@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalization
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 noncomputable section
@@ -25,7 +25,7 @@ theorem exists_frac {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω
     (M : PModel o x) {c : κ} (hc : x c ≠ 0) (a : Ω) :
     ∃ u ∈ chRing o x c, ∃ v ∈ chRing o x c, a = u / v := by
   have hp : InChart M.ξ x c (genCpt M.ξ) := ⟨hc, fun _ => mem_regAt_genCpt M.tie.gen _⟩
-  obtain ⟨u, hu, v, hv, -, e⟩ := ((GlobalTheory.T.regAt_chart_localization o Ω κ x M c _ hp).2 a).1 (mem_regAt_genCpt M.tie.gen a)
+  obtain ⟨u, hu, v, hv, -, e⟩ := ((_root_.GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation o Ω κ x M c _ hp).2 a).1 (mem_regAt_genCpt M.tie.gen a)
   exact ⟨u, hu, v, hv, e⟩
 
 theorem algebraMap_mem_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} (x : κ → Ω)

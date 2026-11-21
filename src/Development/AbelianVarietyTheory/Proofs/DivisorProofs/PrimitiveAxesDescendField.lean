@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStruct
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.Definitions.Divisors.PreUMono
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureCohomologyFlatBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureCohomologyFlatBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullOverBaseChangeComm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpPullbackProdSelfIsPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpPullbackProdSelfIsPullback
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -26,7 +26,7 @@ theorem pullHO_injective_field (K L : Type) [Field K] [Field L] [Algebra K L] (X
     (s' : X' ⟶ Sp L) (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap K L))) (hs : IsSeparated s)
     (hq : QuasiCompact s) :
     Function.Injective (pullHO1 h.w) ∧ Function.Injective (pullHO2 h.w) := by
-  obtain ⟨⟨e1, he1⟩, ⟨e2, he2⟩⟩ := GlobalTheory.T.structure_cohomology_flat_base_change K L X X' s s' φ h hs hq
+  obtain ⟨⟨e1, he1⟩, ⟨e2, he2⟩⟩ := _root_.GlobalTheory.AbCoh.flat_baseChange_HO K L X X' s s' φ h hs hq
   refine ⟨fun a b hab ↦ ?_, fun a b hab ↦ ?_⟩
   · apply one_tmul_injective_field K L
     apply e1.injective
@@ -39,7 +39,7 @@ theorem noPrimO2_axesO1_descend : ∀ (K L : Type) [Field K] [Field L] [Algebra 
   intro K L _ _ _ A _ B _ φ hφ hA
   have hpA : IsProper A.hom := hA.proper
   have hpAA : IsProper (A ⊗ A).hom := by rw [Over.tensorObj_hom]; infer_instance
-  obtain ⟨Φ, hΦ, hμ, hf, hs, ha1, ha2⟩ := GlobalTheory.T.grpPullback_prod_self_isPullback K L (algebraMap K L) A B φ hφ
+  obtain ⟨Φ, hΦ, hμ, hf, hs, ha1, ha2⟩ := _root_.GlobalTheory.AbCoh.prod_pullback_sq K L (algebraMap K L) A B φ hφ
   have injA := pullHO_injective_field K L A.left B.left A.hom B.hom φ hφ.1 inferInstance inferInstance
   have injAA := pullHO_injective_field K L (A ⊗ A).left (B ⊗ B).left (A ⊗ A).hom (B ⊗ B).hom Φ hΦ
     inferInstance inferInstance

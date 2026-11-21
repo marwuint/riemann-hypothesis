@@ -80,61 +80,7 @@ theorem spMap_val_toRat (R : Subalgebra o Ω) :
     spMap (ratHull R).val.toRingHom ≫ spMap (toRat R) = spMap R.val.toRingHom := by
   rw [← Spec.map_comp]; rfl
 
-example : ratHull (⊥ : Subalgebra ℤ ℚ) = ⊤ := top_unique fun x _ =>
-  mem_ratHull.2 ⟨x.den, by simp, Algebra.mem_bot.2 ⟨x.num, by simp [Rat.den_mul_eq_num]⟩⟩
-
 end Rat
-
-theorem exists_ratPoint_of_finiteType {X : Scheme.{0}} (s : X ⟶ Sp ℚ) [LocallyOfFiniteType s] (x : X) :
-    ∃ (Ω : Type) (_ : Field Ω) (_ : ArithBase ℤ Ω) (R : Subalgebra ℤ Ω), R.FG ∧ (∀ z : Ω, ∃ a ∈ R, ∃ b ∈ R, z = a / b) ∧
-      ∃ u : Sp (ratHull R) ⟶ X, ∀ w, (spMap (ratHull R).val.toRingHom ≫ u) w = x := by
-  classical
-  obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial
-  let φ : ℚ →+* Γ(X, U) := (s.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℚ)).inv.hom
-  have hφ : φ.FiniteType := RingHom.FiniteType.comp
-    (HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top)
-    (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of ℚ)).symm.commRingCatIsoToRingEquiv.surjective)
-  letI := φ.toAlgebra
-  obtain ⟨t, ht⟩ : Algebra.FiniteType ℚ Γ(X, U) := hφ
-  let p := hU.primeIdealOf ⟨x, hx⟩
-  let Ω := p.asIdeal.ResidueField
-  let ev : Γ(X, U) →+* Ω := algebraMap _ _
-  haveI : CharZero Ω := (RingHom.charZero_iff (ev.comp φ).injective).1 inferInstance
-  letI : Algebra ℤ Ω := Ring.toIntAlgebra Ω
-  let R : Subalgebra ℤ Ω := Algebra.adjoin ℤ (t.image ev : Finset Ω)
-  have hR : ∀ a, ev a ∈ ratHull R := fun a => by
-    have ha : a ∈ Algebra.adjoin ℚ (t : Set Γ(X, U)) := ht ▸ Algebra.mem_top
-    induction ha using Algebra.adjoin_induction with
-    | mem a ha => exact le_ratHull R (Algebra.subset_adjoin (by simpa using ⟨a, ha, rfl⟩))
-    | algebraMap q =>
-      refine mem_ratHull.2 ⟨q.den, by simp, ?_⟩
-      have : ((q.den : ℤ) : Ω) * ev (algebraMap ℚ _ q) = (q.num : Ω) := by
-        rw [show ev (algebraMap ℚ _ q) = (ev.comp φ) q from rfl, eq_ratCast]
-        exact_mod_cast Rat.den_mul_eq_num q
-      exact this ▸ intCast_mem R _
-    | add a b _ _ ha hb => exact map_add ev a b ▸ add_mem ha hb
-    | mul a b _ _ ha hb => exact map_mul ev a b ▸ mul_mem ha hb
-  refine ⟨Ω, inferInstance, ⟨inferInstance, inferInstance, inferInstance, Int.cast_injective⟩, R, ⟨_, rfl⟩, fun z => ?_,
-    spMap (ev.codRestrict (ratHull R) hR) ≫ hU.fromSpec, fun w => ?_⟩
-  · obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (Γ(X, U) ⧸ p.asIdeal) z
-    obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
-    obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
-    obtain ⟨n, hn, ha⟩ := mem_ratHull.1 (hR a)
-    obtain ⟨m, hm, hb⟩ := mem_ratHull.1 (hR b)
-    refine ⟨_, mul_mem (intCast_mem R m) ha, _, mul_mem (intCast_mem R n) hb, ?_⟩
-    have hn' : (n : Ω) ≠ 0 := Int.cast_ne_zero.2 hn
-    have hm' : (m : Ω) ≠ 0 := Int.cast_ne_zero.2 hm
-    show ev a / ev b = _
-    rw [mul_left_comm, mul_div_mul_left _ _ hn', mul_div_mul_left _ _ hm']
-  · have e : spMap (ratHull R).val.toRingHom ≫ spMap (ev.codRestrict (ratHull R) hR) = spMap ev := by
-      rw [← Spec.map_comp]; rfl
-    have hp : spMap ev w = p := by
-      refine PrimeSpectrum.ext ?_
-      show Ideal.comap ev w.asIdeal = p.asIdeal
-      rw [Subsingleton.elim w (⊥ : PrimeSpectrum Ω)]
-      exact Ideal.ker_algebraMap_residueField _
-    rw [← Category.assoc, e, Scheme.Hom.comp_apply, hp]
-    exact hU.fromSpec_primeIdealOf ⟨x, hx⟩
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
 
@@ -217,16 +163,6 @@ theorem exists_uOver_finiteType [IsDomain R'] [IsLocalRing R'] (u : Sp R' ⟶ Xo
   exact ⟨R, P₀, hR, (uOver_baseChange_iff hφ hL _).1 hP⟩
 
 end UOver
-
-theorem exists_ratPoint (Xo : Moduli D l) (c : Coeff l) (x : Xo.XF c) :
-    ∃ (Ω : Type) (_ : Field Ω) (_ : ArithBase ℤ Ω) (R : Subalgebra ℤ Ω), R.FG ∧ (∀ z : Ω, ∃ a ∈ R, ∃ b ∈ R, z = a / b) ∧
-      ∃ u : Sp (ratHull R) ⟶ Xo.XF c, ∀ w, (spMap (ratHull R).val.toRingHom ≫ u) w = x := by
-  haveI := c.fin
-  haveI := Xo.smooth
-  haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim _
-  haveI : LocallyOfFiniteType (spMap (algebraMap ℚ c.F)) :=
-    (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 inferInstance)
-  exact exists_ratPoint_of_finiteType (pullback.snd _ _ ≫ spMap (algebraMap ℚ c.F)) x
 
 section Spread
 
@@ -343,30 +279,6 @@ theorem UOver.exists_spread {Xo : Moduli D l} {c : Coeff l} {R : Subalgebra o Ω
 
 end Spread
 
-theorem exists_uOver_ratPoint (Xo : Moduli D l) (c : Coeff l) (x : Xo.XF c) :
-    ∃ (Ω : Type) (_ : Field Ω) (_ : ArithBase ℤ Ω) (R : Subalgebra ℤ Ω), R.FG ∧ (∀ z : Ω, ∃ a ∈ R, ∃ b ∈ R, z = a / b) ∧
-      ∃ (P : PolAV (Sp R)) (u : Sp (ratHull R) ⟶ Xo.XF c), UOver Xo c P (toRat R) u ∧
-        ∀ w, (spMap (ratHull R).val.toRingHom ≫ u) w = x := by
-  obtain ⟨Ω, _, hb, R₀, f₀, fr, u, hu⟩ := exists_ratPoint Xo c x
-  obtain ⟨R₁, P₁, f₁, h₁⟩ := exists_uOver_finiteType (spMap (ratHull R₀).val.toRingHom ≫ u)
-  have f₁' : (subalgebraOfSubring R₁).FG := (Subalgebra.fg_iff_finiteType _).2 f₁
-  let R := R₀ ⊔ subalgebraOfSubring R₁
-  have frR : ∀ R' : Subalgebra ℤ Ω, R₀ ≤ R' → ∀ z : Ω, ∃ a ∈ R', ∃ b ∈ R', z = a / b := fun R' h z =>
-    let ⟨a, ha, b, hb, e⟩ := fr z
-    ⟨a, h ha, b, h hb, e⟩
-  have pt : ∀ (R' : Subalgebra ℤ Ω) (h : R₀ ≤ R'), spMap (ratHull R').val.toRingHom ≫
-      spMap (Subalgebra.inclusion (ratHull_mono h)).toRingHom ≫ u = spMap (ratHull R₀).val.toRingHom ≫ u := fun R' h => by
-    rw [← Category.assoc, ← Spec.map_comp]; rfl
-  let τ : R₁ →+* R := (Subalgebra.inclusion (le_sup_right : subalgebraOfSubring R₁ ≤ R)).toRingHom
-  obtain ⟨P, φ, hφ, hL⟩ := exists_pol_baseChange P₁ (spMap τ)
-  obtain ⟨R', hle, f', h'⟩ := UOver.exists_spread (f₀.sup f₁') (frR R le_sup_left) (P := P)
-    (u := spMap (Subalgebra.inclusion (ratHull_mono (le_sup_left : R₀ ≤ R))).toRingHom ≫ u)
-    (by rw [pt R le_sup_left]; exact (uOver_baseChange_iff hφ hL _).2 h₁)
-  obtain ⟨P', φ', hφ', hL'⟩ := exists_pol_baseChange P (spMap (Subalgebra.inclusion hle).toRingHom)
-  refine ⟨Ω, _, hb, R', f', frR R' (le_sup_left.trans hle), P', _, (uOver_baseChange_iff hφ' hL' _).2 h', fun w => ?_⟩
-  rw [← hu w, ← pt R le_sup_left, ← Category.assoc, ← Spec.map_comp]
-  rfl
-
 structure UCompact (Xo : Moduli D l) (c : Coeff l) where
 
   o : Type
@@ -429,10 +341,6 @@ theorem UCompact.isPreimmersion_i {Xo : Moduli D l} {c : Coeff l} (C : UCompact 
   haveI := C.iF_open
   haveI : IsPreimmersion (spMap C.b) := IsPreimmersion.of_isLocalization (nonZeroDivisors C.o)
   infer_instance
-
-theorem UCompact.exists_odd_prime_isUnit {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo c) :
-    ∃ n : ℕ, n.Prime ∧ Odd n ∧ IsUnit (n : C.o) :=
-  ⟨H.d, H.d_prime, by have := H.d_mod; exact Nat.odd_iff.2 (by omega), C.unit_d⟩
 
 structure USetup {Xo : Moduli D l} {c : Coeff l} (C : UCompact Xo c) where
 

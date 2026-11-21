@@ -6,10 +6,11 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeom
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGloballyGeneratedIffGeneratingSections
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFlatSubgroupSchemeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SeparatedOfFiniteSurjectiveQuotientStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormMapRestrictionCompatibleStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyOfFinitePresentationOfCancelStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormLineBundleDescentStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SeparatedOfFiniteSurjectiveQuotient
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormMapRestrictionCompatible
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyOfFinitePresentationOfCancel
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormLineBundleDescent
+import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 
 noncomputable section
 
@@ -91,7 +92,7 @@ theorem quotientByFiniteFlat_of_freeQuotient (hF : GlobalTheory.CompanionTheory.
   have hab : IsAbelianScheme Y := by
     have := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth
       hA.geomConnected
-    have : IsSeparated Y.hom := GlobalTheory.T.separated_of_finite_surjective_quotient q _ _ hq hsnd inferInstance hq1 hq4
+    have : IsSeparated Y.hom := _root_.GlobalTheory.CompanionTheory.QuotientSide.isSeparated_target_of_finite_surjective q _ _ hq hsnd inferInstance hq1 hq4
     have : Flat (q.left ≫ Y.hom) := by rw [hw]; infer_instance
     have : UniversallyClosed (q.left ≫ Y.hom) := by rw [hw]; infer_instance
     have : GeometricallyReduced (q.left ≫ Y.hom) := by rw [hw]; infer_instance
@@ -100,12 +101,12 @@ theorem quotientByFiniteFlat_of_freeQuotient (hF : GlobalTheory.CompanionTheory.
     have := UniversallyClosed.of_comp_surjective q.left Y.hom
     have := GlobalTheory.AbelianQuotient.geometricallyReduced_of_comp q.left Y.hom
     have : LocallyOfFinitePresentation Y.hom :=
-      GlobalTheory.T.locallyOfFinitePresentation_of_cancel q.left Y.hom hq1 hq2 hq3 hq4 (by rw [hw]; infer_instance)
+      _root_.GlobalTheory.CompanionTheory.LfpDescent.descends q.left Y.hom hq1 hq2 hq3 hq4 (by rw [hw]; infer_instance)
     exact ⟨hcomm, GlobalTheory.AbelianQuotient.smooth_of_grpObj_of_flat Y, ⟨⟩,
       GlobalTheory.AbelianQuotient.geometricallyConnected_of_comp q.left Y.hom⟩
   have := hab.proper
-  obtain ⟨N, hN₁, hN₂⟩ := GlobalTheory.T.norm_map_restriction_compatible q.left hq1 hq2 hq3
-  obtain ⟨L', hL', hN⟩ := GlobalTheory.T.norm_line_bundle_descent q.left hq1 N hN₁ hN₂ L hL (by
+  obtain ⟨N, hN₁, hN₂⟩ := _root_.GlobalTheory.CompanionTheory.FinFlatNorm.exists_norm_sheaf q.left hq1 hq2 hq3
+  obtain ⟨L', hL', hN⟩ := _root_.GlobalTheory.CompanionTheory.NormLB.exists_normLB q.left hq1 N hN₁ hN₂ L hL (by
     intro y
     obtain ⟨W, -, h₁, -, t⟩ := hample.exists_affine_finite_subset_trivial hL
       (Scheme.Hom.finite_preimage_singleton q.left y) (U := ⊤) (fun _ _ => trivial)

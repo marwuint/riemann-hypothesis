@@ -15,11 +15,6 @@ abbrev PolB (p q : ℕ) : Type := MvPolynomial (Fin p × Fin q) ℂ
 
 def InU (x : Mat p q) : Prop := xᴴ * Jm p q * x = Jm p q
 
-def zOf (x : Mat p q) : Fin p × Fin q → ℂ := fun ij => (x.toBlocks₁₂ * (x.toBlocks₂₂)⁻¹) ij.1 ij.2
-
-def Phi (k : ℕ) (P : PolB p q) (x : Mat p q) : ℂ :=
-  (x.toBlocks₂₂.det)⁻¹ ^ k * MvPolynomial.eval (zOf x) P
-
 def col (Z : Fin p × Fin q → ℂ) : Mat p q := Matrix.fromBlocks 1 (Matrix.of fun i j => Z (i, j)) 0 1
 
 def Zm (p q : ℕ) : Matrix (Fin p) (Fin q) (PolB p q) := Matrix.of fun i j => MvPolynomial.X (i, j)
@@ -76,41 +71,15 @@ def act (k : ℕ) : Mat p q →ₗ[ℂ] Module.End ℂ (PolB p q) where
 
 theorem Jm_eq : Jm p q = Matrix.fromBlocks 1 0 0 (-1) := rfl
 
-theorem InU.blocks {x : Mat p q} (h : InU x) :
-    x.toBlocks₁₁ᴴ * x.toBlocks₁₁ = 1 + x.toBlocks₂₁ᴴ * x.toBlocks₂₁ ∧
-    x.toBlocks₁₁ᴴ * x.toBlocks₁₂ = x.toBlocks₂₁ᴴ * x.toBlocks₂₂ ∧
-    x.toBlocks₂₂ᴴ * x.toBlocks₂₂ = 1 + x.toBlocks₁₂ᴴ * x.toBlocks₁₂ := by
-  unfold InU at h
-  rw [← Matrix.fromBlocks_toBlocks x, Jm_eq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply,
-    Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at h
-  simp only [Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul] at h
-  obtain ⟨h1, h2, -, h4⟩ := h
-  refine ⟨?_, ?_, ?_⟩
-  · rw [← h1]; abel
-  · rw [← sub_eq_zero, ← h2]; abel
-  · rw [← sub_eq_zero, ← neg_eq_zero, ← sub_eq_zero.2 h4]; abel
-
 theorem InU.mul {x y : Mat p q} (hx : InU x) (hy : InU y) : InU (x * y) := by
   unfold InU at *
   rw [Matrix.conjTranspose_mul]
   calc _ = yᴴ * (xᴴ * Jm p q * x) * y := by simp only [Matrix.mul_assoc]
     _ = _ := by rw [hx, hy]
 
-theorem toBlocks₁₂_mul (g x : Mat p q) :
-    (g * x).toBlocks₁₂ = g.toBlocks₁₁ * x.toBlocks₁₂ + g.toBlocks₁₂ * x.toBlocks₂₂ := by
-  conv_lhs => rw [← Matrix.fromBlocks_toBlocks g, ← Matrix.fromBlocks_toBlocks x, Matrix.fromBlocks_multiply]
-  rfl
-
-theorem toBlocks₂₂_mul (g x : Mat p q) :
-    (g * x).toBlocks₂₂ = g.toBlocks₂₁ * x.toBlocks₁₂ + g.toBlocks₂₂ * x.toBlocks₂₂ := by
-  conv_lhs => rw [← Matrix.fromBlocks_toBlocks g, ← Matrix.fromBlocks_toBlocks x, Matrix.fromBlocks_multiply]
-  rfl
-
 theorem col₁₂ (Z : Fin p × Fin q → ℂ) : (col Z).toBlocks₁₂ = Matrix.of fun i j => Z (i, j) := rfl
 
 theorem col₂₂ (Z : Fin p × Fin q → ℂ) : (col Z).toBlocks₂₂ = 1 := rfl
-
-def cm (T : GrpData p q) (g : T.G) : Mat p q := ((T.cov g : GL (Ix p q) ℂ) : Mat p q)
 
 instance t2Space_cuspAdeles (T : GrpData p q) : T2Space T.G := T.emb.t2Space
 

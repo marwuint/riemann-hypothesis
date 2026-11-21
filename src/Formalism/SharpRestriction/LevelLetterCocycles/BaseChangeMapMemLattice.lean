@@ -86,12 +86,6 @@ theorem contSMul_of (hc : Continuous (algebraMap LL LL')) (M : Type) [AddCommGro
   rw [e]
   exact (hc.comp continuous_fst).smul continuous_snd
 
-example (V : Type) [AddCommGroup V] [Module LL V] : Module O' (LL' ⊗[LL] V) := inferInstance
-example (V : Type) [AddCommGroup V] [Module LL V] : IsScalarTower O' LL' (LL' ⊗[LL] V) := inferInstance
-example (V : Type) [AddCommGroup V] [Module LL V] : IsScalarTower Qp LL' (LL' ⊗[LL] V) := inferInstance
-example (V : Type) [AddCommGroup V] [Module LL V] [FiniteDimensional LL V] :
-    FiniteDimensional LL' (LL' ⊗[LL] V) := inferInstance
-
 end Lat
 
 section LatT

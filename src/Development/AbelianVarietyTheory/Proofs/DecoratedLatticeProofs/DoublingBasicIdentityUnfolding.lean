@@ -43,7 +43,7 @@ theorem basicIdentity_unfold : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE
   have hφc : Continuous φ := hφ.2.1
 
   have hI : HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a) :=
-    GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D V (frameLat V) a (GlobalTheory.Core.Rk.AbsConv.isSelfDualC_frameLat V) ha
+    _root_.GlobalTheory.Core.Rk.IP.hasIwasawa_KAd_selfDual D V (frameLat V) a (GlobalTheory.Core.Rk.AbsConv.isSelfDualC_frameLat V) ha
   have hS : SphConv V a := GlobalTheory.Eis.sphConv D V a hI
   have hσ : (V.rank : ℝ) / 2 < ((s.re : ℂ)).re := by simpa using hs
   have hconvS : ∀ g, EisConv V (sph V a (s.re : ℂ)) g := fun g => (((sphConv_iff hI).1 hS).1 _ hσ).2 g

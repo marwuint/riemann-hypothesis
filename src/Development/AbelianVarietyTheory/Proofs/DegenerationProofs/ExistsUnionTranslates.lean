@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.StrictModelTranslatesTwistCompatibleStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.StrictModelTranslatesTwistCompatible
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGlueFinitelyManyCompatibleSmoothModelsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelGroupLawDefinedAtTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelGroupLawDefinedAtTranslate
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueModelExtensionOfDefinedAtPointsStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -302,7 +302,7 @@ open FinUnion
 theorem exists_union_translates : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K], SH R K → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ M : Model R A, Strict M → ∃ G : Model R A, G.Irr ∧ (∀ a : (𝟙_ (Over (Sp K)) ⟶ A), GenIso M M (transl a).hom → (M.twist (transl a)).Le G) ∧ (∀ y : G.Y.left, ∃ (a : (𝟙_ (Over (Sp K)) ⟶ A)) (g : M.Y ⟶ G.Y), GenIso M M (transl a).hom ∧ IsOpenImmersion g.left ∧ (M.twist (transl a)).j ≫ g.left = G.j ∧ y ∈ Set.range g.left) ∧ ∀ z, DefAt (M.prod M) G (μ[A]) z := by
   intro R K _ _ _ _ _ hS A _ _ hA M hM
   obtain ⟨_, -, -, _⟩ := id hS
-  choose a ha U φ hU hφ using GlobalTheory.T.modelGroupLaw_definedAt_translate R K hS A hA M hM
+  choose a ha U φ hU hφ using _root_.GlobalTheory.SS.defAt_mul_twist R K hS A hA M hM
   have := (M.prod M).qc
   have : CompactSpace (M.prod M).Y.left := QuasiCompact.compactSpace_of_compactSpace (M.prod M).Y.hom
   obtain ⟨T, hT⟩ := isCompact_univ.elim_finite_subcover (fun z => (U z : Set (M.prod M).Y.left))
@@ -316,7 +316,7 @@ theorem exists_union_translates : ∀ (R K : Type) [CommRing R] [IsDomain R] [Is
     obtain ⟨y, hy⟩ := hM.1.1.1
     exact ⟨y, hy, isoAt_id M y⟩
   obtain ⟨G, hle, hcov, hcomp⟩ := GlobalTheory.T.exists_glue_finitely_many_compatible_smoothModels R K A T.card (fun i => M.twist (transl (b i)))
-    fun i j => GlobalTheory.T.strictModel_translates_twist_compatible R K hS A hA M hM _ _ (hb i) (hb j)
+    fun i j => _root_.GlobalTheory.SS.compat_twist_transl R K hS A hA M hM _ _ (hb i) (hb j)
   have hdef : ∀ z, DefAt (M.prod M) G (μ[A]) z := by
     intro z
     obtain ⟨z', hz', hz⟩ := Set.mem_iUnion₂.1 (hT (Set.mem_univ z))
@@ -325,7 +325,7 @@ theorem exists_union_translates : ∀ (R K : Type) [CommRing R] [IsDomain R] [Is
     rw [this]
     exact ⟨U z', φ z', hz, hφ z'⟩
   obtain ⟨m, hm, -⟩ := GlobalTheory.T.existsUnique_model_extension_of_definedAtPoints R K _ _ _ _ _ hdef
-  refine ⟨G, ?_, fun c hc => le_of_law hM m hm c hc (hcomp _ fun i => GlobalTheory.T.strictModel_translates_twist_compatible R K hS A hA M hM _ _ hc (hb i)),
+  refine ⟨G, ?_, fun c hc => le_of_law hM m hm c hc (hcomp _ fun i => _root_.GlobalTheory.SS.compat_twist_transl R K hS A hA M hM _ _ hc (hb i)),
     fun y => ?_, hdef⟩
   · obtain ⟨g₀, o₀, e₀⟩ := hle 0
     have e₁ : M.j ≫ g₀.left = G.j := by

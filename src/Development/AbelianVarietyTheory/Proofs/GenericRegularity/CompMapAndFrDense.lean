@@ -1,6 +1,8 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.FnDefE
-import Formalism.LocalToGlobal.ProjectiveLattices.TieGen
+import Formalism.LocalToGlobal.ProjectiveLattices.PetersonNormSubspace
+import Formalism.LocalToGlobal.ProjectiveLattices.CompOrd
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.PoinStatementPfD
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.SupCLeISupGeneric
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFramesOfHolPeriods
@@ -19,10 +21,6 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
-
-open Classical in
-
-def toGoodAut (c : Coeff l) (σ : c.F →+* ℂ) : ℂ →+* ℂ := if GoodEmb c σ then RingHom.id ℂ else starRingEnd ℂ
 
 theorem lact_mem_dom (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact γ x ∈ X.dom := by

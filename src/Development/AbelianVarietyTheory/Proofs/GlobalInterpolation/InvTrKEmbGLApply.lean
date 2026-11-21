@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.FormsStable
-import Development.AbelianVarietyTheory.Counterexamples.PlaceInjectivity.NotPtIntZeroTarget
+import Formalism.LocalRingCardinality.SpanPowerMembership.FmZeroHLatEmpty
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StatementWithTransposeOfBranching
 import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 
@@ -207,23 +207,5 @@ theorem weights_ok (emb : ι → E →+* K) [StarRing K] (h : ∀ τ, Q.sg τ = 
 end General
 
 variable {D : D7} {u : D.what₂.Word}
-
-def IsBuilt (X : Ch D u) : Prop :=
-  ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : StarRing E) (emb : D.what₂.Tau → E →+* D.what₂.LL)
-    (I : ChainIn E D.what₂.LL D.what₂.Tau D.R) (J : AtIn I) (Q : PerIn I) (Z : FmIn J D.what₂.places)
-    (hI : I.Ok) (hJ : J.Ok) (hQ : Q.Ok) (l : J.Laws emb D.what₂.embLL (D.hcW u))
-    (lf : FmLaws J Q emb D.what₂.embLL (D.hcW u) D.what₂.places hI hQ) (hT : Q.Over J),
-    (∀ τ, Q.sg τ = (RowPar.of (D.hcW u τ)).sg) ∧
-      X = ⟨_, _, _, forms J Q emb D.what₂.embLL (D.hcW u) Z hI hJ hQ l lf hT⟩
-
-theorem ptInt_of_isBuilt (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) {X : Ch D u} (hX : IsBuilt X) : PtInt X := by
-  obtain ⟨E, _, _, _, emb, I, J, Q, Z, hI, hJ, hQ, l, lf, hT, hsg, rfl⟩ := hX
-  refine (PtIntTest.ptInt_iff _).2 fun x hx => ?_
-  exact exists_image emb D.what₂.embLL Q (D.hcW u) h6 hI hQ (fun τ => (weights_ok Q _ emb hsg τ).1)
-    (fun τ => (weights_ok Q _ emb hsg τ).2) (lf.fam _) lf.famP x hx
-
-theorem ptInt_tw (D : D7) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (hX : IsBuilt (tw Tw u μ))
-    (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : PtInt (tw Tw u μ) :=
-  ptInt_of_isBuilt h6 hX
 
 end GlobalTheory.LvT.BuiltChain

@@ -140,55 +140,6 @@ theorem colLev_of_lt {j : ℕ} (hj : j < R.m) (w : Pr.vGs) :
     colLev Ch j w = ⟨HX (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.t j,
       lamX (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N j) R.k R.m R.t j⟩ := if_pos hj
 
-theorem colLev_m (w : Pr.vGs) :
-    colLev Ch R.m w = ⟨HXm (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m) R.r R.t R.m,
-      lamXm (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N R.m) R.r R.t R.m⟩ := if_neg (lt_irrefl _)
-
-theorem colFree (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
-    (colGSD W Ch u 0).Free := by
-  intro d a ha
-  have hpos : 0 < (Pr.vG 0).card := by
-    rw [hPr.vG_card 0, Fields.f, hX.card_Tau]
-    exact Module.finrank_pos
-  obtain ⟨w, hw⟩ := Finset.card_pos.mp hpos
-  have hw' : w ∈ Pr.vGs := by
-    classical
-    unfold Primes.vGs
-    exact Finset.mem_union_left _ hw
-  have hN : R.N 0 = R.k := by simp [Ranks.N]
-  have hm : 0 < R.m := lt_of_lt_of_le (by norm_num) R.two_le_m
-  have hmem : (a.2 : GLG X.E (R.N 0) Pr.vGs) ⟨w, hw'⟩ ∈ (colLev Ch 0 ⟨w, hw'⟩).H :=
-    (Subgroup.mem_pi _).mp a.2.2 ⟨w, hw'⟩ (Set.mem_univ _)
-  rw [colLev_of_lt Ch hm] at hmem
-  have h1 : FormG.incl (colLev Ch 0) a = 1 :=
-    DecoSet.decoration_stabilizer_trivial_unipotent hX hPr (d : DecoSet X.E (R.N 0) (Pr.vT u) Pr.vGs) ha 0 ⟨w, hw'⟩ hw (by rw [hN]; exact hbig)
-      (isNilpotent_of_mem_HX_zero hN.le hmem)
-  exact FormG.incl_injective _ (h1.trans (map_one _).symm)
-
-theorem finrank_MfV (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
-    finrank X.K (MfV W Ch u) = Nat.card (colGSD W Ch u 0).Cl * finrank X.K (VV X.K (W.lamTrue u 0)) :=
-  (colGSD W Ch u 0).finrank_free (colOk W Ch hX u 0) (colFree W Ch hX hPr hbig u)
-
-theorem ColL_le_ColLnab (u : Pr.Word) (j : ℕ) : ColL W Ch u j ≤ ColLnab W Ch u j := by
-  intro φ hφ d
-  exact roundPk_del_le X (W.lamTrue u j) (fun d : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs => d.1.Lsh) d (hφ d)
-
-theorem map_MfL (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word)
-    (s : (colGSD W Ch u 0).Sec) :
-    (MfL W Ch u).map (((colGSD W Ch u 0).resFree (colOk W Ch hX u 0) s (colFree W Ch hX hPr hbig u) :
-      (colGSD W Ch u 0).EqFun →ₗ[X.K] ((colGSD W Ch u 0).Cl → (colGSD W Ch u 0).V)).restrictScalars (𝓞 X.K)) =
-      Submodule.pi Set.univ fun c => (colGSD W Ch u 0).Del (s.rep c) :=
-  (colGSD W Ch u 0).map_intDel_free (colOk W Ch hX u 0) s (colFree W Ch hX hPr hbig u)
-
-theorem finrank_MfV_pos (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
-    0 < finrank X.K (MfV W Ch u) := by
-  rw [finrank_MfV W Ch hX hPr hbig u]
-  have : NeZero (R.N 0) := ⟨(R.N_pos 0).ne'⟩
-  have h1 : Finite (colGSD W Ch u 0).Cl := (colOk W Ch hX u 0).fin_orb
-  have h2 : Nonempty (colGSD W Ch u 0).Cl :=
-    ⟨(colGSD W Ch u 0).cls (DecoSet.base X.E (R.N 0) (Pr.vT u) Pr.vGs)⟩
-  exact Nat.mul_pos Nat.card_pos (colVal W u 0 (Pr.vT u) Pr.vGs).finrank_pos
-
 end Cols
 
 end Formalism.L2.Col

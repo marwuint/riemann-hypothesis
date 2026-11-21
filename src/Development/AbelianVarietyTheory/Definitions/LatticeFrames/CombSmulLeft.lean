@@ -15,27 +15,6 @@ theorem root_ne {z : ℂ} (h : ∃ n : ℕ, 0 < n ∧ z ^ n = 1) : z ≠ 0 := by
   rintro rfl
   simp [hn.ne'] at h
 
-theorem resc_resc (w : VTup t) (s s' : ∀ j, t.Ch j → ℂ) : resc (resc w s) s' = resc w (fun j α => s' j α * s j α) := by
-  have h : ∀ j α γ, s' j α * (s' (j + 1) γ)⁻¹ * (s j α * (s (j + 1) γ)⁻¹) = s' j α * s j α * (s' (j + 1) γ * s (j + 1) γ)⁻¹ :=
-    fun j α γ => by rw [mul_inv]; ring
-  cases w; simp only [resc, smul_smul, h]
-
-theorem twist_eq (w : VTup t) (s : ∀ j, t.Ch j → ℂ) (hs : ∀ j α, s j α ^ 2 = 1) : twist w s = resc w s := by
-  have h : ∀ j α, (s j α)⁻¹ = s j α := fun j α => inv_eq_of_mul_eq_one_right (by rw [← sq, hs])
-  simp only [twist, resc, h]
-
-theorem of_qpinS {v : VCom c} {w : VTup t} (h : QPinS v w) : QPinU v w := by
-  obtain ⟨w₀, s, hs, h, e⟩ := h
-  exact ⟨w₀, s, fun j α => ⟨2, two_pos, hs j α⟩, h, e.trans (twist_eq _ _ hs)⟩
-
-theorem qpinU_resc {v : VCom c} {w : VTup t} (h : QPinU v w) (s' : ∀ j, t.Ch j → ℂ)
-    (hs' : ∀ j α, ∃ n : ℕ, 0 < n ∧ s' j α ^ n = 1) : QPinU v (resc w s') := by
-  obtain ⟨w₀, s, hs, h, rfl⟩ := h
-  refine ⟨w₀, _, fun j α => ?_, h, resc_resc _ _ _⟩
-  obtain ⟨n, hn, e⟩ := hs j α
-  obtain ⟨m, hm, e'⟩ := hs' j α
-  exact ⟨n * m, Nat.mul_pos hn hm, by rw [mul_pow, pow_mul (s j α), e, mul_comm n, pow_mul, e']; simp⟩
-
 theorem comb_lc (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T e f = Finsupp.linearCombination ℂ (fun x => heisO ψ S T x f) e := rfl
 
@@ -167,23 +146,6 @@ theorem laws_of_qpinU (v : VCom c) (H : ∀ w : VTup t, QPin v w → QLaw v w �
   obtain ⟨w₀, s, hs, h, rfl⟩ := h
   exact ⟨qlaw_resc v _ s (fun j α => root_ne (hs j α)) (H _ (qpin_free h)).1,
     qlast_resc v _ s (fun j α => root_ne (hs j α)) (H _ (qpin_free h)).2.1, qfin_resc v _ s (H _ h).2.2⟩
-
-theorem qpinU_iff {v : VCom c} {w : VTup t} :
-    QPinU v w ↔ ∃ s : ∀ j, t.Ch j → ℂ, (∀ j α, ∃ n : ℕ, 0 < n ∧ s j α ^ n = 1) ∧ QPin v (resc w s) := by
-  have key : ∀ (w : VTup t) (s : ∀ j, t.Ch j → ℂ), (∀ j α, ∃ n : ℕ, 0 < n ∧ s j α ^ n = 1) →
-      (∀ j α, ∃ n : ℕ, 0 < n ∧ (s j α)⁻¹ ^ n = 1) ∧ resc (resc w s) (fun j α => (s j α)⁻¹) = w := fun w s hs =>
-    ⟨fun j α => (hs j α).imp fun n h => ⟨h.1, by rw [inv_pow, h.2, inv_one]⟩, by
-      rw [resc_resc]
-      simp only [inv_mul_cancel₀ (root_ne (hs _ _)), resc_one]⟩
-  exact ⟨fun ⟨w₀, s, hs, h, e⟩ => ⟨_, (key w₀ s hs).1, by rw [e, (key w₀ s hs).2]; exact h⟩,
-    fun ⟨s, hs, h⟩ => ⟨_, _, (key w s hs).1, h, (key w s hs).2.symm⟩⟩
-
-theorem norm_dQ (w : VTup t) (s : ∀ j, t.Ch j → ℂ) (hs : ∀ j α, ∃ n : ℕ, 0 < n ∧ s j α ^ n = 1) (j α γ x) :
-    ‖(resc w s).dQ j α γ x‖ = ‖w.dQ j α γ x‖ := by
-  have h : ∀ j α, ‖s j α‖ = 1 := fun j α => by
-    obtain ⟨n, hn, e⟩ := hs j α
-    exact Complex.norm_eq_one_of_pow_eq_one e hn.ne'
-  simp [resc, h]
 
 end GlobalTheory.QTw.RescTest
 end

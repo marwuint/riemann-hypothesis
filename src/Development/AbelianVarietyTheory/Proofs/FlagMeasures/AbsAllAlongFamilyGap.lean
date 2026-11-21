@@ -12,7 +12,11 @@ import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyStatementOfItemsFourSeven
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneLeFoldrMax
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthMomentsAmplitudesLargeGapStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthMomentsAmplitudesLargeGap
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+import Formalism.SharpRestriction.CuspSpanNormBounds.LeadMinorK
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SizesLargeOfPowerBounds
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
@@ -23,7 +27,7 @@ namespace GlobalTheory.GapUAmp
 
 theorem abs_all_along_family_gap : Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.GapIn.Hyp → BpJoin.ThmBpDS → ∀ Cg cb Cu cT CT C0 A C1 : ℝ, ∃ C thr : ℝ, 0 ≤ C ∧ ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm → PX.RanksF Fm C0 Cg cb Cu cT CT → (∀ Cn : ℝ, OwnEv Fm fun C' Cl x i => Formalism.MainNotions.BridgeLemma.AbsAllParameters (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cn C) ∧ (OwnEv Fm fun C' Cl x i => VanishingOnXAndXPlusBranching.PrimeSumLogBound (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1) := by
   intro _ hH _ Cg cb Cu cT CT C0 A C1
-  obtain ⟨CMo, hMo⟩ := GlobalTheory.T.majorantLength_moments_amplitudes_largeGap hH Cg cb Cu cT CT C0 C1 25
+  obtain ⟨CMo, hMo⟩ := _root_.GlobalTheory.AmpMomentsGap.amplitude_moments_gap hH Cg cb Cu cT CT C0 C1 25
   obtain ⟨C₀, hAbs⟩ := GlobalTheory.Amp.AbsRange.abs_range Cg cb Cu cT CT C0 C1 CMo
   obtain ⟨m₁, hAbs'⟩ := hAbs (max C₀ 0) (le_max_left _ _)
   refine ⟨max C₀ 0, 1000, le_max_right _ _, ?_⟩

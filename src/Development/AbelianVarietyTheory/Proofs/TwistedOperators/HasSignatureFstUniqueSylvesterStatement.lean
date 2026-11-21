@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSignatureFstUniqueSylvester
-import Mathlib
 import Formalism.SatakeDualWeyl.Statement
 
 set_option maxHeartbeats 1000000 in

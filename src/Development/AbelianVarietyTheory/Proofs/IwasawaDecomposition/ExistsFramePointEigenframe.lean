@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBaseChange
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFrPtOfEigFrame
 
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam GlobalTheory.ShFam.BdArc Filter Topology
@@ -14,7 +14,7 @@ theorem exists_matches : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   have := Z.jQ_open
   have : IsLocalRing (CAt (ψ.comp φ)) := inferInstanceAs (IsLocalRing ℂ)
   let ψ' : A →+* CAt (ψ.comp φ) := ψ
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_eigFrame_baseChange' E H Dw l Xo c O β Z A (CAt (ψ.comp φ)) φ (x ≫ genι Z) fr ψ'
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.ShFam.EigFrame.exists_baseChange E H Dw l Xo c O β Z A (CAt (ψ.comp φ)) φ (x ≫ genι Z) fr ψ'
   have hr : Set.range (spMap ψ' ≫ x) ⊆ Set.range Z.jQ := by
     rintro _ ⟨s, rfl⟩
     exact not_not.1 (hb s)

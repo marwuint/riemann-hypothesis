@@ -6,8 +6,8 @@ import Formalism.LocalRingCardinality.DataCD
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MatGroupHaarUniqueFiniteCompactOpenPos
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IntegralConjInnerMulInnerOfIsEmptyEquiv
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueHaarDensityAtIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarVolumeThinTubeUnitaryProductAsymptoticStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarUnitaryLastDiagonalEntryLawStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarVolumeThinTubeUnitaryProductAsymptotic
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarUnitaryLastDiagonalEntryLaw
 
 open MeasureTheory Matrix Filter Topology Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp
 open scoped InnerProductSpace ENNReal
@@ -255,13 +255,13 @@ theorem hasDens_unitary : ∀ (j : ℕ) (μ : Measure (PI.MtM j)), PI.IsHaarOnM 
     have hD : (Matrix.diagonal fun j : Fin (k + 1) => if j = Fin.last k then ((1 : ℝ) : ℂ) else 1) = 1 := by
       simp
     have hv := volUn_pos k
-    have ht := GlobalTheory.T.haar_volume_thin_tube_unitary_product_asymptotic k 1 hk (Or.inl rfl) μ μ₀ c (volUn k)⁻¹ hc (inv_pos.2 hv) (by rwa [hD]) (by rwa [hD])
+    have ht := _root_.GlobalTheory.Tube.thin_tube k 1 hk (Or.inl rfl) μ μ₀ c (volUn k)⁻¹ hc (inv_pos.2 hv) (by rwa [hD]) (by rwa [hD])
       hμ₀ h₀ (ih μ₀ hμ₀ h₀)
     have h1 : Tendsto (fun t : ℝ => μ {g | |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t} / ENNReal.ofReal (t ^ k))
         (𝓝[>] 0) (𝓝 1) := by
       refine tendsto_const_nhds.congr' ?_
       filter_upwards [Ioo_mem_nhdsGT (zero_lt_one' ℝ)] with t ht
-      rw [GlobalTheory.T.haarUnitary_lastDiagonalEntry_law k μ hk hμ h t ht.1.le ht.2.le,
+      rw [_root_.GlobalTheory.Amp.EntryLaw.measure_entry k μ hk hμ h t ht.1.le ht.2.le,
         ENNReal.div_self (by simpa using pow_pos ht.1 k) ENNReal.ofReal_ne_top]
     have h2 := ENNReal.ofReal_eq_one.1 (tendsto_nhds_unique ht h1)
     have h3 : c = (volUn (k + 1))⁻¹ := by

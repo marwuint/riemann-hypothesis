@@ -11,9 +11,13 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PEmbeddingPieces
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPiecesAdditive
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PieceDegreeOfIntersectionAndResolutionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegrableOfResolutionStatementStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PieceDegreeOfIntersectionAndResolution
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegrableOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatement
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
@@ -21,10 +25,10 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 theorem embeddingPieces_of_resK (hA : ArithIntersectionSystemStatement)
     (hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) :
     GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingPieces.Statement :=
-  have hInt : PtsIntegrableStatement := GlobalTheory.T.points_integrable_of_resolution_statement hR
-  have hRes : ResExistsStatement := GlobalTheory.T.resolution_exists_of_resolution_statement hR
+  have hInt : PtsIntegrableStatement := _root_.GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegrable_of_resK hR
+  have hRes : ResExistsStatement := _root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hR
   GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingPieces.proof
     (GroundTheory.Heights₂.Heights.HilbertSamuel.PiecesAdditive.proof hInt)
-    (GlobalTheory.T.piece_degree_of_intersection_and_resolution hA hRes hInt)
+    (_root_.GlobalTheory.CompanionTheory.Ar.Giv.pieceDegree hA hRes hInt)
 
 end GlobalTheory.CompanionTheory.Ar.Giv

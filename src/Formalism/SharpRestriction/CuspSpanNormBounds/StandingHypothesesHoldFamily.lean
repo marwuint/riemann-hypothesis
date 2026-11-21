@@ -6,7 +6,8 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds
 import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
 import Formalism.SharpRestriction.CuspSpanNormBounds.ThresholdCubicInequalitySignPattern
 import Formalism.SharpRestriction.CuspSpanNormBounds.ResidualIrreducibilityFormsEquivalent
-import Formalism.SharpRestriction.CuspSpanNormBounds.JointEvBounds
+import Formalism.SharpRestriction.CuspSpanNormBounds.ThinScalesBound
+import Formalism.SharpRestriction.CuspSpanNormBounds.ChainLength
 import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
 import Formalism.SharpRestriction.GlobalSchurBounds.CMFieldLemmas
 import Formalism.SharpRestriction.GlobalSchurBounds.ShortIntervalPrimes
@@ -16,23 +17,6 @@ noncomputable section
 namespace Formalism.MainNotions.S
 
 open Formalism.BasicNotions Formalism.MainNotions
-
-theorem isOrthProjOnto_proj {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (S : Submodule ℂ H)
-    [CompleteSpace S] : IsOrthProjOnto (S.subtypeL.comp S.orthogonalProjectionOnto) S := by
-  have hE : S.subtypeL.comp S.orthogonalProjectionOnto = S.starProjection := rfl
-  rw [hE]
-  refine ⟨?_, ?_, ?_⟩
-  · ext x
-    simp only [ContinuousLinearMap.comp_apply]
-    exact Submodule.starProjection_eq_self_iff.2 (Submodule.starProjection_apply_mem S x)
-  · intro x y
-    exact Submodule.inner_starProjection_left_eq_right S x y
-  · ext x
-    constructor
-    · rintro ⟨y, rfl⟩
-      exact Submodule.starProjection_apply_mem S y
-    · intro hx
-      exact ⟨x, Submodule.starProjection_eq_self_iff.2 hx⟩
 
 theorem linear_le_pow_eight_eventually (a B : ℝ) (ha : 0 < a) : ∃ Y0 : ℝ, 1 ≤ Y0 ∧ ∀ y : ℝ, Y0 ≤ y → B * y ≤ a * y ^ 8 := by
   refine ⟨max 1 (B / a), le_max_left _ _, fun y hy => ?_⟩
@@ -528,63 +512,6 @@ theorem card_epsS_false : (univ.filter fun a : Fin D.R.r => epsS D.R a = false).
           omega
     _ = D.R.rS + 1 := card_range _
 
-theorem row_count_of_tied_bundles (large₂ : SizeData₂ D) (X : RowsAut) (hX : PlaceDegreeData.RowsTie D X) (n0 : ℕ) (A C cb c : ℝ)
-    (h : PlaceDegreeData.WordCountBound D n0 A C c cb) : AdmissibleBoundsFromSource.adm10 D large₂ n0 A C cb c := by
-  intro hp
-  obtain ⟨-, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12⟩ := hp
-  have hX' := hX
-  obtain ⟨⟨pl, T⟩, t5, tsp⟩ := hX'
-  have hn := T.n_eq
-  have trd := T.rd_eq
-  have tg0 := T.g0_eq
-  have tg := T.g_eq
-  have hq : ∀ v, X.I.pAt v = (univ.filter fun a : Fin D.R.r => epsS D.R a = true).card ∧
-      X.I.qAt v = (univ.filter fun a : Fin D.R.r => epsS D.R a = false).card := by
-    intro v
-    have he := T.eps_eq v
-    constructor
-    · simp only [AutInst.pAt, he]
-      exact card_cast hn (fun a => epsS D.R a = true)
-    · simp only [AutInst.qAt, he]
-      exact card_cast hn (fun a => epsS D.R a = false)
-  have hS : PlaceDegreeData.HidaSetting X.I n0 A large₂.sc.b X.lam X.μf X.g X.g₀ X.e := by
-    refine ⟨by rw [hn]; exact p2, ⟨_, _, hq, ?_⟩, p11, ?_, t5, ?_, X.e_adm, ?_, ?_, ?_, ?_, ?_⟩
-    · rw [hn]
-      exact le_trans (Nat.pow_le_pow_left card_epsS_false 2) p3
-    · rw [trd, hn]; exact p4
-    · intro v a
-      rw [T.lam_eq v a]; exact p5 _ _
-    · rw [tg]
-      exact Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
-    · rw [tg]
-      have : gg D = ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ) := by unfold gg; push_cast; ring
-      rw [← this]; exact p6
-    · rw [tg0]; exact D.host.g_prime 0
-    · rw [tg0, hn]; exact p7
-    · exact tsp p8
-  refine h X large₂.sc.b _ hX hS (fun v a c hac => ?_) le_rfl p10 p12
-  rw [T.lam_eq v a, T.lam_eq v c]
-  exact p9 _ _ _ (by rw [← T.eps_eq v a, ← T.eps_eq v c]; exact hac)
-
-theorem count_rows_of_count_all (n₀ : ℕ) (A C c cb : ℝ) (hp : PlaceDegreeData.PointsLemma D n₀ A C c cb) : PlaceDegreeData.WordCountBound D n₀ A C c cb := by
-  intro X b h hT hS hg h1 h2 h3
-  obtain ⟨⟨pl, hA⟩, -, -⟩ := hT
-  have hD := hA.D_eq
-  have hDs : X.I.Dstar (PlaceDegreeData.fdegAll X.I X.σ X.w) X.μf X.fund X.e = D.what₂.Dstar := hA.Dstar_eq.symm
-  have hf := hA.f_eq
-  have hrd := hA.rd_eq
-  have hn := hA.n_eq
-  have hc : PlaceDegreeData.CountData X.I X.lam X.σ X.w X.σs X.tens X.μf X.fund X.R X.e X.Re :=
-    ⟨hA.ds, hA.low, X.tens_spec, X.haar, X.fund_spec, X.R_spec, X.Re_spec⟩
-  rw [← hn, ← hf, ← hrd] at h1
-  rw [← hn, ← hf] at h2 h3
-  have := hp X.I b X.lam X.g X.g₀ X.e X.H X.σ X.w X.Hs X.σs X.tens X.μf X.fund X.R X.Re h hS hc hg h1 h2 h3
-  have e1 : (X.I.Dcount X.σs X.μf X.fund X.R X.Re : ℝ) = (D.what₂.Dall : ℝ) := by exact_mod_cast hD
-  rw [e1, hDs] at this
-  rw [← hn, ← hf]
-  convert this using 3
-  ring
-
 end Count
 
 section Family
@@ -649,59 +576,6 @@ theorem linkS_of_standing_hypotheses (Cg cb Cu cT CT C0 c7 : ℝ) (h1 : 1 ≤ C0
     exact ⟨_, _, _, s0, s1, s2, s3, fun _ => linkS_concl (Fm.L x i) C0 _ _ Cg cb Cu cT CT c7 h1 hh (H76 hh) HC⟩
   · exact ⟨0, 0, 0, le_rfl, (Real.exp_pos _).le, (Real.exp_pos _).le,
       by rw [Real.sqrt_zero]; exact (Real.exp_pos _).le, fun h => absurd h hW⟩
-
-theorem equal_word_mass_of_theorem_S {D : D7} (L : SizeData₂ D) (C0 C' Cl Cg cb Cu cT CT : ℝ)
-    (h : AdmissibleBoundsFromSource.hyp D L C0 C' Cl Cg cb Cu cT CT → AdmissibleBoundsFromSource.Conclusion1 D L) : FrobeniusProjectedBounds.adm3 D L C' Cl Cg cb Cu cT CT C0 :=
-  fun hH => (h ⟨hH.2.1, hH.1, hH.2.2⟩).2.1
-
-theorem equal_word_bound_of_theorem_S {D : D7} (L : SizeData₂ D) (C0 C' Cl Cg cb Cu cT CT : ℝ)
-    (h : AdmissibleBoundsFromSource.hyp D L C0 C' Cl Cg cb Cu cT CT → AdmissibleBoundsFromSource.Conclusion1 D L) : FrobeniusProjectedBounds.Conclusion2 D L C' Cl Cg cb Cu cT CT C0 :=
-  fun hH => (h ⟨hH.2.1, hH.1, hH.2.2⟩).2.2.2
-
-theorem countOwn_of_rows (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ) (hC : 0 ≤ C) (hA : 2 * Cg ≤ A)
-    (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
-    (hR : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, PlaceDegreeData.RowsTie (Fm.D x i) X)
-    (h30 : PlaceDegreeData.FamilyWordCountBound Fm n0 A C c cb7) : CountOwn Fm Cg cb Cu cT CT C0 c := by
-  obtain ⟨-, hcb, h30⟩ := h30
-  have hG := cGam_pos Fm
-  obtain ⟨Y1, hY1, HY1⟩ := linear_le_pow_eight_eventually (8 * Fm.CGam) n0 (by positivity)
-  obtain ⟨Y2, -, HY2⟩ := linear_le_pow_eight_eventually (cb7 * (8 * Fm.CGam)) 8 (by positivity)
-  obtain ⟨x4, hx4⟩ := ev_y Fm (max Y1 Y2)
-  refine ⟨max (Fm.x1 + 1) x4, fun x hx i hH => ?_⟩
-  have hx1 : Fm.x1 < x := by
-    have := le_trans (le_max_left _ _) hx
-    linarith
-  have hy := hx4 x (le_trans (le_max_right _ _) hx)
-  set y : ℝ := x ^ (eps / 8) with hydef
-  have hy1 : 1 ≤ y := le_trans hY1 (le_trans (le_max_left _ _) hy)
-  have a1 := HY1 y (le_trans (le_max_left _ _) hy)
-  have a2 := HY2 y (le_trans (le_max_right _ _) hy)
-  have hL := scL_eq Fm x hx1 i
-  have hh : AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 (sC' Fm) (sCl Fm) Cg cb Cu cT CT := ⟨hH.2.1, hH.1, hH.2.2⟩
-  have hk8 := k_ge_of_hyp (Fm.L x i) hh
-  rw [hL, Fm.CGam_eq x i] at hk8
-  obtain ⟨X, hX⟩ := hR x hx1 i
-  refine row_count_of_tied_bundles (Fm.L x i) X hX n0 A C cb7 c (h30 x i)
-    (count_parameters_of_hyp (Fm.L x i) C0 _ _ Cg cb Cu cT CT n0 A C cb7 hC hcb hA ?_ hCl2 hCl3 ?_ hh)
-  · have : (n0 : ℝ) ≤ n0 * y := le_mul_of_one_le_right (Nat.cast_nonneg _) hy1
-    linarith
-  · rw [hL, Real.log_pow]
-    have h1 : Real.log y ≤ y := Real.log_le_self (by linarith)
-    have h2 : cb7 * (8 * Fm.CGam * y ^ 8) ≤ cb7 * ((Fm.D x i).R.k : ℝ) := mul_le_mul_of_nonneg_left hk8 hcb.le
-    push_cast
-    nlinarith
-
-theorem linkS_of_kudla_family (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 : ℝ) (h1 : 1 ≤ C0) (hC : 0 ≤ C)
-    (hA : 2 * Cg ≤ A) (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
-    (hS0 : StandingHypothesesWithConstants Fm Cg cb Cu cT CT C0)
-    (hR : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, PlaceDegreeData.RowsTie (Fm.D x i) X)
-    (hT : ThmSOwn Fm Cg cb Cu cT CT C0)
-    (S30 : PlaceDegreeData.KudlaFamilyStatement Fm Cres n0 A Cb C c7 cb7) (A30 : PlaceDegreeData.AdmF Fm Cres) : Formalism.MainNotions.LinkS Fm C0 := by
-  have h30 : PlaceDegreeData.ConclusionF3 Fm n0 A C c7 cb7 := (S30 A30).2.2.2.2.2.2
-  have h30R : PlaceDegreeData.FamilyWordCountBound Fm n0 A C c7 cb7 :=
-    ⟨h30.1, h30.2.1, fun x i => count_rows_of_count_all n0 A C c7 cb7 (h30.2.2 x i)⟩
-  exact linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT
-    (countOwn_of_rows Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)
 
 end Family
 
@@ -1565,18 +1439,6 @@ theorem tuWin_of {D : D7} (L : SizeData₂ D) (C : ℝ) (h1 : L.TuGe)
     rw [← Real.log_le_log_iff hT (by positivity), Real.log_rpow hb0, log_scb L]
     exact h2 u
 
-theorem half_le_CTu (h : TuSize Fm) : 1 / 2 ≤ Fm.CTu := by
-  obtain ⟨x0, H⟩ := h
-  obtain ⟨x0, hx0, -, -, ⟨i⟩⟩ := Fm.toFamCore.exists_pt x0
-  obtain ⟨a, b⟩ := H x0 hx0 i
-  obtain ⟨c, d⟩ := tuWin_of (Fm.L x0 i) Fm.CTu a b (Fm.D x0 i).u₀
-  have hb1 : 1 < (Fm.L x0 i).sc.b := lt_of_lt_of_le one_lt_two (two_le_scb _)
-  have e := (Real.rpow_le_rpow_left_iff hb1).1 (le_trans c d)
-  have hm : (0 : ℝ) < (Fm.D x0 i).R.m := by
-    have := (Fm.D x0 i).R.two_le_m
-    exact_mod_cast (by omega : 0 < (Fm.D x0 i).R.m)
-  exact le_of_mul_le_mul_right e hm
-
 theorem sCl_pos : 0 < sCl Fm := by
   obtain ⟨x, -, hx, -, ⟨i⟩⟩ := Fm.toFamCore.exists_pt 0
   unfold sCl
@@ -1587,10 +1449,6 @@ theorem sCl_pos : 0 < sCl Fm := by
   · rw [← Fm.params_CCount _ hx i]; exact (Fm.params _ hx i).CCount_pos
   · rw [← Fm.params_height_rank_constant _ hx i]; exact (Fm.params _ hx i).Ch0r_pos
   · rw [← Fm.params_Cgap _ hx i]; exact (Fm.params _ hx i).Cgap_pos
-
-theorem cYL_pos : 0 < Fm.CYL := by
-  obtain ⟨x, -, hx, -, ⟨i⟩⟩ := Fm.toFamCore.exists_pt 0
-  rw [← Fm.params_CYL _ hx i]; exact (Fm.params _ hx i).CYL_pos
 
 theorem sCl_le_CCount : sCl Fm ≤ Fm.CCount :=
   le_trans (min_le_right _ _) (le_trans (min_le_right _ _) (le_trans (min_le_right _ _) (min_le_left _ _)))
@@ -1627,19 +1485,6 @@ theorem standing_hypotheses_hold_family (C0 : ℝ) (h1 : 1 ≤ C0) (hR : Residua
     (by rw [Fm.params_CkLow, Fm.CGam_eq]; exact r1) r2 r3
   rw [Fm.params_CkLow, Fm.params_CYL] at hH
   exact ⟨data_conditions_of (Fm.L x i) (Fm.params x hx1 i) C0 h1 hW hA, hH, h1⟩
-
-theorem linkS_of (C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 : ℝ) (ca : AdmissibleBoundsFromSource.AdmC)
-    (h1 : 1 ≤ C0) (hC : 0 ≤ C) (hA : 2 * (Fm.CYL + 1) ≤ A)
-    (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm) (hca : ca.Ok (Fm.CYL + 1))
-    (hGam : max ca.CE ca.CN + 1 ≤ Fm.CGam) (hRes : ResidualStandingConditions Fm)
-    (hR : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, PlaceDegreeData.RowsTie (Fm.D x i) X)
-    (S76 : AdmissibleBoundsFromSource.PeriodFamilyStatement Fm ⟨C0, Fm.CYL + 1, 1 / 4, 3, 1 / 2, Fm.CTu⟩ ca)
-    (A76 : AdmissibleBoundsFromSource.FirstFiltrationHypotheses Fm ⟨C0, Fm.CYL + 1, 1 / 4, 3, 1 / 2, Fm.CTu⟩ ca)
-    (S30 : PlaceDegreeData.KudlaFamilyStatement Fm Cres n0 A Cb C c7 cb7) (A30 : PlaceDegreeData.AdmF Fm Cres) : Formalism.MainNotions.LinkS Fm C0 :=
-  linkS_of_kudla_family Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 Cres n0 A Cb C c7 cb7 h1 hC hA hCl2 hCl3
-    (standing_hypotheses_hold_family Fm C0 h1 hRes) hR
-    (S76 ⟨h1, by have := cYL_pos Fm; linarith, by norm_num, by norm_num, by norm_num, half_le_CTu Fm hRes.2.1⟩
-      hca hGam A76) S30 A30
 
 end S0Fam
 
@@ -1684,26 +1529,6 @@ theorem link_thresholds_spec {eps : ℝ} (Fm : FamP eps) (CH : ℝ) (ca : List �
     le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) b,
     le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) a⟩
 
-theorem linkS_closed (𝒞 : FamClass) (C0 : ℝ) (ca : List ℝ → AdmissibleBoundsFromSource.AdmC) (c30 : List ℝ → CountingConstants)
-    (h1 : 1 ≤ C0)
-    (hca : ∀ {eps : ℝ} (Fm : FamP eps), (ca Fm.cOut).Ok (Fm.CYL + 1))
-    (hc30 : ∀ {eps : ℝ} (Fm : FamP eps), 0 ≤ (c30 Fm.cOut).C ∧ 2 * (Fm.CYL + 1) ≤ (c30 Fm.cOut).A)
-    (hRes : Closed 𝒞 fun Fm _ => ResidEv Fm)
-    (hRows : Closed 𝒞 fun Fm _ => ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, PlaceDegreeData.RowsTie (Fm.D x i) X)
-    (S76 : Closed 𝒞 fun Fm _ => AdmissibleBoundsFromSource.PeriodFamilyStatement Fm (gcOf Fm C0) (ca Fm.cOut))
-    (A76 : Closed 𝒞 fun Fm _ => AdmissibleBoundsFromSource.FirstFiltrationHypotheses Fm (gcOf Fm C0) (ca Fm.cOut))
-    (S30 : Closed 𝒞 fun Fm _ => PlaceDegreeData.KudlaFamilyStatement Fm (c30 Fm.cOut).Cres (c30 Fm.cOut).n0 (c30 Fm.cOut).A (c30 Fm.cOut).Cb
-      (c30 Fm.cOut).C (c30 Fm.cOut).c (c30 Fm.cOut).cb)
-    (A30 : Closed 𝒞 fun Fm _ => PlaceDegreeData.AdmF Fm (c30 Fm.cOut).Cres) :
-    Closed 𝒞 fun Fm _ => TuSize Fm → Formalism.MainNotions.LinkS Fm C0 :=
-  closed_of_large (linkThresholds ca c30)
-    (hRes.and (hRows.and (S76.and (A76.and (S30.and A30)))))
-    fun Fm CH hL h a0 => by
-      obtain ⟨g1, g2, g3, g4⟩ := link_thresholds_spec Fm CH ca c30 hL
-      obtain ⟨a1, a2, a3, a4, a6, a7⟩ := h
-      exact linkS_of Fm C0 _ _ _ _ _ _ _ (ca Fm.cOut) h1 (hc30 Fm).1 (hc30 Fm).2 g2 g3 (hca Fm) g1
-        ⟨g4, a0, a1⟩ a2 a3 a4 a6 a7
-
 end ClosedForm
 
 section All
@@ -1711,30 +1536,6 @@ section All
 variable {eps : ℝ} (Fm : FamP eps)
 
 def gS (C0 : ℝ) (h1 : 1 ≤ C0) : UniformConstantsAndStatements.Given := ⟨C0, Fm.CYL + 1, 1 / 4, 3, 1 / 2, Fm.CTu, h1, by norm_num, by norm_num⟩
-
-theorem vm_cast (Vm : ∀ k r, ValMap k r) (Gm : HereditaryPositivity.GM) (hVG : ∀ k0 r, Vm (k0 + 1) r = (Gm k0 r).toValMap)
-    {k k0 r : ℕ} (hk : k0 + 1 = k) : (hk ▸ (Gm k0 r).toValMap : ValMap k r) = Vm k r := by
-  subst hk; exact (hVG k0 r).symm
-
-theorem radialChain_of_blockEstimate (Vm : ∀ k r, ValMap k r) (Gm : HereditaryPositivity.GM) (hVG : ∀ k0 r, Vm (k0 + 1) r = (Gm k0 r).toValMap)
-    (C C' : ℝ) (Ks : ℕ) (h : BlockEstimateTheorem.OrbitValuationBound Fm Gm C C' Ks) : RadialChainStatements.OrbitValuationBound Fm C C' Ks Vm := by
-  intro x i
-  have hk : (Fm.D x i).R.k - 1 + 1 = (Fm.D x i).R.k := by
-    have := k_pos (D := Fm.D x i); omega
-  have h2 := h x i _ hk
-  unfold BlockEstimateTheorem.vmOf at h2
-  rw [vm_cast Vm Gm hVG hk] at h2
-  exact h2
-
-structure AllObj where
-  At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i)
-  Gv : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Cnt.GaugeVol (Fm.D x i)
-  Cw : ℝ
-  Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) u u', LoopTie (Fm.D x i) (Fm.L x i) (At x hx i) u u' Cw
-  Zl : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LocalSplitGroups.TermLocs (Fm.D x i) (At x hx i)
-  cN : ∀ x (i : Fm.Ix x), (Fm.D x i).what₂.Word → (Fm.D x i).what₂.Word → ℝ
-  Vm : ∀ k r, ValMap k r
-  Gm : HereditaryPositivity.GM
 
 structure AllC where
   ca : AdmissibleBoundsFromSource.AdmC
@@ -1785,269 +1586,7 @@ structure AllC where
   Ss : ℝ
   C₃ : ℝ
 
-structure AllHyp
-    (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
-    (Gv : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Cnt.GaugeVol (Fm.D x i)) (Cw : ℝ)
-    (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) u u', LoopTie (Fm.D x i) (Fm.L x i) (At x hx i) u u' Cw)
-    (Zl : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LocalSplitGroups.TermLocs (Fm.D x i) (At x hx i))
-    (cN : ∀ x (i : Fm.Ix x), (Fm.D x i).what₂.Word → (Fm.D x i).what₂.Word → ℝ) (Vm : ∀ k r, ValMap k r) (Gm : HereditaryPositivity.GM)
-    (ca : AdmissibleBoundsFromSource.AdmC) (a : UniformConstantsAndStatements.AdmC) (n0 : ℕ) (Ca : ℝ) (Cq : ℝ) (C3 : ℝ) (C3' : ℝ) (C4 : ℝ) (settingGapConstant : ℝ) (Cres : ℝ)
-    (A : ℝ) (Cb : ℝ) (C : ℝ) (c7 : ℝ) (cb7 : ℝ) (Cβ : ℝ) (Cf : ℝ) (hilbertNinetyConstant : ℝ) (CB : ℝ) (Co : ℝ) (Cd : ℝ) (Cs : ℝ)
-    (Cg₁ : ℝ) (Cg₂ : ℝ) (cD : ℝ) (C₁ : ℝ) (CL : ℝ) (Ca1 : ℝ) (Cv : ℝ) (K1 : ℝ) (K2 : ℝ) (E₀ : ℝ) (Eg : ℝ) (E₁ : ℝ)
-    (E₂ : ℝ) (E₃ : ℝ) (Gg : ℝ) (GI : ℝ) (K0 : ℝ) (KA : ℝ) (Bq : ℝ) (B1 : ℝ) (B2 : ℝ) (Bgf : ℝ) (Bf : ℝ) (Ss : ℝ)
-    (C₃ : ℝ)
-    (C0 : ℝ) (h1 : 1 ≤ C0) : Prop where
-
-  hVG : ∀ k0 r, Vm (k0 + 1) r = (Gm k0 r).toValMap
-  hR : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, PlaceDegreeData.RowsTie (Fm.D x i) X
-
-  hC : 0 ≤ C
-  hA : 2 * (Fm.CYL + 1) ≤ A
-  hca : ca.Ok (Fm.CYL + 1)
-  hC1 : 0 ≤ ca.C1
-  hcL : a.cL = ca.cL
-  ha1 : a.Cgw = a.Cg
-  ha2 : a.Cbw = a.Cb
-  hCh : 0 < a.Ch
-  hβ : 1 ≤ Cβ
-  hCf : 0 ≤ Cf
-  hK1 : 0 < K1
-  hCo : 0 < Co
-  hBq : 0 < Bq
-  hB1 : 0 < B1
-  hilbertNinetyConstant_pos : 0 < hilbertNinetyConstant
-  hStdR : 16 ≤ Cβ * a.Ch
-
-  s76 : AdmissibleBoundsFromSource.PeriodFamilyStatement Fm (gcOf Fm C0) ca
-  s71a : ∀ Cg cb Cu cT CT C0 : ℝ, FrobeniusProjectedBounds.FamilyGlobalDerivation Fm At Cg cb Cu cT CT C0
-  s71b : FrobeniusProjectedBounds.SecondPartFamily Fm At (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 ca.cL ca.cN ca.CN ca.CE
-  s27a : LocalBesselAndTopKernel.PeriodFamilyStatement Fm At Cw Y Zl cN Vm C0 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu Ca Cq ca.CA ca.CA' ca.Ce
-  s27b : LocalBesselAndTopKernel.DeterminantValueFamily Fm C0 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C3 ca.C1 ca.C2 C3' C4 ca.c5 ca.CA ca.ep0 ca.CV
-  s27c : ∀ C0 Cg cb Cu cT CT, LocalBesselAndTopKernel.FamilyUnfoldingCount Fm C0 Cg cb Cu cT CT
-  s29n : NonGenericAndKTwoTheorems.FamilyNonGenericLocalBound Fm a.CNG
-  s29k : NonGenericAndKTwoTheorems.FamilyNonIdentityTermSummabilityOfAdmissible Fm At Gv
-  familyGenericCountBound : UniformConstantsAndStatements.PeriodFamilyStatement Fm (gS Fm C0 h1) a ca.cN ca.CN
-  familyNongenericCountBound : UniformConstantsAndStatements.DeterminantValueFamily Fm (gS Fm C0 h1) a ca.CE
-  s48b : CayleySignature.DeterminantValueFamily Fm settingGapConstant
-  s30 : PlaceDegreeData.KudlaFamilyStatement Fm Cres n0 A Cb C c7 cb7
-  s26 : ThinScalesBound.AdmF Fm → ThinScalesBound.FamilyThinScalesBound Fm Cq
-  s26b : JointEigenvalueBoundsFromAnyDatum.KudlaFamilyStatement Fm Zl cN
-  s28a : VanishingOnXAndXPlusGlobal.KudlaFamilyStatement Fm
-  s48 : VanishingOnXAndXPlusGluing.KudlaFamilyStatement Fm
-  s28c : ∀ C1', VanishingOnXAndXPlusBranching.KudlaFamilyStatement Fm C1'
-  s28b : VanishingOnXAndXPlusMass.KudlaFamilyStatement Fm
-  s28d : VanishingOnXAndXPlus.KudlaFamilyStatement Fm Cw At Y ca.cL
-  s28 : AuxiliaryNormPrimes.KudlaFamilyStatement Fm Cw At Y ca.cL
-  s25a : ChoiceOfModulusAndDiscriminant.FamilyStatementAtConstants Fm CL Ca1
-  s25 : ChoiceOfModulusAndDiscriminant.FamilyStatementAtConstants Fm CL CB
-  s25b : RadialRules.FamilyStatementAtConstants Fm CL Ca1 CB Cv K1 K2
-  s07c : RadialRuleConsequences.KudlaFamilyStatement Fm CB Co Cd Cv K1 K2 Cs cD C₁ Gg GI K0 KA
-  s07b : HereditaryPositivity.KudlaFamilyStatement Fm Gm CB Co Cd Cv K1 K2 Cs cD C₁ 5 E₀ Eg E₁ E₂ E₃
-  s07a : BlockEstimateTheorem.KudlaFamilyStatement Fm Gm 5 CB Co Cd Cv K1 K2 Cs cD C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ ca.CA ca.CA'
-  s47 : ∀ Cu, ∃ Bg', ∀ Cg ≥ a.Cg, OnePlaceEstimates.FamilyStatementAtConstants Fm Gm CB Co Cd K0 KA Cg₁ Cg₂ cD C₁ 5 E₀ Eg E₁ E₂ E₃ Ss C₃ a.Ch a.Aw Cu
-      Cg Bq Bg' B1 B2 a.Cb a.secondBesselConstant Bgf Bf
-
-  pExp : PX.ExpF Fm
-  pId : PX.IdCellF Fm
-  p2a : PX.TwoAF Fm
-  p2ag : PX.TwoAgF Fm
-  familyVolumeLowerBound : PX.FamilyVanishingCondition Fm
-  pG : PX.GDrF Fm At
-  pIdG : PX.FamilyIdentityCondition Fm
-  familyStandingLowerBound : PX.FamilyFirstSumAtLeastOne Fm
-  pAbs : PX.PairAbsF Fm
-  pCells : PX.CellsF Fm At
-  pVol : PX.MassVolF Fm Gv
-  pMain : PX.MainF Fm (gS Fm C0 h1) a.CM a.Ce
-  pM : PX.ModelBasics
-  pDec : PX.FamilyExpansionWithConstants Fm C0 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu Ca
-  pDens : PX.DensF Fm
-  pCnt : PX.CntF Fm Zl cN
-  pForm : PX.FormF Fm At Cw Y Vm C0 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu
-  pArith : PX.ArithF Fm cN C0 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu
-  familySettingGapBound : PX.FamilyFunctionalOrderWithConstant Fm settingGapConstant
-  pRk : ∀ C0 Cg cb Cu cT CT, PX.RanksF Fm C0 Cg cb Cu cT CT
-  familyGlobalEighth : JointEigenvalueBoundsFromAnyDatum.admF8 Fm Zl cN
-  familyGlobalNinth : JointEigenvalueBoundsFromAnyDatum.admF9 Fm Zl
-  pSW : ∀ Cg cb Cu cT CT C0 A, PX.SW Fm Cg cb Cu cT CT C0 A
-  pForm5 : ∀ Cg cb Cu cT CT C0 A, PX.Form Fm Cg cb Cu cT CT C0 A
-  pE : ∀ Cg cb Cu cT CT C0, PX.EpsT Fm Cg cb Cu cT CT C0
-  pTl : ∀ Cg cb Cu cT CT C0, PX.TcritLow Fm Cg cb Cu cT CT C0
-  pSum : ∀ Cg cb Cu cT CT C0 C1', PX.PTsum Fm Cg cb Cu cT CT C0 C1'
-  pDl : ∀ Cg cb Cu cT CT C0 C1', PX.PTDl Fm Cg cb Cu cT CT C0 C1'
-  familyHilbertNinety : ∀ Cg cb Cu cT CT C0 C1', PX.PieriNormsFamily Fm Cg cb Cu cT CT C0 C1'
-  pSchur : ∀ Cg cb Cu cT CT C0 C1', PX.Schur Fm Cg cb Cu cT CT C0 C1'
-  pHH : ∀ Cg cb Cu cT CT C0 A, PX.HH Fm Cg cb Cu cT CT C0 A
-  pVol5 : ∀ Cg cb Cu cT CT C0 A, PX.Vol Fm Cw At Y Cg cb Cu cT CT C0 A
-  pAmp : ∀ Cg cb Cu cT CT C0 C1', ∃ Ca5, 0 ≤ Ca5 ∧ PX.AmpBessel Fm Cg cb Cu cT CT C0 C1' Ca5
-  pFr : PX.Frames Fm a.Ch Cf
-  pStd : ∀ Cg cb Cu cT CT C0, PX.StdHypS Fm Cg cb Cu cT CT C0 a.Ch Cβ
-  pTF : ∀ Cg cb Cu cT CT C0, PX.TFrame Fm Cg cb Cu cT CT C0
-  pMom : PX.Mom Fm
-  pSH : PX.SHaar Fm
-  pRg : ∀ Cg cb Cu cT CT C0, PX.Range Fm Cg cb Cu cT CT C0 a.Cg Bq B1
-  pStep : ∀ Cg cb Cu cT CT C0 C1', PX.DegSteps Fm Cg cb Cu cT CT C0 C1'
-  pProd : ∀ Cg cb Cu cT CT C0, PX.PieriProductBound Fm Cg cb Cu cT CT C0 hilbertNinetyConstant
-  pBL : PX.lemmaB CL
-  permutedRowProductSplitSum : PX.S1 CB Co Cd Cs Cg₁ Cg₂
-  pd : ∀ x (i : Fm.Ix x), PX.decay (Fm.D x i) cD C₁
-  pp : ∀ x (i : Fm.Ix x), PX.topPos (Fm.D x i) Gm 5 E₀ Eg
-  pw : ∀ x (i : Fm.Ix x), PX.topWave (Fm.D x i) Gm 5 E₀ Eg
-  pl : ∀ x (i : Fm.Ix x), PX.lowPos (Fm.D x i) 5 E₀ Eg
-  p71 : ∀ x (i : Fm.Ix x), PX.LettersOnCells (Fm.D x i) CB
-  psg : ∀ x (i : Fm.Ix x), PX.shortGrids (Fm.D x i) Gm CB Ss C₃
-  p3d : ∀ Cg ≥ a.Cg, ∀ x (i : Fm.Ix x), PX.s3d0 (Fm.D x i) a.Ch Cg Bq
-
-  familyWeylLawBound : AdmissibleBoundsFromSource.FamilyWeylDimension Fm (gcOf Fm C0)
-  familySchurOrthogonality : LocalBesselAndTopKernel.UnfoldingCount Fm
-  lWitt : LocalBesselAndTopKernel.FamilySpectralWeights
-  familyMassFirstBound : LocalBesselAndTopKernel.FamilyMultiplicityOneHypothesis Fm
-  weylLawBound : LocalBesselAndTopKernel.FirstSizeStatement
-  lDTau : LocalBesselAndTopKernel.FamilyMassTheoremTwo
-  lDS : LocalBesselAndTopKernel.FamilyDecompositionSumHypothesis Fm C0 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu
-  schurLemma : NonGenericAndKTwoTheorems.adm7
-  lMink : NonGenericAndKTwoTheorems.adm11
-  familySchurSetting : CayleySignature.admF6 Fm
-  l26 : ThinScalesBound.AdmF Fm
-  familyGlobalSixth : JointEigenvalueBoundsFromAnyDatum.admF6 Fm
-  familyGlobalSeventh : JointEigenvalueBoundsFromAnyDatum.admF7 Fm
-  l30 : PlaceDegreeData.AdmF Fm Cres
-  familyMassSecondBound : AuxiliaryNormPrimes.BesselFormLine Fm
-  lmult : AuxiliaryNormPrimes.UnitaryBranchingMultiplicityOne
-  lhad : AuxiliaryNormPrimes.HadamardDeterminantInequality
-  ltr : AuxiliaryNormPrimes.BanaszczykTransferenceBound
-  lmk : AuxiliaryNormPrimes.MinkowskiFiniteSubgroupOrder
-  lWeylU : ∀ Cg cb Cu cT CT C0, VanishingOnXAndXPlus.FamilyWeylDimensionVandermondeQuotient Fm Cg cb Cu cT CT C0
-  familyWeylBound : VanishingOnXAndXPlusBranching.FamilyTwelfthHypothesis Fm
-  lGlue : VanishingOnXAndXPlusGlobal.admF1 Fm
-  lKron : VanishingOnXAndXPlusGlobal.admF3 Fm
-  literatureStatementsS1 : PX.ClassicalAnalysisAndRepresentationTheorems
-
-  iRes : ResidEv Fm
-  familyMassIdentity : AdmissibleBoundsFromSource.FamilyTwelfthHypothesis
-  familyMassRatio : LocalBesselAndTopKernel.SecondSizeStatement Fm
-  familyMassSecondLine : LocalBesselAndTopKernel.BesselFormLine Fm
-  familyTheoremThreeBound : LocalBesselAndTopKernel.FamilyThirdTheoremHypothesis Fm C3
-  iM1' : NonGenericAndKTwoTheorems.FamilyMassFirstHypothesis Fm
-  iM2' : NonGenericAndKTwoTheorems.FamilyMassSecondHypothesis Fm
-  iSW : LocalBesselAndTopKernel.LocalGenericDensity Fm
-  iM1'' : AuxiliaryNormPrimes.SecondSizeStatement Fm
-  iMV : AuxiliaryNormPrimes.FamilyGaugeMassVolumes Fm
-  familyMassExponential : NonGenericAndKTwoTheorems.FamilyMassLatticeBound Fm
-
-structure AllLarge (ca : AdmissibleBoundsFromSource.AdmC) (C settingGapConstant : ℝ) : Prop where
-  hCl : 2 < sCl Fm
-  hCl3 : 2 * C ≤ sCl Fm
-  h48C : settingGapConstant ≤ sCl Fm
-  hC' : 1 ≤ sC' Fm
-  hGam : max ca.CE ca.CN + 1 ≤ Fm.CGam
-  hk8 : 8 * Fm.CGam ≤ Fm.CkLow
-
-theorem linkS_all
-    (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
-    (Gv : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Cnt.GaugeVol (Fm.D x i)) (Cw : ℝ)
-    (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) u u', LoopTie (Fm.D x i) (Fm.L x i) (At x hx i) u u' Cw)
-    (Zl : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LocalSplitGroups.TermLocs (Fm.D x i) (At x hx i))
-    (cN : ∀ x (i : Fm.Ix x), (Fm.D x i).what₂.Word → (Fm.D x i).what₂.Word → ℝ) (Vm : ∀ k r, ValMap k r) (Gm : HereditaryPositivity.GM)
-    (ca : AdmissibleBoundsFromSource.AdmC) (a : UniformConstantsAndStatements.AdmC) (n0 : ℕ) (Ca : ℝ) (Cq : ℝ) (C3 : ℝ) (C3' : ℝ) (C4 : ℝ) (settingGapConstant : ℝ) (Cres : ℝ)
-    (A : ℝ) (Cb : ℝ) (C : ℝ) (c7 : ℝ) (cb7 : ℝ) (Cβ : ℝ) (Cf : ℝ) (hilbertNinetyConstant : ℝ) (CB : ℝ) (Co : ℝ) (Cd : ℝ) (Cs : ℝ)
-    (Cg₁ : ℝ) (Cg₂ : ℝ) (cD : ℝ) (C₁ : ℝ) (CL : ℝ) (Ca1 : ℝ) (Cv : ℝ) (K1 : ℝ) (K2 : ℝ) (E₀ : ℝ) (Eg : ℝ) (E₁ : ℝ)
-    (E₂ : ℝ) (E₃ : ℝ) (Gg : ℝ) (GI : ℝ) (K0 : ℝ) (KA : ℝ) (Bq : ℝ) (B1 : ℝ) (B2 : ℝ) (Bgf : ℝ) (Bf : ℝ) (Ss : ℝ)
-    (C₃ : ℝ)
-    (C0 : ℝ) (h1 : 1 ≤ C0) (hL : AllLarge Fm ca C settingGapConstant)
-    (H : AllHyp Fm At Gv Cw Y Zl cN Vm Gm ca a n0 Ca Cq C3 C3' C4 settingGapConstant Cres A Cb C c7 cb7 Cβ Cf hilbertNinetyConstant CB Co Cd Cs Cg₁ Cg₂ cD C₁ CL Ca1 Cv K1 K2 E₀ Eg E₁ E₂ E₃ Gg GI K0 KA Bq B1 B2 Bgf Bf Ss C₃ C0 h1)
-    (iTu : TuSize Fm) : LinkS Fm C0 := by
-  obtain ⟨hVG, hR, hC, hA, hca, hC1, hcL, ha1, ha2, hCh, hβ, hCf, hK1, hCo, hBq, hB1, hilbertNinetyConstant_pos, hStdR, s76, s71a, s71b, s27a, s27b, s27c, s29n, s29k, familyGenericCountBound, familyNongenericCountBound, s48b, s30, s26, s26b, s28a, s48, s28c, s28b, s28d, s28, s25a, s25, s25b, s07c, s07b, s07a, s47, pExp, pId, p2a, p2ag, familyVolumeLowerBound, pG, pIdG, familyStandingLowerBound, pAbs, pCells, pVol, pMain, pM, pDec, pDens, pCnt, pForm, pArith, familySettingGapBound, pRk, familyGlobalEighth, familyGlobalNinth, pSW, pForm5, pE, pTl, pSum, pDl, familyHilbertNinety, pSchur, pHH, pVol5, pAmp, pFr, pStd, pTF, pMom, pSH, pRg, pStep, pProd, pBL, permutedRowProductSplitSum, pd, pp, pw, pl, p71, psg, p3d, familyWeylLawBound, familySchurOrthogonality, lWitt, familyMassFirstBound, weylLawBound, lDTau, lDS, schurLemma, lMink, familySchurSetting, l26, familyGlobalSixth, familyGlobalSeventh, l30, familyMassSecondBound, lmult, lhad, ltr, lmk, lWeylU, familyWeylBound, lGlue, lKron, literatureStatementsS1, iRes, familyMassIdentity, familyMassRatio, familyMassSecondLine, familyTheoremThreeBound, iM1', iM2', iSW, iM1'', iMV, familyMassExponential⟩ := H
-  obtain ⟨hCl, hCl3, h48C, hC', hGam, hk8⟩ := hL
-  obtain ⟨i₀⟩ := Fm.Ix_zero
-
-  have S1all : ∀ Cu, ∃ Bg', ∀ Cg ≥ a.Cg, BlockEstimateTheorem.OrbitValuationBound Fm Gm ca.CA ca.CA' 5 ∧
-      OnePlaceEstimates.FamilyTargetsAtConstants Fm a.Ch a.Aw Cu Cg Bq Bg' B1 B2 a.Cb a.secondBesselConstant Bgf Bf := fun Cu => by
-    obtain ⟨Bg', s47'⟩ := s47 Cu
-    refine ⟨Bg', fun Cg hCg => ?_⟩
-    have := S1.family_statements_all (CB := CB) (Co := Co) (Cd := Cd) (Cs := Cs) (Cg₁ := Cg₁) (Cg₂ := Cg₂) (c := cD) (C₁ := C₁) Fm Gm 5
-      CL Ca1 Cv K1 K2 E₀ Eg E₁ E₂ E₃ Gg GI K0 KA ca.CA ca.CA' a.Ch a.Aw Cu Cg Bq Bg' B1 B2 a.Cb a.secondBesselConstant Bgf Bf Ss C₃
-      hK1 hCo s25a s25 s25b s07c s07b s07a (s47' Cg hCg) pBL permutedRowProductSplitSum pd pp pw pl p71 psg (p3d Cg hCg) literatureStatementsS1
-    exact ⟨this.2.2.2.2.1, this.2.2.2.2.2⟩
-  obtain ⟨Bg0, hS1⟩ := S1all 0
-  obtain ⟨hThA, h47⟩ := hS1 a.Cg le_rfl
-  have h07 : RadialChainStatements.OrbitValuationBound Fm ca.CA ca.CA' 5 Vm := radialChain_of_blockEstimate Fm Vm Gm hVG _ _ _ hThA
-  have hB1' : ∀ x (i : Fm.Ix x), OnePlaceEstimates.RotatedSumBound (Fm.D x i) a.Ch a.Cg a.Cb := fun x i => (h47 x i).2.1
-  have hB2' : ∀ x (i : Fm.Ix x), OnePlaceEstimates.PathWeightComponents (Fm.D x i) a.secondBesselConstant := fun x i => (h47 x i).2.2.1
-  have hB3' : ∀ x (i : Fm.Ix x), OnePlaceEstimates.ConclusionB3 (Fm.D x i) a.Aw a.Ch a.Cgw a.Cbw := fun x i => by
-    rw [ha1, ha2]; exact (h47 x i).2.2.2.1
-  have h90 : OnePlaceEstimates.FamilyBesselFormulas Fm := fun x i => (h47 x i).2.2.2.2.1
-  have h93 : OnePlaceEstimates.FamilySubmultiplicativeNorm Fm a.Ch a.Cg Bq B1 B2 := fun x i => (h47 x i).2.2.2.2.2.2.2.2.2.2.1
-  have hUB : ∀ Cn, ∃ Cs₀ Cs', ∀ Cs ≥ Cs₀, OnePlaceEstimates.FamilyUniformityTheoremBPrime Fm a.Ch Cn Cs Cs' a.Cb := fun Cn => by
-    obtain ⟨Bg', h⟩ := S1all Cn
-    exact ⟨a.Cg, Bg', fun Cs hCs x i => ((h Cs hCs).2 x i).2.2.2.2.2.2.2.2.1⟩
-
-  have h26 : ThinScalesBound.FamilyThinScalesBound Fm Cq := s26 l26
-  have h26b : JointEigenvalueBoundsFromAnyDatum.OrbitValuationBound Fm Zl cN := s26b (JointEigenvalueBoundsFromAnyDatum.AdmF_of Fm Zl cN ⟨Cq, h26⟩ familyGlobalSixth familyGlobalSeventh familyGlobalEighth familyGlobalNinth)
-
-  have h30 := s30 l30
-
-  have h27 : ∀ Cg cb Cu cT CT C0, LocalBesselAndTopKernel.FamilyBesselBoundFirstPart Fm C0 Cg cb Cu cT CT := fun Cg cb Cu cT CT C0 =>
-    s27c C0 Cg cb Cu cT CT familyMassRatio familyMassSecondLine (pRk C0 Cg cb Cu cT CT)
-  have hPT : ∀ Cg cb Cu cT CT C0 C1', AuxiliaryNormPrimes.FamilyPlancherelOneParameter Fm Cg cb Cu cT CT C0 C1' := fun Cg cb Cu cT CT C0 C1' => by
-    obtain ⟨Ca5, hCa5, hAmp⟩ := pAmp Cg cb Cu cT CT C0 C1'
-    exact AuxiliaryNormPrimes.familyPlancherelOneParameter_of_frames Fm Cg cb Cu cT CT C0 C1' a.Ch Cβ Ca5 Cf a.Cb hCh hβ hCa5 hCf hUB hAmp pFr
-      (pStd _ _ _ _ _ _) (pTF _ _ _ _ _ _)
-  have hMOM : ∀ Cg cb Cu cT CT C0 C1', AuxiliaryNormPrimes.FamilyArchimedeanMomentBound Fm Cg cb Cu cT CT C0 C1' := fun Cg cb Cu cT CT C0 C1' =>
-    AuxiliaryNormPrimes.family_moment_of_frames Fm Cg cb Cu cT CT C0 C1' a.Ch Cβ a.Cg Bq B1 B2 hCh.le hβ h93 pMom pSH (pStd _ _ _ _ _ _)
-      (pTF _ _ _ _ _ _) (pRg _ _ _ _ _ _)
-  have hJ : ∀ Cg cb Cu cT CT C0 C1', AuxiliaryNormPrimes.FamilyDegreeRatioUnitStep Fm Cg cb Cu cT CT C0 C1' := fun Cg cb Cu cT CT C0 C1' =>
-    AuxiliaryNormPrimes.family_degree_ratio_unit_of_degree_and_prodBound Fm Cg cb Cu cT CT C0 C1' hilbertNinetyConstant h90 (pStep _ _ _ _ _ _ _) (pProd _ _ _ _ _ _)
-  obtain ⟨-, -, -, h28b, -, h28⟩ := S5.family_statements_all Fm Cw At Y ca.cL
-    s28a s48 s28c s28b s28d s28 h27 hPT hMOM hJ iM1'' iMV familyMassSecondBound lmult lhad ltr lmk familyWeylBound lGlue lKron pSW pForm5 pE pTl
-    pSum pDl familyHilbertNinety pSchur pHH pVol5 lWeylU
-
-  have hGiv : LocalBesselAndTopKernel.GivOk C0 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu :=
-    ⟨h1, by have := cYL_pos Fm; linarith, by norm_num, by norm_num, by norm_num, half_le_CTu Fm iTu⟩
-  obtain ⟨hT, -⟩ := S0.family_statements_all Fm At Gv Cw Y Zl cN Vm (gS Fm C0 h1) ca a Ca Cq C3 C3' C4 settingGapConstant a.Ch Cβ a.Cg Bq B1 B2 0 i₀
-    hGiv hca hGam hCl hC' hC1 h48C hCh.le hβ hBq hB1
-    s71a s71b s27a s27b s29n s29k familyGenericCountBound familyNongenericCountBound s76 s48b h07 h26 h26b h30.2.1 h28 (hcL ▸ h28)
-    (fun Cg cb Cu cT CT C0 => (h28b.2.2.2 Cg cb Cu cT CT C0 1).1) h28b.1 h28b.2.1 hB1' hB2' hB3' h93
-    pExp pId p2a p2ag familyVolumeLowerBound pG pIdG familyStandingLowerBound pAbs pCells pVol pMain pM pDec pDens pCnt pForm pArith familySettingGapBound (pRk _ _ _ _ _ _)
-    pMom pSH pStd pTF
-    familyWeylLawBound familySchurOrthogonality lWitt familyMassFirstBound weylLawBound lDTau lDS schurLemma lMink familySchurSetting familyMassIdentity familyMassRatio familyMassSecondLine familyTheoremThreeBound iM1' iM2' iSW familyMassExponential
-  exact linkS_of_kudla_family Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 Cres n0 A Cb C c7 cb7 h1 hC hA hCl.le hCl3
-    (standing_hypotheses_hold_family Fm C0 h1 ⟨hk8, iTu, iRes⟩) hR hT s30 l30
-
 end All
-
-section AllClosed
-
-def allThresholds (K : List ℝ → AllC) : TransportedAlt :=
-  ⟨0, fun _ => 0, fun l => max (K l).ca.CE (K l).ca.CN + 1,
-    fun l => max 3 (max (2 * (K (l.take 16)).C) (max (K (l.take 16)).settingGapConstant (8 * l.getD 17 0)))⟩
-
-theorem all_thresholds_spec {eps : ℝ} (Fm : FamP eps) (CH : ℝ) (K : List ℝ → AllC) (h : Fm.Large (allThresholds K) CH) :
-    AllLarge Fm (K Fm.cOut).ca (K Fm.cOut).C (K Fm.cOut).settingGapConstant := by
-  obtain ⟨a, b⟩ := le_sC'_sCl h
-  have e1 : (Fm.cOut ++ Fm.cMid CH).take 16 = Fm.cOut := rfl
-  have e2 : (Fm.cOut ++ Fm.cMid CH).getD 17 0 = Fm.CGam := rfl
-  have hl : (allThresholds K).last (Fm.cOut ++ Fm.cMid CH) =
-      max 3 (max (2 * (K Fm.cOut).C) (max (K Fm.cOut).settingGapConstant (8 * Fm.CGam))) := by
-    show max 3 (max (2 * (K ((Fm.cOut ++ Fm.cMid CH).take 16)).C) (max (K ((Fm.cOut ++ Fm.cMid CH).take 16)).settingGapConstant
-      (8 * (Fm.cOut ++ Fm.cMid CH).getD 17 0))) = _
-    rw [e1, e2]
-  rw [hl] at a b
-  have b3 : (3 : ℝ) ≤ sCl Fm := le_trans (le_max_left _ _) b
-  have a3 : (3 : ℝ) ≤ sC' Fm := le_trans (le_max_left _ _) a
-  exact ⟨by linarith, le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) b,
-    le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) b, by linarith,
-    h.2.2.1 Fm.CGam (by simp [FamP.cMid]),
-    le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) a⟩
-
-theorem linkS_all_closed (𝒞 : FamClass) (C0 : ℝ) (h1 : 1 ≤ C0) (K : List ℝ → AllC)
-    (H : Closed 𝒞 fun Fm _ => ∃ O : AllObj Fm, AllHyp Fm O.At O.Gv O.Cw O.Y O.Zl O.cN O.Vm O.Gm
-      (K Fm.cOut).ca (K Fm.cOut).a (K Fm.cOut).n0 (K Fm.cOut).Ca (K Fm.cOut).Cq (K Fm.cOut).C3 (K Fm.cOut).C3' (K Fm.cOut).C4 (K Fm.cOut).settingGapConstant (K Fm.cOut).Cres (K Fm.cOut).A (K Fm.cOut).Cb (K Fm.cOut).C (K Fm.cOut).c7 (K Fm.cOut).cb7 (K Fm.cOut).Cβ (K Fm.cOut).Cf (K Fm.cOut).hilbertNinetyConstant (K Fm.cOut).CB (K Fm.cOut).Co (K Fm.cOut).Cd (K Fm.cOut).Cs (K Fm.cOut).Cg₁ (K Fm.cOut).Cg₂ (K Fm.cOut).cD (K Fm.cOut).C₁ (K Fm.cOut).CL (K Fm.cOut).Ca1 (K Fm.cOut).Cv (K Fm.cOut).K1 (K Fm.cOut).K2 (K Fm.cOut).E₀ (K Fm.cOut).Eg (K Fm.cOut).E₁ (K Fm.cOut).E₂ (K Fm.cOut).E₃ (K Fm.cOut).Gg (K Fm.cOut).GI (K Fm.cOut).K0 (K Fm.cOut).KA (K Fm.cOut).Bq (K Fm.cOut).B1 (K Fm.cOut).B2 (K Fm.cOut).Bgf (K Fm.cOut).Bf (K Fm.cOut).Ss (K Fm.cOut).C₃ C0 h1) :
-    Closed 𝒞 fun Fm _ => TuSize Fm → LinkS Fm C0 :=
-  closed_of_large (allThresholds K) H fun Fm CH hL ⟨_, h⟩ iTu =>
-    linkS_all Fm _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ C0 h1 (all_thresholds_spec Fm CH K hL) h iTu
-
-end AllClosed
 
 section FromGL
 
@@ -2139,28 +1678,6 @@ theorem level_norm_one_mod_conductor (D : D7) (u : D.what₂.Word) : ShortInterv
 
 theorem discriminant_eq_base_sq (D : D7) (_h : UnusedSlot33.Conclusion1 D) : discr D.host.E = discr D.host.F ^ 2 := by
   exact D.host.der.discr_sq
-
-theorem residEv_of_GL {eps : ℝ} (Fm : FamP eps) (C₄ C₅ : ℝ) (h59 : UnusedSlot33.ConclusionOnFamily Fm C₄ C₅) (h7 : ShortIntervalPrimes.FamilyRankTwoMassConclusion Fm)
-    (h5 : ShortIntervalPrimes.FamilyPrimesAsPropTwoFive Fm) (h7r : ShortIntervalPrimes.FamilyPrimesAsPropTwoSeven Fm) : ResidEv Fm := by
-  obtain ⟨x7, -, H7⟩ := h7.1 1 1 one_pos one_pos
-  obtain ⟨C5, -, x5, -, H5⟩ := h5
-  obtain ⟨Cr, -, xr, -, Hr⟩ := h7r
-  refine ⟨max (Fm.x1 + 1) (max x7 (max x5 xr)), fun x hx i => ?_⟩
-  have hx1 : Fm.x1 < x := by
-    have := le_trans (le_max_left _ _) hx
-    linarith
-  have hb := le_trans (le_max_right _ _) hx
-  have hx7 : x7 ≤ x := le_trans (le_max_left _ _) hb
-  have hc := le_trans (le_max_right _ _) hb
-  have hx5 : x5 ≤ x := le_trans (le_max_left _ _) hc
-  have hxr : xr ≤ x := le_trans (le_max_right _ _) hc
-  have p1 : UnusedSlot33.Conclusion1 (Fm.D x i) := (h59 x hx1 i).1
-  have key := (H7 x hx7 i ⟨C5, H5 x hx5 i⟩).2.1
-  refine ⟨root_discriminant_ge_two _ p1, fun u => ?_, ?_, ?_, discriminant_eq_base_sq _ p1⟩
-  · exact splitsCompl_of_ncard _ _ ((Fm.D x i).mem u).A.T_prime
-      (key _ ((Fm.D x i).mem u).A.T_prime (level_norm_one_mod_conductor _ u)).2
-  · exact splitsCompl_of_ncard _ _ ((Fm.D x i).host.g_prime 0) (key _ ((Fm.D x i).host.g_prime 0) (Hr x hxr i 0).2.1).2
-  · exact splitsCompl_of_ncard _ _ ((Fm.D x i).host.g_prime 1) (key _ ((Fm.D x i).host.g_prime 1) (Hr x hxr i 1).2.1).2
 
 end FromGL
 

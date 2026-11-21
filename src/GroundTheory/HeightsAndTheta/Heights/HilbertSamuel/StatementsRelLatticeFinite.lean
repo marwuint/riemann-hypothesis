@@ -22,12 +22,6 @@ def RelLatticeFinite.Statement : Prop :=
     (y : (Σ k, ι k) → Ω) (a : K → ℤ) (n m : ℕ) (g : Fin m → Ω),
     (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → (relChartLat (Algebra.adjoin ℤ (Set.range g)) y a n).FG
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

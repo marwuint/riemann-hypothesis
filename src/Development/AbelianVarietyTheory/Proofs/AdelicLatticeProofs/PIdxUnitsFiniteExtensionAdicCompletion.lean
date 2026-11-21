@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CardQuotSpanA
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsAdicCompleteSpanAlgebraMapOfFreeFinite
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsAdicCompleteAndCardQuotientAdicCompletionInteg
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NormCoeffMinpolyLeOneOfNormLeOne
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SubgroupPowRelIndexUnitsOfIsAdicCompleteStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SubgroupPowRelIndexUnitsOfIsAdicComplete
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
@@ -149,7 +149,7 @@ theorem pIdx_units_finite_extension_adicCompletion (p : ℕ) (F : Type) [Field F
       congr 1; push_cast; ring)] at this
     rw [this]
     exact pow_ne_zero _ (pow_ne_zero _ hq)
-  obtain ⟨u1, u2⟩ := GlobalTheory.T.subgroupPowRelIndex_units_of_isAdicComplete p O _ hp hπO hcomp hc2
+  obtain ⟨u1, u2⟩ := _root_.GlobalTheory.CNorm.pIdx_units_of_isAdicComplete p O _ hp hπO hcomp hc2
   rw [hc1] at u2
   have hN : ∀ x : Lˣ, Valued.v (Algebra.norm (v.adicCompletion F) (x : L)) ≠ 0 := by
     intro x

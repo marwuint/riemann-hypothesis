@@ -340,8 +340,6 @@ end GlobalTheory.Published
 
 namespace GlobalTheory.Published
 
-open LogLine
-
 end GlobalTheory.Published
 
 namespace GlobalTheory.Published.LogLine

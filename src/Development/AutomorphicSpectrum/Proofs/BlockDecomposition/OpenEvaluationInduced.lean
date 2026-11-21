@@ -3,14 +3,14 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotent
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeylConjParabolicProjStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentFactorizationCharacterTrivialStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralMulVecChangeModulusStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralMulVecChangeModulus
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedCoinvariantLeviActionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantUnipotentCharacterTrivialStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantUnipotentCharacterTrivial
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusCharactersProductOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenRightInvarianceOrbitCoefficientStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenRightInvarianceOrbitCoefficient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportCompactModParabolicOffClosedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSectionOpenCellAltBis
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellDoubleCosetUniquenessStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnRowM
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellDoubleCosetUniqueness
 
 noncomputable section
 
@@ -42,7 +42,7 @@ theorem exists_compact_cell (i t : ℕ) (C : Set (Mir k ((i + 1) + t + 1))) (hC 
     · obtain ⟨a, ha, d, m, hm, e⟩ := h' c hc
       exact ⟨a, ha, d, m, Or.inr hm, e⟩
   · intro x hx
-    obtain ⟨V, hV, μ, hμ, hs⟩ := GlobalTheory.T.exists_continuous_local_section_of_not_mem_Cl k i t x (hCl x hx)
+    obtain ⟨V, hV, μ, hμ, hs⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Chart.chart k i t x (hCl x hx)
     obtain ⟨V', hV', hcl, hsub⟩ := exists_mem_nhds_isClosed_subset hV
     refine ⟨C ∩ V', Filter.inter_mem self_mem_nhdsWithin (mem_nhdsWithin_of_mem_nhds hV'), μ '' (C ∩ V'), ?_, ?_⟩
     · exact (hC.inter_right hcl).image_of_continuousOn (hμ.mono (fun y hy => hsub hy.2))
@@ -113,7 +113,7 @@ theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t +
     rw [e2, e3, e3]
     have e4 : ∀ (hh : HPG k (i + 1) (t + 1)) (v), sigX τ σ hh v =
         extTensor (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (pgProj k (i + 1) (t + 1) hh) v := fun _ _ => rfl
-    rw [e4, hproj, GlobalTheory.T.twisted_coinvariant_levi_action, e4, hc, GlobalTheory.T.coinvariant_unipotent_character_trivial k i t ψ τ σ u hu]
+    rw [e4, hproj, GlobalTheory.T.twisted_coinvariant_levi_action, e4, hc, _root_.GlobalTheory.CompanionTheory.BZPhiPG.qO_extTensor_unip k i t ψ τ σ u hu]
     rfl
   have hl := GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y
   have hl2 := GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f (η * y)
@@ -132,7 +132,7 @@ theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t +
       unfold intO
       rw [← smInt_lin (qO τ σ ψ) hl.1 hl.2]
       rfl
-    rw [s1, GlobalTheory.T.integral_mulVec_change_modulus k (t + 1) _ w' ((sc • Tm) ∘ G) (hG.comp _) (hGc.comp_left (map_zero _)),
+    rw [s1, _root_.GlobalTheory.CompanionTheory.BZPhiPG.Scale.smInt_subst k (t + 1) _ w' ((sc • Tm) ∘ G) (hG.comp _) (hGc.comp_left (map_zero _)),
       smInt_lin (sc • Tm) hG hGc, s2]
   have e5 : sigO τ σ ψ h = Tm := rfl
   unfold eO
@@ -170,7 +170,7 @@ theorem eO_supp (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 
       rw [← e2, ← e1, hy, mul_assoc]
     rw [map_mul, map_inv, ← mul_assoc, e4]
     group
-  obtain ⟨h', hh', e5⟩ := GlobalTheory.T.open_cell_double_coset_uniqueness k i t _ d d2 (h1 * h2) (mul_mem hh1 hh2) e3
+  obtain ⟨h', hh', e5⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Stab.mem_of_double_coset k i t _ d d2 (h1 * h2) (mul_mem hh1 hh2) e3
   refine ⟨h', hh', (castM k ee).symm m2, ⟨m2, hm2, rfl⟩, ?_⟩
   apply (castM k ee).injective
   rw [map_mul, MulEquiv.apply_symm_apply, e5]
@@ -182,7 +182,7 @@ theorem memOAlt (i t : ℕ) (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : 
   let F : indSpace (HPG k i (t + 1)) (sigO τ σ ψ) := ⟨eO ψ f, fun h g => eO_equiv ψ τ σ f h g⟩
   have hF : F ∈ smoothPart (ind (HPG k i (t + 1)) (sigO τ σ ψ)) := by
     show IsOpen {g | ind (HPG k i (t + 1)) (sigO τ σ ψ) g F = F}
-    convert GlobalTheory.T.isOpen_right_invariance_orbit_coefficient k i t ψ τ σ f using 1
+    convert _root_.GlobalTheory.CompanionTheory.BZPhiPG.isOpen_eO_rightPeriods k i t ψ τ σ f using 1
     ext g
     simp only [Set.mem_setOf_eq]
     constructor

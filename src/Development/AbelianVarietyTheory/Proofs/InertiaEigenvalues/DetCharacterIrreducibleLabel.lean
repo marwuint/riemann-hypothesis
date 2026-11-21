@@ -29,9 +29,6 @@ theorem _root_.GlobalTheory.GLq.LabelDet.isIrr_hom {G : Type} [Group G] [Fintype
   rw [FDRep.simple_iff_char_is_norm_one]
   simp [hchar, Nat.card_eq_fintype_card]
 
-theorem level_pos : 0 < g ^ 1 - 1 :=
-  Nat.sub_pos_of_lt (Nat.one_lt_pow one_ne_zero hg.out.one_lt)
-
 open Polynomial in
 open scoped Classical ComplexOrder in
 variable {g : ℕ} [hg : Fact g.Prime] in
@@ -106,22 +103,5 @@ theorem _root_.GlobalTheory.GLq.LabelDet.toG_one {n : ℕ} : _root_.GlobalTheory
   unfold _root_.GlobalTheory.GLq.toG
   rw [dif_pos isUnit_one]
   exact Units.ext (by simp)
-
-theorem inPar_one (a n : ℕ) : InPar a (1 : Mt g n) := fun i j h1 h2 =>
-  Matrix.one_apply_ne (by rintro rfl; omega)
-
-theorem br_one (a b : ℕ) : br a b (1 : Mt g (a + b)) = 1 := by
-  ext i j
-  simp [br, entN, Matrix.one_apply, Fin.ext_iff]
-
-theorem tl_one (a b : ℕ) : tl a (1 : Mt g (a + b)) = 1 := by
-  ext i j
-  have hi : (i : ℕ) < a + b := by omega
-  have hj : (j : ℕ) < a + b := by omega
-  simp [tl, entN, Matrix.one_apply, Fin.ext_iff, hi, hj]
-
-def PosMul (χ : (ZMod g)ˣ →* ℂˣ) {n : ℕ} (F : Gn g n → ℂ) : Prop :=
-  ∃ r : Gn g n → ℂ, (∀ x, 0 ≤ r x) ∧ 0 < r 1 ∧
-    ∀ x, F x = r x * ((χ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ)
 
 end GlobalTheory.GLq.LabelDet

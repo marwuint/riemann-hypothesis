@@ -500,11 +500,6 @@ theorem decoRaw_one : decoRaw ST SG (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.
       exact redA_pullV_one hx i
     · rfl
 
-theorem decoOf_one : decoOf ST SG (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = DecoSet.base E n ST SG := by
-  unfold decoOf
-  rw [decoRaw_one]
-  exact dif_pos Deco.base_ok
-
 end Base
 
 section Surj
@@ -735,11 +730,6 @@ theorem redHSurj_of (hOk : DecoOfOk hc n ST SG) (hS : Function.Surjective (decoP
     exact hred
 
 def DecoPtSurj : Prop := Function.Surjective (decoPt hc n ST SG)
-
-def adelicIso_of {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} (o : OnDeco n ST SG H S)
-    (hOk : DecoOfOk hc n ST SG) (hS : DecoPtSurj hc n ST SG) : GSD.Iso (adGSD hc o) S :=
-  adelicIso hc n ST SG H o ⟨decoPt_injective hc n ST SG hOk, hS⟩ (decoPtEqv_of hc n ST SG H hOk)
-    (redHSurj_of hc n ST SG H hOk hS)
 
 end Inj2
 
@@ -1087,10 +1077,6 @@ variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : 
 theorem decorated_lattice_exists : DecoOfOk hc n ST SG := by
   exact decoOfOk_of hc ST SG reduction_kernel_equality
 
-def adelicIsoS {K : Type} [Field K] [NumberField K] [StarRing K] (H : Subgroup (GLG E n SG)) {S : GSD K}
-    (o : OnDeco n ST SG H S) (hS : DecoPtSurj hc n ST SG) : GSD.Iso (adGSD hc o) S :=
-  adelicIso_of hc n ST SG H o (decorated_lattice_exists hc n ST SG) hS
-
 theorem decoPt_injective' : Function.Injective (decoPt hc n ST SG) := by
   exact decoPt_injective hc n ST SG (decorated_lattice_exists hc n ST SG)
 
@@ -1098,17 +1084,6 @@ theorem decorated_point_equivariant (H : Subgroup (GLG E n SG)) : DecoPtEqv hc n
   exact decoPtEqv_of hc n ST SG H (decorated_lattice_exists hc n ST SG)
 
 end Final
-
-section Inst
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
-
-def OnDeco.triv (K : Type) [Field K] [NumberField K] [StarRing K] :
-    OnDeco n ST SG H (GSD.triv K (UF E n × H) (DecoSet E n ST SG)) :=
-  ⟨MulEquiv.refl _, Equiv.refl _, fun _ _ => rfl⟩
-
-end Inst
 
 section LinAlg
 
@@ -1399,13 +1374,6 @@ theorem decoPtSurj_of (hG : UnimodGenus hc n) (hR : Formalism.L2.DIV.RedSurj) (h
         show v ∉ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal d.N
         rwa [hNx, hN] at hv
       exact (ok.be_off w v hv').symm
-
-open Classical in
-
-def adelicIsoG {K : Type} [Field K] [NumberField K] [StarRing K] (H : Subgroup (GLG E n SG)) {S : GSD K}
-    (o : OnDeco n ST SG H S) (hG : UnimodGenus hc n) (hR : Formalism.L2.DIV.RedSurj) (hT : Formalism.L2.DIV.IsSplitSet (ST ∪ SG))
-    (hD : Disjoint ST SG) : GSD.Iso (adGSD hc o) S :=
-  adelicIsoS hc n ST SG H o (decoPtSurj_of hc n ST SG hG hR hT hD)
 
 end SurjThm
 

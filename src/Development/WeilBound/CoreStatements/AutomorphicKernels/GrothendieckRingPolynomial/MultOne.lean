@@ -5,8 +5,12 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCanonical
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ReverseOrderedProductPermEquivStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CanonicalProductEquivMultiplicityOneStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPosStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityOfEquivStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleFiniteLengthStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityOfEquiv
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.LUnlinkedComm
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContragredientProductIrreducibleStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleFiniteLength
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JhMultMulLeOfSteps
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InSupportOfIsSubquotient
 import CompanionTheory.AutomorphicTheory.HeckeStandardModules.EqZeroOfCompAt
@@ -105,8 +109,8 @@ theorem jhMult_mul_jm_le {g N : ℕ} (z : Fin g → IrrGL k) (hz : ∑ b, (z b).
     (fun S T h => le_trans le_self_add (hadd S T h))
     (fun S T h ⟨φ⟩ => by
       have := hadd S T h
-      rwa [GlobalTheory.T.jacquet_multiplicity_of_equiv z hz _ _ ⟨φ⟩] at this)
-  rwa [GlobalTheory.T.jacquet_multiplicity_of_equiv z hz _ _ ⟨topEquiv π⟩] at h
+      rwa [_root_.GlobalTheory.CompanionTheory.JacquetCongr.jm_congr_of_equiv z hz _ _ ⟨φ⟩] at this)
+  rwa [_root_.GlobalTheory.CompanionTheory.JacquetCongr.jm_congr_of_equiv z hz _ _ ⟨topEquiv π⟩] at h
 
 theorem ofFn_perm {α : Type*} {h : ℕ} (x : Fin h → α) (σ : Equiv.Perm (Fin h)) :
     (List.ofFn (x ∘ σ)).Perm (List.ofFn x) := by
@@ -159,7 +163,7 @@ theorem multOne (c : Cls k) (_hm : MulCls k) (ha : Assoc k) (hc : Comm k) (_h1 :
   have hcl : cl0 (prodIrr x hd) = cl0 (prodIrr (x ∘ Fin.rev) hdr) := by
     rw [hl h y.1 x hd, hl h y.1 (x ∘ Fin.rev) hdr]
     exact foldr_perm ha hc (ofFn_perm x Fin.revPerm).symm _
-  rw [jordan_holder_mult_eq_of_class y _ _ (GlobalTheory.T.product_irreducible_finite_length hA x hd) (GlobalTheory.T.product_irreducible_finite_length hA (x ∘ Fin.rev) hdr) hcl]
+  rw [jordan_holder_mult_eq_of_class y _ _ (_root_.GlobalTheory.CompanionTheory.ProdFL.main hA x hd) (_root_.GlobalTheory.CompanionTheory.ProdFL.main hA (x ∘ Fin.rev) hdr) hcl]
   exact le_antisymm (jhMult_rev_le_one c 𝔪 x y Δ hΔo hΔL hdr hsoc)
     (Order.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 hsoc.isSubquotient))
 

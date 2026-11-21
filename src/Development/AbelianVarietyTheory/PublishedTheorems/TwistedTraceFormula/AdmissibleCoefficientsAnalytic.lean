@@ -25,10 +25,6 @@ def LeviSubmoduleDense : Prop :=
 
 def HarishChandraAnalyticity : Prop := AdmissibleCoefficientsAnalytic ∧ LeviSubmoduleDense
 
-example {n : ℕ} (ε : Fin n → Bool) : IsAdmRep ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧
-    ∀ v, IsKFin ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) v :=
-  ⟨(isIrrAdm_det (ε := ε)).2.1, (det_isURepOn ε).2.2⟩
-
 end GlobalTheory.Published
 
 end

@@ -3,13 +3,19 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOf
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SubOneMemMapOfEq
 import Formalism.LocalToGlobal.Divisibility.DivisibilityProofs.TuplesP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonAdjointHeckeOperatorEqDualLabel
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralHilbert90FiniteIdelesTrivialWhereTrivialStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralHilbert90FiniteIdelesTrivialWhereTrivial
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TrueColumnChoicesHeckeCharReferenceEqOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OpenCharacterEqOneOfIntegralUnitOneAtRamifiedStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AfIsoEqZeroIffStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTypePrimeUnderEqStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ColumnPrimeToBasePrimePreservesCommonPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AfIsoEqZeroIff
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTypePrimeUnderEq
+import Formalism.LocalToGlobal.Columns.AbelianHostFieldConditions
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ColumnPrimeToBasePrimePreservesCommonPlace
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PlaceComponentEqOneIffComponentsOverEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CmDataConjIsConjOfStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CmDataConjIsConjOf
+import Formalism.LocalRingCardinality.DataSpaces
+import Formalism.LocalToGlobal.Divisibility.TuplesLemmas
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV Formalism.L2.Forms
 open scoped TensorProduct
@@ -25,7 +31,7 @@ theorem mt_eq_one_of_intUnit : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St}
   classical
   letI := D.host.cmStar
   have hzU : Matrix.GeneralLinearGroup.det y.1 ∈ U1 (sigD D) := det_in_unitary_one D.host.F D.host.E (sigD D) 1 1 (by simp) y.1 y.2
-  obtain ⟨x', hx'int, hx'h90, hx'supp⟩ := GlobalTheory.T.integral_h90_preimage_trivial_at_places_over_trivial D.host.F D.host.E (sigD D) (GlobalTheory.T.cmData_conj_isConjOf _ _ D.sp.cm)
+  obtain ⟨x', hx'int, hx'h90, hx'supp⟩ := _root_.GlobalTheory.TwU.IntegralHilbert90Unramified.exists_integral_h90_preimage_trivial_where_trivial D.host.F D.host.E (sigD D) (_root_.GlobalTheory.cmData_sig_isConjOf _ _ D.sp.cm)
     (GlobalTheory.HeckeAdjoint.unramified_host D) _ hzU hint
   set x : (AfE t.X.F t.X.E)ˣ := Units.map A.iA.symm.toRingHom.toMonoidHom x' with hxdef
   have hxx : Units.map A.iA.toRingHom.toMonoidHom x = x' := by
@@ -44,7 +50,7 @@ theorem mt_eq_one_of_intUnit : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St}
       GlobalTheory.Mem.Col2.afIso t.X.F t.X.E (x : AfE t.X.F t.X.E) Q = 1 := by
     rintro Q ⟨P, hP, hPQ⟩
     have hxm1 : (x : AfE t.X.F t.X.E) - 1 ∈ RInt t.X.F t.X.E := sub_mem hxint.1 (one_mem _)
-    have key := GlobalTheory.T.afIso_ringEquiv_eq_zero_iff t.X.F t.X.E D.host.F D.host.E t.seam.iE A.iA H.iA_rat H.iA_int _ hxm1 Q
+    have key := _root_.GlobalTheory.AfeLocTr.afIso_eq_zero_iff t.X.F t.X.E D.host.F D.host.E t.seam.iE A.iA H.iA_rat H.iA_int _ hxm1 Q
     have e1 : A.iA ((x : AfE t.X.F t.X.E) - 1) = (x' : AfE D.host.F D.host.E) - 1 := by
       rw [map_sub, map_one]
       simp [x]
@@ -63,12 +69,12 @@ theorem mt_eq_one_of_intUnit : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St}
     have hv : UnderSB t μ ((seamP t.seam Q).under (𝓞 D.host.F)) := by
       refine ⟨P, hP, ?_⟩
       show ((seamP t.seam Q).under (𝓞 D.host.F)).asIdeal = ((seamP t.seam P).under (𝓞 D.host.F)).asIdeal
-      rw [GlobalTheory.T.columnPrimeToBasePrime_preserves_common_place D t.X t.seam t.seam_ok H.fields.ok P Q hPQ]
+      rw [_root_.GlobalTheory.TwU.seamP_under_eq D t.X t.seam t.seam_ok H.fields.ok P Q hPQ]
     exact (GlobalTheory.T.placeComponent_eq_one_iff_components_over_eq_one _ _ _ _).1 (hsupp _ hv) R hR
   have hvG : ∀ P : HeightOneSpectrum (𝓞 t.X.E), (∃ k, ((t.Pr.g k : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal) →
       GlobalTheory.Mem.Col2.afIso t.X.F t.X.E (x : AfE t.X.F t.X.E) P = 1 := by
     rintro P ⟨k, hk⟩
-    obtain ⟨P', hP', hu⟩ := GlobalTheory.T.exists_typePrime_under_eq t.X t.Pr H.fields.ok t.pr_ok k P hk
+    obtain ⟨P', hP', hu⟩ := _root_.GlobalTheory.GprimUnder.exists_vG_under t.X t.Pr H.fields.ok t.pr_ok k P hk
     refine hsuppX P ⟨P', Finset.mem_union_left _ ?_, hu⟩
     fin_cases k
     · exact Finset.mem_union_left _ hP'

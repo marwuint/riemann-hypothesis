@@ -1,4 +1,4 @@
-import Formalism.SharpRestriction.CuspSpanNormBounds.PairOfInputs
+import Formalism.SharpRestriction.CuspSpanNormBounds.DoubleBoundAndExtensionOfSmooth
 import Formalism.SharpRestriction.CuspSpanNormBounds.ExpansionFromLemmaB
 import Formalism.SharpRestriction.CuspSpanNormBounds.LowestKTypeMultiplicity
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.SmoothVectorsTranslateUnitary
@@ -70,17 +70,6 @@ def smoothSub (σ : Mx k r → (H →L[ℂ] H)) : Submodule ℂ H where
   add_mem' := fun h1 h2 => Formalism.MainNotions.LeviCoordinates.smooth_vectors_add h1 h2
   zero_mem' := zero_mem_smoothVecs σ
   smul_mem' := fun c _ h => Formalism.MainNotions.LeviCoordinates.smooth_vectors_smul c h
-
-theorem ddSmooth_of [CompleteSpace H] (hKS : Formalism.MainNotions.DiscreteSeriesInnerProducts.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool}
-    {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)} {w0 : H} (hσ : IsDSHpk k r ε lam σ)
-    (hw0 : IsLowUnitH k r ε lam σ w0) : DDSmoothAt σ w0 := by
-  have hw : w0 ∈ smoothVecs (k := k) (r := r) σ := hKS k r ε lam H σ hσ w0 (kfinHpk_of_lowUnitH hw0)
-  have hle : DDsp σ w0 ≤ smoothSub σ := by
-    refine Submodule.span_le.2 ?_
-    rintro _ ⟨g, hg, rfl⟩
-    exact Formalism.MainNotions.LeviCoordinates.smooth_vectors_translate_unitary (fun _ ha _ hb => Formalism.MainNotions.LeviCoordinates.discrete_series_map_mul hσ ha hb) hw hg
-  intro u hu
-  exact hle hu
 
 end Smooth
 

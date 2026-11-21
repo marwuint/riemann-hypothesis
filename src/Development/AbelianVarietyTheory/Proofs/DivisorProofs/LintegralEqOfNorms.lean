@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergSmoothOfWeakDerivativeClosedSetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergSmoothOfWeakDerivativeClosedSet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousFourierGau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOscillatorActionUnitaryGroupHermitianStatement
 
 noncomputable section
@@ -161,7 +162,7 @@ theorem sm_of_theta (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (F : BB ψ S T
     rw [im_HM x y]
     rfl
   have hH : IsHeis (fun x y => om x y) (rhoV hψ σ S T) := e ▸ isHeis_rhoB h hψ
-  exact GlobalTheory.T.heisenberg_smooth_of_weak_derivative_closed_set _ _ om _ hH (WO S T) (ev _ _) norm_ev_le (fun b C => norm_QB_le b)
+  exact _root_.GlobalTheory.RealWeil.sm_of_weak_deriv_closed _ _ om _ hH (WO S T) (ev _ _) norm_ev_le (fun b C => norm_QB_le b)
     (fun x v => ⟨ψ (symplOH S T x (iotaV σ S T v)), x + iotaV σ S T v, fun b => congrFun (coe_rhoV hψ v b) x⟩)
     {F | IsThetaFunO ψ S T F.1} (differentiable_ev h hψ) (exists_deriv h hψ) F hF
 

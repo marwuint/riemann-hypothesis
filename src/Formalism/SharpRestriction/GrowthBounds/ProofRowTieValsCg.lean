@@ -100,12 +100,6 @@ theorem cg_of {F G : MvPowerSeries σ C} (hF : MvPowerSeries.constantCoeff F = 0
   ⟨VP.cc_subst hA hF, VP.cc_subst hA hG, mvExp (F - G), VP.isIU_of_exp hi rfl, by
     rw [VP.subst_exp hA (by rw [map_sub, hF, hG, sub_zero]), VP.subst_sub' hA]⟩
 
-theorem GImg.cc {a : Fin dd → MvPowerSeries τ C} (h : GImg V A a) (i : Fin dd) :
-    MvPowerSeries.constantCoeff (a i) = 0 := by
-  obtain ⟨P, hP, e⟩ := h
-  rw [← e i]
-  exact VP.cc_subst hA (hP.1 i)
-
 theorem GImg.zero : GImg V A (fun _ : Fin dd => (0 : MvPowerSeries τ C)) :=
   ⟨fun _ => 0, VP.GoodPt.zero, fun _ => VP.subst_zero' hA⟩
 

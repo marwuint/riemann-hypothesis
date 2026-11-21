@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.ZeroN
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsMoveMarked
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DetFrameNeZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DualHalfLevelMarkingExistsAndMatchStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UniformisationComponentLatticesMarkingsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UniformisationComponentLatticesMarkings
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ComponentEqOfMatchedLatticesMarkingsStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
@@ -164,8 +164,8 @@ theorem GlobalTheory.Dict.exists_components_tied : ∀ (E : Type) [Field E] [Num
   have hζ : IsPrimitiveRoot (σ (zetaM c)) l.M :=
     (GlobalTheory.LevelPairing.zetaM_prim c).map_of_injective σ.injective
   have hL (k) : SelfD (U.X k₀) (U.X k).Λ :=
-    Setup.selfD_of_same (hs k) (GlobalTheory.T.uniformisation_component_lattices_markings E H Dw l Xo c σ r U hσ hU hr W k).2.1
-  have hmk (k) : IsMark l (U.X k).Λ (W.mark k) := (GlobalTheory.T.uniformisation_component_lattices_markings E H Dw l Xo c σ r U hσ hU hr W k).2.2.1
+    Setup.selfD_of_same (hs k) (_root_.GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ r U hσ hU hr W k).2.1
+  have hmk (k) : IsMark l (U.X k).Λ (W.mark k) := (_root_.GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ r U hσ hU hr W k).2.2.1
   have hdual (k) := GlobalTheory.T.dual_half_level_marking_exists_and_match E H Dw l r (U.X k₀) _ _ _ (hL k) (hmk k) hζ
   choose δ hδ using fun k => (hdual k).1
   have hle : D.𝔪 ≤ Mfr l := hT.prod.le.trans Ideal.mul_le_left

@@ -2,7 +2,8 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasselmanFirstPropertyStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsDomMonoid
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedVectorZeroOfDualStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedVectorZeroOfDual
+import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
 
 open GlobalTheory.PRep PositivityTheory.SphericalProduct
 
@@ -72,7 +73,7 @@ theorem hecke_pow_kills_of_proj_eq_zero : ∀ (G : Type) [Group G] [TopologicalS
   obtain ⟨R, hR⟩ := key _ ((Submodule.Quotient.mk_eq_zero _).1 hv)
   refine ⟨R, ?_⟩
   have h0 : (((U ^ R) v : fixed π D.J) : V) = 0 := by
-    refine GlobalTheory.T.fixed_vector_zero_of_dual G D.J D.isCompact_J V π hπ _ ((U ^ R) v).2 fun l hl => ?_
+    refine _root_.GlobalTheory.CompanionTheory.CompactAvg.invariant_forms_separate_fixed G D.J D.isCompact_J V π hπ _ ((U ^ R) v).2 fun l hl => ?_
     rw [← hecke R v l hl, Subgroup.coe_pow]
     exact hR R le_rfl l hl
   exact Subtype.ext h0

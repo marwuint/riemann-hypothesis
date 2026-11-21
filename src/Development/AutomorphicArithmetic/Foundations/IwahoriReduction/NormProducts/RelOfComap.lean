@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.LUnH
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TsenTheoremStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassGroupAffineCurveDivisibleCharZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNormSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TsenTheorem
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassGroupAffineCurveDivisibleCharZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNormSurjective
 
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial UniqueFactorizationMonoid
 open scoped Matrix MatrixGroups
@@ -383,7 +384,7 @@ theorem UpperTheory.Kd.K4.nsAbs :
     obtain ⟨c, hc0, hc⟩ := hf (v.valuation K).valuationSubring fun p =>
       (Valuation.mem_valuationSubring_iff _ _).2 (v.valuation_le_one (algebraMap k[X] A p))
     exact ⟨c, hc0, ((v.valuation K).isEquiv_valuation_valuationSubring.eq_one_iff_eq_one).2 hc⟩
-  obtain ⟨g0, hg0⟩ := GlobalTheory.T.exists_algebra_norm_eq_of_isFirstChernClass K K' (GlobalTheory.T.tsen_theorem k K) f hf0
-  obtain ⟨f', h0, h1, h2⟩ := abs_fin (A := A) (B := B) K K' hm (fun c => GlobalTheory.T.classGroup_affineCurve_divisible_charZero k K' m hm c)
+  obtain ⟨g0, hg0⟩ := _root_.GlobalTheory.norm_surjective_of_is_c1 K K' (_root_.GlobalTheory.NeedB.tsen k K) f hf0
+  obtain ⟨f', h0, h1, h2⟩ := abs_fin (A := A) (B := B) K K' hm (fun c => _root_.GlobalTheory.classGroup_ringOfIntegers_divisible k K' m hm c)
     hres f hf0 g0 hg0 hfv
   exact ⟨f', h0, h1, fun W hW => h2 W fun b => mem_of_int W hW b.2⟩

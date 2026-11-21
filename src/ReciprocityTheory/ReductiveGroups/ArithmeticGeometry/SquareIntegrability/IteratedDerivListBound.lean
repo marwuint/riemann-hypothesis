@@ -9,11 +9,6 @@ variable {E : Type} [Field E] [NumberField E] {n nb : ℕ}
 section Col
 variable {dim : (E →+* ℂ) → ℕ}
 
-theorem iteratedDeriv_cast (s : (Fin 1 → Vsp dim) → ℂ) {N M : ℕ} (h : N = M) (v : Fin N → Vsp dim) :
-    d1 s N v = d1 s M (fun k => v (k.cast h.symm)) := by
-  subst h
-  rfl
-
 theorem iteratedDeriv_list_bound (s : (Fin 1 → Vsp dim) → ℂ) (c : ℕ) (μ : ℂ) (y : Vsp dim) (ε : ℝ)
     (σ : E →+* ℂ)
     (hbd : ∀ xs : Fin c → Vsp dim, (∀ k, InPart σ (xs k) ∧ ‖xs k‖ = 1) →

@@ -37,16 +37,6 @@ theorem teichmuller_mem_wittInt {a : L} (ha : ‖a‖ ≤ 1) : teichmuller p a �
 
 variable [CharP L p] [PerfectRing L p]
 
-theorem exists_mem_wittInt_eq_mul_p {w : WittVector p L} (hw : w ∈ wittInt p) (h0 : w.coeff 0 = 0) :
-    ∃ v ∈ wittInt p, w = v * (p : WittVector p L) := by
-  obtain ⟨v, hv⟩ := mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero w).2 h0)
-  refine ⟨v, ?_, hv.symm⟩
-  rw [mem_wittInt_iff] at hw ⊢
-  intro n
-  have h1 := hw (n + 1)
-  rw [← hv, mul_charP_coeff_succ, norm_pow] at h1
-  exact (pow_le_one_iff_of_nonneg (norm_nonneg _) hp.out.ne_zero).1 h1
-
 theorem coeff_eq_of_sub_mem {a b : WittVector p L} {m : ℕ}
     (h : a - b ∈ span {(p : WittVector p L) ^ m}) {i : ℕ} (hi : i < m) : a.coeff i = b.coeff i :=
   le_coeff_eq_iff_le_sub_coeff_eq_zero.2 ((mem_span_p_pow_iff_le_coeff_eq_zero _ _).1 h) i hi

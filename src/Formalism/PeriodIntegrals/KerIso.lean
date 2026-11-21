@@ -44,19 +44,6 @@ def DetOrdFin : Prop :=
       (∀ p, p.Prime → S p → AtP {x : E | x ∈ I} (gp p) p) →
         {p : ℕ | p.Prime ∧ S p ∧ ordK (pp p) (detRel (gp p) g₀) ≠ 0}.Finite
 
-def FourSq : Prop :=
-  ∀ (K E : Type) [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] (cj : E ≃ₐ[ℚ] E) (n : Type) [Fintype n],
-    Module.finrank ℚ K = 2 → Fintype.card n = Module.finrank K E → IsConj K cj →
-    (∀ x : E, x ≠ 0 → 0 < Algebra.trace ℚ E (x * cj x)) →
-      ∃ g : (Fin 4 → E) ≃ₗ[K] (Fin 4 × n → K), IsIsom cj g
-
-def ExtC : Prop :=
-  ∀ (K E : Type) [Field K] [Field E] [Algebra K E] [FiniteDimensional K E] (n : Type) [Fintype n] (φ : K →+* ℂ)
-    (τ : n → E →+* ℂ), Function.Injective τ → (∀ i k, τ i (algebraMap K E k) = φ k) →
-    Fintype.card n = Module.finrank K E → ∀ g : (Fin 4 → E) ≃ₗ[K] (Fin 4 × n → K),
-      ∃ gC : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ),
-        ∀ x : Fin 4 → E, gC (fun w => τ w.2 (x w.1)) = fun w => φ (g x w)
-
 def SplitsAt (K : Type) {E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] (cj : E ≃ₐ[ℚ] E) (p : ℕ) : Prop :=
   ∃ P : Ideal (𝓞 K), P.IsPrime ∧ ((p : ℕ) : 𝓞 K) ∈ P ∧ ∃ a b : 𝓞 K,
     cj (algebraMap K E (a : K)) = algebraMap K E (b : K) ∧ a ∈ P ∧ b ∉ P
@@ -64,12 +51,5 @@ def SplitsAt (K : Type) {E : Type} [Field K] [NumberField K] [Field E] [NumberFi
 def SelfDualI (K : Type) {E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] (cj : E ≃ₐ[ℚ] E)
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Prop :=
   ∀ y : E, y ∈ I ↔ ∀ x ∈ I, Algebra.trace K E (x * cj y) ∈ (algebraMap (𝓞 K) K).range
-
-def LocIso : Prop :=
-  ∀ (K E : Type) [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] (cj : E ≃ₐ[ℚ] E) (n : Type) [Fintype n]
-    (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (p : ℕ),
-    Module.finrank ℚ K = 2 → IsConj K cj → p.Prime → SplitsAt K cj p → SelfDualI K cj I →
-    (∃ g₀ : (Fin 4 → E) ≃ₗ[K] (Fin 4 × n → K), IsIsom cj g₀) →
-      ∃ g : (Fin 4 → E) ≃ₗ[K] (Fin 4 × n → K), IsIsom cj g ∧ AtP {x : E | x ∈ I} g p
 
 end PI.KerIso

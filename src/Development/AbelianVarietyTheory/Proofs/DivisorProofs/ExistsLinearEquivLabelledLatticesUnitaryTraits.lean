@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabelledUnitaryTraitsLatticesEquivConnectedFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabelledUnitaryTraitsLatticesEquivConnectedFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsZhModelProperOverUSetup
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyUWit
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
@@ -18,6 +18,6 @@ theorem _root_.GlobalTheory.UPoinc.exists_linearEquiv_labelled_of_uIsLabW : ∀ 
     GlobalTheory.UPoinc.exists_zhModel_proper_over_uSetup E H Dw hpq l Xo cf C X hproj
   obtain ⟨y, hy⟩ := hlift p z ct
   obtain ⟨y', hy'⟩ := hlift p z ct'
-  obtain ⟨θ, hθ, hsm⟩ := GlobalTheory.T.labelledUnitaryTraits_lattices_equiv_connectedFibre E H Dw hpq l Xo cf C X wi Y U₀ EE G q hO hE hqp hpt p z (hconn z)
+  obtain ⟨θ, hθ, hsm⟩ := _root_.GlobalTheory.UPoinc.GFib.labelled_lattices_equiv E H Dw hpq l Xo cf C X wi Y U₀ EE G q hO hE hqp hpt p z (hconn z)
     ct ct' y y' hy hy' yy yy' hl hl'
   exact ⟨θ.toLinearEquiv hsm, hθ⟩

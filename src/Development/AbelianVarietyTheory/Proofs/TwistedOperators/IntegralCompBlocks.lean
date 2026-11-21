@@ -9,9 +9,6 @@ namespace GlobalTheory.RootEx.OpELevi
 section cov
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-lemma nabs_mul (x y : kˣ) : nabs k (x * y) = nabs k x * nabs k y := by
-  simp [nabs]
-
 lemma nabs_pos (x : kˣ) : 0 < nabs k x := by
   unfold nabs
   exact_mod_cast (distribHaarChar_pos (A := k) (g := x))

@@ -13,15 +13,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 noncomputable section
 namespace Tw.LatVacArith
-open _root_.GlobalTheory
-open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
-variable {F : Type} [Field F] [NumberField F]
-section Gen
-variable {E : Type} [Field E] [NumberField E] [Algebra F E]
-end Gen
-section Main
-variable {E : Type} [Field E] [NumberField E] [Algebra F E]
-end Main
 end Tw.LatVacArith
 namespace Tw.LatVacArith
 open _root_.GlobalTheory

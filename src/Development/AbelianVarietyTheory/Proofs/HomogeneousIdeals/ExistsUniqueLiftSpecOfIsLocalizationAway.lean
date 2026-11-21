@@ -267,28 +267,4 @@ theorem existsUnique_lift_spec_of_isLocalization [IsIntegrallyClosed R] (M : Sub
 
 end Affine
 
-section Normalization
-
-variable {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f]
-
-variable {R R' : Type u} [CommRing R] [CommRing R'] [Algebra R R']
-
-theorem existsUnique_lift_normalization_spec_of_isLocalization [IsIntegrallyClosed R]
-    (M : Submonoid R) (hM : M ≤ nonZeroDivisors R) [IsLocalization M R']
-    (χ₀ : Spec (.of R) ⟶ Y) (χ₁ : Spec (.of R') ⟶ X)
-    (h : χ₁ ≫ f = Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ χ₀) :
-    ∃! χ : Spec (.of R) ⟶ f.normalization,
-      Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ χ = χ₁ ≫ f.toNormalization ∧
-        χ ≫ f.fromNormalization = χ₀ :=
-  existsUnique_lift_spec_of_isLocalization M hM f.fromNormalization (χ₁ ≫ f.toNormalization) χ₀
-    (by rw [Category.assoc, Scheme.Hom.toNormalization_fromNormalization, h])
-
-end Normalization
-
-section Sections
-
-variable {U T Z : Scheme.{u}}
-
-end Sections
-
 end GlobalTheory

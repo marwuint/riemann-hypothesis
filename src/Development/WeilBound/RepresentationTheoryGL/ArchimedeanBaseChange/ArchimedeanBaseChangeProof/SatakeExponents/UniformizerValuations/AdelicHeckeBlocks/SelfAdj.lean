@@ -55,8 +55,8 @@ theorem self_adj (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hS : WaveSpeed) (hE 
       simp only [rp y hy k₂, rK _ y hy k₂, sub_mul, Finset.sum_mul, smul_mul_assoc]
     · intro f hf cf _
       have hfc := hf.1.continuousOn
-      have ap := GlobalTheory.T.kernel_action_equivariant hL n μ E _ f regp hfc lp
-      have aK := fun i => GlobalTheory.T.kernel_action_equivariant hL n μ E (K i) f (regK i) hfc (lK i)
+      have ap := _root_.GlobalTheory.CompanionTheory.WaveMult.act_kReg_section hL n μ E _ f regp hfc lp
+      have aK := fun i => _root_.GlobalTheory.CompanionTheory.WaveMult.act_kReg_section hL n μ E (K i) f (regK i) hfc (lK i)
       have hA0 := section_orth_cpt_zero hQ n μ E
         (fun x => act μ E (fun y => ContinuousLinearMap.adjoint (k y⁻¹)) f x - ∑ i, c i • act μ E (K i) f x)
         (ap.1.sub (continuousOn_finset_sum _ fun i _ => (aK i).1.const_smul (c i)))

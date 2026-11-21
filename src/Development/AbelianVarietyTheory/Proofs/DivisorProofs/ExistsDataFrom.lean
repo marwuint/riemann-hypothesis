@@ -40,8 +40,6 @@ abbrev Mp : RigLB (Bp T iw) := (cm T iw).rigLB T.M (pullSt T iw).fst (pullSt T i
 
 abbrev cubP : CubicalStr (Bp T iw) (Mp T iw) := CubePf.cubical (cm T iw) T.M T.cub _ _
 
-example : (Mp T iw).L = T.M.L.pull (pullback.fst T.B.hom (spMap iw)) := rfl
-
 end Base
 
 section Pts

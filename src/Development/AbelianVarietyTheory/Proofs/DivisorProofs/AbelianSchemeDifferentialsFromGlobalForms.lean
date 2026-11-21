@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SurjectiveOfIsPullb
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsNoetherianRingDualNumber
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueVectorFieldOfGlobalOneFormValuesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueVectorFieldOfGlobalOneFormValues
 open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.DeRham GlobalTheory.SqLift GlobalTheory.LiftSys GlobalTheory.Published
 attribute [local instance] Over.cartesianMonoidalCategory
 open TensorProduct
@@ -46,6 +46,6 @@ theorem par : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R : Type) [C
   have hs : Smooth A.hom := SmoothOfRelativeDimension.smooth g A.hom
   have := smooth_sec A.hom hs U.unop
   obtain ⟨-, -, ⟨h1, h2, -⟩, -⟩ := H' R A g hA hg
-  exact isBaseChange_of_dual _ (GlobalTheory.T.exists_unique_vectorField_of_globalOneForm_values H H' R A g hA hg U)
+  exact isBaseChange_of_dual _ (_root_.GlobalTheory.ParPt.exists_unique_of_globForm H H' R A g hA hg U)
 
 end GlobalTheory.ParForm

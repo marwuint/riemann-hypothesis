@@ -36,17 +36,6 @@ end GlobalTheory.HeightCounting.Up.ThirdIdx
 
 namespace GlobalTheory.HeightCounting.Up.ThirdIdx
 
-theorem exists_divX_eigIdx_third : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.NRows.HypothesesX → AllSt fun _ _ _ T w P x => ∀ (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 (Dof x))), GlobalTheory.CoefDuty.Built l.a.A l.mt.M l.c.ch l.c.tp.tup big L → SumRepresentations.hypO (withLoc L) → ∀ (m : Moved (GlobalTheory.HeightCounting.Fin3.oL x L)), m.Copy → m.Coh → ∀ (s : Side0 (GlobalTheory.HeightCounting.Fin3.oL x L)) (r : ReadPk m s), r.Pin → ∃ (Xd : DivX (withLoc L)) (E : EigIdx (withLoc L) Xd), Nonempty (E.Pi → (famR (w.st (GlobalTheory.HeightCounting.Fin3.oL x L).Z) w.I P.hX (usedOf w.I T P.Wt) m.z.Xg m.z.tr).A.fam.base.Ix) := by
-  intro hL _ _
-  refine StepW.of_all ?_
-  intro K B f T w _ _ _ P x l big L _ _ m _ _ s r _
-  letI : Algebra (↥m.z.core.Q.c.F) (w.st (GlobalTheory.HeightCounting.Fin3.oL x L).Z).toD7.what₂.LL := m.z.alg
-  have hX : Nonempty (DivX (GlobalTheory.HeightCounting.Fin3.DL x L)) := nonempty_divX (Y := r.Y) r.Z m.z.pins m.intersectionNumber_baseChange
-  rw [GlobalTheory.HeightCounting.Fin3.DL_eq] at hX
-  obtain ⟨Xd⟩ := hX
-  obtain ⟨c⟩ := nonempty_ix m.intersectionNumber_baseChange
-  exact ⟨Xd, GlobalTheory.eigIdxFiniteTypes _ _, ⟨fun _ => c⟩⟩
-
 end GlobalTheory.HeightCounting.Up.ThirdIdx
 
 end

@@ -4,7 +4,11 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.PlaceValuationLinAtLarge
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.CuspStepOfLargeFlipRun
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.EndCuspLeadingFormListed
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IterationAndLinearityCuspidalStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsRealFam
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
 
 section
 noncomputable section
@@ -12,21 +16,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open Formalism.IndefR Formalism.IndefR.Links Formalism.L2.DIV GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowChain
-open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow
-variable {D : D7}
-section Lin
-variable {ψ : AddChar (AF D.host.F) ℂ} {T₀ : HSp D}
-end Lin
-variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 end GlobalTheory.RowChain
 namespace GlobalTheory.RowChain
-open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.FlipRun
-variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
-variable (W : G.Weil) (M : Vol G) (t : T)
-variable {W M t}
 end GlobalTheory.RowChain
 namespace GlobalTheory.RowChain
-open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.FlipRun
 end GlobalTheory.RowChain
 namespace GlobalTheory.RowChain
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.FlipRun GlobalTheory.RowUnf GlobalTheory.RowVal

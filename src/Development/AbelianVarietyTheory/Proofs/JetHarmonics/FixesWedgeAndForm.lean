@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CompoundMatrixCauchyBinetPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CompoundMatrixCauchyBinetProperties
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.GroupFactorizationHolds
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 
@@ -52,7 +52,7 @@ theorem fixes_wedge_and_form : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ)
     have := congrFun (congrFun hF i) a
     simpa [Matrix.mul_apply, Fm, mulVec, dotProduct] using this
   refine ⟨?_, dual_fix k r _ s (Sset_UH hs) ?_⟩
-  · rw [(GlobalTheory.T.compoundMatrix_cauchyBinet_properties _ (r + 1) s s).2.2.2]
+  · rw [(_root_.GlobalTheory.compound_properties _ (r + 1) s s).2.2.2]
     exact wedge_eq_of_mul _ _ U hU0 hU1 key
   · funext i
     rw [key, Finset.sum_eq_single 0, hU1, mul_one]

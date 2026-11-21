@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TameAnyAtOfIsConjPl
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.AdmissibleResidualTameEigenvalues
 
@@ -8,8 +8,6 @@ set_option synthInstance.maxHeartbeats 200000
 section
 noncomputable section
 namespace GlobalTheory.IneAway
-open GlobalTheory.TypeLeaf
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 end GlobalTheory.IneAway
 namespace GlobalTheory.TypeLeaf
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
@@ -20,7 +18,7 @@ theorem tame_fixed_of_type_alt : ∀ D : D7, WildOne D → _root_.UpperTheory.Ga
   haveI : Fact (D.nd.l i).Prime := D.nd.lPrime i
   have hw := not_mem_of_ne (D := D) (v := v) (D.nd.lPrime i).out hl
   have hine := _root_.GlobalTheory.IneAway.ineAt' D hG hF i π ρ hc ha hfull hρ k v _ rfl hw
-  obtain ⟨ι, hι, hred⟩ := GlobalTheory.T.exists_reduction_teichmullerEmbedding_at_localisation D i k hl
+  obtain ⟨ι, hι, hred⟩ := _root_.GlobalTheory.TypeLeaf.exists_redVia D i k hl
   have hf := _root_.UpperTheory.GalS.fl0' hfull k v
   unfold labSig at hf ⊢
   rw [isoLoc_single] at hf ⊢
@@ -62,7 +60,7 @@ theorem tame_fixed_of_type_alt : ∀ D : D7, WildOne D → _root_.UpperTheory.Ga
       have h4 := D.nd.plOm.2 (D.naut.plGw k v)
       have h5 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal := D.naut.plGw_over k v
       simpa using (h4 _).2 h5
-    have h3 := GlobalTheory.T.wild_eq_one_of_charpoly_unipotent_mod_l _ _ _ (D.host.g k) (D.nd.l i) D.R.r hl hg _ (redF D i ρ)
+    have h3 := _root_.GlobalTheory.WildKill.eq_one_of_wild_of_unipotent _ _ _ (D.host.g k) (D.nd.l i) D.R.r hl hg _ (redF D i ρ)
       (GlobalTheory.T.residualRep_ker_isOpen D i ρ hρ.1) u hu h2
     rw [hudef, map_mul, map_inv, inv_mul_eq_one, map_pow] at h3
     exact h3.symm

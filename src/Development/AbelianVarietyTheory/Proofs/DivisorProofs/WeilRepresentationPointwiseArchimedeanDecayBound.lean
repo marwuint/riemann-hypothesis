@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordAppend
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepFinitePeriodicityPolynomialHeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordActionSquareIntegrableBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepFinitePeriodicityPolynomialHeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordActionSquareIntegrableBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SobolevBoundPeriodicSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddNormPowLeSumLinearFormPowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddNormPowLeSumLinearFormPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanDecayOperatorApplyMemAdelicSchwartzStatement
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
@@ -50,10 +50,10 @@ theorem om_bound_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩
   let μ : Measure (Fin n × Fin d → AF F) := Measure.addHaar
   have hμ : μ.IsAddHaarMeasure := inferInstance
-  obtain ⟨K, l, C0, hl, hpoly⟩ := GlobalTheory.T.one_add_norm_pow_le_sum_linearForm_pow F (Fin n × Fin d) N
+  obtain ⟨K, l, C0, hl, hpoly⟩ := _root_.GlobalTheory.ArchDecay.onePlusNormPow_le_sum_linearForm_pow F (Fin n × Fin d) N
   obtain ⟨P, Cs, c, hsob⟩ := GlobalTheory.T.sobolev_bound_periodic_schwartz F (Fin n × Fin d) μ hμ
-  obtain ⟨C1, k1, hfin⟩ := GlobalTheory.T.weilRep_finite_periodicity_polynomial_height F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ
-  obtain ⟨C2, k2, hL2⟩ := GlobalTheory.T.word_action_square_integrable_bound F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ μ hμ (P + N)
+  obtain ⟨C1, k1, hfin⟩ := _root_.GlobalTheory.ArchDecay.per_om_level F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ
+  obtain ⟨C2, k2, hL2⟩ := _root_.GlobalTheory.ArchDecay.word_action_square_integrable F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ μ hμ (P + N)
   set A : ℝ := max (max Cs 0 * max C1 1 ^ c * max C2 0) 1 with hA
   have hA1 : 1 ≤ A := le_max_right _ _
   refine ⟨max C0 0 * (K + 1) * A, k1 * c + k2, fun g h x => ?_⟩

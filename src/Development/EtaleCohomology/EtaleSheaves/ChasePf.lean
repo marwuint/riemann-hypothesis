@@ -24,11 +24,6 @@ theorem psi_hom_fst {Z : Scheme.{0}} (A B C : Z.Opens) (hC : C = A ⊓ B) :
     (psi A B C hC).hom ≫ C.ι = pullback.fst A.ι B.ι ≫ A.ι :=
   IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _
 
-@[reassoc]
-theorem psi_hom_snd {Z : Scheme.{0}} (A B C : Z.Opens) (hC : C = A ⊓ B) :
-    (psi A B C hC).hom ≫ C.ι = pullback.snd A.ι B.ι ≫ B.ι := by
-  rw [psi_hom_fst, pullback.condition]
-
 @[reassoc (attr := simp)]
 theorem psi_inv_fst {Z : Scheme.{0}} (A B C : Z.Opens) (hC : C = A ⊓ B) :
     (psi A B C hC).inv ≫ pullback.fst A.ι B.ι ≫ A.ι = C.ι :=
@@ -64,12 +59,6 @@ theorem rL_rT {l k : J} (g : l ⟶ k) (f : k ⟶ j0) (f' : l ⟶ j0) (h : g ≫ 
     rL D c j0 W f' ≫ rT D j0 W g f f' h = rL D c j0 W f := by
   rw [← cancel_mono (Scheme.Opens.ι _)]
   simp [rL, rT, Scheme.Hom.resLE_comp_ι, Scheme.Hom.resLE_comp_ι_assoc]
-
-theorem rT_rT {l' l k : J} (g' : l' ⟶ l) (g : l ⟶ k) (f : k ⟶ j0) (f' : l ⟶ j0) (f'' : l' ⟶ j0)
-    (h : g ≫ f = f') (h' : g' ≫ f' = f'') :
-    rT D j0 W g' f' f'' h' ≫ rT D j0 W g f f' h = rT D j0 W (g' ≫ g) f f'' (by rw [Category.assoc, h, h']) := by
-  rw [← cancel_mono (Scheme.Opens.ι _)]
-  simp [rT, Scheme.Hom.resLE_comp_ι, Scheme.Hom.resLE_comp_ι_assoc]
 
 end
 

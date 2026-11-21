@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientKernelPolarisationDescendedBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualPointEqOfQuotientFamilyIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlatCoverAdditiveFamilyEqLambdaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SameLineBundleFamilyDescendsFlatSurjectiveQuasiCStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientKernelPolarisationDescendedBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualPointEqOfQuotientFamilyIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlatCoverAdditiveFamilyEqLambda
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SameLineBundleFamilyDescendsFlatSurjectiveQuasiC
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -17,12 +17,12 @@ namespace GlobalTheory.DualPol
 
 theorem hasRepAF_of_relAmple : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → HasRepAF A g (𝟙_ _) := by
   intro R _ _ A _ g hA hg L hL ha
-  obtain ⟨B, P, q, hP, hgood, hfa, hfin, hfl, hsu, hF, hK⟩ := GlobalTheory.T.exists_quotient_kernel_polarisation_descended_bundle R A g hA hg L hL ha
-  have hinj : Inj A P := GlobalTheory.T.dualPoint_eq_of_quotient_family_iso R A g hA hg L hL ha B P q hP hfin hfl hsu hF hK
+  obtain ⟨B, P, q, hP, hgood, hfa, hfin, hfl, hsu, hF, hK⟩ := _root_.GlobalTheory.DualQuot.exists_quotient_lam R A g hA hg L hL ha
+  have hinj : Inj A P := _root_.GlobalTheory.DualCon.inj_of_quotient R A g hA hg L hL ha B P q hP hfin hfl hsu hF hK
   have hex : ∀ (T : Over (Sp R)) (N : LB (A ⊗ T).left), Fam A N →
       ∃ x : T ⟶ B, LBIso N (ev P (fst A T) (snd A T ≫ x)) := by
     intro T N hN
-    obtain ⟨H, h, x, hhf, hhs, hhq, hx⟩ := GlobalTheory.T.exists_flatCover_additiveFamily_eq_lambda R A g hA hg L hL ha T N hN
+    obtain ⟨H, h, x, hhf, hhs, hhq, hx⟩ := _root_.GlobalTheory.DualCover.exists_cover R A g hA hg L hL ha T N hN
     have key : ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (y : Y ⟶ H),
         evc hP.isLB a (y ≫ x ≫ q) = evc hN.isLB a (y ≫ h) := by
       intro Y a y
@@ -54,7 +54,7 @@ theorem hasRepAF_of_relAmple : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] 
     let xT : T ⟶ B := Over.homMk d hdB
     have hxT : h ≫ xT = x ≫ q := Over.OverMorphism.ext hd
     refine ⟨xT, (same_id_iff hN.isLB hP.isLB xT).1 ?_⟩
-    refine GlobalTheory.T.sameLineBundleFamily_descends_flat_surjective_quasiCompact (Sp R) A hA T B T H N P hN hP (𝟙 T) xT h hhf hhs hhq ?_
+    refine _root_.GlobalTheory.DualCon.same_of_fpqc (Sp R) A hA T B T H N P hN hP (𝟙 T) xT h hhf hhs hhq ?_
     rw [same_iff hN.isLB hP.isLB, Category.comp_id, hxT, key]
   refine ⟨B, toUnit B, P, ⟨hP, fun T t N hN ↦ ?_⟩, hgood, hfa⟩
   obtain ⟨x, hx⟩ := hex T N hN

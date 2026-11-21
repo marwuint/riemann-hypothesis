@@ -1,9 +1,10 @@
 import Formalism.WachLatticeTwists.RamifiedBlockRings.ChainFromPrimitiveData
 import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingObjectsExist
-import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.DeltaRing
+import Formalism.WachLatticeTwists.RamifiedBlockRings.DistinctEigenvalueCornerPerturbation
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.TheoremNFiveDeltaClause
 import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.DensityPointOfCornerSimple
-import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.Density
-import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CornerSimple
+import Formalism.WachLatticeTwists.RamifiedBlockRings.Statement
+import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdemFactor
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.MemCcIdealIffForall
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 
@@ -14,28 +15,6 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 
 open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities Formalism.RepresentationBoundsCohomology.BR
-
-theorem x0 : DensityPointExists := density_point_of_corner_simple density cornerSimple
-
-theorem bridge : StatBridge := by
-  intro O _ _ X T d _ _ G _ r π eB heB hid m jj a h c
-  have hx : ∀ x, eB x * eB x = eB x := fun x => congrFun hid x
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · have h1 : (fun x => c • ∑ i, jj i x • (eB x * a i x * eB x)) =
-        c • ∑ i, (fun x => jj i x • (eB * a i * eB) x) := by
-      funext x; simp [Finset.sum_apply]
-    rw [h1]
-    refine (spanSub T r).smul_mem ((spanSub T r).sum_mem fun i _ => ?_) c
-    have h2 : (fun x => jj i x • (eB * a i * eB) x) = term r (jj i) 1 * (eB * a i * eB) := by
-      funext x; simp [term]
-    rw [h2]
-    exact mul_mem_tSpan T r (term_mem T r (h i).1 1)
-      (mul_mem_tSpan T r (mul_mem_tSpan T r heB (h i).2.2) heB)
-  · funext x
-    simp only [Pi.mul_apply, Matrix.mul_smul, Finset.mul_sum, ← mul_assoc, hx]
-  · funext x
-    simp only [Pi.mul_apply, Matrix.smul_mul, Finset.sum_mul, mul_assoc, hx]
-  · simp [(h _).2.1]
 
 theorem bcSpan : StatBcSpan := by
   intro O O' _ _ _ X T
@@ -327,34 +306,5 @@ theorem stageC : StatStageC := by
     exact h3 (hpoly ▸ hsep') (hpoly ▸ hspl x)
   · intro Z
     exact vccBaseChange O O' e he X T (bcT O' T) (bcSpan O O' X T) Z π
-
-theorem deltaO_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G : Type}
-    [Fintype d] [DecidableEq d] [Group G] {t : ℕ} {bl : d → Fin (t + 1)} {T : Subalgebra O (X → O)}
-    {r₀ : G →* (X → Matrix d d O)} {π : X} {χ₁ ε : G →* Oˣ} {g₀ : G} {eB e₁ s : X → Matrix d d O}
-    {D : RingData O X d G t bl} (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s D) :
-    D.δO = ∏ i ∈ Finset.Ioo 0 t, ((χ₁ g₀ : O) - (χ₁ g₀ : O) * (((ε g₀)⁻¹ ^ i : Oˣ) : O)) := by
-  obtain ⟨-, -, -, -, -, hrr, -⟩ := hD
-  have h2 : D.δO = ∏ i ∈ Finset.Ioo 0 t,
-      ((D.rr 0 : D.X' → O) D.π' - (D.rr i : D.X' → O) D.π') := by
-    show ((Pi.evalRingHom (fun _ : D.X' => O) D.π').comp D.T'.val.toRingHom) D.δ = _
-    unfold RingData.δ
-    rw [map_prod]; rfl
-  rw [h2]
-  refine Finset.prod_congr rfl fun i hi => ?_
-  rw [Finset.mem_Ioo] at hi
-  rw [hrr 0 (by omega), hrr i hi.2]
-  simp
-
-theorem deltaBc : StatDeltaBc := by
-  intro O O' _ _ _ _ _ _ _ e he
-  refine ⟨?_, fun ℓ => ?_⟩
-  · intro X d G _ _ _ t bl T r π χ₁ ε g₀ eB e₁ s D' hD'
-    have h1 : D'.δO = algebraMap O O'
-        (∏ i ∈ Finset.Ioo 0 t, ((χ₁ g₀ : O) - (χ₁ g₀ : O) * (((ε g₀)⁻¹ ^ i : Oˣ) : O))) := by
-      rw [deltaO_eq hD', map_prod]
-      refine Finset.prod_congr rfl fun i _ => ?_
-      simp [bcChar]
-    exact ⟨h1, by rw [h1, he]⟩
-  · rw [Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, ← he, map_natCast (algebraMap O O')]
 
 end Formalism.RepresentationBoundsCohomology.ringDataObjects

@@ -30,9 +30,6 @@ structure Places (LL : Type) [Field LL] where
 
   val_resChar : ∀ w, val w ((resChar w : ℕ) : LL) = (((ramIdx w : ℕ) : ℤ) : WithTop ℤ)
 
-def unitRule {LL : Type} [Field LL] (P : Places LL) (w : P.Pl) (x : ℚ) : ℚ :=
-  (P.ramIdx w : ℚ) * x
-
 structure Data (R : Ranks) where
 
   LL : Type
@@ -206,13 +203,7 @@ noncomputable def Zj (μ : D.Tup) (j : ℕ) : Submodule ℂ (D.Mt μ j) := Linea
 noncomputable def TjSet (μ : D.Tup) (j : ℕ) : Set (D.Mt μ j) :=
   (fun x => D.eMt μ j ((D.Zj μ j).starProjection x)) '' (D.MtLat μ j).carrier
 
-def nRows (π : D.FT) : ℕ := Fintype.card {σ : Fin D.Drows // D.ft σ = π}
-
 def nRows0 (π : D.FT) : ℕ := Fintype.card {σ : Fin D.D0 // D.ft0 σ = π}
-
-def EEpart (π : D.FT) : Submodule ℂ D.EE := Submodule.span ℂ (D.onb '' {σ | D.ft σ = π})
-
-def IsotypicPart (π : D.FT) : Submodule ℂ D.EE0 := Submodule.span ℂ (D.onb0 '' {σ | D.ft0 σ = π})
 
 def zeC (u : D.Word) (μ : D.Tup) : ℂ := D.embLL (D.ze u μ : D.LL)
 
@@ -223,52 +214,12 @@ def VV (l : ℕ) : ℚ := ∑ e ∈ Finset.Ico 1 R.t, D.shaLen l e
 
 end Data
 
-def BuDef {R : Ranks} (D : Data R) : Prop :=
-  ∀ u (φ : D.Mu u) (F : D.Amb D.mu0), F ∈ D.V0 D.mu0 → D.perCol u D.mu0 φ F = D.Bu u φ (D.iota D.mu0 F)
-
-def LamPDef {R : Ranks} (D : Data R) : Prop :=
-  ∀ μ j, 1 ≤ j → j ≤ R.m → ∀ σ, ∀ x ∈ D.isot j σ, D.thetaP μ j (D.thetaT μ j x) = ((D.lamP μ j σ : ℝ) : ℂ) • x
-
 def DelpNonneg {R : Ranks} (D : Data R) : Prop := 0 ≤ D.delp
-
-def AIntegral {R : Ranks} (D : Data R) : Prop :=
-  ∀ μ x, x ∈ (D.Mtilde μ).carrier → ((D.restRowsFiniteGroupCard : ℂ) • D.eOp μ x) ∈ (D.Mtilde μ).carrier
-
-def ZeUnit {R : Ranks} (D : Data R) : Prop :=
-  ∀ u w, D.places.val w (D.ze u (D.muAt w) : D.LL) = 0 ∧
-    D.places.val (D.places.conj w) (D.ze u (D.muAt w) : D.LL) = 0
 
 def IsotInternal {R : Ranks} (D : Data R) : Prop :=
   ∀ j, 1 ≤ j → j ≤ R.m → DirectSum.IsInternal (D.isot j)
 
 def IsotRank {R : Ranks} (D : Data R) : Prop :=
   ∀ j, 1 ≤ j → j ≤ R.m → ∀ π, Module.finrank ℂ (D.isot j π) = D.nRows0 π
-
-def FactKaBlocks : Prop :=
-  ∀ R : Ranks, ∀ j, 1 ≤ j → j ≤ R.m → (R.sigW j).1 = (R.k - 1) + j ∧ (R.sigW j).2 = R.m - j
-
-def FactShimRange : Prop :=
-  ∀ R : Ranks, ∀ j, 1 ≤ j → j ≤ R.m - 1 → 1 ≤ (R.sigW j).1 ∧ (R.sigW j).1 < R.r
-
-def FactQZ : Prop :=
-  ∀ (R : Ranks) (D : Data R) (μ : D.Tup),
-    LinearMap.range (D.thetaUp μ) ≤ D.V0 μ → D.Qsp μ = LinearMap.range (D.thetaUp μ)
-
-def FactBuDetermined : Prop :=
-  ∀ (R : Ranks) (D : Data R), BuDef D → (∀ x : D.EE, ∃ F ∈ D.V0 D.mu0, D.iota D.mu0 F = x) →
-    ∀ B' : ∀ u, D.Mu u → D.EE → ℂ,
-      (∀ u φ F, F ∈ D.V0 D.mu0 → D.perCol u D.mu0 φ F = B' u φ (D.iota D.mu0 F)) → B' = D.Bu
-
-def FactLamPNonneg : Prop :=
-  ∀ (R : Ranks) (D : Data R), LamPDef D → ∀ μ j, 1 ≤ j → j ≤ R.m → ∀ σ, D.isot j σ ≠ ⊥ → 0 ≤ D.lamP μ j σ
-
-def FactDleDall : Prop := ∀ (R : Ranks) (D : Data R), DelpNonneg D → D.Drows ≤ D.Dall
-
-def FactZeMu0 : Prop := ∀ (R : Ranks) (D : Data R) (u : D.Word), D.zeC u D.mu0 = 1
-
-def FactAjConj : Prop :=
-  ∀ (R : Ranks) (D : Data R), ∀ j w,
-    D.Aj j (D.places.conj w) - D.Aj j w =
-      D.jw (D.muAt w) j (D.places.conj w) - D.jw (D.muAt w) j w
 
 end Formalism.BasicNotions.Rows

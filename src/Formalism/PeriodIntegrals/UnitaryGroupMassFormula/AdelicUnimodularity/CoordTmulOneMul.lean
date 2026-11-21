@@ -50,8 +50,6 @@ theorem coord_mul (x y : E ⊗[F] B) :
   funext k
   simp [Finset.sum_apply]
 
-theorem coord_smul (c : F) (x : E ⊗[F] B) : coord b (c • x) = c • coord b x := map_smul _ _ _
-
 theorem coord_incl (e : E) :
     coord b (Algebra.TensorProduct.includeLeftRingHom (R := F) (B := B) e) = fun k => algebraMap F B (b.repr e k) := by
   funext k

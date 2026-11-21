@@ -1,7 +1,9 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Distinct
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.ContinuousResP
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.WeilGroupDenseInGaloisGroup
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegreeStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegree
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.SmGL UpperTheory.V UpperTheory.V.Hi
 open UpperTheory.V.W (Plc)
@@ -108,7 +110,7 @@ theorem char_tors {B : Type} [Group B] [Finite B] (χ : Dec (F := F) A →* B) (
   obtain ⟨φ0, hφ0⟩ : ∃ φ : Weil h, deg φ = 1 := ⟨frob h, deg_frob⟩
   have hnpos : 0 < Nat.card B := Nat.card_pos
   have hkpos : 0 < M * Nat.card B := Nat.mul_pos hM hnpos
-  obtain ⟨ζ, hζ⟩ := GlobalTheory.T.exists_rootOfUnity_fixed_dvd_weilGroupDegree F Ω A w h (M * Nat.card B) hkpos
+  obtain ⟨ζ, hζ⟩ := _root_.GlobalTheory.exists_fixed_dvd_deg F Ω A w h (M * Nat.card B) hkpos
   haveI : FiniteDimensional F (IntermediateField.adjoin F {ζ}) :=
     IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral ζ)
   obtain ⟨H, hH⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one

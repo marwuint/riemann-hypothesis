@@ -269,10 +269,6 @@ theorem exists_units_neg_iff {L : Type*} [Field L] [NumberField L] (s : {v : Inf
   obtain ⟨a, ha⟩ := exists_units_neg_iff_mem {v | s v = true}
   exact ⟨a, fun v => (ha v).1⟩
 
-example (s : {v : InfinitePlace K.1 // v.IsReal} → Bool) :
-    ∃ a : K.1ˣ, ∀ v : {v : InfinitePlace K.1 // v.IsReal}, (v.1.embedding_of_isReal v.2 (a : K.1) < 0 ↔ s v = true) :=
-  exists_units_neg_iff s
-
 end Bool
 
 end

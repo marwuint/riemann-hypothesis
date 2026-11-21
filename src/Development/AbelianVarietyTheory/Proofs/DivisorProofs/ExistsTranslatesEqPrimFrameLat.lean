@@ -257,14 +257,4 @@ theorem exists_translates_eq_primFrame_lat {ϖ : kˣ} (hϖ : IsUnif ϖ) (ν α :
   · rw [← Finsupp.sum_finsetSum_index (by simp) (by simp), ← h3]
     exact Finset.sum_congr rfl fun i _ => Finsupp.sum_single_index rfl
 
-theorem exists_translates_eq_primFrame {ϖ : kˣ} (hϖ : IsUnif ϖ) (ν α : kˣ →* ℂˣ) (a' : ℕ) :
-    ∃ z : GL (Fin a') k →₀ ℂ,
-      (z.sum fun g c => c • omB ν α g 1 ((matLat (Fin a') (stdLat k D) : Set (Matrix (Fin a') D k)).indicator 1)) =
-        {Y : Matrix (Fin a') D k | IsPrimFrame (stdLat k D) Y}.indicator 1 ∧
-      (z.sum fun _ c => c) = ∏ i ∈ Finset.range a',
-        (1 - (resCard k : ℂ) ^ i * ((ν ϖ : ℂ) * (resCard k : ℂ) ^ (-(Fintype.card D : ℂ) / 2))) ∧
-      (‖(ν ϖ : ℂ)‖ = 1 → (a' : ℝ) - 1 < (Fintype.card D : ℝ) / 2 → (z.sum fun _ c => c) ≠ 0) := by
-  obtain ⟨z, h1, h2⟩ := exists_translates_eq_primFrame_lat hϖ ν α (stdLat k D) a'
-  exact ⟨z, h1, h2, fun hν h => h2 ▸ prod_primFactor_ne_zero hν h⟩
-
 end GlobalTheory.SplitFlip

@@ -1,9 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.Multiplier
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConeDegreeGrowthChowFormIntegralityStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConeDegreeGrowthChowFormIntegrality
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecZEqZeroOfGenVal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingSectionsFiniteTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDegreeOfNormBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingSectionsFiniteType
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
 
 set_option autoImplicit false
@@ -213,93 +212,6 @@ theorem normFac_nsmul {G : WTZ E} (hG : Even G.2) {z : Σ k, Frame (U₁.X k).Ψ
     exact (mul_left_cancel₀ (normFac_pos x U₁ 0 hz).ne' (h.symm.trans (mul_one _).symm))
   | succ n ih => rw [succ_nsmul, normFac_add x U₁ (even_nsmul hG n) hG hz, ih, pow_succ]
 
-theorem homN_pow_mul {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) (θ f : Rul Xo c) {z : Σ k, Frame (U₁.X k).Ψ r}
-    (hz : z.2 ∈ (U₁.X z.1).dom) (n : ℕ) :
-    homN U₁ x (n • G + G') (θ ^ n * f) z = homN U₁ x G θ z ^ n * homN U₁ x G' f z := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [succ_nsmul', add_assoc, pow_succ', mul_assoc, homN_mul U₁ x hG ((even_nsmul hG n).add hG') _ _ z hz, ih]
-    ring
-
-theorem exists_homN_le {G : WTZ E} {f : Rul Xo c} (hf : rdU U₁ f ∈ holSub U₁.X (modelWt U₁ G)) :
-    ∃ B : ℝ, ∀ z : Σ k, Frame (U₁.X k).Ψ r, z.2 ∈ (U₁.X z.1).dom → homN U₁ x G f z ≤ B := by
-  choose B hB using fun k => ((mem_holSub_iff _ _ _).1 hf k).1.2
-  obtain ⟨M, hM⟩ := (Set.finite_range B).bddAbove
-  exact ⟨lieFacZ Dw x G * M, fun z hz =>
-    mul_le_mul_of_nonneg_left ((hB z.1 z.2 hz).trans (hM ⟨z.1, rfl⟩)) (lieFacZ_pos _ _).le⟩
-
 end Fac
-
-theorem prod_exZ_nsmul {M : Type} [CommGroup M] (t : Formalism.L2.Pj.Ix Dw → M) (G : WTZ E) (n : ℕ) :
-    ∏ i, t i ^ exZ Dw (n • G) i = (∏ i, t i ^ exZ Dw G i) ^ n := by
-  rw [← Finset.prod_pow]
-  refine Finset.prod_congr rfl fun i _ => ?_
-  have : exZ Dw (n • G) i = exZ Dw G i * n := by
-    rcases i with _ | i <;> simp [exZ, mul_comm]
-  rw [this, zpow_mul, zpow_natCast]
-
-theorem isIntDeg_of_boundedBy (hU : UnfAll U) {Z : Comp Xo c} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {G : WTZ E} {τ : ℕ}
-    (hG : Even G.2) {t : Rul Xo c} (ht : t ∈ cuspOn U Z (τ • G)) (hb : BoundedBy U x Z σ (τ • G) t G τ) :
-    IsIntDeg (genPoint Z (cuspOn U Z G)) τ (genVal Z t) := by
-  obtain ⟨R, hR, s, hmem, hpt⟩ := GlobalTheory.T.unfolding_sections_finite_type E H Dw l Xo c r σ (U σ) (hU σ hσ) Z
-  obtain ⟨n, w, C, hC⟩ := hb
-  refine GlobalTheory.T.integral_degree_of_norm_bound c.F _ _ _ R σ (∏ i, s i ^ exZ Dw G i) n τ w (fun i => ⟨_, hmem _ _ (w i).2.1.1⟩) _
-    ⟨_, hmem _ _ ht.1.1⟩ C (fun i => rfl) (by simp only [prod_exZ_nsmul, Units.val_pow_eq_pow_val]) fun φ hφ => ?_
-  obtain ⟨z, hz, s', hs⟩ := hpt φ hφ
-  have h1 := hC z hz
-  have hp := normFac_pos x (U σ) G hz.1
-  simp only [homN_eq, normFac_nsmul x (U σ) hG hz.1, mul_pow, ← Finset.mul_sum] at h1
-  rw [hs _ _ ht.1.1 _ rfl, prod_exZ_nsmul, Units.val_pow_eq_pow_val]
-  have h2 : ∀ i, φ ⟨_, hmem _ _ (w i).2.1.1⟩ = _ := fun i => hs _ _ (w i).2.1.1 _ rfl
-  simp only [h2, norm_mul, norm_pow, mul_pow, ← Finset.mul_sum]
-  rw [← pow_mul, mul_comm τ 2, pow_mul, mul_left_comm] at h1 ⊢
-  exact mul_le_mul_of_nonneg_left (le_of_mul_le_mul_left h1 (by positivity)) (by positivity)
-
-theorem boundedBy_pow_mul {Z : Comp Xo c} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {G G' : WTZ E} (hG : Even G.2)
-    (hG' : Even G'.2) {a : ℕ} {θ : Rul Xo c} (hb : BoundedBy U x Z σ (a • (G - G')) θ G a) (k : ℕ) {f : Rul Xo c}
-    (hf : f ∈ cuspOn U Z ((a * k) • G')) : BoundedBy U x Z σ ((a * k) • G) (θ ^ k * f) G (a * k) := by
-  obtain ⟨n, w, C, hC⟩ := hb
-  obtain ⟨B, hB⟩ := exists_homN_le x (U σ) ((mem_cuspW.1 hf.1).2 σ hσ)
-  refine ⟨n, w, C ^ k * B ^ 2, fun z hz => ?_⟩
-  have e : (a * k) • G = k • (a • (G - G')) + (a * k) • G' := by rw [← mul_nsmul, nsmul_sub, sub_add_cancel]
-  rw [e, homN_pow_mul x (U σ) (even_nsmul (hG.sub hG') a) (even_nsmul hG' _) _ _ hz.1, mul_pow, ← pow_mul, mul_comm k 2,
-    pow_mul, pow_mul, mul_right_comm, ← mul_pow]
-  have h1 := pow_le_pow_left₀ (sq_nonneg _) (hC z hz) k
-  exact mul_le_mul h1 (pow_le_pow_left₀ (homN_nonneg _ _ _ _ _) (hB z hz.1) 2) (sq_nonneg _)
-    ((pow_nonneg (sq_nonneg _) k).trans h1)
-
-theorem le_compDeg (hU : UnfAll U) (hP : Proport U) (Z : Comp Xo c) {u u' : Weight Dw} (hu : ∀ τ, StrictAnti (u τ))
-    (hu' : ∀ τ, StrictAnti (u' τ)) (hR : RatioOn U Z (wtOf Dw u 0))
-    (hM : Multiplier U x Z (wtOf Dw u 0) (wtOf Dw u' 0)) : topDeg U Z u' ≤ compDeg U Z (wtOf Dw u 0) := by
-  rcases le_or_gt (topDeg U Z u') 0 with h0 | h0
-  · exact h0.trans (Nat.cast_nonneg _)
-  obtain ⟨a, θ, ha, -, hθ, hmul, σ, hσ, hb⟩ := hM
-  have := finiteDimensional_cuspOn hP Z hu
-  have h1 := GlobalTheory.T.cone_degree_growth_chowForm_integrality.2.2.1 c.F _ _ (genPoint Z (cuspOn U Z (wtOf Dw u 0))) (dimFlag Dw) a ha
-    (fun k => (cuspOn U Z ((a * k) • wtOf Dw u' 0)).map ((genVal Z).toLinearMap ∘ₗ LinearMap.mulLeft c.F (θ ^ k))) (by
-      rintro k _ ⟨f, hf, rfl⟩
-      exact ⟨isIntDeg_of_boundedBy hU hσ (even_wtOf u 0) (hmul k f hf)
-        (boundedBy_pow_mul hσ (even_wtOf u 0) (even_wtOf u' 0) hb k hf), hR _ _ (hmul k f hf)⟩)
-  have h2 : ∀ k : ℕ, genVal Z (θ ^ k) ≠ 0 := fun k => by rw [map_pow]; exact pow_ne_zero _ hθ
-  simp only [rank_map_mul (h2 _)] at h1
-  rw [growth_mul_eq hP Z hu' ha] at h1
-  have ha' : (0 : ℝ) < (a : ℝ) ^ dimFlag Dw := pow_pos (Nat.cast_pos.2 ha) _
-  obtain ⟨δ, hδ⟩ := GlobalTheory.T.cone_degree_growth_chowForm_integrality.2.1 c.F _ _ _ _ a ha ((ENNReal.ofReal_pos.2 (mul_pos ha' h0)).trans_le h1).ne'
-    (ne_top_of_le_ne_top ENNReal.ofReal_ne_top (growth_hilb_le hP Z hu ha))
-  rw [GlobalTheory.T.cone_degree_growth_chowForm_integrality.1 c.F _ _ _ _ a ha δ hδ, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_natCast δ,
-    ← ENNReal.ofReal_pow (Nat.cast_nonneg a), ← ENNReal.ofReal_mul ha'.le,
-    ENNReal.ofReal_le_ofReal_iff (by positivity)] at h1
-  rw [compDeg, hδ.imageDeg_eq]
-  exact le_of_mul_le_mul_left h1 ha'
-
-theorem leafDeg_of_ties : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (K : Type) [Field K] [NumberField K] [StarRing K] (P : SlopeBoundParameters) (F : SlopeBoundLiftData K P) (u : Weight Dw), DegTie U F u → UnfAll U → (∀ τ, StrictAnti (u τ)) → (∀ τ, StrictAnti (uPrime Dw u τ)) → Proport U → EqVolume U → (∀ Z, RatioOn U Z (wtOf Dw u 0)) → (∀ Z, Multiplier U x Z (wtOf Dw u 0) (wtOf Dw (uPrime Dw u) 0)) → LeafDeg F := by
-  intro E _ _ _ H Dw l Xo c r U x K _ _ _ P F u ⟨⟨e, he⟩, ⟨Z, hZ⟩, hρ⟩ hU hu hu' hP hV hR hM k
-  have h1 : 0 < 1 - rhoB Dw u := sub_pos.2 (rhoOf_lt_one hu' hu)
-  have h2 : ∀ la, topDeg U Z la = topDeg U (e k) la := fun la => by rw [topDeg, topDeg, hV Z (e k)]
-  rw [he k, hZ, hρ]
-  refine ⟨(h2 _).trans_le (le_compDeg hU hP _ hu hu' (hR _) (hM _)), ?_⟩
-  rw [delPrime_eq U Z (vdm_pos hu).ne', mul_div_cancel_left₀ _ h1.ne', h2]
-  exact compDeg_le hP _ hu
 
 end GlobalTheory.DegTop

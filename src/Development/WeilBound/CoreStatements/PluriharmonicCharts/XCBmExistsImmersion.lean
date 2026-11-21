@@ -1,7 +1,8 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.FamilyPeriod
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.FderivValueZero
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGenericStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGeneric
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
 import Development.AutomorphicSpectrum.Statements.MetricStatements.ExistsFlagModelBaseMetric
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
@@ -20,20 +21,20 @@ theorem PositivityTheory.Xgp.t_c_bm_exists_immersion : Given → ∀ (E : Type) 
   haveI : Countable M.Ω := countable_of_tie 𝔐.tie
   haveI : Countable c.F := 𝔐.cst.injective.countable
   obtain ⟨φ, hφ⟩ := exists_embedding c.F M.Ω 𝔐.cst c.F.val.toRingHom
-  have tp := GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ
+  have tp := _root_.GlobalTheory.CompanionTheory.Ar.tie_points 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ
   obtain ⟨w, hw⟩ := tp.2.1 (spMap φ ≫ 𝔐.ξ) (𝔐.all _)
   have htop : ∀ z, z ∉ mcPts (⊤ : Ideal (MRing (baseIdx ι M.blk))) := fun z h => by simpa using h.2 1 trivial
-  obtain ⟨x, a, ha, hxa⟩ := Rb.surj w ((GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie w).2 ⟨_, 𝔐.all _, hw⟩) (htop w)
+  obtain ⟨x, a, ha, hxa⟩ := Rb.surj w ((_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie w).2 ⟨_, 𝔐.all _, hw⟩) (htop w)
   have hz : CoordsAt 𝔐.ξ M.x (spMap φ ≫ 𝔐.ξ) (Rb.lift x x) :=
     ((tp.2.2 _ _ (𝔐.all _) hw).2 _).2 ⟨fun k => Units.mk0 (a k) (ha k), hxa⟩
   have hcz : centre (spMap φ ≫ 𝔐.ξ) = centre 𝔐.ξ := SheetDecomposition.CovSch.centre_spMap φ 𝔐.ξ
   have hx : x ∉ bdry s := (hInt x _ hz).2 (by
     change centre _ ∈ _
     rw [hcz]
-    exact (GlobalTheory.T.hodge_cpt_interior_generic E H D l (Xo l) c _ _ Y S M.Ω _ _ M.x 𝔐 (FaithfulSMul.algebraMap_injective _ _)).1)
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l (Xo l) c _ _ Y S M.Ω _ _ M.x 𝔐 (FaithfulSMul.algebraMap_injective _ _)).1)
   obtain ⟨l₀, hl₀⟩ := hcov x
   obtain ⟨j, r, p, hr, hj, hwd, hp⟩ := exists_family (𝔐 := 𝔐) Rb hcl hx
-  have hhol : IsHolTo (Metric.ball 0 1) p := GlobalTheory.T.holomorphic_coords_of_generic_point 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all _ _ _ p
+  have hhol : IsHolTo (Metric.ball 0 1) p := _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all _ _ _ p
     Metric.isOpen_ball hwd fun u hu => (hp u hu).2.1
   obtain ⟨τ₀, hτ⟩ := GlobalTheory.T.holomorphic_disc_over_number_field_ring c.F 𝔐.X (𝔐.f ≫ Y.s) _ p hhol
   have hint : ∀ u ∈ Metric.ball 0 1, 𝔐.Interior (p u) := fun u hu => (hInt _ _ (hp u hu).2.2).1 (hp u hu).1
@@ -100,7 +101,7 @@ theorem PositivityTheory.Xgp.t_c_bm_exists_immersion : Given → ∀ (E : Type) 
     exact DifferentiableAt.comp (0 : Fin (Fintype.card (CMType H) * D.p * D.q) → ℂ) (by rw [smul_zero]; exact a1) a2
   have hne0 : ∀ k', wv 0 ⟨k', pc k'⟩ ≠ 0 := fun k' => by rw [hwv0]; exact (hpc k').ne_zero
   have hhol' : IsHolTo (Metric.ball 0 1) fun u => p ((ρ : ℂ) • u) :=
-    GlobalTheory.T.holomorphic_coords_of_generic_point 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all _ _ wv _ Metric.isOpen_ball
+    _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie 𝔐.all _ _ wv _ Metric.isOpen_ball
       (hwd.comp (by fun_prop) fun u hu => smul_mem_ball' hρ hρ' hu) fun u hu => (hp _ (smul_mem_ball' hρ hρ' hu)).2.1
   have hA : ∀ q', DifferentiableAt ℂ (fun u => affCoord pc (wv u) q') 0 ∧
       fderiv ℂ (fun u => affCoord pc (wv u) q') 0 (fderiv ℂ ψ (Rb.A.chart k x) v) = 0 := fun q' => by

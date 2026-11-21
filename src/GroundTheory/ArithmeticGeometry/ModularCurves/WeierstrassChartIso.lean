@@ -319,27 +319,6 @@ variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
 section Charts
 
-theorem awayTo_scalarAway {j : Fin 3} {T : Type u} [CommRing T] (ψ : MvPolynomial (Fin 3) R →+* T)
-    (hψ1 : ψ (X j) = 1) (hψF : ψ W.toProjective.polynomial = 0) (r : R) :
-    awayTo W ψ hψ1 hψF (scalarAway W j r) = ψ (C r) := by
-  simp only [awayTo, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, val_scalarAway]
-  rw [Localization.awayLift, IsLocalization.Away.lift_eq]
-  rfl
-
-theorem chartZEquiv_scalarAway (r : R) : chartZEquiv W (scalarAway W 2 r) = algebraMap R _ r := by
-  rw [chartZEquiv, awayEquiv_apply, awayTo_scalarAway]
-  simp [dehomZ]
-
-theorem chartYEquiv_scalarAway (r : R) : chartYEquiv W (scalarAway W 1 r) = algebraMap R _ r := by
-  rw [chartYEquiv, awayEquiv_apply, awayTo_scalarAway]
-  simp [dehomY]
-
-theorem chartι_toSpec (j : Fin 3) :
-    Proj.awayι (homGrading W) (var W j) (var_mem W j) one_pos ≫ toSpec W =
-      Spec.map (CommRingCat.ofHom (scalarAway W j)) := by
-  rw [toSpec, Proj.awayι_toSpecZero_assoc, ← Spec.map_comp]
-  rfl
-
 noncomputable def chartZ : Spec (.of W.toAffine.CoordinateRing) ⟶ Curve W :=
   Spec.map (CommRingCat.ofHom (chartZEquiv W).toRingHom) ≫ chartZι W
 

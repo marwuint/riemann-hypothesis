@@ -5,7 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoeffZeroNeOfMonicIrr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CuspidalLabelPolynomialUniqueAllPrimes
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCuspidalCharacterIffIsCuspidalGLnFiniteFieldStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCuspidalCharacterIffIsCuspidalGLnFiniteField
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonListLength
 
 noncomputable section
 
@@ -110,7 +112,7 @@ theorem cuspParam_of_green : GlobalTheory.Published.GreenCuspidal → ∀ (g : �
   obtain ⟨τ, hτ, -, hall⟩ := hG g (datum t ht ζ hζ) d hd
   have huniq := GlobalTheory.GLq.LabelUniqueAll.label_eq (datum t ht ζ hζ) d
   refine ⟨fun V hs hc => ?_, fun P h1 h2 h3 h4 => ?_, fun V W P hs hc hs' hc' hP hP' => ?_⟩
-  · have hV := (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc
+  · have hV := (_root_.GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal g d V hd hs).2 hc
     obtain ⟨Q, hQ, hVQ⟩ := hall _ hV
     refine ⟨⟨Q, ?_, fun P hP => ?_⟩, ?_⟩
     · refine (hasCuspLabel_iff t ht ζ hζ V hV Q).2 ?_
@@ -126,9 +128,9 @@ theorem cuspParam_of_green : GlobalTheory.Published.GreenCuspidal → ∀ (g : �
     obtain ⟨V, hs, hVχ⟩ := hc.2.1.2.1
     have he : (fun x => V.character x) = τ P := funext hVχ
     have hV : IsCusp (fun x => V.character x) := he ▸ hc.2.1
-    exact ⟨V, hs, (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).1 hV, (hasCuspLabel_iff t ht ζ hζ V hV P).2 (he ▸ hc)⟩
-  · have hV := (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc
-    have hW := (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d W hd hs').2 hc'
+    exact ⟨V, hs, (_root_.GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal g d V hd hs).1 hV, (hasCuspLabel_iff t ht ζ hζ V hV P).2 (he ▸ hc)⟩
+  · have hV := (_root_.GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal g d V hd hs).2 hc
+    have hW := (_root_.GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal g d W hd hs').2 hc'
     obtain ⟨Q, hQ, hVQ⟩ := hall _ hV
     obtain ⟨Q', hQ', hWQ⟩ := hall _ hW
     have e1 : P = Q := huniq P Q _ ((hasCuspLabel_iff t ht ζ hζ V hV P).1 hP) (hVQ ▸ (hτ Q hQ).1)

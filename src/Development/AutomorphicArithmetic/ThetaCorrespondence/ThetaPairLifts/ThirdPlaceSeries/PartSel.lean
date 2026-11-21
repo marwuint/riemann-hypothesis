@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.MapBaseTiedSel
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ColumnChoiceWithTies
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SummandFunctionalBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IndefRRealTB
@@ -53,8 +53,6 @@ abbrev CompatibleSelection (σ : RawSel _root_.GlobalTheory.Fc.BundleCondition �
 def summandSelection (σ : RawSel _root_.GlobalTheory.Fc.BundleCondition 𝒜) (τ : _root_.GlobalTheory.Fc.CompatibleSelection σ) : RawSel _root_.GlobalTheory.Fc.Ind.PointSummands 𝒜 :=
   fun Fm hc x hx i => (σ Fm hc x hx i).part (τ Fm hc x hx i)
 end Sel
-section Construction₂
-end Construction₂
 end GlobalTheory.Fc
 end
 end

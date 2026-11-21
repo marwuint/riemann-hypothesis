@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NLineOne
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 
 noncomputable section
 

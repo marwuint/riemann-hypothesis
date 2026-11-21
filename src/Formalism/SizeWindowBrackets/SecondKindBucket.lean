@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.RankGapBounds.RandomSubsetCounterexample
-import Formalism.RankGapBounds.GridNumericalHypotheses
+import Formalism.RankGapBounds.RankAndGapBounds
 
 namespace Formalism.LFunctionChainParameters.DeficitSplitLemmas
 
@@ -53,17 +53,6 @@ def servedLoss (J : Finset κ) (TT : Finset τ) (TTp : ℕ → Finset τ) (vonMa
 
 def wholeAsk (J : Finset κ) (TT : Finset τ) (vonMangoldtClassSum : κ → τ → ℕ → ℝ) (p : ℕ) : ℝ :=
   ∑ j ∈ J, ∑ t ∈ TT, vonMangoldtClassSum j t p
-
-def SplitLe : Prop :=
-  ∀ (ι κ τ : Type) (W : Finset ι) (below : ι → ℕ) (l : ι → ℝ) (Ps S : Finset ℕ) (J : Finset κ)
-    (TT : Finset τ) (TTp : ℕ → Finset τ) (vonMangoldtClassSum : κ → τ → ℕ → ℝ) (dT : κ → τ → ℝ)
-    (gainW : κ → ι → ℝ) (tauW : ι → ℝ) (gain : κ → ℕ → ℝ) (tau lo fl : ℕ → ℝ),
-    UnitRule W below l Ps J gainW tauW gain tau → S ⊆ Ps →
-    (∀ p ∈ S, SizeData₂ J TT TTp vonMangoldtClassSum gain tau lo fl p) →
-    (∀ p ∈ Ps \ S, (∀ j ∈ J, gain j p = 0) ∧ tau p = 0) →
-    ASK Ps J TT vonMangoldtClassSum dT - GaW W J l gainW tauW ≤
-      (∑ p ∈ S, 2 * Real.log p * servedLoss J TT TTp vonMangoldtClassSum lo fl p) +
-      (∑ p ∈ Ps \ S, 2 * Real.log p * wholeAsk J TT vonMangoldtClassSum p) + ∑ j ∈ J, ∑ t ∈ TT, dT j t
 
 def SplitClasses : Prop :=
   ∀ (ι κ τ : Type) (W : Finset ι) (below : ι → ℕ) (l : ι → ℝ) (Ps : Finset ℕ) (cl : ℕ → PClass)
@@ -177,16 +166,6 @@ def OrBucket : Prop :=
       2 * C * lx * a * ((La / k + 1 / K₀) * (Real.log X' + Real.log 4) +
         2 * (Real.log ((p₀ : ℝ) - 1) + 1) / ((p₀ : ℝ) - 1))
 
-def BadOrbitsBucket : Prop :=
-  ∀ (α ι : Type) [Fintype α] [DecidableEq α] [Fintype ι] (δ β m a : ℝ) (ω : ι → ℝ)
-    (BAD : ι → α → Finset α → Prop) [∀ p t T, Decidable (BAD p t T)],
-    0 < δ → δ ≤ 1 → 16 ≤ δ * Fintype.card α → 0 ≤ β → (∀ p, 0 ≤ ω p) → 0 ≤ m → 0 ≤ a →
-    (∀ p t, ∑ T ∈ (Finset.univ : Finset (Finset α)).filter (fun T => t ∈ T ∧ BAD p t T),
-        Formalism.RankGapBounds.LocalQuadraticParts.wt δ T ≤ β * δ) →
-    ∃ T : Finset α, δ * Fintype.card α / 2 ≤ T.card ∧ (T.card : ℝ) ≤ 2 * δ * Fintype.card α ∧
-      ∑ p, 4 * m * a * ω p * ((T.filter fun t => BAD p t T).card : ℝ) ≤
-        32 * β * m * a * T.card * ∑ p, ω p
-
 def OrdersBucket : Prop :=
   ∃ C : ℝ, ∀ (e J : ℕ) (Y mTa : ℝ) (s : Finset ℕ), 1 ≤ e → 1 ≤ J → 1 ≤ Y → 0 ≤ mTa →
     (∀ l ∈ s, l.Prime ∧ l ≠ 2 ∧ (l : ℝ) ≤ Y ∧
@@ -201,59 +180,6 @@ def FirstKindBucket : Prop :=
         ∃ i < I, p₀ ≤ p ∧ P i * (1 - c) ≤ p ∧ (p : ℝ) ≤ P i * (1 + c))) →
     ∑ p ∈ s, Real.log p / p ≤
       C * J * Real.log (2 ^ e * Y) ^ 2 / (2 : ℝ) ^ e + I * ((4 * c + 1 / p₀) * Real.log (2 * X'))
-
-def MarkovDrop : Prop :=
-  ∀ (Ω : Type) [Fintype Ω] (π : Ω → ℝ) (s : Finset ℕ) (Sig : ℕ → Ω → ℝ) (L : ℕ → ℝ) (θ s₀ : ℝ),
-    (∀ o, 0 ≤ π o) → 0 < θ → (∀ p ∈ s, ∀ o, 0 ≤ Sig p o) → (∀ p ∈ s, 0 ≤ L p) →
-    (∀ p ∈ s, ∑ o, π o * Sig p o ≤ s₀) →
-    ∑ o, π o * ∑ p ∈ s, (if θ < Sig p o then L p else 0) ≤ s₀ / θ * ∑ p ∈ s, L p
-
-def SigMean : Prop :=
-  ∀ (Ω ν : Type) [Fintype Ω] (π : Ω → ℝ) (V : Finset ν) (kap : ν → Ω → ℝ) (N : ν → ℝ) (m T c : ℝ),
-    0 ≤ m → 0 ≤ c → (∀ v ∈ V, ∑ o, π o * kap v o ≤ N v * c) → (∑ v ∈ V, N v) ≤ T →
-    ∑ o, π o * (m * ∑ v ∈ V, kap v o) ≤ m * T * c
-
-def SigMeanVar : Prop :=
-  ∀ (Ω ν : Type) [Fintype Ω] (π : Ω → ℝ) (V : Finset ν) (Vo : Ω → Finset ν) (kap : ν → Ω → ℝ)
-    (N : ν → ℝ) (m T c : ℝ),
-    0 ≤ m → 0 ≤ c → (∀ o, 0 ≤ π o) → (∀ o, Vo o ⊆ V) → (∀ v ∈ V, ∀ o, 0 ≤ kap v o) →
-    (∀ v ∈ V, ∑ o, π o * kap v o ≤ N v * c) → (∑ v ∈ V, N v) ≤ T →
-    ∑ o, π o * (m * ∑ v ∈ Vo o, kap v o) ≤ m * T * c
-
-def SecondKindBucket : Prop :=
-  ∀ (Ω : Type) [Fintype Ω] (π : Ω → ℝ) (s : Finset ℕ) (Sig : ℕ → Ω → ℝ) (Y θ s₀ mTa : ℝ),
-    (∀ o, 0 ≤ π o) → 0 < θ → 0 ≤ s₀ → 0 ≤ mTa → 1 ≤ Y → (∀ p ∈ s, ∀ o, 0 ≤ Sig p o) →
-    (∀ p ∈ s, p.Prime ∧ (p : ℝ) ≤ Y) → (∀ p ∈ s, ∑ o, π o * Sig p o ≤ s₀) →
-    ∑ o, π o * ∑ p ∈ s, (if θ < Sig p o then 4 * mTa * Real.log p / p else 0) ≤
-      s₀ / θ * (4 * mTa * (Real.log Y + Real.log 4))
-
-def IoMean : Prop :=
-  ∀ (Ω : Type) [Fintype Ω] (π : Ω → ℝ) (s : Finset ℕ) (Sig io : ℕ → Ω → ℝ) (Y s₀ mTa : ℝ),
-    (∀ o, 0 ≤ π o) → 0 ≤ s₀ → 0 ≤ mTa → 1 ≤ Y →
-    (∀ p ∈ s, p.Prime ∧ (p : ℝ) ≤ Y) → (∀ p ∈ s, ∑ o, π o * Sig p o ≤ s₀) →
-    (∀ p ∈ s, ∀ o, io p o ≤ 2 * Sig p o * (2 * mTa / p)) →
-    ∑ o, π o * ∑ p ∈ s, Real.log p * io p o ≤ 4 * mTa * s₀ * (Real.log Y + Real.log 4)
-
-def ChooseWindow : Prop :=
-  ∀ (Ω : Type) [Fintype Ω] (π X : Ω → ℝ) (M : ℝ), (∀ o, 0 ≤ π o) → ∑ o, π o = 1 →
-    ∑ o, π o * X o ≤ M → ∃ o, 0 < π o ∧ X o ≤ M
-
-def ChooseWindow2 : Prop :=
-  ∀ (Ω : Type) [Fintype Ω] (π F G : Ω → ℝ) (A B : ℝ), (∀ o, 0 ≤ π o) → ∑ o, π o = 1 →
-    (∀ o, 0 ≤ F o) → (∀ o, 0 ≤ G o) → ∑ o, π o * F o ≤ A → ∑ o, π o * G o ≤ B →
-    ∃ o, 0 < π o ∧ F o + G o ≤ A + B ∧ F o ≤ A + B ∧ G o ≤ A + B
-
-def LossChoice : Prop :=
-  ∀ (Ω : Type) [Fintype Ω] (π Loss : Ω → ℝ) (s : Finset ℕ) (Sig io : ℕ → Ω → ℝ)
-    (D Y θ s₀ mTa : ℝ),
-    (∀ o, 0 ≤ π o) → ∑ o, π o = 1 → 0 < θ → 0 ≤ s₀ → 0 ≤ mTa → 1 ≤ Y →
-    (∀ p ∈ s, p.Prime ∧ (p : ℝ) ≤ Y) → (∀ p ∈ s, ∀ o, 0 ≤ Sig p o) →
-    (∀ p ∈ s, ∑ o, π o * Sig p o ≤ s₀) →
-    (∀ o, Loss o ≤ D + ∑ p ∈ s, (if θ < Sig p o then 4 * mTa * Real.log p / p else 0)) →
-    (∀ p ∈ s, ∀ o, io p o ≤ 2 * Sig p o * (2 * mTa / p)) →
-    ∃ o, 0 < π o ∧
-      Loss o ≤ D + (s₀ / θ + s₀) * (4 * mTa * (Real.log Y + Real.log 4)) ∧
-      ∑ p ∈ s, Real.log p * io p o ≤ (s₀ / θ + s₀) * (4 * mTa * (Real.log Y + Real.log 4))
 
 def loF (C Sk a X' Q₁ Q₂ lx La k : ℝ) (L₁ : ℕ → ℝ) (p₀ p : ℕ) : ℝ :=
   cpF C Sk a p + (if (p : ℝ) < X' then prF p₀ Q₁ Q₂ p + orF C lx La a k L₁ p₀ p else 0)

@@ -49,9 +49,6 @@ theorem Good.smul {j : ℕ} {b : S.V} {a : E} (ha : a ∈ L.O) (h : Good S g g' 
   rw [e]
   simp only [mul_smul, smul_add, Finset.smul_sum]
 
-theorem spanTo_mono (g : Fin (r + 1) → S.V) {j j' : ℕ} (h : j ≤ j') : S.spanTo g j ≤ S.spanTo g j' :=
-  Submodule.span_mono (Set.image_mono fun _ hi => lt_of_lt_of_le hi h)
-
 end GlobalTheory.HL.LevelRep
 
 open ValuativeRel MeasureTheory in

@@ -853,50 +853,6 @@ theorem laIsPeriod_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model
 
 end Rec2
 
-section Rec3
-
-open Formalism.MainNotions.S.LocalSplitGroups Formalism.MainNotions.JointEigenvalueBoundsFromAnyDatum Formalism.MainNotions.LocalModelPeriodLattices
-
-variable {D : Formalism.BasicNotions.D7}
-
-theorem G1root_of_agree (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (hA : ∀ p, Agree δ M p) : G1root δ M := by
-  intro p x
-  obtain ⟨-, hδ, -, -, hpsi, -⟩ := hA p
-  rw [hpsi]
-  congr 1
-  have hg : ((gpart p : ℕ) : (D.s.atP p).Fp) ≠ 0 := natFp_ne_zero p _ (gpart_ne_zero p)
-  have hoth : ((oth p : ℕ) : (D.s.atP p).Fp) ≠ 0 := natFp_ne_zero p _ (oth_ne_zero p)
-  have hu : ((uP p : ℚ) : D.host.E) = algebraMap D.host.F D.host.E (((oth p : ℕ) : D.host.F)⁻¹) := by
-    rw [unitAt_eq p]
-    simp [map_inv₀, map_natCast]
-  have hx : x / ((Lat.gS D : ℕ) : D.host.E) = x * algebraMap D.host.F D.host.E (((Lat.gS D : ℕ) : D.host.F)⁻¹) := by
-    rw [map_inv₀, map_natCast, div_eq_mul_inv]
-  rw [qE_eq p, inverse_alg _ hg, hx, hu]
-  simp only [map_neg, map_mul, (D.s.atP p).compat]
-  simp only [map_inv₀, map_natCast]
-  rw [neg_inj]
-  have e : δ p * ((oth p : ℕ) : (D.s.atP p).Fp)⁻¹ * ((gpart p : ℕ) : (D.s.atP p).Fp)⁻¹ * (δ p)⁻¹ =
-      ((Lat.gS D : ℕ) : (D.s.atP p).Fp)⁻¹ := by
-    rw [← gpart_mul_oth p, Nat.cast_mul]
-    field_simp
-  rw [← e]
-  simp only [map_mul]
-  ring
-
-theorem G3lat_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (ν s : ℕ) :
-    (∀ t, t ∈ La M δ ν s ↔ t ∈ gdd (D := D) 1 ν ∧ t - (-1) ^ s * D.conjF t ∈ gdd (D := D) 2 ν) ∧
-    (∀ t ∈ gdd (D := D) 2 ν, t ∈ La M δ ν s) ∧
-    (∀ l ∈ dualPsiG (D := D) (La M δ ν s), l ∈ gdd (D := D) (-1) (-((ν : ℤ) + 1))) :=
-  ⟨laIsPeriod_of δ M hA hd ν s, period_lattice_bounds_of_known δ M ν s (laIsPeriod_of δ M hA hd ν s)⟩
-
-theorem global_condition_of_local_agreement (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (i : ℕ) (hi : i ≤ D.R.rS + 1) : G4 δ M i :=
-  period_lattice_unramified_of_known (unramE D) δ M i hi (laIsPeriod_of δ M hA hd _ 1)
-
-end Rec3
-
 end Formalism.MainNotions.BridgeLemma
 
 end

@@ -55,15 +55,6 @@ theorem isCMField_complexConj_s_eq_neg : IsCMField.complexConj E H.s = -H.s := b
     nlinarith [mul_self_nonneg (φ H.s).re]
   apply Complex.ext <;> simp [hre]
 
-theorem mem_Psi_or (τ : E →+* ℂ) : τ ∈ H.Psi ∨ (starRingEnd ℂ).comp τ ∈ H.Psi := by
-  have h : (τ H.s) ^ 2 = H.s₀ ^ 2 := by
-    rw [← map_pow, H.s_sq, map_neg, map_natCast, H.s₀_sq]
-  rcases sq_eq_sq_iff_eq_or_eq_neg.mp h with h | h
-  · exact Or.inl h
-  · right
-    change (starRingEnd ℂ) (τ H.s) = H.s₀
-    rw [← IsCMField.complexEmbedding_complexConj, H.isCMField_complexConj_s_eq_neg, map_neg, h, neg_neg]
-
 theorem isIntegral_half : IsIntegral ℤ ((1 + H.s) / 2) := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, H.d + 1 = 4 * k := ⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩
   have hk' : (H.d : E) + 1 = 4 * k := by exact_mod_cast hk
@@ -76,12 +67,6 @@ theorem isIntegral_half : IsIntegral ℤ ((1 + H.s) / 2) := by
     linear_combination (1 / 4 : E) * hs - (1 / 4 : E) * hk'
 
 def w₀ : 𝓞 E := ⟨(1 + H.s) / 2, H.isIntegral_half⟩
-
-theorem w₀_add_conj : H.w₀ + conjO E H.w₀ = 1 := by
-  apply RingOfIntegers.ext
-  change (1 + H.s) / 2 + IsCMField.complexConj E ((1 + H.s) / 2) = 1
-  rw [map_div₀, map_add, map_one, H.isCMField_complexConj_s_eq_neg, map_ofNat]
-  ring
 
 theorem conj_mem_K {x : E} (hx : x ∈ H.K) : IsCMField.complexConj E x ∈ H.K := by
   induction hx using IntermediateField.adjoin_induction with
@@ -150,13 +135,9 @@ variable {H : Host E} {La : Type} [AddCommGroup La] [Module (𝓞 E) La]
 
 def r (_X : Datum H La) : ℕ := Module.finrank (𝓞 E) La
 
-def DD : Set ((ℝ ⊗[ℤ] La) →ₗ[ℝ] (ℝ ⊗[ℤ] La)) := domain H X.EF X.p X.q
-
 def g : ℕ := H.f * X.r
 
 def D : ℕ := H.f * X.p * X.q
-
-def RankPos : Prop := 1 ≤ X.r
 
 end Datum
 
@@ -178,10 +159,6 @@ namespace Level
 
 variable {H : Host E}
 
-def MMbar (L : Level H) : Ideal (𝓞 H.K) := H.conjIdeal L.MM
-
-def MMbarO (L : Level H) : Ideal (𝓞 E) := L.MMbar.map (algebraMap (𝓞 H.K) (𝓞 E))
-
 def M' (L : Level H) : ℕ := Nat.lcm L.M L.A
 
 def M₀ (L : Level H) (p : ℕ) : ℕ := L.M / p ^ L.M.factorization p
@@ -194,12 +171,6 @@ theorem Dvd.refl (L : Level H) : L.Dvd L := ⟨dvd_rfl, dvd_rfl, dvd_rfl⟩
 
 theorem Dvd.trans {L L₂ L₃ : Level H} (h : L.Dvd L₂) (h' : L₂.Dvd L₃) : L.Dvd L₃ :=
   ⟨h.1.trans h'.1, h.2.1.trans h'.2.1, h.2.2.trans h'.2.2⟩
-
-theorem M'_pos (L : Level H) : 0 < L.M' :=
-  Nat.lcm_pos (by have := L.three_le; omega) L.one_le
-
-theorem M₀_coprime (L : Level H) {p : ℕ} (hp : p.Prime) : Nat.Coprime p (L.M₀ p) :=
-  Nat.coprime_ordCompl hp (by have := L.three_le; omega)
 
 end Level
 

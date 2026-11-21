@@ -70,20 +70,6 @@ theorem existsUnique_complexUnits_circle (χ : ℂˣ →ₜ* Circle) :
     div_self hne, one_zpow, one_mul] at h
   rw [← h, Circle.norm_coe]
 
-theorem circle_coe_zpow (z : Circle) (m : ℤ) : ((z ^ m : Circle) : ℂ) = (z : ℂ) ^ m := by
-  rw [← coe_circleToUnits, map_zpow, Units.val_zpow_eq_zpow_val, coe_circleToUnits]
-
-theorem existsUnique_circle_zpow_circle (χ : Circle →ₜ* Circle) :
-    ∃! m : ℤ, ∀ z : Circle, χ z = z ^ m := by
-  refine (existsUnique_congr fun m => forall_congr' fun z => ?_).mpr
-    (existsUnique_circle_zpow (circleToUnits.comp χ))
-  show χ z = z ^ m ↔ (χ z : ℂ) = (z : ℂ) ^ m
-  rw [← circle_coe_zpow, Circle.coe_inj]
-
-theorem existsUnique_addChar_real_circle (χ : AddChar ℝ Circle) (hχ : Continuous χ) :
-    ∃! τ : ℝ, ∀ t, χ t = Circle.exp (τ * t) :=
-  existsUnique_circleExp_of_continuous χ hχ χ.map_add_eq_mul
-
 theorem existsUnique_addChar_real_units (χ : AddChar ℝ ℂˣ) (hχ : Continuous χ) :
     ∃! s : ℂ, ∀ t : ℝ, (χ t : ℂ) = Complex.exp (s * t) :=
   existsUnique_exp_of_continuous χ hχ χ.map_add_eq_mul

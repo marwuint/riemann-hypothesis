@@ -3,8 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCoefficientContinuous
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedBoxIntegralIdentity
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicTwistedKernelNonvanishingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorVanishingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingDepthVanishingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorVanishing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingDepthVanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedSmallShearStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearPreservesBoxMembershipStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearOrbitFiniteStatement
@@ -92,7 +92,7 @@ theorem exists_evVal_ne_zero : ∀ {k : Type} [Field k] [ValuativeRel k] [Topolo
   have hev : ∀ w : V', ∃ τ : kˣ, ∀ u : kˣ, valuation k (τ : k) ≤ valuation k (u : k) →
       JJ ν ψ T B (box (n + 1) u : Set (Fin (n + 1) → k)) v w = 0 := by
     intro w
-    obtain ⟨A, hA⟩ := GlobalTheory.T.mirabolic_pairing_exists_eventual_value ν ψ c T T' B s hψ hc hT hT' hinv v w
+    obtain ⟨A, hA⟩ := _root_.GlobalTheory.CompanionTheory.MirPair.exists_evVal ν ψ c T T' B s hψ hc hT hT' hinv v w
     have h0 : A = 0 := hno w A hA
     obtain ⟨τ, hτ⟩ := hA
     exact ⟨τ, fun u hu => (hτ u hu).trans h0⟩
@@ -104,7 +104,7 @@ theorem exists_evVal_ne_zero : ∀ {k : Type} [Field k] [ValuativeRel k] [Topolo
     have hbr : b ∈ (box (n + 1) r : Set (Fin (n + 1) → k)) := box_subset_of_valuation_le htc hb
     have hlast : valuation k (b (Fin.last n)) < 1 :=
       lt_of_le_of_lt (show valuation k (b (Fin.last n)) ≤ valuation k (r : k) from hbr _) hr
-    rw [GlobalTheory.T.mirabolic_pairing_depth_vanishing ν ψ T T' B s hψ hT hinv b _ v v' hlast
+    rw [_root_.GlobalTheory.CompanionTheory.MirPair.twist_integral_eq_JJ_shear ν ψ T T' B s hψ hT hinv b _ v v' hlast
       (hfix b (box_subset_of_valuation_le hrr₁ hbr)) ?_]
     · exact hτ _ u (hu _ ⟨b, hbr, rfl⟩)
     · intro x

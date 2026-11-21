@@ -21,8 +21,8 @@ theorem smallS_of_k (hC : _root_.PositivityTheory.SiegelWeilFormula.Ald.ChartFac
   have hcm : IsCMExt F E σ := d.ok.good.cm
   have hJ : d.A.J.det ≠ 0 := by
     rcases d.ok.sign with ⟨hA, -⟩ | ⟨hA, -⟩
-    · exact (GlobalTheory.T.isUnit_det_gram_of_hermitianSelfDualLatticeSpace F E σ d.B d.m d.A d.r d.s hA).ne_zero
-    · exact (GlobalTheory.T.isUnit_det_gram_skewHermitian_signature F E σ d.B d.m d.A d.r d.s hA).ne_zero
+    · exact (_root_.GlobalTheory.isUnit_det_of_isHerm F E σ d.B d.m d.A d.r d.s hA).ne_zero
+    · exact (_root_.GlobalTheory.SkewUnit.isUnit_det_of_isSkew F E σ d.B d.m d.A d.r d.s hA).ne_zero
   obtain ⟨hc1, -, -, -, hc5⟩ := hC F E σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had'
   have hlin := d.ok.dbl.lin
   have pres1 : ∀ u : UA σ d.A.J, ∀ φ ∈ schA F (K1 d.m n), (S1 ∘ₗ d.S u ∘ₗ S1') φ ∈ schA F (K1 d.m n) :=

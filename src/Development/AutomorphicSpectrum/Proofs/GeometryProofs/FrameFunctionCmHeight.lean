@@ -1,15 +1,16 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofiniteStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferentStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTransitionMatrixGramStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicNormTransitionDetOneStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalBasisGramDetLogNormStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureTypeLatticesOrthogonalStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveZNeZeroStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrameOpenStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofinite
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferent
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTransitionMatrixGram
+import Development.WeilBound.CoreStatements.SesquilinearFractions.DTransUnit
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalBasisGramDetLogNorm
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureTypeLatticesOrthogonal
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveZNeZero
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrameOpen
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureNormStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCmPeriodEmbeddingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCmPeriodEmbedding
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.ExistsExtensionEmbeddingAlgClosedStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -22,12 +23,12 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl
 theorem flatGen_finNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Z : ∀ b : Bool, Curve0 H (sgnRt H b)) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) (e : Fin D.p ⊕ Fin D.q → (FU.Di i).La) (ρ : ℂ) (k : IntermediateField ℚ ℂ) [NumberField k] (hc : c.F ≤ k) (hM : ∀ b, (Z b).M ≤ k) (r : k) (ℓ : Nat.Primes), IsTypeFn H D.p D.q ty → τ (H.rt : E) = H.rt0 → (∀ P (y : Sp ℂ ⟶ Xo.XF c), IsPeriod (FU.Di i) ty P → under y = FU.u i P → y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → Set.range y ⊆ U) → IsLineFn U τ φ → LinearIndependent (𝓞 E) e → IsConstMul U τ φ FU i e ρ → r ≠ 0 → (r : ℂ) * (Z true).z ^ D.p = ρ * (Z false).z ^ D.q → ∃ t : E, (∀ j : E →+* ℂ_[ℓ], Real.log ‖j t‖ + Real.log ‖j (IsCMField.complexConj E t)‖ + Real.log ‖j (gramE (FU.Di i) e).det‖ = -((D.p : ℝ) + D.q) * logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))) ∧ (IsLocBasis (𝓞 E) ℓ e → ∀ j : E →+* ℂ_[ℓ], Real.log ‖j t‖ = 0) ∧ ∀ (j : k →+* ℂ_[ℓ]) (t₀ : ℝ), HasFinNorm U τ φ ℓ (j.comp (IntermediateField.inclusion hc).toRingHom) t₀ → t₀ = Real.log ‖j r‖ - Real.log ‖j ((((IntermediateField.inclusion hc).toRingHom).comp (tauE c τ)) t)‖ - D.q * logIdeal ((j.comp (((IntermediateField.inclusion hc).toRingHom).comp (tauE c τ))).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) + ((D.q : ℝ) - D.p) * (logIdeal ((j.comp (((IntermediateField.inclusion hc).toRingHom).comp (tauE c τ))).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖j ((((IntermediateField.inclusion hc).toRingHom).comp (tauE c τ)) (H.rt : E))‖) := by
   intro E _ _ _ H D l Xo c g ty FU i Z U τ φ e ρ k _ hc hM r ℓ hty hrt hmem hline he hconst hr hz
   obtain ⟨P, hP, x, hx, X, v, w, hkK, hxl, hfr⟩ :=
-    GlobalTheory.T.exists_cm_period_embedding E H D l Xo c g ty FU i Z τ ℓ k inferInstance hty hrt
+    _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_cmPoint_locBasis_frames E H D l Xo c g ty FU i Z τ ℓ k inferInstance hty hrt
   have hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q := by
     simp [(FU.sig i).1, (FU.sig i).2]
-  obtain ⟨T, hT, hgram, hdet, -⟩ := GlobalTheory.T.exists_transition_matrix_gram E H (FU.Di i) (Fin D.p ⊕ Fin D.q) x e hcard he
+  obtain ⟨T, hT, hgram, hdet, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.transition_matrix_exists E H (FU.Di i) (Fin D.p ⊕ Fin D.q) x e hcard he
   have hT0 : T.det ≠ 0 := hdet hxl.1
-  have hge : (gramE (FU.Di i) e).det ≠ 0 := (GlobalTheory.T.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) _ e hcard he).1
+  have hge : (gramE (FU.Di i) e).det ≠ 0 := (_root_.GlobalTheory.CompanionTheory.Relay.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) _ e hcard he).1
   have hconj : (T.map (IsCMField.complexConj E)).det = IsCMField.complexConj E T.det :=
     (AlgEquiv.map_det (IsCMField.complexConj E) T).symm
   have hgdet : (gramE (FU.Di i) x).det
@@ -35,7 +36,7 @@ theorem flatGen_finNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     rw [hgram, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hconj]
   refine ⟨T.det, ?_, ?_, ?_⟩
   · intro j
-    have h1 := GlobalTheory.T.gram_determinant_log_different E H (FU.Di i) _ x ℓ hxl j
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Fl.GramDet.log_norm_det_gramE E H (FU.Di i) _ x ℓ hxl j
     have n1 : ‖j T.det‖ ≠ 0 := norm_ne_zero_iff.2 ((map_ne_zero j).2 hT0)
     have n2 : ‖j (gramE (FU.Di i) e).det‖ ≠ 0 := norm_ne_zero_iff.2 ((map_ne_zero j).2 hge)
     have n3 : ‖j (IsCMField.complexConj E T.det)‖ ≠ 0 :=
@@ -46,12 +47,12 @@ theorem flatGen_finNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     rw [hc2] at h1
     linarith
   · intro hel j
-    rw [GlobalTheory.T.padic_norm_transition_det_one E H (FU.Di i) _ x e T ℓ hxl hel hT j, Real.log_one]
+    rw [_root_.PositivityTheory.Xgf.padic_norm_transition_det_one E H (FU.Di i) _ x e T ℓ hxl hel hT j, Real.log_one]
   · intro j t₀ hN
     obtain ⟨j', hj'⟩ := GlobalTheory.T.exists_extension_embedding_alg_closed k X.K ℂ_[ℓ] (IntermediateField.inclusion hkK).toRingHom j
     obtain ⟨V, hV, hVf, Tm, m'', δ, δ', v', w', hval, hδ, hδ', hlogδ, hlogδ', hA, hB, hfr', hiv, hiw⟩ :=
       GlobalTheory.T.cm_pack_pure_norm E H D l Xo c g ty FU i Z P hP X x hx τ ℓ j' v w hty hrt hxl hfr
-    obtain ⟨hF, hφ⟩ := GlobalTheory.T.cm_pack_pure_frame_open E H D l Xo c g ty FU i Z P hP X x hx U τ φ e ρ T v w hty hrt
+    obtain ⟨hF, hφ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.CMValue.value_on_cmFrame E H D l Xo c g ty FU i Z P hP X x hx U τ φ e ρ T v w hty hrt
       hmem hline he hconst hxl.1 hT hfr
     have hF' : IsFramed U τ X.β X.y v' w' := ⟨hfr'.1, hF.2.1, hfr'.2.2⟩
     have hβ : j'.comp X.β = j.comp (IntermediateField.inclusion hc).toRingHom := by
@@ -65,9 +66,9 @@ theorem flatGen_finNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     have hφ0 := hline.ne X.K X.β X.y v w hF
     have hφ'0 := hline.ne X.K X.β X.y v' w' hF'
     have horth : ∀ a b, sesq (FU.Di i) (x (.inl a)) (x (.inr b)) = 0 := fun a b =>
-      (GlobalTheory.T.pure_type_lattices_orthogonal E H (FU.Di i) g ty P hP _ _ (hx.1 a) (hx.2 b)).1
-    obtain ⟨hG0, hGlog⟩ := GlobalTheory.T.local_basis_gram_det_log_norm E H (FU.Di i) D.p D.q x ℓ hxl horth
-    have hzt : (Z true).z ^ D.p ≠ 0 := pow_ne_zero _ (GlobalTheory.T.curve_z_ne_zero E H _ (Z true))
+      (_root_.GlobalTheory.CompanionTheory.Ar.PureOrth.sesq_eq_zero_of_opposite_pure E H (FU.Di i) g ty P hP _ _ (hx.1 a) (hx.2 b)).1
+    obtain ⟨hG0, hGlog⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.orthogonalBlock_gram_det_log_norm E H (FU.Di i) D.p D.q x ℓ hxl horth
+    have hzt : (Z true).z ^ D.p ≠ 0 := pow_ne_zero _ (_root_.GlobalTheory.CompanionTheory.Ar.Fl.curve0_z_ne_zero E H _ (Z true))
     have hC : ((φ X.K X.y v w : X.K) : ℂ) * τ T.det = (r : ℂ) * τ (gramE (FU.Di i) (x ∘ Sum.inr)).det := by
       apply mul_right_cancel₀ hzt
       rw [hφ, ← hz]

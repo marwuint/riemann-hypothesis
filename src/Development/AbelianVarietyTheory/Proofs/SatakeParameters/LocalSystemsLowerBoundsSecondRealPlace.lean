@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ModelsOK
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Cobdry
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualOm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PlacesOffFirstOrbits
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalModelBoundPlaceOverSecondEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalModelBoundPlaceOverSecondEmbedding
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LowTermLeSecondRealPlaceBoundsStatement
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.FrobeniusOrbits GlobalTheory.TwU Classical
@@ -57,7 +57,7 @@ theorem sysTw_sites : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (X : Ins
     obtain ⟨-, -, -, a2c, -, -, -, -, -, -, -, -, a11⟩ := hA
     by_cases hp : ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ L.sc.X'' D.R.n
     · simp only [if_pos hp]
-      exact GlobalTheory.T.local_model_bound_place_over_second_embedding D u w hg L hT X Y K ce E hty hfa hadm hSh hCL hp _ _ std vp unif eO eO_spec dG dG_spec om Y5 a2c v (r v)
+      exact _root_.GlobalTheory.TwU.LowF.lowAt_F D u w hg L hT X Y K ce E hty hfa hadm hSh hCL hp _ _ std vp unif eO eO_spec dG dG_spec om Y5 a2c v (r v)
         (hr1 v hv).1 (hr1 v hv).2.2 j hjm
     · simp only [if_neg hp]
       exact a11 v j (lt_of_lt_of_eq hjm (hty u w hg).1.symm)

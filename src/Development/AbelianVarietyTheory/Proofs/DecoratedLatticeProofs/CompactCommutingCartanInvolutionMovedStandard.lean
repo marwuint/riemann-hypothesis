@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HalfData
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitaryConvergent
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsMaximalCompactUnnComponentStandardCartanInStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsCartanInvStandardInvolutionDoubledGramStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CartanInvolutionEqOfCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsCartanInvStandardInvolutionDoubledGram
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CartanInvolutionEqOfCommute
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MoveRationalInvariant
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryActionAtRealPlace
 open scoped Matrix NNReal ComplexConjugate TensorProduct ContDiff
@@ -104,14 +104,14 @@ theorem cartan_move_std : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ �
   rw [compAt_mt_mul, compAt_mt_mul] at hc
   have hcar' : IsCartanInv (gramAt D (dblSp A) τ) (Pi * sS τ * P) :=
     isCartanInv_conj (hsS τ) hPi hPPi (compAt_isom hθ _ _ τ)
-  have hcar : IsCartanInv (gramAt D (dblSp A) τ) S1 := GlobalTheory.T.isCartanInv_standardInvolution_doubledGram D A μ hμ _ hstd τ
+  have hcar : IsCartanInv (gramAt D (dblSp A) τ) S1 := _root_.GlobalTheory.CartStd.isCartanInv_stdInv D A μ hμ _ hstd τ
   have hcm : S1 * (Pi * sS τ * P) = Pi * sS τ * P * S1 := by
     calc S1 * (Pi * sS τ * P) = (Pi * P) * S1 * Pi * sS τ * P := by rw [hPi, Matrix.one_mul]; simp only [Matrix.mul_assoc]
       _ = Pi * (P * S1 * Pi * sS τ) * P := by simp only [Matrix.mul_assoc]
       _ = Pi * (sS τ * (P * S1 * Pi)) * P := by rw [hc]
       _ = Pi * sS τ * P * S1 * (Pi * P) := by simp only [Matrix.mul_assoc]
       _ = Pi * sS τ * P * S1 := by rw [hPi, Matrix.mul_one]
-  have heq : S1 = Pi * sS τ * P := GlobalTheory.T.cartanInvolution_eq_of_commute _ _ _ _ hcar hcar' hcm
+  have heq : S1 = Pi * sS τ * P := _root_.GlobalTheory.StdUnn.isCartanInv_eq_of_commute _ _ _ _ hcar hcar' hcm
   rw [heq, Matrix.mul_assoc (Pi * sS τ) P Pi, hPPi, Matrix.mul_one]
 
 end GlobalTheory.StdUnn.CartanMove

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 
 noncomputable section
 
@@ -148,7 +148,7 @@ theorem class_fixed_phase : ∀ (L : Type) [Field L] [CharZero L] [Valued L (Wit
   let P : (Matrix (Fin n') (Fin n) L ⧸ intMat L n' n) → Submodule ℂ M := fun c => ⨆ (j) (_ : j ≠ c), V j
   let π : KInt σ (JT : Matrix (Fin n') (Fin n') L) → Module.End ℂ M :=
     fun k => ω (1, (k : UJ σ (JT : Matrix (Fin n') (Fin n') L)))
-  have hind : iSupIndep V := GlobalTheory.T.latticeModel_vacuumTranslate_classes_independent L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs
+  have hind : iSupIndep V := _root_.GlobalTheory.Hk3.locVac_span_classes_indep L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs
   have hsmul : ∀ (k : KInt σ (JT : Matrix (Fin n') (Fin n') L)) (y : Matrix (Fin n') (Fin n) L),
       k • (QuotientAddGroup.mk y : Matrix (Fin n') (Fin n) L ⧸ intMat L n' n) =
         QuotientAddGroup.mk ((((k : UJ σ (JT : Matrix (Fin n') (Fin n') L)) : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * y) :=

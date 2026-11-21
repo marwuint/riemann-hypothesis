@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMulPetProd
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiamondMatrixConjMemGamma1InterGamma0LevelStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiamondMatrixConjMemGamma1InterGamma0Level
 open UpperHalfPlane ModularForm CongruenceSubgroup MeasureTheory
 open scoped MatrixGroups ModularForm Manifold
 
@@ -35,13 +35,13 @@ theorem pet_dia_dia : ∀ (N l : ℕ) (k d : ℤ) (σ : SL(2, ℤ)), 0 < N → 0
       GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k (GlobalTheory.Hk.dia k σ ⇑f) (GlobalTheory.Hk.dia k σ ⇑g) =
         GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k ⇑f ⇑g := by
   intro N l k d σ _ _ hσ f g
-  have h₁ : ∀ γ ∈ lev N l, σ * γ * σ⁻¹ ∈ lev N l := fun γ hγ => GlobalTheory.T.isDiamondMatrix_conj_mem_gamma1InterGamma0Level N l d σ γ hσ hγ
+  have h₁ : ∀ γ ∈ lev N l, σ * γ * σ⁻¹ ∈ lev N l := fun γ hγ => _root_.GlobalTheory.Hk.isDia_conj_mem_lev N l d σ γ hσ hγ
   have hσ' : IsDia N l (σ 0 0) σ⁻¹ := by
     refine ⟨?_, ?_⟩
     · simp [Matrix.SpecialLinearGroup.SL2_inv_expl, hσ.1]
     · simp [Matrix.SpecialLinearGroup.SL2_inv_expl]
   have h₂ : ∀ γ ∈ lev N l, σ⁻¹ * γ * σ ∈ lev N l := fun γ hγ => by
-    simpa using GlobalTheory.T.isDiamondMatrix_conj_mem_gamma1InterGamma0Level N l _ σ⁻¹ γ hσ' hγ
+    simpa using _root_.GlobalTheory.Hk.isDia_conj_mem_lev N l _ σ⁻¹ γ hσ' hγ
   set e := cosetShift (lev N l) σ h₁ h₂
   unfold pet
   conv_rhs => rw [← finsum_comp_equiv e]

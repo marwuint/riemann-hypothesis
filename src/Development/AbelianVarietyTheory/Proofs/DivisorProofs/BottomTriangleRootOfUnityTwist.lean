@@ -200,19 +200,6 @@ theorem frame_change {D : D7} {T : Type} {A A' WW : HSp D} (ψ : AddChar (AF D.h
       rw [IZ, IZ', (H t).2.2]
       exact const_alg (c2ne t)
 
-theorem rebase : GlobalTheory.FunPr.Hypotheses₂ →
-    GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
-      (X : Tri T A A' WW) (c0 : T → ℂ), IsBottomTri W i j X → X.IsConst W.ψ W.θ c0 →
-      ∃ (X' : Tri T A A' WW) (ζ : T → ℂ), IsBottomTri W i j X' ∧ X'.rW.β = 1 ∧ (∀ t, ∃ n : ℕ, 0 < n ∧ ζ t ^ n = 1) ∧
-        X'.IsConst W.ψ W.θ fun t => ζ t * c0 t := by
-  intro _
-  refine ⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D _ _ _ _ T Lc _ _ G => ?_⟩⟩
-  intro W _ i j A A' WW X c0 hX hc
-  obtain ⟨Z, v, hZ, e1, e2, e3, hv, H⟩ := frame_change W.ψ W.θ W.θ_is _ _ _ _ X hX.is 1 (isFrame_one hX.stdW.2.1)
-  refine ⟨Z, v, ⟨hX.rank, hX.rank', e1 ▸ hX.std, e2 ▸ hX.std', ?_, hZ⟩, by rw [e3], hv, H c0 hc⟩
-  rw [e3]
-  exact hX.stdW
-
 end GlobalTheory.BottomRebase
 
 end

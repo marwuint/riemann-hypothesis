@@ -8,12 +8,6 @@ open scoped RealInnerProductSpace FourierTransform
 
 namespace GlobalTheory.HeckeLemma
 
-def lin (a b w : ℂ) : ℂ := a * (w.re : ℂ) + b * (w.im : ℂ)
-
-def ker (l w : ℂ) : ℂ :=
-  Complex.exp (-2 * Real.pi * ((w.re : ℂ) ^ 2 + (w.im : ℂ) ^ 2)
-    - 2 * Real.pi * Complex.I * ((w.re : ℂ) * l.re + (w.im : ℂ) * l.im))
-
 open NumberField MeasureTheory in
 open scoped RealInnerProductSpace FourierTransform in
 private theorem fourier_gaussian_two_pi (l : ℂ) :

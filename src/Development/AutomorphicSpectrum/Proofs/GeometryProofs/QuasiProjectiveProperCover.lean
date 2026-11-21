@@ -3,8 +3,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChowLemmaQuasiProjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NoetherianIntegralClosedCoverStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChowLemmaQuasiProjective
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NoetherianIntegralClosedCover
 open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -17,13 +17,13 @@ theorem exists_proper_qproj_cover : ∀ (k : Type) [CommRing k] [IsNoetherianRin
   have hLN : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p
   have hC : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace p
   have hN : IsNoetherian X := { }
-  obtain ⟨n, Z, j, hj, hcov⟩ := GlobalTheory.T.noetherian_integral_closed_cover X
+  obtain ⟨n, Z, j, hj, hcov⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Approx.exists_integral_closed_cover X
   have key : ∀ i, ∃ (X' : Scheme.{0}) (π : X' ⟶ Z i), IsProper π ∧ Surjective π ∧
       IsQProjOver (π ≫ j i ≫ p) := by
     intro i
     have := (hj i).1
     have := (hj i).2
-    exact GlobalTheory.T.chow_lemma_quasi_projective k (Z i) (j i ≫ p) inferInstance inferInstance inferInstance
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Approx.exists_isProper_surjective_isQProjOver k (Z i) (j i ≫ p) inferInstance inferInstance inferInstance
   choose Y π hp hsurj hqp using key
   refine ⟨n, Y, fun i => π i ≫ j i, fun i => ?_, fun x => ?_⟩
   · have := (hj i).2

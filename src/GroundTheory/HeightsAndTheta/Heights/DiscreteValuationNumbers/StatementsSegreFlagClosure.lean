@@ -123,13 +123,6 @@ def SegreFlagClosurePullback.Statement : Prop :=
             (Fin.append g gz) Bs Q
         else 0
 
-section Examples
-
-def cutExpansion : Fin (1 + (1 + 1)) → MvPolynomial (Fin (1 + (1 + 1)) ⊕ Fin (1 + (1 + 1))) ℤ :=
-  fun i => if (i : ℕ) < 2 then 1 else 0
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

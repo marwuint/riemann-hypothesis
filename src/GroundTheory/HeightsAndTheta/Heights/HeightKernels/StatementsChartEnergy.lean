@@ -19,18 +19,6 @@ def ChartEnergy.Statement : Prop :=
       1 / 2 * (Real.log M.det.re - Real.log N.det.re) *
         chartMass (1 : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ)
 
-example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
-    (1 : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
-    (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ) ≠ 1 :=
-  ⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one, fun h => by
-    have h1 := congrFun (congrFun h 0) 0
-    simp at h1⟩
-
-example (M N : Matrix (Fin (0 + 1)) (Fin (0 + 1)) ℂ) :
-    chartMixedEnergy M N 0 = ∫ y : Fin 0 → ℂ, (hermChartPot M y - hermChartPot N y) *
-      maDensity (fun _ : Fin 0 => hermChartPot N) y := by
-  simp [chartMixedEnergy]
-
 end
 
 end GroundTheory.Heights₂.Heights

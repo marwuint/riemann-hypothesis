@@ -101,12 +101,6 @@ structure HidaSetting : Prop where
   params : ∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)
   good : GoodTypes R
 
-def OneStepAt : Prop := HidaSetting R F → Scalars R
-
-def OneStep : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
-    (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), OneStepAt R F
-
 theorem rowPart_mono {Sb Sb' : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : Sb ⊆ Sb') (c : EigSys D) :
     rowPart R Sb c ≤ rowPart R Sb' c := by
   refine inf_le_inf_right _ fun u hu => ?_
@@ -115,18 +109,9 @@ theorem rowPart_mono {Sb Sb' : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : 
   obtain ⟨e, f, ϖ, α, h1, h2⟩ := hR
   exact ⟨e, f, ϖ, α, fun v hv => h1 v (h hv), h2⟩
 
-theorem GoodTypes.record {R : RealDat D A Ks} (h : GoodTypes R) : R.grp_record := by
-  obtain ⟨eR, plg, iso, -, h1, h2, h3, -⟩ := h
-  exact ⟨eR, plg, iso, h1, h2, h3⟩
-
 theorem IsLValue.unique {R : RealDat D A Ks} {t : T} {B : GlobalTheory.LFun.Fam D.host.E} {j : ℕ} {l l' : ℝ}
     (h : IsLValue R t B j l) (h' : IsLValue R t B j l') : l = l' := by
   exact_mod_cast h.2.2.symm.trans h'.2.2
-
-theorem IsUpTop.unique {R : RealDat D A Ks} {t : T} {u : MMap (R.MY (D.R.m - 1))} {x x' : (R.HX t).H}
-    (v : (R.MY (D.R.m - 1)).Vec) (hv : ∏ τ, ⟪(v τ : (R.MY (D.R.m - 1)).H τ), (v τ : (R.MY (D.R.m - 1)).H τ)⟫_ℂ ≠ 0)
-    (h : IsUpTop R t u x) (h' : IsUpTop R t u x') : x = x' :=
-  ext_inner_right ℂ fun y => hasPeterssonInner_unique _ _ _ _ _ v hv (h y) (h' y)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars
 

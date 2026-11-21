@@ -78,31 +78,4 @@ theorem exists_ample_model (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ S
       · exact h2
       · exact e2 j hj
 
-theorem isAmpleLB_of_separating : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R), IsProper f →
-    ∀ (ι : Type) [Fintype ι] (L : ι → LB X) (hL : ∀ i, (L i).IsLB) (M : ι → ℕ)
-    (t : ∀ i, Fin (M i + 1) → (L i).Sec) (ht : ∀ i, ⨆ m, nonzeroLocus (t i m) = ⊤),
-    (∀ (K : Type) [Field K] [IsAlgClosed K] (a a' : Sp K ⟶ X), a ≫ f = a' ≫ f →
-      (∀ i, a ≫ GlobalTheory.ProjSpace.toProj f (t i) (ht i) = a' ≫ GlobalTheory.ProjSpace.toProj f (t i) (ht i)) →
-        a = a') →
-    ∀ (w : ι → ℕ), (∀ i, 1 ≤ w i) → ∀ (N : LB X) (hN : N.IsLB),
-    GlobalTheory.CechPic.cls N hN = ∑ i, w i • GlobalTheory.CechPic.cls (L i) (hL i) → GlobalTheory.IsAmpleLB N := by
-  intro R _ X f hf ι _ L hL M t ht hsep w hw N hN hcls
-  obtain ⟨Q, Ψ, r, P, hP, hr, hΨ, hc, hinj⟩ :=
-    exists_ample_model R X f ι L hL M t ht w hw Finset.univ
-  have : LocallyOfFiniteType (Ψ ≫ r) := by rw [hΨ]; infer_instance
-  have : LocallyOfFiniteType Ψ := locallyOfFiniteType_of_comp Ψ r
-  have : IsProper (Ψ ≫ r) := by rw [hΨ]; infer_instance
-  have : IsProper Ψ := IsProper.of_comp Ψ r
-  have : LocallyQuasiFinite Ψ := GlobalTheory.locallyQuasiFinite_of_finite_geometric_points Ψ fun K _ _ y => by
-    have : Subsingleton {x : Spec (.of K) ⟶ X // x ≫ Ψ = y} := ⟨fun x x' => Subtype.ext (by
-      obtain ⟨e1, e2⟩ := hinj K x.1 x'.1 (x.2.trans x'.2.symm)
-      exact hsep K x.1 x'.1 e1 fun i => e2 i (Finset.mem_univ i))⟩
-    infer_instance
-  have := IsFinite.of_isProper_of_locallyQuasiFinite Ψ
-  have hcls' : CechPic.cls (P.pull Ψ) (LB.isLB_pull hP.isLB Ψ) = CechPic.cls N hN := by
-    rw [hc, hcls]
-    exact Finset.sum_congr rfl fun i _ => natCast_zsmul _ _
-  exact (isAmpleLB_congr (LB.isLB_pull hP.isLB Ψ) hN
-    ((CechPic.cls_eq_iff _ _).1 hcls')).1 (hP.pull_of_isAffineHom Ψ)
-
 end GlobalTheory.AmpleSeparateOverRing

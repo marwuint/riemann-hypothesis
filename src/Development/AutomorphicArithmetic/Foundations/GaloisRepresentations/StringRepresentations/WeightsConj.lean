@@ -1,5 +1,8 @@
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.GaloisRepOfPolarizedPair
-import Development.AutomorphicArithmetic.ThetaCorrespondence.CuspidalSupport.CuspOfCq
+import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalGlobalCompatibility.TemperedLocalGlobal.LocalGlobalOfIwahori
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PstAndWdAtOfIsRegAlg
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
+import Development.AutomorphicArithmetic.ThetaCorrespondence.CuspidalSupport.GaloisStatementWeakOfFull
 
 noncomputable section
 
@@ -23,9 +26,6 @@ structure Aw (x y : WD h) : Prop where
   spl : ∀ (u : WD h) (c : G E Ω → ℂ) (t : ℕ), ∀ γ ∈ Ine (F := E) A,
     ((y.lpSum u).inePol γ).rootMultiplicity (c γ) ≤ t → SplW c t (y.lpSum u) → SplW c t (x.lpSum u)
 
-theorem Aw.of_eq {x y : WD h} (e : x = y) : Aw x y := by
-  subst e; exact ⟨fun _ => rfl, fun _ => rfl, fun _ _ _ _ _ _ k => k⟩
-
 def Sz (x : WD h) : Prop :=
   ∀ φ : ↥(Weil h), deg φ = 1 → ∀ α ∈ x.eig φ, ‖α‖ ≤ ((normV w : ℕ) : ℝ) ^ (((x.lpDim : ℝ) + 3) / 2)
 
@@ -35,8 +35,6 @@ structure Ab (x y : WD h) : Prop where
   ine : y.mono0 → (∀ g : ↥(Weil h), (g : G E Ω) ∈ ⁅Ine (F := E) A, Ine (F := E) A⁆ → LocalGlobalAboveLAlt.Triv y g) →
     ∀ g : ↥(Weil h), deg g = 0 → x.charPol g = y.charPol g
 
-theorem Ab.of_eq {x y : WD h} (e : x = y) : Ab x y := by
-  subst e; exact ⟨rfl, id, fun _ _ _ _ => rfl⟩
 end Local
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
@@ -72,39 +70,6 @@ structure IsGalU (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)) (ι : Q
     ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w)
       (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
       (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Pst.Induces Bw), AboveU π ι r HT P h Bw hj
-
-def PairU : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a →
-    ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → GlobalTheory.ContraPair.PolarizedPair π χ →
-      ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ), IsGalU π χ ι r wt HT
-
-def CuspU : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a →
-    ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → IsPolarized π χ →
-      ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ), IsGalU π χ ι r wt HT
-
-def CarU : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 2 ≤ a → ∀ π : CuspSub E a, π.IsCsd → (CG.mk π).IsRegAlg →
-    ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ),
-      IsGalU π (quadChar E ^ a) ι r wt HT ∧
-    ∀ (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
-    ∀ (w : HeightOneSpectrum (𝓞 E)), w ∈ placesOver E l → ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w)
-      (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
-      (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Pst.Induces Bw),
-      (Odd a → Sz ((wdAt P ι Bw h hj (r.comp (Dec (F := E) A).subtype)).lpTw ((wt : ℝ) / 2))) ∧
-      ∀ (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), π.IsLocComp w σ →
-      ∀ rc : IrrGL (w.adicCompletion E) → WD h, IsRec h rc →
-        Ab (wdAt P ι Bw h hj (r.comp (Dec (F := E) A).subtype)) (rc (algNorm σ))
-
-theorem CuspU.of_isCsd (H : CuspU) {E : Type} (Ω : Type) [Field E]
-    [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
-    {a : ℕ} (ha : 1 ≤ a) {π : CuspSub E a} (hr : (CG.mk π).IsRegAlg) (hc : π.IsCsd) :
-    ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ),
-      IsGalU π (quadChar E ^ a) ι r wt HT :=
-  H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)
 
 theorem IsGalU.aw {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}

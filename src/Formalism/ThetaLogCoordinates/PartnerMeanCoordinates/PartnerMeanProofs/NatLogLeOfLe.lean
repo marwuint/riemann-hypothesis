@@ -2,7 +2,7 @@ import Formalism.ThetaLogCoordinates.PartnerMeanCoordinates.TheoremMXB
 
 namespace Formalism.InvariantFactorPaths.MC
 
-open Polynomial Finset Formalism.GM Formalism.GM.M Formalism.GM.MeanGammaLemmas Formalism.InvariantFactorPaths.OddLevelGainBounds.TB
+open Polynomial Finset Formalism.GM Formalism.GM.M Formalism.GM.MeanGammaLemmas
 
 private lemma neg_logb_norm_natCast_eq_padicValNat (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n ≠ 0) :
     -Real.logb p ‖(n : ℚ_[p])‖ = (padicValNat p n : ℝ) := by

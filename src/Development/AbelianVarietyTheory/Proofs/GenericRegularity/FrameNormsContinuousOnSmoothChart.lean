@@ -9,8 +9,8 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FnTrdegOf
 import Formalism.LocalToGlobal.ProjectiveLattices.RegQFree
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MaxBoundPf
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameNormsContinuousOnHolomorphicFramedFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsHolomorphicFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameNormsContinuousOnHolomorphicFramedFamily
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsHolomorphicFamily
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIff
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
@@ -34,7 +34,7 @@ theorem fn_continuousOn_good {E : Type} [Field E] [NumberField E] [IsCMField E] 
   let ρ : X → (A →+* ℂ) := fun x => (φ x).toRingHom
   have hρ : ∀ x, (ρ x).comp (algebraMap c.F A) = σ := fun x => RingHom.ext fun a => (φ x).commutes a
   have hρc : ∀ a, ContinuousOn (fun x => ρ x a) W := hφ
-  obtain ⟨m, s, B, ψ, S, ε, hB, hε, hψ, hd, hnear⟩ := GlobalTheory.T.exists_holomorphic_family_of_ringHom_near c.F A σ (ρ x₀) (hρ x₀)
+  obtain ⟨m, s, B, ψ, S, ε, hB, hε, hψ, hd, hnear⟩ := _root_.GlobalTheory.SmoothPointFamily.exists_holomorphic_family c.F A σ (ρ x₀) (hρ x₀)
   let ψ' : (Fin m → ℂ) → (A →ₐ[c.F] CAt σ) := fun b =>
     if h : b ∈ B then
       { (show A →+* CAt σ from ψ b) with commutes' := fun a => RingHom.congr_fun (hψ b h).1 a }
@@ -44,7 +44,7 @@ theorem fn_continuousOn_good {E : Type} [Field E] [NumberField E] [IsCMField E] 
     simp only [ψ', dif_pos hb]
     rfl
   choose z hz using fun b => GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c A (CAt σ) (ψ' b) yA
-  have hcont := GlobalTheory.T.frameNorms_continuousOn_holomorphic_framedFamily E H Dw l Xo c r U hU xR fn hx hfn σ hσ A yA m B ψ' z hB
+  have hcont := _root_.GlobalTheory.FrameNorm.fn_continuousOn_hol E H Dw l Xo c r U hU xR fn hx hfn σ hσ A yA m B ψ' z hB
     (fun a => (hd a).congr fun b hb => hψ' b hb a) (fun b _ => hz b) i
   let p : X → (Fin m → ℂ) := fun x j => ρ x (s j)
   have hp : ContinuousWithinAt p W x₀ := continuousWithinAt_pi.2 fun j => hρc (s j) x₀ hx₀

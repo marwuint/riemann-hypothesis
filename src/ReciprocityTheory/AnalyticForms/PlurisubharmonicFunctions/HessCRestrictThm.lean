@@ -4,68 +4,6 @@ namespace ReciprocityTheory.AnForm.A
 
 theorem parts_thm : PartsStatement := mulVec_one_sub_idempotent_of_split_sum_identity
 
-private lemma mdisc_eq_zero_of_zeroth_eq_zero {n : ℕ} (A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
-    (hA : A 0 = 0) : mdisc A = 0 := by
-  have hsum : ∀ S : Finset (Fin (n + 1)), ∑ k ∈ S.erase 0, A k = ∑ k ∈ S, A k :=
-    fun S => Finset.sum_erase S hA
-  have hle : ∀ S : Finset (Fin (n + 1)), S.card ≤ n + 1 := fun S => by
-    simpa using Finset.card_le_univ S
-  have key : ∀ S : Finset (Fin (n + 1)), 0 ∈ S →
-      (-1 : ℂ) ^ (n + 1 - S.card) * (∑ k ∈ S, A k).det +
-        (-1 : ℂ) ^ (n + 1 - (S.erase 0).card) * (∑ k ∈ S.erase 0, A k).det = 0 := by
-    intro S h0
-    have h1 := Finset.card_erase_add_one h0
-    have h2 := hle S
-    have he : n + 1 - (S.erase 0).card = (n + 1 - S.card) + 1 := by omega
-    rw [hsum, he, pow_succ]
-    ring
-  unfold mdisc
-  suffices h : ∑ S : Finset (Fin (n + 1)), (-1 : ℂ) ^ (n + 1 - S.card) * (∑ k ∈ S, A k).det = 0 by
-    rw [h, mul_zero]
-  refine Finset.sum_involution
-    (fun S _ => if (0 : Fin (n + 1)) ∈ S then S.erase 0 else insert 0 S) ?_ ?_
-    (fun _ _ => Finset.mem_univ _) ?_
-  · intro S _
-    by_cases h0 : (0 : Fin (n + 1)) ∈ S
-    · simp only [h0, ↓reduceIte]
-      exact key S h0
-    · simp only [h0, ↓reduceIte]
-      have h3 : (insert 0 S).erase 0 = S := Finset.erase_insert h0
-      have h4 := key (insert 0 S) (Finset.mem_insert_self _ _)
-      rw [h3] at h4
-      rw [add_comm]
-      exact h4
-  · intro S _ _
-    by_cases h0 : (0 : Fin (n + 1)) ∈ S
-    · simp only [h0, ↓reduceIte]
-      intro h
-      have h5 := congrArg (fun T => (0 : Fin (n + 1)) ∈ T) h
-      simp [h0] at h5
-    · simp only [h0, ↓reduceIte]
-      intro h
-      have h5 := congrArg (fun T => (0 : Fin (n + 1)) ∈ T) h
-      simp [h0] at h5
-  · intro S _
-    by_cases h0 : (0 : Fin (n + 1)) ∈ S
-    · simp [h0, Finset.insert_erase h0]
-    · simp [h0, Finset.erase_insert h0]
-
-theorem massZero_thm : MassZeroStatement := by
-  intro n φ v U h
-  have h5 := (parts_thm n φ v (fun _ => 1) U h).2.2.2.2
-  have hz : ∀ z, maDens (Fin.cons (fun _ => (1 : ℝ)) φ :
-      Fin (n + 1) → (Fin (n + 1) → ℂ) → ℝ) z = 0 := by
-    intro z
-    have hH : hessC (fun _ : Fin (n + 1) → ℂ => (1 : ℝ)) z = 0 := by
-      refine Matrix.ext fun a b => ?_
-      simp [hessC]
-    unfold maDens
-    rw [mdisc_eq_zero_of_zeroth_eq_zero _ ?_]
-    · simp
-    · simpa using hH
-  unfold maInt at h5
-  simpa [hz] using h5
-
 theorem hessCRestrict_thm : HessCRestrictStatement := by
   intro n φ U j hU hφ y hy
   obtain ⟨Lc, hLc⟩ : ∃ Lc : (Fin n → ℂ) →L[ℝ] (Fin (n + 1) → ℂ),

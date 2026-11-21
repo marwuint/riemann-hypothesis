@@ -132,8 +132,4 @@ theorem isTwInv_starDepth : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
 
 end Twist
 
-example {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (ψ : InvFun (𝓞 E)) (hψ : IsTwInv H ψ) :
-    IsTwInv H (starDepth H.bar ψ (zeroFun (𝓞 E))) :=
-  isTwInv_starDepth E H ψ _ hψ fun σ _ n B => by simp [zeroFun]
-
 end GlobalTheory.PolFan

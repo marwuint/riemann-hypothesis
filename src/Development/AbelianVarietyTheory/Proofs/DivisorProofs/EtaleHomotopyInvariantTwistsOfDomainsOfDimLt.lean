@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HInv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDimLtTopOfEssFiniteType
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfClosedCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfRingEquivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfSubsingletonStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfRingEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfSubsingleton
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 open scoped TensorProduct
 
@@ -32,8 +32,8 @@ theorem hInv_quot_inf (q : ℕ) [NeZero q] (R : Type) [CommRing R] (I J : Ideal 
     (Ideal.quotEquivOfEq (Ideal.map_sup f I J).symm).trans
       (DoubleQuot.quotQuotEquivQuotOfLE (inf_le_left.trans le_sup_left))
   exact GlobalTheory.T.etaleHomotopyInvariantTwists_of_closedCover q (R ⧸ K) (Ideal.map f I) (Ideal.map f J) hinf hqA
-    (GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q _ _ eI.symm hI) (GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q _ _ eJ.symm hJ)
-    (GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q _ _ eIJ.symm hIJ)
+    (_root_.GlobalTheory.EtC.hInv_of_ringEquiv q _ _ eI.symm hI) (_root_.GlobalTheory.EtC.hInv_of_ringEquiv q _ _ eJ.symm hJ)
+    (_root_.GlobalTheory.EtC.hInv_of_ringEquiv q _ _ eIJ.symm hIJ)
 
 theorem ringKrullDim_quot_sup_succ_le (R : Type) [CommRing R] (p J : Ideal R) [p.IsPrime]
     (hJ : ¬ J ≤ p) : ringKrullDim (R ⧸ (p ⊔ J)) + 1 ≤ ringKrullDim (R ⧸ p) := by
@@ -90,7 +90,7 @@ theorem hInv_of_domains_of_dim_lt : ∀ (q : ℕ) [NeZero q] (d : ℕ),
       intro _
       haveI : Subsingleton (R ⧸ (∅ : Finset (Ideal R)).inf id) :=
         Ideal.Quotient.subsingleton_iff.mpr (by simp)
-      exact GlobalTheory.T.etaleHomotopyInvariantTwists_of_subsingleton q _ inferInstance
+      exact _root_.GlobalTheory.EtC.hInv_of_subsingleton q _ inferInstance
     | insert p s hps ih =>
       intro hs
       have hp : p.IsPrime := hs p (Finset.mem_insert_self p s)

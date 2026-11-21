@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.WeilBound.CoreStatements.NefModelVolumes.TwoLtHalfFinrank
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.VolumeEstimateHypotheses
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
@@ -104,26 +104,6 @@ theorem heightAt_eq_of_cover (hPX : _root_.SelfIntersectionVolumeEstimates.Volum
     linarith
   · linarith
 end Point
-theorem height_of_geom_multC_budget_meanAll : _root_.SelfIntersectionVolumeEstimates.VolumeEstimateHypotheses → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → Deg → Short → Geom → MultC → Budget →
-    (∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → D.R.m ^ 2 ≤ D.R.k → ∀ j : ℕ, 1 ≤ j → j < D.R.m → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → Y.d.l₂.M'.primeFactors.card ≤ 15 → MeanAll Y.U (xiR D) (ell D) C) →
-    Height := by
-  intro hPX hP hDG hSz hDg hSh hGe hMu hBu hDS
-  obtain ⟨C0, h0, hDS⟩ := hDS
-  refine Closed.imp ((((((hDG.and hSz).and hDg).and hSh).and hGe).and hMu).and hBu) ?_
-  intro eps Fm CH _ hF
-  obtain ⟨⟨⟨⟨⟨⟨⟨C1, -, a1⟩, ⟨C2, -, a2⟩⟩, ⟨C3, -, a3⟩⟩, ⟨C4, c4, a4⟩⟩, ⟨C5, -, a5⟩⟩, ⟨C6, c6, a6⟩⟩, ⟨C7, c7, a7⟩⟩ := hF
-  refine ⟨C4 + C6 + C7 + C0 * C7, by positivity, ?_⟩
-  obtain ⟨x0, hall⟩ := ((((((a1.and a2).and a3).and a4).and a5).and a6).and a7)
-  refine ⟨x0, fun x hx hle ι p hp i hm Y hY u1 hq => ?_⟩
-  obtain ⟨⟨⟨⟨⟨⟨b1, b2⟩, b3⟩, b4⟩, b5⟩, b6⟩, b7⟩ := hall x hx hle ι p hp
-  have hDGa := b1 i hm Y hY
-  obtain ⟨hb1, hbE, -, -, -, -, hρ⟩ := b2 i
-  have hU : 0 ≤ unitE p := by linarith
-  have hρ1 : rhoB (dat p i) u1 < 1 := ((hρ hm).2 u1 hq).2.2.1
-  have hBu := b7 i hm Y hY u1 hq
-  exact _root_.GlobalTheory.CovHt.HtTopG.heightAt_eq_of_cover hPX hP hY.1 (_root_.GlobalTheory.CovHt.cover_height_comparison hP _ _ _ _ _ _) h0 c4 c6 c7 hU
-    (hDS _ p.T p.fw.laws (Formalism.BasicNotions.ParameterChoice'.m_sq_le_k (Fm.params x hx ι)) ((i : ℕ) + 1) (by omega) hm Y _ _ hY.1 hBu.1) hDGa.2.2.2.2.2.2.1 hρ1
-    (b3 i hm Y hY u1 hq) (b4 i hm Y hY u1 hq) (b5 i hm Y hY u1 hq) (b6 i hm Y hY u1 hq) hBu
 end GlobalTheory.CovHt.HtTopG
 end
 end

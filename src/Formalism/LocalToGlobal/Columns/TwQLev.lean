@@ -231,18 +231,6 @@ theorem chiQ_pow_eq_one (σ₀ : K →+* ℂ) (x : levUQ hc n ST SG Q (Subgroup.
   obtain ⟨M', hM'⟩ := hM P
   rw [hM', pow_mul, MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_pow, h2, map_one, one_pow]
 
-theorem chiQ_eq_one_of (σ₀ : K →+* ℂ) (x : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q)
-    (h1 : ∀ P : Q, bc (prV (E := E) (qv F P.1)) x.1 = 1) : chiQ q _ σ₀ x = 1 := by
-  unfold chiQ
-  rw [MonoidHom.finsetProd_apply]
-  refine Finset.prod_eq_one fun P _ => ?_
-  have hx : lqRes q (Subgroup.pi Set.univ Hw) P x = 1 := by
-    ext1
-    show q.at P x.1 = 1
-    simp only [QLoc.at]
-    rw [h1 P, map_one]
-  simp only [MonoidHom.comp_apply, hx, map_one]
-
 theorem stepOfQ_chi_fin (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E)) (hST : ∀ P : Pl E, P ∈ ST ↔ π ∈ P.asIdeal)
     (hcard : ∀ P ∈ ST, Nat.card (𝓞 E ⧸ P.asIdeal) = T) (hSG : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∈ v.asIdeal → v ∉ plUnder F SG)
     (hidx : (baseLb E n ST).toAddSubgroup.relIndex
@@ -264,21 +252,6 @@ theorem stepOfQ_chi_fin (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E))
     chiQ_pow_eq_one hc n Hw q σ₀ (κ : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q) m2 h2 _
       (fun P => Dvd.dvd.mul_left (Finset.dvd_prod_of_mem m2 (Finset.mem_univ P)) _)
   rw [ha, hb, inv_one, one_mul]
-
-theorem stepOfQ_chi_off (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E)) (hST : ∀ P : Pl E, P ∈ ST ↔ π ∈ P.asIdeal)
-    (hcard : ∀ P ∈ ST, Nat.card (𝓞 E ⧸ P.asIdeal) = T) (hSG : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∈ v.asIdeal → v ∉ plUnder F SG)
-    (hidx : (baseLb E n ST).toAddSubgroup.relIndex
-      (Submodule.span (𝓞 E) (Formalism.BasicNotions.dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) (baseLb E n ST))).toAddSubgroup = T ^ (2 * f))
-    (lam : (Subgroup.pi Set.univ Hw : Subgroup (GLG E n SG)) →* ℂˣ)
-    (hQ : QOpen q) (hQT : ∀ P : Q, (T : 𝓞 F) ∉ (qv F P.1).asIdeal) (σ₀ : K →+* ℂ)
-    (κ : (stepOfQ hc n Hw q hB hTπ hST hcard hSG hidx lam hQ hQT σ₀).U) (κ' : (stepOf hc n Hw hB hTπ hST hcard hSG hidx lam).U)
-    (he : κ.1 = κ'.1) (h1 : ∀ P : Q, bc (prV (E := E) (qv F P.1)) κ.1 = 1) :
-    (stepOfQ hc n Hw q hB hTπ hST hcard hSG hidx lam hQ hQT σ₀).chi κ = (stepOf hc n Hw hB hTπ hST hcard hSG hidx lam).chi κ' := by
-  have h2 : chiQ q _ σ₀ κ = 1 := chiQ_eq_one_of hc n Hw q σ₀ (κ : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q) h1
-  show levTyp lam (Subgroup.inclusion (levUQ_le q _) κ) * (chiQ q _ σ₀ κ)⁻¹ = levTyp lam κ'
-  rw [h2, inv_one, mul_one]
-  congr 1
-  exact Subtype.ext he
 
 end Step
 

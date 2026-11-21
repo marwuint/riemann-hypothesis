@@ -104,4 +104,3 @@ theorem level_one_word_estimate : LevelOneWordEstimate := by
 
 end Formalism.FourierDecayAlt.P.PBD
 
-theorem Formalism.FourierDecayAlt.P.level_one_word_estimate' : Formalism.FourierDecayAlt.P.PBD.LevelOneWordEstimate := Formalism.FourierDecayAlt.P.PBD.level_one_word_estimate

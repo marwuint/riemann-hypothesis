@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.DiagZEqNegAddY
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.SubMulOriginD
 
 open WeierstrassCurve WeierstrassCurve.Projective
 
@@ -64,39 +63,6 @@ lemma proportional_diagXYZ_addXYZ {P Q : Fin 3 → R} (hP : W.Equation P) (hQ : 
     Proportional (diagXYZ W P Q) (W.addXYZ P Q) :=
   proportional_negY W (diagX_mul_addZ hP hQ) (negDiagY_mul_addZ hP hQ) (diagX_mul_negAddY hP hQ)
 
-variable (W) in
-
-def chordN (x₁ y₁ x₂ : R) : R :=
-  x₁ ^ 2 + x₁ * x₂ + x₂ ^ 2 + W.a₂ * (x₁ + x₂) + W.a₄ - W.a₁ * y₁
-
-variable (W) in
-
-def chordD (y₁ x₂ y₂ : R) : R :=
-  y₁ + y₂ + W.a₁ * x₂ + W.a₃
-
-variable (W) in
-
-def slopeXYZ (x₁ y₁ x₂ n d : R) : Fin 3 → R :=
-  W.neg ![d * (n ^ 2 + W.a₁ * n * d - (W.a₂ + x₁ + x₂) * d ^ 2),
-    n * (n ^ 2 + W.a₁ * n * d - (W.a₂ + x₁ + x₂) * d ^ 2 - x₁ * d ^ 2) + y₁ * d ^ 3, d ^ 3]
-
-variable (W) in
-
-def chordXYZ (x₁ y₁ x₂ y₂ : R) : Fin 3 → R :=
-  slopeXYZ W x₁ y₁ x₂ (chordN W x₁ y₁ x₂) (chordD W y₁ x₂ y₂)
-
-variable (W) in
-
-def thirdXYZ (s n v d : R) : Fin 3 → R :=
-  ![d * (-lineQuadCoeff W n v d - lineCubicCoeff W n d * s), -(d * lineCubicCoeff W n d),
-    n * (-lineQuadCoeff W n v d - lineCubicCoeff W n d * s) + v * lineCubicCoeff W n d]
-
-variable (W) in
-
-def originXYZ (z₁ w₁ z₂ w₂ : R) : Fin 3 → R :=
-  W.neg (thirdXYZ W (z₁ + z₂) (originN W z₁ w₁ z₂)
-    (w₁ * originD W w₁ z₂ w₂ - originN W z₁ w₁ z₂ * z₁) (originD W w₁ z₂ w₂))
-
 end Ring
 
 section Field
@@ -141,14 +107,6 @@ lemma Represents.ne_zero {T : Fin 3 → F} {p : W.toAffine.Point} (h : Represent
 lemma Represents.of_equiv {T U : Fin 3 → F} {p : W.toAffine.Point} (h : Represents W U p)
     (e : T ≈ U) : Represents W T p :=
   ⟨(nonsingular_of_equiv e).mpr h.left, (Point.toAffine_of_equiv e).trans h.right⟩
-
-lemma Represents.equiv {T U : Fin 3 → F} {p : W.toAffine.Point} (hT : Represents W T p)
-    (hU : Represents W U p) : T ≈ U := by
-  classical
-  have h : (⟨(nonsingularLift_iff T).mpr hT.left⟩ : W.Point) =
-      ⟨(nonsingularLift_iff U).mpr hU.left⟩ :=
-    (Point.toAffineAddEquiv W).injective (hT.right.trans hU.right.symm)
-  exact Quotient.exact (congrArg Point.point h)
 
 lemma addXYZ_ne_zero_iff {P Q : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nonsingular Q) :
     W.addXYZ P Q ≠ 0 ↔ ¬P ≈ Q := by

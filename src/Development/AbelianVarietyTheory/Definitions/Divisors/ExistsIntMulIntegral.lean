@@ -89,25 +89,11 @@ theorem Datum.conj_ω : IsCMField.complexConj D.F (D.ω : D.F) = D.tr - D.ω := 
   push_cast at h ⊢
   linear_combination h
 
-theorem Datum.ω_sq : (D.ω : D.F) ^ 2 = D.tr * D.ω - D.nm := by
-  have h := congrArg (fun z : 𝓞 D.F => (z : D.F)) D.nm_eq
-  have h2 := D.conj_ω
-  rw [← D.bar_eq] at h2
-  have h3 : (D.ω : D.F) * ((D.bar D.ω : 𝓞 D.F) : D.F) = D.nm := by
-    simpa only [map_mul, map_intCast] using h
-  rw [h2] at h3
-  linear_combination -h3
-
 def Datum.del : D.F := if 0 < D.ρc.im then (D.tr : D.F) - 2 * D.ω else 2 * D.ω - D.tr
 
 theorem Datum.conj_del : IsCMField.complexConj D.F D.del = - D.del := by
   unfold Datum.del
   split_ifs <;> simp only [map_sub, map_mul, map_intCast, map_ofNat, D.conj_ω] <;> ring
-
-theorem Datum.del_sq : D.del ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : D.F) := by
-  unfold Datum.del
-  push_cast
-  split_ifs <;> linear_combination 4 * D.ω_sq
 
 def Datum.hermF (x y : D.La) : D.F := D.skew x y / D.del
 
@@ -115,86 +101,12 @@ theorem Datum.conj_hermF (x y : D.La) : IsCMField.complexConj D.F (D.hermF x y) 
   rw [Datum.hermF, Datum.hermF, map_div₀, D.conj_del, D.skew_swap x y]
   ring
 
-def Datum.IsFBasis (e : Fin D.n → D.La) : Prop :=
-  (∀ c : Fin D.n → 𝓞 D.F, ∑ i, D.smulF (c i) (e i) = 0 → c = 0) ∧
-    ∀ x : D.La, ∃ k : ℤ, k ≠ 0 ∧ ∃ c : Fin D.n → 𝓞 D.F, k • x = ∑ i, D.smulF (c i) (e i)
-
 def Datum.gram (e : Fin D.n → D.La) : Matrix (Fin D.n) (Fin D.n) D.F := Matrix.of fun i j => D.hermF (e i) (e j)
 
 theorem Datum.gram_herm (e : Fin D.n → D.La) :
     ((D.gram e).map (IsCMField.complexConj D.F : D.F →+* D.F))ᵀ = D.gram e := by
   ext i j
   simp [Datum.gram, D.conj_hermF]
-
-def Datum.Kq : Subfield D.F := (IntermediateField.adjoin ℚ {(D.ω : D.F)}).toSubfield
-
-theorem Datum.isIntegral_ω : IsIntegral ℚ (D.ω : D.F) := Algebra.IsIntegral.isIntegral _
-
-def Datum.quadQ : ℚ[X] := X ^ 2 - C (D.tr : ℚ) * X + C (D.nm : ℚ)
-
-theorem Datum.quadQ_natDegree : D.quadQ.natDegree = 2 := by
-  unfold Datum.quadQ; compute_degree!
-
-theorem Datum.quadQ_monic : D.quadQ.Monic := by
-  unfold Datum.quadQ; monicity!
-
-theorem Datum.aeval_quadQ : aeval (D.ω : D.F) D.quadQ = 0 := by
-  simp only [Datum.quadQ, map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, map_intCast, D.ω_sq]
-  ring
-
-theorem Datum.ω_ne_rat (q : ℚ) : (D.ω : D.F) ≠ algebraMap ℚ D.F q := by
-  intro h
-  have h1 := D.ω_sq
-  rw [h] at h1
-  have h2 : q ^ 2 = D.tr * q - D.nm := (algebraMap ℚ D.F).injective (by simpa using h1)
-  have h3 : ((D.tr : ℚ)) ^ 2 - 4 * D.nm < 0 := by exact_mod_cast D.disc_neg
-  nlinarith [sq_nonneg (2 * q - D.tr)]
-
-theorem Datum.minpoly_ω : minpoly ℚ (D.ω : D.F) = D.quadQ := by
-  have hdvd := minpoly.dvd ℚ _ D.aeval_quadQ
-  have hdeg : 2 ≤ (minpoly ℚ (D.ω : D.F)).natDegree := by
-    by_contra h
-    have h1 : (minpoly ℚ (D.ω : D.F)).natDegree = 1 := by
-      have := minpoly.natDegree_pos D.isIntegral_ω; omega
-    obtain ⟨q, hq⟩ := minpoly.natDegree_eq_one_iff.1 h1
-    exact D.ω_ne_rat q hq.symm
-  exact (Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic D.isIntegral_ω) D.quadQ_monic hdvd
-    (by rw [D.quadQ_natDegree]; exact hdeg)).symm
-
-theorem Datum.hKq : Module.finrank ℚ D.Kq = 2 ∧ ∀ τ : D.F →+* ℂ, ∃ x ∈ D.Kq, (τ x).im ≠ 0 := by
-  constructor
-  · have h1 : Module.finrank ℚ (IntermediateField.adjoin ℚ {(D.ω : D.F)}) = 2 := by
-      rw [IntermediateField.adjoin.finrank D.isIntegral_ω, D.minpoly_ω, D.quadQ_natDegree]
-    rw [← h1]
-    exact LinearEquiv.finrank_eq
-      { toFun := fun x => ⟨x.1, x.2⟩, invFun := fun x => ⟨x.1, x.2⟩,
-        left_inv := fun _ => rfl, right_inv := fun _ => rfl,
-        map_add' := fun _ _ => rfl, map_smul' := fun q x => Subtype.ext (by simp [Rat.smul_def]) }
-  · intro τ
-    refine ⟨D.ω, IntermediateField.mem_adjoin_simple_self ℚ _, fun him => ?_⟩
-    have h := congrArg (fun z => (τ z).re) D.ω_sq
-    simp only [map_pow, map_sub, map_mul, map_intCast, pow_two, Complex.mul_re, him, mul_zero, sub_zero,
-      Complex.sub_re, Complex.intCast_re, Complex.intCast_im, zero_mul] at h
-    have h3 : ((D.tr : ℝ)) ^ 2 - 4 * D.nm < 0 := by exact_mod_cast D.disc_neg
-    nlinarith [sq_nonneg (2 * (τ D.ω).re - D.tr)]
-
-def Datum.kqEquiv : D.Kq →+* IntermediateField.adjoin ℚ {(D.ω : D.F)} where
-  toFun x := ⟨x.1, x.2⟩
-  map_one' := rfl
-  map_mul' _ _ := rfl
-  map_zero' := rfl
-  map_add' _ _ := rfl
-
-def Datum.uOf (r : ℚ_[p]) (hr : r ^ 2 - D.tr * r + D.nm = 0) : D.Kq →+* ℚ_[p] :=
-  ((IntermediateField.adjoin.powerBasis D.isIntegral_ω).lift r (by
-      rw [IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen, D.minpoly_ω]
-      simp only [Datum.quadQ, map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, map_intCast]
-      linear_combination hr)).toRingHom.comp D.kqEquiv
-
-theorem Datum.uOf_ω (r : ℚ_[p]) (hr : r ^ 2 - D.tr * r + D.nm = 0) :
-    D.uOf r hr ⟨D.ω, IntermediateField.mem_adjoin_simple_self ℚ _⟩ = r := by
-  rw [Datum.uOf, RingHom.comp_apply]
-  exact PowerBasis.lift_gen _ _ _
 
 section Places
 
@@ -220,33 +132,6 @@ instance : Finite (OverU Kq u) := Subtype.finite
 
 instance : Finite (PlacesU Kq u) := Quotient.finite _
 
-def nPlacesU : ℕ := Nat.card (PlacesU Kq u)
-
-def placeRep (i : Fin (nPlacesU Kq u)) : F →+* PadicAlgCl p :=
-  (Quotient.out ((Finite.equivFin (PlacesU Kq u)).symm i) : OverU Kq u).1
-
 end Places
-
-def iotaPOf (p : ℕ) [Fact p.Prime] : AlgebraicClosure ℚ →+* PadicAlgCl p :=
-  haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ
-  (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] PadicAlgCl p).toRingHom
-
-def iotaCOf : AlgebraicClosure ℚ →+* ℂ :=
-  haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ
-  (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] ℂ).toRingHom
-
-section Examples
-
-variable {p : ℕ} [Fact p.Prime] (D : Datum p)
-
-example (x y : D.La) : IsCMField.complexConj D.F (D.hermF x y) = D.hermF y x := D.conj_hermF x y
-
-example (x : D.La) : D.skew x x = - IsCMField.complexConj D.F (D.skew x x) := D.skew_swap x x
-
-example : D.del ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : D.F) := D.del_sq
-
-example : Module.finrank ℚ D.Kq = 2 := D.hKq.1
-
-end Examples
 
 end GlobalTheory.UPel.HT

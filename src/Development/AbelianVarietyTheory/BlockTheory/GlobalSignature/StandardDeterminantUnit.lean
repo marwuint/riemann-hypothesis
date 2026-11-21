@@ -32,21 +32,12 @@ variable (E n ST SG) in
 def HasStdReps : Prop :=
   ∀ d : DecoSet E n ST SG, ∃ ga : UF E n, StdAtAll (((ga, 1) : UF E n × GLG E n SG) • d)
 
-variable (E n ST SG) in
-
-def StdDetUnit : Prop :=
-  ∀ d : DecoSet E n ST SG, StdAtAll d → ∀ P ∈ ST, DetUnitAt d P ∧ DetUnitAt d (conjPrime₂ P)
-
 end Generic
 
 def Representatives : Prop :=
   ∀ (X : Fields), X.Ok → ∀ (Pr : Primes X), Pr.Ok → ∀ (u : Pr.Word) (n : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E)))
     (d : DecoSet X.E n (Pr.vT u) SG), ∃ ga : UF X.E n, ∀ P ∈ Pr.vT u,
       ((((ga, 1) : UF X.E n × GLG X.E n SG) • d).1.at P = stdAt X.E n P)
-
-def RepresentativesDet : Prop :=
-  ∀ (X : Fields), X.Ok → ∀ (Pr : Primes X), Pr.Ok → ∀ (u : Pr.Word) (n : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E))),
-    StdDetUnit X.E n (Pr.vT u) SG
 
 def RepresentativesSplit : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (ST SG : Finset (HeightOneSpectrum (𝓞 E))),

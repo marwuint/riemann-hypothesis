@@ -70,44 +70,6 @@ theorem exists_rat (x : E4) : ∃ p q : ℚ, x = p + q * ii := by
   field_simp
   linear_combination h
 
-theorem trace_ii : Algebra.trace ℚ E4 ii = 0 := by
-  have h := trace_cc ii
-  rw [cc_ii, map_neg] at h
-  linarith
-
-theorem finrank_eq : Module.finrank ℚ E4 = 2 := by
-  rw [IsCyclotomicExtension.Rat.finrank 4 E4]
-  decide
-
-theorem trace_eq (p q : ℚ) : Algebra.trace ℚ E4 (-(ii / 2) * (p + q * ii)) = q := by
-  have e : -(ii / 2) * ((p : E4) + q * ii) = algebraMap ℚ E4 (q / 2) + algebraMap ℚ E4 (-(p / 2)) * ii := by
-    simp only [eq_ratCast]
-    push_cast
-    linear_combination (-(q : E4) / 2) * ii_mul_ii
-  rw [e, map_add, ← Algebra.smul_def, map_smul, trace_ii, Algebra.trace_algebraMap, finrank_eq]
-  simp
-  ring
-
-theorem trace_int {t : E4} (ht : IsIntegral ℤ t) :
-    ∃ k : ℤ, Algebra.trace ℚ E4 (-(ii / 2) * t) = k := by
-  obtain ⟨m, n, rfl⟩ := exists_int_of_isIntegral ht
-  exact ⟨n, by simpa using trace_eq m n⟩
-
-theorem isIntegral_of_trace {t : E4}
-    (h : ∀ a : E4, IsIntegral ℤ a → ∃ k : ℤ, Algebra.trace ℚ E4 (-(ii / 2) * (t * a)) = k) :
-    IsIntegral ℤ t := by
-  obtain ⟨p, q, rfl⟩ := exists_rat t
-  obtain ⟨k, hk⟩ := h 1 isIntegral_one
-  obtain ⟨l, hl⟩ := h ii ii_isIntegral
-  rw [mul_one, trace_eq] at hk
-  have e : ((p : E4) + q * ii) * ii = ((-q : ℚ) : E4) + p * ii := by
-    push_cast
-    linear_combination (q : E4) * ii_mul_ii
-  rw [e, trace_eq] at hl
-  rw [hk, hl]
-  simp only [Rat.cast_intCast]
-  exact (isIntegral_intCast l).add ((isIntegral_intCast k).mul ii_isIntegral)
-
 def gm : Matrix (Fin 2) (Fin 2) E4 := !![1, 0; 0, -1]
 
 theorem herm_gm (x y : Fin 2 → E4) : herm gm x y = x 0 * cc (y 0) - x 1 * cc (y 1) := by
@@ -161,26 +123,6 @@ theorem lat_int {x y : Fin 2 → E4} (hx : x ∈ lat) (hy : y ∈ lat) : IsInteg
   rw [herm_gm]
   exact ((hx 0).mul (isIntegral_cc (hy 0))).sub ((hx 1).mul (isIntegral_cc (hy 1)))
 
-theorem lat_dual (x : Fin 2 → E4) (h : ∀ y ∈ lat, IsIntegral ℤ (herm gm x y)) : x ∈ lat := by
-  have h0 := h _ (single_mem_lat 0 isIntegral_one)
-  have h1 := (h _ (single_mem_lat 1 isIntegral_one)).neg
-  rw [herm_gm] at h0 h1
-  intro a
-  fin_cases a
-  · simpa [cc_one, cc_zero] using h0
-  · simpa [cc_one, cc_zero] using h1
-
-theorem traceFormDual_lat : traceFormDual (ii / 2) gm lat = lat := by
-  ext x
-  rw [mem_traceFormDual]
-  refine ⟨fun h => lat_dual x fun y hy => isIntegral_of_trace fun a ha => ?_,
-    fun hx y hy => trace_int (lat_int hx hy)⟩
-  have := h (cc a • y) fun b => (isIntegral_cc ha).mul (hy b)
-  have e : herm gm x (cc a • y) = herm gm x y * a := by
-    simp only [herm_gm, Pi.smul_apply, smul_eq_mul, cc_mul, cc_cc]
-    ring
-  rwa [EFf, e] at this
-
 def cmt : Finset (E4 →+* ℂ) := by
   classical
   exact Finset.univ.filter fun τ => τ ii = Complex.I
@@ -219,102 +161,11 @@ theorem exists_flagData : ∃ X : Data E4 2, X.Ψ = cmt ∧ X.Gm = gm ∧ X.p0 =
 def flagData : Data E4 2 := exists_flagData.choose
 
 theorem flagData_Ψ : flagData.Ψ = cmt := exists_flagData.choose_spec.1
-theorem flagData_Gm : flagData.Gm = gm := exists_flagData.choose_spec.2.1
-theorem hyperbolicFlagData_base_point : flagData.p0 = 1 := exists_flagData.choose_spec.2.2.1
-theorem flagData_Λ : flagData.Λ = lat := exists_flagData.choose_spec.2.2.2.1
-theorem flagData_ξ0 : flagData.ξ0 = ii / 2 := exists_flagData.choose_spec.2.2.2.2.1
-theorem flagData_κ0 : flagData.κ0 = -ii := exists_flagData.choose_spec.2.2.2.2.2.1
-theorem flagData_m : flagData.m = 3 := exists_flagData.choose_spec.2.2.2.2.2.2.1
-theorem mem_flagData_Γ (γ : GL (Fin 2) E4) : γ ∈ flagData.Γ ↔ IsUStab gm lat γ ∧
-    (∀ v ∈ lat, ∃ w ∈ lat, Matrix.mulVec (γ : Matrix (Fin 2) (Fin 2) E4) v = v + 3 • w) :=
-  exists_flagData.choose_spec.2.2.2.2.2.2.2.1 γ
-theorem flagData_χ (la : Wt flagData.Ψ 2) (γ : GL (Fin 2) E4) : flagData.χ la γ = 1 :=
-  exists_flagData.choose_spec.2.2.2.2.2.2.2.2 la γ
-
 theorem emb_ii_eq (τ : flagData.Ψ) : τ.1 ii = Complex.I :=
   mem_cmt.1 (flagData_Ψ ▸ τ.2)
-
-theorem norm_ξ0 (τ : flagData.Ψ) : ‖τ.1 flagData.ξ0‖ = 1 / 2 := by
-  rw [flagData_ξ0, map_div₀, emb_ii_eq, map_ofNat]
-  simp
-
-theorem perfect : (∀ x ∈ flagData.Λ, ∀ y ∈ flagData.Λ, ∃ k : ℤ,
-      EFf flagData.ξ0 flagData.Gm x y = k) ∧
-    ∀ φ : flagData.Λ →+ ℤ, ∃ x ∈ flagData.Λ, ∀ y : flagData.Λ,
-      (φ y : ℚ) = EFf flagData.ξ0 flagData.Gm x y := by
-  rw [flagData_Λ, flagData_ξ0, flagData_Gm]
-  exact (perfect_iff_traceFormDual_eq half_ii_ne_zero gm_det ⟨lat_fg, lat_span⟩).2 traceFormDual_lat
-
-def cuspData : DataX E4 2 where
-  toData := flagData
-  k0 := 1
-  minWeight_pos := one_pos
-  k0_le := one_le_two
-  ξ0_abs := norm_ξ0
-  EF_int := perfect.1
-  EF_perf := perfect.2
-  L' := lat
-  L'_fg := lat_fg
-  L'_int x hx y hy := by rw [flagData_Gm]; exact lat_int hx hy
-  L'_dual x h := lat_dual x (by rwa [flagData_Gm] at h)
-  NA := 1
-  NC := 1
-  NA_pos := one_pos
-  NC_pos := one_pos
-  NA_sub x hx := by rw [flagData_Λ] at hx; simpa using hx
-  NC_sub x hx := by rw [flagData_Λ]; simpa using hx
-  g := 3
-  g_pos := by norm_num
-  cong γ h₁ h₂ := by
-    rw [flagData_Λ] at h₁ h₂
-    rw [flagData_Gm] at h₁
-    refine (mem_flagData_Γ γ).2 ⟨h₁, fun v hv => ?_⟩
-    obtain ⟨w, hw, e⟩ := h₂ v hv
-    exact ⟨w, hw, by rw [← Nat.cast_smul_eq_nsmul E4, ← e]; abel⟩
-
-theorem dom_nonempty : flagData.dom.Nonempty := by
-  refine ⟨fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ), fun τ => ?_⟩
-  have hm : mat (Ψ := flagData.Ψ) (fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) τ = 1 := rfl
-  refine ⟨by rw [hm]; simp, fun i => ?_⟩
-  unfold dmin
-  rw [hm, flagData_Gm, hyperbolicFlagData_base_point, gram_one]
-  fin_cases i
-  · simp [lminor, psgn]
-  · simp [lminor, psgn, sgn]
-  · simp [lminor, psgn, sgn, Finset.prod_range_succ, Matrix.det_fin_two]
-
-theorem isIso_one : flagData.IsIso ![1, 1] := by
-  refine ⟨?_, ?_, fun h => by simpa using congrFun h 0⟩
-  · rw [flagData_Λ]
-    intro a
-    fin_cases a <;> simpa using isIntegral_one
-  · rw [flagData_Gm, herm_gm]
-    simp
-
-theorem map_transvMat (v : Fin 2 → E4) (b : E4) (τ : flagData.Ψ) :
-    (transvMat flagData.Gm v ((flagData.m : E4) * b * flagData.κ0)).map τ.1 =
-      flagData.flowMat v τ (((3 : ℝ) : ℂ) * τ.1 b) := by
-  have hc : flagData.c τ = 1 := by rw [Data.c, norm_ξ0]; norm_num
-  ext a k
-  simp only [transvMat, Data.flowMat, Matrix.map_apply, Matrix.of_apply, hc, flagData_m,
-    flagData_κ0, map_add, map_mul, map_sum, map_neg, emb_cc, emb_ii_eq, map_natCast,
-    apply_ite τ.1, map_one, map_zero]
-  push_cast
-  ring
 
 end
 
 end HyperbolicCusp
-
-theorem exists_cuspData_hyperbolic : ∃ (X : DataX E4 2) (M : ℝ),
-    X.p0 = 1 ∧ X.dom.Nonempty ∧ (∃ ξ, X.IsIso ξ) ∧ 0 < M ∧ X.Λ = X.L' ∧
-    (∀ la, ∀ v ∈ X.L', herm X.Gm v v = 0 → ∀ b : E4, cc b = b → IsIntegral ℤ b →
-      ∃ γ ∈ X.Γ, X.χ la γ = 1 ∧ ∀ τ : X.Ψ, (γ : Matrix (Fin 2) (Fin 2) E4).map τ.1 = X.flowMat v τ ((M : ℂ) * τ.1 b)) := by
-  refine ⟨HyperbolicCusp.cuspData, 3, HyperbolicCusp.hyperbolicFlagData_base_point, HyperbolicCusp.dom_nonempty,
-    ⟨_, HyperbolicCusp.isIso_one⟩, by norm_num, HyperbolicCusp.flagData_Λ,
-    fun la v hv hiso b hb hbi => ?_⟩
-  obtain ⟨γ, hγ, e⟩ := HyperbolicCusp.flagData.transv v (HyperbolicCusp.flagData_Λ ▸ hv) hiso b hb hbi
-  exact ⟨γ, hγ, HyperbolicCusp.flagData_χ la γ, fun τ => by
-    rw [e]; exact HyperbolicCusp.map_transvMat v b τ⟩
 
 end GlobalTheory

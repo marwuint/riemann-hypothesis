@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariant
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicQuotientWittTowerPropertieStatement
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasDerivAtZeroAndIsTheta
@@ -213,7 +213,7 @@ theorem res_om_heis (hs : IsIsoSplit V V' C B) {ψ : AddChar (AF D.host.F) ℂ} 
   have hth : IsThetaFunO ψ V W (heisO ψ V W (HMul.hMul (w : Matrix (Fin W.rank) (Fin V.rank) (AE D))
       (Formalism.L2.Theta.mt V (n : GA D V))) g) := isTheta_heisO hω.std hg _
   conv_lhs => rw [← actO_mul_mt V W (n : GA D V) w, ← hω.om_heis (n : GA D V) 1 _ g hg]
-  exact GlobalTheory.T.wittTower_restriction_unipotentRadical_invariant D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hμ n _ hth
+  exact _root_.GlobalTheory.UnipRes.res_unip D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hμ n _ hth
 
 theorem mean_rat_shift (hs : IsIsoSplit V V' C B) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (hμ : IsCovolOne (ratMx D W.rank r) μ 𝓨) {g : WO V W → ℂ} (hg : IsThetaFunO ψ V W g)
@@ -315,12 +315,6 @@ theorem cA_one (N : ℕ) (i j : Fin N) :
   rcases eq_or_ne i j with rfl | h
   · simp
   · rw [Matrix.one_apply_ne h, Matrix.one_apply_ne h.symm, map_zero]
-
-private theorem cA_incA_apply_eq_incA_star (e : D.host.E) : cA D (incA D e) = incA D (star e) := by
-  show Algebra.TensorProduct.map (AlgHom.id _ _) D.sp.cm.sig ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) =
-    (1 : AF D.host.F) ⊗ₜ[D.host.F] star e
-  rw [Algebra.TensorProduct.map_tmul]
-  rfl
 
 set_option maxHeartbeats 1000000 in
 theorem exists_central (V : HSp D) (X : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (hXX : X * X = 0)

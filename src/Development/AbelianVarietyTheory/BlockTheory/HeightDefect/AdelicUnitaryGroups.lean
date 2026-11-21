@@ -204,54 +204,6 @@ theorem locMap_sig (hc : CMData F E) (τ : E →+* ℂ) (y : (placeOf F τ).Comp
     have h3 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ hc.sig (a ⊗ₜ[F] e) = a ⊗ₜ[F] hc.sig e := rfl
     rw [h3, locMap_tmul, locMap_tmul, map_mul, h1, ← h2, Complex.conj_ofReal]
 
-theorem locMap_bijective (hc : CMData F E) (τ : E →+* ℂ) : Function.Bijective (locMap hc τ) := by
-  have hr := placeOf_isReal hc τ
-  let e : (placeOf F τ).Completion ≃+* ℝ := InfinitePlace.Completion.ringEquivRealOfIsReal hr
-  have he : ∀ a, InfinitePlace.Completion.extensionEmbedding (placeOf F τ) a = ((e a : ℝ) : ℂ) :=
-    fun a => (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr a).symm
-  obtain ⟨x, hx⟩ : ∃ x : E, (τ x).im ≠ 0 := by
-    by_contra hcon
-    push Not at hcon
-    have hs : Function.Surjective (algebraMap F E) := by
-      intro a
-      have : star a = a := τ.injective (by
-        rw [hc.cmUnram.2.1 τ a]; exact Complex.conj_eq_iff_im.2 (hcon a))
-      exact (hc.fixed a).1 this
-    have h1 : Module.finrank F E = 1 := by
-      rw [← (LinearEquiv.ofBijective (Algebra.linearMap F E)
-        ⟨(algebraMap F E).injective, hs⟩).finrank_eq, Module.finrank_self]
-    have := hc.deg2
-    omega
-  have hsurj : Function.Surjective (locMap hc τ) := by
-    intro z
-    refine ⟨e.symm (z.re - z.im / (τ x).im * (τ x).re) ⊗ₜ[F] 1 + e.symm (z.im / (τ x).im) ⊗ₜ[F] x, ?_⟩
-    rw [map_add, locMap_tmul, locMap_tmul, he, he, e.apply_symm_apply, e.apply_symm_apply, map_one]
-    apply Complex.ext
-    · simp only [mul_one, Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul]; ring
-    · simp only [mul_one, Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul]; field_simp; ring
-  letI : Algebra (placeOf F τ).Completion ℂ :=
-    (InfinitePlace.Completion.extensionEmbedding (placeOf F τ)).toAlgebra
-  haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hc.deg2]; norm_num)
-  have hC : Module.finrank (placeOf F τ).Completion ℂ = 2 := by
-    rw [← Complex.finrank_real_complex]
-    exact Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl ℂ) (by ext a; exact (he a).symm)
-  haveI : Module.Finite (placeOf F τ).Completion ℂ := Module.finite_of_finrank_pos (by rw [hC]; norm_num)
-  let L : (placeOf F τ).Completion ⊗[F] E →ₗ[(placeOf F τ).Completion] ℂ :=
-    { toFun := locMap hc τ
-      map_add' := map_add _
-      map_smul' := by
-        intro c y
-        have : c • y = (c ⊗ₜ[F] (1 : E)) * y := by
-          rw [Algebra.smul_def]; rfl
-        rw [this, map_mul, locMap_tmul, map_one, mul_one]; rfl }
-  have hinj : Function.Injective L :=
-    (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
-      (by rw [Module.finrank_baseChange, hc.deg2, hC])).2 hsurj
-  exact ⟨hinj, hsurj⟩
-
-def locEquiv (hc : CMData F E) (τ : E →+* ℂ) : (placeOf F τ).Completion ⊗[F] E ≃+* ℂ :=
-  RingEquiv.ofBijective _ (locMap_bijective hc τ)
-
 end RealPlace
 
 section Groups
@@ -284,14 +236,9 @@ def ofInf : GInf hc V →* GA hc V :=
   extH (R' := AF F) hc.sig V.gram (LinearMap.inl F (Ainf F) (Af F)) (fun a b => Prod.ext rfl (mul_zero _).symm)
 
 def ratA : GRat hc V →* GA hc V := diagH hc.sig V.gram (AF F)
-def ratFin : GRat hc V →* GFin hc V := diagH hc.sig V.gram (Af F)
-def ratInf : GRat hc V →* GInf hc V := diagH hc.sig V.gram (Ainf F)
-
 def ratPts : Subgroup (GA hc V) := (ratA hc V).range
 
 def finPts : Subgroup (GA hc V) := (projInf hc V).ker
-
-def realPts : Subgroup (GA hc V) := (projFin hc V).ker
 
 def realCompInf (τ : E →+* ℂ) : GInf hc V →* GReal V τ :=
   (mapU (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ hc.sig) (starRingEnd ℂ) (locMap hc τ) (locMap_sig hc τ)
@@ -301,30 +248,6 @@ def realCompInf (τ : E →+* ℂ) : GInf hc V →* GReal V τ :=
       Ainf F →ₐ[F] (placeOf F τ).Completion))
 
 def realComp (τ : E →+* ℂ) : GA hc V →* GReal V τ := (realCompInf hc V τ).comp (projInf hc V)
-
-open Classical in
-
-def atRealInf (τ : E →+* ℂ) : GReal V τ →* GInf hc V :=
-  (extH (R' := Ainf F) hc.sig V.gram
-    (LinearMap.single F (fun w : InfinitePlace F => w.Completion) (placeOf F τ))
-    (fun a b => Pi.single_mul (placeOf F τ) a b)).comp
-  (mapU (starRingEnd ℂ) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ hc.sig) (locEquiv hc τ).symm.toRingHom
-    (by
-      intro z
-      apply (locEquiv hc τ).injective
-      have := locMap_sig hc τ ((locEquiv hc τ).symm z)
-      show locMap hc τ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ hc.sig ((locEquiv hc τ).symm z)) =
-        locEquiv hc τ ((locEquiv hc τ).symm _)
-      rw [← this, RingEquiv.apply_symm_apply]
-      exact congrArg _ ((locEquiv hc τ).apply_symm_apply z))
-    (V.gram.map τ) (JR _ V.gram) (by
-      ext r s
-      apply (locEquiv hc τ).injective
-      show locEquiv hc τ ((locEquiv hc τ).symm _) = locMap hc τ ((1 : (placeOf F τ).Completion) ⊗ₜ[F] V.gram r s)
-      rw [RingEquiv.apply_symm_apply]
-      simp))
-
-def atReal (τ : E →+* ℂ) : GReal V τ →* GA hc V := (ofInf hc V).comp (atRealInf hc V τ)
 
 def coordR (R : Type) [CommRing R] [Algebra F R] (x : V.V) : Fin V.rank → R ⊗[F] E :=
   fun i => inclR R (V.frame.repr x i)
@@ -401,41 +324,6 @@ def unipRad (R : Type) [CommRing R] [Algebra F R] (W : Submodule E V.V) :
 def unipRat (W : Submodule E V.V) : Subgroup (unipRad hc V (AF F) W) :=
   (ratPts hc V).subgroupOf (unipRad hc V (AF F) W)
 
-def rightTr {G : Type} [Group G] (X : Type) [AddCommGroup X] [Module ℂ X] :
-    G →* Module.End ℂ (G → X) where
-  toFun x := LinearMap.funLeft ℂ X (fun g => g * x)
-  map_one' := by ext f g; simp [LinearMap.funLeft]
-  map_mul' x y := by ext f g; simp [LinearMap.funLeft, mul_assoc]
-
-def smoothAlong {G G' : Type} [Group G] [Group G'] [TopologicalSpace G'] (φ : G' →* G)
-    (X : Type) [AddCommGroup X] [Module ℂ X] : Submodule ℂ (G → X) where
-  carrier := {f | ∃ K : Subgroup G', IsOpen (K : Set G') ∧ ∀ k ∈ K, ∀ g, f (g * φ k) = f g}
-  zero_mem' := ⟨⊤, by simp, fun _ _ _ => rfl⟩
-  add_mem' := fun ⟨K, hK, h⟩ ⟨K', hK', h'⟩ => ⟨K ⊓ K', hK.inter hK', fun k hk g => by
-    simp only [Pi.add_apply, h k hk.1 g, h' k hk.2 g]⟩
-  smul_mem' := fun c _ ⟨K, hK, h⟩ => ⟨K, hK, fun k hk g => by simp only [Pi.smul_apply, h k hk g]⟩
-
-def equivar {Γ G : Type} [Group Γ] [Group G] (φ : Γ →* G) {X : Type} [AddCommGroup X] [Module ℂ X]
-    (ρ : Representation ℂ Γ X) : Submodule ℂ (G → X) where
-  carrier := {f | ∀ γ g, f (φ γ * g) = ρ γ (f g)}
-  zero_mem' := fun _ _ => by simp
-  add_mem' := fun h h' γ g => by simp only [Pi.add_apply, h γ g, h' γ g, map_add]
-  smul_mem' := fun c _ h γ g => by simp only [Pi.smul_apply, h γ g, map_smul]
-
-def contFun (G : Type) [TopologicalSpace G] : Submodule ℂ (G → ℂ) where
-  carrier := {f | Continuous f}
-  zero_mem' := continuous_const
-  add_mem' := fun h h' => Continuous.add h h'
-  smul_mem' := fun c _ h => Continuous.const_smul h c
-
-def autFun : Submodule ℂ (GA hc V → ℂ) :=
-  equivar (ratA hc V) (Representation.trivial ℂ (GRat hc V) ℂ) ⊓ smoothAlong (ofFin hc V) ℂ
-
-def autFunC : Submodule ℂ (GA hc V → ℂ) := autFun hc V ⊓ contFun (GA hc V)
-
-def sphOff (S : Finset (HeightOneSpectrum (𝓞 F))) : Submodule ℂ (GA hc V → ℂ) :=
-  ⨅ k ∈ hypOff hc V S, LinearMap.ker (rightTr ℂ (ofFin hc V k) - 1)
-
 def constTerm (W : Submodule E V.V) (μ : Measure (unipRad hc V (AF F) W))
     (𝓕 : Set (unipRad hc V (AF F) W)) (f : GA hc V → ℂ) (g : GA hc V) : ℂ :=
   ∫ n in 𝓕, f ((n : GA hc V) * g) ∂μ
@@ -462,28 +350,6 @@ def constTermZero (W : Submodule E V.V) : Submodule ℂ (GA hc V → ℂ) where
 
 def cuspidal : Submodule ℂ (GA hc V → ℂ) :=
   ⨅ W : Submodule E V.V, ⨅ (_ : IsIsotropic V W), constTermZero hc V W
-
-def cuspFun : Submodule ℂ (GA hc V → ℂ) := autFunC hc V ⊓ cuspidal hc V
-
-def Definite : Prop := V.SigOK ∧ V.IsDefinite
-
-def algForm {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (GRat hc V) X) :
-    Submodule ℂ (GFin hc V → X) :=
-  equivar (ratFin hc V) ρ ⊓ smoothAlong (MonoidHom.id (GFin hc V)) X
-
-def algFormLevel {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (GRat hc V) X)
-    (K : Subgroup (GFin hc V)) (χ : K →* ℂˣ) : Submodule ℂ (GFin hc V → X) :=
-  algForm hc V ρ ⊓ ⨅ k : K, LinearMap.ker (rightTr X (k : GFin hc V) - ((χ k : ℂˣ) : ℂ) • 1)
-
-def realFinite : Submodule ℂ (GA hc V → ℂ) :=
-  ⨆ (M : Submodule ℂ (GA hc V → ℂ)) (_ : FiniteDimensional ℂ M)
-    (_ : ∀ x : GInf hc V, M ≤ M.comap (rightTr ℂ (ofInf hc V x))), M
-
-def defForm : Submodule ℂ (GA hc V → ℂ) := autFunC hc V ⊓ realFinite hc V
-
-def toScalar {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (GInf hc V) X)
-    (ℓ : Module.Dual ℂ X) (f : GFin hc V → X) : GA hc V → ℂ :=
-  fun g => ℓ (ρ (projInf hc V g)⁻¹ (f (projFin hc V g)))
 
 end Groups
 
@@ -577,44 +443,6 @@ section Claims
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hc : CMData F E) (V : HSpace E)
 
-def ProductInfFin : Prop :=
-  (∀ g : GA hc V, g = ofInf hc V (projInf hc V g) * ofFin hc V (projFin hc V g)) ∧
-  (∀ x, projInf hc V (ofInf hc V x) = x ∧ projFin hc V (ofInf hc V x) = 1) ∧
-  (∀ y, projFin hc V (ofFin hc V y) = y ∧ projInf hc V (ofFin hc V y) = 1) ∧
-  Continuous (ofInf hc V) ∧ Continuous (ofFin hc V) ∧ Continuous (projInf hc V) ∧ Continuous (projFin hc V)
-
-def AtRealSpec : Prop :=
-  ∀ (τ : E →+* ℂ) (g : GReal V τ) (x : GA hc V), x = atReal hc V τ g ↔
-    (projFin hc V x = 1 ∧ realComp hc V τ x = g ∧
-      ∀ τ' : E →+* ℂ, placeOf F τ' ≠ placeOf F τ → realComp hc V τ' x = 1)
-
-def HypOpenCompact : Prop :=
-  IsOpen (hypOff hc V ∅ : Set (GFin hc V)) ∧ IsCompact (hypOff hc V ∅ : Set (GFin hc V)) ∧
-  hypOff hc V ∅ = stabSet hc V (Formalism.MainNotions.StandardLattice.latHat F E {x | ∑ i, x i • V.frame i ∈ V.L0} : Set _)
-
-def ConstTermExists : Prop :=
-  ∀ W, IsIsotropic V W →
-    AllSome (fun μ : Measure (unipRad hc V (AF F) W) => μ.IsHaarMeasure) fun μ =>
-    AllSome (fun 𝓕 => IsFundamentalDomain (unipRat hc V W) 𝓕 μ) fun 𝓕 =>
-      0 < μ 𝓕 ∧ μ 𝓕 < ⊤ ∧ ∀ f ∈ autFunC hc V, ∀ g : GA hc V,
-        IntegrableOn (fun n : unipRad hc V (AF F) W => f ((n : GA hc V) * g)) 𝓕 μ
-
-def DefiniteCuspidal : Prop := Definite V → cuspidal hc V = ⊤
-
-def ToScalarMem : Prop :=
-  Definite V → ∀ (X : Type) [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X]
-    (ρ : Representation ℂ (GInf hc V) X),
-    (∀ (ℓ : Module.Dual ℂ X) (x : X), Continuous fun g => ℓ (ρ g x)) →
-    ∀ f ∈ algForm hc V (ρ.comp (ratInf hc V)), ∀ ℓ, toScalar hc V ρ ℓ f ∈ defForm hc V
-
-def EmbSpec (B A : HSpace E) (ι : B.V →ₗ[E] A.V) (h : HSpace.IsIsomEmb B A ι) : Prop :=
-  Function.Injective (embA hc B A ι h) ∧ Continuous (embA hc B A ι h) ∧
-  (∀ γ, embA hc B A ι h (ratA hc B γ) = ratA hc A (embRat hc B A ι h γ)) ∧
-  ∀ g : GA hc B,
-    (∀ y, act hc A (embA hc B A ι h g) ((embMat B A ι).map (inclR (F := F) (AF F)) *ᵥ y) =
-      (embMat B A ι).map (inclR (F := F) (AF F)) *ᵥ act hc B g y) ∧
-    ∀ z ∈ extSub (F := F) A (AF F) (perp A (LinearMap.range ι)), act hc A (embA hc B A ι h g) z = z
-
 theorem ratPts_eq : ratPts hc V = HFinIn (AF F) hc.sig V.gram := by
   ext g
   constructor
@@ -622,22 +450,5 @@ theorem ratPts_eq : ratPts hc V = HFinIn (AF F) hc.sig V.gram := by
   · rintro ⟨γ, hγ, e⟩; exact ⟨⟨γ, hγ⟩, Subtype.ext e⟩
 
 end Claims
-
-section Host
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable (D : D7) (V : TH.HSp D)
-
-abbrev GAD : Type := GA D.sp.cm V
-
-def atRealD (τ : D.what₂.Tau) : UJ (starRingEnd ℂ) (TH.gramAt D V τ) →* GAD D V :=
-  atReal D.sp.cm V (TH.tauE D τ)
-
-def autFunD : Submodule ℂ (GAD D V → ℂ) := autFun D.sp.cm V
-
-def cuspFunD : Submodule ℂ (GAD D V → ℂ) := cuspFun D.sp.cm V
-
-end Host
 
 end GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups

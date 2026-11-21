@@ -1,7 +1,6 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SubOfNonNil
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmoothQuot
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsBisLast
 
 noncomputable section
 
@@ -131,9 +130,6 @@ def inclI {ρ : Representation ℂ G U} (S : Subrepresentation ρ) :
   isIntertwining' _ := rfl
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
-
-noncomputable def stab (ρ : Representation ℂ G U) (v : U) : Subgroup G :=
-  _root_.UpperTheory.Reformulated.B.RepresentationStabilizer.stab ρ v
 
 theorem smooth_sub {ρ : Representation ℂ G U} (hρ : IsSmooth ρ) (S : Subrepresentation ρ) :
     IsSmooth S.toRepresentation := by

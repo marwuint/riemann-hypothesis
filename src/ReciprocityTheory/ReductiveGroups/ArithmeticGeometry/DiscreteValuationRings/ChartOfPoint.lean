@@ -88,15 +88,6 @@ theorem hformF' (k : ℕ) (ρ : D.toPre.X) :
   intro U _ h
   rw [e]
 
-theorem gF_gs (c : F) (y : (DegPre.BF D.toPre F).left) :
-    gs (𝟙 _) y ⊤ (gF D.toPre F c) = gs (fst (TF (R := V) F) D.toPre.P.A).left y ⊤
-      ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) := by
-  first
-  | rfl
-  | exact (gs_appLE_top _ _ _ le_top _).symm
-  | (unfold gF; exact (gs_appLE_top _ _ _ le_top _).symm)
-  | simp [gF, gs_appLE_top]
-
 theorem coordsF {k : ℕ} {ρ : D.toPre.X} {m : ℕ} (b : Fin m → D.toPre.SecB k ρ)
     (hb : ∀ (R' : Type) [CommRing R'] (f : V →+* R'),
       ∀ b' : Fin m → LB.Sec (LB.LinComb D.toPre.P.L

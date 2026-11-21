@@ -11,21 +11,6 @@ open NumberField IsDedekindDomain
 
 open scoped Pointwise
 
-theorem l_not_unit (D : D7) (a : D.nd.Loc) : ¬ IsUnit ((D.nd.l a : ℕ) : D.nd.O a) := by
-  intro hu
-  have hfg : (⊤ : Submodule ℤ_[D.nd.l a] (D.nd.O a)).FG := Module.Finite.fg_top
-  have hle : (⊤ : Submodule ℤ_[D.nd.l a] (D.nd.O a)) ≤
-      (Ideal.span {(D.nd.l a : ℤ_[D.nd.l a])}) • (⊤ : Submodule ℤ_[D.nd.l a] (D.nd.O a)) := by
-    intro y _
-    obtain ⟨u, hu'⟩ := hu
-    have : y = (D.nd.l a : ℤ_[D.nd.l a]) • (((u⁻¹ : (D.nd.O a)ˣ) : D.nd.O a) * y) := by
-      rw [Algebra.smul_def, map_natCast, ← hu', ← mul_assoc, Units.mul_inv, one_mul]
-    rw [this]
-    exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial
-  have hjac : Ideal.span {(D.nd.l a : ℤ_[D.nd.l a])} ≤ Ideal.jacobson ⊥ := by
-    rw [IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, PadicInt.maximalIdeal_eq_span_p]
-  exact top_ne_bot (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg hle hjac)
-
 theorem res_T_indep (D : D7) (a : D.nd.Loc) (f : D.nd.T a) (x x' : D.nd.X a) :
     IsLocalRing.residue (D.nd.O a) ((f : D.nd.X a → D.nd.O a) x) =
       IsLocalRing.residue (D.nd.O a) ((f : D.nd.X a → D.nd.O a) x') := by
@@ -82,29 +67,6 @@ def IsRhoOf (a : N.Loc) (x : N.X a) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O a)) 
       ∏ c ∈ Finset.Icc 1 R.t, (X - C ((N.chi a c σ : (N.O a)ˣ) : N.O a)) = heckePol N a x w
 
 end Defs
-
-def rhoAt (D : D7) (a : D.nd.Loc) {i : D.ntw.Tw} (h : D.ntw.twOf a = i) (s : D.ntw.Sig i) :
-    G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O a) := by
-  subst h
-  exact mapRep (D.ntw.twist₂ a) (D.ntw.rhoS _ s)
-
-def SideLoc (D : D7) (i : D.ntw.Tw) (b : Bool) : Prop :=
-  ∃ a : D.nd.Loc, D.ntw.twOf a = i ∧ D.ntw.twSide a = b
-
-def SelfPair (D : D7) (i : D.ntw.Tw) : Prop :=
-  ∀ x : NumberField.RingOfIntegers D.LL0,
-    (∃ y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i),
-      algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) y = D.ntw.emb0 i (x : D.LL0)) ↔
-    (∃ y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i),
-      algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) y = D.ntw.emb0b i (x : D.LL0))
-
-def NoSelfPair (D : D7) : Prop := ∀ i, D.ntw.NonzeroIndexPlace i → ¬ SelfPair D i
-
-def SigTie (D : D7) : Prop :=
-  ∀ (i : D.ntw.Tw), D.ntw.NonzeroIndexPlace i → ∀ (s : D.ntw.Sig i), SideLoc D i (D.ntw.side i s) →
-    ∃ (a : D.nd.Loc) (h : D.ntw.twOf a = i),
-      D.nd.j a = D.ntw.jS i s ∧ D.ntw.twSide a = D.ntw.side i s ∧ HG D.nd D.naut a ∧
-      ∃ x ∈ D.nd.Z a, IsRhoOf D.nd a x (rhoAt D a h s)
 
 def ResidualIrreducibleRankR (D : D7) : Prop :=
   ∀ a, HG D.nd D.naut a → ∀ rb, IsRhoBar D.nd a rb →

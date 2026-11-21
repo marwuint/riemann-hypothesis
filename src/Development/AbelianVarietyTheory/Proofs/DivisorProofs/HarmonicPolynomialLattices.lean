@@ -88,11 +88,6 @@ theorem isLattice_latAt {S T : HSp D} {B : Base S T} (hF : B.F.Good) (h : Bridge
     Submodule.IsLattice D.host.E (B.latAt h) :=
   Formalism.UG.P.global_lattice_isLattice_holds _ _ _ _ (Module.Finite.iff_fg.2 hF.sdS.1.fg) hF.sdS.1.span_eq_top _
 
-theorem smallSt : GlobalTheory.BigOn.Exp.TupLe.SmallSt := by
-  intro D _ _ _ _ _ _ _ _ _ p j _ _ B hB _ O O' _ hO' h P hP
-  exact harmLat_le_span D.LL0.val.toRingHom D.what₂.embLL (labLL0 D) O O' hO'.int B.w B.F.BS hB.wt
-    (GlobalTheory.CoefLatConj.pq_le hB) (isLattice_latAt hB.frame _) hP
-
 end GlobalTheory.SmallSpan
 
 end

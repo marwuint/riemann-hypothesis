@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodCocycleMemCocyclesAndEqStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralChangeOfVariablesIntMatrixSlashStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolyDegreeSlashActionMatrixMulStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodCocycleMemCocyclesAndEq
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralChangeOfVariablesIntMatrixSlash
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolyDegreeSlashActionMatrixMul
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralFromIFinsetSumStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTqRepresentativesRightMulPermutesCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUlRepresentativesRightMulPermStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixNormalizesGammaOneGammaZeroLevelStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTqRepresentativesRightMulPermutesCosets
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUlRepresentativesRightMulPerm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixNormalizesGammaOneGammaZeroLevel
 
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
@@ -56,7 +56,7 @@ theorem hecke_eqv (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hk2 : 2 ≤ k) (f : Modu
     per Γ (k - 2) (hkF (k : ℤ) δ ⇑f) - hk Γ (k - 2) δ (per Γ (k - 2) ⇑f) ∈ B1 Γ (k - 2) := by
   have hfd : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) ⇑f := f.holo'
   have hdet : ∀ i, (δ i).det ≠ 0 := fun i => (hδ i).ne'
-  have hpc := (GlobalTheory.T.eichlerPeriodCocycle_mem_cocycles_and_eq Γ k hk2 f).2
+  have hpc := (_root_.GlobalTheory.HeckeFamilyMatrices.PerCoc.per_mem_Z1_and_eq_slP_eichler_sub Γ k hk2 f).2
   set w := k - 2 with hw
   set F := eichler w ⇑f with hF
   set c : ι → ℂ[X] := fun i => slP w (δ i) (F (toGL (δ i) • UpperHalfPlane.I)) with hc
@@ -76,8 +76,8 @@ theorem hecke_eqv (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hk2 : 2 ≤ k) (f : Modu
     simp only [per, hkF]
     rw [GlobalTheory.T.eichlerIntegralFromI_finset_sum w _ (fun i => hfd.slash _ _), map_sum]
     refine Finset.sum_congr rfl fun i _ => ?_
-    have h := GlobalTheory.T.eichlerIntegral_changeOfVariables_intMatrix_slash k hk2 ⇑f hfd (δ i) (hδ i) ((γ : SL(2, ℤ)) • UpperHalfPlane.I)
-    rw [eq_sub_of_add_eq h.symm, map_sub, GlobalTheory.T.polyDegreeSlashAction_matrix_mul w (δ i) (mat γ) _ (eichler_mem _ _ _),
+    have h := _root_.GlobalTheory.EichlerChangeGL.polySlash_eichler_toGL_smul k hk2 ⇑f hfd (δ i) (hδ i) ((γ : SL(2, ℤ)) • UpperHalfPlane.I)
+    rw [eq_sub_of_add_eq h.symm, map_sub, _root_.GlobalTheory.HeckeFamilyMatrices.SlashAction.polySlash_matrix_mul w (δ i) (mat γ) _ (eichler_mem _ _ _),
       toGL_mul _ _ (hdet i) hγdet, mul_smul, toGL_smul_mat]
   have e3 : ∀ i, slP w (δ i * mat γ) (F (toGL (δ i * mat γ) • UpperHalfPlane.I)) =
       slP w (δ (hex.choose i)) (per Γ w ⇑f (hex.choose_spec i).choose) + c (hex.choose i) := by
@@ -86,7 +86,7 @@ theorem hecke_eqv (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hk2 : 2 ≤ k) (f : Modu
     have hγ' : δ i * mat γ = mat γ' * δ (hex.choose i) := (hex.choose_spec i).choose_spec
     have hγ'det : (mat (γ' : SL(2, ℤ))).det ≠ 0 := by simp [mat]
     rw [hγ', toGL_mul _ _ hγ'det (hdet _), mul_smul, toGL_smul_mat,
-      GlobalTheory.T.polyDegreeSlashAction_matrix_mul w (mat γ') (δ (hex.choose i)) _ (eichler_mem _ _ _),
+      _root_.GlobalTheory.HeckeFamilyMatrices.SlashAction.polySlash_matrix_mul w (mat γ') (δ (hex.choose i)) _ (eichler_mem _ _ _),
       hpc γ' (toGL (δ (hex.choose i)) • UpperHalfPlane.I), map_sub]
     simp only [hc]
     abel
@@ -117,9 +117,9 @@ theorem period_map_equivariant : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l
   intro N l k hN hl hlN hk f
   refine ⟨fun q σ hq hqN hσ => ?_, ?_, fun d σ hσ => ?_⟩
   · exact hecke_eqv _ k (by omega) f (tqFam q σ) (tqFam_det q hq σ)
-      (GlobalTheory.T.heckeTqRepresentatives_right_mul_permutes_cosets N l q hN hl hlN hq hqN σ hσ)
-  · exact hecke_eqv _ k (by omega) f (ulFam l) (ulFam_det l hl) (GlobalTheory.T.heckeUlRepresentatives_right_mul_perm N l hN hl hlN)
+      (_root_.GlobalTheory.TqPerm.tqFam_perm N l q hN hl hlN hq hqN σ hσ)
+  · exact hecke_eqv _ k (by omega) f (ulFam l) (ulFam_det l hl) (_root_.GlobalTheory.HeckeFamilyMatrices.ulFam_perm N l hN hl hlN)
   · exact hecke_eqv _ k (by omega) f (fun _ : Unit => mat σ) (fun _ => by simp [mat])
-      (fun γ => ⟨Equiv.refl _, fun _ => GlobalTheory.T.diamondMatrix_normalizes_gammaOneGammaZeroLevel N l d σ hσ γ⟩)
+      (fun γ => ⟨Equiv.refl _, fun _ => _root_.GlobalTheory.HeckeFamilyMatrices.diam_normalises_lev N l d σ hσ γ⟩)
 
 end GlobalTheory.HeckeFamilyMatrices.HeckeEqv

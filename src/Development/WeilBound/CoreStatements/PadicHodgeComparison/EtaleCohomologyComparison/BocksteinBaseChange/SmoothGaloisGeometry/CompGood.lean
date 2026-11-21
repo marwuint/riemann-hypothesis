@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.SmoothGaloisGeometry.CompSm
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.SmoothGaloisGeometry.SmoothSndOfIsStrictlySemistable
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.SmoothGaloisGeometry.SsModelAlgebraMapInjective
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableGenericFibreLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableGenericFibreLocalization
 
 noncomputable section
 
@@ -17,7 +17,7 @@ theorem Model.smooth_q [FiniteDimensional ℚ_[l] K] (M : Model l K) (hM : M.Goo
   have := OK_away hϖ
   have := OK_dvr (l := l) (K := K)
   exact smooth_snd_of_isStrictlySemistable ϖ M.p hss
-    (fun m r h1 h2 ↦ GlobalTheory.T.semistable_generic_fibre_localization (OK l K) ϖ hϖ m r h1 h2 K)
+    (fun m r h1 h2 ↦ _root_.GlobalTheory.CompanionTheory.Semistable.smooth_generic_fibre (OK l K) ϖ hϖ m r h1 h2 K)
 
 theorem compGood : ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
     CompM (Model.Good (l := l) (K := K)) := by

@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFanMarkedFormUniqueInCell
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MarkValEqZeroOrOne
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdBalancedFormMemCellConeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdBalancedFormVanishesLowRankStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdBalancedFormMemCellCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCellOfInFaceOfCellFormCMField
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdBalancedFormVanishesLowRank
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellLeastDimVanishesWhereFormVanishesDiagonal
 
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.Mark GlobalTheory.CompanionTheory.Ar.Fan
 
@@ -33,7 +35,7 @@ theorem genRank_le_of_label_le {O : Type} [CommRing O] [IsDedekindDomain O] [Cha
     rw [← toReal_sum', evalR_toReal] at this
     simpa using this
   have hin := GlobalTheory.T.inRealCone_summands_of_evalZ_additive_cell O bar ψ X m' γ hγ m v hv.mem hv.nonneg hσγ hψσ.le
-  have hr := GlobalTheory.T.spanRank_le_of_inRealCone_polyhedralCell O bar ψ X m' m γ v hγ hv.mem hv.nonneg hin
+  have hr := _root_.GlobalTheory.PolFan.genRank_le_of_inRCone_cell O bar ψ X m' m γ v hγ hv.mem hv.nonneg hin
   have h2 : sInf {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ σ ∧
       genRank γ = k} ≤ i + 1 := by exact_mod_cast hl
   rw [hrk] at hr
@@ -51,10 +53,10 @@ theorem inFace_iff_of_isMarked {O : Type} [CommRing O] [IsDedekindDomain O] [Cha
   obtain ⟨hβ1, hβ2, -, hβl, -⟩ := hβ
   constructor
   · rintro ⟨hx1, hx2, -, hx4, hx5⟩
-    exact ⟨hx1, hx2, GlobalTheory.T.psd_balanced_form_mem_cell_cone O bar hO q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv x hx1 hx2 hx4 hx5⟩
+    exact ⟨hx1, hx2, _root_.GlobalTheory.CompanionTheory.Ar.Fan.RationalConeOfSum.inRCone_of_add O bar hO q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv x hx1 hx2 hx4 hx5⟩
   · rintro ⟨hx1, hx2, hxv⟩
     have hrk := genRank_le_of_label_le bar q ψ lab i hlab X hX v hv hb
-    have hvan := GlobalTheory.T.psd_balanced_form_vanishes_low_rank O bar hO q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv (by rw [hβl]; exact_mod_cast hrk)
+    have hvan := _root_.GlobalTheory.CompanionTheory.Ar.Fan.VanishingInRationalCone.vanish_of_inRCone_of_genRank_le O bar hO q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv (by rw [hβl]; exact_mod_cast hrk)
     have hsum := inRCone_add' hβv hxv
     have hs1 : β + x ∈ balForms bar X := add_mem hβ1 hx1
     have hs2 : ∀ y, 0 ≤ (β + x) y y := fun y => by

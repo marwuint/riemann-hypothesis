@@ -3,9 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsTaylorExpansionOr
 import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsPeriodHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeAndRelDimOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveCrystallineBaseChangeNilpotentThickeninStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPeriodEqPeriodOverThickeningStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNilpotentOfNilpotentDividedPowersIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveCrystallineBaseChangeNilpotentThickenin
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GaussManinPeriods
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPeriodEqPeriodOverThickening
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNilpotentOfNilpotentDividedPowersIdeal
 
 set_option autoImplicit false
 
@@ -27,7 +30,7 @@ theorem pTaylor : PTaylor := by
   intro I _ _ g B _ _ 𝒜 _ hA hg y₀ A₀ _ φ₀ hφ₀ L₀ u₀ F σ e h0 hy hE hτ P₀ hP₀ D _ _ π κ hκ hπ N t ht htN
     j hj A' _ φ' _ m' i h hi k x d hd c per hper
   obtain ⟨hA₀, hg₀⟩ := GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback _ 𝒜 A₀ φ₀ g hφ₀ hA hg
-  have hspan := (GlobalTheory.T.primitiveCrystalline_baseChange_nilpotent_thickening A₀ g hA₀ hg₀ D π κ hκ hπ k).2
+  have hspan := (_root_.GlobalTheory.primCris_isBC_of_nilThick A₀ g hA₀ hg₀ D π κ hκ hπ k).2
   have hmem : (liftMor κ h).pull (m'.pull c) ∈ Submodule.span D (Set.range k.pull) := by
     rw [hspan]; exact Submodule.mem_top
   obtain ⟨n, f, v, hv⟩ := Submodule.mem_span_set'.1 hmem
@@ -44,9 +47,9 @@ theorem pTaylor : PTaylor := by
     have e2 := congrArg (Submodule.subtype _) hsum
     rw [map_sum] at e2
     exact e1.symm.trans e2
-  have key := GlobalTheory.T.taylor_period_eq_period_over_thickening_alt (F := F) (F₀ := fibFam u₀) e (fibUnif u₀)
+  have key := _root_.GlobalTheory.GaussManinTaylor.taylor_period_eq_period_over_thickening (F := F) (F₀ := fibFam u₀) e (fibUnif u₀)
     (isSeparated_left_of_isAbelianScheme 𝒜 hA) (isSeparated_left_of_isAbelianScheme A₀ hA₀) h0
-    (fun _ ↦ trivial) (fun l _ ↦ (hτ l).symm) φ₀ (fun p ↦ (hE p.2).symm) πa (GlobalTheory.T.isNilpotent_of_nilpotentDividedPowers_ideal κ hκ) κ
+    (fun _ ↦ trivial) (fun l _ ↦ (hτ l).symm) φ₀ (fun p ↦ (hE p.2).symm) πa (_root_.GlobalTheory.AnPer.isNilpotent_of_isDPNilpotent κ hκ) κ
     (fun _ hd ↦ hd) N t ht htN (j : B →+* D) hj (A₀.hom ≫ spMap π)
     (by rw [Category.comp_id]; rfl) nn _ k.isMor rfl c.1 per hper Finset.univ f (fun r ↦ (a r).1)
     (fun r l ↦ P₀ l (a r)) _ (fun _ _ ↦ rfl) (fun r ↦ hP₀ (a r)) hpull x

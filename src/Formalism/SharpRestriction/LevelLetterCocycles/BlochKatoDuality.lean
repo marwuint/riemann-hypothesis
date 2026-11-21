@@ -103,19 +103,6 @@ def PushoutSpanLengthBound : Prop :=
 
 end Main
 
-section Bridge
-
-variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
-    [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
-
-def grepOf (T : Formalism.BasicNotions.LocLat G Qp LL O) : GRep G Qp LL O :=
-  @GRep.mk G _ _ Qp LL O _ _ _ _ _ _ T.V T.acg T.modLL T.modQp T.towQp T.modO T.towO T.fdim T.top
-    T.mtop T.cadd T.csmul T.ρ T.cont
-
-def latOf (T : Formalism.BasicNotions.LocLat G Qp LL O) : Lattice (O := O) (grepOf T).ρ := T.L
-
-end Bridge
-
 section Packet
 
 open Formalism.BasicNotions
@@ -143,11 +130,6 @@ def adm5 (D : Formalism.BasicNotions.D7) : Prop :=
 
 def adm6 (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l), drDualCore ((D.loc l).PD K)
-
-def admitted (D : Formalism.BasicNotions.D7) : Prop :=
-  adm1 D ∧ adm2 D ∧ adm3 D ∧ ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm6 D
-
-def Stmt (D : Formalism.BasicNotions.D7) : Prop := admitted D → Conclusion1 D ∧ Conclusion2 D
 
 end Packet
 

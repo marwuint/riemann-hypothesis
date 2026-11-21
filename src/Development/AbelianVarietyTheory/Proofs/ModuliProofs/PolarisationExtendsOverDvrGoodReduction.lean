@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapEqIInfDiscreteValuationSubring
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolPull
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleExtendedPrincipalPolarisationDvrStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleExtendedPrincipalPolarisationDvr
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleOfFaithfullyFlat
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaGroupKTrivialOfPrincipalGenericFibreDvr
 
@@ -76,7 +76,7 @@ theorem polarisation_extends_dvr : Laws → Laws2 → ∀ (V K : Type) [CommRing
     (algebraMap_adicCompletion_injective_of_dvr V) P B M φ hφ hL
   have hπ := isGrpPullback_pullback B (spMap (algebraMap V V'))
   have hB' := PolPull.isAbelianScheme_of_isGrpPullback hB hπ
-  have hA' := GlobalTheory.T.relAmple_extended_principalPolarisation_dvr h h₂ V' (FractionRing V') P' _ M' φ' hB' hφ' hL' inferInstance
+  have hA' := _root_.GlobalTheory.ExtAmple.relAmple_extension h h₂ V' (FractionRing V') P' _ M' φ' hB' hφ' hL' inferInstance
   have : Module.FaithfullyFlat V V' := Module.FaithfullyFlat.of_flat_of_isLocalHom
   have hA : RelAmple B M.L.L :=
     AmpleDescent.relAmple_of_faithfullyFlat V V' B _ _ M.L.L M'.L.L hB hπ M.L.isLB M'.L.isLB hM hA'

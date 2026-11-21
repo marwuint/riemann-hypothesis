@@ -91,9 +91,6 @@ abbrev BForm (D : D7) (n : ℕ) : Type := D.what₂.Tau → Matrix (Fin n) (Fin 
 
 def embV (τ : D.what₂.Tau) (x : Fin n → D.host.E) : Fin n → ℂ := fun i => DV.tauEmb D τ (x i)
 
-def Qv (b : BForm D n) (x : Fin n → D.host.E) : ℝ :=
-  ∑ τ, (star (embV D τ x) ⬝ᵥ (b τ).mulVec (embV D τ x)).re
-
 def PsdRat (b : BForm D n) : Prop :=
   (∀ τ, (b τ).PosSemidef) ∧ ∃ U : Submodule D.host.E (Fin n → D.host.E), ∀ τ,
     LinearMap.ker (Matrix.toLin' (b τ)) = Submodule.span ℂ (embV D τ '' (U : Set (Fin n → D.host.E)))
@@ -121,13 +118,6 @@ theorem embV_smul (τ : D.what₂.Tau) (c : D.host.E) (x : Fin n → D.host.E) :
 def Bv (b : BForm D n) (x y : Fin n → D.host.E) : ℝ :=
   ∑ τ, (star (embV D τ x) ⬝ᵥ (b τ).mulVec (embV D τ y) +
     star (embV D τ y) ⬝ᵥ (b τ).mulVec (embV D τ x)).re
-
-theorem Bv_self (b : BForm D n) (x : Fin n → D.host.E) : Bv D b x x = 2 * Qv D b x := by
-  unfold Bv Qv
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl fun τ _ => ?_
-  rw [Complex.add_re]
-  ring
 
 theorem Bv_comm (b : BForm D n) (x y : Fin n → D.host.E) : Bv D b x y = Bv D b y x := by
   unfold Bv
@@ -180,96 +170,6 @@ def c1 (CR T c : ℝ) (j : ℕ) : ℝ :=
   RRv D CR * T * c * (dP D j : ℝ) ^ 2 * (rho D j : ℝ) / 2
 
 end Cusp
-
-section Half
-
-variable {E : Type} [Field E] [NumberField E] {cj : E → E} {Y : Type} [AddCommGroup Y] [Module (𝓞 E) Y]
-
-theorem halfForm_eq (β : ModuliIntegralCharts.SymB cj Y) (c c' : 𝓞 E) (hc : (c' : E) = cj (c : E)) (h1 : c + c' = 1) (y : Y) :
-    (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) y y = 2 * (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c • y) y := by
-  have hs := β.2.1
-  have hb := β.2.2 c c' hc y y
-  have h2 : (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) ((c + c') • y) y =
-      (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c • y) y + (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c' • y) y := by
-    rw [add_smul, map_add, LinearMap.add_apply]
-  rw [h1, one_smul, hs (c' • y) y, ← hb] at h2
-  linarith
-
-theorem halfForm_int (β : ModuliIntegralCharts.SymB cj Y) (c c' : 𝓞 E) (hc : (c' : E) = cj (c : E)) (h1 : c + c' = 1)
-    (hβ : ∀ a b, ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a b = z) (y : Y) :
-    ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) y y / 2 = z := by
-  obtain ⟨z, hz⟩ := hβ (c • y) y
-  refine ⟨z, ?_⟩
-  rw [halfForm_eq β c c' hc h1 y, hz]
-  ring
-
-end Half
-
-private theorem isIntegral_one_add_sqrt_neg_div_two {E : Type} [Field E] [NumberField E] (s : E) (d : ℕ) (k : ℤ)
-    (hs : s ^ 2 = -(d : E)) (hk : (d : ℤ) + 1 = 4 * k) : IsIntegral ℤ ((1 + s) / 2) := by
-  refine ⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C k, ?_, ?_⟩
-  · first
-    | monicity!
-    | monicity
-  · have h4 : (4 : E) * (k : E) = (d : E) + 1 := by exact_mod_cast hk.symm
-    simp only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X,
-      Polynomial.eval₂_C]
-    try simp only [algebraMap_int_eq, eq_intCast]
-    linear_combination (1 / 4 : E) * hs + (1 / 4 : E) * h4
-
-theorem halfForm_int_host (D : D7) {Y : Type} [AddCommGroup Y] [Module (𝓞 D.host.E) Y]
-    (β : ModuliIntegralCharts.SymB (fun x : D.host.E => D.host.conj x) Y)
-    (hβ : ∀ a b, ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a b = z) (y : Y) :
-    ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) y y / 2 = z := by
-  have h16 : D.host.d % 16 = 7 := D.host.hyp.2.2.2.1
-  obtain ⟨k, hk⟩ : ∃ k : ℤ, (D.host.d : ℤ) + 1 = 4 * k := ⟨((D.host.d : ℤ) + 1) / 4, by omega⟩
-  set s := D.host.sqd with hs_def
-  have hs : s ^ 2 = -(D.host.d : D.host.E) := D.host.sqd_sq
-
-  have hcs : D.host.conj s = -s := by
-    apply D.host.φ₀.injective
-    rw [emb_conj, map_neg]
-    have hw : (D.host.φ₀ s) ^ 2 = -(D.host.d : ℂ) := by
-      rw [← map_pow, hs, map_neg, map_natCast]
-    set w := D.host.φ₀ s
-    have hre : w.re * w.re - w.im * w.im = -(D.host.d : ℝ) := by
-      have h := congrArg Complex.re hw
-      first
-      | rwa [pow_two, Complex.mul_re, Complex.neg_re, Complex.natCast_re] at h
-      | simpa [pow_two] using h
-    have him : w.re * w.im + w.im * w.re = 0 := by
-      have h := congrArg Complex.im hw
-      first
-      | rwa [pow_two, Complex.mul_im, Complex.neg_im, Complex.natCast_im, neg_zero] at h
-      | simpa [pow_two] using h
-    have hdpos : (0 : ℝ) < (D.host.d : ℝ) := by
-      have h : 0 < D.host.d := by omega
-      exact_mod_cast h
-    have h0 : w.re = 0 := by
-      by_contra hne
-      have him' : w.im = 0 := by
-        have h : w.re * w.im = 0 := by linarith
-        rcases mul_eq_zero.mp h with h | h
-        · exact absurd h hne
-        · exact h
-      rw [him'] at hre
-      nlinarith [mul_self_nonneg w.re]
-    apply Complex.ext <;> simp [h0]
-
-  have hint : IsIntegral ℤ ((1 + s) / 2) := isIntegral_one_add_sqrt_neg_div_two s D.host.d k hs hk
-  let c : 𝓞 D.host.E := ⟨(1 + s) / 2, hint⟩
-  have hc : ((1 - c : 𝓞 D.host.E) : D.host.E) = (fun x : D.host.E => D.host.conj x) (c : D.host.E) := by
-    show (1 : D.host.E) - (1 + s) / 2 = D.host.conj ((1 + s) / 2)
-    rw [map_div₀, map_add, map_one, hcs, map_ofNat]
-    ring
-  exact halfForm_int β c (1 - c) hc (add_sub_cancel c 1) hβ y
-
-theorem Qv_int_host (D : D7) {n : ℕ} (X : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : BForm D n)
-    (hb : ∀ x y : X, ∃ z : ℤ, Bv D b x y = z) (x : X) : ∃ z : ℤ, Qv D b x = z := by
-  obtain ⟨z, hz⟩ := halfForm_int_host D (symB D X b) (fun a c => by rw [symB_apply]; exact hb a c) x
-  refine ⟨z, ?_⟩
-  rw [symB_apply, Bv_self] at hz
-  linarith
 
 structure Prov (D : D7) where
 
@@ -420,61 +320,7 @@ def PointsLemma (L : SizeData₂ D) (X : Prov D) (CR Ck Ch Ah Cc Ac : ℝ) : Pro
     (nn.sum fun la v => v * lnN X la) / degO X ≤
       (rhoP X CR T c j ka : ℝ) * PPv D L Cc Ac * ka.size
 
-def Stmt (L : SizeData₂ D) (X : Prov D) (CG AG C A CR Ck Ch Ah Cc Ac : ℝ) : Prop :=
-  admitted L X CG AG → Conclusion1 L X C A ∧ Conclusion2 X CR ∧ PointsLemma L X CR Ck Ch Ah Cc Ac
-
-def TransferenceBound (X : Prov D) (CR : ℝ) : Prop := TransferenceTheoremCond → Conclusion2 X CR
-
 end Statements
-
-theorem isLattice_of_le_of_le {K V : Type*} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
-    [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {N₁ M N₂ : Submodule (𝓞 K) V}
-    (h₁ : Submodule.IsLattice K N₁) (h₂ : Submodule.IsLattice K N₂) (a : N₁ ≤ M) (b : M ≤ N₂) :
-    Submodule.IsLattice K M := by
-  refine ⟨?_, ?_⟩
-  · exact (isNoetherian_submodule.mp (isNoetherian_of_fg_of_noetherian N₂ h₂.fg)) M b
-  · apply eq_top_iff.mpr
-    rw [← h₁.span_eq_top]
-    exact Submodule.span_mono (fun v hv => a hv)
-
-def Between {D : D7} (X : Prov D) : Prop :=
-  ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ ka : Wt D j, ∃ N₁ N₂ : Submodule (𝓞 X.KO) (X.Cusp j ka),
-    Submodule.IsLattice X.KO N₁ ∧ Submodule.IsLattice X.KO N₂ ∧ N₁ ≤ X.Mlat j ka ∧ X.Mlat j ka ≤ N₂
-
-theorem lattice_iff_between_lattices {D : D7} (X : Prov D) : adm1 X ↔ Between X := by
-  constructor
-  · intro h j hj hjm ka
-    exact ⟨X.Mlat j ka, X.Mlat j ka, h j hj hjm ka, h j hj hjm ka, le_rfl, le_rfl⟩
-  · intro h j hj hjm ka
-    obtain ⟨N₁, N₂, h₁, h₂, ha, hb⟩ := h j hj hjm ka
-    exact isLattice_of_le_of_le h₁ h₂ ha hb
-
-theorem two_le_dP (D : D7) {j : ℕ} (hj : j < D.R.m) : 2 ≤ dP D j := by
-  unfold dP rho
-  have h1 : 1 ≤ (D.R.sigW j).2 := by
-    show 1 ≤ D.R.m - j
-    omega
-  have h2 : 1 ≤ D.R.f := by
-    unfold Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n
-    have := D.R.m_le_f
-    have := D.R.two_le_m
-    omega
-  calc 2 = 2 * 1 * 1 := by norm_num
-    _ ≤ 2 * D.R.f * (D.R.sigW j).2 := by gcongr
-
-theorem sup_bound_at_zero_exponent {D : D7} (X : Prov D) : Conclusion2 X 0 := by
-  intro _ j _ hjm hd
-  exfalso
-  have h2 : (2 : ℝ) ≤ (dP D j : ℝ) := by exact_mod_cast two_le_dP D hjm
-  unfold RRv at hd
-  rw [Real.rpow_zero] at hd
-  nlinarith
-
-theorem q_bound_at_zero_weight_constant {D : D7} (L : SizeData₂ D) (X : Prov D) (CR Ch Ah Cc Ac : ℝ) : PointsLemma L X CR 0 Ch Ah Cc Ac := by
-  intro _ _ j _ _ ka _ _ hs
-  exfalso
-  rw [zero_mul, zero_mul, zero_mul] at hs
-  linarith [Wt.one_le_size ka]
 
 abbrev ProvF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Type 1 :=
   ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x), Prov (Fm.D x i)
@@ -485,27 +331,11 @@ variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ProvF Fm)
 
 def familyUnitInput : Prop := ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), adm1 (XF x hx i)
 
-def FamilySecondHypothesis : Prop :=
-  ∃ CG AG x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, adm2 (Fm.L x i) (XF x hx i) CG AG
-
 def FamilyAdmittedLemmaThree : Prop := ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), adm3 (XF x hx i)
 
 def ChowlaSelbergFamily : Prop := ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ChowlaSelbergPeriod (Fm.L x i)
 
-def AdmF : Prop := familyUnitInput Fm XF ∧ FamilySecondHypothesis Fm XF ∧ FamilyAdmittedLemmaThree Fm XF ∧ TransferenceTheoremCond ∧ ChowlaSelbergFamily Fm
-
-def Conclusion1Family : Prop :=
-  ∃ C A x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, Conclusion1 (Fm.L x i) (XF x hx i) C A
-
 def Conclusion2Family (CR : ℝ) : Prop := ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Conclusion2 (XF x hx i) CR
-
-def Conclusion3Family (CR Ck : ℝ) : Prop :=
-  ∀ Ch Ah : ℝ, ∃ Cc Ac x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
-    PointsLemma (Fm.L x i) (XF x hx i) CR Ck Ch Ah Cc Ac
-
-def KudlaFamilyStatement (CR Ck : ℝ) : Prop := AdmF Fm XF → Conclusion1Family Fm XF ∧ Conclusion2Family Fm XF CR ∧ Conclusion3Family Fm XF CR Ck
-
-def TransferenceBoundFamily (CR : ℝ) : Prop := TransferenceTheoremCond → Conclusion2Family Fm XF CR
 
 end Family
 
@@ -526,20 +356,6 @@ def MeanLogSupLowerBoundFamilyGivenPolynomial (C A : ℝ) : Prop :=
 
 def QBoundFamilyGivenPolynomials (CR Ck Ch Ah Cc Ac : ℝ) : Prop :=
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, PointsLemma (Fm.L x i) (XF x hx i) CR Ck Ch Ah Cc Ac
-
-theorem AdmFK.toF {CG AG : ℝ} (h : AdmFK Fm XF CG AG) : AdmF Fm XF := by
-  obtain ⟨h1, ⟨x0, h2⟩, h3, h4, h5⟩ := h
-  exact ⟨h1, ⟨CG, AG, x0, h2⟩, h3, h4, h5⟩
-
-theorem MeanLogSupLowerBoundFamilyGivenPolynomial.toF {C A : ℝ} (h : MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A) : Conclusion1Family Fm XF := by
-  obtain ⟨x0, hx⟩ := h
-  exact ⟨C, A, x0, hx⟩
-
-theorem q_bound_family_of_polynomials {CR Ck : ℝ} (h : ∀ Ch Ah : ℝ, ∃ Cc Ac : ℝ, QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac) :
-    Conclusion3Family Fm XF CR Ck := by
-  intro Ch Ah
-  obtain ⟨Cc, Ac, x0, hx⟩ := h Ch Ah
-  exact ⟨Cc, Ac, x0, hx⟩
 
 end FamilyK
 
@@ -564,39 +380,6 @@ theorem one_le_zBase {D : D7} (L : SizeData₂ D) : 1 ≤ zBase L := by
   calc (1 : ℝ) = 1 * 1 * 1 := by norm_num
     _ ≤ (D.R.f : ℝ) * (D.R.r : ℝ) * L.sc.L := by gcongr
 
-theorem PPv_mono {D : D7} (L : SizeData₂ D) {C C' A A' : ℝ} (h0 : 0 ≤ C) (hC : C ≤ C') (hA : A ≤ A') :
-    PPv D L C A ≤ PPv D L C' A' := by
-  unfold PPv
-  have hZ := one_le_zBase L
-  have h1 : zBase L ^ A ≤ zBase L ^ A' := Real.rpow_le_rpow_of_exponent_le hZ hA
-  have h2 : 0 ≤ zBase L ^ A := Real.rpow_nonneg (by linarith) _
-  calc C * zBase L ^ A ≤ C * zBase L ^ A' := mul_le_mul_of_nonneg_left h1 h0
-    _ ≤ C' * zBase L ^ A' := mul_le_mul_of_nonneg_right hC (le_trans h2 h1)
-
-theorem PointsLemma.mono {D : D7} {L : SizeData₂ D} {X : Prov D} {CR Ck Ch Ah Cc Ac Ch' Ah' Cc' Ac' : ℝ}
-    (hh : PPv D L Ch' Ah' ≤ PPv D L Ch Ah) (hc : PPv D L Cc Ac ≤ PPv D L Cc' Ac')
-    (h : PointsLemma L X CR Ck Ch Ah Cc Ac) : PointsLemma L X CR Ck Ch' Ah' Cc' Ac' := by
-  intro hCR hO j hj hjm ka hn hL hs T c hT hc0 hTc
-  obtain ⟨hOd, hOr⟩ := hO
-  obtain ⟨be, hbe0, hbe, H⟩ := h hCR ⟨hOd.trans hh, hOr.trans hh⟩ j hj hjm ka hn hL hs T c hT hc0 hTc
-  have hsz : 0 ≤ ka.size := le_trans zero_le_one (Wt.one_le_size ka)
-  refine ⟨be, hbe0, hbe.trans (mul_le_mul_of_nonneg_right hc hsz), fun th hspan hth => ?_⟩
-  obtain ⟨nn, hnn, hsum⟩ := H th hspan (fun i => (hth i).trans (mul_le_mul_of_nonneg_right hh hsz))
-  refine ⟨nn, hnn, hsum.trans ?_⟩
-  have hr : (0 : ℝ) ≤ (rhoP X CR T c j ka : ℝ) := Nat.cast_nonneg _
-  calc (rhoP X CR T c j ka : ℝ) * PPv D L Cc Ac * ka.size
-        = (rhoP X CR T c j ka : ℝ) * (PPv D L Cc Ac * ka.size) := by ring
-    _ ≤ (rhoP X CR T c j ka : ℝ) * (PPv D L Cc' Ac' * ka.size) :=
-        mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hc hsz) hr
-    _ = (rhoP X CR T c j ka : ℝ) * PPv D L Cc' Ac' * ka.size := by ring
-
-theorem QBoundFamilyGivenPolynomials.mono {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {XF : ProvF Fm} {CR Ck Ch Ah Cc Ac Ch' Ah' Cc' Ac' : ℝ}
-    (h1 : 0 ≤ Ch') (h2 : Ch' ≤ Ch) (h3 : Ah' ≤ Ah) (h4 : 0 ≤ Cc) (h5 : Cc ≤ Cc') (h6 : Ac ≤ Ac')
-    (h : QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac) : QBoundFamilyGivenPolynomials Fm XF CR Ck Ch' Ah' Cc' Ac' := by
-  obtain ⟨x0, hx⟩ := h
-  exact ⟨x0, fun x hx1 hx0 i =>
-    PointsLemma.mono (PPv_mono _ h1 h2 h3) (PPv_mono _ h4 h5 h6) (hx x hx1 hx0 i)⟩
-
 def PolynomialFamilyAtObjects (CG AG C A CR Ck Ch Ah Cc Ac : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ProvF Fm) : Prop :=
   AdmFK Fm XF CG AG → MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A ∧ Conclusion2Family Fm XF CR ∧ QBoundFamilyGivenPolynomials Fm XF CR Ck Ch Ah Cc Ac
 
@@ -608,44 +391,11 @@ theorem polynomial_family_iff_objects {𝒪 : ObjClass} {CG AG C A CR Ck Ch Ah C
     PacketAlongFamilyInClass 𝒪 CG AG C A CR Ck Ch Ah Cc Ac Fm CH ↔
       ∀ XF : ProvF Fm, (∀ x hx i, 𝒪 (Fm.L x i) (XF x hx i)) → PolynomialFamilyAtObjects CG AG C A CR Ck Ch Ah Cc Ac Fm XF := Iff.rfl
 
-def LambdaBoundFamilyOnly (𝒪 : ObjClass) (CG AG C A : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (_CH : ℝ) : Prop :=
-  ∀ XF : ProvF Fm, (∀ x hx i, 𝒪 (Fm.L x i) (XF x hx i)) → AdmFK Fm XF CG AG → MeanLogSupLowerBoundFamilyGivenPolynomial Fm XF C A
-
-theorem PacketAlongFamilyInClass.lam {𝒪 : ObjClass} {CG AG C A CR Ck Ch Ah Cc Ac : ℝ} {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ}
-    (h : PacketAlongFamilyInClass 𝒪 CG AG C A CR Ck Ch Ah Cc Ac Fm CH) : LambdaBoundFamilyOnly 𝒪 CG AG C A Fm CH := by
-  intro XF hX hA
-  exact (h XF hX hA).1
-
-theorem polynomial_family_zero_iff_lambda {𝒪 : ObjClass} {CG AG C A Ch Ah Cc Ac : ℝ} {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {CH : ℝ} :
-    PacketAlongFamilyInClass 𝒪 CG AG C A 0 0 Ch Ah Cc Ac Fm CH ↔ LambdaBoundFamilyOnly 𝒪 CG AG C A Fm CH := by
-  constructor
-  · intro h
-    exact PacketAlongFamilyInClass.lam h
-  · intro h XF hX hA
-    exact ⟨h XF hX hA, fun x hx i => sup_bound_at_zero_exponent _, ⟨0, fun x hx _ i => q_bound_at_zero_weight_constant _ _ _ _ _ _ _⟩⟩
-
 structure Sel where
   C : ℝ → ℝ → ℝ
   A : ℝ → ℝ → ℝ
   Cc : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ
   Ac : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ
-
-def ClosedAbsoluteShare (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
-  ∃ s : Sel, Formalism.MainNotions.Closed 𝒞 (fun Fm CH => ∀ CG AG CR Ck Ch Ah : ℝ,
-    PacketAlongFamilyInClass 𝒪 CG AG (s.C CG AG) (s.A CG AG) CR Ck Ch Ah (s.Cc CG AG CR Ck Ch Ah) (s.Ac CG AG CR Ck Ch Ah) Fm CH)
-
-theorem ClosedAbsoluteShare.fixed {𝒪 : ObjClass} {𝒞 : Formalism.MainNotions.FamClass} (h : ClosedAbsoluteShare 𝒪 𝒞) :
-    ∀ CG AG : ℝ, ∃ C A : ℝ, ∀ CR Ck Ch Ah : ℝ, ∃ Cc Ac : ℝ,
-      Formalism.MainNotions.Closed 𝒞 (fun Fm CH => PacketAlongFamilyInClass 𝒪 CG AG C A CR Ck Ch Ah Cc Ac Fm CH) := by
-  obtain ⟨s, hs⟩ := h
-  unfold Formalism.MainNotions.Closed at hs
-  obtain ⟨ε1, hε1, hK⟩ := hs
-  intro CG AG
-  refine ⟨s.C CG AG, s.A CG AG, fun CR Ck Ch Ah => ⟨s.Cc CG AG CR Ck Ch Ah, s.Ac CG AG CR Ck Ch Ah, ?_⟩⟩
-  unfold Formalism.MainNotions.Closed
-  refine ⟨ε1, hε1, fun eps he1 he2 => ?_⟩
-  obtain ⟨K, hK'⟩ := hK eps he1 he2
-  exact ⟨K, fun Fm CH hC hL => hK' Fm CH hC hL CG AG CR Ck Ch Ah⟩
 
 end Formalism.MainNotions.WeightFamilies
 

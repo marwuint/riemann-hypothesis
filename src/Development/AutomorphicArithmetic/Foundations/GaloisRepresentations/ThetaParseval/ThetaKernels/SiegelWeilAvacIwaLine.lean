@@ -35,9 +35,6 @@ theorem frame_eps_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : �
   rw [e1, e2, ← key, hε]
   ext (i|i) (j|j) <;> simp [incM, Matrix.fromBlocks_map, Matrix.one_apply] <;> split_ifs <;> simp
 variable {n : ℕ}
-section Unit
-variable {ι : Type} [Fintype ι] [DecidableEq ι]
-end Unit
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 theorem mL_mem_k (κ : GL (Fin d.n) (AE F E)) :
     (incM F d.b.1 * Nk (σ := σ) κ * incM F (d.b⁻¹).1)ᵀ * dbl (incM F d.Y.J) *

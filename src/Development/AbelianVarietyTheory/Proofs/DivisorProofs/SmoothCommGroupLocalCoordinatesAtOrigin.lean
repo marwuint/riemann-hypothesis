@@ -6,12 +6,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeStalkEva
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantVectorFieldApplyConstantEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermOriginConstantSectionEqOriginStalkConstants
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantVectorFieldEvalOriginEqTangentDerivativStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentDerivativeAtOriginAddTangentVectorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentDerivativeAtOriginSmulTangentVectorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentDerivativeAtOriginAddTangentVector
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentDerivativeAtOriginSmulTangentVector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorEqOfTangentDerivativeAtOriginEqStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentVectorOfOriginDerivationStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OriginLocalRingNoetherianFreeUnitSectionConormalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationFamilyCotangentBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationFamilyCotangentBasis
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry IsLocalRing
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -47,14 +47,14 @@ theorem coords_at_origin : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
   let φ : TanM (𝟙 (Sp R)) G →+ (G.left.presheaf.stalk (origin G) → R) :=
     { toFun := fun w => tanDer G w
       map_zero' := funext fun f => by
-        have h := GlobalTheory.T.tangentDerivativeAtOrigin_smul_tangentVector R G 0 0 f
+        have h := _root_.GlobalTheory.CoordsOrigin.tanDer_smul R G 0 0 f
         rwa [zero_smul, zero_mul] at h
-      map_add' := fun u w => funext fun f => GlobalTheory.T.tangentDerivativeAtOrigin_add_tangentVector R G u w f }
+      map_add' := fun u w => funext fun f => _root_.GlobalTheory.CoordsOrigin.tanDer_add R G u w f }
   have hlin : ∀ (c : Fin n → R) f, tanDer G (∑ a, c a • v a) f = ∑ a, c a * tanDer G (v a) f := by
     intro c f
     have h1 : tanDer G (∑ a, c a • v a) f = φ (∑ a, c a • v a) f := rfl
     rw [h1, map_sum, Finset.sum_apply]
-    exact Finset.sum_congr rfl fun a _ => GlobalTheory.T.tangentDerivativeAtOrigin_smul_tangentVector R G (c a) (v a) f
+    exact Finset.sum_congr rfl fun a _ => _root_.GlobalTheory.CoordsOrigin.tanDer_smul R G (c a) (v a) f
   have hbasis : ∀ D : G.left.presheaf.stalk (origin G) → R, (∀ x y, D (x + y) = D x + D y) →
       (∀ x y, D (x * y) = evO G x * D y + evO G y * D x) → (∀ r, D (algebraMap R _ r) = 0) →
       ∃! c : Fin n → R, ∀ x, D x = ∑ a, c a * tanDer G (v a) x := by
@@ -69,7 +69,7 @@ theorem coords_at_origin : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
       have hw' : ∑ a, c a • v a = w := GlobalTheory.T.tangentVector_eq_of_tangentDerivativeAtOrigin_eq R G _ _ fun f => by rw [hlin, hw, hc' f]
       funext a
       rw [← hw', v.repr_sum_self]
-  obtain ⟨z, hz0, hz1, hz2⟩ := GlobalTheory.T.derivation_family_cotangent_basis R _ (evO G) (GlobalTheory.FormalOrigin.evO_constO R G) hF hFin n
+  obtain ⟨z, hz0, hz1, hz2⟩ := _root_.GlobalTheory.CoordsAlg.coords_of_derivation_basis R _ (evO G) (GlobalTheory.FormalOrigin.evO_constO R G) hF hFin n
     (fun a => tanDer G (v a)) hadd hmul hc hbasis
   exact ⟨z, hz0, fun a i => by rw [key]; exact hz1 a i, hz2⟩
 

@@ -1,8 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyRayDataOfNeZero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassPartialZetaContinuationStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassPartialZetaContinuation
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayLSeriesEulerProduct
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayLNonvanishingAtOneStatement
 
 open NumberField IsDedekindDomain GlobalTheory.Mem Complex
 open scoped ComplexOrder
@@ -238,89 +237,6 @@ theorem two_le_absNorm (v : HeightOneSpectrum (𝓞 K)) : 2 ≤ Ideal.absNorm v.
     rw [Ne, Ideal.absNorm_eq_one_iff]; exact v.isPrime.ne_top
   omega
 
-theorem eq_span_of_not_prime (h2 : Module.finrank ℚ K = 2) (v : HeightOneSpectrum (𝓞 K))
-    (hv : ¬ (Ideal.absNorm v.asIdeal).Prime) :
-    ∃ p : ℕ, v.asIdeal = Ideal.span {(p : 𝓞 K)} ∧ Ideal.absNorm v.asIdeal = p ^ 2 := by
-  have hP := v.isPrime
-  have h2' := two_le_absNorm v
-  have hm := Ideal.absNorm_mem v.asIdeal
-  obtain ⟨p, hp, hpv⟩ : ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ v.asIdeal := by
-    rw [← Nat.prod_primeFactorsList (n := Ideal.absNorm v.asIdeal) (by omega), Nat.cast_list_prod] at hm
-    obtain ⟨x, hx, hxv⟩ := (Ideal.IsPrime.multiset_prod_mem_iff_exists_mem hP
-      (((Ideal.absNorm v.asIdeal).primeFactorsList.map Nat.cast : List (𝓞 K)) : Multiset (𝓞 K))).1
-      (by simpa using hm)
-    simp only [Multiset.mem_coe, List.mem_map] at hx
-    obtain ⟨p, hp, rfl⟩ := hx
-    exact ⟨p, Nat.prime_of_mem_primeFactorsList hp, hxv⟩
-  have hN : Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ 2 := by
-    rw [Ideal.absNorm_span_natCast, RingOfIntegers.rank, h2]
-  obtain ⟨J, hJ⟩ : v.asIdeal ∣ Ideal.span {(p : 𝓞 K)} := by
-    rw [Ideal.dvd_span_singleton]; exact hpv
-  have hmul : p ^ 2 = Ideal.absNorm v.asIdeal * Ideal.absNorm J := by rw [← hN, hJ, map_mul]
-  obtain ⟨i, hi, hiv⟩ := (Nat.dvd_prime_pow hp).1 ⟨_, hmul⟩
-  have hi2 : i = 2 := by
-    interval_cases i
-    · rw [pow_zero] at hiv; omega
-    · rw [pow_one] at hiv; exact absurd (hiv ▸ hp) hv
-    · rfl
-  subst hi2
-  refine ⟨p, ?_, hiv⟩
-  have hJ1 : Ideal.absNorm J = 1 := by
-    rw [hiv] at hmul
-    exact (Nat.mul_eq_left (pow_ne_zero _ hp.ne_zero)).1 hmul.symm
-  rw [Ideal.absNorm_eq_one_iff] at hJ1
-  rw [hJ, hJ1, Ideal.mul_top]
-
-theorem summable_of_not_prime_or_le (h2 : Module.finrank ℚ K = 2) (N : ℕ) {ι : Type}
-    (f : ι → HeightOneSpectrum (𝓞 K)) (hf : Function.Injective f)
-    (h : ∀ i, (Ideal.absNorm (f i).asIdeal).Prime → Ideal.absNorm (f i).asIdeal ≤ N) :
-    Summable fun i => ((Ideal.absNorm (f i).asIdeal : ℕ) : ℝ)⁻¹ := by
-  have hfin : {i | Ideal.absNorm (f i).asIdeal ≤ N}.Finite := by
-    have h1 : {I : Ideal (𝓞 K) | Ideal.absNorm I ≤ N}.Finite := Ideal.finite_setOfPred_absNorm_le N
-    refine Set.Finite.preimage (f := fun i => (f i).asIdeal) ?_ h1
-    intro i _ j _ hij
-    exact hf (HeightOneSpectrum.ext hij)
-  rw [← hfin.summable_compl_iff]
-  have hex : ∀ i : ↥({i | Ideal.absNorm (f i).asIdeal ≤ N}ᶜ : Set ι), ∃ p : ℕ,
-      (f i).asIdeal = Ideal.span {(p : 𝓞 K)} ∧ Ideal.absNorm (f i).asIdeal = p ^ 2 :=
-    fun i => eq_span_of_not_prime h2 _ fun hp => i.2 (h i hp)
-  choose p hp1 hp2 using hex
-  have hinj : Function.Injective p := fun i j hij =>
-    Subtype.ext (hf (HeightOneSpectrum.ext (by rw [hp1, hp1, hij])))
-  have := (Real.summable_nat_pow_inv.2 one_lt_two).comp_injective hinj
-  refine this.congr fun i => ?_
-  simp [hp2]
-
 end field
-
-theorem exists_prime_in_class : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ (M : ℕ), 2 ≤ M → ∀ (D : RayData K M) (c : D.G) (N : ℕ), ∃ v : D.Pr, D.cls v.1.asIdeal = c ∧ (Ideal.absNorm v.1.asIdeal).Prime ∧ N < Ideal.absNorm v.1.asIdeal := by
-  intro K _ _ _ h2 M hM D c N
-  by_contra hcon
-  push Not at hcon
-  obtain ⟨ρ, hρ, hZ⟩ := GlobalTheory.T.ray_class_partial_zeta_continuation K h2 M hM D
-  choose Z hZd hZ1 _ hZs using hZ
-  have hre : ∀ s : ℝ, 1 < s → 1 < (s : ℂ).re := fun s h => by simpa using h
-  refine not_summable_class (fun v : D.Pr => Ideal.absNorm v.1.asIdeal)
-    (fun v => two_le_absNorm v.1) (fun v => D.cls v.1.asIdeal) ?_ ?_ (fun s => ∑ x, Z x s)
-    (continuous_finsetSum _ fun x _ => (hZd x).continuous) ?_ ?_ c ?_
-  · intro s hs
-    refine (GlobalTheory.Mem.RayData.lseries_eq_exp_tsum K M hM D 1 s (hre s hs)).2.1.congr fun v => ?_
-    rw [norm_natCast_cpow_of_pos (by linarith [two_le_absNorm v.1])]
-    simp
-  · intro χ hχ
-    obtain ⟨L, hL, hL1, hL2⟩ := GlobalTheory.T.ray_L_nonvanishing_at_one K h2 M hM D χ hχ
-    exact ⟨L, hL.continuous, hL1, fun s hs => by
-      rw [hL2 s (hre s hs), (GlobalTheory.Mem.RayData.lseries_eq_exp_tsum K M hM D χ s (hre s hs)).2.2]⟩
-  · simp only [hZ1, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
-    exact mul_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero) (by exact_mod_cast hρ.ne')
-  · intro s hs
-    rw [← (GlobalTheory.Mem.RayData.lseries_eq_exp_tsum K M hM D 1 s (hre s hs)).2.2]
-    have hco : D.coef 1 = ∑ x, D.cnt x := by
-      funext m
-      simp [RayData.coef]
-    rw [hco, LSeries_sum fun x _ => (hZs x s (hre s hs)).1, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun x _ => (hZs x s (hre s hs)).2
-  · exact summable_of_not_prime_or_le h2 N (fun v : {v : D.Pr // D.cls v.1.asIdeal = c} => v.1.1)
-      (fun i j hij => Subtype.ext (Subtype.ext hij)) fun i hi => hcon i.1 i.2 hi
 
 end GlobalTheory.Mem.RayPrimes

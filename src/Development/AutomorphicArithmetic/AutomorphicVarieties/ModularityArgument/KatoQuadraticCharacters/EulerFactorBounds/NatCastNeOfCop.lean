@@ -201,14 +201,6 @@ theorem Hyp.lv {l N c d : ℕ} {g : SL(2, ℤ)} (H : Hyp l N c d g) (hl : l ≠ 
     have h2 : d.Coprime N := Nat.Coprime.coprime_dvd_right (Dvd.intro_left (6 * l) rfl) H.cd
     exact Nat.Coprime.mul_right h2 (Nat.Coprime.pow_right L h1)
 
-theorem Hyp.lvT {l N c d p : ℕ} {g : SL(2, ℤ)} (H : Hyp l N c d g) (hl : l ≠ 0) (hN : N ≠ 0) (hp0 : p ≠ 0)
-    (hp : Nat.Coprime p (l * N * c * d)) {M L : ℕ} (hM : M = N * l ^ L * p) : Lv c d M := by
-  subst hM
-  obtain ⟨h0, h1, h2⟩ := H.lv hl hN (rfl : N * l ^ L = N * l ^ L)
-  exact ⟨Nat.mul_pos h0 (Nat.pos_of_ne_zero hp0),
-    h1.mul_right (Nat.Coprime.coprime_mul_left_right (Nat.Coprime.coprime_mul_right_right hp)).symm,
-    h2.mul_right (Nat.Coprime.coprime_mul_left_right hp).symm⟩
-
 end UpperTheory.V.Z.Kato.Nb
 
 end

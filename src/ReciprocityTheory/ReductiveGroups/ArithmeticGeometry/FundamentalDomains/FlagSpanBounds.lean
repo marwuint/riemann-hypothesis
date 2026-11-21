@@ -1,4 +1,6 @@
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NonvanishingNearMaximumHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NonvanishingNearMaximum
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalFrameDomain
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra
 
 namespace ReciprocityTheory.ChartRestriction.G.FD.FlagSpanBounds
 
@@ -60,48 +62,10 @@ lemma maj_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r �
     simp [Data.maj, Data.posPart, hermC]
   · exact (X.maj_pos hx τ hv).le
 
-lemma rho_pos {w : ℝ} (hw1 : 1 ≤ w) (hr : 0 < r) : 0 < frameRadius w r ∧ frameRadius w r ≤ 1 / 10 := by
-  unfold frameRadius
-  have hwr : 1 ≤ w * (r : ℝ) := by
-    have : (1 : ℝ) ≤ r := by exact_mod_cast hr
-    nlinarith
-  have hs : 1 ≤ √(w * r) := by
-    first
-    | exact Real.one_le_sqrt.mpr hwr
-    | exact (Real.sqrt_one).symm ▸ Real.sqrt_le_sqrt hwr
-  constructor
-  · apply div_pos one_pos
-    linarith
-  · exact one_div_le_one_div_of_le (by norm_num) (by linarith)
-
 end
 
 end ReciprocityTheory.ChartRestriction.G.FD.FlagSpanBounds
 
 namespace ReciprocityTheory.ChartRestriction.G.FD
-
-variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
-
-theorem frameAtMaximum_of_lower_bound (h41a : LatticeBoundAtMaximum (E := E)) (h6p1 : OrthonormalChartNormControl (E := E)) :
-    FrameAtMaximum (E := E) := by
-  intro r X la P z0 laStar w hP hz0 hmax hpos hw hw1 hr hl0 hl1 hMAX
-  obtain ⟨b, hb, ho⟩ := (orthonormalFlagTranslate_holds r X.toData).1 z0 hz0
-  have hx0 := OrthogonalFrameDomain.rmul_mem_dom X.toData hz0 hb
-  have hsf : X.SameFlag z0 (rmul z0 b) := FlagSpanBounds.sameFlag_rmul X.toData z0 hb
-  obtain ⟨hρ0, hρ10⟩ := FlagSpanBounds.rho_pos (r := r) hw1 hr
-  obtain ⟨lam, Z, hZ, hlam⟩ :=
-    h41a r X z0 (rmul z0 b) laStar (frameRadius w r) hz0 hx0 ho hsf hl0 hl1 hρ0 (by linarith) hMAX
-  have hZρ : X.zN Z ≤ frameRadius w r := by linarith
-  refine ⟨X.xZ (rmul z0 b) Z, lam, OrthonormalChartBounds.xZ_mem_dom X.toData hx0 ho (by linarith), hlam,
-    nonvanishingNearMaximum_holds r X.toData la P z0 (rmul z0 b) w hP hz0 ho ⟨b, hb, rfl⟩ hmax hpos hw hw1 hr Z hZ,
-    fun τ v => ?_⟩
-  have hm := (((h6p1 r X.toData (rmul z0 b) hx0 ho (frameRadius w r) hρ0 hρ10).1 Z hZρ).2.2 τ v).2
-  have hmeq := ((orthonormalFlagTranslate_holds r X.toData).2.2 z0 hz0 _ hx0 hsf).2
-  rw [← hmeq] at hm
-  have hnn := FlagSpanBounds.maj_nonneg X.toData hz0 τ v
-  have hq : (1 + frameRadius w r) / (1 - frameRadius w r) ≤ 2 := by
-    rw [div_le_iff₀ (by linarith)]
-    linarith
-  exact hm.trans (mul_le_mul_of_nonneg_right hq hnn)
 
 end ReciprocityTheory.ChartRestriction.G.FD

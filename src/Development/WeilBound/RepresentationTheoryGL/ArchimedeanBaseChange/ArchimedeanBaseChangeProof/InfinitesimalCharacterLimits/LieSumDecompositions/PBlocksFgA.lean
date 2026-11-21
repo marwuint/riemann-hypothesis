@@ -47,8 +47,6 @@ theorem right_slice_apply (m₁ : GA E r) (F : Sm E (r + s)) (m₂ : GA E s) :
   rw [update1]
   exact congrArg F.1 (CapFactor.lev_eq_leviEmb (R := Ad E) ![r, s] (h2 r s) (m₁, m₂)).symm
 
-example {a : ℕ} (A B : Matrix (Fin a) (Fin a) (Cinf E)) : toL (A + B) = toL A + toL B := rfl
-
 theorem yp_one {a : ℕ} : BlockDerivatives.yp (1 : Kinf E a) (1 : GL (Fin a) (Af E)) = 1 := by
   simp [BlockDerivatives.yp]
 

@@ -13,9 +13,6 @@ noncomputable section
 namespace GlobalTheory.UU
 variable {R : Type} [CommRing R] [IsDomain R]
 
-def IsCPOf (D : DegPre R) (M : CP D.P.A) : Prop :=
-  M.L = ⟨D.P.L, D.rig, D.P.isLB, D.rig_gen⟩ ∧ HEq M.c D.cub ∧ HEq M.sym D.sym
-
 structure PreU (I : Ideal R) (D : DegPre R) (A : PolAV (Spec (CommRingCat.of (FractionRing R))))
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] where
 
@@ -117,10 +114,5 @@ def PhiRaw (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (k :
 
 def CDVR (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] : Prop :=
   IsDiscreteValuationRing V ∧ IsAdicComplete (IsLocalRing.maximalIdeal V) V ∧ CharZero V
-example (hG : GlobalFnsSt) (D : DegPre R) : IsCPOf D (CP.ofDegPre hG D) := ⟨rfl, HEq.rfl, HEq.rfl⟩
-example (D : DegPre R) (α : D.X) : famφT D (TF (R := R) F) α = DegPre.famφ D F α := rfl
-example (D : DegPre R) (k : ℕ) (p : QkPt D F k) (w) (s s' : Fam D F k) :
-    PhiRel D F k p w s s' ↔ PhiRaw D F k p.y p.g w s.s s'.s := Iff.rfl
-example (p : ℕ) [Fact p.Prime] : CDVR ℤ_[p] := ⟨inferInstance, inferInstance, inferInstance⟩
 end GlobalTheory.UU
 end

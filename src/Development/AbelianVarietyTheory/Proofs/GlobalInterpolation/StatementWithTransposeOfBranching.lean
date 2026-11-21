@@ -46,12 +46,6 @@ theorem isBlock_mul_lastGL {R : Type} [CommRing R] {N n : ℕ} {hN : N = n + 1} 
   · rw [(h.2.1 a).2, zero_mul]
   · rw [if_pos hl, h.2.2, one_mul]
 
-theorem isBlock_lastGL (R : Type) [CommRing R] {N n : ℕ} (hN : N = n + 1) (t : Rˣ) :
-    IsBlock hN ((lastGL R N t : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) ((1 : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)
-      (t : R) := by
-  have h := isBlock_mul_lastGL (isBlock_embGL R hN 1) t
-  rwa [map_one, one_mul] at h
-
 theorem sum_bExp {N n : ℕ} (hN : N = n + 1) {lam : DomWeight N} {sg : DomWeight n} (hI : Interlace hN lam sg) :
     ((∑ s, (bBr hN lam sg s).toNat : ℕ) : ℤ) + lam.detShift = nBr lam sg := by
   have h1 : lam.detShift = lam.w (iL hN) := by
@@ -104,15 +98,6 @@ theorem brAt_eq_pullback {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype 
   rw [brAt, LinearMap.smul_apply, h1, smul_smul, ← Finset.prod_mul_distrib,
     Finset.prod_eq_one fun τ _ => by rw [← zpow_add₀ (ht τ), neg_add_cancel, zpow_zero], one_smul,
     ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
-
-theorem homogeneity : Homogeneity := by
-  intro K _ _ ι _ N n hN lam sg hI hS t
-  refine ⟨?_, brAt_eq hN lam sg t⟩
-  ext1 G
-  have h := brAt_eq_pullback hN hI hS 1 (fun τ => lastGL K N (t τ)) (fun τ => (t τ : K)) (fun τ => (t τ).ne_zero)
-    (fun τ => isBlock_lastGL K hN (t τ)) G
-  rw [inv_one, map_one, Module.End.one_apply] at h
-  exact h
 
 section One
 
@@ -294,13 +279,6 @@ theorem onePlace (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : O
   · rw [e _ (st _ f hf), e f hf]; exact b5 a f hf
   · rw [e f hf]; exact b6 f hf
 
-theorem transposed (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : Transposed := by
-  intro N n hN lam sg hI hS
-  obtain ⟨hc, -, hx, -, io, br, hio, hbr, hT⟩ := h6 n N hN.symm lam sg ((interlace_iff hN lam sg).1 hI)
-  refine ⟨io, hio, fun s hs f hf => ?_⟩
-  rw [brOne_eq_transpose hN hI hS hc hx hio hbr hT f hf]
-  exact hT s hs f hf
-
 theorem coeff_prod_rename {A ι : Type} [CommRing A] [Fintype ι] {n : ℕ} (b : ι → Fin n → ℕ)
     (P : ι → MvPolynomial (Unit × Fin n) A) :
     coeff (expOf b) (∏ τ, rename (fun p : Unit × Fin n => (τ, p.2)) (P τ)) =
@@ -479,8 +457,5 @@ theorem integrality (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) 
   have h2 := brStd_mem_delStd (onePlace h6) hN hI hS (s • _) h1
   rw [LinearMap.map_smul_of_tower] at h2
   exact h2
-
-theorem statement_of_branching (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : Statement :=
-  ⟨onePlace h6, equivariance, integrality h6, homogeneity, GlobalTheory.BranchMembers.members⟩
 
 end GlobalTheory.BranchFormula

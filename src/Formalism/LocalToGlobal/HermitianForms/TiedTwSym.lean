@@ -39,46 +39,12 @@ theorem eYS_end {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u
     (hi : i ≤ D.R.m) (h : i = 0 ∨ i = D.R.m) : eYS F i hi = (F.val i hi h).eY := by
   rw [eYS, dif_pos h]
 
-theorem eYS_mid {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf) (i : ℕ)
-    (h1 : 1 ≤ i) (h2 : i + 1 ≤ D.R.m) : eYS F i (le_of_succ_m h2) = F.eYC i h1 h2 := by
-  have hn : ¬(i = 0 ∨ i = D.R.m) := by omega
-  rw [eYS, dif_neg hn]
-
-theorem eYS_de {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf) (i : ℕ)
-    (hi : i ≤ D.R.m) :
-    ∃ C : GL (Fin (D.R.N i)) D.host.E,
-      cT (sigD D : D.host.E →+* D.host.E) C.1 * C.1 = gramN D i hi ∧
-      (∀ x : Fin (D.R.N i) → D.host.E, x ∈ selfDualLatticeCoords D i hi ↔ ∀ a, (C.1 *ᵥ x) a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) ∧
-      ∀ τ z, (D.mem u).C.de i z τ = embT D τ C.1.det * ((eYS F i hi z).1 τ).det := by
-  by_cases h : i = 0 ∨ i = D.R.m
-  · rw [eYS_end F i hi h]
-    exact (F.val i hi h).de
-  · have h1 : 1 ≤ i := by omega
-    have h2 : i + 1 ≤ D.R.m := by omega
-    have e : eYS F i hi = F.eYC i h1 h2 := eYS_mid F i h1 h2
-    rw [e]
-    exact F.deC i h1 h2
-
 variable {inQ : D.what₂.Tup → HeightOneSpectrum (𝓞 D.host.F) → Prop}
 
 def twYS (T : Formalism.L2.Herm.TwChTied D inQ) {Ch : D.what₂.Word → ℕ → Type} {chOf : ∀ u i, (D.mem u).C.cls i → Ch u i}
     (F : ∀ u, FormsTiedSym D u (Ch u) (chOf u)) (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (hi : i ≤ D.R.m) :
     (D.chTw u μ).Y i ≃ Fr D i hi :=
   (T.eY u μ i hi).symm.trans (eYS (F u) i hi)
-
-theorem twYS_de (T : Formalism.L2.Herm.TwChTied D inQ) {Ch : D.what₂.Word → ℕ → Type} {chOf : ∀ u i, (D.mem u).C.cls i → Ch u i}
-    (F : ∀ u, FormsTiedSym D u (Ch u) (chOf u)) (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) (hi : i ≤ D.R.m) :
-    ∃ C : GL (Fin (D.R.N i)) D.host.E,
-      cT (sigD D : D.host.E →+* D.host.E) C.1 * C.1 = gramN D i hi ∧
-      (∀ x : Fin (D.R.N i) → D.host.E, x ∈ selfDualLatticeCoords D i hi ↔ ∀ a, (C.1 *ᵥ x) a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) ∧
-      ∀ τ z, (D.chTw u μ).de i z τ = embT D τ C.1.det * ((twYS T F u μ i hi z).1 τ).det := by
-  obtain ⟨C, hC1, hC2, hC3⟩ := eYS_de (F u) i hi
-  refine ⟨C, hC1, hC2, fun τ z => ?_⟩
-  calc (D.chTw u μ).de i z τ
-      = (D.chTw u μ).de i (T.eY u μ i hi ((T.eY u μ i hi).symm z)) τ := by
-        rw [Equiv.apply_symm_apply]
-    _ = (D.mem u).C.de i ((T.eY u μ i hi).symm z) τ := T.de_eq u μ i hi _ τ
-    _ = embT D τ C.1.det * ((twYS T F u μ i hi z).1 τ).det := hC3 τ _
 
 set_option maxHeartbeats 4000000 in
 
@@ -149,12 +115,6 @@ structure TwLvSameS {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H :
     {F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)} (W : TwFormsTiedS D Tw T J F) where
   step0 : ∀ u μ, LvSame (W.atT u μ) 0 (T.eCls0 u μ) (T.eY u μ 0 (Nat.zero_le _)) (Tw.e0 u μ)
   mu0 : ∀ u i (hi : i ≤ D.R.m), LvSame (W.atT u D.what₂.mu0) i (Formalism.L2.Herm.clsCast D u i) (Formalism.L2.Herm.yCast D u i) (Tw.eMu0 u i hi)
-
-theorem TwFormsTiedS.Fi_zero {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H : Formalism.L2.Herm.HermColsCh D}
-    {J : Formalism.L2.Herm.TwChJointS T H} {F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)} (W : TwFormsTiedS D Tw T J F)
-    (u : D.what₂.Word) (μ : D.what₂.Tup) :
-    (Tw.fm u μ).Fi 0 = ((D.fm u).Fi 0).map (D.e0Tw u μ : _ →ₗ[ℂ] _) := by
-  rw [(Tw.fm u μ).Fi_zero, (D.fm u).Fi_zero, (W.atT u μ).Mu0]
 
 end Formalism.L2.Forms
 

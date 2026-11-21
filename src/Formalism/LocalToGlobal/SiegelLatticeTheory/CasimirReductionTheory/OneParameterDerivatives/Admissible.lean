@@ -5,8 +5,6 @@ set_option autoImplicit false
 
 namespace Formalism.L2.SG.Pf
 
-theorem harishChandra_multiplicity : Formalism.MainNotions.BridgeCPX.HCMultDS := Formalism.L2.SG.Pf.admitted.hcMultDS
-
 theorem harishChandra_admissible : Formalism.MainNotions.BridgeCPX.HCAdmDS := Formalism.L2.SG.Pf.admitted.hcAdmDS
 
 theorem k_finite_smooth : Formalism.L2.SG.LitS.KFinSmooth := by

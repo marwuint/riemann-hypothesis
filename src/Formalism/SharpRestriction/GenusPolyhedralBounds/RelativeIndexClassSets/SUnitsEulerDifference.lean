@@ -1,5 +1,8 @@
 import Formalism.SharpRestriction.Divisibility.WeightAlgebra
-import Formalism.FilteredPoleLength.ReducedBasisBounds.GradedFreeLengthFiltered
+import Mathlib
+import Formalism.LogFactorialIndices.StatementIdx
+import Formalism.FilteredPoleLength.ReducedBasisBounds.LengthBaseChangeLocal
+import Formalism.FilteredPoleLength.ReducedBasisBounds.FilteredPoleLength
 import Formalism.FilteredPoleLength.ReducedBasisBounds.BetaSesquilinearity
 
 noncomputable section
@@ -132,99 +135,11 @@ namespace LocDat
 
 variable {X : PJ D B P j} {ka : WeightFamilies.Wt D j} {la : HeightOneSpectrum (𝓞 B.KO)} (L : LocDat X ka la)
 
-def up (N : Submodule (X.Ol la) ↥(WL X ka la)) : Submodule L.O' L.V₁ :=
-  Submodule.span L.O' (L.bc '' (N : Set ↥(WL X ka la)))
-
-def v (z : L.ι) : ℝ := X.phiC la (L.y z)
-
-def mm (T e : ℕ) (z : L.ι) : ℕ := (max 0 ⌈(L.ep z : ℝ) * ((T : ℝ) * L.ν z - (e : ℝ))⌉).toNat
-
-def err (T : ℕ) (cc : ℝ) : ℝ :=
-  (L.R : ℝ) * ((T : ℝ) * cc * ∑ z, ((L.ep z : ℝ) * L.f z) * L.v z) + (L.R : ℝ) * (L.I : ℝ) +
-    ((Module.length L.O' (↥L.Zm ⧸ L.Z.comap L.Zm.subtype)).toNat : ℝ) +
-    (((IsDiscreteValuationRing.addVal L.O' L.a).toNat : ℝ) -
-        ((IsDiscreteValuationRing.addVal L.O' L.a').toNat : ℝ) +
-        (finrank L.K' L.K₁ : ℝ) * (L.n : ℝ) * (L.be : ℝ)) / (finrank L.K' L.K₁ : ℝ)
-
 def _root_.Formalism.MainNotions.Gaps.T0.InLat (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (la : HeightOneSpectrum (𝓞 B.KO))
     (S : Scal B) (wL wF : WeightFamilies.Wt D j) (T : ℕ) : Prop :=
   Formalism.LatticeIndexTer.IsLat (X.Ol la) (X.Kl la) ↥(WL X ka la) (MW X ka la) ∧
     Formalism.LatticeIndexTer.IsLat (X.Ol la) (X.Kl la) ↥(WL X ka la) (ThW X S ka wL wF T la)
 
-def InExt : Prop :=
-  IsBaseChange L.K' L.bc ∧ Irreducible L.ϖ ∧ Irreducible (algebraMap (X.Ol la) L.O' L.ϖ)
-
-def InTie (S : Scal B) (wL : WeightFamilies.Wt D j) : Prop :=
-  ∀ z, X.depth S.sW wL la (L.y z) = ((L.ν z : ℝ) : EReal) ∧ (∃ m : ℤ, (L.ep z : ℝ) * L.ν z = m) ∧
-    1 ≤ L.ep z ∧ 0 ≤ L.v z
-
-def InRes (S : Scal B) (wL wF : WeightFamilies.Wt D j) (T e : ℕ) : Prop :=
-  L.N₁ ⊔ L.Z ≤ L.up (ThW X S ka wL wF T la) ∧ (∀ i, L.th i ∈ L.up (MW X ka la)) ∧
-    (∀ i, L.th i ∈ L.up (ThW X S ka wL wF T la)) ∧
-    LinearMap.ker L.c ≤ Submodule.span L.K' ((L.N₁ ⊔ L.Z : Submodule L.O' L.V₁) : Set L.V₁) ∧
-    LinearMap.ker L.c ⊔ Submodule.span L.K' (Set.range L.th) = ⊤ ∧
-    (∀ x ∈ L.up (MW X ka la), ∀ i, ∃ w ∈ integralClosure L.O' L.K₁,
-      L.c x i = (algebraMap L.O' L.K₁ (algebraMap (X.Ol la) L.O' L.ϖ)) ^ (-(L.be : ℤ)) * w) ∧
-    L.a ≠ 0 ∧ L.a' ≠ 0 ∧
-    algebraMap L.O' L.K' L.a =
-      Algebra.norm L.K' (Matrix.of fun i k => L.c (L.th k) i).det * algebraMap L.O' L.K' L.a' ∧
-    (L.up (MW X ka la)).map ((algebraMap (X.Ol la) L.O' L.ϖ ^ e) • (LinearMap.id : L.V₁ →ₗ[L.O'] L.V₁)) ⊓
-      (Submodule.span L.K' ((L.N₁ ⊔ L.Z : Submodule L.O' L.V₁) : Set L.V₁)).restrictScalars L.O' ≤ L.N' ∧
-    L.N₁ ≤ L.N' ∧ L.Z ≤ L.Zm ∧ L.Zm ≤ L.N' ∧ (∀ x, L.ρ x ∈ L.AA') ∧
-    LinearMap.ker L.ρ = L.Zm.comap L.N'.subtype ∧ (L.N₁.comap L.N'.subtype).map L.ρ = L.N₁' ∧
-    L.N₁' ≤ L.AA ∧ L.AA ≤ L.AA' ∧ Module.length L.O' (↥L.Zm ⧸ L.Z.comap L.Zm.subtype) ≠ ⊤
-
-def InPts (T e : ℕ) : Prop :=
-  (∀ z, L.Fq z 0 = ⊤) ∧ (∀ z, L.Fq z (L.nq z) = ⊥) ∧ (∀ z k, k < L.nq z → L.Fq z (k + 1) ≤ L.Fq z k) ∧
-    (∀ z k, k < L.nq z → ∀ w ∈ L.Fq z k, L.xq z • w ∈ L.Fq z (k + 1) → w ∈ L.Fq z (k + 1)) ∧
-    (∀ z k, k < L.nq z →
-      Module.length (L.Rr z)
-          (↥(L.Fq z k) ⧸ (L.Fq z (k + 1) ⊔ (L.Fq z k).map
-            ((L.xq z ^ L.mm T e z) • (LinearMap.id : L.Aq z →ₗ[L.Rr z] L.Aq z))).comap (L.Fq z k).subtype) =
-        ((L.rq z k * L.mm T e z : ℕ) : ℕ∞)) ∧
-    (∀ z, ∑ k ∈ Finset.range (L.nq z), L.rq z k = L.R) ∧
-    (∀ z, Module.length (IsLocalRing.ResidueField L.O') (IsLocalRing.ResidueField (L.Rr z)) = (L.f z : ℕ∞)) ∧
-    Nonempty ((↥L.AA' ⧸ L.AA.comap L.AA'.subtype) ≃ₗ[L.O']
-      ((z : L.ι) → L.Aq z ⧸ (⊤ : Submodule (L.Rr z) (L.Aq z)).map
-        ((L.xq z ^ L.mm T e z) • (LinearMap.id : L.Aq z →ₗ[L.Rr z] L.Aq z))))
-
-def InLead : Prop :=
-  L.F1 0 = ⊤ ∧ L.F1 L.n1 = ⊥ ∧ (∀ k, L.F1 (k + 1) ≤ L.F1 k) ∧
-    (∀ k, LinearMap.ker (L.σ k) = (L.F1 (k + 1)).comap (L.F1 k).subtype) ∧
-    (∀ k, Function.Surjective (L.σ k)) ∧ (∀ α, L.deg α < L.n1) ∧
-    (∀ α i, ∃ h : L.u α i ∈ L.F1 (L.deg α), L.σ (L.deg α) ⟨L.u α i, h⟩ = Pi.single ⟨α, rfl⟩ (L.t i)) ∧
-    LinearIndependent L.O' L.t ∧
-    L.N₁'.comap L.AA.subtype = Submodule.span L.O' (Set.range fun p : L.ι1 × Fin L.δ => L.u p.1 p.2) ∧
-    Fintype.card L.ι1 = L.R ∧
-    Module.length L.O' (L.A0 ⧸ Submodule.span L.O' (Set.range L.t)) = (L.I : ℕ∞)
-
-def Ok (S : Scal B) (wL wF : WeightFamilies.Wt D j) (T e : ℕ) : Prop :=
-  InLat X ka la S wL wF T ∧ L.InExt ∧ L.InTie S wL ∧ L.InRes S wL wF T e ∧ L.InPts T e ∧ L.InLead
-
 end LocDat
-
-def Thm0Local : Prop :=
-  ∀ (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
-    (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (la : HeightOneSpectrum (𝓞 B.KO)) (e : ℕ),
-    H1 large₂ X H S wL nus → 1 ≤ T → 0 ≤ cc D large₂ H.Cc H.Ac H.CRc wL →
-    X.Theta S ka wL wF T ≤ X.Msup ka →
-    (T : ℝ) * nus la ≤ (e : ℝ) →
-    ∀ L : LocDat X ka la, L.Ok S wL wF T e →
-    ∀ V' : Submodule (X.Kl la) (X.Vl la), V' ≤ X.locK la (X.Msup ka) →
-      X.qlen la (X.loc la (X.Msup ka) ⊓ X.ofK la V')
-          (X.loc la (X.Theta S ka wL wF T) ⊓ X.ofK la V') ≠ ⊤ ∧
-      ((X.qlen la (X.loc la (X.Msup ka) ⊓ X.ofK la V')
-          (X.loc la (X.Theta S ka wL wF T) ⊓ X.ofK la V')).toNat : ℝ) ≤
-        (e : ℝ) * (finrank (X.Kl la) V' : ℝ) + L.err T (cc D large₂ H.Cc H.Ac H.CRc wL)
-
-def Thm0Concl : Prop :=
-  ∀ (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
-    (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ) (r : HeightOneSpectrum (𝓞 B.KO) → ℝ),
-    H1 large₂ X H S wL nus → 1 ≤ T → 0 ≤ cc D large₂ H.Cc H.Ac H.CRc wL →
-    X.Theta S ka wL wF T ≤ X.Msup ka →
-    (∀ la, 0 ≤ r la) → Summable (fun la => r la * X.lN la) → (∑' la, r la * X.lN la) ≤ β →
-    (∀ la (e : ℕ), (T : ℝ) * nus la ≤ (e : ℝ) →
-      ∃ L : LocDat X ka la, L.Ok S wL wF T e ∧ L.err T (cc D large₂ H.Cc H.Ac H.CRc wL) ≤ r la) →
-    Concl X S ka wL wF T nus β
 
 end Formalism.MainNotions.Gaps.T0

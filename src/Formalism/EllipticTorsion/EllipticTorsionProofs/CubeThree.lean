@@ -195,9 +195,6 @@ lemma weq_iff' (W : WeierstrassCurve K) (s v : MvPowerSeries σ K) :
   simp only [MvPowerSeries.smul_eq_C_mul]
   constructor <;> intro h <;> linear_combination -h
 
-lemma a_mem (i : Fin 5) : ![W.a₁, W.a₂, W.a₃, W.a₄, W.a₆] i ∈ Sadj W := by
-  fin_cases i <;> exact Algebra.subset_adjoin (by simp)
-
 lemma Ca_mem : (MvPowerSeries.C W.a₁ : MvPowerSeries σ K) ∈ TT W σ ∧
     (MvPowerSeries.C W.a₂ : MvPowerSeries σ K) ∈ TT W σ ∧
     (MvPowerSeries.C W.a₃ : MvPowerSeries σ K) ∈ TT W σ ∧

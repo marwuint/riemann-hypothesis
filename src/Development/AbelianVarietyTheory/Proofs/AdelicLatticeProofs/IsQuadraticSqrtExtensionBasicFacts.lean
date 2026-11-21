@@ -8,10 +8,6 @@ namespace GlobalTheory.QNorm
 section
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {δ : F} {θ : E} {σ : E ≃ₐ[F] E}
 
-theorem IsQuad.conj_coord (h : IsQuad δ θ σ) (a b : F) :
-    σ (algebraMap F E a + algebraMap F E b * θ) = algebraMap F E a - algebraMap F E b * θ := by
-  rw [map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, h.conj]; ring
-
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {δ : F} {θ : E} {σ : E ≃ₐ[F] E} in
@@ -43,26 +39,6 @@ theorem _root_.GlobalTheory.QNorm.IsQuad.root_ne_zero (h : _root_.GlobalTheory.Q
   refine ⟨0, (algebraMap F E).injective ?_⟩
   rw [← h.sq, hθ]
   simp
-
-theorem IsQuad.conj_conj (h : IsQuad δ θ σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨a, b, rfl⟩ := h.span x
-  rw [h.conj_coord, map_sub, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, h.conj]; ring
-
-theorem IsQuad.finrank_eq_two (h : IsQuad δ θ σ) : Module.finrank F E = 2 := by
-  have hli : LinearIndependent F ![(1 : E), θ] := by
-    rw [LinearIndependent.pair_iff]
-    intro s t hst
-    apply h.coord_indep
-    simpa [Algebra.smul_def] using hst
-  have hsp : ⊤ ≤ Submodule.span F (Set.range ![(1 : E), θ]) := by
-    intro x _
-    obtain ⟨a, b, rfl⟩ := h.span x
-    refine Submodule.add_mem _ ?_ ?_
-    · rw [Algebra.algebraMap_eq_smul_one]
-      exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
-    · rw [← Algebra.smul_def]
-      exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩)
-  simpa using Module.finrank_eq_card_basis (Module.Basis.mk hli hsp)
 
 end
 

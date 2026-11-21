@@ -156,14 +156,6 @@ def IsEisRule (φ : I → E →+* ℂ) (L : Set E) (m : ℂ) {R₀ : Subring ℂ
 
 end Cx
 
-def JetRingEx : Prop :=
-  ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Type) [Fintype I] (n : ℕ), Nonempty (JetRing R I n)
-
-def JetLift : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R : Type) [CommRing R] [IsDomain R] [CharZero R]
-    [IsLocalRing R] (I : Type) [Fintype I] (n : ℕ) (J : JetRing R I n) (X : Obj F 𝔠 (Sp R)) (δ : X.DetGen)
-    (N : I → Module.End R (HdR X.A)), admitted X N → Nonempty (Family J X δ N)
-
 def JetBC : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (𝔠 : FracId (FR E)) (φ : I → E →+* ℂ) (L : Set E)
     (R : Type) [CommRing R] [IsDomain R] [CharZero R] (σ : R →+* ℂ) (n : ℕ) (J : JetRing R I n) (J' : JetRing ℂ I n)
@@ -180,16 +172,6 @@ def JetAnalytic : Prop :=
       ∀ (g : (I → ℂ) → ℂ) (ν : Idx I n) (u : List I), IsDefSum φ (2 * s) (lattice c y) g → (∀ i, u.count i = ν.1 i) →
         T.C ^ (2 * s) * J.b.repr (r.val J.B Y.X' trivial Y.δ') ν = m * iterD u g 0 * ∏ i, (((ε : ℤ) : ℂ) * T.A i) ^ ν.1 i
 
-def JetCore : Prop :=
-  ∃ ε : ℤˣ, ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (𝔠 : FracId (FR E)),
-    2 ≤ Module.finrank ℚ (FR E) → ∀ (R₀ : Subring ℂ) (s : ℕ) (r : Rule (trivialObjectCondition 𝔠) R₀ (2 * s)), 1 ≤ s →
-    ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] [IsLocalRing R] [Algebra R₀ R] (X₀ : Obj (FR E) 𝔠 (Sp R)) (δ₀ : X₀.DetGen)
-      (N : I → Module.End R (HdR X₀.A)), admitted X₀ N → ∀ κ : I → ℕ, ∃ x : R,
-      ∀ (σ : R →+* ℂ), (∀ a : R₀, σ (algebraMap R₀ R a) = a) → ∀ (φ : I → E →+* ℂ) (c : Ideal (OF E)) (y : (Af E)ˣ) (m : ℂ),
-        IsCMType φ → c ≠ ⊥ → IsEisRule φ (lattice c y) m r → ∀ T : CxPt 𝔠 φ (lattice c y), T.IsOver σ X₀ δ₀ N →
-        ∀ (g : (I → ℂ) → ℂ) (u : List I), IsDefSum φ (2 * s) (lattice c y) g → (∀ i, u.count i = κ i) →
-          T.C ^ (2 * s) * σ x = m * iterD u g 0 * ∏ i, (((ε : ℤ) : ℂ) * T.A i) ^ κ i
-
 def IsEis {F : Type} [Field F] [NumberField F] (𝔞 𝔟 : FracId F) (k : ℕ) (G : ((F →+* ℝ) → ℂ) → ℂ) : Prop :=
   (k ≠ 2 → ∀ z ∈ halfSpace F, HasSum (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.eisClass 𝔞 𝔟 k 0 z) (G z)) ∧
     (k = 2 → ∃ H, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.IsContinuation 𝔞 𝔟 H ∧ G = H 0)
@@ -198,33 +180,12 @@ def EisExp : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (𝔞 𝔟 : FracId F) (s : ℕ), 1 ≤ s →
     ∃ G, IsEis 𝔞 𝔟 (2 * s) G ∧ DifferentiableOn ℂ G (halfSpace F) ∧ GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.HasExpansion 𝔞 𝔟 (2 * s) G
 
-def EisMod : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔞 𝔟 : FracId F) (s : ℕ), 1 ≤ s →
-    ∀ G, IsEis 𝔞 𝔟 (2 * s) G → DifferentiableOn ℂ G (halfSpace F) → IsHolForm 𝔞 𝔟 (2 * s) G
-
 def EisFourier : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔞 𝔟 : FracId F) (k : ℕ), 1 ≤ k → ∀ G,
     GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.HasExpansion 𝔞 𝔟 k G → ∃ (Z : ℂ → ℂ) (a : (𝔞 * 𝔟).elt → ℂ),
       GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.IsPartialZeta (ClassGroup.mk F 𝔞)⁻¹ Z ∧
       HasFourier 𝔞 𝔟 (fun z ↦ (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK F k : ℂ) * G z / (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) ^ k) a ∧
       a 0 = (2 : ℂ)⁻¹ ^ Module.finrank ℚ F * Z (1 - (k : ℂ)) ∧ ∀ ξ, ξ ≠ 0 → ∃ n : ℤ, a ξ = n
-
-def TorusForm : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (𝔞 𝔟 : FracId (FR E)) (φ : I → E →+* ℂ)
-    (c : Ideal (OF E)) (y : (Af E)ˣ), IsCMType φ → c ≠ ⊥ → ∀ z ∈ polydisc I,
-    ∀ (X : Obj (FR E) (𝔞 * 𝔟⁻¹) (Sp ℂ)) (U : Unif φ (lattice c y) z X),
-      ∃ (e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ)) (τ : (FR E →+* ℝ) → ℂ) (lam : Fin (Module.finrank ℚ (FR E)) → ℂ),
-        (∀ j (x : FR E), (e j x : ℂ) = φ (U.e j) (x : E)) ∧ τ ∈ halfSpace (FR E) ∧ (∀ j, lam j ≠ 0) ∧
-        (∀ w, w ∈ U.u.Λ ↔ ∃ m ∈ dualLat 𝔞, ∃ β ∈ 𝔟.elt,
-          w = fun j ↦ lam j * (2 * Real.pi * Complex.I * ((e j m : ℂ) + (e j β : ℂ) * τ (e j)))) ∧
-        ∀ δ : X.DetOmega, U.IsDet δ ((GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) / ∏ j, lam j) → IsTorusPoint e 𝔞 𝔟 τ X δ
-
-def EisRule : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], 2 ≤ Module.finrank ℚ (FR E) → ∀ (𝔠 : FracId (FR E)) (s : ℕ), 1 ≤ s →
-    ∀ z : ClassGroup (OF E) → ℚ, IsClassZetaVals (2 * s) z → ∀ (R₀ : Subring ℂ) (m : ℂ), m ∈ R₀ →
-      (∀ C, m * ((z C / 2 ^ Module.finrank ℚ (FR E) : ℚ) : ℂ) ∈ R₀) →
-      ∃ r : Rule (trivialObjectCondition 𝔠) R₀ (2 * s), ∀ (I : Type) [Fintype I] (φ : I → E →+* ℂ) (c : Ideal (OF E)) (y : (Af E)ˣ),
-        IsCMType φ → c ≠ ⊥ → IsEisRule φ (lattice c y) m r
 
 def ModelInt : Prop := AllLat fun E _ _ I _ d φ _ _ 𝔣 Λ l L =>
   ∀ [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (Ω : ℂ), Ω ^ 12 = latDisc Λ →
@@ -243,32 +204,5 @@ def JetInt : Prop := AllLat fun _ _ _ I _ d φ s z 𝔣 Λ l L =>
     ∀ (g : (I → ℂ) → ℂ) (κ : I → ℕ) (u : List I), IsDefSum φ (2 * s) L g → (∀ i, u.count i = κ i) →
       Sz l lam ((cE_vp l z : ℝ) + ((2 * s * Fintype.card I : ℕ) : ℝ) * c_vp 𝔣 l + ((∑ i, κ i : ℕ) : ℝ) * c_vp 𝔣 l)
         (iterD u g 0 * ∏ i, ((b i / a i) ^ κ i / a i ^ (2 * s)))
-
-abbrev Qb : Type := algebraicClosure ℚ ℂ
-
-def ModelAlg : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
-    ∀ (Λ₀ : PeriodPair) (Ω₀ : ℂ), IsLatOf io 1 Λ₀ → Ω₀ ^ 12 = latDisc Λ₀ →
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
-      IsCMType φ → (∀ i, (φ i).comp (algebraMap K E) = io) → ∀ (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →
-      ∃ (𝔠 : FracId (FR E)) (X₀ : Obj (FR E) 𝔠 (Sp Qb)) (δ₀ : X₀.DetGen) (N : I → Module.End Qb (HdR X₀.A))
-        (T : CxPt 𝔠 φ (lattice c y)), admitted X₀ N ∧ T.IsOver (algebraMap Qb ℂ) X₀ δ₀ N ∧ IsAlgebraic ℚ (T.C / Ω₀ ^ Fintype.card I) ∧
-        ∀ i, T.A i ≠ 0 ∧ IsAlgebraic ℚ (T.A i * Ω₀ ^ 2 * (Real.sqrt d : ℝ) / (2 * Real.pi))
-
-def ModelConj : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
-    ∀ (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), Ω₀ ^ 12 = latDisc Λ₀ → TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ →
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
-      IsCMType φ → (∀ i, (φ i).comp (algebraMap K E) = io) → ∀ (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →
-      ∀ (𝔠 : FracId (FR E)) (X₀ : Obj (FR E) 𝔠 (Sp Qb)) (δ₀ : X₀.DetGen) (N : I → Module.End Qb (HdR X₀.A))
-        (T : CxPt 𝔠 φ (lattice c y)), T.IsOver (algebraMap Qb ℂ) X₀ δ₀ N →
-        ∃ T' : CxPt 𝔠 (fun i ↦ (g : ℂ →+* ℂ).comp (φ i)) (lattice c (y * (upIdele K E t)⁻¹)),
-          T'.IsOver ((g : ℂ →+* ℂ).comp (algebraMap Qb ℂ)) X₀ δ₀ N ∧
-          g (T.C / Ω₀ ^ Fintype.card I) ^ 2 = (T'.C / Ω₁ ^ Fintype.card I) ^ 2 ∧
-          ∀ i, g (T.A i * Ω₀ ^ 2 * (Real.sqrt d : ℝ) / (2 * Real.pi)) =
-            ((modF t : ℝ) : ℂ) * (T'.A i * Ω₁ ^ 2 * (Real.sqrt d : ℝ) / (2 * Real.pi))
-
-def JetClaims : Prop := JetRingEx ∧ JetLift ∧ JetBC ∧ JetAnalytic ∧ JetCore ∧ EisExp ∧ EisMod ∧ EisFourier ∧ TorusForm ∧ EisRule ∧
-  ModelInt ∧ JetInt ∧ ModelAlg ∧ ModelConj
 
 end GlobalTheory.LatJet

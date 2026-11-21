@@ -78,16 +78,6 @@ end Unif
 
 section Points
 
-theorem isVal_iff {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K R]
-    (la : HeightOneSpectrum (𝓞 K)) (v : R → EReal) : IsVal la v ↔ Formalism.L2.Pj.IsVal la v := by
-  constructor
-  · intro hv
-    cases hv
-    constructor <;> assumption
-  · intro hv
-    cases hv
-    constructor <;> assumption
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   (Xo : Moduli Dw l) (c : Coeff l) (cls : ∀ (T : Formalism.L2.Pj.CDVR) (ι : c.F →+* T.Fr), Formalism.L2.Pj.IntFr Xo c T ι → Prop)
 

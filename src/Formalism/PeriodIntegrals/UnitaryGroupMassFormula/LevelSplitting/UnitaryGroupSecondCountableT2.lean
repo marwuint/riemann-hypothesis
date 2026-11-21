@@ -195,26 +195,6 @@ theorem closed_SNH (hJ : IsHermND σ J) (hinv : ∀ x, σ (σ x) = x) {r : ℕ} 
   ⟨isClosed_uniFlag (F0 P) (dualFrameAlt P T) (dual_frame_pairing hJ hinv P T hP), isClosed_Nsub hJ hinv P T hP,
     isClosed_stabT (tupH P)⟩
 
-theorem unitary_group_secondCountable_t2 (hsc : SecondCountableTopology (Af F)) :
-    SecondCountableTopology (HA (Af F) σ J) ∧ T2Space (HA (Af F) σ J) := by
-  obtain ⟨ι, _, ⟨h⟩⟩ := PI.AdicCompletionValuation.exists_homeomorph_tens (F := F) (E := E) (Af F)
-  have : SecondCountableTopology (Af F ⊗[F] E) := h.isEmbedding.secondCountableTopology
-  have : SecondCountableTopology (Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) :=
-    inferInstanceAs (SecondCountableTopology (Fin n → Fin n → Af F ⊗[F] E))
-  have : SecondCountableTopology (Matrix (Fin n) (Fin n) (Af F ⊗[F] E))ᵐᵒᵖ :=
-    MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology
-  have : T2Space (Matrix (Fin n) (Fin n) (Af F ⊗[F] E))ᵐᵒᵖ :=
-    MulOpposite.opHomeomorph.symm.isEmbedding.t2Space
-  have : SecondCountableTopology (GL (Fin n) (Af F ⊗[F] E)) :=
-    Units.isEmbedding_embedProduct.secondCountableTopology
-  have : T2Space (GL (Fin n) (Af F ⊗[F] E)) := Units.isEmbedding_embedProduct.t2Space
-  have hemb : Topology.IsEmbedding (Subtype.val : HR (Af F) σ J → GL (Fin n) (Af F ⊗[F] E)) :=
-    Topology.IsEmbedding.subtypeVal
-  have h1 : SecondCountableTopology (HR (Af F) σ J) := hemb.secondCountableTopology
-  have h2 : T2Space (HR (Af F) σ J) := hemb.t2Space
-  exact ⟨inferInstanceAs (SecondCountableTopology (HR (Af F) σ J)),
-    inferInstanceAs (T2Space (HR (Af F) σ J))⟩
-
 end Top
 
 end PI.LevelKSplit.W.ExC

@@ -36,7 +36,7 @@ private theorem isPst_split {AI : LocAinf l P} (T : LocTied l P AI) {i : V₀ �
   haveI : FiniteDimensional ℚ_[l] V₀ := Module.Finite.trans ↥LL.1 V₀
   haveI : FiniteDimensional ℚ_[l] V₁ := Module.Finite.trans ↥LL.1 V₁
   haveI : FiniteDimensional ℚ_[l] V₂ := Module.Finite.trans ↥LL.1 V₂
-  have b₁ := GlobalTheory.T.finrank_dpst_unramified_le_dim_representation P hdom hfrac ρ₁
+  have b₁ := _root_.GlobalTheory.PstRank.rank_DpstUr_le P hdom hfrac ρ₁
   haveI f₁ : FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ₁) :=
     Module.rank_lt_aleph0_iff.mp (b₁.trans_lt (Cardinal.natCast_lt_aleph0))
   obtain ⟨f₀, c₀⟩ := (isPst_iff P ρ₀).1 hV₀
@@ -110,6 +110,6 @@ private theorem isPstAt_sum (T : LocTied l P AI) {r : ↥Gw →* GL (Fin a) (Om 
   have n₁ := m₁.enlarge l₁
   have n₂ := m₂.enlarge l₂
   exact ⟨supExt L₁ L₂, _, ⟨n₁.1, by rw [GlobalTheory.Pst.SumParam.mapRep_sumRep, n₁.2, n₂.2]⟩,
-    isPst_sum Bw T _ _ (GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw l₁ r₁ p₁) (GlobalTheory.T.isPotentiallySemistable_coefficientField_enlarge P Bw l₂ r₂ p₂)⟩
+    isPst_sum Bw T _ _ (_root_.GlobalTheory.PstExt.isPst_enlarge P Bw l₁ r₁ p₁) (_root_.GlobalTheory.PstExt.isPst_enlarge P Bw l₂ r₂ p₂)⟩
 
 end Sum

@@ -19,8 +19,4 @@ def FibreTranscendenceDegreeAlt.Statement : Prop :=
       Algebra.trdeg G'.Φ (IntermediateField.adjoin G'.Φ
         (Set.range fun q : (Σ k : FibreBlock κ, ι' k.1) => G'.x' ⟨q.1.1, q.2⟩)) = Fintype.card (FibreBlock κ)
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

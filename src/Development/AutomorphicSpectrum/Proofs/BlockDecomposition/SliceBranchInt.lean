@@ -8,7 +8,16 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PParamOffRegular
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegularInjectivePieces
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PParamDensIntegrable
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BranchProperAtPointHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BranchProperAtPointHolds
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchProperAtPoint
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchIntDecompose
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranchInt
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranches
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCurveBranchLength
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchNormalisation
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegBallMass
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegLelongMono
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSmallSetBallCover
 
 namespace GlobalTheory.CompanionTheory.Ar.SliceBranch
 
@@ -20,6 +29,6 @@ theorem paramChartInt : GroundTheory.Heights₂.Heights.ParamChartInt.Statement 
     GroundTheory.Heights₂.Heights.ParamDensIntegrable.proof
 
 theorem sliceBranchInt : GroundTheory.Heights₂.Heights.SliceBranchInt.Statement :=
-  GroundTheory.Heights₂.Heights.SliceBranchInt.proof GlobalTheory.T.branch_proper_at_point_holds paramChartInt
+  GroundTheory.Heights₂.Heights.SliceBranchInt.proof _root_.GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint paramChartInt
 
 end GlobalTheory.CompanionTheory.Ar.SliceBranch

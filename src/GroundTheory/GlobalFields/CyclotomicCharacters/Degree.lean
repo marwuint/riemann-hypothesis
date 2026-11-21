@@ -104,12 +104,6 @@ theorem toPadicInt_degree (q : Nat.Primes) (σ : Gal(ℚ̄/ℚ)) :
   rw [degree_apply, toPadicInt_unitsDegree, unitsPadicEquiv_apply]
   rfl
 
-theorem continuous_degreeComponent (q : Nat.Primes) : Continuous (degreeComponent q) := by
-  have h : Continuous fun σ : Gal(ℚ̄/ℚ) => Multiplicative.toAdd (degreeComponent q σ) :=
-    ((continuous_toPadicInt q).comp (continuous_toAdd.comp continuous_degree)).congr
-      (toPadicInt_degree q)
-  exact continuous_ofAdd.comp h
-
 end Degree
 
 section ComplexConjugation
@@ -124,11 +118,6 @@ theorem exists_algEquiv_conj (ι : ℚ̄ →+* ℂ) :
     (eq_ratCast _ x).trans (eq_ratCast (ι.comp (algebraMap ℚ ℚ̄)) x).symm
   let c : ℂ →ₐ[ℚ] ℂ := (starRingEnd ℂ).toRatAlgHom
   exact ⟨c.restrictNormal' ℚ̄, fun x => c.restrictNormal_commutes ℚ̄ x⟩
-
-theorem exists_isComplexConjugation : ∃ σ : Gal(ℚ̄/ℚ), IsComplexConjugation σ := by
-  let ι : ℚ̄ →ₐ[ℚ] ℂ := IsAlgClosed.lift
-  obtain ⟨σ, hσ⟩ := exists_algEquiv_conj ι.toRingHom
-  exact ⟨σ, ι.toRingHom, hσ⟩
 
 theorem character_of_isComplexConjugation {σ : Gal(ℚ̄/ℚ)} (h : IsComplexConjugation σ) :
     character σ = -1 := by

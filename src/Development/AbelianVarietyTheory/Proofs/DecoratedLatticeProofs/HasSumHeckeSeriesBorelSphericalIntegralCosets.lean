@@ -8,22 +8,6 @@ noncomputable section
 
 namespace GlobalTheory.HeckeSeries
 
-section Cosets
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
-  {p : 𝒪[k]}
-
-theorem ord_det_of_mem_KO {y : GL (Fin n) k} (hy : y ∈ KO k (Fin n)) :
-    ord k (Matrix.GeneralLinearGroup.det y) = 0 := by
-  have hq : (1 : ℝ) < resCard k := by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.one_lt_resCard k
-  have h1 := GlobalTheory.LGrp.nabs_eq_zpow (Matrix.GeneralLinearGroup.det y)
-  rw [GlobalTheory.LGrp.nabs_det_of_mem_KO hy] at h1
-  have h2 : ((resCard k : ℝ)) ^ (-ord k (Matrix.GeneralLinearGroup.det y)) = (resCard k : ℝ) ^ (0 : ℤ) := by
-    rw [← h1, zpow_zero]
-  exact neg_eq_zero.1 (zpow_right_injective₀ (by positivity) hq.ne' h2)
-
-end Cosets
-
 open MeasureTheory ValuativeRel in
 private theorem hermGL_coset_out_entries_integral {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} {p : 𝒪[k]} (hp : Irreducible p)

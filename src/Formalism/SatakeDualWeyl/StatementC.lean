@@ -43,30 +43,10 @@ def prV [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
 
 end Defs
 
-def PosDefToDef : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [CommRing E] [Algebra F E] (n : Type) [Fintype n]
-    [DecidableEq n] (σ : E →ₐ[F] E) (J : Matrix n n E),
-    NumberField.IsTotallyReal F → IsTotPosDef σ J → IsTotDef σ J
-
-def StabFunLe : Prop :=
-  ∀ (A R M : Type) [CommRing A] [CommRing R] [Algebra R A] [AddCommGroup M] [Module R M]
-    (n : Type) [Fintype n] [DecidableEq n] (Λ : Submodule R (n → A)) (f : Λ →ₗ[R] M),
-    stabFun Λ f ≤ stabGL Λ
-
-def StabFunEx : Prop :=
-  ∃ f : ↥(stdLat (n := Fin 2) (A := ℚ) ℤ) →ₗ[ℤ] ZMod 2,
-    stabFun (stdLat (n := Fin 2) (A := ℚ) ℤ) f ≠ stabGL (stdLat (n := Fin 2) (A := ℚ) ℤ)
-
 def LevelAfLStd : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (n : Type) [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (J : Matrix n n E),
     levelAfL σ J (stdLat (n := n) (A := E) (𝓞 E)) = levelAf σ J
-
-def LevelVLStd : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (n : Type) [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (J : Matrix n n E)
-    (v : HeightOneSpectrum (𝓞 F)),
-    levelVL σ J v (stdLat (n := n) (A := E) (𝓞 E)) = levelV σ J v
 
 def ClassSetFiniteL : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
@@ -86,34 +66,6 @@ def AdelicStabFiniteL : Prop :=
     ∀ g : UPts σ J (FiniteAdeleRing (𝓞 F) F),
       Finite (stabAt ((ratPts σ J (FiniteAdeleRing (𝓞 F) F)).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F)))
         ((levelAfL σ J Λ).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))) g)
-
-def AfSplitOff : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (n : Type) [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (J : Matrix n n E)
-    (v : HeightOneSpectrum (𝓞 F)),
-    ∃ (G₂ : Type) (_ : Group G₂) (K₂ : Subgroup G₂)
-      (e : UPts σ J (FiniteAdeleRing (𝓞 F) F) ≃* (UPts σ J (v.adicCompletion F) × G₂)),
-      (∀ g, (((e g).1 : UPts σ J (v.adicCompletion F)) : GL n (E ⊗[F] v.adicCompletion F)) =
-        bc (prV (E := E) v) (g : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))) ∧
-      (∀ g, (e g).2 = 1 ↔ ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v →
-        bc (prV (E := E) w) (g : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = 1) ∧
-      ((levelAf σ J).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))).map e.toMonoidHom =
-        ((levelV σ J v).subgroupOf (UPts σ J (v.adicCompletion F))).prod K₂
-
-def LevelVSplit : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (n : Type) [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (J : Matrix n n E)
-    (v : HeightOneSpectrum (𝓞 F))
-    (φ : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F),
-    (∀ x, φ (sigR σ (v.adicCompletion F) x) = swapR _ (φ x)) →
-    (∀ x, x ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring ↔
-      (φ x).1 ∈ v.adicCompletionIntegers F ∧ (φ x).2 ∈ v.adicCompletionIntegers F) →
-    (∃ u ∈ GLint n (v.adicCompletionIntegers F).toSubring,
-      (u : Matrix n n (v.adicCompletion F)) = fun i j => (φ (inclE (F := F) (v.adicCompletion F) (J i j))).1) →
-    ∀ g ∈ UPts σ J (v.adicCompletion F),
-      g ∈ levelV σ J v ↔
-        bc ((RingHom.fst _ _).comp φ.toRingHom) g ∈
-          GLint n (v.adicCompletionIntegers F).toSubring
 
 def DefSig : Prop :=
   ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (n : Type) [Fintype n] [DecidableEq n]

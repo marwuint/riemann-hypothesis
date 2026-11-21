@@ -12,18 +12,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Br
 
-def NormQuad : Prop :=
-  GlobalTheory.Published.GlobalArtinReciprocity → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
-    Module.finrank F E = 2 → ∀ η : HChar F, IsNormChar E η → IsQuadCharOf E η
-
 def SelfIso : Prop :=
   StrongMultOneReal → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (η : HChar F),
     η ^ 2 = 1 → SelfTw π.HasSat η → IsoTwist π η
-
-def WeakEx : Prop :=
-  CyclicBaseChange → ∀ (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [IsTotallyComplex E]
-    [Algebra F E], Module.finrank F E = 2 → ∀ (a : ℕ), 1 ≤ a → ∀ π : TR.CuspSub F a,
-      (∃ η : HChar F, IsNormChar E η ∧ SelfTw π.HasSat η) ∨ ∃ P : CuspSub E a, IsBC0 π P
 
 def BcAtt0 : Prop :=
   ∀ (F E Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [IsTotallyComplex E] [Field Ω]

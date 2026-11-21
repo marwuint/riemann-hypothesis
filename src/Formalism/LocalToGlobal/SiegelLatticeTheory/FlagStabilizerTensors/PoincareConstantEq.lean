@@ -16,12 +16,6 @@ namespace Formalism.L2.SG.Full
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section Defs
-
-variable {D : D7} (X : HidaSetting D)
-
-end Defs
-
 structure Full {D : D7} (X : HidaSetting D) where
   hK : X.LevelSubgroupCharacter
   TR : TypedRed X
@@ -67,8 +61,6 @@ section Closed
 
 open Full
 
-def FullExists : Prop := ∀ (D : D7) (X : HidaSetting D), X.LevelSubgroupCharacter → Nonempty (Full X)
-
 def VolPosC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), X.LevelSubgroupNormalized → 0 < Y.volN u ∧ 0 < Y.volH u
 
@@ -105,10 +97,6 @@ def AmpWellDefC : Prop :=
     OOIntAll X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') →
     AmpWellDef (X.Fu u) (X.Fu u') (Y.cs u) (Y.cs u')
 
-def ChiNIndepC : Prop :=
-  ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-    ChiNIndep (X.Fu u) (X.Fu u') (Y.cs u) (Y.cs u')
-
 def LemmaVC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
     FundExists X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') →
@@ -133,13 +121,6 @@ def AbsConvC : Prop :=
     FundExists X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') →
     OOIntAll X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') →
     AbsConvT (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u')
-
-def NormExpSatC : Prop :=
-  ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-    AmpWellDef (X.Fu u) (X.Fu u') (Y.cs u) (Y.cs u') →
-    ChiNIndep (X.Fu u) (X.Fu u') (Y.cs u) (Y.cs u') →
-    AbsConvT (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') →
-    NormExpSat (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u')
 
 def IdCellOffC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),

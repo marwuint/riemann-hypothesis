@@ -32,15 +32,6 @@ def trivOn (E : Type) [CommRing E] [Module E V] (A : Set V) (B : AddSubgroup V) 
 def stab (E : Type) [CommRing E] [Module E V] (B : AddSubgroup V) : Subgroup (V ≃ₗ[E] V) :=
   trivOn E ∅ B
 
-def stabRel (E : Type) [CommRing E] [Module E V] (R : Set (V × V)) : Subgroup (V ≃ₗ[E] V) where
-  carrier := {g | ∀ v w, (g v, g w) ∈ R ↔ (v, w) ∈ R}
-  one_mem' := fun _ _ => Iff.rfl
-  mul_mem' := fun {g g'} h1 h2 v w => (h1 (g' v) (g' w)).trans (h2 v w)
-  inv_mem' := by
-    intro g h1 v w
-    have k : ∀ v, g (g⁻¹ v) = v := fun v => g.apply_symm_apply v
-    rw [← h1 (g⁻¹ v), k, k]
-
 def isom [StarRing E] (h : V →ₗ[E] V →ₛₗ[starRingEnd E] E) : Subgroup (V ≃ₗ[E] V) where
   carrier := {g | ∀ v w, h (g v) (g w) = h v w}
   one_mem' := fun _ _ => rfl
@@ -55,9 +46,6 @@ end Groups
 def invVol {G : Type} [Group G] (K₀ K : Subgroup G) : ℝ≥0∞ :=
   (K.relIndex K₀ : ℝ≥0∞) / (K₀.relIndex K : ℝ≥0∞)
 
-theorem invVol_self {G : Type} [Group G] (K₀ : Subgroup G) : invVol K₀ K₀ = 1 := by
-  simp [invVol]
-
 section Local
 variable (o F E : Type) [CommRing o] [IsDomain o] [IsDiscreteValuationRing o]
   [Field F] [Algebra o F] [IsFractionRing o F]
@@ -65,8 +53,6 @@ variable (o F E : Type) [CommRing o] [IsDomain o] [IsDiscreteValuationRing o]
 
 def ord_vw (x : F) : ℤ :=
   - WithZero.log ((IsDiscreteValuationRing.maximalIdeal o).valuation F x)
-
-def resNorm : ℕ := Nat.card (IsLocalRing.ResidueField o)
 
 abbrev MaxOrd : Subalgebra o E := integralClosure o E
 
@@ -169,20 +155,6 @@ def StInt : Subgroup (V ≃ₗ[E] V) :=
   D.St ⊓ stab E (Submodule.span (MaxOrd o E) (Set.range D.A.f)).toAddSubgroup ⊓
     stab E (Submodule.span (MaxOrd o E) (Set.range D.B.f)).toAddSubgroup
 
-def ME : Submodule E V := Submodule.span E (Set.range D.A.f ∪ Set.range D.B.f)
-
-def W0 : Set V := perp D.h D.ME
-
-def H0 : Subgroup (V ≃ₗ[E] V) := isom D.h ⊓ trivOn E (D.ME : Set V) ⊥
-
-def minorOrd : ℤ :=
-  ∑ i : Fin D.blocks.length,
-    ord_vw o F (Algebra.norm F (D.minor (D.blocks.sizeUpTo (i + 1)) (D.blocks.sizeUpTo_le _)))
-
-def aExp : ℤ := ord_vw o F D.G - 2 * (r + 1) * ord_vw o F D.θ
-
-def Ht : ℝ≥0∞ := (resNorm o : ℝ≥0∞) ^ (ord_vw o F D.θ + D.aExp + D.minorOrd)
-
 def Hyp (k : ℕ) : Prop :=
   IsUnramifiedQuadratic o F E ∧ IsStdChar o E D.ψ ∧
     Module.finrank E V = k + 2 * r + 1 ∧
@@ -209,19 +181,6 @@ structure InnerDatum where
 
 variable {D}
 
-def InnerDatum.Rel (d d' : D.InnerDatum) : Prop :=
-  ∃ g ∈ D.H0, Carries g d.L d'.L ∧ Carries g d.L' d'.L' ∧
-    ∀ v w, (g v, g w) ∈ d'.Γ ↔ (v, w) ∈ d.Γ
-
-def InnerDatum.stabiliser (d : D.InnerDatum) : Subgroup (V ≃ₗ[E] V) :=
-  D.H0 ⊓ stab E d.L.toAddSubgroup ⊓ stab E d.L'.toAddSubgroup ⊓ stabRel E (d.Γ : Set (V × V))
-
-def InnerDatum.weight (d : D.InnerDatum) : ℝ≥0∞ :=
-  invVol (D.H0 ⊓ stab E D.ref.toAddSubgroup) d.stabiliser
-
-def dataSum (φ : D.InnerDatum → ℝ≥0∞) : ℝ≥0∞ :=
-  ∑' c : Quot (InnerDatum.Rel (D := D)), c.out.weight * φ c.out
-
 def Serves (d : D.InnerDatum) (Λ : Submodule (MaxOrd o E) V) (n n' : V ≃ₗ[E] V) : Prop :=
   n ∈ D.A.N D.h ∧ n' ∈ D.B.N D.h ∧
     Carries n (D.A.stdLattice D.h d.L) Λ ∧ Carries n' (D.B.stdLattice D.h d.L') Λ ∧
@@ -247,166 +206,11 @@ def M : Submodule (MaxOrd o E) V :=
   Submodule.span (MaxOrd o E) (Set.range (fun b => Λ.pair.1 (D.A.f b)) ∪
     Set.range (fun b => D.θinv • (Λ.pair.2 (D.B.f b) - Λ.pair.1 (D.A.f b))))
 
-def satM : Submodule (MaxOrd o E) V := Λ.1 ⊓ D.ME.restrictScalars (MaxOrd o E)
-
-def defect : ℕ := Λ.M.toAddSubgroup.relIndex Λ.satM.toAddSubgroup
-
-def tauImage : Submodule (MaxOrd o E) V :=
-  Λ.M ⊔ Submodule.span (MaxOrd o E)
-    {v | ∃ w ∈ D.W0, w ∈ d.L ∧ w ∈ d.L' ∧ (w, w) ∈ d.Γ ∧
-      ∃ x ∈ D.A.X E r, ∃ x' ∈ D.B.X E r, w + x ∈ Λ.1 ∧ w + x' ∈ Λ.1 ∧
-        D.θinv • (x' - x) ∈ Λ.1 ∧ v = D.θinv • (x' - x)}
-
-def tauCard : ℕ := Λ.M.toAddSubgroup.relIndex Λ.tauImage.toAddSubgroup
-
-def Rel (Λ Λ' : Term d) : Prop := ∃ g ∈ D.St, Carries g Λ.1 Λ'.1
-
-def HasFrames (u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Prop :=
-  ∃ n n', Serves d Λ.1 n n' ∧ (∀ b, n (D.A.f b) = ∑ a, u a b • D.A.f a) ∧
-    ∀ b, n' (D.B.f b) = ∑ a, u' a b • D.B.f a
-
 end Term
-
-open Classical in
-
-def mass (d : D.InnerDatum) (S : Term d → Prop) : ℝ≥0∞ :=
-  ∑' c : Quot (Term.Rel (d := d)), if S c.out then c.out.mu else 0
-
-open Classical in
-
-def amp (d : D.InnerDatum) (S : Term d → Prop) : ℂ :=
-  ∑' c : Quot (Term.Rel (d := d)),
-    if S c.out then (c.out.mu.toReal : ℂ) * (c.out.om : ℂ) else 0
-
-def count (d : D.InnerDatum) (u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
-    (S : Term d → Prop) : ℝ≥0∞ :=
-  ((Set.encard {Λ : Term d | S Λ ∧ Λ.HasFrames u u'} : ℕ∞) : ℝ≥0∞)
 
 variable (D)
 
-def totalMass : ℝ≥0∞ := dataSum fun d : D.InnerDatum => mass d fun _ => True
-
-def ampSq (S : ∀ d : D.InnerDatum, Term d → Prop) : ℝ≥0∞ :=
-  dataSum fun d : D.InnerDatum => ENNReal.ofReal (‖amp d (S d)‖ ^ 2)
-
-def Finiteness : Prop :=
-  (∀ d : D.InnerDatum, Subgroup.Commensurable (D.H0 ⊓ stab E D.ref.toAddSubgroup) d.stabiliser) ∧
-    (∀ (d : D.InnerDatum) (Λ : Term d),
-      Subgroup.Commensurable D.StInt (D.St ⊓ stab E Λ.1.toAddSubgroup) ∧
-        Λ.defect ≠ 0 ∧ Λ.tauCard ≠ 0) ∧
-    D.totalMass ≠ ⊤
-
-def AmplitudeBounds (k : ℕ) : Prop :=
-  D.ampSq (fun _ Λ => Λ.satM ≠ Λ.M) ≤
-      D.Ht ^ (39 * (r + 1) ^ 2) * (resNorm o : ℝ≥0∞) ^ (-((k : ℤ) - 2 * r - 5)) * D.totalMass ∧
-    (D.ampSq (fun _ Λ => Λ.satM = Λ.M) ≤ D.Ht ^ (39 * (r + 1) ^ 2) * D.totalMass ∧
-      D.ampSq (fun _ _ => True) ≤ D.Ht ^ (39 * (r + 1) ^ 2) * D.totalMass) ∧
-    (ord_vw o F D.θ = 0 → ord_vw o F D.G = 0 →
-      (∀ i : Fin D.blocks.length, ord_vw o F (Algebra.norm F
-        (D.minor (D.blocks.sizeUpTo (i + 1)) (D.blocks.sizeUpTo_le _))) = 0) →
-      (∀ (d : D.InnerDatum) (Λ : Term d), Λ.satM = Λ.M) ∧ D.Ht = 1 ∧
-        D.ampSq (fun _ _ => True) = D.totalMass)
-
-def IsUnitriangular (u : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Prop :=
-  (∀ a, u a a = 1) ∧ ∀ a b, b < a → u a b = 0
-
-def ShareBound (k : ℕ) : Prop :=
-  ∀ β : ℕ, 1 ≤ β →
-    (∀ u u', IsUnitriangular u → IsUnitriangular u' →
-      dataSum (fun d : D.InnerDatum => count d u u' fun Λ => Λ.defect = β) ≤
-        4 * (resNorm o : ℝ≥0∞) ^ (2 * D.aExp * (2 * r + 2)) * ((β : ℝ≥0∞) ^ (k - 1))⁻¹ *
-          dataSum (fun d : D.InnerDatum => count d u u' fun Λ => Λ.satM = Λ.M)) ∧
-    dataSum (fun d : D.InnerDatum => mass d fun Λ => Λ.defect = β) ≤
-      4 * (resNorm o : ℝ≥0∞) ^ (2 * D.aExp * (2 * r + 2)) * ((β : ℝ≥0∞) ^ (k - 1))⁻¹ *
-        dataSum (fun d : D.InnerDatum => mass d fun Λ => Λ.satM = Λ.M) ∧
-    dataSum (fun d : D.InnerDatum => mass d fun Λ => Λ.defect = β) ≤
-      4 * D.Ht ^ (4 * (r + 1)) * ((β : ℝ≥0∞) ^ (k - 1))⁻¹ * D.totalMass
-
-def FibreBound (k : ℕ) : Prop :=
-  ∀ (d : D.InnerDatum) (j : ℕ), 1 ≤ j →
-    (∀ u u', IsUnitriangular u → IsUnitriangular u' →
-      count d u u' (fun Λ => Λ.tauCard = j) ≤
-          (resNorm o : ℝ≥0∞) ^ (6 * D.aExp * (2 * r + 2)) * (j : ℝ≥0∞) ^ (k - 1) ∧
-        count d u u' (fun Λ => Λ.tauCard = j) ≤
-          D.Ht ^ (12 * (r + 1)) * (j : ℝ≥0∞) ^ (k - 1)) ∧
-    mass d (fun Λ => Λ.tauCard = j) ≤
-      D.Ht ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (j : ℝ≥0∞) ^ (k - 1)
-
 end Data
 end Main
-
-def NonGenericLocal : Prop :=
-  ∀ (o F E V : Type) [CommRing o] [IsDomain o] [IsDiscreteValuationRing o]
-    [IsAdicComplete (IsLocalRing.maximalIdeal o) o] [Finite (IsLocalRing.ResidueField o)]
-    [Field F] [CharZero F] [Algebra o F] [IsFractionRing o F]
-    [CommRing E] [StarRing E] [Algebra F E] [Algebra o E] [IsScalarTower o F E]
-    [AddCommGroup V] [Module E V] [Module.Free E V] [Module.Finite E V]
-    (r k : ℕ) (D : Data o F E V r), D.Hyp k →
-    D.Finiteness ∧ D.AmplitudeBounds k ∧ D.ShareBound k ∧ D.FibreBound k
-
-section Examples
-variable {o F E V : Type} [CommRing o] [IsDomain o] [IsDiscreteValuationRing o]
-  [Field F] [Algebra o F] [IsFractionRing o F]
-  [CommRing E] [StarRing E] [Algebra F E] [Algebra o E]
-  [AddCommGroup V] [Module E V] {r : ℕ}
-
-def Data.InnerDatum.ofUnit (D : Data o F E V r) (hθ : D.θ = 1)
-    (L L' : Submodule (MaxOrd o E) V) (hL : D.A.IsInnerLattice D.h L)
-    (hL' : D.B.IsInnerLattice D.h L') (hs : ∀ p ∈ L, ∀ p' ∈ L, D.h p p' ∈ MaxOrd o E)
-    (hs' : ∀ p ∈ L', ∀ p' ∈ L', D.h p p' ∈ MaxOrd o E) : D.InnerDatum where
-  L := L
-  L' := L'
-  Γ := L'.prod L
-  hL := hL
-  hL' := hL'
-  mem := fun _ hp => hp
-  total := fun _ hw => ⟨0, hw, L.zero_mem⟩
-  onto := fun _ hw => ⟨0, L'.zero_mem, hw⟩
-  ker_left := fun w => by simp [Data.θinv, hθ]
-  ker_right := fun w => by simp [Data.θinv, hθ]
-  base := ⟨hL'.2.2.1, hL.2.2.1⟩
-  isometric := fun p hp p' hp' => by
-    simpa [Data.θinv, hθ] using
-      (MaxOrd o E).sub_mem (hs' _ hp.1 _ hp'.1) (hs _ hp.2 _ hp'.2)
-
-def negStd (E : Type) [CommRing E] [StarRing E] (n : ℕ) :
-    (Fin n → E) →ₗ[E] (Fin n → E) →ₛₗ[starRingEnd E] E :=
-  LinearMap.mk₂'ₛₗ (RingHom.id E) (starRingEnd E) (fun x y => -∑ i, x i * star (y i))
-    (fun x x' y => by simp [add_mul, Finset.sum_add_distrib, add_comm])
-    (fun c x y => by simp [Finset.mul_sum, mul_assoc])
-    (fun x y y' => by simp [mul_add, Finset.sum_add_distrib, add_comm])
-    (fun c x y => by simp [Finset.mul_sum, mul_left_comm, mul_comm, mul_assoc, starRingEnd_apply])
-
-theorem isInnerLattice_std (n : ℕ) (A : Frame F (Fin n → E) 0) (i₀ : Fin n)
-    (hz : ∀ i, A.z i ∈ MaxOrd o E) (h1 : A.z i₀ = 1)
-    (hs : ∀ x ∈ MaxOrd o E, star x ∈ MaxOrd o E) :
-    A.IsInnerLattice (negStd E n)
-      (Submodule.span (MaxOrd o E) (Set.range fun i : Fin n => (Pi.single i 1 : Fin n → E))) := by
-  classical
-  have hX : A.X E 0 = ⊥ := by simp [Frame.X]
-  have hm : ∀ v : Fin n → E, v ∈ Submodule.span (MaxOrd o E)
-      (Set.range fun i : Fin n => (Pi.single i 1 : Fin n → E)) ↔ ∀ i, v i ∈ MaxOrd o E := by
-    intro v
-    rw [Submodule.mem_span_range_iff_exists_fun]
-    constructor
-    · rintro ⟨c, rfl⟩ i
-      simp [Finset.sum_apply, Pi.single_apply, Subalgebra.smul_def]
-    · intro hv
-      refine ⟨fun i => ⟨v i, hv i⟩, ?_⟩
-      ext i
-      simp [Finset.sum_apply, Pi.single_apply, Subalgebra.smul_def]
-  refine ⟨⟨Finset.univ.image fun i : Fin n => (Pi.single i 1 : Fin n → E), by simp [hX]⟩,
-    fun v => ?_, (hm _).2 hz, fun c hc => by simpa [h1] using (hm _).1 hc i₀⟩
-  constructor
-  · intro hv
-    refine ⟨fun w hw => by simp [hX] at hw; simp [hw], fun w hw => ?_⟩
-    exact (MaxOrd o E).neg_mem ((MaxOrd o E).sum_mem fun i _ =>
-      (MaxOrd o E).mul_mem ((hm _).1 hv i) (hs _ ((hm _).1 hw i)))
-  · rintro ⟨-, hv⟩
-    refine (hm _).2 fun i => ?_
-    have := hv (Pi.single i 1) (Submodule.subset_span ⟨i, rfl⟩)
-    simpa [negStd, Pi.single_apply, apply_ite (star : E → E)] using this
-
-end Examples
 
 end GlobalTheory.IndefiniteRowSideFullHecke.FrameCoefficientData

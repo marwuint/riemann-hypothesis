@@ -66,13 +66,4 @@ theorem isE_eA (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF
     IsE h (locF 𝔭 (spanO b)) 𝔭 (eA h (locF 𝔭 (spanO b)) 𝔭) :=
   Nat.sInf_mem (s := {e | IsE h (locF 𝔭 (spanO b)) 𝔭 e}) (exists_isE hK hF hd b h𝔭)
 
-theorem sigmaCount_pos_basis [Fact (IsFixF K F)] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V)
-    {H : Matrix κ κ (𝓞 K)} (hH : ∀ i j, jK (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)}
-    (h𝔭 : 𝔭.IsMaximal) (j : ℕ) : 0 < sigmaCount h (locF 𝔭 (spanO b)) 𝔭 j := by
-  rw [sigmaCount_basis h b hH h𝔭]
-  have := finite_quot (K := K) h𝔭 j
-  have : Nonempty {Y : Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ j) // Hq H 𝔭 j * Y + Yᴴ * Hq H 𝔭 j = 0} :=
-    ⟨⟨0, by simp⟩⟩
-  exact Nat.card_pos
-
 end Formalism.HermitianLattices.Ext.L3.HU

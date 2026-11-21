@@ -124,35 +124,11 @@ theorem IsSmooth.levi_frame (h : φ.IsSmooth R) {i j : B.ι} (hy : y ∈ c.e.sou
     (holoOn_ev_of_subset _ fun _ => mem_ptsIn_inf.2) (fun _ hz => gv_ne_zero hz.1 hz.2)
     (fun z hz => by rw [φ.trans i j z hz.1 hz.2, sub_add_cancel]) hy ⟨hi, hj⟩ ξ
 
-theorem StrictPos.semiPos (h : φ.StrictPos R) : φ.SemiPos R := fun i c y hy ξ => by
-  rcases eq_or_ne ξ 0 with rfl | hξ
-  · simp [leviV]
-  · exact (h i c y hy ξ hξ).le
-
 theorem SemiPos.chart (h : φ.SemiPos R) (hs : φ.IsSmooth R) {i : B.ι} (hy : y ∈ c.e.source)
     (hi : y ∈ ptsIn p σ (B.U i)) (ξ : Fin D → ℂ) : 0 ≤ c.levi (φ.φ i) y ξ := by
   obtain ⟨j, hj⟩ := R.cover y
   rw [AlgChart.levi_trans hy hj (hs.contDiffAt_two hj hi)]
   exact h i j y ⟨hj, hi⟩ _
-
-theorem StrictPos.chart (h : φ.StrictPos R) (hs : φ.IsSmooth R) {i : B.ι} (hy : y ∈ c.e.source)
-    (hi : y ∈ ptsIn p σ (B.U i)) {ξ : Fin D → ℂ} (hξ : ξ ≠ 0) : 0 < c.levi (φ.φ i) y ξ := by
-  obtain ⟨j, hj⟩ := R.cover y
-  rw [AlgChart.levi_trans hy hj (hs.contDiffAt_two hj hi)]
-  exact h i j y ⟨hj, hi⟩ _ (AlgChart.dtrans_ne_zero hy hj hξ)
-
-theorem SemiPos.of_anRead (h : φ.SemiPos R) (hs : φ.IsSmooth R) (R' : AnRead p σ D) :
-    φ.SemiPos R' := fun _ _ _ hy ξ => h.chart hs hy.1 hy.2 ξ
-
-theorem StrictPos.of_anRead (h : φ.StrictPos R) (hs : φ.IsSmooth R) (R' : AnRead p σ D) :
-    φ.StrictPos R' := fun _ _ _ hy _ hξ => h.chart hs hy.1 hy.2 hξ
-
-theorem IsSmooth.semiPos_of_exists (hs : φ.IsSmooth R)
-    (h : ∀ y, ∃ (c : AlgChart p σ D) (i : B.ι), y ∈ c.e.source ∧ y ∈ ptsIn p σ (B.U i) ∧
-      ∀ ξ, 0 ≤ c.levi (φ.φ i) y ξ) : φ.SemiPos R := fun j c' y hy ξ => by
-  obtain ⟨c, i, hc, hi, h⟩ := h y
-  exact (h _).trans_eq ((hs.levi_frame hc hi hy.2 _).trans
-    (AlgChart.levi_trans hy.1 hc (hs.contDiffAt_two hc hy.2) ξ).symm)
 
 theorem IsSmooth.strictPos_of_exists (hs : φ.IsSmooth R)
     (h : ∀ y, ∃ (c : AlgChart p σ D) (i : B.ι), y ∈ c.e.source ∧ y ∈ ptsIn p σ (B.U i) ∧
@@ -173,14 +149,6 @@ theorem levi_zpow (hφ : φ.IsSmooth R) (n : ℤ) {j : PUnit → B.ι} (hy : y �
   rw [funext (φ.zpow_φ n j)]
   exact AlgChart.levi_const_mul _ (hφ.contDiffAt_two hy hj) ξ
 
-theorem levi_ofIso (hφ : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) {a : A.ι}
-    {b : B.ι} (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ (A.U a)) (hb : y ∈ ptsIn p σ (B.U b))
-    (ξ : Fin D → ℂ) : c.levi ((φ.ofIso hA w hw).φ a) y ξ = c.levi (φ.φ b) y ξ :=
-  levi_eq_of_add_log ((isOpen_ptsIn (A.U a)).inter (isOpen_ptsIn (B.U b)))
-    ((hφ b).mono inter_subset_right)
-    (holoOn_ev_of_subset (w.s (a, b)).val fun _ => mem_ptsIn_inf.2)
-    (fun _ hz => ev_iso_ne_zero w hz.2 hz.1) (fun _ hz => ofPairs_φ hz.1 hz.2) hy ⟨ha, hb⟩ ξ
-
 theorem SemiPos.tens (h' : ψ.SemiPos R) (h : φ.SemiPos R) (hψ : ψ.IsSmooth R)
     (hφ : φ.IsSmooth R) : (ψ.tens φ).SemiPos R := fun i c y hy ξ =>
   (add_nonneg (h' _ c y ⟨hy.1, (mem_ptsIn_inf.1 hy.2).1⟩ ξ)
@@ -191,70 +159,12 @@ theorem SemiPos.zpow (h : φ.SemiPos R) (hφ : φ.IsSmooth R) {n : ℤ} (hn : 0 
   (mul_nonneg (Int.cast_nonneg hn) (h _ c y ⟨hy.1, mem_pow_iff.1 hy.2⟩ ξ)).trans_eq
     (levi_zpow hφ n hy.1 (mem_pow_iff.1 hy.2) ξ).symm
 
-theorem StrictPos.zpow (h : φ.StrictPos R) (hφ : φ.IsSmooth R) {n : ℤ} (hn : 0 < n) :
-    (φ.zpow n).StrictPos R := fun j c y hy ξ hξ =>
-  (mul_pos (Int.cast_pos.2 hn) (h _ c y ⟨hy.1, mem_pow_iff.1 hy.2⟩ ξ hξ)).trans_eq
-    (levi_zpow hφ n hy.1 (mem_pow_iff.1 hy.2) ξ).symm
-
 theorem SemiPos.pow (h : φ.SemiPos R) (hφ : φ.IsSmooth R) (n : ℕ) : (φ.pow n).SemiPos R :=
   h.zpow hφ (Int.natCast_nonneg n)
-
-theorem StrictPos.pow (h : φ.StrictPos R) (hφ : φ.IsSmooth R) {n : ℕ} (hn : 0 < n) :
-    (φ.pow n).StrictPos R := h.zpow hφ (Int.natCast_pos.2 hn)
-
-theorem SemiPos.ofIso (h : φ.SemiPos R) (hφ : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A)
-    (hw : w.IsGen) : (φ.ofIso hA w hw).SemiPos R := fun _ c y hy ξ =>
-  (h _ c y ⟨hy.1, mem_pick φ.isLB y⟩ ξ).trans_eq
-    (levi_ofIso hφ hA w hw hy.1 hy.2 (mem_pick φ.isLB y) ξ).symm
-
-theorem StrictPos.ofIso (h : φ.StrictPos R) (hφ : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A)
-    (hw : w.IsGen) : (φ.ofIso hA w hw).StrictPos R := fun _ c y hy ξ hξ =>
-  (h _ c y ⟨hy.1, mem_pick φ.isLB y⟩ ξ hξ).trans_eq
-    (levi_ofIso hφ hA w hw hy.1 hy.2 (mem_pick φ.isLB y) ξ).symm
-
-theorem semiPos_fs {α : Type*} [Fintype α] {e : α → B.ι → CxPts p σ → ℂ} (hB : B.IsLB)
-    (he : ∀ a, e a ∈ R.holSec B) (h : NoCommonZero e) :
-    (fs hB e (fun a => (he a).1) h).SemiPos R := fun i c y hy ξ => by
-  have ho := isOpen_over (R.chart c).e (isOpen_ptsIn (p := p) (σ := σ) (B.U i))
-  have hc (a) : ContDiffAt ℂ 2 (e a i ∘ (R.chart c).e.symm) ((R.chart c).e y) :=
-    ((contDiffOn_of_differentiableOn D _ _ ho ((he a).2 i c)).contDiffAt
-      (ho.mem_nhds (mem_over _ hy.1 hy.2))).of_le (WithTop.coe_le_coe.2 le_top)
-  have hs (v) : ∑ j, Complex.normSq ((e ((Fintype.equivFin α).symm j) i ∘ (R.chart c).e.symm) v) =
-      ∑ a, ‖e a i ((R.chart c).e.symm v)‖ ^ 2 :=
-    Fintype.sum_equiv (Fintype.equivFin α).symm _ _ fun _ => Complex.normSq_eq_norm_sq _
-  have := leviV_log_sum_nonneg (fun j => contDiffAt_normSq_comp (hc ((Fintype.equivFin α).symm j)))
-    (fun j => logPshAt_normSq (hc _))
-    (by rw [hs, (R.chart c).e.left_inv hy.1]; exact h.sum_pos hy.2) ξ
-  simp only [hs] at this
-  exact this
 
 end Weight
 
 namespace WeightFamily.Reading
-
-variable [SmoothOfRelativeDimension D p] {R : AnRead p σ D} {κ : Type} [Fintype κ] [DecidableEq κ]
-  [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)] {F : WeightFamily R κ} {B : LB Y}
-  {m : Option κ → ℤ} {r : F.Reading B m} {φ : Weight p σ B}
-
-theorem Isometric.isSmooth (h : r.Isometric φ) : φ.IsSmooth R := fun i =>
-  AnRead.smoothOn_of_cover (fun c => (F.atlas.chart c).open_source)
-    (fun y _ => ⟨_, F.atlas.mem_pick y⟩) fun c => by
-    have hS := (F.atlas.chart c).open_source.inter (isOpen_ptsIn (p := p) (σ := σ) (B.U i))
-    have h₁ : R.SmoothOn (F.atlas.chart c).source (F.atlas.ph m c) := fun j =>
-      ContDiffOn.sum (f := fun o v => m o * F.ph₀ o c ((R.chart j).e.symm v)) fun o _ =>
-        contDiffOn_const.mul (by
-          rcases o with _ | a
-          · exact ((F.smoothK c.2.1).mono (fun _ => mem_K) j).add
-              ((AnRead.holoOn_ev_of_subset _ fun _ hz =>
-                mem_ptsIn_inf.2 ⟨mem_U hz, mem_K hz⟩).smoothOn_log (F.atlas.chart c).open_source
-                (fun _ hz => rv_ne_zero _ _ (mem_U hz) (mem_K hz)) j)
-          · exact (F.smooth a _).mono (fun _ hz => mem_L hz a) j)
-    rw [inter_comm]
-    exact AnRead.SmoothOn.congr
-      (f := fun z => F.atlas.ph m c z - Real.log (‖r.u c i z‖ ^ 2))
-      (fun j => (h₁.mono inter_subset_left j).sub
-        ((r.holo c i).smoothOn_log hS (fun z hz => r.ne c i z hz.1 hz.2) j))
-      fun z hz => eq_sub_of_add_eq (h c i z hz.1 hz.2).symm
 
 end WeightFamily.Reading
 

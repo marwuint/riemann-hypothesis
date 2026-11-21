@@ -19,16 +19,6 @@ lemma ind_of_mem {x : ℂ} (h : x ∈ L.lattice) : ind L x = 1 := by
 lemma ind_of_notMem {x : ℂ} (h : x ∉ L.lattice) : ind L x = 0 := by
   simp [ind, h]
 
-lemma ind_neg (x : ℂ) : ind L (-x) = ind L x := by
-  by_cases hx : x ∈ L.lattice
-  · rw [ind_of_mem L hx, ind_of_mem L (L.lattice.neg_mem hx)]
-  · rw [ind_of_notMem L hx, ind_of_notMem L (fun h => hx (by simpa using L.lattice.neg_mem h))]
-
-lemma sg_analyticAt (hb : SgStarBasic) (a b z : ℂ) :
-    AnalyticAt ℂ (fun w : ℂ => sgStar L (a * w + b)) z := by
-  have hd := (hb L).1
-  exact (by fun_prop : Differentiable ℂ fun w : ℂ => sgStar L (a * w + b)).analyticAt z
-
 private lemma meromorphicOrderAt_eq_zero_of_analyticAt_ne_zero {g : ℂ → ℂ} {x : ℂ} (hg : AnalyticAt ℂ g x) (h : g x ≠ 0) :
     meromorphicOrderAt g x = 0 := by
   have := (meromorphicOrderAt_eq_int_iff (n := 0) hg.meromorphicAt).2 ⟨g, hg, h, by simp⟩

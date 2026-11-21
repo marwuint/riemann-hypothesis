@@ -453,10 +453,6 @@ def toHatOf {B : Subalgebra O K⟦X⟧} (h : B ≤ Rpi O K l e) : B →+* Ahat O
 
 def toHatS : invL l (S O K e) →+* Ahat O K l e := toHatOf l e (invL_S_le_Rpi l e)
 
-variable {e} in
-
-def toHatR {k : ℝ} (hk : k ≤ 1 / e) : R O K l k →+* Ahat O K l e := toHatOf l e (R_mono l hk)
-
 abbrev RpiE : Subalgebra O K⟦X⟧ := invE l e (Rpi O K l e)
 
 theorem toHat_E : toHat O K l e (EIn l e _) = Ehat O K l e := toHat_eq_ofAl l e rfl

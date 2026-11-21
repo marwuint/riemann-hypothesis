@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackTorsionPoints
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsogenyProductDecompositionStatement
+import Development.WeilBound.CoreStatements.SesquilinearFractions.GOntoKer
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsogenyProductDecomposition
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsogenyDecompositionProduct
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPullback
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EllMapCancelAndSabMapCancel
@@ -31,8 +32,8 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.cm_pack_product_frame : ∀ (E
   have hf : (algebraMap V X.K).comp f = algebraMap (𝓞 X.K) X.K := by ext; rfl
   obtain ⟨T', m0, hg⟩ := GlobalTheory.CM.PAT.exists_pullback E H _ _ (spMap f) X.B
   have hψ : ∀ k, IsMonHom (X.ψ (b k) (a k)) := fun k => ((X.fam (b k)).1 (a k)).isMonHom
-  obtain ⟨hon, hker⟩ := GlobalTheory.CompanionTheory.Relay.cm_pack_torsion_points E H D l Xo c g ty FU i Z P hP X N b a hN hspan
-  obtain ⟨χ, hχ, hψχ, hoff⟩ := GlobalTheory.T.isogeny_product_decomposition X.K (algebraMap X.K ℂ) g N (fun k => (X.C (b k)).P) X.B.pol
+  obtain ⟨hon, hker⟩ := _root_.PositivityTheory.Xgf.cm_pack_torsion_points E H D l Xo c g ty FU i Z P hP X N b a hN hspan
+  obtain ⟨χ, hχ, hψχ, hoff⟩ := _root_.GlobalTheory.CompanionTheory.Relay.isogeny_product_decomposition X.K (algebraMap X.K ℂ) g N (fun k => (X.C (b k)).P) X.B.pol
     (fun k => X.ψ (b k) (a k)) hψ hN hon hker
   obtain ⟨uV, huV, htan, hbasis⟩ := GlobalTheory.CompanionTheory.Relay.isogeny_decomposition_product (𝓞 X.K) V f g N (fun k => (X.C (b k)).P) (fun k => (X.C (b k)).v)
     X.B.pol (fun k => X.ψ (b k) (a k)) χ T'.t.G m0.φ X.dim (fun k => (X.C (b k)).basis) hψ hχ hψχ hoff hNu m0.cart

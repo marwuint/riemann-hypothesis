@@ -3,14 +3,14 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArCalcOfPrincipalisation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleGeometricDegreeRaiseWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelSmallSectionsChangeOfMetricStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFubiniStudyWeightsBoundedDifferenceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionCountGrowthMetricNearGeneratorMaxStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGoodSectionGroupFamilyAmpleMultiplesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfIntersectionCanonicalWeightsTendstoZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormBasepointFreeSectionsLeOneFubiniStudyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FubiniStudyWeightIncrementSemiPositiveCurvatureStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleGeometricDegreeRaiseWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelSmallSectionsChangeOfMetric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFubiniStudyWeightsBoundedDifference
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionCountGrowthMetricNearGeneratorMax
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGoodSectionGroupFamilyAmpleMultiples
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfIntersectionCanonicalWeightsTendstoZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormBasepointFreeSectionsLeOneFubiniStudy
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FubiniStudyWeightIncrementSemiPositiveCurvature
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasepointFreeSectionTupleAmpleArithStatement
 
 set_option autoImplicit false
@@ -27,10 +27,10 @@ theorem ampleHS_of_principalisation : GlobalTheory.Published.Principalisation �
   intro hPr k _ X _ p D hX P a hA hS ha
   have hC := GlobalTheory.MixHt.arCalc_of_principalisation hPr
   obtain ⟨e, x, hx⟩ := GlobalTheory.T.exists_basepointFreeSectionTuple_ample_arith k X p D hX P hA
-  obtain ⟨B, hB0, hB⟩ := GlobalTheory.T.exists_fubiniStudyWeights_bounded_difference k X p D hX P e x hx
-  have hG := GlobalTheory.T.isGoodSectionGroupFamily_ampleMultiples hC k X p D hX P hA
-  obtain ⟨t₀, ht₀⟩ := GlobalTheory.T.arithHilbertSamuel_smallSections_change_of_metric hPr k X p D hX P a hS ha hG
-  obtain ⟨C, hCb⟩ := GlobalTheory.T.selfIntersection_canonicalWeights_tendsto_zero hC k X p D hX P hA e x hx
+  obtain ⟨B, hB0, hB⟩ := _root_.GlobalTheory.HSAmp.exists_isCan_bdd k X p D hX P e x hx
+  have hG := _root_.GlobalTheory.HSAmp.GoodH.goodFam_H hC k X p D hX P hA
+  obtain ⟨t₀, ht₀⟩ := _root_.GlobalTheory.HSAmp.ChangeSing.count_change_of_principalisation hPr k X p D hX P a hS ha hG
+  obtain ⟨C, hCb⟩ := _root_.GlobalTheory.HSAmp.selfInter_canWeight_le hC k X p D hX P hA e x hx
   refine ⟨max (t₀ + B) 1, fun t ht => ?_⟩
   have ht1 : t₀ + B ≤ t := le_trans (le_max_left _ _) ht
   have ht2 : 0 < t := lt_of_lt_of_le one_pos (le_trans (le_max_right _ _) ht)
@@ -50,16 +50,16 @@ theorem ampleHS_of_principalisation : GlobalTheory.Published.Principalisation �
     intro n hn ε hε
     have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
     obtain ⟨u, hu, huB⟩ := hB n hn
-    have hsemi := GlobalTheory.T.fubiniStudyWeightIncrement_semiPositive_curvature k X p D hX P e x hx n u hn hu
+    have hsemi := _root_.GlobalTheory.HSAmp.semiPos_up_of_isCan k X p D hX P e x hx n u hn hu
     obtain ⟨h, hh⟩ := (hC.arExists k X p D hX).1 (up P.L u)
     have hsi : (up P.L u).IsSelfInter (h (genericPoint X)) := ⟨h, hh, rfl⟩
     have han := hCb n u _ hn hu hsi
     have hdiff := ht₀ u B _ hB0 huB hsemi hsi t ht1
-    obtain ⟨hnu1, hnu2, hgu, -, -⟩ := GlobalTheory.T.norm_basepointFree_sections_le_one_fubiniStudy k X p D hX P e x hx n u hn hu
+    obtain ⟨hnu1, hnu2, hgu, -, -⟩ := _root_.GlobalTheory.HSAmp.canNorms k X p D hX P e x hx n u hn hu
     have hκ1 : Real.exp (-(Real.log ((D : ℝ) + 1) / (2 * n))) ≤ 1 :=
       Real.exp_le_one_iff.2 (neg_nonpos.2 (div_nonneg hLg (by positivity)))
-    have hcnt := GlobalTheory.T.sectionCount_growth_metric_near_generatorMax hC k X p D hX (upperParabolic P u) hA e x hgu _ t (Real.exp_pos _) hκ1 ht2 hnu1 hnu2 ε hε
-    rw [show (upperParabolic P u).L = up P.L u from rfl, GlobalTheory.T.hermLineBundleGeometricDegree_raiseWeight hC k X p D hX P.L u, Real.log_exp, ← hg] at hcnt
+    have hcnt := _root_.GlobalTheory.HSAmp.lc_exp_bounds hC k X p D hX (upperParabolic P u) hA e x hgu _ t (Real.exp_pos _) hκ1 ht2 hnu1 hnu2 ε hε
+    rw [show (upperParabolic P u).L = up P.L u from rfl, _root_.GlobalTheory.GdegMetric.gdeg_up hC k X p D hX P.L u, Real.log_exp, ← hg] at hcnt
     simp only [hball, hball'] at hdiff
     have hd := hdiff.eventually (Metric.ball_mem_nhds _ hε)
     set an := h (genericPoint X)

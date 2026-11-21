@@ -1,5 +1,15 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightLambdaShiftNonneg
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightCombinatorialDataULeUZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LambdaPrimeAllPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AtPtsImp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterLargeAllPointsBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoEntryValuesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoBlockConstantCentred
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoWindowContainsCloud
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoLowsDistanceBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoThickPlaceCentreWindowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoNonThickPlaceCentreWidthStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoEntriesLeFloorHeight
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtPtsImp
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtPtsStatement
@@ -22,11 +32,11 @@ theorem wts_ok_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ j 
   intro eps Fm x hx i p hp j
   obtain ⟨hF, hLg⟩ := hp
   have hv : ∀ τ, ValsAt (Fm.L x i) j τ := fun τ => GlobalTheory.T.liftWeightRho_entryValues (Fm.L x i) j τ (hF j τ)
-  refine ⟨wts (Fm.L x i) j, ⟨anti _ j, what₂ _ j, fun τ => (GlobalTheory.T.liftWeightRho_block_constant_centred (Fm.L x i) j τ (hv τ)).1, fun τ => (GlobalTheory.T.liftWeightRho_block_constant_centred (Fm.L x i) j τ (hv τ)).2,
-    fun τ => (GlobalTheory.T.liftWeightRho_window_contains_cloud (Fm.L x i) j τ (hv τ)).1, fun τ => (GlobalTheory.T.liftWeightRho_window_contains_cloud (Fm.L x i) j τ (hv τ)).2,
-    fun τ => GlobalTheory.T.liftWeightRho_lows_distance_bounds (Fm.L x i) (Fm.params x hx i) j τ (hv τ), fun τ h => GlobalTheory.T.liftWeightRho_thickPlace_centre_window (Fm.L x i) j τ (hv τ) h,
+  refine ⟨wts (Fm.L x i) j, ⟨anti _ j, what₂ _ j, fun τ => (_root_.GlobalTheory.ExpTie.Lift.block_centre (Fm.L x i) j τ (hv τ)).1, fun τ => (_root_.GlobalTheory.ExpTie.Lift.block_centre (Fm.L x i) j τ (hv τ)).2,
+    fun τ => (_root_.GlobalTheory.ExpTie.Lift.window_cloud (Fm.L x i) j τ (hv τ)).1, fun τ => (_root_.GlobalTheory.ExpTie.Lift.window_cloud (Fm.L x i) j τ (hv τ)).2,
+    fun τ => _root_.GlobalTheory.ExpTie.Lift.low_dist (Fm.L x i) (Fm.params x hx i) j τ (hv τ), fun τ h => GlobalTheory.T.liftWeightRho_thickPlace_centre_window (Fm.L x i) j τ (hv τ) h,
     fun τ h => GlobalTheory.T.liftWeightRho_nonThickPlace_centre_width (Fm.L x i) (Fm.params x hx i) j τ (hv τ) h⟩, fun τ => ⟨-(lamL j τ).detShift, fun a => ?_⟩,
-    fun τ a ha => ⟨U_nonneg _ j τ a ha, GlobalTheory.T.liftWeightRho_entries_le_floor_height (Fm.L x i) (Fm.params x hx i) j τ (hLg j) (hv τ) a ha⟩, T2_card _ j, rfl⟩
+    fun τ a ha => ⟨U_nonneg _ j τ a ha, _root_.GlobalTheory.ExpTie.Lift.wts_U_le_h0_of_large (Fm.L x i) (Fm.params x hx i) j τ (hLg j) (hv τ) a ha⟩, T2_card _ j, rfl⟩
   have := lamT_of_lt j τ a a.2
   show (lamT j τ a : ℤ) = _
   rw [this]

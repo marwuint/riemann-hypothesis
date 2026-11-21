@@ -2,11 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.H1algDefStatement
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
+import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
+import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.RPfVal
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ConjugateMinimaInstance
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GramSpace
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.QBound
+import Formalism.SharpRestriction.Divisibility.WeightAlgebra
 import Formalism.LocalToGlobal.ProjectiveLattices.DepRun
 import Formalism.LocalToGlobal.ProjectiveLattices.RegXInst
 import Formalism.LocalToGlobal.ProjectiveLattices.Adm3OfExtension
@@ -16,6 +18,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ErealLeMulOfForallLe
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsIntegralChartIntegralFramedPoint
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.NuAlgLeOfCharts
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WeightOnDatum
+
 open AlgebraicGeometry CategoryTheory NumberField IsLocalRing IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.QForm Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps.EtaleWeightGaps

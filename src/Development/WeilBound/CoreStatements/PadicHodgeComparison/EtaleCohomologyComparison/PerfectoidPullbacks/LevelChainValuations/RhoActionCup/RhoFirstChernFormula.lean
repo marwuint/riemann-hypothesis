@@ -16,10 +16,12 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationUniqueStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRealizationOfCompatibleStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationAddStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationSmulStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationFunctorialStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationCupProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationUnitClassStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationSmul
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LevelChainValuations.OneSTr
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationFunctorial
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationCupProduct
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealizationUnitClass
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.HodgeTateResidues.LatLink
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.TranscendentalPeriodUnits.IsUOfIsUnit
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LieComplementChartContDiffAt
@@ -51,7 +53,7 @@ theorem chK_good (M : Model l K) (hM : M.Sm) (m : ℕ) :
 theorem rho_mono (M : Model l K) (m : ℕ) {s s' : ℕ} (h : s ≤ s') (hG : (chK S hS hC M m s).Good)
     (hG' : (chK S hS hC M m s').Good) {j : ℕ} (x : ∀ n, M.Hc false n j) (f : Module.Dual K (HdR M.q j) →+ (S.L m).B)
     (hf : (chK S hS hC M m s').Rho x f) : (chK S hS hC M m s).Rho x f := by
-  have H := GlobalTheory.T.realization_functorial (chK S hS hC M m s') (chK S hS hC M m s)
+  have H := _root_.GlobalTheory.CompanionTheory.KapRhoHom.rho_hom (chK S hS hC M m s') (chK S hS hC M m s)
     (homS (hS.lev m) M h (qb_le (hS.lev m) M s) (qb_le (hS.lev m) M s')
       (rHof (dOf S hS hC m) (hcOf S hS hC m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s'))
     hG' hG (homS_good_of_inclHM _ _ _ _ _ _ _ (rHof_incl_pf S hS hC M m h)) x f hf
@@ -89,7 +91,7 @@ theorem rho_add_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m 
 theorem rho_smul_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m (c : (per l K).A) x f, rhoK S hS hC a j m x f →
     rhoK S hS hC a j m (c • x) ((AddMonoidHom.mulLeft ((S.L m).ι ((S.L m).lam c))).comp f) := by
   intro M a hM j m c x f ⟨_, s₀, h⟩
-  exact ⟨hM, s₀, fun s hs => GlobalTheory.T.realization_smul (chK S hS hC M m s) c _ f (h s hs)⟩
+  exact ⟨hM, s₀, fun s hs => _root_.GlobalTheory.CompanionTheory.KapChain.rho_smul (chK S hS hC M m s) c _ f (h s hs)⟩
 
 theorem rho_lin'_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x f, rhoK S hS hC a j m x f →
     ∀ (k : K) φ, f (k • φ) = algebraMap K (S.L m).B k * f φ := by

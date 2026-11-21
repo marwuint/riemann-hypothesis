@@ -89,10 +89,6 @@ theorem Frame.Jt_blocks (fr : Frame I S) : fr.Jt = Matrix.fromBlocks fr.Jt.toBlo
   rw [Frame.Jt_12, Frame.Jt_21, ← Frame.J'_eq] at h
   exact h
 
-theorem cT_cT (M : Matrix (Fin I.n) (Fin I.n) I.E) : cT (starRingEnd I.E) (cT (starRingEnd I.E) M) = M := by
-  ext i j
-  simp [Formalism.UG.cT]
-
 theorem cT_mul' {m p q : Type} [Fintype p] (M : Matrix m p I.E) (N : Matrix p q I.E) :
     cT (starRingEnd I.E) (M * N) = cT (starRingEnd I.E) N * cT (starRingEnd I.E) M := by
   simp only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]

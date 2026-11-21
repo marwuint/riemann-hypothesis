@@ -107,39 +107,4 @@ theorem volume_mul_det_eq_one_of_unimodular (g : ℕ) (Λ : Submodule ℤ (Fin g
     pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero] at habs
   rw [hvol, habs]
 
-theorem det_gram_pi_hermForm {g : ℕ} (Hm W : Matrix (Fin g) (Fin g) ℂ) :
-    (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W i) (W j)).det =
-      (Real.pi : ℂ) ^ g * Hm.det * ((‖W.det‖ ^ 2 : ℝ) : ℂ) := by
-  have h : (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W i) (W j)) =
-      (Real.pi : ℂ) • (W * (Hm * Wᴴ)) := by
-    ext i j
-    simp [hermForm, Matrix.mul_apply, dotProduct, mulVec]
-  rw [h, Matrix.det_smul, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Fintype.card_fin,
-    ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]
-  simp only [Complex.star_def]
-  ring
-
-theorem volume_div_eq_inv_of_unimodular (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
-    (hfull : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤)
-    (Hm : Matrix (Fin g) (Fin g) ℂ) (Ef : LinearMap.BilinForm ℤ Λ) (Fd : Set (Fin g → ℂ))
-    (hH : Hm.IsHermitian) (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re)
-    (hE : ∀ a b : Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) (hbij : Function.Bijective Ef)
-    (hFd : IsAddFundamentalDomain Λ Fd volume) (W : Matrix (Fin g) (Fin g) ℂ) (hW : W.det ≠ 0) :
-    0 < Real.pi ^ g * Hm.det.re * ‖W.det‖ ^ 2 ∧
-    (volume Fd).toReal / (Real.pi ^ g * ‖W.det‖ ^ 2) = (Real.pi ^ g * Hm.det.re * ‖W.det‖ ^ 2)⁻¹ ∧
-    (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W i) (W j)).det =
-      ((Real.pi ^ g * Hm.det.re * ‖W.det‖ ^ 2 : ℝ) : ℂ) := by
-  have h := volume_mul_det_eq_one_of_unimodular g Λ hfull Hm Ef Fd hH hpos hE hbij hFd
-  have hp := (det_re_pos hH hpos).1
-  have hW' : 0 < ‖W.det‖ := norm_pos_iff.2 hW
-  have hπ := Real.pi_pos
-  refine ⟨by positivity, ?_, ?_⟩
-  · rw [eq_inv_of_mul_eq_one_left h]
-    field_simp
-  · have him : Hm.det = (Hm.det.re : ℂ) :=
-      Complex.ext rfl (by simpa using (Complex.pos_iff.1 (posDef_of_hermForm hH hpos).det_pos).2.symm)
-    rw [det_gram_pi_hermForm, him]
-    push_cast
-    simp
-
 end GlobalTheory

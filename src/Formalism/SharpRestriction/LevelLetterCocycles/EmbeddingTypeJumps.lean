@@ -79,8 +79,6 @@ def GlobalIndexAwayFromTypes : Prop :=
     (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ) (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ),
     Formalism.MainNotions.TruncatedSeriesCountingIdentities.admitted i (r i) (ρ i) π dc lenRow e' cB → Formalism.MainNotions.TruncatedSeriesCountingIdentities.GlobalLatticeIndexTheorem i (ρ i) π dc lenRow e' cB
 
-def EndomorphismGoodPartBound : Prop := ∀ i : D.nd.Loc, Formalism.MainNotions.TruncatedSeriesCountingIdentities.EndomorphismIndexBound (D := D) i
-
 def admG1 : Prop := ∀ i : D.nd.Loc, AtQD i → Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG1 i (r i)
 
 def admG2 : Prop :=
@@ -99,10 +97,6 @@ def iwahoriAdmissibleSet : Prop :=
   ∀ i : D.nd.Loc, AtQD i → ∀ π ∈ D.nd.Zgood i,
     Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous i (r i) ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.admSS i (r i) ∧
       Formalism.MainNotions.TruncatedSeriesCountingIdentities.SemisimpleDecomposition i (r i) (ρ i) π ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.CyclotomicInertiaImage (D := D) i
-
-def LocalLiftingAdmitted (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CLL : ℝ) : Prop := Formalism.MainNotions.LocalSituation.LocalLiftingWachEtale D HW F CLL
-
-def H0ColumnLengthBound (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LocalSituation.Conclusion2 D HW F
 
 def admTB (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.LocalSituation.Conclusion4 D HW F
 
@@ -125,21 +119,6 @@ def admW (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
       (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw) (h : Good (D.nbr i w hw).Kw 1 C.LL),
       WachHypothesisLocal (Formalism.MainNotions.LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL h)
         ((F (D.nd.l i)).E (D.nbr i w hw).Kw 1 C.LL h).tie
-
-def TateLengthAllExponents (S : Formalism.MainNotions.LocalSituation.Sit) : Prop :=
-  ∀ (e c : ℕ) (Ve : LocLat S.G S.Qp S.LL S.O), finrank S.LL Ve.V = 1 →
-    (∀ g x, Ve.ρ g x = ((algebraMap S.Qp S.LL (S.PD.χ g : S.Qp))⁻¹) ^ e • x) →
-    Module.length S.O ↥(Submodule.torsionBy S.O (DivisibleCohomology Ve.L ⧸ divisibleFiniteCohomology S.PD Ve.L)
-        ((Formalism.MainNotions.LocalSituation.ell S : S.O) ^ c)) ≤
-      (((finrank S.Qp S.K + 1) * c : ℕ) : ℕ∞) * lenOl S.PD (O := S.O)
-
-def TateLengthCogenerators (HW : HWOf D.loc) : Prop :=
-  ∀ i : D.nd.Loc, AtQD i →
-    ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
-      (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw) (h : Good (D.nbr i w hw).Kw 1 C.LL),
-      TateLengthAllExponents (Formalism.MainNotions.LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 C.LL h)
-
-def FontaineAtPlacesOverL : Prop := Formalism.MainNotions.LocalSituation.adm7 D
 
 def LiteratureHypotheses : Prop :=
   ∀ i : D.nd.Loc, AtQD i →
@@ -176,41 +155,6 @@ def DownAt (ep : Bool) {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) : Prop :=
   ∃ τ₀ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i w hw,
     EmbTypeUe (!ep) τ₀ ∧ ∀ x, τ x = C.inc (τ₀ x)
-
-theorem not_upAt_and_downAt (ep : Bool) {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
-    {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw)
-    (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) : ¬ (UpAt ep C τ ∧ DownAt ep C τ) := by
-  rintro ⟨⟨τ₀, h0, e0⟩, ⟨τ₁, h1, e1⟩⟩
-  have hτ : τ₀ = τ₁ := by
-    ext x
-    exact congrArg _ ((C.inc).injective ((e0 x).symm.trans (e1 x)))
-  subst hτ
-  have hd : (0 : ℝ) < Real.sqrt (D.host.d : ℝ) := by
-    have := D.host.qd_big.2
-    exact Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < D.host.d))
-  have key : ∀ (ψ₁ ψ₂ : D.host.E →+* ℂ),
-      ψ₁ ∈ D.host.cmType →
-      ψ₂ ∈ D.host.cmType →
-      (∃ y : D.what₂.LL, D.what₂.embLL y = ψ₁ (D.host.sqd) ∧
-        D.what₂.embLL y = starRingEnd ℂ (ψ₂ (D.host.sqd))) → False := by
-    intro ψ₁ ψ₂ m1 m2 ⟨y, hy1, hy2⟩
-    have h := hy1.symm.trans hy2
-    simp only [Formalism.HC.HostRaw.cmType, Set.mem_ofPred_eq] at m1 m2
-    rw [m1, m2] at h
-    have him := congrArg Complex.im h
-    simp at him
-    linarith
-  cases ep with
-  | true =>
-    obtain ⟨hr, φ, hφ, hφr⟩ := h0
-    obtain ⟨-, φ', hφ', hφ'r⟩ := h1
-    obtain ⟨y, hy⟩ := hr (D.host.sqd)
-    exact key φ φ' hφ hφ' ⟨y, hφr _ _ hy, hφ'r _ _ hy⟩
-  | false =>
-    obtain ⟨hr, φ, hφ, hφr⟩ := h0
-    obtain ⟨-, φ', hφ', hφ'r⟩ := h1
-    obtain ⟨y, hy⟩ := hr (D.host.sqd)
-    exact key φ' φ hφ' hφ ⟨y, hφ'r _ _ hy, hφr _ _ hy⟩
 
 def HodgeJumpWindowsAtDistinguishedPrimes (ep : Bool) (large₂ : SizeData₂ D) : Prop :=
   ∀ i : D.nd.Loc, AtQD i →
@@ -268,24 +212,6 @@ def Conclusion0 (D : D7) : Prop :=
       finrank ↥(K0 (D.nbr i w hw).Kw) ↥(D.nbr i w hw).Kw.1 = 2 ∧
       finrank ℚ_[D.nd.l i] ↥(Ks (D.nbr i w hw).Kw 1) =
         (D.nd.l i - 1) / 2 * finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1
-
-def admitted (ep : Bool) (CA : ℝ) (CLL : ℝ) (large₂ : SizeData₂ D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
-  admW (D := D) HW F ∧ admA (D := D) CA ∧ GlobalIndexAwayFromTypes r ρ ∧ EndomorphismGoodPartBound (D := D) ∧ admG1 r ∧ admG2 r ρ ∧ admG3 r ρ ∧
-    admG4 r ∧ admG5 r ∧ admG6 r ∧ iwahoriAdmissibleSet r ρ ∧ LocalLiftingAdmitted (D := D) HW F CLL ∧ H0ColumnLengthBound (D := D) HW F ∧
-    admTB (D := D) HW F ∧ TateLengthCogenerators (D := D) HW ∧ admBK (D := D) ∧ KillingTwistedPlaces ρ ∧ HodgeJumpWindowsAtDistinguishedPrimes r ep large₂ ∧ FontaineSubOfSumsAtDistinguishedPrimes r ρ ∧ FontaineAtPlacesOverL (D := D) ∧
-    LiteratureHypotheses (D := D) ∧ ParametersPolynomiallyBounded large₂
-
-def Stmt (CA : ℝ) (CLL : ℝ) (large₂ : SizeData₂ D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) (P : MvPolynomial (Fin 3) ℕ) :
-    Prop :=
-  ∀ ep : Bool, admitted r ρ ep CA CLL large₂ HW F → Conclusion0 D ∧ Conclusion1 D ∧ Conclusion2 ρ large₂ C P
-
-def UniformExportStatement : Prop :=
-  ∀ CA CLL : ℝ, ∃ (C : ℝ) (P : MvPolynomial (Fin 3) ℕ),
-    ∀ (D : D7)
-      (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-      (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
-      (large₂ : SizeData₂ D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW),
-      Stmt r ρ CA CLL large₂ HW F C P
 
 end Glob
 

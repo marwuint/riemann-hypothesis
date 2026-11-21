@@ -5,10 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValua
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassCoeffsIntegralAverageChangeOfVariableStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntVVariableChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralJOfNonrealMultiplierStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralJOfNonrealMultiplier
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisStableLatticePointsSymmetricMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCoordsMemOfOddStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationDerivWeierstrassPOddTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCoordsMemOfOdd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationDerivWeierstrassPOddTorsion
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -20,12 +20,12 @@ theorem GlobalTheory.CMModel.modelAt_of_stable_torsion : ∀ (L : PeriodPair) (�
     rw [map_zero, zero_pow (by norm_num)] at hu12
     exact hΔ ((Valuation.zero_iff _).mp hu12.symm)
   have hj : (latticeCurve L).j ∈ V := by
-    have hi : _root_.IsIntegral V (latticeCurve L).j := (GlobalTheory.T.isIntegral_j_of_nonreal_multiplier L β hβ hβim).tower_top
+    have hi : _root_.IsIntegral V (latticeCurve L).j := (_root_.GlobalTheory.CMModel.LatticeJInt.main L β hβ hβim).tower_top
     obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.mp hi
     rw [← hy]; exact y.2
   obtain ⟨r, s, t, hint⟩ := GlobalTheory.T.exists_variableChange_intV_of_j_mem (latticeCurve L) V (Units.mk0 u hu) hj hu12
-  have htm := fun i => GlobalTheory.T.torsion_weierstrass_coords_mem_of_intV L β u V N hβ hβim hu12 hN hNodd hu r s t hint (T i) (hT i).1 (hT i).2
-  have hud := fun i => GlobalTheory.T.valuation_derivWeierstrassP_oddTorsion L β u V N hβ hβim hu12 hN hNodd (T i) (hT i).1 (hT i).2
+  have htm := fun i => _root_.GlobalTheory.CMModel.torsion_coords_mem_of_odd L β u V N hβ hβim hu12 hN hNodd hu r s t hint (T i) (hT i).1 (hT i).2
+  have hud := fun i => _root_.GlobalTheory.valuation_derivWeierstrassP_torsion_odd L β u V N hβ hβim hu12 hN hNodd (T i) (hT i).1 (hT i).2
   have havg := GlobalTheory.T.weierstrassCoeffs_integral_average_change_of_variables V (-L.g₂ / 4) (-L.g₃ / 4) r s t (Units.mk0 u hu) ι
     (fun i => L.weierstrassP (T i)) (fun i => L.derivWeierstrassP (T i) / 2) hint hcard
     (fun i => (htm i).1) (fun i => (htm i).2)

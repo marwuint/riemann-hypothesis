@@ -2,12 +2,12 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenHom
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuasicoherentSupSectionsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoherentSubobjectCoherentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneratedSubsheafQuasicoherentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneratedSubsheafLeOfTwistedSectionMemStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneratedSubsheafQuasicoherent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneratedSubsheafLeOfTwistedSectionMem
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneratedSubsheafAddLeSupStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneratedSubsheafLeIdealPowerStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneratedSubsheafLeIdealPower
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoherentNoetherianMaximalSubsheafStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AmpleTwistSectionsGenerateSubsheafStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AmpleTwistSectionsGenerateSubsheaf
 
 set_option autoImplicit false
 
@@ -22,21 +22,21 @@ theorem exists_alg_of_twSecs : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] 
   have h0 : (0 : Γ(GlobalTheory.twistZ P H n₁, ⊤)) ∈ twSecs H n₁ (S 0) := ⟨0, map_zero _⟩
   obtain ⟨b₀, hb₀, -⟩ := hgen n₁ le_rfl 0 0 h0
   have hF : F.Nonempty :=
-    ⟨genSub hH n₁ b₀, GlobalTheory.T.generated_subsheaf_quasicoherent hH hP.1 n₁ b₀, fun e => GlobalTheory.T.generated_subsheaf_le_of_twisted_section_mem hH (S e) n₁ b₀ (hW n₁ e hb₀)⟩
+    ⟨genSub hH n₁ b₀, _root_.GlobalTheory.CompanionTheory.GE.TwGen.isQuasicoherent_genSub hH hP.1 n₁ b₀, fun e => _root_.GlobalTheory.CompanionTheory.GE.TwGen.genSub_le hH (S e) n₁ b₀ (hW n₁ e hb₀)⟩
   obtain ⟨M, ⟨hMq, hMS⟩, hMmax⟩ := GlobalTheory.T.coherent_noetherian_maximal_subsheaf hP F hF (fun B hB => hB.1)
   have hgenM : ∀ n, ∀ b ∈ W n, genSub hH n b ≤ M := by
     intro n b hb
     have hmem : M ⊔ genSub hH n b ∈ F :=
-      ⟨(GlobalTheory.T.quasicoherent_sup_sections hP.1 M (genSub hH n b) hMq (GlobalTheory.T.generated_subsheaf_quasicoherent hH hP.1 n b)).1,
-        fun e => sup_le (hMS e) (GlobalTheory.T.generated_subsheaf_le_of_twisted_section_mem hH (S e) n b (hW n e hb))⟩
+      ⟨(GlobalTheory.T.quasicoherent_sup_sections hP.1 M (genSub hH n b) hMq (_root_.GlobalTheory.CompanionTheory.GE.TwGen.isQuasicoherent_genSub hH hP.1 n b)).1,
+        fun e => sup_le (hMS e) (_root_.GlobalTheory.CompanionTheory.GE.TwGen.genSub_le hH (S e) n b (hW n e hb))⟩
     rw [← hMmax _ hmem le_sup_left]
     exact le_sup_right
   refine ⟨M, hMq, fun e => le_antisymm (sup_le (hMS e) (hS.pow_le e)) ?_⟩
   have hSe : IsCoherent (S e : X.Modules) := GlobalTheory.T.coherent_subobject_coherent hP (S e) (hS.qcoh e)
-  obtain ⟨n₀, hn₀⟩ := GlobalTheory.T.ample_twist_sections_generate_subsheaf hA (S e) hSe
+  obtain ⟨n₀, hn₀⟩ := _root_.GlobalTheory.CompanionTheory.GE.TwGen.le_of_genSub_le hA (S e) hSe
   refine hn₀ (max n₀ n₁) (le_max_left _ _) _ fun x hx => ?_
   obtain ⟨b, hb, hxb⟩ := hgen (max n₀ n₁) (le_max_right _ _) e x hx
   rw [← add_sub_cancel b x]
-  exact (GlobalTheory.T.generated_subsheaf_add_le_sup hH _ b (x - b)).trans (sup_le_sup (hgenM _ b hb) (GlobalTheory.T.generated_subsheaf_le_ideal_power I hH hP.1 _ _ _ hxb))
+  exact (GlobalTheory.T.generated_subsheaf_add_le_sup hH _ b (x - b)).trans (sup_le_sup (hgenM _ b hb) (_root_.GlobalTheory.CompanionTheory.GE.TwGen.genSub_le_powSub I hH hP.1 _ _ _ hxb))
 
 end GlobalTheory.CompanionTheory.GE.TwGen

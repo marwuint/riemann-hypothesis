@@ -1,4 +1,4 @@
-import Formalism.LocalToGlobal.CharacterGerms.ValuationEqPairOfBiadditiveCross
+import Formalism.LocalToGlobal.CharacterGerms.TripleSubstSecondCoordinate
 
 noncomputable section
 
@@ -184,22 +184,6 @@ theorem isIU_of_exp {U f : MvPowerSeries τ C} (hi : IntS V U) (he : U = mvExp f
     | exact map_one _
     | rfl
     | (simp [VF.v]; done)
-
-private theorem mvExp_add_character_germs {σ : Type} {f g : MvPowerSeries σ C} (hf : MvPowerSeries.constantCoeff f = 0)
-    (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f + g) = mvExp f * mvExp g := by
-  first
-    | exact exp_add hf hg
-    | exact Formalism.L2.FormalSeriesBounds.UnitSeriesProduct.mvExp_add' hf hg
-    | exact Formalism.IncomingBounds.mvExp_add hf hg
-    | exact Formalism.IncomingBounds.mvExp_add' hf hg
-    | exact mvExp_add hf hg
-
-private theorem mvExp_zero_eq_one {σ : Type} : mvExp (0 : MvPowerSeries σ C) = 1 := by
-  ext m
-  show (∑ k ∈ Finset.range (Finsupp.degree m + 1),
-    (MvPowerSeries.coeff m) ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C)) = MvPowerSeries.coeff m 1
-  rw [Finset.sum_range_succ']
-  simp
 
 theorem biadd_left {c : Fin dd → MvPowerSeries τ C} (hc : GoodPt V c) :
     ∀ l : List (Fin dd → MvPowerSeries τ C), (∀ a ∈ l, GoodPt V a) →

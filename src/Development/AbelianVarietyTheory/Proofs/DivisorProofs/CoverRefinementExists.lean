@@ -1,8 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitKOfIsAlgClosed
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteExtensionSplittingTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteExtensionSplittingTorsion
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoverFunctionFieldEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommonRefinementCoversStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommonRefinementCovers
+import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemConeOfMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormsOfInduces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
 
 set_option autoImplicit false
@@ -90,13 +95,13 @@ theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   intro E _ _ _ H X _ t F _ _ Y M ρ' V₀ q hq
   haveI : CharZero Y.Fn := charZero_of_injective_algebraMap (algebraMap F Y.Fn).injective
   let x : Sp Y.Fn ⟶ X := Y.X.fromSpecStalk (genericPoint Y.X) ≫ M.j ≫ ρ'
-  obtain ⟨K, i1, i2, i3, hfin, hinj, -, ⟨ζ, hζ⟩, hs⟩ := GlobalTheory.T.exists_finite_extension_splitting_torsion E H X t Y.Fn x q hq
+  obtain ⟨K, i1, i2, i3, hfin, hinj, -, ⟨ζ, hζ⟩, hs⟩ := _root_.GlobalTheory.TorsSplitField.splitTors_finite_extension E H X t Y.Fn x q hq
   have hK : IsField K := by
     have : Algebra.IsIntegral Y.Fn K := Algebra.IsIntegral.of_finite _ _
     exact (Algebra.IsIntegral.isField_iff_isField hinj).1 (Field.toIsField _)
   letI : Field K := hK.toField
   obtain ⟨V₁, ρ₁, ψ, hρ₁, hψ⟩ := GlobalTheory.T.exists_cover_function_field_embedding F Y M K
-  obtain ⟨V, π₀, π₁, hπ₀, -, ⟨g₀, e₀, f₀⟩, ⟨g₁, e₁, f₁⟩⟩ := GlobalTheory.T.common_refinement_covers F Y V₀ V₁
+  obtain ⟨V, π₀, π₁, hπ₀, -, ⟨g₀, e₀, f₀⟩, ⟨g₁, e₁, f₁⟩⟩ := _root_.GlobalTheory.CoverCommon.exists_cover_dominating_two F Y V₀ V₁
   haveI := isPreimmersion_j V
   have hη := j_gen_specializes V
   have hg₁ : g₁ (genericPoint V.G) ⤳ genericPoint V₁.G := specializes_of_eq (map_genericPoint g₁ f₁)

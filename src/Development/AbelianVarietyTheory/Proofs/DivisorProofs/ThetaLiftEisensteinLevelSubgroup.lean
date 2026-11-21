@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SphericalEisensteinSeriesOnGroup
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.EisensteinResidue
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.EisensteinMaximalParabolic
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSchwartzVectorField
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EisensteinIsotropicLine
+import Development.AbelianVarietyTheory.Definitions.Foundations.AnalyticOnNhdTsumNpow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOneP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstMemAndComm
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsSchwartzBruhatAdelicMatrixOfMemAdelicSchwartz
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatAdelicMatrixContinuousLeMajorant
@@ -35,44 +35,8 @@ theorem integrable_of_mem (hθ : IsInfFam θ) {m : ℕ} (μ : Measure (Mx D m n)
   obtain ⟨C, hC⟩ := hC N
   exact ((hN K hK).const_mul C).mono' hc.aestronglyMeasurable (.of_forall hC)
 
-variable (τ) in
-
-def IsDer (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (Φ Ψ : schwartzA θ V.rank n) : Prop :=
-  ∀ y : Mx D V.rank n, HasDerivAt (fun t : ℝ => Φ.1 (mt V (oneP θ V τ X t)⁻¹ ⬝ y)) (Ψ.1 y) 0
-
 variable {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle}
   {μ : Measure (Mx D V.rank n)} {𝓕 : Set (Mx D V.rank n)} {ω : StdUnn.G D n →* Module.End ℂ (schwartzA θ V.rank n)}
-
-theorem IsDer.at (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) {Φ Ψ : schwartzA θ V.rank n} (h : IsDer τ X Φ Ψ)
-    (y : Mx D V.rank n) (t : ℝ) :
-    HasDerivAt (fun s : ℝ => Φ.1 (mt V (oneP θ V τ X s)⁻¹ ⬝ y)) (Ψ.1 (mt V (oneP θ V τ X t)⁻¹ ⬝ y)) t := by
-  have := GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (φ := fun g => Φ.1 (mt V g⁻¹ ⬝ y)) (φ' := fun g => Ψ.1 (mt V g⁻¹ ⬝ y))
-    (fun g => by
-      simp only [mul_inv_rev, mt_mul, Matrix.mul_assoc]
-      exact h _) 1 t
-  simpa only [one_mul] using this
-
-variable (ω) in
-
-def Induced (T : (GA D V → ℂ) → GA D V → ℂ) : Prop :=
-  ∀ Φ : schwartzA θ V.rank n, ∃ Ψ : schwartzA θ V.rank n, ∀ (g : StdUnn.G D n) (x : Mx D V.rank n),
-    T (fun h => (ω g Φ).1 (mt V h⁻¹ ⬝ x)) = fun h => (ω g Ψ).1 (mt V h⁻¹ ⬝ x)
-
-theorem Induced.sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (A : ι → (GA D V → ℂ) → GA D V → ℂ)
-    (h : ∀ i, Induced ω (A i)) : Induced ω fun f => ∑ i ∈ s, c i • A i f := by
-  intro Φ
-  choose Ψ e using fun i => h i Φ
-  refine ⟨∑ i ∈ s, c i • Ψ i, fun g x => ?_⟩
-  funext k
-  simp only [e, map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]
-
-section
-
-variable (hψ : IsCharAF D.host.F ψ) (hθ : IsInfFam θ) (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕)
-  (hω : StdUnn.IsWeilSch ψ χ θ V μ ω)
-include hψ hθ hμ hω
-
-end
 
 end GlobalTheory.RegSch.CentreWeilComm
 

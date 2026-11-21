@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EllFamNontrivial
 import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantCochainOneConstOnDegreeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegZeroCocycleExistsCoboundaryOfRichBasedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterFunctionEqZeroOfComposableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterFunctionEqZeroOfComposable
 
 set_option autoImplicit false
 
@@ -36,7 +36,7 @@ theorem exists_perCl {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup 
   have hadd : ∀ l m, p (l + m) = p l + p m := by
     intro l m
     rw [← sub_eq_zero]
-    refine GlobalTheory.T.parameter_function_eq_zero_of_composable K hR l m _ fun k k' k'' hl hm ↦ ?_
+    refine _root_.GlobalTheory.AnPer.Charts.eq_zero_of_cst_composable K hR l m _ fun k k' k'' hl hm ↦ ?_
     let φ : K.triv k ⟶ K.triv k' := ptHom (K.triv k') hl
     let ψ : K.triv k' ⟶ K.triv k'' := ptHom (K.triv k'') hm
     have e := hc φ ψ

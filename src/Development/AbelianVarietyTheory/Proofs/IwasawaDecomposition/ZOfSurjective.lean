@@ -81,9 +81,6 @@ theorem zOf_surjective : Function.Surjective (zOf W Ch sel mu P hX) := by
   show ((resK W Ch sel mu hX).symm (LiftForms.lvlForm _ _ P.grp P.chr x)).1 = φ.1
   rw [hx, LinearEquiv.symm_apply_apply]
 
-def zEquiv : (Fin (dimP W Ch sel mu P hX) → X.K) ≃ₗ[X.K] MtildeV W Ch sel mu P :=
-  LinearEquiv.ofBijective (zOf W Ch sel mu P hX) ⟨zOf_injective W Ch sel mu P hX, zOf_surjective W Ch sel mu P hX⟩
-
 end Gen
 
 end GlobalTheory.Mem.ColTie

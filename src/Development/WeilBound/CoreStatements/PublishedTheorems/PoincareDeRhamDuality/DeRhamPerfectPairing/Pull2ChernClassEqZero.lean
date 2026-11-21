@@ -30,23 +30,6 @@ theorem key₁ {B B' : Type} [CommRing B] [CommRing B'] {n : ℕ} (ρ : B →+* 
   simp only [map_mul]
   linear_combination hs - h1
 
-theorem key₂ {B B' : Type} [CommRing B] [CommRing B'] {n : ℕ} (ρ : B →+* B') (fθ : B) (fc f₂ f₁ fθ' : B')
-    (aθ gm₀ : Fin n → B) (b₂ a₁ bθ' a₂ aθ' gm₂ gm₁ t : Fin n → B')
-    (h1 : ρ fθ - fc + f₂ = ∑ k, ρ (aθ k) * b₂ k) (h2 : f₁ - fc + fθ' = ∑ k, a₁ k * bθ' k)
-    (h3 : ∀ k, ρ (aθ k) + a₂ k = a₁ k + aθ' k) (h4 : ∀ k, gm₂ k = ρ (gm₀ k) + b₂ k)
-    (h5 : ∀ k, t k + gm₂ k = gm₁ k + bθ' k) :
-    (fθ' + ∑ k, aθ' k * gm₂ k) - ρ (fθ + ∑ k, aθ k * gm₀ k) =
-      (f₂ + ∑ k, a₂ k * gm₂ k) - (f₁ + ∑ k, a₁ k * gm₁ k) + ∑ k, t k * a₁ k := by
-  have e : ∀ k, aθ' k * gm₂ k - ρ (aθ k) * ρ (gm₀ k) - a₂ k * gm₂ k + a₁ k * gm₁ k - t k * a₁ k
-      = ρ (aθ k) * b₂ k - a₁ k * bθ' k := by
-    intro k
-    linear_combination (-gm₂ k) * h3 k + ρ (aθ k) * h4 k - a₁ k * h5 k
-  have hs := Finset.sum_congr rfl (fun k (_ : k ∈ Finset.univ) => e k)
-  simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib] at hs
-  rw [map_add, map_sum]
-  simp only [map_mul]
-  linear_combination hs + h2 - h1
-
 theorem exists_factor' {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] (f : M →ₗ[R] N) (hf : Function.Surjective f) (x : M →ₗ[R] R)
     (h : ∀ m, f m = 0 → x m = 0) : ∃ x' : N →ₗ[R] R, ∀ m, x' (f m) = x m := by

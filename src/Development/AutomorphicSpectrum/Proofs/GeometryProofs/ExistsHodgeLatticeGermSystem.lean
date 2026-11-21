@@ -2,8 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransportStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairingStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.GermHodgeLatticeExists
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
@@ -18,7 +19,7 @@ theorem germ_gives_hodgeLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   have hρeq : ∀ (a : 𝓞 E) (v : Fin d → Ω),
       (GlobalTheory.CompanionTheory.Ar.Conj.rho S.g₀.B a).mulVec v = ρ a v := fun a v =>
     M.inj ((S.act₀ a v).trans (hact a v).symm)
-  obtain ⟨⟨ρ0, hρ0⟩, -, -⟩ := GlobalTheory.T.formal_hermitian_action_pairing Ω d (𝓞 E) S.g₀.B
+  obtain ⟨⟨ρ0, hρ0⟩, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint Ω d (𝓞 E) S.g₀.B
   let dd : ((Fin d → Ω) × (Fin d → Ω)) ≃ₗ[Ω] (Fin d → Ω) × Module.Dual Ω (Fin d → Ω) :=
     PositivityTheory.Xgn.GermHodgeLattice.dd Ω d
   have hdd : ∀ y, dd y = (y.1, dotProductBilin Ω Ω y.2) := fun y =>
@@ -56,7 +57,7 @@ theorem germ_gives_hodgeLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
       exact this ▸ hz
     · intro h
       exact Submodule.mem_map.mpr ⟨y, h, rfl⟩
-  have hiso := fun p => GlobalTheory.T.formal_isomorphism_transport Ω d (𝓞 E) S.g₀.B (S.BK p) (S.φ p) (S.ψ p) (S.lam p) (S.iso p)
+  have hiso := fun p => _root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing Ω d (𝓞 E) S.g₀.B (S.BK p) (S.φ p) (S.ψ p) (S.lam p) (S.iso p)
   have h_fst : ∀ (a : 𝓞 E) (y : (Fin d → Ω) × Module.Dual Ω (Fin d → Ω)),
       ((ρH a) y).1 = (ρ a) y.1 := by
     intro a y

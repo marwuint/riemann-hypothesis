@@ -100,9 +100,6 @@ def IsAbsPow (s : ℝ) : Prop :=
   (∀ v, χ.UnrAt v) ∧ (∀ v, ((χ.val v : ℂˣ) : ℂ) = ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-(s : ℂ))) ∧
     ∀ k : Lˣ, ((χ.inf k : ℂˣ) : ℂ) = ∏ φ : L →+* ℂ, ((‖φ (k : L)‖ : ℝ) : ℂ) ^ (s : ℂ)
 
-def IsUnitaryNormOf (χ' : HChar L) (s : ℝ) : Prop :=
-  χ.IsUnitary ∧ ∃ ν : HChar L, ν.IsAbsPow s ∧ χ' = χ * ν
-
 def ValuesIn (s : ℝ) {C : Type} [Field C] (e : C →+* ℂ) : Prop :=
   ∀ v, χ.UnrAt v → ∃ y : C, e y = χ.valTw s v
 
@@ -153,8 +150,6 @@ def bar : HChar L :=
       rw [MonoidHom.comp_apply, χ.2.2 k, map_one]⟩
 
 end HChar
-
-abbrev AlgHChar (L : Type) [Field L] [NumberField L] : Type := {χ : HChar L // ∃ n, χ.IsAlg n}
 
 section Res
 

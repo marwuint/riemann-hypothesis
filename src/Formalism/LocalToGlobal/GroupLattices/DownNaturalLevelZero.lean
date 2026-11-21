@@ -96,7 +96,4 @@ def Joint0 {D : D7} (L0 : LevelData D) (u : D.what₂.Word) (T : Forms0 D u) : P
     (fun c => ((L0 u).y c).1) (fun c => (T.cls0.y c).1)
     (fun c s => ((L0 u).stabI c s).1) (fun c s => (T.cls0.stabI c s).1)
 
-theorem Joint.to0 {D : D7} {X : Formalism.L2.Herm.ColsHerm D} {u : D.what₂.Word} {T : FormsTied D u} (h : Joint X u T) :
-    Joint0 X.base.lev0 u T.to0 := h.car0
-
 end Formalism.L2.Forms

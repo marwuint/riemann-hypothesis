@@ -1,26 +1,21 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteGammaBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteGammaBoundStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.DictAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 
 section
 open NumberField
 namespace GlobalTheory.GamLoss
-variable {E : Type} [Field E] [NumberField E]
 end GlobalTheory.GamLoss
 namespace GlobalTheory.GamLoss
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FunObj
-variable {D : D7}
 end GlobalTheory.GamLoss
 namespace GlobalTheory.GamLoss
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SumSize
-open Formalism.DivisionValues (vw lw)
-variable {D : D7}
 end GlobalTheory.GamLoss
 namespace GlobalTheory.GamLoss
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SumSize GlobalTheory.RowTest
-open Formalism.DivisionValues (vw lw)
-variable {D : D7}
 end GlobalTheory.GamLoss
 namespace GlobalTheory.GamLoss
 open GlobalTheory.SumSize GlobalTheory.RowClaim

@@ -96,34 +96,6 @@ def ProductClause (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (μf : ∀
 def ZeroClause (μ : Measure (GA D V)) (f : GA D V → ℂ) (γ : GA D V) : Prop :=
   ∀ 𝓕 : Set (GA D V), IsFundamentalDomain (GQ V) 𝓕 μ → HasClassInt (GQ V) μ 𝓕 γ f 0
 
-def NonFieldTypeVanishing : Prop :=
-  ∀ (D : D7) (V : HSp D), Odd V.rank →
-  ∀ (S : D.what₂.Tau → SPar) (M : DSModel V S) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V),
-    HypH (k := fun v : T.S => ResF v.1) T.τ →
-  ∀ (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v))
-    (μ : Measure (GA D V)), IsRestrictedProd D.sp.cm.sig V.gram (frameLat V) μa μf μ →
-  ∀ (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ),
-    IsTestArchG M μa fa → IsTestFin T U μf ff →
-  ∀ γ : GRat D.sp.cm.sig V.gram, IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1 →
-    LocalClause T μf ff γ ∧
-    ProductClause μa μf μ fa ff (ratEmb D.sp.cm.sig V.gram γ) ∧
-    ZeroClause μ (tensor D.sp.cm.sig V.gram fa ff) (ratEmb D.sp.cm.sig V.gram γ)
-
-theorem NonFieldTypeVanishing.zero (h : NonFieldTypeVanishing) (hr : Odd V.rank) {S : D.what₂.Tau → SPar}
-    {M : DSModel V S} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} (hH : HypH (k := fun v : T.S => ResF v.1) T.τ)
-    {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
-    {μ : Measure (GA D V)} (hμ : IsRestrictedProd D.sp.cm.sig V.gram (frameLat V) μa μf μ) {f : GA D V → ℂ}
-    (hf : IsTestFnG M T U μa μf f) {γ : GRat D.sp.cm.sig V.gram}
-    (hγ : IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1) : ZeroClause μ f (ratEmb D.sp.cm.sig V.gram γ) := by
-  obtain ⟨fa, ff, ha, hb, rfl⟩ := hf
-  exact (h D V hr S M T U hH μa μf μ hμ fa ff ha hb γ hγ).2.2
-
 end Record
-
-example {G : Type} [CommGroup G] (Γ : Subgroup G) (γ : G) (f : G → ℂ) (x : G) : classKernel Γ γ f x = f γ := by
-  have e : ratClass Γ γ = {γ} := Set.ext fun δ =>
-    ⟨fun ⟨g, _, h⟩ => by simp [h], fun h => ⟨1, one_mem _, by simpa using h⟩⟩
-  rw [classKernel, e, tsum_singleton γ fun δ => f (x⁻¹ * δ * x)]
-  simp
 
 end GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt

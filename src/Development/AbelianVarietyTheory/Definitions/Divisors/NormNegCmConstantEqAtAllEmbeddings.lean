@@ -8,7 +8,13 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMea
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoversOfGuard
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoversOfHalves
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCovPinNotIsXiDet
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankOneBaseWeightEqCmTheta
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsModuliSchemePolarizedAbelianLevel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianCodeWordStagesRingOfIntegersFull
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianCodeWordStagesHasRootOfUnity
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitaryOfOrderDvd
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.NonemptyFrPtComplex
 
 noncomputable section
@@ -149,8 +155,6 @@ theorem log_rd_le_fieldSz (K : Type) [Field K] [NumberField K] :
   unfold fieldSz
   linarith [Real.log_natCast_nonneg (Module.finrank ℚ K)]
 
-example : fieldSz ℚ = 0 := by simp [fieldSz, NumberField.discr_rat]
-
 def expL (L : ℝ) : ℕ := ⌊3 * L / Real.log 3⌋₊
 
 theorem le_expL {L : ℝ} {e : ℕ} (h : e * Real.log 3 ≤ 3 * L) : e ≤ expL L :=
@@ -211,10 +215,6 @@ def resEmb (σ : Y.d.c₂.F →+* ℂ) : T.Q.c.F →+* ℂ :=
   σ.comp ((Y.d.eF : Y.c'.F →+* Y.d.c₂.F).comp (IntermediateField.inclusion Y.hle).toRingHom)
 
 theorem good_resEmb {σ : Y.d.c₂.F →+* ℂ} (hσ : GoodEmb Y.d.c₂ σ) : GoodEmb T.Q.c (Y.resEmb σ) := hσ
-
-def Match {T : CoreJ D} (Y : Deep T.toCore j) : Prop :=
-  ∀ σ, GoodEmb Y.d.c₂ σ → ∃ hr : (D.sp.W j).rank = D.R.r,
-    Y.Pin σ (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota j) (T.x₀ j (Y.resEmb σ))
 
 abbrev GoodL (L o : ℝ) : Prop := Y.Good (expL L) o
 
@@ -385,14 +385,6 @@ theorem exists_half (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + H.d) (e : ℕ) :
 
 end Half
 
-theorem normalClosure_stable (K : IntermediateField ℚ ℂ) (s : ℂ ≃+* ℂ) (a : ℂ) (ha : a ∈ IntermediateField.normalClosure ℚ K ℂ) :
-    s a ∈ IntermediateField.normalClosure ℚ K ℂ := by
-  have : IntermediateField.normalClosure ℚ K ℂ ≤ (IntermediateField.normalClosure ℚ K ℂ).comap s.toRingHom.toRatAlgHom := by
-    refine iSup_le fun f => ?_
-    rintro x ⟨y, rfl⟩
-    exact AlgHom.fieldRange_le_normalClosure (s.toRingHom.toRatAlgHom.comp f) ⟨y, rfl⟩
-  exact this ha
-
 theorem exists_root (h : 5 ≤ D.host.splitBound) : ∃ s : ℤ, (15 : ℤ) ∣ s ^ 2 + D.host.d := by
   have h3 := D.host.split_small 3 (by norm_num) (by norm_num) (by omega)
   have h5 := D.host.split_small 5 (by norm_num) (by norm_num) h
@@ -497,94 +489,6 @@ theorem exists_good_of_cover (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D 
   choose x hx using h
   obtain ⟨U, dict, Kf, h, -⟩ := exists_good_pin T hQ j hj c' hle d e a1 a2 a3 a4 a5 ι hι x hx
   exact ⟨U, dict, Kf, h⟩
-
-theorem exists_match_of_cover (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F)
-    (d : DeltaDat (T.Q.Xo j) c' 0) (e : ℕ) (a1 : d.pd = 15 ^ e) (a2 : d.IsLev) (a3 : d.l₂.A = 1)
-    (a4 : FnAlgClosed d.Xo₂ d.c₂) (a5 : ∀ s : ℂ ≃+* ℂ, (∀ a ∈ T.Q.c.F, s a = a) → ∀ a ∈ c'.F, s a ∈ c'.F) :
-    ∃ U dict Kf, (⟨c', hle, d, U, dict, Kf⟩ : Deep T.toCore j).Good e (fieldSz d.c₂.F) ∧
-      Deep.Match (⟨c', hle, d, U, dict, Kf⟩ : Deep T.toCore j) := by
-  have hW : (D.sp.W j).rank = D.R.r := D.sp.W_rank j hj.1 hj.2
-  let res : (d.c₂.F →+* ℂ) → (T.Q.c.F →+* ℂ) := fun σ =>
-    σ.comp ((d.eF : c'.F →+* d.c₂.F).comp (IntermediateField.inclusion hle).toRingHom)
-  have hres : ∀ σ, GoodEmb d.c₂ σ → GoodEmb T.Q.c (res σ) := fun _ h => h
-  have hι := (GlobalTheory.TupleCover.iotaOK_and_frame T hT j hj _ T.good_σ₀ _ (hT.spaceW j hj _ T.good_σ₀) hW).1
-  obtain ⟨U, dict, Kf, h, hp⟩ := exists_good_pin T.toCore hT.pins j hj c' hle d e a1 a2 a3 a4 a5 _ hι
-    (fun σ => T.x₀ j (res σ)) fun σ hσ =>
-      (GlobalTheory.Member.exists_ctx D _ _ _ d.Xo₂ d.c₂ σ (D.sp.W j) D.R.r hW _ hι (rank_pos T.toCore hT.pins j hj) a3 hσ).2.2 _
-        (GlobalTheory.TupleCover.iotaOK_and_frame T hT j hj _ (hres σ hσ) _ (hT.spaceW j hj _ (hres σ hσ)) hW).2
-  exact ⟨U, dict, Kf, h, fun σ hσ => ⟨hW, hp σ hσ⟩⟩
-
-set_option maxHeartbeats 1000000 in
-
-theorem exists_cover (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + D.host.d)
-    (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) (e : ℕ) :
-    ∃ (c' : Coeff T.Q.l) (_ : T.Q.c.F ≤ c'.F) (d : DeltaDat (T.Q.Xo j) c' 0), d.pd = 15 ^ e ∧ d.IsLev ∧ d.l₂.A = 1 ∧
-      FnAlgClosed d.Xo₂ d.c₂ ∧ ∀ s : ℂ ≃+* ℂ, (∀ a ∈ T.Q.c.F, s a = a) → ∀ a ∈ c'.F, s a ∈ c'.F := by
-  have hpos := rank_pos T hQ j hj
-  obtain ⟨I, hK, hp, hI⟩ := exists_half T.Q.H s (by rw [hQ.1.1]; exact hs) e
-  obtain ⟨l₂, l1, l2, l3, l4, l5, l6⟩ := GlobalTheory.CoverHalf.exists_coverLevel T.Q.l hQ.2.1.2 (15 ^ e) I (Odd.pow (by decide))
-    (by rw [hQ.2.1.1]; exact h15.pow_left e) hK hp hI
-  obtain ⟨Xo₂⟩ := GlobalTheory.Moduli.moduli_scheme_exists _ _ (T.Q.Dw j) l₂ hpos
-  obtain ⟨c₀, -⟩ := GlobalTheory.TupleCover.exists_coeff_ge l₂ ⊥
-  obtain ⟨c₁, -, hc₁⟩ := (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ Xo₂ c₀ hpos).2
-  haveI := c₁.fin
-  haveI := T.Q.c.fin
-  let K : IntermediateField ℚ ℂ := T.Q.c.F ⊔ c₁.F
-  let N : IntermediateField ℚ ℂ := IntermediateField.normalClosure ℚ K ℂ
-  have hKN : K ≤ N := IntermediateField.le_normalClosure K
-  have hN : FiniteDimensional ℚ N := inferInstance
-  have h1 : T.Q.c.F ≤ N := le_sup_left.trans hKN
-  have h2 : c₁.F ≤ N := le_sup_right.trans hKN
-  let c' : Coeff T.Q.l := ⟨N, hN, fun τ a => h1 (T.Q.c.conj τ a), h1 T.Q.c.zeta_mem, T.Q.c.le.trans h1⟩
-  let c₂ : Coeff l₂ := ⟨N, hN, fun τ a => h2 (c₁.conj τ a), h2 c₁.zeta_mem, c₁.le.trans h2⟩
-  have hd : ∃ d : DeltaDat (T.Q.Xo j) c' 0, d.pd = 15 ^ e ∧ d.IsLev ∧ d.l₂.A = 1 ∧ FnAlgClosed d.Xo₂ d.c₂ := by
-    obtain ⟨⟨pd', I', l₂', Xo₂', c₂', hF, r, mm, nab, cδ, φ₀⟩, a1, a2, a3, e₁, e₂, -, a4, a5⟩ :=
-      GlobalTheory.LevelCover.exists_deltaDat_isLev _ _ _ _ (T.Q.Xo j) c' hpos 0 (15 ^ e) I l₂ Xo₂ c₂ rfl l1 l2 l3 l4 l5
-    refine ⟨_, a1, a4, a3 ▸ l6, ?_⟩
-    dsimp only at a3 e₁ e₂ ⊢
-    subst a3
-    obtain rfl := eq_of_heq e₁
-    obtain rfl := eq_of_heq e₂
-    exact hc₁ c₂ h2
-  obtain ⟨d, a1, a2, a3, a4⟩ := hd
-  exact ⟨c', h1, d, a1, a2, a3, a4, fun s _ a ha => normalClosure_stable K s a ha⟩
-
-theorem exists_good (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + D.host.d)
-    (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) (e : ℕ) :
-    ∃ (Y : Deep T j) (o : ℝ), Y.Good e o ∧ Y.d.l₂.M = D.host.g 0 * D.host.g 1 * 15 ^ e ∧ CompNe Y.d.Xo₂ Y.d.c₂ := by
-  obtain ⟨c', h1, d, a1, a2, a3, a4, a5⟩ := exists_cover T hQ j hj s hs h15 e
-  obtain ⟨U, dict, Kf, h⟩ := exists_good_of_cover T hQ j hj c' h1 d e a1 a2 a3 a4 a5
-  exact ⟨_, _, h, by rw [← a1]; show d.l₂.M = _; rw [a2.2.1, hQ.2.1.1],
-    (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ d.Xo₂ d.c₂ (rank_pos T hQ j hj)).1⟩
-
-theorem exists_good_match (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + D.host.d)
-    (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) (e : ℕ) :
-    ∃ (Y : Deep T.toCore j) (o : ℝ), Y.Good e o ∧ Y.Match := by
-  obtain ⟨c', h1, d, a1, a2, a3, a4, a5⟩ := exists_cover T.toCore hT.pins j hj s hs h15 e
-  obtain ⟨U, dict, Kf, h⟩ := exists_match_of_cover T hT j hj c' h1 d e a1 a2 a3 a4 a5
-  exact ⟨_, _, h⟩
-
-theorem pull_one {T : Core D} {j : ℕ} (Y : Deep T j) : Y.Pull 1 1 := by
-  intro k _ _ _ _ _ _ _ y₂ y' y _ _ _ _
-  have hB := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
-  exact (evalAt_one _ _ y₂ (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ k y₂)).trans
-    (evalAt_one _ _ y (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ k y)).symm
-
-theorem not_pull_one_zero {T : Core D} {j : ℕ} (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o)
-    (hpos : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q) : ¬ Y.Pull 1 0 := by
-  intro hp
-  have hB := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
-  obtain ⟨y'⟩ := GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.abelianSchemeLaws_all.2.secTwist _ _ _ _
-    (T.Q.Xo j) Y.c' hpos Y.c'.F.val.toRingHom
-  letI : Algebra Y.c'.F ℂ := Y.c'.F.val.toRingHom.toAlgebra
-  letI : Algebra T.Q.c.F ℂ := T.Q.c.F.val.toRingHom.toAlgebra
-  letI : Algebra Y.d.c₂.F ℂ := Y.d.c₂.F.val.toRingHom.toAlgebra
-  change FrPt (T.Q.Xo j) Y.c' ℂ at y'
-  have ho : AlgOver T.Q.c Y.c' Y.hle ℂ := fun _ => rfl
-  obtain ⟨y₂, hy⟩ := h.lev.1.2.2.2.2.2.2.1 ℂ (fun _ => rfl) y'
-  have := hp ℂ ho (fun _ => rfl) y₂ y' (y'.res Y.hle ho) hy rfl rfl HEq.rfl
-  exact zero_ne_one ((evalAt_zero _ _ y₂).symm.trans (this.trans
-    (evalAt_one _ _ _ (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ _ _))))
 
 end Inhab
 

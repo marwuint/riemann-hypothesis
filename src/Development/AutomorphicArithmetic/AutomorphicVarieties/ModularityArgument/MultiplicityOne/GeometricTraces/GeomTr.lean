@@ -13,7 +13,7 @@ theorem UpperTheory.V.Z.Mult.geomTr :
     unfold geomURat
     refine finsum_congr fun c => ?_
     split_ifs with hc
-    · exact congrArg (_ * ·) (GlobalTheory.T.twistedOrbitalIntegral_product_eq_finprod E hU n hn S hS K' hK' f hf c.rep hc)
+    · exact congrArg (_ * ·) (_root_.GlobalTheory.BCT.twOrb_globFn_eq_finprod E hU n hn S hS K' hK' f hf c.rep hc)
     · rfl
-  rw [GlobalTheory.T.heckeTrace_weightForms_eq_dim_mul_rationalClasses E hU n hn S hS lam K' hK' f hf hsep, hOrb,
+  rw [_root_.GlobalTheory.BCT.trOn_forms_hop_eq_geom E hU n hn S hS lam K' hK' f hf hsep, hOrb,
     GlobalTheory.PreStabU.geomURat_eq_geomU E hU n hn S hS lam K' hK' f hf hsep]

@@ -7,17 +7,6 @@ open scoped ComplexConjugate
 
 noncomputable section
 
-def FOURMulStatement (f : ℕ) : Prop :=
-  ∀ (Ω : Set (Fin f → ℝ)) (h1 h2 : (Fin f → ℂ) → ℂ),
-    IsOpen Ω → DifferentiableOn ℂ h1 (tube f Ω) → DifferentiableOn ℂ h2 (tube f Ω) →
-    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h1 (s + fun k => (m k : ℂ)) = h1 s) →
-    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h2 (s + fun k => (m k : ℂ)) = h2 s) →
-    ∀ b ∈ Ω,
-    Summable (fun ν : Fin f → ℤ => ‖fourCoeff h1 b ν‖) →
-    Summable (fun ν : Fin f → ℤ => ‖fourCoeff h2 b ν‖) →
-    ∀ ν : Fin f → ℤ,
-      fourCoeff (h1 * h2) b ν = ∑' ν' : Fin f → ℤ, fourCoeff h1 b ν' * fourCoeff h2 b (ν - ν')
-
 def FOURMulStatement' (f : ℕ) : Prop :=
   ∀ (Ω : Set (Fin f → ℝ)) (h1 h2 : (Fin f → ℂ) → ℂ),
     IsOpen Ω → DifferentiableOn ℂ h1 (tube f Ω) → DifferentiableOn ℂ h2 (tube f Ω) →
@@ -26,14 +15,6 @@ def FOURMulStatement' (f : ℕ) : Prop :=
     ∀ b ∈ Ω, ∀ ν : Fin f → ℤ,
       HasSum (fun ν' : Fin f → ℤ => fourCoeff h1 b ν' * fourCoeff h2 b (ν - ν'))
         (fourCoeff (h1 * h2) b ν)
-
-def FOURMulSuppStatement (f : ℕ) : Prop :=
-  ∀ (Ω : Set (Fin f → ℝ)) (h1 h2 : (Fin f → ℂ) → ℂ),
-    IsOpen Ω → DifferentiableOn ℂ h1 (tube f Ω) → DifferentiableOn ℂ h2 (tube f Ω) →
-    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h1 (s + fun k => (m k : ℂ)) = h1 s) →
-    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h2 (s + fun k => (m k : ℂ)) = h2 s) →
-    ∀ b ∈ Ω, ∀ ν : Fin f → ℤ, fourCoeff (h1 * h2) b ν ≠ 0 →
-      ∃ ν1 ν2, ν1 + ν2 = ν ∧ fourCoeff h1 b ν1 ≠ 0 ∧ fourCoeff h2 b ν2 ≠ 0
 
 local instance : MeasureSpace UnitAddCircle := ⟨AddCircle.haarAddCircle⟩
 
@@ -158,24 +139,6 @@ theorem four_mul' (f : ℕ) : FOURMulStatement' f := by
   rw [hE]
   simp only [F1, F2, ContinuousMap.coe_mk]
   ring
-
-theorem four_mul (f : ℕ) : FOURMulStatement f := by
-  intro Ω h1 h2 hΩ hd1 hd2 hp1 hp2 b hb _ _ ν
-  exact (four_mul' f Ω h1 h2 hΩ hd1 hd2 hp1 hp2 b hb ν).tsum_eq.symm
-
-theorem four_mul_supp (f : ℕ) : FOURMulSuppStatement f := by
-  intro Ω h1 h2 hΩ hd1 hd2 hp1 hp2 b hb ν hne
-  by_contra hno
-  push Not at hno
-  have H := four_mul' f Ω h1 h2 hΩ hd1 hd2 hp1 hp2 b hb ν
-  have hz : ∀ ν' : Fin f → ℤ, fourCoeff h1 b ν' * fourCoeff h2 b (ν - ν') = 0 := by
-    intro ν'
-    by_cases h0 : fourCoeff h1 b ν' = 0
-    · rw [h0, zero_mul]
-    · rw [hno ν' (ν - ν') (by abel) h0, mul_zero]
-  have H0 : HasSum (fun ν' : Fin f → ℤ => fourCoeff h1 b ν' * fourCoeff h2 b (ν - ν')) 0 := by
-    simp [hz]
-  exact hne (H.unique H0)
 
 end
 

@@ -22,8 +22,4 @@ def ArithmeticIntersectionHorizontal.Statement : Prop :=
             I K' ι' W' n L' = (J' (fibreIdeal κ G') 0 Fin.elim0 : ℝ) * I K ι (imageZ v W') n L) ∨
         (imageZ v W' ∉ divSupp (imageZ v P') s ∧ I K' ι' W' n L' = 0)
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

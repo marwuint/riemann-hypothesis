@@ -148,11 +148,6 @@ theorem norm_two_cp (hp : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have h := norm_int_cp_eq_one (p := p) 2 (not_dvd_two hp)
   exact_mod_cast h
 
-theorem norm_two_zp (hp : p ≠ 2) : ‖(2 : ℤ_[p])‖ = 1 := by
-  have h := norm_int_cp_eq_one (p := p) 2 (not_dvd_two hp)
-  rw [norm_int_cp] at h
-  exact_mod_cast h
-
 theorem norm_le_one_of_quad (x : ℂ_[p]) (t n : ℤ) (h : x ^ 2 = t * x - n) : ‖x‖ ≤ 1 := by
   by_contra hx
   push_neg at hx
@@ -307,14 +302,6 @@ end
 section
 variable (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
 
-theorem zc_neg (z : ℤ_[p]) : zc (-z) = - zc z := by
-  unfold zc
-  rw [PadicInt.coe_neg, map_neg]
-
-theorem zc_pow (z : ℤ_[p]) (n : ℕ) : zc (z ^ n) = zc z ^ n := by
-  unfold zc
-  rw [PadicInt.coe_pow, map_pow]
-
 theorem norm_int_zp_eq_one (n : ℤ) (h : ¬ (p : ℤ) ∣ n) : ‖(n : ℤ_[p])‖ = 1 := by
   rw [← norm_int_cp]
   exact norm_int_cp_eq_one n h
@@ -383,68 +370,6 @@ theorem okpDiff_holds : OkpDiff D := by
       exact h ((Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) hd).1 this)
     rw [norm_int_zp_eq_one _ hnd] at hsq
     rw [← Real.sqrt_sq t0, hsq, Real.sqrt_one]
-
-theorem okpSplit_holds : OkpSplit D := by
-  intro p _ lam hp hs
-  unfold SplitK at hs
-  have hpp : p.Prime := Fact.out
-  have hnd : ¬ (p : ℤ) ∣ (D.host.d : ℤ) := by
-    intro hdv
-    have h0 : ((-(D.host.d : ℤ) : ℤ) : ZMod p) = 0 := by
-      rw [ZMod.intCast_zmod_eq_zero_iff_dvd]; exact (dvd_neg).2 hdv
-    have h1 := (legendreSym.eq_zero_iff p (-(D.host.d : ℤ))).2 h0
-    rw [jacobiSym.legendreSym.to_jacobiSym] at h1
-    rw [h1] at hs
-    exact absurd hs (by decide)
-  obtain ⟨r, hr⟩ := ZMod.isSquare_of_jacobiSym_eq_one hs
-  push_cast at hr
-  set x : ℤ := (r.val : ℤ) with hxdef
-  have ex : ((x : ℤ) : ZMod p) = r := by simp [hxdef]
-  have hx : (p : ℤ) ∣ x * x + D.host.d := by
-    rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
-    push_cast
-    rw [ex]
-    linear_combination -hr
-  have hnx : ¬ (p : ℤ) ∣ x := by
-    intro h
-    apply hnd
-    have := dvd_sub hx (dvd_mul_of_dvd_left h x)
-    simpa using this
-  have h2x : ¬ (p : ℤ) ∣ 2 * x := by
-    intro h
-    rcases (Nat.prime_iff_prime_int.mp hpp).dvd_or_dvd h with h | h
-    · exact not_dvd_two hp h
-    · exact hnx h
-  let F : Polynomial ℤ := Polynomial.X ^ 2 + Polynomial.C (D.host.d : ℤ)
-  have hF : ∀ z : ℤ_[p], F.aeval z = z ^ 2 + (D.host.d : ℤ_[p]) := by intro z; simp [F]
-  have hF' : ∀ z : ℤ_[p], (Polynomial.derivative F).aeval z = 2 * z := by
-    intro z; simp [F]
-    left; exact map_ofNat _ 2
-  have hnorm : ‖F.aeval (x : ℤ_[p])‖ < ‖(Polynomial.derivative F).aeval (x : ℤ_[p])‖ ^ 2 := by
-    rw [hF, hF']
-    have e1 : (x : ℤ_[p]) ^ 2 + (D.host.d : ℤ_[p]) = ((x * x + D.host.d : ℤ) : ℤ_[p]) := by push_cast; ring
-    have e2 : 2 * (x : ℤ_[p]) = ((2 * x : ℤ) : ℤ_[p]) := by push_cast; ring
-    rw [e1, e2, norm_int_zp_eq_one _ h2x, one_pow]
-    exact (PadicInt.norm_int_lt_one_iff_dvd _).2 hx
-  obtain ⟨z, hz, -⟩ := hensels_lemma hnorm
-  rw [hF] at hz
-  have hz2 : z ^ 2 = -((D.host.d : ℤ) : ℤ_[p]) := by push_cast; linear_combination hz
-  have hzn : ‖z‖ = 1 := by
-    have h1 : ‖z‖ ^ 2 = 1 := by
-      rw [← norm_pow, hz2, norm_neg, norm_int_zp_eq_one _ hnd]
-    rw [← Real.sqrt_sq (norm_nonneg z), h1, Real.sqrt_one]
-  have hzc : zc z ^ 2 = tauK D lam (sK D : D.host.K) ^ 2 := by
-    rw [← zc_pow, hz2, tauK_sK_sq, zc_neg, zc_int]
-  obtain ⟨s, hs1, hs2⟩ : ∃ s : ℤ_[p], tauK D lam (sK D : D.host.K) = zc s ∧ ‖s‖ = 1 := by
-    have h0 : (tauK D lam (sK D : D.host.K) - zc z) * (tauK D lam (sK D : D.host.K) + zc z) = 0 := by
-      linear_combination -hzc
-    rcases mul_eq_zero.1 h0 with h | h
-    · exact ⟨z, by linear_combination h, hzn⟩
-    · exact ⟨-z, by rw [zc_neg]; linear_combination h, by rw [norm_neg, hzn]⟩
-  refine ⟨_, subset_closure ⟨sK D, rfl⟩, s, -s, ?_, ?_⟩
-  · simp only
-    rw [tauKc_sK, hs1, zc_neg]
-  · rw [PadicInt.isUnit_iff, sub_neg_eq_add, ← two_mul, norm_mul, norm_two_zp hp, hs2, one_mul]
 
 end
 
@@ -520,20 +445,9 @@ theorem beConj_of' (H : BeConjOfNorm) (D : D7) (he : endInt D) (ha : addInt D) (
     beConj D :=
   beConj_of H D (okpNorm_holds D) (okpTwoUnits_holds D) he ha hn hB
 
-theorem splitZero_of' (H : SplitZeroG) (D : D7) (he : endInt D) (ha : addInt D) (hn : phNorm D)
-    (hb : beConj D) (hB : beBiadd D) : splitZero D :=
-  splitZero_of H D (okpSplit_holds D) he ha hn hb hB
-
-theorem beDiag_of' (H : BeDiagG) (D : D7) (he : endInt D) (ha : addInt D) (hn : phNorm D) (hb : beConj D)
-    (hB : beBiadd D) : beDiag D :=
-  beDiag_of H D (okpTrace_holds D) he ha hn hb hB
-
 theorem jetsPh_of' (HH : JetsHigh) (H1 : JetsOne) (H2 : JetsTwo) (D : D7) (hc : cube D) (hn : phNorm D)
     (hb : beConj D) : jetsPh D :=
   jetsPh_of HH H1 H2 D hc hn hb (okpDiff_holds D)
-
-theorem addition_identity_of_sigma_formula_unit (H31 : UnitTraceSumSecondBound) (HC : CubeIdentityFromAdditionFormula) (D : D7) (hQ : PAdicSigmaAdditionFormula D) (ha : addInt D) : cube2 D :=
-  addition_identity_of_sigma_formula H31 HC D hQ (ePhiOne_holds D) ha
 
 def LemmaThreeOneThird : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (g : G1 p), g.Ok → IntegralMv (g.add (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) →
@@ -596,9 +510,5 @@ theorem cube_second_identity_of_determinant (H31 : LemmaThreeOneThird) (HC : Cub
   intro q _ cc δ g hA
   have hok : g.Ok := hA.2.2.2.2
   exact HC q g hok (ePhiOne_holds D q cc δ g hA) (hQ q cc δ g hA) (H31 q g hok (ha q cc δ g hA).1)
-
-theorem cube_of' (HE : CubeOfTwoIdentities) (H31 : UnitTraceSumSecondBound) (HC2 : CubeIdentityFromAdditionFormula) (H31' : LemmaThreeOneThird) (HC3 : Cube3OfDet) (D : D7)
-    (hQ : PAdicSigmaAdditionFormula D) (hQd : PAdicFrobeniusStickelberger D) (ha : addInt D) : cube D :=
-  cube_of HE D (addition_identity_of_sigma_formula_unit H31 HC2 D hQ ha) (cube_second_identity_of_determinant H31' HC3 D hQd ha)
 
 end Formalism.MainNotions.Ext.CutA

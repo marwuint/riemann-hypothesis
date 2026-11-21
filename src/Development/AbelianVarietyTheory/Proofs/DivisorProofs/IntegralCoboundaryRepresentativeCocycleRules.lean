@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryTwoCoboundaryOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalTwoGroupsRules
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryMultiplicationDefectMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapCoboundarySwapPullbackCommuteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawMapNatMultipleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryMultiplicationDefectMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapCoboundarySwapPullbackCommute
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawMapNatMultiple
 
 set_option autoImplicit false
 
@@ -28,8 +28,8 @@ theorem integral_cob_defect_rules : ∀ (O E : Type) [CommRing O] [CommRing E] [
   have inj2 := map_inj_of_inj (σ := Fin d ⊕ Fin d) ι hι
   have inj3 := map_inj_of_inj (σ := Fin d ⊕ (Fin d ⊕ Fin d)) ι hι
   have inj1 := map_inj_of_inj (σ := Fin d) ι hι
-  obtain ⟨hlawE, hnm⟩ := GlobalTheory.T.isCommFormalGroupLaw_map_natMultiple O d μ hμ E ι
-  obtain ⟨hcob1, hcob2, hswap, -, hpull⟩ := GlobalTheory.T.map_coboundary_swap_pullback_commute O d μ hμ.const E ι
+  obtain ⟨hlawE, hnm⟩ := _root_.GlobalTheory.isLaw_map_nmul O d μ hμ E ι
+  obtain ⟨hcob1, hcob2, hswap, -, hpull⟩ := _root_.GlobalTheory.Katz.map_cob_swap_pull O d μ hμ.const E ι
   have hupμ : up E μ = fun i => map ι (μ i) := rfl
   have hconstE : ∀ i, constantCoeff (up E μ i) = 0 := hlawE.const
   have hcocE := (GlobalTheory.Katz.formalGroupLawCoboundaryTwo_coboundaryOne_alt E d (up E μ) hconstE f).2.2.2.2.2 hlawE
@@ -56,12 +56,12 @@ theorem integral_cob_defect_rules : ∀ (O E : Type) [CommRing O] [CommRing E] [
     have hnc : ∀ i, constantCoeff (nmul μ n i) = 0 := fun i => (hnm n i).1
     have hupn : up E (nmul μ n) = fun i => map ι (nmul μ n i) := rfl
     obtain ⟨hpl, hsb⟩ := hpull (nmul μ n) hnc
-    obtain ⟨hd1, -⟩ := GlobalTheory.T.formalGroupLawCoboundary_multiplicationDefect_mul O E d μ hμ f 0 n
+    obtain ⟨hd1, -⟩ := _root_.GlobalTheory.QLog.cob1_defect_and_defect_mul_of_isLaw O E d μ hμ f 0 n
     refine ⟨?_, ?_⟩
     · apply inj2
       rw [hcob1, ← hupμ, hs, hd1, map_sub, hsmul, hpl, hκ, ← hupn]
     · intro m t u ht hu
-      obtain ⟨-, hd2⟩ := GlobalTheory.T.formalGroupLawCoboundary_multiplicationDefect_mul O E d μ hμ f m n
+      obtain ⟨-, hd2⟩ := _root_.GlobalTheory.QLog.cob1_defect_and_defect_mul_of_isLaw O E d μ hμ f m n
       apply inj1
       rw [hu, hd2, map_add, hsmul, hsb, ← hupn, hs, ht]
 

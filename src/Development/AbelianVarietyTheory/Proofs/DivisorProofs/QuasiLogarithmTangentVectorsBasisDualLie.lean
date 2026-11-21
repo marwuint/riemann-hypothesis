@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdaptedQuasiLogBasisPDivGroupLieDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdaptedQuasiLogBasisPDivGroupLieDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegral
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
 set_option autoImplicit false
@@ -103,10 +103,10 @@ theorem card_eq [Nontrivial O] {ι κ : Type} [Fintype ι] [Fintype κ] [Decidab
 theorem lie_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (E : Type) [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) E), IsBasis c.μ e → (∀ i, cob1 (up E c.μ) (e (Sum.inl i)) = 0) → ∃ lb : Module.Basis (Fin k) O G.dual.Lie, ∀ j, c.IsLie (e (Sum.inr j)) (lb j) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ h k e he hlog
   classical
-  obtain ⟨k0, e0, lb0, he0, -, -, hlie0⟩ := GlobalTheory.T.exists_adapted_quasiLog_basis_pDivGroup_lieDual p C v O hv G d c E h
+  obtain ⟨k0, e0, lb0, he0, -, -, hlie0⟩ := _root_.GlobalTheory.QLogBasis.adapted_basis p C v O hv G d c E h
   have hinj : Function.Injective (algebraMap O E) := h.inj
-  have hex := GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E h
-  have hlin := GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E h
+  have hex := _root_.GlobalTheory.QLogTangent.main p C v O hv G d c E h
+  have hlin := _root_.GlobalTheory.LieLin.main p C v O hv G d c E h
   choose L hL using fun l => (hex _ (he.1 l)).exists
   have hL0 : ∀ i, L (Sum.inl i) = 0 := fun i =>
     (hlin _ _ _ _ 0 (hL (Sum.inl i)) (hL (Sum.inl i))).2.2 (hlog i)

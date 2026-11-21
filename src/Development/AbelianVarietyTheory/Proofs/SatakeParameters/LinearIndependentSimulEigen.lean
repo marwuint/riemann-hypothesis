@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.ClosedAtL
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DefiniteUnitaryRationalHeckeCommuteComplexAutomoStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DefiniteUnitaryRationalHeckeCommuteComplexAutomo
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjugatesAutomorphicFormSpanFiniteDimensionalStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteAutomorphismOrbitMemFiniteExtensionPadicStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteAutomorphismOrbitMemFiniteExtensionPadic
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsConjIsAutFormU
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DefiniteUnitaryRealApproxAndFiniteInfiniteSplit
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LinearIndependentJointEigenvectors
@@ -58,7 +59,7 @@ theorem finU_holds : FinU := by
   choose φ' hφ' hφ'eq using fun σ : ℂ ≃+* ℂ => exists_conj_isAutFormU E a σ φ hφ
   obtain ⟨M, hMfin, hM⟩ := GlobalTheory.T.conjugates_automorphicForm_span_finiteDimensional E a φ hφ
   have heig' : ∀ σ j, opOf (RU E a) (t j) (φ' σ) = σ (η U j) • φ' σ := fun σ j =>
-    GlobalTheory.T.definiteUnitaryRationalHecke_commute_complexAutomorphism E a σ (t j) (ht j) φ (φ' σ) (η U j) hφ (hφ' σ) (hφ'eq σ) (heig j)
+    _root_.GlobalTheory.EigenConj.opOf_conj E a σ (t j) (ht j) φ (φ' σ) (η U j) hφ (hφ' σ) (hφ'eq σ) (heig j)
   have hne : ∀ σ, φ' σ ≠ 0 := by
     intro σ h
     have e := hφ'eq σ g₀ hg₀
@@ -77,7 +78,7 @@ theorem finU_holds : FinU := by
     have hli' : LinearIndependent ℂ v' := LinearIndependent.of_comp M.subtype hli
     have : Finite S := hli'.finite
     exact Set.toFinite S
-  obtain ⟨L, hL, hLmem⟩ := GlobalTheory.T.finite_automorphism_orbit_mem_finite_extension_padic l ι J (η U) hfin
+  obtain ⟨L, hL, hLmem⟩ := _root_.GlobalTheory.orbit_finite_mem_finite_ext l ι J (η U) hfin
   exact ⟨⟨L, hL⟩, hLmem⟩
 
 end GlobalTheory.Cong

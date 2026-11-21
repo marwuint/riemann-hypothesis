@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugati
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesOverSplitPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadratiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridAlphaBetaRestrictQuadraticPowRankStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesOverSplitPlaces
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadrati
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridAlphaBetaRestrictQuadraticPowRank
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlphaUnramifiedOutsideStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BetaUnramifiedOutsideStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridCharacterQuotientNotUnramifiedOverBasePStatement
@@ -40,14 +40,14 @@ theorem squareChars_isGood : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Const
     rcases Finset.mem_union.1 hv with hv | hv
     · have hw : G.pl.w v ∈ locPl G t := Finset.mem_union_left _ (Finset.mem_image_of_mem _ hv)
       have e := G.pl.under_w hv
-      exact ⟨⟨_, hw, e⟩, e ▸ GlobalTheory.T.gridLocalTensorPlaces_over_split_places hL t _ hw⟩
+      exact ⟨⟨_, hw, e⟩, e ▸ _root_.GlobalTheory.LocPlSplit.locPl_split hL t _ hw⟩
     · obtain ⟨P, hP, e⟩ := Finset.mem_image.1 (Finset.mem_sdiff.1 hv).1
       have hw : P ∈ locPl G t := Finset.mem_union_right _ hP
-      exact ⟨⟨P, hw, e⟩, e ▸ GlobalTheory.T.gridLocalTensorPlaces_over_split_places hL t _ hw⟩
+      exact ⟨⟨P, hw, e⟩, e ▸ _root_.GlobalTheory.LocPlSplit.locPl_split hL t _ hw⟩
   · intro B hsub hv₁ hsp hα hβ
     have h2 : Module.finrank D.host.F D.host.E = 2 := D.sp.cm.deg2
-    obtain ⟨rα, rβ⟩ := GlobalTheory.T.thetaGrid_alpha_beta_restrict_quadratic_pow_rank hL t i j
-    refine ⟨?_, ?_, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rα, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rβ, hα, hβ, ?_, hsub, ?_, ?_, ?_, ⟨hv₁, hsp⟩⟩
+    obtain ⟨rα, rβ⟩ := _root_.GlobalTheory.SquareResChars.resEta_alpha_beta hL t i j
+    refine ⟨?_, ?_, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ rα, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ rβ, hα, hβ, ?_, hsub, ?_, ?_, ?_, ⟨hv₁, hsp⟩⟩
     · have hm := (hL.mu0 j).1
       have hx := (hL.xi t).1
       have he := hL.eta.1

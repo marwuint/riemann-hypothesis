@@ -7,7 +7,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeo
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LocallyOfFinitePresentationDiagMap
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsAdicColimitOfFactor
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AdicCompleteAlgebraLiftingUniqueStatement
+import Development.WeilBound.CoreStatements.HodgeTatePoints.ProjectiveUnramifiedQuotient
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 open scoped CategoryTheory.Obj
@@ -94,7 +94,7 @@ theorem spec_lift (A B : Type) [CommRing A] [CommRing B] [Algebra R A] [Algebra 
     have h3 := congrArg (Ideal.Quotient.factor (map_le I A e)) h
     rw [Ideal.Quotient.factor_mk] at h3
     exact h3.trans h2
-  obtain ⟨g, hg, hu⟩ := GlobalTheory.T.adic_complete_algebra_lifting_unique R A B I f hcompat
+  obtain ⟨g, hg, hu⟩ := _root_.PositivityTheory.HtPt.Mi.algHom_of_system R A B I f hcompat
   have hgover : Spec.map (CommRingCat.ofHom (g : B →+* A)) ≫ (specOver (R := R) B).hom = (specOver (R := R) A).hom := by
     change _ ≫ Spec.map _ = Spec.map _
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, g.comp_algebraMap]

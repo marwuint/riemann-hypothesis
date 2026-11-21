@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ScalesBy
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAHEqOfMemRatPts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviDecompositionWittFrameStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviDecompositionWittFrameStabilizer
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.ResLine GlobalTheory.ResidueEisenstein
 open GlobalTheory.Doubling (absE)
@@ -29,7 +29,7 @@ theorem slab_subset : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
     have hone : absE F E (Matrix.GeneralLinearGroup.det (l * l')) = 1 := by
       apply NNReal.coe_injective
       rw [map_mul, map_mul, NNReal.coe_mul, hal', Real.exp_neg, ht, Real.exp_log hpos, mul_inv_cancel₀ hpos.ne', NNReal.coe_one]
-    obtain ⟨u, hu, m, -, e, -, -, hm⟩ := GlobalTheory.T.leviDecomposition_wittFrameStabilizer F E σ n J r X Y D.cm D.herm D.witt _ _ hs
+    obtain ⟨u, hu, m, -, e, -, -, hm⟩ := _root_.GlobalTheory.LeviDecompositionFrame.levi_dec_frame F E σ n J r X Y D.cm D.herm D.witt _ _ hs
     have h0 : b 0 = 1 := by
       have := hb.add 0 0
       rw [add_zero] at this

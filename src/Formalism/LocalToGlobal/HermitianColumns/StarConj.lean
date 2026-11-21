@@ -25,19 +25,6 @@ def toErrX {D : D7} (X : FullTied D) : ErrX D where
   vPl_inj := fun u a b h => (X.base.vT u).injective (Subtype.ext h)
   norm_mem_place_ideal := fun u v => (X.base.vT u v).2
 
-theorem piGLevel {D : D7} (X : FullTied D) : PiGLevel D X.base.lev0 (toErrX X) := by
-  simp only [PiGLevel]
-  intro u i v h
-  have e : (X.levelZeroCompatibility u).piG = (X.levelZeroCompatibility D.u₀).piG := X.piG u D.u₀
-  have k := (X.levelZeroCompatibility u).splitG_pi i v h
-  rw [e, star_conj] at k
-  exact k
-
-theorem piTLevel {D : D7} (X : FullTied D) : PiTLevel D X.base.lev0 (toErrX X) := by
-  simp only [PiTLevel]
-  intro u v z hz y
-  exact (X.levelZeroCompatibility u).fM_pi _ _ z hz y
-
 def GroupCompatibleAtPlaces (D : D7) (H : HermTied D) (G : GTied D H) (Gt : GatTies D) : Prop :=
   ∀ u w hg (v : Fin (D.gat u w hg).P.nV) (s : Fin ((D.gat u w hg).P.n' v)) (x : 𝓞 D.host.F),
     x ∈ ((G u w hg).pl v).1.asIdeal ↔
@@ -76,20 +63,6 @@ structure ExtraTied {D : D7} (X : FullTied D) {L : SizeData₂ D} {hT : GatTies 
   iw_pos : ∀ u w (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
     haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩
     GIwPos u w h (ex.ker u w h)
-
-theorem JoinTied.piG_lev {D : D7} {X : FullTied D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
-    (J : JoinTied X lev eX Gt) : PiGLevel D lev eX := by
-  obtain ⟨h1, h2, _⟩ := J
-  subst h1
-  subst h2
-  exact piGLevel X
-
-theorem JoinTied.piT_lev {D : D7} {X : FullTied D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
-    (J : JoinTied X lev eX Gt) : PiTLevel D lev eX := by
-  obtain ⟨h1, h2, _⟩ := J
-  subst h1
-  subst h2
-  exact piTLevel X
 
 end Formalism.L2.Herm
 

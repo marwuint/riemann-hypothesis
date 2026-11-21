@@ -1,7 +1,8 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.WeakOfAtt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LeviSmoothLocalization.PrincipalSeriesMatching.NormAbsPowUnif
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LeviSmoothLocalization.PrincipalSeriesMatching.WinUnl
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.ClassicalityIrreducibleArith
+import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.ArithmeticPointClassicality
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.IsAutomorphicOverImagQuad
 
 noncomputable section
 
@@ -24,12 +25,7 @@ def AutOff (_u : Plc (Lp F)) (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n)
 def AutOffN (u : Plc (Lp F)) (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop :=
   AutCsd0 ι r ∧ (Continuous r → WitOff u ι r)
 
-def AutOffW (_u : Plc (Lp F)) (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop := IsAutCsdN ι r
-
 variable {u u' : Plc (Lp F)} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
-
-theorem WitOff.of (h : WitA ι r) : WitOff u ι r :=
-  ⟨h.1, fun π h1 h2 => (h.2 π h1 h2).imp fun _ ht v _ hv => ht v hv⟩
 
 theorem witA_of (hO : UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinOf) (hU : UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinUnl) (hn : 1 ≤ n) (hu : u ≠ u') (h : WitOff u ι r) (h' : WitOff u' ι r) :
     WitA ι r := by

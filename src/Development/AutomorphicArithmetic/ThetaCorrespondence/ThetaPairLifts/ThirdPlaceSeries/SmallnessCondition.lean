@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.LiftFrameEmbeddingBase
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
 
 set_option synthInstance.maxHeartbeats 200000

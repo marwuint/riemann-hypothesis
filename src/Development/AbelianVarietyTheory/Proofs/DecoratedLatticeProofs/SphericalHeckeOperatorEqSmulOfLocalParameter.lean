@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BcParamEqOfSatUEq
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SatakeDeterminesSphericalHeckeCharacterGLStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitarySatakeTransformEqOfBaseChangeSatakeParameStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SatakeDeterminesSphericalHeckeCharacterGL
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitarySatakeTransformEqOfBaseChangeSatakeParame
 
 noncomputable section
 
@@ -160,7 +160,7 @@ theorem heckeVec_eq_smul_of_isParamVec : ∀ (F E : Type) [Field F] [NumberField
   by_cases hsp : IsSplit (E := E) v ∧
       ∃ e : GLoc σ J v ≃* GL (Fin n) (w.adicCompletion E), IsSplitChart σ J L h e
   · obtain ⟨hv, e0, he0⟩ := hsp
-    obtain ⟨z, hz⟩ := GlobalTheory.T.satake_determines_sphericalHeckeCharacter_GL E w n B (φ ∘ e0.symm) (comp_symm_mem_hecke e0 he0.2 hφ)
+    obtain ⟨z, hz⟩ := _root_.GlobalTheory.ChainOnto.SatHeckeChar.heckeVec_eq_smul_of_isSatVecGL E w n B (φ ∘ e0.symm) (comp_symm_mem_hecke e0 he0.2 hφ)
     refine ⟨z, fun V _ _ ρ x hx => ?_⟩
     rw [heckeVec_eq_comp_symm e0 he0.2 hφ hx.mem_fixed]
     exact hz V (ρ.comp e0.symm.toMonoidHom) x (hx.isSatVecGL hv he0)
@@ -178,7 +178,7 @@ theorem heckeVec_eq_smul_of_isParamVec : ∀ (F E : Type) [Field F] [NumberField
       rw [heckeVec_eq_comp_symm e0 hC0.2.2 hφ hfx, hS0.2.2 _ hmem]
       congr 1
       rw [satU_eq_of_isUnramInv hU hU0 (Nat.mul_div_le n 2)]
-      exact GlobalTheory.T.unitarySatakeTransform_eq_of_baseChangeSatakeParameter_eq _ ϖ0 c (qV F v) n hU0 α α0 (hB.symm.trans hB0) _ hmem
+      exact _root_.GlobalTheory.SatBc.satU_eq_of_bcParam_eq _ ϖ0 c (qV F v) n hU0 α α0 (hB.symm.trans hB0) _ hmem
   · refine ⟨0, fun V _ _ ρ x hx => ?_⟩
     rcases hx with ⟨hv, e, he, -⟩ | ⟨-, c, ϖ, e, α, hU, hC, -, hB⟩
     · exact (hsp ⟨hv, e, he⟩).elim

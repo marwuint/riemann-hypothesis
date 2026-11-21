@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Formalism.LocalRingCardinality.DataExtra
 import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SignatureAndNodeGaps
+import Formalism.LocalRingCardinality.DataParams
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntertwinerOfIndexEq
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PureTensorLIntertwine
 
@@ -30,24 +30,6 @@ theorem theta_pureTensorO {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
-
-theorem ptY_and_ItY_of_pair (hP : ItPair D) (hC : ∀ k, ChainPar D k) (hθ : IsInfFam R.θ) (hω : R.chain_ωY)
-    (hS : ∀ t (k : Fin D.R.m), (k : ℕ) + 1 < D.R.m → IsStepWeil k R.ψ (Yc D k) (Yc D (k + 1)) (R.ωY t k) ∧
-      IsVacVec R.ψ R.θ (R.MY k) (R.MY (k + 1)) (R.vY t k)) :
-    R.chain_ptY ∧ ∃ It, ({ R with ItY := It } : RealDat D A Ks).chain_ItY := by
-  classical
-  refine ⟨fun t k hk P => theta_pureTensorO (hω t k hk).std hθ _ _ _ _ (hS t ⟨k, by omega⟩ hk).2.theta P, ?_⟩
-  have h : ∀ k, k + 1 < D.R.m → ∃ y, ∀ t, IsItW R.θ (R.MY k) (R.MY (k + 1)) (R.ωY t k) (R.ptY t k) y := by
-    intro k hk
-    have hk0 : k < D.R.m := by omega
-    obtain ⟨It, h⟩ := exists_intertwiner_of_index_eq hP ⟨k, hk0⟩ (hC _) (Yc D k) (Yc D (k + 1))
-      (min k D.R.m) (min (k + 1) D.R.m) (min_eq_left hk0.le) (min_eq_left hk.le)
-      (R.MY k) (R.MY (k + 1)) R.θ R.ψ hθ
-    exact ⟨It, fun t => h _ _ (hS t ⟨k, hk0⟩ hk).1 (hS t ⟨k, hk0⟩ hk).2⟩
-  refine ⟨fun k => if hk : k + 1 < D.R.m then (h k hk).choose else 0, fun t k hk => ?_⟩
-  show IsItW R.θ (R.MY k) (R.MY (k + 1)) (R.ωY t k) (R.ptY t k) (if hk : k + 1 < D.R.m then (h k hk).choose else 0)
-  rw [dif_pos hk]
-  exact (h k hk).choose_spec t
 
 end GlobalTheory.Chain.InnerSteps
 

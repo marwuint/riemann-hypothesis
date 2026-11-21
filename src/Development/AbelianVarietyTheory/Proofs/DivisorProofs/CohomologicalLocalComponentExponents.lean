@@ -8,7 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedTh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSphericalFactorOfSphericalSubquotient
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocallyConstantOrbit
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateSymplecticCharacterExistsStatement
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeCharacterRestriction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterOfIdeleClass
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharExponentOfInfinityType
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryClassSetFinite
+import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
 
 noncomputable section
 
@@ -276,19 +282,6 @@ theorem deg_eq_one_of_isLSeg [CharZero k] {Δ : Segment k} {y : IrrGL k} (hL : I
   obtain ⟨hi, q, hq, -⟩ := hc
   exact not_isSpherical_quotient _ hd (fun _ => rfl) (by omega) (isUnram_mul hu (isUnram_absPow k _)) φ hφ hi q hq hs
 
-theorem isTemperedGL_twist {N : ℕ} {π : Representation ℂ (GL (Fin N) k) Y} (h : IsTemperedGL π) {χ : kˣ →* ℂˣ}
-    (hχ : IsSmoothChar χ) (hu : IsUnitaryChar χ) : IsTemperedGL (twist π (detChar (Fin N) χ)) := by
-  obtain ⟨r, δ, hd, h1, ⟨φ⟩⟩ := h
-  refine ⟨r, fun a => (δ a).tw χ hχ, hd, fun a => ?_, ⟨(twistEquiv φ _).trans (prodIrrTwistEquiv δ hd χ hχ)⟩⟩
-  obtain ⟨⟨Δ, hΔ⟩, B, b1, b2, b3⟩ := h1 a
-  refine ⟨⟨_, (hΔ.tw χ hχ).of_equiv ((δ a).twEquiv χ hχ)⟩,
-    isUnitarisable_of_equiv ((δ a).twEquiv χ hχ) ⟨B, b1, b2, fun (g : GL (Fin (δ a).1) k) v w => ?_⟩⟩
-  have : (detChar _ χ g : ℂ) * starRingEnd ℂ (detChar _ χ g) = 1 := by
-    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, detChar_apply, hu]; simp
-  show B ((detChar _ χ g : ℂ) • (δ a).rep g v) ((detChar _ χ g : ℂ) • (δ a).rep g w) = _
-  rw [B.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, b3, smul_eq_mul, smul_eq_mul,
-    ← mul_assoc, this, one_mul]
-
 end Local
 
 section Completion
@@ -351,97 +344,5 @@ theorem norm_eq_one_of_isTemperedGL {N : ℕ} {ρ : Representation ℂ (GL (Fin 
   exact norm_eq_one_of_deg_one (deg_eq_one_of_isLSeg hΔ hsph) hu (hR a) s ha
 
 end Completion
-
-section Global
-
-open NumberField IsDedekindDomain GlobalTheory.CuspRep
-
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
-
-theorem infChar_conjugate {P : CuspSub E a} (hP : P.IsCsd) {τ : E →+* ℂ} {m m' : Multiset ℂ} (hm : P.HasInfChar τ m)
-    (hm' : P.HasInfChar (ComplexEmbedding.conjugate τ) m') : m = m'.map Neg.neg := by
-  have h1 : (ThetaPull.thetaSub P).Iso P := by
-    obtain ⟨T, hT⟩ := hP
-    refine ⟨((ThetaPull.pull E a).submoduleMap P.V).symm.trans T, fun o φ => ?_⟩
-    obtain ⟨φ, rfl⟩ := ((ThetaPull.pull E a).submoduleMap P.V).surjective φ
-    have e : (ThetaPull.thetaSub P).op o ((ThetaPull.pull E a).submoduleMap P.V φ) =
-        (ThetaPull.pull E a).submoduleMap P.V (P.op (thetaOp o) φ) :=
-      Subtype.ext (ThetaPull.act_pull o φ.1)
-    rw [e]
-    exact (congrArg T (((ThetaPull.pull E a).submoduleMap P.V).symm_apply_apply _)).trans
-      ((hT o φ).trans (congrArg (P.op o)
-        (congrArg T (((ThetaPull.pull E a).submoduleMap P.V).symm_apply_apply φ)).symm))
-  have h2 : (ThetaPull.thetaSub P).HasInfChar τ (m'.map Neg.neg) := by
-    refine ⟨by rw [Multiset.card_map, hm'.1], ?_⟩
-    rintro u _ ⟨φ, hφ, rfl⟩
-    change cap τ u (ThetaPull.pull E a φ) = _ • ThetaPull.pull E a φ
-    rw [ThetaPull.cap_pull, LinearMap.smul_apply, hm'.2 _ φ hφ, smul_smul, map_smul]
-    congr 1
-    have e : ((m'.map Neg.neg).map (u + ·)) = (m'.map (-u + ·)).map Neg.neg := by
-      rw [Multiset.map_map, Multiset.map_map]
-      refine Multiset.map_congr rfl fun z _ => ?_
-      simp only [Function.comp_apply]; ring
-    rw [e, Multiset.prod_map_neg, Multiset.card_map, hm'.1]
-  exact hm.unique (h1.hasInfChar h2)
-
-theorem isTemperedGL_of_twist {η : Formalism.L2.Host.HChar E} (hη : η.IsUnitary) {w : HeightOneSpectrum (𝓞 E)}
-    {σ : SmIrr (GL (Fin a) (w.adicCompletion E))}
-    (h : IsTemperedGL (σ.twist (CuspSub.locDet a η w) (CuspSub.isOpen_ker_locDet η w)).ρ) : IsTemperedGL σ.ρ := by
-  have h1 := isTemperedGL_twist h (ParLaws.isSmoothChar_loc η w).inv fun x => by
-    rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv]
-    exact (congrArg Inv.inv (hη _)).trans inv_one
-  refine (congrArg (IsTemperedGL (V := σ.V)) (MonoidHom.ext fun g => LinearMap.ext fun v => ?_)).mpr h1
-  show σ.ρ g v = (((η.loc w (GeneralLinearGroup.det g))⁻¹ : ℂˣ) : ℂ) • ((η.loc w (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • σ.ρ g v
-  rw [smul_smul, Units.inv_mul, one_smul]
-
-end Global
-
-open NumberField IsDedekindDomain GlobalTheory.CuspRep in
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
-
-theorem norm_satake_eq_one : GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.CohomologicalCsdTempered →
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ), 1 ≤ a → ∀ P : CuspSub E a, P.IsCsd →
-  ∀ m : (E →+* ℂ) → Multiset ℂ, (∀ τ, P.HasInfChar τ (m τ)) → (∀ τ, (m τ).Nodup) →
-  ∀ f : ℂ, (∀ τ, ∀ z ∈ m τ, ∃ k : ℤ, z = f + k) →
-  ∀ (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), P.IsLocComp w σ →
-    ∀ S : Multiset ℂˣ, GlobalTheory.LFun.HasSatGL w σ.ρ S → ∀ s ∈ S, ‖(s : ℂ)‖ = 1 := by
-  intro hC hT E _ _ _ a ha P hP m hm hnd f hf w σ hσ S hS
-  refine norm_eq_one_of_isTemperedGL ?_ hS
-  rcases ha.eq_or_lt with rfl | ha2
-  · exact GKCoh.Tests.tempered_rank_one E P hP w σ hσ
-  obtain ⟨j, hj⟩ : ∃ j : ℤ, 2 * f = j := by
-    obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-    obtain ⟨z, hz⟩ := Multiset.card_pos_iff_exists_mem.1 ((hm τ).1 ▸ ha : 0 < (m τ).card)
-    obtain ⟨k, hk⟩ := hf τ z hz
-    rw [infChar_conjugate hP (hm τ) (hm _)] at hz
-    obtain ⟨z', hz', e⟩ := Multiset.mem_map.1 hz
-    obtain ⟨k', hk'⟩ := hf _ z' hz'
-    exact ⟨-k - k', by push_cast; linear_combination -hk - hk' - e⟩
-  obtain ⟨η, hu, hcsd, hη⟩ : ∃ η : Formalism.L2.Host.HChar E, η.IsUnitary ∧ (CG.ofChar η).IsCsd ∧
-      ∀ τ, ∃ n : ℤ, f + expo η τ = n + ((a : ℂ) - 1) / 2 := by
-    rcases Int.even_or_odd' (j - a + 1) with ⟨i, hi | hi⟩
-    · have hi' : (j : ℂ) - a + 1 = 2 * i := by exact_mod_cast hi
-      refine ⟨1, fun _ => norm_one, (CG.isCsd_ofChar 1).2 fun o => ?_, fun τ => ⟨i, ?_⟩⟩
-      · exact CG.thetaInv_of (fun _ => rfl) (fun z => by
-          have : dchi (1 : Formalism.L2.Host.HChar E) = 0 := fderiv_extZero (continuous_chiInf _) fun z => by simp [chiInf]
-          simp [this]) o
-      · rw [CG.expo_one]; linear_combination hj / 2 + hi' / 2
-    · have hi' : (j : ℂ) - a + 1 = 2 * i + 1 := by exact_mod_cast hi
-      obtain ⟨η, h1, h2, h3⟩ := GlobalTheory.T.conjugate_symplectic_character_exists E
-      refine ⟨η, h1, h2, fun τ => ?_⟩
-      obtain ⟨k, hk⟩ := h3 τ
-      exact ⟨i + k + 1, by rw [hk]; push_cast; linear_combination hj / 2 + hi' / 2⟩
-  have hreg : (CG.mk (P.twist η)).IsRegAlg := (CG.isRegAlg_iff _).2 fun τ => by
-    have h1 : (CG.mk (P.twist η)).HasInfChar τ ((m τ).map (· + expo η τ)) := (hm τ).twist η
-    rw [h1.infChar_eq]
-    refine ⟨(hnd τ).map (add_left_injective _), fun z' hz' => ?_⟩
-    obtain ⟨z, hz, rfl⟩ := Multiset.mem_map.1 hz'
-    obtain ⟨k, hk⟩ := hf τ z hz
-    obtain ⟨n, hn⟩ := hη τ
-    exact ⟨n + k, by push_cast; linear_combination hk + hn⟩
-  have hcsd' : (P.twist η).IsCsd := CG.IsCsd.twist (π := CG.mk P) hcsd hP
-  exact isTemperedGL_of_twist hu (hT E a ha2 _ hcsd' (hC E a ha _ hreg) w _ (hσ.twist η))
 
 end GlobalTheory.TempSat

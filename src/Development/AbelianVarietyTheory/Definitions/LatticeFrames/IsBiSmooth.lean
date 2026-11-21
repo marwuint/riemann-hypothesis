@@ -36,15 +36,6 @@ def BiAct (D : D7) : Prop :=
       Continuous fun x : (GA D A × GA D S) × (GA D S × GA D A') × WO A S × WO S A' =>
         omb x.2.1 (fun v => oma x.1 (fun u => C u v) x.2.2.1) x.2.2.2
 
-def FockRed (D : D7) : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (A S A' : HSp D) (x : DefSp A) (y : DefSp S) (z : DefSp A'),
-    x.Is → y.Is → z.Is → ∀ (k : KerDat A S) (k' : KerDat S A'), k.Is ψ θ x y → k'.Is ψ θ y z →
-    ∀ (χ : GA D A → ℂ) (C : WO A S → WO S A' → ℂ), IsBiVac ψ A S A' x.L y.L z.L C → IsBiSmooth C →
-      ∃ (n : ℕ) (P : Fin n → PolF D S.rank A.rank) (P' : Fin n → PolF D A'.rank S.rank),
-        ∀ φ, IsContAut A φ → HasCen A χ φ →
-          biLift k.om k'.om x.vol y.vol φ (biComb ψ A S A' k.c k'.c C) =
-            ∑ i, k'.lift ψ θ y z (P' i) (k.lift ψ θ x y (P i) φ)
-
 namespace Dat
 
 variable {u : D.what₂.Word} (d : Dat D u)
@@ -63,60 +54,7 @@ def ValLastS : Prop :=
         (liftS (d.pT j h).ω d.top.ν d.top.fd (F.1 v) ((d.pT j h).pt P₂)) ((d.p j).pt P₁))) =
       ∫ h' in d.top.fd, F.1 v h' * d.two j (d.rd j (d.S j ψ) y) C ((d.oT (j + 1 + 1) h).emb (h', 1)) ∂d.top.ν
 
-def TwoColS : Prop :=
-  ∀ j, j + 2 ≤ D.R.m → ∀ C, d.IsRealS j C → ∀ y, ∃ a : (D.mem u).C.Y (j + 1 + 1) →₀ ℂ, ∀ ψ ∈ d.Ram j,
-    d.two j (d.rd j ψ y) C = ∑ y' ∈ a.support, a y' • d.rd (j + 1 + 1) ((D.mem u).C.K (j + 1) ((D.mem u).C.K j ψ)) y'
-
 end Dat
-
-section Examples
-
-variable {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D}
-
-example {f : WO A S → ℂ} {g : WO S A' → ℂ} (hf : IsThetaFunO ψ A S f) (hg : IsThetaFunO ψ S A' g) :
-    IsBiTheta ψ A S A' fun u v => f u * g v where
-  cont := (hf.cont.comp continuous_fst).mul (hg.cont.comp continuous_snd)
-  smooth := fun n L L' hL hL' h0 h0' u v => (hf.smooth n L hL h0 u).mul (hg.smooth n L' hL' h0' v)
-  quasiL := fun γ u v => by rw [hf.quasi, mul_assoc]
-  quasiR := fun γ u v => by rw [hg.quasi, mul_left_comm]
-  levL := by
-    obtain ⟨U, hU, h⟩ := hf.level
-    refine ⟨U, hU, fun a ha h0 v => funext fun w => ?_⟩
-    have e := congrFun (h a ha h0) w
-    simp only [heisO] at e ⊢
-    rw [← mul_assoc, e]
-  levR := by
-    obtain ⟨U, hU, h⟩ := hg.level
-    refine ⟨U, hU, fun a ha h0 u => funext fun w => ?_⟩
-    have e := congrFun (h a ha h0) w
-    simp only [heisO] at e ⊢
-    rw [mul_left_comm, e]
-
-example {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (v : WO S A') : IsThetaFunO ψ A S fun u => C u v where
-  quasi := fun γ u => h.quasiL γ u v
-  level := by
-    obtain ⟨U, hU, hl⟩ := h.levL
-    exact ⟨U, hU, fun a ha h0 => hl a ha h0 v⟩
-  cont := h.cont.comp (continuous_id.prodMk continuous_const)
-  smooth := fun n L hL h0 u => by
-    have := h.smooth n L 0 hL continuous_const h0 (fun _ => Matrix.map_zero _ (map_zero (finPart D))) u v
-    simpa using this
-
-example {C : WO A S → WO S A' → ℂ} (h : IsBiTheta ψ A S A' C) (u : WO A S) : IsThetaFunO ψ S A' (C u) where
-  quasi := fun γ v => h.quasiR γ u v
-  level := by
-    obtain ⟨U, hU, hl⟩ := h.levR
-    exact ⟨U, hU, fun a ha h0 => hl a ha h0 u⟩
-  cont := h.cont.comp (continuous_const.prodMk continuous_id)
-  smooth := fun n L hL h0 v => by
-    have := h.smooth n 0 L continuous_const hL (fun _ => Matrix.map_zero _ (map_zero (finPart D))) h0 u v
-    simpa using this
-
-example {u : D.what₂.Word} (d : Dat D u) (C : WO A S → WO S A' → ℂ) :
-    (IsBiSmooth C ↔ JointSmooth C) ∧ (d.ValS ↔ d.Val) ∧ (d.ValLastS ↔ d.ValLast) ∧ (FockRed D ↔ FockReduce D) :=
-  ⟨Iff.rfl, Iff.rfl, Iff.rfl, Iff.rfl⟩
-
-end Examples
 
 end GlobalTheory.SeeSaw
 

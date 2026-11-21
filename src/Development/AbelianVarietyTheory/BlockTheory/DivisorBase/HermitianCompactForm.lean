@@ -25,9 +25,6 @@ def IsCombAt (x : Sp R ⟶ S) {n : ℕ} (c : Fin n → R) (v : Fin n → (epsAt 
 def IsEigBasisAt (act : OAct O G) (x : Sp R ⟶ S) (χ : O →+* R) {n : ℕ} (v : Fin n → (epsAt x ⟶ G)) : Prop :=
   (∀ i, IsEigAt act x χ (v i)) ∧ ∀ w, IsEigAt act x χ w → ∃! c : Fin n → R, IsCombAt x c v w
 
-example {k : Type} [Field k] (act : OAct O G) (x : Sp k ⟶ S) (χ : O →+* k) (n : ℕ) :
-    (∃ v : Fin n → (epsAt x ⟶ G), IsEigBasisAt act x χ v) ↔ LieMult act x χ n := Iff.rfl
-
 end Frames
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
@@ -67,10 +64,6 @@ def IsMultiple (t : SAB H S) (π : X ⟶ S) (s : X ⟶ Sp F) (V : Set X) (χ : �
     (σ' : Rule t π p q) (a : F) (σ : Rule t π p q) : Prop :=
   ∀ (R : Type) [CommRing R] (j : F →+* R) (x : Sp R ⟶ X) v w, IsFrame t π s V χ j x v w →
     σ' R x v w = j a * σ R x v w
-
-example (t : SAB H S) (π : X ⟶ S) (s : X ⟶ Sp F) (V : Set X) (χ : 𝓞 E →+* F) (p q : ℕ) :
-    IsSection t π s V χ (p := p) (q := q) (fun _ _ _ _ _ => 0) :=
-  ⟨fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp⟩
 
 end Sections
 

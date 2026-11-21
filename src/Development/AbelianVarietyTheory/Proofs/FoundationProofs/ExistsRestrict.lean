@@ -4,16 +4,18 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAd
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsRootOfIsAlgClosed
 import GroundTheory.PAdicHodge.AxLemma
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaKillsFplusDiscreteFormStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCuspFunctionalOddWeightOddPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCuspFunctionalOddWeightOddPrime
+import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaBasisLinearCombination
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsCuspFunctionalValueGalBEquivariant
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalBMemKummerInvariantSet
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerBettiModuleFreeFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerBettiModuleFreeFinite
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsThBSuccCoeffCongStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLinearLimitOfCompatibleFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLinearLimitOfCompatibleFamily
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemSpanEigenOfBaseChangeEigenStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineFunctionalEqPeriodMulStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineFunctionalEqPeriodMul
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubringNonunitsPowModEqZero
 import Development.AbelianVarietyTheory.Definitions.Foundations.ThNSpec
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFunctionalValueModPrimePowUniqueOddWeightStatement
@@ -121,8 +123,8 @@ theorem exists_limit [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubri
   have hlA : (l : Ω) ∈ A.nonunits := (ValuationSubring.mem_nonunits_iff A).2 (val_l_lt_one hj)
   have hhol' : ∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs := hhol.imp fun _ h => h.symm
   have hex : ∀ n, ∀ b ∈ X.B N l w, ∃ φ, IsThB X A N l n b φ := fun n b hb =>
-    (GlobalTheory.T.exists_cuspFunctional_oddWeight_oddPrime Ω ε X A N l inferInstance hhol' hl2 hlN (by omega) hlA n w hw b hb).imp fun _ h => h.1
-  obtain ⟨L, hL⟩ := GlobalTheory.T.exists_linearMap_limit_of_compatible_approximations l (X.Fn l) (X.B N l w)
+    (_root_.GlobalTheory.ThEx.thex Ω ε X A N l inferInstance hhol' hl2 hlN (by omega) hlA n w hw b hb).imp fun _ h => h.1
+  obtain ⟨L, hL⟩ := _root_.GlobalTheory.exists_linear_limit_of_compatible_family l (X.Fn l) (X.B N l w)
     (fun n b x => ∃ φ, IsThB X A N l n b φ ∧ x = lam (seqN D j φ)) C
     (fun n b hb => (hex n b hb).elim fun φ h => ⟨_, φ, h, rfl⟩)
     (by
@@ -193,7 +195,7 @@ theorem exists_period [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubr
   obtain ⟨L, F, hL, hb, hg⟩ := exists_limit X A j hj hhol N w D hl2 hN hNl hw lam hfin C hC
   obtain ⟨F₀, hF₀⟩ := hρ
   obtain ⟨c, hc⟩ := GlobalTheory.T.theta_kills_Fplus_discrete_form l Ω ε X A hhol' (val_l_lt_one hj) N w F₀ hl2 hlN (by omega) hw
-  have := (GlobalTheory.T.kummerBettiModule_free_finite ε X ε.injective hhol N l w hl2 hN hNl hw).1
+  have := (_root_.GlobalTheory.KZ.B_free_finite ε X ε.injective hhol N l w hl2 hN hNl hw).1
   have hkill : ∀ i, L (σ i ![1, 0]) = 0 := by
     intro i
     have hsp := GlobalTheory.T.mem_span_eigen_of_baseChange_eigen' l (X.Fn l) {s : Ω ≃ₐ[ℚ] Ω // s ∈ Ine (F := ℚ) A ∧ ∀ y ∈ F₀, s y = y} (X.B N l w)
@@ -208,7 +210,7 @@ theorem exists_period [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubr
     refine (Submodule.span_le (p := LinearMap.ker L)).2 ?_ hsp
     rintro _ ⟨b, hbB, hbe, rfl⟩
     refine eq_zero_of_le (C := C * ‖((l : ℕ) : Qbar l) ^ c‖⁻¹) (c := 0) fun n _ => ?_
-    obtain ⟨φ, hφ, -⟩ := GlobalTheory.T.exists_cuspFunctional_oddWeight_oddPrime Ω ε X A N l inferInstance hhol' hl2 hlN (by omega) hlA n w hw b hbB
+    obtain ⟨φ, hφ, -⟩ := _root_.GlobalTheory.ThEx.thex Ω ε X A N l inferInstance hhol' hl2 hlN (by omega) hlA n w hw b hbB
     have hlc : ((l : ℕ) : Qbar l) ^ c ≠ 0 := pow_ne_zero _ l_ne_zero
     have hp : 0 < ‖((l : ℕ) : Qbar l) ^ c‖ := norm_pos_iff.2 hlc
     have hc1 : 1 ≤ ‖((l : ℕ) : Qbar l) ^ c‖⁻¹ := by
@@ -228,7 +230,7 @@ theorem exists_period [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (A : ValuationSubr
     refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 ?_)
     rw [norm_neg]
     exact h1.trans (mul_le_mul_of_nonneg_right (le_mul_of_one_le_right hC0 hc1) (norm_nonneg _))
-  obtain ⟨κ, per, h1, h2⟩ := GlobalTheory.T.line_functional_eq_period_mul_alt l (X.Fn l) (Ω ≃ₐ[ℚ] Ω) (X.B N l w) (X.galB l) (fun s => mat ρ s) L F
+  obtain ⟨κ, per, h1, h2⟩ := _root_.GlobalTheory.line_functional_eq_period_mul l (X.Fn l) (Ω ≃ₐ[ℚ] Ω) (X.B N l w) (X.galB l) (fun s => mat ρ s) L F
     (fun K hK τ => (exists_restrict j τ.toRingEquiv).imp fun s hs => hg K hK τ s hs) m σ hσ hσg hkill
   exact ⟨L, κ, per, hL, hb, h1, h2⟩
 
@@ -243,31 +245,11 @@ theorem exists_bound {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp
     rw [norm_mul]
     exact mul_le_of_le_one_right (norm_nonneg _) (hf s)
 
-theorem act_sgD_one (X : Tower Ω ε) {N w : ℕ} (hN : N ≠ 0) {b : X.Fn l} (hb : b ∈ X.B N l w) :
-    X.act l (sgD N l 1 : Matrix (Fin 2) (Fin 2) ℤ) b = b := by
-  obtain ⟨⟨h0, h1⟩, h2⟩ := Betti.isDiam_sgD (d := 1) hN (Fact.out : l.Prime).ne_zero (Nat.coprime_one_left N)
-  have h3 : (⟨sgD N l 1, h0⟩ : CongruenceSubgroup.Gamma0 N) ∈ CongruenceSubgroup.Gamma1' N := by
-    rw [CongruenceSubgroup.Gamma1_mem']
-    simpa [en, CongruenceSubgroup.Gamma0Map] using h2
-  have h4 : sgD N l 1 ∈ Gam N l :=
-    ⟨(CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h3), h1⟩
-  induction hb using Submodule.span_induction with
-  | mem x hx => exact hx.2 _ h4
-  | zero => simp
-  | add x y _ _ hx hy => rw [map_add, hx, hy]
-  | smul a x _ hx => rw [map_smul, hx]
-
 end GlobalTheory.LamPr
 
 end
-
-noncomputable section
-
-open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.CyclotomicQExpansion GlobalTheory.KummerEisensteinGalois
-open scoped TensorProduct MatrixGroups Matrix
 
 namespace GlobalTheory.LamPr
 
 end GlobalTheory.LamPr
 
-end

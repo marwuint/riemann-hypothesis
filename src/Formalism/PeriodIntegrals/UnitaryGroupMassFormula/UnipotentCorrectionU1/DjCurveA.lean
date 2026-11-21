@@ -1,5 +1,5 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentCorrectionU1.CoreStar
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumEqSumCompEmbedding
+import Mathlib
 import Lemmata.B110.ExistsMoved
 
 open Matrix
@@ -55,26 +55,8 @@ theorem pres_exp {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S
     rw [this]; exact hasSum_zero
   exact h2.unique h3
 
-theorem sum_emb (e : Fin j ↪ Fin N) (f : Fin N → ℂ) (hf : ∀ c, c ∉ Set.range e → f c = 0) :
-    ∑ c, f c = ∑ a, f (e a) := by
-  first | exact GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding .. | (apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (intros; apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (apply @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (intros; apply @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (apply @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> first | assumption | infer_instance) | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j e f hf | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j e f | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j e | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N j | exact @GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding N
-
 def sub (e : Fin j ↪ Fin N) (E : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin j) (Fin j) ℂ :=
   Matrix.of fun a b => E (e a) (e b)
-
-theorem sub_right (e : Fin j ↪ Fin N) (row : Fin j → Fin N) (h E : Matrix (Fin N) (Fin N) ℂ)
-    (hE : Pres (Set.range e) E) :
-    (Matrix.of fun a b => (h * E) (row a) (e b)) = (Matrix.of fun a b => h (row a) (e b)) * sub e E := by
-  ext a b
-  rw [Matrix.of_apply, Matrix.mul_apply, Matrix.mul_apply]
-  exact sum_emb e _ fun c hc => by rw [hE c (e b) ⟨b, rfl⟩ hc, mul_zero]
-
-theorem sub_left (e : Fin j ↪ Fin N) (col : Fin j → Fin N) (h E : Matrix (Fin N) (Fin N) ℂ)
-    (hE : Pres (Set.range e)ᶜ E) :
-    (Matrix.of fun a b => (E * h) (e a) (col b)) = sub e E * (Matrix.of fun a b => h (e a) (col b)) := by
-  ext a b
-  rw [Matrix.of_apply, Matrix.mul_apply, Matrix.mul_apply]
-  exact sum_emb e _ fun c hc => by rw [hE (e a) c hc (fun h' => h' ⟨a, rfl⟩), zero_mul]
 
 end Gen
 

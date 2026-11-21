@@ -177,45 +177,8 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.AdicCompletionValuation
   PI.VolFromSW TensAllW
 
-theorem tensFacts_of {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
-    (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
-    (hJ : ∀ i j, σ (J j i) = J i j) (a : ℕ) (R : Type) [CommRing R] [Algebra F R]
-    [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [T2Space R]
-    [SecondCountableTopology R] (hU : IsOpen {r : R | IsUnit r}) (hL : LIP R) :
-    TensFacts F E σ M J a R := by
-  refine ⟨inferInstance, inferInstance, inferInstance, ?_, ?_, ?_,
-    isOpen_linIndep (Module.finBasis F E) R hU hL⟩
-  · exact isClosed_HermR (R := R) σ a
-  · exact continuous_gramR (R := R) σ J
-  · exact fun X => gramR_mem (R := R) σ hσ J hJ X
-
 theorem lip_ainf (F : Type) [Field F] [NumberField F] : LIP (InfiniteAdeleRing F) := by
   classical
   exact lip_pi (fun v : InfinitePlace F => v.Completion) (fun v => lip_field _)
-
-theorem tensAll_holds : TensAll := by
-  unfold TensAll
-  intro F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT _
-  show TensFacts F E σ M J a (Ainf F) ∧ ∀ v : HeightOneSpectrum (𝓞 F), TensFacts F E σ M J a (Fv F v)
-  have hσ : ∀ x, σ (σ x) = x := by
-    intro x
-    let τ : E →+* ℂ := (IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom
-    apply τ.injective
-    rw [hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]
-  have hUinf : IsOpen {r : Ainf F | IsUnit r} := by
-    show IsOpen {r : (∀ w : InfinitePlace F, w.Completion) | IsUnit r}
-    have hset : {r : (∀ w : InfinitePlace F, w.Completion) | IsUnit r} =
-        ⋂ w : InfinitePlace F, (fun r : (∀ w : InfinitePlace F, w.Completion) => r w) ⁻¹' {x | x ≠ 0} := by
-      ext r
-      simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, Pi.isUnit_iff, isUnit_iff_ne_zero]
-    rw [hset]
-    exact isOpen_iInter_of_finite fun w => isOpen_ne.preimage (continuous_apply w)
-  refine ⟨tensFacts_of σ hσ J hJ.1 a (Ainf F) hUinf (lip_ainf F), fun v => ?_⟩
-  have hUv : IsOpen {r : Fv F v | IsUnit r} := by
-    simp only [isUnit_iff_ne_zero]
-    exact isOpen_ne
-  haveI : LocallyCompactSpace (Fv F v) := locallyCompact_Fv (F := F) (v := v)
-  haveI : SecondCountableTopology (Fv F v) := secondCountable_Fv (F := F) (v := v)
-  exact tensFacts_of σ hσ J hJ.1 a (Fv F v) hUv (lip_field _)
 
 end PI.VolStabSW

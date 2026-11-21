@@ -1,7 +1,7 @@
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndExp
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ConstantCoeffPolyAdd
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.PartialDerivativeExponent
-import ReciprocityTheory.ReductiveGroups.Models.FiniteGeneration.FiniteGenerationProofs.SolveV
+import Formalism.FormalGroupWitt.FormalGroupWittProofs.SolveV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.KillAddFin
 
 set_option autoImplicit false

@@ -5,7 +5,8 @@ import Formalism.LocalToGlobal.ProjectiveLattices.RulInst
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEig
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsActionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsAction
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.LocFn
 
 noncomputable section
@@ -16,7 +17,7 @@ theorem eigFrame_change : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] [Nontrivi
   intro S R _ _ G _ _ x O _ act σ n r u V hu hV
   obtain ⟨E, _, _, ⟨M⟩⟩ := lieModel_exists S G R x
   obtain ⟨ρ, hρ, -⟩ := lieModel_exists_unique_act S G R x E M O act.act act.hom act.one act.mul act.add
-  obtain ⟨hc, hf⟩ := GlobalTheory.T.lie_model_eigenvectors_action S R G x E M
+  obtain ⟨hc, hf⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.Bridge.comb_eig_frame S R G x E M
   have hfr := (hf O act ρ σ hρ).2
   choose u' hu' using fun i => M.onto (u i) (hu.1 i).1
   choose V' hV' using fun i => M.onto (V i) (hV.1 i).1

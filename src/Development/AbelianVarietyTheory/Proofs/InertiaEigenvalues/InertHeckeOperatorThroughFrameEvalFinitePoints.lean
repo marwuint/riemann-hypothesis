@@ -7,9 +7,9 @@ import Formalism.SharpRestriction.LevelLetterCocycles.SphericalInertData
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnramifiedOfSphericalVectorDictionary
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertHeckeOperatorIndepOfInertDatum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CosetSumTransferAlongSurjectionPreimageStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TrivOutsidePlaceMemDefiniteUnitaryLocalPointsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalComponentMemMaxCompactGLIffMemMaxCompactStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralFrameConjUnitaryIntegralIffGLIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TrivOutsidePlaceMemDefiniteUnitaryLocalPoints
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalComponentMemMaxCompactGLIffMemMaxCompact
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralFrameConjUnitaryIntegralIffGLIntegral
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped TensorProduct
@@ -54,7 +54,7 @@ theorem heckeVec_frame_eval : ∀ (L : Type) [Field L] [NumberField L] [IsCMFiel
   have hvw : w.under (𝓞 (maximalRealSubfield L)) = v := HeightOneSpectrum.ext hwv
   let T : Subgroup (GAf L n) := trivSub v
   let ψ : T →* locU n w :=
-    { toFun := fun t => ⟨F.j t, GlobalTheory.T.trivOutside_place_mem_definiteUnitaryLocalPoints L n F v w hwv t t.2⟩
+    { toFun := fun t => ⟨F.j t, _root_.GlobalTheory.LocMemTransfer.mem_locU L n F v w hwv t t.2⟩
       map_one' := Subtype.ext (by simp)
       map_mul' := fun x y => Subtype.ext (by simp) }
   have hψv : ∀ t : T, ((ψ t : locU n w) : UA L n) = F.j t := fun t => rfl
@@ -67,8 +67,8 @@ theorem heckeVec_frame_eval : ∀ (L : Type) [Field L] [NumberField L] [IsCMFiel
   set K' : Subgroup (locU n w) := (Formalism.UG.KU D.σw n).comap p with hK'
   have hiff : ∀ t : T, ψ t ∈ K' ↔ (t : GAf L n) ∈ U0 := by
     intro t
-    rw [Subgroup.mem_comap, GlobalTheory.T.integralFrame_conj_unitaryIntegral_iff_GL_integral L n w D.σw b hb p hp (ψ t), hψv,
-      GlobalTheory.T.localComponent_mem_maxCompactGL_iff_mem_maxCompact L n F w t (GlobalTheory.T.trivOutside_place_mem_definiteUnitaryLocalPoints L n F v w hwv t t.2), hU0 t t.2]
+    rw [Subgroup.mem_comap, _root_.GlobalTheory.KUTransfer.ku_iff L n w D.σw b hb p hp (ψ t), hψv,
+      _root_.GlobalTheory.LocInteg.cLoc_mem_KGL_iff L n F w t (_root_.GlobalTheory.LocMemTransfer.mem_locU L n F v w hwv t t.2), hU0 t t.2]
   have hRi : ∀ (a : Formalism.UG.GU D.σw n) (c : Formalism.UG.KU D.σw n), h (a * c) = h a :=
     fun a c => by simpa using hh.1 1 c a
   have haK : ∀ x, ∀ k ∈ K', h (p (x * k)) = h (p x) := by

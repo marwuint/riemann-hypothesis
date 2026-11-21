@@ -17,13 +17,104 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RadfordShufflePolynomialHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodReductionCondition
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.APerTw
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DivRows3GIff
+import Formalism.LocalToGlobal.FiniteTOf
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.IsLinked
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.AllRows
+import Development.AbelianVarietyTheory.Definitions.Divisors.MapBaseTiedSel
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ClassSumPin
+import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SerFixOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DivisorEmbeddingKappaEqRowsKappaAtInfinitePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityEqualityStatementStatement
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
+import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
+import Formalism.LocalToGlobal.IndefiniteReal.NormalDecomposition.LiftHeckeOperators
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartW
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspidalNoRadicalFixed
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConstantTermVanishing
+import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.IwahoriSubgroup
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CentralizerTensorForms
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RegularSemisimpleRationalClassKernelIntegralsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypeHypothesisFormsAgreeStatement
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.StandardMaximalParabolic
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRegularSemisimpleOfTestFunctionNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralHasSumEqIntegralIndicatorHasSum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumConjClassesRegroupWithInvariantSelection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceInputsImplyCuspidalTrace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalSpectrumFinitenessOfDecayHarishChandra
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricExpansionOfParts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperbolicTermsVanish
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ParabolicLeviDecomposition
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularSemisimpleTorusEllipticElementRealPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralizerTorusEllipticElementRealPlace
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeasurableEmbeddingEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompactRealPlaceTorusClassesSignVectors
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumDiscreteSeriesCharacterEqWeylCharacter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceSeparationOfIwahoriTraceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PseudoCoefficientSeparation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TestFunctionsTransportLocalLatticeIsometries
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableOrbitalIntegralPreservedLatticeIsometryStatement
+import Formalism.RealPlaceAnalysis.StatementE
+import Formalism.RealPlaceAnalysis.StatementB
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConsequencesOfDsClass
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PseudocoefficientTraceVanishes
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IrreducibleKStableFiniteSubspace
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Formalism.LocalToGlobal.BesselHermitianTheta.TiedType
+import Formalism.FormalDegreeBessel.StatementIO
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.NotTrivialAndTwist
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SameBlockOfPosC
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaxCompactIrreducibleHasHighestWeightAndIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqLowKOfLeLowKSub
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerOfKFiniteVectors
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.PolarJmConjTranspose
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InducedIntertwiningIntegralNonzero
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CapelliOfGelfand
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlRelationsOnKFiniteVectors
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommuteGelfandInvariantMatrixUnitsOfGlRel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDimensionalInvariantSubspace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HyperbolicPairSplitTorus
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.GeneratorPowUpperVanishHolds
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.FirstSlotSliceSlotMixedCasimirZero
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IsCompactInvariantOrthogonalInf
+import Formalism.RealPlaceAnalysis.FinalF
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoefExtendsHolomorphically
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.KFinSmooth
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LowerSmoothStability.ExistsFinStableOfMemSSup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousWordTranslate
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsometryIntertwinesEnveloping
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompactUnitaryFiniteInvariantSubspace
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.HilbertSchurUnitaryIrreducibleScalar
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerNonzeroOnGeneratingSet
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonFieldTypeVanishing
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.NonFieldTypeVanishing
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LengthFilterFinRange
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IwahoriEigenvalues
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriTraceOfBorelCasselman
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RegularSemisimpleUnitaryGroupConcrete
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParabolicAndConstantTerm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypeIdempotentConstantTermVanish
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalOperatorsVanishingRadicalIntegralsUnitary
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EllipticPart
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalTraceMultiplicityGiven
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ScalarHypothesesOfTopRows
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotNeBotRead
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodIdempotentCoeffInvEqCoeff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiIdemMulLvlIdemBaseNeZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodTypesOfTypesTrue
+
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -60,33 +151,6 @@ theorem goodTypes_of_rows (t : RowsT K w Z Wt p0) : GlobalTheory.IndefiniteRowSi
   exact GlobalTheory.LiftRows.Inh.goodTypes_of_typesTrue t.r.z.pins.char.base.lev hT
 
 end Rows
-
-set_option maxHeartbeats 2000000 in
-
-theorem row_kap_of_row_lam : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), RL.At (prmR N S Γ) R1.LambdaPositivityAtBundlePoints → RL.At (prmR N S Γ) RL.KappaCondition := by
-  intro a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 hL N S Γ h
-  obtain ⟨R, hR, h⟩ := h
-  refine ⟨R, hR, Row.imp h fun 𝒜 σ s hl => ?_⟩
-  have key : AtAll (Bd := Bundle) (fun _ _ _ b => Formalism.L2.Rows.RowsHoldKap3 b.P) 𝒜 σ := by
-    intro eps Fm hc x hx i
-    obtain ⟨κ, -, -, hb⟩ := s Fm hc
-    refine Built.ind (Bd := Bundle) (R := fun D _ _ b => (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → Formalism.L2.Rows.RowsHoldLam3 b.P →
-      Formalism.L2.Rows.RowsHoldKap3 b.P) ?_ (hb x hx i).1 ⟨_, ⟨Fm.params x hx i⟩⟩ (hl Fm hc x hx i)
-    intro K β c b _ _ hk
-    obtain ⟨q, b', ⟨w⟩, he⟩ := hk
-    have e := congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => (∃ L : SizeData₂ s.1, Nonempty (ParameterChoice' s.1 L)) →
-      Formalism.L2.Rows.RowsHoldLam3 s.2.2.P → Formalism.L2.Rows.RowsHoldKap3 s.2.2.P) he
-    refine cast e.symm fun hP hLam => ?_
-    have hb' : b'.P = R3.divisionPairOfAdelicFormsFaceColumnsData w.x := congrArg RPk.P w.y.eq
-    change Formalism.L2.Rows.RowsHoldLam3 b'.P at hLam
-    change Formalism.L2.Rows.RowsHoldKap3 b'.P
-    rw [hb'] at hLam ⊢
-    have hM : GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat :=
-      GlobalTheory.T.multiplicity_equality_statement a6 a7 a2 a1 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 q.x.what₂.r.z.R q.x.what₂.r.z.F q.x.what₂.r.intersectionNumber_baseChange.ok
-        q.x.what₂.r.z.pins.char q.x.what₂.exAt w.y.y.host hP q.B.ccK_top q.x.what₂.r.z.pins.keep.guard (goodTypes_of_rows q.x.what₂)
-    exact GlobalTheory.T.divisorEmbedding_kappa_eq_rowsKappa_at_infinitePlace ⟨a3, a4, a5, a1, a2⟩ _ _ _ _ _ w.x.A3 _ w.x.R w.x.F w.x.cG _ w.x.Y w.x.Z _ w.x.pins w.y.intersectionNumber_baseChange hLam
-      (isot_ne_bot_of_rows a1 a17 q.x.what₂ hM) q.x.obj.kapR
-  exact ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ hc => Ind.ev_of_atAll key Fm (w3_a hc)⟩⟩
 
 end GlobalTheory.Fc.KapLinked
 

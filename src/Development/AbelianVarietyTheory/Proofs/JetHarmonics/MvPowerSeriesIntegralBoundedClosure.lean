@@ -41,35 +41,9 @@ theorem le_C (a : K) : Le ‖a‖ (MvPowerSeries.C a : MvPowerSeries σ K) := fu
   rw [MvPowerSeries.coeff_C]
   split_ifs <;> simp
 
-theorem intg_add {S T : MvPowerSeries σ K} (h : Intg S) (h' : Intg T) : Intg (S + T) := by
-  have := Le.add (c := 1) (d := 1) h h'
-  rwa [max_self] at this
-
-theorem intg_sub {S T : MvPowerSeries σ K} (h : Intg S) (h' : Intg T) : Intg (S - T) := by
-  have := Le.sub (c := 1) (d := 1) h h'
-  rwa [max_self] at this
-
 theorem intg_mul {S T : MvPowerSeries σ K} (h : Intg S) (h' : Intg T) : Intg (S * T) := by
   have := Le.mul (c := 1) (d := 1) h h'
   rwa [one_mul] at this
-
-theorem bdd_add {S T : MvPowerSeries σ K} (h : Bdd S) (h' : Bdd T) : Bdd (S + T) := by
-  obtain ⟨c, h⟩ := h
-  obtain ⟨d, h'⟩ := h'
-  exact ⟨_, Le.add h h'⟩
-
-theorem bdd_sub {S T : MvPowerSeries σ K} (h : Bdd S) (h' : Bdd T) : Bdd (S - T) := by
-  obtain ⟨c, h⟩ := h
-  obtain ⟨d, h'⟩ := h'
-  exact ⟨_, Le.sub h h'⟩
-
-theorem bdd_mul {S T : MvPowerSeries σ K} (h : Bdd S) (h' : Bdd T) : Bdd (S * T) := by
-  obtain ⟨c, h⟩ := h
-  obtain ⟨d, h'⟩ := h'
-  exact ⟨_, Le.mul h h'⟩
-
-omit [IsUltrametricDist K] in
-theorem bdd_C (a : K) : Bdd (MvPowerSeries.C a : MvPowerSeries σ K) := ⟨_, le_C a⟩
 
 omit [IsUltrametricDist K] in
 theorem intg_C {a : K} (ha : ‖a‖ ≤ 1) : Intg (MvPowerSeries.C a : MvPowerSeries σ K) :=
@@ -90,19 +64,10 @@ theorem intg_prod {ι : Type} (t : Finset ι) (f : ι → MvPowerSeries σ K)
     (h : ∀ i ∈ t, Intg (f i)) : Intg (∏ i ∈ t, f i) :=
   Finset.prod_induction f Intg (fun _ _ => intg_mul) intg_one h
 
-theorem bdd_prod {ι : Type} (t : Finset ι) (f : ι → MvPowerSeries σ K)
-    (h : ∀ i ∈ t, Bdd (f i)) : Bdd (∏ i ∈ t, f i) :=
-  Finset.prod_induction f Bdd (fun _ _ => bdd_mul) (bdd_of_intg intg_one) h
-
 theorem intg_pow {S : MvPowerSeries σ K} (h : Intg S) (n : ℕ) : Intg (S ^ n) := by
   induction n with
   | zero => rw [pow_zero]; exact intg_one
   | succ n ih => rw [pow_succ]; exact intg_mul ih h
-
-theorem bdd_pow {S : MvPowerSeries σ K} (h : Bdd S) (n : ℕ) : Bdd (S ^ n) := by
-  induction n with
-  | zero => rw [pow_zero]; exact bdd_of_intg intg_one
-  | succ n ih => rw [pow_succ]; exact bdd_mul ih h
 
 omit [IsUltrametricDist K] in
 theorem small_X (i : σ) : Small (MvPowerSeries.X i : MvPowerSeries σ K) := by
@@ -128,14 +93,6 @@ theorem Le.subst {ρ : Type} [Fintype ρ] {a : ρ → MvPowerSeries σ K} {S : M
   have h1 : Intg (d.prod fun s e => a s ^ e) :=
     intg_prod _ _ fun i _ => intg_pow (ha i) _
   exact (mul_le_mul (hS d) (h1 ν) (norm_nonneg _) hS.nonneg).trans (mul_one c).le
-
-theorem bdd_eval₂ {k ι : Type} [CommRing k] (φ : k →+* K) (a : ι → MvPowerSeries σ K)
-    (A : MvPolynomial ι k) (ha : ∀ j, Bdd (a j)) :
-    Bdd (MvPolynomial.eval₂ ((MvPowerSeries.C : K →+* MvPowerSeries σ K).comp φ) a A) := by
-  induction A using MvPolynomial.induction_on with
-  | C r => rw [MvPolynomial.eval₂_C]; exact bdd_C _
-  | add p q hp hq => rw [MvPolynomial.eval₂_add]; exact bdd_add hp hq
-  | mul_X p n hp => rw [MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]; exact bdd_mul hp (ha n)
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] {σ : Type} in
 omit [IsUltrametricDist K] in

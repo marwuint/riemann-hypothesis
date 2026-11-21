@@ -16,20 +16,6 @@ def JointlySmooth {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (Φ : E 
 
 variable {ρ A e}
 
-theorem JointlySmooth.translate {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Φ : E → K}
-    (h : JointlySmooth ρ A e Φ) (m : List (P × (E → ℝ)))
-    (hm : ∀ a ∈ m, a.1 ∈ A ∧ ContDiff ℝ ∞ a.2) :
-    JointlySmooth ρ A e fun t => ρ (m.map fun a => e a.1 (a.2 t)).prod (Φ t) := by
-  intro F _ _ g hg l hl
-  have h1 := h F g hg (l ++ m.map fun a => (a.1, a.2 ∘ g)) (by
-    intro a ha
-    rcases List.mem_append.1 ha with ha | ha
-    · exact hl a ha
-    · obtain ⟨b, hb, rfl⟩ := List.mem_map.1 ha
-      exact ⟨(hm b hb).1, (hm b hb).2.comp hg⟩)
-  simp only [List.map_append, List.prod_append, map_mul, List.map_map] at h1
-  exact h1
-
 theorem JointlySmooth.extra {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Φ : E → K}
     (h : JointlySmooth ρ A e Φ) {p : P} (hp : p ∈ A)
     (F : Type) [NormedAddCommGroup F] [NormedSpace ℝ F] (g : F → E) (hg : ContDiff ℝ ∞ g)

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.OrdGeOfForall
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsometryEqReflOfCongrModGeThree
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSupportingFormGapOffSmoothConeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSupportingFormGapOffSmoothCone
 
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef GlobalTheory.Poinc
 
@@ -161,7 +161,7 @@ theorem exists_dominant (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O
   have hw1 : 1 ≤ w := by omega
   let lam' : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ := ((2 * w : ℕ) : ℤ) • lam
   have hlam' : ∀ j, 0 ≤ lam' (γ j) := fun j => mul_nonneg (Int.natCast_nonneg _) (hlam j)
-  obtain ⟨D₀, hD₀⟩ := GlobalTheory.T.exists_supportingForm_gap_off_smoothCone O bar φ d X hφ r m γ a₀ hγ hs lam' hlam' (∑ j, lam' (γ j) + 1)
+  obtain ⟨D₀, hD₀⟩ := _root_.GlobalTheory.Poinc.Gap.exists_gap O bar φ d X hφ r m γ a₀ hγ hs lam' hlam' (∑ j, lam' (γ j) + 1)
   obtain ⟨D, l, a, i₀, hD, hμ, hsp, hlin⟩ := exists_tuple hs.span W hw1 hw lam μ D₀
   obtain ⟨hle, hgap⟩ := hD₀ D hD.le
   have hlin' : ∀ β ∈ balForms bar X, lin W a β = D * ∑ i, β (a₀ i) (a₀ i) + lam' β := fun β hβ => hlin β hβ.1

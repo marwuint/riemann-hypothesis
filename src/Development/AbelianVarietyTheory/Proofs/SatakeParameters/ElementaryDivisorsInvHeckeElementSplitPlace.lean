@@ -5,10 +5,10 @@ import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
 import Formalism.LocalToGlobal.Columns.HeckeSp
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivisorsAtInvDualLabelAndStabilizerMulStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompletedLatticeIntegralityFactsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCompletedLatticeBasisAtPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAdelicUnitarySplitPlaceComponentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivisorsAtInvDualLabelAndStabilizerMul
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompletedLatticeIntegralityFacts
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCompletedLatticeBasisAtPrime
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAdelicUnitarySplitPlaceComponent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotentsStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAntiStatement
 
@@ -108,9 +108,9 @@ theorem exists_model {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)
     (ϖ : 𝓞 D.host.E) (k : ℕ) (he : IsIdemAt e P) (h0 : (ϖ : D.host.E) ≠ 0) (hk : k ≤ V.rank) :
     ∃ α : GA D V, IsHeckeElt V e (ϖ : D.host.E) k α ∧
       DivAt V e (ϖ : D.host.E) (List.replicate k (1 : ℤ) ++ List.replicate (V.rank - k) 0) α := by
-  obtain ⟨B, hB1, hB2⟩ := GlobalTheory.T.exists_completedLattice_basis_at_prime V P e he
+  obtain ⟨B, hB1, hB2⟩ := _root_.GlobalTheory.LatLocBasis.exists_loc_basis V P e he
   have hε : finPart D e * finPart D e = finPart D e := by rw [← RingHom.map_mul, he.1.1]
-  obtain ⟨C, hC1, hC2⟩ := (GlobalTheory.T.completedLattice_integrality V).2.2 (finPart D e) B hε fun y hy => (hB2 y hy).imp fun _ h => h.2
+  obtain ⟨C, hC1, hC2⟩ := (_root_.GlobalTheory.LatIntFacts.int_facts V).2.2 (finPart D e) B hε fun y hy => (hB2 y hy).imp fun _ h => h.2
   obtain ⟨d, hd⟩ : ∃ d : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E,
     ∀ i, d i = if i.1 < k then finPart D (incA D (ϖ : D.host.E)) else 1 := ⟨_, fun _ => rfl⟩
   have hdc : ∀ i : Fin V.rank, finPart D (incA D ((ϖ : D.host.E) ^
@@ -119,7 +119,7 @@ theorem exists_model {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)
     split_ifs
     · rw [zpow_one]
     · rw [zpow_zero, RingHom.map_one, RingHom.map_one]
-  obtain ⟨α, hs, hα⟩ := GlobalTheory.T.exists_adelic_unitary_split_place_component V e he.1 (B * Matrix.diagonal d * C) _
+  obtain ⟨α, hs, hα⟩ := _root_.GlobalTheory.SplitLift.split_lift V e he.1 (B * Matrix.diagonal d * C) _
     (conj_diag_inv hC1 hC2 d (fun i => if i.1 < k then finPart D (incA D (ϖ : D.host.E)⁻¹) else 1) fun i => by
       rw [hd]
       split_ifs
@@ -173,6 +173,6 @@ theorem divAt_inv_of_isHeckeElt : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectru
   obtain ⟨α₀, hH, hD⟩ := exists_model V P e ϖ k he h0 hk
   obtain ⟨a, ha, b, hb, rfl⟩ := (((GlobalTheory.T.involution_spherical_hecke_anti V P e he).2.2 ϖ h1 h2).2 k α₀ hH).2 ϖ α h1 h2 hα
   rw [← dualLab_label]
-  exact (GlobalTheory.T.divisorsAt_inv_dualLabel_and_stabilizer_mul V e _ _ _ he.1.1 h0 ((GlobalTheory.T.divisorsAt_inv_dualLabel_and_stabilizer_mul V e _ _ _ he.1.1 h0 hD).2 a ha.1 b hb.1)).1
+  exact (_root_.GlobalTheory.DivDual.divAt_inv_and_mul V e _ _ _ he.1.1 h0 ((_root_.GlobalTheory.DivDual.divAt_inv_and_mul V e _ _ _ he.1.1 h0 hD).2 a ha.1 b hb.1)).1
 
 end GlobalTheory.SplitDivisors

@@ -36,15 +36,6 @@ def galV (L : Type) [Field L] [Algebra ℚ_[l] L] (σ : Ω ≃ₐ[k] Ω) :
     TensorProduct ℚ_[l] L (Htot l (sch.obj (H.geomZ Ω))) →ₗ[L] TensorProduct ℚ_[l] L (Htot l (sch.obj (H.geomZ Ω))) :=
   (galTot l Ω H.q σ).baseChange L
 
-def HTower.triv (k : Type) [Field k] : HTower k where
-  Γ := Empty
-  Z := Spec (CommRingCat.of k)
-  q := 𝟙 _
-  Y := fun g => g.elim
-  s := fun g => g.elim
-  t := fun g => g.elim
-  comm := fun g => g.elim
-
 def HTower.idTower (k : Type) [Field k] : HTower k where
   Γ := Unit
   Z := Spec (CommRingCat.of k)

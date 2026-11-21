@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientAverageMapLatticeEquivStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientAverageMapLatticeEquiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientAverageProdFubiniStatement
 
 noncomputable section
@@ -63,7 +63,7 @@ theorem avg_sum_index : ∀ (E : Type) [Field E] [NumberField E] (ι κ : Type) 
     have : e (γ + x) = e γ + e x := map_add e γ x
     simp only [this]
     exact hΦ.2 _ ((he γ).2 hγ) _
-  have h1 := GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ _ _ hp hs e he Φ hΦ
+  have h1 := _root_.GlobalTheory.CuspGeneric.avg_equiv _ _ _ _ hp hs e he Φ hΦ
   have h2 := GlobalTheory.T.quotientAverage_prod_fubini _ _ _ _ hι hκ _ hper
   rw [← h1, h2]
   rfl

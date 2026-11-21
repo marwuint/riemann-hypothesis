@@ -6,7 +6,7 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.GenusBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.UnimodUnramUnique
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemHcompl
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeDiscriminantOrderNeZeroUnimodulaStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormalStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormal
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeLocalStructureDiscriminanStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryOfUnimodularLatticesAtPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDetStatement
@@ -427,7 +427,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   refine ⟨fun hN => ?_, fun hN => ⟨hN.1.1, sameGenus hK hs hn hM hN⟩⟩
   have dM := (GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hn M hM.1).2.2.2.1
   obtain ⟨N1, N2⟩ := dM N hN
-  obtain ⟨N', m', le⟩ := (GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V h hK hs hn).1 N N1
+  obtain ⟨N', m', le⟩ := (_root_.GlobalTheory.Mass.MaxExists.main K V h hK hs hn).1 N N1
   have N3 := (dM N' ⟨m'.1.1, sameGenus hK hs hn hM m'⟩).2
   have dN := GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hn N N1
   have e := (dN.2.2.1 N' m'.1 le).2

@@ -302,14 +302,6 @@ end Ex
 
 section Uniq
 
-theorem subst_linS {K σ τ ι : Type*} [Field K] {a : σ → MvPowerSeries τ K} (ha : MvPowerSeries.HasSubst a)
-    (t : Finset ι) (k : ι → K) (f : ι → MvPowerSeries σ K) :
-    MvPowerSeries.subst a (∑ i ∈ t, MvPowerSeries.C (k i) * f i) =
-      ∑ i ∈ t, MvPowerSeries.C (k i) * MvPowerSeries.subst a (f i) := by
-  rw [← MvPowerSeries.coe_substAlgHom ha, map_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [map_mul, MvPowerSeries.coe_substAlgHom ha, MvPowerSeries.subst_C]
-
 theorem sum_parity {M : Type*} [AddCommMonoid M] {n' : ℕ} (he : Even n') (ε : ℕ) (hε : ε < 2)
     (P : Fin n' → Prop) [DecidablePred P] (hP : ∀ s, P s ↔ s.val % 2 = ε) (f : ℕ → M) :
     ∑ s ∈ univ.filter P, f s.val = ∑ i : Fin (n' / 2), f (ε + 2 * i.val) := by
@@ -347,83 +339,8 @@ theorem dualT {n' : ℕ} (B : OmBasis p n') (he : Even n') (ε : ℕ) (hε : ε 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [RingHom.coe_pow, ← Function.iterate_add_apply, iterate_map_mul]
 
-theorem dualTK {n' : ℕ} (B : OmBasis p n') (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] (he : Even n') (ε : ℕ)
-    (hε : ε < 2) (P : Fin n' → Prop) [DecidablePred P] (hP : ∀ s, P s ↔ s.val % 2 = ε) (r r' : Fin (n' / 2)) :
-    ∑ s ∈ univ.filter P, algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) ((sigW p)^[s.val] (B.om r))) *
-      algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) ((sigW p)^[s.val] (B.omS r'))) = if r = r' then 1 else 0 := by
-  simp only [← map_mul, ← map_sum]
-  rw [dualT B he ε hε P hP r r']
-  split_ifs <;> simp
-
 variable {X : Sys p} (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] [Algebra X.G.Kf Kc] {j : ℕ} {La : X.Lt j}
   {La' : X.Lt (j + 1)} (φ : Frm X j La La')
-
-theorem kron_inv' (v : X.Pl) (s : Fin (X.G.P.n' v)) :
-    (Pf Kc φ v s ⊗ₖ Qf Kc φ v s) * (Pi Kc φ v s ⊗ₖ Qi Kc φ v s) = 1 :=
-  mul_eq_one_comm.1 (kron_inv Kc φ v s)
-
-theorem hasSubst_zOfX : MvPowerSeries.HasSubst (zOfX X Kc j) :=
-  MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_zOfX Kc)
-
-theorem subst_invF_linF (z : X.ZA j) :
-    MvPowerSeries.subst (invF Kc φ) (linF Kc φ z) = zOfX X Kc j z := by
-  obtain ⟨v, s, ab⟩ := z
-  simp only [linF]
-  rw [subst_lin (hasSubst_invF Kc φ)]
-  simp only [MvPowerSeries.subst_X (hasSubst_invF Kc φ), invF]
-  rw [sum_lin (MvPowerSeries.C) _ _ (fun ab' => zOfX X Kc j ⟨v, (s, ab')⟩), kron_inv', sum_one]
-
-theorem subst_zOfX_coordZA (e : X.EA j ⊕ X.EA j) :
-    MvPowerSeries.subst (zOfX X Kc j) (X.coordZA Kc j e) = MvPowerSeries.X e := by
-  rcases e with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩
-  · have he : Even (X.G.P.n' v) := (X.G.P.setting v).even
-    simp only [Sys.coordZA]
-    rw [subst_linS (hasSubst_zOfX Kc)]
-    simp only [MvPowerSeries.subst_X (hasSubst_zOfX Kc)]
-    rw [Finset.sum_congr rfl (g := fun s => ∑ r' : Fin (X.G.P.n' v / 2), MvPowerSeries.C
-      (algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) ((sigW p)^[s.val] ((X.om v).om r'))) *
-        algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) ((sigW p)^[s.val] ((X.om v).omS r)))) *
-        (MvPowerSeries.X (Sum.inl ⟨v, (r', a, b)⟩) : MvPowerSeries (X.EA j ⊕ X.EA j) Kc))]
-    · rw [Finset.sum_comm]
-      simp only [← Finset.sum_mul, ← map_sum MvPowerSeries.C]
-      simp only [dualTK (X.om v) Kc he 0 (by norm_num) (fun s => ¬ IsOddPos s)
-        (fun s => by show ¬ (s.val % 2 = 1) ↔ _; omega)]
-      simp [apply_ite MvPowerSeries.C, ite_mul]
-    · intro s hs
-      have hs' : ¬ IsOddPos s := (Finset.mem_filter.1 hs).2
-      simp only [zOfX, if_neg hs', Finset.mul_sum]
-      refine Finset.sum_congr rfl fun r' _ => ?_
-      rw [map_mul]
-      ring
-  · have he : Even (X.G.P.n' v) := (X.G.P.setting v).even
-    simp only [Sys.coordZA]
-    rw [subst_linS (hasSubst_zOfX Kc)]
-    simp only [MvPowerSeries.subst_X (hasSubst_zOfX Kc)]
-    rw [Finset.sum_congr rfl (g := fun s => ∑ r' : Fin (X.G.P.n' v / 2), MvPowerSeries.C
-      (algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) ((sigW p)^[s.val] ((X.om v).om r))) *
-        algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) ((sigW p)^[s.val] ((X.om v).omS r')))) *
-        (MvPowerSeries.X (Sum.inr ⟨v, (r', a, b)⟩) : MvPowerSeries (X.EA j ⊕ X.EA j) Kc))]
-    · rw [Finset.sum_comm]
-      simp only [← Finset.sum_mul, ← map_sum MvPowerSeries.C]
-      simp only [dualTK (X.om v) Kc he 1 (by norm_num) (fun s => IsOddPos s) (fun s => Iff.rfl)]
-      simp [apply_ite MvPowerSeries.C, ite_mul]
-    · intro s hs
-      have hs' : IsOddPos s := (Finset.mem_filter.1 hs).2
-      simp only [zOfX, if_pos hs', Finset.mul_sum]
-      refine Finset.sum_congr rfl fun r' _ => ?_
-      rw [map_mul]
-      ring
-
-theorem thA_unique (F : MvPowerSeries (X.ZA j) Kc) (G : MvPowerSeries (X.EA j ⊕ X.EA j) Kc)
-    (h : F = linSub (bc Kc φ) (X.ThZA Kc j G)) : G = thA Kc φ F := by
-  subst h
-  unfold linSub Sys.ThZA thA
-  simp only [bc_lin]
-  rw [MvPowerSeries.subst_comp_subst_apply (hasSubst_linF Kc φ) (hasSubst_invF Kc φ)]
-  simp only [subst_invF_linF]
-  rw [MvPowerSeries.subst_comp_subst_apply (hasSubst_coordZA Kc) (hasSubst_zOfX Kc)]
-  simp only [subst_zOfX_coordZA]
-  exact (congrFun MvPowerSeries.subst_self G).symm
 
 theorem bc_same (v : X.Pl) (s : Fin (X.G.P.n' v)) (ab ab' : Fin (NN X.G.P.m X.t j) × Fin (NN X.G.P.m X.t (j + 1))) :
     bc Kc φ ⟨v, (s, ab)⟩ ⟨v, (s, ab')⟩ = Pf Kc φ v s ab.1 ab'.1 * Qf Kc φ v s ab.2 ab'.2 := by

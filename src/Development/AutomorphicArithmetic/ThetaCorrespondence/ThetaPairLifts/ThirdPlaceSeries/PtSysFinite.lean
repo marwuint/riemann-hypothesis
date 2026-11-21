@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaloisFamilyLocalGlobal
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpenWithLoc
 
@@ -10,12 +10,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 noncomputable section
 namespace GlobalTheory.SysFin
 open GlobalTheory.CoefDuty
-section Places
-variable {R : Ranks} {H : Host R}
-end Places
-section Eig
-variable {D : D7}
-end Eig
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 open Classical in
@@ -62,10 +56,10 @@ theorem ptSys_finite_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* 
         · exact key w' D.host.pde' hov (dvd_mul_of_dvd_left (dvd_mul_left _ _) _) (by exact_mod_cast hp)
         · exact key w' D.host.pde hov (dvd_mul_of_dvd_left (dvd_mul_of_dvd_left (dvd_mul_left _ _) _) _) (by exact_mod_cast hp)
   have hfin : ∀ j : Fin D.R.m, (EigSet (M (D.what₂.muTw w) (j.1 + 1) (by omega) (by omega)) l Q').Finite := fun j =>
-    GlobalTheory.T.heckeEigenvalueSystemSet_finite GlobalTheory.T.heckeDoubleCosetOperators_standardFacts D _ _ _ l Q' _ (hMt.hyp w j) (hB j)
+    _root_.GlobalTheory.EigFinite.eigSet_finite GlobalTheory.T.heckeDoubleCosetOperators_standardFacts D _ _ _ l Q' _ (hMt.hyp w j) (hB j)
   refine ⟨F, Finset.univ.biUnion fun j : Fin D.R.m => (hfin j).toFinset, fun big L Sp Au i x hi => ?_⟩
   obtain ⟨Hk, -⟩ := _root_.GlobalTheory.FitHecke.heckeOpen_withLoc_alt D cf jE A low Pq S hL eig θ Bs M C tp hCh hMt hstar hexp hsplit hcheb big L Sp Au
-  have hpt := GlobalTheory.T.localisationPointEigenSystem_mem (withLoc L) (mtL L M) Hk.av i x
+  have hpt := _root_.GlobalTheory.PointEigen.ptSys_mem_eigSet (withLoc L) (mtL L M) Hk.av i x
   have hwi : L.X.w i = w := hi
   have hl : L.X.l i = l := by rw [← L.X.w_l i, hwi]
   have hmem := GlobalTheory.FitHecke.mem_locs_self (D := withLoc L) i

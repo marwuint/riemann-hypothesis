@@ -14,14 +14,16 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsSemiAbelia
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevel
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RelationsAreFunctions
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesOfExpansionLawsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependenceStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TxCosetCriterionStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueDescentAutomorphismInvariantMorphismStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolarisedIsoCommutesFieldAutomorphismOfTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesOfExpansionLaws
+import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependence
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TxCosetCriterion
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueDescentAutomorphismInvariantMorphism
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolarisedIsoCommutesFieldAutomorphismOfTorsion
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsoPolarisedAbelianSchemesDvrOfFieldExtensStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPullbackDegenerationOfValuesIsoDvrStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGeometricValuesIsoOfIdentificationDvrStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGeometricValuesIsoOfIdentificationDvr
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj BigOperators
@@ -144,42 +146,6 @@ theorem summable_of_data [CompleteSpace C] {m : ℕ} (hm : Odd m) (p : N.QT (m ^
     fun j hj r => summable_evT_of_qMap I hm p r (summable_evT hq hm.pos.ne' hj _ _)⟩
 end Integral
 
-theorem thetaSeries_iff : ThetaSeriesSt ↔ TXSt ∧ EVSt := by
-  constructor
-  · intro h
-    refine ⟨?_, ?_⟩
-    · rintro V _ _ _ I hV rfl D A G _ _ - U C _ _ _ _ _ _ hC N ν m hm Ix p q x hx hq
-      obtain ⟨v, hv, H⟩ := (h V hV D A G U C hC N ν m hm Ix p x hx).1
-      have e : ∀ i, N.tx m (q i) = v i := fun i => ((hv i).hasSum (hq i)).2
-      simpa only [e] using H
-    · rintro V _ _ _ I hV rfl D A G _ _ - U C _ _ _ _ _ _ hC N ν m hm Ix p q x hx hq j hj p₀ q₀ z hz hq₀
-      obtain ⟨v, hv, H⟩ := (h V hV D A G U C hC N ν m hm Ix p x hx).2 j (by omega) p₀ z hz
-      have e : ∀ i, N.ev m (q i) q₀.1.2 = v i := fun i => by
-        obtain ⟨q', g, h₁, h₂, h₃⟩ := hv i
-        rw [qPt_unique ν (hq i) h₁, ν.pt_unique hq₀.2 h₂]
-        exact h₃.tsum_eq
-      simpa only [e] using H
-  · rintro ⟨hT, hE⟩ V _ _ _ hV D A G _ _ U C _ _ _ _ _ hC N ν m hm Ix p x hx
-    letI : NontriviallyNormedField C := ⟨exists_one_lt_norm hV hC⟩
-    haveI : CharZero C := charZero_of hV
-    haveI := hV.1
-    haveI := hV.2.2
-    have hG : IsSemiAbelian G := isSemiAbelian_of_unifPre_dvr V D A G U.toUnifPre
-    choose q hq using fun i => exists_val D.psi_even D.tau_bimult ν (p i)
-    refine ⟨⟨fun i => N.tx m (q i), fun i => ⟨q i, hq i, (summable_of_data hV D hC ν hm _).1.hasSum⟩,
-      hT V _ hV rfl D A G hG U C hC N ν m hm Ix p q x hx hq⟩, fun j hj r z hz => ?_⟩
-    obtain ⟨s, hs⟩ := exists_val D.psi_even D.tau_bimult ν r
-    obtain ⟨r₄, hr₄⟩ := exists_pt D.psi_even D.tau_bimult ν (up (rfl : j * 4 = j * 4) s)
-    have e₁ : r₄.y = 4 • r.y := by
-      rw [← hr₄.1, ← hs.1, ← map_nsmul]; rfl
-    have e₂ : r₄.g = r.g :=
-      ((GtValues.points_correspond V _ D.psi_even D.tau_bimult C N ν).2.1 s.1.2).unique hr₄.2 hs.2
-    have hz₄ := ((LevelCompat.qkToAkU_level firstFiveLaws V _ (admissible_base_of_complete_dvr hV) D A G hG U C j 4 (j * 4) hj (by norm_num) rfl
-      r r₄ z).1 e₁ e₂).1 hz
-    have Q := hE V _ hV rfl D A G hG U C hC N ν m hm Ix p q x hx hq (j * 4) (by omega) r₄ _ z hz₄ hr₄
-    exact ⟨fun i => N.ev m (q i) s.1.2,
-      fun i => ⟨q i, s.1.2, hq i, hs.2, ((summable_of_data hV D hC ν hm _).2 j hj.ne' s).hasSum⟩, Q⟩
-
 section Conclusions
 variable {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : GlobalTheory.LN.CDvr V) {D D' : DegPre V} (he : D.PsiEven)
   (hb : D.TauBimult) (he' : D'.PsiEven) (hb' : D'.TauBimult)
@@ -212,7 +178,7 @@ theorem exists_pullDeg {C : Type} [Field C] [IsAlgClosed C] [CharZero C] [Algebr
       exact inferInstanceAs (IsIso (Spec.map σ.toRingEquiv.toCommRingCatIso.hom))
     haveI : IsIso ((Over.forget _).map s) := this
     haveI : IsIso s := isIso_of_reflects_iso s (Over.forget _)
-    refine GlobalTheory.T.polarisedIso_commutes_fieldAutomorphism_of_torsion hL _ D.P D'.P C _ φ g₁ h1 ⟨w, g₂⟩ k hk (Nat.cast_ne_zero.2 hk0) (asIso s) fun x hx => ?_
+    refine _root_.GlobalTheory.SerreTwist.whisker_comp_eq hL _ D.P D'.P C _ φ g₁ h1 ⟨w, g₂⟩ k hk (Nat.cast_ne_zero.2 hk0) (asIso s) fun x hx => ?_
     obtain ⟨b, rfl⟩ := ν.eA.surjective x
     obtain ⟨g, rfl, hg⟩ := QStr.root_over N hk0 1 b (ν.eA.injective (by rw [map_pow, hx]; exact (map_one _).symm))
     let q : N.QT k := ⟨(1, g), hg.trans N.io_zero.symm⟩
@@ -237,7 +203,7 @@ theorem exists_pullDeg {C : Type} [Field C] [IsAlgClosed C] [CharZero C] [Algebr
     have b₂ : s ≫ ν'.eA (J.φ g.b) = ν'.eA qσ'.1.2.b :=
       Over.OverMorphism.ext (by rw [hqσ'.2.1, hpσ'.2.1, ← hp'.2.1, Over.comp_left, hs, rb])
     rw [asIso_hom, b₁, pt, pt, b₂, hz', rb]
-  obtain ⟨g, hg, -⟩ := GlobalTheory.T.existsUnique_descent_automorphism_invariant_morphism (FractionRing V) C _ (jK V) D.P.A D'.P.A
+  obtain ⟨g, hg, -⟩ := _root_.GlobalTheory.InvariantMorDescent.existsUnique_desc (FractionRing V) C _ (jK V) D.P.A D'.P.A
     (haveI := D'.P.isAb.proper; inferInstance) (Over.homMk (jFK (R := V) C) rfl) rfl (φ.hom ≫ snd _ _) inv
   obtain ⟨Ψ, a₁, a₂, a₃⟩ := GlobalTheory.T.exists_iso_polarisedAbelianSchemes_dvr_of_fieldExtension hL hL2 V D.P D'.P C φ g₁ h1 ⟨w, g₂⟩ _ g hg
   obtain ⟨e, hc⟩ := GlobalTheory.T.exists_pullbackDegeneration_of_values_iso_dvr hL V D D' C N N' ν ν' J Ψ a₁ a₃ φ w g₁ a₂ g₂ g₃
@@ -276,7 +242,7 @@ theorem onQ_of_inducedBy (hn : n ≠ 0) (h : SameMatch mt w)
     ∃ J : NumD.Iso N N', mt.OnQ J ∧ GeoIso ν ν' J.toIso := by
   haveI := hV.1
   obtain ⟨e, he⟩ := H
-  obtain ⟨J, hJ, hc⟩ := GlobalTheory.T.exists_geometric_values_iso_of_identification_dvr firstFiveLaws.1 V D D' e C N N' ν ν'
+  obtain ⟨J, hJ, hc⟩ := _root_.GlobalTheory.IdentifiedValues.exists_geoIso_rel firstFiveLaws.1 V D D' e C N N' ν ν'
   refine ⟨J, fun j p p' h₁ h₂ => ?_, hJ⟩
   refine (r_incl mt (sq (n ^ j)) (pow_ne_zero _ hn) p p' (up (sq _) p) (up (sq _) p') rfl rfl rfl rfl).2 ((h j _ _).2 ?_)
   obtain ⟨r, r', q', a₁, a₂, a₃, a₄⟩ := he j (up (sq (n ^ j)) p)
@@ -330,9 +296,9 @@ theorem recognition_iff : RecognitionSt ↔ URecDvrSt := by
     have hO : CExt V ⊥ C := ⟨hC.1, fun r hr => hC.2 r (bot_le (a := IsLocalRing.maximalIdeal V) hr)⟩
     obtain ⟨M, ν₀, q, I, hI, hq, hl, hB, hP⟩ := exists_integral hV D hC ν
     obtain ⟨M', ν₀', q', I', hI', hq', hl', hB', hP'⟩ := exists_integral hV D' hC ν'
-    have hT := ValuesTorsion.tors_of_integral hL firstFiveLaws.2.1 (GlobalTheory.T.abelianPartValues_of_expansionLaws hL) V _ D.psi_even D.tau_bimult C hO M ν₀
+    have hT := ValuesTorsion.tors_of_integral hL firstFiveLaws.2.1 (_root_.GlobalTheory.ThetaInValues.brUth_of_laws hL) V _ D.psi_even D.tau_bimult C hO M ν₀
       hI n hn ho h1
-    have hT' := ValuesTorsion.tors_of_integral hL firstFiveLaws.2.1 (GlobalTheory.T.abelianPartValues_of_expansionLaws hL) V _ D'.psi_even D'.tau_bimult C hO M'
+    have hT' := ValuesTorsion.tors_of_integral hL firstFiveLaws.2.1 (_root_.GlobalTheory.ThetaInValues.brUth_of_laws hL) V _ D'.psi_even D'.tau_bimult C hO M'
       ν₀' hI' n hn ho h1
     obtain ⟨w₀, hw₀⟩ := exists_move I I' hB hB' w
     have hp₀ : w₀.Proportional c₀ := fun i p => by
@@ -341,11 +307,11 @@ theorem recognition_iff : RecognitionSt ↔ URecDvrSt := by
       exact ⟨v, (hasSum_qMap I hl ho.pow p v).2 a, by rw [hw₀]; exact (hasSum_qMap I' hl' ho.pow _ _).2 b⟩
     have hc : ∀ i (p p' : M'.QT ((n ^ i) ^ 2)), M'.QEq p p' → M'.tx (n ^ i) p' = M'.tx (n ^ i) p := by
       rintro i p p' ⟨z, a, b⟩
-      exact (tsum_congr fun χ => (GlobalTheory.T.thetaConstantTerm_representative_dependence C M' _ ho.pow p p' χ).1 z a b).trans
+      exact (tsum_congr fun χ => (_root_.GlobalTheory.Ex.txT_shift C M' _ ho.pow p p' χ).1 z a b).trans
         ((Equiv.addRight (n ^ i • z)).tsum_eq fun χ => M'.txT (n ^ i) p χ)
     have h0 : c₀ ≠ 0 := by
       rintro rfl
-      obtain ⟨t, -, -, ht⟩ := (GlobalTheory.T.tx_coset_norm_one_and_ne_zero C M' q' hq' n _ hn ho h1 hT' 1 le_rfl).2.2 1
+      obtain ⟨t, -, -, ht⟩ := (_root_.GlobalTheory.tx_coset_criterion C M' q' hq' n _ hn ho h1 hT' 1 le_rfl).2.2 1
       obtain ⟨p, hp⟩ := w₀.onto 1 (1 * t)
       obtain ⟨v, -, b⟩ := hp₀ 1 p
       exact ht ((hc 1 _ _ hp).trans (b.tsum_eq.trans (zero_mul v)))
@@ -365,13 +331,6 @@ theorem recognition_iff : RecognitionSt ↔ URecDvrSt := by
     obtain ⟨a', rfl⟩ := (hB' _).2 a'
     rw [hw₀, qEq_qMap I' (hB' _).1] at b₄
     exact ⟨p, p', a', (hP _ _ _).2 b₁, (hP' _ _ _).2 b₂, b₃, b₄⟩
-
-theorem typings_compare :
-    (ThetaSeriesSt ↔ TXSt ∧ EVSt) ∧ (RecognitionSt ↔ URecDvrSt) ∧ (URecSt → URecDvrSt) ∧
-      (SeriesAndRecognition ↔ TXSt ∧ EVSt ∧ URecDvrSt) ∧ (TXSt ∧ EVSt ∧ URecSt → SeriesAndRecognition) :=
-  ⟨thetaSeries_iff, recognition_iff, uRecDvr_of_uRec,
-    (and_congr thetaSeries_iff recognition_iff).trans and_assoc,
-    fun h => ⟨thetaSeries_iff.2 ⟨h.1, h.2.1⟩, recognition_iff.2 (uRecDvr_of_uRec h.2.2)⟩⟩
 
 end GlobalTheory.SeriesCompare
 end

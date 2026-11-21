@@ -2,13 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RayClassGroupFiniteRepresentativesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsShintaniConeDomainStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsShintaniConeDomain
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RayClassConeParametrizationStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuationBis
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuationAlt
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaTwistedEntireDifferenceStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaRayClassSummableStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsPrimeDegreeOneAvoidingStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaMeromorphicFromTwistsStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaRayClassSummable
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsPrimeDegreeOneAvoiding
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaMeromorphicFromTwists
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RayClassPrimeMultiplicationPermutationStatement
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaPrimeTwistSummableStatement
 
@@ -35,7 +35,7 @@ theorem exists_avoid_one (𝔣 𝔞 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (h�
           ∀ k : ℕ, 1 ≤ k → ∃ q : ℚ, T (1 - (k : ℂ)) = (q : ℂ) := by
   classical
   obtain ⟨𝔟, J, _, r', y, v', hP⟩ := GlobalTheory.T.ray_class_cone_parametrization F 𝔣 h𝔣 ι r v hv 𝔞 h𝔞
-  refine ⟨Finset.univ.biUnion fun j : J => Finset.univ.image (v' j), ?_, GlobalTheory.T.partial_zeta_ray_class_summable F 𝔣 𝔞 𝔟 J r' y v' hP, ?_⟩
+  refine ⟨Finset.univ.biUnion fun j : J => Finset.univ.image (v' j), ?_, _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.classSummable F 𝔣 𝔞 𝔟 J r' y v' hP, ?_⟩
   · intro x hx
     simp only [Finset.mem_biUnion, Finset.mem_image, Finset.mem_univ, true_and] at hx
     obtain ⟨j, i, rfl⟩ := hx
@@ -45,7 +45,7 @@ theorem exists_avoid_one (𝔣 𝔞 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (h�
     have := hpos ((NumberField.InfinitePlace.mk φ).embedding_of_isReal (IsTotallyReal.isReal _))
     simp [h0] at this
   · intro 𝔠 hpr hl hav
-    refine GlobalTheory.T.partial_zeta_twisted_entire_difference GlobalTheory.T.abel_continuation F 𝔣 𝔞 𝔟 𝔠 J r' y v' hP hpr hl fun j i hmem => ?_
+    refine GlobalTheory.T.partial_zeta_twisted_entire_difference _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.abelContinuation F 𝔣 𝔞 𝔟 𝔠 J r' y v' hP hpr hl fun j i hmem => ?_
     have hle : 𝔠 * 𝔟 ≤ 𝔠 := Ideal.mul_le_left
     refine hav (v' j i) ?_ (hle hmem)
     simp only [Finset.mem_biUnion, Finset.mem_image, Finset.mem_univ, true_and]
@@ -61,7 +61,7 @@ theorem exists_avoid (𝔣 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (S : Finset 
             (classWeight (Ideal.absNorm 𝔠) 𝔠 I.1 : ℂ) * ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s)) (T s)) ∧
           ∀ k : ℕ, 1 ≤ k → ∃ q : ℚ, T (1 - (k : ℂ)) = (q : ℂ) := by
   classical
-  obtain ⟨ι, _, r, v, hv⟩ := GlobalTheory.T.exists_shintani_cone_domain F 𝔣 h𝔣
+  obtain ⟨ι, _, r, v, hv⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.exists_coneDomain F 𝔣 h𝔣
   have h := fun c : S => exists_avoid_one F 𝔣 c.1 h𝔣 (hS _ c.2) ι r v hv
   choose W hW0 hWs hWt using h
   refine ⟨Finset.univ.biUnion W, ?_, hWs, fun 𝔠 hpr hl hav c => hWt c 𝔠 hpr hl fun x hx => hav x ?_⟩
@@ -80,7 +80,7 @@ theorem exists_classZeta (𝔣 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (S : Fin
         (∀ c s, 1 < s.re → ((Ideal.absNorm 𝔠 : ℕ) : ℂ) ^ (1 - s) * classSeries 𝔣 (τ c).1 s - classSeries 𝔣 c.1 s = T c s) ∧
         ∀ c, ∀ k : ℕ, 1 ≤ k → ∃ q : ℚ, T c (1 - (k : ℂ)) = (q : ℂ) := by
     intro B
-    obtain ⟨𝔠, hpr, hl, hB, hcop, hav⟩ := GlobalTheory.T.exists_prime_degree_one_avoiding F 𝔣 h𝔣 W B hW0
+    obtain ⟨𝔠, hpr, hl, hB, hcop, hav⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.exists_prime_absNorm_avoiding F 𝔣 h𝔣 W B hW0
     have h𝔠0 : 𝔠 ≠ ⊥ := by
       rintro rfl
       simp only [Ideal.absNorm_bot] at hl
@@ -92,7 +92,7 @@ theorem exists_classZeta (𝔣 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (S : Fin
     exact GlobalTheory.T.partial_zeta_prime_twist_summable F 𝔣 𝔠 (τ c).1 c.1 hl e he s _ hs (hsum _ s hs) (hsum _ s hs) (hTs c s hs)
   obtain ⟨𝔠, hl, -, τ, T, hTd, hTr, hTq⟩ := key 0
   obtain ⟨𝔠', hl', hB', τ', T', hTd', hTr', -⟩ := key (Ideal.absNorm 𝔠)
-  obtain ⟨Z, hZd, hZD, hZq⟩ := GlobalTheory.T.partial_zeta_meromorphic_from_twists S (fun c => classSeries 𝔣 c.1) T T' _ _ τ τ' hl hl' hB'.ne hTd hTd' hTr hTr'
+  obtain ⟨Z, hZd, hZD, hZq⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.TwoRelations.continuation_of_two_relations S (fun c => classSeries 𝔣 c.1) T T' _ _ τ τ' hl hl' hB'.ne hTd hTd' hTr hTr'
   refine ⟨Z, fun c => ⟨⟨hZd c, fun s hs => ?_⟩, fun k hk => hZq k hk (fun c => hTq c k hk) c⟩⟩
   rw [hZD c s hs]
   exact (hsum c s hs).hasSum

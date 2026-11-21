@@ -184,9 +184,6 @@ structure IsCompl {L Q : Type} [CommRing L] [CommRing Q] (i : L →+* Q) (J : Id
   surj : ∀ (x : Q) (n : ℕ), ∃ a, x - i a ∈ (J ^ n).map i
   ker : ∀ (a : L) (n : ℕ), i a ∈ (J ^ n).map i → a ∈ J ^ n
 
-theorem IsCompl.self {L : Type} [CommRing L] (J : Ideal L) [h : IsAdicComplete J L] : IsCompl (RingHom.id L) J :=
-  ⟨by rwa [Ideal.map_id], fun x _ => ⟨x, by simp⟩, fun a n ha => by rwa [Ideal.map_id] at ha⟩
-
 variable {l : ℕ}
 
 abbrev JJ {R : Type} [CommRing R] (B : Obj l R) : Ideal B.A := Ideal.span {(l : B.A)} ⊔ B.I

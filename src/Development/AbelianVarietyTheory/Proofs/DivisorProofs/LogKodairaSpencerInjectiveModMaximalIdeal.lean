@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerInjectiveClosedInteriorPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogKodairaSpencerInjectiveModMaximalBoundaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerInjectiveClosedInteriorPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogKodairaSpencerInjectiveModMaximalBoundary
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
@@ -33,10 +33,10 @@ theorem logKS_inj_mod_maximal : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   have hp := exists_point_vanishing_of_isMaximal U m hm
   obtain ⟨x, hxU, hxm⟩ := hp
   by_cases hx : x ∈ LogKS.interior Y
-  · exact GlobalTheory.T.kodairaSpencer_injective_closed_interior_point E H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm
+  · exact _root_.GlobalTheory.InteriorKS.mem_smul_top_of_isKS E H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm
       ⟨x, hx, hxU, hxm⟩ hKS hΘ
   · have hb : ∃ x, x ∉ LogKS.interior Y ∧ x ∈ U.1 ∧ ∀ f ∈ m, x ∉ Y.X.basicOpen f := ⟨x, hx, hxU, hxm⟩
-    have key := GlobalTheory.T.logKodairaSpencer_injective_mod_maximal_boundary E H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm
+    have key := _root_.GlobalTheory.ChartDer.logKS_inj_mod_boundary E H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm
     first
       | exact key hb hKS hΘ
       | exact key hKS hΘ

@@ -44,7 +44,4 @@ theorem cechYoneda : CechYoneda := by
     simp only [wpMap]
     erw [← Functor.map_comp, ← Functor.map_comp, WidePullback.lift_base]
 
-theorem CechSigma_of (hS : SchemeLevel) : ZariskiLocalCech.CechSigma :=
-  LateralTheory.E.CechSigma_xy1Pf_Lev.CechSigma_of cechYoneda hS
-
 end LateralTheory.E.CechSigma_xy1Pf_Yo

@@ -53,15 +53,10 @@ theorem absFin_finite (D : D7) (x : (AE D)ˣ) :
 theorem absFin_pos (D : D7) (x : (AE D)ˣ) : 0 < absFin D x :=
   finprod_induction (fun r : ℝ => 0 < r) one_pos (fun _ _ => mul_pos) fun v => absV_pos _ v _
 
-example (D : D7) : absFin D 1 = 1 := by simp [absFin, absV]
-
 variable {D : D7}
 
 def subst (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) : WO S T :=
   HMul.hMul (HMul.hMul (mt T h⁻¹) (x : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g)
-
-example (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) : subst S T g h x = actO S T g⁻¹ h⁻¹ x := by
-  simp [subst, actO]
 
 def modFac (S T : HSp D) (x y : (AE D)ˣ) : ℝ :=
   absFin D x ^ ((T.rank : ℝ) / 2) * absFin D y ^ (-(S.rank : ℝ) / 2)

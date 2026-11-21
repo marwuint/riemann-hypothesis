@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeftMulTau
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLocallyConstantCutoffClosedEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugatesSeparableMatrixCompactModCentralizerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleUnitsHaarMeasureDivAbsIsHaarMeasureStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsClosedEmbeddingLeftMulMatrixPowerBasisUnitsHomStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitLeftMulMatrixOfCommuteCompanionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyCompanionMatrixEtaleGeneratorSeparableStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLocallyConstantCutoffClosedEmbedding
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugatesSeparableMatrixCompactModCentralizer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleUnitsHaarMeasureDivAbsIsHaarMeasure
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsClosedEmbeddingLeftMulMatrixPowerBasisUnitsHom
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitLeftMulMatrixOfCommuteCompanion
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyCompanionMatrixEtaleGeneratorSeparable
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR.LinDesc
@@ -26,17 +27,17 @@ theorem exists_cutoff_torus : ∀ (F E : Type) [NontriviallyNormedField F] [Nont
   haveI := (Unram.lcF (F := F) (E := E))
   haveI := (Unram.ultraF (F := F) (E := E))
   obtain ⟨hlc, htd⟩ := gl_lc_td F r
-  obtain ⟨hB, hH, -⟩ := GlobalTheory.T.etaleUnitsHaarMeasureDivAbs_isHaarMeasure F E A μK hμ
+  obtain ⟨hB, hH, -⟩ := _root_.GlobalTheory.JR.LinDesc.unitsMeas_isHaar F E A μK hμ
   have hZ : IsCompact (Prod.fst '' tsupport f') := hf'.2.isCompact.image continuous_fst
-  obtain ⟨C, hC, hCg⟩ := (GlobalTheory.T.conjugates_separable_matrix_compact_mod_centralizer F E r).1 (companion p) (GlobalTheory.T.charpoly_companionMatrix_etaleGenerator_separable F E A r τ p hG) _ hZ
-  obtain ⟨α, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_locallyConstant_cutoff_closedEmbedding (GL (Fin r) F) A.Kˣ (LinDesc.tm A hG)
-    (GlobalTheory.T.isClosedEmbedding_leftMulMatrixPowerBasisUnitsHom F E A r τ p hG) (LinDesc.unitsMeas A μK) C hC
+  obtain ⟨C, hC, hCg⟩ := (_root_.GlobalTheory.OrbCpt.orbit_cpt F E r).1 (companion p) (_root_.GlobalTheory.JR.LinDesc.charpoly_companion_separable F E A r τ p hG) _ hZ
+  obtain ⟨α, h1, h2, h3, h4⟩ := _root_.GlobalTheory.CutOff.exists_cutoff (GL (Fin r) F) A.Kˣ (LinDesc.tm A hG)
+    (_root_.GlobalTheory.JR.LinDesc.tm_isClosedEmbedding F E A r τ p hG) (LinDesc.unitsMeas A μK) C hC
   refine ⟨α, h1, h2, h3, ?_⟩
   rintro g ⟨v, w, hne⟩ s₀
   have hmem : (g : Matrix (Fin r) (Fin r) F) * companion p * ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) ∈
       Prod.fst '' tsupport f' := ⟨(_, v, w, lam), subset_tsupport _ (Function.mem_support.2 hne), rfl⟩
   obtain ⟨c, hc, t, ht, rfl⟩ := hCg g hmem
-  obtain ⟨t₁, rfl⟩ := GlobalTheory.T.exists_unit_leftMulMatrix_of_commute_companion F E A r τ p hG t ht
+  obtain ⟨t₁, rfl⟩ := _root_.GlobalTheory.JR.LinDesc.centr F E A r τ p hG t ht
   have := h4 c hc (t₁ * s₀)
   simpa [map_mul, mul_assoc] using this
 

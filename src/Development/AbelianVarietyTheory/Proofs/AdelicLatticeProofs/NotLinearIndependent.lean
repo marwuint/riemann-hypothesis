@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsEquivOfSumEq
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelOneThetaEqSmulOfSelfDualLattice
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilatedStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilated
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatBilinForm
 
 open Matrix
@@ -126,7 +126,7 @@ theorem not_linearIndependent : ∀ (U : Type) [NormedAddCommGroup U] [NormedSpa
   · intro u v
     rw [him, hB, hP, hP, e.symm_apply_apply, e.symm_apply_apply]
   · intro k
-    refine GlobalTheory.T.differentiable_exp_mul_of_annihilated' g Hm hH (fun w => f k (E w)) ((hd k).comp E.differentiable) fun w z => ?_
+    refine _root_.GlobalTheory.differentiable_exp_mul_of_annihilated g Hm hH (fun w => f k (E w)) ((hd k).comp E.differentiable) fun w z => ?_
     have h1 : fderiv ℝ (fun w => f k (E w)) w = (fderiv ℝ (f k) (E w)).comp E :=
       ((hd k (E w)).hasFDerivAt.comp w E.hasFDerivAt).fderiv
     have h2 := hann k (e.symm w) (e.symm z)

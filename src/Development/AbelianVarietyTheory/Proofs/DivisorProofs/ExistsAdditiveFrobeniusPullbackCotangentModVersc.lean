@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowFinrankCotangent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DUnitMemRangeOfMemKerIdeal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteAlgebrasOverHenselianAndComplete
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowCharEqZeroOfKillsVerschiebungStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimitiveWithCotangentOfDualHeightOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppOneEqZeroOfKernelIdealOfCompEqPrimeSmulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimitiveWithCotangentOfDualHeightOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppOneEqZeroOfKernelIdealOfCompEqPrimeSmul
 
 set_option autoImplicit false
 
@@ -152,7 +152,7 @@ theorem exists_cobOne_relFrob_eq_zero_dUnit_eq (p : ℕ) [Fact p.Prime] (K : Typ
       have := congrArg (fun χ : CartierDual K ((frobTwist h G).A 1) => χ a) hχ'
       simp only [CartierDual.map_apply] at this
       simpa using this
-    obtain ⟨b, hb0, hbw⟩ := GlobalTheory.T.exists_primitive_with_cotangent_of_dual_height_one p K ((frobTwist h G).A 1 ⧸ J) hdual (cotMap π w)
+    obtain ⟨b, hb0, hbw⟩ := _root_.GlobalTheory.PDiv.exists_primitive_dUnit_eq p K ((frobTwist h G).A 1 ⧸ J) hdual (cotMap π w)
     obtain ⟨β, rfl⟩ := hπ b
 
     have hker : RingHom.ker π ≤ RingHom.ker F := by
@@ -161,7 +161,7 @@ theorem exists_cobOne_relFrob_eq_zero_dUnit_eq (p : ℕ) [Fact p.Prime] (K : Typ
         rw [RingHom.mem_ker, hπa] at ha
         exact Ideal.Quotient.eq_zero_iff_mem.mp ha
       rw [RingHom.mem_ker]
-      exact GlobalTheory.T.app_one_eq_zero_of_kernel_ideal_of_comp_eq_prime_smul p K (frobTwist h G) G (verschiebung h G) (relFrob h G)
+      exact _root_.GlobalTheory.PDivGroup.app_one_eq_zero_of_mem_kerIdeal_of_comp_eq_prime_smul p K (frobTwist h G) G (verschiebung h G) (relFrob h G)
         (relFrob_comp_verschiebung h G) a haJ
     have hFβ : F β = liftSurj π hπ F hker (π β) := (liftSurj_apply π hπ F hker β).symm
 

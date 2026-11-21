@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDu
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AdaptSelf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsHermIsometryGraphModScalarFlagPairIota
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagFramesSameGradedDefinitePartLatticeEq
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EmbeddedDatumOfTermDefiniteSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsDefiniteSpaceIsometryOfAdaptedPairStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EmbeddedDatumOfTermDefiniteSpace
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsDefiniteSpaceIsometryOfAdaptedPair
 
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt GlobalTheory.DegAsm
 open scoped Pointwise ENNReal Classical
@@ -155,8 +155,8 @@ open GlobalTheory.ModIdent TermPair
 theorem trip_of_terms : ∀ (K V W : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [FiniteDimensional K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (H : HermSpace K V) (HW : HermSpace K W) (e : W →ₗ[K] V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (F G G' : FlagD H r) (𝔡 : Ideal (𝓞 K)) (N N' : NF H r) (g : ℕ) (Λ Λ' : Submodule (𝓞 K) V) (γ γ' : V ≃ₗ[K] V) (h h' : W ≃ₗ[K] W), 1 ≤ g → IsEmb F HW e → Adapt F G 𝔡 N → Adapt F G' 𝔡 N' → N.IsTerm g Λ → N'.IsTerm g Λ → γ ∈ isomGrp H → γ' ∈ isomGrp H → (∀ a, G.e a = γ (F.e a) ∧ G'.e a = γ' (F.e a)) → γ • Λ' = Λ → γ' • Λ' = Λ → IsH F G e γ h → IsH F G' e γ' h' → (∀ x ∈ Λ ⊓ rs (𝓞 K) (perp H F.X), γ' (γ.symm x) - x ∈ smulLat (g : 𝓞 K) Λ ⊔ (Λ ⊓ rs (𝓞 K) F.X)) → (datOf F G e g Λ, datOf F G' e g Λ, h * h'⁻¹) ∈ Trip HW g (lat0 F e Λ) r (N.gI g Λ) (N'.gI g Λ) := by
   intro K V W _ _ _ _ _ _ _ _ _ _ _ _ _ H HW e hK r F G G' 𝔡 N N' g Λ Λ' γ γ' h h' hg he hN hN' hT hT' hγ hγ' hE
     hΛ hΛ' hh hh' hβ
-  obtain ⟨k, hk, -, hku, hkl⟩ := GlobalTheory.T.exists_definiteSpace_isometry_of_adapted_pair K V W H HW e hK r F G 𝔡 N γ he hN hγ fun a => (hE a).1
-  obtain ⟨k', hk', -, hku', hkl'⟩ := GlobalTheory.T.exists_definiteSpace_isometry_of_adapted_pair K V W H HW e hK r F G' 𝔡 N' γ' he hN' hγ' fun a => (hE a).2
+  obtain ⟨k, hk, -, hku, hkl⟩ := _root_.GlobalTheory.DegAsm.exists_isH K V W H HW e hK r F G 𝔡 N γ he hN hγ fun a => (hE a).1
+  obtain ⟨k', hk', -, hku', hkl'⟩ := _root_.GlobalTheory.DegAsm.exists_isH K V W H HW e hK r F G' 𝔡 N' γ' he hN' hγ' fun a => (hE a).2
   obtain rfl := hku h hh
   obtain rfl := hku' h' hh'
   have d1 := hkl g Λ'
@@ -194,8 +194,8 @@ theorem trip_of_terms : ∀ (K V W : Type) [Field K] [NumberField K] [StarRing K
     simp only [map_sub, map_smul, LinearEquiv.symm_apply_apply] at hst
     rw [smul_sub, smul_add, eq_sub_of_add_eq' hst]
     abel
-  refine ⟨(GlobalTheory.T.embeddedDatum_of_term_definiteSpace K V W H HW e hK r F G 𝔡 N g Λ hg he hN hT).1,
-    (GlobalTheory.T.embeddedDatum_of_term_definiteSpace K V W H HW e hK r F G' 𝔡 N' g Λ hg he hN' hT').1, mul_mem hk (inv_mem hk'), ?_, fun y v => ?_⟩
+  refine ⟨(_root_.GlobalTheory.DegAsm.isDat_datOf K V W H HW e hK r F G 𝔡 N g Λ hg he hN hT).1,
+    (_root_.GlobalTheory.DegAsm.isDat_datOf K V W H HW e hK r F G' 𝔡 N' g Λ hg he hN' hT').1, mul_mem hk (inv_mem hk'), ?_, fun y v => ?_⟩
   · show imLat (h * h'⁻¹) (datOf F G' e g Λ).1 = (datOf F G e g Λ).1
     rw [d1, d2]
     unfold imLat

@@ -42,46 +42,4 @@ instance unitCircleDivisibleNat : DivisibleBy (Additive allEmbeddingsUnitCircle)
 
 instance unitCircleDivisibleInt : DivisibleBy (Additive allEmbeddingsUnitCircle) ℤ := AddGroup.divisibleByIntOfDivisibleByNat _
 
-section Dwork
-
-open MvPowerSeries
-
-variable {K : Type} [Field K] {ι : Type}
-
-def integralPowerSeriesSubring (W : Subring K) (ι : Type) : Subring (MvPowerSeries ι K) where
-  carrier := {u | ∀ m, coeff m u ∈ W}
-  mul_mem' := by
-    intro a b ha hb m
-    classical
-    rw [coeff_mul]
-    exact W.sum_mem fun x _ => W.mul_mem (ha _) (hb _)
-  one_mem' := by
-    intro m
-    classical
-    rw [coeff_one]
-    split_ifs
-    exacts [W.one_mem, W.zero_mem]
-  add_mem' := by intro a b ha hb m; rw [map_add]; exact W.add_mem (ha m) (hb m)
-  zero_mem' := by intro m; rw [map_zero]; exact W.zero_mem
-  neg_mem' := by intro a ha m; rw [map_neg]; exact W.neg_mem (ha m)
-
-def PDivisibleSeries (W : Subring K) (p : ℕ) (u : MvPowerSeries ι K) : Prop :=
-  ∀ m, ∃ w ∈ W, coeff m u = (p : K) * w
-
-end Dwork
-
-section Cor
-
-open MvPowerSeries
-
-variable {K : Type} [Field K] [CharZero K] {ι : Type}
-
-abbrev multivariateExpSeries (H : MvPowerSeries ι K) : MvPowerSeries ι K :=
-  PowerSeries.subst H (PowerSeries.exp K)
-
-def truncatedExpSeries (N : ℕ) (H : MvPowerSeries ι K) : MvPowerSeries ι K :=
-  ∑ d ∈ range (N + 1), C (PowerSeries.coeff d (PowerSeries.exp K)) * H ^ d
-
-end Cor
-
 end Formalism.HermitianLattices.WeilRepresentation.PadicSquareSumIntegrality

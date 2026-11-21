@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitNormOne
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianFormFiniteZerosOnLineCmExt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorCMIsFieldOrNormSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorCMIsFieldOrNormSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonHermitianGramDetTwoVectorsNeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitNormGramDetPairFieldCaseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitNormGramDetPairFieldCase
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published GlobalTheory.PlaneNorm
 open scoped TensorProduct
 
@@ -19,8 +19,8 @@ theorem exists_local_unitNorm_vector : ∀ (F E : Type) [Field F] [NumberField F
     have hz0 : z = 0 := funext fun i => hinj (by simpa using congrFun h0 i)
     subst hz0
     simp [hE, Formalism.UG.hform]
-  rcases GlobalTheory.T.tensorCM_isField_or_norm_surjective F E σ hcm K with hfld | hspl
-  · exact GlobalTheory.T.exists_unitNorm_gramDet_pair_fieldCase F E σ hcm K M J hJ hfld hiso _ _ (hne x hx) (hne y hy)
+  rcases _root_.GlobalTheory.NormDichotomy.unit_or_norm F E σ hcm K with hfld | hspl
+  · exact _root_.GlobalTheory.PlaneNorm.FieldCase.exists_unitNorm_pair F E σ hcm K M J hJ hfld hiso _ _ (hne x hx) (hne y hy)
   · obtain ⟨w, hxw, hwy⟩ := GlobalTheory.T.exists_common_hermitianGramDetTwoVectors_ne F E σ hcm M J hM hJ x y hx hy
     have hs : ∀ e : E, sigR K σ (inclR K e) = inclR K (σ e) := fun e => rfl
     have hRE : ∀ a b : Fin M → E, hR K σ J (fun i => inclR K (a i)) (fun i => inclR K (b i)) =

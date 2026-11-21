@@ -2,7 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotSymEOfNe
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsTwoLevelsPrimitiveAtTraitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantListAlgClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantListAlgClosed
+import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
+import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantListRealisedSystemUpToRootsOfUnityStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedThetaSystemSectionGeneratesFieldFibres
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolFibOfPoint
@@ -60,9 +63,9 @@ theorem exists_scale : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] 
   obtain ⟨hko, hk3⟩ := level_odd ρ
   have hfib : PolFib ρ.P.A ρ.P.L S.g (spMap i ≫ 𝟙 (Sp S.R)) :=
     ρ.g_eq ▸ GlobalTheory.UMin.FibExist.polFib_of_point _ ρ.P K _
-  obtain ⟨pt, c, H⟩ := GlobalTheory.T.exists_thetaConstantList_algClosed _ ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen S.g m N K _
+  obtain ⟨pt, c, H⟩ := _root_.GlobalTheory.UMin.exists_thList _ ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen S.g m N K _
     (SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ i) hm (ne hmV) hN hfib
-  obtain ⟨pt', c', H'⟩ := GlobalTheory.T.exists_thetaConstantList_algClosed _ ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen S.g (S.r * S.N) _ K _
+  obtain ⟨pt', c', H'⟩ := _root_.GlobalTheory.UMin.exists_thList _ ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen S.g (S.r * S.N) _ K _
     (SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ i) hko (ne hkV) rfl hfib
   have hx : spMap i ≫ 𝟙 (Sp S.R) = spMap io ≫ y := by
     rw [Category.comp_id, ← spMap_comp]

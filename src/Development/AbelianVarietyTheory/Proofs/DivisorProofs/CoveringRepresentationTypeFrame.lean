@@ -1,28 +1,34 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbRegCountOfRanks
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitSeparationRegularDeterminantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeepsCuspLatticeNorm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankGrowthBoundSmallScaleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeBoundsForFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodAtOfAntitoneGapWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightConditionsAtIndexStatement
-import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsIsDeepOfField
-import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesesX
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitSeparationRegularDeterminant
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.InterNumDetNonposSplitTorus
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GrothendieckDeformation
-import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
+import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
+import Formalism.LocalRingCardinality.DataParamsT
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 import Development.AbelianVarietyTheory.Definitions.Divisors.WellChosen
-import Development.AbelianVarietyTheory.Definitions.Divisors.MeanLogLeOfBounds
+import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsCoordAtPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalizedPointHeightLatticeSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerConstantCoeffEqSpan
 import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNormLe
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomWeightHomWeight
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.HSClaim
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenRatios
 import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeepsCuspLatticeNorm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankGrowthBoundSmallScale
+import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesesX
+import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeBoundsForFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodAtOfAntitoneGapWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightConditionsAtIndex
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsIsDeepOfField
+
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Theta
 open GlobalTheory GlobalTheory.CompHS GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.HSApp GlobalTheory.DegVal GlobalTheory.DegCmp
@@ -206,71 +212,6 @@ theorem embReg_deep {D : D7} {T : CoreJ D} (hL : LawsJ T) {j : ℕ} (hp1 : 1 ≤
     (shiftG (T.Q.Dw j) a n (c + c)) (wtOf (T.Q.Dw j) (c • hodgeWt (T.Q.Dw j)) 0) (even_shiftG _ _ hn _) (AllWt.even_wtOf _ _)
     a0 rfl (shiftG_add _ _ _ _ _) (kp _ (AllWt.even_wtOf _ _)) (kp _ ((Int.even_coe_nat _).2 hn)) (kp _ (even_shiftG _ _ hn _))
     (finrank_of_goodAt g0).1 (finrank_of_goodAt g2).1 t ht hr S₀ S h0 h1 ρ χ lam hρ
-
-theorem lifts_of_four {Q₁ Q₂ Q₃ Q₄ R : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
-      (_i : Fin (Fm.D x ι).R.m) (_PP _C : ℝ), Prop}
-    (h₁ : Lifts Q₁) (h₂ : Lifts Q₂) (h₃ : Lifts Q₃) (h₄ : Lifts Q₄)
-    (h : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι) (i : Fin (Fm.D x ι).R.m)
-      (PP C₁ C₂ C₃ C₄ : ℝ), Q₁ Fm x hx ι p i PP C₁ → Q₂ Fm x hx ι p i PP C₂ → Q₃ Fm x hx ι p i PP C₃ →
-      Q₄ Fm x hx ι p i PP C₄ → R Fm x hx ι p i PP 0) : Lifts R := by
-  refine (((h₁.and h₂).and h₃).and h₄).imp fun Fm CH _ h' => ?_
-  obtain ⟨⟨⟨⟨_, -, a1⟩, _, -, a2⟩, _, -, a3⟩, _, -, a4⟩ := h'
-  obtain ⟨x0, h'⟩ := ((a1.and a2).and a3).and a4
-  refine ⟨0, le_rfl, x0, fun x hx hle ι p hp i => ?_⟩
-  obtain ⟨⟨⟨b1, b2⟩, b3⟩, b4⟩ := h' x hx hle ι p hp
-  exact h Fm x hx ι p i _ _ _ _ _ (b1 i) (b2 i) (b3 i) (b4 i)
-
-set_option maxHeartbeats 1000000 in
-
-theorem embReg_cover : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → Gram → DeepGood → Size → FlatDeg → Deg → Share → Covers fun Fm x _ ι p i Y _ _ => ∀ (fr : TypeFrame (dat p i) Y.d.l₂) (π : (LevelAut (dat p i) Y.d.l₂) →* G0g (Fm.D x ι).nd) (ρ : Representation ℂ (LevelAut (dat p i) Y.d.l₂) (ℂ ⊗[Y.d.c₂.F] Y.V (Gk p i))) (χ : (LevelAut (dat p i) Y.d.l₂) →* ℂˣ) (Pb : Subgroup (G0g (Fm.D x ι).nd)) (lamb : Pb.comap π →* ℂˣ) (H : Fin 2 → Subgroup (G0g (Fm.D x ι).nd)), Pb.comap π = grpHR fr → (∀ k, (H k).comap π = grpGHR fr k) → (∀ (g : (LevelAut (dat p i) Y.d.l₂)) (v w : Y.V (Gk p i)), (w : Rul Y.d.Xo₂ Y.d.c₂) = transl Y.d.Xo₂ Y.d.c₂ g v → ρ g ((1 : ℂ) ⊗ₜ[Y.d.c₂.F] v) = ((χ g : ℂˣ) : ℂ) • ((1 : ℂ) ⊗ₜ[Y.d.c₂.F] w)) → ∀ k : Fin 2, ∃ n : ℕ, EmbReg ρ ((H k).comap π) n ∧ (n : ℝ) * Nat.card ((H k).comap π) ≤ 3 / 2 * Nat.card (Pb.comap π) * Module.finrank ℂ (eig ρ (Pb.comap π) lamb) := by
-  intro hX hP hGD hQ hS hT hSA _ hDG hSz hFD hDg hSh
-  first
-    | have h4 := GlobalTheory.T.rank_growth_bound_small_scale hX hP hS hT hGD hQ hSA hDG hSz hFD hDg hSh
-    | have h4 := GlobalTheory.T.rank_growth_bound_small_scale hP hS hT hGD hQ hSA hDG hSz hFD hDg hSh
-  first
-    | have ua0 := GlobalTheory.T.type_frame_large_genus_bound hX hP hGD hQ hS hT hSA
-    | have ua0 := GlobalTheory.T.type_frame_large_genus_bound hP hGD hQ hS hT hSA
-  first
-    | have sg := GlobalTheory.T.good_at_of_antitone_gap_weight hX hP
-    | have sg := GlobalTheory.T.good_at_of_antitone_gap_weight hP
-  have h3 := GlobalTheory.T.size_bounds_for_family hSz
-  unfold DeepGood Covers at hDG
-  unfold Covers at h3 h4 ⊢
-  refine lifts_of_four hDG GlobalTheory.T.weight_conditions_at_index h3 h4 ?_
-  clear hDG h3 h4
-  intro eps Fm x hx ι p i PP _ _ _ _ b1 b2 b3 b4 hi Y hY fr π ρ χ Pb lamb H hPb hH hρ k
-  have g0 := (b1 hi Y hY).1
-  have gm := (b1 hi Y hY).2.1
-  have hL := (b2 hi).1
-  have hp1 := (b2 hi).2.1
-  have hq1 := (b2 hi).2.2.1
-  have hf := (b2 hi).2.2.2.1
-  have hj := (b2 hi).2.2.2.2.1
-  have hn := (b2 hi).2.2.2.2.2.1
-  have hs := (b2 hi).2.2.2.2.2.2.2.2
-  have he := (b3 hi Y hY).2.2.2.2.2.2.1
-  have hg := (b3 hi Y hY).2.2.2.2.2.2.2.1
-  have hrk := b4 hi Y hY 2 one_le_two le_rfl
-  have hc0 : 0 ≤ cZero (Fm.D x ι) ((i : ℕ) + 1) := Int.natCast_nonneg _
-  have hs1 := hs _ (Or.inr (Or.inr rfl))
-  have ec : ((2 : ℕ) : ℤ) * cZero (Fm.D x ι) ((i : ℕ) + 1) =
-      cZero (Fm.D x ι) ((i : ℕ) + 1) + cZero (Fm.D x ι) ((i : ℕ) + 1) := by push_cast; ring
-  rw [ec] at hrk
-  have g2 : Y.GoodAt (Gs p i (cZero (Fm.D x ι) ((i : ℕ) + 1) + cZero (Fm.D x ι) ((i : ℕ) + 1))) :=
-    sg _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 (wtA (p.κ i)) (p.κ i).n _ hn
-      (fun τ => by
-        rw [add_smul, ← add_assoc]
-        exact antitone_add_hodge _ _ τ (hs1.1 τ) hc0)
-      (fun τ => by
-        rw [add_smul, ← add_assoc, gap_add_hodge _ hp1 hq1]
-        exact le_add_of_le_of_nonneg (hs1.2 τ) hc0)
-  have ua := ua0 _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 he hg fr
-  have hr : (Y.rk (Gs p i (cZero (Fm.D x ι) ((i : ℕ) + 1) + cZero (Fm.D x ι) ((i : ℕ) + 1))) : ℝ) ≤
-      3 / 2 * Y.rk (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1)))) := by
-    refine hrk.trans (mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _))
-    exact (add_le_add_right (min_le_left _ _) _).trans (by norm_num)
-  exact embReg_deep hL hp1 hq1 hf hj Y hY.1 _ _ hn _ g0 gm g2 (3 / 2) (by norm_num) hr _ _
-    (ua _ (Or.inl hPb)) (ua _ (Or.inr ⟨k, hH k⟩)) ρ χ lamb hρ
 
 end GlobalTheory.BadEmb
 

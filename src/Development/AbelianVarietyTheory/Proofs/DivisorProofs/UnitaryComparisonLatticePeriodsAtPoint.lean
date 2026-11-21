@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBalancedLatticeDataClosedPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBalancedLatticeDataClosedPoint
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorMatch
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZH GlobalTheory.Poinc
@@ -21,7 +22,7 @@ theorem unitaryStepA_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   obtain ⟨x', hx', hcl⟩ := (isClosed_closure (s := ({x} : Set M.Z))).exists_closed_singleton ⟨x, subset_closure rfl⟩
   have hxx' : x ⤳ x' := specializes_iff_mem_closure.2 hx'
   obtain ⟨X, i1, i2, i3, i4, n, eb, b₀, μ, e, h1, h2, h3, h4, h5, h6, h7⟩ :=
-    GlobalTheory.T.exists_balanced_lattice_data_closedPoint E H Dw l Xo c C X₁ M U₀ EE out hA hE x' hcl
+    _root_.GlobalTheory.UPoinc.ClosedPt.exists_lattice_data E H Dw l Xo c C X₁ M U₀ EE out hA hE x' hcl
   refine ⟨X, i1, i2, i3, i4, n, eb, b₀, μ, e, h1, h2, h3, h4, h5, h6, ?_⟩
   intro T ξ hξ hsp
   obtain ⟨π, hπ1, hπ2, hπ3⟩ := h7 T ξ hξ (hsp.trans hxx')

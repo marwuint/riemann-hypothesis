@@ -210,12 +210,6 @@ theorem quotPowπ_app_eq_zero_iff {V : X.Opens} (hV : IsAffineOpen V) (n : ℕ) 
 
 end Qcoh
 
-section Coherent
-
-variable {F}
-
-end Coherent
-
 end
 
 end GroundTheory.Arith.SchemeCoh

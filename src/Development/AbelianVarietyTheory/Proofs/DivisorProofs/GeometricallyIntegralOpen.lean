@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EndoLbIsoSymmetryHypothesisExtendNormalModel
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback
@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCechPicardGlu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCechLineBundleAmbientOfOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLineBundlePullOfIsLineBundleOnOpen
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocalC
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionTranslatesCoverSemiAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBundleExtensionTranslateOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionTranslatesCoverSemiAbelian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBundleExtensionTranslateOpen
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -387,8 +387,8 @@ theorem lb_extends_of_extLam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
   have := hG.geomConnected
   have := geometricallyIntegral_of_smooth G.hom
   refine Spread.exists_extension_of_cover R G.left G.hom (eSec G) (Over.w η[G]) L hL fun x ↦ ?_
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_section_translates_cover_semiAbelian R hR G hG O hO x
-  refine ⟨(𝟙 G * (toUnit G ≫ a)).left ⁻¹ᵁ O, ha, hO _ ?_, GlobalTheory.T.exists_bundle_extension_translate_open R G L PP hL hPP O N hN hiso a⟩
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.Mum.Cover.exists_section_translate_mem R hR G hG O hO x
+  refine ⟨(𝟙 G * (toUnit G ≫ a)).left ⁻¹ᵁ O, ha, hO _ ?_, _root_.GlobalTheory.Mum.exists_ext_translate R G L PP hL hPP O N hN hiso a⟩
   have h₁ : eSec G ≫ (𝟙 G * (toUnit G ≫ a)).left ≫ G.hom = 𝟙 _ := by
     rw [Over.w]; exact Over.w η[G]
   exact congrArg (fun q : Sp R ⟶ Sp R ↦ q (closedPoint R)) h₁

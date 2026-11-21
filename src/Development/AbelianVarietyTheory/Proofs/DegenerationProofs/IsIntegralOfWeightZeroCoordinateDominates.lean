@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ValuationEqPolarFormOfWeightZeroMaxStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ValuationEqPolarFormOfWeightZeroMax
 import Development.AbelianVarietyTheory.Definitions.Degenerations.BaseFacts
 import Development.AbelianVarietyTheory.Definitions.Degenerations.IsAffineSplitTorusLeft
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheory
@@ -24,7 +24,7 @@ theorem Mod.integral_of_weight_zero_dominates : ∀ (p : ℕ) [Fact p.Prime] (V 
     intro x
     rw [QuadraticMap.comp_apply]
     exact congrArg q (m.xe.apply_symm_apply x)
-  refine GlobalTheory.T.valuation_eq_polarForm_of_weightZero_max X q g N J cls p w ν ?_ ?_ hB.lll ?_ hν hi
+  refine _root_.GlobalTheory.ZH.ValLat.main X q g N J cls p w ν ?_ ?_ hB.lll ?_ hν hi
   · have h := m.good.pos.comp (m.xe.symm.injective.tendsto_cofinite)
     exact h.congr hq
   · exact e.finrank_eq.symm.le.trans ((Nat.le_add_left _ _).trans m.dim.le)

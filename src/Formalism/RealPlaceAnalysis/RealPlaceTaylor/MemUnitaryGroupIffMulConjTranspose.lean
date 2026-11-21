@@ -27,22 +27,9 @@ lemma f1alg_isUnit_J {n : ℕ} (ε : Fin n → Bool) : IsUnit (Jm ε) :=
 lemma f1alg_inv_J {n : ℕ} (ε : Fin n → Bool) : (Jm ε)⁻¹ = Jm ε :=
   Matrix.inv_eq_left_inv (Jm_mul_self_eq_oneRealPlaceTaylor ε)
 
-lemma f1alg_cancel {n : ℕ} (ε : Fin n → Bool) {A B : Matrix (Fin n) (Fin n) ℂ}
-    (h : A * Jm ε = B * Jm ε) : A = B := by
-  have h2 := congrArg (· * Jm ε) h
-  simpa [Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor] using h2
-
 lemma f1alg_JJ_left {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (Jm ε * A) = A := by
   rw [← Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.one_mul]
-
-lemma f1alg_theta_mul {n : ℕ} (ε : Fin n → Bool) (A B : Matrix (Fin n) (Fin n) ℂ) :
-    Jm ε * (A * B) * Jm ε = (Jm ε * A * Jm ε) * (Jm ε * B * Jm ε) := by
-  simp only [Matrix.mul_assoc, f1alg_JJ_left]
-
-lemma f1alg_theta_theta {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
-    Jm ε * (Jm ε * A * Jm ε) * Jm ε = A := by
-  simp only [Matrix.mul_assoc, f1alg_JJ_left, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.mul_one]
 
 lemma f1alg_comm_iff {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     A * Jm ε = Jm ε * A ↔ Jm ε * A * Jm ε = A := by
@@ -188,68 +175,5 @@ theorem maximal_compact_facts : KFacts := by
         ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)), neg_add_cancel,
         NormedSpace.exp_zero]
     · exact ((Commute.exp_right (show Commute (Jm ε) X from hc.symm)).symm).eq
-
-lemma f1alg_ct_theta {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
-    (Jm ε * A * Jm ε)ᴴ = Jm ε * Aᴴ * Jm ε := by
-  rw [conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose_eq, Matrix.mul_assoc]
-
-lemma f1alg_theta_comm {n : ℕ} (ε : Fin n → Bool) (X Y : Matrix (Fin n) (Fin n) ℂ) :
-    Jm ε * (X * Y - Y * X) * Jm ε =
-      (Jm ε * X * Jm ε) * (Jm ε * Y * Jm ε) - (Jm ε * Y * Jm ε) * (Jm ε * X * Jm ε) := by
-  rw [Matrix.mul_sub, Matrix.sub_mul, f1alg_theta_mul, f1alg_theta_mul]
-
-lemma f1alg_ct_comm {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) :
-    (X * Y - Y * X)ᴴ = Yᴴ * Xᴴ - Xᴴ * Yᴴ := by
-  rw [conjTranspose_sub, conjTranspose_mul, conjTranspose_mul]
-
-theorem lie_brackets_holds : Brackets := by
-  intro n ε X Y
-
-  have hK : ∀ Z, inK ε Z ↔ Zᴴ = -Z ∧ Jm ε * Z * Jm ε = Z := fun Z => by
-    rw [f1alg_inK_iff, f1alg_comm_iff]
-  have hP : ∀ Z, inP ε Z ↔ Zᴴ = Z ∧ Jm ε * Z * Jm ε = -Z := fun Z => by
-    rw [mem_cartanP_iff, f1alg_anti_iff]
-  refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  · intro hx hy
-    rw [hK] at hx hy ⊢
-    exact ⟨by rw [f1alg_ct_comm, hx.1, hy.1]; noncomm_ring, by rw [f1alg_theta_comm, hx.2, hy.2]⟩
-  · intro hx hy
-    rw [hK] at hx
-    rw [hP] at hy ⊢
-    exact ⟨by rw [f1alg_ct_comm, hx.1, hy.1]; noncomm_ring,
-      by rw [f1alg_theta_comm, hx.2, hy.2]; noncomm_ring⟩
-  · intro hx hy
-    rw [hP] at hx hy
-    rw [hK]
-    exact ⟨by rw [f1alg_ct_comm, hx.1, hy.1]; noncomm_ring,
-      by rw [f1alg_theta_comm, hx.2, hy.2]; noncomm_ring⟩
-  · intro hX
-    have hx := (f1alg_inG_iff ε X).mp hX
-    have htt := f1alg_theta_theta ε X
-    have hct := f1alg_ct_theta ε X
-    have h2 : star ((2 : ℂ)⁻¹) = (2 : ℂ)⁻¹ := by simp
-    refine ⟨(2 : ℂ)⁻¹ • (X + Jm ε * X * Jm ε), (2 : ℂ)⁻¹ • (X - Jm ε * X * Jm ε), ?_, ?_, ?_⟩
-    · rw [hK]
-      constructor
-      · rw [conjTranspose_smul, conjTranspose_add, hct, hx, h2, Matrix.mul_neg, Matrix.neg_mul, htt]
-        module
-      · rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, htt]
-        module
-    · rw [hP]
-      constructor
-      · rw [conjTranspose_smul, conjTranspose_sub, hct, hx, h2, Matrix.mul_neg, Matrix.neg_mul, htt]
-        module
-      · rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, htt]
-        module
-    · module
-  · intro hx hy
-    rw [hK] at hx
-    rw [hP] at hy
-    have h : X = -X := hy.1.symm.trans hx.1
-    ext i j
-    have hij := congrFun (congrFun h i) j
-    simp only [Matrix.neg_apply] at hij
-    rw [Matrix.zero_apply]
-    linear_combination hij / 2
 
 end Formalism.REAL

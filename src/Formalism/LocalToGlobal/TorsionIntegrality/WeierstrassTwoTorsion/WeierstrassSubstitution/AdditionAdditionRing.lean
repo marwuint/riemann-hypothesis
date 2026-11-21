@@ -27,16 +27,6 @@ instance : IsDomain Univ := IsLocalization.isDomain_localization powers_le
 instance : CharZero Univ :=
   charZero_of_injective_algebraMap (IsLocalization.injective Univ powers_le)
 
-def v (i : Fin 7) : Univ := algebraMap P7 Univ (MvPolynomial.X i)
-
-def T : Univ := IsLocalization.Away.invSelf dX
-
-def e (x y : Univ) : Univ := y ^ 2 + v 0 * x * y + v 2 * y - x ^ 3 - v 1 * x ^ 2
-
-def WU : WeierstrassCurve Univ :=
-  ⟨v 0, v 1, v 2, T * (e (v 3) (v 4) - e (v 5) (v 6)),
-    e (v 3) (v 4) - T * (e (v 3) (v 4) - e (v 5) (v 6)) * v 3⟩
-
 end PlusR
 
 end Formalism.L2.Th1.A

@@ -35,13 +35,6 @@ def kι (hL : IsLevi Γ K Q Γ' K' π ι c₀) : K' →* K :=
 theorem c₀_mul (hL : IsLevi Γ K Q Γ' K' π ι c₀) (a b : Q) :
     c₀ ((a * b : Q) : G) = c₀ a * c₀ b := hL.par.ch.mul a a.2 b b.2
 
-theorem c₀_inv (hL : IsLevi Γ K Q Γ' K' π ι c₀) (a : Q) : c₀ ((a⁻¹ : Q) : G) = (c₀ a)⁻¹ := by
-  have h := c₀_mul hL a⁻¹ a
-  rw [inv_mul_cancel] at h
-  have h1 : c₀ ((1 : Q) : G) = 1 := isCh_one hL.par.ch
-  rw [h1] at h
-  exact eq_inv_of_mul_eq_one_left h.symm
-
 theorem c₀_ι_left (hL : IsLevi Γ K Q Γ' K' π ι c₀) (m : G') (a : Q) :
     c₀ ((ι m * a : Q) : G) = c₀ a := by
   rw [c₀_mul hL, hL.triv, one_mul]

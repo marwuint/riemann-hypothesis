@@ -13,6 +13,4 @@ theorem steps3 : Steps3 := fun _ _ _ _ _ _ _ _ _ _ _ _ I =>
 
 theorem cutPassage3S : CutPassage3S := cutPassage3S_of_steps steps3
 
-theorem cutPassage3 : CutPassage3 := cutPassage3_of_S cutPassage3S
-
 end Formalism.IndefR.CxPass

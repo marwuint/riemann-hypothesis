@@ -38,9 +38,6 @@ theorem g_jacobi (D : D7) (k : Fin 2) : jacobiSym (-(D.host.d : ℤ)) (D.host.g 
     rfl
   rw [h1, jacobiSym.one_left]
 
-def SplitPDelta (D : D7) : Prop :=
-  jacobiSym (-(D.host.d : ℤ)) D.host.pde = 1 ∧ jacobiSym (-(D.host.d : ℤ)) D.host.pde' = 1
-
 theorem splitG (D : D7) : ∀ p ∈ [D.host.g 0, D.host.g 1], SplitOK D p := by
   intro p hp
   simp only [List.mem_cons, List.not_mem_nil, or_false] at hp
@@ -208,26 +205,5 @@ theorem datumAtLift_pq_pos (D : D7) (hU) (hDat : ∀ j, InR D j → ∃ hI : Dat
   · show 1 ≤ (D.R.sigW 1).1 + (D.R.sigW 1).2
     simp only [Ranks.sigW]
     omega
-
-theorem exists_par_pins (D : D7) (hB : UnramBridge) (hF : OFull D) (hz : OZeta D)
-    (hDat : ∀ j, InR D j → ∃ hI : DatInt D j, DatLaws D j hI) (hN : N1ab) : ∃ Q : Par D, Q.Pins := by
-  let hU := hB D.host.E (cmUnram_conj D)
-  let Q : Par D :=
-    { H := hostOf D hU
-      l := levelG D (hU := hU)
-      c := coeffFieldOfRecord D (hU := hU) hz
-      Dw := datumAtLift D hU hDat
-      Xo := fun j => Classical.choice (hN D.host.E (hostOf D hU) (datumAtLift D hU hDat j) (levelG D (hU := hU))
-        (datumAtLift_pq_pos D hU hDat j))
-      eO := eOf D hF }
-  refine ⟨Q, ⟨rfl, rfl, rfl, tauEmb_sqrt D⟩, levelG_M D hU, eOf_spec D hF, fun j hj => ?_⟩
-  show IsDatW D j (datumAtLift D hU hDat j)
-  unfold datumAtLift
-  rw [dif_pos hj]
-  exact isDatW_datumOf D hU j _ _
-
-theorem exists_parameter_conditions (D : D7) (hF : OFull D) (hz : OZeta D)
-    (hDat : ∀ j, InR D j → ∃ hI : DatInt D j, DatLaws D j hI) (hN : N1ab) : ∃ Q : Par D, Q.Pins :=
-  exists_par_pins D unramBridge hF hz hDat hN
 
 end Formalism.L2.Pj

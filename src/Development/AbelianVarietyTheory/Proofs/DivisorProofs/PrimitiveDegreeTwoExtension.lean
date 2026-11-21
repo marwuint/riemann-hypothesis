@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PrimitiveStructureS
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUnobstructed
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H2StructureBaseChangeExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquare
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H2StructureBaseChangeExtension
 open CategoryTheory AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.LiftSys GlobalTheory.Obs
@@ -14,8 +14,8 @@ namespace GlobalTheory.Obs
 
 theorem primE2_of_primO2 (hO : PrimitiveStructureSheafDegTwoVanish) : PrimitiveExtendedDegTwoVanish := by
   intro R₀ R₁ _ _ _ q hq A _ g hA hsm c c₁ c₂ hμ h₁ h₂
-  obtain ⟨B, _, pr, pr', hB, hBs, hp, hp', eμ, ef, es, -, -⟩ := GlobalTheory.T.exists_abelianScheme_baseChange_and_square R₀ R₁ A g hA hsm
-  obtain ⟨e, he⟩ := GlobalTheory.T.h2_structure_base_change_extension R₀ R₁ q hq
+  obtain ⟨B, _, pr, pr', hB, hBs, hp, hp', eμ, ef, es, -, -⟩ := _root_.GlobalTheory.AbBaseChangeSq.exists_baseChange_and_sq R₀ R₁ A g hA hsm
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.Obs.extCoef_two_equiv R₀ R₁ q hq
   set eX := e A.left B.left A.hom B.hom pr hp
   set eY := e (A ⊗ A).left (B ⊗ B).left (A ⊗ A).hom (B ⊗ B).hom pr' hp'
   have hc : c = eX (eX.symm c) := (eX.apply_symm_apply c).symm

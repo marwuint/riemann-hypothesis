@@ -1,8 +1,9 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LeviMatchingWords.SplitPlaceGeneratorPowers
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingWordOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedMatrixIntegralCompLinearEquivDetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjAverageUnipotentLocallyConstantCompactSupporStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedMatrixIntegralCompLinearEquivDet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParP
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjAverageUnipotentLocallyConstantCompactSuppor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTerm
 
 noncomputable section
@@ -107,8 +108,8 @@ theorem det_negL_ne_zero {a b : ℕ} {w : Pl E} (m : GLw a w × GLw b w) : Linea
 theorem ct_adj {n a b : ℕ} (h : a + b = n) (w : Pl E) (F : GLw n w → ℂ)
     (hF : ∃ K' : Subgroup (GLw n w), IsOpen (K' : Set (GLw n w)) ∧ IsHecke K' F) (m : GLw a w × GLw b w) :
     ct h w (fun y => starRingEnd ℂ (F y⁻¹)) m = starRingEnd ℂ (ct h w F m⁻¹) := by
-  obtain ⟨hU, hcs⟩ := GlobalTheory.T.conjAverage_unipotent_locallyConstant_compactSupport E n a b h w F hF m⁻¹
-  have hJ := GlobalTheory.T.normalisedMatrixIntegral_comp_linearEquiv_det E w a b (negL m)
+  obtain ⟨hU, hcs⟩ := _root_.GlobalTheory.LeviDesc.UnipMean.cavg_blk_locConst_compactSupport E n a b h w F hF m⁻¹
+  have hJ := _root_.GlobalTheory.LeviDesc.hint_comp_linear E w a b (negL m)
     (fun X => GlobalTheory.LeviDesc.cavg (GlobalTheory.LFun.KGL w n) F (blk h w m⁻¹ X)) (det_negL_ne_zero m) hU hcs
   have hpt : ∀ X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)),
       avg (fun k : GlobalTheory.LFun.KGL w n => starRingEnd ℂ (F ((((k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k))⁻¹))) =

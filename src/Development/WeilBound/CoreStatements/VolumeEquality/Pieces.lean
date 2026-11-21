@@ -1,14 +1,25 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.RootBr
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalSchemeCoordsInjectiveStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalSchemeCoordsInjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUniqueLeftBasisCoordsAdicCompletion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsOver
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RingOfIntegersHomInjective
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConstantsValueOverPointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeBaseChangeConjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeLimitStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConstantsValueOverPoint
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPoint
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeBaseChangeConj
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
+import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.ThreeLeLevel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeLimit
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MultiprojectivePointsNonemptyStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGroupDictionaryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFundamentalSetStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGroupDictionary
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
+import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
+import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFundamentalSet
 
 noncomputable section
 
@@ -71,7 +82,7 @@ theorem sat_of_coords {z : Sp ℂ ⟶ 𝔐.X} {w w' : (Σ k, J k) → ℂ} (h : 
   exact ⟨_, rfl, fun k => a k, fun k => (a k).ne_zero, rfl⟩
 
 theorem pt_unique {z z' : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w) (h' : CoordsAt 𝔐.ξ y z' w) : z = z' :=
-  GlobalTheory.T.normal_scheme_coords_injective _ _ 𝔐.ξ K J y 𝔐.tie 𝔐.normal 𝔐.all z z' w h h'
+  _root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.point_eq_of_coordsAt _ _ 𝔐.ξ K J y 𝔐.tie 𝔐.normal 𝔐.all z z' w h h'
 
 theorem mem_mcPts {z : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w) : w ∈ mcPts (mCoordIdeal y) :=
   ⟨fun k => (h.1 k).imp fun _ h => h.ne_zero, fun g hg => by
@@ -98,7 +109,7 @@ theorem labVal_of_over {z : Sp ℂ ⟶ 𝔐.X} (hz : 𝔐.Interior z) {κ : c.F 
       ← Category.assoc, h3, ← Chg.spMap_comp'] at h
     exact IsFractionRing.ringHom_ext (A := 𝓞 c.F) fun a =>
       RingHom.congr_fun (congrArg CommRingCat.Hom.hom (Spec.map_injective h)) a
-  exact fun τ a => GlobalTheory.T.constants_value_over_point E H D l Xo c Y S Ω K J y 𝔐 z _ p hp _
+  exact fun τ a => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.val_cst E H D l Xo c Y S Ω K J y 𝔐 z _ p hp _
 
 end Pts
 
@@ -190,7 +201,7 @@ theorem exists_sheets (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 :
       exact (congrArg (fun x => Or.𝔐.ξ₀ x ∈ U) (Subsingleton.elim (α := PrimeSpectrum Or.𝔐.Ω₀) _ _)).mpr hU
     obtain ⟨t₁, ht₁, z₁, c₁, u₁⟩ := h2 _ Ω Or.𝔐.ξ K J Dc.y _ _ (Dc.chart b) _ Or.𝔐.tie Or.𝔐.all Dc.arith hg
     have n1 := h1 _ _ _ ζ (Or.𝔐.f ⁻¹ᵁ U) Metric.isOpen_ball (convex_ball _ _).isPreconnected
-      (GlobalTheory.T.holomorphic_coords_of_generic_point _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie Or.𝔐.all _ _ _ ζ Metric.isOpen_ball (Dc.chart b).analytic.differentiableOn hζ)
+      (_root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie Or.𝔐.all _ _ _ ζ Metric.isOpen_ball (Dc.chart b).analytic.differentiableOn hζ)
       ⟨t₁, ht₁, pt_unique Or.𝔐 c₁ (hζ t₁ ht₁) ▸ u₁⟩
     have n2 : ∀ᵐ t : Fin Dc.n → ℂ, ∀ i, t i ≠ 0 := ae_all_iff.2 fun i => by
       rw [volume_pi]

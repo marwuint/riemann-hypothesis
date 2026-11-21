@@ -1,9 +1,16 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.PolynomialSiteTraces.AdmissibleMap
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerEnvelopeUniversalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerEnvelopeExpansionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedEnvelopeFiltrationQuotientStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedEnvelopeTorsionFreeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerEnvelopeUniversal
+import Development.WeilBound.CoreStatements.AbelianHeightsDuality.DividedPowerAlgebras.ExistsDividedPowersAug
+import Development.WeilBound.CoreStatements.AbelianHeightsDuality.DividedPowerAlgebras.FilIsSubDPIdeal
+import Development.WeilBound.CoreStatements.AbelianHeightsDuality.DividedPowerAlgebras.RingTrunc
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerPolynomialFiltrationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EtaleLiftingOfNilIdeal
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.SubThickRees
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.WittExactSequences.IsCompl
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerEnvelopeExpansion
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedEnvelopeFiltrationQuotient
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedEnvelopeTorsionFree
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -19,7 +26,7 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
 
 theorem trAdm (T : Thick (nlFun γ 0 X q κ)) (l s : ℕ) (hT : TF l s T) :
     (0 ≠ 0 → IsNilpotent ((0 : ℕ) : trB T s)) ∧ (0 = 0 → IsNilpotent (trJ T s)) :=
-  ⟨fun h => absurd rfl h, fun _ => (GlobalTheory.T.truncated_envelope_torsion_free T.δ l s (trD T s) (trD_spec T s).1 hT.1 hT.2).2.2⟩
+  ⟨fun h => absurd rfl h, fun _ => (_root_.GlobalTheory.CompanionTheory.SiteTr.tr_tf T.δ l s (trD T s) (trD_spec T s).1 hT.1 hT.2).2.2⟩
 
 def trH (T : Thick (nlFun γ 0 X q κ)) (s : ℕ)
     (adm : (0 ≠ 0 → IsNilpotent ((0 : ℕ) : trB T s)) ∧ (0 = 0 → IsNilpotent (trJ T s))) : T ⟶ polyTr T s adm :=
@@ -42,7 +49,7 @@ theorem trSum (T : Thick (nlFun γ 0 X q κ)) (s : ℕ) (b : ℕ →₀ T.B) :
 theorem polyTr_mem (l s : ℕ) (𝒱 : Set X.Opens)
     (T : (St (γ := γ) (p := 0) (q := q) (κ := κ) (TF l s) 𝒱).FullSubcategory) :
     St (TF l s) 𝒱 (polyTr T.obj s (trAdm T.obj l s T.property.1)) := by
-  have h := GlobalTheory.T.truncated_envelope_torsion_free T.obj.δ l s (trD T.obj s) (trD_spec T.obj s).1 T.property.1.1 T.property.1.2
+  have h := _root_.GlobalTheory.CompanionTheory.SiteTr.tr_tf T.obj.δ l s (trD T.obj s) (trD_spec T.obj s).1 T.property.1.1 T.property.1.2
   refine ⟨⟨h.1, h.2.1⟩, ?_⟩
   obtain ⟨V, hV, hT⟩ := T.property.2
   exact ⟨V, hV, inU_hom (trH T.obj s _) hT⟩
@@ -53,7 +60,7 @@ def polyTf (l s : ℕ) (𝒱 : Set X.Opens) : Poly (sP (St (γ := γ) (p := 0) (
   X T := Ideal.Quotient.mk (trI T.obj s) ((pq T.obj.B).e 1)
   X_mem T := Ideal.mem_map_of_mem _ (Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩))
   univ {T T'} φ x hx := by
-    obtain ⟨F, ⟨hF, hF1, hFd⟩, hFu⟩ := GlobalTheory.T.divided_power_envelope_universal T.obj.δ T'.obj.δ φ.hom.φ φ.hom.dp x hx
+    obtain ⟨F, ⟨hF, hF1, hFd⟩, hFu⟩ := _root_.GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal T.obj.δ T'.obj.δ φ.hom.φ φ.hom.dp x hx
     have hK : ∀ a ∈ trI T.obj s, F a = 0 := by
       intro a ha
       have h1 : F a ∈ fil T'.obj.δ (max s 1) := FubiniStudyChowHeightFormula₂.Adr.Fil.map_fil_le _ _ F hFd _ (Ideal.mem_map_of_mem F ha)
@@ -84,7 +91,7 @@ def polyTf (l s : ℕ) (𝒱 : Set X.Opens) : Poly (sP (St (γ := γ) (p := 0) (
       · exact IsDPMorphism.comp _ ψ.hom.dp (trD_spec T.obj s).1
   span T z := by
     obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective z
-    obtain ⟨b, rfl⟩ := GlobalTheory.T.divided_power_envelope_expansion T.obj.δ w
+    obtain ⟨b, rfl⟩ := _root_.GlobalTheory.CompanionTheory.PDSpanning.exists_sum_dpow T.obj.δ w
     exact ⟨b, (trSum T.obj s b).symm⟩
 
 theorem poly_tf' : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) {X : Scheme.{0}}
@@ -95,7 +102,7 @@ theorem poly_tf' : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ 
   refine ⟨polyTf l s 𝒱, fun r hr => ⟨?_, fun c => ?_⟩⟩
   · intro T b
     have e := trSum T.obj s b
-    refine Iff.trans ?_ (Iff.trans ((GlobalTheory.T.truncated_envelope_filtration_quotient T.obj.δ s (trD T.obj s) (trD_spec T.obj s).1 b r.toNat
+    refine Iff.trans ?_ (Iff.trans ((_root_.GlobalTheory.CompanionTheory.SiteTrCrit.tr_crit T.obj.δ s (trD T.obj s) (trD_spec T.obj s).1 b r.toNat
       (by omega) 0).1) (forall_congr' fun k => ?_))
     · change (b.sum fun k c => trF T.obj s c * (trD T.obj s).dpow k (Ideal.Quotient.mk (trI T.obj s) ((pq T.obj.B).e 1)))
         ∈ fil (trD T.obj s) r.toNat ↔ _
@@ -105,7 +112,7 @@ theorem poly_tf' : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ 
       exact Iff.rfl
   · intro T b
     have e := trSum T.obj s b
-    refine Iff.trans ?_ (Iff.trans ((GlobalTheory.T.truncated_envelope_filtration_quotient T.obj.δ s (trD T.obj s) (trD_spec T.obj s).1 b r.toNat
+    refine Iff.trans ?_ (Iff.trans ((_root_.GlobalTheory.CompanionTheory.SiteTrCrit.tr_crit T.obj.δ s (trD T.obj s) (trD_spec T.obj s).1 b r.toNat
       (by omega) (T.obj.i c)).2) (forall_congr' fun k => ?_))
     · change (b.sum fun k c => trF T.obj s c * (trD T.obj s).dpow k (Ideal.Quotient.mk (trI T.obj s) ((pq T.obj.B).e 1)))
         ∈ fil (trD T.obj s) r.toNat ⊔ Ideal.span {trF T.obj s (T.obj.i c)} ↔ _

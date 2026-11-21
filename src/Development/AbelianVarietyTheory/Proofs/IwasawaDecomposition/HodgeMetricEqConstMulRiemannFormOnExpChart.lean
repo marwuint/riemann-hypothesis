@@ -5,10 +5,14 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeChartBoundsOfS
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExponentialChartAtPoint
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HodgeMetricUniformisationSmoothOnInterior
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPreconnectedPolydiscFirstCoordsNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OrthonormalFramesSameComponentNearChartStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDiagonalRiemannFormOrthonormalFrameStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HodgeMetricFrameEqRiemannFormAtInteriorPointStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPreconnectedPolydiscFirstCoordsNeZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OrthonormalFramesSameComponentNearChart
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsExponentialModelFiberOfUniformisationExp
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHolomorphicUniformisationExpModelFiber
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExpModelFiberEqOneIffMemPeriodLattice
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilPairingExpModelFiberEqAlternatingForm
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDiagonalRiemannFormOrthonormalFrame
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HodgeMetricFrameEqRiemannFormAtInteriorPoint
 open AlgebraicGeometry CategoryTheory Limits MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.LieBase
 open Matrix
 open scoped ComplexOrder Topology
@@ -47,7 +51,7 @@ theorem hodgeMet_eq_riem_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   set U' := unfFam U σ with hU'def
   have hU' : Formalism.L2.PjFree.IsUnf U' := by rw [hU'def, unfFam_self]; exact hU
   obtain ⟨W, hinj⟩ := exists_unfWit_inj hσ hU' h1
-  obtain ⟨d, hdpos, hd⟩ := GlobalTheory.T.exists_diagonal_riemannForm_orthonormalFrame E H Dw l Xo c σ _ U' hσ hU' W
+  obtain ⟨d, hdpos, hd⟩ := _root_.GlobalTheory.HodgeSmooth.exists_diag_riem_orth E H Dw l Xo c σ _ U' hσ hU' W
   have hreach : ∀ z ∈ Ω, ∃ (k : U'.Comp) (x : (U'.X k).dom), IsOrth (U'.X k) x.1 ∧
       cxPt T.Z (U'.un k x) = ch₀.symm z :=
     fun z hz => exists_orth (Z := T.Z) hσ hU' (hΩin z hz)
@@ -68,14 +72,14 @@ theorem hodgeMet_eq_riem_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     intro z hz
     obtain ⟨x₀, -, hx₀⟩ := hcomp z hz
     have hs0 : cxPt T.Z (U'.un (comp z) x₀) ∈ ch₀.source := by rw [hx₀]; exact hsrc z hz.1
-    obtain ⟨B, hBo, hzB, hB⟩ := GlobalTheory.T.orthonormalFrames_same_component_near_chart E H Dw l Xo c O β T.Z σ _ U' hσ hU' h1 n ch₀ hsymmHol (comp z) x₀ hs0
+    obtain ⟨B, hBo, hzB, hB⟩ := _root_.GlobalTheory.HodgeSmooth.chart_comp_locconst E H Dw l Xo c O β T.Z σ _ U' hσ hU' h1 n ch₀ hsymmHol (comp z) x₀ hs0
     rw [hx₀, ch₀.right_inv (by rw [htarget]; exact hz.1)] at hzB
     refine tendsto_nhds_of_eventually_eq ?_
     filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (hBo.mem_nhds hzB)] with w hw hwB
     obtain ⟨x, -, hx⟩ := hcomp w hw
     exact hB w hwB _ x hx
   have hconst : ∀ z ∈ Ω, comp z = comp z₁ := fun z hz =>
-    (GlobalTheory.T.isPreconnected_ball_inter_coords_ne_zero n a ha).constant hcont hz hz₁
+    (_root_.GlobalTheory.isPreconnected_polydisc_first_coords_ne_zero n a ha).constant hcont hz hz₁
   refine ⟨fun τ => if 0 < d (comp z₁) τ then 2 * Real.pi / d (comp z₁) τ else 1, fun τ => ?_, ?_⟩
   · dsimp only
     split_ifs with h
@@ -94,7 +98,7 @@ theorem hodgeMet_eq_riem_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     dsimp only at this
     rw [ch₀.left_inv hx] at this
     exact this
-  obtain ⟨hg, ho⟩ := GlobalTheory.T.hodgeMetric_frame_eq_riemannForm_at_interior_point E H Dw l Xo c O β T.Z σ U hσ hU W hinj d hdpos hd g x (ex x) hI hExpAt hslice _ x' hx'o hx'
+  obtain ⟨hg, ho⟩ := _root_.GlobalTheory.HodgeInteriorGram.gram_eq_riem E H Dw l Xo c O β T.Z σ U hσ hU W hinj d hdpos hd g x (ex x) hI hExpAt hslice _ x' hx'o hx'
     Hm hHm.2.2.1 hHm.2.2.2 f Wd hW
   refine ⟨fun τ => ?_, ho⟩
   rw [hg τ]

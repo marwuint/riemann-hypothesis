@@ -6,9 +6,11 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvInjOfIsModelsO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefMapNormEquivariantBasisOfFive
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIoConjOfFive
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateCharactersEmbeddingsOfCharacterisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateLiftOfCharacterisationClausesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateLiftOfCharacterisationClauses
+import Development.AbelianVarietyTheory.Definitions.Divisors.OfCore
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadingsExistRow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateLiftUniqueAndBaseDatumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralShiftPhaseConjReadingsFiveClausesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralShiftPhaseConjReadingsFiveClauses
 
 noncomputable section
 
@@ -88,7 +90,7 @@ theorem conj_lift5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : 
   have hq4 := oneMapConj5 T R F κw v₀ hR fw i O hP h hh gramR c0R c0L hT hC σ hσ hV
     μ' η' hμ hη c c₁ H j hF ω f₀ f B io thP hL
   obtain ⟨u, z, κ, hu, hz, hκ, hEq, hid⟩ := hq4
-  have hq5 := (GlobalTheory.T.centralShift_phase_conjReadings_fiveClauses).2.1 R F hR i σ u hu
+  have hq5 := (_root_.GlobalTheory.CoreFive.shift_phase_conj).2.1 R F hR i σ u hu
   obtain ⟨U, hU⟩ := hq5
   have hq6 := (GlobalTheory.T.conjugateLift_unique_and_baseDatum).2.2.1 R F hR i
   obtain ⟨hlift, htr⟩ := hq6
@@ -123,7 +125,7 @@ theorem conj_lift5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : 
     have h1 := hx x
     obtain ⟨n, a, fs, hc, -⟩ := h1
     exact exists_ev ev hκ _ _ _ (hS x n a fs hc)
-  have h2 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.2.2 R F hR i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hF ω f₀ f B io thP hL v (fw.hv₀ i σ).1 hex
+  have h2 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.2.2.2 R F hR i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hF ω f₀ f B io thP hL v (fw.hv₀ i σ).1 hex
   obtain ⟨th, hth⟩ := h2
   refine ⟨th, u, U, z₀ * z⁻¹, σ ze * σ (((R.FW i).chi z₀ : D.what₂.LLˣ) : D.what₂.LL) *
     (σ (((R.FW i).chi z : D.what₂.LLˣ) : D.what₂.LL))⁻¹ * κ, hth, hU, mul_mem hz₀ (inv_mem hz), ?_, fun x y hy => ?_⟩
@@ -169,7 +171,7 @@ theorem conjugateRationalLift_at_embedding_of_datum (hR : GlobalTheory.Core5 R F
     (h : IsConjDatum R i σ (c0L i) μ' η' c c₁ H j th) {u U} (hU : IsCompPhase R i σ u U) (hu : σ = sg0 D A → ∀ h, u h = 1)
     {z : G} (hz : z ∈ Subgroup.center G) {κ : ℂ} (hκ : ‖κ‖ = 1)
     (he : ∀ x y, IsRatLift R i ph x y → U ((R.FW i).j σ y) = κ • R.gW i σ z (th (j x))) : ConjAt R i σ ph (c0L i) := by
-  have h1 := (GlobalTheory.T.centralShift_phase_conjReadings_fiveClauses).1 R F hR i σ z hz
+  have h1 := (_root_.GlobalTheory.CoreFive.shift_phase_conj).1 R F hR i σ z hz
   obtain ⟨ζ, hζ⟩ := h1
   refine ⟨(GlobalTheory.GalLift.hypConj_of_chars_ofFive R F hR i σ ((GlobalTheory.GalLift.labels_overK σ).1 hσ).1 ((GlobalTheory.GalLift.labels_overK σ).1 hσ).2).1, ⟨_, _, _, _, _, _, _, h⟩,
     u, U, z, ζ, hU, hu, hζ, fun μ'' η'' c' c₁' H' j' th' h' => ⟨hypConj5 hR i hσ h'.1 h'.2.1, ?_⟩⟩
@@ -202,22 +204,22 @@ theorem conjugateRationalLift_at_nonBaseEmbedding (hR : GlobalTheory.Core5 R F) 
   have h1 := (GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.2.1 R F hR i ((GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.1 R F hR i) σ hσ
   obtain ⟨η', hη⟩ := h1
   have hH := hypConj5 hR i hσ hμ hη
-  have h2 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).1 R F hR i gramR' c0R' c0L' hT' σ hσ
+  have h2 := (_root_.GlobalTheory.GalLift.conjLift_five).1 R F hR i gramR' c0R' c0L' hT' σ hσ
   obtain ⟨c, c₁, hc⟩ := h2
-  have h3 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.1 R F hR i gramR' c0R' c0L' hT' σ c c₁ hc
+  have h3 := (_root_.GlobalTheory.GalLift.conjLift_five).2.1 R F hR i gramR' c0R' c0L' hT' σ c c₁ hc
   obtain ⟨H, j, hF⟩ := h3
   have h4 := (GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.2.2.2.2.2.1 R F hR i σ _ η' hμ hη hH
   obtain ⟨ω, hω⟩ := h4
-  have h5 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.1 R F hR i σ hσ
+  have h5 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.2.1 R F hR i σ hσ
   obtain ⟨f₀, f, B, hv⟩ := h5
   have h6 := GlobalTheory.MovedWeights.exists_io_conj_ofFive R F hR i σ hσ _ η' hμ hH c c₁ hc ω f₀ f B hω hv
   obtain ⟨io, hio⟩ := h6
-  have h7 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.2.1 R F hR i σ _ η' _ c c₁ H j hF ω f₀ f B io hω hv
+  have h7 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.2.2.1 R F hR i σ _ η' _ c c₁ H j hF ω f₀ f B io hω hv
   obtain ⟨thP, hth⟩ := h7
   have hL : LiftData R i σ _ η' c H ω f₀ f B io thP := ⟨hω, hv, hio, hth⟩
   have h8 := conj_lift5 hR fw i hE hI hinj O ph hP hO hT' hC σ hσ hμ hη hF hL
   obtain ⟨th, u, U, z, κ, hp, hU, hz, hκ, he⟩ := h8
-  have h9 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.1 R F hR i gramR c0R c0L hT gramR' c0R' c0L' hT' σ c c₁ H j hF
+  have h9 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.1 R F hR i gramR c0R c0L hT gramR' c0R' c0L' hT' σ c c₁ H j hF
   obtain ⟨c₁', hF'⟩ := h9
   exact conjugateRationalLift_at_embedding_of_datum hR fw hI i hT hσ ph ⟨hμ, hη, hF', (isConjLift_iff R i σ _ _ _ _ _).2 ⟨ω, f₀, f, B, io, thP, hL, hp⟩⟩ hU
     (fun h => absurd h hne) hz hκ he
@@ -239,7 +241,7 @@ theorem conjRatLift5 : GlobalTheory.LowRow.ConjRatLift5 := by
     · subst hs
       exact conjAt_base5 hR fw hI i hT hO.2.1.2.2.2.2.1
     · exact conjugateRationalLift_at_nonBaseEmbedding hR fw i hE hI hinj O ph (hP i) hO hT hσ hs
-  · exact (GlobalTheory.T.centralShift_phase_conjReadings_fiveClauses).2.2 T R F κw v₀ hR fw i hJ'.1 hJ'.2 hb σ fun hg =>
+  · exact (_root_.GlobalTheory.CoreFive.shift_phase_conj).2.2 T R F κw v₀ hR fw i hJ'.1 hJ'.2 hb σ fun hg =>
       hσ ((GlobalTheory.GalLift.overK_iff_good_ofFive T R F κw v₀ hR fw i σ).2 hg)
 
 end GlobalTheory.ConjRatLiftFive

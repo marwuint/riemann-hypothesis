@@ -11,7 +11,8 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemHomLatticeIff
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymplOHEqZeroOfHO
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeCompletionSelfAnnihilatorAtPlaces
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMaps
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsTameFinitePlaceHermitianAllStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsTameFinitePlaceHermitianAll
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleExact
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SepRows GlobalTheory.Asc
 open scoped TensorProduct
@@ -95,7 +96,7 @@ theorem heisO_offPart_vac : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → �
     have hch : ∀ x, x ∈ hQ.toFinset → ∃ e₁ ε, IsSplitIdem D e₁ ∧ IsPlaceIdem D x ε ∧
         e₁ + cA D e₁ = algebraMap (AF D.host.F) (AE D) ε := by
       intro x hx
-      rcases (GlobalTheory.T.isTameFinitePlaceHermitian_all D x).2 with h | h
+      rcases (_root_.GlobalTheory.FinPl.TamePlaces.tame D x).2 with h | h
       · exact absurd ((hmemQ x).1 hx).2 h
       · exact h
     choose! es εs hes hεs hsum using hch

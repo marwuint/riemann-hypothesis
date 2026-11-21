@@ -12,13 +12,6 @@ attribute [local instance] Formalism.InvariantFactorPaths.G7.WModel.nf sx_charZe
 
 variable (p : ℕ) [hp : Fact p.Prime]
 
-theorem sx_lX_const {σ : Type} (i : σ) : MvPowerSeries.constantCoeff (sx_lX p i) = 0 := by
-  have hs : PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries σ (K0 p)) :=
-    PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)
-  obtain ⟨g, hg⟩ := PowerSeries.X_dvd_iff.2 (sx_logF_const p)
-  unfold sx_lX
-  rw [hg, PowerSeries.subst_mul hs, PowerSeries.subst_X hs, map_mul, MvPowerSeries.constantCoeff_X, zero_mul]
-
 theorem sx_X_dvd_lX {σ : Type} (i : σ) : (MvPowerSeries.X i : MvPowerSeries σ (K0 p)) ∣ sx_lX p i := by
   have hs : PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries σ (K0 p)) :=
     PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)

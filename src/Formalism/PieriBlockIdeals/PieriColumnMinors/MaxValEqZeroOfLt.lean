@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PieriBlockIdeals.ParamsWindow
+import Formalism.RankGapBounds.CloudMinFalse
 
 open Finset
 

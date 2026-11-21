@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCardStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardHermitianMatricesModPowStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardUnimodularHermitianRepsLevelOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnimodularHermitianRepsCountSuccStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCard
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardHermitianMatricesModPow
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardUnimodularHermitianRepsLevelOne
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnimodularHermitianRepsCountSucc
 
 open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens Filter Topology
 
@@ -20,10 +20,10 @@ theorem unrFormula : PositivityTheory.PfSWUS.Loc.UnrFormula := by
     intro j
     induction j with
     | zero =>
-      rw [GlobalTheory.T.card_unimodular_hermitian_reps_level_one R σ ϖ q ε hR m n hnm S T hS hT, ha]
+      rw [_root_.GlobalTheory.CompanionTheory.UnrDens.solCount_one R σ ϖ q ε hR m n hnm S T hS hT, ha]
       simp
     | succ j ih =>
-      rw [GlobalTheory.T.unimodular_hermitian_reps_count_succ R σ ϖ q ε hR m n hnm S T hS hT (j + 1) (by omega), ha]
+      rw [_root_.GlobalTheory.CompanionTheory.UnrDens.solCount_succ R σ ϖ q ε hR m n hnm S T hS hT (j + 1) (by omega), ha]
       push_cast
       rw [ih, add_mul, one_mul, pow_add]
       ring
@@ -32,10 +32,10 @@ theorem unrFormula : PositivityTheory.PfSWUS.Loc.UnrFormula := by
     unfold densAt
     have hM : Nat.card (Matrix (Fin m) (Fin n) (R ⧸ lev ϖ (j + 1))) = q ^ (2 * (j + 1) * (m * n)) := by
       show Nat.card (Fin m → Fin n → R ⧸ lev ϖ (j + 1)) = _
-      rw [Nat.card_fun, Nat.card_fun, Nat.card_fin, Nat.card_fin, GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR (j + 1), ← pow_mul,
+      rw [Nat.card_fun, Nat.card_fun, Nat.card_fin, Nat.card_fin, _root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε hR (j + 1), ← pow_mul,
         ← pow_mul]
       ring_nf
-    rw [hsol j, GlobalTheory.T.card_hermitian_matrices_mod_pow R σ ϖ q ε hR n (j + 1), hM]
+    rw [hsol j, _root_.GlobalTheory.CompanionTheory.UnrDens.card_hermMod R σ ϖ q ε hR n (j + 1), hM]
     have he : a + j * a + (j + 1) * n ^ 2 = 2 * (j + 1) * (m * n) := by
       calc a + j * a + (j + 1) * n ^ 2 = (j + 1) * (a + n ^ 2) := by ring
         _ = (j + 1) * (2 * m * n) := by rw [ha']

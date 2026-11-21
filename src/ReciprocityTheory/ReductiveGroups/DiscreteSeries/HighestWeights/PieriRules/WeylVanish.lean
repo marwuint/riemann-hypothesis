@@ -145,34 +145,4 @@ theorem weylK_dual_vanish (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hint : ∀
     rw [hμ, hμ, if_neg ha, if_neg hb] at hlt
     linarith [hdom a b hab hε]
 
-theorem weylK_p_vanish (ε : Fin n → Bool) (β : Bool) (Λ : Fin n → ℝ) (hint : ∀ a, ∃ m : ℤ, Λ a = m)
-    (hdom : KDom ε Λ) (p : pIdx ε β) (h : ¬ KDom ε (Λ + pWt ε β p)) : weylK ε (Λ + pWt ε β p) = 0 := by
-  obtain ⟨⟨i, j⟩, hi, hj⟩ := p
-  obtain ⟨a, b, hab, hε, hlt⟩ := exists_viol_of_not_kDom ε _ h
-  have hμ : ∀ c, (Λ + pWt ε β ⟨(i, j), hi, hj⟩) c =
-      Λ c + (if c = i then 1 else 0) - (if c = j then 1 else 0) := by
-    intro c
-    simp only [Pi.add_apply, pWt, Pi.sub_apply, Pi.single_apply]
-    ring
-  by_cases hai : ε a = ε i
-  ·
-    refine weylK_eq_zero_of_up ε Λ _ i hint hdom (fun c hc => ?_) hab hε hai hlt
-    have hcj : c ≠ j := by
-      rintro rfl
-      simp only at hi hj
-      rw [hc, hi] at hj
-      cases β <;> simp at hj
-    rw [hμ, if_neg hcj, sub_zero]
-  ·
-    have haj : ε a = ε j := by
-      simp only at hi hj
-      rw [hi] at hai
-      rw [hj]
-      cases h1 : ε a <;> cases β <;> simp_all
-    refine weylK_eq_zero_of_down ε Λ _ j hint hdom (fun c hc => ?_) hab hε haj hlt
-    have hci : c ≠ i := by
-      rintro rfl
-      exact hai (haj.trans hc.symm)
-    rw [hμ, if_neg hci, add_zero]
-
 end ReciprocityTheory.ChartRestriction.DS.HW

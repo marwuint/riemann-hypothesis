@@ -85,18 +85,6 @@ variable {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.S
     (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
     (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
 
-theorem rankTie_of (hadm : ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1),
-      (X.Pj (j + 1)).IsLatTup La'.2 → Formalism.MainNotions.TaylorLogMetric.admitted D _ _ (large₂ j L0 La') (Lg' j L0 La')) :
-    RankTie X hfin D large₂ Lg' :=
-  fun j L0 hL0 La' hLa' _ b hb =>
-    rank_of_locBasis _ _ (hadm j L0 hL0 La' hLa').2.2.1 (hadm j L0 hL0 La' hLa').2.2.2 b hb
-
-section Witness
-
-variable (D : D7)
-
-end Witness
-
 end Formalism.L2.KerInert.RepFrame
 
 set_option pp.fullNames true

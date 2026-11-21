@@ -1,15 +1,11 @@
 import Mathlib
-import Formalism.PeriodIntegrals.GaugeGap
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.FrameTransport
 
 noncomputable section
 
 namespace PI.GaugeCharW
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-
-def InfFun : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F], ∃ L : Ainf F →+ ℝ, Continuous L ∧
-    (∀ a : 𝓞 F, ∃ n : ℤ, L (algebraMap F (Ainf F) (a : F)) = n) ∧ ∃ t, L t = 1 / 2
 
 def IntInter : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] (a : F),

@@ -24,11 +24,6 @@ def OrderAsym : Prop := ∀ (F : ℂ → ℂ) (S : ℝ → ℂ) (δ : ℕ), Anal
 
 open Classical in
 
-def ExpRight : Prop := ForSys fun q X _ A => ∀ x y : X, ∃ F : ℂ → ℂ, AnalyticAt ℂ F 1 ∧ ∀ σ : ℝ, 1 < σ →
-  F σ = ((σ : ℂ) - 1) ^ (if x = y then 1 else 0) * Complex.exp (∑' p, lterm q (A x) (A y) σ p)
-
-open Classical in
-
 def LogAsym : Prop := ForSys fun q X _ A => ∀ x y : X, ∃ M : ℝ, ∀ σ : ℝ, 1 < σ → σ ≤ 2 →
   |dre q (A x) (A y) σ - (if x = y then -Real.log (σ - 1) else 0)| ≤ M
 

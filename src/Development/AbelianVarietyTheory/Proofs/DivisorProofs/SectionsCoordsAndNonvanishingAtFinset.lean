@@ -1,10 +1,14 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientJetsFderivDetNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionsApproxFirstJetsPositiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientJetsFderivDetNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionsApproxFirstJetsPositive
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
@@ -12,8 +16,8 @@ namespace GlobalTheory
 
 theorem sections_coords_and_nonvanishing_at_finset : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (H : La), (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph H i) y ξ) → ∀ (T : Finset Y) (G : La), ∃ k0 : ℕ, ∀ k ≥ k0, ∃ (t0 : ι → Y → ℂ) (t : Fin n → ι → Y → ℂ) (a : ι → Y → ℂ), A.IsSec (A.kap + k • H) t0 ∧ (∀ j, A.IsSec (A.kap + k • H) (t j)) ∧ A.IsSec (A.kap + (G + k • H)) a ∧ ∀ P ∈ T, t0 (A.pick P) P ≠ 0 ∧ A.IsCoordAt t0 t P ∧ a (A.pick P) P ≠ 0 := by
   intro n Y _ _ _ _ _ _ ι La _ A H hH T G
-  obtain ⟨q, hq, hk9⟩ := GlobalTheory.T.exists_sections_approx_firstJets_positive n Y ι La A H hH T
-  obtain ⟨ε, hε, hk10⟩ := GlobalTheory.T.quotient_jets_fderiv_det_ne_zero n
+  obtain ⟨q, hq, hk9⟩ := _root_.GlobalTheory.jets_approx_sections_of_positive n Y ι La A H hH T
+  obtain ⟨ε, hε, hk10⟩ := _root_.GlobalTheory.quot_jets_det_ne_zero n
   obtain ⟨k0, hk0⟩ := hk9 0 (fun _ _ => 1) (fun _ => differentiable_const _) ε hε
   have hpj : ∀ j : Fin n, ∀ P : Y,
       Differentiable ℂ (fun v : V n => v j - (A.chart (A.pick P) P) j) := fun j P =>

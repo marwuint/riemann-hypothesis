@@ -9,7 +9,13 @@ import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginRootIndexBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TriangularSpanCoeffRatio
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagEqualChangeLowerTriangular
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianMapLieModelLatticeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianMapLieModelLattice
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecFracExt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameNormsContinuousAlongEmbeddingFamilies
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField
 import Development.WeilBound.CoreStatements.CommonZeroEvaluation.ExistsLocalChartCentre
@@ -233,7 +239,7 @@ theorem diag_root_line : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       have hx' : x ∈ Or.𝔐.dR s q := hx
       rw [hdRs] at hx'
       exact span_mono_subring hreg' hx'
-    have htw := GlobalTheory.T.abelian_map_lie_model_lattice E H Dw l Xo c _ _ Y Or.𝔐.X Or.𝔐.t Or.𝔐.f Or.𝔐.m RM.Ω Or.𝔐.ξ Or.𝔐.Li Or.𝔐.M Fr.y₀ Fr.pt_eq z d
+    have htw := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.triIn_of_frBor E H Dw l Xo c _ _ Y Or.𝔐.X Or.𝔐.t Or.𝔐.f Or.𝔐.m RM.Ω Or.𝔐.ξ Or.𝔐.Li Or.𝔐.M Fr.y₀ Fr.pt_eq z d
       hbor (Small.labelC s) (labelRk Dw s) (Small.mult_labelC Dw s).symm (Or.Fl.b s) w
       (fun k => (Fr.tan_eq s k).symm) hw
     have htb : FinRd.Roots.TriIn (Or.Fl.b s) (fun k => Tm k k) b := fun k => ⟨Tm k, rfl, htri k, hT k⟩

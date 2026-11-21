@@ -22,9 +22,4 @@ theorem exists_pow_card_eq {K L : Type} [Field K] [Fintype K] [Field L] [Algebra
   simp only [AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic, pow_iterate] at h1
   simpa using h1.symm
 
-theorem target : ∀ {K L : Type} [inst : Field K] [inst_1 : Fintype K] [inst_2 : Field L]
-    [inst_3 : Algebra K L] [Algebra.IsAlgebraic K L] (σ : Gal(L/K)) (X : Finset L),
-    ∃ (i : ℕ), ∀ x ∈ X, (σ : L → L) x = x ^ Fintype.card K ^ i :=
-  fun σ X => exists_pow_card_eq σ X
-
 end GlobalTheory.CardinalPower

@@ -19,12 +19,6 @@ def SecPointSeparable.Statement : Prop :=
       Algebra.trdeg k (Algebra.adjoin k (Set.range fun m => x m * (x j₀)⁻¹)) ≤ (e : Cardinal)) →
       Algebra.IsSeparable (GenParField k e n) L
 
-section Inhabitants
-
-abbrev chartPointInv : Fin 1 → GenParField ℚ 0 1 := fun _ => (genPar ℚ 0 1 (.inr 0))⁻¹
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.Vertical

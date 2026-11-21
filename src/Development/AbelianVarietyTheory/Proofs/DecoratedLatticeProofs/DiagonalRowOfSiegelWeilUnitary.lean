@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DiagonalRowBoundFromWindowWidthThree
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DegenerateTermsAndCollisionBoundsUniformWidthsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CorankOnePairsFamilyBoundsOfSiegelWeilStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DegenerateTermsAndCollisionBoundsUniformWidths
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CorankOnePairsFamilyBoundsOfSiegelWeil
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WuDecayOfGap
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RowsPtAt
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CollSBound
@@ -15,14 +15,18 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.SBridge
 import Development.AbelianVarietyTheory.Statements.DiscreteSeriesShifts.ThmBpDS
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DiscreteSeriesDegreeBound
+import Formalism.SharpRestriction.CuspSpanNormBounds.OnePlaceEstimates
+import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeLitG
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.FamilyStatementOfAbsAndVandermonde
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.SettingBlocks
 import Formalism.HermitianCurvature.BesselNonvanishingReduction
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.GammaRangeOfSizeHypotheses
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.DiagSmall
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FinrankLeRankOnAdd
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.KerInclOn
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SumNormSqOrthonormalLeHilbertSchmidt
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.DiagAtScale
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DiagCLC
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.FinXClosed
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ToGlob0
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ExpQuarterMulExpQuarterLeTwo
@@ -33,15 +37,15 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InVolu
 import Formalism.PeriodIntegrals.BesselMapUniq
 import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CorankOneIsEquivalenceOnRow
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DiagCLC
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.FinXClosed
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.StepLocGenPinnedGP
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MainEqNml
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.StepAnalyticConstantsP
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MassDataChoiceLeaves
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AmpUnifPOf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.BDataOf
+import Formalism.LocalRingCardinality.DataTies
 import Formalism.SharpRestriction.CuspSpanNormBounds.WeightedUniformRotatedOfExpansion
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.ThmBChain
+
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S GlobalTheory.Core.Deg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -50,8 +54,8 @@ namespace GlobalTheory.Core.Rk
 theorem rowDiag_of_siegelWeilUnitary
     (hSW : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent) :
     GlobalTheory.Core.Rk.RowDiag (fun D L C' => GlobalTheory.Core.Rk.IsScaleWithBoundedGamma D L C' ∧ ∀ u, GlobalTheory.Core.Rk.RankMu D u) := by
-  have hDeg := GlobalTheory.T.degenerateTerms_and_collisionBounds_uniform_widths
-  have hOne := GlobalTheory.T.corankOnePairsFamilyBounds_of_siegelWeil hSW 3
+  have hDeg := _root_.GlobalTheory.Core.Deg.degenerate_and_collisions_uncond
+  have hOne := _root_.GlobalTheory.Core.Diag.oneOn_singleton_of_siegelWeil hSW 3
   exact GlobalTheory.Core.Rk.diagonalRow_bound_from_windowWidthThree GlobalTheory.wuDecayOfGap (hDeg.1 3) (hDeg.2 3) hOne.1 hOne.2
 
 end GlobalTheory.Core.Rk

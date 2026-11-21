@@ -13,7 +13,8 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeGeneric
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrModelOfNumberFieldPlace
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueEquiv
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalModelPowerFreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibrePowerFreePullbackStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibrePowerFreePullback
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.AdaptedEigenbasisExists
 
 noncomputable section
@@ -55,10 +56,10 @@ theorem germ_degZero_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     rw [map_natCast] at h3
     exact h3.trans hs1
   haveI : CharP Γ.κ p := (CharP.charP_iff_prime_eq_zero hp).2 hpκ
-  obtain ⟨F, hF0, hFi⟩ := GlobalTheory.T.fibre_curve_germ_powers E H hstar X t Ω ξ d M S O' s _ p Γ hξ hpow hfib
+  obtain ⟨F, hF0, hFi⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.GermFam.germ_family E H hstar X t Ω ξ d M S O' s _ p Γ hξ hpow hfib
   choose hFB φ' ψ' lam' he hφ hψ hlam using hFi
-  choose xs A hxs hfr hpr using GlobalTheory.T.hodge_lattice_germ_eigen E H X t Ω ξ d r M S ρ 𝓗 σ u hξ hgive hσ hu hsp
-  have hdet := fun q => (GlobalTheory.T.hodge_lattice_span_independent X Ω ξ E (Fin d → Ω) M.lat ρ H.bar r 𝓗 σ u hσ hu hsp).2.2 q (A q) (hfr q)
+  choose xs A hxs hfr hpr using _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.Frame.exists_basis_frame E H X t Ω ξ d r M S ρ 𝓗 σ u hξ hgive hσ hu hsp
+  have hdet := fun q => (_root_.GlobalTheory.CompanionTheory.Ar.Flat.HodgeLat.quot_det_bundle X Ω ξ E (Fin d → Ω) M.lat ρ H.bar r 𝓗 σ u hσ hu hsp).2.2 q (A q) (hfr q)
   choose Mt hAM hMt using fun i => exists_trans S hgive σ (qi i) q0 (FibreCurve.generic_centre_specializes Γ i) (τ q0) (hτ q0)
     (he i) (hxs q0) hu (hpr (qi i)) (hpr q0)
   let χ : 𝓞 E →+* Γ.κ := v0.comp (τ q0)
@@ -82,8 +83,8 @@ theorem germ_degZero_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   let x : ∀ i : Γ.C.I, Fin r → (Fin d → (Γ.C.v i).valuationSubring) × (Fin d → (Γ.C.v i).valuationSubring) :=
     fun i j => vmap (vi i) (xs (qi i) j)
   let N : Γ.C.I → Matrix (Fin r) (Fin r) Γ.κ := fun i => (Mt i).map v0
-  have hx₀ : IsHBasis F.B x₀ := GlobalTheory.T.intersection_second E _ _ v0 d r _ _ _ hF0 (hxs q0)
-  have hx : ∀ i, IsHBasis (F.Bi i) (x i) := fun i => GlobalTheory.T.intersection_second E _ _ (vi i) d r _ _ _ (hFB i) (hxs (qi i))
+  have hx₀ : IsHBasis F.B x₀ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isHBasis_map E _ _ v0 d r _ _ _ hF0 (hxs q0)
+  have hx : ∀ i, IsHBasis (F.Bi i) (x i) := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isHBasis_map E _ _ (vi i) d r _ _ _ (hFB i) (hxs (qi i))
   have hrel : ∀ i j, transH (F.φ i) (F.ψ i) (F.lam i) (vmap (Γ.C.v i).valuationSubring.subtype (x i j)) -
       ∑ l, N i j l • x₀ l ∈ eigW F.B χ := fun i j => by
     have h1 := vmap_mem_eigW hF0 (τ q0) (hMt i j)
@@ -91,7 +92,7 @@ theorem germ_degZero_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
       (xs (qi i) j) (Mt i j) (xs q0)
     rw [hφ i, hψ i, hlam i]
     exact h2 ▸ h1
-  obtain ⟨hne, hfin, hsum⟩ := GlobalTheory.T.valuation_bounded_frame E Γ.κ Γ.C p d r F χ
+  obtain ⟨hne, hfin, hsum⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegProd.curve_deg E Γ.κ Γ.C p d r F χ
     (GlobalTheory.T.charpoly_splits_of_embeddings E Ω O Γ.κ (v0.comp ((GlobalTheory.CompanionTheory.Ar.ValHom.stalkEquiv ξ hξ q0).symm.toRingHom.comp
       ((algebraMap O Ω).codRestrict (regAt ξ q0) (hreg q0)))) hinj hcard hrange) hχ x₀ x N hx₀ hx hrel
   have hNdet : ∀ i, (N i).det = v0 (Mt i).det := fun i => (RingHom.map_det v0 (Mt i)).symm
@@ -492,7 +493,7 @@ theorem emb_inr (𝔐 : HodgeCpt Y S y) (τ : CMType H) :
 
 theorem cst_mem (𝔐 : HodgeCpt Y S y) (q : Cpt 𝔐.ξ) (o : 𝓞 c.F) : 𝔐.cst (o : c.F) ∈ regAt 𝔐.ξ q := by
   letI algΩ : Algebra (𝓞 c.F) Ω := (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)).toAlgebra
-  exact GlobalTheory.T.base_constants_regular 𝔐.X Ω 𝔐.ξ (𝓞 c.F) (𝔐.f ≫ Y.s) 𝔐.cst_over q o
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.RegBase.algebraMap_mem_regAt_of_base 𝔐.X Ω 𝔐.ξ (𝓞 c.F) (𝔐.f ≫ Y.s) 𝔐.cst_over q o
 
 open CptHodge in
 
@@ -510,7 +511,7 @@ theorem exists_hodgeLat (𝔐 : HodgeCpt Y S y)
   haveI hprop : IsProper s₀ := LocModel.isProper_of_coordTie 𝔐.all 𝔐.tie s₀
   haveI hLN : IsLocallyNoetherian 𝔐.X := LocallyOfFiniteType.isLocallyNoetherian s₀
   have hFib : ∀ (p : ℕ), p.Prime → ∀ z : 𝔐.X, (p : 𝔐.X.residueField z) = 0 → FibPF 𝔐.t z := fun p hp z hz =>
-    (GlobalTheory.T.fibre_power_free_pullback E H _ _ _ 𝔐.t 𝔐.f 𝔐.m z).2 (hFibY p hp _ (by
+    (_root_.GlobalTheory.CompanionTheory.Ar.FibPull.fibPF_pull_iff E H _ _ _ 𝔐.t 𝔐.f 𝔐.m z).2 (hFibY p hp _ (by
       rwa [← map_natCast (𝔐.f.residueFieldMap z).hom p, map_eq_zero] at hz))
   haveI : ∀ x : 𝔐.X, _root_.IsReduced (𝔐.X.presheaf.stalk x) := fun x => by
     have := (𝔐.normal x).1
@@ -521,7 +522,7 @@ theorem exists_hodgeLat (𝔐 : HodgeCpt Y S y)
         (Spec.map (CommRingCat.ofHom 𝔐.fn) ≫ 𝔐.ξ₀) (IsLocalRing.closedPoint Ω) := by rw [𝔐.fn_over]
     exact ((Scheme.Hom.comp_apply 𝔐.ξ 𝔐.f _).symm.trans h1).trans ((Scheme.Hom.comp_apply _ 𝔐.ξ₀ _).trans
       (congrArg 𝔐.ξ₀ (Subsingleton.elim (α := PrimeSpectrum 𝔐.Ω₀) _ _)))
-  have hPow : PowFns 𝔐.t := GlobalTheory.T.powFns_of_abelian_generic E H 𝔐.X 𝔐.t hred hLN (fun z hz => by
+  have hPow : PowFns 𝔐.t := _root_.GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian E H 𝔐.X 𝔐.t hred hLN (fun z hz => by
     rw [← hz _ (𝔐.all z)]
     refine mem_abLocus_of_map 𝔐.m.cart.1 ?_
     rw [hf0]
@@ -533,8 +534,8 @@ theorem exists_hodgeLat (𝔐 : HodgeCpt Y S y)
     ⟨finrank_of_isVB (𝔐.vb (.inl ⟨τ', h⟩)), by
       rw [← emb_inr 𝔐 ⟨τ', h⟩]
       exact finrank_of_isVB (𝔐.vb (.inr ⟨τ', h⟩))⟩
-  obtain ⟨d, M, ⟨G⟩⟩ := GlobalTheory.T.exists_germ_system E H hstar 𝔐.X 𝔐.t Ω 𝔐.ξ hPow hgen
-  obtain ⟨e, he, -⟩ := GlobalTheory.T.lie_model_existsUnique_equiv 𝔐.X 𝔐.t.G Ω 𝔐.ξ (Fin d → Ω) 𝔐.Li M 𝔐.M
+  obtain ⟨d, M, ⟨G⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.germSys_exists E H hstar 𝔐.X 𝔐.t Ω 𝔐.ξ hPow hgen
+  obtain ⟨e, he, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_existsUnique_equiv 𝔐.X 𝔐.t.G Ω 𝔐.ξ (Fin d → Ω) 𝔐.Li M 𝔐.M
   let ρ' : 𝓞 E →+* Module.End Ω (Fin d → Ω) := (e.symm.conjRingEquiv : _ ≃+* _).toRingHom.comp 𝔐.ρ
   have hρ' : ∀ a v, e (ρ' a v) = 𝔐.ρ a (e v) := fun a v => by
     simp [ρ', LinearEquiv.conjRingEquiv, LinearEquiv.conj_apply]
@@ -558,10 +559,10 @@ theorem exists_hodgeLat (𝔐 : HodgeCpt Y S y)
         simp [ComplexEmbedding.conjugate_coe_eq]
       rw [hcc] at e2
       rw [e1, e2, add_comm]
-  have hC : HChar G.g₀.B (D.p + D.q) := GlobalTheory.T.hermitian_signature_character E Ω d (D.p + D.q) G.g₀.B ρ' hrho hcard hsum
-  have hfree := GlobalTheory.T.germ_system_height_free E H hstar 𝔐.X 𝔐.t Ω 𝔐.ξ d (D.p + D.q) M G hPow hgen hC
+  have hC : HChar G.g₀.B (D.p + D.q) := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hChar_of_eigSp_ranks E Ω d (D.p + D.q) G.g₀.B ρ' hrho hcard hsum
+  have hfree := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hfree_at_component_stalks E H hstar 𝔐.X 𝔐.t Ω 𝔐.ξ d (D.p + D.q) M G hPow hgen hC
     (fun q p' hp' h => hFib p' hp' q.1 h)
-  obtain ⟨𝓗, hG⟩ := GlobalTheory.T.exists_hodge_lattice_germ_system E H hstar 𝔐.X 𝔐.t Ω 𝔐.ξ d (D.p + D.q) M G ρ' hgen hact hfree
+  obtain ⟨𝓗, hG⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.germ_gives_hodgeLat E H hstar 𝔐.X 𝔐.t Ω 𝔐.ξ d (D.p + D.q) M G ρ' hgen hact hfree
   letI algΩ : Algebra (𝓞 c.F) Ω := (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)).toAlgebra
   have hint : ∀ (s' : E →+* Ω) (a : 𝓞 E), s' (a : E) ∈ (algebraMap (𝓞 c.F) Ω).range := by
     intro s' a
@@ -573,7 +574,7 @@ theorem exists_hodgeLat (𝔐 : HodgeCpt Y S y)
     germ_degZero_prime E H hstar 𝔐.X 𝔐.t Ω 𝔐.ξ d (D.p + D.q) M G ρ' 𝓗 (𝓞 c.F) ℤ s₀ p σ hp
       (𝔐.cst.injective.comp RingOfIntegers.coe_injective) (cst_mem 𝔐) hgen
       hPow hG (fun q h => hFib p hp q.1 h) hcard hint
-  have htr := GlobalTheory.T.hodge_lattice_transport_equiv 𝔐.X Ω 𝔐.ξ E (Fin d → Ω) 𝔐.Li e M.lat ρ' 𝔐.ρ H.bar (D.p + D.q) 𝓗 hρ'
+  have htr := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hodgeLat_transport 𝔐.X Ω 𝔐.ξ E (Fin d → Ω) 𝔐.Li e M.lat ρ' 𝔐.ρ H.bar (D.p + D.q) 𝓗 hρ'
   rw [lat_map M 𝔐.M e he] at htr
   obtain ⟨𝓗', h'⟩ := htr
   exact ⟨𝓗', fun σ => h' σ _ (hdeg σ)⟩

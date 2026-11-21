@@ -7,7 +7,8 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndBC
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsQuotEquiv
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsLevMoveOfFrOver
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ShortThetaValueExistsUniqueNaturalOfLawsStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ShortThetaValueExistsUniqueNaturalOfLaws
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ShortThetaValueUnderLevelMoveStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -59,7 +60,7 @@ theorem cover_product_indep_of_lift : Laws → ChartIndepSt2 → ∀ (E : Type) 
     intro q
     rw [hk3, ← _root_.mul_assoc, ← map_mul, Units.mul_inv, map_one, _root_.one_mul]
   have h2 := shortValAt_smul d.Xo₂ d.c₂ _ _ (d.w x0) (d.eF ↑(ψ kI)) hw Λ β N P y₂ v' h1
-  have hu := (GlobalTheory.T.shortThetaValue_existsUnique_natural_of_laws hL hC E H Dw d.l₂ d.Xo₂ d.c₂ _ hNab n Λ N hU hT hO a P hP (d.w x0) β).1 k y₂
+  have hu := (_root_.GlobalTheory.shortThetaValue_existsUnique_natural hL hC E H Dw d.l₂ d.Xo₂ d.c₂ _ hNab n Λ N hU hT hO a P hP (d.w x0) β).1 k y₂
   rw [hu.unique hv h2, hev]
   ring
 

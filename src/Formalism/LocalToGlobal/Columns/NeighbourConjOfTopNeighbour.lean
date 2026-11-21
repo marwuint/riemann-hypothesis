@@ -36,13 +36,6 @@ theorem topNeighbour_inf_eq (Q : HeightOneSpectrum (𝓞 E)) {N Z : Submodule (�
     Nat.eq_of_mul_eq_mul_right hpos (by rw [one_mul]; exact hm)
   exact le_antisymm ((Submodule.toAddSubgroup_le _ _).mp (AddSubgroup.relIndex_eq_one.mp h1)) hle
 
-theorem topNeighbour_eq_glue (Q : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ Q ≠ Q) {N Z : Submodule (𝓞 E) (Sp E n)}
-    (hN : Submodule.IsLattice E N) (huN : IsUnimodular (hStd E n) N) (huZ : IsUnimodular (hStd E n) Z)
-    (h : IsHeckeNbr Q.asIdeal n N Z) :
-    Z = (conjPrime₂ Q).asIdeal • N ⊔ (conjPrime₂ Q).asIdeal • dual (hStd E n) ((conjPrime₂ Q).asIdeal • N) := by
-  rw [← topNeighbour_inf_eq Q hN h]
-  exact IsHeckeNbr.eq_glue hN huN huZ Q hne h
-
 theorem ideal_smul_topNeighbour_le (Q : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ Q ≠ Q) {N Z H : Submodule (𝓞 E) (Sp E n)} {j : ℕ}
     (hN : Submodule.IsLattice E N) (huN : IsUnimodular (hStd E n) N) (huZ : IsUnimodular (hStd E n) Z)
     (huH : IsUnimodular (hStd E n) H) (hZ : IsHeckeNbr Q.asIdeal n N Z) (hH : IsHeckeNbr Q.asIdeal j N H) :

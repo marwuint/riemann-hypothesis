@@ -64,35 +64,6 @@ theorem _root_.GlobalTheory.LetterMap.num_algebraMap {Dw : _root_.ReciprocityThe
   rw [dif_pos hex]
   exact hinj hex.choose_spec
 
-theorem map_arcDet (Dw : Datum H) {K L : Type} [Field K] [Field L] (f : K →+* L) :
-    MvPolynomial.map (coeffMap f) (arcDet Dw K) = arcDet Dw L := by
-  unfold arcDet
-  rw [map_prod]
-  refine Finset.prod_congr rfl fun τ _ => ?_
-  rw [RingHom.map_det]
-  congr 1
-  ext i k : 2
-  simp
-
-def ringMap (Dw : Datum H) {K L : Type} [Field K] [Field L] (f : K →+* L) : ArcS Dw K →+* ArcS Dw L :=
-  IsLocalization.Away.lift (arcDet Dw K)
-    (g := (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries L)) (ArcS Dw L)).comp (MvPolynomial.map (coeffMap f)))
-    (by
-      rw [RingHom.comp_apply, map_arcDet]
-      exact IsLocalization.Away.algebraMap_isUnit (arcDet Dw L))
-
-theorem ringMap_algebraMap (Dw : Datum H) {K L : Type} [Field K] [Field L] (f : K →+* L)
-    (P : MvPolynomial (ArcLt Dw) (LaurentSeries K)) :
-    ringMap Dw f (algebraMap _ _ P) = algebraMap _ (ArcS Dw L) (MvPolynomial.map (coeffMap f) P) :=
-  IsLocalization.Away.lift_eq _ _ _
-
-theorem ringMap_arcι (Dw : Datum H) {K L : Type} [Field K] [Field L] (f : K →+* L) (g : PowerSeries K) :
-    ringMap Dw f (arcι Dw K g) = arcι Dw L (PowerSeries.map f g) := by
-  unfold arcι
-  simp only [RingHom.comp_apply]
-  erw [ringMap_algebraMap, MvPolynomial.map_C, coeffMap_ofPowerSeries]
-  try rfl
-
 end GlobalTheory.LetterMap
 
 namespace GlobalTheory

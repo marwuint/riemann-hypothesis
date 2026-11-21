@@ -60,7 +60,7 @@ theorem exists_adelic_of_isometry : ∀ (D : D7) (V : HSp D) (H : ReciprocityThe
     (fun n hn a a' => by
       have := s.mult n hn a a'
       rwa [hν, one_mul] at this)
-  obtain ⟨u, -, hug⟩ := (GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)
+  obtain ⟨u, -, hug⟩ := (_root_.GlobalTheory.UnitaryGlue.adelic_glue D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)
   have h1 : (latGHat V 1 : Set (Fin V.rank → AdLat.RA D.host.F D.host.E)) =
       AdLat.hat D.host.F (LinearMap.range io : Set (Fin V.rank → D.host.E)) := by
     rw [(hlat 1).2, map_one, Units.val_one]

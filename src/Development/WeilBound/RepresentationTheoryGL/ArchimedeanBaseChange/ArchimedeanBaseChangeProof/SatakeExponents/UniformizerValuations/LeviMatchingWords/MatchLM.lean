@@ -19,15 +19,6 @@ def pw {κ : Pl E → Type} [∀ w, Fintype (κ w)] {a b : ℕ} (L : LM κ a b) 
 
 def muAt (d : LocData E n) (w : Pl E) : (w.adicCompletion E)ˣ →* ℂˣ := if w ∈ d.S₀ ∨ (w ∈ d.Bad ∧ IsSplitAt w) then d.μ w else 1
 
-def MatchLMB : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (d : LocData E n), d.Ok →
-  ∀ (a : ℕ) (ha : a ≤ n) (m : ℕ), ∀ w ∈ d.B,
-    Match n a (n - a) w (muAt d w) (d.gU (m + 1) w) (((d.fixL a).mul (pw (d.betaL a ha) m)).tr d.P d.one w)
-
-def MatchLMGood : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (d : LocData E n), d.Ok →
-  ∀ (a : ℕ) (ha : a ≤ n) (w : Pl E), d.Good w → ∀ (k j : ℕ) (intersection_update_fsHerm_neg_one : Bool),
-    Match n a (n - a) w (d.μ w) (U.lpow (KL n w) (d.hU w k) (j + 1))
-      ((pw (d.hL a ha w k intersection_update_fsHerm_neg_one) j).tr d.P d.one w)
-
 def MatchLMUnit : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (d : LocData E n), d.Ok →
   ∀ (a : ℕ) (ha : a ≤ n) (w : Pl E), w ∉ d.B → (IsSplitAt w → d.Good w) →
     Match n a (n - a) w (if IsSplitAt w then d.μ w else 1) ((KL n w : Set (UL n w)).indicator 1) ((d.eL a).tr d.P d.one w)
@@ -44,14 +35,6 @@ def wordL (d : LocData E n) (a : ℕ) (ha : a ≤ n) (w : Pl E) (l : List (ℕ �
 def wordU (d : LocData E n) (w : Pl E) (l : List (ℕ × Bool)) : UL n w → ℂ :=
   l.foldr (fun x f => PositivityTheory.Rg.BcB.F.Eig.lconv (d.hU w x.1) f) ((KL n w : Set (UL n w)).indicator 1)
 
-def MatchLMWord : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (d : LocData E n), d.Ok →
-  ∀ (a : ℕ) (ha : a ≤ n) (w : Pl E), d.Good w → ∀ l : List (ℕ × Bool),
-    Match n a (n - a) w (d.μ w) (wordU d w l)
-      (PositivityTheory.Rg.BcN.F2.mconv ((wordL d a ha w l).tr d.P d.one w) ((wordL d a ha w l).t w))
-
-def MatchLMWordOf : Prop := MT.MatchSplit → MT.CtMul → SphComm → IdemAlg → MatchLMWord
-def MatchLMBOf : Prop := MT.MatchT → MS.MatchSplitPlace → MB.MatchBadS → MB.MatchBadI → MB.FixIdem → IdemAlg → MatchLMB
-def MatchLMGoodOf : Prop := MT.MatchSplit → IdemAlg → MatchLMGood
 def MatchLMUnitOf : Prop := MB.MatchUnitI → MT.MatchSplit → IdemAlg → MatchLMUnit
 
 structure MOk (d : LocData E n) : Prop where
@@ -67,8 +50,6 @@ structure MOk (d : LocData E n) : Prop where
 def MatchLMB2 : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (d : LocData E n), d.Ok → MOk d →
   ∀ (a : ℕ) (ha : a ≤ n) (m : ℕ), ∀ w ∈ d.B,
     Match n a (n - a) w (muAt d w) (d.gU (m + 1) w) (((d.fixL a).mul (pw (d.betaL a ha) m)).tr d.P d.one w)
-
-def MatchLMB2Of : Prop := MT.MatchT → MT.MatchLin → MS.MatchSplitPlace → MB.MatchBadS → MB.MatchBadI → MB.FixIdem → IdemAlg → MatchLMB2
 
 end PositivityTheory.Rg.BcB.F.MLM
 

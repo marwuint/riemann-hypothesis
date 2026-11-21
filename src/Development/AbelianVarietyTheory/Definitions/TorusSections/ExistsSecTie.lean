@@ -51,31 +51,6 @@ theorem IntSec.ofIntData_θ {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.
     {y : letI := io.toAlgebra; FrPt Xo c T.Fr} (I : IntData Xo c T io y) :
     letI := io.toAlgebra; (IntSec.ofIntData I).θ = I.θ := rfl
 
-private lemma eSec_comp_eq_comp_eSec_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
-    {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) : eSec G' ≫ φ = f ≫ eSec G := by
-  unfold eSec
-
-  let T : Over S' := 𝟙_ (Over S')
-  let x : T ⟶ G' := 1
-  have hx : x.left = Over.Hom.left (η : 𝟙_ (Over S') ⟶ G') := by
-    change (1 : T ⟶ G').left = _
-    rw [Hom.one_def, CartesianMonoidalCategory.toUnit_unique (toUnit T) (𝟙 T), Category.id_comp]
-  let x₀ : Over.mk (T.hom ≫ f) ⟶ G := Over.homMk (x.left ≫ φ) (by
-    change (x.left ≫ φ) ≫ G.hom = T.hom ≫ f
-    rw [Category.assoc, h.1.w, ← Category.assoc, Over.w])
-
-  have hsq : x₀ * x₀ = x₀ := by
-    ext
-    rw [h.2 T x x x₀ x₀ rfl rfl]
-    change (x * x).left ≫ φ = x.left ≫ φ
-    rw [show x * x = x from _root_.mul_one (1 : T ⟶ G')]
-  have h1 : x₀ = 1 := mul_left_cancel (hsq.trans (_root_.mul_one x₀).symm)
-  have h2 : x₀.left = f ≫ Over.Hom.left (η : 𝟙_ (Over S) ⟶ G) := by
-    rw [h1, Hom.one_def, Over.comp_left]
-    congr 1
-  rw [← hx]
-  exact h2
-
 structure Fib (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (A : PolAV (Spec (CommRingCat.of K))) where
   φ : A.A.left ⟶ Xo.univ.t.G.left
   cart : IsGrpPullback A.A Xo.univ.t.G x φ
@@ -87,23 +62,6 @@ structure Fib (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (A : P
     gw ω (eSec A.A) z (J (x ≫ eSec Xo.univ.t.G)) (JA (eSec A.A)) *
         val (L := A.L) (φ := fun _ : PUnit => eSec A.A) (ε := fun _ => 1) ρ (𝟙 _) z JA =
       val (L := Xo.univ.t.PP.L) (φ := fun _ : PUnit => eSec Xo.univ.t.G) (ε := fun _ => 1) Xo.univ.t.PP.rig x z J
-
-theorem exists_fib (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) :
-    ∃ A : PolAV (Spec (CommRingCat.of K)), Nonempty (Fib Xo x A) := by
-  obtain ⟨P, φ, act, hc, ⟨ω, hω⟩, -⟩ := GlobalTheory.exists_polAV_pullback_of_isLocalRing E H Xo.X Xo.univ.t Xo.univ.proper
-    Xo.univ.ample Xo.univ.ktriv K x
-
-  have he : eSec P.A ≫ φ = x ≫ eSec Xo.univ.t.G := eSec_comp_eq_comp_eSec_of_isGrpPullback hc
-
-  obtain ⟨ρ, hρ, hv⟩ := GlobalTheory.ConstFam.exists_gen_through (φ' := fun _ : PUnit => eSec P.A)
-    (φ := fun _ : PUnit => eSec Xo.univ.t.G) (ε := fun _ => 1) (h := x) hω Xo.univ.t.PP.isLB P.isLB (fun _ => he)
-    Xo.univ.t.PP.rig Xo.univ.t.PP.rigGen
-  refine ⟨P, ⟨⟨φ, hc, ω, hω, ρ, hρ, ?_⟩⟩⟩
-  intro z JA J hJA hJ
-  have key := hv _ (𝟙 _) z J JA hJ hJA
-  rw [Category.id_comp] at key
-  rw [key]
-  simp only [GlobalTheory.ConstFam.wVal, Fintype.prod_unique, zpow_one, Category.id_comp, he]
 
 section
 
@@ -119,35 +77,6 @@ def Fib.SecTie (Φ : Fib Xo x A) (xF : Sp F ⟶ Xo.X) (s : LB.Sec (PPx xF)) (th 
       sval (L := Xo.univ.t.PP.L) (φ := fun _ : Fin 1 => (snd (Over.mk xF) Xo.univ.t.G).left) (ε := fun _ => 1) s r' z J =
         (gw Φ.ω (r ≫ (snd (TFK (R := R) F) A.A).left) z (J (r' ≫ (snd (Over.mk xF) Xo.univ.t.G).left))
           (JA (r ≫ (snd (TFK (R := R) F) A.A).left))).val * GlobalTheory.UT.sA th r z JA
-
-theorem Fib.SecTie.pt_eq {Φ : Fib Xo x A} {xF : Sp F ⟶ Xo.X} {s : LB.Sec (PPx xF)} {th : GlobalTheory.UT.SecA A F 1}
-    (h : Φ.SecTie xF s th) : xF = jFK (R := R) F ≫ x := h.1
-
-theorem Fib.SecTie.unique {Φ : Fib Xo x A} {xF : Sp F ⟶ Xo.X} {s s' : LB.Sec (PPx xF)}
-    {th : GlobalTheory.UT.SecA A F 1} (h : Φ.SecTie xF s th) (h' : Φ.SecTie xF s' th) (i) : s.f i = s'.f i := by
-  obtain ⟨hx, h2⟩ := h
-  obtain ⟨-, h2'⟩ := h'
-  subst hx
-
-  let a := Φ.cart.1.lift (pullback.snd (jFK (R := R) F ≫ x) Xo.univ.t.G.hom)
-    (pullback.fst (jFK (R := R) F ≫ x) Xo.univ.t.G.hom ≫ jFK (R := R) F)
-    (by rw [← pullback.condition, Category.assoc])
-  let r : (Over.mk (jFK (R := R) F ≫ x) ⊗ Xo.univ.t.G).left ⟶ (TFK (R := R) F ⊗ A.A).left :=
-    pullback.lift (pullback.fst (jFK (R := R) F ≫ x) Xo.univ.t.G.hom) a (Φ.cart.1.lift_snd _ _ _).symm
-  have e1 : 𝟙 _ ≫ (snd (Over.mk (jFK (R := R) F ≫ x)) Xo.univ.t.G).left =
-      r ≫ (snd (TFK (R := R) F) A.A).left ≫ Φ.φ := by
-    change 𝟙 _ ≫ pullback.snd _ _ = r ≫ pullback.snd _ _ ≫ Φ.φ
-    rw [Category.id_comp, ← Category.assoc, pullback.lift_snd, IsPullback.lift_fst]
-    rfl
-  have e2 : 𝟙 _ ≫ (fst (Over.mk (jFK (R := R) F ≫ x)) Xo.univ.t.G).left = r ≫ (fst (TFK (R := R) F) A.A).left := by
-    change 𝟙 _ ≫ pullback.fst _ _ = r ≫ pullback.fst _ _
-    rw [Category.id_comp, pullback.lift_fst]
-    rfl
-  have hss : s = s' := by
-    refine GlobalTheory.FieldBaseChange.sec_ext' Xo.univ.t.PP.isLB fun y J hJ => ?_
-    obtain ⟨JA, hJA⟩ := GlobalTheory.ConstFam.exists_good' A.isLB y
-    rw [h2 _ r (𝟙 _) e1 e2 y JA J hJA hJ, h2' _ r (𝟙 _) e1 e2 y JA J hJA hJ]
-  rw [hss]
 
 theorem Fib.exists_secTie (Φ : Fib Xo x A) {xF : Sp F ⟶ Xo.X} (hx : xF = jFK (R := R) F ≫ x) (s : LB.Sec (PPx xF)) :
     ∃ th : GlobalTheory.UT.SecA A F 1, Φ.SecTie xF s th := by
@@ -189,22 +118,5 @@ def IntTh {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
           (JG ((r ≫ (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left ≫ pullback.fst G.hom (jK R)) ≫ 𝟙 _))
           (fun _ => JA ((r ≫ (U.genF F).left) ≫ (snd (TFK (R := R) F) A.A).left))).val *
           GlobalTheory.UT.sA th (r ≫ (U.genF F).left) z JA
-
-theorem IntTh.isGen {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
-    {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
-    {U : UnifPre I D A G} {F : Type} [Field F] [Algebra (FractionRing R) F] {w : GlobalTheory.UT.W0 U}
-    {th : GlobalTheory.UT.SecA A F 1} (h : IntTh U w th) : w.IsGen := h.1
-
-example {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
-    {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
-    (U : UnifPre I D A G) {F : Type} [Field F] [Algebra (FractionRing R) F] (w : GlobalTheory.UT.W0 U) (hw : w.IsGen) :
-    IntTh U (F := F) w ⟨fun _ => 0, fun _ _ => by simp⟩ := by
-  refine ⟨hw, ⟨fun _ => 0, fun _ _ => by simp⟩, fun Z r z JA JG hA hG => ?_⟩
-  have g0 : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (V : X.Opens), gs f y V 0 = 0 := fun f y V => by
-    unfold gs
-    split_ifs
-    · rw [map_zero, map_zero]
-    · rfl
-  exact (g0 _ _ _).trans ((congrArg (_ * ·) (g0 _ _ _)).trans (mul_zero _)).symm
 
 end GlobalTheory.EtaVal

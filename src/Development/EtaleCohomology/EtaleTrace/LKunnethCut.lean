@@ -43,16 +43,6 @@ theorem kun_bijective_of_kunIso (l : ℕ) [Fact l.Prime] {k : Type} [Field k] {X
   rw [e]
   exact κ.bijective
 
-theorem LKunneth_of (hR : LRing) (hK : LateralTheory.KummerTheory.GOAL) : LKunneth := by
-  intro hB l _ k _ _ hl d e X Y p q hp hq n
-  have hc := (hR hB l).1
-  obtain ⟨⟨-, a2, -, -, -, a6n, a6r, -, -, a7, a8, a9, a10, a11⟩, ⟨b1, b2, b3, -, -⟩, -, ⟨-, e2, e3, e4, -, -⟩⟩ := hB
-  obtain ⟨hp1, hp2⟩ := hp
-  obtain ⟨hq1, -⟩ := hq
-  have : Smooth p := SmoothOfRelativeDimension.smooth d p
-  exact kun_bijective_of_kunIso l p q n (hc _)
-    (hK a2 a6n a6r a7 a8 a9 a10 a11 b1 b2 b3 e2 e3 e4 l k (isUnit_iff_ne_zero.2 hl) p q n 0)
-
 end LateralTheory.EtaleTrace
 
 end

@@ -1,6 +1,8 @@
 import Mathlib
 import GroundTheory.ProfiniteCohomology.PoitouTate.RealEvenHyp
-import GroundTheory.ProfiniteCohomology.PoitouTate.RealOddMain
+import GroundTheory.ProfiniteCohomology.PoitouTate.RealOdd
+import GroundTheory.ProfiniteCohomology.RealPlaces.Vanishing
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -65,66 +67,6 @@ end Hypotheses
 
 variable (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
   (hM : ∀ m : M, N • m = 0)
-
-include hS hM in
-
-theorem poitouTateReal_duality {r s : ℕ} (h : r + s = 3) (hs : 1 ≤ s) :
-    Function.Bijective (tateCompactDualityMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) h
-      (gsTrace S ιr ιs N) M) :=
-  (gsTatePoitouTateHypotheses S ιr ιs hS).duality M hM h hs
-
-include hS hM in
-
-theorem poitouTateReal_compactDual {r s : ℕ} (h : r + s = 3) (hr : 1 ≤ r) :
-    Function.Bijective (ptTCompactDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-      (gsTrace S ιr ιs N) h) :=
-  (gsTatePoitouTateHypotheses S ιr ιs hS).bijective_ptTCompactDualMap M hM h hr
-
-include hS hM in
-
-theorem poitouTateReal_nineTerm :
-    Function.Injective (ptTGlobalToLocalHat (gsFinFamily S ιs) (gsRealFamily S ιr) M) ∧
-    Function.Exact (ptTGlobalToLocalHat (gsFinFamily S ιs) (gsRealFamily S ιr) M)
-      (ptTLocalHatDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-        (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N)) ∧
-    Function.Exact (ptTLocalHatDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-        (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N))
-      (ptTDualToGlobal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) (gsTrace S ιr ιs N) M
-        (show 1 + 2 = 3 from rfl)
-        ((gsTatePoitouTateHypotheses S ιr ιs hS).bijective_ptTCompactDualMap M hM _ le_rfl)) ∧
-    Function.Exact (ptTDualToGlobal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N)
-        (gsTrace S ιr ιs N) M (show 1 + 2 = 3 from rfl)
-        ((gsTatePoitouTateHypotheses S ιr ιs hS).bijective_ptTCompactDualMap M hM _ le_rfl))
-      (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 1).hom ∧
-    Function.Exact (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 1).hom
-      (ptTLocalDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-        (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N) (show 1 + 1 = 2 from rfl)) ∧
-    Function.Exact (ptTLocalDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-        (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N) (show 1 + 1 = 2 from rfl))
-      (ptTDualToGlobal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) (gsTrace S ιr ιs N) M
-        (show 2 + 1 = 3 from rfl)
-        ((gsTatePoitouTateHypotheses S ιr ιs hS).bijective_ptTCompactDualMap M hM _ (by norm_num))) ∧
-    Function.Exact (ptTDualToGlobal (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N)
-        (gsTrace S ιr ιs N) M (show 2 + 1 = 3 from rfl)
-        ((gsTatePoitouTateHypotheses S ιr ιs hS).bijective_ptTCompactDualMap M hM _ (by norm_num)))
-      (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 2).hom ∧
-    Function.Exact (ptTGlobalToLocal (gsFinFamily S ιs) (gsRealFamily S ιr) M 2).hom
-      (ptTLocalDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-        (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N) (show 2 + 0 = 2 from rfl)) ∧
-    Function.Surjective (ptTLocalDualMap (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-      (gsLocalInvRootsQZ S ιs N) (gsRealInvRootsQZ S ιr N) (show 2 + 0 = 2 from rfl)) :=
-  (gsTatePoitouTateHypotheses S ιr ιs hS).nineTerm M hM
-
-include hS hM in
-
-theorem poitouTateReal_sha :
-    Finite (ptTSha (gsFinFamily S ιs) (gsRealFamily S ιr) M 1) ∧
-      Finite (ptTSha (gsFinFamily S ιs) (gsRealFamily S ιr) (dualRep (gsRoots S N) M) 2) ∧
-      Function.Bijective (ptTShaPairing (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-        (gsTrace S ιr ιs N)) ∧
-      Function.Bijective (ptTShaPairing (gsFinFamily S ιs) (gsRealFamily S ιr) (gsRoots S N) M
-        (gsTrace S ιr ιs N)).flip :=
-  (gsTatePoitouTateHypotheses S ιr ιs hS).sha M hM
 
 include ιs hS hM in
 

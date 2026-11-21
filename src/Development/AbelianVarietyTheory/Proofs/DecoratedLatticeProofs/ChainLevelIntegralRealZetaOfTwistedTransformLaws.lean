@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Multiplici
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingHeightEqOneLatticeStabilizerComponents
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledLatticeHeightFunProperties
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingHeightAtRealPlaceContinuousPosLeOne
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStageFiniteLevelEqProductLocalLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStageFiniteLevelEqProductLocalLevels
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStagePeterssonValueRealLevelTranslate
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
@@ -154,7 +154,7 @@ theorem levInt : ∀ D : D7, LevelLawQ D → LevInt D := by
   have hh : s.ν.IsHaarMeasure := hfl.haar
   have hfd : IsFundamentalDomain (GQ s.V) s.fd s.ν := hfl.fund
   have hsd : IsSelfDualC s.V s.Λ := hfl.selfDual
-  obtain ⟨_, _, _, _, hstab, _⟩ := GlobalTheory.T.thetaChainStage_finiteLevel_eq_product_localLevels D c w hw k hk.le s hs
+  obtain ⟨_, _, _, _, hstab, _⟩ := _root_.GlobalTheory.ChainTw.LevLoc.levLoc D c w hw k hk.le s hs
   have hlaw := (hLaw hng c w hw k hk s s' hs hs' p hp φ).1
   obtain ⟨_, hI⟩ := hRC
   obtain ⟨s₁, hs₁, hI₁⟩ := hI a hmaj
@@ -211,4 +211,3 @@ end GlobalTheory.ChainTw.LevIntProof
 
 end
 
-example : ∀ D : D7, LevelLawQ D → LevInt D := GlobalTheory.ChainTw.LevIntProof.levInt

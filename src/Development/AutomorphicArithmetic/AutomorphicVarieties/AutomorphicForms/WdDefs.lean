@@ -25,11 +25,6 @@ def cycL {l : ℕ} [Fact l.Prime] (L : FinExt l) : GQ l →* (↥L.1)ˣ :=
 def FrobPow {l : ℕ} [Fact l.Prime] (g : GQ l) (k : ℕ) : Prop :=
   ∀ c : ↥(MaximalUnramifiedExtension l), g (c : Om l) = (((frobUr l ^ k) c : ↥(MaximalUnramifiedExtension l)) : Om l)
 
-example : IsTri (fun _ : Unit => (1 : End ℚ (Fin 2 → ℚ))) (fun _ (_ : Fin 2) => 1) :=
-  ⟨Pi.basisFun ℚ _, fun _ => ⟨fun i j h => by simp [Matrix.one_apply, h.ne'], fun i => by simp⟩⟩
-
-example {l : ℕ} [Fact l.Prime] : FrobPow (1 : GQ l) 0 := fun _ => rfl
-
 def TriSnoc : Prop :=
   ∀ (k W' W W'' ι : Type) [Field k] [AddCommGroup W'] [Module k W'] [AddCommGroup W] [Module k W] [AddCommGroup W'']
     [Module k W''] (n : ℕ) (T' : ι → End k W') (T : ι → End k W) (T'' : ι → End k W'') (f : W' →ₗ[k] W) (p : W →ₗ[k] W''),

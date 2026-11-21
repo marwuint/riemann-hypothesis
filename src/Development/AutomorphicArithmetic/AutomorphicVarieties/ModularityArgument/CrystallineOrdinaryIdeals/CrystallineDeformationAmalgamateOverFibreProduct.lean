@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.Imports
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CrystallineDeformationFibreProductAmalgamationStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CrystallineDeformationFibreProductAmalgamation
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.CrLift
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 
@@ -35,7 +35,7 @@ theorem GlobalTheory.OrdLoc.dcr_amalgamate : LocalPublishedTheorems → ∀ {l :
       rw [map_sub, ← e₁ s, hs₁, ht₁, sub_self]
     · change p₂ (s - t) = 0
       rw [map_sub, ← e₂ s, hs₂, ht₂, sub_self]
-  obtain ⟨r', hr', g₁, g₂⟩ := GlobalTheory.T.crystalline_deformation_fibre_product_amalgamation D E B π hπ C πC hπC (T ⧸ I) (π.comp q₁) hn q₁ q₂ rfl hc₂ hu
+  obtain ⟨r', hr', g₁, g₂⟩ := _root_.GlobalTheory.FibreGlue.main D E B π hπ C πC hπC (T ⧸ I) (π.comp q₁) hn q₁ q₂ rfl hc₂ hu
     r₁ r₂ hr₁ hr₂
   obtain ⟨r, hr, rfl⟩ := crLift hP D E T πT hπT (T ⧸ I) (π.comp q₁) hn q hq (AlgHom.ext f₁) r' hr'
   exact ⟨r, hr, by rw [← g₁]; rfl, by rw [← g₂]; rfl⟩

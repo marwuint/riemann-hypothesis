@@ -4,18 +4,18 @@ import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ExistsIsRegularAppendO
 import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.Bridge
 import ReciprocityTheory.CommutativeAlgebra.MaximalIdealSquares.RingKrullDimQuotientSpanSingletonAddOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PurityFree
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSMulRegularOfEtalePuncturedOfDepthPosStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSMulRegularOfEtalePuncturedOfDepthPos
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModDepthGEQuotientMapSpanSingleton
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleQuotientOfEtalePuncturedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOfEtaleAtHeightOnePrimesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleQuotientOfEtalePunctured
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOfEtaleAtHeightOnePrimes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteDepthTwoHullOfEtalePuncturedSpectrumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteFreeEtaleLiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftHomOfEtalePuncturedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InjectiveAndSaturatedOfInjectiveModRegularStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CokernelTorsionOfFiniteLengthModElementStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteDepthTwoHullOfEtalePuncturedSpectrum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteFreeEtaleLift
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftHomOfEtalePunctured
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InjectiveAndSaturatedOfInjectiveModRegular
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CokernelTorsionOfFiniteLengthModElement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteLengthCokerOfEtalePuncturedSpectrumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModDepthGEThreeOfFreeRegularLocalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModDepthGEThreeOfFreeRegularLocal
 
 open IsLocalRing
 
@@ -42,7 +42,7 @@ theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdic
     exact hf2 (Ideal.zero_mem _)
   haveI : IsDomain R := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain R
   have hreg : IsSMulRegular A f :=
-    GlobalTheory.T.isSMulRegular_of_etale_punctured_of_depth_pos' R A (ReciprocityTheory.CA.ModDepthGE.mono (by norm_num) hdep) hEt f hf0
+    _root_.GlobalTheory.isSMulRegular_of_etale_punctured_of_depth_pos R A (ReciprocityTheory.CA.ModDepthGE.mono (by norm_num) hdep) hEt f hf0
   haveI hRb : IsRegularLocalRing (R ⧸ Ideal.span {f}) :=
     ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.quotient_span_singleton hf hf2
   have hdimb : 2 ≤ ringKrullDim (R ⧸ Ideal.span {f}) :=
@@ -54,8 +54,8 @@ theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdic
   haveI : Module.Finite (R ⧸ Ideal.span {f}) (A ⧸ (Ideal.span {f}).map (algebraMap R A)) :=
     Module.Finite.of_restrictScalars_finite R _ _
   have hdepb := GlobalTheory.modDepthGE_quotient_map_span_singleton R A f hf hreg 1 hdep
-  have hEtb := GlobalTheory.T.etale_quotient_of_etale_punctured' R A f hEt
-  obtain ⟨A', _, _, hA'fin, ι, hι, hdep', hEt', k, hk⟩ := GlobalTheory.T.exists_finite_depth_two_hull_of_etale_punctured_spectrum _ hdimb _ hdepb hEtb
+  have hEtb := _root_.GlobalTheory.etale_quotient_of_etale_punctured R A f hEt
+  obtain ⟨A', _, _, hA'fin, ι, hι, hdep', hEt', k, hk⟩ := _root_.GlobalTheory.exists_finite_depth_two_hull_of_etale_off_closed_point _ hdimb _ hdepb hEtb
   have hfree : Module.Free (R ⧸ Ideal.span {f}) A' := hpur A' hdep' hEt'
   obtain ⟨_, _⟩ := GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (R ⧸ Ideal.span {f})
   have hnf : ¬ IsField (R ⧸ Ideal.span {f}) := by
@@ -64,13 +64,13 @@ theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdic
     rw [this] at hdimb
     exact absurd hdimb (by decide)
   have hEtA' : Algebra.Etale (R ⧸ Ideal.span {f}) A' := by
-    refine GlobalTheory.T.etale_of_etale_at_height_one_primes _ A' hnf fun p _ hp => hEt' p ?_
+    refine _root_.GlobalTheory.PurityDisc.etale_of_etale_height_one _ A' hnf fun p _ hp => hEt' p ?_
     rintro rfl
     have h1 := maximalIdeal_height_eq_ringKrullDim (R := R ⧸ Ideal.span {f})
     rw [hp] at h1
     rw [← h1] at hdimb
     exact absurd hdimb (by decide)
-  obtain ⟨B, _, _, hBfin, hBfree, hBet, ⟨e⟩⟩ := GlobalTheory.T.exists_finite_free_etale_lift_of_quotient_etale R hcomp f hf A'
+  obtain ⟨B, _, _, hBfin, hBfree, hBet, ⟨e⟩⟩ := _root_.GlobalTheory.EtaleLiftQuot.exists_finite_free_etale_lift R hcomp f hf A'
   let φ : A →ₐ[R] B ⧸ (Ideal.span {f}).map (algebraMap R B) :=
     { toRingHom := e.symm.toRingHom.comp (ι.toRingHom.comp (Ideal.Quotient.mk _))
       commutes' := fun r => by
@@ -80,7 +80,7 @@ theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdic
         show e.symm (ι (Ideal.Quotient.mk _ (algebraMap R A r))) = _
         rw [h1, ι.commutes, e.symm.commutes, ← IsScalarTower.algebraMap_apply] }
   have hφ : ∀ a, φ a = e.symm (ι (Ideal.Quotient.mk _ a)) := fun a => rfl
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_lift_algHom_of_etale_punctured R hcomp hdim f hf hf0 A hEt B φ
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.LiftHom.liftHom_of_etale_punctured R hcomp hdim f hf hf0 A hEt B φ
   have hψa : ∀ a, Ideal.Quotient.mk _ (ψ a) = φ a := fun a => by
     rw [← hψ]; rfl
   have hBreg : IsSMulRegular B f := fun x y h => smul_right_injective B hf0 h
@@ -95,7 +95,7 @@ theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdic
     have h3 : Ideal.Quotient.mk ((Ideal.span {f}).map (algebraMap R A)) a = 0 :=
       hι (by rw [h2, map_zero])
     exact Ideal.Quotient.eq_zero_iff_mem.mp h3
-  obtain ⟨hinj, hfsat⟩ := GlobalTheory.T.injective_and_saturated_of_injective_mod_regular' R A B f hf hBreg ψ hsat
+  obtain ⟨hinj, hfsat⟩ := _root_.GlobalTheory.injective_and_saturated_of_injective_mod_regular R A B f hf hBreg ψ hsat
   have hmap : (maximalIdeal R).map (Ideal.Quotient.mk (Ideal.span {f})) ≤ maximalIdeal (R ⧸ Ideal.span {f}) := by
     rw [Ideal.map_le_iff_le_comap]
     have : (maximalIdeal (R ⧸ Ideal.span {f})).comap (Ideal.Quotient.mk (Ideal.span {f})) = maximalIdeal R := by
@@ -131,7 +131,7 @@ theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdic
     obtain ⟨c, hc⟩ := hspan _ (Ideal.Quotient.eq_zero_iff_mem.mp h1)
     exact ⟨c, by rw [← hc]; abel⟩
   have hdim1 : 1 ≤ ringKrullDim (R ⧸ Ideal.span {f}) := le_trans (by decide) hdimb
-  obtain ⟨s, hs0, hs⟩ := GlobalTheory.T.cokernel_torsion_of_finiteLength_mod_element R f hdim1 A B ψ hcok
+  obtain ⟨s, hs0, hs⟩ := _root_.GlobalTheory.cokernel_torsion_of_finiteLength_mod R f hdim1 A B ψ hcok
   have hEtB : ∀ (p : Ideal R) [p.IsPrime], p ≠ maximalIdeal R →
       Algebra.Etale (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) B) :=
     fun p _ _ => inferInstance
@@ -155,6 +155,6 @@ theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdic
     by_contra h
     rw [not_nontrivial_iff_subsingleton] at h
     exact hr.top_ne_smul (Subsingleton.elim _ _)
-  exact GlobalTheory.T.modDepthGE_three_of_free_regularLocal R hdim A
+  exact _root_.GlobalTheory.modDepthGE_three_of_free_of_isRegularLocalRing R hdim A
 
 end GlobalTheory.LocalLefschetz

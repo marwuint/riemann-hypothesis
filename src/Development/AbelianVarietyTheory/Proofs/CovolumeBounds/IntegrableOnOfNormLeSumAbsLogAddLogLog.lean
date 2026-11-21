@@ -184,29 +184,6 @@ theorem exists_integrableOn_log_norm_of_frequently_ne_zero (μ : Measure E) [μ.
     (fun z hz => (hB z (h1 hz)).1.differentiableWithinAt) (fun z hz => (hB z (h1 hz)).2) ha
   exact ⟨R / 3, by positivity, ae_restrict_of_ae_restrict_of_subset h2 h3, h4.mono_set h2⟩
 
-theorem locallyIntegrableOn_log_norm_of_frequently_ne_zero (μ : Measure E) [μ.IsAddHaarMeasure]
-    {f : E → ℂ} {U : Set E} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U)
-    (hx : ∀ x ∈ U, ∃ᶠ z in 𝓝 x, f z ≠ 0) :
-    (∀ᵐ z ∂(μ.restrict U), f z ≠ 0) ∧ LocallyIntegrableOn (fun z => Real.log ‖f z‖) U μ := by
-  have : ProperSpace E := FiniteDimensional.proper ℂ E
-  have h : ∀ x ∈ U, ∃ r > 0, (∀ᵐ z ∂(μ.restrict (ball x r)), f z ≠ 0) ∧
-      IntegrableOn (fun z => Real.log ‖f z‖) (ball x r) μ := fun x hxU =>
-    exists_integrableOn_log_norm_of_frequently_ne_zero μ
-      (hf.eventually_differentiableAt (hU.mem_nhds hxU)) (hx x hxU)
-  refine ⟨?_, fun x hxU => ?_⟩
-  · rw [ae_restrict_iff'₀ hU.measurableSet.nullMeasurableSet, ae_iff]
-    refine measure_null_of_locally_null _ fun x hx' => ?_
-    have hxU : x ∈ U := by
-      by_contra hn
-      exact hx' fun h => absurd h hn
-    obtain ⟨r, hr, h1, -⟩ := h x hxU
-    rw [ae_restrict_iff' measurableSet_ball, ae_iff] at h1
-    refine ⟨_ ∩ ball x r, inter_mem_nhdsWithin _ (ball_mem_nhds x hr), measure_mono_null ?_ h1⟩
-    rintro z ⟨hz, hzb⟩ hz'
-    exact hz fun _ => hz' hzb
-  · obtain ⟨r, hr, -, h2⟩ := h x hxU
-    exact ⟨ball x r, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds x hr), h2⟩
-
 theorem exists_integrableOn_log_norm_div (μ : Measure E) [μ.IsAddHaarMeasure]
     {g h : E → ℂ} {x : E} (hg : ∀ᶠ z in 𝓝 x, DifferentiableAt ℂ g z)
     (hh : ∀ᶠ z in 𝓝 x, DifferentiableAt ℂ h z) (hg0 : ∃ᶠ z in 𝓝 x, g z ≠ 0)
@@ -224,15 +201,5 @@ theorem exists_integrableOn_log_norm_div (μ : Measure E) [μ.IsAddHaarMeasure]
   simp [Real.log_div, hz.1, hz.2]
 
 end Holomorphic
-
-section Coordinates
-
-open Bornology
-
-variable {ι : Type*} [Fintype ι]
-
-variable {F : Type*} [NormedAddCommGroup F]
-
-end Coordinates
 
 end GlobalTheory

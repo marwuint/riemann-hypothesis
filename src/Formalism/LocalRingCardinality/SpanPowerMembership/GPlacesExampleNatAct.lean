@@ -152,10 +152,6 @@ def gAtPExample (p : ℕ) : GAtP p where
 
 instance (p : ℕ) : Unique (gAtPExample p).P.Tup := inferInstanceAs (Unique (emptyPlaces p).Tup)
 
-theorem toySignLevel_fin (p : ℕ) : (toySignLevel p).FinClasses := by
-  refine ⟨{default}, fun _ _ v => v.elim0, fun L _ => ⟨default,
-    Finset.mem_singleton_self _, 1, Subsingleton.elim _ _⟩⟩
-
 theorem toySignLevel_M (p : ℕ) : (toySignLevel p).M = ⊥ := by
   rw [eq_bot_iff]
   intro F hF

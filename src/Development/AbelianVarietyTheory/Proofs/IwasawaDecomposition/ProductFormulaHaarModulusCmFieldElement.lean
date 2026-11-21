@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarModulusTensorEqModulusNormStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarModulusProductFormulaTotallyRealStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarModulusTensorEqModulusNorm
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarModulusProductFormulaTotallyReal
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianFormFiniteZerosOnLineCmExt
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
@@ -28,12 +28,12 @@ theorem prod_modu_inclR : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
     exact mul_ne_zero hu ((map_ne_zero σ).2 hu) hk.symm
   have hv : ∀ v : HeightOneSpectrum (𝓞 F), modu (Fv F v ⊗[F] E) (inclR (Fv F v) u) =
       modu (Fv F v) (algebraMap F (Fv F v) k) := fun v =>
-    (GlobalTheory.T.haarModulus_tensor_eq_modulus_norm F E σ h (Fv F v) _ _ (hu.isUnit.map _)
+    (_root_.GlobalTheory.GaugeEx.modu_eq_modu_norm F E σ h (Fv F v) _ _ (hu.isUnit.map _)
       (algebraMap_eq_inclR_mul_sigR σ _ u k hk)).2
   have hi : modu (Ainf F ⊗[F] E) (inclR (Ainf F) u) = modu (Ainf F) (algebraMap F (Ainf F) k) :=
-    (GlobalTheory.T.haarModulus_tensor_eq_modulus_norm F E σ h (Ainf F) _ _ (hu.isUnit.map _)
+    (_root_.GlobalTheory.GaugeEx.modu_eq_modu_norm F E σ h (Ainf F) _ _ (hu.isUnit.map _)
       (algebraMap_eq_inclR_mul_sigR σ _ u k hk)).2
   simp only [hv, hi]
-  exact GlobalTheory.T.haarModulus_product_formula_totallyReal F k hk0
+  exact _root_.GlobalTheory.GaugeProdFormula.prod_modu_eq_one F k hk0
 
 end GlobalTheory.GaugeEx

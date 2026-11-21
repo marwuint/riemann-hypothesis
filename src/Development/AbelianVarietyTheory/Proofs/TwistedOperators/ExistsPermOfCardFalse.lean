@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameOfHasSign
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
 import Development.AbelianVarietyTheory.Definitions.Foundations.UnitarySixTwoHarishChandraParameter
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridParameterRegularCardEqRankFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridParamRegularCardMinusCountStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardWeightSetGridEqGridRowSpaceRankStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridParamRegularCardMinusCount
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NodeYPredEqChainVertexAtRowZeroLast
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardWeightSetGridEqGridRowSpaceRank
 
 noncomputable section
 
@@ -157,13 +158,13 @@ theorem parV_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {i j : ℕ} (
 theorem parP_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {i : ℕ} (h : i ≤ D.R.m) :
     SignedHC.IsRegular (GlobalTheory.Grid.parP D i τ) ∧ (GlobalTheory.Grid.parP D i τ).card = GlobalTheory.Grid.rkP D i ∧
       SignedHC.nMinus (GlobalTheory.Grid.parP D i τ) = (D.R.m - i + 1) / 2 :=
-  GlobalTheory.T.gridParam_regular_card_minusCount D hH τ i h
+  _root_.GlobalTheory.Grid.parPi_counts D hH τ i h
 
 theorem parXp_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     SignedHC.IsRegular (GlobalTheory.Grid.parXp D j τ) ∧ (GlobalTheory.Grid.parXp D j τ).card = GlobalTheory.Grid.rkX D j ∧
       SignedHC.nMinus (GlobalTheory.Grid.parXp D j τ) = 0 := by
   obtain ⟨a, b, c⟩ := plus_counts ((GlobalTheory.Grid.grid D τ).weightX j)
-  exact ⟨a, b.trans (GlobalTheory.T.card_weightSet_grid_eq_gridRowSpaceRank D hH τ j h1 h2), c⟩
+  exact ⟨a, b.trans (_root_.GlobalTheory.Grid.card_weightX_grid D hH τ j h1 h2), c⟩
 
 theorem exists_weil_ordered : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts},

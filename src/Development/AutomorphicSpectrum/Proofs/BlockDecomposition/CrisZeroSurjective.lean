@@ -294,7 +294,7 @@ def nm (r : Res l K) (M : Model l K) (n : ℕ) :
     NMor (Wc.pd l r.k n) M.p ((Wc.res l r.k n).comp r.ρ) (B.DD true (base l) n) M.p (Mid.κm r n)
       (algebraMap (Wc.Wm l r.k n) ((base l).Acr n)) :=
   letI := (Mid.wn r n).toAlgebra
-  { hI := GlobalTheory.T.witt_to_acris_isDPMorphism r n
+  { hI := _root_.GlobalTheory.CompanionTheory.CrisDP.wn_isDPMorphism r n
     u := 𝟙 _
     g := RingHom.id _
     hu := by simp

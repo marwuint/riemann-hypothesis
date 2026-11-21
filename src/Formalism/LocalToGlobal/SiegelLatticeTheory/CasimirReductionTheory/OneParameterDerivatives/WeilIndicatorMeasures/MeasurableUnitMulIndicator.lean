@@ -26,9 +26,6 @@ lemma fib_mul (κ : Measure H) [κ.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g
   have key := lintegral_mul_left_eq_self (μ := κ) (fun h : H => f (g * (h : G))) h₀
   simpa [mul_assoc] using key
 
-lemma measurable_mk : Measurable ((↑) : G → G ⧸ H) := by
-  first | exact measurable_quotient_mk'' | exact measurable_quotient_mk' | exact fun s hs => hs
-
 lemma measure_coset_le (κ : Measure H) [κ.IsMulLeftInvariant] (y : G) (E : Set G) :
     κ {h : H | y * h ∈ E} ≤ κ {h : H | (h : G) ∈ E⁻¹ * E} := by
   by_cases hne : ∃ h₀ : H, y * (h₀ : G) ∈ E
@@ -157,19 +154,6 @@ lemma exists_fib_eq_one (hH : IsClosed (H : Set G)) (κ : Measure H) [SFinite κ
       hφ.comp ((measurable_const_mul x).comp measurable_subtype_coe)
     rw [lintegral_mul_const _ hφx]
     exact ENNReal.mul_inv_cancel (hpos x).ne' (hfin x).ne
-
-section Main
-
-variable (μ : Measure G) (ν : Measure H)
-
-noncomputable def qmeas (H : Subgroup G) (μ : Measure G) (β : G → ℝ≥0∞) : Measure (G ⧸ H) :=
-  (μ.withDensity β).map ((↑) : G → G ⧸ H)
-
-variable [SFinite μ] [μ.IsMulRightInvariant] [SFinite ν] [ν.IsMulLeftInvariant]
-  {β : G → ℝ≥0∞} (hβ : Measurable β) (hβ1 : ∀ x, ∫⁻ h, β (x * (h : G)⁻¹) ∂ν = 1)
-include hβ hβ1
-
-end Main
 
 end QuotInt
 

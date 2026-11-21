@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EndOmega
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SubstCongrModPrimeOfIntegralDerivativeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SubstCongrModPrimeOfIntegralDerivative
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PowPrimePowSubFrobeniusTwistNormLeStatement
 
 open PowerSeries GlobalTheory.Honda
@@ -98,7 +98,7 @@ theorem frobLog_eigen : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Ch
     refine (IsUltrametricDist.norm_add_le_max _ _).trans ?_
     rw [norm_neg]
     exact max_le (hA1 m) ((hAB m).trans hl1.le)
-  have key := GlobalTheory.T.subst_congr_mod_prime_of_integral_derivative K l hlp hl1 g hd' Unit A B hA0 hB0 hA1 hB1 hAB
+  have key := _root_.GlobalTheory.Honda.subst_congr_of_derivative_integral K l hlp hl1 g hd' Unit A B hA0 hB0 hA1 hB1 hAB
   have hsM : PowerSeries.subst M (frobOp σ l i f) = PowerSeries.subst A g := by
     have has := PowerSeries.HasSubst.of_constantCoeff_zero hM0
     unfold frobOp

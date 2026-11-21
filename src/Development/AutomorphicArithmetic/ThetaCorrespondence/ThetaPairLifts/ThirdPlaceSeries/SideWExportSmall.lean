@@ -1,5 +1,7 @@
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SideWeightExportLevel
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.OntoAlong
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.WPtFrame
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmallFrameAtColumn
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormChoiceOfExtension
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -16,6 +18,6 @@ theorem sideW_export_small_alt : GlobalTheory.NT.RayField → ∀ (hL : _root_.U
   have hcf : (_root_.GlobalTheory.PlugPt.sideOfWeightedPoint ν p).cf = Fr.at (p.w.st p.Z) p.f := (GlobalTheory.Plug.wPt_frame 𝒮 K p).2.1
   refine ⟨hE.1, hE.2.1, hE.2.2, ?_⟩
   rw [hcf]
-  exact GlobalTheory.T.small_frame_at_column hR p.B p.f p.T p.w p.Z
+  exact _root_.GlobalTheory.SmallExact.smallHas_of_rayField hR p.B p.f p.T p.w p.Z
 end GlobalTheory
 end

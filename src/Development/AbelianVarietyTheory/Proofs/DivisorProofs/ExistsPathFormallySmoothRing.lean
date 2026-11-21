@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivCompM
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDoublingJetOfOrderTwoFirstOrderStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsRingHomModXPowSuccLiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDoublingJetOfOrderTwoFirstOrder
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsRingHomModXPowSuccLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDoublingJetSuccOfLiftStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingHomLimitOfDoublingJetsStatement
 
@@ -17,11 +17,11 @@ theorem exists_path_ring : ∀ (A B R : Type) [CommRing A] [CommRing B] [CommRin
       ∃ ψ : A → PowerSeries R, GlobalTheory.Nef.PathJet.IsJet π ε m β δ (n + 2 + 1) ψ ∧
         ∀ f, (PowerSeries.X : PowerSeries R) ^ (n + 2) ∣ ψ f - φ f := by
     intro n φ hφ
-    obtain ⟨ψ, hψ, hψφ⟩ := GlobalTheory.T.exists_isRingHomModXPow_succ_lift A B R π β hsm (n + 2) (by omega) φ hφ.1
+    obtain ⟨ψ, hψ, hψφ⟩ := _root_.GlobalTheory.Nef.PathJet.exists_lift_succ A B R π β hsm (n + 2) (by omega) φ hφ.1
     exact GlobalTheory.T.exists_doublingJet_succ_of_lift A B R π ε m β δ hεπ hmπ hεm hm2 hδ hδπ (n + 2) (by omega) φ ψ hφ hψ hψφ
   choose F hF hFφ using step
   let seq : (n : ℕ) → {φ : A → PowerSeries R // GlobalTheory.Nef.PathJet.IsJet π ε m β δ (n + 2) φ} :=
-    fun n => Nat.rec ⟨_, GlobalTheory.T.isDoublingJetOfOrder_two_firstOrder A B R π ε m β δ hεπ hmπ hεm hm2 hδ hδπ⟩
+    fun n => Nat.rec ⟨_, _root_.GlobalTheory.Nef.PathJet.firstOrder_isJet A B R π ε m β δ hεπ hmπ hεm hm2 hδ hδπ⟩
       (fun k s => ⟨F k s.1 s.2, hF k s.1 s.2⟩) n
   exact GlobalTheory.T.exists_ringHom_limit_of_doublingJets A B R π ε m β δ (fun n => (seq n).1) (fun n => (seq n).2)
     (fun n f => hFφ n (seq n).1 (seq n).2 f)

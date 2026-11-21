@@ -564,23 +564,6 @@ theorem exists_transport (hG : GlobalFnsSt) {n : ℕ} (hn : n ∣ l.M') (q₀ : 
     simp only [Nat.cast_one, _root_.one_mul] at this
     exact (gtRel_zpow (u_ne_zero hu) _ _ _).1 this
 
-omit [IsAlgClosed F] hW hF hu in
-
-theorem IsTransport.b_comp {n : ℕ} {q₀ : QkPt a.D₀ F n} {q : QkPt P.toPre F n} (h : IsTransport a w e uF q₀ q) :
-    q.g.b.left ≫ φ = q₀.g.b.left := (h.2 0).1 2
-
-theorem IsTransport.unique {n : ℕ} {q₀ : QkPt a.D₀ F n} {q q' : QkPt P.toPre F n} (h : IsTransport a w e uF q₀ q)
-    (h' : IsTransport a w e uF q₀ q') : q = q' := by
-  obtain ⟨gp, hw, -, -, hc, -⟩ := hW
-  have hg : q.g = q'.g := GtRel.unique gp (base_comm hF) (e := e.toAddEquiv) hc ((isGen_iff w).1 hw)
-    ((gtRel_zpow (u_ne_zero hu) _ _ _).2 h.2) ((gtRel_zpow (u_ne_zero hu) _ _ _).2 h'.2)
-  have hy : q.y = q'.y := h.1.trans h'.1.symm
-  obtain ⟨y, g, _⟩ := q
-  obtain ⟨y', g', _⟩ := q'
-  obtain rfl : y = y' := hy
-  obtain rfl : g = g' := hg
-  rfl
-
 theorem IsTransport.equiv (hG : GlobalFnsSt) {n : ℕ} (hn₀ : 0 < n) (hn : n ∣ l.M') {q₀ q₀' : QkPt a.D₀ F n}
     {q q' : QkPt P.toPre F n} (h : IsTransport a w e uF q₀ q) (h' : IsTransport a w e uF q₀' q')
     (H : QkPt.Equiv a.D₀ F q₀ q₀') : QkPt.Equiv P.toPre F q q' := by
@@ -597,47 +580,7 @@ theorem IsTransport.equiv (hG : GlobalFnsSt) {n : ℕ} (hn₀ : 0 < n) (hn : n �
   rw [← zpow_add, hy, map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul,
     Int.add_mul_ediv_left _ _ (Int.natCast_ne_zero.2 hn₀.ne')]
 
-theorem IsTransport.torus {n : ℕ} {q₀ : QkPt a.D₀ F n} {q : QkPt P.toPre F n} (h : IsTransport a w e uF q₀ q)
-    (hy : q₀.y = 0) {t : a.D₀.X → F} (hb : q₀.g.b = DegPre.zeroF a.D₀ F)
-    (ht : ∀ χ j, LB.Coh a.D₀.P.L (DegPre.gtφ a.D₀ F q₀.g.b χ) j →
-      ⊤ ≤ LB.wchart a.D₀.P.L (DegPre.gtφ a.D₀ F q₀.g.b χ) j → valF (𝟙 (Sp F)) _ ((q₀.g.s χ).s j).val = t χ) :
-    q.y = 0 ∧ q.g.b = DegPre.zeroF P.toPre F ∧ ∀ χ j, LB.Coh P.toPre.P.L (DegPre.gtφ P.toPre F q.g.b χ) j →
-      ⊤ ≤ LB.wchart P.toPre.P.L (DegPre.gtφ P.toPre F q.g.b χ) j →
-      valF (𝟙 (Sp F)) _ ((q.g.s χ).s j).val = t (e.symm χ) := by
-  obtain ⟨gp, hw, -, -, hc, -⟩ := hW
-  obtain ⟨h₁, h₂⟩ := GtRel.torus gp (base_comm hF) (e := e.toAddEquiv) hc ((isGen_iff w).1 hw)
-    ((gtRel_zpow (u_ne_zero hu) _ _ _).2 h.2) hb ht
-  refine ⟨by rw [h.1, hy, map_zero], h₁, fun χ j hj hle => (h₂ χ j hj hle).trans ?_⟩
-  rw [hy, map_zero, LinearMap.zero_apply, Int.zero_ediv, zpow_zero, Units.val_one, _root_.one_mul]
-  rfl
-
 end ThetaShiftProofs
-
-theorem transport (hG : GlobalFnsSt) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
-    (l : Level H) (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF)
-    (P : DegData (PowerSeries k) (Ideal.span {PowerSeries.X})) [Module (𝓞 E) P.toPre.X]
-    (oP : letI := H.starRing; P.toPre.OAct (𝓞 E)) (φ : P.toPre.P.A.left ⟶ a.D₀.P.A.left)
-    (he : eSec P.toPre.P.A ≫ φ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-    (w : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ)) (e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X) (hW : WitData a P oP φ he w e)
-    (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing (PowerSeries k)) F] [Algebra (FractionRing k) F] (uF : F)
-    (hF : ∀ x, algebraMap (FractionRing k) F (algebraMap k _ x) =
-      algebraMap (FractionRing (PowerSeries k)) F (algebraMap (PowerSeries k) _ (PowerSeries.C x)))
-    (hu : uF = algebraMap (FractionRing (PowerSeries k)) F (algebraMap (PowerSeries k) _ PowerSeries.X))
-    (n : ℕ) (hn₀ : 0 < n) (hn : n ∣ l.M') :
-    (∀ q₀ : QkPt a.D₀ F n, ∃ q : QkPt P.toPre F n, IsTransport a w e uF q₀ q) ∧
-    (∀ (q₀ : QkPt a.D₀ F n) (q : QkPt P.toPre F n), IsTransport a w e uF q₀ q → q.g.b.left ≫ φ = q₀.g.b.left) ∧
-    (∀ (q₀ : QkPt a.D₀ F n) (q q' : QkPt P.toPre F n), IsTransport a w e uF q₀ q → IsTransport a w e uF q₀ q' →
-      q = q') ∧
-    (∀ (q₀ q₀' : QkPt a.D₀ F n) (q q' : QkPt P.toPre F n), IsTransport a w e uF q₀ q → IsTransport a w e uF q₀' q' →
-      QkPt.Equiv a.D₀ F q₀ q₀' → QkPt.Equiv P.toPre F q q') ∧
-    ∀ (q₀ : QkPt a.D₀ F n) (q : QkPt P.toPre F n) (t : a.D₀.X → F), IsTransport a w e uF q₀ q → q₀.y = 0 →
-      (q₀.g.b = DegPre.zeroF a.D₀ F ∧ ∀ χ j, LB.Coh a.D₀.P.L (DegPre.gtφ a.D₀ F q₀.g.b χ) j →
-        ⊤ ≤ LB.wchart a.D₀.P.L (DegPre.gtφ a.D₀ F q₀.g.b χ) j → valF (𝟙 (Sp F)) _ ((q₀.g.s χ).s j).val = t χ) →
-      q.y = 0 ∧ q.g.b = DegPre.zeroF P.toPre F ∧ ∀ χ j, LB.Coh P.toPre.P.L (DegPre.gtφ P.toPre F q.g.b χ) j →
-        ⊤ ≤ LB.wchart P.toPre.P.L (DegPre.gtφ P.toPre F q.g.b χ) j →
-        valF (𝟙 (Sp F)) _ ((q.g.s χ).s j).val = t (e.symm χ) :=
-  ⟨exists_transport hW hF hu hG hn, fun _ _ h => h.b_comp, fun _ _ _ h h' => h.unique hW hF hu h',
-    fun _ _ _ _ h h' H => h.equiv hW hF hu hG hn₀ hn h' H, fun _ _ _ h hy ht => h.torus hW hF hu hy ht.1 ht.2⟩
 
 section Witness
 
@@ -650,18 +593,6 @@ def toricArc : DegData (PowerSeries k) (Ideal.span {PowerSeries.X}) :=
   arcData (X := 𝓞 E) k (arcIn c k bF).be (arcIn c k bF).be_symm (arcIn c k bF).be_pos (arcIn_be_even c k bF)
 
 instance : Module (𝓞 E) (toricArc c k bF).toPre.X := inferInstanceAs (Module (𝓞 E) (𝓞 E))
-
-def toricArcAct : letI := H.starRing; (toricArc c k bF).toPre.OAct (𝓞 E) :=
-  letI := H.starRing
-  arcOAct (X := 𝓞 E) k _ _ _ _ (𝓞 E) (arcIn c k bF).be_adj
-
-def toricMap : (toricArc c k bF).toPre.P.A.left ⟶ (arcIn c k bF).D₀.P.A.left :=
-  baseMap (X := 𝓞 E) (fun _ => 1) (PowerSeries.C (R := k)) (arcExp k (arcIn c k bF).be)
-
-def toricIso : LB.Iso (toricArc c k bF).toPre.P.L ((arcIn c k bF).D₀.P.L.pull (toricMap c k bF)) :=
-  baseIso (X := 𝓞 E) (fun _ => 1) (PowerSeries.C (R := k)) (arcExp k (arcIn c k bF).be)
-
-def toricNeg : (arcIn c k bF).D₀.X ≃ₗ[𝓞 E] (toricArc c k bF).toPre.X := LinearEquiv.neg (𝓞 E) (M := 𝓞 E)
 
 theorem exists_commonField : ∃ (F : Type) (_ : Field F) (_ : IsAlgClosed F)
     (_ : Algebra (FractionRing (PowerSeries k)) F) (_ : Algebra (FractionRing k) F),

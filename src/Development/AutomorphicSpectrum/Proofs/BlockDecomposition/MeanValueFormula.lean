@@ -1,14 +1,15 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.MeanVal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TsumNeZeroEqSum
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsIntegralMultipleBoundedPlacesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsIntegralMultipleBoundedPlaces
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncSum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteProductDifferenceBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TailSumOverPlacesSmallStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultipliableLocalFactorsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TailSumOverPlacesSmall
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultipliableLocalFactors
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFactorSandwichApproxStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductConvergenceBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedSumLimitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHaarMeasureSingletonStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedSumLimit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHaarMeasureSingleton
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.Mass.MeanV PositivityTheory.Rg.Mass NumberField IsDedekindDomain MeasureTheory Topology Filter
 open scoped ENNReal NNReal Classical
@@ -95,7 +96,7 @@ theorem truncSum_tendsto (hE : Equi) (hC : CountBd) (F : Type) [Field F] [Number
     refine integral_nonneg_of_ae ?_
     have h0 : ∀ᵐ s ∂(lam v), s ≠ (0 : Fv F v) := by
       rw [ae_iff]
-      simpa using GlobalTheory.T.local_haar_measure_singleton F v (lam v) (hlam v)
+      simpa using _root_.GlobalTheory.CompanionTheory.Mass.MeanV.isStdV_measure_singleton_zero F v (lam v) (hlam v)
     filter_upwards [h0] with s hs
     exact (hg0 v s).trans (hpt v s hs).2.2
   have hsplit : ∀ ψ : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ,
@@ -114,8 +115,8 @@ theorem truncSum_tendsto (hE : Equi) (hC : CountBd) (F : Type) [Field F] [Number
     exact Finset.prod_le_prod (fun v _ => hup0 v)
       fun v hv => (hO v (Finset.mem_sdiff.1 hv).2).2.2.2.2.2.2.2
   refine ⟨truncSum θ G T lo, truncSum θ G T up, _, _,
-    GlobalTheory.T.adelic_sandwich_approximation hE hC F hF θ hθ li lam hli hlam T G lo hG hGc hcl,
-    GlobalTheory.T.adelic_sandwich_approximation hE hC F hF θ hθ li lam hli hlam T G up hG hGc hcu, ?_, ?_, ?_⟩
+    _root_.GlobalTheory.CompanionTheory.Mass.MeanV.tendsto_truncSum hE hC F hF θ hθ li lam hli hlam T G lo hG hGc hcl,
+    _root_.GlobalTheory.CompanionTheory.Mass.MeanV.tendsto_truncSum hE hC F hF θ hθ li lam hli hlam T G up hG hGc hcu, ?_, ?_, ?_⟩
   · filter_upwards [self_mem_nhdsWithin] with δ hδ
     have hδ0 : (0 : ℝ) < δ := hδ
     have hsl := truncTerm_summable hC F hF θ hθ T G lo hGc (fun v hv => (hcl v hv).2) δ hδ0
@@ -185,7 +186,7 @@ theorem err_bound (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTo
     {η : ℝ} (hη : 0 < η) :
     ∃ T₀ : Finset (HeightOneSpectrum (𝓞 F)), S ⊆ T₀ ∧ ∀ T, T₀ ⊆ T → ∀ δ : ℝ, 0 < δ →
       |fullSum θ G g δ - truncSum θ G T g δ| ≤ η := by
-  obtain ⟨N, hN, hNx⟩ := GlobalTheory.T.exists_integral_multiple_bounded_places F S (fun v => tsupport (g v)) (fun v hv => (hgS v hv).2)
+  obtain ⟨N, hN, hNx⟩ := _root_.GlobalTheory.CompanionTheory.Mass.MeanV.exists_common_denominator F S (fun v => tsupport (g v)) (fun v hv => (hgS v hv).2)
   obtain ⟨C', hC'0, hcount⟩ := GlobalTheory.T.euler_product_convergence_bound hC F hF θ hθ (tsupport G) hGc N hN
   obtain ⟨MG, hMG⟩ := hGc.exists_bound_of_continuous hG
   have hmex : ∀ v, ∃ m : ℝ, 0 ≤ m ∧ (v ∈ S → ∀ s, g v s ≤ m) := by
@@ -198,7 +199,7 @@ theorem err_bound (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTo
   set M : ℝ := |MG| * ∏ v ∈ S, m v with hMdef
   have hM0 : 0 ≤ M := mul_nonneg (abs_nonneg _) (Finset.prod_nonneg fun v _ => hm0 v)
   have hden : 0 < M * C' + 1 := by positivity
-  obtain ⟨T₁, hT₁⟩ := GlobalTheory.T.tail_sum_over_places_small F C hC0 (η / (M * C' + 1)) (div_pos hη hden)
+  obtain ⟨T₁, hT₁⟩ := _root_.GlobalTheory.CompanionTheory.Mass.MeanV.tail_sum_finset_prod_two_mul_div_sq F C hC0 (η / (M * C' + 1)) (div_pos hη hden)
   refine ⟨T₁ ∪ S, Finset.subset_union_right, ?_⟩
   intro T hT δ hδ
   have hST : S ⊆ T := Finset.subset_union_right.trans hT
@@ -211,7 +212,7 @@ theorem err_bound (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTo
   have hB0 : ∀ x ∈ B, x ≠ 0 := fun x hx => (hBm x hx).1
   have hIT : ∀ x ∈ B, x ∈ IntOut T := fun x hx v hv => (hBm x hx).2.1 v (fun h => hv (hST h))
   have hMul : ∀ x : F, x ≠ 0 → Multipliable fun v => g v (algebraMap F (Fv F v) x) :=
-    fun x hx => GlobalTheory.T.multipliable_local_factors F S C g hb2 x hx
+    fun x hx => _root_.GlobalTheory.CompanionTheory.Mass.MeanV.multipliable_localFactors F S C g hb2 x hx
   have hout : ∀ x, x ≠ 0 → x ∉ B → G (θ δ * algebraMap F (Ainf F) x) = 0 ∨
       ∃ v, g v (algebraMap F (Fv F v) x) = 0 ∧ ∀ T, S ⊆ T → x ∈ IntOut T → v ∈ T := by
     intro x hx hxB
@@ -344,7 +345,7 @@ theorem ofReal_fullSum (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF :
       0 ≤ G (θ δ * algebraMap F (Ainf F) β.1) * ∏' v, g v (algebraMap F (Fv F v) β.1) := by
     intro β
     refine mul_nonneg (hG0 _) ?_
-    refine ge_of_tendsto' (GlobalTheory.T.multipliable_local_factors F S C g hb2 β.1 β.2).hasProd fun U => ?_
+    refine ge_of_tendsto' (_root_.GlobalTheory.CompanionTheory.Mass.MeanV.multipliable_localFactors F S C g hb2 β.1 β.2).hasProd fun U => ?_
     exact Finset.prod_nonneg fun v _ => hg0 v _
   have hsum : Summable fun β : {β : F // β ≠ 0} =>
       G (θ δ * algebraMap F (Ainf F) β.1) * ∏' v, g v (algebraMap F (Fv F v) β.1) := by

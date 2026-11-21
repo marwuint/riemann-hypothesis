@@ -87,8 +87,6 @@ variable (p) in
 
 def uBdR : 𝔹 := logOnePlus 𝔪 (qBdR (p := p)) qBdR_mem
 
-theorem uBdR_mem : uBdR p ∈ 𝔪 := logOnePlus_mem qBdR_mem
-
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 theorem coe_untilt_galFlat_pFlat (σ : Gal(PadicAlgCl p/K)) :

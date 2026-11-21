@@ -7,41 +7,6 @@ open scoped TensorProduct Topology Matrix
 
 namespace GlobalTheory.AdLat.UnitRoot
 
-section quad
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-
-theorem eq_one_or (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
-    (f : E ≃ₐ[F] E) : f = 1 ∨ f = c := by
-  classical
-  haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2
-  have hcard : Fintype.card (E ≃ₐ[F] E) ≤ 2 := by
-    rw [← h2]; exact AlgEquiv.card_le
-  by_contra h
-  push Not at h
-  have : 2 < Fintype.card (E ≃ₐ[F] E) :=
-    Fintype.two_lt_card_iff.2 ⟨f, 1, c, h.1, h.2, hc.symm⟩
-  omega
-
-theorem invol (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) (x : E) :
-    c (c x) = x := by
-  rcases eq_one_or c h2 hc (c * c) with h | h
-  · exact congrArg (fun g : E ≃ₐ[F] E => g x) h
-  · exact absurd (mul_left_cancel (a := c) (h.trans (mul_one c).symm)) hc
-
-theorem fixed_integral (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) (x : E)
-    (hx : IsIntegral ℤ x) (hfix : c x = x) :
-    ∃ y ∈ (algebraMap (𝓞 F) F).range, algebraMap F E y = x := by
-  haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2
-  haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩
-  haveI : IsGalois F E := inferInstance
-  obtain ⟨y, rfl⟩ := (IsGalois.mem_range_algebraMap_iff_fixed (F := F) x).2 (fun f => by
-    rcases eq_one_or c h2 hc f with rfl | rfl
-    · rfl
-    · exact hfix)
-  exact ⟨y, ⟨⟨y, (isIntegral_algebraMap_iff (algebraMap F E).injective).1 hx⟩, rfl⟩, rfl⟩
-
-end quad
-
 section inst
 variable (F : Type) [Field F] [NumberField F]
 
@@ -55,16 +20,6 @@ noncomputable def incl : IntAd F →+* FiniteAdeleRing (𝓞 F) F where
   map_add' _ _ := rfl
 
 theorem incl_apply (a : IntAd F) (v) : incl F a v = a v := rfl
-
-theorem incl_injective : Function.Injective (incl F) := fun a b h =>
-  funext fun v => Subtype.ext (by rw [← incl_apply, ← incl_apply, h])
-
-theorem exists_incl {a : FiniteAdeleRing (𝓞 F) F} (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) :
-    ∃ b, incl F b = a := ⟨fun v => ⟨a v, ha v⟩, rfl⟩
-
-noncomputable def primeAt (v : HeightOneSpectrum (𝓞 F)) : Ideal (IntAd F) :=
-  (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)).comap
-    (Pi.evalRingHom (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F) v)
 
 variable (E : Type) [Field E] [NumberField E] [Algebra F E]
 
@@ -94,91 +49,8 @@ theorem _root_.GlobalTheory.AdLat.UnitRoot.conj_mem (c : E ≃ₐ[F] E) :
   rintro _ ⟨a, rfl⟩
   exact ⟨⟨c (a : E), a.2.map c.toAlgHom.toRingHom.toIntAlgHom⟩, rfl⟩
 
-theorem tmul_fixed (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1)
-    {a : FiniteAdeleRing (𝓞 F) F} (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) {x : E}
-    (hx : x ∈ Set.range (algebraMap (𝓞 E) E)) (hfix : c x = x) :
-    ∃ b, (a ⊗ₜ[F] x : RA F E) = incl F b ⊗ₜ[F] 1 := by
-  obtain ⟨x, rfl⟩ := hx
-  obtain ⟨y, hy, hyx⟩ := fixed_integral c h2 hc _ (RingOfIntegers.isIntegral_coe x) hfix
-  obtain ⟨b, hb⟩ := exists_incl F (a := algebraMap F _ y * a)
-    (fun v => adele_mul_integral F ((mem_range_iff_adele_integral F y).1 hy v) (ha v))
-  refine ⟨b, ?_⟩
-  rw [hb, ← Algebra.smul_def, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, hyx]
-
 theorem sg_tmul (c : E ≃ₐ[F] E) (a : FiniteAdeleRing (𝓞 F) F) (x : E) :
     sg (FiniteAdeleRing (𝓞 F) F) c (a ⊗ₜ[F] x) = a ⊗ₜ[F] c x := rfl
-
-theorem sg_sg (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) (z : RA F E) :
-    sg (FiniteAdeleRing (𝓞 F) F) c (sg (FiniteAdeleRing (𝓞 F) F) c z) = z := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a x => rw [sg_tmul, sg_tmul, invol c h2 hc]
-  | add y z h1 h2 => rw [map_add, map_add, h1, h2]
-
-theorem trace_mem (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) {z : RA F E}
-    (hz : z ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))) :
-    ∃ b, z + sg (FiniteAdeleRing (𝓞 F) F) c z = incl F b ⊗ₜ[F] 1 := by
-  induction hz using AddSubgroup.closure_induction with
-  | mem x hx =>
-    obtain ⟨a, ha, x, hx, rfl⟩ := hx
-    rw [sg_tmul, ← TensorProduct.tmul_add]
-    refine tmul_fixed c h2 hc ha ?_ (by rw [map_add, invol c h2 hc, add_comm])
-    obtain ⟨s, hs⟩ := conj_mem c x hx
-    obtain ⟨t, rfl⟩ := hx
-    exact ⟨t + s, by rw [map_add, hs]⟩
-  | zero => exact ⟨0, by simp⟩
-  | add y z _ _ h1 h2 =>
-    obtain ⟨a, ha⟩ := h1
-    obtain ⟨b, hb⟩ := h2
-    exact ⟨a + b, by rw [map_add, map_add, TensorProduct.add_tmul, ← ha, ← hb]; ring⟩
-  | neg y _ h1 =>
-    obtain ⟨a, ha⟩ := h1
-    exact ⟨-a, by rw [map_neg, map_neg, TensorProduct.neg_tmul, ← ha]; ring⟩
-
-theorem norm_mem (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) {z : RA F E}
-    (hz : z ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))) :
-    ∃ b, z * sg (FiniteAdeleRing (𝓞 F) F) c z = incl F b ⊗ₜ[F] 1 := by
-  induction hz using AddSubgroup.closure_induction with
-  | mem x hx =>
-    obtain ⟨a, ha, x, hx, rfl⟩ := hx
-    rw [sg_tmul, Algebra.TensorProduct.tmul_mul_tmul]
-    refine tmul_fixed c h2 hc (fun v => adele_mul_integral F (ha v) (ha v)) ?_
-      (by rw [map_mul, invol c h2 hc, mul_comm])
-    obtain ⟨s, hs⟩ := conj_mem c x hx
-    obtain ⟨t, rfl⟩ := hx
-    exact ⟨t * s, by rw [map_mul, hs]⟩
-  | zero => exact ⟨0, by simp⟩
-  | add y z hy hz h1 h3 =>
-    obtain ⟨a, ha⟩ := h1
-    obtain ⟨b, hb⟩ := h3
-    obtain ⟨d, hd⟩ := trace_mem c h2 hc ((hatRing F E).mul_mem hy
-      (galoisAut_mem_adelicCompletionOfElementSet F c (conj_mem c) hz))
-    rw [map_mul, sg_sg c h2 hc] at hd
-    exact ⟨a + b + d, by
-      rw [map_add, map_add, map_add, TensorProduct.add_tmul, TensorProduct.add_tmul,
-        ← ha, ← hb, ← hd]; ring⟩
-  | neg y _ h1 =>
-    obtain ⟨a, ha⟩ := h1
-    exact ⟨a, by rw [map_neg, ← ha]; ring⟩
-
-variable (F E) in
-
-noncomputable def adIn : IntAd F →+* hatRing F E :=
-  ((Algebra.TensorProduct.includeLeftRingHom :
-    FiniteAdeleRing (𝓞 F) F →+* RA F E).comp (incl F)).codRestrict (hatRing F E)
-    fun a => (mem_hatRing F E _).2 (tmul_mem_adelicCompletion_of_integral F (a := incl F a) (x := 1)
-      (fun v => (a v).2) ⟨1, map_one _⟩)
-
-noncomputable def conjHat (c : E ≃ₐ[F] E) : hatRing F E →+* hatRing F E :=
-  ((sg (FiniteAdeleRing (𝓞 F) F) c : RA F E →+* RA F E).comp (hatRing F E).subtype).codRestrict _
-    fun z => galoisAut_mem_adelicCompletionOfElementSet F c (conj_mem c) z.2
-
-variable (F E) in
-
-noncomputable def intIn : 𝓞 E →+* hatRing F E :=
-  ((Algebra.TensorProduct.includeRight (R := F) (A := FiniteAdeleRing (𝓞 F) F) (B := E) :
-    E →+* RA F E).comp (algebraMap (𝓞 E) E)).codRestrict _
-    fun a => one_tmul_mem_adelicCompletionOfElementSet F ⟨a, rfl⟩
 
 end inst
 

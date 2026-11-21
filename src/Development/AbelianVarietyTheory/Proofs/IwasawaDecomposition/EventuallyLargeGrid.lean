@@ -1,11 +1,23 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.GKeyFin
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowRatW
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodReductionCondition
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.APerTw
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DivRows3GIff
+import Formalism.LocalToGlobal.FiniteTOf
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.IsLinked
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.AllRows
+import Development.AbelianVarietyTheory.Definitions.Divisors.MapBaseTiedSel
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ClassSumPin
+import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
+import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
+import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SerFixOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ExistsSmallSpherical
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PositionMv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResCharConj
+
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.RowEx GlobalTheory.Mem.LiteralAutomorphy
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -39,7 +51,5 @@ theorem evLgG_gridA_of_exGrid : ExGrid → ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF →
     have h2 := hHas.2 z
     simp only [dif_pos hfin] at h2
     exact h2 hz
-
-example : ExGrid → ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → EvLgG (GridA CF) := evLgG_gridA_of_exGrid
 
 end GlobalTheory.Mem.LiteralAutomorphy

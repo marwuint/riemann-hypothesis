@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.ImportsAlt
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.IsMultiHomogOfIsChowForm
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -18,18 +19,6 @@ def ChowDegreeGeoNum.Statement : Prop :=
       Function.Surjective (Int.castRingHom F) → ((p : ℤ) : F) = 0 →
         (chowDegree ((IndefiniteRowSideFullHecke.ArithBezout.finIdeal W).map (MvPolynomial.map (Int.castRingHom F))) (e + 1)
           : ℤ) = geoNum e W (fun _ _ => 1)
-
-def redTwo : MRing (PBlk 1) →+* MvPolynomial (Σ _ : Unit, PBlk 1 ()) (ZMod 2) :=
-  MvPolynomial.map (Int.castRingHom (ZMod 2))
-
-def blkOneEquiv : (Σ _ : Unit, PBlk 1 ()) ≃ Unit where
-  toFun _ := ()
-  invFun _ := ⟨(), 0⟩
-  left_inv := by
-    rintro ⟨⟨⟩, i⟩
-    fin_cases i
-    rfl
-  right_inv _ := rfl
 
 end ObjectsChow
 

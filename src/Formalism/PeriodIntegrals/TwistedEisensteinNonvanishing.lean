@@ -73,8 +73,6 @@ def stabL (M : Submodule (𝓞 E) (Sp E n)) : Subgroup (Sp E n ≃ₗ[E] Sp E n)
 
 def stdAt (P : HeightOneSpectrum (𝓞 E)) : Submodule (𝓞 E) (Sp E n) := localization₂ P.asIdeal (stdLat E n)
 
-def GLint (P : HeightOneSpectrum (𝓞 E)) : Subgroup (Sp E n ≃ₗ[E] Sp E n) := stabL E n (stdAt E n P)
-
 end Frames
 
 namespace Loc
@@ -142,30 +140,6 @@ def fixX : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) where
 def N1 : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) := R1 k n c ⊓ fixX k n c
 
 variable {k n c}
-
-def n1Arg (r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) : k :=
-  ∑ i ∈ Finset.range (c - 1), atN (r (eN k (n + c) (n + i + 1))) (n + i)
-
-def Cbe (J : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) (h : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) :
-    Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) :=
-  R1 k n c ⊓ J.comap (MulAut.conj h⁻¹).toMonoidHom
-
-def prX (C : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) : Subgroup ((Fin n → k) ≃ₗ[k] (Fin n → k)) where
-  carrier := {g | ∃ r ∈ C, ∀ x, r (inX k n c x) = inX k n c (g x)}
-  one_mem' := ⟨1, C.one_mem, fun _ => rfl⟩
-  mul_mem' := by
-    rintro a b ⟨r, hr, h1⟩ ⟨s, hs, h2⟩
-    refine ⟨r * s, C.mul_mem hr hs, fun x => ?_⟩
-    show r (s _) = _
-    rw [h2, h1]
-    rfl
-  inv_mem' := by
-    rintro a ⟨r, hr, h1⟩
-    refine ⟨r⁻¹, C.inv_mem hr, fun x => ?_⟩
-    show r.symm _ = _
-    rw [LinearEquiv.symm_apply_eq, h1]
-    show _ = inX k n c (a (a.symm x))
-    rw [LinearEquiv.apply_symm_apply]
 
 def volN (K : Type) [Field K] (C N1O : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) : K :=
   ((N1O.relIndex (C ⊓ N1 k n c) : ℕ) : K) / (((C ⊓ N1 k n c).relIndex N1O : ℕ) : K)
@@ -260,9 +234,6 @@ def JQ (kj n c : ℕ) : Subgroup (Sp E (n + c) ≃ₗ[E] Sp E (n + c)) :=
 
 variable {P}
 
-def lamQB (kj n : ℕ) {N : ℕ} (h : HomE E N N) : K :=
-  (unitV ξ (Matrix.det (Matrix.of fun s t : Fin (n - kj) => atN (h (eN E N (kj + t.1))) (kj + s.1))))⁻¹
-
 open Classical in
 
 def PhiQ (k₀ r c' n' c n : ℕ) : SF E K (n' + c') (n + c) := fun x =>
@@ -313,8 +284,6 @@ def rankY (j : ℕ) : ℕ := R.r + j * R.t
 
 def rankX' : ℕ := R.r + R.m * R.t
 
-def sigY0 : ℕ × ℕ := (R.k + R.rS, R.rS + 1)
-
 def sigW (j : ℕ) : ℕ × ℕ := (R.k + j - 1, R.m - j)
 
 end Ranks
@@ -332,12 +301,6 @@ abbrev AutYL (E : Type) [Field E] (R : Ranks) (j : ℕ) : Type := Sp E (R.N j + 
 def BddL (R : Ranks) (P : HeightOneSpectrum (𝓞 E)) (j : ℕ) (h : AutYL E R j) : Prop :=
   ∀ x ∈ LocE.lamY P (qOf P) (R.N j) (cOf R j) 0, h⁻¹ x ∈ LocE.lamY P (qOf P) (R.N j) (cOf R j) 0 ∧
     ((qOf P : E) ^ j) • h x ∈ LocE.lamY P (qOf P) (R.N j) (cOf R j) 0
-
-def NFL (R : Ranks) (P : HeightOneSpectrum (𝓞 E)) (j : ℕ) (h : AutYL E R j) : Prop :=
-  ∃ (n : ℕ → ℤ) (z : Sp E (R.N j)), (∀ i, -(j : ℤ) ≤ n i ∧ n i ≤ 0) ∧ z ∈ stdAt E (R.N j) P ∧
-    ∀ v : Sp E (R.N j + cOf R j), h⁻¹ v ∈ LocE.lamY P (qOf P) (R.N j) (cOf R j) 0 ↔
-      (∀ l : Fin (R.N j), IntAt P (v (Fin.castAdd _ l) - Loc.atN v (R.N j) * z l)) ∧
-        ∀ i : Fin (cOf R j), IntAt P (((qOf P : E) ^ n i.1)⁻¹ * v (Fin.natAdd _ i))
 
 def DCL (R : Ranks) (P : HeightOneSpectrum (𝓞 E)) (j : ℕ) (h h' : AutYL E R j) : Prop :=
   ∃ r ∈ Loc.R1 E (R.N j) (cOf R j), ∃ κ ∈ LocE.JQ P (qOf P) (R.k + j) (R.N j) (cOf R j), h' = r * h * κ

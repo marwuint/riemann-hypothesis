@@ -123,19 +123,6 @@ theorem cyclotomic_irreducible_of_isUnramifiedAt {K : Type*} [Field K] [NumberFi
     (cyclotomic.monic l (𝓞 K))).mp hirr2
   rwa [map_cyclotomic] at this
 
-theorem natCast_mem_of_liesOver {K : Type*} [Field K] [NumberField K] {p : ℕ}
-    (P : Ideal (𝓞 K)) [P.LiesOver (Ideal.span {(p : ℤ)})] : (p : 𝓞 K) ∈ P := by
-  have h : (p : ℤ) ∈ P.under ℤ := by
-    rw [← Ideal.LiesOver.over (P := P) (p := Ideal.span {(p : ℤ)})]
-    exact Ideal.mem_span_singleton_self _
-  simpa [Ideal.under, Ideal.mem_comap] using h
-
-theorem exists_forall_isUnramifiedAt_of_liesOver (K : Type*) [Field K] [NumberField K] :
-    ∃ N : ℕ, ∀ p : ℕ, p.Prime → N < p → ∀ (P : Ideal (𝓞 K)) [P.IsPrime]
-      [P.LiesOver (Ideal.span {(p : ℤ)})], Algebra.IsUnramifiedAt ℤ P := by
-  obtain ⟨N, hN⟩ := exists_forall_isUnramifiedAt K
-  exact ⟨N, fun p hp hpN P _ _ => hN p hp hpN P (natCast_mem_of_liesOver P)⟩
-
 theorem cyclotomic_irreducible_of_forall_isUnramifiedAt {K : Type*} [Field K] [NumberField K]
     {l : ℕ} (hl : l.Prime)
     (h : ∀ (P : Ideal (𝓞 K)) [P.IsPrime], (l : 𝓞 K) ∈ P → Algebra.IsUnramifiedAt ℤ P) :
@@ -152,11 +139,5 @@ theorem cyclotomic_irreducible_of_forall_isUnramifiedAt {K : Type*} [Field K] [N
   have hlM' : (l : 𝓞 K) ∈ M := hlM (Ideal.mem_span_singleton_self _)
   haveI := h M hlM'
   exact cyclotomic_irreducible_of_isUnramifiedAt hl M hlM'
-
-theorem exists_forall_cyclotomic_irreducible (K : Type*) [Field K] [NumberField K] :
-    ∃ N : ℕ, ∀ l : ℕ, l.Prime → N < l → Irreducible (cyclotomic l K) := by
-  obtain ⟨N, hN⟩ := exists_forall_isUnramifiedAt K
-  exact ⟨N, fun l hl hlN => cyclotomic_irreducible_of_forall_isUnramifiedAt hl
-    (fun P _ hP => hN l hl hlN P hP)⟩
 
 end ReciprocityTheory.Cheb

@@ -166,12 +166,6 @@ theorem isHilbertPoly_idealHilbertPoly [Finite ι] {I : Ideal (MvPolynomial ι k
   rw [idealHilbertPoly, dif_pos h]
   exact h.choose_spec
 
-theorem IsHilbertPoly.idealHilbertPoly_eq {I : Ideal (MvPolynomial ι k)} {P : ℚ[X]}
-    (hP : IsHilbertPoly (quotPiece I) P) : idealHilbertPoly I = P := by
-  have h : ∃ P, IsHilbertPoly (quotPiece I) P := ⟨P, hP⟩
-  rw [idealHilbertPoly, dif_pos h]
-  exact h.choose_spec.unique hP
-
 theorem eventually_finrank_quotPiece [Finite ι] {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) :
     ∀ᶠ n : ℕ in atTop, (finrank k (quotPiece I n) : ℚ) = (idealHilbertPoly I).eval (n : ℚ) := by
@@ -240,8 +234,5 @@ noncomputable def projSetDegree [Finite ι] (I : Ideal (MvPolynomial ι k)) : �
 
 def IsProjPureDim (I : Ideal (MvPolynomial ι k)) (e : ℕ) : Prop :=
   ∀ P ∈ projComponents I, ringKrullDim (MvPolynomial ι k ⧸ P) = (e + 1 : ℕ)
-
-def projPoints (I : Ideal (MvPolynomial ι k)) : Set (Projectivization k (ι → k)) :=
-  {y | ∀ g ∈ I, MvPolynomial.eval y.rep g = 0}
 
 end GlobalTheory

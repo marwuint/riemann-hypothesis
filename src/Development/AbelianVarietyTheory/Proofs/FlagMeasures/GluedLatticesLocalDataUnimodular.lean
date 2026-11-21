@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GenericLocalTermsSel
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianOrbitUniqueLatticeIntegralFramesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryComplementMovesHermitianTermsStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalIsometryExtendsLocalIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitriangularFrameChangeLocalScalingsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameDualUnipotentGroupActsUnitriangularOntoStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitriangularFrameChangeLocalScalings
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameDualUnipotentGroupActsUnitriangularOnto
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDatumOfTermReadOnLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeLocalGlobalPrinciple
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLattices
@@ -48,15 +50,15 @@ theorem orbit (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS)
     (∃ n ∈ (FP p).B.N, scaled Z p (frame G') = fun b => n ((FP p).B.f b)) := by
   obtain ⟨A, hA, hAc⟩ := hG
   obtain ⟨A', hA', hAc'⟩ := hG'
-  obtain ⟨Ap, hAp, -⟩ := GlobalTheory.T.rational_unitriangular_frame_change_local_scalings D Z _ _ A hA hAc
-  obtain ⟨Ap', hAp', -⟩ := GlobalTheory.T.rational_unitriangular_frame_change_local_scalings D Z _ _ A' hA' hAc'
+  obtain ⟨Ap, hAp, -⟩ := _root_.GlobalTheory.LocOver.tri_scaled D Z _ _ A hA hAc
+  obtain ⟨Ap', hAp', -⟩ := _root_.GlobalTheory.LocOver.tri_scaled D Z _ _ A' hA' hAc'
   have hN := (hR p).2.2.2.2.2.2
   have hfA : (FP p).A.f = scaled Z p (frame F) := (hB p).1
   have hfB : (FP p).B.f = scaled Z p (frame F') := (hB p).2.1
   refine ⟨?_, ?_⟩
-  · exact (GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p).A hN.2.1).2.2 (scaled Z p (frame G))
+  · exact (_root_.GlobalTheory.LocOver.UnipOnto.unipotent_onto (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p).A hN.2.1).2.2 (scaled Z p (frame G))
       (by rw [hfA]; exact ⟨Ap p, (hAp p).1, (hAp p).2⟩)
-  · exact (GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p).B hN.2.2.2.1).2.2 (scaled Z p (frame G'))
+  · exact (_root_.GlobalTheory.LocOver.UnipOnto.unipotent_onto (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p).B hN.2.2.2.1).2.2 (scaled Z p (frame G'))
       (by rw [hfB]; exact ⟨Ap' p, (hAp' p).1, (hAp' p).2⟩)
 
 theorem mem_iff_of_img {α : Type*} {S S' : Set α} {f : α → α} (hf : Function.Injective f) (hS : f '' S = S')

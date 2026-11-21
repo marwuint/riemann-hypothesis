@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaPowFixesOfCommutativeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardAbelianVarietyTorsionSepClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaPowFixesOfCommutative
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardAbelianVarietyTorsionSepClosed
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFieldOfValues
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRelativeDimensionAbelianVarietyField
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -185,7 +185,7 @@ theorem GlobalTheory.InertiaTate.exists_exponent_inertia_galTate : ∀ (R K Ω :
     rw [← map_natCast (residue R), this, map_zero]
   have hfin : ∀ n : ℕ, {x : ptOver K Ω ⟶ A | x ^ (l ^ n) = 1}.Finite := by
     intro n
-    have h := GlobalTheory.T.card_abelianVariety_torsion_sepClosed K Ω A hA g hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hlK)
+    have h := _root_.GlobalTheory.SepClosedTorsion.card_torsion_sepClosed K Ω A hA g hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hlK)
     have : Finite {x : ptOver K Ω ⟶ A // x ^ (l ^ n) = 1} :=
       Nat.finite_of_card_ne_zero (by
         rw [h]; exact pow_ne_zero _ (pow_ne_zero _ (Fact.out : l.Prime).ne_zero))
@@ -227,7 +227,7 @@ theorem GlobalTheory.InertiaTate.exists_exponent_inertia_galTate : ∀ (R K Ω :
     exact pow_fix_of_fix (galPts A g0) l hA1 n _ (by rw [pow_succ, pow_mul, t.lev_pow, one_pow])
   obtain ⟨Ln, hLnf, hLng, hLn⟩ := exists_galois_field_of_finite A _ (hSfin n) (hSst n)
   have hcomm := aut_comm_of_galTate_comm A l hc Ln n hLn
-  obtain ⟨a, ha⟩ := GlobalTheory.T.inertia_pow_fixes_of_commutative_alt R K Ω V hV Ln hLnf hLng hcomm σ hσ
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.TameInertia.inertia_pow_fixes_of_commutative R K Ω V hV Ln hLnf hLng hcomm σ hσ
   have hpp : g0 ^ (ringChar (ResidueField R) ^ a) ∈ stab A (t.lev n) := by
     have h2 : σ ^ ((Nat.card (ResidueField R) - 1) * ringChar (ResidueField R) ^ a) ∈ Ln.fixingSubgroup :=
       (IntermediateField.mem_fixingSubgroup_iff _ _).2 ha

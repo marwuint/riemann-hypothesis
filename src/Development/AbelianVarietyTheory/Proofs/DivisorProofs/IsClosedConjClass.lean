@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.MinpolyIrreducibleNatDegreeOfRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnitaryRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.MarkedSumIrr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvMemIntV
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOrbitCentralizerAlmostAll
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelMeanValueNonnegative
@@ -23,6 +24,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupActionRi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOrderCentralizerStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyCompletedTensorMatrixSplitSemilocalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSqrtFixedNearOneCommutativeCentralizerStatement
+
 open Matrix NumberField IsDedekindDomain GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx GlobalTheory.OrbFinAf
 open scoped TensorProduct Classical
 
@@ -498,7 +500,5 @@ theorem kottwitz_almost' (G : HTGroup p) (y : G.Cˣ) (hdeg : (minpoly G.F (y : G
 end GlobalTheory.OrbFinAf.AwayIrr
 
 namespace GlobalTheory.OrbFinAf.AwayIrr
-
-open scoped Pointwise
 
 end GlobalTheory.OrbFinAf.AwayIrr

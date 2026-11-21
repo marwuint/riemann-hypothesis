@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.FrobeniusFactorisation.PullT
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittComparisonReductionCompatStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittComparisonFrobeniusCompatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittComparisonGaloisFixedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittComparisonGaloisFixed
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittComparisonPullbackCompatStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerNuReductionCompatStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerNuFrobeniusCompatStatement
@@ -11,7 +11,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerNuPu
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerMuReductionCompatStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerMuGaloisCompatStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittAcrisFlatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AcrisIsAdicCompleteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AcrisIsAdicComplete
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -32,7 +32,7 @@ theorem bW_phi (r : Res l K) (M : Model l K) (n j : ℕ) (y : (HSW r M j).M n) :
     phiM r M n j (bW r M n j y) = bW r M n j ((Wc.phiS l (B.schFn M.p) r.ρ j).f n y) := by apply GlobalTheory.T.witt_comparison_frobenius_compat
 
 theorem bW_gal (r : Res l K) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (hσ : ∀ w, ACris.galCris σ (r.w w) = r.w w) (n j : ℕ)
-    (y : (HSW r M j).M n) : galM r M σ hσ n j (bW r M n j y) = bW r M n j y := by apply GlobalTheory.T.witt_comparison_galois_fixed
+    (y : (HSW r M j).M n) : galM r M σ hσ n j (bW r M n j y) = bW r M n j y := by apply _root_.GlobalTheory.CompanionTheory.BWGal.bW_gal
 
 theorem bW_pull (r : Res l K) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n j : ℕ) (y : (HSW r N j).M n) :
     pullM r u hu n j (bW r N n j y) = bW r M n j ((Wc.pullS l r.ρ (B.schMap u hu) j).f n y) := by apply GlobalTheory.T.witt_comparison_pullback_compat
@@ -66,6 +66,6 @@ theorem mu_gal (r : Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (M :
 
 theorem flatW (r : Res l K) : Module.Flat (WittVector l r.k) (AW r) := by apply GlobalTheory.T.witt_acris_flat
 
-theorem adicA : IsAdicComplete (Ideal.span {(l : Acris l)}) (Acris l) := by apply GlobalTheory.T.acris_isAdicComplete_span_prime
+theorem adicA : IsAdicComplete (Ideal.span {(l : Acris l)}) (Acris l) := by apply _root_.GlobalTheory.CompanionTheory.ACrisAdic.acris_isAdicComplete
 
 end CrystallineSemistableComparison.Pb

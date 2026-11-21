@@ -1,19 +1,24 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.GammaRangeOfSizeHypotheses
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.DiagSmall
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FinrankLeRankOnAdd
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ToGlob0
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ExpQuarterMulExpQuarterLeTwo
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CorankOneIsEquivalenceOnRow
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.KerInclOn
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SumNormSqOrthonormalLeHilbertSchmidt
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LoopEvaluationThresholdZero
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.DegenerateConstant
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LoopTerm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.DiagAtScale
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RowsPtAt
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CollSBound
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DiagCLC
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.FinXClosed
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ToGlob0
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ExpQuarterMulExpQuarterLeTwo
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CorankOneIsEquivalenceOnRow
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.KernelExpansionAbsoluteConvergenceEqualWords
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DiagonalTheoremOfFourPointBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NonemptyConcreteRowDataOfFinitenessBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ColumnDimensionWindowThreeOfColumnCountStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DiagonalTheoremOfFourPointBounds
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NonemptyConcreteRowDataOfFinitenessBundle
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ColumnDimensionWindowThreeOfColumnCount
+
 open scoped Classical
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.PackageTie2 GlobalTheory.Core.Diag GlobalTheory.Core.Deg
 
@@ -50,7 +55,7 @@ theorem diagonalRow_bound_from_windowWidthThree : Formalism.L2.SG.Pf.WuDecayOfGa
   obtain ⟨hTies, hAdm, hHL, hNW, hTF⟩ := hD
   subst hL
   have hS0 : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT := ⟨h8, hHL.2⟩
-  have hD0 : StandingNumericalData D 3 := GlobalTheory.T.columnDimension_window_three_of_columnCount D hNW hR
+  have hD0 : StandingNumericalData D 3 := _root_.GlobalTheory.Core.Diag.standingNumericalData_three_of_dataNW_rankMu D hNW hR
   have hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT 3 := ⟨hS0, hD0, by norm_num⟩
   obtain ⟨S, hF, hLT⟩ := hT.trueD.sTies
   have m1 : ∀ {a b c d e : ℝ}, max (max (max a b) (max c d)) 29 ≤ e →
@@ -59,7 +64,7 @@ theorem diagonalRow_bound_from_windowWidthThree : Formalism.L2.SG.Pf.WuDecayOfGa
     refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> refine le_trans ?_ h <;> simp
   obtain ⟨a1, a2, a3, a4, a5⟩ := m1 hC'
   obtain ⟨b1, b2, b3, b4, b5⟩ := m1 hCl
-  obtain ⟨c⟩ := GlobalTheory.T.nonempty_concreteRowData_of_finitenessBundle hW D large₂ C' Cl Cg cb Cu cT CT S a5 b5 hF hLT hTF hS0
+  obtain ⟨c⟩ := _root_.GlobalTheory.Core.Diag.concK_of_finX hW D large₂ C' Cl Cg cb Cu cT CT S a5 b5 hF hLT hTF hS0
   have hAC : (c.Y.tO u u).AbsConv := kExp_absConv_tied.2 D c.X c.Y u u c.tie
   have g0 := HG 3 rfl C' Cl a3 b3 D large₂ c.X c.Y c.hF c.hI u h1G hTies hAdm hH0 c.tie hAC
   have gc := HC 3 rfl C' Cl a4 b4 D large₂ c.X c.Y c.hF c.hI u h1G hTies hAdm hH0 c.tie hAC
@@ -80,7 +85,7 @@ theorem diagonalRow_bound_from_windowWidthThree : Formalism.L2.SG.Pf.WuDecayOfGa
     intro C; unfold gamL; congr 1; ring
   have hsum : gamL D large₂.sc.L C₁ + gamL D large₂.sc.L C₂ ≤ gamL D large₂.sc.L (max C₁ C₂ + 1) := by
     rw [hg, hg, hg]; exact exp_add_exp_le_exp_max_succ hy
-  have key := GlobalTheory.T.diagonalTheorem_of_fourPointBounds D c large₂ C' Cl Cg cb Cu cT CT 3 (gamL D large₂.sc.L C₁) (gamL D large₂.sc.L C₂)
+  have key := _root_.GlobalTheory.Core.Diag.sDiagAt_of_points D c large₂ C' Cl Cg cb Cu cT CT 3 (gamL D large₂.sc.L C₁) (gamL D large₂.sc.L C₂)
     (gamL D large₂.sc.L (max C₁ C₂ + 1)) u a5 b5 hH0 (Real.exp_pos _).le (Real.exp_pos _).le hsum g0 gc o1 o2
   unfold SDiagAt at key
   show TwoTerm D u _ _

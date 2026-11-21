@@ -4,7 +4,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericI
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviBlockSizesSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittRankLeSkewSignature
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureFundDomLtTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TripSizesSum
@@ -40,25 +39,6 @@ def IsBlockEmb {l d : ℕ} (h : l + d ≤ r) (ι : GlobalTheory.CuspRep.GA E d �
       1 + adMat F (blkCols h X) * (g.1.map Φ.symm - 1) * adMat F (cT (σ : E →+* E) (blkCols h Y) * J) +
         adMat F (blkCols h Y) * (cT (sigR (AF F) σ) ((g⁻¹).1.map Φ.symm) - 1) *
           adMat F (cT (σ : E →+* E) (blkCols h X) * J)
-
-omit [NumberField F] [NumberField E] in
-
-example : IsAdapted σ (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) (!![1; 0] : Matrix (Fin 2) (Fin 1) E) !![0; 1] 1 where
-  le := le_rfl
-  colX i j h k := by
-    have hj : j = 0 := Subsingleton.elim _ _
-    subst hj
-    have hi : i = 0 := Fin.ext h
-    subst hi
-    fin_cases k <;> simp
-  columnBlock i j h k := by
-    have hj : j = 0 := Subsingleton.elim _ _
-    subst hj
-    have hi : i = 1 := Fin.ext (by simp at h; omega)
-    subst hi
-    fin_cases k <;> simp
-  perpX i h1 h2 := by omega
-  perpY i h1 h2 := by omega
 
 end GlobalTheory.BlockForms
 

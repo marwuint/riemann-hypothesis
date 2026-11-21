@@ -221,9 +221,6 @@ structure FieldCond : Prop where
 
   bottom : ∀ i j, BottomInField G i j
 
-def PrimeToPolarisation : Prop :=
-  ∀ t, ∀ w ∈ places G t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal
-
 def cTotal {m : ℕ} (c : Fin m → Fin m → T → ℂ) (t : T) : ℂ := ∏ i, ∏ j, c i j t
 
 def ratio (R : RealDat D Fam Ks) (x : (AE D)ˣ) (c : Fin D.R.m → Fin D.R.m → T → ℂ) (t : T) : ℂ :=
@@ -240,21 +237,6 @@ structure Concl : Prop where
 
   total : ∀ (Q : ∀ i j, Square G i j) (c : Fin D.R.m → Fin D.R.m → T → ℂ), (∀ i j, (Q i j).Is ∧ (Q i j).IsConst (c i j)) →
     ∀ (x : (AE D)ˣ) (t : T), cTotal c t ≠ 0 ∧ ∃ y : D.what₂.LLˣ, D.what₂.embLL y = ratio R x c t
-
-def RatiosInField : Prop :=
-  ∀ (D : D7) (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (Fam : FamIn D.what₂.LL G₀ Pl0 T D.R.m)
-    (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D Fam Ks) (F : Face D Fam) (G : GridPre R),
-    R.Char F → G.Is → PrimeToPolarisation G → FieldCond G → Concl G
-
-example : rightBlock 1 (!![3, 5] : Matrix (Fin 1) (Fin 2) ℤ) = !![5] := by decide
-
-example (i j : ℕ) : rkV D (i + 1) (j + 1) + rkV D i j = rkV D i (j + 1) + rkV D (i + 1) j := by
-  simp only [rkV]; ring
-
-example (i j : Fin D.R.m) (t : T) : alpha R i j t / beta G i j t = R.toLevCh.mu t (j.1 + 1) / G.chi (D.R.m - i) := by
-  unfold alpha beta; exact mul_div_mul_right_eq_div _ _ _
-
-example {u v c c' : ℂ} (hv : v ≠ 0) (h : u = c * v) (h' : u = c' * v) : c = c' := mul_right_cancel₀ hv (h.symm.trans h')
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle
 

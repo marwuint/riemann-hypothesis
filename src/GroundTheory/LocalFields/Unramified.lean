@@ -70,22 +70,8 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
 def maximalUnramified : IntermediateField K L :=
   sSup {E : IntermediateField K L | IsUnramified K E}
 
-theorem le_maximalUnramified (E : IntermediateField K L) [IsUnramified K E] :
-    E ≤ maximalUnramified K L :=
-  le_sSup (show IsUnramified K E from inferInstance)
-
 variable [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace L]
   [IsNonarchimedeanLocalField L] [FiniteDimensional K L]
-
-variable {K L} in
-
-theorem IsUnramified.of_le {E F : IntermediateField K L} (h : E ≤ F) [IsUnramified K F] :
-    IsUnramified K E := by
-  let : Algebra E F := (IntermediateField.inclusion h).toRingHom.toAlgebra
-  have : IsScalarTower K E F := IsScalarTower.of_algebraMap_eq fun _ ↦ rfl
-  have : ValuativeExtension E F := valuativeExtension_algHom (K := K) (IntermediateField.inclusion h)
-  have : FiniteDimensional E F := Module.Finite.of_restrictScalars_finite K E F
-  exact IsUnramified.of_tower_left K E F
 
 theorem exists_generator_of_isUnramified (E : IntermediateField K L) [IsUnramified K E] :
     ∃ (γ : 𝒪[L]) (P : 𝒪[K][X]), P.Monic ∧ aeval γ P = 0 ∧ IsUnit (aeval γ (derivative P)) ∧
@@ -123,26 +109,7 @@ theorem finrank_maximalUnramified :
   rw [heq]
   exact hdeg
 
-theorem IsUnramified.sup (E F : IntermediateField K L) [IsUnramified K E] [IsUnramified K F] :
-    IsUnramified K (E ⊔ F : IntermediateField K L) :=
-  IsUnramified.of_le (sup_le (le_maximalUnramified K L E) (le_maximalUnramified K L F))
-
-theorem IsUnramified.iSup {ι : Type*} (E : ι → IntermediateField K L)
-    [∀ i, IsUnramified K (E i)] : IsUnramified K (⨆ i, E i : IntermediateField K L) :=
-  IsUnramified.of_le (iSup_le fun i ↦ le_maximalUnramified K L (E i))
-
 end Maximal
-
-section BaseChange
-
-variable (K K' L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
-  [IsNonarchimedeanLocalField K] [Field K'] [ValuativeRel K'] [TopologicalSpace K']
-  [IsNonarchimedeanLocalField K'] [Field L] [ValuativeRel L] [TopologicalSpace L]
-  [IsNonarchimedeanLocalField L] [Algebra K K'] [Algebra K' L] [Algebra K L] [IsScalarTower K K' L]
-  [ValuativeExtension K K'] [ValuativeExtension K' L] [ValuativeExtension K L]
-  [FiniteDimensional K L]
-
-end BaseChange
 
 section Galois
 

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CramerMemAdelicC
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLatticeEqAdelicCompletionAndGram
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePartPreservesFormDetNormOne
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ConjugationActsOnCmTorsionByMultiplicationStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingConjugateComponentAdelicStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingConjugateComponentAdelic
 
 namespace GlobalTheory.DetTranslate
 
@@ -194,7 +194,7 @@ theorem conj_translates_det : ∀ (D : D7) (H : ReciprocityTheory.ChartRestricti
   intro D H Dw l Xo c σ V r C hC hpq τ hτ hfix π hπ xi hK hQ
   obtain ⟨Cv, io, hio, -⟩ := hfix
   obtain ⟨⟨s, hs⟩, -⟩ := GlobalTheory.T.conjugation_acts_on_cm_torsion_by_multiplication D.host.E H Cv τ hτ io hio l.M (lt_of_lt_of_le (by norm_num) l.three_le)
-  have step := GlobalTheory.T.marking_conjugate_component_adelic D H Dw l Xo c σ V r C hC hpq τ hτ Cv io s π hs hπ
+  have step := _root_.GlobalTheory.ConjMark.marking_of_conjugate D H Dw l Xo c σ V r C hC hpq τ hτ Cv io s π hs hπ
   by_cases hex : ∃ h γ k h' γ', C.Mark h k γ ∧ C.Mark h' (π k) γ'
   · obtain ⟨h₀, γ₀, k₀, h₀', γ₀', m₀, m₀'⟩ := hex
     obtain ⟨-, -, u₀, hu₀, -, hd₀⟩ := step _ _ _ _ _ m₀ m₀'

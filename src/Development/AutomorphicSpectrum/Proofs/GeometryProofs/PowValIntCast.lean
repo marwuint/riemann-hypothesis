@@ -3,8 +3,11 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsHTAtIff
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDualBC
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatPar
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.OverZpOfInFibre
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HTChartExistsHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateChartIntegralStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HTChartExistsHolds
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HTChartExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateChartIntegral
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 
 noncomputable section
@@ -32,8 +35,8 @@ theorem cp_descend {A Ω : Type} [CommRing A] [Field Ω] [Algebra A Ω] (hinj : 
     refine ⟨κ + 1, IsPrimitiveRoot.of_map_of_injective (f := algebraMap A Ω) ?_ hinj, by ring⟩
     rwa [map_add, map_one, h2, sub_add_cancel]
 
-theorem exists_chart (h876 : type_of% @GlobalTheory.T.section_eq_zero_of_values) (h450 : type_of% @GlobalTheory.T.torsion_embedding_geometric_points)
-    (h758 : type_of% @GlobalTheory.T.HTChartExists_holds) (h576 : type_of% @GlobalTheory.T.hodge_tate_chart_integral)
+theorem exists_chart (h876 : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic) (h450 : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.exists_qfGroup_torsion)
+    (h758 : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.ChartEx.htChartExists) (h576 : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.HT.hasTestPoints_of_tate)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Scheme.{0}}
     [IsLocallyNoetherian X] (t : SAB H X) {Ω : Type} [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X) (hξ : IsCptGen ξ)
     (hall : ∀ q : X, genPt ξ ⤳ q)

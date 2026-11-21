@@ -149,11 +149,6 @@ def equivOfIsMulCoboundary₂ (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f'
     equivOfIsMulCoboundary₂ hf hf' h (incl a) = incl a := by
   simp [equivOfIsMulCoboundary₂]
 
-theorem exists_algEquiv_of_isMulCoboundary₂ (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f')
-    (h : IsMulCoboundary₂ (f' / f)) :
-    ∃ e : CrossedProduct hf ≃ₐ[K] CrossedProduct hf', ∀ a : L, e (incl a) = incl a :=
-  ⟨equivOfIsMulCoboundary₂ hf hf' h, equivOfIsMulCoboundary₂_incl hf hf' h⟩
-
 end coboundary
 
 section split
@@ -210,12 +205,6 @@ theorem isMulCoboundary₂_inv {g : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} 
   simp only [Pi.inv_apply]
   rw [← hx σ τ, smul_inv']
   simp only [div_eq_mul_inv, mul_inv, inv_inv]
-
-def endEquivOfIsMulCoboundary₂ (hf : IsMulCocycle₂ f) (h : IsMulCoboundary₂ f) :
-    CrossedProduct hf ≃ₐ[K] Module.End K L :=
-  (equivOfIsMulCoboundary₂ hf isMulCocycle₂_one (by
-    rw [one_div]
-    exact isMulCoboundary₂_inv h)).trans (endEquiv isMulCocycle₂_one)
 
 end split
 

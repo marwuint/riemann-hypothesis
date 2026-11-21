@@ -5,53 +5,6 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsE
 open NumberField GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKGeo GlobalTheory.PELU GlobalTheory.UPel.HT
 open scoped Matrix TensorProduct Classical
 
-private theorem exists_algHom_end {F : Type} [Field F] [NumberField F] {V : Type} [AddCommGroup V] [Module ℚ V]
-    (φ : 𝓞 F →+* Module.End ℚ V) :
-    ∃ ψ : F →ₐ[ℚ] Module.End ℚ V, ∀ c : 𝓞 F, ψ (c : F) = φ c := by
-  let b := RingOfIntegers.basis F
-  let e : ℚ ⊗[ℤ] 𝓞 F ≃ₗ[ℚ] F := (b.baseChange ℚ).equiv (integralBasis F) (Equiv.refl _)
-  have he : ∀ a : 𝓞 F, e ((1 : ℚ) ⊗ₜ[ℤ] a) = (a : F) := by
-    have key : (e.toLinearMap.restrictScalars ℤ) ∘ₗ (TensorProduct.mk ℤ ℚ (𝓞 F) (1 : ℚ)) =
-        (Algebra.linearMap (𝓞 F) F).restrictScalars ℤ := by
-      refine b.ext fun i => ?_
-      have h1 : e ((b.baseChange ℚ) i) = integralBasis F i := by
-        exact Module.Basis.equiv_apply _ _ _ _
-      rw [Module.Basis.baseChange_apply, integralBasis_apply] at h1
-      exact h1
-    intro a
-    exact congrArg (fun f => f a) key
-  let θ : ℚ ⊗[ℤ] 𝓞 F →ₐ[ℚ] F :=
-    Algebra.TensorProduct.lift (Algebra.ofId ℚ F) ((algebraMap (𝓞 F) F).toIntAlgHom)
-      (fun _ _ => Commute.all _ _)
-  have hθ1 : ∀ a : 𝓞 F, θ ((1 : ℚ) ⊗ₜ[ℤ] a) = (a : F) := by
-    intro a
-    simp [θ]
-  have hθ : ∀ x, θ x = e x := by
-    intro x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul q a =>
-      have h : q ⊗ₜ[ℤ] a = q • ((1 : ℚ) ⊗ₜ[ℤ] a) := by
-        simp [TensorProduct.smul_tmul']
-      rw [h, map_smul, map_smul, he, hθ1]
-    | add x y hx hy => simp [hx, hy]
-  have hbij : Function.Bijective θ := by
-    have h : (θ : ℚ ⊗[ℤ] 𝓞 F → F) = e := funext hθ
-    rw [h]
-    exact e.bijective
-  let E : ℚ ⊗[ℤ] 𝓞 F ≃ₐ[ℚ] F := AlgEquiv.ofBijective θ hbij
-  let ρ : ℚ ⊗[ℤ] 𝓞 F →ₐ[ℚ] Module.End ℚ V :=
-    Algebra.TensorProduct.lift (Algebra.ofId ℚ _) φ.toIntAlgHom
-      (fun x y => Algebra.commute_algebraMap_left x _)
-  refine ⟨ρ.comp E.symm.toAlgHom, fun c => ?_⟩
-  have h : E.symm (c : F) = (1 : ℚ) ⊗ₜ[ℤ] c := by
-    rw [AlgEquiv.symm_apply_eq]
-    exact (hθ1 c).symm
-  show ρ (E.symm (c : F)) = φ c
-  rw [h]
-  refine (Algebra.TensorProduct.lift_tmul _ _ _ _ _).trans ?_
-  simp
-
 private theorem exists_equiv_of_finrank {F : Type} [Field F] [NumberField F] {V V' : Type}
     [AddCommGroup V] [Module ℚ V] [FiniteDimensional ℚ V]
     [AddCommGroup V'] [Module ℚ V'] [FiniteDimensional ℚ V']

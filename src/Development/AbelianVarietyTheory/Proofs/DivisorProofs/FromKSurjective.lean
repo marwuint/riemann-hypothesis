@@ -24,14 +24,6 @@ def fixOfK (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebr
 @[simp] theorem fixOfK_apply (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) (a : Kˣ) :
     (((fixOfK c hcK a : fixU ℚ c) : Lˣ) : L) = algebraMap K L a := rfl
 
-def fromK (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) : Kˣ →* H1 ℚ c :=
-  (QuotientGroup.mk' (normSub ℚ c)).comp (fixOfK c hcK)
-
-variable (K L) in
-
-def ratNormSub : Subgroup Kˣ :=
-  (Units.map (algebraMap ℚ K : ℚ →* K)).range ⊔ GlobalTheory.QuadSymbol.globalNorms K L
-
 section Quad
 
 variable [Algebra.IsQuadraticExtension K L]

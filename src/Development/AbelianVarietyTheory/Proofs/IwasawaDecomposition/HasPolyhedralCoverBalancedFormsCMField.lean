@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegelZeroFront
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPosDefBalancedRealFormCmFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SiegelGramMemConeIntegerSquaresStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAdaptedSiegelBasisBalancedFormsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteBalancedCmIntegersActionsSiegelReducedStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SiegelGramMemConeIntegerSquares
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAdaptedSiegelBasisBalancedForms
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteBalancedCmIntegersActionsSiegelReduced
 
 noncomputable section
 
@@ -86,15 +86,15 @@ theorem hasRedCover (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
   haveI : Module.Free ℤ X := inferInstance
   obtain ⟨n, hn⟩ : ∃ n, Module.finrank ℤ X = n := ⟨_, rfl⟩
   obtain ⟨B₀, hB₀, hB₀'⟩ := GlobalTheory.T.exists_posDef_balanced_realForm_cmField E H X
-  have hF := GlobalTheory.T.finite_balanced_cmIntegers_actions_siegelReduced E H n
-  obtain ⟨S, hS⟩ := GlobalTheory.T.siegelGram_mem_cone_integer_squares n
+  have hF := _root_.GlobalTheory.RedTh.finite_balanced_actions E H n
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.SiegelCone.gram_mem_cone n
   haveI : Nonempty (Module.Basis (Fin n) ℤ X) := ⟨Module.finBasisOfFinrankEq ℤ X hn⟩
   let ref : (𝓞 E →+* Matrix (Fin n) (Fin n) ℤ) → Module.Basis (Fin n) ℤ X := fun ρ => Classical.epsilon fun b => actMat b = ρ
   let ι := ↥hF.toFinset × ↥S
   refine hasRedCover_of_fintype (ι := ι) _ (fun x => sqForm (ref x.1.1) x.2.1) (fun x y z => ?_) (fun x y => ?_) fun B hB => ?_
   · simp only [sqForm_apply, mul_comm]
   · simp only [sqForm_apply]; exact mul_self_nonneg _
-  obtain ⟨b, d, d', u, B', h1, h2, h3, h4, h5, h6⟩ := GlobalTheory.T.exists_adapted_siegel_basis_balanced_forms E H X B₀ hB₀ hB₀' n hn B hB
+  obtain ⟨b, d, d', u, B', h1, h2, h3, h4, h5, h6⟩ := _root_.GlobalTheory.RedTh.exists_adapted_siegel_basis E H X B₀ hB₀ hB₀' n hn B hB
   have hρ : (actMat b : 𝓞 E →+* _) ∈ hF.toFinset := by
     rw [Set.Finite.mem_toFinset]
     exact ⟨d', u, h2, h3, fun c => actMat_balanced b h4 h6 c⟩

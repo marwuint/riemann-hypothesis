@@ -39,8 +39,6 @@ theorem h_smul_right (x y : n → A) (c : A) : D.h x (c • y) = c * D.h x y := 
 
 theorem h_sub_right (x y y' : n → A) : D.h x (y - y') = D.h x y - D.h x y' := (D.hL x).map_sub y y'
 
-theorem h_zero_right (x : n → A) : D.h x 0 = 0 := (D.hL x).map_zero
-
 theorem h_sum_right {ι : Type} (s : Finset ι) (x : n → A) (y : ι → n → A) :
     D.h x (∑ i ∈ s, y i) = ∑ i ∈ s, D.h x (y i) := map_sum (D.hL x) y s
 
@@ -50,20 +48,6 @@ theorem h_add_left (x x' y : n → A) : D.h (x + x') y = D.h x y + D.h x' y := b
 theorem h_smul_left (x y : n → A) (c : A) : D.h (c • x) y = D.σA c * D.h x y := by
   simp only [h, hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
-
-theorem h_zero_left (y : n → A) : D.h 0 y = 0 := by
-  simp [h, hform]
-
-theorem h_sub_left (x x' y : n → A) : D.h (x - x') y = D.h x y - D.h x' y := by
-  simp only [h, hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
-
-theorem h_sum_left {ι : Type} (s : Finset ι) (x : ι → n → A) (y : n → A) :
-    D.h (∑ i ∈ s, x i) y = ∑ i ∈ s, D.h (x i) y := by
-  classical
-  refine Finset.induction_on s ?_ ?_
-  · simp only [Finset.sum_empty, h_zero_left]
-  · intro a s ha ih
-    rw [Finset.sum_insert ha, Finset.sum_insert ha, h_add_left, ih]
 
 structure Hyp : Prop where
   σσ : ∀ x, D.σA (D.σA x) = x
@@ -188,10 +172,6 @@ theorem pW_f (H : D.Hyp) (b : Fin r) : D.pW (D.f b) = 0 := by
 
 theorem orthogonal_proj_normal_zero (H : D.Hyp) : D.pW D.z = 0 := by
   rw [pW_apply, pU_z_eq H, sub_self]
-
-theorem pW_pX (H : D.Hyp) (u : n → A) : D.pW (D.pX u) = 0 := by
-  rw [pX_apply, map_sum]
-  simp [pW_e H]
 
 end Dat
 

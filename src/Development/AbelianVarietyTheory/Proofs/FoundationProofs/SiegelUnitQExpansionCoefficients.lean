@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplexStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegralStatement
 
 open scoped UpperHalfPlane MatrixGroups
@@ -112,7 +112,7 @@ theorem siegel_exp : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   set x : Fin 2 → ℚ := ![(a : ℚ) / M, (b : ℚ) / M] with hx
   obtain ⟨k, hk⟩ := GlobalTheory.T.smoothedSiegelUnit_qExpansion_coeffs_integral c M a hM haM
   obtain ⟨A', hA', -⟩ := hk b hadm
-  have hmem := GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε T c x hadm
+  have hmem := _root_.GlobalTheory.KZ.SiegelMem.an_siegel_eq Ω ε T c x hadm
   set f := siegel T c x with hf
   obtain ⟨φ, C, hφ, hsum⟩ := T.an_exp f
   have hMq : (M : ℚ) ≠ 0 := by exact_mod_cast hM.ne'

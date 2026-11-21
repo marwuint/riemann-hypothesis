@@ -44,12 +44,6 @@ def UnipotentCoordProper.Statement [NumberField F] [IsTotallyReal F] [IsTotallyC
 
 end Coordinate
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

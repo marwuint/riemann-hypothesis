@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightAntitoneOfFiniteDimensionalStable
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCliffordLowestVectorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CliffordVectorSpinWeightStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCliffordLowestVector
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CliffordVectorSpinWeight
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinGlRelationsAdjointStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHighestWeightModuleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Sl2SquareKillsVectorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Sl2SquareKillsVector
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinTensorHighestWeightStatement
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PRVComponents
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRules.KTypeIntDomStatement
@@ -134,7 +134,7 @@ theorem assemble {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n 
     intro i j hij
     have hlt : i < j := by rw [Fin.lt_def]; omega
     have hne : i ≠ j := ne_of_lt hlt
-    refine GlobalTheory.T.sl2_square_kills_vector E hEgl hEu hne ha0 (hay i) (hay j) ⟨ν i - ν j - 1, ?_⟩ ?_ ?_
+    refine _root_.GlobalTheory.CompanionTheory.RealCount.sl2_square_kills E hEgl hEu hne ha0 (hay i) (hay j) ⟨ν i - ν j - 1, ?_⟩ ?_ ?_
     · simp only [wtR, rhoV]; rw [hij]; push_cast; ring
     · have := hdom hlt.le
       simp only [wtR, rhoV] at this ⊢
@@ -255,10 +255,10 @@ theorem spin_parthasarathy_rao_varadarajan : ∀ n : ℕ, ∃ (ι : Type) (_ : F
       ∃ w : Equiv.Perm (Fin n), Antitone (fun a => wtR ν (w a) - rhoV n (w a)) ∧ ∃ x : ι → V, x ≠ 0 ∧
         Formalism.REAL.KHighest (fun _ => true) (yF Kf c) (fun a => wtR ν (w a) - rhoV n (w a)) x := by
   intro n
-  obtain ⟨ι, hF, hD, c, hc, q, hq0, hq⟩ := GlobalTheory.T.exists_clifford_lowest_vector n
+  obtain ⟨ι, hF, hD, c, hc, q, hq0, hq⟩ := _root_.GlobalTheory.CompanionTheory.CliffModel.exists_cliff_model n
   letI := hF
   letI := hD
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.clifford_vector_spin_weight c hc q hq
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.RealCount.spinM_vacuum_lowest c hc q hq
   refine ⟨ι, hF, hD, c, hc, ?_⟩
   intro V _ _ Kf S ν v hK hKu hfd hst hvS hv0 hv
   exact assemble c hc q hq0 h1 h2 V Kf S ν v hK hKu hfd hst hvS hv0 hv

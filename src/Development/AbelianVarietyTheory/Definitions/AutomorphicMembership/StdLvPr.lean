@@ -75,10 +75,6 @@ instance (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.
         ∀ v c z (h : z.1 ∈ ((I.stp u I.mu0 i).rep c).1.1.deco.1.dnN v), (F.lvC i h1 h2).prk v c z = Submodule.Quotient.mk ⟨z.1, h⟩ :=
   ⟨fun h => h.1⟩
 
-example (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf)
-    (h : I.StdLvC l Z u F) (i h1 h2 v c z) (hz : z.1 ∈ ((I.stp u I.mu0 i).rep c).1.1.deco.1.N) :
-    (F.lvC i h1 h2).pr v c z = Submodule.Quotient.mk ⟨z.1, hz⟩ := (h i h1 h2).1 v c z hz
-
 def StdDt (dt : Formalism.L2.Herm.unitaryOneFiniteAdeles (I.rec7 l Z).sp.cm →* (I.rec7 l Z).Dt) : Prop :=
   ∀ (x : Formalism.L2.Herm.unitaryOneFiniteAdeles (I.rec7 l Z).sp.cm) (a : GlobalTheory.Mem.Chr.Ideles B.host.E), IsDetLift B.sp.cm x.1 a →
     dt x = (QuotientGroup.mk a : DtQ B.host I.SQ)
@@ -164,16 +160,6 @@ structure StdKer {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi 
   amb : HEq t.amb (I.J.amb B t.χ)
   δ : t.δ = I.J.δ
   O : I.StdO l Z Y.Qp t.O
-
-example (u : B.Word) (j : Fin (B.R.N B.R.m)) (h : j.1 + 1 ≠ B.R.N B.R.m) : z0 X u j = 0 := if_neg h
-
-example (u : B.Word) (j : Fin (B.R.N B.R.m)) (h : j.1 + 1 = B.R.N B.R.m) :
-    z0 X u j = ((X.piT u : 𝓞 B.host.E) : B.host.E) := if_pos h
-
-example (Qp : I.ι → Finset ℕ) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (h : I.StdO l Z Qp O)
-    (u : B.Word) (a : I.ι) : (O u a).mt 0 = (I.rec7 l Z).muTil 0 := by
-  rw [h.mt u a]
-  exact if_neg fun h => absurd h.1 (by omega)
 
 end GlobalTheory.Mem.Col2.TC
 

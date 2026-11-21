@@ -114,12 +114,6 @@ theorem xi_eq (hw : D.what₂.muAt w ≠ D.what₂.mu0) {ρ : Setup D.ntw} (hP :
 
 end Point
 
-theorem twChr_of_twAdm : GlobalTheory.Published.GlobalArtinReciprocity → TwAdm → TwChr := fun _ h =>
-  Closed.imp h fun _ _ _ ⟨x0, H⟩ => ⟨x0, fun x hx h0 i p r hm w hw j _ hρ hA =>
-    have hw' := (p.tw_iff w).1 hw
-    have h1 := chrEq_tw hm.2.2 hw' (H x hx h0 i p r hm w hw j).1 hρ hA
-    ⟨h1, xi_eq hw' hA.1 j _ h1⟩⟩
-
 end GlobalTheory.TwistChr
 
 end

@@ -1,16 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.TwistingSheafOneChartEqPreimageStandardChart
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjOverCompFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjOverCompFinite
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsAffineOpenLeOfIsQProjOver
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GenericPartDenseProOpen
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsActionOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsQuotientOfFiniteGroup
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.QuotientIsFiniteLocallyOfFiniteTypeDescendStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.QuotientIsFiniteLocallyOfFiniteTypeDescend
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmulApplyEqOfEqOnInvariants
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.QuotientIsReducedIsNormalFlatStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjOverFiniteGroupQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.QuotientIsReducedIsNormalFlat
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjOverFiniteGroupQuotient
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.QuotientExistsUniqueCompEq
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
@@ -32,7 +32,7 @@ theorem isProjOver_comp_spMap {O O' : Type} [CommRing O] [CommRing O'] (b : O' �
   obtain ⟨N, i, hi, rfl⟩ := hs
   have P := GlobalTheory.ProjSpace.isPullback_baseChange N b
   have hf : IsFinite (GlobalTheory.ProjSpace.baseChange N b) := MorphismProperty.of_isPullback P.flip hb
-  have := GlobalTheory.T.isProjOver_comp_finite O' (PSpace O' N) X (i ≫ GlobalTheory.ProjSpace.baseChange N b) (PSpace.str O' N) inferInstance
+  have := _root_.GlobalTheory.isProjOver_comp_of_finite O' (PSpace O' N) X (i ≫ GlobalTheory.ProjSpace.baseChange N b) (PSpace.str O' N) inferInstance
     ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩
   rwa [Category.assoc, P.w, ← Category.assoc] at this
 
@@ -134,8 +134,8 @@ theorem exists_quotient_model_scheme : ∀ (E : Type) [Field E] [NumberField E] 
     obtain ⟨N, i, hi, e⟩ := hproj
     have := isProper_str O' N
     rw [hs', ← e]; infer_instance
-  have hfin := (GlobalTheory.T.quotient_isFinite_and_descends_finiteness_properties Γ C.X X' ρ π hπ _ s' inferInstance).1
-  obtain ⟨-, hnorm, hflat⟩ := GlobalTheory.T.quotient_isReduced_isNormal_flat_of_invariant_sections Γ C.X X' ρ π hπ
+  have hfin := (_root_.GlobalTheory.quotient_isFinite_locallyOfFiniteType_descend Γ C.X X' ρ π hπ _ s' inferInstance).1
+  obtain ⟨-, hnorm, hflat⟩ := _root_.GlobalTheory.quotient_isReduced_isNormal_flat Γ C.X X' ρ π hπ
   have hbf : Flat (spMap b) := by
     rw [Flat.SpecMap_iff]
     letI := b.toAlgebra
@@ -168,7 +168,7 @@ theorem exists_quotient_model_scheme : ∀ (E : Type) [Field E] [NumberField E] 
     exact hρ g
   have e5 : r ≫ j' ≫ p' = C.j ≫ π := by
     rw [reassoc_of% e3, e1, Cpt.j, Category.assoc]
-  refine ⟨X', π, s', j', hπ, hfin, hs', hnorm hN C.normal, GlobalTheory.T.isProjOver_finite_group_quotient Γ C.X X' ρ π hπ O' s' (hs' ▸ hproj), hs'f,
+  refine ⟨X', π, s', j', hπ, hfin, hs', hnorm hN C.normal, _root_.GlobalTheory.isProjOver_quotient Γ C.X X' ρ π hπ O' s' (hs' ▸ hproj), hs'f,
     ?_, hj', ?_, e5, fun x => ⟨?_, ?_⟩⟩
   · refine (quotient_existsUnique_comp_eq Γ U U' ρ₀ r hr _ (r ≫ c') fun g => ?_).unique ?_ rfl
     · rw [← Category.assoc, hr.2.1]

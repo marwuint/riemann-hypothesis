@@ -75,11 +75,6 @@ end Formalism.MainNotions.N.RepresentationBoundsCohomology
 
 namespace Formalism.MainNotions.LargeLevelLemmas
 
-open Formalism.MainNotions.N Formalism.MainNotions.N.RepresentationBoundsCohomology
-
-variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* Matrix.GeneralLinearGroup (Fin D.R.nV) (D.nd.O i)))
-  (ρ : D.nd.X i → (GE D.nd →* Matrix.GeneralLinearGroup (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
-
 end Formalism.MainNotions.LargeLevelLemmas
 
 end

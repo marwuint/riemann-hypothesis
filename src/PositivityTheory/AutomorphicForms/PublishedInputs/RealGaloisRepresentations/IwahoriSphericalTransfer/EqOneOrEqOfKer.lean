@@ -1,12 +1,12 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsExtensionRepIndexTwoOfTraceInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FiniteQuadraticCharactersInAdjointStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FiniteQuadraticCharactersInAdjoint
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsExtensionRepIndexTwoOfTraceInvariant
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjOnInterQuadraticKernelsOfTraceEqStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRepPatchTwistStatement
-import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.IntertwinerZeroOfCharacterTwist
-import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.IntertwinerZeroOfQuadraticTwists
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjOnInterQuadraticKernelsOfTraceEq
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRepPatchTwist
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntertwinerZeroOfCharacterTwist
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntertwinerZeroOfQuadraticTwists
 
 open Formalism.MainNotions.N
 
@@ -50,7 +50,7 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {Γ k : Type} [Group Γ] [F
     (hB2 : ∀ X : Matrix (Fin n) (Fin n) k, (∀ g, (ρ₀ g : Matrix (Fin n) (Fin n) k) * X = ((((η * η₀) g : ℤˣ) : ℤ) : k) • (X * (ρ₀ g : Matrix (Fin n) (Fin n) k))) → X = 0) :
     ∃ ρ : Γ →* GL (Fin n) k, (∀ g, η₀ g = 1 → ρ g = ρ₀ g) ∧ IsSSRep ρ ∧
       ∀ g, η g = 1 → ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((ρj g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace := by
-  obtain ⟨P, hP⟩ := GlobalTheory.T.conj_on_inter_quadraticKernels_of_trace_eq Γ k n ρ₀ ρj η₀ η h0 hj htr
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.QuadKernelConj.conj_on_ker_inf_ker Γ k n ρ₀ ρj η₀ η h0 hj htr
   have hs : ∃ s, η₀ s = 1 ∧ η s = -1 := by
     by_contra hc
     push_neg at hc
@@ -60,8 +60,8 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {Γ k : Type} [Group Γ] [F
     · exact hne1 h
     · exact hne2 h
   obtain ⟨s, hs0, hs1⟩ := hs
-  have hY := GlobalTheory.T.intertwiner_zero_of_character_twist Γ k n ρ₀ η₀ η hB1 hB2
-  obtain ⟨ρ, hρ0, hρ1⟩ := GlobalTheory.T.exists_rep_agreeing_on_kernels Γ k n ρ₀ ρj η₀ η P s hs0 hs1 hP
+  have hY := _root_.GlobalTheory.commute_on_ker_of_commute_on_ker_inter Γ k n ρ₀ η₀ η hB1 hB2
+  obtain ⟨ρ, hρ0, hρ1⟩ := _root_.GlobalTheory.exists_rep_patch_twist Γ k n ρ₀ ρj η₀ η P s hs0 hs1 hP
     (fun Y hYc => hY Y hYc s hs0)
   refine ⟨ρ, hρ0, ?_, ?_⟩
   · apply GlobalTheory.IndexTwoExt.isSSRep_of_ker η₀ t ht
@@ -92,7 +92,7 @@ theorem main : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopological
         (((χ g : ℤˣ) : ℤ) : k) • (X * ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))} := ⟨_, rfl⟩
   have hB : B.Finite := by
     rw [hBdef]
-    exact GlobalTheory.T.finite_quadratic_characters_in_adjoint' Γ k n (ρe i₀)
+    exact _root_.GlobalTheory.finite_quadratic_characters_in_adjoint Γ k n (ρe i₀)
   have notB : ∀ χ : Γ →* ℤˣ, χ ∉ B → ∀ X : Matrix (Fin n) (Fin n) k,
       (∀ g, ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X =
         (((χ g : ℤˣ) : ℤ) : k) • (X * ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) → X = 0 := by
@@ -146,7 +146,7 @@ theorem main : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopological
   filter_upwards [hev] with j hj
   obtain ⟨ρj, hρja, hρjs, hρjt⟩ := exists_ne_zero_smul_mem_of_mem_span' n (ρe i₀) (ρe j) (η i₀) (η j) t ht (hρs i₀) (hρs j)
     (fun g g0 g1 => htrc i₀ j g g0 g1) hj.1.2.2.1 hj.1.2.2.2 (notB _ hj.1.1) (notB _ hj.1.2.1)
-  have hall := GlobalTheory.T.intertwiner_zero_of_quadratic_twists Γ k n (ρe i₀) ρ₁ ρj (η i₀) (η j₁) (η j) hρ1a hρja hρ1s hρjs
+  have hall := _root_.GlobalTheory.trace_eq_of_agree_on_index_two_of_no_twisted_intertwiner Γ k n (ρe i₀) ρ₁ ρj (η i₀) (η j₁) (η j) hρ1a hρja hρ1s hρjs
     (by
       intro c hc
       apply notB

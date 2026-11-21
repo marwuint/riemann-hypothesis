@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLatticesInSupLattices
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlacesStatement
+import Development.AutomorphicArithmetic.PrimeDiscriminants.SlopeTestRemainingChoices
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlaces
+import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsExtAllModelsUniformised
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueTranslatedProductValuationBoundStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SumSupportCMul
@@ -185,7 +187,7 @@ theorem thBound : ThBoundSt := by
       rw [pow_two] at h2
       exact ((Nat.prime_dvd_prime_iff_eq p1 p0).1 (Nat.dvd_of_mul_dvd_mul_right p1.pos h2)).symm
   · intro T' io' y' C' e' ho'
-    have hc := GlobalTheory.T.harmonicValuationLowerBound_hostField_all_places D T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c hnab.1 T' io' y' C' e' ho'.1 (wtA w) w.n
+    have hc := _root_.GlobalTheory.PlaceInt.HostChart.chBound_host D T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c hnab.1 T' io' y' C' e' ho'.1 (wtA w) w.n
       (WeightAlgebra.DF w) (ReciprocityTheory.ChartRestriction.G.PullbackSections.PfTies1.DF_wtA_le (T.Q.Dw j) w)
     convert hc using 1
     refine Finset.sum_congr rfl fun p _ => ?_

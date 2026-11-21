@@ -44,15 +44,6 @@ theorem IsQuasiRegularSeq.isSMulRegular_quot_pow (h : IsQuasiRegularSeq M f) {x 
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hm
   exact (Submodule.Quotient.mk_eq_zero _).mpr (h.mem_pow_smul_top_of_smul_mem hx a hm)
 
-theorem IsQuasiRegularSeq.map_mem_pow_smul_top_iff (h : IsQuasiRegularSeq M f) (T : Submonoid R)
-    (hT : ∀ t ∈ T, IsSMulRegular (M ⧸ (Ideal.span (Set.range f) • ⊤ : Submodule R M)) t)
-    {N : Type*} [AddCommGroup N] [Module R N] (g : M →ₗ[R] N) [IsLocalizedModule T g] (a : ℕ)
-    (m : M) : g m ∈ (Ideal.span (Set.range f) ^ a • ⊤ : Submodule R N) ↔
-      m ∈ (Ideal.span (Set.range f) ^ a • ⊤ : Submodule R M) := by
-  refine ⟨fun hm => ?_, fun hm => Submodule.smul_top_le_comap_smul_top _ g hm⟩
-  obtain ⟨s, hs, hsm⟩ := exists_smul_mem_smul_top_of_isLocalizedModule T g _ hm
-  exact h.mem_pow_smul_top_of_smul_mem (hT s hs) a hsm
-
 theorem isSMulRegular_quot_smul_top_iff (J : Ideal R) (x : R) :
     IsSMulRegular (R ⧸ (J • ⊤ : Submodule R R)) x ↔ IsSMulRegular (R ⧸ J) x := by
   rw [show (J • ⊤ : Submodule R R) = J by simp]
@@ -420,31 +411,5 @@ theorem IsQuasiRegularSeq.powers {R : Type u} [CommRing R] {n : ℕ} {f : Fin n 
   rintro A _ _ d k ⟨b⟩
   have := h.nonempty_basis_quot_pow_self b k
   rwa [Fintype.card_fin] at this
-
-example : (MvPolynomial.idealOfVars (Fin 2) ℤ ^ 3).IsPrimary := by
-  have : (Ideal.span (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ))).IsPrime := by
-    have hk : Ideal.span (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ)) =
-        RingHom.ker MvPolynomial.constantCoeff := by
-      ext p
-      rw [← pow_one (Ideal.span _), RingHom.mem_ker]
-      refine (MvPolynomial.mem_pow_idealOfVars_iff' _ _).trans ?_
-      simp [Finsupp.degree_eq_zero_iff, MvPolynomial.constantCoeff_eq]
-    rw [hk]
-    exact RingHom.ker_isPrime _
-  exact (isQuasiRegularSeq_X (R := ℤ) (Fin 2)).isPrimary_pow (by norm_num)
-
-example : Nonempty (Module.Basis (Fin 6) ℤ
-    (MvPolynomial (Fin 2) ℤ ⧸ MvPolynomial.idealOfVars (Fin 2) ℤ ^ 3)) := by
-  have hk : Ideal.span (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ)) =
-      RingHom.ker (MvPolynomial.aeval (R := ℤ) fun _ : Fin 2 => (0 : ℤ)) := by
-    ext p
-    rw [← pow_one (Ideal.span _), RingHom.mem_ker]
-    refine (MvPolynomial.mem_pow_idealOfVars_iff' _ _).trans ?_
-    simp [Finsupp.degree_eq_zero_iff, MvPolynomial.constantCoeff_eq]
-  have e := (Ideal.quotientEquivAlgOfEq ℤ hk).trans
-    (Ideal.quotientKerAlgEquivOfSurjective (f := MvPolynomial.aeval (R := ℤ) fun _ : Fin 2 => (0 : ℤ))
-      fun z => ⟨MvPolynomial.C z, by simp⟩)
-  exact (isQuasiRegularSeq_X (R := ℤ) (Fin 2)).powers.2.2 ℤ 1 2
-    ⟨(Module.Basis.singleton (Fin 1) ℤ).map e.symm.toLinearEquiv⟩
 
 end GlobalTheory

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAffineOpenSpreadStalkLieEigenspaceFrameStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAffineOpenSpreadStalkLieEigenspaceFrame
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieBase
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DualGramInterpGram
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfConjEqOne
@@ -36,7 +36,7 @@ theorem exists_affine_frame_near : ∀ (E : Type) [Field E] [NumberField E] [IsC
     have h2 : p.hom = φz := RingHom.ext fun a => inj (RingHom.congr_fun h1 a)
     rw [← hp, ← h2]
     rfl
-  obtain ⟨W, hW, φ, fW, hz, -, hWstr, hmap⟩ := GlobalTheory.T.exists_affineOpen_spread_stalk_lieEigenspaceFrame E H Dw l Xo c O β Z F X j (under y) φz fz ⊤ trivial hstr
+  obtain ⟨W, hW, φ, fW, hz, -, hWstr, hmap⟩ := _root_.GlobalTheory.ShFam.StalkSpread.exists_affine_isMap E H Dw l Xo c O β Z F X j (under y) φz fz ⊤ trivial hstr
   have hgerm : spMap (X.X.presheaf.germ W (under y) hz).hom ≫ (show Sp Γ(X.X, W) ⟶ X.X from hW.fromSpec) =
       stalkPt X (under y) := hW.fromSpecStalk_eq_fromSpecStalk hz
   have hφz : φz = (X.X.presheaf.germ W (under y) hz).hom.comp φ := by

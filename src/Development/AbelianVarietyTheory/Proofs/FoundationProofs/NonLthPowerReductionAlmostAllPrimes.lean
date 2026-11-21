@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussValuationExtensionUniqueBertiniNoetherStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussValuationExtensionUniqueBertiniNoether
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
 
@@ -249,7 +249,7 @@ theorem not_valuation_lt_one : ∀ {F : Type} [Field F] [CharZero F] [IsAlgClose
   have htL : Transcendental F (algebraMap K (AdjoinRoot (X ^ l - C s)) t) :=
     (transcendental_algebraMap_iff (algebraMap K _).injective).2 ht
   have hfinL := finiteDimensional_adjoin_map (F := F) hKL t hfin
-  obtain ⟨S₀, hS₀⟩ := GlobalTheory.T.gauss_valuation_extension_unique_bertiniNoether _ htL hfinL
+  obtain ⟨S₀, hS₀⟩ := _root_.GlobalTheory.BertiniNoether.gauss_extension_unique _ htL hfinL
   refine ⟨insert l S₀, fun q hq hqS V hqV W hW h c _hh hc0 hcV hciV => ?_⟩
   have hql : q ≠ l := fun e => hqS (e ▸ Finset.mem_insert_self _ _)
   have hqS₀ : q ∉ S₀ := fun e => hqS (Finset.mem_insert_of_mem e)

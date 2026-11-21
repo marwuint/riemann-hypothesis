@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmDevissageGenerationStepStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmDevissageStepIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmDevissageGenerationStep
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmDevissageStepIndependent
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
 set_option autoImplicit false
@@ -69,7 +69,7 @@ theorem GlobalTheory.basis_lift : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [C
     | tail _ hst ih =>
       intro f hf
       obtain ⟨b, s, hs, hq⟩ := ih f hf
-      obtain ⟨b', s', -, hs', hq'⟩ := GlobalTheory.T.quasiLogarithm_devissage_generation_step p B O Q θ hF d μ hL C hC Θ hΘ ι e he hB _ _ hst _ hq
+      obtain ⟨b', s', -, hs', hq'⟩ := _root_.GlobalTheory.QLog.StepGen.step_generation p B O Q θ hF d μ hL C hC Θ hΘ ι e he hB _ _ hst _ hq
       refine ⟨b + b', s + s', ?_, ?_⟩
       · intro α
         obtain ⟨x, -, hx⟩ := hs α
@@ -111,7 +111,7 @@ theorem GlobalTheory.basis_lift : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [C
       have hcop : Nat.Coprime n p := Nat.Coprime.symm (((Fact.out : p.Prime).coprime_iff_not_dvd).2 hn)
       obtain ⟨w, hw⟩ := hF.unit_coprime n hcop
       refine ⟨v, fun g hg => ?_⟩
-      obtain ⟨t, -, ht⟩ := GlobalTheory.T.divided_in_of_quasi_logarithm p B O Q θ hF d μ hL ⊤ g hg α i
+      obtain ⟨t, -, ht⟩ := _root_.GlobalTheory.QLogDiff.dIn_of_QL p B O Q θ hF d μ hL ⊤ g hg α i
       refine ⟨↑w⁻¹ * t, ?_⟩
       rw [hαi] at ht
       push_cast at ht
@@ -127,7 +127,7 @@ theorem GlobalTheory.basis_lift : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [C
     induction hN with
     | refl => exact ⟨fun _ => trivial, hs⟩
     | tail _ hst ih =>
-      exact GlobalTheory.T.quasiLogarithm_devissage_step_independent p B O Q θ hF d μ hL C hC Θ hΘ ι e he hB _ _ hst c s ih.1 ih.2
+      exact _root_.GlobalTheory.step_independent p B O Q θ hF d μ hL C hC Θ hΘ ι e he hB _ _ hst c s ih.1 ih.2
         (by rw [hcs, sub_self]; exact ql0 _)
   have U1 : ∀ (c : ι → B) (s : MvPowerSeries (Fin d) Q), In (⊤ : Ideal B) s → comb c e = s →
       ∃ (c' : ι → B) (s' : MvPowerSeries (Fin d) Q), In (⊤ : Ideal B) s' ∧ comb c' e = s' ∧

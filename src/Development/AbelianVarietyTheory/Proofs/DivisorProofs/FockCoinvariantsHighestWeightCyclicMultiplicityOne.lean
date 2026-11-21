@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJointShapeGen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoinvTopOrRat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHighestWeightLiftModStableSubspaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionIsLocallyBlockUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightLeSpanSupFockCoinvariantsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHighestWeightLiftModStableSubspace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionIsLocallyBlockUnitary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightLeSpanSupFockCoinvariants
 
 open scoped TensorProduct
 open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift GlobalTheory.HoweR
@@ -20,7 +20,7 @@ theorem coinv_eq_rel (P Q R S : ℕ) (x : ℚ) : coinv P Q R S (x : ℂ) = Globa
 
 theorem fockAct2_good (P Q R S : ℕ) : Good (fockAct2 P Q R S) :=
   ⟨(fock_lie_and_commute P Q R S).2.2.1, fun v => ((GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 v).2,
-    GlobalTheory.T.fockAction_isLocallyBlockUnitary P Q R S⟩
+    _root_.GlobalTheory.HoweR.fock_locU P Q R S⟩
 
 theorem rel_stab (P Q R S : ℕ) (x : ℚ) (Y : Mat R S) (y : Pol P Q R S) (hy : y ∈ GlobalTheory.FockQuot.rel P Q R S x) :
     fockAct2 P Q R S Y y ∈ GlobalTheory.FockQuot.rel P Q R S x := by
@@ -88,7 +88,7 @@ theorem cycMod_rel (P Q R S : ℕ) (x : ℚ) (hne : GlobalTheory.FockQuot.rel P 
     rw [← Submodule.Quotient.mk_eq_zero, ← actQ_zero_mk]
     exact hpos c d hcd
   obtain ⟨v, -, hv, hfv⟩ :=
-    GlobalTheory.T.exists_highestWeight_lift_mod_stable_subspace R S (Pol P Q R S) (fockAct2 P Q R S) (fockAct2_good P Q R S) C ⊤ hKC hKT μ' f₁
+    _root_.GlobalTheory.HoweR.LiftMod.lift_mod R S (Pol P Q R S) (fockAct2 P Q R S) (fockAct2_good P Q R S) C ⊤ hKC hKT μ' f₁
       Submodule.mem_top h1 h2
   have hmk : (Submodule.Quotient.mk v : Pol P Q R S ⧸ C) = Submodule.Quotient.mk f₁ :=
     ((Submodule.Quotient.eq C).2 hfv).symm
@@ -119,7 +119,7 @@ theorem cycMod_rel (P Q R S : ℕ) (x : ℚ) (hne : GlobalTheory.FockQuot.rel P 
     rw [this]
     exact N.sub_mem hn (Submodule.mem_sup_right hd)
   ·
-    obtain ⟨f₀, hf₀⟩ := GlobalTheory.T.highestWeight_le_span_sup_fockCoinvariants P Q R S x μ' hJ
+    obtain ⟨f₀, hf₀⟩ := _root_.GlobalTheory.HoweR.hw_le_span_sup_coinv P Q R S x μ' hJ
     rw [coinv_eq_rel] at hf₀
     obtain ⟨y, hy, c, hc, hyc⟩ := Submodule.mem_sup.1 (hf₀ hv)
     obtain ⟨z, rfl⟩ := Submodule.mem_span_singleton.1 hy

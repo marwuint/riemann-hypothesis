@@ -240,9 +240,6 @@ def embAt (τ : E →+* ℂ) : E →+* ↥C.S := P.fK.comp (embF c τ)
 
 def embInt (τ : E →+* ℂ) : 𝓞 E →+* ↥(intO ↥C.S) := embO (integers_intO C) (embAt P τ)
 
-theorem coe_embInt (τ : E →+* ℂ) (a : 𝓞 E) : (embInt P τ a : ↥C.S) = P.emb τ a :=
-  algebraMap_embO (integers_intO C) (embAt P τ) a
-
 theorem embAt_injective : Function.Injective (embAt P) := fun _ _ h =>
   RingHom.ext fun x => congrArg Subtype.val (P.fK.injective (RingHom.congr_fun h x))
 

@@ -7,11 +7,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AdjointBaseChange
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TwoMulEqOfIsTypeFn
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubeLineBundleAdjointIffHermFormAdjointStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLatticeUniformisationOfPrimThetaStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TransportThetaLevelUniformisationCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDiagonalCoordinatesOfDeterminantConditionStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PeriodLatticeInGenusStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PelObjectClassPrimAndIsoClosedStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLatticeUniformisationOfPrimTheta
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TransportThetaLevelUniformisationCoordinates
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDiagonalCoordinatesOfDeterminantCondition
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PeriodLatticeInGenus
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PelObjectClassPrimAndIsoClosed
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -89,13 +89,13 @@ theorem exists_module {O : Type} [CommRing O] {g : ℕ} {La : Type} [AddCommGrou
 theorem exists_period : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (a : J → 𝓞 E) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La) (ρ : o) (ty : Fin g → (E →+* ℂ)) (t : TObj g k J b (spMap em)), a w = H.w0 → a w' = H.bar H.w0 → em ρ = H.rt0 → IsTypeFn H D.p D.q ty → PELClass D a bas ρ em t → ∃ (D' : Datum H) (f : ℕ → D.La →ₗ[𝓞 E] D'.La) (ν : ℕ → ℤ) (Q : D'.La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), (D'.p = D.p ∧ D'.q = D.q ∧ (∀ n m : ℕ, 0 < n → 0 < m → ∀ x, ∃ y, f (n * m) x = f n x + n • y) ∧ (∀ n : ℕ, 0 < n → (∀ x, (∃ y, f n x = n • y) ↔ ∃ y, x = n • y) ∧ ∀ x', ∃ x y, x' = f n x + n • y) ∧ ∀ n : ℕ, 0 < n → ∀ x x', (n : ℤ) ∣ D'.EF (f n x) (f n x') - ν n * D.EF x x') ∧ em (b.ζ : o) = Complex.exp (-(2 * Real.pi * Complex.I) * (ν k : ℂ) / k) ∧ IsPeriod D' ty Q ∧ (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set.range Q) = ⊤ ∧ (Hm).IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ x y, (hermForm Hm (Q x) (Q y)).im = D'.EF x y) ∧ (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q).range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q x → χ' l = (-1) ^ D'.EF x ((fun j x => a j • x) w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q ((fun i => f k (bas (Pi.single i 1))) i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q ((fun j x => a j • x) j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) := by
   intro l1 l2 l3 l4 E _ _ _ H D o _ g k J b em w w' a bas ρ ty t hw hw' hρ hty hP
   obtain ⟨La, _, EF, lam, ac, Q₀, Hm₀, hbij, hpol, -, u, χ, hAH, hΛ, hχ, hpt, hac⟩ :=
-    GlobalTheory.T.exists_lattice_uniformisation_of_prim_theta l1 l2 l3 l4 o g k J b em w w' t ((GlobalTheory.T.pelObjectClass_prim_and_iso_closed E H D o g k J b em w w' a bas ρ t hP).1 hw hw')
+    _root_.GlobalTheory.PrimUnif.exists_unif_of_prim l1 l2 l3 l4 o g k J b em w w' t ((_root_.GlobalTheory.pelClass_prim_and_iso E H D o g k J b em w w' a bas ρ t hP).1 hw hw')
   obtain ⟨act, haj, hdet, hadj, I, hζ, hev⟩ := exists_act hP
   change OAct (𝓞 E) t.A at act
   rw [hρ] at hdet
   obtain ⟨h, hh⟩ : ∃ h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ (c : 𝓞 E) z,
       u.ex (h (fun i => ty i (c : E) * z i)) = u.ex (h z) ≫ act.act c :=
-    GlobalTheory.T.exists_diagonal_coordinates_of_determinantCondition l1 l2 l3 l4 E H D t.pol u Hm₀ χ act ty hAH hty hdet
+    _root_.GlobalTheory.exists_diagonal_coordinates_of_detCond l1 l2 l3 l4 E H D t.pol u Hm₀ χ act ty hAH hty hdet
   obtain ⟨inj, disc, span, herm, pos, him⟩ := id hpol
   let F : 𝓞 E → ((Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) := fun c =>
     h.toLinearMap ∘ₗ (LinearMap.pi fun i => ty i (c : E) • LinearMap.proj i) ∘ₗ h.symm.toLinearMap
@@ -133,7 +133,7 @@ theorem exists_period : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Ou
     disc₁ span₁ herm₁ pos₁ (fun x y => by rw [him₁]; exact him x y)
   let Q₂ : D'.La →+ (Fin g → ℂ) := Q₀.comp e.toLinearMap.toAddMonoidHom
   have hQ₂ : ∀ x, Q₂ x = Q₀ (e x) := fun x => rfl
-  obtain ⟨f, ν, hgen, hf⟩ := GlobalTheory.T.period_lattice_in_genus_alt l1 l2 l3 l4 E H D D' t.pol u Hm₀ χ act Q₂ hp hq hAH
+  obtain ⟨f, ν, hgen, hf⟩ := _root_.GlobalTheory.TorsionGenus.period_lattice_in_genus l1 l2 l3 l4 E H D D' t.pol u Hm₀ χ act Q₂ hp hq hAH
     (inj.comp e.injective)
     (fun z => (hΛ z).trans ⟨fun ⟨x, hx⟩ => ⟨e.symm x, (congrArg Q₀ (e.apply_symm_apply x)).trans hx⟩,
       fun ⟨x, hx⟩ => ⟨e x, hx⟩⟩)
@@ -154,7 +154,7 @@ theorem exists_period : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Ou
   · show Q₁ (e (c • x)) i = _ * Q₁ (e x) i
     rw [map_smul]
     exact hs _ _ _
-  · refine GlobalTheory.T.transport_thetaLevel_uniformisation_coordinates o g k J b em w w' t La EF lam ac Q₀ Hm₀ D'.La D'.EF
+  · refine _root_.GlobalTheory.UnifTransport.transport_uniformisation o g k J b em w w' t La EF lam ac Q₀ Hm₀ D'.La D'.EF
       (fun i => f k (bas (Pi.single i 1))) (fun j x => a j • x) Q Hm e.symm.toAddEquiv h.symm hpol
       ⟨inj', disc', span', herm', pos', him''⟩ (fun x => ?_) (fun x y => ?_) (fun j x => ?_) (fun i => ?_)
       ⟨u, χ, hAH, hΛ, hχ, hpt, hac⟩

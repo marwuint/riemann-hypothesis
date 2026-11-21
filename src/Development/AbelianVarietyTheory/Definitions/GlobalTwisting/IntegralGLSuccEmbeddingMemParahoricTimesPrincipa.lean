@@ -126,8 +126,6 @@ theorem mem_parahoricTimesPrincipalCongruence_iff {k : GLint E N P} : k ∈ K1 h
 theorem integralGLSuccEmbedding_mem_parahoricTimesPrincipalCongruence {j : GLint E n P} (hj : j ∈ levJ l) : extI hN P j ∈ K1 hN l c :=
   (mem_parahoricTimesPrincipalCongruence_iff hN l c).2 ⟨j, hj, 1, one_mem _, (mul_one _).symm⟩
 
-theorem principalCongruence_le_levelGroup : prinCong N P c ≤ K1 hN l c := le_sup_right
-
 variable {c} (hc : 0 < c)
 include hc
 
@@ -146,9 +144,6 @@ theorem parahoricTimesPrincipalCongruence_character_eq {j : GLint E n P} (hj : j
   refine levExt_lam _ l (reductionModPrime_mem_levelExtendDiagonal_of_parahoric hN l hc hk) hj ?_
   show redGL N P k = _
   rw [e, map_mul, redGL_of_prinCong hc hκ, mul_one, redGL_extI]
-
-theorem levelGroup_character_isOfFinOrder (k : (levelParahoricTimesPrincipalCongruence hN l hc).H) : IsOfFinOrder ((levelParahoricTimesPrincipalCongruence hN l hc).lam k) :=
-  MonoidHom.isOfFinOrder (levExt (by omega : n ≤ N) l).lam (isOfFinOrder_of_finite _)
 
 end K1
 
@@ -178,16 +173,6 @@ def topLevQ {c : ℕ} (hc : 0 < c) : LevQFam X.E X.K (R.N R.m) (QE sel (mu : Chr
 
 @[reducible] def topGSD (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) {M : ℕ} (c : TopDepth R M) : GSD X.K :=
   frmGSD (colValF W sel mu u R.m) (topLevG Ch P) (topLevQ R sel mu c.pos)
-
-theorem topGSD_ok (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) {M : ℕ} (c : TopDepth R M) :
-    (topGSD W Ch sel mu P u c).Ok := by
-  refine GlobalTheory.FramedForms.main hX (W.lamTrue u R.m) (topLevG Ch P) (topLevQ R sel mu c.pos)
-    (fun Q => Subgroup.finiteIndex_of_le (principalCongruence_le_levelGroup _ _ _)) fun g => isOfFinOrder_iff_pow_eq_one.1 ?_
-  have e : (topLevQ R sel mu c.pos).chr g = _ :=
-    piChar_apply (fun w => (topLevQ R sel mu c.pos w).H) (fun w => (topLevQ R sel mu c.pos w).lam) g
-  rw [e]
-  exact Finset.prod_induction _ IsOfFinOrder (fun a b => IsOfFinOrder.mul) IsOfFinOrder.one fun w _ =>
-    levelGroup_character_isOfFinOrder _ _ c.pos _
 
 open Classical in
 
@@ -634,20 +619,6 @@ theorem TopEquiv.cp2Equiv (h : TopEquiv W Ch sel mu cst L T b hY P c) (hX : X.Ok
   rw [e1]
   rfl
 
-def topCpl (h1 : Cp1Equiv W Ch sel mu cst L T b hY) (h2 : TopEquiv W Ch sel mu cst L T b hY P c) (al : L.β m2) :
-    CplKer ((chF W sel mu L u m2).mem al) (midGSD W sel mu L u m2 b) (topGSD W Ch sel mu P u c) (ybCpl W sel mu cst L u m2 b hY) :=
-  CplKer.mk (cp1K W Ch sel mu cst L T al) (topDegreeKTwo W Ch sel mu cst T) (h1 al) h2
-
-open Classical in
-
-def matFam (hM : MatEquiv W Ch sel mu cst L T) : KerFam (chF W sel mu L u) := fun i al be =>
-  if h : i < m2 then ClsKer.mk (matK W Ch sel mu cst L T i al be) (hM i h al be) else zeroKer _ _
-
-def colTop (hM : MatEquiv W Ch sel mu cst L T) (h1 : Cp1Equiv W Ch sel mu cst L T b hY) (h2 : TopEquiv W Ch sel mu cst L T b hY P c)
-    (hF : ∀ j, (chF W sel mu L u j).Ok) {G : ChGlob X R.m} (hL : L.Ok Ch sel mu cst G m2) :
-    MfV W Ch u →ₗ[X.K] (topGSD W Ch sel mu P u c).EqFun :=
-  colCpl (matFam hM) hF m2 (topCpl h1 h2) (hF (m2 + 1) b) ∘ₗ startC hL u
-
 end Col
 
 section Checks
@@ -658,32 +629,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 instance (u : Pr.Word) : Nonempty (TopPt R sel mu u) :=
   haveI : NeZero (R.N R.m) := ⟨(R.N_pos _).ne'⟩
   ⟨DecoF.base _ _ _ _ _⟩
-
-example (hPr : Pr.Ok) (u : Pr.Word) : TilOk Pr sel (mu0 X.F X.E X.K S) u :=
-  tilOk_of hPr u fun P hP => by
-    rw [twistPrimes_trivialTuple_empty] at hP
-    simp at hP
-
-theorem levelGroup_lastColumn_congruence {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n N : ℕ} (hN : N = n + 1) {P : HeightOneSpectrum (𝓞 E)}
-    (l : Lev (𝓞 E ⧸ P.asIdeal) K n) (c : ℕ) {k : GLint E N P} (hk : k ∈ K1 hN l c) :
-    ((qOf P : E) ^ c)⁻¹ • (k.1 (Pi.single (Br.iL hN) 1) - Pi.single (Br.iL hN) 1) ∈ stdAt E N P := by
-  obtain ⟨j, -, κ, hκ, rfl⟩ := (mem_parahoricTimesPrincipalCongruence_iff hN l c).1 hk
-  have h1 := glint_mem (extI hN P j) (hκ _ (single_mem_stdAt (Br.iL hN)))
-  have h0 : prH E hN (Pi.single (Br.iL hN) 1) = 0 := by
-    funext i
-    rw [prH_apply, Pi.single_eq_of_ne fun e => i.2.ne (congrArg Fin.val e)]
-    rfl
-  have h2 : (extI hN P j).1 (Pi.single (Br.iL hN) 1) = Pi.single (Br.iL hN) 1 :=
-    ext_prH hN (by rw [extI_val, prH_sumE, h0, map_zero]) (by rw [extI_val, sumE_last, Units.val_one, one_mul])
-  rw [map_smul, map_sub, h2] at h1
-  exact h1
-
-example (R : Ranks) (h : R.m = 2) : (default : TopDepth R 1).1 = 9 ∧ (default : TopDepth R 5).1 = 14 := by
-  constructor
-  · show max (4 * R.m + 1) (2 * R.m + 2 * 1) = 9
-    rw [h]; rfl
-  · show max (4 * R.m + 1) (2 * R.m + 2 * 5) = 14
-    rw [h]; rfl
 
 end Checks
 

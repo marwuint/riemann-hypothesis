@@ -84,48 +84,12 @@ lemma sm_transfer {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (�
     exact hEq _ ht (hmem t)
   exact ((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev
 
-lemma sm_exists_smoothJ_ne (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [CompleteSpace H] [Nontrivial H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
-    (hσ : PI.UpqRep.IsURepOn (PI.UpqRep.UJset ε) σ) :
-    ∃ w : H, w ≠ 0 ∧ PI.KFinSmoothW.SmoothJ ε σ w := by
-  obtain ⟨x, hx⟩ := exists_ne (0 : H)
-  obtain ⟨Φ, hΦ, hΦc, -, hle⟩ := PI.KFinSmoothW.dense_weak_vectors n ε H σ hσ (ℂ ∙ x) inferInstance
-  refine ⟨PI.KFinSmoothW.gv ε σ Φ x, ?_, PI.KFinSmoothW.garding_vectors_smooth n ε H σ hσ Φ hΦ hΦc x⟩
-  intro h0
-  have h1 := hle x (Submodule.mem_span_singleton_self x)
-  rw [h0, zero_sub, norm_neg] at h1
-  have hpos : 0 < ‖x‖ := norm_pos_iff.2 hx
-  linarith
-
 lemma sm_isURepOn_bridge (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (h : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
     PI.UpqRep.IsURepOn (PI.UpqRep.UJset ε) σ :=
   ⟨⟨h.1.1, fun a ha b hb => h.1.2 a ha b hb⟩, fun g hg v => h.2.1 g hg v, fun v => h.2.2 v⟩
 
 end Gen
-
-section MultSec
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S
-open Formalism.L2.Theta Formalism.IndefR.Mult
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
-
-theorem smNonzero (M : DSModel V S) : SmNonzero M := by
-  intro τ
-  obtain ⟨hc, hnt, hU, -⟩ := M.ds τ
-  have := hc
-  have := hnt
-  obtain ⟨w, hw0, hws⟩ := sm_exists_smoothJ_ne (M.ε τ) (M.σ τ) (sm_isURepOn_bridge (M.ε τ) (M.σ τ) hU)
-  have hsv : SmoothVec (lieAt V τ) (M.rep τ) w :=
-    sm_transfer (M.ε τ) (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (lieAt V τ) (fun X hX => hX) w hws
-  refine ⟨⟨w, Submodule.subset_span hsv⟩, ?_⟩
-  intro h
-  exact hw0 (congrArg Subtype.val h)
-
-end MultSec
 
 end Formalism.IndefR.PeterssonHilbertSpace
 

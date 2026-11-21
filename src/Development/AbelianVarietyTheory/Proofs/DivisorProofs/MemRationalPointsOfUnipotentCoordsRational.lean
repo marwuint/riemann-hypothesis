@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemUnitaryRationalPointsOfFrameImagesRationalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemUnitaryRationalPointsOfFrameImagesRational
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.EisLine GlobalTheory.SphEis
 open GlobalTheory.ResLine (IsHt SemiLat)
@@ -21,7 +21,7 @@ theorem mem_ratPts_of_crd_rat : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
   have hsub : ∀ {a b : ℕ} (X Y : Matrix (Fin a) (Fin b) E),
       adMat F (X - Y) = adMat F X - adMat F Y := fun X Y => by
     ext i k; simp [adMat]
-  refine GlobalTheory.T.mem_unitaryRationalPoints_of_frameImages_rational F E σ n J j m C D Z J₀ hF u C
+  refine _root_.GlobalTheory.SphEis.mem_ratPts_of_cols_rat F E σ n J j m C D Z J₀ hF u C
     (D - Z * (J₀⁻¹ * cT (σ : E →+* E) b₀) + C * c₀) (Z + C * b₀) h.onC ?_ ?_
   · rw [h.onZ, hadd, hmul]
   · rw [h.onD, hadd, hsub, hmul, hmul, hmul]

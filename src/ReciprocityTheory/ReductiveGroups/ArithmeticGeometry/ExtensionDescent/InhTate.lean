@@ -237,54 +237,6 @@ theorem tauBimult : tatePre.TauBimult := by
     ring
   exact corr_of_isConst (h3.of_eq (key a a' b)) h4
 
-theorem jK_toOpen (V : S.Opens) (x : R) :
-    ((jK R).app V).hom (DegPre.toOpen V x) =
-      ((TK R).left.presheaf.map (homOfLE le_top).op).hom
-        ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom
-          (algebraMap R (FractionRing R) x)) := by
-  have e : (jK R).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x) =
-      (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (algebraMap R (FractionRing R) x) := by
-    first
-      | (show ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (jK R).appTop).hom x = ((CommRingCat.ofHom (algebraMap R (FractionRing R))) ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).hom x; rw [Scheme.ΓSpecIso_inv_naturality] <;> rfl)
-      | (rw [← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality] <;> rfl)
-  show ((jK R).app V).hom ((S.presheaf.map (homOfLE le_top).op).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x)) = _
-  rw [app_res_lemma_2, e] <;> rfl
-
 abbrev I : Ideal R := Ideal.span {PowerSeries.X}
-
-theorem psiIn (n : ℤ) (m : ℕ) (hm : m ≤ n.natAbs ^ 2) : tatePre.PsiIn n (I ^ m) := by
-  intro j V _ _ h
-  have hk : n ^ 2 = ((n.natAbs ^ 2 : ℕ) : ℤ) := by
-    first
-      | (push_cast; exact (sq_abs n).symm)
-      | (rw [Nat.cast_pow]; exact (Int.natAbs_sq n).symm)
-  refine ⟨DegPre.toOpen V (PowerSeries.X ^ (n.natAbs ^ 2)), Ideal.mem_map_of_mem _ ?_, ?_⟩
-  · exact Ideal.pow_le_pow_right hm (Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_singleton _)) _)
-  · have e2 : (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom
-          (algebraMap R (FractionRing R) (PowerSeries.X ^ (n.natAbs ^ 2))) =
-        ((pi0 ^ (n ^ 2) : Γ((TK R).left, ⊤)ˣ) : Γ((TK R).left, ⊤)) := by
-      rw [hk, zpow_natCast, Units.val_pow_eq_pow_val, map_pow, map_pow]
-      rfl
-    have hv : ((tatePre.psi n).s j).val = ((TK R).left.presheaf.map (homOfLE le_top).op).hom
-        ((pi0 ^ (n ^ 2) : Γ((TK R).left, ⊤)ˣ) : Γ((TK R).left, ⊤)) := rfl
-    rw [jK_toOpen, hv, map_map_lemma, ← e2] <;> rfl
-
-def tateData : DegData R I where
-  toPre := tatePre
-  psi_even := psiEven
-  tau_bimult := tauBimult
-  psi_pos := fun (n : ℤ) hn => by
-    have h1 : 1 ≤ n.natAbs := Nat.one_le_iff_ne_zero.2 (Int.natAbs_ne_zero.2 hn)
-    have := psiIn n 1 (by nlinarith)
-    simpa using this
-  psi_tendsto := fun m => by
-    refine (Set.finite_Icc (-(m : ℤ)) m).subset ?_
-    intro n hn
-    by_contra hc
-    apply hn
-    apply psiIn n m
-    simp only [Set.mem_Icc, not_and_or, not_le] at hc
-    have : m < n.natAbs := by omega
-    nlinarith
 
 end ReciprocityTheory.ChartRestriction.G.Out.InhTate

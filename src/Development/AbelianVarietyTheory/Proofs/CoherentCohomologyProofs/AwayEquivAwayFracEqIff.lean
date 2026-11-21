@@ -66,22 +66,7 @@ abbrev SecRing (L : LB X) : Type := ⨁ n, RingPiece L n
 
 def SecRing.of (m : ℤ) : LB.Sec (lbZPow L m) →+ SecRing L := DirectSum.of (RingPiece L) m
 
-theorem SecRing.of_mul_of {m' : ℤ} (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) :
-    SecRing.of m σ * SecRing.of m' τ = SecRing.of (m + m') (zmul σ τ) :=
-  DirectSum.of_mul_of (A := RingPiece L) σ τ
-
 theorem SecRing.one_def : (1 : SecRing L) = SecRing.of 0 (zone L) := rfl
-
-theorem SecRing.of_pow (σ : LB.Sec (lbZPow L m)) (k : ℕ) :
-    SecRing.of m σ ^ k = SecRing.of (k * m) (zpowSec σ k) := by
-  induction k with
-  | zero =>
-    rw [pow_zero, SecRing.one_def]
-    exact of_eq_of_gradedMonoid_eq (ringPiece_mk_ext (by simp) fun i => by simp)
-  | succ k ih =>
-    rw [pow_succ, ih, SecRing.of_mul_of]
-    exact of_eq_of_gradedMonoid_eq (ringPiece_mk_ext (by push_cast; ring) fun i => by
-      simp only [zfun_zmul, zfun_zpowSec, pow_succ])
 
 def ModulePiece (F : X.Modules) (L : LB X) (V : X.Opens) (n : ℤ) : Type := Γ(twistZ F L n, V)
 
@@ -134,20 +119,12 @@ namespace SecModule
 
 def of (n : ℤ) : Γ(twistZ F L n, V) →+ SecModule F L V := DirectSum.of (ModulePiece F L V) n
 
-theorem of_injective (n : ℤ) : Function.Injective (of (F := F) (L := L) (V := V) n) :=
-  DirectSum.of_injective (β := ModulePiece F L V) n
-
 theorem of_smul_of (σ : LB.Sec (lbZPow L m)) (a : Γ(twistZ F L n, V)) {d : ℤ} (h : n + m = d) :
     SecRing.of m σ • of n a = of d ((mulSecOfEq F σ h).app V a) :=
   (Gmodule.of_smul_of (RingPiece L) (ModulePiece F L V) σ a).trans
     (of_eq_of_gradedMonoid_eq (modulePiece_mk_ext
       (a := (mulSecOfEq F σ (add_comm _ _)).app V a) ((add_comm _ _).trans h) fun i => by
         simp only [zcoord_mulSecOfEq_app]))
-
-theorem of_pow_smul_of (σ : LB.Sec (lbZPow L m)) (k : ℕ) (a : Γ(twistZ F L n, V)) {d : ℤ}
-    (h : n + k * m = d) :
-    SecRing.of m σ ^ k • of n a = of d ((mulSecOfEq F (zpowSec σ k) h).app V a) := by
-  rw [SecRing.of_pow, of_smul_of]
 
 @[elab_as_elim]
 theorem induction_on {P : SecModule F L V → Prop} (y : SecModule F L V) (zero : P 0)
@@ -185,114 +162,6 @@ def res (h : W ≤ V) : SecModule F L V →ₗ[SecRing L] SecModule F L W where
 
 theorem res_apply (h : W ≤ V) (y : SecModule F L V) (n : ℤ) :
     (res F L h y n : Γ(twistZ F L n, W)) = resM (twistZ F L n) h (y n) := rfl
-
-theorem smul_bijective (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (hV : V ≤ Out.nonzeroLocus σ) :
-    Function.Bijective fun y : SecModule F L V => SecRing.of m σ • y := by
-  have hE : ∀ d : ℤ, ∃ E : Γ(twistZ F L (d - m), V) ≃+ Γ(twistZ F L d, V),
-      ∀ a, E a = (mulSecOfEq F σ (sub_add_cancel d m)).app V a := fun d =>
-    ⟨AddEquiv.ofBijective ((mulSecOfEq F σ (sub_add_cancel d m)).app V).hom
-      (bijective_mulSecOfEq_app hL σ _ hV), fun _ => rfl⟩
-  choose E hE using hE
-  obtain ⟨g, hg'⟩ : ∃ g : SecModule F L V →+ SecModule F L V,
-      ∀ d (b : Γ(twistZ F L d, V)), g (of d b) = of (d - m) ((E d).symm b) :=
-    ⟨DirectSum.toAddMonoid (β := ModulePiece F L V) fun d =>
-      (of (d - m)).comp (E d).symm.toAddMonoidHom,
-      fun d b => DirectSum.toAddMonoid_of (β := ModulePiece F L V) _ d b⟩
-  have hg : ∀ (n d : ℤ) (h : n + m = d) (a : Γ(twistZ F L n, V)),
-      g (of d ((mulSecOfEq F σ h).app V a)) = of n a := fun n d h a => by
-    obtain rfl : n = d - m := by omega
-    rw [hg', ← hE, AddEquiv.symm_apply_apply]
-  refine ⟨Function.LeftInverse.injective (g := g) fun y => ?_, fun y => ?_⟩
-  · induction y using induction_on with
-    | zero => simp only [smul_zero, map_zero]
-    | add y z hy hz => simp only [smul_add, map_add] at hy hz ⊢; rw [hy, hz]
-    | hof n a => simp only [of_smul_of σ a rfl, hg]
-  · induction y using induction_on with
-    | zero => exact ⟨0, smul_zero _⟩
-    | add y z hy hz =>
-      obtain ⟨y, rfl⟩ := hy
-      obtain ⟨z, rfl⟩ := hz
-      exact ⟨y + z, smul_add _ _ _⟩
-    | hof d b =>
-      obtain ⟨a, rfl⟩ := (bijective_mulSecOfEq_app (F := F) hL σ (sub_add_cancel d m) hV).2 b
-      exact ⟨of _ a, of_smul_of σ a _⟩
-
-theorem isLocalizedModule_res [F.IsQuasicoherent] (hL : L.IsLB) (σ : LB.Sec (lbZPow L m))
-    (hW : IsCompact (W : Set X)) (hW' : IsQuasiSeparated (W : Set X)) (h : V ≤ W)
-    (hV : V = W ⊓ Out.nonzeroLocus σ) : IsLocalizedModule.Away (SecRing.of m σ) (res F L h) where
-  map_units := by
-    rintro ⟨_, k, rfl⟩
-    rw [map_pow]
-    exact ((Module.End.isUnit_iff _).2 (smul_bijective hL σ (hV.le.trans inf_le_right))).pow k
-  surj y := by
-    suffices H : ∀ᶠ k : ℕ in atTop, ∃ x, SecRing.of m σ ^ k • y = res F L h x by
-      obtain ⟨k, x, e⟩ := H.exists
-      exact ⟨⟨x, _, k, rfl⟩, e⟩
-    induction y using induction_on with
-    | zero => exact .of_forall fun k => ⟨0, by rw [smul_zero, map_zero]⟩
-    | add y z hy hz =>
-      exact (hy.and hz).mono fun k ⟨⟨a, ha⟩, ⟨b, hb⟩⟩ => ⟨a + b, by rw [smul_add, map_add, ha, hb]⟩
-    | hof n b =>
-      refine (eventually_exists_resM_eq_mulSecOfEq_zpowSec hL σ hW hW' h hV b).mono fun k hk => ?_
-      obtain ⟨a, ha⟩ := hk _ rfl
-      exact ⟨of _ a, by rw [res_of, ha, of_pow_smul_of]⟩
-  exists_of_eq {y z} e := by
-    classical
-    suffices H : ∀ y, res F L h y = 0 → ∀ᶠ k : ℕ in atTop, SecRing.of m σ ^ k • y = 0 by
-      obtain ⟨k, hk⟩ := (H (y - z) (by rw [map_sub, e, sub_self])).exists
-      exact ⟨⟨_, k, rfl⟩, sub_eq_zero.1 ((smul_sub _ _ _).symm.trans hk)⟩
-    intro y hy
-    have key : ∀ n, ∀ᶠ k : ℕ in atTop, SecRing.of m σ ^ k • of n (y n) = 0 := fun n =>
-      (eventually_mulSecOfEq_zpowSec_eq_zero hL σ hW h hV.ge (y n)
-        ((res_apply h y n).symm.trans (by rw [hy]; rfl))).mono fun k hk =>
-          (of_pow_smul_of σ k (y n) rfl).trans ((congrArg (of _) (hk _ rfl)).trans (map_zero _))
-    refine ((eventually_all_finset y.support).2 fun n _ => key n).mono fun k hk => ?_
-    rw [← DirectSum.sum_support_of y, Finset.smul_sum]
-    exact Finset.sum_eq_zero hk
-
-section Degree
-
-variable [F.IsQuasicoherent] (hL : L.IsLB) (σ : LB.Sec (lbZPow L m))
-  (hW : IsCompact (W : Set X)) (hW' : IsQuasiSeparated (W : Set X)) (h : V ≤ W)
-  (hV : V = W ⊓ Out.nonzeroLocus σ)
-
-variable (F) in
-
-def awayPiece (W : X.Opens) (n : ℤ) : Set (LocalizedModule.Away (SecRing.of m σ) (SecModule F L W)) :=
-  {z | ∃ (k : ℕ) (a : Γ(twistZ F L (n + k * m), W)), awayFrac _ _ k (of _ a) = z}
-
-def awayEquiv : LocalizedModule.Away (SecRing.of m σ) (SecModule F L W) ≃ₗ[SecRing L]
-    SecModule F L V :=
-  haveI := isLocalizedModule_res (F := F) hL σ hW hW' h hV
-  IsLocalizedModule.iso _ (res F L h)
-
-theorem pow_smul_awayEquiv (k : ℕ) (y : SecModule F L W) :
-    SecRing.of m σ ^ k • awayEquiv hL σ hW hW' h hV (awayFrac _ _ k y) = res F L h y := by
-  haveI := isLocalizedModule_res (F := F) hL σ hW hW' h hV
-  rw [← map_smul, pow_smul_awayFrac, awayFrac_zero]
-  exact IsLocalizedModule.iso_mk_one _ (res F L h) y
-
-theorem awayEquiv_awayFrac_eq_iff (k : ℕ) {d : ℤ} (hd : n + k * m = d) (a : Γ(twistZ F L d, W))
-    (b : Γ(twistZ F L n, V)) :
-    awayEquiv hL σ hW hW' h hV (awayFrac _ _ k (of d a)) = of n b ↔
-      resM _ h a = (mulSecOfEq F (zpowSec σ k) hd).app V b := by
-  rw [← (of_injective d).eq_iff, ← res_of, ← of_pow_smul_of, ← pow_smul_awayEquiv hL σ hW hW' h hV k]
-  exact (IsSMulRegular.pow k (smul_bijective hL σ (hV.le.trans inf_le_right)).1).eq_iff.symm
-
-theorem mem_awayPiece_iff (z : LocalizedModule.Away (SecRing.of m σ) (SecModule F L W)) :
-    z ∈ awayPiece F σ W n ↔ ∃ b : Γ(twistZ F L n, V), awayEquiv hL σ hW hW' h hV z = of n b := by
-  constructor
-  · rintro ⟨k, a, rfl⟩
-    obtain ⟨b, hb⟩ := (bijective_mulSecOfEq_app (F := F) hL (zpowSec σ k) (n := n) rfl
-      ((hV.le.trans inf_le_right).trans (nonzeroLocus_le_zpowSec hL σ k))).2 (resM _ h a)
-    exact ⟨b, (awayEquiv_awayFrac_eq_iff hL σ hW hW' h hV k rfl a b).2 hb.symm⟩
-  · rintro ⟨b, hb⟩
-    obtain ⟨k, hk⟩ := (eventually_exists_resM_eq_mulSecOfEq_zpowSec hL σ hW hW' h hV b).exists
-    obtain ⟨a, ha⟩ := hk _ rfl
-    exact ⟨k, a, (awayEquiv hL σ hW hW' h hV).injective
-      (((awayEquiv_awayFrac_eq_iff hL σ hW hW' h hV k rfl a b).2 ha).trans hb.symm)⟩
-
-end Degree
 
 end SecModule
 

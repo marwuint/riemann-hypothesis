@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousMvPowerSeriesAlgHomExtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousMvPowerSeriesAlgHomExt
 
 set_option autoImplicit false
 
@@ -98,7 +98,7 @@ theorem ev_subst_of_gen (n k : ℕ)
     exact ⟨N, fun f hf => by
       rw [AlgHom.comp_apply]
       exact pow_dvd_map (PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n) (hN f hf)⟩
-  have e := GlobalTheory.T.padicContinuous_mvPowerSeries_algHom_ext p O (Fin d) (G.A n) _ _ gens (cont_subst (c.ev n) (c.isEval n).2 ha) cont'
+  have e := _root_.GlobalTheory.PadicMvPowerSeriesExt.algHom_ext p O (Fin d) (G.A n) _ _ gens (cont_subst (c.ev n) (c.isEval n).2 ha) cont'
   have := DFunLike.congr_fun e h
   rw [AlgHom.comp_apply, AlgHom.comp_apply, substAlgHom_apply] at this
   exact this
@@ -143,7 +143,7 @@ theorem ev_nmul (n k : ℕ) (i : Fin d) :
       exact ⟨N, fun f hf => by
         rw [hΛ, AlgHom.comp_apply, AlgHom.comp_apply]
         exact pow_dvd_map _ (pow_dvd_map _ (hN f hf))⟩
-    have e : Θ = Λ := GlobalTheory.T.padicContinuous_mvPowerSeries_algHom_ext p O (Fin d ⊕ Fin d) (G.A n) Θ Λ gens
+    have e : Θ = Λ := _root_.GlobalTheory.PadicMvPowerSeriesExt.algHom_ext p O (Fin d ⊕ Fin d) (G.A n) Θ Λ gens
       (cont_subst (c.ev n) (c.isEval n).2 hs) cont'
     have e1 : nmul c.μ (k + 1) i = subst (Sum.elim (nmul c.μ k) fun l => X l) (c.μ i) := by
       unfold nmul; rw [Function.iterate_succ_apply']; rfl

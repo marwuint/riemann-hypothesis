@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.ConclusionsAtIdentity
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IntegralTangentVectorCoordinates
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieAlgebraEigenDecompositionCMSignatureStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ISupRangeDifferentialEqTopOfJointlyOntoStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ISupRangeDifferentialEqTopOfJointlyOnto
+import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
@@ -103,7 +104,7 @@ theorem letters_independent : ThetaUnifAV → Out.Laws → IndSt := by
     rw [FB.fib.1]
     exact (GlobalTheory.T.lieAlgebra_eigenDecomposition_CM_signature E H K ρ X.B FB p q X.split X.typeB X.ρ_sq).2.2.2.1
   have hsur : ⨆ j, LinearMap.range (M j) = ⊤ :=
-    GlobalTheory.T.iSup_range_differential_eq_top_of_jointly_onto hU hL K X.B.pol FB σ₁ (Fin p ⊕ Fin q) (fun j => (X.A j.isLeft).pol) (fun j => FA j.isLeft) X.φ M
+    _root_.GlobalTheory.DiffSpan.iSup_range_diff_eq_top hU hL K X.B.pol FB σ₁ (Fin p ⊕ Fin q) (fun j => (X.A j.isLeft).pol) (fun j => FA j.isLeft) X.φ M
       inferInstance (fun j => (X.lin j).1) hM fun y => by
         obtain ⟨x, hx⟩ := X.onto y
         exact ⟨p + q, finSumFinEquiv.symm, fun m => x _, hx⟩

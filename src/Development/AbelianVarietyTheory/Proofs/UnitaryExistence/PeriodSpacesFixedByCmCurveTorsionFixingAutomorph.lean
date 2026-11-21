@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Permutes
 import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PermutesPeriodSpacesIdOfFixesCmCurveTorsion
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsComplexLinearOfPureTypes
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingAtConjugateSplitPointTransportedTwistedStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingAtConjugateSplitPointTransportedTwisted
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPeriodSpacePermOfComplexAutStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSplitPeriodAnyLevelStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSplitPeriodAnyLevel
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.PureType GlobalTheory.CompRat
@@ -25,7 +25,7 @@ theorem conj_point_eq_of_isSplit {E : Type} [Field E] [NumberField E] [IsCMField
     exact RingHom.congr_fun hτσ _
   obtain ⟨i', P', hP', hu⟩ := F.onto (spMap (τ : ℂ →+* ℂ) ≫ F.u i P)
     (by rw [Category.assoc, F.over_σ i P hP, GlobalTheory.ConjPermutes.spMap_comp, hτσ])
-  obtain ⟨Φ, hE, hp, hm, hlevA, hlev⟩ := GlobalTheory.T.marking_at_conjugate_splitPoint_transported_twisted E H D l Xo σ g ty F hD hσ hty τ hτ C io hC.1 i P hP i' P' hP' hs
+  obtain ⟨Φ, hE, hp, hm, hlevA, hlev⟩ := _root_.GlobalTheory.CompRat.marking_conj_lcm E H D l Xo σ g ty F hD hσ hty τ hτ C io hC.1 i P hP i' P' hP' hs
     hu.symm (1, 0) hC
   obtain ⟨L, hL⟩ := exists_complex_linear_of_pure_types E H _ _ g ty P P' hP hP' Φ hs (fun a ha => (hp a).2 ha)
     (fun a ha => (hm a).2 ha)
@@ -59,7 +59,7 @@ theorem permutes_id_of_fixesCurve : ∀ (E : Type) [Field E] [NumberField E] [Is
     rw [hσx, hτ]
   have hid : ∀ i, π i = i := by
     intro i
-    obtain ⟨P, hP, hs⟩ := GlobalTheory.T.exists_split_period_any_level E H D l Xo σ g ty F hpq hσ hty hsig i
+    obtain ⟨P, hP, hs⟩ := _root_.GlobalTheory.CompRat.exists_isSplit_period_anyLevel E H D l Xo σ g ty F hpq hσ hty hsig i
     have h1 := conj_point_eq_of_isSplit F hpq hσ hty τ hτσ hC i P hP hs
     obtain ⟨P', hP', h2⟩ := hπ i P hP
     exact (F.disj i (π i) P P' hP hP' (h1.symm.trans h2)).symm

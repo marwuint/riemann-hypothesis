@@ -100,45 +100,4 @@ theorem chernOne_eq_neg_ddc_log_det (h : MContDiffAt 2 H z)
 
 end Det
 
-section Sub
-
-variable [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
-  {H : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E}
-
-theorem trace_conn_eq_sub_add_quot (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det)
-    (hs : IsUnit (subGram (H z)).det) (ξ : E) : (conn H z ξ).trace =
-      (conn (fun x => subGram (H x)) z ξ).trace + (conn (fun x => quotGram (H x)) z ξ).trace := by
-  have hq := isUnit_det_quotGram hu hs
-  have he : (fun x => (H x).det) =ᶠ[𝓝 z] fun x => (subGram (H x)).det * (quotGram (H x)).det :=
-    (h.subGram.eventually_isUnit hs).mono fun x hx => det_eq_det_subGram_mul hx
-  rw [trace_conn h hu, trace_conn h.subGram hs, trace_conn (h.quotGram hs) hq, del_congr he,
-    del_mul (h.subGram.det.differentiableAt one_ne_zero)
-      ((h.quotGram hs).det.differentiableAt one_ne_zero), det_eq_det_subGram_mul hs]
-  have h1 := hs.ne_zero
-  have h2 := hq.ne_zero
-  field_simp
-  ring
-
-theorem trace_curv_eq_sub_add_quot (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det)
-    (hs : IsUnit (subGram (H z)).det) (ξ η : E) : (curv H z ξ η).trace =
-      (curv (fun x => subGram (H x)) z ξ η).trace +
-        (curv (fun x => quotGram (H x)) z ξ η).trace := by
-  have hq := isUnit_det_quotGram hu hs
-  have he : (fun x => (conn H x ξ).trace) =ᶠ[𝓝 z] fun x =>
-      (conn (fun x => subGram (H x)) x ξ).trace + (conn (fun x => quotGram (H x)) x ξ).trace := by
-    filter_upwards [h.eventually_two, h.eventually_isUnit hu, h.subGram.eventually_isUnit hs]
-      with x h1 h2 h3
-    exact trace_conn_eq_sub_add_quot (h1.of_le one_le_two) h2 h3 ξ
-  have hS : MContDiffAt 1 (fun x => conn (fun x => subGram (H x)) x ξ) z :=
-    h.subGram.conn hs (by norm_num) ξ
-  have hQ : MContDiffAt 1 (fun x => conn (fun x => quotGram (H x)) x ξ) z :=
-    (h.quotGram hs).conn hq (by norm_num) ξ
-  rw [trace_curv_eq_neg_dbar h hu, trace_curv_eq_neg_dbar h.subGram hs,
-    trace_curv_eq_neg_dbar (h.quotGram hs) hq, dbar_congr he, dbar_add,
-    ContinuousLinearMap.add_apply, neg_add]
-  · exact DifferentiableAt.fun_sum fun a _ => hS.diff a a
-  · exact DifferentiableAt.fun_sum fun a _ => hQ.diff a a
-
-end Sub
-
 end GlobalTheory.HermFrame

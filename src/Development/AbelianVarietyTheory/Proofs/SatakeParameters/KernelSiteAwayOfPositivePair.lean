@@ -2,14 +2,18 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPrimeUnderFirstFactorAtPlaceOverPStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PrimeNotStable
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNormOneIdeleOrderOneTrivialElsewhereStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalisationInverseHalfDifferentEqOneUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNormOneIdeleOrderOneTrivialElsewhere
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SameOffRefl
+import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TiePtOne
+import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ToLEInvApply
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalisationInverseHalfDifferentEqOneUnramified
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.VEqKZeroOfNormOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteScalarsAgreeAwayFromPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ReaderLevelBadPrimesCoprimeResidueCharStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqOffPrimeKernelLatticesOfAgreeAwayStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleFrameMatricesEqOfSameComponentStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwoUnitsAtPlaceUniformizingIdeleStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleFrameMatricesEqOfSameComponent
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwoUnitsAtPlaceUniformizingIdele
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MovedDatumEqOfLatticeTuplesAgreeAwayStatement
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.DIV Formalism.UG Formalism.L2.Ker Formalism.L2.G.Pend Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert GlobalTheory.TwV GlobalTheory.TwV.Xc TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -42,13 +46,13 @@ theorem away_of_pos_pair : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H
   have hab' : (b : D.host.E) = D.host.conj (a : D.host.E) := by
     rw [hab]
     first | exact Formalism.L2.PairingIndexBounds.F.sig_conj D _ | exact Formalism.L2.Fam.sig_eq_conj D.host D.sp.cm _ | exact Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj D _
-  refine ⟨P, ⟨a, b, hab', ha, hb⟩, GlobalTheory.T.localisation_inverseHalfDifferent_eq_one_unramified D _ hp P hpP hpP2, fun h => hSS P h hpP, fun h => hSS _ h hpC,
+  refine ⟨P, ⟨a, b, hab', ha, hb⟩, _root_.GlobalTheory.TwV.Xc.inverseHalfDifferent_local_trivial_at_prime_norm D _ hp P hpP hpP2, fun h => hSS P h hpP, fun h => hSS _ h hpC,
     hlev P hpP, hlev _ hpC, hPof, happ, ?_⟩
   by_cases hc : Nonempty ((sysS H X std).Lv.comp j) ∧ Nonempty ((sysS H X std).Lv.comp (j + 1))
   · obtain ⟨⟨c⟩, ⟨c'⟩⟩ := hc
-    obtain ⟨π, hπU, hoff, hord⟩ := GlobalTheory.T.exists_normOne_idele_order_one_trivial_elsewhere _ _ (sigD D) _ _ _ (A0 J) _ hgood v
+    obtain ⟨π, hπU, hoff, hord⟩ := _root_.GlobalTheory.TwV.Xc.Unif.exists_unif _ _ (sigD D) _ _ _ (A0 J) _ hgood v
     have hU : IsUnifAt J v π := ⟨hπU, hoff, hord⟩
-    obtain ⟨x, y, hx0, hy0, hx, hy⟩ := GlobalTheory.T.two_units_at_place_uniformizing_idele S hDict hSpl hK hPos v π hU j hj c c'
+    obtain ⟨x, y, hx0, hy0, hx, hy⟩ := _root_.GlobalTheory.TwV.Xc.two_units S hDict hSpl hK hPos v π hU j hj c c'
     refine ⟨x, y, hx0, hy0, ?_⟩
     intro La Lb La' Lb' h1 h2 h3 h4 haw
     have e1 : La.1 = Lb.1 := congrArg (fun z : (sysS H X std).Lt j × (sysS H X std).Lt (j + 1) => z.1.1) haw
@@ -63,10 +67,10 @@ theorem away_of_pos_pair : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H
       GlobalTheory.T.movedDatum_eq_of_latticeTuples_agreeAway S hDict hSpl v j hj La Lb La' Lb' hA hA', GlobalTheory.T.kernelSite_scalars_agree_awayFromPlace S hDict hSpl hPair v π hU j hj x y hx hy La Lb La' Lb' hA hA'⟩
     · have hLb : Lb = (La.1, Lb.2) := Prod.ext e1.symm rfl
       rw [hLb]
-      exact GlobalTheory.T.latticeTuple_frameMatrices_eq_of_same_component S hDict hSpl j La.1 La.2 Lb.2
+      exact _root_.GlobalTheory.TwV.Xc.frM_fd_comp S hDict hSpl j La.1 La.2 Lb.2
     · have hLb : Lb' = (La'.1, Lb'.2) := Prod.ext e3.symm rfl
       rw [hLb]
-      exact GlobalTheory.T.latticeTuple_frameMatrices_eq_of_same_component S hDict hSpl (j + 1) La'.1 La'.2 Lb'.2
+      exact _root_.GlobalTheory.TwV.Xc.frM_fd_comp S hDict hSpl (j + 1) La'.1 La'.2 Lb'.2
   · have h1 : (sysS H X std).vEqK 1 0 := GlobalTheory.UnitK.vEqK_zero_of_norm_one _ _ S.E.toCEmb 1 (by simp)
     refine ⟨1, 1, h1, h1, ?_⟩
     intro La Lb La' Lb'

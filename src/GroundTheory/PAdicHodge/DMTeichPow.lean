@@ -1,6 +1,7 @@
 import Mathlib
 import GroundTheory.PAdicHodge.ExistsWeightLeOfConvergesAt
-import GroundTheory.PAdicHodge.ExtRobbaDMLinear
+import GroundTheory.PAdicHodge.ExtRobbaDMRankOne
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -57,25 +58,6 @@ def pow : ℕ → T.TeichFrob
 theorem pow_zero : F.pow 0 = id T := rfl
 
 theorem pow_succ (d : ℕ) : F.pow (d + 1) = F.comp (F.pow d) := rfl
-
-theorem pow_φ_apply (d : ℕ) (x : Γ) : (F.pow d).φ x = F.φ^[d] x := by
-  induction d with
-  | zero => rfl
-  | succ d ih => rw [pow_succ, comp_φ_apply, ih, Function.iterate_succ_apply']
-
-theorem pow_a (d : ℕ) : (F.pow d).a = F.a * d := by
-  induction d with
-  | zero => rfl
-  | succ d ih => rw [pow_succ, comp_a, ih]; ring
-
-theorem pow_a_pos {d : ℕ} (ha : 0 < F.a) (hd : 0 < d) : 0 < (F.pow d).a := by
-  rw [pow_a]; exact Nat.mul_pos ha hd
-
-theorem exists_iterate_φ_eq_mul_of_mem_Gcon [IsAlgClosed L] (ha : 0 < F.a) {d : ℕ} (hd : 0 < d)
-    {w : Γ} (hw : w ∈ T.Gcon) (hw0 : T.red w ≠ 0) :
-    ∃ y ∈ T.Gcon, T.red y ≠ 0 ∧ F.φ^[d] y = w * y := by
-  obtain ⟨y, hy, hy0, hyw⟩ := (F.pow d).exists_φ_eq_mul_of_mem_Gcon (F.pow_a_pos ha hd) hw hw0
-  exact ⟨y, hy, hy0, by rw [← pow_φ_apply]; exact hyw⟩
 
 end TeichFrob
 

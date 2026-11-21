@@ -201,12 +201,6 @@ def IsUpMvF (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (x : (
       (T.cls0.y ((D.fm u).up 0 v c x)).1 = (T.cls0.y c).1 * η.1 * κ.1 ∧
     ∀ h, (D.fm u).upT 0 v c x h = natTr0 T γ κ h
 
-theorem up_move_exists (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (x : (D.fm u).lv 0 v c)
-    (hx : (D.fm u).fv 0 v c x = 1) : ∃ η, IsUpMvF T v c x η := by
-  obtain ⟨z, rfl⟩ := T.lv0.pr_surj v c x
-  obtain ⟨γ, η, κ, hs, hrel, htr⟩ := up_move_natural T v c z hx
-  exact ⟨η, γ, κ, hs, hrel, htr⟩
-
 set_option maxHeartbeats 2000000 in
 
 theorem U_op_eq_move_sum (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
@@ -330,13 +324,6 @@ def IsDnMvF (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (x : M
     bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 *
       (T.cls0.y ((D.fm u).dn 0 v c x)).1 = (T.cls0.y c).1 * η.1 * κ.1 ∧
     ∀ h, (D.fm u).dnT 0 v c x h = natTr0 T γ κ h
-
-theorem down_move_exists (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c))
-    (hx : x ((D.fm u).te 0 v c) = 1) : ∃ η, IsDnMvF T v c x η := by
-  have hx0 : x ≠ 0 := by
-    intro h0; rw [h0, LinearMap.zero_apply] at hx; exact zero_ne_one hx
-  obtain ⟨γ, η, κ, hs, hrel, htr⟩ := down_move_natural T v c x hx0
-  exact ⟨η, γ, κ, hs, hrel, htr⟩
 
 set_option maxHeartbeats 2000000 in
 

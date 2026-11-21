@@ -4,22 +4,6 @@ import Mathlib
     (F : Type) → [Field F] → Type :=
     fun (F : Type) [Field F] ↦ NumberField.InfiniteAdeleRing F
 
-theorem UpperTheory.Reformulated.B.Qh26.aux2 :
-    ∀ {F : Type} [inst : Field F], SMulCommClass F (UpperTheory.Reformulated.B.Qh26.Ainf F) (UpperTheory.Reformulated.B.Qh26.Ainf F) := by
-  intros; infer_instance
-
-theorem UpperTheory.Reformulated.B.Qh26.aux3 :
-    ∀ {F : Type} [inst : Field F], IsScalarTower F (UpperTheory.Reformulated.B.Qh26.Ainf F) (UpperTheory.Reformulated.B.Qh26.Ainf F) := by
-  intros; infer_instance
-
-theorem UpperTheory.Reformulated.B.Qh26.aux4 :
-    ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], SMulCommClass F E E := by
-  intros; infer_instance
-
-theorem UpperTheory.Reformulated.B.Qh26.aux5 :
-    ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], IsScalarTower F E E := by
-  intros; infer_instance
-
 noncomputable def UpperTheory.Reformulated.B.Qh26.IsInfEmb :
     {F E : Type} →
       [inst : Field F] →

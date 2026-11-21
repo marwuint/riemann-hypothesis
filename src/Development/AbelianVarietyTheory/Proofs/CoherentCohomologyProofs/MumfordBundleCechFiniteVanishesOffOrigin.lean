@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsLocalize
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AbelianProjectiveBaseChange
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsSmulHomologyEqZeroOfAcyclicFibre
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyFiniteOfAffineCoverStatement
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MumfordBundleFibreCechAcyclicOffOriginStatement
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyFiniteOfAffineCover
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MumfordBundleFibreCechAcyclicOffOrigin
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry DirectSum TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
@@ -47,13 +47,13 @@ theorem cohomology_finite_and_vanishes_off_origin : ∀ (K : Type) [Field K] [Is
   have hI := isAffineOpen_biInf_of_isSeparated f hD
   have hflat : ∀ p, Module.Flat R ((cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).X p) :=
     flat_cechLB_X f hM hI
-  have hfin := GlobalTheory.T.finite_cechLB_homology_of_affine_cover R Y f _ κ D hM hsep hproj hD hc
+  have hfin := _root_.GlobalTheory.AbLaw.cechLB_homology_finite_of_affine_cover R Y f _ κ D hM hsep hproj hD hc
   refine ⟨hN, hflat, hfin, fun χ h₁ h₂ => ?_⟩
   refine exists_smul_homology_eq_zero_of_acyclic_fibre R K χ _ (Fintype.card κ)
     (fun p hp => isZero_cechLB_X _ _ _ hp.le) hflat hfin ?_
   have h' := IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom χ))
   obtain ⟨w, hw⟩ := exists_iso_pull_pull hF π (pullback.fst f (Spec.map (CommRingCat.ofHom χ)))
-  have hac := GlobalTheory.T.mumfordBundle_fibre_cech_acyclic_off_origin K P _ _ _ _ (h'.paste_horiz h) h₁ h₂ κ
+  have hac := _root_.GlobalTheory.MumfordFibre.fibre_acyclic K P _ _ _ _ (h'.paste_horiz h) h₁ h₂ κ
     (fun i => pullback.fst f (Spec.map (CommRingCat.ofHom χ)) ⁻¹ᵁ D i)
     (fun i => isAffineOpen_preimage_of_isPullback h' (hD i))
     (by rw [← Scheme.Hom.preimage_iSup, hc]; rfl)

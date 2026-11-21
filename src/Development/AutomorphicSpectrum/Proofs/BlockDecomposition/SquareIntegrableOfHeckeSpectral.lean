@@ -4,14 +4,14 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSqIntCoeffOfIsSquareIntegrable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableProdPowMultiIndex
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleIrreducibleCentralScalarStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixCoefficientHeckeDecayStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleIrreducibleCentralScalar
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixCoefficientHeckeDecay
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CartanDecompositionCongruenceStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleCosetVolumeFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupFiniteVolumeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixCoefficientCartanTranslateStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixCoefficientCartanTranslate
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupBasisNhdsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupAntitoneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupAntitone
 
 open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult ValuativeRel
 
@@ -74,7 +74,7 @@ theorem isSqIntCoeff_of_heckeSpectral : ∀ (k : Type) [Field k] [ValuativeRel k
     intro z hz w
     rw [Matrix.GeneralLinearGroup.center_eq_range_scalar] at hz
     obtain ⟨t, rfl⟩ := hz
-    obtain ⟨c, hc⟩ := GlobalTheory.T.admissible_irreducible_central_scalar k N V π hs hi ha t
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.SchurCentre.scalar_acts_by_scalar k N V π hs hi ha t
     rw [hc, map_smul, norm_smul, hu t c hc, one_mul]
   have hF : ∀ g : GL (Fin N) k, ‖l (π (QuotientGroup.mk g : AdGL k N).out v)‖ = ‖l (π g v)‖ := by
     intro g
@@ -102,10 +102,10 @@ theorem isSqIntCoeff_of_heckeSpectral : ∀ (k : Type) [Field k] [ValuativeRel k
   rw [← hmm] at hm
   have hv : v ∈ fixed π (Zls.Km k N m) := by
     rintro ⟨x, hx⟩
-    have : π x v = v := hK1 (GlobalTheory.T.congruence_subgroup_antitone k N m1 m (hmm ▸ le_max_left _ _) hx)
+    have : π x v = v := hK1 (_root_.GlobalTheory.CompanionTheory.CongruenceSubgroups.Km_antitone k N m1 m (hmm ▸ le_max_left _ _) hx)
     simpa using this
   have hlK : ∀ x ∈ Zls.Km k N m, l ∘ₗ π x = l := fun x hx =>
-    hK2 (GlobalTheory.T.congruence_subgroup_antitone k N m2 m (hmm ▸ le_max_right _ _) hx)
+    hK2 (_root_.GlobalTheory.CompanionTheory.CongruenceSubgroups.Km_antitone k N m2 m (hmm ▸ le_max_right _ _) hx)
   obtain ⟨s, hsK, hcov⟩ := GlobalTheory.T.cartan_decomposition_congruence k N m hm hN
   have key : ∀ p : s, ∃ (C : ℝ) (ρ : Fin (N - 1) → ℝ), (∀ j, 0 ≤ ρ j) ∧
       (∀ j : Fin (N - 1), (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ j ^ 2 < 1) ∧
@@ -113,8 +113,8 @@ theorem isSqIntCoeff_of_heckeSpectral : ∀ (k : Type) [Field k] [ValuativeRel k
         ‖l (π (p.1.1 * x * Zls.diagPow k N (Zls.lamOf g) * y * p.1.2) v)‖ ≤ C * ∏ j, ρ j ^ g j := by
     rintro ⟨p, hp⟩
     obtain ⟨h1, h2⟩ := hsK p hp
-    obtain ⟨hf, hli, heq⟩ := GlobalTheory.T.matrix_coefficient_cartan_translate k N V π m v hv l hlK p.1 p.2 h1 h2
-    obtain ⟨C, ρ, hρ0, hρ1, hb⟩ := GlobalTheory.T.matrix_coefficient_hecke_decay k N V π hs ha hH m hm (π p.2 v) hf (l ∘ₗ π p.1) hli
+    obtain ⟨hf, hli, heq⟩ := _root_.GlobalTheory.CompanionTheory.CongruenceCoef.coef_const_translated_double_coset k N V π m v hv l hlK p.1 p.2 h1 h2
+    obtain ⟨C, ρ, hρ0, hρ1, hb⟩ := _root_.GlobalTheory.CompanionTheory.CoeffBound.coeff_bound k N V π hs ha hH m hm (π p.2 v) hf (l ∘ₗ π p.1) hli
     refine ⟨C, ρ, hρ0, hρ1, fun g x hx y hy => ?_⟩
     rw [heq _ x hx y hy]
     exact hb g

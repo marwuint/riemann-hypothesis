@@ -36,11 +36,4 @@ def FarBound : Prop :=
         (∏ v, d v) * (B.e 1).re * GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.latFactor B.I x *
           (2 * (B.I.f : ℝ) * 3 ^ B.I.f * Real.exp (-(h * ep ^ 2 / 16)))
 
-def CuspFrame : Prop :=
-  ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ),
-    IsDSData B d → 1 ≤ B.g → GlobalTheory.Dec.LocDec B h → GlobalTheory.Dec.HBig B 40 h →
-    ∃ Rφ : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund,
-      B.I.IsRConv B.μf B.fund B.R (phe B d) Rφ ∧
-        ∃ T : Fin B.D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund), GlobalTheory.IndefiniteRowSideFullHecke.CuspidalFrames.IsCuspidalFrame B Rφ T
-
 end GlobalTheory.Deep

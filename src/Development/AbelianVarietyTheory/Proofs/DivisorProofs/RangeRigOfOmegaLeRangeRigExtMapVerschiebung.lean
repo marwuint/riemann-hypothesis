@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigExtMapRelFrobCom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowFinrankCotangentLeFinrankFrobeniusKernelQuoti
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveFrobeniusPullbackCotangentModVerscStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKernelIdealOfAppEqZeroFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKernelIdealOfAppEqZeroField
 
 set_option autoImplicit false
 
@@ -31,7 +31,7 @@ theorem range_rigOfOmega_le_range_rigExtMap_verschiebung :
     rw [map_sub, ← hB₀']
     exact congrArg (fun z : G.funs => z.1 1) h1
   obtain ⟨w'', hw''⟩ := dUnit_mem_range_of_mem_kerIdeal _
-    (GlobalTheory.T.mem_kernel_ideal_of_app_eq_zero_field p K _ _ (verschiebung h G) (relFrob h G) (verschiebung_comp_relFrob h G)
+    (_root_.GlobalTheory.PDivGroup.mem_kerIdeal_of_app_eq_zero p K _ _ (verschiebung h G) (relFrob h G) (verschiebung_comp_relFrob h G)
       (relFrob_comp_verschiebung h G) _ h2)
   obtain ⟨u, hu⟩ := G.omegaLevel_surjective 1 (w' + w'')
   have h3 : (frobTwist h G).dFun B = omegaMap _ _ (verschiebung h G) u - w :=

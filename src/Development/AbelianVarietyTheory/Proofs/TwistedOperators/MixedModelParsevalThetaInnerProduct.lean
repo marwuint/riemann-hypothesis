@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Compat
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralHomFundamentalDomainIsotropicSplitCoords
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfLintegralEqZero
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedHeisenbergThetaContinuousBoundedStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedHeisenbergThetaContinuousBounded
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParsevalMixedModelIsotropicThetaProductStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralParametricUnfoldRationalTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralParametricUnfoldRationalTranslates
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum MeasureTheory NumberField Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -27,8 +27,8 @@ theorem parseval : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.ra
   let R : (WO V W → ℂ) → WO V' W → Mx D W.rank r → ℂ := fun f x u =>
     GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (heisO ψ V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' u) f) x
   let h : WO V' W → Mx D W.rank r → ℂ := fun x u => R f₁ x u * starRingEnd ℂ (R f₂ x u)
-  obtain ⟨hc₁, M₁, hM₁⟩ := GlobalTheory.T.restrictedHeisenbergTheta_continuous_bounded D V V' W r C C' B ψ hψ μ 𝓨 hμ f₁ hf₁
-  obtain ⟨hc₂, M₂, hM₂⟩ := GlobalTheory.T.restrictedHeisenbergTheta_continuous_bounded D V V' W r C C' B ψ hψ μ 𝓨 hμ f₂ hf₂
+  obtain ⟨hc₁, M₁, hM₁⟩ := _root_.GlobalTheory.IndefiniteRowSideFullHecke.ResCont.res_heisO_continuous_bounded D V V' W r C C' B ψ hψ μ 𝓨 hμ f₁ hf₁
+  obtain ⟨hc₂, M₂, hM₂⟩ := _root_.GlobalTheory.IndefiniteRowSideFullHecke.ResCont.res_heisO_continuous_bounded D V V' W r C C' B ψ hψ μ 𝓨 hμ f₂ hf₂
   have hhc : Continuous (Function.uncurry h) := hc₁.mul (Complex.continuous_conj.comp hc₂)
   have hhb : ∀ x u, ‖h x u‖ ≤ M₁ * M₂ := fun x u => by
     show ‖R f₁ x u * starRingEnd ℂ (R f₂ x u)‖ ≤ _
@@ -91,7 +91,7 @@ theorem parseval : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.ra
             ∑' ξ : Matrix (Fin W.rank) (Fin r) D.host.E, ‖R f₂ x (ξ.map (incA D) + u)‖ ^ 2) / 2 := by
           rw [tsum_div_const, s1.tsum_add s2]
       _ ≤ (C₁ ^ 2 + C₂ ^ 2) / 2 := by linarith
-  obtain ⟨hint, hEq⟩ := GlobalTheory.T.integral_parametric_unfold_rationalTranslates D W.rank r (WO V' W) (μ'.restrict 𝓕') μ 𝓨 hμ h hhc _ hb
+  obtain ⟨hint, hEq⟩ := _root_.GlobalTheory.UnfoldRat.unfold D W.rank r (WO V' W) (μ'.restrict 𝓕') μ 𝓨 hμ h hhc _ hb
   have a1 : ∀ x, Continuous (h x) := fun x => hhc.uncurry_left x
   have a2 : ∀ u, Continuous (fun x => h x u) := fun u => hhc.uncurry_right u
   have a3 : ∀ u, AEStronglyMeasurable (fun x => h x u) (μ'.restrict 𝓕') := fun u => (a2 u).aestronglyMeasurable

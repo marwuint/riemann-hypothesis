@@ -86,12 +86,6 @@ theorem opWord_smul (l : List (Fin n' × (Fin k × Fin k))) (a : K) (f : MvPolyn
   | nil => rfl
   | cons y l ih => rw [opWord_cons, opWord_cons, ih, Derivation.map_smul, mul_smul_comm]
 
-def opWordL (l : List (Fin n' × (Fin k × Fin k))) :
-    MvPolynomial (Fin n' × Fin k) K →ₗ[K] MvPolynomial (Fin n' × Fin k) K where
-  toFun := opWord l
-  map_add' := opWord_add l
-  map_smul' a f := opWord_smul l a f
-
 theorem combo_add_fun (f : List (Fin n' × (Fin k × Fin k)) →₀ K) (G₁ G₂ : MvPolynomial (Fin n' × Fin k) K) :
     combo f (G₁ + G₂) = combo f G₁ + combo f G₂ := by
   unfold combo

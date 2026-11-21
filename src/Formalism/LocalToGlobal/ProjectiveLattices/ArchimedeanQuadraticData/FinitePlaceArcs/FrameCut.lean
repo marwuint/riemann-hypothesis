@@ -75,38 +75,4 @@ def BcRigidAt (Dv : DvrFrame d w Z) (γ : Dv.Tv.Fr) (lam : ∀ τ : D.host.E →
     (∀ a, tγ (some a) = 1) ∧
     FrMap φ d.yF z₁ ∧ FrMap ψ Dv.yR z₂ ∧ FrBor tγ z₂ z₁
 
-def RecordAt (Dv : DvrFrame d w Z) (Fs : Set (T.R j)) : Prop :=
-  ∀ F ∈ Fs, ∀ t ∈ Z.S, ∀ Y : ArcLt (T.Q.Dw j) → Z.K, (∀ x, Y x ∈ Z.K₀ ∧ ‖Y x‖ ≤ 1) →
-    ‖∏ τ : D.host.E →+* ℂ, (Matrix.of fun i l : Fin ((T.Q.Dw j).mult τ) => Y ⟨τ, i, l⟩).det‖ = 1 →
-    ∀ ev : ArcSR (T.Q.Dw j) Dv.Tv.V Dv.ϖ →+* Z.K,
-      (∀ p : PowerSeries Dv.Tv.V, ev (algebraMap (MvPolynomial (ArcLt (T.Q.Dw j)) (PowerSeries Dv.Tv.V)) _ (MvPolynomial.C p)) =
-        ∑' k : ℕ, Dv.ιT (algebraMap Dv.Tv.V Dv.Tv.Fr (PowerSeries.coeff k p)) * t ^ k) →
-      (∀ x, ev (arcXR (T.Q.Dw j) Dv.Tv.V Dv.ϖ x) = Y x) →
-      ‖ev (evR (T.Q.Xo j) T.Q.c F Dv.yR)‖ ≤ 1
-
-def FrameOfCutStatement (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) : Prop :=
-  InR D j → AllTest (T.Q.Xo j) T.Q.c → WtField (T.Q.Xo j) T.Q.c → ∀ (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra T.Q.c.F K₁]
-    (d : ArcDatumAt T j K₁) (w : HeightOneSpectrum (𝓞 K₁)) (Z : FinSite K₁ w) (Dv : DvrFrame d w Z)
-    (γ : Dv.Tv.Fr) (lam : ∀ τ : D.host.E →+* ℂ, Fin ((T.Q.Dw j).mult τ) → Dv.Tv.Fr)
-    (Bm : ∀ τ : D.host.E →+* ℂ, Matrix (Fin ((T.Q.Dw j).mult τ)) (Fin ((T.Q.Dw j).mult τ)) Dv.Tv.Fr),
-    γ ≠ 0 → (∀ τ k, lam τ k ≠ 0) →
-    BcRigidAt Dv γ lam Bm → RecordAt Dv (mlatRul h j ka) →
-    FrameBound Z (Dv.ιT γ) (fun τ k => Dv.ιT (lam τ k)) (fun τ => (Bm τ).map Dv.ιT) ka.n d (mlatRul h j ka)
-
-def FinLocalCutAt (d : ArcDatumAt T j K₁) (w : HeightOneSpectrum (𝓞 K₁)) (vth : ℤ)
-    (vη : ∀ τ : D.host.E →+* ℂ, Fin ((T.Q.Dw j).mult τ) → ℤ) (m : ℕ) (Fs : Set (T.R j)) : Prop :=
-  ∃ (Z : FinSite K₁ w) (Dv : DvrFrame d w Z) (γ : Dv.Tv.Fr)
-    (lam : ∀ τ : D.host.E →+* ℂ, Fin ((T.Q.Dw j).mult τ) → Dv.Tv.Fr)
-    (A Bm : ∀ τ : D.host.E →+* ℂ, Matrix (Fin ((T.Q.Dw j).mult τ)) (Fin ((T.Q.Dw j).mult τ)) Dv.Tv.Fr),
-    (γ ≠ 0 ∧ ‖Dv.ιT γ‖ = Z.r ^ vth) ∧
-    (∀ τ k, lam τ k ≠ 0 ∧ ‖Dv.ιT (lam τ k)‖ = Z.r ^ vη τ k) ∧
-    ((∀ τ, A τ * Bm τ = 1) ∧ ∀ τ k l, ‖Dv.ιT (A τ k l)‖ ≤ Z.r ^ (-(m : ℤ))) ∧
-    BcRigidAt Dv γ lam Bm ∧ RecordAt Dv Fs
-
-def FinLocalOfCutStatement (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) : Prop :=
-  InR D j → AllTest (T.Q.Xo j) T.Q.c → WtField (T.Q.Xo j) T.Q.c → ∀ (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra T.Q.c.F K₁]
-    (d : ArcDatumAt T j K₁) (w : HeightOneSpectrum (𝓞 K₁)) (vth : ℤ)
-    (vη : ∀ τ : D.host.E →+* ℂ, Fin ((T.Q.Dw j).mult τ) → ℤ) (m : ℕ),
-    FinLocalCutAt d w vth vη m (mlatRul h j ka) → FinLocalAt d w ka.n vth vη m (mlatRul h j ka)
-
 end Formalism.L2.Pj.QAt

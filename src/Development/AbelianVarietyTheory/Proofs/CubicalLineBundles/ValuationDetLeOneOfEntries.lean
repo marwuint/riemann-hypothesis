@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CMLattices.LamLetters
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ValuationLeIffExistsSmulMem
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLetterIntegralOfLocalGeneratorStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLetterIntegralOfLocalGenerator
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.LamCM
@@ -47,6 +47,6 @@ theorem letters_det_valuation_le : ∀ (E : Type) [Field E] [NumberField E] [IsC
     rw [(isLocGen_iff_valuation_eq p _ _).1 hdet, (isLocGen_iff_valuation_eq p _ _).1 hcd]
   rw [← hv]
   exact valuation_prod_mul_det_le _ L.U M cl hdet.1 fun k m =>
-    GlobalTheory.T.lieLetter_integral_of_local_generator E H l c nΨ n' f o La ho L hL p M hM k (cl k) (hcl k) m
+    _root_.GlobalTheory.LamF.letter_integral_of_isLocGen E H l c nΨ n' f o La ho L hL p M hM k (cl k) (hcl k) m
 
 end GlobalTheory.LamF

@@ -298,8 +298,6 @@ theorem lie_algebra_isomorphism_holds : KLIsoAlg := by
     simp only [LinearMap.comp_apply, hA, LinearEquiv.coe_coe, hs, Submodule.subtype_apply, LinearMap.fst_apply,
       hF, Ep, LinearMap.prodMap_apply, hw]
 
-example : Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLIsoAlg := lie_algebra_isomorphism_holds
-
 end
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLIso

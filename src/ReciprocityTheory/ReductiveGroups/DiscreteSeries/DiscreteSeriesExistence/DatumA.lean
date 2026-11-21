@@ -158,16 +158,6 @@ theorem pdA_casF_clm {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ε :
   exact pdA_eabV_congr (f := Formalism.REAL.Eab ε b a fun x => φ (f x))
     (fun h hh => (pdA_eabV_clm φ hf b a hh).symm) a b hg
 
-theorem pdA_continuousOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ε : Fin n → Bool}
-    {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : Formalism.REAL.SmoothOnGV ε f) : ContinuousOn f (UJset ε) := by
-  unfold Formalism.REAL.SmoothOnGV at hf
-  intro g₀ hg₀
-  obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g₀ hg₀
-  have hFc : ContinuousAt F g₀ := hF.continuousOn.continuousAt (hU.mem_nhds hgU)
-  refine hFc.continuousWithinAt.congr_of_eventuallyEq ?_ (hfF g₀ hgU hg₀)
-  filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hgU), self_mem_nhdsWithin] with g hgU' hgJ
-  exact hfF g hgU' hgJ
-
 def pdA_coef {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (v₀ v : V) : (V →L[ℂ] V) →L[ℂ] ℂ :=
   (innerSL ℂ v₀).comp (ContinuousLinearMap.apply ℂ V v)
 

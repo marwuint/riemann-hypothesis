@@ -1,5 +1,22 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AutomorphicArithmetic.LocalEmbeddings.BotMain
+import Mathlib
+import Development.AutomorphicArithmetic.LocalEmbeddings.BotReading
+import Development.AutomorphicArithmetic.LocalEmbeddings.BotPair
+import Development.AutomorphicArithmetic.LocalEmbeddings.BotLocal
+import Development.AutomorphicArithmetic.DivisorFrames.ThetaTransformFockModelEqOfStandardChar
+import Development.AutomorphicArithmetic.DivisorFrames.StdSectionFirstEqProdLocal
+import Development.AutomorphicArithmetic.DivisorFrames.StdSectionSecondEqProdLocal
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockAlgebraicThetaVectorsStableFiniteAdelesLie
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawFramesWeilEquivalence
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilIntertwiningValueStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilLocalFactorEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilArchimedeanFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilUnramifiedFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilGlobalFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaArchimedean
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BottomExistsIntegrable
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.FirstFactorMapThetaSumPureTensor
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TripleProductSecondMapThetaPure
@@ -177,8 +194,8 @@ theorem bottom_matching_of_triangle (hH : GlobalTheory.Published.HoweDualityReal
         rw [Fin.sum_univ_one]
         exact Submodule.subset_span ⟨L' P, Φ', rL' ▸ ⟨P, rfl⟩, fun v => (hall v).2.1.1, ev', rfl⟩)
     rwa [Fin.sum_univ_one, Fin.sum_univ_one, eL'] at this
-  have tA := GlobalTheory.T.fockAlgebraicThetaVectors_stable_finiteAdeles_lie D Bs.ψ θ hψ hθ true A WW FA FW _ _ _ hA
-  have tB := GlobalTheory.T.fockAlgebraicThetaVectors_stable_finiteAdeles_lie D Bs.ψ θ hψ hθ false A' WW FA' FW _ _ _ hB
+  have tA := _root_.GlobalTheory.AlgStable.algF_isStable D Bs.ψ θ hψ hθ true A WW FA FW _ _ _ hA
+  have tB := _root_.GlobalTheory.AlgStable.algF_isStable D Bs.ψ θ hψ hθ false A' WW FA' FW _ _ _ hB
   obtain ⟨oA, oB⟩ := _root_.GlobalTheory.T.triple_algebra_map_surjective hH hPr D Bs.ψ θ hψ hθ A A' WW FA FA' FW _ _ hT _ _ hA hB _ Bs Γ Xc om om' h hTA hTB R Rf hM
   obtain ⟨iA, iB⟩ := _root_.GlobalTheory.T.triple_assembly_inverse_finite hH hPr D Bs.ψ θ hψ hθ A A' WW FA FA' FW _ _ hT _ _ hA hB _ Bs Γ Xc om om' h hTA hTB R Rf hM
   obtain ⟨lA, lB⟩ := _root_.GlobalTheory.T.theta_triple_lift_lie_invariant hH hPr D Bs.ψ θ hψ hθ A A' WW FA FA' FW _ _ hT _ _ hA hB _ Bs Γ Xc om om' h hTA hTB R Rf hM

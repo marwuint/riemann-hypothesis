@@ -67,14 +67,6 @@ def StepTwo.Reduce.Statement : Prop :=
         Subsingleton (SubSystem.quotH ((M₁.tildeSys 0).twist (Q.twist (twistSys S x c)))
           ((M₂.tildeSys 0).twist (Q.twist (twistSys S x c))) 1)
 
-section Hypotheses
-
-variable (k : Type u) [Field k]
-
-def pt01 : Fin (1 + 1) → k := fun i => if i = 0 then 0 else 1
-
-end Hypotheses
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

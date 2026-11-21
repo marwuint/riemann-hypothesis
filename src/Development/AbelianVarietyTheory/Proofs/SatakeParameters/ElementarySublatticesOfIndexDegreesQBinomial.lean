@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QBinomialSumCardQuotientSubspacesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QBinomialSumCardQuotientSubspaces
 
 noncomputable section
 
@@ -178,7 +178,7 @@ theorem subElem_degrees : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscrete
   refine ⟨subIdx_zero L, subElem_zero L, fun k hk => subElem_eq_empty hk L, fun X => ?_⟩
   haveI := finite_red L
   haveI : Module.Finite (ResidueField O) (Red L.1) := Module.Finite.of_finite
-  have h := GlobalTheory.T.qBinomial_sum_card_quotient_subspaces (ResidueField O) (Red L.1) X
+  have h := _root_.GlobalTheory.qBinomial_subspaces (ResidueField O) (Red L.1) X
   rw [finrank_red L] at h
   simp only [ncard_subElem L]
   exact h

@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecProdRecSatakeLL
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
 import Formalism.SharpRestriction.LevelLetterCocycles.SphericalInertData
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertFrameConjExtendsAndFrameMapSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLiftSatakeVectorLocalHeckeEigenStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParametersUnramifiedUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertFrameConjExtendsAndFrameMapSurjective
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLiftSatakeVectorLocalHeckeEigen
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParametersUnramifiedUnitary
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -18,8 +18,8 @@ theorem GlobalTheory.InertHeckeCmp.satU_eq : ∀ (L : Type) [Field L] [NumberFie
     exact absurd i.2 (by omega)
   have hn : 0 < n := by omega
   obtain ⟨b, hbK, hbJ, p, hp, σ, hcomp, hsat⟩ := hα0
-  obtain ⟨hs, hsurj⟩ := GlobalTheory.T.inert_frame_conj_extends_and_frame_map_surjective L n hn v w hw Dv b hbK hbJ p hp
-  obtain ⟨φ, hφU, hφ0, hfix, hAe⟩ := GlobalTheory.T.exists_lift_satake_vector_local_hecke_eigen L n F π U hD v w hw Dv α hα hs b hbK hbJ p hp
-  have e1 := (hAe h hh).symm.trans (GlobalTheory.T.satake_parameters_unramified_unitary L n U hD.1 w Dv.σw Dv.ϖ _ Dv.unram p hsurj σ hcomp α0 hsat φ hφU hfix h hh)
+  obtain ⟨hs, hsurj⟩ := _root_.GlobalTheory.InertFrameConj.conj_and_surjective L n hn v w hw Dv b hbK hbJ p hp
+  obtain ⟨φ, hφU, hφ0, hfix, hAe⟩ := _root_.GlobalTheory.InertHeckeTransfer.exists_lift_eigen L n F π U hD v w hw Dv α hα hs b hbK hbJ p hp
+  have e1 := (hAe h hh).symm.trans (_root_.GlobalTheory.InertHeckeEigen.heckeVec_eq_satU_of_fixed L n U hD.1 w Dv.σw Dv.ϖ _ Dv.unram p hsurj σ hcomp α0 hsat φ hφU hfix h hh)
   rw [← sub_eq_zero, ← sub_smul] at e1
   exact sub_eq_zero.1 ((smul_eq_zero.1 e1).resolve_right hφ0)

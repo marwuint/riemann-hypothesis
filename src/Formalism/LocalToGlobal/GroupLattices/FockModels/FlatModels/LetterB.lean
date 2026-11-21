@@ -96,30 +96,6 @@ theorem Nv_true_eq (R : Type) [CommRing R] (m : ℕ) (c : Fin (m + 1)) :
   rw [lcminor_initMinor_eq, Fintype.sum_subsingleton _ 1]
   simp [Nv, MvPolynomial.X]
 
-theorem shape_one (m : ℕ) (vec : Bool) : shapeDeg (n := m + 1) (fun _ : Fin 1 => s0 m vec) = nuL m 1 vec := by
-  funext t
-  unfold shapeDeg s0 nuL
-  cases vec
-  · simp only [Bool.false_eq_true, ↓reduceIte]
-    by_cases ht : t = Fin.last m
-    · subst ht
-      simp
-    · have h1 : (t : ℕ) < m := Fin.val_lt_last ht
-      simp [ht, h1]
-  · simp only [↓reduceIte]
-    by_cases ht : t = 0
-    · subst ht
-      simp
-    · have h1 : ¬ (t : ℕ) < 1 := by
-        intro h
-        apply ht
-        ext
-        first
-          | (rw [Fin.val_zero]; omega)
-          | (simp only [Fin.coe_ofNat_eq_mod, Nat.zero_mod]; omega)
-          | (norm_num; omega)
-      simp [ht, h1]
-
 theorem Nv_mem (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (c : Fin (m + 1)) :
     Nv R m vec c ∈ dualWeyl R (m + 1) (m + 1) (nuL m 1 vec) := by
   cases vec

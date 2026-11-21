@@ -1,8 +1,25 @@
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointCondH0WallOfCanon
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DecompositionInvariantsCondition
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
+import Formalism.SharpRestriction.LevelLetterCocycles.LargeLevelLemmas
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionLocalAbove
+import Formalism.SharpRestriction.LevelLetterCocycles.AdmissibleParameterJ
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionLocalAway
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CoefficientCompatibilityOf
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PointConditionsOfPointGaloisRepFamilies
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.SemisimpleDecompositionOf
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorsionExponentLeOfJumpsAtEmbeddingsUnramified
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostCompletionLeMaxUnramifiedPadic
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinrankMaxUnramifiedSubfieldPadicFinExtPos
+import Development.AutomorphicArithmetic.ResidueCharacters.TwistedPlaces
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankLeOfSubsetClosureRange
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChiCrysOfConstituent
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MainAltAltBisStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AlAwayRepcongr
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.EtaPiece
 
 set_option synthInstance.maxHeartbeats 200000
 
@@ -31,12 +48,12 @@ theorem jointCond_H0Wall_of_canon_alt : GlobalTheory.Published.FontaineBcris →
   have hsm : D.nd.l i ∉ D.host.small := fun h => by
     have h' : primeClass D.host.toHostRaw (D.nd.l i) = PrimeClass.splitK := hsplit
     simp [primeClass, h] at h'
-  have hKur := GlobalTheory.T.hostCompletion_le_maxUnramified_padic D i hsm hq hd u hu'
+  have hKur := _root_.GlobalTheory.HubLoc.kw_le_Kur_all D i hsm hq hd u hu'
   have hgood : Good (D.nbr i u hu').Kw 1 (D.nbr i u hu').LL :=
     (D.self_good i u hu').good_one (D.nbr i u hu').LL_split hl2 (GlobalTheory.HubLoc.le_Ks_one_of_Kur _ hKur)
   have hZ : π ∈ D.nd.Z i := Formalism.MainNotions.LargeLevelLemmas.zgoodSubsetZ i hπ
   have hfam := hX.fam
-  have hdec := (GlobalTheory.T.pointConditions_of_pointGaloisRepFamilies D X.r X.ρ hfam i π hZ).2.2.2
+  have hdec := (_root_.GlobalTheory.PointConditions.main D X.r X.ρ hfam i π hZ).2.2.2
   have hgr := hfam.good i
   have hcont := hfam.cont i π
   have hWc : Continuous (WpO D.nd i (X.ρ i) π) := by
@@ -48,11 +65,11 @@ theorem jointCond_H0Wall_of_canon_alt : GlobalTheory.Published.FontaineBcris →
   have hLc := GlobalTheory.WordJumpsCompare.continuous_loc D i u hu' _ hWc
   have hc : ∀ v, Continuous fun g => matRep (Br.locM (D.nbr i u hu') ((WpO D.nd i (X.ρ i) π).comp (decS D.nd u))) g v :=
     fun v => hLc.matrix_mulVec continuous_const
-  have hJW := fun τ => GlobalTheory.T.decomposition_local_above D L ep hJa hJb hJc hJe hJf i (X.r i) (X.ρ i) π hgr hZ hdec u hu'
+  have hJW := fun τ => _root_.GlobalTheory.jumps_WpO_T2O_window D L ep hJa hJb hJc hJe hJf i (X.r i) (X.ρ i) π hgr hZ hdec u hu'
     (TruncatedSeriesCountingIdentities.CoefExt.self i u hu') τ (WpO D.nd i (X.ρ i) π) (Or.inl rfl)
   have hrn : D.R.r ≤ D.R.nV := Nat.le_add_right _ _
   have hnV : 1 ≤ D.R.nV := le_trans D.R.t_odd.pos (Nat.le_add_left _ _)
-  have hH := GlobalTheory.T.torsionExponent_le_of_jumps_at_embeddings_unramified D.loc HW D.locA (D.nd.l i) (D.nbr i u hu').Kw (D.nbr i u hu').LL hgood (hOf L) D.R.nV
+  have hH := _root_.GlobalTheory.HubX.cH0all_le_of_jumps_at_embeddings D.loc HW D.locA (D.nd.l i) (D.nbr i u hu').Kw (D.nbr i u hu').LL hgood (hOf L) D.R.nV
     (4 * D.R.n) (wLat D i (X.ρ i) π u hu' hc) hKur (GlobalTheory.bridge_finrank_le D i u hu') hnV
     (fun τ => by
       obtain ⟨U, hU1, hU2, hU3⟩ := (hJW τ).1

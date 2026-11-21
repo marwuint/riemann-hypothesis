@@ -14,7 +14,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PRFormula
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PEmbeddingWeight
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSmoothWeightConstNearEmbeddings
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegralConjugationSymmetryStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegralConjugationSymmetry
 set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
@@ -105,7 +105,7 @@ theorem conjugate_pieces_same_mass :
         ⟨fun h => by simpa using congrArg ComplexEmbedding.conjugate h, fun h => by rw [h]⟩
       rw [hBv' _ hzc _ hsc, hBv z hz s hs]
       simp only [hiff]
-    obtain ⟨hΨ', hI⟩ := GlobalTheory.T.points_integral_conjugation_symmetry K ι (mCoordIdeal y) D Ψ (conjugateProjection Ψ) L B B' hP hΨ
+    obtain ⟨hΨ', hI⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegralAt_conj K ι (mCoordIdeal y) D Ψ (conjugateProjection Ψ) L B B' hP hΨ
       (conjugateProjection_star Ψ) hL hC hBa hBs hBa' hBs' hstar
     rw [ptsIntegral_eq_at hRes resBridge hP hΨ' hL hBs' (isSectionOn_one_of_degree_zero hP hBa'),
       ptsIntegral_eq_at hRes resBridge hP hΨ hL hBs (isSectionOn_one_of_degree_zero hP hBa), hI]

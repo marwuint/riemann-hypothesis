@@ -53,21 +53,6 @@ theorem exists_int_approx (w : HeightOneSpectrum (𝓞 E)) {x : w.adicCompletion
   rw [valued_algebraMap]
   exact hy.le
 
-theorem locK_congr {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (hχ : LevelLe χ w a) {y y' : Eˣ}
-    (hy : w.valuation E (y : E) = 1) (hy' : w.valuation E (y' : E) = 1)
-    (hd : w.valuation E ((y : E) - y') ≤ WithZero.exp (-(a : ℤ))) : χ.locK w y = χ.locK w y' := by
-  have h1 : χ.loc w (atFin w (y * y'⁻¹)) = 1 := by
-    have e : ((atFin w (y * y'⁻¹) : (w.adicCompletion E)ˣ) : w.adicCompletion E) =
-        algebraMap E (w.adicCompletion E) ((y : E) / y') := by
-      simp [atFin, div_eq_mul_inv]
-    refine hχ _ ?_ ?_
-    · rw [IsUnitAt, e, valued_algebraMap, map_div₀, hy, hy', div_one]
-    · rw [e, ← map_one (algebraMap E (w.adicCompletion E)), ← map_sub, valued_algebraMap, div_sub_one y'.ne_zero,
-        map_div₀, hy', div_one]
-      exact hd
-  rw [map_mul, map_inv, map_mul, map_inv, mul_inv_eq_one] at h1
-  exact h1
-
 end GlobalTheory.GaussModulus
 
 end

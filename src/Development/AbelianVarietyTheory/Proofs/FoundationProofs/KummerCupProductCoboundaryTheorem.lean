@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupKummerCoboundaryOfNormsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCochainCharacterGaloisInvariantClassStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupKummerCoboundaryOfNorms
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCochainCharacterGaloisInvariantClass
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerExponentOfGaloisElementIsKummerCharacter
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TsenTheoremStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNormSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TsenTheorem
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNormSurjective
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZetaMemRange
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerDivisorDescendsFunctionFieldStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerDivisorDescendsFunctionField
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertiaFixesAdjoinKummerRootsAndValuesEqStatement
 
 open GlobalTheory.NeedB Polynomial
@@ -28,13 +28,13 @@ theorem cup_eq_coboundary_vanishing_on_inertia : ∀ (k K Ω : Type) [Field k] [
   haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap (RatFunc k) K).injective
   obtain ⟨z, hz⟩ := zeta_mem_range k K Ω N ζ hN hζ
   have hfix : ∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ := fun g => by rw [← hz]; exact g.commutes z
-  have hC1 : IsFirstChernClassOfLineBundle K := GlobalTheory.T.tsen_theorem k K
+  have hC1 : IsFirstChernClassOfLineBundle K := _root_.GlobalTheory.NeedB.tsen k K
   have hnorm : ∀ (L : IntermediateField K Ω), FiniteDimensional K L → ∀ c : K, c ≠ 0 →
-      ∃ x : L, Algebra.norm K x = c := fun L _ c hc => GlobalTheory.T.exists_algebra_norm_eq_of_isFirstChernClass K L hC1 c hc
-  obtain ⟨η₀, hη₀c, hη₀⟩ := GlobalTheory.T.exists_locallyConstant_kum_cup_coboundary_of_norm_surj K Ω N ζ hN hζ hfix hnorm a b α β ha0 hb0 hα hβ
+      ∃ x : L, Algebra.norm K x = c := fun L _ c hc => _root_.GlobalTheory.norm_surjective_of_is_c1 K L hC1 c hc
+  obtain ⟨η₀, hη₀c, hη₀⟩ := _root_.GlobalTheory.cup_kummer_coboundary_of_norms K Ω N ζ hN hζ hfix hnorm a b α β ha0 hb0 hα hβ
   obtain ⟨θ, hθ0, hθE, hθη, hθs⟩ :=
-    GlobalTheory.T.kummer_cochain_character_galoisInvariant_class K Ω N ζ hN hζ hfix a b α β ha0 hb0 hα hβ η₀ hη₀c hη₀
-  obtain ⟨f, hf0, hfB⟩ := GlobalTheory.T.kummer_divisor_descends_functionField k K Ω N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ θ hθ0 hθE hθs
+    _root_.GlobalTheory.eta_kummer_galoisInvariant K Ω N ζ hN hζ hfix a b α β ha0 hb0 hα hβ η₀ hη₀c hη₀
+  obtain ⟨f, hf0, hfB⟩ := _root_.GlobalTheory.KummerCob.divisor_descends k K Ω N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ θ hθ0 hθE hθs
   obtain ⟨θ₀, hθ₀⟩ := IsAlgClosed.exists_pow_nat_eq (algebraMap K Ω f) hN
   have hθ₀0 : θ₀ ≠ 0 := by
     rintro rfl

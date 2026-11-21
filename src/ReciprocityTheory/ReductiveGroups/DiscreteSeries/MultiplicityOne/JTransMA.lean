@@ -12,23 +12,6 @@ namespace TransM
 
 variable {S : Type} [Fintype S] [DecidableEq S]
 
-def cE (S : Type) [Fintype S] : EuclideanSpace ℂ S ≃ₗᵢ⋆[ℂ] EuclideanSpace ℂ S where
-  toFun v := WithLp.toLp 2 (fun i => conj (v.ofLp i))
-  invFun v := WithLp.toLp 2 (fun i => conj (v.ofLp i))
-  map_add' u v := by ext i; simp
-  map_smul' a v := by ext i; simp
-  left_inv v := by ext i; simp
-  right_inv v := by ext i; simp
-  norm_map' v := by
-    simp only [LinearEquiv.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, EuclideanSpace.norm_eq]
-    congr 1
-    refine Finset.sum_congr rfl fun i _ => ?_
-    simp
-
-abbrev TE (S : Type) [Fintype S] [DecidableEq S] :
-    Matrix S S ℂ ≃⋆ₐ[ℂ] (EuclideanSpace ℂ S →L[ℂ] EuclideanSpace ℂ S) :=
-  Matrix.toEuclideanCLM (n := S) (𝕜 := ℂ)
-
 private theorem unitary_exists_unit_scalar_isUnit_det_one_add (m : Matrix S S ℂ) (hm : mᴴ * m = 1) :
     ∃ ζ : ℂ, starRingEnd ℂ ζ * ζ = 1 ∧ IsUnit (1 + ζ • m).det := by
   have hH : (m + mᴴ).IsHermitian := by

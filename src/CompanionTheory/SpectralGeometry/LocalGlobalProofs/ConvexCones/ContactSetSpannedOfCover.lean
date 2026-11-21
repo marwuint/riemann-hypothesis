@@ -1,9 +1,9 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ContactSetSpansOfPosDefStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdConeAddMemStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ContactSetSpansOfPosDef
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdConeAddMem
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdConeDescendsAlongSurjectionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdConeExistsMaximalSupportStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.PsdConeExistsMaximalSupport
 
 set_option autoImplicit false
 
@@ -46,12 +46,12 @@ theorem isSpanned_contact : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [Ch
       Covers2 a → IsSpanned bar (contact bar a) := by
   intro O _ _ _ _ bar red X _ _ _ _ ι _ a ha
   have hadd : ∀ B ∈ contact bar a, ∀ B' ∈ contact bar a, B + B' ∈ contact bar a := fun B hB B' hB' =>
-    ⟨GlobalTheory.T.psd_cone_add_mem O bar X B B' hB.1 hB'.1, fun i x => by
+    ⟨_root_.GlobalTheory.CompanionTheory.Ar.Fan.add_mem_psdCone O bar X B B' hB.1 hB'.1, fun i x => by
       have h1 := hB.2 i x
       have h2 := hB'.2 i x
       simp only [LinearMap.add_apply]
       exact add_le_add h1 h2⟩
-  obtain ⟨B₁, hB₁, hrad⟩ := GlobalTheory.T.psd_cone_exists_maximal_support O bar X (contact bar a) ⟨0, zero_mem_contact bar a⟩ (fun B hB => hB.1) hadd
+  obtain ⟨B₁, hB₁, hrad⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.exists_least_radical O bar X (contact bar a) ⟨0, zero_mem_contact bar a⟩ (fun B hB => hB.1) hadd
   obtain ⟨X₁, _, _, _, r, B₁', hr, hbal, hdef, hfac⟩ := id hB₁.1
   have : Module.Finite O X₁ := Module.Finite.of_surjective r hr
   have hfac' : B₁ = pullR r B₁' := LinearMap.ext₂ hfac
@@ -62,7 +62,7 @@ theorem isSpanned_contact : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [Ch
     obtain ⟨i, x, rfl⟩ := ha y
     exact ⟨i, r x, by rw [map_add, map_add]⟩
   obtain ⟨m, γ, hγ, hnn, hK, hsub⟩ :=
-    GlobalTheory.T.contact_set_spans_of_pos_def O bar X₁ ι (fun i => r (a i)) (red X₁) hcov ⟨B₁', hB₁', hdef⟩
+    _root_.GlobalTheory.CompanionTheory.Ar.Fan.isSpanned_contact_of_posDef O bar X₁ ι (fun i => r (a i)) (red X₁) hcov ⟨B₁', hB₁', hdef⟩
   refine ⟨m, fun i => pull r (γ i), fun i => pull_mem r (hγ i), fun i y => hnn i (r y), fun i => ?_, fun B hB => ?_⟩
   · have e : toReal (pull r (γ i)) = pullR r (toReal (γ i)) := LinearMap.ext₂ fun _ _ => by simp
     rw [e]

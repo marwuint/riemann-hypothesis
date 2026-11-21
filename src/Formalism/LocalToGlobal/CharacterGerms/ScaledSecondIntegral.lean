@@ -123,18 +123,6 @@ theorem boundS : ∀ (i s : ℕ) (x : ℕ → I ⊕ J → C), x ∈ X.Ty → (�
     rw [hsplit]
     exact (h1.mono (by push_cast; linarith)).add h2
 
-def rem (x : ℕ → I ⊕ J → C) : ℕ → (ℕ → I ⊕ J → C)
-  | 0 => x
-  | s + 1 => rem x s - Vpow s (X.lift (rem x s s))
-
-theorem rem_eq (x : ℕ → I ⊕ J → C) (s : ℕ) :
-    X.rem x s = x - ∑ s' ∈ range s, Vpow s' (X.lift (X.rem x s' s')) := by
-  induction s with
-  | zero => simp [rem]
-  | succ s ih =>
-    show X.rem x s - Vpow s (X.lift (X.rem x s s)) = _
-    rw [Finset.sum_range_succ, sub_add_eq_sub_sub, ← ih]
-
 end Std
 
 def Good (a : ZMod d) (u : I → C) (x : ℕ → I ⊕ J → C) : Prop :=
@@ -210,27 +198,6 @@ theorem c0'_comb {ι : Type*} (s : Finset ι) (x : ι → ℕ → I ⊕ J → C)
     X.c0' (∑ k ∈ s, teich V.l (co k) (x k)) j = ∑ k ∈ s, co k ^ V.l * X.c0' (x k) j := by
   simp only [c0', Finset.sum_apply, teich, pow_one, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
-
-theorem Good.wd {a : ZMod d} {u : I → C} {x x' : ℕ → I ⊕ J → C}
-    (h : X.Good a u x) (h' : X.Good a u x') (n : I ⊕ J) : V.Ge 0 (x 2 n - x' 2 n) := by
-  have hz : x - x' ∈ X.Ty := X.Ty.sub_mem h.1.1 h'.1.1
-  have hz0 : (x - x') 0 = 0 := by rw [Pi.sub_apply, h.1.2.1, h'.1.2.1, sub_self]
-  have hγ : ∀ j, V.Ge 0 (x 1 (Sum.inr j) - x' 1 (Sum.inr j)) := fun j => by
-    have := X.t2 _ hz 1 (fun i hi => by rw [show i = 0 by omega]; exact hz0) (Sum.inr j)
-    simpa using this
-  have hw : (x - x') - Vpow 1 (const0 (Sum.elim 0 (fun j => x 1 (Sum.inr j) - x' 1 (Sum.inr j)))) ∈ X.Ty :=
-    X.Ty.sub_mem hz (X.V_mem _ (X.t3 _ hγ))
-  have hw0 : ∀ i < 2, ((x - x') - Vpow 1 (const0 (Sum.elim 0
-      (fun j => x 1 (Sum.inr j) - x' 1 (Sum.inr j)))) : ℕ → I ⊕ J → C) i = 0 := by
-    intro i hi
-    funext m
-    interval_cases i
-    · simp [Vpow, h.1.2.1, h'.1.2.1]
-    · cases m with
-      | inl c => simp [Vpow, const0, h.2 c, h'.2 c]
-      | inr j => simp [Vpow, const0]
-  have hw2 := X.t2 _ hw 2 hw0 n
-  simpa [Vpow, const0] using hw2
 
 end Cart
 

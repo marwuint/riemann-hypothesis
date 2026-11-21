@@ -3,22 +3,24 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.Multiplier
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.ExistsAlgebraicIndependentGenericPoint
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ProjPointIdealMemProjComponentsOfIsProjPureDim
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFormDegreeLeHilbertDegreeEvalNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearSystemHilbertFunctionEqFinrankConePieceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankGrowthLimsupOfEventuallyPolynomialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearSystemHilbertFunctionEqFinrankConePiece
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankGrowthLimsupOfEventuallyPolynomial
+import Development.AbelianVarietyTheory.Definitions.Divisors.AevalEqZeroOfMemConeIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsChowFormOfHomogeneousPrimeKrullDimStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealQuotientHilbertPolyConeIdealEqFieldDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FieldDegreeLeChowFormDegreeAlgebraicPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FieldDegreeLeChowFormDegreeAlgebraicPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChowFormDegreeLeFieldDegreeAlgebraicPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealQuotientHilbertPolyMapBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealQuotientHilbertPolyMapBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPrimeMapRationalFunctionsGenericLinearFormNotMStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeSaturationGenericHyperplaneSectionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHomogeneousAndHilbertPolyEqOfPrimeInSaturationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsChowFormGenericHyperplaneSectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsChowFormGenericHyperplaneSection
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConductorNeZeroFiniteTypeCharZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLinearSystemConeAlgebraIffCoeffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankGrowthLimsupShiftLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroForallComplexPointExtendStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplexPointNormLtOfNotIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLinearSystemConeAlgebraIffCoeff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankGrowthLimsupShiftLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroForallComplexPointExtend
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SpecialisationNumberFieldAndCountableValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplexPointNormLtOfNotIsUnit
 
 set_option autoImplicit false
 
@@ -124,19 +126,19 @@ theorem degree_eq_coeff (D : ℕ) : ∀ (K : Type) [Field K] [CharZero K] (P : I
   | zero =>
     intro K _ _ P _ hP δ f h
     obtain ⟨y, j, hy, rfl⟩ := exists_eq_coneIdeal hP h
-    rw [GlobalTheory.T.idealQuotientHilbertPoly_coneIdeal_eq_field_degree K N y j hy, le_antisymm (GlobalTheory.T.chowForm_degree_le_field_degree_algebraic_point K N δ y j f hy h) (GlobalTheory.T.field_degree_le_chowForm_degree_algebraic_point K N δ y j f hy h)]
+    rw [GlobalTheory.T.idealQuotientHilbertPoly_coneIdeal_eq_field_degree K N y j hy, le_antisymm (GlobalTheory.T.chowForm_degree_le_field_degree_algebraic_point K N δ y j f hy h) (_root_.GlobalTheory.CompHt.PointLow.finrank_le_of_isChowFormInt K N δ y j f hy h)]
     simp
   | succ D ih =>
     intro K _ _ P hp hP δ f h
     let L := FractionRing (MvPolynomial (Fin N) K)
     have : CharZero L := charZero_of_injective_algebraMap (algebraMap K L).injective
-    obtain ⟨hE, hEH⟩ := GlobalTheory.T.idealQuotientHilbertPoly_map_baseChange K L N P hP
+    obtain ⟨hE, hEH⟩ := _root_.GlobalTheory.HilbBaseChange.idealHilbertPoly_map K L N P hP
     obtain ⟨hEp, hl⟩ := GlobalTheory.T.isPrime_map_rationalFunctions_generic_linearForm_not_mem K L N P hp
     obtain ⟨Q, hQ, hIQ, hsat⟩ := GlobalTheory.T.exists_prime_saturation_generic_hyperplane_section K L N P hp fun u => by
       obtain ⟨y, hy, h1, h2⟩ := (h.zero_iff _).1 (aeval_eq_zero_of_block h
         (fun v => if v.1 = 0 then u v.2 else 0) (Fin.last _) (fun j => if_neg (by simp)))
       exact ⟨y, hy, h1, by simpa using h2 0⟩
-    obtain ⟨f', hf'⟩ := GlobalTheory.T.exists_chowForm_generic_hyperplane_section K L N P D δ f hP h
+    obtain ⟨f', hf'⟩ := _root_.GlobalTheory.ChowSpec.exists_isChowFormInt_generic_section K L N P D δ f hP h
     have hlin : (∑ j : Fin N, C (algebraMap (MvPolynomial (Fin N) K) L (X j)) * X j :
         MvPolynomial (Fin N) L).IsHomogeneous 1 :=
       IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X L j).C_mul _
@@ -170,8 +172,8 @@ theorem growth_hilb_eq (ev : V →ₗ[K] Ω) (D a : ℕ) (ha : 1 ≤ a) (δ : �
   have : (imageIdeal ev b).IsPrime := isPrime_coneIdeal _
   have hI : (imageIdeal ev b).IsHomogeneous (homogeneousSubmodule (Fin N) K) := isHomogeneous_coneIdeal _
   have hP := fun g hg n => homogeneousComponent_mem_of_mem hI (p := g) hg n
-  simp only [GlobalTheory.T.linearSystemHilbertFunction_eq_finrank_conePiece K V Ω ev N b]
-  exact (GlobalTheory.T.rankGrowthLimsup_of_eventually_polynomial D a _ _ ha (eventually_finrank_quotPiece hI)).1
+  simp only [_root_.GlobalTheory.DegCmp.hilb_eq_finrank_quotPiece K V Ω ev N b]
+  exact (_root_.GlobalTheory.CompHt.growth_of_eventually_eq_eval D a _ _ ha (eventually_finrank_quotPiece hI)).1
     (degree_idealHilbertPoly_eq_of_isPrime hI (ringKrullDim_of_isChowFormInt hP hf)).le δ
     (degree_eq_coeff D K _ hP δ f hf)
 
@@ -182,8 +184,8 @@ theorem exists_isImageDeg [FiniteDimensional K V] (ev : V →ₗ[K] Ω) (D a : �
   have hp : (imageIdeal ev b).IsPrime := isPrime_coneIdeal _
   have hI : (imageIdeal ev b).IsHomogeneous (homogeneousSubmodule _ K) := isHomogeneous_coneIdeal _
   have hP := fun g hg n => homogeneousComponent_mem_of_mem hI (p := g) hg n
-  simp only [GlobalTheory.T.linearSystemHilbertFunction_eq_finrank_conePiece K V Ω ev _ b] at h0 h1
-  obtain ⟨g1, g2⟩ := GlobalTheory.T.rankGrowthLimsup_of_eventually_polynomial D a _ _ ha (eventually_finrank_quotPiece hI)
+  simp only [_root_.GlobalTheory.DegCmp.hilb_eq_finrank_quotPiece K V Ω ev _ b] at h0 h1
+  obtain ⟨g1, g2⟩ := _root_.GlobalTheory.CompHt.growth_of_eventually_eq_eval D a _ _ ha (eventually_finrank_quotPiece hI)
   have hle := not_lt.1 fun h => h1 (g2 h)
   have hc : (idealHilbertPoly (imageIdeal ev b)).coeff D ≠ 0 := fun h =>
     h0 (by simpa using g1 hle 0 (by simp [h]))
@@ -205,7 +207,7 @@ variable {K V Ω : Type} [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Alg
 
 theorem X_pow_mul_C_mem (ev : V →ₗ[K] Ω) {d : ℕ} {t : Ω} (ht : t ∈ ((LinearMap.range ev) ^ d : Submodule K Ω)) :
     (Polynomial.X ^ d * Polynomial.C t : Polynomial Ω) ∈ coneAlg ev := by
-  refine (GlobalTheory.T.mem_linearSystemConeAlgebra_iff_coeff K V Ω ev _).2 fun n => ?_
+  refine (_root_.GlobalTheory.DegCmp.mem_coneAlg_iff_coeff K V Ω ev _).2 fun n => ?_
   rw [Polynomial.coeff_mul_C, Polynomial.coeff_X_pow]
   split_ifs with h
   · rw [one_mul, h]; exact ht
@@ -230,8 +232,8 @@ theorem growth_rank_le [CharZero K] [FiniteDimensional K V] (ev : V →ₗ[K] Ω
     by_contra h
     push Not at h
     exact hc (Subtype.ext (Polynomial.ext h))
-  have hce := (GlobalTheory.T.mem_linearSystemConeAlgebra_iff_coeff K V Ω ev _).1 c.2 e
-  refine le_trans ?_ (GlobalTheory.T.rankGrowthLimsup_shift_le D e fun k => hilb ev (a * k))
+  have hce := (_root_.GlobalTheory.DegCmp.mem_coneAlg_iff_coeff K V Ω ev _).1 c.2 e
+  refine le_trans ?_ (_root_.GlobalTheory.GrowthShift.growth_shift_le D e fun k => hilb ev (a * k))
   refine limsup_le_limsup (Eventually.of_forall fun k => ENNReal.div_le_div_right (mul_le_mul_right
     (ENat.toENNReal_le.2 (Cardinal.toENat.monotone' ?_)) _) _)
   obtain ⟨a, rfl⟩ := Nat.exists_eq_add_of_le ha
@@ -243,7 +245,7 @@ theorem growth_rank_le [CharZero K] [FiniteDimensional K V] (ev : V →ₗ[K] Ω
         (congrArg Subtype.val h0), by
         change Polynomial.X ^ n * Polynomial.C h * _ = Polynomial.X ^ _ * Polynomial.C (t * h)
         rw [map_mul, pow_add]; ring⟩
-    have h5 := (GlobalTheory.T.mem_linearSystemConeAlgebra_iff_coeff K V Ω ev _).1 s.2 (e + (1 + a) * k)
+    have h5 := (_root_.GlobalTheory.DegCmp.mem_coneAlg_iff_coeff K V Ω ev _).1 s.2 (e + (1 + a) * k)
     have hs' : (s : Polynomial Ω) = (c : Polynomial Ω) * (Polynomial.X ^ ((1 + a) * k) * Polynomial.C t) := hs.symm
     rw [hs', ← mul_assoc, Polynomial.coeff_mul_C, Polynomial.coeff_mul_X_pow] at h5
     have h6 := Submodule.mul_mem_mul (Submodule.pow_mem_pow _ hce a) h5
@@ -264,8 +266,8 @@ theorem isUnit_of_growth {K A B A' : Type} [Field K] [CommRing A] [Algebra K A] 
     (hw : ∀ i, ι (w i) = algebraMap B A' (w' i)) (hs : ι s * algebraMap B A' u = 1) : IsUnit u := by
   by_contra hu
   have : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing K B
-  obtain ⟨q, hq, hext⟩ := GlobalTheory.T.exists_ne_zero_forall_complexPoint_extend' B A' hinj
-  obtain ⟨M, hM⟩ := GlobalTheory.T.exists_complex_point_norm_lt_of_not_isUnit' K B σ n w' u q hu hq
+  obtain ⟨q, hq, hext⟩ := _root_.GlobalTheory.exists_ne_zero_forall_complexPoint_extend B A' hinj
+  obtain ⟨M, hM⟩ := _root_.GlobalTheory.exists_complex_point_norm_lt_of_not_isUnit K B σ n w' u q hu hq
   obtain ⟨T, hT⟩ : ∃ T, T = |C| * (1 + ∑ _i : Fin n, |M|) ^ k := ⟨_, rfl⟩
   have hT0 : 0 ≤ T := by rw [hT]; positivity
   obtain ⟨φ, h1, h2, h3, h4⟩ := hM (1 / (T + 1)) (by positivity)

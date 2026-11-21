@@ -76,14 +76,6 @@ def ColsDim : Prop :=
     FiniteDimensional k (Cols k ιi ιf K ψ π) ∧
       finrank k (Cols k ιi ιf K ψ π) = finrank k V * Nat.card (Classes ιf K)
 
-def SharpDim : Prop :=
-  ∀ (Γ Gi Gf : Type) [Group Γ] [Group Gi] [Group Gf] (k : Type) [Field k] (V : Type)
-    [AddCommGroup V] [Module k V] (ιi : Γ →* Gi) (ιf : Γ →* Gf) (K K0 : Subgroup Gf)
-    (ψ : K →* kˣ) (π : Representation k Gi V),
-    K ≤ K0 → StabTriv ιf K0 → Finite (Classes ιf K) → FiniteDimensional k V →
-    FiniteDimensional k (Sharp k ιi ιf K π ψ) ∧
-      finrank k (Sharp k ιi ιf K π ψ) = finrank k V * Nat.card (Classes ιf K)
-
 def SharpBij : Prop :=
   ∀ (Γ Gi Gf : Type) [Group Γ] [Group Gi] [Group Gf] (V : Type) [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (ιi : Γ →* Gi) (ιf : Γ →* Gf)
@@ -122,24 +114,7 @@ def ratHom (σ : E →ₐ[F] E) (J : Matrix n n E) (R : Type) [CommRing R] [Alge
   ((bc (inclE (F := F) R)).comp (UJ (σ : E →+* E) J).subtype).codRestrict _
     (fun g => bc_mem_UPts σ J R g)
 
-abbrev Ginf (σ : E →ₐ[F] E) (J : Matrix n n E) := UPts σ J (InfiniteAdeleRing F)
-
-abbrev Gfin (σ : E →ₐ[F] E) (J : Matrix n n E) := UPts σ J (FiniteAdeleRing (𝓞 F) F)
-
 end Unitary
-
-open NumberField in
-
-def ColsDimU : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (n : Type) [Fintype n]
-    [DecidableEq n] (σ : E →ₐ[F] E) (J : Matrix n n E) (K K0 : Subgroup (Gfin σ J))
-    (ψ : K →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (Ginf σ J) V),
-    K ≤ K0 → StabTriv (ratHom σ J (FiniteAdeleRing (𝓞 F) F)) K0 →
-    Finite (Classes (ratHom σ J (FiniteAdeleRing (𝓞 F) F)) K) → FiniteDimensional ℂ V →
-    FiniteDimensional ℂ (Cols ℂ (ratHom σ J (InfiniteAdeleRing F))
-        (ratHom σ J (FiniteAdeleRing (𝓞 F) F)) K ψ π) ∧
-      finrank ℂ (Cols ℂ (ratHom σ J (InfiniteAdeleRing F)) (ratHom σ J (FiniteAdeleRing (𝓞 F) F))
-          K ψ π) = finrank ℂ V * Nat.card (Classes (ratHom σ J (FiniteAdeleRing (𝓞 F) F)) K)
 
 section Proofs
 
@@ -414,13 +389,5 @@ theorem columns_dimension : ColsDim := by
   haveI := h1
   refine ⟨LinearEquiv.finiteDimensional e.symm, ?_⟩
   rw [e.finrank_eq, h2, Subspace.dual_finrank_eq]
-
-theorem sharp_dimension : SharpDim := by
-  intro Γ Gi Gf _ _ _ k _ V _ _ ιi ιf K K0 ψ π hK hst hfin hV
-  exact equi_dim ιf K (stabTriv_mono ιf hK hst) (π.comp ιi) ψ⁻¹
-
-theorem columns_dimension_unitary : ColsDimU := by
-  intro F E _ _ _ _ n _ _ σ J K K0 ψ V _ _ π hK hst hfin hV
-  exact columns_dimension _ _ _ ℂ V _ _ K K0 ψ π hK hst hfin hV
 
 end Formalism.L2.SG.ColsDim

@@ -75,18 +75,6 @@ theorem framepf_ι_X : framepf_ι π' i PowerSeries.X = letE i * π' := by
   · subst hj; simp
   · simp [Pi.single_apply, hj]
 
-theorem framepf_ι_pow (g : PowerSeries O) (k : ℕ) :
-    framepf_ι π' i (g ^ k) = letE i * framepf_ι π' i g ^ k := by
-  have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
-  let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
-  have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
-  simp only [framepf_ι, hS, map_pow, letE]
-  funext j
-  by_cases hj : j = i
-  · subst hj; simp
-  · simp [Pi.single_apply, hj]
-
 private lemma powerSeries_algHom_eq_subst_X (ψ : PowerSeries O →ₐ[O] PowerSeries O)
     (hψ : PowerSeries.constantCoeff (ψ PowerSeries.X) = 0) (f : PowerSeries O) :
     ψ f = PowerSeries.subst (ψ PowerSeries.X) f := by

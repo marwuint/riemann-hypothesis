@@ -82,19 +82,3 @@ theorem eig_lpChar (x y : WD h) (φ : Weil h) (hy : y.lpDim = 1) (c : ℂ) (hc :
 
 end GlobalTheory.RowTie.EigTwist
 
-open GlobalTheory.RowTie.EigTwist in
-
-theorem GlobalTheory.RowTie.eigLaws_of_wdTie : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂)
-    (A : NAut N) (T : GlobalTheory.RowTie.WDTie N A), GlobalTheory.LocalInv.EigLaws N A T.eig := by
-  intro R H what₂ N A T w σ hσ
-  have hW : σ ∈ Weil (N.plOm.2 w) := mem_Weil_of_isFrob _ hσ
-  let φ : Weil (N.plOm.2 w) := ⟨σ, hW⟩
-  have hφ : deg φ = 1 := deg_eq_one_iff.mpr hσ
-  have key : ∀ a, T.eig w a σ = (T.e w a).eig φ := fun a => by
-    rw [WDTie.eig, WD.inePol_of_mem _ hW]
-    rfl
-  refine ⟨fun a => ?_, fun a s => ?_, fun a χ c hχ hc => ?_⟩
-  · rw [key, WD.card_eig, T.dim]
-  · rw [key, key, T.tw, eig_lpTw _ hφ]
-  · rw [key] at hc
-    rw [key, key, T.char _ _ _ hχ, eig_lpChar _ _ _ (by rw [T.dim, hχ]) c hc]

@@ -1,8 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaLiftHasPointAtLocalisationSamePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeStandardTwistStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaLiftHasPointAtLocalisationSamePlace
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfInjective
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStd
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.HeckeStdTwOfStd
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStdB
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeDoubleCosetOperatorsStandardFacts
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitExEveryDatum
+
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -31,16 +39,5 @@ theorem continuous_of_adic {A B : Type} [CommRing A] [IsLocalRing A] [Topologica
   have h1 : f x ∈ Ideal.map (f : A →+* B) (IsLocalRing.maximalIdeal A ^ n) := Ideal.mem_map_of_mem _ hx
   rw [Ideal.map_pow] at h1
   exact Ideal.pow_right_mono hm n h1
-
-theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Formalism.MainNotions.SumRepresentations.Conclusion42 D → Formalism.MainNotions.SumRepresentations.Conclusion41 D → RowPoint D.nd D.naut := by
-  intro hL D P h42 _ i σ hne
-  obtain ⟨Q, hQ⟩ := ((h42 i) σ hne).1.2
-  obtain ⟨i', hi', P', x', hth, hx⟩ :=
-    GlobalTheory.T.theta_lift_has_point_at_localisation_same_place D P.M P.H.hecke P.H.av P.H.cover (GlobalTheory.T.hecke_standard_twist hL D P) i σ Q hQ
-  obtain ⟨hj, hw⟩ := (D.nd.locs_mem _ _ i').1 hi'
-  have hl : D.nd.l i' = D.nd.l i := by rw [← D.nd.w_l i', ← D.nd.w_l i, hw]
-  obtain ⟨φ, hφ⟩ := P.H.hecke.sameO i' i hj hw
-  refine ⟨i', hj, hl, fun w _ => P.locW_eq i' i σ w, ⟨φ, ?_, fun z => (hφ z).symm⟩, P', x', hth, hx⟩
-  exact continuous_of_adic (D.nd.O_adic i') (D.nd.O_adic i) φ
 
 end GlobalTheory.RowPointLoc

@@ -330,9 +330,6 @@ theorem unitInf_ideleAtInf_ne {w u : InfinitePlace F} (h : u ≠ w) (x : (w.Comp
 def charAt (μ : (AF F ⊗[F] E)ˣ →* Circle) (v : HeightOneSpectrum (𝓞 F)) : (Fv F v ⊗[F] E)ˣ →* Circle :=
   μ.comp (ideleAt F E v)
 
-def charAtInf (μ : (AF F ⊗[F] E)ˣ →* Circle) (w : InfinitePlace F) : (w.Completion ⊗[F] E)ˣ →* Circle :=
-  μ.comp (ideleAtInf F E w)
-
 end Comp
 
 theorem continuous_ideleAt (v : HeightOneSpectrum (𝓞 F)) : Continuous (ideleAt F E v) :=
@@ -346,16 +343,6 @@ theorem absE_ideleAtInf (w : InfinitePlace F) (x : (w.Completion ⊗[F] E)ˣ) :
     absE F E (ideleAtInf F E w x) = absEw F E w x := by
   rw [absE_apply, Finset.prod_eq_single w (fun u _ hu => by rw [unitInf_ideleAtInf_ne hu, map_one]) (by simp)]
   simp
-
-example (h : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F)) (ϖ : (Fv F v)ˣ)
-    (hϖ : Valued.v ϖ.1 = WithZero.exp (-1 : ℤ)) :
-    absEv F E v (Units.map (algebraMap (Fv F v) (Fv F v ⊗[F] E)).toMonoidHom ϖ) =
-      ((Ideal.absNorm v.asIdeal : ℝ≥0) ^ 2)⁻¹ := by
-  rw [absEv_algebraMap, h, ← inv_pow]
-  congr 1
-  refine NNReal.eq ?_
-  rw [coe_nnnorm, FinitePlace.norm_def, hϖ, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]
-  exact congrArg NNReal.toReal (zpow_neg_one _)
 
 end GlobalTheory.Doubling
 

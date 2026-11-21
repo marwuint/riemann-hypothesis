@@ -174,9 +174,6 @@ theorem major_slack {q : ℕ} {s t : Fin q → ℝ} (hs : s ∈ Cone q) (ht : t 
     simp
   · simp
 
-theorem majorant_inequality_holds : Major := fun q s t hs ht h => by
-  simpa using major_slack hs ht (δ := 0) (by simpa using h)
-
 theorem sum_min_self {q : ℕ} {s : Fin q → ℝ} (hs : s ∈ Cone q) :
     ∑ i, ∑ j, min (s i) (s j) = ∑ i : Fin q, (2 * (i.val : ℝ) + 1) * s i := by
   have e : ∀ i j, min (s i) (s j) = (if j ≤ i then s i else 0) + if i < j then s j else 0 := fun i j => by

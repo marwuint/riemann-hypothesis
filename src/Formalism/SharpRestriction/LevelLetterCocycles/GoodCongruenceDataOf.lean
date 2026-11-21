@@ -56,23 +56,6 @@ variable (g0 : GE N) (eB e₁ X0 : N.X i → MatN N i)
 
 abbrev Pf : N.X i → Polynomial (N.O i) := fun x => blockPoly (eB x) (X0 x)
 
-def mk51 (hfin : Finite (SplitPts R.t (Pf N eB X0))) (π' : SplitPts R.t (Pf N eB X0)) :
-    IdempotentChoiceData N i where
-  eB := eB
-  e1 := e₁
-  g0 := g0
-  X0 := X0
-  X' := SplitPts R.t (Pf N eB X0)
-  finX' := @Fintype.ofFinite _ hfin
-  decX' := Classical.decEq _
-  p := fun y => y.1.1
-  T' := splitT (N.T i) R.t (Pf N eB X0)
-  rr := fun c y => if h : 1 ≤ c ∧ c ≤ R.t then y.1.2 ⟨c - 1, by omega⟩ else 0
-  π' := π'
-  e := eG R.r R.t (KK N i)
-  ψρ := fun a => (a π').submatrix (Fin.castAdd R.t) (Fin.castAdd R.t)
-  ψχ := fun c a => a π' (Fin.natAdd R.r c) (Fin.natAdd R.r c)
-
 variable (hfin : Finite (SplitPts R.t (Pf N eB X0))) (π' : SplitPts R.t (Pf N eB X0))
 
 end Mk

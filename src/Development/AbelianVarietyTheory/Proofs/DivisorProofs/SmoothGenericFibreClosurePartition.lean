@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureGenericFibreClopenSplitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureGenericFibreClopenSplit
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
@@ -20,7 +20,7 @@ theorem smooth_genericFibre_closure_partition : ∀ (R : Type) [CommRing R] [IsD
     have hcl : ∀ S : Set X, j ⁻¹' closure S = closure (j ⁻¹' S) := fun S =>
       j.isOpenEmbedding.isOpenMap.preimage_closure_eq_closure_preimage j.continuous S
     rw [hcl, hcl]
-    refine GlobalTheory.T.closure_generic_fibre_clopen_split_alt R A hA (j ⁻¹' C) (j ⁻¹' C') ?_ ?_ ?_
+    refine _root_.GlobalTheory.closure_generic_fibre_clopen_split R A hA (j ⁻¹' C) (j ⁻¹' C') ?_ ?_ ?_
     · have : j ⁻¹' C ∪ j ⁻¹' C' = (Spec.map φ) ⁻¹' {(⊥ : PrimeSpectrum R)} := by
         rw [← Set.preimage_union, hU, hφ, ← Set.preimage_comp, Scheme.Hom.comp_base]
         rfl

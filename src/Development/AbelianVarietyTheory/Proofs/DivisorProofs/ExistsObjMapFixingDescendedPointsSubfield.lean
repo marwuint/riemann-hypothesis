@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteEtalePointOfExt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyHomDescendsAlgClosedCharZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSabMapOfGrpPullbackRespectingActionBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpPullbackPointDescendsAlgClosedSubfieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSabMapOfGrpPullbackRespectingActionBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpPullbackPointDescendsAlgClosedSubfield
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniformBaseChange.PullGt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -63,14 +63,14 @@ theorem exists_objMap_fixing_descended_points : ∀ {E : Type} [Field E] [Number
         (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame M₀ _ (fun _ => π) _ st fun _ => hst₁.symm) hL
     exact LBIso.trans o.t.PP.isLB (pull_isLB hM₀ π) (pull_isLB o.t.PP.isLB st) hL (LBIso.symm h1)
 
-  obtain ⟨m, hm⟩ := GlobalTheory.T.exists_sabMap_of_grpPullback_respecting_action_bundle o.t o.t (spMap (σ : K →+* K)) st o.proper hcart hact hLB
+  obtain ⟨m, hm⟩ := _root_.GlobalTheory.UCanon.TriplePull.exists_sabMap_of_isProper o.t o.t (spMap (σ : K →+* K)) st o.proper hcart hact hLB
   have hφ : m.cm.F = st := hm
 
   have hun : η[o.t.G].left ≫ π = spMap k₀.subtype ≫ η[B₀].left := ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left hpb
   have htor : ∀ (y : 𝟙_ (Over (Sp K)) ⟶ o.t.G) (n : ℕ), 0 < n → y ^ n = 1 →
       y.left ≫ st = spMap (σ : K →+* K) ≫ y.left := by
     intro y n hn hy
-    obtain ⟨y₀, hy₀⟩ := GlobalTheory.T.grpPullback_point_descends_algClosed_subfield K k₀ hk₀ B₀ o.t.G π hB₀ hpb n hn y η[B₀].left (by
+    obtain ⟨y₀, hy₀⟩ := _root_.GlobalTheory.AlgClosedDescent.grpPullback_point_descends K k₀ hk₀ B₀ o.t.G π hB₀ hpb n hn y η[B₀].left (by
       rw [hy, ← hun]; simp [Hom.one_def])
     refine hpt y.left ?_ ⟨y₀, hy₀⟩
     simpa using Over.w y

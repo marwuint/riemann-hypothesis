@@ -1039,12 +1039,6 @@ theorem rankFf_rec
     (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (l : K.Col i dc) (hdim : DimV i dc Dd ρ π l) : KFin.RankFf i dc Dd ρ π l :=
   rankFf i dc Dd ρ π l (orbC_V i dc r π g0 eB e₁ s Dd hD hc l) hdim
 
-theorem finX_rec (hFin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i)
-    (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
-    (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (x' : Dd.X') (l : K.Col i dc) : KDim.FinX i dc Dd.r Dd.χ x' l :=
-  finX i dc Dd.r Dd.χ hFin x' l
-    (KDim.contX_of_orbC i dc Dd.r Dd.χ x' l (KOrb.orbC_repE i dc r π g0 eB e₁ s Dd hD hc x' (K.colIdx i dc l)))
-
 end RecOrb
 
 section IsoH1f

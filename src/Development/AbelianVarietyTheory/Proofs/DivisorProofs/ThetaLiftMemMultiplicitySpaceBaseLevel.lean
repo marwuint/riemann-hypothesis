@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffDeri
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCharacterConjugate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftOfMemLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlacesApart
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftMemLevelOfDatumFlagCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftMemLevelOfDatumFlagCharacter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftIntertwinesLiftsSmoothVectorsStatement
 open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -27,7 +27,7 @@ theorem thF_mem_conj {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A
   have hx := hL g0
   clear hL
   rcases hx with ⟨κ, hl⟩
-  have h1 := GlobalTheory.T.lift_mem_levelOfDatum_flagCharacter R i t P
+  have h1 := _root_.GlobalTheory.lift_mem_levVP R i t P
   let g1 : P.H := ⟨g0.1, g0.2⟩
   have h3 := h1 g1 κ hl
   clear h1

@@ -55,8 +55,4 @@ def CoeffMem : Prop :=
     (∀ xP ∈ S, ∀ n, coeff n (tS W xP) ∈ S) ∧
     (∀ xP ∈ S, ∀ yP ∈ S, ∀ n, coeff n (xPlus W xP yP) ∈ S ∧ coeff n (yPlus W xP yP) ∈ S)
 
-def LogCoeff : Prop :=
-  ∀ (K : Type u) [Field K] [CharZero K] (W : WeierstrassCurve K) (n : ℕ),
-    ((n + 1 : ℕ) : K) * coeff (n + 1) (logSer W) = coeff n (om W)
-
 end Formalism.L2.Th1.A

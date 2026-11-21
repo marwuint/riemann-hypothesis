@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaGramDetEqOneOfSelfDualLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaGramDetEqOneOfSelfDualLattice
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GramDetEqNormMulGramDetOneStatement
 
 noncomputable section
@@ -181,7 +181,7 @@ theorem unitLemmaLie_of (h1 : CountIdentity) (h2 : UnitaryLimit) (h3 : LinearDes
       rw [eta_norm B₁ hd _ (rep_plus _ k).1]
       by_cases hk : B₁.N k.rep = 0
       · rw [hk, mul_zero, mul_zero]
-      · rw [GlobalTheory.T.eta_gramDet_eq_one_of_selfDual_lattice K B₁ k.rep (rep_plus _ k).2 (nonempty_of_N_ne_zero B₁ _ hk), mul_one]
+      · rw [_root_.GlobalTheory.UnitLemma.Unimod.eta_gramDet_eq_one K B₁ k.rep (rep_plus _ k).2 (nonempty_of_N_ne_zero B₁ _ hk), mul_one]
     have hst : ∑ᶠ k : B₂.Cl, B₂.N k.rep = B₂.stSum := rfl
     rw [hS, hS₁, hst] at hQ
     have hk : InvAlg.kapSum B₁ B₂ =

@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LevelMatchIff
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TensorTypesRealPlacesEquivSpanWeylModulesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameComplementRealPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TensorTypesRealPlacesEquivSpanWeylModules
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameComplementRealPlaces
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MapFnOfEqValC
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HcParamEqWeightStepZeroAddRho
 open MeasureTheory NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.ColDict GlobalTheory.St
@@ -12,7 +14,7 @@ namespace GlobalTheory.St
 
 theorem coefficient_map_exists_onto : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (F : Formalism.L2.Forms.Forms0 D u) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∃ J : X.Vpi u →ₗ⋆[ℂ] (Formalism.L2.Forms.Fr D 0 (Nat.zero_le _) → ℂ), JOK X u F wt J ∧ ∀ p ∈ Formalism.L2.Forms.ValC (Formalism.L2.Forms.gramC (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (Formalism.L2.Forms.embT D)) (Formalism.L2.Forms.lamT u 0), ∃ ξ, J ξ = p := by
   intro D X u F wt hw
-  obtain ⟨o, ho, hfr⟩ := GlobalTheory.T.exists_orthonormalFrame_complement_realPlaces D X u wt hw
+  obtain ⟨o, ho, hfr⟩ := _root_.GlobalTheory.St.CFrame.frame_of_type D X u wt hw
   let e := Equiv.piCongrLeft (X.Vloc u) X.pl.symm
   have he : ∀ (x : ∀ τ, X.Vloc u (X.pl.symm τ)) τ, e x (X.pl.symm τ) = x τ := fun x τ =>
     Equiv.piCongrLeft_apply_apply (X.Vloc u) X.pl.symm x τ
@@ -29,7 +31,7 @@ theorem coefficient_map_exists_onto : ∀ (D : D7) (X : HidaSetting D) (u : D.wh
     intro τ
     have h := X.piLoc_type u (X.pl.symm τ)
     rwa [X.pl.apply_symm_apply] at h
-  obtain ⟨Jp, hJv, hJs, hJi, hJe⟩ := GlobalTheory.T.tensor_types_realPlaces_equiv_span_weylModules D.what₂.Tau D.R.k (D.R.N 0) D.R.N_zero.symm
+  obtain ⟨Jp, hJv, hJs, hJi, hJe⟩ := _root_.GlobalTheory.TenTypes.tensor_dict D.what₂.Tau D.R.k (D.R.N 0) D.R.N_zero.symm
     (Formalism.L2.Forms.lamT u 0) (fun τ i => (((D.hcW u τ).u i : ℚ) : ℝ))
     (fun τ i => GlobalTheory.hcParam_eq_weight_step_zero_add_rho D u τ i)
     (fun τ => X.Vloc u (X.pl.symm τ)) (fun τ => X.piLoc u (X.pl.symm τ)) hty (X.Vpi u) tens hin hsp

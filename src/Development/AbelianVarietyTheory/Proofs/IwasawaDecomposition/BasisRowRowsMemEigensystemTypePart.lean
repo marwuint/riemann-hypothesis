@@ -8,7 +8,13 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Stable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreClausesOfWeakCharacterisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurConstantsExistOnChainOfCuspRapidDecay
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowTypePartLeEigensystemPartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypePartLeEigensystemPartPrincipalLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypePartLeEigensystemPartPrincipalLevel
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
+import Formalism.LocalToGlobal.IndefiniteReal.PartsRow
+import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
+import Formalism.LocalToGlobal.Divisibility.TrivialExtensionSideWellFormed
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ClosureImageSpan
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftMatrixComputesLiftRational
 import Development.AbelianVarietyTheory.Definitions.Divisors.InstCMHostS
@@ -16,7 +22,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLabelThetaLiftSpaceIffDual
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelOperatorsAtPrimeOffLevelDatum
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeScalarOnSphericalVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeScalarOnSphericalVectors
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowTypeHasSphericalHeckeEigensystem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonzeroLiftPartTypeGivesNonzeroTypeVectorStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
@@ -151,7 +157,7 @@ theorem exists_isEigOf_of_vec : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (P
   have hPW : ∀ i, GlobalTheory.StdFrame.StdPsi Y.hF (Y.PW i) := fun i => Y.stdPsi.2 i
   have hsc : ∀ Pr d B, GlobalTheory.Hk3.SphOp (Wc D i) Pr d B → ∃ a : ℂ, ∀ x ∈ π.S,
       (∀ κ, (Y.PW i).ψ κ ∈ GlobalTheory.Hk3.hyp (Wc D i) Pr → Formalism.L2.NG.rt D.host.E D.R.r κ x = x) → principalLevelFrame.Hecke₃ (Y.PW i) B x = a • x :=
-    fun Pr d B h => GlobalTheory.T.sphericalHecke_scalar_on_spherical_vectors Y.hF (Y.PW i) (hPW i) π Pr d B h
+    fun Pr d B h => _root_.GlobalTheory.SphScalar.spherical_scalar Y.hF (Y.PW i) (hPW i) π Pr d B h
   obtain ⟨c0, hBase⟩ := hCore.lev.βW i
   rw [one_pow] at hBase
   have hfix : ∀ Pr d B, Hecke₂ (Wc D i) (levS _ (R.βW i) (R.datWp i (R.toRealDat.levL F.lv2 false (sg0 D A3.A)))) (levChi _ (R.βW i) (R.datWp i (R.toRealDat.levL F.lv2 false (sg0 D A3.A)))) R.SF Pr d B → ∀ x,
@@ -216,7 +222,7 @@ theorem isot_part : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory
   obtain ⟨c, hc⟩ := exists_isEigOf_of_vec D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH π i0
     (GlobalTheory.T.nonzero_liftPart_type_gives_nonzero_typeVector hPr D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH π i0 hne)
 
-  obtain ⟨w, hw, hwU⟩ := GlobalTheory.T.typePart_le_eigensystemPart_principalLevel R.toRealDat F.lv2 hH.ok.ok2 hCore R.SF hSF Y.hF Y.PY Y.PW hPY hPW π i0 c hc i0 U hU
+  obtain ⟨w, hw, hwU⟩ := _root_.GlobalTheory.PartTypeW.part_in_eigenpart R.toRealDat F.lv2 hH.ok.ok2 hCore R.SF hSF Y.hF Y.PY Y.PW hPY hPW π i0 c hc i0 U hU
   have hwe : w = Y.mj.eW i0 y := (hCore.models.HW i0 (sg0 D A3.A)).1 (hwU.trans hUe)
   have hwc : Y.mj.eW i0 y ∈ R.Wc' i0 c := by rw [hWc, ← hwe]; exact hw
 

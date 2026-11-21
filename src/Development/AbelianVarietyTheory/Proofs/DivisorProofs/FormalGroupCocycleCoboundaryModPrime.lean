@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesLiftQuotient
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoboundaryOfPullbackNmulCoboundaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapCoboundarySwapPullbackCommuteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawMapNatMultipleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalChartQuotientByIdealWithPrimePowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapCoboundarySwapPullbackCommute
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCommFormalGroupLawMapNatMultiple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalChartQuotientByIdealWithPrimePow
 
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup
 
@@ -32,11 +32,11 @@ theorem coboundary_mod_p : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] 
   intro p _ O _ G d c κ B y hκ0 hcoc hdiv hB
   set I : Ideal O := Ideal.span {(p : O)} with hI
   set r : O →+* O ⧸ I := Ideal.Quotient.mk I with hr
-  obtain ⟨c', hlaw, hev, -⟩ := GlobalTheory.T.exists_formalChart_quotient_by_ideal_with_primePow p O G d c I 1 (by
+  obtain ⟨c', hlaw, hev, -⟩ := _root_.GlobalTheory.QLog.ChartRed.exists_chart p O G d c I 1 (by
     rw [pow_one]; exact Ideal.mem_span_singleton_self _)
   have hconst := c.isLaw.const
-  obtain ⟨hm1, hm2, hm3, -, hm5⟩ := GlobalTheory.T.map_coboundary_swap_pullback_commute O d c.μ hconst (O ⧸ I) r
-  obtain ⟨-, hn⟩ := GlobalTheory.T.isCommFormalGroupLaw_map_natMultiple O d c.μ c.isLaw (O ⧸ I) r
+  obtain ⟨hm1, hm2, hm3, -, hm5⟩ := _root_.GlobalTheory.Katz.map_cob_swap_pull O d c.μ hconst (O ⧸ I) r
+  obtain ⟨-, hn⟩ := _root_.GlobalTheory.isLaw_map_nmul O d c.μ c.isLaw (O ⧸ I) r
   have hnc : ∀ i, constantCoeff (nmul c.μ p i) = 0 := fun i => (hn p i).1
   have hcoc' : IsCoc (fun i => map r (c.μ i)) (map r κ) :=
     ⟨by rw [← hm2, hcoc.1, map_zero], by rw [← hm3, hcoc.2]⟩

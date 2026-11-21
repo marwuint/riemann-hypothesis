@@ -3,8 +3,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricallyConnectedBaseChangeIffFibersStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsOpenGeometricallyConnectedFibersStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricallyConnectedBaseChangeIffFibers
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsOpenGeometricallyConnectedFibers
 open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -22,9 +22,9 @@ theorem geometricallyConnected_descends_to_fg :
   classical
   set U : Set (PrimeSpectrum k) := {x | GeometricallyConnected
       (pullback.snd G.hom (spMap (algebraMap k x.asIdeal.ResidueField)))} with hUdef
-  have hU : IsOpen U := GlobalTheory.T.isOpen_geometricallyConnected_fibers k G hs hp
+  have hU : IsOpen U := _root_.GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres k G hs hp
   have hVU : ∀ x ∈ Set.range (PrimeSpectrum.comap (algebraMap k V)), x ∈ U :=
-    (GlobalTheory.T.geometricallyConnected_baseChange_iff_fibers k V G.left G.hom).1 hV
+    (_root_.GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_pullback_snd_spMap_iff_residueField k V G.left G.hom).1 hV
   obtain ⟨I, hI⟩ := (PrimeSpectrum.isClosed_iff_zeroLocus_ideal _).1 hU.isClosed_compl
   have htop : Ideal.map (algebraMap k V) I = ⊤ := by
     by_contra hne
@@ -43,7 +43,7 @@ theorem geometricallyConnected_descends_to_fg :
   have hc : ∀ i, c i ∈ Algebra.adjoin k (s : Set V) := fun i =>
     Algebra.subset_adjoin (by simp [s])
   refine ⟨Algebra.adjoin k (s : Set V), Subalgebra.fg_adjoin_finset s, ?_⟩
-  apply (GlobalTheory.T.geometricallyConnected_baseChange_iff_fibers k (Algebra.adjoin k (s : Set V)) G.left G.hom).2
+  apply (_root_.GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_pullback_snd_spMap_iff_residueField k (Algebra.adjoin k (s : Set V)) G.left G.hom).2
   rintro x ⟨y, rfl⟩
   by_contra hx
   have hx' : PrimeSpectrum.comap (algebraMap k (Algebra.adjoin k (s : Set V))) y ∈ Uᶜ := hx

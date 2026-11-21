@@ -34,13 +34,20 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NotGeo
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.VpBounds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetHypOfIsTripleOfGalHodge
+import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGlIntertwinerOfResidualSpanEqTop
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.UnramifiedNoJump
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsAuxiliaryHeckeCharacter
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankOneCuspidalUnitaryCharEquivApplySymm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLamTie0OfIsLamTie
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumThEmptyNeZero
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.TwistSeries
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.HkSupSizedOfHkSup
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckeValueIntegrality
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SplitOffDetection
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistAllPowersOfGaloisCohomologyClassField
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CoreEq
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAboveL
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
@@ -120,24 +127,6 @@ structure HypE : Prop where
   e23 : GlobalTheory.Published.DeRhamPotSemistable
   e24 : GlobalTheory.GalOfCusp.LocalGlobalAboveL
   e25 : ∀ D : D7, LocalSituation.Conclusion5 D
-
-end
-
-section
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
-
-structure HypN (hL : GlobalTheory.Published.LocalLanglandsGL) : Prop where
-  pr : PrN
-  ser : SerN
-  arch : ArchCmp hL
-  par : ParSt hL
-  pt : PtSt hL
-  parMem : AtMem hL (fun _ _ _ _ w Z _ _ _ _ _ c => ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam (w.D Z) Rw)
-
-@[reducible] def prm0 (hL : GlobalTheory.Published.LocalLanglandsGL) : Prm hL := prmR (NEb hL) SExt.none (geoCl anyGeometry)
-
-def MultQ {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) : Prop :=
-  GlobalTheory.Fc.EvP fun _ K => ∀ q : WPt p.s K, GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat
 
 end
 

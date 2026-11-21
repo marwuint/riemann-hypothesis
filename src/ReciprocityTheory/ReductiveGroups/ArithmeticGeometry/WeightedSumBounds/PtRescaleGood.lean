@@ -118,34 +118,6 @@ private theorem sp_lemma_13 {σ τ : Type*} {a : σ → MvPowerSeries τ C} {m :
     (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (h := fun s n => a s ^ n) (pow_zero _),
     pow_one]
 
-private theorem ml_lemma_10 {τ : Type*} {f g : MvPowerSeries τ C} (hf : constantCoeff f = 0)
-    (hg : constantCoeff g = 0) (t : τ) : coeff (Finsupp.single t 1) (f * g) = 0 := by
-  rw [coeff_mul]
-  apply Finset.sum_eq_zero
-  intro p hp
-  rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
-  have key : ∀ i, p.1 i + p.2 i = if t = i then 1 else 0 := fun i => by
-    rw [← Finsupp.add_apply, hp, Finsupp.single_apply]
-  by_cases h1 : p.1 t = 0
-  · have hp1 : p.1 = 0 := by
-      ext i
-      have hi := key i
-      show p.1 i = 0
-      split_ifs at hi with hti
-      · subst hti
-        omega
-      · omega
-    rw [hp1, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf, zero_mul]
-  · have hp2 : p.2 = 0 := by
-      ext i
-      have hi := key i
-      show p.2 i = 0
-      split_ifs at hi with hti
-      · subst hti
-        omega
-      · omega
-    rw [hp2, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg, mul_zero]
-
 theorem ptAdd_lin (G : LogFGL v d) {τ : Type*} {x y : Fin d → MvPowerSeries τ C}
     (hx : ∀ a, constantCoeff (x a) = 0) (hy : ∀ a, constantCoeff (y a) = 0) (a : Fin d)
     (t : τ) :
@@ -170,23 +142,6 @@ theorem ptSumL_good (G : LogFGL v d) {τ : Type*} :
     ∀ l : List (Fin d → MvPowerSeries τ C), (∀ x ∈ l, PTGood v x) → PTGood v (ptSumL G l)
   | [], _ => ptGood_zero
   | x :: l, h => ptAdd_good G (h x (by simp)) (ptSumL_good G l fun x' hx' => h x' (by simp [hx']))
-
-private theorem zs_lemma_5 {τ : Type*} (f : MvPowerSeries (Fin d) C) (hf : constantCoeff f = 0) :
-    subst (0 : Fin d → MvPowerSeries τ C) f = 0 := by
-  ext e
-  rw [coeff_subst (hs_lemma (fun _ => by simp)), map_zero]
-  apply finsum_eq_zero_of_forall_eq_zero
-  intro m
-  by_cases hm : m = 0
-  · rw [hm]
-    simp [hf, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-  · obtain ⟨s, hs⟩ : ∃ s, m s ≠ 0 := by
-      by_contra hc
-      push_neg at hc
-      exact hm (Finsupp.ext hc)
-    have h0 : (m.prod fun s n => (0 : Fin d → MvPowerSeries τ C) s ^ n) = 0 :=
-      Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by simp [hs])
-    rw [h0, map_zero, smul_zero]
 
 theorem ptSumL_lg (G : LogFGL v d) {τ : Type*} :
     ∀ l : List (Fin d → MvPowerSeries τ C), (∀ x ∈ l, ∀ a, constantCoeff (x a) = 0) →

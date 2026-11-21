@@ -101,29 +101,4 @@ theorem nonempty_flatSec {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (
     rw [Matrix.det_one, nval_of_ne one_ne_zero, EReal.coe_eq_coe_iff] at h1
     exact hw (h1.symm.trans (by simp [vV]))
 
-theorem exists_flatSec (x : ℝ) : ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E)
-    (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
-    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ (Dw.p + Dw.q)) (Z : Comp Xo c) (τ : Psi H),
-    1 ≤ Dw.p ∧ (∀ σ, GoodEmb c σ → IsUnf (U σ)) ∧ Nonempty (FlatSec U x Z τ) := by
-  obtain ⟨D, hp, hq⟩ := GlobalTheory.CM.CyclotomicTwentyEight.exists_datum
-  have hpq : 1 ≤ D.p + D.q := by omega
-  obtain ⟨l, -, hg, -⟩ := GlobalTheory.exists_level_goodAt_all_primes_and_idx _ GlobalTheory.CM.CyclotomicTwentyEight.host 1 one_pos
-  obtain ⟨Xo⟩ := GlobalTheory.Moduli.moduli_scheme_exists _ _ D l hpq
-  obtain ⟨c₀⟩ : Nonempty (Coeff l) := inferInstance
-  obtain ⟨-, c, -, hc⟩ := GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ D l Xo c₀ hpq
-  obtain ⟨⟨Z⟩, -⟩ := GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ D l Xo c hpq
-  have hU : ∀ σ : c.F →+* ℂ, ∃ U : Unf Xo c σ (D.p + D.q), GoodEmb c σ → IsUnf U := fun σ => by
-    by_cases hσ : GoodEmb c σ
-    · obtain ⟨U, hU⟩ := GlobalTheory.IsUnfEx.exists_isUnf GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.QNorm.hasseNormSt
-        GlobalTheory.abelianSchemeLaws_all.1.secBaseChange GlobalTheory.abelianSchemeLaws_all.2.secTwist _ _ D l Xo c σ hpq hσ
-      exact ⟨U.toPj, fun _ => hU⟩
-    · exact ⟨{ Comp := PEmpty, X := fun k => k.elim, un := fun k => k.elim }, fun h => absurd h hσ⟩
-  choose U hU using hU
-  obtain ⟨τ⟩ : Nonempty (Psi GlobalTheory.CM.CyclotomicTwentyEight.host) := by
-    obtain ⟨ρ⟩ : Nonempty (GlobalTheory.CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight →+* ℂ) := inferInstance
-    by_cases h : ρ (GlobalTheory.CM.CyclotomicTwentyEight.host.rt : GlobalTheory.CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight) = GlobalTheory.CM.CyclotomicTwentyEight.host.rt0
-    exacts [⟨⟨ρ, h⟩⟩, ⟨⟨_, conj_mem h⟩⟩]
-  exact ⟨_, _, _, _, _, D, l, Xo, c, U, Z, τ, hp.ge, hU,
-    nonempty_flatSec U x hq hp.ge hg hU (hc c le_rfl) Z τ⟩
-
 end GlobalTheory.FlatLine.Definite

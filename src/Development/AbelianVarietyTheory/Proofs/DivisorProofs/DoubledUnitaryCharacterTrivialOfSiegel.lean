@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigCellFactorisationDoubledUnitaryGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseInvertibleAntidiagonalCornerDoubledUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseInvertibleAntidiagonalCornerDoubledUnitary
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix TensorProduct
@@ -54,7 +54,7 @@ theorem eq_one_of_siegel : (∀ (F E : Type) [Field F] [NumberField F] [Field E]
     rwa [map_mul, hP p t hp, mul_one] at h1
   have hcl : IsClosed {g : UG (cA σ) (dbl (incM F J)) | c g = 1} := isClosed_eq hc continuous_const
   refine MonoidHom.ext fun g => ?_
-  exact hcl.closure_subset_iff.2 (fun h hh => hΩ h hh) (GlobalTheory.T.dense_invertible_antidiagonal_corner_doubledUnitary F E σ hCM n J ε hJ hdet g)
+  exact hcl.closure_subset_iff.2 (fun h hh => hΩ h hh) (_root_.GlobalTheory.SiegelDense.dense F E σ hCM n J ε hJ hdet g)
 
 end GlobalTheory.SiegelChar
 

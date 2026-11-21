@@ -159,22 +159,6 @@ theorem l1Norm_linearForm_le_sum {ι : Type*} (s : Finset ι) (v : ι → σ) (e
   refine (l1Norm_sum_le _ _).trans_eq (sum_congr rfl fun k _ ↦ ?_)
   rw [C_mul_X_eq_monomial, l1Norm_monomial]
 
-theorem l1Norm_linearForm_eq_sum {ι : Type*} (s : Finset ι) {v : ι → σ}
-    (hv : Function.Injective v) (e : ι → K) :
-    l1Norm (∑ k ∈ s, C (e k) * X (v k) : MvPolynomial σ K) = ∑ k ∈ s, ‖e k‖ := by
-  classical
-  refine (l1Norm_linearForm_le_sum s v e).antisymm ?_
-  have hinj : Function.Injective fun k ↦ (Finsupp.single (v k) 1 : σ →₀ ℕ) :=
-    fun a b h ↦ hv (Finsupp.single_left_injective one_ne_zero h)
-  refine le_trans (le_of_eq ?_) (sum_norm_coeff_le_l1Norm _ (s.image fun k ↦ .single (v k) 1))
-  rw [sum_image fun a _ b _ h ↦ hinj h]
-  refine sum_congr rfl fun k hk ↦ ?_
-  rw [coeff_sum, sum_eq_single k]
-  · simp [C_mul_X_eq_monomial]
-  · intro b _ hb
-    rw [C_mul_X_eq_monomial, coeff_monomial, if_neg fun h ↦ hb (hinj h)]
-  · exact fun h ↦ (h hk).elim
-
 theorem l1Norm_linearForm_le {ι : Type*} [Fintype ι] (v : ι → σ) (e : ι → K) :
     l1Norm (∑ k, C (e k) * X (v k) : MvPolynomial σ K) ≤
       √(Fintype.card ι) * √(∑ k, ‖e k‖ ^ 2) :=
@@ -225,14 +209,6 @@ theorem l1Norm_bind_le_sum_norm_coeff_mul_pow_degree [NormOneClass K] (f : σ �
   rw [l1Norm_C, Finsupp.degree_apply, ← prod_pow_eq_pow_sum]
   exact mul_le_mul_of_nonneg_left (l1Norm_prod_pow_le _ _ _ _ fun i _ ↦ h i) (norm_nonneg _)
 
-theorem sum_norm_coeff_mul_pow_le (P : MvPolynomial σ K) {R : ℝ} (hR : 0 ≤ R) {d : ℕ}
-    (hd : P.totalDegree ≤ d) :
-    ∑ α ∈ P.support, ‖P.coeff α‖ * R ^ α.degree ≤ l1Norm P * max 1 R ^ d := by
-  rw [l1Norm, sum_mul]
-  refine sum_le_sum fun α hα ↦ mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)
-  exact (pow_le_pow_left₀ hR (le_max_right 1 R) _).trans
-    (pow_le_pow_right₀ (le_max_left _ _) ((degree_le_totalDegree hα).trans hd))
-
 theorem sum_norm_coeff_mul_pow_of_isHomogeneous {P : MvPolynomial σ K} {d : ℕ}
     (hP : P.IsHomogeneous d) (R : ℝ) :
     ∑ α ∈ P.support, ‖P.coeff α‖ * R ^ α.degree = l1Norm P * R ^ d := by
@@ -244,26 +220,6 @@ theorem l1Norm_bind_le_mul_pow_of_isHomogeneous [NormOneClass K] (f : σ → MvP
     {P : MvPolynomial σ K} {d : ℕ} (hP : P.IsHomogeneous d) {R : ℝ}
     (h : ∀ i, l1Norm (f i) ≤ R) : l1Norm (bind₁ f P) ≤ l1Norm P * R ^ d :=
   (l1Norm_bind_le_sum_norm_coeff_mul_pow_degree f P h).trans_eq (sum_norm_coeff_mul_pow_of_isHomogeneous hP R)
-
-theorem norm_eval_le_sum [NormOneClass K] (x : σ → K) (P : MvPolynomial σ K) {R : ℝ}
-    (h : ∀ i, ‖x i‖ ≤ R) : ‖eval x P‖ ≤ ∑ α ∈ P.support, ‖P.coeff α‖ * R ^ α.degree := by
-  rw [eval_eq]
-  refine norm_sum_le_of_le _ fun α _ ↦ (norm_mul_le _ _).trans ?_
-  rw [Finsupp.degree_apply, ← prod_pow_eq_pow_sum]
-  refine mul_le_mul_of_nonneg_left ((Finset.norm_prod_le _ _).trans ?_) (norm_nonneg _)
-  exact prod_le_prod (fun _ _ ↦ norm_nonneg _) fun i _ ↦
-    (norm_pow_le _ _).trans (pow_le_pow_left₀ (norm_nonneg _) (h i) _)
-
-theorem norm_eval_le_of_le [NormOneClass K] (x : σ → K) (P : MvPolynomial σ K) {R : ℝ}
-    (h : ∀ i, ‖x i‖ ≤ R) {d : ℕ} (hd : P.totalDegree ≤ d) :
-    ‖eval x P‖ ≤ l1Norm P * max 1 R ^ d := by
-  have := (norm_eval_le_sum x P fun i ↦ (h i).trans (le_max_right 1 R)).trans
-    (sum_norm_coeff_mul_pow_le P (zero_le_one.trans (le_max_left 1 R)) hd)
-  rwa [← max_assoc, max_self] at this
-
-theorem norm_eval_le [NormOneClass K] [Fintype σ] (x : σ → K) (P : MvPolynomial σ K) :
-    ‖eval x P‖ ≤ l1Norm P * max 1 ‖x‖ ^ P.totalDegree :=
-  norm_eval_le_of_le x P (norm_le_pi_norm x) le_rfl
 
 end Eval
 
@@ -511,12 +467,6 @@ theorem fockInner_monomial_left (α : σ →₀ ℕ) (c : 𝕜) (Q : MvPolynomia
   rw [fockInner_eq_sum_of_subset_left Q (s := {α}) support_monomial_subset]
   simp
 
-theorem fockInner_monomial_right (P : MvPolynomial σ 𝕜) (α : σ →₀ ℕ) (c : 𝕜) :
-    fockInner P (monomial α c) = multiFactorial α * (P.coeff α * starRingEnd 𝕜 c) := by
-  classical
-  rw [fockInner_eq_sum_of_subset_right P (s := {α}) support_monomial_subset]
-  simp
-
 theorem fockInner_X_mul_left (i : σ) (P Q : MvPolynomial σ 𝕜) :
     fockInner (X i * P) Q = fockInner P (pderiv i Q) := by
   induction P using MvPolynomial.induction_on' with
@@ -532,41 +482,5 @@ theorem fockInner_pderiv_left (i : σ) (P Q : MvPolynomial σ 𝕜) :
   rw [← fockInner_conj_symm, ← fockInner_X_mul_left, fockInner_conj_symm]
 
 end Fock
-
-example : l1Norm (C 3 * X 0 + C (-4) * X 1 : MvPolynomial (Fin 2) ℂ) = 7 := by
-  have := l1Norm_linearForm_eq_sum (K := ℂ) univ (v := id) Function.injective_id ![3, -4]
-  rw [Fin.sum_univ_two, Fin.sum_univ_two] at this
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, id] at this
-  rw [this]
-  norm_num
-
-example : l2Norm (monomial 0 3 + monomial (Finsupp.single 0 1) 4 : MvPolynomial (Fin 1) ℂ) = 5 ∧
-    supCoeff (monomial 0 3 + monomial (Finsupp.single 0 1) 4 : MvPolynomial (Fin 1) ℂ) = 4 := by
-  have hne : (Finsupp.single 0 1 : Fin 1 →₀ ℕ) ≠ 0 := by simp
-  constructor
-  · rw [l2Norm_eq_sqrt_sum_of_subset (s := {0, Finsupp.single 0 1})
-      (support_add.trans (union_subset (support_monomial_subset.trans (by simp))
-        (support_monomial_subset.trans (by simp)))), sum_pair hne.symm]
-    simp only [coeff_add, coeff_monomial, hne, hne.symm, if_true, if_false]
-    rw [Real.sqrt_eq_iff_mul_self_eq_of_pos (by norm_num)]
-    norm_num
-  · refine le_antisymm ((supCoeff_le_iff (by norm_num)).mpr fun β ↦ ?_) ?_
-    · simp only [coeff_add, coeff_monomial]
-      split_ifs with h1 h2
-      · exact (hne (h2.trans h1.symm)).elim
-      all_goals norm_num
-    · refine le_trans (le_of_eq ?_) (norm_coeff_le_supCoeff _ (Finsupp.single 0 1))
-      simp [coeff_monomial, hne.symm]
-
-example : fockNormSq (X 0 ^ 3 : MvPolynomial (Fin 2) ℂ) = 6 := by
-  rw [X_pow_eq_monomial, fockNormSq_monomial, multiFactorial_single]
-  norm_num [Nat.factorial]
-
-example : fockInner (1 : MvPolynomial (Fin 1) ℂ) (C Complex.I) = -Complex.I := by
-  rw [C_apply, fockInner_monomial_right]
-  simp
-
-example : #(monomialsLE (Fin 2) 2) = 6 := by
-  rw [card_monomialsLE]; decide
 
 end GlobalTheory.MvPoly

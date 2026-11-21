@@ -19,11 +19,6 @@ namespace GlobalTheory.AntiIsom
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-def hermL (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (y : Fin r → ℂ) : (Fin r → ℂ) →ₗ[ℂ] ℂ where
-  toFun w := hermC τ G w y
-  map_add' u v := by simp [hermC, add_mul, Finset.sum_add_distrib]
-  map_smul' c v := by simp [hermC, Finset.mul_sum, mul_assoc]
-
 open NumberField AlgebraicGeometry CategoryTheory in
 open scoped Matrix in
 open scoped ComplexConjugate in

@@ -6,14 +6,15 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoPullbackExtendDVRStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoPullbackExtendDVR
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionSquareOfAxesTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleDiagonalExtendedBundleOfGenericStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingActExtendsSemiAbelianDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateSimilitudeGeometricPointsOfGenericDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationKernelKilledOverDvrOfGenericStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperGroupSchemeDvrSectionsMulEquivGenericStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorLieConditionExtendsAbelianSchemeDvrStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleDiagonalExtendedBundleOfGeneric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingActExtendsSemiAbelianDvr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateSimilitudeGeometricPointsOfGenericDvr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationKernelKilledOverDvrOfGeneric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperGroupSchemeDvrSectionsMulEquivGeneric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorLieConditionExtendsAbelianSchemeDvr
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.NotWeilIsGrpPullbackNoncomm
@@ -147,7 +148,7 @@ theorem extends_obj : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Com
       Over.w (snd o.A o.A)])
   have hsq : IsSquare φ φ₂ := ⟨pG.lift_fst _ _ _, pG.lift_snd _ _ _⟩
 
-  obtain ⟨act', ⟨h1, h2, h3, h4⟩, hact⟩ := GlobalTheory.T.exists_ring_action_extension_compatible W L G o.A φ (isSemiAbelian_of_isAbelianScheme G hG) hA
+  obtain ⟨act', ⟨h1, h2, h3, h4⟩, hact⟩ := _root_.GlobalTheory.ringAct_extends_semiAbelian_dvr W L G o.A φ (isSemiAbelian_of_isAbelianScheme G hG) hA
     D.Oᵐᵒᵖ (fun a => o.act.act a.unop) (fun a => o.act.hom _) (by simpa using o.act.one)
     (fun a c => by simp [o.act.mul]) (fun a c => by simp [o.act.add])
   let actG : OActN D.O G :=
@@ -164,24 +165,24 @@ theorem extends_obj : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Com
   have symm' : LBIso P' (P'.pull (lift (snd G G) (fst G G)).left) := by
     have i0 : LBIso (o.P.pull (𝟙 (G2 o.A).left)) (o.P.pull (lift (snd o.A o.A) (fst o.A o.A)).left) :=
       LBIso.trans (pull_isLB hP _) hP (pull_isLB hP _) (lbIso_pull_id hP) o.symm
-    have i1 := GlobalTheory.T.lineBundleIso_pullback_extend_DVR W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP (𝟙 _) (lift (snd o.A o.A) (fst o.A o.A))
+    have i1 := _root_.GlobalTheory.PullIsoExt.lbIso_pull_ext W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP (𝟙 _) (lift (snd o.A o.A) (fst o.A o.A))
       (𝟙 _) (lift (snd G G) (fst G G)) (by simp)
       (lift_match₂ hsq _ _ _ _ hsq.2.symm hsq.1.symm) i0
     exact LBIso.trans hP' (pull_isLB hP' _) (pull_isLB hP' _) (lbIso_pull_id hP').symm i1
   have rosati' : ∀ c : D.O, LBIso (P'.pull (lift (fst G G ≫ actG.act c) (snd G G)).left)
       (P'.pull (lift (fst G G) (snd G G ≫ actG.act (D.star c).unop)).left) := fun c =>
-    GlobalTheory.T.lineBundleIso_pullback_extend_DVR W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP _ _ _ _
+    _root_.GlobalTheory.PullIsoExt.lbIso_pull_ext W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP _ _ _ _
       (lift_match₂ hsq _ _ _ _ (by rw [Over.comp_left, Category.assoc, hactG, ← Category.assoc, ← hsq.1,
         Category.assoc, Over.comp_left]) hsq.2.symm)
       (lift_match₂ hsq _ _ _ _ hsq.1.symm (by rw [Over.comp_left, Category.assoc, hactG, ← Category.assoc,
         ← hsq.2, Category.assoc, Over.comp_left])) (o.rosati c)
-  have ample' := GlobalTheory.T.relAmple_diagonal_extendedBundle_of_generic W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP o.ample
+  have ample' := _root_.GlobalTheory.DiagAmpleExt.relAmple_diag_of_generic W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP o.ample
   have kerP' : ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over (Sp W)) (x : T ⟶ G),
       (∃ t : (P'.pull (lift (snd G T ≫ x) (fst G T)).left).Gen, t.IsGen) → x ^ e = 1 := by
     obtain ⟨e, he, hk⟩ := o.kerP
-    exact ⟨e, he, GlobalTheory.T.polarisation_kernel_killed_over_dvr_of_generic W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP r1 r2 symm' ample' e hk⟩
+    exact ⟨e, he, _root_.GlobalTheory.KerExt.kernel_killed W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP r1 r2 symm' ample' e hk⟩
 
-  obtain ⟨eL, heL⟩ := GlobalTheory.T.properGroupScheme_dvr_sections_mulEquiv_generic W L G o.A φ hG.proper hA
+  obtain ⟨eL, heL⟩ := _root_.GlobalTheory.LevExt.sections_generic_mulEquiv W L G o.A φ hG.proper hA
   have inj : ∀ s₁ s₂ : 𝟙_ (Over (Sp L)) ⟶ o.A, s₁.left ≫ φ = s₂.left ≫ φ → s₁ = s₂ := fun s₁ s₂ e =>
     Over.OverMorphism.ext (hA.1.hom_ext e (by rw [Over.w, Over.w]))
   have key : ∀ s t, s.left ≫ φ = spMap (algebraMap W L) ≫ t.left → eL s = t := fun s t e => by
@@ -230,7 +231,7 @@ theorem extends_obj : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Com
     rw [spMap_comp]
     exact (GlobalTheory.LiePull.lieMult_pull (𝓞 D.F) (Sp W) (Sp L) G o.A (spMap (algebraMap W L)) φ (actG.toF D)
       (o.act.toF D) hA (fun c => hactG _) k (spMap β) _ D.m).1 (o.lieRank k (spMap β) _ (hx k β) i)
-  obtain ⟨lieG, rankG⟩ := GlobalTheory.T.harrisTaylor_lie_condition_extends_abelianScheme_dvr p D W L G hG actG (gm b.ρ) (fun i => gm.comp (b.t i))
+  obtain ⟨lieG, rankG⟩ := _root_.GlobalTheory.LieExt.lie_ext p D W L G hG actG (gm b.ρ) (fun i => gm.comp (b.t i))
     (fun i => by simp [b.t_ω]) (by simpa using congrArg gm b.ρ_root) comax' disc lieGen rankGen
 
   have geomGen : ∀ (k : Type) [Field k] [IsAlgClosed k] (β : L →+* k),
@@ -241,7 +242,7 @@ theorem extends_obj : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Com
     rw [spMap_comp]
     exact tate_push hA hsq o.act actG hactG o.P P' hP hP' iP N o.eta eta' hlv k (spMap β)
       (o.geom k (spMap β) _ (hx k β))
-  have geomG := GlobalTheory.T.tateSimilitude_geometric_points_of_generic_dvr p D R b N W L gm G hG actG P' hP' eta' eta_add' geomGen
+  have geomG := _root_.GlobalTheory.HTGeomExt.tateIsoO_geom_of_generic p D R b N W L gm G hG actG P' hP' eta' eta_add' geomGen
   have lie' : ∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ Sp W), x ≫ spMap gm = spMap β →
       ∀ v : epsPtR x ⟶ G, IsTanScal actG x (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) v →
         ∃ w : Fin D.a → (epsPtR x ⟶ G),

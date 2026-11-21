@@ -35,6 +35,4 @@ end ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace ReciprocityTheory.ChartRestriction.G.DVR
 
-open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out IsLocalRing
-
 end ReciprocityTheory.ChartRestriction.G.DVR

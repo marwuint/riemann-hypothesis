@@ -33,14 +33,6 @@ theorem tensL_smul_right (c : ℂ) (m : Matrix ι ι ℂ) (S : V →L[ℂ] V) :
   ext x i
   simp [tensL_apply, Finset.smul_sum, smul_comm c]
 
-theorem tensL_one_apply (S : V →L[ℂ] V) (x : PiLp 2 (fun _ : ι => V)) (i : ι) :
-    tensL (1 : Matrix ι ι ℂ) S x i = S (x i) := by
-  simp [tensL_apply, Matrix.one_apply]
-
-theorem tensL_id_apply (m : Matrix ι ι ℂ) (x : PiLp 2 (fun _ : ι => V)) (i : ι) :
-    tensL m (1 : V →L[ℂ] V) x i = ∑ j, m i j • x j := by
-  simp [tensL_apply]
-
 end Lin
 
 variable {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -107,14 +99,6 @@ theorem tensKRep_units (ρ : KG ε →* unitary (Matrix ι ι ℂ)) (dρ : Matri
         (dρ X i j) 0) :
     (tensKRep T ρ dρ hc hd).units = tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1)) :=
   funext fun a => funext fun b => tensD_units T dρ a b
-
-theorem tensKRep_op (ρ : KG ε →* unitary (Matrix ι ι ℂ)) (dρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix ι ι ℂ)
-    (hc : Continuous (fun k : KG ε => ((ρ k : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ)))
-    (hd : ∀ X, inK ε X → ∀ γ : ℝ → KG ε, (∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) →
-      ∀ i j, HasDerivAt (fun t : ℝ => ((ρ (γ t) : unitary (Matrix ι ι ℂ)) : Matrix ι ι ℂ) i j)
-        (dρ X i j) 0) (k : KG ε) :
-    (tensKRep T ρ dρ hc hd).op k = tensOp T ρ k :=
-  tensTau_coe T ρ k
 
 theorem tensRep : TensRepStatement := by
   intro n ε Λ T ι _ _ ρ dρ hc hd

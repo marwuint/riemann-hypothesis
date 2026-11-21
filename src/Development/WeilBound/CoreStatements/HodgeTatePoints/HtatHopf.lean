@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.Models
+import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroupStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroup
 import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfFin
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfFlat
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDenominatorBtOrderStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsHenselianFlatOverPrimeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDenominatorBtOrder
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsHenselianFlatOverPrime
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfDesc
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfTop
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfSub
@@ -17,8 +17,8 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 namespace PositivityTheory.HtPt.Htat.HopfOrderTop
 
-private theorem btOrder_top_isHopfOrder' (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group)
-    (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) (R' : Type) [CommRing R'] [IsDomain R'] [IsIntegrallyClosed R']
+private theorem btOrder_top_isHopfOrder' (hHenselian : type_of% @_root_.GlobalTheory.CompanionTheory.CommAlg.exists_flat_henselian_normal_over_prime) (hBaseChange : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective)
+    (hRegular : type_of% @_root_.PositivityTheory.HtPt.Htat.reg_pull) (R' : Type) [CommRing R'] [IsDomain R'] [IsIntegrallyClosed R']
     [HenselianLocalRing R'] (T : Type) [CommGroup T] [Finite T] (Γ' : QFGroup R' T) :
     IsHopfOrder (Γ'.btOrder ⊤) := by
   haveI := Γ'.separated
@@ -89,7 +89,7 @@ private theorem exists_smul_mem_of_extOrder {R K : Type} [CommRing R] [IsDomain 
   rw [hmem]
   exact A.sum_mem fun t _ => A.smul_mem (ha t) _
 
-theorem btOrder_top_isHopfOrder (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R]
+theorem btOrder_top_isHopfOrder (hHenselian : type_of% @_root_.GlobalTheory.CompanionTheory.CommAlg.exists_flat_henselian_normal_over_prime) (hBaseChange : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective) (hRegular : type_of% @_root_.PositivityTheory.HtPt.Htat.reg_pull) (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R]
     (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) : IsHopfOrder (Γ.btOrder ⊤) := by
   classical
   refine PositivityTheory.HtPt.Htat.HopfOrderFlatLocal.isHopfOrder_of_flat_local R T _ ?_ ?_
@@ -112,5 +112,5 @@ theorem btOrder_top_isHopfOrder (hHenselian : type_of% @GlobalTheory.T.exists_he
 
 end PositivityTheory.HtPt.Htat.HopfOrderTop
 
-theorem PositivityTheory.HtPt.Htat.bt_hopf_of (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T), IsHopfOrder (Γ.btOrder ⊤) :=
+theorem PositivityTheory.HtPt.Htat.bt_hopf_of (hHenselian : type_of% @_root_.GlobalTheory.CompanionTheory.CommAlg.exists_flat_henselian_normal_over_prime) (hBaseChange : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective) (hRegular : type_of% @_root_.PositivityTheory.HtPt.Htat.reg_pull) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T), IsHopfOrder (Γ.btOrder ⊤) :=
   @PositivityTheory.HtPt.Htat.HopfOrderTop.btOrder_top_isHopfOrder hHenselian hBaseChange hRegular

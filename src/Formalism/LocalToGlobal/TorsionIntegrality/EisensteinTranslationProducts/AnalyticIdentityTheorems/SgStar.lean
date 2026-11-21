@@ -13,10 +13,6 @@ lemma semiChar_sq (L : PeriodPair) (ω : ℂ) : semiChar L ω * semiChar L ω = 
   unfold semiChar
   split_ifs <;> norm_num
 
-lemma norm_semiChar (L : PeriodPair) (ω : ℂ) : ‖semiChar L ω‖ = 1 := by
-  unfold semiChar
-  split_ifs <;> simp
-
 end ModifiedSigmaBounds
 
 open ModifiedSigmaBounds
@@ -47,23 +43,6 @@ theorem sgStarFixed_of (h : SgStarQuasi) : SgStarFixed := by
     rw [this, Complex.exp_zero]
   linear_combination (semiChar L ω * semiChar L ω * sgStar L z) * key
     + sgStar L z * semiChar_sq L ω
-
-theorem sgStarNormPeriodic_of (h : SgStarQuasi) : SgStarNormPeriodic := by
-  intro L ω z hω
-  rw [h L ω z hω, norm_mul, norm_mul, norm_semiChar, one_mul, mul_pow, Complex.norm_exp,
-    ← Real.exp_nat_mul, mul_right_comm, ← Real.exp_add, mul_comm]
-  congr 2
-  have h1 : ‖z + ω‖ ^ 2 = ‖z‖ ^ 2 + ‖ω‖ ^ 2 + 2 * (z * conj ω).re := by
-    rw [Complex.sq_norm, Complex.sq_norm, Complex.sq_norm, Complex.normSq_add]
-  have h2 : (ω * conj ω).re = ‖ω‖ ^ 2 := by
-    rw [Complex.mul_conj, Complex.ofReal_re, Complex.sq_norm]
-  have h3 : ((Real.pi : ℂ) * herm L z ω + (Real.pi : ℂ) * herm L ω ω / 2).re
-      = Real.pi * ((z * conj ω).re / area L) + Real.pi * (‖ω‖ ^ 2 / area L) / 2 := by
-    rw [← h2, herm, herm, ← Complex.div_ofReal_re, ← Complex.div_ofReal_re]
-    simp
-  rw [h3, h1]
-  push_cast
-  ring
 
 namespace ModifiedSigmaBounds
 

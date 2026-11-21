@@ -165,14 +165,6 @@ theorem equivariant_inl_inr_of_prod_equiv (e : V ≃ₗ[LL] (V' × V''))
   · apply e.injective
     rw [he]; simp
 
-theorem finrank_dcris_add (e : V ≃ₗ[LL] (V' × V''))
-    (he : ∀ g v, e (ρ g v) = (ρ' g (e v).1, ρ'' g (e v).2))
-    [Module.Finite LL (Dcris PD ρ')] [Module.Finite LL (Dcris PD ρ'')] :
-    finrank LL (Dcris PD ρ) = finrank LL (Dcris PD ρ') + finrank LL (Dcris PD ρ'') := by
-  obtain ⟨h1, h2, h3, h4⟩ := equivariant_inl_inr_of_prod_equiv e he
-  exact finrank_add_tensor e _ _ _ (dcris_map PD _ h1) (dcris_map PD _ h2) (dcris_map PD _ h3)
-    (dcris_map PD _ h4)
-
 theorem finite_fildR [Module.Finite LL (DdR PD ρ)] (τ : K →ₐ[Qp] LL) (a : ℤ) :
     Module.Finite LL (FildR PD ρ τ a) :=
   Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) (inf_le_left.trans inf_le_left)
@@ -193,28 +185,5 @@ theorem multV_add (e : V ≃ₗ[LL] (V' × V''))
   ring
 
 end Funct
-
-theorem tateDual_summand : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] [TopologicalSpace Qp] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] {O : Type} [CommRing O] [Algebra O LL], Formalism.MainNotions.LocalSituation.fontCore PD → TateDualRule PD → GoodO (Qp := Qp) LL O → ∀ (A W Bk T : GRep G Qp LL O) (e : A.V ≃ₗ[LL] (W.V × Bk.V)) (Pr : W.V →ₗ[LL] T.V →ₗ[LL] LL) (τ : K →ₐ[Qp] LL) (J J' : Multiset ℤ), (∀ g v, e (A.ρ g v) = (W.ρ g (e v).1, Bk.ρ g (e v).2)) → IsCrys PD A.ρ → (∀ a, multV PD A.ρ τ a = ((J + J').count a : ℕ)) → (∀ a, multV PD Bk.ρ τ a = (J'.count a : ℕ)) → IsDual1 PD W.ρ T.ρ Pr → IsCrys PD T.ρ ∧ ∀ a, multV PD T.ρ τ a = ((J.map fun u => -u - 1).count a : ℕ) := by
-  intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ O _ _ hF hT hO A W Bk T e Pr
-    τ J J' he hA mA mB hD
-  obtain ⟨⟨fW, lW⟩, ⟨gW, -⟩, -⟩ := hF LL O hO W
-  obtain ⟨⟨fB, lB⟩, ⟨gB, -⟩, -⟩ := hF LL O hO Bk
-  have hW : IsCrys PD W.ρ := by
-    have h1 := finrank_dcris_add PD e he
-    have h2 : finrank LL A.V = finrank LL W.V + finrank LL Bk.V := by
-      rw [e.finrank_eq, Module.finrank_prod]
-    unfold IsCrys at hA ⊢
-    rw [h1, h2, mul_add] at hA
-    omega
-  obtain ⟨c, m⟩ := hT LL O hO W T Pr hW hD
-  refine ⟨c, fun a => ?_⟩
-  have hinj : Function.Injective fun u : ℤ => -u - 1 := fun x y h => by
-    simp only at h; omega
-  have ha : a = -(-a - 1) - 1 := by ring
-  have h3 := multV_add PD e he τ (-a - 1)
-  rw [mA, mB, Multiset.count_add] at h3
-  rw [ha, m τ, Multiset.count_map_eq_count' _ _ hinj]
-  push_cast at h3
-  omega
 
 end GlobalTheory.HTW.SumJumps

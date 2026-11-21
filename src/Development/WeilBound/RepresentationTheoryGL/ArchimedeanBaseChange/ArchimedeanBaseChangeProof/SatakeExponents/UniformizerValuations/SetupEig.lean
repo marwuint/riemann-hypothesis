@@ -52,13 +52,6 @@ def SphOne : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Glo
 def CompUnit : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : Submodule ℂ (UA E n → ℂ)),
   IsAutRepU π → ∀ (w : Pl E) (σ : SmIrr (UL n w)), IsCompU π w σ → GlobalTheory.SmGL.IsUnitarisable σ.ρ
 
-def SphStar : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (σ : SmIrr (UL n w)),
-  GlobalTheory.SmGL.IsUnitarisable σ.ρ → Module.finrank ℂ (fixed σ.ρ (KL n w)) = 1 → ∀ h₁ h₂, IsHecke (KL n w) h₁ → IsHecke (KL n w) h₂ →
-    twTr σ.ρ (KL n w) (KL n w) (lconv h₁ h₂) LinearMap.id =
-      twTr σ.ρ (KL n w) (KL n w) h₁ LinearMap.id * twTr σ.ρ (KL n w) (KL n w) h₂ LinearMap.id ∧
-    twTr σ.ρ (KL n w) (KL n w) (lstar h₁) LinearMap.id = starRingEnd ℂ (twTr σ.ρ (KL n w) (KL n w) h₁ LinearMap.id) ∧
-    twTr σ.ρ (KL n w) (KL n w) ((KL n w : Set (UL n w)).indicator 1) LinearMap.id = 1
-
 def IsCong {w : Pl E} (m : ℕ) (K' : Subgroup (UL n w)) : Prop :=
   ∀ k, k ∈ K' ↔ k ∈ KL n w ∧ ∀ i j, Valued.v ((k.1.val - 1) i j) ≤ WithZero.exp (-(m : ℤ))
 

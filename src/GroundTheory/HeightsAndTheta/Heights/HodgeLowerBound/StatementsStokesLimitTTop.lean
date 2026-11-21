@@ -18,8 +18,6 @@ def StokesLimitTTop.Statement : Prop :=
 
 namespace Line
 
-open GroundTheory.Heights₂.Heights.Regular.ProjectiveLine
-
 end Line
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

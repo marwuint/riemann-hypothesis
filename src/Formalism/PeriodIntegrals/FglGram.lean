@@ -23,10 +23,6 @@ def hP {p : ℕ} [Fact p.Prime] {ι : Type*} [Fintype ι] (x y : ι → ℂ_[p] 
 
 abbrev Xv {p : ℕ} [Fact p.Prime] {σ : Type*} (i : σ) : MvPowerSeries σ ℂ_[p] := MvPowerSeries.X i
 
-def DualIso {p : ℕ} [Fact p.Prime] {κ ι : Type*} [Fintype κ] (b b' : ι → κ → ℂ_[p] × ℂ_[p]) : Prop :=
-  (∀ e e', hP (b e) (b e') = 0) ∧ (∀ e e', hP (b' e) (b' e') = 0) ∧
-    ∀ e e', hP (b e) (b' e') = if e = e' then 1 else 0
-
 section
 
 variable {p : ℕ} [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]) {σ : Type*}
@@ -56,10 +52,6 @@ end
 def PhOn {p : ℕ} [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]) {κ ι : Type*} [Fintype κ] [Fintype ι]
     (b : ι → κ → ℂ_[p] × ℂ_[p]) : MvPowerSeries ι ℂ_[p] :=
   ∑ k, phAt ph (lin l ex (fun e => (b e k).1) (fun e => Xv e))
-
-def beSum {p : ℕ} [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]) (ι : Type*) [Fintype ι] :
-    MvPowerSeries (ι ⊕ ι) ℂ_[p] :=
-  ∑ e : ι, be l ex ph (Xv (Sum.inl e)) (Xv (Sum.inr e))
 
 def GramRhs {p : ℕ} [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]) {κ : Type*} [Fintype κ] {k : ℕ}
     (A : Fin k → κ → ℂ_[p] × ℂ_[p]) : MvPowerSeries (Fin k) ℂ_[p] :=
@@ -98,18 +90,5 @@ def GramUnit : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]), Data l ex ph →
     ∀ (n : ℕ) (de : Fin n → Fin n → ℂ_[p] × ℂ_[p]), (∀ i j, hP (de i) (de j) = if i = j then 1 else 0) →
       GramRhs l ex ph de = ∑ j, phAt ph (Xv j)
-
-def GramIso : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]), Data l ex ph →
-    ∀ (κ : Type) [Fintype κ] (r : ℕ) (b : Fin r → κ → ℂ_[p] × ℂ_[p]), (∀ e e', hP (b e) (b e') = 0) →
-      GramRhs l ex ph b = 0
-
-def PhDualGram : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]) (S : Set (ℂ_[p] × ℂ_[p])), Data l ex ph →
-    (∀ (κ : Type) [Fintype κ] (k : ℕ) (A : Fin k → κ → ℂ_[p] × ℂ_[p]), (∀ j i, A j i ∈ S) →
-      Simeq (PhOn l ex ph A) (GramRhs l ex ph A)) →
-    ∀ (κ ι : Type) [Fintype κ] [Fintype ι] (b b' : ι → κ → ℂ_[p] × ℂ_[p]), (∀ e k, b e k ∈ S) →
-      (∀ e k, b' e k ∈ S) → DualIso b b' →
-      Simeq (PhOn l ex ph (Sum.elim b b')) (beSum l ex ph ι)
 
 end PI.FglGram

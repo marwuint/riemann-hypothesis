@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsAlgebraicOfJKM
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMapConstEqOfIsAlgClosed
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemRingOfIntegersOfHol
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalLevStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCupProductCoboundaryTheoremStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCupProductCoboundaryTheorem
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 
 noncomputable section
 
@@ -155,7 +156,7 @@ theorem spec_of_units [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M l n : ℕ} (hM 
   have hx := topChar_apply X hl hlM huF hu0
   have hy := topChar_apply X hl hlM hvF hv0
   have ha : ∃ η, IsTopEta X M (topChar X M l n u) (topChar X M l n v) η := by
-    obtain ⟨-, -, -, -, η, h1, h2, h3⟩ := GlobalTheory.T.kummerCupProduct_coboundary_theorem Ω (topL X M) (topBar X M) (l ^ n) _ hN hζ ⟨u, huL⟩ ⟨v, hvL⟩ _ _
+    obtain ⟨-, -, -, -, η, h1, h2, h3⟩ := _root_.GlobalTheory.KummerCob.thmA Ω (topL X M) (topBar X M) (l ^ n) _ hN hζ ⟨u, huL⟩ ⟨v, hvL⟩ _ _
       (fun h => hu0 (congrArg Subtype.val h)) (fun h => hv0 (congrArg Subtype.val h)) hu1 hu2 hv1 hv2 hα hβ
     obtain ⟨η', g1, g2, g3⟩ := exists_extend hx hy _ η h1 h2 h3
     exact ⟨η', g1, g2, fun B g hB => g3 B g ((over_iff X M B).2 hB)⟩
@@ -173,27 +174,5 @@ theorem spec_of_units [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M l n : ℕ} (hM 
 end GlobalTheory.K4.TopEta
 
 namespace GlobalTheory.K4
-
-open GlobalTheory.KZ
-
-attribute [local instance] algMdl
-
-theorem wkTop_spec : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
-    (l n r N : ℕ) (x : ZMod N) (c d : ℕ), l.Prime → 0 < N → 1 ≤ r + n → Nat.Coprime l N → 1 < c → 1 < d →
-    Nat.Coprime c (6 * l * N) → Nat.Coprime d (6 * l * N) →
-    (∃ η, IsTopEta X (l ^ (r + n) * N) (topChar X (l ^ (r + n) * N) l n (topU X l (r + n) N x c))
-      (topChar X (l ^ (r + n) * N) l n (topV X l (r + n) N d)) η) ∧
-    ∀ σ ∈ fixMu Ω (l ^ (r + n) * N),
-      IsTopW (K := topL X (l ^ (r + n) * N)) (topZeta X (l ^ (r + n) * N) l n)
-        (topChar X (l ^ (r + n) * N) l n (topU X l (r + n) N x c))
-        (topChar X (l ^ (r + n) * N) l n (topV X l (r + n) N d))
-        (topEta X (l ^ (r + n) * N) (topChar X (l ^ (r + n) * N) l n (topU X l (r + n) N x c))
-          (topChar X (l ^ (r + n) * N) l n (topV X l (r + n) N d)))
-        (topLift X (l ^ (r + n) * N) σ)⁻¹ ⟨wkTop X l n r N x c d σ, wkTop_mem X l n r N x c d σ⟩ := by
-  intro Ω _ _ _ ε X l n r N x c d hl hN hs hlN hc1 hd1 hc hd
-  obtain ⟨hu, hv⟩ := TopUnits.isTopUnit_topU_topV X x hl hN hs hlN hc1 hd1 hc hd
-  obtain ⟨h1, h2⟩ := TopEta.spec_of_units X (mul_ne_zero (pow_ne_zero _ hl.ne_zero) hN.ne') hl.ne_zero
-    (pow_dvd_topLevel l n r N) hu hv
-  exact ⟨h1, fun σ _ => h2 _⟩
 
 end GlobalTheory.K4

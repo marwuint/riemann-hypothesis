@@ -848,14 +848,6 @@ theorem idDiagBlocksC (hV : VolPosC) (hI : PiIrrC) (hM : IdMeetC) (D : D7) (X : 
   exact idDiagBlocks_of (Y.cs u) (Y.FN u) hK2 hFE (hI D X u) hH
     (pos_of_mul_pos_right hN ENNReal.toReal_nonneg) h1 h2 h3 h4
 
-def IdCellDiagNeatC : Prop :=
-  ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), NeatKu X u Y.hK →
-    FundExists X u u (X.Fu u) (X.Fu u) (Y.what₂ u) (Y.what₂ u) →
-    Formalism.L2.SG.TermOp.IdCellDiag (X.Fu u) (Y.cs u) (Y.FN u)
-
-theorem idCellDiagNeatC_of (hV : VolPosC) (hI : PiIrrC) (hM : IdMeetC) : IdCellDiagNeatC :=
-  fun D X Y u hC hFE => idCellDiag_of (Y.cs u) (Y.FN u) (idDiagBlocksC hV hI hM D X Y u hC hFE)
-
 theorem idCellDiagC_of_steps (hV : VolPosC) (hI : PiIrrC) (hM : IdMeetC) (hN : NeatC) : IdCellDiagC :=
   idCellDiagC_of fun D X Y u _ hFE _ => idDiagBlocksC hV hI hM D X Y u (hN D X Y u) hFE
 

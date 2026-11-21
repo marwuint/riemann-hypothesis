@@ -9,7 +9,8 @@ import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocBases
 import Formalism.SharpRestriction.GrowthBounds.IntegralWeylLatticeSpan.LatSOfLocBasis
 import Formalism.SharpRestriction.GrowthBounds.BaseLevels.LevelsGEmpty
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.TiedCls
-import Formalism.SharpRestriction.GrowthBounds.ChartComparison.MemAll
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison.OneChartLev
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison.BadQNotOver
 import Formalism.SharpRestriction.GrowthBounds.TwistedLevelAgreement.StepInTwK
 
 noncomputable section

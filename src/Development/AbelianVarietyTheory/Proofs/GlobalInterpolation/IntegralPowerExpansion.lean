@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SourceLatticeInvariance
-import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.UnfoldingOperatorConditions
 
 open NumberField IsDedekindDomain Formalism.L2.Col
 

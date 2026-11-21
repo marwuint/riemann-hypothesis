@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximationStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealProperties
 
 open NumberField IsDedekindDomain GlobalTheory.AdLat
 open scoped TensorProduct Matrix nonZeroDivisors
@@ -41,7 +41,7 @@ theorem hat_selfDual : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     | add w w' _ _ h h' => rw [hermA_add_left]; exact add_mem h h'
     | neg w _ h => rw [hermA_neg_left]; exact neg_mem h
   refine ⟨fun hz => ?_, fun hz => back z hz⟩
-  obtain ⟨h1, -, h3, -⟩ := GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n L hfg hspan
+  obtain ⟨h1, -, h3, -⟩ := _root_.GlobalTheory.AdLat.hat_rational_points_and_approx F E n L hfg hspan
   obtain ⟨x, hx⟩ := h3 z
   have hxL : x ∈ L := by
     refine (hL x).1 fun y hy => ?_
@@ -51,7 +51,7 @@ theorem hat_selfDual : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
       rw [sub_eq_add_neg z, hermA_add_left, hermA_neg_left]; ring
     rw [e] at h
     have e2 := hermA_tmul_fv c G (1 : FiniteAdeleRing (𝓞 F) F) x y
-    exact ((GlobalTheory.T.adelicCompletion_fractionalIdeal_properties_alt F E).2.1 J _).1 (e2 ▸ h)
+    exact ((_root_.GlobalTheory.AdLat.adelicCompletion_fractionalIdeal_properties F E).2.1 J _).1 (e2 ▸ h)
   have := add_mem hx ((h1 x).2 hxL)
   simpa using this
 

@@ -18,8 +18,4 @@ def APrimeChartMargin.Statement : Prop :=
       ∀ v : Fin D.n → ℂ, IsChartVel X.M (X.S.R.chart k) z w v →
         c * ‖v‖ ^ 2 ≤ levi (fun y => Real.log (D.A'.h y)) z w
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

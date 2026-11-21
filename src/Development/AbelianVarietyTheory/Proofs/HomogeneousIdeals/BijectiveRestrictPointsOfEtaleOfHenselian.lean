@@ -352,38 +352,11 @@ theorem bijective_restrictPoints_of_existsUnique {X S T₀ T : Scheme.{u}} (f : 
   obtain ⟨l, ⟨h₁, h₂⟩, h₃⟩ := H g hg
   exact ⟨⟨l, h₂⟩, Subtype.ext h₁, fun y hy ↦ Subtype.ext (h₃ _ ⟨congr(($hy).1), y.2⟩)⟩
 
-theorem bijective_restrictPoints_of_etale {X S T₀ T : Scheme.{u}} (f : X ⟶ S) [Etale f]
-    (h : T ⟶ S) (i : T₀ ⟶ T) [IsClosedImmersion i] (hi : IsNilpotent i.ker) :
-    Function.Bijective (restrictPoints f h i) :=
-  bijective_restrictPoints_of_existsUnique f h i fun g w ↦ existsUnique_lift_of_etale f i hi g h w
-
 theorem bijective_restrictPoints_of_etale_of_henselian {X S : Scheme.{u}} (f : X ⟶ S) [Etale f]
     (R : Type u) [CommRing R] [HenselianLocalRing R] (h : Spec (.of R) ⟶ S) :
     Function.Bijective (restrictPoints f h
       (Spec.map (CommRingCat.ofHom (IsLocalRing.residue R)))) :=
   bijective_restrictPoints_of_existsUnique f h _ fun g w ↦
     existsUnique_lift_of_etale_of_henselian f _ IsLocalRing.residue_surjective g h w
-
-theorem unramified_etale_sections :
-    (∀ {X S T : Scheme.{u}} (f : X ⟶ S) [FormallyUnramified f] [LocallyOfFiniteType f]
-      [IsSeparated f] (a b : T ⟶ X), a ≫ f = b ≫ f →
-        IsOpenImmersion (equalizer.ι a b) ∧ IsClosedImmersion (equalizer.ι a b)) ∧
-    (∀ {X S T : Scheme.{u}} (f : X ⟶ S) [FormallyUnramified f] [LocallyOfFiniteType f]
-      [IsSeparated f] [ConnectedSpace T] (a b : T ⟶ X), a ≫ f = b ≫ f →
-        ∀ (k : Type u) [Field k] (j : Spec (.of k) ⟶ T), j ≫ a = j ≫ b → a = b) ∧
-    (∀ {X S : Scheme.{u}} (f : X ⟶ S) [Etale f] [IsSeparated f] (s : S ⟶ X), s ≫ f = 𝟙 S →
-        IsOpenImmersion s ∧ IsClosedImmersion s) ∧
-    (∀ {X S T₀ T : Scheme.{u}} (f : X ⟶ S) [Etale f] (i : T₀ ⟶ T) [IsClosedImmersion i],
-      IsNilpotent i.ker → ∀ (g : T₀ ⟶ X) (h : T ⟶ S), g ≫ f = i ≫ h →
-        ∃! l : T ⟶ X, i ≫ l = g ∧ l ≫ f = h) ∧
-    (∀ (R : Type u) [CommRing R] [HenselianLocalRing R] {X : Scheme.{u}} (f : X ⟶ Spec (.of R))
-      [Etale f], Function.Bijective (restrictPoints f (𝟙 _)
-        (Spec.map (CommRingCat.ofHom (IsLocalRing.residue R))))) :=
-  ⟨fun f _ _ _ _ _ hab ↦ ⟨isOpenImmersion_equalizer_ι_of_unramified f hab,
-      isClosedImmersion_equalizer_ι_of_isSeparated f hab⟩,
-    fun f _ _ _ _ _ _ hab _ _ j hj ↦ eq_of_connected_of_unramified_of_point f hab j hj,
-    fun f _ _ s hs ↦ isOpenImmersion_and_isClosedImmersion_of_section_of_etale f s hs,
-    fun f _ i _ hi g h w ↦ existsUnique_lift_of_etale f i hi g h w,
-    fun R _ _ _ f _ ↦ bijective_restrictPoints_of_etale_of_henselian f R _⟩
 
 end GlobalTheory

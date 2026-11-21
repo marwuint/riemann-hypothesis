@@ -44,9 +44,6 @@ def ThetaLimit : Prop :=
   ∀ (σ : ℝ) (p : ℕ) (x : ℝ), 0 < x →
     Tendsto (fun ε : ℝ => ld p (th ε σ) x) (𝓝[>] 0) (𝓝 (if p = 0 then 1 else 0))
 
-def ThetaMono : Prop :=
-  ∀ σ ε ε' x : ℝ, 0 ≤ σ → 0 < ε → ε ≤ ε' → 0 < x → th ε' σ x ≤ th ε σ x
-
 def CutBound : Prop :=
   ∀ (c : Cut) (m p : ℕ), 1 ≤ m → ∃ C : ℝ, ∀ ε x : ℝ, 0 < ε → 0 < x →
     |ld p (c.sc ε m) x| ≤ C ∧ (x < ε / 2 → ld p (c.sc ε m) x = 0) ∧
@@ -518,10 +515,6 @@ def I1 : Prop :=
 
 def BaseDensityIntegrable : Prop := Integrable (S.dens []) S.B.μ
 
-def jsq : ℝ := ∫ ω, ∑ a, ‖(S.fam 0).u ω a‖ ^ 2 ∂S.B.μ
-
-def J0 : Prop := ∀ ω, S.dens [] ω = ∑ a, ‖(S.fam 0).u ω a‖ ^ 2
-
 def ThmP : Prop :=
   ∀ (N : ℕ) (Y : Fin N → ℝ), N ≤ S.Ntot → S.OnBoxes (List.ofFn Y) → ∀ ε : ℝ, 0 < ε →
     S.principalHermitianLattice ε (plus (List.ofFn Y)) =
@@ -586,13 +579,6 @@ def LemmaEFromSteps : Prop :=
   Constants → ReduceToBoxes → GridConvergence → ConstSign → BoxesFit → ClaimAll → StepClaim → ClaimInduction →
   BoxLimitFromClaim → LimitB → LimitA → CutoffLimitInL2 → PairLimit → InterpolationCoefficientsInL2 → Leibniz → CutBound → LemmaE
 
-def WeightedIntegrable : Prop :=
-  ∀ (B : Base) (T : Type) [Fintype T] (f : B.Ω → ℝ) (v : T → B.Ω → ℂ) (C : ℝ) (p N : ℕ), N ≤ 2 * p →
-    Measurable f → (∀ ω, 0 ≤ f ω) →
-    (∀ ω, f ω ≤ C * (B.G ω) ^ ((2 * p : ℝ) - N) * ∑ t, ‖v t ω‖ ^ 2) →
-    (∀ t, Integrable (fun ω => ‖v t ω‖ ^ 2) B.μ) → (∀ t, Integrable (fun ω => (B.G ω) ^ (2 * p) * ‖v t ω‖ ^ 2) B.μ) →
-    Integrable f B.μ
-
 structure EP (B : Base) where
 
   R : Type
@@ -613,73 +599,7 @@ attribute [instance] EP.fR EP.fι
 
 namespace EP
 
-variable {B : Base} (X : EP B)
-
-def beta (h h' : Fn B X.R) : ℂ := ∫ ω, pr B (fun _ _ => 1) h h' ω ∂B.μ
-
-def Meas : Prop :=
-  (∀ a, Measurable fun ω => X.u ω a) ∧ (∀ a, Measurable fun ω => X.Cw X.u ω a) ∧ (∀ i, Measurable fun ω => X.dw ω i) ∧
-    ∀ p i, Measurable fun ω => dS B X.gw X.u p ω i
-
-def PolarKK (c : Cut) : Prop :=
-  ∀ (ε₁ ε₂ : ℝ) (m₁ m₂ : ℕ), 0 < ε₁ → 0 < ε₂ → 1 ≤ m₁ → 1 ≤ m₂ →
-    X.beta (X.Cw (mulF B (c.sc ε₁ m₁) X.u)) (mulF B (c.sc ε₂ m₂) X.u) =
-      ∫ ω, pr B X.dw (X.gw (mulF B (c.sc ε₁ m₁) X.u)) (X.gw (mulF B (c.sc ε₂ m₂) X.u)) ω ∂B.μ
-
-def CwLocal (c : Cut) : Prop :=
-  ∀ (ε₁ : ℝ) ω, 0 < ε₁ → ε₁ < B.G ω → ∀ a, X.Cw (mulF B (c.sc ε₁ 1) X.u) ω a = X.Cw X.u ω a
-
-def BetaFinite : Prop :=
-  Integrable (sq B (fun _ _ => 1) X.u) B.μ ∧ Integrable (sq B (fun _ _ => 1) (X.Cw X.u)) B.μ
-
-def NF (p N : ℕ) : Prop :=
-  ∀ q : ℕ, ∃ (n : ℕ) (v : Fin n → B.Ω → ℂ) (C : ℝ),
-    (∀ ω, sq B X.dw (dS B X.gw X.u q) ω ≤ C * (B.G ω) ^ ((2 * p : ℝ) - N) * ∑ t, ‖v t ω‖ ^ 2) ∧
-    (∀ t, Integrable (fun ω => ‖v t ω‖ ^ 2) B.μ) ∧ ∀ t, Integrable (fun ω => (B.G ω) ^ (2 * p) * ‖v t ω‖ ^ 2) B.μ
-
-def CoefInt : Prop := ∀ q : ℕ, Integrable (sq B X.dw (dS B X.gw X.u q)) B.μ
-
 end EP
-
-def EpCoefInt : Prop :=
-  WeightedIntegrable → ∀ (B : Base) (X : EP B) (p N : ℕ), N ≤ 2 * p → (∀ ω i, 0 ≤ X.dw ω i) → X.Meas → X.NF p N → X.CoefInt
-
-def EpStep5 : Prop :=
-  ∀ (B : Base) (X : EP B) (c : Cut), X.Meas → X.BetaFinite →
-    Tendsto (fun ε : ℝ => X.beta (X.Cw X.u) (mulF B (c.sc ε 2) X.u)) (𝓝[>] 0) (𝓝 (X.beta (X.Cw X.u) X.u))
-
-def EpStep6 : Prop :=
-  CutBound →
-  ∀ (B : Base) (X : EP B) (c : Cut), JetLocal B X.gw X.u → X.PolarKK c → X.CwLocal c → ∀ ε : ℝ, 0 < ε →
-    X.beta (X.Cw X.u) (mulF B (c.sc ε 2) X.u) =
-      ∫ ω, pr B X.dw (X.gw X.u) (X.gw (mulF B (c.sc ε 2) X.u)) ω ∂B.μ
-
-def LemmaEprime : Prop :=
-  ∀ (B : Base) (X : EP B) (c : Cut) (M : ℕ), (∀ ω i, 0 ≤ X.dw ω i) → X.Meas → JetLocal B X.gw X.u →
-    PolyS B X.gw X.u M → X.CoefInt → X.PolarKK c → X.CwLocal c → X.BetaFinite →
-    Integrable (sq B X.dw (X.gw X.u)) B.μ ∧
-    ((∫ ω, sq B X.dw (X.gw X.u) ω ∂B.μ : ℝ) : ℂ) = X.beta (X.Cw X.u) X.u ∧
-    Tendsto (fun ε : ℝ => X.beta (X.Cw (mulF B (c.sc ε 1) X.u)) (mulF B (c.sc ε 1) X.u)) (𝓝[>] 0)
-      (𝓝 (X.beta (X.Cw X.u) X.u))
-
-def LemmaEprimeFull : Prop :=
-  ∀ (B : Base) (X : EP B) (c : Cut) (M p N : ℕ), N ≤ 2 * p → (∀ ω i, 0 ≤ X.dw ω i) → X.Meas →
-    JetLocal B X.gw X.u → PolyS B X.gw X.u M → X.NF p N → X.PolarKK c → X.CwLocal c → X.BetaFinite →
-    Integrable (sq B X.dw (X.gw X.u)) B.μ ∧
-    ((∫ ω, sq B X.dw (X.gw X.u) ω ∂B.μ : ℝ) : ℂ) = X.beta (X.Cw X.u) X.u ∧
-    Tendsto (fun ε : ℝ => X.beta (X.Cw (mulF B (c.sc ε 1) X.u)) (mulF B (c.sc ε 1) X.u)) (𝓝[>] 0)
-      (𝓝 (X.beta (X.Cw X.u) X.u))
-
-def LemmaEprimeFromSteps : Prop :=
-  Leibniz → CutBound → CutoffLimitInL2 → PairLimit → EpStep5 → EpStep6 → LemmaEprime
-
-def EstEJoint : Prop :=
-  ∀ (E W : Type) [Field E] (D : TB.Data E W) (S : Fin D.f → Sys) (loc : W → Fin D.f → List (Bool × ℝ)),
-    (∀ v, (S v).Ntot = D.Ntop) → (∀ v, (S v).RootsOut) →
-    (∀ w ∈ D.Wall, ∀ v, (S v).admitted (loc w v) ∧ (loc w v).length ≤ D.cnt w) →
-    (∀ w ∈ D.Wall, D.wt w = ∏ v, (S v).size (loc w v)) →
-    (∀ ε : ℝ, 0 < ε → ∀ w ∈ D.Wall, (D.gram ε 0 w [] []).re = ∏ v, (S v).principalHermitianLattice ε (loc w v)) →
-    (∀ v, (S v).J0) → (∀ v, (S v).EnergyLimit) → D.EstE (∏ v, (S v).jsq)
 
 end
 

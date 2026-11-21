@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameGram
 
 theorem inner_eq_pi_herm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ) (x y : D.B.carrier) (c c' : Fin D.g → ℂ), D.IsVec a x c → D.IsVec a y c' → ((D.B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] y) : ℂ) = Real.pi * a.herm c' c := by
   intro E _ _ _ H L _ _ D σ a x y c c' hx hy
-  obtain ⟨t', m, hP, hA⟩ := GlobalTheory.T.complex_abelian_fibre_ample E H L D σ
+  obtain ⟨t', m, hP, hA⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.FibrePol.exists_fibre_pol E H L D σ
   obtain ⟨hab, g, u, Hm, χ, hAH, d₁, d₂⟩ := FrameEx.exists_goodUnif E H _ D.t (emb σ) t' m hP hA
   have hp : IsGrpPullback t'.G D.t.G (emb σ) m.φ := m.cart
   obtain ⟨v, hlift, vA, hvA, hdiff⟩ := hx

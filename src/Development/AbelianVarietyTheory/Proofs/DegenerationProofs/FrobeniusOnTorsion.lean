@@ -8,15 +8,15 @@ import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableF
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SplitTorusHomProperTrivialField
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FlatQuotientIsoOfSameKernel
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GeometricallyConnectedOfSurjective
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusAbelianQuotientPDivisibleSmoothGroupStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusAbelianQuotientPDivisibleSmoothGroup
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FrobGPowAndClosedSubgroup
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FrobGSplitTorusPow
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PullPowOfFix
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AmpleCubPullAndPullPow
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CardTorsionPullbackPowerLocusLeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CardTorsionPullbackPowerLocusLe
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsImage
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CardTorsionAbelianVarietyLeConstMulPowStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPolyNormSqRootsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CardTorsionAbelianVarietyLeConstMulPow
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPolyNormSqRoots
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -55,10 +55,6 @@ theorem card_torsion_le_mul {A B : Type} [CommGroup A] [CommGroup B] (f : A →*
   rwa [Nat.card_prod] at this
 
 variable {S : Scheme.{0}}
-
-noncomputable def onPts {G H : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ] (Z : Over S) :
-    (Z ⟶ G) →* (Z ⟶ H) :=
-  MonoidHom.mk' (fun x => x ≫ φ) fun x y => MonObj.mul_comp x y φ
 
 theorem pow_comp' {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ] (x : Z ⟶ G) (n : ℕ) :
     (x ^ n) ≫ φ = (x ≫ φ) ^ n := MonObj.pow_comp x n φ
@@ -189,9 +185,9 @@ theorem core (k : Type) [Field k] [IsAlgClosed k] (N : Over (Sp k)) [GrpObj N] (
     (GlobalTheory.SS.AmpSub.ampleCub_pull_and_pullPow (Sp k) N L hL).1 B' ν hν hνci
   have hpp : PullPow F'.left (L.pull ν.left) Q :=
     pullPow_pull ν.left (by rw [← Over.comp_left, hF'ν, Over.comp_left]) hE
-  obtain ⟨P, _, hProots, hPkill⟩ := GlobalTheory.T.exists_poly_normSq_roots' k B' hB' (L.pull ν.left) hL' F' Q hF' hpp
-  obtain ⟨C2, hC2⟩ := GlobalTheory.T.card_torsion_pullbackPowerLocus_le k N hN X B i q hq hB L hL E Q hQ inferInstance hE hi
-  obtain ⟨C3, hC3⟩ := GlobalTheory.T.card_torsion_abelianVariety_le_const_mul_pow k B' hB' (L.pull ν.left) hL' a' ha'
+  obtain ⟨P, _, hProots, hPkill⟩ := _root_.GlobalTheory.SS.exists_poly_normSq_roots k B' hB' (L.pull ν.left) hL' F' Q hF' hpp
+  obtain ⟨C2, hC2⟩ := _root_.GlobalTheory.SS.PowLocus.card_torsion_powLocus_le k N hN X B i q hq hB L hL E Q hQ inferInstance hE hi
+  obtain ⟨C3, hC3⟩ := _root_.GlobalTheory.SS.card_torsion_le k B' hB' (L.pull ν.left) hL' a' ha'
   have hmono : Mono ν := by
     have : Mono ν.left := inferInstance
     exact (Over.forget _).mono_of_mono_map this
@@ -282,7 +278,7 @@ theorem GlobalTheory.SS.frobenius_on_torsion : ∀ (k : Type) [Field k] [IsAlgCl
     exact (Over.forget _).mono_of_mono_map this
   let F'e : End N := F'
   obtain ⟨g', hg', hgiso⟩ := hdimN g hg
-  obtain ⟨X, _, _, _, B, _, i, qB, hqB, hB, hdimB⟩ := GlobalTheory.T.exists_torus_abelian_quotient_p_divisible_smooth_group k p N hN hdiv
+  obtain ⟨X, _, _, _, B, _, i, qB, hqB, hB, hdimB⟩ := _root_.GlobalTheory.SS.DivSemi.exists_torus_abelian_quotient k p N hN hdiv
   obtain ⟨a, ha, hga⟩ := hdimB g' hg'
   have hFN : FrobG N F' q :=
     (GlobalTheory.SS.frobG_pow_and_closed_subgroup k G hG F q hF).2 N ν F' hν hνci hF' hF'ν

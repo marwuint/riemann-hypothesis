@@ -33,43 +33,10 @@ def SmoothedRemainderRealIntegralFormula : Prop :=
       Tendsto (fun U : ℝ => ∫ u in y..U, (psumR a u - u) / u ^ 2) atTop (𝓝 I) ∧
       Gone a y = -y * I
 
-def WeightedSumTendsto : Prop :=
-  ∀ (a : ℕ → ℂ) (S : ℂ),
-    Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, a n / (n : ℂ)) atTop (𝓝 S) →
-    ∀ y : ℝ, 1 ≤ y →
-      Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, a n * ((min 1 (y / (n : ℝ)) : ℝ) : ℂ)) atTop
-        (𝓝 (-Gchi a S y))
-
-def SmoothedRemainderHasDerivBound : Prop :=
-  ∀ CM : ℝ, (∀ y : ℝ, 1 ≤ y → ∑ n ∈ Icc 1 ⌊y⌋₊, Λ n / (n : ℝ) ≤ Real.log y + CM) →
-    ∀ (a : ℕ → ℂ) (S : ℂ), (∀ n, ‖a n‖ ≤ Λ n) →
-    ∀ y : ℝ, 1 ≤ y →
-      HasDerivWithinAt (Gchi a S) (∑ n ∈ Icc 1 ⌊y⌋₊, a n / (n : ℂ) - S) (Set.Ici y) y ∧
-      ‖∑ n ∈ Icc 1 ⌊y⌋₊, a n / (n : ℂ) - S‖ ≤ Real.log y + CM + ‖S‖
-
-def SmoothedRemainderRealHasDerivBound : Prop :=
-  ∀ (CM : ℝ) (a : ℕ → ℝ),
-    (∀ y : ℝ, 1 ≤ y → |∑ n ∈ Icc 1 ⌊y⌋₊, a n / (n : ℝ) - Real.log y| ≤ CM) →
-    ∀ y : ℝ, 1 ≤ y →
-      HasDerivWithinAt (Gone a)
-        (∑ n ∈ Icc 1 ⌊y⌋₊, a n / (n : ℝ) - Real.log y + Real.eulerMascheroniConstant) (Set.Ici y) y ∧
-      |∑ n ∈ Icc 1 ⌊y⌋₊, a n / (n : ℝ) - Real.log y + Real.eulerMascheroniConstant| ≤
-        CM + Real.eulerMascheroniConstant
-
-def SmoothedRemainderScaling : Prop :=
-  ∀ (a : ℕ → ℂ) (S : ℂ) (A w : ℝ), 0 < A → 0 < w →
-    (w : ℂ) * Gchi a S (A / w) =
-      ∑ n ∈ Icc 1 ⌊A / w⌋₊, a n * ((A / (n : ℝ) - w : ℝ) : ℂ) - (A : ℂ) * S
-
 def SmoothedRemainderScaledDiffBound : Prop :=
   ∀ (a : ℕ → ℂ) (S : ℂ), (∀ y : ℝ, 0 ≤ y → ∑ n ∈ Icc 1 ⌊y⌋₊, ‖a n‖ ≤ 2 * y) →
     ∀ A w₁ w₂ : ℝ, 0 < A → 0 < w₁ → w₁ ≤ w₂ →
       ‖(w₂ : ℂ) * Gchi a S (A / w₂) - (w₁ : ℂ) * Gchi a S (A / w₁)‖ ≤ 3 * A * Real.log (w₂ / w₁)
-
-def SmoothedRemainderRealScaledDiffBound : Prop :=
-  ∀ a : ℕ → ℝ, (∀ n, 0 ≤ a n) → (∀ y : ℝ, 0 ≤ y → ∑ n ∈ Icc 1 ⌊y⌋₊, a n ≤ 2 * y) →
-    ∀ A w₁ w₂ : ℝ, 0 < A → 0 < w₁ → w₁ ≤ w₂ →
-      |w₂ * Gone a (A / w₂) - w₁ * Gone a (A / w₁)| ≤ 3 * A * Real.log (w₂ / w₁)
 
 def GoodFor (Q : ℝ) {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) : Prop :=
   ∀ s : ℂ, 1 - 1 / 400 < s.re → |s.im| ≤ Q → ¬ Formalism.ZeroFreeDirichlet.IsLZero χ s
@@ -131,34 +98,5 @@ def PrimesAPInterval (C₀ Cr cr c : ℝ) : Prop :=
 
 def PP (m₀ a₀ : ℕ) (X : ℝ) : Finset ℕ :=
   (Ioc ⌊Real.sqrt X⌋₊ ⌊X⌋₊).filter (fun q => q.Prime ∧ q ≡ a₀ [MOD m₀])
-
-def PrimesInProgressionCountLowerBound : Prop :=
-  ∀ C₀ Cr cr c : ℝ, 0 < C₀ → 0 < Cr → 0 < cr → 0 < c → PrimesAPInterval C₀ Cr cr c →
-    ∀ ε : ℝ, 0 < ε → ε < 1 → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ m₀ a₀ : ℕ, 3 ≤ m₀ → Nat.Coprime a₀ m₀ →
-      ∀ X : ℝ, 0 < X → (1 / 4) * Real.log x ^ 2 * Real.log m₀ ≤ Real.log X → x ^ (ε / 6) ≤ Real.log X →
-        X ^ ((9 : ℝ) / 10) ≤ ((PP m₀ a₀ X).card : ℝ)
-
-def cn (x : ℝ) (n : ℕ) : ℝ := Λ n * min 1 (x / (n : ℝ))
-
-def outPart (m₀ m : ℕ) : ℕ :=
-  ∏ p ∈ m.primeFactors.filter (fun p => ¬ p ∣ m₀ ∧ Odd (m.factorization p)), p
-
-def sqSum (x : ℝ) (κ : ℕ → ℂ) (q : ℕ) : ℂ :=
-  ∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, (cn x n : ℂ) * κ n * (jacobiSym (n : ℤ) q : ℂ)
-
-def JacobiTwistedMeanSquareBound : Prop :=
-  (∀ y : ℝ, 0 ≤ y → ∑ n ∈ Icc 1 ⌊y⌋₊, Λ n ≤ 2 * y) →
-  ∀ ε : ℝ, 0 < ε → ε < 1 → ∀ C' c' : ℝ, 0 < C' → 0 < c' →
-    ∃ x₀ C : ℝ, ∀ x : ℝ, x₀ ≤ x →
-      ∀ (m₀ : ℕ) (PPs : Finset ℕ) (κ : ℕ → ℂ) (nStar : ℕ),
-        8 ∣ m₀ → 0 < m₀ →
-        (∀ p : ℕ, p.Prime → p ∣ m₀ → (p : ℝ) ≤ x ^ (ε / 5) ∨ x ^ (400 : ℝ) < p) →
-        PPs.Nonempty → (∀ q ∈ PPs, q.Prime ∧ q % 4 = 3 ∧ x ^ (400 : ℝ) < q) →
-        κ 1 = 1 → (∀ m n, κ (m * n) = κ m * κ n) → (∀ n, ‖κ n‖ ≤ 1) →
-        (∀ n n' : ℕ, n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊ → n' ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊ →
-          IsPrimePow n → IsPrimePow n' → outPart m₀ (n * n') ≠ 1 → outPart m₀ (n * n') ≠ nStar →
-          |(∑ q ∈ PPs, (jacobiSym ((n * n' : ℕ) : ℤ) q : ℝ)) / PPs.card| ≤
-            C' * Real.exp (-c' * Real.log x ^ 2)) →
-        (∑ q ∈ PPs, ‖sqSum x κ q‖ ^ 2) / PPs.card ≤ C * x * Real.log x
 
 end Formalism.HermitianLattices.GL2PrimeSums

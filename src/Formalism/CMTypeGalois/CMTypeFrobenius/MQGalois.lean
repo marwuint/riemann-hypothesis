@@ -89,62 +89,8 @@ lemma mq_isGalois (h : IsMQ a α) : IsGalois ℚ E := by
 
 end MQ
 
-section Exists
-
-variable {k : ℕ} (a : Fin k → ℤ)
-
-lemma exists_square_roots_closure : ∃ β : Fin k → AlgebraicClosure ℚ, ∀ i, β i ^ 2 = (a i : AlgebraicClosure ℚ) := by
-  choose β hβ using fun i => IsAlgClosed.exists_pow_nat_eq ((a i : AlgebraicClosure ℚ)) two_pos
-  exact ⟨β, hβ⟩
-
-end Exists
-
-private lemma adjoin_range_subtype_eq_whole_field {L : Type} [Field L] [Algebra ℚ L] (K : IntermediateField ℚ L)
-    {k : ℕ} (β : Fin k → L) (hK : K = IntermediateField.adjoin ℚ (Set.range β)) (α' : Fin k → K)
-    (hα : ∀ i, (α' i : L) = β i) :
-    @IntermediateField.adjoin ℚ _ K _ K.algebra' (Set.range α') = ⊤ := by
-  letI : Algebra ℚ K := K.algebra'
-  have himg : K.val '' Set.range α' = Set.range β := by
-    rw [← Set.range_comp]
-    congr 1
-    funext i
-    exact hα i
-  have hmap := IntermediateField.adjoin_map ℚ (Set.range α') K.val
-  rw [himg, ← hK] at hmap
-  rw [eq_top_iff]
-  intro x _
-  have hx : (x : L) ∈ (IntermediateField.adjoin ℚ (Set.range α')).map K.val := by
-    rw [hmap]; exact x.2
-  obtain ⟨y, hy, hyx⟩ := (IntermediateField.mem_map _).1 hx
-  have hyx' : y = x := Subtype.ext hyx
-  exact hyx' ▸ hy
-
-lemma adjoin_subtype_top {L : Type} [Field L] [Algebra ℚ L] (K : IntermediateField ℚ L)
-    {k : ℕ} (β : Fin k → L) (hK : K = IntermediateField.adjoin ℚ (Set.range β)) (α' : Fin k → K)
-    (hα : ∀ i, (α' i : L) = β i) [inst : Algebra ℚ K] :
-    IntermediateField.adjoin ℚ (Set.range α') = ⊤ := by
-  obtain rfl : inst = K.algebra' := Subsingleton.elim _ _
-  exact adjoin_range_subtype_eq_whole_field K β hK α' hα
-
 theorem mqGalois : MQGalois := by
   intro k E _ _ a α h ha
   exact ⟨mq_isGalois h, mq_sigma h, mq_galSign_mul h ha, mq_injective h⟩
-
-theorem mqExists : MQExists := by
-  intro k a
-  obtain ⟨β, hβ⟩ := exists_square_roots_closure a
-  set K := IntermediateField.adjoin ℚ (Set.range β) with hK
-  have hint : ∀ x ∈ Set.range β, IsIntegral ℚ x := by
-    rintro _ ⟨i, rfl⟩
-    refine ⟨X ^ 2 - C ((a i : ℚ)), monic_X_pow_sub_C _ two_ne_zero, ?_⟩
-    rw [eval₂_sub, eval₂_X_pow, eval₂_C, hβ i, map_intCast, sub_self]
-  haveI : FiniteDimensional ℚ K := IntermediateField.finiteDimensional_adjoin hint
-  haveI : NumberField K := ⟨⟩
-  let α' : Fin k → K := fun i => ⟨β i, IntermediateField.subset_adjoin ℚ _ ⟨i, rfl⟩⟩
-  refine ⟨K, inferInstance, inferInstance, α', ?_, ?_⟩
-  · intro i
-    apply Subtype.ext
-    simp [α', hβ i]
-  · exact adjoin_subtype_top K β hK α' (fun i => rfl)
 
 end Formalism.Q3

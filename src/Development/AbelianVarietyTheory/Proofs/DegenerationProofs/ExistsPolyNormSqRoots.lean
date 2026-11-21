@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPositiveDefiniteQuadraticFormEndomorphismsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianVarietyTorsionFiniteEndomorphismDivisibleStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SimilitudeDefiniteFormIsAlgebraicOnVectorStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPositiveDefiniteQuadraticFormEndomorphisms
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianVarietyTorsionFiniteEndomorphismDivisible
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SimilitudeDefiniteFormIsAlgebraicOnVector
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -152,8 +152,8 @@ theorem exists_poly_normSq_roots : ∀ (k : Type) [Field k] [IsAlgClosed k] (B :
     · refine ⟨2 + 1, by norm_num, ?_⟩
       rw [Nat.cast_add, h]; simp
     · exact ⟨2, le_rfl, h⟩
-  have hD := fun n : ℕ => GlobalTheory.T.abelianVariety_torsion_finite_endomorphism_divisible k B hB (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl)
-  obtain ⟨Q, Q1, Q2, Q3, Q4⟩ := GlobalTheory.T.exists_positiveDefinite_quadraticForm_endomorphisms k B hB L hL
+  have hD := fun n : ℕ => _root_.GlobalTheory.TorsionDivisible.finite_torsion_and_divisible k B hB (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl)
+  obtain ⟨Q, Q1, Q2, Q3, Q4⟩ := _root_.GlobalTheory.SS.exists_quadraticForm_end k B hB L hL
   obtain ⟨r, hr⟩ := exists_monic_torsion (M := Additive (𝟙_ (Over (Sp k)) ⟶ B)) l (fun n => (hD n).1) (ptEnd F hF _)
   have hT : ∀ f ∈ homSub B, ptEnd F hF B f ∈ homSub B := fun f hf => by
     change IsMonHom (Additive.toMul f) at hf
@@ -168,7 +168,7 @@ theorem exists_poly_normSq_roots : ∀ (k : Type) [Field k] [IsAlgClosed k] (B :
     have h' : (evalPt x ∘ₗ (homSub B).subtype) e = Additive.ofMul x := congrArg Additive.ofMul (Category.comp_id x)
     rw [h'] at h
     exact h
-  obtain ⟨P, hP, h0, hβ⟩ := GlobalTheory.T.similitude_definite_form_isAlgebraic_on_vector (homSub B) (fun f => Q (Additive.toMul f.1)) φ e q l r hl2
+  obtain ⟨P, hP, h0, hβ⟩ := _root_.GlobalTheory.SimAlg.similitude_algebraic (homSub B) (fun f => Q (Additive.toMul f.1)) φ e q l r hl2
     (fun x y => by
       have := Q1 (Additive.toMul x.1) (Additive.toMul y.1)
       rw [sub_eq_add_neg]

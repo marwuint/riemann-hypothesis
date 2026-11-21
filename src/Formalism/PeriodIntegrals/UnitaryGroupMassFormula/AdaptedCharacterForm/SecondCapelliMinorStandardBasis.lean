@@ -91,6 +91,4 @@ theorem chat2Adapted_of (hcov : ContractionsCovariant) : Chat2Adapted := by
   rw [← h, mulVec_col P Q hQP 0, mulVec_col P Q hQP 1]
   exact second_capelli_minor_standard_basis _ u (β ᵥ* P) (β' ᵥ* P) hβ
 
-theorem main : ContractionsCovariant → ChatAdapted ∧ Chat2Adapted := fun h => ⟨chatAdapted_of h, chat2Adapted_of h⟩
-
 end Formalism.FourierDecayAlt.Q.Adapted

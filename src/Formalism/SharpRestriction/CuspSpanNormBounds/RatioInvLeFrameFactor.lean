@@ -92,12 +92,6 @@ theorem sum_range_sub_mul_two' (r : ℕ) : ∑ a ∈ range r, (r - a) * 2 = r * 
   rw [Finset.sum_range_succ, Nat.sub_self, zero_mul, add_zero] at this
   exact this
 
-theorem prod_tF_four : ∏ a : Fin (r + 1), tF r κ τ a ^ 4 = τ ^ (4 * (r + 1)) * κ ^ (2 * r * (r + 1)) := by
-  rw [Fin.prod_univ_eq_prod_range (fun a => tF r κ τ a ^ 4)]
-  have : ∏ a ∈ range (r + 1), tF r κ τ a ^ 4 = (∏ a ∈ range (r + 1), tF r κ τ a ^ 2) ^ 2 := by
-    rw [← Finset.prod_pow]; refine Finset.prod_congr rfl fun a _ => by ring
-  rw [this, prod_range_tF_sq, sum_range_sub_mul_two]; ring
-
 theorem leadMinor_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) (l : ℕ) (hl : l ≤ r + 1) :
     leadMinor (ptMat (ptTr κ τ hκ hτ γ)) l hl =
       ((∏ a : Fin (r + 1) with a.val < l, tF r κ τ a ^ 2 : ℝ) : ℂ) * leadMinor (ptMat γ) l hl := by

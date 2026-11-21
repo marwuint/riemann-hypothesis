@@ -100,11 +100,6 @@ def PerronTrunc (C : ℝ) : Prop :=
           ((u : ℂ) ^ ((cLine u : ℂ) + t * I) / ((cLine u : ℂ) + t * I))‖ ≤
       C * (u * Real.log u ^ 2 / T + Real.log u)
 
-def RectCauchy : Prop :=
-  ∀ (x₀ x₁ y₀ y₁ : ℝ) (h : ℂ → ℂ) (w : ℂ), x₀ < w.re → w.re < x₁ → y₀ < w.im → w.im < y₁ →
-    DifferentiableOn ℂ h (rect x₀ x₁ y₀ y₁) →
-    rectInt (fun s => h s / (s - w)) x₀ x₁ y₀ y₁ = 2 * Real.pi * I * h w
-
 def RectResidue : Prop :=
   ∀ (x₀ x₁ y₀ y₁ : ℝ) (H : ℂ → ℂ) (Z : Finset ℂ) (wt : ℂ → ℂ) (e : ℂ) (u : ℝ), 0 < u →
     x₀ < 0 → 0 < x₁ → y₀ < 0 → 0 < y₁ → DifferentiableOn ℂ H (rect x₀ x₁ y₀ y₁) →

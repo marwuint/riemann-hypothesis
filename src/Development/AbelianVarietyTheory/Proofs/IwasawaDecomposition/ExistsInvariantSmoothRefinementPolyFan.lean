@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotIsPrimZero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MaxSimplicialCellMultiplicityLtTopOfIsPolyFanStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionLowersMaxCellMultiplicityStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSmoothAdmissibleFanOfCellMultOneCMFieldStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MaxSimplicialCellMultiplicityLtTopOfIsPolyFan
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionLowersMaxCellMultiplicity
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSmoothAdmissibleFanOfCellMultOneCMField
 
 noncomputable section
 
@@ -15,7 +15,7 @@ theorem resolution : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   suffices key : ∀ n : ℕ, ∀ φ lab : InvFun (𝓞 E), maxMult H.bar q φ = n → IsPolyFan H.bar q φ → IsTwInv H φ →
       IsTwInv H lab → SimpLab H.bar q φ lab → ∃ φ' : InvFun (𝓞 E), IsPolFan H.bar q φ' ∧ NoSelfInt H.bar q φ' ∧
         IsTwInv H φ' ∧ Subordinate H.bar q φ' φ by
-    obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.1 (GlobalTheory.T.maxSimplicialCellMultiplicity_lt_top_of_isPolyFan E H q φ hP).ne
+    obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.1 (_root_.GlobalTheory.PolFan.maxMult_lt_top E H q φ hP).ne
     exact key n φ lab hn.symm hP hT hL hS
   intro n
   induction n using Nat.strong_induction_on with
@@ -23,7 +23,7 @@ theorem resolution : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
     intro φ lab hn hP hT hL hS
     by_cases h2 : 2 ≤ maxMult H.bar q φ
     · obtain ⟨φ', lab', hP', hT', hL', hS', hsub, hlt⟩ :=
-        GlobalTheory.T.exists_starSubdivision_lowers_maxCellMultiplicity E H q φ lab hD hP hT hL hS (hn ▸ ENat.coe_lt_top n) h2
+        _root_.GlobalTheory.PolFan.exists_round_lt_maxMult E H q φ lab hD hP hT hL hS (hn ▸ ENat.coe_lt_top n) h2
       obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 (hlt.trans_le le_top).ne
       have hkn : k < n := by
         rw [← hk, hn] at hlt; exact_mod_cast hlt
@@ -33,7 +33,7 @@ theorem resolution : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
         rw [hn] at h2 ⊢
         have : ¬ 2 ≤ n := fun h => h2 (by exact_mod_cast h)
         exact_mod_cast (show n ≤ 1 by omega)
-      obtain ⟨h1, h2⟩ := GlobalTheory.T.isSmoothAdmissibleFan_of_cellMult_one_CMField E H q φ lab hD hP hS hle
+      obtain ⟨h1, h2⟩ := _root_.GlobalTheory.PolFan.smoothEnd E H q φ lab hD hP hS hle
       exact ⟨φ, h1, h2, hT, Subordinate.refl φ⟩
 
 end GlobalTheory.PolFan

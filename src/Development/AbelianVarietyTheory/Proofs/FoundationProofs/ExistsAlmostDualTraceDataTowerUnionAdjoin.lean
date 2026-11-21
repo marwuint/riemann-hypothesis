@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsTrDataGaussianIntOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CosetRepresentativeTraceFixedProperties
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumMulCosetRepresentativeTraceEqStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsValuationAlmostEtaleTowerFixerStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTowerUnionAdjoinOfGaloisFixedStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsValuationAlmostEtaleTowerFixer
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTowerUnionAdjoinOfGaloisFixed
 
 noncomputable section
 
@@ -93,7 +94,7 @@ theorem exists_trData_towerAlg : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field
   intro p _ Ω _ _ hp2 hclo T F
   classical
   have hpcoe : ((p : integralClosure (O0 p) Ω) : Ω) = p := map_natCast (integralClosure (O0 p) Ω).val p
-  obtain ⟨v, hvint, hvinv, hp0, hp1, hS⟩ := GlobalTheory.T.exists_valuation_almostEtale_towerFixer p Ω hp2 hclo T
+  obtain ⟨v, hvint, hvinv, hp0, hp1, hS⟩ := _root_.GlobalTheory.ValuationAlmostSeparation.exists_valuation_almostSep p Ω hp2 hclo T
   obtain ⟨U, -, hUfin, hUfix, hUsep⟩ := hS (F.image Subtype.val)
   obtain ⟨n, a, b, c, hsep, hc⟩ := hUsep (v p) hp1
   haveI := hUfin
@@ -136,7 +137,7 @@ theorem exists_trData_towerAlg : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field
       right := ?_
       sum := ?_ }
   · intro x hx
-    apply GlobalTheory.T.mem_towerUnionAdjoin_of_galois_fixed p Ω hclo T
+    apply _root_.GlobalTheory.K5.mem_towerAlg_of_fixed p Ω hclo T
     intro g hg
     exact (cosetTrace_fixed_props Ω v _ hvinv' U _ hx).1 ⟨g, hg⟩
   · intro x _ y _

@@ -268,20 +268,6 @@ theorem tensorHom_cupCochain {A' B' : Rep k G} (φ : A ⟶ A') (ψ : B ⟶ B') (
   rw [Rep.hom_comm_apply]
   rfl
 
-theorem associator_cupCochain {C : Rep k G} {r m l : ℕ} (h₁ : p + q = m) (h₂ : m + r = n)
-    (h₃ : q + r = l) (h₄ : p + l = n) (f : (Fin p → G) → A) (g : (Fin q → G) → B)
-    (e : (Fin r → G) → C) (x : Fin n → G) :
-    (α_ A B C).hom.hom (cupCochain h₂ (cupCochain h₁ f g) e x) =
-      cupCochain h₄ f (cupCochain h₃ g e) x := by
-  subst h₁ h₂ h₃
-  simp only [cupCochain_apply]
-  rw [associator_hom_tmul, tensor_ρ_tmul, ← Module.End.mul_apply,
-    ← map_mul, ← partialProd_add x (fun j : Fin (q + r) => x ⟨p + j, by omega⟩) (by omega)
-      (fun j => rfl) (by omega), partialProd_prefix x (by omega) (by omega)]
-  have hE : (fun j : Fin r => x ⟨p + (q + j), by omega⟩) = fun j : Fin r => x ⟨p + q + j, by omega⟩ :=
-    funext fun j => congrArg x (Fin.ext (by simp only; omega))
-  rw [hE]
-
 def oneCochain : (Fin 0 → G) → (𝟙_ (Rep k G) : Rep k G) := fun _ => (1 : k)
 
 theorem leftUnitor_oneCochain_cupCochain (f : (Fin q → G) → A) (x : Fin q → G) :

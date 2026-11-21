@@ -29,7 +29,4 @@ theorem substExpInt : SubstExpInt := subst_exp_integral
 theorem congIffSimeq : CongIffSimeq := congruence_iff_simeq
 theorem sumEBridge : SumEBridge := sum_series_analytic
 theorem mapCob : MapCob := map_coboundary
-theorem intHyp : IntHyp :=
-  IntHyp_of prodInt substExpInt congIffSimeq Formalism.L2.Th1.C.hyperbolicSum Formalism.L2.Th1.C.ptClosure
-
 end Formalism.L2.Th1.E

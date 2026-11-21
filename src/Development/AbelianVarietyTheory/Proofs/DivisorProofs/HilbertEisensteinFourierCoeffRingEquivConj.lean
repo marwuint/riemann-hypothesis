@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitLatticeLevelTraceDenominatorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitLatticeLevelTraceDenominator
 open NumberField UpperHalfPlane GlobalTheory.HilbFam GlobalTheory.QFam
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM qPow upperHalf cK omegaFactor IsPartialZeta HasExpansion)
 open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (iterD partialD)
@@ -27,7 +27,7 @@ theorem ecoef_ringEquiv : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyRea
 
   have hchar : ∀ ξ : F, ξ ∈ ((𝔞 * 𝔟 : Frac F) : FractionalIdeal (𝓞 F)⁰ F) → g (eTr (ξ * x)) = eTr (ξ * ((m : F) * x)) := by
     intro ξ hξ
-    obtain ⟨r, hr⟩ := (GlobalTheory.T.splitLattice_level_trace_denominator F N 𝔞 𝔟 x ξ hlev hξ).2
+    obtain ⟨r, hr⟩ := (_root_.GlobalTheory.HilbFam.trace_denominator_of_hasLevel F N 𝔞 𝔟 x ξ hlev hξ).2
     have ht : Algebra.trace ℚ F (ξ * x) = (r : ℚ) / N := by
       rw [eq_div_iff hNq, mul_comm]; exact hr
     have hsm : ξ * ((m : F) * x) = (m : ℚ) • (ξ * x) := by

@@ -242,11 +242,6 @@ theorem stepLocPinnedC_of_fam (hQ5 : ∀ D : D7, Formalism.MainNotions.NonGeneri
     exact_mod_cast this
   exact ⟨s, hs1, hs0, hsb, localLe_of_fam _ _ 39 C0n _ (by omega) hQ hL⟩
 
-theorem rowNGC_of_fam (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hQ5 : ∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39) (hX : NondegenerateGramTuple)
-    (hB : StepChoiceConstantsC) (hE : StepPinExists) (hT0 : StepTermVanish) (hF : StepFamC) (hT : StepThmBPinnedC)
-    (hQ : CorankOneEquivalence) (hN : StepNormals) (hP : StepPoints) (hO : StepNormOne) : RowNGC := by
-  exact rowNGC_of_loc hR hCh hX hB hE hT0 (stepLocPinnedC_of_fam hQ5 hF) hT hQ hN hP hO
-
 end Step
 
 end Formalism.L2.SG.NGLocModel

@@ -2,8 +2,10 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GaussianBinomialClosedForm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumQuotientTransportStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosetsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumQuotientTransport
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosets
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIsSphSec
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasSumDoublingInert
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LvTwDivDvInertEqStdL
@@ -96,7 +98,7 @@ theorem localZetaOn_inert : GlobalTheory.IndefiniteRowSideFullHecke.SphericalSec
       φ (ioAt A v a.out) * c a.out)
       (GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.stdL (Formalism.UG.qV D.host.F v) A.rank α (GlobalTheory.LFun.locChar χ⁻¹ w ϖ) (s + 1 / 2) /
         GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.dFac (Formalism.UG.qV D.host.F v) A.rank b s * ℓ x) := by
-    refine GlobalTheory.T.hasSum_quotient_of_hasSum_mulEquiv_quotient _ _ e _ _ he.2.2 (fun g => φ (ioAt A v g) * c g) ?_ _ ?_
+    refine _root_.GlobalTheory.hasSum_quotient_transport _ _ e _ _ he.2.2 (fun g => φ (ioAt A v g) * c g) ?_ _ ?_
     · intro g k hk
       show φ (ioAt A v (g * k)) * c (g * k) = φ (ioAt A v g) * c g
       rw [hφΦ, hφΦ, map_mul, hΦK _ _ ((he.2.2 k).1 hk), hcx, hcx, map_mul, Module.End.mul_apply,
@@ -107,7 +109,7 @@ theorem localZetaOn_inert : GlobalTheory.IndefiniteRowSideFullHecke.SphericalSec
       simp only [hfun]
       exact hsum
   haveI := hL.1
-  obtain ⟨hint, hval⟩ := GlobalTheory.T.integral_right_invariant_eq_sum_open_subgroup_cosets (Gv A v) μ (stabLoc D.sp.cm.sig A.gram L v) (isOpen_stabLoc _ _ _ v) hμK
+  obtain ⟨hint, hval⟩ := _root_.GlobalTheory.InertZeta.cosetIntegral_holds (Gv A v) μ (stabLoc D.sp.cm.sig A.gram L v) (isOpen_stabLoc _ _ _ v) hμK
     (fun g => φ (ioAt A v g) * c g) _ (fun g k hk => by
       show φ (ioAt A v (g * k)) * c (g * k) = φ (ioAt A v g) * c g
       rw [hφΦ, hφΦ, map_mul, hΦK _ _ ((he.2.2 k).1 hk), hcx, hcx, map_mul, Module.End.mul_apply,

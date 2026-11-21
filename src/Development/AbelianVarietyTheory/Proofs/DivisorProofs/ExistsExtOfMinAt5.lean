@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsMumfordFamOfSubsi
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMinAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFieldPointLiftFiniteSurjectiveMorphismStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalNormalDomainFiniteExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionGenericPointFractionMeetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMinimalCompactificationExtensionOfCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFieldPointLiftFiniteSurjectiveMorphism
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalNormalDomainFiniteExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionGenericPointFractionMeet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMinimalCompactificationExtensionOfCover
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -41,8 +41,8 @@ theorem exists_ext_of_minAt5 : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (Z : 
     obtain ⟨m, j, hj, rfl⟩ := hz
     have := isProper_str (cycAway n) m
     infer_instance
-  obtain ⟨K', _, _, _, y', hy'⟩ := GlobalTheory.T.exists_fieldPoint_lift_finite_surjective_morphism U.toScheme F.X c (FractionRing R) y
-  obtain ⟨R', _, _, _, _, _, ρ, eR, -, hinj, hcomp, hmeet⟩ := GlobalTheory.T.exists_local_normal_domain_finite_extension R K'
+  obtain ⟨K', _, _, _, y', hy'⟩ := _root_.GlobalTheory.FinLift.lift_fieldPoint U.toScheme F.X c (FractionRing R) y
+  obtain ⟨R', _, _, _, _, _, ρ, eR, -, hinj, hcomp, hmeet⟩ := _root_.GlobalTheory.LocalNormalExt.exists_local_normal_domain_of_finite_extension R K'
   haveI : CharZero R' := charZero_of_injective_ringHom hinj
   let gam : FractionRing R →+* FractionRing R' := (eR.symm : K' →+* FractionRing R').comp (algebraMap (FractionRing R) K')
   have E1 : spMap gam = spMap (eR.symm : K' →+* FractionRing R') ≫ spMap (algebraMap (FractionRing R) K') :=
@@ -73,9 +73,9 @@ theorem exists_ext_of_minAt5 : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (Z : 
   have hyz : yy ≫ π ≫ z = jK R' ≫ spMap (ρ.comp b) := by
     rw [← Category.assoc, E3, Category.assoc, Category.assoc, hiz, hyb, ← Category.assoc, E2, spMap_comp_eq,
       Category.assoc]
-  obtain ⟨a', ha'⟩ := GlobalTheory.T.exists_minimalCompactification_extension_of_cover (cycAway n) g Z S' z π OZ hOZ hamp G N hGsa hGsm hL R' (ρ.comp b) G₁' hG₁' yy _ h3 hyz
+  obtain ⟨a', ha'⟩ := _root_.GlobalTheory.TozCore.exists_extension_of_cover_hodge (cycAway n) g Z S' z π OZ hOZ hamp G N hGsa hGsm hL R' (ρ.comp b) G₁' hG₁' yy _ h3 hyz
   have hmeet' : ∀ (x : FractionRing R) (w : R'), algebraMap R' _ w = gam x → ∃ r : R, algebraMap R _ r = x :=
     fun x w hw => hmeet x w (by rw [hw]; simp [gam])
-  exact GlobalTheory.T.exists_extension_generic_point_fraction_meet Z R R' gam hmeet' (y ≫ i) a' (ha'.trans E3)
+  exact _root_.GlobalTheory.TorDown.ext_of_fraction_meet Z R R' gam hmeet' (y ≫ i) a' (ha'.trans E3)
 
 end GlobalTheory.MinExt

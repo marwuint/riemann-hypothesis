@@ -150,7 +150,7 @@ theorem nu_eq_one (hψ : IsStdChar D ψ (-1)) (hW : IsWeilDatumO ψ S T χS χT 
     {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hv : NonSplitAt D v ε) (uS : UnramAt ε χS)
     (uT : UnramAt ε χT) {k : GA D T} (hk : SuppPl ε T k) : ν k = 1 := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
-  refine GlobalTheory.T.adelic_unitary_character_trivial_at_nonsplit_place D T ΛT hT v ε hv ν (fun k hk hst => ?_) k hk
+  refine _root_.GlobalTheory.InertChar.char_eq_one_of_nonSplit D T ΛT hT v ε hv ν (fun k hk hst => ?_) k hk
   obtain ⟨f₀, f0, hf₀, hvac⟩ := GlobalTheory.FinWeilForm.exists_vacuum hψ hL
   have hfix := hvac v ε hv
   have hst' := GlobalTheory.T.mem_localHomLattice_of_keeps_completedLattices D S T ΛS ΛT hS hT v ε hv.1 1 k

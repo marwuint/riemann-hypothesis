@@ -9,20 +9,14 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRule
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRules.StdExpEntryHasDerivAt
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRules.ExpEntryHasDerivAt
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRules.PrhoEntryHasDerivAt
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRules.PPlusPWtInjective
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRules.KTypeIntDomStatement
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Weight
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousRepresentations.DerivExistsAllPosStatement
 
 namespace ReciprocityTheory.ChartRestriction.DS.HW
-
-theorem pieriCount : PieriCountStatement := pieriCount_of compRed kRepRel
 
 theorem pieriStd : PieriStdStatement := pieriStd_of compRed kRepRel
 
 theorem pieriDual : PieriDualStatement := pieriDual_of compRed kRepRel
-
-theorem pPlus : PPlusStatement :=
-  pPlus_of_parts pieriCount tensHW kTypeIntDom weylSumP
-    (fun _ ε β => ⟨pRho ε β, pDRho ε β, pRho_continuous ε β,
-      fun X hX γ hγ i j => pRho_hasDerivAt ε β X hX γ hγ i j, fun a b => pDRho_single ε β a b⟩)
-    (fun _ ε β => pAdM_kRel ε β)
 
 end ReciprocityTheory.ChartRestriction.DS.HW

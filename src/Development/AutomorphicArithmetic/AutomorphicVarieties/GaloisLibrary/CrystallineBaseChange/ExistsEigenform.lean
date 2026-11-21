@@ -95,12 +95,6 @@ private def chSub (N k : ℕ) (χ : DirichletCharacter ℂ N) : Submodule ℂ (C
     rw [show ((c • f : CuspForm (Gamma1 N) (k : ℤ)) : ℍ → ℂ) = c • (f : ℍ → ℂ) from rfl, ModularForm.SL_smul_slash,
       hf γ hγ, smul_comm]
 
-section
-open Module
-variable {K M : Type} [Field K] [IsAlgClosed K] [AddCommGroup M] [Module K M] [FiniteDimensional K M]
-
-end
-
 private def Phi (N : ℕ) (k : ℤ) : CuspForm (Gamma1 N) k →ₗ[ℂ] (ℕ → ℂ) where
   toFun g n := if n = 0 then 0 else coef g n
   map_add' f g := by

@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CauchyRiemannIffDifferentiableOnComplexStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DbarSolveComplexTorusStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PeriodicCechCocycleSmoothCoboundaryStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CauchyRiemannIffDifferentiableOnComplex
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DbarSolveComplexTorus
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PeriodicCechCocycleSmoothCoboundary
 open Complex Matrix
 open scoped ContDiff BigOperators Real Topology
 
@@ -84,8 +84,8 @@ open PeriodicCousin
 theorem holomorphic_periodic_cocycle_coboundary : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ (ι : Type) (U : ι → Set (Fin g → ℂ)) (c : ι → ι → (Fin g → ℂ) → ℂ), (∀ i, IsOpen (U i)) → (∀ i (l : Λ) z, z ∈ U i → z + l ∈ U i) → (∀ z, ∃ i, z ∈ U i) → (∀ i j, DifferentiableOn ℂ (c i j) (U i ∩ U j)) → (∀ i j (l : Λ), ∀ z ∈ U i ∩ U j, c i j (z + l) = c i j z) → (∀ i j k, ∀ z ∈ U i ∩ U j ∩ U k, c i j z + c j k z = c i k z) → ∃ (t : (Fin g → ℂ)) (h : ι → (Fin g → ℂ) → ℂ), (∀ i, DifferentiableOn ℂ (h i) (U i) ∧ ∀ (l : Λ), ∀ z ∈ U i, h i (z + l) = h i z + t ⬝ᵥ star (l : (Fin g → ℂ))) ∧ ∀ i j, ∀ z ∈ U i ∩ U j, c i j z = h j z - h i z := by
   intro g Λ hd hs ι U c hU hUΛ hcov hc hcΛ hcoc
   have hcs : ∀ i j, ContDiffOn ℝ ∞ (c i j) (U i ∩ U j) := fun i j =>
-    ((GlobalTheory.T.cauchyRiemann_iff_differentiableOn g _ (c i j) ((hU i).inter (hU j))).2 (hc i j)).1
-  obtain ⟨b, hb, hcb⟩ := GlobalTheory.T.exists_periodic_smooth_coboundary_of_cech_cocycle g Λ hd hs ι U c hU hUΛ hcov hcs hcΛ hcoc
+    ((_root_.GlobalTheory.cauchyRiemann_iff_differentiableOn_complex g _ (c i j) ((hU i).inter (hU j))).2 (hc i j)).1
+  obtain ⟨b, hb, hcb⟩ := _root_.GlobalTheory.periodic_cech_cocycle_smooth_coboundary g Λ hd hs ι U c hU hUΛ hcov hcs hcΛ hcoc
   choose k hk using hcov
   have hbAt : ∀ i, ∀ z ∈ U i, ContDiffAt ℝ ∞ (b i) z := fun i z hz =>
     (hb i).1.contDiffAt ((hU i).mem_nhds hz)
@@ -93,7 +93,7 @@ theorem holomorphic_periodic_cocycle_coboundary : ∀ (g : ℕ) (Λ : Submodule 
     intro a i j z hi hj
     have ho := (hU i).inter (hU j)
     have h0 : dbar a (c i j) z = 0 :=
-      ((GlobalTheory.T.cauchyRiemann_iff_differentiableOn g _ (c i j) ho).1 ((hcs i j).differentiableOn (by simp))).2 (hc i j) a z ⟨hi, hj⟩
+      ((_root_.GlobalTheory.cauchyRiemann_iff_differentiableOn_complex g _ (c i j) ho).1 ((hcs i j).differentiableOn (by simp))).2 (hc i j) a z ⟨hi, hj⟩
     have h1 : c i j =ᶠ[𝓝 z] fun x => b j x - b i x := by
       filter_upwards [ho.mem_nhds ⟨hi, hj⟩] with x hx using hcb i j x hx
     rw [dbar_congr h1, dbar_sub ((hbAt j z hj).differentiableAt (by simp))
@@ -104,7 +104,7 @@ theorem holomorphic_periodic_cocycle_coboundary : ∀ (g : ℕ) (Λ : Submodule 
   have hw' : ∀ a i, ∀ z ∈ U i, w a =ᶠ[𝓝 z] dbar a (b i) := by
     intro a i z hz
     filter_upwards [(hU i).mem_nhds hz] with x hx using hw a i x hx
-  obtain ⟨t, f, hf, hfΛ, hft⟩ := GlobalTheory.T.exists_periodic_dbar_solution g Λ hd hs w (by
+  obtain ⟨t, f, hf, hfΛ, hft⟩ := _root_.GlobalTheory.dbar_solve_complexTorus g Λ hd hs w (by
     intro a
     refine ⟨contDiff_iff_contDiffAt.2 fun z =>
       (contDiffAt_dbar (hbAt _ z (hk z))).congr_of_eventuallyEq (hw' a _ z (hk z)), fun l z => ?_⟩
@@ -123,7 +123,7 @@ theorem holomorphic_periodic_cocycle_coboundary : ∀ (g : ℕ) (Λ : Submodule 
     fun i => ⟨?_, ?_⟩, ?_⟩
   · have hbd : ∀ z ∈ U i, DifferentiableAt ℝ (b i) z := fun z hz =>
       (hbAt i z hz).differentiableAt (by simp)
-    refine ((GlobalTheory.T.cauchyRiemann_iff_differentiableOn g _ _ (hU i)).1 ?_).1 ?_
+    refine ((_root_.GlobalTheory.cauchyRiemann_iff_differentiableOn_complex g _ _ (hU i)).1 ?_).1 ?_
     · intro z hz
       exact (((hbd z hz).sub (hfd z)).sub (antilin _).differentiableAt).differentiableWithinAt
     · intro a z hz

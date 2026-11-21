@@ -73,79 +73,10 @@ theorem HasValueAt.inv {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) (hv 
   refine hasValueAt_iff.2 ⟨b, a, e ▸ mul_ne_zero hv hb, inv_div _ _, ?_⟩
   rw [← e, inv_mul_cancel_left₀ hv]
 
-theorem HasValueAt.neg {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) : HasValueAt (-R) x (-v) := by
-  simpa using (hasValueAt_C (-1) x).mul h
-
-theorem HasValueAt.sub {R S : RatFunc ℂ} {x v w : ℂ} (h : HasValueAt R x v) (h' : HasValueAt S x w) :
-    HasValueAt (R - S) x (v - w) := by
-  simpa [sub_eq_add_neg] using h.add h'.neg
-
 theorem HasValueAt.pow {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) (m : ℕ) : HasValueAt (R ^ m) x (v ^ m) := by
   induction m with
   | zero => simpa using hasValueAt_one x
   | succ m ih => simpa [pow_succ] using ih.mul h
-
-theorem HasValueAt.zpow {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) (hv : v ≠ 0) (m : ℤ) :
-    HasValueAt (R ^ m) x (v ^ m) := by
-  cases m with
-  | ofNat m => simpa using h.pow m
-  | negSucc m => simpa using (h.pow (m + 1)).inv (pow_ne_zero _ hv)
-
-theorem HasValueAt.multiset_prod {ι : Type} (S : Multiset ι) {R : ι → RatFunc ℂ} {x : ℂ} {v : ι → ℂ}
-    (h : ∀ i ∈ S, HasValueAt (R i) x (v i)) : HasValueAt (S.map R).prod x (S.map v).prod := by
-  induction S using Multiset.induction_on with
-  | empty => simpa using hasValueAt_one x
-  | cons a S ih =>
-    simp only [Multiset.map_cons, Multiset.prod_cons]
-    exact (h a (by simp)).mul (ih fun i hi => h i (by simp [hi]))
-
-theorem eq_of_hasValueAt_infinite {R S : RatFunc ℂ} {T : Set ℂ} (hT : T.Infinite)
-    (h : ∀ x ∈ T, ∃ w, HasValueAt R x w ∧ HasValueAt S x w) : R = S := by
-  have : (R - S).num = 0 := by
-    refine Polynomial.eq_zero_of_infinite_isRoot _ (hT.mono fun x hx => ?_)
-    obtain ⟨w, h1, h2⟩ := h x hx
-    obtain ⟨h3, h4⟩ := h1.sub h2
-    simp only [RatFunc.eval, eval₂_id, sub_self] at h4
-    exact (div_eq_zero_iff.1 h4.symm).resolve_right h3
-  exact sub_eq_zero.1 (RatFunc.num_eq_zero_iff.1 this)
-
-def IsRatIn (q : ℕ) (F : ℂ → ℂ) (R : RatFunc ℂ) : Prop :=
-  ∃ r : ℝ, ∀ z : ℂ, r < z.re → HasValueAt R ((q : ℂ) ^ (-z)) (F z)
-
-theorem IsRatIn.unique {q : ℕ} (hq : 2 ≤ q) {F : ℂ → ℂ} {R S : RatFunc ℂ} (h : IsRatIn q F R) (h' : IsRatIn q F S) :
-    R = S := by
-  obtain ⟨r, h⟩ := h
-  obtain ⟨s, h'⟩ := h'
-  have hq1 : (1 : ℝ) < q := by exact_mod_cast hq
-  have hinj : Function.Injective fun t : ℝ => (q : ℂ) ^ (-(t : ℂ)) := by
-    intro a b e
-    have := congrArg norm e
-    simp only [Complex.norm_natCast_cpow_of_pos (show 0 < q by omega), Complex.neg_re, Complex.ofReal_re] at this
-    exact neg_injective ((Real.strictMono_rpow_of_base_gt_one hq1).injective this)
-  refine eq_of_hasValueAt_infinite ((Set.Ioi_infinite (max r s)).image hinj.injOn) ?_
-  rintro _ ⟨t, ht, rfl⟩
-  exact ⟨F t, h t (by simpa using (max_lt_iff.1 ht).1), h' t (by simpa using (max_lt_iff.1 ht).2)⟩
-
-theorem IsRatIn.mul {q : ℕ} {F G : ℂ → ℂ} {R S : RatFunc ℂ} (h : IsRatIn q F R) (h' : IsRatIn q G S) :
-    IsRatIn q (fun z => F z * G z) (R * S) := by
-  obtain ⟨r, h⟩ := h
-  obtain ⟨s, h'⟩ := h'
-  exact ⟨max r s, fun z hz => (h z (max_lt_iff.1 hz).1).mul (h' z (max_lt_iff.1 hz).2)⟩
-
-theorem IsRatIn.add {q : ℕ} {F G : ℂ → ℂ} {R S : RatFunc ℂ} (h : IsRatIn q F R) (h' : IsRatIn q G S) :
-    IsRatIn q (fun z => F z + G z) (R + S) := by
-  obtain ⟨r, h⟩ := h
-  obtain ⟨s, h'⟩ := h'
-  exact ⟨max r s, fun z hz => (h z (max_lt_iff.1 hz).1).add (h' z (max_lt_iff.1 hz).2)⟩
-
-def HasContValue (q : ℕ) (F : ℂ → ℂ) (z₀ w : ℂ) : Prop :=
-  ∃ R : RatFunc ℂ, IsRatIn q F R ∧ HasValueAt R ((q : ℂ) ^ (-z₀)) w
-
-theorem HasContValue.unique {q : ℕ} (hq : 2 ≤ q) {F : ℂ → ℂ} {z₀ w w' : ℂ} (h : HasContValue q F z₀ w)
-    (h' : HasContValue q F z₀ w') : w = w' := by
-  obtain ⟨R, hR, e⟩ := h
-  obtain ⟨S, hS, e'⟩ := h'
-  exact e.unique (hS.unique hq hR ▸ e')
 
 def IsLaurentPoly (R : RatFunc ℂ) : Prop :=
   ∃ (m : ℕ) (p : ℂ[X]), R * RatFunc.X ^ m = algebraMap _ _ p
@@ -202,15 +133,6 @@ def negPowUnit (q : ℕ) (hq : q ≠ 0) (s : ℂ) : ℂˣ :=
 
 @[simp] theorem negPowUnit_val (q : ℕ) (hq : q ≠ 0) (s : ℂ) : (negPowUnit q hq s : ℂ) = (q : ℂ) ^ (-s) := rfl
 
-theorem HasValueAt.reflectRat {q : ℕ} (hq : q ≠ 0) {R : RatFunc ℂ} {z w : ℂ}
-    (h : HasValueAt R ((q : ℂ) ^ (-(1 - z))) w) : HasValueAt (reflectRat (natUnit q hq) R) ((q : ℂ) ^ (-z)) w := by
-  have hq' : (q : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hq
-  refine HasValueAt.substRat _ ?_ h
-  have e : (q : ℂ) ^ (-(1 - z)) = ((q : ℂ) * (q : ℂ) ^ (-z))⁻¹ := by
-    rw [Complex.cpow_neg, sub_eq_add_neg, Complex.cpow_add _ _ hq', Complex.cpow_one]
-  rw [e]
-  exact ((hasValueAt_C _ _).mul (hasValueAt_X _)).inv (by simp [hq])
-
 theorem HasValueAt.scaleRat {q : ℕ} (hq : q ≠ 0) {R : RatFunc ℂ} {z s w : ℂ}
     (h : HasValueAt R ((q : ℂ) ^ (-(z + s))) w) :
     HasValueAt (scaleRat (negPowUnit q hq s) R) ((q : ℂ) ^ (-z)) w := by
@@ -218,14 +140,7 @@ theorem HasValueAt.scaleRat {q : ℕ} (hq : q ≠ 0) {R : RatFunc ℂ} {z s w : 
   rw [neg_add_rev, Complex.cpow_add _ _ (Nat.cast_ne_zero.2 hq)]
   exact (hasValueAt_C _ _).mul (hasValueAt_X _)
 
-theorem IsRatIn.shift {q : ℕ} (hq : q ≠ 0) {F : ℂ → ℂ} {R : RatFunc ℂ} (h : IsRatIn q F R) (s : ℂ) :
-    IsRatIn q (fun z => F (z + s)) (scaleRat (negPowUnit q hq s) R) := by
-  obtain ⟨r, h⟩ := h
-  exact ⟨r - s.re, fun z hz => (h (z + s) (by simpa using sub_lt_iff_lt_add.1 hz)).scaleRat hq⟩
-
 def lFactor (S : Multiset ℂˣ) : RatFunc ℂ := (S.map fun a : ℂˣ => (1 - RatFunc.C (a : ℂ) * RatFunc.X)⁻¹).prod
-
-def gammaFactor (u : ℂˣ) (S : Multiset ℂˣ) : RatFunc ℂ := reflectRat u (lFactor (S.map (·⁻¹))) / lFactor S
 
 @[simp] theorem lFactor_zero : lFactor 0 = 1 := by simp [lFactor]
 
@@ -245,33 +160,9 @@ def checkFun {G : Type} [Group G] (c : G → ℂ) : G → ℂ := fun x => c x⁻
 @[simp] theorem checkFun_checkFun {G : Type} [Group G] (c : G → ℂ) : checkFun (checkFun c) = c := by
   ext x; simp
 
-def matFT [MeasurableSpace k] (ψ : AddChar k Circle) (ν : Measure k) (Ξ : Matrix n n k → ℂ) : Matrix n n k → ℂ :=
-  fun y => ∫ x, Ξ x * (ψ (trace (x * y)) : ℂ) ∂(volM ν n n)
-
-def gjIntegrand (Ξ : Matrix n n k → ℂ) (c : GL n k → ℂ) (z : ℂ) (x : GL n k) : ℂ :=
-  Ξ x.val * c x * ((nabs k (GeneralLinearGroup.det x) : ℝ) : ℂ) ^ (z + ((Fintype.card n : ℂ) - 1) / 2)
-
 variable [MeasurableSpace (GL n k)]
 
-def gjZeta (μ : Measure (GL n k)) (Ξ : Matrix n n k → ℂ) (c : GL n k → ℂ) (z : ℂ) : ℂ :=
-  ∫ x, gjIntegrand Ξ c z x ∂μ
-
-def GJConverges (μ : Measure (GL n k)) (Ξ : Matrix n n k → ℂ) (c : GL n k → ℂ) : Prop :=
-  ∃ r : ℝ, ∀ z : ℂ, r < z.re → Integrable (gjIntegrand Ξ c z) μ
-
-def HasGJ (μ : Measure (GL n k)) (Ξ : Matrix n n k → ℂ) (c : GL n k → ℂ) (R : RatFunc ℂ) : Prop :=
-  GJConverges μ Ξ c ∧ IsRatIn (resCard k) (gjZeta μ Ξ c) R
-
-def HasGJValue (μ : Measure (GL n k)) (Ξ : Matrix n n k → ℂ) (c : GL n k → ℂ) (z₀ w : ℂ) : Prop :=
-  GJConverges μ Ξ c ∧ HasContValue (resCard k) (gjZeta μ Ξ c) z₀ w
-
 variable {μ : Measure (GL n k)} {Ξ : Matrix n n k → ℂ} {c : GL n k → ℂ}
-
-theorem HasGJ.unique {R S : RatFunc ℂ} (h : HasGJ μ Ξ c R) (h' : HasGJ μ Ξ c S) : R = S :=
-  h.2.unique (one_lt_resCard k) h'.2
-
-theorem HasGJValue.unique {z₀ w w' : ℂ} (h : HasGJValue μ Ξ c z₀ w) (h' : HasGJValue μ Ξ c z₀ w') : w = w' :=
-  h.2.unique (one_lt_resCard k) h'.2
 
 open MeasureTheory Matrix in
 open ValuativeRel in
@@ -426,28 +317,6 @@ theorem _root_.GlobalTheory.LGrp.nabs_eq_zpow (x : kˣ) :
       = _root_.GlobalTheory.SplitWeil.nabs k (x * ϖ ^ (-o) * ϖ ^ o) := by rw [hx]
     _ = (_root_.GlobalTheory.SplitWeil.resCard k : ℝ) ^ (-o) := by
       rw [_root_.GlobalTheory.SplitWeil.nabs_mul, hy1, (key o).1, one_mul]
-
-def cosetInd (g : GL n k) : Matrix n n k → ℂ :=
-  Set.indicator (Units.val '' {x : GL n k | g⁻¹ * x ∈ KO k n}) 1
-
-omit [MeasurableSpace (GL n k)] in
-
-theorem cosetInd_mem_SB (g : GL n k) : cosetInd g ∈ SB (Matrix n n k) := by
-  obtain ⟨_, _⟩ := Model.secondCountable_and_t2_local_field (k := k)
-  have e : {x : GL n k | g⁻¹ * x ∈ KO k n} = (Homeomorph.mulLeft g⁻¹) ⁻¹' (KO k n : Set (GL n k)) := rfl
-  have hc : IsCompact (Units.val '' {x : GL n k | g⁻¹ * x ∈ KO k n}) :=
-    (e ▸ (Homeomorph.isCompact_preimage _).2 SplitFlip.isCompact_KO).image Units.continuous_val
-  have hr : IsOpen (Set.range fun x : GL n k => x.val) := by
-    have : (Set.range fun x : GL n k => x.val) = {A | A.det ≠ 0} := by
-      ext A
-      exact ⟨fun ⟨x, hx⟩ => hx ▸ x.det_ne_zero, fun h => ⟨GeneralLinearGroup.mkOfDetNeZero A h, rfl⟩⟩
-    rw [this]
-    exact isOpen_ne_fun continuous_id.matrix_det continuous_const
-  have ho : IsOpen (Units.val '' {x : GL n k | g⁻¹ * x ∈ KO k n}) :=
-    (Topology.IsOpenEmbedding.mk SplitFlip.isEmbedding_val_GL hr).isOpenMap _
-      (SplitFlip.isOpen_KO.preimage (continuous_const_mul _))
-  exact ⟨(LocallyConstant.charFn ℂ ⟨hc.isClosed, ho⟩).isLocallyConstant,
-    HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩
 
 end ZetaNonvanishing₂
 

@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Transv
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedModelTargetHeisenbergAnisotropicPart
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicMatrixQuotientPeriodicIntegralContinuousPaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittSourceMixedCoordHeisenbergRestrictionStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittDecompositionMixedCoordsRankZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittSourceMixedCoordHeisenbergRestriction
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittDecompositionMixedCoordsRankZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaSeriesSummableOnCovolumeDomain
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisThetaLaws
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
@@ -47,7 +48,7 @@ theorem heis_mixS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D �
   · have hg0 : heisO ψ S T (d.ext0 T w) f 0 = f (d.ext0 T w) := by
       simp only [heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]
     rcases Nat.eq_zero_or_pos ρ with rfl | hρ
-    · have hz := (GlobalTheory.T.wittDecomposition_mixedCoords_rank_zero D ψ).1 S S₀ T d v.μ v.𝓕 v.covol f
+    · have hz := (_root_.GlobalTheory.Unf.mixRankZero D ψ).1 S S₀ T d v.μ v.𝓕 v.covol f
       haveI : Subsingleton (Matrix (Fin T.rank) (Fin 0) D.host.E) := ⟨fun a b => Matrix.ext fun _ j => j.elim0⟩
       have h1 : ∀ x : Matrix (Fin T.rank) (Fin 0) D.host.E, d.mixS T ψ v.μ v.𝓕 f (rat x) w = f (d.ext0 T w) :=
         fun x => by rw [hz]
@@ -55,7 +56,7 @@ theorem heis_mixS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D �
         fun _ => f (d.ext0 T w) from funext h1]
       exact hasSum_single (f := fun _ : Matrix (Fin T.rank) (Fin 0) D.host.E => f (d.ext0 T w))
         (0 : Matrix (Fin T.rank) (Fin 0) D.host.E) fun b hb => absurd (Subsingleton.elim b 0) hb
-    · obtain ⟨hsplit, hrat, hYe, hXe, -, hres, -, -, -⟩ := GlobalTheory.T.wittSourceMixedCoord_heisenbergRestriction D ψ S S₀ T ρ d
+    · obtain ⟨hsplit, hrat, hYe, hXe, -, hres, -, -, -⟩ := _root_.GlobalTheory.Bridge.heis_bridge D ψ S S₀ T ρ d
       have hg : IsThetaFunO ψ S T (heisO ψ S T (d.ext0 T w) f) :=
         (GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 _ _ hf
       have hcov : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D T.rank ρ) v.μ v.𝓕 := hrat ▸ v.covol

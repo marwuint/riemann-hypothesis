@@ -19,14 +19,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Formalism.L2.SG.DataInst Formalism.L2.SG.CntLocal Formalism.L2.SG.RowsConc Formalism.L2.SG.RealObj
 
-def AmpValLowerAll : Prop :=
-  ∀ (D : D7) (T : STies D) (u u' : D.what₂.Word) (i0 i0' : ∀ _ : InfinitePlace T.X.B.I.F, Fin D.R.k)
-    (νq : T.X.B.I.Ginf → Measure T.X.B.I.Ginf),
-    u ≠ u' → Formalism.MainNotions.S.Cnt.Stand D u u' → ConcTie T.X T.Y → (∀ v, i0 v = i0' v) → PtRepExists T.X u u' 1 i0 i0' →
-      NuQPin T.X u u' νq →
-      Formalism.L2.SG.Pf.RowForm.ClassAbs.AmpValLowerC T.X T.Y u u'
-        (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) i0 i0' νq
-
 theorem tprod_alpD_pos (D : D7) (hk : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k) (u u' : D.what₂.Word) :
     0 < ∏' p, alpD u u' p := by
   have hP := Formalism.L2.SG.Pf.placesOver_holds D
@@ -51,27 +43,5 @@ theorem tprod_alpD_pos (D : D7) (hk : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k) (u u
     constructor <;> linarith
   rw [← Real.rexp_tsum_eq_tprod hal0 hlogα]
   exact Real.exp_pos _
-
-theorem rowsSumC_of (hFC : FormulaC) (hAV : AmpValLowerAll) : RowsSumC := by
-  intro D T u u' i0 i0' νq Lsp κ hne hSt hCT _hg3 hk hcong hi hPR hNu hRL
-  have hWD : Formalism.L2.SG.WuDecay.WuDecay T.X := hCT.2.2.2.2.1
-  have hAbs : (T.Y.tO u u').AbsConv :=
-    Formalism.L2.SG.Pf.absConvC_outright D T.X T.Y u u'
-      (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD)
-      (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u' (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD)
-      (Formalism.L2.SG.Pf.fundExistsC_holds D T.X T.Y u u')
-      (Formalism.L2.SG.Pf.KernelOfEmbedding.ooIntAll_of (Y := T.Y) hWD u u')
-  have hL := Formalism.L2.SG.Pf.liftOntoC_of (fun D => Formalism.L2.SG.Pf.WittFlags.LatIso_holds D) D T.X T.Y u u'
-  have hAF : Formalism.L2.SG.PairVal.AutFin D (T.X.Fu u) (T.Y.what₂ u) := fun Λ hΛ =>
-    _root_.automorphism_lattice_finite D (D.sp.Y_sig 0) _ (D.mem u).A.T_prime.pos (T.X.Fu u) Λ ((T.Y.rowsOK u).1 Λ hΛ)
-  have hAF' : Formalism.L2.SG.PairVal.AutFin D (T.X.Fu u') (T.Y.what₂ u') := fun Λ hΛ =>
-    _root_.automorphism_lattice_finite D (D.sp.Y_sig 0) _ (D.mem u').A.T_prime.pos (T.X.Fu u') Λ ((T.Y.rowsOK u').1 Λ hΛ)
-  have hLT : Formalism.L2.SG.Pf.LocCP.LocTied D := by
-    obtain ⟨_, _, _, _, _, _, _, hL⟩ := hCT.2.2.2.2.2.2.1
-    exact hL
-  have hnc : 0 < Formalism.L2.SG.Pf.Cnt.cExpl D (T.X.Fu u) (T.Y.what₂ u) * ∏' p, alpD u u' p :=
-    mul_pos (hFC D T u u' Lsp hLT hSt hcong).1 (tprod_alpD_pos D hk u u')
-  exact Formalism.L2.SG.RowsAbsX.rowsSum_of_val _ κ _ i0 i0' (T.Y.FN u) (T.Y.FN u') νq hAbs hL
-    (hAV D T u u' i0 i0' νq hne hSt hCT hi hPR hNu) hAF hAF' hnc
 
 end Formalism.L2.SG.PoincareAmplitudeLowerBounds

@@ -3,7 +3,6 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Regular
 import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
 import Development.WeilBound.ThetaLifts.Reductions.SiegelOfCore
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConstantTermVanishing
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointRadical
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspidalNoRadicalFixed
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.StandardMaximalParabolic
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CentralizerTensorForms
@@ -14,10 +13,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableDesce
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelCompactTranslateBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsIsoFrameFirstCols
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLatticePointsInSiegelSetBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularSemisimpleConjugateUnipotentTranslateStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemParabolicOfFlagPreservingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularSemisimpleConjugateUnipotentTranslate
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemParabolicOfFlagPreserving
 import Development.WeilBound.RepresentationTheoryGL.LimitMultiplicityWeights.RegularClassIntegrals.DecayFinal
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeIntegralFiniteLargeExponentStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeIntegralFiniteLargeExponent
+
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult
@@ -352,11 +352,11 @@ theorem class_bound {X Y : Matrix (Fin V.rank) (Fin r) D.host.E} (hW : IsWittFra
       exact lt_of_le_of_lt (by gcongr) hρR
     have hstab : ∀ δ, h δ ≠ 0 → δ ∈ (frameFlag (isIsoFrame_firstCols hW j)).parRat D.sp.cm := by
       intro δ hδ
-      exact GlobalTheory.T.mem_parabolic_of_flag_preserving D V r X Y hW j δ
+      exact _root_.GlobalTheory.CompanionTheory.RegInt.mem_parRat_frameFlag_firstCols D V r X Y hW j δ
         (ht1 p hp t ht a ha k hk δ (subset_tsupport f hδ) j hc1 hc2)
     have hmul : ∀ δ ∈ Cl, h δ ≠ 0 → ∀ ν ∈ (frameFlag (isIsoFrame_firstCols hW j)).unipRat D.sp.cm, δ * ν ∈ Cl := by
       intro δ hδ hne ν hν
-      obtain ⟨g, hg⟩ := GlobalTheory.T.regular_semisimple_conjugate_unipotent_translate D V _ _ (isIsoFrame_firstCols hW j) δ (regSS_of_conj hδ hreg) (hstab δ hne) ν hν
+      obtain ⟨g, hg⟩ := _root_.GlobalTheory.CompanionTheory.ParabConj.conj_translate D V _ _ (isIsoFrame_firstCols hW j) δ (regSS_of_conj hδ hreg) (hstab δ hne) ν hν
       exact IsConj.trans hδ (isConj_iff.2 ⟨g, hg⟩)
     have hT' : T ≤ ρ ^ (r * r) := prod_max_le tpos hρ1 hall
     set β : ℝ := B₂ * T ^ A₂ * ρ⁻¹ ^ m' with hβ
@@ -421,7 +421,7 @@ theorem regClassInt : PositivityTheory.ThKR.SiegelCore → MainStatements.Regula
     continuous_classKernel hfc hfs (rat_mem γ)
   refine GlobalTheory.CompanionTheory.AutCover.integrable_descend_of_cover D V μ _ hcl.measurableSet hcov _ (fun δ hδ x => GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel_mul _ _ hδ x)
     hcont.measurable ?_
-  obtain ⟨m₀, hm₀⟩ := GlobalTheory.T.cone_integral_finite_large_exponent D.host.F V.rank r c hc
+  obtain ⟨m₀, hm₀⟩ := _root_.GlobalTheory.CompanionTheory.ConeInt.lintegral_cone_lt_top D.host.F V.rank r c hc
   obtain ⟨B, hB0, hB⟩ := class_bound hWF hK hΩ hΩP hc hconj hf hcusp hreg m₀
   refine ⟨hcont.aestronglyMeasurable, ?_⟩
   have hm := hm₀ m₀ le_rfl

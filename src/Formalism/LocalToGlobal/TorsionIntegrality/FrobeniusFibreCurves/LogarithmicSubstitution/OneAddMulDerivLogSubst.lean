@@ -297,10 +297,4 @@ theorem constantCoeff_prim (f : PowerSeries K) : constantCoeff (prim f) = 0 := b
 
 end Rules
 
-theorem expLogIdentities : ExpLogRules := by
-  intro K _ _ ι
-  exact ⟨fun f g hf hg => fExp_add hf hg,
-    fun f hf => ⟨constantCoeff_fExp hf, fLog_fExp hf⟩,
-    fun g hg => ⟨constantCoeff_fLog hg, fExp_fLog hg⟩⟩
-
 end Formalism.L2.Th1.B

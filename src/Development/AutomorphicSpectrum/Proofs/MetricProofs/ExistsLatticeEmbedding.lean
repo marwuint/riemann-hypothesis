@@ -4,13 +4,14 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
 import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntEmbInjective
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.CMFieldDegreeEqTwiceCardStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenusEqCardMulSignatureStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LatticeRationalEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AlternatingFormHermitianDescentStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SkewHermitianFormExistsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AlternatingFormLatticeCompatibleStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealBasisFromLatticeBasisStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.CMFieldDegreeEqTwiceCard
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BlockGLSupportedMemMirabolicSupported
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenusEqCardMulSignature
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LatticeRationalEmbedding
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AlternatingFormHermitianDescent
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SkewHermitianFormExists
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AlternatingFormLatticeCompatible
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealBasisFromLatticeBasis
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EmbeddingInverseRootImaginaryStatement
 open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.FiniteCovolume GroundTheory.Automorphic GlobalTheory.CompanionTheory.Ar.Cusp.Dict
 open scoped ENNReal InnerProductSpace
@@ -47,9 +48,9 @@ theorem exists_latEmb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   haveI := R.free
   haveI := R.fin
   have hform : R.form = F.form := by rw [hR]; exact F.form_eq 0
-  have hrk := GlobalTheory.T.CM_field_degree_eq_twice_card E Ψ F.σ F.cm
-  have hg := GlobalTheory.T.genus_eq_card_mul_signature E Ψ g j j' R.B F.σ F.cm (by rw [hR]; exact F.sig 0 h0)
-  obtain ⟨N, hN, e, einj, esmul, hspan⟩ := GlobalTheory.T.lattice_rational_embedding E Λ
+  have hrk := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.CMRank.finrank_eq_two_mul_card E Ψ F.σ F.cm
+  have hg := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.TangentDim.dim_eq_card_mul E Ψ g j j' R.B F.σ F.cm (by rw [hR]; exact F.sig 0 h0)
+  obtain ⟨N, hN, e, einj, esmul, hspan⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatticeCoordinates.exists_embedding E Λ
   have hpos : 0 < Module.finrank ℚ E := Module.finrank_pos
   have hNj : N = j + j' := by
     rw [R.rank, hrk, hg] at hN
@@ -61,9 +62,9 @@ theorem exists_latEmb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   have halt : ∀ x, F.form x x = 0 := fun x => by rw [← hform]; exact R.alt x
   have hadj : ∀ a a' : 𝓞 E, (a' : E) = IsCMField.complexConj E (a : E) → ∀ x y, F.form (a • x) y = F.form x (a' • y) := by
     rw [← hform]; exact R.adj
-  obtain ⟨B, hBe, hBadj, hBskew, hBnd⟩ := GlobalTheory.T.alternating_form_hermitian_descent E Λ (j + j') e einj esmul hspan F.form halt hunim hadj
-  obtain ⟨h, m, hm, hmaster, hint⟩ := GlobalTheory.T.skew_hermitian_form_exists E H Λ (j + j') e B hBadj hBskew hBnd
-  have hdual := GlobalTheory.T.alternating_form_lattice_compatible E H Λ (j + j') e einj F.form hunim B hBe hBskew hBnd hspan h m hm hmaster
+  obtain ⟨B, hBe, hBadj, hBskew, hBnd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin E Λ (j + j') e einj esmul hspan F.form halt hunim hadj
+  obtain ⟨h, m, hm, hmaster, hint⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.HermTrace.exists_hermitian_of_trace E H Λ (j + j') e B hBadj hBskew hBnd
+  have hdual := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.latEmb_relIndex_dual_ne_zero E H Λ (j + j') e einj F.form hunim B hBe hBskew hBnd hspan h m hm hmaster
   have hrt : (H.rt : E) ≠ 0 := by
     intro h0
     have h1 : ((H.rt ^ 2 : 𝓞 E) : E) = ((-(H.d : 𝓞 E) : 𝓞 E) : E) := by rw [H.rt_sq]
@@ -78,7 +79,7 @@ theorem exists_latEmb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     rw [one_mul, one_smul] at this
     rw [this, hBe]
   let lam : Module.Basis (Fin (2 * g)) ℤ Λ := (Module.finBasisOfFinrankEq ℤ Λ R.rank)
-  obtain ⟨bas, hbas⟩ := GlobalTheory.T.real_basis_from_lattice_basis E Ψ g (j + j') F.σ F.cm hg Λ e hspan lam
+  obtain ⟨bas, hbas⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.exists_realBasis_of_latBasis E Ψ g (j + j') F.σ F.cm hg Λ e hspan lam
   have hlat : IsLattice E e.range := by
     refine ⟨?_, ?_, ?_⟩
     · rintro a _ ⟨x, rfl⟩

@@ -51,10 +51,4 @@ theorem scaleGen_isGen {M : LB X} (hM : M.IsLB) {φ : K → (Y ⟶ X)} {ε : K �
 
 end Transport
 
-section Pull
-
-variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'} {D : DegPre R} {D' : DegPre R'}
-
-end Pull
-
 end ReciprocityTheory.ChartRestriction.G.Geo.Tor

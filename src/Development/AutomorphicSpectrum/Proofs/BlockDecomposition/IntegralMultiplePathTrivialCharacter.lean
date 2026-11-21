@@ -73,13 +73,6 @@ theorem halfTr_nsmul (n : ℕ) (x : AE D) : halfTr (n • x) = n • halfTr x :=
   simp only [nsmul_eq_mul]
   ring
 
-theorem halfTr_add (x x' : AE D) : halfTr (x + x') = halfTr x + halfTr x' := by
-  simp only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_add]
-  ring
-
-theorem halfTr_zero : halfTr (0 : AE D) = 0 := by
-  simp only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_zero, mul_zero]
-
 theorem halfTr_trace_nsmul (n : ℕ) (M B : Mx D r r) :
     halfTr (Matrix.trace (HMul.hMul (n • M) B : Mx D r r)) = n • halfTr (Matrix.trace (HMul.hMul M B : Mx D r r)) := by
   rw [Matrix.smul_mul, Matrix.trace_smul, halfTr_nsmul]

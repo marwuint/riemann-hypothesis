@@ -2,8 +2,8 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
 import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenFibreExists
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PtsIntegralLogNormRatEqBaseStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationPotentialDegreeCompatibilityStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PtsIntegralLogNormRatEqBase
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationPotentialDegreeCompatibility
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticSystemRegularityProperties
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
@@ -121,7 +121,7 @@ theorem position_integral (hE : ResExistsStatement) {P J : Ideal (MRing ι)} {D 
   have hlift : ∀ x ∉ (∅ : Set R.X), logNormRat (wtLine hab) 1 1 (R.lift x x) = v (π x) := by
     intro x _
     rw [logNormRat_wtLine, ratioWt_of_mem (R.mem x x (R.mem_U x)).1, hlog x]
-  have hb := GlobalTheory.T.intersection_number_pullback_degree_alt hE K ι P J D R X A π hπ dg br hP hdeg L Φ hL hΦ hS (wtLine hab) 1 1 v ∅
+  have hb := _root_.GlobalTheory.CompanionTheory.Ar.PB.ptsIntegral_logNormRat_eq_base hE K ι P J D R X A π hπ dg br hP hdeg L Φ hL hΦ hS (wtLine hab) 1 1 v ∅
     (wtLine_smooth hab h₁ h₂) hrat hnull hlift (mIntegrableCont A Φ hΦ v hv)
   rwa [logNormRat_wtLine] at hb
 
@@ -144,7 +144,7 @@ theorem num_sub_num : Inputs → ∀ (II : IntersectionSystem), IsFullIntersecti
   intro hIn II hII K _ ι _ D σ _ S P Re t t' w ht ht0 ht' ht'0
   have hF := hII.1
   have hP := Re.arith
-  have hpot := (GlobalTheory.T.realisation_potential_degree_compatibility hIn.resExists K ι D σ S P Re).1
+  have hpot := (_root_.GlobalTheory.CompanionTheory.Ar.PB.re_pot hIn.resExists K ι D σ S P Re).1
   have hbasic := (anSys_open_basics D σ S).2.2.2.1
   have hsc : ∀ (b : Prop) [Decidable b], 0 < (if b then t else t') ∧ (if b then t else t') ≤ S.t₀ := by
     intro b _

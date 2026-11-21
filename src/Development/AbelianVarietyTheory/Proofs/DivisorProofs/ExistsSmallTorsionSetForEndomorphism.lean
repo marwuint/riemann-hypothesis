@@ -1,9 +1,11 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FinitePointsOfIsOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusExtensionPointsDivisible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteOrderUnipotentAutDivisiblePrimaryEqIdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimaryTorsionDivisibleAndTorsionEqIdealTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOneOfKillsIdealPowerTorsionSemiAbelianStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteOrderUnipotentAutDivisiblePrimaryEqId
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimaryTorsionDivisibleAndTorsionEqIdealTorsion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOneOfKillsIdealPowerTorsionSemiAbelian
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -117,8 +119,8 @@ theorem finite_order_unipotent_eq_id : ∀ (E : Type) [Field E] [NumberField E] 
     obtain ⟨y, hy⟩ := GlobalTheory.SS.torusExtension_points_divisible k G (GlobalTheory.TorsionDense.nonempty_torusExtension G hG)
       g hg.one_le x.toMul
     exact ⟨Additive.ofMul y, by rw [← ofMul_pow, hy]; rfl⟩
-  obtain ⟨hred1, hred2⟩ := GlobalTheory.T.primaryTorsion_divisible_and_torsion_eq_ideal_torsion E (Additive (𝟙_ (Over (Sp k)) ⟶ G)) g I hg hI hI2 hdivM
-  have key := GlobalTheory.T.finiteOrder_unipotent_aut_divisible_primary_eq_id A βA n g r m hn
+  obtain ⟨hred1, hred2⟩ := _root_.GlobalTheory.primaryTorsion_divisible_and_gTorsion E (Additive (𝟙_ (Over (Sp k)) ⟶ G)) g I hg hI hI2 hdivM
+  have key := _root_.GlobalTheory.finite_order_unipotent_eq_id A βA n g r m hn
     (fun x => Subtype.ext (by
       rw [hβAit, hβit, ← iter_comp, hpow, Category.comp_id]; rfl))
     hg (by omega)
@@ -157,7 +159,7 @@ theorem finite_order_unipotent_eq_id : ∀ (E : Type) [Field E] [NumberField E] 
   have hI1 : I ≠ ⊤ := fun h => by
     rw [h, Ideal.absNorm_top] at hI
     exact hg.one_lt.ne hI
-  have h1 := GlobalTheory.T.eq_one_of_kills_idealPowerTorsion_semiAbelian E k G act (α * (𝟙 G)⁻¹) I hG hγ
+  have h1 := _root_.GlobalTheory.IdealTorsion.eq_one_of_idealTorsion_comp_eq_one E k G act (α * (𝟙 G)⁻¹) I hG hγ
     (fun a => by
       rw [MonObj.comp_mul, GrpObj.comp_inv, MonObj.mul_comp, GrpObj.inv_comp, hcomm, Category.comp_id,
         Category.id_comp])

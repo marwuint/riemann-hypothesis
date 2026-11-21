@@ -37,22 +37,9 @@ theorem relInertiaDegree_mul {K L M : Subgroup G} (hML : M ≤ L) (hLK : L ≤ K
     relInertiaDegree d L M * relInertiaDegree d K L = relInertiaDegree d K M :=
   Subgroup.relIndex_mul_relIndex _ _ _ (Subgroup.map_mono hML) (Subgroup.map_mono hLK)
 
-theorem relRamificationIndex_mul {K L M : Subgroup G} (hML : M ≤ L) (hLK : L ≤ K) :
-    relRamificationIndex d L M * relRamificationIndex d K L = relRamificationIndex d K M := by
-  unfold relRamificationIndex
-  have h := Subgroup.relIndex_inf_mul_relIndex M L (d.ker ⊓ K)
-  have h1 : L ⊓ (d.ker ⊓ K) = d.ker ⊓ L := by
-    rw [inf_comm d.ker K, ← inf_assoc, inf_eq_left.2 hLK, inf_comm]
-  rw [h1, inf_eq_left.2 hML] at h
-  exact h
-
 theorem inertiaDegree_eq_mul (hd : Function.Surjective d) {K L : Subgroup G} (hLK : L ≤ K) :
     inertiaDegree d L = relInertiaDegree d K L * inertiaDegree d K := by
   rw [← relInertiaDegree_top hd, ← relInertiaDegree_top hd, relInertiaDegree_mul hLK le_top]
-
-theorem ramificationIndex_eq_mul {K L : Subgroup G} (hLK : L ≤ K) :
-    ramificationIndex d L = relRamificationIndex d K L * ramificationIndex d K := by
-  rw [← relRamificationIndex_top, ← relRamificationIndex_top, relRamificationIndex_mul hLK le_top]
 
 theorem relIndex_eq_mul {K L : Subgroup G} (hLK : L ≤ K) :
     L.relIndex K = relRamificationIndex d K L * relInertiaDegree d K L := by
@@ -190,15 +177,6 @@ theorem relDeg_surjective (K : OpenSubgroup G) : Function.Surjective (D.relDeg K
   obtain ⟨σ, hσ, hσx⟩ := (D.mem_map_deg_iff K).2 ⟨x, rfl⟩
   exact ⟨⟨σ, hσ⟩, (D.relDeg_eq_iff K _ x).2 hσx⟩
 
-theorem continuous_relDeg (K : OpenSubgroup G) : Continuous (D.relDeg K) := by
-  have hp : Topology.IsClosedEmbedding (fun x : Multiplicative ℤ̂ => x ^ inertiaDegree D.deg K) :=
-    (continuous_pow _).isClosedEmbedding (ProfiniteInteger.pow_left_injective (D.inertiaDegree_ne_zero K))
-  rw [hp.isEmbedding.continuous_iff]
-  have h : ((fun x : Multiplicative ℤ̂ => x ^ inertiaDegree D.deg K) ∘ D.relDeg K) =
-      D.deg ∘ Subtype.val := funext (D.relDeg_pow K)
-  rw [h]
-  exact D.continuous_deg.comp continuous_subtype_val
-
 theorem mem_map_relDeg_iff {K L : OpenSubgroup G} (hLK : L ≤ K) {x : Multiplicative ℤ̂} :
     x ∈ ((L : Subgroup G).subgroupOf K).map (D.relDeg K) ↔
       ∃ y, y ^ relInertiaDegree D.deg K L = x := by
@@ -214,17 +192,6 @@ theorem mem_map_relDeg_iff {K L : OpenSubgroup G} (hLK : L ≤ K) {x : Multiplic
     refine ⟨⟨σ, hLK hσ⟩, hσ, ?_⟩
     rw [relDeg_eq_iff, ← pow_mul, ← hf]
     exact hσy
-
-theorem inertiaDegree_relDeg {K L : OpenSubgroup G} (hLK : L ≤ K) :
-    inertiaDegree (D.relDeg K) ((L : Subgroup G).subgroupOf K) = relInertiaDegree D.deg K L := by
-  have hf := inertiaDegree_eq_mul D.surjective_deg (K := (K : Subgroup G)) (L := (L : Subgroup G)) hLK
-  have hne : relInertiaDegree D.deg K L ≠ 0 := fun h => D.inertiaDegree_ne_zero L (by rw [hf, h, zero_mul])
-  have h : ((L : Subgroup G).subgroupOf K).map (D.relDeg K) =
-      (powMonoidHom (relInertiaDegree D.deg K L) : Multiplicative ℤ̂ →* Multiplicative ℤ̂).range := by
-    ext x
-    rw [D.mem_map_relDeg_iff hLK]
-    rfl
-  rw [inertiaDegree, h, index_range_powMonoidHom hne]
 
 theorem relInertiaDegree_ne_zero {K L : OpenSubgroup G} (hLK : L ≤ K) :
     relInertiaDegree D.deg K L ≠ 0 := fun h =>
@@ -281,20 +248,6 @@ theorem valuation_norm {K L : OpenSubgroup G} (hLK : L ≤ K) (a : fixedModule A
     D.valuation K (norm A (K : Subgroup G) (L : Subgroup G) a) = D.valuation L a ^ relInertiaDegree D.deg K L := by
   rw [valuation_eq_iff, norm_norm (M := (L : Subgroup G)) (L := (K : Subgroup G)) hLK le_top, ← valuation_pow,
     ← pow_mul, inertiaDegree_eq_mul D.surjective_deg (K := (K : Subgroup G)) (L := (L : Subgroup G)) hLK]
-
-theorem range_valuation_comp_norm {K L : OpenSubgroup G} (hLK : L ≤ K) :
-    ((D.valuation K).comp (norm A (K : Subgroup G) (L : Subgroup G))).range =
-      (D.valuation K).range.map (powMonoidHom (relInertiaDegree D.deg K L)) := by
-  ext z
-  constructor
-  · rintro ⟨a, rfl⟩
-    refine ⟨D.valuation L a, ?_, (D.valuation_norm hLK a).symm⟩
-    rw [range_valuation, ← D.range_valuation L]
-    exact ⟨a, rfl⟩
-  · rintro ⟨y, hy, rfl⟩
-    rw [range_valuation, ← D.range_valuation L] at hy
-    obtain ⟨a, rfl⟩ := hy
-    exact ⟨a, D.valuation_norm hLK a⟩
 
 theorem valuation_of_mem {K L : OpenSubgroup G} (hLK : L ≤ K) {a : A} (ha : a ∈ fixedModule A (K : Subgroup G)) :
     D.valuation L ⟨a, fixedModule_anti hLK ha⟩ =

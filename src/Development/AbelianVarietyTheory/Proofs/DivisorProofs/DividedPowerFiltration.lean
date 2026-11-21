@@ -82,24 +82,6 @@ theorem _root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil {a : B} (ha : a ∈ J) (n
     δ.dpow n a ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ n :=
   Ideal.subset_span ⟨[(n, a)], by simpa using ha, by simp, by simp⟩
 
-theorem exists_widePullback_of_iteratedLine (l : List (ℕ × B)) (hl : ∀ p ∈ l, p.2 ∈ J) (h1 : 1 ≤ (l.map Prod.fst).sum) :
-    (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ J ∧
-      ∀ n, δ.dpow n (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ dpFil δ (n * (l.map Prod.fst).sum) := by
-  induction l with
-  | nil => simp at h1
-  | cons p l ih =>
-    have hp : p.2 ∈ J := hl p (by simp)
-    have hl' : ∀ q ∈ l, q.2 ∈ J := fun q hq ↦ hl q (by simp [hq])
-    simp only [List.map_cons, List.sum_cons, List.prod_cons] at h1 ⊢
-    by_cases h0 : p.1 = 0
-    · rw [h0, δ.dpow_zero hp, one_mul, zero_add]
-      exact ih hl' (by omega)
-    · have hm := δ.dpow_mem h0 hp
-      refine ⟨J.mul_mem_right _ hm, fun n ↦ ?_⟩
-      rw [δ.dpow_mul_right hm, δ.dpow_comp h0 hp, mul_add]
-      exact mul_mem_dpFil δ (Ideal.mul_mem_left _ _ (dpow_mem_dpFil δ hp _))
-        (pow_mem_dpFil δ (Ideal.subset_span ⟨l, hl', le_rfl, rfl⟩) n)
-
 set_option autoImplicit false in
 open DividedPowers in
 variable {B : Type} [CommRing B] {J : Ideal B} in
@@ -196,12 +178,6 @@ theorem _root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil_mul {m : ℕ} (hm : 1 ≤
     exact Ideal.mul_mem_left _ _ (ihx n)
 
 variable {δ}
-
-theorem exists_dpFil_eq_bot (h : IsNilDP δ) : ∃ N, dpFil δ N = ⊥ := by
-  obtain ⟨N, h⟩ := h
-  refine ⟨N, Ideal.span_eq_bot.2 ?_⟩
-  rintro _ ⟨l, h1, h2, rfl⟩
-  exact h l h1 h2
 
 set_option autoImplicit false in
 open DividedPowers in

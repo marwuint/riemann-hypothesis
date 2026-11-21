@@ -93,6 +93,4 @@ theorem wick_of (hI : IntegP) : Wick := by
     refine (hint (M * pderiv (a, j, false) (phiP ε c t b))).congr (Filter.Eventually.of_forall fun x => ?_)
     simp only [evX, map_mul]; ring
 
-theorem wick (hI : IntegP) : Wick := wick_of hI
-
 end PositivityTheory.Rg.Sw.WR.G

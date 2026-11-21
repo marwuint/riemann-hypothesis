@@ -39,16 +39,6 @@ def decVal (g g' h h' : X.B.I.Ginf) (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.
     ((X.piU u g).comp ((X.piU u h).comp ((Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq (Formalism.L2.SG.PairVal.ptOf s.toTerm)).comp
       ((X.piU u' h'⁻¹).comp (X.piU u' g'⁻¹)))))
 
-def CommonDC : Prop :=
-  ∀ (R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR) (ρ : ℕ),
-    ∃ (U : X.Vpi u ≃ₗᵢ[ℂ] X.Vpi u) (U' : X.Vpi u' ≃ₗᵢ[ℂ] X.Vpi u') (ζ : ℂ), ‖ζ‖ = 1 ∧
-      ∀ s : LiftT X Y u u' κ R ρ, s.1.relevant →
-        ∀ g ∈ X.SinfU u, ∀ g' ∈ X.SinfU u',
-          s.1.pt.1 = g * Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) * g'⁻¹ →
-          ∀ h h', Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0'
-              (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)) h h' →
-            decVal X Y u u' vR i0 i0' νq g g' h h' s.1 = ζ • frameVal X Y u u' vR i0 i0' νq U U' s.1
-
 theorem classFrameOO3_frameVal_trans (g g' h h' : X.B.I.Ginf) (hg : g ∈ X.SinfU u) (hg' : g' ∈ X.SinfU u')
     (hh : h ∈ X.SinfU u) (hh' : h' ∈ X.SinfU u')
     (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
@@ -179,38 +169,5 @@ theorem ptValueC_of (h1 : LiftAtSomeC X Y u u' κ)
   unfold decVal
   ext x
   simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, map_smul, hk2, c2, c3, hk1, c1]
-
-theorem commonFrameC_of_D (h1 : LiftAtSomeC X Y u u' κ)
-    (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
-    (h3 : DecompPhaseC X Y u u' κ) (h4 : DFrameAtS X u u' i0 i0' 1) (h4' : LiftGPosC X Y u u' κ)
-    (h5 : FormTranspC X Y u u' vR νq κ) (hD : CommonDC X Y u u' vR i0 i0' νq κ)
-    (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u u') :
-    CommonFrameC X Y u u' vR i0 i0' νq κ := by
-  intro R ρ
-  obtain ⟨U, U', ζ, hζ, hc⟩ := hD R ρ
-  refine ⟨U, U', ζ, hζ, fun s A B hAB => ?_⟩
-  rw [← hAB]
-  by_cases hrel : s.1.relevant
-  · obtain ⟨g, hg, g', hg', hdec, h, h', hDF, hval⟩ :=
-      chiOO_decomp X Y u u' vR i0 i0' νq κ h1 h2 h3 h4 h4' h5 R ρ s hrel
-    rw [hval]
-    exact hc s hrel g hg g' hg' hdec h h' hDF
-  · obtain ⟨h0, hc0⟩ := irrelZeroC_of X Y u u' vR i0 i0' νq κ hV hAt R ρ s hrel
-    rw [h0]
-    unfold frameVal
-    rcases hc0 with hc0 | hc0
-    · rw [hc0, zero_smul, smul_zero]
-    · rw [hc0]
-      simp
-
-theorem commonFrameC_of_move (h1 : LiftAtSomeC X Y u u' κ)
-    (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
-    (h3 : DecompPhaseC X Y u u' κ) (h4 : DFrameAtS X u u' i0 i0' 1) (h4' : LiftGPosC X Y u u' κ)
-    (h5 : FormTranspC X Y u u' vR νq κ) (hM : DFrameMoveC X u u' i0 i0') (hF : OOtNuC X Y u u' νq κ)
-    (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
-    (hS : ScalarAgreeC X Y u u' κ) (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u u') :
-    CommonFrameC X Y u u' vR i0 i0' νq κ :=
-  commonFrameC_of_scalar X Y u u' vR i0 i0' νq κ (ptValueC_of X Y u u' vR i0 i0' νq κ h1 h2 h3 h4 h4' h5 hM) hF hNu hVI
-    hS hV hAt
 
 end Formalism.L2.SG.Pf.RowForm

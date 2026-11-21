@@ -3,31 +3,35 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneAddInvPowMul
 import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.UnitTestFunctions.TestFun
 import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.MirabolicGenerators.MirGen
 import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.SchwartzBruhatMajorants.SgOneHd
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdentityTubeHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TubeChainHoldsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdentityTubeHolds
+import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TubeChainHolds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionLawHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightLipschitzHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightLipschitzHolds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StagedEstimateHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WallLawOfSectionLawStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WallLawOfSectionLaw
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrossingOfWallsAndHeightsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GalleryOfTubesAndCrossingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TransferOfSectionAndWallLawsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GalleryOfTubesAndCrossing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TransferOfSectionAndWallLaws
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistOfSectionLawStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinScalingLawStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneralLinearTopologicalGroupStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneralLinearTopologicalGroup
+import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.ConvGrOf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDeterminantLawStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExtensionLawStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicLawOfBlockDetStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviDecompOfBlockDetStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviQuotientOfBlockDetStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceGroupOfBlockDetStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviQuotientOfBlockDet
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceGroupOfBlockDet
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentConvergenceOfParabolicStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelInductionFromGalleryStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SphericalTestFunctionExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardSectionGoodStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardSectionGood
+import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.IsEpCont
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGlobalDictionaryStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanLocalGlobalDictionaryStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantMultiplierGoodStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantMultiplierGood
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantMultiplierMirabolicStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinMultiplicativityStatement
 import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.DictInf
@@ -39,35 +43,35 @@ namespace PositivityTheory.RgEis.Hd
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
-theorem idTube : IdTube := GlobalTheory.T.identity_tube_holds
-theorem tubeChain : TubeChain := GlobalTheory.T.tube_chain_holds
+theorem idTube : IdTube := _root_.GlobalTheory.CompanionTheory.Eis.idTube
+theorem tubeChain : TubeChain := _root_.GlobalTheory.CompanionTheory.TubeFourier.tubeChain
 theorem secLaw : SecLaw := GlobalTheory.T.section_law_holds
-theorem htLip : HtLip := GlobalTheory.T.height_lipschitz_holds
+theorem htLip : HtLip := _root_.GlobalTheory.CompanionTheory.RgEis.htLip
 theorem stage : PiLocalization₂ := GlobalTheory.T.staged_estimate_holds
-theorem wallLaw_of : SecLaw → WallLaw := GlobalTheory.T.wall_law_of_section_law
+theorem wallLaw_of : SecLaw → WallLaw := _root_.GlobalTheory.CompanionTheory.RgEis.wallLaw_of_secLaw
 theorem cross_of : SecLaw → HtLip → PiLocalization₂ → WallLaw → Cross := GlobalTheory.T.crossing_of_walls_and_heights
-theorem gallery_of : SecLaw → IdTube → TubeChain → Cross → Gallery := GlobalTheory.T.gallery_of_tubes_and_crossing
-theorem transfer_of : SecLaw → WallLaw → Transfer := GlobalTheory.T.transfer_of_section_and_wall_laws
+theorem gallery_of : SecLaw → IdTube → TubeChain → Cross → Gallery := _root_.GlobalTheory.CompanionTheory.RgEisGal.gallery
+theorem transfer_of : SecLaw → WallLaw → Transfer := _root_.GlobalTheory.CompanionTheory.RgTransfer.transfer
 theorem twist_of : SecLaw → Twist := GlobalTheory.T.twist_of_section_law
 theorem scale : Scale := GlobalTheory.T.eisenstein_scaling_law
-theorem grpTop : GrpTop := GlobalTheory.T.general_linear_topological_group
+theorem grpTop : GrpTop := _root_.GlobalTheory.CompanionTheory.RgEisTop.grpTop
 theorem bdetLaw : BdetLaw := GlobalTheory.T.block_determinant_law
 theorem extLaw : ExtLaw := GlobalTheory.T.extension_law
 theorem parLaw_of : BdetLaw → ExtLaw → GrpTop → ParLaw := GlobalTheory.T.parabolic_law_of_block_det
 theorem leviS_of : BdetLaw → ExtLaw → GrpTop → LeviS := GlobalTheory.T.levi_decomp_of_block_det
-theorem leviQ_of : BdetLaw → ExtLaw → GrpTop → LeviQ := GlobalTheory.T.levi_quotient_of_block_det
-theorem convGrOf_of : BdetLaw → ExtLaw → ConvGrOf := GlobalTheory.T.convergence_group_of_block_det
+theorem leviQ_of : BdetLaw → ExtLaw → GrpTop → LeviQ := _root_.GlobalTheory.CompanionTheory.RgEisLeviQUnit.leviQ
+theorem convGrOf_of : BdetLaw → ExtLaw → ConvGrOf := _root_.GlobalTheory.CompanionTheory.Plucker.convGrOf
 theorem convU_of : ParLaw → ConvU := GlobalTheory.T.unipotent_convergence_of_parabolic
 theorem sgStep_of : Gallery → Transfer → Twist → GrpTop → ParLaw → LeviS → LeviQ → ConvGrOf → ConvU → SgStep := GlobalTheory.T.siegel_induction_from_gallery
 theorem epConv : EpConv := GlobalTheory.CompanionTheory.EpConvB.epConv
 theorem epMain_of : EpConv → EpMain := GlobalTheory.CompanionTheory.EpsteinMain.Hd.epMain_of_epConv
 theorem testFun : TestFun := PositivityTheory.RgEis.TF.testFun
 theorem testSph : TestSph := GlobalTheory.T.spherical_test_function_exists
-theorem stdGood : StdGood := GlobalTheory.T.standard_section_good
+theorem stdGood : StdGood := _root_.GlobalTheory.CompanionTheory.StdGoodAd.stdGood
 theorem mirGen_of : SecLaw → StdGood → BdetLaw → EpConv → EpMain → TestFun → TestSph → MirGen := PositivityTheory.RgEis.MG.mirGen
 theorem dict : Dict := GlobalTheory.T.local_global_dictionary
 theorem dictInf : DictInf := GlobalTheory.T.archimedean_local_global_dictionary
-theorem cmGood_of : StdGood → Dict → DictInf → CMGood := GlobalTheory.T.constant_multiplier_good
+theorem cmGood_of : StdGood → Dict → DictInf → CMGood := _root_.GlobalTheory.CompanionTheory.RgEisCM.cmGood
 theorem cmMir_of : Dict → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw → MirGen → CMMir := GlobalTheory.T.constant_multiplier_mirabolic
 theorem sgOne_of : SecLaw → WallLaw → Scale → StdGood → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw →
     MirGen → SgOne := PositivityTheory.RgEis.So.sgOne_hd
@@ -103,7 +107,7 @@ theorem eisBL : GlobalTheory.ThK.Dbl.EisBL :=
   have hP := parLaw_of bdetLaw extLaw grpTop
   have hG := cmGood_of stdGood dict dictInf
   have hM := mirGen_of secLaw stdGood bdetLaw epConv (epMain_of epConv) testFun testSph
-  SiegelEisensteinSeries.BRoad.eisBL_of GlobalTheory.T.eisenstein_half_holds
+  SiegelEisensteinSeries.BRoad.eisBL_of _root_.GlobalTheory.CompanionTheory.SiegelEisHalf.eisHalf
     (siegelMult_of secLaw hW dict dictInf hG grpTop bdetLaw extLaw hP
       (sgAll_of hG (cmMir_of dict hG grpTop bdetLaw extLaw hP hM)
         (sgOne_of secLaw hW scale stdGood dict dictInf hG grpTop bdetLaw extLaw hP hM)

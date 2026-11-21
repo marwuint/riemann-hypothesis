@@ -140,39 +140,4 @@ theorem CommonFactorInduction.of_open (hrees : ReesAlgebraDim.Statement.{u})
     (BlowUpReduction.of_open hrees hst hvert hdiv hhor hcomp) LeftSideAdditiveInDegree.full RightSideMultiplicativeInForm.full
     DivCycleMul.full
 
-theorem VerticalDivisorsCommute.of_open (hl : LeftTermSupport.Statement.{u})
-    (hr : RightTermSupport.Statement.{u}) (hring : LocalCoeffRing.Statement.{u})
-    (hrees : ReesAlgebraDim.Statement.{u}) (hst : BlowUpStrictTransform.Statement.{u})
-    (hdrop : BlowUpExcessDecreases.Statement.{u}) (hvert : BlowUpVerticalPush.Statement.{u})
-    (hdiv : BlowUpDivisorPush.Statement.{u}) (hhor : BlowUpHorizontalCorresp.Statement.{u})
-    (hcomp : HorizontalComponentModel.Statement.{u}) : VerticalDivisorsCommute.Statement.{u} :=
-  VerticalDivisorsCommute.of_steps (NoCommonComponentCase.of_open hl hr hring)
-    (CommonFactorInduction.of_open hrees hst hdrop hvert hdiv hhor hcomp)
-
-theorem HsymmPairFlagIndependence.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
-    (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
-    HsymmPairFlagIndependence.Statement :=
-  HsymmPairFlagIndependence.proof (PairNumberExpansionIndependence.proof hC2) hclos hseg
-
-theorem FlagIndependence.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
-    (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
-    FlagIndependence.Statement :=
-  FlagIndependence.proof (PairNumberExpansionIndependence.proof hC2)
-    (HsymmPairFlagIndependence.of_open hC2 hclos hseg) SymmetricSpanHsymm.full
-
-theorem PairCocycle.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
-    (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
-    PairCocycle.Statement :=
-  PairCocycle.proof (FlagIndependence.of_open hC2 hclos hseg) hC2 IntNumAddFirst.full
-
-theorem SubQuotient.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
-    (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
-    SubQuotient.Statement :=
-  SubQuotient.proof (FlagIndependence.of_open hC2 hclos hseg)
-
-theorem ScalarQuotient.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
-    (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
-    ScalarQuotient.Statement :=
-  ScalarQuotient.proof (FlagIndependence.of_open hC2 hclos hseg)
-
 end GroundTheory.Heights₂.Heights.NumbersDVR

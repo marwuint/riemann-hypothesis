@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDatNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleTensorLiftApplyEqTwoPointValueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnPointsIsCocycleAndEvalEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleTensorLiftApplyEqTwoPointValue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnPointsIsCocycleAndEvalEq
 
 set_option autoImplicit false
 
@@ -21,7 +21,7 @@ theorem Dat.fv_add_h_res {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {p
     (φ : G.A n →ₐ[R] D) :
     fv d.f (G.A (n + 1)) D (φ.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n)) (t.y (n + 1)) +
       (φ.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n)) (d.h (n + 1)) = fv d.f (G.A n) D φ (t.y n) + φ (d.h n) := by
-  have hc := (_root_.GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).1 (G.A (n + 1)) (G.A n) D
+  have hc := (_root_.GlobalTheory.PtExt.fv_isCoc_and_ev_eq R A d.f).1 (G.A (n + 1)) (G.A n) D
     (G.res n : G.A (n + 1) →ₐ[R] G.A n) φ (t.y (n + 1)) (sm_whole _)
   rw [hc, t.res n, d.res n, AlgHom.comp_apply, map_sub]
   simp only [BialgHom.coe_toAlgHom]
@@ -52,8 +52,8 @@ theorem Dat.pullTwo_res_coc (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A]
       toConv (Rt.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n))).ofConv =
       (toConv L * toConv Rt).ofConv.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n) :=
     (AlgHom.convMul_comp_bialgHom_distrib (toConv L) (toConv Rt) (G.res n)).symm
-  rw [hres, _root_.GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue, hmul, d.fv_add_h_res n, d.fv_add_h_res n, d.fv_add_h_res n]
-  conv_rhs => rw [← hid (d.coc n), _root_.GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue]
+  rw [hres, _root_.GlobalTheory.PtExt.Dat.lift_coc, hmul, d.fv_add_h_res n, d.fv_add_h_res n, d.fv_add_h_res n]
+  conv_rhs => rw [← hid (d.coc n), _root_.GlobalTheory.PtExt.Dat.lift_coc]
   simp only [← spOver_comp, Category.assoc, t.res]
 
 end GlobalTheory.PtExt

@@ -66,10 +66,6 @@ section Embeddings
 
 variable {M M'} {hMM'}
 
-omit [FiniteDimensional ℚ_[p] K] [FiniteDimensional K M'] in
-include hτM in
-theorem pow_mem_fixingSubgroup_base (j : ℕ) : τ ^ j ∈ M.fixingSubgroup := pow_mem hτM j
-
 variable (hMM') in
 
 def stepEmb (hτM : τ ∈ M.fixingSubgroup) (j : ℕ) :

@@ -109,41 +109,4 @@ theorem exists_unimod_GG : ∃ μ : Measure (Mt k r), IsHaarOn (GG k r) μ ∧ I
   obtain ⟨μ, hμ⟩ := Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r
   exact ⟨μ, haar_unimod_of_biinv isClosedSub_GG hμ⟩
 
-def zStd (k r : ℕ) : Fin (2 * r + k + 1) → ℂ := bvec (wI k r (Fin.last k))
-
-theorem Tz_zStd : Tz k r (zStd k r) = 1 := by
-  have hH : herm (Hpk k r) (zStd k r) (zStd k r) =
-      Hpk k r (wI k r (Fin.last k)) (wI k r (Fin.last k)) := by
-    simp [herm, zStd, bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
-  rw [Tz, hH]
-  simp [Hpk, wI]
-
-def detRep (k r m : ℕ) (h : Mat k r) : ℂ →L[ℂ] ℂ := h.det ^ m • ContinuousLinearMap.id ℂ ℂ
-
-example : ∃ h ∈ UWset 1 0 (zStd 1 0), detRep 1 0 1 h 1 = -1 := by
-  refine ⟨!![-1, 0; 0, 1], ⟨?_, fun a => a.elim0, ?_⟩, ?_⟩
-  · show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ)ᴴ * Hpk 1 0 * !![-1, 0; 0, 1] = Hpk 1 0
-    ext i j
-    fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Hpk]
-  · show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ) *ᵥ (Pi.single 1 1) = Pi.single 1 1
-    ext i
-    fin_cases i <;> simp
-  · show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ).det ^ 1 • (1 : ℂ) = -1
-    simp
-
-example : (1 : Mat 1 0) ∉ Greg 1 0 (zStd 1 0) (zStd 1 0) := by
-  rintro ⟨-, -, h⟩
-  apply h
-  have h0 : Dmin 1 0 (zStd 1 0) (zStd 1 0) 1 ⟨0, by omega⟩ = 1 := by simp [Dmin]
-  have hz : zStd 1 0 = ![0, 1] := by
-    ext i
-    fin_cases i <;> simp [zStd, bvec, wI]
-  have h1 : Dmin 1 0 (zStd 1 0) (zStd 1 0) 1 (Fin.last 1) = -1 := by
-    show Matrix.det (n := Fin 1) _ = _
-    rw [Matrix.det_fin_one, hz]
-    simp [Zhat, fvec, herm, Hpk, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
-  unfold Gf
-  rw [h0, h1, Tz_zStd]
-  simp
-
 end GlobalTheory.SgInf

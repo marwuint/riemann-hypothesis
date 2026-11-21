@@ -143,16 +143,6 @@ theorem exists_integrable_zetaIntegral [π.IsIrreducible] (hπ : IsAdmissible π
   obtain ⟨s₀, _, _, _, h⟩ := exists_zeta_rat hπ μ
   exact ⟨s₀, fun Φ hΦ v ℓ hℓ => (h Φ hΦ v ℓ hℓ).1⟩
 
-theorem exists_ratFunc_zetaIntegral [π.IsIrreducible] (hπ : IsAdmissible π)
-    (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
-    ∃ s₀ : ℝ, ∀ Φ : Matrix (Fin n) (Fin n) F → ℂ, IsSchwartzBruhat Φ → ∀ (v : V) (ℓ : Module.Dual ℂ V),
-      ℓ ∈ smoothVectors (Representation.dual π) → ∃ R : RatFunc ℂ, ∀ s : ℂ, s₀ < s.re →
-        zetaIntegral μ Φ (matrixCoeff π v ℓ) s = R.eval (RingHom.id ℂ) (qs F s) := by
-  obtain ⟨s₀, _, _, _, h⟩ := exists_zeta_rat hπ μ
-  refine ⟨s₀, fun Φ hΦ v ℓ hℓ => ?_⟩
-  obtain ⟨-, N, P, hP⟩ := h Φ hΦ v ℓ hℓ
-  exact ⟨_, hP⟩
-
 theorem zetaIntegral_translate (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] (a : GL (Fin n) F)
     (Φ : Matrix (Fin n) (Fin n) F → ℂ) (v : V) (ℓ : Module.Dual ℂ V) (s : ℂ) :
     zetaIntegral μ (fun Y => Φ (((a⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * Y))

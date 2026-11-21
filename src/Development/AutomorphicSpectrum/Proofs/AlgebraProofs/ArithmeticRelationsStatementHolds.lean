@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.RelationsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UniformizerModelPermModuleLatticeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UniformizerModelPermModuleLattice
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsLatticeFamily
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DescentRelationsFromModelsStatement
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.TopRel
@@ -39,7 +41,7 @@ theorem relations : GlobalTheory.CompanionTheory.Ar.Num.RelationsStatement := by
       refine ⟨fun v hv => ⟨w, hw0, ?_⟩, fun v hv => ⟨1, one_ne_zero, ?_⟩⟩
       · exact hinc.2.2.2 hv
       · simpa using hinc.2.2.1 hv
-  exact GlobalTheory.T.uniformizer_model_perm_module_lattice O Ω K ι x ϖ hϖ d hmod p hp0 φ (VL := fun τ => Fin (r τ) → Ω)
+  exact _root_.GlobalTheory.CompanionTheory.CkRelations.main O Ω K ι x ϖ hϖ d hmod p hp0 φ (VL := fun τ => Fin (r τ) → Ω)
     (VO := fun τ => Fin (s τ) → Ω) Lie W Om OmHT hsame hck lie om hflag
 
 end GlobalTheory.CompanionTheory.Ar.Num.TopRel

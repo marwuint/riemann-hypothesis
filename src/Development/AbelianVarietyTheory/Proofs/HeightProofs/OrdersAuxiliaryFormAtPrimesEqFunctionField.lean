@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CountQAtStGener
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsRatioFormsAtPoints
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.RealisationValuesEqValuedPointOrdersStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsEquivCoverPointsPlacesBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsGaussRingMapToCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ComponentRingAwayGenericSectionQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsGaussRingMapToCompletion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.ValuationResidueLemmas
+import Formalism.LocalToGlobal.ProjectiveLattices.CurveLoc
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ComponentRingAwayGenericSectionQuotient
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped TensorProduct
 
@@ -102,7 +104,7 @@ theorem exists_equiv_places {D : D7} {B : WeightFamilies.Prov D} {P : ModuliInte
           d.Wres (e ζ).1 (e ζ).2.1 (gF (e ζ).1 F) + m • κ := by
   have hD' : d.D + 1 = WeightFamilies.dimY D j + 1 := by rw [hD]
   obtain ⟨f, φ, hflat, hloc, hmax, hres, hφ, hφK, hφT⟩ :=
-    GlobalTheory.T.exists_gaussRing_map_to_completion D B P j X la N d.D d.N (Equiv.prodCongr (finCongr hD') eN)
+    _root_.GlobalTheory.GaussCompletion.exists_gaussRing_map D B P j X la N d.D d.N (Equiv.prodCongr (finCongr hD') eN)
   letI : ∀ c, Algebra (KTf B.KO d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.KTtoS hs c).toAlgebra
   letI : ∀ c, Algebra (ReciprocityTheory.ChartRestriction.G.T0.Op d.D d.N la) (OmS (Ω c) d.D d.N) := fun c => d.algOp hs la c
   letI := algOpKT (K := B.KO) d.D d.N la
@@ -130,7 +132,7 @@ theorem exists_equiv_places {D : D7} {B : WeightFamilies.Prov D} {P : ModuliInte
     rw [IsLocalRing.ResidueField.map_residue, eq_comm, ← sub_eq_zero, ← map_sub,
       IsLocalRing.residue_eq_zero_iff]
     exact ha
-  choose χ hχs hχk hχψ using fun c => GlobalTheory.T.componentRing_away_genericSection_quotient D B P j X la N wL w (Ω c) (gF c) d.D d.N hD' eN (d.jc c) (d.x c)
+  choose χ hχs hχk hχψ using fun c => _root_.GlobalTheory.componentRing_away_quotient D B P j X la N wL w (Ω c) (gF c) d.D d.N hD' eN (d.jc c) (d.x c)
     (fun p => IsFractionRing.lift_algebraMap (g := (d.sH c).toRingHom) (hs c) p) hφK hφT (h0 c) (hx c)
   obtain ⟨Ψ, hΨ, hΨs, hΨi, hΨsep⟩ := exists_quot_maps (Jid X la w) (fun c => phiZ X la N (Ω c) (gF c) w)
     (CurveInj.fraction_zero_injective X la N Ω gF w hinj)

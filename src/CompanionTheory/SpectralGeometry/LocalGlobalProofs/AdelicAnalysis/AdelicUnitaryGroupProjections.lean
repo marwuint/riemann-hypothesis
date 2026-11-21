@@ -1,6 +1,6 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -207,7 +207,7 @@ theorem components : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
         ((HA.mat (Fv F v) σ J (hMap σ J (evA v) h) : GL _ _) :
           Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) i j ∈ Lv b v := by
       intro h
-      obtain ⟨-, -, -, -, -, ev, -, -, -⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hCM d b M M
+      obtain ⟨-, -, -, -, -, ev, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b M M
       filter_upwards [ev (projFin (fun a i =>
         ((HA.mat (AF F) σ J h : GL _ _) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) a i))] with v hv i j
       rw [projV_projFin] at hv
@@ -223,7 +223,7 @@ theorem components : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     classical
     haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
     obtain ⟨-, -, -, -, -, -, inj, glue, -⟩ :=
-      GlobalTheory.T.adelic_tuple_projections F E σ hCM _ (Module.finBasis F E) M M
+      _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM _ (Module.finBasis F E) M M
     have injM : ∀ A B : Matrix (Fin M) (Fin M) (AF F ⊗[F] E),
         A.map (tm E (fstA F)) = B.map (tm E (fstA F)) →
         (∀ v : HeightOneSpectrum (𝓞 F), A.map (tm E (evA v)) = B.map (tm E (evA v))) → A = B := by

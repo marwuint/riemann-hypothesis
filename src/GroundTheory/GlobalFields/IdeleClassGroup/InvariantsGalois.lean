@@ -31,15 +31,6 @@ theorem coe_norm_of_eq {K L : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)} [(L.subgroupOf
   subst hK hL
   exact congrArg Subtype.val (norm_fixedEquiv h c)
 
-theorem coe_norm_openSubgroup {U U' : OpenSubgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)} (hUU' : U' ≤ U)
-    (c : IdeleClassGroup (ofOpenSubgroup U').1)
-    (hc : of (ofOpenSubgroup U') c ∈ fixedModule IdeleClassLimit (U' : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))) :
-    (norm IdeleClassLimit (U : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) (U' : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))
-      ⟨of (ofOpenSubgroup U') c, hc⟩ : IdeleClassLimit) =
-      of (ofOpenSubgroup U) (FiniteSubfield.ideleClassNorm (ofOpenSubgroup_le hUU') c) :=
-  coe_norm_of_eq (ofOpenSubgroup_le hUU') (fixingSubgroup_ofOpenSubgroup U).symm
-    (fixingSubgroup_ofOpenSubgroup U').symm c hc
-
 end IdeleClassLimit
 
 namespace FiniteSubfield

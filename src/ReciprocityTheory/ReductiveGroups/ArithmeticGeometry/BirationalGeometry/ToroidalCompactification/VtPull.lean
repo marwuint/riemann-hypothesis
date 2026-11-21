@@ -70,12 +70,6 @@ section Nat
 
 variable {T T' : Over S} (σ : T' ⟶ T)
 
-theorem whisk_fst : (σ ▷ A) ≫ fst T A = fst T' A ≫ σ := by
-  first
-    | exact whiskerRight_fst σ A
-    | (simp; done)
-    | exact CartesianMonoidalCategory.whiskerRight_fst σ A
-
 theorem whisk_snd : (σ ▷ A) ≫ snd T A = snd T' A := by
   first
     | exact whiskerRight_snd σ A
@@ -114,26 +108,6 @@ def PullRel (L : LB A.left) (a : ℤ) {T T' : Over S} (h : T' ⊗ A ⟶ T ⊗ A)
     (s' : LB.Sec (LPow A L a T')) : Prop :=
   ∀ {Z : Scheme.{0}} (r : Z ⟶ (T' ⊗ A).left) (z : Z) (j : Fin 1 → L.ι), r z ∈ (LPow A L a T').U j →
     gs r z ((LPow A L a T').U j) (s'.f j) = gs (r ≫ h.left) z ((LPow A L a T).U j) (s.f j)
-
-theorem pullRel_of {L : LB A.left} {a : ℤ} {T T' : Over S} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h ≫ snd T A = snd T' A}
-    {s : LB.Sec (LPow A L a T)} {s' : LB.Sec (LPow A L a T')} (H : IsPullSec A L a h hh s s') : PullRel L a h s s' := by
-  intro Z r z j hz
-  rw [H j]
-  have hz1 : r z ∈ h.left ⁻¹ᵁ (LPow A L a T).U j := chart_le_res A L h hh a j hz
-  have hz2 : (r ≫ h.left) z ∈ (LPow A L a T).U j := by
-    first
-      | exact hz1
-      | simpa using hz1
-  unfold gs
-  rw [dif_pos hz, dif_pos hz2]
-  have k1 := congrArg (fun g => g.hom (((T' ⊗ A).left.presheaf.map
-    (homOfLE (chart_le_res A L h hh a j)).op).hom ((h.left.app _).hom (s.f j))))
-    (Scheme.Hom.germ_stalkMap r _ z hz)
-  have k2 := congrArg (fun g => g.hom ((h.left.app _).hom (s.f j))) (Scheme.Hom.germ_stalkMap r _ z hz1)
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at k1 k2
-  rw [← k1]
-  erw [TopCat.Presheaf.germ_res_apply]
-  exact k2
 
 theorem exists_pullRel (L : LB A.left) (a : ℤ) {T T' : Over S} (h : T' ⊗ A ⟶ T ⊗ A) (hh : h ≫ snd T A = snd T' A)
     (s : LB.Sec (LPow A L a T)) : ∃ s' : LB.Sec (LPow A L a T'), PullRel L a h s s' :=
@@ -202,15 +176,6 @@ theorem eθ {T T' : Over S} (σ : T' ⟶ T) (x : T ⟶ A) :
   · simp [← Over.comp_left]
   · simp [← Over.comp_left, translPt_whisk]
 
-theorem exists_phi_pull {T T' : Over S} (σ : T' ⟶ T) (θ : ThetaGrp A L k T) :
-    ∃ φ' : LB.Gen (thetaLB A L k (σ ≫ θ.pt)), φ'.IsGen ∧ ∀ {Z : Scheme.{0}} (r : Z ⟶ (T' ⊗ A).left) (z : Z)
-      (j : Fin 2 → L.ι), r z ∈ LB.wchart L ![(snd T' A).left, (translPt A (σ ≫ θ.pt)).left] j →
-        gm r z (LB.wchart L ![(snd T' A).left, (translPt A (σ ≫ θ.pt)).left] j) (φ'.s j) =
-          gm (r ≫ (σ ▷ A).left) z (LB.wchart L ![(snd T A).left, (translPt A θ.pt).left] j) (θ.φ.s j) := by
-  obtain ⟨φ', g, H⟩ := exists_gen_pull (L := L) ![(snd T A).left, (translPt A θ.pt).left] ![k, -k] θ.φ (σ ▷ A).left
-    ![(snd T' A).left, (translPt A (σ ≫ θ.pt)).left] (eθ σ θ.pt)
-  exact ⟨φ', g θ.isGen, H⟩
-
 theorem symLift_pull (hL : L.IsLB) {T T' : Over S} (σ : T' ⟶ T) {n : ℕ} {x : T ⟶ A} {θ : ThetaGrp A L k T}
     (hθ : SymLift A L k n x θ) (φ' : LB.Gen (thetaLB A L k (σ ≫ θ.pt))) (gφ' : φ'.IsGen)
     (hv : ∀ {Z : Scheme.{0}} (r : Z ⟶ (T' ⊗ A).left) (z : Z) {J : (Z ⟶ A.left) → L.ι}, Good L z J →
@@ -260,31 +225,5 @@ theorem symLift_pull (hL : L.IsLB) {T T' : Over S} (σ : T' ⟶ T) {n : ℕ} {x 
 end Theta
 
 variable [IsCommMonObj A]
-
-theorem vtOver_pull (L : RigLB A) (N : ℕ) {T T' : Over S} (σ : T' ⟶ T) {ok : (T ⟶ A) → Prop}
-    {ok' : (T' ⟶ A) → Prop} (hok : ∀ x, ok x → ok' (σ ≫ x)) {s : LB.Sec (LPow A L.L 1 T)}
-    {s' : LB.Sec (LPow A L.L 1 T')} {t : T ⟶ A} {F : LB.Sec (LPow A L.L ((N : ℤ) ^ 2) T)}
-    {F' : LB.Sec (LPow A L.L ((N : ℤ) ^ 2) T')}
-    (hs : IsPullSec A L.L 1 (σ ▷ A) (whiskerRight_snd σ A) s s')
-    (hF : IsPullSec A L.L ((N : ℤ) ^ 2) (σ ▷ A) (whiskerRight_snd σ A) F F') (h : VtOver L N ok s t F) :
-    VtOver L N ok' s' (σ ≫ t) F' := by
-  obtain ⟨t', α₀, α, s₁, U, ht, o, g₀, n₀, cα, tw, sl, ac⟩ := h
-  have e1 : (σ ▷ A).left ≫ (snd T A).left = (snd T' A).left := by rw [← Over.comp_left, whisk_snd]
-  have e2 : (σ ▷ A).left ≫ (snd T A ^ N).left = (snd T' A ^ N).left := by
-    rw [← Over.comp_left, MonObj.comp_pow, whisk_snd]
-  have eα : ∀ kk, (![(snd T' A).left, (snd T' A ^ N).left] : Fin 2 → _) kk =
-      (σ ▷ A).left ≫ (![(snd T A).left, (snd T A ^ N).left] : Fin 2 → _) kk := by
-    intro kk; fin_cases kk
-    · exact e1.symm
-    · exact e2.symm
-  obtain ⟨α', -, hα'⟩ := exists_gen_pull (L := L.L) _ _ α (σ ▷ A).left _ eα
-  obtain ⟨s₁', hs₁'⟩ := exists_pullRel L.L ((N : ℤ) ^ 2) (σ ▷ A) (whiskerRight_snd σ A) s₁
-  obtain ⟨φ', gφ', HU⟩ := exists_phi_pull σ U
-  refine ⟨σ ≫ t', α₀, α', s₁', ⟨σ ≫ U.pt, φ', gφ'⟩, by rw [← MonObj.comp_pow, ht], hok _ o, g₀, n₀, ?_, ?_, ?_, ?_⟩
-  · refine corr_of_val L.isLB fun y J hJ => ?_
-    rw [val_of_pull eα hα' _ y hJ, val_corr hJ cα, val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp, e1]
-  · exact twist_pull (σ ▷ A) (whiskerRight_snd σ A) (mul_whisk σ N) hα' (pullRel_of hs) hs₁' tw
-  · exact symLift_pull L.isLB σ sl φ' gφ' fun r z J hJ => val_of_pull (eθ σ U.pt) HU r z hJ
-  · exact twist_pull (σ ▷ A) (whiskerRight_snd σ A) (transl_whisk σ U.pt) HU hs₁' (pullRel_of hF) ac
 
 end ReciprocityTheory.ChartRestriction.G.Geo.Tor

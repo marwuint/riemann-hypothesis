@@ -1,10 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiscrMulMemOfIsIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRingEquivAdicCompletionLocalizationProdStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiscrMulMemOfIsIntegral
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRingEquivAdicCompletionLocalizationProd
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConductorProdFstStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormalLocalIsLocalisationOfFiniteOverPolynomialAStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRegularLocalRingAdicCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomainStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormalLocalIsLocalisationOfFiniteOverPolynomialA
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRegularLocalRingAdicCompletion
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain
 
 open IsLocalRing TensorProduct
 
@@ -87,13 +87,13 @@ theorem exists_finite_over_localization_atPrime_below (P B A : Type) [CommRing P
 
 theorem exists_conductor_adicCompletion_of_essFiniteType : ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsIntegrallyClosed A] [CharZero A] [Algebra.EssFiniteType ℤ A], ∃ x : A, x ≠ 0 ∧ ∀ c : FractionRing (AdicCompletion (maximalIdeal A) A), IsIntegral (AdicCompletion (maximalIdeal A) A) c → ∃ s : AdicCompletion (maximalIdeal A) A, algebraMap _ (FractionRing (AdicCompletion (maximalIdeal A) A)) s = algebraMap _ (FractionRing (AdicCompletion (maximalIdeal A) A)) (algebraMap A (AdicCompletion (maximalIdeal A) A) x) * c := by
   intro A _ _ _ _ _ _
-  obtain ⟨r, B, _, _, _, _, _, _, 𝔫, _, hinj, hloc⟩ := GlobalTheory.T.injective_and_isLocalization_of_finite_over_mvPolynomial A
+  obtain ⟨r, B, _, _, _, _, _, _, 𝔫, _, hinj, hloc⟩ := _root_.GlobalTheory.normal_local_is_localisation_of_finite_over_polynomial A
   obtain ⟨p, _, C, _, _, _, _, _, 𝔪, _, hinjC, hlocC, hcomap⟩ :=
     exists_finite_over_localization_atPrime_below (MvPolynomial (Fin r) ℤ) B A 𝔫 hinj
   have hTreg : IsRegularLocalRing (Localization.AtPrime p) := inferInstance
-  obtain ⟨_, _⟩ := GlobalTheory.T.regular_local_ring_normal_domain (Localization.AtPrime p)
-  have := GlobalTheory.T.isRegularLocalRing_adicCompletion' (Localization.AtPrime p)
-  obtain ⟨_, _⟩ := GlobalTheory.T.regular_local_ring_normal_domain
+  obtain ⟨_, _⟩ := _root_.GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (Localization.AtPrime p)
+  have := _root_.GlobalTheory.RegularCompletion.isRegularLocalRing_adicCompletion (Localization.AtPrime p)
+  obtain ⟨_, _⟩ := _root_.GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing
     (AdicCompletion (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p))
   have : CharZero (Localization.AtPrime p) :=
     charZero_of_injective_algebraMap (R := MvPolynomial (Fin r) ℤ)
@@ -103,9 +103,9 @@ theorem exists_conductor_adicCompletion_of_essFiniteType : ∀ (A : Type) [CommR
       (AdicCompletion (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p))) := by
     intro x y h
     exact AdicCompletion.of_injective (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p) h
-  obtain ⟨d, hd0, hd⟩ := GlobalTheory.T.exists_ne_zero_mul_integral_eq_tensor (Localization.AtPrime p)
+  obtain ⟨d, hd0, hd⟩ := _root_.GlobalTheory.DiscConductor.discr_mul_mem_of_isIntegral (Localization.AtPrime p)
     (AdicCompletion (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p)) C hTU hinjC
-  obtain ⟨S', _, e, he⟩ := GlobalTheory.T.exists_ringEquiv_adicCompletion_localization_prod (Localization.AtPrime p) C A 𝔪 hcomap
+  obtain ⟨S', _, e, he⟩ := _root_.GlobalTheory.CompletionFactor.exists_ringEquiv_completion_prod (Localization.AtPrime p) C A 𝔪 hcomap
   have key := GlobalTheory.T.exists_mul_fst_eq_of_integral_of_conductor (AdicCompletion (maximalIdeal A) A) S' _ e _ hd
   have hed : (e (algebraMap (Localization.AtPrime p) _ d)).1 =
       algebraMap A (AdicCompletion (maximalIdeal A) A) (algebraMap C A (algebraMap _ C d)) := by

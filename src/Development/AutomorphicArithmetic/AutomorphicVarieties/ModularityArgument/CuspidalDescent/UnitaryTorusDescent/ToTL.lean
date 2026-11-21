@@ -11,6 +11,4 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 theorem toTL (N : GlobalTheory.Mem.LiteralAutomorphy.LitN) (k : IsRec h rc) : IsRecT h rc := isRecT_of_isRec N.loc.dzt k
 
-theorem toTL' (_N : GlobalTheory.Mem.LiteralAutomorphy.LitN) (k : IsRecT h rc) : IsRecT h rc := k
-
 end UpperTheory.V.Z.Desc.P

@@ -153,17 +153,6 @@ theorem cupH_π (h : p + q = n) (z : cocycles A p) (w : cocycles B q) :
   rw [cupH, descH_π]
   exact cupHLeft_π h z w
 
-variable (A B p q) in
-
-def cupTensor :
-    groupCohomology A p ⊗[k] groupCohomology B q →ₗ[k] groupCohomology (A ⊗ B) (p + q) :=
-  TensorProduct.lift (cupH rfl)
-
-variable (A B p q) in
-
-def cup : groupCohomology A p ⊗ groupCohomology B q ⟶ groupCohomology (A ⊗ B) (p + q) :=
-  ModuleCat.ofHom (cupTensor A B p q)
-
 theorem map_π_apply {A' : Rep k G} (φ : A ⟶ A') (z : cocycles A n) :
     map (MonoidHom.id G) φ n (π A n z) = π A' n (cocyclesMap (MonoidHom.id G) φ n z) := by
   change (π A n ≫ map (MonoidHom.id G) φ n).hom z =
@@ -192,17 +181,6 @@ theorem map_cupH {A' B' : Rep k G} (φ : A ⟶ A') (ψ : B ⟶ B') (h : p + q = 
     exact tensorHom_cupCochain φ ψ h _ _ x
   rw [cupH_π, map_π_apply, map_π_apply, cupH_π, ← key]
   exact map_π_apply _ _
-
-theorem d_oneCochain :
-    (inhomogeneousCochains.d (𝟙_ (Rep k G)) 0).hom (oneCochain (k := k) (G := G)) = 0 := by
-  funext x
-  simp [inhomogeneousCochains.d_hom_apply, oneCochain]
-  rfl
-
-variable (k G) in
-
-def oneClass : groupCohomology (𝟙_ (Rep k G)) 0 :=
-  π _ 0 (cocyclesMk oneCochain d_oneCochain)
 
 end Cohomology
 

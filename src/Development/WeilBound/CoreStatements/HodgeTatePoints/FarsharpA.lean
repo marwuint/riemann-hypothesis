@@ -162,7 +162,7 @@ theorem dvd_mul_of_norm (C : Type) [NontriviallyNormedField C] [IsUltrametricDis
         obtain ⟨u, h1, h2⟩ := exists_isGroupLikeElem χ
         rw [← h2]
         exact hu u h1
-  have key := GlobalTheory.T.norm_smul_le_one_of_primitive_bounded_powers C p hp _ _ supN supN (mulHom O C A)
+  have key := _root_.GlobalTheory.NearlyPrimitive.norm_smul_le_one C p hp _ _ supN supN (mulHom O C A)
     (inlHom O C A) (inrHom O C A) supN_smul supN_smul supN_nonneg
     supN_nonneg (supN_add_le hO') (supN_mul_le hO')
     (fun f => supN_le fun t => le_supN hO' f _)

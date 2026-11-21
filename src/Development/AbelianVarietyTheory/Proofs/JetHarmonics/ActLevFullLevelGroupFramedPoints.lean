@@ -25,12 +25,12 @@ theorem actLaws_levFull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro g S _ _ y
     obtain ⟨ρ, ν, i, h⟩ := exists_move hpq hA Xo g
-    obtain ⟨y', hy'⟩ := (GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H Dw l Xo c ρ ν h.1 S y).1
+    obtain ⟨y', hy'⟩ := (_root_.GlobalTheory.exists_unique_frMove E H Dw l Xo c ρ ν h.1 S y).1
     exact ⟨y', ρ, ν, i, h, hy'⟩
   · intro g S _ _ y y' y'' h' h''
     obtain ⟨ρ, ν, i, h, hm⟩ := h'
     have hm' := frMove_transfer hpq hA Xo c g i h h''
-    obtain rfl := (GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H Dw l Xo c ρ ν h.1 S y).2 y' y'' ν rfl hm hm'
+    obtain rfl := (_root_.GlobalTheory.exists_unique_frMove E H Dw l Xo c ρ ν h.1 S y).2 y' y'' ν rfl hm hm'
     exact (GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) y').2.1
   · intro S _ _ y
     refine ⟨𝟙 _, ι, inferInstance, ⟨Category.id_comp _, fun a => ?_, fun a => ?_⟩, hone S y⟩

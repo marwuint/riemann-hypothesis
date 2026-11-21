@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomOfMulComp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiAdjTensorPowerIntMatrixEndomorphismStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDegenerationTauBalancedOfAdjointIntMatriceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataSymmetricPullbackAndPsiEqTauStatement
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiAdjTensorPowerIntMatrixEndomorphism
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDegenerationTauBalancedOfAdjointIntMatrice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataSymmetricPullbackAndPsiEqTau
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -21,12 +22,12 @@ theorem exists_integer_ring_action_on_tensor_degeneration_data : ∀ (R : Type) 
   letI := H.starRing
   letI md : Module (𝓞 E) D'.toPre.X := tensModule T ρ
   let oB : D'.toPre.P.OAct (𝓞 E) :=
-    { ringAct T ρ with rosati := fun a ↦ GlobalTheory.T.rosatiAdj_tensorPowerIntMatrixEndomorphism R D.toPre D'.toPre W T (ρ a) (ρ (star a)) (hρ a) }
+    { ringAct T ρ with rosati := fun a ↦ _root_.GlobalTheory.TensAct.rosatiAdj_matAct R D.toPre D'.toPre W T (ρ a) (ρ (star a)) (hρ a) }
   let o : D'.toPre.OAct (𝓞 E) :=
     { onB := oB
       c_lin := fun a y ↦ c_lin T (ρ a) y
-      tau_bal := fun a ↦ GlobalTheory.T.tensorDegeneration_tauBalanced_of_adjointIntMatrices R _ D D' W T (ρ a) (ρ (star a)) (hρ a) }
+      tau_bal := fun a ↦ _root_.GlobalTheory.TensBal.tauBal_tens R _ D D' W T (ρ a) (ρ (star a)) (hρ a) }
   exact ⟨md, o, ⟨fun a z i ↦ xe_latAct T (ρ a) z i, fun a i ↦ matAct_pr T (ρ a) i⟩,
-    GlobalTheory.T.traceFormTwistIso_of_matAct_of_latAct R _ D D' W T (ρ H.w0) (𝓞 E) o H.w0 rfl (fun y ↦ rfl) hw⟩
+    _root_.GlobalTheory.TensPsi.tensorData_symmetric_pullback_and_psi_eq_tau R _ D D' W T (ρ H.w0) (𝓞 E) o H.w0 rfl (fun y ↦ rfl) hw⟩
 
 end GlobalTheory.TensAct

@@ -2,20 +2,28 @@ import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CurveSemiAbelianConjecture
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.SeparableFormGroupElementFixesUniquePositiveLine
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FunctionFieldModelExistsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveThroughCoordinatesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLieEigenDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.NefThresholdGapConditionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FunctionFieldModelExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveThroughCoordinates
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLieEigenDecomposition
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.NefThresholdGapCondition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FunctionFieldDegreeEqStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLieLatticeDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FunctionFieldCurveExistsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLatticeDegreeFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveDegreeUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLieLatticeDegree
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FunctionFieldCurveExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLatticeDegreeFormula
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveDegreeUnique
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SplitCharactersUnramifiedStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceDecompositionInternalStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceDecompositionInternal
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeStableUnderAction
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitIffUnitAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
@@ -132,11 +140,11 @@ theorem flag_at (E : Type) [Field E] [NumberField E] [CharZero Ω] (hg : IsCptGe
         (subDeg C (Y.lieLat Mz) (W (s + 1)) - subDeg C (Y.lieLat Mz) (W s)) := by
   classical
   have hvb : M.lat.IsVBOn S (finrank Ω V) ⊤ := fun p _ => by
-    obtain ⟨U, hU, c, hc, hf⟩ := (GlobalTheory.T.lie_omega_lattice_vector_bundle X Ω ξ G V M hg hsm).1 p trivial
+    obtain ⟨U, hU, c, hc, hf⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth X Ω ξ G V M hg hsm).1 p trivial
     exact ⟨U, hU, c, hc, fun q _ hq => hf q trivial hq⟩
   obtain ⟨hE, hsum⟩ := EigSplit.isVBOn_eigSp X Ω ξ V E r M.lat S _ I σ hg hσ hcard hvb
     (fun p _ a e he => LieStable.lat_stable X Ω ξ G V M _ act r hr p a e he) hreg hdisc
-  have hint := GlobalTheory.T.eigenspace_decomposition_internal Ω V E r I σ hσ hcard
+  have hint := _root_.GlobalTheory.CompanionTheory.Ar.isInternal_eigSp Ω V E r I σ hσ hcard
   have hind := hint.submodule_iSupIndep
   let U' : Submodule Ω V := ⨆ s : {s // s ≠ s₀}, eigSp r (σ s)
   let L' : Lat ξ V := fun q => ⨆ s : {s // s ≠ s₀}, M.eigLat r (σ s) q
@@ -150,11 +158,11 @@ theorem flag_at (E : Type) [Field E] [NumberField E] [CharZero Ω] (hg : IsCptGe
     exact hint.submodule_iSup_eq_top
   have hlat : ∀ q ∈ S, M.lat q = M.eigLat r (σ s₀) q ⊔ L' q := fun q hq =>
     (hsum q hq).trans (iSup_split (fun s => M.eigLat r (σ s) q) s₀)
-  obtain ⟨W, hW0, hWn, hdeg⟩ := GlobalTheory.T.curve_lie_lattice_degree X Ω ξ K C z Y G V M Vz Mz h₀ h S (M.eigLat r (σ s₀)) L' n _ b U'
+  obtain ⟨W, hW0, hWn, hdeg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GrDeg.grLine_deg_eq_sub X Ω ξ K C z Y G V M Vz Mz h₀ h S (M.eigLat r (σ s₀)) L' n _ b U'
     hg hsm hz hS hb hfl hL' hcompl hlat
   refine ⟨W, hW0, ?_, hdeg⟩
   rw [hWn]
-  exact GlobalTheory.T.curve_lie_eigen_decomposition X Ω ξ k K z G V M Vz Mz h₀ (𝓞 E) I act.act r rz σ χ hg hsm act.hom hr hrz hχ hval
+  exact _root_.GlobalTheory.CompanionTheory.Ar.EigVal.values_eigen_sheaves X Ω ξ k K z G V M Vz Mz h₀ (𝓞 E) I act.act r rz σ χ hg hsm act.hom hr hrz hχ hval
     (hsum _ hz) s₀
 
 end GlobalTheory.CompanionTheory.Ar.Conj.ModelNefness
@@ -168,10 +176,10 @@ theorem m2Model_of_m2Curve : CurveSemiAbelianConjecture → RootLineDeRhamModel 
   haveI : Fact p.Prime := ⟨hp⟩
   obtain ⟨hprime, hPW, hchar, hdim⟩ := hW
   haveI : CharZero M.Ω := charZero_of_isArithVar M.arith
-  obtain ⟨K, _, _, _, w, hwW, hbir, hwk⟩ := GlobalTheory.T.function_field_model_exists M.K M.ι Wi p hprime hchar hdim
-  obtain ⟨C, hFF, hne, hv⟩ := GlobalTheory.T.function_field_curve_exists (ZMod p) K
+  obtain ⟨K, _, _, _, w, hwW, hbir, hwk⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.Field.curve_field M.K M.ι Wi p hprime hchar hdim
+  obtain ⟨C, hFF, hne, hv⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FF.places_form_curve (ZMod p) K
   haveI : CharP K p := charP_of_injective_algebraMap (algebraMap (ZMod p) K).injective p
-  obtain ⟨z, Y, h₀, h, hco, hfib⟩ := GlobalTheory.T.curve_through_coordinates D.X M.Ω D.ξ M.K M.ι M.y D.tie K C w
+  obtain ⟨z, Y, h₀, h, hco, hfib⟩ := _root_.GlobalTheory.CompanionTheory.Relay.curve_through_coordinates D.X M.Ω D.ξ M.K M.ι M.y D.tie K C w
     (by rw [hwW]; exact hPW) hwk
   obtain ⟨hz, hi⟩ := hfib p (CharP.cast_eq_zero K p)
   have hg : IsCptGen D.ξ := D.tie.gen
@@ -191,7 +199,7 @@ theorem m2Model_of_m2Curve : CurveSemiAbelianConjecture → RootLineDeRhamModel 
     hv i _ (mem_algebraicClosure_iff.1 c.2)
   obtain ⟨Vz, _, _, ⟨Mz⟩⟩ := lieModel_exists D.X D.t.G K z
   haveI : Smooth D.t.G.hom := D.t.semi.smooth
-  haveI : FiniteDimensional K Vz := (GlobalTheory.T.lie_model_finite_projective D.X D.t.G K z Vz Mz).1
+  haveI : FiniteDimensional K Vz := (_root_.GlobalTheory.CompanionTheory.Ar.lieModel_finite_projective D.X D.t.G K z Vz Mz).1
   obtain ⟨rz, hrz, -⟩ := lieModel_exists_unique_act D.X D.t.G K z Vz Mz (𝓞 E) D.t.act.act D.t.act.hom
     D.t.act.one D.t.act.mul D.t.act.add
   have hreg : ∀ q ∈ {q | InFibre D.ξ p q}, ∀ s a, D.σ s a ∈ regAt D.ξ q := fun q hq s a => D.reg q hq s a
@@ -212,8 +220,8 @@ theorem m2Model_of_m2Curve : CurveSemiAbelianConjecture → RootLineDeRhamModel 
   have hx1 : ∀ τ (i : Fin N), (i : ℕ) < j → x (τ, i) = wd τ (i + 1) - wd τ i := by
     intro τ i hij
     obtain ⟨e₀, hdo⟩ := D.deg₁ τ i hij
-    have h1 := GlobalTheory.T.curve_lattice_degree_formula D.X M.Ω D.ξ K C z Y M.K M.ι M.y w _ {q | InFibre D.ξ p q} _ e₀ h₀ h D.tie hco hz hi hdo
-    have h2 := GlobalTheory.T.curve_degree_unique D.X M.Ω D.ξ K C z Y _ _ _ hg h1 (hdegW τ ⟨i, hij⟩)
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.isDeg_coordDeg D.X M.Ω D.ξ K C z Y M.K M.ι M.y w _ {q | InFibre D.ξ p q} _ e₀ h₀ h D.tie hco hz hi hdo
+    have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.curveIn_isDeg_unique_of_isCptGen D.X M.Ω D.ξ K C z Y _ _ _ hg h1 (hdegW τ ⟨i, hij⟩)
     simp only [x, wd, hxdeg, h2]
     push_cast
     rfl
@@ -221,8 +229,8 @@ theorem m2Model_of_m2Curve : CurveSemiAbelianConjecture → RootLineDeRhamModel 
     intro τ i hij
     have hlt : N - 1 - (i : ℕ) < N - j := by have := i.2; omega
     obtain ⟨e₀, hdo⟩ := D.deg₂ τ i hlt hij
-    have h1 := GlobalTheory.T.curve_lattice_degree_formula D.X M.Ω D.ξ K C z Y M.K M.ι M.y w _ {q | InFibre D.ξ p q} _ e₀ h₀ h D.tie hco hz hi hdo
-    have h2 := GlobalTheory.T.curve_degree_unique D.X M.Ω D.ξ K C z Y _ _ _ hg h1 (hdegL τ ⟨N - 1 - i, hlt⟩)
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.isDeg_coordDeg D.X M.Ω D.ξ K C z Y M.K M.ι M.y w _ {q | InFibre D.ξ p q} _ e₀ h₀ h D.tie hco hz hi hdo
+    have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.curveIn_isDeg_unique_of_isCptGen D.X M.Ω D.ξ K C z Y _ _ _ hg h1 (hdegL τ ⟨N - 1 - i, hlt⟩)
     have h3 : coordDeg C w (-M.xdeg (τ, i)) = -coordDeg C w (M.xdeg (τ, i)) := by
       simp [coordDeg]
     rw [h3] at h2
@@ -232,7 +240,7 @@ theorem m2Model_of_m2Curve : CurveSemiAbelianConjecture → RootLineDeRhamModel 
     simp only [x, ld, hxdeg, h4]
     push_cast
     rfl
-  obtain ⟨hgap, heq⟩ := GlobalTheory.T.nef_threshold_gap_condition Ψ N j p mu x wd ld hp2 hj hjN hdom hthr hx1 hx2
+  obtain ⟨hgap, heq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.GapThreshold.gapCond_and_lmuNum Ψ N j p mu x wd ld hp2 hj hjN hdom hthr hx1 hx2
   have hfin := hC E H D.X D.t D.pow (algebraicClosure (ZMod p) K) K p hp2 C z Y hne hconst
     (fun i => D.fib ⟨_, h i⟩ (hi i)) Vz Mz rz hrz Ψ χ hχ hconj j (N - j) _ Wf Lf hj (by omega) hW0 hL0 hWj hLq hgap
   have hfin' : 0 ≤ ∑ r : Ψ × Fin N, -mu r.1 r.2 * x r := heq ▸ hfin

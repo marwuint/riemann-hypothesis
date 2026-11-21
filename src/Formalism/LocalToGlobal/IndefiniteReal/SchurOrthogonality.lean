@@ -1,8 +1,7 @@
 import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
-import Formalism.LocalToGlobal.IndefiniteReal.HaarTransfer.SchurClosable
+import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.SmExpSmulContDiff
 import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSchur
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SchurClosable
 
 noncomputable section
 
@@ -14,53 +13,6 @@ open scoped InnerProductSpace ContDiff TensorProduct
 namespace Formalism.IndefR.SchurOrthogonalityAlt
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-section Alg
-
-theorem polar {X H' : Type*} [AddCommGroup X] [Module ℂ X] [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
-    (A₁ A₂ : X →ₗ[ℂ] H') (ip : X → X → ℂ)
-    (h : ∀ a b : ℂ, ∃ c : ℝ, ∀ x y, ⟪(a • A₁ + b • A₂) x, (a • A₁ + b • A₂) y⟫_ℂ = (c : ℂ) * ip x y) :
-    ∃ c : ℂ, ∀ x y, ⟪A₁ x, A₂ y⟫_ℂ = c * ip x y := by
-  obtain ⟨c10, h10⟩ := h 1 0
-  obtain ⟨c01, h01⟩ := h 0 1
-  obtain ⟨c11, h11⟩ := h 1 1
-  obtain ⟨c1i, h1i⟩ := h 1 Complex.I
-  refine ⟨(((c11 : ℂ) - c10 - c01) - Complex.I * ((c1i : ℂ) - c10 - c01)) / 2, fun x y => ?_⟩
-  have e10 := h10 x y
-  have e01 := h01 x y
-  have e11 := h11 x y
-  have e1i := h1i x y
-  simp only [LinearMap.add_apply, LinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left,
-    inner_smul_right, one_smul, zero_smul, add_zero, zero_add, map_one, map_zero, one_mul, zero_mul,
-    inner_zero_left, inner_zero_right, Complex.conj_I] at e10 e01 e11 e1i
-  linear_combination (1 / 2 : ℂ) * (e11 - e10 - e01) - (Complex.I / 2) * (e1i - e10 - e01) +
-    ((⟪A₁ x, A₂ y⟫_ℂ - ⟪A₂ x, A₁ y⟫_ℂ) / 2 - Complex.I * ⟪A₂ x, A₂ y⟫_ℂ / 2) * Complex.I_sq
-
-theorem prod_of_place {ι : Type*} [Fintype ι] [DecidableEq ι] {X : ι → Type*} (B : (∀ i, X i) → (∀ i, X i) → ℂ)
-    (ip : ∀ i, X i → X i → ℂ)
-    (h : ∀ i (v v' : ∀ i, X i), ∃ c : ℂ, ∀ x y, B (Function.update v i x) (Function.update v' i y) = c * ip i x y)
-    (e : ∀ i, X i) (v v' : ∀ i, X i) :
-    (∏ i, ip i (e i) (e i)) * B v v' = (∏ i, ip i (v i) (v' i)) * B e e := by
-  have key : ∀ s : Finset ι, (∏ i ∈ s, ip i (e i) (e i)) * B v v' =
-      (∏ i ∈ s, ip i (v i) (v' i)) * B (s.piecewise e v) (s.piecewise e v') := by
-    intro s
-    induction s using Finset.induction_on with
-    | empty => simp
-    | insert a s ha ih =>
-      rw [Finset.prod_insert ha, Finset.prod_insert ha, Finset.piecewise_insert, Finset.piecewise_insert]
-      obtain ⟨c, hc⟩ := h a (s.piecewise e v) (s.piecewise e v')
-      have hu : Function.update (s.piecewise e v) a (v a) = s.piecewise e v :=
-        Function.update_eq_self_iff.2 (Finset.piecewise_eq_of_notMem _ _ _ ha).symm
-      have hu' : Function.update (s.piecewise e v') a (v' a) = s.piecewise e v' :=
-        Function.update_eq_self_iff.2 (Finset.piecewise_eq_of_notMem _ _ _ ha).symm
-      have h1 := hc (v a) (v' a)
-      rw [hu, hu'] at h1
-      rw [hc]
-      linear_combination (ip a (e a) (e a)) * ih + (ip a (e a) (e a) * ∏ i ∈ s, ip i (v i) (v' i)) * h1
-  have := key Finset.univ
-  rwa [Finset.piecewise_univ, Finset.piecewise_univ] at this
-
-end Alg
 
 section L2
 
@@ -78,21 +30,6 @@ def toL2 {X : Type*} [AddCommGroup X] [Module ℂ X] (L : X →ₗ[ℂ] (α → 
 
 theorem to_square_integrable_apply {X : Type*} [AddCommGroup X] [Module ℂ X] (L : X →ₗ[ℂ] (α → ℂ))
     (hL : ∀ w, MemLp (L w) 2 ν) (w : X) : toL2 L hL w = (hL w).toLp (L w) := rfl
-
-theorem inner_toLp {f g : α → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
-    ⟪hf.toLp f, hg.toLp g⟫_ℂ = ∫ x, star (f x) * g x ∂ν := by
-  rw [L2.inner_def]
-  apply integral_congr_ae
-  filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2
-  rw [h1, h2]
-  simp [RCLike.inner_apply, mul_comm]
-
-theorem integrable_star_mul {f g : α → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
-    Integrable (fun x => star (f x) * g x) ν := by
-  refine (L2.integrable_inner (𝕜 := ℂ) (hf.toLp f) (hg.toLp g)).congr ?_
-  filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2
-  rw [h1, h2]
-  simp [RCLike.inner_apply, mul_comm]
 
 end L2
 
@@ -391,176 +328,6 @@ variable (M : DSModel V S)
 
 variable (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
 
-def MultiplicitySquareIntegrable (J : Set (GA D V)) (χ : GA D V → ℂ) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) : Prop :=
-  IsInfFam θ → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ →
-    ∀ T, IsMultMap θ M J χ T → ∀ v, MemLp (T v) 2 (μ.restrict 𝓕)
-
-variable (V) in
-
-def RightRegularUnitary (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) : Prop :=
-  IsInfFam θ → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → ∀ τ,
-    ∃ π' : Gt V τ →* (Lp ℂ 2 (μ.restrict 𝓕) →L[ℂ] Lp ℂ 2 (μ.restrict 𝓕)), (∀ g f, ‖π' g f‖ = ‖f‖) ∧
-      ∀ g (F : GA D V → ℂ), (∀ γ ∈ GQ V, ∀ x, F (γ * x) = F x) → ∀ hF : MemLp F 2 (μ.restrict 𝓕),
-        ∃ hF' : MemLp (rTr V (atTau θ V τ (gm g)) F) 2 (μ.restrict 𝓕),
-          π' g (hF.toLp F) = hF'.toLp (rTr V (atTau θ V τ (gm g)) F)
-
-def ClosableInSquareIntegrable (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) : Prop :=
-  IsInfFam θ → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ →
-    ∀ τ (A : M.sm τ →ₗ[ℂ] (GA D V → ℂ)) (hA : ∀ w, MemLp (A w) 2 (μ.restrict 𝓕)),
-      (∀ w, ∀ γ ∈ GQ V, ∀ x, A w (γ * x) = A w x) →
-      (∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w w' : M.sm τ, (w' : M.H τ) = M.rep τ g w →
-        A w' = rTr V (atTau θ V τ g) (A w)) →
-      (∀ x, ∃ ℓ : M.H τ →ₗ[ℂ] ℂ, Sobolev₂ (lieAt V τ) (M.rep τ) ℓ ∧ ∀ w : M.sm τ, ℓ w = A w x) →
-      (∀ w, Continuous (A w)) →
-      ∀ (u : ℕ → M.sm τ) (y : Lp ℂ 2 (μ.restrict 𝓕)), Tendsto (fun n => (u n : M.H τ)) atTop (𝓝 0) →
-        Tendsto (fun n => (hA (u n)).toLp (A (u n))) atTop (𝓝 y) → y = 0
-
-open Classical in
-
-structure GoodMap (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S)
-    (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T : MMap M) : Prop where
-  l2 : ∀ v, MemLp (T v) 2 (μ.restrict 𝓕)
-  left : ∀ v, ∀ γ ∈ GQ V, ∀ x, T v (γ * x) = T v x
-  equiv : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ (v : M.Vec) (w : M.sm τ),
-    (w : M.H τ) = M.rep τ g (v τ) → T (Function.update v τ w) = rTr V (atTau θ V τ g) (T v)
-  cont : ∀ τ (v : M.Vec) (x : GA D V), ∃ ℓ : M.H τ →ₗ[ℂ] ℂ, Sobolev₂ (lieAt V τ) (M.rep τ) ℓ ∧
-    ∀ w : M.sm τ, ℓ w = T (Function.update v τ w) x
-  cv : ∀ v, Continuous (T v)
-
 variable {M θ} {J : Set (GA D V)} {χ : GA D V → ℂ} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
-
-open Classical in
-theorem good_of_mem (hL2 : MultiplicitySquareIntegrable M θ J χ μ 𝓕) (hθ : IsInfFam θ) (hμ : μ.IsHaarMeasure)
-    (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) {T : MMap M} (hT : T ∈ Mult θ M J χ) : GoodMap θ M μ 𝓕 T := by
-  induction hT using Submodule.span_induction with
-  | mem T hT => exact ⟨hL2 hθ hμ h𝓕 T hT, fun v => (hT.aut v).left, hT.equiv, hT.cont, fun v => (hT.aut v).cont⟩
-  | zero =>
-    refine ⟨fun v => ?_, fun v γ _ x => ?_, fun τ g _ v w _ => ?_, fun τ v x => ⟨0, sobCont_zero, fun w => ?_⟩,
-      fun v => ?_⟩
-    · rw [MultilinearMap.zero_apply]; exact MemLp.zero
-    · simp
-    · rw [MultilinearMap.zero_apply, MultilinearMap.zero_apply]; rfl
-    · simp
-    · rw [MultilinearMap.zero_apply]; exact continuous_zero
-  | add T T' _ _ h h' =>
-    refine ⟨fun v => ?_, fun v γ hγ x => ?_, fun τ g hg v w hw => ?_, fun τ v x => ?_, fun v => ?_⟩
-    · rw [MultilinearMap.add_apply]; exact (h.l2 v).add (h'.l2 v)
-    · rw [MultilinearMap.add_apply, Pi.add_apply, Pi.add_apply, h.left v γ hγ x, h'.left v γ hγ x]
-    · rw [MultilinearMap.add_apply, MultilinearMap.add_apply, h.equiv τ g hg v w hw, h'.equiv τ g hg v w hw]; rfl
-    · obtain ⟨ℓ, hℓ, e⟩ := h.cont τ v x
-      obtain ⟨ℓ', hℓ', e'⟩ := h'.cont τ v x
-      exact ⟨ℓ + ℓ', sobCont_add hℓ hℓ', fun w => by
-        rw [LinearMap.add_apply, e, e', MultilinearMap.add_apply, Pi.add_apply]⟩
-    · rw [MultilinearMap.add_apply]; exact (h.cv v).add (h'.cv v)
-  | smul a T _ h =>
-    refine ⟨fun v => ?_, fun v γ hγ x => ?_, fun τ g hg v w hw => ?_, fun τ v x => ?_, fun v => ?_⟩
-    · rw [MultilinearMap.smul_apply]; exact (h.l2 v).const_smul a
-    · rw [MultilinearMap.smul_apply, Pi.smul_apply, Pi.smul_apply, h.left v γ hγ x]
-    · rw [MultilinearMap.smul_apply, MultilinearMap.smul_apply, h.equiv τ g hg v w hw]; rfl
-    · obtain ⟨ℓ, hℓ, e⟩ := h.cont τ v x
-      exact ⟨a • ℓ, sobCont_smul a hℓ, fun w => by
-        rw [LinearMap.smul_apply, e, MultilinearMap.smul_apply, Pi.smul_apply]⟩
-    · rw [MultilinearMap.smul_apply]; exact (h.cv v).const_smul a
-
-set_option maxHeartbeats 1000000 in
-open Classical in
-
-theorem place (hSC : Formalism.IndefR.Leaf.SchurClosable) (hR : RightRegularUnitary V θ μ 𝓕)
-    (hcl : ClosableInSquareIntegrable M θ μ 𝓕) (hθ : IsInfFam θ) (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ)
-    {T T' : MMap M} (hT : GoodMap θ M μ 𝓕 T) (hT' : GoodMap θ M μ 𝓕 T') (τ : D.what₂.Tau) (v v' : M.Vec) :
-    ∃ c : ℂ, ∀ x y : M.sm τ, ∫ g in 𝓕, star (T (Function.update v τ x) g) * T' (Function.update v' τ y) g ∂μ =
-      c * ⟪(x : M.H τ), (y : M.H τ)⟫_ℂ := by
-  haveI : CompleteSpace (M.H τ) := (M.ds τ).1
-  obtain ⟨π', hπ'n, hπ'⟩ := hR hθ hμ h𝓕 τ
-  have h₁ : ∀ w, MemLp (T.toLinearMap v τ w) 2 (μ.restrict 𝓕) := fun w => hT.l2 _
-  have h₂ : ∀ w, MemLp (T'.toLinearMap v' τ w) 2 (μ.restrict 𝓕) := fun w => hT'.l2 _
-  have hab : ∀ a b : ℂ, ∀ w, MemLp ((a • T.toLinearMap v τ + b • T'.toLinearMap v' τ) w) 2 (μ.restrict 𝓕) :=
-    fun a b w => ((h₁ w).const_smul a).add ((h₂ w).const_smul b)
-  have hcomb : ∀ a b : ℂ, toL2 (a • T.toLinearMap v τ + b • T'.toLinearMap v' τ) (hab a b) =
-      a • toL2 (T.toLinearMap v τ) h₁ + b • toL2 (T'.toLinearMap v' τ) h₂ := by
-    intro a b
-    apply LinearMap.ext
-    intro w
-    show (hab a b w).toLp _ = a • (h₁ w).toLp _ + b • (h₂ w).toLp _
-    rw [← MemLp.toLp_const_smul, ← MemLp.toLp_const_smul, ← MemLp.toLp_add]
-    exact MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (by simp))
-  obtain ⟨c, hc⟩ := polar (toL2 (T.toLinearMap v τ) h₁) (toL2 (T'.toLinearMap v' τ) h₂)
-    (fun x y : M.sm τ => ⟪(x : M.H τ), (y : M.H τ)⟫_ℂ) (fun a b => by
-      rw [← hcomb a b]
-      generalize hab a b = hL
-      generalize hLdef : a • T.toLinearMap v τ + b • T'.toLinearMap v' τ = L at hL ⊢
-      have hLw : ∀ w : M.sm τ, L w = a • T (Function.update v τ w) + b • T' (Function.update v' τ w) := by
-        intro w; rw [← hLdef]; rfl
-      have hleft : ∀ (w : M.sm τ), ∀ γ ∈ GQ V, ∀ z, L w (γ * z) = L w z := by
-        intro w γ hγ z
-        rw [hLw, Pi.add_apply, Pi.add_apply, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply,
-          hT.left _ γ hγ z, hT'.left _ γ hγ z]
-      have hequiv : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w w' : M.sm τ, (w' : M.H τ) = M.rep τ g w →
-          L w' = rTr V (atTau θ V τ g) (L w) := by
-        intro g hg w w' hw
-        have e1 := hT.equiv τ g hg (Function.update v τ w) w' (by rw [Function.update_self]; exact hw)
-        have e2 := hT'.equiv τ g hg (Function.update v' τ w) w' (by rw [Function.update_self]; exact hw)
-        rw [Function.update_idem] at e1 e2
-        rw [hLw, hLw, e1, e2]
-        rfl
-      have hcont : ∀ z, ∃ ℓ : M.H τ →ₗ[ℂ] ℂ, Sobolev₂ (lieAt V τ) (M.rep τ) ℓ ∧ ∀ w : M.sm τ, ℓ w = L w z := by
-        intro z
-        obtain ⟨ℓ₁, hℓ₁, e₁⟩ := hT.cont τ v z
-        obtain ⟨ℓ₂, hℓ₂, e₂⟩ := hT'.cont τ v' z
-        refine ⟨a • ℓ₁ + b • ℓ₂, sobCont_add (sobCont_smul a hℓ₁) (sobCont_smul b hℓ₂), fun w => ?_⟩
-        rw [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smul_apply, e₁, e₂, hLw]
-        rfl
-      have hint : ∀ (g : Gt V τ) (x : M.sm τ) (hx : piR M τ g x ∈ M.sm τ),
-          toL2 L hL ⟨piR M τ g x, hx⟩ = π' g (toL2 L hL x) := by
-        intro g x hx
-        obtain ⟨hF', he⟩ := hπ' g (L x) (hleft x) (hL x)
-        rw [to_square_integrable_apply, to_square_integrable_apply, he]
-        exact MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (hequiv (gm g) (gm_mem g) x ⟨piR M τ g x, hx⟩ rfl))
-      have hcv : ∀ w : M.sm τ, Continuous (L w) := by
-        intro w; rw [hLw]; exact ((hT.cv _).const_smul a).add ((hT'.cv _).const_smul b)
-      have hclo := hcl hθ hμ h𝓕 τ L hL hleft hequiv hcont hcv
-      have hclo' : ∀ (u : ℕ → M.sm τ) (y : Lp ℂ 2 (μ.restrict 𝓕)),
-          Tendsto (fun n => (u n : M.H τ)) atTop (𝓝 0) → Tendsto (fun n => toL2 L hL (u n)) atTop (𝓝 y) →
-            y = 0 := by
-        intro u y h1 h2
-        simp only [to_square_integrable_apply] at h2
-        exact hclo u y h1 h2
-      obtain ⟨c, -, hc⟩ := hSC (Gt V τ) (M.H τ) (Lp ℂ 2 (μ.restrict 𝓕)) (piR M τ) π' (piR_norm M τ) hπ'n
-        (commutant_scalar M τ) (M.sm τ) (toL2 L hL) (sm_dense M τ) (fun g x hx => sm_stable M τ g hx)
-        hint hclo'
-      exact ⟨c, fun x y => hc x y⟩)
-  refine ⟨c, fun x y => ?_⟩
-  have e := hc x y
-  rw [to_square_integrable_apply, to_square_integrable_apply, inner_toLp] at e
-  exact e
-
-open Classical in
-
-theorem schurMult_of (hSC : Formalism.IndefR.Leaf.SchurClosable) (hL2 : MultiplicitySquareIntegrable M θ J χ μ 𝓕)
-    (hR : RightRegularUnitary V θ μ 𝓕) (hcl : ClosableInSquareIntegrable M θ μ 𝓕) : SchurMult θ M J χ μ 𝓕 := by
-  intro hθ hμ h𝓕 T hT T' hT'
-  have gT := good_of_mem hL2 hθ hμ h𝓕 hT
-  have gT' := good_of_mem hL2 hθ hμ h𝓕 hT'
-  have hne : ∀ τ, ∃ e : M.sm τ, ⟪(e : M.H τ), (e : M.H τ)⟫_ℂ ≠ 0 := by
-    intro τ
-    obtain ⟨e, he⟩ := Formalism.IndefR.PeterssonHilbertSpace.smNonzero M τ
-    refine ⟨e, ?_⟩
-    rw [inner_self_ne_zero]
-    exact fun h => he (Subtype.ext h)
-  choose e he using hne
-  have hP : (∏ τ, ⟪(e τ : M.H τ), (e τ : M.H τ)⟫_ℂ) ≠ 0 := Finset.prod_ne_zero_iff.2 fun τ _ => he τ
-  have key := prod_of_place (fun v v' : M.Vec => ∫ g in 𝓕, star (T v g) * T' v' g ∂μ)
-    (fun τ (x y : M.sm τ) => ⟪(x : M.H τ), (y : M.H τ)⟫_ℂ)
-    (fun τ v v' => place hSC hR hcl hθ hμ h𝓕 gT gT' τ v v') e
-  refine ⟨(∫ g in 𝓕, star (T e g) * T' e g ∂μ) / ∏ τ, ⟪(e τ : M.H τ), (e τ : M.H τ)⟫_ℂ,
-    fun v v' => ⟨integrable_star_mul (gT.l2 v) (gT'.l2 v'), ?_⟩⟩
-  have := key v v'
-  beta_reduce at this
-  rw [div_mul_eq_mul_div, eq_div_iff hP]
-  linear_combination this
-
-theorem schurMult (hL2 : MultiplicitySquareIntegrable M θ J χ μ 𝓕) (hR : RightRegularUnitary V θ μ 𝓕)
-    (hcl : ClosableInSquareIntegrable M θ μ 𝓕) : SchurMult θ M J χ μ 𝓕 :=
-  schurMult_of schur_closable hL2 hR hcl
 
 end Formalism.IndefR.SchurOrthogonalityAlt

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.BernsteinUnitaryProducts.BernsteinTheoremA.FrobeniusReciprocity.SupportedInIffOfFrob
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantFunctionalEqHaarMultipleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBruhatProdSpanTensorsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialIntegralMemSchwartzBruhatStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantFunctionalEqHaarMultiple
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBruhatProdSpanTensors
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialIntegralMemSchwartzBruhat
 
 noncomputable section
 
@@ -86,7 +86,7 @@ theorem tens_induction {M : Type*} [AddCommGroup M] [Module ℂ M] (T : SB (A ×
     (N : Submodule ℂ M) (f : SB (A × B))
     (h : ∀ (a : SB A) (b : SB B), (∀ q : A × B, (a : A → ℂ) q.1 ≠ 0 → (b : B → ℂ) q.2 ≠ 0 →
       (f : A × B → ℂ) q ≠ 0) → T (tens a b) ∈ N) : T f ∈ N := by
-  refine span_transfer T ?_ N ?_ f (GlobalTheory.T.schwartzBruhat_prod_span_tensors A B f)
+  refine span_transfer T ?_ N ?_ f (_root_.GlobalTheory.CompanionTheory.FrobProd.span_box A B f)
   · rintro F ⟨a, b, -, rfl⟩
     exact tens_mem a b
   · rintro F ⟨a, b, hab, rfl⟩
@@ -113,7 +113,7 @@ theorem fib_integrable (F : SB (A × B)) (a : A) {w : B → ℂ} (hw : Continuou
   exact hb ⟨(a, b), subset_tsupport _ h, rfl⟩
 
 def intB (w : B → ℂ) (hw : Continuous w) : SB (A × B) →ₗ[ℂ] SB A where
-  toFun F := ⟨fun a => ∫ b, (F : A × B → ℂ) (a, b) * w b ∂μ, GlobalTheory.T.partial_integral_mem_schwartzBruhat A B μ w hw F⟩
+  toFun F := ⟨fun a => ∫ b, (F : A × B → ℂ) (a, b) * w b ∂μ, _root_.GlobalTheory.CompanionTheory.TestFunctionFibreIntegral.integral_mem_SB A B μ w hw F⟩
   map_add' F F' := Subtype.ext (funext fun a => by
     show ∫ b, ((F : A × B → ℂ) (a, b) + (F' : A × B → ℂ) (a, b)) * w b ∂μ =
       (∫ b, (F : A × B → ℂ) (a, b) * w b ∂μ) + ∫ b, (F' : A × B → ℂ) (a, b) * w b ∂μ
@@ -161,7 +161,7 @@ theorem factor_intB (uK : IsUnimod K) (b0 : SB K) (hb0 : ∫ y, (b0 : K → ℂ)
     M F = M (tens (intB μ (fun _ => (1 : ℂ)) continuous_const F) b0) := by
   have hc : ∀ a : SB A, ∃ c : ℂ, ∀ b : SB K, M (tens a b) = c * ∫ y, (b : K → ℂ) y ∂μ := by
     intro a
-    refine GlobalTheory.T.invariant_functional_eq_haar_multiple K uK μ (M ∘ₗ tensR a) ?_
+    refine _root_.GlobalTheory.CompanionTheory.FrobHaarR.exists_eq_mul_integral K uK μ (M ∘ₗ tensR a) ?_
     intro k b
     have e : tens a (pullHomeo (Homeomorph.mulRight k) b) = rtr k (tens a b) := rfl
     show M (tens a (pullHomeo (Homeomorph.mulRight k) b)) = M (tens a b)

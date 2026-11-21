@@ -49,12 +49,6 @@ lemma fischerInner_sum_right {ι : Type*} (s : Finset ι) (f : MvPolynomial σ �
     fockF f (∑ a ∈ s, h a) = ∑ a ∈ s, fockF f (h a) :=
   map_sum (fischerInnerRightHom f) h s
 
-lemma fischerInner_neg_left (f g : MvPolynomial σ ℂ) : fockF (-f) g = -fockF f g :=
-  map_neg (fischerInnerLeftHom g) f
-
-lemma fischerInner_neg_right (f g : MvPolynomial σ ℂ) : fockF f (-g) = -fockF f g :=
-  map_neg (fischerInnerRightHom f) g
-
 lemma fischerInner_eq_star (f g : MvPolynomial σ ℂ) : fockF f g = star (fockF g f) := by
   classical
   rw [fischerInner_eq_sum_of_subset f g (f.support ∪ g.support) Finset.subset_union_left,
@@ -111,52 +105,5 @@ lemma fischerInner_X_mul_left [DecidableEq σ] (v : σ) (f g : MvPolynomial σ �
 end general
 
 variable {M n' : ℕ}
-
-lemma fischerInner_oscillatorLower (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i : Fin M) (a : Fin n')
-    (f g : MvPolynomial (Fin M × Fin n') ℂ) :
-    fockF (bop ε ε' i a f) g = (if sgnv ε ε' i a then 1 else -1) * fockF f (bpl ε ε' i a g) := by
-  unfold bop bpl
-  split_ifs with h
-  · simp only [LinearMap.mulLeft_apply, Derivation.coeFn_coe, one_mul]
-    exact fischerInner_pderiv_left _ f g
-  · simp only [LinearMap.mulLeft_apply, LinearMap.neg_apply, Derivation.coeFn_coe, fischerInner_neg_right]
-    rw [fischerInner_X_mul_left]; ring
-
-lemma fischerInner_oscillatorRaise (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i : Fin M) (a : Fin n')
-    (f g : MvPolynomial (Fin M × Fin n') ℂ) :
-    fockF (bpl ε ε' i a f) g = (if sgnv ε ε' i a then 1 else -1) * fockF f (bop ε ε' i a g) := by
-  unfold bop bpl
-  split_ifs with h
-  · simp only [LinearMap.mulLeft_apply, Derivation.coeFn_coe, one_mul]
-    exact fischerInner_X_mul_left _ f g
-  · simp only [LinearMap.mulLeft_apply, LinearMap.neg_apply, Derivation.coeFn_coe, fischerInner_neg_left]
-    rw [fischerInner_pderiv_left]; ring
-
-lemma signMatch_mul_left (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i j : Fin M) (a : Fin n') :
-    ((if sgnv ε ε' i a then 1 else -1 : ℂ) * (if sgnv ε ε' j a then 1 else -1)) =
-      ((sgn ε i j : ℝ) : ℂ) := by
-  unfold sgnv sgn
-  generalize ε i = x; generalize ε j = y; generalize ε' a = z
-  cases x <;> cases y <;> cases z <;> norm_num
-
-lemma signMatch_mul_right (ε : Fin M → Bool) (ε' : Fin n' → Bool) (i : Fin M) (a b : Fin n') :
-    ((if sgnv ε ε' i b then 1 else -1 : ℂ) * (if sgnv ε ε' i a then 1 else -1)) =
-      ((sgn ε' a b : ℝ) : ℂ) := by
-  unfold sgnv sgn
-  generalize ε i = x; generalize ε' a = y; generalize ε' b = z
-  cases x <;> cases y <;> cases z <;> norm_num
-
-theorem fischerAdjointness_holds : FockAdj := by
-  intro M n' ε ε' f g
-  refine ⟨fun i a => fischerInner_oscillatorLower ε ε' i a f g, fun i j => ?_, fun a b => ?_⟩
-  · simp only [Eg, LinearMap.sum_apply, Module.End.mul_apply, fischerInner_sum_left,
-      fischerInner_sum_right, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    rw [fischerInner_oscillatorRaise, fischerInner_oscillatorLower, ← mul_assoc, signMatch_mul_left]
-  · simp only [Eg', LinearMap.neg_apply, LinearMap.sum_apply, Module.End.mul_apply,
-      fischerInner_neg_left, fischerInner_neg_right, fischerInner_sum_left, fischerInner_sum_right, mul_neg, Finset.mul_sum]
-    congr 1
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [fischerInner_oscillatorRaise, fischerInner_oscillatorLower, ← mul_assoc, signMatch_mul_right]
 
 end Formalism.REAL

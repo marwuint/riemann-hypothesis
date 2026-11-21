@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexUnitsSquareUnderRingHomAdicCompletionLeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ProdAbsNormPowValuationTwoLeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CardRingHomRealEqNrRealPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexUnitsSquareUnderRingHomAdicCompletionLe
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ProdAbsNormPowValuationTwoLe
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CardRingHomRealEqNrRealPlaces
 
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
@@ -61,11 +61,11 @@ theorem index_locSq_le : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (H
   intro F _ _ S
   classical
   choose e he using fun v : HeightOneSpectrum (𝓞 F) => exists_valuation_two_eq_exp v
-  have hP := GlobalTheory.T.prod_absNorm_pow_valuation_two_le F S e (fun v _ => he v)
+  have hP := _root_.GlobalTheory.QNorm.prod_absNorm_pow_le_two_pow F S e (fun v _ => he v)
   have hN : ∀ v : HeightOneSpectrum (𝓞 F),
       (sqSub (algebraMap F (v.adicCompletion F))).index ≠ 0 ∧
         (sqSub (algebraMap F (v.adicCompletion F))).index ≤ 4 * Ideal.absNorm v.asIdeal ^ e v :=
-    fun v => GlobalTheory.T.index_unitsSquareUnderRingHom_adicCompletion_le F v (e v) (he v)
+    fun v => _root_.GlobalTheory.QNorm.index_sqSub_adicCompletion_le F v (e v) (he v)
   obtain ⟨hF0, hFle⟩ := index_biInf_ne_zero_and_le_prod S (fun v => sqSub (algebraMap F (v.adicCompletion F)))
     (fun v _ => (hN v).1)
   have hR2 : ∀ σ : F →+* ℝ, (sqSub σ).index ≤ 2 := fun σ =>
@@ -96,7 +96,7 @@ theorem index_locSq_le : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (H
         ≤ ∏ _σ ∈ (Finset.univ : Finset (F →+* ℝ)), 2 :=
           Finset.prod_le_prod (fun _ _ => Nat.zero_le _) (fun σ _ => hR2 σ)
       _ = 2 ^ InfinitePlace.nrRealPlaces F := by
-          rw [Finset.prod_const, Finset.card_univ, Fintype.card_eq_nat_card, GlobalTheory.T.card_ringHom_real_eq_nrRealPlaces' F]
+          rw [Finset.prod_const, Finset.card_univ, Fintype.card_eq_nat_card, _root_.GlobalTheory.QNorm.card_ringHom_real_eq_nrRealPlaces F]
   refine Subgroup.index_inf_le.trans ((Nat.mul_le_mul hF hR).trans (le_of_eq ?_))
   rw [InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
     ← InfinitePlace.card_add_two_mul_card_eq_rank, show (4 : ℕ) = 2 ^ 2 by norm_num]

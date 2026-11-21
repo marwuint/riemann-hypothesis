@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OneLeftSpMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ImplicitFunctionHolomorphicStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ImplicitFunctionHolomorphic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AnChart
 
 noncomputable section
@@ -342,7 +342,7 @@ theorem exists_sections : ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R 
   obtain ⟨L, hL⟩ : ∃ L : (I₀ → ℂ) ≃L[ℂ] (K₀ ⊕ Fin g → ℂ),
       (L : (I₀ → ℂ) →L[ℂ] (K₀ ⊕ Fin g → ℂ)) = F₀ :=
     ⟨(LinearEquiv.ofBijective F₀.toLinearMap bij).toContinuousLinearEquiv, by ext; rfl⟩
-  obtain ⟨ε', δ', X, ε'0, δ'0, hX₀, hXd, hX, hXinv⟩ := GlobalTheory.T.implicit_function_holomorphic n I₀ (K₀ ⊕ Fin g)
+  obtain ⟨ε', δ', X, ε'0, δ'0, hX₀, hXd, hX, hXinv⟩ := _root_.GlobalTheory.CompanionTheory.HoloChart.holomorphic_inverse_with_parameters n I₀ (K₀ ⊕ Fin g)
     (B ×ˢ Set.univ) Φ b₀ x₀ L (hB.prod isOpen_univ) ⟨hb₀, trivial⟩ hΦ (by
       rw [hL, hΦd]; exact hF₀)
   rw [Φ₀] at hX₀ hXd hX hXinv

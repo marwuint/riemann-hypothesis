@@ -1,5 +1,4 @@
 import Mathlib
-import Lemmata.CofiniteContinuousBounds.LeOfCofinite
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Up.PG
 

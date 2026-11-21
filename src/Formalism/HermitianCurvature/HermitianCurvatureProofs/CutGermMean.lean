@@ -71,11 +71,6 @@ theorem dual_sub_span {f : ℕ} (La : Submodule ℤ (V f)) [DiscreteTopology La]
   rw [hrep j, Int.cast_smul_eq_zsmul]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
-example {f : ℕ} (La : Submodule ℤ (V f)) [DiscreteTopology La] [IsZLattice ℝ La] :
-    ∃ LIM : ((Submodule.span ℤ (Set.range (bD La))).toAddSubgroup → ℂ) → ℂ,
-      IsMeanInf (Submodule.span ℤ (Set.range (bD La))).toAddSubgroup LIM :=
-  Formalism.FourierDecayAlt.P.invariantMeanExists f _
-
 theorem inDual_neg {ω₁ ω₂ σ : ℂ} (h : TBB.InDual ω₁ ω₂ σ) : TBB.InDual ω₁ ω₂ (-σ) := by
   intro a b
   have h1 := h (-a) (-b)

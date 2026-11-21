@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EigenvectorAdjointIntertwinerNormalOperatorsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EigenvectorAdjointIntertwinerNormalOperators
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LinearMapExtOfISupEqTop
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
@@ -23,7 +23,7 @@ theorem parts_of_adjoint_lift : ∀ {X E I : Type} [NormedAddCommGroup X] [Inner
   have hup : ∀ c, (Ec c).map (LinearMap.adjoint Θ) ≤ Formalism.L2.Col.eigAt op (lab c) := by
     rintro c _ ⟨w, hw, rfl⟩
     exact Formalism.L2.Col.mem_eigAt_of_forall_apply fun i =>
-      GlobalTheory.T.eigenvector_adjoint_intertwiner_normal_operators Θ op h hint hn hn' i (lab c i) w (hh c w hw i)
+      _root_.GlobalTheory.HkUp.eigen_up_along_adjoint Θ op h hint hn hn' i (lab c i) w (hh c w hw i)
   have hiff : ∀ (Q : (I → ℂ) → Prop) c, Ec c ≠ ⊥ →
       ((Ec c).map (LinearMap.adjoint Θ) ≤ Formalism.L2.Col.eigSum op Q ↔ Q (lab c)) := by
     intro Q c hcne

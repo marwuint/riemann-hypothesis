@@ -1,9 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaNsmul
-import Development.AbelianVarietyTheory.Definitions.Uniformization.InKLbPowIffPowEqOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeRel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompEqOneOfTransl
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
+import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemNonzeroLocusIffPowFn
+import Development.AbelianVarietyTheory.Statements.ThetaLevelCharacters.MemThetaLevelCharDimZero
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FormallyUnramifiedMulInvertibleInteger
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel GlobalTheory.UPel.HeckeImage
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel
 
 namespace GlobalTheory.TorsionRigid
 

@@ -8,8 +8,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalTorusAlgebraic
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AppellHumbertUniformisationRiemannFormStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegPreOfPolAVStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AppellHumbertUniformisationRiemannForm
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegPreOfPolAV
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LbIsoLinCombLamOfAppellHumbertStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ImInvIsHermitian
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HomExtOfLin
@@ -91,8 +91,8 @@ theorem sharpClass_of_unif : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P
   change ∀ i z, u₀.ex (R i z) = u.ex z ≫ pr i at hpru
   have hk : (k : ℂ) ≠ 0 := by simpa using (b.unit.map em).ne_zero
   have hk0 : 0 < k := Nat.pos_of_ne_zero fun e => hk (by simp [e])
-  obtain ⟨Ef, hEf, -, -, -, -, -, -, hWeil⟩ := GlobalTheory.T.appellHumbert_uniformisation_riemannForm laws laws2 hc hT P₀ u₀ _ χ₀ hAH₀
-  obtain ⟨c, φ, hφ, hcP, ⟨wP, hwP⟩, hlev⟩ := GlobalTheory.T.exists_siegPre_iso_of_polAV laws hc o ℂ em P₀.g k b.ζ (Units.map (em : o →* ℂ) b.ζ) P₀
+  obtain ⟨Ef, hEf, -, -, -, -, -, -, hWeil⟩ := _root_.GlobalTheory.AnyAppellHumbert.isAH_properties laws laws2 hc hT P₀ u₀ _ χ₀ hAH₀
+  obtain ⟨c, φ, hφ, hcP, ⟨wP, hwP⟩, hlev⟩ := _root_.GlobalTheory.exists_siegPre_of_polAV laws hc o ℂ em P₀.g k b.ζ (Units.map (em : o →* ℂ) b.ζ) P₀
     (fun x => u₀.ex ((k : ℂ)⁻¹ • per τ (m x))) rfl hk rfl
     (IsPrimitiveRoot.coe_units_iff.1 (b.prim ℂ em))
     (fun x y => by rw [map_add, map_add, smul_add, u₀.ex_add])

@@ -5,7 +5,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.F
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsThetaPtOverOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGeneratorNeZero
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsLocallyNoetherian
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FullLinearLevelCoverBaseChangeTorsorStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FullLinearLevelCoverBaseChangeTorsor
 
 set_option autoImplicit false
 
@@ -89,7 +89,7 @@ theorem exists_shift_nullVal_ne_zero : Laws → ∀ (E : Type) [Field E] [Number
     induction m with
     | zero => rw [zero_smul, e₀, pow_zero]
     | succ m ih => rw [succ_nsmul, hev.1, ih, pow_succ]
-  have sur := ((T.fullLinearLevel_cover_baseChange_torsor hL E H Dw l Xo (R ^ 4) (by positivity)).2.2.1 K y.x ev hev).1
+  have sur := ((_root_.GlobalTheory.fullLevel_cover_baseChange_torsor hL E H Dw l Xo (R ^ 4) (by positivity)).2.2.1 K y.x ev hev).1
   have key : ∀ x : Dw.La, ∃ u : LatMod Dw R,
       w (g (Submodule.Quotient.mk (x + R • qRep u))) ≠ 0 := fun x => by
     obtain ⟨z, hz, h⟩ := exists_nullVal_ne_zero Xo c hL y (R ^ 2) hR (ev (g (Submodule.Quotient.mk x)) ^ R ^ 2)

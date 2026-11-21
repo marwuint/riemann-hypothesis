@@ -55,15 +55,6 @@ theorem shiftF_apply (x y : Fin d → k) (f : SchF k d V) : (shiftF x f).1 y = f
 theorem actF_apply (X : Representation ℂ (GL (Fin d) k) V) (g : GL (Fin d) k) (f : SchF k d V) (y : Fin d → k) :
     (actF X g f).1 y = X g (f.1 (((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y)) := rfl
 
-theorem size_eq (m : ℕ) : (m + 1) + (m + 1) = ((m + 1) + m) + 1 := by omega
-
-def Rm (ψ : AddChar k Circle) {m : ℕ} (π₁ π₂ : GRep k (m + 1)) : MRep k (m + 1) :=
-  iterN ψ m (gres ((π₁.prod π₂).cast (size_eq m)))
-
-def gOf {m : ℕ} (σ : IrrRep (GL (Fin (m + 1)) k)) : GRep k (m + 1) := ⟨σ.V, σ.ρ⟩
-
-def gDual {m : ℕ} (σ : IrrRep (GL (Fin (m + 1)) k)) : GRep k (m + 1) := ⟨smoothPart σ.ρ.dual, contra σ.ρ⟩
-
 end GlobalTheory.CompanionTheory.BZShell
 
 end

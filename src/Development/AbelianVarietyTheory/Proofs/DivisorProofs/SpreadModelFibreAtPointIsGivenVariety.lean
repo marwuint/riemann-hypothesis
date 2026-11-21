@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.UniformizationLawsAndExpansionStatements
@@ -11,11 +11,11 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpeciali
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDescOfPoints
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowEqOneOfIsGrpPullbackOfInjectiveDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingSpreadPointsEqSpreadRootStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelStructureGeometricFibrePullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelPointPowEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaPtFibreSpreadModelAtFieldPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowEqOneOfIsGrpPullbackOfInjectiveDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingSpreadPointsEqSpreadRoot
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelStructureGeometricFibrePullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelPointPowEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaPtFibreSpreadModelAtFieldPoint
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -82,12 +82,12 @@ theorem fibre_descends : ∀ (F Ω T : Type) [Field F] [IsAlgClosed F] [CharZero
   have hnΩ : (n : Ω) ≠ 0 := by
     rw [← map_natCast em]; exact (map_ne_zero em).2 (Nat.cast_ne_zero.2 hn.ne_zero)
   have hyt : ∀ i, y₀ i ^ ((n ^ J) ^ 2) = 1 := fun i =>
-    GlobalTheory.T.pow_eq_one_of_isGrpPullback_of_injective_domain Ω T jT hinj A P φ hP (lev.pt i) (y₀ i) _ (hy i) (lev.torsion i)
+    _root_.GlobalTheory.Mum.pow_eq_one_of_isGrpPullback_of_injective Ω T jT hinj A P φ hP (lev.pt i) (y₀ i) _ (hy i) (lev.torsion i)
   let ζT : Tˣ := Units.map (algebraMap F T).toMonoidHom ζ
   have hjζ : Units.map jT.toMonoidHom ζT = Units.map em.toMonoidHom ζ := by
     ext; simp [ζT, ← hcomp]
   have hpair : ∀ i j, WeilIs P.A P.L (((n ^ J) ^ 2 : ℕ) : ℤ) (y₀ i) (y₀ j) (unitOn ζT ^ stdSymp A.g i j) := fun i j => by
-    have := GlobalTheory.T.commutatorPairing_spread_points_eq_spread_root Ω T jT hinj A P φ hP hL ((n ^ J) ^ 2) (lev.pt i) (lev.pt j) (y₀ i) (y₀ j) (ζT ^ stdSymp A.g i j)
+    have := _root_.GlobalTheory.MumPair.weilIs_of_spread Ω T jT hinj A P φ hP hL ((n ^ J) ^ 2) (lev.pt i) (lev.pt j) (y₀ i) (y₀ j) (ζT ^ stdSymp A.g i j)
       (Nat.one_le_iff_ne_zero.2 hM0) (hy i) (hy j) (hyt i) (hyt j)
       (by rw [map_zpow, hjζ, unitOn_zpow]; exact lev.pairing i j)
     rwa [unitOn_zpow] at this
@@ -97,14 +97,14 @@ theorem fibre_descends : ∀ (F Ω T : Type) [Field F] [IsAlgClosed F] [CharZero
   let ψ₀ : A₀.A.left ⟶ P.A.left := pullback.fst P.A.hom (spMap tR)
   have hA₀ : IsGrpPullback A₀.A P.A (spMap tR) ψ₀ := isGrpPullback_pullback P.A (spMap tR)
   have hLA₀ : LBIso A₀.L (P.L.pull ψ₀) := PolBaseChange.lbIso_refl (pull_isLB P.isLB _)
-  obtain ⟨levF, hlevF⟩ := GlobalTheory.T.exists_level_structure_geometric_fibre_pullback T F tR P A₀ ψ₀ hA₀ hLA₀ A.g ((n ^ J) ^ 2) hgP ζT ζ hF0 htζ hζ y₀ hyt hpair
+  obtain ⟨levF, hlevF⟩ := _root_.GlobalTheory.Mum.FibLevel.exists_level_of_pullback T F tR P A₀ ψ₀ hA₀ hLA₀ A.g ((n ^ J) ^ 2) hgP ζT ζ hF0 htζ hζ y₀ hyt hpair
   have cover : ∀ z : Over.mk (spMap t.toRingHom) ⟶ P.A, z ^ (n ^ J) = 1 →
       ∃ a : Fin (2 * A.g) → ZMod ((n ^ J) ^ 2),
       ((Over.homMk (spMap t.toRingHom) : Over.mk (spMap t.toRingHom) ⟶ baseOver (Sp T)) ≫
         linComb y₀ (fun i => (a i).val)) ^ (n ^ J) = z := by
     intro z hz
     obtain ⟨e, he⟩ := GlobalTheory.exists_mulEquiv_of_isGrpPullback hA₀ (𝟙 (Sp F)) (spMap tR) (Category.id_comp _).symm
-    obtain ⟨a, ha⟩ := GlobalTheory.T.exists_levelPoint_pow_eq' F A₀ (n ^ J) A.g hgP _ levF (e.symm z) (by omega) (by rw [← map_pow, hz, map_one])
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.exists_levelPoint_pow_eq F A₀ (n ^ J) A.g hgP _ levF (e.symm z) (by omega) (by rw [← map_pow, hz, map_one])
     refine ⟨a, ?_⟩
     have key : e (GlobalTheory.levelPoint levF hgP a) =
         (Over.homMk (spMap t.toRingHom) : Over.mk (spMap t.toRingHom) ⟶ baseOver (Sp T)) ≫
@@ -122,7 +122,7 @@ theorem fibre_descends : ∀ (F Ω T : Type) [Field F] [IsAlgClosed F] [CharZero
         (Over.homMk (spMap t.toRingHom) : Over.mk (spMap t.toRingHom) ⟶ baseOver (Sp T)) ≫
           linComb y₀ (fun i => (a i).val))
       (fun a => (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (v' a)) :=
-    GlobalTheory.T.isThetaPt_fibre_spread_model_at_fieldPoint F Ω T em jT t hft hinj hcomp A P φ hP hL (n ^ J) (Fin (2 * A.g) → ZMod ((n ^ J) ^ 2))
+    _root_.GlobalTheory.Mum.isThetaPt_fibre F Ω T em jT t hft hinj hcomp A P φ hP hL (n ^ J) (Fin (2 * A.g) → ZMod ((n ^ J) ^ 2))
       (GlobalTheory.levelPoint lev rfl) (fun a => linComb y₀ (fun i => (a i).val)) v' ho.pow hm3 hxF
       (fun a => linComb_pow_eq_one _ _ _ hyt) cover hv
   let B := GlobalTheory.AmpleSymModel.polPull A₀ (spMap em)
@@ -133,7 +133,7 @@ theorem fibre_descends : ∀ (F Ω T : Type) [Field F] [IsAlgClosed F] [CharZero
   have hB : IsGrpPullback B.A P.A (spMap em ≫ spMap tR) (ψ₁ ≫ ψ₀) := hB₁.comp hA₀
   have hLB : LBIso B.L (P.L.pull (ψ₁ ≫ ψ₀)) := GlobalTheory.ArcDataDescent.lbIso_pull_pull P.isLB ψ₀ ψ₁ rfl
   have hBζ : Units.map (em.comp tR).toMonoidHom ζT = Units.map em.toMonoidHom ζ := by ext; simp [ζT, tR]
-  obtain ⟨levB, hlevB⟩ := GlobalTheory.T.exists_level_structure_geometric_fibre_pullback T Ω (em.comp tR) P B (ψ₁ ≫ ψ₀) (hB.congr hsp rfl) hLB A.g ((n ^ J) ^ 2) hgP ζT _
+  obtain ⟨levB, hlevB⟩ := _root_.GlobalTheory.Mum.FibLevel.exists_level_of_pullback T Ω (em.comp tR) P B (ψ₁ ≫ ψ₀) (hB.congr hsp rfl) hLB A.g ((n ^ J) ^ 2) hgP ζT _
     hΩ0 hBζ (hζ.map_of_injective (Units.map_injective (f := em.toMonoidHom) em.injective)) y₀ hyt hpair
   have thΩ := GlobalTheory.Ex.Specialise.isThetaPt_map hL2 P em (x := spMap em ≫ spMap tR) rfl thF
   have key : ∀ (s : Sp Ω ⟶ Sp T) (_ : s = (baseOver (Sp Ω)).hom ≫ (spMap em ≫ spMap tR))

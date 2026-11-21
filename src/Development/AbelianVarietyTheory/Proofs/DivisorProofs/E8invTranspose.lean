@@ -37,8 +37,4 @@ instance : StarRing O8 where
   star_mul a b := adj_mul a b
   star_add a b := adj_add a b
 
-def e8 : O8 := Matrix.single (0 : Fin 8) (0 : Fin 8) (1 : ℤ)
-
-def f8 : O8 := -Matrix.single (2 : Fin 8) (0 : Fin 8) (1 : ℤ)
-
 end GlobalTheory.Mum.E8Ring

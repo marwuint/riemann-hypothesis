@@ -111,7 +111,4 @@ theorem integer_ring_topology : OTop (E := E) v :=
     fun t ht x hx => by rw [sc_mul]; exact Sd.oev_smul v ht hx,
     fun σ _ hx => oev_sigR v σ hx⟩
 
-theorem ring_topology_instances : RTop (E := E) v :=
-  ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
-
 end PI.UnitaryGroupMassFormula.LocJacTyp

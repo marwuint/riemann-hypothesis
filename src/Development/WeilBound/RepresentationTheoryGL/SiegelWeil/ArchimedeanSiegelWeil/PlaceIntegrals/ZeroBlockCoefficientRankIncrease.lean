@@ -1,29 +1,38 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMMemFramesEIff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypOneZeroZero
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeZeroRankOneOfThreeLeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeZeroRankOneOfThreeLe
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsStandardLocalMeasures
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFibreMeasuresArchimedeanGramMapStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFibreMeasuresArchimedeanGramMap
+import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneVectorCcOfSiegelWeil
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FundamentalDomainUnitaryAdelicExistsMeasureEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAdeleCharTrivialOnTotallyReal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalComponentsNontrivialAdelicCharacterStatement
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HaarFibreUniqueness.SdExInst
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensGen
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HaarFibreUniqueness.GramMapFibreExistence
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolumeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliableStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TprodComplementSplitFinsetStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PureAdelicFunctionMeasurableStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliable
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TprodComplementSplitFinset
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PureAdelicFunctionMeasurable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCovolOne
-import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.ZeroBlockCoefficientInductionLeftStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicPlaneUnfoldingIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CovolumeOneEulerProductMeasureExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductMeasureCovolumeOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeStabilizerVolumeAlmostAllStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicRankOneGlobalVolumeStatement
-import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.ZeroBlockCoefficientInductionRight
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductLintegralLimitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ISupFiniteProductTailLimitStatement
+import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.ZeroBlockCoefficientInductionLeft
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicPlaneUnfoldingIntegral
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CovolumeOneEulerProductMeasureExists
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductMeasureCovolumeOne
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeStabilizerVolumeAlmostAll
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicRankOneGlobalVolume
+import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.InvOneSubBounds
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductLintegralLimit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ISupFiniteProductTailLimit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicSumNondegenerateFrameStatement
 
 noncomputable section
@@ -52,17 +61,17 @@ theorem lintegral_iSup_places {ι Ω : Type} [Countable ι] [DecidableEq ι] [Me
 theorem latV_measurable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
     (v : HeightOneSpectrum (𝓞 F)) : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
-  obtain ⟨h1, h2, h3, h4, -⟩ := GlobalTheory.T.completion_is_local_ring F v
-  haveI := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M
-  exact (((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2).measurableSet
+  obtain ⟨h1, h2, h3, h4, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
+  haveI := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M
+  exact (((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b n M).2.2.2.1 v).2).measurableSet
 
 theorem fam_inf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)) (hlam : lam.IsAddHaarMeasure) (n : ℕ) :
     ∃ f, IsGramFibFree (Ainf F) σ J n (coordW (Ainf F) b lam n M) (coordHerm (Ainf F) σ b lam n) f := by
   have hB : BorelSpace (Ainf F) := ⟨rfl⟩
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) _ b lam hlam
-  exact GlobalTheory.T.exists_fibreMeasures_archimedeanGramMap F E σ hCM M n J hJ _ _ (hW n M) (hH n)
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Ainf F) _ b lam hlam
+  exact _root_.GlobalTheory.ArchGramFibre.exists_fibreFamily F E σ hCM M n J hJ _ _ (hW n M) (hH n)
 
 theorem fam_fin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
@@ -72,14 +81,14 @@ theorem fam_fin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   have := PI.VolStabS.secondCountable_Fv F v
   have := PI.VolStabS.locallyCompact_Fv F v
   have hBv : BorelSpace (Fv F v) := ⟨rfl⟩
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) _ b lam hlam
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) _ b lam hlam
   exact PI.OmFibreUniq.W.gram_map_fibre_existence σ J v n hCM hJ _ _ (hW n M) (hH n)
 
 theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 1 ≤ n → 2 * n < M → ∀ (h₀ : ∀ a b : Fin n, σ ((0 : Matrix (Fin n) (Fin n) E) b a) = (0 : Matrix (Fin n) (Fin n) E) a b) (h₁ : ∀ a b : Fin (n + 1), σ ((0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) b a) = (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) a b), (framesE σ J (0 : Matrix (Fin n) (Fin n) E)).Nonempty → SWFree σ J (0 : Matrix (Fin n) (Fin n) E) h₀ → SWFree σ (hypOne J) (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) h₁ := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn hnM h₀ h₁ hne hSW d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm
   classical
-  have hLi : IsLocR (Ainf F) := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1
-  have hLv : ∀ v, IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F
+  have hLi : IsLocR (Ainf F) := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1
+  have hLv : ∀ v, IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩
   haveI hBv : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩
   obtain ⟨hJ', he0⟩ := GlobalTheory.T.hyperbolic_sum_nondegenerate_frame F E σ hCM M J hJ
@@ -89,19 +98,19 @@ theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   obtain ⟨m'inf, hm'inf⟩ := fam_inf σ hCM J hJ b laminf hinf.1 n
   choose m₁ hm₁ using fun v => fam_fin σ hCM (hypOne J) hJ' b v (lam v) (hlam v).1 1
   choose m' hm' using fun v => fam_fin σ hCM J hJ b v (lam v) (hlam v).1 n
-  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ
+  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := _root_.GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ
   obtain ⟨⟨𝓕₁, h𝓕₁⟩, -⟩ := hFV μ₁ hμ₁
   have hE' := hSW d b laminf lam hinf hlam μ₁ 𝓕₁ hμ₁ h𝓕₁ m'inf m' hm'inf hm'
-  have hE₁ := GlobalTheory.T.siegelWeilFree_zero_rank_one_of_three_le F E σ hCM (M + 2) (hypOne J) hJ' (by omega) h₂ ⟨_, he0⟩ d b laminf lam hinf hlam
+  have hE₁ := _root_.GlobalTheory.CompanionTheory.SW.OneZero.one_vector_zero F E σ hCM (M + 2) (hypOne J) hJ' (by omega) h₂ ⟨_, he0⟩ d b laminf lam hinf hlam
     μ 𝓕 hμ h𝓕 m₁inf m₁ hm₁inf hm₁
-  obtain ⟨hfinL, hsumL⟩ := GlobalTheory.T.zero_block_coefficient_induction_right F E σ hCM M J hJ n hn hnM h₀ h₁ h₂ d b lam hlam m m₁ m' hm hm₁ hm'
+  obtain ⟨hfinL, hsumL⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypMass.HH.mass_isotropic F E σ hCM M J hJ n hn hnM h₀ h₁ h₂ d b lam hlam m m₁ m' hm hm₁ hm'
     hE₁.1 hE₁.2.1 hE'.1 hE'.2.1
   refine ⟨hfinL, hsumL, ?_⟩
-  obtain ⟨dA, hdA, hdAE⟩ := GlobalTheory.T.covolume_one_euler_product_measure_exists F E σ hCM n d b laminf lam hinf hlam
-  obtain ⟨hsumP, S₃, hS₃⟩ := GlobalTheory.T.hyperbolic_rank_one_global_volume F E σ hCM M J hJ (by omega) d b laminf lam hinf hlam h₂ m₁inf m₁
+  obtain ⟨dA, hdA, hdAE⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.CovolA.exists_dA F E σ hCM n d b laminf lam hinf hlam
+  obtain ⟨hsumP, S₃, hS₃⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimOne.prim_formula F E σ hCM M J hJ (by omega) d b laminf lam hinf hlam h₂ m₁inf m₁
     hm₁inf hm₁ _ hE₁
-  obtain ⟨S₂, hS₂⟩ := GlobalTheory.T.euler_product_measure_covolume_one F E σ hCM M J hJ n d b laminf lam hinf hlam dA hdAE _ _ _ hE'
-  have hStab := GlobalTheory.T.lattice_stabilizer_volume_almost_all F E σ hCM M J hJ n d b
+  obtain ⟨S₂, hS₂⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Pure.inner_pure F E σ hCM M J hJ n d b laminf lam hinf hlam dA hdAE _ _ _ hE'
+  have hStab := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Stab.stageInt_latStab F E σ hCM M J hJ n d b
   refine ⟨S₂ ∪ S₃ ∪ (Filter.eventually_cofinite.1 hStab).toFinset, fun S hS φinf φ hφinf hφ => ?_⟩
   have hS2 : S₂ ⊆ S := fun x hx => hS (by simp [hx])
   have hS3 : S₃ ⊆ S := fun x hx => hS (by simp [hx])
@@ -113,7 +122,7 @@ theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     exact hv (hS (by simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq]; exact Or.inr hc))
   have hlatm : ∀ v, MeasurableSet (latV b v : Set (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E)) :=
     fun v => latV_measurable σ hCM b (n + 1) (M + 2) v
-  have stg := GlobalTheory.T.zero_block_coefficient_induction_left F E σ hCM M J hJ n hn hnM h₀ h₁ h₂
+  have stg := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStage.local_stages F E σ hCM M J hJ n hn hnM h₀ h₁ h₂
   obtain ⟨Ψinf, hΨinfm, hΨinf1, hΨinf2⟩ := stg (Ainf F) hLi d b laminf hinf.1 minf m₁inf m'inf hminf hm₁inf
     hm'inf φinf hφinf
   choose Ψ hΨm hΨ1 hΨ2 using fun v => stg (Fv F v) (hLv v) d b (lam v) (hlam v).1 (m v) (m₁ v) (m' v)
@@ -171,7 +180,7 @@ theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     · rw [hΨ'S v hv]; exact hΨm v
     · rw [hΨ'N v hv]; exact hGm v
   have hpm : ∀ S', Measurable (purePr σ J b S' Ψinf Ψ') := fun S' =>
-    GlobalTheory.T.euler_product_lintegral_limit F E σ hCM M J hJ d b S' Ψinf Ψ' hΨinfm hΨ'm
+    _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimMeas.measurable_purePr F E σ hCM M J hJ d b S' Ψinf Ψ' hΨinfm hΨ'm
   obtain ⟨term, hterm⟩ : ∃ term : Finset (HeightOneSpectrum (𝓞 F)) → (Fin 1 → Fin (M + 2) → AF F ⊗[F] E) → ℝ≥0∞,
       ∀ S' y, term S' y = ENNReal.ofReal (∏' v : {v // v ∉ S'}, τ v.1) * purePr σ J b S' Ψinf Ψ' y :=
     ⟨_, fun _ _ => rfl⟩
@@ -194,7 +203,7 @@ theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
           have hvS' : v ∉ S' := (Finset.mem_sdiff.1 hv).2
           have hvS : v ∉ S := fun h => hvS' (h1 h)
           rw [hΨ'N v hvS, hGprim v hvS _ (hy v hvS')]
-      have ht := GlobalTheory.T.tprod_complement_split_finset _ τ S' S'' hsumτ h2
+      have ht := _root_.GlobalTheory.CompanionTheory.SW.TailCut.tprod_tail_cut _ τ S' S'' hsumτ h2
       rw [e1, e2, ← Finset.prod_sdiff h2, e3, ht, ENNReal.ofReal_mul (Finset.prod_nonneg fun v _ => hτ0 v),
         ENNReal.ofReal_prod_of_nonneg fun v _ => hτ0 v]
       exact le_of_eq (by ring)
@@ -203,7 +212,7 @@ theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
       rw [e1, mul_zero]
       exact bot_le
   have hτtail : ∀ S' : Finset (HeightOneSpectrum (𝓞 F)), 0 ≤ ∏' v : {v // v ∉ S'}, τ v.1 := fun S' =>
-    (GlobalTheory.T.infinite_product_multipliable {v // v ∉ S'} (fun v => τ v.1) (hsumτ.subtype _)).2.2.2 fun _ => hτ0 _
+    (_root_.GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod {v // v ∉ S'} (fun v => τ v.1) (hsumτ.subtype _)).2.2.2 fun _ => hτ0 _
   have hint : ∀ S', S ⊆ S' → ∫⁻ y, term S' y ∂(thetaMeas σ (hypOne J) μ 𝓕 (framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E))) =
       ((∫⁻ X, φinf X ∂(minf (hermOf (Ainf F) σ 0 h₁))) * ∏ v ∈ S, ∫⁻ X, φ v X ∂(m v (hermOf (Fv F v) σ 0 h₁))) *
         ENNReal.ofReal ((∏ v ∈ S' \ S, Mv v) * ((∏' v : {v // v ∉ S'}, τ v.1) * ∏' v : {v // v ∉ S'}, p v.1)) := by
@@ -240,11 +249,11 @@ theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     · rw [← hv Sh subset_rfl]
       refine le_iSup_of_le Sh ?_
       rw [Finset.union_eq_right.2 hSSh]
-  have hΦm := GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b (n + 1) (M + 2) S φinf φ hφinf hφ
+  have hΦm := _root_.GlobalTheory.CompanionTheory.SW.PureMeas.measurable_pureL F E σ hCM d b (n + 1) (M + 2) S φinf φ hφinf hφ
   have hΨgm : Measurable fun y => ⨆ S', term (S ∪ S') y := Measurable.iSup fun S' => htm _
-  have hB := GlobalTheory.T.hyperbolic_plane_unfolding_integral F E σ hCM M J hJ n hn hnM μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ dA hdA _ _ hΦm hΨgm hcond
+  have hB := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Unf.unfold_frames F E σ hCM M J hJ n hn hnM μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ dA hdA _ _ hΦm hΨgm hcond
   rw [hB, lintegral_iSup_places _ S term htm hmono _ _ hint,
-    GlobalTheory.T.iSup_finite_product_tail_limit _ Mv τ p S hsumM hsumτ hsump hM0 hτ0 hp0 hle]
+    _root_.GlobalTheory.CompanionTheory.TailProd.iSup_partial_mul_tails _ Mv τ p S hsumM hsumτ hsump hM0 hτ0 hp0 hle]
   simp only [ENNReal.coe_one, one_mul]
   congr 2
   exact tprod_congr fun v => hMv v.1

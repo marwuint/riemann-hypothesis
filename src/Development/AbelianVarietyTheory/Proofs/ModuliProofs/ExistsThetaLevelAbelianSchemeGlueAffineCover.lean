@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SurjectiveAppTopPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenOfInvariant
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelIsoUniqueOfDenseCommonFibresStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemeGlueOpenCoverStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemeGlueOpenCover
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
@@ -271,7 +271,7 @@ theorem exists_glue : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g 
   have e₂ : ∀ i, (e i).inv ≫ x i = (U i).ι := fun i => (x i).isoOpensRange_inv_comp
   choose t' ht' using fun i => GlobalTheory.tObj_pull o g _ J b _ _ _ ((U i).ι ≫ s) (e i).inv (t i)
     (by rw [← Category.assoc, e₂])
-  obtain ⟨t₀, ht₀⟩ := GlobalTheory.T.exists_thetaLevelAbelianScheme_glue_openCover o g _ J b S s I U t'
+  obtain ⟨t₀, ht₀⟩ := _root_.GlobalTheory.exists_tobj_of_cover o g _ J b S s I U t'
     (top_le_iff.1 fun p _ => TopologicalSpace.Opens.mem_iSup.2 (hc p))
     (fun i j => by
       obtain ⟨u, hu⟩ := GlobalTheory.tObj_pull o g _ J b _ _ _ ((U i ⊓ U j).ι ≫ s) (S.homOfLE inf_le_left) (t' i)

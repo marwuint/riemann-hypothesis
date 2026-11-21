@@ -29,20 +29,4 @@ def Rounding : Prop :=
     ((∀ u, Fil u ≠ Fil (u + 1) → (-b - S ≤ u ∧ u ≤ -b) ∨ (-η ≤ u ∧ u ≤ η)) →
       ∀ i, NbDown b (Fil (-η)) (i - g) ≤ Fil (-i) ∧ Fil (-i) ≤ NbDown b (Fil (-η)) (i + g))
 
-def UnivPart : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ →
-    ∀ (r m : ℕ) (Up Dn : Finset ℕ) (C F : ℕ → Submodule O (Fin r → O)),
-      (∀ s ∈ Up, ∀ v : Fin r → O, ϖ • v ∈ C s → v ∈ C s) →
-      (∀ s ∈ Dn, ∀ v : Fin r → O, ϖ • v ∈ F s → v ∈ F s) →
-      (∀ s ∈ Up, r ≤ Module.finrank O (C s) + m) → (∀ s ∈ Dn, Module.finrank O (F s) ≤ m) →
-      ∃ L'' Lrest : Submodule O (Fin r → O), IsCompl L'' Lrest ∧ (∀ s ∈ Up, L'' ≤ C s) ∧
-        (∀ s ∈ Dn, F s ≤ Lrest) ∧ Module.finrank O Lrest ≤ m * (Up.card + Dn.card)
-
-def Descent : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (ϖ : O), Irreducible ϖ →
-    ∀ (φ : PowerSeries O →ₐ[O] PowerSeries O) (d : ℕ), 1 ≤ d → UnitDist ϖ d (φ PowerSeries.X) →
-      ∀ (c : O) (f g : PowerSeries O),
-        φ f ∈ Ideal.span {PowerSeries.C c, φ g} → f ∈ Ideal.span {PowerSeries.C c, g}
-
 end Formalism.ExponentWindows

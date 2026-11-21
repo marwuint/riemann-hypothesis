@@ -50,6 +50,4 @@ def GaugeUnfold : Prop :=
 
 theorem gauss_pos {n : ℕ} (y : Fin n → ℂ) : 0 < gauss y := Real.exp_pos _
 
-example : qEps (fun _ : Fin 1 => true) (fun _ => 1) = 1 := by simp [qEps]
-
 end GlobalTheory.GaussMean

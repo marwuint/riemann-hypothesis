@@ -98,13 +98,6 @@ lemma pat_smul {l : Fin r} {A : Mx k r} (c : ℂ) (hA : Pat k r l A) : Pat k r l
   apply h
   rw [Matrix.smul_apply, h0, smul_zero]
 
-lemma pat_neg {l : Fin r} {A : Mx k r} (hA : Pat k r l A) : Pat k r l (-A) := by
-  intro i j h
-  apply hA
-  intro h0
-  apply h
-  rw [Matrix.neg_apply, h0, neg_zero]
-
 lemma pat_sub {l : Fin r} {A B : Mx k r} (hA : Pat k r l A) (hB : Pat k r l B) : Pat k r l (A - B) := by
   intro i j h
   by_cases hA' : A i j = 0

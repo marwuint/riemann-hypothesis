@@ -8,14 +8,6 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.UnramOrder
 
-section Abstract
-
-open IsLocalRing Polynomial
-
-variable {R₀ R : Type*} [CommRing R₀] [CommRing R] [Algebra R₀ R]
-
-end Abstract
-
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]

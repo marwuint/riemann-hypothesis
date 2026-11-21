@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTemperateGrowthE
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClmSupBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialOperatorFderivFormulaStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialOperatorSchwartzSeminormBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivativeBoundByPartialsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivativeBoundByPartials
 
 open GlobalTheory.SliceSchwartz
 open scoped ContDiff
@@ -46,7 +46,7 @@ theorem decay_qOp (n : ℕ) : ∀ (P : SchwartzMap (κ' → V) ℂ →L[ℂ] Sch
     exact ⟨s, C, hC, fun f z => by rw [norm_iteratedFDeriv_zero]; exact h f z⟩
   | succ n ih =>
     intro P k
-    obtain ⟨CE, hCE, hE⟩ := GlobalTheory.T.iterated_derivative_bound_by_partials (κ ⊕ κ₁' → V)
+    obtain ⟨CE, hCE, hE⟩ := _root_.GlobalTheory.norm_iteratedFDeriv_succ_le_sum_partial (κ ⊕ κ₁' → V)
     set b := Module.finBasis ℝ (κ ⊕ κ₁' → V)
     obtain ⟨s1, C1, hC1, h1⟩ := ih P k
     choose s1' C1' hC1' h1' using fun i => clm_sup_bound (pd (padL (κ' := κ') (b i ∘ Sum.inl))) s1

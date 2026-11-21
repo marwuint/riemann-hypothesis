@@ -401,22 +401,6 @@ theorem local_basis_change_decomp (A : AtTTied u) (w : D.what₂.places.Pl) (hw 
   · rw [hval]
     exact hdec
 
-theorem local_basis_change_decomp_compatible (Tt : FormsTied D u) (hU : UnramifiedAtLevelPrimes D u Tt.atT) (w : D.what₂.places.Pl) (hw : OverT D u w)
-    (hs : (D.fm u).seenP w = true) (v : (D.mem u).A.vT)
-    (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) (B B' : GL (Fin (D.R.N i)) D.host.E)
-    (hB : IsLocBasis (D.mem u).A.T (Ld D u i hi c : Set _) B)
-    (hB' : IsLocBasis (D.mem u).A.T (Lk Tt.atT i hi v c : Set _) B') :
-    ∃ (K₁ K₂ : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) ℂ) (j : Fin (D.R.N i)) (ϖ : bwA_Ow D w)
-      (ε η : (bwA_Ow D w)ˣ), Irreducible ϖ ∧
-      K₁ ∈ bwA_EO (bwA_Ow D w) (D.R.N i) ∧ K₂ ∈ bwA_EO (bwA_Ow D w) (D.R.N i) ∧ K₁.det * K₂.det = 1 ∧
-      ((D.mem u).A.T : ℂ) = ((η : bwA_Ow D w) : ℂ) *
-        (((ε : bwA_Ow D w) * ϖ ^ D.what₂.places.ramIdx w : bwA_Ow D w) : ℂ) ∧
-      bwA_N D ((D.fm u).tauOf w v) B B' ((D.fm u).tauOf w v) =
-        K₁ * Matrix.diagonal (Function.update 1 j
-          ((((ε : bwA_Ow D w) * ϖ ^ D.what₂.places.ramIdx w : bwA_Ow D w) : ℂ))⁻¹) * K₂ :=
-  local_basis_change_decomp D u Tt.atT w hw v i hi (Tt.lv i hi) c (bwL_lcInt D u Tt i hi c) B B' hB hB'
-    (det_basis_change_div_prime_and_inv_integral D u Tt hU w hw hs v i hi c B B' hB hB')
-
 theorem length_factor_local_basis (A : AtTTied u) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (v : (D.mem u).A.vT) (Lv : LvTied u A 0 (Nat.zero_le _)) (c : (D.mem u).C.cls 0)
     (hLc0 : clsCrd D u 0 (Nat.zero_le _) c ≤ Ld D u 0 (Nat.zero_le _) c) (B B' : GL (Fin (D.R.N 0)) D.host.E)
@@ -487,36 +471,6 @@ theorem length_factor_local_basis (A : AtTTied u) (w : D.what₂.places.Pl) (hw 
   simp only [wsum]
   push_cast
   ring
-
-theorem length_factor_compatible_forms (Tt : FormsTied D u) (hU : UnramifiedAtLevelPrimes D u Tt.atT) (w : D.what₂.places.Pl) (hw : OverT D u w)
-    (hs : (D.fm u).seenP w = true) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (B B' : GL (Fin (D.R.N 0)) D.host.E)
-    (hB : IsLocBasis (D.mem u).A.T (Ld D u 0 (Nat.zero_le _) c : Set _) B)
-    (hB' : IsLocBasis (D.mem u).A.T (Lk Tt.atT 0 (Nat.zero_le _) v c : Set _) B')
-    (Nτ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ)
-    (hN : Nτ = bwA_N D ((D.fm u).tauOf w v) B B' ((D.fm u).tauOf w v)) :
-    ∃ n : ℕ, Module.length (bwA_Ow D w)
-      (((bwA_span (bwA_Ow D w) le_rfl ((D.fm u).lam 0 ((D.fm u).tauOf w v)).natW).map (mvPolynomialRowLinearMap (bwA_Ow D w) Nτ)).map
-          (mvPolynomialScalingMap (bwA_Ow D w) (Nτ.det ^ ((D.fm u).lam 0 ((D.fm u).tauOf w v)).detShift)) ⧸
-        ((bwA_span (bwA_Ow D w) le_rfl ((D.fm u).lam 0 ((D.fm u).tauOf w v)).natW).map
-          (mvPolynomialScalingMap (bwA_Ow D w) (((D.mem u).A.T : ℂ) ^ (D.fm u).bTop ((D.fm u).tauOf w v)))).comap
-          (((bwA_span (bwA_Ow D w) le_rfl ((D.fm u).lam 0 ((D.fm u).tauOf w v)).natW).map
-            (mvPolynomialRowLinearMap (bwA_Ow D w) Nτ)).map
-              (mvPolynomialScalingMap (bwA_Ow D w) (Nτ.det ^ ((D.fm u).lam 0 ((D.fm u).tauOf w v)).detShift))).subtype) = n ∧
-      (D.R.k : ℚ) * n = (D.what₂.places.ramIdx w : ℚ) *
-        (Module.finrank ℤ (delSq ℤ (D.R.N 0) ((D.fm u).lam 0 ((D.fm u).tauOf w v))) : ℚ) *
-        ((wsum ((D.fm u).lam 0 ((D.fm u).tauOf w v)) : ℚ) + (D.R.k : ℚ) * ((D.fm u).bTop ((D.fm u).tauOf w v) : ℚ)) :=
-  length_factor_local_basis D u Tt.atT w hw v (Tt.lv 0 (Nat.zero_le _)) c (bwL_lcInt D u Tt 0 (Nat.zero_le _) c) B B' hB hB'
-    (det_basis_change_div_prime_and_inv_integral D u Tt hU w hw hs v 0 (Nat.zero_le _) c B B' hB hB') Nτ hN
-
-theorem tensor_weyl_basis_lin_indep {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (lam : ι → DomWeight N) (κ : ι → Type)
-    (b : ∀ τ, Module.Basis (κ τ) ℤ (delSq ℤ N (lam τ))) :
-    LinearIndependent ℂ (fun g : (∀ τ, κ τ) => Formalism.L2.Forms.ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ)
-      ((b τ (g τ) : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ))) := by
-  have hb : ∀ τ, LinearIndependent ℂ (fun i : κ τ => MvPolynomial.map (Int.castRingHom ℂ)
-      ((b τ i : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ)) := fun τ =>
-    weyl_basis_lin_indep_field le_rfl (lam τ).natW (dominant_natWeight_antitone (lam τ)) ℂ (b τ)
-  exact linearIndependent_prod_rename_of_forall κ (fun τ (i : κ τ) => MvPolynomial.map (Int.castRingHom ℂ)
-      ((b τ i : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ)) hb
 
 end Tied
 

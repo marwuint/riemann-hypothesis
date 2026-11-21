@@ -1,5 +1,5 @@
 import Mathlib
-import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.ExponentSeparationLemma.ExponentSeparation
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSupportOfIsSubquotientProdIrr
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFiniteness
@@ -7,8 +7,8 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GeometricLemma
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalRepGLExistsSatakeParameters
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PrincipalSeriesSubquotientOfCharacters
 import GroundTheory.AutomorphicForms.Satake
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedInPrincipalSeriesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientPrincipalSeriesBoundStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedInPrincipalSeries
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientPrincipalSeriesBound
 
 noncomputable section
 
@@ -23,7 +23,7 @@ theorem mem_principalSeriesSpace_of_indSp {n : ℕ} (α : Fin n → ℂˣ)
     (f : IndSp (points (Fin n))
       ((GlobalTheory.SmGL.ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom)) :
     (fun g => f.1.1 g) ∈ principalSeriesSpace k n (paramChar k α) :=
-  GlobalTheory.T.induced_in_principal_series k n α f
+  _root_.GlobalTheory.CompanionTheory.SphSupp.PsBridge.indSp_mem_principalSeriesSpace k n α f
 
 theorem isSatakeParameter_of_isSubquotient_of_injective {n : ℕ} (α : Fin n → ℂˣ) {X V : Type}
     [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin n) k) X}
@@ -31,7 +31,7 @@ theorem isSatakeParameter_of_isSubquotient_of_injective {n : ℕ} (α : Fin n �
     {π : Representation ℂ (GL (Fin n) k) V} (h : IsSubquotient π ρ)
     [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)] (μ : MeasureTheory.Measure (GL (Fin n) k))
     [μ.IsHaarMeasure] : IsSatakeParameter π μ α :=
-  GlobalTheory.T.subquotient_principal_series_bound k n α X V ρ hρ ι hι π h μ
+  _root_.GlobalTheory.CompanionTheory.HeckeSub.isSatakeParameter_subquotient k n α X V ρ hρ ι hι π h μ
 
 theorem KO_eq_integralGL (n : ℕ) : KO k (Fin n) = GroundTheory.Automorphic.GLnLocal.integralGL k n := rfl
 

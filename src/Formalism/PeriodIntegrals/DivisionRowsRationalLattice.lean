@@ -14,9 +14,6 @@ open NumberField IsDedekindDomain
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
 
-def IsGLat (A : HLat K) (ρ : Representation K G A.V) : Prop :=
-  A.Good ∧ (∀ g, ∀ x ∈ A.L, ρ g x ∈ A.L) ∧
-  ∀ g v x, Formalism.HermitianLatticesTheory.normAt A.b A.X v (ρ g x) = Formalism.HermitianLatticesTheory.normAt A.b A.X v x
 variable (A : HLat K) (ρ : Representation K G A.V)
 
 def cutE (e : Module.End K A.V) (M : Submodule (𝓞 K) A.V) : Submodule (𝓞 K) A.V :=
@@ -26,16 +23,6 @@ def imgE (e : Module.End K A.V) (M : Submodule (𝓞 K) A.V) : Submodule (𝓞 K
   M.map (LinearMap.restrictScalars (𝓞 K) e)
 
 def dimE (e : Module.End K A.V) : ℕ := Module.finrank K (LinearMap.range e)
-
-def cut (a : MonoidAlgebra K G) (M : Submodule (𝓞 K) A.V) : Submodule (𝓞 K) A.V :=
-  cutE A (ρ.asAlgebraHom a) M
-
-def img (a : MonoidAlgebra K G) (M : Submodule (𝓞 K) A.V) : Submodule (𝓞 K) A.V :=
-  imgE A (ρ.asAlgebraHom a) M
-
-def dimOf (a : MonoidAlgebra K G) : ℕ := dimE A (ρ.asAlgebraHom a)
-
-def rkL (M : Submodule (𝓞 K) A.V) : ℕ := Formalism.HN.rkK M
 
 def degL (M : Submodule (𝓞 K) A.V) : ℝ := (Formalism.HN.rkK M : ℝ) * Formalism.HN.muDef A.b A.X M
 
@@ -54,8 +41,6 @@ def idxAt {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum
 def LocLe {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K)) (F : ℕ)
     (M N : Submodule (𝓞 K) V) : Prop :=
   ∀ x ∈ M, ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • x ∈ (w.asIdeal ^ F) • N
-
-def vCard (G : Type) [Fintype G] (w : HeightOneSpectrum (𝓞 K)) : ℤ := vAdd w ((Fintype.card G : ℕ) : K)
 
 def IsFull (M : Submodule (𝓞 K) A.V) : Prop := M.FG ∧ Submodule.span K (M : Set A.V) = ⊤
 
@@ -95,71 +80,11 @@ def KernelIndexFullLattice (A : HLat K) (e : Module.End K A.V) : Prop :=
       idxAt w (cutE A e A.L) (cutE A e Th) ≤ idxAt w A.L Th + (F : ℤ) * (dimE A (1 - e) : ℤ)) ∧
     cutE A e Th ≤ imgE A e Th
 
-def projection_sandwich_lattice : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V),
-    IsGLat A ρ → ProjectionSandwichLength A (ρ.asAlgebraHom (eG T)) (Fintype.card G)
-
-def MassRatio₂ : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V),
-    IsGLat A ρ → DegreeKernelLowerBound A (ρ.asAlgebraHom (eG T)) (Fintype.card G)
-
-def kernel_index_full_lattice : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V),
-    IsGLat A ρ → KernelIndexFullLattice A (ρ.asAlgebraHom (eG T))
-
 def projection_lemma_base_level : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
     (A : HLat K) (e : Module.End K A.V) (n : ℕ), IsProj A e n → ProjectionSandwichLength A e n ∧ DegreeKernelLowerBound A e n ∧ KernelIndexFullLattice A e
 
 end Lemma2
-
-section Lemma4
-
-open NumberField IsDedekindDomain
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
-
-def rS (T : GoodSet K G) (P0 : Pair K G) (A : HLat K) (ρ : Representation K G A.V) (s : T.S) : ℕ :=
-  rkL A (cut A ρ (eps P0 * eS T s) A.L)
-
-def rkT (T : GoodSet K G) (P0 P : Pair K G) (A : HLat K) (ρ : Representation K G A.V) : ℕ :=
-  ∑ s, nS T P s * rS T P0 A ρ s
-
-def delRk (T : GoodSet K G) (P0 P : Pair K G) (A : HLat K) (ρ : Representation K G A.V)
-    (Gam : ∀ s : T.S, Matrix (Fin (nS T P s)) (Fin (nS T P s)) (𝓞 K)) (w : HeightOneSpectrum (𝓞 K)) : ℝ :=
-  ∑ s, ((nS T P s * rS T P0 A ρ s : ℕ) : ℝ) *
-    ((vAdd w (algebraMap (𝓞 K) K (Gam s).det) : ℝ) / (nS T P s : ℝ) + (vCard (K := K) G w : ℝ))
-
-def Conclusion4a : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (P0 P : Pair K G), M1 T P0 →
-    ∀ (A : HLat K) (ρ : Representation K G A.V), IsGLat A ρ →
-      rkL A (cut A ρ (eps P * eG T) A.L) = rkT T P0 P A ρ ∧
-      |degL A (cut A ρ (eps P * eG T) A.L) -
-          ∑ s, (nS T P s : ℝ) * degL A (cut A ρ (eps P0 * eS T s) A.L)| ≤
-        10 * laG G * (rkT T P0 P A ρ : ℝ) ∧
-      (0 < rkT T P0 P A ρ →
-        muMaxL A (cut A ρ (eps P * eG T) A.L) ≤ muMaxL A (cut A ρ (eps P0 * eG T) A.L) + 10 * laG G)
-
-def Conclusion4b (C : ℝ) : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (P0 P : Pair K G), M1 T P0 →
-    ∃ Gam : ∀ s : T.S, Matrix (Fin (nS T P s)) (Fin (nS T P s)) (𝓞 K), (∀ s, (Gam s).det ≠ 0) ∧
-      ∀ (A : HLat K) (ρ : Representation K G A.V) (B : Submodule (𝓞 K) A.V),
-        IsGLat A ρ → IsGLat (K := K) (G := G) { A with L := B } ρ →
-        (∀ w, 0 ≤ delRk T P0 P A ρ Gam w ∧
-          |(idxAt w (cut A ρ (eps P * eG T) A.L) (cut A ρ (eps P * eG T) B) : ℝ) -
-            ∑ s, (nS T P s : ℝ) *
-              (idxAt w (cut A ρ (eps P0 * eS T s) A.L) (cut A ρ (eps P0 * eS T s) B) : ℝ)| ≤
-            C * delRk T P0 P A ρ Gam w) ∧
-        ∑ᶠ w, lw K w * delRk T P0 P A ρ Gam w ≤ 8 * laG G * (rkT T P0 P A ρ : ℝ)
-
-def Conclusion4 (C : ℝ) : Prop := Conclusion4a ∧ Conclusion4b C
-
-end Lemma4
 
 section Herm
 
@@ -177,9 +102,6 @@ def IsConjPlK (w w' : HeightOneSpectrum (𝓞 K)) : Prop := ∀ x : K, vAdd w' x
 def IsHermE (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
   (∀ x y, h y x = star (h x y)) ∧ (∀ x, (∀ y, h x y = 0) → x = 0) ∧ ∀ x y, h (e x) y = h x (e y)
 
-def IsGHerm (A : HLat K) (ρ : Representation K G A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
-  (∀ x y, h y x = star (h x y)) ∧ (∀ x, (∀ y, h x y = 0) → x = 0) ∧ ∀ g x y, h (ρ g x) (ρ g y) = h x y
-
 def DualInAt (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (M : Submodule (𝓞 K) A.V)
     (w : HeightOneSpectrum (𝓞 K)) : Prop :=
   ∀ v : A.V, (∀ a ∈ M, h v a ∈ Set.range (algebraMap (𝓞 K) K)) → ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • v ∈ M
@@ -194,12 +116,6 @@ def GramDetKernelValuation (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.
     ∀ (d : ℕ) (a : Fin d → A.V), IsBasisAt A a (cutE A e A.L) w w' →
       vAdd w (Matrix.of fun i j => h (a i) (a j)).det ≤ 2 * (dimE A (1 - e) : ℤ) * vAdd w ((n : ℕ) : K)
 
-def gram_det_kernel_dual_lattice : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V)
-    (h : A.V →ₗ⋆[K] A.V →ₗ[K] K), StarIsConj K → IsGLat A ρ → IsGHerm A ρ h →
-    GramDetKernelValuation A (ρ.asAlgebraHom (eG T)) (Fintype.card G) h
-
 def gram_det_kernel_base_level : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
     (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K),
@@ -207,10 +123,6 @@ def gram_det_kernel_base_level : Prop :=
 
 def IsCMFormE (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
   (∀ i j, IsCM (h (A.b i) (A.b j))) ∧ (∀ i j, IsCM (A.b.repr (e (A.b j)) i)) ∧
-  ∀ (v : InfinitePlace K) i j, Formalism.HermitianLatticesTheory.majAt A.b A.X v (A.b i) (A.b j) = v.embedding (h (A.b i) (A.b j))
-
-def IsCMForm (A : HLat K) (ρ : Representation K G A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) : Prop :=
-  (∀ i j, IsCM (h (A.b i) (A.b j))) ∧ (∀ g i j, IsCM (A.b.repr (ρ g (A.b j)) i)) ∧
   ∀ (v : InfinitePlace K) i j, Formalism.HermitianLatticesTheory.majAt A.b A.X v (A.b i) (A.b j) = v.embedding (h (A.b i) (A.b j))
 
 def LamStar (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K)
@@ -237,12 +149,6 @@ def L7 (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V �
     (∀ φ ∈ A.dualL, (∀ u ∈ U, φ u = 0) →
       ∀ m ∈ cutE A e A.L, φ m ∈ Set.range (algebraMap (𝓞 K) K))
 
-def division_rows_rational_lattice : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K] [IsGalois ℚ K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V)
-    (h : A.V →ₗ⋆[K] A.V →ₗ[K] K), StarIsConj K → IsGLat A ρ → IsGHerm A ρ h → IsCMForm A ρ h →
-    (∀ w, DualInAt A h A.L w) → L7 A (ρ.asAlgebraHom (eG T)) (Fintype.card G) h
-
 def division_rows_base_level : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K] [IsGalois ℚ K]
     (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K),
@@ -250,34 +156,5 @@ def division_rows_base_level : Prop :=
     (∀ w, DualInAt A h A.L w) → L7 A e n h
 
 end Herm
-
-section Parts
-
-open NumberField IsDedekindDomain
-
-def ProjA : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (A : HLat K) (e : Module.End K A.V) (n : ℕ), IsProj A e n → ProjectionSandwichLength A e n
-
-def ProjB : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (A : HLat K) (e : Module.End K A.V) (n : ℕ), IsProj A e n → DegreeKernelLowerBound A e n
-
-def ProjC : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (A : HLat K) (e : Module.End K A.V) (n : ℕ), IsProj A e n → KernelIndexFullLattice A e
-
-def GLatProj : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V),
-    IsGLat A ρ → IsProj A (ρ.asAlgebraHom (eG T)) (Fintype.card G)
-
-def GLatHerm : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [NumberField.IsTotallyComplex K]
-    (G : Type) [Group G] [Fintype G] (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V)
-    (h : A.V →ₗ⋆[K] A.V →ₗ[K] K), StarIsConj K → IsGHerm A ρ h →
-    IsHermE A (ρ.asAlgebraHom (eG T)) h ∧ (IsCMForm A ρ h → IsCMFormE A (ρ.asAlgebraHom (eG T)) h)
-
-end Parts
 
 end PI.Dv

@@ -1251,16 +1251,6 @@ theorem pderiv_eq_zero_of {K σ : Type} [CommRing K] {q : MvPolynomial σ K} {v 
   refine Finset.sum_eq_zero fun m hm => ?_
   rw [pderiv_monomial, h m hm, Nat.cast_zero, mul_zero, monomial_zero]
 
-theorem glAct_kill (LL : Letters N) (j : ℕ) (c d : Fin r) {q : MvPolynomial (Fin N × Fin r) ℚ_[p]}
-    (hq : ∀ m ∈ q.support, ∀ v : Fin N × Fin r, (v.1 : ℕ) < j → m v = 0) : glAct p LL j c d q = 0 := by
-  unfold glAct
-  rw [LinearMap.sum_apply]
-  refine Finset.sum_eq_zero fun i _ => ?_
-  split_ifs with h1 h2
-  · simp [pderiv_eq_zero_of (fun m hm => hq m hm (i, d) h1)]
-  · simp [pderiv_eq_zero_of (fun m hm => hq m hm (i, c) h1)]
-  · simp
-
 theorem glAct_mul_kill (LL : Letters N) (j : ℕ) (c d : Fin r) (x : MvPolynomial (Fin N × Fin r) ℚ_[p])
     {q : MvPolynomial (Fin N × Fin r) ℚ_[p]}
     (hq : ∀ m ∈ q.support, ∀ v : Fin N × Fin r, (v.1 : ℕ) < j → m v = 0) :
@@ -2858,7 +2848,5 @@ theorem highest_weight_dim_monotone : WeightSpaceDimMonotone := by
 end Formalism.GM.DimensionMonotonicity
 
 namespace Formalism.GM
-
-theorem weight_space_dimension_monotone : M.WeightSpaceDimMonotone := DimensionMonotonicity.highest_weight_dim_monotone
 
 end Formalism.GM

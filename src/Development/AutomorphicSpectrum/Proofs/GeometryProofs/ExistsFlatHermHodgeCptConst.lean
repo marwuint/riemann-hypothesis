@@ -2,8 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsPowSubMemSpanOfIsUnitModOfIsAlgClosed
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFlagDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BirationalLatticeHeightFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFlagDegree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BirationalLatticeHeightFormula
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointNormalCoords
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionsTwoComponents
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPlaceOfNotMemGenFibre
@@ -16,9 +17,9 @@ theorem exists_flatHerm_hodgeCpt_const : ∀ (E : Type) [Field E] [NumberField E
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 Fl xdeg e τ F' _ _ ψ A c₀ r cinf hR hA hB hC hc₀ hgen hZ hcinf hnorm
   have hN : NormalCpt 𝔐.ξ := XR.normalCpt_of_isCptGen 𝔐.tie.gen 𝔐.normal
   have hO : OverInt y ψ := overInt_of_normalCpt 𝔐.tie hN ψ
-  have hD := GlobalTheory.T.hodge_cpt_flag_degree E H D l Xo c O β Y S Ω K J y 𝔐 Fl xdeg e τ hR
+  have hD := _root_.GlobalTheory.CompanionTheory.Ar.Flat.lineLat_isDegOn E H D l Xo c O β Y S Ω K J y 𝔐 Fl xdeg e τ hR
   rw [← hA] at hD
-  refine ⟨hO, GlobalTheory.T.birational_lattice_height_formula K J Ω F' y ψ 𝔐.X 𝔐.ξ Ω _ (∏ i, e (τ, i)) c₀ A r cinf hO hB hC 𝔐.tie hN hD hc₀
+  refine ⟨hO, _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_flatHerm_of_adelic K J Ω F' y ψ 𝔐.X 𝔐.ξ Ω _ (∏ i, e (τ, i)) c₀ A r cinf hO hB hC 𝔐.tie hN hD hc₀
     (fun p => ?_) hcinf hnorm⟩
   by_cases hp : p ∈ genFibre ℤ 𝔐.ξ
   · exact Or.inl ⟨cst_mem_regAt_of_genFibre hN ψ hp, orderAt_one_zero.2 (hgen p hp)⟩

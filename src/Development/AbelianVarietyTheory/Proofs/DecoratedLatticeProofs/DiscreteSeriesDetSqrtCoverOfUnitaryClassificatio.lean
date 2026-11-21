@@ -5,10 +5,16 @@ import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary�
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsOfIsDSPar
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConsequencesOfDsClass
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDiscreteSeriesKTypesOfHasParamCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDiscreteSeriesKTypesOfHasParamCover
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsParamCoverDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CoverDiscreteSeriesUnitarilyEquivOfSameParamStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HarishChandraModulesIndefiniteUnitaryGroupStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CoverDiscreteSeriesUnitarilyEquivOfSameParam
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HarishChandraModulesIndefiniteUnitaryGroup
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Formalism.LocalToGlobal.BesselHermitianTheta.TiedType
+import Formalism.FormalDegreeBessel.StatementIO
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.NotTrivialAndTwist
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SameBlockOfPosC
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Formalism.L2.Theta Matrix GlobalTheory.RealPar GlobalTheory.CoverDS
 open GlobalTheory.IndefiniteRowSideFullHecke.IsotypicSignedParameters (SignedPar IsDSPar)
 open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTypeOf IsDS IsSqIntOn UJset)
@@ -27,9 +33,9 @@ theorem discreteSeriesCover_of_classification :
       (fun p q h T U hU => ((GlobalTheory.T.harishChandraModules_indefiniteUnitaryGroup.1 p q h T).1 U hU).2.1)
   intro p q hn T
   choose D hD using fun lam : {lam : Ix p q → ℚ // IsParam lam} => hC p q T lam.1 lam.2
-  refine ⟨D, fun lam => GlobalTheory.T.hasDiscreteSeriesKTypes_of_hasParam_cover hM hK hI p q hn T (D lam) lam.1 lam.2 (hD lam), fun R => ?_⟩
+  refine ⟨D, fun lam => _root_.GlobalTheory.CoverDS.hasTypes_of_hasParam_of_group hM hK hI p q hn T (D lam) lam.1 lam.2 (hD lam), fun R => ?_⟩
   obtain ⟨lam, hl, hR⟩ := GlobalTheory.T.exists_param_coverDiscreteSeries hX p q hn T R
-  exact ⟨⟨lam, hl⟩, GlobalTheory.T.coverDiscreteSeriesUnitarilyEquiv_of_sameParam hU p q hn T R (D ⟨lam, hl⟩) lam hl hR (hD _)⟩
+  exact ⟨⟨lam, hl⟩, _root_.GlobalTheory.CoverDS.unitEquiv_of_dsUnique hU p q hn T R (D ⟨lam, hl⟩) lam hl hR (hD _)⟩
 
 end GlobalTheory.CoverDS
 

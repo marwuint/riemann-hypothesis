@@ -1,5 +1,30 @@
 import Formalism.HermitianCurvature.StatementNF
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowerLevelsSameScalar
+import Formalism.HermitianCurvature.StatementM
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.Interlace
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.QuasiDeterminantFromEntries
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.AdmissibleRecOfAdmissibleWord
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.FrameOfAdmissibleWord
+import Formalism.HermitianCurvature.StatementWd
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PositionInsertionDiagonalCompat
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.KroneckerEmbedMulApply
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.SecondEmbedMulFirstEmbedApply
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.QEFirstMulSecondEqSwap
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.TransferMatrixFactorization
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.EntryCommuteTransposedRMatrix
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ScalarCommuteTransposedRMatrixEntry
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftMatrixTransferConjTransposeCommute
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.DiagScalarCommuteOfEntries
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PartialFlipCommuteDiagScalarOfFree
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.DiagScalarCommuteTransposedRMatrix
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.MultiplicationOpHom
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelNablaStarRelations
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.InterlaceSignTwo
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.EulerZetaGammaInvIdentity
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.RaisingConstantEqNablaStar
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.TransferRtt
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.WeightedSumDifferenceIdentity
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.GammaFamilyCommuteGenerators
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ModelWordsAssemble
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelCoordinatesCommute
 
 noncomputable section
@@ -25,105 +50,6 @@ theorem poly_pad {A : Type} [Ring A] [Algebra ℂ A] (m n : ℕ) (hmn : m < n) (
   rw [h1, Finset.sum_range_succ, if_neg (lt_irrefl m), if_pos rfl, add_comm]
   congr 1
   exact Finset.sum_congr rfl fun j hj => by rw [if_pos (mem_range.mp hj)]
-
-theorem modelSHyp : ModelSHyp := by
-  intro P L hP hL
-  obtain ⟨hp, hpb, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hG, hGi, -, -, hT⟩ := hL
-  obtain ⟨hs, hsz, -, hsG, -, -⟩ := star_generators P
-  have hH := transfer_hermitian P hP
-  have hE : ∀ Y a b, star (QQr P Y a b) = QQr P (star Y) b a := fun Y a b => by
-    rw [← hH Y]; rfl
-  have hszb : star (zbA P) = zA P := by rw [← hsz, star_star]
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · show star L.ζ = L.ζb
-    rw [hz, hzb, hsz]
-  · show star L.TT = L.TT
-    rw [hT]; simp
-  · intro l
-    show star (L.c l) = L.cb l ∧ star (L.ci l) = L.cbi l ∧ star (L.p l) = -L.pb l
-    rw [hc, hcb, hci, hcbi, hp, hpb]; exact hs l
-  · exact ⟨fun Y hY => by rw [hH Y, hY], transfer_rtt P hP, transfer_determinant P hP, Mx8.qC_real P⟩
-  · intro Y Y'; exact lower_left_commute_model P hP Y Y'
-  · intro Y
-    show t22 P Y = L.GG * NF.xA (kap P) Y
-    rw [hG]; rfl
-  · exact fun f => Mx7.star_kap P f
-  · intro f g hg
-    have : ∃ w, g = sc P w := by
-      simp only [PreLevel.ops, PreLevel.fns, PreLevel.ofLevel, hp, hpb, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hG, hGi,
-        Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at hg
-      rcases hg with (((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | (rfl | rfl | rfl | rfl | rfl | rfl)) | ⟨l, rfl⟩) | ⟨l, rfl⟩ <;>
-        exact ⟨_, rfl⟩
-    obtain ⟨w, rfl⟩ := this
-    exact Mx7.kap_comm_sc P f w
-  · obtain ⟨a11, a12, a21, a22, h⟩ := transfer_leading P hP
-    refine ⟨P.k + 2, fun a b j => !![if j < P.k + 1 then a11 j else if j = P.k + 1 then 1 else 0,
-      if j < P.k then a12 j else if j = P.k then -zA P else 0;
-      if j < P.k then a21 j else if j = P.k then -zbA P else 0,
-      if j < P.k - 1 then a22 j else if j = P.k - 1 then ggA P else 0] a b, ?_, ?_⟩
-    · intro Y a b
-      obtain ⟨h1, h2, h3, h4⟩ := h Y
-      fin_cases a <;> fin_cases b
-      · exact h1.trans (poly_pad (P.k + 1) (P.k + 2) (by omega) _ a11 Y).symm
-      · refine h2.trans ?_
-        rw [← smul_neg]; exact (poly_pad P.k (P.k + 2) (by omega) _ a12 Y).symm
-      · refine h3.trans ?_
-        rw [← smul_neg]; exact (poly_pad P.k (P.k + 2) (by omega) _ a21 Y).symm
-      · exact h4.trans (poly_pad (P.k - 1) (P.k + 2) (by omega) _ a22 Y).symm
-    · intro Y
-      show t21 P Y = -(Y ^ P.k • L.ζb) + _
-      rw [(h Y).2.2.1, hzb]
-      congr 1
-      refine Finset.sum_congr rfl fun j hj => ?_
-      show _ = Y ^ j • (if j < P.k then a21 j else _)
-      rw [if_pos (Finset.mem_range.1 hj)]
-  · intro Y
-    obtain ⟨z1, -, z3, z4⟩ := transfer_zeta P Y
-    obtain ⟨w1, -, w3, w4⟩ := transfer_zeta P (star Y)
-    have e21 : star (t21 P (star Y)) = t12 P Y := by have := hE (star Y) 1 0; rwa [star_star] at this
-    have e12 : star (t12 P (star Y)) = t21 P Y := by have := hE (star Y) 0 1; rwa [star_star] at this
-    have e22 : star (t22 P (star Y)) = t22 P Y := by have := hE (star Y) 1 1; rwa [star_star] at this
-    have s1 := congrArg star w1
-    have s3 := congrArg star w3.eq
-    have s4 := congrArg star w4.eq
-    simp only [star_sub, star_mul, star_neg, e21, e12, e22, hsz] at s1 s3 s4
-    show t21 P Y * L.ζ = L.ζ * t21 P Y - t22 P Y ∧ t22 P Y * L.ζ = L.ζ * t22 P Y ∧ t12 P Y * L.ζ = L.ζ * t12 P Y ∧
-      t12 P Y * L.ζb = L.ζb * t12 P Y + t22 P Y ∧ t21 P Y * L.ζb = L.ζb * t21 P Y ∧ t22 P Y * L.ζb = L.ζb * t22 P Y
-    rw [hz, hzb]
-    refine ⟨?_, z4.eq, z3.eq, ?_, s3.symm, s4.symm⟩
-    · rw [sub_eq_iff_eq_add] at z1; rw [z1]; abel
-    · rw [sub_eq_iff_eq_add] at s1; rw [s1]; abel
-  · intro Y a b g hg
-    have key : ∀ l, ∀ x ∈ Wd.ops (siteA P l), Commute (QQr P Y a b) x := fun l =>
-      Mx8.commutes_of_ent P l _ (Mx8.QQr_ent P l) Y a b
-    simp only [PreLevel.crdOps, PreLevel.ofLevel, hp, hpb, hc, hci, hcb, hcbi, Set.mem_union, Set.mem_range] at hg
-    rcases hg with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩
-    · exact key l _ (Or.inl (by simp [Wd.hol, siteA]))
-    · exact key l _ (Or.inl (by simp [Wd.hol, siteA]))
-    · exact key l _ (Or.inr (by rw [← (hs l).1, star_star]; simp [Wd.hol, siteA]))
-    · exact key l _ (Or.inr (by rw [← (hs l).2.1, star_star]; simp [Wd.hol, siteA]))
-    · exact key l _ (Or.inl (by simp [Wd.hol, siteA]))
-    · have h := key l (-pbA P l) (Or.inr (by rw [← (hs l).2.2, star_star]; simp [Wd.hol, siteA]))
-      simpa using h.neg_right
-
-theorem relIsCoreNorm : RelIsCoreNorm := by
-  intro P A _ _ _ d
-  unfold Q.NFData.Rel RelCore RelNorm
-  tauto
-
-theorem thmSOfSteps : ThmSOfSteps := by
-  intro h1 h2 h3 h4 h5 h6 hB hC hN hR P A _ _ _ L0 QQ κ hP hS
-  obtain ⟨b, SS, hF, hRa, hCo⟩ := hB h1 h2 h3 P A L0 QQ κ hP hS
-  obtain ⟨L, hE, hn, hns, hst, hcore, hent⟩ := hC P A L0 QQ κ b SS hP hS hF hRa hCo
-  obtain ⟨hnorm, h11⟩ := hN h1 h2 h3 h4 h5 h6 P A L0 QQ κ b SS L hP hS hF hRa hCo hE hn hns hst hcore
-    (fun Y => ⟨(hent Y).1, (hent Y).2.1⟩)
-  refine ⟨⟨L, κ, SS⟩, hE, rfl, hst, (hR P A _).2 ⟨hcore, hnorm⟩, fun Y => ?_⟩
-  ext a b
-  fin_cases a <;> fin_cases b
-  · exact h11 Y
-  · exact (hent Y).2.1
-  · exact (hent Y).1
-  · exact (hent Y).2.2
 
 theorem normalFormOfS : NormalFormOfS := by
   intro hT hPre hH Wp Wq _ _ _ _ _ _ P z z' π π' hpl X
@@ -853,12 +779,6 @@ end Formalism.FourierDecayAlt.P.NFx3
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem model_hypotheses : Formalism.FourierDecayAlt.NF.ModelSHyp := by
-  exact NFx3.modelSHyp
-theorem theorem_S_of_steps : Formalism.FourierDecayAlt.NF.ThmSOfSteps := by
-  exact NFx3.thmSOfSteps
-theorem normal_form_of_S : Formalism.FourierDecayAlt.NF.NormalFormOfS := by
-  exact NFx3.normalFormOfS
 theorem normal_form_from_module : Formalism.FourierDecayAlt.NF.NormalFormFromModuleOfParts := by
   exact NFx3.normalFormFromModuleOfParts
 

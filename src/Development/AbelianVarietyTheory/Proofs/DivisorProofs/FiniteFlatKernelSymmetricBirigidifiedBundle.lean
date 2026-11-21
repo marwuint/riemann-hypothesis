@@ -9,11 +9,20 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelOfLineBundleFiniteFlatSubgroupScheme
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsProductPrincipallyPolarisedAbelianScheme
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KernelOfAmpleBundleFiniteFlatOfLaws
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsClosedSubschemeTranslationKernelStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsClosedSubschemeTranslationKernel
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.InKIffTrivialTwist
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrivialEvaluationsOfMemKernelSymmetricPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKernelLiftOneOfAxisTrivialBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKernelDiagonalRestrictionOfSymmetricTrivialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrivialEvaluationsOfMemKernelSymmetricPair
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdditiveSwapOfTrivAxes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjRestrictSnd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKernelLiftOneOfAxisTrivialBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKernelDiagonalRestrictionOfSymmetricTrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOfFiniteRetractOfFiniteFlatStatement
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -31,7 +40,7 @@ theorem flat_of_finite_rep : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (B
     (∀ (T : Over (Sp R)) (x : T ⟶ B), GlobalTheory.MemKL B M x ↔ ∃ z : T ⟶ H, z ≫ j = x) → Flat H.hom := by
   intro R _ _ B _ hB N hN hamp M hM H j hj hfin hrep
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds
-  refine GlobalTheory.T.flat_of_isFinite_of_flat_at_maximal R H hfin (fun m _ => ?_)
+  refine _root_.GlobalTheory.flat_of_isFinite_of_flat_localization_maximal R H hfin (fun m _ => ?_)
   set f := spMap (algebraMap R (Localization.AtPrime m)) with hf
   have hB' : IsAbelianScheme ((Over.pullback f).obj B) := GlobalTheory.isAbelianScheme_pullback_obj f B hB
   haveI := hB'.comm
@@ -39,7 +48,7 @@ theorem flat_of_finite_rep : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (B
   obtain ⟨hP, -, -, -⟩ := GlobalTheory.AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral _ B N hB hN hamp
     (Localization.AtPrime m) f _ _ _ hpb
   have hML : (M.pull (pullback.fst B.hom f)).IsLB := pull_isLB hM _
-  have hrep' := GlobalTheory.T.memKernelOfLineBundle_baseChange_representable _ _ f B M hM H j hrep
+  have hrep' := _root_.GlobalTheory.memKL_baseChange_rep _ _ f B M hM H j hrep
   have hth := GlobalTheory.AbLaw.CubeAffine.triv_theta_of_isProjBy GlobalTheory.T.abelianScheme_laws_unconditional.1 _ ((Over.pullback f).obj B) hB' hP _ hML
   have hcl : IsClosedImmersion ((Over.pullback f).map j).left := by
     have e : ((Over.pullback f).map j).left =
@@ -56,7 +65,7 @@ theorem flat_of_finite_rep : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (B
     first
     | exact MorphismProperty.pullback_snd (P := @IsFinite) _ _ hfin
     | (haveI := hfin; exact (inferInstance : IsFinite (pullback.snd H.hom f)))
-  exact GlobalTheory.T.lineBundleKernel_flat_of_finite_noetherian_local hG (Localization.AtPrime m) ((Over.pullback f).obj B) hB' hP _ hML hth _ _ hcl hrep' hfin'
+  exact _root_.GlobalTheory.StabFlatLocal.flat_of_isFinite hG (Localization.AtPrime m) ((Over.pullback f).obj B) hB' hP _ hML hth _ _ hcl hrep' hfin'
 
 theorem exists_closed_rep : ∀ (R : Type) [CommRing R] (B : Over (Sp R)) [GrpObj B], IsAbelianScheme B →
     ∀ N : LB B.left, N.IsLB → Out.RelAmple B N → ∀ M : LB B.left, M.IsLB →
@@ -66,7 +75,7 @@ theorem exists_closed_rep : ∀ (R : Type) [CommRing R] (B : Over (Sp R)) [GrpOb
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds
   have hP : IsProjBy B.hom := GlobalTheory.WtTower.isProjBy_of_relAmple B hN hamp
   obtain ⟨h0, -, h2⟩ := GlobalTheory.UU.TrivTwist.inK_iff_trivial_twist _ B M hM
-  obtain ⟨H, j, hj, hrep⟩ := GlobalTheory.T.exists_closed_subscheme_translation_kernel hG R B hB hP M (AbLaw.pw M 0) hM h0
+  obtain ⟨H, j, hj, hrep⟩ := _root_.GlobalTheory.UU.TwistKer.exists_closed_twist_kernel hG R B hB hP M (AbLaw.pw M 0) hM h0
   refine ⟨H, j, hj, fun T x => ?_⟩
   rw [← GlobalTheory.UU.inK_iff_memKL, h2 _ rfl T x]
   exact hrep T x
@@ -106,9 +115,9 @@ theorem kernel_finiteFlat : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G 
 
   have hmemK : GlobalTheory.MemKL (G ⊗ G) P (lift (k ≫ fst G G) (k ≫ snd G G)) := by
     rw [lift_comp_fst_snd]; exact (hrepK K k).2 ⟨𝟙 K, Category.id_comp _⟩
-  obtain ⟨ha, hb⟩ := GlobalTheory.T.trivial_evaluations_of_mem_kernel_symmetric_pair R G hG P hP h1 h2 hsym K _ _ hmemK
-  obtain ⟨za, hza⟩ := (hrepL K _).1 (GlobalTheory.T.mem_kernel_diagonal_restriction_of_symmetric_trivial R G hG P hP h1 h2 hsym K _ ha)
-  obtain ⟨zb, hzb⟩ := (hrepL K _).1 (GlobalTheory.T.mem_kernel_diagonal_restriction_of_symmetric_trivial R G hG P hP h1 h2 hsym K _ hb)
+  obtain ⟨ha, hb⟩ := _root_.GlobalTheory.KerAxes.triv_of_memKL_pair R G hG P hP h1 h2 hsym K _ _ hmemK
+  obtain ⟨za, hza⟩ := (hrepL K _).1 (_root_.GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm R G hG P hP h1 h2 hsym K _ ha)
+  obtain ⟨zb, hzb⟩ := (hrepL K _).1 (_root_.GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm R G hG P hP h1 h2 hsym K _ hb)
   have hfinHL2 : IsFinite (HL ⊗ HL).hom := by
     haveI := hfinL
     show IsFinite (pullback.fst HL.hom HL.hom ≫ HL.hom)
@@ -139,7 +148,7 @@ theorem kernel_finiteFlat : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G 
     intro T x
     constructor
     · intro htr
-      obtain ⟨z, hz⟩ := (hrepK T _).1 (GlobalTheory.T.mem_kernel_lift_one_of_axis_trivial_bundle R G hG P hP h1 h2 hsym T x htr)
+      obtain ⟨z, hz⟩ := (hrepK T _).1 (_root_.GlobalTheory.AbDual.memKL_lift_one_of_triv_ev R G hG P hP h1 h2 hsym T x htr)
       have hz' : z.left ≫ k.left = x.left ≫ e.left := by
         rw [← Over.comp_left, hz, ← hxe, Over.comp_left]
       refine ⟨Over.homMk (pullback.lift z.left x.left hz') ?_, ?_⟩
@@ -150,10 +159,10 @@ theorem kernel_finiteFlat : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G 
       have hm : GlobalTheory.MemKL (G ⊗ G) P (lift (y ≫ i) (1 : T ⟶ G)) := by
         refine (hrepK T _).2 ⟨y ≫ s, ?_⟩
         rw [Category.assoc, hs, ← Category.assoc, hxe]
-      exact (GlobalTheory.T.trivial_evaluations_of_mem_kernel_symmetric_pair R G hG P hP h1 h2 hsym T _ _ hm).1
+      exact (_root_.GlobalTheory.KerAxes.triv_of_memKL_pair R G hG P hP h1 h2 hsym T _ _ hm).1
 
   have hLi : GlobalTheory.MemKL G (P.pull (lift (𝟙 G) (𝟙 G)).left) i :=
-    GlobalTheory.T.mem_kernel_diagonal_restriction_of_symmetric_trivial R G hG P hP h1 h2 hsym H i ((hmemH H i).2 ⟨𝟙 H, Category.id_comp _⟩)
+    _root_.GlobalTheory.AbDual.memKL_diag_of_triv_ev_of_symm R G hG P hP h1 h2 hsym H i ((hmemH H i).2 ⟨𝟙 H, Category.id_comp _⟩)
   obtain ⟨zH, hzH⟩ := (hrepL H i).1 hLi
   have hfinH : IsFinite H.hom := isFinite_of_closedImmersion_factor_through_finite i iL zH hzH hi hfinL
 

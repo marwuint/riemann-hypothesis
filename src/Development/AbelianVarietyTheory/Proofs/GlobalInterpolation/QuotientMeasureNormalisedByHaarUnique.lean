@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.InvariantRadonFibre
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUniqueHaarOfInvariantRadonOnCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuotientInvariantMeasureExistsUniqueUnimodularStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUniqueHaarOfInvariantRadonOnCosets
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuotientInvariantMeasureExistsUniqueUnimodular
 
 open MeasureTheory MeasureTheory.Measure GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre
 open scoped ENNReal NNReal
@@ -10,8 +10,8 @@ namespace GlobalTheory.Proof.quotientMeasure_normalised_by_haar_unique
 
 theorem normaliseQuotientClause : NormaliseQuotientClause := by
   intro G _ _ _ _ _ _ _ _ H _ _ hH hG hH' dg _ ν _
-  obtain ⟨⟨μ₀, hμ₀⟩, huniq⟩ := GlobalTheory.T.quotientInvariantMeasure_exists_unique_unimodular G H hH hG hH'
-  obtain ⟨dg₀, ⟨hdg₀, hF₀⟩, -⟩ := GlobalTheory.T.existsUnique_haar_of_invariantRadonOnCosets G H hH ν μ₀ hμ₀
+  obtain ⟨⟨μ₀, hμ₀⟩, huniq⟩ := _root_.GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause G H hH hG hH'
+  obtain ⟨dg₀, ⟨hdg₀, hF₀⟩, -⟩ := _root_.GlobalTheory.QuotientHaar.existsUnique_haar_of_invariantRadon G H hH ν μ₀ hμ₀
   set c : ℝ≥0 := haarScalarFactor dg dg₀ with hc
   have hcpos : 0 < c := haarScalarFactor_pos_of_isHaarMeasure dg dg₀
   have hdg : dg = c • dg₀ := isMulLeftInvariant_eq_smul dg dg₀

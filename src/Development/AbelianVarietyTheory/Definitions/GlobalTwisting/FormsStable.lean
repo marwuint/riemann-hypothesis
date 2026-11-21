@@ -60,15 +60,6 @@ def PP.IsDil (a : F) (p p' : PP Lc n) : Prop := p'.1.L = p.1.L ∧ ∀ x, p'.1.f
 
 def PP.Inc (p p₁ : PP Lc n) : Prop := ∃ x, p.1.f x = 1 ∧ p.IsUp x p₁
 
-example (p : PP Lc n) : p.IsAct 1 p := fun x => by simp
-
-example (p : PP Lc n) : PP.IsDil 1 p p := ⟨rfl, fun x => (one_mul _).symm⟩
-
-example (p : PP Lc n) : ¬ p.Inc p := by
-  rintro ⟨x, h1, h2, h3, -⟩
-  have : x ∈ p.ker := by rw [h3]; exact h2
-  exact one_ne_zero (h1.symm.trans this.2)
-
 end LocF
 
 variable {D : D7} {u : D.what₂.Word}
@@ -324,7 +315,5 @@ def Step0Tie (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) : Prop :
   ∀ w, Formalism.MainNotions.product_first_zeroth_parts.OverT D u w → (Tw.fm u μ).seenP w = (D.fm u).seenP w ∧
     ∀ x ∈ LT.Nlam D u w, Tw.e0 u μ x ∈ Nlam (tw Tw u μ) w
 
-def PtInt (X : Ch D u) : Prop :=
-  (∀ φ ∈ X.fm.Fi D.R.m, Pt X φ ∈ X.fm.ptC) ∧ ∃ h : X.fm.PRat, X.fm.PtilIntegral h
 end
 end GlobalTheory.LvT

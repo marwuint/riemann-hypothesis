@@ -18,48 +18,6 @@ def LatMinkowskiSt : Prop :=
   ∀ (Y : Type) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] (σ : Y ≃ₗ[ℤ] Y) (n M : ℕ), 0 < n →
     σ ^ n = 1 → 3 ≤ M → (∀ y, ∃ z, σ y = y + M • z) → σ = 1
 
-def PairThetaSt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (c : Coeff l)
-    (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF)
-    (P : Out.DegData (PowerSeries k) (Ideal.span {PowerSeries.X})) [Module (𝓞 E) P.toPre.X]
-    (oP : letI := H.starRing; P.toPre.OAct (𝓞 E)) (φ₁ φ₂ : P.toPre.P.A.left ⟶ a.D₀.P.A.left)
-    (he₁ : eSec P.toPre.P.A ≫ φ₁ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-    (he₂ : eSec P.toPre.P.A ≫ φ₂ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-    (w₁ : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ₁)) (w₂ : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ₂))
-    (e₁ e₂ : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X),
-    WitData a P oP φ₁ he₁ w₁ e₁ → WitData a P oP φ₂ he₂ w₂ e₂ →
-    letI := H.starRing
-    ∃ (θ : P.toPre.P.A ≅ P.toPre.P.A) (wθ : LB.Iso P.toPre.P.L (P.toPre.P.L.pull θ.hom.left))
-      (w₁' : LB.Iso P.toPre.P.L (a.D₀.P.L.pull (θ.hom.left ≫ φ₂))),
-      IsMonHom θ.hom ∧ θ.hom.left ≫ φ₂ = φ₁ ∧ (∀ x, oP.onB.act x ≫ θ.hom = θ.hom ≫ oP.onB.act x) ∧
-      (∀ y, (P.toPre.c (e₁ y)).left ≫ θ.hom.left = (P.toPre.c (e₂ y)).left) ∧ wθ.IsGen ∧
-      HEq w₁' w₁ ∧ Tri w₂ wθ w₁'
-
-def DataRigidTorsion : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (c : Coeff l)
-    (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF) (t : SAB H (Sp (PowerSeries k)))
-    (P : PELUnif (Ideal.span {PowerSeries.X}) t), P.TorsionIso →
-    ∀ (φ₁ φ₂ : P.D.toPre.P.A.left ⟶ a.D₀.P.A.left)
-    (he₁ : eSec P.D.toPre.P.A ≫ φ₁ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-    (he₂ : eSec P.D.toPre.P.A ≫ φ₂ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-    (w₁ : LB.Iso P.D.toPre.P.L (a.D₀.P.L.pull φ₁)) (w₂ : LB.Iso P.D.toPre.P.L (a.D₀.P.L.pull φ₂))
-    (e₁ e₂ : a.D₀.X ≃ₗ[𝓞 E] P.D.toPre.X),
-    WitData a P.D P.oD φ₁ he₁ w₁ e₁ → WitData a P.D P.oD φ₂ he₂ w₂ e₂ →
-    (∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing (PowerSeries k)) F] [Algebra (FractionRing k) F]
-      (uF : F),
-      (∀ x, algebraMap (FractionRing k) F (algebraMap k _ x) =
-        algebraMap (FractionRing (PowerSeries k)) F (algebraMap (PowerSeries k) _ (PowerSeries.C x))) →
-      uF = algebraMap (FractionRing (PowerSeries k)) F (algebraMap (PowerSeries k) _ PowerSeries.X) →
-      ∀ (n : ℕ) (p₀ : Out.QkPt a.D₀ (FractionRing k) n),
-        ((n = l.A ∧ ∃ v, HEq p₀ (a.etaA v)) ∨
-          (n = l.M ∧ ∃ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), HEq p₀ (a.eta v))) →
-        ∀ (q₀ : Out.QkPt a.D₀ F n) (q₁ q₂ : Out.QkPt P.D.toPre F n),
-          QkExt (algebraMap _ F) p₀ q₀ → q₁.y = e₁ q₀.y → q₂.y = e₂ q₀.y →
-          (∀ z, GenRel w₁ (q₁.g.s (e₁ z)) (q₀.g.s z) (uF ^ (a.be q₀.y z / n))) →
-          (∀ z, GenRel w₂ (q₂.g.s (e₂ z)) (q₀.g.s z) (uF ^ (a.be q₀.y z / n))) →
-          Out.QkPt.Equiv P.D.toPre F q₁ q₂) →
-    φ₁ = φ₂ ∧ e₁ = e₂ ∧ HEq w₁ w₂
-
 section Gt
 
 open ReciprocityTheory.ChartRestriction.G.Out

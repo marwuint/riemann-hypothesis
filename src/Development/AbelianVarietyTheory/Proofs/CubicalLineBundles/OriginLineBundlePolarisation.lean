@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.OpensRangeC
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddXYZOrChordXYZOrOriginXYZNeZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.EigLatBasis
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SymmetricLineBundleOfRegularSectionStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KernelPolarisationTrivialOfSectionsVanishZeroStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SymmetricLineBundleOfRegularSection
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KernelPolarisationTrivialOfSectionsVanishZero
 
 set_option autoImplicit false
 
@@ -76,9 +76,9 @@ theorem originLB_polarisation (R : Type) [CommRing R] (W : WeierstrassCurve R) [
   · unfold Out.Rigidified
     rw [he']
     exact ⟨_, isGen_one_pull_zero W⟩
-  · exact GlobalTheory.T.symmetric_lineBundle_of_regular_section _ (schemeOver W) (originLB W) (originSec W) (originLB_isLB W)
+  · exact _root_.GlobalTheory.SymOfZeroDivisor.sym_of_regular_section _ (schemeOver W) (originLB W) (originSec W) (originLB_isLB W)
       (fun i V h => ((isRegularSec_originSec W i).resG h).mem) hz
-  · refine GlobalTheory.T.kernelPolarisation_trivial_of_sections_vanish_zero _ (schemeOver W) (originLB W) (originSec W) (originLB_isLB W) hz ?_
+  · refine _root_.GlobalTheory.kTriv_of_sections_vanish_on_zero _ (schemeOver W) (originLB W) (originSec W) (originLB_isLB W) hz ?_
     intro R' _ f Y φ q H s T t j h e
     rw [he'] at e
     exact appLE_sec_pull_originLB_eq_zero W H s t j h e

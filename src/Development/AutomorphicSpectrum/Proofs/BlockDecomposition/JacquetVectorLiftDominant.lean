@@ -1,6 +1,7 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjectionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjection
+import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactGroupFiniteCosetRepsStatement
 
 open GlobalTheory.PRep PositivityTheory.SphericalProduct
@@ -135,7 +136,7 @@ theorem exists_fixed_proj_eq_piN_pow : ∀ (G : Type) [Group G] [TopologicalSpac
     congr 2
     group
 
-  obtain ⟨E1, hE1fix, -, -, -, hE1⟩ := GlobalTheory.T.compact_fixed_vector_projection G (D.J ⊓ D.T) hKc V π hπ
+  obtain ⟨E1, hE1fix, -, -, -, hE1⟩ := _root_.GlobalTheory.CompanionTheory.CompactAvg.exists_average G (D.J ⊓ D.T) hKc V π hπ
   obtain ⟨r, b, hr, hb, hy⟩ := exists_avg (D.J ⊓ D.T) hKc π hπ E1 hE1 x (D.J ⊓ D.T) le_rfl
     (fun y hy => ⟨y, hy, by simp⟩)
   obtain ⟨y, hydef⟩ : ∃ y, y = E1 x := ⟨_, rfl⟩
@@ -178,7 +179,7 @@ theorem exists_fixed_proj_eq_piN_pow : ∀ (G : Type) [Group G] [TopologicalSpac
       rfl
     rw [h6, h5]
 
-  obtain ⟨E2, hE2fix, -, -, -, hE2⟩ := GlobalTheory.T.compact_fixed_vector_projection G D.J D.isCompact_J V π hπ
+  obtain ⟨E2, hE2fix, -, -, -, hE2⟩ := _root_.GlobalTheory.CompanionTheory.CompactAvg.exists_average G D.J D.isCompact_J V π hπ
   obtain ⟨r2, c, hr2, hc, hv⟩ := exists_avg D.J D.isCompact_J π hπ E2 hE2 y (D.J ⊓ D.N) inf_le_left
     (fun g hg => by
       obtain ⟨c, hc, b', hb', a, ha, rfl⟩ := D.fact_up g hg

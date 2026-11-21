@@ -25,10 +25,6 @@ theorem Kl.mul {b : Matrix (Fin n) (Fin n) O} {u : Fin n → M} (h : Kl b u) (a 
   rw [Finset.sum_comm]
   simp only [← Finset.smul_sum, h _, smul_zero, Finset.sum_const_zero]
 
-theorem Kl.smul {b : Matrix (Fin n) (Fin n) O} {u : Fin n → M} (h : Kl b u) (a : O) : Kl (a • b) u := by
-  intro i
-  simp only [Matrix.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, h i, smul_zero]
-
 theorem Kl.cancel {b : Matrix (Fin n) (Fin n) O} {u : Fin n → M} {a ℓ : O} (hc : IsCoprime a ℓ)
     (hu : ∀ j, ∃ e : ℕ, ℓ ^ e • u j = 0) (h : Kl (a • b) u) : Kl b u := by
   obtain ⟨e, he⟩ : ∃ e : ℕ, ∀ j, ℓ ^ e • u j = 0 := by
@@ -66,11 +62,6 @@ theorem map_inj {a b : Matrix (Fin n) (Fin n) (𝓞 E)}
   have h' := congrArg (fun m : Matrix (Fin n) (Fin n) E => m i j) h
   simp only [Matrix.map_apply] at h'
   exact FaithfulSMul.algebraMap_injective (𝓞 E) E h'
-
-theorem map_smul' (c : ℕ) (a : Matrix (Fin n) (Fin n) (𝓞 E)) :
-    ((c : 𝓞 E) • a).map (algebraMap (𝓞 E) E) = (c : E) • a.map (algebraMap (𝓞 E) E) := by
-  ext i j
-  simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_natCast]
 
 theorem exists_adj : ∃ r : Matrix (Fin n) (Fin n) (𝓞 E),
     r * (A.p * A.q) = ((A.k ^ 2 : ℕ) : 𝓞 E) • ((N ^ 2 : ℕ) : 𝓞 E) • (1 : Matrix (Fin n) (Fin n) (𝓞 E)) := by

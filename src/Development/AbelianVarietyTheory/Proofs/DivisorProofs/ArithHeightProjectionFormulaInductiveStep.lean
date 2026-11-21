@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ResidueDegreeOfIsClosedImmersion
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanIntegralPullMulDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormTopPowerPullbackSmallerDimEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointClosureDimLeAndResidueDegreeNeZeroIffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArithStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantRestrictionPointClosuresStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumMultPullbackRationalSectionPushforwardStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanIntegralPullMulDegree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormTopPowerPullbackSmallerDimEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointClosureDimLeAndResidueDegreeNeZeroIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArith
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantRestrictionPointClosures
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumMultPullbackRationalSectionPushforward
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -41,9 +41,9 @@ theorem main : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (
   have hAY : IsAmb q := isAmb_of_isArithVar hY
   have := hX.isNoetherian
   have := hY.isNoetherian
-  obtain ⟨hbdX, -, -, -, hsubX, hgenX⟩ := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hAX
-  obtain ⟨-, -, -, -, hsubY, hgenY⟩ := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hAY
-  obtain ⟨g, hgc, hgη, hgdeg⟩ := GlobalTheory.T.exists_dominant_restriction_pointClosures X Y π y
+  obtain ⟨hbdX, -, -, -, hsubX, hgenX⟩ := _root_.GlobalTheory.MixHt.hasDim_basic k X p hAX
+  obtain ⟨-, -, -, -, hsubY, hgenY⟩ := _root_.GlobalTheory.MixHt.hasDim_basic k Y q hAY
+  obtain ⟨g, hgc, hgη, hgdeg⟩ := _root_.GlobalTheory.MixHt.clo_restrict_dominant X Y π y
 
   have hdW : topologicalKrullDim (clo y) = ((e + 1 + 1 : ℕ) : WithBot ℕ∞) := by
     refine (hgenY (clo y) (e + 1 + 1)).1 ((hsubY (clo y) (cloι y) _ _).1 ?_)
@@ -80,7 +80,7 @@ theorem main : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (
   have hsum : ∑ᶠ w, ((((L.pull π hπ).restr (cloι y)).div hrA).mult w : ℝ) * h' (cloι y w) =
       (π.residueDegree y : ℝ) * ∑ᶠ z, (((L.restr (cloι (π y))).div hr).mult z : ℝ) * h (cloι (π y) z) := by
     rw [ediv, ← hδ]
-    refine Eq.trans (finsum_congr fun w => ?_) (GlobalTheory.T.finsum_mult_pullback_rationalSection_pushforward k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q)
+    refine Eq.trans (finsum_congr fun w => ?_) (_root_.GlobalTheory.PushDiv.finsum_mult_pull k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q)
       (hAX.sub _) (hAY.sub _) g hg1 hgη (L.restr (cloι (π y))).B (L.restr (cloι (π y))).isLB r hr
       (fun z => h (cloι (π y) z)))
     by_cases hm : ((((L.restr (cloι (π y))).pull g hg1)).div hr1).mult w = 0
@@ -88,14 +88,14 @@ theorem main : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (
       rw [hm, Int.cast_zero, zero_mul]
       exact (mul_eq_zero_of_left (Int.cast_eq_zero.2 hm) _).symm
     · have hco := CartierDiv.coheight_eq_one_of_mult_ne_zero hm
-      have hd1 := ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k (clo y) (cloι y ≫ q) (hAY.sub _) (e + 1) hdW).1 w).1 hco
+      have hd1 := ((_root_.GlobalTheory.MixHt.dimOne k (clo y) (cloι y ≫ q) (hAY.sub _) (e + 1) hdW).1 w).1 hco
       have hd2 := (hsubY (clo y) (cloι y) w (e + 1)).2 hd1
       rw [hrec _ hd2, happ, hgdeg]
       rfl
 
   obtain ⟨m, hm⟩ := hbdX
   obtain ⟨d', -, hd'⟩ := hm (π y)
-  obtain ⟨hle, hiff⟩ := GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hAX hAY π hπ y (e + 1 + 1) d' hy hd'
+  obtain ⟨hle, hiff⟩ := _root_.GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff k X Y p q hAX hAY π hπ y (e + 1 + 1) d' hy hd'
   have hdZ : topologicalKrullDim (clo (π y)) = (d' : WithBot ℕ∞) := by
     refine (hgenX (clo (π y)) d').1 ((hsubX (clo (π y)) (cloι (π y)) _ _).1 ?_)
     rw [cloι_genericPoint]; exact hd'
@@ -109,7 +109,7 @@ theorem main : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (
     have hZv0 := hX.of_isClosedImmersion (cloι (π y)) hcZ (e := e0) hdZ
     have hzero (σ : k →+* ℂ) (ε : ℤˣ) :
         (((L.restr (cloι (π y))).pull g hg1).φ σ).chernPart (e + 1) ε = 0 :=
-      GlobalTheory.T.chernForm_topPower_pullback_smaller_dim_eq_zero k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q) e0 (e + 1) hZv0 hWv (by omega) g hg1 hgη
+      _root_.GlobalTheory.ChernLowDim.chernPart_pull_of_lt k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q) e0 (e + 1) hZv0 hWv (by omega) g hg1 hgη
         (L.restr (cloι (π y))) σ ε
     have harch0 : ((L.restr (cloι (π y))).pull g hg1).archInt ((L.restr (cloι (π y))).pull g hg1) (e + 1) hr1 = 0 := by
       unfold HermLB.archInt Weight.chernInt
@@ -123,7 +123,7 @@ theorem main : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (
     have hZv := hX.of_isClosedImmersion (cloι (π y)) hcZ hdZ
     obtain ⟨-, hrecZ⟩ := H.recursion_one (cloι (π y)) hcZ (by omega : 1 ≤ e + 1) hdZ hr
     rw [cloι_genericPoint] at hrecZ
-    have hpa := GlobalTheory.T.archimedeanIntegral_pull_mul_degree k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q) (e + 1) hZv hWv g hg1 hgη
+    have hpa := _root_.GlobalTheory.ArchPull.archInt_pull k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q) (e + 1) hZv hWv g hg1 hgη
       (hδ ▸ h0) (L.restr (cloι (π y))) (L.restr (cloι (π y))) r hr
     rw [hδ] at hpa
     rw [hrecW, hpa, hrecZ]

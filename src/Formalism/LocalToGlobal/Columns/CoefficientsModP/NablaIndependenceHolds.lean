@@ -89,11 +89,6 @@ variable {K : Type} [Field K] [NumberField K]
 
 local notation "Ow" => Formalism.L2.Col.Ow
 
-theorem nb_mk'_smul {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K)) [Module (Ow w) V]
-    [IsScalarTower (𝓞 K) (Ow w) V] (a : 𝓞 K) (t : w.asIdeal.primeCompl) (x : V) :
-    (t : 𝓞 K) • ((IsLocalization.mk' (Ow w) a t) • x) = a • x := by
-  rw [← algebraMap_smul (Ow w) (t : 𝓞 K), smul_smul, IsLocalization.mk'_spec', algebraMap_smul]
-
 theorem nb_mem_span_ow {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K)) [Module (Ow w) V]
     [IsScalarTower (𝓞 K) (Ow w) V] (T : Set V) (x : V) :
     x ∈ Submodule.span (Ow w) T ↔ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Submodule.span (𝓞 K) T) := by
@@ -291,28 +286,6 @@ theorem nb_mem_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol 
     F ∈ transLat lam T M ↔ ∀ (w : HeightOneSpectrum (𝓞 K)) (B : ι → GL (Fin n) K), (∀ τ, IsBasisAt w (M τ) (B τ)) →
       actP lam B⁻¹ F ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal T := by
   simp only [transLat, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]
-
-theorem nb_free {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hT : NbStab lam T)
-    (B : ι → GL (Fin n) K) :
-    transLat lam T (fun τ => colLat (B τ)) = T.map ((actP lam B).restrictScalars (𝓞 K)) := by
-  ext F
-  rw [nb_mem_transLat]
-  constructor
-  · intro h
-    refine ⟨actP lam B⁻¹ F, ?_, ?_⟩
-    · have h1 : actP lam B⁻¹ F ∈ ⨅ w : HeightOneSpectrum (𝓞 K), Formalism.HermitianLatticesTheory.localization₂ w.asIdeal T := by
-        rw [Submodule.mem_iInf]
-        exact fun w => h w B fun _ => rfl
-      rwa [lc_iInf_locP] at h1
-    · rw [LinearMap.coe_restrictScalars, ← polyAction_mul, mul_inv_cancel, polyAction_one₂]
-  · rintro ⟨F0, hF0, rfl⟩ w B' hB'
-    refine nb_indep hT w (fun τ => colLat (B τ)) B B' (fun _ => rfl) hB' _ ?_
-    rw [LinearMap.coe_restrictScalars, ← polyAction_mul, inv_mul_cancel, polyAction_one₂]
-    exact lc_le_locP w T hF0
-
-theorem nablaDeltaFree_holds : NabDelFree := by
-  intro K _ _ ι _ n lam B
-  exact ⟨nb_free (nb_stab_nab lam) B, nb_free (nb_stab_del lam) B⟩
 
 end Main
 

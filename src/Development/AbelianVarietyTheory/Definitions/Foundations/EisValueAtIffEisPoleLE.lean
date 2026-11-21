@@ -87,8 +87,6 @@ def ZetaValueAt (s₀ c : ℂ) : Prop := IsZetaFamily V μ m Φ f₁ f₂ ∧ Va
 
 def ZetaHolValueAt (s₀ c : ℂ) : Prop := IsZetaFamily V μ m Φ f₁ f₂ ∧ HolValueAt (zeta V μ m Φ f₁ f₂) s₀ c
 
-def ZetaCoeffAt (s₀ : ℂ) (n : ℤ) (c : ℂ) : Prop := IsZetaFamily V μ m Φ f₁ f₂ ∧ CoeffAt (zeta V μ m Φ f₁ f₂) s₀ n c
-
 end Integral
 
 variable {V} {a : GL (Fin V.rank) (AE D)} {μ : (AE D)ˣ →* Circle}
@@ -100,13 +98,7 @@ variable {Φ Ψ : GA D (dblSp V) → ℂ} {g : GA D (dblSp V)} {s : ℂ}
 theorem leftInv_of_mem (hμ : IsHeckeChar D μ) (hΦ : Φ ∈ degPS V a μ s) : LeftInv (siegelQ V) Φ :=
   fun _ hγ g => apply_siegelQ_mul V a hμ hΦ hγ g
 
-theorem EisConv.hasSum (h : EisConv V Φ g) :
-    HasSum (fun q : SiegelCosets V => Φ ((q.out : GQ (dblSp V)) * g)) (eis V Φ g) := CosetConv.hasSum h
-
 theorem leftInv_eis (h : LeftInv (siegelQ V) Φ) : LeftInv (GQ (dblSp V)) (eis V Φ) := leftInv_cosetSum h
-
-theorem eis_rTr (k : GA D (dblSp V)) (Φ : GA D (dblSp V) → ℂ) : eis V (rTr _ k Φ) = rTr _ k (eis V Φ) :=
-  funext (cosetSum_mul_right Φ k)
 
 theorem eis_add (h : EisConv V Φ g) (h' : EisConv V Ψ g) : eis V (Φ + Ψ) g = eis V Φ g + eis V Ψ g := cosetSum_add h h'
 
@@ -133,9 +125,6 @@ theorem IsEisFamily.add (h : IsEisFamily V Φ) (h' : IsEisFamily V Ψ) : IsEisFa
 
 theorem IsEisFamily.smul (h : IsEisFamily V Φ) (c : ℂ → ℂ) : IsEisFamily V (c • Φ) := fun s hs =>
   ⟨fun γ hγ g => congrArg (c s • ·) ((h s hs).1 γ hγ g), fun g => ((h s hs).2 g).smul (c s)⟩
-
-theorem IsEisFamily.rTr (h : IsEisFamily V Φ) (x : GA D (dblSp V)) : IsEisFamily V fun s => rTr _ x (Φ s) := fun s hs =>
-  ⟨(h s hs).1.mul_right x, fun g => (cosetConv_mul_right (Φ s) x g).2 ((h s hs).2 _)⟩
 
 theorem IsEisHolExt.isEisExt (h : IsEisHolExt V Φ U E) : IsEisExt V Φ U E :=
   ⟨h.1, h.2.1, fun g => (h.2.2.1 g).meromorphicOn, h.2.2.2⟩
@@ -165,11 +154,6 @@ theorem EisCoeffAt.unique (h : EisCoeffAt V Φ s₀ n φ) (h' : EisCoeffAt V Φ 
 
 theorem EisValueAt.unique (h : EisValueAt V Φ s₀ φ) (h' : EisValueAt V Φ s₀ ψ) : φ = ψ := h.eisCoeffAt.unique h'.eisCoeffAt
 
-theorem EisCoeffAt.leftInv (h : EisCoeffAt V Φ s₀ n φ) : LeftInv (GQ (dblSp V)) φ :=
-  fun _ hγ g => ((h.2 _).congr (h.1.eqRight hγ g)).unique (h.2 g)
-
-theorem EisValueAt.leftInv (h : EisValueAt V Φ s₀ φ) : LeftInv (GQ (dblSp V)) φ := h.eisCoeffAt.leftInv
-
 theorem IsEisFamily.leftInv_eisLaurent (h : IsEisFamily V Φ) (s₀ : ℂ) (n : ℤ) :
     LeftInv (GQ (dblSp V)) (eisLaurent V Φ s₀ n) := fun γ hγ g => by
   have e : CoeffAt (eisSer V Φ (γ * g)) s₀ n = CoeffAt (eisSer V Φ g) s₀ n :=
@@ -177,29 +161,12 @@ theorem IsEisFamily.leftInv_eisLaurent (h : IsEisFamily V Φ) (s₀ : ℂ) (n : 
   unfold eisLaurent laurent
   rw [e]
 
-theorem EisContinues.eisCoeffAt (h : EisContinues V Φ) (s₀ : ℂ) (n : ℤ) : EisCoeffAt V Φ s₀ n (eisLaurent V Φ s₀ n) :=
-  ⟨h.1, fun g => let ⟨_, b⟩ := h.2 g; coeffAt_laurent (b.subset_contDom trivial) n⟩
-
-theorem EisCoeffAt.add (h : EisCoeffAt V Φ s₀ n φ) (h' : EisCoeffAt V Ψ s₀ n ψ) : EisCoeffAt V (Φ + Ψ) s₀ n (φ + ψ) :=
-  ⟨h.1.add h'.1, fun g => ((h.2 g).add (h'.2 g)).congr ⟨_, fun s hs => (eis_add ((h.1 s hs).2 g) ((h'.1 s hs).2 g)).symm⟩⟩
-
 theorem EisValueAt.add (h : EisValueAt V Φ s₀ φ) (h' : EisValueAt V Ψ s₀ ψ) : EisValueAt V (Φ + Ψ) s₀ (φ + ψ) :=
   ⟨h.1.add h'.1, fun g => ((h.2 g).add (h'.2 g)).congr ⟨_, fun s hs => (eis_add ((h.1 s hs).2 g) ((h'.1 s hs).2 g)).symm⟩⟩
-
-theorem EisCoeffAt.smul (h : EisCoeffAt V Φ s₀ n φ) (c : ℂ) : EisCoeffAt V (c • Φ) s₀ n (c • φ) :=
-  ⟨h.1.smul fun _ => c, fun g => ((h.2 g).const_mul c).congr ⟨0, fun s _ => (congrFun (eis_smul c (Φ s)) g).symm⟩⟩
 
 theorem EisValueAt.smul (h : EisValueAt V Φ s₀ φ) (c : ℂ) : EisValueAt V (c • Φ) s₀ (c • φ) :=
   ⟨h.1.smul fun _ => c, fun g => ((holValueAt_const c s₀).mul (h.2 g)).congr
     ⟨0, fun s _ => (congrFun (eis_smul c (Φ s)) g).symm⟩⟩
-
-theorem EisCoeffAt.rTr (h : EisCoeffAt V Φ s₀ n φ) (x : GA D (dblSp V)) :
-    EisCoeffAt V (fun s => rTr _ x (Φ s)) s₀ n (rTr _ x φ) :=
-  ⟨h.1.rTr x, fun g => (h.2 (g * x)).congr ⟨0, fun s _ => (congrFun (eis_rTr x (Φ s)) g).symm⟩⟩
-
-theorem EisValueAt.rTr (h : EisValueAt V Φ s₀ φ) (x : GA D (dblSp V)) :
-    EisValueAt V (fun s => rTr _ x (Φ s)) s₀ (rTr _ x φ) :=
-  ⟨h.1.rTr x, fun g => (h.2 (g * x)).congr ⟨0, fun s _ => (congrFun (eis_rTr x (Φ s)) g).symm⟩⟩
 
 section Holomorphic
 
@@ -378,18 +345,6 @@ theorem dblInt_add (h : DblConv V μ m E f₁ f₂) (h' : DblConv V μ m E' f₁
 
 variable [SigmaFinite m]
 
-theorem dblInt_smul_measure (c : ℝ≥0) : dblInt V μ (c • m) E f₁ f₂ = (c : ℂ) ^ 2 * dblInt V μ m E f₁ f₂ := by
-  have e : autMeasure V (c • m) = c • autMeasure V m := quotMeasure_smul (c : ℝ≥0∞)
-  rw [dblInt, e, Measure.prod_smul_left, Measure.prod_smul_right, integral_smul_nnreal_measure,
-    integral_smul_nnreal_measure, smul_smul, ← sq, NNReal.smul_def, Complex.real_smul]
-  push_cast; rfl
-
-theorem dblInt_of_factor {A B : GA D V → ℂ} (h : ∀ g₁ g₂, E (io V (g₁, g₂)) = A g₁ * conj (B g₂) * μ (detA V g₂)) :
-    dblInt V μ m E f₁ f₂ = Cusp.petersson V m A f₁ * Cusp.petersson V m f₂ B := by
-  refine (integral_congr_ae (.of_forall fun q => ?_)).trans (integral_prod_mul _ _)
-  simp only [dblIntegrandQ, dblIntegrand, h, AutomorphicL2Unitary.descend]
-  field_simp [Circle.coe_ne_zero]
-
 variable [m.IsMulLeftInvariant]
 
 theorem DblConv.dblInt_eq (hc : DblConv V μ m E f₁ f₂) (h : IsFundamentalDomain (GQ V) 𝓕 m) :
@@ -417,59 +372,6 @@ theorem dblConv_iff (hi : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E f₁
     (measurableEmbedding_sec.measurable.prodMap measurableEmbedding_sec.measurable)).aestronglyMeasurable)).1 hc
 
 end Dbl
-
-section ZetaNonvanishing₂
-
-variable {m : Measure (GA D V)} {Φ : ℂ → GA D (dblSp V) → ℂ} {f₁ f₂ : GA D V → ℂ} {s₀ c c' : ℂ} {n : ℤ}
-
-theorem ZetaValueAt.unique (h : ZetaValueAt V μ m Φ f₁ f₂ s₀ c) (h' : ZetaValueAt V μ m Φ f₁ f₂ s₀ c') : c = c' :=
-  h.2.unique h'.2
-
-theorem ZetaCoeffAt.unique (h : ZetaCoeffAt V μ m Φ f₁ f₂ s₀ n c) (h' : ZetaCoeffAt V μ m Φ f₁ f₂ s₀ n c') : c = c' :=
-  h.2.unique h'.2
-
-end ZetaNonvanishing₂
-
-section Euler
-
-open NumberField IsDedekindDomain
-
-variable {K : Type} [Field K] [NumberField K] {T : Set (HeightOneSpectrum (𝓞 K))} {c : LFun.Fam K} {σ : ℝ} {Λ : ℂ → ℂ}
-
-end Euler
-
-example (h0 : V.rank = 0) {Φ : GA D (dblSp V) → ℂ} (h : LeftInv (siegelQ V) Φ) (g : GA D (dblSp V)) :
-    EisConv V Φ g ∧ eis V Φ g = Φ g :=
-  cosetSum_of_le (fun _ _ => mem_siegelOf.2 ((keepsDiag_iff _).2 fun i => absurd i.2 (by omega))) h g
-
-theorem eis_smul_indicator (V : HSp D) (c : ℂ → ℂ) :
-    IsEisFamily V (fun s => c s • indicator (siegelQ V : Set (GA D (dblSp V))) 1) ∧
-      ∀ s, eis V (c s • indicator (siegelQ V : Set (GA D (dblSp V))) 1) = c s • indicator (GQ (dblSp V) : Set _) 1 :=
-  ⟨IsEisFamily.smul (Φ := fun _ => _) (fun _ _ => ⟨(cosetSum_indicator 1).1, fun g => (cosetSum_indicator g).2.1⟩) c,
-    fun s => (eis_smul _ _).trans (congrArg _ (funext fun g => (cosetSum_indicator g).2.2))⟩
-
-example (V : HSp D) (s₀ : ℂ) : ∃ Φ, EisContinues V Φ ∧ EisPoleLE V Φ s₀ 1 ∧
-    EisCoeffAt V Φ s₀ (-1) (indicator (GQ (dblSp V) : Set _) 1) ∧ ∀ φ, ¬ EisValueAt V Φ s₀ φ := by
-  obtain ⟨h1, h2⟩ := eis_smul_indicator V fun s => (s - s₀)⁻¹
-  have h3 : ∀ g, IsMerExt (eisSer V (fun s => (s - s₀)⁻¹ • indicator (siegelQ V : Set (GA D (dblSp V))) 1) g) univ
-      fun s => (s - s₀)⁻¹ * indicator (GQ (dblSp V) : Set _) 1 g := fun g =>
-    ⟨isRightDomain_univ, fun s _ => by fun_prop, 0, fun s _ => (congrFun (h2 s) g).symm⟩
-  have h4 : ∀ z : ℂ, Tendsto (fun s => (s - s₀) ^ 1 * ((s - s₀)⁻¹ * z)) (𝓝[≠] s₀) (𝓝 z) := fun z =>
-    tendsto_const_nhds.congr' (eventually_nhdsWithin_of_forall fun s hs => by simp [sub_ne_zero.2 hs])
-  refine ⟨_, ⟨h1, fun g => ⟨_, h3 g⟩⟩, ⟨h1, fun g => ((h3 g).isExtAt trivial).poleLE_iff.2 ⟨_, h4 _⟩⟩,
-    ⟨h1, fun g => ((h3 g).isExtAt trivial).coeffAt_of_tendsto (h4 _)⟩, fun φ h => ?_⟩
-  have h5 := ((tendsto_nhdsWithin_of_tendsto_nhds (s := {s₀}ᶜ) ((continuous_sub_right s₀).pow 1).continuousAt.tendsto).mul
-    (((h3 1).isExtAt trivial).holValueAt_iff.1 (h.2 1)))
-  simpa [indicator_of_mem (one_mem (GQ (dblSp V)))] using tendsto_nhds_unique h5 (h4 _)
-
-example (m : Measure (GA D V)) [m.IsHaarMeasure] (c c₁ c₂ : ℂ) :
-    DblConv V 1 m (fun _ => c) (fun _ => c₁) (fun _ => c₂) ∧
-      dblInt V 1 m (fun _ => c) (fun _ => c₁) (fun _ => c₂) = c * conj c₁ * c₂ * (autMeasure V m).real univ ^ 2 := by
-  have e : dblIntegrandQ V 1 (fun _ => c) (fun _ => c₁) (fun _ => c₂) = fun _ => c * conj c₁ * c₂ :=
-    funext fun _ => by simp [dblIntegrandQ, dblIntegrand]
-  refine ⟨⟨fun _ _ _ => rfl, e ▸ integrable_const _⟩, ?_⟩
-  rw [dblInt, e, integral_const, ← univ_prod_univ, measureReal_prod_prod, Complex.real_smul]
-  push_cast; ring
 
 end GlobalTheory.Eis
 

@@ -2,11 +2,14 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncModelEmbeddedLogResolutionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncModelEmbeddedLogResolution
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjoinCoordsArithVarStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.EmbeddedResolutionAmpleMetricStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.EmbeddedResolutionAmpleMetric
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarOfBlockAlgebraicStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BlockJoinInclusionsCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BlockJoinInclusionsCompat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.PB Filter Topology
 open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 
@@ -33,7 +36,7 @@ theorem exists_good_model : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSt
   intro hRes K _ ι _ Ω _ _ y e β b hV hβ hβP
   obtain ⟨M, y₂, J, ⟨i₀, hi₀⟩, hfield, hJh, hJ, hsnc, hz⟩ :=
     GlobalTheory.T.adjoin_coords_arith_var hRes K ι Ω y e β b hV hβ hβP
-  have hj := (GlobalTheory.T.block_join_inclusions_compat).1 K ι Unit (fun _ => Fin M) Ω y y₂
+  have hj := (_root_.GlobalTheory.CompanionTheory.Ar.Cmp.join_block_maps).1 K ι Unit (fun _ => Fin M) Ω y y₂
   have hb₁ := hj.1
   have hcomp : joinVec y y₂ ∘ joinInl ι (fun _ : Unit => Fin M) = y := hj.2.2.1
   have hblocks := join_blocks y y₂ hV.2.1.2.2 ⟨i₀, hi₀⟩
@@ -44,9 +47,9 @@ theorem exists_good_model : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSt
     · rw [hcomp, hfield]
       intro t ht
       exact isAlgebraic_algebraMap (⟨t, ht⟩ : blockFnField y)
-  obtain ⟨R, hR⟩ := GlobalTheory.T.snc_model_embedded_log_resolution (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M) Ω (joinVec y y₂) e J
+  obtain ⟨R, hR⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.isEmbedded_of_isSncModel (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M) Ω (joinVec y y₂) e J
     harith hJh hJ hsnc
-  obtain ⟨Amp, h₁, h₂, h₃⟩ := GlobalTheory.T.embedded_resolution_ample_metric (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M)
+  obtain ⟨Amp, h₁, h₂, h₃⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.exists_smooth_hermLine_posPot_of_isEmbedded (K ⊕ Unit) (joinIdx ι fun _ : Unit => Fin M)
     (mCoordIdeal (joinVec y y₂)) J e R hR
   exact ⟨K ⊕ Unit, inferInstance, joinIdx ι fun _ : Unit => Fin M, inferInstance, Sum.inl,
     joinInl ι fun _ : Unit => Fin M, joinVec y y₂, J, R, Amp, hb₁, hcomp, hfield, harith, hR, h₁, h₂, h₃, hz⟩

@@ -51,10 +51,6 @@ theorem hasEval_adicRing {σ : Type*} [Finite σ] {a : σ → 𝒪}
 theorem psEvalAt_X {σ : Type*} (a : σ → 𝒪) (i : σ) : psEvalAt (MvPowerSeries.X i) a = a i := by
   simp [psEvalAt, MvPowerSeries.eval₂_X]
 
-theorem psEvalAt_C {σ : Type*} (a : σ → 𝒪) (r : 𝒪) : psEvalAt (MvPowerSeries.C r) a = r := by
-  simp [psEvalAt, MvPowerSeries.eval₂_C]
-  rfl
-
 variable [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪]
 
 def evAlgHom {σ : Type*} [Finite σ] (a : σ → 𝒪) (ha : ∀ i, a i ∈ IsLocalRing.maximalIdeal 𝒪) :
@@ -153,9 +149,6 @@ omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
 @[ext] theorem ext {x y : MaxIdealPoint F} (h : x.val = y.val) : x = y := Subtype.ext h
-
-omit [IsAdicComplete (IsLocalRing.maximalIdeal 𝒪) 𝒪] in
-theorem val_injective : Function.Injective (val : MaxIdealPoint F → 𝒪) := fun _ _ => ext
 
 instance : Zero (MaxIdealPoint F) := ⟨mk 0 (zero_mem _)⟩
 

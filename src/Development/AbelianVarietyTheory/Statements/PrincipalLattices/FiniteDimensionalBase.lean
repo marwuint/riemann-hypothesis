@@ -116,37 +116,6 @@ theorem disjoint_lat {ρ ρ' : ℂ} (h : ρ ≠ ρ') : Disjoint (lat hP ρ) (lat
   · exact ha' j (hj ▸ h)
   · exact ha j hj
 
-theorem lat_eq_top {p : ℕ} (hty : IsTypeFn H p 0 ty) : lat hP H.rt0 = ⊤ := by
-  refine top_le_iff.1 fun a _ j hj => ?_
-  have h := (hty (ty j)).2 hj
-  have : Nonempty {i // ty i = ty j} := ⟨⟨j, rfl⟩⟩
-  exact absurd h Nat.card_pos.ne'
-
-theorem form_w0_ne_zero {ρ : ℂ} (hρ : ρ ^ 2 = -(H.d : ℂ)) {a : D.La} (ha : a ∈ lat hP ρ) (h0 : a ≠ 0) :
-    D.EF (H.w0 • a) a ≠ 0 := by
-  obtain ⟨Hm, -, hpos, hE⟩ := hP.2.2.2.2
-  have hz : Pe a ≠ 0 := fun h => h0 (hP.2.1 (h.trans (map_zero Pe).symm))
-  have h1 := hE (H.w0 • a) a
-  have h2 := hE a a
-  rw [D.alt] at h2
-  have h3 : hermForm Hm (Pe (H.w0 • a)) (Pe a) = ((1 + ρ) / 2) * hermForm Hm (Pe a) (Pe a) := by
-    rw [period_w0_smul hP ha, hermForm, hermForm, smul_dotProduct, smul_eq_mul]
-  have him : ρ.im ≠ 0 := by
-    intro h
-    have e := congrArg Complex.re hρ
-    have hd : (0 : ℝ) < H.d := Nat.cast_pos.2 H.d_prime.pos
-    simp [pow_two, h] at e
-    nlinarith [mul_self_nonneg ρ.re]
-  intro h
-  rw [h3, h, Complex.mul_im, h2] at h1
-  have h4 : ((1 + ρ) / 2).im = ρ.im / 2 := by simp
-  rw [h4] at h1
-  have := hpos _ hz
-  simp only [Int.cast_zero, mul_zero, zero_add, mul_eq_zero] at h1
-  rcases h1 with h1 | h1
-  · exact him (by linarith)
-  · exact this.ne' h1
-
 include hP in
 
 theorem eq_zero_of_line {a : D.La} (h : ∀ z : ℂ, z • Pe a ∈ Pe.range) : a = 0 := by
@@ -212,56 +181,6 @@ theorem finiteDimensional_base (l : Level H) : FiniteDimensional ℚ (KA l) := b
   · refine IsIntegral.of_pow l.A_pos ?_
     rw [show zeta l.A ^ l.A = 1 from (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one]
     exact isIntegral_one
-
-theorem hypotheses_inhabited (h₁ : N1ab) (h₂ : N1c) (hT : ThetaUnifAV) (hB : Out.PolBaseChangeSt)
-    (hper : ∀ D : Datum H, (∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty) ∧
-      ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty → ∃ Pe, IsPeriod D ty Pe)
-    (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (P : Out.PolAV (Sp (𝓞 M))) (hg : P.g = 1)
-    (v : epsR (𝓞 M) ⟶ P.A) (hv : IsTangent v)
-    (hcm : ∀ (PC : Out.PolAV (Sp ℂ)) (ψ : PC.A.left ⟶ P.A.left) (u : HolUnif PC.A PC.L PC.g), PC.g = 1 →
-      IsGrpPullback PC.A P.A (spMap ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))) ψ → LBIso PC.L (P.L.pull ψ) →
-      IsThetaUnif u → ∃ c, IsQuadLattice u.Λ H.d c)
-    (D : Datum H) (hD : 1 ≤ D.p + D.q) (l : Level H) :
-    ∃ (Xo : Moduli D l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n)
-      (Pe : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty Pe) (k : IntermediateField ℚ ℂ)
-      (P₀ : Out.PolAV (Sp k)) (v₀ : epsR k ⟶ P₀.A) (PC : Out.PolAV (Sp ℂ)) (ψ : PC.A.left ⟶ P₀.A.left)
-      (u₀ : HolUnif PC.A PC.L PC.g) (c : ℂ),
-      KA l ≤ k ∧ FiniteDimensional ℚ k ∧ P₀.g = 1 ∧ IsTangent v₀ ∧ PC.g = 1 ∧
-      IsGrpPullback PC.A P₀.A (spMap (algebraMap k ℂ)) ψ ∧ LBIso PC.L (P₀.L.pull ψ) ∧ IsThetaUnif u₀ ∧ c ≠ 0 ∧
-      IsQuadLattice u₀.Λ H.d c ∧
-      (∃ (f : 𝓞 M →+* k) (π : P₀.A.left ⟶ P.A.left), IsGrpPullback P₀.A P.A (spMap f) π ∧
-        v₀.left ≫ π = spMap (Chart.dualMapR f) ≫ v.left) ∧
-      (D.q = 0 → lat hP H.rt0 = ⊤ ∧ Nontrivial (FU.Di i).La) := by
-  obtain ⟨Xo⟩ := h₁ E H D l hD
-  obtain ⟨g, ty, hty⟩ := (hper D).1
-  obtain ⟨FU⟩ := h₂ E H D l Xo (algebraMap (KA l) ℂ) g ty hD rfl hty
-  let i : Fin FU.n := ⟨0, FU.n_pos⟩
-  obtain ⟨Pe, hP⟩ := (hper (FU.Di i)).2 g ty (by rw [(FU.sig i).1, (FU.sig i).2]; exact hty)
-  have := finiteDimensional_base l
-  let k : IntermediateField ℚ ℂ := M ⊔ KA l
-  let f : 𝓞 M →+* k := (IntermediateField.inclusion (le_sup_left : M ≤ k)).toRingHom.comp (algebraMap (𝓞 M) M)
-  obtain ⟨P₀, π, hg₀, hπ, hL₀⟩ := exists_baseChange hB (spMap f) P
-  obtain ⟨PC, ψ, hgC, hψ, hLC⟩ := exists_baseChange hB (spMap (algebraMap k ℂ)) P₀
-  obtain ⟨v₀, hv₀, hv₁⟩ := exists_tangent_over f hπ hv
-  obtain ⟨u₀, hu⟩ := exists_isThetaUnif hT PC
-  have hC : PC.g = 1 := hgC.trans (hg₀.trans hg)
-  have hL : LBIso PC.L (P.L.pull (ψ ≫ π)) :=
-    LBIso.trans PC.isLB (pull_isLB P₀.isLB ψ) (pull_isLB P.isLB _) hLC
-      (LBIso.chartPull (chartPullPull P₀.L ψ ψ rfl) (chartPullSame P.L _ _ _ ψ fun _ => rfl) hL₀)
-  obtain ⟨c, hc⟩ := hcm PC (ψ ≫ π) u₀ hC ((hψ.comp hπ).congr (by
-    show Spec.map _ ≫ Spec.map _ = Spec.map _
-    rw [← Spec.map_comp]; rfl) rfl) hL hu
-  refine ⟨Xo, g, ty, FU, i, Pe, hP, k, P₀, v₀, PC, ψ, u₀, c, le_sup_right, inferInstance, hg₀.trans hg, hv₀, hC, hψ,
-    hLC, hu, ?_, hc, ⟨f, π, hπ, hv₁⟩, fun hq => ⟨lat_eq_top hP (hq ▸ hty), ?_⟩⟩
-  · rintro rfl
-    have h0 : Submodule.span ℝ (u₀.Λ : Set (Fin PC.g → ℂ)) ≤ ⊥ := Submodule.span_le.2 fun z hz => by
-      obtain ⟨m, n, rfl⟩ := (hc z).1 hz
-      funext _; simp
-    rw [u₀.full] at h0
-    have e : (fun _ => 1 : Fin PC.g → ℂ) = 0 := h0 Submodule.mem_top
-    exact one_ne_zero (congrFun e ⟨0, by omega⟩)
-  · refine Module.nontrivial_of_finrank_pos (R := 𝓞 E) ?_
-    rw [(FU.Di i).rank, (FU.sig i).1, (FU.sig i).2]; omega
 
 end PureType
 

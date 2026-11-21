@@ -15,6 +15,4 @@ def DifferentLatIndex.Statement : Prop :=
       genIndex (diffLat s I).toAddSubgroup (familyLat s v).toAddSubgroup =
         ((familyIndex I v : ℝ) / |(discr Em : ℝ)| ^ ρ) ^ ((Module.finrank ℚ K : ℝ) / Module.finrank ℚ Em)
 
-example : IsNzFamily Gauss.isoLine 1 Gauss.isoFam := Gauss.isoFam_nz
-
 end GroundTheory.Heights₂.Heights.NineStatements

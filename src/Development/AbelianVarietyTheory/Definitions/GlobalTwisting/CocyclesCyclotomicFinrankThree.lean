@@ -6,9 +6,6 @@ namespace GlobalTheory.OrdLoc
 
 variable {G : Type} [Group G] [TopologicalSpace G] (E : Type) [NontriviallyNormedField E]
 
-def WCont {X M : Type} [TopologicalSpace X] [AddCommGroup M] [Module E M] (f : X → M) : Prop :=
-  ∀ ℓ : M →ₗ[E] E, Continuous fun x => ℓ (f x)
-
 variable {E}
 
 def Z1 (γ : G →* Eˣ) : Submodule E (G → E) where

@@ -124,11 +124,6 @@ private theorem conj_sqrtMinusD' : D.host.conj D.host.sqrtMinusD = -D.host.sqrtM
     | exact Formalism.HC.HostRaw.conj_sqd _
     | exact Formalism.HC.HostRaw.conj_sqd
 
-theorem omg_add_conj : omg D + D.host.conj (omg D) = 1 := by
-  show (1 + D.host.sqrtMinusD) / 2 + D.host.conj ((1 + D.host.sqrtMinusD) / 2) = 1
-  rw [map_div₀, map_add, map_one, conj_sqrtMinusD', map_ofNat]
-  ring
-
 theorem omg_int : IsIntegral ℤ (omg D) := by
   have hd : D.host.d % 8 = 7 := by
     first

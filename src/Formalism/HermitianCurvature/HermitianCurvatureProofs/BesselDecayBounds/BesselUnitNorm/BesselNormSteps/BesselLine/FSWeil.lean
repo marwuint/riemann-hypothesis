@@ -84,54 +84,6 @@ theorem quot_map {μG μW μN ν : Measure (Mt k r)} [SFinite μW] [SFinite μN]
   rw [muSof, lintegral_map hf1 hg1]
   rfl
 
-theorem gHyp_sfinite {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-    {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
-    {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {μW μN μG ν : Measure (Mt k r)}
-    {σ : Mx k r → (H →L[ℂ] H)} (hG : GHyp z π μW μN μG ν σ) :
-    SFinite μW ∧ SFinite μN ∧ SFinite ν ∧ μG = (ν.prod (μW.prod μN)).map psiMap := by
-  obtain ⟨-, hGh, -, -, ⟨hWh, -⟩, ⟨κ, -, -, hκ⟩, hq⟩ := hG
-  have : SigmaFinite μG := hGh.1
-  have : SigmaFinite μW := hWh.1
-  have : SFinite μN := by rw [hκ]; infer_instance
-  have : SFinite (muSof μW μN) := by unfold muSof; infer_instance
-  have : SFinite ν := sfinite_quot hGh.2.1 hq
-  exact ⟨inferInstance, inferInstance, inferInstance, quot_map hq⟩
-
-theorem weilStep : WeilStep := by
-  intro k r H _ _ _ Wp _ _ _ _ z π μW μN μG ν σ hG F hF
-  obtain ⟨hWs, hNs, hνs, hmap⟩ := gHyp_sfinite hG
-  subst hmap
-  have hFm := hF.aestronglyMeasurable
-  have hI := (integrable_map_measure hFm measurable_psiMap.aemeasurable).1 hF
-  refine ⟨hI.prod_right_ae, hI.integral_prod_left, ?_⟩
-  rw [integral_map measurable_psiMap.aemeasurable hFm, integral_prod (fun w => F (Matrix.of (psiMap w))) hI]
-  rfl
-
-theorem nuStep : NuStep := by
-  intro k r H _ _ _ Wp _ _ _ _ z π μW μN μG ν σ hG
-  obtain ⟨hWs, hNs, hνs, hmap⟩ := gHyp_sfinite hG
-  obtain ⟨-, hGh, -, -, ⟨hWh, -⟩, ⟨κ, -, -, hκ⟩, hq⟩ := hG
-  have hS0 : μW.prod μN ≠ 0 := fun h0 =>
-    muS_ne_zero hGh.2.1 hq (by rw [muSof, h0, Measure.map_zero])
-  have hGae : ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r) := ae_iff.2 hGh.2.2.1
-  rw [hmap] at hGae
-  have h1 := Measure.ae_ae_of_ae_prod (ae_of_ae_map measurable_psiMap.aemeasurable hGae)
-  have hWae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UH (Hpk k r) ∧ Matrix.of p.2 ∈ UH (Hpk k r) := by
-    have a1 : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z := ae_iff.2 hWh.2.2.1
-    have a2 : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r := by
-      rw [hκ]
-      exact ae_iff.2 (PI.WUN.muN_conc κ)
-    filter_upwards [Measure.quasiMeasurePreserving_fst.ae a1,
-      Measure.quasiMeasurePreserving_snd.ae a2] with p hp1 hp2
-    exact ⟨hp1.1, hp2.1⟩
-  have : (ae (μW.prod μN)).NeBot := ae_neBot.2 hS0
-  filter_upwards [h1] with x hx
-  obtain ⟨p, hp, hp'⟩ := (hx.and hWae).exists
-  have hpx : sM p * Matrix.of x ∈ UH (Hpk k r) := hp
-  have hs : sM p ∈ UH (Hpk k r) := PI.WUN.UH_mul hp'.1 hp'.2
-  have h2 := PI.WUN.UH_mul (PI.WUN.UH_inv hs) hpx
-  rwa [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (PI.WUN.UH_det hs), Matrix.one_mul] at h2
-
 end Weil
 
 end PI.WBL.FSW

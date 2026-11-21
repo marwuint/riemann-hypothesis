@@ -1,5 +1,12 @@
 import Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.IsLatClosure
-import Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.ExistsInitialThetaValue
+import Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.LatticeAreaPositivity.ThetaTranslationOperatorApply
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EllipticOnePole
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.Th0TranslateProduct
+import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdChar
+import Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.LatticeAreaPositivity.DensityIntegrableFundDomain
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.QuasiPeriodConstIsogeny
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.IsogenyFormulaInstance
 
 noncomputable section
 
@@ -49,12 +56,6 @@ theorem is_lattice_smul_holds : IsLatSmul := by
     ring
   rw [h3, Complex.im_ofReal_mul]
   exact mul_ne_zero (Complex.normSq_pos.mpr hc).ne' h2
-
-theorem has_cm_smul_holds : HasCMSmul := by
-  intro d Λ c h x hx
-  rw [AddSubgroup.mem_smul_pointwise_iff_exists] at hx ⊢
-  obtain ⟨s, hs, rfl⟩ := hx
-  exact ⟨_, h s hs, by simp only [smul_eq_mul]; ring⟩
 
 theorem sqrt_choice (s : ℂ) (d : ℕ) (hs : s ^ 2 = -(d : ℂ)) :
     s = Complex.I * ((Real.sqrt d : ℝ) : ℂ) ∨ -s = Complex.I * ((Real.sqrt d : ℝ) : ℂ) := by
@@ -112,28 +113,5 @@ theorem lattice_ideal_lattice_holds : LatILat := by
   obtain ⟨a, b, h, hl, -⟩ := exists_latI_basis K d hd4 x hx hK φ 𝔞 h𝔞
   rw [latI_eq_smul, hl]
   exact is_lattice_smul_holds _ δ hδ (is_lattice_closure_holds a b h.ne')
-
-theorem lambda_conj_lattice_holds : LamConjLat := by
-  intro D hU hC cc hcc δ hδ M _ hM ρ
-  obtain ⟨𝔟, h𝔟, hρ⟩ := (hC cc hcc.1 M (br_jL_mem D cc hcc δ hδ M hM)).1 ρ
-  have hjM : IntegralLatticeDensity.jL (TaylorLogMetric.lamOf D cc δ) ∈ M := by
-    rw [← brcc_jL_delta D cc hcc δ hδ]; exact br_jL_mem D cc hcc δ hδ M hM
-  have hj : ρ ⟨IntegralLatticeDensity.jL (TaylorLogMetric.lamOf D cc δ), hjM⟩ = IntegralLatticeDensity.jL (latI (brPhi D) 𝔟 1) := by
-    rw [← br_lamOf_eq, ← hρ]; congr 2; exact (brcc_jL_delta D cc hcc δ hδ).symm
-  obtain ⟨c, hc0, hlc, -⟩ := br_lamConj_eq hU M ρ (TaylorLogMetric.lamOf D cc δ) (latI (brPhi D) 𝔟 1) hM.2.1 hM.2.2
-    (br_discr_lamOf D cc hcc δ hδ) (brcc_discr_one_ne D 𝔟 h𝔟) hjM hj
-  obtain ⟨h1, h2⟩ := lattice_ideal_lattice_holds D.host.K D.host.d (discriminant_mod_four D) ⟨D.host.sqrtMinusD, br_sqrt_mem D⟩
-    (br_sqrt_sq D) (br_finrank_K D) (brPhi D) 𝔟 1 h𝔟 one_ne_zero
-  rw [hlc]
-  exact ⟨is_lattice_smul_holds _ c hc0 h1, has_cm_smul_holds _ _ c h2⟩
-
-theorem lambda_conj_theta_holds : LamConjTheta := by
-  intro D hU hC cc hcc δ hδ M _ hM ρ
-  obtain ⟨h1, h2⟩ := lambda_conj_lattice_holds D hU hC cc hcc δ hδ M hM ρ
-  have hd8 : D.host.d % 8 = 7 := by
-    have := D.host.hyp.2.2.2.1
-    omega
-  obtain ⟨G, hG⟩ := th0Ex D.host.d _ hd8 h1 h2
-  exact ⟨G, hG, fun G' hG' => th0Uniq D.host.d _ G' G h1 hG' hG, normPos D.host.d _ G h1 hG⟩
 
 end Formalism.L2.Th1.F2

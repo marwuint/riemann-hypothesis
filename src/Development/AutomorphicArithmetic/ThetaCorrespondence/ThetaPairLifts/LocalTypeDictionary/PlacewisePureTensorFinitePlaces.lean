@@ -2,7 +2,8 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsDoublingFrame
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.SphericalFixesPureVacuumVectors
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsDoublingFrameStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -60,9 +61,9 @@ theorem placewise_pure_tensor_finite_places : _root_.GlobalTheory.FunPr.ThetaLoc
   refine ⟨fun v => loc (idem _ v) (idem_mul_self v) h, fun v u hu => ?_, fun f φ hSB hvac => ?_, fun f φ hSB hvac => ?_⟩
   · show u • (mat (loc (idem _ v) (idem_mul_self v) h) - 1) = 0
     rw [mat_loc, phi_sub_one, smul_smul, mul_idem_of_evFin hu, zero_smul]
-  · exact side Γ.M Bs.ψ hT.geo.hM om h (fun v hh hhv φ hφ => GlobalTheory.T.weilRepresentationLocality_unitaryGroupW_pairVW _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ)
+  · exact side Γ.M Bs.ψ hT.geo.hM om h (fun v hh hhv φ hφ => _root_.GlobalTheory.WeilLocalityW.locality _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ)
       (S₀ ∪ S₁) (fun S e he hS hin hout => (hfixB S e he hS hin hout).1) f φ hSB hvac
-  · exact side Γ.M' Bs.ψ hT.geo.hM' om' h (fun v hh hhv φ hφ => GlobalTheory.T.weilRepresentation_localAtFinitePlace_unitaryGroupW _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ)
+  · exact side Γ.M' Bs.ψ hT.geo.hM' om' h (fun v hh hhv φ hφ => _root_.GlobalTheory.WeilLocalityW'.locality _ _ _ Bs _ _ Γ Xc om om' hT v hh hhv φ hφ)
       (S₀ ∪ S₁) (fun S e he hS hin hout => (hfixB S e he hS hin hout).2) f φ hSB hvac
 end GlobalTheory.PlacePureFin
 end

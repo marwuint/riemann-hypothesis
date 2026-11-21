@@ -1,16 +1,18 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SphericalHeckeUnitary.PuSphHecke
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.QuadraticCharacterNorms.SphStarUPlug
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalAlgebraHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalAlgebraHoldsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalAlgebraHolds
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SetupEig
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalAlgebraHolds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SphericalOneOfLocalAlgebraStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactUnitHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactUnitHolds
 
 namespace PositivityTheory.Rg.BcB.F.U
 
 theorem unitary_words_holds : UWord :=
-  UU.uWordOfU GlobalTheory.T.diagonal_algebra_holds GlobalTheory.T.local_algebra_holds (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.T.local_algebra_holds) GlobalTheory.T.compact_unit_holds PositivityTheory.Rg.BcB.F.Fok.sphStarU
+  UU.uWordOfU _root_.GlobalTheory.CompanionTheory.BlockScalars.diagAlg _root_.GlobalTheory.CompanionTheory.LocHecke.locAlg (GlobalTheory.T.spherical_one_of_local_algebra _root_.GlobalTheory.CompanionTheory.LocHecke.locAlg) _root_.GlobalTheory.CompanionTheory.CompUnitary.compUnit PositivityTheory.Rg.BcB.F.Fok.sphStarU
 
 theorem unitary_adjoint_holds : UAdj :=
-  UU.uAdjOfU GlobalTheory.T.diagonal_algebra_holds GlobalTheory.T.local_algebra_holds (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.T.local_algebra_holds) GlobalTheory.T.compact_unit_holds PositivityTheory.Rg.BcB.F.Fok.sphStarU
+  UU.uAdjOfU _root_.GlobalTheory.CompanionTheory.BlockScalars.diagAlg _root_.GlobalTheory.CompanionTheory.LocHecke.locAlg (GlobalTheory.T.spherical_one_of_local_algebra _root_.GlobalTheory.CompanionTheory.LocHecke.locAlg) _root_.GlobalTheory.CompanionTheory.CompUnitary.compUnit PositivityTheory.Rg.BcB.F.Fok.sphStarU
 
 end PositivityTheory.Rg.BcB.F.U

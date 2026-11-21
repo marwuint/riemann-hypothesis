@@ -128,64 +128,6 @@ open MeasureTheory Metric Set Filter Topology Real
 
 noncomputable section
 
-lemma ci_of_cont {f : ℂ → ℝ} (hf : Continuous f) : CircleIntegrable f 0 1 :=
-  (hf.comp (continuous_circleMap 0 1)).intervalIntegrable _ _
-
-lemma avg_affine (a b : ℂ) : Real.circleAverage (fun ζ : ℂ => a + ζ * b) 0 1 = a := by
-  have h : DiffContOnCl ℂ (fun ζ : ℂ => a + ζ * b) (ball (0:ℂ) |(1:ℝ)|) :=
-    (by fun_prop : Differentiable ℂ (fun ζ : ℂ => a + ζ * b)).diffContOnCl
-  simpa using h.circleAverage
-
-lemma avg_re_affine (a b c : ℂ) :
-    Real.circleAverage (fun ζ : ℂ => (c * (a + ζ * b)).re) 0 1 = (c * a).re := by
-  have hi : CircleIntegrable (fun ζ : ℂ => a + ζ * b) 0 1 :=
-    ((by fun_prop : Continuous (fun ζ : ℂ => a + ζ * b)).comp
-      (continuous_circleMap 0 1)).intervalIntegrable _ _
-  let L : ℂ →L[ℝ] ℝ := Complex.reCLM.comp ((ContinuousLinearMap.mul ℂ ℂ c).restrictScalars ℝ)
-  have h := L.circleAverage_comp_comm hi
-  rw [avg_affine] at h
-  simpa [L, Function.comp_def] using h
-
-lemma le_avg_norm (a b : ℂ) : ‖a‖ ≤ Real.circleAverage (fun ζ : ℂ => ‖a + ζ * b‖) 0 1 := by
-  rcases eq_or_ne a 0 with rfl | ha
-  · rw [norm_zero]
-    exact Real.circleAverage_nonneg_of_nonneg fun _ _ => norm_nonneg _
-  have h1 : ‖a‖ ^ 2 = Real.circleAverage
-      (fun ζ : ℂ => ((starRingEnd ℂ) a * (a + ζ * b)).re) 0 1 := by
-    rw [avg_re_affine, Complex.conj_mul']
-    norm_cast
-  have h2 : Real.circleAverage (fun ζ : ℂ => ((starRingEnd ℂ) a * (a + ζ * b)).re) 0 1 ≤
-      Real.circleAverage (fun ζ : ℂ => ‖a‖ * ‖a + ζ * b‖) 0 1 := by
-    refine Real.circleAverage_mono (ci_of_cont (by fun_prop)) (ci_of_cont (by fun_prop))
-      fun x _ => (Complex.re_le_norm _).trans ?_
-    rw [norm_mul, Complex.norm_conj]
-  have h3 : Real.circleAverage (fun ζ : ℂ => ‖a‖ * ‖a + ζ * b‖) 0 1 =
-      ‖a‖ * Real.circleAverage (fun ζ : ℂ => ‖a + ζ * b‖) 0 1 := by
-    simpa [smul_eq_mul] using
-      Real.circleAverage_fun_smul (a := ‖a‖) (f := fun ζ : ℂ => ‖a + ζ * b‖) (c := 0) (R := 1)
-  have hpos : 0 < ‖a‖ := norm_pos_iff.2 ha
-  refine le_of_mul_le_mul_left ?_ hpos
-  nlinarith
-
-lemma le_avg_sq (a b : ℂ) : ‖a‖ ^ 2 ≤ Real.circleAverage (fun ζ : ℂ => ‖a + ζ * b‖ ^ 2) 0 1 := by
-  have key : ∀ x : ℂ, (2 * (starRingEnd ℂ) a * x).re - ‖a‖ ^ 2 ≤ ‖x‖ ^ 2 := by
-    intro x
-    have := sq_nonneg (x.re - a.re)
-    have := sq_nonneg (x.im - a.im)
-    simp only [Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.mul_im,
-      Complex.conj_re, Complex.conj_im, Complex.re_ofNat, Complex.im_ofNat]
-    nlinarith
-  have hE : Real.circleAverage (fun ζ : ℂ => (2 * (starRingEnd ℂ) a * (a + ζ * b)).re - ‖a‖ ^ 2)
-      0 1 = ‖a‖ ^ 2 := by
-    rw [Real.circleAverage_fun_sub (ci_of_cont (by fun_prop)) (ci_of_cont (by fun_prop)),
-      avg_re_affine, Real.circleAverage_const]
-    simp only [Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.mul_im,
-      Complex.conj_re, Complex.conj_im, Complex.re_ofNat, Complex.im_ofNat]
-    ring
-  rw [← hE]
-  exact Real.circleAverage_mono (ci_of_cont (by fun_prop)) (ci_of_cont (by fun_prop))
-    fun x _ => key _
-
 lemma ii_sup' {ι : Type} [Fintype ι] [Nonempty ι] (f : ι → ℝ → ℝ) {a b : ℝ}
     (hf : ∀ j, IntervalIntegrable (f j) volume a b) :
     IntervalIntegrable (fun θ => Finset.univ.sup' Finset.univ_nonempty (fun j => f j θ))
@@ -208,38 +150,6 @@ namespace ReciprocityTheory.AnForm.A
 open MeasureTheory Metric Set Filter Topology Real PshInh
 
 theorem isPsh_iff_isLeviPsh_thm : IsPsh_iff_isLeviPshStatement := PshLap.plurisubharmonicIffLeviNonneg_holds
-
-theorem isPshInhabit_thm : IsPshInhabitStatement := by
-  intro D
-  have hsq : IsPsh (Set.univ : Set (Fin D → ℂ)) (fun z => ∑ j, ‖z j‖ ^ 2) := by
-    refine ⟨(by fun_prop : Continuous (fun z : Fin D → ℂ => ∑ j, ‖z j‖ ^ 2)).continuousOn.upperSemicontinuousOn,
-      fun z w _ => ⟨ci_of_cont (by fun_prop), ?_⟩⟩
-    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-    rw [Real.circleAverage_fun_sum (fun j _ => ci_of_cont (by fun_prop))]
-    exact Finset.sum_le_sum fun j _ => le_avg_sq (z j) (w j)
-  have hnorm : IsPsh (Set.univ : Set (Fin D → ℂ)) (fun z => ‖z‖) := by
-    refine ⟨continuous_norm.continuousOn.upperSemicontinuousOn,
-      fun z w _ => ⟨ci_of_cont (by fun_prop), ?_⟩⟩
-    show ‖z‖ ≤ Real.circleAverage (fun ζ : ℂ => ‖z + ζ • w‖) 0 1
-    rcases isEmpty_or_nonempty (Fin D) with hD | hD
-    · rw [Subsingleton.elim z 0, norm_zero]
-      exact Real.circleAverage_nonneg_of_nonneg fun _ _ => norm_nonneg _
-    · obtain ⟨j, -, hj⟩ := Finset.exists_mem_eq_sup Finset.univ Finset.univ_nonempty
-        (fun b => ‖z b‖₊)
-      have hzj : ‖z‖ = ‖z j‖ := by rw [Pi.norm_def, hj]; rfl
-      rw [hzj]
-      refine (le_avg_norm (z j) (w j)).trans (Real.circleAverage_mono (ci_of_cont (by fun_prop))
-        (ci_of_cont (by fun_prop)) fun ζ _ => ?_)
-      simpa using norm_le_pi_norm (z + ζ • w) j
-  have hC : ContDiffOn ℝ 2 (fun z : Fin D → ℂ => ∑ j, ‖z j‖ ^ 2) Set.univ :=
-    (ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)).contDiffOn
-  refine ⟨hsq, hnorm, (PshLap.plurisubharmonicIffLeviNonneg_holds D _ _ isOpen_univ hC).1 hsq, ?_⟩
-  rintro ⟨-, h2⟩
-  have h := (h2 0 (Pi.single 0 1) (fun _ _ => Set.mem_univ _)).2
-  rw [Real.circleAverage_const_on_circle (a := (-1:ℝ)) (fun x hx => by
-    simp only [mem_sphere_iff_norm, sub_zero, abs_one] at hx
-    simp [hx])] at h
-  norm_num at h
 
 theorem isPsh_sup_thm : IsPsh_supStatement := by
   intro D ι _ _ U u hU hu

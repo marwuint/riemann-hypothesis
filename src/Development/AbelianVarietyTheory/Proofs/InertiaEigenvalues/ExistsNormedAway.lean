@@ -8,9 +8,6 @@ namespace GlobalTheory.AwayNorm
 
 variable {R N : Type} [CommRing R] [CommRing N] [Algebra R N]
 
-def Dv (R : Type) [CommRing R] [Algebra R N] (u : Nˣ) (x : N) (r : ℤ) : Prop :=
-  ∃ y : R, x = ((u ^ r : Nˣ) : N) * algebraMap R N y
-
 variable {R N : Type} [CommRing R] [CommRing N] [Algebra R N] in
 
 theorem _root_.GlobalTheory.AwayNorm.exists_normed_away : ∀ (p : ℕ) (R : Type) [CommRing R],

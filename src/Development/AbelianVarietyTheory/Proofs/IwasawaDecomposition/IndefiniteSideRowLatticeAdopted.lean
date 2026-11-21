@@ -64,20 +64,6 @@ end GlobalTheory.CompanionTheory.MemQ
 end
 
 section
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValues Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
-open scoped Matrix
-set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.real_row_set_eq_image : ∀ (D : D7) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (μ : D.what₂.Tup), X.RRset μ = X.iota μ '' ((X.Mtilde μ).carrier ∩ (X.V0 μ : Set (X.Amb μ))) := by
-  intro D EE _ _ _ X μ
-  apply Set.Subset.antisymm
-  · rintro _ ⟨_, ⟨x, hx, rfl⟩, rfl⟩
-    exact ⟨x, hx, (GlobalTheory.CompanionTheory.MemQ.iota_starProjection_Qsp X μ hx.2).symm⟩
-  · rintro _ ⟨x, hx, rfl⟩
-    exact ⟨_, ⟨x, hx, rfl⟩, GlobalTheory.CompanionTheory.MemQ.iota_starProjection_Qsp X μ hx.2⟩
-
-end
-
-section
 
 open NumberField
 open scoped Matrix MatrixOrder ComplexOrder
@@ -94,45 +80,6 @@ structure IsCxBasis {n : ℕ} (σ : K →+* ℂ) {W : Type} [AddCommGroup W] [Mo
   li : LinearIndependent ℂ fun i => j (Pi.single i 1)
 
   span : Submodule.span ℂ (Set.range fun i => j (Pi.single i 1)) = ⊤
-
-def IsGramOf [NumberField K] [StarRing K] {n : ℕ} (σ : K →+* ℂ) {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
-    (j : (Fin n → K) →ₛₗ[σ] W) (H : Matrix (Fin n) (Fin n) K) : Prop :=
-  ∀ x y, inner ℂ (j x) (j y) = σ (Formalism.DivisionValues.hform H x y)
-
-def IsExtOf {n n' : ℕ} (σ : K →+* ℂ) {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
-    (j : (Fin n → K) →ₛₗ[σ] W) (j' : (Fin n' → K) →ₛₗ[σ] W') (M : Matrix (Fin n') (Fin n) K) (f : W →ₗ[ℂ] W') : Prop :=
-  ∀ x, f (j x) = j' (M.mulVec x)
-
-def jFrame {n : ℕ} (σ : K →+* ℂ) (C : Matrix (Fin n) (Fin n) ℂ) :
-    (Fin n → K) →ₛₗ[σ] EuclideanSpace ℂ (Fin n) where
-  toFun x := WithLp.toLp 2 (C.mulVec fun i => σ (x i))
-  map_add' x y := by
-    have : (fun i => σ ((x + y) i)) = (fun i => σ (x i)) + fun i => σ (y i) := by
-      funext i; simp
-    rw [this, Matrix.mulVec_add, WithLp.toLp_add]
-  map_smul' a x := by
-    have : (fun i => σ ((a • x) i)) = σ a • fun i => σ (x i) := by
-      funext i; simp
-    rw [this, Matrix.mulVec_smul, WithLp.toLp_smul]
-
-def jOf {n : ℕ} (σ : K →+* ℂ) (H : Matrix (Fin n) (Fin n) K) :
-    (Fin n → K) →ₛₗ[σ] EuclideanSpace ℂ (Fin n) :=
-  jFrame σ (CFC.sqrt (H.map σ))
-
-def extOp {n n' : ℕ} {σ : K →+* ℂ} {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
-    {j : (Fin n → K) →ₛₗ[σ] W} (hj : IsCxBasis σ j) (j' : (Fin n' → K) →ₛₗ[σ] W')
-    (M : Matrix (Fin n') (Fin n) K) : W →ₗ[ℂ] W' :=
-  (Module.Basis.mk hj.li hj.span.ge).constr ℂ fun i => j' (M.mulVec (Pi.single i 1))
-
-def cxSpan {n : ℕ} {σ : K →+* ℂ} {W : Type} [AddCommGroup W] [Module ℂ W]
-    (j : (Fin n → K) →ₛₗ[σ] W) (Z : Submodule K (Fin n → K)) : Submodule ℂ W :=
-  Submodule.span ℂ (j '' (Z : Set (Fin n → K)))
-
-def IsLatOf [NumberField K] {n : ℕ} {O : Type} [CommRing O] {φO : O →+* ℂ} (σ : K →+* ℂ) {W : Type} [AddCommGroup W]
-    [Module ℂ W] (M : Formalism.BasicNotions.Rows.OLat O φO W) (j : (Fin n → K) →ₛₗ[σ] W)
-    (N : Submodule (𝓞 K) (Fin n → K)) : Prop :=
-  (∀ v ∈ M.gen, v ∈ Set.range j) ∧
-    ∀ x, x ∈ N ↔ ∃ c : W → 𝓞 K, j x = ∑ v ∈ M.gen, σ (c v : K) • v
 
 structure Chain (m : ℕ) (A B : Type) [NormedAddCommGroup A] [InnerProductSpace ℂ A]
     [NormedAddCommGroup B] [InnerProductSpace ℂ B] where
@@ -152,52 +99,7 @@ attribute [instance] Chain.inst1 Chain.inst2 Chain.inst3
 
 namespace Chain
 
-variable {m : ℕ} {A B : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A]
-  [NormedAddCommGroup B] [InnerProductSpace ℂ B] (C : Chain m A B)
-
-noncomputable def downTo (j : ℕ) : C.Mult j →ₗ[ℂ] C.Mult 0 :=
-  Nat.rec (motive := fun j => C.Mult j →ₗ[ℂ] C.Mult 0) LinearMap.id (fun j f => f.comp (C.io j)) j
-
-def iota : A →ₗ[ℂ] B :=
-  C.zero.toLinearEquiv.toLinearMap ∘ₗ C.downTo m ∘ₗ C.top.symm.toLinearEquiv.toLinearMap
-
 end Chain
-
-theorem jFrame_one_single {n : ℕ} (σ : K →+* ℂ) (i : Fin n) :
-    jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ) (Pi.single i 1) = EuclideanSpace.basisFun (Fin n) ℂ i := by
-  ext k
-  simp [jFrame, EuclideanSpace.basisFun_apply, Pi.single_apply, Matrix.one_mulVec]
-
-theorem isCxBasis_jFrame_one {n : ℕ} (σ : K →+* ℂ) : IsCxBasis σ (jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ)) := by
-  have h : (fun i => jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ) (Pi.single i 1)) =
-      fun i => EuclideanSpace.basisFun (Fin n) ℂ i := funext (jFrame_one_single σ)
-  refine ⟨?_, ?_⟩
-  · rw [h]; exact (EuclideanSpace.basisFun (Fin n) ℂ).orthonormal.linearIndependent
-  · rw [h]
-    exact (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.span_eq
-
-theorem isGramOf_jFrame_one [NumberField K] [StarRing K] {n : ℕ} (σ : K →+* ℂ)
-    (hσ : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) :
-    IsGramOf σ (jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ)) 1 := by
-  intro x y
-  simp only [jFrame, Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply]
-  simp [Matrix.one_mulVec, EuclideanSpace.inner_eq_star_dotProduct, dotProduct, map_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Finset.sum_eq_single i (fun j _ hj => by rw [Matrix.one_apply_ne (Ne.symm hj)]; simp) (by simp)]
-  rw [Matrix.one_apply_eq, map_one, mul_one, mul_comm]
-  congr 1
-  exact (hσ (x i)).symm
-
-def Chain.ofMap (f : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] EuclideanSpace ℂ (Fin 2)) :
-    Chain 2 (EuclideanSpace ℂ (Fin 2)) (EuclideanSpace ℂ (Fin 2)) where
-  Mult := fun _ => EuclideanSpace ℂ (Fin 2)
-  zero := LinearIsometryEquiv.refl _ _
-  top := LinearIsometryEquiv.refl _ _
-  io := fun j => if j = 0 then f else LinearMap.id
-
-theorem Chain.iota_ofMap (f : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] EuclideanSpace ℂ (Fin 2)) :
-    (Chain.ofMap f).iota = f := by
-  exact LinearMap.ext fun x => rfl
 
 end GlobalTheory.CompanionTheory.Mem
 
@@ -267,74 +169,6 @@ private theorem rv0_projection_identities {K : Type} [Field K] {n d d0 : ℕ} (A
   · calc Pr * E0 * (Pr0 * E) = Pr * (E0 * Pr0) * E := by simp only [Matrix.mul_assoc]
       _ = Pr * A * (L * E) := by rw [hE0]; simp only [Matrix.mul_assoc]
       _ = Pr * A * E := by rw [hLE]
-
-theorem projection_matrix_idempotent_commute {K : Type} [Field K] {n d d0 : ℕ} (A : Matrix (Fin n) (Fin n) K)
-    (E : Matrix (Fin n) (Fin d) K) (Pr : Matrix (Fin d) (Fin n) K)
-    (E0 : Matrix (Fin n) (Fin d0) K) (Pr0 : Matrix (Fin d0) (Fin n) K)
-    (h1 : Pr * E = 1) (h0 : Pr0 * E0 = 1) (hAA : A * A = A)
-    (hc : E * Pr * A = A * (E * Pr)) (hp : E0 * Pr0 = A * (E * Pr)) :
-    E * (Pr * E0) = E0 ∧ (Pr0 * E) * (Pr * E0) = 1 ∧
-      LinearMap.range (Pr * E0).mulVecLin = LinearMap.range (Pr * A * E).mulVecLin ∧
-      (Pr * A * E) * (Pr * E0) = Pr * E0 := by
-  have hLAL : E * Pr * (A * (E * Pr)) = A * (E * Pr) := by
-    calc E * Pr * (A * (E * Pr)) = E * Pr * A * (E * Pr) := by simp only [Matrix.mul_assoc]
-      _ = A * (E * (Pr * E) * Pr) := by rw [hc]; simp only [Matrix.mul_assoc]
-      _ = A * (E * Pr) := by rw [h1, Matrix.mul_one]
-  obtain ⟨hM1, hM2, -, -, hM5⟩ := rv0_projection_identities A (E * Pr) E Pr E0 Pr0 h1 rfl h0 hp hLAL
-  refine ⟨hM2, ?_, ?_, hM1⟩
-  · rw [Matrix.mul_assoc, hM2, h0]
-  · apply le_antisymm
-    · calc LinearMap.range (Pr * E0).mulVecLin
-          = LinearMap.range ((Pr * A * E) * (Pr * E0)).mulVecLin := by rw [hM1]
-        _ ≤ LinearMap.range (Pr * A * E).mulVecLin := by
-          rw [Matrix.mulVecLin_mul]; exact LinearMap.range_comp_le_range _ _
-    · calc LinearMap.range (Pr * A * E).mulVecLin
-          = LinearMap.range ((Pr * E0) * (Pr0 * E)).mulVecLin := by rw [hM5]
-        _ ≤ LinearMap.range (Pr * E0).mulVecLin := by
-          rw [Matrix.mulVecLin_mul]; exact LinearMap.range_comp_le_range _ _
-
-private theorem conjTranspose_form_pullback_eq_of_mul_eq {K : Type} [Field K] [StarRing K] {n d d0 : ℕ} (H : Matrix (Fin n) (Fin n) K)
-    (E : Matrix (Fin n) (Fin d) K) (Pr : Matrix (Fin d) (Fin n) K) (E0 : Matrix (Fin n) (Fin d0) K) (c : K)
-    (h : E * (Pr * E0) = E0) :
-    (Pr * E0)ᴴ * (c • (Eᴴ * H * E)) * (Pr * E0) = c • (E0ᴴ * H * E0) := by
-  rw [Matrix.mul_smul, Matrix.smul_mul]
-  congr 1
-  calc (Pr * E0)ᴴ * (Eᴴ * H * E) * (Pr * E0) = (E * (Pr * E0))ᴴ * H * (E * (Pr * E0)) := by
-        simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
-    _ = E0ᴴ * H * E0 := by rw [h]
-
-private theorem cutLat_cutLat_eq_of_mul_eq {K : Type} [Field K] [NumberField K] {n d d0 : ℕ} (E : Matrix (Fin n) (Fin d) K)
-    (M : Matrix (Fin d) (Fin d0) K) (E0 : Matrix (Fin n) (Fin d0) K) (N : Submodule (𝓞 K) (Fin n → K))
-    (h : E * M = E0) : cutLat M (cutLat E N) = cutLat E0 N := by
-  ext x
-  simp only [cutLat, Submodule.mem_comap, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply,
-    Matrix.mulVec_mulVec, h]
-
-theorem positive_definite_irreducible_character : ImESpec → SubESpec → GaMatHom → GaMatAdj → LvlIdemSpec → IdemOfSpec → GoodAtSpec → CutOrthProj → LvlPartSpec → GoodPartSpec → LvlOpSpec → OrthProjExists → ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (v0 : InfinitePlace K), IsConjAt v0 → ∀ (S : CSD K), (S.H.map v0.embedding).PosDef → ∀ (G : Type) [Group G] [Fintype G] (r : Representation K G S.Forms), S.ActGood r → ∀ (X : Finset (G → K)), (∀ χ ∈ X, IsAbsIrrChar χ) → ∀ (P : Subgroup G) (ψ : P →* Kˣ), S.lvlE r P ψ * (S.lvlPr r P ψ * S.V0E r X P ψ) = S.V0E r X P ψ ∧ (S.goodPartProjection r X P ψ * S.lvlE r P ψ) * (S.lvlPr r P ψ * S.V0E r X P ψ) = 1 ∧ LinearMap.range (S.lvlPr r P ψ * S.V0E r X P ψ).mulVecLin = LinearMap.range (S.lvlOp r P ψ (idemOf X)).mulVecLin ∧ S.lvlOp r P ψ (idemOf X) * (S.lvlPr r P ψ * S.V0E r X P ψ) = S.lvlPr r P ψ * S.V0E r X P ψ ∧ (S.lvlPr r P ψ * S.V0E r X P ψ)ᴴ * S.lvlH r P ψ * (S.lvlPr r P ψ * S.V0E r X P ψ) = S.goodPartHermitianForm r X P ψ ∧ cutLat (S.lvlPr r P ψ * S.V0E r X P ψ) (S.lvlNab r P ψ) = S.Mt r X P ψ := by
-  intro hImE hSubE hGaHom hGaAdj hLvlIdem hIdemOf hGood hCut hLvlPart hV0 hLvlOp hOrth
-  intro K _ _ _ v0 hv0 S hpos G _ _ r hact X hX P ψ
-  obtain ⟨hlvl, -⟩ := hLvlIdem K v0 hv0 G P ψ
-  have hgood := hGood K v0 hv0 G X hX P ψ
-  obtain ⟨hidem, hcent⟩ := hIdemOf K v0 hv0 G X hX
-  obtain ⟨⟨h1, -⟩, hEP⟩ := hCut K v0 hv0 S hpos G r hact (lvlIdem P ψ) hlvl.idem hlvl.selfAdj
-  obtain ⟨⟨h0, -⟩, hE0P0⟩ := hCut K v0 hv0 S hpos G r hact (goodAt X P ψ) hgood.idem hgood.selfAdj
-  obtain ⟨-, hmul⟩ := hGaHom K S G r
-
-  have hAA : S.gaMat r (idemOf X) * S.gaMat r (idemOf X) = S.gaMat r (idemOf X) := by
-    rw [← hmul, hidem.idem]
-  have hc : S.cutE r (lvlIdem P ψ) * S.cutPr r (lvlIdem P ψ) * S.gaMat r (idemOf X) =
-      S.gaMat r (idemOf X) * (S.cutE r (lvlIdem P ψ) * S.cutPr r (lvlIdem P ψ)) := by
-    rw [hEP, ← hmul, hcent, hmul]
-  have hp : S.cutE r (goodAt X P ψ) * S.cutPr r (goodAt X P ψ) =
-      S.gaMat r (idemOf X) * (S.cutE r (lvlIdem P ψ) * S.cutPr r (lvlIdem P ψ)) := by
-    rw [hE0P0, hEP]
-    exact hmul _ _
-  obtain ⟨m1, m2, m3, m4⟩ := projection_matrix_idempotent_commute (S.gaMat r (idemOf X)) (S.cutE r (lvlIdem P ψ)) (S.cutPr r (lvlIdem P ψ))
-    (S.cutE r (goodAt X P ψ)) (S.cutPr r (goodAt X P ψ)) h1 h0 hAA hc hp
-  exact ⟨m1, m2, m3, m4, conjTranspose_form_pullback_eq_of_mul_eq S.H (S.cutE r (lvlIdem P ψ)) (S.cutPr r (lvlIdem P ψ))
-    (S.cutE r (goodAt X P ψ)) ((Nat.card P : K)⁻¹) m1,
-    cutLat_cutLat_eq_of_mul_eq (S.cutE r (lvlIdem P ψ)) (S.cutPr r (lvlIdem P ψ) * S.cutE r (goodAt X P ψ))
-    (S.cutE r (goodAt X P ψ)) S.nabLat m1⟩
 
 end GlobalTheory.CompanionTheory.Mem
 
@@ -422,17 +256,6 @@ theorem integral_iff_matrix_indefinite_side : ∀ (D : D7) (G : Type) [Group G] 
     (X.eOp (tup t)) (X.eOp_idem (tup t)) (X.Mtilde (tup t)) _ (hX.forms t) (hX.Mtilde t) x
 
 end GlobalTheory.CompanionTheory.MemQ
-
-end
-
-section
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValues Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
-open scoped Matrix
-set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.indefinite_side_row_lattice_one : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) (s : ℕ), A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → ∀ (t : T) (x : X.Amb (tup t)), ((∃ c : X.Amb (tup t) → 𝓞 D.what₂.LL, x = ∑ v ∈ (X.Mtilde (tup t)).gen, D.what₂.embLL (c v : D.what₂.LL) • v) ∧ x ∈ X.V0 (tup t)) ↔ ∃ F ∈ (A.side P ψ Zs).Mt t, x = jA t ((rV0 D A P ψ t).mulVec F) := by
-  intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t x
-  exact GlobalTheory.CompanionTheory.MemQ.v0_int_lemma_5 (A.fam.R t) (A.fam.lvl P ψ) A.fam.v0 s ⟨hOk.conj, hOk.irr, hOk.what₂ t⟩
-    D.what₂.embLL (jA t) (X.eOp (tup t)) (X.eOp_idem (tup t)) (X.Mtilde (tup t)) _ (hX.forms t) (hX.Mtilde t) x
 
 end
 
@@ -531,18 +354,6 @@ end
 section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValues Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
 open scoped Matrix
-set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.indefinite_side_row_lattice_two : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) (s : ℕ), A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → ∀ (t : T), (∀ x : X.Amb (tup t), ((∃ c : X.Amb (tup t) → 𝓞 D.what₂.LL, x = ∑ v ∈ (X.Mtilde (tup t)).gen, D.what₂.embLL (c v : D.what₂.LL) • v) ∧ x ∈ X.V0 (tup t)) → ∃ (s : Finset (X.Amb (tup t))) (c : X.Amb (tup t) → 𝓞 D.what₂.LL), (s : Set (X.Amb (tup t))) ⊆ (X.Mtilde (tup t)).carrier ∩ (X.V0 (tup t) : Set (X.Amb (tup t))) ∧ x = ∑ y ∈ s, D.what₂.embLL (c y : D.what₂.LL) • y) → Submodule.span (𝓞 D.what₂.LL) {y : X.RR.V | X.jEE y ∈ X.RRset (tup t)} = (matLat (S.ι t) ((A.side P ψ Zs).abelian₂ t)).map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL)) := by
-  intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t hint
-  apply le_antisymm
-  · exact GlobalTheory.CompanionTheory.MemQ.span_le_lemma_8 D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t
-  · exact GlobalTheory.CompanionTheory.MemQ.le_span_lemma_9 D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t hint
-
-end
-
-section
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValues Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
-open scoped Matrix
 
 namespace GlobalTheory.CompanionTheory.MemQ
 
@@ -605,25 +416,6 @@ theorem rrDef_iff_glued : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T :
     exact (key x).symm
 
 end GlobalTheory.CompanionTheory.MemQ
-
-end
-
-section
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValues Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
-open scoped Matrix
-set_option maxHeartbeats 1000000 in
-theorem _root_.GlobalTheory.T.indefinite_side_row_lattice_three : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)), (∀ w, D.what₂.muAt w = tup (S.μ (D.plEq w))) → (∀ t : T, (∃ w, t = S.μ w) → Submodule.span (𝓞 D.what₂.LL) {y : X.RR.V | X.jEE y ∈ X.RRset (tup t)} = (matLat (S.ι t) ((A.side P ψ Zs).abelian₂ t)).map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))) → (X.RRDef ↔ X.RR.L = S.RR.map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))) := by
-  intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA hmu hspan
-  have key := GlobalTheory.CompanionTheory.MemQ.mem_glued_lemma_10 D G Pl0 T m A EE X P ψ Zs S tup eRR hmu hspan
-  unfold RowSide.RRDef
-  constructor
-  · intro h
-    ext x
-    rw [← key x]
-    exact h x
-  · intro h x
-    rw [h]
-    exact (key x).symm
 
 end
 
@@ -694,19 +486,6 @@ private theorem exists_finset_sum_of_mem_V0_Mtilde {D : D7} {EE : Type} [NormedA
     subst hy
     exact ⟨hxM, hx0⟩
   · simp
-
-theorem rr_lat_of_stable : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (s : ℕ)
-    (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE)
-    (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup)
-    (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V)
-    (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)),
-    A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → X.RRDef → (∀ w, D.what₂.muAt w = tup (S.μ (D.plEq w))) →
-    (∀ μ (a : 𝓞 D.what₂.LL), ∀ y ∈ (X.Mtilde μ).carrier, D.what₂.embLL (a : D.what₂.LL) • y ∈ (X.Mtilde μ).carrier) →
-    X.RR.L = S.RR.map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL)) := by
-  intro D G _ _ Pl0 T m A s EE _ _ _ X P ψ Zs S tup eRR jA hOk hX hRR hmu hstab
-  refine (GlobalTheory.CompanionTheory.MemQ.rr_lat_of_rowSide D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX hmu ?_).mp hRR
-  intro w x hx
-  exact GlobalTheory.CompanionTheory.Twist.exists_finset_sum_of_mem_V0_Mtilde X hstab _ x hx
 
 end GlobalTheory.CompanionTheory.Twist
 

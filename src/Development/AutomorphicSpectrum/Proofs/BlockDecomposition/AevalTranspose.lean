@@ -2,19 +2,19 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulEqOfRangeLe
 import GroundTheory.AutomorphicForms.AnisotropicHeight
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableSdot
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCyclicVectorOfSeparableStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCyclicVectorOfSeparable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteOfCommuteCyclicMatrixStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutePolynomialOfMemCentralizerStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPolynomialProjectionInvariantStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPolynomialProjectionInvariant
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPrimitiveIdempotentsSeparatingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLatticeDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLatticeDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvolutionAdjoinNormStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RangeIsotropicIffInvolutionMulZeroStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LambdaInvolutionNegStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeMulIdempotentRangeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeMulIdempotentRange
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogAbsEqLogIdeleModuleStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnLambdaSubgroupStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsEpsilonCentralizerBoundStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsEpsilonCentralizerBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralizerCompactReductionStatement
 
 noncomputable section
@@ -40,7 +40,7 @@ theorem commute_of_mem (d : GL (Fin n) E) (t : GA E n) (ht : t ∈ adCent d) (e 
 
 theorem adCent_comm (d : GL (Fin n) E) (hd : IsRegD d) (t t' : GA E n) (ht : t ∈ adCent d) (ht' : t' ∈ adCent d) :
     t * t' = t' * t := by
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_cyclic_vector_of_separable E n (nrm d).val hd
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector E n (nrm d).val hd
   have hγ : IsPol (nrm d).val (nrm d).val := ⟨X, (aeval_X _).symm⟩
   exact Units.ext (GlobalTheory.T.commute_of_commute_cyclic_matrix E (Ad E) n (nrm d).val v hv t.val t'.val
     (commute_of_mem d t ht _ hγ) (commute_of_mem d t' ht' _ hγ))
@@ -48,8 +48,8 @@ theorem adCent_comm (d : GL (Fin n) E) (hd : IsRegD d) (t t' : GA E n) (ht : t �
 theorem exists_idem' {K : Type} [Field K] {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (hγ : γ.charpoly.Separable)
     (W : Submodule K (Fin n → K)) (hW : W.map (Matrix.toLin' γ) ≤ W) :
     ∃ π, IsPol γ π ∧ π * π = π ∧ LinearMap.range (Matrix.toLin' π) = W := by
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_cyclic_vector_of_separable K n γ hγ
-  exact GlobalTheory.T.exists_polynomial_projection_invariant K n γ v hγ hv W hW
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector K n γ hγ
+  exact _root_.GlobalTheory.CompanionTheory.TorusCh.exists_idem_pol_range_eq K n γ v hγ hv W hW
 
 theorem sg_pol (d : GL (Fin n) E) (x : Matrix (Fin n) (Fin n) E) (hx : IsPol (nrm d).val x) :
     IsPol (nrm d).val (sg d x) := by
@@ -121,8 +121,8 @@ theorem height_lb {K : Type} [Field K] [NumberField K] {n : ℕ} (γ : Matrix (F
       ∀ s : (AdeleRing (𝓞 K) K)ˣ, (s : AdeleRing (𝓞 K) K) = (1 + e.map (algebraMap K (AdeleRing (𝓞 K) K)) * (g.val - 1)).det →
       c ≤ (GroundTheory.Global.IdeleGroup.ideleModule K s : ℝ) → ∀ x : Fin n → K, x ᵥ* e ≠ 0 →
         ε ≤ GroundTheory.Automorphic.Reduction.height g x := by
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_cyclic_vector_of_separable K n γᵀ (by rwa [Matrix.charpoly_transpose])
-  refine GlobalTheory.T.exists_epsilon_centralizer_bound K n γ v (fun y => ?_) e he c hc
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector K n γᵀ (by rwa [Matrix.charpoly_transpose])
+  refine _root_.GlobalTheory.CompanionTheory.TorusCh.HeightBound.exists_pos_le_height K n γ v (fun y => ?_) e he c hc
   obtain ⟨h, hh⟩ := hv y
   exact ⟨h, by rw [hh, aeval_transpose, Matrix.mulVec_transpose]⟩
 
@@ -177,7 +177,7 @@ theorem torusChar : DegAdelic → TorusChar := by
         _ = _ := by rw [hπi, hπi]
     refine (idem_facts γ _ _ (hπp _) hpol (hπi _) hid).2.1 ?_
     rw [(idem_facts γ _ _ (hπp e) (hπp e') (hπi e) (hπi e')).2.2, hπr, hπr, hπr, hMeet]
-  have hc := GlobalTheory.T.idempotent_lattice_decomposition _ hcomm σ hσ2 m P (fun e => Subtype.ext (hπi e))
+  have hc := _root_.GlobalTheory.CompanionTheory.TorusCh.isotropicIdempotent_signs _ hcomm σ hσ2 m P (fun e => Subtype.ext (hπi e))
     (fun e => by
       rw [hcomm]
       exact Subtype.ext (by rw [Subalgebra.coe_mul, hσ1]; exact hisoπ e))
@@ -243,7 +243,7 @@ theorem torusChar : DegAdelic → TorusChar := by
   refine ⟨a, ?_, ?_, ?_, ?_, ?_⟩
   · intro t ht x e
     rw [← hsign t ht e, ← hπr e]
-    exact GlobalTheory.T.degree_mul_idempotent_range E n hDA _ (hπi e) t x (hcm t ht e)
+    exact _root_.GlobalTheory.CompanionTheory.TorusCh.DegLam.deg_lam E n hDA _ (hπi e) t x (hcm t ht e)
   · intro t ht t' ht'
     funext j
     exact lam_mul _ (hπi _) t t' (hcm t ht _) (hcm t' ht' _)

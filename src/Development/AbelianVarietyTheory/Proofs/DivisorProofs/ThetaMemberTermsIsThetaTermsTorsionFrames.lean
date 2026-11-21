@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFramesOn
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsPowEqOfBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExhaustOfLabels
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemDividingLabelsIffClassZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemDividingLabelsIffClassZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfFramedPointLiesOverTorusExtensionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionFrameAbelianPartTorsionFrameStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRenormalizationRigidificationMultipleStatement
@@ -105,7 +105,7 @@ theorem isThetaTerms₀_of_terms : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet
             (X₁.ρ.pt l).left := by
           rw [← e]
           exact (congrArg (fun q => q.left) hl).symm
-        have hH : l ∈ X₁.S.HH X₁.M z₁ := (GlobalTheory.T.mem_dividingLabels_iff_class_zero I X₁ z₁ act x₀ hd V ev X t δ 𝔪 l).2
+        have hH : l ∈ X₁.S.HH X₁.M z₁ := (_root_.GlobalTheory.GSep.mem_HH_iff_yy_zero I X₁ z₁ act x₀ hd V ev X t δ 𝔪 l).2
           ⟨q, y, by rw [hq, map_zero], hy, hl'⟩
         obtain ⟨a, rfl⟩ : l ∈ Set.range lab := by rw [hlab]; exact hH
         refine ⟨a, 𝔪.cart.1.hom_ext ?_ ?_⟩

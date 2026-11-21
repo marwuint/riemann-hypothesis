@@ -2,12 +2,18 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyAbelianVarietyAlgClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureCohomologyResidueFieldFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupIdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeSpecialFibreCohomologyLiftArtinianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalFunctionsConstantAfterBaseChangeOfAbelianSStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquare
+import Development.AbelianVarietyTheory.Definitions.Divisors.PrimitiveStructureSheafDegTwoVanish
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUnobstructed
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyAbelianVarietyAlgClosed
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
+import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureCohomologyResidueFieldFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupId
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeSpecialFibreCohomologyLiftArtinian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalFunctionsConstantAfterBaseChangeOfAbelianS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitInjectiveOfForallPrimeBaseChangeFieldInject
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSquareAffineH1Vanish
 
@@ -39,10 +45,10 @@ theorem fp_bc1 (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [G
     (Module.Finite R (HO1 A.hom) ∧ Module.Projective R (HO1 A.hom)) ∧ StructureSheafH1BaseChange A.hom := by
   haveI : Smooth A.hom := hA.smooth
   haveI : IsProper A.hom := hA.proper
-  obtain ⟨h1, -, h3, -⟩ := GlobalTheory.T.structure_cohomology_residue_field_fibre R A.left A.hom inferInstance inferInstance (GlobalTheory.T.globalFunctionsConstantAfterBaseChange_of_abelianScheme R A hA)
+  obtain ⟨h1, -, h3, -⟩ := _root_.GlobalTheory.AbCoh.CohBaseChange.main R A.left A.hom inferInstance inferInstance (_root_.GlobalTheory.AbCoh.uConst_of_isAbelianScheme R A hA)
     (by
       intro R' _ _ _ _ k _ _ α hα X' s' φ X₀ s₀ ψ hφ w
-      obtain ⟨B, _, pr, -, hB, hBg, hpb, -⟩ := GlobalTheory.T.exists_abelianScheme_baseChange_and_square R R' A g hA hg
+      obtain ⟨B, _, pr, -, hB, hBg, hpb, -⟩ := _root_.GlobalTheory.AbBaseChangeSq.exists_baseChange_and_sq R R' A g hA hg
       let e : B.left ≅ X' := IsPullback.isoIsPullback _ _ hpb hφ
       have he2 : e.hom ≫ s' = B.hom := IsPullback.isoIsPullback_hom_snd A.left (Sp R') hpb hφ
       have he : e.inv ≫ B.hom = s' ≫ spMap (RingHom.id R') := by
@@ -50,7 +56,7 @@ theorem fp_bc1 (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [G
         first | (rw [spMap_id, Category.comp_id]) | (simp [spMap, CommRingCat.ofHom_id]) | (rw [spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id])
       have w' : IsPullback (ψ ≫ e.inv) s₀ B.hom (spMap (α : R' →+* k)) := by
         refine IsPullback.of_iso w (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [← he2]
-      obtain ⟨s1, s2⟩ := GlobalTheory.T.abelianSchemeSpecialFibre_cohomology_lift_artinian R' B g hB hBg k α hα X₀ s₀ (ψ ≫ e.inv) w'
+      obtain ⟨s1, s2⟩ := _root_.GlobalTheory.AbCoh.artinian_pullHO_surjective R' B g hB hBg k α hα X₀ s₀ (ψ ≫ e.inv) w'
       have hc := surj_of_comp (s := s') (s' := B.hom) e.inv ψ he w.w w'.w
       exact ⟨hc.1 s1, hc.2 s2⟩)
   exact ⟨h1, h3⟩
@@ -85,7 +91,7 @@ theorem axesMap_baseChange_injective (R : Type) [CommRing R] [IsNoetherianRing R
     (K : Type) [Field K] [IsAlgClosed K] [Algebra R K] :
     Function.Injective ((axesMap A).baseChange K) := by
   obtain ⟨hsq, hsqg⟩ := (GlobalTheory.Obs.sq_abelian_and_affine_H1 R).1 A g hA hg
-  obtain ⟨B, _, pr, pr', hB, hBg, hpb, hpb', -, -, -, h1, h2⟩ := GlobalTheory.T.exists_abelianScheme_baseChange_and_square R K A g hA hg
+  obtain ⟨B, _, pr, pr', hB, hBg, hpb, hpb', -, -, -, h1, h2⟩ := _root_.GlobalTheory.AbBaseChangeSq.exists_baseChange_and_sq R K A g hA hg
   obtain ⟨eS, heS⟩ := (fp_bc1 R (A ⊗ A) (g + g) hsq hsqg).2 K _ _ pr' hpb'
   obtain ⟨eA, heA⟩ := (fp_bc1 R A g hA hg).2 K _ _ pr hpb
   have key : ∀ (f : A ⟶ A ⊗ A) (f' : B ⟶ B ⊗ B), f'.left ≫ pr' = pr ≫ f.left →
@@ -99,7 +105,7 @@ theorem axesMap_baseChange_injective (R : Type) [CommRing R] [IsNoetherianRing R
       congr 1
       exact pO1_bc f f' pr pr' hpb.w hpb'.w hc c
     | add x y hx hy => simp only [map_add, hx, hy]
-  obtain ⟨-, -, -, -, hax⟩ := GlobalTheory.T.structureSheafCohomology_abelianVariety_algClosed K B g hB hBg
+  obtain ⟨-, -, -, -, hax⟩ := _root_.GlobalTheory.AbCoh.structureSheafCoh_abelianVariety_algClosed K B g hB hBg
   intro z z' hzz
   rw [← sub_eq_zero] at hzz ⊢
   rw [← map_sub] at hzz

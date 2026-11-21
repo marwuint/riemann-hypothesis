@@ -245,10 +245,6 @@ def HaarTransversal : Set (Hfin X u) :=
 
 def K0 : Subgroup (Hfin X u) := Subgroup.closure (HaarTransversal X u)
 
-def ColsLink (hK : X.LevelSubgroupCharacter) : Prop :=
-  Ku X u hK ≤ K0 X u ∧ Formalism.L2.SG.ColsDim.StabTriv (iotaF X u) (K0 X u) ∧
-    Finite (Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u hK))
-
 def c0 (volN volH : ℝ) : ℝ := volN * volH / (Module.finrank ℂ (X.Vpi u) : ℝ)
 
 def NOinf : Set X.B.I.Ginf :=

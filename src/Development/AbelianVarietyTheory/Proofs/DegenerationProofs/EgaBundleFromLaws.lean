@@ -6,8 +6,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsN
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBCPf
 import Development.AbelianVarietyTheory.Definitions.Degenerations.MorAlgSt
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CompatibleLineBundlesFormalThickeningStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueHomOfThickeningsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CompatibleLineBundlesFormalThickening
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueHomOfThickenings
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSectionPrimitiveBundleTranslateLocalRingStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueSec
 
@@ -18,4 +19,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 
 theorem GlobalTheory.LN.ega_of_laws : Laws → Laws2 → Ega := fun h₁ h₂ =>
-  ⟨GlobalTheory.T.compatible_line_bundles_formal_thickening h₁ h₂, GlobalTheory.T.existsUnique_hom_of_thickenings' h₁ h₂, GlobalTheory.SecAlg.existsUnique_sec, GlobalTheory.T.exists_section_primitiveBundle_translate_localRing h₁ h₂⟩
+  ⟨_root_.GlobalTheory.FormalAlgebraise.algebraisation h₁ h₂, _root_.GlobalTheory.LocalMorAlg.existsUnique_hom_of_thickenings h₁ h₂, GlobalTheory.SecAlg.existsUnique_sec, GlobalTheory.T.exists_section_primitiveBundle_translate_localRing h₁ h₂⟩

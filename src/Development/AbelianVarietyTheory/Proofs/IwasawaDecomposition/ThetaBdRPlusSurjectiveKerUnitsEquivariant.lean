@@ -74,19 +74,6 @@ theorem frob_surj : Function.Surjective (frobenius (ModP (Per.OC l) l) l) := by
 
 theorem θ_surj : Function.Surjective (Per.θ l) := surjective_fontaineTheta (frob_surj l)
 
-theorem toC_alg (x : Per.OC l) : Per.toC l (algebraMap _ _ x) = (x : ℂ_[l]) :=
-  GlobalTheory.RingIface.toC_alg l x
-
-theorem toC_injective : Function.Injective (Per.toC l) := by
-  rw [injective_iff_map_eq_zero]
-  intro x hx
-  obtain ⟨n, a, ha⟩ := IsLocalization.Away.surj ((l : ℕ) : Per.OC l) x
-  have h := congrArg (Per.toC l) ha
-  rw [map_mul, hx, zero_mul, toC_alg] at h
-  have h0 : a = 0 := Subtype.ext h.symm
-  rw [h0, map_zero] at ha
-  exact ((IsLocalization.Away.algebraMap_isUnit ((l : ℕ) : Per.OC l)).pow n).mul_left_eq_zero.1 ha
-
 theorem fontaineTheta_algebraMap₂ (a : Per.Ainf l) : Per.θP l (algebraMap _ _ a) = (Per.θ l a : ℂ_[l]) :=
   GlobalTheory.RingIface.fontaineTheta_algebraMap l a
 

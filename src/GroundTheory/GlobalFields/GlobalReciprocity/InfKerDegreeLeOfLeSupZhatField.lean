@@ -78,20 +78,6 @@ theorem abstractSymbol_apply (c : IdeleClassGroup K.1) :
       ((reciprocityEquiv K L).symm (normClass K L c)) :=
   rfl
 
-theorem abstractSymbol_eq_of_reciprocity (c : IdeleClassGroup K.1) (g : K.1.fixingSubgroup)
-    (h : classFieldTheory.toClassFieldData.reciprocity (openSubgroup_le hKL.out)
-        classFieldTheory.classFieldAxiom
-        (QuotientGroup.mk (s := (L.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)).subgroupOf K.openSubgroup) g) =
-      normClass K L c) :
-    abstractSymbol K L c = Abelianization.of (restrictHom g) := by
-  have e : (reciprocityEquiv K L).symm (normClass K L c) =
-      Abelianization.of (QuotientGroup.mk (s := (L.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)).subgroupOf
-        K.openSubgroup) g) := by
-    rw [MulEquiv.symm_apply_eq, ClassFieldData.reciprocityAbEquiv_of]
-    exact h.symm
-  rw [abstractSymbol_apply, e, Abelianization.map_of]
-  rfl
-
 end Map
 
 section Layers

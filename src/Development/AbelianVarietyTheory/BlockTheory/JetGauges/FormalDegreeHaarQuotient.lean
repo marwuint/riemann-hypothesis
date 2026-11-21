@@ -42,14 +42,6 @@ section Twist
 
 variable {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
-def twist (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
-    (π : Mat k r → (Wp →L[ℂ] Wp)) (s : Mat k r) : Wp →L[ℂ] Wp :=
-  psiGen k r z c ((leviW k r s)⁻¹ * s) • π (leviW k r s)
-
-def twistInv (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
-    (π : Mat k r → (Wp →L[ℂ] Wp)) (s : Mat k r) : Wp →L[ℂ] Wp :=
-  (psiGen k r z c ((leviW k r s)⁻¹ * s))⁻¹ • π (leviW k r s)⁻¹
-
 def IsEquivariant (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
     (π : Mat k r → (Wp →L[ℂ] Wp)) (φ : Mat k r → Wp) : Prop :=
   ∀ h ∈ UWset k r z, ∀ n ∈ Nset k r, ∀ g ∈ UH (Hpk k r),
@@ -58,57 +50,7 @@ def IsEquivariant (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → �
 def sectionL2NormSq (ν : Measure (Mt k r)) (φ : Mat k r → Wp) : ℝ≥0∞ :=
   ∫⁻ g, ‖φ (Matrix.of g)‖ₑ ^ 2 ∂ν
 
-def IsSquareIntegrableEquivariant (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
-    (π : Mat k r → (Wp →L[ℂ] Wp)) (ν : Measure (Mt k r)) (φ : Mat k r → Wp) : Prop :=
-  IsEquivariant k r z c π φ ∧ AEStronglyMeasurable (fun g : Mt k r => φ (Matrix.of g)) ν ∧
-    sectionL2NormSq ν φ < ⊤
-
 end Twist
-
-section Period
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-variable {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-
-def coefNormSq (μ : Measure (Mt k r)) (σ : Mat k r → (H →L[ℂ] H)) (w : H) : ℝ≥0∞ :=
-  ∫⁻ g, ‖⟪w, σ (Matrix.of g) w⟫_ℂ‖ₑ ^ 2 ∂μ
-
-def IsFormalDegreeAt (μ : Measure (Mt k r)) (σ : Mat k r → (H →L[ℂ] H)) (w : H) (d : ℝ) : Prop :=
-  w ≠ 0 ∧ 0 < d ∧ coefNormSq μ σ w = ENNReal.ofReal (‖w‖ ^ 4 / d)
-
-def formalDegreeAt (μ : Measure (Mt k r)) (σ : Mat k r → (H →L[ℂ] H)) (w : H) : ℝ :=
-  ‖w‖ ^ 4 / (coefNormSq μ σ w).toReal
-
-def periodIntegrand (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
-    (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Wp →L[ℂ] Wp)) (w v : H) (s : Mt k r) :
-    Wp →L[ℂ] Wp :=
-  ⟪v, σ (Matrix.of s) w⟫_ℂ • twistInv k r z c π (Matrix.of s)
-
-def period (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ)
-    (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) (w v : H) :
-    Wp →L[ℂ] Wp :=
-  ∫ s, periodIntegrand k r z c σ π w v s ∂μS
-
-end Period
-
-def BesselPeriodNeZero : Prop :=
-  ∀ (k r : ℕ) (hk : 2 ≤ k), Even k →
-    ∀ (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ) (u : Fin k → ℝ),
-      Formalism.QuantumDeterminants.IsHCParam (DecreasingNodeGaps.param r k (by omega) v b) →
-      DecreasingNodeGaps.Interlaces r k (DecreasingNodeGaps.param r k (by omega) v b) u →
-      DecreasingNodeGaps.Parity r k (DecreasingNodeGaps.param r k (by omega) v b) u →
-    ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mat k r → (H →L[ℂ] H)),
-      PI.UpqRep.IsDSHpk k r (DecreasingNodeGaps.sign r k (by omega)) (DecreasingNodeGaps.param r k (by omega) v b) σ →
-    ∀ (z : Fin (2 * r + k + 1) → ℂ), inWb k r z → 0 < Tz k r z →
-    ∀ (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (π : Mat k r → (Wp →L[ℂ] Wp)),
-      PI.UpqRep.IsHCTypeW k r z u π →
-    ∀ (c : Fin r → ℂ), (∀ a, c a ≠ 0) →
-    ∀ (μS : Measure (Mt k r)), IsHaarOn (Sset k r z) μS →
-    ∀ x : H, PI.UpqRep.IsLowUnitH k r (DecreasingNodeGaps.sign r k (by omega))
-        (DecreasingNodeGaps.param r k (by omega) v b) σ x →
-      ∃ g ∈ UH (Hpk k r), ∃ y ∈ UH (Hpk k r),
-        Integrable (periodIntegrand k r z c σ π (σ g x) (σ y x)) μS ∧
-          period k r z c σ π μS (σ g x) (σ y x) ≠ 0
 
 theorem col_of_fix {h : Mat k r} {j : Fin (2 * r + k + 1)}
     (hj : h *ᵥ Formalism.QuantumDeterminants.bvec j = Formalism.QuantumDeterminants.bvec j) (i : Fin (2 * r + k + 1)) :
@@ -173,53 +115,6 @@ theorem leviW_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Mat k r} (hh : h ∈ 
   · by_cases hj : r ≤ j.val ∧ j.val ≤ r + k
     · rw [row_out hh (i := i) (by tauto) j, if_neg h2]
     · rw [col_out hh hj i, if_neg h2]
-
-theorem isUnit_det_of_mem {h : Mat k r} (hh : h ∈ UH (Hpk k r)) (hH : IsUnit (Hpk k r).det) :
-    IsUnit h.det := by
-  have hU : hᴴ * Hpk k r * h = Hpk k r := hh
-  have := congrArg Matrix.det hU
-  rw [Matrix.det_mul] at this
-  exact isUnit_of_mul_isUnit_right (this ▸ hH)
-
-theorem twist_mul {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-    {z : Fin (2 * r + k + 1) → ℂ} (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) {h n : Mat k r}
-    (hh : h ∈ UWset k r z) (hn : n ∈ Nset k r) (hd : IsUnit h.det) :
-    twist k r z c π (h * n) = psiGen k r z c n • π h ∧
-      twistInv k r z c π (h * n) = (psiGen k r z c n)⁻¹ • π h⁻¹ := by
-  simp only [twist, twistInv, leviW_mul hh hn, Matrix.nonsing_inv_mul_cancel_left h n hd, and_self]
-
-theorem measurable_lmulM (a : Mat k r) : Measurable (lmulM a : Mt k r → Mt k r) := by
-  apply Continuous.measurable
-  exact continuous_const.matrix_mul continuous_id
-
-example : IsHaarOn ({1, -1} : Set (Mat k r))
-    (Measure.dirac (Matrix.of.symm (1 : Mat k r) : Mt k r) + Measure.dirac (Matrix.of.symm (-1 : Mat k r) : Mt k r)) := by
-  refine ⟨?_, ?_, fun C _ _ => measure_lt_top _ _, ?_⟩
-  · rw [Measure.add_apply, Measure.dirac_apply, Measure.dirac_apply,
-      Set.indicator_of_notMem, Set.indicator_of_notMem, add_zero]
-    · exact fun h => h (Or.inr rfl)
-    · exact fun h => h (Or.inl rfl)
-  · intro a ha
-    rw [Measure.map_add _ _ (measurable_lmulM a), Measure.map_dirac' (measurable_lmulM a),
-      Measure.map_dirac' (measurable_lmulM a)]
-    have e1 : lmulM a (Matrix.of.symm (1 : Mat k r) : Mt k r) = Matrix.of.symm a := mul_one a
-    have e2 : lmulM a (Matrix.of.symm (-1 : Mat k r) : Mt k r) = Matrix.of.symm (-a) := mul_neg_one a
-    rw [e1, e2]
-    rcases ha with rfl | rfl
-    · rfl
-    · rw [neg_neg]
-      exact add_comm _ _
-  · intro h
-    have := congrArg (fun m : Measure (Mt k r) => m Set.univ) h
-    simp at this
-
-example (G : Set (Mat k r)) (μ : Measure (Mt k r)) (hμ : IsHaarOn G μ) :
-    IsQuotRep G μ (Measure.dirac (Matrix.of.symm (1 : Mat k r) : Mt k r)) μ := by
-  refine ⟨hμ.1, fun f _ => ?_⟩
-  congr 1
-  funext g
-  rw [lintegral_dirac]
-  exact congrArg f (one_mul (Matrix.of g)).symm
 
 end GlobalTheory.IndefiniteRowSideFullHecke.FormalDegreeHaarQuotient
 

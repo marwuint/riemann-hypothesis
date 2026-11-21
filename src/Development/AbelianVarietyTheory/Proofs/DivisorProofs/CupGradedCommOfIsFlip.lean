@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImageCochainExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlexanderWhitneyDiagonalSwapHomotopyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlexanderWhitneyDiagonalSwapHomotopy
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
@@ -200,7 +200,7 @@ theorem GlobalTheory.EtC.Pair.cup_flip : ∀ (R : Type) [CommRing R] {I J K : Cx
   obtain ⟨γ, hγ⟩ := μ.aw_exists E h α β
   obtain ⟨γ', hγ'⟩ := ν.aw_exists E h' β α
   rw [μ.cup_spec E h α β γ hγ, ν.cup_spec E h' β α γ' hγ']
-  obtain ⟨hh, -, hd0, hds⟩ := GlobalTheory.T.exists_alexanderWhitneyDiagonal_swap_homotopy
+  obtain ⟨hh, -, hd0, hds⟩ := _root_.GlobalTheory.EtC.pr_aw_wa_homotopy
   obtain ⟨θ, hθ⟩ := ev_exists (R := R) (E := E) (I := K) (n := k - 1)
     (fun N s _ U x => phi μ α.1 β.1 s x (hh N)) (fun N s _ V U g x => phi_res μ α.1 β.1 s g x (hh N))
   have key : δ (k - 1) k θ = sg k • (γ.1 - sg (n * m) • γ'.1) := by

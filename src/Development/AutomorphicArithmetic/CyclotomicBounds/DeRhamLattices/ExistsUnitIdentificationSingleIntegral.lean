@@ -14,7 +14,7 @@ private theorem UpperTheory.KN.tame_identification_unit (l : ℕ) [Fact l.Prime]
   have hδ : δ ^ l = ε := frobeniusEquiv_symm_pow_p (OCb l) l ε
   obtain ⟨-, -, hθ, -⟩ := hεall ε δ hε hδ
   obtain ⟨α, β, hα, hβ⟩ := P.exists_exponents
-  obtain ⟨hK1, hK2, -, -⟩ := GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι P T I α β hα hβ ε δ hε hδ
+  obtain ⟨hK1, hK2, -, -⟩ := _root_.GlobalTheory.BKExp.exponents l a e O K t ϖ ι P T I α β hα hβ ε δ hε hδ
   set ν : OA l O := (1 : O) ⊗ₜ[ℤ_[l]] muOf δ with hν
   have hpow : ∀ k : ℕ, (1 : O) ⊗ₜ[ℤ_[l]] (muOf δ ^ k) = ν ^ k := fun k => by
     rw [hν, Algebra.TensorProduct.tmul_pow, one_pow]

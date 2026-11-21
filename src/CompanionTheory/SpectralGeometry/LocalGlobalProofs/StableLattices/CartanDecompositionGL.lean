@@ -1,17 +1,17 @@
 import Mathlib
 import CompanionTheory.RealGroups.UnitaryAdmissibility.ArchimedeanUnitaryDual.InhabitedFinite
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.EntryMulSubOne
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsUniformizerNonarchimedeanStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsUniformizerNonarchimedean
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CartanDecompositionGlNonarchimedeanStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CongruenceSubgroupIsOpenStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CongruenceSubgroupIsOpen
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CongruenceSubgroupIsCompactStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CongruenceSubgroupsNeighborhoodBasisStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CongruenceSubgroupNormalInMaximalCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CompactSubgroupFiniteOpenCosetsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.MatrixNearIdentityInCongruenceSubgroupStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CompactSubgroupFiniteOpenCosets
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.MatrixNearIdentityInCongruenceSubgroup
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NearIdentityUpperLowerFactorizationStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DominantConjugationPreservesUpperCongruenceStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DominantConjugationPreservesLowerCongruenceStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DominantConjugationPreservesUpperCongruence
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DominantConjugationPreservesLowerCongruence
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DominantMonoidElementsAreAntitonePowersStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.AntitonePowersInDominantMonoidStatement
 
@@ -21,7 +21,7 @@ namespace GlobalTheory.CompanionTheory.CartGL
 theorem stCartanGL : StCartanGL := by
   unfold CompanionTheory.Rg.Fl.StCartanGL CompanionTheory.Rg.Fl.HasCartan
   intro L _ _ _ n U hU
-  obtain ⟨p, hp⟩ := GlobalTheory.T.exists_uniformizer_nonarchimedean L
+  obtain ⟨p, hp⟩ := _root_.GlobalTheory.CompanionTheory.CartGL.exists_isUnif L
   have hp1 : ‖(p : L)‖ < 1 := by
     unfold GlobalTheory.CompanionTheory.CartGL.IsUnif at hp
     exact hp.1
@@ -31,9 +31,9 @@ theorem stCartanGL : StCartanGL := by
   have h0 : 0 ≤ r := hr0.le
   have h1 : r ≤ 1 := hr1.le
   refine ⟨GlobalTheory.CompanionTheory.CartGL.congK L n r h0 h1, fun x hx => hεU r h0 h1 hrε hx,
-    GlobalTheory.T.congruence_subgroup_is_open L n r h0 h1 hr0, GlobalTheory.T.congruence_subgroup_is_compact L n r h0 h1, ?_⟩
-  obtain ⟨d, c, hc, hcK⟩ := GlobalTheory.T.compact_subgroup_finite_open_cosets (GL (Fin n) L) (GlobalTheory.CompanionTheory.CartGL.congK L n 1 zero_le_one le_rfl)
-    (GlobalTheory.CompanionTheory.CartGL.congK L n r h0 h1) (GlobalTheory.T.congruence_subgroup_is_compact L n 1 zero_le_one le_rfl) (GlobalTheory.T.congruence_subgroup_is_open L n r h0 h1 hr0)
+    _root_.GlobalTheory.CompanionTheory.CartGL.isOpen_congK L n r h0 h1 hr0, GlobalTheory.T.congruence_subgroup_is_compact L n r h0 h1, ?_⟩
+  obtain ⟨d, c, hc, hcK⟩ := _root_.GlobalTheory.CompanionTheory.CosetCover.exists_finite_coset_cover (GL (Fin n) L) (GlobalTheory.CompanionTheory.CartGL.congK L n 1 zero_le_one le_rfl)
+    (GlobalTheory.CompanionTheory.CartGL.congK L n r h0 h1) (GlobalTheory.T.congruence_subgroup_is_compact L n 1 zero_le_one le_rfl) (_root_.GlobalTheory.CompanionTheory.CartGL.isOpen_congK L n r h0 h1 hr0)
   refine ⟨d, n + 2, ?_⟩
   unfold CompanionTheory.Rg.Fl.IsCartan
   refine ⟨c, GlobalTheory.CompanionTheory.CartGL.tGen p, ?_, ?_, ?_, ?_⟩
@@ -63,19 +63,19 @@ theorem stCartanGL : StCartanGL := by
     have hkA : ∀ i j, ‖((k : Matrix (Fin n) (Fin n) L) - 1) i j‖ ≤ r := fun i j =>
       (GlobalTheory.CompanionTheory.CartGL.mem_congK.mp hk i j).1
     obtain ⟨Um, Wm, hUl, hWu, hUr, hWr, hUW⟩ := GlobalTheory.T.near_identity_upper_lower_factorization L n r h0 hr1 (k : Matrix (Fin n) (Fin n) L) hkA
-    obtain ⟨kU, -, hkUv⟩ := GlobalTheory.T.matrix_near_identity_in_congruence_subgroup L n r h0 h1 hr1 Um hUr
-    obtain ⟨kW, -, hkWv⟩ := GlobalTheory.T.matrix_near_identity_in_congruence_subgroup L n r h0 h1 hr1 Wm hWr
+    obtain ⟨kU, -, hkUv⟩ := _root_.GlobalTheory.CompanionTheory.CartGL.exists_mem_congK_of_entries L n r h0 h1 hr1 Um hUr
+    obtain ⟨kW, -, hkWv⟩ := _root_.GlobalTheory.CompanionTheory.CartGL.exists_mem_congK_of_entries L n r h0 h1 hr1 Wm hWr
     have hk_eq : k = kU * kW := Units.ext (by rw [Units.val_mul, hkUv, hkWv, hUW])
     have hA : GlobalTheory.CompanionTheory.CartGL.dPow p a₁ * kU * (GlobalTheory.CompanionTheory.CartGL.dPow p a₁)⁻¹ ∈ GlobalTheory.CompanionTheory.CartGL.congK L n r h0 h1 := by
-      have hb := GlobalTheory.T.dominant_conjugation_preserves_upper_congruence L n p hp1 a₁ ha₁ r kU (fun i j hij => by rw [hkUv]; exact hUl i j hij)
+      have hb := _root_.GlobalTheory.CompanionTheory.CartGL.conj_upper_contract L n p hp1 a₁ ha₁ r kU (fun i j hij => by rw [hkUv]; exact hUl i j hij)
         (fun i j => by rw [hkUv]; exact hUr i j)
-      obtain ⟨k', hk', hk'v⟩ := GlobalTheory.T.matrix_near_identity_in_congruence_subgroup L n r h0 h1 hr1 _ hb
+      obtain ⟨k', hk', hk'v⟩ := _root_.GlobalTheory.CompanionTheory.CartGL.exists_mem_congK_of_entries L n r h0 h1 hr1 _ hb
       rw [← Units.ext hk'v]
       exact hk'
     have hB : (GlobalTheory.CompanionTheory.CartGL.dPow p a₂)⁻¹ * kW * GlobalTheory.CompanionTheory.CartGL.dPow p a₂ ∈ GlobalTheory.CompanionTheory.CartGL.congK L n r h0 h1 := by
-      have hb := GlobalTheory.T.dominant_conjugation_preserves_lower_congruence L n p hp1 a₂ ha₂ r kW (fun i j hij => by rw [hkWv]; exact hWu i j hij)
+      have hb := _root_.GlobalTheory.CompanionTheory.CartGL.Lower.conj_lower_contract L n p hp1 a₂ ha₂ r kW (fun i j hij => by rw [hkWv]; exact hWu i j hij)
         (fun i j => by rw [hkWv]; exact hWr i j)
-      obtain ⟨k', hk', hk'v⟩ := GlobalTheory.T.matrix_near_identity_in_congruence_subgroup L n r h0 h1 hr1 _ hb
+      obtain ⟨k', hk', hk'v⟩ := _root_.GlobalTheory.CompanionTheory.CartGL.exists_mem_congK_of_entries L n r h0 h1 hr1 _ hb
       rw [← Units.ext hk'v]
       exact hk'
     refine ⟨_, hA, _, hB, ?_⟩

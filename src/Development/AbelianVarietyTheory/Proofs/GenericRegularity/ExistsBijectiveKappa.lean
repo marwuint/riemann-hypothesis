@@ -1,5 +1,10 @@
 import Mathlib
-import Formalism.LocalToGlobal.ProjectiveLattices.RatRgOfSecRat
+import Formalism.LocalToGlobal.ProjectiveLattices.TieGenRg
+import Formalism.LocalToGlobal.ProjectiveLattices.TieGenR
+import Formalism.LocalToGlobal.ProjectiveLattices.UnifGen
+import Formalism.LocalToGlobal.ProjectiveLattices.ZeroWeightAlgebraicPart
+import Formalism.LocalToGlobal.ProjectiveLattices.AxHSupA
+import Formalism.LocalToGlobal.ProjectiveLattices.ReadProofs
 import Formalism.LocalToGlobal.ProjectiveLattices.CurveInstSt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsGenericComponentPointsOffMeagre

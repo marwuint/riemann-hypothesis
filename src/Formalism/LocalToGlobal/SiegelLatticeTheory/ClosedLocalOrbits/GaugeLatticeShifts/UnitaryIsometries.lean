@@ -53,9 +53,6 @@ theorem hJ_smul_left (a : ℂ) (x y : Fin n → ℂ) : hJ ε (a • x) y = conj 
 theorem hJ_sub_left (x x' y : Fin n → ℂ) : hJ ε (x - x') y = hJ ε x y - hJ ε x' y := by
   rw [hJ_conj, hJ_sub_right, map_sub, ← hJ_conj, ← hJ_conj]
 
-theorem hJ_neg_left (x y : Fin n → ℂ) : hJ ε (-x) y = -hJ ε x y := by
-  rw [hJ_conj, hJ_neg_right, map_neg, ← hJ_conj]
-
 theorem hJ_sum_left {ι : Type*} (s : Finset ι) (c : ι → ℂ) (x : ι → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ i ∈ s, c i • x i) y = ∑ i ∈ s, conj (c i) * hJ ε (x i) y := by
   rw [hJ_conj, hJ_sum_right, map_sum]

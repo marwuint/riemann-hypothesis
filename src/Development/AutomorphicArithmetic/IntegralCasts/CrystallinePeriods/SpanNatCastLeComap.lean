@@ -174,8 +174,6 @@ theorem frob_eq_map : frob p R = WittVector.map (frobenius (Tilt p R) p) :=
 theorem map_frob (f : R →+* S) (x : Ainf p R) : map p f (frob p R x) = frob p S (map p f x) := by
   ext n; simp [map, frob_eq_map, frobenius_def]
 
-theorem frob_bijective : Function.Bijective (frob p R) := WittVector.frobenius_bijective p _
-
 @[simp] theorem map_algebraMap (f : R →+* S) (a : ℤ_[p]) :
     map p f (algebraMap ℤ_[p] _ a) = algebraMap ℤ_[p] _ a := by
   ext n

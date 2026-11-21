@@ -115,21 +115,6 @@ theorem over_hom_ext_of_isLocalRing {T Y : Over (Spec (.of R))} {f g : T ⟶ Y}
 
 omit hu hW in
 
-theorem over_hom_ext_ptOver {Y : Over (Spec (.of R))} {f g : schemeOver W ⟶ Y}
-    (h : ∀ (A : Type) [CommRing A] [Algebra R A] (P : Fin 3 → A)
-      (hP : IsUnimodularSol (W.baseChange A) P), ptOver W P hP ≫ f = ptOver W P hP ≫ g) : f = g :=
-  over_hom_ext_of_isLocalRing fun A _ _ _ x => by
-    obtain ⟨P, hP, rfl⟩ := exists_eq_ptOver W x
-    exact h A P hP
-
-omit hu hW in
-theorem ptOver_congr {A : Type} [CommRing A] [Algebra R A] {P Q : Fin 3 → A}
-    {hP : IsUnimodularSol (W.baseChange A) P} {hQ : IsUnimodularSol (W.baseChange A) Q}
-    (e : P = Q) : ptOver W P hP = ptOver W Q hQ := by
-  subst e; rfl
-
-omit hu hW in
-
 theorem exists_isSumTriple [W.IsElliptic] {A : Type} [CommRing A] [IsLocalRing A] [Algebra R A]
     {P Q : Fin 3 → A} (hP : IsUnimodularSol (W.baseChange A) P)
     (hQ : IsUnimodularSol (W.baseChange A) Q) :
@@ -158,29 +143,5 @@ theorem isMonHom_scaleOver [W.IsElliptic] : IsMonHom (scaleOver W hu hW) := by
   rw [h1] at e ⊢
   rw [_root_.mul_one] at e
   exact mul_eq_left.1 e.symm
-
-omit hu hW in
-
-def AddsByLaws (m : schemeOver W ⊗ schemeOver W ⟶ schemeOver W) : Prop :=
-  ∀ (A : Type) [CommRing A] (ρ : R →+* A) (P Q T : Fin 3 → A)
-    (hP : IsUnimodularSol (W.map ρ) P) (hQ : IsUnimodularSol (W.map ρ) Q)
-    (hT : IsUnimodularSol (W.map ρ) T),
-    (Proportional T ((W.map ρ).toProjective.addXYZ P Q) ∧
-      Proportional T (diagXYZ (W.map ρ).toProjective P Q)) →
-    ∀ x y : Over.mk (spMap ρ) ⟶ schemeOver W, x.left = ptHom W ρ P hP →
-      y.left = ptHom W ρ Q hQ → (lift x y ≫ m).left = ptHom W ρ T hT
-
-omit hu hW in
-
-theorem AddsByLaws.unique [W.IsElliptic] {m m' : schemeOver W ⊗ schemeOver W ⟶ schemeOver W}
-    (hm : AddsByLaws W m) (hm' : AddsByLaws W m') : m = m' :=
-  over_hom_ext_of_isLocalRing fun A _ _ _ x => by
-    rw [← lift_comp_fst_snd x]
-    obtain ⟨P, hP, eP⟩ := exists_eq_ptOver W (x ≫ fst _ _)
-    obtain ⟨Q, hQ, eQ⟩ := exists_eq_ptOver W (x ≫ snd _ _)
-    obtain ⟨S, hS, h⟩ := exists_isSumTriple W hP hQ
-    rw [eP, eQ]
-    exact Over.OverMorphism.ext ((hm A _ P Q S hP hQ hS ⟨h.1, h.2⟩ _ _ rfl rfl).trans
-      (hm' A _ P Q S hP hQ hS ⟨h.1, h.2⟩ _ _ rfl rfl).symm)
 
 end GlobalTheory.WeightScale

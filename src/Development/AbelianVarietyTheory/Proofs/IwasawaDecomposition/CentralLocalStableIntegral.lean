@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenLocOfCenReal
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CoreEq
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
@@ -9,8 +11,19 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.De
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAboveL
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsXdAllIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JumpsCardOfBuilt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentralCharacterIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentralCharacterLocalStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentralCharacterIntegral
+import Formalism.LocalToGlobal.Divisibility.ProjLemmas
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CenterEqSum
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentralRationalAtMember
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ActionReadAtMember
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCompOfOne
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBlockDiagonalWithIdentity
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelFinEMemDivisorStandard
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateBlockUpperOfEigenfunctionUnipotentType
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentralFrameSplitNontrivialAt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsResidueNeZeroOne
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.G0LiftUnitaryCentralFrame
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjParahoricBlockLift
 
 noncomputable section
 
@@ -60,13 +73,6 @@ theorem zlStable_of_allT {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type
   rw [hy]
   unfold NTypes.onMt
   rw [dif_pos hc]
-
-theorem zlStable_at (hL : GlobalTheory.Published.LocalLanglandsGL) :
-    AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => GlobalTheory.PendOf.ZLStable (w.D Z) :=
-  GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hR _ => hR.elim fun r => zlStable_of_allT r.all
-
-theorem cen_at : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => CenLoc (w.D Z) c.a.all.gal.mt ∧ GlobalTheory.PendOf.ZLStable (w.D Z) ∧ GlobalTheory.PendOf.CenInt (w.D Z) := fun hL =>
-  GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.central_character_local hL) (GlobalTheory.HeightCounting.Up.Model.AtMem.and (zlStable_at hL) (GlobalTheory.T.central_character_integral hL))
 
 end GlobalTheory.CenAtLoc
 

@@ -1,5 +1,7 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.FrobeniusHodgeTateLaws.LamEig2
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSetStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 
 open UpperTheory.V.Z.Kato.Joint
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.CyclotomicQExpansion GlobalTheory.KummerEisensteinGalois GlobalTheory.K4 GlobalTheory.LambdaValuationPowers
@@ -93,7 +95,7 @@ theorem UpperTheory.V.Z.Kato.Joint.admissibleFunctional_of_projection :
   have heig := hEig hLin hOp hStab hThP l Ω ε X A N (2 * e - 1) j χd (fun T => ι.symm (lamC T))
     ⟨hjl, hl2, hlN, hN, hodd, hjA⟩ hev P hP
     (fun T hT b hb => by
-      have hb' := GlobalTheory.T.hecke_letter_preserves_basis_set ε X ε.injective ⟨φ, hφ2, hφ1⟩ N l (2 * e - 1) hl2 hN hlcN.symm hodd T hT b hb
+      have hb' := _root_.GlobalTheory.KZ.B_stable_op ε X ε.injective ⟨φ, hφ2, hφ1⟩ N l (2 * e - 1) hl2 hN hlcN.symm hodd T hT b hb
       rw [hPx _ (tmul_mem X N l _ _ hb'), hPx _ (tmul_mem X N l _ _ hb), Finset.smul_sum]
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [← map_smul, ← hπT i T hT _ (tmul_mem X N l _ _ hb)]

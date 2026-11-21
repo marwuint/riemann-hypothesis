@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamExtensionPotentiallySemistableStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamBlockTriangularDiagonalBlocksStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamExtensionPotentiallySemistable
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamBlockTriangularDiagonalBlocks
 
 noncomputable section
 
@@ -258,12 +258,12 @@ theorem redStep : RedStep := by
   have hz' : ∀ g i j, (ρ' g : Matrix ({i // i ∈ s} ⊕ {i // i ∉ s}) ({i // i ∈ s} ⊕ {i // i ∉ s}) ↥(MaximalUnramifiedExtension l)) (Sum.inr i) (Sum.inl j) = 0 := fun g i j =>
     hz g i.1 j.1 i.2 j.2
   have hform := blk_form ρ' hz'
-  have hsub := GlobalTheory.T.deRham_blockTriangular_diagonal_blocks l P AI T _ _ K r ρ' (blk₁ ρ' hz') (blk₂ ρ' hz') _ hR' hform hD'
+  have hsub := _root_.GlobalTheory.PMon.subQuot l P AI T _ _ K r ρ' (blk₁ ρ' hz') (blk₂ ρ' hz') _ hR' hform hD'
   have hS1 : AdmSt P (blk₁ ρ' hz') :=
     IH _ (Fintype.card_subtype_lt (x := y) hy) _ (isRat_blk₁ ρ' hz' hR') hsub.1
   have hS2 : AdmSt P (blk₂ ρ' hz') :=
     IH _ (Fintype.card_subtype_lt (p := fun i => i ∉ s) (x := x) (not_not.2 hx)) _ (isRat_blk₂ ρ' hz' hR') hsub.2
-  have hS' := GlobalTheory.T.deRhamExtension_potentiallySemistable l P AI T _ _ K r ρ' (blk₁ ρ' hz') (blk₂ ρ' hz') _ hR' hform hD' hS1 hS2
+  have hS' := _root_.GlobalTheory.PMon.extStep_holds l P AI T _ _ K r ρ' (blk₁ ρ' hz') (blk₂ ρ' hz') _ hR' hform hD' hS1 hS2
   exact semistable_of_conjugate_unramified_rational P Y X hYX hXY hY hX ρ' ρ h' hR.le hS'
 
 end GlobalTheory.PMon.Red

@@ -86,11 +86,6 @@ def IsMultIdeal (p : X ⟶ Sp k) (n : ℕ) (η : RatForms p n) (m : ℕ) (G : Ca
     ∀ (x : X) (hx : x ∈ U.1) (u : X.functionFieldˣ),
       (u : X.functionField) = fnOf U.1 (gen_mem hx) f → InMultAt p n η m G x u
 
-theorem IsMultIdeal.unique {p : X ⟶ Sp k} {n : ℕ} {η : RatForms p n} {m : ℕ} {G : CartierDiv X}
-    {J J' : X.IdealSheafData} (h : IsMultIdeal p n η m G J) (h' : IsMultIdeal p n η m G J') :
-    J = J' :=
-  Scheme.IdealSheafData.ext (funext fun U => Ideal.ext fun f => (h U f).trans (h' U f).symm)
-
 structure IsSncChart [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) (B : Closeds Y) (y : Y)
     (U : Y.Opens) (hy : y ∈ U) (z : Fin n → Γ(Y, U)) (J : Finset (Fin n)) (w : Fin n → Y)
     (u : Fin n → Y.functionFieldˣ) : Prop where

@@ -17,12 +17,6 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 theorem symplOH_add_self (S T : HSp D) (x y : WO S T) : symplOH S T x y + symplOH S T x y = symplO S T x y := by
   rw [symplOH, ← add_mul, ← map_add, add_halves, map_one, one_mul]
 
-theorem smul_cancel {R : Type} [CommRing R] {n k l : ℕ} {a c : R} (h : a * c = 1) (P G : Matrix (Fin n) (Fin n) R)
-    (hP : P * G = 1) (y : Matrix (Fin n) (Fin k) R) (b : Matrix (Fin k) (Fin l) R) :
-    a • (P * (c • (G * y) * b)) = y * b := by
-  rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, h, one_smul, Matrix.mul_assoc G, ← Matrix.mul_assoc, hP,
-    Matrix.one_mul]
-
 section Source
 
 variable {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ))
@@ -80,16 +74,6 @@ theorem mixS_quasi (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ))
     d.ext0 T (ratW T S₀ γ) + (d.extY T a + d.extX T x + d.ext0 T w₀) by abel, h]
   ring
 
-theorem mixS_rank_zero (d : HypDec S S₀ 0) {μ : Measure (Mx D T.rank 0)} {𝓕 : Set (Mx D T.rank 0)}
-    (hμ : IsCovolOne (ratMx D T.rank 0) μ 𝓕) (f : WO S T → ℂ) (x : Mx D T.rank 0) (w₀ : WO S₀ T) :
-    d.mixS T ψ μ 𝓕 f x w₀ = f (d.ext0 T w₀) := by
-  have : ∀ a : Mx D T.rank 0, a = 0 := fun a => Subsingleton.elim a 0
-  have e : ∀ a : Mx D T.rank 0, ψ (symplOH S T (d.extY T a) (d.extX T x)) * f (d.extY T a + d.extX T x + d.ext0 T w₀) =
-      f (d.ext0 T w₀) := fun a => by
-    rw [this a, this x, map_zero, map_zero, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add, zero_add]
-  simp only [mixS_eq, e]
-  rw [setIntegral_const, Measure.real, hμ.2.2, ENNReal.toReal_one, one_smul]
-
 end Source
 
 section Target
@@ -120,57 +104,7 @@ theorem mixedModelTarget_heisenberg_anisotropic_part (f : WO S T → ℂ) (u : W
 
 variable {μ 𝓕}
 
-theorem mixT_heis_incX (hμ : IsCovolOne (ratMx D ρ S.rank) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
-    (ξ : Mx D ρ S.rank) (y : Mx D S.rank ρ) (w₀ : WO S T₀) :
-    d.mixT S ψ μ 𝓕 (heisO ψ S T (d.incX S ξ) f) y w₀ =
-      ψ (symplO S T (d.incAdj S y) (d.incX S ξ)) * d.mixT S ψ μ 𝓕 f y w₀ := by
-  have h : symplOH S T (d.inc0 S w₀) (d.incX S ξ) = 0 := by rw [symplOH_skew, wittDecomp_sympl_inclIsotropic_inclAnisotropic, neg_zero]
-  have h2 := covolOne_integral_add hμ
-    (fun ξ => heisO ψ S T (d.incX S ξ) (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S w₀) f)) 0)
-    (d.integrandT_periodic hf y w₀) ξ
-  rw [mixT, mixT, ← h2, ← integral_const_mul]
-  congr 1; funext a
-  simp only [integrandT_eq]
-  simp only [heisO, map_add (d.incX S), symplOH_add_left, symplOH_incX_incX, h, add_zero, zero_add, ← mul_assoc,
-    ← AddChar.map_add_eq_mul, ← symplOH_add_self, symplOH_skew S T (d.incAdj S y) (d.incX S ξ)]
-  congr 2
-  · abel
-  · abel
-
-theorem adjoint_nB_incAdj (b : Mx D ρ T₀.rank) (y : Mx D S.rank ρ) :
-    incA D D.host.xi0 • (giA S ⬝ (adj (d.p0 ⬝ (mt T (d.nB b)⁻¹ ⬝ d.incAdj S y)) ⬝ gA T₀)) = y ⬝ b := by
-  have h1 : d.p0 ⬝ (mt T (d.nB b)⁻¹ ⬝ d.incAdj S y) =
-      plus T₀ b ⬝ (incA D (-D.host.xi0⁻¹) • (adj y ⬝ gA S)) := by
-    rw [nB_inv, cancel₂ (d.wittDecomp_projAnisotropic_unipotentMixed _), incAdj_apply, incY_apply]
-    generalize incA D (-D.host.xi0⁻¹) • (adj y ⬝ gA S) = z
-    simp only [plus_neg, Matrix.sub_mul, Matrix.neg_mul, Matrix.mul_assoc, cancel₂ d.p0_jY, cancel₂ d.pY_jY,
-      Matrix.zero_mul, Matrix.one_mul, zero_sub, neg_neg]
-  have h2 : adj (incA D (-D.host.xi0⁻¹) • (adj y ⬝ gA S)) = cA D (incA D (-D.host.xi0⁻¹)) • (gA S ⬝ y) := by
-    rw [adj_smul, adj_mul, adj_adj, adj_gA]
-  rw [h1, adj_mul, h2, Matrix.mul_assoc _ (adj (plus T₀ b)), adj_plus_gA]
-  exact smul_cancel (R := AE D) (wittDecomp_trace0Unit_mul_conj_neg_inv (D := D)) (giA S) (gA S) (giA_mul_gA S) y b
-
 end Target
-
-theorem nC_injective {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : Function.Injective d.nC := fun c c' h => by
-  have h1 : d.pX ⬝ (mt S (d.nC c) ⬝ d.jY) = d.pX ⬝ (mt S (d.nC c') ⬝ d.jY) := by rw [h]
-  refine Subtype.ext ?_
-  simpa only [nC_jY, Matrix.mul_add, pX_jY, zero_add, cancel₂ d.pX_jX, Matrix.one_mul] using h1
-
-theorem levi_injective {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : Function.Injective d.levi := fun c c' h => by
-  have h1 : d.pX ⬝ (mt S (d.levi c) ⬝ d.jX) = d.pX ⬝ (mt S (d.levi c') ⬝ d.jX) := by rw [h]
-  refine Units.ext ?_
-  simpa only [levi_jX, cancel₂ d.pX_jX, Matrix.one_mul] using h1
-
-def xiSkew (D : D7) (ρ : ℕ) : skewA D ρ :=
-  ⟨incA D D.host.xi0 • (1 : Mx D ρ ρ), by
-    rw [mem_skewA, adj_smul, adj_one, GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, map_neg, neg_smul]⟩
-
-theorem nC_xi_ne_one (D : D7) : (hypDecThree D).nC (xiSkew D 1) ≠ 1 := fun h => by
-  have h1 := congrArg Subtype.val (nC_injective (hypDecThree D) (h.trans (hypDecThree D).nC_zero.symm))
-  have h2 : incA D D.host.xi0 * 1 = 0 := congrFun (congrFun h1 0) 0
-  rw [mul_one, ← map_zero (incA D)] at h2
-  exact GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D (incA_injective h2)
 
 end GlobalTheory.MixModel.Check
 

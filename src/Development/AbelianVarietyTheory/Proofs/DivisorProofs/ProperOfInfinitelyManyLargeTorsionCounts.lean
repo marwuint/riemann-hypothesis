@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfManyTorsionPointsCharZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperSmoothConnGroupOfManyTorsionCharPStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfManyTorsionPointsCharZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperSmoothConnGroupOfManyTorsionCharP
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -28,7 +28,7 @@ theorem GlobalTheory.properOfInfinitelyManyLargeTorsionCounts :
   obtain ⟨p, hp⟩ := CharP.exists k
   rcases CharP.char_is_prime_or_zero k p with hpp | hp0
   · haveI : Fact p.Prime := ⟨hpp⟩
-    exact GlobalTheory.T.isProper_smoothConnGroup_of_many_torsion_charP k p G hG g hsm m hm0 s hs hlt
+    exact _root_.GlobalTheory.SerreTateProperness.main k p G hG g hsm m hm0 s hs hlt
   · subst hp0
     haveI : CharZero k := CharP.charP_to_charZero k
-    exact GlobalTheory.T.isProper_of_many_torsion_points_charZero k G hG g hsm m s hs hlt
+    exact _root_.GlobalTheory.ManyTorsionProper.isProper_of_many_torsion_charZero k G hG g hsm m s hs hlt

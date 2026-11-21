@@ -1,5 +1,11 @@
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReductionToLocalLanglandsAStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReductionToLocalLanglandsA
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PublishedInputsThirdLayer
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SameGaloisLevelExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RayPrimeHostIntegral
@@ -45,7 +51,7 @@ theorem sa_of_prN_alt_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInput
     show TypesTrue L.ntypes f.P f.W
     rw [← e1, ← e2]
     exact hTT
-  obtain ⟨hGA, hCen⟩ := GlobalTheory.T.heckeGaloisStage_fits_of_same_centre_actions x (nOfLay x L hZ hη) hG hPlG hplGw hcA hcM
+  obtain ⟨hGA, hCen⟩ := _root_.GlobalTheory.Mem.R3.Rw.SwapN.fits_swap x (nOfLay x L hZ hη) hG hPlG hplGw hcA hcM
   obtain ⟨x', hx', hrep⟩ := GlobalTheory.T.exists_transported_state_heckeGaloisStage x (nOfLay x L hZ hη) hG hGA hCen
   obtain ⟨Pq, hPq1, hPq2⟩ := exists_pq_sel B w.I w.ok
   have hEl' := hEl P x'

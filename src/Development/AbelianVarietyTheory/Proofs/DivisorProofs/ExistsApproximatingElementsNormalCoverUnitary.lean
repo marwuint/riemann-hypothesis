@@ -1,18 +1,22 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepAtBIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisedBlowupFiniteNormalCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealAlongMonomialFamilyEqSpanMonomialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApproximateSeriesLeadingTermFourierSystemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCorrectionApproximateIdealSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryTraitThroughModuliGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisedBlowupFiniteNormalCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealAlongMonomialFamilyEqSpanMonomial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApproximateSeriesLeadingTermFourierSystem
+import Development.AbelianVarietyTheory.Definitions.Divisors.OrdGeOfForall
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCorrectionApproximateIdealSections
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryTraitThroughModuliGenericPoint
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqLeOfForallNonneg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolarizationTransferModels
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PhiDivisorArcBlowup
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LevelOfSplitAndLevelCoeffExist
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteInjectiveRingHomIsLocalHomAndExtendStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkValueClosedPointDefinedOverSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCorrectionProperNormalCoverPowerLocalEquatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSystemOfOrderGeAlongTraitsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkValueClosedPointDefinedOverSubfield
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCorrectionProperNormalCoverPowerLocalEquat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSystemOfOrderGeAlongTraits
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
 import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -50,7 +54,7 @@ theorem exists_elements_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   have hcov' := hcov
   obtain ⟨-, -, hζg, -⟩ := hcov'
   obtain ⟨S₁, hS₁, p₁, sM, U₁, hft, hqc, hfl, hnorm, hprop, hdom, hcart, hU₁, hlift, hxi⟩ :=
-    GlobalTheory.T.exists_normalisedBlowup_finite_normal_cover E H Dw hpq l Xo c C J hJ S π hπ M g z₁ ζ hcov
+    _root_.GlobalTheory.USepCov.exists_cover E H Dw hpq l Xo c C J hJ S π hπ M g z₁ ζ hcov
   haveI := hS₁
   haveI : IsIntegrallyClosed (Φ.V y) := (Φ.cn y).2.1
   have hζ' : (spMap ρ ≫ ξ) ≫ π = spMap (Φ.ev y) ≫ ζ := by rw [hζ, Category.assoc]
@@ -70,13 +74,13 @@ theorem exists_elements_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     rw [spMap, Spec_closedPoint]
   have hdef' : GlobalTheory.UChart.DefOver k₀ (spMap ev₁ ≫ (spMap ρ ≫ ξ)) := by rwa [← Category.assoc, hcomp]
   obtain ⟨hpt₁, hdef₁⟩ := hξ₁ K ev₁ k₀ hk₀ hpt' hdef'
-  obtain ⟨b', hb', hid⟩ := GlobalTheory.T.idealAlong_monomialFamily_eq_span_monomial E H Dw hpq l Xo c C φ hφ d J hJ hV S π hπ V Cm hB ξ hξ
+  obtain ⟨b', hb', hid⟩ := _root_.GlobalTheory.UGZero.idlAlong_eq_span_monomial E H Dw hpq l Xo c C φ hφ d J hJ hV S π hπ V Cm hB ξ hξ
   have hU₂ : ((U₁ ⊓ p₁ ⁻¹ᵁ U : S₁.Opens) : Set S₁).Nonempty := by
     have h1 : ((p₁ ⁻¹ᵁ U : S₁.Opens) : Set S₁).Nonempty := by
       obtain ⟨s, hs⟩ := (p₁.denseRange).exists_mem_open U.isOpen hUne
       exact ⟨s, hs⟩
     exact nonempty_preirreducible_inter U₁.isOpen (p₁ ⁻¹ᵁ U).isOpen hU₁ h1
-  obtain ⟨g₀, hg₀, happ⟩ := GlobalTheory.T.exists_correction_properNormalCover_powerLocalEquation C.Z M S₁ sM p₁ g J hft hqc hfl hnorm hprop hdom hcart (U₁ ⊓ p₁ ⁻¹ᵁ U) hU₂ z₁ (Φ.V y) (Φ.ev y)
+  obtain ⟨g₀, hg₀, happ⟩ := _root_.GlobalTheory.CorrCover.exists_corr C.Z M S₁ sM p₁ g J hft hqc hfl hnorm hprop hdom hcart (U₁ ⊓ p₁ ⁻¹ᵁ U) hU₂ z₁ (Φ.V y) (Φ.ev y)
     (Φ.ev_loc y) ξ₁ hξ₁p
   have hpath : ξ₁ ≫ p₁ ≫ g = spMap ρ ≫ (ξ ≫ π ≫ pullback.fst C.z (spMap C.b)) := by
     rw [← Category.assoc, hξ₁p, Category.assoc, ← hζg, ← Category.assoc, hζ]
@@ -96,14 +100,14 @@ theorem exists_elements_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   have hδga : ∀ i, Φ.δ y i = ((l.M' : ℕ) : ℤ) • ga i := fun i => LinearMap.ext₂ fun a b => by
     rw [(hst i).2 a b]; simp [hga]
   refine ⟨ev₁, hev₁, (Scheme.stalkClosedPointTo ξ₁).hom.range, g₀, fun k => 2 * b' (h k),
-    fun x hx => GlobalTheory.T.stalkValue_closedPoint_definedOver_subfield S₁ (Φ.V y) ξ₁ K ev₁ k₀ hpt₁ hdef₁ x hx, fun k => ?_,
+    fun x hx => _root_.GlobalTheory.USep.stalkVal_closedPoint S₁ (Φ.V y) ξ₁ K ev₁ k₀ hpt₁ hdef₁ x hx, fun k => ?_,
     Ideal.span_singleton_eq_span_singleton.1 hkey, ?_⟩
   · push_cast
     rw [hev k, hb' (h k)]
     ring
   intro D l' a hdom c' e'
   obtain ⟨e₁, he₁⟩ := happ D e'
-  obtain ⟨f, hord, hlead⟩ := GlobalTheory.T.exists_approximate_series_leading_term_fourierSystem (𝓞 E) (H.bar : 𝓞 E → 𝓞 E) hbdd (min Dw.p Dw.q) φ hφ 1 !![(1 : ℤ)] Φ.posW N₁ _ Φ y ga
+  obtain ⟨f, hord, hlead⟩ := _root_.GlobalTheory.Poinc.approx_of_vsys (𝓞 E) (H.bar : 𝓞 E → 𝓞 E) hbdd (min Dw.p Dw.q) φ hφ 1 !![(1 : ℤ)] Φ.posW N₁ _ Φ y ga
     l.M' hM hδga (D * (2 * d)) l' a hdom c' (max e' e₁)
   have hord' : Φ.OrdGe φ (D * (2 * d)) e₁ f := fun y' hP hm i =>
     (sup_le_sup_left (α := Ideal (Φ.V y')) (Ideal.pow_le_pow_right (le_max_right e' e₁)) _) (hord y' hP hm i)
@@ -119,7 +123,7 @@ theorem exists_elements_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       have := (hU ⟨q, rfl⟩).2
       rw [Scheme.Hom.comp_apply]
       exact this
-    have htr' := GlobalTheory.T.mem_system_of_order_ge_along_traits GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint E H Dw l Xo c C φ d J hV M z₁ U ζ N₁ Φ htr V' hc ev' hl hUM y' hy' D e₁ f hord'
+    have htr' := _root_.GlobalTheory.USepStrait.mem_of_ordGe_on _root_.GlobalTheory.UTraitExt.uTraitExtSt E H Dw l Xo c C φ d J hV M z₁ U ζ N₁ Φ htr V' hc ev' hl hUM y' hy' D e₁ f hord'
     have hpath' : ξ' ≫ p₁ ≫ g = spMap ev' ≫ ζ ≫ pullback.fst C.z (spMap C.b) := by
       rw [hζg, ← Category.assoc (spMap ev'), hcomm, Category.assoc]
     rwa [GlobalTheory.TorRef.idlAlong_comap, hpath'])

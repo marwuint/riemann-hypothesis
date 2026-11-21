@@ -33,16 +33,6 @@ def formsInTw (W : TwFormsTiedS D Tw T J F) (u : D.what₂.Word) (μ : D.what₂
   val := W.val u μ hμ (i + 1) (one_le i) hi
   tw := fun β => DetTw.ofChiD (dt β) (cTw D (i + 1))
 
-section Agree
-
-variable {p : ℕ} {W' Qq : Type} [CommRing W'] [IsDomain W'] [IsDiscreteValuationRing W'] [Field Qq] [Algebra W' Qq]
-  (W : TwFormsTiedS D Tw T J F) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) (i : ℕ) (hi : i + 1 ≤ D.R.m)
-  {L : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u)} {nV : ℕ}
-  (I : LocId L p nV W' Qq) (Z : Type) [CommGroup Z] (β : T.Ch u μ (i + 1))
-  (M : StepMore D T u μ I Z (i + 1) (one_le i) hi β)
-
-end Agree
-
 variable {X : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
   {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w hg)} {Lv : Levels Fl} {i : ℕ}
 

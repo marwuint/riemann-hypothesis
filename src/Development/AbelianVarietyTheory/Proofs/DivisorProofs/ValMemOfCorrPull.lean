@@ -96,11 +96,4 @@ theorem val_spMap_mem {R : Type} [CommRing R] {L : LB X} {φ : Ix → (Sp R ⟶ 
 end GlobalTheory.Poinc.Sep
 
 namespace GlobalTheory.Poinc.Sep
-attribute [local instance] Over.cartesianMonoidalCategory
-open MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
-open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
-open scoped CategoryTheory.Obj
-
-variable {V V₁ : Type} [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁]
-
 end GlobalTheory.Poinc.Sep

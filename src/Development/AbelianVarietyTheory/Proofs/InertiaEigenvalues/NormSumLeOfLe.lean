@@ -2,12 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SmulMemRatForms
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNormEqOfMemClosure
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValCCuspOfSmul
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupLatticeRationalFormMemLocalUnitBallStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OneTmulMemSupLatticeOfMemLocalUnitBallStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightVectorRealizationExistsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBasisRationalFormsLocalUnitBallStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitBallFiniteUnramifiedDescentComplexPadicStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteUnramifiedApproximationPadicStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupLatticeRationalFormMemLocalUnitBall
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OneTmulMemSupLatticeOfMemLocalUnitBall
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightVectorRealizationExists
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBasisRationalFormsLocalUnitBall
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitBallFiniteUnramifiedDescentComplexPadic
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteUnramifiedApproximationPadic
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NatCastMemPlaceAt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniformiserNormGapPadicEmbeddingStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ImportsBisTer
 
@@ -180,7 +181,7 @@ theorem mem_span_locBall
       rw [e, norm_mul, norm_inv]
       calc _ ≤ 1 * ‖embS S iC b c‖⁻¹ := mul_le_mul_of_nonneg_right (hval z) (by positivity)
         _ ≤ r := by rw [one_mul]; exact hcr
-    obtain ⟨F', _, _, _, φ', hφ', hunr, a', ha'⟩ := GlobalTheory.T.exists_finite_unramified_approximation_padic (D.ntw.l i) S.Ks (embS S iC b) n w hwk r hϖ0
+    obtain ⟨F', _, _, _, φ', hφ', hunr, a', ha'⟩ := _root_.GlobalTheory.KurApprox.kur_approx (D.ntw.l i) S.Ks (embS S iC b) n w hwk r hϖ0
     have hsum' : ∀ z : Pts YS iC b ((j : ℕ) + 1),
         ‖∑ s, φ' (a' s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1))‖ ≤ r := fun z => by
       have e : ∑ s, φ' (a' s) * valC z.1 (cuspOf YS fw j (B s) : T0.R ((j : ℕ) + 1)) =
@@ -240,8 +241,8 @@ end GlobalTheory.GeoTie
 
 theorem GlobalTheory.GeoTie.supDescent_side : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T1 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T1 D.R.m) (T0 : CoreJ D) [Algebra T0.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T0.Q.c.F) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (fw : FWTie T0 Rl.toRealDat κ v₀) (i : D.ntw.Tw) (iC : FractionRing (D.ntw.O i) →+* ℂ_[D.ntw.l i]), (∀ x, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range) → ∀ (b : Bool) (j : Fin D.R.m), SupDescent YS fw iC b j := by
   intro D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC hiC b j
-  have hA := GlobalTheory.T.supLatticeRationalForm_mem_localUnitBall D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j
-  have hbdd := GlobalTheory.T.weight_vector_realization_exists D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hA
+  have hA := _root_.GlobalTheory.GeoTie.mem_locBall_of_mem_MK D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j
+  have hbdd := _root_.GlobalTheory.GeoTie.exists_smul_mem_locBall D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hA
   have h1 : iC (1 : NX.KB S i b) = 1 := map_one iC
   unfold SupDescent
   apply le_antisymm
@@ -253,7 +254,7 @@ theorem GlobalTheory.GeoTie.supDescent_side : ∀ (D : D7) (Γ : Type) [Group Γ
     exact hA x hx z
   · rw [Submodule.span_le]
     intro x hx
-    have h := mem_span_locBall YS fw iC b j hiC (GlobalTheory.T.exists_basis_rationalForms_local_unit_ball D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hbdd) (GlobalTheory.T.unitBall_finite_unramified_descent_complexPadic D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hbdd) x hx
+    have h := mem_span_locBall YS fw iC b j hiC (_root_.GlobalTheory.GeoTie.locBall_basis_exists D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hbdd) (_root_.GlobalTheory.GeoTie.BallDescent.ball_descent D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j hbdd) x hx
     refine (Submodule.span_le.2 ?_) h
     rintro _ ⟨f, hf, rfl⟩
-    exact GlobalTheory.T.one_tmul_mem_supLattice_of_mem_localUnitBall D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j f hf
+    exact _root_.GlobalTheory.GeoTie.one_tmul_mem_Bsup D Γ Pl0 I0 T1 A3 T0 Rl cG S YS κ v₀ fw i iC hiC b j f hf

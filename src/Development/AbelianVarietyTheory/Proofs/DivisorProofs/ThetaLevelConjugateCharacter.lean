@@ -1,10 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MapBaseTiedSel
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.IsLinked
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RealPins3RealTOf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RealPinsRealTOf
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwArgs
+import Formalism.LocalToGlobal.IndefiniteReal.NonzeroIndexPlaceIndepConstants
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ComplexSidePlacesIffMemNonzeroIndexPlaces
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DivisionPairOfAdelicFormsFaceColumnsData
+import Formalism.LocalToGlobal.Divisibility.TupUsed
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeqIotaIffEqTransCastAdelicGroup
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ToSTiesRPin
+
 open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain
 open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.Lev
 open GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3
@@ -85,25 +89,5 @@ theorem levels_of_twArgs {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w 
 end GlobalTheory.Mem.R3.LinkLev
 
 namespace GlobalTheory.Mem.R3.LinkLev
-
-set_option maxHeartbeats 4000000 in
-
-theorem tS_fin_conj_match : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c) (w : BWit q b), q.O.L.sc = K.s → w.y.y.tS ∈ Formalism.L2.Theta.GfC (Yc (q.w.D q.Z) 0) ∧ Formalism.IndefR.AutomorphicEvaluation.ConjLevel w.y.y.tS⁻¹ (levS _ (w.x.R.βY 0) (w.x.R.dat0 (w.x.R.toRealDat.levR w.x.F.lv2 true))) (Formalism.IndefR.Lev.levChi _ (w.x.R.βY 0) (w.x.R.dat0 (w.x.R.toRealDat.levR w.x.F.lv2 true))) (w.y.y.ιS ⁻¹' seeKS b.S.X) (fun k => seeChiS b.S.X (w.y.y.ιS k)) ∧ Formalism.L2.SG.RowLevelMatch.RowLevelMatchAt w.x.R.toRealDat w.x.F.lv2 b.S.X w.y.y.instEq w.y.y.tS := by
-  intro hL p
-  refine GlobalTheory.Fc.EvP.of_all fun _ K _ => ?_
-  intro q c b w hsc
-  obtain ⟨sP, sS, hP, hS, hb⟩ := w.s
-  have see := q.sat.see
-  have ht : w.y.y.tS = q.sat.t := eq_of_heq w.pt.1
-  have hι := (GlobalTheory.Mem.JIota.heq_iota_iff _ _ w.y.y.instEq w.y.y.ιS).1 w.y.y.ιS_eq
-  have hX : b.S.X = q.sat.P.X := by
-    rw [hb]
-    exact spack_X_eq_of_heq (by rw [w.recPin.s.cols]; exact rfl) sP q.sat.P hP
-  have key := levels_of_twArgs w.a w.x w.ax q.sat.P.X q.sat.P.inst q.sat.t ⟨see.conj, see.mat⟩
-  refine ⟨?_, ?_, ?_⟩
-  · rw [ht]
-    exact see.fin
-  · exact conjLevel_of_setting_eq _ _ hX _ _ _ hι _ _ ht _ _ key.1
-  · exact of_setting_eq (fun X h t => Formalism.L2.SG.RowLevelMatch.RowLevelMatchAt w.x.R.toRealDat w.x.F.lv2 X h t) _ _ hX _ _ _ _ ht key.2
 
 end GlobalTheory.Mem.R3.LinkLev

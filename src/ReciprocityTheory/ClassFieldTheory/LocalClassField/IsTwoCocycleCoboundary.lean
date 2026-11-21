@@ -16,14 +16,6 @@ def D1 (y : G → A) (g h : G) : A := ρ g (y h) - y (g * h) + y g
 
 variable {ρ}
 
-theorem IsTwoCocycle.sub {c c' : G → G → A} (hc : IsTwoCocycle ρ c) (hc' : IsTwoCocycle ρ c') :
-    IsTwoCocycle ρ (fun g h => c g h - c' g h) := by
-  intro g h k
-  have h1 := hc g h k
-  have h2 := hc' g h k
-  simp only [map_sub]
-  linear_combination (norm := abel) h1 - h2
-
 variable {N} {c : G → G → A} (hc : IsTwoCocycle ρ c)
   {r s : G → G} (hrs : ∀ g, r g * s g = g) (hr : ∀ g, r g ∈ N)
   (hrn : ∀ n ∈ N, ∀ g, r (n * g) = n * r g) (hsn : ∀ n ∈ N, ∀ g, s (n * g) = s g)

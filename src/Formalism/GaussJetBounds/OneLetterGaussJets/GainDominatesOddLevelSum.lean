@@ -1,7 +1,32 @@
-import Formalism.GaussJetBounds.OneLetterGaussJets.TheoremATwoFormsOfEntry
+import Formalism.GaussJetBounds.OneLetterGaussJets.OddLevelGainSum
+import Formalism.GaussJetBounds.StatementA
+import Formalism.GaussJetBounds.GaussJetProofs.CapacityLeReachCapacity
+import Formalism.GaussJetBounds.GenLogInverse
+import Formalism.GaussJetBounds.OneLetterRadius
+import Formalism.GaussJetBounds.GaussJetProofs.AsmRDotAddRight
+import Formalism.GaussJetBounds.GaussJetProofs.LemmaRA
+import Formalism.GaussJetBounds.GaussJetProofs.NormNatCastEqPowPadicValNat
+import Formalism.GaussJetBounds.GaussJetProofs.SubstitutionWeightBound
+import Formalism.IncomingBounds.WeightIdentities
+import Formalism.GaussJetBounds.StatementJ
+import Formalism.GaussJetBounds.GaussJetProofs.TheoremAOneMonomialLogLoss
+import Formalism.GaussJetBounds.GaussJetProofs.ThmAOp
+import Formalism.GaussJetBounds.GaussJetProofs.ConstantCoeffAevalLinP
+import Formalism.GaussJetBounds.StatementM
+import Formalism.GaussJetBounds.GaussJetProofs.FrameA
+import Formalism.GaussJetBounds.GaussJetProofs.Generic
+import Formalism.GaussJetBounds.StatementS
+import Formalism.GaussJetBounds.StatementU
+import Formalism.GaussJetBounds.OneLetterGauss
+import Formalism.GradedWeylDivisibility.FinalD
+import Formalism.GaussJetBounds.GaussJetProofs.OrbMul
+import Formalism.GaussJetBounds.StatementQ
+import Formalism.GaussJetBounds.GaussJetProofs.ConstantCoeffQuadSer
+import Formalism.GaussJetBounds.StatementN
+import Formalism.GaussJetBounds.MonoShapeTop
+import Formalism.GaussJetBounds.GaussJetProofs.NormDetLeOneOfEntries
 import Formalism.GaussJetBounds.OneLetterGaussJets.OneLetterGaussProofs.CompanionTheory
-import Formalism.GaussJetBounds.OneLetterGaussJets.OneLetterGaussProofs.OneLetterUnramifiedBound
-import Formalism.GaussJetBounds.OneLetterGaussJets.SizesRows7
+import Formalism.GaussJetBounds.GaussJetProofs.OneGauss
 
 universe u v w
 
@@ -19,6 +44,4 @@ theorem normCor7 : NormCor7 := by
     Finset.sum_le_sum fun s _ => gain_dominates_oddLevel_sum l d (by omega) TT nu1 nu2 s
   rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
   linarith [h6.1, h6.2]
-theorem oneLetterGauss7 : OneLetterGauss7 := one_letter_gauss_bound
-
 end Formalism.DworkPowerSeriesWeights.OddLevelGainBounds

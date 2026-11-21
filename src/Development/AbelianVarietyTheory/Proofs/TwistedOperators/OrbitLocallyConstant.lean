@@ -9,11 +9,11 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CharEqOneOfOpENeZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExDownExUpAndExUpExDown
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousWittExtendByZero
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicIntersectionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicIntersection
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QuotientIntegralLinear
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeakIntegralOfIsLocallyConstantOfIsCompact
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMemSBEqOneOnCompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatMatrixExistsOpenAddSubgroupInvariaStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatMatrixExistsOpenAddSubgroupInvaria
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpECutOmEquivariant
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColEInvMulAffPt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowSupportUniform
@@ -175,7 +175,7 @@ theorem fc_supp (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hσ : IsSmoothRep
     (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) :
     ∃ Ω : Set (GL (n ⊕ Fin c) k), IsCompact Ω ∧ ∀ χ hχ h, fc hψ ν μ σ θ b φ F p χ hχ Φ h ≠ 0 →
       ∃ x : GL n k, ∃ u ∈ N k n c p ⊓ N k n c (p + 1), ∃ w ∈ Ω, h = embX c x * u * w := by
-  obtain ⟨Λ, hΛ, hΦ⟩ := GlobalTheory.T.schwartzBruhat_matrix_exists_open_addSubgroup_invariant k _ _ Φ.1 Φ.2
+  obtain ⟨Λ, hΛ, hΦ⟩ := _root_.GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup k _ _ Φ.1 Φ.2
   obtain ⟨Ω, hΩ, H⟩ := opE_support_compact_mod_R k n n' c (p + 1) (by omega) hc ψ hψ hψ1 ν
     (tsupport Φ.1) Φ.2.2 Λ hΛ
   obtain ⟨B, hB, HB⟩ := _root_.GlobalTheory.RootEx.RowSupport.row_support_uniform k n c p hp hc ψ hψ1 A σ hσ F Ω hΩ
@@ -307,7 +307,7 @@ theorem step_two (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hμ : IsOpen (μ
     apply hne
     rw [fc_equiv hψ ν φ F hp hc hθ hb χ hχ Φ x u hu w,
       fc_equiv hψ ν φ F hp hc hθ hb (fun _ => 1) (IsLocallyConstant.const 1) Φ x u hu w, hw w hw']
-  obtain ⟨z, hz1, hz2⟩ := GlobalTheory.T.weil_formula_rootExchange_parabolic_intersection k n c p hp hc ν μX μG (fc hψ ν μ σ θ b φ F p χ hχ Φ)
+  obtain ⟨z, hz1, hz2⟩ := _root_.GlobalTheory.RootEx.QuotStep.quotInt_step k n c p hp hc ν μX μG (fc hψ ν μ σ θ b φ F p χ hχ Φ)
     (fc_lc hψ ν φ F hμ hσ χ hχ Φ) ⟨Ω, hΩ, fun h hh => by
       obtain ⟨x, u, hu, w, hw', rfl⟩ := H _ _ h hh
       exact ⟨_, ⟨Subgroup.mul_mem_sup ⟨x, rfl⟩ hu.1, Subgroup.mul_mem_sup ⟨x, rfl⟩ hu.2⟩, w, hw', rfl⟩⟩

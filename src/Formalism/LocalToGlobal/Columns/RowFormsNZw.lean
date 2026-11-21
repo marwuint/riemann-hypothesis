@@ -106,93 +106,9 @@ def posX : Equiv.Perm (Fin (R.N R.m - 1)) :=
 
 theorem nz_posX_val (i : Fin (R.N R.m - 1)) : (posX R i).1 = posXn R i.1 := rfl
 
-theorem nz_coarseX {a : ℕ} (h1 : R.r ≤ a) (h2 : a < R.N R.m - 1) :
-    coarse R.r (List.replicate R.m R.t) a = (a - R.r) / R.t + 1 := by
-  have hn' := rank_X'_eq R
-  rw [coarse_of_le h1, blkIdx_replicate (nz_t_pos R) R.m (a - R.r) (by omega)]
-
-def sX (B : ℕ) : ℚ := ((R.t : ℚ) - 1) / 2 - (((R.N R.m - 1 : ℕ) : ℚ) - 1) / 2 + (R.k : ℚ) + (B : ℚ) * ((R.t : ℚ) + 1)
-
-theorem nz_sX_int (B : ℕ) : ∃ z : ℤ, sX R B = z := by
-  obtain ⟨a, ha⟩ := R.k_even
-  obtain ⟨c, hc⟩ := R.t_odd
-  have hk := R.m_add_three_le_k
-  have hn : ((R.N R.m - 1 : ℕ) : ℚ) = (R.k : ℚ) + (R.m : ℚ) * ((R.t : ℚ) + 1) - 1 := by
-    have : R.N R.m - 1 + 1 = R.k + R.m * (R.t + 1) := by
-      unfold Ranks.N
-      omega
-    have h2 : ((R.N R.m - 1 + 1 : ℕ) : ℚ) = ((R.k + R.m * (R.t + 1) : ℕ) : ℚ) := by rw [this]
-    push_cast at h2
-    linarith
-  unfold sX
-  rw [hn, ha, hc]
-  exact ⟨(c : ℤ) - ((a : ℤ) + (R.m : ℤ) * ((c : ℤ) + 1) - 1) + ((a : ℤ) + a) + (B : ℤ) * (2 * (c : ℤ) + 1 + 1), by push_cast; ring⟩
-
 variable {R}
 
-theorem RowPar.nz_sgTrue_pos (P : HCParam R) (a : Fin (R.N R.m - 1)) (h : R.r ≤ a.1) :
-    (((RowPar.of P).sgTrue).w (posX R a) : ℚ) = -(RowPar.of P).eAt ((a.1 - R.r) / R.t) + sX R ((a.1 - R.r) / R.t) := by
-  have ht := nz_t_pos R
-  have hk := R.m_add_three_le_k
-  have hm : (a.1 - R.r) % R.t < R.t := Nat.mod_lt _ ht
-  rw [RowPar.sgTrue_eq P (posX R a), nz_posX_val, nz_posXn_hi R h,
-    RowPar.sgHC_e _ ((a.1 - R.r) / R.t) ((a.1 - R.r) % R.t + 1) (by omega) (by omega)]
-  unfold rhoVec sX
-  rw [nz_posX_val, nz_posXn_hi R h]
-  have hk1 : ((R.k - 1 : ℕ) : ℚ) = (R.k : ℚ) - 1 := by
-    rw [Nat.cast_sub (by omega)]
-    simp
-  push_cast
-  rw [hk1]
-  ring
-
 end PosX
-
-section WtsX
-
-variable {X : Fields} {Word : Type} {R : Ranks} {W : Wts X Word R}
-
-theorem nz_sg_val (hW : W.Ok) (τ : X.Tau) (a : Fin (R.N R.m - 1)) (h : R.r ≤ a.1) :
-    ((W.sgTrue τ).w (posX R a) : ℚ) = -(W.row τ).eAt ((a.1 - R.r) / R.t) + sX R ((a.1 - R.r) / R.t) := by
-  obtain ⟨P, hP⟩ := hW.row_ok τ
-  unfold Wts.sgTrue
-  rw [← hP]
-  exact RowPar.nz_sgTrue_pos P a h
-
-theorem nz_sg_const (hW : W.Ok) (τ : X.Tau) (a b : Fin (R.N R.m - 1)) (ha : R.r ≤ a.1) (hb : R.r ≤ b.1)
-    (hab : coarse R.r (List.replicate R.m R.t) a.1 = coarse R.r (List.replicate R.m R.t) b.1) :
-    (W.sgTrue τ).w (posX R a) = (W.sgTrue τ).w (posX R b) := by
-  rw [nz_coarseX R ha a.2, nz_coarseX R hb b.2] at hab
-  have h1 : (a.1 - R.r) / R.t = (b.1 - R.r) / R.t := by omega
-  have h2 : ((W.sgTrue τ).w (posX R a) : ℚ) = ((W.sgTrue τ).w (posX R b) : ℚ) := by
-    rw [nz_sg_val hW τ a ha, nz_sg_val hW τ b hb, h1]
-  exact_mod_cast h2
-
-theorem nz_sg_even (hW : W.Ok) (hf : Even X.f) (he : ∀ j : Fin R.m, ∃ z : ℤ, ∑ τ, (W.row τ).e j = 2 * (z : ℚ))
-    (a : Fin (R.N R.m - 1)) (ha : R.r ≤ a.1) : Even (∑ τ, (W.sgTrue τ).w (posX R a)) := by
-  have hn' := rank_X'_eq R
-  have hB : (a.1 - R.r) / R.t < R.m := Nat.div_lt_of_lt_mul (by rw [Nat.mul_comm]; have := a.2; omega)
-  obtain ⟨z, hz⟩ := he ⟨(a.1 - R.r) / R.t, hB⟩
-  obtain ⟨y, hy⟩ := nz_sX_int R ((a.1 - R.r) / R.t)
-  obtain ⟨c, hc⟩ := hf
-  have h1 : ((∑ τ, (W.sgTrue τ).w (posX R a) : ℤ) : ℚ) = ((2 * (-z + (c : ℤ) * y) : ℤ) : ℚ) := by
-    push_cast
-    rw [Finset.sum_congr rfl fun τ _ => nz_sg_val hW τ a ha, Finset.sum_add_distrib, Finset.sum_neg_distrib,
-      Finset.sum_const, Finset.card_univ]
-    have h2 : ∑ τ, (W.row τ).eAt ((a.1 - R.r) / R.t) = 2 * (z : ℚ) := by
-      rw [← hz]
-      refine Finset.sum_congr rfl fun τ _ => ?_
-      unfold RowPar.eAt
-      rw [dif_pos hB]
-    have h3 : Fintype.card X.Tau = c + c := hc
-    rw [h2, h3, hy, nsmul_eq_mul]
-    push_cast
-    ring
-  have h4 : ∑ τ, (W.sgTrue τ).w (posX R a) = 2 * (-z + (c : ℤ) * y) := by exact_mod_cast h1
-  rw [h4]
-  exact even_two_mul _
-
-end WtsX
 
 section PosV
 
@@ -231,76 +147,8 @@ theorem nz_posV_val (i : Fin R.nV) : (posV R j i).1 = posVn R j i.1 := rfl
 
 variable {R j}
 
-theorem nz_pV_eq (h2 : j ≤ R.m) : pV R j = RowPar.pOf R j := by
-  have := R.m_add_three_le_k
-  unfold pV RowPar.pOf Ranks.r
-  omega
-
 def sV (R : Ranks) (j : ℕ) : ℚ := ((R.k : ℚ) - (R.m : ℚ)) / 2 + (j : ℚ) - 1
 
-theorem nz_sV_int (R : Ranks) (j : ℕ) : ∃ z : ℤ, sV R j = z := by
-  obtain ⟨a, ha⟩ := R.k_even
-  obtain ⟨b, hb⟩ := R.m_even
-  unfold sV
-  rw [ha, hb]
-  exact ⟨(a : ℤ) - b + j - 1, by push_cast; ring⟩
-
-theorem RowPar.nz_lamVQ_pos (S : RowPar R) (h1 : 1 ≤ j) (h2 : j ≤ R.m) (a : Fin R.nV) (h : R.r ≤ a.1) :
-    S.lamVQ j (posV R j a) = -S.eAt (j - 1) + sV R j := by
-  have hp := nz_pV_eq h2
-  have hle := nz_pV_le R j
-  have ha := a.2
-  unfold Ranks.nV at ha
-  have e : (posV R j a).1 = a.1 - R.r + RowPar.pOf R j := by
-    rw [nz_posV_val]
-    unfold posVn
-    rw [if_neg (by omega), if_neg (by omega), hp]
-  unfold RowPar.lamVQ
-  rw [e, if_neg (by omega), if_pos (by omega)]
-  unfold RowPar.dV sV
-  rw [RowPar.cast_pOf h1, RowPar.cast_qOf h2]
-  ring
-
 end PosV
-
-section WtsV
-
-variable {X : Fields} {Word : Type} {R : Ranks} {W : Wts X Word R} {j : ℕ}
-
-theorem nz_lamV_val (hW : W.Ok) (h1 : 1 ≤ j) (h2 : j ≤ R.m) (τ : X.Tau) (a : Fin R.nV) (h : R.r ≤ a.1) :
-    ((W.lamV j τ).w (posV R j a) : ℚ) = -(W.row τ).eAt (j - 1) + sV R j := by
-  rw [Wts.lamV_eq hW h1 h2 τ (posV R j a)]
-  exact RowPar.nz_lamVQ_pos _ h1 h2 a h
-
-theorem nz_lamV_const (hW : W.Ok) (h1 : 1 ≤ j) (h2 : j ≤ R.m) (τ : X.Tau) (a b : Fin R.nV) (ha : R.r ≤ a.1)
-    (hb : R.r ≤ b.1) : (W.lamV j τ).w (posV R j a) = (W.lamV j τ).w (posV R j b) := by
-  have h3 : ((W.lamV j τ).w (posV R j a) : ℚ) = ((W.lamV j τ).w (posV R j b) : ℚ) := by
-    rw [nz_lamV_val hW h1 h2 τ a ha, nz_lamV_val hW h1 h2 τ b hb]
-  exact_mod_cast h3
-
-theorem nz_lamV_even (hW : W.Ok) (hf : Even X.f) (he : ∀ j : Fin R.m, ∃ z : ℤ, ∑ τ, (W.row τ).e j = 2 * (z : ℚ))
-    (h1 : 1 ≤ j) (h2 : j ≤ R.m) (a : Fin R.nV) (ha : R.r ≤ a.1) : Even (∑ τ, (W.lamV j τ).w (posV R j a)) := by
-  have hB : j - 1 < R.m := by omega
-  obtain ⟨z, hz⟩ := he ⟨j - 1, hB⟩
-  obtain ⟨y, hy⟩ := nz_sV_int R j
-  obtain ⟨c, hc⟩ := hf
-  have h3 : ((∑ τ, (W.lamV j τ).w (posV R j a) : ℤ) : ℚ) = ((2 * (-z + (c : ℤ) * y) : ℤ) : ℚ) := by
-    push_cast
-    rw [Finset.sum_congr rfl fun τ _ => nz_lamV_val hW h1 h2 τ a ha, Finset.sum_add_distrib, Finset.sum_neg_distrib,
-      Finset.sum_const, Finset.card_univ]
-    have h4 : ∑ τ, (W.row τ).eAt (j - 1) = 2 * (z : ℚ) := by
-      rw [← hz]
-      refine Finset.sum_congr rfl fun τ _ => ?_
-      unfold RowPar.eAt
-      rw [dif_pos hB]
-    have h5 : Fintype.card X.Tau = c + c := hc
-    rw [h4, h5, hy, nsmul_eq_mul]
-    push_cast
-    ring
-  have h6 : ∑ τ, (W.lamV j τ).w (posV R j a) = 2 * (-z + (c : ℤ) * y) := by exact_mod_cast h3
-  rw [h6]
-  exact even_two_mul _
-
-end WtsV
 
 end Formalism.L2.Col

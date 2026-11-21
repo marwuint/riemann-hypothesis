@@ -2,11 +2,17 @@ import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFramesAnalyticStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitAnalyticFunctionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGeneratorStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionsFlatAgreeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundle
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFramesAnalytic
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitAnalyticFunction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGenerator
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionsFlatAgree
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FamilyUniformisationOfAbelianSchemeLaws
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 
@@ -44,15 +50,15 @@ theorem flat_zero_of_resolution_gaga (hres : Geo.ResK.ResKStatement) (hgaga : Ga
   obtain ⟨FU⟩ := GlobalTheory.familyUnif_of_laws GlobalTheory.abelianSchemeLaws_all.1 E H D l Xo
     (σ.comp (IntermediateField.inclusion c.le).toRingHom) g ty hpq hσρ hty
   have hστ : ∀ a : 𝓞 E, σ (tauIn c τ a) = τ (a : E) := fun a => rfl
-  obtain ⟨Φ, hΦ, -⟩ := GlobalTheory.T.exists_unit_analytic_function E H D l Xo c τ τ σ g ty FU hty hτ hστ
-  obtain ⟨h1, h2, -, hne⟩ := GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hO hτ
+  obtain ⟨Φ, hΦ, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.anUnit E H D l Xo c τ τ σ g ty FU hty hτ hστ
+  obtain ⟨h1, h2, -, hne⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c O β Y U Z τ hO hτ
   obtain ⟨b₁, hb₁, hs₁⟩ := exists_basis_of_isVBOn h1 hne
   obtain ⟨b₂, hb₂, hs₂⟩ := exists_basis_of_isVBOn h2 hne
   have hσrt : σ (tauIn c τ H.rt) = H.rt0 := (hστ H.rt).trans hτ
-  obtain ⟨f, κ, W, -, -, hgen, -⟩ := GlobalTheory.T.eigen_frames_analytic hres hgaga E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ hO hpq hτ hσrt hZ
+  obtain ⟨f, κ, W, -, -, hgen, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_gen_of_unitAn hres hgaga E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ hO hpq hτ hσrt hZ
     hΦ hb₁ hs₁ hb₂ hs₂
-  obtain ⟨φ, hφ, hrep⟩ := GlobalTheory.T.wedge_eigen_line_generator E H D l Xo c O β Y U Z τ _ _ hO hτ hgen
+  obtain ⟨φ, hφ, hrep⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_frameFn_of_gen E H D l Xo c O β Y U Z τ _ _ hO hτ hgen
   exact ⟨φ, hφ, FlatOnModel.of_gen hφ hgen hrep, fun φ' h1' h2' =>
-    GlobalTheory.T.frame_functions_flat_agree E H D l Xo c O β Y U Z τ φ φ' hO hτ hZ hφ (FlatOnModel.of_gen hφ hgen hrep) h1' h2'⟩
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_const_of_flatOnModel E H D l Xo c O β Y U Z τ φ φ' hO hτ hZ hφ (FlatOnModel.of_gen hφ hgen hrep) h1' h2'⟩
 
 end GlobalTheory.CompanionTheory.Ar.Flat.A0

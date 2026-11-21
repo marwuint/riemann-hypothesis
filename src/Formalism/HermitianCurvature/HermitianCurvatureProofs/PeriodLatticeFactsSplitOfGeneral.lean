@@ -157,13 +157,6 @@ theorem scaledIdealNorm : Formalism.FourierDecayAlt.S6.NormIdl := by
     congr 2 <;> (push_cast; ring)
   rw [this, Real.sqrt_sq (by positivity)]
 
-theorem discrSquare : Formalism.FourierDecayAlt.S6.DiscrSquare := by
-  intro E _ _ _ h
-  have := natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow (maximalRealSubfield E)
-    (𝓞 (maximalRealSubfield E)) E (𝓞 E)
-  rw [(unramRelative E h).1, Algebra.IsQuadraticExtension.finrank_eq_two] at this
-  simpa using this
-
 theorem twistedLatticeBetween : Formalism.FourierDecayAlt.S6.Between := by
   intro E _ _ _ A B s hBA hB
   refine ⟨fun t ht => ?_, fun t ht => ((mem_twLat E A B s t).1 ht).1⟩
@@ -182,9 +175,5 @@ theorem dualIdealEqLiftIdeal : Formalism.FourierDecayAlt.S6.IdealsMatch := by
   · unfold dualIdl liftIdl nuBlock; congr 1; ring
   · unfold dualIdl nuBlock; congr 1; ring
   · unfold nuBlock; ring
-
-theorem periodLatticeFactsSplitOfGeneral : Formalism.FourierDecayAlt.S6.TextFromGeneral := by
-  intro h E _ _ _ hU g₁ g₂ h₁ h₂ ν s _
-  exact h E hU _ ν s (Nat.mul_pos h₁.1.pos h₂.1.pos)
 
 end Formalism.FourierDecayAlt.P

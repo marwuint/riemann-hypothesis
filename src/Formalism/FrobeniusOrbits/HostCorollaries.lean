@@ -14,12 +14,11 @@ import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Orbits
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.DiscriminantRealSubfield
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.DiscrB
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.Principal
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ThickOrbit
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ThickFrames
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ExistsOpenNormalOrderOf
+import Mathlib
+import Formalism.FrobeniusOrbits.HostThickExists
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.OrdUnimod
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.NcardEqTwoIff
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.OrbitSg
+import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ThickExists
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.EqZeroOfNegEq
 import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
@@ -35,19 +34,11 @@ theorem cmType : HostCMType := hostCMType_of hostGalois hostGalSpec
 theorem frob : HostFrob := hostFrob_of hostGalois hostGalSpec
 theorem splitK : HostSplitK := hostSplitK_of (hostFrob_of hostGalois hostGalSpec)
 theorem efgTwo : HostEFGTwo := hostEFGTwo_of hostInertia hostDecomp
-theorem ramified : HostRamified := hostRamified_of hostInertia
-
 theorem host_field :
     HostExample ∧ HostGroup ∧ HostOrders ∧ HostRecip ∧ HostFixed ∧ HostGalois ∧ HostGalSpec ∧
     HostConj ∧ HostReal ∧ TwoPowerCyclotomicLayerRealSubfieldCharacterization ∧ HostMu ∧ HostFrob ∧ HostInertia ∧ HostUnramEF ∧
     HostDecomp ∧ HostDecompConj ∧ HostEFGTwo ∧ HostSplitK ∧ HostCMType :=
   ⟨hostExample, hostGroup, hostOrders, hostRecip, hostFixed, hostGalois, hostGalSpec, conj, real, f1, hostMu,
     frob, hostInertia, hostUnramEF, hostDecomp, hostDecompConj, efgTwo, splitK, cmType⟩
-
-theorem host_places :
-    HostThickOrbit ∧ HostThickExists ∧ HostTops ∧ HostProG ∧ HostStab ∧ HostOrdinary ∧ HostUnimodular ∧
-    HostConductor ∧ HostEta ∧ HostOrbitCountSg :=
-  ⟨hostThickOrbit, hostThickExists, hostTops, hostProG, hostStab, hostOrdinary, hostUnimodular,
-    hostConductor, hostEta, hostOrbitCountSg⟩
 
 end Formalism.FrobeniusOrbits.Final

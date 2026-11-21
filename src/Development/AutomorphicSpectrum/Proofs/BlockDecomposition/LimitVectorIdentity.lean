@@ -1,18 +1,25 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.InfinitesimalCharacterGlue
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinStable
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRescaledConvergentSubsequenceStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRescaledConvergentSubsequence
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalPairTypedStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSpaceCarriesFlatStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatAbsoluteCharacterStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TendstoAbsoluteCharacterOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TendstoAbsoluteCharacterOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CarriesTwistAbsoluteCharacterStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CarriesTwistStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinStableTwistStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinStableInducedSpanStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalTypedDiscreteStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalTypedExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalTypedNodeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatNodeFunctionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalTypedNode
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteDeterminingSetStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TypedFirstBlockRestrictionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TypedSecondBlockRestriction
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemProdSpanInfStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalProdSpan
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatNodeFunction
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NodeFunctionLeviDecompositionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CarriesInducedNodeStatement
 
 noncomputable section
@@ -85,7 +92,7 @@ theorem carries_indFin {r s : ℕ} (e₁ : GA E r → ℂ) (e₂ : GA E s → �
   intro φ hφ
   obtain ⟨φ', h', he⟩ := GlobalTheory.T.carries_induced_node e₁ e₂ U₁ U₁' U₂ U₂' h₁ h₂ a₁ a₁' a₂ a₂' c₁ c₂ φ (indFin_le _ _ hφ)
   refine ⟨φ', mem_indFin (memInd2_of_indSpan h') ?_, he⟩
-  have hF := GlobalTheory.T.flat_node_function e₁ e₂ h₁ h₂
+  have hF := _root_.GlobalTheory.CompanionTheory.LimV.NodeFlat.flatFn_nodeFn e₁ e₂ h₁ h₂
   have hv : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k φ)) := finVec_of_indFin hφ
   refine Submodule.finiteDimensional_of_le
     (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k φ)).map (mulOp hF.sm)) (Submodule.span_le.2 ?_)
@@ -194,7 +201,7 @@ theorem treefd {N : ℕ} (t : Tr E N) : t.Disc → ∀ (K : Subgroup (GL (Fin N)
     simp only [Tr.Disc] at ht
     rw [space_node]
     intro K W hK hW
-    haveI := GlobalTheory.T.finiteDimensional_typed_node (tw a.space ((s' : ℂ) / 2)) (tw b.space (-(r' : ℂ) / 2)) (GlobalTheory.T.finiteDimensional_typed_extension _ _ (iha ht.1))
+    haveI := _root_.GlobalTheory.CompanionTheory.LimV.FdNode.finiteDimensional_typed_indSpan (tw a.space ((s' : ℂ) / 2)) (tw b.space (-(r' : ℂ) / 2)) (GlobalTheory.T.finiteDimensional_typed_extension _ _ (iha ht.1))
       (GlobalTheory.T.finiteDimensional_typed_extension _ _ (ihb ht.2)) K W hK hW
     have hle : typed (indFin (tw a.space ((s' : ℂ) / 2)) (tw b.space (-(r' : ℂ) / 2))) K W ≤
         typed (indSpan (tw a.space ((s' : ℂ) / 2)) (tw b.space (-(r' : ℂ) / 2))) K W :=
@@ -224,7 +231,7 @@ theorem treeflat {N : ℕ} (s : Tr E N) : ∀ (t : ℕ → Tr E N), s.Disc → (
     refine ⟨fun k => absFn M (z - zk k), fun k => GlobalTheory.T.flat_absolute_character M _, fun k => ?_, fun x => ?_⟩
     · simp only [space_leaf]
       exact GlobalTheory.T.carries_twist_absolute_character V (zk k) z
-    · refine GlobalTheory.T.tendsto_absolute_character_one M x _ ?_
+    · refine _root_.GlobalTheory.CompanionTheory.LimV.absFn_tendsto_one M x _ ?_
       have h0 := hz 0
       simp only [Tr.twists, List.getD_cons_zero] at h0
       simpa using (tendsto_const_nhds (x := z)).sub h0
@@ -260,7 +267,7 @@ theorem treeflat {N : ℕ} (s : Tr E N) : ∀ (t : ℕ → Tr E N), s.Disc → (
       simp only [Nat.add_sub_cancel_left]
     obtain ⟨e₁, he₁, hc₁, hl₁'⟩ := iha u₁ hs.1 hd₁ h1 hz₁
     obtain ⟨e₂, he₂, hc₂, hl₂'⟩ := ihb u₂ hs.2 hd₂ h2 hz₂
-    refine ⟨fun k => nodeFn (e₁ k) (e₂ k), fun k => GlobalTheory.T.flat_node_function _ _ (he₁ k) (he₂ k), fun k => ?_, fun x => ?_⟩
+    refine ⟨fun k => nodeFn (e₁ k) (e₂ k), fun k => _root_.GlobalTheory.CompanionTheory.LimV.NodeFlat.flatFn_nodeFn _ _ (he₁ k) (he₂ k), fun k => ?_, fun x => ?_⟩
     · rw [space_node, space_node]
       exact carries_indFin _ _ _ _ _ _ (he₁ k) (he₂ k) (GlobalTheory.T.finStable_twist _ _ (treestable _ (hd₁ k)))
         (GlobalTheory.T.finStable_twist _ _ (treestable _ hs.1)) (GlobalTheory.T.finStable_twist _ _ (treestable _ (hd₂ k)))
@@ -297,7 +304,7 @@ theorem limVec : PositivityTheory.Rg.BcB.SpectralAccumulation.LimVec := by
     funext i x
     have h1 : EE k x * f k i x = 0 := congrFun (congrArg Subtype.val (congrFun h i)) x
     exact (mul_eq_zero.1 h1).resolve_left (hEne k x)
-  obtain ⟨c, φ, G, hφ, hG, hlim⟩ := GlobalTheory.T.exists_rescaled_convergent_subsequence gM hne
+  obtain ⟨c, φ, G, hφ, hG, hlim⟩ := _root_.GlobalTheory.CompanionTheory.LimVec.normalised_subseq_limit gM hne
   let F : ι → H E a b → ℂ := fun i => (G i).1
   have hev : ∀ i x, Tendsto (fun k => c k * (EE (φ k) x * f (φ k) i x)) atTop (𝓝 (F i x)) := by
     intro i x

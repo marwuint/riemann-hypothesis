@@ -21,9 +21,6 @@ def IsLefK (lam : Fin n → ℤ) (E : KMod n) (T : E.V →L[ℂ] E.V) : Prop :=
       LinearMap.trace ℂ E.V ((E.ρ k * T : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) =
         (∏ a, ∏ b, (1 + z a / z b)) * conj (weylChar lam fun a => z a ^ 2)
 
-def CxExK : Prop :=
-  ∀ (n : ℕ) (lam : Fin n → ℤ), Antitone lam → ∃ E Fr ε ι S Γ T, CxData lam E Fr ε ι S Γ T ∧ IsLefK lam E T
-
 section
 
 variable {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] (π : G n →* (U →L[ℂ] U))
@@ -41,13 +38,5 @@ def HasInf (χ : Inf n) : Prop :=
     ContDiffOn ℝ ∞ (fun g => ⟪w, piM π g v⟫_ℂ) (GLs n) ∧ IsEig χ fun g => ⟪w, piM π g v⟫_ℂ
 
 end
-
-def RealTr (reg : Bool) : Prop :=
-  ∀ (n : ℕ) (lam : Fin n → ℤ), Antitone lam → (reg = true → StrictAnti lam) → ∀ (E : KMod n) (T : E.V →L[ℂ] E.V), IsLefK lam E T →
-    ∀ [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (U : Type) [NormedAddCommGroup U]
-      [InnerProductSpace ℂ U] [CompleteSpace U] (π : G n →* (U →L[ℂ] U)) (A : U →L[ℂ] U), IsUnitaryRep π →
-      IsTopIrreducible π → IsThetaOp n π A → A * A = 1 → HasInf π (infOf lam) → (∃ t, IsInvT π E t ∧ t ≠ 0) →
-      ∃ s : ℂ, (s = 1 ∨ s = -1) ∧ ∀ k val (T' : ℝ), IsMult μ E k val T' →
-        HasTrace (repOp π μ (phiOf E T k) ∘L A) (s * 2 ^ n * val (infOf lam))
 
 end PositivityTheory.RgBcC.Real

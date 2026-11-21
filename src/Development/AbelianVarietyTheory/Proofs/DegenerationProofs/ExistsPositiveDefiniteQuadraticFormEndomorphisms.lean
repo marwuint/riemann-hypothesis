@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAss
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProductFormulaPlacesOfFgFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLineBundleHeightProperSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLineBundleHeightProperScheme
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -171,7 +171,7 @@ theorem exists_quadraticForm_end : ∀ (k : Type) [Field k] [IsAlgClosed k] (B :
   have : IsIntegral B.left := GeometricallyIntegral.isIntegral_of_subsingleton B.hom
   obtain ⟨K, _, _, hK, P, hP⟩ := exists_generic B
   obtain ⟨Pl, hPl⟩ := GlobalTheory.T.exists_productFormula_places_of_fg_field k K hK
-  obtain ⟨h, hrel, hpos⟩ := GlobalTheory.T.exists_lineBundle_height_properScheme k K Pl B hpr L hL
+  obtain ⟨h, hrel, hpos⟩ := _root_.GlobalTheory.SS.exists_height k K Pl B hpr L hL
   have hrel' : ∀ (Z : Over (Sp k)), IsProper Z.hom → ∀ (I : Type) [Fintype I] (φ : I → (Z ⟶ B)) (ε : I → ℤ),
       (∃ t : LB.Gen (LB.LinComb L (fun i => (φ i).left) ε), t.IsGen) →
       ∀ z : Over.mk (spMap (algebraMap k K)) ⟶ Z, ∑ i, ε i * h (z ≫ φ i) = 0 := by

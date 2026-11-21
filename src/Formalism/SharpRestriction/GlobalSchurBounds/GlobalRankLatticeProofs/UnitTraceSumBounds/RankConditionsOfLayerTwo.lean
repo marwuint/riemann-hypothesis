@@ -7,7 +7,8 @@ import Formalism.LocalToGlobal.Columns.CmUnramifiedOfFieldConditions
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 import Formalism.SharpRestriction.GlobalSchurBounds.TheoremThreeFamilyOfFormalDegreeInput
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.LwRankTies
-import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.LwAdmWeyl
+import Formalism.SharpRestriction.GlobalSchurBounds.AdmittedWeylDimension
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.WeylBridge
 import Formalism.SharpRestriction.GlobalSchurBounds.LinkTied
 
 noncomputable section
@@ -289,22 +290,6 @@ theorem mu0Tie_of_sym {D : D7} (C : ColsTiedSym D) (u : D.what₂.Word) : Standa
   exact Finset.prod_congr rfl fun τ _ => card_ssIdx_eq u τ
 
 end Rec
-
-section Fam
-
-theorem rank_conditions_of_layer_two {eps : ℝ} (Fm : FamP eps) (h : RealPlaceSecondLayerConditions Fm) : RankTiesF Fm := by
-  obtain ⟨x0, h⟩ := h
-  exact rank_conditions_of_lowest_space Fm ⟨x0, fun x hx i u => mu0Tie_of_sym (h x hx i).2.choose u⟩
-
-theorem rankTiesF_of_col' {eps : ℝ} (Fm : FamP eps)
-    (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, ∀ u : (Fm.D x i).what₂.Word,
-      ∃ X : StandardLattice.ColRep (Fm.D x i) (Fm.ex x hx i).lev u, StandardLattice.BaseWeightColumnCondition (Fm.D x i) (Fm.ex x hx i).lev u X) :
-    RankTiesF Fm := by
-  obtain ⟨x0, h⟩ := h
-  exact rankTiesF_of_col Fm ⟨x0, fun x hx h0 i =>
-    ⟨StandardLattice.HarishChandraReduction.content_bound_clause _ _, StandardLattice.HarishChandraReduction.levels_pro_g_on_columns _ _, weyl_dimension_formula_holds _, h x hx h0 i⟩⟩
-
-end Fam
 
 end Formalism.MainNotions.Ext.Lw
 

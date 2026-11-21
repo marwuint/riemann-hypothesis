@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaEigenCompatibilityNinth
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
@@ -43,13 +43,13 @@ theorem heckeFunI_eigC_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
         have hQ : w ∉ D.nd.Q i := fun hm => hns (D.nd.SQ_split i w (Or.inr hm))
         exact (h41i.2 w hS hQ).2 hns
       rw [hsv', hα₀] at hub
-      have hW := GlobalTheory.T.satakeTransform_eq_of_unramifiedBaseChange_eq _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α' _ hub h0 hh0
+      have hW := _root_.GlobalTheory.InertUbcSatake.satU_eq_of_ubc_eq _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α' _ hub h0 hh0
       rw [hc, ← hW]
       have hmem : (P.M.loc i).real g' ∈ NG.isoTyp (P.H.av.rep i P').ρ (P.H.av.rep i P').S := by
         have h2 := hg'
         rw [P.H.av.typeV] at h2
         exact h2
-      exact GlobalTheory.T.isotypicFixedVector_isSatakeEigen_inertPlace _ _ (P.H.av.rep i P') v w hov Dv α' hα' _ hmem (hfix g') h0 hh0
+      exact _root_.GlobalTheory.EigIsoInert.eig_of_isoTyp_fixed _ _ (P.H.av.rep i P') v w hov Dv α' hα' _ hmem (hfix g') h0 hh0
     · rw [iSup_neg (show P' ∉ {P | D.naut.ptV i P = some x} from hP')] at hg'
       rw [(Submodule.mem_bot ℂ).1 hg']
       simp [hC]
@@ -74,7 +74,7 @@ theorem eig_eq_satU_alt : GlobalTheory.Published.AutomorphicFormsFiniteGL → �
       iSup_eq_bot.2 fun P' => iSup_eq_bot.2 fun hP' => absurd ⟨P', hP'⟩ hne
     rw [this] at hf
     exact (Submodule.mem_bot ℂ).1 hf
-  obtain ⟨v₀, Dv₀, hov₀⟩ := GlobalTheory.T.exists_inertLocalDatum_at_inertPlace D hA.hF w hin
+  obtain ⟨v₀, Dv₀, hov₀⟩ := _root_.GlobalTheory.InertDatumAtInert.main D hA.hF w hin
   obtain ⟨α₀, -, hα₀⟩ := _root_.GlobalTheory.EigInert.exists_satAt_of_nonsplit_over hL D P i P₀ v₀ w hov₀ hns Dv₀
   refine ⟨P₀, hP₀, ?_⟩
   rw [hn]

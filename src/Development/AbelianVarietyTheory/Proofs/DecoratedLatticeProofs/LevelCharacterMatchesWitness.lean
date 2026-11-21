@@ -19,15 +19,4 @@ theorem twistedAdelicData_characters_eq_frame (K : Ctx) (B : GlobalTheory.Mem.Ba
     (congrArg (fun C => C.mu0 j) h1).trans (congrArg (fun g : Fr B.toPre => g.mu0 j) w.C_eq).symm
   exact h3 ▸ h2
 
-theorem level_character_matches_witness : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ j : Fin q.B.R.m, Formalism.IndefR.Links.ChrEq ((pk (packB b)).mu0 ((j : ℕ) + 1)) (q.w.I.C.mu0 j) := by
-  intro hL p K q c b hw j
-  obtain ⟨x, a, ax, y, -⟩ := hw
-  have hx : a.x = x := eq_of_heq ax
-  have h0 := twistedAdelicData_characters_eq_frame _ _ _ _ q.w q.Z _ _ _ _ _ _ _ _ _ _ a j
-  have e : b.B.Q.Rl.mu0 = x.R.mu0 := congrArg (fun k : Bl.RPk b.R b.S => k.B.Q.Rl.mu0) y.eq
-  have e' : a.x.R.mu0 = x.R.mu0 := congrArg (fun z : R3.TwIn q.O.ex => z.R.mu0) hx
-  have e2 : (pk (packB b)).mu0 = a.x.R.mu0 := e.trans e'.symm
-  rw [e2]
-  exact h0
-
 end GlobalTheory.Fam

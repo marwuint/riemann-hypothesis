@@ -33,14 +33,6 @@ theorem _root_.GlobalTheory.ProjFrac.ext {U : (Proj 𝒜).Opens} {s t : Γ(Proj 
 theorem ev_resG {U V : (Proj 𝒜).Opens} (h : V ≤ U) (x : Proj 𝒜) (hx : x ∈ V) (s : Γ(Proj 𝒜, U)) :
     ev 𝒜 V x hx (resG (Proj 𝒜) h s) = ev 𝒜 U x (h hx) s := rfl
 
-theorem mem_basicOpen_iff {U : (Proj 𝒜).Opens} (s : Γ(Proj 𝒜, U)) (x : Proj 𝒜) (hx : x ∈ U) :
-    x ∈ (Proj 𝒜).basicOpen s ↔ IsUnit (ev 𝒜 U x hx s) := by
-  rw [Scheme.mem_basicOpen _ _ _ hx]
-  refine Iff.trans ?_ (HomogeneousLocalization.isUnit_iff_isUnit_val 𝒜 x.asHomogeneousIdeal.toIdeal
-    (s.1 ⟨x, hx⟩)).symm
-  rw [← Proj.stalkIso'_germ 𝒜 U x hx s]
-  exact (isUnit_map_iff (Proj.stalkIso' 𝒜 x) _).symm
-
 variable (𝒜) in
 
 def frac (U : (Proj 𝒜).Opens) {d : ℕ} (a b : A) (ha : a ∈ 𝒜 d) (hb : b ∈ 𝒜 d)
@@ -55,11 +47,6 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
 
 theorem ev_frac (x : Proj 𝒜) (hx : x ∈ U) :
     ev 𝒜 U x hx (frac 𝒜 U a b ha hb hU) = Localization.mk a ⟨b, hU hx⟩ := rfl
-
-theorem ev_frac_mul_den (x : Proj 𝒜) (hx : x ∈ U) :
-    ev 𝒜 U x hx (frac 𝒜 U a b ha hb hU) * algebraMap A _ b = algebraMap A _ a := by
-  rw [ev_frac, Localization.mk_eq_mk']
-  exact IsLocalization.mk'_spec _ a (⟨b, hU hx⟩ : x.asHomogeneousIdeal.toIdeal.primeCompl)
 
 theorem resG_frac (h : V ≤ U) :
     resG (Proj 𝒜) h (frac 𝒜 U a b ha hb hU) = frac 𝒜 V a b ha hb (h.trans hU) := rfl

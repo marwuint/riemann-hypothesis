@@ -1,25 +1,29 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotSymEOfNe
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSameGenericProjectiveCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsProjSpaceMapOfTupleHasDivisorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCoverOpenImmersionNormalisedThetaClosureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerFirstFactorThetaModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullO1SectionCoordinatesPowerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelModuliIntegralNormalLocallyNoetherianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantBundlePowEightIsoDetHodgePowFourStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRealisedThetaSystemNormalLevelModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaMapEighthPowerSiegelModuliStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalProjectiveToricMinorModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCoverImageOpenFiniteOverModuliStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalSchemeExtensionThroughFiniteCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSameGenericProjectiveCoords
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsProjSpaceMapOfTupleHasDivisor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCoverOpenImmersionNormalisedThetaClosure
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerFirstFactorThetaModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullO1SectionCoordinatesPower
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelModuliIntegralNormalLocallyNoetherian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantBundlePowEightIsoDetHodgePowFour
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRealisedThetaSystemNormalLevelModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaMapEighthPowerSiegelModuli
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalProjectiveToricMinorModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCoverImageOpenFiniteOverModuli
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalSchemeExtensionThroughFiniteCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarisedE8ThetaPowerOverModuliStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelThetaMapDeepLevelFiniteFibresStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantPowEqUnitMulSymmetricFunctionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymmetricThetaConstantsEqThetaMapCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteNormalisationProjectiveQuasiFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteOverProjectiveSpaceProjectiveAmpleTwistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelThetaConstantsProjectivelyIntegralAnyBaseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelThetaMapDeepLevelFiniteFibres
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantPowEqUnitMulSymmetricFunction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymmetricThetaConstantsEqThetaMapCoords
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteNormalisationProjectiveQuasiFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteOverProjectiveSpaceProjectiveAmpleTwist
+import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
+import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelThetaConstantsProjectivelyIntegralAnyBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTypeCycAway
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResGInjectiveOfTop
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsE8IsSharpBasis
@@ -80,9 +84,9 @@ theorem minSt5 : GlobalTheory.SiegJoin.MinSt5 := by
   obtain ⟨ℓ, hℓ, hℓn⟩ := Nat.exists_prime_and_dvd (show n ≠ 1 by omega)
   have hℓo : Odd ℓ := Odd.of_dvd_nat ho hℓn
   obtain ⟨W, hW, hbas⟩ := GlobalTheory.ZM.exists_isE8_isSharpBasis
-  obtain ⟨hXi, hXn, -⟩ := GlobalTheory.T.siegelModuli_integral_normal_locallyNoetherian g n hg hn ho F
+  obtain ⟨hXi, hXn, -⟩ := _root_.GlobalTheory.SiegelIntegral.integral_normal_noetherian g n hg hn ho F
   obtain ⟨P, rig, hPg, hPs, hrig, -⟩ := GlobalTheory.T.exists_polarised_E8ThetaPower_over_moduli g n hg hn ho F W hW
-  obtain ⟨j₀, hj₀⟩ := GlobalTheory.T.siegelThetaMap_deepLevel_finite_fibres ℓ hℓ hℓo g
+  obtain ⟨j₀, hj₀⟩ := _root_.GlobalTheory.SiegThQF.finite_fibres ℓ hℓ hℓo g
   have hmo : Odd (ℓ ^ (j₀ + 1)) := hℓo.pow
   have hm3 : 3 ≤ ℓ ^ (j₀ + 1) := by
     have h2 := hℓ.two_le
@@ -97,7 +101,7 @@ theorem minSt5 : GlobalTheory.SiegJoin.MinSt5 := by
     rw [e] at hu
     rw [Nat.cast_pow]
     exact (isUnit_of_mul_isUnit_left hu).pow _
-  obtain ⟨N, f, hf⟩ := GlobalTheory.T.exists_thetaMap_eighthPower_siegelModuli g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) hPg hPs hrig hmo hm3 hmu
+  obtain ⟨N, f, hf⟩ := _root_.GlobalTheory.SiegTh.exists_thAt g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) hPg hPs hrig hmo hm3 hmu
   have hq : QFin f := hj₀ (j₀ + 1) (by omega) n hg hn ho F W hW hℓn P rig N f hf
   haveI : IsDedekindDomain (cycAway n) := GlobalTheory.CycAwayReg.isDedekindDomain_cycAway n
   haveI : Algebra.FiniteType ℤ (cycAway n) := finiteType_cycAway n
@@ -105,49 +109,49 @@ theorem minSt5 : GlobalTheory.SiegJoin.MinSt5 := by
   have hlft : LocallyOfFiniteType F.s := GlobalTheory.SiegUnram.locallyOfFiniteType_of_isQProjOver F.qproj
   have hqc : QuasiCompact F.s := GlobalTheory.SiegelFamilyBaseChange.quasiCompact_of_isQProjOver F.qproj
   obtain ⟨Z, p, i, hpf, hio, hip, hZn, hZi, hid⟩ :=
-    GlobalTheory.T.exists_finite_normalisation_projective_quasiFinite (cycAway n) N F.X F.s f hXi hXn hlft hqc F.isSeparated hfs hq
-  obtain ⟨hzproj, hOZlb, hOZamp, -⟩ := GlobalTheory.T.finite_over_projectiveSpace_projective_ample_twist (cycAway n) N 8 Z p (by norm_num) hpf
+    _root_.GlobalTheory.SiegMin.exists_finite_openImmersion_of_qFin (cycAway n) N F.X F.s f hXi hXn hlft hqc F.isSeparated hfs hq
+  obtain ⟨hzproj, hOZlb, hOZamp, -⟩ := _root_.GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB (cycAway n) N 8 Z p (by norm_num) hpf
   obtain ⟨o, Ω, _, _, _, _, β, S, ρ, u, Y, q, hsys, hlev, hbig, hfin⟩ :=
-    GlobalTheory.T.exists_realisedThetaSystem_normalLevelModel ℓ hℓ hℓo j₀ g n hg hn ho F W hW hℓn (hbas g)
-  obtain ⟨X, M, U₀, EE, fM, Xab, Zh, hmin, hab, habeq⟩ := GlobalTheory.T.exists_normal_projective_toric_minor_model o Ω S ρ hbig hfin
+    _root_.GlobalTheory.SiegLevSys.exists_sys_levModel ℓ hℓ hℓo j₀ g n hg hn ho F W hW hℓn (hbas g)
+  obtain ⟨X, M, U₀, EE, fM, Xab, Zh, hmin, hab, habeq⟩ := _root_.GlobalTheory.SiegJoin.minor_model o Ω S ρ hbig hfin
   have hXnm : X.IsNm S.th := hmin.1
   have hXnorm : Geo.Tor.IsNormalScheme X.Z := hmin.2.2.1
   have hover : S.Over₀ M U₀ := hmin.2.2.2.1
   obtain ⟨d, hd, hdo⟩ :=
-    GlobalTheory.T.levelCover_openImmersion_normalisedThetaClosure g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf o Ω β S ρ u hsys hq Y X q hlev hXnm hXnorm
+    _root_.GlobalTheory.SiegOpen.level_openImmersion g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf o Ω β S ρ u hsys hq Y X q hlev hXnm hXnorm
   obtain ⟨U, c, hUc, -⟩ :=
-    GlobalTheory.T.level_cover_image_open_finite_over_moduli g n hg hn ho F W hW o Ω β S ρ u hsys Y X M q U₀ EE fM Xab Zh d hlev hmin habeq hd hdo
+    _root_.GlobalTheory.OpenLev.exists_open_finite g n hg hn ho F W hW o Ω β S ρ u hsys Y X M q U₀ EE fM Xab Zh d hlev hmin habeq hd hdo
   obtain ⟨G, _, e, _, hGs, hGsm, hGpb, hGh⟩ :=
-    GlobalTheory.T.eighth_power_first_factor_theta_model g n hg hn ho F W hW o Ω β S ρ u hsys M U₀ EE Zh U c hover hUc
-  obtain ⟨eS, hSymE, hcrd⟩ := GlobalTheory.T.exists_symmetric_theta_constants_eq_thetaMap_coords g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf o Ω β S ρ u hsys
+    _root_.GlobalTheory.SiegFactor.firstFactor g n hg hn ho F W hW o Ω β S ρ u hsys M U₀ EE Zh U c hover hUc
+  obtain ⟨eS, hSymE, hcrd⟩ := _root_.GlobalTheory.SiegTh.exists_symE_pCrd g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf o Ω β S ρ u hsys
   have hMn : Geo.Tor.IsNormalScheme M.Z := hover.normal
-  have hscale := GlobalTheory.T.thetaConstant_pow_eq_unit_mul_symmetricFunction g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf o Ω β S ρ u hsys M eS hMn
+  have hscale := _root_.GlobalTheory.SiegTh.sameScale_theta_symE g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf o Ω β S ρ u hsys M eS hMn
     hover.div hSymE
   have hediv : M.HasDiv eS := fun z' => by
     obtain ⟨i', hi'⟩ := hover.div z'
     obtain ⟨j', hj', -⟩ := hscale z' i' hi'
     exact ⟨j', hj'⟩
-  obtain ⟨h, hhs, hhc⟩ := GlobalTheory.T.exists_projSpace_map_of_tuple_hasDivisor o Ω (cycAway n) β M N eS hediv
+  obtain ⟨h, hhs, hhc⟩ := _root_.GlobalTheory.SiegTh.CrdMapBC.exists_map_of_hasDiv o Ω (cycAway n) β M N eS hediv
   haveI : NeZero (S.r * S.N) := ⟨by have := S.r_pos; have := S.N_ge; positivity⟩
   obtain ⟨δ, t, hδ, htop, -, hsec⟩ := GlobalTheory.TupleBundle.exists_lb_of_hasDiv o Ω M S.Gam S.th hover.div
-  have hhb := GlobalTheory.T.pull_O1_section_coordinates_power o Ω (cycAway n) M S.Gam S.th δ t N (N + 1).factorial eS h hδ htop hsec hhc hscale
+  have hhb := _root_.GlobalTheory.SiegTh.PullO1.lbIso_pull_O1_lbPow o Ω (cycAway n) M S.Gam S.th δ t N (N + 1).factorial eS h hδ htop hsec hhc hscale
   have hSg : S.g = 8 * g := hsys.2.2.1
-  have hkey := GlobalTheory.T.thetaConstantBundle_pow_eight_iso_detHodge_pow_four o Ω S ρ M U₀ EE Zh (by omega) hover hab δ t hδ htop hsec
+  have hkey := _root_.GlobalTheory.KeyZh.key_zh o Ω S ρ M U₀ EE Zh (by omega) hover hab δ t hδ htop hsec
   haveI : Nonempty U := ⟨⟨_, hUc.1.some_mem⟩⟩
   obtain ⟨x, hxU, hxg⟩ := lemGen o Ω M U
-  have hUh : U.ι ≫ h = c ≫ f := GlobalTheory.T.eq_of_same_generic_projective_coords (cycAway n) N U.toScheme (c ≫ F.s) (U.ι ≫ h) (c ≫ f) Ω x eS
+  have hUh : U.ι ≫ h = c ≫ f := _root_.GlobalTheory.SiegCrd.eq_of_generic_pCrd (cycAway n) N U.toScheme (c ≫ F.s) (U.ι ≫ h) (c ≫ f) Ω x eS
     (by rw [Category.assoc, hhs, hUc.2.2.2.1]) (by rw [Category.assoc, hfs]) hxg
     (by rw [← Category.assoc, hxU]; exact hhc)
     (by rw [← Category.assoc, hUc.2.2.2.2 x hxU, Category.assoc]; exact hcrd _ rfl)
   haveI : Surjective c := hUc.2.2.1
   have hUd : Dense (U : Set M.Z) := U.isOpen.dense hUc.1
-  obtain ⟨π, hπU, hπp⟩ := GlobalTheory.T.normal_scheme_extension_through_finite_cover (cycAway n) N M.Z F.X Z U c i p h inferInstance hMn hZi hUd
+  obtain ⟨π, hπU, hπp⟩ := _root_.GlobalTheory.NormalFiniteLift.exists_lift_of_finite (cycAway n) N M.Z F.X Z U c i p h inferInstance hMn hZi hUd
     inferInstance hpf hio hid (by rw [hUh, hip])
   have hss : π ≫ p ≫ PSpace.str (cycAway n) N = M.s ≫ spMap β := by rw [← Category.assoc, hπp, hhs]
   obtain ⟨hπs, hπpr, hZno⟩ := lemProper (cycAway n) o β M.Z F.X Z M.s (p ≫ PSpace.str (cycAway n) N) π i U c
     hover.proj hsys.1 hzproj hUc.2.2.1 hπU hid hss
   have hTI : GlobalTheory.Poinc.ThetaInt F W i := by
-    have h0 := GlobalTheory.T.siegelThetaConstants_projectively_integral_anyBase g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf
+    have h0 := _root_.GlobalTheory.SiegTh.ThIntAll.thetaInt_all g n hg hn ho F W hW P rig (ℓ ^ (j₀ + 1)) N f hf
     rw [← hip] at h0
     intro o' Ω' _ _ _ _ S' ρ' u' hsh hgen M' π' hM' hpt
     exact h0 o' Ω' S' ρ' u' hsh hgen M' (π' ≫ p) hM' (by rw [← Category.assoc, hpt]; simp only [Category.assoc])

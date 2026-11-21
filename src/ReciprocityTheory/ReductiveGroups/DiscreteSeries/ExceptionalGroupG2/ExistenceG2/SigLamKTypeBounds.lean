@@ -24,15 +24,6 @@ noncomputable section
 open Finset Matrix
 
 namespace ReciprocityTheory.ChartRestriction.DS.G2
-section Transfer
-
-variable {n : ℕ} {H₁ H₂ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
-  [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
-  {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)} {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
-  {ε : Fin n → Bool}
-
-end Transfer
-
 variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
 
 variable {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}

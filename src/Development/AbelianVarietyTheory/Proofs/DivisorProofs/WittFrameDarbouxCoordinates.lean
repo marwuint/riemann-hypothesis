@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvIInfScaleMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalDarbouxHermitianTensorAdeles
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadraticExtensionSymplecticCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadraticExtensionSymplecticCoordinates
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticFormBaseChangeMatrixStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusElementActsOnFrameColumnsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittFrameExtendsToBlockBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticPairingBlockReductionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittFrameExtendsToBlockBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticPairingBlockReduction
 open scoped TensorProduct NNReal Matrix ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
@@ -123,10 +123,10 @@ theorem adapted_torus : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     exact mul_eq_zero_of_right _ this.symm
   have h2 : Module.finrank F E = 2 := hB.cm.2.2.1
   haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2
-  obtain ⟨n₀, Z₀, Q, hn, hQP, hPQ, hG, hJ₀, hJ₀h, hZx, hZy⟩ := GlobalTheory.T.witt_frame_extends_to_block_basis F E σ hB.cm n X.J hP.herm.herm hX' r₀ Xf Yf hWF
+  obtain ⟨n₀, Z₀, Q, hn, hQP, hPQ, hG, hJ₀, hJ₀h, hZx, hZy⟩ := _root_.GlobalTheory.SiegelSet.PerpBasis.exists_perp_basis F E σ hB.cm n X.J hP.herm.herm hX' r₀ Xf Yf hWF
   set P := Matrix.fromCols Z₀ (Matrix.fromCols Xf Yf) with hPdef
   obtain ⟨co₀, hco₀⟩ := GlobalTheory.RatDarboux.exists_darboux (AF F) h2 σ hσ hJ₀h hP.skew.skew hJ₀ hW'
-  obtain ⟨p, q, hpq, hpq', hpr, hqr⟩ := GlobalTheory.T.quadratic_extension_symplectic_coordinates σ d W.J hσ h2 hP.skew.skew hW'
+  obtain ⟨p, q, hpq, hpq', hpr, hqr⟩ := _root_.GlobalTheory.PairCoords.exists_pair_coords σ d W.J hσ h2 hP.skew.skew hW'
   have hinc : ∀ {a b c : Type} [Fintype b] (U : Matrix a b E) (V : Matrix b c E),
       incM F (U * V) = incM F U * incM F V := fun U V => Matrix.map_mul
   have h1 : incM F P * incM F Q = 1 := by
@@ -167,7 +167,7 @@ theorem adapted_torus : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         q ((incM F Q * w₁) (Sum.inr (Sum.inr i))) ⬝ᵥ p ((incM F Q * w₂) (Sum.inr (Sum.inl i))) -
           q ((incM F Q * w₂) (Sum.inr (Sum.inr i))) ⬝ᵥ p ((incM F Q * w₁) (Sum.inr (Sum.inl i))) := fun i => by
       rw [neg_one_mul, neg_one_mul, map_neg, ← hpq', ← hpq]; ring
-    rw [e1, GlobalTheory.T.symplectic_form_base_change_matrix, hGinc, GlobalTheory.T.symplectic_pairing_block_reduction, hform₀, he, he, hdot, hdot, blockCo_apply, blockCo_apply]
+    rw [e1, GlobalTheory.T.symplectic_form_base_change_matrix, hGinc, _root_.GlobalTheory.WeilM.symp_fromBlocks_hyperbolic, hform₀, he, he, hdot, hdot, blockCo_apply, blockCo_apply]
     simp only [key, sumElim_dotProduct_sumElim, top]
     simp only [dotProduct, Fintype.sum_prod_type, Finset.sum_sub_distrib]
     ring

@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsSeriesOfNat
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GroupLawPowerSeries
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EvBasicNEvalSubCoeffMem
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NEvalSqZero
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowerSeriesEqOfEvalAtNilpotentPointsEqStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowerSeriesEqOfEvalAtNilpotentPointsEq
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2 GlobalTheory.ChF
@@ -29,7 +29,7 @@ private lemma nv_eq_nEval {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {
 private lemma sep_nil {R : Type} [CommRing R] {n d : ℕ} (f f' : PS R n d)
     (h : ∀ (S : Type) [CommRing S] [Algebra R S] (a : Fin n → Fin d → S), (∀ i j, IsNilpotent (a i j)) →
       nv (algebraMap R S) f a = nv (algebraMap R S) f' a) : f = f' :=
-  GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq R ⊥ inferInstance n d f f' (fun S _ _ _ _ _ a ha => h S a ha)
+  _root_.GlobalTheory.ChF.eq_of_nv_eq R ⊥ inferInstance n d f f' (fun S _ _ _ _ _ a ha => h S a ha)
 
 private lemma nv_ev {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {n m d : ℕ}
     (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) (b : Fin m → Fin d → PS R n d) (f : PS R m d)

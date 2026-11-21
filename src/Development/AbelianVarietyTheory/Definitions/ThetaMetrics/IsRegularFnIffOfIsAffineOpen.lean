@@ -131,10 +131,6 @@ theorem IsRegularFn.ne_zero {U : X.Opens} [hU : Nonempty U] {a : Γ(X, U)} (ha :
   rw [map_zero] at this
   exact zero_notMem_nonZeroDivisors this
 
-theorem isRegularFn_iff_ne_zero [IsIntegral X] {U : X.Opens} [Nonempty U] {a : Γ(X, U)} :
-    IsRegularFn a ↔ a ≠ 0 :=
-  ⟨IsRegularFn.ne_zero, isRegularFn_of_ne_zero⟩
-
 theorem IsRegularFn.app_of_flat (φ : Y ⟶ X) [Flat φ] {U : X.Opens} {a : Γ(X, U)}
     (ha : IsRegularFn a) : IsRegularFn ((φ.app U).hom a) := by
   refine isRegularFn_iff_germ.2 fun y hy => ?_
@@ -223,12 +219,6 @@ theorem SecMaps.on {A B : LB X} {w : LB.Iso A B} {a : A.Sec} {b : B.Sec} (h : Se
   have := congrArg (resG X (le_inf hp hq)) (h (p, q))
   rwa [map_mul, resG_resG, resG_resG] at this
 
-theorem secMaps_genSec_iff {A B : LB X} (w : LB.Iso A B) (a : A.Gen) (ha : a.IsGen) (b : B.Gen)
-    (hb : b.IsGen) :
-    SecMaps w ⟨fun i => (a.s i).val, fun i j => congrArg Units.val (ha i j)⟩
-      ⟨fun i => (b.s i).val, fun i j => congrArg Units.val (hb i j)⟩ ↔ LB.Gen.Maps w a b :=
-  forall_congr' fun _ => ⟨fun h => Units.ext h, fun h => congrArg Units.val h⟩
-
 theorem SecMaps.isGen {A B : LB X} {w : LB.Iso A B} {a : A.Sec} {b : B.Sec} (h : SecMaps w a b)
     (ha : IsRegularSec a) : w.IsGen := by
   rintro ⟨p, q⟩ ⟨p', q'⟩
@@ -264,14 +254,6 @@ theorem SecMaps.eq {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} {a : A.Sec} {b b'
     have := congrArg (X.presheaf.germ (B.U p ⊓ A.U q) x hm).hom
       ((h (p, q)).trans (h' (p, q)).symm)
     rwa [germ_resG, germ_resG] at this
-
-theorem SecMaps.isRegularSec {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} {a : A.Sec} {b : B.Sec}
-    (h : SecMaps w a b) (ha : IsRegularSec a) : IsRegularSec b := fun p =>
-  isRegularFn_of_locally fun x hx => by
-    obtain ⟨q, hq⟩ := LB.mem_of_cover hA x
-    refine ⟨B.U p ⊓ A.U q, inf_le_left, ⟨hx, hq⟩, ?_⟩
-    rw [h (p, q)]
-    exact (IsRegularFn.of_isUnit (Units.isUnit _)).mul ((ha q).resG _)
 
 theorem existsUnique_secMaps {A B : LB X} {a : A.Sec} {b : B.Sec} (ha : IsRegularSec a)
     (h : ∀ (p : B.ι) (q : A.ι), Associated (resG X (inf_le_right : B.U p ⊓ A.U q ≤ A.U q) (a.f q))
@@ -375,9 +357,6 @@ def secPow {L : LB X} (s : L.Sec) (n : ℕ) : (lbPow L n).Sec where
     exact congrArg (· * _) ((congrArg Units.val (lbPow_g L n j j')).trans
       (Units.val_pow_eq_pow_val _ _)).symm
 
-theorem IsRegularSec.secPow {L : LB X} {s : L.Sec} (hs : IsRegularSec s) (n : ℕ) :
-    IsRegularSec (secPow s n) := fun j => ((hs (j ⟨⟩)).resG _).pow n
-
 section Rational
 
 variable [IsIntegral X]
@@ -456,31 +435,6 @@ theorem mem_ratSecs_iff_stalk {L : LB X} (s : L.Sec) (V : X.Opens) [Nonempty V]
     exact (congrArg (fun r => r * h ∈ Set.range (algebraMap (X.presheaf.stalk x) X.functionField))
       (Scheme.algebraMap_germ_eq_germToFunctionField X hx _)).mp this
 
-theorem SecMaps.ratSecs_eq {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) {w : LB.Iso A B} {a : A.Sec}
-    {b : B.Sec} (hw : SecMaps w a b) (V : X.Opens) [Nonempty V] : ratSecs a V = ratSecs b V := by
-  have key : ∀ (p : B.ι) (q : A.ι) (x : X) (hp : x ∈ B.U p) (hq : x ∈ A.U q),
-      Associated ((X.presheaf.germ _ x hq).hom (a.f q)) ((X.presheaf.germ _ x hp).hom (b.f p)) := by
-    intro p q x hp hq
-    have hm : x ∈ B.U p ⊓ A.U q := ⟨hp, hq⟩
-    have e := congrArg (X.presheaf.germ (B.U p ⊓ A.U q) x hm).hom (hw (p, q))
-    rw [map_mul, germ_resG, germ_resG] at e
-    exact (congrArg (Associated _) e).mpr
-      (associated_unit_mul_right _ _ ((Units.isUnit _).map _))
-  have mv : ∀ (x : X) (r r' : X.presheaf.stalk x) (h : X.functionField), r ∣ r' →
-      algebraMap _ X.functionField r * h ∈ Set.range (algebraMap (X.presheaf.stalk x) _) →
-      algebraMap _ X.functionField r' * h ∈ Set.range (algebraMap (X.presheaf.stalk x) _) := by
-    rintro x r _ h ⟨c, rfl⟩ ⟨d, hd⟩
-    exact ⟨c * d, by rw [map_mul, map_mul, hd]; ring⟩
-  ext h
-  rw [mem_ratSecs_iff_stalk, mem_ratSecs_iff_stalk]
-  constructor
-  · intro H p x hV hp
-    obtain ⟨q, hq⟩ := LB.mem_of_cover hA x
-    exact mv x _ _ h (key p q x hp hq).dvd (H q x hV hq)
-  · intro H q x hV hq
-    obtain ⟨p, hp⟩ := LB.mem_of_cover hB x
-    exact mv x _ _ h (key p q x hp hq).symm.dvd (H p x hV hp)
-
 def genericChart {L : LB X} (hL : L.IsLB) : L.ι := (LB.mem_of_cover hL (genericPoint X)).choose
 
 theorem mem_genericChart {L : LB X} (hL : L.IsLB) : genericPoint X ∈ L.U (genericChart hL) :=
@@ -494,68 +448,6 @@ def ratOf {L : LB X} (hL : L.IsLB) (s : L.Sec) (V : X.Opens) [Nonempty V] :
       ((X.presheaf.germ _ (genericPoint X) (mem_genericChart hL)).hom (s.f _)))⁻¹
   map_zero' := by rw [Pi.zero_apply, map_zero, zero_mul]
   map_add' t t' := by rw [Pi.add_apply, map_add, add_mul]
-
-theorem ratOf_smul {L : LB X} (hL : L.IsLB) (s : L.Sec) (V : X.Opens) [Nonempty V] (c : Γ(X, V))
-    (t : ∀ i, Γ(X, V ⊓ L.U i)) :
-    ratOf hL s V (fun i => resG X inf_le_left c * t i) = c • ratOf hL s V t := by
-  have hm : genericPoint X ∈ V ⊓ L.U (genericChart hL) :=
-    ⟨genericPoint_mem V, mem_genericChart hL⟩
-  change (X.presheaf.germ _ _ hm).hom (resG X inf_le_left c * t _) * _ = _
-  rw [map_mul, germ_resG, mul_assoc]
-  rfl
-
-theorem germK_eq_mul_ratOf {L : LB X} (hL : L.IsLB) {s : L.Sec} (hs : IsRegularSec s)
-    (V : X.Opens) [Nonempty V] {t : ∀ i, Γ(X, V ⊓ L.U i)} (ht : t ∈ secOn L V) (i : L.ι)
-    [Nonempty (V ⊓ L.U i : X.Opens)] :
-    (X.germToFunctionField _).hom (t i) =
-      (X.germToFunctionField (V ⊓ L.U i)).hom (resG X inf_le_right (s.f i)) * ratOf hL s V t := by
-  have hi : genericPoint X ∈ V ⊓ L.U i := genericPoint_mem _
-  have h0 := mem_genericChart hL
-  have hm : genericPoint X ∈ V ⊓ L.U i ⊓ L.U (genericChart hL) := ⟨hi, h0⟩
-  have hm' : genericPoint X ∈ L.U i ⊓ L.U (genericChart hL) := ⟨hi.2, h0⟩
-  have e₁ := congrArg (X.presheaf.germ _ _ hm).hom (ht i (genericChart hL))
-  have e₂ := congrArg (X.presheaf.germ _ _ hm').hom (s.compat i (genericChart hL))
-  rw [map_mul, germ_resG, germ_resG, germ_resG] at e₁
-  rw [map_mul, germ_resG, germ_resG] at e₂
-  have hne : @id X.functionField ((X.presheaf.germ _ _ h0).hom (s.f (genericChart hL))) ≠ 0 :=
-    nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 (hs _) _ h0)
-  have key : ∀ g a b : X.functionField, b ≠ 0 → g * a = g * b * (a * b⁻¹) := fun g a b hb => by
-    field_simp
-  refine e₁.trans ((key _ _ _ hne).trans ?_)
-  exact congrArg (· * ratOf hL s V t) (e₂.symm.trans
-    (germ_resG (inf_le_right : V ⊓ L.U i ≤ L.U i) _ hi (s.f i)).symm)
-
-theorem bijOn_ratOf {L : LB X} (hL : L.IsLB) {s : L.Sec} (hs : IsRegularSec s) (V : X.Opens)
-    [Nonempty V] : Set.BijOn (ratOf hL s V) (secOn L V) (ratSecs s V) := by
-  refine ⟨fun t ht i _ => ⟨t i, germK_eq_mul_ratOf hL hs V ht i⟩, fun t ht t' ht' e => ?_,
-    fun h hh => ?_⟩
-  · funext i
-    refine ext_germK fun hη => ?_
-    have : Nonempty (V ⊓ L.U i : X.Opens) := ⟨⟨_, hη⟩⟩
-    exact (germK_eq_mul_ratOf hL hs V ht i).trans
-      ((congrArg _ e).trans (germK_eq_mul_ratOf hL hs V ht' i).symm)
-  · have ex : ∀ i, ∃ a : Γ(X, V ⊓ L.U i), ∀ hη : genericPoint X ∈ V ⊓ L.U i,
-        (X.presheaf.germ _ _ hη).hom a = (X.presheaf.germ _ _ hη.2).hom (s.f i) * h := by
-      intro i
-      by_cases hi : Nonempty (V ⊓ L.U i : X.Opens)
-      · obtain ⟨a, ha⟩ := hh i
-        exact ⟨a, fun hη => ha.trans (congrArg (· * h) (germ_resG _ _ hη _))⟩
-      · exact ⟨0, fun hη => (hi ⟨⟨_, hη⟩⟩).elim⟩
-    choose t ht using ex
-    have hts : t ∈ secOn L V := fun i j => ext_germK fun hη => by
-      have hm' : genericPoint X ∈ L.U i ⊓ L.U j := ⟨hη.1.2, hη.2⟩
-      have e₂ := congrArg (X.presheaf.germ _ _ hm').hom (s.compat i j)
-      rw [map_mul, germ_resG, germ_resG] at e₂
-      rw [map_mul, germ_resG, germ_resG, germ_resG, ht, ht, ← mul_assoc]
-      exact congrArg (· * h) e₂
-    refine ⟨t, hts, ?_⟩
-    have hm : genericPoint X ∈ V ⊓ L.U (genericChart hL) :=
-      ⟨genericPoint_mem V, mem_genericChart hL⟩
-    have hne : @id X.functionField
-        ((X.presheaf.germ _ _ (mem_genericChart hL)).hom (s.f (genericChart hL))) ≠ 0 :=
-      nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 (hs _) _ _)
-    have key : ∀ b : X.functionField, b ≠ 0 → b * h * b⁻¹ = h := fun b hb => by field_simp
-    exact (congrArg (· * _) (ht _ hm)).trans (key _ hne)
 
 end Rational
 

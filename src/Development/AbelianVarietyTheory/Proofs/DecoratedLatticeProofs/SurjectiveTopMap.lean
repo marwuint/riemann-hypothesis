@@ -3,10 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TopFormula
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.MiPinnedWithFinIff
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TopLevExists
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsMemMultT
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OnFrameOfSignature
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MapFnOfEqValC
+import Formalism.LocalRingCardinality.PosOfIsomEmb
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalizedFockFormPureTensorProperties
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryActionAtRealPlace
 import Formalism.LocalToGlobal.IndefiniteReal.GvPairOfOrbitDerivCont
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.L2.Forms GlobalTheory.Core.Rk GlobalTheory.Core.Rk.Top
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -144,13 +146,6 @@ theorem hasMat_finPt {h : GA D D.sp.X'} (hh : h ∈ GfC D.sp.X') : HasMat h (fin
   ⟨hh, fun i j => (finN_apply D.sp.X' (rankP D) h (finCongr (rankP D) i) (finCongr (rankP D) j)).symm⟩
 
 end Law
-
-section Form
-
-variable {D : D7} {u : D.what₂.Word} {K : ClsPTied u} {θ : InfFam D} {S : D.what₂.Tau → SPar} {M : DSModel D.sp.X' S}
-  {j : SmT M →ₗ[ℂ] (FrP D → ℂ)} {J : Set (GA D D.sp.X')} {χ : GA D D.sp.X' → ℂ}
-
-end Form
 
 end GlobalTheory.Core.Rk.TopOnto
 

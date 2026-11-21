@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.QuasiAffineSubgroupContainingTorusEqTorusStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.QuasiAffineSubgroupContainingTorusEqTorus
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AmpleCubPullAndPullPow
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricallyReducedOfPerfectField
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenConnectedComponentOfNoetherianSpace
@@ -250,7 +250,7 @@ theorem card_torsion_powLocus_le : ∀ (k : Type) [Field k] [IsAlgClosed k] (G :
       (by have : (2 : ℤ) ≤ Q := by exact_mod_cast hQ
           nlinarith) hP h₂ hF₀ n s
     exact ⟨f, hf ▸ hx, hf ▸ hs⟩
-  have hK := GlobalTheory.T.quasiAffine_subgroup_containing_torus_eq_torus k G hG X B i q hq hB N₀ (μ₀ ≫ ν) i' hN₀ inferInstance hcl₀
+  have hK := _root_.GlobalTheory.QuasiAffineTorus.main k G hG X B i q hq hB N₀ (μ₀ ≫ ν) i' hN₀ inferInstance hcl₀
     (by rw [← Category.assoc, hi', hi₁']) hqa
 
   have : CompactSpace N.left := QuasiCompact.compactSpace_of_compactSpace N.hom

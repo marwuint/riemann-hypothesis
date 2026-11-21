@@ -1,8 +1,9 @@
 import Development.WeilBound.CoreStatements.ProjectiveValuations.IsIsoOfIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSpMapEv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowerUnitriangularMulUpperTriangularOfIsUnitLeadStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRowPermLeadingMinorsNotMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagCellPointImageAndFrameStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowerUnitriangularMulUpperTriangularOfIsUnitLead
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRowPermLeadingMinorsNotMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagCellPointImageAndFrame
 
 noncomputable section
 
@@ -151,10 +152,10 @@ theorem exists_cell_pt (b : A.B) {x : Sp S ⟶ Y.X} (h : ⊤ ≤ x ⁻¹ᵁ (A.k
     ∃ (z' : Sp S ⟶ Z) (hx' : z' ≫ π = x) (_ : ⊤ ≤ z' ⁻¹ᵁ (cellFrames hZ ht).U ((b, w) : A.B × Pm Dw.mult)),
       ∀ σ i, initSpan S (fun j => vec (A.k b).M.toMChart x hM
         (fun r => ((((A.k b).u σ).map (ev x _ h)) * T σ) r j)) i = (cellFrames hZ ht).step z' hx' σ i := by
-  choose L U hL0 hL1 hU hUu hLU using fun σ => GlobalTheory.T.exists_lu_of_isUnit_leading_minors S (Dw.mult σ) ((T σ).submatrix (w σ) id) (hminor σ)
+  choose L U hL0 hL1 hU hUu hLU using fun σ => _root_.GlobalTheory.lowerUnitriangular_mul_upperTriangular_of_isUnit_leadingMinors S (Dw.mult σ) ((T σ).submatrix (w σ) id) (hminor σ)
   let ψ₀ : Γ(Y.X, (A.V b).1) →+* S := ev x _ h
   let xc : CellVar Dw.mult → S := fun v => L v.1 v.2.1.1 v.2.1.2
-  obtain ⟨hzπ, hz, huAt⟩ := GlobalTheory.T.flagCellPoint_image_and_frame E H Dw l Xo c Y p A Z π g κ hZ ht b w _ ψ₀ xc _ rfl
+  obtain ⟨hzπ, hz, huAt⟩ := _root_.GlobalTheory.FlagMod.FieldFlag.cellpt E H Dw l Xo c Y p A Z π g κ hZ ht b w _ ψ₀ xc _ rfl
   have hx : (spMap (MvPolynomial.eval₂Hom ψ₀ xc) ≫ κ b w) ≫ π = x := hzπ.trans (spMap_ev _ (A.V b).2 h)
   refine ⟨_, hx, hz, fun σ n => ?_⟩
   rw [(cellFrames hZ ht).step_eq _ _ hz]
@@ -199,7 +200,7 @@ theorem exists_local (X : FlagCover Y) (y : X.YY) :
   obtain ⟨q, hq⟩ : y ∈ Set.range z₀ := hW.range_fromSpec.ge hyW
   let q' : PrimeSpectrum R := q
   choose T hTu hT using fun σ => exists_strictHenselian_absolutely_closed_local_ring X k σ z₀ hz₀ rfl (A.k b) h₀ hM₀
-  choose w hw using fun σ => GlobalTheory.T.exists_perm_leadingMinors_not_mem R _ (T σ) q'.asIdeal q'.2
+  choose w hw using fun σ => _root_.GlobalTheory.exists_rowPerm_leadingMinors_not_mem R _ (T σ) q'.asIdeal q'.2
     fun h => q'.2.ne_top (Ideal.eq_top_of_isUnit_mem _ h (hTu σ))
   let m : (Σ σ : E →+* ℂ, Fin (Dw.mult σ + 1)) → R := fun i =>
     (((T i.1).submatrix (w i.1) id).submatrix (Fin.castLE (Nat.lt_succ_iff.1 i.2.2))

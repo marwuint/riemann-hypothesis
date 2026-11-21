@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsFinWeil
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsEigenSysOfHeckeLin
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemIntMat
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InertPlaceHomLatticeIndexEqLocalComponentIndexStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InertPlaceHomLatticeComponentsScaledIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexIntegralMatricesUnitaryDiagonalTranslateStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InertPlaceHomLatticeIndexEqLocalComponentIndex
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InertPlaceHomLatticeComponentsScaledIntegral
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexIntegralMatricesUnitaryDiagonalTranslate
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum GlobalTheory.LFun GlobalTheory.AdelicU GlobalTheory.PRep GlobalTheory.FinZeta GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.LiftRows
 open Formalism.IndefR.Lev (levG levChi IsBaseFrame)
@@ -26,8 +27,8 @@ theorem GlobalTheory.InertHomIdx.idx_moved_inert : ∀ (D : D7) (S T : HSp D) (v
     rw [h1]
     simp only [Units.val_mul, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
     rw [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]
-  rw [GlobalTheory.T.inertPlace_homLattice_index_eq_localComponent_index D S T v w h hw]
-  obtain ⟨c₀, b, hc₀, hX⟩ := GlobalTheory.T.inertPlace_homLattice_components_scaled_integral D S T v w h hw a ha
+  rw [_root_.GlobalTheory.InertHomIdx.idx_latF_moved D S T v w h hw]
+  obtain ⟨c₀, b, hc₀, hX⟩ := _root_.GlobalTheory.InertHomLattice.mem_map_latF_iff D S T v w h hw a ha
   set M := (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).toAddSubgroup.map (GlobalTheory.InertHomIdx.matW S T w) with hM
   clear_value M
   let τ : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E) →+ Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E) :=
@@ -66,7 +67,7 @@ theorem GlobalTheory.InertHomIdx.idx_moved_inert : ∀ (D : D7) (S T : HSp D) (v
       rw [← Matrix.mul_assoc ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1) a.1, Units.inv_mul, Matrix.one_mul]
     rw [← h1, AddSubgroup.map_map, AddSubgroup.map_map, hcomm]
   rw [← AddSubgroup.relIndex_map_map_of_injective _ _ hτ, h2, h1,
-    GlobalTheory.T.relIndex_integralMatrices_unitaryDiagonal_translate ϖ c _ hU T.rank S.rank d t ht k₁ hk₁ k₂ hk₂]
+    _root_.GlobalTheory.LatIdx.relIndex_intMat_translate ϖ c _ hU T.rank S.rank d t ht k₁ hk₁ k₂ hk₂]
   congr 1
   show (Ideal.absNorm v.asIdeal) ^ 2 = Ideal.absNorm w.asIdeal
   rw [GlobalTheory.LFun.InertChart.absNorm_eq (Algebra.IsQuadraticExtension.finrank_eq_two _ _) hw]

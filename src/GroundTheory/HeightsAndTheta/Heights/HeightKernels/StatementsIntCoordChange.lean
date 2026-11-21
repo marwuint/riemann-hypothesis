@@ -57,19 +57,6 @@ def IntCoordChange.Statement : Prop :=
     II Unit (dualBlocks T) (P.map (intCoordSubst A)) n (fun j => intCoordLine A ⟨B, hAB⟩ (L j)) =
       II Unit (dualBlocks T₂) P n L
 
-example : (-1 : Matrix Unit Unit ℤ) * (-1) = 1 ∧ (-1 : Matrix Unit Unit ℤ) * (-1) = 1 ∧ 1 ≤ 1 ∧
-    IsArithVar (dualIdeal dualBasisStandard) 1 ∧
-    IsSmoothHerm (dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective) :=
-  ⟨by simp, by simp, le_rfl, DualArithVar.full ℚ 1 _ Unit dualBasisStandard le_rfl,
-    (DualLineSemipositive.proof ℚ 1 _ Unit dualBasisStandard _).1⟩
-
-example : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks Unit) :=
-  intCoordLine (-1 : Matrix Unit Unit ℤ) ⟨-1, by simp⟩
-    (dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective)
-
-example : intCoordSubst (-1 : Matrix Unit Unit ℤ) (X ⟨(), ()⟩) = -X ⟨(), ()⟩ := by
-  simp [intCoordSubst]
-
 end
 
 end GroundTheory.Heights₂.Heights

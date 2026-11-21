@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LengthLeOfForallFgSubmoduleLengthLeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LengthQuotientScalarMulStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LengthQuotientScalarMul
 open Pointwise
 
 namespace GlobalTheory
@@ -63,7 +63,7 @@ theorem length_quotient_smul_range_le_finrank_mul : ∀ (O K : Type) [CommRing O
     obtain ⟨x, rfl⟩ := hp y
     exact ⟨R'.mkQ x, by simp [q]⟩
   calc Module.length O N ≤ Module.length O (N' ⧸ R') := Module.length_le_of_surjective q hq
-    _ = (Module.finrank O N' : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := GlobalTheory.T.length_quotient_scalar_mul O N' a
+    _ = (Module.finrank O N' : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := _root_.GlobalTheory.length_quot_smul_range_finite_free O N' a
     _ ≤ _ := by
       gcongr
 

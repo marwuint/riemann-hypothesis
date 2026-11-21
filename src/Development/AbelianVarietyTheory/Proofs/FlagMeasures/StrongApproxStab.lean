@@ -5,10 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalExtend
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PatternUnitriangularStrongApproximationStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalCommonStabiliserBlockUnitriangularOnFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BlockUnitriangularRationalFromCommonStabiliserStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameMatrixCloseGivesLatticeCloseIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PatternUnitriangularStrongApproximation
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalCommonStabiliserBlockUnitriangularOnFrame
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BlockUnitriangularRationalFromCommonStabiliser
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameMatrixCloseGivesLatticeCloseIntegral
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 
@@ -85,8 +85,8 @@ theorem strong_approx_stab : ∀ {F E : Type} [Field F] [NumberField F] [Field E
       show valuation (A.loc p).Fp (c₁ p : (A.loc p).Fp)⁻¹ ≤ 1
       rw [map_inv₀]
       exact inv_le_one_of_one_le₀ (le_of_lt (not_le.1 h'))
-  obtain ⟨d, hd0, hdfin, hd⟩ := GlobalTheory.T.frameMatrix_close_gives_lattice_close_integral A r k G Λ hΛ
-  choose s hsP hsf hsI using fun p => GlobalTheory.T.localCommonStabiliser_blockUnitriangular_on_frame A r k G p (n p) (hnSt p)
+  obtain ⟨d, hd0, hdfin, hd⟩ := _root_.GlobalTheory.HL.FrameClose.close_lattice A r k G Λ hΛ
+  choose s hsP hsf hsI using fun p => _root_.GlobalTheory.HL.LocPattern.local_pattern A r k G p (n p) (hnSt p)
   let c' : ∀ p, ((A.loc p).Fp)ˣ := fun p => c p * Units.mk0 (d p) (hd0 p)
   have hc' : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c' p}.Finite := by
     refine (hc.union hdfin).subset fun p hp => ?_
@@ -99,12 +99,12 @@ theorem strong_approx_stab : ∀ {F E : Type} [Field F] [NumberField F] [Field E
     by_contra hq
     simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hq
     exact hp (hsI p hq.2 hq.1)
-  obtain ⟨t, htP, htc⟩ := GlobalTheory.T.pattern_unitriangular_strong_approximation A (r + 1) _ (fun i j h => h.1)
+  obtain ⟨t, htP, htc⟩ := _root_.GlobalTheory.HL.pattern_strong_approx A (r + 1) _ (fun i j h => h.1)
     (fun i j l hij hjl => ⟨hij.1.trans hjl.1, fun m h1 h2 => by
       by_cases hm : (m : ℕ) ≤ (j : ℕ)
       · exact hij.2 m h1 hm
       · exact hjl.2 m (by omega) h2⟩) c' hc' s hsP hsI'
-  obtain ⟨g, hgSt, hgf⟩ := GlobalTheory.T.blockUnitriangular_rational_from_commonStabiliser A r k G t htP
+  obtain ⟨g, hgSt, hgf⟩ := _root_.GlobalTheory.HL.RatPat.main A r k G t htP
   refine ⟨g, hgSt, fun p g' hg' => ?_⟩
   obtain ⟨g'', hg''St, hg''⟩ := hgSt p
   have hgg : g' = g'' := ((GlobalTheory.HL.RatExt.rational_extend A _ p).2.2.1 g).unique hg' hg''

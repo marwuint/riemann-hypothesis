@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthCokerLsmulEqLengthKerAddSumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthKerCokerLsmulQuotientSpanSwapStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthCokerLsmulEqLengthKerAddSum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthKerCokerLsmulQuotientSpanSwap
 
 open IsLocalRing
 
@@ -159,7 +159,7 @@ theorem side {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalR
     intro p hp
     obtain ⟨h1, h2⟩ := (hP p).1 hp
     exact ⟨h1, h2, fun hb => Finset.disjoint_left.1 hdis hp ((hQ p).2 ⟨h1, hb⟩)⟩
-  have key := GlobalTheory.T.length_coker_lsmul_eq_length_ker_add_sum' A b P
+  have key := _root_.GlobalTheory.length_coker_lsmul_eq_length_ker_add_sum A b P
     (fun p hp => ⟨dim_quotient_eq_one hA p.asIdeal (hmem p hp).1, (hmem p hp).2.2⟩)
     (A ⧸ Ideal.span {a}) (support_cases hA a ha P hP)
   refine ⟨key.1, key.2.trans ?_⟩
@@ -190,7 +190,7 @@ theorem intersection_symm : ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetheri
   intro A _ _ _ _ hA a b ha hb P Q hP hQ hdis
   obtain ⟨hK, hC⟩ := side hA a b ha P Q hP hQ hdis
   obtain ⟨_, hC'⟩ := side hA b a hb Q P hQ hP hdis.symm
-  obtain ⟨hk, hc⟩ := GlobalTheory.T.length_ker_coker_lsmul_quotient_span_swap A a b ha hb
+  obtain ⟨hk, hc⟩ := _root_.GlobalTheory.kernel_cokernel_length_swap A a b ha hb
   have hS := hC.symm.trans (hc.trans hC')
   rw [← hk] at hS
   have hS' := WithTop.add_left_cancel hK hS

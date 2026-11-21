@@ -8,11 +8,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.KerJoin
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.ConcreteLevelAdelicSubset
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.LevelSubgroupProperties
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.DstarIdxPf
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselGroupQuotientFundamentalDomainCocompactStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselGroupQuotientFundamentalDomainCocompact
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentAnisotropicProjectionEqOne
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HaarMeasureDisintegrationBesselGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LintegralBesselGroupUnfoldFundamentalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBesselRationalCutoffFundamentalDomainStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HaarMeasureDisintegrationBesselGroup
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LintegralBesselGroupUnfoldFundamentalDomain
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBesselRationalCutoffFundamentalDomain
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.AutomorphicEvaluation Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.RowDict Formalism.L2.SG.RowsJoinPinned GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Core.Rk GlobalTheory.Core.Mi
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -21,8 +21,8 @@ namespace GlobalTheory.Core.Mi.Fold
 
 theorem fold_quot : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (𝓢 : Set (besGrp B.d B.o)), IsFundamentalDomain ((GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o)) 𝓢 B.lev.μR → ∀ Fs : Set X.B.I.GA, IsFundamentalDomain (Srat X u) Fs (X.B.I.muA X.B.μf) → ∃ c : ℝ, 0 < c ∧ ∀ F : X.B.I.GA → ENNReal, Measurable F → (∀ γ ∈ Srat X u, ∀ x, F (γ * x) = F x) → (∀ k ∈ X.K2, ∀ x, F (x * (1, k)) = F x) → (∀ x, F x ≠ 0 → ∃ s ∈ SfinU X u, ∃ k ∈ X.K2, x.2 = s * X.xu u * k) → ∫⁻ x in Fs, F x ∂(X.B.I.muA X.B.μf) = ENNReal.ofReal c * ∫⁻ y, ∫⁻ s in 𝓢, F (iotaX X h s.1 * (y, X.xu u)) ∂B.lev.μR ∂(X.nuQ u) := by
   intro D X h u ψ A B 𝓢 h𝓢 Fs hFs
-  obtain ⟨c₁, hc₁, hL1⟩ := GlobalTheory.T.haarMeasure_disintegration_besselGroup D X h u ψ A B
-  obtain ⟨β, hβm, hβ1, hβF⟩ := GlobalTheory.T.exists_besselRational_cutoff_fundamentalDomain D X u Fs hFs
+  obtain ⟨c₁, hc₁, hL1⟩ := _root_.GlobalTheory.Core.Mi.Disint.disint D X h u ψ A B
+  obtain ⟨β, hβm, hβ1, hβF⟩ := _root_.GlobalTheory.Core.Mi.Fold.exists_cutoff_srat D X u Fs hFs
   have hK := Formalism.L2.SG.Closed.level_subgroup_properties X
   have hK0 : X.B.μf X.K2 ≠ 0 := hK.2.2.1.ne'
   have hKT : X.B.μf X.K2 ≠ ⊤ := hK.2.2.2.ne
@@ -37,7 +37,7 @@ theorem fold_quot : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
   haveI : LocallyCompactSpace (GA D (D.sp.Y 0)) := (iotaX X h).toHomeomorph.isClosedEmbedding.locallyCompactSpace
   have hcl : IsClosed (besGrp B.d B.o : Set (GA D (D.sp.Y 0))) := GlobalTheory.BesClosed.besGrp_isClosed _ _ _ _ _ _ B.d B.o
   haveI : LocallyCompactSpace (besGrp B.d B.o) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace
-  haveI : B.lev.μR.IsHaarMeasure := (GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D D.R.rS B.lev).1
+  haveI : B.lev.μR.IsHaarMeasure := (_root_.GlobalTheory.BesselQuot.besGrp_quotient D D.R.rS B.lev).1
   haveI : SigmaFinite B.lev.μR := inferInstance
   have hK2m : MeasurableSet X.K2 := (Formalism.L2.SG.Pf.DstarIdxPf.isOpen_levelSubgroup' X).measurableSet
   have hι : Continuous (fun s : besGrp B.d B.o => iotaX X h s.1) :=
@@ -70,7 +70,7 @@ theorem fold_quot : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
       have hf : Measurable (fun x : X.B.I.GA => β (x * g * (1, k)) * F (x * g)) :=
         (hβm.comp ((continuous_id.mul continuous_const).mul continuous_const).measurable).mul
           (hFm.comp (continuous_id.mul continuous_const).measurable)
-      rw [GlobalTheory.T.lintegral_besselGroup_unfold_fundamental_domain D X h u ψ A B 𝓢 h𝓢 _ hf]
+      rw [_root_.GlobalTheory.Core.Mi.Unfold.lintegral_unfold D X h u ψ A B 𝓢 h𝓢 _ hf]
       refine lintegral_congr fun s => ?_
       have e3 : ∀ σ : Srat X u, β ((σ : X.B.I.GA) * iotaX X h s.1 * g * (1, k)) * F ((σ : X.B.I.GA) * iotaX X h s.1 * g) =
           β ((σ : X.B.I.GA) * (iotaX X h s.1 * g * (1, k))) * F (iotaX X h s.1 * g) := by

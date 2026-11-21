@@ -108,14 +108,6 @@ theorem nonempty_ident (D : D7) : Nonempty (Ident D) := by
   exact ⟨⟨fun k v => RingEquiv.ofBijective _ ⟨RingHom.injective _, key k v⟩,
     fun k v => Formalism.BasicNotions.Examples₂.LocF.emb_cont _ _ (D.naut.plGw_over k v)⟩⟩
 
-theorem ident_unique (D : D7) (I J : Ident D) : I = J := by
-  obtain ⟨i, hi⟩ := I
-  obtain ⟨j, hj⟩ := J
-  congr 1
-  funext k v
-  refine RingEquiv.ext (congrFun ((Padic.denseRange_ratCast _).equalizer (hi k v) (hj k v) (funext fun q => ?_)))
-  simp
-
 theorem cls_eq_of_iso {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ}
     (σ τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) ((D.naut.plGw k v).adicCompletion D.host.E)))
     (h : Nonempty (pull I k v σ ≅ pull I k v τ)) : GlobalTheory.LocLanglands.cls σ = GlobalTheory.LocLanglands.cls τ := by
@@ -127,37 +119,6 @@ theorem cls_eq_of_iso {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : �
     Units.ext (Matrix.ext fun a b => (I.i k v).apply_symm_apply _)
   rw [← hg]
   exact e'.toIntertwiningMap.isIntertwining' _
-
-open Classical in
-
-theorem exists_isRc (hL : GlobalTheory.Published.LocalLanglandsGL) {D : D7} (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (I : Ident D) :
-    ∃ rc, IsRc hL T I rc := by
-  refine ⟨fun k v n π => if h : ∃ σ, Nonempty (π ≅ pull I k v σ) then
-    (T.e _).symm (GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 (D.naut.plGw k v)) (GlobalTheory.LocLanglands.cls h.choose))
-    else D.naut.lpZero _, fun k v n σ π h => ?_⟩
-  have h' : ∃ σ, Nonempty (π ≅ pull I k v σ) := ⟨σ, h⟩
-  beta_reduce
-  rw [dif_pos h', Equiv.apply_symm_apply, cls_eq_of_iso I k v _ σ ⟨h'.choose_spec.some.symm ≪≫ h.some⟩]
-
-theorem isRc_dim {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} {I : Ident D} {rc}
-    (h : IsRc hL T I rc) (k v n σ) : D.naut.lpDim (rc k v n (pull I k v σ)) = n := by
-  rw [← T.dim, h k v n σ _ ⟨CategoryTheory.Iso.refl _⟩]
-  obtain ⟨_, _, _, -, H⟩ := GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))
-  exact H.dim _
-
-theorem param_eq {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} {I : Ident D} {rc}
-    (h : IsRc hL T I rc) {rep cp} (hc : IsComp I rep cp) {loc : D.what₂.FT → ∀ w, D.naut.LP w} {sat}
-    (hr : GlobalTheory.HeightCounting.RowTrue hL D rep (fun σ w => T.e w (loc σ w)) sat) (σ k v) :
-    loc σ (D.naut.plGw k v) = rc k v D.R.r (cp σ k v) := by
-  obtain ⟨s, hs, τ, h1, h2⟩ := hc σ k v
-  apply (T.e _).injective
-  rw [h2, h k v _ τ _ ⟨CategoryTheory.Iso.refl _⟩]
-  have key : ∀ (w) (hs : s.w = w) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.r) (w.adicCompletion D.host.E))),
-      GlobalTheory.HeightCounting.IsLocS (rep σ).S s (hs ▸ τ) → T.e w (loc σ w) =
-        GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 w) (GlobalTheory.LocLanglands.cls τ) := by
-    rintro _ rfl τ h1
-    exact hr.1 σ s τ h1
-  exact key _ hs τ h1
 
 theorem map_surj {D : D7} (I : Ident D) (k v) (n : ℕ) :
     Function.Surjective (Matrix.GeneralLinearGroup.map (n := Fin n) (I.i k v).toRingHom) := fun g =>
@@ -177,98 +138,6 @@ theorem emb_le {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞
   refine hd.induction_on (p := fun z : ℤ_[p] => ‖f z‖ ≤ 1) ⟨t, ht⟩
     (isClosed_le (hf.comp continuous_subtype_val).norm continuous_const) fun m => ?_
   simpa using Formalism.BasicNotions.Examples₂.LocF.norm_int_le w m
-
-theorem exists_iso {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (p : ℕ) [hp : Fact p.Prime]
-    (hw : (p : 𝓞 L) ∈ s.w.asIdeal) (I : ℚ_[p] ≃+* s.w.adicCompletion L) (hI : Continuous I) :
-    ∃ i : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L, Continuous i ∧
-      ∀ x : L, i (s.i x) = algebraMap L (s.w.adicCompletion L) x := by
-  have hv : (p : 𝓞 (maximalRealSubfield L)) ∈ s.v.asIdeal := by
-    rw [← s.split_alg_mem, map_natCast]; exact hw
-  set f := Formalism.BasicNotions.Examples₂.LocF.emb s.v p hv
-  have hf : Continuous f := Formalism.BasicNotions.Examples₂.LocF.emb_cont s.v p hv
-  have hlt := Formalism.BasicNotions.Examples₂.LocF.norm_l_lt s.v p hv
-  have hp0 : (p : ℚ) ≠ 0 := Nat.cast_ne_zero.2 hp.out.ne_zero
-  have key : ∀ x : L, f (I.symm (algebraMap L _ x)) = s.i x := by
-    intro x
-    set y := I.symm (algebraMap L _ x)
-    refine eq_of_forall_dist_le fun ε hε => ?_
-    obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one (half_pos hε) hlt
-    have hpn : (0 : ℝ) < ‖(p : ℚ_[p]) ^ n‖ := norm_pos_iff.2 (pow_ne_zero _ (Nat.cast_ne_zero.2 hp.out.ne_zero))
-    obtain ⟨q, hq⟩ := Padic.rat_dense p y hpn
-    have h1 : ‖(y - q) / (p : ℚ_[p]) ^ n‖ ≤ 1 := by rw [norm_div, div_le_one hpn]; exact hq.le
-    have hpv : (0 : ℝ) < ‖(p : s.v.adicCompletion (maximalRealSubfield L))‖ ^ n :=
-      pow_pos (norm_pos_iff.2 (Nat.cast_ne_zero.2 hp.out.ne_zero)) n
-    have h2 := emb_le s.v p f hf _ h1
-    have h3 := emb_le s.w p I.toRingHom hI _ h1
-    have e3 : I.toRingHom ((y - q) / (p : ℚ_[p]) ^ n) = algebraMap L _ ((x - q) / (p : L) ^ n) := by
-      simp [y]
-    rw [e3, Valued.toNormedField.norm_le_one_iff, ← PI.CompAtExist.stepA s, ← Valued.toNormedField.norm_le_one_iff] at h3
-    simp only [map_div₀, map_sub, map_pow, map_natCast, map_ratCast, norm_div, norm_pow, div_le_one hpv] at h2 h3
-    calc dist (f y) (s.i x) ≤ dist (f y) q + dist (s.i x) q := dist_triangle_right _ _ _
-      _ ≤ ε := by rw [dist_eq_norm, dist_eq_norm]; linarith
-  letI := f.toAlgebra
-  have : ContinuousSMul ℚ_[p] (s.v.adicCompletion (maximalRealSubfield L)) := continuousSMul_of_algebraMap _ _ hf
-  have hcl : IsClosed (Set.range f) :=
-    (LinearMap.range (Algebra.linearMap ℚ_[p] (s.v.adicCompletion (maximalRealSubfield L)))).closed_of_finiteDimensional
-  have hs : Function.Surjective f := by
-    rw [← Set.range_eq_univ, ← hcl.closure_eq]
-    refine DenseRange.closure_range ((s.v.denseRange_algebraMap (maximalRealSubfield L)).mono ?_)
-    rintro _ ⟨a, rfl⟩
-    exact ⟨_, (key (algebraMap _ L a)).trans (s.i.commutes a)⟩
-  let e := RingEquiv.ofBijective f ⟨f.injective, hs⟩
-  let el : ℚ_[p] ≃ₗ[ℚ_[p]] s.v.adicCompletion (maximalRealSubfield L) :=
-    LinearEquiv.ofBijective (Algebra.linearMap _ _) ⟨f.injective, hs⟩
-  have hc : Continuous e.symm := by
-    refine el.toContinuousLinearEquiv.symm.continuous.congr fun y => e.injective ?_
-    exact (el.toContinuousLinearEquiv.apply_symm_apply y).trans (e.apply_symm_apply y).symm
-  refine ⟨e.symm.trans I, hI.comp hc, fun x => ?_⟩
-  rw [← key]
-  exact (congrArg I (e.symm_apply_apply _)).trans (I.apply_symm_apply _)
-
-theorem exists_splitPlace (D : D7) (k v) : ∃ s : SplitPlace D.host.E, s.w = D.naut.plGw k v := by
-  obtain ⟨s, -, h, -⟩ := GlobalTheory.SplitConjPlace.splitEx_all D _ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v)
-  refine ⟨GlobalTheory.SplitConjPlace.conjSP s, HeightOneSpectrum.ext (Ideal.ext fun x => ?_)⟩
-  rw [GlobalTheory.SplitConjPlace.mem_conj_w]
-  refine (h x _ ?_).symm
-  rw [IsCMField.coe_ringOfIntegersComplexConj]
-  exact D.host.φ₀.injective (by
-    rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])
-
-def constTyp (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) : NG.FinTyp L n where
-  S := Submodule.span ℂ {1}
-  stable h f hf := by
-    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hf
-    exact hf
-  smooth f hf := by
-    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hf
-    exact ⟨1, one_pos, fun _ _ => rfl⟩
-  ne := by simp
-  irr S' h _ := ((Submodule.isAtom_iff_finrank_eq_one.2 (finrank_span_singleton one_ne_zero)).le_iff).1 h
-
-theorem isComp_const (D : D7) (I : Ident D) : IsComp I (fun _ => constTyp D.host.E D.R.r)
-    fun _ k v => pull I k v (GlobalTheory.SmGL.IrrRep.ofChar 1 GlobalTheory.SmGL.isSmoothChar_one) := by
-  intro σ k v
-  obtain ⟨s, hs⟩ := exists_splitPlace D k v
-  refine ⟨s, hs, _, ?_, rfl⟩
-  have key : ∀ (w) (hs : s.w = w) (hw : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal)
-      (J : ℚ_[D.host.g k] ≃+* w.adicCompletion D.host.E), Continuous J →
-      GlobalTheory.HeightCounting.IsLocS (constTyp D.host.E D.R.r).S s (hs ▸ (GlobalTheory.SmGL.IrrRep.ofChar 1 GlobalTheory.SmGL.isSmoothChar_one :
-        GlobalTheory.SmGL.IrrRep (GL (Fin D.R.r) (w.adicCompletion D.host.E)))) := by
-    rintro _ rfl hw J hJ
-    obtain ⟨i, h1, h2⟩ := exists_iso s _ hw J hJ
-    refine ⟨i, LinearMap.toSpanSingleton ℂ _ 1, h1, h2, fun a b h => ?_,
-      fun a => Submodule.mem_span_singleton.2 ⟨a, rfl⟩, fun x _ (a : ℂ) => ?_⟩
-    · exact smul_left_injective ℂ (one_ne_zero : (1 : GAf D.host.E D.R.r → ℂ) ≠ 0) h
-    · funext g
-      change ((1 : ℂ) * a) • (1 : ℂ) = a • (1 : ℂ)
-      rw [one_mul]
-  exact key _ hs (D.naut.plGw_over k v) (I.i k v) (I.cont k v)
-
-theorem not_isComp_zero (D : D7) (I : Ident D) (rep) (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k) (cp)
-    (h : IsComp I rep cp) : Nontrivial (cp σ k v) := by
-  obtain ⟨_, _, τ, -, h2⟩ := h σ k v
-  rw [h2]
-  exact (irrSm_pull I k v τ).1.1
 
 theorem exists_pull {D : D7} (I : Ident D) (k v) {n : ℕ} (π : Rep.{0} ℂ (GL (Fin n) ℚ_[D.host.g k]))
     (h : GlobalTheory.SerSys.IrrSm π) : ∃ σ, Nonempty (π ≅ pull I k v σ) := by
@@ -292,11 +161,6 @@ theorem exists_pull {D : D7} (I : Ident D) (k v) {n : ℕ} (π : Rep.{0} ℂ (GL
   change π.ρ g x = π.ρ (Matrix.GeneralLinearGroup.map (I.i k v).symm.toRingHom
       (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom g)) x
   rw [hg]
-
-theorem isRc_unique {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} {I : Ident D} {rc rc'}
-    (h : IsRc hL T I rc) (h' : IsRc hL T I rc') (k v n π) (hπ : GlobalTheory.SerSys.IrrSm π) : rc k v n π = rc' k v n π := by
-  obtain ⟨σ, e⟩ := exists_pull I k v π hπ
-  exact (T.e _).injective ((h k v n σ π e).trans (h' k v n σ π e).symm)
 
 end GlobalTheory.TypeRec.Model
 

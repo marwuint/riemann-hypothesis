@@ -8,7 +8,12 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TripleWeilTransferMatching
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaIntegralVanishesOnFiniteRelations
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaLiftVanishesOfIrreducibleDefect
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantTripleCoefficientStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HypothesesAbsDet
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Theta IsDedekindDomain NumberField Finset MeasureTheory
@@ -38,7 +43,7 @@ theorem theta_bottom_minor_match : _root_.GlobalTheory.FunPr.ThetaLocalInputs �
   have hH : GlobalTheory.Published.HoweDualityReal := hP.howeDualityReal
   have hLM := _root_.GlobalTheory.T.twisted_local_factors_match hH hP hK hM
   have hTA := _root_.GlobalTheory.T.twisted_square_theta_integrals_eq hP hK hM
-  obtain ⟨CF1, H1⟩ := GlobalTheory.T.definiteBottom_dictionary_frames_exponents_kernel
+  obtain ⟨CF1, H1⟩ := _root_.GlobalTheory.BotDict.bottom_dictionary
   obtain ⟨CF2, H2⟩ := _root_.GlobalTheory.T.theta_bottom_finite_place_matching hH hP hK hM
   refine ⟨max CF1 CF2, fun ε CF hCF => ?_⟩
   obtain ⟨C1, x1, G1⟩ := H1 ε CF (le_trans (le_max_left _ _) hCF)
@@ -188,7 +193,7 @@ theorem theta_bottom_minor_match : _root_.GlobalTheory.FunPr.ThetaLocalInputs �
     have h2 := (smul_eq_zero.1 h1).resolve_right hq0
     rw [eq_div_iff hκ0]; exact sub_eq_zero.1 h2
   refine ⟨ρ / κ, div_ne_zero hρ hκ0, fun s Q δ t0 P P' hB ea ea' ed ed' => ?_⟩
-  have hn : P'.n = P.n := GlobalTheory.T.squareBottomPairs_weights_eq G s i j _ P P' hB
+  have hn : P'.n = P.n := _root_.GlobalTheory.BottomWeights.isBottom_n_eq G s i j _ P P' hB
   have core : ∀ (a₁ a₁' d₁ d₁' : ℕ) (n n' : D.what₂.Tau → ℕ) (ea : a₁ = A.rank) (ea' : a₁' = A'.rank) (ed : d₁ = WW.rank)
       (ed' : d₁' = WW.rank) (hn : n' = n), ∃ (M : Tup D a₁ d₁ n → Tup D a₁' d₁' n' → ℤ) (M' : Tup D a₁' d₁' n' → Tup D a₁ d₁ n → ℤ),
         (∀ T₁ T₂, ∑ T, M' T₁ T * M T T₂ = if T₁ = T₂ then 1 else 0) ∧

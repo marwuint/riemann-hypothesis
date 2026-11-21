@@ -271,16 +271,4 @@ def FourierJacobiBessel : Prop :=
     [MeasurableSpace k] [BorelSpace k],
     Heisenberg k ∧ UniqueBessel k ∧ Exponents k ∧ LocalSign k ∧ Target k ∧ Source k
 
-example {k n : Type} [Field k] [Fintype n] [DecidableEq n] (ψ : AddChar k Circle) (u β₀ : n → k)
-    (Φ₀ : (n → k) → ℂ) : schM ψ u (schT β₀ Φ₀) = (ψ (-(u ⬝ᵥ β₀)) : ℂ) • schT β₀ (schM ψ u Φ₀) := by
-  funext β
-  simp only [schM, schT, Pi.smul_apply, smul_eq_mul, dotProduct_add, ← mul_assoc, ← Circle.coe_mul,
-    ← AddChar.map_add_eq_mul]
-  congr 3
-  ring
-
-example {k n n' : Type} [Field k] {c p : ℕ} (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (ξ : n → k) (u' : n' → k) :
-    ch (x + colM c p ξ) = ch x ∧ ch (x + rowM n c p u') = ch x := by
-  simp [ch, colM, rowM]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage

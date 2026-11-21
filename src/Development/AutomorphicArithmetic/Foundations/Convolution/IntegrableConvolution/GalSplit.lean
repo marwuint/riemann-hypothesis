@@ -15,15 +15,6 @@ private theorem orderOf_gen (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, 
     (hm : Module.finrank F E = m + 1) : orderOf σ = m + 1 := by
   rw [orderOf_eq_card_of_forall_mem_zpowers hσ, IsGalois.card_aut_eq_finrank, hm]
 
-private theorem pow_inj (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {m : ℕ}
-    (hm : Module.finrank F E = m + 1) :
-    Function.Injective (fun i : Fin (m + 1) => σ ^ (i : ℕ)) := by
-  have ho := orderOf_gen σ hσ hm
-  intro i j hij
-  have := pow_injOn_Iio_orderOf (x := σ) (by simp only [ho, Set.mem_Iio]; exact i.2)
-    (by simp only [ho, Set.mem_Iio]; exact j.2) hij
-  exact Fin.ext this
-
 private theorem det_ne (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {m : ℕ}
     (hm : Module.finrank F E = m + 1) (b : Module.Basis (Fin (m + 1)) F E) :
     (Matrix.of fun (i j : Fin (m + 1)) => (σ ^ (i : ℕ)) (b j)).det ≠ 0 :=

@@ -1,15 +1,15 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SplitAnisotropic
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasuresStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlacesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAllStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberMeasuresAgreeAlmostAllStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasures
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlaces
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAll
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberMeasuresAgreeAlmostAll
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesCongruentTargetAlmostAllStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesBlockOneAlmostAllStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankZeroGramFiberMeasureStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesBlockOneAlmostAll
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankZeroGramFiberMeasure
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -187,17 +187,17 @@ theorem exists_family (hcm : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin 
     (lam : Measure (Fv F v)) (hl : IsStdV v lam) (n : ℕ) :
     ∃ m, IsGramFib (Fv F v) σ J n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m := by
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  have hloc : IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F v
+  have hloc : IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   obtain ⟨h1, h2, h3, h4, -⟩ := hloc
   haveI := h1
   haveI := h2
   haveI := h3
   haveI := h4
   haveI := hl.1
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b lam hl.1
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Fv F v) d b lam hl.1
   haveI := hW n M
   haveI := hH n
-  exact GlobalTheory.T.exists_gram_fiber_measures F E σ hcm M J hJ (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) n _ _ (hW n M) (hH n)
+  exact _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hcm M J hJ (Fv F v) (_root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) n _ _ (hW n M) (hH n)
 
 theorem absNorm_one_le (v : HeightOneSpectrum (𝓞 F)) : (1 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := by
   have : 0 < Ideal.absNorm v.asIdeal :=
@@ -218,7 +218,7 @@ theorem key (hcm : IsCMExt F E σ) : ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M)
     refine ⟨0, Filter.Eventually.of_forall ?_⟩
     intro v lam hl m hm
     haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-    have h0 := GlobalTheory.T.rank_zero_gram_fiber_measure F E σ hcm M J hJ (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) d b lam hl.1 m hm
+    have h0 := _root_.GlobalTheory.CompanionTheory.SW.GramEmpty.fibre_gram_zero F E σ hcm M J hJ (Fv F v) (_root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) d b lam hl.1 m hm
       (hermOf (Fv F v) σ T hT)
     have hU : (latV b v : Set (Fin 0 → Fin M → Fv F v ⊗[F] E)) = Set.univ := by
       ext Y
@@ -242,10 +242,10 @@ theorem key (hcm : IsCMExt F E σ) : ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M)
     obtain ⟨C₁, hC₁⟩ := ih M₁ 1 hone (Or.inr (by omega)) T₁ hT₁.1 hT₁.2 d b
     refine ⟨3 * |C₁| + 2, ?_⟩
     have e1 := GlobalTheory.T.local_densities_congruent_target_almost_all F E σ hcm (M₁ + 1) J hJ (n + 1) T hT hdet g hgdet _ hbh hblock d b
-    have e2 := GlobalTheory.T.local_gram_fiber_measures_agree_almost_all F E σ hcm (M₁ + 1) J hJ _ hJ' d b (n + 1)
-    have e3 := GlobalTheory.T.local_densities_block_one_almost_all F E σ hcm M₁ 1 hone t ht n T₁ hT₁.1 hT₁.2 hbh d b
-    have e4 := GlobalTheory.T.rank_one_local_density_almost_all F E σ hcm (M₁ + 1) _ hJ' (by omega) d b
-    have e5 := (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 t ht
+    have e2 := _root_.GlobalTheory.CompanionTheory.SW.lattice_mass_fibre_eq F E σ hcm (M₁ + 1) J hJ _ hJ' d b (n + 1)
+    have e3 := _root_.GlobalTheory.CompanionTheory.SW.GoodStep.blockFibre_mass F E σ hcm M₁ 1 hone t ht n T₁ hT₁.1 hT₁.2 hbh d b
+    have e4 := _root_.GlobalTheory.CompanionTheory.SW.LocGood.density_standard_lattice F E σ hcm (M₁ + 1) _ hJ' (by omega) d b
+    have e5 := (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hcm d b).2 t ht
     filter_upwards [e1, e2, e3, e4, e5, hC₁] with v h1 h2 h3 h4 h5 h6 lam hl m hm
     obtain ⟨m', hm'⟩ := exists_family hcm hJ' b v lam hl (n + 1)
     obtain ⟨m₁, hm₁⟩ := exists_family hcm hJ' b v lam hl 1

@@ -12,10 +12,6 @@ section Discrete
 variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Algebra R K]
   [IsFractionRing R K] (v : HeightOneSpectrum R)
 
-theorem isDiscreteValuationRing_adicCompletionIntegers :
-    IsDiscreteValuationRing (v.adicCompletionIntegers K) :=
-  inferInstance
-
 theorem valued_adicCompletion_surjective :
     Function.Surjective (Valued.v : v.adicCompletion K → ℤᵐ⁰) :=
   valuedAdicCompletion_surjective K v

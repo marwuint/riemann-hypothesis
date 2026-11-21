@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobeniusStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairingStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobenius
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing
 
 noncomputable section
 
@@ -14,9 +14,9 @@ theorem beta_rhoH_eq : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [Cha
     beta B p (rhoH B a y) = ((rho B (star a)).transpose.map (· ^ p)).mulVec (beta B p y) := by
   intro R _ p _ _ d O _ _ B a y
   refine dotProduct_eq _ _ fun u => ?_
-  have hadj := (GlobalTheory.T.formal_hermitian_action_pairing R d O B).2.2 (star a) (alpha B p u) y
+  have hadj := (_root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint R d O B).2.2 (star a) (alpha B p u) y
   rw [star_star] at hadj
-  have htw := GlobalTheory.T.alpha_equivariant_frobenius R p d O B (star a) u
+  have htw := _root_.GlobalTheory.CompanionTheory.Ar.Conj.AlphaAct.alpha_comm_act R p d O B (star a) u
   rw [dotProduct_comm, dotProduct_beta, ← hadj, ← htw, ← dotProduct_beta, dotProduct_comm _ (beta B p y),
     Matrix.dotProduct_mulVec, Matrix.transpose_map, Matrix.mulVec_transpose]
 

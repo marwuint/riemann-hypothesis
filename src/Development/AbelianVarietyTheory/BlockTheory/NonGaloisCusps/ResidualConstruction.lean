@@ -122,16 +122,6 @@ def ConsExist : Prop :=
         (∀ x, S.X0 x = (X0 x).map (algebraMap A (N.O i))) ∧
         GoodCongruenceObjects N rep ρ π S)
 
-def TakenAfter (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
-    (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) : Prop :=
-  ∃ (A : Type) (_ : CommRing A) (_ : IsDomain A) (_ : IsDiscreteValuationRing A) (_ : Algebra ℤ_[N.l i] A)
-    (_ : Module.Finite ℤ_[N.l i] A) (_ : Algebra A (N.O i)) (_ : IsScalarTower ℤ_[N.l i] A (N.O i))
-    (TA : Subalgebra A (N.X i → A)) (repA : N.X i → (GE N →* GL (Fin R.nV) A))
-    (ρA : N.X i → (GE N →* GL (Fin R.r) A)) (χA : ℕ → (GE N →* Aˣ)),
-    IsEnlargement N i rep ρ A TA repA ρA χA ∧ HidaSetting R.t TA (N.Z i) repA ρA χA ∧
-    ∀ π ∈ N.Z i, ∃ g0 L eB e1 X0, IsInertiaCyclotomicGeneratorElement N i g0 ∧ IsChoice R.t TA repA ρA χA π g0 L eB e1 X0 ∧
-      RootsIn R.t (N.O i) eB X0
-
 theorem isEnlargement_self (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
     (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) :
     IsEnlargement N i rep ρ (N.O i) (N.T i) rep ρ (N.chi i) := by
@@ -146,18 +136,6 @@ theorem isEnlargement_self (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
     rfl
 
 end Record
-
-example {A : Type} [CommRing A] {n : ℕ} (M : Matrix (Fin n) (Fin n) A) : blockPol 1 M = M.charpoly := by
-  unfold blockPol Matrix.charpoly Matrix.charmatrix
-  congr 1
-  ext a b
-  by_cases h : a = b <;> simp [h, Matrix.one_apply]
-
-def ConsExist_at (D : D7) : Prop := ∀ i : D.nd.Loc, ConsExist D.nd i
-
-def ConsExistF {eps : ℝ} (Fm : FamP eps) : Prop := ∀ (x : ℝ) (k : Fm.Ix x), ConsExist_at (Fm.D x k)
-
-def ConsExistClosed (𝒞 : FamClass) : Prop := Closed 𝒞 (fun Fm _ => ConsExistF Fm)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices
 

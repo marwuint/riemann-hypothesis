@@ -15,10 +15,6 @@ def GenericFormsKer.Statement : Prop :=
       (∀ i : Fin e, ∑ j, u (i, j) * ∑ m, c m * algebraMap F L (b m j) = 0) →
       ∀ j, ∑ m, c m * algebraMap F L (b m j) = 0
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.Vertical

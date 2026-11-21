@@ -1,7 +1,10 @@
 import Mathlib
 import GroundTheory.PAdicHodge.ConvergesAtOfNormLeSeq
 import GroundTheory.PAdicHodge.BoundOfEventuallyAntitone
-import GroundTheory.PAdicHodge.ExtRobba
+import GroundTheory.PAdicHodge.ExtRobbaLift
+import GroundTheory.PAdicHodge.ExtRobbaUnits
+import GroundTheory.PAdicHodge.ExtRobbaNewton
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -21,15 +24,6 @@ theorem isBezout_robbaTilde : IsBezout T.RobbaTilde := T.isBezout_of_rootExists 
 end TeichLift
 
 namespace ExtRobba
-
-variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
-  [IsDiscreteValuationRing (normInteger K)] [CharZero K]
-variable (p : ℕ) [hp : Fact p.Prime] [CharP (IsLocalRing.ResidueField (normInteger K)) p]
-  [PerfectRing (IsLocalRing.ResidueField (normInteger K)) p]
-variable {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L] [CompleteSpace L]
-  [CharP L p] [PerfectRing L p] [IsAlgClosed L]
-variable (ι : IsLocalRing.ResidueField (normInteger K) →+* L) {ϖ : normInteger K}
-  (hϖ : Irreducible ϖ) (hι : ∀ a, ‖ι a‖ ≤ 1)
 
 end ExtRobba
 

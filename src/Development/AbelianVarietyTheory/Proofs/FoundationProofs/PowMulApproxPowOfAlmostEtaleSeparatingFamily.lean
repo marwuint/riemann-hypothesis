@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationFrobeniusSumSubLeNatCastPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CosetRepresentativeTraceFixedPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CosetRepresentativeTraceFixedProperties
 
 open GlobalTheory.AlmostEt
 open scoped NNReal
@@ -12,7 +12,7 @@ theorem cpow_mul_approx_pow_of_isSep :
     ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ), p.Prime → ∀ (G : Type) [Group G] [MulSemiringAction G L], (∀ (g : G) (x : L), v (g • x) = v x) → ∀ (N : Subgroup G) [Fintype (G ⧸ N)] (θ : ℝ≥0), θ ≤ 1 → (∀ u ∈ Fix L (⊤ : Subgroup G), ∃ w ∈ Fix L (⊤ : Subgroup G), v (u - w ^ p) ≤ θ * v u) → ∀ (n : ℕ) (a b : Fin n → L) (c : L), IsSep v N a b c → ∀ x ∈ Fix L N, v x ≤ 1 → ∃ w ∈ Fix L N, v (c ^ p * x - w ^ p) ≤ max θ (v (p : L)) := by
   intro L _ v p hp G _ _ hv N _ θ hθ hroot n a b c hs x hx hx1
   have frob := GlobalTheory.T.valuation_frobenius_sum_sub_le_natCast_prime L v p hp
-  have trfix := GlobalTheory.T.cosetRepresentativeTrace_fixed_properties L v G hv N
+  have trfix := _root_.GlobalTheory.AlmostEt.cosetTrace_fixed_props L v G hv N
   have memN : ∀ y : L, y ∈ Fix L N ↔ ∀ g ∈ N, g • y = y := by
     intro y
     constructor

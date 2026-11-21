@@ -19,12 +19,6 @@ def RationalUnipotent.Statement (h : HermitianForm F E W) : Prop :=
       ∃ γ ∈ latticeStab h La, γ • x₀ = x₀ ∧ γ • w₀ = w₀ + y + c • x₀ ∧
         ∀ z ∈ hypComplement h x₀ w₀, γ • z = z - h.toSesq y z • x₀
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

@@ -141,22 +141,6 @@ def ExpandsF (U : UnifPre I D A G) (w : Ident U) (k : ℕ) (t : SecF F A k)
     (f : Fin n → Fam D.toPre (FractionRing R) k),
     (∀ i, U.Expands k (σ i) (f i)) ∧ SecComb F U w k c σ t ∧ FamComb D.toPre F k c f s
 
-def IsTheImage (U : Unif I D A G) (k : ℕ) (p : QkPt D.toPre F k)
-    (x : TFK (R := R) F ⟶ A.A) : Prop :=
-  1 ≤ k ∧ ∃ w : Ident U.toUnifPre,
-    QkToAk D.toPre F A k (ExpandsF F U.toUnifPre w k) p x
-
-theorem IsTheImage.torsion {U : Unif I D A G} {k : ℕ} {p : QkPt D.toPre F k}
-    {x : TFK (R := R) F ⟶ A.A} (h : IsTheImage F U k p x) : x ^ k = 1 :=
-  let ⟨_, _, h⟩ := h
-  h.1
-
-theorem isTheImage_of_forall {U : Unif I D A G} {k : ℕ} (hk : 1 ≤ k) {p : QkPt D.toPre F k}
-    {x : TFK (R := R) F ⟶ A.A}
-    (h : ∀ w : Ident U.toUnifPre, QkToAk D.toPre F A k (ExpandsF F U.toUnifPre w k) p x) :
-    IsTheImage F U k p x :=
-  ⟨hk, Classical.arbitrary _, h _⟩
-
 end Expansion
 
 end GlobalTheory.IndefiniteRowSideFullHecke.BaseChangeCharts

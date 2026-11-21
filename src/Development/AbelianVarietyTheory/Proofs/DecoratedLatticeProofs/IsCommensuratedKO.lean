@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasBoundedSumsOne
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasSumSphericalFunctionDoublingLengthStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBorelSphericalSameDoubleCosetSumsZonalStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBorelSphericalSameDoubleCosetSumsZonal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BiInvariantReplaceSameDoubleCosetSums
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosets
 
@@ -134,7 +134,7 @@ theorem unramifiedDoublingGL : GlobalTheory.Published.UnramifiedDoublingGL := by
   have hq : 0 < resCard k := zero_lt_one.trans hq1
   have hqR : (1 : ℝ) < resCard k := by exact_mod_cast hq1
   have hqR0 : (0 : ℝ) < resCard k := zero_lt_one.trans hqR
-  obtain ⟨φ, hφ, hsum⟩ := GlobalTheory.T.exists_borel_spherical_same_double_coset_sums_zonal k n V π α hπ ω hω
+  obtain ⟨φ, hφ, hsum⟩ := _root_.GlobalTheory.ZonalBorel.exists_isBorelSph_hAct_eq k n V π α hπ ω hω
   obtain ⟨δ, hδ, hmain⟩ := GlobalTheory.T.hasSum_sphericalFunction_doublingLength k n _ φ hφ
     (fun i => mul_ne_zero (α i).ne_zero (Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hqR0 _).ne'))
     ϖ hϖ (cellLen hϖ) (cellLen_eq hϖ)

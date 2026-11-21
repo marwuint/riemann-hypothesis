@@ -85,16 +85,6 @@ theorem taylorDir_comp (u : τ → W) {φ : W → σ → ℂ} (hφ : AnalyticAt 
 
 end Comp
 
-section Points
-
-variable {n d : ℕ} {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
-
-variable (e : Fin 1 × Fin d → W) {f : W → ℂ}
-
-variable {ι : Type} [Fintype ι]
-
-end Points
-
 section Curried
 
 variable {m n d d' : ℕ}
@@ -119,12 +109,6 @@ noncomputable def curryPts (n d : ℕ) : (Fin n × Fin d → ℂ) →L[ℂ] (Fin
 
 @[simp] theorem taylorPts_const (c : ℂ) :
     taylorPts n (fun _ : Fin n → Fin d → ℂ => c) = C c := taylor_const c
-
-section Algebra
-
-variable {F G : (Fin n → Fin d → ℂ) → ℂ}
-
-end Algebra
 
 end Curried
 

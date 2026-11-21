@@ -86,10 +86,6 @@ theorem halfAt_all (D : D7) (l : ℕ) : HalfAt D l := by
   · exact isHalf_lab D (l := l) e0
   · exact isHalf_cj (isHalf_lab D e0)
 
-theorem halfAt_inRange : InRange fun Fm x _ i p j P _ w => SmallAt p j P w → HalfAt (Fm.D x i) (Formalism.EigenvalueLevelCeiling.plc w) := by
-  refine ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ?_⟩⟩
-  exact EvPt.of_forall fun x _ i _ _ _ _ _ _ _ _ w _ _ _ => halfAt_all (Fm.D x i) (Formalism.EigenvalueLevelCeiling.plc w)
-
 end GlobalTheory.HalfLabels
 
 end

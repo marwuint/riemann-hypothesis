@@ -66,9 +66,6 @@ theorem levelRes_apply (σ : galUnramifiedOutside K.1 ℚ̄ S) (x : N.1) :
     ((levelRes S N hN σ x : N.1) : ℚ̄) = ((σ ⟨x, hN x x.2⟩ : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) :=
   congrArg Subtype.val (decompHom_apply (Kv := K.1) (levelIncl S N hN) σ x)
 
-theorem continuous_levelRes : Continuous (levelRes S N hN) :=
-  continuous_decompHom _
-
 theorem levelRes_surjective : Function.Surjective (levelRes S N hN) := by
   intro γ
   refine ⟨(γ.liftNormal ℚ̄).restrictNormal (maxUnramifiedOutside K.1 ℚ̄ S), ?_⟩

@@ -14,9 +14,4 @@ def StepBruhat : Prop :=
     ∀ ν : Measure H, ν.IsHaarMeasure →
       ∃ β : G → ℝ≥0∞, Measurable β ∧ ∀ g : G, ∫⁻ h, β (g * (h : G)) ∂ν = 1
 
-def StepInvInv : Prop :=
-  ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [LocallyCompactSpace K]
-    [SecondCountableTopology K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K),
-    ν.IsHaarMeasure → ν.IsMulRightInvariant → ν.IsInvInvariant
-
 end PI.WeilQuotMeas.UnitaryGroupMassFormula

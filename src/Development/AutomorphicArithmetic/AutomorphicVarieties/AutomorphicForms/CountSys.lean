@@ -38,46 +38,6 @@ theorem finite_image_of_card_le {P Y : Type} (Sig : Set P) (Iso : P → P → Pr
   rw [Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card _ hfin]
   exact key _ (by simp)
 
-theorem exists_eigData {P W : Type} (Sig : Set P) (Iso : P → P → Prop) (sys : P → W → Multiset ℂ)
-    (hiso : ∀ a ∈ Sig, ∀ b ∈ Sig, Iso a b → sys a = sys b) (N : ℕ)
-    (hcard : ∀ S : Finset P, (∀ a ∈ S, a ∈ Sig) → (∀ a ∈ S, ∀ b ∈ S, Iso a b → a = b) → S.card ≤ N)
-    (hconj : ∀ σ : ℂ ≃+* ℂ, ∀ a ∈ Sig, ∃ b ∈ Sig, ∀ v, sys b v = (sys a v).map σ)
-    (w : W) {n q : ℕ} {m : Fin n → ℤ} {wt : ℤ} (hn : ∀ a ∈ Sig, (sys a w).card = n)
-    (hpure : ∀ a ∈ Sig, ∀ b ∈ sys a w, ‖b‖ = (q : ℝ) ^ (-(wt : ℝ) / 2))
-    (hint : ∀ a ∈ Sig, SlopesIn q m (sys a w)) :
-    ∃ D : EigData n q m wt, Nat.card D.S ≤ N ∧ ∃ cl : ↥Sig → D.S, (∀ a b, cl a = cl b → sys a = sys b) ∧
-      ∀ a, (D.β (cl a)).map (·⁻¹) = sys a w := by
-  obtain ⟨hfin, hN⟩ := finite_image_of_card_le Sig Iso sys hiso N hcard
-  refine ⟨⟨↥(sys '' Sig), hfin, fun s => (s.1 w).map (·⁻¹), ?_, ?_, ?_, ?_, ?_⟩, hN,
-    fun a => ⟨sys a, a, a.2, rfl⟩, fun a b h => congrArg Subtype.val h, fun a => ?_⟩
-  · rintro ⟨_, a, ha, rfl⟩
-    simpa using hn a ha
-  · intro σ
-    have hmem : ∀ s : ↥(sys '' Sig), (fun v => (s.1 v).map σ) ∈ sys '' Sig := by
-      rintro ⟨_, a, ha, rfl⟩
-      obtain ⟨b, hb, h⟩ := hconj σ a ha
-      exact ⟨b, hb, funext h⟩
-    let F : ↥(sys '' Sig) → ↥(sys '' Sig) := fun s => ⟨_, hmem s⟩
-    have hF : Function.Injective F := by
-      intro s s' h
-      refine Subtype.ext (funext fun v => ?_)
-      exact Multiset.map_injective σ.injective (congrFun (congrArg Subtype.val h) v)
-    refine ⟨Equiv.ofBijective F (Finite.injective_iff_bijective.1 hF), fun s => ?_⟩
-    simp [F, Multiset.map_map]
-  · rintro ⟨_, a, ha, rfl⟩ b hb
-    obtain ⟨c, hc, rfl⟩ := Multiset.mem_map.1 hb
-    rw [norm_inv, hpure a ha c hc, ← Real.rpow_neg (Nat.cast_nonneg q)]
-    congr 1
-    ring
-  · rintro k hk ⟨_, a, ha, rfl⟩ b hb
-    obtain ⟨c, hc, rfl⟩ := Multiset.mem_map.1 hb
-    exact (hint a ha c hc).1 k hk
-  · rintro k hk ⟨_, a, ha, rfl⟩ b hb
-    obtain ⟨c, hc, rfl⟩ := Multiset.mem_map.1 hb
-    rw [inv_inv]
-    exact (hint a ha c hc).2 k hk
-  · simp [Multiset.map_map]
-
 open NumberField IsDedekindDomain in
 
 theorem natCast_notMem_of_not_dvd {F : Type} [Field F] [NumberField F] {p M : ℕ} (hp : p.Prime)

@@ -55,47 +55,6 @@ variable {V : Type*} [AddCommGroup V] [Module E V] (h : HermitianForm K E V) (v 
 
 end Unitary
 
-section Division
-
-variable (K : Type*) [Field K] [NumberField K] (D : Type*) [DivisionRing D] [Algebra K D]
-  [FiniteDimensional K D]
-
-attribute [local instance] adeleTensorTopology isModuleTopology_adeleTensor
-  isTopologicalRing_adeleTensor t2Space_adeleTensor
-
-variable {K D} {d : ℕ} (b : Basis (Fin d) K D)
-
-theorem exists_scalar_mem_normOneUnits (x : (𝔸[K] ⊗[K] D)ˣ) :
-    ∃ a : (𝔸[K])ˣ, scalarUnits K D a * x ∈ normOneUnits b := by
-  set t : ℝ := (GroundTheory.Global.IdeleGroup.ideleModule K (AdelicGLn.det K d (rmatUnits b 𝔸[K] x)) : ℝ)
-    with ht
-  have htpos : 0 < t := (GroundTheory.Global.IdeleGroup.ideleModule K _).2
-  have hn : 0 < Module.finrank ℚ K := Module.finrank_pos
-  have hd := pos_of_basis b
-  set ρ : ℝ := t⁻¹ ^ ((1 : ℝ) / ((Module.finrank ℚ K * d : ℕ) : ℝ)) with hρdef
-  have hρ : 0 < ρ := Real.rpow_pos_of_pos (inv_pos.2 htpos) _
-  have hρpow : ρ ^ (Module.finrank ℚ K * d) = t⁻¹ := by
-    rw [hρdef, ← Real.rpow_natCast, ← Real.rpow_mul (inv_nonneg.2 htpos.le),
-      one_div_mul_cancel (by positivity), Real.rpow_one]
-  refine ⟨Reduction.posIdele ρ hρ, ?_⟩
-  rw [mem_normOneUnits, Reduction.mem_normOneGL]
-  have hdet : AdelicGLn.det K d (rmatUnits b 𝔸[K] (scalarUnits K D (Reduction.posIdele ρ hρ) * x)) =
-      Reduction.posIdele ρ hρ ^ d * AdelicGLn.det K d (rmatUnits b 𝔸[K] x) := by
-    ext
-    simp only [map_mul, Units.val_mul, Units.val_pow_eq_pow_val, AdelicGLn.coe_det, rmatUnits_val]
-    congr 1
-    have hs : rmat b 𝔸[K] (scalarUnits K D (Reduction.posIdele ρ hρ) : 𝔸[K] ⊗[K] D) =
-        algebraMap 𝔸[K] (Matrix (Fin d) (Fin d) 𝔸[K])
-          ((Reduction.posIdele (K := K) ρ hρ : GroundTheory.Global.IdeleGroup K) : 𝔸[K]) :=
-      (rmatHom b 𝔸[K]).commutes (Reduction.posIdele (K := K) ρ hρ : 𝔸[K])
-    rw [hs, Matrix.algebraMap_eq_diagonal, det_diagonal]
-    simp
-  rw [hdet, map_mul, map_pow]
-  simp only [Positive.val_mul, Positive.val_pow, Reduction.ideleModule_posIdele]
-  rw [← ht, ← pow_mul, hρpow, inv_mul_cancel₀ htpos.ne']
-
-end Division
-
 end Anisotropic
 
 end

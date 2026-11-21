@@ -167,8 +167,4 @@ lemma small_one_add_pow (hϖ : Irreducible ϖ) {q : Q} (h : Sm Q ϖ 1 q) {r : �
   refine ⟨h1, ?_⟩
   simpa using ht.mul hϖ h2
 
-lemma Sm.of_toNat (hϖ : Irreducible ϖ) {k : ℤ} {a : Q} (ha : Sm Q ϖ (k.toNat : ℤ) a) :
-    Sm Q ϖ k a :=
-  ha.mono hϖ (Int.self_le_toNat k)
-
 end PI.WADVR

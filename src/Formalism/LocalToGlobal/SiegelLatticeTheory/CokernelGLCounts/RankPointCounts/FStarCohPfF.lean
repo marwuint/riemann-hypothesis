@@ -80,8 +80,4 @@ theorem cohDG_holds : CohDG Zd u u' F0 what₂ := by
   have T1 := hH.2.2.2 p
   exact absurd ⟨hu, Formalism.MainNotions.S.Loc.HermSp.CohU.gdet_ne_of_ratio T1.1.1.2.2.2.2.1 hu T1.2.2.2.1.2.2.2.2.2⟩ hp
 
-theorem star_coherence_of_good (hLp : CohLp Zd u u' F0 what₂) (hGood : CohGood Zd u u' F0 what₂) :
-    CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
-  star_coherence_of_three Zd (cohDG_holds Zd) hLp hGood
-
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

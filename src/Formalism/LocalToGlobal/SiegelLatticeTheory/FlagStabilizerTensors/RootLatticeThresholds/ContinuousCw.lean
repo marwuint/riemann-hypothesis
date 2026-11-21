@@ -24,22 +24,11 @@ theorem isUB_Cw (w : Point D.host.E (D.R.rS + 1)) (c : FreeE w → ℂ) : IsUB (
   · exact ⟨h2.1.le, h2.2⟩
   · exact absurd rfl hij
 
-theorem continuous_Cw (w : Point D.host.E (D.R.rS + 1)) : Continuous fun c : FreeE w → ℂ => Cw w c := by
-  refine continuous_pi fun i => continuous_pi fun j => ?_
-  simp only [Cw, Matrix.of_apply]
-  split_ifs with h1 h2
-  · exact continuous_const
-  · exact continuous_apply _
-  · exact continuous_const
-
 theorem Cw_apply_free (w : Point D.host.E (D.R.rS + 1)) (c : FreeE w → ℂ) (p : FreeE w) :
     Cw w c p.1.1 p.1.2 = c p := by
   simp only [Cw, Matrix.of_apply]
   rw [if_neg (ne_of_lt p.2.1), dif_pos p.2]
   rfl
-
-theorem inv_eq_adj {m : ℕ} {blk : Fin m → ℕ} {C : Matrix (Fin m) (Fin m) ℂ} (hC : IsUB blk C) : C⁻¹ = C.adjugate := by
-  rw [Matrix.inv_def, hC.det_eq_one, Ring.inverse_one, one_smul]
 
 theorem span_frm_le (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) (k : ℕ)
     (hk : k ≤ D.R.rS) :

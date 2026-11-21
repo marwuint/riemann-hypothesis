@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LamRange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSetupDividingLabelPersistsDeeperLevel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSetupTowerSameGenericFibreRealisationsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSetupTowerSameGenericFibreRealisations
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -28,7 +28,7 @@ theorem Tower.div_lam : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n 
   rw [hd] at hxa
   obtain ⟨b, hb⟩ := 𝔗.lam_range x
   obtain rfl : 𝔗.lam b = a := hb.trans (funext hxa)
-  obtain ⟨k, hk, e⟩ := DivDeep.same_ratio (GlobalTheory.T.thetaSetupTower_same_genericFibre_realisations g n F W Z i X₁ act hact 𝔗) x₀ b
+  obtain ⟨k, hk, e⟩ := DivDeep.same_ratio (_root_.GlobalTheory.Poinc.Sep.Tower.same g n F W Z i X₁ act hact 𝔗) x₀ b
   set φ := algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁
   have h₁ : φ (X₁.S.th x₀) ≠ 0 := (map_ne_zero φ).2 hx.1
   have h₂ := hdv.1

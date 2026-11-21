@@ -47,8 +47,4 @@ theorem cohIota_holds : CohIota Zd u u' F0 what₂ := by
   rw [hg] at hn
   exact (hn rfl).elim
 
-theorem starCoh_of_P'' (hGen : CohGen Zd u u' F0 what₂) (hLp : CohLp Zd u u' F0 what₂)
-    (hGood : CohGood Zd u u' F0 what₂) : CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
-  starCoh_of_P' Zd hGen hLp (cohIota_holds Zd) hGood
-
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

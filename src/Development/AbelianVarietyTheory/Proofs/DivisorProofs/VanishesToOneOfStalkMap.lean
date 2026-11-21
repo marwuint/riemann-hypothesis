@@ -1,9 +1,14 @@
-import Development.AbelianVarietyTheory.Definitions.Divisors.MeanLogLeOfBounds
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsCoordAtPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalizedPointHeightLatticeSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerConstantCoeffEqSpan
 import Formalism.HarderNarasimhan.StatementPl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataViehwegVanishingNumberFieldTwist
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisRegularSequenceOfCommonZerosStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftSectionsZeroSchemeRegularSequenceLineBStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalLiftSectionsOnClosedSubschemeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisRegularSequenceOfCommonZeros
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftSectionsZeroSchemeRegularSequenceLineB
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalLiftSectionsOnClosedSubscheme
+
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.HermTools GlobalTheory.Vanishing GlobalTheory.Adelic GlobalTheory.HilbertSamuel GlobalTheory.ChowHt GlobalTheory.TangentOrigin
@@ -135,7 +140,7 @@ theorem res_onto : Quoted → ∀ (K : Type) [Field K] [NumberField K] (G : Geo 
   intro Q K _ _ G hnef hbig s hs
   have hB : (tens G.K.bundle G.L₂).IsLB := isLB_tens G.K.isLB G.isLB₂
   have hB' : (G.adj₂ 0).IsLB := isLB_tw hB G.isLB _
-  obtain ⟨g, hg, hreg⟩ := GlobalTheory.T.exists_basis_regular_sequence_of_common_zeros K G s hs _ hB
+  obtain ⟨g, hg, hreg⟩ := _root_.GlobalTheory.RegBasis.exists_regular_basis K G s hs _ hB
   have hproj : IsProjOver (GlobalTheory.strHom K G.Y) := by
     rw [GlobalTheory.strHom_eq (f := G.str) fun _ => rfl]
     exact G.geom.alg.variety.proj
@@ -151,14 +156,14 @@ theorem res_onto : Quoted → ∀ (K : Type) [Field K] [NumberField K] (G : Geo 
     rwa [e] at h
   have key : ∀ y₀ : sectionsOnClosedSubscheme G.str (G.adj₂ 0) (G.ideal s), ∃ f, resTo suppIn_top f = y₀ := by
     intro y₀
-    choose W hW b hb using fun y => GlobalTheory.T.exists_local_lift_sectionsOnClosedSubscheme K G.Y G.str (G.adj₂ 0) hB' (G.ideal s) y₀ y
+    choose W hW b hb using fun y => _root_.GlobalTheory.Vanishing.exists_local_lift_H0On K G.Y G.str (G.adj₂ 0) hB' (G.ideal s) y₀ y
     have hcomp : ∀ y z, VanishesTo (G.ideal s) 1 (Vanishing.H0.restr inf_le_left (b y) -
         Vanishing.H0.restr inf_le_right (b z) : Vanishing.H0 G.str (G.adj₂ 0) (W y ⊓ W z)) := by
       intro y z
       refine vanishesTo_one_of_stalkMap fun z' hz' j hj => ?_
       rw [map_sub, Vanishing.H0.germ_restr, Vanishing.H0.germ_restr, map_sub, ← hb y z' hz'.1 j hj,
         ← hb z z' hz'.2 j hj, sub_self]
-    obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_lift_sections_zeroScheme_regularSequence_lineBundle K G.Y hproj G.str _ G.L hB G.isLB G.D _ _ hreg
+    obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.HSCore.exists_glue_mod_regSeq K G.Y hproj G.str _ G.L hB G.isLB G.D _ _ hreg
       (vanishFrom_adj_of_nef_big Q K G G.L₂ G.isLB₂ hnef hbig) (by simp) W b hW
       fun y z => vanishesTo_of_isUnit G s g hg (hcomp y z)
     refine ⟨σ, Vanishing.H0.ext_germ fun z _ => ?_⟩

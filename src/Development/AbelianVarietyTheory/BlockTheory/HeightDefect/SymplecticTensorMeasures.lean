@@ -57,9 +57,6 @@ namespace ConjIsom
 
 variable {V : HSp D} (s : ConjIsom V)
 
-def toFun (x : Fin V.rank → D.host.E) : Fin V.rank → D.host.E :=
-  s.P.val.mulVec fun i => cE D (x i)
-
 def PA : GL (Fin V.rank) (AE D) := Matrix.GeneralLinearGroup.map (incA D) s.P
 
 def autGL : GL (Fin V.rank) (AE D) →* GL (Fin V.rank) (AE D) :=
@@ -137,12 +134,6 @@ theorem basConj_fix {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T} (K 
 def hTens (V W : HSp D) (x y : WA V W) : AE D :=
   ∑ i, ∑ j, ∑ k, ∑ l, cA D (y i j) * incA D (V.gram i k) * incA D (W.gram j l) * x k l
 
-def symplTens (V W : HSp D) (x y : WA V W) : AF D.host.F :=
-  Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * hTens V W x y)
-
-def actTens (V W : HSp D) (g : GA D V) (h : GA D W) (y : WA V W) : WA V W :=
-  HMul.hMul (HMul.hMul (mt V g) y) (mt W h).transpose
-
 def toHom {V W : HSp D} (s : ConjIsom V) (t : ConjIsom W) (y : WA V W) : WA V W :=
   if V.rank ≤ W.rank then HMul.hMul (cM s.PA.val) y else HMul.hMul y (cM t.PA.val).transpose
 
@@ -165,101 +156,10 @@ def htFin (V : HSp D) (g : GA D V) : ℕ :=
 def htStd (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (g : GA D V) : ℝ :=
   (htFin V g : ℝ) * (1 + ∑ τ, ∑ i, ∑ j, ‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖)
 
-def IsHeckeCharF (D : D7) (χ : (AF D.host.F)ˣ →* Circle) : Prop :=
-  Continuous χ ∧ ∀ a : D.host.Fˣ, χ (Units.map (algebraMap D.host.F (AF D.host.F)).toMonoidHom a) = 1
-
 def realFac (r : ℕ → ℕ → NNReal) (V : HSp D) : NNReal :=
   ∏ τ : D.what₂.Tau, r (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2
 
 variable {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T}
-
-structure KfinLocalWeilDatum (K : KfinTied Wl) (L : Formalism.MainNotions.KudlaSiegelWeil.LocW D X) where
-
-  eG : ∀ V, L.G V ≃* GA D V
-
-  eG_meas : ∀ V (S : Set (L.G V)), MeasurableSet S ↔ MeasurableSet (eG V '' S)
-
-  gF : ∀ V g, g ∈ L.GF V ↔ eG V g ∈ GQ V
-
-  gK : AllSome (IsInfFam (D := D)) fun θ => ∀ V : HSp D, V.SigOK → ∀ g, g ∈ L.Gk V ↔ IsFinK θ V (K.cpt V) (eG V g)
-
-  rc : ℕ → ℕ → NNReal
-  rc_pos : ∀ p q, 0 < rc p q
-
-  meas : ∀ V : HSp D, V.SigOK →
-    AllSome (IsVolMeasG D V (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2)) fun μ =>
-      Measure.map (eG V) (L.μG V) = realFac rc V • μ
-
-  eF : L.ChrF →* ((AF D.host.F)ˣ →* Circle)
-  eF_inj : Function.Injective eF
-  eF_range : Set.range eF = {χ | IsHeckeCharF D χ}
-
-  res : ∀ χ a, eF (L.res χ) a = T.eChr χ (idF D a)
-
-  eta : IsEta D (eF L.eta)
-
-  thF : ∀ V W : HSp D, V.rank ≠ W.rank → ∀ Φ, L.thF V W Φ = Wl.evS V W Φ 0
-
-  om : ∀ (V W : HSp D) (hV : V.SigOK) (hW : W.SigOK) χ χ', V.rank ≠ W.rank →
-    ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') W.rank → ∀ g h,
-      L.om V W χ χ' (g, h) = omTens Wl (basConj K V hV) (basConj K W hW) χ χ' (eG V g, eG W h)
-
-structure LocWTied (K : KfinTied Wl) (L : Formalism.MainNotions.KudlaSiegelWeil.LocW D X) extends KfinLocalWeilDatum K L where
-
-  cc : ∀ χ x, T.eChr (L.cc χ) x = T.eChr χ (Units.map (cA D).toMonoidHom x)
-
-  ht : AllSome (IsInfFam (D := D)) fun θ => ∀ V : HSp D, ∃ (C : ℝ) (N : ℕ), ∀ g,
-    L.ht V g ≤ C * htStd θ V (eG V g) ^ N ∧ htStd θ V (eG V g) ≤ C * L.ht V g ^ N
-
-  sR : L.sR = true
-
-def ConjExists (D : D7) : Prop :=
-  ∀ V : HSp D, ∃ s : ConjIsom V, ∀ x, s.toFun (s.toFun x) = x
-
-def ConjUnique (D : D7) : Prop :=
-  ∀ (V : HSp D) (s s' : ConjIsom V), ∃ γ ∈ GQ V, matHom V γ * s.PA = s'.PA ∧ ∀ g, s'.aut g = γ * s.aut g * γ⁻¹
-
-def AutProps (D : D7) : Prop :=
-  ∀ (V : HSp D) (s : ConjIsom V), IsHomeomorph s.aut ∧ ∀ g, (s.aut g ∈ GQ V ↔ g ∈ GQ V) ∧ (s.aut g ∈ GfC V ↔ g ∈ GfC V) ∧
-    (s.aut g ∈ GinfC V ↔ g ∈ GinfC V) ∧ (mt V (s.aut g)).det = cA D (mt V g).det
-
-def BasKeepsK (K : KfinTied Wl) : Prop :=
-  ∀ θ, IsInfFam (D := D) θ → ∀ (V : HSp D) (hV : V.SigOK) (g : GA D V),
-    (basConj K V hV).aut ((basConj K V hV).aut g) = g ∧
-      (IsKinf θ V (K.cpt V) ((basConj K V hV).aut g) ↔ IsKinf θ V (K.cpt V) g)
-
-def HomIsTens (D : D7) : Prop :=
-  ∀ (V W : HSp D) (s : ConjIsom V) (t : ConjIsom W), Function.Bijective (toHom s t) ∧
-    (∀ y, toHom s t y ∈ ratL V W ↔ y ∈ ratL V W) ∧
-    (∀ x y, sympl V W (toHom s t x) (toHom s t y) = symplTens V W x y) ∧
-    ∀ g h y, toHom s t (actTens V W g h y) = actHom V W (pairAut s t (g, h)).1 (pairAut s t (g, h)).2 (toHom s t y)
-
-def TensHeis (Wl : WeilTied D X T) : Prop :=
-  ∀ (V W : HSp D) (s : ConjIsom V) (t : ConjIsom W) χ χ', V.rank ≠ W.rank →
-    ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') W.rank → ∀ g h y Φ Φ',
-      Wl.evS V W Φ' = Heisenberg₂ Wl.ψ V W (toHom s t y) (Wl.evS V W Φ) →
-      Wl.evS V W (omTens Wl s t χ χ' (g, h) Φ') =
-        Heisenberg₂ Wl.ψ V W (toHom s t (actTens V W g h y)) (Wl.evS V W (omTens Wl s t χ χ' (g, h) Φ))
-
-def TensTheta (Wl : WeilTied D X T) : Prop :=
-  ∀ (V W : HSp D) (s : ConjIsom V) (t : ConjIsom W) χ χ', V.rank ≠ W.rank →
-    ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') W.rank → ∀ γ ∈ GQ V, ∀ γ' ∈ GQ W, ∀ Φ,
-      Wl.evS V W (omTens Wl s t χ χ' (γ, γ') Φ) 0 = Wl.evS V W Φ 0
-
-def TensSplit (Wl : WeilTied D X T) : Prop :=
-  ∀ (V W : HSp D) (s : ConjIsom V) (t : ConjIsom W) χ χ', V.rank ≠ W.rank →
-    ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') W.rank →
-    ∀ e, IsSplitIdem D e → ∀ g h, SuppAt e V g → SuppAt e W h → ∀ x y, IsDetAt e V g x → IsDetAt e W h y →
-    ∃ r : ℝ, 0 < r ∧ ∀ ℓ : X.Sch V W →ₗ[ℂ] ℂ,
-      (∀ u : WA V W, (∀ i j, cA D e * u i j = u i j) → ∀ Φ Φ',
-        Wl.evS V W Φ' = Heisenberg₂ Wl.ψ V W (toHom s t u) (Wl.evS V W Φ) → ℓ Φ' = ℓ Φ) →
-      ∀ Φ, ℓ (omTens Wl s t χ χ' (g, h) Φ) = (r : ℂ) * ((T.eChr χ' x * T.eChr χ y : Circle) : ℂ) * ℓ Φ
-
-def TensTwist (Wl : WeilTied D X T) : Prop :=
-  ∀ (V W : HSp D) (s : ConjIsom V) (t : ConjIsom W) χ χ' ν, V.rank ≠ W.rank →
-    ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') W.rank → ResEta D (T.eChr ν) 0 → ∀ g h x,
-      (IsDetRoot V g x → omTens Wl s t χ (χ' * ν) (g, h) = ((T.eChr ν x : Circle) : ℂ) • omTens Wl s t χ χ' (g, h)) ∧
-      (IsDetRoot W h x → omTens Wl s t (χ * ν) χ' (g, h) = ((T.eChr ν x : Circle) : ℂ) • omTens Wl s t χ χ' (g, h))
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SymplecticTensorMeasures
 

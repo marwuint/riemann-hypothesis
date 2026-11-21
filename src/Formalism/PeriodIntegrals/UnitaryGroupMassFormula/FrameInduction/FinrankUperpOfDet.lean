@@ -26,11 +26,6 @@ lemma gramM_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) 
 lemma Uperp_mat (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) :
     Uperp k r z z' g = LinearMap.ker (Matrix.mulVecLin ((Vc k r z z' g)ᴴ * Hpk k r)) := rfl
 
-lemma gramM_herm (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) :
-    (gramM k r z z' g)ᴴ = gramM k r z z' g := by
-  rw [gramM_eq, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose,
-    Formalism.QuantumDeterminants.GBasic.Hpk_herm, Matrix.mul_assoc]
-
 lemma herm_Vc (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) (c d : Fin (r + 1) ⊕ Fin (r + 1) → ℂ) :
     herm (Hpk k r) (Vc k r z z' g *ᵥ c) (Vc k r z z' g *ᵥ d) = herm (gramM k r z z' g) c d := by
   rw [herm_mulVec_mulVec, ← gramM_eq]

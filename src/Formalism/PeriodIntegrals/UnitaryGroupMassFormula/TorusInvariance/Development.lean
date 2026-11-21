@@ -179,13 +179,6 @@ lemma eh_zero (a b : Fin (2 * r + k + 1)) (g : Mx k r) :
     EH k r a b (fun _ : Mx k r => (0 : E)) g = 0 := by
   simp [EabH, RdV]
 
-lemma rep_sum {ι : Type*} [Fintype ι] (c : ι → ℂ) {F : ι → Mx k r → E}
-    {x : ι → Sm E k r i D} (h : ∀ j, Rep (F j) (x j).1) :
-    Rep (fun g => ∑ j, c j • F j g) (∑ j, c j • x j).1 := by
-  intro g hg
-  simp only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]
-  exact Finset.sum_congr rfl fun j _ => by rw [h j g hg]
-
 section Ops
 
 variable (hP : EabPres) (hC : StepCongr) (hD : IsOpen D)

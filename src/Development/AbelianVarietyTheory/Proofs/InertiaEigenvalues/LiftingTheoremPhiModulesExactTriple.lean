@@ -2,19 +2,20 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomialAction
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RepresentationBounds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokernelLatticeMapKilledByPrimePowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NumericalConditionsTheoremTLargePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxFrobeniusOrbitLengthDiffBoundsZmodStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinExactTripleJumpsCharactersLiftStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokernelLatticeMapKilledByPrimePow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NumericalConditionsTheoremTLargePrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxFrobeniusOrbitLengthDiffBoundsZmod
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinExactTripleJumpsCharactersLift
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonodromyMemRangeOfInvariantVectorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentFiniteFreeInvertPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentMonodromyImageValuationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentPowSmulMonodromyAddPhiMemStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftImageEulerEInvariantsQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMemTameDescentClassEqOfPowMemStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentFiniteFreeInvertPrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentMonodromyImageValuation
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentPowSmulMonodromyAddPhiMem
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftImageEulerEInvariantsQuotient
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMemTameDescentClassEqOfPowMem
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMonodromyEqLeadingCoeffBreuilKisinDescentStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAdicCompleteTwistedInvariantLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsHausdorffInvariantsQuotientOfFiniteFreeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsHausdorffInvariantsQuotientOfFiniteFree
 
 open PowerSeries GlobalTheory.BK
 
@@ -26,11 +27,11 @@ theorem lifting_along_exact_triple : GlobalTheory.IndefiniteRowSideFullHecke.Con
   have hl : l.Prime := Fact.out
   have hts : e + 1 = l ^ a := TameDescentExponentData.succ_eq (K := K)
   have ha : 1 ≤ a := Nat.one_le_iff_ne_zero.2 (NeZero.ne a)
-  obtain ⟨hr1, hr4, hrper⟩ := GlobalTheory.T.maxFrobeniusOrbitLengthDiff_bounds_zmod l e a hl ha hts Sig N hnum.frob_mem hnum.zero_mem_Sig
+  obtain ⟨hr1, hr4, hrper⟩ := _root_.GlobalTheory.BK.maxPeriod_bounds l e a hl ha hts Sig N hnum.frob_mem hnum.zero_mem_Sig
     hnum.card_Sig hnum.two_le
   set r := maxPeriod l Sig with hr
   obtain ⟨hL1, hL2, hL3, -, -, hL6⟩ :=
-    GlobalTheory.T.numerical_conditions_theorem_T_large_prime l H N η r hnum.two_le hnum.one_le hnum.lt hr4 hnum.large
+    _root_.GlobalTheory.numerical_bounds_of_forty_mul_lt l H N η r hnum.two_le hnum.one_le hnum.lt hr4 hnum.large
   have hl2 : l ≠ 2 := by
     have h8 : 8 ≤ N ^ 3 := by
       calc 8 = 2 ^ 3 := rfl
@@ -44,7 +45,7 @@ theorem lifting_along_exact_triple : GlobalTheory.IndefiniteRowSideFullHecke.Con
     ⟨hnum.frob_mem, hnum.zero_mem_Sig, hnum.card_Sig, hnum.two_le, hnum.range_U, hnum.zero_mem_U,
       hnum.card_U, hnum.one_le, hnum.lt, hnum.large⟩
   obtain ⟨-, hkM, -, hkMinv, -, hkY'⟩ :=
-    GlobalTheory.T.cokernel_latticeMap_killed_by_prime_pow O K l e a ι₁ ι₂ Sig U N η H hB D₁ D₂ htype hch2 G hex.finiteLength
+    _root_.GlobalTheory.Proof.cokernel_latticeMap_killed_by_prime_pow.main O K l e a ι₁ ι₂ Sig U N η H hB D₁ D₂ htype hch2 G hex.finiteLength
   set ρ := GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.eW N r with hρ
   have hcast : ∀ v : Vec K a ι₂, (l ^ GlobalTheory.IndefiniteRowSideFullHecke.RepresentationBounds.rho l Sig N : ℕ) • v = (l : K) ^ ρ • v := by
     intro v
@@ -59,10 +60,10 @@ theorem lifting_along_exact_triple : GlobalTheory.IndefiniteRowSideFullHecke.Con
 
   set ω := D₁.Mon (y₁ + D₁.phi m₁) with hω
   have hω1 : (l : K) ^ (η * (r + 1)) • ω ∈ D₁.Z :=
-    GlobalTheory.T.breuilKisinDescent_pow_smul_monodromy_add_phi_mem O K l e a ι₁ η H D₁ hnum.one_le hnum.lt (by omega) hL2 r hr1
+    _root_.GlobalTheory.BK.pow_smul_Mon_add_phi_mem_Z O K l e a ι₁ η H D₁ hnum.one_le hnum.lt (by omega) hL2 r hr1
       (fun τ c hc => hrper c (htype.chars_subset τ hc)) hL6 hl2 y₁ hy₁ m₁ hm₁
 
-  obtain ⟨hjmp, -, hinj, hker⟩ := GlobalTheory.T.breuilKisin_exactTriple_jumps_characters_lift O K l e a ι₀ ι₁ ι₂ η H D₀ D₁ D₂ F G hex
+  obtain ⟨hjmp, -, hinj, hker⟩ := _root_.GlobalTheory.exactTriple_jumps_chars_lift O K l e a ι₀ ι₁ ι₂ η H D₀ D₁ D₂ F G hex
   have hGω : G.onPol ((l : K) ^ (η * (r + 1)) • ω) = 0 := by
     rw [map_smul, hω, G.onPol_Mon, hG1, map_smul, h0, smul_zero, smul_zero]
   obtain ⟨w₀, hw₀, hFw₀⟩ := hker ρ (fun y hy => by
@@ -76,9 +77,9 @@ theorem lifting_along_exact_triple : GlobalTheory.IndefiniteRowSideFullHecke.Con
     · exact (mem_divE (l := l) (e := e)).2 (D₁.upper _ (D₁.phi_mem_L hm₁.1))
     · rw [D₁.desc.act_phi, hm₁.2 g]
   obtain ⟨-, wm, hwm, hLcwm⟩ := GlobalTheory.T.monodromy_mem_range_of_invariant_vector O K l e a ι₁ η H D₁ _ hy₁Y
-  have hIm := (GlobalTheory.T.breuilKisinDescent_monodromy_image_valuation O K l e a ι₁ η H D₁ U N htype.jumps_subset
+  have hIm := (_root_.GlobalTheory.LcImage.image_valuation_integralImage O K l e a ι₁ η H D₁ U N htype.jumps_subset
     (fun i hi => Finset.mem_Icc.2 (hnum.range_U i hi)) hnum.card_U hnum.lt).1
-  obtain ⟨w', hw', hFw'⟩ := GlobalTheory.T.lift_image_eulerE_invariants_quotient O K l e a ι₀ ι₁ η H D₀ D₁ F U hIm ω
+  obtain ⟨w', hw', hFw'⟩ := _root_.GlobalTheory.Proof.LiftImage.lift_image O K l e a ι₀ ι₁ η H D₀ D₁ F U hIm ω
     ⟨wm, hwm, hLcwm⟩ _ ⟨w₀, D₀.desc.mem_Zl_of_mem_Z hw₀, hFw₀⟩
 
   set c₂ := GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.c₂ N η r with hc₂
@@ -87,13 +88,13 @@ theorem lifting_along_exact_triple : GlobalTheory.IndefiniteRowSideFullHecke.Con
     rw [map_smul, hFw', hFw₀, hc₂, GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.c₂, GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.c₁, add_comm]
   have hjmp0 : D₀.jumps ⊆ (U : Set ℤ) := hjmp.trans htype.jumps_subset
   have hIcc : U ⊆ Finset.Icc (-(η : ℤ)) H := fun i hi => Finset.mem_Icc.2 (hnum.range_U i hi)
-  obtain ⟨y, hy, hLcy⟩ := GlobalTheory.T.exists_mem_tameDescent_class_eq_of_pow_mem O K l e a ι₀ η H D₀ U N hjmp0 hIcc hnum.card_U
+  obtain ⟨y, hy, hLcy⟩ := _root_.GlobalTheory.LcImage.exists_mem_Y'_Lc_cls_eq O K l e a ι₀ η H D₀ U N hjmp0 hIcc hnum.card_U
     hnum.lt (by omega) hL2 c₂ w' hw' (hw₀eq ▸ hw₀)
 
-  have hff := (GlobalTheory.T.breuilKisinDescent_finite_free_invertPrime O K l e a ι₀ η H D₀).1
+  have hff := (_root_.GlobalTheory.ZFin.finiteFree_and_localisation O K l e a ι₀ η H D₀).1
   obtain ⟨y₀, hy₀, hMy₀⟩ := GlobalTheory.T.exists_monodromy_eq_leadingCoeff_breuilKisinDescent O K l e a ι₀ η H D₀ U N hjmp0 hIcc hnum.card_U
     hnum.one_le hnum.lt hL3 hL2 (GlobalTheory.T.isAdicComplete_twistedInvariantLattice O K l e a ι₀ η H D₀)
-    (GlobalTheory.T.isHausdorff_invariants_quotient_of_finiteFree O K l e a ι₀ η H D₀ hff) y hy
+    (_root_.GlobalTheory.InertiaEigenvalues.isHausdorff_Z_of_finiteFree O K l e a ι₀ η H D₀ hff) y hy
 
   have hGF : ∀ v : Vec K a ι₀, G.app (F.app v) = 0 := by
     intro v

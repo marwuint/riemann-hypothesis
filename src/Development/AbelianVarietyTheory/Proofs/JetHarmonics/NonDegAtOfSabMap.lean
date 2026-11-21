@@ -1,5 +1,12 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Jets.CubWeilOneIffPairOne
+import Formalism.LocalToGlobal.CharacterGerms.NondegenerateCharts
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
+import Development.AbelianVarietyTheory.BlockTheory.JetGauges.SemiAbelianAxisTangent
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 
 set_option autoImplicit false
@@ -12,9 +19,6 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 attribute [local instance] Over.cartesianMonoidalCategory
-
-def cobCube {A U : Type} [CommGroup A] [CommGroup U] (h : A → U) (x x' y : A) : U :=
-  h (x * x' * y) * (h (x * x'))⁻¹ * (h (x * y))⁻¹ * (h (x' * y))⁻¹ * h x * h x' * h y * (h 1)⁻¹
 
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
 

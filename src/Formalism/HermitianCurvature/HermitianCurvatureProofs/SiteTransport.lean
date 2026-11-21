@@ -102,6 +102,4 @@ end Formalism.FourierDecayAlt.P.PTieB
 
 namespace Formalism.FourierDecayAlt.P
 
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.PBH Formalism.FourierDecayAlt.P.PTieB
-
 end Formalism.FourierDecayAlt.P

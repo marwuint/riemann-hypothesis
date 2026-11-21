@@ -74,13 +74,13 @@ theorem exists_ideal_complex (hG : GlobalFnsSt) {V : Type} [CommRing V] (B : Ove
       refine ⟨Over.homMk y ?_, Over.OverMorphism.ext hy⟩
       rw [← Over.w j, ← Category.assoc, hy]
       exact Category.assoc _ _ _
-  obtain ⟨P⟩ := GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj A _ B'.hom hB'.smooth hp' F hF
+  obtain ⟨P⟩ := _root_.GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy A _ B'.hom hB'.smooth hp' F hF
   have := hB'.proper
   have := hB'.geomConnected
   have q₀ := IsPullback.of_hasPullback B'.hom (Spec.map (CommRingCat.ofHom g₀))
   obtain ⟨I, ⟨eI⟩, hI⟩ := GlobalTheory.UU.SecCyclic.cyclic_ideal A _ B'.hom F hF P inferInstance inferInstance K₀ g₀ hg₀ _ _ _
     q₀ (CubeOpen.bijective_appTop hG B' hB' q₀) ((test K₀ g₀ _ _ _ q₀).2 h₀)
-  obtain ⟨C, c₁, c₂, ⟨eC⟩, c₃⟩ := GlobalTheory.T.exists_perfect_free_finite_complex A B' hB' hp' g hg' F hF hΛ P
+  obtain ⟨C, c₁, c₂, ⟨eC⟩, c₃⟩ := _root_.GlobalTheory.AbLaw.exists_free_complex_of_primitive A B' hB' hp' g hg' F hF hΛ P
   refine ⟨I, C, c₁, c₂, ⟨eC.trans eI⟩, fun p _ => ?_, fun R _ _ φ =>
     (test R φ _ _ _ (IsPullback.of_hasPullback _ _)).symm.trans (hI R φ _ _ _ (IsPullback.of_hasPullback _ _))⟩
   let K := AlgebraicClosure p.ResidueField
@@ -97,7 +97,7 @@ theorem exists_section_translate : Laws → Laws2 → ∀ (A : Type) [CommRing A
   have proj : IsProjBy P.A.hom := by
     obtain ⟨d, -, n, s, hs⟩ := (GlobalTheory.Unif.relAmple_iff_veryAmpleBy V P.A P.L P.isLB).1 P.ample
     exact ⟨_, isLB_pw P.isLB _, n, s, hs⟩
-  obtain ⟨H, j, hj, hH⟩ := GlobalTheory.T.exists_closed_subscheme_translation_kernel hL.globalFns V P.A P.isAb proj P.L O P.isLB hO
+  obtain ⟨H, j, hj, hH⟩ := _root_.GlobalTheory.UU.TwistKer.exists_closed_twist_kernel hL.globalFns V P.A P.isAb proj P.L O P.isLB hO
   have fin : IsFinite H.hom := GlobalTheory.AmpleStabFinite.isFinite_of_relAmple hL.globalFns V P.A P.isAb P.L O P.isLB hO
     P.ample H j hj hH
   obtain ⟨r, hr⟩ := P.rigid

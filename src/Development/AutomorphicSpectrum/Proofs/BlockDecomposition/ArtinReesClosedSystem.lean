@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubobjectPullba
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecsMapArrow
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealPowerSubobjectSections
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArtinReesSubobjectStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperInfIdealSheavesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperInfIdealSheaves
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.SchemeCoh GlobalTheory.CompanionTheory.GE
 
 set_option autoImplicit false
@@ -337,6 +337,6 @@ theorem restrict_alg : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ide
   have : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))
   obtain ⟨k, ar⟩ := GlobalTheory.T.artin_rees_subobject I hE D hD
   exact ⟨k, closedSys_restrict hS hE.1 hD hc ar, propSupp_restrict hS hE.1 hD hP k,
-    fun halg hPD => alg_of hS hE.1 hD hc (fun T₁ T₂ => GlobalTheory.T.proper_inf_ideal_sheaves _ T₁ T₂) halg hPD⟩
+    fun halg hPD => alg_of hS hE.1 hD hc (fun T₁ T₂ => _root_.GlobalTheory.CompanionTheory.GE.Union.isProper_inf _ T₁ T₂) halg hPD⟩
 
 end GlobalTheory.CompanionTheory.GE.Comb

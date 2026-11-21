@@ -1,7 +1,12 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThickId
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIdealThickeningImmersionOfIsPullbackSquareZeroStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquare
+import Development.AbelianVarietyTheory.Definitions.Divisors.PrimitiveStructureSheafDegTwoVanish
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUnobstructed
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIdealThickeningImmersionOfIsPullbackSquareZero
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.Obs GlobalTheory.LBLift
@@ -32,7 +37,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (hAb : AbLift) (R : Type) [CommRing 
   letI := σ.toAlgebra
   let U := Ov σ
   let S' := Ov (Ideal.Quotient.mk J)
-  obtain ⟨B, _, pr, pr', hB, hBg, hp, hp', hμ, h₁, h₂, -, -⟩ := GlobalTheory.T.exists_abelianScheme_baseChange_and_square R C A g hA hg
+  obtain ⟨B, _, pr, pr', hB, hBg, hp, hp', hμ, h₁, h₂, -, -⟩ := _root_.GlobalTheory.AbBaseChangeSq.exists_baseChange_and_sq R C A g hA hg
   have hp : IsPullback pr B.hom A.hom U.hom := hp
   have hp' : IsPullback pr' (B ⊗ B).hom (A ⊗ A).hom U.hom := hp'
   have wZ : ∀ Z : Over (Sp R), (fst Z (U ⊗ S')).left ≫ Z.hom = ((snd Z (U ⊗ S')).left ≫ (fst U S').left) ≫ U.hom :=
@@ -46,10 +51,10 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (hAb : AbLift) (R : Type) [CommRing 
   have hJ' : J.map σ ^ 2 = ⊥ := by rw [← Ideal.map_pow, hJ, Ideal.map_bot]
   have th : IsThick (J.map σ) B.hom i := by
     have q := isPullback_lift A U S' hp i hi₁ hi₂
-    exact GlobalTheory.T.isIdealThickeningImmersion_of_isPullback_square_zero_quotient R C σ J hJ _ _ B.hom _ i q
+    exact _root_.GlobalTheory.LBLift.isThick_of_isPullback_quotient R C σ J hJ _ _ B.hom _ i q
   have th' : IsThick (J.map σ) (B ⊗ B).hom i' := by
     have q := isPullback_lift (A ⊗ A) U S' hp' i' hi'₁ hi'₂
-    exact GlobalTheory.T.isIdealThickeningImmersion_of_isPullback_square_zero_quotient R C σ J hJ _ _ (B ⊗ B).hom _ i' q
+    exact _root_.GlobalTheory.LBLift.isThick_of_isPullback_quotient R C σ J hJ _ _ (B ⊗ B).hom _ i' q
   have key : ∀ (φ : A ⊗ A ⟶ A) (φB : B ⊗ B ⟶ B), φB.left ≫ pr = pr' ≫ φ.left →
       (φ ▷ (U ⊗ S')).left ≫ i = i' ≫ φB.left := by
     intro φ φB hφ

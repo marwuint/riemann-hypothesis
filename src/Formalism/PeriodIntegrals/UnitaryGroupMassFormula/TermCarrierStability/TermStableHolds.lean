@@ -66,12 +66,6 @@ theorem termStable_holds (D : D7) (u u' : D.what₂.Word) : TermStable D u u' :=
     admissible_stable_under_frame_change Λ (gS D) (lf D F0) x.1 F₂ hFl.1 hFc hxl.1 hxf.1 hxa n hn m hm hfr,
     frameOK_tr D Λ hΛγ he hz hiso hxf⟩
 
-theorem hyp_inhabited (D : D7) (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
-    (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : IsRowLat D F0 Λ) :
-    ∃ (x : Carrier (PD D Λ (lf D F0) u)) (F₂ : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)),
-      DCRel Λ (lf D F0) x.1 F₂ :=
-  ⟨⟨lf D F0, pd_self F0 Λ hΛ⟩, lf D F0, 1, one_mem_NLam Λ _, 1, one_mem_NLam Λ _, fun _ => rfl, rfl⟩
-
 end D7
 
 end PI.TCS

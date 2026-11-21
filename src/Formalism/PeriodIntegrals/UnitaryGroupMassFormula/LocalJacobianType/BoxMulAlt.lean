@@ -21,10 +21,6 @@ def OTop : Prop :=
   (∀ t ∈ v.adicCompletionIntegers F, ∀ x ∈ OEv (E := E) v, sc (E := E) v t * x ∈ OEv (E := E) v) ∧
   (∀ σ : E →ₐ[F] E, ∀ x ∈ OEv (E := E) v, sigR (Fv F v) σ x ∈ OEv (E := E) v)
 
-def RTop : Prop :=
-  LocallyCompactSpace (Fv F v ⊗[F] E) ∧ SecondCountableTopology (Fv F v ⊗[F] E) ∧
-  T2Space (Fv F v ⊗[F] E) ∧ IsTopologicalRing (Fv F v ⊗[F] E)
-
 def BoxMul : Prop :=
   ∀ (ι : Type) [Fintype ι] (μ : Measure (ι → Fv F v ⊗[F] E)) [μ.IsAddHaarMeasure]
     (y : ι → Fv F v ⊗[F] E), (∀ i, IsUnit (y i)) →

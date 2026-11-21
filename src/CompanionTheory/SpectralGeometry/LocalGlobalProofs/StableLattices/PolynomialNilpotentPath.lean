@@ -1,7 +1,7 @@
 import Mathlib
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.HilbertSchmidtDecay.AbsoluteL2Bound
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.InfinitesimalCharacterPaths.TensDecomp
-import CompanionTheory.AutomorphicTheory.TemperedLocalSpectra.AffineGL.GenSpace
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GlRelationsDerivativePreserved
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantCoefficientsExpansion
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.JacquetBasis
@@ -112,7 +112,7 @@ theorem exists_monic_trace (n : Fin c → ℕ) (h : ∑ i, n i = N) (Xf : Fin N 
       rw [← map_prod]
     obtain ⟨k, hk⟩ := hP u
     set D := qdet Xf (u + ((N : ℂ) - 1) / 2) with hD
-    have hspan := GlobalTheory.T.capelliDet_block_levi_congr_mod_upperBlockIdeal (Module.End ℂ V) n h Xf hX u
+    have hspan := _root_.GlobalTheory.CapHC.qdet_blocks_congr (Module.End ℂ V) n h Xf hX u
     have hspan' : D - (b : Module.End ℂ V) ∈ Submodule.span ℂ {y : Module.End ℂ V | ∃ (p q : Fin N) (w : Module.End ℂ V),
         blk (stdBlocks n h) p < blk (stdBlocks n h) q ∧ y = Xf p q * w} := by
       rw [hb]

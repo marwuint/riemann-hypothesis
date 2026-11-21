@@ -48,14 +48,6 @@ theorem gsp_map (f : R →+* R') {ν : R} {g : M4 R} (h : IsGSp ν g) : IsGSp (f
   ext i j
   by_cases e : i = j <;> simp [e, Matrix.one_apply]
 
-def conjSp {Γ : Type} [Group Γ] {m : M4 R} (hm : IsGSp 1 m) (r : Γ →* M4 R) : Γ →* M4 R where
-  toFun g := adj m * r g * m
-  map_one' := by rw [map_one, mul_one, sp_adj_mul hm]
-  map_mul' g h := by
-    rw [map_mul]
-    calc adj m * (r g * r h) * m = adj m * r g * (m * adj m) * r h * m := by rw [sp_mul_adj hm]; simp only [mul_assoc, mul_one]
-      _ = _ := by simp only [mul_assoc]
-
 theorem wM_sp (pr : Bool) : IsGSp 1 (wM R pr) := by
   cases pr
   · simp [IsGSp, wM, adj_one]

@@ -123,7 +123,4 @@ theorem jf_psiOnto_of_cellDecomp (hCD : BigCellDecomposition.CellDecomp) : Forma
   simp only [Matrix.mul_assoc]
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ hu1]
 
-theorem jf_equivDet_of_cellDecomp (hCD : BigCellDecomposition.CellDecomp) : Formalism.FourierDecayAlt.JF.EquivDet :=
-  Formalism.FourierDecayAlt.P.equiv_det_of_onto (jf_psiOnto_of_cellDecomp hCD)
-
 end Formalism.FourierDecayAlt.P

@@ -133,14 +133,6 @@ theorem exists_emb (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.a
   have hmI : IsIntegral (OO p n) ((m : ℤ) : Om p n) := (integralClosure (OO p n) (Om p n)).intCast_mem m
   exact hmI.mul (hN_eq ▸ hint)
 
-theorem exists_ringAt (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.asIdeal) :
-    ∃ τ : LL →+* Om p n, ∀ x : LL,
-      w.valuation LL x ≤ 1 ↔ embL τ x ∈ Set.range (algebraMap (Ot τ) (Lt τ)) := by
-  obtain ⟨τ, hτ⟩ := exists_emb (p := p) (n := n) w hw
-  refine ⟨τ, fun x => ?_⟩
-  have := induces (τ := τ) x
-  rwa [hτ] at this
-
 def tauAt (p : ℕ) [Fact p.Prime] (n : ℕ) (w : HeightOneSpectrum (𝓞 LL)) (hw : (p : 𝓞 LL) ∈ w.asIdeal) :
     LL →+* Om p n := (exists_emb (p := p) (n := n) w hw).choose
 

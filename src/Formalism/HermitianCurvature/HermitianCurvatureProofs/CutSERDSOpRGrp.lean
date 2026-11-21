@@ -24,47 +24,6 @@ def RDSNicePoly : Prop :=
     (Θ : B.DiffOp k r Wp Wq), CutMP.PolyOp o κ Θ →
       ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), NiceAll D F → NiceAll D (B.opApply Θ F) ∧ NiceAll D (B.opAdj Θ F)
 
-section swap
-
-variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-
-def swapT (T : B.DTerm k r Wp Wq) : B.DTerm k r Wp Wq where
-  coef := T.coefAdj
-  coefAdj := T.coef
-  word := T.word
-  word_lie := T.word_lie
-  adj_id := fun x A₁ B₁ => by
-    have h := T.adj_id x B₁ A₁
-    simp only [B.hsInner] at h ⊢
-    simpa only [inner_conj_symm] using (congrArg (starRingEnd ℂ) h).symm
-
-theorem polyOp_swap {o κ : ℕ} {Θ : B.DiffOp k r Wp Wq} (h : CutMP.PolyOp o κ Θ) :
-    CutMP.PolyOp o κ (Θ.map swapT) := by
-  intro Tm hTm
-  rw [List.mem_map] at hTm
-  obtain ⟨T, hT, rfl⟩ := hTm
-  obtain ⟨hlen, P, ⟨q, hq, hPq⟩, hc, hca⟩ := h T hT
-  refine ⟨hlen, fun g => star (P g), ?_, fun g => hca g, fun g => ?_⟩
-  · refine ⟨MvPolynomial.rename Sum.swap (MvPolynomial.map (starRingEnd ℂ) q), ?_, fun g => ?_⟩
-    · exact le_trans (MvPolynomial.totalDegree_rename_le _ _) (le_trans (show (MvPolynomial.map (starRingEnd ℂ) q).totalDegree ≤ q.totalDegree from
-        Finset.sup_mono (MvPolynomial.support_map_subset _ _)) hq)
-    · show star (P g) = _
-      rw [hPq g, MvPolynomial.eval_rename, MvPolynomial.eval_map]
-      have e0 : (starRingEnd ℂ) ∘ (Sum.elim (fun x : Fin _ × Fin _ => g x.1 x.2) fun x => star (g x.1 x.2)) =
-          (Sum.elim (fun x : Fin _ × Fin _ => g x.1 x.2) fun x => star (g x.1 x.2)) ∘ Sum.swap := by
-        funext x
-        cases x <;> simp
-      have e1 := MvPolynomial.eval₂_comp_left (starRingEnd ℂ) (RingHom.id ℂ)
-        (Sum.elim (fun x : Fin _ × Fin _ => g x.1 x.2) fun x => star (g x.1 x.2)) q
-      rw [RingHom.comp_id, e0] at e1
-      exact e1
-  · show T.coef g = star (star (P g)) • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)
-    rw [star_star]
-    exact hc g
-
-end swap
-
 theorem opProp1_of_poly (hN : RDSNicePoly) {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     (D : B.RealPlaceData k r Wp Wq) {o κ : ℕ} {Θ : B.DiffOp k r Wp Wq} (hP : CutMP.PolyOp o κ Θ)

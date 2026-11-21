@@ -427,8 +427,6 @@ structure RealCol where
 
 variable {R F}
 
-def RealCol.toCol (Y : RealCol R F) : CxData.CxCol (fc := F.fc) (R.toCx F) := (R.toCx F).colDef (fun u t => (Y.ζ u t)⁻¹) Y.sEE
-
 structure RealCol.Char (Y : RealCol R F) : Prop where
   zeta : ∀ u t, ∃ n : ℕ, 0 < n ∧ Y.ζ u t ^ n = 1
   zeta0 : ∀ u, Y.ζ u A.μ0 = 1

@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueEx
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieAlgebraEigenDecompositionCMSignature
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSelfDualLatticeCmHomomorphismsDefiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexIdealRankOneTensorImageEqMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexIdealMulConjEqGramDetSelfDualStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSelfDualLatticeCmHomomorphismsDefinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexIdealRankOneTensorImageEqMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexIdealMulConjEqGramDetSelfDual
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM
 
@@ -28,12 +28,12 @@ theorem idealSt_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
         ∀ τ : 𝓞 E →+* 𝓞 K, τ H.rt = ρ →
           GlobalTheory.FlatCM.idx K p (FB.eigLat X.B.t.act τ) (GlobalTheory.FlatCM.subP FP FB MP τ) = 𝔫.map τ := by
   intro E _ _ _ H hH K _ _ ρ σ₁ p X gP gQ hg
-  obtain ⟨Λ, hfg, hstd, hdual, hdesc⟩ := GlobalTheory.T.exists_selfDual_lattice_cmHomomorphisms_definite E H hH K ρ σ₁ p X gP gQ hg
+  obtain ⟨Λ, hfg, hstd, hdual, hdesc⟩ := _root_.GlobalTheory.FlatCM.HomLat.exists_selfDual_lieSpan E H hH K ρ σ₁ p X gP gQ hg
   have hbinj : Function.Injective ((algebraMap (𝓞 E) E).comp (H.bar : 𝓞 E →+* 𝓞 E)) :=
     (RingOfIntegers.coe_injective (K := E)).comp (GlobalTheory.CM.ringOfIntegers_hom_injective _)
   let barE : E →+* E := IsFractionRing.lift hbinj
   have hbarE : ∀ x : 𝓞 E, barE x = ((H.bar x : 𝓞 E) : E) := fun x => IsFractionRing.lift_algebraMap hbinj x
-  refine ⟨_, GlobalTheory.T.index_ideal_mul_conj_eq_gram_det_selfDual E _ barE hbarE p gP Λ hfg hstd (hdual barE hbarE), ?_⟩
+  refine ⟨_, _root_.GlobalTheory.SelfDualIndex.idx_mul_map_bar_eq E _ barE hbarE p gP Λ hfg hstd (hdual barE hbarE), ?_⟩
   intro FP FB MP hMP τ hτ
   have hτinj : Function.Injective ((algebraMap (𝓞 K) K).comp τ) :=
     (RingOfIntegers.coe_injective (K := K)).comp (GlobalTheory.CM.ringOfIntegers_hom_injective _)
@@ -57,7 +57,7 @@ theorem idealSt_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   have hrk : latRank K (FP.eigLat (X.A true).t.act τ) = 1 := by
     rw [(GlobalTheory.CM.EigDec.eigen_decomposition E H K ρ (X.A true) FP 1 0 X.split X.typeP X.ρ_sq).1 τ, if_pos hτ]
   rw [subP, hdesc FP FB MP hMP τ hτ τE hτE]
-  exact GlobalTheory.T.indexIdeal_rankOne_tensor_image_eq_map E K τ τE hτE p _ _ _ MP Λ hfgA hrk (fun a => hinj (.inl a))
+  exact _root_.GlobalTheory.IdxTensor.idx_image_eq_map E K τ τE hτE p _ _ _ MP Λ hfgA hrk (fun a => hinj (.inl a))
     (iSupIndep.comp hind (f := fun a : Fin p => ((Sum.inl a : Fin p ⊕ Fin 0), τ)) fun a b e => by simpa using e)
     hfg hstd
 

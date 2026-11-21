@@ -2,12 +2,16 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeAndRelDimOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupPullbackAbelianSchemeDualNumberEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackLineBundleAutomorphismEqConstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualNumberUnitEqOfGermEqStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupPullbackAbelianSchemeDualNumberEq
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SubsingletonSpDualNumber
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackLineBundleAutomorphismEqConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualNumberUnitEqOfGermEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinIndepIntBilinFormCharZeroCombinationEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonomialBoundaryFamilyParamNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitPartOfPeriodTauMonomialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonomialBoundaryFamilyParamNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitPartOfPeriodTauMonomial
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -31,11 +35,11 @@ theorem dir_eq_zero_of_const : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
     · simp [constHom, TrivSqZeroExt.algebraMap_eq_inl, hρ]
   obtain ⟨B', _, π₁, π₂, w, c', h1, h2, h3, hw, hc', hrel⟩ := hc
   rw [hρc] at h2 hc' hrel
-  have hπ : π₁ = π₂ := GlobalTheory.T.groupPullback_abelianScheme_dualNumber_eq k Q.P.A Q.P.g B' ρ π₁ π₂ Q.P.isAb Q.P.smoothDim h1 h2 h3
+  have hπ : π₁ = π₂ := _root_.GlobalTheory.DualRigidityField.pullback_eq k Q.P.A Q.P.g B' ρ π₁ π₂ Q.P.isAb Q.P.smoothDim h1 h2 h3
   subst hπ
   have hab : IsAbelianScheme B' :=
     (GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback ρ Q.P.A B' π₁ Q.P.g h1 Q.P.isAb Q.P.smoothDim).1
-  obtain ⟨lam, hlam⟩ := GlobalTheory.T.pulledBackLineBundle_automorphism_eq_const B' Q.P.L π₁ hab Q.P.isLB w hw
+  obtain ⟨lam, hlam⟩ := _root_.GlobalTheory.PullAutConst.main B' Q.P.L π₁ hab Q.P.isLB w hw
   obtain ⟨zz⟩ : Nonempty (Sp (DualNumber k)) := inferInstance
   obtain ⟨J, hJ⟩ : ∃ J, Good Q.P.L zz J := by
     obtain ⟨J, hJ, -⟩ := exists_good Q.P.L Q.P.isLB zz (K := PEmpty) PEmpty.elim PEmpty.elim
@@ -48,10 +52,10 @@ theorem dir_eq_zero_of_const : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
       have := hJ (c' x ≫ π₁)
       simpa using this
     rw [hlam _ (c' x) zz _ hmem, (hc' x).1]
-  have htne := GlobalTheory.T.monomialBoundaryFamily_param_ne_zero Q t gam hmon hli hs
+  have htne := _root_.GlobalTheory.MonoParam.t_ne_zero Q t gam hmon hli hs
   have key : ∀ y z, ∑ i, a i * (gam i y z : k) = 0 := by
     intro y z
-    obtain ⟨τ₀, hτ⟩ := GlobalTheory.T.exists_unitPartOfPeriodTau_monomial Q t gam hmon hs htne y z
+    obtain ⟨τ₀, hτ⟩ := _root_.GlobalTheory.UnitTau.exists_isUnitTau Q t gam hmon hs htne y z
     let e : (DualNumber k)ˣ := ⟨1 + TrivSqZeroExt.inr (∑ i, a i * (gam i y z : k)),
       1 - TrivSqZeroExt.inr (∑ i, a i * (gam i y z : k)), by ext <;> simp, by ext <;> simp⟩
     have h := hrel y z τ₀ hτ e rfl zz J hJ
@@ -61,7 +65,7 @@ theorem dir_eq_zero_of_const : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
       have hG : ∀ G : ((Sp (DualNumber k)).presheaf.stalk zz)ˣ, G * G⁻¹ * G⁻¹ * G = 1 := fun G => by group
       rw [hG, _root_.one_mul] at h
       exact mul_right_cancel (h.symm.trans (_root_.one_mul _).symm)
-    have he := GlobalTheory.T.dualNumber_unit_eq_of_germ_eq k zz _ _ h'
+    have he := _root_.GlobalTheory.DualUnitGerm.unit_eq_of_germ_eq k zz _ _ h'
     have := congrArg (fun u : (DualNumber k)ˣ => TrivSqZeroExt.snd (u : DualNumber k)) he
     simpa [e] using this
   exact GlobalTheory.T.linIndep_intBilinForm_charZero_combination_eq_zero gam k a hli key

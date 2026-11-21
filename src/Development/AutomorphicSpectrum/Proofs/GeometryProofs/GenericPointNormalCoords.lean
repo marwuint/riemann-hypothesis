@@ -6,8 +6,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFullLevelAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCptGenResidueFieldGeneric
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsInGenericFibreStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FieldPointLiftsGenericFibreStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveOverCoordsExistStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveOverRestrictIntStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveOverCoordsExist
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveOverRestrictInt
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.XR
 open scoped CategoryTheory.Obj
@@ -103,8 +103,8 @@ theorem exists_cpt_of_genericPoint : ∀ (E : Type) [Field E] [NumberField E] [I
     congr 1
     ext1
     exact Subsingleton.elim (α := ℤ →+* Y.X.residueField e) _ _
-  obtain ⟨n, x, hx⟩ := GlobalTheory.T.projective_over_coords_exist ℤ Y.X (Y.s ≫ spMap (Int.castRingHom (𝓞 c.F)))
-    (GlobalTheory.T.projective_over_restrict_int (𝓞 c.F) Y.X Y.s Y.proj) (Y.X.residueField e) (Y.X.fromSpecResidueField e) hgen hover
+  obtain ⟨n, x, hx⟩ := _root_.GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist ℤ Y.X (Y.s ≫ spMap (Int.castRingHom (𝓞 c.F)))
+    (_root_.GlobalTheory.CompanionTheory.Ar.XR.isProjOver_comp_spMap_int (𝓞 c.F) Y.X Y.s Y.proj) (Y.X.residueField e) (Y.X.fromSpecResidueField e) hgen hover
   refine ⟨Y.X.residueField e, inferInstance, hch, n, x, y, ?_, ?_, ?_⟩
   · rw [hy]; exact hx
   · rw [hy]; exact normalCpt_of_isCptGen hgen Y.normal

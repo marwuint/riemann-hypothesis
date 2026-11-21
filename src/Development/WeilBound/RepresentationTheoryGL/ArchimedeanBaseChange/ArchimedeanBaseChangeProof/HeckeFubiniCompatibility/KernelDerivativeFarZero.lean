@@ -1,7 +1,10 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableG
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHoldStatement
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.MultHasCompactSupport
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelActionEquivariantStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelActionEquivariant
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivativeCalculusHoldsStatement
 
 noncomputable section
@@ -168,7 +171,7 @@ theorem act_mem_CE (M : KMod n)
     {k : Mat n → (M.V →L[ℂ] M.V)} (hk : ContDiffOn ℝ ∞ k (GLs n)) {R : ℝ} (hR : ∀ y ∈ GLs n, R < lg y → k y = 0)
     (hkq : ∀ y ∈ GLs n, ∀ k₁ : Matrix.unitaryGroup (Fin n) ℂ, k (k₁.1 * y) = M.ρ k₁ * k y)
     {F : Mat n → M.V} (hF : ContinuousOn F (GLs n)) : act μ M k F ∈ CE M :=
-  ⟨act_contDiffOn μ M hk hR hF, (GlobalTheory.T.kernel_action_equivariant GlobalTheory.T.length_function_facts_hold n μ M k F ⟨hk.continuousOn, R, hR⟩ hF hkq).2⟩
+  ⟨act_contDiffOn μ M hk hR hF, (_root_.GlobalTheory.CompanionTheory.WaveMult.act_kReg_section GlobalTheory.T.length_function_facts_hold n μ M k F ⟨hk.continuousOn, R, hR⟩ hF hkq).2⟩
 
 section Clm
 

@@ -39,10 +39,6 @@ theorem hhat_neg_left (u v : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I (-u) v = 
   have := hhat_sub_left I 0 u v
   rwa [zero_sub, DictLat.hhat_zero_left, zero_sub] at this
 
-theorem hhat_neg_right (u v : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I u (-v) = -hhat I u v := by
-  have := hhat_sub_right I u 0 v
-  rwa [zero_sub, DictLat.hhat_zero_right, zero_sub] at this
-
 theorem pair_right (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {u : Fin I.n → I.E ⊗[I.F] Af I.F} (hu : u ∈ I.Lf)
     {S : Set (VA I)} (hS : ∀ s ∈ S, hhat I u s ∈ Wq I w) {v : VA I} (hv : InMod I g S v) : hhat I u v ∈ Wq I w := by
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hv

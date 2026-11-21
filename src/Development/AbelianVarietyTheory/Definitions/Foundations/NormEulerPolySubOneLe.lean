@@ -267,24 +267,6 @@ theorem Bounded.add {r r' : ℕ} {κ : ℝ} (h : Bounded T c r κ) (h' : Bounded
   ⟨by simpa using add_le_add (h w hw).1 (h' w hw).1, fun b hb =>
     (Multiset.mem_add.1 hb).elim ((h w hw).2 b) ((h' w hw).2 b)⟩
 
-def IsCont (T : Set (HeightOneSpectrum (𝓞 K))) (c : Fam K) (σ : ℝ) (Λ : ℂ → ℂ) : Prop :=
-  DifferentiableOn ℂ Λ {s | σ < s.re} ∧ ∃ σ₀ : ℝ, ∀ s : ℂ, σ₀ < s.re → Converges T c s ∧ Λ s = eulerProd T c s
-
-def IsMerCont (T : Set (HeightOneSpectrum (𝓞 K))) (c : Fam K) (σ : ℝ) (Λ : ℂ → ℂ) : Prop :=
-  MeromorphicOn Λ {s | σ < s.re} ∧ ∃ σ₀ : ℝ, ∀ s : ℂ, σ₀ < s.re → Converges T c s ∧ Λ s = eulerProd T c s
-
-theorem IsCont.unique {σ : ℝ} {Λ Λ' : ℂ → ℂ} (h : IsCont T c σ Λ) (h' : IsCont T c σ Λ') :
-    Set.EqOn Λ Λ' {s | σ < s.re} := by
-  obtain ⟨h1, a, h2⟩ := h
-  obtain ⟨h1', a', h2'⟩ := h'
-  have ho : ∀ x : ℝ, IsOpen {s : ℂ | x < s.re} := fun x => isOpen_lt continuous_const Complex.continuous_re
-  refine (h1.analyticOnNhd (ho σ)).eqOn_of_preconnected_of_eventuallyEq (h1'.analyticOnNhd (ho σ))
-    (convex_halfSpace_re_gt σ).isPreconnected (z₀ := ((max σ (max a a') + 1 : ℝ) : ℂ))
-    (show σ < max σ (max a a') + 1 from (le_max_left _ _).trans_lt (lt_add_one _)) ?_
-  filter_upwards [(ho (max σ (max a a'))).mem_nhds (lt_add_one (max σ (max a a')))] with s hs
-  simp only [Set.mem_setOf_eq, max_lt_iff] at hs
-  rw [(h2 s hs.2.1).2, (h2' s hs.2.2).2]
-
 end Product
 
 section Hecke
@@ -361,9 +343,6 @@ theorem LvTw_eq (c : Fam E) (m : HeightOneSpectrum (𝓞 E) → ℂˣ) (v : Heig
       ((c w).map fun b : ℂˣ => (1 - (b : ℂ) * (m w : ℂ)⁻¹ * npow w (-s))⁻¹).prod := by
   simp [LvTw, Lv, locL_twist]
 
-theorem Lv_add (c c' : Fam E) (v : HeightOneSpectrum (𝓞 F)) (s : ℂ) : Lv (c + c') v s = Lv c v s * Lv c' v s := by
-  simp [Lv, locL_add, Finset.prod_mul_distrib]
-
 theorem hasProd_Lv {S : Set (HeightOneSpectrum (𝓞 F))} {c : Fam E} {s : ℂ} (h : Converges (above E S) c s) :
     HasProd (fun v : {v // v ∉ S} => Lv c v.1 s) (LS S c s) := by
   let f : {w // w ∉ above E S} → {v // v ∉ S} := fun w => ⟨w.1.under (𝓞 F), w.2⟩
@@ -439,10 +418,6 @@ variable (E) in
 
 def dSfun (S : Set (HeightOneSpectrum (𝓞 F))) (a b : ℕ) (s : ℂ) : ℂ := ∏' v : {v // v ∉ S}, dv E a b v.1 s
 
-variable (E) in
-
-def dS (S : Set (HeightOneSpectrum (𝓞 F))) (a b : ℕ) : ℂ := dSfun E S a b (((b : ℂ) - a) / 2)
-
 theorem dv_center (a t : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
     dv E a (a + t) v ((t : ℂ) / 2) = ∏ k ∈ Finset.Icc (t + 1) (t + a), locL (etaFam E k) v k := by
   rw [dv, ← Finset.prod_range_reflect, ← Finset.Ico_add_one_right_eq_Icc, Finset.prod_Ico_eq_prod_range,
@@ -465,30 +440,7 @@ theorem hasProd_dv (S : Set (HeightOneSpectrum (𝓞 F))) (a b : ℕ) {s : ℂ} 
 theorem dSfun_eq (S : Set (HeightOneSpectrum (𝓞 F))) (a b : ℕ) {s : ℂ} (hs : 0 < s.re) :
     dSfun E S a b s = ∏ i ∈ Finset.range a, etaL E S (b + i) (2 * s + a - i) := (hasProd_dv S a b hs).tprod_eq
 
-theorem dS_eq (S : Set (HeightOneSpectrum (𝓞 F))) (a : ℕ) {t : ℕ} (ht : 1 ≤ t) :
-    dS E S a (a + t) = ∏ k ∈ Finset.Icc (t + 1) (t + a), etaL E S k k ∧ dS E S a (a + t) ≠ 0 := by
-  have hc : ∀ k ∈ Finset.Icc (t + 1) (t + a), Converges S (etaFam E k) k := fun k hk =>
-    converges_etaFam S k (by
-      have := (Finset.mem_Icc.1 hk).1
-      rw [Complex.natCast_re]
-      exact_mod_cast (by omega : 1 < k))
-  have e : dS E S a (a + t) = ∏ k ∈ Finset.Icc (t + 1) (t + a), etaL E S k k := by
-    rw [dS, dSfun, show (((a + t : ℕ) : ℂ) - a) / 2 = (t : ℂ) / 2 by push_cast; ring]
-    simp only [dv_center]
-    exact (hasProd_prod fun k hk => (hc k hk).hasProd).tprod_eq
-  exact ⟨e, e ▸ Finset.prod_ne_zero_iff.2 fun k hk => (hc k hk).ne_zero⟩
-
 end Ext
-
-example : eulerFac {Units.mk0 2 two_ne_zero, (Units.mk0 2 two_ne_zero)⁻¹} (1 / 4) = 16 / 7 := by
-  simp [eulerFac, eulerPoly]; norm_num
-
-example {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (x : ℂˣ) : seg w x 1 = {x} := by
-  have : npowU w 0 = 1 := Units.ext (by simp [npow])
-  simp [seg, this]
-
-example {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
-    ¬ Converges (K := K) ∅ (fun _ => {1}) 0 := fun h => h.1 w (by simp) (by simp [eulerPoly, npow])
 
 end GlobalTheory.LFun
 

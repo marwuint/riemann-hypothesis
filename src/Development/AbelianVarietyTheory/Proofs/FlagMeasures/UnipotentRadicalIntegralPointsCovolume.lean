@@ -6,31 +6,31 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointMajorantFram
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointRationalEquivariance
 import Formalism.HarderNarasimhan.ShiftInvariance
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSelfDualFlagOfSaturatedIsotropicFlagStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualHermitianFlagPieceHeightsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSelfDualFlagOfSaturatedIsotropicFlag
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualHermitianFlagPieceHeights
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualHermitianFlagAtComplexEmbeddingStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ComplexFlagAtEmbeddingFrameFinrankAndLowersStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagUnipotentRadicalEqLoweringStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagUnipotentRadicalEqLowering
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinrankMatricesLoweringFiltrationByEqSuccAddStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalBlockFrameOfComplexFlagStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSkewOrthonormalBasisAdaptedFiltrationStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalBlockFrameOfComplexFlag
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSkewOrthonormalBasisAdaptedFiltration
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealComplexSpanOrthonormalSkewFamilyStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitaryLayerCoordsToBlocksStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumePiLatticeUnitaryCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumePiLatticeUnitaryCoordinates
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HomLatticeCovolumeEmbeddingFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBiorthogonalFrameOfSaturatedFlagStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBiorthogonalFrameOfSaturatedFlag
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BiorthogonalBlockFramesTriangularStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalBlockFrameLocalSplitStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HeightFlagPieceTriangularFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSkewIntegerNormCoprimePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConjStableLatticeRealImagCovolumeLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ZlatticeCovolumeEqOfCoprimeScalarsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalBlockFrameLocalSplit
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HeightFlagPieceTriangularFrame
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSkewIntegerNormCoprimePrime
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConjStableLatticeRealImagCovolumeLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ZlatticeCovolumeEqOfCoprimeScalars
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitaryLeadingTermOfSkewLayerStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdjointMemAndExistsIntegralPointStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdjointMemAndExistsIntegralPoint
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegralPointsAlgebraSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EmbeddingsMatchInfinitePlacesAutInstanceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagUnipotentDimEqSumPairsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ProdLayerHeightQuotientsEqSqStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EmbeddingsMatchInfinitePlacesAutInstance
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagUnipotentDimEqSumPairs
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ProdLayerHeightQuotientsEqSq
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase GlobalTheory.RadCov
 
@@ -60,10 +60,10 @@ theorem real_domain (E : Type) [Field E] [NumberField E] [StarRing E] (hE : Form
     fun y => Iff.rfl
   generalize L.comap (realMul ι κ 1) = A at hA
   generalize L.comap (realMul ι κ Complex.I) = B at hB
-  obtain ⟨⟨dA, lA⟩, ⟨dB, lB⟩, hle⟩ := GlobalTheory.T.conjStable_lattice_real_imag_covolume_le ι κ L hc A B hA hB
+  obtain ⟨⟨dA, lA⟩, ⟨dB, lB⟩, hle⟩ := _root_.GlobalTheory.ReImLattice.real_imag_covolume_le ι κ L hc A B hA hB
   have heq : ZLattice.covolume A volume = ZLattice.covolume B volume := by
-    refine GlobalTheory.T.zlattice_covolume_eq_of_coprime_scalars ι κ A B fun p hp => ?_
-    obtain ⟨δ, N, h1, h2, h3⟩ := GlobalTheory.T.exists_skew_integer_norm_coprime_prime E hE ι φ hφ p hp
+    refine _root_.GlobalTheory.CovScal.covolume_eq_of_scalars ι κ A B fun p hp => ?_
+    obtain ⟨δ, N, h1, h2, h3⟩ := _root_.GlobalTheory.RadCov.SkewUnit.exists_skew_norm_coprime E hE ι φ hφ p hp
     have hδ : ∀ v, φ v (δ : E) = Complex.I * ((φ v (δ : E)).im : ℂ) := by
       intro v
       have h := hE.2.1 (φ v) (δ : E)
@@ -127,7 +127,7 @@ theorem layer_covolume (E : Type) [Field E] [NumberField E] [StarRing E] (hE : I
       ∏ b ∈ Finset.range m, Formalism.HermitianLatticesTheory.vInv E ^ (Formalism.HermitianLatticesTheory.fDeg E * (r b * r (b + c + 1))) *
         (pieceHt X F b ^ r (b + c + 1) / pieceHt X F (b + c + 1) ^ r b) := by
   classical
-  obtain ⟨hloc, hrat⟩ := GlobalTheory.T.rational_block_frame_local_split E n m F r T T' Λ hT hΛ hF
+  obtain ⟨hloc, hrat⟩ := _root_.GlobalTheory.RadCov.LocSplit.locSplit E n m F r T T' Λ hT hΛ hF
   obtain ⟨hr1, hr2⟩ := hrat c
   choose Φ hΦ1 hΦ2 using fun v => GlobalTheory.T.exists_unitary_layerCoords_to_blocks n m d _ r (U v) (B v) deg (hU v) (hW v) (hB v) (hs v) c
   set G : ι → ∀ b, Matrix (Fin (r b)) (Fin (r b)) ℂ :=
@@ -166,7 +166,7 @@ theorem layer_covolume (E : Type) [Field E] [NumberField E] [StarRing E] (hE : I
   have hM := fun b : Fin m => GlobalTheory.T.homLatticeCovolume_embedding_family E hE ι φ hX.1 _ _ (Λ b) (Λ (b + c + 1)) (hΛ _) (hΛ _)
     (fun v => G v b) (fun v => G v (b + c + 1)) (fun v => hdet v _) (fun v => hdet v _) (M b)
     (fun z => Iff.rfl)
-  obtain ⟨dL, lL, hcov⟩ := GlobalTheory.T.covolume_pi_lattice_unitary_coordinates ι {i : Fin d // deg i = c} (Fin m) (fun b => r b)
+  obtain ⟨dL, lL, hcov⟩ := _root_.GlobalTheory.CovPi.covolume_pi_unitary ι {i : Fin d // deg i = c} (Fin m) (fun b => r b)
     (fun b => r (b + c + 1)) Φ hΦ1 M (fun b => (hM b).imp fun _ h => h.1) L (fun z => by
       rw [hL]
       constructor
@@ -189,7 +189,7 @@ theorem layer_covolume (E : Type) [Field E] [NumberField E] [StarRing E] (hE : I
     have : 0 < |(discr E : ℝ)| := abs_pos.2 (by exact_mod_cast discr_ne_zero E)
     unfold Formalism.HermitianLatticesTheory.vInv
     positivity
-  have hp := GlobalTheory.T.height_flag_piece_triangular_frame E hE ι n m φ P X hX hP F r T T' Λ hT hΛ hF U hU hW
+  have hp := _root_.GlobalTheory.PieceCov.main E hE ι n m φ P X hX hP F r T T' Λ hT hΛ hF U hU hW
   rw [h, hp, hp, div_mul_cancel_left₀ (pow_pos hv _).ne', mul_pow, ← pow_mul, inv_pow, mul_assoc,
     mul_assoc, div_eq_mul_inv]
 
@@ -240,12 +240,12 @@ theorem adj_frame {E : Type} [Field E] [StarRing E] {n : ℕ} {J : Matrix (Fin n
 theorem radicalCovolume : RadicalCovolume := by
   classical
   intro I xf a j hj S hS ν _ hν
-  obtain ⟨F, r, hF, hFm, hFS, hr, hrj, hra, hr0⟩ := GlobalTheory.T.exists_selfDual_flag_of_saturated_isotropic_flag I xf a j S hS
-  obtain ⟨hτ, hha, hh1⟩ := GlobalTheory.T.selfDualHermitianFlag_piece_heights I xf a j hj S hS F hF hFm hFS
+  obtain ⟨F, r, hF, hFm, hFS, hr, hrj, hra, hr0⟩ := _root_.GlobalTheory.RadCov.FullFlag.main I xf a j S hS
+  obtain ⟨hτ, hha, hh1⟩ := _root_.GlobalTheory.RadCov.pieceHt_dualFlag I xf a j hj S hS F hF hFm hFS
   obtain ⟨-, hfg, hsp, -, -⟩ := GlobalTheory.PointLattice.lamX_selfDual I (1, xf)
   obtain ⟨htc, hf1, hf2, -, -⟩ := GlobalTheory.Count.FrameMajorant.frames_give_majorants I (1, xf)
-  obtain ⟨hadjL, helt⟩ := GlobalTheory.T.adjoint_mem_and_exists_integral_point I xf
-  have hX := GlobalTheory.T.embeddingsMatchInfinitePlaces_autInstance I xf
+  obtain ⟨hadjL, helt⟩ := _root_.GlobalTheory.RadCov.RatElt.adj_mem_and_exists_latGroup I xf
+  have hX := _root_.GlobalTheory.RadCov.Place.placeMatch I xf
   have hJ : I.Jᴴ = I.J := I.J_herm
   have hφ := fun v => I.cm.cmUnram.2.1 (I.φ v)
   set m := 2 * a + 1 with hm
@@ -254,14 +254,14 @@ theorem radicalCovolume : RadicalCovolume := by
   have hW : ∀ v, IsDualFlag (Formalism.REAL.Jm (I.ε v)) (W v) m ∧ W v m = ⊤ := fun v => GlobalTheory.T.selfDual_hermitianFlag_at_complex_embedding I.E I.n m I.J (I.φ v) (I.P v) (I.ε v) F (hφ v) (I.P_unit v) (I.P_spec v) hF hsp
   have hWr := fun v => GlobalTheory.T.complexFlagAtEmbeddingFrame_finrank_and_lowers I.E I.n (I.φ v) (I.P v) F (I.P_unit v)
   have hN : ∀ v, flagN (I.ε v) (flagAt I S v) = {g | uMat g - 1 ∈ lowers (W v) 0} := fun v =>
-    GlobalTheory.T.isotropicFlagUnipotentRadical_eq_lowering I.n a (I.ε v) (W v) _ (hW v).1 (hW v).2 fun i => by
+    _root_.GlobalTheory.RadFullFlag.flagN_eq_lowers I.n a (I.ε v) (W v) _ (hW v).1 (hW v).2 fun i => by
       simp only [hWdef, locFlag, flagAt, hFS]
-  choose U hU hUW using fun v => GlobalTheory.T.exists_orthonormal_block_frame_of_complex_flag I.n m (W v) r (hW v).1.1 (hW v).1.2.1
+  choose U hU hUW using fun v => _root_.GlobalTheory.RadCov.exists_orthonormal_block_frame I.n m (W v) r (hW v).1.1 (hW v).1.2.1
     (fun b hb => ((hW v).1.2.2.1 b hb).trans (hW v).2) (fun b => by
       rw [hWdef, (hWr v).1, (hWr v).1, hr])
   obtain ⟨deg, hdeg⟩ := exists_deg m (fun c => ∑ b ∈ Finset.range m, r b * r (b + c + 1))
     (fun c hc => Finset.sum_eq_zero fun b _ => by rw [hr0 (b + c + 1) (by omega), mul_zero])
-    (dimN I.n j) (GlobalTheory.T.isotropicFlagUnipotentDim_eq_sum_pairs I.n a j r hrj hra hr0)
+    (dimN I.n j) (_root_.GlobalTheory.RadicalDimSum.dimN_eq_sum_pairs I.n a j r hrj hra hr0)
   have hbot : ∀ v, lowers (W v) m = ⊥ := fun v =>
     lowers_eq_bot (hW v).1.2.1 (hW v).1.2.2.1 (by rw [(hW v).2]; simp)
   have hadj : ∀ v c, ∀ X ∈ lowers (W v) c,
@@ -269,7 +269,7 @@ theorem radicalCovolume : RadicalCovolume := by
     lowers_adj (Formalism.REAL.Jm_conjTranspose _) (hW v).1 hX
       (by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.one_mul])
       (fun y _ => by rw [(hW v).2]; trivial)
-  choose B hB hBG hBs using fun v => GlobalTheory.T.exists_skew_orthonormal_basis_adapted_filtration I.n (dimN I.n j) m (I.ε v) (lowers (W v)) deg
+  choose B hB hBG hBs using fun v => _root_.GlobalTheory.SkewBasis.exists_skew_basis I.n (dimN I.n j) m (I.ε v) (lowers (W v)) deg
     (lowers_succ_le (hW v).1.1) (hbot v) (hadj v) (fun c => by
       rw [hdeg, GlobalTheory.T.finrank_matricesLoweringFiltrationBy_eq_succ_add I.n m (W v) r (U v) (hU v) (hUW v) c])
   have hreal := fun v s => GlobalTheory.T.real_complex_span_orthonormal_skew_family I.n _ (I.ε v) (B v) s (hB v) (hBG v)
@@ -277,7 +277,7 @@ theorem radicalCovolume : RadicalCovolume := by
     rcases le_total b m with h | h
     · exact hF.1 h
     · exact (hF.2.2.1 b h).le
-  obtain ⟨T, T', Λ, hT, hΛ, hFT⟩ := GlobalTheory.T.exists_biorthogonal_frame_of_saturated_flag I.E I.n m F r hF.1 hF.2.1 hF.2.2.1 ⟨hfg, hsp⟩
+  obtain ⟨T, T', Λ, hT, hΛ, hFT⟩ := _root_.GlobalTheory.RadCov.exists_biorth_of_saturated_flag I.E I.n m F r hF.1 hF.2.1 hF.2.2.1 ⟨hfg, hsp⟩
     (fun b y hy hyb => by
       by_cases hb : m ≤ b
       · rwa [hF.2.2.1 b hb]
@@ -429,7 +429,7 @@ theorem radicalCovolume : RadicalCovolume := by
     exact mul_nonneg (by positivity) (Finset.prod_nonneg fun b _ =>
       mul_nonneg (by positivity) (div_pos (pow_pos (hpos _) _) (pow_pos (hpos _) _)).le))]
   simp only [Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← Finset.mul_sum]
-  rw [← GlobalTheory.T.isotropicFlagUnipotentDim_eq_sum_pairs I.n a j r hrj hra hr0, GlobalTheory.T.prod_layer_height_quotients_eq_sq I.n I.f a j r _ _ hrj hra hr0 hτ hha hh1, ← mul_assoc,
+  rw [← _root_.GlobalTheory.RadicalDimSum.dimN_eq_sum_pairs I.n a j r hrj hra hr0, _root_.GlobalTheory.HtProd.htProd I.n I.f a j r _ _ hrj hra hr0 hτ hha hh1, ← mul_assoc,
     ← mul_pow, Real.sqrt_mul (by positivity), Real.sqrt_sq hlp, Real.sqrt_eq_rpow, ← Real.rpow_natCast,
     ← Real.rpow_mul (by positivity)]
   congr 2

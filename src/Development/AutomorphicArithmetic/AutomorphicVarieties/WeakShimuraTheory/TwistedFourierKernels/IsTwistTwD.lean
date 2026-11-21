@@ -36,9 +36,6 @@ def twD (D : GDet n A G) (γ : G →* Aˣ) : GDet n A G where
 
 theorem isTwist_twD (D : GDet n A G) (γ : G →* Aˣ) : D.IsTwist γ (twD D γ) := fun _ _ _ _ => rfl
 
-theorem eq_twD {D D' : GDet n A G} {γ : G →* Aˣ} (h : D.IsTwist γ D') : D' = twD D γ :=
-  GDet.ext fun B _ _ y => h B y
-
 theorem chi_twD (D : GDet n A G) (γ : G →* Aˣ) (y : MonoidAlgebra A G) : (twD D γ).chi y = D.chi (twA γ A y) := by
   change D.D (Polynomial A) (twA γ (Polynomial A) _) = D.D (Polynomial A) _
   congr 1
@@ -76,14 +73,6 @@ theorem Anti.mono {F : GFrame l} {Q Q' : Type} [CommGroup Q] [CommGroup Q'] {γ 
 structure TwCh (F : GFrame l) {R : Type} [CommRing R] [IsLocalRing R] (γ : F.G₀ →* Rˣ) : Prop extends Anti F γ where
   cont : AdicCont (maximalIdeal R) fun g => (γ g : R)
   red : ∀ g, (γ g : R) - 1 ∈ maximalIdeal R
-
-theorem TwCh.one (F : GFrame l) (R : Type) [CommRing R] [IsLocalRing R] : TwCh F (1 : F.G₀ →* Rˣ) where
-  conj g := by simp
-  iu u := by simp
-  i0 := by simp
-  mu v g _ := rfl
-  cont N := IsLocallyConstant.of_constant _ fun _ _ => rfl
-  red g := by simp
 
 variable {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n}
 

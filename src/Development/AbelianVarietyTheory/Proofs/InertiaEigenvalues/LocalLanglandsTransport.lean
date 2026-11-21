@@ -13,14 +13,14 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialTwJacquetOfSurjective
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousRingEquivLocalFieldPreservesValuationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportIrrGLBijectiveDegreeCharZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportKeepsCuspidalTwistsCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsDataTransportLocalFieldIsoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankinSelbergEpsilonTransportStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceOverTransportRingIsoSymmStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalArtinMapUniqueTransportPlaceIsoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecTransportFieldIsoStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousRingEquivLocalFieldPreservesValuation
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportIrrGLBijectiveDegreeCharZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportKeepsCuspidalTwistsCharacters
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsDataTransportLocalFieldIso
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankinSelbergEpsilonTransport
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceOverTransportRingIsoSymm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalArtinMapUniqueTransportPlaceIso
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecTransportFieldIso
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecUniqueOfLawsStatement
 
 noncomputable section
@@ -87,11 +87,11 @@ theorem fieldCompatible : GlobalArtinReciprocity → ChevalleyUnits → BrauerDe
   have P : PlaceIso A w A' w' φ j i := ⟨h1, h2, h3, h4⟩
   have := charZero_compl w
   have := charZero_compl w'
-  have hs : Continuous i.symm := (GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation _ _ i h3).1
-  obtain ⟨T, hT, hTd⟩ := GlobalTheory.T.transportIrrGL_bijective_degree_charZero _ _ i h3
-  obtain ⟨hcu, hch⟩ := GlobalTheory.T.transport_keeps_cuspidal_twists_characters _ _ i h3
-  obtain ⟨S, hS, hSd, hS0, hSs, hSc, hSt, hSp, hSi, hSo⟩ := GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h E' Ω' A' w' h' φ j i P
-  have hart := GlobalTheory.T.localArtinMap_unique_transport_placeIso hG hC E Ω A w h E' Ω' A' w' h' φ j i P a a' ha ha'
+  have hs : Continuous i.symm := (_root_.GlobalTheory.LocalFieldIso.continuous_iso_keeps_valuation _ _ i h3).1
+  obtain ⟨T, hT, hTd⟩ := _root_.GlobalTheory.transport_irrGL_bijective _ _ i h3
+  obtain ⟨hcu, hch⟩ := _root_.GlobalTheory.LocLanglands.repRel_isCusp_nu_ofChar _ _ i h3
+  obtain ⟨S, hS, hSd, hS0, hSs, hSc, hSt, hSp, hSi, hSo⟩ := _root_.GlobalTheory.WDTransport.exists_equiv_wd E Ω A w h E' Ω' A' w' h' φ j i P
+  have hart := _root_.GlobalTheory.LocLanglands.isLocalArtin_transport hG hC E Ω A w h E' Ω' A' w' h' φ j i P a a' ha ha'
   have hrel : ∀ x, RepRel i x (T x) := fun x => (hT _ _).2 rfl
   have hcusp : ∀ x, x.IsCusp ↔ (T x).IsCusp := fun x => (hcu _ _ (hrel x)).1
   have hpsi : ∀ ψ : AddChar (w.adicCompletion E) Circle, ∀ x, psiMap i ψ (i x) = ψ x := fun ψ x => by
@@ -114,12 +114,12 @@ theorem fieldCompatible : GlobalArtinReciprocity → ChevalleyUnits → BrauerDe
       have key := H'.eps (psiMap i ψ) (hψ.comp hs) hne m ρ' τ' hc
       rw [hρ', hτ'] at key
       simp only [hSc, S.apply_symm_apply]
-      exact GlobalTheory.T.rankin_selberg_epsilon_transport _ _ i.symm hs (psiMap i ψ) ψ (fun _ => rfl) m ρ' ρ τ' τ _
+      exact _root_.GlobalTheory.LocLanglands.hasPairEps_transport _ _ i.symm hs (psiMap i ψ) ψ (fun _ => rfl) m ρ' ρ τ' τ _
         (repRel_symm (hρ' ▸ hrel _)) (repRel_symm (hτ' ▸ hrel _)) key
     · rw [hcusp, H'.cusp, ← hSi, S.apply_symm_apply]
     · let f : Segment (w.adicCompletion E) → Segment (w'.adicCompletion E') := fun Δ =>
         Segment.ofFirst (T Δ.first) ((hcusp _).1 Δ.isCusp_first) Δ.len Δ.len_pos
-      have hl := GlobalTheory.T.isLanglandsData_transport_localFieldIso _ _ i h3 l (l.map f) x (T x)
+      have hl := _root_.GlobalTheory.LocLanglands.isL_transport _ _ i h3 l (l.map f) x (T x)
         (by rw [List.forall₂_map_right_iff, List.forall₂_same]; exact fun Δ _ => ⟨hrel _, rfl⟩) (hrel x) hx
       rw [H'.langlands _ _ hl, Equiv.symm_apply_eq]
       clear hl hx
@@ -131,7 +131,7 @@ theorem fieldCompatible : GlobalArtinReciprocity → ChevalleyUnits → BrauerDe
         rfl
   obtain ⟨ψ, hψ, hψ1⟩ := exists_continuous_addChar_ne_one (w.adicCompletion E)
   have hE : ε E w h ψ = fun y => ε' E' w' h' (psiMap i ψ) (S y) := funext fun y =>
-    GlobalTheory.T.rec_transport_field_iso hG hC hB hL E Ω A w h E' Ω' A' w' h' φ j i P ε ε' hε hε' ψ _ hψ hψ1 (hpsi ψ) y _ ((hS _ _).2 rfl)
+    _root_.GlobalTheory.LocLanglands.EpsUnique.eps_eq_of_placeIso hG hC hB hL E Ω A w h E' Ω' A' w' h' φ j i P ε ε' hε hε' ψ _ hψ hψ1 (hpsi ψ) y _ ((hS _ _).2 rfl)
   have hrc := GlobalTheory.T.rec_unique_of_laws hLC hLE hBZ E Ω A w h a ha _ rc _ ψ _ hψ hψ1 hE H.toLawsMin M
   have hπ : T (cls π) = cls π' := (hT _ _).1 ⟨n, π, π', e, rfl, rfl, he⟩
   refine exists_of_wdRel ((hS _ _).2 ?_) (H.dim _)

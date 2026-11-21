@@ -18,8 +18,4 @@ def PrincipalReductionOfBoundedGens.Statement : Prop :=
 
 end Lemmas
 
-section Examples
-
-end Examples
-
 end GroundTheory.Heights₂.Heights.NumbersDVR

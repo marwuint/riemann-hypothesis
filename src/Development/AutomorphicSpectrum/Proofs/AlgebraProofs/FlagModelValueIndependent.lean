@@ -6,10 +6,14 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinFlagMo
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ImportsAlt
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.JoinVerticalDivisorStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.JoinTwoModels
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelJoinLeftStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelJoinRightStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagPlainValueIndependentStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagFurtherTermIndependentStatementStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelJoinLeft
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ExSub
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelJoinRight
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ExSubAlt
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagPlainValueIndependent
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ImportsTerAlt
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagFurtherTermIndependentStatement
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ImportsBisFurther
 
 namespace GlobalTheory.CompanionTheory.CommAlg.FlagModelValue
 
@@ -17,8 +21,8 @@ open GroundTheory.Heights₂.Heights.NumbersDVR in
 
 theorem main : FlagModelValueIndependence.Statement :=
   FlagModelValueIndependence.proof
-    (FlagPairValueIndependence.proof GlobalTheory.T.flag_plain_value_independent GlobalTheory.T.flag_further_term_independent_statement)
+    (FlagPairValueIndependence.proof _root_.GlobalTheory.CompanionTheory.CommAlg.FlagPlainValue.main _root_.GlobalTheory.CompanionTheory.Ar.Num.flag_further_term_independent)
     (FlagModelCommonModel.proof GlobalTheory.CompanionTheory.CommAlg.joinTwoModels GlobalTheory.CompanionTheory.CommAlg.JoinPullbackAlt.main
-      GlobalTheory.CompanionTheory.Heights.join_vertical_divisor_statement GlobalTheory.T.flag_model_join_left GlobalTheory.T.flag_model_join_right)
+      GlobalTheory.CompanionTheory.Heights.join_vertical_divisor_statement _root_.GlobalTheory.CompanionTheory.Ar.Num.FlagModelJoinLeft.main _root_.GlobalTheory.CompanionTheory.Ar.Num.FlagModelJoinRight.main)
 
 end GlobalTheory.CompanionTheory.CommAlg.FlagModelValue

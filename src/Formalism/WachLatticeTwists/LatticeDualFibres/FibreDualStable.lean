@@ -1,5 +1,6 @@
 import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
-import Formalism.WachLatticeTwists.LatticeDualFibres.MapHOneCommSquare
+import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
+import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
 
 universe u
 
@@ -52,37 +53,6 @@ theorem dualLat_stable {V V' : Type u} [AddCommGroup V] [Module O V] [AddCommGro
   show b x (ρ' g f) ∈ (1 : Submodule O (FractionRing O))
   rw [ex, hb]
   exact Submodule.smul_mem _ _ (hf _ hx')
-
-theorem fibre_stable {VY VT : Type u} [AddCommGroup VY] [Module O VY] [AddCommGroup VT]
-    [Module O VT] {ρY : Representation O G VY} {ρT : Representation O G VT} {Y : Submodule O VY}
-    {T : Submodule O VT} {φ : Y →ₗ[O] VT ⧸ T} (hY : StableUnder ρY Y)
-    (hφ : EquivToQuot ρY ρT Y T φ) : StableUnder (ρY.prod ρT) (fibre Y T φ) := by
-  rintro g ⟨y, t⟩ ⟨hy, hyt⟩
-  exact (show ∃ h : ρY g y ∈ Y, φ ⟨ρY g y, h⟩ = Submodule.Quotient.mk (ρT g t) from
-    ⟨hY g y hy, hφ g ⟨y, hy⟩ (hY g y hy) t hyt⟩)
-
-theorem fibreDual_stable {VY VT VY' VT' : Type u} [AddCommGroup VY] [Module O VY]
-    [AddCommGroup VT] [Module O VT] [AddCommGroup VY'] [Module O VY'] [AddCommGroup VT']
-    [Module O VT'] {ε : G →* Oˣ} {ρY : Representation O G VY} {ρT : Representation O G VT}
-    {ρY' : Representation O G VY'} {ρT' : Representation O G VT'}
-    {bY : VY →ₗ[O] VY' →ₗ[O] FractionRing O} {bT : VT →ₗ[O] VT' →ₗ[O] FractionRing O}
-    {Y : Submodule O VY} {T : Submodule O VT} {φ : Y →ₗ[O] VT ⧸ T}
-    (hY : StableUnder ρY Y) (hT : StableUnder ρT T) (hφ : EquivToQuot ρY ρT Y T φ)
-    (hbY : EquivPair ε ρY ρY' bY) (hbT : EquivPair ε ρT ρT' bT) :
-    StableUnder (ρT'.prod ρY') (fibreDual bY bT Y T φ) := by
-  rintro g ⟨f', y'⟩ ⟨hf', hp'⟩
-  refine (show ρT' g f' ∈ dualLat bT T ∧ ∀ (y : Y) (x : VT), φ y = Submodule.Quotient.mk x →
-      bY y (ρY' g y') - bT x (ρT' g f') ∈ (1 : Submodule O (FractionRing O)) from
-    ⟨dualLat_stable hT hbT g f' hf', ?_⟩)
-  intro y x hyx
-  have hy0 : ρY g⁻¹ (y : VY) ∈ Y := hY g⁻¹ _ y.2
-  have h0 := hp' ⟨_, hy0⟩ (ρT g⁻¹ x) (hφ g⁻¹ y hy0 x hyx)
-  have ey : (y : VY) = ρY g (ρY g⁻¹ (y : VY)) := by
-    rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
-  have ex : x = ρT g (ρT g⁻¹ x) := by
-    rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
-  rw [ey, ex, hbY, hbT, ← smul_sub]
-  exact Submodule.smul_mem _ _ h0
 
 end Basic
 
@@ -226,131 +196,6 @@ attribute [instance] PushData.gY PushData.mY PushData.tY PushData.tgY PushData.c
 
 namespace PushData
 
-variable {O G VT VT' : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
-    [Group G] [TopologicalSpace G]
-    [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT]
-    [ContinuousSMul O VT]
-    [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT']
-    [ContinuousSMul O VT'] {D : LatData O G VT VT'} (E : PushData D)
-
-def ρYl : Representation O G E.Y := E.ρY.subrepresentation E.Y E.stY
-
-abbrev L : Submodule O (E.VY × VT) := fibre E.Y D.T E.φ
-
-def ρL : Representation O G E.L :=
-  (E.ρY.prod D.ρT).subrepresentation E.L (fibre_stable E.stY E.eqφ)
-
-abbrev Lb : Submodule O (VT' × E.VY') := fibreDual E.bY D.bT E.Y D.T E.φ
-
-def ρLb : Representation O G E.Lb :=
-  (D.ρT'.prod E.ρY').subrepresentation E.Lb (fibreDual_stable E.stY D.stT E.eqφ E.eqY D.eqT)
-
-def prL : E.L →ₗ[O] E.Y :=
-  LinearMap.codRestrict E.Y (LinearMap.fst O E.VY VT ∘ₗ E.L.subtype) (fun p => p.2.1)
-
-def prLb : E.Lb →ₗ[O] D.T' :=
-  LinearMap.codRestrict D.T' (LinearMap.fst O VT' E.VY' ∘ₗ E.Lb.subtype) (fun p => p.2.1)
-
-theorem φ_equiv (g : G) (y : E.Y) : E.φ (E.ρYl g y) = D.ρA g (E.φ y) := by
-  obtain ⟨x, hx⟩ := Submodule.mkQ_surjective _ (E.φ y)
-  have h := E.eqφ g y (E.stY g y y.2) x hx.symm
-  show E.φ ⟨E.ρY g y, E.stY g y y.2⟩ = D.ρA g (E.φ y)
-  rw [h, ← hx]
-  try rfl
-
-def φs : H1 E.ρYl →ₗ[O] H1 D.ρA := mapH1 E.ρYl D.ρA E.φ E.contφ E.φ_equiv
-
-def jY : H1 E.ρYl →ₗ[O] H1 E.ρY :=
-  mapH1 E.ρYl E.ρY E.Y.subtype continuous_subtype_val (fun _ _ => rfl)
-
-def toDirect : DirectPush O (H1 D.ρA) (H1 D.ρT) D.q where
-  HY := H1 E.ρYl
-  HVY := H1 E.ρY
-  HL := H1 E.ρL
-  HVL := H1 (E.ρY.prod D.ρT)
-  jY := E.jY
-  jL := mapH1 E.ρL (E.ρY.prod D.ρT) E.L.subtype continuous_subtype_val (fun _ _ => rfl)
-  p1 := mapH1 E.ρL E.ρYl E.prL
-    (Continuous.subtype_mk (continuous_fst.comp continuous_subtype_val) _) (fun _ _ => rfl)
-  p2 := mapH1 (E.ρY.prod D.ρT) D.ρT (LinearMap.snd O E.VY VT) continuous_snd (fun _ _ => rfl)
-  φs := E.φs
-  comm := by
-    intro x
-    induction x using Submodule.Quotient.induction_on with
-    | H x =>
-      refine congrArg (Submodule.Quotient.mk) ?_
-      exact Subtype.ext (funext fun g => (x.1 g).2.2)
-  HfVY := E.HfVY
-  HfVL := E.HfVL
-
-def prF : H1 E.ρY →ₗ[O] H1 E.ρY' →ₗ[O] FractionRing O :=
-  (cupProductH1H1 E.ρY E.ρY' (twist D.ε (FractionRing O)) E.bY E.contbY E.eqY E.contY').compr₂ D.invF
-
-def toDual (hc : D.InvCompat) : DualPush O (H1 D.ρA) (H1 D.ρTl') D.pr where
-  HY := H1 E.ρYl
-  HVY := H1 E.ρY
-  HVY' := H1 E.ρY'
-  HLb := H1 E.ρLb
-  HVLb := H1 (D.ρT'.prod E.ρY')
-  jY := E.jY
-  jLb := mapH1 E.ρLb (D.ρT'.prod E.ρY') E.Lb.subtype continuous_subtype_val (fun _ _ => rfl)
-  p1 := mapH1 E.ρLb D.ρTl' E.prLb
-    (Continuous.subtype_mk (continuous_fst.comp continuous_subtype_val) _) (fun _ _ => rfl)
-  p2 := mapH1 (D.ρT'.prod E.ρY') E.ρY' (LinearMap.snd O VT' E.VY') continuous_snd (fun _ _ => rfl)
-  φs := E.φs
-  prF := E.prF
-  cup := by
-    intro y x
-    induction y using Submodule.Quotient.induction_on with
-    | H y =>
-      induction x using Submodule.Quotient.induction_on with
-      | H x =>
-        rw [LatData.pr, PushData.prF, LinearMap.compr₂_apply, LinearMap.compr₂_apply,
-          ← hc]
-        refine congrArg D.inv (congrArg (Submodule.Quotient.mk) ?_)
-        refine Subtype.ext (funext fun p => ?_)
-        obtain ⟨g, k⟩ := p
-        obtain ⟨x0, hx0⟩ := Submodule.mkQ_surjective _ (E.φ (y.1 g))
-        have hm := (E.ρLb g (x.1 k)).2.2 (y.1 g) x0 hx0.symm
-        show pairKO D.bT D.T (E.φ (y.1 g)) (D.ρTl' g (E.prLb (x.1 k))) =
-          toKO O (E.bY (y.1 g) (E.ρY' g (x.1 k).1.2))
-        rw [← hx0]
-        show toKO O (D.bT x0 (D.ρT' g (x.1 k).1.1)) = _
-        symm
-        rw [← sub_eq_zero, ← map_sub]
-        exact (Submodule.Quotient.mk_eq_zero _).2 hm
-  HfVY := E.HfVY
-  HfVY' := E.HfVY'
-  HfVLb := E.HfVLb
-
 end PushData
-
-def StatPropLocCont : Prop :=
-  ∀ (O G VT VT' : Type u) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
-    [Group G] [TopologicalSpace G]
-    [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT]
-    [ContinuousSMul O VT] [Module (FractionRing O) VT] [IsScalarTower O (FractionRing O) VT]
-    [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT']
-    [ContinuousSMul O VT'] [Module (FractionRing O) VT'] [IsScalarTower O (FractionRing O) VT']
-    (D : LatData O G VT VT') (HfV : Submodule O (H1 D.ρT)) (HfV' : Submodule O (H1 D.ρT'))
-    (ℓ e' : ℕ) (ι₁ ι₂ : Type u) (P : ι₁ → PushData D) (Q : ι₂ → PushData D),
-    IsLatticeIn D.T → PerfectRight D.bT → Module.Finite O (H1 D.ρTl') → ∀ hc : D.InvCompat,
-    HfV.map D.q = annih D.pr (HfV'.comap D.j') →
-    (∀ i, (P i).toDirect.Fun HfV ∧ (P i).toDirect.Lift ℓ e') →
-    (∀ i, ((Q i).toDual hc).Fun ∧ ((Q i).toDual hc).Orth ∧
-      ((Q i).toDual hc).Lift (HfV'.comap D.j') ℓ e') →
-    (∀ i, ∀ y ∈ (P i).HfVY.comap (P i).jY, ((ℓ : O) ^ e') • (P i).φs y ∈ HfV.map D.q) ∧
-    (∀ i, ∀ y ∈ (Q i).HfVY.comap (Q i).jY, ((ℓ : O) ^ e') • (Q i).φs y ∈ HfV.map D.q) ∧
-    Module.length O
-      (((⨆ i, ((P i).HfVY.comap (P i).jY).map (P i).φs) ⊔
-          (⨆ i, ((Q i).HfVY.comap (Q i).jY).map (Q i).φs) : Submodule O (H1 D.ρA)) ⧸
-        (HfV.map D.q).comap ((⨆ i, ((P i).HfVY.comap (P i).jY).map (P i).φs) ⊔
-          (⨆ i, ((Q i).HfVY.comap (Q i).jY).map (Q i).φs) : Submodule O (H1 D.ρA)).subtype) ≤
-      ((Module.finrank O ↥(HfV'.comap D.j') + Module.finrank O D.T : ℕ) : ℕ∞) *
-        ((e' : ℕ∞) * eO O ℓ)
 
 end Formalism.RepresentationBoundsCohomology.LOC

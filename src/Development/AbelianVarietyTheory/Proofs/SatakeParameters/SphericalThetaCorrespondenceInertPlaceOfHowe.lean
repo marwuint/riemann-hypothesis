@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVectorStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSphericalCombinationOfFixedLocalTranslatesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HoweUnramifiedAllVacuaStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnramifiedLocalPairOfInertWeilDatumStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVector
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSphericalCombinationOfFixedLocalTranslates
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HoweUnramifiedAllVacua
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnramifiedLocalPairOfInertWeilDatum
 
 noncomputable section
 
@@ -77,8 +77,8 @@ theorem half {S T : HSp D} {P : Pl D.host.E} {e f : AE D} (he : IsPrimeIdem P e 
   obtain ⟨bT, hb⟩ := exists_pullback he πT ιT hT cT
   obtain ⟨bS, hbS⟩ := howe bT fun u hu k hk => by
     rw [hb]
-    exact (GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors T P).2.1 cT W πT u (fixT u hu) k hk
-  obtain ⟨cS, hc⟩ := GlobalTheory.T.exists_sphericalCombination_of_fixed_localTranslates S P e f he (Finsupp.mapDomain ιS bS) fun g hg => by
+    exact (_root_.GlobalTheory.SphLabelOps.label_operators T P).2.1 cT W πT u (fixT u hu) k hk
+  obtain ⟨cS, hc⟩ := _root_.GlobalTheory.SphAvg.fixed_comb_eq_opOf S P e f he (Finsupp.mapDomain ιS bS) fun g hg => by
     obtain ⟨g', -, rfl⟩ := Finset.mem_image.1 (Finsupp.mapDomain_support hg)
     exact hS g'
   refine ⟨cS, fun u hu => ?_⟩
@@ -99,9 +99,9 @@ theorem sphCorr_of_inert : HoweUnram → ∀ {D : D7} (ψ : AddChar (AF D.host.F
   intro hH D ψ S T χS χT om P hW hP hV
   obtain ⟨e, he⟩ := exists_idem_of_conj_eq P hP
   obtain ⟨ϖ, σ, q, δ, JS, JT, ψ', M, ρ, ω, ιS, ιT, hL, rS, rT, kS, kT, hω, hM, hvac⟩ :=
-    GlobalTheory.T.exists_unramifiedLocalPair_of_inertWeilDatum ψ S T χS χT om P hW hP hV e he
+    _root_.GlobalTheory.InertLoc.exists_locPair ψ S T χS χT om P hW hP hV e he
   haveI : CharZero (P.adicCompletion D.host.E) := algebraRat.charZero _
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.howeUnramified_all_vacua hH _ ϖ σ q δ _ _ JS JT ψ' M ρ ω hL
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.Hk3.howe_all_vacua hH _ ϖ σ q δ _ _ JS JT ψ' M ρ ω hL
   have oneS : (1 : GA D S) ∈ hyp S P := by
     rw [← map_one ιS, kS]; exact one_mem _
   have oneT : (1 : GA D T) ∈ hyp T P := by

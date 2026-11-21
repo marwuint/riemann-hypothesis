@@ -74,13 +74,13 @@ theorem exists_ext [StarRing (𝓞 E)] (hstar : ∀ a : 𝓞 E, star a = H.bar a
       (C' : IntegralChartA3 Xo c T' (iT.comp io) y'), IsExt y iT e y' ∧ Good3 C' ∧ AllRat Xo (xOf y') M := by
   obtain ⟨C₁, hC₁⟩ := GlobalTheory.IntChartTrunc.intChart_frTrunc_exists E H Dw l Xo c hstar T io y
   have hgood₁ : Good3 C₁ := ⟨hC₁, unif_of_splitModel C₁.I (splitModel_of_good y hy C₁.I)⟩
-  obtain ⟨L, _, _, hL, hrat⟩ := (GlobalTheory.T.torsion_rational_over_finite_extension_level_structure E H Dw l Xo T.Fr (xOf y) M hM).1
+  obtain ⟨L, _, _, hL, hrat⟩ := (_root_.GlobalTheory.torsion_rational_over_finite_extension E H Dw l Xo T.Fr (xOf y) M hM).1
   obtain ⟨T₂, i₂, e₂, ψ, φ, he₂, hv₂, hψ, -, -⟩ := GlobalTheory.PlaceExtField.exists_cdvr_finite_extension T L
   obtain ⟨⟨y₂, hext₂⟩, hy⟩ := GlobalTheory.ThetaBound.exists_isExt_and_trans E H Dw l Xo c T T₂ io y i₂ e₂ he₂ hv₂
   have hx₂ := (hy y₂ hext₂).1
   obtain ⟨C₂, hgood₂⟩ :=
     GlobalTheory.ThetaBound.Prep.exists_good_chart_ext E H Dw l Xo c hstar T io y C₁ hgood₁ T₂ i₂ e₂ y₂ hext₂
-  have hrat₂ := ((GlobalTheory.T.torsion_rational_over_finite_extension_level_structure E H Dw l Xo L _ M hM).2 hrat).1 T₂.Fr ψ.toRingHom
+  have hrat₂ := ((_root_.GlobalTheory.torsion_rational_over_finite_extension E H Dw l Xo L _ M hM).2 hrat).1 T₂.Fr ψ.toRingHom
   have hi : i₂ = ψ.toRingHom.comp (algebraMap T.Fr L) := RingHom.ext fun a => (hψ a).symm
   have hsp : spMap ψ.toRingHom ≫ spMap (algebraMap T.Fr L) ≫ xOf y = xOf y₂ := by
     rw [hx₂, hi, ← Category.assoc]

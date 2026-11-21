@@ -121,11 +121,6 @@ def toGal : WeilGroup K Ω →* (Ω ≃ₐ[K] Ω) := (weilSubgroup K Ω).subtype
 
 theorem toGal_injective : Function.Injective (toGal K Ω) := Subtype.val_injective
 
-theorem range_toGal : (toGal K Ω).range = weilSubgroup K Ω := Subgroup.range_subtype _
-
-variable {K Ω} in
-theorem toGal_mem (σ : WeilGroup K Ω) : toGal K Ω σ ∈ weilSubgroup K Ω := σ.2
-
 variable {K Ω} in
 
 def mk (σ : Ω ≃ₐ[K] Ω) (hσ : σ ∈ weilSubgroup K Ω) : WeilGroup K Ω := ⟨σ, hσ⟩
@@ -133,10 +128,6 @@ def mk (σ : Ω ≃ₐ[K] Ω) (hσ : σ ∈ weilSubgroup K Ω) : WeilGroup K Ω 
 variable {K Ω} in
 @[simp]
 theorem toGal_mk (σ : Ω ≃ₐ[K] Ω) (hσ : σ ∈ weilSubgroup K Ω) : toGal K Ω (mk σ hσ) = σ := rfl
-
-variable {K Ω} in
-@[ext]
-theorem ext {σ τ : WeilGroup K Ω} (h : toGal K Ω σ = toGal K Ω τ) : σ = τ := toGal_injective K Ω h
 
 def restrictFrobenius : WeilGroup K Ω →* Subgroup.zpowers (maximalUnramifiedExtensionFrobenius K Ω) :=
   ((AlgEquiv.restrictNormalHom (maximalUnramifiedExtension K Ω)).comp (toGal K Ω)).codRestrict _
@@ -163,20 +154,6 @@ theorem degree_eq_iff (σ : WeilGroup K Ω) (n : ℤ) :
   exact ⟨fun h ↦ by rw [h, toAdd_ofAdd], fun h ↦
     Multiplicative.toAdd.injective (injective_zpow_maximalUnramifiedExtensionFrobenius K Ω h)⟩
 
-theorem unramifiedDegree_toGal (σ : WeilGroup K Ω) :
-    unramifiedDegree K Ω (toGal K Ω σ) = Multiplicative.ofAdd (((degree K Ω σ).toAdd : ℤ) : ℤ̂) :=
-  (restrictNormal_eq_frobenius_zpow_iff _ _).1 (restrictNormal_toGal σ)
-
-theorem degree_eq_iff_unramifiedDegree (σ : WeilGroup K Ω) (n : ℤ) :
-    degree K Ω σ = Multiplicative.ofAdd n ↔
-      unramifiedDegree K Ω (toGal K Ω σ) = Multiplicative.ofAdd (n : ℤ̂) := by
-  rw [degree_eq_iff, restrictNormal_eq_frobenius_zpow_iff]
-
-theorem degree_surjective : Function.Surjective (degree K Ω) := by
-  intro n
-  obtain ⟨σ, hσ⟩ := exists_restrictNormal_eq_frobenius_zpow K Ω n.toAdd
-  exact ⟨mk σ (mem_weilSubgroup_iff.2 ⟨_, hσ⟩), (degree_eq_iff _ n.toAdd).2 hσ⟩
-
 variable (K Ω) in
 
 def inertia : Subgroup (WeilGroup K Ω) := (degree K Ω).ker
@@ -185,22 +162,6 @@ theorem mem_inertia_iff {σ : WeilGroup K Ω} :
     σ ∈ inertia K Ω ↔ toGal K Ω σ ∈ (maximalUnramifiedExtension K Ω).fixingSubgroup := by
   rw [inertia, MonoidHom.mem_ker, ← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker,
     AlgEquiv.restrictNormalHom, MonoidHom.mk'_apply, ← ofAdd_zero, degree_eq_iff, zpow_zero]
-
-variable (K Ω) in
-
-theorem inertia_eq_comap :
-    inertia K Ω = (maximalUnramifiedExtension K Ω).fixingSubgroup.comap (toGal K Ω) := by
-  ext σ
-  exact mem_inertia_iff
-
-variable (K Ω) in
-
-theorem exact_inertia_degree :
-    (degree K Ω).ker = inertia K Ω ∧ Function.Surjective (degree K Ω) ∧
-      (inertia K Ω).map (toGal K Ω) = (maximalUnramifiedExtension K Ω).fixingSubgroup := by
-  refine ⟨rfl, degree_surjective, ?_⟩
-  rw [inertia_eq_comap, Subgroup.map_comap_eq, range_toGal]
-  exact inf_of_le_right (fixingSubgroup_le_weilSubgroup K Ω)
 
 variable (K Ω) in
 
@@ -236,9 +197,6 @@ theorem continuous_iff {X : Type*} [TopologicalSpace X] {f : X → WeilGroup K �
 
 theorem isOpen_inertia : IsOpen (inertia K Ω : Set (WeilGroup K Ω)) :=
   (isOpen_discrete ({1} : Set (Multiplicative ℤ))).preimage continuous_degree
-
-theorem isClosed_inertia : IsClosed (inertia K Ω : Set (WeilGroup K Ω)) :=
-  OpenSubgroup.isClosed ⟨inertia K Ω, isOpen_inertia⟩
 
 variable (K Ω) in
 
@@ -277,18 +235,6 @@ theorem isCompact_inertia : IsCompact (inertia K Ω : Set (WeilGroup K Ω)) :=
 instance : LocallyCompactSpace (WeilGroup K Ω) :=
   isCompact_inertia.locallyCompactSpace_of_mem_nhds_of_group
     (isOpen_inertia.mem_nhds (Subgroup.one_mem _))
-
-theorem denseRange_toGal : DenseRange (toGal K Ω) := by
-  have h := dense_weilSubgroup K Ω
-  rw [← range_toGal, MonoidHom.coe_range] at h
-  exact h
-
-theorem isOpen_preimage_toGal {U : Set (Ω ≃ₐ[K] Ω)} (hU : IsOpen U) :
-    IsOpen (toGal K Ω ⁻¹' U) :=
-  hU.preimage continuous_toGal
-
-theorem exists_degree_eq_one : ∃ φ : WeilGroup K Ω, degree K Ω φ = Multiplicative.ofAdd 1 :=
-  degree_surjective _
 
 end WeilGroup
 

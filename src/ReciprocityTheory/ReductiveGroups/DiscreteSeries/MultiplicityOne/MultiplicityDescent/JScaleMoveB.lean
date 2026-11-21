@@ -1,4 +1,6 @@
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.MultiplicityDescent.BesselIsometryScalar
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.StDiagExists
+import Formalism.SharpRestriction.CuspSpanNormBounds.CayleySignature
+import Mathlib.Analysis.InnerProductSpace.TensorProduct
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.JSmoothA
 
 noncomputable section
@@ -10,31 +12,6 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1.Down.ScaleMoveB
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B ReciprocityTheory.ChartRestriction.DS.Mult1.SmoothA
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-
-section sm
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-theorem smooth_mul {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (GV k r) σ) {t : Mat k r}
-    (ht : t ∈ GV k r) {v : H} (hv : v ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ) :
-    σ t v ∈ Formalism.MainNotions.S.smoothVecs (k := k) (r := r) σ := by
-  have hv' : SmoothOnH (Hpk k r) (fun g => σ g v) := hv
-  show SmoothOnH (Hpk k r) (fun g => σ g (σ t v))
-  intro g₀ hg₀
-  have hg₀t : inUH (Hpk k r) (g₀ * t) := gv_mul hg₀ ht
-  obtain ⟨U, F, hU, hgU, hF, hFe⟩ := hv' (g₀ * t) hg₀t
-  let R : Mat k r →L[ℝ] Mat k r := LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ t)
-  have hR : ∀ g, R g = g * t := fun g => rfl
-  refine ⟨R ⁻¹' U, F ∘ R, hU.preimage R.continuous, by simpa [hR] using hgU,
-    hF.comp R.contDiff.contDiffOn (fun g hg => hg), fun g hg hgH => ?_⟩
-  have hgH' : g ∈ GV k r := hgH
-  simp only [Function.comp, hR]
-  rw [← hFe (g * t) hg (gv_mul hgH' ht)]
-  show σ g (σ t v) = σ (g * t) v
-  rw [hσ.1.2 g hgH' t ht]
-  rfl
-
-end sm
 
 theorem lie_conj {t X : Mat k r} (ht : t ∈ GV k r) (hX : Formalism.MainNotions.S.InLieHpk k r X) :
     Formalism.MainNotions.S.InLieHpk k r (t⁻¹ * X * t) := by
@@ -80,34 +57,5 @@ theorem dsig_conj {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotion
       rw [this]
       exact ((σ t⁻¹).restrictScalars ℝ).differentiableAt.comp (0 : ℝ) hd'
     rw [deriv_zero_of_not_differentiableAt hnd, deriv_zero_of_not_differentiableAt hd, map_zero]
-
-theorem dsigW_conj {σ : Mat k r → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (GV k r) σ) {t : Mat k r}
-    (ht : t ∈ GV k r) : ∀ (ws : List (Mat k r)), (∀ X ∈ ws, Formalism.MainNotions.S.InLieHpk k r X) → ∀ u : H,
-    Formalism.MainNotions.S.dsigW (k := k) (r := r) σ ws (σ t u) =
-      σ t (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ (ws.map fun X => t⁻¹ * X * t) u)
-  | [], _, u => rfl
-  | X :: w, hw, u => by
-    simp only [Formalism.MainNotions.S.dsigW, List.map_cons]
-    rw [dsigW_conj hσ ht w (fun Y hY => hw Y (List.mem_cons_of_mem X hY)) u,
-      dsig_conj hσ ht (hw X List.mem_cons_self)]
-
-theorem cw_transport {Wp : Type} [NormedAddCommGroup Wp] {σ : Mat k r → (H →L[ℂ] H)}
-    (hσ : Formalism.MainNotions.S.IsURepOn (GV k r) σ) {t : Mat k r} (ht : t ∈ GV k r) {B : H → Wp}
-    (hB : Formalism.MainNotions.S.IsCWCont (k := k) (r := r) σ B) :
-    Formalism.MainNotions.S.IsCWCont (k := k) (r := r) σ (fun v => B (σ t v)) := by
-  obtain ⟨C, Ws, hWs, hb⟩ := hB
-  refine ⟨C, Ws.map (List.map fun X => t⁻¹ * X * t), ?_, fun v hv => ?_⟩
-  · intro w hw X hX
-    obtain ⟨w0, hw0, rfl⟩ := List.mem_map.1 hw
-    obtain ⟨X0, hX0, rfl⟩ := List.mem_map.1 hX
-    exact lie_conj ht (hWs w0 hw0 X0 hX0)
-  · refine (hb (σ t v) (smooth_mul hσ ht hv)).trans (le_of_eq ?_)
-    congr 1
-    rw [List.map_map]
-    congr 1
-    apply List.map_congr_left
-    intro w hw
-    simp only [Function.comp]
-    rw [dsigW_conj hσ ht w (hWs w hw), hσ.2.1 t ht]
 
 end ReciprocityTheory.ChartRestriction.DS.Mult1.Down.ScaleMoveB

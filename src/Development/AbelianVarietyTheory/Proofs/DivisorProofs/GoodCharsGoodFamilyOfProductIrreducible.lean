@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.BlockEmbeddingFactors
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodFamilyOfRealised
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalCharacterFormula
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldAbelianByPrimePower
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfVirtualAndCharacter
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.MemVirtualCharactersOfAbelianByPrimePower
@@ -78,19 +78,5 @@ theorem norm_one_prod {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (
     simp only [Finset.prod_mul_distrib, Pi.inv_apply]
 
 end Characters
-
-section Local
-
-open GlobalTheory.IndefiniteRowSideFullHecke.BlockEmbeddingFactors GlobalTheory.IndefiniteRowSideFullHecke.CuspValueComparison GlobalTheory.IndefiniteRowSideFullHecke.TameCharacterTorusValues
-
-variable {g : ℕ} [Fact g.Prime] {r : ℕ}
-
-end Local
-
-section Global
-
-open GlobalTheory.IndefiniteRowSideFullHecke.BlockEmbeddingFactors GlobalTheory.IndefiniteRowSideFullHecke.TameCharacterTorusValues
-
-end Global
 
 end GlobalTheory.GoodFamily

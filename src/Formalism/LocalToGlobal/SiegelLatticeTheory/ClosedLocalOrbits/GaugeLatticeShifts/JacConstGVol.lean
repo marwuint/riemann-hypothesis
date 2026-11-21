@@ -186,12 +186,6 @@ variable {k : ℕ}
 
 abbrev Low (k : ℕ) : Type := {ab : Fin k × Fin k // ab.2 < ab.1}
 
-theorem skMat_low (x : UCo k) (p : Low k) : skMat x p.1.1 p.1.2 = x.2 p := skMat_low_om x p
-
-theorem skMat_up (x : UCo k) (p : Low k) : ‖skMat x p.1.2 p.1.1‖ = ‖x.2 p‖ := by
-  obtain ⟨⟨a, b⟩, h⟩ := p
-  simp [skMat, h, h.ne, not_lt.2 h.le]
-
 theorem norm_skMat_sq (x : UCo k) :
     ‖RLk (skMat x)‖ ^ 2 = ∑ a, (x.1 a) ^ 2 + 2 * ∑ p : Low k, ‖x.2 p‖ ^ 2 := by
   have key : ∀ a b : Fin k, ‖skMat x a b‖ ^ 2 = (if a = b then (x.1 a) ^ 2 else 0) +

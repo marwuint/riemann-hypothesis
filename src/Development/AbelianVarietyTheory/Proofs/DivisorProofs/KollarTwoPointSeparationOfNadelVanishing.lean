@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalBudgetsTwoPointInductionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalBudgetsTwoPointInduction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeparateTwoPointsNefBigStatement
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
@@ -18,7 +18,7 @@ theorem pointSeparationPair_of_vanishing :
   intro hP hV hN X _ _ _ p n hproj hdim M Δ m G r N₀ x₁ x₂ c hM hΔ hklt hm hG hr hnef hbig hC
     h₁ h₂ hx hc hZ hs
   letI := algebraΓOfHom p
-  obtain ⟨h, hpos, hsum, hh⟩ := GlobalTheory.T.exists_rational_budgets_twoPointInduction n r c hr hc hs
+  obtain ⟨h, hpos, hsum, hh⟩ := _root_.GlobalTheory.PairStep.exists_rat_budgets n r c hr hc hs
   have hr' : (0 : ℚ) < (r : ℚ) := by exact_mod_cast hr
   refine GlobalTheory.T.separate_two_points_nef_big hP hV hN X p n hproj hdim M Δ m G N₀ (1 / (r : ℚ)) h x₁ x₂ hM hΔ hklt hm hG
     hnef hbig ?_ h₁ h₂ hx hpos ?_ hsum (by positivity)

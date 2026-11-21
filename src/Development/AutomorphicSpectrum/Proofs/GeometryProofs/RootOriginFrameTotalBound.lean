@@ -1,7 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSandwichOfHodgeTateFreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SandwichPointOverFieldExtStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSandwichOfHodgeTateFree
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SandwichPointOverFieldExt
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PRootsOfUnityValuation
 open NumberField IsDedekindDomain MeasureTheory Filter Topology
 open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
@@ -206,7 +210,7 @@ theorem lieEig_htDual : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [
     hOm hpq hpS EC _ _ _ _ MC ρC hAct s σ hσ
   obtain ⟨hla, hov, -⟩ := hI
   have hHT : HT.HTFree Or.𝔐 p := hOm p hpS
-  obtain ⟨κ, hκ, hS⟩ := GlobalTheory.T.exists_sandwich_of_hodge_tate_free hG.2.2.2.2.2.2.1 E H Dw l Xo c O β Y SS _ _ _ RM.y Or.𝔐 p hpS hpq hHT
+  obtain ⟨κ, hκ, hS⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.ModelSandwich.sandwich_of_htFree hG.2.2.2.2.2.2.1 E H Dw l Xo c O β Y SS _ _ _ RM.y Or.𝔐 p hpS hpq hHT
   have hgen := Or.𝔐.tie.gen
   have hr := FinRd.ram_pos hla
   have hpos : (0 : ℤ) < (e : ℤ) * ramOverZ la := by
@@ -226,7 +230,7 @@ theorem lieEig_htDual : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [
     · have h2 : vV T.V (algebraMap T.V T.Fr (p : T.V)) = 0 := by simp [vV, h1]
       rw [hvp] at h2
       omega
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.T.sandwich_point_over_field_ext E H Dw l Xo c O β Y SS _ _ _ RM.y Or.𝔐 p hpS κ hHT hS T.Fr
+  obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.hodge_tate_model_point_sandwich E H Dw l Xo c O β Y SS _ _ _ RM.y Or.𝔐 p hpS κ hHT hS T.Fr
     (realVal T.V T.Fr) T.V realVal_integers hv1 zV EC MC ρC s σ κz hAct hσ hκz
   refine ⟨κz, h1, h2, absT_kappa hla hov (fun h => ?_) (fun h => ?_)⟩
   · rw [HT.IsCp, if_pos h] at hκ

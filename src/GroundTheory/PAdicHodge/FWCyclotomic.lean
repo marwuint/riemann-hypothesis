@@ -1,7 +1,9 @@
 import Mathlib
 import GroundTheory.PAdicHodge.FWCyclotomicNorm
-import GroundTheory.PAdicHodge.FontaineWintenberger
+import GroundTheory.PAdicHodge.FWGalois
+import GroundTheory.PAdicHodge.FWCharP
 import GroundTheory.PAdicHodge.PerfectoidCriterion
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -86,23 +88,5 @@ instance : NormedAlgebra (cyclComplete p) ℂ_[p] where
 local notation "K∞" => cyclComplete p
 local notation "K∞♭" => Tilt (cyclComplete p) NormedField.valuation (normInteger (cyclComplete p))
   normInteger_integers p
-
-def absoluteGaloisGroupCyclTiltEquiv : Field.absoluteGaloisGroup K∞ ≃ₜ* Field.absoluteGaloisGroup K∞♭ :=
-  absoluteGaloisGroupTiltEquiv K∞ p
-
-def cyclGaloisTiltEquiv :
-    (algebraicClosure K∞ ℂ_[p] ≃ₐ[K∞] algebraicClosure K∞ ℂ_[p]) ≃ₜ*
-      (algebraicClosure K∞♭ (Tilt ℂ_[p] NormedField.valuation (normInteger ℂ_[p]) normInteger_integers p) ≃ₐ[K∞♭]
-        algebraicClosure K∞♭ (Tilt ℂ_[p] NormedField.valuation (normInteger ℂ_[p]) normInteger_integers p)) :=
-  galoisTiltEquiv K∞ ℂ_[p] p
-
-theorem cyclGaloisTiltEquiv_fixes_iff (L : IntermediateField K∞ ℂ_[p]) [FiniteDimensional K∞ L]
-    (σ : algebraicClosure K∞ ℂ_[p] ≃ₐ[K∞] algebraicClosure K∞ ℂ_[p]) :
-    (∀ y : algebraicClosure K∞♭ (Tilt ℂ_[p] NormedField.valuation (normInteger ℂ_[p])
-        normInteger_integers p),
-        (y : Tilt ℂ_[p] NormedField.valuation (normInteger ℂ_[p]) normInteger_integers p) ∈
-          tiltIntermediateField p L → cyclGaloisTiltEquiv p σ y = y) ↔
-      (∀ x : algebraicClosure K∞ ℂ_[p], (x : ℂ_[p]) ∈ L → σ x = x) :=
-  galoisTiltEquiv_fixes_iff L σ
 
 end GroundTheory.PAdicHodge

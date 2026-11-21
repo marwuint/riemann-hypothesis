@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullHermPullL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MapPrBPtMP
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiprojectivePointOfNonvanishingCoordsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiprojectiveChartHolomorphicCoordinatesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicSectionSmoothCompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicSectionSmoothComposition
 open CategoryTheory AlgebraicGeometry Limits TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.ProjSpace GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.ArInt
@@ -51,7 +51,7 @@ theorem smooth_of_isHermRep : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermL
     have h2 := (M.cInf σ₀) i (s z₀) hi
     exact h1.comp₂ h2 (G := fun x => x.1 * Real.exp (x.2 / 2))
       (contDiff_fst.mul (Real.contDiff_exp.comp (contDiff_snd.div_const 2)))
-  have hFs := GlobalTheory.T.holomorphic_section_smooth_composition hT hcont hholo hz hF
+  have hFs := _root_.GlobalTheory.CompanionTheory.CxSmooth.contDiffAt_comp_of_cInfAt hT hcont hholo hz hF
   have hP : ContDiffAt ℝ ∞ (fun z : (Σ k, Bk n k) → ℂ => ∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k) z₀ := by
     refine contDiffAt_prod fun k _ => ?_
     have hn : ContDiffAt ℝ ∞ (fun z : (Σ k, Bk n k) → ℂ => ‖z ⟨k, c k⟩‖) z₀ :=

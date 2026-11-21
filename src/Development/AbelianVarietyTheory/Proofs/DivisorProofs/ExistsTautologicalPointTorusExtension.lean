@@ -4,8 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGensOfDataFrom
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ScaleGenIsGen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoAdditiveCubicalStructureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoEqOneAlongAxesStatement
-import Development.AbelianVarietyTheory.Definitions.Divisors.NotExistsDataOfNotSymm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoEqOneAlongAxes
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsOfPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTauLattice
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.ExistsUniqueEqConstMulEllTheta
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.TChart GlobalTheory.UT GlobalTheory.Mum.Two
@@ -165,7 +169,7 @@ theorem GlobalTheory.TInj.exists_tautPt : ∀ {o W : Type} [CommRing o] [CommRin
     choose J hJ using fun ψ : (TF (R := V) F).left ⟶ T.B.left => exists_chart T.M.isLB (ψ y)
     refine (hval 0 y J J' hJ hJ').trans (Eq.trans ?_ (val_one _).symm)
     rw [map_zero e, kU_zero, smul_zero, hτ0 y J hJ, hcF0,
-      (GlobalTheory.T.mumford_bundle_iso_eq_one_along_axes T ε n V D ω s e β ββ w hB hF' (TF (R := V) F) b y J J' hJ hJ').1,
+      (_root_.GlobalTheory.TInj.lamVal_axes_one T ε n V D ω s e β ββ w hB hF' (TF (R := V) F) b y J J' hJ hJ').1,
       show unitOn (1 : Fˣ) = 1 from map_one _, map_one, _root_.mul_one, _root_.mul_one]
   · intro χ χ'
     refine corr_of_val D.P.isLB fun y J' hJ' => ?_

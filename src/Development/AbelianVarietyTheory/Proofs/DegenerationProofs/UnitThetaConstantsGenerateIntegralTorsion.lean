@@ -8,19 +8,19 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SemistableReduction₂
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UnitThetaConstantsGenerateIntegralTorsionImports
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPrimitiveScalingStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPrimitiveScaling
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionFramePowEqIntegralGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSectionOfBaseProductSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsMemNonzeroLocusFibreOfSecBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSectionNonzeroLocusSpecialFibreIffStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGoodTorsionTranslateOfSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecialFibreProjectionAbelianPartStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PointDescendsToValuationRingStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorsionLiftSpecialFibreOfGenericRationalStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaModelTorsionRationalOverFractionFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLabelOfPowEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsMemNonzeroLocusFibreOfSecBasis
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSectionNonzeroLocusSpecialFibreIff
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGoodTorsionTranslateOfSection
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecialFibreProjectionAbelianPart
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PointDescendsToValuationRing
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorsionLiftSpecialFibreOfGenericRational
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaModelTorsionRationalOverFractionField
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLabelOfPowEqOne
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelPointExtendsTorsionPointMulStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClosureEqKerOfMeetsTorsionCosetsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClosureEqKerOfMeetsTorsionCosets
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -77,8 +77,8 @@ theorem exists_section (hL : Laws2) (u : ρ.UTest p y₀) : ∃ (ϑ : H0 u.U.LG.
         (h.left (IsLocalRing.closedPoint u.V) ∈ nonzeroLocus ϑ → ‖y₀ ⟨S.th a, S.th_mem a⟩‖ = c) := by
   obtain ⟨w, hw⟩ := lbIso u
   obtain ⟨θ, hθ, hval⟩ := GlobalTheory.T.exists_section_of_baseProduct_section S.R ρ.P ρ.th₁
-  obtain ⟨ϑ, c, hc, hϑ, hrel⟩ := GlobalTheory.T.exists_primitive_scaling_alt u.V u.G u.semi u.U.LG.L u.U.LG.isLB _ ρ.P.L ρ.P.isLB _ w hw θ (by
-    obtain ⟨y, hy, e⟩ := GlobalTheory.T.exists_mem_nonzeroLocus_fibre_of_secBasis hL.secBaseChangeAny S.R ρ.P ρ.th₁ ρ.th₁_basis
+  obtain ⟨ϑ, c, hc, hϑ, hrel⟩ := _root_.GlobalTheory.PrimScale.exists_primitive_scaling u.V u.G u.semi u.U.LG.L u.U.LG.isLB _ ρ.P.L ρ.P.isLB _ w hw θ (by
+    obtain ⟨y, hy, e⟩ := _root_.GlobalTheory.ThetaFibre.exists_mem_nonzeroLocus_fibre hL.secBaseChangeAny S.R ρ.P ρ.th₁ ρ.th₁_basis
       (spMap u.yK (IsLocalRing.closedPoint _))
     obtain ⟨z, hz, -⟩ := Scheme.exists_preimage_of_isPullback (grpPullback u).1 _ _ e
     exact ⟨z, by rw [hz]; exact hθ y hy⟩)
@@ -139,9 +139,9 @@ theorem exists_translate (hL : Laws) {V : Type} [CommRing V] [IsDomain V] [IsDis
     (f : V →+* κ) (hf : IsLocalHom f) {n : ℕ} (hn : 2 ≤ n) (hκ : (n : κ) ≠ 0) (c : Over.mk (spMap f) ⟶ G) :
     ∃ x : Over.mk (spMap f) ⟶ G, x ^ n = 1 ∧ (c * x).left (IsLocalRing.closedPoint κ) ∈ nonzeroLocus ϑ := by
   have := U.smooth
-  obtain ⟨θ, hθ⟩ := GlobalTheory.T.exists_thetaSection_nonzeroLocus_specialFibre_iff hL.globalFns V D A G U ϑ
-  obtain ⟨π, hπ, hlift⟩ := GlobalTheory.T.exists_specialFibre_projection_abelianPart V D.toPre G (U.gt 0) κ f hf
-  obtain ⟨b, hb, hb'⟩ := GlobalTheory.T.exists_good_torsion_translate_of_section hL.polBaseChange hL.goodPt _ D.toPre.P θ κ (spMap f) n hn hκ (by
+  obtain ⟨θ, hθ⟩ := _root_.GlobalTheory.SpecialFibreLocus.exists_sec_nonzeroLocus_iff hL.globalFns V D A G U ϑ
+  obtain ⟨π, hπ, hlift⟩ := _root_.GlobalTheory.SpecialPoints.exists_projection V D.toPre G (U.gt 0) κ f hf
+  obtain ⟨b, hb, hb'⟩ := _root_.GlobalTheory.UnitTheta.exists_good_point_of_sec hL.polBaseChange hL.goodPt _ D.toPre.P θ κ (spMap f) n hn hκ (by
     obtain ⟨z, hz, e⟩ := hϑ
     have hm : IsLocalRing.maximalIdeal V ^ (0 + 1) = IsLocalRing.maximalIdeal V := pow_one _
     have : Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1)) :=
@@ -207,9 +207,9 @@ theorem exists_bound (hL : Laws) (hL₂ : Laws2) (u : ρ.UTest p y₀) (hy : ∀
   let r : Over.mk (spMap f) ⟶ baseOver (Sp u.V) := Over.homMk (spMap f) (Category.comp_id _)
   obtain ⟨x, hx, hx'⟩ := exists_translate hL u.U ϑ hϑ f hf hn
     (by rw [← map_natCast f]; exact (hu.map f).ne_zero) (r ≫ h)
-  obtain ⟨h', e₁, e₂⟩ := GlobalTheory.T.exists_torsion_lift_specialFibre_of_generic_rational GlobalTheory.T.point_descends_to_valuationRing' hL.unramExt u.V u.complete u.G (PadicAlgCl p) _ n hu
-    (GlobalTheory.T.thetaModel_torsion_rational_over_fractionField o Ω S ρ p y₀ u n hd) κ f hf x hx
-  obtain ⟨b, hb, hb'⟩ := GlobalTheory.T.exists_label_of_pow_eq_one' o Ω S ρ p y₀ u n hd h' e₁
+  obtain ⟨h', e₁, e₂⟩ := _root_.GlobalTheory.exists_torsion_lift_of_generic_rational _root_.GlobalTheory.point_descends_to_valuationRing hL.unramExt u.V u.complete u.G (PadicAlgCl p) _ n hu
+    (_root_.GlobalTheory.UnitTheta.torsion_rational o Ω S ρ p y₀ u n hd) κ f hf x hx
+  obtain ⟨b, hb, hb'⟩ := _root_.GlobalTheory.UnitTheta.exists_label_of_pow_eq_one o Ω S ρ p y₀ u n hd h' e₁
   refine ⟨b, hb, (H _ _ (GlobalTheory.T.modelPointExtendsTorsionPoint_mul o Ω S ρ p y₀ u a b h h' hh hb')).2 ?_⟩
   obtain rfl : r ≫ h' = x := Over.OverMorphism.ext e₂
   rw [← MonObj.comp_mul] at hx'
@@ -240,7 +240,7 @@ theorem closure_unit_theta : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [C
     obtain rfl := eq_zero_of_nonpos l.q l.pos hq
     exact hw
   have hδc : S.delta y₀ = c := le_antisymm (hx₀ ▸ (H x₀ ((l.ker_iff x₀).1 (hsub hx₀))).1) hcδ
-  refine ⟨hδ, GlobalTheory.T.closure_eq_ker_of_meets_torsion_cosets' _ _ ρ.n _ _ ρ.n_prime.ne_zero hJ hM l.yy l.yy_onto _ hsub fun a ha => ?_⟩
+  refine ⟨hδ, _root_.GlobalTheory.closure_eq_ker_of_meets_torsion_cosets _ _ ρ.n _ _ ρ.n_prime.ne_zero hJ hM l.yy l.yy_onto _ hsub fun a ha => ?_⟩
   obtain ⟨b, hb, hb'⟩ := (H a ((l.ker_iff a).1 ha)).2
   exact ⟨b, hb, hb'.trans hδc.symm⟩
 

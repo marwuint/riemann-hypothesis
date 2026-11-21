@@ -26,13 +26,6 @@ theorem val_tauAt {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) (hX :
   · rw [if_neg h, show pullW _ w = conjPrime₂ P.1 from seesPbar_tauAt hPr u hX hw (mt hs.2 h) P,
       GlobalTheory.CharVal.valuation_conjP, star_star]
 
-structure NonDeg {D : D7} {u : D.what₂.Word} (A : Dat D u) : Prop where
-  sees : A.Sees
-  T_eq : A.J.T = (D.mem u).A.T
-  cl : ∀ i, Nonempty (A.I.S i).Cl
-  split : ∀ i, Nonempty (Split (A.J.A i) A.J.T)
-  forms : A.ch.fm.Fi 0 ≠ ⊥
-
 local instance starHost (B : Base) : StarRing B.host.E := B.fields.starE
 
 variable (B : Base) (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W) (G : GJStage B C)

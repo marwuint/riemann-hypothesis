@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.VolNzeroOne
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.LevelIntersectParabolic
 
 noncomputable section
 
@@ -19,43 +19,11 @@ theorem coord_zero_of_row {n : ℕ} (G : Matrix (Fin n) (Fin n) E) (v : Fin n �
     Finset.sum_ite_eq', Finset.mem_univ, if_true] at h
   exact (mul_eq_zero.mp h).resolve_left hd
 
-theorem linIndep_of_gram {n M : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E)
-    (X : Fin n → Fin M → E) (h : (gramE σ J X).det ≠ 0) : LinearIndependent E X := by
-  rw [Fintype.linearIndependent_iff]
-  intro c hc
-  have key : ∀ a, ∑ b, gramE σ J X a b * c b = hE σ J (X a) (∑ b, c b • X b) := by
-    intro a
-    simp only [gramE, hE, Formalism.UG.hform, Finset.sum_apply, Pi.smul_apply, smul_eq_mul,
-      Finset.mul_sum, Finset.sum_mul]
-    rw [Finset.sum_comm]
-    apply Finset.sum_congr rfl
-    intro i _
-    rw [Finset.sum_comm]
-    apply Finset.sum_congr rfl
-    intro j _
-    apply Finset.sum_congr rfl
-    intro b _
-    ring
-  have hG : Matrix.mulVec (gramE σ J X) c = 0 := by
-    funext a
-    simp only [Matrix.mulVec, dotProduct, Pi.zero_apply]
-    rw [key, hc]
-    simp [hE, Formalism.UG.hform]
-  have hc0 := Matrix.eq_zero_of_mulVec_eq_zero h hG
-  intro i
-  exact congrFun hc0 i
-
 end Alg
 
 section Frames
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
-
-theorem frameInitialVectors_castSucc {M r : ℕ} (P : Frame E M r) (a : Fin r) : F0 P (Fin.castSucc a) = P.e a := by
-  simp [F0]
-
-theorem frameInitialVectors_last {M r : ℕ} (P : Frame E M r) : F0 P (Fin.last r) = P.z := by
-  simp [F0]
 
 theorem tupH_e {M r : ℕ} (P : Frame E M r) (a : Fin r) :
     tupH P (Fin.castAdd r (Fin.castSucc a)) = P.e a := by
@@ -187,45 +155,6 @@ theorem det_gram_tupH_ne_zero (hP : P.IsStd σ J T)
     | last => exact coord_zero_of_row _ v hv _ _ _ hTne (herm_wCell_last_mul_mulVec_eq_of_inWb σ J P T hP hT1)
     | cast c => exact coord_zero_of_row _ v hv _ _ 1 one_ne_zero (row_f σ J P T hP hT1 c)
   | right b => exact coord_zero_of_row _ v hv _ _ 1 one_ne_zero (row_e σ J P T hP b)
-
-theorem linearIndependent_frame_with_normal (hP : P.IsStd σ J T)
-    (hT1 : ∀ i j, σ (gramE σ J (tupH P) j i) = gramE σ J (tupH P) i j) :
-    LinearIndependent E (F0 P) := by
-  have h := linIndep_of_gram σ J (tupH P) (det_gram_tupH_ne_zero σ J P T hP hT1)
-  have he : F0 P = tupH P ∘ Fin.castAdd r := by
-    funext i
-    simp [tupH]
-  rw [he]
-  exact h.comp _ (Fin.castAdd_injective _ _)
-
-theorem gram_frame_with_normal_eq_diag (hP : P.IsStd σ J T)
-    (hT0 : ∀ i j, σ (gramE σ J (F0 P) j i) = gramE σ J (F0 P) i j) :
-    ∀ i j, gramE σ J (F0 P) i j =
-      if i = Fin.last r ∧ j = Fin.last r then algebraMap F E (-T) else 0 := by
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7⟩ := hP
-  intro i j
-  induction i using Fin.lastCases with
-  | last =>
-    induction j using Fin.lastCases with
-    | last =>
-      simp only [gramE, frameInitialVectors_last]
-      rw [h6]
-      simp
-    | cast b =>
-      rw [← hT0]
-      simp only [gramE, frameInitialVectors_last, frameInitialVectors_castSucc]
-      rw [h4 b, map_zero]
-      simp [(Fin.castSucc_lt_last b).ne]
-  | cast a =>
-    induction j using Fin.lastCases with
-    | last =>
-      simp only [gramE, frameInitialVectors_last, frameInitialVectors_castSucc]
-      rw [h4 a]
-      simp [(Fin.castSucc_lt_last a).ne]
-    | cast b =>
-      simp only [gramE, frameInitialVectors_castSucc]
-      rw [h1 a b]
-      simp [(Fin.castSucc_lt_last a).ne]
 
 end Frames
 

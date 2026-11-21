@@ -29,7 +29,7 @@ theorem GlobalTheory.Mem.SRe.conj_ev_mem_HHX : GlobalTheory.Dec.DSInfChar → Gl
   have hT : PiTensorProduct.lift S ∈ MultT R.θ (MP R) (JR R F) (chiR R F) := by
     refine (mem_multT R.θ (MP R) (JR R F) (chiR R F) _).2 ?_
     rw [LinearEquiv.symm_apply_apply]; exact hS
-  obtain ⟨hRow, hMem⟩ := GlobalTheory.T.translateToSecondModel_cuspFormMap_value_automorphic hP D X h R.θ _ (MP R) (JR R F) (chiR R F) t hθ hMat _ hT
+  obtain ⟨hRow, hMem⟩ := _root_.GlobalTheory.Core.Mi.rowFun_evS hP D X h R.θ _ (MP R) (JR R F) (chiR R F) t hθ hMat _ hT
     (PiTensorProduct.tprod ℂ v₀)
   have hfx : ∀ x, evS X h t (PiTensorProduct.lift S (PiTensorProduct.tprod ℂ v₀)) x =
       S v₀ ((iotaX X h).symm x * t) := fun x => by

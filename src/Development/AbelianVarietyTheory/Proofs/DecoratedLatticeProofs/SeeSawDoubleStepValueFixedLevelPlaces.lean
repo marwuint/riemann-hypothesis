@@ -7,14 +7,19 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeeSawUnfoldedDataEqKernelDataAtLevel
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationDisjointPlacesCommuteVacua
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SliceColMem
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapBesselToFourierJacobiLocalModelStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapFourierJacobiToBesselLocalModelStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LineContractionSplitPlaceLocalModelStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumLocalModelFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapsSatisfyFlatLawsFinitePlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapBesselToFourierJacobiLocalModel
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ExistsUnitarySupportedAtPlaceOfMulEqIdem
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapFourierJacobiToBesselLocalModel
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LineContractionSplitPlaceLocalModel
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumLocalModelFormula
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapsSatisfyFlatLawsFinitePlaces
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatThetaMapsConvergeThetaFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralIndicatorGivesLocalVacuumSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralIndicatorGivesLocalVacuumSplitPlace
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.AllPositions
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmooth
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymCollapseOfAllPositions
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergInvariantFactorsContraction
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AllPositionsHolds
@@ -37,8 +42,8 @@ theorem one_place : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), c.Is �
   intro D c v G hc hv j σ h
   have hs := G.hs
   have H : j + 1 + 1 + 2 * σ = G.s := by omega
-  obtain ⟨C, hC, key⟩ := GlobalTheory.LocMod.GValProof.gval_of_laws D (GlobalTheory.T.flatMap_besselToFourierJacobi_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) (GlobalTheory.T.weilDatum_localModel_formula D))
-    (GlobalTheory.T.flatMap_fourierJacobiToBessel_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) (GlobalTheory.T.weilDatum_localModel_formula D)) (GlobalTheory.T.lineContraction_splitPlace_localModel D GlobalTheory.LocFlat.contrFactor)
+  obtain ⟨C, hC, key⟩ := GlobalTheory.LocMod.GValProof.gval_of_laws D (_root_.GlobalTheory.FlatBFLoc.flatBF_of_laws D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (_root_.GlobalTheory.FinPl.flatLaws_all D) (_root_.GlobalTheory.LocOm.omLoc D))
+    (_root_.GlobalTheory.LocMod.flatFB_holds D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (_root_.GlobalTheory.FinPl.flatLaws_all D) (_root_.GlobalTheory.LocOm.omLoc D)) (_root_.GlobalTheory.ContrLocProof.contrLoc D GlobalTheory.LocFlat.contrFactor)
     (GlobalTheory.LocFlat.symCollapse_of_allPositions GlobalTheory.SymChain.allPositions_holds) G.k G.ν G.unitVol (GlobalTheory.LocMod.ofSplit G.q) G.s D.R.k
     G.S (Fin D.R.t) c.ψ G.char j (2 * σ) H
   refine ⟨C, hC, fun s₁ s₂ f₁ f₂ h₁ h₂ => ?_⟩
@@ -53,9 +58,9 @@ theorem one_place : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), c.Is �
     ⟨G.sc j, hne, G.FX j (by omega), G.FX (j + 1) (by omega), G.FX (j + 1 + 1) (by omega), G.FY j _ a₀, G.FY (j + 1) _ a₁,
       G.FY (j + 1 + 1) _ a₂, G.bes j (σ + 1) h _ a₀, G.jac j (σ + 1) h _ a₁,
       G.sc_step j ▸ G.bes (j + 1 + 1) σ (idx_step h) _ a₂⟩
-  obtain ⟨T₁, m₁, e₁⟩ := (GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ _ _ (G.FY j _ a₀) (G.FY (j + 1) _ a₁) c.ψ G.S.ψ hc.std G.char G.S.cond
+  obtain ⟨T₁, m₁, e₁⟩ := (_root_.GlobalTheory.LocMod.indicator_vac D G.k G.q G.unit _ _ _ _ (G.FY j _ a₀) (G.FY (j + 1) _ a₁) c.ψ G.S.ψ hc.std G.char G.S.cond
     _ _ (hv.sd j (by omega)) (hv.sd (j + 1) (by omega)) (G.latY j _ a₀) (G.latY (j + 1) _ a₁)).2 f₁ h₁
-  obtain ⟨T₂, m₂, e₂⟩ := (GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ _ _ (G.FY (j + 1) _ a₁) (G.FY (j + 1 + 1) _ a₂) c.ψ G.S.ψ hc.std G.char
+  obtain ⟨T₂, m₂, e₂⟩ := (_root_.GlobalTheory.LocMod.indicator_vac D G.k G.q G.unit _ _ _ _ (G.FY (j + 1) _ a₁) (G.FY (j + 1 + 1) _ a₂) c.ψ G.S.ψ hc.std G.char
     G.S.cond _ _ (hv.sd (j + 1) (by omega)) (hv.sd (j + 1 + 1) (by omega)) (G.latY (j + 1) _ a₁) (G.latY (j + 1 + 1) _ a₂)).2 f₂ h₂
   obtain ⟨O₁, o₁, -⟩ := GlobalTheory.LocMod.PinModel.exists_isOne (k := G.k)
     (Y := GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin (2 * σ + 1 + 1))
@@ -178,9 +183,9 @@ theorem gValue_mid : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n
       rw [key i s₁ s₂ _ _ (vac_foldr D c v n G hc hv hG j (by omega) i L hi Ψ₁ h₁)
         (vac_foldr D c v n G hc hv hG (j + 1) (by omega) i L hi Ψ₂ h₂), ih hL', GlobalTheory.SeeSawRhs.biComb_smul, smul_smul]
   have hb : IsBiTheta c.ψ _ _ _ (c.ctr j σ h s₁ s₂ Ψ₁ Ψ₂) :=
-    (GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D c.ψ hc.std _ _ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) (flatBF s₁ Ψ₁) (flatFB s₂ Ψ₂)
-      (((GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D c.ψ fun _ => True).1 _ _ _ s₁).Heisenberg₂.theta _ h₁.1)
-      (((GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D c.ψ fun _ => True).2 _ _ _ s₂).Heisenberg₂.theta _ h₂.1)).1
+    (_root_.GlobalTheory.ContrComb.contr_comb_main D c.ψ hc.std _ _ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) (flatBF s₁ Ψ₁) (flatFB s₂ Ψ₂)
+      (((_root_.GlobalTheory.FinPl.flatLaws_all D c.ψ fun _ => True).1 _ _ _ s₁).Heisenberg₂.theta _ h₁.1)
+      (((_root_.GlobalTheory.FinPl.flatLaws_all D c.ψ fun _ => True).2 _ _ _ s₂).Heisenberg₂.theta _ h₂.1)).1
   rw [hG.eG j (by omega) _ h₁.1, hG.eG (j + 1) (by omega) _ h₂.1, ind _ (List.nodup_finRange n),
     biComb_dG D c v n G hG j (by omega) _ (theta_left hb) (theta_right hb)]
 

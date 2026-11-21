@@ -3,7 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaPartD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermInf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermOf
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EqOneOfPowNear
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
@@ -156,7 +157,7 @@ theorem hasCO_herm (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   haveI : LocallyCompactSpace (Af F) := a1
   haveI : SecondCountableTopology (Af F) := a2
   haveI : T2Space (Af F) := a3
-  obtain ⟨-, -, -, -, -, -, hh, -, hcl, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Af F)
+  obtain ⟨-, -, -, -, -, -, hh, -, hcl, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Af F)
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   let b := Module.finBasis F E
   let c : (Af F ⊗[F] E) →+ (Fin (Module.finrank F E) → Af F) :=
@@ -205,7 +206,7 @@ theorem starLoc_periodic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   haveI : LocallyCompactSpace (Af F) := a1
   haveI : SecondCountableTopology (Af F) := a2
   haveI : T2Space (Af F) := a3
-  obtain ⟨t1, -, -, -, -, htr, -, -, -, hG⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Af F)
+  obtain ⟨t1, -, -, -, -, htr, -, -, -, hG⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Af F)
   haveI : IsTopologicalRing (Af F ⊗[F] E) := t1
   obtain ⟨V, hVo, hV⟩ := psiFin_trivial F ψ hψ
   let ph : HermR (Af F) σ n → (Fin n → Fin M → Af F ⊗[F] E) → Af F := fun u X =>

@@ -8,8 +8,8 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnshe
 import Development.AutomorphicSpectrum.PublishedTheorems.Divisibility₂.PairingExists
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SheetIsOpenEmbeddingRangeStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsAlgChartOverIntegersStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsAlgChartFromIntegersStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChernDensitySheetEqStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsAlgChartFromIntegers
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChernDensitySheetEq
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -45,7 +45,7 @@ theorem GlobalTheory.CompanionTheory.Ar.BaseZ.chernPart_sheet : ∀ (k : Type) [
     obtain ⟨c', hc's, hc'e⟩ := GlobalTheory.T.exists_algChart_over_integers k X p t τ σ D c
     have hcomp : ∀ y ∈ c.e.source, sheet t τ y ∈ c'.e.source ∧ c'.e (sheet t τ y) = c.e y :=
       fun y hy => ⟨hc's ▸ Set.mem_image_of_mem _ hy, hc'e y hy⟩
-    have hdens := GlobalTheory.T.chernDensity_sheet_eq k X p t τ σ D B φ ψ hW hφ hψ c c' hcomp
+    have hdens := _root_.GlobalTheory.CompanionTheory.Ar.ZDens.chernDens_sheet k X p t τ σ D B φ ψ hW hφ hψ c c' hcomp
     have hA' : sheet t τ '' A ⊆ c'.e.source := by
       rintro _ ⟨y, hy, rfl⟩
       exact (hcomp y (hAc hy)).1
@@ -80,7 +80,7 @@ theorem GlobalTheory.CompanionTheory.Ar.BaseZ.chernPart_sheet : ∀ (k : Type) [
     refine GlobalTheory.Weight.chernPart_eq_zero ε (hme.measurableSet_image' hUm.compl) fun c' => ?_
     rw [Set.disjoint_left]
     rintro _ hz ⟨y, hy, rfl⟩
-    obtain ⟨c, hcs, -⟩ := GlobalTheory.T.exists_algChart_from_integers k X p t τ σ D c' ⟨y⟩
+    obtain ⟨c, hcs, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.exists_chart_sheet k X p t τ σ D c' ⟨y⟩
     exact hy (Set.mem_iUnion.2 ⟨c, by rw [hcs]; exact hz⟩)
   have hU : (Measure.comap (sheet t τ) (ψ.chernPart D ε)).restrict
       (⋃ c : AlgChart p σ D, c.e.source) = ((φ σ).chernPart D ε).restrict

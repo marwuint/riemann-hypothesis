@@ -40,12 +40,6 @@ theorem rv_hJ (v : NumberField.InfinitePlace I.F) (x y : Fin I.n → I.E) :
   rw [starRingEnd_apply, phi_star I v]
   ring
 
-theorem hJ_conj {n : ℕ} (ε : Fin n → Bool) (u w : Fin n → ℂ) : hJ ε w u = star (hJ ε u w) := by
-  simp only [hJ, Formalism.REAL.Jm, dotProduct, Matrix.mulVec_diagonal, star_sum, star_mul',
-    Pi.star_apply, star_star]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  by_cases h : ε i = true <;> simp [h] <;> ring
-
 variable {I}
 
 theorem rv_frame {r : ℕ} {e f : Fin r → Fin I.n → I.E} {z : Fin I.n → I.E} (hF : IsFrame I e f z)

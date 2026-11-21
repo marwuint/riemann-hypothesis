@@ -3,7 +3,8 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalOrthogonalProjCommComplementUnitary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeLocalGlobalPrinciple
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotallyPositiveOrthogonalOfTwoFlagExtendedSpacesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotallyPositiveOrthogonalOfTwoFlagExtendedSpaces
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsNatMulIntegral
 open scoped Classical ENNReal
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.Unfold
@@ -18,7 +19,7 @@ theorem lattice_between_parts : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u
   have hU : ∀ y ∈ Xplus F ⊔ Xplus F', y ∈ orth (VS D) (Xplus F ⊔ Xplus F') → y = 0 := by
     intro y hyU hyW
     by_contra hy
-    have hpos := GlobalTheory.T.totallyPositive_orthogonal_of_two_flagExtendedSpaces D X Y u u' F F' w hZ hG y hyW hy
+    have hpos := _root_.GlobalTheory.ComplPos.complement_totPos D X Y u u' F F' w hZ hG y hyW hy
     have h0 : (VS D).hT y y = 0 := (mem_orth_iff _ y).1 hyW y hyU
     rw [h0, map_zero] at hpos
     exact lt_irrefl _ hpos

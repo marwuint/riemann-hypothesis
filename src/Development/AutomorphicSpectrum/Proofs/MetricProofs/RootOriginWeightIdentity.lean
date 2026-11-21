@@ -4,7 +4,11 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumFundCoMulSumIic
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueLatOfChartBundle
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCoordField
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IntegralSectionLatticeMultipleStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IntegralSectionLatticeMultiple
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEmbeddingPieces
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Small
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Small.Fund
 
@@ -172,7 +176,7 @@ theorem section_on_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     rw [hfeq]
     exact isIntegral_algebraMap (x := (⟨_, hB⟩ : Algebra.adjoin ℚ
       (Set.range fun p : Σ k, RM.ι k => RM.y p / RM.y ⟨p.1, c' p.1⟩)))
-  obtain ⟨N₀, hN, hmem⟩ := GlobalTheory.T.integral_section_lattice_multiple RM.K RM.ι RM.Ω RM.y 0 (combLine (RM.line 1) n₀).a _ key
+  obtain ⟨N₀, hN, hmem⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Small.exists_nat_mul_mem_chartLatNm_of_isIntegral_rat RM.K RM.ι RM.Ω RM.y 0 (combLine (RM.line 1) n₀).a _ key
   refine ⟨n₀, N₀, ?_, hN, ?_, ?_⟩
   · intro j
     cases j with

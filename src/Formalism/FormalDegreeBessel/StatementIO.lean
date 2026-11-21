@@ -105,33 +105,10 @@ def GlRelAd : Prop :=
     GlRel E → Q * P = 1 →
     GlRel (fun a b => ∑ c, ∑ d, (P c a * Q b d) • E c d)
 
-def CapCentral : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (f : Matrix (Fin n) (Fin n) ℂ → E) (u : ℂ) (c d : Fin n) (g : Matrix (Fin n) (Fin n) ℂ),
-    SmoothOnGV ε f → inUJ ε g →
-    capelli ε u (EabV ε c d f) g = EabV ε c d (capelli ε u f) g
-
 def QMinorLeft : Prop :=
   ∀ (n t : ℕ) (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
     (f : Matrix (Fin n) (Fin n) ℂ → E) (a b : Fin t → Fin n) (u : ℂ) (h : Matrix (Fin n) (Fin n) ℂ),
     qminorOp (EabV ε) a b u (fun x => f (h * x)) = fun x => qminorOp (EabV ε) a b u f (h * x)
-
-def CapLeft : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (f : Matrix (Fin n) (Fin n) ℂ → E) (u : ℂ) (h : Matrix (Fin n) (Fin n) ℂ),
-    capelli ε u (fun x => f (h * x)) = fun x => capelli ε u f (h * x)
-
-def IsHWfun (ε : Fin n → Bool) (ν : Fin n → ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E) : Prop :=
-  ∀ g, inUJ ε g → (∀ a, EabV ε a a f g = ν a • f g) ∧ ∀ a b, a < b → EabV ε a b f g = 0
-
-def CapHW : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (f : Matrix (Fin n) (Fin n) ℂ → E) (ν : Fin n → ℂ),
-    SmoothOnGV ε f → IsHWfun ε ν f →
-    ∀ (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →
-      (∀ u : ℂ, capelli ε u f g = (∏ k : Fin n, (u - ((k : ℕ) : ℂ) + ν k)) • f g) ∧
-      (∀ Y : ℂ, capelli ε (Y + ((n : ℂ) - 1) / 2) f g =
-        (∏ k : Fin n, (Y + ν k + (((n : ℂ) - 1) / 2 - ((k : ℕ) : ℂ)))) • f g)
 
 def CapComatrix : Prop :=
   ∀ (m : ℕ) (ε : Fin (m + 1) → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
@@ -177,10 +154,5 @@ def CapHWH : Prop :=
     (∀ g, inUH H g → (∀ a, EabH H a a f g = ν a • f g) ∧ ∀ a b, a < b → EabH H a b f g = 0) →
     ∀ (g : Matrix (Fin n) (Fin n) ℂ), inUH H g →
       ∀ u : ℂ, capelliH H u f g = (∏ k : Fin n, (u - ((k : ℕ) : ℂ) + ν k)) • f g
-
-def EabHJ : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (f : Matrix (Fin n) (Fin n) ℂ → E) (a b : Fin n),
-    EabH (Jm ε) a b f = EabV ε a b f
 
 end Formalism.QuantumDeterminants

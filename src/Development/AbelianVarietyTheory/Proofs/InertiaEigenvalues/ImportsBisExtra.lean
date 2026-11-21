@@ -17,9 +17,4 @@ theorem ιB_algebraMap_Kur {l : ℕ} [Fact l.Prime] (P : LocPrime l) (c : ↥(Ma
   rw [P.PD_ι] at h
   exact h
 
-theorem tied_ιB_algebraMap_Kur : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
-    LocTied l P AI → ∀ c : ↥(MaximalUnramifiedExtension l),
-      P.ιB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) = algebraMap (Om l) P.R.BdR (c : Om l) :=
-  fun _ _ P _ _ c => ιB_algebraMap_Kur P c
-
 end GlobalTheory.LocIota

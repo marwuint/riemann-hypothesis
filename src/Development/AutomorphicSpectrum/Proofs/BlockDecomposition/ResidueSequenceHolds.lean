@@ -2,16 +2,16 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.LeibnizOrd
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EGPgTrueEqLastIff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionConstructedFromDoubleCosetStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionFromCompactDataStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionFromCompactData
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactTransversalDoubleCosetStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportInducedFunctionClosedStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SurjectiveIntertwinerQuotientEquivStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BijectiveIntertwinerSubrepEquivStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedDoubleCosetCriterionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenDoubleCosetCriterionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedDoubleCosetCriterion
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenDoubleCosetCriterion
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSectionClosedCellStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSectionOpenCellStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicClosedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicClosed
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemHPGIffConjugateParabolicStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedCellInducingCharacterStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellInducingCharacterStatement
@@ -80,7 +80,7 @@ theorem exists_lift [NonarchimedeanGroup G] {Q P : Subgroup G} {x : G} (hLS : Lo
     push_cast
     group
   obtain ⟨K, hK, hKY, hWD⟩ := GlobalTheory.T.section_constructed_from_double_coset hLS σ hσ φ' hφ' _ hopen hinv C hC Y hY (fun c _ => hxY c)
-  obtain ⟨f, h1, h2, h3, h4⟩ := GlobalTheory.T.induced_function_from_compact_data σ φ' C K hWD hsupp
+  obtain ⟨f, h1, h2, h3, h4⟩ := _root_.GlobalTheory.CompanionTheory.BZRes.TwoOrbit.exists_equivariant_extension σ φ' C K hWD hsupp
   refine ⟨⟨⟨f, fun h g => h1 h g⟩, ?_⟩, ?_, ?_⟩
   · refine mem_smoothPart_of_nhds ?_
     filter_upwards [hK.mem_nhds (one_mem K)] with κ hκ
@@ -234,9 +234,9 @@ theorem orbit_cover {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) (g : 
       g ∈ dcos (parab k (two (stdSum h))) (Mir k (i + t)) (wGL k h) := by
   by_cases hy : ∀ a : Fin (i + 1), ((g⁻¹ : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k)
       (Fin.last (i + t)) (stdSum h (Sum.inl a)) = 0
-  · exact Or.inl ((GlobalTheory.T.closed_double_coset_criterion k h ht g).2 hy)
+  · exact Or.inl ((_root_.GlobalTheory.CompanionTheory.BZRes.ClosedOrbit.mem_dcos_iff k h ht g).2 hy)
   · push_neg at hy
-    exact Or.inr ((GlobalTheory.T.open_double_coset_criterion k h ht g).2 hy)
+    exact Or.inr ((_root_.GlobalTheory.CompanionTheory.BZRes.mem_dcos_wGL_iff k h ht g).2 hy)
 
 theorem isClosed_orbit {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) :
     IsClosed (dcos (parab k (two (stdSum h))) (Mir k (i + t)) 1) := by
@@ -245,7 +245,7 @@ theorem isClosed_orbit {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) :
         (Fin.last (i + t)) (stdSum h (Sum.inl a)) = 0} := by
     ext g
     rw [Set.mem_iInter]
-    exact GlobalTheory.T.closed_double_coset_criterion k h ht g
+    exact _root_.GlobalTheory.CompanionTheory.BZRes.ClosedOrbit.mem_dcos_iff k h ht g
   rw [e]
   refine isClosed_iInter fun a => isClosed_eq ?_ continuous_const
   exact (Units.continuous_coe_inv (M := Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k)).matrix_elem _ _
@@ -254,8 +254,8 @@ theorem orbits_disjoint {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) :
     Disjoint (dcos (parab k (two (stdSum h))) (Mir k (i + t)) 1)
       (dcos (parab k (two (stdSum h))) (Mir k (i + t)) (wGL k h)) := by
   refine Set.disjoint_left.2 fun g h1 h2 => ?_
-  obtain ⟨a, ha⟩ := (GlobalTheory.T.open_double_coset_criterion k h ht g).1 h2
-  exact ha ((GlobalTheory.T.closed_double_coset_criterion k h ht g).1 h1 a)
+  obtain ⟨a, ha⟩ := (_root_.GlobalTheory.CompanionTheory.BZRes.mem_dcos_wGL_iff k h ht g).1 h2
+  exact ha ((_root_.GlobalTheory.CompanionTheory.BZRes.ClosedOrbit.mem_dcos_iff k h ht g).1 h1 a)
 
 end ConcreteL
 
@@ -287,7 +287,7 @@ theorem core0 (i j : ℕ) (h₀ : (i + 1) + (j + 1) = i + (j + 1) + 1) (h₁ : (
   have ho := (GlobalTheory.SplitFlip.isOpen_KO (k := k) (n := Fin (i + (j + 1) + 1))).mem_nhds (one_mem _)
   have ht : 0 < j + 1 := by omega
   refine two_orbits (Q := parab k (two (stdSum h₀))) (P := Mir k (i + (j + 1))) (w := wGL k h₀)
-    (GlobalTheory.T.local_section_closed_cell k h₀ ht) (GlobalTheory.T.local_section_open_cell k h₀) (GlobalTheory.T.mirabolic_closed k _)
+    (GlobalTheory.T.local_section_closed_cell k h₀ ht) (GlobalTheory.T.local_section_open_cell k h₀) (_root_.GlobalTheory.CompanionTheory.BZRes.MirClosed.isClosed_mirabolic k _)
     _ GlobalTheory.SplitFlip.isCompact_KO ho
     _ GlobalTheory.SplitFlip.isCompact_KO (fun g => ?_)
     (orbit_cover k h₀ ht) (isClosed_orbit k h₀ ht) (orbits_disjoint k h₀ ht)

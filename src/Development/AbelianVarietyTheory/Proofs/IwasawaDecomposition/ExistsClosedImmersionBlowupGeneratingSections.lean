@@ -46,7 +46,7 @@ theorem exists_blowup_graph {R : Type} [CommRing R] [IsNoetherianRing R] {X : Sc
       rintro _ ⟨t, rfl⟩
       exact ⟨⟨_, hdU t⟩, rfl⟩)
     have hw : w ≫ U.ι = d ≫ g := IsOpenImmersion.lift_fac ..
-    have hw' : d ≫ ψ = w ≫ φ := GlobalTheory.T.eq_of_proportional_to_generating_sections R X _ L m σ (d ≫ g) _ _ (htop _ hdU ▸ GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ (d ≫ g) hσ)
+    have hw' : d ≫ ψ = w ≫ φ := _root_.GlobalTheory.ProjBlowup.eq_of_proportional R X _ L m σ (d ≫ g) _ _ (htop _ hdU ▸ GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ (d ≫ g) hσ)
       (by rw [Category.assoc, hψ, Category.assoc, hφ, reassoc_of% hw]) (hψσ.comp d) (hw ▸ hφσ.comp w)
     have key : ∀ h : W ⟶ _, h ≫ b = g → d ≫ h = w ≫ j := fun h hh => by
       have H := graphClosure.isPullback_incl s (PSpace.str R m) U.ι φ hφ.symm

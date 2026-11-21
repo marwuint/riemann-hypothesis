@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastSeeSawDatumExistsAtLevelPrimePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceChangeBaseVacuumHeisenbergCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DataAsCombinationsAtSplitPlacesProofStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastSeeSawDatumExistsAtLevelPrimePlace
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceChangeBaseVacuumHeisenbergCombination
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DataAsCombinationsAtSplitPlacesProof
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationDisjointPlacesCommuteVacua
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiCombEqLOpROp
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaConstMul
@@ -202,7 +203,7 @@ theorem comb_eq_foldr (hP : Places p I P) (hψ : IsStdChar D ψ (-1)) (hLS : IsS
     (hr2 : ∀ i f₀, Vac ψ S T LS LT (· = (p i).v) f₀ → Over ψ (α i) (β i) LS LT f₀ (Ψ i) (comb ψ S T (r i) f₀)) :
     ∀ f, Vac ψ S T LS LT P f → comb ψ S T c f = I.foldr (fun i f' => comb ψ S T (r i) f') f := by
   intro f hf
-  have hAC := GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι p I P hP n n' ψ hψ S T α β LS LT hLS hLT Ψ
+  have hAC := _root_.GlobalTheory.FinPl.allComb D k ι p I P hP n n' ψ hψ S T α β LS LT hLS hLT Ψ
   exact hAC.2.1 f _ _ (hc.2 f hf) (overAll_foldr hψ hP.inj r hr1 hr2 I hP.nodup f fun i _ =>
     vac_mono (fun x hx => (hP.mem x).2 ⟨i, hx⟩) hf)
 
@@ -216,9 +217,9 @@ theorem over_of_overAll (hP : Places p I P) (hψ : IsStdChar D ψ (-1)) {f Ξ : 
   have hSB : ∀ j, Ψ j ∈ SB (Matrix n n' k) := fun j => by
     obtain ⟨g, g', h⟩ := hstep j (hP.all j)
     exact h.2.2.2.1
-  choose r hr1 hr2 using fun j => (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k (p j) n n' ψ hψ (hP.unit j) S T (α j) (β j) LS LS LT LT hLS hLT hLS hLT).2
+  choose r hr1 hr2 using fun j => (_root_.GlobalTheory.FinPl.Rebase.rebase D k (p j) n n' ψ hψ (hP.unit j) S T (α j) (β j) LS LS LT LT hLS hLT hLS hLT).2
     (Ψ j) (hSB j)
-  have hAC := GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι p I P hP n n' ψ hψ S T α β LS LT hLS hLT Ψ
+  have hAC := _root_.GlobalTheory.FinPl.allComb D k ι p I P hP n n' ψ hψ S T α β LS LT hLS hLT Ψ
   have hE : Ξ = I.foldr (fun j f' => comb ψ S T (r j) f') f := hAC.2.1 f _ _ hΞ
     (overAll_foldr hψ hP.inj r hr1 hr2 I hP.nodup f fun j _ => vac_mono (fun x hx => (hP.mem x).2 ⟨j, hx⟩) hf)
   have hcomm : ∀ x ∈ I, ∀ y ∈ I, ∀ z : WO S T → ℂ,
@@ -246,7 +247,7 @@ set_option maxHeartbeats 1000000 in
 theorem main : ∀ D : D7, GlobalTheory.FinPl.LastTAll D := by
   intro D k _ _ _ _ ι p I P hP q ψ hψ χ hχ hchar n n' n'' _ _ _ _ _ _ V₀ A L S X T L'' o o'' ζ ζ₀ hζ hζ₀ τ lam hlam
     hunit hτ
-  have hloc := fun i => GlobalTheory.T.lastSeeSawDatum_exists_at_levelPrimePlace D k (p i) q ψ hψ (hP.unit i) (χ i) (hχ i) (hchar i) n n' n'' V₀ A L S X T L'' o o''
+  have hloc := fun i => _root_.GlobalTheory.LastSeeSawDatum.lastDatum D k (p i) q ψ hψ (hP.unit i) (χ i) (hχ i) (hchar i) n n' n'' V₀ A L S X T L'' o o''
     ζ ζ₀ hζ hζ₀ τ lam hlam (hunit i) hτ
   choose ε hε using hloc
   refine ⟨ε, ?_⟩
@@ -258,9 +259,9 @@ theorem main : ∀ D : D7, GlobalTheory.FinPl.LastTAll D := by
   have hSB' : ∀ i, phiOne (ε i • Q i) (lastPair q (Λ i)) ∈ SB _ := fun i => by
     obtain ⟨g, g', h⟩ := overAll_steps I 0 _ (hc'.2 0 vac_zero) i (hP.all i)
     exact h.2.2.2.1
-  choose r hr1 hr2 using fun i => (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k (p i) n n' ψ hψ (hP.unit i) A S (α i) (β i) LA LA LS LS hLA hLS hLA
+  choose r hr1 hr2 using fun i => (_root_.GlobalTheory.FinPl.Rebase.rebase D k (p i) n n' ψ hψ (hP.unit i) A S (α i) (β i) LA LA LS LS hLA hLS hLA
     hLS).2 (Ψ i) (hSB i)
-  choose r' hr1' hr2' using fun i => (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k (p i) (n'' ⊕ Fin 1) n ψ hψ (hP.unit i) S X (β i) (γ₀ i) LS LS LX LX
+  choose r' hr1' hr2' using fun i => (_root_.GlobalTheory.FinPl.Rebase.rebase D k (p i) (n'' ⊕ Fin 1) n ψ hψ (hP.unit i) S X (β i) (γ₀ i) LS LS LX LX
     hLS hLX hLS hLX).2 _ (hSB' i)
   choose e₁ e₂ he₁ he₂ hE using fun i => hε i (α i) (α₀ i) (β i) (γ i) (γ₀ i) (hfr i).1 (hfr i).2 (Q i) (Λ i) (Ψ i) LA LS
     LT LX hLA hLS hLT hLX (hlat i).1 (hlat i).2 (r i) (r' i) (hr1 i) (hr1' i) (hr2 i) (hr2' i)

@@ -5,7 +5,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Glo
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AddJFintype
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsJoinBlocksStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsJoinBlocks
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordOverIntOfFiniteOrder
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -55,7 +58,7 @@ theorem tie_blocks : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Fi
     · exact (map_ne_zero _).2 (block_ratio_mem hc k (c k)).1
     · have := hreg _ (block_ratio_mem hc k i).2
       rwa [map_div₀] at this
-  have h3 := GlobalTheory.T.coords_join_blocks X' Ω ξ' Unit (fun _ => Fin (N + 1)) (fun p => x' p.2) K J
+  have h3 := _root_.GlobalTheory.CompanionTheory.Ar.AddBlockMulti.add_block_multi X' Ω ξ' Unit (fun _ => Fin (N + 1)) (fun p => x' p.2) K J
     (fun p => algebraMap Ω₀ Ω (y p)) h1 h2
   convert h3 using 2 with c'
   exact Fintype.prod_sum_type _

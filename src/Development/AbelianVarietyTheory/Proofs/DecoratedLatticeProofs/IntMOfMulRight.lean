@@ -32,9 +32,6 @@ theorem IntM.add {M N : Matrix a b K} (h : IntM v M) (h' : IntM v N) : IntM v (M
 theorem IntM.sub {M N : Matrix a b K} (h : IntM v M) (h' : IntM v N) : IntM v (M - N) :=
   fun i j => v.map_sub_le (h i j) (h' i j)
 
-theorem SmallM.add {M N : Matrix a b K} (h : SmallM v M) (h' : SmallM v N) : SmallM v (M + N) :=
-  fun i j => v.map_add_lt (h i j) (h' i j)
-
 theorem SmallM.sub {M N : Matrix a b K} (h : SmallM v M) (h' : SmallM v N) : SmallM v (M - N) :=
   fun i j => v.map_sub_lt (h i j) (h' i j)
 

@@ -7,7 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheaf
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechModulesFunctorShortExactOfIsAffineOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RhoIsCoc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardNonempty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPullOneBijectiveLatticeCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPullOneBijectiveLatticeCover
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LogKS Formalism.L2.Pj
 open GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.CechFin
@@ -53,9 +55,6 @@ theorem sfCr_self (hc : IsCoc W c) (U : Z.Opens) (i : J) (h : U ≤ W i ⊓ W i)
   have e := sfCr_add W c hc U i i i (le_inf h (h.trans inf_le_left))
   have e2 : sfCr W c U i i h + sfCr W c U i i h = sfCr W c U i i h := e
   linear_combination e2
-
-theorem sfCr_congr (U : Z.Opens) {i j i' : J} (e : i = j) (h : U ≤ W i ⊓ W i') (h' : U ≤ W j ⊓ W i') :
-    sfCr W c U i i' h = sfCr W c U j i' h' := by subst e; rfl
 
 theorem sfCr_congr2 (U : Z.Opens) {i i' j' : J} (e : i' = j') (h : U ≤ W i ⊓ W i') (h' : U ≤ W i ⊓ W j') :
     sfCr W c U i i' h = sfCr W c U i j' h' := by subst e; rfl
@@ -104,7 +103,7 @@ theorem GlobalTheory.CechFin.cocycle_of_finite_affine_subcover : ∀ (R : Type) 
     rw [sfCr_res]
     rw [add_comm]
     exact e.symm
-  obtain ⟨y, hy⟩ := (GlobalTheory.T.cech_pull_one_bijective_lattice_cover R Z s (NE κ) (cov D hD) (cov_mono D hD) hinf hsup).2
+  obtain ⟨y, hy⟩ := (_root_.GlobalTheory.CoverO.restrict_bijective R Z s (NE κ) (cov D hD) (cov_mono D hD) hinf hsup).2
     (H1.mk _ ⟨Fv, hF⟩)
   obtain ⟨f0, rfl⟩ := H1.mk_surjective _ y
   rw [CoefMap.pullCohomologyOne_class, H1.mk_eq_mk] at hy

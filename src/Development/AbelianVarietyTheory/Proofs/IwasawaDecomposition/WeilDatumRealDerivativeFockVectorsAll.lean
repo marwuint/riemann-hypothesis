@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PderivComm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtYAndItYOfPair
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfPderivStable
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RealLieAlgebraActsByFockOperatorsUpToScalarsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDatumRealPlaceDerivativesAddStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonzeroFockVacuumOfNonzeroThetaFunctionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDatumRealPlaceDerivativesAdd
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonzeroFockVacuumOfNonzeroThetaFunction
 
 noncomputable section
 
@@ -95,7 +95,7 @@ theorem realAllO : ∀ D : D7, Formalism.IndefR.WeilFull.RealAllO D := by
       simp [aPlusAll, aPlus, crea, Datum.dRho, heisO]
     simp only [z0, map_zero]
     exact hasDerivAt_const _ _
-  obtain ⟨f₀, hv0, hne⟩ := GlobalTheory.T.exists_nonzero_fockVacuum_of_nonzero_thetaFunction D S T A B θ ψ hp.std hp.inf f hf f0
+  obtain ⟨f₀, hv0, hne⟩ := _root_.GlobalTheory.Mem.VacReal.exists_isVacF_ne_zero D S T A B θ ψ hp.std hp.inf f hf f0
   obtain ⟨κS, κT, hκ⟩ := GlobalTheory.T.realLieAlgebra_acts_by_fockOperators_upToScalars D S T A B θ ψ χS χT om τ hp.inf hd
   have k0 := hκ f₀ hv0.1 (hv0.2 τ)
   have all := GlobalTheory.T.lieAction_fockOperators_scalars_trace D S T A B θ ψ χS χT om f₀ τ αS αT hp.inf hd hαS hαT hv0
@@ -117,7 +117,7 @@ theorem realAllO : ∀ D : D7, Formalism.IndefR.WeilFull.RealAllO D := by
   have kf := hκ f hf (by rw [cA, cB]; exact hv)
   have ht : IsThetaFunO ψ S T (ptF ψ θ A B f P) :=
     GlobalTheory.Chain.InnerSteps.theta_pureTensorO hp.std hp.inf _ _ _ _ hf P
-  have sm := GlobalTheory.T.weilDatum_realPlaceDerivatives_add D S T θ ψ χS χT om τ hp.inf hd XS hXS XT hXT _ _ _ ht (kf.1 XS hXS P) (kf.2 XT hXT P) x
+  have sm := _root_.GlobalTheory.Mem.LieSum.hasDerivAt_add D S T θ ψ χS χT om τ hp.inf hd XS hXS XT hXT _ _ _ ht (kf.1 XS hXS P) (kf.2 XT hXT P) x
   have uS := (onb_facts (hp.onbS τ)).1
   have uT := (onb_facts (hp.onbT τ)).1
   have frA : (A.fr τ * XS * (A.fr τ)⁻¹) = (BS τ)⁻¹ * XS * BS τ := by

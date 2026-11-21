@@ -244,20 +244,6 @@ theorem exists_reduced_basis_integralPart {κ : Type*}
     Real.rpow_natCast]
   exact_mod_cast choose_add_le_one_add_pow _ _
 
-example : (X 0 : MvPolynomial (Fin 1) ℚ) ∈ integralPart (span ℚ {X 0}) ∧
-    (1 / 2 : ℚ) • (X 0 : MvPolynomial (Fin 1) ℚ) ∉ integralPart (span ℚ {X 0}) := by
-  refine ⟨⟨mem_span_singleton_self _, fun α => ?_⟩, fun h => ?_⟩
-  · change IsIntegral ℤ (coeff α (X 0))
-    rw [coeff_X]
-    split_ifs
-    exacts [isIntegral_one, isIntegral_zero]
-  · have h1 := (mem_integralPart.1 h).2 (Finsupp.single 0 1)
-    rw [coeff_smul, coeff_X, if_pos rfl, smul_eq_mul, mul_one] at h1
-    obtain ⟨m, hm⟩ := IsIntegrallyClosed.isIntegral_iff.mp h1
-    rw [eq_intCast] at hm
-    have h2 : (2 * m : ℤ) = 1 := by exact_mod_cast (by rw [hm]; norm_num : (2 * m : ℚ) = 1)
-    omega
-
 end MvPoly
 
 end GlobalTheory

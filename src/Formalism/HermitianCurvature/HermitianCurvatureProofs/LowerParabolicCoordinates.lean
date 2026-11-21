@@ -76,23 +76,6 @@ lemma lt_conjT {l : Matrix (Fin m) (Fin m) ℂ} (hl : l ∈ C2.LTset m) : lᴴ �
   ⟨fun i j h => by rw [Matrix.conjTranspose_apply, hl.1 j i h, star_zero],
    fun i => by rw [Matrix.conjTranspose_apply, hl.2, star_one]⟩
 
-lemma ut_inv_super {u : Matrix (Fin m) (Fin m) ℂ} (hu : u ∈ C2.UTset m) (a : Fin m) (h : a.val + 1 < m) :
-    u⁻¹ a ⟨a.val + 1, h⟩ = -u a ⟨a.val + 1, h⟩ := by
-  have hi := ut_inv hu
-  have hne : a ≠ ⟨a.val + 1, h⟩ := fun e => by have := congrArg Fin.val e; simp at this
-  have e := congrFun (congrFun (Matrix.mul_nonsing_inv u (ut_unit hu)) a) ⟨a.val + 1, h⟩
-  rw [Matrix.mul_apply, Matrix.one_apply_ne hne, Fintype.sum_eq_add a ⟨a.val + 1, h⟩ hne] at e
-  · rw [hu.2, hi.2, one_mul, mul_one] at e
-    linear_combination e
-  · intro k ⟨hk1, hk2⟩
-    rcases lt_or_gt_of_ne hk1 with hl | hl
-    · rw [hu.1 a k hl, zero_mul]
-    · have : (⟨a.val + 1, h⟩ : Fin m) < k := by
-        rw [Fin.lt_def] at hl ⊢
-        have : k.val ≠ a.val + 1 := fun e => hk2 (Fin.ext e)
-        simp only; omega
-      rw [hi.1 k _ this, mul_zero]
-
 lemma monomialMatrix_inv_left (w : Equiv.Perm (Fin m)) (d : Fin m → ℂ) (hd : ∀ a, d a ≠ 0) :
     C2.monoP w.symm (fun i => (d (w.symm i))⁻¹) * C2.monoP w d = 1 := by
   ext i j
@@ -133,82 +116,6 @@ end C2x2
 
 open C2x2
 
-theorem inverse_star_substitution : C2.InvStarSub := by
-  intro m u hu a h
-  rw [Matrix.conjTranspose_apply, ut_inv_super hu a h]
-  simp
-
-lemma c2x2_antiW_mul {s : ℕ} (M : Matrix (Fin s) (Fin s) ℂ) (i j : Fin s) :
-    (C2.antiW s * M) i j = M i.rev j := by
-  simp only [C2.antiW, Matrix.mul_apply, Matrix.of_apply]
-  rw [Finset.sum_eq_single i.rev]
-  · simp
-  · intro k _ hk; rw [if_neg hk, zero_mul]
-  · simp
-
-lemma c2x2_mul_antiW {s : ℕ} (M : Matrix (Fin s) (Fin s) ℂ) (i j : Fin s) :
-    (M * C2.antiW s) i j = M i j.rev := by
-  simp only [C2.antiW, Matrix.mul_apply, Matrix.of_apply]
-  rw [Finset.sum_eq_single j.rev]
-  · simp
-  · intro k _ hk
-    rw [if_neg, mul_zero]
-    intro e; apply hk; rw [e, Fin.rev_rev]
-  · simp
-
-lemma c2x2_antiW_sq (s : ℕ) : C2.antiW s * C2.antiW s = 1 := by
-  ext i j
-  rw [c2x2_antiW_mul]
-  simp only [C2.antiW, Matrix.of_apply, Fin.rev_rev, Matrix.one_apply]
-  by_cases h : i = j
-  · simp [h]
-  · rw [if_neg (fun e => h e.symm), if_neg h]
-
-lemma c2x2_simpleLow_succ {n : ℕ} (l : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
-    C2.simpleLow l = ∑ a : Fin n, l a.succ a.castSucc := by
-  unfold C2.simpleLow
-  rw [Fin.sum_univ_castSucc, dif_neg (by simp), add_zero]
-  refine Finset.sum_congr rfl (fun a _ => ?_)
-  rw [dif_pos (by have := a.isLt; simp only [Fin.coe_castSucc]; omega)]
-  rfl
-
-lemma c2x2_simpleUp_succ {n : ℕ} (u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
-    C2.simpleUp u = ∑ a : Fin n, u a.castSucc a.succ := by
-  unfold C2.simpleUp
-  rw [Fin.sum_univ_castSucc, dif_neg (by simp), add_zero]
-  refine Finset.sum_congr rfl (fun a _ => ?_)
-  rw [dif_pos (by have := a.isLt; simp only [Fin.coe_castSucc]; omega)]
-  rfl
-
-theorem stabilizer_antidiagonal : C2.StabAntidiag := by
-  intro s u t hu ht
-  have hi := ut_inv hu
-  refine ⟨⟨fun i j hij => ?_, fun i => ?_⟩, ?_, ?_⟩
-  · rw [c2x2_mul_antiW, c2x2_antiW_mul]
-    exact hi.1 _ _ (Fin.rev_lt_rev.mpr hij)
-  · rw [c2x2_mul_antiW, c2x2_antiW_mul]
-    exact hi.2 _
-  · calc C2.antiW s * u⁻¹ * C2.antiW s * (t • C2.antiW s) * u
-        = t • (C2.antiW s * u⁻¹ * (C2.antiW s * C2.antiW s) * u) := by
-          simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]
-      _ = t • C2.antiW s := by
-          rw [c2x2_antiW_sq, Matrix.mul_one, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (ut_unit hu),
-            Matrix.mul_one]
-  · rcases s with _ | n
-    · simp [C2.simpleLow, C2.simpleUp]
-    · rw [c2x2_simpleLow_succ, c2x2_simpleUp_succ]
-      have e1 : ∀ a : Fin n, (C2.antiW (n + 1) * u⁻¹ * C2.antiW (n + 1)) a.succ a.castSucc =
-          -u a.rev.castSucc a.rev.succ := by
-        intro a
-        rw [c2x2_mul_antiW, c2x2_antiW_mul, Fin.rev_succ, Fin.rev_castSucc]
-        have := ut_inv_super hu a.rev.castSucc (by simp only [Fin.coe_castSucc]; exact Nat.succ_lt_succ a.rev.isLt)
-        exact this
-      simp only [e1]
-      rw [Finset.sum_neg_distrib]
-      have e2 : ∑ a : Fin n, u a.rev.castSucc a.rev.succ = ∑ a : Fin n, u a.castSucc a.succ :=
-        Equiv.sum_comp Fin.revPerm (fun a => u a.castSucc a.succ)
-      rw [e2]; ring
-
 theorem unipotent_radical_image : C2.URImage := by
   intro m P hP
   have hPu := isMonomial_unit hP
@@ -228,25 +135,6 @@ theorem unipotent_radical_image : C2.URImage := by
     have e : uᴴ * P = P * (P⁻¹ * uᴴ * P) := by
       rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul]
     rw [e, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (ut_unit hX), Matrix.mul_one]
-
-theorem upper_splitting_of_lower : C2.UpSplitOfLowSplit := by
-  intro hLow m P hP u hu
-  obtain ⟨p, ⟨hp1, hp2, hpe⟩, huniq⟩ := hLow m P hP uᴴ (ut_conjT hu)
-  refine ⟨(p.2ᴴ, p.1ᴴ), ⟨lt_conjT hp2.1, lt_conjT hp1.1, ?_, ?_, ?_⟩, ?_⟩
-  · simpa using hp2
-  · simpa using hp1
-  · simp only
-    rw [← Matrix.conjTranspose_mul, ← hpe, Matrix.conjTranspose_conjTranspose]
-  · rintro q ⟨_, _, hq1, hq2, hqe⟩
-    have := huniq (q.2ᴴ, q.1ᴴ) ⟨hq2, hq1, by
-      simp only
-      rw [← Matrix.conjTranspose_mul, ← hqe]⟩
-    rw [Prod.ext_iff] at this
-    simp only at this
-    obtain ⟨e1, e2⟩ := this
-    apply Prod.ext
-    · simp only; rw [← e2, Matrix.conjTranspose_conjTranspose]
-    · simp only; rw [← e1, Matrix.conjTranspose_conjTranspose]
 
 lemma c2x2_lowOf_sub {m : ℕ} (p : Fin m × Fin m → Prop) [DecidablePred p] (v : {q : Fin m × Fin m // p q} → ℂ)
     (i j : Fin m) :

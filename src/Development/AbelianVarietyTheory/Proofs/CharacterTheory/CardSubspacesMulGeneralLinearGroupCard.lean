@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardSubspacesOfFinrankMulCardBasesStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardSubspacesOfFinrankMulCardBases
 
 open Polynomial GlobalTheory.CuspGL
 
@@ -15,7 +15,7 @@ theorem card_GL_eq_prod_range (F : Type) [Field F] [Finite F] (n : ℕ) :
 
 theorem card_subspaces_mul_glCard : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (a : ℕ), a ≤ Module.finrank F V → (Nat.card {W : Submodule F V // Module.finrank F W = a} : ℂ) * (Nat.card F : ℂ) ^ (a * (Module.finrank F V - a)) * glCard F a * glCard F (Module.finrank F V - a) = glCard F (Module.finrank F V) := by
   intro F _ _ V _ _ _ a ha
-  have h := GlobalTheory.T.card_subspaces_of_finrank_mul_card_bases F V a ha
+  have h := _root_.GlobalTheory.SubspaceNumber.card_subspaces_mul F V a ha
   obtain ⟨b, hb⟩ := Nat.exists_eq_add_of_le ha
   have hb' : Module.finrank F V - a = b := by omega
   rw [hb']

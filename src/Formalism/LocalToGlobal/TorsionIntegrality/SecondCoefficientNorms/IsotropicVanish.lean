@@ -84,20 +84,6 @@ def UnitaryInv : Prop :=
       Cong R (∑ i, PowerSeries.subst (flin l linv (fun j => τ (δ i j)) u) ph)
         (∑ j, PowerSeries.subst (u j) ph)
 
-def IsotropicVanish : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (R : Subring K) (l linv ph : PowerSeries K),
-    Frame R l linv ph →
-    ∀ (O : Type) [CommRing O] [StarRing O] (τ : O →+* K),
-    (∀ α, EndInt R l linv (τ α)) →
-    (∀ z : O, star z = z → IsBinomScalar R (τ z)) →
-    F1 R l linv ph →
-    (∀ α : O, PhNormAt R l linv ph (τ α) (τ (star α))) →
-    (∀ α : O, AdjAt R l linv ph (τ α) (τ (star α))) →
-    ∀ (n ι : Type) [Fintype n] [Fintype ι] (f : ι → n → O),
-    (∀ e e', ∑ i, star (f e i) * f e' i = 0) →
-    ∀ (σ : Type) (t : ι → MvPowerSeries σ K), (∀ e, IsPt R (t e)) →
-      LG R (∑ i, PowerSeries.subst (flin l linv (fun e => τ (f e i)) t) ph)
-
 def HyperbolicSum : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (R : Subring K) (l linv ph : PowerSeries K),
     Frame R l linv ph →

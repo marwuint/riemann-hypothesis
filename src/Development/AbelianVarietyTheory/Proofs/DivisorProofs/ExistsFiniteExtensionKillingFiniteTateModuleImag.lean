@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinsetFixingPointLocallyFiniteTypeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinsetFixingPointLocallyFiniteType
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -26,7 +26,7 @@ theorem exists_finiteDimensional_galTate_eq_one : ∀ (K Ω : Type) [Field K] [F
         push_neg at h
         exact hs (LinearMap.ext fun t => Tate.ext fun n => h t n)
       obtain ⟨t, n, htn⟩ := hex
-      obtain ⟨F, hF⟩ := GlobalTheory.T.exists_finset_fixing_point_locallyFiniteType K Ω A hA (t.lev n)
+      obtain ⟨F, hF⟩ := _root_.GlobalTheory.PtFin.exists_finset_fix K Ω A hA (t.lev n)
       refine ⟨F, fun σ hσ hfix => ?_⟩
       exfalso
       apply htn

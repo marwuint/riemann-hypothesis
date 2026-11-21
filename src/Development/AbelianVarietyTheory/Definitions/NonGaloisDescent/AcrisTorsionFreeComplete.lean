@@ -110,43 +110,17 @@ theorem plusLift_alg {S : Type} [CommRing S] (f : Per.Acris l →+* S) (h : IsUn
     (x : Per.Acris l) : plusLift f h (algebraMap _ _ x) = f x :=
   IsLocalization.Away.lift_eq _ _ x
 
-theorem isUnit_l_BcrisP : IsUnit ((l : ℕ) : BcrisP l) := by
-  have h := IsLocalization.Away.algebraMap_isUnit (S := BcrisP l) ((l : ℕ) : Per.Acris l)
-  rwa [map_natCast] at h
-
 def plusToB : BcrisP l →+* Per.Bcris l :=
   plusLift (algebraMap (Per.Acris l) (Per.Bcris l)) (isUnit_l_Bcris l)
 
-def phiP : BcrisP l →+* BcrisP l :=
-  plusLift ((algebraMap (Per.Acris l) (BcrisP l)).comp (phiA l)) (isUnit_l_BcrisP l)
-
 variable {l}
-
-def sigP (g : Per.Gq l) : BcrisP l →+* BcrisP l :=
-  plusLift ((algebraMap (Per.Acris l) (BcrisP l)).comp (sigA g)) (isUnit_l_BcrisP l)
 
 theorem plusToB_alg (x : Per.Acris l) :
     plusToB l (algebraMap _ _ x) = algebraMap (Per.Acris l) (Per.Bcris l) x := plusLift_alg _ _ x
 
-theorem phiP_alg (x : Per.Acris l) : phiP l (algebraMap _ _ x) = algebraMap _ _ (phiA l x) :=
-  plusLift_alg _ _ x
-
-theorem sigP_alg (g : Per.Gq l) (x : Per.Acris l) : sigP g (algebraMap _ _ x) = algebraMap _ _ (sigA g x) :=
-  plusLift_alg _ _ x
-
 theorem plus_ext {S : Type} [CommRing S] {f f' : BcrisP l →+* S}
     (h : ∀ x : Per.Acris l, f (algebraMap _ _ x) = f' (algebraMap _ _ x)) : f = f' :=
   IsLocalization.ringHom_ext (Submonoid.powers ((l : ℕ) : Per.Acris l)) (RingHom.ext h)
-
-theorem plusToB_phi (x : BcrisP l) : plusToB l (phiP l x) = Per.φB l (plusToB l x) :=
-  RingHom.congr_fun (plus_ext (f := (plusToB l).comp (phiP l)) (f' := (Per.φB l).comp (plusToB l)) fun y => by
-    rw [RingHom.comp_apply, RingHom.comp_apply, phiP_alg, plusToB_alg, plusToB_alg]
-    exact ((ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.2 y).symm) x
-
-theorem plusToB_sig (g : Per.Gq l) (x : BcrisP l) : plusToB l (sigP g x) = Per.σB g (plusToB l x) :=
-  RingHom.congr_fun (plus_ext (f := (plusToB l).comp (sigP g)) (f' := (Per.σB g).comp (plusToB l)) fun y => by
-    rw [RingHom.comp_apply, RingHom.comp_apply, sigP_alg, plusToB_alg, plusToB_alg]
-    exact ((ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.1 g y).symm) x
 
 namespace Core
 
@@ -247,16 +221,5 @@ structure Fits {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (C : Cor
 
   σ : ∀ (K : FinExt l) (x : ↥(K0 K)) (c : ↥(MaximalUnramifiedExtension l)), (c : Om l) = (x : Om l) →
     (((P.PD K).σ x : ↥(K0 K)) : Om l) = ((C.σ c : ↥(MaximalUnramifiedExtension l)) : Om l)
-
-example (C : Core l) : Per.θ l (xi C.ε) = 0 :=
-  (theta_eq_zero_iff_xi_dvd l C.ε (core_isEps l C) _).2 dvd_rfl
-
-example (C : Core l) : Nontrivial (BcrisP l) := ((Per.θD l).comp C.jP).domain_nontrivial
-
-example (C : Core l) (x : ℚ_[l]) : C.ι (C.qB x) = C.oD (algebraMap ℚ_[l] (Om l) x) := C.ι_u _
-
-example (C : Core l) (x : ℚ_[l]) : C.ι (C.qB x) ∈ Per.FilD l 0 := by
-  rw [show C.ι (C.qB x) = _ from C.ι_u _]
-  exact GlobalTheory.RingIface.alg_mem_FilD_zero l _
 
 end GlobalTheory.MemLoc

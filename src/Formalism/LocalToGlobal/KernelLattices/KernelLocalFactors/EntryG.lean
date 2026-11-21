@@ -128,56 +128,6 @@ theorem fin_mul (hN : IsSdLat N) (hN' : IsSdLat N') (c c' : ℕ) (hc : 0 < c) (h
 
 end Regroup
 
-section Cf
-
-variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
-
-end Cf
-
-section LatSum
-
-variable {E : Type} [Field E] [NumberField E] {H : Type} [AddCommGroup H] [Module (𝓞 E) H]
-
-end LatSum
-
-section Clo
-
-variable {X : Fields} {p : ℕ} [Fact p.Prime] {a b : ℕ} {A : Amb X} {a₀ : ℕ} {b₀ c₀' : ℤ} {ha : 0 < a₀} {hd : 0 < A.d} {lam₀ : ℂ}
-  {hlam : lam₀ ≠ 0} {ι : ℂ ≃+* ℂ_[p]} {ϖ : ℂ} {pE : 𝓞 X.E} {D : ℕ} {e : ℝ}
-
-end Clo
-
-section Entry
-
-variable {X : Fields} {p : ℕ} [Fact p.Prime] {a b : ℕ} (A : Amb X) (a₀ : ℕ) (b₀ c₀' : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (lam₀ : ℂ)
-  (hlam : lam₀ ≠ 0) (ι : ℂ ≃+* ℂ_[p]) (ϖ : ℂ) (pE : 𝓞 X.E) (D : ℕ) (e : ℝ)
-
-end Entry
-
-section Rec
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {Sg : Set ℕ}
-  (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
-  (A : Amb X) {p : ℕ} [Fact p.Prime] (a₀ : ℕ) (b₀ c₀' : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (lam₀ : ℂ)
-  (hlam : lam₀ ≠ 0) (ι : ℂ ≃+* ℂ_[p]) (ϖ : ℂ) (pE : 𝓞 X.E) (D : ℕ) (e : ℝ) {u : Pr.Word} (m2 : ℕ)
-
-end Rec
-
-section Deg
-
-variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
-
-def wtD (ι : Type) (a b : ℕ) : ((ι × Fin b × Fin b) ⊕ DVar ι a b) → ℕ := Sum.elim (fun _ => 0) (fun _ => 1)
-
-end Deg
-
-section Lat
-
-variable {X : Fields} (A : Amb X) {p : ℕ} [Fact p.Prime] {a b : ℕ}
-
-end Lat
-
 namespace Test
 
 end Test

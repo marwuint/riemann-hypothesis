@@ -138,7 +138,7 @@ theorem one_sub_unit {𝔪 : Ideal (𝓞 D.host.E)} {Z : Finset (Pl D.host.E)} (
       Matrix.one_apply, ← hsB]
     split_ifs <;> simp
   have hI : IsIntM (1 - B) := by rw [e0]; exact GlobalTheory.HalfUnit.isIntM_map _
-  refine GlobalTheory.T.exists_integral_inverse_at_splitPlaces_of_units Z e he _ (GlobalTheory.HalfUnit.det_mem hI) fun PP hPP => GlobalTheory.HalfUnit.isUnit_res_det PP hI ?_
+  refine _root_.GlobalTheory.LocalInvIdem.exists_inv Z e he _ (GlobalTheory.HalfUnit.det_mem hI) fun PP hPP => GlobalTheory.HalfUnit.isUnit_res_det PP hI ?_
   have hr : redM PP (1 - B) = 1 := by
     rw [e0, GlobalTheory.HalfUnit.redM_map]
     ext i j

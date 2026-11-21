@@ -23,12 +23,6 @@ def IsIntHom {d d' : ℕ} (G : LogFGL v d) (G' : LogFGL v d') (φ : Fin d' → M
 def intSpan (v : AddValuation C (WithTop ℝ)) {ι : Type} [Fintype ι] {d : ℕ} (u : ι → Fin d → C) : Set (Fin d → C) :=
   {x | ∃ a : ι → C, (∀ k, IsIntV v (a k)) ∧ x = ∑ k, a k • u k}
 
-example {d : ℕ} (G : LogFGL v d) : IsIntHom G G (fun a => X a) 1 := by
-  refine ⟨fun b => by simp, fun b α => ?_, fun b => ?_⟩
-  · unfold IsIntV; rw [coeff_X]; split_ifs <;> simp
-  · rw [show (fun a => (X a : MvPowerSeries (Fin d) C)) = X from rfl, subst_self]
-    simp [Matrix.one_apply, ite_smul]
-
 end Hom
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
@@ -38,12 +32,6 @@ def UnramIn (E : Type) [Field E] [NumberField E] (p : ℕ) : Prop := ¬ (p : ℤ
 def SplitInK (H : Host E) (p : ℕ) : Prop := (H.d : ZMod p) ≠ 0 ∧ IsSquare (-(H.d : ZMod p))
 
 def InertInK (H : Host E) (p : ℕ) : Prop := ¬ IsSquare (-(H.d : ZMod p))
-
-example (H : Host E) : SplitInK H 2 := by
-  have h : (H.d : ZMod 2) = 1 := by
-    have := H.d_mod
-    rw [← ZMod.natCast_mod H.d 2, show H.d % 2 = 1 by omega]; rfl
-  refine ⟨by rw [h]; decide, 1, by rw [h]; decide⟩
 
 variable {Dw : Datum H} {l : Level H}
 
@@ -107,10 +95,6 @@ def TypedPartAt (τ : E →+* ℂ) : Prop :=
       IsSatFrame (vX_vp X) (fun a => P.mulVec (frame Ch X f a)) ∧
       (∀ a b, ty b ≠ s → P.mulVec (frame Ch X f a) b = 0) ∧
       ∀ k : ℕ, nuFacC Ch X f k = detDepth G' (fun a => P.mulVec (frame Ch X f a)) k
-
-omit [StarRing (𝓞 E)] in
-
-example : Module.finrank (𝓞 E) Dw.La - Dw.q = Dw.p := by rw [Dw.rank]; omega
 
 def FormalGroupTypes : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l)

@@ -36,55 +36,6 @@ private theorem sr_tmul (l : W →ₗ[ℂ] ℂ) (w : W) (z : Z) : sr l (w ⊗ₜ
 
 end Lin
 
-section Rep
-
-variable {G Y X : Type} [Group G] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup X] [Module ℂ X]
-
-private theorem fs_intw {Q : Type} (c : Q → G) (τ : Representation ℂ G Y) (τ' : Representation ℂ G X)
-    (f : Y →ₗ[ℂ] X) (hf : Function.Injective f) (h : ∀ g y, f (τ g y) = τ' g (f y)) (y : Y) :
-    f ((∑ᶠ q, τ (c q)) y) = (∑ᶠ q, τ' (c q)) (f y) := by
-  classical
-  rcases subsingleton_or_nontrivial Y with hY | hY
-  · rw [Subsingleton.elim y 0]
-    simp
-  · have hX : Nontrivial X := hf.nontrivial
-    have ne1 : ∀ g, τ g ≠ 0 := by
-      intro g hg
-      obtain ⟨v, hv⟩ := exists_ne (0 : Y)
-      have e : τ g (τ g⁻¹ v) = v := by
-        rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
-      rw [hg] at e
-      exact hv (by simpa using e.symm)
-    have ne2 : ∀ g, τ' g ≠ 0 := by
-      intro g hg
-      obtain ⟨v, hv⟩ := exists_ne (0 : X)
-      have e : τ' g (τ' g⁻¹ v) = v := by
-        rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
-      rw [hg] at e
-      exact hv (by simpa using e.symm)
-    by_cases hQ : Finite Q
-    · haveI := Fintype.ofFinite Q
-      rw [finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]
-      simp [LinearMap.sum_apply, map_sum, h]
-    · haveI : Infinite Q := not_finite_iff_infinite.mp hQ
-      rw [finsum_of_infinite_support, finsum_of_infinite_support]
-      · simp
-      · exact Set.infinite_univ.mono fun q _ => ne2 (c q)
-      · exact Set.infinite_univ.mono fun q _ => ne1 (c q)
-
-private theorem uOp_intw (I : Iwa G) (τ : Representation ℂ G Y) (τ' : Representation ℂ G X)
-    (f : Y →ₗ[ℂ] X) (hf : Function.Injective f) (h : ∀ g y, f (τ g y) = τ' g (f y)) (a : G) (y : Y) :
-    f (I.uOp τ a y) = I.uOp τ' a (f y) :=
-  fs_intw _ τ τ' f hf h y
-
-end Rep
-
-section Main
-
-variable {L : Type} [Field L] [NumberField L] {n : ℕ} {V : Type} [Fintype V] {S : V → UpperTheory.V.W.Plc L}
-
-end Main
-
 section Inv
 
 variable {G H : Type} [Group G] [Group H] {m : ℕ} (K₁ : Subgroup G) (K₂ : Subgroup H) (τ₀ : K₁ →* GL (Fin m) ℂ)
@@ -95,28 +46,6 @@ private theorem mem_invT {Y : Type} [AddCommGroup Y] [Module ℂ Y] (ρ : Repres
   Iff.rfl
 
 end Inv
-
-section Box
-
-variable {G H W W' : Type} [Group G] [Group H] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
-
-end Box
-
-section Part
-
-variable {H Y X : Type} [Group H] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup X] [Module ℂ X]
-
-end Part
-
-section InvE
-
-variable {G H : Type} [Group G] [Group H] {m : ℕ} (K₁ : Subgroup G) (K₂ : Subgroup H) (τ₀ : K₁ →* GL (Fin m) ℂ)
-
-private abbrev iE {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (G × H) W) (a : H →₀ ℤ) (N : ℕ) :
-    Submodule ℂ (Fin m → W) :=
-  invT K₁ K₂ τ₀ ρ ⊓ Submodule.pi Set.univ fun _ => ePart (ρ.comp (MonoidHom.inr G H)) a N
-
-end InvE
 
 private theorem eigBoxL_lemma {G Q Y X : Type} [Group G] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup X] [Module ℂ X]
     (c : Q → G) (τ : Representation ℂ G Y) (τ' : Representation ℂ G X) (f : Y →ₗ[ℂ] X)

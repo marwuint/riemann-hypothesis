@@ -111,10 +111,6 @@ theorem blockUnif_mem_center (b : Set.range β) :
     blockUnif F b ∈ Submonoid.center (levi F n β) :=
   diagPow_mem_center (c := blockIndicator b) fun _ _ h => blockIndicator_const b h
 
-theorem blockUnif_commute (b : Set.range β) (m : levi F n β) :
-    blockUnif F b * m = m * blockUnif F b :=
-  ((Submonoid.mem_center_iff.1 (blockUnif_mem_center b)) m).symm
-
 theorem ordDet_blockUnif (b : Set.range β) :
     ordDet ((blockUnif F b : levi F n β) : GL (Fin n) F) = blockSize β b := by
   rw [blockUnif, ordDet_diagPow]
@@ -244,10 +240,6 @@ theorem isLocallyConstant_of_forall_mul {X : Type*} {f : levi F n β → X}
     exact V.one_mem
   · have := hV _ hx
     rwa [mul_inv_cancel_left] at this
-
-theorem isLocallyConstant_blockOrd (b : Set.range β) : IsLocallyConstant (blockOrd F b) :=
-  isLocallyConstant_of_forall_mul fun m => ⟨leviIntegral F n β, isOpen_leviIntegral, fun k hk => by
-    rw [blockOrd_mul, blockOrd_of_mem_integralGL b (Subgroup.mem_subgroupOf.1 hk), add_zero]⟩
 
 theorem isLocallyConstant_ordDet :
     IsLocallyConstant fun m : levi F n β => ordDet (m : GL (Fin n) F) :=

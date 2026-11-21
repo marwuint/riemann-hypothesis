@@ -19,12 +19,6 @@ theorem HasDeg.mul {deg : Ix → ℕ} {k l : ℤ} {X Y : Matrix Ix Ix R}
   · rw [hY r q (by omega), mul_zero]
   · rw [hX p r h, zero_mul]
 
-omit [Fintype Ix] [DecidableEq Ix] in
-theorem HasDeg.sub {deg : Ix → ℕ} {k : ℤ} {X Y : Matrix Ix Ix R}
-    (hX : HasDeg deg k X) (hY : HasDeg deg k Y) : HasDeg deg k (X - Y) := by
-  intro p q hpq
-  rw [Matrix.sub_apply, hX p q hpq, hY p q hpq, sub_zero]
-
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 private lemma submatrix_mul_eq_of_vanishing_off {ι κ : Type} (X Y : Matrix Ix Ix R) (Q : Ix → Prop)
     [DecidablePred Q] (f : ι → Ix) (g : κ → Ix) (hX : ∀ i r, ¬ Q r → X (f i) r = 0) :

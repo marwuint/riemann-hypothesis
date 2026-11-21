@@ -64,9 +64,6 @@ theorem isUnit_two_zmod_pow (hn : Odd n) (k : ℕ) : IsUnit (2 : ZMod (n ^ k)) :
   have h : Nat.Coprime 2 (n ^ k) := (Nat.coprime_two_left.2 hn).pow_right k
   simpa using (ZMod.isUnit_iff_coprime 2 (n ^ k)).2 h
 
-theorem isNilpotent_natCast_zmod_pow (n k : ℕ) : IsNilpotent (n : ZMod (n ^ k)) :=
-  ⟨k, by rw [← Nat.cast_pow, ZMod.natCast_self]⟩
-
 theorem exists_eq_nsmul_of_nsmul_eq_zero_zmod (hn : n ≠ 0) (hk : 2 ≤ k) (x : ZMod (n ^ k))
     (hx : n • x = 0) : ∃ a, x = n • a := by
   obtain ⟨z, rfl⟩ := ZMod.intCast_surjective x
@@ -78,46 +75,6 @@ theorem exists_eq_nsmul_of_nsmul_eq_zero_zmod (hn : n ≠ 0) (hk : 2 ≤ k) (x :
     apply mul_left_cancel₀ (Int.natCast_ne_zero.2 hn)
     rw [hw]; push_cast; ring
   exact ⟨(((n : ℤ) ^ j * w : ℤ) : ZMod (n ^ (j + 2))), by rw [h2]; simp⟩
-
-theorem meets_cosets_nsmul_of_meets_cosets_torsion {ι : Type*} (hn : n ≠ 0) (hk : 2 ≤ k)
-    (T : Set (ι → ZMod (n ^ k))) (hT : ∀ x, ∃ t ∈ T, n • (x - t) = 0) (x : ι → ZMod (n ^ k)) :
-    ∃ t ∈ T, ∃ a, x = t + n • a := by
-  obtain ⟨t, ht, h⟩ := hT x
-  choose a ha using fun i =>
-    exists_eq_nsmul_of_nsmul_eq_zero_zmod hn hk ((x - t) i) (congrFun h i)
-  exact ⟨t, ht, a, by rw [← sub_eq_iff_eq_add']; exact funext ha⟩
-
-theorem end_eq_zero_of_quad_const_on_cosets_zmod {ι : Type*} (hn : Odd n)
-    (ω : LinearMap.BilinForm (ZMod (n ^ k)) (ι → ZMod (n ^ k))) (hω : Injective ω)
-    (S : (ι → ZMod (n ^ k)) →ₗ[ZMod (n ^ k)] (ι → ZMod (n ^ k)))
-    (hS : ∀ x y, ω (S x) y = ω (S y) x) (u : (ZMod (n ^ k))ˣ) (q : (ι → ZMod (n ^ k)) → ZMod (n ^ k))
-    (hq : ∀ x, 2 * q x = u * ω (S x) x) (T : Set (ι → ZMod (n ^ k)))
-    (hT : (∀ x, ∃ t ∈ T, ∃ a, x = t + n • a) ∨ (2 ≤ k ∧ ∀ x, ∃ t ∈ T, n • (x - t) = 0))
-    (c : ZMod (n ^ k)) (hc : ∀ t ∈ T, q t = c) : S = 0 := by
-  have hT' : ∀ x, ∃ t ∈ T, ∃ a, x = t + n • a :=
-    hT.elim id fun h => meets_cosets_nsmul_of_meets_cosets_torsion hn.pos.ne' h.1 T h.2
-  refine end_eq_zero_of_quad_const_on_cosets (isUnit_two_zmod_pow hn k)
-    (isNilpotent_natCast_zmod_pow n k) ω hω S hS u q hq T (fun x => ?_) c hc
-  simpa only [Nat.cast_smul_eq_nsmul] using hT' x
-
-theorem end_eq_zero_of_twist_proportional {ι K : Type*} [CommRing K] [IsDomain K] (hn : Odd n)
-    (ω : LinearMap.BilinForm (ZMod (n ^ k)) (ι → ZMod (n ^ k))) (hω : Injective ω)
-    (S : (ι → ZMod (n ^ k)) →ₗ[ZMod (n ^ k)] (ι → ZMod (n ^ k)))
-    (hS : ∀ x y, ω (S x) y = ω (S y) x) (u : (ZMod (n ^ k))ˣ) (q : (ι → ZMod (n ^ k)) → ZMod (n ^ k))
-    (hq : ∀ x, 2 * q x = u * ω (S x) x) {ζ : K} (hζ : IsPrimitiveRoot ζ (n ^ k))
-    (θ θ' : (ι → ZMod (n ^ k)) → K) (hθ : ∀ x, θ' x = ζ ^ (q x).val * θ x)
-    (c : K) (hc : ∀ x, θ' x = c * θ x)
-    (hT : (∀ x, ∃ t, θ t ≠ 0 ∧ ∃ a, x = t + n • a) ∨
-      (2 ≤ k ∧ ∀ x, ∃ t, θ t ≠ 0 ∧ n • (x - t) = 0)) : S = 0 := by
-  haveI : NeZero (n ^ k) := ⟨pow_ne_zero _ hn.pos.ne'⟩
-  have h1 : ∀ t, θ t ≠ 0 → ζ ^ (q t).val = c := fun t ht =>
-    mul_right_cancel₀ ht ((hθ t).symm.trans (hc t))
-  obtain ⟨t₀, ht₀⟩ : ∃ t, θ t ≠ 0 :=
-    hT.elim (fun h => (h 0).imp fun _ h => h.1) fun h => (h.2 0).imp fun _ h => h.1
-  refine end_eq_zero_of_quad_const_on_cosets_zmod hn ω hω S hS u q hq {t | θ t ≠ 0} hT (q t₀)
-    fun t ht => ?_
-  exact ZMod.val_injective _
-    (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) ((h1 t ht).trans (h1 t₀ ht₀).symm))
 
 end ZMod
 

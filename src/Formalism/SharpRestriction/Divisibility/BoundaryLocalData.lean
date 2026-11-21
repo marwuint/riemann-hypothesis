@@ -364,71 +364,9 @@ def Conclusion4 (Y : Prov D X) : Prop :=
 
 def Conclusion5 : Prop := ModuliIntegralCharts.LinkConditions D X
 
-def IntegralChartJetBound : Prop := ModuliIntegralCharts.jet_form_downstream' D X
-
 def Conclusion6 : Prop := ModuliIntegralCharts.RunConditions D X
 
-def Stmt (Y : Prov D X) (ka : ℝ) : Prop :=
-  admitted D X Y → Conclusion1 D X Y ∧ Conclusion2 D X Y ∧ PointsLemma D X ka ∧ Conclusion4 D X Y ∧ Conclusion5 D X ∧ Conclusion6 D X
-
-def BoundsOfCoreAdmissibleData (Y : Prov D X) (ka : ℝ) : Prop :=
-  admitted D X Y → ZeroGainValuation D X Y ∧ Conclusion2 D X Y ∧ ModuliIntegralCharts.KeyFormulaLineBundle D X ka ∧ Conclusion4 D X Y ∧ Conclusion5 D X
-
-theorem Ospan_smul {C V : Type} [NormedField C] [AddCommGroup V] [Module C V] (S : Set V) (a : C)
-    (ha : ‖a‖ ≤ 1) {v : V} (hv : v ∈ ModuliIntegralCharts.Ospan (C := C) S) : a • v ∈ ModuliIntegralCharts.Ospan (C := C) S := by
-  unfold ModuliIntegralCharts.Ospan at hv ⊢
-  induction hv using AddSubgroup.closure_induction with
-  | mem x hx =>
-    obtain ⟨b, hb, s, hs, rfl⟩ := hx
-    refine AddSubgroup.subset_closure ⟨a * b, ?_, s, hs, by rw [mul_smul]⟩
-    rw [norm_mul]; exact mul_le_one₀ ha (norm_nonneg _) hb
-  | zero => simp
-  | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
-  | neg x _ hx => rw [smul_neg]; exact neg_mem hx
-
-theorem jetBoundDownstream_of_jetBound (h : Conclusion5 D X) : IntegralChartJetBound D X := by
-  intro w p hp n DF nW hn h3 y sg hsg t' ht' v hv
-  obtain ⟨t, ht, h⟩ := (h w p hp n DF nW hn h3 y).2 sg hsg
-  have hpos : (0 : ℝ) < (p : ℝ) ^ (-((X.loc w p).cJ y n DF * (X.loc w p).phiCy y)) :=
-    Real.rpow_pos_of_pos (by exact_mod_cast hp.pos) _
-  have ht0 : t ≠ 0 := by
-    intro h0; rw [h0, norm_zero] at ht; linarith
-  have : t' • v = (t' / t) • (t • v) := by
-    rw [smul_smul, div_mul_cancel₀ _ ht0]
-  rw [this]
-  refine Ospan_smul _ _ ?_ (h v hv)
-  rw [norm_div]
-  exact div_le_one_of_le₀ (ht'.trans ht) (norm_nonneg _)
-
-theorem finiteModel_of_heckeEstimate (Y : Prov D X) (h1 : Conclusion1 D X Y) (h2 : Conclusion2 D X Y) : ModuliIntegralCharts.division_rows_rational_lattice D X := by
-  intro w p hp
-  refine ⟨fun La => ?_, fun Z y a => (h1.2 w p hp Z y a).2.2, (h2 w p hp).1⟩
-  obtain ⟨P, hP, -, hs, hr, hM⟩ := h1.1 w p hp La
-  exact ⟨(Y.loc w p hp).dg P, by rw [(Y.loc w p hp).dg_res, hP, (Y.loc w p hp).PPq_def], hs, hr, hM⟩
-
 abbrev ObjClass : Type 1 := ∀ {D : Formalism.BasicNotions.D7} {X : ModuliIntegralCharts.Prov D}, Prov D X → Prop
-
-def UniformExportStatement (𝒪 : ObjClass) (ka : ℝ) : Prop :=
-  ∀ (D : Formalism.BasicNotions.D7) (X : ModuliIntegralCharts.Prov D) (Y : Prov D X), 𝒪 Y → Stmt D X Y ka
-
-def Comparison₂ (D : Formalism.BasicNotions.D7) (X : ModuliIntegralCharts.Prov D) (Y : Prov D X) (ka : ℝ) : Prop :=
-  PoincareBundleExtensionCond D X Y ∧ ModuliIntegralCharts.Conclusion8 D X ka ∧ Conclusion6 D X
-
-def TieClass (ka : ℝ) : ObjClass := fun {D} {X} Y => Comparison₂ D X Y ka
-
-theorem essentialPacket_of_packet {D : Formalism.BasicNotions.D7} {X : ModuliIntegralCharts.Prov D} {Y : Prov D X} {ka : ℝ} (h : Stmt D X Y ka) :
-    BoundsOfCoreAdmissibleData D X Y ka :=
-  fun a => ⟨(h a).1.2, (h a).2.1, (h a).2.2.1.2, (h a).2.2.2.1, (h a).2.2.2.2.1⟩
-
-theorem packet_of_essential_of_clauses {D : Formalism.BasicNotions.D7} {X : ModuliIntegralCharts.Prov D} {Y : Prov D X} {ka : ℝ} (h : BoundsOfCoreAdmissibleData D X Y ka)
-    (t : Comparison₂ D X Y ka) : Stmt D X Y ka :=
-  fun a => ⟨⟨t.1, (h a).1⟩, (h a).2.1, ⟨t.2.1, (h a).2.2.1⟩, (h a).2.2.2.1, (h a).2.2.2.2, t.2.2⟩
-
-def UniformKeyFormulaOfAdmissible (ka : ℝ) : Prop :=
-  ∀ (D : Formalism.BasicNotions.D7) (X : ModuliIntegralCharts.Prov D) (Y : Prov D X), BoundsOfCoreAdmissibleData D X Y ka
-
-theorem uniformPacket_clauseClass_of_essential {ka : ℝ} (h : UniformKeyFormulaOfAdmissible ka) : UniformExportStatement (TieClass ka) ka :=
-  fun D X Y t => packet_of_essential_of_clauses (h D X Y) t
 
 section Family
 
@@ -452,68 +390,16 @@ def FamilyPacketImplication (ka : ℝ) : Prop := AdmFx Fm XF YF → familyPoinca
 
 def InClass (𝒪 : ObjClass) : Prop := ∀ x hx (i : Fm.Ix x), 𝒪 (YF x hx i)
 
-theorem familyPacket_of_uniformPacket {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) (hO : InClass Fm XF YF 𝒪) :
-    FamilyPacketImplication Fm XF YF ka :=
-  fun a x hx i => h _ _ _ (hO x hx i) (a x hx i)
-
-theorem jetBoundDownstream_of_family {ka : ℝ} (h : familyPoincareExtensionAndPointBounds Fm XF YF ka) :
-    ∀ x hx (i : Fm.Ix x), IntegralChartJetBound (Fm.D x i) (XF x hx i) :=
-  fun x hx i => jetBoundDownstream_of_jetBound _ _ (h x hx i).2.2.2.2.1
-
-def familyValuationAndKeyFormula (ka : ℝ) : Prop :=
-  ∀ x hx (i : Fm.Ix x),
-    ZeroGainValuation (Fm.D x i) (XF x hx i) (YF x hx i) ∧ Conclusion2 (Fm.D x i) (XF x hx i) (YF x hx i) ∧
-    ModuliIntegralCharts.KeyFormulaLineBundle (Fm.D x i) (XF x hx i) ka ∧ Conclusion4 (Fm.D x i) (XF x hx i) (YF x hx i) ∧ Conclusion5 (Fm.D x i) (XF x hx i)
-
-def FamilyKeyFormulaOfAdmissible (ka : ℝ) : Prop := AdmFx Fm XF YF → familyValuationAndKeyFormula Fm XF YF ka
-
-theorem familyEssential_of_uniformEssential {ka : ℝ} (h : UniformKeyFormulaOfAdmissible ka) : FamilyKeyFormulaOfAdmissible Fm XF YF ka :=
-  fun a x hx i => h _ _ _ (a x hx i)
-
-theorem familyEssential_of_familyPacket {ka : ℝ} (h : FamilyPacketImplication Fm XF YF ka) : FamilyKeyFormulaOfAdmissible Fm XF YF ka :=
-  fun a x hx i => ⟨(h a x hx i).1.2, (h a x hx i).2.1, (h a x hx i).2.2.1.2, (h a x hx i).2.2.2.1, (h a x hx i).2.2.2.2.1⟩
-
-theorem familyPacket_of_familyEssential {ka : ℝ} (h : FamilyKeyFormulaOfAdmissible Fm XF YF ka) (t : InClass Fm XF YF (TieClass ka)) :
-    FamilyPacketImplication Fm XF YF ka :=
-  fun a x hx i => ⟨⟨(t x hx i).1, (h a x hx i).1⟩, (h a x hx i).2.1, ⟨(t x hx i).2.1, (h a x hx i).2.2.1⟩,
-    (h a x hx i).2.2.2.1, (h a x hx i).2.2.2.2, (t x hx i).2.2⟩
-
-theorem jetBound_of_familyEssential {ka : ℝ} (h : familyValuationAndKeyFormula Fm XF YF ka) :
-    ∀ x hx (i : Fm.Ix x), Conclusion5 (Fm.D x i) (XF x hx i) :=
-  fun x hx i => (h x hx i).2.2.2.2
-
 end Family
 
 def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass) (ka : ℝ) : Prop :=
   Formalism.MainNotions.Closed 𝒞 (fun Fm _ =>
     ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), InClass Fm XF YF 𝒪 → FamilyPacketImplication Fm XF YF ka)
 
-theorem closed_absolute_share_of_uniform_export {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) (𝒞 : Formalism.MainNotions.FamClass) :
-    ClosedAbsoluteShare 𝒞 𝒪 ka :=
-  ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
-    fun Fm _ _ _ XF YF hO => familyPacket_of_uniformPacket Fm XF YF h hO⟩⟩
-
-def ShareAbsoluteConstant (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass) : Prop := ∃ ka : ℝ, ClosedAbsoluteShare 𝒞 𝒪 ka
-
-def ClosedFamilyKeyFormula (𝒞 : Formalism.MainNotions.FamClass) (ka : ℝ) : Prop :=
-  Formalism.MainNotions.Closed 𝒞 (fun Fm _ => ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), FamilyKeyFormulaOfAdmissible Fm XF YF ka)
-
-theorem closedEssential_of_uniformEssential {ka : ℝ} (h : UniformKeyFormulaOfAdmissible ka) (𝒞 : Formalism.MainNotions.FamClass) : ClosedFamilyKeyFormula 𝒞 ka :=
-  ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
-    fun Fm _ _ _ XF YF => familyEssential_of_uniformEssential Fm XF YF h⟩⟩
-
 def PacketAlongFamilyInClass (𝒪 : ObjClass) (ka : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   ∀ (XF : BaseObjectsAlongFamily Fm) (YF : ProvF Fm XF), InClass Fm XF YF 𝒪 → FamilyPacketImplication Fm XF YF ka
 
-theorem packetAlongFamily_of_uniform {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
-    PacketAlongFamilyInClass 𝒪 ka Fm :=
-  fun XF YF hO => familyPacket_of_uniformPacket Fm XF YF h hO
-
 theorem closedPacket_iff_alongFamily (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass) (ka : ℝ) :
     ClosedAbsoluteShare 𝒞 𝒪 ka ↔ Formalism.MainNotions.Closed 𝒞 (fun Fm _ => PacketAlongFamilyInClass 𝒪 ka Fm) := Iff.rfl
-
-theorem uniformPacket_anti_class {𝒪 𝒪' : ObjClass} {ka : ℝ}
-    (hs : ∀ {D : Formalism.BasicNotions.D7} {X : ModuliIntegralCharts.Prov D} (Y : Prov D X), 𝒪' Y → 𝒪 Y) (h : UniformExportStatement 𝒪 ka) : UniformExportStatement 𝒪' ka :=
-  fun D X Y hY => h D X Y (hs Y hY)
 
 end Formalism.MainNotions.BoundaryLocalData

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NcardSublatticesOfIndexPrimePowerLeStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeOperatorAlternatingSeriesIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormLeOfRecurrenceGrowthStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormLeOfRecurrenceGrowth
 
 noncomputable section
 
@@ -149,7 +149,7 @@ theorem main : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRi
           mul_le_mul_of_nonneg_right h3 hC0
       _ = C * (((n : ℝ) + 1) ^ r * ((qRes O : ℝ) ^ (r - 1)) ^ n) := by ring
   have hB : 0 < (qRes O : ℝ) ^ (r - 1) := pow_pos hq0 _
-  have hrec := GlobalTheory.T.norm_le_of_recurrence_growth' β a (C / ‖φ L0‖) ((qRes O : ℝ) ^ (r - 1)) r hB
+  have hrec := _root_.GlobalTheory.norm_le_of_recurrence_growth β a (C / ‖φ L0‖) ((qRes O : ℝ) ^ (r - 1)) r hB
     (by rw [ha_def, recSeq]) hrel hbound
   have hxb := hrec ((c : ℂ) * x) (Multiset.mem_map_of_mem _ hx)
   rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg hc0.le] at hxb

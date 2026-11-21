@@ -41,12 +41,6 @@ theorem lact_tr_mem (M : TwoLevels E r U C) (u : U) (c : C) {x : Frame M.Ψ r} (
     lact (M.tr u c) x ∈ M.dom :=
   lact_mem_dom_of_isom M (M.tr_herm u c) hx
 
-theorem lact_Γ_mem (M : TwoLevels E r U C) (c : C) {γ : GL (Fin r) E} (hγ : γ ∈ (M.comp c).Γ)
-    {x : Frame M.Ψ r} (hx : x ∈ M.dom) : lact γ x ∈ M.dom :=
-  lact_mem_dom_of_isom M (fun v w => by
-    have := ((M.comp c).Γ_stab γ hγ).1 v w
-    rwa [M.comp_Gm c] at this) hx
-
 def Lmap (M : TwoLevels E r U C) (u : U) (c : C) (x : M.dom) : M.dom :=
   ⟨lact (M.tr u c) x.1, lact_tr_mem M u c x.2⟩
 

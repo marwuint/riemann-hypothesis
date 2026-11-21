@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.UnitRatio
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitOfUnitary
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralDefiniteQuotientEqClassSumStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralDefiniteQuotientEqClassSum
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsRatDatum
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousFinGL
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryClassRepresentativesBijective
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousPhiPrV
@@ -181,7 +182,7 @@ theorem integral_rdS {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {n
     rw [hP] at this
     exact GlobalTheory.DefiniteQuotient.posDef_of_signature this
   choose h hh1 hh2 using fun a => GlobalTheory.Core.Mi.PinModel.exists_finM V rfl (yc a)
-  obtain ⟨vol, ν, hvol, hν, -, hsum⟩ := GlobalTheory.T.integral_definiteQuotient_eq_classSum D θ hθ V _ rfl _ rfl T f bad S cl yc hb hS hPD μ 𝓕 hμ h𝓕 h
+  obtain ⟨vol, ν, hvol, hν, -, hsum⟩ := _root_.GlobalTheory.ClassSumLevel.integral_eq_classSum D θ hθ V _ rfl _ rfl T f bad S cl yc hb hS hPD μ 𝓕 hμ h𝓕 h
     fun a => ⟨hh1 a, hh2 a⟩
   haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram
   haveI : BorelSpace (GA D V) := ⟨rfl⟩

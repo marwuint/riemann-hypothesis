@@ -620,25 +620,6 @@ theorem map_maximalIdeal_pow_le {S O : Type*} [CommRing S] [IsLocalRing S] [Comm
   rw [Ideal.map_pow]
   exact Ideal.pow_right_mono (map_maximalIdeal_le φ) n
 
-open TensorProduct in
-
-theorem tensorProduct_mk_one_injective_of_isTorsionFree {S : Type*} [CommRing S] [IsDomain S]
-    (F : Type*) [Field F] [Algebra S F] [FaithfulSMul S F] (M : Type*) [AddCommGroup M]
-    [Module S M] [Module.IsTorsionFree S M] :
-    Function.Injective (TensorProduct.mk S F M 1) := by
-  letI : Algebra (FractionRing S) F := FractionRing.liftAlgebra S F
-  have h1 : Function.Injective (TensorProduct.mk S (FractionRing S) M 1) := by
-    rw [IsLocalizedModule.injective_iff_isRegular (nonZeroDivisors S)]
-    intro c
-    exact IsSMulRegular.of_ne_zero (nonZeroDivisors.coe_ne_zero c)
-  have h2 := Module.FaithfullyFlat.tensorProduct_mk_injective
-    (A := FractionRing S) (B := F) (FractionRing S ⊗[S] M)
-  have h3 := (AlgebraTensorModule.cancelBaseChange S (FractionRing S) F F M).injective.comp
-    (h2.comp h1)
-  intro a b hab
-  apply h3
-  simpa using hab
-
 theorem exists_complete_discreteValuationRing_ker_eq {S : Type u} [CommRing S]
     [IsNoetherianRing S] [IsLocalRing S] (q : Ideal S) [q.IsPrime] (hq : q ≠ maximalIdeal S) :
     ∃ (O : Type u) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O)

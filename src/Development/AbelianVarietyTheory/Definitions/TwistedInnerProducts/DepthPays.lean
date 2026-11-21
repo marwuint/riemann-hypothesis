@@ -152,10 +152,6 @@ def DepthPays : Prop := ∀ C : ℝ, 0 ≤ C → Ev fun {D} _ _ {sc} {G} _ _ => 
 
 theorem eu_zero {n : ℕ} : eu (0 : Fin n → ℂ) = 0 := by simp [eu]
 
-theorem Long.mono {θ : InfFam D} {V : HSp D} {A : Fr V} {Λ : Lat V} {x : GA D V} {s s' : ℝ} (h : Long θ A Λ x s) (h0 : 0 ≤ s')
-    (hs : s' ≤ s) : Long θ A Λ x s' := fun 𝔪 h1 w h2 h3 =>
-  (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ h0 hs _) (Real.sqrt_nonneg _)).trans (h 𝔪 h1 w h2 h3)
-
 end GlobalTheory.SepPer
 
 end

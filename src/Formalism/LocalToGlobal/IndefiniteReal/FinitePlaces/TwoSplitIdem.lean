@@ -35,23 +35,6 @@ def LatSelfDual (D : D7) : Prop :=
           ∀ u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True),
             ψ (symplO S T x u) = 1)
 
-open Classical in
-
-def IdemExists (D : D7) : Prop :=
-  (∀ P : HeightOneSpectrum (𝓞 D.host.E), ¬ Lev.IsConjPl (D := D) P P → ∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e P ∧
-    ∀ v : HeightOneSpectrum (𝓞 D.host.F), P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal →
-      ∃ ε : AF D.host.F, IsPlaceIdem D v ε ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) ε) ∧
-  (∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (e e' : AE D), Formalism.L2.NTheta.IsIdemAt e P → Formalism.L2.NTheta.IsIdemAt e' P →
-    e = e') ∧
-  ∀ (gp : Fin 2 → ℕ) (pb : Fin 2 → 𝓞 D.host.E) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)),
-    Lev.IsTypePlaces (D := D) gp pb Pg → Lev.IsTwistPlaces (D := D) gp Q → ∃ e : AE D, IsIdemSum e (Pg ∪ Q)
-
-def LiftsExistB (D : D7) : Prop :=
-  ∀ (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ)
-    (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (gp : Fin 2 → ℕ) (pb : Fin 2 → 𝓞 D.host.E),
-    Lev.IsBaseFrame V β Λ N → Lev.IsTypePlaces (D := D) gp pb L.Pg → Lev.IsTwistPlaces (D := D) gp L.Q →
-      Lev.LiftsExist V β L
-
 def HeisStable (D : D7) : Prop :=
   ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ (S T : HSp D) (w₀ : WO S T) (f : WO S T → ℂ),
     IsThetaFunO ψ S T f → IsThetaFunO ψ S T (heisO ψ S T w₀ f)

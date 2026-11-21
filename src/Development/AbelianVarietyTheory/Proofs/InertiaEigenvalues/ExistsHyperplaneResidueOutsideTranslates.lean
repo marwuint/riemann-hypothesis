@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsResidueAnnihilatorOfNotStandardColumnFormAStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueTopFactorThroughBottomStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueTopFactorThroughBottom
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrMatrixProjPreimageStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlFactorFromBlocksModUniformizerStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlFactorFromBlocksModUniformizer
 open MeasureTheory Filter Topology
 open scoped InnerProductSpace BigOperators
 
@@ -13,7 +13,7 @@ theorem GlobalTheory.gen_type_core : ∀ (O K : Type) [CommRing O] [IsDomain O] 
   set S : Submodule K (Fin r ⊕ Fin t → K) := Submodule.span K (Set.range fun j => fun i => algebraMap O K (x i j)) with hS
   let U : Submodule O (Fin r ⊕ Fin t → O) := Submodule.comap ((Algebra.linearMap O K).compLeft (Fin r ⊕ Fin t)) (S.restrictScalars O)
   have hU : ∀ u, u ∈ U ↔ (fun i => algebraMap O K (u i)) ∈ S := fun u => Iff.rfl
-  obtain ⟨b, hb⟩ := GlobalTheory.T.exists_residue_first_block_factor_of_second O r t U a (fun u hu h2 => hA u ((hU u).1 hu) h2) (g : Matrix (Fin r) (Fin r) _) hg
+  obtain ⟨b, hb⟩ := _root_.GlobalTheory.residue_top_factor_through_bottom O r t U a (fun u hu h2 => hA u ((hU u).1 hu) h2) (g : Matrix (Fin r) (Fin r) _) hg
   obtain ⟨P, hP1, hP2⟩ := GlobalTheory.T.dvr_matrix_proj_preimage_alt O K (Fin r ⊕ Fin t) S
   set bt : Matrix (Fin r) (Fin t) O := b.map (Function.surjInv IsLocalRing.residue_surjective) with hbt
   have hbt' : bt.map (IsLocalRing.residue O) = b := by
@@ -48,5 +48,5 @@ theorem GlobalTheory.gen_type_core : ∀ (O K : Type) [CommRing O] [IsDomain O] 
     rw [hq, Matrix.add_apply, map_add]
     have e : ((1 - q₀) * P) i j = Matrix.mulVec (1 - q₀) (fun l => P l j) i := rfl
     rw [e, this, add_zero]
-  obtain ⟨h, h1, h2, h3⟩ := GlobalTheory.T.gl_factor_fromBlocks_mod_uniformizer_alt O r t ϖ hϖ g L hL bt q hqq
+  obtain ⟨h, h1, h2, h3⟩ := _root_.GlobalTheory.gl_factor_fromBlocks_mod_uniformizer O r t ϖ hϖ g L hL bt q hqq
   exact ⟨h, h1, h2, by rw [← Matrix.mul_assoc, h3, hqx]⟩

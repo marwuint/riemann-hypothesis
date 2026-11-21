@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperRamificationGroupOfCommStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperRamificationGroupOfComm
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
@@ -36,7 +36,7 @@ theorem pow_mem_upper_mod_commutator : ∀ (F L : Type) [Field F] [ValuativeRel 
   have hσQ : AlgEquiv.restrictNormalHom Q σ ∈ upperRamificationGroup F Q v := by
     rw [← GroundTheory.LocalField.map_upperRamificationGroup Q v]
     exact Subgroup.mem_map_of_mem _ hσ
-  have hpow := GlobalTheory.T.pow_mem_upperRamificationGroup_of_comm' F Q p e v hab hv hpe _ hσQ
+  have hpow := _root_.GlobalTheory.PMon.Ram.pow_mem_upperRamificationGroup_of_comm F Q p e v hab hv hpe _ hσQ
   rw [← map_pow, ← GroundTheory.LocalField.map_upperRamificationGroup Q] at hpow
   obtain ⟨τ, hτ, hτσ⟩ := Subgroup.mem_map.1 hpow
   refine ⟨τ, hτ, commutator_le_of_forall_commutator_mem C hC ?_⟩

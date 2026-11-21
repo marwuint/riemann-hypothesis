@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.ConvolutionSmoothL2
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightConvolutionOperatorAeEqIntegralAdelic
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuousStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
+import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvariantExtensionIntegrableOnCompactStatement
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
@@ -45,9 +47,9 @@ theorem conv_isContRep : ∀ (B : RowsAut) (ψ : B.I.GA → ℂ) (F : B.I.L2 B.�
   have iK : IsFiniteMeasureOnCompacts (B.I.muA B.μf) := by
     unfold AutInst.muA
     infer_instance
-  obtain ⟨hl, -, -, -, -⟩ := GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf
+  obtain ⟨hl, -, -, -, -⟩ := _root_.GlobalTheory.AdelicUnimod.adelic_unimodular B.I B.μf
   have iL : (B.I.muA B.μf).IsMulLeftInvariant := ⟨hl⟩
-  obtain ⟨-, -, hiso, hcontR, hext⟩ := GlobalTheory.T.rightRegularRep_unitary_stronglyContinuous B
+  obtain ⟨-, -, hiso, hcontR, hext⟩ := _root_.GlobalTheory.RightRegFund.rightReg_unitary_continuous B
   obtain ⟨hEinv, hEm⟩ := hext F
   unfold IsContRep
   refine ⟨?_, ?_, ?_⟩

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartFlagPt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFlagPointInOrbitStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PluckerNonvanishingOrbitInvariantStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFlagPointInOrbit
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PluckerNonvanishingOrbitInvariant
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsUpperOfMinors
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorProperties
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointTriangularChangeOrbit
@@ -20,14 +20,14 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.exists_Lca_of_plk_ne
     ∃ (c : FC.CIdx Ψ N j τ ca cb → ℂ) (a : ℂ), SameOrbit (FA.Re.R.lift x₀ x₀)
       (FC.flagPt M (BM.F l) (FC.bvec BM l (FA.pr (FA.Re.π x₀))) (FC.Lca τ ca cb c a)) := by
   have hz : FA.Re.R.lift x₀ x₀ ∈ mcPts (mCoordIdeal y) := FA.Re.R.mem x₀ x₀ (FA.Re.R.mem_U x₀)
-  obtain ⟨h, hh, horb⟩ := GlobalTheory.T.exists_flag_point_in_orbit K ι Φ y Ψ N j M n BM l _ hO _ hz (FA.pr_eq x₀)
+  obtain ⟨h, hh, horb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.exists_flagPt_of_orbit K ι Φ y Ψ N j M n BM l _ hO _ hz (FA.pr_eq x₀)
   obtain ⟨hbm, hbg, -, -⟩ := GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec_good K ι Φ y Ψ N j M n BM l _ hO
   have hmin : ∀ τ' (i : Fin N), IsProperStep N j i →
       minorIJ (h τ') (stepCols N j i) (stepCols N j i) ≠ 0 := by
     intro τ' i hi
     obtain ⟨k, hk⟩ : ∃ k, M.blk (τ', i) = some k :=
       Option.ne_none_iff_exists'.1 fun e => (M.blk_none _).1 e hi
-    have h1 := (GlobalTheory.T.plucker_nonvanishing_orbit_invariant K ι Φ y Ψ N j M (BM.F l) _ _ _ (τ', i) horb).1 (hplk (τ', i))
+    have h1 := (_root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.plk_ne_zero_iff_of_sameOrbit K ι Φ y Ψ N j M (BM.F l) _ _ _ (τ', i) horb).1 (hplk (τ', i))
     rwa [GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.plk_flagPt K ι Φ y Ψ N j M (BM.F l) _ h (τ', i) k (BM.isFrame l) hbm hbg
       (fun τ'' => (hh τ'').1) hk] at h1
   choose B hBd hBt hBdet hBL using fun τ' =>

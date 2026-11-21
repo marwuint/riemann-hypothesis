@@ -2,10 +2,10 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NatInvIsoOfLocalTateDualityCyclotomicTwistStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H2TwistFromOpenUnionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapH2SubtypeInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowPSmulMemOneFractionRingStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFGTopPPowInverseLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H2TwistFromOpenUnion
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapH2SubtypeInjective
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowPSmulMemOneFractionRing
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFGTopPPowInverseLattice
 
 open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.ChartRestriction.T2
 open Formalism.NG (KO)
@@ -22,8 +22,8 @@ theorem colim_equiv {O : Type} [CommRing O] [TopologicalSpace O] {G : Type} [Gro
     ∃ e : H2 (twist ε M) ≃ₗ[O] M, ∀ n (z : H2 (twist ε (N n))),
       e (mapH2 (twist ε (N n)) (twist ε M) (N n).subtype continuous_subtype_val
         (twist_map ε (N n).subtype) z) = Θ.θ (N n) (hfg n) z := by
-  have hinj := GlobalTheory.T.map_H2_subtype_injective Θ N hmono hopen hcov hfg
-  have hsurj := GlobalTheory.T.exists_H2_preimage_of_monotone_open_exhaustion ε N hmono hopen hcov
+  have hinj := _root_.GlobalTheory.map_H2_subtype_injective_of_union Θ N hmono hopen hcov hfg
+  have hsurj := _root_.GlobalTheory.h2_twist_exists_of_iUnion_open ε N hmono hopen hcov
   let ι : ∀ n, H2 (twist ε (N n)) →ₗ[O] H2 (twist ε M) := fun n =>
     mapH2 (twist ε (N n)) (twist ε M) (N n).subtype continuous_subtype_val (twist_map ε (N n).subtype)
   let ψ : ∀ n, N n →ₗ[O] H2 (twist ε M) := fun n => ι n ∘ₗ (Θ.θ (N n) (hfg n)).symm.toLinearMap
@@ -88,10 +88,10 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
     [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
 
 theorem frac_isFGTop (hO : PadicCoeff p O) (hF : FracTop O) (n : ℕ) :
-    IsFGTop O ((1 : Submodule O (FractionRing O)).comap (LinearMap.lsmul O _ ((p : O) ^ n))) := GlobalTheory.T.isFGTop_p_pow_inverse_lattice hO hF n
+    IsFGTop O ((1 : Submodule O (FractionRing O)).comap (LinearMap.lsmul O _ ((p : O) ^ n))) := _root_.GlobalTheory.isFGTop_comap_lsmul_one hO hF n
 
 theorem frac_cover (hO : PadicCoeff p O) (y : FractionRing O) :
-    ∃ n, y ∈ (1 : Submodule O (FractionRing O)).comap (LinearMap.lsmul O _ ((p : O) ^ n)) := GlobalTheory.T.exists_pow_p_smul_mem_one_fractionRing hO y
+    ∃ n, y ∈ (1 : Submodule O (FractionRing O)).comap (LinearMap.lsmul O _ ((p : O) ^ n)) := _root_.GlobalTheory.padicCoeff_exists_pow_smul_mem_one hO y
 
 theorem ko_discrete (hF : FracTop O) : DiscreteTopology (KO O) := by
   apply discreteTopology_of_isOpen_singleton_zero

@@ -1,4 +1,4 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BesselDerivatives.ContDiffOnDirectionalDerivative
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BesselDerivatives.LiftAOneZero
 import Formalism.PeriodIntegrals.BesselDeriv
 
 open scoped ContDiff Topology

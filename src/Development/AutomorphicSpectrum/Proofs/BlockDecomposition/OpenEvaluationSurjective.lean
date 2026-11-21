@@ -3,20 +3,21 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsBump
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCIndValue
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotentStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicDoubleCosetDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCellStructureDataStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCellStructureData
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvaluationMapsLinearStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenEvaluationInducedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenEvaluationInduced
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemSubmoduleOfBumpsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BumpTranslateMemSubmoduleStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSmallCompactOpenBetweenStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LastRowUpdateNhdsGenerationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOpenCellRetractionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellParabolicNearIdentityStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOpenCellRetraction
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellParabolicNearIdentity
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeylNotMemClosedCellStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedCellRightStableStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousShiftedOrbitMapStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedParabolicNearOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureOpenNonemptyNeZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousShiftedOrbitMap
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedParabolicNearOne
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureOpenNonemptyNeZero
 
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG Topology
 open scoped TensorProduct
@@ -317,7 +318,7 @@ theorem forcing (i t : ℕ) (O : Set (Mir k (i + (t + 1)))) (hO : O ∈ 𝓝 (1 
       ∀ (d : Fin (t + 1) → k) (m : Mir k (i + (t + 1))) (x : Mir k ((i + 1) + t + 1)), x ∈ N →
         dEmb k i t d * wEl k i t * sO k i t m = h * wEl k i t * x →
         ∃ a ∈ HPG k i (t + 1), ∃ x' ∈ O, m = a * x' := by
-  obtain ⟨Θ, hΘc, hΘ1, hΘ⟩ := GlobalTheory.T.continuous_open_cell_retraction k i t
+  obtain ⟨Θ, hΘc, hΘ1, hΘ⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.OntoO.Proj.exists_parab_mul k i t
   obtain ⟨N, hN, hNf⟩ := GlobalTheory.T.last_row_update_nhds_generation k (i + (t + 1)) (parab k (ePG i (t + 1))) (by
     intro r _ g hg
     rw [mem_parab_iff]
@@ -374,16 +375,16 @@ theorem onto (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonar
     (dpowM (i + (t + 1)) (-1 / 2)) (eO_translate ψ) (fun v hv O hO => ?_) y
   obtain ⟨v₀, hv₀⟩ : ∃ v₀, qO τ σ ψ v₀ = v := LinearMap.rTensor_surjective σ.V (Submodule.mkQ_surjective _) v
   have h0 : v₀ ≠ 0 := fun h => hv (hv₀.symm.trans ((congrArg (qO τ σ ψ) h).trans (map_zero _)))
-  have grp := GlobalTheory.T.mirabolic_cell_structure_data k ψ hψ i t
+  have grp := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Grp.main k ψ hψ i t
   have hker : IsOpen ((dpowM (k := k) (i + (t + 1)) (-1 / 2)).ker : Set (Mir k (i + (t + 1)))) :=
     (GlobalTheory.CompanionTheory.LeibPhi.isOpen_ker_dpow (k := k) (i + (t + 1) + 1) (-1 / 2)).preimage continuous_subtype_val
   let _ : MeasurableSpace (Fin (t + 1) → k) := borel _
   exact bump_abs (muD k (t + 1)) (HPG k (i + 1) (t + 1)) (sigX τ σ) (HPG k i (t + 1)) (sigO τ σ ψ)
-    (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k _) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k _) (sO k i t) (GlobalTheory.T.continuous_shifted_orbit_map k i t)
+    (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k _) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k _) (sO k i t) (_root_.GlobalTheory.CompanionTheory.BZPhiPG.OntoO.continuous_sO k i t)
     (wEl k i t) (dEmb k i t) 0 (GlobalTheory.T.weyl_not_mem_closed_cell k i t).2 (Cl k i t) grp.2.2.1 grp.2.2.2.1 (GlobalTheory.T.weyl_not_mem_closed_cell k i t).1 (qO τ σ ψ)
     (dpowM (i + (t + 1)) (-1 / 2)) hker (eO ψ) (fun f m => rfl) (fun f y => GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y)
-    (fun f hf => GlobalTheory.T.open_evaluation_induced k i t ψ hψ τ σ hτ hσ f hf) (fun O hO => GlobalTheory.T.open_cell_parabolic_near_identity k i t O hO) (fun O hO => forcing k i t O hO)
-    (GlobalTheory.T.haar_measure_open_nonempty_ne_zero k (t + 1)) v₀ h0 (GlobalTheory.T.smooth_vector_fixed_parabolic_near_one k i t τ σ hτ hσ v₀) v hv₀ O hO
+    (fun f hf => _root_.GlobalTheory.CompanionTheory.BZPhiPG.MemO.eO_mem k i t ψ hψ τ σ hτ hσ f hf) (fun O hO => _root_.GlobalTheory.CompanionTheory.BZPhiPG.OntoO.h_small k i t O hO) (fun O hO => forcing k i t O hO)
+    (_root_.GlobalTheory.CompanionTheory.BZPhiPG.OntoO.muD_toReal_ne_zero k (t + 1)) v₀ h0 (_root_.GlobalTheory.CompanionTheory.BZPhiPG.OntoO.sigX_fix_nhds k i t τ σ hτ hσ v₀) v hv₀ O hO
 
 end Main
 end GlobalTheory.CompanionTheory.BZPhiPG.OntoO

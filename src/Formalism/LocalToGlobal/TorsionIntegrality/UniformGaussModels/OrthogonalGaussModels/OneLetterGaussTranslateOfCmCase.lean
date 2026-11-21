@@ -1,7 +1,10 @@
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.StatementJ
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.StatementE
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.StatementF
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OneLetterGaussEveryOrth7
+import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelConditionEquivalent
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.ThetaInZIsThetaLog
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementG
+import Formalism.GaussJetBounds.OneLetterGaussJets.OddLevelGainSum
+import Formalism.GaussJetBounds.StatementS
+import Formalism.GaussJetBounds.StatementU
+import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelCondition
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.HasCMByStable
 
 namespace Formalism.L2.Th1.Top
@@ -42,144 +45,5 @@ theorem data {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (ha : 0 < a₀) (hdK : 0 
     (1 / 4) * h1c + ((↑b₀ + Complex.I * ((Real.sqrt dK : ℝ) : ℂ)) / 4) * hb)
 
 end HAux
-
-theorem ThmAEntryEveryH_of (hX : MatrixEntriesCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : ThmAEntryEveryH := by
-  unfold ThmAEntryEveryH MatrixEntriesCM at *
-  intro hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨hsf, hd4, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨lam, hlam, hLT⟩ := hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro n _ _ h Λ g₀ hLat
-  obtain ⟨κ, hκ0, hκalg, hκn, hθ⟩ := hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat
-  refine ⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩
-  obtain ⟨g₁, hiso, hidx, hK1⟩ := hθ θ hθmem heq l h5 ι
-  refine ⟨g₁, hiso, hidx, ?_⟩
-  intro t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde ιr _ _ om oms how htr hζ f f' hhyp
-  have hcurve := hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr
-  exact hrest σ hσ F hF d N0 N1 hd2 hde ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
-
-theorem ThmAGaussEveryH_of (hX : GaussFormCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : ThmAGaussEveryH := by
-  unfold ThmAGaussEveryH GaussFormCM at *
-  intro hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨hsf, hd4, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨lam, hlam, hLT⟩ := hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro n _ _ h Λ g₀ hLat
-  obtain ⟨κ, hκ0, hκalg, hκn, hθ⟩ := hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat
-  refine ⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩
-  obtain ⟨g₁, hiso, hidx, hK1⟩ := hθ θ hθmem heq l h5 ι
-  refine ⟨g₁, hiso, hidx, ?_⟩
-  intro t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde ιr _ _ om oms how htr hζ f f' hhyp
-  have hcurve := hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr
-  exact hrest σ hσ F hF d N0 N1 hd2 hde ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
-
-theorem OneLetterGaussEveryH_of (hX : OneLetterGaussCMReformulated) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) :
-    OneLetterGaussEveryH := by
-  unfold OneLetterGaussEveryH OneLetterGaussCMReformulated at *
-  intro hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨hsf, hd4, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨lam, hlam, hLT⟩ := hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro N0 N1 h Λ g₀ hLat
-  obtain ⟨κ, hκ0, hκalg, hκn, hθ⟩ := hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK (Fin N0 × Fin N1) h Λ g₀ hLat
-  refine ⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩
-  obtain ⟨g₁, hiso, hidx, hK1⟩ := hθ θ hθmem heq l h5 ι
-  refine ⟨g₁, hiso, hidx, ?_⟩
-  intro t N hN0 hlN hNt σ hσ γ B' hfr F hF C
-  have hcurve := hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr
-  exact hrest σ hσ F hF N0 N1 C _ γ hfr.1 hcurve
-
-theorem KernelEveryH_of (hX : ThreeBoundsCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : CMThetaKernelEveryInertPrime := by
-  intro hL hκ a₀ b₀ c₀ dK ha hdK hOK l _ h5 hd hin ι g2 g3 ε hg hε hth
-  obtain ⟨hsq, hmod, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, tail⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsq hmod hcm l h5 hd hin ι g2 g3 ε hg hε hth
-  obtain ⟨lam, hlam, hLT⟩ := hN l _ ι g2 g3 s2 ε c hc hε e2 e3 es
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro n _ _ h Λ g₀ hLat
-  obtain ⟨κ, k1, k2, k3, hθ⟩ := hK hL hκ a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat
-  refine ⟨κ, k1, k2, k3, fun θ hθm hten => ?_⟩
-  obtain ⟨g₁, i1, i2, hK1⟩ := hθ θ hθm hten l h5 ι
-  refine ⟨g₁, i1, i2, ?_⟩
-  intro t N hN0 hlN ht σ hσ γ B' hFr F hF ν r0 r1 _ om oms hO hT f f' hH
-  exact tail σ hσ F hF ν r0 r1 om oms hO hT n f f' hH _ γ hFr.1
-    (hK1 g2 g3 ε s2 hLT hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth t N hN0 hlN ht σ γ B' hFr)
-
-theorem ThmSEveryH_of (hX : StructureTheoremCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : ThmSEveryH := by
-  intro hL hκ a₀ b₀ c₀ dK ha hdK hOK l _ h5 hd hin ι g2 g3 ε hg hε hth
-  obtain ⟨hsq, hmod, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, c, hc, hs2, e2, e3, es, tail⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsq hmod hcm l h5 hd hin ι g2 g3 ε hg hε hth
-  obtain ⟨lam, hlam, hLT⟩ := hN l _ ι g2 g3 s2 ε c hc hε e2 e3 es
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro n _ _ h Λ g₀ hLat
-  obtain ⟨κ, k1, k2, k3, hθ⟩ := hK hL hκ a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat
-  refine ⟨κ, k1, k2, k3, fun θ hθm hten => ?_⟩
-  obtain ⟨g₁, i1, i2, hK1⟩ := hθ θ hθm hten l h5 ι
-  refine ⟨g₁, i1, i2, ?_⟩
-  intro t N hN0 hlN ht σ hσ γ B' hFr F hF ν r0 r1 _
-  obtain ⟨cS, c1, c2, c3⟩ := tail σ hσ F hF ν r0 r1
-  refine ⟨cS, c1, c2, ?_⟩
-  intro om oms ϖ μ hϖ hO hT hμ0 hμ f f' hH
-  exact c3 om oms ϖ μ hϖ hO hT hμ0 hμ n f f' hH _ γ hFr.1
-    (hK1 g2 g3 ε s2 hLT hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth t N hN0 hlN ht σ γ B' hFr)
-
-theorem matrix_entries_translate_of_cm_case (hX : MatrixEntriesSharpCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : MatrixEntriesSharpTranslate := by
-  unfold MatrixEntriesSharpTranslate MatrixEntriesSharpCM at *
-  intro hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨hsf, hd4, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨lam, hlam, hLT⟩ := hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro n _ _ h Λ g₀ hLat
-  obtain ⟨κ, hκ0, hκalg, hκn, hθ⟩ := hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat
-  refine ⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩
-  obtain ⟨g₁, hiso, hidx, hK1⟩ := hθ θ hθmem heq l h5 ι
-  refine ⟨g₁, hiso, hidx, ?_⟩
-  intro t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde hx ιr _ _ om oms how htr hζ f f' hhyp
-  have hcurve := hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr
-  exact hrest σ hσ F hF d N0 N1 hd2 hde hx ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
-
-theorem gauss_form_translate_of_cm_case (hX : GaussFormSharpCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) : GaussFormSharpTranslate := by
-  unfold GaussFormSharpTranslate GaussFormSharpCM at *
-  intro hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨hsf, hd4, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨lam, hlam, hLT⟩ := hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro n _ _ h Λ g₀ hLat
-  obtain ⟨κ, hκ0, hκalg, hκn, hθ⟩ := hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ g₀ hLat
-  refine ⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩
-  obtain ⟨g₁, hiso, hidx, hK1⟩ := hθ θ hθmem heq l h5 ι
-  refine ⟨g₁, hiso, hidx, ?_⟩
-  intro t N hN0 hlN hNt σ hσ γ B' hfr F hF d N0 N1 _ hd2 hde hx ιr _ _ om oms how htr hζ f f' hhyp
-  have hcurve := hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr
-  exact hrest σ hσ F hF d N0 N1 hd2 hde hx ιr om oms how htr hζ n f f' hhyp _ γ hfr.1 hcurve
-
-theorem one_letter_gauss_translate_of_cm_case (hX : OneLetterGaussSharpCM) (hN : LTNormExists) (hK : uniformGaussModelConditionEquivalent) :
-    OneLetterGaussSharpTranslate := by
-  unfold OneLetterGaussSharpTranslate OneLetterGaussSharpCM at *
-  intro hLS hKE a₀ b₀ c₀ dK ha hdK hOK l _ h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨hsf, hd4, hcm⟩ := HAux.data ha hdK hOK
-  obtain ⟨s2, hs2, ⟨c, hc, hg2, hg3, hs2e⟩, hrest⟩ :=
-    hX dK (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) hsf hd4 hcm l h5 hld hsq ι g2 g3 ε hgood hε hcoef
-  obtain ⟨lam, hlam, hLT⟩ := hN l (Formalism.L2.Th1.F.cmPair a₀ b₀ dK ha hdK) ι g2 g3 s2 ε c hc hε hg2 hg3 hs2e
-  refine ⟨s2, lam, hlam, hs2, hLT, ?_⟩
-  intro N0 N1 h Λ g₀ hLat
-  obtain ⟨κ, hκ0, hκalg, hκn, hθ⟩ := hK hLS hKE a₀ b₀ c₀ dK ha hdK lam hlam hOK (Fin N0 × Fin N1) h Λ g₀ hLat
-  refine ⟨κ, hκ0, hκalg, hκn, fun θ hθmem heq => ?_⟩
-  obtain ⟨g₁, hiso, hidx, hK1⟩ := hθ θ hθmem heq l h5 ι
-  refine ⟨g₁, hiso, hidx, ?_⟩
-  intro t N hN0 hlN hNt σ hσ γ B' hfr F hF C
-  have hcurve := hK1 g2 g3 ε s2 hLT hgood.2.2.1 hgood.2.2.2.1 hgood.2.2.2.2.1 hε hcoef t N hN0 hlN hNt σ γ B' hfr
-  exact hrest σ hσ F hF N0 N1 C _ γ hfr.1 hcurve
 
 end Formalism.L2.Th1.Top

@@ -13,14 +13,6 @@ noncomputable section
 
 namespace GlobalTheory.EtC.SpecMapPullbackFunctoriality
 
-theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
-
-theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (sp A) := by
-  simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]
-  exact sch.map_id _
-
 abbrev PC (q : ℕ) (T : Type) [CommRing T] : Prop :=
   ∀ i : ℤ, Function.Bijective (pull _ (spMap (LaurentPolynomial.C : T →+* LaurentPolynomial T)) (tw q i) 0)
 

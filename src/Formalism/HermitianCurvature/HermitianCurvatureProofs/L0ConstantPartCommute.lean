@@ -72,36 +72,12 @@ lemma l0_constant_part_commute (Y : ℂ) {g : A} (hg : g ∈ zfns L) :
     Commute (algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) g :=
   (Algebra.commute_algebraMap_left _ g).mul_left ((zc L (mζb L) hg).mul_left (zc L (mGGi L) hg))
 
-lemma zetaInv_mul_l0_mul_zeta (Y : ℂ) : L.ζi * L.l0 Y * L.ζ = L.l0 Y - L.ζi := by
-  have c := l0_constant_part_commute L Y (mζ L)
-  have h1 : L.ζi * (-L.nab) * L.ζ = -L.nab - L.ζi := by
-    rw [mul_neg, neg_mul, mul_assoc, L.nab_ζ, mul_add, ← mul_assoc, L.ζi_ζ, one_mul, mul_one]; abel
-  have h2 : L.ζi * (algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) * L.ζ =
-      algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi) := by
-    rw [mul_assoc, c.eq, ← mul_assoc, L.ζi_ζ, one_mul]
-  unfold LevelData.l0
-  rw [mul_sub, sub_mul, h1, h2]; abel
-
 lemma l0_mul_gg_eq_gg_mul_sub (Y : ℂ) : L.l0 Y * L.GG = L.GG * (L.l0 Y - L.ζb * L.GGi) := by
   have c := l0_constant_part_commute L Y (mGG L)
   have h : L.GG * (L.ζb * L.GGi) = L.ζb := by
     rw [(zc L (mζb L) (mGGi L)).eq, ← mul_assoc, L.GG_GGi, one_mul]
   unfold LevelData.l0
   rw [sub_mul, c.eq, neg_mul, L.nab_GG, mul_sub, mul_sub, h, mul_neg]; abel
-
-lemma zetaConj2 : L.ζb * L.GGi - L.ζi = L.TT • (L.ζi * L.GGi) := by
-  obtain ⟨p, pb, c, ci, cb, cbi, ζ, ζi, ζb, ζbi, GG, GGi, nab, nabs, TT, h1, h2, h3, h4, h5, h6, h7,
-    h8, h9, h10, h11, h12⟩ := L
-  dsimp only
-  subst h12
-  have e : ζi * (ζ * ζb - algebraMap ℂ A TT) = ζb - TT • ζi := by
-    rw [mul_sub, ← mul_assoc, h7, one_mul, Algebra.smul_def, Algebra.commutes]
-  calc ζb * GGi - ζi = ζb * GGi - ζi * ((ζ * ζb - algebraMap ℂ A TT) * GGi) := by
-        rw [h10, mul_one]
-    _ = ζb * GGi - (ζb - TT • ζi) * GGi := by rw [← mul_assoc, e]
-    _ = TT • (ζi * GGi) := by
-        rw [sub_mul, smul_mul_assoc]
-        abel
 
 end Level
 
@@ -237,20 +213,6 @@ end Formalism.FourierDecayAlt.P.Fr3
 namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.P.Fr3
-
-theorem zeta_conj_nabla : Formalism.FourierDecayAlt.Fr.ZetaConj := by
-  intro A S _ _ _ _ _ _ r L f Y hee
-  refine ⟨?_, zetaConj2 L⟩
-  have c : Commute (kapL L * f.ee Y : SlopeTestRemainingChoices S A) (io L.ζ) := by
-    refine Commute.mul_left ?_ (hee _ (mζ L))
-    exact io_comm (((zc L (mζb L) (mζ L)).mul_left (zc L (mζi L) (mζ L))).mul_left (zc L (mGGi L) (mζ L)))
-  have i1 : (io L.ζi : SlopeTestRemainingChoices S A) * io L.ζ = 1 := by rw [← io_mul, L.ζi_ζ, io_one]
-  have h1 : (io L.ζi : SlopeTestRemainingChoices S A) * io (L.l0 Y) * io L.ζ = io (L.l0 Y) - io L.ζi := by
-    rw [← io_mul, ← io_mul, zetaInv_mul_l0_mul_zeta]; simp only [io, map_sub]
-  have h2 : (io L.ζi : SlopeTestRemainingChoices S A) * (kapL L * f.ee Y) * io L.ζ = kapL L * f.ee Y := by
-    rw [mul_assoc, c.eq, ← mul_assoc, i1, one_mul]
-  unfold FrameData.l
-  rw [mul_add, add_mul, h1, h2]; abel
 
 theorem start_ee : Formalism.FourierDecayAlt.Fr.StartEe := by
   intro A _ _ r L SS

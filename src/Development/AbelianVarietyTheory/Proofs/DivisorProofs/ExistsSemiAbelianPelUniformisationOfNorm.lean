@@ -1,9 +1,14 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.USt
+import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSemiAbelianUniformisationCompleteNormalBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingActionExtensionToUniformisedSemiAbeliaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingActionExtensionToUniformisedSemiAbelia
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationRingActionAdjointCubeBundle
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundlePrimitiveOfEvenNormDataStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundlePrimitiveOfEvenNormData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusHomOfIff
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsSymmetricOfSymmetryGenerator
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
@@ -32,7 +37,7 @@ theorem exists_sab_pelUnif_of_norm {E : Type} [Field E] [NumberField E] [IsCMFie
     ∃ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t), P.D = D ∧ HEq P.mod inst ∧ HEq P.oD oD := by
   letI := H.starRing
   obtain ⟨G, iG, cG, A, hG, ⟨U⟩⟩ := GlobalTheory.T.hasSemiAbelianUniformisation_complete_normal_base R hR D
-  obtain ⟨oA, oG, hl⟩ := GlobalTheory.T.exists_ringAction_extension_to_uniformised_semiAbelian R hR D A G hG U (𝓞 E) oD
+  obtain ⟨oA, oG, hl⟩ := _root_.GlobalTheory.Mum.exists_oLinear_of_oAct R hR D A G hG U (𝓞 E) oD
   have hd := H.d_mod
   let t : SAB H (Sp R) :=
     { G := G
@@ -42,7 +47,7 @@ theorem exists_sab_pelUnif_of_norm {E : Type} [Field E] [NumberField E] [IsCMFie
       cub := U.cubG
       sym := GlobalTheory.isSymmetric_of_symmetry_generator U.LG U.symG U.symG_gen U.symG_rig
       adj := fun a => GlobalTheory.Mum.UnifAdjoint.lbIso_cubeLB_star R hR.1 D A G hG U (𝓞 E) oD oA oG hl a
-      prim := GlobalTheory.T.lbIso_cubeLB_of_even_norm R hR D A G hG U (𝓞 E) oD oA oG hl H.w0 ((H.d + 1) / 4)
+      prim := _root_.GlobalTheory.Mum.mumfordBundle_primitive_of_evenNorm_data R hR D A G hG U (𝓞 E) oD oA oG hl H.w0 ((H.d + 1) / 4)
         (by show H.w0 + H.bar H.w0 = 1; rw [GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel]) (w_zero_mul_conj_eq_norm H) (by omega)
         (Nat.even_iff.2 (by omega)) hw }
   exact ⟨t, ⟨D, oD, A, oA, U, rfl, hl, hw⟩, rfl, HEq.rfl, HEq.rfl⟩

@@ -1,6 +1,7 @@
 import Formalism.SizeWindowBrackets.FirstPrimeNeSecondPrime
 import Formalism.SizeWindowBrackets.QuotientSlopeBoundsWith
-import Formalism.SizeWindowBrackets.PowerBoundGivesRiemannHypothesis
+import Formalism.StatementOC
+import Mathlib.NumberTheory.LSeries.RiemannZeta
 
 open Finset ArithmeticFunction
 
@@ -32,9 +33,6 @@ def chpsC : AddChar (E0 × H) ℂ := chC * psC
 
 def Gsig (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (y : ℝ) : ℂ :=
   GPsi D ell 0 y + GPsi D ell psC y - GPsi D ell chC y - GPsi D ell chpsC y
-
-def CharacterSignsAtBaseClass : Prop :=
-  (chC : AddChar (E0 × H) ℂ) sgc0 = -1 ∧ (psC : AddChar (E0 × H) ℂ) sgc0 = 1 ∧ (chpsC : AddChar (E0 × H) ℂ) sgc0 = -1
 
 def fPl (H : Type) [AddCommGroup H] [Fintype H] [DecidableEq H] : ℝ := ((PhiSet (H := H)).card : ℝ)
 
@@ -121,39 +119,6 @@ def GrowthSizeBound : Prop :=
     (nT : ℝ) * m * b * (((nT2 : ℝ) / n) / 2) * (Gx - 4 * x ^ ((1 : ℝ) / 2 + ε)) ≤ Err + 2 * (nT : ℝ) * m * b / x →
     Gx ≤ x ^ ((1 : ℝ) / 2 + (C + 3) * ε)
 
-def GrowthInequalityDataExists (C ε x : ℝ) : Prop :=
-  ∃ (H : Type) (_ : AddCommGroup H) (_ : Fintype H) (_ : DecidableEq H) (D : ArithData H)
-    (ell : AddChar (E0 × H) ℂ → ℂ) (N m : ℕ) (TT T2 : Finset H) (a : H → ℝ) (w : H → Fin m → E0 × H → ℝ)
-    (b b' η X' θ Cd CL Err k aE : ℝ),
-    HostFacts D ∧ GrowthInequalityHypotheses D ell N TT T2 a w x ε b b' η X' θ Cd CL Err ∧ SmallCosts x ε (fPl H) b η θ Cd CL ∧
-    SizeWindows C ε x (Fintype.card H) TT.card T2.card m b k aE Err
-
-def RiemannHypothesisOfBalanceAndGrowthData : Prop :=
-  (∀ (H : Type) [AddCommGroup H] [Fintype H] [DecidableEq H], AskMainBalance (H := H)) →
-  ∀ C ε₁ : ℝ, 0 < ε₁ → (∀ ε : ℝ, 0 < ε → ε < ε₁ → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → GrowthInequalityDataExists C ε x) →
-    RiemannHypothesis
-
-def GrowthBoundAtPoint : Prop :=
-  ∀ C ε x : ℝ, GrowthInequalityDataExists C ε x → Gz x ≤ x ^ ((1 : ℝ) / 2 + (C + 3) * ε)
-
-def GrowthBoundGivesRiemannHypothesis : Prop :=
-  ∀ C ε₁ : ℝ, 0 < ε₁ → (∀ ε : ℝ, 0 < ε → ε < ε₁ → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → GrowthInequalityDataExists C ε x) →
-    RiemannHypothesis
-
-section
-variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
-
-def LeadingTermTranslateMean : Prop :=
-  ∀ {W : H → Type} [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
-    (Dd : Formalism.RankGapBounds.WeightedMeanData.Data H W Top m f) (D : ArithData H) (N : ℕ) (ell : AddChar (E0 × H) ℂ → ℂ)
-    (TT : Finset H) (a : H → ℝ) (w : H → Fin m → E0 × H → ℝ) (eT : Top ≃ TT) (eP : Fin f ≃ PhiSet (H := H)) (E : ℝ),
-    (∀ τ, Dd.aT τ = a (eT τ)) → (∀ u0 j ρ, Dd.w u0 j ρ = w u0 j (eP ρ)) →
-    Dd.gam = Real.eulerMascheroniConstant → Dd.LpL = (ell chC).re →
-    (∀ u0, Dd.ASK u0 = ∑ t ∈ TT, ∑ j : Fin m, ASK D N (a t) t (w u0 j)) →
-    Formalism.RankGapBounds.WeightedMeanData.umean Dd.ASK ≤ Formalism.RankGapBounds.WeightedMeanData.umean Dd.Main + E → topExcess D N ell TT a w ≤ E
-
-end
-
 def LipWAll : Prop :=
   ∀ (H : Type) [AddCommGroup H] [Fintype H] [DecidableEq H] (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ),
     LipW D ell
@@ -161,23 +126,5 @@ def LipWAll : Prop :=
 def DerivIntAll : Prop :=
   ∃ Cd : ℝ, 0 ≤ Cd ∧ ∀ (H : Type) [AddCommGroup H] [Fintype H] [DecidableEq H] (D : ArithData H)
     (ell : AddChar (E0 × H) ℂ → ℂ), DerivInt D ell Cd
-
-def ReducedGrowthInequalityDataExists (Cd C ε x : ℝ) : Prop :=
-  ∃ (H : Type) (_ : AddCommGroup H) (_ : Fintype H) (_ : DecidableEq H) (D : ArithData H)
-    (ell : AddChar (E0 × H) ℂ → ℂ) (N m : ℕ) (TT T2 : Finset H) (a : H → ℝ) (w : H → Fin m → E0 × H → ℝ)
-    (b b' η X' θ CL Err k aE : ℝ),
-    HostFacts D ∧
-    (3 ≤ x ∧ 0 < b ∧ 0 ≤ η ∧ 0 < X' ∧ 0 < b' ∧ b' * X' ≤ x * b ∧ 0 ≤ θ ∧
-      (∀ t ∈ TT, |a t / b - x| ≤ 1) ∧
-      NodeSizes T2 b b' η w ∧
-      (∀ u0 j t ρ, t ∈ TT → InPhi ρ → a t / w u0 j ρ ≤ N) ∧
-      topExcess D N ell TT a w ≤ Err ∧
-      ThinScales D ell X' θ ∧ ValuesAtX D ell x ε CL) ∧
-    SmallCosts x ε (fPl H) b η θ Cd CL ∧
-    SizeWindows C ε x (Fintype.card H) TT.card T2.card m b k aE Err
-
-def RiemannHypothesisOfReducedGrowthData : Prop :=
-  ∃ Cd : ℝ, 0 ≤ Cd ∧ ∀ C ε₁ : ℝ, 0 < ε₁ →
-    (∀ ε : ℝ, 0 < ε → ε < ε₁ → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ReducedGrowthInequalityDataExists Cd C ε x) → RiemannHypothesis
 
 end Formalism.LFunctionChainParameters.ThickSetMeanBounds

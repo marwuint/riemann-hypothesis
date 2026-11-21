@@ -35,19 +35,6 @@ def ResOntoK (p : ℕ) [Fact p.Prime] {K r : ℕ} [NeZero r] (LL : Letters (K + 
     (M : Fin q → WithTop ℤ) (ρ : Fin r) : Prop :=
   ∀ x ∈ XSp p LL J M ρ, ∃ h ∈ Y p LL J M, initPart (Fin.last K, ρ) 0 h = x
 
-def ResSat (p : ℕ) [Fact p.Prime] {K r : ℕ} [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ)
-    (M : Fin q → WithTop ℤ) (ρ : Fin r) : Prop :=
-  ∀ x ∈ XSp p LL J M ρ, x ∈ IntPol p (Fin (K + 1) × Fin r) →
-    ∃ h ∈ Y p LL J M, h ∈ IntPol p (Fin (K + 1) × Fin r) ∧ initPart (Fin.last K, ρ) 0 h = x
-
-def DivModP (p : ℕ) [Fact p.Prime] {K r : ℕ} [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ)
-    (M : Fin q → WithTop ℤ) (ρ : Fin r) : Prop :=
-  ∀ h ∈ Y p LL J M, h ∈ IntPol p (Fin (K + 1) × Fin r) →
-    ∀ a ∈ IntPol p (Fin (K + 1) × Fin r), ∀ b ∈ IntPol p (Fin (K + 1) × Fin r),
-      h = X (Fin.last K, ρ) * a + (p : ℚ_[p]) • b →
-      ∃ h₁ ∈ IntPol p (Fin (K + 1) × Fin r), ∃ b' ∈ IntPol p (Fin (K + 1) × Fin r),
-        X (Fin.last K, ρ) * h₁ ∈ Y p LL J M ∧ h = X (Fin.last K, ρ) * h₁ + (p : ℚ_[p]) • b'
-
 noncomputable def grSpan (p : ℕ) [Fact p.Prime] {K r : ℕ} [NeZero r] (LLw : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ)
     (M : Fin q → WithTop ℤ) (ρ : Fin r) (w : Fin r → ℤ) (e : ℕ) :
     Submodule ℚ_[p] (MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :=

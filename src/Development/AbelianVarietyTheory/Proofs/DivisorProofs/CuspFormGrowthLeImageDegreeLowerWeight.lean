@@ -3,11 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenRatios
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfGrowthOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConeDegreeGrowthChowFormIntegralityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormGrowthOnComponentNsmulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentFunctionFieldFgStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsRatioOnComponentOfBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralInConeDegreeOfValuativeBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConeDegreeGrowthChowFormIntegrality
+import Development.AbelianVarietyTheory.Definitions.Divisors.Multiplier
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormGrowthOnComponentNsmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentFunctionFieldFg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsRatioOnComponentOfBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralInConeDegreeOfValuativeBound
 
 set_option autoImplicit false
 
@@ -24,8 +25,8 @@ theorem growthOn_le_compDeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   · rw [h0]; exact bot_le
   obtain ⟨a, θ, ha, hθ, hmul⟩ := hM
   haveI := GlobalTheory.DegTop.finiteDimensional_of_growthOn (U := U) (Z := Z) hG hfin
-  have hR := GlobalTheory.T.cuspFormsRatioOnComponent_of_birational E H Dw l Xo c r U Z G hB
-  have hFG := GlobalTheory.T.flagSpaceComponent_functionField_fg E H Dw l Xo c r U hU Z
+  have hR := _root_.GlobalTheory.DegVal.ratioOn_of_birOn E H Dw l Xo c r U Z G hB
+  have hFG := _root_.GlobalTheory.DegVal.om_fg E H Dw l Xo c r U hU Z
   set ev := genPoint Z (cuspOn U Z G) with hev
   let S : ℕ → Submodule c.F (Om Z) := fun k =>
     if k = 0 then ⊥ else (cuspOn U Z ((a * k) • G')).map ((genVal Z).toLinearMap ∘ₗ LinearMap.mulLeft c.F (θ ^ k))
@@ -41,7 +42,7 @@ theorem growthOn_le_compDeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
       obtain ⟨f, hf, rfl⟩ := ht
       have hk1 : 1 ≤ k := Nat.one_le_iff_ne_zero.2 hk
       obtain ⟨hc, hv⟩ := hmul k hk1 f hf
-      exact ⟨GlobalTheory.T.isIntegralInConeDegree_of_valuativeBound c.F _ _ ev inferInstance inferInstance hFG _ _ hv, hR _ _ hc⟩)
+      exact ⟨_root_.GlobalTheory.DegVal.ValInt.isIntDeg_of_valBound c.F _ _ ev inferInstance inferInstance hFG _ _ hv, hR _ _ hc⟩)
   have hθk : ∀ k : ℕ, genVal Z (θ ^ k) ≠ 0 := fun k => by rw [map_pow]; exact pow_ne_zero _ hθ
   have h2 : growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (cuspOn U Z ((a * k) • G')))) ≤
       growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (S k))) :=
@@ -58,9 +59,9 @@ theorem growthOn_le_compDeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     rw [mul_nsmul]
   have h3 : growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (cuspOn U Z ((a * k) • G')))) =
       (a : ℝ≥0∞) ^ dimFlag Dw * growthOn U Z G' := by
-    rw [hmulG, GlobalTheory.T.cuspFormGrowthOnComponent_nsmul E H Dw l Xo c r U hU Z G' hG' a ha]
+    rw [hmulG, _root_.GlobalTheory.GrowthMul.growthOn_nsmul E H Dw l Xo c r U hU Z G' hG' a ha]
   have h4 : growth (dimFlag Dw) (fun k => hilb ev (a * k)) ≤ (a : ℝ≥0∞) ^ dimFlag Dw * growthOn U Z G := by
-    rw [← GlobalTheory.T.cuspFormGrowthOnComponent_nsmul E H Dw l Xo c r U hU Z G hG a ha, ← hmulG]
+    rw [← _root_.GlobalTheory.GrowthMul.growthOn_nsmul E H Dw l Xo c r U hU Z G hG a ha, ← hmulG]
     exact GlobalTheory.DegTop.growth_mono _ fun k hk => GlobalTheory.DegTop.hilb_le hG (Nat.mul_pos ha hk)
   have haD0 : (a : ℝ≥0∞) ^ dimFlag Dw ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (by omega))
   have haDT : (a : ℝ≥0∞) ^ dimFlag Dw ≠ ⊤ := ENNReal.pow_ne_top (ENNReal.natCast_ne_top a)

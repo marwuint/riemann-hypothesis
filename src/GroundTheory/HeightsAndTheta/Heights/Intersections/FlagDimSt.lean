@@ -14,10 +14,4 @@ def flagIdealOver (F : Type) [Field F] (n : ℕ) : Ideal (MRingOver F (PluckerBl
 
 theorem flagIdealQ_eq (n : ℕ) : flagIdealQ n = flagIdealOver ℚ n := rfl
 
-theorem flagIdealOver_isPrime (F : Type) [Field F] (n : ℕ) : (flagIdealOver F n).IsPrime :=
-  RingHom.ker_isPrime _
-
-def FlagDim.Statement : Prop :=
-  ∀ (F : Type) [Field F] (n : ℕ), IsProjVarF (flagIdealOver F n) (flagDim n)
-
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumOfDescendedMultiplicationImpor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NearOpenSumMapFlatSurjectiveQuasiCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelPairSumEqOfSumEqOtherPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NearOpenSumMapFlatSurjectiveQuasiCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelPairSumEqOfSumEqOtherPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NearOpenEmbeddingCompOfSumMapCompStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomOfSumMapCompFixingNearOpenStatement
 
@@ -51,10 +51,10 @@ theorem exists_datum : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R],
   intro R _ _ _ hA S π hP hS hI G' _ _ hG N hL
   have h1 : pullback.fst π π ≫ π = pullback.fst π π ≫ π := rfl
   have h2 : pullback.snd π π ≫ π = pullback.fst π π ≫ π := pullback.condition.symm
-  obtain ⟨fl1, su1, qc1⟩ := GlobalTheory.T.nearOpen_sumMap_flat_surjective_quasiCompact R hA S π hP hS hI G' hG N _ h1
-  obtain ⟨fl2, su2, qc2⟩ := GlobalTheory.T.nearOpen_sumMap_flat_surjective_quasiCompact R hA S π hP hS hI G' hG N _ h2
-  have e12 := GlobalTheory.T.kernelPair_sum_eq_of_sum_eq_other_pullback R hA S π hP hS hI G' hG N hL _ _ h1 h2
-  have e21 := GlobalTheory.T.kernelPair_sum_eq_of_sum_eq_other_pullback R hA S π hP hS hI G' hG N hL _ _ h2 h1
+  obtain ⟨fl1, su1, qc1⟩ := _root_.GlobalTheory.Mum.Desc.sum_flat_surjective_quasiCompact R hA S π hP hS hI G' hG N _ h1
+  obtain ⟨fl2, su2, qc2⟩ := _root_.GlobalTheory.Mum.Desc.sum_flat_surjective_quasiCompact R hA S π hP hS hI G' hG N _ h2
+  have e12 := _root_.GlobalTheory.Mum.DescKP.sum_eq_of_sum_eq R hA S π hP hS hI G' hG N hL _ _ h1 h2
+  have e21 := _root_.GlobalTheory.Mum.DescKP.sum_eq_of_sum_eq R hA S π hP hS hI G' hG N hL _ _ h2 h1
   let f := EffectiveEpi.desc (Desc.sum N _ h1).left (Desc.sum N _ h2).left (fun g g' h => e12 _ g g' h)
   let g := EffectiveEpi.desc (Desc.sum N _ h2).left (Desc.sum N _ h1).left (fun g g' h => e21 _ g g' h)
   have hf : (Desc.sum N _ h1).left ≫ f = (Desc.sum N _ h2).left := EffectiveEpi.fac _ _ _

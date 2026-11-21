@@ -1,4 +1,4 @@
-import Formalism.FrobeniusOrbits.HostOrbitsPlaces
+import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.HostDiffSupport
 
 open NumberField IntermediateField Ideal
@@ -15,48 +15,9 @@ def NoRel (T : Finset ℕ) (L : ℕ) : Prop :=
     ∀ i j : ℤ, 0 < |i| → |i| ≤ L → 0 < |j| → |j| ≤ L → i ≠ j →
       j * ((s₂ : ℤ) - s₁) ≠ i * ((s₃ : ℤ) - s₁)
 
-def InTranslate {n : ℕ} (T : Finset ℕ) (u₀ x : ZMod n) : Prop := ∃ s ∈ T, x = (s : ZMod n) + u₀
-
-open Classical in
-
-def HostThickOrbit : Prop :=
-  ∀ (n L : ℕ), 0 < n → 2 ≤ L → ∀ T : Finset ℕ, (∀ s ∈ T, 4 * L * s < n) → NoRel T L →
-  ∀ u₀ t h : ZMod n,
-    (4 * L < addOrderOf h → ∀ i₀ : ℤ,
-      ((Finset.Ico i₀ (i₀ + L)).filter (fun i : ℤ => InTranslate T u₀ (t + i • h))).card ≤ 2) ∧
-    (addOrderOf h ≤ 4 * L →
-      {x : ZMod n | (∃ i : ℤ, x = t + i • h) ∧ InTranslate T u₀ x}.ncard ≤ 1)
-
 def HostThickExists : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ n L : ℕ, 2 ≤ L → ∃ T : Finset ℕ, (∀ s ∈ T, 4 * L * s < n) ∧ NoRel T L ∧
     (n : ℝ) * Real.exp (-C * Real.sqrt (Real.log n * Real.log L)) / L ≤ T.card
-
-def bern {α : Type*} [Fintype α] (δ : ℝ) (T : Finset α) : ℝ :=
-  δ ^ T.card * (1 - δ) ^ (Fintype.card α - T.card)
-
-open Classical in
-
-def HostTops : Prop :=
-  ∀ (α ι : Type) [Fintype α] [Fintype ι] (δ β : ℝ) (ω : ι → ℝ) (BAD : ι → α → Finset α → Prop),
-    0 < δ → δ ≤ 1 → 0 ≤ β → (∀ p, 0 ≤ ω p) → 16 ≤ δ * Fintype.card α →
-    (∀ p t, (∑ T : Finset α, if t ∈ T ∧ BAD p t T then bern δ T else 0) ≤ β * δ) →
-    ∃ T : Finset α, δ * Fintype.card α / 2 ≤ T.card ∧ (T.card : ℝ) ≤ 2 * δ * Fintype.card α ∧
-      (∑ p, ω p * ((T.filter (fun t => BAD p t T)).card : ℝ)) ≤
-        4 * β * δ * Fintype.card α * ∑ p, ω p
-
-def HostProG : Prop :=
-  ∀ (g : ℕ), g.Prime →
-  ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
-    [TotallyDisconnectedSpace G],
-    (∀ N : Subgroup G, IsOpen (N : Set G) → N.Normal → ∃ m : ℕ, N.index = g ^ m) →
-    ∀ x : G, IsOfFinOrder x → ∃ m : ℕ, orderOf x = g ^ m
-
-def HostStab : Prop :=
-  ∀ (e q d : ℕ), HypOdd q d →
-  ∀ (L : Type) [Field L] [NumberField L] (ζ a b : L), IsLayer (e + 2) q d ζ a b →
-  ∀ (k g : ℕ), g.Prime → 2 ^ (e + 2) * k < g - 1 →
-  ∀ Γ : Subgroup (Matrix.GeneralLinearGroup (Fin k) (hostE ζ a b)),
-    (∀ γ ∈ Γ, ∃ m : ℕ, orderOf γ = g ^ m) → Γ = ⊥
 
 def HostOrdinary : Prop :=
   ∀ (e q d : ℕ), HostHyp q d →
@@ -78,13 +39,6 @@ def HostUnimodular : Prop :=
         ∀ y ∈ ((𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 (hostE ζ a b))) (hostE ζ a b))⁻¹),
           Algebra.trace (KinE ζ a b) (hostE ζ a b) (x * σ y) ∈
             (algebraMap (𝓞 (KinE ζ a b)) (KinE ζ a b)).range
-
-def HostConductor : Prop :=
-  ∀ (e q d : ℕ), HostHyp q d →
-  ∀ (L : Type) [Field L] [NumberField L] (ζ a b : L), IsLayer (e + 2) q d ζ a b →
-  ∀ m : ℕ, 0 < m →
-    (Nonempty (hostE ζ a b →ₐ[ℚ] CyclotomicField m ℚ) ↔
-      (if e = 0 then q * d else 2 ^ (e + 2) * q * d) ∣ m)
 
 def etaF {L : Type*} [Field L] [NumberField L] (ζ a b : L) (𝔭 : Ideal (𝓞 (hostF ζ a b))) : ℤ :=
   if (primesOver 𝔭 (𝓞 (hostE ζ a b))).ncard = 2 then 1 else -1

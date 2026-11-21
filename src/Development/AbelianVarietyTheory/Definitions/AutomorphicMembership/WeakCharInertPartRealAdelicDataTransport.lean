@@ -206,10 +206,6 @@ theorem holds_tr (h : Holds R F) : letI := alg b iK; Holds (real3 b R) (face3 b 
   case ok => exact (by with_unfolding_all exact (h.ok :))
   case sep => exact (by with_unfolding_all exact (h.sep :))
 
-theorem errEq_tr (h : ErrEq R F) : letI := alg b iK; ErrEq (real3 b R) (face3 b F) := by
-  tr_via (fun X : Cx.CxData A.fam3.amb3 => ∀ w j, (X.data F.cr false).err0 w j = errOf (X.data F.cr false) (F.fc X.zs).Z.F0 w)
-    (toCx3_eq b R F) h
-
 end Tr
 
 end GlobalTheory.Mem.R3

@@ -34,9 +34,6 @@ theorem dl_mul (u u' : DualNumber D) (hu : IsUnit u.fst) (hu' : IsUnit u'.fst) :
 theorem dl_one_add (l : DualNumber D) (h : l.fst = 0) : dl (1 + l) = l.snd := by
   simp [dl, h]
 
-theorem dl_one : dl (1 : DualNumber D) = 0 := by
-  simp [dl]
-
 theorem dl_inl (c : D) : dl (TrivSqZeroExt.inl c : DualNumber D) = 0 := by
   simp [dl]
 

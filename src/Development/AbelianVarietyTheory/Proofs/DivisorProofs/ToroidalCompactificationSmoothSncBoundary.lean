@@ -5,9 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelativeDim
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
 import GroundTheory.ArithmeticGeometry.SchemeCohomology.RegularSmooth
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.WChartsC
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncAtOfStalkIdEqSpanProdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrictNormalCrossingsDescentEtaleCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundaryBranchesDistinctPrimesToricChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncAtOfStalkIdEqSpanProd
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrictNormalCrossingsDescentEtaleCompletion
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundaryBranchesDistinctPrimesToricChart
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -88,11 +90,11 @@ theorem smooth_and_snc : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] 
     intro hc
     exact hc hx
   · obtain ⟨k, _, m, e, C, ξ, a, hT, hy, rfl, hE, hid, hrange, -⟩ := hU x hx
-    have hs' := GlobalTheory.T.boundaryBranches_distinct_primes_toricChart Xo c φ hpq hfan hno zs i OZ N d J π j BD h hsep hU k m e C ξ hT hy hx hE hid hrange
+    have hs' := _root_.GlobalTheory.BranchSep.branch_sep Xo c φ hpq hfan hno zs i OZ N d J π j BD h hsep hU k m e C ξ hT hy hx hE hid hrange
     obtain ⟨hm, hs, -⟩ := hT
     have hprod : ∏ i, C.s i = ∏ i : Fin m, bdParam k m e i :=
       Fintype.prod_equiv (finCongr hm) (fun i => C.s i) (fun i => bdParam k m e i) (fun i => by rw [hs i]; rfl)
     rw [hprod] at hid
-    obtain ⟨n, r, T, hr, hD⟩ := GlobalTheory.T.strictNormalCrossings_descent_etale_completion _ k m e _ _ hE hid hs'
-    exact GlobalTheory.T.sncAt_of_stalkId_eq_span_prod_of_isRegularLocalRing S _ _ (isRegularLocalRing_stalk h hU _) n r T hr hD
+    obtain ⟨n, r, T, hr, hD⟩ := _root_.GlobalTheory.SncDescent.exists_rsp_of_isEtaleCompletion _ k m e _ _ hE hid hs'
+    exact _root_.GlobalTheory.sncAt_of_stalkId_eq_span_prod S _ _ (isRegularLocalRing_stalk h hU _) n r T hr hD
 end GlobalTheory.UChartSmooth

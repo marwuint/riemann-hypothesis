@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PropFTop
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionFamilyMultilinearStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionFamilyMultilinear
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsPowSubMemSpanOfIsUnitModOfIsAlgClosed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArMonoAddSingle
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MonoLinesLineSmooth
 open MvPolynomial NumberField Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Flat
@@ -43,7 +45,7 @@ theorem sum_arMono (hP : PtsIntegrableStatement) (hM : MetricLocalStatement) (hD
     ∑ i : Fin N, M.arMono II t ((m + Finsupp.single (τ, i) 1).mapDomain some) =
       R.ht * M.geoMono (m.mapDomain some) -
         ptsIntegral M.P (pot (monoLines (M.line t) (m.mapDomain some) (dimFl Ψ N))) (R.v t) / (M.δ : ℝ) := by
-  have h1 := GlobalTheory.T.intersection_family_multilinear hP hM M.K M.ι M.Ω R.F M.y R.φ (II M.K M.ι) M.P (dimFl Ψ N)
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Flat.sum_roots_eq hP hM M.K M.ι M.Ω R.F M.y R.φ (II M.K M.ι) M.P (dimFl Ψ N)
     (monoLines (M.line t) (m.mapDomain some) (dimFl Ψ N)) R.A R.S (dimFl Ψ N + 1) N
     (fun i => M.x t (τ, i)) (R.v t) (hII M.K M.ι) M.arith R.overInt le_rfl M.arith
     (mono_smooth M t _ _) R.A_smooth (fun i => M.x_smooth t _) (R.v_inv t) (R.v_smooth t)

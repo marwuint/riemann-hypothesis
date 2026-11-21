@@ -227,13 +227,6 @@ open Classical in
 
 def infiniteConst (w : InfinitePlace K) : ℂ := if w.IsReal then 1 else π
 
-omit [NumberField K] in
-theorem infiniteConst_ne_zero (w : InfinitePlace K) : infiniteConst w ≠ 0 := by
-  unfold infiniteConst
-  split_ifs
-  · exact one_ne_zero
-  · exact_mod_cast Real.pi_ne_zero
-
 theorem integral_infiniteTest (w : InfinitePlace K) {s : ℂ} (hs : 0 < s.re) :
     ∫ a : (w.Completion)ˣ, χ.infiniteTest w a * χ.infiniteComponent w a *
       ((‖(a : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ s ∂infinitePlaceUnitsMeasure w =

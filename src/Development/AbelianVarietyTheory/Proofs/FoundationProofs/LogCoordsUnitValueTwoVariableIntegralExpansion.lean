@@ -4,10 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBasisOnZetaPowMulQPow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsDlog
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDlogCoef
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRootsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRoots
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesAndDerivUniqueOfCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesCongIffCoeffAndIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesCongIffCoeffAndIsUnit
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvOfFintype
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsAlgZpOfPow
 open scoped MatrixGroups
@@ -299,7 +301,7 @@ theorem cong_val (hc : IsClo p Ω) {T : GlobalTheory.K5.Tower p Ω} {L : ℕ} {�
   obtain ⟨V, hV⟩ := (R2 _ _ _ h1).2.2.1
   rw [← hV] at h1
   rw [← hY] at hy
-  refine ((GlobalTheory.T.evalSeries_cong_iff_coeff_and_isUnit p Ω hc T L ψ hψ L _ _ _ (R1 Y V _ _ _ _ hy h1).2.1).1).2 fun r => ?_
+  refine ((_root_.GlobalTheory.Glue.ev_cong_iff_and_unit p Ω hc T L ψ hψ L _ _ _ (R1 Y V _ _ _ _ hy h1).2.1).1).2 fun r => ?_
   have e : (Y + V).coeff r = ∑ k ∈ S r, (((v k r - A * k) * θ k r : ℤ) : Ω) * T.ζ L ^ (g * k) := by
     rw [HahnSeries.coeff_add, hY, hV]
     simp only
@@ -361,7 +363,7 @@ theorem local_coords : ∀ (p : ℕ) [Fact p.Prime] (Ωl : Type) [Field Ωl] [Al
   have hw : ι w0 = x := by
     rw [hxe, hw0]
     simp only [map_sum, map_mul, map_pow, AlgHom.commutes, hι.1, hι.2, Int.cast_one, one_mul]
-  obtain ⟨w, hwu⟩ := isUnit_of_inv ι (GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hc T (m + 1) hL ι hι).1 w0 (hw ▸ hx0) (hw ▸ hxi)
+  obtain ⟨w, hwu⟩ := isUnit_of_inv ι (_root_.GlobalTheory.K5.LevEmb.emb_inj_range p Ω hc T (m + 1) hL ι hι).1 w0 (hw ▸ hx0) (hw ▸ hxi)
   obtain ⟨α, β, hd⟩ := GlobalTheory.K5.exists_isDlog p (m + 1) w
   obtain ⟨d1, d2⟩ := coef m a w α β (hwu.trans hw0) hd
   obtain ⟨f1, d1⟩ := Ideal.mem_span_singleton'.1 d1
@@ -375,7 +377,7 @@ theorem local_coords : ∀ (p : ℕ) [Fact p.Prime] (Ωl : Type) [Field Ωl] [Al
     IsIntegral.mul (IsIntegral.add (emb_int _ ι _) hc1) hxi, ?_⟩, ?_⟩
   · linear_combination x⁻¹ * k1 - x⁻¹ * d1 - (ι α + A₁ * z) * hinv
   · have hζ1 : T.ζ 1 - 1 ≠ 0 := sub_ne_zero.2 ((T.prim 1).ne_one (by simpa using hp.out.one_lt))
-    have hpd := GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T 1 1 le_rfl (Nat.totient_pos.2 (pow_pos hp.out.pos _))
+    have hpd := _root_.GlobalTheory.K5.PDiv.pdiv p Ω T 1 1 le_rfl (Nat.totient_pos.2 (pow_pos hp.out.pos _))
     rw [pow_one, div_eq_mul_inv] at hpd
     have hinv2 : (T.ζ 1 - 1) * (T.ζ 1 - 1)⁻¹ = 1 := mul_inv_cancel₀ hζ1
     have hpi : IsInt p (p : Ω) := by simpa using Basic.isInt_intCast (p := p) (Ω := Ω) (p : ℤ)

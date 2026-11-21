@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationExtendMvPolynomialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularFibreOfJacobianDerivationsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericJacobianDataIteratedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationExtendMvPolynomial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularFibreOfJacobianDerivations
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericJacobianDataIterated
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPolynomialTensorBaseChangeRingEquivStatement
 open IsLocalRing TensorProduct
 
@@ -41,9 +41,9 @@ theorem regularFibre_of_liftedPartialDerivations :
     rw [hQdef, RingHom.mem_ker, hC] at ha
     exact hΛ a ha
   choose Dσ hDσ using hlift
-  choose dσ hdσC hdσX using fun s : σ => GlobalTheory.T.exists_derivation_extend_mvPolynomial (MvPolynomial σ Λ) (↥(F : Set K))
+  choose dσ hdσC hdσX using fun s : σ => _root_.GlobalTheory.derivation_extend_mvPolynomial (MvPolynomial σ Λ) (↥(F : Set K))
     ((MvPolynomial.pderiv s : Derivation Λ (MvPolynomial σ Λ) (MvPolynomial σ Λ)).restrictScalars ℤ)
-  choose Eσ hEσC hEσX using fun s : σ => GlobalTheory.T.exists_derivation_extend_mvPolynomial B (↥(F : Set K)) (Dσ s)
+  choose Eσ hEσC hEσX using fun s : σ => _root_.GlobalTheory.derivation_extend_mvPolynomial B (↥(F : Set K)) (Dσ s)
   let d : (↥(F : Set K)) ⊕ σ → Derivation ℤ (MvPolynomial (↥(F : Set K)) (MvPolynomial σ Λ))
       (MvPolynomial (↥(F : Set K)) (MvPolynomial σ Λ)) :=
     Sum.elim (fun t => (MvPolynomial.pderiv t).restrictScalars ℤ) dσ
@@ -66,9 +66,9 @@ theorem regularFibre_of_liftedPartialDerivations :
         rw [map_mul, Derivation.leibniz, Derivation.leibniz, MvPolynomial.map_X, hEσX, hdσX, ih]
         simp [smul_eq_mul]
   obtain ⟨h, f, s, g, hg, hfQ, hQspan, hdet⟩ :=
-    GlobalTheory.T.exists_generic_jacobian_data_iterated_alt Λ σ (↥(F : Set K)) Q hΛQ d (fun t x => rfl) (fun s x => hdσC s x) (fun s t => hdσX s t)
+    _root_.GlobalTheory.exists_generic_jacobian_data_iterated Λ σ (↥(F : Set K)) Q hΛQ d (fun t x => rfl) (fun s x => hdσC s x) (fun s t => hdσX s t)
   have hreg : IsRegularRing (MvPolynomial (↥(F : Set K)) B ⊗[MvPolynomial (↥(F : Set K)) (MvPolynomial σ Λ)] K) :=
-    GlobalTheory.T.isRegular_fibre_of_jacobian_derivations _ _ K Q rfl hfrac h f g (fun i => d (s i)) (fun i => D (s i))
+    _root_.GlobalTheory.regular_fibre_of_jacobian _ _ K Q rfl hfrac h f g (fun i => d (s i)) (fun i => D (s i))
       (fun i x => hcompat (s i) x) hg hfQ hQspan hdet
   obtain ⟨e⟩ := GlobalTheory.T.mvPolynomial_tensor_baseChange_ringEquiv' (MvPolynomial σ Λ) B K (↥(F : Set K))
   exact IsRegularRing.of_ringEquiv e

@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ProductFormIsSecti
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CuspAndSupCLeOfBounded
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsSmallCoeffRuleNeZero
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.EqZeroOfMulEqZeroOfReadingNeZero
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.NonemptyComponentComplexUniformisationStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.NonemptyComponentComplexUniformisation
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.PjFree GlobalTheory.EtaForm GlobalTheory.EtaAn GlobalTheory.ArcQ
@@ -55,7 +55,7 @@ theorem exists_etaRule_cusp_ne_zero_bounds : ∀ (E : Type) [Field E] [NumberFie
       linarith))) (Real.exp_pos _).le
   refine ⟨i, _, inferInstance, cf, _, f, hi, hG, hsp, hf, hcusp.1, ?_, hnz, ?_, harch, hcusp.2⟩
   · rintro rfl
-    obtain ⟨k⟩ := GlobalTheory.T.nonempty_component_complexUniformisation E H Dw l Xo c σ₀ r (U σ₀) hσ₀ (hU σ₀ hσ₀) (by omega)
+    obtain ⟨k⟩ := _root_.GlobalTheory.nonempty_comp_of_isUnf E H Dw l Xo c σ₀ r (U σ₀) hσ₀ (hU σ₀ hσ₀) (by omega)
     obtain ⟨x, -, hx⟩ := hnz k
     apply hx
     rw [map_zero]

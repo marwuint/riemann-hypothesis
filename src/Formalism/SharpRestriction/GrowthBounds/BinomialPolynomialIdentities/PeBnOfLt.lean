@@ -15,8 +15,6 @@ theorem iv_inj (N n : ℕ) : Function.Injective (iv N n) := by
 
 theorem pe_Bn_of_lt {N : ℕ} (B : Fin N → ℕ) {i : ℕ} (h : i < N) : Bn B i = B ⟨i, h⟩ := by simp [Bn, h]
 
-theorem Bn_of_ge {N : ℕ} (B : Fin N → ℕ) {i : ℕ} (h : ¬ i < N) : Bn B i = 0 := by simp [Bn, h]
-
 theorem expSet_eq (n N : ℕ) (B : Fin N → ℕ) :
     (fun m : Fin N × Fin n →₀ ℕ => m.mapDomain (iv N n)) '' {m | ∀ i, multideg m i = B i} =
       {e : ℕ × Fin n →₀ ℕ | ∀ i, ∑ a, e (i, a) = if i < N then Bn B i else 0} := by

@@ -106,15 +106,6 @@ theorem not_good_conj {σ : D.what₂.LL →+* ℂ} (h : GoodEmb T.Q.c (res T σ
   simp only [sq, Complex.mul_re, Complex.neg_re, Complex.natCast_re, him] at hre
   nlinarith [mul_self_nonneg T.Q.H.rt0.re]
 
-theorem premises_met (hl : LawsJ T) (i : Fin D.R.m) : ∃ σ : D.what₂.LL →+* ℂ, ¬ GoodEmb T.Q.c (res T σ) ∧
-    T.V ((i : ℕ) + 1) (resC T σ) = Wc D i := by
-  have key : ∃ σ : D.what₂.LL →+* ℂ, ¬ GoodEmb T.Q.c (res T σ) := by
-    by_cases h : GoodEmb T.Q.c (res T D.what₂.embLL)
-    · exact ⟨_, not_good_conj T h⟩
-    · exact ⟨_, h⟩
-  obtain ⟨σ, hσ⟩ := key
-  exact ⟨σ, hσ, hl.spaceW _ (inR i) _ (good_resC T hσ)⟩
-
 theorem branch (ha : AlgTie T) (hp : T.Q.PinField) (hr : ∀ τ, tauE D τ (T.Q.H.rt : D.host.E) = T.Q.H.rt0)
     (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) : GoodEmb T.Q.c (res T σ) ↔ labE σ (lab σ ρ) = tauE D ρ := by
   have e0 := res_embLL T ha hp
@@ -135,16 +126,6 @@ theorem branch (ha : AlgTie T) (hp : T.Q.PinField) (hr : ∀ τ, tauE D τ (T.Q.
 theorem branch_of_pins (ha : AlgTie T) (hp : T.Q.Pins) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) :
     GoodEmb T.Q.c (res T σ) ↔ labE σ (lab σ ρ) = tauE D ρ :=
   branch T ha hp.2.2.1 (fun τ => hp.1.2.2.2 τ) σ ρ
-
-def ConjModel (D : D7) : Prop :=
-  ∀ {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S), ∃ (M' : DSModel V (fun τ => dualPar (S τ)))
-    (c : ∀ τ, M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ), ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, c τ (M'.rep τ g w) = M.rep τ g (c τ w)
-
-def ConjMult (D : D7) : Prop :=
-  ∀ {V : HSp D} {S S' : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (M' : DSModel V S')
-    (c : ∀ τ, M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ), (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, c τ (M'.rep τ g w) = M.rep τ g (c τ w)) →
-    (∀ τ (w : M'.H τ), w ∈ M'.sm τ ↔ c τ w ∈ M.sm τ) ∧ ∀ J χ, ∀ T ∈ Mult θ M J χ, ∃ T' ∈ Mult θ M' J (fun k => star (χ k)),
-      ∀ (v' : M'.Vec) (v : M.Vec), (∀ τ, (v τ : M.H τ) = c τ (v' τ)) → ∀ g, T' v' g = star (T v g)
 
 end Row
 

@@ -5,7 +5,13 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetHypOfIsTripleOfGalHodge
+import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGlIntertwinerOfResidualSpanEqTop
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.UnramifiedNoJump
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsAuxiliaryHeckeCharacter
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankOneCuspidalUnitaryCharEquivApplySymm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLamTie0OfIsLamTie
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumThEmptyNeZero
 
 noncomputable section
 
@@ -53,18 +59,18 @@ theorem exists_setup_ch (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.
   obtain ⟨κA, hκ1, hκ2, hκ3⟩ := GlobalTheory.CharTransport.exists_hom D
   let rc : Recip D D.nd.Om := ⟨κA, art⟩
   have hrc : rc.Good := ⟨hκ1, hκ2, hκ3, hart⟩
-  obtain ⟨e, ek, he1, he2, he3⟩ := GlobalTheory.T.exists_ladicCoefficientField_embeddings_complex D D.nd D.ntw (fun i b => (ι i b).toRingHom.comp (κ i b)) hκι hcard
-  choose F hF hFstd hFψ hFθ hFsT hFBS hFBT hFΛS hFΛT hFβS hFβT hFf hFlS hFlT using GlobalTheory.T.exists_good_frame_realisation D Γ Pl0 I0 T A3 Ks Rl F3 hC
+  obtain ⟨e, ek, he1, he2, he3⟩ := _root_.GlobalTheory.EmbExt.exists_side_embeddings D D.nd D.ntw (fun i b => (ι i b).toRingHom.comp (κ i b)) hκι hcard
+  choose F hF hFstd hFψ hFθ hFsT hFBS hFBT hFΛS hFΛT hFβS hFβT hFf hFlS hFlT using _root_.GlobalTheory.FrameOfReal.exists_frame_real D Γ Pl0 I0 T A3 Ks Rl F3 hC
   let f : ∀ i, Bool → (D.ntw.O0 i →+* ℂ) := fun i b =>
     ((e i b).comp (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)))).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))
   have hfi : ∀ i b, Function.Injective (f i b) := fun i b =>
     ((e i b).injective.comp (IsFractionRing.injective (D.ntw.O i) (FractionRing (D.ntw.O i)))).comp (D.ntw.O_inj i)
   let de : D.ntw.Tw → Bool → Twist D Circle := fun i b =>
     twistOf rc (f i b) (ch i) (D.ntw.pD i) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i))
-  have hde : ∀ i b, (de i b).Good := fun i b => GlobalTheory.T.artin_twisting_character_delta_good D rc hrc i (ch i) (hch1 i) (f i b) (hfi i b) b
+  have hde : ∀ i b, (de i b).Good := fun i b => _root_.GlobalTheory.DeltaGood.twistOf_delta_good D rc hrc i (ch i) (hch1 i) (f i b) (hfi i b) b
   have hpl : ∀ i b, PlacesOK Rl.Pg (de i b).Q := fun i _ =>
     GlobalTheory.T.typePlaces_twistPlaces_goodPosition D Γ Pl0 I0 T A3 Ks Rl A3.A.μ0 hC.lev hspl hq i (ch i) (hch1 i)
-  have hB := fun i j b => GlobalTheory.T.liftBaseData_isGood_twist D Γ Pl0 I0 T A3 Ks Rl F3 hC j (F j) (hF j) (de i b) (hde i b) (hpl i b)
+  have hB := fun i j b => _root_.GlobalTheory.SeriesTie.BaseGood.base_good D Γ Pl0 I0 T A3 Ks Rl F3 hC j (F j) (hF j) (de i b) (hde i b) (hpl i b)
   choose w mu hwp hwm hBg using hB
   let P : D.ntw.Tw → ∀ j : Fin D.R.m, Bool → LevelP Rl.Pg (Wc D j).rank ℂ := fun i j b =>
     ⟨(levOf (eGc Rl cG j) D.nexp.U ((Units.map (e i b).toMonoidHom).comp (D.nexp.psiU i b))).1,
@@ -115,7 +121,7 @@ theorem exists_setup_ch (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.
         base := hBG
         latS := fun _ j _ => hFlS j
         latT := fun _ j _ => hFlT j
-        Pg := fun _ _ _ P hP => GlobalTheory.T.typePlaces_mem_placesOver_generators D Γ Pl0 I0 T A3 Ks Rl F3 hC P hP
+        Pg := fun _ _ _ P hP => _root_.GlobalTheory.TypePlacesOver.mem_placesOver D Γ Pl0 I0 T A3 Ks Rl F3 hC P hP
         delta := fun _ _ _ => rfl
         weil := fun i j b t ht => hom i j b t.chi t ht rfl
         classes := fun i j b t _ _ => hrep i j b t }
@@ -135,7 +141,7 @@ theorem exists_setup_ch (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.
         mu0 := fun _ _ _ => rfl
         eta := fun _ _ _ => rfl
         delta := fun i j b => by
-          exact GlobalTheory.T.twistingCharacter_ladicGaloisCharacter_eq_hecke D rc i (κ i b) (ι i b) (Rl.C.delAt (D.ntw.l i)) (D.ntw.delta i) b hrc (D.ntw.delta_open i) (hG i b)
+          exact _root_.GlobalTheory.SeriesTie.charOf_psiAt_chrEq D rc i (κ i b) (ι i b) (Rl.C.delAt (D.ntw.l i)) (D.ntw.delta i) b hrc (D.ntw.delta_open i) (hG i b)
             (f i b) (fun y hy => he3 i b y hy) (ch i) (D.ntw.pD i)
         deltaPl := fun i t P hP hPD => hch2 i ⟨t, hP, hPD⟩
         ap := fun i j b τ => hwp i j b τ
@@ -149,20 +155,7 @@ end GlobalTheory.SeriesTie.ComplexCh
 
 end
 
-noncomputable section
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links
-  Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.TwInputs GlobalTheory.SeriesTie NumberField IsDedekindDomain Polynomial
-open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0)
-open scoped TensorProduct
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-set_option synthInstance.maxHeartbeats 400000
-set_option maxHeartbeats 800000
-
 namespace GlobalTheory.TwInputs.SetupPinCh
 
 end GlobalTheory.TwInputs.SetupPinCh
 
-end

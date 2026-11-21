@@ -11,36 +11,61 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
 import Development.AbelianVarietyTheory.Definitions.Divisors.SlopeTestRemainingChoicesAlt
 import Development.AbelianVarietyTheory.Definitions.Divisors.RowSideOfCompatibleThetaPair
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualL3OfCovolumeTied
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualFunctionGridLarge
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualL6OfLowerBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualOntoOfMorePointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualSmallOfPartsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndefiniteScaleThetaNonvanishingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualRowsOfClassSumsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamilyHypothesesOfWorkingClassSevenDuties
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConstructedPointClassesEventuallyWorking
+import Development.AbelianVarietyTheory.Definitions.Divisors.TupleReadBaseTupleEqFamily
+import Development.AbelianVarietyTheory.Definitions.Divisors.TwistedPlaceChoiceLiesOverPair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventualL6OfLowerBound
+import Development.AbelianVarietyTheory.Definitions.Divisors.BaseRankDimension
+import Formalism.LocalToGlobal.IndefiniteReal.RealTB
+import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
+import Formalism.LocalToGlobal.Divisibility.NumericScaleExponentEqExtended
+import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PassIn3OfRows
+import Formalism.LocalToGlobal.IndefiniteReal.RealPins
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfSEEofTT
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourFRLeMinGOfSizeG
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRowPlacementFiniteElementMatchesLevels
+import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConvention
+import Formalism.LocalToGlobal.IndefiniteReal.EvalTieTOne
+import Formalism.LocalToGlobal.IndefiniteReal.RationalEmbedding
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowLevelMatch
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StarCoeffOfEqReverse
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StarCoeffEisensteinSeriesReversePoly
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoeffZeroNeOfMonicIrr
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinersAndLiftsExistAtChoices
+import Formalism.LocalToGlobal.IndefiniteReal.LinksW
+import Formalism.LocalToGlobal.IndefiniteReal.LinksLemmas
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvInjOfIsModelsOfTie
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JEvExistsAndJEvBar
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GeoAct
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SelfDualFramesNormalAtLevelPlacesOfCharFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneFormMapRowThreeLevelOfCharacterisation
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
+import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
+import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
+import Formalism.LocalToGlobal.IndefiniteReal.FWExist
+import Formalism.LocalRingCardinality.DataExtra
+import Formalism.LocalRingCardinality.DataTies
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaIoExtensionOfWeakCharacterisationFrames
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationEveryEmbeddingThirdKind
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteVolumeAdelicUnitaryQuotient
+import Formalism.LocalToGlobal.IndefiniteReal.RealRec
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftRowFiresOfWeakCharacterisation
+import Formalism.LocalRingCardinality.NFLeTwoMulTSq
+import Formalism.LocalRingCardinality.DataNChTie
+import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NMjT
+import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionFirst
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionSecond
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionThird
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowSideCardEqOfCoord
 import Formalism.LocalToGlobal.Divisibility.TupUsed
 import Formalism.SharpRestriction.GlobalSchurBounds.MainSup
+
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem.Top GlobalTheory.Fc
 
 namespace GlobalTheory.Fc.FourBoundsAtBundles
-
-theorem tupAllUsed_part {D : D7} {O : Obj D} {c : ℝ} (b : Ind.Part D O c) : Formalism.L2.DIV.TupAllUsed b.P := by
-  intro t
-  rcases b.pt.charW.tup.mu_used t with h | ⟨w, hw⟩
-  · left
-    subst h
-    exact b.P.tied.div.tup.mu0
-  · right
-    refine ⟨D.plEq.symm w, ?_⟩
-    have e1 := b.pt.tupAt (D.plEq.symm w)
-    rw [Equiv.apply_symm_apply] at e1
-    have e2 := b.pt.tupTie (D.what₂.muAt (D.plEq.symm w)) (Or.inr ⟨_, rfl⟩)
-    rw [e1, hw] at e2
-    exact e2
-
-theorem pDiv_of {D : D7} {O : Obj D} {c : ℝ} (b : Ind.Part D O c) (h : GlobalTheory.Cp.DivRows3G b.P) : Ind.PDiv D O c b :=
-  Formalism.L2.DIV.DivRows3G.toRows (tupAllUsed_part b)
-    ⟨h.sharpRR, h.baseRR, h.divisionRows_rationalLift, h.thTheta, ⟨h.num.Ij, h.num.jw, h.num.etaJ⟩, h.colsBk⟩
 
 end GlobalTheory.Fc.FourBoundsAtBundles
 

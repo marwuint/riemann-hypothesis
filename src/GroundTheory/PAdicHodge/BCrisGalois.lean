@@ -107,13 +107,6 @@ theorem galBAction_smul (σ : Gal(PadicAlgCl p/K)) (x : BCris hε) :
     (galBAction hε).smul σ x = galB hε σ x :=
   rfl
 
-theorem galB_one : galB hε (1 : Gal(PadicAlgCl p/K)) = RingHom.id (BCris hε) :=
-  awaySMulHom_one _
-
-theorem galB_mul (σ τ : Gal(PadicAlgCl p/K)) :
-    galB hε (σ * τ) = (galB hε σ).comp (galB hε τ) :=
-  awaySMulHom_mul _ σ τ
-
 theorem galB_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : BCrisPlus ℂ_[p] p) :
     galB hε σ (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) x) =
       algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (σ • x) :=

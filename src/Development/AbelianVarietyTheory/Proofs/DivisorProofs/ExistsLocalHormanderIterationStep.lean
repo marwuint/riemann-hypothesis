@@ -1,12 +1,16 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HormanderEstimateOnBallConstLeviBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqNormSmoothSectionSubGluedLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HormanderEstimateOnBallConstLeviBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqNormSmoothSectionSubGluedLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEnergyGluedSectionLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSSecGlueSectionByPartitionOfHoloStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSSecGlueSectionByPartitionOfHolo
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
@@ -26,7 +30,7 @@ theorem hormander_step : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space 
     intro a
     have hsub : ball (C.c a) (C.r a) ⊆ (A.chart (C.idx a)).target :=
       ball_subset_closedBall.trans (C.sub a)
-    refine GlobalTheory.T.hormander_estimate_on_ball_const_levi_bound n (C.c a) (C.r a) t (fun w => A.ph la (C.idx a) ((A.chart (C.idx a)).symm w))
+    refine _root_.GlobalTheory.HormanderBall.hormander_ball n (C.c a) (C.r a) t (fun w => A.ph la (C.idx a) ((A.chart (C.idx a)).symm w))
       (F0 (C.idx a) ∘ (A.chart (C.idx a)).symm) ht ((A.smooth_ph la (C.idx a)).mono hsub)
       ((hF0.1 (C.idx a)).mono hsub) ?_
     intro v hv ξ
@@ -39,10 +43,10 @@ theorem hormander_step : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space 
   have hK : ENNReal.ofReal (max (C.m : ℝ) K' / t) =
       ENNReal.ofReal (max (C.m : ℝ) K') * ENNReal.ofReal t⁻¹ := by
     rw [div_eq_mul_inv, ENNReal.ofReal_mul (le_max_of_le_right hK'0)]
-  refine ⟨glue C la u, GlobalTheory.T.isSSec_glueSectionByPartition_of_holo n Y ι La A C la u hu, ?_, ?_⟩
+  refine ⟨glue C la u, _root_.GlobalTheory.OTY.glue_isSSec_of_holo n Y ι La A C la u hu, ?_, ?_⟩
   · have hm : (C.m : ℝ≥0∞) ≤ ENNReal.ofReal (max (C.m : ℝ) K') := by
       rw [← ENNReal.ofReal_natCast]; exact ENNReal.ofReal_le_ofReal (le_max_left _ _)
-    calc n0 A la (F0 - glue C la u) ≤ _ := GlobalTheory.T.n0_sub_glue_le_card_mul_sum_lintegral n Y ι La A C la F0 u hF0 hu
+    calc n0 A la (F0 - glue C la u) ≤ _ := _root_.GlobalTheory.GlueDist.sq_norm_smoothSection_sub_glued_le n Y ι La A C la F0 u hF0 hu
       _ ≤ (C.m : ℝ≥0∞) * (ENNReal.ofReal t⁻¹ * n1 C la F0) := by gcongr; exact hsum
       _ ≤ ENNReal.ofReal (max (C.m : ℝ) K') * (ENNReal.ofReal t⁻¹ * n1 C la F0) := by gcongr
       _ = _ := by rw [hK, mul_assoc]

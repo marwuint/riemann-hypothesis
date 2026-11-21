@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ExistsUnitarySupportedAtPlaceOfMulEqIdem
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapsPreserveSchwartzBruhatAndSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergFrameHalfInverseStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapsPreserveSchwartzBruhatAndSurjective
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ContrFactor
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.AllPositions
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergFrameHalfInverse
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCharacterSplitPlaceExistsContinuousNontrivia
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousCharactersLocallyConstantNonarchLocalF
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory Matrix ValuativeRel GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.LocMod GlobalTheory.StepData
@@ -307,7 +309,7 @@ theorem factor_isModel : ∀ (D : D7), GlobalTheory.FinPl.FlatLaws D → OmLoc D
   let l : Fin c := ⟨σ, by omega⟩
   have hon : ∀ Ψ : SB (Matrix (n ⊕ Unit) n' k), ∃ Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k),
       Ψ.1 = flRow ψk ν (σ + 1) Φ.1 := fun Ψ => by
-    obtain ⟨Φ, hΦ, h⟩ := ((GlobalTheory.T.flatMaps_preserve_schwartzBruhat_and_surjective k ψk ν hcont hν n n' c (σ + 1) (by omega)).2 (by omega)).2 Ψ.1 Ψ.2
+    obtain ⟨Φ, hΦ, h⟩ := ((_root_.GlobalTheory.LocFlat.flat_SB_onto k ψk ν hcont hν n n' c (σ + 1) (by omega)).2 (by omega)).2 Ψ.1 Ψ.2
     exact ⟨⟨Φ, hΦ⟩, h.symm⟩
   refine ⟨fun Ψ => ?_, fun x₀ Ψ Ψ' hΨ' => ?_, fun y hy Ψ Ψ' hΨ' => ?_⟩
   · obtain ⟨Φ, h⟩ := hon Ψ
@@ -324,7 +326,7 @@ theorem factor_isModel : ∀ (D : D7), GlobalTheory.FinPl.FlatLaws D → OmLoc D
     have hY : IsHalf (cA D p.e) (J.d.ext0 B.V (B.d.inc0 J.W₀ y)) := isHalf_mul B.d.j0 hy J.d.p0
     have hlc : IsLocallyConstant fun t : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k =>
         ψ (symplO J.W B.V (p.up FW FV t) (J.d.ext0 B.V (B.d.inc0 J.W₀ y))) := by
-      simp only [fun t => (GlobalTheory.T.heisenberg_frame_half_inverse D k p _ _ J.W B.V FW FV ψ ψk hχ).2.2.2.1 t _ hY]
+      simp only [fun t => (_root_.GlobalTheory.LocSympl.halves_at_split D k p _ _ J.W B.V FW FV ψ ψk hχ).2.2.2.1 t _ hY]
       exact (GlobalTheory.RootEx.OpenKernel.isLocallyConstant_coe_addChar ψk hcont).comp_continuous
         (continuous_hO_up p FW FV _)
     let Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) :=

@@ -96,16 +96,6 @@ def expT (w : D.what₂.places.Pl) : ℤ :=
 def Nlam (w : D.what₂.places.Pl) : Submodule (Ow D w) (Vl D u 0) :=
   imgL D u w ((((D.mem u).A.T : ℂ) ^ expT D u w) • (Uprod D u 0 w) ^ D.R.m) (Sram D u w)
 
-def URat (i : ℕ) (v : (D.mem u).A.vT) : Prop :=
-  ∀ x, ∃ y, (D.fm u).emb i y = Uop D u i v ((D.fm u).emb i x)
-
-def UL (i : ℕ) (v : (D.mem u).A.vT) (h : URat D u i v) : Vl D u i →ₗ[D.what₂.LL] Vl D u i :=
-  descend ((D.fm u).emb i) ((D.fm u).emb i) ((D.fm u).emb_inj i) (Uop D u i v) h
-
-theorem UL_spec (i : ℕ) (v : (D.mem u).A.vT) (h : URat D u i v) (x : Vl D u i) :
-    (D.fm u).emb i (UL D u i v h x) = Uop D u i v ((D.fm u).emb i x) :=
-  descend_spec ((D.fm u).emb i) ((D.fm u).emb i) ((D.fm u).emb_inj i) (Uop D u i v) h x
-
 end LT
 
 def NuAtTDef (D : D7) (L : SizeData₂ D) : Prop :=

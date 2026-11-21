@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.Divisibility.HeckeCSDICommTrRep
 import Development.AbelianVarietyTheory.Definitions.Divisors.FactorBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitMassFormulaFiniteIndexSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowLevelPrincipalFirstBlockIndexEqCardStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowLevelPrincipalFirstBlockIndexEqCard
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFormsOfToH
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsClassSumPairingOfIsFormsOf
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Matrix
@@ -12,7 +12,7 @@ namespace GlobalTheory
 
 theorem change_of_level_classSum : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (W : Formalism.L2.Col.Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (P : LevFam X.E X.K R.r Pr.vGs) (hX : X.Ok) (v : InfinitePlace X.K) (F' : (mtildeKGSD W Ch sel mu).EqFun), F'.1 ∈ (mtildeGSD W Ch sel mu P).EqFun → (mtildeKGSD W Ch sel mu).ipAt (mtildeKOk W Ch sel mu hX) v F'.1 F'.1 = (Nat.card P.grp : ℂ) * (mtildeGSD W Ch sel mu P).ipAt (mtildeOk W Ch sel mu hX P) v F'.1 F'.1 := by
   intro X Pr R W Ch sel S mu P hX v F' hF
-  obtain ⟨ι, hinj, hact, hidx⟩ := GlobalTheory.T.rowLevel_principal_firstBlock_index_eq_card W Ch sel mu P
+  obtain ⟨ι, hinj, hact, hidx⟩ := _root_.GlobalTheory.RowLevIndex.index_eq W Ch sel mu P
   have hK := mtildeKOk W Ch sel mu hX
   have hP := mtildeOk W Ch sel mu hX P
   have hf : ∀ (g : (mtildeGSD W Ch sel mu P).G) (d : (mtildeGSD W Ch sel mu P).D),

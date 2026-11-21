@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ReflectionFixesNormal
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ModVec
 
 noncomputable section
 
@@ -116,10 +116,6 @@ theorem h_W_span' (H : D.Hyp) {w : n → A} (hw : IsWp D w) {x : n → A}
 theorem xp_add {v w : n → A} (hv : Xp D v) (hw : Xp D w) : Xp D (v + w) := by
   intro a
   rw [hRadd_lemma_2, hv a, hw a, add_zero]
-
-theorem xp_sub {v w : n → A} (hv : Xp D v) (hw : Xp D w) : Xp D (v - w) := by
-  intro a
-  rw [hRsub_lemma_3, hv a, hw a, sub_zero]
 
 theorem xp_sub_pXv (H : D.Hyp) (v : n → A) : Xp D (v - D.pXv v) := by
   intro a

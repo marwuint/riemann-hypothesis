@@ -80,22 +80,9 @@ theorem TorusCompat.trans {f' : S'' ⟶ S'} {f : S' ⟶ S} {F' : G''.left ⟶ G'
   rw [torusCompat_iff] at h' h ⊢
   rw [bcMap_comp, Category.assoc, h, ← Category.assoc, h', Category.assoc]
 
-theorem torusCompat_id_iff {i' i : splitTorus S X ⟶ G} :
-    TorusCompat (𝟙 S) (𝟙 G.left) i' i ↔ i' = i := by
-  rw [torusCompat_iff, bcMap_id, Category.id_comp, Category.comp_id]
-  constructor
-  · intro h
-    exact Over.OverMorphism.ext h.symm
-  · rintro rfl
-    rfl
-
 theorem TorusCompat.of_comp {H : Over S} (i : splitTorus S X ⟶ G) (φ : G ⟶ H) :
     TorusCompat (𝟙 S) φ.left i (i ≫ φ) := by
   rw [torusCompat_iff, bcMap_id, Category.id_comp, Over.comp_left]
-
-theorem torusCompat_bcMap (f : S' ⟶ S) :
-    TorusCompat f (bcMap f X) (𝟙 (splitTorus S' X)) (𝟙 (splitTorus S X)) := by
-  rw [torusCompat_iff, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]
 
 theorem existsUnique_torusCompat {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (hF : IsPullback F G'.hom G.hom f) (i : splitTorus S X ⟶ G) :
@@ -113,23 +100,6 @@ theorem existsUnique_torusCompat {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     · rw [← hj]
       simp
     · simp
-
-theorem TorusCompat.unique {f : S' ⟶ S} {F : G'.left ⟶ G.left}
-    (hF : IsPullback F G'.hom G.hom f) {i : splitTorus S X ⟶ G} {i₁ i₂ : splitTorus S' X ⟶ G'}
-    (h₁ : TorusCompat f F i₁ i) (h₂ : TorusCompat f F i₂ i) : i₁ = i₂ :=
-  (existsUnique_torusCompat hF i).unique h₁ h₂
-
-theorem TorusCompat.of_comp_right {f' : S'' ⟶ S'} {f : S' ⟶ S} {F' : G''.left ⟶ G'.left}
-    {F : G'.left ⟶ G.left} (hF : IsPullback F G'.hom G.hom f) (hF' : F' ≫ G'.hom = G''.hom ≫ f')
-    {i'' : splitTorus S'' X ⟶ G''} {i' : splitTorus S' X ⟶ G'} {i : splitTorus S X ⟶ G}
-    (h'' : TorusCompat (f' ≫ f) (F' ≫ F) i'' i) (h : TorusCompat f F i' i) :
-    TorusCompat f' F' i'' i' := by
-  rw [torusCompat_iff] at h'' h ⊢
-  rw [bcMap_comp] at h''
-  apply hF.hom_ext
-  · simp only [Category.assoc] at h'' ⊢
-    rw [← h, h'']
-  · simp [hF', bcMap_hom]
 
 private theorem torusCompat_mul_comp [GrpObj G'] [GrpObj G] {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (hF : IsGrpPullback G' G f F) {i' : splitTorus S' X ⟶ G'} {i : splitTorus S X ⟶ G} [IsMonHom i]
@@ -190,28 +160,6 @@ theorem surjective_red {A : Type} [CommRing A] {J : Ideal A} (hJ : IsNilpotent J
     exact x.isPrime.mem_of_pow_mem n (by rw [hpow]; exact zero_mem _)
   obtain ⟨y, hy⟩ := hx
   exact ⟨y, hy⟩
-
-example : TorusCompat (red (Ideal.span {(2 : ZMod 4)}))
-    (SplitTorus.bcMap (red (Ideal.span {(2 : ZMod 4)})) ℤ) (𝟙 (splitTorus _ ℤ)) (𝟙 (splitTorus _ ℤ)) :=
-  torusCompat_bcMap _
-
-example (S : Scheme.{0}) (G : Over S) (i : splitTorus S ℤ ⟶ G) : TorusCompat (𝟙 S) (𝟙 _) i i :=
-  TorusCompat.refl i
-
-example : ¬ TorusCompat (𝟙 (Spec (CommRingCat.of ℚ))) (𝟙 _)
-    (1 : splitTorus _ ℤ ⟶ splitTorus _ ℤ) (𝟙 (splitTorus _ ℤ)) := by
-  rw [torusCompat_id_iff]
-  intro h
-  let S := Spec (CommRingCat.of ℚ)
-  have hall : ∀ t : Over.mk (𝟙 S) ⟶ splitTorus S ℤ, t = 1 := fun t => by
-    rw [← Category.comp_id t, ← h, MonObj.comp_one]
-  let u : Γ(S, ⊤)ˣ := -1
-  have h1 := SplitTorus.val_ofVal (T := Over.mk (𝟙 S)) (zmultiplesHom _ (Additive.ofMul u)) 1
-  rw [hall (SplitTorus.ofVal _), SplitTorus.val_one] at h1
-  have h2 : u = 1 := Units.ext (by simpa using h1.symm)
-  have h3 := congrArg (fun v : Γ(S, ⊤)ˣ => (Scheme.ΓSpecIso (CommRingCat.of ℚ)).hom.hom v.val) h2
-  simp only [u, Units.val_neg, Units.val_one, map_neg, map_one] at h3
-  norm_num at h3
 
 end GlobalTheory.UU
 end

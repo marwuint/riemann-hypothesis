@@ -65,11 +65,6 @@ theorem finite_cohomology_galois_top (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDi
     (Rep.res ((⊤ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).subtype M) hM r
   Finite.of_injective _ (bijective_cohomologyRes_top M r).1
 
-theorem hasFiniteCohomology_galois (U : OpenSubgroup Gal(Ksep/K)) :
-    HasFiniteCohomology (ULift.{0} ℤ) (U : Subgroup Gal(Ksep/K)) (fun m => (m : K) ≠ 0) :=
-  fun A _ _ hA => ⟨finite_cohomology_galois K Ksep hA U A (fun _ => card_nsmul_eq_zero'),
-    fun q hq => subsingleton_cohomology_galois K Ksep hA U A (fun _ => card_nsmul_eq_zero') q hq⟩
-
 theorem hasFiniteCohomology_galois_top :
     HasFiniteCohomology (ULift.{0} ℤ) Gal(Ksep/K) (fun m => (m : K) ≠ 0) :=
   fun A _ _ hA => ⟨finite_cohomology_galois_top K Ksep hA A (fun _ => card_nsmul_eq_zero'),

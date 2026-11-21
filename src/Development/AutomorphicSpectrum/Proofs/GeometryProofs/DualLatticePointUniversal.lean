@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerRingInjective
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
 
 noncomputable section
 
@@ -403,7 +404,7 @@ theorem tangent_universal (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj
       (∀ e : L, hom x (Module.Dual.eval R L e) ≫ u = M.pt e) ∧
       ∀ (V : Type) [AddCommGroup V] [Module R V] [Module Rᵐᵒᵖ V] [IsCentralScalar R V] (v : ob x V ⟶ G),
         zsec x ≫ v = 1 → ∃! φ : Module.Dual R L →ₗ[R] V, hom x φ ≫ u = v := by
-  obtain ⟨hfin, hproj, hbc⟩ := GlobalTheory.T.lie_model_finite_base_change S G R x L M
+  obtain ⟨hfin, hproj, hbc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange S G R x L M
   obtain ⟨n, f, g, -, -, hfg⟩ := Module.Finite.exists_comp_eq_id_of_projective R L
   let e : Fin n → L := fun k => f (Pi.single k 1)
   let w : Fin n → Module.Dual R L := fun k => LinearMap.proj k ∘ₗ g
@@ -421,7 +422,7 @@ theorem tangent_universal (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj
   refine ⟨univ M e w, zsec_univ M e w, eval_univ M he, ?_⟩
   intro V _ _ _ _ v hv
   obtain ⟨L', _, _, ⟨M'⟩⟩ := lieModel_exists S G (TrivSqZeroExt R V) (xB x V)
-  obtain ⟨j, hj1, hj2, -⟩ := GlobalTheory.T.lie_model_base_change_map S G R (TrivSqZeroExt R V) x L L' M M'
+  obtain ⟨j, hj1, hj2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange S G R (TrivSqZeroExt R V) x L L' M M'
   letI : Module R L' := Module.compHom L' (algebraMap R (TrivSqZeroExt R V))
   haveI : IsScalarTower R (TrivSqZeroExt R V) L' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl
   let β : L →ₗ[R] L' := { toFun := j, map_add' := j.map_add, map_smul' := hj2 }

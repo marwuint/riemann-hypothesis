@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Se
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SegmentTermInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityCuspidalProductStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicitySubquotientLe
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleSubquotientCuspidalPermutationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleSubquotientCuspidalPermutation
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleFiniteLength
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPos
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InSupportOfIsSubquotient
@@ -261,7 +261,7 @@ theorem fine_jacquet_length_two_segment (hA : GlobalTheory.Published.Irreducible
   have hmono : ∀ {c : ℕ} (y : Fin c → IrrGL k) (hy : ∑ a, (y a).1 = N), jm y hy π ≤ jm y hy (prodIrr (seg2 ρ hρ).term hd) :=
     fun y hy => GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient y hy π _ hsm hsq
   have hdec : ∃ hy : ∑ a, (dec (seg2 ρ hρ) a).1 = N, 1 ≤ jm (dec (seg2 ρ hρ)) hy π := by
-    obtain ⟨e, he, h1⟩ := GlobalTheory.T.irreducible_subquotient_cuspidal_permutation hA (seg2 ρ hρ).term hd (seg2 ρ hρ).isCusp_term π hπs hc.1 hsq
+    obtain ⟨e, he, h1⟩ := _root_.GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm hA (seg2 ρ hρ).term hd (seg2 ρ hρ).isCusp_term π hπs hc.1 hsq
     rcases perm_two e with rfl | rfl
     · have h2 : 1 ≤ jm (seg2 ρ hρ).term hd π := h1
       rw [hz] at h2

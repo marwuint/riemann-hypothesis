@@ -7,88 +7,6 @@ namespace UnitaryThetaMoves
 
 variable {C : Type*} [NormedField C] {Γ : Type*} [CommGroup Γ]
 
-def chiRatio (χ : Γ →* Cˣ) (M M' : ℕ) (dg dg' dg₁ dg₂ : Γ) : C :=
-  ((χ dg₁ ^ (M' : ℤ) * χ dg₂ ^ (-(M : ℤ))) / (χ dg ^ (M' : ℤ) * χ dg' ^ (-(M : ℤ))) : Cˣ)
-
-def idxExp (M M' : ℕ) (a a' : ℤ) : ℤ := 2 * ((M' : ℤ) * a - (M : ℤ) * a')
-
-theorem norm_units_zpow (x : Cˣ) (z : ℤ) : ‖((x ^ z : Cˣ) : C)‖ = ‖(x : C)‖ ^ z := by
-  rw [Units.val_zpow_eq_zpow_val, norm_zpow]
-
-theorem norm_units_ne_zero (x : Cˣ) : ‖(x : C)‖ ≠ 0 := norm_ne_zero_iff.mpr x.ne_zero
-
-section Val
-
-variable {V : Type*} [Fintype V]
-
-theorem norm_chi_prod (χ : Γ →* Cˣ) (t : V → Γ) (Q : V → ℕ) (a : V → ℤ)
-    (ht : ∀ v, ‖((χ (t v) : Cˣ) : C)‖ = ‖(Q v : C)‖) :
-    ‖((χ (∏ v, t v ^ a v) : Cˣ) : C)‖ = ∏ v, ‖(Q v : C)‖ ^ a v := by
-  first
-  | (rw [map_prod, Units.coe_prod, norm_prod]
-     refine Finset.prod_congr rfl fun v _ => ?_
-     rw [map_zpow, norm_units_zpow, ht v])
-  | (simp [map_prod, norm_prod, norm_units_zpow, ht])
-
-theorem norm_chiRatio (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, χ h = 1)
-    (M M' : ℕ) (t : V → Γ) (Q : V → ℕ) (a a' : V → ℤ) (dg dg' dg₁ dg₂ u u' : Γ)
-    (hu : u ∈ H) (hu' : u' ∈ H)
-    (hk : dg₁ = dg * (∏ v, t v ^ a v) * u) (hk' : dg₂ = dg' * (∏ v, t v ^ a' v) * u')
-    (hQ : ∀ v, (Q v : C) ≠ 0) (ht : ∀ v, ‖((χ (t v) : Cˣ) : C)‖ = ‖(Q v : C)‖) :
-    ‖chiRatio χ M M' dg dg' dg₁ dg₂‖ = ∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v) := by
-  subst hk hk'
-  have hu1 : χ u = 1 := hχH u hu
-  have hu1' : χ u' = 1 := hχH u' hu'
-  have hQn : ∀ v, ‖(Q v : C)‖ ≠ 0 := fun v => norm_ne_zero_iff.mpr (hQ v)
-  have hα := norm_units_ne_zero (χ dg)
-  have hβ := norm_units_ne_zero (χ dg')
-  have hprod : ∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v) =
-      (∏ v, ‖(Q v : C)‖ ^ a v) ^ (M' : ℤ) * (∏ v, ‖(Q v : C)‖ ^ a' v) ^ (-(M : ℤ)) := by
-    first
-    | rw [← Finset.prod_zpow, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]
-    | rw [Finset.prod_zpow, Finset.prod_zpow, ← Finset.prod_mul_distrib]
-    refine Finset.prod_congr rfl fun v _ => ?_
-    rw [← zpow_mul, ← zpow_mul, ← zpow_add₀ (hQn v)]
-    congr 1
-    ring
-  simp only [chiRatio, Units.val_div_eq_div_val, Units.val_mul, norm_div, norm_mul, norm_units_zpow,
-    map_mul, hu1, hu1', mul_one, norm_chi_prod χ t Q a ht, norm_chi_prod χ t Q a' ht]
-  rw [hprod, mul_zpow, mul_zpow]
-  first
-  | (rw [div_eq_iff (mul_ne_zero (zpow_ne_zero _ hα) (zpow_ne_zero _ hβ))]
-     ring)
-  | (field_simp
-     ring)
-
-theorem norm_sqrt_idx (M M' : ℕ) (Q : V → ℕ) (a a' : V → ℤ) (hQ : ∀ v, (Q v : C) ≠ 0)
-    (n : ℕ) (hn : (n : C) = ∏ v, (Q v : C) ^ idxExp M M' (a v) (a' v)) (s : C) (hs : s * s = n) :
-    ‖s‖ = ∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v) := by
-  have hQn : ∀ v, ‖(Q v : C)‖ ≠ 0 := fun v => norm_ne_zero_iff.mpr (hQ v)
-  have hR : 0 ≤ ∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v) :=
-    Finset.prod_nonneg fun v _ => zpow_nonneg (norm_nonneg _) _
-  have hsq : ‖s‖ * ‖s‖ = (∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v)) *
-      (∏ v, ‖(Q v : C)‖ ^ ((M' : ℤ) * a v - (M : ℤ) * a' v)) := by
-    rw [← norm_mul, hs, hn, norm_prod, ← Finset.prod_mul_distrib]
-    refine Finset.prod_congr rfl fun v _ => ?_
-    rw [norm_zpow, ← zpow_add₀ (hQn v), idxExp, two_mul]
-  first
-  | exact (mul_self_inj (norm_nonneg _) hR).1 hsq
-  | nlinarith [norm_nonneg s]
-
-theorem norm_inv_mul_charRatio (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, χ h = 1)
-    (M M' : ℕ) (t : V → Γ) (Q : V → ℕ) (a a' : V → ℤ) (dg dg' dg₁ dg₂ u u' : Γ)
-    (hu : u ∈ H) (hu' : u' ∈ H)
-    (hk : dg₁ = dg * (∏ v, t v ^ a v) * u) (hk' : dg₂ = dg' * (∏ v, t v ^ a' v) * u')
-    (hQ : ∀ v, (Q v : C) ≠ 0) (ht : ∀ v, ‖((χ (t v) : Cˣ) : C)‖ = ‖(Q v : C)‖)
-    (n : ℕ) (hn : (n : C) = ∏ v, (Q v : C) ^ idxExp M M' (a v) (a' v)) (s : C) (hs : s * s = n) :
-    ‖s⁻¹ * chiRatio χ M M' dg dg' dg₁ dg₂‖ = 1 := by
-  have hQn : ∀ v, ‖(Q v : C)‖ ≠ 0 := fun v => norm_ne_zero_iff.mpr (hQ v)
-  rw [norm_mul, norm_inv, norm_sqrt_idx M M' Q a a' hQ n hn s hs,
-    norm_chiRatio χ H hχH M M' t Q a a' dg dg' dg₁ dg₂ u u' hu hu' hk hk' hQ ht]
-  exact inv_mul_cancel₀ (Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (hQn v))
-
-end Val
-
 section Index
 
 def matLat (O K : Type*) [CommRing O] [Field K] [Algebra O K] (N N' : ℕ) : AddSubgroup (Matrix (Fin N') (Fin N) K) where
@@ -116,20 +34,6 @@ def RelIndexFormula : Prop :=
       matLat O K N N' ≤ movLat O K k k' →
       0 ≤ (N' : ℤ) * a - (N : ℤ) * a' ∧
         (matLat O K N N').relIndex (movLat O K k k') = Q ^ ((N' : ℤ) * a - (N : ℤ) * a').toNat
-
-theorem hn_of_idx {V : Type*} [Fintype V] (M₀ M₀' : ℕ) (Q : V → ℕ) (a a' : V → ℤ) (nv : V → ℕ)
-    (hpos : ∀ v, 0 ≤ idxExp M₀ M₀' (a v) (a' v))
-    (hnv : ∀ v, nv v = Q v ^ (idxExp M₀ M₀' (a v) (a' v)).toNat) :
-    (((∏ v, nv v : ℕ)) : C) = ∏ v, (Q v : C) ^ idxExp M₀ M₀' (a v) (a' v) := by
-  rw [Nat.cast_prod]
-  refine Finset.prod_congr rfl fun v _ => ?_
-  rw [hnv v, Nat.cast_pow, ← zpow_natCast, Int.toNat_of_nonneg (hpos v)]
-
-theorem idxExp_eq (M₀ M₀' : ℕ) (a a' : ℤ) :
-    idxExp M₀ M₀' a a' = ((2 * M₀' : ℕ) : ℤ) * a - ((2 * M₀ : ℕ) : ℤ) * a' := by
-  unfold idxExp
-  push_cast
-  ring
 
 end Index
 
@@ -346,88 +250,6 @@ theorem relIndexFormula : RelIndexFormula := by
   | exact AddSubgroup.index_eq_card _
 
 end IdxMain
-
-section Model
-
-variable {F M : Type*} [AddCommGroup F] [Module C F] [AddCommGroup M] [Module C M]
-
-def eNat (χ : Γ →* Cˣ) (M₀ M₀' : ℕ) (dg dg' : Γ) (Th : M) : M :=
-  (((χ dg ^ (M₀' : ℤ) * χ dg' ^ (-(M₀ : ℤ)) : Cˣ) : C)) • Th
-
-def xiNat (χ : Γ →* Cˣ) (M₀ M₀' : ℕ) (dg₁ dg₂ : Γ) (ΞTh : F →ₗ[C] M) : F →ₗ[C] M :=
-  (((χ dg₁ ^ (M₀' : ℤ) * χ dg₂ ^ (-(M₀ : ℤ)) : Cˣ) : C)) • ΞTh
-
-def MapsToUpToSign (ΞTh : F →ₗ[C] M) (oneYP : F) (ThY : M) (s : C) : Prop :=
-  ∃ ε : C, (ε = 1 ∨ ε = -1) ∧ ΞTh (s • oneYP) = ε • ThY
-
-theorem exists_norm_eq_one_scaledMap_eq {V : Type*} [Fintype V] (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, χ h = 1)
-    (M₀ M₀' : ℕ) (t : V → Γ) (Q : V → ℕ) (a a' : V → ℤ) (dg dg' dg₁ dg₂ u u' : Γ)
-    (hu : u ∈ H) (hu' : u' ∈ H)
-    (hk : dg₁ = dg * (∏ v, t v ^ a v) * u) (hk' : dg₂ = dg' * (∏ v, t v ^ a' v) * u')
-    (hQ : ∀ v, (Q v : C) ≠ 0) (ht : ∀ v, ‖((χ (t v) : Cˣ) : C)‖ = ‖(Q v : C)‖)
-    (n : ℕ) (hn : (n : C) = ∏ v, (Q v : C) ^ idxExp M₀ M₀' (a v) (a' v)) (s : C) (hs : s * s = n)
-    (ΞTh : F →ₗ[C] M) (oneYP : F) (ThY : M) (hvac : MapsToUpToSign ΞTh oneYP ThY s) :
-    ∃ κ : C, ‖κ‖ = 1 ∧ xiNat χ M₀ M₀' dg₁ dg₂ ΞTh oneYP = κ • eNat χ M₀ M₀' dg dg' ThY := by
-  obtain ⟨ε, hε, hΞ⟩ := hvac
-  have hn0 : (n : C) ≠ 0 := by
-    rw [hn]
-    exact Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (hQ v)
-  have hs0 : s ≠ 0 := by
-    rintro rfl
-    apply hn0
-    rw [← hs, zero_mul]
-  have hc0 : ((χ dg ^ (M₀' : ℤ) * χ dg' ^ (-(M₀ : ℤ)) : Cˣ) : C) ≠ 0 := Units.ne_zero _
-  refine ⟨ε * (s⁻¹ * chiRatio χ M₀ M₀' dg dg' dg₁ dg₂), ?_, ?_⟩
-  · rw [norm_mul, norm_inv_mul_charRatio χ H hχH M₀ M₀' t Q a a' dg dg' dg₁ dg₂ u u' hu hu' hk hk' hQ ht n hn s hs,
-      mul_one]
-    rcases hε with rfl | rfl
-    · exact norm_one
-    · rw [norm_neg, norm_one]
-  · have hx : ΞTh oneYP = s⁻¹ • ε • ThY := by
-      rw [← hΞ, map_smul, inv_smul_smul₀ hs0]
-    simp only [xiNat, eNat, chiRatio, LinearMap.smul_apply, hx, smul_smul, Units.val_div_eq_div_val]
-    congr 1
-    first
-    | (rw [mul_assoc ε, mul_assoc s⁻¹, div_mul_cancel₀ _ hc0]
-       ring)
-    | (field_simp
-       ring)
-
-end Model
-
-section Assembled
-
-theorem exists_norm_eq_one_scaledMap_eq_of_relIndex {V : Type*} [Fintype V] (OV KV : V → Type) [∀ v, CommRing (OV v)] [∀ v, IsDomain (OV v)]
-    [∀ v, IsDiscreteValuationRing (OV v)] [∀ v, Field (KV v)] [∀ v, Algebra (OV v) (KV v)]
-    [∀ v, IsFractionRing (OV v) (KV v)] (ϖ : ∀ v, OV v) (hϖ : ∀ v, Irreducible (ϖ v))
-    (χ : Γ →* Cˣ) (H : Subgroup Γ) (hχH : ∀ h ∈ H, χ h = 1) (M₀ M₀' : ℕ)
-    (k : ∀ v, GL (Fin (2 * M₀)) (KV v)) (k' : ∀ v, GL (Fin (2 * M₀')) (KV v)) (a a' : V → ℤ)
-    (wv wv' : ∀ v, (OV v)ˣ)
-    (hdk : ∀ v, (k v : Matrix (Fin (2 * M₀)) (Fin (2 * M₀)) (KV v)).det =
-      algebraMap (OV v) (KV v) (ϖ v) ^ a v * algebraMap (OV v) (KV v) (wv v : OV v))
-    (hdk' : ∀ v, (k' v : Matrix (Fin (2 * M₀')) (Fin (2 * M₀')) (KV v)).det =
-      algebraMap (OV v) (KV v) (ϖ v) ^ a' v * algebraMap (OV v) (KV v) (wv' v : OV v))
-    (hle : ∀ v, matLat (OV v) (KV v) (2 * M₀) (2 * M₀') ≤ movLat (OV v) (KV v) (k v) (k' v))
-    (t : V → Γ) (dg dg' dg₁ dg₂ u u' : Γ) (hu : u ∈ H) (hu' : u' ∈ H)
-    (hk : dg₁ = dg * (∏ v, t v ^ a v) * u) (hk' : dg₂ = dg' * (∏ v, t v ^ a' v) * u')
-    (hQ : ∀ v, ((Nat.card (IsLocalRing.ResidueField (OV v)) : ℕ) : C) ≠ 0)
-    (ht : ∀ v, ‖((χ (t v) : Cˣ) : C)‖ = ‖((Nat.card (IsLocalRing.ResidueField (OV v)) : ℕ) : C)‖)
-    (s : C) (hs : s * s = ((∏ v, (matLat (OV v) (KV v) (2 * M₀) (2 * M₀')).relIndex
-      (movLat (OV v) (KV v) (k v) (k' v)) : ℕ) : C))
-    {F M : Type*} [AddCommGroup F] [Module C F] [AddCommGroup M] [Module C M]
-    (ΞTh : F →ₗ[C] M) (oneYP : F) (ThY : M) (hvac : MapsToUpToSign ΞTh oneYP ThY s) :
-    ∃ κ : C, ‖κ‖ = 1 ∧ xiNat χ M₀ M₀' dg₁ dg₂ ΞTh oneYP = κ • eNat χ M₀ M₀' dg dg' ThY := by
-  have hR := fun v => relIndexFormula (OV v) (KV v) (ϖ v) (hϖ v) _ rfl (2 * M₀) (2 * M₀') (k v) (k' v)
-    (a v) (a' v) (wv v) (wv' v) (hdk v) (hdk' v) (hle v)
-  refine exists_norm_eq_one_scaledMap_eq χ H hχH M₀ M₀' t (fun v => Nat.card (IsLocalRing.ResidueField (OV v)))
-    a a' dg dg' dg₁ dg₂ u u' hu hu' hk hk' hQ ht _ ?_ s hs ΞTh oneYP ThY hvac
-  refine hn_of_idx M₀ M₀' _ a a' _ (fun v => ?_) (fun v => ?_)
-  · rw [idxExp_eq]
-    exact (hR v).1
-  · rw [idxExp_eq]
-    exact (hR v).2
-
-end Assembled
 
 end UnitaryThetaMoves
 

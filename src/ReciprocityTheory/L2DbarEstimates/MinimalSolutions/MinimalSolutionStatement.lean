@@ -22,28 +22,12 @@ def RieszOnRangeStatement (E H : Type*) [AddCommGroup E] [Module ℂ E]
     (∀ e : E, ‖ℓ e‖ ^ 2 ≤ A * ‖θ e‖ ^ 2) →
     ∃ u ∈ (LinearMap.range θ).topologicalClosure, ‖u‖ ^ 2 ≤ A ∧ ∀ e : E, ⟪u, θ e⟫_ℂ = ℓ e
 
-def MinimalSolutionStatement (E H : Type*) [AddCommGroup E] [Module ℂ E]
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] : Prop :=
-  ∀ (θ : E →ₗ[ℂ] H) (ℓ : E →ₗ[ℂ] ℂ) (u u' : H),
-    u ∈ (LinearMap.range θ).topologicalClosure →
-    (∀ e : E, ⟪u, θ e⟫_ℂ = ℓ e) → (∀ e : E, ⟪u', θ e⟫_ℂ = ℓ e) →
-    u' - u ∈ (LinearMap.range θ)ᗮ ∧ ‖u‖ ≤ ‖u'‖ ∧
-      (u' ∈ (LinearMap.range θ).topologicalClosure → u' = u)
-
 def SplitStatement (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
     [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [CompleteSpace H₂] : Prop :=
   ∀ (ι : E →ₗ[ℂ] H₁) (t : E →ₗ[ℂ] H₂) (K : Submodule ℂ H₂), IsClosed (K : Set H₂) →
     LinearMap.range t ≤ K → ∀ (f : H₂) (w : H₁), WeakAdj ι t f w →
     ∃ f₁ f₂ : H₂, f = f₁ + f₂ ∧ f₁ ∈ K ∧ f₂ ∈ Kᗮ ∧ WeakAdj ι t f₁ w ∧ WeakAdj ι t f₂ 0
-
-def HormanderLemmaStatement (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
-    [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]
-    [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [CompleteSpace H₂] : Prop :=
-  ∀ (ι : E →ₗ[ℂ] H₁) (t : E →ₗ[ℂ] H₂) (K : Submodule ℂ H₂), IsClosed (K : Set H₂) →
-    LinearMap.range t ≤ K → ∀ (v : H₂) (A : ℝ), 0 ≤ A → v ∈ K →
-    (∀ f ∈ K, ∀ w : H₁, WeakAdj ι t f w → ‖⟪v, f⟫_ℂ‖ ^ 2 ≤ A * ‖w‖ ^ 2) →
-    ∃ u : H₁, ‖u‖ ^ 2 ≤ A ∧ ∀ (f : H₂) (w : H₁), WeakAdj ι t f w → ⟪u, w⟫_ℂ = ⟪v, f⟫_ℂ
 
 def OntoWithBoundStatement (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]

@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulVecMemHatSwap
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ResidueCharIsOfFinOrder
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlDetEqOneOfMemUnip
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodFormsCoordinateMapMemOfLiftsMem
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaKernelFiniteAdelicLawsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaKernelFiniteAdelicLaws
 
 set_option autoImplicit false
 
@@ -140,7 +140,7 @@ variable {R i t}
 
 theorem kernelLaws (hM : R.IsModels) (hP : R.IsThP) (hT : DatumType R i t) :
     KernelLaws (W := (R.cV i).coef.W) (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (envV R i t).χ (kern R i t) :=
-  have h := GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t hM.inf hM.cV hP.ωP hP.pt_theta hP.ioP hT
+  have h := _root_.GlobalTheory.TraceIncl.kern_laws R i t hM.inf hM.cV hP.ωP hP.pt_theta hP.ioP hT
   ⟨h.2.1, h.2.2.1⟩
 
 theorem clSum_eval (f : (A.MtCSD i t).Forms) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) :
@@ -154,7 +154,7 @@ theorem integrand_eq (hM : R.IsModels) (hP : R.IsThP) (hT : DatumType R i t) (x 
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) (h : GA D (Vc D i)) :
     Datum.thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) (R.extV i t x h))) =
       kern R i t (fin _ h) ((R.HV i t).e x (fin _ h)) v g := by
-  have e := (GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t hM.inf hM.cV hP.ωP hP.pt_theta hP.ioP hT).1 h
+  have e := (_root_.GlobalTheory.TraceIncl.kern_laws R i t hM.inf hM.cV hP.ωP hP.pt_theta hP.ioP hT).1 h
   refine Eq.trans ?_ (congrFun (congrFun (LinearMap.congr_fun e.symm ((R.HV i t).e x (fin _ h))) v) g)
   rfl
 
@@ -263,7 +263,7 @@ theorem clSum_equiv [Nontrivial (Fin (R.nW i) → D.what₂.LL)] (g : G) (f : (A
   have hx' : (R.FW i).j (sg0 D A) x ≠ 0 := fun e => hx (h.j_inj_rat.1 (e.trans (map_zero _).symm))
   refine clSum_act (presV R i t) (kernelLaws h.models h.thP h.typ) (R.B.L i t).act_tie (envV R i t).J_le (actS R i)
     (fun q y w => funext fun v => ?_) g f
-  exact (GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).2.2.2 _ q (h.red i t q)
+  exact (_root_.GlobalTheory.TraceIncl.kern_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).2.2.2 _ q (h.red i t q)
     (LevelForms.exists_lift R h.unif i _ (h.models.HW i _).1 hx' _) y w v
 
 theorem clSum_trU [Nontrivial (Fin (R.nW i) → D.what₂.LL)] (f : (A.MtCSD i t).Forms) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
@@ -289,7 +289,7 @@ theorem adForm_theta_trU [Nontrivial (Fin (R.nW i) → D.what₂.LL)] {θ} (hθ 
 
 theorem kern_fin {g : GA D (Vc D i)} (hg : g ∈ GfC (Vc D i)) (w : (R.cV i).W) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) :
     kern R i t (fin _ g) w v = singleSeries R i (R.ωP i t) (R.vP i t) g w v := by
-  have e := (GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).1 g
+  have e := (_root_.GlobalTheory.TraceIncl.kern_laws R i t h.models.inf h.models.cV h.thP.ωP h.thP.pt_theta h.thP.ioP h.typ).1 g
   refine (congrFun (LinearMap.congr_fun e w) v).trans ?_
   exact congrArg (fun w' => singleSeries R i (R.ωP i t) (R.vP i t) g w' v)
     (LinearMap.congr_fun ((h.models.cV i).1 _ (inv_mem hg)) w)

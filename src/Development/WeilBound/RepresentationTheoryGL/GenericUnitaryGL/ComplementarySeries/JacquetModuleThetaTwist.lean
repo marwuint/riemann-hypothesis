@@ -1,6 +1,9 @@
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.ComplementarySeries.Complementary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductTransposeInverseDualReverse
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalLanglandsOfIrreducibleAdmissibleStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalLanglandsOfIrreducibleAdmissible
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.GKLocal
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothIterPhi
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JordanHolderMultiplicityJacquetEqBorelJacquetOfS
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NontrivialOfIrreducible
@@ -133,7 +136,7 @@ theorem jmTheta (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
     GlobalTheory.BZSeg.JmTheta k := by
   intro N V _ _ π _ _ a b hd hd'
   have hA := GlobalTheory.CompanionTheory.BZCuspPair.irrAdm
-  have hGK : GKLocal k := GlobalTheory.T.local_langlands_of_irreducible_admissible hA
+  have hGK : GKLocal k := _root_.GlobalTheory.CompanionTheory.GKLocalProof.gkLocal hA
   rw [jacquet_module_theta_twist hA hGK ![a, b] hd π]
   refine jm_congr ?_ _ _ π
   rw [dualRev_eq hA]

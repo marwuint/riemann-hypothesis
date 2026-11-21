@@ -1,12 +1,22 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsLatFamilyCongr
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QuasiFiniteGroupFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalUnique
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QuasiFiniteGroupFinite
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.AdelicGroupAlgebraActionInjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusPointOverFractionField
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongUniqueUpToIso
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtExistsBc
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.SameGenericPointCharts
@@ -36,9 +46,9 @@ theorem lieBC {S : Scheme.{0}} {G : Over S} [GrpObj G] {A B : Type} [CommRing A]
     show (c a * b) • e = c a • b • e
     rw [mul_smul]⟩
   haveI : Smooth G.hom := hsm
-  obtain ⟨j, h1, h2, -⟩ := GlobalTheory.T.lie_model_base_change_map S G A B x E E' M M'
+  obtain ⟨j, h1, h2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange S G A B x E E' M M'
   let β : E →ₗ[A] E' := { toFun := j, map_add' := map_add j, map_smul' := fun a e => h2 a e }
-  have hbc : IsBaseChange B β := (GlobalTheory.T.lie_model_finite_base_change S G A x E M).2.2 B E' M' β h1
+  have hbc : IsBaseChange B β := (_root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange S G A x E M).2.2 B E' M' β h1
   refine ⟨j, h1, h2, ?_, ?_⟩
   · refine eq_top_iff.2 fun e _ => ?_
     refine hbc.inductionOn e (fun z => z ∈ Submodule.span B (Set.range j)) (Submodule.zero_mem _) ?_ ?_ ?_
@@ -116,10 +126,10 @@ theorem step {R B Ω : Type} [CommRing R] [IsDomain R] [CommRing B] [IsDomain B]
         Γ.IsHT i M N χ w → ∃ w' : Module.Dual B L', (∀ e, W (jj e) = k' (w' e)) ∧
           Γ'.IsHT i' M' N ((Units.map (φ : R →* B)).comp χ) w' := by
   subst hx
-  haveI := GlobalTheory.T.quasi_finite_group_finite R T Γ
+  haveI := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.finite_of_qfGroup R T Γ
   letI : Algebra R B := φ.toAlgebra
   obtain ⟨Γ', F, hF⟩ := PositivityTheory.UnitarySelfGeneration.bt_exists_bc R T Γ B φ hφ
-  have tor := GlobalTheory.T.torsion_along_base_change R T Γ X G x N i hi B φ Γ' F hF
+  have tor := _root_.GlobalTheory.CompanionTheory.Ar.TorBC.isTorsionAlong_baseChange R T Γ X G x N i hi B φ Γ' F hF
   obtain ⟨β, hβ, -, hsp, hext⟩ := lieBC φ x _ rfl hsm M M'
   have hc : ∀ l, jj (β l) = tl l := fun l => M₀.inj (Over.OverMorphism.ext (by
     have e : k'.comp φ = k := RingHom.ext hk
@@ -129,7 +139,7 @@ theorem step {R B Ω : Type} [CommRing R] [IsDomain R] [CommRing B] [IsDomain B]
     rw [← Category.assoc, this]
     simp only [Category.assoc]
   · obtain ⟨w', hw'⟩ := hext w
-    refine ⟨w', fun e => ?_, GlobalTheory.T.hodge_tate_functional_base_change R T Γ X G x N i hi L M B Γ' F hF tor L' M' β hβ hsp χ w w' hw' H⟩
+    refine ⟨w', fun e => ?_, _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.isHT_baseChange R T Γ X G x N i hi L M B Γ' F hF tor L' M' β hβ hsp χ w w' hw' H⟩
     have he : e ∈ Submodule.span B (Set.range β) := by rw [hsp]; trivial
     induction he using Submodule.span_induction with
     | mem _ h =>
@@ -242,8 +252,8 @@ theorem PositivityTheory.Xgn.sequence_family_overlap : ∀ (E : Type) [Field E] 
     have e' := congrArg (algebraMap B Ω) e
     rw [map_natCast, map_zero] at e'
     exact (Nat.cast_ne_zero.2 (pow_ne_zero _ hp.out.ne_zero)) e'
-  haveI := GlobalTheory.T.quasi_finite_group_finite B _ Γ₂
-  obtain ⟨u', hu'⟩ := (GlobalTheory.T.hodge_tate_functional_unique_mod_smul B _ Γ₂ 𝔐.X 𝔐.t.G _ _ i₂ t₂ hsm hN L' M' _ w₂' w₁' H₂').1 H₁''
+  haveI := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.finite_of_qfGroup B _ Γ₂
+  obtain ⟨u', hu'⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.BT.HT.isHT_iff B _ Γ₂ 𝔐.X 𝔐.t.G _ _ i₂ t₂ hsm hN L' M' _ w₂' w₁' H₂').1 H₁''
   obtain ⟨U, hU⟩ := hjext u'
   have hdiff : P₁.Dh.h x - P₂.Dh.h x = (p ^ 𝔐.R p) • U := by
     rw [hh₁, hh₂]

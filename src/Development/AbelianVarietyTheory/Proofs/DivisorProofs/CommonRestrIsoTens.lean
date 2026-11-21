@@ -62,6 +62,4 @@ theorem cls_common_add {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ �
     (commonRestr_iso_tens C a b)
   rw [← e₁, e₂, cls_tens (C.isLB a) (C.isLB b)]
 
-example : ∀ {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (a b : Λ), cls (B (a + b)) (C.isLB (a + b)) = cls (B a) (C.isLB a) + cls (B b) (C.isLB b) := @cls_common_add
-
 end GlobalTheory.HSApp

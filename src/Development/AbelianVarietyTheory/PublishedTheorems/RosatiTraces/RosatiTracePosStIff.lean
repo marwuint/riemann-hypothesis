@@ -17,10 +17,6 @@ def RosatiTracePosSt : Prop := RosatiPositiveSt
 
 namespace RosatiTracePosSt
 
-open GlobalTheory.ThetaDetCompare GlobalTheory.ThetaCoord
-
-variable {K : Type} [Field K] [IsAlgClosed K]
-
 end RosatiTracePosSt
 
 end GlobalTheory.Published

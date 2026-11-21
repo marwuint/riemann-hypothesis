@@ -15,66 +15,9 @@ open IsDedekindDomain NumberField
 
 namespace GlobalTheory.CompanionTheory.EisM
 
-section Abstract
-
-variable {X H : Type}
-
-def TestAlg [TopologicalSpace X] (A : Submodule ℂ (X → ℂ)) : Prop :=
-  (∀ f ∈ A, Continuous f ∧ HasCompactSupport f) ∧ (∀ f ∈ A, ∀ g ∈ A, f * g ∈ A) ∧ (∀ f ∈ A, star f ∈ A) ∧
-    (∀ x y, x ≠ y → ∃ f ∈ A, f x ≠ f y) ∧
-    ∀ C, IsCompact C → ∃ f ∈ A, (∀ x, 0 ≤ (f x).re ∧ (f x).im = 0) ∧ ∀ x ∈ C, f x = 1
-
-def InJ [MeasurableSpace X] [MeasurableSpace H] (lam : Measure H) (Q : Measure X) (p : H → X → ℂ) (ξ : X → ℂ) : Prop :=
-  Integrable ξ Q ∧ Integrable (fun x => ∫ z, ξ z * p x z ∂Q) lam
-
-def LJ [MeasurableSpace X] [MeasurableSpace H] (lam : Measure H) (Q : Measure X) (p : H → X → ℂ) (ξ : X → ℂ) : ℂ :=
-  ∫ x, ∫ z, ξ z * p x z ∂Q ∂lam
-
-end Abstract
-
 variable {D : D7} {N r t n : ℕ}
 
 abbrev XS (e : AE D) (N r t : ℕ) : Type := {z : Mx D N r × Mx D N t // e • z.1 = z.1 ∧ e • z.2 = z.2}
-
-def testA (θ : InfFam D) (S : Finset (Pl D)) (e : AE D) (hn : r + t = n) : Submodule ℂ (XS e N r t → ℂ) where
-  carrier := {f | ∃ Φ ∈ schwartzA θ N n, Good S e Φ ∧ HasCompactSupport Φ ∧ ∀ z : XS e N r t, f z = Φ (jn hn z.1.1 z.1.2)}
-  add_mem' := by
-    rintro f f' ⟨Φ, h₁, h₂, h₃, h₄⟩ ⟨Φ', h₁', h₂', h₃', h₄'⟩
-    refine ⟨Φ + Φ', Submodule.add_mem _ h₁ h₁', fun x => ?_, h₃.add h₃', fun z => ?_⟩
-    · have a := h₂ x
-      have b := h₂' x
-      by_cases h : IntOff S x
-      · simp only [Pi.add_apply, if_pos h] at a b ⊢
-        rw [a, b]
-      · simp only [Pi.add_apply, if_neg h] at a b ⊢
-        rw [a, b, add_zero]
-    · simp only [Pi.add_apply, h₄, h₄']
-  zero_mem' := by
-    refine ⟨0, Submodule.zero_mem _, fun x => ?_, HasCompactSupport.zero, fun z => rfl⟩
-    simp
-  smul_mem' := by
-    rintro c f ⟨Φ, h₁, h₂, h₃, h₄⟩
-    refine ⟨c • Φ, Submodule.smul_mem _ c h₁, fun x => ?_, h₃.smul_left, fun z => ?_⟩
-    · have a := h₂ x
-      by_cases h : IntOff S x
-      · simp only [Pi.smul_apply, if_pos h] at a ⊢
-        rw [a]
-      · simp only [Pi.smul_apply, if_neg h] at a ⊢
-        rw [a, smul_zero]
-    · simp only [Pi.smul_apply, h₄]
-
-def toXS {e : AE D} (he : e * e = e) (z : Mx D N r × Mx D N t) : XS e N r t :=
-  ⟨(e • z.1, e • z.2), by simp only [smul_smul, he, and_self]⟩
-
-def PS {e : AE D} (he : e * e = e) (S : Finset (Pl D)) (P : Measure (Mx D N r × Mx D N t)) : Measure (XS e N r t) :=
-  (P.restrict {z | IntOff S z.1 ∧ IntOff S z.2}).map (toXS he)
-
-def pk (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (b₀ : HermE D r) {e : AE D} (x : hermS D t e) (z : XS e V.rank r t) : ℂ :=
-  pch ψ x.1.1 (qv V b₀ z.1)
-
-def xi (V : HSp D) (b₀ : HermE D r) (hn : r + t = n) {e : AE D} (Φ : Mx D V.rank n → ℂ) (η : Mx D r t → ℂ)
-    (z : XS e V.rank r t) : ℂ :=
-  Φ (jn hn z.1.1 z.1.2) * conj (η (yv V b₀ z.1))
 
 def phiU (V : HSp D) (r t : ℕ) (h : GA D V) : (Mx D V.rank r × Mx D V.rank t) ≃ₜ (Mx D V.rank r × Mx D V.rank t) where
   toFun z := (mm (mt V h) z.1, mm (mt V h) z.2)
@@ -123,17 +66,6 @@ def phiG (N r : ℕ) (g : GL (Fin t) (AE D)) : (Mx D N r × Mx D N t) ≃ₜ (Mx
     rw [Matrix.mul_assoc, e₁, Matrix.mul_one]
   continuous_toFun := continuous_fst.prodMk (continuous_snd.matrix_mul continuous_const)
   continuous_invFun := continuous_fst.prodMk (continuous_snd.matrix_mul continuous_const)
-
-def tauG {e : AE D} (g : GL (Fin t) (AE D)) (x : hermS D t e) : hermS D t e :=
-  ⟨⟨mm (mm (g⁻¹).1 x.1.1) (adj (g⁻¹).1), by
-      have hx : adj x.1.1 = x.1.1 := x.1.2
-      change adj (mm (mm (g⁻¹).1 x.1.1) (adj (g⁻¹).1)) = _
-      simp only [mm, adj_mul, adj_adj, hx]
-      rw [Matrix.mul_assoc]⟩, by
-      have hx : e • x.1.1 = x.1.1 := x.2
-      change e • (mm (mm (g⁻¹).1 x.1.1) (adj (g⁻¹).1)) = _
-      simp only [mm]
-      rw [← Matrix.smul_mul, ← Matrix.mul_smul, hx]⟩
 
 end GlobalTheory.CompanionTheory.EisM
 

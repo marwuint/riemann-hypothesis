@@ -1,5 +1,13 @@
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DeligneLocalConstants
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PowFamIsDeligneMeas
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.EpsMeasFamily
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussSumNeZeroOfRamified
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingsTowerCompatibleStatement
+import Formalism.LocalToGlobal.GaloisLevelStructure.DefsGal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalFieldNormValuation
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductorAndHaarIntegersExist
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
 
 noncomputable section
 
@@ -82,19 +90,6 @@ def alphaChar (α : kˣ →* ℂˣ) {p : kˣ} (hp : valuation k (p : k) < 1) {m 
     (hα : ∀ x ∈ unitFilt k m, α x = 1) (hpm : valuation k (p : k) * valuation k (p : k) ≤ uniformizer k ^ m)
     (z : Multiplicative (ballSub p)) :
     alphaChar α hp hα hpm z = (α (onePlus hp (Multiplicative.toAdd z)) : ℂ) := rfl
-
-end Local
-
-section Sums
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  {ψ : AddChar k Circle} {c : kˣ} {m : ℕ} {R : Finset kˣ} {θ : kˣ →* ℂˣ}
-
-end Sums
-
-section Local
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 end Local
 

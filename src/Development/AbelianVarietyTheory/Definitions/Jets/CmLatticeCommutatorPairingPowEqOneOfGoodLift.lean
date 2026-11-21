@@ -118,30 +118,6 @@ def ThetaLaws (ι : ℂ ≃+* ℂ_[q]) (d : ℕ) (ω : ℂ_[q]) (θ : ℂ → �
 namespace Basic
 open Filter Topology
 
-theorem logS_eq : (logS : ℂ_[q]⟦X⟧) = PowerSeries.log ℂ_[q] := by
-  ext n; simp [logS, coeff_log]
-
-theorem mulS_eq (a : ℤ_[q]) :
-    mulS a = PowerSeries.map ((algebraMap ℚ_[q] ℂ_[q]).comp PadicInt.Coe.ringHom) (binomialSeries ℤ_[q] a) - 1 := by
-  ext n
-  rw [map_sub, coeff_map, binomialSeries_coeff, smul_eq_mul, mul_one, mulS, coeff_mk, coeff_one]
-  rcases n with _ | n
-  · simp
-  · simp only [Nat.succ_ne_zero, if_false, sub_zero]; rfl
-
-theorem eis_eq {d : ℕ} {L : PeriodPair} (h : IsOK d L) {k : ℕ} (hk : 0 < k) : eis d k = L.G (2 * k) := by
-  have h1 : eis d k = ∑' w : ({w : ℂ | InOK d w ∧ w ≠ 0} : Set ℂ), (fun z : ℂ => (z ^ (2 * k))⁻¹) w := by
-    simp only [eis, one_div]; rfl
-  have h2 : L.G (2 * k) = ∑' w : (L.lattice : Set ℂ), (fun z : ℂ => (z ^ (2 * k))⁻¹) w := rfl
-  rw [h1, h2, tsum_subtype _ fun z : ℂ => (z ^ (2 * k))⁻¹, tsum_subtype _ fun z : ℂ => (z ^ (2 * k))⁻¹]
-  refine tsum_congr fun z => ?_
-  by_cases hz : z = 0
-  · subst hz; simp [Set.indicator, hk.ne']
-  · have e : z ∈ {w : ℂ | InOK d w ∧ w ≠ 0} ↔ z ∈ (L.lattice : Set ℂ) := by simp [hz, h z]
-    by_cases hL : z ∈ (L.lattice : Set ℂ)
-    · rw [Set.indicator_of_mem hL, Set.indicator_of_mem (e.2 hL)]
-    · rw [Set.indicator_of_notMem hL, Set.indicator_of_notMem (fun h' => hL (e.1 h'))]
-
 open PowerSeries in
 open scoped ComplexConjugate in
 variable {q : ℕ} [Fact q.Prime] in
@@ -197,21 +173,6 @@ theorem _root_.GlobalTheory.MomOne.Basic.isOK_okPair (d : ℕ) (hd : 0 < d) :
     exact ⟨m, n, by simp [_root_.GlobalTheory.MomOne.Basic.okPair]⟩
   · rintro ⟨u, v, rfl⟩
     exact ⟨u, v, by simp [_root_.GlobalTheory.MomOne.Basic.okPair]⟩
-
-open Cardinal in
-
-theorem mk_le_of_denseRange {A X : Type} [MetricSpace X] (f : A → X) (hf : DenseRange f) (hA : #A ≤ 𝔠) :
-    #X ≤ 𝔠 := by
-  have h : ∀ x : X, ∃ s : ℕ → A, Filter.Tendsto (fun n => f (s n)) Filter.atTop (nhds x) := fun x => by
-    obtain ⟨u, hu, hx⟩ := mem_closure_iff_seq_limit.1 (hf x)
-    choose s hs using hu
-    exact ⟨s, by simpa only [hs] using hx⟩
-  choose s hs using h
-  have hinj : Function.Injective s := fun x y hxy =>
-    tendsto_nhds_unique (hs x) (by rw [hxy]; exact hs y)
-  refine (Cardinal.mk_le_of_injective hinj).trans ?_
-  rw [← Cardinal.power_def, Cardinal.mk_nat]
-  exact (Cardinal.power_le_power_right hA).trans_eq Cardinal.continuum_power_aleph0
 
 open PowerSeries in
 open scoped ComplexConjugate in
@@ -270,36 +231,6 @@ theorem _root_.GlobalTheory.MomOne.Basic.nonempty_iso (q : ℕ) [Fact q.Prime] :
   · rw [Cardinal.mk_complex]; exact aleph0_lt_continuum
   · exact Cardinal.eq.1 (by rw [Cardinal.mk_complex, cardinal_padicComplex_eq_continuum])
 
-theorem exists_ok_of (ι : ℂ ≃+* ℂ_[q]) (W : WeierstrassCurve ℂ_[q]) (h1 : ‖W.a₁‖ ≤ 1) (h2 : ‖W.a₂‖ ≤ 1)
-    (h3 : ‖W.a₃‖ ≤ 1) (h4 : ‖W.a₄‖ ≤ 1) (h6 : ‖W.a₆‖ ≤ 1) (hΔ : ‖W.Δ‖ = 1) :
-    ∃ (L : PeriodPair) (c : ℂ), Mdl.Ok ⟨ι, L, c, W⟩ := by
-  have hne : W.Δ ≠ 0 := by intro h; simp [h] at hΔ
-  haveI : W.IsElliptic := ⟨hne.isUnit⟩
-  obtain ⟨L, C, hC⟩ := exists_variableChange_eq_latticeCurve (W.map (ι.symm : ℂ_[q] →+* ℂ))
-  have e4 := congrArg WeierstrassCurve.c₄ hC
-  have e6 := congrArg WeierstrassCurve.c₆ hC
-  rw [WeierstrassCurve.variableChange_c₄, WeierstrassCurve.map_c₄, latticeCurve_c₄] at e4
-  have l6 : (latticeCurve L).c₆ = 216 * L.g₃ := by
-    simp only [latticeCurve, WeierstrassCurve.c₆, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆]
-    ring
-  rw [WeierstrassCurve.variableChange_c₆, WeierstrassCurve.map_c₆, l6] at e6
-  have hu : ((C.u⁻¹ : ℂˣ) : ℂ) ≠ 0 := Units.ne_zero _
-  refine ⟨L, ((C.u⁻¹ : ℂˣ) : ℂ), hu, h1, h2, h3, h4, h6, hΔ, ?_, ?_⟩
-  · have : L.g₂ / ((C.u⁻¹ : ℂˣ) : ℂ) ^ 4 = ι.symm W.c₄ / 12 := by
-      have e : (ι.symm : ℂ_[q] →+* ℂ) W.c₄ = ι.symm W.c₄ := rfl
-      rw [e] at e4
-      field_simp
-      linear_combination -e4
-    show W.c₄ / 12 = ι _
-    rw [this, map_div₀, RingEquiv.apply_symm_apply, map_ofNat]
-  · have : L.g₃ / ((C.u⁻¹ : ℂˣ) : ℂ) ^ 6 = ι.symm W.c₆ / 216 := by
-      have e : (ι.symm : ℂ_[q] →+* ℂ) W.c₆ = ι.symm W.c₆ := rfl
-      rw [e] at e6
-      field_simp
-      linear_combination -e6
-    show W.c₆ / 216 = ι _
-    rw [this, map_div₀, RingEquiv.apply_symm_apply, map_ofNat]
-
 open PowerSeries in
 open scoped ComplexConjugate in
 variable {q : ℕ} [Fact q.Prime] in
@@ -310,23 +241,6 @@ theorem _root_.GlobalTheory.MomOne.Basic.norm_nat_eq_one {m : ℕ} (h : Nat.Copr
   have h1 : (m : ℂ_[q]) = (((m : ℚ_[q]) : PadicAlgCl q) : ℂ_[q]) := by simp
   rw [h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]
   exact h
-
-theorem exists_ok (q : ℕ) [Fact q.Prime] : ∃ M : Mdl q, M.Ok := by
-  obtain ⟨ι⟩ := nonempty_iso q
-  have hq : q.Prime := Fact.out
-  by_cases h : q = 37
-  · obtain ⟨L, c, H⟩ := exists_ok_of ι ⟨0, -1, 1, 0, 0⟩ (by simp) (by simp) (by simp) (by simp) (by simp) (by
-      have : (⟨0, -1, 1, 0, 0⟩ : WeierstrassCurve ℂ_[q]).Δ = -((11 : ℕ) : ℂ_[q]) := by
-        simp only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]
-        norm_num
-      rw [this, norm_neg]; exact norm_nat_eq_one (by subst h; norm_num))
-    exact ⟨_, H⟩
-  · obtain ⟨L, c, H⟩ := exists_ok_of ι ⟨0, 0, 1, -1, 0⟩ (by simp) (by simp) (by simp) (by simp) (by simp) (by
-      have : (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℂ_[q]).Δ = ((37 : ℕ) : ℂ_[q]) := by
-        simp only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]
-        norm_num
-      rw [this]; exact norm_nat_eq_one ((Nat.coprime_primes hq (by norm_num)).2 h))
-    exact ⟨_, H⟩
 
 theorem hasDerivAt_u (M : Mdl q) (hc : M.c ≠ 0) : HasDerivAt M.u M.c 0 := by
   have ha := M.L.analyticAt_weierstrassPExcept 0
@@ -381,11 +295,6 @@ theorem exists_chart (M : Mdl q) (h : M.Ok) : ∃ ℓ, M.Chart ℓ ∧ hat M.ι 
   · intro n; rw [e, coeff_X]; split_ifs <;> simp
   · rw [e]; simp
 
-theorem exists_model_chart (q : ℕ) [Fact q.Prime] : ∃ (M : Mdl q) (ℓ : ℂ_[q]⟦X⟧), M.Chart ℓ := by
-  obtain ⟨M, hM⟩ := exists_ok q
-  obtain ⟨ℓ, h, -⟩ := exists_chart M hM
-  exact ⟨M, ℓ, h⟩
-
 open PowerSeries in
 open scoped ComplexConjugate in
 variable {q : ℕ} [Fact q.Prime] in
@@ -421,51 +330,6 @@ theorem _root_.GlobalTheory.MomOne.Basic.cmLatticeCommutatorPairing_pow_eq_one_o
     rw [this, Complex.exp_int_mul_two_pi_mul_I]
   rw [← map_pow, key, map_one]
 
-theorem exists_good [Fact (Nat.Prime 2)] (ι : ℂ ≃+* ℂ_[2]) : ∃ y, Good ι 7 1 1 y ∧ kap1 7 1 y = -1 := by
-  have hsq : ((Real.sqrt (7 : ℕ) : ℝ) : ℂ) ^ 2 = 7 := by exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg 7)
-  have hs : Real.sqrt (7 : ℕ) ≠ 0 := by positivity
-  have hw : wK 7 * (1 - wK 7) = 2 := by
-    rw [wK]; linear_combination (-((Real.sqrt (7 : ℕ) : ℝ) : ℂ) ^ 2 / 4) * Complex.I_sq + 1 / 4 * hsq
-  have hc : conj (wK 7) = 1 - wK 7 := by
-    simp only [wK, map_add, map_mul, map_div₀, map_one, map_ofNat, Complex.conj_I, Complex.conj_ofReal]; ring
-  set a := ι (wK 7)
-  have ha : a * (1 - a) = 2 := by have := congrArg ι hw; simpa [map_ofNat] using this
-  have h2 : ‖(2 : ℂ_[2])‖ = 1 / 2 := by
-    have : (2 : ℂ_[2]) = algebraMap ℚ_[2] ℂ_[2] ((2 : ℕ) : ℚ_[2]) := by simp [map_ofNat]
-    rw [this, norm_algebraMap', Padic.norm_p]; norm_num
-  have hp : ‖a‖ * ‖1 - a‖ = 1 / 2 := by rw [← norm_mul, ha, h2]
-  have hor : ‖a‖ ≤ 1 / 2 ∨ ‖1 - a‖ ≤ 1 / 2 := by
-    have := IsUltrametricDist.norm_add_le_max a (1 - a)
-    rw [add_sub_cancel, norm_one, le_max_iff] at this
-    rcases this with h | h
-    · right; nlinarith [norm_nonneg (1 - a)]
-    · left; nlinarith [norm_nonneg a]
-  have hk : ∀ (u : ℤ) (e : ℤ), (e = 1 ∨ e = -1) → kap1 7 1 (((1 : ℕ) : ℂ) * (u + e * wK 7) / ((2 : ℕ) : ℂ) ^ 1) = -1 := by
-    intro u e he
-    have him : (h1 7 1 (((1 : ℕ) : ℂ) * (u + e * wK 7) / ((2 : ℕ) : ℂ) ^ 1)).im = -e / 2 := by
-      rw [h1, Complex.im_ofReal_mul, one_mul, Complex.conj_im]
-      simp [wK]
-      field_simp
-    rw [kap1, him]
-    rcases he with rfl | rfl
-    · rw [← Complex.exp_pi_mul_I]; congr 1; push_cast; ring
-    · rw [← Complex.exp_neg_pi_mul_I]; congr 1; push_cast; ring
-  have hb : ((2 : ℕ) : ℝ) ^ (-(2 * (1 : ℕ) : ℤ)) = 1 / 4 := by norm_num
-  rcases hor with h | h
-  · refine ⟨_, ⟨_, ⟨-1, -1, rfl⟩, ?_, rfl⟩, hk _ _ (.inr rfl)⟩
-    have : conj (((-1 : ℤ) : ℂ) + (-1 : ℤ) * wK 7) = wK 7 ^ 2 := by
-      rw [map_add, map_mul, hc, map_intCast]; push_cast; linear_combination hw
-    rw [this, map_pow, norm_pow, hb]; nlinarith [norm_nonneg a]
-  · refine ⟨_, ⟨_, ⟨-2, 1, rfl⟩, ?_, rfl⟩, hk _ _ (.inl rfl)⟩
-    have : conj (((-2 : ℤ) : ℂ) + (1 : ℤ) * wK 7) = (1 - wK 7) ^ 2 := by
-      rw [map_add, map_mul, hc, map_intCast, map_intCast]; push_cast; linear_combination hw
-    rw [this, map_pow, norm_pow, hb, map_sub, map_one]; nlinarith [norm_nonneg (1 - a)]
-
-theorem shiftS_X (ζ : ℂ_[q]) : shiftS ζ X = C ζ * (1 + X) - 1 := by
-  ext n
-  rw [shiftS, coeff_mk, tsum_eq_single 1 (fun m hm => by simp [coeff_X, hm])]
-  rcases n with _ | _ | n <;> simp [coeff_X, coeff_one, mul_add, Nat.choose_eq_zero_of_lt]
-
 open PowerSeries in
 open scoped ComplexConjugate in
 variable {q : ℕ} [Fact q.Prime] in
@@ -474,19 +338,6 @@ open Filter Topology in
 theorem _root_.GlobalTheory.MomOne.Basic.cmLatticeHermitianForm_mul_left (d : ℕ) (a z w : ℂ) :
     _root_.GlobalTheory.MomOne.h1 d (a * z) w = a * _root_.GlobalTheory.MomOne.h1 d z w := by
   unfold _root_.GlobalTheory.MomOne.h1; ring
-
-theorem riemannForm_im_eq_neg_one {d : ℕ} (hd : 0 < d) : (h1 d 1 (wK d)).im = -1 := by
-  have hs : Real.sqrt d ≠ 0 := by positivity
-  rw [h1, Complex.im_ofReal_mul, one_mul, Complex.conj_im]
-  have : (wK d).im = Real.sqrt d / 2 := by simp [wK]
-  rw [this]
-  field_simp
-
-example : Split 7 2 := Or.inl ⟨rfl, rfl⟩
-
-example : Split 7 11 := Or.inr ⟨by norm_num, by norm_num⟩
-
-example : ¬ Split 7 3 := by norm_num [Split]
 
 open PowerSeries in
 open scoped ComplexConjugate in

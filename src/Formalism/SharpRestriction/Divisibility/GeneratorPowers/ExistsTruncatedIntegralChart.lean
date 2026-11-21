@@ -88,11 +88,4 @@ theorem dir_tan {d : ℕ} (xc : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G)
 
 end Lemmas
 
-section Main
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-variable (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
-
-end Main
-
 end Formalism.MainNotions.ModuliIntegralCharts.H1

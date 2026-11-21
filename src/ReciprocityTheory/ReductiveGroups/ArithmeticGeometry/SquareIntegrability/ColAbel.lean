@@ -118,9 +118,4 @@ theorem cab_core (hP : Ext.PackingCount) (hGT : Ext.GaussianTailBound) (hA : Pro
 
 end
 
-theorem colAbel_holds (hx : Ext.All) (hA : PropAStatement) (hS : GSupStatement) :
-    ColAbelStatement := by
-  intro E _ _ _ X DF P I hI c hc σ ξ _ hξ1 hξI
-  exact cab_core hx.1 hx.2.1 hA hS hI c hc σ ξ hξ1 hξI
-
 end ReciprocityTheory.ChartRestriction.G.I2

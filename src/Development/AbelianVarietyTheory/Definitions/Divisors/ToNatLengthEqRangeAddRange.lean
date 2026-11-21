@@ -460,11 +460,6 @@ theorem topForm_eq_add {χ : G → ℤ} (h : DiffVanish (d + 1) χ) (h₁ : Diff
       multiDiff_translate, h₁.multiDiff_eq_of_le_card hn.ge g _ 0, Int.cast_add]
   · simp
 
-example : topForm (diffVanish_pow_int 2).1 (∏ _i : Fin 2, symOf 1) = 2 ∧
-    topForm (diffVanish_pow_int 2).1 (∏ _i : Fin 1, symOf 1) = 0 := by
-  rw [topForm_prod, topForm_prod, multiDiff_pow]
-  simp
-
 end Sym
 
 section SmallPic
@@ -495,10 +490,6 @@ def smallCls (L : LB X) (hL : L.IsLB) : SmallPic X := (smallPicEquiv X).symm (cl
 @[simp] theorem smallPicEquiv_smallCls (L : LB X) (hL : L.IsLB) :
     smallPicEquiv X (smallCls L hL) = cls L hL := (smallPicEquiv X).apply_symm_apply _
 
-theorem smallCls_surj (c : SmallPic X) : ∃ L hL, smallCls L hL = c :=
-  have ⟨L, hL, e⟩ := cls_surj (smallPicEquiv X c)
-  ⟨L, hL, (smallPicEquiv X).symm_apply_eq.2 e⟩
-
 theorem smallCls_eq_iff {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) :
     smallCls L hL = smallCls M hM ↔ LBIso L M :=
   (smallPicEquiv X).symm.injective.eq_iff.trans (cls_eq_iff hL hM)
@@ -519,14 +510,6 @@ def c1 (L : LB X) (hL : L.IsLB) : PicSym X := symOf (smallCls L hL)
 def firstChernPic : Pic X →+ PicSym X := symOf.comp (smallPicEquiv X).symm.toAddMonoidHom
 
 @[simp] theorem firstChernPic_class (L : LB X) (hL : L.IsLB) : firstChernPic (cls L hL) = c1 L hL := rfl
-
-theorem firstChernTensor {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : (tens L M).IsLB) :
-    c1 (tens L M) h = c1 L hL + c1 M hM := map_add firstChernPic (cls L hL) (cls M hM)
-
-theorem firstChern_trivial (h : (LB.triv X).IsLB) : c1 (LB.triv X) h = 0 := map_zero firstChernPic
-
-theorem firstChernCongr {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) : c1 L hL = c1 M hM :=
-  congrArg symOf ((smallCls_eq_iff hL hM).2 h)
 
 def picSymPull (f : Y ⟶ X) : PicSym X →ₐ[ℚ] PicSym Y := symMap (smallPull f)
 

@@ -78,11 +78,6 @@ def WeilPull (A B : Out.PolAV (Sp (𝓞 K))) (φ : A.A ⟶ B.A) (f : A.A ⟶ A.A
     ∀ x y : Over.mk (spMap β ≫ genPt K) ⟶ A.A, x ^ n = 1 → y ^ n = 1 → ∀ z : kˣ,
       (Out.WeilIs B.A B.L n (x ≫ φ) (y ≫ φ) (unitOn z) ↔ Out.WeilIs A.A A.L n x (y ≫ f) (unitOn z))
 
-def BundlePull {S : Scheme.{0}} (A B : Out.PolAV S) (φ : A.A ⟶ B.A) (f : A.A ⟶ A.A) : Prop :=
-  ∀ s : S, ∃ U : S.Opens, s ∈ U ∧
-    LBIso ((cubeLB B.A ![fst A.A A.A ≫ φ, snd A.A A.A ≫ φ] B.L).pull ((A.A ⊗ A.A).hom ⁻¹ᵁ U).ι)
-      ((cubeLB A.A ![fst A.A A.A, snd A.A A.A ≫ f] A.L).pull ((A.A ⊗ A.A).hom ⁻¹ᵁ U).ι)
-
 end Pol
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H}
@@ -162,9 +157,6 @@ def Isogeny : Prop := IsFinite o.sumMap.left ∧ Surjective o.sumMap.left
 def PolPull : Prop :=
   (∀ j, WeilPull o.AP o.B (o.φP j) (o.ιP.act (o.hP j))) ∧ ∀ j, WeilPull o.AC o.B (o.φC j) (o.ιC.act (o.hC j))
 
-def PolPullBundle : Prop :=
-  (∀ j, BundlePull o.AP o.B (o.φP j) (o.ιP.act (o.hP j))) ∧ ∀ j, BundlePull o.AC o.B (o.φC j) (o.ιC.act (o.hC j))
-
 def Bound (La : ℝ) : Prop :=
   (∀ j (τ : E →+* ℂ), ‖τ (o.hP j : E)‖ ≤ La ^ 2) ∧ ∀ j (τ : E →+* ℂ), ‖τ (o.hC j : E)‖ ≤ La ^ 2
 
@@ -172,21 +164,5 @@ def Good (La : ℝ) : Prop :=
   o.Rosati ∧ o.Types ∧ o.Lines ∧ o.Isogeny ∧ o.PolPull ∧ o.Bound La
 
 end CMObj
-
-theorem mem_psiBar_of_notMem_psi (H : Host E) (τ : E →+* ℂ) (h : τ ∉ psi H) : τ ∈ psiBar H := by
-  have h1 : τ (H.rt : E) ^ 2 = H.rt0 ^ 2 := by
-    have := congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq
-    simp only [RingOfIntegers.coe_eq_algebraMap, map_pow, map_neg, map_natCast] at this
-    rw [H.sqrt_neg_disc_sq]; exact this
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h2 | h2
-  · exact absurd h2 h
-  · exact h2
-
-example {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} {t : Sp R ⟶ S} (v : epsAt t ⟶ G) :
-    IsMultiple 1 v v := by
-  have : epsScaleR (1 : R) = RingHom.id _ := by
-    refine RingHom.ext fun x => ?_
-    ext <;> simp [epsScaleR]
-  simp [IsMultiple, this, spMap]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.CMObjBundlePull

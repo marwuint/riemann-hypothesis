@@ -31,10 +31,6 @@ def TwCoverPair (D : Formalism.BasicNotions.D7) : Prop :=
        (∀ x : NumberField.RingOfIntegers ↥D.LL0, x ∈ w.asIdeal ↔ ∃ y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i),
           algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) y = D.ntw.emb0b i (x : ↥D.LL0)))
 
-theorem twCoverPair_of {D : Formalism.BasicNotions.D7} (h : NTw.CoverAtSplitPlaces D.ntw) : TwCoverPair D := fun p hp w hw hw' =>
-  let ⟨i, hi, h1⟩ := h p hp w hw hw'
-  ⟨i, hi, Or.inl h1⟩
-
 structure Ties (D : D7) : Prop where
   cdScale_tie : cdScaleTie D
   dsig_tie : dsigTie D

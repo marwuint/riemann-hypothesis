@@ -24,32 +24,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
-theorem exists_end_reads {K M A ι : Type} [Field K] [AddCommGroup M] [Module K M] [AddCommGroup A] [Module ℂ A] {e : K →+* ℂ}
-    (r : M →ₛₗ[e] A) (hr : Function.Injective r) (S : ι → A →ₗ[ℂ] A) :
-    ∃ T : Module.End K M, ∀ f, (∃ g, ∀ a, r g = S a (r f)) → ∀ a, r (T f) = S a (r f) := by
-  rcases isEmpty_or_nonempty ι with h | ⟨⟨a₀⟩⟩
-  · exact ⟨0, fun _ _ a => isEmptyElim a⟩
-  let U : Submodule K M :=
-    { carrier := {f | ∃ g, ∀ a, r g = S a (r f)}
-      zero_mem' := ⟨0, fun a => by rw [map_zero, map_zero]⟩
-      add_mem' := by
-        rintro _ _ ⟨x, hx⟩ ⟨y, hy⟩
-        exact ⟨x + y, fun a => by rw [map_add, map_add, map_add, hx a, hy a]⟩
-      smul_mem' := by
-        rintro c v ⟨x, hx⟩
-        exact ⟨c • x, fun a => by rw [map_smulₛₗ, map_smulₛₗ, map_smul, hx a]⟩ }
-  obtain ⟨p, hp⟩ := U.subtype.exists_leftInverse_of_injective U.ker_subtype
-  choose s hs using fun u : U => u.2
-  let ψ : U →ₗ[K] M :=
-    { toFun := s
-      map_add' := fun u u' => hr (by rw [map_add, hs _ a₀, hs _ a₀, hs _ a₀, Submodule.coe_add, map_add, map_add])
-      map_smul' := fun c u => hr (by
-        rw [RingHom.id_apply, map_smulₛₗ, hs _ a₀, hs _ a₀, Submodule.coe_smul, map_smulₛₗ, map_smul]) }
-  refine ⟨ψ ∘ₗ p, fun v hv a => ?_⟩
-  have : p v = ⟨v, hv⟩ := LinearMap.congr_fun hp ⟨v, hv⟩
-  change r (s (p v)) = _
-  rw [this, hs _ a]
-
 namespace Setup
 
 variable (ρ : Setup X) (i : X.Tw) (j : Fin D.R.m) (b : Bool)
@@ -101,23 +75,6 @@ theorem HeckeTie.eq (h : HeckeTie rd) (hinj : Function.Injective rd) {k P} (hk :
     (d : ρ.IsHeckeDatum i j b k P α R z) {f g : Y.Fm i ((j : ℕ) + 1) b} (hg : HeckeAt rd k P f g) : Y.hkF i _ b k P f = g :=
   hinj ((h k P hk f ⟨g, hg⟩ α R z d).trans (hg α R z d).symm)
 
-theorem ratHecke_of_range
-    (h1 : ∀ k P, HkIdx i k P → ∀ α R z, ρ.IsHeckeDatum i j b k P α R z → ∀ f, ρ.hecke i j b k P R z (rd f) ∈ Set.range rd)
-    (h2 : ∀ k P, HkIdx i k P → ∀ α R z α' R' z', ρ.IsHeckeDatum i j b k P α R z → ρ.IsHeckeDatum i j b k P α' R' z' →
-      ∀ f, ρ.hecke i j b k P R z (rd f) = ρ.hecke i j b k P R' z' (rd f)) : RatHecke rd := fun k P hk f => by
-  by_cases h : ∃ α R z, ρ.IsHeckeDatum i j b k P α R z
-  · obtain ⟨α, R, z, d⟩ := h
-    obtain ⟨g, hg⟩ := h1 k P hk α R z d f
-    exact ⟨g, fun α' R' z' d' => hg.trans (h2 k P hk α R z α' R' z' d d' f)⟩
-  · exact ⟨0, fun α R z d => absurd ⟨α, R, z, d⟩ h⟩
-
-theorem exists_hecke (hinj : Function.Injective rd) (k : ℕ) (P : Pl D.host.E) :
-    ∃ T : Module.End (FractionRing (X.O i)) (Y.Fm i ((j : ℕ) + 1) b), ∀ f, (∃ g, HeckeAt rd k P f g) → HeckeAt rd k P f (T f) := by
-  obtain ⟨T, hT⟩ := exists_end_reads rd hinj
-    fun a : {a : GA D (Wc D j) × Finset (GA D (Wc D j)) × (AE D)ˣ // ρ.IsHeckeDatum i j b k P a.1 a.2.1 a.2.2} =>
-      ρ.hecke i j b k P a.1.2.1 a.1.2.2
-  exact ⟨T, fun f ⟨g, hg⟩ α R z d => hT f ⟨g, fun a => hg _ _ _ a.2⟩ ⟨(α, R, z), d⟩⟩
-
 theorem CellTie.injective_rdK {hρ : ρ.Good} (T : CellTie hρ Y rd) (k : ℕ) : Function.Injective (rdK rd hρ k) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   obtain ⟨d⟩ := T.nonempty_dat
@@ -130,17 +87,6 @@ theorem CellTie.injective_rdK {hρ : ρ.Good} (T : CellTie hρ Y rd) (k : ℕ) :
 end Hecke
 
 section Univ
-
-theorem admQ_admissibleConjugatePairPlaces (i : X.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) : AdmQ X i (admissibleConjugatePairPlaces X i Q M) M := by
-  classical
-  refine ⟨fun P hP => ?_, fun P hP => ?_⟩
-  · obtain ⟨-, P', -, -, h⟩ := mem_admissibleConjugatePairPlaces_iff.1 hP
-    exact h.1 P (by simp)
-  · obtain ⟨-, P', -, hc, h⟩ := mem_admissibleConjugatePairPlaces_iff.1 hP
-    exact ⟨⟨P', conj_mem_admissibleConjugatePairPlaces hP hc, hc⟩, (h.2 P (by simp)).2⟩
-
-theorem InRange.twSet {i : X.Tw} {Q : Finset (Pl D.host.E)} (h : InRange X i Q) : TWSet X i Q :=
-  fun v hv => ⟨h.1 v hv, fun hl => Finset.disjoint_left.1 h.2.2 hv (X.twistExcludedPlaces_contains_residueChar i hl)⟩
 
 theorem twSet_of_twOK {i : X.Tw} {k : ℕ} {Q : Finset (Pl D.host.E)} {ψ} (h : TwOK (X := X) i k Q ψ) : TWSet X i Q :=
   fun v hv => ⟨h.1 v hv, fun hl => Finset.disjoint_left.1 h.2.1 hv (X.twistExcludedPlaces_contains_residueChar i hl)⟩
@@ -200,9 +146,6 @@ theorem delU_eq_spread (hQ : TWSet X i Q) {ch : Set (Pl D.host.E)} (hch : IsChoi
       spread Y i Q M ch fun P => Multiplicative.toAdd (coord Y i (admissibleConjugatePairPlaces X i Q M) M P.1 σ) :=
   funext fun v => (delU_eq_coord hY hQ σ v).trans (spread_coord Y i Q M hch σ v).symm
 
-theorem delU_eq_one (hQ : TWSet X i Q) (h0 : admissibleConjugatePairPlaces X i Q M = ∅) : Y.delU i Q M = 1 :=
-  MonoidHom.ext fun σ => Multiplicative.toAdd.injective (funext fun v => delU_off hY hQ σ v (by simp [h0]))
-
 end Univ
 
 section Full
@@ -219,41 +162,9 @@ structure FullTie : Type where
 
 variable (hF : ∀ i j b, Faithful (rd i j b))
 
-open Classical in
-
-def Model.hkF (i : X.Tw) : ∀ n b, ℕ → Pl D.host.E → Module.End (FractionRing (X.O i)) (Y.Fm i n b)
-  | 0, b => Y.hkF i 0 b
-  | n + 1, b => fun k P =>
-    if h : n < D.R.m ∧ HkIdx i k P then (exists_hecke (hF i ⟨n, h.1⟩ b).injective k P).choose else Y.hkF i (n + 1) b k P
-
-def withHecke : NExp D.R D.host D.what₂ D.LL0 N X := { Y with hkF := Model.hkF rd hF }
-
-theorem heckeTie_withHecke (i j b) : HeckeTie (Y := withHecke rd hF) (rd i j b) := fun k P hk f hf => by
-  have e : Model.hkF rd hF i ((j : ℕ) + 1) b k P = (exists_hecke (hF i j b).injective k P).choose := dif_pos ⟨j.2, hk⟩
-  have h := (exists_hecke (hF i j b).injective k P).choose_spec f hf
-  rw [← e] at h
-  exact h
-
-theorem withHecke_hkF_zero (i n b P) : (withHecke rd hF).hkF i n b 0 P = Y.hkF i n b 0 P := by
-  cases n with
-  | zero => rfl
-  | succ n => exact dif_neg fun h => absurd h.2.1 (by omega)
-
 variable (hL : ρ.LatFG)
 
-def withAll : NExp D.R D.host D.what₂ D.LL0 N X :=
-  withSeries hρ (Y := withHecke (Y := withUnivChar Y) rd hF) rd hF hL
-
-def fullTieWithAll (hU : ρ.LevelOf Y) : FullTie hρ (Y := withAll hρ rd hF hL) rd where
-  tie := tieWithSeries hρ (Y := withHecke (Y := withUnivChar Y) rd hF) rd hF hL ⟨hU.1, hU.2⟩
-  hecke := heckeTie_withHecke (Y := withUnivChar Y) rd hF
-  univ := fun _ _ _ => rfl
-
 end Full
-
-example (ρ : Setup X) (i j b) (P : Pl D.host.E) (F : GA D (Wc D j) → ℂ) : ρ.hecke i j b 0 P {1} 1 F = F := by
-  funext x
-  simp [Setup.hecke_apply]
 
 end GlobalTheory.SeriesTie
 

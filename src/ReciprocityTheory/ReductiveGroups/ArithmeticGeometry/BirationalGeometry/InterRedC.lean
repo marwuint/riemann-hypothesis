@@ -72,11 +72,4 @@ theorem isSection_lift (R : AnLogRes P J e) {A : HermLine ι} {s : MRing ι}
     Finset.prod_pos fun k _ => pow_pos (norm_pos_iff.mpr (hc k)) _
   field_simp
 
-theorem logNormSec_lift (R : AnLogRes P J e) (A : HermLine ι) (s : MRing ι) (y : R.X) :
-    logNormSec (potOf R A) (fun x y => eval (R.lift x y) (map (Int.castRingHom ℂ) s)) y =
-      logNorm A s (R.lift y y) := by
-  have hpos := A.pos _ (R.mem y y (R.mem_U y)).1
-  simp only [logNormSec, logNorm, potOf]
-  rw [Real.exp_neg, Real.exp_log hpos, div_eq_mul_inv]
-
 end ReciprocityTheory.ChartRestriction.G.Geo

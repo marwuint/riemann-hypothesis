@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.Eventual
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.SumNegOnePowFinrankEqZero
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExactAndSurjectiveAppOfExactOfEpi
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KerOpsComm
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpanSectionsAllAffinesOfCoverStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpanSectionsAllAffinesOfCover
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelOperatorsEventuallyGenerateStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CokernelSequenceOperatorSequenceStatement
 
@@ -42,7 +42,7 @@ theorem kerOpSeq (hG : GradedNoeth) {A : Type} [CommRing A] [IsNoetherianRing A]
     haveI := (hM.coherent (e + 1)).1
     exact isCoherent_kernel _ (hM.coherent e)
   refine ⟨t.sup D, ⟨hcoh, kerOps_comm hM.comm, fun e he => ?_⟩⟩
-  refine GlobalTheory.T.span_sections_all_affines_of_cover (fun i => (hcoh e).1) (hcoh (e + 1)).1 _ (fun x => ?_)
+  refine _root_.GlobalTheory.CompanionTheory.GE.UV.span_range_app_eq_top_of_local (fun i => (hcoh e).1) (hcoh (e + 1)).1 _ (fun x => ?_)
   obtain ⟨U, hUt, hxU⟩ := Set.mem_iUnion₂.1 (ht (Set.mem_univ x))
   exact ⟨U, hxU, hD U e ((Finset.le_sup hUt).trans he)⟩
 

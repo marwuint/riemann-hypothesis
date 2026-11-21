@@ -1,10 +1,10 @@
 import Mathlib
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliLeftComatrixStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliLeftComatrix
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliDetMulVectorTypeStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorPolyMapStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorIntertwiningApplyStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsEigenSplitOfResolventIdentityStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorIntertwiningApply
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsEigenSplitOfResolventIdentity
 open Formalism.REAL Finset
 
 namespace GlobalTheory
@@ -56,7 +56,7 @@ theorem qdet_vector_multiplier_shift_plus : ∀ (V W : Type) [AddCommGroup V] [M
       · simp
     have h2 : ∀ k : Fin (m + 1), ∑ a : Fin (m + 1), Tm E' u a l ((((-1 : ℂ) ^ ((a : ℕ) + (k : ℕ))) • qminor E' (Fin.succAbove a) (Fin.succAbove k) (u - 1)) (y k)) = if l = k then qdet E' u (y k) else 0 := by
       intro k
-      have := LinearMap.congr_fun (GlobalTheory.T.capelli_left_comatrix_qminor_eq (Module.End ℂ W) m E' hE' u k l) (y k)
+      have := LinearMap.congr_fun (_root_.GlobalTheory.capelli_left_comatrix (Module.End ℂ W) m E' hE' u k l) (y k)
       simp only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply] at this
       simp only [LinearMap.smul_apply, map_smul]
       rw [this]
@@ -66,12 +66,12 @@ theorem qdet_vector_multiplier_shift_plus : ∀ (V W : Type) [AddCommGroup V] [M
     rw [Finset.sum_comm]
     simp only [h2]
     simp [hq]
-  obtain ⟨v, hv, hXv⟩ := GlobalTheory.T.exists_eigenSplit_of_resolventIdentity (Fin (m + 1) → W) (m + 1) Ω X (m + 1) _ ν hν hXc hΩ
+  obtain ⟨v, hv, hXv⟩ := _root_.GlobalTheory.exists_sum_eigen_split_of_resolvent (Fin (m + 1) → W) (m + 1) Ω X (m + 1) _ ν hν hXc hΩ
     (Pi.single j w)
   have hqι : ∀ u y, qdet E u (ι y) = (∏ s, (u + ν s)) • ι y := by
     intro u y
     rw [← map_smul, ← hq]
-    exact (GlobalTheory.T.qminor_intertwining_apply V W (m + 1) (m + 1) E E' ι hι id id u y).symm
+    exact (_root_.GlobalTheory.qminor_intertwine V W (m + 1) (m + 1) E E' ι hι id id u y).symm
   have hmu : ∀ (u : ℂ) (y : Fin (m + 1) → W), qdet E u (∑ a, x a (ι (y a))) =
       (∏ s, (u + ν s)) • (∑ a, x a (ι (y a))) + ∑ a, x a (ι (X u y a)) := by
     intro u y
@@ -82,7 +82,7 @@ theorem qdet_vector_multiplier_shift_plus : ∀ (V W : Type) [AddCommGroup V] [M
       simp only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply,
         LinearMap.add_apply, hqι, map_smul] at this
       rw [this]
-      simp only [LinearMap.smul_apply, map_smul, GlobalTheory.T.qminor_intertwining_apply V W (m + 1) m E E' ι hι]
+      simp only [LinearMap.smul_apply, map_smul, _root_.GlobalTheory.qminor_intertwine V W (m + 1) m E E' ι hι]
     simp only [map_sum, h3, Finset.sum_add_distrib, Finset.smul_sum, X, hM]
     rw [Finset.sum_comm]
   refine ⟨v, ?_, fun s u => ?_⟩

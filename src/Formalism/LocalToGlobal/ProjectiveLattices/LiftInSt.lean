@@ -9,10 +9,6 @@ open Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions Formalism.MainNo
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {E : PtExt X} {hM : IntAtExt X E}
   {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData (xplus X E hM) ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)}
 
-def HdIntAt {y : PtsG G la → E.Pt' la} (hs : ∀ ζ, SecPt ζ (y ζ)) (x : Lw (xplus X E hM) la G.w) : Prop :=
-  ∀ (l : List (Idx D j G.N →₀ ℕ)) (ζ : PtsG G la),
-    0 ≤ nval (hs ζ).T.V 1 ((hs ζ).lift (l.foldr (fun β z => hasse (xplus X E hM) la G.w β z) x))
-
 def LocRingSt (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) : Prop :=
   ∀ (y : PtsG G la → E.Pt' la) (hw : ∀ ζ, FromW ζ (y ζ)) (g0 : B.Cusp j wF),
     Nonempty (CurveModel G la g0) →

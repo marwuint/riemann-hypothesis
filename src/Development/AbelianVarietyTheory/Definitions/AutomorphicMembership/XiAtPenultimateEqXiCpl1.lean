@@ -19,8 +19,6 @@ theorem castSp_apply {E : Type} [Field E] {a b : ℕ} (h : a = b) (x : Sp E a) (
 
 theorem castSp_comp {E : Type} [Field E] {a b : ℕ} (x : HomE E a b) : castSp E rfl ∘ₗ x = x := rfl
 
-def castV {ι : Type} {a b b' : ℕ} (h : b = b') (z : VCx ι a b) : VCx ι a b' := fun τ r c => z τ (Fin.cast h.symm r) c
-
 end Cast
 
 theorem thC_zero {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] {a b : ℕ} (emb : ι → E →+* ℂ) (δ : ℂ)
@@ -285,13 +283,6 @@ theorem thAt_of_le (h : R.m ≤ i) (p : PtAt R sel mu cst u i) (p' : PtAt R sel 
 
 end ThUnfold
 
-section ThLast
-
-variable {u : Pr.Word} {n : ℕ} {b : Idx sel mu L (n + 1)} {b' : Idx sel mu L (n + 1 + 1)} (h : n + 1 + 1 = R.m)
-  (p : PtAt R sel mu cst u (n + 1)) (p' : PtAt R sel mu cst u (n + 1 + 1))
-
-end ThLast
-
 section Ker
 
 variable {u : Pr.Word} {n : ℕ} (T : ChTh W sel mu u n)
@@ -315,36 +306,6 @@ theorem k2top_eq_xiOver (h : n + 1 + 1 = R.m) (p : PtAt R sel mu cst u (n + 1)) 
         (frsF sel mu q) (xiOver Ch sel mu cst n rfl p.1.1 p.1.2 q) := if_pos (p.mem_ybSet h)
 
 end Ker
-
-example (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) : ChainIn X.E X.K X.Tau R :=
-  chainAt sel mu cst L (topLev Ch sel mu cst P) u (fun _ _ _ => 1) (fun _ _ _ => 1) A.cD (thAt Ch sel mu cst L A u)
-
-example (u : Pr.Word) : ∃ (n : ℕ) (h : n + 1 + 1 = R.m) (_ : PtAt R sel mu cst u (n + 1)) (p' : PtAt R sel mu cst u (n + 1 + 1))
-    (d : XPt Pr R sel mu), p'.1.1 = tilAt sel mu u h d := by
-  have h : R.m - 2 + 1 + 1 = R.m := by have := R.two_le_m; omega
-  have : NeZero (R.N (R.m - 2 + 1)) := ⟨by have := R.m_add_three_le_k; unfold Ranks.N; omega⟩
-  obtain ⟨p, -⟩ := exists_ptAt (R := R) sel mu cst (u := u) (j := R.m - 2 + 1) (DecoF.base _ _ _ _ _)
-  obtain ⟨p', hp'⟩ := exists_ptAt sel mu cst (tilAt sel mu u h (DecoF.base _ _ _ _ _))
-  exact ⟨_, h, p, p', _, hp'⟩
-
-example {u : Pr.Word} (P : Pr.vT u) (i : ℕ)
-    (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1)) (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) :
-    xiAt Ch sel mu cst L u i b b' p p' 0 = 0 := by
-  by_contra hx
-  have h := phiT_of_xiAt_ne_zero Ch sel mu cst L hx P
-  obtain ⟨y, -, hy⟩ := p.1.1.deco.2.f_ne P
-  have h0 := p'.1.1.deco.2.f_add P 0 (zero_mem _) 0 (zero_mem _)
-  rw [add_zero, left_eq_add] at h0
-  exact hy ((h y (by_contra fun hn => hy (p.1.1.deco.2.f_off P y hn))).2.symm.trans h0)
-
-example [IsEmpty (rowSG Pr sel mu)] {u : Pr.Word} {i : ℕ} (h : i < R.m) (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1))
-    (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) (x : HomE X.E (R.N i) (R.N (i + 1))) :
-    xiAt Ch sel mu cst L u i b b' p p' x = phiT X.K p.1.1.deco.1 p'.1.1.deco.1 x := by
-  rcases lt_trichotomy (i + 2) R.m with h | h | h
-  · rw [xiAt_entry Ch sel mu cst L h (b.some_get (by omega)).symm (b'.some_get (by omega)).symm, XiEntry, Fintype.prod_empty, mul_one]
-  · rw [xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h (b.some_get (by omega)).symm, XiCpl1, Fintype.prod_empty, mul_one]
-  · obtain ⟨n, rfl⟩ : ∃ n, i = n + 1 := ⟨i - 1, by have := R.two_le_m; omega⟩
-    rw [xiAt_last Ch sel mu cst L (by omega), xiOver, Fintype.prod_empty, mul_one]
 
 end Chain
 

@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.HCFdeg
+import Formalism.PeriodIntegrals.UpqRep
 
 noncomputable section
 
@@ -42,20 +42,5 @@ def StableSubspaceMobius : Prop :=
     ∃ d : ℝ, IsFdeg (muG ε) σ d
 
 def FormalDegreeFromOrthogonality : Prop := StOrth → StUnimod → StableSubspaceMobius
-
-def FormalDegreeValue : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool), ∃ c : ℝ, 0 < c ∧
-    ∀ (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-      (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsHCParam lam → IsDS ε lam σ →
-      ∀ d : ℝ, IsFdeg (muG ε) σ d → d = c * fdegHC lam
-
-theorem hCFdeg_of (h1 : StableSubspaceMobius) (h23 : FormalDegreeValue) : PI.HCFdeg := by
-  intro n ε
-  obtain ⟨c, hc, h⟩ := h23 n ε
-  refine ⟨c, hc, fun lam H _ _ _ σ hl hσ => ?_⟩
-  haveI : Nontrivial H := hσ.2.1
-  obtain ⟨d, hd⟩ := h1 n ε H σ hσ.2.2.1 hσ.2.2.2.1 hσ.2.2.2.2.1
-  rw [← h lam H σ hl hσ d hd]
-  exact hd
 
 end PIW.HCFdeg

@@ -105,43 +105,11 @@ structure RealRec (Q : RealT Rc P Dcf Spf Zscf S Ks) : Type 1 where
 
 namespace RealRec
 
-variable {Q : RealT Rc P Dcf Spf Zscf S Ks} (Qr : RealRec Q)
-
-theorem tupT_inj_used {μ μ' : D.what₂.Tup} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (hμ' : Formalism.IndefR.RecTie.Used0 D μ')
-    (h : Qr.tupT μ = Qr.tupT μ') : μ = μ' := by
-  calc μ = P.I.tup (Qr.tupT μ) := (Qr.tupTie μ hμ).symm
-    _ = P.I.tup (Qr.tupT μ') := by rw [h]
-    _ = μ' := Qr.tupTie μ' hμ'
-
-theorem tupleRead_baseTuple_eq_family : Qr.tupT D.what₂.mu0 = P.A3.A.μ0 := by
-  have h : P.I.tup P.A3.A.μ0 = D.what₂.mu0 := by
-    first
-    | exact P.tied.div.tup.mu0
-    | exact P.tied.div.1.tup.mu0
-    | exact P.tied.div.tied.tup.mu0
-  rw [← h]
-  exact Qr.tupT_tup _
-
-theorem tw_iff (Qr : RealRec Q) (w : D.what₂.places.Pl) : D.plEq w ∈ Q.Rl.twPl ↔ D.what₂.muAt w ≠ D.what₂.mu0 := by
-  have h0 := Qr.tupleRead_baseTuple_eq_family
-  constructor
-  · intro hw he
-    apply Q.charW.tup.mu_ne (D.plEq w) hw
-    rw [← Qr.recR.tupAt w, he, h0]
-  · intro hne
-    by_contra hw
-    apply hne
-    apply Qr.tupT_inj_used (Or.inr ⟨w, rfl⟩) (Or.inl rfl)
-    rw [Qr.recR.tupAt w, Q.charW.tup.mu_off (D.plEq w) hw, h0]
-
 end RealRec
 
 namespace RealRec
 
 variable {Q : RealT Rc P Dcf Spf Zscf S Ks}
-
-def ThetaFireAll (Qr : RealRec Q) : Prop :=
-  Formalism.IndefR.RecTie.ThetaFireRow (Formalism.IndefR.RecTie.toLiftReal Q.Rl.toRealDat Q.F.lv2 Qr.tupT Qr.hm Qr.hTop Qr.hinj) Qr.IL
 
 def PartsRow (Qr : RealRec Q) : Prop :=
   Formalism.IndefR.RecTie.PartsRec Q.Rl.toRealDat Q.F.lv2 Qr.tupT Qr.hm Qr.PY Qr.PW Qr.eFT Qr.E Qr.labPi Qr.piOf Qr.Ish.prt Qr.IL.prtW

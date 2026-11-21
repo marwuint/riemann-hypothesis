@@ -65,7 +65,4 @@ theorem hasTh_iff {m : ℕ} {K : Type} [Field K] {x : Sp K ⟶ S} {N : ℕ} {c :
 
 end
 
-theorem symTup_one {R : Type} [CommRing R] (c : Fin 1 → R) : symTup c 0 = c 0 := by
-  simp [symTup, Multiset.esymm, Multiset.powersetCard_one]
-
 end GlobalTheory.UMin

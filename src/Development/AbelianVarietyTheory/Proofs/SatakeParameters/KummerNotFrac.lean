@@ -1,18 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LMulBeta
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedShiftFixedRatioConstDomainStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitOfStableLineStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitOfStableLine
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClosEqZeroOfMulMemStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerPEqSpanBetaStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FilPEqSpanBetaDPowStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerPEqSpanBeta
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FilPEqSpanBetaDPow
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AinfAdjoinBetaImageDivBetaPowStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BetaImageDeRhamPlusDvdOfLAdicResiduesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivPowerEnvelopeMemAinfAdjoinBetaStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AcrisMemBetaAdicClosureAinfAdjoinBetaStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LogPeriodCongruenceBdrStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BetaImageDeRhamPlusDvdOfLAdicResidues
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivPowerEnvelopeMemAinfAdjoinBeta
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AcrisMemBetaAdicClosureAinfAdjoinBeta
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LogPeriodCongruenceBdr
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLogOnePlusKerThetaDeRhamPlusStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GaloisLogTeichmullerRatioEqAddKummerStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsKummerFracCoboundaryFullGaloisStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsKummerFracCoboundaryFullGalois
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
 noncomputable section
@@ -27,8 +27,8 @@ theorem StLat.not_frac (l : ℕ) [Fact l.Prime] (Co : Core l) (ϖ : Per.Fl l)
     (hx : Co.ι x ≠ 0) : Co.ι y ≠ Co.ι x * algebraMap (Per.BdRp l) (Per.BdR l) u := by
   intro h
   obtain ⟨hdom, hdvr, hmax, hmaxθ, -, hfilt, hfr⟩ := BdRDVR.core_dvr l Co
-  have hker := GlobalTheory.T.kerP_eq_span_beta_of_untilt_eq l ϖ hϖ
-  have hfil := GlobalTheory.T.filP_eq_span_betaD_pow_of_kerP_eq_span_beta l Co ϖ hker
+  have hker := _root_.GlobalTheory.Pst.StLat.ker_localizedTheta_eq_span_beta l ϖ hϖ
+  have hfil := _root_.GlobalTheory.Pst.StLat.filtration_eq_span_pow l Co ϖ hker
   have hinjD : Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) := IsFractionRing.injective _ _
   have hβ0 : betaD ϖ ≠ 0 := by
     intro h0
@@ -55,10 +55,10 @@ theorem StLat.not_frac (l : ℕ) [Fact l.Prime] (Co : Core l) (ϖ : Per.Fl l)
     apply hinjD
     rw [map_mul (algebraMap (Per.BdRp l) (Per.BdR l)), ← Co.ι_j, ← Co.ι_j, e1, e2, map_mul Co.ι, map_mul Co.ι, h]
     ring
-  have hA := GlobalTheory.T.acris_mem_betaAdicClosure_ainfAdjoinBeta l Co.j Co.j_cris ϖ (GlobalTheory.T.divPowerEnvelope_mem_ainfAdjoinBeta l ϖ hϖ) hfil
+  have hA := _root_.GlobalTheory.Pst.StLat.acris_mem_clos l Co.j Co.j_cris ϖ (_root_.GlobalTheory.Pst.StLat.acris0_le_sa l ϖ hϖ) hfil
   have hz := GlobalTheory.T.eq_zero_of_mem_clos_of_pow_mul_mul_mem_clos l (Fact.out : l.Prime) (isUnit_l_BdRp l) (betaD ϖ) hβ0 hsep (Sg ϖ)
-    (GlobalTheory.T.ainfAdjoinBetaImage_div_beta_pow l ϖ hϖ hker hfil) (GlobalTheory.T.betaImageDeRhamPlus_dvd_of_lAdic_residues l ϖ hker hfil) u
-    (GlobalTheory.T.log_period_congruence_bdr l ϖ hker hfil u hu) (Co.j (ax * Co.t ^ r')) 0 (hA _) (by
+    (GlobalTheory.T.ainfAdjoinBetaImage_div_beta_pow l ϖ hϖ hker hfil) (_root_.GlobalTheory.Pst.StLat.betaD_dvd_of_res l ϖ hker hfil) u
+    (_root_.GlobalTheory.Pst.StLat.log_trunc_pow l ϖ hker hfil u hu) (Co.j (ax * Co.t ^ r')) 0 (hA _) (by
       rw [pow_zero, one_mul, ← e3]; exact hA _)
   have hz2 : Co.ι (x * tt ^ (r + r')) = 0 := by
     rw [← e1, Co.ι_j, hz, map_zero]
@@ -76,7 +76,7 @@ theorem StLat.kummer_not_frac : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
   ¬ ∀ g ∈ GK K, b * P.actQ g b' - P.actQ g b * b' = b * P.actQ g b * ((kummer P g : ℚ_[l]) • P.tB) := by
   intro l _ P AI T K b b' hb h
   haveI : IsDomain P.R.B := GlobalTheory.RegularRing.isDomain_of_tied T (botExt l)
-  obtain ⟨x, y, hx, hxy⟩ := GlobalTheory.T.exists_kummerFracCoboundary_full_galois l P K b b' hb h
+  obtain ⟨x, y, hx, hxy⟩ := _root_.GlobalTheory.Pst.NoLog.exists_full_frac l P K b b' hb h
   obtain ⟨Co, hC⟩ := GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T
   obtain ⟨ϖ, hr⟩ := exists_tilt (lRoot l) (lRoot_succ l) l (lRoot_zero l)
   have hϖ : ϖ.untilt = ((l : ℕ) : Per.OC l) := Subtype.ext (by
@@ -84,7 +84,7 @@ theorem StLat.kummer_not_frac : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
     rw [lRoot_zero, map_natCast] at this
     exact this.trans (SubringClass.coe_natCast _ _).symm)
   obtain ⟨u, hu⟩ := GlobalTheory.T.exists_logOnePlus_kerTheta_deRhamPlus l (beta ϖ) (by
-    rw [GlobalTheory.T.kerP_eq_span_beta_of_untilt_eq l ϖ hϖ]; exact Ideal.mem_span_singleton_self _)
+    rw [_root_.GlobalTheory.Pst.StLat.ker_localizedTheta_eq_span_beta l ϖ hϖ]; exact Ideal.mem_span_singleton_self _)
   have hg := GlobalTheory.T.galois_logTeichmullerRatio_eq_add_kummer l P Co hC.ζ ϖ hr hϖ u hu
   letI : Field P.R.BdR := (GlobalTheory.RegularRing.isField_of_tied T).toField
   set U := T.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) u) with hUdef
@@ -167,6 +167,6 @@ theorem stRegular : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf 
     ring
   · have hK : ∀ b : P.R.B, ¬ ∀ g ∈ GK K, P.actQ g b - b = (kummer P g : ℚ_[l]) • P.tB :=
       GlobalTheory.Pst.NoLog.kummer_not_coboundary l P AI T K
-    exact GlobalTheory.T.isUnit_of_stable_line' l P K hK (GlobalTheory.RegularRing.lineUnit hC hreg K) b hb h
+    exact _root_.GlobalTheory.Pst.StLine.isUnit_of_stable_line l P K hK (GlobalTheory.RegularRing.lineUnit hC hreg K) b hb h
 
 end GlobalTheory.Pst

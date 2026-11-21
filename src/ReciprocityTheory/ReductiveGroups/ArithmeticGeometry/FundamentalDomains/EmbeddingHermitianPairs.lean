@@ -13,30 +13,6 @@ section herm
 
 variable (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
 
-lemma hermC_add_left (u u' v : Fin r → ℂ) : hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
-  simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
-
-lemma hermC_add_right (u v v' : Fin r → ℂ) : hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
-  simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
-
-lemma hermC_smul_left (a : ℂ) (u v : Fin r → ℂ) : hermC τ G (a • u) v = a * hermC τ G u v := by
-  simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  ring
-
-lemma hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) : hermC τ G u (a • v) = conj a * hermC τ G u v := by
-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  ring
-
-lemma hermC_conj (hG : ∀ a b, cc (G a b) = G b a) (u v : Fin r → ℂ) :
-    conj (hermC τ G u v) = hermC τ G v u := by
-  simp only [hermC, map_sum, map_mul, Complex.conj_conj]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  rw [← emb_cc' τ (G b a), hG]
-  ring
-
 lemma hermC_emb (x y : Fin r → E) :
     hermC τ G (fun a => τ (x a)) (fun a => τ (y a)) = τ (herm G x y) := by
   simp only [hermC, herm, map_sum, map_mul, emb_cc']

@@ -1,6 +1,7 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.BaseChangeUnits.QuadraticInductionGL2Alt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.HolomorphicIrreducibility.IsAlgOfPos
-import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.SymmetricAdjointFrobenius.InfEx
+import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.ArthurClozelDescent
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.CapCentral
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.HolomorphicIrreducibility.DenseRangeUnitsR
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.HolomorphicIrreducibility.AlgCyc
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdTransfer
@@ -335,40 +336,3 @@ private theorem tw_back {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   rw [tw_val, tw_val, smul_smul, ← Units.val_mul]
   simp
 
-theorem UpperTheory.V.Z.Bc.isAutR_of_ind (hP : Af.Hypotheses₂) {E Ω : Type} [Field E] [NumberField E] [IsTotallyReal E] [Field Ω] [CharZero Ω]
-    [IsAlgClosure ℚ Ω] [Algebra E Ω] (h2 : Module.finrank ℚ E = 2) {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {π : TR.CuspSub E 2}
-    {r : G E Ω →* GL (Fin 2) (Qbar l)} (hatt : AttR ι r π) {m m' : Fin 2 → ℤ} (hinj : Function.Injective ![m 0, m 1, m' 0, m' 1])
-    {R : G ℚ Ω →* GL (Fin 4) (Qbar l)} (hR : IsSSRep R) (H : IndCh (galEmb ℚ E Ω) r R) {P : TR.CuspSub ℚ (2 * 2)} (hfin : IndFin P π)
-    (hinf : ∀ u, P.HasInfChar u (infOf m + infOf m')) : IsAutR ι R := by
-  haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩
-  obtain ⟨hnd, hint⟩ := infOf_add hinj
-  have key : IsAutR ι (tw R (cycBar ℚ Ω l)⁻¹) := ⟨P, fun u => ⟨_, hinf u, hnd, hint⟩,
-    attInd ℚ E Ω h2 l ι r R π.HasSat P.HasSat (fun _ _ _ => TR.CuspSub.HasSat.unique) (fun _ _ _ => TR.CuspSub.HasSat.unique) hatt hfin hR H⟩
-  rw [tw_back R]
-  exact UpperTheory.V.Sd.twR hP ℚ Ω l ι 4 _ _ ((UpperTheory.V.Sd.algCyc hP ℚ Ω l ι).1 1 1 (by simp)) key
-
-theorem UpperTheory.V.Z.Bc.quadraticInductionGL2_of (hP : Af.Hypotheses₂) (h1 : IndWeakQd) (h3 : InfOfL) : QuadraticInductionGL2 := by
-  intro E _ _ _ h2 π hm hc
-  obtain ⟨P, hfin⟩ := h1 E h2 π hm hc
-  refine ⟨P, hfin, fun v v' u m m' hne hv hv' => ?_⟩
-  obtain ⟨M, hM⟩ := UpperTheory.V.Lit.infEx hP ℚ _ P u
-  exact h3 E h2 P π hfin v v' u m m' M hne hv hv' hM ▸ hM
-
-theorem UpperTheory.V.Z.Bc.indAut_of (hP : Af.Hypotheses₂) (h1 : IndWeakQ) (h3 : InfOfL) : UpperTheory.V.Sd.IndAut := by
-  intro E Ω _ _ _ _ _ _ _ h2 l _ ι π r m m' hatt ⟨v, v', hvv, hv, hv'⟩ hinj R hR H
-  obtain ⟨P, hfin⟩ := h1 E h2 π ⟨m, m', v, v', hvv, hv, hv', hinj⟩
-  refine isAutR_of_ind hP h2 hatt hinj hR (fun u hu => H u (range_galEmb ℚ E Ω ▸ hu)) hfin fun u => ?_
-  obtain ⟨M, hM⟩ := UpperTheory.V.Lit.infEx hP ℚ _ P u
-  exact h3 E h2 P π hfin v v' u _ _ M hvv hv hv' hM ▸ hM
-
-theorem UpperTheory.V.Z.Bc.indAutC_of (hP : Af.Hypotheses₂) (h : IndC) : IndAutC := by
-  intro K M Ω _ _ _ _ _ _ _ _ _ _ _ _ h2 l _ ι π r hatt hm R hR H
-  haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed M, Algebra.IsAlgebraic.trans K M Ω⟩
-  obtain ⟨P, hfin, hinf⟩ := h K M h2 π hm
-  have key : IsAutC ι (tw R (cycBar K Ω l)⁻¹) := by
-    refine ⟨P, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun φ => ?_, attInd K M Ω h2 l ι r R (CG.mk π).HasSat (CG.mk P).HasSat (fun _ _ _ h h' => h.unique h') (fun _ _ _ h h' => h.unique h') hatt hfin hR H⟩
-    obtain ⟨m, m', τ, τ', hne, rfl, e, hv, hv', hinj⟩ := hm φ
-    rw [CG.HasInfChar.infChar_eq (π := CG.mk P) (hinf τ τ' _ _ hne e.symm hv hv')]
-    exact infOf_add hinj
-  rw [tw_back R]
-  exact UpperTheory.V.Sd.twC hP K Ω l ι 4 _ _ ((UpperTheory.V.Sd.algCyc hP K Ω l ι).1 1 1 (by simp)) key

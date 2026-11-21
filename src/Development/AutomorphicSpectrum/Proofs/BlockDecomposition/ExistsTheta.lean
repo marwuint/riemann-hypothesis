@@ -2,17 +2,17 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.NLeA
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.CombinatorialCechAcyclic
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AlgebraMapConeRing
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinsetSystemInjectiveExtensionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinsetSystemInjectiveExtension
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinsetSystemScalarTowerExtStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PmExactnessOfExPStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExPOfCompatibleEquivStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExPOfCompatibleEquiv
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MonomialFormsBasisStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeFormsMapInjectiveStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelativeFormsMapMemSpanStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MonomialFormInRelativeImageStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartEmptyBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartEmptyBaseChange
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartSingletonBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartExtendBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartExtendBaseChange
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartBaseChangeMapUniqueStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartFormsBaseChangeStatement
 
@@ -31,9 +31,9 @@ theorem exists_theta {A : Type} [CommRing A] [Algebra K A] (C : ChartRings K A n
       IsBaseChange (Aa C) (thetaLin C θ hθ) := by
     intro S
     rcases S.eq_empty_or_nonempty with rfl | ⟨k, hk⟩
-    · exact GlobalTheory.T.chart_empty_base_change C
+    · exact _root_.GlobalTheory.CompanionTheory.SurjectionOntoH4.ThetaEmpty.theta_empty C
     · obtain ⟨θ₁, h₁, hu, hb⟩ := GlobalTheory.T.chart_singleton_base_change C k
-      exact GlobalTheory.T.chart_extend_base_change C S k hk θ₁ h₁ hu hb
+      exact _root_.GlobalTheory.CompanionTheory.SurjectionOntoH4.ThetaLoc.theta_loc C S k hk θ₁ h₁ hu hb
   choose θ hθ bc using key
   refine ⟨θ, hθ, ?_, bc⟩
   intro S T h y
@@ -55,7 +55,7 @@ theorem Tset_ne_univ (g : Gam n d) (D : Finset (E n d)) (h : good g D) : Tset g 
 theorem model_ex (a : ℕ) : ExP (fun S : Finset (Fin d) => relOm K (I0 n K S) a)
     (fun {S T} h => relMap (incl (cone_mono h)) (cone_ideal_map_mono (S := S) (T := T) h) a) := by
   obtain ⟨b, hb⟩ := GlobalTheory.T.monomial_forms_basis (K := K) (n := n) (d := d) a
-  refine GlobalTheory.T.finset_system_injective_extension (K := K) b (fun p => good p.1 p.2.1) (fun p => Tset p.1 p.2.1) (fun p h => Tset_ne_univ _ _ h) _ _
+  refine _root_.GlobalTheory.CompanionTheory.SurjectionOntoH4.Exc.exP_of_basis (K := K) b (fun p => good p.1 p.2.1) (fun p => Tset p.1 p.2.1) (fun p h => Tset_ne_univ _ _ h) _ _
     (fun S => ((omMap (K := K) (incl (le_top : (cone S : AddSubmonoid (Gam n d)) ≤ ⊤)) a).toAddMonoidHom).comp
       (relOm K (I0 n K S) a).subtype.toAddMonoidHom) ?_ ?_ ?_
   · intro S x y hxy
@@ -119,7 +119,7 @@ theorem h4a : ChartFormsCechExact := by
         omMap (θ T) a (omMap (incl (cone_mono h)) a (ω : Om K (R0 K n d S) a))
       have e2 : (C.res h).comp (θ S) = (θ T).comp (incl (cone_mono h)) := AlgHom.ext fun y => nat h y
       rw [omMap_comp, omMap_comp, e2]
-  refine GlobalTheory.T.pm_exactness_of_exP P (GlobalTheory.T.exP_of_compatible_equiv _ _ (fun {S T} h => relMap (C.res h) (res_mem_I C (S := S) (T := T) h) a) _
+  refine GlobalTheory.T.pm_exactness_of_exP P (_root_.GlobalTheory.CompanionTheory.SurjectionOntoH4.exP_of_addEquiv _ _ (fun {S T} h => relMap (C.res h) (res_mem_I C (S := S) (T := T) h) a) _
     (fun S => ((e S).symm.toAddEquiv : relA C S a ≃+ P.M S)) ?_ h2)
   intro S T h x
   apply (e T).injective

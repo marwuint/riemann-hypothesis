@@ -43,20 +43,4 @@ theorem transposeInv_apply (g : GL n R) (i j : n) :
 
 @[simp] theorem transposeInv_symm : (transposeInv : GL n R ≃* GL n R).symm = transposeInv := rfl
 
-theorem det_transposeInv (g : GL n R) :
-    GeneralLinearGroup.det (transposeInv g) = (GeneralLinearGroup.det g)⁻¹ := by
-  rw [← map_inv]
-  apply Units.ext
-  simp only [GeneralLinearGroup.val_det_apply, coe_transposeInv, det_transpose]
-
-theorem map_transposeInv {S : Type*} [CommRing S] (f : R →+* S) (g : GL n R) :
-    GeneralLinearGroup.map f (transposeInv g) = transposeInv (GeneralLinearGroup.map f g) := by
-  apply Units.ext
-  rfl
-
-theorem continuous_transposeInv [TopologicalSpace R] :
-    Continuous (transposeInv : GL n R → GL n R) := by
-  rw [Units.continuous_iff]
-  exact ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
-
 end Reformulated.TransposeInverseTheory

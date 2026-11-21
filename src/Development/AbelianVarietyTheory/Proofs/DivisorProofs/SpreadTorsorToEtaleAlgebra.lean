@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorsTrivialIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFilteredColimitFiniteTypeIntRings
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenFibMapAlgebraMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtaleFactorOfIndEtAtPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtaleFactorOfIndEtAtPrime
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsZmodTorsorModelOfFilteredColimitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtaleLiftGenericFibreOfFactorizationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorBaseChangeZmodStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtaleLiftGenericFibreOfFactorization
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorBaseChangeZmod
 
 open IsLocalRing Polynomial CategoryTheory Limits
 open scoped TensorProduct
@@ -41,11 +41,11 @@ theorem spread_torsor_to_etale : ∀ (T O : Type) [CommRing T] [CommRing O] [Alg
   let u : U →+* GenFib T O := ((GlobalTheory.FiniteTypeColimit.inclusions (CommRingCat.of (GenFib T O))).app j).hom
   haveI : Algebra.FiniteType ℤ U := GlobalTheory.FiniteTypeColimit.finiteType _ j
 
-  have hfact := GlobalTheory.T.exists_etale_factorization_of_isIndEtale (Polynomial T) O P φ hφ hind
-  have hl := GlobalTheory.T.exists_etale_lift_genericFibre_of_factorization T (Polynomial T) O hfact U u
+  have hfact := _root_.GlobalTheory.IndEtFactorLoc.exists_etale_factor_of_indEt_atPrime (Polynomial T) O P φ hφ hind
+  have hl := _root_.GlobalTheory.GenFibLift.exists_etale_genFib_lift T (Polynomial T) O hfact U u
   obtain ⟨W, _, _, _, _, _, ψ, uW, hcomp⟩ := hl
   letI : Algebra U (GenFib T W) := uW.toAlgebra
-  obtain ⟨actE, hE⟩ := GlobalTheory.T.torsor_base_change_zmod U (GenFib T W) q Dj actj hq hDj
+  obtain ⟨actE, hE⟩ := _root_.GlobalTheory.LocAcyc.exists_isZModTorsor_tensorBase U (GenFib T W) q Dj actj hq hDj
   refine ⟨W, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ψ,
     TensorProduct U (GenFib T W) Dj, inferInstance, inferInstance, actE, hE, ?_⟩
   intro s hs

@@ -56,13 +56,4 @@ def QFrame (g : W.Gam) (J : O⟦X⟧ →ₐ[O] O⟦X⟧) : Prop :=
 
 end Generic
 
-def CompletionLines : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
-    ∀ (H : LocHW l P) (F : LocFon l P AI H), LocCmpT l P AI H F →
-    ∀ (K LL : FinExt l) (hA : CaseA K LL) (U : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Multiset ℤ)
-      (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)),
-      CrysWith (P.PD K) (H.W K 1 LL hA.2.2).emb T.ρ U → (∀ i, ∀ u ∈ U i, 0 ≤ u) →
-      ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (ζ : ↥LL.1), IsPrimitiveRoot ζ l →
-        LinesAt (H.W K 1 LL hA.2.2) T i ζ (U i)
-
 end GlobalTheory.SenLines

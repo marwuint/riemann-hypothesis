@@ -25,10 +25,4 @@ theorem galMap_proj (σ : Ω ≃ₐ[K] Ω) (hσ : σ ∈ L.fixingSubgroup) : gal
 
 end Proj
 
-def Desc : Prop := Base → ∀ (l : ℕ) [Fact l.Prime] (K : Type) [Field K], (l : K) ≠ 0 →
-  ∀ {X : Scheme.{0}} (p : X ⟶ Sp K), IsProper p → ∀ (n : ℤ) (k : ℕ)
-    (y : HtL l k (sch.obj (geom (AlgebraicClosure K) p)) n 0),
-    ∃ (L : IntermediateField K (AlgebraicClosure K)) (_ : FiniteDimensional K L)
-      (z : HtL l k (sch.obj (geom L p)) n 0), pull _ (sch.map (proj L p)) _ n z = y
-
 end LateralTheory.EWeil.StabPf

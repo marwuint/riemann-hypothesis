@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjo
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapZpInjective
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesAndDerivUniqueOfCoefficients
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesCongIffCoeffAndIsUnitStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePadicSpanOfPowPMulMemStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesCongIffCoeffAndIsUnit
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePadicSpanOfPowPMulMem
 open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois GlobalTheory.GeoFix
 
@@ -25,9 +25,9 @@ theorem divide_ev : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra
     ⟨d, e, a, he, fun r => rfl, rfl, rfl⟩
   have hcong : Cong p v (∑ t, e t * ψ (algebraMap (Lau p) (O0 p) (a t))) 0 :=
     ⟨o, ho, by rw [sub_zero, hsum]⟩
-  have hcr := ((GlobalTheory.T.evalSeries_cong_iff_coeff_and_isUnit p Ω hc T n ψ h v c _ _ hev).1.1 hcong)
+  have hcr := ((_root_.GlobalTheory.Glue.ev_cong_iff_and_unit p Ω hc T n ψ h v c _ _ hev).1.1 hcong)
   choose y hy hcy using hcr
-  obtain ⟨m, f, hf, hlat⟩ := GlobalTheory.T.exists_finite_padic_span_of_pow_p_mul_mem p Ω hc d e he v
+  obtain ⟨m, f, hf, hlat⟩ := _root_.GlobalTheory.GeoFix.exists_fin_span_of_pow_mul p Ω hc d e he v
   have hμ : ∀ r, ∃ μ : Fin m → ℤ_[p], y r = ∑ j, zp Ω (μ j) * f j := by
     intro r
     refine hlat (fun t => (a t).coeff r) (y r) (hy r) ?_

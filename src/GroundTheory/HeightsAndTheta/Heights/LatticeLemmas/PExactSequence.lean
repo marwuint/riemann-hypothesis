@@ -61,11 +61,6 @@ end HermitianBundle
 
 namespace LatticeLemmas
 
-theorem ExactSequence.proof : ExactSequence.Statement := by
-  intro K _ _ M F hF
-  simp only [HermitianBundle.deg]
-  rw [(HermitianBundle.subQuotExtension M F hF).arithDegree_eq_add, add_div]
-
 end LatticeLemmas
 
 end

@@ -14,9 +14,4 @@ theorem weilUnitary : GlobalTheory.Published.WeilSiegelFormulaUnitary :=
 
 theorem fa : FA := fa_of convergent weilUnitary
 
-theorem fockAniso_free (_ : GlobalTheory.Published.SiegelWeilAnisotropicUnitary) (D : Formalism.BasicNotions.D7) :
-    GlobalTheory.BottomRallis.SiegelWeilFockAniso D := fa D
-
-example : type_of% @fockAniso_free = type_of% @GlobalTheory.BottomRallis.siegelWeilFockAniso_of_siegelWeilAnisotropic := rfl
-
 end UpperTheory.Lit.Sw47

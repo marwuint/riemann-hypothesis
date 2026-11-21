@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RwAppend
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartAndRightWordsSmooth
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixExpCurveDerivativeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularRepresentationContinuousStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatrixExpCurveDerivative
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularRepresentationContinuous
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LpIntegralAePointwiseStatement
 open MeasureTheory Matrix Finset Filter Topology
 open scoped ContDiff ComplexConjugate InnerProductSpace ZeroAtInfty
@@ -25,7 +25,7 @@ theorem Rd_continuousOn {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace
 theorem hasDerivAt_curve {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) (z : G n) (s : ℝ) :
     HasDerivAt (fun r : ℝ => f (z.val * (expC X r).val)) (Rd X f (z.val * (expC X s).val)) s := by
-  have hγ := (GlobalTheory.T.matrix_exp_curve_derivative n X).2 s
+  have hγ := (_root_.GlobalTheory.CompanionTheory.PresSobA.ExpCurve.expC_continuous_hasDerivAt n X).2 s
   let L : CLof (Mat n) (Mat n) := LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ z.val)
   have h1 : HasDerivAt (fun r : ℝ => z.val * (expC X r).val) (z.val * ((expC X s).val * X)) s :=
     L.hasFDerivAt.comp_hasDerivAt s hγ
@@ -42,7 +42,7 @@ theorem continuous_F {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace �
     {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) :
     Continuous (fun p : ℝ × G n => Rd X f (p.2.val * (expC X p.1).val)) := by
   have hc : Continuous (fun p : ℝ × G n => p.2 * expC X p.1) :=
-    continuous_snd.mul ((GlobalTheory.T.matrix_exp_curve_derivative n X).1.comp continuous_fst)
+    continuous_snd.mul ((_root_.GlobalTheory.CompanionTheory.PresSobA.ExpCurve.expC_continuous_hasDerivAt n X).1.comp continuous_fst)
   have hv : Continuous (fun p : ℝ × G n => (p.2 * expC X p.1).val) := Units.continuous_val.comp hc
   exact (Rd_continuousOn hf X).comp_continuous hv (fun p => val_mem_GLs (p.2 * expC X p.1))
 
@@ -65,7 +65,7 @@ theorem setIntegral_ae (hU : Unimod) {f : Mat n → V} (X : Mat n) (hf : ContDif
     (⇑(∫ s in Set.Ioc a b, rR μ V (expC X s) (cls μ (Rd X f))) : G n → V) =ᵐ[μ]
       fun z => ∫ s in Set.Ioc a b, Rd X f (z.val * (expC X s).val) := by
   have hc : Continuous (fun s : ℝ => rR μ V (expC X s) (cls μ (Rd X f))) :=
-    ((GlobalTheory.T.regular_representation_continuous n μ V hU (cls μ (Rd X f))).1).comp (GlobalTheory.T.matrix_exp_curve_derivative n X).1
+    ((_root_.GlobalTheory.CompanionTheory.PresSobA.translations_strongly_continuous n μ V hU (cls μ (Rd X f))).1).comp (_root_.GlobalTheory.CompanionTheory.PresSobA.ExpCurve.expC_continuous_hasDerivAt n X).1
   have hint : Integrable (fun s : ℝ => rR μ V (expC X s) (cls μ (Rd X f)))
       (volume.restrict (Set.Ioc a b)) := hc.integrableOn_Ioc
   refine GlobalTheory.T.lp_integral_ae_pointwise ℝ (G n) V (volume.restrict (Set.Ioc a b)) μ _

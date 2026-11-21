@@ -7,10 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeutralGroupModelStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeutralGroupModel
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SmConnModelDescends
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAmpleCubSpFibre
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAmpleCubicalOfGroupSchemeIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAmpleCubicalOfGroupSchemeIso
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TorusExtensionOverCompleteLocalDvr
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AbelianProjectiveBaseChange
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SmoothOfRelativeDimensionOfGeneric
@@ -52,7 +52,7 @@ theorem exists_ampleCub_fibre {S S' T : Scheme.{0}} {f : S' ⟶ S} (j : T ⟶ S'
     ∃ N : LB ((Over.pullback t).obj G).left, AmpleCub ((Over.pullback t).obj G) N := by
   obtain ⟨e, he, -⟩ := grpPullback_iso (isGrpPullback_pullback G t)
     (((isGrpPullback_pullback G' j).comp h).congr ht rfl)
-  exact GlobalTheory.T.exists_ampleCubical_of_groupScheme_iso _ _ _ e he L hL
+  exact _root_.GlobalTheory.SS.AmpIso.exists_ampleCub_of_iso _ _ _ e he L hL
 
 theorem smoothOfRelativeDimension_model {K W : Type} [Field K] [CommRing W] [IsDomain W]
     [Algebra K (FractionRing W)] (P : Out.PolAV (Sp K)) (G : Over (Sp W)) [GrpObj G] (hG : SmConn G)
@@ -74,7 +74,7 @@ theorem exists_level_model : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscr
   intro V K _ _ _ _ _ _ R K' _ _ _ _ _ _ _ hR hc P
   have : IsFractionRing R K' := hR.2.2.2
   let P' := GlobalTheory.TorusModel.polPull (spMap (algebraMap K K')) P
-  obtain ⟨G', _, hG', he, c, hc1, hext⟩ := GlobalTheory.T.exists_neutral_group_model' R K' hR P'.A P'.isAb
+  obtain ⟨G', _, hG', he, c, hc1, hext⟩ := _root_.GlobalTheory.SS.exists_neutral_group_model R K' hR P'.A P'.isAb
     (GlobalTheory.AbProj.isProjBy_of_isPullback P' (IsPullback.id_horiz _))
   obtain ⟨L', hL'⟩ := GlobalTheory.SS.exists_ampleCub_spFibre R K' hR P' G'.Y hG' G'.e he
   obtain ⟨s, hs⟩ := GlobalTheory.smConn_model_descends V K R K' hc P.A P.isAb G'.Y hG' ⟨G'.e, he⟩

@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalCartanPairs.CmpBlock
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalCartanPairs.PiNonunit
 
 noncomputable section
@@ -48,21 +47,6 @@ theorem cmp_gram_pre [IsDomain R] {ι : Type*} [Fintype ι] (A A' h : Matrix ι 
     ring
   rw [hxy, smul_eq_mul] at key
   exact mul_left_cancel₀ hs key
-
-theorem cmp_pre {ι : Type*} [Fintype ι] (h : Matrix ι ι R) (p q x y : ι → R) (c₁ d α' s' : R)
-    (w : Matrix (Fin 2) (Fin 2) R) (hp : h *ᵥ p = c₁ • x) (hq : h *ᵥ q = (c₁ * d) • y)
-    (hw : w 1 0 = d * α' * s') :
-    h *ᵥ (w 0 0 • p + (s' * α') • q) = c₁ • (w 0 0 • x + w 1 0 • y) ∧
-      h *ᵥ ((w 0 1 * d) • p + w 1 1 • q) = (c₁ * d) • (w 0 1 • x + w 1 1 • y) := by
-  refine ⟨?_, ?_⟩
-  · rw [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hp, hq, hw]
-    ext i
-    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-    ring
-  · rw [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hp, hq]
-    ext i
-    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-    ring
 
 theorem cmp_hyp [IsDomain R] {ι : Type*} [Fintype ι] (A A' h : Matrix ι ι R) (s : R) (hs : s ≠ 0)
     (hh : (h.map σ)ᵀ * A * h = s • A') (c₁ c₂ : R) (hc : σ c₁ * c₂ = s)
@@ -158,32 +142,6 @@ theorem cmp_split [IsDomain R] {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fi
     rw [hB]
   · rw [hB] at hS
     simpa using hS
-
-theorem cmp_pre_sel {ι : Type*} [Fintype ι] [DecidableEq ι] (h h₁ g₁ : Matrix ι ι R) (ϖ : R)
-    (m a : ℕ) (hh₁ : h = ϖ ^ m • h₁) (hg : h₁ * g₁ = ϖ ^ (2 * a) • (1 : Matrix ι ι R)) (j : ι)
-    (x y : ι → R) (hx : x = h₁ *ᵥ Pi.single j 1) (w : Matrix (Fin 2) (Fin 2) R) (α α' s' : R)
-    (hα : α = ϖ ^ (2 * a) * α') (hw : w 1 0 = α * s') :
-    h *ᵥ (w 0 0 • Pi.single j 1 + (s' * α') • (g₁ *ᵥ y)) = ϖ ^ m • (w 0 0 • x + w 1 0 • y) ∧
-      h *ᵥ ((w 0 1 * ϖ ^ (2 * a)) • Pi.single j 1 + w 1 1 • (g₁ *ᵥ y)) =
-        (ϖ ^ m * ϖ ^ (2 * a)) • (w 0 1 • x + w 1 1 • y) := by
-  have e1 : h *ᵥ Pi.single j 1 = ϖ ^ m • x := by
-    rw [hh₁, smulMulVec_lemma, hx]
-  have e2 : h *ᵥ (g₁ *ᵥ y) = (ϖ ^ m * ϖ ^ (2 * a)) • y := by
-    rw [hh₁, smulMulVec_lemma, Matrix.mulVec_mulVec, hg, smulMulVec_lemma, Matrix.one_mulVec, smul_smul]
-  refine ⟨?_, ?_⟩
-  · rw [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, e1, e2, hw, hα]
-    ext i
-    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-    ring
-  · rw [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, e1, e2]
-    ext i
-    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-    ring
-
-theorem cmp_pow (ϖ : R) (hϖ : σ ϖ = ϖ) (m a k : ℕ) (hk : m + a = k) :
-    σ (ϖ ^ m) * (ϖ ^ m * ϖ ^ (2 * a)) = ϖ ^ (2 * k) := by
-  rw [map_pow, hϖ, ← hk]
-  ring
 
 end PI.SqPair.LocCartanPairW
 

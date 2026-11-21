@@ -12,10 +12,14 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GramMapMulIn
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EasyInputs
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOKAll
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ActRep
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDatumFixesLatticeVacuaAtInertPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDatumRealDerivativeFockVectorsAllStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsOfSmoothThetaStableStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChainStepVectorsAndAdjointVectorsAreThetaStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDatumFixesLatticeVacuaAtInertPlaces
+import Formalism.LocalToGlobal.IndefiniteReal.WeilFull
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDatumRealDerivativeFockVectorsAll
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsOfSmoothThetaStable
+import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.TwoSplitIdem
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChainStepVectorsAndAdjointVectorsAreTheta
+import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.StepVecThetaLem
 
 noncomputable section
 
@@ -31,14 +35,14 @@ theorem inputs_of_hypotheses : GlobalTheory.Published.WeilRepresentationUnitaryP
   intro hW _ hH hC D
   obtain ⟨hcart, hsd, hsp, hdim, hpet, hsm⟩ := GlobalTheory.Mem.EasyInputs.easy_inputs D
   exact
-    { weil := Formalism.IndefR.WeilFull.weilExistsFull_of (hW D) (GlobalTheory.T.weil_datum_fixes_lattice_vacua_at_inert_places D) (GlobalTheory.T.weilDatum_realDerivative_fockVectors_all D)
+    { weil := Formalism.IndefR.WeilFull.weilExistsFull_of (hW D) (_root_.GlobalTheory.InertAll.inertAllO D) (_root_.GlobalTheory.WeilReal.realAllO D)
       vac := GlobalTheory.Member.vacuum_oriented_exists D
       stepVec := GlobalTheory.PlaceDatum.stepVecExists D
       thPVec := GlobalTheory.PlaceVec.thPVecExists D
-      ptStable := GlobalTheory.T.fockPolynomialVectors_of_smoothTheta_stable D
+      ptStable := _root_.GlobalTheory.FockTheta.ptStable D
       cartan := hcart
       selfDual := hsd
-      vecTheta := GlobalTheory.T.chainStepVectors_and_adjointVectors_areTheta D
+      vecTheta := _root_.GlobalTheory.VecTheta.vecThetaSD D
       measFD := Formalism.IndefR.Eqv.measFDExists_holds D
       measDef := Formalism.IndefR.Eqv.measLevDefExists_holds D
       fund := Formalism.IndefR.Eqv.fundDomExists_holds D

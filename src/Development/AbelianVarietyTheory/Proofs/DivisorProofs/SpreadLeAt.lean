@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
-import Formalism.MeanHeightDescent.CovolumeFullAssemblyWeighted
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightNodesFarAndSpreadStatement
+import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
+import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightNodesFarAndSpread
 
 open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.L2.Indef.Tree NumberField GlobalTheory.MeanTop
 
@@ -11,7 +12,7 @@ theorem spread_le_at {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N) (hW : W.H
     (j : ℕ) (hj : j ≤ N - W.kc) :
     (j : ℝ) * ((⨆ i, reWt W.u' τ i) - ⨅ i, reWt W.u' τ i) ≤ 6 * ∑ i, |(W.u' τ i : ℝ)| := by
   classical
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.dividedWeight_nodes_far_and_spread ι N W hW hD τ
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.MeanTop.nodes_far_and_spread ι N W hW hD τ
   have hN : 0 < N := lt_of_le_of_lt (Nat.zero_le _) hW.p_lt
   haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
   obtain ⟨a, ha⟩ := exists_eq_ciSup_of_finite (f := reWt W.u' τ)

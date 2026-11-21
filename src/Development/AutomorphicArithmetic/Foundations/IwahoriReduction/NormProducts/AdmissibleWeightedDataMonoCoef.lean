@@ -3,7 +3,8 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.FrobeniusHodgeTateLaws.SmoothedZetaClassHodgeTateLawStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSubMulAddLeOfUltrametricReplace
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormEqOneOfIsUnitToZModPow
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoefSpanFinset
+import Development.AbelianVarietyTheory.Definitions.Foundations.ShCocOn
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsLocallyConstantCycMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZetaSystemExponentRaiseOfPrimePowSmul
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ShCocWsumProps
 
@@ -40,23 +41,6 @@ end UpperTheory.Kd.K4
 namespace UpperTheory.Kd.K4.ZetaTop
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} {l : ℕ} [Fact l.Prime]
-
-theorem admissibleWeightedData_mono_coef {ι : Qbar l ≃+* ℂ} {e : ℕ} {g : Newform (2 * e + 1)} {A : ValuationSubring Ω} {W : R2 Ω l}
-    {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {N : ℕ} [NeZero N] {cw : ZMod N → Qbar l} {c d : ℕ}
-    {gm : (ZMod l)ˣ → SL(2, ℤ)} {ψ : ZMod l → Qbar l} {cf cf' : Coef l} (hle : cf.O ≤ cf'.O)
-    (h : AdmWn ι e g A W X pr N cw c d gm ψ cf) : AdmWn ι e g A W X pr N cw c d gm ψ cf' := by
-  refine ⟨fun x hx => ?_, fun x => hle (h.2 x)⟩
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ := h.1 x hx
-  exact ⟨h1, h2, h3, h4, h5, h6, fun b hb i => hle (h7 b hb i), h8⟩
-
-theorem isZWc_mono {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {W : R2 Ω l} {e : ℕ} {ψ : ZMod l → Qbar l}
-    {N : ℕ} [NeZero N] {cw : ZMod N → Qbar l} {c d k : ℕ} {gm : (ZMod l)ˣ → SL(2, ℤ)} {cf cf' : Coef l} {c₀ : ℕ}
-    {Y : ∀ r : ℕ, (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l} (hle : cf.O ≤ cf'.O)
-    (h : IsZWc X l pr W e ψ N cw c d k gm cf c₀ Y) : IsZWc X l pr W e ψ N cw c d k gm cf' c₀ Y := by
-  obtain ⟨Yx, hx, hs⟩ := h
-  refine ⟨Yx, fun x r n => ?_, hs⟩
-  obtain ⟨bB, hB, b, hb, hY⟩ := hx x r n
-  exact ⟨bB, hB, b, fun y i => hle (hb y i), hY⟩
 
 theorem isZWc_raise {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {W : R2 Ω l} {e : ℕ} {ψ : ZMod l → Qbar l}
     {N : ℕ} [NeZero N] {cw : ZMod N → Qbar l} {c d k : ℕ} {gm : (ZMod l)ˣ → SL(2, ℤ)} {cf : Coef l} {c₀ : ℕ}

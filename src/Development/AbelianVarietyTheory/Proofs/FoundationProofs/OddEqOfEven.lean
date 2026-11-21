@@ -5,12 +5,12 @@ import Formalism.LocalRingCardinality.ConjSqrtMinusD
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulVSubRight
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpanRationalTranslatesVacuumStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpanRationalTranslatesVacuum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OmEqPullOfVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNormOneScalarAvoidingMatrixEigenvaluesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNormOneScalarAvoidingMatrixEigenvalues
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilOperatorVacuumExactConstantEvenRankStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackFirstGroupRationalPointEqSmulStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackSecondGroupRationalPointEqDetSmulStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackSecondGroupRationalPointEqDetSmul
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
 
@@ -84,7 +84,7 @@ theorem exists_factor {D : D7} {n : ℕ} (g : GA D n) (γ : Matrix (Fin n) (Fin 
     ∃ (g₁ g₂ : GA D n) (γ₁ γ₂ : Matrix (Fin n) (Fin n) D.host.E), IsRat D (g₁ : GL (Fin n) (AE D)) γ₁ ∧
       IsRat D (g₂ : GL (Fin n) (AE D)) γ₂ ∧ g = g₁ * g₂ ∧ γ = γ₁ * γ₂ ∧ (1 - γ₁).det ≠ 0 ∧ (1 - γ₂).det ≠ 0 := by
   obtain ⟨-, -, hex, hun, -⟩ := GlobalTheory.NormSum.mem_ratG_intG D n
-  obtain ⟨z, hz, hz1, hdet⟩ := GlobalTheory.T.exists_normOne_scalar_avoiding_matrix_eigenvalues D n γ
+  obtain ⟨z, hz, hz1, hdet⟩ := _root_.GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero D n γ
   have hγ := hun g γ h
   obtain ⟨g₁, hg₁⟩ := hex (z • γ) (by
     have : (z • γ).map D.host.conj = D.host.conj z • γ.map D.host.conj := by
@@ -133,7 +133,7 @@ theorem isPull_row (hc : Crv D cc δ) (hN : Even N) (hN' : Even N')
     obtain ⟨Lt, hLt, -⟩ := GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
     have hu := det_norm ((GlobalTheory.NormSum.mem_ratG_intG D N).2.2.2.1 g γ h)
     obtain ⟨b, hb⟩ := exists_root D _ hu
-    refine GlobalTheory.T.om_eq_mul_pull_of_om_eq_on_vacuum D cc δ hc N N' e0 he (GlobalTheory.T.theta_span_rational_translates_vacuum D cc δ hc N N' e0 he W.nz) W g 1 γ 1 _ h
+    refine GlobalTheory.T.om_eq_mul_pull_of_om_eq_on_vacuum D cc δ hc N N' e0 he (_root_.GlobalTheory.ThetaSpan.theta_span D cc δ hc N N' e0 he W.nz) W g 1 γ 1 _ h
       (isRat_one D N') ?_
     rw [GlobalTheory.T.weilOperator_vacuum_exact_constant_evenRank D cc δ hc N N' hN hN' e0 he W g 1 _ 1 (Lt g) (stdL D N') (det_root h b hb) (by simp)
       (hLt g).1 (moves_one D N'), GlobalTheory.T.thetaPullback_firstGroup_rationalPoint_eq_smul D cc δ hc N N' hN hN' e0 he g γ (Lt g) h hdet (hLt g).1]
@@ -158,10 +158,10 @@ theorem isPull_col (hc : Crv D cc δ) (hN : Even N) (hN' : Even N')
     obtain ⟨Lt, hLt, -⟩ := GlobalTheory.NormSum.exists_lattice_of_adelic_point D N'
     have hu := det_norm ((GlobalTheory.NormSum.mem_ratG_intG D N').2.2.2.1 g γ h)
     obtain ⟨b, hb⟩ := exists_root D _ hu
-    refine GlobalTheory.T.om_eq_mul_pull_of_om_eq_on_vacuum D cc δ hc N N' e0 he (GlobalTheory.T.theta_span_rational_translates_vacuum D cc δ hc N N' e0 he W.nz) W 1 g 1 γ _
+    refine GlobalTheory.T.om_eq_mul_pull_of_om_eq_on_vacuum D cc δ hc N N' e0 he (_root_.GlobalTheory.ThetaSpan.theta_span D cc δ hc N N' e0 he W.nz) W 1 g 1 γ _
       (isRat_one D N) h ?_
     rw [GlobalTheory.T.weilOperator_vacuum_exact_constant_evenRank D cc δ hc N N' hN hN' e0 he W 1 g 1 _ (stdL D N) (Lt g) (by simp) (det_root h b hb)
-      (moves_one D N) (hLt g).1, GlobalTheory.T.thetaPullback_secondGroup_rationalPoint_eq_det_smul D cc δ hc N N' hN hN' e0 he g γ (Lt g) h hdet (hLt g).1]
+      (moves_one D N) (hLt g).1, _root_.GlobalTheory.RatEqui.pull_right_eq_det_smul D cc δ hc N N' hN hN' e0 he g γ (Lt g) h hdet (hLt g).1]
     funext z
     rw [map_one, one_zpow, mul_one, char_value W.chV W.ep γ.det b hb (fun τ => a τ - ((N / 2 : ℕ) : ℤ))
       (fun τ => by have := ha τ; obtain ⟨k, hk⟩ := hN; omega), Pi.smul_apply, smul_eq_mul, ← mul_assoc,

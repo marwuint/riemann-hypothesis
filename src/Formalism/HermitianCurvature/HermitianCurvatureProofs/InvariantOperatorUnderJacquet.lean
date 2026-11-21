@@ -39,24 +39,11 @@ namespace Formalism.FourierDecayAlt.P
 theorem jacquet_derivative_formula : Formalism.FourierDecayAlt.JF.JWords :=
   bessel_words_of_domain bessel_integral_domain
 
-theorem invariant_operator_under_jacquet : Formalism.FourierDecayAlt.JF.JTheta :=
-  theta_bessel_commute_of_parts jacquet_derivative_formula rewrite_rho_action
-
-theorem jacquet_invariant_operator_ae : Formalism.FourierDecayAlt.JF.RadialPartIntertwines :=
-  radial_part_intertwines_of_parts invariant_operator_under_jacquet big_cell_orbit_set
-
 theorem jacquet_smooth_coordinates : Formalism.FourierDecayAlt.JF.JqSmooth :=
   bessel_smooth_of_parts jacquet_derivative_formula big_cell_domain
 
 theorem casimir_under_jacquet_integral : Formalism.FourierDecayAlt.JF.CVUnderInt :=
   capelli_under_integral_of_parts jacquet_derivative_formula capelli_word_sum rewrite_rho_action
-
-theorem casimir_commutes_bessel : Formalism.FourierDecayAlt.Q.BesselCommutes :=
-  bessel_capelli_commute_of_parts jacquet_derivative_formula capelli_rho_commute casimir_under_jacquet_integral big_cell_orbit_set
-    conjugation_invariance_every_setting Formalism.QuantumDeterminants.bessel_unipotent_equiv_holds Formalism.QuantumDeterminants.bessel_unitary_equiv_holds
-
-theorem casimir_eigenvalue_bessel : Formalism.FourierDecayAlt.Q.EigenBessel :=
-  eigen_bessel_from_commuting_operators casimir_commutes_bessel matrix_coefficient_linear
 
 theorem right_transfer_upper_levels : Formalism.FourierDecayAlt.Q.RTTUpper :=
   rtt_upper_relations_from_descent chain_descent_relation resSurj_statement capelli_commutation operator_preserves_fusion_forms
@@ -73,10 +60,6 @@ theorem detCore : Formalism.FourierDecayAlt.Q.DetAt fun P => Fin.last P.r :=
     left_type_action operator_preserves_fusion_forms transfer_linear_local
 
 end JacquetIntegral
-
-theorem determinant_identity_all_levels : Formalism.FourierDecayAlt.Q.DetLevel :=
-  determinant_level_from_capelli_identity JacquetIntegral.detCore chain_descent_relation restriction_mem family_operators transfer_triples
-    operator_preserves_fusion_forms transfer_linear_local transfer_joint_smooth cell_decomposition cells_dense
 
 theorem actual_operators_exist : Formalism.FourierDecayAlt.Q.ActualOpsExist :=
   actual_operators_from_parts operator_preserves_fusion_forms transfer_linear_local transfer_joint_smooth radial_operators
@@ -97,10 +80,6 @@ theorem levelStartActual_of_normalForm (h : Formalism.FourierDecayAlt.Q.NormalFo
 
 theorem levelStartActual_of_fromModule (h : Formalism.FourierDecayAlt.Q.NormalFormFromModule) : Formalism.FourierDecayAlt.Q.LevelStartActual :=
   levelStartActual_of_normalForm (normalFormActual_of_fromModule h)
-
-theorem radAdj_of_open (hE : Formalism.FourierDecayAlt.P.JFxG.Exhaust) (hA : Formalism.FourierDecayAlt.P.JFxG.JThetaAdjC) (hX : Formalism.FourierDecayAlt.B.XiExists) :
-    Formalism.FourierDecayAlt.JF.RadAdj :=
-  jf_radAdj_of_parts3 hE bessel_integral_domain hA hX
 
 end JacquetIntegral
 

@@ -41,12 +41,6 @@ theorem IK_span : Submodule.span ℝ (IK I : Set (IR I)) = ⊤ := by
   · intro hy
     exact ⟨⟨y, Submodule.subset_span hy⟩, mem_IK.2 hy, rfl⟩
 
-theorem IK_lattice (hI : IsSplit P I) : ∃ (_ : DiscreteTopology (IK I)) (_ : IsZLattice ℝ (IK I)),
-    Module.finrank ℤ (IK I) = Module.finrank ℝ (IR I) := by
-  haveI := IK_discrete hI
-  haveI : IsZLattice ℝ (IK I) := ⟨IK_span⟩
-  exact ⟨inferInstance, inferInstance, ZLattice.rank ℝ (IK I)⟩
-
 def Ib (hI : IsSplit P I) : Module.Basis (Fin (Module.finrank ℝ (IR I))) ℝ (IR I) :=
   haveI := IK_discrete hI
   haveI : IsZLattice ℝ (IK I) := ⟨IK_span⟩

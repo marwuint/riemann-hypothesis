@@ -17,21 +17,11 @@ def GoodPar (n p q : ℕ) (S : SPar) : Prop :=
   ∃ (lam : Fin n → ℝ) (ε : Fin n → Bool), IsEnum S lam ε ∧ Formalism.QuantumDeterminants.IsHCParam lam ∧
     (Finset.univ.filter fun a => ε a = true).card = p ∧ (Finset.univ.filter fun a => ε a = false).card = q
 
-def isoDef {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M] (J : Matrix (Fin n) (Fin n) ℂ)
-    (π : Matrix (Fin n) (Fin n) ℂ → Module.End ℂ M) (S : SPar) : Submodule ℂ M :=
-  sSup {W | ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
-    (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ) (ε : Fin n → Bool)
-    (P : Matrix (Fin n) (Fin n) ℂ) (T : H →ₗ[ℂ] M),
-    IsEnum S lam ε ∧ IsDS ε lam σ ∧ IsUnit P ∧ Pᴴ * Formalism.REAL.Jm ε * P = J ∧
-    (∀ g ∈ Formalism.QuantumDeterminants.UH J, ∀ v, T (σ (P * g * P⁻¹) v) = π g (T v)) ∧ W = LinearMap.range T}
-
 def IsDsig (D : D7) (τ : D.what₂.Tau) (d : ℝ) : Prop :=
   ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
     (σ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ → (H →L[ℂ] H)),
     IsDS (epsSH D.R) (lamSH D.R (D.hc τ)) σ ∧
     IsFdeg ((D.s.cdScale _ (epsSH D.R) : ENNReal) • Formalism.REAL.muG (epsSH D.R)) σ d
-
-def DsigHC (D : D7) : Prop := ∀ τ, D.dsig τ = Formalism.QuantumDeterminants.fdegHC (lamSH D.R (D.hc τ))
 
 def IsVolMeasG (D : D7) (W : HSp D) (P Q : D.what₂.Tau → ℕ) (μ : Measure (GA D W)) : Prop :=
   μ.IsHaarMeasure ∧

@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
 import Formalism.LocalToGlobal.ProjectiveLattices.ConjNeSelfOfCM
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCharacterGermValuationEqColumnTypedStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCharacterGermValuationEqColumnTyped
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ChartLocalDepthLeOfValuedExtensionBoundStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmTypeDirectionsEigenbasisValuedIntegersStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFormalBiextensionIntegralChartValuedExtensStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValuationBlockPolynomialGeProdStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValuationBlockPolynomialGeProd
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Formalism.L2.Pj
@@ -49,7 +49,7 @@ theorem nuLocC_le_of_character_flags : ∀ (E : Type) [Field E] [NumberField E] 
   have hp1 : X.v (p : X.C) ≤ 1 := by
     have := X.ints.map_le_one (p : X.O)
     rwa [map_natCast] at this
-  obtain ⟨hval, hsupp⟩ := GlobalTheory.T.valuation_blockPolynomial_ge_prod X.C X.v X.O X.ints (E →+* ℂ) Dw.mult n (colP Dw hn) hβ
+  obtain ⟨hval, hsupp⟩ := _root_.GlobalTheory.CharDepth.valuation_blockPoly_ge X.C X.v X.O X.ints (E →+* ℂ) Dw.mult n (colP Dw hn) hβ
     (fun τ i => a (τ, i)) ha
     (fun ℓ : LtN Dw n => ∑ j, X.ι (Ch.uvecT ⟨ℓ.1, ℓ.2.1⟩ j) * dl (χ' ℓ.2.2) j)
     (fun τ => X.v (p : X.C) ^ len τ) (fun τ => NNReal.rpow_le_one hp1 (hlen τ))
@@ -71,7 +71,7 @@ theorem nuLocC_le_of_character_flags : ∀ (E : Type) [Field E] [NumberField E] 
     intro h0
     rw [h0, map_zero, map_zero] at hval
     exact absurd hval (not_le.2 (NNReal.rpow_pos (pos_iff_ne_zero.2 hp0)))
-  obtain ⟨f, hf⟩ := GlobalTheory.T.exists_characterGerm_valuation_eq_columnTyped X.C X.v X.O X.ints (chD Ch.ch) (𝓞 E) B _ hg H.w0 k n (E →+* ℂ) Dw.mult τO
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.CharValue.exists_germ_valuation_eq X.C X.v X.O X.ints (chD Ch.ch) (𝓞 E) B _ hg H.w0 k n (E →+* ℂ) Dw.mult τO
     (fun q j => X.ι (Ch.uvecT q j))
     (fun q a0 => by
       rw [hact]

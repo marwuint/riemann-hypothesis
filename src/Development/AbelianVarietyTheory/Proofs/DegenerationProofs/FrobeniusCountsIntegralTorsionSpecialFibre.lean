@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAss
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFrobGBaseChange
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EqOneOfPowOfClosedPoint
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FrobeniusOnTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FrobeniusOnTorsion
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -124,7 +124,7 @@ theorem frobenius_on_integral_torsion : ∀ (W R Ω : Type) [CommRing W] [CommRi
     rw [map_natCast, CharP.cast_eq_zero] at this
     exact not_isUnit_zero this
   have hq : 2 ≤ p ^ r := hp.two_le.trans (Nat.le_self_pow (by omega) p)
-  obtain ⟨t, a, m, C, Q, V, hm, hroot, hV, hcount, hQ, hT⟩ := GlobalTheory.T.frobenius_on_torsion_alt _ p l hl hlp _
+  obtain ⟨t, a, m, C, Q, V, hm, hroot, hV, hcount, hQ, hT⟩ := _root_.GlobalTheory.SS.frobenius_on_torsion _ p l hl hlp _
     (smConn_pullback _ G hG) g (by
       show SmoothOfRelativeDimension g (pullback.snd _ _)
       exact (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback

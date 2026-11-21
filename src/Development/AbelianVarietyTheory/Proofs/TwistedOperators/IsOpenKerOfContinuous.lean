@@ -222,33 +222,4 @@ theorem integral_eq_sum_reps [MeasurableSpace V] [BorelSpace V] (m : Measure V) 
 
 end Reps
 
-section Abstract
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ}
-  {ψ : AddChar k Circle} {ν : Measure k} {V : Type} [AddCommGroup V] [Module ℂ V]
-  {ω : Representation ℂ (GL (n ⊕ Fin c) k) V} {l : V →ₗ[ℂ] ℂ} {v : V}
-
-end Abstract
-
-section Target
-open Unfolding
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  [MeasurableSpace k] [BorelSpace k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
-  {c p : ℕ} {ψ : AddChar k Circle} {ν : Measure k} {μ : kˣ →* ℂˣ}
-  {A P P' : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup P] [Module ℂ P] [AddCommGroup P'] [Module ℂ P']
-  {σ : Representation ℂ (GL (n ⊕ Fin c) k) A} {π : Representation ℂ (GL n k) P}
-  {π' : Representation ℂ (GL n' k) P'}
-
-def omS {a : Type} (b : Type) [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ) :
-    Representation ℂ (GL a k) (SB (Matrix b a k)) := (omR μ).comp (MonoidHom.inl _ _)
-
-def untw {m : Type} [Fintype m] [DecidableEq m] (η : kˣ →* ℂˣ) (σ : Representation ℂ (GL m k) A) :
-    Representation ℂ (GL m k) A where
-  toFun g := (((η (Matrix.GeneralLinearGroup.det g))⁻¹ : ℂˣ) : ℂ) • σ g
-  map_one' := by simp
-  map_mul' g h := by
-    simp only [map_mul, mul_inv, Units.val_mul, smul_mul_smul_comm]
-
-end Target
-
 end GlobalTheory.RootEx.UniformLattices

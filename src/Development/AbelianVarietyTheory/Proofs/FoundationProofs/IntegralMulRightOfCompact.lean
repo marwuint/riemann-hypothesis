@@ -396,27 +396,6 @@ theorem isOpen_ker_red : IsOpen (s.red.ker : Set (stabLoc σ J L v)) := by
     Set.ext s.red_eq_one_iff]
   exact (isOpen_stabLocOne J s.emb L s.cm).preimage continuous_subtype_val
 
-theorem idem_projector (μ : Measure (GLoc σ J v)) [μ.IsHaarMeasure] {W : Type} [AddCommGroup W] [Module ℂ W]
-    [FiniteDimensional ℂ W] {τ : Representation ℂ (GL (Fin n) (ResF v)) W} (hτ : τ.IsIrreducible) :
-    conv μ (s.idem μ τ) (s.idem μ τ) = s.idem μ τ ∧
-    (∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLoc σ J v) V), IsSmooth ρ →
-      (∀ k : stabLoc σ J L v, smoothOp ρ μ (s.idem μ τ) ∘ₗ ρ k = ρ k ∘ₗ smoothOp ρ μ (s.idem μ τ)) ∧
-      smoothOp ρ μ (s.idem μ τ) ∘ₗ smoothOp ρ μ (s.idem μ τ) = smoothOp ρ μ (s.idem μ τ) ∧
-      LinearMap.range (smoothOp ρ μ (s.idem μ τ)) =
-        (isotypic (ρ.comp (stabLoc σ J L v).subtype) (τ.comp s.red)).toSubmodule ∧
-      (smoothOp ρ μ (s.idem μ τ) ≠ 0 ↔
-        ∃ f : Representation.IntertwiningMap (τ.comp s.red) (ρ.comp (stabLoc σ J L v).subtype), f ≠ 0)) ∧
-    ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : (GLoc σ J v) →* (H →L[ℂ] H)),
-      IsUnitaryRep π →
-      (∀ k : stabLoc σ J L v, repOp π μ (s.idem μ τ) ∘L π k = π k ∘L repOp π μ (s.idem μ τ)) ∧
-      repOp π μ (s.idem μ τ) ∘L repOp π μ (s.idem μ τ) = repOp π μ (s.idem μ τ) ∧
-      IsSelfAdjoint (repOp π μ (s.idem μ τ)) ∧
-      LinearMap.range (repOp π μ (s.idem μ τ)).toLinearMap =
-        (isotypic ((linRep π).comp (stabLoc σ J L v).subtype) (τ.comp s.red)).toSubmodule ∧
-      (repOp π μ (s.idem μ τ) ≠ 0 ↔
-        ∃ f : Representation.IntertwiningMap (τ.comp s.red) ((linRep π).comp (stabLoc σ J L v).subtype), f ≠ 0) :=
-  typeIdem_projector μ (isOpen_stabLoc σ J L v) (isCompact_stabLoc σ J L v) s.red_surjective s.isOpen_ker_red hτ
-
 end SplitAt
 
 end GlobalTheory.Orb

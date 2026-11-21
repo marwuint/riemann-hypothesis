@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TameAnyAtOfIsConjPl
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TameAnyAtPlace
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.AdmissibleResidualTameEigenvalues
@@ -9,12 +9,8 @@ set_option synthInstance.maxHeartbeats 200000
 section
 noncomputable section
 namespace GlobalTheory.IneAway
-open GlobalTheory.TypeLeaf
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 end GlobalTheory.IneAway
 namespace GlobalTheory.TypeLeaf
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
-open GlobalTheory.TameLabels
 end GlobalTheory.TypeLeaf
 namespace GlobalTheory.TypeLeaf.ConjPlace
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
@@ -38,7 +34,7 @@ theorem tame_any_at_of_is_conj_pl_tame_gen : ∀ D : D7, WildOne D → (∀ (i :
       ((redF D i ρ).prod (chiBar D i)) s = 1 := by
     intro u hu
     have huI := mem_ine_of_wild hu
-    obtain ⟨ι, -, hred⟩ := GlobalTheory.T.exists_reduction_teichmullerEmbedding_at_localisation D i k hl
+    obtain ⟨ι, -, hred⟩ := _root_.GlobalTheory.TypeLeaf.exists_redVia D i k hl
     have hf := _root_.UpperTheory.GalS.fl0' hfull k v
     unfold labSig at hf
     rw [isoLoc_single] at hf
@@ -52,7 +48,7 @@ theorem tame_any_at_of_is_conj_pl_tame_gen : ∀ D : D7, WildOne D → (∀ (i :
       have h4 := D.nd.plOm.2 (D.naut.plGw k v)
       have h5 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal := D.naut.plGw_over k v
       simpa using (h4 _).2 h5
-    have h3 := GlobalTheory.T.wild_eq_one_of_charpoly_unipotent_mod_l _ _ _ (D.host.g k) (D.nd.l i) D.R.r hl hgv _ (redF D i ρ)
+    have h3 := _root_.GlobalTheory.WildKill.eq_one_of_wild_of_unipotent _ _ _ (D.host.g k) (D.nd.l i) D.R.r hl hgv _ (redF D i ρ)
       (GlobalTheory.T.residualRep_ker_isOpen D i ρ hρ.1) u hu h2
     refine Prod.ext h3 ?_
     change Units.map _ (D.nd.chi i 1 u) = 1
@@ -60,7 +56,7 @@ theorem tame_any_at_of_is_conj_pl_tame_gen : ∀ D : D7, WildOne D → (∀ (i :
   have hopen : IsOpen ((((redF D i ρ).prod (chiBar D i)).ker : Subgroup _) : Set (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om)) := by
     rw [MonoidHom.ker_prod, Subgroup.coe_inf]
     exact (GlobalTheory.T.residualRep_ker_isOpen D i ρ hρ.1).inter (isOpen_ker_chiBar D i)
-  obtain ⟨n, hn, hM, hpow⟩ := GlobalTheory.T.tameGenerator_image_eq_coprime_pow _ _ _ _ _ hγ0 hg _ _ hopen hkill
+  obtain ⟨n, hn, hM, hpow⟩ := _root_.GlobalTheory.TypeLeaf.tameGen_pow _ _ _ _ _ hγ0 hg _ _ hopen hkill
   set γ0 := D.nd.gam0 i (D.naut.plGw k v) with hγ0def
   set M := orderOf (((redF D i ρ).prod (chiBar D i)) γ0) with hMdef
   have hone : ((redF D i ρ).prod (chiBar D i)) γ0 ^ M = 1 := pow_orderOf_eq_one _
@@ -69,7 +65,7 @@ theorem tame_any_at_of_is_conj_pl_tame_gen : ∀ D : D7, WildOne D → (∀ (i :
     rw [map_inv, hpow, inv_eq_iff_mul_eq_one, ← pow_add, ← mul_one_add, show 1 + (M - 1) = M by omega, mul_comm, pow_mul,
       hone, one_pow]
   have hn' : (n * (M - 1)).Coprime M := hn.mul_left ((Nat.coprime_self_sub_left hM).2 (Nat.coprime_one_left _))
-  obtain ⟨θ, hθ, hθo, hθn⟩ := GlobalTheory.T.exists_order_preserving_power_hom_algClosure_primeField (D.host.g k) M _ hM hn'
+  obtain ⟨θ, hθ, hθo, hθn⟩ := _root_.GlobalTheory.PowAut.exists_powHom_fbar (D.host.g k) M _ hM hn'
   obtain ⟨hcp, hcχ⟩ := GlobalTheory.T.inertia_compatible_conjugation_representation D hF i π ρ hc hρ w _ hw (D.nd.plOm.2 w) _ (Subgroup.inv_mem _ hγw.1)
     (cConj D.ntw (D.nd.gam0 i w)⁻¹) (fun y => by rw [cConj_apply, RingEquiv.symm_apply_apply])
   rw [inv_inv] at hcp hcχ

@@ -215,30 +215,6 @@ def congChar {Z : Type} [Group Z] (ι : R →+* A) (hι : Function.Injective ι)
   (lam.comp ((redGL I).subgroupComap H)).comp
     ((H.comap (redGL I)).equivMapOfInjective (bc ι) (bc_injective ι hι)).symm.toMonoidHom
 
-theorem congChar_apply {Z : Type} [Group Z] (ι : R →+* A) (hι : Function.Injective ι) (I : Ideal R)
-    (H : Subgroup (GL n (R ⧸ I))) (lam : H →* Z) (g : GL n R) (hg : redGL I g ∈ H) (hm : bc ι g ∈ congPre ι I H) :
-    congChar ι hι I H lam ⟨bc ι g, hm⟩ = lam ⟨redGL I g, hg⟩ := by
-  have h : ((H.comap (redGL I)).equivMapOfInjective (bc ι) (bc_injective ι hι)).symm ⟨bc ι g, hm⟩ =
-      (⟨g, hg⟩ : H.comap (redGL I)) := by
-    rw [MulEquiv.symm_apply_eq]
-    exact Subtype.ext rfl
-  exact congrArg (fun z => lam ((redGL I).subgroupComap H z)) h
-
-theorem princ_le_congPre (ι : R →+* A) (I : Ideal R) (H : Subgroup (GL n (R ⧸ I))) : princ ι I ≤ congPre ι I H :=
-  Subgroup.map_mono (Subgroup.comap_mono bot_le)
-
-theorem congChar_princ {Z : Type} [Group Z] (ι : R →+* A) (hι : Function.Injective ι) (I : Ideal R)
-    (H : Subgroup (GL n (R ⧸ I))) (lam : H →* Z) (x : congPre ι I H) (hx : (x : GL n A) ∈ princ ι I) :
-    congChar ι hι I H lam x = 1 := by
-  obtain ⟨g, hg, hgx⟩ := hx
-  have hg1 : redGL I g = 1 := hg
-  have hgH : redGL I g ∈ H := by rw [hg1]; exact H.one_mem
-  have hm : bc ι g ∈ congPre ι I H := hgx ▸ x.2
-  have hx' : x = ⟨bc ι g, hm⟩ := Subtype.ext hgx.symm
-  rw [hx', congChar_apply ι hι I H lam g hgH hm]
-  have : (⟨redGL I g, hgH⟩ : H) = 1 := Subtype.ext hg1
-  rw [this, map_one]
-
 end Cong
 
 section Loc
@@ -277,11 +253,6 @@ theorem toFr_apply (x : GL (Fin N) (E ⊗[F] v.adicCompletion F)) :
 
 def JU (a t : ℕ) (fixLast : Bool) (fc : ℕ) : Subgroup (GL (Fin N) (E ⊗[F] v.adicCompletion F)) :=
   UPts σE J (v.adicCompletion F) ⊓ (JLoc F v N a t fixLast fc).comap (toFr v spl fr)
-
-theorem mem_JU (a t : ℕ) (fixLast : Bool) (fc : ℕ) (x : GL (Fin N) (E ⊗[F] v.adicCompletion F)) :
-    x ∈ JU σE J v spl fr a t fixLast fc ↔ x ∈ UPts σE J (v.adicCompletion F) ∧
-      fr⁻¹ * bc ((RingHom.fst _ _).comp spl.toRingHom) x * fr ∈ JLoc F v N a t fixLast fc := by
-  rw [JU, Subgroup.mem_inf, Subgroup.mem_comap, toFr_apply]
 
 def lamU {Z : Type} [CommGroup Z] (a t : ℕ) (fixLast : Bool) (fc : ℕ) (ψ0 : AddChar (resV F v) Z) (χ : ℕ → (resV F v)ˣ →* Z)
     (Sd : Finset ℕ) (nb : ℕ) : JU σE J v spl fr a t fixLast fc →* Z :=

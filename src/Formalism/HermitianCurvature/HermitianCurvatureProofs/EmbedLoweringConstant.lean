@@ -207,9 +207,6 @@ theorem freeOf2_mul_of_free {a : S} {M N : M2 (SlopeTestRemainingChoices S A)} (
   rw [Matrix.mul_apply, Fin.sum_univ_two]
   exact fr_add (fr_mul (hM _ _) (hN _ _)) (fr_mul (hM _ _) (hN _ _))
 
-theorem ins_add (a : S) (M N : M2 (SlopeTestRemainingChoices S A)) : ins a (M + N) = ins a M + ins a N := by
-  simp [ins, mul_add, Finset.sum_add_distrib]
-
 theorem ins_smul (a : S) (c : ℂ) (M : M2 (SlopeTestRemainingChoices S A)) : ins a (c • M) = c • ins a M := by
   simp [ins, Finset.smul_sum]
 
@@ -323,7 +320,6 @@ theorem fn_comm (L : LevelData A r) {g h : A} (hg : g ∈ zfns L) (hh : h ∈ zf
     (io g : SlopeTestRemainingChoices S A) * io h = io h * io g := by
   rw [← io_mul, ← io_mul, L.fns_comm g (Or.inr hg) h (Or.inr hh)]
 
-theorem mζ (L : LevelData A r) : L.ζ ∈ zfns L := by simp [zfns]
 theorem mζi (L : LevelData A r) : L.ζi ∈ zfns L := by simp [zfns]
 theorem mζb (L : LevelData A r) : L.ζb ∈ zfns L := by simp [zfns]
 theorem mζbi (L : LevelData A r) : L.ζbi ∈ zfns L := by simp [zfns]

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProporti
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializes
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -44,7 +44,7 @@ variable [GlobalTheory.IsNormalScheme X]
 
 theorem regAt_iff_ord (x : X) (u : X.functionFieldˣ) :
     RegAt x (u : X.functionField) ↔ ∀ z, z ⤳ x → 0 ≤ Scheme.ord (u : X.functionField) z := by
-  rw [← regularAt_zero_iff, GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg X (0 : CartierDiv X) x u]
+  rw [← regularAt_zero_iff, _root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes X (0 : CartierDiv X) x u]
   simp only [mult_zero, add_zero]
 
 theorem unitAt_of_ord (x : X) (u : X.functionFieldˣ)
@@ -57,9 +57,9 @@ theorem eff_supp_eq_of_mult : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoet
   have hEff : ∀ F : CartierDiv X, F.Eff ↔ ∀ z, 0 ≤ F.mult z := by
     intro F
     refine ⟨fun h z => ?_, fun h x => ?_⟩
-    · have := (GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg X F z 1).1 (h z) z (specializes_refl z)
+    · have := (_root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes X F z 1).1 (h z) z (specializes_refl z)
       simpa [Units.val_one, ord_one] using this
-    · have := (GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg X F x 1).2 fun z _ => by simpa [Units.val_one, ord_one] using h z
+    · have := (_root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes X F x 1).2 fun z _ => by simpa [Units.val_one, ord_one] using h z
       simpa using this
   refine ⟨hEff D, fun x => ⟨fun hx => ?_, fun ⟨z, hz, hm⟩ => ?_⟩, fun E h => ?_, fun x g h => ?_⟩
   · by_contra hne

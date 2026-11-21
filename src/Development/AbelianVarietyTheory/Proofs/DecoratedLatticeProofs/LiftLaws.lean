@@ -19,7 +19,7 @@ theorem std_target : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), IsStdC
   have hs := G.hs
   have H : j + b = G.s := by omega
   obtain ⟨μT, hT, -⟩ := hT
-  obtain ⟨Tm, hTm, hO⟩ := (GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ _ _ (G.FY j (b + 1) (by omega)) (G.FY (j + 1) b hb) c.ψ G.S.ψ
+  obtain ⟨Tm, hTm, hO⟩ := (_root_.GlobalTheory.LocMod.indicator_vac D G.k G.q G.unit _ _ _ _ (G.FY j (b + 1) (by omega)) (G.FY (j + 1) b hb) c.ψ G.S.ψ
     hc G.char G.S.cond (v.N j) (v.N (j + 1)) (hv.sd j (by omega)) (hv.sd (j + 1) (by omega))
     (G.latY j (b + 1) (by omega)) (G.latY (j + 1) b hb)).2 f hf
   obtain ⟨O, hO1, -⟩ := GlobalTheory.LocMod.PinModel.exists_isOne (k := G.k) (Y := XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin b)
@@ -27,7 +27,7 @@ theorem std_target : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), IsStdC
   have hR : (G.S.T (Fin D.R.t)).Regular := Chain.ofType_regular _ _ _ _ _
   have e1 := (G.eg_is j b H).2 Tm hTm O ⟨_, hR.1 j b H⟩ hO1 rfl
   rw [← hO O hO1, ← e1, ← map_smul]
-  refine GlobalTheory.T.weilDatum_localModel_formula D G.k (ofSplit G.q) c.ψ _ _ χS χT ω hω _ μT (isComp_inv _ hS) hT _ _ _ _ Tm hTm 1 1 h x.1
+  refine _root_.GlobalTheory.LocOm.omLoc D G.k (ofSplit G.q) c.ψ _ _ χS χT ω hω _ μT (isComp_inv _ hS) hT _ _ _ _ Tm hTm 1 1 h x.1
     (isLoc_one _ _) hx _ _ ?_
   rw [map_one, map_one, Units.val_one, one_smul, inv_inv]
   exact (om_phi G.S _ μ hμ hu j b H hb x).symm
@@ -44,7 +44,7 @@ theorem std_source : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), IsStdC
   have H : j + a = G.s := by omega
   have H' : j + 1 + a = G.s + 1 := by omega
   have hm := G.hs
-  obtain ⟨Tm, hTm, hO⟩ := (GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ (c.V j) (c.V (j + 1)) (G.FY j (a + 1) hb) (G.FY (j + 1) a H')
+  obtain ⟨Tm, hTm, hO⟩ := (_root_.GlobalTheory.LocMod.indicator_vac D G.k G.q G.unit _ _ (c.V j) (c.V (j + 1)) (G.FY j (a + 1) hb) (G.FY (j + 1) a H')
     c.ψ G.S.ψ hc G.char G.S.cond (v.N j) (v.N (j + 1)) (hv.sd j (by omega)) (hv.sd (j + 1) (by omega))
     (G.latY j (a + 1) hb) (G.latY (j + 1) a H')).2 f hf
   obtain ⟨O, hO1, -⟩ := GlobalTheory.LocMod.PinModel.exists_isOne (k := G.k) (Y := XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin a)
@@ -58,7 +58,7 @@ theorem std_source : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), IsStdC
   have hd := valuation_det_of_mem_stabLat ((R.2.2 j (a + 1) hb).2.2 x.2)
   have e2 : ((μ (j + 1))⁻¹ * μ'⁻¹) (Matrix.GeneralLinearGroup.det x.1) = 1 := by
     rw [MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.inv_apply, ← mul_inv, mul_comm, hT' _ hd, inv_one]
-  have key := GlobalTheory.T.weilDatum_localModel_formula D G.k (ofSplit G.q) c.ψ _ _ χS χT ω hω (μ (j + 1))⁻¹ μ' (isComp_inv _ hS) hT _ _
+  have key := _root_.GlobalTheory.LocOm.omLoc D G.k (ofSplit G.q) c.ψ _ _ χS χT ω hω (μ (j + 1))⁻¹ μ' (isComp_inv _ hS) hT _ _
     (G.FY j (a + 1) hb) (G.FY (j + 1) a H') Tm hTm h x.1 1 1 hl (isLoc_one _ _) Φ
     ((((G.S.T (Fin D.R.t)).lev j (a + 1) hb).lam x : ℂ) • Φ) (by
       rw [e2, inv_inv, Units.val_one, one_smul]

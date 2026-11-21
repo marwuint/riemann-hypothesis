@@ -163,21 +163,6 @@ theorem weighted_subst_le {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ m,
   rw [le_div_iff₀ (pow_pos hr0 m)]
   exact le_trans (mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hr0.le hr1.le hn) (norm_nonneg _)) (ha n)
 
-theorem conv_subst {Y : K⟦X⟧} (h0 : constantCoeff Y = 0) (hY : ∀ m, ‖coeff m Y‖ ≤ 1) (a : K⟦X⟧)
-    (ha : ∀ r : ℝ, 0 < r → r < 1 → Tendsto (fun k : ℕ => ‖coeff k a‖ * r ^ k) atTop (𝓝 0))
-    (r : ℝ) (hr0 : 0 < r) (hr1 : r < 1) :
-    Tendsto (fun k : ℕ => ‖coeff k (subst Y a)‖ * r ^ k) atTop (𝓝 0) := by
-  obtain ⟨s, hs0, hs1⟩ := exists_between hr1
-  have hs : 0 < s := hr0.trans hs0
-  obtain ⟨B, hB⟩ := (ha s hs hs1).bddAbove_range
-  have hb := weighted_subst_le h0 hY a hs hs1 (B := B) fun n => hB ⟨n, rfl⟩
-  refine squeeze_zero (g := fun k => B * (r / s) ^ k) (fun k => by positivity) (fun k => ?_) ?_
-  · calc _ = (‖coeff k (subst Y a)‖ * s ^ k) * (r / s) ^ k := by
-          rw [div_pow]; field_simp
-      _ ≤ _ := mul_le_mul_of_nonneg_right (hb k) (by positivity)
-  · simpa using (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity)
-      ((div_lt_one hs).2 hs0)).const_mul B
-
 theorem Ex.subst {u v Y a e : K⟦X⟧} (hu : ‖constantCoeff u‖ < 1) (h0 : constantCoeff Y = 0)
     (hY : ∀ m, ‖coeff m Y‖ ≤ 1) (hv : Ex u Y v)
     (ha : ∀ r : ℝ, 0 < r → r < 1 → Tendsto (fun k : ℕ => ‖coeff k a‖ * r ^ k) atTop (𝓝 0))

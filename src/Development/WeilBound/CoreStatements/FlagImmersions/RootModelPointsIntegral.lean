@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinearStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinear
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 
@@ -125,7 +125,7 @@ theorem root_model_points_integral : ∀ II : IntersectionSystem, IsFullIntersec
   have hP : IsArithVar M.P (dimFl Ψ N + 1) := M.arith
   have hsm : ∀ j, IsSmoothHerm (M.line t j) := line_smooth M t
   obtain ⟨hexp, hperm⟩ :=
-    GlobalTheory.T.log_integral_multilinear II hII M.K M.ι M.P (dimFl Ψ N) (Option (Ψ × Fin N)) (M.line t) n hP hsm
+    _root_.GlobalTheory.CompanionTheory.Ar.Top.geo_multilin II hII M.K M.ι M.P (dimFl Ψ N) (Option (Ψ × Fin N)) (M.line t) n hP hsm
   have hterm : ∀ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N),
       ptsIntegral M.P (fun k z => Real.log ((M.line t (w k)).h z)) (fun _ => 1) =
         M.δ * (M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none) *

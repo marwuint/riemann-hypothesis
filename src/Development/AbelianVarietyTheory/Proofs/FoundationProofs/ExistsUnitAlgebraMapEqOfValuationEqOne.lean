@@ -13,12 +13,6 @@ theorem mem_primeCompl_span [(Ideal.span {π}).IsPrime] {b : R} :
     b ∈ (Ideal.span {π}).primeCompl ↔ ¬ π ∣ b := by
   rw [Ideal.mem_primeCompl_iff, Ideal.mem_span_singleton]
 
-theorem eq_zero_of_forall_pow_dvd [IsDomain R] [IsNoetherianRing R] (hπ : ¬ IsUnit π) {x : R}
-    (hx : ∀ e : ℕ, π ^ e ∣ x) : x = 0 := by
-  by_contra h
-  obtain ⟨n, hn⟩ := FiniteMultiplicity.of_not_isUnit hπ h
-  exact hn (hx _)
-
 section AtPrime
 
 variable [(Ideal.span {π}).IsPrime] (S : Type*) [CommRing S] [Algebra R S]
@@ -28,9 +22,6 @@ theorem maximalIdeal_eq_span [IsLocalRing S] :
     maximalIdeal S = Ideal.span {algebraMap R S π} := by
   rw [← IsLocalization.AtPrime.map_eq_maximalIdeal (Ideal.span {π}) S, Ideal.map_span,
     Set.image_singleton]
-
-theorem isUnit_algebraMap_iff (x : R) : IsUnit (algebraMap R S x) ↔ ¬ π ∣ x := by
-  rw [IsLocalization.AtPrime.isUnit_to_map_iff S (Ideal.span {π}), mem_primeCompl_span]
 
 include π in
 theorem algebraMap_atPrime_injective [IsDomain R] : Function.Injective (algebraMap R S) :=
@@ -135,25 +126,6 @@ theorem exists_unit_algebraMap_eq (hπ : π ≠ 0) {y : A} (hy : IsUnit y) {z : 
   rw [IsScalarTower.algebraMap_apply R A K, map_mul, hr, hr', Units.mul_inv, map_one, map_one]
 
 end Inter
-
-section Valuation
-
-variable [(Ideal.span {π}).IsPrime]
-  {A : Type*} [CommRing A] [Algebra R A] [IsLocalization.Away π A]
-  (S : Type*) [CommRing S] [Algebra R S] [IsLocalization.AtPrime S (Ideal.span {π})]
-  [IsDomain S] [IsDiscreteValuationRing S]
-  (K : Type*) [Field K] [Algebra R K] [FaithfulSMul R K]
-  [Algebra A K] [IsScalarTower R A K] [Algebra S K] [IsScalarTower R S K] [IsFractionRing S K]
-
-theorem exists_unit_algebraMap_eq_of_valuation_eq_one (hπ : π ≠ 0) {y : A} (hy : IsUnit y)
-    (h : (IsDiscreteValuationRing.maximalIdeal S).valuation K (algebraMap A K y) = 1) :
-    ∃ r : R, IsUnit r ∧ algebraMap R A r = y := by
-  obtain ⟨z, hz⟩ := IsDiscreteValuationRing.exists_lift_of_le_one h.le
-  refine exists_unit_algebraMap_eq K hπ hy (z := z) ?_ hz.symm
-  rw [← hz, IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem] at h
-  exact notMem_maximalIdeal.1 h
-
-end Valuation
 
 theorem existsUnique_zpow_mul_eq_unit {S K : Type*} [CommRing S] [IsDomain S]
     [IsDiscreteValuationRing S] [Field K] [Algebra S K] [IsFractionRing S K] {ϖ : S}

@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmExistsHolds
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCmPointLatticeDataOfAdaptedBasisStatement
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataNonemptyField
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SabMapCancelAndCompOver
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodCmPointOfIntegralCmObjectStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodCmPointOfIntegralCmObject
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.LamCM Formalism.L2.Pj
 open scoped ComplexOrder
@@ -35,7 +35,7 @@ theorem exists_good_cmPt_at_frame : ∀ (E : Type) [Field E] [NumberField E] [Is
     exact ⟨mm⟩
   let σ₁ : K₁ →ₐ[c.F] CAt c.F.val.toRingHom :=
     { (algebraMap K₁ ℂ : K₁ →+* ℂ) with commutes' := fun _ => rfl }
-  obtain ⟨z, σ', hz, he⟩ := GlobalTheory.T.exists_good_cm_point_of_integral_cm_object E H Dw l Xo c hstar K₁ ρ (algebraMap K₁ ℂ) X La y Φ mB
+  obtain ⟨z, σ', hz, he⟩ := _root_.GlobalTheory.LamT.exists_cmPt_good_of_cmObj E H Dw l Xo c hstar K₁ ρ (algebraMap K₁ ℂ) X La y Φ mB
     (fun τ => by
       show τ (H.rt : E) = H.rt0 ↔ _
       rw [← hρ, Subtype.ext_iff]

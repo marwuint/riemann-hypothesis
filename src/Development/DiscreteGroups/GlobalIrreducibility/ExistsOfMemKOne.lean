@@ -75,12 +75,6 @@ theorem valuation_lt_iff (x : ℚ_[g]) : valuation (w.adicCompletion E) (i x) < 
 theorem valuation_le_iff (x : ℚ_[g]) : valuation (w.adicCompletion E) (i x) ≤ 1 ↔ ‖x‖ ≤ 1 :=
   (val_le_iff _).trans (norm_le_iff i hi x)
 
-theorem v_lt_iff (x : ℚ_[g]) : Valued.v (i x) < 1 ↔ ‖x‖ < 1 :=
-  Valued.toNormedField.norm_lt_one_iff.symm.trans (norm_lt_iff i hi x)
-
-theorem v_le_iff (x : ℚ_[g]) : Valued.v (i x) ≤ 1 ↔ ‖x‖ ≤ 1 :=
-  Valued.toNormedField.norm_le_one_iff.symm.trans (norm_le_iff i hi x)
-
 omit hi in
 
 theorem exists_ker_red {n : ℕ} (M : Matrix (Fin n) (Fin n) ℚ_[g])
@@ -169,16 +163,5 @@ theorem exists_of_mem_KOne {n : ℕ} {m : GL (Fin n) (w.adicCompletion E)}
   change i ((inc g n k : Matrix (Fin n) (Fin n) ℚ_[g]) a b) = m.val a b
   rw [hk']
   simp
-
-theorem map_ker_red (n : ℕ) :
-    ((red g n).ker.map (inc g n)).map (Matrix.GeneralLinearGroup.map i.toRingHom) =
-      KOne (w.adicCompletion E) (Fin n) := by
-  ext m
-  constructor
-  · rintro ⟨_, ⟨k, hk, rfl⟩, rfl⟩
-    exact map_mem_KOne i hi k (MonoidHom.mem_ker.1 hk)
-  · intro hm
-    obtain ⟨k, hk, rfl⟩ := exists_of_mem_KOne i hi hm
-    exact ⟨_, ⟨k, MonoidHom.mem_ker.2 hk, rfl⟩, rfl⟩
 
 end DiscreteGroups.sglob.DzIso

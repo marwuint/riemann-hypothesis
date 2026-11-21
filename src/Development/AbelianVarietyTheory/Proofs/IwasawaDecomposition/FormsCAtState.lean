@@ -32,10 +32,4 @@ end GlobalTheory.HeightCounting.RatSide
 
 namespace GlobalTheory.HeightCounting.RatSide
 
-theorem formsC_at_state : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w =>
-    ∀ (P : Pre2 K w) (x : St P), LA hL x → FormsC (SOf x) := by
-  intro hL
-  refine StepW.of_all fun K _ _ _ w _ _ _ P x _ => formsC_of_full _ fun j _ _ =>
-    ⟨x.m.z.geo.fw.ks (idxOf _ j), GlobalTheory.GoodLat.Obj.mkFull_of_tie x.m.z.geo.fw (idxOf _ j)⟩
-
 end GlobalTheory.HeightCounting.RatSide

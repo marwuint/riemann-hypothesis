@@ -1,8 +1,8 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinprodPlacesOverTypePrimesSplitStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalIndicesColumnRowLevelsExactStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinprodPlacesOverTypePrimesSplit
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalIndicesColumnRowLevelsExact
 
 open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain
 
@@ -13,12 +13,12 @@ theorem exact_ranks_of_record : ∀ D : D7, (∀ i, StandardLattice.SplitsF D (D
   letI := D.host.cmStar
   have hmass : ∀ n, Formalism.HermitianLatticesTheory.IsOrthoLattice h L n → Formalism.HermitianLatticesTheory.mass h L = StandardLattice.massI D n :=
     fun n ho => StandardLattice.mass_ortho D.host.E D.sp.cm.cmUnram n V h L ho
-  have hcol := GlobalTheory.T.finprod_places_over_typePrimes_split D (fun x : ℝ => ∏ i ∈ Finset.Icc 1 D.R.k, (x ^ i - 1)) hsp
-  have hrow := GlobalTheory.T.finprod_places_over_typePrimes_split D (fun x : ℝ => (∏ i ∈ Finset.range D.R.r, (x ^ D.R.r - x ^ i)) /
+  have hcol := _root_.GlobalTheory.TypedPlacesProduct.finprod_typed_places D (fun x : ℝ => ∏ i ∈ Finset.Icc 1 D.R.k, (x ^ i - 1)) hsp
+  have hrow := _root_.GlobalTheory.TypedPlacesProduct.finprod_typed_places D (fun x : ℝ => (∏ i ∈ Finset.range D.R.r, (x ^ D.R.r - x ^ i)) /
     (x ^ (D.R.rS * (2 * D.R.k + 2 * D.R.rS + 1)) * x ^ (D.R.k * (D.R.k - 1) / 2))) hsp
   beta_reduce at hcol hrow
-  obtain ⟨hc0, hr0⟩ := GlobalTheory.T.localIndices_column_row_levels_exact D 0
-  obtain ⟨hc1, hr1⟩ := GlobalTheory.T.localIndices_column_row_levels_exact D 1
+  obtain ⟨hc0, hr0⟩ := _root_.GlobalTheory.idxColLoc_idxRowLoc_exact D 0
+  obtain ⟨hc1, hr1⟩ := _root_.GlobalTheory.idxColLoc_idxRowLoc_exact D 1
   refine ⟨fun ho u => ?_, fun ho => ?_⟩
   · rw [hdu u, hmass _ ho, hcol]
     unfold StandardLattice.duStarU StandardLattice.duStarP StandardLattice.idxPi

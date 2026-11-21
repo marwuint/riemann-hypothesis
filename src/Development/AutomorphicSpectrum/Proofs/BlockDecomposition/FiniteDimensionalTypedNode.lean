@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteDeterminingSetStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TypedFirstBlockRestrictionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TypedSecondBlockRestrictionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TypedSecondBlockRestriction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemProdSpanInfStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalProdSpanStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalProdSpan
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinStable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermAuxiliaryStatementA
 open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology
@@ -63,12 +63,12 @@ theorem finiteDimensional_typed_indSpan : ∀ {E : Type} [Field E] [NumberField 
   choose K₁ W₁ oK₁ fW₁ sl₁ using
     fun i : Kinf E (r + s) × GL (Fin (r + s)) (Af E) => GlobalTheory.T.typed_first_block_restriction i.1 i.2 K W hK hW
   choose K₂ W₂ oK₂ fW₂ sl₂ using
-    fun i : Kinf E (r + s) × GL (Fin (r + s)) (Af E) => GlobalTheory.T.typed_second_block_restriction i.1 i.2 K W hK hW
+    fun i : Kinf E (r + s) × GL (Fin (r + s)) (Af E) => _root_.GlobalTheory.CompanionTheory.LimV.SliceR.slice_right i.1 i.2 K W hK hW
   let P : ↥S × ↥T → Submodule ℂ (GA E r × GA E s → ℂ) := fun i =>
     prodSpan (U₁.map (Sm E r).subtype ⊓ typeF (K₁ (i.1.1, i.2.1)) (W₁ (i.1.1, i.2.1)))
       (U₂.map (Sm E s).subtype ⊓ typeF (K₂ (i.1.1, i.2.1)) (W₂ (i.1.1, i.2.1)))
   haveI : ∀ i, FiniteDimensional ℂ (P i) := fun i =>
-    GlobalTheory.T.finiteDimensional_prodSpan _ _ (fd_inf _ _ _ (h₁ _ _ (oK₁ _) (fW₁ _))) (fd_inf _ _ _ (h₂ _ _ (oK₂ _) (fW₂ _)))
+    _root_.GlobalTheory.CompanionTheory.LimV.finiteDimensional_prodSpan_of_fd _ _ (fd_inf _ _ _ (h₁ _ _ (oK₁ _) (fW₁ _))) (fd_inf _ _ _ (h₂ _ _ (oK₂ _) (fW₂ _)))
   have hmem : ∀ (i : ↥S × ↥T) (φ : typed (indSpan U₁ U₂) K W), sliceMap i.1.1 i.2.1 φ.1 ∈ P i := by
     intro i φ
     have hmi := memInd2_of_mem_indSpan φ.2.1

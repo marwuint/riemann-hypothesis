@@ -1,9 +1,11 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsFunctionsFiniteFlatCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantListFieldExtensionEqUpToPermStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendElementOfFieldEqualizerFaithfullyFlatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsFunctionsFiniteFlatCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantListFieldExtensionEqUpToPerm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendElementOfFieldEqualizerFaithfullyFlat
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.MinSt2
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.UPoinc GlobalTheory.Ex.OneGen
@@ -40,20 +42,20 @@ theorem symTup_perm' {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (σ : E
 
 theorem sym_ring : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m N : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (x : Sp R ⟶ S) (θ : SecAt G L x), Odd m → IsUnit (m : R) → N = m ^ (4 * g) → PolFib G L g x → ∃ e : Fin N → R, SymAt G L ρ m x θ e := by
   intro S G _ _ L ρ hL hρ g m N R _ _ _ _ _ x θ hm hmu hN hP
-  obtain ⟨R₁, _, _, c, hfin, hff, hc⟩ := GlobalTheory.T.theta_constants_functions_finite_flat_cover S G L ρ hL hρ g m N R x θ hm hmu hN hP
+  obtain ⟨R₁, _, _, c, hfin, hff, hc⟩ := _root_.GlobalTheory.UMin.thList_cover S G L ρ hL hρ g m N R x θ hm hmu hN hP
   have hP' : ∀ j, ∀ (K : Type) [Field K] (i₁ i₂ : R₁ →+* K), i₁.comp (algebraMap R R₁) = i₂.comp (algebraMap R R₁) →
       i₁ (symTup c j) = i₂ (symTup c j) := by
     intro j K _ i₁ i₂ h
     obtain ⟨pt₁, h₁⟩ := hc K (i₁.comp (algebraMap R R₁)) i₁ rfl
     obtain ⟨pt₂, h₂⟩ := hc K (i₁.comp (algebraMap R R₁)) i₂ h.symm
-    obtain ⟨σ, hσ⟩ := GlobalTheory.T.thetaConstantList_fieldExtension_eq_up_to_perm S G L ρ hL hρ g m R x θ hm hmu hP K K _ _ (RingHom.id K) (RingHom.id_comp _) N pt₁ _ pt₂ _ h₁ h₂
+    obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.UMin.SymCmp.thList_ext_perm S G L ρ hL hρ g m R x θ hm hmu hP K K _ _ (RingHom.id K) (RingHom.id_comp _) N pt₁ _ pt₂ _ h₁ h₂
     rw [symTup_map', symTup_map', funext hσ]
     exact (symTup_perm' (fun b => i₁ (c b)) σ).symm ▸ rfl
-  choose e he using fun j => GlobalTheory.T.descend_element_of_field_equalizer_faithfully_flat R R₁ hfin hff (symTup c j) (hP' j)
+  choose e he using fun j => _root_.GlobalTheory.exists_eq_algebraMap_of_forall_ringHom_eq R R₁ hfin hff (symTup c j) (hP' j)
   refine ⟨e, fun K _ i pt c' hl j => ?_⟩
   obtain ⟨K', _, φ, i₁, hφ⟩ := exists_common_field R R₁ hff K i
   obtain ⟨pt₁, h₁⟩ := hc K' (φ.comp i) i₁ hφ
-  obtain ⟨σ, hσ⟩ := GlobalTheory.T.thetaConstantList_fieldExtension_eq_up_to_perm S G L ρ hL hρ g m R x θ hm hmu hP K K' i (φ.comp i) φ rfl N pt c' pt₁ _ hl h₁
+  obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.UMin.SymCmp.thList_ext_perm S G L ρ hL hρ g m R x θ hm hmu hP K K' i (φ.comp i) φ rfl N pt c' pt₁ _ hl h₁
   apply φ.injective
   have h1 : φ (i (e j)) = i₁ (algebraMap R R₁ (e j)) := by rw [← RingHom.comp_apply, ← RingHom.comp_apply, hφ]
   rw [h1, ← he j K' i₁, symTup_map', symTup_map', funext hσ]

@@ -195,22 +195,6 @@ def mkU (z : D.what₂.Tau → ℂ) (hz : ∀ τ, z τ ≠ 0) : (AE D)ˣ :=
     rw [RingHom.map_mul, cmpAt_mkAE, cmpAt_mkAE, RingHom.map_one, mul_inv_cancel₀ (hz τ)]) (by
     rw [RingHom.map_mul, finPart_mkAE, finPart_mkAE, RingHom.map_one, mul_one]))
 
-theorem cmpAt_cA (τ : D.what₂.Tau) (x : AE D) : cmpAt D τ (cA D x) = starRingEnd ℂ (cmpAt D τ x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a e =>
-    show th0 D τ (fstA D.host.F a ⊗ₜ[D.host.F] star e) = starRingEnd ℂ (th0 D τ (fstA D.host.F a ⊗ₜ[D.host.F] e))
-    rw [theta_tensor_apply, theta_tensor_apply, emb_star, map_mul, compF_real, Complex.conj_ofReal]
-  | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy, RingHom.map_add, RingHom.map_add]
-
-theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a e => rfl
-  | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy, RingHom.map_add, RingHom.map_add]
-
-theorem cmpAt_incA (τ : D.what₂.Tau) (x : D.host.E) : cmpAt D τ (incA D x) = tauE D τ x := (theta_infinite_family D τ).1 x
-
 theorem expU (D : D7) : ExpU D := by
   classical
   rintro χ τ a b ⟨n, hn, e⟩ ⟨m, hm, e'⟩
@@ -240,60 +224,8 @@ theorem expU (D : D7) : ExpU D := by
   rw [a3] at a4
   norm_num at a4
 
-theorem mat_ext {m n : ℕ} {M N : Matrix (Fin m) (Fin n) (AE D)} (h1 : ∀ τ, M.map (cmpAt D τ) = N.map (cmpAt D τ))
-    (h2 : M.map (finPart D) = N.map (finPart D)) : M = N := by
-  ext i j
-  exact ae_ext' (fun τ => congrFun (congrFun (h1 τ) i) j) (congrFun (congrFun h2 i) j)
-
 theorem infMat_eq (V : HSp D) (τ : D.what₂.Tau) (h : GA D V) :
     infMat D.sp.cm.sig V.gram (th0 D τ) h = (mt V h).map (cmpAt D τ) := rfl
-
-theorem atTauU (D : D7) : AtTauU D := by
-  classical
-  intro V τ g hg
-  have hg' : gᴴ * gramAt D V τ * g = gramAt D V τ := hg
-  let z : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun τ' => if τ' = τ then g else 1
-  have hz : ∀ τ', (z τ')ᴴ * gramAt D V τ' * z τ' = gramAt D V τ' := fun τ' => by
-    by_cases h : τ' = τ
-    · subst h; simpa [z] using hg'
-    · simp [z, h]
-  let M : Matrix (Fin V.rank) (Fin V.rank) (AE D) := fun i j =>
-    mkAE (fun τ' => z τ' i j) ((1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j)
-  have m1 : ∀ τ', M.map (cmpAt D τ') = z τ' := fun τ' => by ext i j; exact cmpAt_mkAE _ _ τ'
-  have m2 : M.map (finPart D) = 1 := by ext i j; exact finPart_mkAE _ _
-  have rel : (M.map (cA D))ᵀ * V.gram.map (incA D) * M = V.gram.map (incA D) := by
-    refine mat_ext (fun τ' => ?_) ?_
-    · have a : ((M.map (cA D))ᵀ).map (cmpAt D τ') = (z τ')ᴴ := by
-        rw [← m1]; ext i j; exact cmpAt_cA τ' _
-      have b : (V.gram.map (incA D)).map (cmpAt D τ') = gramAt D V τ' := by ext i j; exact cmpAt_incA τ' _
-      rw [Matrix.map_mul, Matrix.map_mul, a, b, m1, hz]
-    · have a : ((M.map (cA D))ᵀ).map (finPart D) = 1 := by
-        have : ((M.map (cA D))ᵀ).map (finPart D) = ((M.map (finPart D)).map (sigR (Af D.host.F) D.sp.cm.sig))ᵀ := by
-          ext i j; exact finPart_cA _
-        rw [this, m2, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _), Matrix.transpose_one]
-      rw [Matrix.map_mul, Matrix.map_mul, a, m2, Matrix.one_mul, Matrix.mul_one]
-  have hM : IsUnit M := by
-    rw [Matrix.isUnit_iff_isUnit_det]
-    have e := congrArg Matrix.det rel
-    rw [Matrix.det_mul] at e
-    have hJ : IsUnit (V.gram.map (incA D)).det := by
-      have e2 : (V.gram.map (incA D)).det = incA D V.gram.det := ((incA D).map_det V.gram).symm
-      rw [e2]
-      exact (gram_det_ne V).isUnit.map _
-    exact isUnit_of_mul_isUnit_right (e ▸ hJ)
-  let h : GA D V := (⟨hM.unit, rel⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram)
-  have hh : IsAtTau (th0 D) V τ g h :=
-    ⟨Units.ext m2, (m1 τ).trans (if_pos rfl), fun τ' e => (m1 τ').trans (if_neg e)⟩
-  refine ⟨h, hh, fun h' hh' => ?_⟩
-  apply Subtype.ext
-  apply Units.ext
-  refine mat_ext (M := mt V h') (N := mt V h) (fun τ' => ?_) ?_
-  · rw [← infMat_eq, ← infMat_eq]
-    by_cases e : τ' = τ
-    · rw [e, hh.2.1, hh'.2.1]
-    · rw [hh.2.2 τ' e, hh'.2.2 τ' e]
-  · have a : finHom V h' = 1 := hh'.1
-    exact (congrArg Units.val a).trans m2.symm
 
 end Formalism.L2.Fam.ThC
 

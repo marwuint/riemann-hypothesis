@@ -43,9 +43,9 @@ theorem family_conj_H_eq : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fa
     ∃ D : ConjData C p O d, (∀ a, D.ρH a = rhoH F.B a) ∧
       ∀ i, D.H i = imLat C i (transH (F.φ i) (F.ψ i) (F.lam i)) := by
   intro K _ C p _ _ d O _ _ F hI
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.formal_group_action_ring_hom K d O F.B
-  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := GlobalTheory.T.formal_hermitian_action_pairing K d O F.B
-  have iso := fun i => GlobalTheory.T.formal_isomorphism_transport K d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rho_hom K d O F.B
+  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint K d O F.B
+  have iso := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing K d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
   have h₁ := fun i => (iso i).1
   have h₂ := fun i => (iso i).2.1
   have hT := fun i => (iso i).2.2.1
@@ -54,7 +54,7 @@ theorem family_conj_H_eq : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fa
       C.v i (bil (F.lam i) 1 1 a b) ≤ 1) → IntM C i (lin (F.φ i) 1) ∧ IntM C i (lin (F.ψ i) 1) ∧
         IntM C i (bil (F.lam i) 1 1) := fun i h =>
     ⟨fun a b => (h a b).1, fun a b => (h a b).2.1, fun a b => (h a b).2.2⟩
-  have hiso := fun i => GlobalTheory.T.alpha_beta_isomorphism_transport K p d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
+  have hiso := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Conj.alpha_beta_of_isIso K p d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
   refine ⟨{ lie := fun i => colLat C i (lin (F.φ i) 1)
             H := fun i => imLat C i (transH (F.φ i) (F.ψ i) (F.lam i))
             lie_bun := isBun_colLat C _ _ h₁ h₂ (F.ae.subset fun i hi h => hi ?_)
@@ -81,9 +81,9 @@ theorem family_conj_H_eq : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fa
   · rw [hρH, rhoH_fst, hρ]
   · rw [hρH, rhoH_inr, hρ]
   · rw [hρ, hρH]
-    exact GlobalTheory.T.alpha_equivariant_frobenius K p d O F.B a u
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.AlphaAct.alpha_comm_act K p d O F.B a u
   · rw [hρ, hρH]
-    exact GlobalTheory.T.beta_equivariant_frobenius K p d O F.B a y
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq K p d O F.B a y
 
 theorem family_conj_H_lattices : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (F : Family C p d O), Nonempty C.I → ∃ D : ConjData C p O d, (∀ a, D.ρH a = rhoH F.B a) ∧ ∀ i y, y ∈ D.H i ↔ y ∈ stdLat (C.v i).valuationSubring.toSubring (transH (F.φ i) (F.ψ i) (F.lam i)) := by
   intro K _ C p _ _ d O _ _ F hI

@@ -14,11 +14,6 @@ theorem gb_self (q : ℕ) : ∀ n : ℕ, gaussBinom q n n = 1
     rw [gb_succ_succ, gb_self q n, gb_eq_zero q n (n + 1) (by omega)]
     simp
 
-theorem gb_one_succ_succ (q i : ℕ) : gaussBinom q 1 (i + 2) = 0 :=
-  Formalism.G0.QVandermondeP.gb_eq_zero q 1 (i + 2) (by omega)
-
-theorem gb_one_one (q : ℕ) : gaussBinom q 1 1 = 1 := gb_self q 1
-
 theorem pascal2 (q M n : ℕ) :
     gaussBinom q (M + 1) (n + 1) = gaussBinom q M (n + 1) + q ^ (M - n) * gaussBinom q M n := by
   induction M generalizing n with
@@ -79,30 +74,6 @@ theorem pascal2 (q M n : ℕ) :
               q ^ (M - k) * (gaussBinom q M k + q ^ (k + 1) * gaussBinom q M (k + 1)) := by ring
         _ = gaussBinom q (M + 1) (k + 1 + 1) + q ^ (M - k) * gaussBinom q (M + 1) (k + 1) := by
           rw [s2, s3]
-
-private theorem gaussBinom_symm_of_add_eq (q : ℕ) :
-    ∀ n a b : ℕ, a + b = n → gaussBinom q n a = gaussBinom q n b := by
-  intro n
-  induction n with
-  | zero =>
-    intro a b h
-    have ha : a = 0 := by omega
-    have hb : b = 0 := by omega
-    subst ha; subst hb; rfl
-  | succ n ih =>
-    intro a b h
-    rcases a with _ | a
-    · have hb : b = n + 1 := by omega
-      subst hb
-      rw [Formalism.G0.QVandermondeP.gb_zero_right, gb_self]
-    · rcases b with _ | b
-      · have ha : a = n := by omega
-        subst ha
-        rw [Formalism.G0.QVandermondeP.gb_zero_right, gb_self]
-      · have e1 : gaussBinom q n a = gaussBinom q n (b + 1) := ih a (b + 1) (by omega)
-        have e2 : gaussBinom q n (a + 1) = gaussBinom q n b := ih (a + 1) b (by omega)
-        have hn : n - b = a + 1 := by omega
-        rw [Formalism.G0.QVandermondeP.gb_succ_succ q n a, pascal2 q n b, e1, e2, hn]
 
 theorem gb_symm (q : ℕ) : ∀ a b : ℕ, gaussBinom q (a + b) a = gaussBinom q (a + b) b
   | 0, b => by rw [Nat.zero_add, gb_zero_right, gb_self]

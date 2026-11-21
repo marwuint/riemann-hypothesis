@@ -20,11 +20,6 @@ theorem coboundary_trivial_action_zero (ρ : Representation O Γ M) (h : ∀ g m
   show ρ g v - v = 0
   rw [h, sub_self]
 
-def cocOf (ρ : Representation O Γ M) (h : ∀ g m, ρ g m = m) : H1z ρ →ₗ[O] (Γ → M) :=
-  Submodule.liftQ _ (coZ1s ρ).subtype (fun x hx => by
-    rw [LinearMap.mem_ker]
-    exact coboundary_trivial_action_zero ρ h _ hx)
-
 theorem unr_vanish (ρ : Representation O Γ M) (h : ∀ g m, ρ g m = m) (I : Subgroup Γ) (z : coZ1s ρ)
     (hz : (Submodule.mkQ _ z : H1z ρ) ∈ unrH1 ρ I) (g : Γ) (hg : g ∈ I) : (z : Γ → M) g = 0 := by
   have h1 : resH1 ρ I (Submodule.mkQ _ z) = 0 := hz

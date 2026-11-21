@@ -3,8 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BaseOneSide.
 import Development.WeilBound.CoreStatements.ThetaDilations.ThetaLint
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilFormulaRange
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SummableOneDivAbsNormSq
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlacesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalarStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlaces
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VectorLengthFormulaOfParts
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Cocompactness
 
@@ -78,7 +79,7 @@ theorem euler_of_factor {F E : Type} [Field F] [NumberField F] [Field E] [Number
       ∫⁻ X, pureL b S φinf φ X ∂I = (c : ℝ≥0∞) * ((∫⁻ X, φinf X ∂minf) * ∏ v ∈ S, ∫⁻ X, φ v X ∂(mm v))) :
     ∃ c : ℝ≥0, IsEulerProd b I c minf mm := by
   classical
-  have hLv : ∀ v, IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F
+  have hLv : ∀ v, IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   choose c hc using hc
   obtain ⟨A, hAm, hA0, hAt⟩ := @GlobalTheory.CompanionTheory.SW.Fact.exists_test_set _ _ minf hsi hinf0
   choose B hBm hB0 hBt using fun v => @GlobalTheory.CompanionTheory.SW.Fact.exists_test_set _ _ (mm v) (hsv v) (hv0 v)
@@ -87,7 +88,7 @@ theorem euler_of_factor {F E : Type} [Field F] [NumberField F] [Field E] [Number
     intro S _ v hv
     have hlatm : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
       haveI := GlobalTheory.CompanionTheory.SW.Fact.borel_tup σ hCM (Fv F v) (hLv v) n M
-      exact ((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2.measurableSet
+      exact ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b n M).2.2.2.1 v).2.measurableSet
     let φ0 : ∀ w : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F w ⊗[F] E) → ℝ≥0∞ :=
       fun w => (B w).indicator 1
     let φ1 := Function.update φ0 v ((latV b v).indicator 1)
@@ -129,7 +130,7 @@ theorem euler_of_factor {F E : Type} [Field F] [NumberField F] [Field E] [Number
     have e5 := (ENNReal.mul_left_inj hP0 hPt).mp e4
     have e6 := congrArg ENNReal.toReal e5
     simpa [ENNReal.toReal_mul] using e6
-  obtain ⟨c₀, S₀, -, hS₀⟩ := GlobalTheory.T.infinite_product_renormalization _ (fun v => (mm v (latV b v)).toReal) c ∅
+  obtain ⟨c₀, S₀, -, hS₀⟩ := _root_.GlobalTheory.CompanionTheory.SW.TailConst.exists_const_mul_tail _ (fun v => (mm v (latV b v)).toReal) c ∅
     (fun _ => ENNReal.toReal_nonneg) hsum hstep
   refine ⟨c₀, hfin, hsum, S₀, fun S hS φinf φ hφi hφ => ?_⟩
   rw [hc S φinf φ hφi hφ]
@@ -157,8 +158,8 @@ theorem euler_scaled {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     (hIsupp : I {X | gramR (AF F) σ J X = T.map (inclR (AF F))}ᶜ = 0) :
     ∃ c : ℝ≥0, IsEulerProd b I c (minf (hermOf (Ainf F) σ T hT)) (fun v => κ v • m v (hermOf (Fv F v) σ T hT)) := by
   classical
-  have hLi : IsLocR (Ainf F) := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1
-  have hLv : ∀ v, IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F
+  have hLi : IsLocR (Ainf F) := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1
+  have hLv : ∀ v, IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩
   have hFi := GlobalTheory.CompanionTheory.SW.Fact.fib_facts σ hCM J hJ (Ainf F) hLi T hT hdet b laminf hinf.1 minf hminf
   have hFv : ∀ v, SigmaFinite (m v (hermOf (Fv F v) σ T hT)) ∧
@@ -173,20 +174,20 @@ theorem euler_scaled {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
       ext X
       simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
       intro hX
-      have hloc := (GlobalTheory.T.gram_matrix_local_global F E σ hCM M J hJ n X T).1.1 hX
+      have hloc := (_root_.GlobalTheory.CompanionTheory.SW.GramLocal.gram_local F E σ hCM M J hJ n X T).1.1 hX
       rcases h0 with h | ⟨v, h⟩
       · exact hFi.2 h _ hloc.1
       · exact (hFv v).2 (hzero v h) _ (hloc.2 v)
     rw [hempty, Set.compl_empty] at hIsupp
     rw [Measure.measure_univ_eq_zero.mp hIsupp]
-    exact ⟨0, (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b n M 0 0 _ _).2.2 hfin hsum h0⟩
+    exact ⟨0, (_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b n M 0 0 _ _).2.2 hfin hsum h0⟩
   · push Not at h0
     obtain ⟨hinf0, hv0⟩ := h0
     have hsv : ∀ v, SigmaFinite (κ v • m v (hermOf (Fv F v) σ T hT)) := fun v => by
       haveI := (hFv v).1
       infer_instance
     refine euler_of_factor σ hCM n M d b _ _ hFi.1 hsv hinf0 hv0 hfin hsum I fun S => ?_
-    obtain ⟨c, hc⟩ := GlobalTheory.T.siegel_weil_orbital_measure F E σ hCM M J hJ n T hT hdet d b laminf lam hinf hlam minf hminf m hm
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.SW.FactS.fact_S F E σ hCM M J hJ n T hT hdet d b laminf lam hinf hlam minf hminf m hm
       I hIf hIinv hIsupp S
     refine ⟨c / ∏ v ∈ S, κ v, fun φinf φ hφi hφ => ?_⟩
     rw [hc φinf φ hφi hφ]
@@ -211,33 +212,33 @@ theorem mass_formula_of_total_mass_one : MassOne → Prop1 := by
   have hd : T.det ≠ 0 := by
     rw [Matrix.det_unique]
     exact hE0
-  obtain ⟨β', e, -, hh⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT
+  obtain ⟨β', e, -, hh⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hcm T hT
   have hββ : β' = β := (algebraMap F E).injective (congrFun (congrFun e 0) 0).symm
   rw [hββ] at hh
   obtain ⟨t1, t2⟩ := PositivityTheory.PlacePermOperatorBicommutantSpan.theta_inv F E σ hcm 1 J hJ μ 𝓕 hμ h𝓕 1 T
   have hlf : IsLocallyFiniteMeasure (thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin 1 → E | gramE σ J X = T}) :=
     GlobalTheory.CompanionTheory.Mass.One.theta_locFin σ hcm 1 J hJ μ 𝓕 hμ h𝓕 C hC hcov hμ0 hμt 1 _
   have hfin0 : ∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤ := fun v => by
-    have hloc : IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F v
+    have hloc : IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
     obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
     haveI := hTR
     haveI := hLC
     haveI := hSC
     haveI := hT2
     haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-    have hh' := GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b (lam v) (hlam v).1
+    have hh' := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Fv F v) d b (lam v) (hlam v).1
     haveI hW := hh'.2.1 1 1
     haveI hH := hh'.2.2 1
-    have hl := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 1 J hJ (Fv F v) hloc 1 _ _ (m v) hW hH (hm v)
+    have hl := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hcm 1 J hJ (Fv F v) hloc 1 _ _ (m v) hW hH (hm v)
       (hermOf (Fv F v) σ T hT)).1
-    exact ((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.1 v).1.measure_lt_top
+    exact ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 1).2.2.2.1 v).1.measure_lt_top
   have hfin : ∀ v, (cfac E v • m v (hermOf (Fv F v) σ T hT)) (latV b v) < ⊤ := fun v => by
     rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
     exact ENNReal.mul_lt_top ENNReal.coe_lt_top (hfin0 v)
   have hsum : Summable fun v => |((cfac E v • m v (hermOf (Fv F v) σ T hT)) (latV b v)).toReal - 1| := by
     have hev : ∀ᶠ v in Filter.cofinite,
         |((cfac E v • m v (hermOf (Fv F v) σ T hT)) (latV b v)).toReal - 1| = 0 := by
-      filter_upwards [hMass F E σ hcm J hJ d b, (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 β hβ] with v h1 h2
+      filter_upwards [hMass F E σ hcm J hJ d b, (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hcm d b).2 β hβ] with v h1 h2
       have h3 := h1 (lam v) (hlam v) (m v) (hm v) _ h2
       rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, hh, h3]
       simp

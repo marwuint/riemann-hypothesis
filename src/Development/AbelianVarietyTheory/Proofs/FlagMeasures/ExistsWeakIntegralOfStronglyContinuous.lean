@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepresentationUnitaryMulContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SecondCountableFiniteAdelicUnitaryPointsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepresentationUnitaryMulContinuous
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SecondCountableFiniteAdelicUnitaryPoints
 
 open MeasureTheory Formalism.MainNotions.S
 open scoped InnerProductSpace
@@ -44,8 +44,8 @@ theorem exists_weakIntegral_of_stronglyContinuous {X H : Type*} [TopologicalSpac
 
 theorem AutInst_exists_isRConvF_and_isRConv : ∀ (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA), I.IsFundDom (I.muA μf) fund → ∀ R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund), I.IsRightReg μf fund R → (∀ e : I.Gf → ℂ, Integrable e μf → ∃ T, I.IsRConvF μf fund R e T) ∧ ∀ φ : I.GA → ℂ, Integrable φ (I.muA μf) → ∃ T, I.IsRConv μf fund R φ T := by
   intro I μf _ _ fund hfund R hR
-  obtain ⟨-, -, hn, hc⟩ := GlobalTheory.T.rightRegularRepresentation_unitary_mul_continuous I μf fund hfund R hR
-  haveI := GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints I
+  obtain ⟨-, -, hn, hc⟩ := _root_.GlobalTheory.RightRegProps.rightReg_unitary_mul_continuous I μf fund hfund R hR
+  haveI := _root_.GlobalTheory.CongTop.secondCountable_finiteAdelicPoints I
   refine ⟨fun e he => ?_, fun φ hφ => ?_⟩
   · obtain ⟨T, hT⟩ := exists_weakIntegral_of_stronglyContinuous μf (fun g => R (1, g))
       (fun g F => hn _ F) (fun F => (hc F).comp (by fun_prop)) e he

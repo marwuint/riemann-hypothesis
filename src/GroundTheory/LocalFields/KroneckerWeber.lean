@@ -63,18 +63,6 @@ theorem exists_le_lubinTateField_sup_unramifiedTower (L : IntermediateField K Ω
   exact ⟨n, m, (range_normUnits_le_range_normUnits_iff (mul_comm_of_isAbelianGalois _)
     (mul_comm_of_isAbelianGalois L)).1 hle⟩
 
-theorem maximalAbelianExtension_eq_lubinTateMaxUnramified :
-    maximalAbelianExtension K Ω = lubinTateMaxUnramified Ω hπ := by
-  have : IsSepClosure K Ω := ⟨inferInstance, inferInstance⟩
-  have hf := isLubinTateSeries_ltPoly π
-  refine le_antisymm (fun y hy => ?_) ?_
-  · obtain ⟨L, _, _, hyL⟩ := exists_finite_abelian_mem hy
-    obtain ⟨n, m, h⟩ := exists_le_lubinTateField_sup_unramifiedTower hπ hf L
-    exact sup_le_sup (lubinTateField_le_lubinTateLimit hπ hf _)
-      (unramifiedTower_le_maximalUnramifiedExtension m) (h hyL)
-  · refine @le_maximalAbelianExtension K Ω _ _ _ _ _ (isAbelianGalois_of_mul_comm _ fun σ τ =>
-      (lubinTateMaxUnramifiedGalEquiv hπ hf).injective (by rw [map_mul, map_mul, mul_comm]))
-
 end LubinTate
 
 section Padic
@@ -227,15 +215,6 @@ theorem maximalUnramifiedExtension_eq_adjoin_rootsOfUnity :
       rw [hc, pow_mul, hζn, one_pow])
     rw [← hi]
     exact hU.le_maximalUnramifiedExtension (pow_mem (mem_adjoin_simple_self ℚ_[p] ξ) i)
-
-theorem lubinTateLimit_le_adjoin_rootsOfUnity [ValuativeRel Ω] [TopologicalSpace Ω]
-    [IsValuativeTopology Ω] [ValuativeExtension ℚ_[p] Ω] :
-    lubinTateLimit Ω (irreducible_natCast_integer p) ≤
-      adjoin ℚ_[p] {ζ : Ω | ∃ n : ℕ, ζ ^ (p ^ n) = 1} := by
-  rw [lubinTateLimit_eq _ (isLubinTateSeries_multiplicativeLTPoly p)]
-  exact iSup_le fun n => (lubinTateField_le_adjoin_rootsOfUnity p n).trans
-    (adjoin.mono _ _ _ fun ζ (hζ : ζ ^ (p ^ n) = 1) =>
-      show ∃ n : ℕ, ζ ^ (p ^ n) = 1 from ⟨n, hζ⟩)
 
 variable (Ω) in
 

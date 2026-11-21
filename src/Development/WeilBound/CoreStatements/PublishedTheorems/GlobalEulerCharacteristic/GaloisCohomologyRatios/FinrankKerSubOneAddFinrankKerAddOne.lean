@@ -26,34 +26,6 @@ theorem finrank_ker_sub_one_add_finrank_ker_add_one {k V : Type*} [Field k] [Add
 
 variable {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))} {ℓ : ℕ}
 
-theorem gsRoots_realConj (hℓ : 0 < ℓ)
-    (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
-    (v : {v : InfinitePlace K.1 // v.IsReal}) (t : gsRoots S ℓ) :
-    (gsRoots S ℓ).ρ (gsRealFamily S ιr v (realConj v.1 v.2)) t = -t := by
-  obtain ⟨ζ, rfl⟩ : ∃ ζ : rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S), Additive.ofMul ζ = t :=
-    ⟨Additive.toMul t, rfl⟩
-  change Additive.ofMul (galRootsOfUnityHom K.1 _ ℓ (gsRealFamily S ιr v (realConj v.1 v.2)) ζ) =
-    Additive.ofMul ζ⁻¹
-  congr 1
-  apply Subtype.ext
-  apply Units.ext
-  rw [coe_galRootsOfUnityHom_apply]
-  set f : maxUnramifiedOutside K.1 ℚ̄ S →ₐ[K.1] AlgebraicClosure v.1.Completion :=
-    (ιr v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val
-  have hf : Function.Injective f := f.injective
-  apply hf
-  set u : (AlgebraicClosure v.1.Completion)ˣ := Units.map (f : maxUnramifiedOutside K.1 ℚ̄ S →* AlgebraicClosure v.1.Completion) (ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)
-  have hu : u ^ ℓ = 1 := by
-    rw [← map_pow]
-    have : (ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) ^ ℓ = 1 := (mem_rootsOfUnity _ _).1 ζ.2
-    rw [this, map_one]
-  have key := realConj_apply_of_pow_eq_one v.1 v.2 u hℓ hu
-  have h1 : f ((gsRealFamily S ιr v (realConj v.1 v.2)) ((ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)) =
-      realConj v.1 v.2 (f ((ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)) :=
-    gsRealFamily_apply S ιr v _ _
-  rw [h1]
-  exact key
-
 section TConj
 variable [Fact ℓ.Prime]
 

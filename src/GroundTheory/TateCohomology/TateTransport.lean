@@ -1,6 +1,7 @@
 import Mathlib
 import GroundTheory.TateCohomology.TateGroupIso
-import GroundTheory.TateCohomology.TateZeroClass
+import GroundTheory.TateCohomology.TateLow
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.GroupCoh
@@ -97,21 +98,6 @@ noncomputable def tateTransportShortComplex (X : ShortComplex (Rep.{u} k K)) :
 
 omit [Fintype H] [Fintype K] in
 
-lemma shortExact_map_resFunctor_equiv {X : ShortComplex (Rep.{u} k K)} (hX : X.ShortExact) :
-    (X.map (resFunctor (e : H →* K))).ShortExact :=
-  (Rep.shortExact_res (e : H →* K)).2 hX
-
-theorem tateTransport_δ {X : ShortComplex (Rep.{u} k K)} (hX : X.ShortExact) (n : ℤ) :
-    TateCohomology.δ hX n ≫ (tateTransport e (n + 1)).app X.X₁ =
-      (tateTransport e n).app X.X₃ ≫
-        TateCohomology.δ (shortExact_map_resFunctor_equiv e hX) n :=
-  HomologicalComplex.HomologySequence.δ_naturality (tateTransportShortComplex e X)
-    (TateCohomology.map_tateComplexFunctor_shortExact hX)
-    (TateCohomology.map_tateComplexFunctor_shortExact (shortExact_map_resFunctor_equiv e hX))
-    n (n + 1) rfl
-
-omit [Fintype H] [Fintype K] in
-
 def invariantsTransport {B : Rep.{u} k K} (x : B.ρ.invariants) :
     (res (e : H →* K) B).ρ.invariants :=
   ⟨x, fun h => x.2 (e h)⟩
@@ -120,11 +106,6 @@ omit [Fintype H] [Fintype K] in
 @[simp]
 lemma coe_invariantsTransport {B : Rep.{u} k K} (x : B.ρ.invariants) :
     (invariantsTransport e x : B) = x := rfl
-
-theorem tateTransport_tateZeroClass (B : Rep.{u} k K) (x : B.ρ.invariants) :
-    ((tateTransport e 0).app B).hom (tateZeroClass B x) =
-      tateZeroClass (res (e : H →* K) B) (invariantsTransport e x) :=
-  homologyMap_tateZeroClass _ x _ (funext fun _ => rfl)
 
 end Cohomology
 

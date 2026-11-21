@@ -16,11 +16,4 @@ def MIntegrableOfDensLe.Statement : Prop :=
       0 ≤ locDens A Φ j y ∧ locDens A Φ j y ≤ locDens A Ψ j y) →
     ∀ g : X → ℝ, (∀ x, x ∉ V → g x = 0) → MIntegrable A Ψ g → MIntegrable A Φ g
 
-section Inhabitants
-
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData)
-open ReciprocityTheory.AnForm.M (p1 fsPot projLine_isSmoothPotential projLine_isPlurisubharmonic locDensCont locDens_nonneg_of_psh)
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.AnalyticLimit

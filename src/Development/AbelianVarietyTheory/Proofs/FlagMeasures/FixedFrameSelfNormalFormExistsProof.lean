@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProofStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProof
 
 noncomputable section
 open scoped Classical
@@ -119,9 +119,6 @@ theorem Xa_r (F : Formalism.MainNotions.S.FlagG S r (n : E)) : F.Xa r = F.X := b
 theorem line_le {A : Submodule (𝓞 E) E} {v : S.V} {M : Submodule (𝓞 E) S.V} (h : ∀ x ∈ A, x • v ∈ M) :
     GlobalTheory.DegCnt.line A v ≤ M := by
   rintro _ ⟨x, hx, rfl⟩; exact h x hx
-
-theorem mem_line {A : Submodule (𝓞 E) E} {v : S.V} {x : E} (hx : x ∈ A) : x • v ∈ GlobalTheory.DegCnt.line A v :=
-  ⟨x, hx, rfl⟩
 
 theorem idNF_spec (F : Formalism.MainNotions.S.FlagG S r (n : E)) (hT : ((n : ℕ) : E) ≠ 0) (𝔡 : Ideal (𝓞 E)) (h𝔡 : 𝔡 ≠ ⊥)
     (h𝔡s : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : E) = star (x : E))
@@ -325,7 +322,7 @@ theorem fe_of {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {
 
 theorem idNFC_holds : GlobalTheory.TypeAsm.IdNFC := by
   intro D large₂ X Y u hStd Λ hΛ
-  obtain ⟨-, -, -, -, -, -, -, hne, hstar, -⟩ := GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hStd
+  obtain ⟨-, -, -, -, -, -, -, hne, hstar, -⟩ := _root_.GlobalTheory.TypeAsm.hostC D large₂ hStd
   have hpos : 0 < (D.mem u).A.T := (D.mem u).A.T_prime.pos
   have hP := Formalism.MainNotions.LatticeGluingRadicals.p_posX D _ hpos (Formalism.MainNotions.S.lf D (X.Fu u))
   by_cases h0 : Λ = (Formalism.MainNotions.S.VS D).L0

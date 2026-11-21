@@ -35,10 +35,6 @@ theorem integral_add {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral
 theorem integral_neg {f : MvPowerSeries ι K} (hf : Integral f) : Integral (-f) := fun n => by
   rw [map_neg, norm_neg]; exact hf n
 
-theorem integral_sub {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral g) :
-    Integral (f - g) := by
-  rw [sub_eq_add_neg]; exact integral_add hf (integral_neg hg)
-
 theorem integral_sum {α : Type} (s : Finset α) (F : α → MvPowerSeries ι K)
     (h : ∀ a ∈ s, Integral (F a)) : Integral (∑ a ∈ s, F a) := fun n => by
   rw [map_sum]

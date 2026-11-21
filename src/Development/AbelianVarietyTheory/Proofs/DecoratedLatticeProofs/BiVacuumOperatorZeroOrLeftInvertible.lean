@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatt
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiCombEqLOpROp
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompletedHomLatticeStableSplitIdempotent
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeCompletionSplitPlacesActsBySignsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsolateAbstractStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeCompletionSplitPlacesActsBySigns
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsolateAbstract
 
 noncomputable section
 
@@ -205,8 +205,8 @@ theorem GlobalTheory.FinPl.biInv_main : ∀ D : D7, GlobalTheory.FinPl.BiInv D :
       s ≠ 0 ∧ ∀ C ∈ {C | BiVacAt ψ LA LS LA' P C}, twoT ψ A S A' γ C = s • C := by
     intro γ
     by_cases hγ : γ ∈ Γ
-    · obtain ⟨ε₁, hε₁, h₁⟩ := GlobalTheory.T.homLatticeCompletion_splitPlaces_acts_by_signs D k ι p I P hP ψ hψ A S LA LS hA hS γ.1 (AddSubgroup.mem_prod.1 hγ).1
-      obtain ⟨ε₂, hε₂, h₂⟩ := GlobalTheory.T.homLatticeCompletion_splitPlaces_acts_by_signs D k ι p I P hP ψ hψ S A' LS LA' hS hA' γ.2 (AddSubgroup.mem_prod.1 hγ).2
+    · obtain ⟨ε₁, hε₁, h₁⟩ := _root_.GlobalTheory.FinPl.VacSign.latO_acts_by_signs D k ι p I P hP ψ hψ A S LA LS hA hS γ.1 (AddSubgroup.mem_prod.1 hγ).1
+      obtain ⟨ε₂, hε₂, h₂⟩ := _root_.GlobalTheory.FinPl.VacSign.latO_acts_by_signs D k ι p I P hP ψ hψ S A' LS LA' hS hA' γ.2 (AddSubgroup.mem_prod.1 hγ).2
       refine ⟨ε₁ * ε₂, fun _ => ⟨mul_ne_zero (left_ne_zero_of_mul_eq_one hε₁) (left_ne_zero_of_mul_eq_one hε₂),
         fun C hC => ?_⟩⟩
       funext u v
@@ -255,7 +255,7 @@ theorem GlobalTheory.FinPl.biInv_main : ∀ D : D7, GlobalTheory.FinPl.BiInv D :
         mul_right_cancel₀ (psi_ne_zero ψ _) (heq.trans (one_mul _).symm)
       rw [symplO_skew'] at h1
       exact psi_eq_one_of_neg ψ h1
-  rcases GlobalTheory.T.eq_zero_or_exists_inverse_combination_of_separating (WO A S × WO S A') Γ (goodG A S A' P) (WO A S → WO S A' → ℂ) (twoT ψ A S A')
+  rcases _root_.GlobalTheory.isolate_abstract (WO A S × WO S A') Γ (goodG A S A' P) (WO A S → WO S A' → ℂ) (twoT ψ A S A')
       {C | BiVacAt ψ LA LS LA' P C} (bet ψ A S A') aF (chi ψ A S A') hΓG (twoT_zero ψ A S A') (twoT_mul ψ A S A')
       (bet_ne_zero ψ A S A') (fun γ hγ => haF γ hγ) (fun γ _ x v => twoT_comm ψ A S A' x γ v) hχ hsep
       (kOp A S A' op).support (kOp A S A' op) (kOp_good A S A' P op hop) with h | ⟨κ, hκ, hinv⟩

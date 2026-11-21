@@ -2,13 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanOfPowMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinSectionTrivialisesInvertPrimeTensor
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EPowXiExtMemMan
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DividedDifferenceIdealPowerMemStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElementMovingTiltedUniformizerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerEpsPowSubOneEqEisensteinMulUnitStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisEisensteinEvalEqMulUnitCoeffDeRhamPlusStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinEvalNonZeroDivisorNatCastIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DividedDifferenceIdealPowerMem
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElementMovingTiltedUniformizer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerEpsPowSubOneEqEisensteinMulUnit
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisEisensteinEvalEqMulUnitCoeffDeRhamPlus
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinEvalNonZeroDivisorNatCastIsUnit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinGaloisScalesDeRhamPeriodsByUnitPow
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TaylorFormulaPiInvPrimeModEisensteinPowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TaylorFormulaPiInvPrimeModEisensteinPow
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 
@@ -20,13 +20,13 @@ open GlobalTheory.GalStep in
 
 theorem GlobalTheory.GalStep.taylor_rho : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → IsCrisCmp I jB → IsHoriz (thetaW a LL) ϖ (sQ l) P jB → ∀ (jD : (ι → OD l ↥(OL LL)) ≃ₗ[OD l ↥(OL LL)] TW (OD l ↥(OL LL)) T), (∀ (c : ι → OA l ↥(OL LL)) (z : TW (OA l ↥(OL LL)) T), I.j (inclV l ↥(OL LL) ι c) = TWincl (inclO l ↥(OL LL)) T z → jD (fun i => toOD l ↥(OL LL) (c i)) = TWincl (toOD l ↥(OL LL)) T z) → ∀ α : ℕ, (∀ v ∈ P.L, E ↥LL.1 l e ^ α • v ∈ P.M) → ∀ g : Gl l, sQ l g ∈ GK (ϖ.field a) → ∃ v : OD l ↥(OL LL), IsUnit v ∧ ∀ w ∈ P.Mext (invL l (S ↥(OL LL) ↥LL.1 e)), ∀ (R : ℕ) (j : ι), GlobalTheory.GalStep.rhoD T jD g (GlobalTheory.GalStep.YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xiExt w)) j - v ^ α * ∑ i ∈ Finset.range R, toOD l ↥(OL LL) (1 ⊗ₜ ϖ.mu (sQ l g)) ^ i * Ring.inverse (i.factorial : OD l ↥(OL LL)) * GlobalTheory.GalStep.YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xiExt (fun τ k => descN ↥LL.1 i (w τ k))) j ∈ Ideal.span {GlobalTheory.GalStep.ED ↥LL.1 (thetaW a LL) ϖ ^ R} := by
   intro hF l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I jB Pl AI hStd hCmp hHor jD hjD α hα g hg
-  obtain ⟨v, hv, hED⟩ := GlobalTheory.T.galois_eisensteinEval_eq_mul_unit_coeffDeRhamPlus l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ (sQ l g) hg
+  obtain ⟨v, hv, hED⟩ := _root_.GlobalTheory.GalStep.galOD_ED l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ (sQ l g) hg
   refine ⟨v, hv, fun w hw R j => ?_⟩
   exact taylor_vec (thetaW a LL) ϖ P α (descN_mem_Mext P) (E_pow_xiExt_mem_Man P α hα)
     (galOD ↥(OL LL) (sQ l g)) (rhoDHom T jD g) (rhoD_smul T jD g) (v ^ α)
     (GlobalTheory.T.breuilKisin_galois_scales_deRhamPeriods_by_unit_pow hF l a e ϖ LL hl2 ι P T I jB Pl AI hStd hCmp hHor jD hjD α hα g hg v hED)
     (fun i => toOD l ↥(OL LL) (1 ⊗ₜ ϖ.mu (sQ l g)) ^ i * Ring.inverse (i.factorial : OD l ↥(OL LL))) R _
-    (fun f hf => GlobalTheory.T.taylor_formula_pi_invPrime_mod_eisenstein_pow l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ (sQ l g) hg f hf R) hw j
+    (fun f hf => _root_.GlobalTheory.GalStep.taylor_iD_mod_ED l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ (sQ l g) hg f hf R) hw j
 
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
@@ -43,7 +43,7 @@ theorem GlobalTheory.GalStep.key_sums (hF : GlobalTheory.Published.FontaineBcris
   have hgk : sQ l (g ^ k) ∈ GK (ϖ.field a) := by rw [map_pow]; exact Subgroup.pow_mem _ hg k
   obtain ⟨v, hv, htay⟩ := taylor_rho hF l a e ϖ LL hl2 ι P T I jB Pl AI hStd hCmp hHor jD hjD α hα (g ^ k) hgk
   have h1 := htay wx hwx (α + b) j
-  obtain ⟨v', hv', hED⟩ := GlobalTheory.T.galois_eisensteinEval_eq_mul_unit_coeffDeRhamPlus l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ (sQ l (g ^ k)) hgk
+  obtain ⟨v', hv', hED⟩ := _root_.GlobalTheory.GalStep.galOD_ED l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ (sQ l (g ^ k)) hgk
   have hxe : E ↥LL.1 l e ^ α • P.xiExt wx = E ↥LL.1 l e ^ (α + b) • m := by
     rw [hwxdef, smul_smul, ← pow_add]
   have h2 : rhoD T jD (g ^ k) (YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xiExt wx)) j ∈
@@ -75,15 +75,15 @@ theorem GlobalTheory.GalStep.main : GlobalTheory.Published.FontaineBcris → ∀
       rfl
     rw [h2]
     exact h1
-  obtain ⟨g, ε, c, hε, hc, hg, hk⟩ := GlobalTheory.T.exists_galois_element_moving_tilted_uniformizer l a e ϖ hl2
-  obtain ⟨u, hu, hq⟩ := GlobalTheory.T.teichmuller_eps_pow_sub_one_eq_eisenstein_mul_unit l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ε c hε hc
-  obtain ⟨hnz, hnat⟩ := GlobalTheory.T.eisensteinEval_nonZeroDivisor_natCast_isUnit l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ
+  obtain ⟨g, ε, c, hε, hc, hg, hk⟩ := _root_.GlobalTheory.KummerMove.main l a e ϖ hl2
+  obtain ⟨u, hu, hq⟩ := _root_.GlobalTheory.GalStep.teich_pow_sub_one_eq_ED_mul l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ε c hε hc
+  obtain ⟨hnz, hnat⟩ := _root_.GlobalTheory.GalStep.ED_nzd_and_natCast_isUnit l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ
   have hxM : E ↥LL.1 l e ^ (β₀ + n) • m ∈ P.MMl := P.ext_mono (le_trans (A_le_S l e) (le_away _ _)) hβ
   have hsurj := P.xiExt.surjective (E ↥LL.1 l e ^ (β₀ + n) • m)
   obtain ⟨wx, hwxdef⟩ := hsurj
   have hwx : wx ∈ P.Mext (invL l (S ↥(OL LL) ↥LL.1 e)) :=
     ((GlobalTheory.BK.xi_trivialises_invL_S ↥(OL LL) ↥LL.1 l e a ι P).2 wx).1 (by rw [hwxdef]; exact hxM)
-  have hD1 := GlobalTheory.T.divided_difference_ideal_power_mem (OD l ↥(OL LL)) hnat (ED ↥LL.1 (thetaW a LL) ϖ) _ u hu hq (α + (β₀ + n))
+  have hD1 := _root_.GlobalTheory.FilCoeff.d_mul_x_one_mem_span_pow (OD l ↥(OL LL)) hnat (ED ↥LL.1 (thetaW a LL) ϖ) _ u hu hq (α + (β₀ + n))
     (fun i => YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xiExt (fun τ k => descN ↥LL.1 i (wx τ k))) j)
     (key_sums hF l a e ϖ LL hl2 ι P T I jB Pl AI hStd hCmp hHor jD hjD α (β₀ + n) hα g hg ε c hk hm hwx hwxdef j)
   have hfin := tail_step (thetaW a LL) ϖ P hnz (E_pow_xiExt_mem_Man P) (descN_mem_Mext P) α β₀ n hα hm hn hwx hwxdef j hD1

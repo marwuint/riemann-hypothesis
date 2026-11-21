@@ -13,8 +13,8 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.WeightsBelow
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LogLeOfLePowMulPow
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaLatticeWeightScalarNeZeroAndLogBounds
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ScaledFamily
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SupBoundsLeGeneratorConstantMulSizeStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsShortFiniteGeneratorsThetaLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SupBoundsLeGeneratorConstantMulSize
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsShortFiniteGeneratorsThetaLattice
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.L2.Pj GlobalTheory.RunIn ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
@@ -31,7 +31,7 @@ theorem exists_tiedW_rec : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIn
   have hO : OPO large₂ (recB h.toLawsCore) := by
     obtain ⟨-, ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hO, -⟩, -⟩ := hP
     exact hO
-  obtain ⟨N, w0, hspan, hN, hsup⟩ := GlobalTheory.T.exists_short_finite_generators_thetaLattice hC D T h hG large₂ j hj wL hRL hL hrn hLP
+  obtain ⟨N, w0, hspan, hN, hsup⟩ := _root_.GlobalTheory.ThetaFamily.theta_family hC D T h hG large₂ j hj wL hRL hL hrn hLP
   have hcount := log_count_le_mul_size D _ large₂ j wL N Prw hL hn0 hRL hO hPrw hN
   have hs : (0 : ℝ) ≤ wL.size := by
     have h1 := frn_le_size_sub_one wL
@@ -40,7 +40,7 @@ theorem exists_tiedW_rec : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIn
     linarith
   have hp : 0 ≤ Real.log (D.host.pde : ℝ) := Real.log_natCast_nonneg _
   have hZ : 0 ≤ Zb D large₂ := by unfold Zb; positivity
-  have hnum := (GlobalTheory.T.supBounds_le_generatorConstant_mul_size D (recB h.toLawsCore) large₂ j wL D.host.pde hL hn0).2.2
+  have hnum := (_root_.GlobalTheory.RunIn.sup_bounds_le_Gc D (recB h.toLawsCore) large₂ j wL D.host.pde hL hn0).2.2
   have hGc := mul_le_mul_of_nonneg_right (hG4 D.host.pde (by simp)) hs
   have hd : 0 ≤ Real.log |((NumberField.discr (recB h.toLawsCore).KO : ℤ) : ℝ)| := by
     rw [Real.log_abs]; exact Real.log_intCast_nonneg _

@@ -61,26 +61,6 @@ theorem locSq_reindex {κ : Type} (e : κ ≃ ι) (M : Rep.{0} (ULift.{0} ℤ) G
   funext k
   rw [ptGlobalToLocal_reindex, sq]
 
-theorem trSq_reindex [Fintype ι] {κ : Type} [Fintype κ] (e : κ ≃ ι)
-    (D : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep D] (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]
-    [Finite M] (inv : ∀ v, cohomology (Rep.res (φ v).toMonoidHom D) 2 →+ QZ) {r s : ℕ}
-    (h : r + s = 2) {N : ℕ} [NeZero N] {Xk : κ → Type} [∀ k, AddCommGroup (Xk k)]
-    [∀ k, Module (ZMod N) (Xk k)] {Y : Type} [AddCommGroup Y] [Module (ZMod N) Y]
-    {Yk : κ → Type} [∀ k, AddCommGroup (Yk k)] [∀ k, Module (ZMod N) (Yk k)]
-    (resY : ∀ k, Y →ₗ[ZMod N] Yk k) (P : ∀ k, Xk k →ₗ[ZMod N] Yk k →ₗ[ZMod N] ZMod N)
-    (Ex : ∀ k, Xk k ≃+ cohomology (Rep.res (φ (e k)).toMonoidHom M) r)
-    (Ey : Y ≃+ cohomology (dualRep D M) s)
-    (Eyk : ∀ k, Yk k ≃+ cohomology (Rep.res (φ (e k)).toMonoidHom (dualRep D M)) s)
-    (hres : ∀ k y, Eyk k (resY k y) = ptRes φ (dualRep D M) (e k) s (Ey y)) (ε : ℤ)
-    (hQ : ∀ k a b, ptLocalPairing φ D M inv (e k) h (Ex k a) (Eyk k b) = ε • zmodToQZ N (P k a b))
-    (x : ∀ k, Xk k) (y : cohomology (dualRep D M) s) :
-    ptLocalDualMap φ D M inv h
-        (reindexAdd (fun v => cohomology (Rep.res (φ v).toMonoidHom M) r) e (fun k => Ex k (x k))) y =
-      ε • zmodToQZ N (∑ k, P k (x k) (resY k (Ey.symm y))) := by
-  rw [ptLocalDualMap_reindex, map_sum, Finset.smul_sum]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [← hQ, hres, AddEquiv.apply_symm_apply]
-
 def finsetCoeEquiv {α : Type} (S : Finset α) : S ≃ (S : Set α) where
   toFun v := ⟨v.1, Finset.mem_coe.2 v.2⟩
   invFun w := ⟨w.1, Finset.mem_coe.1 w.2⟩

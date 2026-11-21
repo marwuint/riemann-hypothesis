@@ -13,13 +13,6 @@ theorem eN_apply (N i : ℕ) (l : Fin N) : eN k N i l = if l.1 = i then 1 else 0
 theorem mem_Ufl {n c i : ℕ} {v : Fin (n + c) → k} :
     v ∈ Ufl k n c i ↔ ∀ l : Fin (n + c), ¬ (l.1 < n + i) → v l = 0 := Iff.rfl
 
-theorem inX_apply {n c : ℕ} (x : Fin n → k) (l : Fin (n + c)) :
-    inX k n c x l = if h : l.1 < n then x ⟨l.1, h⟩ else 0 := by
-  simp only [inX, LinearMap.pi_apply]
-  split_ifs with h
-  · rfl
-  · rfl
-
 theorem atN_add {N : ℕ} (v w : Fin N → k) (i : ℕ) : atN (v + w) i = atN v i + atN w i := by
   simp only [atN]
   split_ifs <;> simp
@@ -61,11 +54,5 @@ theorem fillMatrix_single {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n �
     xx1 xj t (Pi.single s 1) l = if hf : IsFree n' n c l.1 s.1 then t ⟨(l, s), hf⟩ else base xj l s := by
   simp only [xx1, Matrix.toLin'_apply, Matrix.mulVec_single, MulOpposite.op_one, one_smul, Matrix.col_apply,
     Matrix.of_apply, base]
-
-theorem extractFree_fillMatrix {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) (t : FC n' (c + 1) n c → k) :
-    fe (xx1 xj t) = t := by
-  funext p
-  show xx1 xj t (Pi.single p.1.2 1) p.1.1 = t p
-  rw [fillMatrix_single, dif_pos p.2]
 
 end PI.UnfoldEquiv.UnitaryGroupMassFormula

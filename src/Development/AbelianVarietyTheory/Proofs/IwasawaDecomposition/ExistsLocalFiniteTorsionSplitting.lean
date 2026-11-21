@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionFlatLocallyQuasiFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionFlatLocallyQuasiFinite
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSectionOfIsIntegralHom
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniversalTorsionPairPolAV
 
@@ -255,7 +255,7 @@ theorem exists_finite_part : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have := t.semi.smooth
   have := t.semi.separated
   have := t.semi.quasiCompact
-  obtain ⟨_, _⟩ := GlobalTheory.T.torsion_flat_locallyQuasiFinite X t.G t.semi q hq
+  obtain ⟨_, _⟩ := _root_.GlobalTheory.FibreFlatGen.flat_and_locallyQuasiFinite_torsion X t.G t.semi q hq
   have hcl : IsClosedImmersion η[t.G].left := by
     have : IsClosedImmersion (η[t.G].left ≫ t.G.hom) := by
       rw [Over.w]; exact inferInstanceAs (IsClosedImmersion (𝟙 X))

@@ -9,9 +9,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStageFiniteLevelEqProductLocalLevelsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainCoefficientSupportedPrincipalLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralSplitFinitePlaceFubiniStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStageFiniteLevelEqProductLocalLevels
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainCoefficientSupportedPrincipalLevel
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralSplitFinitePlaceFubini
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjPlEqCP
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatIntegrandLocalFactorSplitsTwistPlaceStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -31,8 +31,8 @@ theorem qPeel_holds : GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheo
     obtain ⟨hr, -, hfl⟩ := hs
     exact hfl.haar
   have : BorelSpace (GA D s.V) := ⟨rfl⟩
-  obtain ⟨-, hmO, hlevIff, -, -, -⟩ := GlobalTheory.T.thetaChainStage_finiteLevel_eq_product_localLevels D c w hw k hk.le s hs
-  have hmL : MeasurableSet (levSet s) := (GlobalTheory.T.thetaChainStage_finiteLevel_eq_product_localLevels D c w hw k hk.le s hs).1
+  obtain ⟨-, hmO, hlevIff, -, -, -⟩ := _root_.GlobalTheory.ChainTw.LevLoc.levLoc D c w hw k hk.le s hs
+  have hmL : MeasurableSet (levSet s) := (_root_.GlobalTheory.ChainTw.LevLoc.levLoc D c w hw k hk.le s hs).1
   set F := flatInt p m X a φ (PiLocalization₂.val u₁ v₁) (PiLocalization₂.val u₂ v₂) z with hF
   have hloc := GlobalTheory.T.flatIntegrand_localFactor_splits_twistPlace hU hC D hgap c w hw k hk s s' hs hs' p hp m X hX a ha u₁ u₂ φ hq v₁ hv₁ v₂ hv₂ z hz
   choose J μ ζ hJo hμ hμJ hζi hζ1 hJiff hζv hFx using hloc
@@ -107,7 +107,7 @@ theorem qPeel_holds : GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheo
       have hFx' : ∀ x ∈ ET (w.Q \ insert PP T), GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v x = 1 → ∀ y,
           F (x * GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v y) = ζ PP hPP y * F x :=
         fun x hx h1 y => hFx PP hPP x hx.1 h1 y
-      have hfub := GlobalTheory.T.integral_split_finite_place_fubini D s.V s.ν hhaar v (μ PP hPP) (hμ PP hPP) (J PP hPP) (hJo PP hPP) (hμJ PP hPP)
+      have hfub := _root_.GlobalTheory.Core.Rk.FubiniPlace.integral_split_place D s.V s.ν hhaar v (μ PP hPP) (hμ PP hPP) (J PP hPP) (hJo PP hPP) (hμJ PP hPP)
         (ET (w.Q \ insert PP T)) hE' hinv F (ζ PP hPP) (hζi PP hPP) (hζ1 PP hPP) hFx' (by rw [hset]; exact ih1)
       refine ⟨hfub.1, fun hz2 => ?_⟩
       rw [hfub.2, hset, ih2 hz2, hζv PP hPP hz2, Finset.prod_insert hPT]
@@ -127,7 +127,7 @@ theorem qPeel_holds : GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheo
         apply hne
         simp only [hF, flatInt, GlobalTheory.Core.Rk.IP.integrand]
         rw [show GlobalTheory.Core.Rk.IP.wcoef p.ω m X (p.pt φ) (p.pt φ) g = coefW p.ω m X (p.pt φ) g from rfl, h0, zero_mul, zero_mul]
-      exact GlobalTheory.T.twistedChain_coefficient_supported_principal_level D hgap c w hw k hk s s' hs hs' p hp m X hX φ g hc _
+      exact _root_.GlobalTheory.TwSuppLev.supp_at_principal D hgap c w hw k hk s s' hs hs' p hp m X hX φ g hc _
         (by simp only [Twist.S₀, Finset.coe_image]; exact Set.mem_image_of_mem _ hP)
     · exact h2 PP hP
   have hintR : IntegrableOn F (ET w.Q) s.ν := hlev.of_forall_diff_eq_zero (hET _ subset_rfl) hzero

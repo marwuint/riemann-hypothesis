@@ -275,23 +275,6 @@ theorem Iso.good (I : Iso A B) (h : A.Good) : B.Good := by
   rw [I.span_L, h3, Submodule.map_top]
   exact I.e.range
 
-theorem Iso.numbers (I : Iso A B) (hX : FrameOK A) (hL : A.L.FG) :
-    A.mu = B.mu ∧ A.muMax = B.muMax ∧ A.muMin = B.muMin ∧ A.lcv = B.lcv := by
-  obtain ⟨h1, -, h3, h4, h5, -, -⟩ := rerealize K A.V A.ι B.V B.ι A.b A.X B.b B.X I.e.toLinearMap hX
-    (I.frameOK hX) I.e.injective I.norm A.L hL
-  rw [I.map_L] at h1 h3 h4 h5
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · unfold HLat.mu muDef; rw [h3]
-  · unfold HLat.muMax muMaxDef; rw [h4]
-  · unfold HLat.muMin muMinDef; rw [h5]
-  · unfold HLat.lcv; rw [h1]
-
-def Iso.withL (I : Iso A B) (L' : Submodule (𝓞 K) A.V) :
-    Iso (withL A L') (HLatOps.withL B (L'.map (I.e.toLinearMap.restrictScalars (𝓞 K)))) where
-  e := I.e
-  map_L := rfl
-  norm := I.norm
-
 theorem frame_free : FrameFree := by
   intro K V ι κ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' hn L hL
   obtain ⟨h1, -, h3, h4, h5, -, -⟩ := rerealize K V ι V κ b X b' X' LinearMap.id hX hX'
@@ -540,35 +523,6 @@ theorem pull_spec : PullSpec := by
     rw [h5]
     exact Submodule.smul_mem _ _ (Submodule.subset_span h4)
 
-theorem embIso' (A B : HLat K) (ψ : A.V →ₗ[K] B.V) (U : Submodule K B.V) (hB : FrameOK B)
-    (hψ : Function.Injective ψ) (hU : LinearMap.range ψ = U)
-    (hn : ∀ v x, normAt A.b A.X v x = normAt B.b B.X v (ψ x))
-    (hL : A.L = B.L.comap (ψ.restrictScalars (𝓞 K))) :
-    ∃ I : Iso A (sub B U), ∀ x : A.V, U.subtype (I.e x) = ψ x := by
-  let e : A.V ≃ₗ[K] U := (LinearEquiv.ofInjective ψ hψ).trans (LinearEquiv.ofEq _ _ hU)
-  have he : ∀ a, ((e a : U) : B.V) = ψ a := fun a => rfl
-  have hps := pull_spec1 B (sub B U).b U.subtype hB Subtype.val_injective
-  refine ⟨⟨e, ?_, fun v x => ?_⟩, fun x => rfl⟩
-  · ext y
-    constructor
-    · rintro ⟨a, ha, rfl⟩
-      rw [hL] at ha
-      exact ha
-    · intro hy
-      obtain ⟨a, ha⟩ := e.surjective y
-      refine ⟨a, ?_, ha⟩
-      rw [hL]
-      show ψ a ∈ B.L
-      rw [← he a, ha]
-      exact hy
-  · rw [hn]
-    exact hps.2.2 v (e x)
-
-theorem with_lattice_index : WithLIndex := by
-  intro K _ _ _ _ A L' hA hL hle h0
-  exact ⟨Formalism.LFunctionChainParameters.slopeLatticeData.muMaxDef_mono A.b A.X hA hL hle h0,
-    fun hr => Formalism.LFunctionChainParameters.slopeLatticeData.muDef_index A.b A.X hA hL hle h0 hr⟩
-
 end Pull
 
 section Unitary
@@ -744,13 +698,6 @@ def Iso.dual [IsTotallyComplex K] (I : Iso A B) (hA : FrameOK A) :
       rw [this, I.umat_mul_star hA, Matrix.transpose_one]
     rw [← hw, cnorm_mulVec hU]
 
-theorem iso_inv_dual : IsoInvDual := by
-  intro K _ _ _ _ A B I hG
-  have hd := dualPl K A.V A.ι A.b A.X hG.1 A.L hG.2.1 hG.2.2
-  have hX : FrameOK (HLatOps.dual A) := DualPolygon.dualFrame_unit A.X hG.1
-  obtain ⟨h1, h2, h3, -⟩ := (I.dual hG.1).numbers hX hd.1
-  exact ⟨h1, h2, h3⟩
-
 theorem dual_numbers : DualNumbers := by
   intro K _ _ _ _ A hG hr
   have hL : A.L ≠ ⊥ := Formalism.LFunctionChainParameters.slopeLatticeData.ne_bot_of_rkK_pos hr
@@ -793,12 +740,6 @@ theorem dual_numbers : DualNumbers := by
     linarith
 
 end DualSec
-
-section HtMap
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K]
-
-end HtMap
 
 section Emb
 
@@ -849,40 +790,5 @@ theorem comap_fg {V W : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   exact isNoetherian_submodule.mp hN _ inf_le_left
 
 end Emb
-
-section Ext
-
-open TensorProduct
-
-variable {K K' : Type} [Field K] [NumberField K] [StarRing K] [Field K'] [NumberField K']
-  [StarRing K'] [Algebra K K']
-
-end Ext
-
-section Record
-
-open Formalism.BasicNotions.DV
-
-example (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) : L.NuH u = withL (D.div.Nu u) (L.NuLat u) := rfl
-example (D : D7) (u : D.what₂.Word) :
-    (D.fm u).ramLat = withL ((D.fm u).lat 0) (D.fm u).ramL := rfl
-
-end Record
-
-section Checks
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K]
-
-example (A : HLat K) : (dual A).mu = A.muDual := rfl
-example (A : HLat K) : (dual A).muMax = A.muMaxDual := rfl
-example (A : HLat K) : (dual A).muMin = A.muMinDual := rfl
-example (A : HLat K) : withL A A.L = A := rfl
-example {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
-    [Module.Finite K V] (L : Submodule (𝓞 K) V) (H : InfinitePlace K → V → V → ℂ) :
-    ofForm L H = ofFormB (Module.finBasis K V) L H := rfl
-example (A : HLat K) (L' : Submodule (𝓞 K) A.V) : withL A L' = { A with L := L' } := rfl
-example (A : HLat K) (L' : Submodule (𝓞 K) A.V) : (withL A L').mu = muDef A.b A.X L' := rfl
-
-end Checks
 
 end Formalism.L2.GlobalTheoryTheory.HLatOps

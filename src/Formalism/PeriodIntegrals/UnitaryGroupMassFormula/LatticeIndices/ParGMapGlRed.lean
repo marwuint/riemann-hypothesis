@@ -85,12 +85,6 @@ theorem parG_map_glRed {P : Matrix (Fin k) (Fin k) A → Prop} {P' : Matrix (Fin
     rw [glRed_coe]
     exact map_lift π hπ _
 
-include hπ in
-
-theorem nuG_map_glRed : (nuG A r k).map (glRed π) = nuG B r k :=
-  parG_map_glRed π hπ _ _ (fun _ hh => isUpUni_map π (map_zero π) (map_one π) hh)
-    (fun _ hh => isUpUni_map _ (lift_zero π hπ) (lift_one π hπ) hh)
-
 end Par
 
 theorem sG_map_glRed {A B : Type} [CommRing A] [IsLocalRing A] [Field B] {r k : ℕ} (π : A →+* B)

@@ -133,10 +133,6 @@ theorem evPt_mul (τ : L →+* ℂ) (g h : GL (Fin n) ℂ) : evPt τ (g * h) = v
       simp [vmul, evPt, conj_ne τ, Matrix.mul_apply, mul_comm]
     · simp [vmul, evPt, h1, h2]
 
-theorem vmul_ratPt (γ₀ δ₀ : Matrix (Fin n) (Fin n) L) : vmul (ratPt γ₀) (ratPt δ₀) = ratPt (γ₀ * δ₀) := by
-  funext p
-  simp [vmul, ratPt, Matrix.mul_apply]
-
 end
 
 end PI.UnitaryGroupMassFormula.HwConjInf

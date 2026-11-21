@@ -129,13 +129,13 @@ theorem ne_zero_and_psiCmp (h₁ : Laws) (h₂ : Laws2) {R V : Type} [CommRing R
   have hcmp : SecCmp D D'.toPre C.β C.v C.xe f f' := hff
   have hrel' := GlobalTheory.T.psiRel_of_expT' h₁ h₂ V _ hV' D' A' G' U' U₀ hU σ' f' hf'
   obtain ⟨y', hy'⟩ := exists_point_of_cmp hφ C 1 σ σ' hσσ y hy
-  have hne' : ∀ α, ∃ j, (f' α).f j ≠ 0 := GlobalTheory.T.forall_term_ne_zero_of_psiRelation V D'.toPre f' hrel'
+  have hne' : ∀ α, ∃ j, (f' α).f j ≠ 0 := _root_.GlobalTheory.forall_ne_zero_of_psiRel V D'.toPre f' hrel'
     (exists_term_ne_zero (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge U' 1 σ' f' hf' y' hy')
   refine ⟨ne_zero_of_secCmp C.pbB.1.w hcmp hne', fun psi h hrel => ?_⟩
   have hrig : RigCmp φ (withPsi D psi h) D'.toPre C.β C.v :=
-    GlobalTheory.T.rigidification_comparison_uniformisation R V I _ φ hm C.map_le D D'.toPre A G A' G' U U' F C
+    _root_.GlobalTheory.rigCmp_of_cmp R V I _ φ hm C.map_le D D'.toPre A G A' G' U U' F C
   obtain ⟨gam, hgam⟩ := exists_generic_map hφ
-  exact ⟨hrig, gam, hgam, GlobalTheory.T.psiCmp_of_secCmp' R V φ (withPsi D psi h) D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig f f' hcmp
+  exact ⟨hrig, gam, hgam, _root_.GlobalTheory.psiCmp_of_secCmp R V φ (withPsi D psi h) D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig f f' hcmp
     hrel hrel' (hne' 0) gam hgam⟩
 
 set_option maxHeartbeats 1600000 in
@@ -160,7 +160,7 @@ theorem exists_cmp {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ide
   obtain ⟨U', hU'⟩ := (GlobalTheory.LN.PreForm.under_exists_and_expands hL hL2 V _ D' A' _ s.semi).1 U₀.toUnifPre
   have := s.semi.smooth
   obtain ⟨w', hw'⟩ := PrimeUnif.isCPMap_of_eq hL.globalFns s.gen s.P U'.P (hU'.2.1.trans hLG) hw
-  obtain ⟨C, -⟩ := GlobalTheory.T.exists_compare_uniformisationData_pullback hL hL2 ega_holds R V I _ hR hB (IsLocalRing.maximalIdeal.isMaximal V).ne_top φ hle D _ A A'
+  obtain ⟨C, -⟩ := _root_.GlobalTheory.LN.PreCompare.exists_cmp hL hL2 ega_holds R V I _ hR hB (IsLocalRing.maximalIdeal.isMaximal V).ne_top φ hle D _ A A'
     G _ U U' _ (isGrpPullback_pullback G _) w' hw'
   exact ⟨D', A', _, _, _, _, U₀, U', hU', ⟨C⟩⟩
 
@@ -176,7 +176,7 @@ theorem exists_unif_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   have hpi : IsPrincipalIdealRing (R ⧸ IsLocalRing.maximalIdeal R) := by
     letI := Ideal.Quotient.field (IsLocalRing.maximalIdeal R)
     infer_instance
-  obtain ⟨D, U, rfl, rfl⟩ := GlobalTheory.T.exists_uniformization_data_complete_local_prime h₁ h₂ h₃ ega_holds GlobalTheory.uniformisation_dvr_unconditional R _ hR hpi G P hS hW hsp
+  obtain ⟨D, U, rfl, rfl⟩ := _root_.GlobalTheory.PreUnifLocal.exists_preU_local h₁ h₂ h₃ ega_holds GlobalTheory.uniformisation_dvr_unconditional R _ hR hpi G P hS hW hsp
     A gen hgen hA
   obtain ⟨σ, y, hy⟩ := exists_sec_point U θ k hθ
   obtain ⟨f, hf, -⟩ := CompleteBaseExpansion.main h₁ h₂ ega_holds R _ hR.1 hI D A G U 1 σ
@@ -190,11 +190,11 @@ theorem exists_unif_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   have hev : E.PsiEven :=
     GlobalTheory.T.psiEven_descend_baseChange h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr gam hgam hpsi D'.psi_even
   have hbi : E.TauBimult :=
-    GlobalTheory.T.tauBimult_of_baseChange' h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi D'.tau_bimult
+    _root_.GlobalTheory.tauBimult_of_baseChange h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi D'.tau_bimult
   obtain ⟨hD, hD₁, hD₂, hD₃⟩ :=
-    GlobalTheory.T.exists_isPullDeg_of_comparison R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi hbi
+    _root_.GlobalTheory.PsiRing.exists_isPullDeg_of_cmp R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi hbi
   obtain ⟨ga, a, hSc⟩ := exists_psiScal R E
-  obtain ⟨th, hth, hmul⟩ := GlobalTheory.T.exists_thetaSection_nonzeroFibres_localRing h₂.secTwist R D
+  obtain ⟨th, hth, hmul⟩ := _root_.GlobalTheory.PsiRing.exists_basis_fibNZ h₂.secTwist R D
   obtain ⟨q, hq⟩ := hmul (f 0)
   choose b hb using fun χ : D.X => GlobalTheory.T.exists_twistedSection_thetaTranslate_coef R D th hmul χ (ga χ) (hSc χ).1 (f χ)
   have hab : ∀ χ, algebraMap R (FractionRing R) q * (a χ).val = algebraMap R (FractionRing R) (b χ) := fun χ =>

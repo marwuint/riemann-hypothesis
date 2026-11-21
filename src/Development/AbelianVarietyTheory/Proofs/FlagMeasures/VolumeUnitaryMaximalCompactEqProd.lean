@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoOfSqueeze
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeExistsPosUnique
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAlgebrasMaxCompactAndLeviInterStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeWholeGroupStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeWholeGroup
+import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaugeMeasureMatrixAlgebraSubgroupLocalAsymptoticStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeVolumeUnitaryGroupEqStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeVolumeUnitaryGroupEq
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 
@@ -212,8 +213,8 @@ theorem volU_pos (N : ℕ) : 0 < volU N := by
 theorem exists_gauge_allPos (N : ℕ) : ∃ ν : Measure (UJ (allPos N)), IsFiniteMeasure ν ∧ ν.IsMulLeftInvariant ∧
     Asym ν (fun g => hs (uMat g - 1)) (N ^ 2) ∧ ν Set.univ = ENNReal.ofReal (volU N) := by
   obtain ⟨c, hc0, hc, -⟩ := GlobalTheory.GaugeConst.gauge_exists_pos_unique N (allPos N)
-  have hsub := ((GlobalTheory.T.riemannianHaarGauge_whole_group N (allPos N)).1 c hc).2
-  have hvol := GlobalTheory.T.riemannianHaarGauge_volume_unitaryGroup_eq N c hc
+  have hsub := ((_root_.GlobalTheory.GaugeWhole.gauge_whole N (allPos N)).1 c hc).2
+  have hvol := _root_.GlobalTheory.UnitaryVolume.volume_unitary N c hc
   have hfin : Formalism.REAL.muG (allPos N) Set.univ ≠ ⊤ := by
     intro htop
     rw [htop, ENNReal.toReal_top, mul_zero] at hvol

@@ -44,37 +44,6 @@ theorem plane_mass_bound_parameters (D : D7) (large₂ : SizeData₂ D) (u u' : 
     (hC : 55 * max 1 (1 / Cl) ≤ C ^ 2) : UnitaryVolumeMass.stMass2 D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C :=
   fun hH => plane_mass_le_height_pow D large₂ C' Cl Cg cb Cu cT CT C hC hH.1.1
 
-theorem plane_mass_bound_K2 (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 C : ℝ)
-    (hC : 55 * max 1 (1 / Cl) ≤ C ^ 2) : UnitaryVolumeMass.stMass2K D large₂ C' Cl Cg cb Cu cT CT C0 C :=
-  fun hH => plane_mass_le_height_pow D large₂ C' Cl Cg cb Cu cT CT C hC hH.1.1
-
-theorem plane_mass_constant_le_sq (Cl : ℝ) : 55 * max 1 (1 / Cl) ≤ (55 * max 1 (1 / Cl)) ^ 2 := by
-  have h : (1 : ℝ) ≤ max 1 (1 / Cl) := le_max_left _ _
-  nlinarith
-
-section Family
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-theorem family_plane_mass_admissible (Cg cb Cu cT CT C0 A : ℝ) : AuxiliaryNormPrimes.FamilyRankTwoMassBound Fm Cg cb Cu cT CT C0 A :=
-  ⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ u u' => plane_mass_bound_parameters _ _ u u' _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩
-
-theorem family_plane_mass_admissible_alt (Cg cb Cu cT CT C0 A : ℝ) : VanishingOnXAndXPlus.FamilyRankTwoMassEstimate Fm Cg cb Cu cT CT C0 A :=
-  ⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ u u' => plane_mass_bound_parameters _ _ u u' _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩
-
-theorem family_plane_mass_admissible_k2 : LatticeIndexAndWeightTheory.FamilyRankTwoMassHyp Fm := fun _ _ _ _ _ _ =>
-  ⟨55 * max 1 (1 / sCl Fm), 0, fun _ _ _ => plane_mass_bound_K2 _ _ _ _ _ _ _ _ _ _ _ (plane_mass_constant_le_sq _)⟩
-
-theorem family_genus_bound_of_mass_ratio (Cg cb Cu cT CT C0 A : ℝ) (h1 : VanishingOnXAndXPlusMass.familyUnitInput Fm) (hCl : 1 ≤ sCl Fm) :
-    VanishingOnXAndXPlusMass.Conclusion1Family Fm Cg cb Cu cT CT C0 A :=
-  BridgeLemma.family_first_bound_of_mass_ratio Fm Cg cb Cu cT CT C0 A h1 (family_plane_mass_admissible Fm Cg cb Cu cT CT C0 A) hCl
-
-theorem family_genus_bound_of_siegel_ratio (Cg cb Cu cT CT C0 A : ℝ) (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio) (hCl : 1 ≤ sCl Fm) :
-    VanishingOnXAndXPlusMass.Conclusion1Family Fm Cg cb Cu cT CT C0 A :=
-  family_genus_bound_of_mass_ratio Fm Cg cb Cu cT CT C0 A (BridgeLemma.family_lattice_count_first_of_siegel Fm hS) hCl
-
-end Family
-
 end Formalism.MainNotions.BridgeLemma₂
 
 end

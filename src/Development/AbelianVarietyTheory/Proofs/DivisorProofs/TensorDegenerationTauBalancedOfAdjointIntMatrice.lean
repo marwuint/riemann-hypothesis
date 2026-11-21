@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomOfMulComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosVec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStronglyTrivialCubicalThetaFinsuppTensorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStronglyTrivialFormalSumTensorAddStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStronglyTrivialFormalSumTensorNegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStronglyTrivialFormalSumTensorZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStronglyTrivialFormalSumTensorAdd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStronglyTrivialFormalSumTensorNeg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStronglyTrivialFormalSumTensorZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiBalanceFormalSumMemSpanCubicalThetaStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiBalanceFormalSumPsiValuesEqTauProductStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiGeneratorTensorPowerCorrespondsFormalSumStatement
@@ -26,15 +26,15 @@ theorem triv_span {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : �
     (hc : c ∈ Submodule.span ℤ (Set.range fun p : Vec r × Vec r × Vec r => theta p.1 p.2.1 p.2.2)) : Triv T c := by
   induction hc using Submodule.span_induction with
   | mem x hx => obtain ⟨p, rfl⟩ := hx; exact GlobalTheory.T.isStronglyTrivial_cubicalThetaFinsupp_tensor R D D' W T hB _ _ _
-  | zero => exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_zero R D D' W T
-  | add x y _ _ hx hy => exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_add R D D' W T _ _ hx hy
+  | zero => exact _root_.GlobalTheory.TensBal.triv_zero R D D' W T
+  | add x y _ _ hx hy => exact _root_.GlobalTheory.TensBal.triv_add R D D' W T _ _ hx hy
   | smul n x _ hx =>
     induction n using Int.induction_on with
-    | zero => rw [zero_smul]; exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_zero R D D' W T
-    | succ k ih => rw [add_smul, one_smul]; exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_add R D D' W T _ _ ih hx
+    | zero => rw [zero_smul]; exact _root_.GlobalTheory.TensBal.triv_zero R D D' W T
+    | succ k ih => rw [add_smul, one_smul]; exact _root_.GlobalTheory.TensBal.triv_add R D D' W T _ _ ih hx
     | pred k ih =>
       rw [sub_smul, one_smul, sub_eq_add_neg]
-      exact GlobalTheory.T.isStronglyTrivialFormalSumTensor_add R D D' W T _ _ ih (GlobalTheory.T.isStronglyTrivialFormalSumTensor_neg R D D' W T _ hx)
+      exact _root_.GlobalTheory.TensBal.triv_add R D D' W T _ _ ih (_root_.GlobalTheory.TensBalNeg.triv_neg R D D' W T _ hx)
 
 theorem tau_tens {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) {z : (TK R).left} {J J'} (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J') (p q : D'.X) :

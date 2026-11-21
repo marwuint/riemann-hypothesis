@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RowsExhaust
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverEta
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralizedEigenPartProjectorMemHeckeAlgebraStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralizedEigenPartProjectorMemHeckeAlgebra
+import Formalism.LocalToGlobal.Columns.AlgebraMapMemMaximalIdealPowIff
+import Formalism.SharpRestriction.LevelLetterCocycles.DataN
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverAlg
 
 open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef NumberField IsDedekindDomain GlobalTheory.EtaJoin
 
@@ -111,7 +114,7 @@ theorem exists_proj (T : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw T.
   obtain ⟨hfd, -⟩ := finrank_V T.B j w
   haveI := hfd
   obtain ⟨hS, hsplit, hint⟩ := gens_hypsTw T.B hstd h1 h2 (Or.inl hw)
-  exact GlobalTheory.T.generalizedEigenPartProjector_mem_heckeAlgebra (T.B.Oc j w) (FractionRing (T.B.Oc j w)) (T.B.V j w) (heckeGens T.B j w) hS hsplit hint
+  exact _root_.GlobalTheory.part_projector_mem_adjoin (T.B.Oc j w) (FractionRing (T.B.Oc j w)) (T.B.V j w) (heckeGens T.B j w) hS hsplit hint
     (latLoc T.B j w) (latLoc_fg T.B j w) (latLoc_span T.B j w)
     (fun a ha x hx => alg_stable T.B hl a (Algebra.subset_adjoin ha) x hx) I
 

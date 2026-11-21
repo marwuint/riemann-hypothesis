@@ -71,10 +71,6 @@ theorem comm_apply (a : WDRep h V) (σ : Weil h) (v : V) :
     a.ρ σ (a.N v) = ((normV w : ℕ) : ℂ) ^ deg σ • a.N (a.ρ σ v) :=
   LinearMap.congr_fun (a.comm σ) v
 
-theorem conj_N (a : WDRep h V) (σ : Weil h) :
-    a.ρ σ * a.N * a.ρ σ⁻¹ = ((normV w : ℕ) : ℂ) ^ deg σ • a.N := by
-  rw [a.comm, smul_mul_assoc, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]
-
 def Iso (a : WDRep h V) (b : WDRep h V') : Prop :=
   ∃ e : V ≃ₗ[ℂ] V', (∀ σ v, e (a.ρ σ v) = b.ρ σ (e v)) ∧ ∀ v, e (a.N v) = b.N (e v)
 
@@ -366,11 +362,6 @@ theorem map_N_eigenspace (a : WDRep h V) {φ : Weil h} (hφ : deg φ = 1) {α : 
 theorem unr_diag {ι : Type*} [Finite ι] (c : ι → ℂˣ) : (diag h c).Unr :=
   ⟨rfl, fun σ => LinearMap.ext fun v => funext fun i => by simp⟩
 
-theorem tempered_sp (n : ℕ) : (sp h n).Tempered := fun φ hφ => by
-  rw [sp_ρ, sp_N, hφ]
-  refine isPurePair_diagEnd_shiftEnd (by exact_mod_cast one_lt_normV w) _ fun i => ?_
-  rw [zpow_one, spEig, norm_qPow]
-
 end WDRep
 
 def isoSetoid (h : IsPlaceOver A w) : Setoid (Σ n : ℕ, WDRep h (Fin n → ℂ)) where
@@ -411,26 +402,6 @@ theorem ind {P : WD h → Prop} (hP : ∀ (n : ℕ) (a : WDRep h (Fin n → ℂ)
     P x := by
   obtain ⟨n, a, rfl⟩ := exists_rep x
   exact hP n a
-
-theorem exists_ofMatrix (x : WD h) : ∃ (n : ℕ) (ρ : Weil h →* GL (Fin n) ℂ)
-    (N : Matrix (Fin n) (Fin n) ℂ) (h1 : _) (h2 : _) (h3 : _) (h4 : _),
-    mk (WDRep.ofMatrix ρ N h1 h2 h3 h4) = x := by
-  obtain ⟨n, a, rfl⟩ := exists_rep x
-  refine ⟨n, a.toGL, LinearMap.toMatrix' a.N, a.smooth.of_le fun σ hσ => ?_, fun σ => ?_, ?_,
-    fun σ => ?_, sound ⟨.refl _ _, fun σ v => ?_, fun v => ?_⟩⟩
-  · ext : 1
-    simp [hσ]
-  · simpa using a.semisimple σ
-  · exact a.nilpotent.map
-      (LinearMap.toMatrixAlgEquiv' : End ℂ (Fin n → ℂ) ≃ₐ[ℂ] Matrix (Fin n) (Fin n) ℂ)
-  · have := congrArg
-      (LinearMap.toMatrixAlgEquiv' : End ℂ (Fin n → ℂ) ≃ₐ[ℂ] Matrix (Fin n) (Fin n) ℂ) (a.comm σ)
-    rw [map_mul, map_smul, map_mul] at this
-    exact this
-  · show Matrix.toLin' (LinearMap.toMatrix' (a.ρ σ)) v = a.ρ σ v
-    rw [Matrix.toLin'_toMatrix']
-  · show Matrix.toLin' (LinearMap.toMatrix' a.N) v = a.N v
-    rw [Matrix.toLin'_toMatrix']
 
 def lpDim (x : WD h) : ℕ :=
   Quotient.lift (s := isoSetoid h) (fun a => finrank ℂ (Fin a.1 → ℂ))
@@ -587,11 +558,6 @@ theorem frobEig_diag {ι : Type*} [Fintype ι] (c : ι → ℂˣ) :
 
 @[simp] theorem lpDim_lpSp (n : ℕ) : lpDim (lpSp h n) = n := by simp [lpSp]
 
-theorem tempered_lpSp (n : ℕ) : tempered (lpSp h n) := (tempered_mk _).mpr (WDRep.tempered_sp n)
-
-theorem not_mono0_lpSp {n : ℕ} (hn : 2 ≤ n) : ¬ mono0 (lpSp h n) :=
-  fun h0 => shiftEnd_ne_zero hn ((monodromyZero_ofWeilDeligneRepClass_iff _).mp h0)
-
 theorem _root_.GlobalTheory.WeilDeligne.WDRep.Tempered.norm_eq_one {a : WDRep h V} (ha : a.Tempered)
     (hN : a.N = 0) {φ : Weil h} (hφ : deg φ = 1) : absSpace (a.ρ φ) 1 = ⊤ := by
   obtain ⟨h1, h2⟩ := ha φ hφ
@@ -646,40 +612,5 @@ theorem tempered_diag_iff {ι : Type*} [Finite ι] (c : ι → ℂˣ) :
         · rw [hz _ (by linarith) v hv, map_zero]
 
 end WD
-
-section Examples
-
-variable (h : IsPlaceOver A w)
-
-theorem sp_two_spec : (WD.lpSp h 2).lpDim = 2 ∧ (WD.lpSp h 2).tempered ∧ ¬ (WD.lpSp h 2).mono0 ∧
-    ¬ (WD.lpSp h 2).unr :=
-  ⟨WD.lpDim_lpSp 2, WD.tempered_lpSp 2, WD.not_mono0_lpSp le_rfl,
-    fun hu => shiftEnd_ne_zero le_rfl ((WD.unr_mk _).mp hu).1⟩
-
-theorem not_tempered_diag_spEig : ¬ (WD.mk (WDRep.diag h (WDRep.spEig w 2))).tempered := by
-  rw [WD.tempered_mk, WD.tempered_diag_iff]
-  intro hc
-  have hq : (1 : ℝ) < ((normV w : ℕ) : ℝ) := by exact_mod_cast one_lt_normV w
-  have := hc 0
-  rw [WDRep.spEig, norm_qPow, ← Real.rpow_zero ((normV w : ℕ) : ℝ),
-    Real.rpow_right_inj (zero_lt_one.trans hq) hq.ne'] at this
-  norm_num at this
-
-example : ((WD.mk (WDRep.diag h fun _ : Fin 1 => 1)).lpTw 1).frobEig = {((normV w : ℕ) : ℂ)} := by
-  have : ((WDRep.diag h fun _ : Fin 1 => 1).tw 1).ρ (frob h) =
-      diagEnd fun _ => ((normV w : ℕ) : ℂ) := by
-    refine LinearMap.ext fun v => funext fun i => ?_
-    simp
-  rw [WD.lpTw_mk, WD.frobEig_mk, this, charpoly_diagEnd, Fin.prod_univ_one, roots_X_sub_C]
-
-example : (WD.lpZero h).lpDim = 0 := by simp [WD.lpZero]
-
-omit [IsAlgClosure E Ω] in
-
-example (v : HeightOneSpectrum (𝓞 E)) : ∃ (B : ValuationSubring (AlgebraicClosure E))
-    (hB : IsPlaceOver B v) (x : WD hB), ¬ x.mono0 ∧ x.tempered :=
-  ⟨_, isPlaceOver_placeOf _ v, WD.lpSp _ 2, WD.not_mono0_lpSp le_rfl, WD.tempered_lpSp 2⟩
-
-end Examples
 
 end GlobalTheory.WeilDeligne

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDer
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationCoeffEqZeroOfDegreeLtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationCoeffEqZeroOfDegreeLt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationFormalGroupLawIsLinearStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationFormalGroupLawLeibnizStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationFormalGroupLawLeibniz
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat GlobalTheory.LawDer
 
 set_option autoImplicit false
@@ -239,7 +239,7 @@ theorem invDer_monomial (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
         · rfl
       rw [h1, h2, add_zero]
     · have hXi : invDer μ u (X i) = C (u i) + Ri := by rw [hRi]; ring
-      rw [hmono, GlobalTheory.T.invariantDerivationFormalGroupLaw_leibniz R d μ hc hunit u, hD, hXi, ← Finset.sum_congr rfl (fun j _ => hterm j),
+      rw [hmono, _root_.GlobalTheory.LawDer.invDer_mul R d μ hc hunit u, hD, hXi, ← Finset.sum_congr rfl (fun j _ => hterm j),
         Finset.sum_add_distrib, Finset.sum_ite_eq' Finset.univ i, if_pos (Finset.mem_univ _)]
       rw [add_mul, Finset.sum_mul, smul_eq_C_mul (monomial α' (1 : R)) (u i)]
       ring
@@ -254,7 +254,7 @@ theorem iterate_order (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
   | succ k ih =>
     intro m F h β hβ
     rw [Function.iterate_succ_apply]
-    refine ih m _ (fun γ hγ => GlobalTheory.T.invariantDerivation_coeff_eq_zero_of_degree_lt R d μ hc u F (m + k) ?_ γ hγ) β hβ
+    refine ih m _ (fun γ hγ => _root_.GlobalTheory.invDer_coeff_eq_zero_of_degree_lt R d μ hc u F (m + k) ?_ γ hγ) β hβ
     intro δ hδ
     exact h δ (by omega)
 

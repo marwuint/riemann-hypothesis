@@ -308,12 +308,6 @@ theorem exists_point {T : Over (Spec (CommRingCat.of R))}
   rw [Category.id_comp, Category.id_comp, ← hx] at this
   exact this.trans (val_pull hJ _ _ _).symm
 
-theorem existsUnique_point {T : Over (Spec (CommRingCat.of R))}
-    (σ : T.left ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) (hσ : σ ≫ thick R I e = T.hom) (ξ : GtPt D T) :
-    ∃! x : T.left ⟶ (thickObj R I e G).left, IsPointOf g x ξ := by
-  obtain ⟨x, hx⟩ := exists_point g σ hσ ξ
-  exact ⟨x, hx, fun x' hx' => hx'.unique_left g hx⟩
-
 theorem IsPointOf.comp_hom {T : Over (Spec (CommRingCat.of R))} {x : T.left ⟶ (thickObj R I e G).left}
     {ξ : GtPt D T} (h : IsPointOf g x ξ) : x ≫ (thickObj R I e G).hom ≫ thick R I e = T.hom := by
   rw [← Over.w ξ.b, h.1, Category.assoc, Over.w g.pG]

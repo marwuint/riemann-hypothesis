@@ -21,12 +21,6 @@ def XiTop {u : Pr.Word} (m2 : ℕ) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Se
         ftY sel mu cst P (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ (fr P).symm.toLinearMap ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap)
           ((frsF sel mu p P).symm (repY Y))
 
-def IsRowFrame (u : Pr.Word) (d : RowPt Pr R sel mu) (fr : Frs X.E (R.N R.m) (rowSG Pr sel mu)) : Prop :=
-  ∀ P : rowSG Pr sel mu,
-    prXp X.E R ∘ₗ (fr P).symm.toLinearMap = (d.1.liftFr P).symm.toLinearMap ∘ₗ prXp X.E R ∧
-    atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ (fr P).symm.toLinearMap =
-      ((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)
-
 end GlobalTheory.TwU
 
 end

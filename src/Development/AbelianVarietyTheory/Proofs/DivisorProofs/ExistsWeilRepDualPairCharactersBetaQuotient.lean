@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHeckeCharMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicWeilRepUnitaryPairSchroedingerModelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicWeilRepUnitaryPairSchroedingerModel
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -48,6 +49,6 @@ theorem GlobalTheory.WeilTripleW.exists_isWeil : ∀ {D : D7} {T : Type} {L : Le
       ∃ om, Mo.IsWeil B.ψ (beta G i j) (beta G i j / alpha G t i j) om := by
   intro D T L sc G μ₀ hL t i j hS B hB X Y r s r' s' hX hY Mo hMo
   obtain ⟨hb, ha, rb, ra⟩ := GlobalTheory.SquareChars.square_chars hL t i j hS
-  exact GlobalTheory.T.exists_adelicWeilRep_unitaryPair_schroedingerModel D B hB _ _ X Y r s r' s' hX hY Mo hMo
+  exact _root_.GlobalTheory.WeilSchrodinger.exists_isWeil D B hB _ _ X Y r s r' s' hX hY Mo hMo
     (beta G i j) (beta G i j / alpha G t i j) hb (GlobalTheory.WeilTripleW.isHecke_div hb ha) rb
     (GlobalTheory.WeilTripleW.resEtaPow_div rb ra)

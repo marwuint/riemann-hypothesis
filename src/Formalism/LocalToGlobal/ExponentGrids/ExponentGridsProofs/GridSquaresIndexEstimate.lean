@@ -287,28 +287,4 @@ theorem height_h0_index_bound : PassageSizeIndexed := by
     (gridBudgetIdx m N B BN0 Bδ S0 ee qq) BF hR hM hM0 hΨ hincl ha hEM hh hg hBF
   linarith
 
-example (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (W0 : Finset (Pl K)) :
-    ∑ w ∈ W0, lw w * (vw w (∏ _ij : Fin 1 × Fin 1, (32 : K)) : ℝ) ≤
-      gridBudgetIdx 1 1 0 (Real.log 2) 0 (∅ : Finset Empty) (fun _ => 0) (fun _ => 0) := by
-  have hone : ∀ w : Pl K, vw w (1 : K) = 0 := fun w => (Formalism.DivisionValues.valuation_basic_properties K w).2.2.2.2.1
-  have hHt : HtLe (K := K) (fun _ => 0) 1 0 := by
-    unfold Formalism.PairingDivisionLocalBalance.HtLe
-    simp [hone]
-  refine gridHeightBoundIndexed K Empty 1 1 (fun _ => 0) {2} ∅ (fun _ _ _ => 1) (fun _ _ => 32) (fun _ => 1)
-    (fun _ => 1) (fun _ _ => 1) (fun _ _ _ => 1) (fun _ _ _ => 0) (fun _ => false) (fun _ => 2)
-    (fun _ => 1) (fun _ => 0) ∅ (fun _ => 0) (fun _ => 0) (fun _ => 0) 0 (Real.log 2) 0 W0
-    (fun _ => le_rfl) (by simp [Nat.prime_two]) (fun _ _ _ _ _ _ => zero_le_one) (by simp)
-    (fun _ _ => by norm_num) (fun _ => rfl) (fun _ => le_rfl) (fun _ => Nat.zero_le _) (by simp)
-    ?_ (fun _ => ⟨hHt, hHt⟩) (fun _ _ => hHt) (fun _ _ _ => hHt) (Real.log_nonneg (by norm_num))
-    (fun _ _ _ _ => by simp) (fun _ => by simp)
-  intro w _ ij
-  have vmul := (Formalism.DivisionValues.valuation_basic_properties K w).1
-  have h2 : (2 : K) ≠ 0 := by norm_num
-  have h32 : vw w (32 : K) = 5 * vw w (2 : K) := by
-    have e : (32 : K) = 2 * (2 * (2 * (2 * 2))) := by norm_num
-    rw [e, vmul _ _ h2 (by norm_num), vmul _ _ h2 (by norm_num), vmul _ _ h2 (by norm_num),
-      vmul _ _ h2 h2]
-    ring
-  simp [hone, h32, Formalism.PairingDivisionLocalBalance.wt]
-
 end Formalism.AtG

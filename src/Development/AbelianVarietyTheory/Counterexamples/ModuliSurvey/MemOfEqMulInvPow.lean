@@ -33,15 +33,4 @@ theorem exists_root_and_zeta (l : Level H) (c : Coeff l) (W : ValuationSubring �
     exact eq_inv_of_mul_eq_one_left h1)
   exact ⟨⟨⟨_, hr⟩, hrW⟩, ⟨⟨_, hz⟩, hzW⟩, rfl, rfl⟩
 
-theorem localRing_ne_top (l : Level H) (c : Coeff l) (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Prime)
-    (hW : (p : ℂ) ∈ W.nonunits) : c.V W ≠ ⊤ := by
-  intro h
-  have h1 : ((p : c.F))⁻¹ ∈ c.V W := by rw [h]; trivial
-  have h2 : ((p : ℂ))⁻¹ ∈ W := by simpa [ValuationSubring.mem_comap] using h1
-  have hp0 : (p : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hp.ne_zero
-  rw [ValuationSubring.mem_nonunits_iff] at hW
-  have h3 := (W.valuation_le_one_iff _).mpr h2
-  rw [map_inv₀, inv_le_one₀ (zero_lt_iff.mpr ((map_ne_zero _).mpr hp0))] at h3
-  exact absurd hW (not_lt.mpr h3)
-
 end GlobalTheory.JointModelGuards

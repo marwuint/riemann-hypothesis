@@ -601,18 +601,6 @@ theorem hom_twistSub_monomial' {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL
       rwa [this]
     · exact absurd h1 ha
 
-theorem twistSub_mem_Pol {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
-    (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) (hA : A ∈ Pol R n d) :
-    twistSub LL S j A ∈ Pol (GLLaurent R n) n d := by
-  rw [← support_sum_monomial_coeff A, map_sum]
-  refine Submodule.sum_mem _ fun m hm => ?_
-  have hd : (fun i => multideg m i) = d := by
-    unfold Pol at hA
-    rw [mem_restrictSupport_iff] at hA
-    exact funext (hA (by simpa using hm))
-  rw [← hd]
-  exact hom_twistSub_monomial' LL S j m _
-
 theorem twistSub_polComp {R : Type} [CommRing R] {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (d : ι → ℕ) (A : MvPolynomial (ι × Fin n) R) :
     twistSub LL S j (polComp R n d A) = polComp (GLLaurent R n) n d (twistSub LL S j A) := by

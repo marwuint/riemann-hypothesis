@@ -30,14 +30,6 @@ theorem hom_eq_iff_forall_isAlgClosed [IsReduced T] (s : Y ⟶ S) [IsSeparated s
   refine ext_of_isDominant_of_isSeparated s (by simp only [Category.assoc, h]) ι ?_
   simpa only [Category.assoc] using H _ (ι ≫ x)
 
-theorem over_hom_eq_iff_forall_field {T Y : Over S} [IsReduced T.left] [IsSeparated Y.hom]
-    {f g : T ⟶ Y} :
-    f = g ↔ ∀ (k : Type u) [Field k] (t : Spec (.of k) ⟶ S) (x : Over.mk t ⟶ T),
-      x ≫ f = x ≫ g := by
-  refine ⟨fun e _ _ _ _ => e ▸ rfl, fun H => Over.OverMorphism.ext ?_⟩
-  refine (hom_eq_iff_forall_field Y.hom ((Over.w f).trans (Over.w g).symm)).mpr fun k _ x => ?_
-  exact congrArg (·.left) (H k (x ≫ T.hom) (Over.homMk x rfl))
-
 variable {R : Type u} [CommRing R]
 
 theorem over_hom_eq_iff_forall_isAlgClosed_algebra {T Y : Over (Spec (.of R))} [IsReduced T.left]
@@ -361,51 +353,6 @@ variable {k} in
   exact congrArg (ofProjectivePoint W k)
     ((WeierstrassCurve.Projective.Point.toAffineAddEquiv _).symm_apply_apply p)
 
-variable {k} in
-
-theorem ofAffinePoint_toAffine {P : Fin 3 → k} (h : (W.baseChange k).toProjective.Nonsingular P) :
-    ofAffinePoint W k (WeierstrassCurve.Projective.Point.toAffine (W.baseChange k).toProjective P) =
-      ptOver W P (.of_nonsingular h) :=
-  ofAffinePoint_toAffineLift W ⟨(WeierstrassCurve.Projective.nonsingularLift_iff P).mpr h⟩
-
-variable {k} in
-
-theorem ofAffinePoint_of_represents {P : Fin 3 → k} {p : (W.baseChange k).toAffine.Point}
-    (h : AddLaw.Represents (W.baseChange k).toProjective P p) :
-    ofAffinePoint W k p = ptOver W P (.of_nonsingular h.left) :=
-  h.right ▸ ofAffinePoint_toAffine W h.left
-
-theorem ofAffinePoint_injective : Function.Injective (ofAffinePoint W k) := by
-  classical
-  exact (ofProjectivePoint_injective W k).comp
-    (WeierstrassCurve.Projective.Point.toAffineAddEquiv
-      (W.baseChange k).toProjective).symm.injective
-
-variable {k K} in
-
-theorem ofProjectivePoint_comp_left (f : k →ₐ[R] K) {P : Fin 3 → k}
-    (h : (W.baseChange k).toProjective.NonsingularLift (Quotient.mk _ P))
-    (h' : (W.baseChange K).toProjective.NonsingularLift (Quotient.mk _ (f ∘ P))) :
-    (ofProjectivePoint W K ⟨h'⟩).left =
-      Spec.map (CommRingCat.ofHom (f : k →+* K)) ≫ (ofProjectivePoint W k ⟨h⟩).left :=
-  (SpecMap_pt W P (.of_nonsingular h) f).symm
-
-variable {k K} in
-
-theorem ofAffinePoint_map_left [DecidableEq k] [DecidableEq K] {S : Type*} [CommRing S]
-    [Algebra R S] [Algebra S k] [IsScalarTower R S k] [Algebra S K] [IsScalarTower R S K]
-    (f : k →ₐ[S] K) (p : (W.baseChange k).toAffine.Point) :
-    (ofAffinePoint W K (WeierstrassCurve.Affine.Point.map (W' := W.toAffine) f p)).left =
-      Spec.map (CommRingCat.ofHom (f : k →+* K)) ≫ (ofAffinePoint W k p).left := by
-  rcases p with _ | ⟨a, b, h⟩
-  · refine Eq.trans ?_ (SpecMap_pt W ![0, 1, 0] (isUnimodularSol_zero _) (f.restrictScalars R)).symm
-    exact pt_congr W ![0, 1, 0] (isUnimodularSol_zero _) (by ext i; fin_cases i <;> simp) _
-  · refine Eq.trans ?_
-      (SpecMap_pt W ![a, b, 1] (isUnimodularSol_some h.left) (f.restrictScalars R)).symm
-    exact pt_congr W ![f a, f b, 1] (isUnimodularSol_some
-      ((W.toAffine.baseChange_nonsingular f.injective ..).mpr h).left)
-      (by ext i; fin_cases i <;> simp) _
-
 variable [(W.baseChange k).IsElliptic] [(W.baseChange K).IsElliptic]
 
 theorem ofProjectivePoint_bijective : Function.Bijective (ofProjectivePoint W k) := by
@@ -449,93 +396,7 @@ theorem projectivePointEquiv_symm_ptOver (P : Fin 3 → k)
       ⟨(WeierstrassCurve.Projective.nonsingularLift_iff P).mpr h.nonsingular⟩ :=
   (Equiv.symm_apply_eq _).mpr rfl
 
-variable {k} in
-
-theorem affinePointEquiv_symm_ptOver (P : Fin 3 → k) (h : IsUnimodularSol (W.baseChange k) P) :
-    (affinePointEquiv W k).symm (ptOver W P h) =
-      WeierstrassCurve.Projective.Point.toAffine (W.baseChange k).toProjective P :=
-  (Equiv.symm_apply_eq _).mpr (ofAffinePoint_toAffine W h.nonsingular).symm
-
-variable {k K} in
-
-theorem affinePointEquiv_symm_of_left_eq [DecidableEq k] [DecidableEq K] {S : Type*} [CommRing S]
-    [Algebra R S] [Algebra S k] [IsScalarTower R S k] [Algebra S K] [IsScalarTower R S K]
-    (f : k →ₐ[S] K)
-    (x : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R k))) ⟶ schemeOver W)
-    (y : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R K))) ⟶ schemeOver W)
-    (h : y.left = Spec.map (CommRingCat.ofHom (f : k →+* K)) ≫ x.left) :
-    (affinePointEquiv W K).symm y =
-      WeierstrassCurve.Affine.Point.map (W' := W.toAffine) f ((affinePointEquiv W k).symm x) := by
-  obtain ⟨p, rfl⟩ := (affinePointEquiv W k).surjective x
-  rw [Equiv.symm_apply_apply, Equiv.symm_apply_eq]
-  exact Over.OverMorphism.ext (h.trans (ofAffinePoint_map_left W f p).symm)
-
 end Field
-
-theorem hom_schemeOver_eq_iff {T : Over (Spec (.of R))} [IsReduced T.left]
-    {f g : T ⟶ schemeOver W} :
-    f = g ↔ ∀ (k : Type u) [Field k] [Algebra R k]
-      (x : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R k))) ⟶ T), x ≫ f = x ≫ g :=
-  have : IsSeparated (schemeOver W).hom := inferInstanceAs (IsSeparated (toSpec W))
-  over_hom_eq_iff_forall_field_algebra
-
-theorem points :
-    (∀ (A : Type u) [CommRing A] [Algebra R A] (P Q : Fin 3 → A)
-      (hP : IsUnimodularSol (W.baseChange A) P) (hQ : IsUnimodularSol (W.baseChange A) Q),
-      pt W P hP = pt W Q hQ ↔ ∃ v : Aˣ, Q = (v : A) • P) ∧
-    (∀ (A : Type u) [CommRing A] [Algebra R A] [IsLocalRing A],
-      ∃ e : UnimodularClass (W.baseChange A) ≃
-        (Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R A))) ⟶ schemeOver W),
-        ∀ P h, (e (Quotient.mk _ ⟨P, h⟩)).left = pt W P h) ∧
-    (W.IsElliptic →
-      ∃ (e : ∀ (k : Type u) [Field k] [Algebra R k], (W.baseChange k).toAffine.Point ≃
-          (Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R k))) ⟶ schemeOver W))
-        (e' : ∀ (k : Type u) [Field k] [Algebra R k], (W.baseChange k).toProjective.Point ≃
-          (Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R k))) ⟶ schemeOver W)),
-        (∀ (k : Type u) [Field k] [Algebra R k],
-          (e k 0).left = Spec.map (CommRingCat.ofHom (algebraMap R k)) ≫ zero W ∧
-          (e' k 0).left = Spec.map (CommRingCat.ofHom (algebraMap R k)) ≫ zero W ∧
-          (∀ a b h, (e k (.some a b h)).left = pt W ![a, b, 1] (isUnimodularSol_some h.left)) ∧
-          (∀ (P : Fin 3 → k)
-            (h : (W.baseChange k).toProjective.NonsingularLift (Quotient.mk _ P)),
-            (e' k ⟨h⟩).left = pt W P (.of_nonsingular h)) ∧
-          (∀ p, e k p.toAffineLift = e' k p)) ∧
-        ∀ (k K : Type u) [Field k] [Field K] [Algebra R k] [Algebra R K] [DecidableEq k]
-          [DecidableEq K] (f : k →ₐ[R] K),
-          (∀ p : (W.baseChange k).toAffine.Point,
-            (e K (WeierstrassCurve.Affine.Point.map (W' := W.toAffine) f p)).left =
-              Spec.map (CommRingCat.ofHom (f : k →+* K)) ≫ (e k p).left) ∧
-          ∀ (P : Fin 3 → k)
-            (h : (W.baseChange k).toProjective.NonsingularLift (Quotient.mk _ P))
-            (h' : (W.baseChange K).toProjective.NonsingularLift (Quotient.mk _ (f ∘ P))),
-            (e' K ⟨h'⟩).left = Spec.map (CommRingCat.ofHom (f : k →+* K)) ≫ (e' k ⟨h⟩).left) ∧
-    (∀ (T Y : Over (Spec (.of R))) [IsReduced T.left] [IsSeparated Y.hom] (f g : T ⟶ Y),
-      f = g ↔ ∀ (k : Type u) [Field k] (x : Spec (.of k) ⟶ T.left), x ≫ f.left = x ≫ g.left) :=
-  ⟨fun _ _ _ _ _ hP hQ => pt_eq_pt_iff W hP hQ,
-    fun A _ _ _ => ⟨ptClassEquiv W A, fun _ _ => rfl⟩,
-    fun _ => ⟨fun k _ _ => affinePointEquiv W k, fun k _ _ => projectivePointEquiv W k,
-      fun k _ _ => ⟨congrArg (·.left) (ofAffinePoint_zero W k),
-        congrArg (·.left) (ofProjectivePoint_zero W k), fun _ _ _ => rfl, fun _ _ => rfl,
-        ofAffinePoint_toAffineLift W⟩,
-      fun _ _ _ _ _ _ _ _ f => ⟨ofAffinePoint_map_left W f,
-        fun _ h h' => ofProjectivePoint_comp_left W f h h'⟩⟩,
-    fun _ Y _ _ f g => Iff.trans ⟨fun e => congrArg (·.left) e, fun e => Over.OverMorphism.ext e⟩
-      (hom_eq_iff_forall_field Y.hom ((Over.w f).trans (Over.w g).symm))⟩
-
-example : pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, 0, 1]
-    (isUnimodularSol_some (by simp [WeierstrassCurve.baseChange])) ≠
-    pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, -1, 1]
-      (isUnimodularSol_some (by
-        simp [WeierstrassCurve.baseChange, WeierstrassCurve.Affine.equation_iff])) := by
-  intro e
-  simpa using (pt_eq_pt_iff_minors _ _ _).mp e 1 2
-
-example (k : Type) [Field k] [Algebra ℚ k] : Function.Bijective
-    (ofAffinePoint (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ) k) :=
-  have : (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ).IsElliptic := ⟨Ne.isUnit (by
-    norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆,
-      WeierstrassCurve.b₈])⟩
-  ofAffinePoint_bijective _ k
 
 end WeierstrassCurve
 

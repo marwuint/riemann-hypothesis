@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntOIsLocalR
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionCharEqOfEqOnTorsionStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDlogUniqueModuloPStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalFiniteTorsionSplittingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionCharacterCocycleDescentStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionCharacterCocycleDescent
 
 set_option autoImplicit false
 
@@ -51,12 +51,6 @@ theorem tors_of {g : T' ⟶ T} {w : Over.mk y ⟶ G} {w' : Over.mk y' ⟶ G} (e 
     (hw : w ^ q = 1) : w' ^ q = 1 := by
   obtain ⟨h, rfl⟩ := eq_pull w w' e
   rw [← map_pow, hw, map_one]
-
-theorem mul_of {g : T' ⟶ T} {w₁ w₂ : Over.mk y ⟶ G} {w₁' w₂' : Over.mk y' ⟶ G} (e₁ : w₁'.left = g ≫ w₁.left)
-    (e₂ : w₂'.left = g ≫ w₂.left) : (w₁' * w₂').left = g ≫ (w₁ * w₂).left := by
-  obtain ⟨h, rfl⟩ := eq_pull w₁ w₁' e₁
-  obtain ⟨h', rfl⟩ := eq_pull w₂ w₂' e₂
-  rw [← map_mul]; rfl
 
 theorem one_of {g : T' ⟶ T} (h : g ≫ y = y') : (1 : Over.mk y' ⟶ G).left = g ≫ (1 : Over.mk y ⟶ G).left := by
   rw [← map_one (pull (G := G) g h)]; rfl
@@ -258,7 +252,7 @@ theorem ex_gl [IsIntegrallyClosed A] {κ : (Sp (FractionRing A) ⟶ t.G.left) �
   haveI := P.dom
   haveI : IsIntegrallyClosed (Localization.Away P.f) :=
     isIntegrallyClosed_of_isLocalization _ _ (powers_le_nonZeroDivisors_of_noZeroDivisors P.ne)
-  obtain ⟨b, hb, hb'⟩ := GlobalTheory.T.torsion_character_cocycle_descent E H X t (Localization.Away P.f) _ q P.B P.u P.fin
+  obtain ⟨b, hb, hb'⟩ := _root_.GlobalTheory.LineNorm.exists_groupLike_unit_of_isFinPart E H X t (Localization.Away P.f) _ q P.B P.u P.fin
     (fun σ => Units.map (algebraMap A (Localization.Away P.f)).toMonoidHom
       (κ (spMap (P.toK.comp σ.toRingHom) ≫ P.u.left))) (fun σ σ' σ'' w w' h h' h'' => by
       have e : spMap P.toK ≫ spMap (RingHom.id _) ≫ spMap (algebraMap A (Localization.Away P.f)) ≫ x₀ =

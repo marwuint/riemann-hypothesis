@@ -171,96 +171,6 @@ theorem corollary_u2_of_parts_holds : GermExpansionHypothesisFromComponents := b
   rw [← mul_assoc] at h3
   exact h3
 
-theorem useDerivBoundOfParts : UseDerivBoundOfParts := by
-  intro hC2 hEx _ hSem hComp hDBD hDBC
-  intro C₁ C₂
-  obtain ⟨Cc, hCc⟩ := hC2 C₁ C₂
-  refine ⟨Cc, ?_⟩
-  intro k p s ρ Wp Wq _ _ _ _ _ _ ι _ U hOk A₀ hA₀
-  obtain ⟨h1, h2, h3, C, hC⟩ := hCc k p s ρ Wp Wq ι U hOk A₀ hA₀
-  obtain ⟨_, hs1, _⟩ := hOk
-  refine ⟨h1, h2, h3, max C 0, ?_⟩
-  intro bet Cp hCp hPos hLB hcong f c hf
-  have hc0 : 0 ≤ c := cc_nonneg hf
-  have ha0 : 0 ≤ U.a C₂ A₀ := le_trans (by positivity) h2
-  obtain ⟨V, indexVFirst, indexVSecond, hVc, ⟨M⟩⟩ := hEx k ρ (ι → (Wq →L[ℂ] Wp)) (U.a C₂ A₀) U.mmB U.S
-  obtain ⟨Φ, hev, hbd⟩ := hC f c hf V M
-  obtain ⟨pn, hpn, hpC⟩ := hSem k ρ (ι → (Wq →L[ℂ] Wp)) bet (U.a C₂ A₀) U.AB Cp U.mmB U.S h3 hCp hPos hLB V M
-  obtain ⟨V', indexWFirst, indexWSecond, hW, T, hT, _⟩ := hComp V pn Cp hpC
-  have hTn : ‖T‖ ≤ Cp := ContinuousLinearMap.opNorm_le_bound T hCp (fun v => by rw [hT]; exact hpC v)
-  refine ⟨V', indexWFirst, indexWSecond, hW, fun Z => T (Φ Z), ?_, ?_⟩
-  · intro J w hJ
-    have hv : ∀ g ∈ B.GV k ρ, M.ev (∑ Z ∈ J, w Z • Φ Z) g = (∑ Z ∈ J, w Z • U.Phi f Z) g := by
-      intro g hg
-      rw [map_sum, Finset.sum_apply, Finset.sum_apply]
-      refine Finset.sum_congr rfl fun Z hZ => ?_
-      rw [map_smul, Pi.smul_apply, Pi.smul_apply, hev Z (hJ Z hZ) g hg]
-    have hb := hcong _ _ _ _ hv hv
-    have hsum : (∑ Z ∈ J, w Z • T (Φ Z)) = T (∑ Z ∈ J, w Z • Φ Z) := by
-      rw [map_sum]
-      simp only [map_smul]
-    show ‖∑ Z ∈ J, w Z • T (Φ Z)‖ ^ 2 = _
-    rw [hsum, hT, hpn, hb]
-  · intro Kd hKd
-    have hD1 : G.DerivBound (C₂ * s ^ 2) Kd (fun Z => max C 0 * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀)))) Φ := by
-      refine hDBD s (C₂ * s ^ 2) V Φ (U.a C₂ A₀) (max C 0 * c) Kd hs1 ha0
-        (mul_nonneg (le_max_right _ _) hc0) hKd ?_
-      intro Z hZ
-      obtain ⟨hcd, hb⟩ := hbd Z hZ
-      refine ⟨hcd, fun q hq => le_trans (hb q hq) ?_⟩
-      exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hc0) (by positivity)
-    have hD2 := hDBC s (C₂ * s ^ 2) V V' T Φ Kd _ hD1
-    intro Z hZ
-    obtain ⟨hcd, hb⟩ := hD2 Z hZ
-    refine ⟨hcd, fun j hj => le_trans (hb j hj) ?_⟩
-    have hm : 0 ≤ max C 0 * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀))) :=
-      mul_nonneg (mul_nonneg (le_max_right _ _) hc0) (le_min zero_le_one (Real.rpow_nonneg (norm_nonneg _) _))
-    calc ‖T‖ * (max C 0 * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀))))
-        ≤ Cp * (max C 0 * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀)))) := mul_le_mul_of_nonneg_right hTn hm
-      _ = max C 0 * Cp * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀))) := by ring
-
-theorem germ_in_form (hG : G.GermRate) (hD : G.DetMatch) (hU : UseDerivBound) (hS : ScaleMatch) :
-    ∃ (C₂ : ℕ) (Cc : ℝ),
-    ∀ (k p m ρ : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (ι : Type) [Fintype ι]
-    (U : UData k p (m+1+1) ρ Wp Wq ι), U.Ok C₂ →
-    ∀ A₀ : ℝ, Cc * (((p + (m+1+1) + ρ : ℕ) : ℝ) + 1) ^ 4 * (U.As : ℝ) ≤ A₀ →
-    ∀ Kc : Set ℂ, IsCompact Kc → (0 : ℂ) ∉ Kc → ∃ Cst : ℝ,
-    ∀ (bet : (B.Mat k ρ → ι → (Wq →L[ℂ] Wp)) → (B.Mat k ρ → ι → (Wq →L[ℂ] Wp)) → ℂ) (Cp : ℝ), 0 ≤ Cp →
-      PosP bet (U.a C₂ A₀) U.mmB U.S → LBound bet U.AB U.mmB U.S Cp →
-      (∀ x y x' y' : B.Mat k ρ → ι → (Wq →L[ℂ] Wp), (∀ g ∈ B.GV k ρ, x g = x' g) → (∀ g ∈ B.GV k ρ, y g = y' g) →
-        bet x y = bet x' y') →
-      ∀ (f : B.Mat k (p + (m+1+1) + ρ) → (Wq →L[ℂ] Wp)) (c : ℝ), B.CCle A₀ (3 * U.As) f c →
-      ∃ (V' : Type) (_ : NormedAddCommGroup V') (_ : NormedSpace ℂ V'), CompleteSpace V' ∧ ∃ Φ' : G.Mat (m+1+1) → V',
-        (∀ (J : Finset (G.Mat (m+1+1))) (w : G.Mat (m+1+1) → ℂ), (∀ Z ∈ J, G.detM Z ≠ 0) →
-          ‖∑ Z ∈ J, w Z • Φ' Z‖ ^ 2 = (bet (∑ Z ∈ J, w Z • U.Phi f Z) (∑ Z ∈ J, w Z • U.Phi f Z)).re) ∧
-        ∀ t c' : ℂ, t ≠ 0 → c' * t ^ (m+1) ∈ Kc →
-          ‖G.remainder betaU m (fun _ => 1) Φ' t c'‖ ≤ Cst * Cp * c * ‖t‖ := by
-  obtain ⟨C₁, C₂, hGR⟩ := hG
-  obtain ⟨Cc, hCc⟩ := hU C₁ C₂
-  refine ⟨C₂, Cc, ?_⟩
-  intro k p m ρ Wp Wq _ _ _ _ _ _ ι _ U hOk A₀ hA₀ Kc hKc h0
-  obtain ⟨_, twice_smooth_le_first, _, C, hC⟩ := hCc k p (m + 1 + 1) ρ Wp Wq ι U hOk A₀ hA₀
-  obtain ⟨_, hβ, _⟩ := hS
-  obtain ⟨Cst, hCst⟩ := hGR m betaU hβ Kc hKc h0
-  refine ⟨Cst * C, ?_⟩
-  intro bet Cp hCp hPos hLB hcong f c hf
-  obtain ⟨V', i1, i2, hcomp, Φ', hnorm, hDBd⟩ := hC bet Cp hCp hPos hLB hcong f c hf
-  refine ⟨V', i1, i2, hcomp, Φ', hnorm, ?_⟩
-  intro t c' ht hc'
-  have hA' : (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2 ≤ U.a C₂ A₀ := by
-    have e : ((m + 1 + 1 : ℕ) : ℝ) = (m : ℝ) + 2 := by push_cast; ring
-    rw [e] at twice_smooth_le_first
-    exact twice_smooth_le_first
-  have hfin := hCst V' Φ' (U.a C₂ A₀) (C * Cp * c) (C₂ * (m + 1 + 1) ^ 2) hA' (le_of_eq (by ring))
-    (hDBd _ (zero_notMem_detSet hD (m + 1) Kc h0)) t c' ht hc'
-  calc _ ≤ Cst * (C * Cp * c) * ‖t‖ := hfin
-    _ = Cst * C * Cp * c * ‖t‖ := by ring
-
-theorem germInFormOfParts : GermInFormOfParts := by
-  intro hG hD hU hS
-  exact germ_in_form hG hD hU hS
-
 private theorem one_le_gN_of_mem_GV {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV k r) : 1 ≤ B.gN g := by
   letI : NormedAddCommGroup (B.Mat k r) := Matrix.frobeniusNormedAddCommGroup
   have hH : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -293,81 +203,6 @@ theorem ccMono : CCMono := by
   refine ⟨hck, fun u v hu hv hl g hg => le_trans ?_ (hb u v hu hv hl g hg)⟩
   exact mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le (one_le_gN_of_mem_GV g hg) hAB) (norm_nonneg _)
 
-private theorem sqrt_add_le_sqrt_add_sqrt_of_quadratic_nonneg {Qv Qw R : ℝ} (hv : 0 ≤ Qv) (hw : 0 ≤ Qw)
-    (h : ∀ t : ℝ, 0 ≤ Qw * (t * t) + R * t + Qv) : Real.sqrt (Qv + R + Qw) ≤ Real.sqrt Qv + Real.sqrt Qw := by
-  have hd := discrim_le_zero h
-  unfold discrim at hd
-  have h1 := Real.sq_sqrt hv
-  have h2 := Real.sq_sqrt hw
-  have ha := Real.sqrt_nonneg Qv
-  have hb := Real.sqrt_nonneg Qw
-  have hs : 0 ≤ Real.sqrt Qv + Real.sqrt Qw := add_nonneg ha hb
-  have e : (2 * (Real.sqrt Qv * Real.sqrt Qw)) ^ 2 = 4 * Qw * Qv := by
-    rw [mul_pow, mul_pow, h1, h2]; ring
-  have hR : R ≤ 2 * (Real.sqrt Qv * Real.sqrt Qw) := by
-    by_contra hc
-    push_neg at hc
-    have hp : 0 ≤ 2 * (Real.sqrt Qv * Real.sqrt Qw) := by positivity
-    nlinarith
-  rw [← Real.sqrt_sq hs]
-  apply Real.sqrt_le_sqrt
-  nlinarith
-
-theorem seminormOfForm : SeminormOfForm := by
-  intro k ρ E _ _ bet a AB Cp mmB S hAB hCp hPos hLB V _ _ M
-  obtain ⟨hSes, hPP⟩ := hPos
-  obtain ⟨hadd1, hadd2, hsm1, hsm2⟩ := hSes
-  have hC : ∀ v, CCS a mmB S (M.ev v) := fun v => ⟨⟨‖v‖, M.mem v⟩, M.off v⟩
-  have hQ0 : ∀ v, 0 ≤ (bet (M.ev v) (M.ev v)).re := fun v => (hPP _ (hC v)).2
-  have key : ∀ v w : V, ∀ t : ℝ, (bet (M.ev (v + (t : ℂ) • w)) (M.ev (v + (t : ℂ) • w))).re =
-      (bet (M.ev v) (M.ev v)).re + t * (bet (M.ev v) (M.ev w) + bet (M.ev w) (M.ev v)).re +
-        t * t * (bet (M.ev w) (M.ev w)).re := by
-    intro v w t
-    have hx := hC v
-    have hy := hC w
-    have hcy : CCS a mmB S ((t : ℂ) • M.ev w) := by rw [← map_smul]; exact hC _
-    have hs : CCS a mmB S (M.ev v + (t : ℂ) • M.ev w) := by rw [← map_smul, ← map_add]; exact hC _
-    have e1 : bet (M.ev v + (t : ℂ) • M.ev w) (M.ev v + (t : ℂ) • M.ev w) =
-        bet (M.ev v) (M.ev v) + (t : ℂ) * bet (M.ev v) (M.ev w) + (t : ℂ) * bet (M.ev w) (M.ev v) +
-          (t : ℂ) * ((t : ℂ) * bet (M.ev w) (M.ev w)) := by
-      rw [hadd1 _ _ _ hx hcy hs, hadd2 _ _ _ hx hx hcy, hadd2 _ _ _ hcy hx hcy,
-        hsm2 _ _ _ hx hy, hsm1 _ _ _ hy hx, hsm1 _ _ _ hy hcy, hsm2 _ _ _ hy hy, Complex.conj_ofReal]
-      ring
-    rw [map_add, map_smul, e1]
-    simp only [Complex.add_re, Complex.re_ofReal_mul]
-    ring
-  have disc : ∀ v w : V, ∀ t : ℝ, 0 ≤ (bet (M.ev w) (M.ev w)).re * (t * t) +
-      (bet (M.ev v) (M.ev w) + bet (M.ev w) (M.ev v)).re * t + (bet (M.ev v) (M.ev v)).re := by
-    intro v w t
-    have h := hQ0 (v + (t : ℂ) • w)
-    rw [key v w t] at h
-    nlinarith [h]
-  refine ⟨Seminorm.of (fun v => Real.sqrt (bet (M.ev v) (M.ev v)).re) ?_ ?_, ?_, ?_⟩
-  · intro v w
-    show Real.sqrt (bet (M.ev (v + w)) (M.ev (v + w))).re ≤
-      Real.sqrt (bet (M.ev v) (M.ev v)).re + Real.sqrt (bet (M.ev w) (M.ev w)).re
-    have h1 := key v w 1
-    simp only [Complex.ofReal_one, one_smul, one_mul] at h1
-    rw [h1]
-    exact sqrt_add_le_sqrt_add_sqrt_of_quadratic_nonneg (hQ0 v) (hQ0 w) (disc v w)
-  · intro c v
-    show Real.sqrt (bet (M.ev (c • v)) (M.ev (c • v))).re = ‖c‖ * Real.sqrt (bet (M.ev v) (M.ev v)).re
-    have hx := hC v
-    have hcx : CCS a mmB S (c • M.ev v) := by rw [← map_smul]; exact hC _
-    rw [map_smul, hsm1 _ _ _ hx hcx, hsm2 _ _ _ hx hx, ← mul_assoc, Complex.mul_conj,
-      Complex.re_ofReal_mul, Real.sqrt_mul (Complex.normSq_nonneg c), Complex.normSq_eq_norm_sq,
-      Real.sqrt_sq (norm_nonneg c)]
-  · intro v
-    show Real.sqrt (bet (M.ev v) (M.ev v)).re ^ 2 = _
-    exact Real.sq_sqrt (hQ0 v)
-  · intro v
-    show Real.sqrt (bet (M.ev v) (M.ev v)).re ≤ Cp * ‖v‖
-    have hcc : B.CCle AB mmB (M.ev v) ‖v‖ := ccMono k ρ E a AB ‖v‖ mmB (M.ev v) hAB (M.mem v)
-    have hb := hLB (M.ev v) ‖v‖ hcc (M.off v)
-    have hre : (bet (M.ev v) (M.ev v)).re ≤ (Cp * ‖v‖) ^ 2 := le_trans (Complex.re_le_norm _) hb
-    calc Real.sqrt (bet (M.ev v) (M.ev v)).re ≤ Real.sqrt ((Cp * ‖v‖) ^ 2) := Real.sqrt_le_sqrt hre
-      _ = Cp * ‖v‖ := Real.sqrt_sq (mul_nonneg hCp (norm_nonneg v))
-
 def SW {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (_p : Seminorm ℂ V) : Type := V
 
 section
@@ -379,50 +214,6 @@ noncomputable instance : SeminormedAddCommGroup (SW p) :=
 noncomputable instance : NormedSpace ℂ (SW p) where
   norm_smul_le c v := le_of_eq (map_smul_eq_mul p c v)
 end
-
-theorem seminormCompletion : SeminormCompletion := by
-  intro V _ _ p Cp hp
-  let L : V →ₗ[ℂ] SW p :=
-    { toFun := fun v => (v : SW p)
-      map_add' := fun _ _ => rfl
-      map_smul' := fun _ _ => rfl }
-  have hL : ∀ v, ‖L v‖ = p v := fun _ => rfl
-  let Lc : V →L[ℂ] SW p := L.mkContinuous Cp (fun v => by rw [hL]; exact hp v)
-  refine ⟨UniformSpace.Completion (SW p), inferInstance, inferInstance, inferInstance,
-    UniformSpace.Completion.toComplL.comp Lc, ?_, ?_⟩
-  · intro v
-    show ‖((Lc v : SW p) : UniformSpace.Completion (SW p))‖ = p v
-    rw [UniformSpace.Completion.norm_coe]
-    exact hL v
-  · have hs : Function.Surjective (Lc : V → SW p) := fun v => ⟨v, rfl⟩
-    rw [ContinuousLinearMap.coe_comp', UniformSpace.Completion.coe_toComplL]
-    exact UniformSpace.Completion.denseRange_coe.comp hs.denseRange
-      (UniformSpace.Completion.continuous_coe _)
-
-theorem useGermTopCountOfParts : UseGermTopCountOfParts := by
-  intro hTop hBud
-  obtain ⟨C₁, C₂, hT⟩ := hTop
-  refine ⟨C₂, fun Ca => ?_⟩
-  obtain ⟨Cc, hCc⟩ := hBud C₁ C₂ Ca
-  refine ⟨Cc, ?_⟩
-  intro p m β hβ σ d hd n As A A₀ hn hAs hA₀ hA Kc hKc h0
-  have hkey : ∀ i : ℕ, i ≤ C₂ * (m + 2) ^ 2 →
-      (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2 + 2 * (((p + m + 1 : ℕ) : ℝ) + 1) ^ 2 <
-        (A - (Ca : ℝ) * ((n : ℝ) ^ 2 + ((p + m + 1 : ℕ) : ℝ) ^ 3 + ((p + m + 1 : ℕ) : ℝ) * (i : ℝ))) /
-          (5 * (((p + m + 1 : ℕ) : ℝ) + 1)) := by
-    intro i hi
-    have hb := hCc (p + m + 1) n (m + 2) As i A A₀ hn (by omega) (by omega) hAs (Nat.le_succ_of_le hi) hA₀ hA
-    have hr : (0 : ℝ) ≤ (Ca : ℝ) * ((p + m + 1 : ℕ) : ℝ) ^ 2 := by positivity
-    push_cast at hb hr ⊢
-    linarith
-  refine hT p m β hβ σ d hd _ ((C₁ : ℝ) * ((m : ℝ) + 2) ^ 2) le_rfl ?_ Kc hKc h0
-  intro i hi
-  have hk := hkey i hi
-  have hpos : (0 : ℝ) ≤ 2 * (((p + m + 1 : ℕ) : ℝ) + 1) ^ 2 := by positivity
-  have hC : (0 : ℝ) ≤ (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2 := by positivity
-  have he : ((p + (m + 1 + 1) : ℕ) : ℝ) = ((p + m + 1 : ℕ) : ℝ) + 1 := by push_cast; ring
-  rw [he]
-  exact ⟨by linarith, by linarith⟩
 
 section supp
 open Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.BetaSesquilinearity
@@ -595,15 +386,9 @@ end Formalism.FourierDecayAlt.P.Ux8
 namespace Formalism.FourierDecayAlt.P
 
 theorem compactly_supported_monotone : Formalism.FourierDecayAlt.U.CCMono := Ux8.ccMono
-theorem seminorm_of_form : Formalism.FourierDecayAlt.U.SeminormOfForm := Ux8.seminormOfForm
-theorem seminorm_completion : Formalism.FourierDecayAlt.U.SeminormCompletion := Ux8.seminormCompletion
 theorem star_projection : Formalism.FourierDecayAlt.U.StarPi := Ux8.starPi
 theorem phi_support_level_of_parts : Formalism.FourierDecayAlt.U.PhiSuppGOfParts := Ux8.phiSuppGOfParts
 theorem corollary_u2_of_parts : Formalism.FourierDecayAlt.U.GermExpansionHypothesisFromComponents := Ux8.corollary_u2_of_parts_holds
-theorem derivative_bound_use_of_parts : Formalism.FourierDecayAlt.U.UseDerivBoundOfParts := Ux8.useDerivBoundOfParts
 theorem germ_expansion_of_parts : Formalism.FourierDecayAlt.U.UseGermOfParts := Ux8.useGermOfParts
 theorem germ_top_level_of_parts : Formalism.FourierDecayAlt.U.UseGermTopOfParts := Ux8.useGermTopOfParts
-theorem germ_top_count_of_parts : Formalism.FourierDecayAlt.U.UseGermTopCountOfParts := Ux8.useGermTopCountOfParts
-theorem germ_in_form_of_parts : Formalism.FourierDecayAlt.U.GermInFormOfParts := Ux8.germInFormOfParts
-
 end Formalism.FourierDecayAlt.P

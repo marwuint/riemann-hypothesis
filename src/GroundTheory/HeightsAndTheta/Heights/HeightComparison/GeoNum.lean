@@ -242,36 +242,6 @@ theorem intNum_map_eq_geoNum {K : Type} [Fintype K] [DecidableEq K] {ι : K → 
   have := intNum_eq_geoNum_comap p n _ hQ hd a
   rwa [hcm] at this
 
-open GeoNum in
-
-theorem intNum_map_eq_geoNum_hyps (p : ℕ) [Fact p.Prime] (D : ℕ) :
-    Geo.IsMultiProjPrime (RingHom.ker (red (ι := fun _ : Unit => Fin (D + 1)) p)) ∧
-      (C (p : ℤ) : Geo.MRing (fun _ : Unit => Fin (D + 1))) ∈
-        RingHom.ker (red (ι := fun _ : Unit => Fin (D + 1)) p) ∧
-      ringKrullDim (Geo.MRing (fun _ : Unit => Fin (D + 1)) ⧸
-          RingHom.ker (red (ι := fun _ : Unit => Fin (D + 1)) p)) =
-        ((D + Fintype.card Unit : ℕ) : WithBot ℕ∞) := by
-  refine ⟨⟨RingHom.ker_isPrime _, ⟨{C (p : ℤ)}, ?_, ker_red p⟩, fun k => ⟨0, ?_⟩⟩, ?_, ?_⟩
-  · rintro _ rfl
-    refine ⟨0, fun m hm k => ?_⟩
-    have : m = 0 := by
-      have h1 := MvPolynomial.mem_support_iff.mp hm
-      rw [coeff_C] at h1
-      by_contra hne
-      exact h1 (if_neg (Ne.symm hne))
-    subst this
-    simp
-  · rw [RingHom.mem_ker, map_X]
-    exact X_ne_zero _
-  · rw [RingHom.mem_ker, map_C]
-    simp
-  · rw [ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective (red_surjective p)),
-      MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]
-    have hc : Nat.card ((_ : Unit) × Fin (D + 1)) = D + 1 := by
-      rw [Nat.card_eq_fintype_card, Fintype.card_sigma]
-      simp
-    rw [hc, Fintype.card_unit]
-
 end
 
 end GroundTheory.Heights₂.Heights.Bridge

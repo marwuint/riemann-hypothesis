@@ -42,9 +42,6 @@ def coeY (G : Fin (m + 1) → (step X (χ s)).V) : Fin (m + 1) → Fin (m + 1) �
 theorem coeY_injective : Function.Injective (coeY (X := X) (χ := χ) (s := s)) := fun G G' h =>
   funext fun c => (Subtype.ext (congrFun h c) : toS X χ s (G c) = toS X χ s (G' c))
 
-theorem coeY_add (G G') : coeY (X := X) (χ := χ) (s := s) (G + G') = coeY G + coeY G' := by
-  funext c; rfl
-
 theorem coeY_smul (r : ℂ) (G) : coeY (X := X) (χ := χ) (s := s) (r • G) = r • coeY G := by
   funext c; rfl
 

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKSIffKsRel
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Spread
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRegularKodairaSpencerCoordinateAffineOffBoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerCoordinateUniqueNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerCoordsTwoChartsTransitionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerCoordinateUniqueNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerCoordsTwoChartsTransition
 
 set_option autoImplicit false
 
@@ -49,7 +49,7 @@ theorem canId_nonempty : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type)
   have hloc : ∀ t : M.K.bundle.ι × X.F.J, ∃ a : Γ(M.X, ksOpen M t.1 t.2), ∀ (K : Type) [Field K]
       (z : Sp K ⟶ M.X) (hz : ⊤ ≤ z ⁻¹ᵁ ksOpen M t.1 t.2), KSRel M t.1 t.2 z (GlobalTheory.FlagMod.ev z _ hz a) := fun t =>
     GlobalTheory.FlagMod.glue_field (ksOpen M t.1 t.2) (fun L _ z x => KSRel M t.1 t.2 z x)
-      (fun L _ z hz x y hx hy => (GlobalTheory.T.kodairaSpencer_coordinate_unique_ne_zero M hKS t.1 t.2 L z hz).1 x y hx hy)
+      (fun L _ z hz x y hx hy => (_root_.GlobalTheory.CompHS.ksRel_unique_ne_zero M hKS t.1 t.2 L z hz).1 x y hx hy)
       (fun W hW hle => GlobalTheory.T.exists_regular_kodairaSpencerCoordinate_affine_off_boundary M hdR hKS t.1 t.2 W hW hle)
   choose a ha using hloc
   have cover : ∀ y ∈ M.off, ∃ t : M.K.bundle.ι × X.F.J, y ∈ ksOpen M t.1 t.2 := by
@@ -74,7 +74,7 @@ theorem canId_nonempty : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type)
       have h2 := GlobalTheory.FlagMod.le_preimage_mono inf_le_right hz
       have hg := GlobalTheory.FlagMod.le_preimage_mono hle hz
       rw [map_mul, GlobalTheory.FlagMod.ev_res z _ hz h1, GlobalTheory.FlagMod.ev_res z _ hz h2, GlobalTheory.FlagMod.ev_res z _ hz hg]
-      exact GlobalTheory.T.kodairaSpencerCoords_two_charts_transition M hKS t.1 t'.1 t.2 t'.2 L z h1 h2 hg _ _ (ha t L z h1) (ha t' L z h2)
+      exact _root_.GlobalTheory.CompHS.ksRel_change M hKS t.1 t'.1 t.2 t'.2 L z h1 h2 hg _ _ (ha t L z h1) (ha t' L z h2)
     have := congrArg (ger y (⟨h, h'⟩ : y ∈ ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2)) e
     have e1 := ger_resG (inf_le_left : ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2 ≤ _) y ⟨h, h'⟩ (a t)
     have e2 := ger_resG (inf_le_right : ksOpen M t.1 t.2 ⊓ ksOpen M t'.1 t'.2 ≤ _) y ⟨h, h'⟩ (a t')
@@ -91,7 +91,7 @@ theorem canId_nonempty : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type)
   · obtain ⟨t, ht⟩ := cover y hy
     refine ⟨(t.1, flagIdx M _ t.2), ht.2, ?_⟩
     rw [hf t y ht]
-    exact isUnit_ger_of_ev (a t) y ht fun L _ z hz => (GlobalTheory.T.kodairaSpencer_coordinate_unique_ne_zero M hKS t.1 t.2 L z hz).2 _ (ha t L z hz)
+    exact isUnit_ger_of_ev (a t) y ht fun L _ z hz => (_root_.GlobalTheory.CompHS.ksRel_unique_ne_zero M hKS t.1 t.2 L z hz).2 _ (ha t L z hz)
   · have hk : KSRel M i k z (GlobalTheory.FlagMod.ev z (ksOpen M i k) (GlobalTheory.FlagMod.le_preimage_inf ho hi) (a (i, k))) :=
       ha (i, k) K z (GlobalTheory.FlagMod.le_preimage_inf ho hi)
     have e : H0.val (B := LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)) z (i, flagIdx M _ k) ho hi f =

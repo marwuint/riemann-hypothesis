@@ -6,10 +6,6 @@ open UpperTheory.V.W (Plc)
 open Formalism.MainNotions.N (IsSSRep IsInv)
 open scoped Matrix
 
-private noncomputable def diagRep {G : Type} [Group G] {n : ℕ} (χ : Fin n → G →* ℂˣ) : G →* GL (Fin n) ℂ :=
-  (Units.map (Matrix.diagonalRingHom (Fin n) ℂ).toMonoidHom).comp
-    ((MulEquiv.piUnits (M := fun _ : Fin n => ℂ)).symm.toMonoidHom.comp (MonoidHom.pi χ))
-
 private theorem commute_of_semisimple_of_charpoly_prod_chars {G : Type} [Group G] {m n : ℕ} (T : G →* Module.End ℂ (Fin m → ℂ))
     (χ : Fin n → G →* ℂˣ) (hss : ∀ g, (T g).IsSemisimple)
     (hcp : ∀ g, (T g).charpoly = ∏ i, (X - C ((χ i g : ℂˣ) : ℂ))) (g k : G) :

@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.StrongApproxE
+import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StrongApproximation.LocSmall
 
 noncomputable section
@@ -29,26 +29,6 @@ theorem local_span_holds : LocSpan := by
   have hx : x ∈ Submodule.span L.Fp (Set.range (fun i => L.ιE (b i))) := htop ▸ Submodule.mem_top
   obtain ⟨α, hα⟩ := (Submodule.mem_span_range_iff_exists_fun L.Fp).mp hx
   exact ⟨α, hα.symm⟩
-
-theorem local_open_subgroup : LocOpen := by
-  intro F E _ _ _ _ _ sig p L U hU n w
-  have := L.top
-  let f : Fin n → (L.Fp →+ L.Ep) := fun i =>
-    (LinearMap.smulRight (LinearMap.id : L.Fp →ₗ[L.Fp] L.Fp) (w i)).toAddMonoidHom
-  have hf : ∀ i α, f i α = α • w i := fun i α => rfl
-  refine ⟨⨅ i, (U.comap (f i)), ?_, ?_⟩
-  · rw [AddSubgroup.coe_iInf]
-    refine isOpen_iInter_of_finite (fun i => ?_)
-    have hc : Continuous (f i) := by
-      have : (f i : L.Fp → L.Ep) = fun α => α • w i := funext (hf i)
-      rw [this]
-      exact continuous_id.smul continuous_const
-    exact hU.preimage hc
-  · intro α hα i
-    rw [AddSubgroup.mem_iInf] at hα
-    have := hα i
-    rw [AddSubgroup.mem_comap, hf] at this
-    exact this
 
 theorem intSpan' : IntSpan := by
   intro F E _ _ _ _ _

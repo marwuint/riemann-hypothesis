@@ -130,9 +130,6 @@ def lamTr (D : D7) (μ : D.what₂.Tup) (j : ℕ) (π : D.what₂.FT) : ℝ :=
 def LamDef (D : D7) : Prop :=
   ∀ μ j, 1 ≤ j → j ≤ D.R.m → ∀ π, D.what₂.isot j π ≠ ⊥ → D.what₂.lamP μ j π = lamTr D μ j π
 
-def LamScalar (D : D7) : Prop :=
-  ∀ μ j, 1 ≤ j → j ≤ D.R.m → ∀ π, ∃ c : ℝ, ∀ x ∈ D.what₂.isot j π, D.what₂.thetaP μ j (D.what₂.thetaT μ j x) = (c : ℂ) • x
-
 theorem lamTr_of_scalar (D : D7) (μ : D.what₂.Tup) (j : ℕ) (π : D.what₂.FT) (c : ℝ) (h0 : D.what₂.isot j π ≠ ⊥)
     (hc : ∀ x ∈ D.what₂.isot j π, D.what₂.thetaP μ j (D.what₂.thetaT μ j x) = (c : ℂ) • x) : lamTr D μ j π = c := by
   set W := D.what₂.isot j π with hW
@@ -175,51 +172,6 @@ theorem kapOf_pos {n : ℕ} (ty : Fin n → D.what₂.FT) : 0 < S.kapOf ty := by
   · exact Real.rpow_pos_of_pos h _
   · exact one_pos
 
-theorem RowLatticeBoundForBasis.kap_eq {S : RowSide D EE} {n : ℕ} {b : OrthonormalBasis (Fin n) ℂ EE} {ty : Fin n → D.what₂.FT} {kap : ℝ}
-    (h : S.RowLatticeBoundForBasis b ty kap) (hn : 0 < n) : kap = S.kapOf ty := by
-  obtain ⟨hbij, hk, ρ, hρ0, -, -, h⟩ := h
-  set P : Fin n → ℝ := fun σ => ∏ j ∈ Finset.Icc 1 D.R.m, D.what₂.lamP D.what₂.mu0 j (ty σ) with hPdef
-  have hT : ∀ σ, S.iiStar (b σ) = ((kap * P σ : ℝ) : ℂ) • b σ := by
-    intro σ
-    have := h D.what₂.mu0 σ
-    rw [hρ0, mul_one] at this
-    exact this
-  have hP : ∀ σ, P σ ≠ 0 := by
-    intro σ h0
-    have hz : S.iotaQ D.what₂.mu0 (LinearMap.adjoint (S.iotaQ D.what₂.mu0) (b σ)) = 0 := by
-      have := hT σ
-      rw [h0] at this
-      simpa [iiStar] using this
-    have h1 : LinearMap.adjoint (S.iotaQ D.what₂.mu0) (b σ) = 0 := by
-      rw [← inner_self_eq_zero (𝕜 := ℂ), LinearMap.adjoint_inner_right, hz, inner_zero_left]
-    obtain ⟨y, hy⟩ := (hbij D.what₂.mu0).2 (b σ)
-    have h2 : inner ℂ (b σ) (b σ) = 0 := by
-      nth_rewrite 1 [← hy]
-      rw [← LinearMap.adjoint_inner_right, h1, inner_zero_right]
-    have h3 : b σ = 0 := inner_self_eq_zero.1 h2
-    have h4 := b.orthonormal.1 σ
-    rw [h3, norm_zero] at h4
-    exact zero_ne_one h4
-  have hdet : LinearMap.det S.iiStar = ((kap ^ n * ∏ σ, P σ : ℝ) : ℂ) := by
-    rw [← LinearMap.det_toMatrix b.toBasis]
-    have hM : LinearMap.toMatrix b.toBasis b.toBasis S.iiStar =
-        Matrix.diagonal (fun σ => ((kap * P σ : ℝ) : ℂ)) := by
-      ext i j
-      rw [LinearMap.toMatrix_apply, OrthonormalBasis.coe_toBasis, hT j, map_smul, Finsupp.smul_apply,
-        ← OrthonormalBasis.coe_toBasis, Module.Basis.repr_self, Finsupp.single_apply, Matrix.diagonal_apply]
-      by_cases hij : j = i
-      · subst hij; simp
-      · rw [if_neg hij, if_neg (fun h => hij h.symm)]; simp
-    rw [hM, Matrix.det_diagonal, ← Complex.ofReal_prod, Finset.prod_mul_distrib, Finset.prod_const,
-      Finset.card_univ, Fintype.card_fin]
-  have hne : (∏ σ, P σ) ≠ 0 := Finset.prod_ne_zero_iff.2 (fun σ _ => hP σ)
-  have hr : S.kapRatio ty = kap ^ n := by
-    unfold kapRatio DV.lamProd
-    rw [hdet, Complex.ofReal_re]
-    exact mul_div_cancel_right₀ _ hne
-  unfold kapOf
-  rw [hr, if_pos (pow_pos hk n), Real.pow_rpow_inv_natCast hk.le hn.ne']
-
 end RowSide
 
 def kapSharp (D : D7) : ℝ := (RowSide.sharp D).kapOf D.what₂.ft
@@ -227,13 +179,6 @@ def kapSharp (D : D7) : ℝ := (RowSide.sharp D).kapOf D.what₂.ft
 def BaseLevelRowSide.kap0 {D : D7} (X : BaseLevelRowSide D) : ℝ := X.s.kapOf D.what₂.ft0
 
 def DV.KapRBase {D : D7} (X : DivX D) : Prop := X.kapR D.what₂.embLL = kapSharp D
-
-def SharpLatticeBoundForNumber (D : D7) : Prop := SharpLatticeBound D (kapSharp D)
-
-def BaseLevelRowSide.BaseLevelSideLevelOneCondition {D : D7} (X : BaseLevelRowSide D) : Prop := X.L1c0 X.kap0
-
-theorem SharpLatticeBound.iff_def {D : D7} (hn : 0 < D.what₂.Drows) : (∃ kap, SharpLatticeBound D kap) ↔ SharpLatticeBoundForNumber D :=
-  ⟨fun ⟨_, h⟩ => by have := RowSide.RowLatticeBoundForBasis.kap_eq h hn; unfold SharpLatticeBoundForNumber kapSharp; rw [← this]; exact h, fun h => ⟨_, h⟩⟩
 
 end Formalism.BasicNotions
 

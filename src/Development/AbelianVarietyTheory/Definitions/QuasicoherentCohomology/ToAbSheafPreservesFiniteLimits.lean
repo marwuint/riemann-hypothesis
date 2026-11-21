@@ -101,9 +101,6 @@ instance linearModules : Linear Γ(X, ⊤) X.Modules where
 
 lemma smul_hom_def {F G : X.Modules} (r : Γ(X, ⊤)) (φ : F ⟶ G) : r • φ = φ ≫ smulHom G r := rfl
 
-lemma smulHom_eq_smul_id (F : X.Modules) (r : Γ(X, ⊤)) : smulHom F r = r • 𝟙 F :=
-  (Category.id_comp _).symm
-
 @[simp] lemma smul_app_apply {F G : X.Modules} (r : Γ(X, ⊤)) (φ : F ⟶ G) (U : X.Opens)
     (x : Γ(F, U)) : (r • φ).app U x = restrictGlobal X U r • φ.app U x := rfl
 
@@ -152,9 +149,6 @@ instance instModule : Module R (WithAction ρ) where
   zero_smul x := by
     change ρ (algebraMap R A 0) x = _
     rw [map_zero, map_zero]; rfl
-
-example : instModule ρ ℤ = AddCommGroup.toIntModule (WithAction ρ) := by
-  with_reducible_and_instances rfl
 
 variable {R} in
 

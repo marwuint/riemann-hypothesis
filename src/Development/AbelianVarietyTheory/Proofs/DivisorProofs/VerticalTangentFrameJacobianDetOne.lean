@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBaseFrame
 import Development.AbelianVarietyTheory.Definitions.Divisors.P22
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetBigCellCoordinateJacobianVerticalChangesEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LuDecompositionUnitriangularUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivativeBasePullbackEqZeroAlongVerticalDeformaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramedPointVectorsVerticalDeformationEigenbasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigCellFramedPointVectorsLowerTriangularEigenbasStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigCellEigenbasisCombinationCoeffUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetBigCellCoordinateJacobianVerticalChangesEqOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LuDecompositionUnitriangularUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivativeBasePullbackEqZeroAlongVerticalDeforma
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramedPointVectorsVerticalDeformationEigenbasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigCellFramedPointVectorsLowerTriangularEigenbas
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigCellEigenbasisCombinationCoeffUnique
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.CompHS
@@ -27,15 +27,15 @@ theorem GlobalTheory.LogPole.vert_jac_det_one : ∀ (E : Type) [Field E] [Number
     have hUx : ⊤ ≤ (zw b ≫ toBase TF Z) ⁻¹ᵁ U.1 := GlobalTheory.FlagMod.le_preimage_map (toBase TF Z) h.2.1 (hzw b)
     have hk : ⊤ ≤ (zw b ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k := GlobalTheory.FlagMod.le_preimage_map (inc₀ TF.X Z) h.2.2.1 (hzw b)
     have hM : ⊤ ≤ (zw b ≫ toBase TF Z) ⁻¹ᵁ (TF.X.F.M k).U := TF.X.F.inM hk (Category.assoc _ _ _)
-    obtain ⟨B, hBl, hBu, hBc⟩ := GlobalTheory.T.bigCell_framedPointVectors_lowerTriangular_eigenbasis E H Dw l Xo c TF Z U n e v hv W k L N h (DualNumber K) (w b) (zw b) (hzw b)
+    obtain ⟨B, hBl, hBu, hBc⟩ := _root_.GlobalTheory.LogPole.frVec_cell_comb E H Dw l Xo c TF Z U n e v hv W k L N h (DualNumber K) (w b) (zw b) (hzw b)
       _ hx hUx (hzw' b)
-    have hF := GlobalTheory.T.framedPointVectors_verticalDeformation_eigenbasis E H Dw l Xo c TF U n e v hv K P₀ P hU _ hPG hB (Pi.single b.toF (1 : K)) (w b) _ hx hUx
+    have hF := _root_.GlobalTheory.LogPole.frVec_isVert_isCombAtG E H Dw l Xo c TF U n e v hv K P₀ P hU _ hPG hB (Pi.single b.toF (1 : K)) (w b) _ hx hUx
       (TF.X.F.M k).toMChart hM (hw b)
     have eq : B σ' * (L σ').map (ev (zw b) W (hzw b)) * (N σ').map (ev (zw b) W (hzw b)) =
         GlobalTheory.FlagTan.unip K (Pi.single b.toF (1 : K)) σ' *
           ((N σ').map (ev z W hz)).map (fun r => (TrivSqZeroExt.inl r : DualNumber K)) := by
       refine Matrix.ext fun i j => ?_
-      have := GlobalTheory.T.bigCell_eigenbasisCombination_coeff_unique E H Dw l Xo c TF Z U n e v hv W k L N h (DualNumber K) (zw b) (hzw b) _ rfl hUx σ' _ _ _
+      have := _root_.GlobalTheory.LogPole.cell_eigComb_coeff_unique E H Dw l Xo c TF Z U n e v hv W k L N h (DualNumber K) (zw b) (hzw b) _ rfl hUx σ' _ _ _
         (hBc σ' i) (hF σ' i)
       have := congrFun this j
       simpa [Matrix.map_mul, Matrix.mul_assoc] using this
@@ -64,11 +64,11 @@ theorem GlobalTheory.LogPole.vert_jac_det_one : ∀ (E : Type) [Field E] [Number
       have h2 : (Pi.single b.toF (1 : K) : GlobalTheory.FlagTan.FIx Dw → K) (some ⟨σ', (i, i)⟩) = 0 :=
         Pi.single_eq_of_ne (fun hh => absurd (hbt i i hh) (lt_irrefl _)) _
       simp [GlobalTheory.FlagTan.unip, h2]
-    exact GlobalTheory.T.lu_decomposition_unitriangular_unique _ _ _ _ _ _ _ (hBl σ') hL hN hN1 hU0 hU1 hN0 hN01 eq
-  refine ⟨?_, fun b r => GlobalTheory.T.derivative_basePullback_eq_zero_along_verticalDeformation E H Dw l Xo c TF Z U.1 W h.2.1 K P _ (w b) (zw b) (hzw b) (hw b) (hzw' b) r⟩
+    exact _root_.GlobalTheory.lu_unique _ _ _ _ _ _ _ (hBl σ') hL hN hN1 hU0 hU1 hN0 hN01 eq
+  refine ⟨?_, fun b r => _root_.GlobalTheory.LogPole.snd_ev_toBase_of_isVert E H Dw l Xo c TF Z U.1 W h.2.1 K P _ (w b) (zw b) (hzw b) (hw b) (hzw' b) r⟩
   have hM : ∀ σ i j, j < i → (N σ).map (ev z W hz) i j = 0 := fun σ i j hij => by simp [h.2.2.2.2.2.1 σ i j hij]
   have hM1 : ∀ σ i, (N σ).map (ev z W hz) i i = 1 := fun σ i => by simp [h.2.2.2.2.2.2.1 σ i]
-  convert GlobalTheory.T.det_bigCellCoordinateJacobian_verticalChanges_eq_one E H Dw K (fun σ => (N σ).map (ev z W hz)) hM hM1 using 2
+  convert _root_.GlobalTheory.LogPole.VertDet.det_vert E H Dw K (fun σ => (N σ).map (ev z W hz)) hM hM1 using 2
   refine Matrix.ext fun a b => ?_
   simp only [Matrix.of_apply, cellCoord]
   rw [← key b a.1]

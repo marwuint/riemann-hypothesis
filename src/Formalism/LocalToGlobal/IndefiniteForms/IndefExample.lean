@@ -42,61 +42,6 @@ theorem std_ratHerm (K0 : Subfield K) (n : ℕ) :
     · exact K0.zero_mem
   · simp [fr]
 
-theorem locB (D : ℕ) (w : HeightOneSpectrum (𝓞 K)) : IsLocBasis (sl K D) w (sb K D) := by
-  refine ⟨?_, rfl⟩
-  have h : sb K D = ⇑(Pi.basisFun K (Fin D)) := by
-    ext i j
-    simp [sb, Pi.basisFun_apply]
-  rw [h]
-  exact (Pi.basisFun K (Fin D)).linearIndependent
-
-theorem matLat_one (D : ℕ) (L : Submodule (𝓞 K) (Fin D → K)) :
-    matLat (1 : Matrix (Fin D) (Fin D) K) L = L := by
-  ext x
-  simp [matLat]
-
-theorem idx_std (D : ℕ) (w : HeightOneSpectrum (𝓞 K)) : idx w (sl K D) (sl K D) = 0 := by
-  unfold idx Formalism.HermitianLatticesTheory.lidx
-  simp
-
-theorem gramR_one (D : ℕ) : gramR (1 : Matrix (Fin D) (Fin D) K) (sb K D) = 1 := by
-  unfold gramR
-  have h : (Matrix.of fun a b : Fin D =>
-      star (sb K D a) ⬝ᵥ (1 : Matrix (Fin D) (Fin D) K).mulVec (sb K D b)) = 1 := by
-    ext a b
-    simp only [Matrix.of_apply, Matrix.one_mulVec, sb, dotProduct_single, mul_one, Pi.star_apply,
-      Matrix.one_apply]
-    by_cases hab : a = b
-    · subst hab
-      simp
-    · simp [hab, Pi.single_apply, Ne.symm hab]
-  rw [h, Matrix.det_one]
-
-theorem jw_std (D : ℕ) (w : HeightOneSpectrum (𝓞 K)) :
-    jw (1 : Matrix (Fin D) (Fin D) K) w (sl K D) = 0 := by
-  have h := conjugate_weight_gram_general K D (1 : Matrix (Fin D) (Fin D) K) (fun i j => by
-      by_cases hij : i = j
-      · subst hij
-        simp
-      · simp [Matrix.one_apply, hij, Ne.symm hij]) (by simp) (sl K D) (sl_lattice K D) w (sb K D)
-    (locB K D w)
-  rw [h, gramR_one, ValuationRepresentative.vw_one, neg_zero]
-
-theorem one_posDef (n : ℕ) (v : InfinitePlace K) :
-    ((1 : Matrix (Fin n) (Fin n) K).map v.embedding).PosDef := by
-  rw [Matrix.map_one _ (map_zero _) (map_one _)]
-  exact Matrix.PosDef.one
-
-theorem one_quot (n : ℕ) : IsQuotMetric (1 : Matrix (Fin n) (Fin n) K) 1 (fr K n) := by
-  intro v
-  simp [fr]
-
-theorem indep_unit {V : Type} [AddCommGroup V] [Module K V] (A : Unit → Submodule K V) : iSupIndep A := by
-  intro i
-  have h : (⨆ (j : Unit) (_ : j ≠ i), A j) = ⊥ := by simp
-  rw [h]
-  exact disjoint_bot_right
-
 def conjLinearRankOne (r : ℝ) : (Fin 1 → ℂ) →ₗ⋆[ℂ] ℂ where
   toFun y := (r : ℂ) * star (y 0)
   map_add' x y := by simp [mul_add]
@@ -128,14 +73,6 @@ theorem pairC_std (v : InfinitePlace K) (r : ℝ) (hr : 0 < r) (x y : Fin 1 → 
   show x 0 * y 0 = (r : ℂ)⁻¹ * ⟪(r : ℂ) * star (y 0), x 0⟫_ℂ
   rw [RCLike.inner_apply, map_mul, Complex.conj_ofReal, RCLike.star_def, Complex.conj_conj]
   linear_combination (-(x 0 * y 0)) * mul_inv_cancel₀ hr'
-
-theorem scale_inv_one (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v) (v : InfinitePlace K) :
-    (scaleFrame t (fr K 1) v)⁻¹ = ((Real.sqrt (t v) : ℝ) : ℂ) • 1 := by
-  simp only [scaleFrame, fr]
-  have hs : (Real.sqrt (t v) : ℂ) ≠ 0 := by exact_mod_cast (Real.sqrt_pos.mpr (ht v)).ne'
-  apply Matrix.inv_eq_left_inv
-  rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, Complex.ofReal_inv,
-    mul_inv_cancel₀ hs, one_smul]
 
 variable {K}
 
@@ -192,17 +129,6 @@ theorem bij_one' {d : ℕ} : Function.Bijective (1 : Matrix (Fin d) (Fin d) K).m
   rw [h]
   exact Function.bijective_id
 
-theorem scal_comap {d d' : ℕ} {XS : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ}
-    {XT : InfinitePlace K → Matrix (Fin d') (Fin d') ℂ} {v : InfinitePlace K} {φ : Matrix (Fin d') (Fin d) K}
-    {A : Submodule K (Fin d → K)} {E : Submodule K (Fin d' → K)} {s : ℝ} (hφ : Function.Bijective φ.mulVec)
-    (hmap : A.map φ.mulVecLin = E) (h : IsScalarOn XS XT v φ A s) :
-    IsScalarOn XS XT v φ (E.comap φ.mulVecLin) s := by
-  have hA : E.comap φ.mulVecLin = A := by
-    rw [← hmap]
-    exact Submodule.comap_map_eq_of_injective (f := φ.mulVecLin) (by exact hφ.1) A
-  rw [hA]
-  exact h
-
 theorem map_top_of_bij {d : ℕ} (A : Matrix (Fin d) (Fin d) K) (h : Function.Bijective A.mulVec) :
     Submodule.map A.mulVecLin ⊤ = ⊤ := by
   rw [Submodule.map_top]
@@ -229,45 +155,6 @@ abbrev amb (Bs : DefBase K) : DefAmb Bs where
   ZHL := fun _ _ => ⊤
 
 abbrev zs (Bs : DefBase K) : DefSub (amb Bs) := ⟨fun _ => ⊤, fun _ _ => ⊤⟩
-
-theorem zs_stable (Bs : DefBase K) : (zs Bs).Stable := by
-  exact ⟨fun _ _ => le_top, fun _ _ _ => le_top⟩
-
-theorem zs_inBlock (Bs : DefBase K) : (zs Bs).InBlock := by
-  exact ⟨fun _ => le_top, fun _ _ => le_top⟩
-
-def scaleOf {Bs : DefBase K} (N : IndefNum Bs) : IndefScale Bs where
-  F0 := N.F0
-  J0 := N.J0
-  E1u := 0
-  l3m := N.l3
-  l3u := 0
-  l6m := N.l6
-  l6u := 0
-  x := 1
-  b := N.hh
-  la := N.la
-  de := N.de
-
-theorem scaleOf_num {Bs : DefBase K} (N : IndefNum Bs) (hE : N.E1 = fun _ => 0) (C CH : ℝ) :
-    N = (scaleOf N).num C CH := by
-  obtain ⟨F0, J0, E1, l3, l6, hh, la, de⟩ := N
-  simp only at hE
-  subst hE
-  simp [IndefScale.num, scaleOf]
-
-def castN {Bs : DefBase K} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer Dc} {N N' : IndefNum Bs} (h : N = N')
-    (P : IndefCore Df0 Df1 Dc Sp N) : IndefCore Df0 Df1 Dc Sp N' := h ▸ P
-
-theorem castN_μ {Bs : DefBase K} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer Dc} {N N' : IndefNum Bs}
-    (h : N = N') (P : IndefCore Df0 Df1 Dc Sp N) : (castN h P).base.μ = P.base.μ := by
-  subst h
-  rfl
-
-def pkgOf {Bs : DefBase K} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer Dc} {N : IndefNum Bs}
-    (hE : N.E1 = fun _ => 0) (P : IndefCore Df0 Df1 Dc Sp N) (C CH : ℝ) :
-    IndefPkg (amb Bs) (fun _ => ⟨Df0, Df1, Dc, Sp, scaleOf N⟩) C CH :=
-  ⟨zs Bs, zs_stable Bs, zs_inBlock Bs, castN (scaleOf_num N hE C CH) P⟩
 
 end Amb
 
@@ -298,23 +185,6 @@ abbrev df : DefSide (base K v0) where
   XT := fun _ _ => fr K 1
   Tl := fun _ _ => sl K 1
   Zp := fun _ _ _ => ⊤
-
-theorem wf (hv0 : IsConjAt v0) : (df K v0).WF where
-  cm := ConjugateWeightGram.isCMSub_cmMax
-  conj := hv0
-  HV_rat := fun _ => (std_ratHerm K (cmMax K) 1).1
-  HV_pos := fun _ v => one_posDef K 1 v
-  Mt_lat := fun _ => sl_lattice K 1
-  Pq_surj := fun _ x => ⟨x, by simp⟩
-  XQ_quot := fun _ => one_quot K 1
-  Lam_lat := fun _ => by
-    show Submodule.IsLattice K (matLat (1 : Matrix (Fin 1) (Fin 1) K) (sl K 1))
-    rw [matLat_one]; exact sl_lattice K 1
-  Qp_indep := indep_unit K _
-  Qp_top := by simp
-  XT_herm := fun _ _ => ConjugateWeightGram.isHermAt_of_ratHerm (std_ratHerm K (cmMax K) 1) v0
-  Tl_lat := fun _ _ => sl_lattice K 1
-  Zp_indep := fun _ => indep_unit K _
 
 abbrev dat : IndefData (df K v0) where
   μ := fun _ => ()
@@ -371,10 +241,6 @@ theorem l3 : (dat K v0).L3 (num K v0) := by
   intro j
   exact le_refl _
 
-theorem on : (dat K v0).ON (num K v0) := by
-  refine ⟨fun w hw => by simp [dat] at hw, fun w hw => by simp [dat] at hw, fun j => ?_⟩
-  simp [dat, num]
-
 def what₂ : IndefRows (df K v0) where
   toIndefData := dat K v0
   pos := one_pos
@@ -385,11 +251,6 @@ def what₂ : IndefRows (df K v0) where
   l1a := l1a K v0
   l1c := l1c K v0
   l1d := l1d K v0
-
-def side : IndefSide (df K v0) (num K v0) where
-  toIndefRows := what₂ K v0
-  l3 := l3 K v0
-  on := on K v0
 
 abbrev dc : DefCols (df K v0) where
   Mem := Unit
@@ -428,28 +289,6 @@ def cols : IndefCols (df K v0) (dc K v0) (sp K v0) (num K v0) where
   l1b := l1b K v0
   l1e := l1e K v0
 
-theorem untw : (dat K v0).Untwisted (num K v0) := by
-  intro w _ j
-  refine ⟨?_, rfl⟩
-  simp only [IndefData.Aw, IndefData.Iw, dat, df]
-  rw [matLat_one, idx_std, idx_std, jw_std]
-  simp
-
-theorem funn : (dat K v0).FUN (num K v0) := by
-  unfold IndefData.FUN IndefData.muMaxRR
-  simp
-
-theorem extra : IndefExtra (side K v0) (cols K v0) where
-  untw := untw K v0
-  level := ⟨rfl, rfl, rfl⟩
-  passage := fun _ _ HH0 h => by
-    refine ⟨?_, ?_⟩
-    · show (dat K v0).muMaxRR ≤ HH0 + 14 * (0 : ℝ)
-      rw [mul_zero, add_zero]; exact h
-    · show (dat K v0).muCC ≤ (dat K v0).muCC + 3 * (0 : ℝ) * _ + 28 * (0 : ℝ)
-      simp
-  fun0 := funn K v0
-
 end one
 
 namespace two
@@ -483,23 +322,6 @@ abbrev df : DefSide (base K v0) where
   Tl := fun _ _ => sl K 1
   Zp := fun _ _ _ => ⊤
 
-theorem wf (hv0 : IsConjAt v0) : (df K v0).WF where
-  cm := ConjugateWeightGram.isCMSub_cmMax
-  conj := hv0
-  HV_rat := fun _ => (std_ratHerm K (cmMax K) 1).1
-  HV_pos := fun _ v => one_posDef K 1 v
-  Mt_lat := fun _ => sl_lattice K 1
-  Pq_surj := fun _ x => ⟨x, by simp⟩
-  XQ_quot := fun _ => one_quot K 1
-  Lam_lat := fun _ => by
-    show Submodule.IsLattice K (matLat (1 : Matrix (Fin 1) (Fin 1) K) (sl K 1))
-    rw [matLat_one]; exact sl_lattice K 1
-  Qp_indep := indep_unit K _
-  Qp_top := by simp
-  XT_herm := fun _ _ => ConjugateWeightGram.isHermAt_of_ratHerm (std_ratHerm K (cmMax K) 1) v0
-  Tl_lat := fun _ _ => sl_lattice K 1
-  Zp_indep := fun _ => indep_unit K _
-
 def mp (t : Bool) : Matrix (Fin 1) (Fin 1) K := cond t (a • 1) 1
 
 abbrev dat : IndefData (df K v0) where
@@ -517,19 +339,6 @@ abbrev dat : IndefData (df K v0) where
   κ := kap
   lam := fun _ t _ v => cond t (l v * ‖v.embedding a‖ ^ 2) (l v)
   err0 := fun _ _ => 0
-
-abbrev num : IndefNum (base K v0) where
-  F0 := fun w _ => if w ∈ S then
-    (((dat K v0 S a kap l).Iw () true w : ℝ) + ((dat K v0 S a kap l).Iw () true (conjPl w) : ℝ)) /
-      (2 * (ramw w : ℝ)) else 0
-  J0 := fun _ _ _ => 0
-  E1 := fun _ => 0
-  l3 := fun _ => lcv (scaleFrame l (fr K 1)) (sl K 1) / ((1 : ℕ) : ℝ)
-  l6 := fun _ => Finset.univ.inf' Finset.univ_nonempty fun v => Real.log (l v)
-  hh := Formalism.HN.muMaxDef (Pi.basisFun K (Fin 1)) (scaleFrame (fun v => kap v * l v) (fr K 1))
-    (dat K v0 S a kap l).RR + meanLog kap
-  la := 0
-  de := 0
 
 variable {K v0 S a kap l}
 
@@ -584,38 +393,6 @@ theorem l1d : (dat K v0 S a kap l).DimensionsOfPartsAgree := by
   intro j p
   rfl
 
-theorem l6 : (dat K v0 S a kap l).L6 (num K v0 S a kap l) := by
-  intro j p v
-  exact Finset.inf'_le _ (Finset.mem_univ v)
-
-theorem l3 : (dat K v0 S a kap l).L3 (num K v0 S a kap l) := by
-  intro j
-  exact le_refl _
-
-theorem on : (dat K v0 S a kap l).ON (num K v0 S a kap l) := by
-  refine ⟨fun w hw => ?_, fun w _ j => le_refl _, fun j => by simp [dat, num]⟩
-  have hw' : w ∈ S := hw
-  have hμ : decide (w ∈ S) = true := by simp [hw']
-  have hr : (0 : ℝ) < (ramw w : ℝ) := by
-    have := one_le_ramw w
-    have h1 : (1 : ℝ) ≤ (ramw w : ℝ) := by exact_mod_cast this
-    linarith
-  have hr0 : (ramw w : ℝ) ≠ 0 := hr.ne'
-  have key : ∀ X : ℝ, X ≤ (2 * ((ramw w : ℝ) * (X / (2 * (ramw w : ℝ)))) + (ramw w : ℝ) * 0 +
-      (ramw w : ℝ) * (2 / (plc w : ℝ) ^ 2)) * ((1 : ℕ) : ℝ) := by
-    intro X
-    have h2 : 2 * ((ramw w : ℝ) * (X / (2 * (ramw w : ℝ)))) = X := by
-      rw [div_eq_mul_inv]
-      have hi : (2 * (ramw w : ℝ)) * (2 * (ramw w : ℝ))⁻¹ = 1 := mul_inv_cancel₀ (by positivity)
-      linear_combination X * hi
-    have hnn : (0 : ℝ) ≤ (ramw w : ℝ) * (2 / (plc w : ℝ) ^ 2) := by positivity
-    have e : (X + (ramw w : ℝ) * 0 + (ramw w : ℝ) * (2 / (plc w : ℝ) ^ 2)) * ((1 : ℕ) : ℝ) =
-        X + (ramw w : ℝ) * (2 / (plc w : ℝ) ^ 2) := by push_cast; ring
-    rw [h2, e]
-    linarith
-  simp only [dat, num, hμ, hw', if_true, Fintype.sum_unique]
-  exact key _
-
 def what₂ (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (ha : a ≠ 0) (hk : ∀ v, 0 < kap v) (hl : ∀ v, 0 < l v) :
     IndefRows (df K v0) where
   toIndefData := dat K v0 S a kap l
@@ -628,142 +405,11 @@ def what₂ (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (ha : a ≠ 0) (hk : ∀ v,
   l1c := l1c ha hk hl
   l1d := l1d
 
-def side (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (ha : a ≠ 0) (hk : ∀ v, 0 < kap v) (hl : ∀ v, 0 < l v) :
-    IndefSide (df K v0) (num K v0 S a kap l) where
-  toIndefRows := what₂ hS ha hk hl
-  l3 := l3
-  on := on
-
 variable (K v0 S a kap l)
-
-abbrev dc : DefCols (df K v0) where
-  Mem := Unit
-  a := fun _ => 1
-  Xc := fun _ => fr K 1
-  Pt := fun _ t => cond t (a • (Pi.basisFun K (Fin 1)).toDual) (Pi.basisFun K (Fin 1)).toDual
-
-abbrev sp : SPer (dc K v0 a) where
-  HH := ℂ
-  nHH := inferInstance
-  iHH := inferInstance
-  Pu := fun _ => LinearMap.proj 0
-  Rw := ⊤
-
-abbrev cd : ColData (dc K v0 a) (sp K v0 a) (dat K v0 S a kap l) where
-  B := fun _ => (Pi.basisFun K (Fin 1)).toDual
-  ζ := fun _ _ => 1
-  sE := conjLinearRankOne (Real.sqrt (kap v0 * l v0))
 
 variable {K v0 S a kap l}
 
-theorem l1b : (cd K v0 S a kap l).PairingFactorsThroughPeriods := by
-  refine ⟨fun u t φ F => ?_, fun _ => rfl, fun _ _ => one_ne_zero, fun _ w => ValuationRepresentative.vw_one w⟩
-  dsimp only [cd, dc, dat, df]
-  cases t
-  · simp [mp]
-  · simp [mp, smul_one_mulVec]
-
-theorem l1e (hk : ∀ v, 0 < kap v) (hl : ∀ v, 0 < l v) : (cd K v0 S a kap l).L1e := by
-  have hpos : ∀ v, 0 < kap v * l v := fun v => mul_pos (hk v) (hl v)
-  have hr : 0 < Real.sqrt (kap v0 * l v0) := Real.sqrt_pos.mpr (hpos v0)
-  refine ⟨fun y => conj_linear_rank_one_norm _ _ hr.le (scale_inv_one K (fun v => kap v * l v) hpos v0) y,
-    fun y => Submodule.mem_top, by simp, 1, fun y => by rw [Matrix.one_mulVec],
-    fun u => ⟨((Real.sqrt (kap v0 * l v0) : ℝ) : ℂ)⁻¹, inv_ne_zero (by exact_mod_cast hr.ne'), 1,
-      fun x => by rw [Matrix.one_mulVec], fun x y => ?_⟩⟩
-  dsimp only [cd, dc, sp, dat, df, base]
-  rw [Matrix.one_mulVec, Matrix.one_mulVec, pairC_std K v0 _ hr]
-  simp [ColData.bes]
-
-def cols (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (ha : a ≠ 0) (hk : ∀ v, 0 < kap v) (hl : ∀ v, 0 < l v) :
-    IndefCols (df K v0) (dc K v0 a) (sp K v0 a) (num K v0 S a kap l) where
-  toIndefRows := what₂ hS ha hk hl
-  l6 := l6
-  col := cd K v0 S a kap l
-  l1b := l1b
-  l1e := l1e hk hl
-
-theorem untw : (dat K v0 S a kap l).Untwisted (num K v0 S a kap l) := by
-  intro w hw j
-  have hw' : w ∉ S := hw
-  have hμ : decide (w ∈ S) = false := by simp [hw']
-  refine ⟨?_, ?_⟩
-  · simp only [IndefData.Aw, IndefData.Iw, dat, df, hμ, mp, cond_false]
-    rw [matLat_one, idx_std, idx_std, jw_std]
-    simp
-  · simp [num, hw']
-
-theorem funn : (dat K v0 S a kap l).FUN (num K v0 S a kap l) := by
-  unfold IndefData.FUN IndefData.muMaxRR
-  simp
-
-theorem extra (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (ha : a ≠ 0) (hk : ∀ v, 0 < kap v) (hl : ∀ v, 0 < l v) :
-    IndefExtra (side (v0 := v0) hS ha hk hl) (cols hS ha hk hl) where
-  untw := untw
-  level := ⟨rfl, rfl, rfl⟩
-  passage := fun _ _ HH0 h => by
-    refine ⟨?_, ?_⟩
-    · show (dat K v0 S a kap l).muMaxRR ≤ HH0 + 14 * (0 : ℝ)
-      rw [mul_zero, add_zero]; exact h
-    · show (dat K v0 S a kap l).muCC ≤ (dat K v0 S a kap l).muCC + 3 * (0 : ℝ) * _ + 28 * (0 : ℝ)
-      simp
-  fun0 := funn
-
 end two
-
-theorem two.Iw_true {K : Type} [Field K] [NumberField K] [StarRing K] (v0 : InfinitePlace K)
-    (S : Finset (HeightOneSpectrum (𝓞 K))) (a : K) (kap l : InfinitePlace K → ℝ) (ha : a ≠ 0)
-    (w : HeightOneSpectrum (𝓞 K)) : (two.dat K v0 S a kap l).Iw () true w = vw w a := by
-  have hf : (fun i => ∑ k, (a • (1 : Matrix (Fin 1) (Fin 1) K)) k i • sb K 1 k) =
-      fun i => a • sb K 1 i := by
-    funext i
-    fin_cases i
-    simp [Matrix.smul_apply]
-  have hmat : matLat (a • (1 : Matrix (Fin 1) (Fin 1) K)) (sl K 1) =
-      Submodule.span (𝓞 K) (Set.range fun i => a • sb K 1 i) := by
-    unfold matLat sl
-    rw [Submodule.map_span, ← Set.range_comp]
-    exact congrArg (fun s => Submodule.span (𝓞 K) s)
-      (congrArg Set.range (funext fun i => by simp [smul_one_mulVec]))
-  have hlin : LinearIndependent K (fun i => a • sb K 1 i) := by
-    rw [linearIndependent_unique_iff]
-    intro h0
-    exact ha (by simpa [sb] using congrFun h0 0)
-  have hlat : Submodule.IsLattice K (matLat (a • (1 : Matrix (Fin 1) (Fin 1) K)) (sl K 1)) := by
-    rw [hmat]
-    refine ⟨Submodule.fg_span (Set.finite_range _), ?_⟩
-    rw [Submodule.span_span_of_tower]
-    exact hlin.span_eq_top_of_card_eq_finrank (by simp)
-  have hidx := (index_change_formula K 1 _ hlat (sb K 1) (locB K 1 w).1 w (a • 1)
-    ⟨hf ▸ hlin, by rw [hf, hmat]⟩).1
-  have h2 : (two.dat K v0 S a kap l).Iw () true w =
-      vw w (a • (1 : Matrix (Fin 1) (Fin 1) K)).det := hidx
-  rw [h2, Matrix.det_smul, Matrix.det_one]
-  simp
-
-section Pair
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K]
-
-open scoped Classical in
-
-def pairSet (w : HeightOneSpectrum (𝓞 K)) : Finset (HeightOneSpectrum (𝓞 K)) := {w, conjPl w}
-
-theorem pairSet_conj (w u : HeightOneSpectrum (𝓞 K)) : conjPl u ∈ pairSet w ↔ u ∈ pairSet w := by
-  classical
-  simp only [pairSet, Finset.mem_insert, Finset.mem_singleton]
-  constructor
-  · rintro (h | h)
-    · right
-      rw [← h, ValuationRepresentative.conjPl_conjPl]
-    · left
-      rw [← ValuationRepresentative.conjPl_conjPl u, h, ValuationRepresentative.conjPl_conjPl]
-  · rintro (h | h)
-    · right
-      rw [h]
-    · left
-      rw [h, ValuationRepresentative.conjPl_conjPl]
-
-end Pair
 
 section Concrete
 
@@ -780,43 +426,6 @@ instance : StarRing K3 where
   star_involutive := complexConj_apply_apply K3
   star_mul := fun a b => by simp [mul_comm]
   star_add := fun a b => map_add _ a b
-
-theorem conjAt (v0 : InfinitePlace K3) : IsConjAt v0 := by
-  intro a
-  exact IsCMField.complexEmbedding_complexConj K3 v0.embedding a
-
-theorem example_field_totally_complex : IsTotallyComplex K3 := by
-  infer_instance
-
-theorem example_field_has_infinite_place : Nonempty (InfinitePlace K3) := by
-  infer_instance
-
-def coreOne (v0 : InfinitePlace K3) :
-    IndefCore (one.df K3 v0) (one.df K3 v0) (one.dc K3 v0) (one.sp K3 v0) (one.num K3 v0) :=
-  ⟨one.side K3 v0, one.cols K3 v0, one.extra K3 v0⟩
-
-theorem quadratic_example_rank_one_package (v0 : InfinitePlace K3) (C CH : ℝ) :
-    (one.df K3 v0).WF ∧ Nonempty (IndefPkg (amb (one.base K3 v0))
-      (fun _ => ⟨one.df K3 v0, one.df K3 v0, one.dc K3 v0, one.sp K3 v0, scaleOf (one.num K3 v0)⟩) C CH) := by
-  exact ⟨one.wf K3 v0 (conjAt v0), ⟨pkgOf rfl (coreOne v0) C CH⟩⟩
-
-def coreTwo (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K3)) :
-    IndefCore (two.df K3 v0) (two.df K3 v0) (two.dc K3 v0 3) (two.sp K3 v0 3)
-      (two.num K3 v0 (pairSet w) 3 (fun _ => 2) (fun _ => 5)) :=
-  ⟨two.side (pairSet_conj w) (by norm_num) (fun _ => by norm_num) (fun _ => by norm_num),
-    two.cols (pairSet_conj w) (by norm_num) (fun _ => by norm_num) (fun _ => by norm_num),
-    two.extra (pairSet_conj w) (by norm_num) (fun _ => by norm_num) (fun _ => by norm_num)⟩
-
-def faceTwo (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K3)) : IndefFace where
-  K := K3
-  Bs := two.base K3 v0
-  A := amb (two.base K3 v0)
-  fc := fun _ => ⟨two.df K3 v0, two.df K3 v0, two.dc K3 v0 3, two.sp K3 v0 3,
-    scaleOf (two.num K3 v0 (pairSet w) 3 (fun _ => 2) (fun _ => 5))⟩
-
-theorem quadratic_example_rank_two_package (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K3)) (C CH : ℝ) :
-    (two.df K3 v0).WF ∧ Nonempty (IndefPkg (faceTwo v0 w).A (faceTwo v0 w).fc C CH) := by
-  exact ⟨two.wf K3 v0 (conjAt v0), ⟨pkgOf rfl (coreTwo v0 w) C CH⟩⟩
 
 end Concrete
 

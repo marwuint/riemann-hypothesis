@@ -25,10 +25,6 @@ def linIdeal (A : Matrix (Fin d) (Fin n) ℂ) : Ideal (MvPolynomial (Fin n) ℂ)
 def ConeAvoids (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ) (N : ℕ) : Prop :=
   originIdeal n ^ N ≤ leadIdeal J ⊔ linIdeal A
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.ComplexSets

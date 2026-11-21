@@ -15,8 +15,6 @@ theorem coreAll : CoreAll := by
   intro K T _ _ _ O n _ _ θ s J P hs hJ hJu
   exact MassDataIdxCore.coreAll_gen O hs J P hJ hJu
 
-theorem latCore_holds : LatCore := latCore_of coreAll
-
 def LatBasisAll {D : D7} (X : HidaSetting D) (p : TypX X) : Prop :=
   ∀ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ → ∃ P, LatBasis X p θ P
 

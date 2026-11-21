@@ -3,7 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WordAppend
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppSmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExistStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
@@ -44,7 +46,7 @@ theorem GlobalTheory.ArchDecay.HeisWeil.exists_hasDerivAt_adm {F E : Type} [Fiel
     (hu : At (evI F) u) (f : (κ → AF F) → ℂ) (hf : f ∈ schA F κ) :
     ∃ Df : (κ → AF F) → ℂ, ∀ l ∈ (adeleClass F).adm κ,
       HasDerivAt (fun t : ℝ => l (dc.rho ψ (realAd F t • u) f)) (l Df) 0 := by
-  obtain ⟨D, hD⟩ := GlobalTheory.T.archHeisenbergDerivatives_exist F E σ α β κ ψ JA JB dc hψ
+  obtain ⟨D, hD⟩ := _root_.GlobalTheory.HeisDer.derEx F E σ α β κ ψ JA JB dc hψ
   induction hf using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨f₀, g, hg, rfl⟩ := hx

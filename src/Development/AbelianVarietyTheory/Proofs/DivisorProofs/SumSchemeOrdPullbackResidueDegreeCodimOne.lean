@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericallyFiniteFiniteNearCodimOnePointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericallyFiniteFiniteNearCodimOnePoint
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.ProjHypC
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumOrdMulInertiaDegEqFinrankMulOrdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueDegreeEqInertiaDegAffineChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaDegBotEqFinrankFiniteDomainStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueDegreeEqInertiaDegAffineChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaDegBotEqFinrankFiniteDomain
 
 set_option autoImplicit false
 
@@ -72,8 +72,8 @@ theorem residueDegree_genericPoint_eq_finrank (X Y : Scheme.{0}) [IsIntegral X] 
   letI : Algebra Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := (g.app V).hom.toAlgebra
   haveI : Module.Finite Γ(X, V) Γ(Y, g ⁻¹ᵁ V) := hf
   have h2 : genericPoint Y ∈ g ⁻¹ᵁ V := gen_mem (Classical.arbitrary (g ⁻¹ᵁ V)).2
-  rw [GlobalTheory.T.residueDegree_eq_inertiaDeg_affine_chart X Y g V hV hU _ h2, hU.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]
-  exact GlobalTheory.T.inertiaDeg_bot_eq_finrank_finite_domain _ _ hi
+  rw [_root_.GlobalTheory.ResidueDegreeChart.residueDegree_eq_inertiaDeg X Y g V hV hU _ h2, hU.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]
+  exact _root_.GlobalTheory.inertiaDeg_bot_eq_finrank _ _ hi
 
 theorem sum_ord_inertiaDeg (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing S] [IsDomain S]
     [Algebra R S] [Module.Finite R S] (hi : Function.Injective (algebraMap R S)) (p : Ideal R) [p.IsPrime]
@@ -259,7 +259,7 @@ theorem sum_ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocall
           hU.primeIdealOf ⟨w, hw'⟩ := dif_pos hw'
       beta_reduce
       rw [hd, fnMap_germ, ord_germ_eq Y (g ⁻¹ᵁ V) hU w hw' (hcod w hw) _ ha',
-        GlobalTheory.T.residueDegree_eq_inertiaDeg_affine_chart X Y g V hV hU w hw']
+        _root_.GlobalTheory.ResidueDegreeChart.residueDegree_eq_inertiaDeg X Y g V hV hU w hw']
       rfl
   haveI := functionField_isFractionRing_of_isAffineOpen X V hV
   obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := Γ(X, V)) f
@@ -293,7 +293,7 @@ theorem sum_ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocall
 
 theorem sum_ord_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X), g.residueDegree (genericPoint Y) ≠ 0 → ∀ z : X, Order.coheight z = 1 → ∀ f : X.functionField, f ≠ 0 → ∑ᶠ w ∈ g ⁻¹' {z}, Scheme.ord (TrueGeo.SmallSec.fnMap g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) f) w * (g.residueDegree w : ℤ) = (g.residueDegree (genericPoint Y) : ℤ) * Scheme.ord f z := by
   intro k _ X Y _ _ _ _ p q hp hq g hg hη hdeg z hz f hf
-  obtain ⟨hfin, hcod, V, hV, hzV, hgV⟩ := GlobalTheory.T.genericallyFinite_finite_near_codimOne_point k X Y p q hp hq g hg hη hdeg z hz
+  obtain ⟨hfin, hcod, V, hV, hzV, hgV⟩ := _root_.GlobalTheory.PushFinite.finite_near_coheight_one k X Y p q hp hq g hg hη hdeg z hz
   exact sum_ord_fnMap g hη _ z hz hfin hcod V hV hzV f hf
 
 end GlobalTheory.OrdPull

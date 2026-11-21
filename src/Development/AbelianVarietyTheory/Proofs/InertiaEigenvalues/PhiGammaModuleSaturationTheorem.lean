@@ -2,27 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.PowerSeriesOneAddConstMulXMulInv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLatComap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIndepSpan
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ImportsMore
 
 noncomputable section
 open GlobalTheory.PhiGam
 open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.PhiGam.Sat
 variable {k : Type} [Field k]
-
-section
-variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k V] {l n : ℕ} {R : RingPG k l}
-
-theorem linearIndependent_phi (D : ModPG R n V) (i : ZMod n) {ι : Type} {v : ι → V}
-    (hv : LinearIndependent k⸨X⸩ v) : LinearIndependent k⸨X⸩ fun j => D.φ i (v j) := by
-  have h1 := hv.linearIndepOn_id
-  have h2 := D.linearIndependent_φ i (Module.Basis.extend h1)
-  have h3 := h2.comp (fun j : ι => ⟨v j, h1.subset_extend _ ⟨j, rfl⟩⟩)
-    (fun a b h => hv.injective (congrArg Subtype.val h))
-  convert h3 using 2 with j
-  simp [Module.Basis.extend_apply_self]
-
-end
 
 variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [IsScalarTower k⟦X⟧ k⸨X⸩ V]
   {W : Type} [AddCommGroup W] [Module k⸨X⸩ W] [Module k⟦X⟧ W] [IsScalarTower k⟦X⟧ k⸨X⸩ W]
@@ -35,11 +20,6 @@ theorem comap_sh (f : W →ₗ[k⸨X⸩] V) (a : ℤ) (N : Submodule k⟦X⟧ V)
 theorem isLat_comap (f : W →ₗ[k⸨X⸩] V) (hf : Function.Injective f) {N : Submodule k⟦X⟧ V} (hN : IsLat N) :
     IsLat (N.comap (f.restrictScalars k⟦X⟧)) :=
   _root_.GlobalTheory.LatticeComap.main f hf hN
-
-theorem exists_lifts (f : W →ₗ[k⸨X⸩] V) {N : Submodule k⟦X⟧ V} (hN : N.FG) :
-    ∃ (m : ℕ) (b : Fin m → V), LinearIndependent k⸨X⸩ ((LinearMap.range f).mkQ ∘ b) ∧
-      ∀ y ∈ N, ∃ (a : Fin m → k⟦X⟧) (x : W), f x ∈ N ∧ y = ∑ j, a j • b j + f x :=
-  _root_.GlobalTheory.AbelianStatement.main f hN
 
 variable [Module k V] [Module k W] {l n : ℕ} {R : RingPG k l}
 

@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeanFundamentalDomainOfLeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AffineChangeFundamentalDomainMeanPeriodicStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeanFundamentalDomainOfLe
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AffineChangeFundamentalDomainMeanPeriodic
 
 open MeasureTheory
 
@@ -22,9 +22,9 @@ theorem mean_factor_le : ∀ (g : ℕ) (Λ Λ' : AddSubgroup (Fin g → ℂ)) (F
       have : Function.Injective (fun x : Λ₁ => (⟨h x, x.2⟩ : Λ')) := fun x y hxy =>
         Subtype.ext (h.injective (congrArg Subtype.val hxy))
       exact this.countable
-    obtain ⟨hD, hmD⟩ := GlobalTheory.T.affine_change_fundamentalDomain_mean_periodic g Λ' Λ₁ Fd' h 0 (fun z => u' z ^ 2) hΛ'c (fun z => Iff.rfl) hF'
+    obtain ⟨hD, hmD⟩ := _root_.GlobalTheory.AffineMean.affine_fundamentalDomain_mean g Λ' Λ₁ Fd' h 0 (fun z => u' z ^ 2) hΛ'c (fun z => Iff.rfl) hF'
       (fun a ha z => by simp only [hpu' a ha z]) hm'
-    exact GlobalTheory.T.mean_fundamentalDomain_eq_one_of_le g Λ Λ₁ Fd _ (fun z => u' (h z) ^ 2) hc (fun a ha => hh a ha) hF hD hVt
+    exact _root_.GlobalTheory.mean_fundamentalDomain_of_le g Λ Λ₁ Fd _ (fun z => u' (h z) ^ 2) hc (fun a ha => hh a ha) hF hD hVt
       (fun a ha z => by
         have : h (z + a) = h z + h a := map_add h z a
         rw [this, hpu' (h a) ha]) (by simpa using hmD)
@@ -39,9 +39,9 @@ theorem mean_factor_le : ∀ (g : ℕ) (Λ Λ' : AddSubgroup (Fin g → ℂ)) (F
       have : Function.Injective (fun x : Λ₁ => (⟨L x, x.2⟩ : Λ)) := fun x y hxy =>
         Subtype.ext (L.injective (congrArg Subtype.val hxy))
       exact this.countable
-    obtain ⟨hD, hmD⟩ := GlobalTheory.T.affine_change_fundamentalDomain_mean_periodic g Λ Λ₁ Fd L (v m) (fun z => u z ^ 2) hΛc (fun z => Iff.rfl) hF
+    obtain ⟨hD, hmD⟩ := _root_.GlobalTheory.AffineMean.affine_fundamentalDomain_mean g Λ Λ₁ Fd L (v m) (fun z => u z ^ 2) hΛc (fun z => Iff.rfl) hF
       (fun a ha z => by simp only [hpu a ha z]) hm
-    refine GlobalTheory.T.mean_fundamentalDomain_eq_one_of_le g Λ Λ₁ Fd _ (fun z => u ((p : ℂ) • z + v m) ^ 2) hc ?_ hF hD hVt ?_ hmD
+    refine _root_.GlobalTheory.mean_fundamentalDomain_of_le g Λ Λ₁ Fd _ (fun z => u ((p : ℂ) • z + v m) ^ 2) hc ?_ hF hD hVt ?_ hmD
     · intro a ha
       change (p : ℂ) • a ∈ Λ
       have : (p : ℂ) • a = p • a := by rw [Nat.cast_smul_eq_nsmul]

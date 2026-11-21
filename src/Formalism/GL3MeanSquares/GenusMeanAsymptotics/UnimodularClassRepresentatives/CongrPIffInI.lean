@@ -68,38 +68,4 @@ theorem InI.divK (h𝔭 : 𝔭.IsMaximal) (hF : IsFixF K F) {D : K} (hD : star D
   rw [this]
   exact h2
 
-theorem inI_of_trace (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {z : K}
-    (h : ∀ c : 𝓞 K, InI 𝔭 k (κ c * z + star (κ c * z))) : InI 𝔭 k z := by
-  have hp := h𝔭.isPrime
-  obtain ⟨θ, hθ⟩ := exists_theta hK hF h𝔭
-  set δ := θ - conjO K θ with hδ
-  have h1 : InI 𝔭 k (κ δ * z) := by
-    have e : κ δ * z = (κ θ * z + star (κ θ * z)) - κ (conjO K θ) * (κ 1 * z + star (κ 1 * z)) := by
-      have : κ (conjO K θ) = star (κ θ) := rfl
-      rw [hδ, map_sub, this, map_one, one_mul, star_mul']
-      ring
-    rw [e]
-    have h2 := InI.mul hp (InI.int hp (conjO K θ)) (h 1)
-    rw [zero_add] at h2
-    exact (h θ).sub hp h2
-  obtain ⟨ν, hν⟩ := (conjO_eq_iff_mem_range hF (δ * conjO K δ)).1 (by
-    rw [map_mul, conjO_conjO, mul_comm])
-  have hνp : ν ∉ 𝔭 := by
-    intro hm
-    have h3 : δ * conjO K δ ∈ extP K 𝔭 ^ 1 := by rw [← hν]; exact ι_mem_pow (by simpa using hm)
-    have h4 : conjO K δ ∈ extP K 𝔭 ^ 1 := mem_of_unit_mul_mem hθ h3
-    have h5 : δ ∈ extP K 𝔭 ^ 1 := by
-      have := conjO_mem_pow hF 𝔭 1 _ h4
-      rwa [conjO_conjO] at this
-    have h6 : (1 : 𝓞 K) ∈ extP K 𝔭 ^ 1 := mem_of_unit_mul_mem hθ (by rwa [mul_one])
-    have h7 := (mem_pow_iff (K := K) 𝔭 1 1).1 (by rwa [map_one])
-    rw [pow_one] at h7
-    exact h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h7)
-  apply InI.of_mul hp hνp
-  have h8 := InI.mul hp (InI.int hp (conjO K δ)) h1
-  rw [zero_add] at h8
-  have : κ (ι ν) * z = κ (conjO K δ) * (κ δ * z) := by rw [hν, map_mul]; ring
-  rw [this]
-  exact h8
-
 end Formalism.HermitianLattices.Ext.L3.Cell

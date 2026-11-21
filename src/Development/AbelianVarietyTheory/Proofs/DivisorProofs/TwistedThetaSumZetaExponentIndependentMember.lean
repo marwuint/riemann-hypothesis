@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkZeta
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SumFCalculus
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedSumExponentsAffineTwoMembersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTermsDividingLabelGroupMemberStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistWeightWellDefinedOnLatticeClassStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedThetaSumZetaPowerResidueDividingLabelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegMemDividingLabelsThetaModelPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTermsDividingLabelGroupMember
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistWeightWellDefinedOnLatticeClass
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedThetaSumZetaPowerResidueDividingLabel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegMemDividingLabelsThetaModelPoint
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -134,17 +134,17 @@ theorem twistSum_indep : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix
     have hsup : ∀ s (hs : s ∈ X₁.S.supI X₁.M z₁), κ + h ⟨s, AddSubgroup.subset_closure hs⟩ = 0 := by
       intro s hs
       have hsH : s ∈ X₁.S.HH X₁.M z₁ := AddSubgroup.subset_closure hs
-      obtain ⟨U₁, hU₁⟩ := GlobalTheory.T.exists_terms_dividing_label_group_member g n F W Z i X₁ z₁ act x₀ hdiv V₁ ev₁ Y₁ m₁ t₁ δ₁ 𝔪₁ s hsH
-      obtain ⟨U₂, hU₂⟩ := GlobalTheory.T.exists_terms_dividing_label_group_member g n F W Z i X₁ z₁ act x₀ hdiv V₂ ev₂ Y₂ m₂ t₂ δ₂ 𝔪₂ s hsH
+      obtain ⟨U₁, hU₁⟩ := _root_.GlobalTheory.Poinc.Sep.exists_terms_single g n F W Z i X₁ z₁ act x₀ hdiv V₁ ev₁ Y₁ m₁ t₁ δ₁ 𝔪₁ s hsH
+      obtain ⟨U₂, hU₂⟩ := _root_.GlobalTheory.Poinc.Sep.exists_terms_single g n F W Z i X₁ z₁ act x₀ hdiv V₂ ev₂ Y₂ m₂ t₂ δ₂ 𝔪₂ s hsH
       have hw₁ := h1 Unit (fun _ => s) (fun _ => hsH) U₁ hU₁ () τ hτ
       have hw₂ := h2 Unit (fun _ => s) (fun _ => hsH) U₂ hU₂ () τ hτ
       obtain ⟨q₁, hq₁⟩ := exists_stalk_zeta X₁ z₁ (X₁.S.ζ ^ ε₁ s τ)
       obtain ⟨q₂, hq₂⟩ := exists_stalk_zeta X₁ z₁ (X₁.S.ζ ^ ε₂ s τ)
       obtain ⟨u, hu⟩ := (X₁.M.stalkEquiv z₁).surjective ⟨_, hs.2 (s + τ)⟩
       have hu' : X₁.M.stalkHom z₁ u = X₁.S.th (s + τ) / X₁.S.th s := by rw [← RatModel.coe_stalkEquiv, hu]
-      have r₁ := GlobalTheory.T.twistedThetaSum_zeta_power_residue_dividing_label g n F W Z i X₁ z₁ act x₀ hdiv V₁ ev₁ Y₁ m₁ t₁ δ₁ 𝔪₁ Unit (fun _ => s) (fun _ => hsH) U₁ hU₁ ()
+      have r₁ := _root_.GlobalTheory.Poinc.Sep.TwistResid.twist_resid g n F W Z i X₁ z₁ act x₀ hdiv V₁ ev₁ Y₁ m₁ t₁ δ₁ 𝔪₁ Unit (fun _ => s) (fun _ => hsH) U₁ hU₁ ()
         hs τ hτ sg _ hw₁ q₁ u hq₁ hu'
-      have r₂ := GlobalTheory.T.twistedThetaSum_zeta_power_residue_dividing_label g n F W Z i X₁ z₁ act x₀ hdiv V₂ ev₂ Y₂ m₂ t₂ δ₂ 𝔪₂ Unit (fun _ => s) (fun _ => hsH) U₂ hU₂ ()
+      have r₂ := _root_.GlobalTheory.Poinc.Sep.TwistResid.twist_resid g n F W Z i X₁ z₁ act x₀ hdiv V₂ ev₂ Y₂ m₂ t₂ δ₂ 𝔪₂ Unit (fun _ => s) (fun _ => hsH) U₂ hU₂ ()
         hs τ hτ sg _ hw₂ q₂ u hq₂ hu'
       have m₁' : q₁ * u - 1 ∈ maximalIdeal (X₁.M.Z.presheaf.stalk z₁) :=
         mem_maximalIdeal_of_map ev₁ (by rwa [map_sub, map_one])
@@ -173,13 +173,13 @@ theorem twistSum_indep : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix
         rw [hj, X₁.ρ.N_eq]
         exact X₁.ρ.n_odd.pow.mul X₁.ρ.n_odd.pow.pow
       exact h5.pow
-    have hz := affine_zero hodd (X₁.S.supI X₁.M z₁) (GlobalTheory.T.neg_mem_dividing_labels_theta_model_point g n F W Z i X₁ z₁) ⟨x₀, hdiv⟩ κ h hsup
+    have hz := affine_zero hodd (X₁.S.supI X₁.M z₁) (_root_.GlobalTheory.Poinc.Sep.neg_mem_supI g n F W Z i X₁ z₁) ⟨x₀, hdiv⟩ κ h hsup
     intro b hb
     rw [pow_eq_iff_cast, ← sub_eq_zero, hκ b hb]
     exact hz b hb
 
   obtain ⟨zt, hzt⟩ := exists_stalk_zeta X₁ z₁ (X₁.S.ζ ^ (X₁.S.r * X₁.S.N))
-  obtain ⟨wt, hwt⟩ := GlobalTheory.T.twistWeight_wellDefined_on_lattice_class g n F W Z i X₁ z₁ act x₀ hdiv V₁ ev₁ Y₁ m₁ t₁ δ₁ 𝔪₁ sg τ hτ
+  obtain ⟨wt, hwt⟩ := _root_.GlobalTheory.Poinc.Sep.WtWd.wt_wd g n F W Z i X₁ z₁ act x₀ hdiv V₁ ev₁ Y₁ m₁ t₁ δ₁ 𝔪₁ sg τ hτ
   obtain ⟨s₁, hs₁⟩ := exists_stalk_zeta X₁ z₁ (X₁.S.ζ ^ e₁)
   obtain ⟨s₀, hs₀⟩ := exists_stalk_zeta X₁ z₁ (X₁.S.ζ ^ ε₁ (lab₁ c₁) τ)
   have hA := hS₁ zt (s₁ * r) hzt (by rw [map_mul, hs₁, hr, mul_div_assoc]) wt hwt

@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.Imports
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.UnramifiedLiftDeformation
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CrystallineDeformationAmalgamateOverFibreProductStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdIdealEqBotOfCrystallineDeformationStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CrystallineDeformationAmalgamateOverFibreProduct
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdIdealEqBotOfCrystallineDeformation
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatingElementUnramifiedTwistEqPowMulUnitStatement
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryIdealSaturatorsMapAlgHomStatement
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.ExistsTruncatedPolynomialThickeningFibreSquareStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CrystallineTwistByUnramifiedCharacterStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.CrystallineTwistByUnramifiedCharacter
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 
 namespace GlobalTheory.CrFrac
@@ -35,8 +35,8 @@ theorem core (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [
     (hcanc : ∀ (P y : T) (j : ℕ) (v : Cˣ), j ≤ 2 * k → p₂ P = t ^ j * v → P * y = 0 → p₁ y = 0)
     (a : U.R) (ha : GlobalTheory.OrdLoc.del D U.r.hom ^ k * a ∈ GlobalTheory.OrdLoc.ordIdeal D U.r.hom) : f a = 0 := by
   obtain ⟨u, hu1, hu2, hu3, j, v, hj, hdel⟩ := GlobalTheory.T.saturatingElement_unramified_twist_eq_pow_mul_unit D E C t ht
-  have hr₂ := GlobalTheory.T.crystalline_twist_by_unramified_character D E C πC hπC u hu1 hu2 hu3
-  obtain ⟨r, hr, hr1, hr2⟩ := GlobalTheory.T.crystallineDeformation_amalgamate_over_fibre_product_cover hL D E B π hπ C πC hπC T (π.comp p₁) hπT p₁ p₂ rfl hcomp.symm hsurj
+  have hr₂ := _root_.GlobalTheory.OrdTwist.twist_inDcr D E C πC hπC u hu1 hu2 hu3
+  obtain ⟨r, hr, hr1, hr2⟩ := _root_.GlobalTheory.OrdLoc.dcr_amalgamate hL D E B π hπ C πC hπC T (π.comp p₁) hπT p₁ p₂ rfl hcomp.symm hsurj
     (push f U.r.hom) _ hf hr₂
   have hx : (GG.map (π : B →+* E)).comp (push f U.r.hom) = push ((π.restrictScalars O).comp f) U.r.hom :=
     (push_comp (π.restrictScalars O) f U.r.hom).symm
@@ -48,7 +48,7 @@ theorem core (hL : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {O : Type} [
     show push ((p₁.restrictScalars O).comp F) U.r.hom = push f U.r.hom
     rw [push_comp, hF]
     exact hr1
-  have h0 := GlobalTheory.T.ordIdeal_eq_bot_of_crystalline_deformation hL D E T (π.comp p₁) hπT r hr
+  have h0 := _root_.GlobalTheory.OrdLoc.ordIdeal_eq_bot_of_inDcr hL D E T (π.comp p₁) hπT r hr
   obtain ⟨hmap, -, hdelF⟩ := GlobalTheory.T.ordinaryIdeal_saturators_map_algHom D F U.r.hom
   have h1 : F (GlobalTheory.OrdLoc.del D U.r.hom ^ k * a) = 0 := by
     have h := Ideal.mem_map_of_mem (F : U.R →+* T) ha

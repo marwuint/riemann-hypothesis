@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumFCompEquiv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkZeta
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TxFrameTranslate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrExp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberExistsFrameExponentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationExponentOfFrameExponentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameExponentsAffineTwoMembersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberExistsFrameExponent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationExponentOfFrameExponent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameExponentsAffineTwoMembers
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -25,17 +25,17 @@ theorem trans_exp_affine : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ 
   classical
   intro I X₁ z₁ act x₀ hd V1 _ _ _ ev1 Y1 _ t1 δ1 𝔪1 V2 _ _ _ ev2 Y2 _ t2 δ2 𝔪2 τ hτ
   let E1 : X₁.S.Gam → ℕ := fun a => if ha : a ∈ X₁.S.HH X₁.M z₁ then
-    Classical.choose (GlobalTheory.T.thetaMember_exists_frame_exponent I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 a ha τ hτ) else 0
+    Classical.choose (_root_.GlobalTheory.GSep.FrameExpEx.exists_frExp I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 a ha τ hτ) else 0
   let E2 : X₁.S.Gam → ℕ := fun a => if ha : a ∈ X₁.S.HH X₁.M z₁ then
-    Classical.choose (GlobalTheory.T.thetaMember_exists_frame_exponent I X₁ z₁ act x₀ hd V2 ev2 Y2 t2 δ2 𝔪2 a ha τ hτ) else 0
+    Classical.choose (_root_.GlobalTheory.GSep.FrameExpEx.exists_frExp I X₁ z₁ act x₀ hd V2 ev2 Y2 t2 δ2 𝔪2 a ha τ hτ) else 0
   have h1 : ∀ a ∈ X₁.S.HH X₁.M z₁, FrExp 𝔪1 a τ (E1 a) := fun a ha => by
     simp only [E1, dif_pos ha]
-    exact Classical.choose_spec (GlobalTheory.T.thetaMember_exists_frame_exponent I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 a ha τ hτ)
+    exact Classical.choose_spec (_root_.GlobalTheory.GSep.FrameExpEx.exists_frExp I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 a ha τ hτ)
   have h2 : ∀ a ∈ X₁.S.HH X₁.M z₁, FrExp 𝔪2 a τ (E2 a) := fun a ha => by
     simp only [E2, dif_pos ha]
-    exact Classical.choose_spec (GlobalTheory.T.thetaMember_exists_frame_exponent I X₁ z₁ act x₀ hd V2 ev2 Y2 t2 δ2 𝔪2 a ha τ hτ)
-  exact ⟨E1, E2, fun a ha => GlobalTheory.T.translationExponent_of_frameExponent I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 a ha τ hτ _ (h1 a ha),
-    fun a ha => GlobalTheory.T.translationExponent_of_frameExponent I X₁ z₁ act x₀ hd V2 ev2 Y2 t2 δ2 𝔪2 a ha τ hτ _ (h2 a ha),
-    GlobalTheory.T.frameExponents_affine_two_members I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 V2 ev2 Y2 t2 δ2 𝔪2 τ hτ E1 E2 h1 h2⟩
+    exact Classical.choose_spec (_root_.GlobalTheory.GSep.FrameExpEx.exists_frExp I X₁ z₁ act x₀ hd V2 ev2 Y2 t2 δ2 𝔪2 a ha τ hτ)
+  exact ⟨E1, E2, fun a ha => _root_.GlobalTheory.GSep.TransTerms.transExp_of_frExp I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 a ha τ hτ _ (h1 a ha),
+    fun a ha => _root_.GlobalTheory.GSep.TransTerms.transExp_of_frExp I X₁ z₁ act x₀ hd V2 ev2 Y2 t2 δ2 𝔪2 a ha τ hτ _ (h2 a ha),
+    _root_.GlobalTheory.GSep.TransTerms.frExp_affine_two_members I X₁ z₁ act x₀ hd V1 ev1 Y1 t1 δ1 𝔪1 V2 ev2 Y2 t2 δ2 𝔪2 τ hτ E1 E2 h1 h2⟩
 
 end GlobalTheory.GSep.TransTerms

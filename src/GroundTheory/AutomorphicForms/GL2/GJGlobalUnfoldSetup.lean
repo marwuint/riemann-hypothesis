@@ -187,11 +187,6 @@ theorem coe_inv_mul_coe (q : normOneGL K n) :
       (((q : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = 1 := by
   rw [← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one]
 
-theorem coe_mul_coe_inv (q : normOneGL K n) :
-    (((q : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) *
-      (((q⁻¹ : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = 1 := by
-  rw [← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Units.val_one]
-
 theorem conj_unipOne {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k) (Z : UPos n k → 𝔸[K]) :
     q⁻¹ * unipOne K n k Z * q = unipOne K n k (conjUnip k q Z) := by
   refine Subtype.ext (Units.ext ?_)

@@ -1,7 +1,43 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsModuliSchemePolarizedAbelianLevel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsIsGlobal
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TowerComponentsEquivOfGivenStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CInfGood
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BcMapBcVec
+import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.OnbMat
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.InterpolationModelInequalities
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspidalExponentialDecay
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.QuotientIsHausdorff
+import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.TorusAt
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.UnitaryHaarVolume
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NonvanishingNearMaximum
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.OneLeAbsNormOfLeOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ProdMulLeDetIdeal
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ValuationLeOfEqAlgebraMap
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.AbsNormSpanGalois
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.DetValuationLeOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ExistsEvalNeZeroOfTotalDegreeLt
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ExistsMonicIrreducibleCardGt
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.FiniteDetAddSmulOneEqZero
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.LargeResidueExtensionLemma
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.HermitianFormGramBlockBasis
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+import Formalism.LocalToGlobal.ProjectiveLattices.PartitionExtendByZeroAntitone
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
+import Formalism.LocalToGlobal.Divisibility.Frames
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.ThmFlatA
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Formalism.MeanHeightDescent.CombinedAverageDegreeBound
+import Formalism.MonomialMeanResidues.FilteredDegree
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GoodOver
+import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.HSClaim
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.SpecFirstDetFormNeZero
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.YCompOf
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SplitComponentsOfAlgClosedStatement
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ModelSmall
 import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
@@ -28,7 +64,7 @@ theorem vs_tower : Top.Given → Top.GoodTowerExistsX → Top.VolumeTheoremX →
     simp
   obtain ⟨Y, hY⟩ := GlobalTheory.CompanionTheory.Ar.Rec.exists_isGlobal E H Dw Xf l c hN hgood hA
   obtain ⟨T, o, hX⟩ := hTow E H Dw Xf l c Y hY (GlobalTheory.T.split_components_of_alg_closed E H Dw l (Xf l) c Y hcl) hp hq
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.tower_components_equiv_of_given E H Dw l (Xf l) c Y T o.toTowerOrigin hG
+  obtain ⟨κ, hκ⟩ := _root_.PositivityTheory.UnitarySelfGeneration.y_comp_of E H Dw l (Xf l) c Y T o.toTowerOrigin hG
   have hbad : T.bad = (2 * discr E * l.M').natAbs.primeFactors := by
     have hne : 2 * discr E * l.M' ≠ 0 := by
       intro h0

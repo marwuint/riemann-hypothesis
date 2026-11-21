@@ -736,8 +736,4 @@ theorem fontaineFormalism (hF : GlobalTheory.Published.FontaineBcris) (l : ℕ) 
     (AI : LocAinf l P) (hs : GlobalTheory.Per.IsStd P AI) : FontaineFormalism l P :=
   fontaineFormalism_of_regular l P AI (fun C => ⟨hF.tensorInj C, hF.regular C⟩) hs
 
-theorem fontaineFormalismTensor (hF : GlobalTheory.Published.FontaineBcris) (l : ℕ) [Fact l.Prime] (P : LocPrime l)
-    (AI : LocAinf l P) (hs : GlobalTheory.Per.IsStd P AI) : FontaineFormalismTensor l P :=
-  (fontaineFormalismTensor_equiv l P).2 ((fontaineFormalism_equiv l P).1 (fontaineFormalism hF l P AI hs))
-
 end GlobalTheory.RegularRing

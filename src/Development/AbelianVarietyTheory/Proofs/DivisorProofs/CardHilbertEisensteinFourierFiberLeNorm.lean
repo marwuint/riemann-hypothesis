@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorization
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardDivisorsLeAbsNormNumberFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardDivisorsLeAbsNormNumberField
 open NumberField Complex
 open scoped nonZeroDivisors
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
@@ -112,7 +112,7 @@ theorem card_le_norm : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F
   rw [coeIdeal_absNorm] at key
   calc (s.card : ℝ) = ((s.image f).card : ℝ) := by rw [Finset.card_image_of_injOn hinj]
     _ ≤ (Ideal.absNorm I : ℝ) := by
-      exact_mod_cast GlobalTheory.T.card_divisors_le_absNorm_numberField F I hI0 (s.image f) (by
+      exact_mod_cast _root_.GlobalTheory.card_le_absNorm_of_forall_le F I hI0 (s.image f) (by
         intro J hJ
         obtain ⟨c, hc, rfl⟩ := Finset.mem_image.mp hJ
         exact hIJ c hc)

@@ -2,7 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntEmbCoe
 import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemiabelianExtensionDvr
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BlowPolSt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FormallyUnramifiedEtaleCompletion
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyFiniteRootsOfBimul
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PhiDivisorArcBlowup
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMonomialLevelFormDvr
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFiniteExtPelUnif
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialSupportHolds
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapEqIInfDiscreteValuationSubring
 
@@ -134,112 +139,7 @@ end Algebra
 open CategoryTheory AlgebraicGeometry Limits NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory
 
-theorem isOpen_preimage_bot {A O : Type} [CommRing A] [IsDedekindDomain A] [CommRing O] [IsLocalRing O]
-    (g : PrimeSpectrum O → PrimeSpectrum A) (hg : Continuous g) : IsOpen (g ⁻¹' {⊥}) := by
-  have hs : ∀ q, g q ≤ g (closedPoint O) := fun q =>
-    (PrimeSpectrum.le_iff_specializes _ _).2 ((specializes_closedPoint q).map hg)
-  by_cases h : g (closedPoint O) = ⊥
-  · have : g ⁻¹' {⊥} = Set.univ := Set.eq_univ_of_forall fun q => le_bot_iff.1 (h ▸ hs q)
-    exact this ▸ isOpen_univ
-  · have hm : ∀ p : PrimeSpectrum A, p ≠ ⊥ → p.asIdeal.IsMaximal := fun p hp =>
-      Ring.DimensionLEOne.maximalOfPrime (fun e => hp (PrimeSpectrum.ext e)) p.isPrime
-    have : g ⁻¹' {⊥} = g ⁻¹' {g (closedPoint O)}ᶜ := by
-      ext q
-      simp only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_compl_iff]
-      refine ⟨fun e e' => h (e' ▸ e), fun e => ?_⟩
-      by_contra e'
-      exact e (PrimeSpectrum.ext ((hm _ e').eq_of_le (g (closedPoint O)).isPrime.ne_top (hs q)))
-    rw [this]
-    exact ((PrimeSpectrum.isClosed_singleton_iff_isMaximal _).2 (hm _ h)).isOpen_compl.preimage hg
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
-
-theorem isOpen_preimage_range (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {O : CommRingCat.{0}} [IsLocalRing O]
-    (a : Spec O ⟶ Z.X) : IsOpen (a ⁻¹' Set.range Z.j) := by
-  have := Z.jQ_open
-  have : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F)) :=
-    IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))
-  obtain ⟨U, hU, hU'⟩ := (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))).isEmbedding.isInducing.isOpen_iff.1
-    Z.jQ.isOpenEmbedding.isOpen_range
-  have hb : Set.range (spMap (algebraMap (𝓞 c.F) c.F)) = {(⊥ : PrimeSpectrum (𝓞 c.F))} := by
-    have h0 : ∀ t, spMap (algebraMap (𝓞 c.F) c.F) t = (⊥ : PrimeSpectrum (𝓞 c.F)) := fun t => by
-      apply PrimeSpectrum.ext
-      change Ideal.comap (algebraMap (𝓞 c.F) c.F) t.asIdeal = ⊥
-      rw [@Ideal.eq_bot_of_prime _ _ t.asIdeal t.isPrime]
-      exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)
-    ext p
-    exact ⟨fun ⟨t, ht⟩ => ht ▸ h0 t, fun hp => ⟨(⊥ : PrimeSpectrum c.F), (h0 _).trans hp.symm⟩⟩
-  have hr : Set.range Z.j = U ∩ Z.s ⁻¹' {(⊥ : PrimeSpectrum (𝓞 c.F))} := by
-    rw [← hb, ← Scheme.Pullback.range_fst, ← Set.image_preimage_eq_inter_range, hU', ← Set.range_comp]
-    rfl
-  rw [hr, Set.preimage_inter]
-  exact (hU.preimage a.continuous).inter
-    (isOpen_preimage_bot (fun q => Z.s (a q)) (Z.s.continuous.comp a.continuous))
-
-theorem exists_trait_through : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
-    (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω : Type) [Field Ω]
-    [IsAlgClosed Ω] (x : Sp Ω ⟶ Z.X), ∃ (T : Formalism.L2.Pj.CDVR) (χ : Sp T.V ⟶ Z.X) (y : Sp T.Fr ⟶ Xo.XF c)
-    (ι : IsLocalRing.ResidueField T.V →+* Ω),
-    y ≫ Z.j = Out.jK T.V ≫ χ ∧ spMap ι ≫ spMap (IsLocalRing.residue T.V) ≫ χ = x := by
-  intro E _ _ _ H D l Xo c Z Ω _ _ x
-  obtain ⟨h₁, -, -, _, _, _, _⟩ := GlobalTheory.ModelRelCompare.densePart Z (GlobalTheory.ModelRelCompare.isDedFrac_in_use c).1
-  by_cases hx : x (closedPoint Ω) ∈ Set.range Z.j
-  · obtain ⟨u, hu⟩ := GlobalTheory.HomExt.exists_lift_of_range_subset Z.j x (by
-      rintro _ ⟨t, rfl⟩
-      rwa [Subsingleton.elim (α := PrimeSpectrum Ω) t (closedPoint Ω)])
-    have : CharZero Ω := GlobalTheory.TorRef.charZero_of_point (K := .of Ω) u
-    obtain ⟨h₁, h₂, h₃⟩ := GlobalTheory.FrameCmp.cDvr_powerSeries Ω
-    have : IsLocalHom (PowerSeries.constantCoeff (R := Ω)) := ⟨fun a ha => PowerSeries.isUnit_iff_constantCoeff.2 ha⟩
-    refine ⟨{ V := PowerSeries Ω }, spMap (PowerSeries.C (R := Ω)) ≫ x,
-      Out.jK _ ≫ spMap (PowerSeries.C (R := Ω)) ≫ u, ResidueField.lift PowerSeries.constantCoeff, ?_, ?_⟩
-    · simp only [Category.assoc, hu]
-    · have e : spMap (ResidueField.lift (PowerSeries.constantCoeff (R := Ω))) ≫ spMap (residue (PowerSeries Ω)) ≫
-          spMap (PowerSeries.C (R := Ω)) = 𝟙 _ := by
-        rw [← Spec.map_comp, ← Spec.map_comp, ← Spec.map_id]
-        congr 1
-      simpa only [Category.assoc, Category.id_comp] using congrArg (· ≫ x) e
-  · let ξ := x (closedPoint Ω)
-    let O := Z.X.presheaf.stalk ξ
-    obtain ⟨η, hη, hs⟩ := exists_mem_genericPoints_specializes ξ
-    have hη' := genericPoints_subset_range_of_isDominant Z.j hη
-    have h1 : η ∈ Set.range (Z.X.fromSpecStalk ξ) := by
-      rw [Scheme.range_fromSpecStalk]
-      exact hs
-    obtain ⟨q, rfl⟩ := h1
-    obtain ⟨_, ⟨f, rfl⟩, hqf, hf⟩ := PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open
-      (a := q) hη' (isOpen_preimage_range Z (Z.X.fromSpecStalk ξ))
-    have hfm : f ∈ maximalIdeal O := by
-      by_contra hn
-      have : Z.X.fromSpecStalk ξ (closedPoint (Z.X.presheaf.stalk ξ)) ∈ Set.range Z.j :=
-        hf (show closedPoint O ∈ PrimeSpectrum.basicOpen f from hn)
-      rw [Scheme.fromSpecStalk_closedPoint] at this
-      exact hx this
-    obtain ⟨W, _, _, _, _, ψ, ι, hψ, hι⟩ := exists_dvr (O := O) (Ω := Ω) hfm q.asIdeal q.isPrime hqf
-      (Scheme.stalkClosedPointTo x).hom
-    let a : Sp W ⟶ Z.X := Spec.map (CommRingCat.ofHom ψ) ≫ Z.X.fromSpecStalk ξ
-    obtain ⟨y, hy⟩ := GlobalTheory.HomExt.exists_lift_of_range_subset Z.j
-      (spMap (algebraMap W (FractionRing W)) ≫ a) (by
-        rintro _ ⟨t, rfl⟩
-        have : spMap (algebraMap W (FractionRing W)) t = (⊥ : PrimeSpectrum W) := by
-          apply PrimeSpectrum.ext
-          change Ideal.comap (algebraMap W (FractionRing W)) t.asIdeal = ⊥
-          rw [@Ideal.eq_bot_of_prime _ _ t.asIdeal t.isPrime]
-          exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)
-        rw [Scheme.Hom.comp_apply, this]
-        exact hf (a := PrimeSpectrum.comap ψ ⊥) hψ)
-    have hc : CharZero (FractionRing W) := GlobalTheory.TorRef.charZero_of_point (K := .of (FractionRing W)) y
-    have hc' : CharZero W := ⟨fun p q e => Nat.cast_injective (R := FractionRing W) (by
-      simpa using congrArg (algebraMap W (FractionRing W)) e)⟩
-    refine ⟨{ V := W }, a, y, ι, hy, ?_⟩
-    have e : spMap ι ≫ spMap (residue W) ≫ Spec.map (CommRingCat.ofHom ψ) =
-        Spec.map (Scheme.stalkClosedPointTo x) := by
-      rw [← Spec.map_comp, ← Spec.map_comp]
-      congr 1
-      exact CommRingCat.hom_ext hι
-    refine Eq.trans ?_ (Scheme.Spec_stalkClosedPointTo_fromSpecStalk x)
-    rw [← e]
-    simp only [a, Category.assoc]
-    rfl
 
 end GlobalTheory.GeomTrait

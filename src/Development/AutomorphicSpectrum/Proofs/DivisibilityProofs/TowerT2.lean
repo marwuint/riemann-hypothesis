@@ -5,13 +5,14 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerIdentityAtCutoffStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerHeightIdentityExpansionStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerIdentityAtCutoff
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerHeightIdentityExpansion
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CutoffCoefficientsBoundStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LinRootRemainderBoundStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HomogeneousPowerSumDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagShiftTotalLinRootPowerStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DominantPartialSumBoundsStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LinRootRemainderBound
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HomogeneousPowerSumDecomposition
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagShiftTotalLinRootPower
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DominantPartialSumBounds
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeWeightFormula
 
 noncomputable section
@@ -95,15 +96,15 @@ theorem tower_T2_of_inputs : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Finty
     have h4 : (4 * (Fintype.card Ψ : ℝ) * (N : ℝ) ^ 2) < (B : ℝ) + 1 := lt_of_le_of_lt h1 hB0
     have h5 : 4 * Fintype.card Ψ * N ^ 2 < B + 1 := by exact_mod_cast h4
     omega
-  obtain ⟨A₀, b₀, hId⟩ := GlobalTheory.T.tower_identity_at_cutoff II Ψ N T hh frob hprop hshape hP6 hBA B (by omega)
+  obtain ⟨A₀, b₀, hId⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.exists_identAt II Ψ N T hh frob hprop hshape hP6 hBA B (by omega)
   have hAl := hA0 B A₀ b₀ hB128 hBig hbad hId
   have hfl := GlobalTheory.T.cutoff_coefficients_bound II Ψ N T hh frob C' rd Lval B A₀ b₀ hprop hI9 hF hB128 hbad hId
   have hHom : (linRoot u ^ (dimFl Ψ N + 1) : RP Ψ N).IsHomogeneous (dimFl Ψ N + 1) := by
     simpa using (linRoot_isHomogeneous u).pow (dimFl Ψ N + 1)
-  obtain ⟨Q, hQ1, hQ2⟩ := GlobalTheory.T.homogeneous_power_sum_decomposition Ψ N _ hN2 hHom
+  obtain ⟨Q, hQ1, hQ2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.form_top_succ_eq_sum_pk Ψ N _ hN2 hHom
   have hDec : IsDecomp (linRoot u ^ (dimFl Ψ N + 1)) Q := ⟨hQ1, hQ2⟩
-  have hEq := GlobalTheory.T.tower_height_identity_expansion II Ψ N T hh frob B A₀ b₀ _ Q hId hDec
-  have hRest := GlobalTheory.T.lin_root_remainder_bound Ψ N T.j T.bad frob u g B Q T.j_pos T.j_lt hW hB0 hDec
+  have hEq := _root_.GlobalTheory.CompanionTheory.Ar.Top.identOnDecomposedForm II Ψ N T hh frob B A₀ b₀ _ Q hId hDec
+  have hRest := _root_.GlobalTheory.CompanionTheory.Ar.Top.restSum_total_bound Ψ N T.j T.bad frob u g B Q T.j_pos T.j_lt hW hB0 hDec
   have hhF : 0 ≤ hh (linRoot u ^ (dimFl Ψ N + 1)) := hI9.2.1 u hdom
   have hdeg : 0 < flagDeg u := (GlobalTheory.CompanionTheory.Ar.Top.flagDeg_eq_weyl Ψ N u).2.1 hreg
   have hV : 0 < T.volT := Finset.sum_pos (fun c _ => hprop.1 c) Finset.univ_nonempty
@@ -123,7 +124,7 @@ theorem tower_T2_of_inputs : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Finty
     have : ∀ σ ∈ (Finset.univ : Finset Ψ), -((K + C') * abelian₂ * ∑ i, |u σ i|) ≤
         A₀ * (∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < T.j), u σ i) + b₀ * ∑ i, u σ i := by
       intro σ _
-      obtain ⟨l1', l2', l3'⟩ := GlobalTheory.T.dominant_partial_sum_bounds N T.j (u σ) T.j_lt.le (by omega) (fun a b h => hdom σ a b h)
+      obtain ⟨l1', l2', l3'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.partialSum_sub_mean_bounds N T.j (u σ) T.j_lt.le (by omega) (fun a b h => hdom σ a b h)
       exact label_term_lower hNpos hK hC hLam hAl hfl l1' l2' l3'
     have h2 := Finset.sum_le_sum this
     have h3 : ∑ σ, -((K + C') * abelian₂ * ∑ i, |u σ i|) = -((K + C') * abelian₂ * l1 u) := by
@@ -133,7 +134,7 @@ theorem tower_T2_of_inputs : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Finty
   have hShTot : -(A₀ * ∑ σ, Sh T.j σ (linRoot u ^ (dimFl Ψ N + 1))) -
       b₀ * ∑ σ, Tot σ (linRoot u ^ (dimFl Ψ N + 1)) =
       E * ∑ σ, (A₀ * (∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < T.j), u σ i) + b₀ * ∑ i, u σ i) := by
-    simp only [fun σ => (GlobalTheory.T.flag_shift_total_lin_root_power Ψ N T.j σ u).1, fun σ => (GlobalTheory.T.flag_shift_total_lin_root_power Ψ N T.j σ u).2]
+    simp only [fun σ => (_root_.GlobalTheory.CompanionTheory.Ar.Top.Sh_Tot_linRoot_pow Ψ N T.j σ u).1, fun σ => (_root_.GlobalTheory.CompanionTheory.Ar.Top.Sh_Tot_linRoot_pow Ψ N T.j σ u).2]
     simp only [Finset.sum_neg_distrib, ← Finset.mul_sum, Finset.sum_add_distrib]
     ring
   have hSpread : 0 ≤ ((min T.j (N - T.j) : ℕ) : ℝ) * spread u :=

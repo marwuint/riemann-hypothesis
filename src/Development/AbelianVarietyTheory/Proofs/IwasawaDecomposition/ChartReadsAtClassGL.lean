@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsInvOne
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicMatrixCongruenceBadPrimeIffCompletionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicMatrixCongruenceBadPrimeIffCompletion
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemPrinCongOfSm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartTiedLevelChain
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValuedInvMulLe
@@ -89,7 +89,7 @@ theorem frame_near : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC
   classical
   intro B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c fb hfb P
   have hpt := hR.pt c
-  have hd := fun z => (GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a ((I.rec7 l Z).R.N i) ((I.cst a).D P) P z).2.2
+  have hd := fun z => (_root_.GlobalTheory.Mem.Col2.AdT.AdelicValuationDictionary.main I hOk l Z a ((I.rec7 l Z).R.N i) ((I.cst a).D P) P z).2.2
   unfold GlobalTheory.TwU.NearAt
   rw [hd]
   have hfb2 := (hd _).1 (hfb P).2

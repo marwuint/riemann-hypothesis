@@ -375,8 +375,6 @@ noncomputable section
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat IsDedekindDomain
 
 namespace GlobalTheory.St.Lat
-open Formalism.L2.SG.Pf Formalism.L2.SG.Pf.LatEx
-
 end GlobalTheory.St.Lat
 
 noncomputable section

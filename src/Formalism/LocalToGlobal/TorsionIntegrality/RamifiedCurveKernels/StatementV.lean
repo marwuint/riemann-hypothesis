@@ -12,25 +12,6 @@ open Formalism.L2.Th1.A (logSer expSer wpReg)
 open Formalism.G (unitBall)
 open Formalism.DworkPowerSeriesWeights (JetsIntegral jetPair)
 
-def IntUnram : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l linv ph : PowerSeries K),
-    Frame (unitBall K) l linv ph → IsOneUnit (unitBall K) (PowerSeries.derivative K l) →
-    F1 (unitBall K) l linv ph → (∀ i : ℕ, 1 ≤ i → ‖jet l ph i‖ ≤ 1) →
-    ∀ (O : Type) [CommRing O] [StarRing O] (τ : O →+* K),
-    (∀ α, EndInt (unitBall K) l linv (τ α)) →
-    (∀ z : O, star z = z → IsBinomScalar (unitBall K) (τ z)) →
-    (∀ α : O, PhNormAt (unitBall K) l linv ph (τ α) (τ (star α))) →
-    (∀ α : O, AdjAt (unitBall K) l linv ph (τ α) (τ (star α))) →
-    ∀ (n m : Type) [Fintype n] [DecidableEq n] [Fintype m] (w : n → O), (∀ j, star (w j) = w j) →
-    ∀ δ : m → Fin 4 × n → O,
-      (∀ a b, ∑ i, star (δ i a) * δ i b = if a = b then w a.2 else 0) →
-    ∀ (Th : MvPowerSeries n K) (G : MvPowerSeries (Fin 4 × n) K), IntMv (unitBall K) G →
-      tens4 Th = toZ linv (mvExp (-(phIso τ l linv ph δ)) * G) →
-    JetsIntegral Th ∧
-    ∀ (ν : Type) [Fintype ν] (A : n → ν → K), (∀ i x, ‖A i x‖ ≤ 1) →
-    ∀ P : MvPolynomial ν K, (∀ k, ‖MvPolynomial.coeff k P‖ ≤ 1) →
-      ‖jetPair P (linSub A Th)‖ ≤ 1
-
 def CurveJetsUnram : Prop :=
   ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K),
     CoeffIn (unitBall K) W → ‖(2 : K)‖ = 1 →

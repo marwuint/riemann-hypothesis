@@ -136,9 +136,6 @@ end ProjScheme
 
 variable {N : ℕ} (K : Type) [Field K]
 
-def complexPointsAt (X : ProjScheme (𝓞 K) N) (σ : K →+* ℂ) : Set (CP N) :=
-  X.complexPoints (σ.comp (algebraMap (𝓞 K) K))
-
 variable {K}
 
 end

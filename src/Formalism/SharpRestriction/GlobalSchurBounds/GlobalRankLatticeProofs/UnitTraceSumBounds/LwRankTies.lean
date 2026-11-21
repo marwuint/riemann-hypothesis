@@ -1,5 +1,6 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.MainSup
-import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.CountHypothesesIffText
+import Formalism.SharpRestriction.GlobalSchurBounds.AdmittedWeylDimension
+import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
 import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLu
 import Formalism.SharpRestriction.AdmissibleParameterJoins.DIVfromGLz
 
@@ -25,23 +26,6 @@ theorem rank_conditions_iff_lowest_space {eps : ℝ} (Fm : FamP eps) :
 theorem rank_conditions_of_lowest_space {eps : ℝ} (Fm : FamP eps)
     (h : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), StandardLattice.Mu0Tie (Fm.D x i) u) : RankTiesF Fm :=
   (rank_conditions_iff_lowest_space Fm).2 h
-
-theorem rankTiesF_of_col {eps : ℝ} (Fm : FamP eps)
-    (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
-      StandardLattice.adm17 (Fm.D x i) (Fm.ex x hx i).lev ∧ StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev ∧ StandardLattice.AdmittedWeylDimension (Fm.D x i) ∧
-        ∀ u : (Fm.D x i).what₂.Word, ∃ X : StandardLattice.ColRep (Fm.D x i) (Fm.ex x hx i).lev u,
-          StandardLattice.BaseWeightColumnCondition (Fm.D x i) (Fm.ex x hx i).lev u X) :
-    RankTiesF Fm := by
-  obtain ⟨x0, h⟩ := h
-  refine rank_conditions_of_lowest_space Fm ⟨max x0 (max 3 (Fm.x1 + 1)), fun x hx i u => ?_⟩
-  have e0 : x0 ≤ x := (le_max_left _ _).trans hx
-  have e3 : 3 ≤ x := ((le_max_left _ _).trans (le_max_right _ _)).trans hx
-  have e1 : Fm.x1 < x := by
-    have := ((le_max_right 3 (Fm.x1 + 1)).trans (le_max_right x0 _)).trans hx
-    linarith
-  obtain ⟨h17, hp, hW, hX⟩ := h x e1 e0 i
-  obtain ⟨X, hX⟩ := hX u
-  exact StandardLattice.mu0Tie_of_col (Fm.D x i) (Fm.ex x e1 i).lev h17 hp (GlobalTheoryTheory.JDB.gBig_fam Fm x e3 e1 i) hW u X hX
 
 end Formalism.MainNotions.Ext.Lw
 

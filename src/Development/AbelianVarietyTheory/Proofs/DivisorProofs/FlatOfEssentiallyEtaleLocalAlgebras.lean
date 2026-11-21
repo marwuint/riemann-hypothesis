@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgHomLocalizationAtPrimeFactorsThroughAwayStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgHomLocalizationAtPrimeFactorsThroughAway
 open IsLocalRing
 
 namespace GlobalTheory
@@ -7,7 +7,7 @@ namespace GlobalTheory
 theorem flat_of_algHom_atPrime (R A B : Type) [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     [Algebra.Etale R A] [Algebra.Etale R B] (p : Ideal B) [p.IsPrime] (φ : A →ₐ[R] Localization.AtPrime p) :
     φ.toRingHom.Flat := by
-  obtain ⟨g, hg, ψ, hψ⟩ := GlobalTheory.T.algHom_localizationAtPrime_factors_through_away R A B p φ
+  obtain ⟨g, hg, ψ, hψ⟩ := _root_.GlobalTheory.FactorAway.factor_away R A B p φ
   set h := Localization.awayLift (algebraMap B (Localization.AtPrime p)) g
     (IsLocalization.map_units (Localization.AtPrime p) (⟨g, hg⟩ : p.primeCompl)) with hh
   have e : φ.toRingHom = h.comp ψ.toRingHom := by ext a; exact (hψ a).symm

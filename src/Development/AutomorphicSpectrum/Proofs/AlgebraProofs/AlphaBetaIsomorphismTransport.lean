@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalBilinearTermProductStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobeniusStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobenius
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsoPowOneLawFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransportStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalLinearTermCompositionStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobeniusStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobenius
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormulaStatement
 
 set_option autoImplicit false
@@ -111,7 +111,7 @@ theorem frobenius_point_commutes_composition {φ : Pt R 1 d} (hφ : ∀ i, const
     comp1 (ptPow R d p (0 : Fin 1)) φ = comp1 (frobPt p φ) (ptPow R d p (0 : Fin 1)) := by
   rw [comp1_point_power_expand p φ hφ]
   funext i
-  rw [GlobalTheory.T.power_series_pow_p_frobenius R p d 1 (φ i)]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_eq_ev_frobenius R p d 1 (φ i)]
   change _ = ev ![ptPow R d p (0 : Fin 1)] (frobPt p φ i)
   congr 1
   funext j
@@ -198,8 +198,8 @@ variable {O : Type} [CommRing O] [StarRing O] (p : ℕ) [Fact p.Prime] [CharP R 
 variable {B B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 2 d}
 
 theorem hw_rel (h : IsIso B B₂ φ ψ lam) : lin φ 1 * hw B₂ p = hw B p * (lin φ 1).map (· ^ p) := by
-  obtain ⟨V, cV, eV, lV⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B
-  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B₂
+  obtain ⟨V, cV, eV, lV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B
+  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B₂
   have hp : p ≠ 0 := (Fact.out : p.Prime).ne_zero
   have hp1 : 1 ≤ p := Nat.one_le_iff_ne_zero.2 hp
   have e := h.act (p : O)
@@ -211,7 +211,7 @@ theorem hw_rel (h : IsIso B B₂ φ ψ lam) : lin φ 1 * hw B₂ p = hw B p * (l
 theorem am_rel (h : IsIso B B₂ φ ψ lam) :
     am B₂ p + (hw B₂ p).transpose * bil lam 1 1 =
       ((lin φ 1).map (· ^ p)).transpose * am B p * lin φ 1 := by
-  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B₂
+  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B₂
   obtain ⟨g₂, ax₂, e₂, b₂⟩ := GlobalTheory.T.pow_one_series_p_formula R p d O B₂
   obtain ⟨g, ax, e, b⟩ := GlobalTheory.T.pow_one_series_p_formula R p d O B
   have hp : p ≠ 0 := (Fact.out : p.Prime).ne_zero
@@ -266,7 +266,7 @@ theorem alpha_beta_of_isIso : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prim
       (∀ u, alpha B p (((lin φ 1).map (· ^ p)).mulVec u) = transH φ ψ lam (alpha B₂ p u)) ∧
         ∀ y, beta B p (transH φ ψ lam y) = ((lin ψ 1).transpose.map (· ^ p)).mulVec (beta B₂ p y) := by
   intro R _ p _ _ d O _ _ B B₂ φ ψ lam h
-  obtain ⟨i1, -, -, -, -, hpair⟩ := GlobalTheory.T.formal_isomorphism_transport R d O B B₂ φ ψ lam h
+  obtain ⟨i1, -, -, -, -, hpair⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing R d O B B₂ φ ψ lam h
   have H1 := IsoAlpha.hw_rel p h
   have H2 := IsoAlpha.am_rel p h
   have A : ∀ u, alpha B p (((lin φ 1).map (· ^ p)).mulVec u) = transH φ ψ lam (alpha B₂ p u) := by

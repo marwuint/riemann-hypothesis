@@ -165,19 +165,4 @@ def DualDef {G E : Type} [Group G] [CommRing E] (r : G →* GG 3 E) (γ : G → 
     (r' : G →* GG 3 (DualNumber E)) : Prop :=
   ∀ g, (r' g).right = (r g).right ∧ ∀ a b, (r' g).mat a b = ⟨(r g).mat a b, (γ g * (r g).mat) a b⟩
 
-example (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (hc : AdicCont (maximalIdeal ℤ_[l]) fun g => (cycA l l ℤ_[l] g : ℤ_[l])) :
-    Dat3 l ℤ_[l] where
-  η := 1
-  Ψ := cycA l l ℤ_[l]
-  τ := 1
-  e := 1
-  Kv := botExt l
-  odd := hl
-  e_pos := le_rfl
-  η_ker g := by simp [GK, botExt]
-  η_unr _ _ := rfl
-  τ_open := by simp
-  Ψ_cont := hc
-  Ψ_I g _ := by simp
-
 end UpperTheory.V.Loc

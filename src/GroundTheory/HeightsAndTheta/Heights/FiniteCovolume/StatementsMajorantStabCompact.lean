@@ -14,12 +14,6 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 def MajorantStabCompact.Statement (h : HermitianForm F E W) (v : Basis ι E W) : Prop :=
   ∀ M : Majorant h v, IsCompact (M.stab : Set (archUnitary h v))
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

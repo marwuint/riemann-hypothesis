@@ -8,10 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantHeisenbergLatticeVacuumFunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSplittingSplitOm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousCharacterCocycleTrivialNearZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubgroupSymplecticAnnihilatorLocalFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchwartzBruhatSchroedingerFixedLocalFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerMemSchwartzBruhatFinitePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousCharacterCocycleTrivialNearZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubgroupSymplecticAnnihilatorLocalField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchwartzBruhatSchroedingerFixedLocalField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerMemSchwartzBruhatFinitePlace
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -169,9 +169,9 @@ theorem exists_schr_eigen : ∀ {F : Type} [Field F] [NumberField F] (v : Global
     have h1 := hNN (Set.mk_mem_prod hx hy)
     rw [Set.mem_preimage] at h1
     exact hU₀ _ h1
-  obtain ⟨U, hU, hUχ⟩ := GlobalTheory.T.continuous_character_cocycle_trivial_near_zero lamH hlamc ε hεN hε0 χ hχc (fun a h => hker a h) (fun a b => hco a b)
-  obtain ⟨φ₁, hφ₁SB, hφ₁0, U', hU', hU'φ⟩ := GlobalTheory.T.exists_schwartzBruhat_schroedingerFixed_localField v ψ hψc (κ := κ)
-  obtain ⟨Y, hYsep, N', hN', hN'Y⟩ := GlobalTheory.T.exists_subgroup_symplecticAnnihilator_localField v ψ hψc hψ1 (U ∩ U') (Filter.inter_mem hU hU')
+  obtain ⟨U, hU, hUχ⟩ := _root_.GlobalTheory.CocycleChar.cocycle_char_trivial_near_zero lamH hlamc ε hεN hε0 χ hχc (fun a h => hker a h) (fun a b => hco a b)
+  obtain ⟨φ₁, hφ₁SB, hφ₁0, U', hU', hU'φ⟩ := _root_.GlobalTheory.SchrTestVec.exists_fixed v ψ hψc (κ := κ)
+  obtain ⟨Y, hYsep, N', hN', hN'Y⟩ := _root_.GlobalTheory.SympDualNbhd.exists_dual_nbhd v ψ hψc hψ1 (U ∩ U') (Filter.inter_mem hU hU')
 
   let β : (κ → Fv F v) × (κ → Fv F v) → (κ → Fv F v) × (κ → Fv F v) → ℂ :=
     fun w' w => ψ (w'.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ w'.2)
@@ -271,7 +271,7 @@ theorem exists_schr_eigen : ∀ {F : Type} [Field F] [NumberField F] (v : Global
     ?_, ?_, fun a => ?_⟩
   · refine Submodule.sum_mem _ fun q _ => ?_
     rw [hπ]
-    exact Submodule.smul_mem _ _ (GlobalTheory.T.schroedinger_mem_schwartzBruhat_finitePlace v ψ hψc _ _ (GlobalTheory.T.schroedinger_mem_schwartzBruhat_finitePlace v ψ hψc _ _ hφ₁SB))
+    exact Submodule.smul_mem _ _ (_root_.GlobalTheory.SchrSBFin.schr_mem_SB v ψ hψc _ _ (_root_.GlobalTheory.SchrSBFin.schr_mem_SB v ψ hψc _ _ hφ₁SB))
   · rw [← hsum]
     intro h0
     apply hw₀

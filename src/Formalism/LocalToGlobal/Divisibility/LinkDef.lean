@@ -190,22 +190,6 @@ theorem twisted_place_eta_sum_le (A : FamIn K G Pl0 T m) (P0 : Subgroup G) (ψ0 
   unfold etaSumBound
   linarith
 
-theorem exists_dg (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) :
-    ∃ dg : ℕ, 0 < dg ∧ ∀ j t, (A.fam.L j t).DG (A.fam.lvlA P0 ψ0) ∣ dg := by
-  have : Finite T := hOk.tup_fin
-  have := Fintype.ofFinite T
-  have hpos : ∀ j t, 0 < (A.fam.L j t).DG (A.fam.lvlA P0 ψ0) := by
-    intro j t
-    unfold BlockDat.DG
-    refine Nat.mul_pos Nat.card_pos (Nat.pos_of_ne_zero ?_)
-    unfold CSD.DGam
-    rw [Ne, Finset.lcm_eq_zero_iff]
-    rintro ⟨c, -, hc⟩
-    exact (Fintype.card_pos (α := ((A.fam.L j t).S.Gam c))).ne' hc
-  exact ⟨∏ p : Fin m × T, (A.fam.L p.1 p.2).DG (A.fam.lvlA P0 ψ0), Finset.prod_pos fun p _ => hpos p.1 p.2,
-    fun j t => Finset.dvd_prod_of_mem (fun p : Fin m × T => (A.fam.L p.1 p.2).DG (A.fam.lvlA P0 ψ0))
-      (Finset.mem_univ (j, t))⟩
-
 end Concrete
 
 section Inputs
@@ -331,35 +315,6 @@ theorem DivInputsDef.eb_eq (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (I : DivInputsDef A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg) :
     (I.toDivInputs0 hOk hsep).eb = ebOf (A.side P0 ψ0 Pk.Zs) := rfl
 
-theorem DivInputsDef.defs_eq (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
-    (I : DivInputsDef A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg) :
-    (I.toDivInputs0 hOk hsep).Sy = SyOf (A.side P0 ψ0 Pk.Zs) Pk.core.base.toIndefData ∧
-      (I.toDivInputs0 hOk hsep).gy = (fun y => (vw y ((Fintype.card G * s : ℕ) : K) : ℝ)) ∧
-      (I.toDivInputs0 hOk hsep).LG = R.lam0 + Real.log (s : ℝ) ∧
-      (I.toDivInputs0 hOk hsep).ηy = etaYOf A P0 ψ0 Pk.Zs s Pk.core.base.μ Pk.core.base.D ∧
-      (I.toDivInputs0 hOk hsep).E2 = (fun j => I.bd j + Real.log (I.dg : ℝ) + Real.log (s : ℝ)) ∧
-      (I.toDivInputs0 hOk hsep).E3 = 1 := ⟨rfl, rfl, rfl, rfl, rfl, rfl⟩
-
 end Inputs
-
-section Corollary
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
-
-theorem division_height_bound_definite [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
-    (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* Kˣ)
-    (Dc : ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs)) (Sp : ∀ Zs : DefSub A.fam.amb, SPer (Dc Zs))
-    (Zsc : DefSub A.fam.amb → IndefScale A.fam.base) (C CH : ℝ)
-    (Pk : IndefPkg A.fam.amb (faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) C CH)
-    {Pl : Type} [Fintype Pl] [DecidableEq Pl] (R : RecNums A.fam.base.J Pl) (u : (Dc Pk.Zs).Mem)
-    (Nu : Submodule (𝓞 K) (Fin ((Dc Pk.Zs).a u) → K)) (sg : HeightOneSpectrum (𝓞 K) → ℝ)
-    (I : DivInputsDef A s P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg)
-    (val2 : ∀ w, ∀ φ ∈ Nu, ∀ F ∈ (A.side P1 ψ1 Pk.Zs).Mt (Pk.core.cols.μ w),
-      (Dc Pk.Zs).Pt u (Pk.core.cols.μ w) φ F = 0 ∨ sg w ≤ (vw w ((Dc Pk.Zs).Pt u (Pk.core.cols.μ w) φ F) : ℝ)) :
-    DivClauses Pk.core R u Nu sg := by
-  exact division_height_bound_clauses A hOk hsep P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk R u Nu sg
-    ⟨I.toDivInputs0 hOk hsep, val2⟩
-
-end Corollary
 
 end Formalism.L2.DIV

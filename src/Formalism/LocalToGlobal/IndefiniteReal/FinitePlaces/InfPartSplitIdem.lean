@@ -1,4 +1,4 @@
-import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FrameInt
+import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceAt
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemFin
 import Formalism.LocalToGlobal.IndefiniteReal.FockTheta.ConjPurelyImaginaryGenerator
 
@@ -14,14 +14,6 @@ namespace Formalism.IndefR.Fin
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
-
-def finInc (D : D7) : Formalism.L2.Herm.Af D.host.F →ₗ[D.host.F] AF D.host.F where
-  toFun a := pairA D.host.F 0 a
-  map_add' a b := Prod.ext (show (0 : Ainf D.host.F) = 0 + 0 from (add_zero 0).symm) rfl
-  map_smul' c a := Prod.ext (show (0 : Ainf D.host.F) = c • 0 from (smul_zero c).symm) rfl
-
-def liftF (D : D7) : (Formalism.L2.Herm.Af D.host.F ⊗[D.host.F] D.host.E) →ₗ[D.host.F] AE D :=
-  TensorProduct.map (finInc D) LinearMap.id
 
 set_option maxHeartbeats 800000 in
 

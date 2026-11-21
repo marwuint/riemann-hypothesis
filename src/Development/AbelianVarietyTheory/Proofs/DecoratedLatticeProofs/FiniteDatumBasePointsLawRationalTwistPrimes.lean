@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SplitPart
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevChiEqOne
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChartBasePairDatumRationalApproxEqTwisted
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IdempotentHalfEqRationalAddNsmulStandardHomStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteDatumLawBetweenBasePointsMovedPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IdempotentHalfEqRationalAddNsmulStandardHom
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteDatumLawBetweenBasePointsMovedPoints
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Forms Formalism.UG
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.MixPer GlobalTheory.Core.Rk GlobalTheory.AdForm
 open scoped TensorProduct Classical
@@ -30,7 +30,7 @@ theorem transport_base : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
   obtain ⟨M₀, hM₀, h2⟩ := GlobalTheory.AdForm.TwResid.xiAt_transport_tw I l hok u a i hi (A.b0 i α) (A.b0 (i + 1) γ)
     (A.p0 i α) q (A.p0 (i + 1) γ) q' (A.kb i α) κ₀ (A.kb (i + 1) γ) κ₀'
     (hb.1.of_extTo hQ hd0) hb.2 (hb'.1.of_extTo hQ hd0) hb'.2 hq hq' hc hc'
-  obtain ⟨z₂, t, ht, hth, hv2⟩ := GlobalTheory.T.idempotentHalf_eq_rational_add_nsmul_standardHom ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) A.e _ hA.idem
+  obtain ⟨z₂, t, ht, hth, hv2⟩ := _root_.GlobalTheory.AdForm.DenseHalf.half_eq_rat_add_nsmul ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) A.e _ hA.idem
     (d * M₀) (Nat.mul_pos hd hM₀) v hvh
   have hm : (z' + k • z₂).map (fun r => A.e * incA (I.rec7 l Z) r) =
       z'.map (fun r => A.e * incA (I.rec7 l Z) r) + k • z₂.map (fun r => A.e * incA (I.rec7 l Z) r) := by
@@ -53,7 +53,7 @@ theorem law_read : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.P
   intro B X I hok hpins l Z u a Ch A hA i hi α γ k hk hper κ κ' hr hr' x y hx hy z z' v hv hvh hact
   obtain ⟨κ₀, hκ₀⟩ := ((hA.U i (Nat.le_of_succ_le hi) α κ.1).1 κ.2).2
   obtain ⟨κ₀', hκ₀'⟩ := ((hA.U (i + 1) hi γ κ'.1).1 κ'.2).2
-  obtain ⟨q, q', hq, hq', hc, hc', hlaw⟩ := GlobalTheory.T.finiteDatum_law_between_basePoints_movedPoints I hok hpins l Z u a Ch A hA i hi α γ κ κ' hr hr' x y hx hy κ₀.1 κ₀'.1 hκ₀.symm hκ₀'.symm
+  obtain ⟨q, q', hq, hq', hc, hc', hlaw⟩ := _root_.GlobalTheory.AdForm.MovedLaw.moved_law I hok hpins l Z u a Ch A hA i hi α γ κ κ' hr hr' x y hx hy κ₀.1 κ₀'.1 hκ₀.symm hκ₀'.symm
   have h2 := transport_base I hok hpins l Z u a Ch A hA i hi α γ k hk hper κ κ' κ₀.1 κ₀'.1 hκ₀.symm hκ₀'.symm q q' hq hq' hc hc' z z' v hv hvh hact
   rw [h2]
   exact hlaw _

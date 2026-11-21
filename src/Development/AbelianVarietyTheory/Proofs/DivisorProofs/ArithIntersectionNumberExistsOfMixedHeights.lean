@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearFunctionalOfSymmetricMultiadditiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbientStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearFunctionalOfSymmetricMultiadditive
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbient
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArithHeightEqMixedHeightDiagonalStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -15,8 +15,8 @@ theorem arFormExists_of_isMix : ArchInteg → (∀ (k : Type) [CommRing k] (Y : 
   intro hA hT k _ X _ p D hX ι _ L
   obtain ⟨T, hT⟩ := hT k X p (isAmb_of_isArithVar hX) (D + 1)
   have hg : HasDim (genericPoint X) (D + 1) :=
-    ((GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p (isAmb_of_isArithVar hX)).2.2.2.2.2 X (D + 1)).2 hX.dim_eq
-  obtain ⟨Φ, hΦ, hΦ0⟩ := GlobalTheory.T.exists_linear_functional_of_symmetric_multiadditive k X p D (fun M => T (D + 1) M (genericPoint X))
+    ((_root_.GlobalTheory.MixHt.hasDim_basic k X p (isAmb_of_isArithVar hX)).2.2.2.2.2 X (D + 1)).2 hX.dim_eq
+  obtain ⟨Φ, hΦ, hΦ0⟩ := _root_.GlobalTheory.MixHt.exists_linear_of_multiadditive k X p D (fun M => T (D + 1) M (genericPoint X))
     (fun M N h => hT.iso (D + 1) M N _ le_rfl hg h)
     (fun M e => hT.symm (D + 1) M e _ le_rfl hg)
     (fun A B M => hT.add D A B M _ le_rfl hg) ι L

@@ -11,8 +11,15 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Cha
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformisationCompleteLocalDomainPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiUnitOnAbelianLocusUniformisationStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformisationCompleteLocalDomainPrime
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigidSys
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBCPf
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import Development.AbelianVarietyTheory.Definitions.Degenerations.ToATotal
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiUnitOnAbelianLocusUniformisation
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisationCompleteDvrOfLaws
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCubicalBundleOfSymmetricSemiAbelian
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EgaBundleFromLaws
@@ -89,12 +96,12 @@ theorem exists_unif_psiUnitOn : Laws → Laws2 → Laws3 → Laws4 → Laws5 →
   obtain ⟨A, gen, hm, hL⟩ := exists_polAV_fibre G L c W hG hs hp ha hk (jK R) hgen
   obtain ⟨P, rfl, -⟩ := GlobalTheory.UU.exists_cp_of_isSymmetric h₁ R A G hG gen hm L c hs
   have := hG.smooth
-  obtain ⟨D, U, hU, -⟩ := GlobalTheory.T.exists_uniformisation_completeLocalDomain_prime h₁ h₂ h₃ (GlobalTheory.LN.ega_of_laws h₁ h₂) (GlobalTheory.LN.uniformisation_dvr h₁ h₂ h₃ h₄ h₅) R _ hadm
+  obtain ⟨D, U, hU, -⟩ := _root_.GlobalTheory.PrimeUnif.exists_unif h₁ h₂ h₃ (GlobalTheory.LN.ega_of_laws h₁ h₂) (GlobalTheory.LN.uniformisation_dvr h₁ h₂ h₃ h₄ h₅) R _ hadm
     (inferInstanceAs (IsPrincipalIdealRing (IsLocalRing.ResidueField R))) G P hG hS hE
     (thetaNZ_of_closedPoint G _ hθ) A gen hm hL
   refine ⟨D, A, U, hU, ?_⟩
   rw [hab]
-  exact GlobalTheory.T.psiUnitOn_abelian_locus_uniformisation h₁ h₂ h₃ h₄ h₅ R _ hadm D A G hG U (hab ▸ W.isOpen)
+  exact _root_.GlobalTheory.PsiAbelian.psiUnitOn_abLocus h₁ h₂ h₃ h₄ h₅ R _ hadm D A G hG U (hab ▸ W.isOpen)
 
 end GlobalTheory.UnifNormal
 

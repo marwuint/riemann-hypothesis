@@ -11,7 +11,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductSubsetSu
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorSumAnnihilatorStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutingHeckeCapelliOperatorsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasDerivAtTorusTranslateStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentialPolynomialSolutionSpaceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentialPolynomialSolutionSpace
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRecurrencePolynomialStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusElementLeviEmbeddingStatement
 open scoped ENNReal
@@ -285,7 +285,7 @@ theorem killU : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N
   refine ⟨Nat.choose (r + s) r ^ Fintype.card (E →+* ℂ), fun V hV hinf φ hφ => ?_⟩
   choose M hM using hinf
   obtain ⟨l, hl, hk⟩ := levi_kill E r s M hr hs fun τ => (hM τ).1
-  obtain ⟨S, hfin, hrank, hS⟩ := GlobalTheory.T.exponential_polynomial_solution_space l
+  obtain ⟨S, hfin, hrank, hS⟩ := _root_.GlobalTheory.CompanionTheory.ConstCoeffODE.solutions_mem_finite l
   have haut := hV.aut φ hφ
   have hc : ∀ τ u, cap (a := r + s) τ u φ = ((M τ).map (u + ·)).prod • φ := fun τ u => (hM τ).2 u φ hφ
   have horb := orbit_mem r s hr hs φ haut M hc l hk S hS

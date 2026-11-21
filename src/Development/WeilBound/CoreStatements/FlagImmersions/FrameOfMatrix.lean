@@ -1,6 +1,11 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.FibSandwich
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSumStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSum
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasisStatement
 
 noncomputable section
@@ -71,7 +76,7 @@ theorem frame_of_matrix {S : Scheme.{0}} {L : Type} [Field L] {G : Over S} [GrpO
     rfl
   · exact (GlobalTheory.T.eigen_frame_iff_eigenspace_basis S L G x₀ W M O act ρ σ n (fun k => ∑ i, P k i • x i) hM).2
       ⟨fun k => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h1 i), huniq⟩
-  · exact (GlobalTheory.T.is_comb_tangent_iff_linear_sum S L G x₀ W M n x (P k) _).2 rfl
+  · exact (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.isComb_lieModel_pt_iff S L G x₀ W M n x (P k) _).2 rfl
 
 theorem tied_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ} {Ω : Type}

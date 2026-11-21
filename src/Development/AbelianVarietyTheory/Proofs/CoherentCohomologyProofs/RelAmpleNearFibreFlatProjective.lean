@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.Exis
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubeTotalComplexAcyclicOfSlicesInductionOnCard
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FirstCohomologyVanishesOfIsoOfIsGen
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.SerreVanishingH1Twist
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsSectionLiftFibreNoFirstCohomologyStatement
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsSectionLiftFibreNoFirstCohomology
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SectionPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProperOfIsProjBy
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsHomogeneousXPowMulAddXPowMul
@@ -316,7 +316,7 @@ theorem relAmple_near_fibre : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (
     obtain ⟨n, s, hs⟩ := hv
     exact ⟨h0, n, s, hs.1, fun i => (hs.2 i).1⟩
   obtain ⟨h1, n, s₀, hs₀, hs₀'⟩ := hv'
-  choose c x hc hx using fun i => GlobalTheory.T.exists_section_lift_fibre_noFirstCohomology R B.left B.hom (pw L d) hF hP (isLB_pw hL d) K g hg
+  choose c x hc hx using fun i => _root_.GlobalTheory.AbLaw.FibreLift.exists_pull_eq_smul R B.left B.hom (pw L d) hF hP (isLB_pw hL d) K g hg
     _ _ _ h h1 ((SecOnR.topEquiv _ _).symm (s₀ i))
   have e := fun i => preimage_nonzeroLocus_of_pull_eq h.w (pw L d) (x i) _ (hc i) (hx i)
   simp only [LinearEquiv.apply_symm_apply] at e

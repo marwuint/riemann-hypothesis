@@ -5,10 +5,10 @@ import Formalism.LocalToGlobal.CharacterGerms.BlockAdmissibleChart
 import Formalism.LocalToGlobal.CharacterGerms.NegMem
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsEmbeddingCongrIntegralCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsEmbeddingCongrIntegralCharacter
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RingHomEqOfCongruentIntegralUnramifiedStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenvectorOfGeneralizedEigenUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralCharacterGeneralizedEigenStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralCharacterGeneralizedEigen
 
 open scoped BigOperators
 open Formalism.L2.FormalSeriesBounds
@@ -172,7 +172,7 @@ theorem limit_idempotent_range : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : V
       exact hk
     by_cases hv0 : v = 0
     · subst hv0; simpa using hzero
-    obtain ⟨ψ, hψχ, hψ⟩ := GlobalTheory.T.exists_integral_character_generalizedEigen C V O κ L hL χ v hv0 hgen
+    obtain ⟨ψ, hψχ, hψ⟩ := _root_.GlobalTheory.GenChar.exists_character C V O κ L hL χ v hv0 hgen
     by_cases hw0 : E.mulVec v = 0
     · rw [hw0]; exact hzero
     set w := E.mulVec v with hwdef
@@ -244,7 +244,7 @@ theorem limit_idempotent_range : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : V
       obtain ⟨y, hy⟩ := hε
       have := hl (ε - 1) y (by rw [← hy]; ring)
       simpa using this
-    obtain ⟨a, ha⟩ := GlobalTheory.T.exists_embedding_congr_integral_character C V O d em h0 h1 ψ hψ fun x hx => by
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.ResidueChar.main C V O d em h0 h1 ψ hψ fun x hx => by
       obtain ⟨y, hy⟩ := hP x hx
       exact hl x y hy
     have hψa := GlobalTheory.T.ringHom_eq_of_congruent_integral_unramified C V O d hd ε hε hF ψ (em a) hψ (h0 a) hone ha

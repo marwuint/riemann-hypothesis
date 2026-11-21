@@ -3,7 +3,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QuasiProjectiveProperCoverStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QuasiProjectiveProperCover
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PropernessDescendsFgSubalgebraStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperOfProperCoverStatement
 open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -62,7 +62,7 @@ theorem isProper_descends (k V : Type) [CommRing k] [IsNoetherianRing k] [CommRi
     (X : Scheme.{0}) (p : X ⟶ Sp k) (hs : IsSeparated p) (hl : LocallyOfFiniteType p)
     (hq : QuasiCompact p) (hP : IsProper (pullback.snd p (spMap (algebraMap k V)))) :
     ∃ R : Subalgebra k V, R.FG ∧ IsProper (pullback.snd p (spMap (algebraMap k R))) := by
-  obtain ⟨n, Y, π, hπ, hcov⟩ := GlobalTheory.T.quasi_projective_proper_cover k X p hs hl hq
+  obtain ⟨n, Y, π, hπ, hcov⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Approx.exists_proper_qproj_cover k X p hs hl hq
   have hi : ∀ i, ∃ R : Subalgebra k V, R.FG ∧
       IsProper (pullback.snd (π i ≫ p) (spMap (algebraMap k R))) := by
     intro i

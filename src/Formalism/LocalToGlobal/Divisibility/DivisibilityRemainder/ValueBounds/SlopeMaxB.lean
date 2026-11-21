@@ -146,28 +146,6 @@ theorem boundB_of_values {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm)
     (hCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u)) : BoundB Fm EbMu :=
   boundB_of_slopes Fm hT (slopes_of_values Fm hT hCV)
 
-theorem colTies_of_sel {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) : RT.tCVTies Fm := by
-  obtain ⟨b, hs⟩ := stabF Fm
-  refine ⟨max (max s.1 b) (Fm.x1 + 1), fun x hx i => ?_⟩
-  have h1 : Fm.x1 < x := by have := le_trans (le_max_right _ _) hx; linarith
-  have h0 : s.1 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have hb : b ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  exact ⟨⟨(s.2 x h1 h0 i).T.cols⟩, hs x hb h1 i⟩
-
-theorem slopes_of_sel {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) (hT : TuSize Fm) : LocalQuadraticParts.SlopesFamily Fm :=
-  slopes_of_values Fm hT (tCV_of_ties Fm (colTies_of_sel s))
-
-theorem boundB_of_sel {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) (hT : TuSize Fm) :
-    ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) u,
-      (((Fm.D x i).fm u).lat 0).muMax ≤ (Fm.L x i).sc.x ^ EbMu Fm.cOut * (Fm.L x i).sc.b :=
-  boundB_of_slopes Fm hT (slopes_of_sel s hT)
-
-theorem closed_boundB (𝒜 : FamClass) (sel : Formalism.L2.TSel 𝒜) :
-    Closed (Formalism.L2.Top3.D3 3 𝒜) fun Fm _ => ∀ _ : Formalism.L2.Top3.D3 3 𝒜 Fm, TuSize Fm → Formalism.MainNotions.DGamSize Fm →
-      ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) u,
-        (((Fm.D x i).fm u).lat 0).muMax ≤ (Fm.L x i).sc.x ^ EbMu Fm.cOut * (Fm.L x i).sc.b :=
-  Closed.of_class fun Fm _ _ hc hT _ => boundB_of_sel (sel Fm (Formalism.L2.Top3.d3_a hc)) hT
-
 end Formalism.L2.DIV.SlopeMaxB
 
 end

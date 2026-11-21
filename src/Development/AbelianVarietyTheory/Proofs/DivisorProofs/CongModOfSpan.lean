@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructureMapComp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothConeInteriorDefiniteBalancedFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruentTupleUnimodularImageOrLargeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedConeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLatticeQuadraticSumGeDiagonalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothConeInteriorDefiniteBalancedForm
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruentTupleUnimodularImageOrLarge
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedCone
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLatticeQuadraticSumGeDiagonal
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing
@@ -127,7 +128,7 @@ open GlobalTheory.Poinc.LinearValuationCongruences in
 
 theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (bar : O → O), BddAct bar → ∀ (q : ℕ) (φ : InvFun O), IsPolFan bar q φ → ∀ d₀, HasSupports bar q φ d₀ → ∀ (s : ℕ) (W : Matrix (Fin (s + 1)) (Fin (s + 1)) ℤ), PosW W → ∀ (N₁ p : ℕ) [Fact p.Prime], 3 ≤ N₁ → ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (Φ : FPre bar q p A), Φ.abelian₂ → Φ.Four W N₁ → Φ.Approx φ ((W 0 0).toNat * d₀) := by
   intro O _ _ bar hB q φ hφ d₀ hS s W hW N₁ p _ hN₁ A _ _ _ Φ hLam hFour y₀ e
-  obtain ⟨cW, hcW0, hcW⟩ := GlobalTheory.T.weightedLatticeQuadraticSum_ge_diagonal (s + 1) W hW
+  obtain ⟨cW, hcW0, hcW⟩ := _root_.GlobalTheory.Poinc.QWDom.qW_ge (s + 1) W hW
   obtain ⟨C, hC⟩ := hLam
   have hW00 : 0 < W 0 0 := by
     have := hW.diag_pos (i := 0)
@@ -153,7 +154,7 @@ theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.
   rw [not_subsingleton_iff_nontrivial] at hX₀
   have hPF := hφ (Φ.X y₀) (Φ.rank_le y₀)
   obtain ⟨r, γ, k₀, c₀, hγ, hk₀, hc₀, hβ₀⟩ :=
-    GlobalTheory.T.exists_smoothCone_interior_definite_balancedForm O bar φ (Φ.X y₀) hPF (Φ.β y₀) (Φ.bal y₀) (Φ.pos y₀)
+    _root_.GlobalTheory.Poinc.Cover.exists_cone O bar φ (Φ.X y₀) hPF (Φ.β y₀) (Φ.bal y₀) (Φ.pos y₀)
   obtain ⟨m, a₀, hsup⟩ := hS (Φ.X y₀) (Φ.rank_le y₀) r γ hγ
   have hD := linVal hγ.linear hsup hk₀ hβ₀
   obtain ⟨T, hT⟩ : ∃ T : ℝ, T = (W 0 0 : ℝ) * ((∑ i, Φ.β y₀ (a₀ i) (a₀ i) : ℤ) : ℝ) := ⟨_, rfl⟩
@@ -179,7 +180,7 @@ theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.
     have : (T + 1) / cW ≤ K := hK ▸ le_max_right _ _
     rw [div_le_iff₀' hcW0] at this
     linarith
-  obtain ⟨N₀, hN₀⟩ := GlobalTheory.T.congruent_tuple_unimodular_image_or_large O bar hB (Φ.X y₀) (Fin m × Fin (s + 1)) a hspan K
+  obtain ⟨N₀, hN₀⟩ := _root_.GlobalTheory.Poinc.dichotomy O bar hB (Φ.X y₀) (Fin m × Fin (s + 1)) a hspan K
   obtain ⟨N, hNN₀, hN₁N, k, Q, t, hkid, hk, ⟨hTle, hTeq⟩, hfour⟩ := hFour y₀ N₀
   choose c hc using fun i => hTeq y₀ (fun u => a (i, u))
   obtain ⟨f, hf⟩ := hfour m a c (max e n)
@@ -260,7 +261,7 @@ theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.
           rw [e1, hw, hkid, LinearMap.id_apply, hw', ht, mul_smul, smul_add]
           simp only [ha, ↓reduceIte]
           abel
-        have hid := GlobalTheory.T.leadingTerm_unique_supported_balancedCone O bar φ d₀ (Φ.X y₀) hPF r m γ a₀ hγ hsup (Φ.β y₀) k₀ c₀ hk₀ hc₀ hβ₀ (Φ.pos y₀) g N₁ hN₁
+        have hid := _root_.GlobalTheory.Poinc.leadingTerm_unique O bar φ d₀ (Φ.X y₀) hPF r m γ a₀ hγ hsup (Φ.β y₀) k₀ c₀ hk₀ hc₀ hβ₀ (Φ.pos y₀) g N₁ hN₁
           hcong heq
         exact hμa (funext fun iu => by rw [← hg, hid])
       · linarith

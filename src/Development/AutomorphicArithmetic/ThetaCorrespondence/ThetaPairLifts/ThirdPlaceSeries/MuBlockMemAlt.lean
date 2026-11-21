@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedMuPartInBaseChange
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SplitStepOAlt
 
@@ -9,7 +9,6 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 noncomputable section
 namespace GlobalTheory.MuBlock
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 end GlobalTheory.MuBlock
 namespace GlobalTheory.MuBlock
 end GlobalTheory.MuBlock

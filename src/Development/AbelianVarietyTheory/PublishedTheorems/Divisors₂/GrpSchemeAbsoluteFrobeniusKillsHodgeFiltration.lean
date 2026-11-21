@@ -87,45 +87,4 @@ theorem grpScheme_absoluteFrobenius_kills_hodgeFiltration (A : Over (Sp R)) [Grp
       (GlobalTheory.VB.frob A.left p hA)) : ∀ x ∈ PrimitiveSubmodule A, m.pull x = 0 :=
   fun _ hx ↦ Subtype.ext (frobenius_kills_hodge_filtration p hR m.isMor hx)
 
-theorem unit_concl (Φ : primDR (𝟙_ (Over (Sp R))) → primDR (𝟙_ (Over (Sp R)))) :
-    (∃ N : Submodule R (primDR (𝟙_ (Over (Sp R)))), IsCompl (Submodule.span R (Set.range Φ)) N) ∧
-    (∀ P : PrimeSpectrum R, Module.rankAtStalk (Submodule.span R (Set.range Φ)) P = 0) ∧
-    ∀ (B : Over (Sp R)) [GrpObj B] (φ : HdR (𝟙_ (Over (Sp R))) →ₗ[R] HdR B →ₗ[R] R) x y, φ x y = 0 := by
-  have : Subsingleton (primDR (𝟙_ (Over (Sp R)))) :=
-    ⟨fun a b ↦ (primDR_unit a).trans (primDR_unit b).symm⟩
-  refine ⟨⟨⊤, ?_⟩, fun P ↦ congrFun Module.rankAtStalk_eq_zero_of_subsingleton P,
-    fun B _ φ x y ↦ by rw [HdR_unit x]; simp⟩
-  rw [Subsingleton.elim (Submodule.span R (Set.range Φ)) ⊥]; exact isCompl_bot_top
-
-include hR in
-
-theorem applies (H : ConjugateFiltration) (D : DualAbelianScheme) (F : AbelianDeRham.Free)
-    (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
-    ∃ (B : Over (Sp R)) (_ : GrpObj B) (P : LB (A ⊗ B).left) (φ : HdR A →ₗ[R] HdR B →ₗ[R] R),
-      GlobalTheory.AbDual.IsDual A B P ∧ GlobalTheory.AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ ∧
-      ∀ x ∈ (conjDR p R hR A).dualAnnihilator, ∀ y ∈ (conjDR p R hR B).dualAnnihilator, φ x y = 0 := by
-  obtain ⟨B, _, P, φ, hB, hg', hP, hφ⟩ := PoincareDeRhamDuality.Test.exists_hyp R D F A g hA hg
-  refine ⟨B, _, P, φ, hP, hφ, fun x hx y hy ↦ ?_⟩
-  exact (H p R hR A g hA hg _ (frobMor p R hR A (cast_left p R hR A))).2.2.2 B hB hg' _
-    (frobMor p R hR B (cast_left p R hR B)) P hP φ hφ x y
-    (fun c ↦ (Submodule.mem_dualAnnihilator _).1 hx _ (Submodule.subset_span ⟨c, rfl⟩))
-    (fun c ↦ (Submodule.mem_dualAnnihilator _).1 hy _ (Submodule.subset_span ⟨c, rfl⟩))
-
-theorem elliptic (H : ConjugateFiltration) (F : AbelianDeRham.Free) (k : Type) [Field k] (hk : (p : k) = 0)
-    (W : WeierstrassCurve k) [W.IsElliptic] :
-    (∀ P : PrimeSpectrum k, Module.rankAtStalk (conjDR p k hk (GlobalTheory.WeierstrassCurve.ellPolAV W).A) P = 1) ∧
-    conjDR p k hk (GlobalTheory.WeierstrassCurve.ellPolAV W).A ≠ ⊥ ∧
-    conjDR p k hk (GlobalTheory.WeierstrassCurve.ellPolAV W).A ≠ ⊤ := by
-  let E := GlobalTheory.WeierstrassCurve.ellPolAV W
-  have hg : SmoothOfRelativeDimension 1 E.A.hom := E.smoothDim
-  have h1 : ∀ P : PrimeSpectrum k, Module.rankAtStalk (conjDR p k hk E.A) P = 1 :=
-    (H p k hk E.A 1 E.isAb hg _ (frobMor p k hk E.A (cast_left p k hk E.A))).2.2.1
-  refine ⟨h1, fun e ↦ ?_, fun e ↦ ?_⟩
-  · have := h1 ⊥
-    rw [show conjDR p k hk E.A = ⊥ from e, Module.rankAtStalk_eq_zero_of_subsingleton] at this
-    simp at this
-  · have := h1 ⊥
-    rw [Module.rankAtStalk_eq_of_equiv (LinearEquiv.ofTop _ e), (F.prim E.isAb hg).2.2 ⊥] at this
-    simp at this
-
 end GlobalTheory.Published.ConjugateFiltration.Test

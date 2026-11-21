@@ -21,11 +21,6 @@ lemma one_le_gN {g : Mat k r} (hg : g ∈ GV k r) : 1 ≤ gN g := (Formalism.Fou
 
 lemma gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := lt_of_lt_of_le one_pos (one_le_gN hg)
 
-lemma rpow_mono_G {g : Mat k r} (hg : g ∈ GV k r) {a b : ℝ} (h : a ≤ b) : gN g ^ a ≤ gN g ^ b :=
-  Real.rpow_le_rpow_of_exponent_le (one_le_gN hg) h
-
-lemma loss_bound_nonneg (r : ℕ) : 0 ≤ C2.B0 r := by unfold C2.B0; positivity
-
 lemma top_ge_nat (m : ℕ) : (((m : ℕ) : ℕ∞) : WithTop ℕ∞) ≤ (((⊤ : ℕ∞)) : WithTop ℕ∞) :=
   WithTop.coe_le_coe.2 le_top
 
@@ -50,59 +45,6 @@ lemma ckOn_op_top {f : Mat k r → E} {X : Mat k r} (b : Bool) (hf : CkOn (⊤ :
     have hd : DifferentiableAt ℝ f' g :=
       (hc.differentiableOn top_ne_zero').differentiableAt (hU.mem_nhds hg)
     exact (hasDerivAt_ext b hU hg hgG hd hff hX).deriv
-
-lemma ckOn_W_top {f : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w)
-    (hf : CkOn (⊤ : ℕ∞) (GV k r) f) : CkOn (⊤ : ℕ∞) (GV k r) (W w f) := by
-  induction w with
-  | nil => exact hf
-  | cons x w ih =>
-    rw [W_cons]
-    exact ckOn_op_top x.1 (ih fun y hy => hw y (List.mem_cons_of_mem _ hy)) (hw x List.mem_cons_self)
-
-lemma right_word_eq_word (v : List (Mat k r)) (f : Mat k r → E) : Rw v f = W (lr [] v) f := by
-  rw [← dLR_eq]; rfl
-
-lemma foldr_LdV_eq_W_lr (u : List (Mat k r)) (f : Mat k r → E) : u.foldr LdV f = W (lr u []) f := by
-  rw [← dLR_eq]; rfl
-
-lemma allLie_lr' {u v : List (Mat k r)} (hu : ∀ X ∈ u, inLie k r X) (hv : ∀ X ∈ v, inLie k r X) :
-    AllLie (lr u v) := by
-  intro x hx
-  simp only [lr, List.mem_append, List.mem_map] at hx
-  rcases hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩
-  · exact hu X hX
-  · exact hv X hX
-
-lemma L_Rw_comm {X : Mat k r} (hX : inLie k r X) : ∀ (v : List (Mat k r)), (∀ Y ∈ v, inLie k r Y) →
-    ∀ K : Mat k r → E, CkOn (⊤ : ℕ∞) (GV k r) K → ∀ g ∈ GV k r,
-      Rw v (LdV X K) g = LdV X (Rw v K) g := by
-  intro v
-  induction v with
-  | nil => intro _ K _ g _; rfl
-  | cons Y v ih =>
-    intro hv K hK g hg
-    have hv' : ∀ Z ∈ v, inLie k r Z := fun Z hZ => hv Z (List.mem_cons_of_mem _ hZ)
-    have hY := hv Y List.mem_cons_self
-    show op false Y (Rw v (LdV X K)) g = op true X (op false Y (Rw v K)) g
-    rw [op_congr false hY (ih hv' K hK) g hg]
-    have hc : CkOn (⊤ : ℕ∞) (GV k r) (Rw v K) := by
-      rw [right_word_eq_word]; exact ckOn_W_top _ (allLie_lr' (by simp) hv') hK
-    exact op_comm (ckOn_top_nat hc 2) hX hY hg
-
-lemma dLR_R (u v : List (Mat k r)) (X : Mat k r) (F : Mat k r → E) :
-    dLR u v (RdV X F) = dLR u (v ++ [X]) F := by
-  unfold dLR Rw; rw [List.foldr_append]; rfl
-
-lemma dLR_L {u v : List (Mat k r)} {X : Mat k r} (hu : ∀ Y ∈ u, inLie k r Y) (hv : ∀ Y ∈ v, inLie k r Y)
-    (hX : inLie k r X) {F : Mat k r → E} (hF : CkOn (⊤ : ℕ∞) (GV k r) F) :
-    ∀ g ∈ GV k r, dLR u v (LdV X F) g = dLR (u ++ [X]) v F g := by
-  intro g hg
-  have e1 : dLR u v (LdV X F) = W (lr u []) (Rw v (LdV X F)) := by
-    rw [← foldr_LdV_eq_W_lr]; rfl
-  have e2 : dLR (u ++ [X]) v F = W (lr u []) (LdV X (Rw v F)) := by
-    rw [← foldr_LdV_eq_W_lr]; unfold dLR; rw [List.foldr_append]; rfl
-  rw [e1, e2]
-  exact W_congr _ (allLie_lr' hu (by simp)) (L_Rw_comm hX v hv F hF) g hg
 
 lemma chart_rho {g0 x : Mat k r} (hg0 : g0 ∈ GV k r) (hx : x ∈ Sr g0) (hxG : x ∈ GV k r) :
     chart g0 (rho g0 x) = x := by
@@ -155,50 +97,8 @@ theorem ckOn_top_of_all {F : Mat k r → E} (hF : ∀ m : ℕ, CkOn ((m : ℕ) :
     show F x = F (chart g0 (rho g0 x))
     rw [chart_rho hg0 hx.1 hxG]
 
-theorem rule_A1_derivatives : C2.FiniteOrderIntersectionInSmooth := by
-  intro k r E _ _ A F hF
-  refine ⟨ckOn_top_of_all fun m => (hF m).choose_spec.1, ?_⟩
-  intro u v hu hv
-  obtain ⟨c, hc⟩ := hF (u.length + v.length)
-  refine ⟨c, fun g hg => le_trans ?_ (hc.2 u v hu hv le_rfl g hg)⟩
-  refine mul_le_mul_of_nonneg_right (rpow_mono_G hg ?_) (norm_nonneg _)
-  have : 0 ≤ C2.B0 r * ((u.length : ℝ) + v.length) := mul_nonneg (loss_bound_nonneg r) (by positivity)
-  linarith
-
-theorem ruleB : C2.RuleB := by
-  intro k r E _ _ A F hF X hX
-  refine ⟨⟨ckOn_op_top false hF.1 hX.1, ?_⟩, ⟨ckOn_op_top true hF.1 hX.1, ?_⟩⟩
-  · intro u v hu hv
-    obtain ⟨C, hC⟩ := hF.2 u (v ++ [X]) hu (by
-      intro Y hY; rcases List.mem_append.1 hY with h | h
-      · exact hv Y h
-      · rw [List.mem_singleton.1 h]; exact hX)
-    refine ⟨C, fun g hg => ?_⟩
-    have e : A - C2.B0 r - C2.B0 r * ((u.length : ℝ) + v.length) =
-        A - C2.B0 r * ((u.length : ℝ) + (v ++ [X]).length) := by
-      rw [List.length_append, List.length_singleton]; push_cast; ring
-    have := hC g hg
-    rw [← e, ← dLR_R] at this
-    exact this
-  · intro u v hu hv
-    obtain ⟨C, hC⟩ := hF.2 (u ++ [X]) v (by
-      intro Y hY; rcases List.mem_append.1 hY with h | h
-      · exact hu Y h
-      · rw [List.mem_singleton.1 h]; exact hX) hv
-    refine ⟨C, fun g hg => ?_⟩
-    have e : A - C2.B0 r - C2.B0 r * ((u.length : ℝ) + v.length) =
-        A - C2.B0 r * (((u ++ [X]).length : ℝ) + v.length) := by
-      rw [List.length_append, List.length_singleton]; push_cast; ring
-    have := hC g hg
-    rw [← e, ← dLR_L (fun Y hY => (hu Y hY).1) (fun Y hY => (hv Y hY).1) hX.1 hF.1 g hg] at this
-    exact this
-
 end Formalism.FourierDecayAlt.P.SmoothnessOrderArithmetic
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem rule_A1_of_derivatives : C2.FiniteOrderIntersectionInSmooth := SmoothnessOrderArithmetic.rule_A1_derivatives
-
-theorem rule_B_derivatives : C2.RuleB := SmoothnessOrderArithmetic.ruleB
 
 end Formalism.FourierDecayAlt.P

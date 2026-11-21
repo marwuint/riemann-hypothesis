@@ -181,14 +181,6 @@ theorem flagStabilizer_mul_mem {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ :
   · show n (k _) = _
     rw [hz', hz]
 
-theorem flagStabilizer_fixes_frame {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
-    {k : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : k ∈ CntLocal.N0 F0 Λ) (c : Fin (D.R.rS + 1)) :
-    k (frame (lf D F0) c) = frame (lf D F0) c := by
-  obtain ⟨_, he, hz⟩ := h
-  refine Fin.lastCases ?_ (fun i => ?_) c
-  · simpa [frame, Formalism.MainNotions.S.FlagG.fvec, lf] using hz
-  · simpa [frame, Formalism.MainNotions.S.FlagG.fvec, lf] using he i
-
 theorem n0rel_iff {T T' : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     {F' F'' : LFlag (VS D) D.R.rS T'} :
     CntLocal.NilradicalFlagMoved F0 Λ F' F'' ↔ ∃ n ∈ CntLocal.N0 F0 Λ, ∀ c, n (frame F' c) = frame F'' c := by

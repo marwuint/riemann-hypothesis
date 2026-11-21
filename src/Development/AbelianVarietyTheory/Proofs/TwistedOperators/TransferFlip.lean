@@ -1,6 +1,7 @@
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TwistPlacesOffPrimeQZero
 import Formalism.LocalToGlobal.IndefiniteReal.HeckeNonvanishing.Imports
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCosetSameLocalCosetSetsOtherBaseLatticeStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCosetSameLocalCosetSetsOtherBaseLattice
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.DictAt
@@ -251,6 +252,6 @@ theorem trFlip_of_same (hsame : SameD) : TrFlip := by
   have hdep : depthAt G' w' = depthAt G w' := (by with_unfolding_all exact ((congrArg (max · 1) h3) :))
   exact (by with_unfolding_all exact ((flips_tensor_heq e1 (T3.trans h4) .one hψ (unifAt w') hdep (flipOrder (m + 1))) :))
 
-theorem flippedTensorsTransferToGrid_proof : TrFlip := trFlip_of_same (sameD_of_cosZero GlobalTheory.T.exists_coset_same_localCosetSets_other_baseLattice)
+theorem flippedTensorsTransferToGrid_proof : TrFlip := trFlip_of_same (sameD_of_cosZero _root_.GlobalTheory.FunObj.CosFlip.exists_cos_cosetSet_eq)
 
 end GlobalTheory.RowEx.Carry

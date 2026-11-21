@@ -10,10 +10,6 @@ universe u
 variable {F : Type u} [Field F] [DecidableEq F] (E E' : WeierstrassCurve F) (p : ℕ)
   [hp : Fact p.Prime] [CharP F p]
 
-noncomputable def powFieldPoints :
-    AddSubgroup (E'.baseChange E.toAffine.FunctionField).toAffine.Point :=
-  (Point.map (W' := E') (powField E p).val).range
-
 variable {E E'} [E.IsElliptic] [E'.IsElliptic]
 
 omit [DecidableEq F] [E.IsElliptic] [E'.IsElliptic] in

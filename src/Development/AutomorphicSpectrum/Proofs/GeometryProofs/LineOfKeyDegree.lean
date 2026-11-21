@@ -5,15 +5,15 @@ import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.BaseChangeIndex
 import GroundTheory.HeightsAndTheta.Heights.FactorialBounds.Assembly
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaSectionsBoundedStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaSectionsBounded
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IteratedDerivBoundGaussianGrowthStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IntegralFlagEmbeddingCriterionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PolarizedDataFieldExtensionStatement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IntegralFlagEmbeddingCriterion
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PolarizedDataFieldExtension
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionSupNormFieldExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrameStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsIntegralJetBasisStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrame
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsIntegralJetBasis
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaDerivativeBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsThetaSupBoundLogMeanStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsThetaSupBoundLogMean
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierQuadraticCharacterStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -160,7 +160,7 @@ theorem theta_on_ext {H : Host E} {L L' : Type} [Field L] [NumberField L] [Field
     (D : PPData H L) (D' : PPData H L') (e : D.Ext D') (th : Out.H0 D.t.PP.L 1) {Φ : ℝ} (hth : D.HasTheta th Φ)
     (hg : D'.g = D.g) (σ' : L' →+* ℂ) (a' : D'.Frame σ') : ∃ θ, a'.IsTheta 1 θ ∧ θ ≠ 0 := by
   obtain ⟨s', -, hs'⟩ := GlobalTheory.T.section_sup_norm_field_extension E H L D L' D' e 1 th
-  obtain ⟨-, hall⟩ := GlobalTheory.T.theta_function_archimedean_frame E H L' D' σ'
+  obtain ⟨-, hall⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L' D' σ'
   obtain ⟨h1, h2, -⟩ := hall a'
   obtain ⟨θ, hθ, -⟩ := h1 1 s'
   obtain ⟨a, -, -, hiff⟩ := hs' σ' a'
@@ -171,7 +171,7 @@ theorem g_pos {H : Host E} {L : Type} [Field L] [NumberField L] (D : PPData H L)
   by_contra hg
   have hg0 : D.g = 0 := by omega
   have σ : L →+* ℂ := (IsAlgClosed.lift : L →ₐ[ℚ] ℂ).toRingHom
-  obtain ⟨⟨a⟩, hall⟩ := GlobalTheory.T.theta_function_archimedean_frame E H L D σ
+  obtain ⟨⟨a⟩, hall⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L D σ
   obtain ⟨-, -, hv⟩ := hall a
   obtain ⟨⟨c, hc, -⟩, hc2⟩ := hv x
   have h3 := (hc2 c hc).2 hx
@@ -180,7 +180,7 @@ theorem g_pos {H : Host E} {L : Type} [Field L] [NumberField L] (D : PPData H L)
 
 theorem len_pos {H : Host E} {L : Type} [Field L] [NumberField L] (D : PPData H L) (x : D.B.carrier) (hx : x ≠ 0)
     (σ : L →+* ℂ) : 0 < D.len σ x := by
-  obtain ⟨⟨a⟩, hall⟩ := GlobalTheory.T.theta_function_archimedean_frame E H L D σ
+  obtain ⟨⟨a⟩, hall⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L D σ
   obtain ⟨-, -, hv⟩ := hall a
   obtain ⟨⟨c, hc, -⟩, hc2⟩ := hv x
   obtain ⟨h2, h3⟩ := hc2 c hc
@@ -214,14 +214,14 @@ theorem core_applied {H : Host E} {L : Type} [Field L] [NumberField L] (D : PPDa
       (∀ j, a.IsFn (s j) (f j)) ∧ (∀ j, a.IsTheta (3 * n') (f j)) ∧ D.IsVec a x v ∧ v ≠ 0 ∧
         D.len σ x ^ 2 = Real.pi * (a.herm v v).re := by
     intro σ
-    obtain ⟨⟨a⟩, hall⟩ := GlobalTheory.T.theta_function_archimedean_frame E H L D σ
+    obtain ⟨⟨a⟩, hall⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L D σ
     obtain ⟨h1, h2, hv⟩ := hall a
     choose f hf using fun j => (h1 (3 * n') (s j)).exists
     obtain ⟨⟨c, hc, -⟩, hc2⟩ := hv x
     obtain ⟨h5, h6⟩ := hc2 c hc
     exact ⟨a, f, c, hf, fun j => h2 _ _ _ (hf j), hc, h6 hx, h5⟩
-  obtain ⟨J, hint, hJ⟩ := GlobalTheory.T.exists_integral_jet_basis E H L D x (3 * n') r s
-  refine GlobalTheory.T.integral_flag_embedding_criterion L r n' J
+  obtain ⟨J, hint, hJ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.JetMain.jets E H L D x (3 * n') r s
+  refine _root_.GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope L r n' J
     (fun i σ => √(Real.exp 1 * ((3 * n' : ℕ) : ℝ) * n') ^ i * D.len σ x ^ i * (√(r : ℝ) * Mv σ)) ?_ hint ?_ ?_
   · intro i σ
     have := hlen σ
@@ -268,7 +268,7 @@ theorem core_applied {H : Host E} {L : Type} [Field L] [NumberField L] (D : PPDa
 
 theorem line_of_key : KeyDegSt → LineSt := by
   rintro ⟨C₁, hC₁, key⟩
-  obtain ⟨C₃, hC₃, sup⟩ := GlobalTheory.T.exists_theta_sup_bound_log_mean
+  obtain ⟨C₃, hC₃, sup⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Sup.mean_log_sup
   have hlog1 : 0 ≤ Real.log (1 + C₁) := Real.log_nonneg (by linarith)
   have hC₂ : 0 ≤ C₃ * (1 + Real.log (1 + C₁)) := mul_nonneg hC₃ (by linarith)
   obtain ⟨C₄, hC₄⟩ := SlopeParameterChoice.full C₁ _ hC₁ hC₂
@@ -278,7 +278,7 @@ theorem line_of_key : KeyDegSt → LineSt := by
   have hg1R : (1 : ℝ) ≤ D.g := by exact_mod_cast hg1
   have hh : 0 ≤ D.hp := le_max_right _ _
   obtain ⟨L₁, _, _, _, D₁, e₁, th, hth⟩ := key E H L D hg1
-  obtain ⟨hg₁, hh₁, io₁, hi₁, -, hm₁⟩ := (GlobalTheory.T.polarized_data_field_extension E H L D L₁).2 D₁ e₁
+  obtain ⟨hg₁, hh₁, io₁, hi₁, -, hm₁⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Sl.ext_baseChange E H L D L₁).2 D₁ e₁
   have hΦ : 0 ≤ D.hp / 2 + C₁ * D.g := by positivity
   obtain ⟨M, hM, hsup, hmean⟩ := sup E H L₁ D₁ th _ (hg₁.symm ▸ hg1) hΦ hth
   rw [hg₁] at hmean
@@ -286,8 +286,8 @@ theorem line_of_key : KeyDegSt → LineSt := by
   obtain ⟨K, hK, hmK⟩ : ∃ K : ℕ, 1 ≤ K ∧ m = 3 * K :=
     ⟨⌈2 + (D.g : ℝ) ^ 2 + D.hp⌉₊, Nat.ceil_pos.2 (by positivity), hm⟩
   have hm1 : 1 ≤ m := by omega
-  obtain ⟨L₂, _, _, _, D₂, e₂, s, hsup₂, hspan⟩ := GlobalTheory.T.exists_theta_sections_bounded E H L₁ D₁ th _ M m hm1 hth hsup
-  obtain ⟨hg₂, hh₂, io₂, hi₂, -, hm₂⟩ := (GlobalTheory.T.polarized_data_field_extension E H L₁ D₁ L₂).2 D₂ e₂
+  obtain ⟨L₂, _, _, _, D₂, e₂, s, hsup₂, hspan⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Basis.main E H L₁ D₁ th _ M m hm1 hth hsup
+  obtain ⟨hg₂, hh₂, io₂, hi₂, -, hm₂⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Sl.ext_baseChange E H L₁ D₁ L₂).2 D₂ e₂
   have hx₁ : io₁ x ≠ 0 := fun h => hx (hi₁ (by rw [h, map_zero]))
   have hx₂ : io₂ (io₁ x) ≠ 0 := fun h => hx₁ (hi₂ (by rw [h, map_zero]))
   have hK2 : 1 ≤ 3 * K ^ 2 := by

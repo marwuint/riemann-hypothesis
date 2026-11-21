@@ -143,11 +143,6 @@ theorem natCard_groupCohomology_two_ideleClassRep_dvd :
         exact (Nat.prod_primeFactors_pow_factorization hn0).symm
     _ = finrank K L := IsGalois.card_aut_eq_finrank K L
 
-theorem finite_groupCohomology_two_ideleClassRep :
-    Finite (groupCohomology (ideleClassRep K L) 2) :=
-  Nat.finite_of_card_ne_zero fun h =>
-    Module.finrank_pos.ne' (Nat.eq_zero_of_zero_dvd (h ▸ natCard_groupCohomology_two_ideleClassRep_dvd))
-
 end Level
 
 end GroundTheory.ProfCoh

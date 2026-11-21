@@ -187,6 +187,4 @@ def eEnd (Ξ : AlgRep E a) (τ : E →+* ℂ) (i j : Fin a) : Module.End ℂ (Fi
 def IsAlgIso (Ξ Ξ' : AlgRep E a) (T : (Fin Ξ.d → ℂ) ≃ₗ[ℂ] (Fin Ξ'.d → ℂ)) : Prop :=
   (∀ y v, T (Ξ.mat y *ᵥ v) = Ξ'.mat y *ᵥ T v) ∧ ∀ X v, T (Ξ.dmat X *ᵥ v) = Ξ'.dmat X *ᵥ T v
 
-theorem isAlgIso_refl (Ξ : AlgRep E a) : IsAlgIso Ξ Ξ (LinearEquiv.refl _ _) := ⟨fun _ _ => rfl, fun _ _ => rfl⟩
-
 end UpperTheory.V.AlgRepEndIrreducible

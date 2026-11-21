@@ -1,15 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPtHomApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeOperatorTestFamilyPreservesLevelForms
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenProductOfLocalLevelsUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeOperatorPreservesEquivariantRightInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EquivariantDoubleCosetSectionMemEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EquivariantFunctionEqFinsumDoubleCosetSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeOperatorEquivariantDoubleCosetSectionBasePoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteRationalPointsConjInSupportStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteProductOfLocalFunctionsUnitaryNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDoubleCosetDefiniteUnitaryRationalOfIsOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDefiniteUnitaryRationalInfConjLevelTer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenProductOfLocalLevelsUnitary
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeOperatorPreservesEquivariantRightInvariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EquivariantDoubleCosetSectionMemEquivariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EquivariantFunctionEqFinsumDoubleCosetSections
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeOperatorEquivariantDoubleCosetSectionBasePoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteRationalPointsConjInSupport
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteProductOfLocalFunctionsUnitaryNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAdelicUnitaryPointLocalComponentMemLocalUn
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDoubleCosetDefiniteUnitaryRationalOfIsOpen
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryClassSetFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDefiniteUnitaryRationalInfConjLevelBis
 
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
@@ -33,7 +36,7 @@ theorem trOn_eqvM (ι : H →* G) (hι : Function.Injective ι) (ρ : Representa
           ∑ᶠ h : H, F ((Quotient.out q)⁻¹ * ι h * Quotient.out q) * LinearMap.trace ℂ V (ρ h) := by
   classical
   have hR : ∀ k ∈ K', ∀ x, F (x * k) = F x := fun k hk x => (hF k hk x).2
-  have hmaps := GlobalTheory.T.heckeOperator_preserves_equivariantRightInvariant G H V ι ρ K K' F hF
+  have hmaps := _root_.GlobalTheory.BCT.TraceBlocks.levOp_rightReg_mem_eqvM G H V ι ρ K K' F hF
   unfold trOn
   rw [dif_pos hmaps]
   haveI : Fintype (DoubleCoset.Quotient (ι.range : Set G) (K' : Set G)) := Fintype.ofFinite _
@@ -43,11 +46,11 @@ theorem trOn_eqvM (ι : H →* G) (hι : Function.Injective ι) (ρ : Representa
   let e : DoubleCoset.Quotient (ι.range : Set G) (K' : Set G) → (M →ₗ[ℂ] V) :=
     fun q => (LinearMap.proj (R := ℂ) (φ := fun _ : G => V) (x q)).comp M.subtype
   let s : DoubleCoset.Quotient (ι.range : Set G) (K' : Set G) → (V →ₗ[ℂ] M) :=
-    fun q => (secM ι ρ K' (x q)).codRestrict M (fun v => GlobalTheory.T.equivariantDoubleCosetSection_mem_equivariant G H V ι ρ K' (x q) v)
+    fun q => (secM ι ρ K' (x q)).codRestrict M (fun v => _root_.GlobalTheory.BCT.TraceBlocks.secM_mem_eqvM G H V ι ρ K' (x q) v)
   have hid : ∑ q, s q ∘ₗ e q = LinearMap.id := by
     ext φ : 1
     apply Subtype.ext
-    have := GlobalTheory.T.equivariantFunction_eq_finsum_doubleCosetSections G H V ι hι ρ K' hdc hst φ.1 φ.2
+    have := _root_.GlobalTheory.BCT.TraceBlocks.eqvM_eq_finsum_secM G H V ι hι ρ K' hdc hst φ.1 φ.2
     rw [finsum_eq_sum_of_fintype] at this
     simpa [s, e, x] using this
   have h1 : ∀ φ : M, φ = ∑ q, s q (e q φ) := fun φ => by
@@ -68,7 +71,7 @@ theorem trOn_eqvM (ι : H →* G) (hι : Function.Injective ι) (ρ : Representa
     rw [LinearMap.trace_comp_comm']
   rw [htr, finsum_eq_sum_of_fintype, Finset.mul_sum]
   refine Finset.sum_congr rfl fun q _ => ?_
-  have hfin := GlobalTheory.T.finite_rationalPoints_conj_in_support G H ι hι K' F hR hsupp (x q) (hst _)
+  have hfin := _root_.GlobalTheory.finite_support_conj_points G H ι hι K' F hR hsupp (x q) (hst _)
   have hsub : ∀ {β : Type} [AddCommMonoid β] (g : H → β), (∀ h, F ((x q)⁻¹ * ι h * x q) = 0 → g h = 0) →
       Function.support g ⊆ hfin.toFinset := fun g hg h hh => by
     simp only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]
@@ -76,7 +79,7 @@ theorem trOn_eqvM (ι : H →* G) (hι : Function.Injective ι) (ρ : Representa
   have hA : e q ∘ₗ T.restrict hmaps ∘ₗ s q = ((K'.relIndex K : ℕ) : ℂ)⁻¹ • ((stabCard ι K' (x q) : ℂ))⁻¹ •
       ∑ h ∈ hfin.toFinset, F ((x q)⁻¹ * ι h * x q) • ρ h := by
     ext v
-    have := GlobalTheory.T.heckeOperator_equivariantDoubleCosetSection_basePoint G H V ι hι ρ K K' F hR hsupp (x q) (hst _) hfin v
+    have := _root_.GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self G H V ι hι ρ K K' F hR hsupp (x q) (hst _) hfin v
     rw [finsum_eq_sum_of_support_subset _ (hsub _ fun h h0 => by simp [h0])] at this
     simpa [e, s, LinearMap.restrict_apply, LinearMap.sum_apply] using this
   rw [hA, LinearMap.map_smul, LinearMap.map_smul, map_sum, smul_eq_mul, smul_eq_mul,
@@ -135,12 +138,12 @@ theorem GlobalTheory.BCT.TrKer.trOn_vecM_hopM : ∀ (E : Type) [Field E] [Number
   have hdc : Finite (DoubleCoset.Quotient ((finPtHom (E := E) (n := n)).range : Set (finU E n))
       (globLev S K' : Set (finU E n))) := by
     rw [finPtHom_range]
-    exact GlobalTheory.T.finite_doubleCoset_definiteUnitaryRational_of_isOpen E n _ (GlobalTheory.T.isOpen_productOfLocalLevelsUnitary E hU n S K' hK)
+    exact _root_.GlobalTheory.BCT.finite_doubleCoset_ratFinU_isOpen E n _ (_root_.GlobalTheory.BCT.isOpen_globLev E hU n S K' hK)
   have hst : ∀ x : finU E n, Finite ((finPtHom (E := E) (n := n)).range ⊓
       (globLev S K').map (MulAut.conj x).toMonoidHom : Subgroup (finU E n)) := fun x => by
     rw [finPtHom_range]
-    exact GlobalTheory.T.finite_definiteUnitary_rational_inf_conj_level E hU n S hS K' hK x
-  rw [hV, hT, trOn_eqvM finPtHom finPtHom_injective (wDual lam) _ _ _ hF (GlobalTheory.T.finite_productOfLocalFunctionsUnitary_ne_zero E hU n S K' hK f hf) hdc hst]
+    exact _root_.GlobalTheory.BCT.finite_ratFinU_inf_conj_globLev_anyRank E hU n S hS K' hK x
+  rw [hV, hT, trOn_eqvM finPtHom finPtHom_injective (wDual lam) _ _ _ hF (_root_.GlobalTheory.BCT.finite_globFn_ne_zero E hU n S K' hK f hf) hdc hst]
   have htr : ∀ γ : UE E n, LinearMap.trace ℂ _ (wDual lam γ) = LinearMap.trace ℂ _ (GlobalTheory.BCT.TrKer.wAt lam γ⁻¹) :=
     fun γ => LinearMap.trace_transpose' _
   simp only [htr, finPtHom_apply, stabCard]

@@ -40,27 +40,17 @@ local macro "gl2" : tactic => `(tactic|
 theorem nU_add (b c : A F) : nU (b + c) = nU b * nU c := by sl2; ring
 theorem nU_neg (b : A F) : nU (-b) = (nU b)⁻¹ := eq_inv_of_mul_eq_one_left (by rw [← nU_add]; simp)
 @[simp] theorem nL_zero : nL (0 : A F) = 1 := by sl2
-theorem nL_add (b c : A F) : nL (b + c) = nL b * nL c := by sl2
-theorem nL_neg (b : A F) : nL (-b) = (nL b)⁻¹ := eq_inv_of_mul_eq_one_left (by rw [← nL_add]; simp)
 @[simp] theorem mD_one : mD (1 : (A F)ˣ) = 1 := by sl2
 theorem mD_mul (a b : (A F)ˣ) : mD (a * b) = mD a * mD b := by sl2; ring
 theorem mD_inv (a : (A F)ˣ) : mD a⁻¹ = (mD a)⁻¹ := eq_inv_of_mul_eq_one_left (by rw [← mD_mul]; simp)
 theorem mD_mul_nU (a : (A F)ˣ) (b : A F) : mD a * nU b = nU ((a : A F) ^ 2 * b) * mD a := by
   sl2; linear_combination (-(a : A F) * b) * a.mul_inv
-theorem mD_mul_nL (a : (A F)ˣ) (c : A F) : mD a * nL c = nL (((a⁻¹ : (A F)ˣ) : A F) ^ 2 * c) * mD a := by
-  sl2; linear_combination (-((a⁻¹ : (A F)ˣ) : A F) * c) * a.mul_inv
-theorem wW_mul_mD (a : (A F)ˣ) : wW F * mD a = mD a⁻¹ * wW F := by sl2
 theorem wW_mul_wW : wW F * wW F = mD (-1) := by sl2
 theorem wW_inv : (wW F)⁻¹ = mD (-1) * wW F := by
   refine inv_eq_of_mul_eq_one_right ?_; sl2
 theorem wW_mul_nU (b : A F) : wW F * nU b = nL (-b) * wW F := by sl2
 theorem wW_nU_wW_inv (b : A F) : wW F * nU b * (wW F)⁻¹ = nL (-b) := by rw [wW_mul_nU, mul_inv_cancel_right]
 theorem nL_eq (c : A F) : nL c = wW F * nU (-c) * (wW F)⁻¹ := by rw [wW_nU_wW_inv, neg_neg]
-theorem wW_eq : wW F = nU 1 * nL (-1) * nU 1 := by sl2
-theorem mD_neg_one_comm (g : G1 F) : mD (-1) * g = g * mD (-1) := by sl2
-
-theorem wW_nU_wW (t : (A F)ˣ) : wW F * nU (t : A F) * wW F =
-    nU (-((t⁻¹ : (A F)ˣ) : A F)) * mD (-t⁻¹) * wW F * nU (-((t⁻¹ : (A F)ˣ) : A F)) := by sl2
 theorem mD_mul_wW (a : (A F)ˣ) : mD a * wW F = nU (a : A F) * nL (-((a⁻¹ : (A F)ˣ) : A F)) * nU (a : A F) := by sl2
 
 @[simp] theorem dM_one : dM (1 : (A F)ˣ) = 1 := by gl2
@@ -83,12 +73,10 @@ theorem gl_injective : Function.Injective (gl (F := F)) := fun _ _ h => Subtype.
 theorem scalar_comm (s : (A F)ˣ) (g : GL (Fin 2) (A F)) :
     Matrix.GeneralLinearGroup.scalar (Fin 2) s * g = g * Matrix.GeneralLinearGroup.scalar (Fin 2) s := by
   gl2 <;> ring
-theorem aE_mul_dM (s : (A F)ˣ) : aE s * dM s = Matrix.GeneralLinearGroup.scalar (Fin 2) s := by gl2
 theorem dM_mul_aE (s t : (A F)ˣ) : dM s * aE t = aE t * dM s := by gl2
 theorem gl_mD (a : (A F)ˣ) : gl (mD a) = aE a * dM a⁻¹ := by gl2
 theorem gl_mD_mul_dM_sq (s : (A F)ˣ) : gl (mD s) * dM (s ^ 2) = Matrix.GeneralLinearGroup.scalar (Fin 2) s := by
   gl2; rw [pow_two, ← mul_assoc, Units.inv_mul, one_mul]
-theorem gl_wW_mul_aE (t : (A F)ˣ) : gl (wW F) * aE t = dM t * gl (wW F) := by gl2
 theorem aE_mul_nU (t : (A F)ˣ) (b : A F) : aE t * gl (nU b) = gl (nU ((t : A F) * b)) * aE t := by gl2
 theorem dM_mul_gl (t : (A F)ˣ) (g : G1 F) : dM t * gl g = gl (cD t g) * dM t := by
   gl2 <;> first | rw [mul_assoc, Units.inv_mul, mul_one] | ring
@@ -116,17 +104,6 @@ def cDE (t : (A F)ˣ) : G1 F ≃* G1 F where
   right_inv g := by rw [← cD_mul_left]; simp
   map_mul' := cD_mul t
 @[simp] theorem cDE_apply (t : (A F)ˣ) (g : G1 F) : cDE t g = cD t g := rfl
-theorem cD_inv (t : (A F)ˣ) (g : G1 F) : cD t g⁻¹ = (cD t g)⁻¹ := map_inv (cDE t) g
-theorem cD_nU (t : (A F)ˣ) (b : A F) : cD t (nU b) = nU (b * ((t⁻¹ : (A F)ˣ) : A F)) := by sl2
-theorem cD_nL (t : (A F)ˣ) (c : A F) : cD t (nL c) = nL ((t : A F) * c) := by sl2
-theorem cD_mD (t a : (A F)ˣ) : cD t (mD a) = mD a := by sl2
-theorem cD_wW (t : (A F)ˣ) : cD t (wW F) = mD t⁻¹ * wW F := by sl2
-theorem cD_sq (t : (A F)ˣ) (g : G1 F) : cD (t ^ 2) g = (mD t)⁻¹ * g * mD t := by
-  apply gl_injective
-  have h : dM (t ^ 2) = (gl (mD t))⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) t := by
-    rw [← gl_mD_mul_dM_sq, inv_mul_cancel_left]
-  rw [gl_cD, h, gl_mul, gl_mul, gl_inv, mul_assoc (gl (mD t))⁻¹, scalar_comm]; group
-
 theorem continuous_entry (i j : Fin 2) : Continuous fun g : G1 F => g i j :=
   (continuous_apply j).comp ((continuous_apply i).comp continuous_subtype_val)
 theorem continuous_adelicSL2_of_continuous_entries {X : Type*} [TopologicalSpace X] {f : X → G1 F} (h : ∀ i j, Continuous fun x => f x i j) : Continuous f :=
@@ -135,8 +112,6 @@ theorem continuous_adelicGL2_of_continuous_entries {X : Type*} [TopologicalSpace
     (h' : ∀ i j, Continuous fun x => ((f x)⁻¹).val i j) : Continuous f :=
   Units.continuous_iff.2 ⟨continuous_matrix h, continuous_matrix h'⟩
 theorem continuous_nU : Continuous (nU (F := F)) :=
-  continuous_adelicSL2_of_continuous_entries fun i j => by fin_cases i <;> fin_cases j <;> simp <;> fun_prop
-theorem continuous_nL : Continuous (nL (F := F)) :=
   continuous_adelicSL2_of_continuous_entries fun i j => by fin_cases i <;> fin_cases j <;> simp <;> fun_prop
 theorem continuous_mD : Continuous (mD (F := F)) :=
   continuous_adelicSL2_of_continuous_entries fun i j => by
@@ -171,10 +146,6 @@ theorem ab_pow (a : (A F)ˣ) (n : ℕ) : ab (a ^ n) = ab a ^ n := by
   | succ n ih => rw [pow_succ, pow_succ, ab_mul, ih]
 theorem ab_diagonal (c : Fˣ) : ab (IdeleGroup.diagonal F c) = 1 := congrArg Subtype.val (IdeleGroup.ideleModule_diagonal c)
 theorem coe_diagonal (c : Fˣ) : ((IdeleGroup.diagonal F c : (A F)ˣ) : A F) = rt (c : F) := rfl
-theorem ab_neg_one : ab (-1 : (A F)ˣ) = 1 := by
-  have h : ab (-1 : (A F)ˣ) ^ 2 = 1 := by rw [← ab_pow]; simp
-  exact (pow_eq_one_iff_of_nonneg (ab_pos _).le two_ne_zero).1 h
-theorem ab_neg (a : (A F)ˣ) : ab (-a) = ab a := by rw [← neg_one_mul, ab_mul, ab_neg_one, one_mul]
 theorem continuous_ab : Continuous (ab (F := F)) := continuous_subtype_val.comp IdeleGroup.continuous_ideleModule
 
 @[simp] theorem ψ_zero : ψ (0 : A F) = 1 := by simp [ψ]
@@ -194,8 +165,6 @@ theorem det_ratGL (γ : GL (Fin 2) F) :
   refine Units.ext ?_
   simp [Matrix.det_fin_two, ratGL_apply, coe_diagonal]
 theorem nU_rt_mem (b : F) : nU (rt b) ∈ Gam F := ⟨⟨!![1, b; 0, 1], by simp [Matrix.det_fin_two]⟩, by
-  apply specialLinear_ext_entries <;> refine (ratS_apply _ _ _).trans ?_ <;> simp⟩
-theorem nL_rt_mem (b : F) : nL (rt b) ∈ Gam F := ⟨⟨!![1, 0; b, 1], by simp [Matrix.det_fin_two]⟩, by
   apply specialLinear_ext_entries <;> refine (ratS_apply _ _ _).trans ?_ <;> simp⟩
 theorem wW_mem : wW F ∈ Gam F := ⟨⟨!![0, 1; -1, 0], by simp [Matrix.det_fin_two]⟩, by
   apply specialLinear_ext_entries <;> refine (ratS_apply _ _ _).trans ?_ <;> simp⟩

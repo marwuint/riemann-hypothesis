@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.InterlacingEquivariance
-import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.OnePlaceBranchStatement
+import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
+import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkMapInitMinor
 
@@ -162,15 +163,5 @@ theorem brOne_map [CharZero K] [CharZero K'] (lam : DomWeight N) (sg : DomWeight
   rw [← map_rename, branchingProjection_map, map_rename]
 
 end BaseChange
-
-theorem baseChange : GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.BaseChange := by
-  intro K K' _ _ _ φ N n hN lam sg _ _ f _
-  haveI : CharZero K' := (RingHom.charZero_iff φ.injective).mp inferInstance
-  exact brOne_map φ hN lam sg f
-
-def FamilyNonzero : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (ι : Type) [Fintype ι] (N n : ℕ) (hN : N = n + 1)
-    (lam : ι → DomWeight N) (sg : ι → DomWeight n),
-    (∀ τ, Br.Interlace hN (lam τ) (sg τ)) → (∀ τ, Br.SameShift (lam τ) (sg τ)) → Br.brStd (K := K) hN lam sg ≠ 0
 
 end GlobalTheory.Proof.TensorMapDescent

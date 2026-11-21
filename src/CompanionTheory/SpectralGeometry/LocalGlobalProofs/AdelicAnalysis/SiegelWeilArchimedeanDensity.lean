@@ -1,11 +1,13 @@
 import Mathlib
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaIntegralOverCoordinatesStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaIntegralOverCoordinates
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueNonnegative
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GaussQ
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaMeasureNonzeroVectorsBoundStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteComponentCoordinatesActionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdelicLatticeMembershipIffStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.MeasurableFiniteLevelLatticeSetStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaMeasureNonzeroVectorsBound
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteComponentCoordinatesAction
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdelicLatticeMembershipIff
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.MeasurableFiniteLevelLatticeSet
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.BB NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -69,7 +71,7 @@ theorem real_bound {C₀ c R : ℝ} (hc : 1 ≤ c) (hR : 0 < R) (a b : ℕ) :
 
 theorem main_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (ρ : InfinitePlace F → (F →+* ℝ)) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → (∀ x w, e (algebraMap F (Ainf F) x) w = ρ w x) → (∀ y w, |e y w| = ‖y w‖) → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ N : ℕ, 0 < N → ∃ C : ℝ, ∀ R : ℝ, 0 < R → ∫⁻ ω, ∑' x : {x : Fin M × Fin d → F // x ≠ 0}, Set.indicator {x : Fin M × Fin d → F | (∀ i v, ((N : Af F) * (gfin σ J b ω *ᵥ fun j => algebraMap F (Af F) (x j)) i) v ∈ v.adicCompletionIntegers F) ∧ ∀ w, ‖ginf e σ J b ω w *ᵥ fun j => ρ w (x j)‖ ≤ R} (fun _ => (1 : ℝ≥0∞)) x.1 ∂(prH μ 𝓕) ≤ ENNReal.ofReal (C * (R ^ (Module.finrank ℚ F * M) + R ^ (2 * Module.finrank ℚ F * M))) := by
   intro F E _ _ _ _ _ σ hCM M J hJ hM d b ρ e hom hρ he μ 𝓕 hμ hF N hN
-  obtain ⟨C₀, hC₀⟩ := GlobalTheory.T.theta_measure_nonzero_vectors_bound F E σ hCM M J hJ hM d b μ 𝓕 hμ hF N hN
+  obtain ⟨C₀, hC₀⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeanCount.mean_count_box F E σ hCM M J hJ hM d b μ 𝓕 hμ hF N hN
   set c : ℕ := M * d * Fintype.card (InfinitePlace F) + 1 with hc
   have hc1 : (1 : ℝ) ≤ (c : ℝ) := by
     have : 1 ≤ c := by omega
@@ -82,7 +84,7 @@ theorem main_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     {X | (∀ v, (fun a i => (N : Fv F v ⊗[F] E) * projV v (projFin X) a i) ∈ latV b v) ∧
       sizeTup b (projInf X) ≤ c * R} with hS
   have hmeasSize : Measurable fun X : Fin 1 → Fin M → AF F ⊗[F] E => sizeTup b (projInf X) := by
-    obtain ⟨hp, -, -, -, -, -, -, -, hs⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hCM d b 1 1
+    obtain ⟨hp, -, -, -, -, -, -, -, hs⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b 1 1
     have hcont : Continuous fun y : AF F ⊗[F] E =>
         sizeInf b (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) y) := by
       have h := hs.comp (hp.comp (continuous_pi fun _ : Fin 1 => continuous_pi fun _ : Fin 1 =>
@@ -94,8 +96,8 @@ theorem main_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     refine Finset.measurable_sum _ fun p _ => Finset.measurable_sum _ fun i _ => ?_
     exact hm.comp ((measurable_pi_apply i).comp (measurable_pi_apply p))
   have hmeasS : MeasurableSet S :=
-    (GlobalTheory.T.measurable_finite_level_lattice_set F E σ hCM d M b N).inter (measurableSet_le hmeasSize measurable_const)
-  have hpull := GlobalTheory.T.theta_integral_over_coordinates F E σ hCM M J hJ d b μ 𝓕 hμ hF
+    (_root_.GlobalTheory.CompanionTheory.SW.BB.measurableSet_natMul_int F E σ hCM d M b N).inter (measurableSet_le hmeasSize measurable_const)
+  have hpull := _root_.GlobalTheory.CompanionTheory.SW.BB.PullCoord.lintegral_thetaMeas_coord F E σ hCM M J hJ d b μ 𝓕 hμ hF
     {x : Fin M × Fin d → F | x ≠ 0} {X : Fin 1 → Fin M → E | X ≠ 0}
     (fun x => ofF_ne_zero_iff b x) (S.indicator fun _ => (1 : ℝ≥0∞))
     (measurable_const.indicator hmeasS)
@@ -105,9 +107,9 @@ theorem main_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
       S.indicator (fun _ => (1 : ℝ≥0∞)) (actW (AF F) σ J ω⁻¹ (ratTup (AF F) (ofF b x.1))) := by
     intro ω x
     by_cases hA : x.1 ∈ {x : Fin M × Fin d → F | (∀ i v, ((N : Af F) * (gfin σ J b ω *ᵥ fun j => algebraMap F (Af F) (x j)) i) v ∈ v.adicCompletionIntegers F) ∧ ∀ w, ‖ginf e σ J b ω w *ᵥ fun j => ρ w (x j)‖ ≤ R}
-    · obtain ⟨h1, h2⟩ := GlobalTheory.T.infinite_component_coordinates_action F E σ hCM M J hJ d b ρ e hρ ω x.1
+    · obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.SW.BB.RatCoord.coords_ratTup F E σ hCM M J hJ d b ρ e hρ ω x.1
       have hY : actW (AF F) σ J ω⁻¹ (ratTup (AF F) (ofF b x.1)) ∈ S := by
-        refine ⟨(GlobalTheory.T.finite_adelic_lattice_membership_iff F E d M b N _).2 ?_, size_le b e he _ hR fun w => ?_⟩
+        refine ⟨(_root_.GlobalTheory.CompanionTheory.SW.BB.Lat.natCast_mul_mem_latV_iff F E d M b N _).2 ?_, size_le b e he _ hR fun w => ?_⟩
         · rw [h2]
           exact hA.1
         · rw [h1 w]

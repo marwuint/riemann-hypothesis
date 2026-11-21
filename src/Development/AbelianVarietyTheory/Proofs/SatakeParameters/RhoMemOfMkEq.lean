@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FixedMemOfOrbitHeightStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FixedMemOfOrbitHeight
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatrixLatticeIndexIntegralTranslationInvarianceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntGramOfFixedStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsConjugateModelExtremalDualParameterStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedLocalDualPairSwapHermitianAdjointStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntGramOfFixed
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsConjugateModelExtremalDualParameter
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedLocalDualPairSwapHermitianAdjoint
 
 noncomputable section
 
@@ -113,8 +113,8 @@ theorem step (hP : GlobalTheory.Hk3.LocPair ϖ σ q δ JS JT ψ ρ ω) (s : M) (
       ∃ u ∈ Submodule.span ℂ {v : M | ∃ y : Matrix (Fin n') (Fin n) L, latIdx y < latIdx x ∧ v = ρ y s},
         v - u ∈ Submodule.span ℂ {v : M | ∃ h : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L), (h : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) ∧
           v = ρ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x) s} ∧ v - u ≠ 0 := by
-  obtain ⟨l, hl, hg⟩ := GlobalTheory.T.exists_int_gram_of_fixed_alt L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs0 hs hspan x hfix
-  obtain ⟨v, hv, u, hu, h1, h2⟩ := GlobalTheory.T.exists_conjugateModel_extremal_dual_parameter L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs0 hs hspan (x - l) hg
+  obtain ⟨l, hl, hg⟩ := _root_.GlobalTheory.Hk3.HoweDuality.exists_int_gram_of_fixed L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs0 hs hspan x hfix
+  obtain ⟨v, hv, u, hu, h1, h2⟩ := _root_.GlobalTheory.Hk3.HoweG.gramClass_orbit_mod_lower L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs0 hs hspan (x - l) hg
   have hidx : latIdx (x - l) = latIdx x := by
     rw [sub_eq_add_neg]; exact (GlobalTheory.T.matrixLatticeIndex_integral_translation_invariance L n' n x).1 _ (neg_mem hl)
   refine ⟨v, hv, u, by rwa [hidx] at hu, ?_, h2⟩
@@ -171,7 +171,7 @@ theorem fixed_mem_span (hP : GlobalTheory.Hk3.LocPair ϖ σ q δ JS JT ψ ρ ω)
     refine Submodule.span_le.2 ?_
     rintro _ ⟨y, hy, rfl⟩
     exact rho_mem_of_mk_eq hP hs hy
-  have hind := GlobalTheory.T.latticeModel_vacuumTranslate_classes_independent L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs
+  have hind := _root_.GlobalTheory.Hk3.locVac_span_classes_indep L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hs
   have htop : (⨆ c, V c) = ⊤ := by
     refine eq_top_iff.2 ?_
     rw [← hspan]
@@ -237,7 +237,7 @@ theorem fixed_mem_span (hP : GlobalTheory.Hk3.LocPair ϖ σ q δ JS JT ψ ρ ω)
       refine Submodule.mem_iSup_of_mem (QuotientAddGroup.mk y) (Submodule.mem_iSup_of_mem ?_ (hmemV y))
       rw [hμmk, hμmk]
       exact hy
-  exact GlobalTheory.T.invariant_mem_of_orbit_height_separation π V hind htop hline hπ μ hμ S hS hstep w (fun k => hw k (Subgroup.mem_comap.1 k.2))
+  exact _root_.GlobalTheory.fixed_mem_of_orbit_height π V hind htop hline hπ μ hμ S hS hstep w (fun k => hw k (Subgroup.mem_comap.1 k.2))
 
 end Half
 
@@ -251,7 +251,7 @@ theorem howeUnram_holds : HoweUnram := by
   intro L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP s hs0 hs hspan
   refine ⟨?_, fixed_mem_span hP s hs0 hs hspan⟩
   intro w hw
-  obtain ⟨hP', hv', hsp'⟩ := GlobalTheory.T.unramifiedLocalDualPair_swap_hermitianAdjoint L ϖ σ q δ n n' JS JT ψ M ρ ω hP
+  obtain ⟨hP', hv', hsp'⟩ := _root_.GlobalTheory.Hk3.HoweSwap.locPair_swap L ϖ σ q δ n n' JS JT ψ M ρ ω hP
   have := fixed_mem_span hP' s hs0 (hv' s hs) (hsp' s hspan) w (fun h hh => by simpa using hw h hh)
   simpa using this
 

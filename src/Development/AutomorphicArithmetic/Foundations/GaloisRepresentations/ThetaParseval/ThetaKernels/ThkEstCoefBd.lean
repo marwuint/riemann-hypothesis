@@ -14,8 +14,6 @@ open scoped TensorProduct ENNReal NNReal Classical
 noncomputable section
 namespace PositivityTheory.ThKEst
 namespace W
-variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
-variable {E : Type} [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
 end W
 open W
 theorem coefBd_of_k : CoefReal → _root_.PositivityTheory.ThKEst.CoefBd_k := by

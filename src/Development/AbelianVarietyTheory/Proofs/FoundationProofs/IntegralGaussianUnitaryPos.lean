@@ -39,7 +39,7 @@ theorem integral_gaussian_unitary_pos : ∀ (V : Type) [NormedAddCommGroup V] [N
   refine ⟨(c : ℝ), by exact_mod_cast hpos, fun y v => ?_⟩
   let g : Fin n → ℂ → ℂ := fun i z => cexp (-(π : ℂ) * (1 - l i) * (z * conj z) +
     π * (((1 - l i) * e.repr y i) * conj z) + π * (z * conj (e.repr v i)))
-  have hg := fun i => GlobalTheory.T.integral_cexp_complex_gaussian_linear (1 - l i) ((1 - l i) * e.repr y i) (e.repr v i) (hre i)
+  have hg := fun i => _root_.GlobalTheory.UnitaryTheta.integral_cexp_gaussian_plane (1 - l i) ((1 - l i) * e.repr y i) (e.repr v i) (hre i)
   have hF : (fun z => cexp (-(π : ℂ) * H (z - a z) z + π * H (y - a y) z + π * H z v)) =
       (fun x : Fin n → ℂ => ∏ i, g i (x i)) ∘ Tm := by
     funext z

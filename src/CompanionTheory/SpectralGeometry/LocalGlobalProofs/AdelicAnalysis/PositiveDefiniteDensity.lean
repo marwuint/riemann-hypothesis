@@ -1,6 +1,6 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FourierInversionSchwartzBruhatStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FourierInversionSchwartzBruhat
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
 
@@ -82,7 +82,7 @@ theorem integral_mul_dens {χ : V → V → ℂ} {μ m : Measure V} [μ.IsAddHaa
     (hn : ∀ x y, ‖χ x y‖ = 1) (ha : ∀ x x' y, χ (x + x') y = χ x y * χ x' y)
     (hint : Integrable (mhat χ m) μ) {φ : V → ℂ} (hφ : SB φ) :
     ∫ x, φ x * dens χ μ m x ∂μ = ∫ z, φ z ∂m := by
-  obtain ⟨hsb, hinv⟩ := GlobalTheory.T.fourier_inversion_schwartz_bruhat V χ μ h φ hφ
+  obtain ⟨hsb, hinv⟩ := _root_.GlobalTheory.CompanionTheory.SW.FouSB.fou_sb V χ μ h φ hφ
   have hφi : Integrable φ μ := hφ.1.continuous.integrable_of_hasCompactSupport hφ.2
   have hfi : Integrable (fou χ μ φ) μ := hsb.1.continuous.integrable_of_hasCompactSupport hsb.2
   have hfni : Integrable (fun y => fou χ μ φ (-y)) μ := hfi.comp_neg

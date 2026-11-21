@@ -691,9 +691,6 @@ theorem average_smul_invariant (κ : O) (a : LetA O n) {z : W.DD T} (hz : ∀ h 
   simp only [h2avD, h2avA]
   rw [Finset.sum_congr rfl fun h hh => by rw [gamma_smul_series, hz h hh], ← Finset.sum_smul, smul_assoc]
 
-theorem average_add (κ : O) (x y : W.DD T) : h2avD W T κ (x + y) = h2avD W T κ x + h2avD W T κ y := by
-  simp only [h2avD, map_add, Finset.sum_add_distrib, smul_add]
-
 theorem average_sub (κ : O) (x y : W.DD T) : h2avD W T κ (x - y) = h2avD W T κ x - h2avD W T κ y := by
   simp only [h2avD, map_sub, Finset.sum_sub_distrib, smul_sub]
 

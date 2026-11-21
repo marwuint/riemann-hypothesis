@@ -176,20 +176,6 @@ structure AmpIn (large₂ : SizeData₂ D) (C1 Ca : ℝ) (u u' : D.what₂.Word)
       ENNReal.ofReal (K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) *
         Formalism.MainNotions.S.Bridge.orbSqO (toBessel D τ u u' θ (W τ) (lamD D τ) (A τ) (hW τ) (hA τ) hT hT') (f τ) p
 
-theorem ampIn_exists {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 Cn C1 Ca : ℝ}
-    (hAmp : Formalism.MainNotions.S.Bridge.AmpIsBessel D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 Ca)
-    (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) {u u' : D.what₂.Word} (hTT : HypTT D u u') {θ : ℝ}
-    (hθ : normWin D large₂ C1 θ) (hCn : 0 ≤ Cn) (hT : 0 < Tr D u) (hT' : 0 < Tr D u')
-    (W : D.what₂.Tau → LocW D.R.k D.R.rS) (A : ∀ τ, LocS (W τ)) (hW : ∀ τ, GoodW D τ u u' θ (W τ))
-    (hA : ∀ τ, GoodS D (lamD D τ) (A τ)) :
-    ∃ I : AmpIn large₂ C1 Ca u u' θ hT hT', I.W = W := by
-  have hd : ∀ τ, l1dist (lamD D τ) (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 := fun τ => by
-    have : l1dist (lamD D τ) (lamD D τ) = 0 := by simp [l1dist]
-    rw [this]; positivity
-  have h := fun τ => hAmp hH τ u u' hTT θ hθ (W τ) (hW τ) (lamD D τ) (hd τ) (A τ) (hA τ) hT hT'
-  choose f K hK hf hMM hJ using h
-  exact ⟨⟨⟨W, A, hW, hA, f, hf⟩, K, hK, fun τ μsec hs => (hMM τ μsec hs).2, hJ⟩, rfl⟩
-
 def JointAmplitudeFactorization {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
     {Cl Nu : Type} (N : Formalism.FourierDecayAlt.PN.NGData τ₀ D.host.E D.R.rS Cl Nu) (large₂ : SizeData₂ D) (C1 : ℝ)
@@ -201,39 +187,6 @@ def JointAmplitudeFactorization {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [No
       (∀ τ, RelPt D (W τ).z (W τ).z' (g τ) (p τ) ∧ normWin D large₂ C1 (θ' τ) ∧ RMeas D (W τ) (g τ) (θ' τ) (νR τ) ∧
         Formalism.MainNotions.S.Pv.Frames.turnPt (p τ) = ptLoc D τ w) ∧
       ENNReal.ofReal (N.jacobianSquareBound γ) ≤ ENNReal.ofReal Cfac * ∏ τ, ENNReal.ofReal (hsNormSq ((A τ).J (νR τ) (g τ)))
-
-theorem jointAmplitude_bound_of_local {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
-    {Cl Nu : Type} (N : Formalism.FourierDecayAlt.PN.NGData τ₀ D.host.E D.R.rS Cl Nu) {large₂ : SizeData₂ D} {C1 Ca Ch Cg b : ℝ}
-    {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u} {hT' : 0 < Tr D u'} (I : AmpIn large₂ C1 Ca u u' θ hT hT')
-    (hok : ∀ τ, LocOk D Ch Cg (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) b (kaRe D))
-    (hka : 0 < Formalism.MainNotions.S.Bridge.kaS D) {Cfac : ℝ} (hCfac : 0 ≤ Cfac)
-    (hF : JointAmplitudeFactorization X N large₂ C1 I.W I.A (D.mem u).A.T (D.mem u').A.T Cfac) :
-    Formalism.L2.SG.ThmBUse.JacobianSquareDominatedAtPoints X N (bdOf I.toInputs hok)
-      (Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2))) := by
-  intro γ w hγ hw hb
-  rcases le_or_gt (N.jacobianSquareBound γ) 0 with h0 | h0
-  · rw [ENNReal.ofReal_of_nonpos h0]; exact bot_le
-  obtain ⟨g, p, θ', νR, hloc, hJ2⟩ := hF γ w hγ hw hb h0
-  have hc : ∀ τ, 0 ≤ I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2) := fun τ =>
-    mul_nonneg (I.hK τ).le (Real.rpow_nonneg (by have := large₂.sc.one_lt_alt; unfold Scale.b; positivity) _)
-  have hplace : ∀ τ, ENNReal.ofReal (hsNormSq ((I.A τ).J (νR τ) (g τ))) ≤
-      ENNReal.ofReal (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) *
-        orbSq ((bdOf I.toInputs hok).L τ) ((bdOf I.toInputs hok).f τ) (ptLoc D τ w) := by
-    intro τ
-    obtain ⟨h1, h2, h3, h4⟩ := hloc τ
-    refine (I.hJ τ (g τ) (p τ) h1 (θ' τ) h2 (νR τ) h3).trans ?_
-    rw [← h4]
-    gcongr
-    exact orbSqO_le_bdOf I.toInputs hok hka τ (p τ)
-  calc ENNReal.ofReal (N.jacobianSquareBound γ) ≤ ENNReal.ofReal Cfac * ∏ τ, ENNReal.ofReal (hsNormSq ((I.A τ).J (νR τ) (g τ))) := hJ2
-    _ ≤ ENNReal.ofReal Cfac * ∏ τ, (ENNReal.ofReal (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) *
-          orbSq ((bdOf I.toInputs hok).L τ) ((bdOf I.toInputs hok).f τ) (ptLoc D τ w)) := by
-        gcongr with τ
-        exact hplace τ
-    _ = ENNReal.ofReal (Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2))) * JSq D (bdOf I.toInputs hok) w := by
-        rw [Finset.prod_mul_distrib, ENNReal.ofReal_mul hCfac, ENNReal.ofReal_prod_of_nonneg (fun τ _ => hc τ), mul_assoc]
-        rfl
 
 theorem jSqG_le_MM {large₂ : SizeData₂ D} {C1 Ca Ch Cg b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u}
     {hT' : 0 < Tr D u'} (I : AmpIn large₂ C1 Ca u u' θ hT hT')
@@ -284,10 +237,6 @@ def RowBData {D : D7} (large₂ : SizeData₂ D) {X : HidaSetting D} (Y : Full X
 def AmpUnif : Prop :=
   ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ Ca : ℝ, 0 ≤ Ca ∧ ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D), Formalism.MainNotions.S.Bridge.AmpIsBessel D large₂ C' Cl Cg cb Cu cT CT C0 0 C1 Ca
-
-def TFrameUnif : Prop :=
-  ∀ Cg cb Cu cT CT C0 : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (large₂ : SizeData₂ D), Formalism.MainNotions.TFrameOfHyp D large₂ C' Cl Cg cb Cu cT CT C0
 
 def PtUnif : Prop :=
   ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
@@ -415,41 +364,6 @@ theorem normTie_bdOf {large₂ : SizeData₂ D} {C1 Ca Ch Cg Cβ Cb Cn Cfac Ire 
           ← mul_assoc]
     _ ≤ _ := ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right hreal hIre)
 
-theorem normalized_amplitude_hypotheses_hold {large₂ : SizeData₂ D} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
-    {C' Cl Cg cb Cw cT CT C0 C1 Ca Ch Cs Cβ Cb Cn Ire : ℝ} (A : ℕ)
-    (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0) (hTT : HypTT D u u') (hT : 0 < Tr D u) (hT' : 0 < Tr D u')
-    (hAmp : Formalism.MainNotions.S.Bridge.AmpIsBessel D large₂ C' Cl Cg cb Cw cT CT C0 0 C1 Ca)
-    (hStd : Formalism.MainNotions.S.Bridge.StdOfHyp D large₂ C' Cl Cg cb Cw cT CT C0 Ch Cs Cs Cβ)
-    (hTF : Formalism.MainNotions.TFrameOfHyp D large₂ C' Cl Cg cb Cw cT CT C0) (hpt : PtFacts Y u u')
-    (ν νL : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ)
-    (hRow : RowBData large₂ Y u u' ν C1 Cn Ire) (hCs : 0 ≤ Cs) (hka : 0 < Formalism.MainNotions.S.Bridge.kaS D) (hβ : 0 ≤ Cβ) :
-    Formalism.L2.SG.ThmBUse.Ties (Y.tO u u') (NOf2 Y u u' νL ν ng) Ch Cs (Tu D u) (Tu D u') (large₂.sc.b ^ Cβ) A Cb
-      (Real.exp ((max 0 Cb * Cβ + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire) := by
-  obtain ⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩ := hRow
-  have hWg : ∀ τ, GoodW D τ u u' θ (WX Cc u u' τ) := fun τ =>
-    goodW_of Cc u u' τ (hloc τ).1 (hloc τ).2.1 (hloc τ).2.2.1 (hloc τ).2.2.2.1 (hloc τ).2.2.2.2.1
-  have hAg : ∀ τ, GoodS D (lamD D τ) (AX hBs u u' τ) := fun τ => goodS_of hBs u u' τ (hloc τ).2.2.2.2.2
-  have hv : 0 < D.host.v := by
-    unfold Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE
-    have h : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)| :=
-      abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)
-    have := Real.rpow_pos_of_pos h ((1 : ℝ) / (Module.finrank ℚ D.host.E : ℝ))
-    linarith
-  have hS := hStd hH
-  have hF := hTF hH
-  let I : AmpIn large₂ C1 Ca u u' θ hT hT' := ampInOf hAmp hH hTT hθw hT hT' (WX Cc u u') (AX hBs u u') hWg hAg
-  have hok : ∀ τ, LocOk D Ch Cs (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) (large₂.sc.b ^ Cβ) (kaRe D) := fun τ =>
-    locOk_locB D τ u u' θ (WX Cc u u' τ) (AX hBs u u' τ) (hWg τ) (hAg τ) hT hT' hka hv hθ0 (hS τ u u').1 (hF u) (hF u')
-  have hCj : 0 ≤ Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) :=
-    mul_nonneg hCfac (Finset.prod_nonneg fun τ _ => mul_nonneg (I.hK τ).le
-      (Real.rpow_nonneg (by unfold Scale.b; positivity) _))
-  exact ⟨bdOf I.toInputs hok, 1, _, zero_le_one, hCj,
-    gaps_bdOf I.toInputs hok (fun τ => (hS τ u u').2) hCs le_rfl,
-    point_amplitude_relation_normalized Y u u' hpt νL ν ng,
-    Formalism.L2.SG.ThmBUse.weight_normalized Formalism.L2.SG.Pf.weightConclusion Y u u' νL ν ng A,
-    jointAmplitude_bound_of_local (Y.tO u u') (NOf2 Y u u' νL ν ng) I hok hka hCfac (hJF νL ng),
-    normTie_bdOf I hok hCfac hIre hβ (hNF I.sec I.sec_spec)⟩
-
 theorem hypTT_of {u u' : D.what₂.Word} (h : Formalism.MainNotions.S.Cnt.Stand D u u') : HypTT D u u' := by
   obtain ⟨-, hpu, hpu', h3u, h3u', -, -, -, -, -, -, -, hmod⟩ := h
   refine ⟨hpu, hpu', h3u, h3u', ?_⟩
@@ -463,64 +377,6 @@ theorem tr_pos {u u' : D.what₂.Word} (h : Formalism.MainNotions.S.Cnt.Stand D 
   exact ⟨Nat.cast_pos.2 (show 0 < (D.mem u).A.T from lt_of_lt_of_le (by norm_num) h3u),
     Nat.cast_pos.2 (show 0 < (D.mem u').A.T from lt_of_lt_of_le (by norm_num) h3u')⟩
 
-theorem stepThmBPinnedC_of (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hTF : TFrameUnif) (hP : PtUnif)
-    (hR : RowBDataUnif) : StepThmBPinnedC := by
-  intro Cg cb Cw cT CT C0 A
-  obtain ⟨C1, Cn, c₀, d₀, hR2⟩ := hR Cg cb Cw cT CT C0
-  obtain ⟨Ca, -, a₀, b₀, hA2⟩ := hA Cg cb Cw cT CT C0 C1
-  obtain ⟨e₀, f₀, hTF2⟩ := hTF Cg cb Cw cT CT C0
-  obtain ⟨g₀, h₀, hP2⟩ := hP Cg cb Cw cT CT C0
-  obtain ⟨Cb, Cg₀, hB1⟩ := hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)
-  have hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn| := by
-    have h1 : 0 ≤ max 0 Cb := le_max_left _ _
-    have h2 : 0 ≤ max 2 Cw := le_trans (by norm_num) (le_max_left _ _)
-    have := mul_nonneg h1 h2
-    positivity
-  refine ⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ (max e₀ g₀)),
-    max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ (max f₀ h₀)))), ?_⟩
-  intro C' Cl hC' hCl D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng
-  have hC'a : a₀ ≤ C' := le_trans (le_max_left _ _) hC'
-  have hC'c : c₀ ≤ C' := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'
-  have hC'e : e₀ ≤ C' := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hC'
-  have hC'g : g₀ ≤ C' := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hC'
-  have hCl8 : 8 ≤ Cl := le_trans (le_max_left _ _) hCl
-  have hCls : 128 * max Cg₀ 0 ≤ Cl := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl
-  have hClb : b₀ ≤ Cl :=
-    le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hCld : d₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hClf : f₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hClh : h₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0 := hctx.1
-  have hTT := hypTT_of hctx.2.1
-  obtain ⟨hT, hT'⟩ := tr_pos hctx.2.1
-  have hm := cl_le_m hH
-  have hs0 : 0 ≤ max Cg₀ 0 := le_max_right _ _
-  have hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hmR' : |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hβ2 : (2 : ℝ) ≤ max 2 Cw := le_max_left _ _
-  have hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg| := by positivity
-  have hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self CT; have := abs_nonneg Cg; linarith
-    linarith
-  have hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self Cg; have := abs_nonneg CT; linarith
-    linarith
-  have hStd := Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0)
-    (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'
-  have hka := (Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1
-  have hRow := hR2 C' Cl hC'c hCld D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin
-  have hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f *
-      Real.log large₂.sc.b) * Ire := mul_nonneg (Real.exp_pos _).le hRow.1
-  exact Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (Y.tO u u') (NOf2 Y u u' νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D)
-    (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u' ν γ) hTB
-    (normalized_amplitude_hypotheses_hold Y u u' A hH hTT hT hT' (hA2 C' Cl hC'a hClb D large₂) hStd (hTF2 C' Cl hC'e hClf D large₂)
-      (hP2 C' Cl hC'g hClh D large₂ X Y u u' hctx) ν νL ng hRow hs0 hka (by linarith))
-
 end Final
 
 section Gen
@@ -533,51 +389,6 @@ open Formalism.MainNotions.S.Lat Formalism.L2.SG.HidaSetting Formalism.L2.SG.Poi
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
-
-theorem ties_core {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (XT : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
-    {Cl' Nu : Type} (N : Formalism.FourierDecayAlt.PN.NGData τ₀ D.host.E D.R.rS Cl' Nu)
-    {large₂ : SizeData₂ D} {X : HidaSetting D} (u u' : D.what₂.Word)
-    {C' Cl Cg cb Cw cT CT C0 C1 Ca Ch Cs Cβ Cb Cn Ire : ℝ} (A : ℕ)
-    (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0) (hTT : HypTT D u u') (hT : 0 < Tr D u) (hT' : 0 < Tr D u')
-    (hAmp : Formalism.MainNotions.S.Bridge.AmpIsBessel D large₂ C' Cl Cg cb Cw cT CT C0 0 C1 Ca)
-    (hStd : Formalism.MainNotions.S.Bridge.StdOfHyp D large₂ C' Cl Cg cb Cw cT CT C0 Ch Cs Cs Cβ)
-    (hTF : Formalism.MainNotions.TFrameOfHyp D large₂ C' Cl Cg cb Cw cT CT C0)
-    (hpt : Formalism.L2.SG.ThmBUse.PtTie XT N (D.mem u).A.T (D.mem u').A.T)
-    (hwt : Formalism.L2.SG.ThmBUse.WtTie XT N (D.mem u).A.T (D.mem u').A.T A 1)
-    (hIre : 0 ≤ Ire) {θ : ℝ} (Cc : Choice X θ) (hBs : WuBessel Cc) (hθ0 : 0 < θ) (hθw : normWin D large₂ C1 θ)
-    (hloc : ∀ τ, ColsTypeTr Cc u τ ∧ ColsTypeTr Cc u' τ ∧ ZTr Cc u τ ∧ ZTr Cc u' τ ∧ HaarTr Cc τ ∧
-      GoodSRest hBs u u' τ)
-    {Cfac : ℝ} (hCfac : 0 ≤ Cfac)
-    (hJF : JointAmplitudeFactorization XT N large₂ C1 (WX Cc u u') (AX hBs u u') (D.mem u).A.T (D.mem u').A.T Cfac)
-    (hNF : ∀ sec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ,
-        (∀ τ, IsSection D.R.k D.R.rS (WX Cc u u' τ).z (WX Cc u u' τ).z' (sec τ)) →
-        ENNReal.ofReal Cfac * ∏ τ, MMv D u u' (AX hBs u u' τ) (sec τ) ≤
-          ENNReal.ofReal (large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2 * D.R.f) * Ire))
-    (hCs : 0 ≤ Cs) (hka : 0 < Formalism.MainNotions.S.Bridge.kaS D) (hβ : 0 ≤ Cβ) :
-    Formalism.L2.SG.ThmBUse.Ties XT N Ch Cs (D.mem u).A.T (D.mem u').A.T (large₂.sc.b ^ Cβ) A Cb
-      (Real.exp ((max 0 Cb * Cβ + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire) := by
-  have hWg : ∀ τ, GoodW D τ u u' θ (WX Cc u u' τ) := fun τ =>
-    goodW_of Cc u u' τ (hloc τ).1 (hloc τ).2.1 (hloc τ).2.2.1 (hloc τ).2.2.2.1 (hloc τ).2.2.2.2.1
-  have hAg : ∀ τ, GoodS D (lamD D τ) (AX hBs u u' τ) := fun τ => goodS_of hBs u u' τ (hloc τ).2.2.2.2.2
-  have hv : 0 < D.host.v := by
-    unfold Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE
-    have h : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)| :=
-      abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)
-    have := Real.rpow_pos_of_pos h ((1 : ℝ) / (Module.finrank ℚ D.host.E : ℝ))
-    linarith
-  have hS := hStd hH
-  have hF := hTF hH
-  let I : AmpIn large₂ C1 Ca u u' θ hT hT' := ampInOf hAmp hH hTT hθw hT hT' (WX Cc u u') (AX hBs u u') hWg hAg
-  have hok : ∀ τ, LocOk D Ch Cs (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) (large₂.sc.b ^ Cβ) (kaRe D) := fun τ =>
-    locOk_locB D τ u u' θ (WX Cc u u' τ) (AX hBs u u' τ) (hWg τ) (hAg τ) hT hT' hka hv hθ0 (hS τ u u').1 (hF u) (hF u')
-  have hCj : 0 ≤ Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) :=
-    mul_nonneg hCfac (Finset.prod_nonneg fun τ _ => mul_nonneg (I.hK τ).le
-      (Real.rpow_nonneg (by unfold Scale.b; positivity) _))
-  exact ⟨bdOf I.toInputs hok, 1, _, zero_le_one, hCj,
-    gaps_bdOf I.toInputs hok (fun τ => (hS τ u u').2) hCs le_rfl, hpt, hwt,
-    jointAmplitude_bound_of_local XT N I hok hka hCfac hJF,
-    normTie_bdOf I hok hCfac hIre hβ (hNF I.sec I.sec_spec)⟩
 
 def PtFactsG {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) : Prop :=
   ∀ t ∈ (Y.tO u u).genSet, (Y.tO u u).vec t ≠ 0 →
@@ -597,18 +408,6 @@ theorem wtTie_NOfG {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) (νL ν
   subst hw
   exact Formalism.L2.SG.Pf.weightConclusion D _ _ A w hb
 
-def RowBDataG (large₂ : SizeData₂ D) {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word)
-    (νB : X.B.I.Ginf → Measure X.B.I.Ginf) (C1 Cn Ire : ℝ) : Prop :=
-  0 ≤ Ire ∧ ∃ (θ : ℝ) (C : Choice X θ) (hB : WuBessel C), 0 < θ ∧ normWin D large₂ C1 θ ∧
-    (∀ τ, ColsTypeTr C u τ ∧ ColsTypeTr C u τ ∧ ZTr C u τ ∧ ZTr C u τ ∧ HaarTr C τ ∧ GoodSRest hB u u τ) ∧
-    ∃ Cfac : ℝ, 0 ≤ Cfac ∧
-      (∀ (νL : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ),
-        JointAmplitudeFactorization (genT (Y.tO u u)) (NOfG Y u νL νB ng) large₂ C1 (WX C u u) (AX hB u u) (D.mem u).A.T (D.mem u).A.T Cfac) ∧
-      ∀ sec : D.what₂.Tau → ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ,
-        (∀ τ, IsSection D.R.k D.R.rS (WX C u u τ).z (WX C u u τ).z' (sec τ)) →
-        ENNReal.ofReal Cfac * ∏ τ, MMv D u u (AX hB u u τ) (sec τ) ≤
-          ENNReal.ofReal (large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2 * D.R.f) * Ire)
-
 end Gen
 
 section GenStep
@@ -625,19 +424,6 @@ def PtUnifG : Prop :=
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word),
       Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u → PtFactsG Y u
 
-def RowBDataUnifG : Prop :=
-  ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C1 Cn : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word),
-      Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u →
-      ∀ (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
-        (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ), MassDataTie X hb X0 ψ →
-      ∀ (sd C Th : ℝ) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
-        (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
-        (vR : Formalism.L2.SG.TermDef.Term D u u F0 what₂ → ℝ) (Q : Formalism.L2.SG.PairVal.PairSys D u u F0 what₂)
-        (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (Irat Ire : ℝ),
-        MassDataAdmissible X Y u u (bkU X hb Y u u X0 ψ sd C Th vR Q i0 i0' νq) Irat Ire →
-      ∀ ν, Pinned X u u ν → RowBDataG large₂ Y u ν C1 Cn Ire
-
 def StepThmBG : Prop :=
   ∀ Cg cb Cw cT CT C0 : ℝ, ∀ A : ℕ, ∃ CB : ℝ, 0 ≤ CB ∧ ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word),
@@ -653,187 +439,6 @@ def StepThmBG : Prop :=
         Formalism.FourierDecayAlt.PN.PointSumInput (genT (Y.tO u u)) (NOfG Y u νL ν ng) (A * (D.R.rS + 1) ^ 2)
           (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
 
-theorem stepThmBG_of (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hTF : TFrameUnif) (hP : PtUnifG)
-    (hR : RowBDataUnifG) : StepThmBG := by
-  intro Cg cb Cw cT CT C0 A
-  obtain ⟨C1, Cn, c₀, d₀, hR2⟩ := hR Cg cb Cw cT CT C0
-  obtain ⟨Ca, -, a₀, b₀, hA2⟩ := hA Cg cb Cw cT CT C0 C1
-  obtain ⟨e₀, f₀, hTF2⟩ := hTF Cg cb Cw cT CT C0
-  obtain ⟨g₀, h₀, hP2⟩ := hP Cg cb Cw cT CT C0
-  obtain ⟨Cb, Cg₀, hB1⟩ := hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)
-  have hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn| := by
-    have h1 : 0 ≤ max 0 Cb := le_max_left _ _
-    have h2 : 0 ≤ max 2 Cw := le_trans (by norm_num) (le_max_left _ _)
-    have := mul_nonneg h1 h2
-    positivity
-  refine ⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ (max e₀ g₀)),
-    max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ (max f₀ h₀)))), ?_⟩
-  intro C' Cl hC' hCl D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng
-  have hC'a : a₀ ≤ C' := le_trans (le_max_left _ _) hC'
-  have hC'c : c₀ ≤ C' := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'
-  have hC'e : e₀ ≤ C' := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hC'
-  have hC'g : g₀ ≤ C' := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hC'
-  have hCl8 : 8 ≤ Cl := le_trans (le_max_left _ _) hCl
-  have hCls : 128 * max Cg₀ 0 ≤ Cl := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl
-  have hClb : b₀ ≤ Cl :=
-    le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hCld : d₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hClf : f₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hClh : h₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0 := hctx.1
-  have hTT := hypTT_of hctx.2.1
-  obtain ⟨hT, -⟩ := tr_pos hctx.2.1
-  have hm := cl_le_m hH
-  have hs0 : 0 ≤ max Cg₀ 0 := le_max_right _ _
-  have hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hmR' : |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hβ2 : (2 : ℝ) ≤ max 2 Cw := le_max_left _ _
-  have hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg| := by positivity
-  have hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self CT; have := abs_nonneg Cg; linarith
-    linarith
-  have hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self Cg; have := abs_nonneg CT; linarith
-    linarith
-  have hStd := Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0)
-    (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'
-  have hka := (Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1
-  obtain ⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩ :=
-    hR2 C' Cl hC'c hCld D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin
-  have hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f *
-      Real.log large₂.sc.b) * Ire := mul_nonneg (Real.exp_pos _).le hIre
-  exact Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (genT (Y.tO u u)) (NOfG Y u νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D)
-    (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u ν γ) hTB
-    (ties_core (genT (Y.tO u u)) (NOfG Y u νL ν ng) u u A hH hTT hT hT (hA2 C' Cl hC'a hClb D large₂) hStd
-      (hTF2 C' Cl hC'e hClf D large₂) (ptTie_NOfG Y u (hP2 C' Cl hC'g hClh D large₂ X Y u hctx) νL ν ng)
-      (wtTie_NOfG Y u νL ν ng A) hIre Cc hBs hθ0 hθw hloc hCfac (hJF νL ng) hNF hs0 hka (by linarith))
-
 end GenStep
-
-section Comparison₂
-
-open scoped Classical
-open Formalism.MainNotions.S.Lat Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full
-  Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.NGCut Formalism.L2.SG.NGAnalytic Formalism.L2.SG.LocWSOf Formalism.QuantumDeterminants NumberField
-  Formalism.L2.SG.Pf.MainEqCut
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-theorem theoremB_fixed_induction_of_uniform (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hP : PtUnif)
-    (hR : RowBDataUnif) : StepThmBPinnedC := by
-  intro Cg cb Cw cT CT C0 A
-  obtain ⟨C1, Cn, c₀, d₀, hR2⟩ := hR Cg cb Cw cT CT C0
-  obtain ⟨Ca, -, a₀, b₀, hA2⟩ := hA Cg cb Cw cT CT C0 C1
-  obtain ⟨g₀, h₀, hP2⟩ := hP Cg cb Cw cT CT C0
-  obtain ⟨Cb, Cg₀, hB1⟩ := hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)
-  have hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn| := by
-    have h1 : 0 ≤ max 0 Cb := le_max_left _ _
-    have h2 : 0 ≤ max 2 Cw := le_trans (by norm_num) (le_max_left _ _)
-    have := mul_nonneg h1 h2
-    positivity
-  refine ⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ g₀),
-    max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ h₀))), ?_⟩
-  intro C' Cl hC' hCl D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng
-  have hC'a : a₀ ≤ C' := le_trans (le_max_left _ _) hC'
-  have hC'c : c₀ ≤ C' := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'
-  have hC'g : g₀ ≤ C' := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC'
-  have hCl8 : 8 ≤ Cl := le_trans (le_max_left _ _) hCl
-  have hCls : 128 * max Cg₀ 0 ≤ Cl := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl
-  have hClb : b₀ ≤ Cl :=
-    le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hCld : d₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hClh : h₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0 := hctx.1
-  have hTT := hypTT_of hctx.2.1
-  obtain ⟨hT, hT'⟩ := tr_pos hctx.2.1
-  have hm := cl_le_m hH
-  have hs0 : 0 ≤ max Cg₀ 0 := le_max_right _ _
-  have hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hmR' : |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hβ2 : (2 : ℝ) ≤ max 2 Cw := le_max_left _ _
-  have hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg| := by positivity
-  have hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self CT; have := abs_nonneg Cg; linarith
-    linarith
-  have hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self Cg; have := abs_nonneg CT; linarith
-    linarith
-  have hStd := Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0)
-    (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'
-  have hka := (Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1
-  have hRow := hR2 C' Cl hC'c hCld D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin
-  have hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f *
-      Real.log large₂.sc.b) * Ire := mul_nonneg (Real.exp_pos _).le hRow.1
-  exact Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (Y.tO u u') (NOf2 Y u u' νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D)
-    (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u' ν γ) hTB
-    (normalized_amplitude_hypotheses_hold Y u u' A hH hTT hT hT' (hA2 C' Cl hC'a hClb D large₂) hStd (fun _ => hctx.2.2.2.2.2.2.2.2.2)
-      (hP2 C' Cl hC'g hClh D large₂ X Y u u' hctx) ν νL ng hRow hs0 hka (by linarith))
-
-theorem theoremB_induction_of_uniform_bounds (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hP : PtUnifG)
-    (hR : RowBDataUnifG) : StepThmBG := by
-  intro Cg cb Cw cT CT C0 A
-  obtain ⟨C1, Cn, c₀, d₀, hR2⟩ := hR Cg cb Cw cT CT C0
-  obtain ⟨Ca, -, a₀, b₀, hA2⟩ := hA Cg cb Cw cT CT C0 C1
-  obtain ⟨g₀, h₀, hP2⟩ := hP Cg cb Cw cT CT C0
-  obtain ⟨Cb, Cg₀, hB1⟩ := hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)
-  have hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn| := by
-    have h1 : 0 ≤ max 0 Cb := le_max_left _ _
-    have h2 : 0 ≤ max 2 Cw := le_trans (by norm_num) (le_max_left _ _)
-    have := mul_nonneg h1 h2
-    positivity
-  refine ⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ g₀),
-    max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ h₀))), ?_⟩
-  intro C' Cl hC' hCl D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng
-  have hC'a : a₀ ≤ C' := le_trans (le_max_left _ _) hC'
-  have hC'c : c₀ ≤ C' := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'
-  have hC'g : g₀ ≤ C' := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC'
-  have hCl8 : 8 ≤ Cl := le_trans (le_max_left _ _) hCl
-  have hCls : 128 * max Cg₀ 0 ≤ Cl := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl
-  have hClb : b₀ ≤ Cl :=
-    le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hCld : d₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hClh : h₀ ≤ Cl := le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _))
-    (le_max_right _ _)) (le_max_right _ _)) hCl
-  have hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0 := hctx.1
-  have hTT := hypTT_of hctx.2.1
-  obtain ⟨hT, -⟩ := tr_pos hctx.2.1
-  have hm := cl_le_m hH
-  have hs0 : 0 ≤ max Cg₀ 0 := le_max_right _ _
-  have hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hmR' : |max Cg₀ 0| ≤ D.R.m := by rw [abs_of_nonneg hs0]; linarith
-  have hβ2 : (2 : ℝ) ≤ max 2 Cw := le_max_left _ _
-  have hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg| := by positivity
-  have hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self CT; have := abs_nonneg Cg; linarith
-    linarith
-  have hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by
-    have h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|) := by nlinarith
-    have h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg| := by have := le_abs_self Cg; have := abs_nonneg CT; linarith
-    linarith
-  have hStd := Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0)
-    (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'
-  have hka := (Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1
-  obtain ⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩ :=
-    hR2 C' Cl hC'c hCld D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin
-  have hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f *
-      Real.log large₂.sc.b) * Ire := mul_nonneg (Real.exp_pos _).le hIre
-  exact Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (genT (Y.tO u u)) (NOfG Y u νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D)
-    (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u ν γ) hTB
-    (ties_core (genT (Y.tO u u)) (NOfG Y u νL ν ng) u u A hH hTT hT hT (hA2 C' Cl hC'a hClb D large₂) hStd
-      (fun _ => hctx.2.2.2.2.2.2.2.2.2) (ptTie_NOfG Y u (hP2 C' Cl hC'g hClh D large₂ X Y u hctx) νL ν ng)
-      (wtTie_NOfG Y u νL ν ng A) hIre Cc hBs hθ0 hθw hloc hCfac (hJF νL ng) hNF hs0 hka (by linarith))
-
-end Comparison₂
 
 end Formalism.L2.SG.Pf.BDat

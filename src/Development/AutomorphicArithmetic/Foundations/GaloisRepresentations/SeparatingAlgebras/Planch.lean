@@ -2,12 +2,6 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
-section
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
-  [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
-
-end
-
 private theorem sum_norm_sq_le_integral_of_plancherel {G : Type} [Group G] {n : ℕ} (K : Subgroup G)
     (φ : (Fin n → UnitAddCircle) → G → ℂ) (D S : (Fin n → UnitAddCircle) → ℂ) (f : G → ℂ)
     (T : Finset G) (mr B : ℝ) (N : ℕ) (c : ℂ) (hm : 0 < mr) (hN : 0 < N)

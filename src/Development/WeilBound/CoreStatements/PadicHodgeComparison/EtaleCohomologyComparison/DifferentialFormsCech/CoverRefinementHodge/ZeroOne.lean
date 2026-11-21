@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.CechDifferentialPullback.Bridge
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafPullConnectingCompatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechShortExactPullCompatStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechShortExactPullCompat
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -91,7 +91,7 @@ theorem cechHOne_pull' : ∀ {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V 
       cechOneProj U hC' (GroundTheory.Arith.SchemeCoh.res S'.X₃.obj (top_le_map f) (α.τ₃.hom.app (op ⊤) s)) := by
     change cechPullH f α.τ₁.hom V U τ hτ (0 + 1) (hC.delta 0 (globalCocycle S.X₃.obj V s)) =
       hC'.delta 0 (globalCocycle S'.X₃.obj U _)
-    refine (GlobalTheory.T.cech_short_exact_pull_compat f V U τ hτ hC hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ 0
+    refine (_root_.GlobalTheory.CompanionTheory.OmCechDelta.cechPullH_delta f V U τ hτ hC hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ 0
       (globalCocycle S.X₃.obj V s)).trans ?_
     congr 1
     exact Subtype.ext (pullCoch_globalCocycle f α.τ₃.hom V U τ hτ s)

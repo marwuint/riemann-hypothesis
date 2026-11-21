@@ -93,12 +93,6 @@ theorem sum_univ_eq {M : Type*} [AddCommMonoid M] (g : (E →+* ℂ) → M) :
 theorem two_mul_card : 2 * Fintype.card Φ = Module.finrank ℚ E := by
   rw [← Embeddings.card E ℂ, ← Fintype.card_congr Φ.sumEquiv, Fintype.card_sum, two_mul]
 
-theorem card_eq_finrank [IsCMField E] :
-    Fintype.card Φ = Module.finrank ℚ (maximalRealSubfield E) := by
-  have h := Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E
-  rw [Algebra.IsQuadraticExtension.finrank_eq_two _ E, ← Φ.two_mul_card] at h
-  omega
-
 instance : Nonempty Φ := by
   rw [← Fintype.card_pos_iff]
   have h := Φ.two_mul_card
@@ -143,12 +137,6 @@ theorem eq_zero_of_sum_re_eq_zero (δ : Φ → ℂ)
   simpa using h2 (Φ.sumEquiv (.inl τ))
 
 end NumberField
-
-example {E : Type*} [Field E] [NumberField E] (Φ : CMType E) : Φ.conjugate ≠ Φ := by
-  intro h
-  obtain ⟨τ⟩ : Nonempty Φ := inferInstance
-  have h1 : τ.1 ∈ Φ.conjugate := by rw [h]; exact τ.2
-  exact (Φ.mem_iff_conjugate_notMem _).mp τ.2 h1
 
 end CMType
 

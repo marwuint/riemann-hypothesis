@@ -38,23 +38,7 @@ theorem h_om'_f (f f' : Fin (r + 1) → V) (a : Fin (r + 1)) :
   rw [this, Matrix.mul_adjugate, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
   split_ifs <;> simp
 
-theorem h_om_f' (f f' : Fin (r + 1) → V) (b : Fin (r + 1)) :
-    H.h (H.om f f') (f' b) = if b = Fin.last r then M.L.cj (H.Zhat f f').det else 0 := by
-  have : H.h (H.om f f') (f' b) =
-      M.L.cj (((H.Zhat f f').adjugate * (H.Zhat f f')) (Fin.last r) b) := by
-    unfold HermSp.om
-    rw [h_sum_left, Matrix.mul_apply, map_sum]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    rw [map_mul, H.h_herm (f' b) (f a)]
-    rfl
-  rw [this, Matrix.adjugate_mul, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
-  by_cases h : b = Fin.last r
-  · subst h; simp
-  · rw [if_neg (Ne.symm h), if_neg h, mul_zero, map_zero]
-
 def omP (f f' : Fin (r + 1) → V) : V := Ring.inverse (H.Dl f f' (r + 1)) • H.om' f f'
-
-def omQ (f f' : Fin (r + 1) → V) : V := M.L.cj (Ring.inverse (H.Dl f f' (r + 1))) • H.om f f'
 
 theorem h_omP_f (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) (a : Fin (r + 1)) :
     H.h (omP H f f') (f a) = if a = Fin.last r then 1 else 0 := by
@@ -63,24 +47,11 @@ theorem h_omP_f (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) (a 
   · exact Ring.inverse_mul_cancel _ hD
   · exact mul_zero _
 
-theorem h_omQ_f' (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) (b : Fin (r + 1)) :
-    H.h (omQ H f f') (f' b) = if b = Fin.last r then 1 else 0 := by
-  rw [omQ, H.h_smul_left, h_om_f', ← dl_full]
-  split_ifs
-  · rw [← map_mul, Ring.inverse_mul_cancel _ hD, map_one]
-  · exact mul_zero _
-
 theorem omP_mem (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) :
     omP H f f' ∈ H.perp (H.X f) := by
   rw [mem_perpX_iff]
   intro a
   rw [h_omP_f H f f' hD, if_neg (Fin.castSucc_lt_last a).ne]
-
-theorem omQ_mem (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) :
-    omQ H f f' ∈ H.perp (H.X f') := by
-  rw [mem_perpX_iff]
-  intro a
-  rw [h_omQ_f' H f f' hD, if_neg (Fin.castSucc_lt_last a).ne]
 
 theorem z_mem (f : Fin (r + 1) → V) (T : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T) :
     f (Fin.last r) ∈ H.perp (H.X f) := by

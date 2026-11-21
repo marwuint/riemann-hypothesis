@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZ
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdxEqRelIndex
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QuadraticCharNegOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormCmPrimeInertPrimeSignStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormCmPrimeInertPrimeSign
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.RatEqui GlobalTheory.InertParity
 open scoped BigOperators Pointwise
 open Formalism.FrobeniusOrbits GlobalTheory.NormSign
@@ -100,7 +100,7 @@ theorem norm_neg : ∀ (D : D7) (t : 𝓞 D.host.E) (P B : Ideal (𝓞 D.host.E)
     D.host.conj (t : D.host.E) = t → P.IsMaximal → D.host.conj • P = P →
     Ideal.span {t} = P * B * (D.host.conj • B) → (∏ τ, embT D τ (t : D.host.E)).re < 0 := by
   intro D t P B ht0 ht hP hc hB
-  obtain ⟨-, p, f, hp, -, hp2, -, hf, hN, hpd⟩ := (GlobalTheory.T.absNorm_cmPrime_inertPrime_sign D P hP).2.1 hc
+  obtain ⟨-, p, f, hp, -, hp2, -, hf, hN, hpd⟩ := (_root_.GlobalTheory.InertResidue.norm_prime D P hP).2.1 hc
   rw [prod_embT]
   generalize D.host = H at *
   haveI : Fact H.d.Prime := ⟨H.hyp.2.1⟩

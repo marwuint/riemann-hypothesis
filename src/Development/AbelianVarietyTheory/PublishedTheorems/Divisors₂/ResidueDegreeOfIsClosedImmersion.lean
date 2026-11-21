@@ -146,13 +146,7 @@ theorem cycleHeights_of_arCalc (H : ArCalc) : CycleHeights :=
 
 namespace CycleHeights
 
-theorem arExists (H : CycleHeights) : ArExists := H.1
-
-theorem arMix (H : CycleHeights) : ArMix := H.2.1
-
 theorem heightProjection (H : CycleHeights) : HeightProjection := H.2.2
-
-theorem arChange (H : CycleHeights) : ArChange := arChange_of_arMix H.1 H.2.1
 
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {D e : ℕ}
 
@@ -161,49 +155,6 @@ theorem existsUnique (H : CycleHeights) (hX : IsArithVar p D) (L : HermLB p) : �
   have ⟨h, hh⟩ := (H.1 k X p D hX).1 L
   ⟨h, hh, fun _ h' => h'.unique hX hh⟩
 
-theorem height_pull (H : CycleHeights) (hX : IsArithVar p D) (hY : IsArithVar q e) (π : Y ⟶ X) (hπ : π ≫ p = q)
-    {L : HermLB p} {h : X → ℝ} {h' : Y → ℝ} (hh : L.IsArithHeight h) (hh' : (L.pull π hπ).IsArithHeight h')
-    {W : Scheme.{0}} [IsIntegral W] (j : W ⟶ Y) [IsClosedImmersion j] (hc : CharZero Γ(W, ⊤)) {d : ℕ}
-    (hd : topologicalKrullDim W = (d + 1 : ℕ))
-    (hd' : topologicalKrullDim (closure ({π (j (genericPoint W))} : Set X)) = (d + 1 : ℕ))
-    (hm : π.residueDegree (j (genericPoint W)) ≠ 0) :
-    h' (j (genericPoint W)) = π.residueDegree (j (genericPoint W)) * h (π (j (genericPoint W))) := by
-  have hW := hY.of_isClosedImmersion j hc hd
-  have e₁ : (j ≫ π) ≫ p = j ≫ q := by rw [Category.assoc, hπ]
-  have hdeg : (j ≫ π).residueDegree (genericPoint W) = π.residueDegree (j (genericPoint W)) := by
-    rw [GlobalTheory.CurveDegreesCompare.residueDegree_comp, residueDegree_of_isClosedImmersion j, mul_one]
-  obtain ⟨f, hf, e₂⟩ := H.2.2 k X W p _ D d hX hW (j ≫ π) e₁ hd' (hdeg ▸ hm) L h hh
-  rw [hdeg] at e₂
-  exact (hh'.isSelfInter_restrict hY j rfl).unique hW
-    ⟨f, (L.refines_pull_comp π hπ j rfl e₁).isArithHeight hW hf, e₂⟩
-
-theorem isSelfInter_pull_of_isIso_restrict (H : CycleHeights) [IsIntegral X] [IsIntegral Y] (hX : IsArithVar p D)
-    (hY : IsArithVar q D) (π : Y ⟶ X) (hπ : π ≫ p = q) (U : X.Opens) (hU : (U : Set X).Nonempty) [IsIso (π ∣_ U)]
-    {L : HermLB p} {a : ℝ} (ha : L.IsSelfInter a) : (L.pull π hπ).IsSelfInter a := by
-  obtain ⟨h₁, h₂⟩ := generic_of_isIso_restrict π U hU
-  obtain ⟨h, hh, rfl⟩ := ha
-  have := H.2.2 k X Y p q D D hX hY π hπ (by
-    rw [h₁, (genericPoint_spec X).def]
-    exact (IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph).trans hX.dim_eq)
-    (by rw [h₂]; exact one_ne_zero) L h hh
-  rwa [h₂, h₁, Nat.cast_one, one_mul] at this
-
-theorem isSelfInter_shift (H : CycleHeights) [IsIntegral X] (hX : IsArithVar p D) {L : HermLB p} {a : ℝ}
-    (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (ha : L.IsSelfInter a) :
-    (L.shift t ht).IsSelfInter (a + ((D : ℝ) + 1) * ∑ᶠ σ, t σ * (L.φ σ).chernInt D univ fun _ => 1) :=
-  TwistTop.isSelfInter_shift H.1 H.arChange k X p D hX L a t ht ha
-
 end CycleHeights
-
-example (t : ℝ) : IsArithVar (𝟙 (Sp ℤ)) 0 ∧
-    topologicalKrullDim (closure ({genericPoint (Sp ℤ)} : Set (Sp ℤ))) = (0 + 1 : ℕ) ∧
-    (𝟙 (Sp ℤ) : _ ⟶ _).residueDegree (genericPoint _) = 1 ∧
-    ((ArithBase.trivShift t).pull (𝟙 _) (Category.id_comp _)).IsSelfInter t := by
-  obtain ⟨h, hh, e⟩ := ArithBase.isSelfInter_trivShift t
-  refine ⟨ArithBase.isArithVar_int, ?_, Scheme.Hom.residueDegree_id _,
-    e ▸ hh.isSelfInter_restrict ArithBase.isArithVar_int (𝟙 _) (Category.id_comp _)⟩
-  rw [(genericPoint_spec (Sp ℤ)).def]
-  exact (IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ _).isHomeomorph).trans
-    ArithBase.isArithVar_int.dim_eq
 
 end GlobalTheory.Published

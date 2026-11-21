@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BadEltIdemCentral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffOneRealOfIdem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankEigenInfKerLeOfSemidirectSplitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankEigenInfKerLeOfSemidirectSplit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneSubGoodIdempotentEqBadTupleSumsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightUpperUnitriangularIdempotentIndepCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightUpperUnitriangularIdempotentIndepCharacter
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders GlobalTheory.BadCount Module
 
 namespace GlobalTheory.BadCount
@@ -22,9 +22,9 @@ theorem bad_part_le_locShare : ∀ (D : D7) (Γ V : Type) [Group Γ] [Finite Γ]
     intro k
     unfold locShare
     refine Finset.sum_congr rfl fun t _ => Finset.prod_congr rfl fun v _ => ?_
-    exact GlobalTheory.T.weight_upperUnitriangularIdempotent_indep_character D k _ _ (hW.1 ⟨k, v⟩) (hψ₀ k) (t v)
+    exact _root_.GlobalTheory.BadCount.wtOf_eUk_indep D k _ _ (hW.1 ⟨k, v⟩) (hψ₀ k) (t v)
   refine ⟨S, hbad, ?_⟩
-  have key := GlobalTheory.T.finrank_eigen_inf_ker_le_of_semidirect_split (G0g D.nd) Γ V π ι hs ρ P lam lamb hlamb H n D.ntypes.e0
+  have key := _root_.GlobalTheory.BadCount.finrank_eig_inf_ker_le_of_isSplit (G0g D.nd) Γ V π ι hs ρ P lam lamb hlamb H n D.ntypes.e0
     (fun k => badElt D k (S k)) (fun k => locShare D (fun k _ => eUk D k (ψ₀ k)) k (S k)) c hemb hn
     (fun k => (GlobalTheory.BadCount.IdemCen.badElt_idem_central D k (S k)).1)
     (fun k a => (GlobalTheory.BadCount.IdemCen.badElt_idem_central D k (S k)).2 a)

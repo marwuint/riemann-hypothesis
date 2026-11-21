@@ -18,12 +18,4 @@ def placesRing {L : Type*} [Field L] [NumberField L] (S : Set (FinitePlace L)) :
 theorem mem_placesRing {L : Type*} [Field L] [NumberField L] (S : Set (FinitePlace L)) (x : L) :
     x ∈ placesRing S ↔ ∀ w ∈ S, w x ≤ 1 := Iff.rfl
 
-example {L : Type*} [Field L] [NumberField L] (S : Set (FinitePlace L)) (x : 𝓞 L) :
-    algebraMap (𝓞 L) L x ∈ placesRing S := fun w _ ↦ by
-  rw [← FinitePlace.norm_embedding_eq]
-  exact FinitePlace.norm_le_one _ _ x
-
-example : placesRing (∅ : Set (FinitePlace ℚ)) = ⊤ :=
-  eq_top_iff.2 fun _ _ w hw ↦ absurd hw (Set.notMem_empty w)
-
 end GroundTheory.Heights₂.Heights

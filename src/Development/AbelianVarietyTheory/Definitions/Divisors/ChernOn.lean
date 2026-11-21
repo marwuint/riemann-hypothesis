@@ -29,31 +29,8 @@ def Calc.NumOn [IsIntegral X] : Prop := ∀ u, M.Smooth u → ∀ hu hc (Φ : Mv
   IsArFun (fun o : Option ι => o.elim (fnB (M.pull ε π ((2 : ℝ) • u)) hu hc) L) e Φ → ∀ a : Option ι → ℝ,
     Φ (lin a ^ (e + 1)) = ν * K.top (∑ i, a (some i) • v i + a none • K.ar u)
 
-def Calc.Reads [IsIntegral X] : Prop :=
-  IsArithVar p e ∧ 0 < ν ∧ (∀ σ, Continuous (π σ) ∧ Function.Surjective (π σ)) ∧ Function.Surjective ε ∧
-  (∀ u, M.Smooth u → ∀ σ z, CxPts.CInfAt (M.pull ε π u σ) z) ∧ K.ChernOn ε π ν L v ∧ K.NumOn ε π ν L v
-
-omit [Fintype ι] in
-
-example : (∀ σ z, CxPts.CInfAt (M.pull ε π ((2 : ℝ) • 0) σ) z) ∧ ∀ σ σ',
-    (Weight.ofFun (M.pull ε π ((2 : ℝ) • 0) σ)).IsConj (Weight.ofFun (M.pull ε π ((2 : ℝ) • 0) σ')) := by
-  rw [smul_zero]
-  exact ⟨fun _ z => CxPts.cInfAt_const 0 z, fun _ _ _ _ _ _ _ => rfl⟩
-
 end Model
 
 variable {D : D7} {Y : ShimX D.what₂.Tau} {T : Real0 Y} (P : T.Pts)
-
-open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ArInt in
-
-def Real0.Pts.OnModel : Prop := ∀ B : ℝ, 2 ≤ B → ∀ c, ∃ (k : Type) (_ : CommRing k) (X : Scheme.{0}) (_ : IsIntegral X)
-    (p : X ⟶ Sp k) (ε : (k →+* ℂ) → Fin ((T.M c).n + 1)) (π : ∀ σ, CxPts p σ → (T.M c).X (ε σ)) (ν : ℝ) (m : ℕ)
-    (L : Option (D.what₂.Tau × Fin Y.N) → HermLB p) (q : X → Y.Pt → Prop),
-  0 < m ∧ (T.K B c).Reads ε π ν L (T.gen B c m) ∧ (∀ x, IsAlgPt x → ∃ y, q x y) ∧ (∀ y, Y.compPt y = c → ∃ x, q x y) ∧
-  ∀ x y, q x y → IsAlgPt x ∧ Y.compPt y = c ∧
-    (∀ g, P.mean c y g * Nat.card (X.residueField x →+* ℂ) =
-      ∑ᶠ σ, ∑ᶠ z ∈ {z : CxPts p σ | z.1 (IsLocalRing.closedPoint ℂ) = x}, (T.M c).pull ε π g σ z) ∧
-    ∀ n : Option (D.what₂.Tau × Fin Y.N) → ℤ,
-      IsPtHt (ArInt.comb L n) x (P.ht B c y (∑ o, (n o : ℝ) • T.gen B c m o))
 
 end GlobalTheory.Mean4O

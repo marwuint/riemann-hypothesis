@@ -129,10 +129,6 @@ theorem coe_selfDualLatticeInFrameCoordinates_eq (V : HSp D) : (latC V : Set (Fi
 theorem isLevelK_iff_finCong (V : HSp D) (N : ℕ) (Kf : Subgroup (GA D V)) :
     IsLevelK V N Kf ↔ ∀ k, k ∈ Kf ↔ k ∈ GfC V ∧ FinCong V N k := Iff.rfl
 
-theorem isRat_one_one (V : HSp D) : IsRat V 1 1 := by
-  unfold IsRat
-  rw [map_one, map_one]
-
 theorem exists_isRat_of_mem_GQ (V : HSp D) {γ : GA D V} (h : γ ∈ GQ V) : ∃ γ', IsRat V γ γ' := by
   obtain ⟨γ', -, e⟩ := h
   exact ⟨γ', e.symm⟩
@@ -175,51 +171,9 @@ namespace Ctx
 
 variable {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {V : HSp D} {r : ℕ} (C : Ctx Xo c σ V r)
 
-theorem ok_iff_recOK : C.OK ↔ GlobalTheory.RecDict.RecOK C.M V C.hr C.ι C.th C.x₀ ∧
-    (H.rt : D.host.E) = D.host.sqrtMinusD ∧ H.rt0 = D.host.φ₀ D.host.sqrtMinusD ∧ 1 ≤ Dw.p + Dw.q ∧ l.A = 1 ∧
-    GoodEmb c σ ∧ ∀ τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ (C.θ τ) := by
-  constructor
-  · intro h
-    exact ⟨⟨h.base, h.modelW, h.iota.emb, (isom_iff_model Dw V C.hr C.ι).1 h.iota.isom, fun _ τ => h.inf τ.1,
-      h.orth⟩, h.iota.rt, h.iota.rt0, h.pos, h.lA, h.good, h.inf⟩
-  · rintro ⟨⟨h1, h2, h3, h4, -, h6⟩, k1, k2, k3, k4, k5, k6⟩
-    exact ⟨⟨k1, k2, h3, (isom_iff_model Dw V C.hr C.ι).2 h4⟩, k3, k4, k5, h1, h2, k6, h6⟩
-
-theorem markSpec_iff_mark (h : GA D V) (p : Σ k, Frame (C.M.X k).Ψ r) :
-    GlobalTheory.RecDict.MarkSpec C.M V C.hr C.ι C.th C.x₀ h p ↔ ∃ γ, C.Mark h p.1 γ ∧ p.2 = C.fr (γ * h) p.1 := by
-  constructor
-  · rintro ⟨γ, h1, h2, h3, h4⟩
-    exact ⟨γ, ⟨h1, h2, h3⟩, funext h4⟩
-  · rintro ⟨γ, ⟨h1, h2, h3⟩, h4⟩
-    exact ⟨γ, h1, h2, h3, fun τ => congrFun h4 τ⟩
-
-theorem isDict_iff_markSpec (dict : GA D V → Σ k, Frame (C.M.X k).Ψ r) :
-    C.IsDict dict ↔ (∀ h, GlobalTheory.RecDict.MarkSpec C.M V C.hr C.ι C.th C.x₀ h (dict h)) ∧
-      ∀ k, ∃ h, dict h = ⟨k, C.fr 1 k⟩ := by
-  simp only [IsDict, markSpec_iff_mark]
-
 theorem unf_eq_toPj (un : ∀ k, (C.M.X k).dom → FrPt Xo c (CAt σ)) :
     C.unf un = (GlobalTheory.FrameUnif.unfOf C.e C.F C.M un).toPj := rfl
 
-theorem mat_fr_one (k : Fin C.F.n) (τ : (C.M.X k).Ψ) : mat (C.fr 1 k) τ = C.x₀ τ.1 := by
-  have h : archM V (C.θ τ.1) 1 = 1 := by
-    unfold archM
-    rw [map_one]
-    exact Matrix.map_one _ (map_zero _) (map_one _)
-  show Matrix.reindex (finCongr C.hr) (finCongr C.hr) (archM V (C.θ τ.1) 1) * C.x₀ τ.1 = _
-  rw [h]
-  simp
-
 end Ctx
-
-example (V : HSp D) (N : ℕ) : FinCong V N 1 := fun z _ => ⟨0, zero_mem _, by simp⟩
-
-example (D : D7) (x : D.host.E) : cF D (cF D x) = x := star_star x
-
-example (D : D7) : cF D D.host.sqrtMinusD = -D.host.sqrtMinusD := by
-  have hφ : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := D.host.φ₀_mem
-  apply D.host.φ₀.injective
-  rw [cF_apply_eq_complexConj, IsCMField.complexEmbedding_complexConj, map_neg, hφ]
-  simp
 
 end GlobalTheory.Member

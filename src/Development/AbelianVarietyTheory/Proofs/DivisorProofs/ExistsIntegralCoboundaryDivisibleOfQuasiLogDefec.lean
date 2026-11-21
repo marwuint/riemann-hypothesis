@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralCoboundaryRepresentativeCocycleRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupCocycleCoboundaryModPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapCoboundarySwapPullbackCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralCoboundaryRepresentativeCocycleRules
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupCocycleCoboundaryModPrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapCoboundarySwapPullbackCommute
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup
 
 namespace GlobalTheory.QLog
@@ -18,12 +18,12 @@ theorem exists_int_cob_dvd_of_defect_ev :
     ext α
     rw [coeff_map, hbκ α]
     rfl
-  obtain ⟨hcoc, hκ0, hdef⟩ := GlobalTheory.T.integral_coboundary_representative_cocycle_rules O E d c.μ c.isLaw hF.inj f κ hκ
+  obtain ⟨hcoc, hκ0, hdef⟩ := _root_.GlobalTheory.QLog.integral_cob_defect_rules O E d c.μ c.isLaw hF.inj f κ hκ
   have hrel := (hdef p s hs).1
   have hμ0 := c.isLaw.const
   have hneg : cob1 c.μ (-s) = -cob1 c.μ s := by
     rw [← neg_one_smul O s, formalCoboundary_smul hμ0, neg_one_smul]
-  obtain ⟨t, ht0, htd⟩ := GlobalTheory.T.formalGroupCocycle_coboundary_mod_prime p O G d c κ (-s) (-y) (hκ0 hf0) hcoc
+  obtain ⟨t, ht0, htd⟩ := _root_.GlobalTheory.CobModP.coboundary_mod_p p O G d c κ (-s) (-y) (hκ0 hf0) hcoc
     (fun α => by
       rw [hneg, hrel, show -((p : O) • κ - pull2 (nmul c.μ p) κ) - pull2 (nmul c.μ p) κ
         = -((p : O) • κ) by ring, map_neg, coeff_smul]
@@ -35,7 +35,7 @@ theorem exists_int_cob_dvd_of_defect_ev :
       hμ0, map_zero]
   have hadd := formalCoboundary_add hup0 (f - map (algebraMap O E) t) (map (algebraMap O E) t)
   rw [sub_add_cancel] at hadd
-  have hmap := (GlobalTheory.T.map_coboundary_swap_pullback_commute O d c.μ hμ0 E (algebraMap O E)).1 t
+  have hmap := (_root_.GlobalTheory.Katz.map_cob_swap_pull O d c.μ hμ0 E (algebraMap O E)).1 t
   have hsub : cob1 (up E c.μ) (f - map (algebraMap O E) t) =
       map (algebraMap O E) (κ - cob1 c.μ t) := by
     rw [map_sub, hmap, hκ]

@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgC
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmpleNefHermitianSmallSection
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoSelfIntersectionPowTensorDivPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAmpleTensorOfNefFibresAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeightGenericPointNonnegAmpleSemiPositiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleIsNefTensStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAmpleTensorOfNefFibresAmple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeightGenericPointNonnegAmpleSemiPositive
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleIsNefTens
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
@@ -23,10 +23,10 @@ theorem selfInter_nonneg : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k 
   obtain ⟨α, hα, hlim⟩ := GlobalTheory.SelfInterGrowth.main hC k X p D hX C A c hc
   refine ge_of_tendsto' hlim fun n => div_nonneg ?_ (by positivity)
   have hpow := GlobalTheory.NefPow.isNef_pow hC k X p D hX C n hnef
-  have htens := GlobalTheory.T.hermLineBundle_isNef_tens hC k X p D hX _ _ hpow hAn
-  have hamp := GlobalTheory.T.isAmple_tensor_of_nef_fibres_ample k X p D hX _ A hpow.vertical hA
+  have htens := _root_.GlobalTheory.NefTens.isNef_tens hC k X p D hX _ _ hpow hAn
+  have hamp := _root_.GlobalTheory.AmpleNefFibZ.isAmpleLB_tens_of_nefFib k X p D hX _ A hpow.vertical hA
   obtain ⟨h, hh, he⟩ := hα n
   rw [← he]
-  exact GlobalTheory.T.height_genericPoint_nonneg_ample_semiPositive hC hHS k X p D hX hD _ h hamp htens.semiPos hh (hlow _ h htens hh)
+  exact _root_.GlobalTheory.HSNef.height_generic_nonneg_of_ample hC hHS k X p D hX hD _ h hamp htens.semiPos hh (hlow _ h htens hh)
 
 end GlobalTheory.KleimanStep

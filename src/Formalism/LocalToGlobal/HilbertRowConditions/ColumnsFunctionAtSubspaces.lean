@@ -1,7 +1,9 @@
 import Formalism.LocalToGlobal.HilbertRowConditions.RowPin
 import Formalism.LocalToGlobal.IndefiniteForms.PairingConditionOfInverseMatrixIdentity
 import Formalism.LocalToGlobal.Divisibility.DivisionCompatibleToSub2Indef2
-import Formalism.LocalToGlobal.HilbertRowConditions.RowPinD
+import Formalism.LocalToGlobal.ClassSK
+import Formalism.SharpRestriction.Divisibility.StatementFT.PeriodPointConditions
+import Formalism.SharpRestriction.Divisibility.HookProducts.AdmPtTw
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 
 noncomputable section
@@ -69,10 +71,6 @@ attribute [instance] RowSideFamily.grp RowSideFamily.fin
 
 variable {ex : Extra D L hT Gi Gl Kc Y cX}
 
-def cjS (b : Bool) : ℂ →+* ℂ := Formalism.IndefR.Links.cj b
-
-def twS (P : RowSideFamily ex) : Bool := Formalism.IndefR.Links.twAt D.what₂.embLL P.A3.fam3.base3.v0
-
 open Classical in
 
 structure RowSideDetermined (T : TiedDataSK ex) (P : RowSideFamily ex) : Prop where
@@ -92,19 +90,6 @@ structure RowSideDetermined (T : TiedDataSK ex) (P : RowSideFamily ex) : Prop wh
   gamDvd : (∀ (t : P.T) (c : (P.A3.A.fam.R t).S.Cl), Fintype.card ((P.A3.A.fam.R t).S.Gam c) ∣ (D.mem D.u₀).C.DGam) ∧
     ∀ (j : Fin D.R.m) (t : P.T) (c : (P.A3.A.fam.L j t).S.Cl), Fintype.card ((P.A3.A.fam.L j t).S.Gam c) ∣ (D.mem D.u₀).C.DGam
 
-noncomputable def RowSideDetermined.columnsOfSubspaces {T : TiedDataSK ex} {P : RowSideFamily ex} (h : RowSideDetermined T P) :
-    ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs) :=
-  Classical.choose h.faces
-
-noncomputable def RowSideDetermined.periodOfSubspaces {T : TiedDataSK ex} {P : RowSideFamily ex} (h : RowSideDetermined T P) : ∀ Zs, SPer (h.columnsOfSubspaces Zs) :=
-  Classical.choose (Classical.choose_spec h.faces)
-
-theorem RowSideDetermined.columns_function_at_subspaces {T : TiedDataSK ex} {P : RowSideFamily ex} (h : RowSideDetermined T P) : h.columnsOfSubspaces P.Zs = P.Dc :=
-  (Classical.choose_spec (Classical.choose_spec h.faces)).1
-
-theorem RowSideDetermined.period_function_at_subspaces {T : TiedDataSK ex} {P : RowSideFamily ex} (h : RowSideDetermined T P) : HEq (h.periodOfSubspaces P.Zs) P.Sp :=
-  (Classical.choose_spec (Classical.choose_spec h.faces)).2
-
 structure RowsHold0_3 (P : RowSideFamily ex) : Prop where
   zsSt : P.Zs.Stable
   zsBl : P.Zs.InBlock
@@ -112,17 +97,7 @@ structure RowsHold0_3 (P : RowSideFamily ex) : Prop where
   famOk : ∃ s, P.A3.fam3.Ok3 s
   famSep : P.A3.fam3.TypesSep3
 
-structure RowsHold3 (P : RowSideFamily ex) : Prop extends RowsHold0_3 P where
-  lvl : LevelLink P.S0 P.S1
-  buRat : D.BuRational
-  pkg : ∃ (N : IndefNum P.A3.fam3.base3) (Sc : IndefColsR (P.A3.side3 P.Ps P.ψs P.Zs) P.Dc P.Sp N),
-    Sc.toIndefData = P.S1 ∧ HEq Sc.col P.C
-
-def RowsHoldPer3 (T : TiedDataSK ex) : Prop := Formalism.L2.GlobalTheoryTheory.PerDec.PeriodDecompositionBase T
-
 def RowsHoldKap3 (P : RowSideFamily ex) : Prop := ∀ e : D.what₂.LL →+* ℂ, Y.kapR e = P.S1.κ (InfinitePlace.mk e)
-
-def RowsHoldDrows3 (P : RowSideFamily ex) : Prop := D.what₂.Drows = P.S1.D
 
 open Classical in
 
@@ -143,31 +118,6 @@ def RowsHoldDcPt3 (P : RowSideFamily ex) : Prop :=
     (F : Fin ((P.A3.side3 P.Ps P.ψs P.Zs).nV t) → D.what₂.LL),
     D.what₂.embLL (P.Dc.Pt (P.I.wU u) t x F) =
       D.what₂.perCol u (P.I.tup t) (D.jN u (P.I.eNu u x)) (P.I.jA t ((rV0 D P.A3.A P.Ps P.ψs t).mulVec F))
-
-def IsBCLL0 {d : ℕ} (Λ : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL)) : Prop :=
-  ∃ B : Submodule (𝓞 ↥D.LL0) (Fin d → ↥D.LL0),
-    Λ = Submodule.span (𝓞 D.what₂.LL) ((fun v i => ((v i : ↥D.LL0) : D.what₂.LL)) '' (B : Set (Fin d → ↥D.LL0)))
-
-def RowsHoldBC3 (P : RowSideFamily ex) : Prop :=
-  IsBCLL0 ((P.A3.side3 P.P0 P.ψ0 P.Zs).abelian₂ P.A3.fam3.base3.μ0) ∧ ∀ i, IsBCLL0 (P.S0.M i)
-
-def RowsHoldPerTw3 (T : TiedDataSK ex) : Prop := Formalism.L2.GlobalTheoryTheory.PerDec.PeriodDecompositionTwisted T
-
-def RowsHoldPtTw3 (T : TiedDataSK ex) : Prop := Formalism.L2.GlobalTheoryTheory.PerDec.LowerTwistedAtTuples T
-
-def LowerMapPeriod : Prop :=
-  ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts} {Y : DivX D}
-    {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} (T : TiedDataSK ex) (P : RowSideFamily ex), RowSideDetermined T P → RowsHold3 P →
-    ∀ u (φ : (D.div.Nu u).V) (x : D.div.RR.V),
-      D.what₂.embLL (D.div.Bk u φ x) = D.what₂.perCol u D.what₂.mu0 (D.jN u φ) (D.what₂.sec D.what₂.mu0 (D.jEE x))
-
-def PairingPeriod : Prop :=
-  ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts} {Y : DivX D}
-    {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} (T : TiedDataSK ex) (P : RowSideFamily ex), RowSideDetermined T P → RowsHold3 P →
-    Formalism.L2.DIV.DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I →
-    ∀ u (x : Fin (P.Dc.a (P.I.wU u)) → D.what₂.LL) (y : Fin P.S1.D → D.what₂.LL),
-      D.what₂.embLL (P.C.B (P.I.wU u) x y) =
-        D.what₂.perCol u D.what₂.mu0 (D.jN u (P.I.eNu u x)) (D.what₂.sec D.what₂.mu0 (D.jEE (P.I.eRR y)))
 
 end Bundle
 

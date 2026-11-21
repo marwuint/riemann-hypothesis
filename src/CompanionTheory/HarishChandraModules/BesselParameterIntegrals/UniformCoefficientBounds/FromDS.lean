@@ -1,7 +1,19 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.InfinitesimalDecay.DecBoundOfCompact
 import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AdmissibleSmoothVectors.AdmissibleOfIwasawa
-import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.UniformCoefficientBounds.CoefGen
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe
+import Formalism.HermitianCurvature.BesselNonvanishingReduction
+import Formalism.PeriodIntegrals.UpqRep
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianFormalDegree.VUnitInvVal
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLemB
+import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+import Formalism.PeriodIntegrals.KFinSmooth
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLimBdPfKFin
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LowerSmoothStability.ExistsFinStableOfMemSSup
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormBallVolumes
+import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.SmoothCyclicVectors.SmoothCyc
+import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.UniformCoefficientBounds.CoefBoundUniform
 
 open Matrix MeasureTheory Set
 open scoped InnerProductSpace
@@ -10,7 +22,7 @@ noncomputable section
 
 namespace CompanionTheory.D.Upq.Coef
 
-open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Formalism.FourierDecayAlt.P.CutBP.Jmu Formalism.FourierDecayAlt.P.CutBP.Jmu.NDG ReciprocityTheory.ChartRestriction.DS
+open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData ReciprocityTheory.ChartRestriction.DS
 
 theorem thrStar_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thrStar ε ≤ 32 * (n : ℝ) ^ 3 := by
   have hp : pOf ε ≤ n := (Finset.card_le_univ _).trans_eq (Fintype.card_fin n)
@@ -73,19 +85,6 @@ theorem decay_infinite_range : DecInf := by
   rw [← neg_sub, Real.rpow_neg (by linarith), ← div_eq_mul_inv,
     le_div_iff₀ (Real.rpow_pos_of_pos (by linarith) _), mul_comm]
   exact h3
-
-theorem capelli_coefficient_continuity : CoefCC := by
-  intro hK k r Wp Wq _ _ _ _ _ _ Bs ε lam h u u' νq νq' A hG
-  have hn : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 := one_le_pow₀ (by exact_mod_cast by omega)
-  have hh := hG.1.2.2.2.1.2.1
-  have ht := thrStar_le (n := 2 * r + k + 1) (by omega) ε
-  have hm : thrStar ε + (64 * (2 * r + k + 1) ^ 3 : ℕ) < h := by
-    rw [Nat.cast_mul, Nat.cast_pow, Nat.cast_ofNat]
-    linarith
-  obtain ⟨C, Ws, -, hC⟩ := DecInf.decSm hG.1.1 hG.1.2.2.1 _ hm (σ := A.σ) hG.1.2.1
-  rw [coef_eq_cf]
-  exact inCC_cf_of_dec hK hG.1.1 hG.1.2.1 (lowest_unit_vector_is_K_finite hG) _ (fun a ha b hb => ⟨_, fun g hg =>
-    (congrArg (· * _) (Real.rpow_natCast _ _)).trans_le (hC b hb a ha g hg)⟩) 5
 
 end CompanionTheory.D.Upq.Coef
 

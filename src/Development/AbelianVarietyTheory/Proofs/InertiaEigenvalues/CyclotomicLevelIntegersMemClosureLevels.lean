@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMulMemLatIff
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersEqSumZetaPow
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersLevelOneEqSumZetaPowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersLevelOneEqSumZetaPow
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.ExpImage
 
@@ -45,7 +45,7 @@ theorem mem_closure_all (l : ℕ) [Fact l.Prime] (K : FinExt l) (ζ : ℕ → Om
     intro α hα hn
     have hp : IsPrimitiveRoot (ζ (0 + 1)) l := by
       simpa using chain_primitive ζ h0 h1 h 0
-    obtain ⟨y, hy, rfl⟩ := GlobalTheory.T.exists_integral_eq_sum_zeta_pow_level_one l K (ζ (0 + 1)) hp α hα hn
+    obtain ⟨y, hy, rfl⟩ := _root_.GlobalTheory.Cyc.integers_level_one_eq_sum_zeta_pow l K (ζ (0 + 1)) hp α hα hn
     refine AddSubgroup.sum_mem _ (fun a _ => AddSubgroup.subset_closure ?_)
     exact ⟨a, y a, (hy a).1, (hy a).2, mul_comm _ _⟩
   | succ s ih =>

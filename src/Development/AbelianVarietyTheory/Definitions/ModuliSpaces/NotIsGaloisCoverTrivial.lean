@@ -79,54 +79,5 @@ theorem isGaloisCover_field (K L : Type) [Field K] [Field L] [Algebra K L] [Fini
       ext x
       exact (RingHom.congr_fun hb' x).trans (AlgHom.congr_fun ha x).symm
 
-theorem isGaloisCover_complex :
-    IsGaloisCover (ℂ ≃ₐ[ℝ] ℂ) (fun σ => spMap (σ : ℂ →+* ℂ)) (spMap (algebraMap ℝ ℂ)) ∧ Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2 := by
-  have : IsAlgClosure ℝ ℂ := ⟨Complex.isAlgClosed, inferInstance⟩
-  have : IsGalois ℝ ℂ := ⟨⟩
-  exact ⟨isGaloisCover_field ℝ ℂ, by rw [IsGalois.card_aut_eq_finrank, Complex.finrank_real_complex]⟩
-
-theorem not_isGaloisCover_trivial :
-    ¬ IsGaloisCover ℤˣ (fun _ => 𝟙 (Sp ℂ)) (𝟙 (Sp ℂ)) := by
-  intro h
-  obtain ⟨a, -, ha⟩ := h.fibre ℂ (𝟙 _) (𝟙 _) rfl
-  have h1 : (1 : ℤˣ) = a := ha 1 (by simp)
-  have h2 : (-1 : ℤˣ) = a := ha (-1) (by simp)
-  exact absurd (h1.trans h2.symm) (by decide)
-
-theorem dirMap_fst {K : Type} [Field K] {n : ℕ} (lam : (Fin n → K) →ₗ[K] K) (x : TrivSqZeroExt K (Fin n → K)) :
-    (dirMap lam x).fst = x.fst ∧ (dirMap lam x).snd = lam x.snd := by
-  constructor <;> simp [dirMap]
-
-theorem densePrimes_univ_iff (R : Type) [CommRing R] : DenseP (Set.univ : Set (Ideal R)) ↔ _root_.IsReduced R := by
-  constructor
-  · intro h
-    refine ⟨fun x hx => h x fun p _ hp => ?_⟩
-    obtain ⟨k, hk⟩ := hx
-    exact hp.mem_of_pow_mem k (hk ▸ p.zero_mem)
-  · intro hR f hf
-    have hnil : f ∈ nilradical R := by
-      rw [nilradical_eq_sInf, Ideal.mem_sInf]
-      exact fun p hp => hf p (Set.mem_univ p) hp
-    exact (mem_nilradical.mp hnil).eq_zero
-
-theorem not_denseP_two : ¬ DenseP ({Ideal.span {2}} : Set (Ideal ℤ)) := by
-  intro h
-  have h2 : (2 : ℤ) = 0 := h 2 fun p hp _ => by
-    rw [Set.mem_singleton_iff.mp hp]
-    exact Ideal.mem_span_singleton_self 2
-  norm_num at h2
-
-theorem odd_of_wfam {o : Type} [CommRing o] {g : ℕ} {J : Type} {n N' : ℕ} {b : TBase o (N' ^ 2)} {em : o →+* ℂ}
-    {C : TObj g (N' ^ 2) J b (spMap em) → Prop} {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ}
-    (W : WFam n em C Mat κ) : Odd N' := by
-  obtain ⟨x, ⟨-, hx⟩, -⟩ := W.Y.pts PUnit (algebraMap o PUnit) (fun _ => 0) (by
-    unfold InMM
-    exact ⟨fun _ _ => Subsingleton.elim _ _, fun q hq => absurd (Subsingleton.elim q ⊤) hq.ne_top⟩)
-  let x' : Sp PUnit ⟶ W.U.toScheme := specPUnitIsInitial.to _
-  have hx' : x' ≫ W.U.ι = x := specPUnitIsInitial.hom_ext _ _
-  have h := (W.th PUnit x' (fun _ => 0)).2 (hx' ▸ hx)
-  unfold TObj.HasTh Out.IsThetaPt at h
-  exact h.1
-
 end GlobalTheory.ZM.DwModel
 end

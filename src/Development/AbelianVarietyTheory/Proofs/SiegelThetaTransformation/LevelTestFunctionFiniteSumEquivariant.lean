@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMul
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionPreservesThetaAndInnerProduct
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeVacuaExistUnique
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructurePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructureProperties
 
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.SW GlobalTheory.ThFr ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
 open scoped ComplexConjugate ComplexOrder Real Classical
@@ -254,7 +254,7 @@ theorem isVac_wG (hs : IsSympl X bas) (hn : Even n) {γ : GL (Fin r) E} (hγ : I
 
 theorem isSB_sum {ι : Type} (s : Finset ι) (f : ι → TF n g) (hf : ∀ i, IsSB (f i)) :
     IsSB (∑ i ∈ s, f i) :=
-  Finset.sum_induction f IsSB (fun a b ha hb => (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ _ _ a b ha hb).1) isSB_zero
+  Finset.sum_induction f IsSB (fun a b ha hb => (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ _ _ a b ha hb).1) isSB_zero
     fun i _ => hf i
 
 theorem wG_sum (hs : IsSympl X bas) (hn : Even n) {γ : GL (Fin r) E} (hγ : IsUn X γ) {ι : Type}
@@ -318,7 +318,7 @@ theorem phi_eq_sum (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (he : Ev
     (h3 : ∀ y, D.dat hn y ≠ 0 → ∃ i, ∀ k, Cong X D.𝔪 (y k) (f i k)) :
     D.phi bas hn v₀ L Λ = ∑ i, D.dat hn (f i) • heisG X bas (f i)
       (unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L))) := by
-  obtain ⟨-, -, -, hl, -, hd, -⟩ := GlobalTheory.T.level_structure_properties E r X g bas idx n hs he D hn
+  obtain ⟨-, -, -, hl, -, hd, -⟩ := _root_.GlobalTheory.SW.level_laws E r X g bas idx n hs he D hn
   unfold Level.phi
   generalize unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L)) = v at hv ⊢
   let q : ι → tens Λ ((Ideal.span {2} * conjI D.𝔪) • L) ⧸
@@ -349,7 +349,7 @@ theorem exists_reps (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (he : E
       (∀ i, f i ∈ tens Λ ((Ideal.span {2} * conjI D.𝔪) • N)) ∧
       (∀ i j, (∀ k, Cong X D.𝔪 (f i k) (f j k)) → i = j) ∧
       (∀ y, D.dat hn y ≠ 0 → ∃ i, ∀ k, Cong X D.𝔪 (y k) (f i k)) ∧ ∀ i, ‖D.dat hn (f i)‖ = 1 := by
-  obtain ⟨-, hu, -, -, hlam, -⟩ := GlobalTheory.T.level_structure_properties E r X g bas idx n hs he D hn
+  obtain ⟨-, hu, -, -, hlam, -⟩ := _root_.GlobalTheory.SW.level_laws E r X g bas idx n hs he D hn
   have H : ∀ κ : D.J, ∃ y ∈ tens Λ ((Ideal.span {2} * conjI D.𝔪) • N),
       D.Red (fun i => y (Fin.castLE hn i)) κ ∧ ∀ k : Fin n, r ≤ (k : ℕ) → Cong X D.𝔪 (y k) 0 := by
     intro κ
@@ -431,7 +431,7 @@ end Main
 
 theorem phi_sum_equivariant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (D : Level X) (hn : r ≤ n) (M : ℕ), 0 < M → (M : 𝓞 E) ∈ D.𝔪 → ∀ v₀ : Lt E r → TF n g, (∀ L ∈ D.lats, IsVac X bas D.w (tens (stdL E n) (D.sh L)) (v₀ L)) → ∀ L ∈ D.lats, ∀ Λ ∈ Vset E n M, IsSB (D.phi bas hn v₀ L Λ) ∧ IsVac X bas D.w (tens Λ (D.sh L)) (unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L))) ∧ (∀ L' ∈ D.lats, ∃ s : Finset (Matrix (Fin n) (Fin r) E), s.card = Nat.card D.J ∧ (∀ y ∈ s, y ∈ tens Λ ((Ideal.span {2} * conjI D.𝔪) • (L ⊓ L')) ∧ ‖D.dat hn y‖ = 1 ∧ ∀ y' ∈ s, (∀ k, Cong X D.𝔪 (y k) (y' k)) → y = y') ∧ D.phi bas hn v₀ L Λ = ∑ y ∈ s, D.dat hn y • heisG X bas y (unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L))) ∧ D.phi bas hn v₀ L' Λ = ∑ y ∈ s, D.dat hn y • heisG X bas y (unitv (projA X bas D.w (tens Λ (D.sh L')) (v₀ L')))) ∧ ∀ γ ∈ D.grp, ∀ k : D.J, D.Red (fun i => (γ : Matrix (Fin r) (Fin r) E) *ᵥ D.β i) k → ∀ t : ℂ, ‖t‖ = 1 → wG X bas idx γ (v₀ L) = t • v₀ (mapL γ L) → wG X bas idx γ (D.phi bas hn v₀ L Λ) = (t * ((D.lam k : ℂˣ) : ℂ)⁻¹) • D.phi bas hn v₀ (mapL γ L) Λ := by
   intro E _ _ _ r X g bas idx n hs he D hn M _ hM v₀ h0 L hL Λ hΛ
-  obtain ⟨hX, -, hg, hl, -, -, hd⟩ := GlobalTheory.T.level_structure_properties E r X g bas idx n hs he D hn
+  obtain ⟨hX, -, hg, hl, -, -, hd⟩ := _root_.GlobalTheory.SW.level_laws E r X g bas idx n hs he D hn
   haveI := finite_J D
   haveI : Fintype D.J := Fintype.ofFinite _
   have hv := fun L hL => isVac_unitv idx hs he hΛ (hl L hL).1 (h0 L hL)

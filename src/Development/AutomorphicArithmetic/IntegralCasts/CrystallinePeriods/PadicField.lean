@@ -73,32 +73,6 @@ instance : Algebra.IsAlgebraic (KZero p K) (AlgCl K) := Algebra.IsAlgebraic.tran
 
 def wittToOCK : WittVector p (ResK K) →+* OCK K := (OCK.ofInteger K).comp (wittToInteger p K)
 
-theorem smul_wittToOCK (g : GalK K) (a : WittVector p (ResK K)) :
-    g • wittToOCK p K a = wittToOCK p K a := OCK.smul_ofInteger K g _
-
-theorem toRingHom_comp_wittToOCK (g : GalK K) :
-    (MulSemiringAction.toRingHom (GalK K) (OCK K) g).comp (wittToOCK p K) = wittToOCK p K :=
-  RingHom.ext (smul_wittToOCK p K g)
-
-def wittToAinf : WittVector p (ResK K) →+* Ainf p (OCK K) := Ainf.liftWitt p (wittToOCK p K)
-
-def kZeroToBcrisPlus : KZero p K →+* BcrisPlus p (OCK K) :=
-  BcrisPlus.liftFracWitt p (wittToOCK p K)
-
-def kZeroToBcris : KZero p K →+* Bcris p (OCK K) :=
-  (algebraMap (BcrisPlus p (OCK K)) _).comp (kZeroToBcrisPlus p K)
-
-def kZeroToBst : KZero p K →+* Bst p (OCK K) :=
-  (algebraMap (Bcris p (OCK K)) _).comp (kZeroToBcris p K)
-
-theorem frob_kZeroToBcris (x : KZero p K) : Bcris.frob p _ (kZeroToBcris p K x) =
-    kZeroToBcris p K (WittVector.FractionRing.frobenius p (ResK K) x) := by
-  simp [kZeroToBcris, kZeroToBcrisPlus, BcrisPlus.frob_liftFracWitt]
-
-theorem frob_kZeroToBst (x : KZero p K) : Bst.frob p _ (kZeroToBst p K x) =
-    kZeroToBst p K (WittVector.FractionRing.frobenius p (ResK K) x) := by
-  simp [kZeroToBst, frob_kZeroToBcris]
-
 theorem algebraMap_wittVector_eq (a : WittVector p (ResK K)) :
     algebraMap (AlgCl K) (CK K) (algebraMap (KZero p K) (AlgCl K) (algebraMap _ _ a)) =
       wittToOCK p K a := by
@@ -111,17 +85,5 @@ def algClToBdRPlus : AlgCl K →+* BdRPlus p (OCK K) :=
 @[simp] theorem thetaC_algClToBdRPlus (x : AlgCl K) :
     BdRPlus.thetaC p (OCK K) (algClToBdRPlus p K x) = (x : CK K) :=
   BdRPlus.thetaC_wittSection _ _ _ x
-
-theorem algClToBdRPlus_algebraMap (a : KZero p K) :
-    algClToBdRPlus p K (algebraMap _ _ a) =
-      algebraMap _ _ (AinfInv.liftFracWitt p (wittToOCK p K) a) :=
-  BdRPlus.wittSection_algebraMap _ _ _ a
-
-theorem eq_algClToBdRPlus (s : AlgCl K →+* BdRPlus p (OCK K))
-    (h₁ : ∀ x, BdRPlus.thetaC p (OCK K) (s x) = (x : CK K))
-    (h₂ : ∀ a : KZero p K, s (algebraMap _ _ a) =
-      algebraMap _ _ (AinfInv.liftFracWitt p (wittToOCK p K) a)) : s = algClToBdRPlus p K :=
-  BdRPlus.hom_ext_thetaC (F := KZero p K) (fun a => by rw [h₂, algClToBdRPlus_algebraMap])
-    (fun x => by rw [h₁, thetaC_algClToBdRPlus])
 
 end Reformulated.AutPerF

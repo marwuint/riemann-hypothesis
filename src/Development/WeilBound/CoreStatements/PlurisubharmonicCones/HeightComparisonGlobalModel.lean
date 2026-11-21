@@ -2,15 +2,40 @@ import Development.WeilBound.CoreStatements.PlurisubharmonicCones.FlatSat
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsSmulMemOfEig
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsAction
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBounds
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartIntegralPointStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFamilyExistsOnEigenspaceStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LabelledDegreeCommensurableBoundStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SumLogPrimeDivPredLeLogStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LabelledDegreeEqLogIndexStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.AbelianPartIntegralPointBis
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsAdapted
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.OrthogonalFamilyAdaptedBasis
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LabelDegreeCommensurableBound
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.SumLogPrimeRatioLe
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LabelDegreeLogIndex
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogIndexOfOrthogonalFamilyStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompactDatumIntersectionStatement
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ComponentDataHeightIdentity
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspCorrespondenceBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartLieSignatureStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartLieSignature
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -32,8 +57,8 @@ theorem phiDeg_le_parts {E L Ψ : Type} [Field E] [NumberField E] [Field L] [Num
       (-(r * Real.log (hostRd E)) + I / Module.finrank ℚ E + A.Bq.normDegree (A.img (lab τ))) := by
     intro τ
     obtain ⟨𝔞, h0, h1, h2, h3⟩ := ha τ
-    have hc := GlobalTheory.T.labelled_degree_commensurable_bound E L Ψ V A r k v (lab τ) (q τ) (F τ) 𝔞 (hq τ).1 h0 h1 h2
-    have hs := GlobalTheory.T.labelled_degree_eq_log_index E L Ψ V A r k v (lab τ) (q τ) hf hO (hq τ).2 (hq τ).1
+    have hc := _root_.LevelTowerAlt.label_degree_commensurable_bound E L Ψ V A r k v (lab τ) (q τ) (F τ) 𝔞 (hq τ).1 h0 h1 h2
+    have hs := _root_.LevelTowerAlt.label_degree_log_index E L Ψ V A r k v (lab τ) (q τ) hf hO (hq τ).2 (hq τ).1
     have ht := GlobalTheory.T.log_index_of_orthogonal_family E L Ψ V A r v hf hO (lab τ)
     have h4 : ((r : ℝ) + k) * Real.log (Ideal.absNorm 𝔞) / Module.finrank ℚ L ≤ ((r : ℝ) + k) * X := by
       rw [mul_div_assoc]
@@ -80,7 +105,7 @@ theorem small_blocks_numbers {f j r Ca C1 La X rd l4 T : ℝ} (hf : 0 ≤ f) (hj
 theorem height_comparison_global_model : (Top.Given → Fl.FlatDegree → FlatSat) → Top.Given → Fl.FlatDegree → ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (B₁ B : ℕ) (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ Or.𝔐.X) (P : AbPart Or.𝔐.t (spMap (algebraMap (𝓞 L) L) ≫ z)) (V : Type) [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (MV : LieModel P.tK.G (𝟙 (Sp L)) V) (A : LinPt E L (CMType H) V) (r k : ℕ) (v : Fin r → V) (q : CMType H → Fin k → A.Λ), admitted Xo l c Y Or B₁ → 4 * Dc.f * Dc.N ^ 2 ≤ B → Or.𝔐.IsLinPtOf z P MV A → Module.finrank (𝓞 L) A.Bq.carrier ≤ Fintype.card (CMType H) * (D.p + D.q) → r + k = Dc.j' → IsOFamily A.ρ A.I v → (∀ τ, A.IsAdapted (Or.sm τ) v (q τ) ∧ ∀ i, (q τ i : V) ∈ A.eig (Or.sm τ)) → A.phiDeg Or.sm (fun τ => Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) v q ≤ C * Dc.f * Dc.j' * abelian₂ B (hostRd E) (hostLval H) := by
   intro hFS hG hF
   obtain ⟨Cf, hCf0, hflat⟩ := hFS hG hF
-  obtain ⟨C1, hC10, hprimes⟩ := GlobalTheory.T.sum_log_prime_div_pred_le_log
+  obtain ⟨C1, hC10, hprimes⟩ := _root_.LevelTowerAlt.sum_log_prime_ratio_le
   have hG' := hG
   obtain ⟨-, -, -, -, -, -, -, -, ⟨Cs, hCs0, hslope⟩, -⟩ := hG'
   have hC₀ : 0 ≤ Cs + Cf * (2 + C1) := by positivity
@@ -103,7 +128,7 @@ theorem height_comparison_global_model : (Top.Given → Fl.FlatDegree → FlatSa
   have hB16 : 16 ≤ B := by nlinarith
   have hfNB : Dc.f * Dc.N ≤ B := by nlinarith [Nat.le_self_pow (n := 2) (by norm_num) Dc.N]
   have hS₀B : S₀.card ≤ B := hcard.trans hB
-  obtain ⟨hp, hR, ht, hvb⟩ := GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
+  obtain ⟨hp, hR, ht, hvb⟩ := _root_.LevelTowerAlt.component_data_height_identity E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
   have hHT : ∀ p ∈ S₀ ∪ Dc.SB B, HT.HTFree (Or.𝔐.withS (S₀ ∪ Dc.SB B) hp hR ht hvb) p := by
     intro p hp'
     rcases Finset.mem_union.1 hp' with h | h
@@ -149,7 +174,7 @@ theorem height_comparison_global_model : (Top.Given → Fl.FlatDegree → FlatSa
     exact h1.trans h2
   have hrank : ∀ τ, A.Bq.rank (A.img (Or.sm τ)) ≤ Dc.j' := by
     intro τ
-    obtain ⟨k', q', -, -, hk', hrk', -⟩ := (GlobalTheory.T.adapted_family_exists_on_eigenspace E L (CMType H) V A hf2).2 r v hO (Or.sm τ)
+    obtain ⟨k', q', -, -, hk', hrk', -⟩ := (_root_.LevelTowerAlt.orthogonal_family_adapted_basis E L (CMType H) V A hf2).2 r v hO (Or.sm τ)
     have h1 : Module.finrank L (eigSp A.ρ (A.σ (Or.sm τ))) = r + k := by
       rw [← (hq τ).1.2, finrank_span_eq_card (hq τ).1.1, Fintype.card_fin]
     omega
@@ -169,7 +194,7 @@ theorem height_comparison_global_model : (Top.Given → Fl.FlatDegree → FlatSa
   have hσ : A.σ = σ₀ := hσu A.σ hLin.2.1
   have hrk2 : ∀ s, A.Bq.rank (eigSp ρM (intLift (A.σ s))) ≤ labelRk D s := by
     intro s
-    obtain ⟨k', q', -, -, hk', hrk', -⟩ := (GlobalTheory.T.adapted_family_exists_on_eigenspace E L (CMType H) V A hf2).2 r v hO s
+    obtain ⟨k', q', -, -, hk', hrk', -⟩ := (_root_.LevelTowerAlt.orthogonal_family_adapted_basis E L (CMType H) V A hf2).2 r v hO s
     rw [finrank_eig' Or.𝔐 hLin] at hk'
     rw [e1]
     omega
@@ -178,7 +203,7 @@ theorem height_comparison_global_model : (Top.Given → Fl.FlatDegree → FlatSa
       (Cs + Cf * (2 + C1)) * ((D.p + D.q : ℕ) : ℝ) * abelian₂ B (hostRd E) (hostLval H) := by
     intro τ
     have h0 := hflat E H L t' P.tB m' A.Bq MB ρM (intLift (A.σ (.inl τ))) (intLift (A.σ (.inr τ))) hLin.2.2.2.2.1 hfib hact
-      (GlobalTheory.T.abelian_part_lie_signature E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L _ P)
+      (_root_.GlobalTheory.CompanionTheory.Ar.AbPartConst.lieMult_constant_along_cmType E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L _ P)
       (fun a b hab => A.σ_inj (.inl τ) (congrArg (algebraMap (𝓞 L) L) hab))
       (fun e a => by
         have := DFunLike.congr_fun ((hσc e).2.2 τ) a
@@ -225,7 +250,7 @@ theorem height_comparison_global_model : (Top.Given → Fl.FlatDegree → FlatSa
       · rw [hb, hs]
         exact hfl0 τ)
   have hab := (Finset.sum_le_sum (s := Finset.univ) fun τ _ => e2 (Or.sm τ)).trans hab0
-  have hm := GlobalTheory.T.abelian_part_integral_point hG E H D l (Xo l) c Y (S₀ ∪ Dc.SB B) Ω K J Dc.y (Or.𝔐.withS (S₀ ∪ Dc.SB B) hp hR ht hvb) L z P V MV A
+  have hm := _root_.LevelTowerAlt.abelian_part_integral_point_bis hG E H D l (Xo l) c Y (S₀ ∪ Dc.SB B) Ω K J Dc.y (Or.𝔐.withS (S₀ ∪ Dc.SB B) hp hR ht hvb) L z P V MV A
     (by omega) hSd hHT hLin'
   have hparts := phiDeg_le_parts A Or.sm (fun τ => Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) v q
     (2 * (∑ p ∈ S₀ ∪ Dc.SB B, Real.log (p : ℝ) / ((p : ℝ) - 1)) + 2 * Real.log (hostRd E)) hf2 hO hq

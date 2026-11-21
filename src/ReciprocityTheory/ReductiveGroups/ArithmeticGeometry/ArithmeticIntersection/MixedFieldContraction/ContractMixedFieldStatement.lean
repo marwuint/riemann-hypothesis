@@ -62,17 +62,6 @@ def GenDegStatement : Prop :=
       (∀ j, IsSmoothHerm (L j)) → (∀ j, IsPullHerm κ v (L j) (L' j)) →
       I K' ι' P' d L' = (J (fibreIdeal κ G) 0 Fin.elim0 : ℝ) * I K ι (imageZ v P') d L
 
-def PFSumStatement : Prop :=
-  ∀ (I : AllFam), I.IsFamily →
-    ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
-      (K₂ : Type) [Fintype K₂] (ι₂ : K₂ → Type) [∀ k, Fintype (ι₂ k)]
-      (P₂ : Ideal (MRing (Sum.elim ι ι₂))) (d : ℕ) (G : GenFibre inlV P₂)
-      (J : IFamily G.Φ (fibreIdx (Sum.elim ι ι₂) (Sum.inl : K → K ⊕ K₂)))
-      (L : Fin d → HermLine ι) (L' : Fin d → HermLine (Sum.elim ι ι₂)),
-      IsArithVar P₂ d → IsArithVar (imageZ inlV P₂) d → IsFieldIntersection J →
-      (∀ j, IsSmoothHerm (L j)) → (∀ j, IsPullHerm Sum.inl inlV (L j) (L' j)) →
-      I (K ⊕ K₂) (Sum.elim ι ι₂) P₂ d L' = (J (fibreIdeal Sum.inl G) 0 Fin.elim0 : ℝ) * I K ι (imageZ inlV P₂) d L
-
 def ImageCoordStatement : Prop :=
   ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)]
@@ -109,12 +98,6 @@ def FibreDimStatement : Prop :=
     (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) (d r : ℕ) (G : GenFibre v P'),
     IsBlockMap κ v → IsArithVar P' (d + r) → IsArithVar (imageZ v P') d → IsProjVarF (fibreIdeal κ G) r
 
-def PullExistsStatement : Prop :=
-  ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
-    (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)]
-    (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) (A : HermLine ι),
-    IsBlockMap κ v → ∃ A' : HermLine ι', IsPullHerm κ v A A' ∧ (IsSmoothHerm A → IsSmoothHerm A')
-
 def LineFibreStatement : Prop :=
   ∀ (F : Type) [Field F] (ι₀ : Type) [Fintype ι₀] (Q : Ideal (MRingOver F fun _ : Unit => ι₀))
     (J : IFamily F fun _ : Unit => ι₀),
@@ -148,68 +131,5 @@ def ChangeOfModelStatement : Prop :=
       I K ι P d L₁ = (J (fibreIdeal Sum.inr G) 0 Fin.elim0 : ℝ) * I K ι₂ (imageZ inrV (graphIdeal P (linForm A))) d L
 
 end Graph
-
-section WW
-
-def diagonalBlockIndex (j : Fin 2) : T.YBlk → T.WBlk
-  | .base => .base
-  | .det => .det
-  | .line => if j = 0 then .line0 else .line1
-
-def otherLine (j : Fin 2) : T.WBlk := if j = 0 then .line1 else .line0
-
-def PullbackFibresAreLines : Prop :=
-  ∀ (I : AllFam), I.IsFamily →
-    ∀ (Ω : Type) [Field Ω] (ι ν κ : Type) [Fintype ι] [Fintype ν] [Fintype κ] (E : Type) [AddCommGroup E]
-      [Module Ω E] (Φ : Type) [Field Φ] [Algebra Ω Φ] (x : ι → Ω) (B : ChartBundle ℤ x 2 E)
-      (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω) (δ : ν → Ω) (a : Fin 2 → Φ) (j : Fin 2) (D : ℕ)
-      (L : Fin (D + 1) → HermLine (T.yyIdx ι ν κ)) (L' : Fin (D + 1) → HermLine (T.wwIdx ι ν κ))
-      (N : HermLine (T.wwIdx ι ν κ)),
-      T.IsTwistedDualSec B φ → T.IsTwistedDualGen B φ → T.IsTwistedDetGen B e δ → (∃ i, x i ≠ 0) →
-      AlgebraicIndependent Ω a →
-      IsArithVar (T.yyIdeal x δ e φ (a j)) (D + 1) → IsArithVar (T.wwIdeal x δ e φ (a 0) (a 1)) (D + 2) →
-      (∀ i, IsSmoothHerm (L i)) → (∀ i, IsPullHerm (diagonalBlockIndex j) (T.yyEmb j) (L i) (L' i)) → IsSmoothHerm N →
-      I T.WBlk (T.wwIdx ι ν κ) (T.wwIdeal x δ e φ (a 0) (a 1)) (D + 2) (Fin.snoc (α := fun _ => _) L' N) =
-        (N.a (otherLine j) : ℝ) * I T.YBlk (T.yyIdx ι ν κ) (T.yyIdeal x δ e φ (a j)) (D + 1) L
-
-def PullbackProductVanishing : Prop :=
-  ∀ (I : AllFam), I.IsFamily →
-    ∀ (Ω : Type) [Field Ω] (ι ν κ : Type) [Fintype ι] [Fintype ν] [Fintype κ] (E : Type) [AddCommGroup E]
-      [Module Ω E] (Φ : Type) [Field Φ] [Algebra Ω Φ] (x : ι → Ω) (B : ChartBundle ℤ x 2 E)
-      (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω) (δ : ν → Ω) (a : Fin 2 → Φ) (j : Fin 2) (D : ℕ)
-      (L : Fin (D + 2) → HermLine (T.yyIdx ι ν κ)) (L' : Fin (D + 2) → HermLine (T.wwIdx ι ν κ)),
-      T.IsTwistedDualSec B φ → T.IsTwistedDualGen B φ → T.IsTwistedDetGen B e δ → (∃ i, x i ≠ 0) →
-      AlgebraicIndependent Ω a →
-      IsArithVar (T.yyIdeal x δ e φ (a j)) (D + 1) → IsArithVar (T.wwIdeal x δ e φ (a 0) (a 1)) (D + 2) →
-      (∀ i, IsSmoothHerm (L i)) → (∀ i, IsPullHerm (diagonalBlockIndex j) (T.yyEmb j) (L i) (L' i)) →
-      I T.WBlk (T.wwIdx ι ν κ) (T.wwIdeal x δ e φ (a 0) (a 1)) (D + 2) L' = 0
-
-def YYBlockMapStatement : Prop :=
-  ∀ (ι ν κ : Type) (j : Fin 2), IsBlockMap (diagonalBlockIndex j) (T.yyEmb (ι := ι) (ν := ν) (κ := κ) j)
-
-end WW
-
-section Inhabit
-
-def InhabitIdStatement : Prop :=
-  IsArithVar (⊥ : Ideal (MRing (PBlk 2))) 2 ∧ imageZ id (⊥ : Ideal (MRing (PBlk 2))) = ⊥ ∧
-    Nonempty (GenFibre (ι := PBlk 2) (ι' := PBlk 2) id ⊥)
-
-def InhabitLineStatement : Prop :=
-  IsArithVar (⊥ : Ideal (MRing (Sum.elim (PBlk 1) (PBlk 2)))) 2 ∧
-    IsArithVar (imageZ inlV (⊥ : Ideal (MRing (Sum.elim (PBlk 1) (PBlk 2))))) 1 ∧
-    Nonempty (GenFibre (inlV (ι := PBlk 1) (ι₂ := PBlk 2)) ⊥) ∧
-    ∀ (G : GenFibre (inlV (ι := PBlk 1) (ι₂ := PBlk 2)) ⊥)
-      (J : IFamily G.Φ (fibreIdx (Sum.elim (PBlk 1) (PBlk 2)) (Sum.inl : Unit → Unit ⊕ Unit))),
-      IsFieldIntersection J → ∀ m : ℤ, J (fibreIdeal Sum.inl G) 1 ![fun _ => m] = m
-
-def idMat (n : ℕ) : ∀ _ : Unit, Fin n → Fin n → ℤ := fun _ i j => if i = j then 1 else 0
-
-def InhabitModelStatement : Prop :=
-  IsArithVar (⊥ : Ideal (MRing (PBlk 2))) 2 ∧ IsBasePtFree (⊥ : Ideal (MRing (PBlk 2))) (linForm (idMat 2)) ∧
-    IsArithVar (imageZ inrV (graphIdeal (⊥ : Ideal (MRing (PBlk 2))) (linForm (idMat 2)))) 2 ∧
-    Nonempty (GenFibre (inrV (ι := PBlk 2) (ι₂ := PBlk 2)) (graphIdeal ⊥ (linForm (idMat 2))))
-
-end Inhabit
 
 end ReciprocityTheory.ChartRestriction.G.AI.I4

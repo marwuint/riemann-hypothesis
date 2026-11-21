@@ -315,41 +315,6 @@ theorem notMem_support_of_comap_ι_eq_top (I : Y.IdealSheafData) {U : Y.Opens}
   have h2 : (⟨x, hxU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U) := h1
   simp at h2
 
-private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
-    (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (g : Γ(X, U)) :
-    x ∈ X.basicOpen g ↔ g ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal := by
-  have h1 : hU.fromSpec.base (hU.primeIdealOf ⟨x, hx⟩) = x := hU.fromSpec_primeIdealOf ⟨x, hx⟩
-  have h2 : hU.fromSpec ⁻¹ᵁ (X.basicOpen g) = PrimeSpectrum.basicOpen g :=
-    hU.fromSpec_preimage_basicOpen g
-  constructor
-  · intro h
-    rw [← h1] at h
-    have h3 : hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹ᵁ (X.basicOpen g) := h
-    rw [h2] at h3
-    exact (PrimeSpectrum.mem_basicOpen g _).mp h3
-  · intro h
-    have h3 : hU.primeIdealOf ⟨x, hx⟩ ∈ PrimeSpectrum.basicOpen g :=
-      (PrimeSpectrum.mem_basicOpen g _).mpr h
-    rw [← h2] at h3
-    have h4 : hU.fromSpec.base (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen g := h3
-    rwa [h1] at h4
-
-theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheafData)
-    {U : X.Opens} (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) :
-    x ∈ I.support ↔ I.ideal ⟨U, hU⟩ ≤ (hU.primeIdealOf ⟨x, hx⟩).asIdeal := by
-  rw [Scheme.IdealSheafData.mem_support_iff_of_mem (I := I) (U := ⟨U, hU⟩) hx,
-    Scheme.mem_zeroLocus_iff]
-  constructor
-  · intro h
-    rw [SetLike.le_def]
-    intro f hf
-    have hb := h f hf
-    rw [mem_basicOpen_iff_notMem_primeIdealOf hU hx f] at hb
-    exact not_not.mp hb
-  · intro h f hf
-    rw [mem_basicOpen_iff_notMem_primeIdealOf hU hx f]
-    exact not_not.mpr (h hf)
-
 theorem comap_ι_comp_eq_of_comap_ι_eq (f : X ⟶ Y) (V : Y.Opens) (U : X.Opens)
     (hle : U ≤ f ⁻¹ᵁ V) (I J : Y.IdealSheafData)
     (h : I.comap V.ι = J.comap V.ι) : I.comap (U.ι ≫ f) = J.comap (U.ι ≫ f) := by
@@ -370,16 +335,6 @@ theorem comap_listProd {X Y : Scheme.{u}} (f : X ⟶ Y) (L : List Y.IdealSheafDa
     simp only [List.map_nil, List.prod_nil]
     exact comap_top f
   | cons D E ih => simp only [List.map_cons, List.prod_cons, comap_mul, ih]
-
-theorem comap_finset_prod {X Y : Scheme.{u}} (f : X ⟶ Y) {ι : Type*} (s : Finset ι)
-    (F : ι → Y.IdealSheafData) :
-    (∏ i ∈ s, F i).comap f = ∏ i ∈ s, (F i).comap f := by
-  classical
-  refine Finset.induction_on s ?_ ?_
-  · simp only [Finset.prod_empty]
-    exact comap_top f
-  · intro a t ha ih
-    simp only [Finset.prod_insert ha, comap_mul, ih]
 
 private theorem isReduced_of_ringEquiv {A B : Type u} [CommRing A] [CommRing B]
     (e : A ≃+* B) (h : _root_.IsReduced B) : _root_.IsReduced A := by
@@ -423,12 +378,6 @@ theorem isReduced_subscheme_vanishingIdeal
     rw [Scheme.IdealSheafData.vanishingIdeal_ideal]
     exact PrimeSpectrum.isRadical_vanishingIdeal _
   exact isReduced_of_isReduced_stalk _
-
-theorem comap_subschemeι_self {X : Scheme.{u}} (I : X.IdealSheafData) :
-    I.comap I.subschemeι = ⊥ := by
-  refine le_antisymm ?_ bot_le
-  have h := comap_map_le (⊥ : I.subscheme.IdealSheafData) I.subschemeι
-  rwa [map_bot, ker_subschemeι] at h
 
 end AlgebraicGeometry.Scheme.IdealSheafData
 

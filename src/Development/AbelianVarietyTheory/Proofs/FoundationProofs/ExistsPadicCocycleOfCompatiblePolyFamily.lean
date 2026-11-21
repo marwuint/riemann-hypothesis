@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLaws
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHomogeneousPolyCocycleEqOnCongruenceStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HomogeneousPolyCocycleDiffCoboundaryOfEqOnStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHomogeneousPolyCocycleEqOnCongruence
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HomogeneousPolyCocycleDiffCoboundaryOfEqOn
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HomogeneousLiftCompatible
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups
@@ -44,7 +44,7 @@ theorem step (N l w : ℕ) [Fact l.Prime] (hN : 0 < N) (hl2 : l ≠ 2) (hlN : ¬
   have hp : l.Prime := Fact.out
   haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hp.ne_zero⟩
   haveI : NeZero (l ^ (n + 1)) := ⟨pow_ne_zero _ hp.ne_zero⟩
-  obtain ⟨z', hz', hz'n⟩ := GlobalTheory.T.exists_homogeneousPolyCocycle_eqOn_congruence N l w hN hp hl2 hlN hw Φ hΦ (n + 1)
+  obtain ⟨z', hz', hz'n⟩ := _root_.GlobalTheory.KZ.H3.exists_coc_near N l w hN hp hl2 hlN hw Φ hΦ (n + 1)
   set c := ZMod.castHom (pow_dvd_pow l (Nat.le_succ n)) (ZMod (l ^ n)) with hc
   have L := GlobalTheory.KZ.polySlash_laws (ZMod (l ^ n))
   have L' := GlobalTheory.KZ.polySlash_laws (ZMod (l ^ (n + 1)))
@@ -64,7 +64,7 @@ theorem step (N l w : ℕ) [Fact l.Prime] (hN : 0 < N) (hl2 : l ≠ 2) (hlN : ¬
     simp only [r]
     rw [h1 δ d1]
     exact (h2 δ d2).trans (h3 δ d3).symm
-  obtain ⟨p, hph, hpγ⟩ := GlobalTheory.T.homogeneousPolyCocycle_diff_coboundary_of_eqOn N l w n hN hp hl2 hlN hw r y hr hy hnear
+  obtain ⟨p, hph, hpγ⟩ := _root_.GlobalTheory.KZ.H3.adj_of_near N l w n hN hp hl2 hlN hw r y hr hy hnear
   let pt : MvPolynomial (Fin 2) (ZMod (l ^ (n + 1))) :=
     ∑ m ∈ p.support, MvPolynomial.monomial m (((p.coeff m).val : ℕ) : ZMod (l ^ (n + 1)))
   have hpc : ∀ m, pt.coeff m = (((p.coeff m).val : ℕ) : ZMod (l ^ (n + 1))) := by
@@ -112,7 +112,7 @@ theorem cocycle_lift_of_fam : ∀ (N l w : ℕ) [Fact l.Prime], 0 < N → l ≠ 
       ∀ n, Near (fun δ => MvPolynomial.map (PadicInt.toZModPow n) (z δ)) (Φ n) := by
   intro N l w _ hN hl2 hlN hw Φ hΦ
   have hp : l.Prime := Fact.out
-  have lev := GlobalTheory.T.exists_homogeneousPolyCocycle_eqOn_congruence N l w hN hp hl2 hlN hw Φ hΦ
+  have lev := _root_.GlobalTheory.KZ.H3.exists_coc_near N l w hN hp hl2 hlN hw Φ hΦ
   choose F hF1 hF2 hF3 using CocLift.step N l w hN hl2 hlN hw Φ hΦ
   let seq : (n : ℕ) → {y : SL(2, ℤ) → MvPolynomial (Fin 2) (ZMod (l ^ n)) // IsCoc w (Gam N l) y ∧ Near y (Φ n)} :=
     fun n => Nat.rec (motive := fun n => {y : SL(2, ℤ) → MvPolynomial (Fin 2) (ZMod (l ^ n)) //

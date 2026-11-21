@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ho
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.DiscreteSeriesClassificationIff
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DiscreteSeriesLowestKTypeOfClassification
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DRepCEqDsigC
-open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.GKModule GlobalTheory.GKLie GlobalTheory.CompanionTheory.GKClosure GlobalTheory.CompanionTheory.Hypotheses₂
+open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.GKModule GlobalTheory.GKLie GlobalTheory.CompanionTheory.Hypotheses₂
 open GlobalTheory.SmoothGlob (lieSet)
 open scoped InnerProductSpace
 

@@ -13,20 +13,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
-section Gen
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
-variable {Y Z : Scheme.{0}} {K : Type} [Fintype K]
-
-end Gen
-
-section GenX
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-variable {Xo : Moduli Dw l} {Y Z : Scheme.{0}} {K : Type} [Fintype K]
-
-end GenX
-
 section Sec
 
 variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left) (a : ℤ)
@@ -141,15 +127,6 @@ theorem isPullSec_comp {T T' T'' : Over S0} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h �
   simp only [Over.comp_left, Scheme.Hom.comp_app, Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply,
     Category.assoc, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE, Scheme.Hom.appLE_comp_appLE,
     Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_comp_appLE_assoc]
-
-theorem isPullSec_id {T : Over S0} (hh : 𝟙 (T ⊗ A) ≫ snd T A = snd T A) (s : LB.Sec (LPow A L a T)) :
-    IsPullSec A L a (𝟙 (T ⊗ A)) hh s s := by
-  intro j
-  simp only [Over.id_left, Scheme.Hom.id_app, CommRingCat.id_apply]
-  rw [show (homOfLE (chart_le_res A L (𝟙 (T ⊗ A)) hh a j)).op = 𝟙 _ from Subsingleton.elim _ _]
-  erw [CategoryTheory.Functor.map_id]
-  erw [CommRingCat.hom_id]
-  rfl
 
 end SecComp
 

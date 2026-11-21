@@ -51,16 +51,6 @@ def GXPos : Prop :=
 
 variable (Y : Formalism.L2.SG.Full.Full X) {θ : ℝ} (C : Choice X θ) (hB : WuBessel C)
 
-def LocNormP (νl : Point D.host.E (D.R.rS + 1) → ∀ v : InfinitePlace X.B.I.F, Measure (Formalism.REAL.UJ (X.B.I.ε v))) :
-    Prop :=
-  ∀ w : Point D.host.E (D.R.rS + 1), Formalism.L2.SG.ThmBUse.IsRowPt D (D.mem u).A.T (D.mem u').A.T w →
-    (∃ g, IsPtRep X u u' w g) →
-    Complex.normSq ((Formalism.L2.SG.TermOp.scl (Y.FN u) (Y.FN u') (X := X) (u := u) (u' := u') * X.volK2 : ℝ) : ℂ) *
-        (∏ v, Formalism.MainNotions.S.hsNormSq (haveI := FiniteDimensional.complete ℂ (X.Vloc u v)
-          Jv (νl w v) (X.Wloc u v) (X.Wloc u' v) ((gamW X u u' w) v))) *
-      (Formalism.L2.SG.LoopTerm.covN (Y := Y) C u * Formalism.L2.SG.LoopTerm.covN (Y := Y) C u') =
-      Formalism.L2.SG.Pf.JointAmplitudePoints.localAmplitudeProduct u u' hB w
-
 section GX
 
 variable {D : D7} {X : HidaSetting D}

@@ -36,19 +36,9 @@ theorem IsSq.add_left (hs : IsSq σ h) (x y z : V) : h (x + y) z = h x z + h y z
 theorem IsSq.smul_left (hs : IsSq σ h) (c : K) (x y : V) : h (c • x) y = σ c * h x y := by
   rw [hs.herm y (c • x), hs.smul_right, map_mul, ← hs.herm]
 
-theorem IsSq.zero_right (hs : IsSq σ h) (x : V) : h x 0 = 0 := by
-  have h0 := hs.smul_right 0 x 0
-  simpa using h0
-
-theorem IsSq.zero_left (hs : IsSq σ h) (y : V) : h 0 y = 0 := by
-  rw [hs.herm y 0, hs.zero_right, map_zero]
-
 theorem IsSq.sub_right (hs : IsSq σ h) (x y z : V) : h x (y - z) = h x y - h x z := by
   rw [sub_eq_add_neg, hs.add_right, ← neg_one_smul K z, hs.smul_right]
   ring
-
-theorem IsSq.self_fixed (hs : IsSq σ h) (x : V) : σ (h x x) = h x x := by
-  exact (hs.herm x x).symm
 
 theorem IsSq.ext_basis {h' : V → V → K} (hs : IsSq σ h) (hs' : IsSq σ h') {ι : Type}
     (b : Basis ι K V) (hb : ∀ i j, h (b i) (b j) = h' (b i) (b j)) (x y : V) : h x y = h' x y := by
@@ -63,39 +53,6 @@ theorem IsSq.ext_basis {h' : V → V → K} (hs : IsSq σ h) (hs' : IsSq σ h') 
       rw [hs.herm (b i) y, hs'.herm (b i) y, h1])
     exact LinearMap.congr_fun e x
   exact h3 y x
-
-theorem exists_aniso (h2 : (2 : K) ≠ 0) (hs : IsHS σ h) (x : V) (hx : x ≠ 0) :
-    ∃ e, h e e ≠ 0 := by
-  by_contra H
-  push_neg at H
-  obtain ⟨y, hy⟩ : ∃ y, h x y ≠ 0 := by
-    by_contra H'
-    push_neg at H'
-    exact hx (hs.nondeg x H')
-  have key : ∀ c : K, c * h x y + σ (c * h x y) = 0 := by
-    intro c
-    have e1 : h (x + c • y) (x + c • y) = h x x + h x (c • y) + (h (c • y) x + h (c • y) (c • y)) := by
-      rw [hs.add_right, IsSq.add_left hs.toIsSq, IsSq.add_left hs.toIsSq]
-      ring
-    rw [H, H, H, hs.herm x (c • y), hs.smul_right] at e1
-    linear_combination -e1
-  have ha : h x y + σ (h x y) = 0 := by simpa using key 1
-  by_cases hσ : ∃ c, σ c ≠ c
-  · obtain ⟨c, hc⟩ := hσ
-    have e2 := key c
-    rw [map_mul] at e2
-    have hsa : σ (h x y) = -(h x y) := by linear_combination ha
-    rw [hsa] at e2
-    have e3 : (c - σ c) * h x y = 0 := by linear_combination e2
-    rcases mul_eq_zero.1 e3 with h0 | h0
-    · exact hc (by linear_combination -h0)
-    · exact hy h0
-  · push_neg at hσ
-    rw [hσ] at ha
-    have e3 : (2 : K) * h x y = 0 := by linear_combination ha
-    rcases mul_eq_zero.1 e3 with h0 | h0
-    · exact h2 h0
-    · exact hy h0
 
 def perp (hs : IsSq σ h) (e : V) : Submodule K V := LinearMap.ker (hs.lin e)
 
@@ -158,35 +115,5 @@ theorem decomp_val (hs : IsSq σ h) (e w : V) (hw : h e w = 0) (s : K) :
   ring
 
 end basic
-
-theorem exists_orth (h2 : (2 : K) ≠ 0) : ∀ (m : ℕ) (V : Type) [AddCommGroup V] [Module K V]
-    [FiniteDimensional K V] (h : V → V → K), IsHS σ h → finrank K V = m →
-    ∃ f : Fin m → V, (∀ i j, i ≠ j → h (f i) (f j) = 0) ∧ ∀ i, h (f i) (f i) ≠ 0 := by
-  intro m
-  induction m with
-  | zero =>
-    intro V _ _ _ h hs hm
-    exact ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0⟩
-  | succ n ih =>
-    intro V _ _ _ h hs hm
-    obtain ⟨x, hx⟩ := Module.finrank_pos_iff_exists_ne_zero.mp (by omega : 0 < finrank K V)
-    obtain ⟨e, he⟩ := exists_aniso h2 hs x hx
-    have hp := perp_isHS hs e he
-    have hr := finrank_perp hs.toIsSq e he
-    obtain ⟨g, hg1, hg2⟩ := ih (perp hs.toIsSq e) (fun w w' => h w w') hp (by omega)
-    refine ⟨Fin.cons e (fun i => (g i : V)), ?_, ?_⟩
-    · intro i j hij
-      induction i using Fin.cases <;> induction j using Fin.cases
-      · exact absurd rfl hij
-      · simp only [Fin.cons_zero, Fin.cons_succ]
-        exact (mem_perp hs.toIsSq e _).1 (g _).2
-      · simp only [Fin.cons_zero, Fin.cons_succ]
-        rw [hs.herm e, (mem_perp hs.toIsSq e _).1 (g _).2, map_zero]
-      · simp only [Fin.cons_succ]
-        exact hg1 _ _ (fun h' => hij (by rw [h']))
-    · intro i
-      induction i using Fin.cases
-      · simpa using he
-      · simpa using hg2 _
 
 end PI.VolStabSW.FFHS

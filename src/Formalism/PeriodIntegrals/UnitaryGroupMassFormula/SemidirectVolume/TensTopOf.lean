@@ -1,5 +1,6 @@
 import Mathlib
-import Formalism.PeriodIntegrals.VolSemiDirect
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.LevelIntersectParabolic
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ClosedStep
 
 noncomputable section
@@ -16,17 +17,6 @@ def AFTop : Prop :=
 theorem finite_nf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] : Module.Finite F E :=
   Module.Finite.of_restrictScalars_finite ℚ F E
-
-def sigL {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
-    (σ : E →ₐ[F] E) : R ⊗[F] E →ₗ[R] R ⊗[F] E where
-  toFun := sigR R σ
-  map_add' := fun x y => map_add _ x y
-  map_smul' := by
-    intro r x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a e => simp [sigR, TensorProduct.smul_tmul']
-    | add x y hx hy => simp_all [smul_add]
 
 theorem tensTop_of (h : AFTop) : TensTop := by
   intro F E _ _ _ _ _

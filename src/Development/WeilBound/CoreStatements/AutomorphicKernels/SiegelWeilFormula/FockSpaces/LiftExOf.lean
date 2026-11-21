@@ -48,30 +48,12 @@ def tensP {d : SD σ} (R : RD d) (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → 
     funext X
     simp only [RD.tens, fP_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]
 
-def tensS {d : SD σ} (R : RD d) (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) :
-    𝓢(Fin d.m → Fin d.n → ℂ, ℂ) →ₗ[ℂ] (Mx F E d.m d.n → ℂ) where
-  toFun S := R.tens w S Ψ
-  map_add' S S' := by
-    funext X
-    simp only [RD.tens, SchwartzMap.add_apply, Pi.add_apply, add_mul]
-  map_smul' a S := by
-    funext X
-    simp only [RD.tens, SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]
-
 theorem liftEx_of : TBij → FockMem → LiftEx := by
   intro hB hF F E _ _ _ _ _ σ d R w Ψ hΨ
   obtain ⟨φ, hφ⟩ := linLift hB d (tensP R w Ψ) fun P => (hF F E σ d R).1 (((hF F E σ d R).2.1 w Ψ hΨ).1 P)
   exact ⟨φ, hφ⟩
 
 theorem liftEx (hB : TBij) : LiftEx := liftEx_of hB fockMem
-
-theorem liftSw (hB : TBij) (d : SD σ) (R : RD d) (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ ∈ R.away w) :
-    ∃ φ : 𝓢(Fin d.m → Fin d.n → ℂ, ℂ) →ₗ[ℂ] d.Fn, ∀ S, φ S ∈ d.sch ∧ d.T (φ S) = R.tens w S Ψ :=
-  linLift hB d (tensS R w Ψ) fun S => tens_mem d R w S ⟨S, rfl⟩ Ψ hΨ
-
-theorem liftSw1 (hB : TBij) (d : SD σ) (R : RD d) (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) (hf : IsSw f)
-    (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ ∈ R.away w) : ∃ Φ ∈ d.sch, d.T Φ = R.tens w f Ψ :=
-  (hB F E σ d).2.1 _ (tens_mem d R w f hf Ψ hΨ)
 
 end PositivityTheory.SiegelWeilFormula.KFock
 

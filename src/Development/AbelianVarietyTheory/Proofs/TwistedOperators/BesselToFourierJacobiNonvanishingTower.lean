@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartFixed
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFOfIsVacVec
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridConjugationWeilDataInverseCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridConjugationWeilDataInverseCharacter
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftPeriodsIsTameThetaFunctionalStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselPeriodGivesFourierJacobiPeriodOfLiftStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumHermitianPair
@@ -60,7 +60,7 @@ theorem rungJ : FockTot → PartFixed → RungJ := by
   have hi : 2 * k + 2 < D.R.m := by omega
 
   obtain ⟨c1, c2, -, c4, c5, c6, c7, c8, c9h, c9f⟩ :=
-    GlobalTheory.T.gridConjugation_weilData_inverseCharacter D hD T L μ0 hL sc G W M hM (2 * k + 2) hi
+    _root_.GlobalTheory.Asc.conjRead_holds D hD T L μ0 hL sc G W M hM (2 * k + 2) hi
   obtain ⟨c4a, c4b⟩ := c4 ⟨k + 1, by omega⟩
   rw [c4a, c4b] at c1
 

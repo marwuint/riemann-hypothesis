@@ -1,5 +1,6 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogGroupOrderBoundStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogGroupOrderBound
+import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TwoLogCardLevelsLe
 

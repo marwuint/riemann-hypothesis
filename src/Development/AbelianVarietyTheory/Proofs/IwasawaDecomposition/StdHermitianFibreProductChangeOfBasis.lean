@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasuresTransportUnitarySimilitudeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasuresTransportUnitarySimilitude
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousDistribHaarCharUnits
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNiceLocalFieldProductRingInfiniteAdelesComplet
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProductFormulaHaarModulusCmFieldElementStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProductFormulaHaarModulusCmFieldElement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictedProductMeasureSmulFactorsEqSmulStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRestrictedProductTupleMeasureMapLeftRightActioStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRestrictedProductTupleMeasureMapLeftRightActio
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
@@ -80,7 +80,7 @@ theorem fibAt_basis (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   have hu : IsUnit ((P : Matrix (Fin M) (Fin M) E).map (inclR (F := F) R)).det := by
     rw [hdet]
     exact ((Matrix.isUnits_det_units P)).map _
-  have := GlobalTheory.T.fibreMeasures_transport_unitary_similitude F E σ R hR M _ J lam ν β 1 m _ hl hν hu isUnit_one
+  have := _root_.GlobalTheory.GaugeEx.fibAt_similitude F E σ R hR M _ J lam ν β 1 m _ hl hν hu isUnit_one
     (fun z => by rw [one_mul, qR_mulVec]) h
   rw [one_mul, (modu_basic R).2.2.1, inv_one, mul_one, hdet] at this
   exact this
@@ -90,10 +90,10 @@ theorem isStdX_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   subst hJ
   obtain ⟨hni, hnv⟩ := nice_ainf_fv F
   have hdet : (P : Matrix (Fin M) (Fin M) E).det ≠ 0 := (Matrix.isUnits_det_units P).ne_zero
-  obtain ⟨hfin, hone⟩ := GlobalTheory.T.product_formula_haarModulus_cmField_element F E σ hσ _ hdet
+  obtain ⟨hfin, hone⟩ := _root_.GlobalTheory.GaugeEx.prod_modu_inclR F E σ hσ _ hdet
   refine ⟨_, _, fibAt_basis F E σ (Ainf F) hni M J P _ _ _ _ s.haar_lamI s.haar_nuI hi,
     fun v => fibAt_basis F E σ (Fv F v) (hnv v) M J P _ _ _ _ (s.haar_lamV v) (s.haar_nuV v) (hv v), ?_⟩
-  have h1 := GlobalTheory.T.isRestrictedProductTupleMeasure_map_leftRightAction F E d b 1 M ν' mi mv
+  have h1 := _root_.GlobalTheory.GaugeEx.ProdTransport.isProd_map_lrAct F E d b 1 M ν' mi mv
     (Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) P) 1 hp
   have hg : (Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) P).val =
       (P : Matrix (Fin M) (Fin M) E).map (inclR (AF F)) := rfl

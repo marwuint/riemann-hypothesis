@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.BasicLiftAll
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.JdPolyOKPolynomialOperators
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumMinorSumPolynomialOperatorStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumMinorSumPolynomialOperator
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliDetConjugateTopCoefficientStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AntisymProdEqSumQuantumMinorStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LeibnizDetFrameMatrixMatrixUnitStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AntisymProdEqSumQuantumMinor
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LeibnizDetFrameMatrixMatrixUnit
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ConjugateTransposeLeibniz.YOperatorLeibnizRule
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RightOperatorDualMemOfInfiniteStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsDualMatrixFrameFvecStatement
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BasicLift
@@ -169,7 +170,7 @@ theorem row_mul_det (q : Fin (r + 1 + (r + k)) → ℂ) (a : Fin (r + 1 + (r + k
     rw [evAt_apply, evAt_apply, Module.End.mul_apply, unitE, level_generator_apply _ _ _ _ hg, level_generator_apply _ _ _ _ hg,
       (Qx2.good_eh (isOpen_dom z z') _ _).loc _ (fun x => (Zhat k r z z' x).det • (F : Q.Mx k r → E) x)
         (fun x hx => mulE_apply _ hs F hx) g hg,
-      GlobalTheory.T.leibniz_det_frameMatrix_matrixUnit E k r z z' _ _ _ _ F.2.1 g hg]
+      _root_.GlobalTheory.HatNF.DetLeibniz.det_leibniz E k r z z' _ _ _ _ F.2.1 g hg]
     simp only [posL_cast]
     rfl
   rw [Finset.sum_mul]
@@ -240,7 +241,7 @@ theorem group_identity (hz' : inWb k r z') (hT : 0 < Tz k r z') (Y : ℂ) :
     (fun a j => end_ext _ fun G x hx => by
       rw [Module.End.mul_apply, Module.End.mul_apply, mulE_apply _ hs _ hx, mulE_apply _ (hνs a j) _ hx,
         mulE_apply _ (hνs a j) _ hx, mulE_apply _ hs _ hx, smul_comm])
-  have mnr := GlobalTheory.T.antisym_prod_eq_sum_quantumMinor _ (r + 1) (r + k) (unitE z z' E) (fun l d => Qm (Fin.natAdd (r + 1) l) d) (lam z g)
+  have mnr := _root_.GlobalTheory.ScalarColsMinor.antisym_prod_eq_sum_qminor _ (r + 1) (r + k) (unitE z z' E) (fun l d => Qm (Fin.natAdd (r + 1) l) d) (lam z g)
     ((Zhat k r z z' g)⁻¹).transpose (u - ((r + 1 : ℕ) : ℂ))
   set F0 := (levData E 0 (isOpen_dom z z')).toV F hFs with hF0
   have hF0v : ∀ x ∈ Q.Glev k r 0 ∩ {g | dZ z z' g ≠ 0}, (F0 : Q.Mx k r → E) x = F x := fun x hx => level_restriction_apply_on F hx
@@ -438,7 +439,7 @@ theorem lift_regular {d : Q.NFData P (RA P Bs)} (hD : P5.IsData P Bs.z Bs.z' Bs.
   have hL := hD.2.2.1
   have hdL := hd.1
   obtain ⟨Qm, w, hG⟩ := group_identity (E := Wq →L[ℂ] Wp) Bs.z Bs.z' Bs.z'_mem Bs.T'_pos (y : ℂ)
-  obtain ⟨Θ, hΘ, hap⟩ := GlobalTheory.T.quantumMinor_sum_polynomialOperator Wp Wq P.k P.r (P.r + P.k) (P.r + 1 + (P.r + P.k)) _
+  obtain ⟨Θ, hΘ, hap⟩ := _root_.GlobalTheory.HatNF.MinorPoly.minor_polyOp Wp Wq P.k P.r (P.r + P.k) (P.r + 1 + (P.r + P.k)) _
     (fun i : (Fin (P.r + P.k) → Fin (P.r + 1 + (P.r + P.k))) × (Fin (P.r + P.k) → Fin (P.r + 1 + (P.r + P.k))) =>
       pos P.k P.r ∘ i.1) (fun i => pos P.k P.r ∘ i.2) w (fun i g => -coef Bs.z Qm i g)
     (fun i => by

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHilbRep
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapEqKerIff
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsRepresentableOfCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertPointEqOfOpenCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertPointEqOfOpenCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertPointGlueOpenCoverStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertFunctorLocalRepresentingDataOfRestrictStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfRepresentsHilbertFunctorOfLocalStatement
@@ -19,7 +19,7 @@ theorem GlobalTheory.HilbGlue.isSheaf_hilbFunctor {S Z : Scheme.{0}} (z : Z ⟶ 
   rw [Presieve.isSheafFor_arrows_iff]
   intro x hx
   exact existsUnique_of_exists_of_unique (GlobalTheory.T.hilbert_point_glue_open_cover z r Y 𝒰 x fun i j R b c h => hx i j R b c h)
-    fun y y' h h' => GlobalTheory.T.hilbert_point_eq_of_open_cover z r Y 𝒰 y y' fun i => (h i).trans (h' i).symm
+    fun y y' h h' => _root_.GlobalTheory.HilbGlue.HPt.ext_openCover z r Y 𝒰 y y' fun i => (h i).trans (h' i).symm
 
 theorem GlobalTheory.HilbGlue.isHilbRep_of_cover : ∀ (S Z : Scheme.{0}) (z : Z ⟶ S), IsFinite z → Flat z →
     LocallyOfFinitePresentation z → ∀ r : ℕ, (∀ s : S, ∃ W : S.Opens, s ∈ W ∧ IsHilbRep (z ∣_ W) r) →

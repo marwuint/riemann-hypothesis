@@ -26,15 +26,4 @@ def StabOf : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (A :
     Off V p → ∃ (T : Finset (Plc E)) (e : ℕ), (∀ u ∈ T, (p : 𝓞 E) ∉ u.asIdeal ∧ (u ∈ V.S ∨ F.a u ∉ KGL u n)) ∧
       ∀ k' : GUf E n, F.j k' ∈ S.L.KN 1 → (∀ u ∈ T, Near1 u e (F.a u * comp u k' * (F.a u)⁻¹)) → Stab F V (F.j k')
 
-def InIdBasic : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] (w : Plc E) (𝔟 : Ideal (𝓞 E)), 𝔟 ≠ ⊥ →
-    (∃ e : ℕ, ∀ y, InId w 𝔟 y ↔ Valued.v y ≤ WithZero.exp (-(e : ℤ))) ∧
-    (∀ (e : ℕ) y, InId w (w.asIdeal ^ e) y ↔ Valued.v y ≤ WithZero.exp (-(e : ℤ))) ∧
-    (𝔟 ⊔ w.asIdeal = ⊤ → ∀ y, InId w 𝔟 y ↔ y ∈ w.adicCompletionIntegers E) ∧
-    (∀ 𝔟' y, 𝔟 ≤ 𝔟' → InId w 𝔟 y → InId w 𝔟' y) ∧
-    ∀ 𝔠 : Ideal (𝓞 E), 𝔠 ⊔ w.asIdeal = ⊤ → ∀ y, InId w (𝔠 * 𝔟) y ↔ InId w 𝔟 y
-
-def IdHat : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n p : ℕ) [Fact p.Prime] (S : Setup A n p) (F : Frame S) (𝔟 : Ideal (𝓞 E)), 𝔟 ≠ ⊥ →
-    ∀ v, v ∈ idHat S.D 𝔟 ↔ ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → ∀ i, InId w 𝔟 (F.vec w v i)
-
 end UpperTheory.Gal.Int.Geo.Pl

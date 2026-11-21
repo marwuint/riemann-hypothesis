@@ -1,19 +1,24 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianMeasureData
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypOneZeroZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTamagawaMeasureNormalization
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureAddRankOneBlock
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentExtendByUnitVectorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentUnitaryActionIffStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentUnitaryActionIff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFreeSetProjectsCompactStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreIntegralContinuousInParameterStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureOrthogonalSumStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureExtensionByOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreIntegralContinuousInParameter
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureOrthogonalSum
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureExtensionByOne
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductUniqueness
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneScalarPreservesNondegenerateStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureGeneralRankExtensionStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneScalarPreservesNondegenerate
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StageData
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureGeneralRankExtension
 
 noncomputable section
 
@@ -30,35 +35,35 @@ theorem cont_double_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   haveI iSC : SecondCountableTopology R := D.hR.2.2.1
   haveI iT2 : T2Space R := D.hR.2.2.2.1
   have hval : IsOpenEmbedding (Units.val : Rˣ → R) := D.hR.2.2.2.2.2.2.1
-  have hJ' := GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht
-  obtain ⟨kTR, kLC, kSC, kT2, -, -, -, kB, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R
+  have hJ' := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap F E σ M J D.hJ t D.ht
+  obtain ⟨kTR, kLC, kSC, kT2, -, -, -, kB, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ D.hCM R
   haveI := kTR
   haveI := kLC
   haveI := kSC
   haveI := kT2
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
-  obtain ⟨eLC, eSC, eT2, eB, -⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ D.hCM R n
+  obtain ⟨eLC, eSC, eT2, eB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ D.hCM R n
   haveI := eLC
   haveI := eSC
   haveI := eT2
   haveI := eB
-  obtain ⟨gTG, gLC, gSC, gT2, gB, hactall⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ D.hCM (M + 1) _ hJ' R
+  obtain ⟨gTG, gLC, gSC, gT2, gB, hactall⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ D.hCM (M + 1) _ hJ' R
   haveI := gTG
   haveI := gLC
   haveI := gSC
   haveI := gT2
   haveI := gB
   obtain ⟨hact, hact1, hactm, -⟩ := hactall (n + 1)
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ D.hCM R d b lam D.hlam
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ D.hCM R d b lam D.hlam
   haveI := hW n M
   haveI := hH n
-  obtain ⟨-, -, hbd', -⟩ := GlobalTheory.T.local_fibre_measure_orthogonal_sum F E σ D.hCM M n J D.hJ R D.hR d b lam D.hlam m' D.hm'
+  obtain ⟨-, -, hbd', -⟩ := _root_.GlobalTheory.CompanionTheory.SW.StageF.gramFibFree_basic F E σ D.hCM M n J D.hJ R D.hR d b lam D.hlam m' D.hm'
   obtain ⟨-, hloc₁, -, -, -, hgram₁⟩ :=
-    GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁
+    _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.gramFib_basic F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁
   haveI : BorelSpace (Fin n → Fin M → R ⊗[F] E) := kB n M
   haveI : BorelSpace (Fin 1 → Fin (M + 1) → R ⊗[F] E) := kB 1 (M + 1)
   have hUo : IsOpen {X : Fin n → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} :=
-    GlobalTheory.T.linearly_independent_frames_open F E σ D.hCM R D.hR n M
+    _root_.GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ D.hCM R D.hR n M
 
   have hCt : ∀ L : Set (HA R σ (blockOne (algebraMap F E t) J)), IsCompact L →
       ∃ C : Set (Fin n → Fin M → R ⊗[F] E), IsCompact C ∧
@@ -73,7 +78,7 @@ theorem cont_double_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
         (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) => actW R σ _ p.1⁻¹ p.2) '' (L ×ˢ tsupport φ)),
         LinearIndependent (R ⊗[F] E) Y := by
       rintro _ ⟨⟨h, z⟩, ⟨-, hz⟩, rfl⟩
-      exact (GlobalTheory.T.linearIndependent_unitary_action_iff F E R σ (M + 1) (n + 1) _ h⁻¹ z).2 (hfree hz)
+      exact (_root_.GlobalTheory.CompanionTheory.WeilSiegel.Free.ActFree.actW_linearIndependent_iff F E R σ (M + 1) (n + 1) _ h⁻¹ z).2 (hfree hz)
     obtain ⟨C, hC, hCf, hCv⟩ := GlobalTheory.T.compact_free_set_projects_compact (R ⊗[F] E) M n _ hQc hQf
     refine ⟨C, hC, hCf, fun h hh A c X hne => hCv A c X ?_⟩
     refine ⟨(h, actW R σ _ h (vec A c X)), ⟨hh, subset_tsupport _ hne⟩, ?_⟩
@@ -95,7 +100,7 @@ theorem cont_double_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
       refine hφ.comp (hact.comp ((continuous_fst.comp continuous_fst).prodMk ?_))
       exact continuous_vec.comp ((cT.comp (continuous_fst.comp (continuous_snd.comp continuous_fst))).prodMk
         ((continuous_snd.comp (continuous_snd.comp continuous_fst)).prodMk continuous_snd))
-    have hj := GlobalTheory.T.fibre_integral_continuous_in_parameter (Fin n → Fin M → R ⊗[F] E) (HermR R σ n) _ (coordW R b lam n M)
+    have hj := _root_.GlobalTheory.CompanionTheory.SW.FibreJointOpen.continuousOn_fibre_integral_of_subset (Fin n → Fin M → R ⊗[F] E) (HermR R σ n) _ (coordW R b lam n M)
       (coordHerm R σ b lam n) (gramR R σ J) Subtype.val {X | LinearIndependent (R ⊗[F] E) X} hUo
       Set.univ isOpen_univ m' D.hm'
       (HA R σ (blockOne (algebraMap F E t) J) × R × (Fin n → R ⊗[F] E))

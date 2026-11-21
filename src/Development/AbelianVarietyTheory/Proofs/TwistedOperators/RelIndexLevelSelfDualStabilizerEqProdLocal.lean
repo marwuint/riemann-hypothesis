@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LocalIntegralG
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.LiftsGen
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsMemProjEqOnFinset
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlockPartitionOfEqTwoBlock
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelPlacesUnionTwistPlacesSplitDisjointStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeLevelEqUnitaryInfFrameStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelPlacesUnionTwistPlacesSplitDisjoint
+import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeLevelEqUnitaryInfFrameStabilizer
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardBlockUpperTriangularSubgroupOfTopBlockStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -57,8 +58,8 @@ theorem relIndex_levV_latLev : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl
   intro D G _ _ Pl0 T A Ks _ _ _ R F i t P m Hl cl hC hP
   obtain ⟨c, hB⟩ := hC.lev.βV i
   rw [one_pow] at hB
-  have hK := GlobalTheory.T.latticeLevel_eq_unitary_inf_frame_stabilizer D (Vc D i) (R.βV i) _ hB
-  obtain ⟨hsplit, hdis⟩ := GlobalTheory.T.levelPlaces_union_twistPlaces_split_disjoint R F hC t
+  have hK := _root_.GlobalTheory.LatLevEq.latLev_eq_UA_inf_St D (Vc D i) (R.βV i) _ hB
+  obtain ⟨hsplit, hdis⟩ := _root_.GlobalTheory.TwistTypePlaces.isSplitSet_union R F hC t
   have hspan : Submodule.span D.host.E ((R.ΛV i : Submodule (𝓞 D.host.E) _) : Set (Fin (Vc D i).rank → D.host.E)) = ⊤ := by
     rw [eq_top_iff, ← hermitianSpace_standard_lattice_span_eq_top D (Vc D i)]
     refine Submodule.span_mono fun x hx => ?_

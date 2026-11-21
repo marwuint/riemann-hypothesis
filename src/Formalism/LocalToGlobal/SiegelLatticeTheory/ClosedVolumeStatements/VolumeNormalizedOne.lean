@@ -2,49 +2,93 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Volumes
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.SupportG
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.LocVol
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SupportLoc
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.VolSemiDirect
+import Mathlib
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.LevelIntersectParabolic
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ClosedStep
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.SubgroupLocallyCompactHolds
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.FundamentalDomainExists
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ProdHaar
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.LocallyCompactAdelicUnitary
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.Closed
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.EqZeroOfMemNbhdA
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.StabilizerFixesFrameVector
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ProjStep
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ProjCont
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.HasStableRangeOne
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.OrthogonalInvarianceOfStableRankOne
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.CjDefs
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ModVec
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ModTop
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LevelKSplit
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.VolumeUnipotentOne
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.VolStabSW
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SupportDatum
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NilpotentVolumeOne.LinearIndependentFrameWithNormal
+import Formalism.PeriodIntegrals.VolFromSW
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.TopoAF
+import Formalism.PeriodIntegrals.WeilQuotMeas
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.StepBruhat
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.LintegralMulAvgComm
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.Bruhat
+import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotMeasUniq
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.TensTop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensGen
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensFibV
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.Unfold
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.HformSmulRight
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.Unimod
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.PosNear
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.OrbRing
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnitaryOrbits.InclRAlgebraMap
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnitaryOrbits.StLamOf
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnitaryOrbits.LocalSum
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnitaryOrbits.StFix
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianDiagonalization.ExistsOrthogonalFamily
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.TopoMuInv
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.EventuallyStruct
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibFour
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibDis
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.TensAll
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensInfSS
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensVNA
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensVGlue
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.HenselCountHolds
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.MeasureEqOfCos
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensVDx
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensVSec
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.ExistsUnifFv
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.SdTestInf
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.SdDual
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.RPGlue
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.KapIntegral
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DetAdmA
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibTop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensHF
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensHI
+import ReciprocityTheory.Automorphisms.InstMainA
+import ReciprocityTheory.ResidueCardinality.ArtinOntoB
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensFFT
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensFFIn
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensHH
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensVolA
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensHC
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensVolS
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensSAInt
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensChLift
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensIdxC
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensCnt
+import Formalism.SharpRestriction.CuspSpanNormBounds.LocalGroupInFamilyNontrivial
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LocProdFormula
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.Blocks
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.DeterminantFormIdentity
 import Formalism.PeriodIntegrals.LocProdFormula
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.DiffGenLoc
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilySeparationBound
 
 namespace Formalism.L2.SG.Closed
 
-theorem volume_normalized_all : Formalism.L2.SG.Volumes.VolumeUnipotentAllCM := volume_unipotent_all_cm
-theorem LevelSAll_holds : Formalism.L2.SG.Volumes.LevelSAll := level_s_all_split
-theorem volume_normalized_one : Formalism.L2.SG.Volumes.VolumeUnipotentOneFrom := volumeUnipotentOne
-
-theorem VolumesFromSW_holds (hS0 : PI.VolFromSW.VolumeDegenerateFromSiegelWeil) : Formalism.L2.SG.Volumes.VolumesFromSW := by
-  have hS := volume_stabilizer_from_siegel_weil
-  unfold PI.VolFromSW.VolStabFromSW at hS
-  unfold PI.VolFromSW.VolumeDegenerateFromSiegelWeil at hS0
-  unfold Formalism.L2.SG.Volumes.VolumesFromSW
-  unfold Formalism.MainNotions.UnusedSlot34.ForAllCM at *
-  intros
-  beta_reduce
-  intro h1 h2
-  constructor
-  · apply hS <;> assumption
-  · apply hS0 <;> assumption
-
 theorem NormProd_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.NormProd D := by
   intro δ M hA x hx
   exact local_product_formula D.host.F D.host.E (Formalism.MainNotions.BridgeLemma.szf_finrankFE D) D.conjF D.s.atP M
     (fun p => (hA p).1) x hx
-
-theorem SupportLoc_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportLoc D := Formalism.L2.SG.Pf.localSupport_holds D
-
-theorem SupportLemma_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportLemma D :=
-  Formalism.L2.SG.SupportG.supportLemma_of_loc (SupportLoc_holds D) (NormProd_holds D)
-
-theorem SupportVec_holds (D : Formalism.BasicNotions.D7) : Formalism.L2.SG.SupportG.SupportVec D := support_vector_all D
-
-theorem DiffExists_holds {F : Type} [Field F] [NumberField F]
-    (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) : Formalism.L2.SG.LocVol.DiffExists v :=
-  diffExists v
 
 end Formalism.L2.SG.Closed

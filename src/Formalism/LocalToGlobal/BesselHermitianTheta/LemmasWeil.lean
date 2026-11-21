@@ -217,15 +217,6 @@ theorem isDetAt_root {e : AE D} (he : IsSplitIdem D e) (V : HSp D) (g : GA D V) 
 
 variable {X : ThetaX D} {T : ThetaTied D X}
 
-theorem PhiYupTied.kernel {Wl : WeilTied D X T} (h : PhiYupTied Wl) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m)
-    (g : GA D (D.sp.Y (j + 1))) (k : GA D (D.sp.Y j)) :
-    Wl.evS _ _ (Wl.om _ _ (X.carY μ (j + 1) j) (X.carY μ (j + 1) (j + 1)) (k, g) (X.PhiYup μ j)) 0 =
-      Wl.evS _ _ (Wl.om _ _ (X.carY μ (j + 1) (j + 1)) (X.carY μ (j + 1) j) (g, k) (X.PhiY μ j)) 0 := by
-  have s := Wl.om_swap _ _ (X.carY μ (j + 1) (j + 1)) (X.carY μ (j + 1) j) (rank_Y_ne X j hj)
-    (row_lift_ok T μ (j + 1) (by omega) hj (j + 1) hj) (row_lift_ok T μ (j + 1) (by omega) hj j hj.le)
-    g k (X.PhiY μ j) (X.PhiYup μ j) (h μ j hj) 0
-  rwa [Matrix.transpose_zero] at s
-
 end Formalism.L2.Theta
 
 end

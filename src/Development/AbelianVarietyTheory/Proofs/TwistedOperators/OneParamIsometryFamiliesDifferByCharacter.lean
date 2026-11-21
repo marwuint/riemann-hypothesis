@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsScalarOfCommuteSchrodingerOperatorsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicativeHasDerivAtZeroStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsScalarOfCommuteSchrodingerOperators
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicativeHasDerivAtZero
 import GroundTheory.GlobalFields.TateThesis.GaussianSchwartz
 open GlobalTheory.RealWeil MeasureTheory
 open scoped SchwartzMap Matrix
@@ -15,7 +15,7 @@ theorem famChar_hasDerivAt : ∀ (l : Type) [Fintype l] (B : ℝ → (l ⊕ l �
 
   have key : ∀ t, ∃ c : ℂ, ∀ f, T t f = c • U t f := by
     intro t
-    obtain ⟨c, hc⟩ := GlobalTheory.T.exists_scalar_of_commute_schrodingerOperators l ((T t).comp (U (-t)))
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.RealWeil.exists_eq_smul_of_commute_rhoFun l ((T t).comp (U (-t)))
       (fun f => by simp only [LinearMap.comp_apply]; rw [hTi, hUi])
       (fun w f f₁ h => by
         simp only [LinearMap.comp_apply]
@@ -53,7 +53,7 @@ theorem famChar_hasDerivAt : ∀ (l : Type) [Fintype l] (B : ℝ → (l ⊕ l �
     filter_upwards [hd.eventually_ne hd0] with t ht
     rw [hlam t f₀, SchwartzMap.smul_apply, smul_eq_mul, mul_div_assoc, div_self ht, mul_one]
 
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_hasDerivAt_zero_of_continuousAt_of_map_add lam hl0 hlmul hlc
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.multiplicative_hasDerivAt_zero lam hl0 hlmul hlc
   refine ⟨c, fun f y => ?_⟩
   have hfun : (fun t => T t f y) = fun t => lam t * U t f y := by
     funext t; rw [hlam t f, SchwartzMap.smul_apply, smul_eq_mul]

@@ -203,25 +203,6 @@ theorem forall_smul_eq_iff_mem_range_ideleEmbedding (x : IdeleGroup L) :
   · rintro ⟨y, rfl⟩ σ
     exact smul_ideleEmbedding σ y
 
-theorem fixedPoints_subgroup_idele :
-    FixedPoints.subgroup (L ≃ₐ[K] L) (IdeleGroup L) = (ideleEmbedding K L).range := by
-  ext x
-  exact forall_smul_eq_iff_mem_range_ideleEmbedding x
-
-variable (K L) in
-
-def ideleFixedEquiv : IdeleGroup K ≃ₜ* FixedPoints.subgroup (L ≃ₐ[K] L) (IdeleGroup L) where
-  toMulEquiv := (MonoidHom.ofInjective (f := ideleEmbedding K L)
-      (ideleEmbedding_injective (K := K) (L := L))).trans
-    (MulEquiv.subgroupCongr fixedPoints_subgroup_idele.symm)
-  continuous_toFun := continuous_ideleEmbedding.subtype_mk _
-  continuous_invFun := by
-    rw [(isClosedEmbedding_ideleEmbedding (K := K) (L := L)).isInducing.continuous_iff]
-    convert continuous_subtype_val using 1
-    funext y
-    simp only [Function.comp_apply]
-    exact MonoidHom.apply_ofInjective_symm _ _
-
 end Galois
 
 variable (K L) in

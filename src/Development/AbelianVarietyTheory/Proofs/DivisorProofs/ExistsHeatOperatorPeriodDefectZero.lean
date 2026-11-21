@@ -5,12 +5,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCo
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.BijectiveSmulChartSec
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeISupInfPreimage
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorFieldZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantFieldConstCoeffsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymmetricSecondOrderOperatorOfCharacterForStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudFourierTermChartRestrictionIsWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRaynaudTorusWeightFunctionSubConstMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRaynaudFourierTermSubSmulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaShiftFunctionalEqSubConstFnSmulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantFieldConstCoeffs
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymmetricSecondOrderOperatorOfCharacterFor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudFourierTermChartRestrictionIsWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRaynaudTorusWeightFunctionSubConstMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRaynaudFourierTermSubSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaShiftFunctionalEqSubConstFnSmul
 
 set_option autoImplicit false
 
@@ -100,9 +100,9 @@ theorem exists_heat_defect_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLo
     simp only [hπ, hw1, map_add]
     rw [hw2 b a]
     linear_combination (-(w a b)) * h2)
-  obtain ⟨c₁, hc₁⟩ := GlobalTheory.T.exists_torus_invariantField_const_coeffs R Dd O oa Y n v dd hv ℓ₁
-  obtain ⟨c₂, hc₂⟩ := GlobalTheory.T.exists_torus_invariantField_const_coeffs R Dd O oa Y n v dd hv ℓ₂
-  obtain ⟨M, hMs, hMa, hMg⟩ := GlobalTheory.T.exists_symmetric_second_order_operator_of_character_form R Dd O oa Y n v dd hv w hw1 hw2
+  obtain ⟨c₁, hc₁⟩ := _root_.GlobalTheory.HeatMod.TorField.exists_isTorField R Dd O oa Y n v dd hv ℓ₁
+  obtain ⟨c₂, hc₂⟩ := _root_.GlobalTheory.HeatMod.TorField.exists_isTorField R Dd O oa Y n v dd hv ℓ₂
+  obtain ⟨M, hMs, hMa, hMg⟩ := _root_.GlobalTheory.HeatMod.TorTensor.exists_quad R Dd O oa Y n v dd hv w hw1 hw2
   obtain ⟨⟨a1, a2, a3⟩, kc, wt₂, pb₂⟩ := hc₂
   let h' : Heat Y.H Y.q.left Dd.toPre.P.L dd ⇑D :=
     { Θ := h.Θ + M
@@ -138,11 +138,11 @@ theorem exists_heat_defect_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLo
   have key : ∀ k α σ σ', TActs Y h' k α σ σ' →
       TActs Y h k α σ (σ' - constFn Dd.toPre.P.A.hom ⊤ (e k α) • σ) := by
     rintro k α σ σ' ⟨τ, τ', hτ, hτ', hA⟩
-    refine ⟨τ, τ' - constFn Y.H.hom ⊤ (e k α) • τ, hτ, GlobalTheory.T.isRaynaudFourierTerm_sub_smul R Dd.toPre O oa Y k α σ σ' τ τ' (e k α) hτ hτ',
+    refine ⟨τ, τ' - constFn Y.H.hom ⊤ (e k α) • τ, hτ, _root_.GlobalTheory.HeatTermLin.isTerm_sub_smul R Dd.toPre O oa Y k α σ σ' τ τ' (e k α) hτ hτ',
       fun i => ?_⟩
     have hA' := hA i
     obtain ⟨V, hV⟩ := (hB i).1
-    have hwt := GlobalTheory.T.raynaudFourierTerm_chartRestriction_isWeight R Dd.toPre O oa Y k α σ τ hτ (h.j i) (h.W i) ⟨V, hV⟩ (h.le i)
+    have hwt := _root_.GlobalTheory.HeatMod.isWt_fourierTerm R Dd.toPre O oa Y k α σ τ hτ (h.j i) (h.W i) ⟨V, hV⟩ (h.le i)
     change rsT (τ'.f fun _ => h.j i) (h.W i) = op Y.H dd (h.Θ + M) (h.u - c₁)
       (fun O f => h.d i O f - combF Y.H.hom dd c₂ O f) (h.p i) (h.p' i) k (h.W i)
       (rsT (τ.f fun _ => h.j i) (h.W i)) at hA'
@@ -163,10 +163,10 @@ theorem exists_heat_defect_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLo
     refine ⟨b1, b2, b3, fun α V hV f hf => ?_⟩
     show IsWt Y α _ (h.d i _ f - combF Y.H.hom dd c₂ _ f)
     rw [wt₂ α _ ⟨V, rfl⟩ f hf]
-    exact GlobalTheory.T.isRaynaudTorusWeightFunction_sub_const_mul R Dd.toPre O oa Y α _ _ f (ℓ₂ α) (b4 α V hV f hf) hf
+    exact _root_.GlobalTheory.HeatMod.isWt_sub_const_mul R Dd.toPre O oa Y α _ _ f (ℓ₂ α) (b4 α V hV f hf) hf
   · intro k mu α σ σ' σ₁ σ₁' hk hS hT1 hT2
     have H := hD k mu α σ _ σ₁ _ hk hS (key _ _ _ _ hT1) (key _ _ _ _ hT2)
-    have H2 := GlobalTheory.T.thetaShiftFunctionalEq_sub_constFn_smul R Dd.toPre k mu α σ σ' σ₁ σ₁' _ _ _ hS H
+    have H2 := _root_.GlobalTheory.HeatMod.shiftEq_of_sub_constFn_smul R Dd.toPre k mu α σ σ' σ₁ σ₁' _ _ _ hS H
     convert H2 using 1
     exact defect_cancel w π π' half h2 hw1 hw2 hπ' hπ k mu α
 

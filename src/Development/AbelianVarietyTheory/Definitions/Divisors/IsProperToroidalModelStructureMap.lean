@@ -88,42 +88,6 @@ def toSymB : levelForms H N X →ₗ[ℤ] Formalism.MainNotions.ModuliIntegralCh
     (toSymB H N X β : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) a b = ((β : LinearMap.BilinForm ℤ X) a b : ℝ) := by
   simp [toSymB]
 
-theorem toSymB_injective : Function.Injective (toSymB H N X) := fun β γ h => by
-  ext a b
-  have := congrArg (fun B : Formalism.MainNotions.ModuliIntegralCharts.SymB (fun x : E => IsCMField.complexConj E x) X =>
-    (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) a b) h
-  simp only [toSymB_apply] at this
-  exact_mod_cast this
-
-theorem mem_range_toSymB (B : Formalism.MainNotions.ModuliIntegralCharts.SymB (fun x : E => IsCMField.complexConj E x) X) :
-    B ∈ LinearMap.range (toSymB H N X) ↔ ∀ a b, ∃ z : ℤ, (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) a b = N * z := by
-  constructor
-  · rintro ⟨β, rfl⟩ a b
-    obtain ⟨z, hz⟩ := β.2.2.2 a b
-    exact ⟨z, by rw [toSymB_apply, hz]; push_cast; rfl⟩
-  · intro h
-    choose g hg using h
-    have inj : ∀ {a b : ℤ}, (a : ℝ) = b → a = b := fun h => by exact_mod_cast h
-    have hg' : ∀ a b, (((N : ℤ) * g a b : ℤ) : ℝ) = (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) a b := fun a b => by
-      rw [hg]; push_cast; rfl
-    let γ : LinearMap.BilinForm ℤ X := LinearMap.mk₂ ℤ (fun a b => (N : ℤ) * g a b)
-      (fun a b c => inj (by rw [Int.cast_add, hg', hg', hg', map_add, LinearMap.add_apply]))
-      (fun n a b => inj (by
-        rw [smul_eq_mul, Int.cast_mul n, hg', hg', map_smul, LinearMap.smul_apply, zsmul_eq_mul]))
-      (fun a b c => inj (by rw [Int.cast_add, hg', hg', hg', map_add]))
-      (fun n a b => inj (by rw [smul_eq_mul, Int.cast_mul n, hg', hg', map_smul, zsmul_eq_mul]))
-    refine ⟨⟨γ, fun y z => inj ?_, fun a y z => inj ?_, fun y z => Dvd.intro _ rfl⟩, ?_⟩
-    · exact (hg' y z).trans ((B.2.1 y z).trans (hg' z y).symm)
-    · exact (hg' _ z).trans ((B.2.2 a _ (H.bar_eq a) y z).trans (hg' y _).symm)
-    · ext a b
-      exact (toSymB_apply _ a b).trans (hg' a b)
-
-theorem smul_trForm_mem (H : Host E) (N : ℕ) : (N : ℤ) • HostModel.trForm H ∈ levelForms H N (𝓞 E) := by
-  obtain ⟨h1, h2, -⟩ := (levelForms H 1 (𝓞 E)).smul_mem (N : ℤ)
-    (show HostModel.trForm H ∈ levelForms H 1 (𝓞 E) from
-      ⟨HostModel.trForm_symm H, HostModel.trForm_adj H, fun _ _ => by simp⟩)
-  exact ⟨h1, h2, fun y z => Dvd.intro _ rfl⟩
-
 end Forms
 
 section Part
@@ -151,36 +115,6 @@ theorem IsPartOfBasis.exists_dual {v : Fin m → L} (h : IsPartOfBasis v) :
   refine ⟨fun i => b.coord (Sum.inl i), fun i j => ?_⟩
   rw [← hb j, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]
   simp [eq_comm]
-
-theorem exists_isPartOfBasis_of_ne_zero [Module.Free ℤ L] [Module.Finite ℤ L] {v : L} (hv : v ≠ 0) :
-    ∃ (k : ℤ) (w : L), 0 < k ∧ v = k • w ∧ IsPartOfBasis ![w] := by
-  classical
-  obtain ⟨n, S⟩ := (Submodule.span ℤ {v}).smithNormalForm (Module.finBasis ℤ L)
-  have hn : n = 1 := by
-    rw [← Fintype.card_fin n, ← Module.finrank_eq_card_basis S.bN,
-      ← (LinearEquiv.toSpanNonzeroSingleton ℤ L v hv).finrank_eq, Module.finrank_self]
-  subst hn
-  obtain ⟨r, hr⟩ : ∃ r : ℤ, v = r • S.bM (S.f 0) := by
-    have h := S.bN.sum_repr ⟨v, Submodule.mem_span_singleton_self v⟩
-    have h' := congrArg Subtype.val h
-    simp only [Fin.sum_univ_one, Submodule.coe_smul, S.snf, smul_smul] at h'
-    exact ⟨_, h'.symm⟩
-  let e : Fin 1 ⊕ Fin _ ≃ Fin (Module.finrank ℤ L) :=
-    ((Equiv.ofInjective S.f S.f.injective).sumCongr (Fintype.equivFin _).symm).trans (Equiv.Set.sumCompl (Set.range S.f))
-  have key : ∀ b : Module.Basis (Fin (Module.finrank ℤ L)) ℤ L, IsPartOfBasis ![b (S.f 0)] := fun b =>
-    ⟨_, b.reindex e.symm, fun i => by fin_cases i; simp [e]⟩
-  rcases lt_trichotomy r 0 with h | h | h
-  · refine ⟨-r, -S.bM (S.f 0), by omega, by simp [hr], ?_⟩
-    simpa using key (S.bM.map (LinearEquiv.neg ℤ))
-  · exact absurd (by simp [hr, h]) hv
-  · exact ⟨r, _, h, hr, key _⟩
-
-example (w : L) : ¬ IsPartOfBasis ![(2 : ℤ) • w] := fun h => by
-  have := h.isUnit_of_smul (i := 0) (k := 2) (w := w) rfl
-  rcases Int.isUnit_iff.1 this with h | h <;> omega
-
-example : IsPartOfBasis ![(Pi.single (Sum.inl 0) 1 : Fin 1 ⊕ Fin 1 → ℤ)] :=
-  ⟨1, Pi.basisFun ℤ _, fun i => by fin_cases i; simp⟩
 
 end Part
 
@@ -244,30 +178,6 @@ theorem IsMonomial.tau (h : IsMonomial Dg t β) (hs : ∀ i y z, β i y z = β i
   have := hp n'
   field_simp
 
-theorem IsMonomial.betaAt_eq (h : IsMonomial Dg t β) (hs : ∀ i y z, β i y z = β i z y) {C : Type} [NormedField C]
-    (f : R →+* C) (hle : ∀ a, ‖f a‖ ≤ 1) (ht : ∀ i, f (t i) ≠ 0) (p : ℕ) (a b : Dg.X) :
-    betaAt Dg f p a b = ∑ i, -Real.logb p ‖f (t i)‖ * β i a b := by
-  have hunit : ∀ u : Rˣ, ‖f u‖ = 1 := by
-    intro u
-    have h1 : ‖f u‖ * ‖f (u⁻¹ : Rˣ)‖ = 1 := by rw [← norm_mul, ← map_mul]; simp
-    have h2 := hle (u⁻¹ : Rˣ)
-    have h3 := hle u
-    nlinarith [norm_nonneg (f u), norm_nonneg (f (u⁻¹ : Rˣ))]
-  have key : ∀ y, vPsiAt Dg f p y = ∑ i, -Real.logb p ‖f (t i)‖ * ((β i y y : ℝ) / 2) := fun y => by
-    have hex : ∃ r, PsiCoord Dg y r := (h y).elim fun _ h => h.elim fun _ h => ⟨_, h.2⟩
-    obtain ⟨u, n, hn, hr⟩ := h.coord hex.choose_spec
-    rw [vPsiAt, dif_pos hex, hr, map_mul, norm_mul, hunit, one_mul, map_prod, norm_prod,
-      Real.logb_prod _ _ fun i _ => by simp [ht i], ← Finset.sum_neg_distrib]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [map_pow, norm_pow, Real.logb_pow, hn]
-    push_cast
-    ring
-  rw [betaAt, key, key, key, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  simp only [map_add, LinearMap.add_apply, hs i b a]
-  push_cast
-  ring
-
 theorem psiUnitOn_of_coord {y : Dg.X} {r : R} (hr : PsiCoord Dg y r) {U : Set (Sp R)}
     (hU : ∀ p ∈ U, r ∉ p.asIdeal) : PsiUnitOn Dg y U := by
   intro j' V hV hVU hj' h'
@@ -302,53 +212,12 @@ theorem IsMonomial.psiUnitOn (h : IsMonomial Dg t β) (y : Dg.X) {U : Set (Sp R)
   · obtain ⟨i, -, hi⟩ := (Ideal.IsPrime.prod_mem_iff).1 hm
     exact (Ideal.IsPrime.prod_mem_iff).2 ⟨i, Finset.mem_univ _, hpr.mem_of_pow_mem _ hi⟩
 
-theorem isMonomial_arcData (k : Type) [Field k] {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
-    (be : LinearMap.BilinForm ℤ X) (hs : ∀ y z, be y z = be z y) (hp : ∀ y, y ≠ 0 → 0 < be y y)
-    (he : ∀ y, (2 : ℤ) ∣ be y y) :
-    IsMonomial (ToricData.arcData k be hs hp he).toPre ![PowerSeries.X] ![be] := by
-  intro (y : X)
-  have h0 : 0 ≤ be y y := by
-    by_cases h : y = 0
-    · simp [h]
-    · exact (hp y h).le
-  obtain ⟨n, hn⟩ : ∃ n : ℕ, be y y = 2 * n := ⟨(be y y / 2).toNat, by have := he y; omega⟩
-  refine ⟨1, ![n], fun i => by fin_cases i; exact hn, fun _ => PUnit.unit, le_rfl, PsiCoordLocal.generic_le _ _ _ le_rfl,
-    ToricData.psi_eq_toOpen _ y _ ?_ _ _ _⟩
-  rw [ToricData.arcExp_val, hn]
-  simp
-
-theorem exists_isMonomial_isPartOfBasis (H : Host E) {N : ℕ} (hN : N ≠ 0) (k : Type) [Field k] :
-    ∃ (Dd : DegData (PowerSeries k) (Ideal.span {PowerSeries.X})) (_ : Module (𝓞 E) Dd.toPre.X)
-      (γ : Fin 1 → levelForms H N Dd.toPre.X),
-      Nontrivial Dd.toPre.X ∧ IsMonomial Dd.toPre ![PowerSeries.X] (fun i => γ i) ∧ IsPartOfBasis γ := by
-  have pos : ∀ y : 𝓞 E, y ≠ 0 → 0 < ((N : ℤ) • HostModel.trForm H) y y := fun y hy =>
-    mul_pos (by exact_mod_cast Nat.pos_of_ne_zero hN) (HostModel.trForm_pos H hy)
-  have hv : (⟨_, smul_trForm_mem H N⟩ : levelForms H N (𝓞 E)) ≠ 0 := fun h => by
-    have := pos 1 one_ne_zero
-    rw [show (N : ℤ) • HostModel.trForm H = 0 from congrArg Subtype.val h] at this
-    simp at this
-  obtain ⟨r, w, hr, hw, hb⟩ := exists_isPartOfBasis_of_ne_zero hv
-  have hp : ∀ y : 𝓞 E, y ≠ 0 → 0 < (w : LinearMap.BilinForm ℤ (𝓞 E)) y y := fun y hy => by
-    have := pos y hy
-    rw [show (N : ℤ) • HostModel.trForm H = r • (w : LinearMap.BilinForm ℤ (𝓞 E)) from congrArg Subtype.val hw] at this
-    exact (mul_pos_iff_of_pos_left hr).1 this
-  have he : ∀ y : 𝓞 E, (2 : ℤ) ∣ (w : LinearMap.BilinForm ℤ (𝓞 E)) y y := fun y =>
-    ⟨_, apply_self_eq_two_mul w.2 y⟩
-  refine ⟨ToricData.arcData (X := 𝓞 E) k w w.2.1 hp he, inferInstanceAs (Module (𝓞 E) (𝓞 E)), ![w], inferInstanceAs (Nontrivial (𝓞 E)), ?_, hb⟩
-  convert isMonomial_arcData (X := 𝓞 E) k w w.2.1 hp he using 1
-  funext i
-  fin_cases i
-  rfl
-
 end Monomial
 
 section Charts
 
 def IsEtaleCompletion {A R : Type} [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R] (φ : A →+* R) : Prop :=
   φ.Flat ∧ (maximalIdeal A).map φ = maximalIdeal R ∧ ((residue R).comp φ).Finite
-
-theorem isEtaleCompletion_id (A : Type) [CommRing A] [IsLocalRing A] : IsEtaleCompletion (RingHom.id A) :=
-  ⟨RingHom.Flat.id A, Ideal.map_id _, RingHom.Finite.of_surjective _ residue_surjective⟩
 
 variable {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O]
   {β : O →+* c.F}
@@ -391,44 +260,6 @@ def HasToricChart (Z : Model Xo c β) (x : gen Z) : Prop :=
     ξ (closedPoint _) = x ∧ IsToricChart Z ξ P γ
 
 namespace IsToricChart
-
-variable {Z : Model Xo c β} {k : Type} [Field k] {m d : ℕ} {ξ : Sp (ChartRing k m d) ⟶ gen Z}
-  {t : SAB H (Sp (ChartRing k m d))} {P : PELUnif (maximalIdeal (ChartRing k m d)) t}
-  {γ : Fin m → levelForms H l.M' P.D.toPre.X}
-
-theorem mem_abLocus_iff (h : IsToricChart Z ξ P γ) (p : Sp (ChartRing k m d)) :
-    p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal := by
-  obtain ⟨-, -, h3, ⟨μ⟩, -⟩ := h
-  rw [← h3, mem_genBd_iff, not_not, ← abLocus_pullback abLocusOne Z.t.semi μ.cart.1 p]
-  rfl
-
-theorem data_at_point_n3 (h : IsToricChart Z ξ P γ) : UniformisationConclusion t (abLocus t.G) :=
-  ⟨P, fun y => h.2.2.2.2.2.1.psiUnitOn y fun p hp => (h.mem_abLocus_iff p).1 hp, h.2.2.2.2.1⟩
-
-theorem centre_mem_iff (h : IsToricChart Z ξ P γ) : ξ (closedPoint _) ∈ genBd Z ↔ m ≠ 0 := by
-  refine (h.2.2.1 _).trans ?_
-  change _ ∈ maximalIdeal _ ↔ _
-  rw [Ideal.IsPrime.prod_mem_iff]
-  constructor
-  · rintro ⟨i, -⟩ rfl
-    exact i.elim0
-  · intro hm
-    refine ⟨⟨0, Nat.pos_of_ne_zero hm⟩, Finset.mem_univ _, ?_⟩
-    rw [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]
-    simp
-
-theorem forms (h : IsToricChart Z ξ P γ) :
-    (∀ i y, 0 ≤ (γ i : LinearMap.BilinForm ℤ P.D.toPre.X) y y) ∧ (∀ i, γ i ≠ 0) ∧
-      ∀ y, y ≠ 0 → ∃ i, 0 < (γ i : LinearMap.BilinForm ℤ P.D.toPre.X) y y :=
-  ⟨h.2.2.2.2.2.1.nonneg, h.2.2.2.2.2.2.linearIndependent.ne_zero,
-    fun _ hy => h.2.2.2.2.2.1.exists_pos (maximalIdeal.isMaximal _).ne_top hy⟩
-
-theorem nontrivial (h : IsToricChart Z ξ P γ) (hx : ξ (closedPoint _) ∈ genBd Z) : Nontrivial P.D.toPre.X := by
-  by_contra hn
-  rw [not_nontrivial_iff_subsingleton] at hn
-  refine h.forms.2.1 ⟨0, Nat.pos_of_ne_zero (h.centre_mem_iff.1 hx)⟩ ?_
-  ext a b
-  simp [Subsingleton.elim a 0]
 
 end IsToricChart
 
@@ -511,9 +342,6 @@ instance isProper_b : IsProper T.b := by
   have : IsProper (T.b ≫ Y.s) := T.b_s ▸ isProper_toroidalModel_structureMap T.Z
   exact IsProper.of_comp T.b Y.s
 
-theorem b_mem_abLocus (x : T.Z.X) : T.b x ∈ abLocus Y.t.G ↔ x ∈ abLocus T.Z.t.G :=
-  abLocus_pullback abLocusOne Y.t.semi T.pull.cart.1 x
-
 def bQ : gen T.Z ⟶ gen Y :=
   pullback.map _ _ _ _ T.b (𝟙 _) (𝟙 _) (by rw [Category.comp_id, T.b_s]) (by rw [Category.comp_id, Category.id_comp])
 
@@ -533,121 +361,7 @@ instance isProper_bQ : IsProper T.bQ := by
     exact T.j_b
   · rw [Category.assoc, bQ_genStr, T.Z.jQ_over, Y.jQ_over]
 
-theorem bQ_mem_genBd (x : gen T.Z) : T.bQ x ∈ genBd Y ↔ x ∈ genBd T.Z := by
-  rw [mem_genBd_iff, mem_genBd_iff, ← T.b_mem_abLocus, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, bQ_genι]
-
-theorem isPullback_jQ : IsPullback (𝟙 _) T.Z.jQ Y.jQ T.bQ := by
-  have := T.Z.jQ_open
-  have := Y.jQ_open
-  refine (IsOpenImmersion.isPullback (𝟙 _) T.Z.jQ Y.jQ T.bQ (by simp) ?_).flip.flip
-  ext x
-  exact not_iff_not.1 (T.bQ_mem_genBd x)
-
-theorem isIso_bQ_restrict : IsIso (T.bQ ∣_ (haveI := Y.jQ_open; Y.jQ.opensRange)) := by
-  have := Y.jQ_open
-  have h := T.isPullback_jQ
-  refine ((MorphismProperty.isomorphisms Scheme).arrow_mk_iso_iff (morphismRestrictOpensRange T.bQ Y.jQ)).2 ?_
-  rw [MorphismProperty.isomorphisms.iff, ← h.flip.isoPullback_inv_snd]
-  infer_instance
-
-theorem surjective_bQ : Function.Surjective T.bQ := by
-  have hc : IsClosed (Set.range T.bQ) := T.bQ.isClosedMap.isClosed_range
-  have hd : Dense (Set.range T.bQ) := Y.jQ_dense.mono (by
-    rintro _ ⟨x, rfl⟩
-    exact ⟨T.Z.jQ x, by rw [← Scheme.Hom.comp_apply, jQ_bQ]⟩)
-  exact Set.range_eq_univ.1 (hc.closure_eq.symm.trans hd.closure_eq)
-
-theorem mem_support_BD_iff (x : gen T.Z) : genι T.Z x ∈ T.BD.idealSheaf.support ↔ x ∈ genBd T.Z :=
-  ⟨fun h => mem_genBd_iff.2 (T.BD_supp _ h), T.BD_pos x⟩
-
-theorem j_notMem_support_BD (x : Xo.XF c) : T.Z.j x ∉ T.BD.idealSheaf.support := fun h =>
-  (T.mem_support_BD_iff (T.Z.jQ x)).1 h ⟨x, rfl⟩
-
-theorem isRegularLocalRing (x : gen T.Z) : IsRegularLocalRing ((gen T.Z).presheaf.stalk x) := (T.snc x).1
-
-theorem n3 (h : Y.N3) : T.Z.N3 := by
-  intro R _ _ _ _ h1 h2 h3 ξ t μ hne hs
-  obtain ⟨ν, -⟩ := ObjMaps.exists_sab_comp T.pull μ
-  have e : (ξ ≫ T.b) ⁻¹' abLocus Y.t.G = ξ ⁻¹' abLocus T.Z.t.G := Set.ext fun x => T.b_mem_abLocus (ξ x)
-  exact e ▸ h R h1 h2 h3 (ξ ≫ T.b) t ν (e ▸ hne) hs
-
-theorem lift_spec {O' : Type} [CommRing O'] [IsDomain O'] {b' : O →+* O'} {a : ArcIn D l β O' b'} {ϖ : O'}
-    {χ'' : Sp (PowerSeries O') ⟶ T.Z.X} (h : IsArcChart Y a ϖ (χ'' ≫ T.b)) :
-    χ'' ≫ T.Z.s = spMap (PowerSeries.C (R := O')) ≫ spMap b' ∧
-      ∀ x : Sp (PowerSeries O'), χ'' x ∈ abLocus T.Z.t.G ↔ PowerSeries.X ∉ x.asIdeal :=
-  ⟨by rw [← T.b_s, ← Category.assoc]; exact h.1, fun x => (T.b_mem_abLocus (χ'' x)).symm.trans (h.2.1 x)⟩
-
-def withDivisor (BD : EffCartierData T.Z.X) (h₁ : ∀ x ∈ BD.idealSheaf.support, x ∉ abLocus T.Z.t.G)
-    (h₂ : ∀ x ∈ genBd T.Z, genι T.Z x ∈ BD.idealSheaf.support) (m0 : ℕ) (h : 0 < m0) : TorModel Y :=
-  { T with BD := BD, BD_supp := h₁, BD_pos := h₂, m0 := m0, torModel_multiplicity_pos := h }
-
 end TorModel
-
-theorem smooth_of_surjective (Y : Model Xo c β) (h : Function.Surjective Y.jQ) :
-    SmoothOfRelativeDimension D.dim (genStr Y) := by
-  have := Y.jQ_open
-  have : Surjective Y.jQ := ⟨h⟩
-  have : IsIso Y.jQ := isIso_of_isOpenImmersion_of_opensRange_eq_top _ (by
-    ext x; simpa using h x)
-  have := Xo.smooth
-  have e : genStr Y = inv Y.jQ ≫ pullback.snd _ _ := by rw [IsIso.eq_inv_comp, Y.jQ_over]
-  have hs : SmoothOfRelativeDimension D.dim
-      (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) :=
-    (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth
-  rw [e]
-  have := smoothOfRelativeDimension_comp 0 D.dim (inv Y.jQ)
-    (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))
-  rwa [Nat.zero_add] at this
-
-def TorModel.ofNoBoundary (Y : Model Xo c β) (h : Function.Surjective Y.jQ) : TorModel Y where
-  Z := Y
-  b := 𝟙 _
-  b_s := Category.id_comp _
-  j_b := Category.comp_id _
-  pull := ObjComp.sabMapId Y.t
-  pull_univ T g₁ g₂ h₁ h₂ := by
-    obtain rfl : g₁ = g₂ := Y.m0.cart.1.hom_ext h₁ h₂
-    exact congrArg (g₁ ≫ ·) (Category.comp_id _)
-  smooth := smooth_of_surjective Y h
-  snc x := by
-    have := smooth_of_surjective Y h
-    have : Smooth (genStr Y) := SmoothOfRelativeDimension.smooth D.dim _
-    have hr := ExtendRig.isRegularRing_stalk isRegularRing_of_smooth c.F (genStr Y) x
-    exact sncAt_of_not_mem _ x (fun hx => hx (h x)) (IsRegularLocalRing.of_isRegularRing_of_isLocalRing _)
-  toric x hx := (hx (h x)).elim
-  lifts _ _ _ _ _ _ _ χ _ _ := ⟨χ, Category.comp_id _⟩
-  BD := EffCartierData.zero _
-  BD_supp x hx := by
-    refine (((EffCartierData.zero Y.X).mem_support_iff PUnit.unit (x := x) trivial).1 hx ?_).elim
-    change x ∈ Y.X.basicOpen (1 : Γ(Y.X, ⊤))
-    simp
-  BD_pos x hx := (hx (h x)).elim
-  m0 := 1
-  torModel_multiplicity_pos := one_pos
-
-theorem surjective_jQ_of_dim_eq_zero (Y : Model Xo c β) (h : D.dim = 0) : Function.Surjective Y.jQ := by
-  have hs := Xo.smooth
-  rw [h] at hs
-  have : Etale Xo.s := (Etale.iff_smoothOfRelativeDimension_zero _).2 hs
-  have : QuasiCompact Xo.s := by
-    obtain ⟨N, i, _, _, e⟩ := Xo.qproj
-    have := isProper_str (KA l) N
-    rw [← e]
-    infer_instance
-  have : LocallyQuasiFinite Xo.s := by
-    refine ⟨fun {U} hU {V} hV e => ?_⟩
-    have h₁ := Xo.s.formallyUnramified_appLE hU hV e
-    have h₂ := Xo.s.finiteType_appLE hU hV e
-    algebraize [(Xo.s.appLE U V e).hom]
-    exact inferInstanceAs (Algebra.QuasiFinite _ _)
-  have : IsFinite Xo.s := IsFinite.of_locallyQuasiFinite _
-  have := isProper_genStr Y
-  have : IsProper (Y.jQ ≫ genStr Y) := by rw [Y.jQ_over]; infer_instance
-  have : IsProper Y.jQ := IsProper.of_comp Y.jQ (genStr Y)
-  exact Set.range_eq_univ.1 (Y.jQ.isClosedMap.isClosed_range.closure_eq.symm.trans Y.jQ_dense.closure_eq)
-
-theorem nonempty_torModel_of_definite (Y : Model Xo c β) (h : D.p = 0 ∨ D.q = 0) : Nonempty (TorModel Y) :=
-  ⟨.ofNoBoundary Y (surjective_jQ_of_dim_eq_zero Y (by rcases h with h | h <;> simp [Datum.dim, h]))⟩
 
 end Model
 

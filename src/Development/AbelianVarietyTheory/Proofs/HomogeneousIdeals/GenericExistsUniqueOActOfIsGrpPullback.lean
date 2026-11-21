@@ -592,12 +592,6 @@ theorem fractionField_of_isGrpPullback (h : SemiAbelianHomExtension) {R K : Type
 
 end GlobalTheory.Published.SemiAbelianHomExtension
 
-theorem GlobalTheory.Published.SemiAbelianHomExtension.generic (h : GlobalTheory.Published.SemiAbelianHomExtension) (S : Scheme.{0}) [IsIntegral S] [AlgebraicGeometry.IsNoetherian S]
-    (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) (G H : Over S) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
-    (f : (Over.pullback (S.fromSpecStalk (genericPoint S))).obj G ⟶ (Over.pullback (S.fromSpecStalk (genericPoint S))).obj H) [IsMonHom f] :
-    ∃! F : G ⟶ H, IsMonHom F ∧ (Over.pullback (S.fromSpecStalk (genericPoint S))).map F = f :=
-  of_isGenericPointHom h hS (GlobalTheory.IsGenericPointHom.fromSpecStalk S) hG hH f
-
 theorem GlobalTheory.Published.SemiAbelianHomExtension.fractionField (h : GlobalTheory.Published.SemiAbelianHomExtension) (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (G H : Over (Sp R)) [GrpObj G] [GrpObj H] (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
     (f : (Over.pullback (spMap (algebraMap R K))).obj G ⟶ (Over.pullback (spMap (algebraMap R K))).obj H) [IsMonHom f] :

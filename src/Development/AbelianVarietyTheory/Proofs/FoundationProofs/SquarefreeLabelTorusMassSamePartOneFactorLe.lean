@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassUnionBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardIrreducibleSamePrimeToPartRootsLeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBound
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassUnionBounds
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardIrreducibleSamePrimeToPartRootsLe
 
 open Polynomial Classical GlobalTheory.BadShare
 
@@ -111,7 +111,7 @@ theorem sum_mul_pow_le {u : ℝ} (h0 : 0 ≤ u) (h1 : u ≤ 1 / 8) (N : ℕ) :
 theorem mass_samePart_one_factor : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 2 ^ 12 ≤ g → (mass g N fun f => ∃ l : ℕ, l.Prime ∧ ¬ BB g N l ∧ ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P ∣ f ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y) ≤ 12 * Real.logb 2 g / Real.sqrt g := by
   intro g _ N hg
   have hg2 : 2 ≤ g := le_trans (by norm_num) hg
-  obtain ⟨-, -, hunion, -⟩ := GlobalTheory.T.squarefreeLabelTorusMass_union_bounds g N
+  obtain ⟨-, -, hunion, -⟩ := _root_.GlobalTheory.BadShare.mass_union_bounds g N
   obtain ⟨S, hS⟩ : ∃ S : ℕ → ℕ → Finset (ZMod g)[X], S = fun d l => (sqSet g d).filter fun P =>
       Irreducible P ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)),
         ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y := ⟨_, rfl⟩
@@ -144,14 +144,14 @@ theorem mass_samePart_one_factor : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 2 
           apply Finset.sum_le_sum
           intro P hP
           simp only [hS, Finset.mem_filter] at hP
-          have h1 := (GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).2 N d P hP.1
+          have h1 := (_root_.GlobalTheory.BadShare.divisor_bound g).2 N d P hP.1
           rw [torusCard_irreducible hP.2.1, (mem_sqSet.mp hP.1).2.1] at h1
           exact h1
       _ = ((S d l).card : ℝ) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by
           rw [Finset.sum_const, nsmul_eq_mul]
       _ ≤ (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by
           gcongr
-          have := GlobalTheory.T.card_irreducible_samePrimeToPart_roots_le g N d l hd.1 hd.2 hl.1.1 hl.2
+          have := _root_.GlobalTheory.BadShare.TwoRoots.card_irreducible_samePart_le g N d l hd.1 hd.2 hl.1.1 hl.2
           rw [hS]
           exact this
   have hstep2 : ∀ d ∈ Finset.Icc 2 N, mass g N (fun f => ∃ l ∈ L d, ∃ P ∈ S d l, P ∣ f) ≤

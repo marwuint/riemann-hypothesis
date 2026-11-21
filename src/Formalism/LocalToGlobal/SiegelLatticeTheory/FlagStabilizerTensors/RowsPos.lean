@@ -1,7 +1,14 @@
 import Mathlib
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KloostermanDiagonalOfType
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KloostermanDiagonalOfConditions
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CovolumeSpans
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.RelevantSetZeroGNotIdentity
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IsIdentityOfEqualFlags
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MainEqHolds
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.FullExistsTiedHolds
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DiagCLC
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.PairsDegCutCOfSteps
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KloostermanTermANonneg
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KloostermanCosetSumLe
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ExpQuarterMulExpQuarterLeTwo
 
 noncomputable section
 
@@ -54,39 +61,6 @@ def DiagLP : Prop :=
       ConcTie X Y → (Y.tO u u).AbsConv → large₂.CGam = CG →
       (Y.tO u u).RowBig (epsL D) (ddC X Y u u) → (Y.tO u u).RowNotScalar (epsL D) (ddC X Y u u) →
       Formalism.L2.SG.RowsOther.DiagRow (Y.tO u u) (oneC X Y u) (D.mem u).A.GamP (ddC X Y u u)
-
-theorem typeBound_of_uniformTypeBound (h : TypeC) : TypeP := by
-  intro Cg cb Cw cT CT C0 _ _
-  obtain ⟨CH, Ch, Cp, h1, h2, h3, h4⟩ := h Cg cb Cw cT CT C0
-  refine ⟨CH, Ch, Cp, h1, h2, h3, fun Cs hCs => ?_⟩
-  obtain ⟨C₀, h5⟩ := h4 Cs hCs
-  refine ⟨C₀, fun C hC => ?_⟩
-  obtain ⟨C'₀, Cl₀, h6⟩ := h5 C hC
-  exact ⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hK hT => h6 C' Cl hC' hCl D large₂ X Y u hK hT⟩
-
-theorem diagonalBound_pos_of_diagonalBound (h : KppDiagC) : KppDiagP := by
-  intro Cg cb Cw cT CT C0 _ _
-  obtain ⟨C'₀, Cl₀, h1⟩ := h Cg cb Cw cT CT C0
-  exact ⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hK hT hA => h1 C' Cl hC' hCl D large₂ X Y u hK hT hA⟩
-
-theorem rowNGP_of (h : RowNGC) : RowNGP := by
-  intro Cg cb Cw cT CT C0 _ _
-  obtain ⟨C4, hC4, C'₀, Cl₀, h1⟩ := h Cg cb Cw cT CT C0
-  exact ⟨C4, hC4, C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u u' _ hH hS hT hA =>
-    h1 C' Cl hC' hCl D large₂ X Y u u' hH hS hT hA⟩
-
-theorem rowMainEqP_of (h : RowMainEqC) : RowMainEqP := by
-  intro Cg cb Cw cT CT C0 A _ _
-  obtain ⟨CB, hCB, C'₀, Cl₀, h1⟩ := h Cg cb Cw cT CT C0 A
-  exact ⟨CB, hCB, C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hH hT hA => h1 C' Cl hC' hCl D large₂ X Y u hH hT hA⟩
-
-theorem diagLP_of (h : DiagCL) : DiagLP := by
-  intro Cg cb Cw cT CT C0 A _ _
-  obtain ⟨CB, C4, h1, h2, h3⟩ := h Cg cb Cw cT CT C0 A
-  refine ⟨CB, C4, h1, h2, fun CG hCG => ?_⟩
-  obtain ⟨C'₀, Cl₀, h4⟩ := h3 CG hCG
-  exact ⟨C'₀, Cl₀, fun C' Cl hC' hCl D large₂ X Y u _ hH hP hT hA hG hB hN =>
-    h4 C' Cl hC' hCl D large₂ X Y u hH hP hT hA hG hB hN⟩
 
 section Asm
 

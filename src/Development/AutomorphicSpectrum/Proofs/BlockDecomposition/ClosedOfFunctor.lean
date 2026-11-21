@@ -1,11 +1,11 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.LeftZeroDuality.H1StructureDimLe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPowMulOfAway
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalPropertyAffineIdealCriterionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalPropertyAffineIdealCriterion
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineIdealLocusCriterionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialLocusLocalToGlobalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperIntegralPerfectFamilyExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeometricallyIntegralGlobalFunctionsConstantStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialLocusLocalToGlobal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProperIntegralPerfectFamilyExists
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeometricallyIntegralGlobalFunctionsConstant
 
 set_option autoImplicit false
 
@@ -26,7 +26,7 @@ theorem closed_of_functor (Y : Scheme.{0}) (P : ∀ T : Scheme.{0}, (T ⟶ Y) �
       ∀ (R' : Type) [CommRing R'] (g : Γ(Y, U) →+* R'), IsUnit (g r) →
         (P (Spec (CommRingCat.of R')) (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec) ↔ I ≤ RingHom.ker g)) :
     ∃ (Z : Scheme.{0}) (i : Z ⟶ Y), IsClosedImmersion i ∧ ∀ (T : Scheme.{0}) (t : T ⟶ Y), P T t ↔ ∃ z : T ⟶ Z, z ≫ i = t :=
-  GlobalTheory.T.affine_ideal_locus_criterion Y P stab loc (GlobalTheory.T.local_property_affine_ideal_criterion Y P stab loc near)
+  GlobalTheory.T.affine_ideal_locus_criterion Y P stab loc (_root_.GlobalTheory.CompanionTheory.TrivLoc.Rep.exists_ideal_on_affine Y P stab loc near)
 
 theorem locus_near {S : Scheme.{0}} {A Y : Over S} [GrpObj A] (hA : IsAbelianScheme A) [IsLocallyNoetherian Y.left]
     {N : LB (A ⊗ Y).left} (hN : N.IsLB) (y : Y.left) :
@@ -36,8 +36,8 @@ theorem locus_near {S : Scheme.{0}} {A Y : Over S} [GrpObj A] (hA : IsAbelianSch
   obtain ⟨_, ⟨U, hU, rfl⟩, hy, -⟩ := Y.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ
   obtain ⟨p, hp⟩ := hU.range_fromSpec.ge hy
   have : IsNoetherianRing Γ(Y.left, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩
-  obtain ⟨X, f, M, hM, h₁, h₂, h₃, h₄, h₅, h₆, H⟩ := GlobalTheory.T.proper_integral_perfect_family_exists S A Y hA N hN Γ(Y.left, U) hU.fromSpec
-  obtain ⟨r, I, hr, H'⟩ := GlobalTheory.T.geometrically_integral_global_functions_constant _ X f M hM h₁ h₂ h₃ h₄ h₅ h₆ p
+  obtain ⟨X, f, M, hM, h₁, h₂, h₃, h₄, h₅, h₆, H⟩ := _root_.GlobalTheory.CompanionTheory.TrivLoc.exists_chart_family S A Y hA N hN Γ(Y.left, U) hU.fromSpec
+  obtain ⟨r, I, hr, H'⟩ := _root_.GlobalTheory.CompanionTheory.TrivLoc.exists_ideal_near _ X f M hM h₁ h₂ h₃ h₄ h₅ h₆ p
   refine ⟨U, hU, r, I, ?_, fun R' _ g hg => ?_⟩
   · rw [← hU.fromSpec_image_basicOpen]
     exact ⟨p, hr, hp⟩
@@ -47,7 +47,7 @@ theorem locus_near {S : Scheme.{0}} {A Y : Over S} [GrpObj A] (hA : IsAbelianSch
 theorem trivLocus : TrivLocus := by
   intro S A Y _ hA hY N hN h1
   obtain ⟨Z, i, hi, H⟩ := closed_of_functor Y.left (fun T t => Locus N t)
-    (fun T T' h t ht => ht.comp h) (fun T t h => GlobalTheory.T.trivial_locus_local_to_global S A Y hA N hN h1 T t h) (locus_near hA hN)
+    (fun T T' h t ht => ht.comp h) (fun T t h => _root_.GlobalTheory.CompanionTheory.TrivLoc.locus_of_locally S A Y hA N hN h1 T t h) (locus_near hA hN)
   refine ⟨Over.mk (i ≫ Y.hom), Over.homMk i rfl, hi, fun T y => ?_⟩
   refine (locus_left_iff y).symm.trans ((H _ y.left).trans ⟨?_, ?_⟩)
   · rintro ⟨z, hz⟩

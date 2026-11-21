@@ -3,7 +3,8 @@ import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCharIffCoord
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCharTraceOfMul
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsListProdStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsListProd
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsMirClass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCharacterOfFDRepCompHomAndMul
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BlockParabolicUnitriangularSubgroupsGLnPrimeFiel
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
@@ -118,7 +119,7 @@ theorem hc_isChar_and_res_decomp : ∀ (g : ℕ) [Fact g.Prime] (a b n : ℕ), n
       exact (hπ x hxP h₁ h₂).2 hx.2.2
     have hχP : IsChar (fun p : P => χ p) := GlobalTheory.GLm.isChar_comp_hom_and_mul.1 P _ P.subtype χ hχ
     have hΨ := GlobalTheory.GLm.isChar_fibre_mean P (Gn g a × Gn g b) π _ hsurj hχP
-    obtain ⟨L, hL, hLs⟩ := GlobalTheory.T.exists_irr_pairs_char_prod_eq_sum (Gn g a) (Gn g b) _ hΨ
+    obtain ⟨L, hL, hLs⟩ := _root_.GlobalTheory.GLm.ProdChar.exists_list_prod (Gn g a) (Gn g b) _ hΨ
     refine ⟨L, hL, fun x y => ?_⟩
     rw [← hLs x y]
     have hker : (Nat.card π.ker : ℂ) = (g : ℂ) ^ (a * b) := by

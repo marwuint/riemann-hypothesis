@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexifiedDerivedActionIsLieActionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexifiedDerivedActionIsLieAction
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR GlobalTheory.HolDict
 open scoped TensorProduct InnerProductSpace ContDiff
@@ -295,7 +295,7 @@ theorem isWtOn_root [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {μ : Fin n
   have h0 : SmoothVec (lieH (Formalism.REAL.Jm ε)) σ (0 : H) := fun k Xs _ => by
     simp only [map_zero]; exact contDiff_const
   obtain ⟨hlin, -, hequiv, -⟩ :=
-    GlobalTheory.T.complexifiedDerivedAction_isLieAction n (Formalism.REAL.Jm ε) H σ (Formalism.REAL.Jm_conjTranspose ε) det_Jm hσ v 0 hs h0
+    _root_.GlobalTheory.HolDict.LieAct.main n (Formalism.REAL.Jm ε) H σ (Formalism.REAL.Jm_conjTranspose ε) det_Jm hσ v 0 hs h0
   intro θ hθ
   have hg : Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) ∈ Formalism.QuantumDeterminants.UH (Formalism.REAL.Jm ε) :=
     mem_UJset_of_mem_Kset_divisor hθ
@@ -418,7 +418,7 @@ theorem extremal_killed : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → �
   have h0 : SmoothVec (lieH (Formalism.REAL.Jm ε)) σ (0 : H) := fun k Xs _ => by
     simp only [map_zero]; exact contDiff_const
   obtain ⟨-, -, hequiv, -⟩ :=
-    GlobalTheory.T.complexifiedDerivedAction_isLieAction n (Formalism.REAL.Jm ε) H σ (Formalism.REAL.Jm_conjTranspose ε) det_Jm hσ v 0 hs h0
+    _root_.GlobalTheory.HolDict.LieAct.main n (Formalism.REAL.Jm ε) H σ (Formalism.REAL.Jm_conjTranspose ε) det_Jm hσ v 0 hs h0
   have hw2 := hwtP _ _ (isWtOn_root hσ hs hv a c)
   have hfun : (fun b => ((fun a => Formalism.QuantumDeterminants.lowK ε lam (s a)) + Formalism.REAL.root a c) (s.symm b)) =
       Formalism.QuantumDeterminants.lowK ε lam + Formalism.REAL.root (s a) (s c) := by

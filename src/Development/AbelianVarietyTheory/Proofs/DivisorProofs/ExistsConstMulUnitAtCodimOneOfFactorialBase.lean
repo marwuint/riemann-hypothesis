@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstMulEqUnit
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFibreGenericPointDvrOfPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFibreGenericPointDvrOfPrime
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeEqSpanOfCoheightLeOneStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCoheightOneNotMemOpenGenericPointStatement
 open AlgebraicGeometry CategoryTheory Limits
@@ -61,7 +61,7 @@ theorem exists_const_mul_unitAt_coheight_one : ∀ (R K : Type) [CommRing R] [Is
     rintro b ⟨h1, hbS⟩
     have hb0 : (q b).asIdeal ≠ ⊥ := fun h => hbS (hgen b h)
     obtain ⟨π, hπ, hqb⟩ := GlobalTheory.T.exists_prime_eq_span_of_coheight_le_one' R X q hgz b h1.le hb0
-    obtain ⟨ξ, -, hξ, hd, hirr⟩ := GlobalTheory.T.exists_fibre_genericPoint_dvr_of_prime R X q π hπ
+    obtain ⟨ξ, -, hξ, hd, hirr⟩ := _root_.GlobalTheory.VerticalUnit.exists_fibre_generic_of_prime R X q π hπ
     have hξ1 : Order.coheight ξ = 1 := by
       have e := IsDiscreteValuationRing.ringKrullDim_eq_one (X.presheaf.stalk ξ)
       rw [ringKrullDim_stalk_eq_coheight] at e

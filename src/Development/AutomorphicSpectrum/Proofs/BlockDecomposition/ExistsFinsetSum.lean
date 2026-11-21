@@ -42,9 +42,6 @@ theorem component_of (n : ℕ) (a : V n) : component hy n (of hy n a) = a :=
 theorem component_of_ne {n k : ℕ} (h : k ≠ n) (a : V k) : component hy n (of hy k a) = 0 :=
   (DirectSum.component.of R n k a).trans (dif_neg h)
 
-theorem of_injective (n : ℕ) : Function.Injective (of hy n) :=
-  Function.LeftInverse.injective (component_of hy n)
-
 theorem lhom_ext {N : Type*} [AddCommGroup N] [Module R N] {f g : NSum hy →ₗ[R] N}
     (h : ∀ n a, f (of hy n a) = g (of hy n a)) : f = g :=
   DirectSum.linearMap_ext R fun n => LinearMap.ext (h n)
@@ -210,9 +207,6 @@ theorem of_mem_grading (e : ℕ) (t : ℤ) (a : W e t) : D.of e t a ∈ D.gradin
 theorem comp_of (e : ℕ) (t : ℤ) (a : W e t) : D.comp e t (D.of e t a) = a := by
   simp [comp, of]
 
-theorem of_injective (e : ℕ) (t : ℤ) : Function.Injective (D.of e t) :=
-  Function.LeftInverse.injective (D.comp_of e t)
-
 theorem X_smul_of (j : ι) (e : ℕ) (t : ℤ) (a : W e t) :
     (MvPolynomial.X j : MvPolynomial ι (MvPolynomial κ R)) • D.of e t a =
       D.of e (t + 1) (D.x j e t a) := by
@@ -315,13 +309,6 @@ theorem X_smul_bijective (j : ι) (h : ∀ e t, Function.Bijective (D.x j e t)) 
   GrSum.X_smul_bijective D.hxN fun t => NSum.map_bijective (D.hyN t) (D.hyN (t + 1)) _ _ fun e => h e t
 
 end BiOps
-
-example : BiOps (R := ℤ) (fun _ _ => ℤ) Unit Unit where
-  x _ _ _ := 2 • LinearMap.id
-  y _ _ _ := 3 • LinearMap.id
-  hx _ _ _ _ _ := rfl
-  hy _ _ _ _ _ := rfl
-  hxy _ _ _ _ a := by simp; ring
 
 end Bi
 

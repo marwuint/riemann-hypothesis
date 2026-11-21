@@ -61,22 +61,6 @@ theorem mem_range_norm_iff_forall_local [IsCyclic Gal(L/K)] (x : Kˣ) :
           (IdeleNorm.infiniteLocalNorm L v).range := by
   rw [mem_range_norm_iff_diagonal_mem_range_ideleNorm, IdeleNorm.mem_range_ideleNorm_iff_forall]
 
-theorem exists_norm_eq_iff_forall_local [IsCyclic Gal(L/K)] {x : K} (hx : x ≠ 0) :
-    (∃ y : L, Algebra.norm K y = x) ↔
-      (∀ v, IdeleGroup.finiteProj v (IdeleGroup.diagonal K (Units.mk0 x hx)) ∈
-          (IdeleNorm.finiteLocalNorm L v).range) ∧
-        ∀ v, IdeleGroup.infiniteProj v (IdeleGroup.diagonal K (Units.mk0 x hx)) ∈
-          (IdeleNorm.infiniteLocalNorm L v).range := by
-  rw [← mem_range_norm_iff_forall_local]
-  constructor
-  · rintro ⟨y, hy⟩
-    have hy0 : y ≠ 0 := by
-      rintro rfl
-      exact hx (by simpa using hy.symm)
-    exact ⟨Units.mk0 y hy0, Units.ext (by simpa using hy)⟩
-  · rintro ⟨a, ha⟩
-    exact ⟨a, by simpa using congrArg Units.val ha⟩
-
 end
 
 section Quadratic
@@ -103,16 +87,6 @@ theorem mem_range_norm_iff_forall_local_of_finrank_eq_two (h : finrank K L = 2) 
           (IdeleNorm.infiniteLocalNorm L v).range := by
   obtain ⟨_, _⟩ := isGalois_isCyclic_of_finrank_eq_two h
   exact mem_range_norm_iff_forall_local x
-
-theorem exists_norm_eq_iff_forall_local_of_finrank_eq_two (h : finrank K L = 2) {x : K}
-    (hx : x ≠ 0) :
-    (∃ y : L, Algebra.norm K y = x) ↔
-      (∀ v, IdeleGroup.finiteProj v (IdeleGroup.diagonal K (Units.mk0 x hx)) ∈
-          (IdeleNorm.finiteLocalNorm L v).range) ∧
-        ∀ v, IdeleGroup.infiniteProj v (IdeleGroup.diagonal K (Units.mk0 x hx)) ∈
-          (IdeleNorm.infiniteLocalNorm L v).range := by
-  obtain ⟨_, _⟩ := isGalois_isCyclic_of_finrank_eq_two h
-  exact exists_norm_eq_iff_forall_local hx
 
 end Quadratic
 

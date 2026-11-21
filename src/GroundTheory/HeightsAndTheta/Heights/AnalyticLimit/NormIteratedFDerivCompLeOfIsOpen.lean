@@ -98,36 +98,6 @@ theorem tendstoUniformlyOn_of_norm_le {Y α : Type*} [SeminormedAddCommGroup α]
   rw [dist_comm, dist_eq_norm]
   exact (ht y hy).trans_lt hβt
 
-theorem tendsto_logErrorBound_nhdsWithin (C : ℝ) : Tendsto (fun t => errorWithLinear C t) (𝓝[>] 0) (𝓝 0) := by
-  have hell : Tendsto ell (𝓝[>] (0 : ℝ)) atTop :=
-    Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero
-  have h1 : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0) := by
-    simpa using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero
-  have h2 : Tendsto (fun t => errE C t) (𝓝[>] 0) (𝓝 0) := by
-    have := (h1.comp hell).const_mul C
-    rw [mul_zero] at this
-    refine this.congr fun t => ?_
-    simp only [Function.comp, errE, mul_div_assoc]
-  have h3 : Tendsto (fun t : ℝ => C * t) (𝓝[>] 0) (𝓝 0) := by
-    have : Tendsto (fun t : ℝ => C * t) (𝓝 0) (𝓝 (C * 0)) :=
-      (continuous_const.mul continuous_id).tendsto 0
-    rw [mul_zero] at this
-    exact this.mono_left nhdsWithin_le_nhds
-  simpa [errorWithLinear] using h2.add h3
-
-theorem logErrorBound_pos {C t : ℝ} (hC : 0 < C) (ht : 0 < t) (ht1 : t < Real.exp (-1)) :
-    0 < errorWithLinear C t := by
-  have hl : 1 < ell t := by
-    have := Real.log_lt_log ht ht1
-    rw [Real.log_exp] at this
-    show 1 < Real.log t⁻¹
-    rw [Real.log_inv]
-    linarith
-  have hlog : 0 < Real.log (ell t) := Real.log_pos hl
-  have hl0 : 0 < ell t := by linarith
-  unfold errorWithLinear errE
-  positivity
-
 end
 
 end ArgumentConvergenceLemmas

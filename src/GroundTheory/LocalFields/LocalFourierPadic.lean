@@ -8,47 +8,9 @@ namespace GroundTheory.LocalField
 open ValuativeRel MeasureTheory
 open scoped NNReal ENNReal
 
-section DifferentNorm
-
-variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
-  [IsNonarchimedeanLocalField K]
-  [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
-  [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [Algebra.IsSeparable K L]
-
-theorem card_quotient_differentIdeal :
-    Nat.card (𝒪[L] ⧸ differentIdeal 𝒪[K] 𝒪[L]) = residueCard L ^ differentExponent K L := by
-  rw [differentIdeal_eq_maximalIdeal_pow, ← Submodule.cardQuot_apply,
-    cardQuot_pow_of_prime (IsDiscreteValuationRing.not_a_field 𝒪[L]),
-    Submodule.cardQuot_apply]
-  rfl
-
-end DifferentNorm
-
 namespace Padic
 
 variable (p : ℕ) [hp : Fact p.Prime]
-
-theorem mem_integer_iff_norm_le_one (x : ℚ_[p]) : x ∈ 𝒪[ℚ_[p]] ↔ ‖x‖ ≤ 1 := by
-  rw [Valuation.mem_integer_iff, ← map_one (valuation ℚ_[p]), ← Valuation.vle_iff_le,
-    Valuation.Compatible.vle_iff_le (v := _root_.Padic.mulValuation),
-    GroundTheory.LocalField.Padic.mulValuation_le_iff_norm_le, norm_one]
-
-def padicIntRingEquivInteger : ℤ_[p] ≃+* 𝒪[ℚ_[p]] where
-  toFun x := ⟨x, (mem_integer_iff_norm_le_one p x).mpr x.2⟩
-  invFun y := ⟨y, (mem_integer_iff_norm_le_one p y).mp y.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-  map_mul' _ _ := rfl
-  map_add' _ _ := rfl
-
-theorem irreducible_p_integer : Irreducible (p : 𝒪[ℚ_[p]]) := by
-  have h := (MulEquiv.irreducible_iff (f := (padicIntRingEquivInteger p).toMulEquiv)
-    (x := (p : ℤ_[p]))).2 PadicInt.irreducible_p
-  simpa using h
-
-theorem ord_p : ord (p : ℚ_[p]) = 1 := by
-  have := ord_uniformizer (irreducible_p_integer p)
-  simpa using this
 
 theorem fourierChar_intCast (n : ℤ) : Real.fourierChar (n : ℝ) = 1 := by
   rw [Real.fourierChar_apply', Circle.exp_eq_one]
@@ -167,60 +129,6 @@ def stdChar : AddChar ℚ_[p] Circle where
     field_simp
     ring
 
-theorem stdChar_apply (x : ℚ_[p]) (m : ℤ) (k : ℕ) (h : ‖x - (m : ℚ_[p]) / (p : ℚ_[p]) ^ k‖ ≤ 1) :
-    stdChar p x = Real.fourierChar (((m : ℚ) / (p : ℚ) ^ k : ℚ) : ℝ) :=
-  stdCharFun_eq p x m k h
-
-theorem stdChar_intCast_div_pow (m : ℤ) (k : ℕ) :
-    stdChar p ((m : ℚ_[p]) / (p : ℚ_[p]) ^ k) = Real.fourierChar (((m : ℚ) / (p : ℚ) ^ k : ℚ) : ℝ) :=
-  stdChar_apply p _ m k (by simp)
-
-theorem stdChar_eq_one_of_norm_le_one {x : ℚ_[p]} (hx : ‖x‖ ≤ 1) : stdChar p x = 1 := by
-  rw [stdChar_apply p x 0 0 (by simpa using hx)]
-  simp
-
-theorem stdChar_inv_p_ne_one : stdChar p (p : ℚ_[p])⁻¹ ≠ 1 := by
-  have h := stdChar_intCast_div_pow p 1 1
-  rw [Int.cast_one, pow_one, one_div] at h
-  rw [h, Real.fourierChar_apply', Ne, Circle.exp_eq_one]
-  rintro ⟨n, hn⟩
-  have hp0 : (p : ℝ) ≠ 0 := by exact_mod_cast hp.out.ne_zero
-  have h1 : (1 : ℝ) = n * p := by
-    push_cast at hn
-    field_simp at hn
-    nlinarith [Real.pi_pos]
-  have h2 : (n : ℤ) * p = 1 := by exact_mod_cast h1.symm
-  have h3 : (p : ℤ) = 1 := Int.eq_one_of_dvd_one (by positivity) ⟨n, by rw [← h2]; ring⟩
-  have : p = 1 := by exact_mod_cast h3
-  exact hp.out.one_lt.ne' this
-
-theorem isTrivialOn_stdChar_zero : IsTrivialOn (stdChar p) 0 := fun x hx =>
-  stdChar_eq_one_of_norm_le_one p ((mem_integer_iff_norm_le_one p x).mp (mem_valBall_zero_iff.mp hx))
-
-theorem not_isTrivialOn_stdChar_neg_one : ¬ IsTrivialOn (stdChar p) (-1) := by
-  intro h
-  have hpp : (p : ℚ_[p]) ≠ 0 := by exact_mod_cast hp.out.ne_zero
-  apply stdChar_inv_p_ne_one p
-  apply h
-  rw [mem_valBall_iff_le_ord (inv_ne_zero hpp), ord_inv hpp, ord_p]
-
-theorem continuous_stdChar : Continuous (stdChar p) :=
-  continuous_of_isTrivialOn (isTrivialOn_stdChar_zero p)
-
-theorem stdChar_ne_one : stdChar p ≠ 1 := by
-  intro h
-  apply not_isTrivialOn_stdChar_neg_one p
-  rw [h]
-  intro x _
-  exact AddChar.one_apply x
-
-theorem addCharConductor_stdChar : addCharConductor (stdChar p) = 0 := by
-  have hc := continuous_stdChar p
-  have hne := stdChar_ne_one p
-  refine le_antisymm ((isTrivialOn_iff hc hne 0).mp (isTrivialOn_stdChar_zero p)) ?_
-  by_contra hlt
-  exact not_isTrivialOn_stdChar_neg_one p ((isTrivialOn_iff hc hne (-1)).mpr (by omega))
-
 section Extension
 
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
@@ -232,33 +140,7 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [ValuativeExtension ℚ_[p] K] [FiniteDimensional ℚ_[p] K] in
 theorem stdCharOf_apply (x : K) : stdCharOf p K x = stdChar p (Algebra.trace ℚ_[p] K x) := rfl
 
-theorem continuous_stdCharOf : Continuous (stdCharOf p K) :=
-  continuous_traceChar (continuous_stdChar p) (stdChar_ne_one p)
-
-theorem stdCharOf_ne_one : stdCharOf p K ≠ 1 :=
-  traceChar_ne_one (continuous_stdChar p) (stdChar_ne_one p)
-
-theorem addCharConductor_stdCharOf :
-    addCharConductor (stdCharOf p K) = -(differentExponent ℚ_[p] K : ℤ) :=
-  addCharConductor_traceChar_of_eq_zero (continuous_stdChar p) (stdChar_ne_one p)
-    (addCharConductor_stdChar p)
-
 variable [MeasurableSpace K] [BorelSpace K]
-
-theorem selfDualMeasure_stdCharOf_integers_eq_rpow :
-    selfDualMeasure (stdCharOf p K) (𝒪[K] : Set K) =
-      ((residueCard K : ℝ≥0) ^ (-(differentExponent ℚ_[p] K : ℝ) / 2) : ℝ≥0) := by
-  rw [selfDualMeasure_integers, addCharConductor_stdCharOf]
-  push_cast
-  rfl
-
-theorem selfDualMeasure_stdCharOf_integers :
-    selfDualMeasure (stdCharOf p K) (𝒪[K] : Set K) =
-      ((Nat.card (𝒪[K] ⧸ differentIdeal 𝒪[ℚ_[p]] 𝒪[K]) : ℝ≥0) ^ (-(1 / 2 : ℝ)) : ℝ≥0) := by
-  rw [selfDualMeasure_stdCharOf_integers_eq_rpow, card_quotient_differentIdeal, Nat.cast_pow,
-    ← NNReal.rpow_natCast, ← NNReal.rpow_mul]
-  congr 2
-  ring
 
 end Extension
 

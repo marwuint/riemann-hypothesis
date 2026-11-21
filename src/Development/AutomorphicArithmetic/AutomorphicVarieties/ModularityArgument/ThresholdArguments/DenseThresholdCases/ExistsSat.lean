@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.DiscreteSeriesCoefficientsCuspidal
+import Mathlib
 import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.PfHRep
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AfDesc
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AutomorphicFormHyp
@@ -26,17 +26,6 @@ theorem exists_sat_alt (P : _root_.UpperTheory.V.Af.Hypotheses') (π : TR.CuspSu
     (GlobalTheory.LFun.KGL w a : Set _) x hx0 hx (hi.2 ▸ Submodule.mem_top))
   exact ⟨B, (h4 _ _ hi B).2 hB⟩
 end Proj
-section Loc
-open GlobalTheory.LFun Formalism.UG
-variable {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
-end Loc
-section Inf
-variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
-open GlobalTheory.HeckeGal.Model GlobalTheory.Mem.Chr.CharModel
-end Inf
-section Sign
-variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
-end Sign
 theorem _root_.UpperTheory.Esk.pf_HRep_alt : _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.Esk.HCap → UpperTheory.Esk.HRep := by
   intro P hC
   unfold UpperTheory.Esk.HCap at hC

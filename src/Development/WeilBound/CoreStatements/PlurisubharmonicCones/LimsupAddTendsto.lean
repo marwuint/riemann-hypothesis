@@ -2,7 +2,8 @@ import Mathlib
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.GlueCharts
 import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.PhiISemipositive
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PlurisubharmonicLocalStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PlurisubharmonicLocal
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 
 open Filter Topology Metric Set
 open ReciprocityTheory.AnForm.A (IsPsh coordDiv limsupExt molli shrink polyMax)
@@ -139,7 +140,7 @@ theorem isPsh_ext {n : ℕ} {T : Set (Fin n → ℂ)} (hT : IsOpen T) (hT1 : T �
     (h1 : ∀ v ∈ T \ coordDiv S, g' v = g v)
     (h2 : ∀ v ∈ T, v ∈ coordDiv S → g' v = limsup g (𝓝[T \ coordDiv S] v)) :
     IsPsh T fun v => q v + g' v := by
-  refine GlobalTheory.T.plurisubharmonic_local n T _ hT fun v₀ hv₀ => ?_
+  refine _root_.GlobalTheory.CompanionTheory.AnForm.PshLocal.isPsh_of_locally n T _ hT fun v₀ hv₀ => ?_
   obtain ⟨δ, hδ, hδT⟩ := nhds_basis_closedBall.mem_iff.1 (hT.mem_nhds hv₀)
   obtain ⟨Mq, hMq⟩ := (isCompact_closedBall v₀ δ).exists_bound_of_continuousOn (hq.mono hδT)
   have hUT : ball v₀ δ ⊆ T := ball_subset_closedBall.trans hδT

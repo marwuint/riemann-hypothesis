@@ -23,12 +23,6 @@ def LineNormalForm.Statement (h : HermitianForm F E W) : Prop :=
 
 end NormalForm
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

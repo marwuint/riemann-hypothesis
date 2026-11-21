@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmCocycleApplyFinsetSumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmCocycleApplyFinsetSum
 
 set_option autoImplicit false
 
@@ -42,12 +42,6 @@ theorem subst_powerSeriesEvalTwoGroups {τ τ' : Type} [Finite τ] {u v : Fin d 
   congr 1
   funext s
   cases s <;> rfl
-
-theorem powerSeriesEvalTwoGroups_X {τ : Type} {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
-    (hv : ∀ i, constantCoeff (v i) = 0) (s : Fin d ⊕ Fin d) :
-    at2 (X s) u v = Sum.elim u v s := by
-  unfold at2
-  rw [subst_X (hs2 hu hv)]
 
 theorem op_addLaw {τ : Type} {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) : op (addLaw R d) u v = u + v := by
@@ -213,7 +207,7 @@ theorem symmetricCocycle_additive_eq_coboundary_add_alt (R : Type) [CommRing R] 
     rw [Pi.single_apply]; split_ifs <;> simp⟩
   let y : Fin d → A := fun m => ⟨Pi.single m (X (Sum.inr m)), fun i => by
     rw [Pi.single_apply]; split_ifs <;> simp⟩
-  have key := GlobalTheory.T.symmCocycle_apply_finset_sum A (MvPowerSeries τ R) γ hsymm hcoc hzero d x y
+  have key := _root_.GlobalTheory.symmCocycle_sum A (MvPowerSeries τ R) γ hsymm hcoc hzero d x y
   have coeA : ∀ (s : Finset (Fin d)) (f : Fin d → A),
       ((∑ j ∈ s, f j : A) : Fin d → MvPowerSeries τ R) = ∑ j ∈ s, (f j : Fin d → MvPowerSeries τ R) :=
     fun s f => map_sum A.subtype f s

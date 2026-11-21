@@ -1,5 +1,16 @@
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLb2OfThetaTie
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarriedThTw
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SettingsFormsExistList
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PlaceModelImp
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DofOTw
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyPtsOfReading
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StateB2OfRationalData
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMovedDataLaterStagesWithNewTwistStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNormalisedReadingTransportedNewTwist
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReadPackageTwistHeq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideTw
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SeriesAtThetaTwist
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SameGaloisLevelExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RootsOfUnityRingLeWittIntegers
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExpTh
@@ -51,7 +62,7 @@ theorem exists_levelB2_twisted_state_of_thetaTie : ∀ (hL : _root_.UpperTheory.
   intro hL K B f T w P x l th hT
   have hser := _root_.GlobalTheory.T.series_at_theta_twist_ys_exp hL x l th
   obtain ⟨m, hm, hc, hh⟩ := GlobalTheory.T.exists_movedData_laterStagesWithNewTwist x (thTw (Dof x) th)
-  obtain ⟨r, hp, hrep, hj, he⟩ := GlobalTheory.T.exists_normalisedReading_transported_newTwist x _ m hm hc hh
+  obtain ⟨r, hp, hrep, hj, he⟩ := _root_.GlobalTheory.HeightCounting.Up.readTw x _ m hm hc hh
   obtain ⟨l', h1, h2, h3, h4, h5, h6, h7⟩ := _root_.GlobalTheory.T.read_package_twist_heq_alt hL x l.toLI _ m hm hc hh r hp hrep hj he
   obtain ⟨mt, hPV⟩ := _root_.GlobalTheory.HeightCounting.Up.exists_in_mt_theta_twist_pv_eq x l.toLI th m hm hc hh r hp hj
   refine ⟨stTw x _ m hc hh r hp, ?_, rfl, ?_⟩

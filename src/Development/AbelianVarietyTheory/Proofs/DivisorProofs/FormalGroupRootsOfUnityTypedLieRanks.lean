@@ -3,13 +3,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueEqZeroIffV
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeBelowComplexEmbeddingLabelIsMaximalCardStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbeddingReducedResidueFieldBijectiveUnramifiedStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogarithmicGroupLawSplitByIdempotentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomKerEqIffFrobeniusTwistStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegersApproximatingRootOfUnityTwistsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomKerEqIffFrobeniusTwist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegersApproximatingRootOfUnityTwists
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDetPowDepthLeOfIntegralLogHomStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegersActIntegralChartEigenDirectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabelDirectionsIntegralBasisUnramifiedPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabelDirectionsIntegralBasisUnramifiedPrime
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusActsOnTypeAtValuationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralLogHomDiagonalOfLimitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralLogHomDiagonalOfLimit
 
 set_option autoImplicit false
 
@@ -91,7 +91,7 @@ theorem exists_orbit (X : ValExt T p) (hp : UnramIn E p) (τ : E →+* ℂ) :
       ∀ z : X.C, z ^ (p ^ h - 1) = 1 → ∃ a₀ : 𝓞 E, X.v (embX io X τ a₀ - z) < 1 := by
   obtain ⟨-, h, h0, hc⟩ := GlobalTheory.T.primeBelowComplexEmbeddingLabel_isMaximal_card E H l c p T io X τ
   haveI := charP_residueField_of_irreducible X
-  obtain ⟨hon, F, Fp, Fs, Fi, Fk⟩ := GlobalTheory.T.ringHom_ker_eq_iff_frobeniusTwist (𝓞 E) _ p (red io X τ) h h0 (by rw [← primeBelow_eq_ker]; exact hc)
+  obtain ⟨hon, F, Fp, Fs, Fi, Fk⟩ := _root_.GlobalTheory.FrobOrbit.ringHom_ker_eq_iff_frobenius_twist (𝓞 E) _ p (red io X τ) h h0 (by rw [← primeBelow_eq_ker]; exact hc)
   obtain ⟨hi, hs⟩ := GlobalTheory.T.embeddingReducedResidueField_bijective_unramified E H l c p T io X hp
   choose lab hlab using fun s => hs (F s)
   refine ⟨h, h0, hc, lab, ⟨hi ?_, fun s a => ?_, fun s s' e => Fi ?_, fun σ => ?_⟩, fun s a => ?_, fun z hz => ?_⟩
@@ -118,7 +118,7 @@ theorem exists_hom_of_approx [DecidableEq (Lt1 Dw)] {L : Matrix (Lt1 Dw) (Fin (c
     (t : (E →+* ℂ) → X.C) (ht : ∀ r : ℝ, ∃ a : 𝓞 E, ∀ σ, (r : WithTop ℝ) ≤ vX_vp X (embX io X σ a - t σ)) :
     ∃ φ, IsIntHom (fgl Ch X) (fgl Ch X) φ
       ((Matrix.of fun e ℓ => lieVec Ch X ℓ e) * Matrix.diagonal (fun ℓ : Lt1 Dw => t ℓ.1) * L) := by
-  refine GlobalTheory.T.isIntegralLogHom_diagonal_of_limit X.C (vX_vp X) _ (fgl Ch X) (Lt1 Dw) _ L (fun e ℓ => isIntV_jX X _) hL hUL _ fun r => ?_
+  refine _root_.GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit X.C (vX_vp X) _ (fgl Ch X) (Lt1 Dw) _ L (fun e ℓ => isIntV_jX X _) hL hUL _ fun r => ?_
   obtain ⟨a, ha⟩ := ht r
   obtain ⟨h1, h2⟩ := GlobalTheory.T.integers_act_integralChart_eigenDirections E H Dw l Xo c p T io X y Ch a
   exact ⟨fun ℓ => embX io X ℓ.1 a, _, _, h1, h2, fun ℓ => ha ℓ.1⟩
@@ -127,7 +127,7 @@ theorem typedPartAt (hp : UnramIn E p) (τ : E →+* ℂ) : TypedPartAt Ch X τ 
   classical
   obtain ⟨h, h0, hc, lab, horb, hpow, hroot⟩ := exists_orbit (io := io) X hp τ
   haveI : NeZero h := ⟨h0.ne'⟩
-  obtain ⟨L, hL, hLU, hUL⟩ := GlobalTheory.T.label_directions_integral_basis_unramified_prime E H Dw l Xo c p T io X y Ch hp
+  obtain ⟨L, hL, hLU, hUL⟩ := _root_.GlobalTheory.PrimePart.exists_integral_inverse_lieVec E H Dw l Xo c p T io X y Ch hp
   set U : Matrix (Fin (chD Ch.ch)) (Lt1 Dw) X.C := Matrix.of fun e ℓ => lieVec Ch X ℓ e with hU
   obtain ⟨-, -, hinj, hker⟩ := id horb
 
@@ -137,7 +137,7 @@ theorem typedPartAt (hp : UnramIn E p) (τ : E →+* ℂ) : TypedPartAt Ch X τ 
   have happ : ∀ z : X.C, z ^ (p ^ h - 1) = 1 → ∀ r : ℝ, ∃ a : 𝓞 E, ∀ σ,
       (r : WithTop ℝ) ≤ vX_vp X (embX io X σ a - t z σ) := by
     intro z hz r
-    obtain ⟨a, h1, h2⟩ := GlobalTheory.T.exists_integers_approximating_root_of_unity_twists E H l c p T io X τ h h0 lab hpow z hz (hroot z hz) r
+    obtain ⟨a, h1, h2⟩ := _root_.GlobalTheory.PrimePart.exists_approx_root_twists E H l c p T io X τ h h0 lab hpow z hz (hroot z hz) r
     refine ⟨a, fun σ => ?_⟩
     by_cases hσ : ∃ s, lab s = σ
     · obtain ⟨s, rfl⟩ := hσ

@@ -1,7 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GaugeUnfold
 import Formalism.LocalToGlobal.GlobalTheory.GL5.Statement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousMulEquivCongruenceTopologyAdelicStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousMulEquivCongruenceTopologyAdelic
+import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsReduction
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.TopfBasis
+import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaussianRapidDecay
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CdScaleIsTrueScale
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueInfEmb
@@ -89,7 +94,7 @@ theorem exists_adelic_equiv : ∀ I : AutInst, Formalism.MainNotions.GlobalTheor
   have hex := GlobalTheory.Mem.VolEmb.existsUnique_infEmb I.F I.E I.cm.sig hcm
   choose θ hθ hθu using fun v => hex (I.φ v)
   obtain ⟨er, her⟩ := exists_real_equiv I hcm θ hθ
-  obtain ⟨ef, hef, -⟩ := GlobalTheory.T.exists_continuousMulEquiv_congruenceTopology_adelicUnitary I
+  obtain ⟨ef, hef, -⟩ := _root_.GlobalTheory.CongTop.Swap.exists_continuousMulEquiv_adelic I
   obtain ⟨sp, hsp⟩ := GlobalTheory.Mem.VolSplit.exists_adelic_split I.F I.E I.cm.sig I.n I.J
   let g : HA (Ainf I.F) I.cm.sig I.J × HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af I.F) I.cm.sig I.J ≃ₜ* I.GA :=
     { toFun := fun x => (er x.1, ef.symm x.2)

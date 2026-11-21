@@ -158,15 +158,32 @@ import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PLiftGraphPoints
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PLocalGenFamily
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PLocallyPrincipalCoprimeField
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PMoriwakiBigCurve
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KleimanGenericPointSectionInputStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KleimanInputNefAmpleSectionCountStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KodairaGenericOfAmpleSectionCountStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormFormGaussBoundHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.TargetSt
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsFieldSubalgebraSelf
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGeneric
+import Development.WeilBound.CoreStatements.HodgeTatePoints.KleimanInputUniverseZero
+import Development.WeilBound.CoreStatements.HodgeTatePoints.KTwins
+import Development.WeilBound.CoreStatements.HodgeTatePoints.SiuKodaira
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormFormGaussBoundHolds
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsNormFormGaussBound
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingAlt
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeOfIsIntersectionSystem
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeGenericOfDegree
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeAndCoordinatesOfResolutionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeAndCoordinatesOfResolution
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.ContractMixedFieldStatement
+import Development.AutomorphicSpectrum.PublishedTheorems.Metrics₂.PoincareLelong
 import Development.WeilBound.CoreStatements.AutomorphicKernels.MoriwakiBigness.SegreJoinGeneration.GeneratesOverSegreJoinTwist
 import Development.WeilBound.CoreStatements.AutomorphicKernels.MoriwakiBigness.HilbertSamuelBlock.HSMBlock
 import Development.WeilBound.CoreStatements.AutomorphicKernels.MoriwakiBigness.MoriwakiRankBounds.OfAis
@@ -185,7 +202,7 @@ theorem hsChain (hResK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have s1 := GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.proof
   have s2 := GroundTheory.Heights₂.Heights.HilbertSamuel.ChartDenominator.proof
   have s3 := GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSupBound.proof
-  have s4 := GroundTheory.Heights₂.Heights.HilbertSamuel.KodairaSection.proof s1 (GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS)) (GlobalTheory.T.kodaira_generic_of_ample_section_count (GlobalTheory.T.kleiman_input_nef_ample_section_count GlobalTheory.T.kleiman_genericPointSectionInput).2.1 (GlobalTheory.T.kleiman_input_nef_ample_section_count GlobalTheory.T.kleiman_genericPointSectionInput).2.2) s2 s3
+  have s4 := GroundTheory.Heights₂.Heights.HilbertSamuel.KodairaSection.proof s1 (GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS)) (_root_.PositivityTheory.HtPt.Siua.siu_kodaira (_root_.PositivityTheory.HtPt.Ktw.k_twins _root_.PositivityTheory.HtPt.Kra.kleiman_input_universe_zero).2.1 (_root_.PositivityTheory.HtPt.Ktw.k_twins _root_.PositivityTheory.HtPt.Kra.kleiman_input_universe_zero).2.2) s2 s3
   have s5 := GroundTheory.Heights₂.Heights.HilbertSamuel.SectionProduct.full
   have s6 := GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbSemipos.proof
   have s7 := GroundTheory.Heights₂.Heights.HilbertSamuel.NefAmpleGeneric.proof (PositivityTheory.KAmp.kAmp) (GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS))
@@ -244,18 +261,18 @@ theorem hsChain (hResK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have s60 := GroundTheory.Heights₂.Heights.HilbertSamuel.ResVolume.proof
   have s61 := GroundTheory.Heights₂.Heights.Targets.LiftGraphPoints.proof
   have s62 := GroundTheory.Heights₂.Heights.AutoClose.Targets_LiftGraphMetric
-  have s63 := GroundTheory.Heights₂.Heights.Targets.LiftBlockDatum.proof (GlobalTheory.T.resolution_exists_of_resolution_statement hResK) s60 s61 s62
-  have s64 := GroundTheory.Heights₂.Heights.ForSecondHalf.PtsIntegrable.of_resExists (GlobalTheory.T.resolution_exists_of_resolution_statement hResK)
+  have s63 := GroundTheory.Heights₂.Heights.Targets.LiftBlockDatum.proof (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hResK) s60 s61 s62
+  have s64 := GroundTheory.Heights₂.Heights.ForSecondHalf.PtsIntegrable.of_resExists (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hResK)
   have s65 := GroundTheory.Heights₂.Heights.Inter.RatR.proof s64
   have s66 := GroundTheory.Heights₂.Heights.HilbertSamuel.IsomInvariance.proof s65
   have s67 := GroundTheory.Heights₂.Heights.HilbertSamuel.AddBlockIsometric.proof
-  have s68 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerBlockTop.proof ((GlobalTheory.T.degree_and_coordinates_of_resolution (GlobalTheory.T.resolution_exists_of_resolution_statement hResK)).2) s66 s67
+  have s68 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerBlockTop.proof ((_root_.GlobalTheory.CompanionTheory.Ar.Pub.genDeg_and_pfCoord (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hResK)).2) s66 s67
   have s69 := GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundCount.full
-  have s70 := GroundTheory.Heights₂.Heights.Targets.LiftCountAlongMultiples.proof s63 s68 (PositivityTheory.LocalParametersCuspidal.MB.HSM.theoremHSMBlock hAIS hResK) s69 (GlobalTheory.T.packing')
+  have s70 := GroundTheory.Heights₂.Heights.Targets.LiftCountAlongMultiples.proof s63 s68 (PositivityTheory.LocalParametersCuspidal.MB.HSM.theoremHSMBlock hAIS hResK) s69 (_root_.GlobalTheory.CompanionTheory.Ar.Small.packing)
   have s71 := GroundTheory.Heights₂.Heights.Targets.AmpleCountAlongMultiples.proofAmple s59 s70
   have s72 := GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegGeomDeg.proof (GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS))
-  have s73 := GroundTheory.Heights₂.Heights.Targets.NefBigCountAlongMultiples.proof s49 s71 s7 s72 (GlobalTheory.T.packing')
-  have s74 := GroundTheory.Heights₂.Heights.Targets.AmpleCountAlongMultiples.statementB s73 (GlobalTheory.T.packing')
+  have s73 := GroundTheory.Heights₂.Heights.Targets.NefBigCountAlongMultiples.proof s49 s71 s7 s72 (_root_.GlobalTheory.CompanionTheory.Ar.Small.packing)
+  have s74 := GroundTheory.Heights₂.Heights.Targets.AmpleCountAlongMultiples.statementB s73 (_root_.GlobalTheory.CompanionTheory.Ar.Small.packing)
   have s75 := GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedProductNonneg.full
   have s76 := GroundTheory.Heights₂.Heights.HilbertSamuel.KleimanNefF.proof (PositivityTheory.KAmp.kAmp) s75
   have s77 := GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegAmple.full
@@ -300,7 +317,7 @@ theorem hsChain (hResK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have s116 := GroundTheory.Heights₂.Heights.Targets.CurveBoxLattice.proof s112 s113 s114 s115 s84
   have s117 := GroundTheory.Heights₂.Heights.Targets.CurveBoxCount.proof s110 s116
   have s118 := GroundTheory.Heights₂.Heights.Targets.CurveCountLower.proof s91 s103 s109 s117
-  have s119 := GroundTheory.Heights₂.Heights.Targets.MoriwakiBigCurve.proof s118 (GlobalTheory.T.packing')
+  have s119 := GroundTheory.Heights₂.Heights.Targets.MoriwakiBigCurve.proof s118 (_root_.GlobalTheory.CompanionTheory.Ar.Small.packing)
   have s120 := GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralAgainstPositive.full
   have s121 := GroundTheory.Heights₂.Heights.ForSecondHalf.KleimanNef.proof s76
   have s122 := GroundTheory.Heights₂.Heights.HilbertSamuel.MixedKleimanLow.proof s120 s121
@@ -309,7 +326,7 @@ theorem hsChain (hResK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have s125 := GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.full
   have s126 := GroundTheory.Heights₂.Heights.HilbertSamuel.G4.proof s90 s125
   have s127 := GroundTheory.Heights₂.Heights.HilbertSamuel.CurveSmallCountLower.proof s91 s103 s109 s117
-  have s128 := GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeBigDimensionOne.proof (GlobalTheory.T.packing') s127
+  have s128 := GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeBigDimensionOne.proof (_root_.GlobalTheory.CompanionTheory.Ar.Small.packing) s127
   have s129 := GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeDimensionOne.proof s128
   have s130 := GroundTheory.Heights₂.Heights.HilbertSamuel.SmallSectionMixed.proof s126 s129 (GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS)) s78
   have s131 := GroundTheory.Heights₂.Heights.HilbertSamuel.MixedSectionStep.proof s130 s65 s120 s121 s124
@@ -336,7 +353,7 @@ theorem hsChain (hResK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have s152 := GroundTheory.Heights₂.Heights.HilbertSamuel.GenOnFibres.full
   have s153 := GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedRestrict.full
   have s154 := GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedNefGeneric.proof s152 s153 s75
-  have s155 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerHeightsirational.proof s154 (GlobalTheory.T.kodaira_generic_of_ample_section_count (GlobalTheory.T.kleiman_input_nef_ample_section_count GlobalTheory.T.kleiman_genericPointSectionInput).2.1 (GlobalTheory.T.kleiman_input_nef_ample_section_count GlobalTheory.T.kleiman_genericPointSectionInput).2.2) s2
+  have s155 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerHeightsirational.proof s154 (_root_.PositivityTheory.HtPt.Siua.siu_kodaira (_root_.PositivityTheory.HtPt.Ktw.k_twins _root_.PositivityTheory.HtPt.Kra.kleiman_input_universe_zero).2.1 (_root_.PositivityTheory.HtPt.Ktw.k_twins _root_.PositivityTheory.HtPt.Kra.kleiman_input_universe_zero).2.2) s2
   have s156 := GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.proof
   have s157 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerBlockArith.proof s156
   have s158 := GroundTheory.Heights₂.Heights.HilbertSamuel.LeviLogFlat.proof
@@ -350,7 +367,7 @@ theorem hsChain (hResK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have s166 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerBlockOldPartSurj.proof
   have s167 := GroundTheory.Heights₂.Heights.HilbertSamuel.PrimeZariskiDense.proof s143 s141 s142
   have s168 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerBlockMeasure.proof s165 s166 s167
-  have s169 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerBlockDatum.proof (GlobalTheory.T.resolution_exists_of_resolution_statement hResK) s60 s151 s155 s157 s163 s168
+  have s169 := GroundTheory.Heights₂.Heights.HilbertSamuel.PowerBlockDatum.proof (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hResK) s60 s151 s155 s157 s163 s168
   have s170 := GroundTheory.Heights₂.Heights.HilbertSamuel.BlockChiCovolume.proof
   have s171 := GroundTheory.Heights₂.Heights.HilbertSamuel.TensorPowerL2Degree.proof s169 s68 s170 (PositivityTheory.LocalParametersCuspidal.MB.HSM.theoremHSMBlock hAIS hResK)
   have s172 := GroundTheory.Heights₂.Heights.HilbertSamuel.EuclideanSectionsPower.proof s148 s171
@@ -358,9 +375,9 @@ theorem hsChain (hResK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have s174 := GroundTheory.Heights₂.Heights.Targets.SublatticeDegree.full
   have s175 := GroundTheory.Heights₂.Heights.HilbertSamuel.EuclideanSections.proof s172 s173 s174 s139
   have s176 := GroundTheory.Heights₂.Heights.HilbertSamuel.G7.proof s139 s175
-  have s177 := GroundTheory.Heights₂.Heights.HilbertSamuel.MonomialShift.proof (GlobalTheory.T.packing')
+  have s177 := GroundTheory.Heights₂.Heights.HilbertSamuel.MonomialShift.proof (_root_.GlobalTheory.CompanionTheory.Ar.Small.packing)
   have s178 := GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbMonomial.full
-  have s179 := GroundTheory.Heights₂.Heights.HilbertSamuel.UpperNormalisation.proof s176 (GlobalTheory.T.packing') s83
+  have s179 := GroundTheory.Heights₂.Heights.HilbertSamuel.UpperNormalisation.proof s176 (_root_.GlobalTheory.CompanionTheory.Ar.Small.packing) s83
   have s180 := GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeNef.proof s177 s178 s179
   exact ⟨s90, s119, s138, s176, s180⟩
 

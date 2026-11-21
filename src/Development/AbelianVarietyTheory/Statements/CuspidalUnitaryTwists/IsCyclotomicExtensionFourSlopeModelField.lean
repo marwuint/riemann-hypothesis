@@ -11,17 +11,6 @@ noncomputable section
 
 namespace GlobalTheory.TestLat.SlopeModel
 
-theorem exists_frame {N : ℕ} {H : Matrix (Fin N) (Fin N) ℂ} (hH : H.PosDef) :
-    ∃ X : Matrix (Fin N) (Fin N) ℂ, IsUnit X.det ∧ (X⁻¹)ᴴ * X⁻¹ = H := by
-  obtain ⟨B, hB⟩ := CStarAlgebra.nonneg_iff_eq_star_mul_self.1 hH.posSemidef.nonneg
-  have hu : IsUnit B.det := by
-    have h := (Matrix.isUnit_iff_isUnit_det _).1 hH.isUnit
-    rw [hB, Matrix.det_mul] at h
-    exact isUnit_of_mul_isUnit_right h
-  refine ⟨B⁻¹, Matrix.isUnit_nonsing_inv_det B hu, ?_⟩
-  rw [Matrix.nonsing_inv_nonsing_inv B hu, hB]
-  rfl
-
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι] {n N : ℕ} {C : Type}
 
 open NumberField in
@@ -166,57 +155,6 @@ theorem _root_.GlobalTheory.TestLat.SlopeModel.nonempty_idx (lam : ι → _root_
   haveI : Nontrivial ↥(_root_.Formalism.L2.DIV.VV ℚ lam) := nontrivial_of_ne _ _ hne
   exact (_root_.Formalism.L2.DIV.bVV ℚ lam).index_nonempty
 
-def stdLat (E : Type) [Field E] [NumberField E] (n : ℕ) : Submodule (𝓞 E) (Fin n → E) :=
-  Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)
-
-theorem mem_stdLat {E : Type} [Field E] [NumberField E] {x : Fin n → E} :
-    x ∈ stdLat E n ↔ ∀ i, IsIntegral ℤ (x i) := by
-  simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
-  exact forall_congr' fun i => ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x i, h⟩, rfl⟩⟩
-
-theorem mem_range_iff {E : Type} [Field E] [NumberField E] {x : E} :
-    x ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ x :=
-  ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩
-
-theorem single_mem_stdLat {E : Type} [Field E] [NumberField E] (i : Fin n) :
-    (Pi.single i 1 : Fin n → E) ∈ stdLat E n := by
-  refine mem_stdLat.2 fun j => ?_
-  by_cases h : j = i
-  · subst h; simpa using isIntegral_one
-  · simpa [h] using isIntegral_zero
-
-theorem stdLat_isLattice (E : Type) [Field E] [NumberField E] (n : ℕ) : Submodule.IsLattice E (stdLat E n) := by
-  refine ⟨Submodule.fg_pi fun _ => ?_, ?_⟩
-  · rw [Submodule.one_eq_span]
-    exact Submodule.fg_span (Set.finite_singleton _)
-  · rw [eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]
-    refine Submodule.span_mono ?_
-    rintro _ ⟨i, rfl⟩
-    rw [Pi.basisFun_apply]
-    exact single_mem_stdLat i
-
-theorem stdLat_selfDualE {E : Type} [Field E] [NumberField E] (cE : E →+* E) (n : ℕ) :
-    IsSelfDualE cE (1 : Matrix (Fin n) (Fin n) E) (stdLat E n) := by
-  have hf : ∀ x y : Fin n → E, Formalism.UG.hform cE (1 : Matrix (Fin n) (Fin n) E) x y = ∑ i, cE (x i) * y i := by
-    intro x y
-    simp [Formalism.UG.hform, Matrix.one_apply]
-  refine ⟨stdLat_isLattice E n, fun y => ⟨fun hy x hx => ?_, fun h => mem_stdLat.2 fun i => ?_⟩⟩
-  · rw [mem_range_iff, hf]
-    exact IsIntegral.sum _ fun i _ =>
-      ((mem_stdLat.1 hx i).map cE.toIntAlgHom).mul (mem_stdLat.1 hy i)
-  · have := h _ (single_mem_stdLat i)
-    rw [mem_range_iff, hf, Finset.sum_eq_single i] at this
-    · simpa using this
-    · intro b _ hb
-      simp [hb]
-    · simp
-
-def wt (a : ℕ) : DomWeight 2 where
-  w := ![a, 0]
-  anti := by
-    intro i j hij
-    fin_cases i <;> fin_cases j <;> simp_all
-
 abbrev K4 : Type := CyclotomicField 4 ℚ
 
 instance isCyclotomicExtension_four_slopeModelField : IsCyclotomicExtension {4} ℚ K4 := by
@@ -225,98 +163,5 @@ instance isCyclotomicExtension_four_slopeModelField : IsCyclotomicExtension {4} 
   exact Subsingleton.elim _ _
 
 instance isCMField_slopeModelField : IsCMField K4 := IsCyclotomicExtension.Rat.isCMField K4 (S := {4}) ⟨4, rfl, by norm_num⟩
-
-theorem hypotheses_inhabited (a : ℕ) (ha : 1 ≤ a) (k : ℕ) :
-    letI : StarRing K4 := IsCMField.starRing K4
-    ∃ (v₀ : InfinitePlace K4) (cE : K4 →+* K4) (emb : Unit → K4 →+* K4) (lam : Unit → DomWeight 2)
-      (J : Matrix (Fin 2) (Fin 2) K4) (L : Fin (k + 1) → Submodule (𝓞 K4) (Fin 2 → K4)) (N : ℕ)
-      (e : Fin N ≃ Fin (k + 1) × VVIdx lam),
-      IsTotallyComplex K4 ∧ Formalism.DivisionValues.IsConjAt v₀ ∧ cE ≠ RingHom.id _ ∧
-      (∀ (φ : K4 →+* ℂ) (x : K4), φ (cE x) = starRingEnd ℂ (φ x)) ∧
-      (∀ τ x, star (emb τ x) = emb τ (cE x)) ∧ (1 : ℝ) ≤ a ∧ SpreadLe lam a ∧ (lam ()).w 0 - (lam ()).w 1 = a ∧
-      (∀ φ : K4 →+* ℂ, (J.map φ).PosDef) ∧ (∀ c, IsSelfDualE cE J (L c)) ∧ 0 < N ∧
-      (∃ X, IsMetric ((sumGram lam e (gramK emb J))⁻¹)ᵀ X) ∧ (∃ X, IsMetric (sumGram lam e (gramK emb J)) X) ∧
-      (∃ X, IsMetric ((sumGram lam e (gramKd emb J))⁻¹)ᵀ X) ∧ (∃ X, IsMetric (sumGram lam e (gramKd emb J)) X) := by
-  letI : StarRing K4 := IsCMField.starRing K4
-  have hone : ∀ φ : K4 →+* ℂ, ((1 : Matrix (Fin 2) (Fin 2) K4).map φ).PosDef := fun φ => by
-    rw [Matrix.map_one _ (map_zero _) (map_one _)]
-    exact Matrix.PosDef.one
-  let lam : Unit → DomWeight 2 := fun _ => wt a
-  let e := (Fintype.equivFin (Fin (k + 1) × VVIdx lam)).symm
-  have g1 : gramK (fun _ : Unit => RingHom.id K4) (1 : Matrix (Fin 2) (Fin 2) K4) = fun _ => 1 := by
-    funext τ; simp [gramK]
-  have g2 : gramKd (fun _ : Unit => RingHom.id K4) (1 : Matrix (Fin 2) (Fin 2) K4) = fun _ => 1 := by
-    funext τ; simp [gramKd]
-  have hm := exists_isMetric (sumGram lam e fun _ => (1 : Matrix (Fin 2) (Fin 2) K4))
-    fun φ => sumGram_posDef lam e _ φ fun _ => hone φ
-  haveI := nonempty_idx lam
-  refine ⟨Classical.arbitrary _, (IsCMField.complexConj K4 : K4 →+* K4), fun _ => RingHom.id _, lam, 1,
-    fun _ => stdLat K4 2, _, e, inferInstance, fun x => IsCMField.complexEmbedding_complexConj K4 _ x, ?_,
-    fun φ x => IsCMField.complexEmbedding_complexConj K4 φ x, fun _ _ => rfl, by exact_mod_cast ha, ?_, ?_, hone,
-    fun _ => stdLat_selfDualE _ 2, Fintype.card_pos, ?_, ?_, ?_, ?_⟩
-  · intro h
-    apply IsCMField.complexConj_ne_one K4
-    ext x
-    exact congrArg (fun f : K4 →+* K4 => f x) h
-  · intro τ i j
-    fin_cases i <;> fin_cases j <;> simp [lam, wt]
-  · simp [lam, wt]
-  · rw [g1]; exact hm.2
-  · rw [g1]; exact hm.1
-  · rw [g2]; exact hm.2
-  · rw [g2]; exact hm.1
-
-theorem hypothesesK (n : ℕ) :
-    IsDefGram (1 : Matrix (Fin n) (Fin n) K) ∧ IsSelfDualK (1 : Matrix (Fin n) (Fin n) K) (stdLat K n) := by
-  refine ⟨⟨Matrix.conjTranspose_one, fun a b => ?_, fun φ => ?_⟩, stdLat_isLattice K n, ?_⟩
-  · rw [Matrix.one_apply]
-    split_ifs
-    · exact one_mem _
-    · exact zero_mem _
-  · rw [Matrix.map_one _ (map_zero _) (map_one _)]
-    exact Matrix.PosDef.one
-  · have hm : ∀ x : K, x ∈ (1 : Submodule (𝓞 K) K) ↔ IsIntegral ℤ x := fun x => by
-      rw [Submodule.mem_one]
-      exact ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩
-    ext x
-    change (∀ y ∈ stdLat K n, star y ⬝ᵥ ((1 : Matrix (Fin n) (Fin n) K) *ᵥ x) ∈ (1 : Submodule (𝓞 K) K)) ↔ _
-    simp only [Matrix.one_mulVec, hm]
-    refine ⟨fun h => mem_stdLat.2 fun i => ?_, fun hx y hy => ?_⟩
-    · have := h _ (single_mem_stdLat i)
-      simpa [Pi.star_single] using this
-    · exact IsIntegral.sum _ fun i _ =>
-        ((mem_stdLat.1 hy i).map (starRingEnd K).toIntAlgHom).mul (mem_stdLat.1 hx i)
-
-theorem muDef_std [IsTotallyComplex K] (hN : 0 < N) :
-    Formalism.HN.muDef (Pi.basisFun K (Fin N)) (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ))
-      (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin N)))) = 0 := by
-  have hX : ∀ v : InfinitePlace K, IsUnit ((fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) v).det := fun _ => by simp
-  have hne : Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin N))) ≠ ⊥ := by
-    intro h
-    have := Submodule.subset_span (R := 𝓞 K) (Set.mem_range_self (f := Pi.basisFun K (Fin N)) ⟨0, hN⟩)
-    rw [h, SetLike.mem_coe, Submodule.mem_bot] at this
-    exact (Pi.basisFun K (Fin N)).ne_zero _ this
-  have h1 := (Formalism.HN.sizeMu K (Fin N → K) (Fin N) (Pi.basisFun K (Fin N)) _ hX _
-    (Submodule.fg_span (Set.finite_range _)) hne).2.1
-  have h2 := (Formalism.HN.htGram K (Fin N → K) (Fin N) (Pi.basisFun K (Fin N)) _ hX N (Pi.basisFun K (Fin N))
-    (Pi.basisFun K (Fin N)).linearIndependent).1
-  have h3 : ∀ v : InfinitePlace K, Formalism.HN.gramPl (Pi.basisFun K (Fin N)) (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) v
-      (Pi.basisFun K (Fin N)) = 1 := by
-    intro v
-    ext a c
-    simp only [Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, Matrix.of_apply, inv_one,
-      Matrix.one_mulVec, Module.Basis.repr_self, Finsupp.single_apply, Matrix.one_apply]
-    rw [Finset.sum_eq_single a]
-    · by_cases h : a = c
-      · simp [h]
-      · simp [h, Ne.symm h]
-    · intro b _ hb
-      simp [Ne.symm hb]
-    · simp
-  rw [h1, Formalism.HN.size, h2]
-  simp [h3]
-
-theorem bound_edges (f ν : ℕ) (R : ℝ) : bound f 0 R = 0 ∧ bound 0 ν R = 0 ∧ bound f 1 1 = 0 := by
-  simp [bound]
 
 end GlobalTheory.TestLat.SlopeModel

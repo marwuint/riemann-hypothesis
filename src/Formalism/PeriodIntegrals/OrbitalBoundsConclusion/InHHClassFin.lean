@@ -18,4 +18,3 @@ theorem stabClassFinite : PI.InHHClassFin.StabClassFinite :=
     PI.UnitaryGroupMassFormula.InHHClassFin.frameIso PI.UnitaryGroupMassFormula.InHHClassFin.frameGram PI.UnitaryGroupMassFormula.InHHClassFin.frameRat
     PI.UnitaryGroupMassFormula.InHHClassFin.levelStep
 
-theorem stabilizer_class_finite : PI.InHHClassFin.StabClassFinite := stabClassFinite

@@ -97,10 +97,6 @@ theorem exists_orthogonalSum_testGrid_of_levelChoiceGrid {D : D7} (A B : GlobalT
     · rintro ⟨x, hx, t, ht, rfl⟩
       exact ⟨A.V.frame.equivFun x, hx, t, ht, key x t⟩
 
-example : ∀ {D : D7} (A B : GlobalTheory.Grid.Node D) {c : ℕ} {ε : D.host.E} (d : GlobalTheory.ChiGrid.HermitianOrthogonalExtensionData A.V B.V c ε) (𝔟 : Fin c → GlobalTheory.Grid.FrId D), (ε = 1 ∨ ε = -1) → B.Λ = d.lat A.Λ 𝔟 → ∃ d' : GlobalTheory.Grid.HermitianOrthogonalExtensionData A B c, d'.ι = d.ι ∧ d'.Is (fun p q => GlobalTheory.ChiGrid.antiDiagonalSignGramMatrix c ε p q) 𝔟 := by
-  intro D A B c ε d 𝔟 h hΛ
-  exact exists_orthogonalSum_testGrid_of_levelChoiceGrid A B d 𝔟 h hΛ
-
 end GlobalTheory.GridJoin
 
 end

@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyBreuilKisinDatumStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyBreuilKisinDatum
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismaticFCrystalHomExtBreuilKisinPrismStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDatumStructureMapInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDatumStructureMapInjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemiBCInjectiveOfInjective
 
 noncomputable section
@@ -19,7 +20,7 @@ theorem fHom_eq_of_realises : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (T' : 
     Realises K M' (ainfObj K) (ainfId K) T' ρ' j' → ∀ u u' : FHom M M',
       (∀ x, j' (u.u (ainfObj K) x) = j' (u'.u (ainfObj K) x)) → u = u' := by
   intro l _ K T' _ _ ρ' M M' j' H u u' h
-  obtain ⟨bk⟩ := GlobalTheory.T.nonempty_breuilKisinDatum l K
+  obtain ⟨bk⟩ := _root_.GlobalTheory.BSP.nonempty_bk_of_finExt l K
   apply GlobalTheory.T.prismaticFCrystalHom_ext_breuilKisin_prism l K bk M M' u u'
   haveI := M'.fin (ainfObj K)
   haveI := M'.proj (ainfObj K)
@@ -29,7 +30,7 @@ theorem fHom_eq_of_realises : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (T' : 
     semiBC_injective_of_injective _ _ ((inclW l).comp (ainfId K).toRingHom)
       (GlobalTheory.Prism.inclW_injective.comp (ainfId K).injective) _ _ j' H.bc
   have ht : Function.Injective (M'.tr bk.ι) :=
-    semiBC_injective_of_injective _ _ bk.ι.f (GlobalTheory.T.breuilKisinDatum_structureMap_injective l K bk) _ _ (M'.tr bk.ι) (M'.tr_bc bk.ι)
+    semiBC_injective_of_injective _ _ bk.ι.f (_root_.GlobalTheory.BSP.bk_ev_injective l K bk) _ _ (M'.tr bk.ι) (M'.tr_bc bk.ι)
   refine LinearMap.ext fun x => ht (hj ?_)
   rw [← u.u_tr, ← u'.u_tr]
   exact h _

@@ -36,13 +36,6 @@ theorem psi_add_right (p q₁ q₂ : Sym m n) : psi p (q₁ + q₂) = psi p q₁
   refine Finset.sum_congr rfl fun u _ => ?_
   rw [coeff_add]; ring
 
-theorem psi_smul_right (p q : Sym m n) (r : ℂ) : psi p (r • q) = r * psi p q := by
-  classical
-  rw [psi_eq p (r • q) (p.support ∪ q.support) (Finset.union_subset_union le_rfl support_smul),
-    psi, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun u _ => ?_
-  rw [coeff_smul, smul_eq_mul]; ring
-
 theorem psi_herm (p q : Sym m n) : psi q p = star (psi p q) := by
   unfold psi
   rw [Finset.union_comm, star_sum]

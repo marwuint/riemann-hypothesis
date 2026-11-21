@@ -8,24 +8,6 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace UpperTheory.V.X
 
-section Dat
-
-variable {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] (l : ℕ) [Fact l.Prime]
-  {O : Type} [CommRing O] [Algebra ℤ_[l] O]
-
-structure SoDat (S : Finset (HeightOneSpectrum (𝓞 k))) (e : ℕ) (ψ : G k Ω →* Oˣ)
-    (Θ : GS Ω (S : Set (HeightOneSpectrum (𝓞 k))) →* Oˣ) : Prop where
-  odd : l ≠ 2 ∨ IsTotallyComplex k
-  above : ContainsAbove S l
-  e_pos : 1 ≤ e
-  opn : IsOpen (ψ.ker : Set (G k Ω))
-  lift : Θ.comp (toGS Ω _) = Chr.Psi l (e + 1) ψ
-
-def locSum (e : ℕ) (ψ : G k Ω →* Oˣ) (S : Finset (HeightOneSpectrum (𝓞 k))) (A : S → ValuationSubring Ω) : ℕ∞ :=
-  ∑ v : S, Chr.h0 l e ψ (Dec (F := k) (A v))
-
-end Dat
-
 section Lev
 
 variable {O : Type} [CommRing O]

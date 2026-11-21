@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InductionContragredient
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InductionFiniteLengthStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviBlocksParabolicInductionFiniteLengthStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InductionFiniteLength
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviBlocksParabolicInductionFiniteLength
 
 noncomputable section
 
@@ -83,7 +83,7 @@ theorem irreducibleAdmissible (hA : GlobalTheory.Published.IrreducibleAdmissible
 theorem main : GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.Published.StandardFunctorsFiniteLength →
     GlobalTheory.Published.BernsteinZelevinskyFiniteness := by
   intro hA hS k _ _ _ _
-  exact ⟨irreducibleAdmissible hA k, GlobalTheory.T.jacquet_finite_length hS k, GlobalTheory.T.induction_finite_length hS k,
+  exact ⟨irreducibleAdmissible hA k, _root_.GlobalTheory.JacquetBlocks.jacquetFiniteLength_of_standard hS k, _root_.GlobalTheory.inductionFiniteLength_of_standard hS k,
     GlobalTheory.SmGL.IndDual.inductionContragredient k⟩
 
 end GlobalTheory.BZBridge

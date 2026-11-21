@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotIsPrimZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinitelyManyIsoClassesProjectiveNumberFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntBilinFormToRealMemBalancedPsdConeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellGeneratorOnRayOfLinIndepSubcellStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntBilinFormToRealMemBalancedPsdCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellGeneratorOnRayOfLinIndepSubcell
 
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 
@@ -123,7 +123,7 @@ theorem perModule [Module.Finite O X] (hF : IsPolyFanOn bar φ X)
   refine hC m _ fun i => ⟨hp' i, ?_⟩
   have hrel' : ∑ i, toReal (pull e.toLinearMap (δ i)) = ∑ j, c j • toReal (γ j) := by
     rw [← hrel]; ext a b; simp [LinearMap.sum_apply]
-  obtain ⟨j, a, b, ha, hb, hab⟩ := GlobalTheory.T.cellGenerator_on_ray_of_linIndep_subcell O bar φ X m n _ γ c h' hγ hl' hc hrel' i
+  obtain ⟨j, a, b, ha, hb, hab⟩ := _root_.GlobalTheory.PolFan.cell_gen_on_ray O bar φ X m n _ γ c h' hγ hl' hc hrel' i
   exact ⟨⟨γ j, hγ.mem j⟩, hγS j, a, b, ha, hb, Subtype.ext (by simpa using hab)⟩
 
 end MultBound
@@ -145,7 +145,7 @@ theorem maxMult_lt_top : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       haveI : Module.Finite (𝓞 E) (Y k) := Module.Finite.equiv e
       haveI : Module.Projective (𝓞 E) (Y k) := Module.Projective.of_equiv e
       have hYr : Module.finrank (𝓞 E) (Y k) ≤ q := e.finrank_eq ▸ hX
-      obtain ⟨C, hC⟩ := perModule (hφ (Y k) hYr) (GlobalTheory.T.intBilinFormToReal_mem_balancedPsdCone E H (Y k))
+      obtain ⟨C, hC⟩ := perModule (hφ (Y k) hYr) (_root_.GlobalTheory.PolFan.toReal_mem_psdCone_of_nonneg E H (Y k))
       refine ⟨C, fun X' _ _ _ _ _ he' m δ h hl hp => ?_⟩
       obtain ⟨e'⟩ := he'
       obtain ⟨h', hl', hp', hc⟩ := transport e'.symm h hl hp

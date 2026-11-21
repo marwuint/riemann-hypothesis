@@ -6,9 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefTwistPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaTermsTorusTranslate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionFramesSectionValuesRatioRootOfUnity
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RootOfUnityFractionFieldMemberEqZetaPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedMemberDividingThetaConstantNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemberTermsIntegralUnitShiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RootOfUnityFractionFieldMemberEqZetaPow
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TxFrameTranslate
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SumFCalculus
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleBaseOfCompleteNormalLocalCharZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedMemberDividingThetaConstantNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemberTermsIntegralUnitShift
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusTorsionPointOfLabelOrthogonalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemberTorsionPointsAdditiveLabelStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRigidificationMatchingFramesTorsionFramesStatement
@@ -16,7 +20,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionTrans
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramedTorsionPointTorusExtensionEqOfLiesOverStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramedTorsionTorusExtensionRespectCubicalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaFrameCubeConstantRootOfUnityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyTermsEqUpToNormalisingThetaConstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyTermsEqUpToNormalisingThetaConst
+import Development.AbelianVarietyTheory.Definitions.Divisors.LamRange
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -184,14 +189,14 @@ theorem one_member {κ : X₁.S.Gam → X₁.S.Gam → X₁.S.Gam → X₁.S.R} 
       𝔪.yK (κ a a' 0 * algebraMap X₁.o₁ X₁.S.R X₁.S.ζ ^ (e a + e a')) =
         𝔪.yK (κ a a' τ * algebraMap X₁.o₁ X₁.S.R X₁.S.ζ ^ (e (a + a') + e 0)) := by
   obtain ⟨T₁, hT₀, -, -⟩ :=
-    GlobalTheory.T.exists_member_terms_integral_unit_shift g n F W Z i X₁ z₁ act x₀ hdiv V ev X m t δ 𝔪 (X₁.S.HH X₁.M z₁) Subtype.val Subtype.range_coe
+    _root_.GlobalTheory.Poinc.IntTerm.exists_terms g n F W Z i X₁ z₁ act x₀ hdiv V ev X m t δ 𝔪 (X₁.S.HH X₁.M z₁) Subtype.val Subtype.range_coe
   generalize (fun mu c => T₁ mu c * mono W t δ mu) = T₀ at hT₀
   have hT₀' := hT₀
   obtain ⟨x, fr, th, w₀, s, g', w, hx, hfr, hth, hw₀, hs, hc, hTc⟩ := hT₀'
   obtain ⟨ρA, hρA, htors⟩ := GlobalTheory.T.exists_rigidification_matchingFrames_torsionFrames g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x fr hx hfr
   obtain ⟨χ₀, hχ₀⟩ : ∃ χ, TorChar 𝔪 τ χ := GlobalTheory.T.exists_torusTorsionPoint_of_label_orthogonal g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 τ hτ
   choose u g₂ w₂ hu h₂ hb hv hco using fun b : X₁.S.HH X₁.M z₁ => shift 𝔪 hx hρA htors hw₀ hχ₀ (hc b)
-  choose e he using fun b => GlobalTheory.T.rootOfUnity_fractionField_member_eq_zeta_pow g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 (u b) (hu b)
+  choose e he using fun b => _root_.GlobalTheory.Poinc.Sep.eq_yK_zeta_pow_of_pow_eq_one g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 (u b) (hu b)
   have hk : 0 < X₁.S.r * X₁.S.N := Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)
   have hu0 : ∀ b, u b ≠ 0 := fun b h => by
     have := hu b
@@ -222,11 +227,11 @@ theorem one_member {κ : X₁.S.Gam → X₁.S.Gam → X₁.S.Gam → X₁.S.R} 
     have hT₂ : 𝔪.Terms x₀ (fun _ : Unit => a.1 + τ) fun mu _ => r mu * T₀ mu a :=
       ⟨x, fr, th, w₀, s, fun _ => g₃, fun _ => w₃, hx, hfr, hth, hw₀, hs, fun _ => h₃, fun mu _ => by
         rw [hco', map_mul, hr, ← hTc, _root_.mul_assoc]⟩
-    have θ := GlobalTheory.T.uniformisedMember_dividingThetaConstant_ne_zero g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ hdiv
+    have θ := _root_.GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ hdiv
     have a₁ := mul_right_cancel₀ θ
-      (GlobalTheory.T.thetaFamily_terms_eq_up_to_normalising_thetaConst g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ x₀ _ _ _ _ _ _ hT hT₀ c a hl mu)
+      (_root_.GlobalTheory.Poinc.Sep.TermsCompare.terms_eq g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ x₀ _ _ _ _ _ _ hT hT₀ c a hl mu)
     have a₂ := mul_right_cancel₀ θ
-      (GlobalTheory.T.thetaFamily_terms_eq_up_to_normalising_thetaConst g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ x₀ _ _ _ _ _ _ hT' hT₂ c' () hl' mu)
+      (_root_.GlobalTheory.Poinc.Sep.TermsCompare.terms_eq g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ x₀ _ _ _ _ _ _ hT' hT₂ c' () hl' mu)
     rw [a₁, a₂, ← he, map_mul, hr, ← _root_.mul_assoc, mul_inv_cancel_left₀ (hu0 a)]
   · obtain ⟨c⟩ := (GlobalTheory.firstFiveLaws.1.cube _ 𝔪.A ⟨𝔪.A.L, ρA, 𝔪.A.isLB, hρA⟩ rfl).1
     have K := hκ x fr hx hfr ρA hρA c

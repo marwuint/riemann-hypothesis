@@ -6,9 +6,6 @@ namespace Formalism.LatticeIndexTer
 
 open Finset
 
-lemma ph_zero : ph 0 = 0 := by
-  simp [ph]
-
 lemma ph_ge_neg_one {x : ℝ} (hx : 0 ≤ x) : -1 ≤ ph x := by
   rcases hx.eq_or_lt with rfl | hx'
   · simp [ph]
@@ -101,7 +98,5 @@ theorem sumInterlacedBound : Interlace := by
   constructor
   · linarith [hb.1]
   · linarith [hb.2]
-
-def chi (n : ℕ) : ℝ := if n = 0 then -1 else 0
 
 end Formalism.LatticeIndexTer

@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.L2DefiniteCuspForms
 import Formalism.LocalToGlobal.ProjectiveLattices.NonnegIffOfLiesTotal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.NonemptyUnitAt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NonvanishingNearMaximum
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonvaStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonva
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EigenBasisIffTangentBasis
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LieBasisIffTangentBasisPullbackUniversal
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionGeneratesOfNowhereZero
@@ -33,7 +33,7 @@ theorem exists_frPt_of_eigenbasis : ∀ (E : Type) [Field E] [NumberField E] [Is
       have : (fun j => (w (e ⟨(e.symm j).1, (e.symm j).2⟩)).left ≫ Φ.m.φ) = fun i => (w i).left ≫ Φ.m.φ :=
         funext fun j => congrArg (fun k => (w k).left ≫ Φ.m.φ) (e.apply_symm_apply j)
       exact this ▸ ht)
-  obtain ⟨h1, -, h3⟩ := GlobalTheory.T.rigidifiedSectionCorrespondence_existsUnique_nonvanishing E H Dw l Xo K x Φ.T.t Φ.m
+  obtain ⟨h1, -, h3⟩ := _root_.GlobalTheory.SecTieEx.secTie_exists_unique E H Dw l Xo K x Φ.T.t Φ.m
   obtain ⟨s, hs⟩ := h1 Φ.th
   have hgen : SecGen x s := GlobalTheory.Frames.secGen_of_secNZ GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo K x s
     ((h3 Φ.th s hs).2.2 Φ.th_ne)

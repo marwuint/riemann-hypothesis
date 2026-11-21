@@ -13,13 +13,6 @@ open scoped Classical in
 noncomputable def automorphismOrder (W : WeierstrassCurve F) : ℕ :=
   if W.a₆ = 0 then 4 else if W.a₄ = 0 then 6 else 2
 
-theorem automorphismOrder_of_a₆_eq_zero {W : WeierstrassCurve F} (hb : W.a₆ = 0) : automorphismOrder W = 4 := by
-  simp [automorphismOrder, hb]
-
-theorem automorphismOrder_of_a₄_eq_zero {W : WeierstrassCurve F} (ha : W.a₄ = 0) (hb : W.a₆ ≠ 0) :
-    automorphismOrder W = 6 := by
-  simp [automorphismOrder, ha, hb]
-
 def automorphismScale (W : WeierstrassCurve F) :
     MulAction.stabilizer (VariableChange F) W →* Fˣ where
   toFun ξ := ξ.1.u

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertiaElementRestrictingToFiniteGaloisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaFixedPosValuationDvdUniformiserStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertiaElementRestrictingToFiniteGalois
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaFixedPosValuationDvdUniformiser
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -39,7 +39,7 @@ theorem div_uniformizer_mem : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsD
   let y : L := ⟨x, hxL⟩
   have hfix : ∀ τ ∈ inertia K W, τ y = y := by
     intro τ hτ
-    obtain ⟨σ, hσ, he⟩ := GlobalTheory.T.exists_inertia_element_restricting_to_finite_galois R K Ω V hV L τ hτ
+    obtain ⟨σ, hσ, he⟩ := _root_.GlobalTheory.InertiaRestrict.exists_mem_inertia_eq_on R K Ω V hV L τ hτ
     apply Subtype.ext
     rw [← he y]
     exact (IntermediateField.mem_fixedField_iff _ _).1 hx σ hσ
@@ -50,7 +50,7 @@ theorem div_uniformizer_mem : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsD
     · refine Or.inr fun h' => h ?_
       have : ((y⁻¹ : L) : Ω) ∈ V := h'
       simpa using this
-  have key := GlobalTheory.T.inertia_fixed_pos_valuation_dvd_uniformiser R K L W hW π hπ y hfix hyW
+  have key := _root_.GlobalTheory.InertiaUnram.div_uniformiser_mem R K L W hW π hπ y hfix hyW
   have : ((y / algebraMap K L (algebraMap R K π) : L) : Ω) ∈ V := key
   simpa using this
 

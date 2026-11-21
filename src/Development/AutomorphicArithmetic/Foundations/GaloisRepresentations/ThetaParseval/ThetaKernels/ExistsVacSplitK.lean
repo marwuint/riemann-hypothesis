@@ -12,18 +12,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 open MeasureTheory
-noncomputable section
 namespace PositivityTheory.ThKW.SplitVacuumEigenvectors
 end PositivityTheory.ThKW.SplitVacuumEigenvectors
-end
-noncomputable section
 namespace PositivityTheory.ThKW.SplitVacuumEigenvectors
-open GlobalTheory.SplitInvFormF
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-variable {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {xi0 : E}
-  {ψ : AddChar (AF F) ℂ}
 end PositivityTheory.ThKW.SplitVacuumEigenvectors
-end
 noncomputable section
 namespace PositivityTheory.ThKW.SplitVacuumEigenvectors
 open GlobalTheory.SplitInvFormF

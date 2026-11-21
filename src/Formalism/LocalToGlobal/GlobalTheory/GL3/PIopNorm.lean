@@ -566,9 +566,6 @@ theorem IopIso_of_parts (hA : HfIntRec) (hB : SelfDualRec) :
     · intro v _ hv
       exact hB D cc hcc δ hδ h0 N N' L₁ L₁' h1 v hv
 
-theorem LinkThIndep_of_parts (hA : HfIntRec) (hB : SelfDualRec) : LinkThIndep :=
-  LinkThIndep_of_IopIso (IopIso_of_parts hA hB)
-
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 end

@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualRef
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueLiesUnder
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallSectionHeightLowerBound
 
@@ -112,34 +113,5 @@ theorem height_tens (hX : IsArithVar p D) {L M : HermLB p} {h h' h'' : X → ℝ
   refine congrArg _ (finsum_congr fun σ => finsum_congr fun y => h₂ σ (mem_offSupp.2 ?_))
   rw [hZ.under_eq_genericPoint]
   exact CartierDiv.genericPoint_notMem_supp _
-
-theorem isPtHt_dual_comb : GlobalTheory.Published.ArExists → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
-    (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ x : X, IsAlgPt x →
-    (∀ (L : HermLB p) (a : ℝ), IsPtHt L x a → IsPtHt L.dual x (-a)) ∧
-    ∀ (ι : Type) [Fintype ι] (L : ι → HermLB p) (a : ι → ℝ), (∀ i, IsPtHt (L i) x (a i)) →
-      ∀ n : ι → ℤ, IsPtHt (ArInt.comb L n) x (∑ i, (n i : ℝ) * a i) := by
-  intro HE k _ X _ p D hX x hx
-  have hex (L : HermLB p) : ∃ h, L.IsArithHeight h := (HE k X p D hX).1 L
-  let ht (L : HermLB p) : ℝ := (hex L).choose x
-  have hht {L : HermLB p} {h : X → ℝ} (H : L.IsArithHeight h) : ht L = h x :=
-    congrFun ((hex L).choose_spec.unique hX H) x
-  have hiso {L M : HermLB p} (e : L.Isometric M) : ht L = ht M :=
-    (hht (e.isArithHeight hX (hex L).choose_spec)).symm
-  have hadd (L M : HermLB p) : ht (L.tens M) = ht L + ht M :=
-    height_tens hX (hex L).choose_spec (hex M).choose_spec (hex _).choose_spec hx
-  let F₀ : HermLB.IsomClass p → ℝ := Quotient.lift (s := HermLB.isometrySetoid p) ht fun L M e => hiso e
-  let F : HermLB.IsomClass p →+ ℝ := AddMonoidHom.mk' F₀ (by
-    rintro ⟨L⟩ ⟨M⟩
-    exact hadd L M)
-  have hF (L : HermLB p) : F L.icls = ht L := rfl
-  have hpt (L : HermLB p) (a : ℝ) : IsPtHt L x a ↔ F L.icls = a * Nat.card (X.residueField x →+* ℂ) :=
-    ⟨fun ⟨h, H, e⟩ => (hht H).trans e, fun e => ⟨_, (hex L).choose_spec, e⟩⟩
-  refine ⟨fun L a h => ?_, fun ι _ L a h n => ?_⟩
-  · rw [hpt] at h ⊢
-    rw [HermLB.icls_dual, map_neg, h, neg_mul]
-  · simp only [hpt] at h ⊢
-    rw [ArInt.icls_comb, map_sum, Finset.sum_mul]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [map_zsmul, h, zsmul_eq_mul, mul_assoc]
 
 end GlobalTheory.PtHtComb

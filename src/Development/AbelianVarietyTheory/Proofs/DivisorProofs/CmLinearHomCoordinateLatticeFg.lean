@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLinearHomProd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRosatiCoordinatesDivisibleOfPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCmHomGramMatrixDetNeZeroDefiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCmHomGramMatrixDetNeZeroDefinite
 
 set_option autoImplicit false
 
@@ -17,7 +17,7 @@ theorem lat_fg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Rec
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0),
     (GlobalTheory.FlatCM.HomLat.lat X).FG := by
   intro E _ _ _ H hH K _ _ ρ σ₁ p X
-  obtain ⟨gP, gQ, hG, hdet⟩ := GlobalTheory.T.exists_cmHomGramMatrix_det_ne_zero_definite E H hH K ρ σ₁ p X
+  obtain ⟨gP, gQ, hG, hdet⟩ := _root_.GlobalTheory.FlatCM.HomLat.exists_isGram_det_ne_zero E H hH K ρ σ₁ p X
   set N : 𝓞 E := H.bar.symm gP.det with hNdef
   have hN0 : N ≠ 0 := fun h => hdet (by simpa [hNdef] using congrArg H.bar h)
   have hN : (N : E) ≠ 0 := by exact_mod_cast hN0

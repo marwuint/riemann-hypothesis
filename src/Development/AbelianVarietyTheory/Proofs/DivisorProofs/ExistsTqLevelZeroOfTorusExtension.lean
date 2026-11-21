@@ -42,9 +42,6 @@ theorem exists_tq_level_zero_of_torusExtension : ∀ (R : Type) [CommRing R] [Is
     (pullback.lift_snd _ _ _)) Q₁
   exact ⟨Q₀⟩
 
-example : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Nonempty (TorusExtension ((Over.pullback (spMap (residue R))).obj G)) → ∃ (X : Type) (_ : AddCommGroup X) (_ : Module.Free ℤ X) (_ : Module.Finite ℤ X), Nonempty (TQ (thickObj R (maximalIdeal R) 0 G) X) :=
-  exists_tq_level_zero_of_torusExtension
-
 end GlobalTheory.Raynaud
 
 end

@@ -45,15 +45,6 @@ theorem upd_add {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b 
   simp only [upd, Pi.add_apply, blk_apply]
   split_ifs <;> simp
 
-theorem upd_part {n : Type} {N N' : ℕ} (z : n → Fin N' → Fin N → ℂ) (b : Fin N' × Fin N) :
-    upd z b (part z b) = z := by
-  funext τ i j
-  simp only [upd, part]
-  split_ifs with h
-  · subst h
-    rfl
-  · rfl
-
 theorem formV_blk (A : ℝ) {n : Type} [Fintype n] {N N' : ℕ} (w : n → Fin N' → Fin N → ℂ)
     (b : Fin N' × Fin N) (x : n → ℂ) :
     formV A n N N' w (blk b x) = (∑ τ, w τ b.1 b.2 * conj (x τ)) / (A : ℂ) := by

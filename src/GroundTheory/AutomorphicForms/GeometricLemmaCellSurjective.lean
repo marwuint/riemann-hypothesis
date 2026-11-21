@@ -184,12 +184,6 @@ theorem permGL_conj_mem_congruenceSubgroup {J : ℕ} {k : GL (Fin n) F}
     permGL F w * k * (permGL F w)⁻¹ ∈ congruenceSubgroup F n J :=
   conj_mem_congruenceSubgroup F n (permGL_mem_integralGL w) hk
 
-theorem permGL_inv_conj_mem_congruenceSubgroup {J : ℕ} {k : GL (Fin n) F}
-    (hk : k ∈ congruenceSubgroup F n J) :
-    (permGL F w)⁻¹ * k * permGL F w ∈ congruenceSubgroup F n J := by
-  have := conj_mem_congruenceSubgroup F n ((integralGL F n).inv_mem (permGL_mem_integralGL w)) hk
-  simpa using this
-
 variable {Y : Set (GL (Fin n) F)} (hYo : IsOpen Y)
   (hCY : closure (doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))
     (blockUpper F n γ)) ∩ Y = doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))

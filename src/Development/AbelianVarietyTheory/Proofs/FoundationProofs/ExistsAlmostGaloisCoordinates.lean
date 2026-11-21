@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZetaSubOneMemSpanGaloisDifferencesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZetaSubOneMemSpanGaloisDifferences
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePow
 open GlobalTheory.K5 GlobalTheory.KumDlog
 
 noncomputable section
@@ -137,7 +137,7 @@ theorem GlobalTheory.KumDlog.almostGal_coord : ∀ (p : ℕ) [Fact p.Prime], p �
     intro w hw
     obtain ⟨hwr, g, hg, hgw⟩ := (Finset.mem_filter.1 hw).2
     obtain ⟨F, hF, hF1, hF0⟩ := rep_of_span hH hg
-      (GlobalTheory.T.zeta_sub_one_mem_span_galois_differences p hp2 Ω hclo T n r hr hH (n + 1) (by omega) g hg (hgw ▸ hwr))
+      (_root_.GlobalTheory.KumIdeal.zeta_sub_one_mem_span p hp2 Ω hclo T n r hr hH (n + 1) (by omega) g hg (hgw ▸ hwr))
     exact ⟨F, hF, hF1, fun h hh e => hF0 h hh (e.trans hgw.symm)⟩
   choose! F hFr hF1 hF0 using hF
   set s := W.card with hs
@@ -150,7 +150,7 @@ theorem GlobalTheory.KumDlog.almostGal_coord : ∀ (p : ℕ) [Fact p.Prime], p �
       _ ≤ p ^ n * (p - 1) := Nat.le_mul_of_pos_right _ (by have := hp.two_le; omega)
   set c : Ω := (p : Ω) / τ ^ s with hc
   have hcC : c ∈ FixI (Hfix T r) := by
-    refine ⟨GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T (n + 1) s (by omega) hsle, fun g hg => ?_⟩
+    refine ⟨_root_.GlobalTheory.K5.PDiv.pdiv p Ω T (n + 1) s (by omega) hsle, fun g hg => ?_⟩
     have hz : g (T.ζ (n + 1)) = T.ζ (n + 1) := (mem_Hinf.1 (mem_Hfix.1 hg).1 (n + 1)).1
     rw [hc, map_div₀, map_pow, hτ, map_sub, map_one, hz, map_natCast]
   have hrep : Rep (FixI (Hfix T r)) (Hinf T) (fun h => c * ∏ w ∈ W, F w h) :=

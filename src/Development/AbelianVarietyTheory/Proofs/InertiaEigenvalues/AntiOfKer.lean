@@ -10,29 +10,29 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisTwistedS
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAuxiliaryPrimesPrescribedFrobenius
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenNormalSubgroupUnderInertia
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevInductionGrowBoundOfPresentationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UniversalSelmerCocycleMapAlgHomStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComparisonCocyclesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UniversalSelmerCocycleMapAlgHom
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComparisonCocycles
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelmerUnramifiedOfVanishInertiaGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DetNeZeroOfLowestFormNeZeroPresentationStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroup
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DetNeZeroOfLowestFormNeZeroPresentation
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UniversalCocycleRowsRelationNewPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReciprocityRelaxedSelmerDualSelmerNewPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReciprocityRelaxedSelmerDualSelmerNewPlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNewPlaceFrobeniusConjugateModOpenNormalSubStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLambdaAlgebraHomEvaluationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalEqZeroOfLowCoeffOfNilpotentMultipleStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLambdaAlgebraHomEvaluation
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalEqZeroOfLowCoeffOfNilpotentMultiple
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteLocalRingPolyDividesVarPowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetupOfFactorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniversalSelmerCocycleBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PerfectPairingFiniteModuleRowsCriterionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoInvDualOfSetupStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetupOfFactor
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniversalSelmerCocycleBaseChange
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PerfectPairingFiniteModuleRowsCriterion
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoInvDualOfSetup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDualSelmerClassNotKilledStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelmerOrderFormulaDualSelmerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalInvariantsKilledStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelmerOrderFormulaDualSelmer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalInvariantsKilled
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSmallSubgroupCocycleFormNeZeroStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenNormalSubgroupTwoCocyclesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaVanishingNoInvariantsFirstHalfPlacesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRingSqZeroNilpotentAugmentedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalEqZeroLowCoeffThreeNilpotentsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalEqZeroLowCoeffThreeNilpotents
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.ResSel GlobalTheory.StepTwo GlobalTheory.TwistDet
 
@@ -102,19 +102,19 @@ theorem det_ne_zero (hPT : PoitouTateTotallyComplex) (hT : TameLocal) (hl : 0 < 
     (hI : ∀ τ ∈ Ine (F := D.host.E) (N.plOm.1 p), ((κ' τ : Bˣ) : B) * (1 + x₁) ^ (Multiplicative.toAdd (d τ)).val = 1)
     (hσ : ((κ' σ : Bˣ) : B) * (1 + x₂) = 1) {a' : ℕ} {Φ' : Matrix (Fin a') (Fin a') B}
     {Z' : GE N → Matrix (Fin D.R.r) (Fin a') B} (hZ' : Univ bkP i s κ' Q' Φ' Z') : Φ'.det ≠ 0 := by
-  have hZA := GlobalTheory.T.universalSelmerCocycle_map_algHom D N X bkP i s B A π κ' κ hκ' Q' a' Φ' Z' hZ'
+  have hZA := _root_.GlobalTheory.NewPrime.univ_map D N X bkP i s B A π κ' κ hκ' Q' a' Φ' Z' hZ'
   have hσD : σ ∈ DecV N p := hp.2.2.2.2.2.1.1
   have hσL : σ ∈ L := hp.2.2.2.1 hσD
-  obtain ⟨E, hE1, hE2, hE3⟩ := GlobalTheory.T.comparison_cocycles_alt D N X bkP i s A κ Q Q' a a' Ψ (Φ'.map π) Z (fun g => (Z' g).map π) (two X γ) (two X σ)
+  obtain ⟨E, hE1, hE2, hE3⟩ := _root_.GlobalTheory.NewPrime.comparison_cocycles D N X bkP i s A κ Q Q' a a' Ψ (Φ'.map π) Z (fun g => (Z' g).map π) (two X γ) (two X σ)
     hZ hZA (GlobalTheory.T.selmer_unramified_of_vanish_inertia_generators hT D N X bkP i s hl M L z p d σ γ h3 hL hp A κ hK ha hκ Q Q' hQ) (fun W _ _ b m => by
       cases b
       · show repOn (Tgl i s) κ W σ m = m
-        rw [(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl M L z (by omega) hL A κ ρ hK hρ W σ hσL).1, hκ σ hσD, Units.val_one, one_smul]
+        rw [(_root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl M L z (by omega) hL A κ ρ hK hρ W σ hσL).1, hκ σ hσD, Units.val_one, one_smul]
       · show repOn (Tgl i s) κ W (cConj X σ) m = m
-        rw [(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl M L z (by omega) hL A κ ρ hK hρ W _
+        rw [(_root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl M L z (by omega) hL A κ ρ hK hρ W _
           ((hL.1.2.2.1 σ _ (cConj_apply X σ)).1 hσL)).1, antiHom_cConj X ha, hκ σ hσD, inv_one, Units.val_one, one_smul])
   have hcard : Fintype.card (Bool × Fin D.R.r) = 2 * D.R.r := by simp
-  refine GlobalTheory.T.det_ne_zero_of_lowestForm_ne_zero_presentation A B (π : B →+* A) x₁ x₂ (Bool × Fin D.R.r) a a' Φ' (fun j => Z' (two X σ j.1) j.2)
+  refine _root_.GlobalTheory.LowDet.det_ne_zero A B (π : B →+* A) x₁ x₂ (Bool × Fin D.R.r) a a' Φ' (fun j => Z' (two X σ j.1) j.2)
     (fun j => Z' (two X γ j.1) j.2) (fun j => if j.1 then 1 else ((κ' σ : Bˣ) : B)) Ψ E (fun j => Z (two X σ j.1) j.2)
     (fun j => if j.1 then - y.1 (cConj X σ) j.2 else y.1 σ j.2) l₀ hπ hker h1 h2 h11 (hcard ▸ h22) (hcard ▸ h12)
     (fun j => ?_) (GlobalTheory.T.universal_cocycle_rows_relation_newPlace hT D N X bkP i s hl M L z p d σ γ h3 hL hp B κ' x₁ x₂ hK' ha' h11 hI hσ Q' a' Φ' Z' hZ')
@@ -127,7 +127,7 @@ theorem det_ne_zero (hPT : PoitouTateTotallyComplex) (hT : TameLocal) (hl : 0 < 
     have hcx : matAct (Φ'.map π) (c • x) = 0 := by
       have hx' : matAct (Φ'.map π) x = 0 := hx
       rw [map_smul, hx', smul_zero]
-    have e := GlobalTheory.T.reciprocity_relaxedSelmer_dualSelmer_newPlace hPT hT D N X bkP i s hl M L z p d σ γ h3 hL hp A κ Q Q' ρ hS hK hρ ha hκ hQ Y A β hβ.1 y _ hy
+    have e := _root_.GlobalTheory.NewRecip.reciprocity hPT hT D N X bkP i s hl M L z p d σ γ h3 hL hp A κ Q Q' ρ hS hK hρ ha hκ hQ Y A β hβ.1 y _ hy
       ((hZA Y).1 _ hcx)
     have key : ∀ (g : GE N) (k : Fin D.R.r → A), vecPair D.R.r β (rect ((Z' g).map π) (c • x)) k =
         β (∑ j, (∑ u, k u * π (Z' g u j)) • x j) c := fun g k => by
@@ -166,10 +166,10 @@ theorem step : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal →
   rcases hFit Q hQ a Φ hΦ with rfl | ⟨b, b', hb⟩
   · exfalso
     have hK : Kills i (X.O0 i ⧸ idl i) := fun x hx => Ideal.Quotient.eq_zero_iff_mem.2 hx
-    obtain ⟨φ, hφ, -⟩ := GlobalTheory.T.exists_lambda_algebra_hom_evaluation D N X i M (Fin R ⊕ Fin n) _ (fun _ => (0 : X.O0 i ⧸ idl i)) hl hMν hK
+    obtain ⟨φ, hφ, -⟩ := _root_.GlobalTheory.NewPrime.LamHom.exists_lamHom D N X i M (Fin R ⊕ Fin n) _ (fun _ => (0 : X.O0 i ⧸ idl i)) hl hMν hK
       (fun _ => zero_pow (pow_ne_zero _ hp.ne_zero))
     have e1 := hφ F₀
-    rw [hF₀, Matrix.det_isEmpty, map_one, GlobalTheory.T.aeval_eq_zero_of_low_coeff_of_nilpotent_multiple _ _ _ (0 : X.O0 i ⧸ idl i) 1 (fun _ => 0) F₀ (pow_one _) (fun _ => dvd_rfl)
+    rw [hF₀, Matrix.det_isEmpty, map_one, _root_.GlobalTheory.NewPrime.aeval_eq_zero_of_low_coeff_of_pow_eq_zero _ _ _ (0 : X.O0 i ⧸ idl i) 1 (fun _ => 0) F₀ (pow_one _) (fun _ => dvd_rfl)
       (fun u hu => hK _ (hc₀ u (by omega)))] at e1
     have e2 : (1 : X.O0 i) ∈ Ideal.span {(X.l i : X.O0 i) ^ nu X i} * IsLocalRing.maximalIdeal (X.O0 i) :=
       Ideal.Quotient.eq_zero_iff_mem.1 e1
@@ -184,17 +184,17 @@ theorem step : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal →
   letI : TopologicalSpace A := ⊥
   haveI : DiscreteTopology A := ⟨rfl⟩
   have ht0 : t ^ X.l i ^ (M - nu X i - 1) = 0 := pow_eq_zero_of_le (by omega) htK
-  obtain ⟨φ, hφ, hκ⟩ := GlobalTheory.T.exists_lambda_algebra_hom_evaluation D N X i M _ A (fun q => a₀ q * t) hl hMν hK (fun q => by rw [mul_pow, ht0, mul_zero])
+  obtain ⟨φ, hφ, hκ⟩ := _root_.GlobalTheory.NewPrime.LamHom.exists_lamHom D N X i M _ A (fun q => a₀ q * t) hl hMν hK (fun q => by rw [mul_pow, ht0, mul_zero])
   obtain ⟨κ, hκφ, hκ⟩ := hκ (fun q => d (P q))
   have hker : ∀ g, (∀ q ∉ K, d (P q) g = 1) → κ g = 1 := fun g hg => hκ.eq_one fun q => by
     by_cases hq : q ∈ K
     · exact Or.inl (by rw [haK q hq, zero_mul])
     · exact Or.inr (hg q hq)
-  obtain ⟨hSet, hAnti, hκz⟩ := GlobalTheory.T.setup_and_antiHom_of_kills D N X bkP i s hG M _ P _ A₀ Q hSt.1 hQ A κ hK (fun g hg => hker g fun q _ => hg q)
-  obtain ⟨Z, hZ⟩ := GlobalTheory.T.exists_universalSelmerCocycle_baseChange D N X bkP i s M _ _ Q a Φ hΦ A φ κ hκφ hK
+  obtain ⟨hSet, hAnti, hκz⟩ := _root_.GlobalTheory.NewPrime.setup_of_factor D N X bkP i s hG M _ P _ A₀ Q hSt.1 hQ A κ hK (fun g hg => hker g fun q _ => hg q)
+  obtain ⟨Z, hZ⟩ := _root_.GlobalTheory.NewPrime.UnivCocycle.main D N X bkP i s M _ _ Q a Φ hΦ A φ κ hκφ hK
   have hdet : (Φ.map φ).det = 0 := by
     have e1 := (φ : _ →+* A).map_det Φ
-    rw [RingHom.coe_coe, ← hF₀, hφ, GlobalTheory.T.aeval_eq_zero_of_low_coeff_of_nilpotent_multiple _ _ _ t _ _ F₀ htK (fun _ => dvd_mul_left _ _)
+    rw [RingHom.coe_coe, ← hF₀, hφ, _root_.GlobalTheory.NewPrime.aeval_eq_zero_of_low_coeff_of_pow_eq_zero _ _ _ t _ _ F₀ htK (fun _ => dvd_mul_left _ _)
       (fun u hu => hK _ (hc₀ u hu))] at e1
     exact e1.symm
   have hadj : (Φ.map φ).adjugate b b' ∣ t ^ ((e + 1) * w) := by
@@ -204,17 +204,17 @@ theorem step : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal →
   generalize Φ.map φ = Ψ at hZ hdet hadj
   obtain ⟨ρ, hρ⟩ := exists_isDual i s
   have hl0 : X.l i ^ (nu X i + 1) ≠ 0 := pow_ne_zero _ hp.ne_zero
-  obtain ⟨Y, _, _, _, β, hβ, hcog⟩ := GlobalTheory.T.perfect_pairing_finite_module_rows_criterion A (X.l i ^ (nu X i + 1)) hl0 (by
+  obtain ⟨Y, _, _, _, β, hβ, hcog⟩ := _root_.GlobalTheory.NewPrime.charDual_cogenerator A (X.l i ^ (nu X i + 1)) hl0 (by
     have e1 := hK _ (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (GlobalTheory.ResSel.SmallSub.l_mem X i))
     rw [map_mul, map_pow, map_natCast] at e1
     rw [Nat.cast_pow, pow_succ, e1])
   letI : TopologicalSpace Y := ⊥
   haveI : DiscreteTopology Y := ⟨rfl⟩
-  have hNI := GlobalTheory.T.noInvDual_of_setup_of_isDual_of_tame_inertia D N X bkP i s A κ Q ρ z hSet hρ hz
+  have hNI := _root_.GlobalTheory.NewPrime.noInvDual_of_setup D N X bkP i s A κ Q ρ z hSet hρ hz
   obtain ⟨y, hy, hyc⟩ := GlobalTheory.T.exists_dual_selmer_class_not_killed D N X bkP i s A κ Q ρ hSet hK hρ hNI
-    (GlobalTheory.T.selmer_order_formula_dual_selmer hPT hLF hLD hLE hGF hGE h4 D N X bkP i s A κ Q ρ hSet hK hρ hNI) Y β hβ a Ψ Z hZ ((X.l i : A) ^ nu X i * t ^ ((e + 1) * w)) t
+    (_root_.GlobalTheory.SelOrder.orderFormula hPT hLF hLD hLE hGF hGE h4 D N X bkP i s A κ Q ρ hSet hK hρ hNI) Y β hβ a Ψ Z hZ ((X.l i : A) ^ nu X i * t ^ ((e + 1) * w)) t
     (Ψ.adjugate b) b'
-    (GlobalTheory.T.local_invariants_killed_alt hT D N X bkP i s hl M R n d A₀ L z P hM1 hz hL hSt A κ Q ρ t a₀ hQ hSet hK hρ hκ
+    (_root_.GlobalTheory.NewPrime.LocInv.local_invariants_killed hT D N X bkP i s hl M R n d A₀ L z P hM1 hz hL hSt A κ Q ρ t a₀ hQ hSet hK hρ hκ
       (fun q => hau _ (by rintro ⟨j, -, h⟩; cases h)) A)
     (by
       have e1 := congrFun (Matrix.adjugate_mul Ψ) b
@@ -290,13 +290,13 @@ theorem step : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal →
     · by_cases hq : q = q₁
       · exact Or.inr (Or.inr (hq ▸ hξ1))
       · exact Or.inl (by rw [hξ q hq, map_mul]; exact dvd_mul_left _ _)
-  obtain ⟨φ', hφ', hκ'⟩ := GlobalTheory.T.exists_lambda_algebra_hom_evaluation D N X i M _ B ξ hl hMν hK' (fun q => by
+  obtain ⟨φ', hφ', hκ'⟩ := _root_.GlobalTheory.NewPrime.LamHom.exists_lamHom D N X i M _ B ξ hl hMν hK' (fun q => by
     rcases hξ3 q with ⟨c, hc⟩ | hc | hc <;> rw [hc]
     · rw [mul_pow, ← map_pow, ht0, map_zero, zero_mul]
     · exact pow_eq_zero_of_le (m := 2) (by omega) (by rw [sq, h11])
     · exact pow_eq_zero_of_le (by omega) h22)
   obtain ⟨κ', hκφ', hκ'⟩ := hκ' (fun q => d (P' q))
-  obtain ⟨Z', hZ'⟩ := GlobalTheory.T.exists_universalSelmerCocycle_baseChange D N X bkP i s M _ _ Q' a' Φ' hΦ' B φ' κ' hκφ' hK'
+  obtain ⟨Z', hZ'⟩ := _root_.GlobalTheory.NewPrime.UnivCocycle.main D N X bkP i s M _ _ Q' a' Φ' hΦ' B φ' κ' hκφ' hK'
   have hP' : ∀ q, P' (em q) = P q := hE
   have hσL : σ ∈ L' := by
     have e1 := hL'.1.2.1.conj_mem _ (L'.mul_mem (hUL hg) hh) g⁻¹
@@ -347,7 +347,7 @@ theorem step : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal →
     have : Fact (1 < X.l i ^ M) := ⟨Nat.one_lt_pow (by omega) hp.one_lt⟩
     rwa [hξ1, e2, toAdd_ofAdd, ZMod.val_one, pow_one] at e1
   · have e1 := (φ' : _ →+* B).map_det Φ'
-    rw [RingHom.coe_coe, ← hF', hφ', GlobalTheory.T.aeval_eq_zero_low_coeff_three_nilpotents _ _ _ (j t) x₁ x₂ (2 * (e + 1) * w + 2) (2 * D.R.r) ξ F'
+    rw [RingHom.coe_coe, ← hF', hφ', _root_.GlobalTheory.NewPrime.aeval_eq_zero_of_low_coeff_of_three_nilpotent _ _ _ (j t) x₁ x₂ (2 * (e + 1) * w + 2) (2 * D.R.r) ξ F'
       (by rw [← map_pow, htK, map_zero]) h11 h22 hξ3 (fun u hu => hK' _ (hcon u hu))] at e1
     exact e1.symm
 

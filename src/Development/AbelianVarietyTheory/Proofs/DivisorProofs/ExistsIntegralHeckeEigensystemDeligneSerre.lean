@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixExistsCommonEigenvectorMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteJointEigensystemsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatricesIntertwiningOfSemilinearStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixExistsCommonEigenvectorMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteJointEigensystems
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatricesIntertwiningOfSemilinear
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormEigenvalueLeOneOfEntries
 
 open Matrix
@@ -124,7 +124,7 @@ theorem core (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] (emb : O →+* Pad
   let X : Set (R →+* PadicAlgCl l) :=
     {χ | ∃ c : Fin n → PadicAlgCl l, c ≠ 0 ∧ ∀ p, τ p *ᵥ c = χ p • c}
   have hXfin : X.Finite := by
-    have h := GlobalTheory.T.finite_joint_eigenvalues_of_commute (PadicAlgCl l) n R τ hcomm
+    have h := _root_.GlobalTheory.finite_joint_eigensystems (PadicAlgCl l) n R τ hcomm
     refine Set.Finite.of_finite_image (f := fun χ : R →+* PadicAlgCl l => (χ : R → PadicAlgCl l))
       (h.subset ?_) DFunLike.coe_injective.injOn
     rintro _ ⟨χ, ⟨c, hc, hχ⟩, rfl⟩
@@ -170,7 +170,7 @@ theorem core (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] (emb : O →+* Pad
         have hv' : τ p *ᵥ v = μ • v := hv
         show τ p *ᵥ (τ q *ᵥ v) = μ • (τ q *ᵥ v)
         rw [mulVec_mulVec, (hcomm p q).eq, ← mulVec_mulVec, hv', mulVec_smul]
-      obtain ⟨v, hvE, hv0, hv⟩ := GlobalTheory.T.exists_common_eigenvector_mem_of_commute (PadicAlgCl l) n (Set.range τ)
+      obtain ⟨v, hvE, hv0, hv⟩ := _root_.GlobalTheory.matrix_exists_common_eigenvector_mem (PadicAlgCl l) n (Set.range τ)
         (by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩; exact hcomm a b) E hE hstab
       obtain ⟨χ, hχ⟩ := eigen_ringHom R (PadicAlgCl l) n τ v hv0 (fun q => hv (τ q) ⟨q, rfl⟩)
       have hχX : χ ∈ X := ⟨v, hv0, hχ⟩
@@ -222,7 +222,7 @@ theorem exists_integral_eigensystem : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [C
     have hab : a * b = 1 := hinj (by rw [map_mul, hb, map_one, mul_inv_cancel₀ hne])
     exact IsUnit.of_mul_eq_one b hab
   obtain ⟨n, σ, e, hσ, he_inj, he_span, he_T⟩ :=
-    GlobalTheory.T.exists_matrices_intertwining_of_semilinear_alt l O emb I M hfin htf V j Tq hli hcomp
+    _root_.GlobalTheory.exists_matrices_intertwining_of_semilinear l O emb I M hfin htf V j Tq hli hcomp
   obtain ⟨χ, hχle, hχm, hχalg, c, hc, hχc⟩ :=
     core l O emb hle hunit (MvPolynomial I O) n σ m hm (fun p hp => hann p (hσ p hp))
   set θ : I → PadicAlgCl l := fun i => χ (MvPolynomial.X i) with hθ

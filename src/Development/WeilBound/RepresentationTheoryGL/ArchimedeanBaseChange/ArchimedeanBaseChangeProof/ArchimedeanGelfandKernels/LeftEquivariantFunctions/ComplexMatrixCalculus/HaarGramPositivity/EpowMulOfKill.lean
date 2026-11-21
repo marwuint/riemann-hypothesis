@@ -17,8 +17,6 @@ variable {n : ℕ}
 theorem isOpen_GLs : IsOpen (GLs n) :=
   isOpen_ne_fun (continuous_id.matrix_det) continuous_const
 
-theorem one_le_inf : (1 : WithTop ℕ∞) ≤ ∞ := by exact_mod_cast (le_top : (1 : ℕ∞) ≤ ⊤)
-
 theorem inf_add_one_le : (∞ : WithTop ℕ∞) + 1 ≤ ∞ := by
   show (((⊤ : ℕ∞) : WithTop ℕ∞) + 1) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)
   exact_mod_cast (le_top : ((⊤ : ℕ∞) + 1) ≤ ⊤)

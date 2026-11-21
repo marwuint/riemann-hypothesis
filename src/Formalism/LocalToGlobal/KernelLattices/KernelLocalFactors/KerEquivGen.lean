@@ -83,15 +83,6 @@ theorem latSum_map {H M : Type} [AddCommGroup H] [Module (𝓞 E) H] [AddCommMon
   rw [add_sub_cancel] at this
   exact this
 
-theorem finsum_map_of_injective {ι M N : Type} [AddCommMonoid M] [AddCommMonoid N] (T : M →+ N)
-    (hT : Function.Injective T) (f : ι → M) : ∑ᶠ i, T (f i) = T (∑ᶠ i, f i) := by
-  by_cases h : (Function.support f).Finite
-  · exact (map_finsum T h).symm
-  · have hs : Function.support (fun i => T (f i)) = Function.support f := by
-      ext i
-      simp only [Function.mem_support, ne_eq, map_eq_zero_iff T hT]
-    rw [finsum_of_infinite_support h, finsum_of_infinite_support (by rw [hs]; exact h), map_zero]
-
 theorem isSdLat_gmap {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) (γ : UF E n) : IsSdLat (gmap γ.1 N) := by
   refine ⟨gmap_lattice γ.1 N hN.1, ?_⟩
   change dual (hStd E n) (gmap γ.1 N) = gmap γ.1 N
@@ -99,89 +90,5 @@ theorem isSdLat_gmap {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N
 
 variable {K : Type} [Field K] {a b : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 E))}
   {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
-
-theorem kerOf_move_one {th : ThDist E K a b SB V V'} {Sall : Finset (HeightOneSpectrum (𝓞 E))} {D cA cB : ℕ}
-    {rho : UF E a →* Module.End K V} {rho' : UF E b →* Module.End K V'} {sS sT : SB → E → K}
-    (hth : ThDist.Ok th Sall D rho rho' sS sT)
-    {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} (hN : IsSdLat N) (hN' : IsSdLat N')
-    (fr : Frs E a SB) (fr' : Frs E b SB) (γ : UF E a) (γ' : UF E b)
-    (Ξ Ξ₁ : HomE E a b → K) (c : K)
-    (hinv : ∀ x z, z ∈ mulLat cB (homAt Sall N N') → Ξ (x + z) = Ξ x)
-    (hΞ : ∀ x, Ξ₁ (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) = c * Ξ x) :
-    kerOf th Sall cA cB (gmap γ.1 N) (fun P => γ.1 * fr P) (gmap γ'.1 N') (fun P => γ'.1 * fr' P) Ξ₁ =
-      c • ((rho' γ') ∘ₗ kerOf th Sall cA cB N fr N' fr' Ξ ∘ₗ (rho γ⁻¹)) := by
-  have hsd := isSdLat_gmap hN γ
-  have hsd' := isSdLat_gmap hN' γ'
-  have hH := homAt_gmap Sall γ.1 γ'.1 N N'
-  have hΞ' : ∀ y, Ξ₁ y = c * Ξ ((conjE γ.1 γ'.1).symm y) := fun y => by
-    have := hΞ ((conjE γ.1 γ'.1).symm y)
-    rwa [← conjE_apply, LinearEquiv.apply_symm_apply] at this
-  have step : (fun x => Ξ₁ x • th (gmap γ.1 N) (fun P => γ.1 * fr P) (gmap γ'.1 N') (fun P => γ'.1 * fr' P) cB x) =
-      fun x => (c * Ξ ((conjE γ.1 γ'.1).symm x)) • th (gmap γ.1 N) (fun P => γ.1 * fr P) (gmap γ'.1 N') (fun P => γ'.1 * fr' P) cB x := by
-    funext x
-    rw [hΞ']
-  unfold kerOf
-  rw [step, hH, divLat_map, mulLat_map, latSum_map]
-  · unfold latSum
-    simp only [LinearEquiv.symm_apply_apply]
-    simp only [conjE_apply]
-    simp only [hth.equiv γ γ' N fr N' fr' cB _ hN hN']
-    rcases eq_or_ne c 0 with rfl | hc
-    · simp
-    · let T : (V →ₗ[K] V') →+ (V →ₗ[K] V') :=
-        { toFun := fun f => c • (rho' γ' ∘ₗ f ∘ₗ rho γ⁻¹)
-          map_zero' := by simp
-          map_add' := fun f g => by simp [LinearMap.add_comp, LinearMap.comp_add, smul_add] }
-      have e1 : ∀ w, rho γ⁻¹ (rho γ w) = w := fun w => by
-        show (rho γ⁻¹ * rho γ) w = w
-        rw [← map_mul, inv_mul_cancel, map_one]; rfl
-      have e2 : ∀ w, rho' γ'⁻¹ (rho' γ' w) = w := fun w => by
-        show (rho' γ'⁻¹ * rho' γ') w = w
-        rw [← map_mul, inv_mul_cancel, map_one]; rfl
-      have hT : Function.Injective T := by
-        intro f g h
-        have h1 := congrArg (fun u => c⁻¹ • u) h
-        simp only [T, AddMonoidHom.coe_mk, ZeroHom.coe_mk, inv_smul_smul₀ hc] at h1
-        refine LinearMap.ext fun v => ?_
-        have h2 := LinearMap.congr_fun h1 (rho γ v)
-        simp only [LinearMap.comp_apply, e1] at h2
-        have h3 := congrArg (rho' γ'⁻¹) h2
-        rwa [e2, e2] at h3
-      have hTa : ∀ f, T f = c • (rho' γ' ∘ₗ f ∘ₗ rho γ⁻¹) := fun _ => rfl
-      rw [← hTa, ← finsum_map_of_injective T hT]
-      apply finsum_congr
-      intro z
-      rw [hTa]
-      simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
-  · intro x z hz
-    have hz' : (conjE γ.1 γ'.1).symm z ∈ mulLat cB (homAt Sall N N') := (Submodule.mem_map_equiv _).1 hz
-    rw [map_add, hinv _ _ hz', hth.cong _ _ _ _ cB (x + z) x hsd hsd' (by rw [hH, mulLat_map, add_sub_cancel_left]; exact hz)]
-
-theorem kerOf_move {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {a b : ℕ}
-    {SB : Finset (HeightOneSpectrum (𝓞 E))} {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
-    {th : ThDist E K a b SB V V'} {Sall : Finset (HeightOneSpectrum (𝓞 E))} {cA cB : ℕ}
-    {rho : UF E a →* Module.End K V} {rho' : UF E b →* Module.End K V'} {sS sT : SB → E → K}
-    (hth : ThDist.Ok th Sall (cA * cB) rho rho' sS sT) (hB : 0 < cB)
-    {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)} (hN : IsSdLat N) (hN' : IsSdLat N')
-    (fr : Frs E a SB) (fr' : Frs E b SB) (γ : UF E a) (γ' : UF E b)
-    (κ : ∀ P : SB, ↥(GLint E a P.1)) (κ' : ∀ P : SB, ↥(GLint E b P.1))
-    (Ξ Ξ₁ : HomE E a b → K) (c : K)
-    (hinv : ∀ x z, z ∈ mulLat cB (homAt Sall N N') → Ξ (x + z) = Ξ x)
-    (hΞ : ∀ x, (∏ P : SB, sS P (LinearEquiv.det (κ P).1 : Eˣ) * sT P (LinearEquiv.det (κ' P).1 : Eˣ)) *
-        Ξ₁ (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) = c * Ξ x) :
-    kerOf th Sall cA cB (gmap γ.1 N) (fun P => γ.1 * fr P * (κ P).1) (gmap γ'.1 N') (fun P => γ'.1 * fr' P * (κ' P).1) Ξ₁ =
-      c • ((rho' γ') ∘ₗ kerOf th Sall cA cB N fr N' fr' Ξ ∘ₗ (rho γ⁻¹)) := by
-  have hsd := isSdLat_gmap hN γ
-  have hsd' := isSdLat_gmap hN' γ'
-  have e : kerOf th Sall cA cB (gmap γ.1 N) (fun P => γ.1 * fr P * (κ P).1) (gmap γ'.1 N') (fun P => γ'.1 * fr' P * (κ' P).1) Ξ₁ =
-      kerOf th Sall cA cB (gmap γ.1 N) (fun P => γ.1 * fr P) (gmap γ'.1 N') (fun P => γ'.1 * fr' P)
-        (fun y => (∏ P : SB, sS P (LinearEquiv.det (κ P).1 : Eˣ) * sT P (LinearEquiv.det (κ' P).1 : Eˣ)) * Ξ₁ y) := by
-    unfold kerOf
-    congr 1
-    funext x
-    rw [hth.det (gmap γ.1 N) (fun P => γ.1 * fr P) (gmap γ'.1 N') (fun P => γ'.1 * fr' P) cB x κ κ' hsd hsd', smul_smul,
-      mul_comm]
-  rw [e]
-  exact kerOf_move_one hth hN hN' fr fr' γ γ' Ξ _ c hinv hΞ
 
 end Formalism.L2.Ker

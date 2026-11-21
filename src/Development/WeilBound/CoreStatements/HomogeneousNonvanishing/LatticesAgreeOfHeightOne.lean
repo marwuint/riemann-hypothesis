@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.QuadraticCharacterPrescribedPlaces
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPointLocalizationPrimeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPointLocalizationPrime
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.CompanionTheory.Ar
 open scoped CategoryTheory.Obj
@@ -28,7 +29,7 @@ theorem latagree_le (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRing
     rw [hc]
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ (c k) (Submodule.subset_span ⟨k, rfl⟩)
   · intro P hP i
-    obtain ⟨q, hqp, hq⟩ := GlobalTheory.T.exists_point_localization_prime X Ω ξ hξ p P.asIdeal P.isPrime
+    obtain ⟨q, hqp, hq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation X Ω ξ hξ p P.asIdeal P.isPrime
     have hqT := hT p hp q hqp
     have hle : regAt ξ p ≤ regAt ξ q := fun a ha =>
       (hq a).2 ⟨1, (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top, by simpa using ha⟩

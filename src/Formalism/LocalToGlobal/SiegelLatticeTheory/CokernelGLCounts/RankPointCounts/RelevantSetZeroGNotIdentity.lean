@@ -135,15 +135,4 @@ theorem DelC_holds : DelC := by
   refine ⟨2 * (CH + 1), fun C hC => ⟨0, 0, fun C' Cl _ _ D large₂ X Y u hH _ t ht => ?_⟩⟩
   exact delta_pos_le_height_sq (PFHost_of_data D hH.1.2.1) large₂ hCH hC t ht
 
-theorem NDlC_holds :
-    ∀ Cg cb Cw cT CT C0 CH : ℝ, 0 ≤ CH → ∃ C₀ : ℝ, ∀ C : ℝ, C₀ ≤ C → ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-      ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word),
-        Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0 → Formalism.L2.SG.RowsConc.ConcTie X Y →
-        ∀ t ∈ relSet Y u, ∀ l ∈ k2ends D (jT t) (labT t),
-          ((Nloc (ddS D) D.R.rS l (labT t l) : ℚ) : ℝ) ≤
-            Hb large₂.sc.b C D.R.m D.R.f * k2S D (H1C large₂ CH) (jT t) (labT t) ^ 2 := by
-  intro Cg cb Cw cT CT C0 CH hCH
-  refine ⟨2 * (CH + 1), fun C hC => ⟨0, 0, fun C' Cl _ _ D large₂ X Y u hH _ t _ l hl => ?_⟩⟩
-  exact localNorm_le_height_sq (PFHost_of_data D hH.1.2.1) large₂ hCH hC t l hl
-
 end Formalism.L2.SG.KappaOffDiagonal

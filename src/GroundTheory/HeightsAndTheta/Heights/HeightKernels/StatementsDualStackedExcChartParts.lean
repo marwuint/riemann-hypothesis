@@ -47,19 +47,6 @@ def DualStackedGraphQuadRel.Statement : Prop :=
         (latCombo b' fun t => d₄ t * a t) →
       graphFirstForm c₁ * graphSecondForm d₂ - graphFirstForm c₃ * graphSecondForm d₄ ∈ stackedGraph b' a)
 
-def DualStackedExcChartResidue.Statement : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (i : ℕ) (F F' : HermLattice K i) (T : Type) [Fintype T]
-    [DecidableEq T] (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
-    (a : T → ℤ),
-    1 ≤ i → F'.lattice < F.lattice →
-    (∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice) →
-    (∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) →
-    ∀ (k : Type) [Field k] (ρ : 𝓞 K →+* k) (π : 𝓞 K) (y₀ : Fin i → K) (m : ℕ) (g : Fin m → Fin i → K)
-      (α : T → k) (M : T → Fin (m + 1) → k), IsExcCoords F F' b b' ρ π y₀ g α M →
-      ∀ v u : T, ∃ σ₀ : k →+* excChartRing b' a v u, ∀ (ω : 𝓞 K) (c : T → ℤ),
-        latCombo b' c = algebraMap (𝓞 K) K ω • (b' v : Fin i → K) →
-        σ₀ (ρ ω) * excChartMap b' a v u (graphFirst v) = excChartMap b' a v u (graphFirstForm c)
-
 def DualStackedExcChartForms.Statement : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (i : ℕ) (F F' : HermLattice K i) (T : Type) [Fintype T]
     [DecidableEq T] (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))

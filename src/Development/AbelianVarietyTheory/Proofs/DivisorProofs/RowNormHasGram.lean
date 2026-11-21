@@ -35,9 +35,6 @@ theorem hasGram_of_unif {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type
     rw [InfinitePlace.mk_embedding]
     rfl
 
-theorem hasGram_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.Rows → RecTied D L → ∀ i : Fin D.R.m, HasGram (nrmR p.R.toRealDat i) :=
-  fun p hp _ i => hasGram_of_unif p.R.toRealDat hp.prim.unif i
-
 end GlobalTheory.CovTop.GramPt
 
 end

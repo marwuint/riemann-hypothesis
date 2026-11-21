@@ -110,14 +110,6 @@ def routeB (t : T) (i j : ℕ) : Path T (.grid i (j + 1)) (.grid (i + 1) j) :=
 
 variable (W : G.Weil) (M : Vol G)
 
-def alg (a : Arrow T) : Submodule ℂ (Sch G a) :=
-  Submodule.span ℂ {φ | ∃ f P, IsThetaFunO W.ψ (G.pS a.pair) (G.pT a.pair) f ∧
-    (∀ τ, IsFockVacAt (heisO W.ψ (G.pS a.pair) (G.pT a.pair)) W.θ τ
-      (cplxO (G.cartS W.cart a.pair τ) (G.onT W.cart a.pair τ)) f) ∧ φ = W.fock a.pair f P}
-
-def IsAlg {X Y : Node} {p : Path T X Y} (τ : TotT G p) : Prop :=
-  ∀ d ∈ τ.support, Path.Fam.All (fun a f => f ∈ alg W a) d
-
 variable (t : T) (i j : ℕ)
 
 variable (G) in
@@ -155,18 +147,6 @@ def xiV (g : GA D (spV G i j)) : ℂ := flatDet (L.eta ^ (2 * eps G i j))⁻¹ _
 variable (G) in
 
 def xiV₁ (g : GA D (spV₁ G i j)) : ℂ := flatDet (L.mu t (j + 1) * G.ch.chi (D.R.m - i))⁻¹ _ g
-
-structure LiftsCusp (F : Fn G (.grid i (j + 1))) : Prop where
-
-  x : ∀ f ∈ alg W (.right i (j + 1)), IsCuspForm W.θ (spW G i j) (liftA W M (.right i (j + 1)) f F)
-
-  th : ∀ f ∈ alg W (.down t i j), IsCuspForm W.θ (spW₁ G i j) (liftA W M (.down t i j) f F)
-
-  thx : ∀ f ∈ alg W (.right i (j + 1)), ∀ f' ∈ alg W (.down t (i + 1) j),
-    IsCuspForm W.θ (spV₁ G i j) (liftA W M (.down t (i + 1) j) f' (liftA W M (.right i (j + 1)) f F))
-
-  xth : ∀ f ∈ alg W (.down t i j), ∀ f' ∈ alg W (.right i j),
-    IsCuspForm W.θ (spV₁ G i j) (liftA W M (.right i j) f' (liftA W M (.down t i j) f F))
 
 variable (G) in
 
@@ -230,53 +210,6 @@ def IsDatumB (e : Num G i j) (Γ : Geo G i j) (τ : TotT G (routeB t i j))
     (Φ : (Fin (spW₁ G i j).rank × Fin ((spW G i j).rank + (spW₁ G i j).rank) → AF D.host.F) → ℂ) : Prop :=
   Φ ∈ schA D.host.F _ ∧ ∀ u, thetaSum D.host.F (Γ.M'.co.rho W.ψ u Φ) = τ.sum fun d c => c * boxB e d u
 
-variable (i j) in
-
-def quotMeas : Measure (GA D (spV G i j) × GA D (spV₁ G i j)) :=
-  ((M.ν (.grid i (j + 1))).restrict (M.fd (.grid i (j + 1)))).prod ((M.ν (.grid (i + 1) j)).restrict (M.fd (.grid (i + 1) j)))
-
-variable (t) in
-
-def ppInt (F : Fn G (.grid i (j + 1))) (F₁ : Fn G (.grid (i + 1) j)) (f : GA D (spV G i j) × GA D (spV₁ G i j) → ℂ)
-    (x : GA D (spV G i j) × GA D (spV₁ G i j)) : ℂ :=
-  f x * (xiV G i j x.1 * F x.1) * conj (conj (xiV₁ G t i j x.2) * F₁ x.2)
-
-variable (t) in
-
-def PairEq (F : Fn G (.grid i (j + 1))) (F₁ φ : Fn G (.grid (i + 1) j)) (f : GA D (spV G i j) × GA D (spV₁ G i j) → ℂ) :
-    Prop :=
-  IntegrableOn (fun g => φ g * conj (F₁ g)) (M.fd (.grid (i + 1) j)) (M.ν (.grid (i + 1) j)) ∧
-    Integrable (ppInt t F F₁ f) (quotMeas M i j) ∧
-    ∫ g in M.fd (.grid (i + 1) j), φ g * conj (F₁ g) ∂M.ν (.grid (i + 1) j) = ∫ x, ppInt t F F₁ f x ∂quotMeas M i j
-
-def SquareFubini : Prop :=
-  ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T) (sc : Consts) (G : GridData L sc) (W : G.Weil) (M : Vol G) (t : T) (i j : ℕ),
-    L.Is μ0 → M.Is t → i + 1 ≤ D.R.m → j + 1 ≤ D.R.m →
-    ∀ (e : Num G i j) B (Γ : Geo G i j) X om om', ∀ h : IsTripleOf W M t i j e B Γ X, WeilTensorModels.IsTriple B Γ X om om' →
-    ∀ F F₁, IsCuspForm W.θ (spV G i j) F → IsCuspForm W.θ (spV₁ G i j) F₁ →
-      (∀ τ Φ, IsAlg W τ → IsDatumA W e Γ τ Φ → TotConv W M (routeA t i j) τ F ∧ Γ.M.Conv om Φ ∧
-        PairEq M t F F₁ (liftT W M (routeA t i j) τ F) fun x => Γ.M.I om Φ (blkU _ _ e h.JWW x)) ∧
-      ∀ τ Φ, IsAlg W τ → IsDatumB W e Γ τ Φ → Φ ∈ Γ.M'.So B.ψ B.τ₁ →
-        (τ.support.card ≤ 1 → TotConv W M (routeB t i j) τ F) ∧ Γ.M'.Conv om' Φ ∧
-        (TotConv W M (routeB t i j) τ F →
-          PairEq M t F F₁ (liftT W M (routeB t i j) τ F) fun x => Γ.M'.I om' Φ (blkU _ _ e h.JWW x))
-
-def SquareCommutes : Prop :=
-  ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T) (sc : Consts) (G : GridData L sc) (W : G.Weil) (M : Vol G) (t : T) (i j : ℕ),
-    L.Is μ0 → M.Is t → i + 1 ≤ D.R.m → j + 1 ≤ D.R.m →
-    ∀ (e : Num G i j) B (Γ : Geo G i j) X om om' R Rf, IsTripleOf W M t i j e B Γ X → WeilTensorModels.IsMatched B Γ X om om' R Rf →
-    ∀ c, WeilTensorModels.IsConst B Γ X om om' R Rf c →
-    ∀ τA τB ΦA ΦB, IsAlg W τA → IsAlg W τB → IsDatumA W e Γ τA ΦA → IsDatumB W e Γ τB ΦB →
-      WeilTensorModels.PolMatch B Γ X R Rf ΦA ΦB →
-    ∀ F, IsCuspForm W.θ (spV G i j) F → LiftsCusp W M t i j F →
-      TotConv W M (routeA t i j) τA F ∧ TotConv W M (routeB t i j) τB F ∧
-        liftT W M (routeA t i j) τA F = c • liftT W M (routeB t i j) τB F
-
-def TwoRoutes : Prop := SquareFubini ∧ SquareCommutes
-
-example (f : Sch G (.right i (j + 1))) (f' : Sch G (.down t (i + 1) j)) (F : Fn G (.grid i (j + 1))) :
-    liftP W M (routeA t i j) (((), f), f') F = liftA W M (.down t (i + 1) j) f' (liftA W M (.right i (j + 1)) f F) := rfl
-
 theorem nonempty_num {μ0 : T} (hL : L.Is μ0) (hi : i + 1 ≤ D.R.m) (hj : j + 1 ≤ D.R.m) : Nonempty (Num G i j) := by
   have hr : ∀ X : Node, X.InRange D.R.m → (G.V X).rank = X.rank D := fun X hX => (node_isV G hL hX).rank
   have h1 := hr (.grid i (j + 1)) (by simp only [Node.InRange]; constructor <;> omega)
@@ -289,8 +222,6 @@ theorem nonempty_num {μ0 : T} (hL : L.Is μ0) (hi : i + 1 ≤ D.R.m) (hj : j + 
     simp only [Node.rank, rankV]
     ring
   exact ⟨finSumFinEquiv.trans (finCongr key)⟩
-
-example : alpha G t i j / beta G i j = G.nu t i (j + 1) := mul_div_mul_right_eq_div _ _ _
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation
 

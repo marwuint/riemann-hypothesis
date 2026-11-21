@@ -8,9 +8,6 @@ namespace Formalism.L2.S
 
 open Formalism.BasicNotions
 
-def letterOf {R : Ranks} (h : HCParam R) (l : Fin (R.k - 2)) : Bool :=
-  decide (h.u ⟨l.1 + 1, by omega⟩ ≠ h.v ⟨l.1, by omega⟩ - 1 / 2)
-
 def delOf {R : Ranks} (h : HCParam R) (hk : 3 ≤ R.k) : ℚ :=
   (h.v ⟨0, by omega⟩ - h.v ⟨1, by omega⟩) / 4
 

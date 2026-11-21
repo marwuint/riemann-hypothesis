@@ -6,8 +6,8 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.HeckeStdTwOfStd
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverAct
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoeffMonicPolySum
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteCosetsHeckeSetAtSplitPlaceOutsideLevelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComplexHeckeEigenvectorDescendsToCoefficientFielStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitExEveryDatumStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComplexHeckeEigenvectorDescendsToCoefficientFiel
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitExEveryDatum
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.RowTie GlobalTheory.SplitRead
 
 noncomputable section
@@ -113,11 +113,11 @@ theorem main : ∀ (D : D7) (M : Formalism.L2.MtFam D), Formalism.L2.HeckeTied D
     simp only [κ, hφalg]
     rw [← hiotaC]
     exact (haF v k ⟨hv, hk1, hk2⟩).1
-  obtain ⟨e, hene, he⟩ := GlobalTheory.T.complexHeckeEigenvector_descends_to_coefficientField D M NL.B (D.nd.j i) (D.nd.w i) (D.nd.mu i) (D.nd.j_range i).1
+  obtain ⟨e, hene, he⟩ := _root_.GlobalTheory.PtLocalEig.eig_descends D M NL.B (D.nd.j i) (D.nd.w i) (D.nd.mu i) (D.nd.j_range i).1
     (D.nd.j_range i).2 (D.nd.mu_w i) φ hφ κ y0 hy0ne (by
       intro v k hvk
       obtain ⟨hv, hk1, hk2⟩ := (Formalism.L2.genAt_iff NL h v k).2 hvk
-      obtain ⟨s, ϖ, hc, hu⟩ := GlobalTheory.T.splitEx_every_datum D v hv.1
+      obtain ⟨s, ϖ, hc, hu⟩ := _root_.GlobalTheory.SplitConjPlace.splitEx_all D v hv.1
       have hbad : s.v ∉ Formalism.L2.badPl D i := not_bad_of_genAt NL _ _ i h v k s hvk hc
       have hfin := GlobalTheory.T.finite_cosets_heckeSet_at_splitPlace_outside_level D.host.E D.R.nV (M.loc i).J (M.loc i).χ (Formalism.L2.badPl D i) (HT.J_hyp i)
         s ϖ k hbad hu

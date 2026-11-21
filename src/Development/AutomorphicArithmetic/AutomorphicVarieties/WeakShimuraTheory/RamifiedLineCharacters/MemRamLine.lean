@@ -67,9 +67,6 @@ structure Cup (w w' : ℤ × ℤ) (x y z : Γ → R) (m : Φ.ι → R) : Prop wh
   kill : ∀ g ∈ Φ.N, z g = 0
   loc : ∀ v, ∃ o, ∀ s ∈ Φ.Gv v, z s = o - a (Φ.rt (w + w') s) * o - y s * a (Φ.rt w s) * m v
 
-example (w w' : ℤ × ℤ) : Φ.Cup a w w' 0 0 0 0 :=
-  ⟨IsLocallyConstant.const 0, by simp, by simp, fun _ => ⟨0, by simp⟩⟩
-
 def Gys (l : ℕ) (𝒩 : Set Γ → Prop) : Prop :=
   ∀ (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
     (ρ : Representation (ZMod (l ^ 1)) Γ M), ContAction ρ → (∀ g ∈ Φ.N, ρ g = 1) → ∀ m0 : M, m0 ≠ 0 →

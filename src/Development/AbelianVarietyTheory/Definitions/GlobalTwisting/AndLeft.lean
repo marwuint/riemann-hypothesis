@@ -26,8 +26,6 @@ def OverCols (Q : V4.Slot) : Prop := ∀ K X f T c, Q K X f T c → HasCols K X 
 theorem OverCols.and_left {Q R : V4.Slot} (h : OverCols Q) : OverCols fun K X f T c => Q K X f T c ∧ R K X f T c :=
   fun K X f T c t => h K X f T c t.1
 
-example : OverCols HasCols := fun _ _ _ _ _ t => t
-
 end GlobalTheory.Fc.Cv
 
 end

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NeZeroTop
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DecoratedPointClassesBijectiveDoubleCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsK1PointCongruentStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemFramedLevelIffTwoAdelicPointsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DecoratedPointClassesBijectiveDoubleCosets
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsK1PointCongruent
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemFramedLevelIffTwoAdelicPoints
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PointLatticeIffBaseLatticeDecorated
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStepLevelSmallerAtFinitePlacesStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.QbKLeLocLev
@@ -67,7 +67,7 @@ theorem topU_dense {U : Subgroup (GL (Fin n) (AfE F E))} {Λ : LevFam E K n SG} 
     ∀ g ∈ UAd hc n, ∃ x ∈ topU U t Θ d, ∃ p : DecoF E n ST SG Q, IsPtOf hc (g * x * (k * t)) p := by
   intro g hg
   have hkt : k * t ∈ UAd hc n := mul_mem hk (principal_le_adelic_unitary hc n ST SG ht)
-  obtain ⟨z, hz, hsm, p, hp⟩ := GlobalTheory.T.exists_K1_point_congruent F E hc n ST SG Q hQ (g * (k * t)) (mul_mem hg hkt) e
+  obtain ⟨z, hz, hsm, p, hp⟩ := _root_.GlobalTheory.Mem.ColAd.exists_K1_isPtOf F E hc n ST SG Q hQ (g * (k * t)) (mul_mem hg hkt) e
   have hzU := principal_le_adelic_unitary hc n ST SG hz
   refine ⟨(k * t) * z * (k * t)⁻¹, ⟨?_, ?_⟩, p, ?_⟩
   · refine (hU _ (mul_mem (mul_mem hkt hzU) (inv_mem hkt))).2 ?_
@@ -122,7 +122,7 @@ theorem exists_clsG_top : ∀ (F E K : Type) [Field F] [NumberField F] [Field E]
     rwa [mul_inv_cancel_right] at h1
   have hlev : ∀ (g x : GL (Fin n) (AfE F E)) (p p' : DecoF E n ST SG Q), IsPtOf hc (g * (k * t)) p → IsPtOf hc (g * x * (k * t)) p' →
       (x ∈ topU S.U t Θ d ↔ ∃ (h : Λ.grp) (θ : Θ.grp), ((1, h.1, θ.1) : UF E n × GLG E n SG × GLQ E n Q) • p = p') :=
-    fun g x p p' h h' => GlobalTheory.T.mem_framedLevel_iff_two_adelic_points F E K hc n ST SG Q Λ Θ d hd N hdN hΘ S.U k t g x p p' hk hrk ht hU h h'
+    fun g x p p' h h' => _root_.GlobalTheory.Mem.Col2.TopCh.mem_topU_iff F E K hc n ST SG Q Λ Θ d hd N hdN hΘ S.U k t g x p p' hk hrk ht hU h h'
   have hle : topU S.U t Θ d ≤ UAd hc n := fun x hx => ((S.U_eq x).1 (topU_le _ _ _ _ hx)).1
   let sI : ∀ c, stab c →* UJ (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) := fun c =>
     ((ufGL E n).comp (gm c)).codRestrict _ fun a => by
@@ -131,7 +131,7 @@ theorem exists_clsG_top : ∀ (F E K : Type) [Field F] [NumberField F] [Field E]
       exact ((ratEquiv hc n).symm (gm c a)).2
   refine ⟨{ lev := L, y := fun c => ⟨y c, hyU c⟩, y_bij := ?_, y_lat := ?_, stabI := sI, stabI_inj := ?_, stabI_range := ?_ },
     hLb, hLU, hLoc, hLchi, fun c => rfl, fun c a => rfl⟩
-  · refine GlobalTheory.T.decoratedPointClasses_bijective_doubleCosets F E K hc n ST SG Q C Λ Θ s L.U (k * t) (fun c => ⟨y c, hyU c⟩) (hLU ▸ hle) hkt ?_ ?_ hpt hinj hsurj
+  · refine _root_.GlobalTheory.Mem.Col2.ClsBij.classes_bijective F E K hc n ST SG Q C Λ Θ s L.U (k * t) (fun c => ⟨y c, hyU c⟩) (hLU ▸ hle) hkt ?_ ?_ hpt hinj hsurj
     · rw [hLU]; exact hlev
     · rw [hLU]; exact topU_dense e hd hQ hdq hk hrk ht hU
   · intro c x

@@ -39,35 +39,8 @@ def indefDown {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} (S :
     IndefData (A3.A.side P ψ (A3.fam3.toSub2 Zs)) :=
   A3.indef2 S (fun _ => ⊥) (fun _ _ => ⊥) (fun _ _ _ _ => 0)
 
-def indef3 {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} (S : IndefData (A3.A.side P ψ (A3.fam3.toSub2 Zs)))
-    (Ep : A3.fam3.base3.Ix → Submodule K (Fin S.D → K))
-    (Wp : ∀ j : Fin m, A3.fam3.base3.Ix → Submodule K (Fin (S.dW j) → K))
-    (lam : Fin m → T → A3.fam3.base3.Ix → InfinitePlace K → ℝ) :
-    IndefData (A3.side3 P ψ Zs) where
-  μ := S.μ
-  Tw := S.Tw
-  D := S.D
-  XE := S.XE
-  Ep := Ep
-  ι := S.ι
-  dW := S.dW
-  XW := S.XW
-  Wp := Wp
-  M := S.M
-  θ := S.θ
-  κ := S.κ
-  lam := lam
-  err0 := S.err0
-
 def cols2 {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} (Dc : DefCols (A3.side3 P ψ Zs)) :
     DefCols (A3.A.side P ψ (A3.fam3.toSub2 Zs)) where
-  Mem := Dc.Mem
-  a := Dc.a
-  Xc := Dc.Xc
-  Pt := Dc.Pt
-
-def cols3 {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} (Dc : DefCols (A3.A.side P ψ (A3.fam3.toSub2 Zs))) :
-    DefCols (A3.side3 P ψ Zs) where
   Mem := Dc.Mem
   a := Dc.a
   Xc := Dc.Xc
@@ -81,30 +54,12 @@ def sper2 {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} {Dc : De
   Pu := Sp.Pu
   Rw := Sp.Rw
 
-def sper3 {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} {Dc : DefCols (A3.A.side P ψ (A3.fam3.toSub2 Zs))}
-    (Sp : SPer Dc) : SPer (A3.cols3 Dc) where
-  HH := Sp.HH
-  nHH := Sp.nHH
-  iHH := Sp.iHH
-  Pu := Sp.Pu
-  Rw := Sp.Rw
-
 def colData2 {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} {Dc : DefCols (A3.side3 P ψ Zs)} {Sp : SPer Dc}
     {S : IndefData (A3.side3 P ψ Zs)} (C : ColData Dc Sp S)
     (Ep : A3.A.fam.base.Ix → Submodule K (Fin S.D → K))
     (Wp : ∀ j : Fin m, A3.A.fam.base.Ix → Submodule K (Fin (S.dW j) → K))
     (lam : Fin m → T → A3.A.fam.base.Ix → InfinitePlace K → ℝ) :
     ColData (A3.cols2 Dc) (A3.sper2 Sp) (A3.indef2 S Ep Wp lam) where
-  B := C.B
-  ζ := C.ζ
-  sE := C.sE
-
-def colData3 {P : Subgroup G} {ψ : P →* Kˣ} {Zs : DefSub A3.fam3.amb3} {Dc : DefCols (A3.A.side P ψ (A3.fam3.toSub2 Zs))}
-    {Sp : SPer Dc} {S : IndefData (A3.A.side P ψ (A3.fam3.toSub2 Zs))} (C : ColData Dc Sp S)
-    (Ep : A3.fam3.base3.Ix → Submodule K (Fin S.D → K))
-    (Wp : ∀ j : Fin m, A3.fam3.base3.Ix → Submodule K (Fin (S.dW j) → K))
-    (lam : Fin m → T → A3.fam3.base3.Ix → InfinitePlace K → ℝ) :
-    ColData (A3.cols3 Dc) (A3.sper3 Sp) (A3.indef3 S Ep Wp lam) where
   B := C.B
   ζ := C.ζ
   sE := C.sE
@@ -122,50 +77,6 @@ abbrev DivisionCompatibilityDataThreeSided (P0 : Subgroup G) (ψ0 : P0 →* D.wh
   DivisionCompatibilityData D A3.A P0 ψ0 Ps ψs (A3.fam3.toSub2 Zs) (A3.indefDown S0) (A3.indefDown S1) X0 (A3.cols2 Dc)
 
 variable {D A3}
-
-def DivisionCompatibilityDataThreeSided.to2 {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ}
-    {Zs : DefSub A3.fam3.amb3} {S0 : IndefData (A3.side3 P0 ψ0 Zs)} {S1 : IndefData (A3.side3 Ps ψs Zs)}
-    {X0 : Formalism.BasicNotions.BaseLevelRowSide D} {Dc : DefCols (A3.side3 Ps ψs Zs)} (I : DivisionCompatibilityDataThreeSided D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 Dc)
-    (E0 : A3.A.fam.base.Ix → Submodule D.what₂.LL (Fin S0.D → D.what₂.LL))
-    (W0 : ∀ j : Fin m, A3.A.fam.base.Ix → Submodule D.what₂.LL (Fin (S0.dW j) → D.what₂.LL))
-    (l0 : Fin m → T → A3.A.fam.base.Ix → InfinitePlace D.what₂.LL → ℝ)
-    (E1 : A3.A.fam.base.Ix → Submodule D.what₂.LL (Fin S1.D → D.what₂.LL))
-    (W1 : ∀ j : Fin m, A3.A.fam.base.Ix → Submodule D.what₂.LL (Fin (S1.dW j) → D.what₂.LL))
-    (l1 : Fin m → T → A3.A.fam.base.Ix → InfinitePlace D.what₂.LL → ℝ) :
-    DivisionCompatibilityData D A3.A P0 ψ0 Ps ψs (A3.fam3.toSub2 Zs) (A3.indef2 S0 E0 W0 l0) (A3.indef2 S1 E1 W1 l1) X0 (A3.cols2 Dc) where
-  eG := I.eG
-  tup := I.tup
-  eRR := I.eRR
-  eRR0 := I.eRR0
-  jA := I.jA
-  jA0 := I.jA0
-  eMt := I.eMt
-  jW := I.jW
-  wU := I.wU
-  eNu := I.eNu
-
-def DivisionCompatibilityDataThreeSided.of2 {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ}
-    {Zs : DefSub A3.fam3.amb3} {S0 : IndefData (A3.A.side P0 ψ0 (A3.fam3.toSub2 Zs))}
-    {S1 : IndefData (A3.A.side Ps ψs (A3.fam3.toSub2 Zs))} {X0 : Formalism.BasicNotions.BaseLevelRowSide D}
-    {Dc : DefCols (A3.A.side Ps ψs (A3.fam3.toSub2 Zs))}
-    (I : DivisionCompatibilityData D A3.A P0 ψ0 Ps ψs (A3.fam3.toSub2 Zs) S0 S1 X0 Dc)
-    (E0 : A3.fam3.base3.Ix → Submodule D.what₂.LL (Fin S0.D → D.what₂.LL))
-    (W0 : ∀ j : Fin m, A3.fam3.base3.Ix → Submodule D.what₂.LL (Fin (S0.dW j) → D.what₂.LL))
-    (l0 : Fin m → T → A3.fam3.base3.Ix → InfinitePlace D.what₂.LL → ℝ)
-    (E1 : A3.fam3.base3.Ix → Submodule D.what₂.LL (Fin S1.D → D.what₂.LL))
-    (W1 : ∀ j : Fin m, A3.fam3.base3.Ix → Submodule D.what₂.LL (Fin (S1.dW j) → D.what₂.LL))
-    (l1 : Fin m → T → A3.fam3.base3.Ix → InfinitePlace D.what₂.LL → ℝ) :
-    DivisionCompatibilityDataThreeSided D A3 P0 ψ0 Ps ψs Zs (A3.indef3 S0 E0 W0 l0) (A3.indef3 S1 E1 W1 l1) X0 (A3.cols3 Dc) where
-  eG := I.eG
-  tup := I.tup
-  eRR := I.eRR
-  eRR0 := I.eRR0
-  jA := I.jA
-  jA0 := I.jA0
-  eMt := I.eMt
-  jW := I.jW
-  wU := I.wU
-  eNu := I.eNu
 
 variable (D A3)
 
@@ -320,14 +231,6 @@ theorem DivTied3.toDef (H : DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) : D
   mt := ⟨H.mt.forms, H.mt.lat⟩
   th := ⟨H.th.li, H.th.span, H.th.lat⟩
   cols := ⟨H.cols.wU_bij, H.cols.Nu⟩
-
-theorem DivTied3.toRows (H : DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) : DivRows3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I where
-  sharpRR := H.sharp.RR
-  baseRR := H.base.RR
-  divisionRows_rationalLift := H.mt.Z0
-  thTheta := H.th.theta
-  num := H.num
-  colsBk := H.cols.Bk
 
 theorem DivTied3.ofSplit (hD : DivDef3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) (hR : DivRows3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I) :
     DivTied3 D A3 P0 ψ0 Ps ψs Zs S0 S1 X0 C NuC I where

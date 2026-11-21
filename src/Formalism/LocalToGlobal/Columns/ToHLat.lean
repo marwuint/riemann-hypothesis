@@ -50,10 +50,6 @@ abbrev hCoord (h : S.Ok) : S.EqFun ≃ₗ[K] (Fin (S.hDim h) → K) := S.coordOf
 def toHc (h : S.Ok) (L : Submodule (𝓞 K) S.EqFun) : HLat K :=
   toHLat (stdFrame (S.hGram h)) (L.map ((S.hCoord h).toLinearMap.restrictScalars (𝓞 K)))
 
-def delHc (h : S.Ok) : HLat K := toHLat (stdFrame (S.hGram h)) (S.toCSD h).delLat
-
-def nabHc (h : S.Ok) : HLat K := toHLat (stdFrame (S.hGram h)) (S.toCSD h).nabLat
-
 def subZ (h : S.Ok) (U : Submodule K S.EqFun) : Submodule K (Fin (S.hDim h) → K) :=
   U.map (S.hCoord h).toLinearMap
 
@@ -74,13 +70,6 @@ def subMat (h : S.Ok) (U : Submodule K S.EqFun) : Matrix (Fin (S.hDim h)) (Fin (
   X := restrFrame (S.subMat h U) (S.hGram h)
   L := L
 
-def subIncl (h : S.Ok) (U : Submodule K S.EqFun) (L : Submodule (𝓞 K) U) (L' : Submodule (𝓞 K) S.EqFun) :
-    (S.subH h U L).V →ₗ[K] (S.toH h L').V := U.subtype
-
-def isoMat (h : S.Ok) (U : Submodule K S.EqFun) (v : InfinitePlace K) :
-    Matrix (Fin (S.hDim h)) (Fin (S.subD h U)) ℂ :=
-  (stdFrame (S.hGram h) v)⁻¹ * (S.subMat h U).map v.embedding * restrFrame (S.subMat h U) (S.hGram h) v
-
 end GSD
 
 section Cols
@@ -90,9 +79,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 @[reducible] def latH (u : Pr.Word) (j : ℕ) : HLat X.K :=
   (colGSD W Ch u j).toH (colOk W Ch hX u j) (ColL W Ch u j)
 
-@[reducible] def latNabH (u : Pr.Word) (j : ℕ) : HLat X.K :=
-  (colGSD W Ch u j).toH (colOk W Ch hX u j) (ColLnab W Ch u j)
-
 @[reducible] def Mu0H (u : Pr.Word) : HLat X.K :=
   (colGSD W Ch u 0).toH (colOk W Ch hX u 0) (MfL W Ch u)
 
@@ -100,12 +86,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (colGSD W Ch u 0).subH (colOk W Ch hX u 0) (MramV W Ch u) (MramL W Ch u)
 
 def ramInclH (u : Pr.Word) : (MramH W Ch hX u).V →ₗ[X.K] (Mu0H W Ch hX u).V := ramIncl W Ch u
-
-def VrC (u : Pr.Word) (v : InfinitePlace X.K) : Matrix (Mu0H W Ch hX u).ι (MramH W Ch hX u).ι ℂ :=
-  (colGSD W Ch u 0).isoMat (colOk W Ch hX u 0) (MramV W Ch u) v
-
-@[reducible] def NlamH (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K)) : HLat X.K :=
-  withL (MramH W Ch hX u) (NlamG W Ch u w)
 
 end Cols
 
@@ -116,9 +96,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 
 @[reducible] def MtildeH (P : LevFam X.E X.K R.r Pr.vGs) : HLat X.K :=
   (mtildeGSD W Ch sel mu P).toH (mtildeOk W Ch sel mu hX P) (MtildeL W Ch sel mu P)
-
-@[reducible] def MtH (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : HLat X.K :=
-  (mtGSD W Ch sel mu P j).toH (mtOk W Ch sel mu hX P j) (MtL W Ch sel mu P j)
 
 end Rows
 

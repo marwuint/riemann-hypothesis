@@ -30,16 +30,6 @@ theorem GenSecSeparable.of_freeParAlgIndep (h : FreeParAlgIndep.Statement) :
   GenSecSeparable.proof SecAlgFinite.full GenSecDomain.full ChartPointTrdeg.full
     (SecPointSeparable.of_freeParAlgIndep h)
 
-theorem SpecLength.of_freeParAlgIndep (h : FreeParAlgIndep.Statement) : SpecLength.Statement := by
-  have cnf : ChowNormForm.Statement :=
-    ChowNormForm.proof
-      (ChowNormFormGeneric.proof SecAlgFinite.full GenSecDomain.full (GenSecSeparable.of_freeParAlgIndep h)
-        ChowSecDvd.full NormFormIrreducible.full GenChowIrreducible.full NormFormDvd.full)
-      SecAlgFieldChange.full
-  have nzd : SecLinNZD.Statement := SecLinNZD.proof cnf NormFormEval.full SpecFirstNeField.full
-  exact SpecLength.proof SpecChart.full FiniteOrd.full ParDVRIsDVR.full SecBFinite.full
-    (SecBLinInj.proof SecBGeneric.full SecBTorsionFree.full nzd ParAlgIndep.full)
-
 theorem ChowFormSectionVertical.of_freeParAlgIndep (h : FreeParAlgIndep.Statement) :
     ChowFormSectionVertical.Statement :=
   ChowFormSectionVertical.of_chartPoint_secPoint_specChart ChartPointTrdeg.full

@@ -5,8 +5,8 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IsFibre
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentities
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScalingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresUniqueAeStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScaling
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresUniqueAe
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -145,8 +145,8 @@ theorem fib_rmul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     exact (isOpen_univ.measure_pos ν Set.univ_nonempty).ne h1
   haveI hμa : (a • μ).IsAddHaarMeasure := Measure.IsAddHaarMeasure.nnreal_smul μ ha0
   haveI hνc : (c • ν).IsAddHaarMeasure := Measure.IsAddHaarMeasure.nnreal_smul ν hc0
-  have hres := GlobalTheory.T.gram_fiber_measures_scaling F E σ hσ M J hJ R hR n μ ν m hμ hν hm a c ha0 hc0
-  have huq := GlobalTheory.T.gram_fiber_measures_unique F E σ hσ M J hJ R hR n (a • μ) (c • ν) _ hμa hνc hres _ hnew (τ S)
+  have hres := _root_.GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hσ M J hJ R hR n μ ν m hμ hν hm a c ha0 hc0
+  have huq := _root_.GlobalTheory.CompanionTheory.SW.GramFib.fibre_unique F E σ hσ M J hJ R hR n (a • μ) (c • ν) _ hμa hνc hres _ hnew (τ S)
   have hs : τh.symm (τ S) = S := τh.symm_apply_apply S
   simp only [hs] at huq
   have hfin : (m S).map (fun X => rmul R X g) = (a / c) • m (τ S) := huq.symm

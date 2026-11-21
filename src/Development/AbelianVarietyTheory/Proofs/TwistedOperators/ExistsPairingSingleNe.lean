@@ -33,16 +33,6 @@ def lowBlock {n : ℕ} (g : Matrix (Fin n) (Fin n) L) : Matrix (Fin (n / 2)) (Fi
 def pairing (σ : L →+* L) (δ : L) (ψ : AddChar L ℂ) {n n' : ℕ} (x y : Matrix (Fin n') (Fin n) L) : ℂ :=
   ψ (δ * (∑ i, ∑ j, x i j * σ (y i.rev j.rev)) + σ (δ * (∑ i, ∑ j, x i j * σ (y i.rev j.rev))))
 
-def conjU {σ : L →+* L} (hσ : ∀ x, σ (σ x) = x) (n : ℕ) : GU σ n →* GU σ n :=
-  ((bc σ).comp (GU σ n).subtype).codRestrict _ fun g => by
-    have h := congrArg (fun M : Matrix (Fin n) (Fin n) L => M.map σ) (show cT σ g.1.1 * antiJ L n * g.1.1 = antiJ L n from g.2)
-    have hJ : (antiJ L n).map σ = antiJ L n := by
-      ext i j
-      simp only [Matrix.map_apply, antiJ]
-      split_ifs <;> simp
-    simp only [Matrix.map_mul, hJ] at h
-    exact h
-
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
 variable (L) in

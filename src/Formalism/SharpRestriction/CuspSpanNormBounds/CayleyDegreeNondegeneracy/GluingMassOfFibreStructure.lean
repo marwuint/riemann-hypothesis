@@ -9,41 +9,6 @@ open NumberField Module Formalism.BasicNotions Formalism.MainNotions Formalism.M
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section Orbit
-
-open MulAction
-
-theorem sum_orbits_inv_card_stabilizer (A G : Type) [Group A] [MulAction A G] [Finite A] [Finite G] :
-    ∑ᶠ ω : Quotient (orbitRel A G), ((Nat.card (stabilizer A ω.out) : ℕ) : ℝ)⁻¹ =
-      (Nat.card G : ℝ) / (Nat.card A : ℝ) := by
-  classical
-  have := Fintype.ofFinite A
-  have := Fintype.ofFinite G
-  have := Fintype.ofFinite (Quotient (orbitRel A G))
-  rw [finsum_eq_sum_of_fintype]
-  have hA : (0 : ℝ) < (Nat.card A : ℝ) := by exact_mod_cast Nat.card_pos
-  have h1 : ∀ ω : Quotient (orbitRel A G),
-      ((Nat.card (stabilizer A ω.out) : ℕ) : ℝ)⁻¹ = (Nat.card (orbit A ω.out) : ℝ) / (Nat.card A : ℝ) := by
-    intro ω
-    have h := MulAction.card_orbit_mul_card_stabilizer_eq_card_group A ω.out
-    have h' : (Nat.card (orbit A ω.out) : ℝ) * (Nat.card (stabilizer A ω.out) : ℝ) = (Nat.card A : ℝ) := by
-      rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]
-      exact_mod_cast h
-    have hs : (0 : ℝ) < (Nat.card (stabilizer A ω.out) : ℝ) := by exact_mod_cast Nat.card_pos
-    haveI : Nonempty (orbit A ω.out) := ⟨⟨_, mem_orbit_self _⟩⟩
-    have ho : (0 : ℝ) < (Nat.card (orbit A ω.out) : ℝ) := by exact_mod_cast Nat.card_pos
-    rw [← h']
-    field_simp
-  rw [Finset.sum_congr rfl fun ω _ => h1 ω, ← Finset.sum_div]
-  congr 1
-  have h2 : Nat.card G = ∑ ω : Quotient (orbitRel A G), Nat.card (orbit A ω.out) := by
-    rw [Nat.card_congr (MulAction.selfEquivSigmaOrbits A G), Nat.card_sigma]
-  rw [h2]
-  push_cast
-  rfl
-
-end Orbit
-
 theorem trace_inner_self_pos {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : IsPosDef h) (x : V) (hx : x ≠ 0) :
     0 < Algebra.trace ℚ K (h x x) := by

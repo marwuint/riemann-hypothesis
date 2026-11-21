@@ -35,10 +35,6 @@ def SegreFlagConeAlg.Statement : Prop :=
                 (fun _ : Unit => C (flagClosurePt y w e φ φ' t k ⟨none, m'⟩) * X none))))
           (C (flagClosurePt y w e φ φ' t k p) * X p.1)
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

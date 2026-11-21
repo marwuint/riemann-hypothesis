@@ -170,12 +170,6 @@ noncomputable def diag : K →ₗ[k] Repartition k K where
 theorem diag_apply (x : K) (v : Place k K) : diag (k := k) x v = x :=
   rfl
 
-theorem diag_injective : Function.Injective (diag (k := k) (K := K)) := by
-  intro x y h
-  obtain ⟨v⟩ := Place.nonempty (k := k) (K := K)
-  have := congrArg (fun a : Repartition k K => a v) h
-  simpa using this
-
 theorem mul_diag (x y : K) : mul x (diag (k := k) y) = diag (x * y) := by
   ext v; simp
 
@@ -189,12 +183,6 @@ theorem mem_principal {a : Repartition k K} : a ∈ principal k K ↔ ∃ x : K,
 
 theorem diag_mem_principal (x : K) : diag x ∈ principal k K :=
   ⟨x, rfl⟩
-
-theorem mul_mem_principal (x : K) {a : Repartition k K} (ha : a ∈ principal k K) :
-    mul x a ∈ principal k K := by
-  obtain ⟨y, rfl⟩ := ha
-  rw [mul_diag]
-  exact diag_mem_principal _
 
 end Repartition
 

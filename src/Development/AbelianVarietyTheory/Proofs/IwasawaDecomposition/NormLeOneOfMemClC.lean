@@ -55,6 +55,4 @@ end GlobalTheory.Mem.Df
 
 namespace GlobalTheory.Mem.Df
 
-open Formalism.L2.TwC
-
 end GlobalTheory.Mem.Df

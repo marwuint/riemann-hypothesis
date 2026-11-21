@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumSu21RankOneSeriesDifferencesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellShellIsOpenCompactSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarMeasureWeylCellOddUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumSu21RankOneSeriesDifferences
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellShellIsOpenCompactSubgroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarMeasureWeylCellOddUnitary
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG GlobalTheory.WeylCell.WeylUnipotentShell
 
 namespace GlobalTheory.WeylCell.WeylUnipotentShell.Atone
@@ -68,8 +68,8 @@ theorem _root_.GlobalTheory.WeylCell.WeylUnipotentShell.integral_depth_cell : �
       ∫⁻ u : cellU y, ‖(z / (q : ℂ) ^ 2) ^ depthU k (u : GU σ n)‖ₑ ∂μ = ‖cSU q ((‖z‖ : ℝ) : ℂ)‖ₑ := by
   intro L _ _ _ ϖ σ q hq n k hk hn y hy hwy _ _ μ _ hμ z hz
   have q2 : 2 ≤ q := hq.2.2.2.2.2.1
-  have hsh := GlobalTheory.T.unitaryWeylCellShell_isOpenCompactSubgroup L ϖ σ q hq n k hk hn y hy hwy
-  have hvol := GlobalTheory.T.haar_measure_weyl_cell_odd_unitary L ϖ σ q hq n k hk hn y hy hwy μ hμ
+  have hsh := _root_.GlobalTheory.WeylCell.WeylUnipotentShell.shellU_open_compact_subgroup L ϖ σ q hq n k hk hn y hy hwy
+  have hvol := _root_.GlobalTheory.WeylCell.WeylUnipotentShell.measure_shellU L ϖ σ q hq n k hk hn y hy hwy μ hμ
   let f : cellU y → ℕ := fun u => depthU k (u : GU σ n)
   let V : ℕ → ℝ := fun j => (q : ℝ) ^ (j + 2 * (j / 2))
   have hV0 : ∀ j, 0 ≤ V j := fun j => by positivity
@@ -92,9 +92,9 @@ theorem _root_.GlobalTheory.WeylCell.WeylUnipotentShell.integral_depth_cell : �
     simp only [w, V]; split_ifs <;> push_cast <;> rfl
   let c : ℕ → ℂ := fun j => (z / (q : ℂ) ^ 2) ^ j
   have hs : HasSum (fun j => c j * (w j : ℂ)) (cSU q z) := by
-    simp only [c, hwc]; exact GlobalTheory.T.hasSum_cSU_power_differences q q2 z hz
+    simp only [c, hwc]; exact _root_.GlobalTheory.SURankOneSeries.hasSum_series q q2 z hz
   have hz' : ‖((‖z‖ : ℝ) : ℂ)‖ < 1 := by rw [Complex.norm_real, Real.norm_of_nonneg (norm_nonneg _)]; exact hz
-  have hs' := GlobalTheory.T.hasSum_cSU_power_differences q q2 _ hz'
+  have hs' := _root_.GlobalTheory.SURankOneSeries.hasSum_series q q2 _ hz'
   have hterm : ∀ j : ℕ, (((‖z‖ : ℝ) : ℂ) / (q : ℂ) ^ 2) ^ j *
       ((q : ℂ) ^ (j + 2 * (j / 2)) - (if j = 0 then 0 else (q : ℂ) ^ (j - 1 + 2 * ((j - 1) / 2)))) =
       ((‖c j‖ * w j : ℝ) : ℂ) := fun j => by

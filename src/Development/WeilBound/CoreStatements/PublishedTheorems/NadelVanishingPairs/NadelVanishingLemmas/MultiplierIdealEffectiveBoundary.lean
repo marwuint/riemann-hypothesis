@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalProject
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.DivisorPointProperLiftStatement
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.DiscrepancyFormulaDivisor
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.FormOrderBirationalPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdFunctionFieldPullbackPrimeDivisorOverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirationalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdFunctionFieldPullbackPrimeDivisorOver
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirational
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -29,18 +29,18 @@ theorem regAt_of_regularAt_neg_roundDown : ∀ (k : Type) [Field k] [CharZero k]
   · subst hf0; exact regAt_zero x
   refine regAt_of_forall_coheight_eq_one fun z hzx hz1 => ?_
   obtain ⟨E, hE⟩ := DivOver.exists_isAt_of_coheight_eq_one (p := p) hz1
-  obtain ⟨E', hE'E⟩ := GlobalTheory.T.exists_primeDivisor_over_source_birational k X Y p s hres.bir E
+  obtain ⟨E', hE'E⟩ := _root_.GlobalTheory.Discrepancy.DivOver.exists_over k X Y p s hres.bir E
   obtain ⟨w, rfl, hE'⟩ := GlobalTheory.T.divisor_point_proper_lift k X Y p s hres.bir inferInstance E' E hE'E _ hE
   obtain ⟨g, hg⟩ := G.exists_isEqn (s w)
   have hg' := isEqn_pullCart s hg
   have hη' : EtaleKlt.ratPull p s n η ≠ 0 := fun h0 =>
-    hmult.ne_zero ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y p s hres.bir n).1 (h0.trans (map_zero _).symm))
+    hmult.ne_zero ((_root_.GlobalTheory.EtaleKlt.ratPull_bijective_of_birational k X Y p s hres.bir n).1 (h0.trans (map_zero _).symm))
   have hd := GlobalTheory.T.discrepancy_formula_divisor k Y (s ≫ p) n (EtaleKlt.ratPull p s n η) hη' K (pullCart s G) m
     hmult.pos hres.div E' w (fnPull s g) hE' hg'
   have hd2 : discrep E' (EtaleKlt.ratPull p s n η) m (fnPull s g) = discrep E η m g := by
     simp only [discrep]
     rw [GlobalTheory.T.form_order_birational_pullback k X Y p s hres.bir E' E hE'E n η hmult.ne_zero,
-      GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hE'E g]
+      _root_.GlobalTheory.Discrepancy.DivOver.Over.ord_fnPull_of_bijective k X Y p s hres.bir E' E hE'E g]
   have hd3 := (hmult.eqn _ g hg).discrep_eq_neg hmult.pos (specializes_refl _) hE
   have hm : (0 : ℚ) < m := by exact_mod_cast hmult.pos
   have hnn : 0 ≤ (pullCart s G - m • K).mult w := by
@@ -63,7 +63,7 @@ theorem regAt_of_regularAt_neg_roundDown : ∀ (k : Type) [Field k] [CharZero k]
     simp [hu, fnPull]
   have h1 : 0 ≤ E'.ord (fnPull s u * h⁻¹) :=
     (E'.ord_nonneg_iff _).2 (hv ▸ (hE' _).2 hreg)
-  rw [E'.ord_mul, E'.ord_inv, GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hE'E u, hE'.ord_eq h,
+  rw [E'.ord_mul, E'.ord_inv, _root_.GlobalTheory.Discrepancy.DivOver.Over.ord_fnPull_of_bijective k X Y p s hres.bir E' E hE'E u, hE'.ord_eq h,
     ← hh.mult_eq] at h1
   have h2 : 0 ≤ E.ord u := by omega
   exact (hE f).1 ((E.ord_nonneg_iff u).1 h2)

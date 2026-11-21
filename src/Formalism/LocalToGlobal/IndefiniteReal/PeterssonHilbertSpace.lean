@@ -218,18 +218,6 @@ theorem isHermPos_multT (hθ : IsInfFam θ) (hfin : HCFinite θ M J χ)
     (hP : PetPos V μ 𝓕) (hne : SmNonzero M) : IsHermPos (MultT θ M J χ) (ipMT' M μ 𝓕) :=
   (isHermPos_mult M μ 𝓕 θ J χ hθ hfin hU hS hH hF hP hne).map_equiv PiTensorProduct.lift
 
-theorem isHermPos_ipW {W : HSp D}
-    {κ : ∀ τ : D.what₂.Tau, Fin (W.sig (tauE D τ)).1 ⊕ Fin (W.sig (tauE D τ)).2 → ℤ}
-    (M : DSModel W (parW W κ)) (μ : Measure (GA D W)) (𝓕 : Set (GA D W)) (C : Submodule ℂ (MMap M))
-    (hdim : ∀ τ, 0 < dimK _ _ (κ τ)) (h : IsHermPos C (ipM M μ 𝓕)) : IsHermPos C (ipW M μ 𝓕) := by
-  have hs : (0 : ℝ) < ∏ τ, ((dimK _ _ (κ τ) : ℚ) : ℝ) :=
-    Finset.prod_pos fun τ _ => by exact_mod_cast hdim τ
-  have he : ipW M μ 𝓕 = fun x y => ((∏ τ, ((dimK _ _ (κ τ) : ℚ) : ℝ) : ℝ) : ℂ) * ipM M μ 𝓕 x y := by
-    funext x y
-    simp [ipW]
-  rw [he]
-  exact isHermPos_scale h hs
-
 end MultSec
 
 end Formalism.IndefR.PeterssonHilbertSpace

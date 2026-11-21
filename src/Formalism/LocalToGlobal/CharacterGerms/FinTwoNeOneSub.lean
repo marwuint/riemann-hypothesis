@@ -109,109 +109,11 @@ theorem exists_rowsOK (hdich : X.Alt ∨ ∀ a, X.big 0 a) (hj : X.j' < X.n) (b 
 
 end One
 
-section Fam
-
-variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {T : Type} {r : T → ℕ} {cc : T → T} {a : T → ℕ → ℕ}
-  {Orb : Type} [Fintype Orb] {tau : Orb → Fin 2 → ZMod d → T} {J : Orb → Fin 2 → Type} [∀ o g, Fintype (J o g)]
-  {X : ∀ o, RowData C V d (IIof r tau o) (J o)} {F : ∀ o, Flag (X o)} {Z : Finset Orb}
-  {ga : Orb → Fin 2 → ZMod d → ℕ → ℕ} {n : ℕ} {L : Orb → List (GlobalTheory d × ℝ)}
-  {pl : (Σ o, Σ i : Fin (L o).length, Fin (rowsAt X L o i)) → Fin n}
-
-theorem ConjugatePairPlaceSetting.rowsOK (H : ConjugatePairPlaceSetting r cc a tau X F Z ga n L pl) (o : Orb) :
-    ∃ kind : Fin n → Knd d, RowsOK (X o).G (X o).Alt
-      (prodAll (plAt n pl o) fun i => (blkAt L o i).poly (X o) (F o)) kind := by
-  have h : ∀ i : Fin (L o).length, ∃ kind : Fin (rowsAt X L o i) → Knd d,
-      RowsOK (X o).G (X o).Alt ((blkAt L o i).poly (X o) (F o)) kind := by
-    intro i
-    by_cases ho : o ∈ Z
-    · refine exists_rowsOK (X o) (F o) (H.dich o ho) (H.hj o ho) _ fun g t k hk => (H.supp o ho g t k ?_).2
-      rw [← H.wt o ho g t k]
-      have h : (blkAt L o i).wt (X o) g t k ≤ ((L o).map fun q => q.1.wt (X o) g t k).sum :=
-        le_sum_map (L o) (fun q => q.1.wt (X o) g t k) (List.get_mem (L o) i)
-      omega
-    · have h0 : (L o).length = 0 := by rw [H.off o ho]; rfl
-      exact absurd i.2 (by omega)
-  choose kind hk using h
-  exact ⟨_, rowsOK_prodAll _ _ (plAt_inj n H.plinj o) _ kind hk⟩
-
-theorem mem_vars_blkProd {b : Fin n} {o : Orb} {w : WV (IIof r tau o)}
-    (hx : ((b, ⟨o, w⟩) : Fin n × WVO (IIof r tau)) ∈ (blkProd X F n L pl).vars) :
-    (b, w) ∈ (prodAll (plAt n pl o) fun i => (blkAt L o i).poly (X o) (F o)).vars := by
-  unfold blkProd at hx
-  have h1 := MvPolynomial.vars_prod _ hx
-  rw [Finset.mem_biUnion] at h1
-  obtain ⟨o', -, h2⟩ := h1
-  unfold toAll at h2
-  have h3 := MvPolynomial.vars_rename _ _ h2
-  rw [Finset.mem_image] at h3
-  obtain ⟨y, hy, hyeq⟩ := h3
-  simp only [Prod.mk.injEq] at hyeq
-  obtain ⟨hy1, hy2⟩ := hyeq
-  have ho : o' = o := congrArg Sigma.fst hy2
-  subst ho
-  have hw : y.2 = w := eq_of_heq (Sigma.mk.inj_iff.1 hy2).2
-  rw [show (b, w) = y from Prod.ext hy1.symm hw.symm]
-  exact hy
-
-theorem fin_two_ne_one_sub (g : Fin 2) : g ≠ 1 - g := by
-  fin_cases g <;> decide
-
-theorem ConjugatePairPlaceSetting.no_conj (H : ConjugatePairPlaceSetting r cc a tau X F Z ga n L pl) (b : Fin n) (o : Orb) (g : Fin 2) (t : ZMod d)
-    (i : Fin (r (tau o g t))) (i' : Fin (r (tau o (1 - g) t)))
-    (hx : ((b, ⟨o, ⟨g, ⟨t, i⟩⟩⟩) : Fin n × WVO (IIof r tau)) ∈ (blkProd X F n L pl).vars)
-    (hx' : ((b, ⟨o, ⟨1 - g, ⟨t, i'⟩⟩⟩) : Fin n × WVO (IIof r tau)) ∈ (blkProd X F n L pl).vars) : False := by
-  obtain ⟨kind, hk⟩ := H.rowsOK o
-  refine no_conj_of_rowsOK hk (mem_vars_blkProd hx) (mem_vars_blkProd hx') (fin_two_ne_one_sub g) ?_
-  show ((X o).G g).ty (Sum.inl ⟨t, i⟩) = ((X o).G (1 - g)).ty (Sum.inl ⟨t, i'⟩)
-  rw [H.hty o g, H.hty o (1 - g)]
-
-theorem ConjugatePairPlaceSetting.no_conj_letter (H : ConjugatePairPlaceSetting r cc a tau X F Z ga n L pl) (τ : T) (a1 : Fin (r τ)) (a2 : Fin (r (cc τ)))
-    (b : Fin n)
-    (h1 : (⟨τ, a1, b⟩ : Letter T r n) ∈ (MvPolynomial.rename (phiL r tau n) (blkProd X F n L pl)).vars)
-    (h2 : (⟨cc τ, a2, b⟩ : Letter T r n) ∈ (MvPolynomial.rename (phiL r tau n) (blkProd X F n L pl)).vars) : False := by
-  obtain ⟨x, hx, ex⟩ := Finset.mem_image.1 (MvPolynomial.vars_rename _ _ h1)
-  obtain ⟨x', hx', ex'⟩ := Finset.mem_image.1 (MvPolynomial.vars_rename _ _ h2)
-  obtain ⟨ρ, o, g, t, i⟩ := x
-  obtain ⟨ρ', o', g', t', i'⟩ := x'
-  have e1 : tau o g t = τ := congrArg Sigma.fst ex
-  have e1' : tau o' g' t' = cc τ := congrArg Sigma.fst ex'
-  have eρ : ρ = b := congrArg (fun ℓ : Letter T r n => ℓ.2.2) ex
-  have eρ' : ρ' = b := congrArg (fun ℓ : Letter T r n => ℓ.2.2) ex'
-  have e2 : tau o' g' t' = tau o (1 - g) t := by
-    rw [e1', ← e1]
-    have hg : g = 0 ∨ g = 1 := by fin_cases g <;> simp
-    rcases hg with rfl | rfl
-    · exact H.conj o t
-    · exact H.conj' o t
-  have e3 := H.inj (a₁ := (o', g', t')) (a₂ := (o, 1 - g, t)) e2
-  simp only [Prod.mk.injEq] at e3
-  obtain ⟨rfl, rfl, rfl⟩ := e3
-  rw [eρ] at hx
-  rw [eρ'] at hx'
-  exact H.no_conj b o' g t' i i' hx hx'
-
-end Fam
-
 theorem lap_one_apply {T : Type} (r : T → ℕ) (n : ℕ) (C : Type) [Field C] (τ τ' : T) (a : Fin (r τ)) (a' : Fin (r τ'))
     (P : MvPolynomial (Letter T r n) C) :
     lap r n C 1 τ τ' a a' P = ∑ b, ∑ b', (1 : Matrix (Fin n) (Fin n) C) b b' •
       MvPolynomial.pderiv (⟨τ, a, b⟩ : Letter T r n) (MvPolynomial.pderiv (⟨τ', a', b'⟩ : Letter T r n) P) := by
   simp only [lap, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply]
   rfl
-
-theorem harmonic_product_bound : NormOneHarmonic := by
-  intro C _ V d _ T r cc a Orb _ tau J _ X F Z ga n L pl H isX
-  simp only [harmK, Submodule.mem_iInf, LinearMap.mem_ker]
-  intro τ _ a1 a2
-  rw [lap_one_apply]
-  refine Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun b' _ => ?_
-  by_cases hb : b = b'
-  · subst hb
-    by_cases h : (⟨τ, a1, b⟩ : Letter T r n) ∈ (MvPolynomial.rename (phiL r tau n) (blkProd X F n L pl)).vars
-    · have h' : (⟨cc τ, a2, b⟩ : Letter T r n) ∉ (MvPolynomial.rename (phiL r tau n) (blkProd X F n L pl)).vars :=
-        fun h2 => H.no_conj_letter τ a1 a2 b h h2
-      rw [MvPolynomial.pderiv_eq_zero_of_notMem_vars h', map_zero, smul_zero]
-    · rw [pderiv_comm', MvPolynomial.pderiv_eq_zero_of_notMem_vars h, map_zero, smul_zero]
-  · rw [Matrix.one_apply_ne hb, zero_smul]
 
 end Formalism.L2.FormalSeriesBounds.RF

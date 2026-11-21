@@ -5,7 +5,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepUnique
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupListRepresentativeOfForms
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFrameTaylorClassEq
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsLocalFrameOfCoords
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGradedClassRepresentativeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGradedClassRepresentative
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.LocDefs
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFrameDerivationCompatStatement
 set_option backward.isDefEq.respectTransparency false
 set_option autoImplicit false
@@ -234,7 +235,7 @@ theorem main : CrystallineSemistableComparison.Pb.KH.LocGr → CrystallineSemist
   obtain ⟨E, ε, hL⟩ := GlobalTheory.CompanionTheory.ConeLocal.exists_loc q c s (by omega)
   let σ : ∀ T, E.D ⟶ T := fun T => (E.ne T).some
   have hr : (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) := by push_cast; ring
-  obtain ⟨y, hy⟩ := (GlobalTheory.T.local_graded_class_representative q c.t s E ε hL σ (n + 1) ((n : ℤ) + 1) hr (by omega)).1 (resKS q s hVV _ _ _ ω)
+  obtain ⟨y, hy⟩ := (_root_.GlobalTheory.CompanionTheory.ConeLocal.loc_coef q c.t s E ε hL σ (n + 1) ((n : ℤ) + 1) hr (by omega)).1 (resKS q s hVV _ _ _ ω)
   have h1 := GlobalTheory.T.local_frame_derivation_compat q s hVV hV' c D hD E ε hL σ (n + 1) ((n : ℤ) + 1) hr (by omega) ω y hy (i0 _)
   exact ⟨y (i0 _), h1, rep_xdt q s n c.t E ε hL σ _ _ hr _ (rep_top E σ _ (fun I => ε (y I)) _ hy)⟩
 

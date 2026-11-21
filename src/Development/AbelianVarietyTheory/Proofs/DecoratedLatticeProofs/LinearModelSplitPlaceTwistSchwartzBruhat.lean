@@ -9,10 +9,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearMapVaryPureTensorFactorSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockVectorPureTensorCoefficientSplitsTrivialPlacStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalTwistDatumRenumberRowsColumnsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsChartsAtTwistPlacesChainStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearMapVaryPureTensorFactorSplitPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockVectorPureTensorCoefficientSplitsTrivialPlac
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalTwistDatumRenumberRowsColumns
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsChartsAtTwistPlacesChain
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaChainStepVectorLocalPureTensor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompAtMtOfMemGfC
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerModelIsometryHalfLatticeVolumeOne
@@ -164,11 +166,11 @@ theorem GlobalTheory.TwistLinModel.linearModel_at_twist : ∀ D : D7, ForStepQ D
     s.L (w.chi (k + 1)) w.Q w.ξ f₀ p.f m X D.R.t ht _ _ hLP hbase hX hsf.frame hsf'.frame hdisj hvec
   have hxpure := hxall x ⟨hxoff, hxloc⟩
 
-  obtain ⟨e, he⟩ := ((GlobalTheory.T.exists_charts_at_twist_places_chain D c w hw k hk.le s hs0 PP hPP).2 v φ hφ).1
+  obtain ⟨e, he⟩ := ((_root_.GlobalTheory.TwistChart.charts_at_twist D c w hw k hk.le s hs0 PP hPP).2 v φ hφ).1
 
   obtain ⟨ε, hε, hιy⟩ := hι
   obtain ⟨ε', hε', hιy'⟩ := hι'
-  have hre := GlobalTheory.T.local_twist_datum_renumber_rows_columns D v D.R.r s.V.rank s'.V.rank (Blocks k D.R.t) (Blocks (k + 1) D.R.t) ε ε' hε hε'
+  have hre := _root_.GlobalTheory.Reidx.renumber D v D.R.r s.V.rank s'.V.rank (Blocks k D.R.t) (Blocks (k + 1) D.R.t) ε ε' hε hε'
 
   have htame : GlobalTheory.SplitWeil.IsTame ξl⁻¹ := by
     have h := (GlobalTheory.tameLift_isTame_not_isUnram D v φ PP (w.ξ PP) hφ (hw.ne PP hPP) ξl hξl).1
@@ -189,7 +191,7 @@ theorem GlobalTheory.TwistLinModel.linearModel_at_twist : ∀ D : D7, ForStepQ D
   obtain ⟨⟨Tm, hTm⟩, hall⟩ := hth
   have hxv : x (.inl v) = Tm (onHalf φ s.V s'.V (frCo φ s.β) (frCo φ s'.β) e (R ⟨_, hΦ⟩).1) := by
     rw [hall Tm hTm, hLr, (hre.1 ξl⁻¹).1]; congr 2; funext z; rw [hR]
-  obtain ⟨T₀, hT₀Φ, hT₀pure, hT₀act⟩ := GlobalTheory.T.exists_linearMap_vary_pureTensor_factor_split_place D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω (cart s.M) (cart s'.M)
+  obtain ⟨T₀, hT₀Φ, hT₀pure, hT₀act⟩ := _root_.GlobalTheory.VarySplitFactor.exists_linearMap_pure D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω (cart s.M) (cart s'.M)
     s.Λ s'.Λ f₀ m X hp.weil hθ hbase hX x p.f hxpure v φ e he (frCo φ s.β) (frCo φ s'.β) (R ⟨_, hΦ⟩) Tm hTm hxv
   have hT₀θ : ∀ u, IsThetaFunO c.ψ s.V s'.V (T₀ u) := fun u => by
     obtain ⟨x', -, -, hx'⟩ := hT₀pure u; exact hx'.2.1
@@ -253,7 +255,7 @@ theorem GlobalTheory.TwistLinModel.linearModel_at_twist : ∀ D : D7, ForStepQ D
     exact congrArg (fun f => pureTensorO c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) f P) hfin2
   · intro inst1 inst2 ν hν g hg1
     have hri := hre.2.2.2 ν hν.1
-    obtain ⟨C₁, hC₁⟩ := GlobalTheory.T.fockVector_pureTensor_coefficient_splits_trivial_place D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω (cart s.M) (cart s'.M) s.Λ s'.Λ f₀
+    obtain ⟨C₁, hC₁⟩ := _root_.GlobalTheory.FockCoeffSplit.coeff_split D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω (cart s.M) (cart s'.M) s.Λ s'.Λ f₀
       m X hp.weil hθ hbase hX (onb s.M) (onb s'.M) x hxoff.1 v P g hg1
     have hco := (GlobalTheory.PlaceCoord.isCoord_mapCo D s.V s'.V s.Λ s'.Λ hsf.selfDual hsf'.selfDual v φ e he (frCo φ s.β) (frCo φ s'.β)).1
     have hI := GlobalTheory.TwistLinModel.placeModel_isometry_borel D c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) s.Λ s'.Λ f₀ m X

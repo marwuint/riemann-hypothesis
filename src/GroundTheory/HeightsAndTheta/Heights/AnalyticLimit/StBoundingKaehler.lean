@@ -12,10 +12,4 @@ def BoundingKaehler.Statement : Prop :=
     ∃ Om : KaehlerForm A, ∀ i,
       LeviLe A Set.univ 1 (th i) 1 Om.pot ∧ LeviLe A Set.univ (-1) Om.pot 1 (th i)
 
-section Inhabitants
-
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData)
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.AnalyticLimit

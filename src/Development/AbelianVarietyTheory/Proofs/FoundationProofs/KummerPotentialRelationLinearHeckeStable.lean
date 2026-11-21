@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerPotentialIncrementLinearLawsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerPotentialIncrementLinearLaws
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 
@@ -32,17 +32,17 @@ variable (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
 theorem rel_add {b b' : X.Fn l} {F F' : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (h : Rel X l b F) (h' : Rel X l b' F') :
     Rel X l (b + b') (F + F') := by
   intro u
-  have := (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).1 _ _ _ _ (h u) (h' u)
+  have := (_root_.GlobalTheory.KZ.H3.isKummerPotentialIncrement_linear_laws Ω ε X l).1 _ _ _ _ (h u) (h' u)
   convert this using 1 <;> first | rfl | (funext z; simp)
 
 theorem rel_zero : Rel X l 0 0 := by
   intro u
-  convert (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.1 using 1 <;> first | rfl | (funext z; simp)
+  convert (_root_.GlobalTheory.KZ.H3.isKummerPotentialIncrement_linear_laws Ω ε X l).2.1 using 1 <;> first | rfl | (funext z; simp)
 
 theorem rel_smul (c : ℤ_[l]) {b : X.Fn l} {F : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (h : Rel X l b F) :
     Rel X l (c • b) (c • F) := by
   intro u
-  have := (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.2.1 c _ _ (h u)
+  have := (_root_.GlobalTheory.KZ.H3.isKummerPotentialIncrement_linear_laws Ω ε X l).2.2.1 c _ _ (h u)
   convert this using 1 <;> first | rfl | (funext z; simp)
 
 theorem rel_act (m : Matrix (Fin 2) (Fin 2) ℤ) {b : X.Fn l} {F : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (h : Rel X l b F) :
@@ -56,7 +56,7 @@ theorem rel_act (m : Matrix (Fin 2) (Fin 2) ℤ) {b : X.Fn l} {F : ℂ → MvPol
   show R1 X l (X.kmap l (X.sl (toGQ m)).toRingEquiv (b (mZl l m *ᵥ u))) _
   rw [e]
   by_cases hm : 0 < m.det
-  · exact (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.2.2 m _ _ hm (h _)
+  · exact (_root_.GlobalTheory.KZ.H3.isKummerPotentialIncrement_linear_laws Ω ε X l).2.2.2 m _ _ hm (h _)
   · have h1 : toGQ m = 1 := by unfold toGQ; rw [dif_neg hm]
     rw [h1, kmap_eq_self X l _ (fun f => X.sl_one f)]
     simp only [mob_one']

@@ -48,9 +48,6 @@ def iF (F : Type) [Field F] [NumberField F] : Af F →ₗ[F] AF F where
         | (show (0 : Ainf F) = (algebraMap F (AF F) c * ((0, x) : AF F)).1; show (0 : Ainf F) = (algebraMap F (AF F) c).1 * 0; simp)
     · show c • x = (c • ((0, x) : AF F)).2
       rfl
-example (F : Type) [Field F] [NumberField F] (x : Ainf F) : fstA F (iI F x) = x := rfl
-example (F : Type) [Field F] [NumberField F] (x : Ainf F) : sndA F (iI F x) = 0 := rfl
-
 def jI (D : D7) : Ainf D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D := TensorProduct.map (iI D.host.F) LinearMap.id
 def jF (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D := TensorProduct.map (iF D.host.F) LinearMap.id
 

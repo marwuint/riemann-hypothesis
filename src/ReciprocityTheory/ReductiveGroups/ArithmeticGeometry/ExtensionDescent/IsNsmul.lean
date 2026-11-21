@@ -109,34 +109,7 @@ def tau (ψW : PsiOn D W) (a b : D.X) :=
 
 end PsiOn
 
-def GtPt.IsIotaW {D : DegPre R} {W : (Spec (CommRingCat.of R)).Opens} (ψW : PsiOn D W)
-    {T : Over W.toScheme} (y : D.X) (g : GtPt D (overW W T)) : Prop :=
-  g.b = DegPre.cT D (overW W T) y ∧ ∀ χ, LB.Gen.Corr D.P.L _ _ _ _ (g.s χ)
-    (LB.pullGen D.P.L _ _ (ψW.tau y χ) T.hom)
-
-structure QkPtW (ψW : PsiOn D W) (k : ℕ) (T : Over W.toScheme) where
-  y : D.X
-  g : GtPt D (overW W T)
-  eq : ∃ h : GtPt D (overW W T), GtPt.IsNsmul k g h ∧ GtPt.IsIotaW ψW y h
-
 namespace QkPtW
-
-variable {D W} {ψW : PsiOn D W} {k : ℕ} {T : Over W.toScheme}
-
-def Equiv (p p' : QkPtW D W ψW k T) : Prop :=
-  ∃ z : D.X, p'.y = p.y + k • z ∧
-    ∃ h : GtPt D (overW W T), GtPt.IsIotaW ψW z h ∧ GtPt.IsAdd p.g h p'.g
-
-def IsAdd (p p' p'' : QkPtW D W ψW k T) : Prop :=
-  p''.y = p.y + p'.y ∧ GtPt.IsAdd p.g p'.g p''.g
-
-def IsPull {T' : Over W.toScheme} (h : T' ⟶ T) (p : QkPtW D W ψW k T) (p' : QkPtW D W ψW k T') :
-    Prop :=
-  p'.y = p.y ∧ GtPt.IsPull h.left p.g p'.g
-
-def IsPullF (F : Type) [Field F] [Algebra (FractionRing R) F]
-    (x : Spec (CommRingCat.of F) ⟶ T.left) (p : QkPtW D W ψW k T) (p' : QkPt D F k) : Prop :=
-  p'.y = p.y ∧ GtPt.IsPullF F x p.g p'.g
 
 end QkPtW
 

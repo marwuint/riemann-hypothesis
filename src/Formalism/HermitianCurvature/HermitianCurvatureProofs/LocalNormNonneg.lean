@@ -10,28 +10,6 @@ namespace Formalism.FourierDecayAlt.P.PBA
 
 open Formalism.FourierDecayAlt NumberField
 
-section defeq
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
-  [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
-  [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq)
-  (RR : Fin S.f → ℝ → ℕ → List C.Letter → C.LPt → C.LPt → ℂ)
-
-example : (KB.withRR S RR).W = S.W := rfl
-example : (KB.withRR S RR).base.Wall = S.base.Wall := rfl
-example : (KB.withRR S RR).base.cnt = S.base.cnt := rfl
-example : (KB.withRR S RR).base.K = S.base.K := rfl
-example : (KB.withRR S RR).base.Ntop = S.base.Ntop := rfl
-example : (KB.withRR S RR).base.av = S.base.av := rfl
-example : (KB.withRR S RR).base.vol = S.base.vol := rfl
-example : (KB.withRR S RR).base.La = S.base.La := rfl
-example : (KB.withRR S RR).base.wt = S.base.wt := rfl
-example : (KB.withRR S RR).base.f = S.base.f := rfl
-example : (KB.withRR S RR).base.r = S.base.r := rfl
-example (v : Fin S.f) ε i a p q : (KB.withRR S RR).gramLoc v ε i a p q =
-    ((√(C.nLoc S.G.k S.G.r S.fr (S.pd v).G p) * √(C.nLoc S.G.k S.G.r S.fr (S.pd v).G q) : ℝ) : ℂ) *
-      RR v ε i a p q := rfl
-end defeq
-
 theorem extract_prob {ι X : Type} [Fintype ι] (U : Finset X) (θ : ℕ → ι → X → ℝ)
     (hθ : ∀ n A, TB.IsProb U (θ n A)) :
     ∃ (φ : ℕ → ℕ) (θ' : ι → X → ℝ), StrictMono φ ∧ (∀ A, TB.IsProb U (θ' A)) ∧

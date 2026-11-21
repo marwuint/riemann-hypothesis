@@ -120,31 +120,6 @@ def GLast (D : D7) : Prop :=
       biComb ψ B.A W X c₁ c₂ fun u => o''.boxT W (T₂ O₂) fun w => T₁ O₁ ((B.o.resS W).symm
         (u, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj B.L W ((rat τ : Mx D B.L.rank L''.rank) * w)))
 
-open Classical in
-
-def GCore1 (D : D7) : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν →
-  ∀ (p : Place D k) (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t]
-    (ψ : AddChar (AF D.host.F) ℂ), p.IsChar ψ S.ψ → ∀ (j c : ℕ) (H : j + 1 + 1 + c = s) (σ : ℕ) (B : BesLev D (σ + 1))
-    (J : JacLev D (σ + 1)) (B' : BesLev D σ) (F : Dbl p B J B' (XIx (Fin κ) t j) (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t (j + 1 + 1)) c)
-    (s₁ : StepBF ψ B J) (C₀ : Frame k B.V₀.rank (XIx (Fin κ) t j ⊕ Unit)), p.IsCoreFrame B (F.s * (S.ϖ : k) ^ (σ + 1)) F.F₀ C₀ →
-  ∀ T₁, p.IsModel ψ F.G₀ F.G₁ T₁ → ∃ T₀, p.IsModel ψ C₀ F.F₁ T₀ ∧ ∀ Φ₁ Ψ, Φ₁.1 = (S.T t).Phi j (c + 1 + 1) (by omega) →
-    (∀ x, Ψ.1 x = (S.T t).entry S.ψ ν j (c + 1) (by omega) 1 1 x.toCols₁ * if ∀ r, x r (Sum.inr ()) ∈ 𝒪[k] then 1 else 0) →
-    flatBF s₁ (T₁ Φ₁) = T₀ Ψ
-
-open Classical in
-
-def GCore2 (D : D7) : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν →
-  ∀ (p : Place D k) (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t]
-    (ψ : AddChar (AF D.host.F) ℂ), p.IsChar ψ S.ψ → ∀ (j c : ℕ) (H : j + 1 + 1 + c = s) (σ : ℕ) (B : BesLev D (σ + 1))
-    (J : JacLev D (σ + 1)) (B' : BesLev D σ) (F : Dbl p B J B' (XIx (Fin κ) t j) (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t (j + 1 + 1)) c)
-    (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (C₂ : Frame k B'.V₀.rank (XIx (Fin κ) t (j + 1 + 1) ⊕ Unit)),
-    p.IsCoreFrame B' (F.s * p.xi * (S.ϖ : k) ^ (σ + 1)) F.F₂ C₂ →
-  ∀ T₂, p.IsModel ψ F.G₁ F.G₂ T₂ → ∃ T₀, p.IsModel ψ F.F₁ C₂ T₀ ∧ ∀ Φ₂ Ψ, Φ₂.1 = (S.T t).Phi (j + 1) (c + 1) (by omega) →
-    (∀ x, Ψ.1 x = (S.T t).entry S.ψ ν (j + 1) c H 1 1 x.toRows₁ * if ∀ r, x (Sum.inr ()) r ∈ 𝒪[k] then 1 else 0) →
-    flatFB s₂ (T₂ Φ₂) = T₀ Ψ
-
 variable {D : D7} {u : D.what₂.Word}
 
 def MovedTo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (V : HSp D) (g : GA D V) (β : GL (Fin V.rank) (Lev.EAf D))
@@ -229,20 +204,6 @@ structure PinGBy (G : ∀ PP : d.c.Pg, GAt d τ PP.1) (cG : ∀ j, WO (D.sp.X j)
   supp : ∀ j, ∀ w ∈ (cG j).support, GlobalTheory.FinPl.MxAt (· ∈ d.c.S) w
   prod : ∀ j, j < D.R.m → ∀ f, IsThetaFunO d.c.ψ _ _ f → comb d.c.ψ _ _ (cG j) f =
     d.c.Pg.attach.toList.foldr (fun PP f' => comb d.c.ψ _ _ ((G PP).cg j) f') f
-
-variable (d τ) in
-
-def PinG (cG : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ) : Prop := ∃ G, PinGBy (d := d) (τ := τ) G cG
-
-def GAt.Vec {PP : Formalism.L2.DIV.Pl D.host.E} (G : GAt d τ PP) : Prop :=
-  (∀ j c (H : j + c = G.s) P, ∃ Tm, (ofSplit G.q).IsModel d.c.ψ (G.FY j (c + 1) (by omega)) (G.FY (j + 1) c (by omega)) Tm ∧
-    ∀ Φ, Φ.1 = (G.S.T (Fin D.R.t)).Phi j c H → (d.p j).ω (d.t j, d.t (j + 1)) ((d.p j).pt P) = Tm Φ) ∧
-  ∀ h P, ∃ Tm, (ofSplit G.q).IsModel d.c.ψ (G.FY (G.s + 1) 0 rfl) G.FT Tm ∧
-    ∀ Φ, Φ.1 = (G.S.T (Fin D.R.t)).PhiTop → (d.pT G.s h).ω (d.t (G.s + 1), 1) ((d.pT G.s h).pt P) = Tm Φ
-
-def GAt.Lev {PP : Formalism.L2.DIV.Pl D.host.E} (G : GAt d τ PP) : Prop :=
-  ∀ j c (hc : j + c = G.s + 1) x xk, (ofSplit G.q).IsLoc (G.FY j c hc) x xk → xk ∈ ((G.S.T (Fin D.R.t)).lev j c hc).J →
-    (d.t j)⁻¹ * x * d.t j ∈ d.lev j
 
 end GlobalTheory.LocMod
 end

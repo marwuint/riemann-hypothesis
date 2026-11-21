@@ -10,10 +10,6 @@ namespace GlobalTheory
 
 namespace SatHilb
 
-attribute [local instance] MvPolynomial.gradedAlgebra
-
-variable {ι K : Type*} [Field K]
-
 end SatHilb
 
 open MvPolynomial Filter in

@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFam
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OneLeftSpMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationDeterminesChartStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationVanishingConstantsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartStandardSmoothStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationDeterminesChart
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationVanishingConstants
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartStandardSmooth
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 
@@ -15,7 +15,7 @@ open GlobalTheory.CompanionTheory.Ar.Flat.ExpChart GlobalTheory.HolHom in
 
 theorem exp_chart : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)), Smooth G.hom → IsHolPts B ψ → ∀ b₀ ∈ B, ∃ (V : G.left.Opens) (t : Fin g → Γ(G.left, V)) (N : ℕ) (f : Fin N → Γ(G.left, V)) (ε : ℝ) (Ψ : ∀ b : Fin n → ℂ, (Fin g → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G)), 0 < ε ∧ ball b₀ ε ⊆ B ∧ IsHolTo (ball b₀ ε ×ˢ ball (0 : Fin g → ℂ) ε) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (Ψ bz.1 bz.2).left) ∧ (∀ b ∈ ball b₀ ε, Ψ b 0 = 1 ∧ (∀ a : Fin g, IsDerivAt0 (fun z => (Ψ b z).left) (Pi.single a 1) (spMap (dualMap (ψ b)) ≫ (M.pt (Pi.single a 1)).left)) ∧ ∀ z ∈ ball (0 : Fin g → ℂ) ε, ⊤ ≤ (Ψ b z).left ⁻¹ᵁ V ∧ ∀ a, valAt' (Ψ b z).left V (t a) = z a) ∧ ∃ δ : ℝ, 0 < δ ∧ ∀ b ∈ ball b₀ δ, ∀ x : Over.mk (spMap (ψ b)) ⟶ G, ⊤ ≤ x.left ⁻¹ᵁ V → (∀ j, ‖valAt' x.left V (f j) - valAt' (Ψ b₀ 0).left V (f j)‖ < δ) → (fun a => valAt' x.left V (t a)) ∈ ball (0 : Fin g → ℂ) ε ∧ x = Ψ b (fun a => valAt' x.left V (t a)) := by
   intro R _ G _ _ g n M B ψ hsm hB b₀ hb₀
-  obtain ⟨V, t, ρ, hV, hρ, hss, hθ, hrat⟩ := GlobalTheory.T.exists_exp_chart_standard_smooth R G g M (ψ b₀) hsm
+  obtain ⟨V, t, ρ, hV, hρ, hss, hθ, hrat⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.ExpChart.Coords.exists_coords R G g M (ψ b₀) hsm
   letI : Algebra R Γ(G.left, V) := (cst G.hom V).toAlgebra
   haveI : Algebra.IsStandardSmooth R Γ(G.left, V) := hss
   have halg : ∀ r, algebraMap R Γ(G.left, V) r = cst G.hom V r := fun _ => rfl
@@ -41,7 +41,7 @@ theorem exp_chart : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [Is
   have hD₀ : ∀ D : Γ(G.left, V) →+ ℂ, (∀ r, D (algebraMap R _ r) = 0) →
       (∀ x y, D (x * y) = χ₀ x * D y + χ₀ y * D x) → (∀ c, D (t c) = 0) → D = 0 := by
     intro D hc hl hz
-    obtain ⟨c, hcD, -⟩ := GlobalTheory.T.derivation_vanishing_constants R G g M (ψ b₀) hsm V hV h₀ D hc (fun f f' => by
+    obtain ⟨c, hcD, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.ExpChart.lie_der_basis R G g M (ψ b₀) hsm V hV h₀ D hc (fun f f' => by
       rw [hχv, hχv]; exact hl f f')
     have hc0 : ∀ a, c a = 0 := fun a => by
       have := hcD (t a)
@@ -59,7 +59,7 @@ theorem exp_chart : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [Is
     · rw [hl, hχv, hχv]
     · rw [hD]; exact (hθ (ψ b₀) hρ).2.2 c c'
   obtain ⟨N, f, ε, δ, Ψa, hε, hδ, hεB, hΨ₀, hprop, hdiff, hft, huniq⟩ :=
-    GlobalTheory.T.derivation_determines_chart R Γ(G.left, V) n g B ψ hB.1 hB.2 b₀ hb₀ χ₀ t hχc ht₀ hD₀ hS₀
+    _root_.GlobalTheory.CompanionTheory.Ar.StdSmoothChart.exists_sections R Γ(G.left, V) n g B ψ hB.1 hB.2 b₀ hb₀ χ₀ t hχc ht₀ hD₀ hS₀
 
   have hev : ∀ᶠ b in 𝓝 b₀, ψ b ρ ≠ 0 ∧
       ∀ j, ‖valAt' (1 : Over.mk (spMap (ψ b)) ⟶ G).left V (f j) - χ₀ (f j)‖ < δ := by

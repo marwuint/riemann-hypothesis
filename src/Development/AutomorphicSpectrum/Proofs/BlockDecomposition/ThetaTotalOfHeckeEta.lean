@@ -7,14 +7,14 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneThetaTot
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StepTotalOfProductsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductThetaOfSchwartzTensorStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductMeasureStatementStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzTensorDensityStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilRepresentationContinuityStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilRepresentationKFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrbitMajorantStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwasawaCompactnessStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneMajorantStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzTensorDensity
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilRepresentationContinuity
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilRepresentationKFinite
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrbitMajorant
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwasawaCompactness
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneMajorant
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EuclideanTotalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FockTotalOfEuclideanStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FockTotalOfEuclidean
 
 noncomputable section
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct Topology
@@ -105,9 +105,9 @@ theorem thTotal_of (h0 : ZeroTotal) (h1 : OneTotal) (hS : StepTotal) : HeckeEta 
 
 theorem thTotal : HeckeEta → ThTotal :=
   thTotal_of GlobalTheory.T.zero_coefficient_total
-    (GlobalTheory.T.rank_one_theta_total GlobalTheory.T.weil_representation_continuity (GlobalTheory.T.rank_one_majorant GlobalTheory.T.weil_representation_continuity GlobalTheory.T.weil_representation_K_finite GlobalTheory.T.orbit_majorant GlobalTheory.T.iwasawa_compactness)
-      (GlobalTheory.T.fock_total_of_euclidean GlobalTheory.T.euclidean_total))
-    (GlobalTheory.T.step_total_of_products (GlobalTheory.T.product_theta_of_schwartz_tensor GlobalTheory.T.schwartz_tensor_density) GlobalTheory.T.product_measure_statement)
+    (GlobalTheory.T.rank_one_theta_total _root_.GlobalTheory.CompanionTheory.ThTot.weilCont (_root_.GlobalTheory.CompanionTheory.ThTot.rank_one_majorant_of_parts _root_.GlobalTheory.CompanionTheory.ThTot.weilCont _root_.GlobalTheory.CompanionTheory.ThTot.weilKFin _root_.GlobalTheory.CompanionTheory.ThTot.orbitMaj _root_.GlobalTheory.CompanionTheory.ThTot.iwaCpt)
+      (_root_.GlobalTheory.CompanionTheory.ThTot.fockTotal_of_eucTotal GlobalTheory.T.euclidean_total))
+    (GlobalTheory.T.step_total_of_products (GlobalTheory.T.product_theta_of_schwartz_tensor _root_.GlobalTheory.CompanionTheory.ThTot.SchwT.schwTensor) GlobalTheory.T.product_measure_statement)
 
 end GlobalTheory.CompanionTheory.ThTot
 

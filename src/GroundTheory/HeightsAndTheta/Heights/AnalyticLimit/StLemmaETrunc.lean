@@ -19,10 +19,4 @@ def LemmaETrunc.Statement : Prop :=
       (∀ x, -(C₁ * Real.log R + 2) ≤ v x ∧ v x ≤ 0) ∧
       ∃ c : ℝ, ∀ x ∈ Yo, r x < R → v x = u x + c
 
-section Inhabitants
-
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLinePairSection projLine_isSmoothPotential projLine_isHolomorphicSection)
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.AnalyticLimit

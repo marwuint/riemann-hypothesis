@@ -4,8 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageS
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRealRel
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.MarkingValueGaloisInvariantStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierLabelMarkedFaceBoundStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierDimFanCellExistsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFanMarkedFormUniqueInCell
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MarkValEqZeroOrOne
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierLabelMarkedFaceBound
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFanExistsMarkedFormInCell
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierDimFanCellExists
 
 noncomputable section
 
@@ -29,11 +32,11 @@ theorem exists_markFun_props_gen : ∀ (O : Type) [CommRing O] [IsDedekindDomain
   intro X _ _ _ _ hX
   refine ⟨fun β _ _ => ?_, fun β _ _ h1 => (mk β h1).2.2.1, fun β _ _ h1 => (mk β h1).2.2.2.1,
     fun m v hv hle β _ _ β' _ _ h1 h1' hc hc' =>
-      GlobalTheory.T.isMarked_unique_of_inRCone O bar hb q ψ lab i hD hψ hlab X hX m v hv hle β β' (mk β h1) (mk β' h1') hc hc',
+      _root_.GlobalTheory.CompanionTheory.Ar.Fan.MarkedFaces.eq_of_isMarked_of_inRCone O bar hb q ψ lab i hD hψ hlab X hX m v hv hle β β' (mk β h1) (mk β' h1') hc hc',
     fun m v hv β hβ hp hc hl => ?_⟩
   · rw [ev]
     split_ifs <;> simp
-  · obtain ⟨β₀, h0, hc0⟩ := GlobalTheory.T.exists_isMarked_inRCone_of_isCell_of_evalZ_eq O bar hb q ψ lab i hD hψ hlab X hX m v hv β hβ hp hc hl
+  · obtain ⟨β₀, h0, hc0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.MarkedRayInCone.exists_isMarked_inRCone O bar hb q ψ lab i hD hψ hlab X hX m v hv β hβ hp hc hl
     exact ⟨β₀, h0.1, h0.2.1, by rw [ev, if_pos h0], hc0⟩
 
 end GlobalTheory.CompanionTheory.Ar.Fan.MarkingFunction

@@ -289,13 +289,6 @@ theorem mapHom_app_constOn (U : (scheme W).Opens) (r : R) :
 
 end BaseChange
 
-example (hP : IsUnimodularSol ((⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ).map (RingHom.id ℚ)) ![2, -5, 8])
-    (h : ⊤ ≤ ptHom _ _ _ hP ⁻¹ᵁ coordOpen _ 2) :
-    evalPt (ptHom _ _ _ hP) _ h (ratio _ 2 0) = 1 / 4 := by
-  have := evalPt_ptHom_ratioOn_mul _ _ hP le_rfl h 0
-  simp only [Matrix.cons_val_zero, Matrix.cons_val] at this
-  linarith
-
 end WeierstrassCurve
 
 end GlobalTheory

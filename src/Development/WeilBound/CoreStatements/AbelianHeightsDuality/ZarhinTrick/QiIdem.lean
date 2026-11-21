@@ -1,5 +1,5 @@
 import Mathlib
-import PositivityTheory.PublishedTheorems.WeilRepresentations.ZariskiDensity.QiCoreDefs
+import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.QiCoreDefs
 
 set_option autoImplicit false
 

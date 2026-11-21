@@ -1,8 +1,15 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerCanonicalDivisor
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.Hypotheses2
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ExistsKodairaSpencerComparisonLogPole
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerCanonicalDivisorStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GrothendieckDeformation
+import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
+import Development.AbelianVarietyTheory.Definitions.Divisors.WellChosen
+import Development.AbelianVarietyTheory.Definitions.Divisors.P22
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 
 section
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
@@ -36,15 +43,15 @@ theorem exists_log_pole_along_boundary (hP : _root_.GlobalTheory.CovTop.Hypothes
           ((L₀ TF.X Z (FlagTan.kap Dw)).pull (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)).σ)) z
           (i, flagIdx (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)) _ k) ho hi ω₀.ω = ev z W hz u := by
   obtain ⟨i, hi⟩ := exists_chart (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)).K.isLB y
-  obtain ⟨U, n, e₀, v, hyU, hv₀⟩ := GlobalTheory.T.exists_lieEigenBasis_near_boundaryFlagSpace_point E H Dw l Xo c TF Z hF y
-  obtain ⟨e, W, k, L, N, hv, hyW, hWV, hc⟩ := GlobalTheory.T.exists_bigCell_chartFrame_eigenbasis E H Dw l Xo c TF Z U n e₀ v hv₀ y hyU V hy
-  obtain ⟨ε, b, hb⟩ := GlobalTheory.T.exists_logKS_symPair_basis_alt E H Dw l Xo c TF U n e v _ hv.1 hv.2.1 hv.2.2
-  obtain ⟨x, U', hU', hyU', hx, hbd⟩ := GlobalTheory.T.exists_coordinates_logVectorFields_determinant E H Dw l Xo c TF U b _ hyU
-  have het := GlobalTheory.T.etale_bigCellCoordinates_flagSpace E H Dw l Xo c TF Z hF U n e v hv W k L N hc
+  obtain ⟨U, n, e₀, v, hyU, hv₀⟩ := _root_.GlobalTheory.LogPole.exists_eigBasis_near E H Dw l Xo c TF Z hF y
+  obtain ⟨e, W, k, L, N, hv, hyW, hWV, hc⟩ := _root_.GlobalTheory.LogPole.exists_isCell_near E H Dw l Xo c TF Z U n e₀ v hv₀ y hyU V hy
+  obtain ⟨ε, b, hb⟩ := _root_.GlobalTheory.LogKSDiv.exists_logKS_symPair_basis E H Dw l Xo c TF U n e v _ hv.1 hv.2.1 hv.2.2
+  obtain ⟨x, U', hU', hyU', hx, hbd⟩ := _root_.GlobalTheory.LogPole.exists_coord_logDet E H Dw l Xo c TF U b _ hyU
+  have het := _root_.GlobalTheory.CellEtale.etale_cellCoord E H Dw l Xo c TF Z hF U n e v hv W k L N hc
   obtain ⟨s, hs, hcmp⟩ := _root_.GlobalTheory.T.kodaira_spencer_comparison_along_boundary hP E H Dw l Xo c TF
   let o : Fin Dw.dim ≃ HIx Dw (psiSet H) :=
     (Fintype.equivFinOfCardEq (FlagTan.card_HIx (FlagTan.isHalf_psiSet H))).symm
-  obtain ⟨a, ha, hhor⟩ := GlobalTheory.T.logKodairaSpencer_det_eq_const_mul_horizontal E H Dw l Xo c TF s hs hcmp hKS U n e v hv ε b hb o
+  obtain ⟨a, ha, hhor⟩ := _root_.GlobalTheory.LogPole.logDet_eq_hor E H Dw l Xo c TF s hs hcmp hKS U n e v hv ε b hb o
   obtain ⟨W', hW'a, hyW', hW'⟩ := Opens.isBasis_iff_nbhd.1 (Y₀ TF.X Z).isBasis_affineOpens
     (show y ∈ W ⊓ (toBase TF Z ⁻¹ᵁ U'.1 ⊓ (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)).K.bundle.U i) from ⟨hyW, hyU', hi⟩)
   have hW'W : W' ≤ W := hW'.trans inf_le_left
@@ -54,7 +61,7 @@ theorem exists_log_pole_along_boundary (hP : _root_.GlobalTheory.CovTop.Hypothes
   let G : Fin Dw.dim ⊕ VIx Dw → Γ(Y₀ TF.X Z, W) :=
     Sum.elim (fun i => ((toBase TF Z).appLE U.1 W hc.2.1).hom (x i)) (cellCoord N)
   let g : Fin (FlagTan.dimFlag Dw) → Γ(Y₀ TF.X Z, W') := fun a => resG _ hW'W (G (O a))
-  have hfr := GlobalTheory.T.isTopFormFrame_base_coordinates_add_variables_etale c.F TF.Y.X (Y₀ TF.X Z) TF.Y.s (toBase TF Z) (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)).str
+  have hfr := _root_.GlobalTheory.TopFrameEt.isFrame_etale c.F TF.Y.X (Y₀ TF.X Z) TF.Y.s (toBase TF Z) (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)).str
     ((Category.assoc _ _ _).trans (Category.id_comp _).symm) Dw.dim (FlagTan.dimFlag Dw) TF.smooth (VIx Dw) O U.1 U'.1 hU'
     U.2 W W' hW'W hc.1 hW'a hc.2.1 hW'U (cellCoord N) het x hx
   have hJ : IsUnit ((Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)).K.jacobian i hW'i g) :=
@@ -62,7 +69,7 @@ theorem exists_log_pole_along_boundary (hP : _root_.GlobalTheory.CovTop.Hypothes
   haveI := TF.smooth
   haveI : Smooth TF.Y.s := SmoothOfRelativeDimension.smooth Dw.dim TF.Y.s
   haveI : IsLocallyNoetherian TF.Y.X := LocallyOfFiniteType.isLocallyNoetherian TF.Y.s
-  obtain ⟨r₁, r₂⟩ := GlobalTheory.T.reducedEquation_pullback_unitLocus_divides_vanishing TF.Y.X (Y₀ TF.X Z) (toBase TF Z) (VIx Dw) (LogKS.interior TF.Y) U U' hU' W hc.1 hc.2.1
+  obtain ⟨r₁, r₂⟩ := _root_.GlobalTheory.EtaleReducedEq.reducedEq_pullback_etale TF.Y.X (Y₀ TF.X Z) (toBase TF Z) (VIx Dw) (LogKS.interior TF.Y) U U' hU' W hc.1 hc.2.1
     (cellCoord N) het _ hbd
   let ac : Γ(Y₀ TF.X Z, W') := algX (str₀ TF.X Z) W' (a : c.F)
   have hac : IsUnit ac := (Ne.isUnit (Rat.cast_ne_zero.2 ha)).map _
@@ -84,7 +91,7 @@ theorem exists_log_pole_along_boundary (hP : _root_.GlobalTheory.CovTop.Hypothes
   have hk : ⊤ ≤ (z ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k := FlagMod.le_preimage_map _ hc.2.2.1 hzW
   obtain ⟨_, hch⟩ := exists_chartFr (z ≫ inc₀ TF.X Z) hU₀
   obtain ⟨Q, hQ⟩ := hch k hk
-  obtain ⟨P₀, P, t, hU, hQP, ht, hP₀, hB⟩ := GlobalTheory.T.exists_bigCell_framedPoints_triangular_frameChange E H Dw l Xo c TF Z U n e v hv W k L N hc K z hzW hk Q hQ
+  obtain ⟨P₀, P, t, hU, hQP, ht, hP₀, hB⟩ := _root_.GlobalTheory.LogPole.exists_cellFrames E H Dw l Xo c TF Z U n e v hv W k L N hc K z hzW hk Q hQ
   have ez : z ≫ inc₀ TF.X Z = TF.X.ptY P := FlagMod.FlagCover.eq_ptY (hQ.lies.frBor hQP)
   obtain ⟨w, hw⟩ := (hKS K P).exists_isTanFrame
   have ezM : z ≫ toFlag (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)) = z ≫ inc₀ TF.X Z := by rw [eM]
@@ -95,7 +102,7 @@ theorem exists_log_pole_along_boundary (hP : _root_.GlobalTheory.CovTop.Hypothes
   have hkM := ezM ▸ hk
   have key := ω₀.isKS K P Q t w z zw i k W' hW'i g hz (fun b => hzO b W' hz) hkM ho hi (chartFr_congr ezM.symm hkM hQ)
     hQP hw hzw
-  obtain ⟨v₁, v₂⟩ := GlobalTheory.T.vertical_tangentFrame_jacobian_det_one E H Dw l Xo c TF Z U n e v hv W k L N hc K z hzW P₀ P hU ez hP₀ hB (fun b => w (.inr b))
+  obtain ⟨v₁, v₂⟩ := _root_.GlobalTheory.LogPole.vert_jac_det_one E H Dw l Xo c TF Z U n e v hv W k L N hc K z hzW P₀ P hU ez hP₀ hB (fun b => w (.inr b))
     (fun b => zw (.inr b)) (fun b => hzO _ W hzW) hw.2 (fun b => hzw' _)
   have eb : ∀ b, (show Sp (DualNumber K) ⟶ Y₀ TF.X Z from zw b) ≫ toBase TF Z = frX (w b) ≫ TF.Y.j := fun b => by
     rw [← Category.assoc, hzw', (TF.X.lies_ptY _).1]

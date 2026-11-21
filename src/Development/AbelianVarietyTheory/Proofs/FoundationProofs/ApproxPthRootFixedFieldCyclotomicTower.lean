@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrobeniusSurjectiveModPrimeCyclotomicKummerTowerStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemAdjoinDivOfFixedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EqUnitMulPowCyclotomicUniformizerStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrobeniusSurjectiveModPrimeCyclotomicKummerTower
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemAdjoinDivOfFixed
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EqUnitMulPowCyclotomicUniformizer
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ApproxPthRootClosedMulDivPowStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationTowerZetaSubOneStatement
 
@@ -51,7 +51,7 @@ theorem approxRoot_fix_tower : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field �
 
   have hgoodB : ∀ x ∈ B, v (p : Ω) ≤ θ * v x → good x := by
     intro x hx hvx
-    obtain ⟨y, hy, z, hz, e⟩ := GlobalTheory.T.frobenius_surjective_mod_prime_cyclotomicKummerTower p Ω T x hx
+    obtain ⟨y, hy, z, hz, e⟩ := _root_.GlobalTheory.K5.frob_surj_adjoin_tower p Ω T x hx
     refine ⟨y, hBF y hy, ?_⟩
     have : x - y ^ p = (p : Ω) * z := by rw [e]; ring
     rw [this, map_mul]
@@ -89,7 +89,7 @@ theorem approxRoot_fix_tower : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field �
     by_cases hb0 : b = 0
     · refine ⟨0, F.zero_mem, ?_⟩
       rw [hb0, zero_pow hpp.ne_zero, sub_zero, map_zero]; exact zero_le
-    obtain ⟨n, k, hn, u, hu, u', hu', e, rfl⟩ := GlobalTheory.T.eq_unit_mul_pow_cyclotomic_uniformizer p Ω hclo T b hb hb0
+    obtain ⟨n, k, hn, u, hu, u', hu', e, rfl⟩ := _root_.GlobalTheory.K5.UnitPow.eq_unit_mul_pow p Ω hclo T b hb hb0
     have h1 := hunit u hu u' hu' e
     have h2 := (GlobalTheory.T.approxPthRoot_closed_mul_div_pow Ω v p F θ hθ1 _ _ (hzeta n hn) (hzeta n hn)).2.2 k
     exact (GlobalTheory.T.approxPthRoot_closed_mul_div_pow Ω v p F θ hθ1 _ _ h1 h2).1
@@ -106,7 +106,7 @@ theorem approxRoot_fix_tower : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field �
       exact (Basic.mem_gn T n g).2
         ⟨hg _ (Or.inl ⟨n, rfl⟩), hg _ (Or.inr ⟨n, rfl⟩)⟩
     exact hx ⟨g, hgm⟩
-  obtain ⟨b, hb, c, hc, hc0, rfl⟩ := GlobalTheory.T.exists_div_mem_adjoin_of_fixed (O0 p) Ω hclo.inj S x hfix
+  obtain ⟨b, hb, c, hc, hc0, rfl⟩ := _root_.GlobalTheory.mem_adjoin_div_of_fixed (O0 p) Ω hclo.inj S x hfix
   exact (GlobalTheory.T.approxPthRoot_closed_mul_div_pow Ω v p F θ hθ1 _ _ (hB b hb) (hB c hc)).2.1 hc0
 
 end GlobalTheory.K5.TopRoots

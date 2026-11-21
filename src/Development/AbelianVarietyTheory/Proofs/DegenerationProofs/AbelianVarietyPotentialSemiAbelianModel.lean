@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableF
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsogenousRetractPolarisedFiniteExtStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PotentialSemiAbelianReductionOfIsogenyStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PotentialSemiAbelianReductionOfRetractStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDvrIntegralClosureFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PotentialSemiAbelianReductionOfIsogeny
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PotentialSemiAbelianReductionOfRetract
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDvrIntegralClosureFinite
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PotentialSemiAbelianModelOfSymmetryHypStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -21,11 +21,11 @@ theorem potModel_isSemiAbelian : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDis
   intro V _ _ _ _ K _ _ _ _ A _ hA
   obtain ⟨L, _, _, _, B, _, Q, g, m, i, r, i', r', hp, hs, hsB, hi, hr, hm, hri, hi', hr', hir, hS⟩ :=
     GlobalTheory.T.exists_isogenous_retract_polarised_finiteExt K A hA
-  obtain ⟨W, _, _, _, _, _, _, _, -, -, -, -, -, hup⟩ := GlobalTheory.T.exists_complete_dvr_integral_closure_finite V K L
+  obtain ⟨W, _, _, _, _, _, _, _, -, -, -, -, -, hup⟩ := _root_.GlobalTheory.SS.exists_complete_dvr_finite_extension V K L
   haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap K L).injective
   letI := Q.grp
   have hQ := GlobalTheory.T.potentialSemiAbelianModel_of_symmetryHyp W L Q hS
-  have hB := GlobalTheory.T.potentialSemiAbelianReduction_of_retract W L B Q.A i' r' hi' hr' hir hQ
+  have hB := _root_.GlobalTheory.SS.potModel_semiAbelian_of_retract W L B Q.A i' r' hi' hr' hir hQ
   have hAL : IsAbelianScheme ((Over.pullback (spMap (algebraMap K L))).obj A) := by
     have := hA.comm
     have := hA.smooth
@@ -36,5 +36,5 @@ theorem potModel_isSemiAbelian : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDis
         smooth := by change Smooth (pullback.snd A.hom _); infer_instance
         proper := by change IsProper (pullback.snd A.hom _); infer_instance
         geomConnected := by change GeometricallyConnected (pullback.snd A.hom _); infer_instance }
-  exact hup A _ (GlobalTheory.T.potentialSemiAbelianReduction_of_isogeny W L _ B g m hAL hp hs hsB i r hi hr hm hri hB)
+  exact hup A _ (_root_.GlobalTheory.SS.potModel_semiAbelian_of_isogeny W L _ B g m hAL hp hs hsB i r hi hr hm hri hB)
 end GlobalTheory.SS

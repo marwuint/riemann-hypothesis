@@ -29,56 +29,13 @@ def DatOk (i : X.Tw) (j : ℕ) (b : Bool) (a : Y.Dat i j b) : Prop :=
 
 variable {Y}
 
-def ExpDat.Max (E : ExpDat Y) : Prop :=
-  ∀ i, ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b (a : Y.Dat i j b), DatOk Y i j b a → a ∈ E.Dat0 i j b
-
 variable (Y)
 
 def ExpDat.all : ExpDat Y where
   Dat0 i j b := {a | DatOk Y i j b a}
   theta_base_equivariant _ _ _ _ ha := ha.1
 
-theorem ExpDat.all_max : (ExpDat.all Y).Max :=
-  fun _ _ _ _ _ ha => ha
-
-theorem ExpDat.all_data_admT4 : admT4 Y (ExpDat.all Y) := by
-  intro i _ j _ b k Q ψ hψ Sg hSg
-  unfold ThPsi
-  rw [Submodule.span_le]
-  intro x hx
-  simp only [Set.mem_iUnion] at hx
-  obtain ⟨a, ha, hxa⟩ := hx
-  exact (hSg ha).2.2.2 k Q ψ hψ hxa
-
 variable {Y}
-
-theorem ExpDat.all_data_isotypicPartsInternalDirectSum {E : ExpDat Y} (h : IsotypicPartsInternalDirectSum Y E) : IsotypicPartsInternalDirectSum Y (ExpDat.all Y) := by
-  intro i hi j hj b
-  obtain ⟨h1, h2, h3, h4, -, -⟩ := h i hi j hj b
-  exact ⟨h1, h2, h3, h4, fun a ha => ha.2.1, fun k Q ψ hψ hu a ha => ha.2.2.1 k Q ψ hψ hu⟩
-
-theorem ExpDat.Max.eq_all {E : ExpDat Y} (hM : E.Max) (hI : IsotypicPartsInternalDirectSum Y E) (hT : admT4 Y E) (i : X.Tw) (hi : X.NonzeroIndexPlace i)
-    (j : ℕ) (hj : j ∈ Finset.Icc 1 D.R.m) (b : Bool) : E.Dat0 i j b = {a | DatOk Y i j b a} := by
-  ext a
-  constructor
-  · intro ha
-    show DatOk Y i j b a
-    unfold DatOk
-    refine ⟨E.theta_base_equivariant i j b a ha, (hI i hi j hj b).2.2.2.2.1 a ha,
-      fun k Q ψ hψ hu => (hI i hi j hj b).2.2.2.2.2 k Q ψ hψ hu a ha, ?_⟩
-    intro k Q ψ hψ x hx
-    have hle := hT i hi j hj b k Q ψ hψ {a} (Set.singleton_subset_iff.mpr ha)
-    exact hle (Submodule.subset_span (Set.mem_biUnion (Set.mem_singleton a) hx))
-  · intro ha
-    exact hM i j hj b a ha
-
-theorem ExpDat.thSub_all (Sg0 : ∀ (i : X.Tw) (j : ℕ) (b : Bool), Set (Y.Dat i j b))
-    (h : ∀ i, ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, ∀ a ∈ Sg0 i j b, DatOk Y i j b a) : ThSub Y (ExpDat.all Y) Sg0 := by
-  intro i j hj b
-  unfold ThJ Th SgJ
-  apply Submodule.span_mono
-  rintro _ ⟨a, ha, rfl⟩
-  exact ⟨a, h i j hj b a ha, rfl⟩
 
 end Formalism.MainNotions.IntegralHeckeForms
 
@@ -146,47 +103,6 @@ def AvRec (D : D7) : Finset (PlE D.host) := (avSet_finite D).toFinset
 theorem mem_avRec {D : D7} (v : PlE D.host) : v ∈ AvRec D ↔ ∃ p ∈ avPrimes D, v ∈ placesOver D.host.E p := by
   simp only [AvRec, AvSet, Set.Finite.mem_toFinset, Set.mem_iUnion, exists_prop]
 
-theorem prime_of_mem_avPrimes {D : D7} {q : ℕ} (hq : q ∈ avPrimes D) : q.Prime := by
-  unfold avPrimes at hq
-  rw [Finset.mem_filter] at hq
-  obtain ⟨hq, hq0⟩ := hq
-  rcases Finset.mem_union.mp hq with hq | hq
-  · simp only [Finset.mem_insert, Finset.mem_image, Finset.mem_univ, true_and] at hq
-    rcases hq with rfl | rfl | rfl | rfl | rfl | rfl | rfl | ⟨u, rfl⟩
-    · norm_num
-    · norm_num
-    · exact D.host.g_prime 0
-    · exact D.host.g_prime 1
-    · exact D.host.pde_prime
-    · exact D.host.pde'_prime
-    · have hS : {p : ℕ | p.Prime ∧ p % (rPrAv D * LevelStarExponents.condE D) = 1 ∧
-          ¬ p ∣ Ideal.absNorm D.host.ccK}.Nonempty := by
-        by_contra hS
-        rw [Set.not_nonempty_iff_eq_empty] at hS
-        exact hq0 (by unfold q0Av; rw [hS, Nat.sInf_empty])
-      exact (Nat.sInf_mem hS).1
-    · exact (D.mem u).A.T_prime
-  · exact Nat.prime_of_mem_primeFactors hq
-
-theorem not_mem_avRec_of_over {D : D7} {v : PlE D.host} {p : ℕ} (hp : p.Prime) (hpav : p ∉ avPrimes D)
-    (hv : v ∈ placesOver D.host.E p) : v ∉ AvRec D := by
-  intro hv'
-  obtain ⟨q, hq, hvq⟩ := (mem_avRec v).mp hv'
-  by_cases hqp : q = p
-  · exact hpav (hqp ▸ hq)
-  have hcop : Nat.Coprime q p := (Nat.coprime_primes (prime_of_mem_avPrimes hq) hp).mpr hqp
-  have h1 : ((Nat.gcd q p : ℤ) : 𝓞 D.host.E) =
-      (q : 𝓞 D.host.E) * (Nat.gcdA q p : 𝓞 D.host.E) + (p : 𝓞 D.host.E) * (Nat.gcdB q p : 𝓞 D.host.E) := by
-    rw [Nat.gcd_eq_gcd_ab]
-    push_cast
-    ring
-  rw [Nat.Coprime.gcd_eq_one hcop, Nat.cast_one, Int.cast_one] at h1
-  have hq' : ((q : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal := hvq
-  have hp' : ((p : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal := hv
-  apply v.isPrime.ne_top
-  rw [Ideal.eq_top_iff_one, h1]
-  exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ hq') (Ideal.mul_mem_right _ _ hp')
-
 open Classical in
 
 def TwGoodOne (D : D7) (I : TwIn D) (i : D.ntw.Tw) (b : Bool) (Q : Finset (PlE D.host)) (k' : ℕ)
@@ -212,10 +128,6 @@ def TwConjAt (D : D7) (C : NChoice D) : Prop :=
     NChoicePack C (D.what₂.places.conj w) = NChoicePack C w ∧
       (D.what₂.places.conj w ≠ w → C.sd (D.what₂.places.conj w) = !C.sd w)
 
-theorem TwConjAt.twI_conj {D : D7} {C : NChoice D} (h : TwConjAt D C) (w : D.what₂.places.Pl)
-    (hw : D.what₂.muAt w ≠ D.what₂.mu0) : C.twI (D.what₂.places.conj w) = C.twI w :=
-  congrArg Sigma.fst (h w hw).1
-
 def TwGoodE {eps : ℝ} (Fm : FamP eps) (E : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, IntegralHeckeForms.XD (Fm.D x i)) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x),
     TwConjAt (Fm.D x i) (Fm.ex x hx i).nch ∧
@@ -233,41 +145,6 @@ def TwGood {eps : ℝ} (Fm : FamP eps) : Prop := TwGoodE Fm (twE Fm)
 theorem psiAt_psiAt {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ →* A) :
     BlochKatoReduction.Gen.psiAt b (BlochKatoReduction.Gen.psiAt b ψ) = ψ := by
   cases b <;> simp [BlochKatoReduction.Gen.psiAt]
-
-open Classical in
-
-theorem exists_good_of_conditions (D : D7) (I : TwIn D) (twI : D.what₂.places.Pl → D.ntw.Tw)
-    (sd : D.what₂.places.Pl → Bool) (hconds : IntegralHeckeForms.aux₃ D (BlochKatoReduction.bk0 D) I.E I.N0)
-    (hset : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) (twI w))
-    (hI : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → I.Ok (twI w))
-    (hW1 : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → D.ntw.NonzeroIndexPlace (twI w)) :
-    ∃ (Q : D.what₂.places.Pl → Finset (PlE D.host)) (k' : D.what₂.places.Pl → ℕ)
-      (psi' : ∀ w, D.ntw.RCG (twI w) (Q w) →* (D.ntw.Ok (twI w) (k' w))ˣ),
-      (∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → TwGoodOne D I (twI w) (sd w) (Q w) (k' w) (psi' w)) ∧
-      ∀ w w', twI w' = twI w →
-        twPack D (twI w') (sd w') (Q w') (k' w') (psi' w') = twPack D (twI w) (sd w) (Q w) (k' w) (psi' w) := by
-  have hne : ∀ i, Nonempty (Σ (Q : Finset (PlE D.host)) (k' : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ) :=
-    fun i => ⟨⟨∅, 0, 1⟩⟩
-  let good : ∀ i, (Σ (Q : Finset (PlE D.host)) (k' : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ) → Prop :=
-    fun i s => IntegralHeckeForms.GoodTw D.nexp (BlochKatoReduction.bk0 D) I.E I.N0 i (twEps D i) (I.S i) (AvRec D) s.1 s.2.1 s.2.2
-  let pk : ∀ i, Σ (Q : Finset (PlE D.host)) (k' : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ :=
-    fun i => @Classical.epsilon _ (hne i) (good i)
-  have hpk : ∀ i, (∃ s, good i s) → good i (pk i) := fun i h => Classical.epsilon_spec h
-  refine ⟨fun w => (pk (twI w)).1, fun w => (pk (twI w)).2.1,
-    fun w => BlochKatoReduction.Gen.psiAt (sd w) (pk (twI w)).2.2, ?_, ?_⟩
-  · intro w hw
-    have hP : ∃ s, good (twI w) s := by
-      obtain ⟨Q, k', ψ, hg⟩ := hconds (twI w) (hW1 w hw) (hset w hw) (twEps D (twI w)) (twEps_pos D (twI w))
-        (hI w hw).1 (I.S (twI w)) (hI w hw).2 (AvRec D)
-      exact ⟨⟨Q, k', ψ⟩, hg⟩
-    unfold TwGoodOne
-    rw [psiAt_psiAt]
-    exact hpk _ hP
-  · intro w w' h
-    unfold twPack
-    rw [psiAt_psiAt, psiAt_psiAt]
-    show (⟨twI w', pk (twI w')⟩ : TwPack D) = ⟨twI w, pk (twI w)⟩
-    rw [h]
 
 end Formalism.MainNotions
 

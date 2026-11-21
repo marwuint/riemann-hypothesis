@@ -71,21 +71,6 @@ theorem g_pos_of_built {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.
   obtain ⟨hg1, hg2, -⟩ := hB
   unfold C.HidaSetting.g; exact_mod_cast Nat.mul_pos hg1 hg2
 
-theorem dW_nonneg {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
-    {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
-    (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (j : ℕ) (w : List C.Letter) (h h' : C.LPt) :
-    0 ≤ dW S v j w h h' := by
-  have hg := g_pos_of_built hB
-  have hrd := rd_pos' E
-  have hκ : 0 < D.kapG (S.g : ℝ) (S6.rd E) := by unfold D.kapG; positivity
-  have hδ : 0 < D.deG (S.g : ℝ) (S6.rd E) := by unfold D.deG; positivity
-  unfold dW bS ΓS
-  have := bSt_pos' _ hκ h
-  have := bSt_pos' _ hκ h'
-  have := gamLev_pos S.G.k S.G.r _ _ hκ hδ j
-  have := sizeAt_nonneg S v w
-  positivity
-
 theorem pdG_of_built {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
     {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
     (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) :
@@ -365,57 +350,6 @@ theorem kc_scal {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.p
   rw [e3, hscal, mul_div_assoc, ← mul_assoc, inv_mul_cancel₀ hdl.ne', one_mul]
   unfold dW
   ring
-
-theorem hatB_setC (hA : P5.ThmPActual) (hPS : KB.PStd) {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq}
-    {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
-    {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
-    (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
-    (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
-    (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε))
-    (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ) (hj : j ≤ S.G.r) (w : List C.Letter)
-    (hw : KB.CutWord (D.parOf S v) (S.l + 1) w) (l : ℂ) (h h' : C.LPt) (hh : D.IsLocPt h j)
-    (hh' : D.IsLocPt h' j) :
-    KB.hatB (setC S p F) v ε (j + 1) 1 w l h h' =
-      ((dW S v j w h h' : ℝ) : ℂ) * (p v).form j hj w
-        (KB.waveG ((p v).T.bs j) (sW S j l) w
-          (KB.slv (p v).T (F v ε) j hj w (stdS S h) ((stdS_size S h).trans hh.2)))
-        (KB.slv (p v).T (F v ε) j hj w (stdS S h') ((stdS_size S h').trans hh'.2)) := by
-  have hgpos := g_pos_of_built hB
-  have hB' := hB
-  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩ := hB'
-  obtain ⟨hl0, hInD, -, -, -⟩ := hv v
-  have hH : D.IsLocPt (stdS S h) j := (isLocPt_toStd_iff _ _ hgpos h 1 j).2 hh
-  have hH' : D.IsLocPt (stdS S h') j := (isLocPt_toStd_iff _ _ hgpos h' 1 j).2 hh'
-  obtain ⟨φ, -, -, hφ, hφint⟩ := hPS hA (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (F v ε) j hj w
-    (stdS S h) (stdS S h') hH hH' Cb (by rw [hl0]; exact hInD) (hF v ε hε) (by rw [hl0]; exact hw)
-  have hlam_pos := lamS_pos S hgpos j
-  obtain ⟨g, hgdef⟩ : ∃ g : ℂ → ℂ, g = fun c' => P5.fsv (sW S j l) c' * φ c' := ⟨_, rfl⟩
-  have hae : (fun c : ℂ => KB.gN (setC S p F) v ε (j + 1) w (h ++ [(1, c)]) (h' ++ [(1, c)]) *
-      KB.psiL (setC S p F) l c) =ᵐ[volume]
-      fun c => ((Kc S v j w h h' : ℝ) : ℂ) * g (lamS S j • c) := by
-    filter_upwards [ae_ne_zero_complex] with c hc
-    have hlc : (lamS S j : ℂ) * c ≠ 0 := mul_ne_zero (by exact_mod_cast hlam_pos.ne') hc
-    simp only [hgdef, Complex.real_smul]
-    rw [gN_setC_app hB F v ε j hj w h h' hh.2 hh'.2 c hc, hφ _ hlc]
-    have : KB.psiL (setC S p F) l c = KB.psiL S l c := rfl
-    rw [this, psiL_eq_fsv S hgpos j l c]
-    ring
-  have hint : KB.hatB (setC S p F) v ε (j + 1) 1 w l h h' = ((KB.dlB S (j + 1) 1 : ℝ) : ℂ)⁻¹ *
-      ∫ c, ((Kc S v j w h h' : ℝ) : ℂ) * g (lamS S j • c) := by
-    unfold KB.hatB
-    rw [show j + 1 + 1 - 1 = j + 1 by omega, integral_congr_ae hae]
-    rfl
-  have hcs : ∫ c, ((Kc S v j w h h' : ℝ) : ℂ) * g (lamS S j • c) =
-      ((Kc S v j w h h' : ℝ) : ℂ) * (((|(lamS S j ^ 2)⁻¹| : ℝ) : ℂ) * ∫ c, P5.fsv (sW S j l) c * φ c) := by
-    rw [integral_const_mul, Measure.integral_comp_smul, Complex.finrank_real_complex, Complex.real_smul, hgdef]
-  have gen : ∀ X : ℂ, ((KB.dlB S (j + 1) 1 : ℝ) : ℂ)⁻¹ *
-      (((Kc S v j w h h' : ℝ) : ℂ) * (((|(lamS S j ^ 2)⁻¹| : ℝ) : ℂ) * X)) = ((dW S v j w h h' : ℝ) : ℂ) * X := by
-    intro X
-    rw [← kc_scal hB v j hj w h h']
-    push_cast
-    ring
-  exact (hint.trans ((congrArg (fun Z => ((KB.dlB S (j + 1) 1 : ℝ) : ℂ)⁻¹ * Z) hcs).trans (gen _))).trans
-    (congrArg (fun X => ((dW S v j w h h' : ℝ) : ℂ) * X) (hφint (sW S j l)))
 
 end main3
 

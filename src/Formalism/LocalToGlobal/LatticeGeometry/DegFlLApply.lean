@@ -27,10 +27,6 @@ def N : ℕ := letI := D.host.cmStar; w.S.rank
 
 def Indef : Prop := 1 ≤ w.j ∧ w.j < w.N
 
-def Defin : Prop := w.j = w.N
-
-theorem j_le_N : w.j ≤ w.N := w.j_le
-
 end Dat
 
 def jcl (D : D7) (j : ℕ) : ℕ := max 1 (min j D.R.m)
@@ -138,26 +134,5 @@ theorem wtL_nonneg (D : D7) (p : ℕ) (la : PlL D p) : 0 ≤ wtL D p la := by
   unfold wtL
   exact div_nonneg (mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _))
     (mul_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _))
-
-theorem datW_indef (D : D7) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (h2 : j < D.R.m) : (datW D κ j).Indef := by
-  have hk := D.R.m_add_three_le_k
-  refine ⟨?_, ?_⟩
-  · rw [datW_j D κ h1 h2.le]; simp only [Ranks.sigW]; omega
-  · rw [datW_j D κ h1 h2.le, datW_N]; simp only [Ranks.sigW, Ranks.r]; omega
-
-theorem datW_S (D : D7) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
-    (datW D κ j).S = (letI := D.host.cmStar; D.sp.W j) := by
-  simp only [datW, jcl_eq D h1 h2]
-
-theorem dat_ext (D : D7) {Lev : Type} (w w' : Dat D Lev) (hS : w.S = w'.S) (hκ : w.κ = w'.κ) : w = w' := by
-  obtain ⟨S, κ, j, a, b, c, d⟩ := w
-  obtain ⟨S', κ', j', a', b', c', d'⟩ := w'
-  simp only at hS hκ
-  subst hS; subst hκ
-  have : j = j' := by
-    have τ : D.what₂.Tau := D.eTau.symm 1
-    have := (d τ).symm.trans (d' τ)
-    exact (Prod.mk.inj this).1
-  subst this; rfl
 
 end Formalism.L2.Geo

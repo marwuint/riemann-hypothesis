@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.FamilyGroupSumFactorsWeightAmplitude
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLocalObjectFamilyClassesDetermineRowsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonGenericFamilyClassesDetermineRowsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLocalObjectFamilyClassesDetermineRows
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FamDefs
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonGenericFamilyClassesDetermineRows
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
 
 noncomputable section
 
@@ -26,7 +29,7 @@ theorem existFam : ExistFam := by
     apply ht.1
     show Gt t = 0
     simp [Gt, h0]
-  have hrel : t₀.relevant := (GlobalTheory.T.nonGeneric_family_classes_determine_rows D X Y u u' hTie).2.2 t₀ hv
-  exact GlobalTheory.T.exists_localObjectFamily_classesDetermineRows D X Y u u' TS cls hG hrow t₀ ht₀ hrel
+  have hrel : t₀.relevant := (_root_.GlobalTheory.NGClass.ngClass_rows D X Y u u' hTie).2.2 t₀ hv
+  exact _root_.GlobalTheory.FamGen.exists_famTie D X Y u u' TS cls hG hrow t₀ ht₀ hrel
 
 end GlobalTheory.SnFam

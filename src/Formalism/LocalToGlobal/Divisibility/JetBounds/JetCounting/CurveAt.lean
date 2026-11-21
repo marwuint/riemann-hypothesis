@@ -1,5 +1,7 @@
-import Formalism.LocalToGlobal.Divisibility.JetBounds.PlaceInputAllEntries
-import Formalism.LocalToGlobal.Divisibility.JetBounds.JetCounting.RelShape
+import Formalism.LocalToGlobal.Divisibility.JetBounds.Statement
+import Formalism.LocalToGlobal.Divisibility.JetBounds.MinorProductsLattice
+import Formalism.GaussJetBounds.FinalB
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.TwoPlaces
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.FinalFree
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.HasSubstBlock
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.GramFrameCompositionMvExpFact

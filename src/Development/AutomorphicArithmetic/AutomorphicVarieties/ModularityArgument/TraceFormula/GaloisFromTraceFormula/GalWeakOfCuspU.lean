@@ -146,14 +146,4 @@ theorem galStep_le {N : ℕ} (hW : GalWeak N) (E : Type) [Field E] [NumberField 
   have hBB : B = B' := Multiset.map_injective hψ e2
   exact ⟨B, hB, hBB ▸ hB'⟩
 
-theorem galWeak_of_cuspU (hG : UpperTheory.GalN.CuspU) (hL : GlobalTheory.Published.LocalLanglandsGL) (N : ℕ) : GalWeak N := by
-  intro E _ _ _ _
-  obtain ⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ) := GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2
-  refine ⟨2, inferInstance, ι, fun a ha _ P hP s hr => ?_⟩
-  obtain ⟨r, wt, HT, H⟩ := hG E (AlgebraicClosure E) 2 ι a ha _ _ hr (GlobalTheory.HeightCounting.Blocks.isPolarized_twist_absPow hP s)
-  refine ⟨r, H.cont, Filter.Eventually.of_forall fun w hl σ hσ S hS B g hB hg => ?_⟩
-  obtain ⟨rc, hrc⟩ := (hL.1 E _ B w hB).exists
-  refine GlobalTheory.T.local_langlands_galois_compat E _ 2 ι a r H.cont w hl B hB rc hrc σ S hS _ ((H.aw hl hrc hσ).eq_unr ?_) g hg
-  exact (GlobalTheory.WeilDeligne.WD.unr_tw _ _).2 (UpperTheory.GalN.unr_rec_of_hasSat hrc σ S hS)
-
 end UpperTheory.V.Z.Tf.GaloisFromTraceFormula

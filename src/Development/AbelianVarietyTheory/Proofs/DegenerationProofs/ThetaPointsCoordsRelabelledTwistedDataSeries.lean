@@ -4,7 +4,14 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsCoordPtFibre
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomTransport
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsThetaPtDown
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevelStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DataRigidSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaVV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj BigOperators
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -83,7 +90,7 @@ theorem theta_coord : GlobalTheory.UT.LL → BrGtSt → TXSt → EVSt → AllD f
       rw [← hp₄.1, ← hq₁.1, ← map_nsmul]; rfl
     have e₂ : p₄.g = p₁.g := (B.2.1 q₁.1.2).unique hp₄.2 hq₁.2
     have := M.admissible_base_of_complete_dvr.2
-    have hA₄ := ((GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL M.W _ M.admissible_base_of_complete_dvr.1 M.P.D M.P.A M.t.G M.t.semi M.P.U C j 4 (j * 4) hj (by norm_num) rfl
+    have hA₄ := ((_root_.GlobalTheory.LevelCompat.qkToAkU_level hL M.W _ M.admissible_base_of_complete_dvr.1 M.P.D M.P.A M.t.G M.t.semi M.P.U C j 4 (j * 4) hj (by norm_num) rfl
       p₁ p₄ y).1 e₁ e₂).1 hA₁
     have Q := hE M.W _ M.cdv rfl M.P.D M.P.A M.t.G M.t.semi M.P.U C M.ext N' ν' m hm D.La p' q' x hA hqp
       (j * 4) (by omega) p₄ q₄ y hA₄ hp₄

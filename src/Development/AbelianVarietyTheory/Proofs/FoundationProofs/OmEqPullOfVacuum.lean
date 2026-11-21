@@ -35,11 +35,6 @@ theorem Hf_nsmul_left (n : ℕ) (x w : VC D N N') : Hf D T (n • x) w = n * Hf 
 theorem Hf_nsmul_right (n : ℕ) (x w : VC D N N') : Hf D T x (n • w) = n * Hf D T x w := by
   rw [Hf_conj, Hf_nsmul_left, map_mul, ← Hf_conj, map_natCast]
 
-theorem qH_nsmul (n : ℕ) (x : VC D N N') : qH D T (n • x) = n ^ 2 * qH D T x := by
-  rw [qH, qH, Hf_nsmul_left, Hf_nsmul_right, ← mul_assoc, ← Nat.cast_mul, ← Complex.ofReal_natCast,
-    Complex.re_ofReal_mul]
-  push_cast; ring
-
 theorem Hf_diff (x : VC D N N') : Differentiable ℂ (fun z : VC D N N' => Hf D T z x) := by
   unfold Hf
   fun_prop

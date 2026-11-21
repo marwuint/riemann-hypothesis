@@ -96,9 +96,6 @@ theorem RelW.refl {w : PlE H} (x : A.LP w) : RelW N A x x := ⟨rfl, fun _ => rf
 
 theorem RelW.of_eq {w : PlE H} {x y : A.LP w} (e : x = y) : RelW N A x y := e ▸ RelW.refl x
 
-theorem RelW.ofN {w : PlE H} {x y : A.LP w} (h : UpperTheory.GalN.RelW N A x y) : RelW N A x y :=
-  ⟨h.dim, h.eq_of_unr, fun _ => h.ine, fun k => h.mono k.2.1⟩
-
 theorem RelW.unr {w : PlE H} {x y : A.LP w} (h : RelW N A x y) (u : A.unr y) : A.unr x := (h.eq_of_unr u) ▸ u
 
 theorem RelW.sum (hLP : TieLP N A) {w : PlE H} {x y x' y' : A.LP w} (h : RelW N A x y) (h' : RelW N A x' y') :
@@ -155,16 +152,7 @@ def NcPt (i : N.Loc) (x : N.X i) (w : PlE H) : Prop :=
 
 variable {N A}
 
-theorem weakA (h : exists_galois_rep_local_global_compatible N A) : AutomorphicGaloisAdmissible N A := fun i =>
-  ⟨fun a ha π hc hr => by
-    obtain ⟨ρ, c, s, o, u⟩ := (h i).1 a ha π hc hr
-    refine ⟨ρ, c, s, fun w hw => RelW.of_eq (o w hw).1,
-      fun w hw _ => ⟨(u w hw).1, (u w hw).2.1, CuspA.of_eq (u w hw).2.2⟩, fun _ w => ?_⟩
-    by_cases hw : w ∈ placesOver H.E (N.l i)
-    · exact (u w hw).2.2
-    · exact (o w hw).1, (h i).2⟩
 theorem weakA' (h : AutomorphicGaloisAdmissible N A) : AutomorphicGaloisAdmissible N A := h
-theorem weak {D : D7} (h : adm2 D) : AutomorphicGaloisAdmissible D.nd D.naut := weakA h
 theorem weak' {D : D7} (h : AutomorphicGaloisAdmissible D.nd D.naut) : AutomorphicGaloisAdmissible D.nd D.naut := h
 
 end UpperTheory.GalS

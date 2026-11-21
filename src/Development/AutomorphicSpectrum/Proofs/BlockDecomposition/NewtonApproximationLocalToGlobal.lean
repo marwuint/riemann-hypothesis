@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.Splits
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLocalInductionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemIdempotentComplementIffStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLocalInduction
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemIdempotentComplementIff
 open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison CrystallineSemistableComparison.R
 
 namespace GlobalTheory.CompanionTheory.NewtonStep
@@ -21,7 +21,7 @@ theorem mul_pow_eq (d : ℕ) {e z w : S} (h : e * (z - w) = 0) :
 theorem step_of_forall_maximal (ϖ : S)
     (H : ∀ m : Ideal S, m.IsMaximal → Step (Ideal.Quotient.mk (compI m) ϖ)) : Step ϖ := by
   intro Q n hQ hd h0
-  have key := GlobalTheory.T.idempotent_local_induction (S := S)
+  have key := _root_.GlobalTheory.CompanionTheory.Idem.glue_idempotent_property (S := S)
     (fun e => ∃ z, ϖ ^ (n + 1) ∣ e * Q.eval z ∧ ϖ ^ n ∣ e * z ^ Q.natDegree) ?_ ?_ ?_ ?_
   · obtain ⟨z, h1, h2⟩ := key
     exact ⟨z, by simpa using h1, by simpa using h2⟩
@@ -62,8 +62,8 @@ theorem step_of_forall_maximal (ϖ : S)
     rw [hdeg] at hb
     rw [Polynomial.eval_map, Polynomial.eval₂_at_apply, ← map_pow, ← map_mul] at ha
     rw [← map_pow, ← map_pow, ← map_mul] at hb
-    obtain ⟨e1, i1, n1, E1⟩ := (GlobalTheory.T.mem_idempotent_complement_iff m hm.isPrime _).1 (Ideal.Quotient.eq.1 ha)
-    obtain ⟨e2, i2, n2, E2⟩ := (GlobalTheory.T.mem_idempotent_complement_iff m hm.isPrime _).1 (Ideal.Quotient.eq.1 hb)
+    obtain ⟨e1, i1, n1, E1⟩ := (_root_.GlobalTheory.CompanionTheory.CompIdeal.mem_compI_iff m hm.isPrime _).1 (Ideal.Quotient.eq.1 ha)
+    obtain ⟨e2, i2, n2, E2⟩ := (_root_.GlobalTheory.CompanionTheory.CompIdeal.mem_compI_iff m hm.isPrime _).1 (Ideal.Quotient.eq.1 hb)
     have i1' : e1 * e1 = e1 := i1
     have i2' : e2 * e2 = e2 := i2
     refine ⟨e1 * e2, ?_, ?_, z, ⟨e1 * e2 * a, ?_⟩, ⟨e1 * e2 * b, ?_⟩⟩

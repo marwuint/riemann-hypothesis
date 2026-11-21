@@ -176,10 +176,4 @@ lemma divisorSections_apply_eq (D : WeilDivisor X) {V : X.Opens} (t : divisorSec
 
 end
 
-section Basis
-
-variable [IsIntegral X] [IsNoetherian X] [IsLocallyFactorial X]
-
-end Basis
-
 end GroundTheory.Arith.SchemeCoh

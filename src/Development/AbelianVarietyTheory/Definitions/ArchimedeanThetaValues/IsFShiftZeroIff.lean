@@ -64,36 +64,12 @@ def IsFactor (lin : ℂ → A.La → A.V →ₗ[ℂ] ℂ) (cst : ℂ → A.La �
 
 variable {A} in
 
-theorem IsFactor.hasSum {lin : ℂ → A.La → A.V →ₗ[ℂ] ℂ} {cst : ℂ → A.La → ℂ} (h : IsFactor A lin cst) (w : ℂ)
-    (la : A.La) (v : A.V) (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (hth : th ∈ A.Theta j α) {s : ℂ}
-    (hs : HasSum (fun m => A.term j α th m v * eTwoPi (w * A.exponent j α m)) s) :
-    HasSum (fun m => A.term j α th m (v + A.Pw w la) * eTwoPi (w * A.exponent j α m))
-      (Complex.exp (lin w la v + cst w la) ^ j * s) := by
-  simp only [h w la v j α th hth]
-  exact ((Equiv.addRight la.y).hasSum_iff.2 hs).mul_left _
-
-variable {A} in
-
 theorem IsFactor.sum {lin : ℂ → A.La → A.V →ₗ[ℂ] ℂ} {cst : ℂ → A.La → ℂ} (h : IsFactor A lin cst) (w : ℂ)
     (la : A.La) (v : A.V) (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (hth : th ∈ A.Theta j α) :
     A.Sum j α th w (v + A.Pw w la) = Complex.exp (lin w la v + cst w la) ^ j * A.Sum j α th w v := by
   rw [AnArc.Sum, AnArc.Sum, ← tsum_mul_left]
   refine Eq.trans ?_ ((Equiv.addRight la.y).tsum_eq _)
   exact tsum_congr fun m => h w la v j α th hth m
-
-theorem not_isFShift_zero (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (la : A.La) (z : A.V) (S : ℂ⸨X⸩) :
-    ¬ IsFShift A 0 α th la z S := fun h => h.1.1 rfl
-
-theorem isFShift_zero_iff (k : ℕ) [NeZero k] (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (z : A.V) (S : ℂ⸨X⸩) :
-    IsFShift A k α th 0 z S ↔ S = A.FSum k α th z := by
-  have hy : (0 : A.La).y = 0 := rfl
-  have key : ∀ n : ℤ, (∑ᶠ (m : A.X) (_ : A.exponent k α m = n), A.term k α th m z) = (A.FSum k α th z).coeff n :=
-    fun n => by
-      rw [AnArc.coeff_FSum]
-      exact finsum_cond_eq_sum_of_cond_iff _ fun {m} _ => by rw [AnArc.mem_level]
-  simp only [IsFShift, hy, map_zero, LinearMap.zero_apply, add_zero, smul_zero, Int.zero_ediv, dvd_zero, and_true,
-    key, ne_eq, NeZero.ne k, not_false_eq_true, true_and]
-  exact ⟨fun h => HahnSeries.ext (funext h), fun h n => by rw [h]⟩
 
 def AnFin : Prop :=
   (∀ (j : ℕ) (α : A.X), 1 ≤ j → Module.Finite ℂ (A.Theta j α)) ∧ ∃ th ∈ A.Theta 1 0, th ≠ 0
@@ -132,16 +108,6 @@ theorem GenPts.LevelPt.ne_zero {Φ : GenPts A t y} {k : ℕ} {p : Over.mk y ⟶ 
 
 theorem GenPts.LevelPt.dvd {Φ : GenPts A t y} {k : ℕ} {p : Over.mk y ⟶ t.G} {la : A.La} (h : Φ.LevelPt k p la)
     (α : A.X) : (k : ℤ) ∣ A.be la.y α := h.2.1.2 α
-
-theorem GenPts.levelPt_one (Φ : GenPts A t y) (k : ℕ) [NeZero k] : Φ.LevelPt k 1 0 := by
-  refine ⟨one_pow _, ⟨NeZero.ne k, fun α => ?_⟩, fun α α' th h th' h' z F F' j hF hF' hj => ?_⟩
-  · rw [show (0 : A.La).y = 0 from rfl, map_zero]; exact dvd_zero _
-  · rw [isFShift_zero_iff] at hF hF'
-    rw [_root_.mul_one] at hj ⊢
-    have hj' : ⊤ ≤ (fib (Φ.x z) ≫ pullback.fst t.G.hom y) ⁻¹ᵁ t.PP.L.U j := by
-      rw [fib, pullback.lift_fst]; exact hj
-    rw [Φ.val k α th h z j hj', Φ.val k α' th' h' z j hj', hF, hF']
-    ring
 
 def GenPts.IsTan (Φ : GenPts A t y) (z₀ : A.V) (ν : Sp (DualNumber ℂ⸨X⸩) ⟶ pullback t.G.hom y) : Prop :=
   ν ≫ pullback.snd _ _ = spMap (algebraMap ℂ⸨X⸩ (DualNumber ℂ⸨X⸩)) ∧
@@ -232,18 +198,6 @@ def FPts.Lev {V : Type} [AddCommGroup V] {act : 𝓞 E → V → V} {I : ℕ →
   p ^ k = 1 ∧ (k ≠ 0 ∧ ∃ i₀ i₁, (∀ z, φ k i₁ z ≠ 0 → ψ i₀ z ≠ 0) ∧ ∃ z, φ k i₁ z ≠ 0) ∧
   ∀ i i' z j, ⊤ ≤ (Θ.x z * p).left ⁻¹ᵁ t.PP.L.U j →
     sval (Θ.sig k i) (fib (Θ.x z * p)) j * ψ i' z = sval (Θ.sig k i') (fib (Θ.x z * p)) j * ψ i z
-
-omit [StarRing (𝓞 E)] in
-
-theorem FPts.lev_one {V : Type} [AddCommGroup V] {act : 𝓞 E → V → V} {I : ℕ → Type} {F : Type} [Field F]
-    {y₁ : Sp F ⟶ S} {φ : ∀ j, I j → V → F} (Θ : FPts act t y₁ φ) (k : ℕ) (hk : 1 ≤ k) (i₀ : I k) (z₀ : V)
-    (h : φ k i₀ z₀ ≠ 0) : Θ.Lev k 1 (φ k) := by
-  refine ⟨one_pow _, ⟨by omega, i₀, i₀, fun _ hz => hz, z₀, h⟩, fun i i' z j hj => ?_⟩
-  rw [_root_.mul_one] at hj ⊢
-  have hj' : ⊤ ≤ (fib (Θ.x z) ≫ pullback.fst t.G.hom y₁) ⁻¹ᵁ t.PP.L.U j := by
-    rw [fib, pullback.lift_fst]; exact hj
-  rw [Θ.val k hk i z j hj', Θ.val k hk i' z j hj']
-  ring
 
 end Gen
 

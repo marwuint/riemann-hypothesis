@@ -1,11 +1,11 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Measures
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalUnitaryGroupTuplesTopologicalFactsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeilIntegrationFormulaOrbitStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramMapFibreMeasureLocalUnitaryInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramFibreMeasureFreeTupleNeZeroFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalUnitaryGroupTuplesTopologicalFacts
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeilIntegrationFormulaOrbit
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramMapFibreMeasureLocalUnitaryInvariant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramFibreMeasureFreeTupleNeZeroFinite
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardFrameGramDetNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmulLocalWittFreeTupleGramStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmulLocalWittFreeTupleGram
 
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures
 open scoped TensorProduct ENNReal
@@ -30,7 +30,7 @@ theorem linearIndependent_smul {F E : Type} [Field F] [Field E] [Algebra F E] (R
 
 theorem exists_haar_stabiliser : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∀ (hT : ∀ i j, σ (gramE σ J (F0 P) j i) = gramE σ J (F0 P) i j), ∀ (μ : Measure (Fin (r + 1) → Fin n → Fv F v ⊗[F] E)) (ν : Measure (HermR (Fv F v) σ (r + 1))), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ∀ fib : HermR (Fv F v) σ (r + 1) → Measure (Fin (r + 1) → Fin n → Fv F v ⊗[F] E), IsFibreFamily μ (gramR (Fv F v) σ J) Subtype.val {X | LinearIndependent (Fv F v ⊗[F] E) X} ν Set.univ fib → ∀ μG : Measure (HA (Fv F v) σ J), μG.IsHaarMeasure → ∃ μ0 : Measure (S0 (Fv F v) σ J P), μ0.IsHaarMeasure ∧ ((fib (hermOf (Fv F v) σ (gramE σ J (F0 P)) hT)) {y | ¬ ∃ g : HA (Fv F v) σ J, g • ratTup (Fv F v) (F0 P) = y} = 0 ∧ ∀ f : HA (Fv F v) σ J → ℝ≥0∞, Measurable f → ∀ s : (Fin (r + 1) → Fin n → Fv F v ⊗[F] E) → HA (Fv F v) σ J, (∀ y, (∃ g : HA (Fv F v) σ J, g • ratTup (Fv F v) (F0 P) = y) → s y • ratTup (Fv F v) (F0 P) = y) → ∫⁻ g, f g ∂μG = ∫⁻ y, ∫⁻ h', f (s y * (h' : HA (Fv F v) σ J)) ∂μ0 ∂(fib (hermOf (Fv F v) σ (gramE σ J (F0 P)) hT))) := by
   intro F E _ _ _ _ _ σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μG hμG
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩ := GlobalTheory.T.localUnitaryGroup_tuples_topological_facts F E σ hCM n J hJ v
+  obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩ := _root_.GlobalTheory.LocalUnitaryTop.top_facts F E σ hCM n J hJ v
   haveI := h1
   haveI := h2
   haveI := h3
@@ -47,13 +47,13 @@ theorem exists_haar_stabiliser : ∀ (F E : Type) [Field F] [NumberField F] [Fie
   set S := hermOf (Fv F v) σ (gramE σ J (F0 P)) hT with hS
   have hgram : gramR (Fv F v) σ J x0 = (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E)) :=
     gramR_ratTup (Fv F v) σ J (F0 P)
-  obtain ⟨hne, hfin⟩ := GlobalTheory.T.gramFibreMeasure_freeTuple_ne_zero_finite F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib x0 S hx0 hgram
-  have hinv := GlobalTheory.T.gramMap_fibreMeasure_localUnitary_invariant F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib S
+  obtain ⟨hne, hfin⟩ := _root_.GlobalTheory.LocalFibreNonzero.fibre_nonzero_finite F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib x0 S hx0 hgram
+  have hinv := _root_.GlobalTheory.LocalFibreInvariant.fibre_invariant F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib S
   have hcont := (h9 (r + 1)).2
   have hnull : (fib S) {y | ¬ ∃ g : HA (Fv F v) σ J, g • x0 = y} = 0 := by
     refine measure_mono_null (fun y hy => ?_) (hfib.1 S)
     intro hmem
-    exact hy (GlobalTheory.T.exists_smul_localWitt_free_tuple_gram F E σ hCM n J hJ v r P T hP y hmem.2 hmem.1)
+    exact hy (_root_.GlobalTheory.LocalWittFree.exists_smul_ratTup_eq F E σ hCM n J hJ v r P T hP y hmem.2 hmem.1)
   have hsmul : ∀ g : HA (Fv F v) σ J, Continuous
       (fun y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E => g • y) := fun g =>
     hcont.comp (Continuous.prodMk continuous_const continuous_id)
@@ -68,7 +68,7 @@ theorem exists_haar_stabiliser : ∀ (F E : Type) [Field F] [NumberField F] [Fie
     · exact hcont.comp (Continuous.prodMk continuous_id continuous_const)
     · rintro _ ⟨g, -, rfl⟩
       exact linearIndependent_smul (Fv F v) σ J g hx0
-  obtain ⟨μ0, hμ0, hw⟩ := GlobalTheory.T.weil_integration_formula_orbit (HA (Fv F v) σ J) (Fin (r + 1) → Fin n → Fv F v ⊗[F] E) x0
+  obtain ⟨μ0, hμ0, hw⟩ := _root_.GlobalTheory.WeilOrbit.weil_formula (HA (Fv F v) σ J) (Fin (r + 1) → Fin n → Fv F v ⊗[F] E) x0
     hcont μG hμG (fib S) hnull hinv' hcpt hne
   exact ⟨μ0, hμ0, hnull, hw⟩
 

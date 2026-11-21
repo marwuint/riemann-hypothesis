@@ -39,12 +39,6 @@ def RationalValuesAt (R : RealDat D A Ks) : Prop :=
     ∀ (i : Fin D.R.m) (t : T) (K' : Type) [Field K'] (ι : D.what₂.LL →+* K') (σ' : K' →+* ℂ), σ'.comp ι = D.what₂.embLL →
       ∀ c' : VV K' (lamV D i) →ₛₗ[σ'] (R.cV i).W, IsCoefExt (W := (R.cV i).W) ι (lamV D i) (c0L i) c' → ValuesIn R i t c'
 
-theorem ValuesIn.reps {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} {K' : Type} [Field K'] {σ' : K' →+* ℂ}
-    {c' : VV K' (lamV D i) →ₛₗ[σ'] (R.cV i).W} (H : ValuesIn R i t c') {J : Subgroup (Bridge.Gf (Vc D i))} {Cl : Type}
-    {y : Cl → Bridge.Gf (Vc D i)} (_hy : Bridge.IsReps (Bridge.ratF (Vc D i)) J y) (x : A.fam.amb.FL i t) :
-    ∃ val : Cl → VV K' (lamV D i), ∀ k, c' (val k) = formFn R i t x (y k) :=
-  ⟨fun k => (H x (y k)).choose, fun k => (H x (y k)).choose_spec⟩
-
 end Row
 
 def RationalValues : Prop :=

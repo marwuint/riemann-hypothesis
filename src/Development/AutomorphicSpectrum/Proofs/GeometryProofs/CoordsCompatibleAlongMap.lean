@@ -6,8 +6,9 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -128,7 +129,7 @@ theorem mem_regAt_iff (tie : CoordTie ℤ ξ x) (hc : InChart ξ x c p) (hp : p 
     a ∈ regAt ξ p ↔ ∃ s ∈ chRing ℚ x c, unitAt ξ p s ∧ s * a ∈ chRing ℚ x c := by
   constructor
   · intro ha
-    obtain ⟨s, hs, hu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x tie c p hc a).1 ha
+    obtain ⟨s, hs, hu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x tie c p hc a).1 ha
     exact ⟨s, mem_chQ_of_mem_chZ hs, hu, mem_chQ_of_mem_chZ hsa⟩
   · rintro ⟨s, _, hu, hsa⟩
     have h := mul_mem hu.2.2 (chQ_mem_regAt tie hc hp hsa)
@@ -160,7 +161,7 @@ theorem exists_point_of_prime (tie : CoordTie ℤ ξ x) (hc : x c ≠ 0) (P : Id
     ∃ p : Cpt ξ, InChart ξ x c p ∧ p ∈ genFib ξ ∧ ∀ s : chRing ℚ x c, s ∉ P ↔ unitAt ξ p (s : Ω) := by
   let inc : chRing ℤ x c →+* chRing ℚ x c :=
     RingHom.codRestrict (algebraMap (chRing ℤ x c) Ω) (chRing ℚ x c) fun s => mem_chQ_of_mem_chZ s.2
-  obtain ⟨p, ⟨hpc, hpu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x tie c hc (Ideal.comap inc P) inferInstance
+  obtain ⟨p, ⟨hpc, hpu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ κ x tie c hc (Ideal.comap inc P) inferInstance
   have hnP : ∀ n : ℕ, 0 < n → (n : chRing ℚ x c) ∉ P := by
     intro n hn hmem
     have hn0 : (n : ℚ) ≠ 0 := by exact_mod_cast hn.ne'

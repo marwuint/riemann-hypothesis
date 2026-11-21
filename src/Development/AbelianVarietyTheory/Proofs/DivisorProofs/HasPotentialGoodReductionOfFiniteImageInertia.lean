@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeBaseChangeFieldAndCommStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtensionKillingFiniteTateModuleImagStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDiscreteValuationRingOfIsAboveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResiduePerfectAndCharStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisRepresentationTateModuleBaseChangeEqOneIffStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeBaseChangeFieldAndComm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtensionKillingFiniteTateModuleImag
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDiscreteValuationRingOfIsAbove
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResiduePerfectAndChar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisRepresentationTateModuleBaseChangeEqOneIff
 
 set_option autoImplicit false
 
@@ -33,20 +33,20 @@ theorem hasPotentialGoodReduction_of_finite_image_inertia : NeronOggShafarevichS
   haveI : Algebra.IsSeparable K Ω := hs.separable
   haveI : IsSepClosed Ω := hs.sep_closed
   haveI : IsProper A.hom := hA.proper
-  obtain ⟨L, hL, hfix⟩ := GlobalTheory.T.exists_finite_extension_killing_finite_tateModule_image K Ω A inferInstance l _ hfin
+  obtain ⟨L, hL, hfix⟩ := _root_.GlobalTheory.AbVarRedCut.exists_finiteDimensional_galTate_eq_one K Ω A inferInstance l _ hfin
   let W : ValuationSubring L := V.comap (algebraMap L Ω)
   have hW : IsAbove R K W.toSubring := by
     unfold IsAbove at hV ⊢
     rw [← hV]
     ext x
     rfl
-  haveI : IsDiscreteValuationRing W := GlobalTheory.T.isDiscreteValuationRing_of_isAbove_alt R K L W hW
+  haveI : IsDiscreteValuationRing W := _root_.GlobalTheory.AbVarRed.isDiscreteValuationRing_of_isAbove R K L W hW
   have hr : (algebraMap W L).range = W.toSubring := by
     ext x
     exact ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩
   have hW' : IsAbove R K (algebraMap W L).range := hr ▸ hW
-  obtain ⟨hp, hm⟩ := GlobalTheory.T.residue_perfect_and_char_alt R K L W hW'
-  obtain ⟨hab, hc⟩ := GlobalTheory.T.isAbelianScheme_and_comm_baseChange_field K L A hA
+  obtain ⟨hp, hm⟩ := _root_.GlobalTheory.AbVarRedRes.residue_perfect_and_char R K L W hW'
+  obtain ⟨hab, hc⟩ := _root_.GlobalTheory.Published.AbVarRed.isAbelianScheme_baseChange_field_and_comm K L A hA
   haveI : IsSepClosure L Ω := ⟨inferInstance, Algebra.isSeparable_tower_top_of_isSeparable K L Ω⟩
   have hV' : IsAbove W L V.toSubring := by
     unfold IsAbove
@@ -55,7 +55,7 @@ theorem hasPotentialGoodReduction_of_finite_image_inertia : NeronOggShafarevichS
   refine ⟨L, W, inferInstance, inferInstance, hL, inferInstance, inferInstance, inferInstance, inferInstance,
     inferInstance, hW', ?_⟩
   refine (hN.iff_tateUnramified hV' hab l (hm l hl)).2 fun σ hσ => ?_
-  rw [GlobalTheory.T.galoisRepresentationTateModule_baseChange_eq_one_iff K L Ω A l σ]
+  rw [_root_.GlobalTheory.TateBaseChange.galTate_baseChange_eq_one_iff K L Ω A l σ]
   exact hfix _ (restrictScalars_mem_inertia_of_mem V σ hσ) fun a ha => σ.commutes ⟨a, ha⟩
 
 end GlobalTheory

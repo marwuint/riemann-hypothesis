@@ -7,13 +7,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricHermitianBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OrthogonalMetricFlagDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightInvariantScalingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsOrthogonalLieMetricStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NumberFieldPointIntegralModelStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagLineDegreeFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptLieMetricBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricHermitianBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OrthogonalMetricFlagDegree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightInvariantScaling
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsOrthogonalLieMetric
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NumberFieldPointIntegralModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagLineDegreeFormula
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptLieMetricBound
 
 noncomputable section
 
@@ -77,19 +77,19 @@ theorem logBound_mono {C C' t : ℝ} (h0 : 0 ≤ C) (h : C ≤ C') (ht : 0 ≤ t
 
 theorem fibreInput : N1ab → PartI → Geo.ResK.ResKStatement → GlobalTheory.Published.SemiAbelianHomExtension → SlopeBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) [Fintype (CMType H)] (R : Top.RootModel (CMType H) (D.p + D.q)) (𝔐 : HodgeCpt Y S R.y) (Fl : 𝔐.Flag) (e : CMType H × Fin (D.p + D.q) → R.Ω), 1 ≤ D.p + D.q → Fl.RootLines R.xdeg e → Ht.FibreInput R := by
   intro h1 h2 h3 h4 h5 E _ _ _ H D l Xo c Y S _ R 𝔐 Fl e hpq hroot
-  obtain ⟨h, horth⟩ := GlobalTheory.T.exists_orthogonal_lie_metric E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐
-  obtain ⟨C₁, hC₁, hslope⟩ := GlobalTheory.T.hodge_cpt_lie_metric_bound h1 h2 h3 h4 h5 E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 h hpq
+  obtain ⟨h, horth⟩ := _root_.GlobalTheory.CompanionTheory.Ar.MetricOrth.main E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐
+  obtain ⟨C₁, hC₁, hslope⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SlopeUnif.slope_unif h1 h2 h3 h4 h5 E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 h hpq
   have hdeg : (fun r => (R.x 1 r).a) = R.xdeg := funext fun r => R.x_deg 1 r
-  obtain ⟨C₂, hht⟩ := GlobalTheory.T.flag_line_degree_formula E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 Fl h (R.x 1) e (R.x_smooth 1)
+  obtain ⟨C₂, hht⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.root_height E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 Fl h (R.x 1) e (R.x_smooth 1)
     (hdeg.symm ▸ hroot)
   have hch : CharZero R.Ω := (RingHom.charZero_iff 𝔐.cst.injective).1 inferInstance
   refine ⟨max C₁ C₂, hC₁.trans (le_max_left _ _), fun L _ _ w hw => ?_⟩
-  obtain ⟨z₀, hz₀⟩ := GlobalTheory.T.number_field_point_integral_model 𝔐.X R.Ω R.K R.ι R.y 𝔐.ξ hch 𝔐.all 𝔐.tie L w hw
+  obtain ⟨z₀, hz₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.algebraicPoint_extends_to_integers 𝔐.X R.Ω R.K R.ι R.y 𝔐.ξ hch 𝔐.all 𝔐.tie L w hw
   obtain ⟨L', _, _, ε, hs⟩ := hslope L z₀
   have hsm : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth
-  obtain ⟨B, MB, hB⟩ := GlobalTheory.T.lie_metric_hermitian_bundle 𝔐.X R.Ω R.K R.ι R.y 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M h L'
+  obtain ⟨B, MB, hB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lie_fibre_exists 𝔐.X R.Ω R.K R.ι R.y 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M h L'
     (spMap (RingOfIntegers.mapRingHom ε) ≫ z₀)
-  obtain ⟨A, hA, hW⟩ := GlobalTheory.T.orthogonal_metric_flag_degree E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 Fl h horth L' _ B MB hB
+  obtain ⟨A, hA, hW⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagFib.flag_fibre E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 Fl h horth L' _ B MB hB
   have hpt : spMap (algebraMap (𝓞 L') L') ≫ spMap (RingOfIntegers.mapRingHom ε) ≫ z₀ =
       spMap ε ≫ spMap (algebraMap (𝓞 L) L) ≫ z₀ := by
     rw [← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]
@@ -99,7 +99,7 @@ theorem fibreInput : N1ab → PartI → Geo.ResK.ResKStatement → GlobalTheory.
     rw [hpt]
     exact coordsAt_comp 𝔐.all ε hz₀
   have hext : ∀ r, Ht.lineHt (R.x 1 r) L' (fun p => ε (w p)) = Ht.lineHt (R.x 1 r) L w := fun r => by
-    simpa using GlobalTheory.T.line_height_invariant_scaling R.K R.ι (R.x 1 r) L L' ε w (fun _ => 1) hw.1 fun _ => one_ne_zero
+    simpa using _root_.GlobalTheory.CompanionTheory.Ar.Ht.lineHt_map_scale R.K R.ι (R.x 1 r) L L' ε w (fun _ => 1) hw.1 fun _ => one_ne_zero
   obtain ⟨ha, hb⟩ := hht L' _ _ hz B MB A hB hW
   refine ⟨L', inferInstance, inferInstance, ε, B, A, hA, fun τ i => ?_, fun τ i => ?_, ?_⟩
   · rw [← hext]

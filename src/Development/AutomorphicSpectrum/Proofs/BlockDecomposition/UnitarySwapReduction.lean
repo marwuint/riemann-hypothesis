@@ -4,11 +4,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConjTransposeAn
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryBorelSplitting
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAdmissibleLinearFunctionalStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousUnitaryRootMapStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleReflectionRootBorelDecompStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleReflectionRootBorelDecomp
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleReflectionMemMaximalCompactStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RootMapMemCompactOfIntegralStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ReflectionRootUnipotentShiftStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ReflectionRootDiagonalConjStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ReflectionRootDiagonalConj
 
 noncomputable section
 
@@ -38,7 +38,7 @@ theorem step_factor (hU : IsUnramInv ϖ σ q) (a : ℕ) (h : 2 * (a + 2) ≤ n) 
     ∃ b : GU σ n, IsBorelU b ∧
       chiDeltaU q (fun k => (χ k : ℂ)) b = (((χ i : ℂ) / (χ j : ℂ)) / (q : ℂ) ^ 2) ^ (-ordL x) ∧
       sR σ hU.1 a h * uR σ hU.1 a h x = b * (sR σ hU.1 a h * uR σ hU.1 a h x⁻¹ * sR σ hU.1 a h) :=
-  GlobalTheory.T.simple_reflection_root_borel_decomp L ϖ σ q n hU a h χ i j hi hj x hx
+  _root_.GlobalTheory.CompanionTheory.SwapFactor.sR_uR_factor L ϖ σ q n hU a h χ i j hi hj x hx
 
 theorem step_sR_mem_KU (hU : IsUnramInv ϖ σ q) (a : ℕ) (h : 2 * (a + 2) ≤ n) : sR σ hU.1 a h ∈ KU σ n :=
   GlobalTheory.T.simple_reflection_mem_maximal_compact L ϖ σ q n hU a h
@@ -58,7 +58,7 @@ theorem step_torus_shift (hU : IsUnramInv ϖ σ q) (a : ℕ) (h : 2 * (a + 2) �
       (∀ x : L, sR σ hU.1 a h * uR σ hU.1 a h x * t = t' * (sR σ hU.1 a h * uR σ hU.1 a h (c * x))) ∧
       chiDeltaU q (fun k => (χ k : ℂ)) t' * (q : ℂ) ^ (2 * ordL c) =
         chiDeltaU q (fun k => ((χ ∘ Equiv.swap i j) k : ℂ)) t :=
-  GlobalTheory.T.reflection_root_diagonal_conj L ϖ σ q n hU a h χ i j hi hj t ht
+  _root_.GlobalTheory.CompanionTheory.SwapRoot.Torus.torus_step L ϖ σ q n hU a h χ i j hi hj t ht
 
 end Lem
 

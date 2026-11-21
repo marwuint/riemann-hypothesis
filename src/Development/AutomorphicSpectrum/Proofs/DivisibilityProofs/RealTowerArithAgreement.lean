@@ -1,9 +1,15 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArithmeticIntersectionMultilinearPolarStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FunctionalProductLinearFormsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MonomialLinesPermutationStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArithmeticIntersectionMultilinearPolar
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FunctionalProductLinearForms
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MonomialLinesPermutation
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PResAboveCover
 
@@ -179,7 +185,7 @@ theorem word_eq (hL : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStat
     II M.K M.ι M.P (dimFl Ψ N + 1) (fun r => M.line t (w r)) =
       PB.polar (dimFl Ψ N + 1) (fun v => II M.K M.ι M.P (dimFl Ψ N + 1) fun r => R.Re.line (v r) t)
         (fun r a => (rootC (w r) a : ℝ)) := by
-  have hc := GlobalTheory.T.arithmetic_intersection_multilinear_polar hL II hII M.K M.ι (Option (Ψ × Fin N)) M.P (dimFl Ψ N + 1)
+  have hc := _root_.GlobalTheory.CompanionTheory.Ar.PB.combLine_intersection hL II hII M.K M.ι (Option (Ψ × Fin N)) M.P (dimFl Ψ N + 1)
     (fun a => R.Re.line a t) (fun r => rootC (w r)) R.Re.arith (fun a => R.Re.line_smooth a t ht0 ht)
   rw [← hc.2]
   exact hL M.K M.ι (II M.K M.ι) (hII.1 M.K M.ι) M.P _ _ _ R.Re.arith (fun j => smooth_line M t _) hc.1
@@ -241,11 +247,11 @@ theorem arFun_lin (hII : IsFullIntersectionSystem II) (lam : Wt Ψ N) (s t : ℝ
       ∏ _k : Fin (dimFl Ψ N + 1), ∑ j, C (cS lam s j) * X j := by
     rw [linA_eq, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
   rw [e]
-  have h1 := GlobalTheory.T.functional_product_linear_forms (Option (Ψ × Fin N)) (dimFl Ψ N + 1) (M.arFun II t)
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Top.linearFunctional_prod_linearForms (Option (Ψ × Fin N)) (dimFl Ψ N + 1) (M.arFun II t)
     (fun _ => cS lam s)
   rw [h1, Finset.sum_div]
   refine Finset.sum_congr rfl fun w _ => ?_
-  obtain ⟨hdeg, σ, -, hii⟩ := GlobalTheory.T.monomial_lines_permutation II hII.1 M.K M.ι M.P (dimFl Ψ N + 1)
+  obtain ⟨hdeg, σ, -, hii⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.monoLines_monomial_word II hII.1 M.K M.ι M.P (dimFl Ψ N + 1)
     (Option (Ψ × Fin N)) (M.line t) w M.arith (smooth_line M t)
   rw [arFun_monomial, RootModel.arMono, if_pos hdeg, hii, prod_cS M lam s w]
   have hp : ((M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none)) ≠ 0 :=

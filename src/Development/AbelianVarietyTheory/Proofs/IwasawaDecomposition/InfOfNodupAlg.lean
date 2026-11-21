@@ -122,27 +122,6 @@ open Classical in
 def wtOf (π : NG.AutRep D.host.E D.R.nV) : WtQ D.host.E D.R.nV :=
   if h : ∃ b, π.toAlgWt.IsDual b then clsW h.choose else clsW π.toAlgWt
 
-set_option synthInstance.maxHeartbeats 400000 in
-
-def nbcOf (hE : IsEmpty D.nd.Loc) : NBC D.naut where
-  AU := fun _ => AUq D.host.E D.R.nV
-  multAU := fun _ X => X.rep.mult
-  sphAU := fun _ X w => ∃ v, NG.OverPl w v ∧ X.rep.SphAt v
-  locAU := fun _ X w => locOf hL D T X.rep w
-  satAU := fun _ X w => satOf X.rep w
-  satAU_card := fun _ X w => satOf_card X.rep w
-  Wt := fun _ => WtQ D.host.E D.R.nV
-  infW := fun _ Y τ => NG.infOf (hwOf Y.rep τ)
-  infW_card := fun _ Y τ => infOf_card _
-  wtAU := fun _ X => wtOf D X.rep
-  infW_alg := fun _ Y τ => infOf_nodup_alg (hwOf_antitone Y.rep τ)
-  embAV := fun i => isEmptyElim i
-  embAV_inj := fun i => isEmptyElim i
-  embAV_loc := fun i => isEmptyElim i
-  embAV_sat := fun i => isEmptyElim i
-  embAV_sph := fun i => isEmptyElim i
-  embAV_inf := fun i => isEmptyElim i
-
 end GlobalTheory.AutQuot
 
 end

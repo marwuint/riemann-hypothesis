@@ -6,10 +6,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
 import Formalism.LocalToGlobal.Divisibility.TrivialExtensionSideWellFormed
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatchedSphericalPairsCommuteCompositeLiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLabelThetaLiftSpaceIffDualStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertHeckeOperatorsRowsRationalSelfAdjointLabelsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSphericalDoubleCosetLabelIffDecreasingStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatchedSphericalPairsCommuteCompositeLift
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLabelThetaLiftSpaceIffDual
+import Formalism.LocalToGlobal.IndefiniteReal.CutTuples2
+import Formalism.LocalToGlobal.Divisibility.ProjLemmas
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertHeckeOperatorsRowsRationalSelfAdjointLabels
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSphericalDoubleCosetLabelIffDecreasing
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualAntitoneListIffInertPrimeHeckeExponents
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreClausesOfWeakCharacterisation
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RealizationFamilyNormalOperatorsStatement
@@ -89,7 +92,7 @@ theorem labIn_pw {n : ℕ} {y : List ℕ} (hy : Formalism.L2.Col.InertTypeOk n y
 
 theorem labs {D : D7} (V : HSp D) (P : Pl D.host.E) (d : List ℤ) (hd : IsLab V P d) (hc : conjPl P = P) :
     ∃ y, Formalism.L2.Col.InertTypeOk V.rank y ∧ d = labIn V.rank y := by
-  obtain ⟨hl, hpw, hdu⟩ := (GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing V P d).1 hd
+  obtain ⟨hl, hpw, hdu⟩ := (_root_.GlobalTheory.LabChar.labels_char V P d).1 hd
   obtain ⟨y, h1, h2, h3, h4⟩ := (GlobalTheory.Hk3.labIn_selfDual_iff _ d).1 ⟨hl, hpw, hdu hc⟩
   exact ⟨y, ⟨h2, h3, h1⟩, h4⟩
 
@@ -190,7 +193,7 @@ theorem ev_lemma (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hCore : Core R.toRealD
     have hle : R.EEc e ≤ R.EEp3 q := le_iSup₂_of_le (f := fun c (_ : R.Carries q c) => R.EEc c) e he le_rfl
     exact hw0 (hInj q w (hle hw) h0)
   · intro P hP cX c0 hM
-    exact (GlobalTheory.T.matched_spherical_pairs_commute_composite_lift R.toRealDat F.lv2 hCore hSchur R.SF hSF A3.A.μ0 P hP cX c0 hM hX hXops).2 e w
+    exact (_root_.GlobalTheory.Hk3.SysE.matched_commute R.toRealDat F.lv2 hCore hSchur R.SF hSF A3.A.μ0 P hP cX c0 hM hX hXops).2 e w
       (by rw [← hEEc]; exact hw)
 
 set_option maxHeartbeats 4000000 in
@@ -220,7 +223,7 @@ theorem opv_lemma (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hCore : Core R.toReal
     (hv : v ∈ Submodule.span ℂ (R.jX A3.A.μ0 '' ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum q.1 : Set (A3.A.fam.R A3.A.μ0).S.Forms)))
     (l : ℂ) (hl : hX (R.plI Q.1) (Finsupp.single (labIn D.sp.X'.rank y) 1) v = l • v) (hv0 : v ≠ 0) :
     l = D.what₂.embLL (q.1.2 (Q.1, y)) := by
-  have hT := GlobalTheory.T.inertHeckeOperators_rows_rational_selfAdjoint_labels R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models A3.A.μ0 (A3.okI A3.A.μ0 × List ℕ)
+  have hT := _root_.GlobalTheory.InertRows.inert_rows R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models A3.A.μ0 (A3.okI A3.A.μ0 × List ℕ)
     (fun k => R.plI k.1) (fun k => labIn D.sp.X'.rank k.2) (A3.heckeRI A3.A.μ0)
     (fun k => Formalism.L2.Col.InertTypeOk D.sp.X'.rank k.2)
     (fun k hk => ⟨(tie2 R hIn hAll k.1).1, (tie2 R hIn hAll k.1).2, labIn_pw hk⟩)
@@ -276,8 +279,8 @@ theorem dir1 (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hCore : Core R.t
     c P d = c' P d := by
   obtain ⟨Q, hQ⟩ := tie1 R hIn hAll P hP hconj
   subst hQ
-  have hdY : IsLab (Yc D 0) (R.plI Q.1) d := ((GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual R.toRealDat F.lv2 (s := s) hCore i _ d hP).2).1 hd
-  have hdd : dualLab d = d := ((GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Yc D 0) _ d).1 hdY).2.2 hconj
+  have hdY : IsLab (Yc D 0) (R.plI Q.1) d := ((_root_.GlobalTheory.LabEq.isLab_W_iff R.toRealDat F.lv2 (s := s) hCore i _ d hP).2).1 hd
+  have hdd : dualLab d = d := ((_root_.GlobalTheory.LabChar.labels_char (Yc D 0) _ d).1 hdY).2.2 hconj
   obtain ⟨cX, hM⟩ := (hTS _ hP hconj).1.2 (Finsupp.single d 1)
   have hev : ∀ a : Pl D.host.E → List ℤ → ℂ,
       GlobalTheory.Hk3.evC (Yc D 0) (R.plI Q.1) (fun e => a (R.plI Q.1) (dualLab e)) (Finsupp.single d 1) = a (R.plI Q.1) d := by
@@ -333,9 +336,9 @@ theorem dir2 (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hCore : Core R.t
     unfold GlobalTheory.Hk3.evC
     refine Finsupp.sum_congr fun d _ => ?_
     split_ifs with hd
-    · have hdd : dualLab d = d := ((GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Yc D 0) _ d).1 hd).2.2 hPc
+    · have hdd : dualLab d = d := ((_root_.GlobalTheory.LabChar.labels_char (Yc D 0) _ d).1 hd).2.2 hPc
       show c0 d * c (R.plI Q.1) (dualLab d) = c0 d * c' (R.plI Q.1) (dualLab d)
-      rw [hdd, hcc _ d hPg hPc (((GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual R.toRealDat F.lv2 (s := s) hCore i _ d hPg).2).2 hd)]
+      rw [hdd, hcc _ d hPg hPc (((_root_.GlobalTheory.LabEq.isLab_W_iff R.toRealDat F.lv2 (s := s) hCore i _ d hPg).2).2 hd)]
     · rfl
   have valid : ∀ y', Formalism.L2.Col.InertTypeOk D.sp.X'.rank y' → p.1.2 (Q.1, y') = p'.1.2 (Q.1, y') := by
     intro y' hy'

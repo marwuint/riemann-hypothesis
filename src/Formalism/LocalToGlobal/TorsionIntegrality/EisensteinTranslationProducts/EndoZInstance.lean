@@ -51,11 +51,6 @@ def TaylorTh0 : Prop :=
           (Formalism.L2.Th1.B.wOf (L.weierstrassP (ω₀ / 2)) (pSeries L))
         * Formalism.L2.Th1.B.fExp (-(PowerSeries.C (s2 L / 2) * PowerSeries.X ^ 2))
 
-def SigmaUniversal : Prop :=
-  ∃ U : ℕ → MvPolynomial (Fin 2) ℚ, ∀ (K : Type) [Field K] [CharZero K] (g2 g3 : K)
-    (P : PowerSeries K), Formalism.L2.Th1.B.IsWp g2 g3 P →
-    ∀ n, PowerSeries.coeff n (Formalism.L2.Th1.B.sigma P) = MvPolynomial.aeval ![g2, g3] (U n)
-
 def IsWpUnique : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (g2 g3 : K) (P P' : PowerSeries K),
     Formalism.L2.Th1.B.IsWp g2 g3 P → Formalism.L2.Th1.B.IsWp g2 g3 P' → P = P'

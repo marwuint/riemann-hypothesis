@@ -18,7 +18,4 @@ def LenPoleLAll (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.P
 theorem theorem_zero_split_of_lengths (hLB : LenBaseAll D B P) (hLP : LenPoleLAll D B P) :
     Conclusion1OfComb (D := D) (B := B) (P := P) := theorem_zero_split_of_local (localC_of_len hLB hLP)
 
-theorem theorem_zero_bundled_of_lengths (hLf : LiftAll D B P) (hLB : LenBaseAll D B P) (hLP : LenPoleLAll D B P) :
-    Conclusion1Of2 (D := D) (B := B) (P := P) := theorem_zero_bundled_of_split hLf (theorem_zero_split_of_lengths hLB hLP)
-
 end Formalism.MainNotions.Gaps.EtaleWeightGaps

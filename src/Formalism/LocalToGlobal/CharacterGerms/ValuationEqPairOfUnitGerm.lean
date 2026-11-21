@@ -236,15 +236,4 @@ theorem expODE {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing
     _ = A := by rw [hJD, Matrix.mul_one]
   exact congrFun (congrFun hDA i) j
 
-theorem logCoord_holds {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
-    [NeZero d] {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
-    (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : LogCoordSt Y p :=
-  logCoord_of_ode p (expODE Y)
-
-theorem valuation_eq_pair_of_unit_germ {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
-    [NeZero d] {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
-    (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V) (Ls : LetSys C dd) (n : ℕ)
-    (h2 : UnitSt Y p) (h3 : GermLiftSt Y p H) : ValEqPSt Y p H Ls n :=
-  valuation_eq_pair_of_log_unit_germ Y p H Ls n (logCoord_holds Y p) h2 h3
-
 end Formalism.L2.FormalSeriesBounds

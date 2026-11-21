@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotIsIsoSpMapDnFst
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleFamilyAgreeingSmallExtensionTangStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleFamilyAgreeingSmallExtensionTang
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothExistsPointLiftSquareZeroLocalRingStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveLineBundleFamilyCalculusRulesStatement
 
@@ -40,6 +40,6 @@ theorem smallLift_of_tanLift : ∀ (S : Scheme.{0}) [IsAffine S] (A : Over S) [G
       hN.isLB hM.isLB h
     rw [IsIso.inv_hom_id] at h'
     exact ⟨_, h'⟩
-  · exact GlobalTheory.T.exists_lineBundleFamily_agreeing_smallExtension_tangent S A hA U M hM hI hT C e he hk h0 s N hN u' (hu ▸ h)
+  · exact _root_.GlobalTheory.DualOpen.exists_same_of_smallExt S A hA U M hM hI hT C e he hk h0 s N hN u' (hu ▸ h)
 
 end GlobalTheory.DualOpen

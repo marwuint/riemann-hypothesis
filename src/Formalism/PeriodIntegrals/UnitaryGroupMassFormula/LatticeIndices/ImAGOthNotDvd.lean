@@ -27,17 +27,6 @@ private theorem gOf_coprime_gOth (p : TypX X) : Nat.Coprime (gOf p) (gOth X p) :
   · exact (Nat.coprime_primes h0 h1).2 hne
   · exact (Nat.coprime_primes h1 h0).2 hne.symm
 
-theorem imA_gOth_not_dvd (p : TypX X) : ¬ gOf p ∣ gOth X p := by
-  have h0 := D.host.g_prime 0
-  have h1 := D.host.g_prime 1
-  have hne := D.host.g_ne
-  unfold gOth gOf
-  split_ifs
-  · intro h
-    exact hne ((Nat.prime_dvd_prime_iff_eq h0 h1).1 h)
-  · intro h
-    exact hne ((Nat.prime_dvd_prime_iff_eq h1 h0).1 h).symm
-
 private theorem le_exp_sub_one_of_lt_exp' (y : WithZero (Multiplicative ℤ)) (k : ℤ) (h : y < WithZero.exp k) :
     y ≤ WithZero.exp (k - 1) := by
   rcases eq_or_ne y 0 with rfl | hy

@@ -21,15 +21,6 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
 namespace ILin
 
-section Base
-
-variable {I : Ideal R} {I' : Ideal R'} (φ : R →+* R')
-  {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
-  {G' : Over (Spec (CommRingCat.of R'))} [GrpObj G']
-  (bc : G' ≅ (Over.pullback (specOf φ)).obj G)
-
-end Base
-
 end ILin
 
 section ILin

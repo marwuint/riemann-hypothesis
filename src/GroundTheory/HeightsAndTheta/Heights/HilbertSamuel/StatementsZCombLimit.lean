@@ -18,12 +18,6 @@ def ZCombLimit.Statement : Prop :=
       |(genDeg (mCoordIdeal y) D (HermLine.zcomb A B ((q : ℤ) - k * p) p).a : ℝ) / (q : ℝ) ^ D -
           genDeg (mCoordIdeal y) D A.a| < ε
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationTaylorPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorIsRingHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfForallMemFilt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoeffwiseDerivationMvPowerSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSolveMvPowerSeriesMatrixIdentityConstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSolveMvPowerSeriesMatrixIdentityConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSingleDerivationTaylorPowerSeriesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesDegreeAdicFiltrationMulLeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordinatePolynomialSubMemMaximalIdealPowStatement
@@ -41,7 +41,7 @@ theorem derivation_extends : ∀ (R A : Type) [CommRing R] [IsLocalRing R] [IsNo
     split_ifs <;> simp
   have hTinc : ∀ r, T (inc r) = MvPowerSeries.C r := by
     intro r; rw [hT, taylor_const A R n ev ds (inc r) (fun i => hinc i r), hev]
-  obtain ⟨G, hG⟩ := GlobalTheory.T.exists_solve_mvPowerSeries_matrix_identity_const n R (fun i j => pdZ j (T (z i))) (by
+  obtain ⟨G, hG⟩ := _root_.GlobalTheory.powerSeries_matrix_solve n R (fun i j => pdZ j (T (z i))) (by
     intro i j
     simp only [pdZ_apply]
     rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv, zero_add, hT,

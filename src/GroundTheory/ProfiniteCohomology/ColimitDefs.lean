@@ -65,10 +65,6 @@ theorem transitionCochains_trans {U V W : OpenNormalSubgroup G} (hVU : V ≤ U) 
   exact groupCohomology.cochainsMap_congr
     (MonoidHom.ext fun g => QuotientGroup.induction_on g fun _ => rfl) (LinearMap.ext fun _ => rfl)
 
-variable (k G) in
-
-example [Nonempty (OpenNormalSubgroup G)] : IsFiltered (OpenNormalSubgroup G)ᵒᵖ := inferInstance
-
 @[simps]
 noncomputable def levelCochains :
     (OpenNormalSubgroup G)ᵒᵖ ⥤ CochainComplex (ModuleCat k) ℕ where
@@ -122,22 +118,9 @@ theorem inflationCochains_f_hom_apply (U : OpenNormalSubgroup G) (n : ℕ)
       (x fun i => (g i : G ⧸ (U : Subgroup G)) : A) :=
   rfl
 
-theorem inflationCochains_comp_cochainsComplexι (U : OpenNormalSubgroup G) :
-    inflationCochains A U ≫ cochainsComplexι A = infCochains A U := by
-  ext n : 1
-  exact inflationCochainsX_comp_ι A U n
-
 noncomputable def inflation (U : OpenNormalSubgroup G) (n : ℕ) :
     groupCohomology (A.quotientToInvariants (U : Subgroup G)) n ⟶ cohomology A n :=
   HomologicalComplex.homologyMap (inflationCochains A U) n
-
-theorem inflation_comp_cohomologyToGroupCohomology (U : OpenNormalSubgroup G) (n : ℕ) :
-    inflation A U n ≫ cohomologyToGroupCohomology A n =
-      (groupCohomology.infNatTrans k (U : Subgroup G) n).app A := by
-  unfold inflation cohomologyToGroupCohomology
-  refine (HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_
-  rw [inflationCochains_comp_cochainsComplexι]
-  rfl
 
 theorem transitionCochains_comp_inflationCochains {U V : OpenNormalSubgroup G} (h : V ≤ U) :
     transitionCochains A h ≫ inflationCochains A V = inflationCochains A U := by

@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelActionMemCuspF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelActionCuspFormRepresentationStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteGroupRightActionComponentsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryCocycleCoboundaryOfTrivialOnStabilisers
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidualCharacterDetValuesMemCoeffFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightTranslationLiftEqLevelMoveUnitConstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelMoveStabiliserCharacterDetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidualCharacterDetValuesMemCoeffField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightTranslationLiftEqLevelMoveUnitConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelMoveStabiliserCharacterDet
 open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -157,9 +157,9 @@ theorem exists_equivariant_constants : ∀ {D : D7} {G : Type} [Group G] [Fintyp
   have hex : ∀ g, ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k :=
     fun g => ((hO i).2.lift.lev g).imp fun _ h => h.1
   obtain ⟨mv, hmv1, hmv, -, hcp⟩ := GlobalTheory.T.exists_finiteGroup_rightAction_components T R κ v₀ hI hT hpb i σ hσ hV hex
-  choose y hy using GlobalTheory.T.residual_character_det_values_mem_coeff_field T R κ v₀ hI hT i
-  obtain ⟨z, hz1, hz⟩ := GlobalTheory.T.rightTranslation_lift_eq_levelMove_unit_const T R κ v₀ O hI hT hpb hO i σ hσ hV
-  have hst := GlobalTheory.T.levelMove_stabiliser_character_det T R κ v₀ O hI hT hpb hO i σ hσ hV
+  choose y hy using _root_.GlobalTheory.ChiDetValues.chiC_mem_coeff T R κ v₀ hI hT i
+  obtain ⟨z, hz1, hz⟩ := _root_.GlobalTheory.DictMove.rdU_actLev_eq T R κ v₀ O hI hT hpb hO i σ hσ hV
+  have hst := _root_.GlobalTheory.StabMove.phiAt_actLev_of_comp_eq T R κ v₀ O hI hT hpb hO i σ hσ hV
   have hmu := muVal_cast hV (hT.laws.muVal _ (inR i) σ hσ)
   have hinj : Function.Injective fun a : T.Q.c.F => D.what₂.embLL (algebraMap T.Q.c.F D.what₂.LL a) :=
     D.what₂.embLL.injective.comp (algebraMap T.Q.c.F D.what₂.LL).injective

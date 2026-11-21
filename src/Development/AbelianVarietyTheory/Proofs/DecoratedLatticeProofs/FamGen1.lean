@@ -43,6 +43,4 @@ theorem famGen1 : CorankOneIsEquivalenceOnRow → FamGen1 := by
     have : t' ∈ cls1 Y u t := he ▸ hrefl t' ht'
     exact (hrow t t' this).symm
 
-example : CorankOneIsEquivalenceOnRow → FamGen1 := famGen1
-
 end GlobalTheory.Core.One

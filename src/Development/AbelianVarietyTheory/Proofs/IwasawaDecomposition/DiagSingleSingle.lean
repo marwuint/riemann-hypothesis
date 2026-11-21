@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.RootOfUnityEightQMemCoeffGaloisSubfield
 import Formalism.LocalRingCardinality.SpanPowerMembership.Spaces
 import Formalism.SharpRestriction.InertJacobiLevels.HostFam
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NegOneNormFromCmFieldFiniteAdelesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NegOneNormFromCmFieldFiniteAdeles
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasSignatureDiagonalSgn
 
 noncomputable section
@@ -305,7 +305,7 @@ def spacesStd : Spaces R F E where
     change R.rankY 0 - (R.k + j - 1) = R.m - j
     omega
   baseSpace_isometric_graded := fun j _ _ => by
-    obtain ⟨y, hy⟩ := GlobalTheory.T.neg_one_norm_from_cmField_finiteAdeles F E cm
+    obtain ⟨y, hy⟩ := _root_.GlobalTheory.neg_one_norm_finiteAdele F E cm
     obtain ⟨g, hg⟩ := sign_congr (Formalism.UG.sigR cm.sig (FiniteAdeleRing (𝓞 F) F))
       (Formalism.UG.inclE (FiniteAdeleRing (𝓞 F) F)) y hy star_isIntegral (R.rankY 0) (cut _ (pY R 0))
       (cut _ (R.k + j - 1))
@@ -322,10 +322,5 @@ end GlobalTheory.Mem.DiagSp
 
 open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem
 open scoped TensorProduct
-
-theorem GlobalTheory.Mem.exists_spaces : ∀ (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (T : ℕ) (hT : T.Prime) (pz : E) (hpz : star pz * pz = T) (vn : ℕ → Bool), ∃ S : Spaces R F E, S.T = T ∧ (∀ j, j ≤ R.m → ∀ τ : E →+* ℂ, (S.Y j).sig τ = sigYD R j) ∧ S.Vneg = vn ∧ ∃ hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x), ∀ j, S.X j = Formalism.BasicNotions.Examples₂.posSpace hstar (R.N j) := by
-  intro R F E _ _ _ _ _ _ cm T hT pz hpz vn
-  exact ⟨DiagSp.spacesStd R cm T hT pz hpz vn, rfl, fun j _ τ => DiagSp.spY_sig R j τ, rfl,
-    Formalism.BasicNotions.Examples₂.star_isIntegral, fun _ => rfl⟩
 
 end

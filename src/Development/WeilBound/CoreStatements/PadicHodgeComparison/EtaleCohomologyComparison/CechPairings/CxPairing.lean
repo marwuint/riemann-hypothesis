@@ -249,11 +249,4 @@ def CxPairing.cup {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (P : CxPairing
     rw [P.leib, show K.d p (Quotient.out x).1 = 0 from (Quotient.out x).2,
       show L.d q (Quotient.out y).1 = 0 from (Quotient.out y).2]; simp)
 
-structure DPairing (K : DCx.{w} R) (L : DCx.{w'} R) (M : DCx.{w''} R) where
-  μ : ∀ {p q p' q' a b : ℕ}, p + p' = a → q + q' = b → (K.X p q →ₗ[R] L.X p' q' →ₗ[R] M.X a b)
-  lh : ∀ {p q p' q' a b : ℕ} (h : p + p' = a) (h' : q + q' = b) x y, M.dh a b (μ h h' x y) =
-    μ (p := p + 1) (p' := p') (by omega) h' (K.dh p q x) y + (-1 : ℤ) ^ p • μ (p := p) (p' := p' + 1) (by omega) h' x (L.dh p' q' y)
-  lv : ∀ {p q p' q' a b : ℕ} (h : p + p' = a) (h' : q + q' = b) x y, M.dv a b (μ h h' x y) =
-    μ (q := q + 1) (q' := q') h (by omega) (K.dv p q x) y + (-1 : ℤ) ^ q • μ (q := q) (q' := q' + 1) h (by omega) x (L.dv p' q' y)
-
 end CrystallineSemistableComparison

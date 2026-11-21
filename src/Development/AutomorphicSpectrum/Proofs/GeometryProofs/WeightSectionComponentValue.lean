@@ -11,7 +11,8 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProdZpowLe
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AllWeightSectionsCompat
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.NotFamConstZero
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicApproximationCompleteDvrStatement
+import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
+import Development.WeilBound.CoreStatements.CommonZeroEvaluation.AlgebraicApproximationValued
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntegralFrameSubalgebraRelayStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameChartNonzeroDenominatorStatement
 open NumberField IsDedekindDomain Filter Topology
@@ -208,7 +209,7 @@ theorem approx_main : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [Is
   have hg₂ : g₂ ≠ 0 := Finset.prod_ne_zero_iff.2 fun b hb => hna0' b (Finset.mem_filter.1 hb).2
   have hg : g ≠ 0 := mul_ne_zero (mul_ne_zero hg₀ hg₁) hg₂
   let n' : ℕ := max n (vV T.V (ψ fS) + 1).toNat
-  obtain ⟨ψ₁, hψ₁c, hψ₁a, hψ₁n, hψ₁g⟩ := GlobalTheory.T.algebraic_approximation_complete_dvr c.F C.R T hy io ψ.toRingHom
+  obtain ⟨ψ₁, hψ₁c, hψ₁a, hψ₁n, hψ₁g⟩ := _root_.ModelDimension.algebraic_approximation_valued c.F C.R T hy io ψ.toRingHom
     (RingHom.ext fun a => ψ.commutes a) (insert fS F) n' g hg
   let ψ' : C.R →ₐ[c.F] T.Fr := { ψ₁ with commutes' := fun a => RingHom.congr_fun hψ₁c a }
   have hψ' : ∀ x, ψ' x = ψ₁ x := fun _ => rfl

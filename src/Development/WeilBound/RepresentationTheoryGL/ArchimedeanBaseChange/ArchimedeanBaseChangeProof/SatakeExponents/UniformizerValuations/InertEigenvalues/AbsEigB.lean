@@ -1,7 +1,9 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.EigInert
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.ExtremeU
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.JacquetLemma
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantHeckeOperatorsCommuteStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantHeckeOperatorsCommute
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictDom
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 
@@ -244,7 +246,7 @@ theorem main_D [CompleteSpace L] {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (D
     rw [e2]
     exact D.J.one_mem
   have hc : ∀ i j, Commute (F i) (F j) := fun i j =>
-    GlobalTheory.T.dominant_hecke_operators_commute (GU σ n) D hcommT V ρ hsm i.1.1 j.1.1 i.2.1 j.2.1 i.1.2 j.1.2 i.2.2 j.2.2
+    _root_.GlobalTheory.CompanionTheory.CassHecke.heckeOp_commute (GU σ n) D hcommT V ρ hsm i.1.1 j.1.1 i.2.1 j.2.1 i.1.2 j.1.2 i.2.2 j.2.2
   let μ : Module.Dual ℂ (fixed ρ D.J) := (LinearMap.proj (R := ℂ) (φ := fun _ : GU σ n => ℂ) 1) ∘ₗ
     (GlobalTheory.LFun.psSpaceU σ q β).subtype ∘ₗ f ∘ₗ (fixed ρ D.J).subtype
   have hμf : ∀ i x, μ (F i x) = ξ i * μ x := fun i x =>

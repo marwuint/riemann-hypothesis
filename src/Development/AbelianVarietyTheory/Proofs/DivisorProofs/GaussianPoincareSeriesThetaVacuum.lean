@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsHalfIdem
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MapFinNeg
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCharacterHalfSymplecticFormRealPointStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealSymplecticFormAlternatingInvariantDefiniteStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealSymplecticFormAlternatingInvariantDefinite
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OmAtSmulRight
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix GlobalTheory.WeilParts GlobalTheory.FinWeil GlobalTheory.FinWeilO GlobalTheory.FockCompare GlobalTheory.VacUnique GlobalTheory.RatAut
 open scoped TensorProduct Kronecker ComplexOrder ContDiff
@@ -168,7 +169,7 @@ theorem series_theta_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ
   classical
   intro D ψ hψ θ σ hσ S T sS sT hS hT ΛS ΛT dS dT w hw a
   have hθ := hσ.inf
-  obtain ⟨hJJ, hskew, hinvJ, hneg⟩ := GlobalTheory.T.realSymplecticForm_alternating_invariant_definite D S T sS sT hS hT
+  obtain ⟨hJJ, hskew, hinvJ, hneg⟩ := _root_.GlobalTheory.RealSymplForm.form_alt_inv_def D S T sS sT hS hT
   obtain ⟨aL, aR, a0, -, acont, arat, -, -, -⟩ := GlobalTheory.T.homSymplecticHalfForm_algebraic_laws_continuous D S T
   have hA := selfDual_latF (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ dS dT).1
   have htop : IsTopologicalAddGroup (WO S T) := (GlobalTheory.AdelicMatrixLattice.lattice D T S).1
@@ -211,7 +212,7 @@ theorem series_theta_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ
         exact (tauE D _).injective (e.trans (RingHom.map_zero _).symm)
       rw [this, map_zero])
     (fun R => by
-      refine ((GlobalTheory.T.finite_rational_points_completed_lattice D S T ΛS ΛT dS dT R).image (ratW T S)).subset ?_
+      refine ((_root_.GlobalTheory.CompletedLatticeFinite.finite_rational_points D S T ΛS ΛT dS dT R).image (ratW T S)).subset ?_
       rintro _ ⟨⟨g, rfl⟩, h1, h2⟩
       refine ⟨g, ⟨⟨_, h1, ?_⟩, fun τ i j => ?_⟩, rfl⟩
       · have e : (ratW T S g : WO S T) - (1 - realIdem D) • (ratW T S g : WO S T) =

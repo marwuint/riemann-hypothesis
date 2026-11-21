@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPullb
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueHomExtensionOfIsOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPelUnifPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSquareUnique
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversalTorsionRigidOverModuliFieldPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversalTorsionRigidOverModuliFieldPoint
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UChart GlobalTheory.UCanon GlobalTheory.PolDeg GlobalTheory.TInj
@@ -148,7 +148,7 @@ theorem two_match {X : Scheme.{0}} (u : SAB H X) (V : Type) [CommRing V] [IsDoma
         ← Category.assoc, l₁.ext, ← Category.assoc, gen, Category.assoc, hactA, Category.assoc]
     exact (GlobalTheory.SemiAbExtDomain.existsUnique_hom_extension_generic (FractionRing V) t₁.G t₂.G hG₁ hG₂
       ((Over.pullback (jK V)).map (a.hom ≫ t₂.act.toRingAct.act x))).unique ⟨inferInstance, h₀⟩ ⟨inferInstance, rfl⟩
-  obtain ⟨b, h, hbi, lin, coord⟩ := GlobalTheory.T.uniformisedGroupIso_abelianPart_character_isos V (maximalIdeal V) hA D₁ A₁ t₁.G U₁.toUnifPre D₂ A₂ t₂.G U₂.toUnifPre a ha
+  obtain ⟨b, h, hbi, lin, coord⟩ := _root_.GlobalTheory.TInj.iso_lin_coord V (maximalIdeal V) hA D₁ A₁ t₁.G U₁.toUnifPre D₂ A₂ t₂.G U₂.toUnifPre a ha
   have hb : IsMonHom b := lin.2.1
   have hov : Over₀ U₁.toUnifPre U₂.toUnifPre a.hom b := lin.2.2.1
   have uq := fun x => over₀_onTorus_unique V (maximalIdeal V) hA D₁ D₂ A₁ A₂ t₁.G t₂.G U₁.toUnifPre U₂.toUnifPre
@@ -158,9 +158,9 @@ theorem two_match {X : Scheme.{0}} (u : SAB H X) (V : Type) [CommRing V] [IsDoma
       (hactG x ▸ onTorus_comp (fun e => l₁.i_lin e x) lin.2.2.2)) χ
   have hbl : ∀ x : 𝓞 E, o₁.onB.act x ≫ b = b ≫ o₂.onB.act x := fun x =>
     (uq x).1 _ _ (hactG x ▸ over_comp (fun e => l₁.q_lin e x) hov) (over_comp hov (fun e => l₂.q_lin e x))
-  have hlbG := GlobalTheory.T.mumfordBundleIso_genericFibre_extends_uniformisedGroups V (maximalIdeal V) hA D₁ A₁ t₁.G U₁.toUnifPre D₂ A₂ t₂.G U₂.toUnifPre hG₁ a.hom cA.hom ha hcA
+  have hlbG := _root_.GlobalTheory.TInj.lbIso_lam_of_generic V (maximalIdeal V) hA D₁ A₁ t₁.G U₁.toUnifPre D₂ A₂ t₂.G U₂.toUnifPre hG₁ a.hom cA.hom ha hcA
     gen hlbA
-  have hlbB := GlobalTheory.T.mumfordBundle_iso_along_homs_descends_abelianPart V hA D₁ D₂ A₁ A₂ t₁.G t₂.G hG₁ hG₂ U₁ U₂ a.hom a.hom b b ha ha hb hb hov hov hlbG
+  have hlbB := _root_.GlobalTheory.HomMum.lbIso_descends V hA D₁ D₂ A₁ A₂ t₁.G t₂.G hG₁ hG₂ U₁ U₂ a.hom a.hom b b ha ha hb hb hov hov hlbG
   have hnrm : ∀ χ, ∃ u : LB.Gen (CmpLB D₁.toPre D₂.toPre b (h.toAddMonoidHom χ) χ), Nrm u :=
     fun χ => (coord χ).imp fun _ => And.left
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible V
@@ -199,7 +199,7 @@ theorem two_match {X : Scheme.{0}} (u : SAB H X) (V : Type) [CommRing V] [IsDoma
     apply hO₂.1.1.hom_ext
     · rw [Over.comp_left, Category.assoc, hα, hx]
     · rw [Over.comp_left, Category.assoc, Over.w, Over.w, Over.w]
-  refine ⟨p', GlobalTheory.T.torsionPairImage_latticePart_eq_of_match V (maximalIdeal V) hA D₁ D₂ b h.symm _ hM k p₁ p' hg', hg',
+  refine ⟨p', _root_.GlobalTheory.TInj.qImg_lattice V (maximalIdeal V) hA D₁ D₂ b h.symm _ hM k p₁ p' hg', hg',
     (GlobalTheory.T.torsionPointOfPair_exists_torsion_injective_upToEquiv V (maximalIdeal V) hA D₂ A₂ t₂.G U₂ hG₂ _ k hk).2 p' p₂ x₂ (hxx ▸ hp') hq₂⟩
 
 open GlobalTheory.TorusExt GlobalTheory.Balanced in
@@ -292,7 +292,7 @@ theorem pair_match : ∀ {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l)
   let z : Over.mk ((jFK (R := R) (AlgebraicClosure (FractionRing R)) ≫ C.y) ≫ pullback.fst _ _) ⟶
       Over.mk ((TFK (R := R) (AlgebraicClosure (FractionRing R))).hom ≫ 𝟙 _ ≫ C.y ≫ pullback.fst _ _) :=
     Over.homMk (𝟙 _) ((Category.id_comp _).trans ((congrArg _ (Category.id_comp _)).trans (Category.assoc _ _ _).symm))
-  have key := GlobalTheory.T.universal_torsion_rigid_over_moduli_fieldPoint Xo c φ0 _ _ (jFK (R := R) (AlgebraicClosure (FractionRing R)) ≫ C.y)
+  have key := _root_.GlobalTheory.TorsRigid.torsion_rigid Xo c φ0 _ _ (jFK (R := R) (AlgebraicClosure (FractionRing R)) ≫ C.y)
     (z ≫ pushHom O₀ _ x₀) (by rw [← MonObj.comp_pow, hz, MonObj.comp_one]) (spMap j₁) (spMap j₂)
     (by rw [← Category.assoc, ← Category.assoc, s₁, s₂, Category.assoc, Category.assoc, hy])
   refine ⟨p₁, p₂, hy₁, hT₁, hy₂, hT₂, hQ _ hn p₁ p₂ x₁ x₂ hq₁ hq₂ ?_⟩

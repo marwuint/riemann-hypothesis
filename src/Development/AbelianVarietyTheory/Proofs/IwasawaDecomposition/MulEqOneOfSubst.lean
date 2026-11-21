@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoefSetNonemptyOfNonneg
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieCombStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
+import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsTrans
 
 set_option maxHeartbeats 800000
@@ -17,12 +20,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SectionsThroughEpsilonPoints (EpsPt
 namespace GlobalTheory.LocM.FJ.FlagIndep
 
 attribute [local instance] Over.cartesianMonoidalCategory
-
-section Linear
-
-variable {k V : Type} [Field k] [AddCommGroup V] [Module k V] {m : ℕ}
-
-end Linear
 
 section Tangent
 
@@ -42,22 +39,6 @@ theorem eig_of_comb {v : Fin m → (Sp (DualNumber k) ⟶ t.G.left)} (hv : ∀ i
   exact congrArg (fun z => (tv z).left) this
 
 end Tangent
-
-section Arcs
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-  {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
-  {Z : Mdl Y i₀} {F : DVF p}
-
-def cst (F : DVF p) : F.O →+* LaurentSeries ↥F.K := F.toLaurent.comp PowerSeries.C
-
-variable {b : Z.i.c.V W →+* F.O} {a : ArcIn Dw Z.i.l (Z.i.c.V W).subtype F.O b} {χ : Sp (PowerSeries F.O) ⟶ (Y Z.i).X}
-
-def arcVec (Wt : Wit (Y Z.i) a χ) (w : epsR (PowerSeries F.O) ⟶ Wt.t.G) :
-    Sp (DualNumber (LaurentSeries ↥F.K)) ⟶ (Y Z.i).t.G.left :=
-  spMap (dualMap F.toLaurent) ≫ w.left ≫ Wt.m.φ
-
-end Arcs
 
 section Series
 

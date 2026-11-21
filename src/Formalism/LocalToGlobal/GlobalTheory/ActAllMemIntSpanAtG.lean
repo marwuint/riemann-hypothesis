@@ -57,25 +57,6 @@ theorem zpow_mem_intW (u : (intW Pl w)ˣ) (z : ℤ) : ((u : intW Pl w) : LL) ^ z
 
 end IntW
 
-section Row
-
-variable {K : Type} [CommRing K]
-
-theorem rowAct_one {r n : ℕ} (f : MvPolynomial (Fin r × Fin n) K) :
-    rowAct K (1 : Matrix (Fin r) (Fin r) K) f = f := by
-  have h : rowAct K (n := n) (1 : Matrix (Fin r) (Fin r) K) = AlgHom.id K (MvPolynomial (Fin r × Fin n) K) := by
-    apply MvPolynomial.algHom_ext
-    intro v
-    simp only [rowAct, aeval_X, AlgHom.id_apply]
-    rw [Finset.sum_eq_single v.1]
-    · simp
-    · intro c _ hc
-      simp [Matrix.one_apply_ne' hc]
-    · simp
-  rw [h, AlgHom.id_apply]
-
-end Row
-
 section WO
 
 variable {K : Type} [Field K] (O : Subring K)
@@ -106,20 +87,6 @@ private theorem map_subtype_mem_wO_of_mem_weyl {n : ℕ} (ν : Fin n → ℕ) (p
     rw [Subring.smul_def, MvPolynomial.smul_eq_C_mul] at h
     rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
     exact h
-
-def stabM (n : ℕ) (ν : Fin n → ℕ) : Submonoid (Matrix (Fin n) (Fin n) O) where
-  carrier := {g | ∀ f ∈ wO O n ν, rowAct K (g.map O.subtype) f ∈ wO O n ν}
-  one_mem' := by
-    intro f hf
-    rw [Matrix.map_one _ (map_zero _) (map_one _), rowAct_one]
-    exact hf
-  mul_mem' := by
-    intro g h hg hh f hf
-    rw [Matrix.map_mul]
-    have := congrArg (fun φ => φ f) (rowActMul K n n (h.map O.subtype) (g.map O.subtype))
-    simp only [AlgHom.coe_comp, Function.comp_apply] at this
-    rw [← this]
-    exact hh _ (hg f hf)
 
 theorem wO_stable [IsLocalRing O] {n : ℕ} (ν : Fin n → ℕ) (g : Matrix (Fin n) (Fin n) O) (hg : IsUnit g.det)
     {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ wO O n ν) : rowAct K (g.map O.subtype) f ∈ wO O n ν := by

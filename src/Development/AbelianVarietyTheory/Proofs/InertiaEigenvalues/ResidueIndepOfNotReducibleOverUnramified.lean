@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReducibleOfStableRationalRowSubspaceStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReducibleOfStableRationalRowSubspace
 
 noncomputable section
 
@@ -97,7 +97,7 @@ theorem residue_indep_of_not_splits : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime
   by_contra hc0
   apply hNS
   have hbij := fr_bijective l m
-  refine GlobalTheory.T.reducible_of_stable_rational_rowSubspace l n K r ρ hR (resW P r m u) (fun d hd => hd.1) ?_ ?_ ?_ ?_
+  refine _root_.GlobalTheory.PMon.splits_of_stable_rat_subspace l n K r ρ hR (resW P r m u) (fun d hd => hd.1) ?_ ?_ ?_ ?_
   · intro e he d hd
     refine ⟨fun i => ?_, ?_⟩
     · simp [Pi.smul_apply, smul_eq_mul, map_mul, he, hd.1 i]

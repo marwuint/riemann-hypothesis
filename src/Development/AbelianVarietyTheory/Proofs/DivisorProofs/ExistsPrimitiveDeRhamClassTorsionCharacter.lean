@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFaithfullyFla
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleCohomologousOfDeRhamSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsAddChiEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDatOfIsAdd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPushoutTorsorNTorsionCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPushoutTorsorNTorsionCharacter
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct WithConv
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap epsR IsTangent IsGrpPullback)
 open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB CubicalStr Theta thφ thε thK x3)
@@ -23,7 +23,7 @@ theorem GlobalTheory.PtExt.exists_dat_chi_eq : ∀ (p : ℕ) [Fact p.Prime]  (R 
   have hn : ((p ^ N : ℕ) : R) = 0 := by push_cast; exact hN
   have hR : HasRoots A (p ^ N) := fun D _ _ x ↦
     GlobalTheory.PtCover.exists_faithfullyFlat_pow_eq R A hA (p ^ N) (pow_pos (Fact.out : p.Prime).pos N) D x
-  obtain ⟨u, g, hu, hg, hchi⟩ := GlobalTheory.T.exists_pushout_torsor_nTorsion_character R A (p ^ N) hn hR b hb
+  obtain ⟨u, g, hu, hg, hchi⟩ := _root_.GlobalTheory.PtExt.exists_pushout_torsor R A (p ^ N) hn hR b hb
   obtain ⟨f, hf⟩ := GlobalTheory.PtExt.cohom_fv_of_toH1O_surjective R A hs u hu
   obtain ⟨g', hg', hchi'⟩ := GlobalTheory.CobChi.exists_isAdd_chi_eq R A (p ^ N) hn u (fv f) g hg hf
   let c : primDR A := ⟨H1.mk _ f, by rw [show primDR A = ⊤ from hP]; exact Submodule.mem_top⟩

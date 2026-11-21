@@ -45,12 +45,6 @@ theorem lact_rmul_lact {Ψ : Finset (E →+* ℂ)} (γ' γ : GL (Fin r) E) (y b 
     ((γ' * γ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * (mat y τ * mat b τ)
   simp only [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
-theorem lact_one {Ψ : Finset (E →+* ℂ)} (y : Frame Ψ r) : lact (1 : GL (Fin r) E) y = y := by
-  funext τ
-  show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = y τ
-  rw [Units.val_one, ← RingHom.mapMatrix_apply, map_one, Matrix.one_mul]
-  rfl
-
 theorem locClause_of_unif {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {Kf : Subgroup (GA D V)} {th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r}
     (hd : DictIsUnif V dict Kf th hr) (hK : Kf ≤ GfC V)

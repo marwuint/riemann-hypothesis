@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LawLoc
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardInversePrimeRepsIntegralRightMulHecke
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalSelfDualLatticeSplitPlaceDecompositionStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IndexIntegralMatricesInSubstitutionImageStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IndexIntegralMatricesInSubstitutionImage
 
 noncomputable section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory Matrix ValuativeRel GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.LocMod GlobalTheory.LocOm
@@ -148,7 +148,7 @@ theorem vacuum_move : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topolo
   intro D k _ _ _ _ p ψ S T χS χT ω hW μS μT hμS hμT Y Y' _ _ _ _ FS FT Tm hTm g gk h hk hg hh he
   classical
   obtain ⟨Λ, hdd, hd, hd', hup, hhalf, hchalf⟩ := GlobalTheory.T.localSelfDualLattice_split_place_decomposition D k p ψ hW.std S T Y Y' FS FT
-  obtain ⟨R₀, hcard, hR₀, hR₀u⟩ := GlobalTheory.T.index_integralMatrices_in_substitution_image k Y Y' gk hk he
+  obtain ⟨R₀, hcard, hR₀, hR₀u⟩ := _root_.GlobalTheory.LocOm.IntIndex.index_integral_image k Y Y' gk hk he
   have hact : ∀ x, actO S T g⁻¹ h⁻¹ (p.up FS FT x) =
       p.up FS FT (((hk⁻¹ : GL Y k) : Matrix Y Y k) * x * (gk : Matrix Y' Y' k)) :=
     fun x => (actO_up_loc D k p S T Y Y' FS FT g gk h hk hg hh x).2

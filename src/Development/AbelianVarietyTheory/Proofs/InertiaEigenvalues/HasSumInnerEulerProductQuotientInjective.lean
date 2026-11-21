@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EulerOperatorInjectiveEigenvectorStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EulerOperatorInjectiveEigenvector
 open scoped InnerProductSpace BigOperators
 
 namespace GlobalTheory
@@ -113,7 +113,7 @@ theorem hasSum_inner_quotient_eulerProduct_injective : ∀ (Γ : Type) [Group Γ
     convert this using 1
     funext x
     rw [key]
-  obtain ⟨W, hW, hinj, -⟩ := GlobalTheory.T.eulerOperator_injective_eigenvector ι (fun v => Γ ⧸ K.comap (c v)) x0 H a' s B' Z h1 hs hs1 hfin
+  obtain ⟨W, hW, hinj, -⟩ := _root_.GlobalTheory.eulerOp_injective_eigen ι (fun v => Γ ⧸ K.comap (c v)) x0 H a' s B' Z h1 hs hs1 hfin
     hnorm hx0 hrec
   refine ⟨W, hinj, fun x y => ?_⟩
   have hW' := (Equiv.hasSum_iff e).mpr hW

@@ -1,7 +1,9 @@
 import Development.WeilBound.CoreStatements.AbelianHeightsDuality.UnitaryDensity.Cayley
 import Development.WeilBound.ThetaLifts.LatticeBasics.ConstOfGood
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.UniqPlugPl
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryMatrixEqProdQuasiReflectionsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryMatrixEqProdQuasiReflections
+import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
 
 noncomputable section
 
@@ -102,7 +104,7 @@ theorem cut_rat (hc : IsCMExt F E σ) (hJ : IsHermND σ Jᵀ) {L : Subgroup (UA 
     exact h1.symm
   have hform : ∀ x y, GlobalTheory.UnRep.hermE c J x y = x ⬝ᵥ J *ᵥ fun b => σ (y b) := fun x y => by
     simp only [GlobalTheory.UnRep.hermE, dotProduct, Matrix.mulVec, Finset.mul_sum, hcσ, mul_assoc]
-  obtain ⟨l, hl, rfl⟩ := GlobalTheory.T.unitaryMatrix_eq_prod_quasiReflections F E c n J ⟨fun x => by rw [hcσ, hcσ]; exact hσ x, hne, fun a b => by rw [hcσ, hh],
+  obtain ⟨l, hl, rfl⟩ := _root_.GlobalTheory.UnRep.isUnE_eq_prod_refl F E c n J ⟨fun x => by rw [hcσ, hcσ]; exact hσ x, hne, fun a b => by rw [hcσ, hh],
     by simpa using hJ.2⟩ γ fun x y => by
       have e1 : (fun b => σ ((γ *ᵥ y) b)) = γ.map σ *ᵥ fun b => σ (y b) :=
         funext fun b => RingHom.map_mulVec (σ : E →+* E) γ y b

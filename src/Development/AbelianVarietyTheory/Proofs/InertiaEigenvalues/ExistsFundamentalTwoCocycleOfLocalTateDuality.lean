@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.H2EquivOfTorsionCharacter
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ContCohomologyTransportMulEquiv
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2LocalStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2Local
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 open Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.Cyc.TwistLift GlobalTheory.TateTop
@@ -45,7 +45,7 @@ theorem exists_fundamental_cocycle_loc (hT : Formalism.GaloisCohomology.LocalTat
     rw [show Φ.symm (Φ g) = g from Φ.symm_apply_apply g, ← P.PD_χ K g] at h1
     exact h1
   · have : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
-    have hfin := (GlobalTheory.T.finite_H1_H2_local hT l K.1 K.2 r (ZMod (l ^ r))
+    have hfin := (_root_.GlobalTheory.finite_H1_H2_of_localTateDuality hT l K.1 K.2 r (ZMod (l ^ r))
       (ReciprocityTheory.Gal.charRep (redChar χZ r)) hr
       (contAction_charRep _ ((continuous_toZModPow _).comp hχc))).1
     obtain ⟨e⟩ := (GlobalTheory.contCohomology_transport_mulEquiv (ZMod (l ^ r)) (Formalism.GaloisCohomology.GK l K.1)

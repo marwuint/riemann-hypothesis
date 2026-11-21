@@ -66,17 +66,6 @@ structure Good (G : HTGroup p) (K : Subgroup G.GAf) (f : G.GAf → ℂ) : Prop w
     ¬ RegIrr G ((y.1.1 : G.Cˣ) : G.C) →
     GlobalTheory.LKCount.orbK (MonoidHom.id _) (K.prod (Kp G)) (B.embAt x t hx y) (fun h => f h.1 * oneP G h.2) = 0
 
-structure Scope (D : Datum p) (G : HTGroup p) (gb : GBase D.toG ℂ) (N : ℕ) : Prop where
-  a1 : D.a = 1
-  m1 : D.m = 1
-  ga : G.a = 1
-  odd : Odd G.n
-  cpt : D.CompactB
-  three : 3 ≤ N
-  cop : N.Coprime p
-  rho : gb.ρ = D.ρc
-  tau : ∀ (i : Fin D.a) (c : 𝓞 D.F), gb.t i c = D.tau i (c : D.F)
-
 abbrev PtsOf (G : HTGroup p) (v : InfinitePlace G.F) (K : Subgroup G.GAf) (q : FCls G) : Type :=
   Pts G v (Quot.out q).β (Quot.out q).trivAf.choose (Quot.out q).trivAf.choose_spec.choose
     (Quot.out q).trivAf.choose_spec.choose_spec K (Kp G)
@@ -90,8 +79,5 @@ def Seen (G : HTGroup p) (v : InfinitePlace G.F) (K : Subgroup G.GAf) (f : G.GAf
 
 def CxFin (G : HTGroup p) (v : InfinitePlace G.F) (K : Subgroup G.GAf) (f : G.GAf → ℂ) : Prop :=
   {z : Σ q : FCls G, PtsOf G v K q × grp G (Quot.out q).β | Seen G v K f z.1 z.2.1 z.2.2}.Finite
-
-example (K : Subgroup G.GAf) (v : InfinitePlace G.F) : CxFin G v K 0 :=
-  Set.finite_empty.subset fun _ hz => (hz.2.1 rfl).elim
 
 end UpperTheory.Gal.LocalSmoothExtension

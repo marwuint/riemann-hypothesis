@@ -20,10 +20,4 @@ def PullbackDegreeCount.Statement : Prop :=
       (({x | pullQ R v Ψ x = y ∧ pullW R v Ψ x = w} \ pullBad R v Ψ).ncard : ℤ) =
         J (fibreIdeal κ G) 0 Fin.elim0
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

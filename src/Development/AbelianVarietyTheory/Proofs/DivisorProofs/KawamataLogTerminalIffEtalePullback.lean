@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldMapCompConstFn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModificationLineBundleGlobalSectionsDimPullEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorEtalePullbackOrdersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorOverRestrictEtaleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorLiftAlongEtaleMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackNeZeroOfEtaleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorEtalePullbackOrders
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorOverRestrictEtale
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorLiftAlongEtaleMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackNeZeroOfEtale
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy
@@ -24,14 +24,14 @@ theorem kltAt_iff_etale : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] [
   haveI : GlobalTheory.IsNormalScheme W := ModifSections.isNormalScheme_of_smooth p
   have hnM := NadelApp.topologicalKrullDim_eq_of_smooth M (f ≫ p) n
   have hnW := NadelApp.topologicalKrullDim_eq_of_smooth W p n
-  have hne : ∀ η : RatForms p n, η ≠ 0 → ratPull p f n η ≠ 0 := GlobalTheory.T.rationalTopFormPullback_ne_zero_of_etale M W p f n U hU ⟨y, hy⟩
+  have hne : ∀ η : RatForms p n, η ≠ 0 → ratPull p f n η ≠ 0 := _root_.GlobalTheory.EtaleKlt.ratPull_ne_zero M W p f n U hU ⟨y, hy⟩
   have hlog : ∀ (η : RatForms p n) (m' : ℕ) (g : W.functionFieldˣ), η ≠ 0 →
       IsLogEqn p (qWeil D₀ m) η (f y) m' g →
       IsLogEqn (f ≫ p) (qWeil D₁ m) (ratPull p f n η) y m'
         (Units.map (functionFieldMap f).toMonoidHom g) := by
     intro η m' g hη h z hz E' hE'
     have hzU : z ∈ U := hz.mem_open U.isOpen hy
-    obtain ⟨E, hE, hord, hform⟩ := GlobalTheory.T.exists_primeDivisor_etalePullback_orders M W p f n U hU z hzU E' hE'
+    obtain ⟨E, hE, hord, hform⟩ := _root_.GlobalTheory.EtaleDiv.exists_isAt_ord_formOrd M W p f n U hU z hzU E' hE'
     have key := h (f z) (hz.map f.continuous) E hE
     obtain ⟨d, hd⟩ := D₀.exists_isEqn (f z)
     have hd' := hD z d hd
@@ -45,13 +45,13 @@ theorem kltAt_iff_etale : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] [
     obtain ⟨g, hg⟩ := (m • canonical p n + D₀).exists_isEqn (f y)
     have h1 := hG (f y) g hg
     refine (h1.kltAt_iff hnW hη hm).2 fun E hE => ?_
-    obtain ⟨E', hE', hord, hform⟩ := GlobalTheory.T.primeDivisor_lift_along_etale_map M W p f n U hU y hy E hE
+    obtain ⟨E', hE', hord, hform⟩ := _root_.GlobalTheory.EtaleKlt.divOver_lift M W p f n U hU y hy E hE
     have h2 := ((hlog η m g hη h1).kltAt_iff hnM (hne η hη) hm).1 hk E' hE'
     rw [discrep, hord, hform η hη] at h2
     exact h2
   · rintro ⟨η, m', g, hη, hm', h1, h2⟩
     refine ⟨ratPull p f n η, m', _, hne η hη, hm', hlog η m' g hη h1, fun E' hE' => ?_⟩
-    obtain ⟨E, hE, hord, hform⟩ := GlobalTheory.T.primeDivisorOver_restrict_etale M W p f n U hU y hy E' hE'
+    obtain ⟨E, hE, hord, hform⟩ := _root_.GlobalTheory.EtaleKlt.divOver_restrict M W p f n U hU y hy E' hE'
     have h3 := h2 E hE
     rw [discrep] at h3 ⊢
     rw [hord, hform η hη]

@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChLApply
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMulAddCharLinearFormStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatCompAffineMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMulAddCharLinearForm
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatCompAffineMatrix
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionEvaluateEntryOfMulLawStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionIntegrateEntryOfTranslationStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionLowerEntryMultiplicationLawStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionUpperFreeEntryTranslationLawStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionEqFlatMapFourierJacobiRowStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapFourierJacobiRowAddStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionIntegrateEntryOfTranslation
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionLowerEntryMultiplicationLaw
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionUpperFreeEntryTranslationLaw
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialReductionEqFlatMapFourierJacobiRow
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapFourierJacobiRowAdd
 
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData
 
@@ -59,7 +59,7 @@ theorem evalLaw_direct (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuou
       map_add' := fun s t => by simp [mul_add]
       map_smul' := fun a t => by simp; ring }
   have hmem : (fun t => (ψ (b * (t e.1 e.2 - β e.1 e.2)) : ℂ) * Φ.1 t) ∈ SB (Matrix R Q k) := by
-    have := GlobalTheory.T.schwartzBruhat_mul_addChar_linearForm k ψ hψ R Q f (-(b * β e.1 e.2)) Φ.1 Φ.2
+    have := _root_.GlobalTheory.PartRed.sb_mul_addChar_linear k ψ hψ R Q f (-(b * β e.1 e.2)) Φ.1 Φ.2
     convert this using 3 with t
     simp only [f, LinearMap.coe_mk, AddHom.coe_mk]
     ring_nf
@@ -73,7 +73,7 @@ theorem intLaw_direct (ψ : AddChar k Circle) (ν : Measure k) (L : SB (Matrix R
     IntLaw L ψ ν w β E I e := by
   intro a Φ
   have hmem1 : (fun t => Φ.1 (t + Matrix.single e.1 e.2 a)) ∈ SB (Matrix R Q k) := by
-    have := GlobalTheory.T.schwartzBruhat_comp_affine_matrix k R Q 1 (Matrix.single e.1 e.2 a) Φ.1 Φ.2
+    have := _root_.GlobalTheory.AffineSB.mem_SB_comp_affine k R Q 1 (Matrix.single e.1 e.2 a) Φ.1 Φ.2
     simpa using this
   let Φa : SB (Matrix R Q k) := ⟨_, hmem1⟩
   refine ⟨(ψ (-w (Matrix.single e.1 e.2 a)) : ℂ) • Φa, ?_, fun x => ?_⟩
@@ -158,7 +158,7 @@ theorem kills_ints (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ
     rw [heq]
     by_cases haI : a ∈ I ∪ S
     · rwa [Finset.insert_eq_of_mem haI]
-    · refine GlobalTheory.T.partialReduction_integrate_entry_of_translation k ψ ν hψ hν R Q M L w β E (I ∪ S) a haE h1 ?_
+    · refine _root_.GlobalTheory.PartRed.IntEntry.integrate_entry k ψ ν hψ hν R Q M L w β E (I ∪ S) a haE h1 ?_
       refine hlaw a (Finset.mem_insert_self _ _) (I ∪ S) Finset.subset_union_left ?_ haI
       exact Finset.union_subset_union_right (Finset.subset_insert _ _)
 
@@ -254,7 +254,7 @@ theorem kills_low (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ)
     obtain ⟨he1, he2⟩ := Finset.mem_filter.mp he
     obtain ⟨l, i, rfl, hρi, hil⟩ := mem_lowSet.mp he1
     simp only [colIx, Sum.elim_inr] at he2
-    refine GlobalTheory.T.partialReduction_lower_entry_multiplication_law k ψ ν hψ hν n n' c ρ M L hc H4 l i hρi hil E'
+    refine _root_.GlobalTheory.PartRed.LowLaw.evalLaw_low k ψ ν hψ hν n n' c ρ M L hc H4 l i hρi hil E'
       (Finset.subset_union_left.trans h1) ?_ ?_ h3
     · intro x hx
       apply h1
@@ -299,7 +299,7 @@ theorem kills_up (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ)
     obtain ⟨he1, he2⟩ := Finset.mem_filter.mp he
     obtain ⟨l, i, rfl, hli, hiρ⟩ := mem_upSet.mp he1
     simp only [colIx, Sum.elim_inr] at he2
-    refine GlobalTheory.T.partialReduction_upper_free_entry_translation_law k ψ ν hψ hν n n' c ρ M L hc H4 l i hli hiρ I'
+    refine _root_.GlobalTheory.PartRed.UpperLaw.intLaw_up k ψ ν hψ hν n n' c ρ M L hc H4 l i hli hiρ I'
       (Finset.subset_union_left.trans h1) ?_ ?_ h3
     · intro x hx
       apply h1
@@ -358,7 +358,7 @@ theorem flRow_factor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
   let lρ : Fin c := ⟨ρ, hρc⟩
   let F : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] (Matrix (n ⊕ Unit) n' k → ℂ) :=
     { toFun := fun Φ => flRow ψ ν (ρ + 1) Φ.1
-      map_add' := fun Φ₁ Φ₂ => GlobalTheory.T.flatMapFourierJacobiRow_add k ψ ν hψ hν n n' c (ρ + 1) Φ₁.1 Φ₂.1 Φ₁.2 Φ₂.2
+      map_add' := fun Φ₁ Φ₂ => _root_.GlobalTheory.LocFlat.flRow_add k ψ ν hψ hν n n' c (ρ + 1) Φ₁.1 Φ₂.1 Φ₁.2 Φ₂.2
       map_smul' := fun a Φ => by
         funext x
         simp only [flRow, opE, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]
@@ -368,7 +368,7 @@ theorem flRow_factor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
     rw [LinearMap.mem_ker] at hΦ ⊢
     apply K4
     funext x
-    rw [GlobalTheory.T.partialReduction_eq_flatMapFourierJacobiRow k ψ ν hν n n' c ρ hc lρ rfl Φ.1 x]
+    rw [_root_.GlobalTheory.RedFlatRow.red_eq_flRow k ψ ν hν n n' c ρ hc lρ rfl Φ.1 x]
     exact congrFun hΦ _
   let f₀ : LinearMap.range F →ₗ[ℂ] M := (LinearMap.ker F).liftQ L hker ∘ₗ F.quotKerEquivRange.symm.toLinearMap
   obtain ⟨g, hg⟩ := LinearMap.exists_extend f₀

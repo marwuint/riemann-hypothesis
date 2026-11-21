@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.CarchAt
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.SumCmArcFunctionalVanishesLowFourierJacobiStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.SumCmArcFunctionalVanishesLowFourierJacobi
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspFDOfCuspFiniteClaim
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArithmeticCMKnownTheoremsProof
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TransvInOfHasPrinc
@@ -30,7 +31,7 @@ theorem kill_comb_over (E : Type) [Field E] [NumberField E] [IsCMField E] (H : R
     (he : ∀ k, ∀ x ∈ (U.X k).dom, f k x = ∑ i, a i * Formalism.L2.PjFree.rdU U (F i) k x) (μ : ArcLt Dw →₀ ℕ) :
     ∑ i, a i * ι (cfOf d.yF μ d.jj (F i)) = 0 := by
   subst hσ
-  exact GlobalTheory.T.sum_cmArcFunctional_vanishes_low_fourierJacobi GlobalTheory.ArcCM.known_holds E H Dw l Xo c K₁ d ι r U a' n n' La c₁ hg hU hd hD
+  exact _root_.GlobalTheory.ArcKill.sum_cfOf_eq_zero GlobalTheory.ArcCM.known_holds E H Dw l Xo c K₁ d ι r U a' n n' La c₁ hg hU hd hD
     (GlobalTheory.TransvPrinc.transvIn_of_hasPrinc E H Dw l Xo c _ r U a' n hP hχ) m a F f hF hB hf he μ
 
 end Free

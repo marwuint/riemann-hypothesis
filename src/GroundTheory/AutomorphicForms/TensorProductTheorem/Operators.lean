@@ -43,11 +43,6 @@ theorem commute_of_mem_adjoin {T : Set (End ℂ M)} {a : End ℂ M} (ha : ∀ t 
   | add b c _ _ hb hc => exact hb.add_right hc
   | mul b c _ _ hb hc => exact hb.mul_right hc
 
-theorem IsStable.union {T₁ T₂ : Set (End ℂ M)} {p : Submodule ℂ M} (h₁ : IsStable T₁ p)
-    (h₂ : IsStable T₂ p) : IsStable (T₁ ∪ T₂) p := by
-  rintro t (ht | ht)
-  exacts [h₁ t ht, h₂ t ht]
-
 theorem IsStable.mono {T₁ T₂ : Set (End ℂ M)} {p : Submodule ℂ M} (h : IsStable T₂ p)
     (hT : T₁ ⊆ T₂) : IsStable T₁ p :=
   fun t ht => h t (hT ht)
@@ -90,33 +85,6 @@ theorem adjoin_eq_top {T : Set (End ℂ M)} (h : IsSimpleUnder T) : Algebra.adjo
     exact this
   rw [← this]
   exact a.2
-
-theorem exists_eq_algebraMap {T : Set (End ℂ M)} (h : IsSimpleUnder T) {φ : End ℂ M}
-    (hφ : ∀ t ∈ T, Commute φ t) : ∃ c : ℂ, φ = algebraMap ℂ (End ℂ M) c := by
-  have := h.1
-  obtain ⟨c, hc⟩ := Module.End.exists_eigenvalue φ
-  refine ⟨c, ?_⟩
-  have hst : IsStable T (LinearMap.ker (φ - algebraMap ℂ (End ℂ M) c)) := by
-    intro t ht x hx
-    rw [LinearMap.mem_ker] at hx ⊢
-    have h1 : (φ - algebraMap ℂ (End ℂ M) c) * t = t * (φ - algebraMap ℂ (End ℂ M) c) :=
-      ((hφ t ht).sub_left (Algebra.commutes' c t)).eq
-    have := congrArg (fun g : End ℂ M => g x) h1
-    simp only [Module.End.mul_apply, hx, map_zero] at this
-    exact this
-  rcases h.2 _ hst with h0 | h0
-  · exfalso
-    apply hc.exists_hasEigenvector.elim
-    intro x hx
-    have hx1 : x ∈ LinearMap.ker (φ - algebraMap ℂ (End ℂ M) c) := by
-      rw [LinearMap.mem_ker, LinearMap.sub_apply, hx.apply_eq_smul]
-      simp [Algebra.algebraMap_eq_smul_one]
-    rw [h0, Submodule.mem_bot] at hx1
-    exact hx.2 hx1
-  · ext x
-    have hx : x ∈ LinearMap.ker (φ - algebraMap ℂ (End ℂ M) c) := by rw [h0]; trivial
-    rw [LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at hx
-    exact hx
 
 omit [FiniteDimensional ℂ M] in
 
@@ -214,30 +182,6 @@ theorem exists_simple_stable (T : Set (End ℂ M)) [Nontrivial M] :
     have hle := hmin _ hne hst
     rw [Submodule.finrank_map_subtype_eq] at hle
     exact Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le q) hle)
-
-theorem exists_rankOne (T : Set (End ℂ M)) [Nontrivial M] :
-    ∃ N : Submodule ℂ M, N ≠ ⊥ ∧ IsStable T N ∧ ∃ p ∈ Algebra.adjoin ℂ T, ∃ n₀ ∈ N, n₀ ≠ 0 ∧
-      p n₀ = n₀ ∧ ∀ x ∈ N, ∃ c : ℂ, p x = c • n₀ := by
-  obtain ⟨N, hNs, hN0, hsimple⟩ := exists_simple_stable T
-  have := hsimple.1
-  obtain ⟨n, hn⟩ := exists_ne (0 : N)
-  obtain ⟨f, hf⟩ : ∃ f : Module.Dual ℂ N, f n = 1 := by
-    obtain ⟨f, hf⟩ : ∃ f : Module.Dual ℂ N, f n ≠ 0 := by
-      by_contra hcon
-      push Not at hcon
-      exact hn ((Module.forall_dual_apply_eq_zero_iff ℂ n).1 hcon)
-    exact ⟨(f n)⁻¹ • f, by simp [hf]⟩
-  let b : End ℂ N := f.smulRight n
-  have hb : b ∈ Algebra.adjoin ℂ (restrictSet T N hNs) := by
-    rw [adjoin_eq_top hsimple]; trivial
-  obtain ⟨p, hp, hpb⟩ := exists_of_mem_adjoin_restrictSet hNs hb
-  refine ⟨N, hN0, hNs, p, hp, n, n.2, fun h => hn (Subtype.ext h), ?_, ?_⟩
-  · rw [← hpb n]
-    simp [b, hf]
-  · intro x hx
-    refine ⟨f ⟨x, hx⟩, ?_⟩
-    rw [← hpb ⟨x, hx⟩]
-    simp [b]
 
 end RestrictedTensor
 

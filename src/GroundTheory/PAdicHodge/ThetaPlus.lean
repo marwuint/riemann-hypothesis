@@ -114,10 +114,6 @@ theorem isDiscreteValuationRing_of_isAdicComplete {π : B} [IsAdicComplete (span
   obtain ⟨n, u, rfl⟩ := exists_eq_pow_mul_unit_of_isAdicComplete hmax hx
   exact ⟨n, u, rfl⟩
 
-theorem maximalIdeal_eq_span_of_isMaximal [IsLocalRing B] {π : B} (hmax : (span {π}).IsMaximal) :
-    maximalIdeal B = span {π} :=
-  (IsLocalRing.eq_maximalIdeal hmax).symm
-
 end Abstract
 
 section General

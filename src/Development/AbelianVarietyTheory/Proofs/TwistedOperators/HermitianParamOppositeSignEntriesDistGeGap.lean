@@ -1,12 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SignatureAndNodeGaps
+import Formalism.LocalRingCardinality.DataParams
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainParIffStepGap
 
 noncomputable section
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.IndefR.Links Formalism.IndefR.Mult
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilSignShift (NcGapGt NcGapGe minSig lamS lamT StepGap)
-open GlobalTheory.IndefiniteRowSideFullHecke.SignatureAndNodeGaps GlobalTheory.Chain.ItPairCompare
+open GlobalTheory.Chain.ItPairCompare
 
 namespace GlobalTheory.Chain.ParOfSizes
 

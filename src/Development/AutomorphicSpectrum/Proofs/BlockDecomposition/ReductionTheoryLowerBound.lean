@@ -2,9 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatVInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZeroMemBoxF
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicTensorRationalApproximationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactHeightLowerBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicBoxCompactStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactAdelicNormBoundedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactHeightLowerBound
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicBoxCompact
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactAdelicNormBounded
 
 set_option linter.unusedSectionVars false
 
@@ -202,7 +202,7 @@ theorem upper_bound (h : IsCMExt F E σ) (x₁ x₂ : Fin n → E) {A₁ A₂ : 
       hv ((matHom _ σ J κ⁻¹).1 *ᵥ ((α₁ * ζ) • ratV F x₁ + (α₂ * algebraMap (AF F) (AF F ⊗[F] E) z) • ratV F x₂)) ≤ P := by
   have := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
-  obtain ⟨hbF, hbE⟩ := GlobalTheory.T.adelic_box_compact F E
+  obtain ⟨hbF, hbE⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main F E
   have hcA : Continuous (algebraMap (AF F) (AF F ⊗[F] E)) :=
     IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF F) (AF F ⊗[F] E))
   let Φ : GAd σ J × (AF F ⊗[F] E) × (AF F ⊗[F] E) × (AF F ⊗[F] E) × AF F → Fin n → AF F ⊗[F] E := fun t =>
@@ -213,7 +213,7 @@ theorem upper_bound (h : IsCMExt F E σ) (x₁ x₂ : Fin n → E) {A₁ A₂ : 
     simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
     fun_prop
   have hK := (hC.prod (hA₁.prod (hA₂.prod (hbE.prod hbF)))).image (continuous_coordVec.comp hΦ)
-  obtain ⟨P, hP, hle⟩ := GlobalTheory.T.compact_adelic_norm_bounded F _ _ hK
+  obtain ⟨P, hP, hle⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.Simple.exists_adelicNorm_le_of_isCompact F _ _ hK
   exact ⟨P, hP, fun κ hκ α₁ h₁ α₂ h₂ ζ hζ z hz =>
     hle _ ⟨(κ, α₁, α₂, ζ, z), ⟨hκ, h₁, h₂, hζ, hz⟩, rfl⟩⟩
 
@@ -230,7 +230,7 @@ theorem simple_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hBc : Continuous fun p : GAd σ J => Bm σ J X Y p⁻¹ := continuous_Bm.comp continuous_inv
   have hA₁ : IsCompact ((fun p : GAd σ J => Bm σ J X Y p⁻¹ 0 0) '' Ω) := hΩ.image (hBc.matrix_elem 0 0)
   have hA₂ : IsCompact ((fun p : GAd σ J => Bm σ J X Y p⁻¹ j j) '' Ω) := hΩ.image (hBc.matrix_elem j j)
-  obtain ⟨P, hP, hlow⟩ := GlobalTheory.T.compact_height_lower_bound F E σ h n J (Ω * C) (hΩ.mul hC)
+  obtain ⟨P, hP, hlow⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.Simple.exists_one_le_mul_hgt F E σ h n J (Ω * C) (hΩ.mul hC)
   obtain ⟨P₄, hP₄, hup⟩ := upper_bound h (Xᵀ 0) (Xᵀ j) hA₁ hA₂ hC
   obtain ⟨K, hKdef⟩ : ∃ K, K = 2 * P * P₄ := ⟨_, rfl⟩
   have hK : 0 < K := by rw [hKdef]; positivity

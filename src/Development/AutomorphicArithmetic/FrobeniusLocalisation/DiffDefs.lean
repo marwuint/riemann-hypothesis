@@ -41,8 +41,6 @@ def rad : ℕ := ∏ l ∈ H.ram, l
 
 def QSc : ℕ := ∏ l ∈ H.smallR, l ^ H.sl l
 
-def eL : ℕ := sInf {m : ℕ | 0 < m ∧ (m : NumberField.RingOfIntegers H.E) ∈ differentIdeal ℤ (NumberField.RingOfIntegers H.E)}
-
 theorem mem_unitsOne {f : ℕ} (hf : f ∣ H.condN) (u : (ZMod H.condN)ˣ) :
     u ∈ H.unitsOne f ↔ (u : ZMod H.condN).val ≡ 1 [MOD f] := by
   rw [unitsOne, MonoidHom.mem_ker, ← Units.val_eq_one, ZMod.unitsMap_val, ZMod.cast_eq_val,

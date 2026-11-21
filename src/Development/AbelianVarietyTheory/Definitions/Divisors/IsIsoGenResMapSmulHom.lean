@@ -286,34 +286,6 @@ theorem genEquiv_eqn_div (c : Chart E r) (c' : Chart E' r) {W : Z.X.Opens}
 theorem vCls_div : Z.vCls (φ.div hE hE').cls = cls _ hE.isLB_det - cls _ hE'.isLB_det :=
   (VertDiv.vCls_cls _).trans (cls_div _ _ _)
 
-theorem cls_div_trans (φ' : Z.GenIso E' E'') :
-    (div (φ ≪≫ φ') hE hE'').cls = (φ.div hE hE').cls + (φ'.div hE' hE'').cls := by
-  have := hE.isQuasicoherent
-  have := hE'.isQuasicoherent
-  have := hE''.isQuasicoherent
-  refine VertDiv.IsSum.cls_eq fun i j k => ?_
-  obtain ⟨c, c'⟩ := i
-  obtain ⟨d', d''⟩ := j
-  obtain ⟨e, e''⟩ := k
-  have h₁ : c.U ⊓ c'.U ⊓ (d'.U ⊓ d''.U) ⊓ (e.U ⊓ e''.U) ≤ c.U ⊓ c'.U := inf_le_left.trans inf_le_left
-  have h₂ : c.U ⊓ c'.U ⊓ (d'.U ⊓ d''.U) ⊓ (e.U ⊓ e''.U) ≤ d'.U ⊓ d''.U :=
-    inf_le_left.trans inf_le_right
-  have h₃ : c.U ⊓ c'.U ⊓ (d'.U ⊓ d''.U) ⊓ (e.U ⊓ e''.U) ≤ e.U ⊓ e''.U := inf_le_right
-  refine ⟨e.isFrame.detUnit c.isFrame (h₃.trans inf_le_left) (h₁.trans inf_le_left) *
-    c'.isFrame.detUnit d'.isFrame (h₁.trans inf_le_right) (h₂.trans inf_le_left) *
-    d''.isFrame.detUnit e''.isFrame (h₂.trans inf_le_right) (h₃.trans inf_le_right),
-    (genEquiv inf_le_left).injective ?_⟩
-  rw [map_mul, map_mul, genEquiv_eqn_div, genEquiv_eqn_div, genEquiv_eqn_div, genEquiv_resG]
-  simp only [Units.val_mul, map_mul, ← IsFrame.val_detUnit_pullback]
-  simp only [← Units.val_mul]
-  refine congrArg Units.val ?_
-  rw [← (c'.isFrame.pullback Z.gen.ι).detUnit_map_iso _ φ.inv,
-    ← (d''.isFrame.pullback Z.gen.ι).detUnit_map_iso _ (φ ≪≫ φ').inv, detUnit, detUnit, detUnit,
-    ← (d'.isFrame.pullback Z.gen.ι).detUnit_map_iso _ φ.inv,
-    show ∀ a b c d e : Γ(Z.gen.toScheme, _)ˣ, a * b * c * (d * e) = a * d * b * e * c from
-      fun a b c d e => by ac_rfl, IsFrame.detUnit_mul, IsFrame.detUnit_mul, IsFrame.detUnit_mul]
-  exact (IsFrame.detUnit_mul _ _ _ _ _ _).symm
-
 variable {φ} {ψ : E' ⟶ E}
 
 theorem eqn_div_of_hom (hψ : φ.inv = Z.genRes.map ψ) (c : Chart E r) (c' : Chart E' r)
@@ -332,20 +304,6 @@ theorem eqn_div_of_hom (hψ : φ.inv = Z.genRes.map ψ) (c : Chart E r) (c' : Ch
     pullback_map_app_pullbackSections, app_resM]
   congr 2
   exact (res_pullbackSections _ _ _ _ _).trans (pullbackSections_res _ _ _ _ _).symm
-
-theorem isEff_cls_div (hψ : φ.inv = Z.genRes.map ψ) : IsEff (φ.div hE hE').cls := by
-  let s : (φ.div hE hE').M.Sec :=
-    ⟨fun p : Chart E r × Chart E' r => (p.1.isFrame.basis (inf_le_left : p.1.U ⊓ p.2.U ≤ _)).det
-      fun i => ψ.app _ (resM E' inf_le_right (p.2.e i)), fun p q =>
-      Z.resG_injective inf_le_right le_rfl <| by
-        change resG _ _ (resG _ _ _) = resG _ _ (_ * resG _ _ _)
-        rw [map_mul, resG_resG, resG_resG]
-        exact (eqn_div_of_hom hE hE' hψ p.1 p.2 (inf_le_inf_left _ inf_le_left) le_rfl).symm.trans
-          (((φ.div hE hE').eqn_rel p q _ _ _).trans (congrArg _
-            (eqn_div_of_hom hE hE' hψ q.1 q.2 (inf_le_inf_left _ inf_le_right) le_rfl)))⟩
-  have h : (φ.div hE hE').Extends 1 s := VertDiv.extends_one (LB.sec_ext fun p =>
-    (eqn_div_of_hom hE hE' hψ p.1 p.2 le_rfl le_rfl).symm.trans (resG_self _ _))
-  exact ⟨_, h.cls_eq_ofEff.symm⟩
 
 theorem cls_div_of_smul {φ : Z.GenIso E E} {g : O} (hg : g ≠ 0)
     (hφ : φ.inv = Z.genRes.map (smulHom E (Z.const g))) :
@@ -422,28 +380,6 @@ def root (i : Fin N) : LB X := det (fl.gr i) 1
 
 theorem isLB_root (i : Fin N) : (fl.root i).IsLB := (fl.isVB_gr i).isLB_det
 
-theorem cls_det : cls _ fl.isVB_self.isLB_det = ∑ i, cls _ (fl.isLB_root i) := by
-  have key (i : Fin (N + 1)) : cls _ (fl.isVB i).isLB_det =
-      ∑ j : Fin N, if (j : ℕ) < i then cls _ (fl.isLB_root j) else 0 := by
-    induction i using Fin.induction with
-    | zero =>
-      have := VB.isVB_zero_iff.1 (fl.isVB 0)
-      exact (((VB.isFrame_freeFrame X (Fin 0)).map_iso ((VB.isVB_zero_iff.1
-        (VB.isVB_freeModule_fin X 0)).iso this).hom).cls_det_eq_zero _).trans (by simp)
-    | succ i ih =>
-      obtain ⟨h, e⟩ := VBExt.isVB_and_cls_det_of_shortExact X (.mk (fl.step i) (cokernel.π _)
-        (cokernel.condition _)) _ _ { exact := ShortComplex.exact_cokernel _ } (fl.isVB _)
-        (fl.isVB_gr i)
-      refine e.trans ((congrArg (· + _) ih).trans ?_)
-      refine (congrArg _ (Finset.sum_ite_eq_of_mem' Finset.univ i
-        (fun j => cls _ (fl.isLB_root j)) (Finset.mem_univ i)).symm).trans ?_
-      rw [← Finset.sum_add_distrib]
-      refine Finset.sum_congr rfl fun j _ => ?_
-      simp only [Fin.val_castSucc, Fin.val_succ, Fin.ext_iff]
-      split_ifs <;> first | omega | simp
-  exact ((cls_eq_iff (fl.isVB (Fin.last N)).isLB_det _).2
-    ((fl.isVB _).lbIso_det_of_iso (asIso (fl.ι _)))).symm.trans ((key _).trans (by simp))
-
 def ofIso {E' : X.Modules} (e : E ≅ E') : Flag E' N where
   F := fl.F
   ι i := fl.ι i ≫ e.hom
@@ -464,8 +400,6 @@ def ofRankOne {L : X.Modules} (h : IsVB L 1) : Flag L 1 where
   step := Fin.cons 0 finZeroElim
   step_ι := Fin.cons zero_comp finZeroElim
   isIso_last := IsIso.id L
-
-def grOfRankOne {L : X.Modules} (h : IsVB L 1) : (ofRankOne h).gr 0 ≅ L := cokernelZeroIsoTarget
 
 open ZeroObject in
 
@@ -509,10 +443,6 @@ instance mono_genRes_map_ι (fl : Flag E N) (i : Fin (N + 1)) : Mono (Z.genRes.m
 namespace FlagPair
 
 variable {φ : Z.GenIso E E'} (P : FlagPair φ N)
-
-theorem gen_unique (i : Fin (N + 1)) (ψ : Z.GenIso (P.fl.F i) (P.fl'.F i))
-    (h : ψ.hom ≫ Z.genRes.map (P.fl'.ι i) = Z.genRes.map (P.fl.ι i) ≫ φ.hom) : ψ = P.gen i :=
-  Iso.ext ((cancel_mono _).1 (h.trans (P.gen_ι i).symm))
 
 theorem gen_step (i : Fin N) : Z.genRes.map (P.fl.step i) ≫ (P.gen i.succ).hom =
     (P.gen i.castSucc).hom ≫ Z.genRes.map (P.fl'.step i) := by

@@ -42,10 +42,6 @@ def proj (m : ι → ℕ) (τ : ι) : PolyRep m where
   mul R _ A B := by ext i j; simp [evEnt, Matrix.mul_apply]
   transp R _ A := by ext i j; simp [evEnt]
 
-theorem ev_proj (τ : ι) {R : Type} [CommRing R] (A : Mat m R) : (proj m τ).ev A = A τ := by
-  ext i j
-  exact aeval_X (R := ℤ) (fun v : EntIx m => A v.1 v.2.1 v.2.2) ⟨τ, (i, j)⟩
-
 end PolyRep
 
 end GlobalTheory.GoodMetric

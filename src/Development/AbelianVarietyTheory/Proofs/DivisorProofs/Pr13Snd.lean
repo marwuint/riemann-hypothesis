@@ -24,15 +24,4 @@ def pr13 : Tr f ⟶ pullback f f :=
 
 variable (R : Type) [CommRing R]
 
-def d1 : (freeOn R).obj (pullback f f) ⟶ (freeOn R).obj Y :=
-  (freeOn R).map (pullback.snd f f) - (freeOn R).map (pullback.fst f f)
-
-def d2 : (freeOn R).obj (Tr f) ⟶ (freeOn R).obj (pullback f f) :=
-  (freeOn R).map (pullback.snd _ _) - (freeOn R).map (pr13 f) + (freeOn R).map (pullback.fst _ _)
-
-theorem d2_comp : d2 f R ≫ d1 f R = 0 := by
-  simp only [d1, d2, Preadditive.sub_comp, Preadditive.add_comp, Preadditive.comp_sub, ← Functor.map_comp,
-    pr13_fst, pr13_snd, pullback.condition]
-  abel
-
 end GlobalTheory.Et.CovChar.Trip

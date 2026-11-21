@@ -23,9 +23,6 @@ def ConjIn (ρ : Representation ℂ G V) (W : Submodule ℂ V) (j : Gn g n →* 
   ∀ y ∈ W, y ≠ 0 → ∃ Λ : V →ₛₗ[starRingEnd ℂ] U, Λ y ≠ 0 ∧
     ∀ z ∈ W, Λ z ∈ fixK1 π ∧ ∀ h, Λ (ρ (j h) z) = π (lift g n h) (Λ z)
 
-def typeSpan {ι T : Type} (ρ : Representation ℂ G V) (b : ι → V) (ty : ι → T) (π : T) : Submodule ℂ V :=
-  Submodule.span ℂ {z | ∃ (x : G) (σ : ι), ty σ = π ∧ z = ρ x (b σ)}
-
 theorem ConjIn.act_ne {ρ : Representation ℂ G V} {W : Submodule ℂ V} {j : Gn g n →* G}
     {π : Representation ℂ (GL (Fin n) ℚ_[g]) U} (h : ConjIn ρ W j π) (a a' : MonoidAlgebra ℂ (Gn g n))
     (ha : ∀ x, starRingEnd ℂ (a.coeff x) = a'.coeff x) {y : V} (hy : y ∈ W) (h0 : y ≠ 0)
@@ -62,20 +59,7 @@ def facHom (D : D7) (k : Fin 2) (v : D.nd.PlG k) : Gn (D.host.g k) D.R.r →* G0
 
 abbrev LocRep (D : D7) (k : Fin 2) : Type 1 := Rep.{0} ℂ (GL (Fin D.R.r) ℚ_[D.host.g k])
 
-abbrev Corr (D : D7) : Type 1 := ∀ (k : Fin 2) (v : D.nd.PlG k), LocRep D k → D.naut.LP (D.naut.plGw k v)
-
 abbrev Comp (D : D7) : Type 1 := D.what₂.FT → ∀ k : Fin 2, D.nd.PlG k → LocRep D k
-
-def SeriesTame (D : D7) (rc : Corr D) : Prop :=
-  ∀ (k : Fin 2) (v : D.nd.PlG k) (π : LocRep D k), IsIrrRep π.ρ → GlobalTheory.SplitWeil.IsSmoothRep π.ρ →
-    D.naut.lpDim (rc k v π) = D.R.r ∧
-    ∀ f, (∃ u ∈ fixK1 π.ρ, actK π.ρ (D.ntypes.eSer k f) u ≠ 0) →
-      D.naut.inePol (rc k v π) (D.ntypes.tg k v) =
-        ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (D.ntypes.teichC k x)).prod
-
-def ParamTie (D : D7) (i : D.nd.Loc) (rc : Corr D) (cp : Comp D) : Prop :=
-  ∀ (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k), IsIrrRep (cp σ k v).ρ ∧ GlobalTheory.SplitWeil.IsSmoothRep (cp σ k v).ρ ∧
-    D.naut.locW i σ (D.naut.plGw k v) = rc k v (cp σ k v)
 
 def SeriesConj (D : D7) : Prop :=
   ∀ (k : Fin 2) (f : (ZMod (D.host.g k))[X]), IsLabel D k f →
@@ -122,11 +106,5 @@ theorem exists_good (D : D7) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Re
     simp at hp
 
 variable {D : D7} {X : BaseLevelRowSide D}
-
-def TypeTie (Y : Prov D X) (cp : Comp D) {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
-    [FiniteDimensional ℂ EE] (S : RowSide D EE) (P : Pair D.what₂.LL (G0g D.nd))
-    (j : S.RR.V →ₗ[D.what₂.LL] Y.sK.RR.V) {ι : Type} (b : ι → EE) (ty : ι → D.what₂.FT) : Prop :=
-  ∃ (aE : EE →ₗ[ℂ] Y.EEK) (aA : ∀ μ, S.Amb μ →ₗ[ℂ] Y.sK.Amb μ), IsLevelIn Y S P j aE aA ∧
-    ∀ σ k v, ConjIn Y.actEE (typeSpan Y.actEE (fun s => aE (b s)) ty σ) (facHom D k v) (cp σ k v).ρ
 
 end GlobalTheory.GoodTypes

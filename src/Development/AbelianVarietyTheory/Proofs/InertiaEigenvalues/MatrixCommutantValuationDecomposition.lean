@@ -4,24 +4,12 @@ open GlobalTheory.UnitDiscAlg
 
 namespace GlobalTheory.ValDecomp
 
-section Abstract
-variable {R : Type*} [CommRing R]
-
-end Abstract
 end GlobalTheory.ValDecomp
 
 namespace GlobalTheory.ValDecomp
-section Abstract2
-variable {R : Type*} [CommRing R]
-
-end Abstract2
 end GlobalTheory.ValDecomp
 
 namespace GlobalTheory.ValDecomp
-section Mat
-variable {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E] {n : ℕ}
-
-end Mat
 end GlobalTheory.ValDecomp
 
 namespace GlobalTheory.ValDecomp

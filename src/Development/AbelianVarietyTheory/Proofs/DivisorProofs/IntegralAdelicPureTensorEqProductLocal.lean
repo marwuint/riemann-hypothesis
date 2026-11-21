@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarAdelicVectorsBoundsPureTensorsSlices
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableEmbeddingAdelicTupleLocalComponents
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictedProductIntegralPureTensorEqProd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralFiniteAdelicFactorOffPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralAdelicHaarSplitArchimedeanFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicHaarIntegralPointsOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralFiniteAdelicFactorOffPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralAdelicHaarSplitArchimedeanFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicHaarIntegralPointsOne
 open scoped Matrix GlobalTheory.VacAny ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RatWeilOp
 
@@ -76,7 +76,7 @@ theorem finPart (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [M
       simp only [hK, h2]
       congr 1
       exact Finset.prod_congr rfl fun v hv => by rw [h1 v hv]
-    have hstep := GlobalTheory.T.lintegral_finiteAdelic_factor_offPlace F κ w μf (μv w) (hμv w) K hKm hKi (f w) (hf w)
+    have hstep := _root_.GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant F κ w μf (μv w) (hμv w) K hKm hKi (f w) (hf w)
     have e1 : ∀ y : κ → Af F,
         {y : κ → Af F | ∀ v ∉ insert w S, ∀ i, evalV F v (y i) ∈ v.adicCompletionIntegers F}.indicator 1 y *
           ∏ v ∈ insert w S, f v (fun i => evalV F v (y i)) = f w (fun i => evalV F w (y i)) * K y := by
@@ -134,8 +134,8 @@ theorem integral_pure_haar : ∀ (F : Type) [Field F] [NumberField F] (κ : Type
   letI : MeasurableSpace (κ → Af F) := borel _
   haveI : BorelSpace (κ → Af F) := ⟨rfl⟩
   haveI : ∀ v : Pl F, ProperSpace (Fv F v) := fun v => GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v
-  obtain ⟨μf, hμfH, hμf1⟩ := GlobalTheory.T.exists_finiteAdelicHaar_integralPoints_one F κ
-  obtain ⟨c, hc0, hctop, hc⟩ := GlobalTheory.T.lintegral_adelicHaar_split_archimedean_finite F κ μ μi μf
+  obtain ⟨μf, hμfH, hμf1⟩ := _root_.GlobalTheory.FinAdeleHaarNorm.exists_addHaar_integral_eq_one F κ
+  obtain ⟨c, hc0, hctop, hc⟩ := _root_.GlobalTheory.WeilAdm.HaarSplit.lintegral_split_mul F κ μ μi μf
   refine ⟨(c.toReal : ℂ), Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨hc0, hctop⟩), fun f φ hfc hfi hφ => ?_⟩
   have hfinS := Filter.eventually_cofinite.1 hφ.2
   set S := hfinS.toFinset with hS

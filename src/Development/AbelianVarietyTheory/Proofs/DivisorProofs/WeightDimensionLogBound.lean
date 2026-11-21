@@ -5,7 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EigLatLe
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightBoundHolds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HostBoundHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylDimFormulaDualityBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylDimFormulaDualityBound
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdelicOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.StatementG
+import Formalism.PolynomialDimension.WeylDim
 import Formalism.SharpRestriction.Divisibility.HookProducts.Compl3Record
 set_option synthInstance.maxHeartbeats 400000
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Pj Formalism.IndefR.Links Formalism.IndefR.FWT ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop GlobalTheory.DefPt GlobalTheory.FlatLine
@@ -251,7 +254,7 @@ theorem sizes :
       ((p.κ i).n : ℝ) * (Fintype.card (Psi p.T.Q.H) : ℝ) * ((dat p i).p : ℝ) * |GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd (Fm.D x ι).host.E| ≤
       C * unitE p := by
   have hdim : ∀ (n : ℕ) (la : Fin n → ℕ), Antitone la → ∀ w : ℤ,
-      (GlobalTheory.DualWeyl.dim la : ℝ) ≤ ((∑ i, |((la i : ℤ) : ℝ) - w|) + 1) ^ n.choose 2 := fun n la h => (GlobalTheory.T.dualWeyl_dim_formula_duality_bound n la h).2.2
+      (GlobalTheory.DualWeyl.dim la : ℝ) ≤ ((∑ i, |((la i : ℤ) : ℝ) - w|) + 1) ^ n.choose 2 := fun n la h => (_root_.GlobalTheory.WeylDimBound.dim_weyl_dual_bound n la h).2.2
   have H := Closed.and WtShape.wtN (Sizes.hostN 1)
   simp only [WtN, HostN, Lifts] at H
   unfold Lifts

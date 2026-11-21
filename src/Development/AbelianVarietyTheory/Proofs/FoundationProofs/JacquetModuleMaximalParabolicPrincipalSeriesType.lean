@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EigenvectorEqZeroOfMemTwistedSpanChainStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedJacquetKernelMemTwistedSpanFiniteStageStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesCongruenceSubgroupSmoothCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsStripClearingUpperRightPrincipalSeriesCongStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjBlockLowerMemPrincipalSeriesCongruenceStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeNotIntertwineOutsideStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EigenvectorEqZeroOfMemTwistedSpanChain
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedJacquetKernelMemTwistedSpanFiniteStage
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesCongruenceSubgroupSmoothCharacter
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsStripClearingUpperRightPrincipalSeriesCong
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjBlockLowerMemPrincipalSeriesCongruence
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeNotIntertwineOutside
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompactSubgroupSmoothCharacterDatumMonotoneStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesUnipotentStripPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StripsExhaustParabolicUnipotentRadicalStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterMulStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StripsExhaustParabolicUnipotentRadical
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterMul
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 
@@ -40,23 +40,23 @@ theorem eig_jacquet_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologica
   let z : GL (Fin (r + t)) k := diagT k (Fin (r + t)) (fun i => if (i : ℕ) < r then Units.mk0 ϖ hϖ0 else 1)
   have hz : z.val = Matrix.diagonal (fun i : Fin (r + t) => if (i : ℕ) < r then ϖ else 1) := by
     simp only [z]; rw [val_diagT]; congr 1; funext i; split_ifs <;> simp
-  obtain ⟨hD, -⟩ := GlobalTheory.T.principalSeriesCongruenceSubgroup_smoothCharacterDatum k (r + t) ψ hψ hord
+  obtain ⟨hD, -⟩ := _root_.GlobalTheory.PsType.grp_theta_datum k (r + t) ψ hψ hord
   obtain ⟨hSD, hSmono⟩ := GlobalTheory.T.compactSubgroupSmoothCharacterDatum_monotone k (r + t) ψ r ϖ hψ hϖ0 hϖ1 hϖmax
   obtain ⟨h0J, hθ1, h1KO, hconj⟩ := GlobalTheory.T.principalSeriesUnipotentStrip_properties k (r + t) ψ r ϖ hϖ0 hϖ1 hϖmax hcut
-  obtain ⟨m, hm⟩ := GlobalTheory.T.twistedJacquetKernel_mem_twistedSpan_finite_stage _ V π _ (strip ψ r ϖ) hSmono (GlobalTheory.T.strips_exhaust_parabolicUnipotentRadical k r t ψ ϖ hψ hϖ0 hϖ1 hϖmax) v hv
-  refine GlobalTheory.T.eigenvector_eq_zero_of_mem_twistedSpan_chain (GL (Fin (r + t)) k) V π hπ (grp ψ) (strip ψ r ϖ) (theta ψ) z hD hSD hSmono
+  obtain ⟨m, hm⟩ := _root_.GlobalTheory.PsType.twKer_one_mem_aug_stage _ V π _ (strip ψ r ϖ) hSmono (_root_.GlobalTheory.PsType.strip_exhaust k r t ψ ϖ hψ hϖ0 hϖ1 hϖmax) v hv
+  refine _root_.GlobalTheory.PsType.eig_eq_zero_of_mem_aug_chain (GL (Fin (r + t)) k) V π hπ (grp ψ) (strip ψ r ϖ) (theta ψ) z hD hSD hSmono
     (fun y hy => ⟨h0J y hy, hθ1 0 y hy⟩) (hconj z hz) ?_ ?_ m v hm heig
   · intro y hy
     by_cases hyJ : y ∈ grp ψ
     · exact Or.inl ⟨hyJ, hθ1 1 y hy⟩
-    · exact Or.inr (GlobalTheory.T.principalSeriesType_not_intertwine_outside k (r + t) ψ hord y (h1KO y hy) hyJ)
+    · exact Or.inr (_root_.GlobalTheory.PsType.not_intertwine k (r + t) ψ hord y (h1KO y hy) hyJ)
   · intro j hj
-    obtain ⟨y, hy, hblk⟩ := GlobalTheory.T.exists_strip_clearing_upperRight_principalSeriesCongruence k (r + t) ψ r ϖ hord hcut j hj
+    obtain ⟨y, hy, hblk⟩ := _root_.GlobalTheory.PsType.clear_upper_right k (r + t) ψ r ϖ hord hcut j hj
     have hyJ : y ∈ grp ψ := h0J y hy
     have hyinv : y⁻¹ ∈ grp ψ := hD.inv y hyJ
     have hg : y⁻¹ * j ∈ grp ψ := hD.mul _ hyinv _ hj
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.conj_blockLower_mem_principalSeriesCongruence k (r + t) ψ r ϖ hϖ0 hϖ1 z hz (y⁻¹ * j) hg hblk
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.PsType.conj_blockLower_mem_theta k (r + t) ψ r ϖ hϖ0 hϖ1 z hz (y⁻¹ * j) hg hblk
     refine ⟨y, hy, h1, ?_⟩
-    rw [h2, GlobalTheory.T.principalSeriesTypeCharacter_mul k (r + t) ψ hord _ hyinv _ hj, hθ1 0 _ ((hSD 0).inv y hy), one_mul]
+    rw [h2, _root_.GlobalTheory.PsType.theta_mul k (r + t) ψ hord _ hyinv _ hj, hθ1 0 _ ((hSD 0).inv y hy), one_mul]
 
 end GlobalTheory.PsType

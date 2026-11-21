@@ -37,8 +37,4 @@ def EulerAdditivityDegreeZero : Prop :=
     Valid X.𝒜 ((0, s) :: (d, s') :: ts) → F.IsGr X.𝒜 → admitted X.𝒜 ((d, s * s') :: ts) F.Ann →
     ∀ᶠ m in atTop, chi ((d, s * s') :: ts) F m = chi ((0, s) :: ts) F m + chi ((d, s') :: ts) F m
 
-def RuleCong : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts ts' : List (Deg k × X.R)) (F : X.Mod),
-    List.Forall₂ (fun p q => p.1 = q.1 ∧ p.2 - q.2 ∈ F.Ann) ts ts' → ∀ m, chi ts F m = chi ts' F m
-
 end Formalism.MainNotions.V.Pf.V2.Calc

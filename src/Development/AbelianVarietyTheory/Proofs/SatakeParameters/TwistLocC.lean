@@ -22,17 +22,4 @@ theorem twist_locC (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (F
   rw [MonoidHom.inv_apply, hχ, map_mul, MonoidHom.inv_apply, ← map_inv]
   rfl
 
-theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (dc : TruncatedSeriesCountingIdentities.Decl D i), TruncatedSeriesCountingIdentities.admG2 (D := D) i r ρ π → TruncatedSeriesCountingIdentities.SemisimpleDecomposition (D := D) i r ρ π → EmbeddingTypes.ambDual (D := D) i ρ π dc := by
-  intro D i r ρ π dc hG hD _ w hw _ C τ a
-  have hd : ∃ e, GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.IsDecomp (t := D.R.t) (r π) (ρ π) (D.nd.chi i) e := by
-    obtain ⟨e, he⟩ := hD
-    exact ⟨e, fun g u => he g u⟩
-  have hc : IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r π))) := by
-    rw [← twist_locC]
-    exact (hG w hw C).2 π
-  have := D.nd.lPrime i
-  have := C.LL.2
-  have hdr := (GlobalTheory.Per.CrisDR.isDR_of_isCrys _ _ _ (D.locT (D.nd.l i)) _ C.LL _ _ hc).1
-  exact (((GlobalTheory.SummandJumps.main D i w hw (D.locT _) C.LL C.le r ρ π hd).2 hdr).2.2 τ a).2
-
 end GlobalTheory.AmbientDual

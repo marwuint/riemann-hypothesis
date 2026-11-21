@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRestrictedProductMeasureCountableStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRestrictedProductMeasureCountable
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableEmbeddingAdelicTupleLocalComponentsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralPointsFinitePlaceTensorPropertiesStatement
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
@@ -40,7 +40,7 @@ theorem exists_isProd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   have hsv : ∀ v, SigmaFinite (mv v) := fun v => by
     haveI := hv v
     infer_instance
-  obtain ⟨ν, hν0, hν⟩ := GlobalTheory.T.exists_restricted_product_measure_countable (HeightOneSpectrum (𝓞 F)) _ _ (fun v => latV b v) mi mv hsi hsv hmeas
+  obtain ⟨ν, hν0, hν⟩ := _root_.GlobalTheory.GaugeEx.AbsProd.exists_restricted_product (HeightOneSpectrum (𝓞 F)) _ _ (fun v => latV b v) mi mv hsi hsv hmeas
     (fun v => by haveI := hv v; exact (hcpt v).measure_lt_top.ne) hs
   set e := (fun X : (Fin n → Fin M → AF F ⊗[F] E) =>
     (projInf X, fun v : HeightOneSpectrum (𝓞 F) => projV v (projFin X))) with he

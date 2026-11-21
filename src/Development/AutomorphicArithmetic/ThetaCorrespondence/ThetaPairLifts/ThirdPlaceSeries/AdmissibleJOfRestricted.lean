@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.AdmissibleJOfRestricted
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.DeRhamFamilyAway
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.DeRhamPointsWeightJumps
@@ -21,10 +21,10 @@ theorem admJ_of_admPar (D : D7) (L : SizeData₂ D) (h0 : SumRepresentations.tie
     (hC : CutRec D) (hW : GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.WeightParam D) (hB : GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.BlockCharParam D) (hP : AdmissibleParameterJ.AdmPar L) :
     _root_.Formalism.MainNotions.AdmissibleParameterJ.AdmJAlt L :=
   have hG := _root_.UpperTheory.GalS.de_rham_points_weight_jumps_alt D h0 h1 h2 h5 hC
-  ⟨hG.1, GlobalTheory.CrysWD.crysIffWD D, hG.2, _root_.GlobalTheory.T.admDict_of_weight_blockChar GlobalTheory.Published.cheb_holds D h2 hW hB, GlobalTheory.T.hodgeTateJumpsReading_rowAdm D, hP⟩
+  ⟨hG.1, GlobalTheory.CrysWD.crysIffWD D, hG.2, _root_.GlobalTheory.T.admDict_of_weight_blockChar GlobalTheory.Published.cheb_holds D h2 hW hB, _root_.GlobalTheory.AdmReadBridge.main D, hP⟩
 theorem duties_of_large_aux41 (hC : GlobalTheory.TwSys.Cheb) (D : D7) (hL : GlobalTheory.CoefDuty.Large D) (h41 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D) (hg : _root_.UpperTheory.GalS.DeRhamJumpsDistinctCondition D)
     (hRho : AutomorphicSideWildInertia.ResidualIrreducibleGood D) : GlobalTheory.CoefDuty.Duties D :=
-  ⟨hL.1, fun i r hr => jc_of_u hr hL.2.1 (_root_.UpperTheory.GalS.g3a_of_restricted_general_alt h41 hg i r hr), GlobalTheory.T.designConditionAll_of_cheb_of_takenAll hC D hL.2.2, GlobalTheory.T.rowFiveOneTypePrime_of_coefRingTakenAtLive hC D hRho hL.2.2⟩
+  ⟨hL.1, fun i r hr => jc_of_u hr hL.2.1 (_root_.UpperTheory.GalS.g3a_of_restricted_general_alt h41 hg i r hr), _root_.GlobalTheory.DesignFromSize.main hC D hL.2.2, _root_.GlobalTheory.OrthogonalDesignFromSize.main hC D hRho hL.2.2⟩
 theorem prvG5_of_admissible_cutRec : LocalFiniteness → LocalTateDuality → LocalEulerChar →
     ∀ D : D7, _root_.Formalism.MainNotions.SumRepresentations.AdmissibleDatum D → RbEx D → CutRec D → SumRepresentations.ConclusionG5 D := by
   intro h1 h2 h3 D hA hRb hC

@@ -125,12 +125,6 @@ theorem cartierDualIsoHomRootsOfUnityOfNsmul_hom_apply (M : Rep.{u} (ULift.{u} �
       M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) m = (rootsOfUnityToUnits K L n).hom (f m) :=
   rfl
 
-variable (K L) in
-
-def cartierDualIsoHomRootsOfUnity (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) :
-    (Rep.ihom M).obj (galRootsOfUnity.{u} K L (AddMonoid.exponent M)) ≅ cartierDual K L M :=
-  cartierDualIsoHomRootsOfUnityOfNsmul K L M _ (AddMonoid.exponent_nsmul_eq_zero)
-
 end RootsOfUnity
 
 section Finite
@@ -183,22 +177,6 @@ theorem card_cartierDual (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) [Finite M]
     _ = Nat.card (Multiplicative M) :=
         CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity (Multiplicative M) L
     _ = Nat.card M := Nat.card_congr Multiplicative.toAdd
-
-variable (K) in
-
-theorem hasEnoughRootsOfUnity_exponent_of_isSepClosed [IsSepClosed L] (M : Type*)
-    [AddCommGroup M] [Finite M] (h : (Nat.card M : K) ≠ 0) :
-    HasEnoughRootsOfUnity L (AddMonoid.exponent M) := by
-  have hdvd : AddMonoid.exponent M ∣ Nat.card M := AddGroup.exponent_dvd_nat_card
-  have hK : (AddMonoid.exponent M : K) ≠ 0 := by
-    obtain ⟨c, hc⟩ := hdvd
-    intro h0
-    apply h
-    rw [hc, Nat.cast_mul, h0, zero_mul]
-  have : NeZero (AddMonoid.exponent M : L) := ⟨by
-    rw [← map_natCast (algebraMap K L)]
-    exact (map_ne_zero (algebraMap K L)).2 hK⟩
-  infer_instance
 
 end Finite
 
@@ -275,33 +253,7 @@ theorem cartierBidualityIso_hom (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) [Finite M
     (cartierBidualityIso K L M).hom = toCartierDualCartierDual K L M :=
   rfl
 
-variable (K L) in
-
-def cartierBidualityIsoOfIsSepClosed [IsSepClosed L] (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K))
-    [Finite M] (h : (Nat.card M : K) ≠ 0) : M ≅ cartierDual K L (cartierDual K L M) :=
-  have := hasEnoughRootsOfUnity_exponent_of_isSepClosed K (L := L) M h
-  cartierBidualityIso K L M
-
 end Biduality
-
-section Exact
-
-attribute [local instance 3000] Submodule.Quotient.module
-
-variable (K L) in
-
-def cartierDualShortComplex (S : ShortComplex (Rep.{u} (ULift.{u} ℤ) Gal(L/K))) :
-    ShortComplex (Rep.{u} (ULift.{u} ℤ) Gal(L/K)) :=
-  ShortComplex.mk (cartierDualMap (K := K) (L := L) S.g) (cartierDualMap S.f) (by
-    rw [← cartierDualMap_comp, S.zero]
-    refine Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun f => ?_))
-    let f' : S.X₃ →ₗ[ULift.{u} ℤ] galUnits.{u} K L := f
-    refine LinearMap.ext fun a => ?_
-    change f' ((0 : S.X₁ ⟶ S.X₃).hom a) = 0
-    rw [Rep.zero_hom]
-    exact map_zero f')
-
-end Exact
 
 section ZMod
 
@@ -311,11 +263,6 @@ theorem nsmul_zmodRep_eq_zero (G : Type*) [Monoid G] (n : ℕ) (x : zmodRep.{u} 
   change n • z = 0
   have := AddMonoid.exponent_nsmul_eq_zero z
   rwa [ZMod.exponent] at this
-
-theorem exponent_zmodRep (G : Type*) [Monoid G] (n : ℕ) :
-    AddMonoid.exponent (zmodRep.{u} G n) = n := by
-  change AddMonoid.exponent (ULift.{u} (ZMod n)) = n
-  rw [AddMonoid.exponent_eq_of_addEquiv AddEquiv.ulift, ZMod.exponent]
 
 instance finite_zmodRep (G : Type*) [Monoid G] (n : ℕ) [NeZero n] : Finite (zmodRep.{u} G n) :=
   inferInstanceAs (Finite (ULift.{u} (ZMod n)))
@@ -381,25 +328,6 @@ def cartierDualZModIso (n : ℕ) : cartierDual K L (zmodRep.{u} Gal(L/K) n) ≅ 
 @[simp]
 theorem cartierDualZModIso_hom (n : ℕ) : (cartierDualZModIso K L n).hom = cartierDualZModHom K L n :=
   rfl
-
-variable (K L) in
-
-def cartierDualRootsOfUnityIso (n : ℕ) [NeZero n] [HasEnoughRootsOfUnity L n] :
-    cartierDual K L (galRootsOfUnity.{u} K L n) ≅ zmodRep.{u} Gal(L/K) n :=
-  have : HasEnoughRootsOfUnity L (AddMonoid.exponent (zmodRep.{u} Gal(L/K) n)) := by
-    rwa [exponent_zmodRep]
-  (cartierDualFunctor K L).mapIso (cartierDualZModIso K L n).op ≪≫
-    (cartierBidualityIso K L (zmodRep.{u} Gal(L/K) n)).symm
-
-variable (K L) in
-
-def cartierDualRootsOfUnityIsoOfIsSepClosed [IsSepClosed L] (n : ℕ) (hn : (n : K) ≠ 0) :
-    cartierDual K L (galRootsOfUnity.{u} K L n) ≅ zmodRep.{u} Gal(L/K) n :=
-  have : NeZero (n : L) := ⟨by
-    rw [← map_natCast (algebraMap K L)]
-    exact (map_ne_zero (algebraMap K L)).2 hn⟩
-  have : NeZero n := ⟨fun h => hn (by rw [h, Nat.cast_zero])⟩
-  cartierDualRootsOfUnityIso K L n
 
 end ZMod
 

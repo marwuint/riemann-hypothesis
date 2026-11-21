@@ -175,28 +175,6 @@ theorem rootSum_eq (n : ℤ) {d : ℕ} (hd : 0 < d) :
   rw [hdc]
   ring
 
-theorem rootCount_eq_card_zmod (n : ℤ) (e : ℕ) [NeZero e] :
-    rootCount n e = (univ.filter fun x : ZMod e => x ^ 2 = (n : ZMod e)).card := by
-  have key : ∀ x : ℕ, (e : ℤ) ∣ (x : ℤ) ^ 2 - n ↔ ((x : ZMod e)) ^ 2 = (n : ZMod e) := by
-    intro x
-    rw [← CharP.intCast_eq_zero_iff (ZMod e) e]
-    push_cast
-    exact sub_eq_zero
-  unfold rootCount
-  refine card_bij (fun x _ => (x : ZMod e)) ?_ ?_ ?_
-  · intro x hx
-    simp only [mem_filter, mem_univ, true_and]
-    exact (key x).1 (mem_filter.1 hx).2
-  · intro a ha b hb hab
-    have ha' := mem_range.1 (mem_filter.1 ha).1
-    have hb' := mem_range.1 (mem_filter.1 hb).1
-    have := (ZMod.natCast_eq_natCast_iff' a b e).1 hab
-    rwa [Nat.mod_eq_of_lt ha', Nat.mod_eq_of_lt hb'] at this
-  · intro y hy
-    refine ⟨y.val, ?_, by simp⟩
-    refine mem_filter.2 ⟨mem_range.2 (ZMod.val_lt y), (key _).2 ?_⟩
-    simpa using (mem_filter.1 hy).2
-
 theorem rr_eq_rootSum (n : ℤ) (d : ℕ) : Ad3.S.RR n d = rootSum n d := by
   unfold Ad3.S.RR rootSum Ad3.S.GS
   simp_rw [sum_mul]

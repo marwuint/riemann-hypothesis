@@ -20,20 +20,6 @@ noncomputable def shift {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x0 M : Frame Ψ r
 noncomputable def oneF (Ψ : Finset (E →+* ℂ)) (r : ℕ) : Frame Ψ r :=
   fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)
 
-omit [NumberField E] [IsCMField E] in
-theorem oneF_mem (Ψ : Finset (E →+* ℂ)) (r : ℕ) : oneF Ψ r ∈ Bor Ψ r := by
-  intro τ
-  refine ⟨?_, fun a c h => ?_⟩
-  · change (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0
-    simp
-  · exact Matrix.one_apply_ne h.ne'
-
-omit [NumberField E] [IsCMField E] in
-theorem rmul_oneF {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x : Frame Ψ r) : rmul x (oneF Ψ r) = x := by
-  funext τ
-  change mat x τ * (1 : Matrix (Fin r) (Fin r) ℂ) = mat x τ
-  exact Matrix.mul_one _
-
 end GlobalTheory.GrpSep
 
 namespace GlobalTheory

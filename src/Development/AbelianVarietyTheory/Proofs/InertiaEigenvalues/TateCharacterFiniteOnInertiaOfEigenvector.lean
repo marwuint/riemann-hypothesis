@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AxLemmaPadicComplexFixedElementApproximationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicAlgHomSubDvdOfXDvdStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateEstimateGaloisEigenvectorCLTateStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormInertiaPartialTraceGeometricLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AxLemmaPadicComplexFixedElementApproximation
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicAlgHomSubDvdOfXDvd
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateEstimateGaloisEigenvectorCLTate
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormInertiaPartialTraceGeometricLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormPowPrimePowSubOneStatement
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
@@ -45,7 +45,7 @@ theorem finite_on_inertia : ∀ (l : ℕ) [Fact l.Prime] (η : GQ l →* ℤ_[l]
     (∀ g : GQ l, Per.σC g y = algebraMap ℚ_[l] ℂ_[l] ((η g : ℤ_[l]) : ℚ_[l]) * y) →
     ∃ N : ℕ, 0 < N ∧ ∀ γ ∈ (MaximalUnramifiedExtension l).fixingSubgroup, η γ ^ N = 1 := by
   intro l _ η y hy hη
-  obtain ⟨c, hc, hax⟩ := GlobalTheory.T.axLemma_padicComplex_fixed_element_approximation l
+  obtain ⟨c, hc, hax⟩ := _root_.GlobalTheory.AxLemma.ax_lemma_complete l
   have hτ0 := norm_l_pos (l := l)
   have hτ1 := norm_l_lt_one (l := l)
   set τ := ‖((l : ℕ) : ℤ_[l])‖ with hτ
@@ -67,8 +67,8 @@ theorem finite_on_inertia : ∀ (l : ℕ) [Fact l.Prime] (η : GQ l →* ℤ_[l]
     rw [← hηγ, hk] at this
     exact (pow_le_pow_iff_right_of_lt_one₀ hτ0 hτ1).1 this
   have hk2 : 2 ≤ k := by omega
-  obtain ⟨H, hmem, hnorm, hidx, hidx', hpow, hgen⟩ := GlobalTheory.T.exists_normal_subgroup_filtration_index_bounded l η γ k hk2 hk
-  obtain ⟨ρ, hρ0, hρ1, hgain⟩ := GlobalTheory.T.norm_inertia_partialTrace_geometric_le l γ hγ H k hnorm hidx hidx' hpow hgen
+  obtain ⟨H, hmem, hnorm, hidx, hidx', hpow, hgen⟩ := _root_.GlobalTheory.galois_congruence_chain l η γ k hk2 hk
+  obtain ⟨ρ, hρ0, hρ1, hgain⟩ := _root_.GlobalTheory.PartialTraceGain.norm_sum_pow_le l γ hγ H k hnorm hidx hidx' hpow hgen
   obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one (inv_pos.2 hc) hρ1
   have hy0 : 0 < ‖y‖ := norm_pos_iff.2 hy
   have hr : 0 < τ ^ (k + n) * ‖y‖ := by positivity
@@ -86,7 +86,7 @@ theorem finite_on_inertia : ∀ (l : ℕ) [Fact l.Prime] (η : GQ l →* ℤ_[l]
       have := congrArg γ h1
       simpa [mul_assoc] using this
     rw [map_sub, map_mul, h2, hz g hg, AlgEquiv.commutes]
-  have hest := GlobalTheory.T.tate_estimate_galois_eigenvector_cLTate l γ ((η γ : ℤ_[l]) : ℚ_[l]) y z (l ^ n) (c * (τ ^ (k + n) * ‖y‖)) (ρ ^ n)
+  have hest := _root_.GlobalTheory.InertiaEigenvalues.tate_eigenvector_estimate l γ ((η γ : ℤ_[l]) : ℚ_[l]) y z (l ^ n) (c * (τ ^ (k + n) * ‖y‖)) (ρ ^ n)
     (hη γ) (PadicInt.norm_units (η γ)) (hz _ (hpow n)) hyz (hgain n _ hv) (by positivity)
   have hlte := GlobalTheory.T.norm_pow_prime_pow_sub_one_of_norm_sub_one l (η γ : ℤ_[l]) k hk2 hk n
   have e1 : ‖((η γ : ℤ_[l]) : ℚ_[l]) ^ l ^ n - 1‖ = τ ^ (k + n) := by

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsIn
 import Formalism.LocalToGlobal.GroupLattices.Joint0
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsChartsReadingStepZero
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroChartOfMemberLevelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroLevelCharacterEqReferenceTupleStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroLevelCharacterEqReferenceTuple
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemberRepresentativeMovedAtTwistEqTupleFramesStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroLevelReadAsReferenceStatement
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix GlobalTheory.TwU GlobalTheory.TwU.AtTrue
@@ -66,7 +66,7 @@ theorem reads : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins
     let x' : F.to0.cls0.lev.U := ⟨x.1, hU ▸ x.2⟩
     show (((K0 ()).lev.chi x : ℂˣ) : ℂ) = _
     rw [hchi x x' rfl]
-    exact GlobalTheory.T.stepZero_levelCharacter_eq_referenceTuple I hI hP l Z u a _ _ _ _ _ (k ()) hk' c0 (κ c0) _ rfl (hκ c0).2.2 (hκ c0).2.1 x' κ' hg hq
+    exact _root_.GlobalTheory.TwU.StepZeroChr.chr_zero I hI hP l Z u a _ _ _ _ _ (k ()) hk' c0 (κ c0) _ rfl (hκ c0).2.2 (hκ c0).2.1 x' κ' hg hq
   case stab => exact fun c s => hst ⟨c, rfl⟩ s
   case off => exact fun _ v hT => hk'.k_off () v hT (nQ v) (Or.inl rfl)
   case levs => exact fun β => by cases β; exact ⟨hLb, hUloc, hU, hchi⟩

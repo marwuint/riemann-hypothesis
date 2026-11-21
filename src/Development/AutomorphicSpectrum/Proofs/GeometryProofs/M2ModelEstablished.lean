@@ -2,13 +2,13 @@ import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CurveSemiAbelianConjecture
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.SeparableFormGroupElementFixesUniquePositiveLine
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.M2ModelOfCurveBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.M2CurveEstablishedStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.M2ModelOfCurveBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.M2CurveEstablished
 open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
 
 namespace GlobalTheory.CompanionTheory.Ar.Conj
 
-theorem m2Model_holds : RootLineDeRhamModel := GlobalTheory.T.rootLineDeRhamModel_of_curveSemiAbelian GlobalTheory.T.curveSemiAbelianConjecture
+theorem m2Model_holds : RootLineDeRhamModel := _root_.GlobalTheory.CompanionTheory.Ar.Conj.m2Model_of_m2Curve _root_.GlobalTheory.CompanionTheory.Ar.Conj.CurveDegreeNonneg.m2Curve_holds
 
 end GlobalTheory.CompanionTheory.Ar.Conj

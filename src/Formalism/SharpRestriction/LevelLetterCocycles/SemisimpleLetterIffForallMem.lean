@@ -140,30 +140,4 @@ theorem dssLet_iff_mem (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.Del
 
 end Core
 
-theorem semisimpleProductTheorem_iff_dssMem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
-    (Cm : CmpOf D.loc D.locA HW F) :
-    Formalism.MainNotions.UnusedSlot35.SemisimpleProductTheorem D HW F Cm ↔ (Formalism.MainNotions.UnusedSlot35.AdmDss D HW F Cm →
-      ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-        DssMem ((HW l).W K s LL h)) := by
-  constructor
-  · intro h hAdm l _ K s LL hG
-    have h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG) := hAdm.2.2.2.1 l K s LL hG
-    exact (coreDss_iff_mem _ h9).1 (h hAdm l K s LL hG)
-  · intro h hAdm l _ K s LL hG
-    have h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG) := hAdm.2.2.2.1 l K s LL hG
-    exact (coreDss_iff_mem _ h9).2 (h hAdm l K s LL hG)
-
-theorem semisimple_letter_iff_forall_mem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
-    (Cm : CmpOf D.loc D.locA HW F) :
-    Formalism.MainNotions.UnusedSlot35.SemisimpleLetterTheorem D HW F Cm ↔ (Formalism.MainNotions.UnusedSlot35.AdmDss D HW F Cm →
-      ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-        DssLetMem ((HW l).W K s LL h)) := by
-  constructor
-  · intro h hAdm l _ K s LL hG
-    have h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG) := hAdm.2.2.2.1 l K s LL hG
-    exact (dssLet_iff_mem _ h9).1 (h hAdm l K s LL hG)
-  · intro h hAdm l _ K s LL hG
-    have h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG) := hAdm.2.2.2.1 l K s LL hG
-    exact (dssLet_iff_mem _ h9).2 (h hAdm l K s LL hG)
-
 end Formalism.MainNotions.UnusedSlot35.DssRec

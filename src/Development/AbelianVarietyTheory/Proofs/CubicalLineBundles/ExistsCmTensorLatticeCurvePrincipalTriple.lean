@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueCm
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsTensorBundle
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.TensorPairingIdentityOfPureTensors
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KTrivOfPerfect
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RelAmpleLineBundleOfPositiveHermitianCmFormStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmTensorSmoothOfRelativeDimensionStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RelAmpleLineBundleOfPositiveHermitianCmForm
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmTensorSmoothOfRelativeDimension
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPrimitiveNormalisation
 
@@ -64,8 +64,8 @@ theorem exists_isTen : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [Is
   let s : SAB H (Sp R) :=
     { G := Serre.tensorObj D.La C.act, semi := GlobalTheory.isSemiAbelian_of_isAbelianScheme _ hA, act := c, PP := PP,
       cub := cub, sym := sym, adj := adj, prim := prim }
-  exact ⟨⟨s, hA, _, GlobalTheory.T.cmTensor_smoothOfRelativeDimension E H R ω C D _ _ ⟨τ⟩, ObjDim.sym,
-    GlobalTheory.T.relAmple_lineBundle_of_positive_hermitian_cm_form laws E H R ω C D ε _ _ _ τ PP.L hK hpos PP.isLB hθ' prim hp',
+  exact ⟨⟨s, hA, _, _root_.GlobalTheory.CM.tensor_smoothOfRelativeDimension E H R ω C D _ _ ⟨τ⟩, ObjDim.sym,
+    _root_.GlobalTheory.CM.relAmple_of_kForm_pos laws E H R ω C D ε _ _ _ τ PP.L hK hpos PP.isLB hθ' prim hp',
     GlobalTheory.PerfectTensorKernel.kTriv_of_perfect _ (OK H) C.P.A _ C.act _ D.La τ C.P.L PP.L h₀ n x y hxy C.P.isLB PP.isLB
       hθP hθ' hp' C.P.ktriv⟩, ⟨⟨τ, hc, hp'⟩⟩, rfl⟩
 

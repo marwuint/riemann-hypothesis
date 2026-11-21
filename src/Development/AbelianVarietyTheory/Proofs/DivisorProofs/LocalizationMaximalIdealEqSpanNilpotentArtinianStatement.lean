@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalizationMaximalIdealEqSpanNilpotentArtinian
-import Mathlib
+
 open NumberField
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in

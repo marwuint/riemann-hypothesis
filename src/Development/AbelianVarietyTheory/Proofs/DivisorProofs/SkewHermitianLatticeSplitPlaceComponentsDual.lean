@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualFamily
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorLatticeInertPlaceSelfDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentCoprimeAtGoodPlaces
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FormallyUnramifiedRingOfIntegersIffDifferentIdea
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceDualRingOfIntegersIffOfUnramifiedExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalGeneratorOfNonzeroIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceDualRingOfIntegersIffOfUnramifiedExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalGeneratorOfNonzeroIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLocalLatticeIdealMapSmulIffGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealMapSmulIsLatticeOfNeBotStatement
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.KSplit
@@ -53,7 +53,7 @@ theorem eq_dualGlob {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E
   constructor
   · intro hy x hx
     refine Submodule.smul_induction_on hx (fun i hi x hx => ?_) (fun a b ha hb => ?_)
-    · have key := (GlobalTheory.T.traceDual_ringOfIntegers_iff_of_unramified_extension F E hu (form σ J y x)).1 ((hdual y).1 hy x hx)
+    · have key := (_root_.GlobalTheory.UnrTraceDual.traceDual_ringOfIntegers_iff_of_unramified F E hu (form σ J y x)).1 ((hdual y).1 hy x hx)
       have e1 : i • x = (i : E) • x := by ext j; rfl
       rw [e1, form_smul_right]
       have hi' : i ∈ Ideal.span (algebraMap (𝓞 F) (𝓞 E) '' (differentIdeal ℤ (𝓞 F) : Set (𝓞 F))) := hi
@@ -76,7 +76,7 @@ theorem eq_dualGlob {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E
   · intro hy
     rw [hdual y]
     intro x hx o
-    refine (GlobalTheory.T.traceDual_ringOfIntegers_iff_of_unramified_extension F E hu (form σ J y x)).2 (fun d hd => ?_) o
+    refine (_root_.GlobalTheory.UnrTraceDual.traceDual_ringOfIntegers_iff_of_unramified F E hu (form σ J y x)).2 (fun d hd => ?_) o
     have hmem : (algebraMap (𝓞 F) (𝓞 E) d) • x ∈ (differentIdeal ℤ (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E)) • L :=
       Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hd) hx
     have h2 := hy _ hmem
@@ -128,7 +128,7 @@ theorem skewSplitDual : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
       dualLoc σ W.Jᵀ ((differentIdeal ℤ (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E)) • W.L) v :=
     (congrArg (fun L => latLoc F L v) hglob).trans
       (SelfDual.latLoc_dualGlob hdetT (GlobalTheory.T.ideal_map_smul_isLattice_of_ne_bot F E d W.L _ h𝔡0 hW.lat) v)
-  obtain ⟨z, hz0, hz1, hzle, hzeq⟩ := GlobalTheory.T.exists_local_generator_of_nonzero_ideal F (differentIdeal ℤ (𝓞 F)) v h𝔡0
+  obtain ⟨z, hz0, hz1, hzle, hzeq⟩ := _root_.GlobalTheory.ideal_localGenerator F (differentIdeal ℤ (𝓞 F)) v h𝔡0
   have key := mem_splitLat_comp_iff_skew hcm hW.skew t z hloc (GlobalTheory.T.mem_localLattice_idealMap_smul_iff_generator F E d W.L _ v z hzle hzeq)
   set M : Matrix (Fin d) (Fin d) (Fv F v) := z • (c.1ᵀ * W.J.map t) with hM
   have hMdet : M.det ≠ 0 := by

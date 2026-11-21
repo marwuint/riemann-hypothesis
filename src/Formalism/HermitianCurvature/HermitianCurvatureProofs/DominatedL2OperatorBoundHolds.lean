@@ -63,10 +63,6 @@ theorem Gp_bigPt_eq (p : KB.Pl P Wp Wq) (c : Fin (P.r + 1) → ℂ) :
     ofFn_getD_eq_apply c i (by omega)
   simp only [h1, h2]
 
-theorem Gp_bigPt_continuous (p : KB.Pl P Wp Wq) : Continuous fun c : Fin (P.r + 1) → ℂ => TBB.Gp p (TBB.bigPt P.r c) := by
-  simp_rw [Gp_bigPt_eq]
-  fun_prop
-
 private theorem isLocPt_bigPt_of_ne_zero (r : ℕ) (c : Fin (r + 1) → ℂ) (hd : ∀ a, c a ≠ 0) :
     D.IsLocPt (TBB.bigPt r c) (r + 1) := by
   refine ⟨fun b hb => ?_, ?_⟩
@@ -205,97 +201,6 @@ theorem nf_arith_ab (r k : ℝ) (hr : 0 ≤ r) (hk : 2 ≤ k) :
 theorem nf_arith_thr (R x : ℝ) (hR1 : 1 ≤ R) (hx1 : 1 ≤ x) : x ^ 2 * (9 * R) < 20 * (R * x ^ 3) := by
   have hx2 : 0 < R * x ^ 2 := mul_pos (by linarith) (pow_pos (by linarith) 2)
   nlinarith [mul_lt_mul_of_pos_left (by linarith : (9 : ℝ) < 20 * x) hx2]
-
-private theorem ew_cutF_pow_bigPt_eq_norm_gp_pow_mul {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
-    (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (q₀ : ℕ) (c : Fin (P.r + 1) → ℂ)
-    (hd : ∀ a, c a ≠ 0) :
-    TBB.Ew p (fun _ => 1) (D.cutF p.T.base (fun x => x ^ q₀) H 1) (P.r + 1) [] (TBB.bigPt P.r c) =
-      ‖TBB.Gp p (TBB.bigPt P.r c)‖ ^ (2 * q₀) * TBB.Ew p (fun _ => 1) H (P.r + 1) [] (TBB.bigPt P.r c) := by
-  rw [ew_eq_weight p _ c hd, ew_eq_weight p H c hd, JCTx2.JF_cutF, JCTx2.hsVec_smul', norm_smul]
-  by_cases hζ : TBB.TTp p < Complex.normSq (c (Fin.last P.r))
-  · have hGf : Gf P.k P.r p.T.base.z p.T.base.z'
-        (bigCell P.k P.r (fun j => c j.castSucc) (p.T.base.μsec (c (Fin.last P.r)))) =
-          TBB.Gp p (TBB.bigPt P.r c) := by
-      exact TBBx2.Gf_of_Zhat _ _ _ (TBB.bigPt P.r c) (by exact PBM.zhat_bigCell_pt p.T.base c hζ)
-    simp only [div_one]
-    rw [hGf, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_pow]
-    ring
-  · replace hζ := not_lt.1 hζ
-    rw [bcWeight_eq_zero_of_normSq_le p.hl.2.2 _ _ _ (by exact hζ)]
-    simp
-
-theorem dominated_L2_operator_bound_holds : DominatedL2OperatorBound := by
-  intro Cb C₁
-  refine ⟨C₁ + 20, ?_⟩
-  intro Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ N hN Th hTh
-  obtain ⟨-, -, hCk, hCC, hbud, -⟩ := hN
-  obtain ⟨-, -, hglob, hord⟩ := hTh
-  have hk : (2 : ℝ) ≤ P.k := by exact_mod_cast p.hl.2.2
-  have hr0 : (0 : ℝ) ≤ P.r := Nat.cast_nonneg _
-  have hx : CutMP.nDim P.k P.r = (2 * (P.r : ℝ) + P.k + 1) := by unfold CutMP.nDim; push_cast; ring
-  have hR1 : (1 : ℝ) ≤ ((P.r : ℝ) + 1) := by linarith
-  have hx1 : (1 : ℝ) ≤ (2 * (P.r : ℝ) + P.k + 1) := by linarith
-  have hN0 : (0 : ℝ) ≤ N := Nat.cast_nonneg N
-  have hC₁ : 0 ≤ C₁ := by
-    by_contra h
-    have h1 : (0 : ℝ) < CutMP.nDim P.k P.r * ((N : ℝ) + 1) := by rw [hx]; positivity
-    have h2 : C₁ * CutMP.nDim P.k P.r * ((N : ℝ) + 1) < 0 := by
-      rw [mul_assoc]; exact mul_neg_of_neg_of_pos (not_le.1 h) h1
-    have h3 : (0 : ℝ) ≤ (B.opOrder Th : ℝ) := Nat.cast_nonneg _
-    linarith
-  obtain ⟨d, hd⟩ : ∃ d : ℝ, d = C₁ * ((P.r : ℝ) + 1) * CutMP.nDim P.k P.r * ((N : ℝ) + 1) := ⟨_, rfl⟩
-  rw [← hd] at hglob
-  have hd0 : 0 ≤ d := by
-    rw [hd, hx]
-    exact mul_nonneg (mul_nonneg (mul_nonneg hC₁ (by linarith)) (by linarith)) (by linarith)
-  have hdS : d ≤ C₁ * (((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)) := by
-    rw [hd, hx]; exact nf_arith_d C₁ _ _ _ hC₁ hR1 hx1 hN0
-  have hM0 : (0 : ℝ) ≤ (((2 * P.r + 2) * p₀ : ℕ) : ℝ) := Nat.cast_nonneg _
-  have e1 : (C₁ + 20) * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = C₁ * (((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)) + 20 * (((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)) := by ring
-  have hlow := nf_arith_low ((P.r : ℝ) + 1) (2 * (P.r : ℝ) + P.k + 1) N hR1 hx1 hN0
-  have hab := nf_arith_ab (P.r : ℝ) (P.k : ℝ) hr0 hk
-  have hthr := nf_arith_thr ((P.r : ℝ) + 1) (2 * (P.r : ℝ) + P.k + 1) hR1 hx1
-  have hA2 : 20 * (((P.r : ℝ) + 1) * (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀ - d - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) := by linarith
-  have hAB2 : B.AB P.k P.r ≤ A₀ - d - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) := by unfold B.AB; linarith
-  have hAB1 : B.AB P.k P.r ≤ A₀ - d := by linarith
-  have hMc : (((2 * P.r + 2) * p₀ : ℕ) : ℝ) = (2 * (P.r : ℝ) + 2) * p₀ := by push_cast; ring
-  have hT2 : JF.TransportedAlt P.k P.r (A₀ - d - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)) 0 := by
-    unfold JF.TransportedAlt
-    rw [lt_div_iff₀ (by positivity)]
-    push_cast
-    linarith [hMc]
-  have hT1 : JF.TransportedAlt P.k P.r (A₀ - d) 0 := by
-    unfold JF.TransportedAlt
-    rw [lt_div_iff₀ (by positivity)]
-    push_cast
-    linarith [hMc]
-  obtain ⟨-, hH1⟩ := CutMP.class_lower_decay_holds P.k P.r Wp Wq Th d A₀ hd0 hglob f hCk hCC
-  have hH2 : ∀ m : ℕ, B.InCC (A₀ - d - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)) m (D.cutF p.T.base (fun x => x ^ p₀) (B.opApply Th f) 1) := by
-    have heq : D.cutF p.T.base (fun x => x ^ p₀) (B.opApply Th f) 1 =
-        fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) • B.opApply Th f g := by
-      funext g; simp [D.cutF]
-    rw [heq]
-    exact inCC_Gpow_smul _ _ p₀ hH1
-  have I1 := ew_integrable p hAB1 hT1 (fun j _ => hH1 j)
-  have I2 := ew_integrable p hAB2 hT2 (fun j _ => hH2 j)
-  have hkey : ∀ᵐ c : Fin (P.r + 1) → ℂ,
-      TBB.Ew p (fun _ => 1) (D.cutF p.T.base (fun x => x ^ p₀) (B.opApply Th f) 1) (P.r + 1) []
-          (TBB.bigPt P.r c) =
-        ‖TBB.Gp p (TBB.bigPt P.r c)‖ ^ (2 * p₀) *
-          TBB.Ew p (fun _ => 1) (B.opApply Th f) (P.r + 1) [] (TBB.bigPt P.r c) := by
-    filter_upwards [ae_ne_zero_all P.r] with c hc
-    exact ew_cutF_pow_bigPt_eq_norm_gp_pow_mul p _ p₀ c hc
-  have hnn : ∀ᵐ c : Fin (P.r + 1) → ℂ,
-      0 ≤ TBB.Ew p (fun _ => 1) (B.opApply Th f) (P.r + 1) [] (TBB.bigPt P.r c) := by
-    filter_upwards [ae_ne_zero_all P.r] with c hc
-    rw [ew_eq_weight p _ c hc]
-    exact mul_nonneg (bcWeight_nonneg0 _ _ _ _ _) (sq_nonneg _)
-  refine Integrable.mono' (I1.add I2) ?_ ?_
-  · exact ((Gp_bigPt_continuous p).norm.pow _).aestronglyMeasurable.mul I1.aestronglyMeasurable
-  · filter_upwards [hkey, hnn] with c h1 h2
-    rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (pow_nonneg (norm_nonneg _) _) h2), Pi.add_apply, h1]
-    exact nf_pow_bound _ (norm_nonneg _) _ _ _ h2
 
 end
 

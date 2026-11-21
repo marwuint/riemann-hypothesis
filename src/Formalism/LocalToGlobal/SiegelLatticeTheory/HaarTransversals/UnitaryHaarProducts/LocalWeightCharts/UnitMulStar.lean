@@ -279,5 +279,3 @@ end Cayley
 
 end WlocSk.OneP
 
-section Check
-end Check

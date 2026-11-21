@@ -16,8 +16,4 @@ def ArithmeticIntersectionFibreMultiHomogeneous.Statement : Prop :=
     IsMultiHomogIdeal (W'.map (MvPolynomial.map (Int.castRingHom (ZMod p)))) →
     ∀ G' : GenFibre v W', IsMultiHomogIdeal (fibreIdeal κ G')
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

@@ -94,23 +94,23 @@ theorem space_mass (hMM : MaxMass) (K V : Type) [Field K] [NumberField K] [StarR
   have hnd := SpaceMass.nondeg_of_PD h hp
   have hp' := SpaceMass.PD_of_ortho h' hK I _ hI
   have hnd' := SpaceMass.nondeg_of_PD h' hp'
-  obtain ⟨hex, -, -⟩ := GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V h hK hs hnd
+  obtain ⟨hex, -, -⟩ := _root_.GlobalTheory.Mass.MaxExists.main K V h hK hs hnd
   obtain ⟨c, hc⟩ := hMM K hK _ hj
-  obtain ⟨-, hu', ho'⟩ := GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V' h' hK hs' hnd'
+  obtain ⟨-, hu', ho'⟩ := _root_.GlobalTheory.Mass.MaxExists.main K V' h' hK hs' hnd'
   obtain ⟨hIl, hIu, hIr⟩ := ho' I _ hI
   obtain ⟨hImax, -, hIlam⟩ := hu' I hIl hIu
   have hcI : mass h' I = c := by rw [hc V' h' hs' hp' hIr I hImax, hIlam, mul_one]
-  have hcpos : 0 < c := hcI ▸ (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V' h' hK hs' hp' I hIl).2.1
+  have hcpos : 0 < c := hcI ▸ (_root_.GlobalTheory.Mass.GenusOrb.main K V' h' hK hs' hp' I hIl).2.1
   have hdisc := GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hnd
-  obtain ⟨hmass, hmpos, hYst, hfin, -⟩ := GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp M₀ hM₀.1.1
+  obtain ⟨hmass, hmpos, hYst, hfin, -⟩ := _root_.GlobalTheory.Mass.GenusOrb.main K V h hK hs hp M₀ hM₀.1.1
   have hn'0 := (hdisc M₀ hM₀.1).1
   set n' := discN h M₀ with hn'
   have hm₀ : mass h M₀ ≤ c * (n' : ℝ) ^ ((Module.finrank K V : ℝ) / 2) := by
     rw [hc V h hs hp rfl M₀ hM₀]
-    exact mul_le_mul_of_nonneg_left (GlobalTheory.T.maximalLatticeLocalFactorProduct_pos_and_le K V h hK hs hnd hj M₀ hM₀).2 hcpos.le
+    exact mul_le_mul_of_nonneg_left (_root_.GlobalTheory.MaxLatLam.main K V h hK hs hnd hj M₀ hM₀).2 hcpos.le
   have hDst : Stable (isom h) (latsDisc (R := 𝓞 K) h n) := by
     intro g M hM
-    have h1 := (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp M hM.1.1).2.2.1 g M (SpaceMass.mem_genus_self h M hM.1.1)
+    have h1 := (_root_.GlobalTheory.Mass.GenusOrb.main K V h hK hs hp M hM.1.1).2.2.1 g M (SpaceMass.mem_genus_self h M hM.1.1)
     have h2 := (hdisc M hM.1).2.2.2.1 _ h1
     exact ⟨h2.1, h2.2.trans hM.2⟩
   let X : Set (Submodule (𝓞 K) V × Submodule (𝓞 K) V) :=
@@ -122,20 +122,20 @@ theorem space_mass (hMM : MaxMass) (K V : Type) [Field K] [NumberField K] [StarR
     (fun p hp => hp.1) (fun y hy => hfin y hy.1.1)
   have f2 := GlobalTheory.T.orbitStabilizerMass_eq_weightedSum_fibres (isom h) _ _ X (genus h M₀) Prod.snd (fun _ _ => rfl) hXst hYst
     (fun p hp => hp.2.1) (fun y hy => hfin y hy.1)
-  obtain ⟨mono, hconst, -⟩ := GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (isom h) (Submodule (𝓞 K) V)
+  obtain ⟨mono, hconst, -⟩ := _root_.GlobalTheory.Mass.OrbMono.main (isom h) (Submodule (𝓞 K) V)
   have s1 : orbMass (isom h) (latsDisc (R := 𝓞 K) h n) ≤ orbMass (isom h) X := by
     rw [f1]
     refine mono _ _ _ _ subset_rfl fun M hM => ?_
     obtain ⟨M', hM', hle⟩ := hex M hM.1
     have hne : (X ∩ Prod.fst ⁻¹' {M}).Nonempty :=
-      ⟨(M, M'), ⟨hM, (GlobalTheory.T.mem_genus_iff_maximalIntegralHermitianLattice K V h hK hs hp M₀ M' hM₀).2 hM', hle⟩, rfl⟩
+      ⟨(M, M'), ⟨hM, (_root_.GlobalTheory.Mass.MaxGenus.main K V h hK hs hp M₀ M' hM₀).2 hM', hle⟩, rfl⟩
     have := Set.one_le_encard_iff_nonempty.2 hne
     exact_mod_cast this
   have s2 : orbMass (isom h) X ≤ ENNReal.ofReal ((i : ℝ) ^ ((Module.finrank K V : ℝ) +
       Real.logb 2 (Module.finrank ℚ K))) * orbMass (isom h) (genus h M₀) := by
     rw [f2, ← hconst]
     refine mono _ _ _ _ subset_rfl fun M' hM' => ?_
-    refine le_trans ?_ (GlobalTheory.T.encard_sublattices_of_index_le K V h hK hs hnd M' hM'.1 i (Nat.one_le_iff_ne_zero.2 hi0))
+    refine le_trans ?_ (_root_.GlobalTheory.Mass.sublattice_count K V h hK hs hnd M' hM'.1 i (Nat.one_le_iff_ne_zero.2 hi0))
     have hM'' := (hdisc M₀ hM₀.1).2.2.2.1 M' hM'
     have : (X ∩ Prod.snd ⁻¹' {M'}).encard ≤
         {N : Submodule (𝓞 K) V | N ≤ M' ∧ idxN M' N = i}.encard := by
@@ -181,8 +181,8 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
   choose! T hT1 hT2 using count_sets K
   have hc : 0 < mass h₁ I₁ := by
     have hp' := SpaceMass.PD_of_ortho h₁ hK I₁ _ hI₁
-    obtain ⟨-, -, ho'⟩ := GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V₁ h₁ hK hs₁ (SpaceMass.nondeg_of_PD h₁ hp')
-    exact (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V₁ h₁ hK hs₁ hp' I₁ (ho' I₁ _ hI₁).1).2.1
+    obtain ⟨-, -, ho'⟩ := _root_.GlobalTheory.Mass.MaxExists.main K V₁ h₁ hK hs₁ (SpaceMass.nondeg_of_PD h₁ hp')
+    exact (_root_.GlobalTheory.Mass.GenusOrb.main K V₁ h₁ hK hs₁ hp' I₁ (ho' I₁ _ hI₁).1).2.1
   set L : ℝ := Real.logb 2 (Module.finrank ℚ K) with hLdef
   have hLf : L = 1 + Real.logb 2 (fDeg K) := by
     have := hK.1
@@ -215,7 +215,7 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
   · rintro U hU ⟨N, hN, hNn⟩
     obtain ⟨-, hsU, hpU, -⟩ := res U
     have hnU := FewOrbits.nondeg _ hpU
-    obtain ⟨M, hM, hNM⟩ := (GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K U (hRes h U) hK hsU hnU).1 N hN
+    obtain ⟨M, hM, hNM⟩ := (_root_.GlobalTheory.Mass.MaxExists.main K U (hRes h U) hK hsU hnU).1 N hN
     obtain ⟨hbf, hdisc, -, hloc⟩ := GlobalTheory.MaxLatStruct.main K U (hRes h U) hK hsU hnU M hM
     obtain ⟨hi0, hd⟩ := (GlobalTheory.Mass.DiscOrder.main K U (hRes h U) hK hsU hnU N hN).2.2.1 M hM.1 hNM
     set S := hbf.toFinset with hS
@@ -240,7 +240,7 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
     obtain ⟨-, hsU0, hpU0, -⟩ := res U0
     have hbad : badP (hRes h U0) M0 = badP (hRes h U) M := by
       rw [hI0]; simp [hS]
-    obtain ⟨e, he⟩ := GlobalTheory.T.definite_hermitian_isometric_of_same_bad_primes K U0 (hRes h U0) hK hsU0 hpU0 hL U (hRes h U) hsU hpU
+    obtain ⟨e, he⟩ := _root_.GlobalTheory.Mass.SameBad.main K U0 (hRes h U0) hK hsU0 hpU0 hL U (hRes h U) hsU hpU
       (hU0.trans hU.symm) M0 M hM0 hM hbad
     obtain ⟨g, hg, hge⟩ := witt U0 U e he
     refine ⟨⟨g, hg⟩, ?_⟩

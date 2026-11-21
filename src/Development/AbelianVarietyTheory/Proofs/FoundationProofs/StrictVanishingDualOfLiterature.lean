@@ -2,16 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalCochainsGlueGlobalStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupProductUnramifiedClassesVanishesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupProductCoboundaryModStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupProductCoboundaryMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisCocycleIntegralAfterScalingStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupProductDualTwistIsTwoCocycleUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TateDualCocycleCoboundaryOfVanishOnFixingStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GreenbergOrdinaryOfVanishingOnCycloKernelStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TateDualCocycleCoboundaryOfVanishOnFixing
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GreenbergOrdinaryOfVanishingOnCycloKernel
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeightCommutatorInvarianceStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCommutatorDetNonzeroStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCommutatorDetNonzero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CohomologyUnramifiedLiftStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CocyclePairAlternatingNeOnCycloKernelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EulerSystemTameClassScaleEnlargeCoefficientsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CocyclePairAlternatingNeOnCycloKernel
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EulerSystemTameClassScaleEnlargeCoefficients
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherRest
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealEqComap
 
@@ -193,7 +193,7 @@ theorem main : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact
   have ha1O : a1 ∈ c2.O := pow_mem (natCast_mem _ _) _
   have hT' : ∀ n : ℕ, 1 ≤ n → ∀ w : Pl, w ∉ S' → l ^ n ∣ normV w - 1 → ∀ ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n)),
       KillsMu (normV w) ψ → Function.Surjective ψ → Tame c2 W y' n w ψ :=
-    fun n hn w hw hd ψ hK hs => GlobalTheory.T.eulerSystemTameClass_scale_enlarge_coefficients l Ω W c c2 y n w ψ a1 (le_trans hcc1 hc12) ha1O (hT n hn w hw hd ψ hK hs)
+    fun n hn w hw hd ψ hK hs => _root_.GlobalTheory.Ord2.tame_scale l Ω W c c2 y n w ψ a1 (le_trans hcc1 hc12) ha1O (hT n hn w hw hd ψ hK hs)
   obtain ⟨xA, hxA, hxAe⟩ := hz2triv hzT
 
   have hloc : ∀ n : ℕ, ∀ v ∈ S, ∃ B : ValuationSubring Ω, IsPlaceOver B v ∧
@@ -204,7 +204,7 @@ theorem main : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact
       have hv : v = v0 := place_eq (Fact.out : l.Prime) hlv hlv0
       subst hv
       refine ⟨A, hAv0, ?_⟩
-      exact GlobalTheory.T.cup_product_coboundary_mod l Ω c2 n W (Dec (F := ℚ) A) y' z' hN.cont hWc2 hN.det2
+      exact _root_.GlobalTheory.Ord2.CupCob.cup_cob l Ω c2 n W (Dec (F := ℚ) A) y' z' hN.cont hWc2 hN.det2
         (isIntegralCocycleOneModPow_of_integral_cocycle c2 n W _ hy' hy'int) (isIntegralCocycleOneModPow_of_integral_cocycle c2 n (dual1 W) _ hz' hz'int)
         (Or.inr ⟨xA, hxA, fun s hs => cv_of_eq n (hxAe s hs)⟩)
     · obtain ⟨B, hB, -⟩ := hyU v hlv
@@ -219,18 +219,18 @@ theorem main : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact
     by_contra h
     push_neg at h
     apply hyG
-    refine GlobalTheory.T.greenbergOrdinary_of_vanishing_on_cycloKernel l Ω e S A W hN y hy fun g hg => ?_
+    refine _root_.GlobalTheory.Ord2.GrOfKill.gr_of_vanish_on_trivial l Ω e S A W hN y hy fun g hg => ?_
     have := h g hg
     exact (smul_eq_zero.mp this).resolve_left ha1
   have hzN : ∃ g ∈ N0g W, z' g ≠ 0 := by
     by_contra h
     push_neg at h
     apply hzB
-    refine GlobalTheory.T.tateDual_cocycle_coboundary_of_vanish_on_fixing l Ω e S A W hN z hz fun g hg => ?_
+    refine _root_.GlobalTheory.Ord2.h1dual_of_vanish_fix l Ω e S A W hN z hz fun g hg => ?_
     have := h g hg
     exact (smul_eq_zero.mp this).resolve_left ha2
-  obtain ⟨g, hg, h, hh, hne⟩ := GlobalTheory.T.cocycle_pair_alternating_ne_on_cycloKernel l Ω e S A W hN y' hy' z' hz' hyN hzN
-  obtain ⟨φ, hφ, hde⟩ := GlobalTheory.T.exists_commutator_det_nonzero l Ω e S A W hN
+  obtain ⟨g, hg, h, hh, hne⟩ := _root_.GlobalTheory.Ord2.exists_om_ne_swap_on_N0g l Ω e S A W hN y' hy' z' hz' hyN hzN
+  obtain ⟨φ, hφ, hde⟩ := _root_.GlobalTheory.Ord2.commutator_H0_has_no_eigenvalue_one l Ω e S A W hN
   have hφH : φ ∈ H0g W := commutator_det_one_le W hφ
   have hgW : W g = 1 := (Subgroup.mem_inf.mp hg).2
   have hhW : W h = 1 := (Subgroup.mem_inf.mp hh).2

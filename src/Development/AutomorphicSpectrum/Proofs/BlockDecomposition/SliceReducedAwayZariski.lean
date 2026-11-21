@@ -13,8 +13,17 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceReducedAwa
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceReducedGeneral
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceLength
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLocalOrder
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SliceBranchesHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CurveBranchLengthHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SliceBranchesHolds
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchProperAtPoint
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchIntDecompose
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranchInt
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranches
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCurveBranchLength
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchNormalisation
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegBallMass
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegLelongMono
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSmallSetBallCover
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CurveBranchLengthHolds
 set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.Heights.BranchOrder
@@ -41,6 +50,6 @@ theorem sliceLength : SliceLength.Statement :=
   @SliceLength.proof IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full sliceReducedGeneral sliceMultGeneral
 
 theorem localOrder : LocalOrder.Statement :=
-  LocalOrder.proof sliceLength GlobalTheory.T.slice_branches_holds GlobalTheory.T.curve_branch_length_holds
+  LocalOrder.proof sliceLength _root_.GlobalTheory.CompanionTheory.Ar.SliceBranch.sliceBranches _root_.GlobalTheory.CompanionTheory.Heights.CurveBranch.curveBranchLength
 
 end GlobalTheory.CompanionTheory.Heights.BranchOrder

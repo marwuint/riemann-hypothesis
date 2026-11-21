@@ -145,14 +145,6 @@ theorem homOfFrames_app_chartSec (hL : L.IsLB) {F : X.Modules} {σ : ∀ i, Γ(F
   rw [modRes_self, modRes_self, coord_chartSec, resG_resG, resG_g_self hL, one_smul] at this
   exact this
 
-def homEquivFrames (hL : L.IsLB) (F : X.Modules) :
-    (toMod L ⟶ F) ≃ {σ : ∀ i, Γ(F, L.U i) // IsFrameFamily L σ} where
-  toFun φ := ⟨fun i => φ.app (L.U i) (chartSec hL i), (isFrameFamily_chartSec hL).map φ⟩
-  invFun σ := homOfFrames hL σ.2
-  left_inv φ := hom_ext_chartSec hL fun i =>
-    homOfFrames_app_chartSec hL ((isFrameFamily_chartSec hL).map φ) i
-  right_inv σ := Subtype.ext (funext fun i => homOfFrames_app_chartSec hL σ.2 i)
-
 theorem bijective_toPushforward_comp (hL : L.IsLB) (f : Y ⟶ X) (G : Y.Modules) :
     Function.Bijective fun ψ : toMod (L.pull f) ⟶ G =>
       toPushforward L f ≫ (Scheme.Modules.pushforward f).map ψ := by

@@ -1,6 +1,6 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeBallCountRatioBoundStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeBallCountRatioBound
 
 noncomputable section
 
@@ -63,7 +63,7 @@ theorem box_packing : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   have hd : d = 2 := by
     rw [← h2, Module.finrank_eq_card_basis b, Fintype.card_fin]
   subst hd
-  have key := GlobalTheory.T.lattice_ball_count_ratio_bound (PiLp 1 (fun _ : Fin 1 × Fin M × Fin 2 × InfinitePlace F => ℝ)) (intSub b e N)
+  have key := _root_.GlobalTheory.CompanionTheory.Adelic.tsum_indicator_norm_le_packing (PiLp 1 (fun _ : Fin 1 × Fin M × Fin 2 × InfinitePlace F => ℝ)) (intSub b e N)
     ((coord hF b).comp (e.comp (intSub b e N).subtype)) r R hr hrR
   rw [finrank_coord hF 2 M] at key
   have conv : ∀ t : ℝ, ∑' l : Λ, (Set.indicator (box b N t) (fun _ => (1 : ℝ≥0∞))) (e l) =

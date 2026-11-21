@@ -246,10 +246,4 @@ theorem genSmooth (h : IsArithVar p D) (hr : ∀ x, IsRegularLocalRing (X.preshe
   obtain ⟨c, hc, -⟩ := AlgChart.exists_of_etale hU x hx (mem_ptsIn.2 hz)
   exact ⟨c, hc⟩
 
-theorem genSmooth_of_isRegSurf : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k),
-    IsRegSurf p → GenSmooth p 1 ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ),
-      ∃ U : X.Opens, y ∈ ptsIn p σ U ∧ SmoothOfRelativeDimension 1 (U.ι ≫ p) :=
-  fun _ _ _ _ h => ⟨genSmooth h.toIsArithVar h.regular,
-    exists_opens_smooth h.toIsArithVar h.regular⟩
-
 end GlobalTheory.RegGenSmooth

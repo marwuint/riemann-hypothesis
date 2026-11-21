@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieB
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsVarietiesComponentsSmoothGenericFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModificationLineBundleGlobalSectionsDimPullEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeometricallyIntegralAlgebraicConstantsMemRangeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicConstantsDescendToNormalIntegralSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicConstantsDescendToNormalIntegralScheme
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnIffGeneratesAtInv
 
 set_option autoImplicit false
 
@@ -50,7 +51,7 @@ theorem exists_var_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   have : GlobalTheory.IsNormalScheme V.toScheme := GlobalTheory.ModifSections.isNormalScheme_of_smooth (V.ι ≫ genStr Z ≫ spMap e.toRingHom)
   have : GeometricallyConnected (V.ι ≫ genStr Z ≫ spMap e.toRingHom) := by
     refine GlobalTheory.GeomConnFn.geometricallyConnected_of_locallyOfFiniteType _ ?_
-    exact GlobalTheory.T.algebraicConstants_descend_to_normalIntegralScheme F V.toScheme Y.X _ Y.str g (by rw [reassoc_of% hg, hπ])
+    exact _root_.GlobalTheory.ConstDescent.descent F V.toScheme Y.X _ Y.str g (by rw [reassoc_of% hg, hπ])
       (GlobalTheory.T.geometricallyIntegral_algebraicConstants_mem_range F Y.X Y.str)
   obtain ⟨X, ε, -, hs⟩ := GlobalTheory.ProjVar.Var.exists_iso _ Dw.dim hp
   refine ⟨X, ε.inv ≫ V.ι, inferInstance, ?_, ?_⟩

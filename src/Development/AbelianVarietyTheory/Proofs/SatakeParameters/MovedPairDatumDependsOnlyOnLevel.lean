@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingY
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSpBot
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MovedPairDatumEqAdelicDatumStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MovedPairDatumEqAdelicDatum
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DatLocHomRe
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelInstances GlobalTheory.TwU GlobalTheory.TwV
 open scoped TensorProduct Matrix
@@ -21,7 +21,7 @@ theorem xiM_datLoc : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.I
       S.Xi j hj (J.chart std j (Nat.le_of_succ_le hj) La) (J.chart std (j + 1) hj La') (J.pt std j (Nat.le_of_succ_le hj) La)
         (J.pt std (j + 1) hj La') (homRe h1 h2 z) := by
     funext z
-    exact GlobalTheory.T.moved_pair_datum_eq_adelic_datum t std J S.Xi j hj h1 h2 La La' z
+    exact _root_.GlobalTheory.TwV.moved_pair_datum_eq_adelic_datum_alt t std J S.Xi j hj h1 h2 La La' z
   rw [hx]
   exact datLoc_homRe D t.cc (ssRec t u μ) (t.rd u μ).lev h1 h2 _ _ _ _ _ hK1 hK2
     (S.law.loc j hj (J.chart std j (Nat.le_of_succ_le hj) La) (J.chart std (j + 1) hj La') (J.pt std j (Nat.le_of_succ_le hj) La)

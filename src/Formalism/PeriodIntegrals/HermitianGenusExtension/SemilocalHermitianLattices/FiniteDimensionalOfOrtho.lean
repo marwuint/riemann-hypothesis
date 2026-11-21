@@ -16,31 +16,12 @@ def stdForm (K : Type) [Field K] [StarRing K] (n : ℕ) :
     (fun x y y' => by simp [mul_add, Finset.sum_add_distrib])
     (fun c x y => by simp [Finset.mul_sum, mul_left_comm])
 
-def stdLat (K : Type) [Field K] (n : ℕ) : Submodule (𝓞 K) (Fin n → K) :=
-  Submodule.span (𝓞 K) (Set.range fun i : Fin n => (Pi.single i 1 : Fin n → K))
-
 theorem stdForm_apply (K : Type) [Field K] [StarRing K] (n : ℕ) (x y : Fin n → K) :
     stdForm K n x y = ∑ i, star (x i) * y i := rfl
 
 theorem stdForm_isSymm (K : Type) [Field K] [StarRing K] (n : ℕ) : (stdForm K n).IsSymm := by
   refine ⟨fun x y => ?_⟩
   simp [stdForm_apply, mul_comm, starRingEnd_apply]
-
-theorem stdLat_isOrtho (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) :
-    Formalism.HermitianLatticesTheory.IsOrthoLattice (stdForm K n) (stdLat K n) n := by
-  refine ⟨fun i => Pi.single i 1, ?_, ?_, rfl, ?_⟩
-  · have := (Pi.basisFun K (Fin n)).linearIndependent
-    rwa [show ⇑(Pi.basisFun K (Fin n)) = fun i => (Pi.single i 1 : Fin n → K) from
-      funext fun i => Pi.basisFun_apply K (Fin n) i] at this
-  · have := (Pi.basisFun K (Fin n)).span_eq
-    rwa [show ⇑(Pi.basisFun K (Fin n)) = fun i => (Pi.single i 1 : Fin n → K) from
-      funext fun i => Pi.basisFun_apply K (Fin n) i] at this
-  · intro i j
-    rw [stdForm_apply]
-    by_cases hij : i = j
-    · subst hij
-      simp [Pi.single_apply]
-    · simp [Pi.single_apply, hij, Ne.symm hij]
 
 section Ortho
 
@@ -160,12 +141,6 @@ theorem isUnimodular_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule 
     simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
       LinearMap.coe_restrictScalars]
     exact fun y hy => hint y hy x hx
-
-theorem isUnimodularAt_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
-    (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :
-    ∀ p : Ideal (𝓞 K), p.IsMaximal → Formalism.HermitianLatticesTheory.IsUnimodularAt h p L :=
-  ((Formalism.HermitianLatticesTheory.locDual (𝓞 K) K V h hs (fun r => (star_int r).imp fun _ ht => ht) L
-    (isLattice_of_ortho hL).fg).2).1 (isUnimodular_of_ortho hL)
 
 theorem mass_pos_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :

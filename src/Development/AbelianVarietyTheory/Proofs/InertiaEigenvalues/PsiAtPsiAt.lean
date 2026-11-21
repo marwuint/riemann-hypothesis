@@ -36,8 +36,6 @@ theorem main : GlobalTheory.TwSys.Cheb → ∀ (D : D7) (C : NChoice D)
   · rw [Rat.cast_sum, ← hT.Q_eq i]
     exact Finset.sum_le_sum fun v hv => GlobalTheory.T.conductorRoot_sub_one_length_le_tameValue D C hT i v hv
 
-example : GlobalTheory.TwSys.Cheb → ∀ (D : D7) (C : NChoice D) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GlobalTheory.PtCore.PtFam D r ρ → NChTie D C → GlobalTheory.PtCore.TriplesGood D → GlobalTheory.PtCore.SameTwist D C → GlobalTheory.PtCore.GoodPtRow D → GlobalTheory.PtCore.ResAbsIrr D → KillingConditions.SignatureChoiceCondition ρ C := main
-
 end GlobalTheory.JointSix
 
 end

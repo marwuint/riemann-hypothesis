@@ -3,13 +3,16 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Zelevin
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPos
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbeddingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbedding
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PrincipalSeriesSupport.PrinSeriesWord
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParabolicInductionPreservesSubquotient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetLengthOneStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentLengthTwoStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentInductionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleSubSegmentProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityConcatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConcatenatedJacquetMultiplicityFactorizationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityConcat
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConcatenatedJacquetMultiplicityFactorization
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConcatApplyEquiv
 
 noncomputable section
@@ -42,7 +45,7 @@ theorem occurs_topCut (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ 
       jm y hd π ≤ jm (concat c (fun a => dec (topCut Δ c hc a))) hcat π ∧
         ∀ a, IsLSeg (topCut Δ c hc a) (y a).rep := by
   choose c x hx hcusp hemb using fun a =>
-    GlobalTheory.T.support_subscheme_embedding k (y a).1 _ (y a).rep (y a).2.rep.smooth (y a).2.rep.irr
+    _root_.GlobalTheory.CompanionTheory.SubEmb.subEmbedding k (y a).1 _ (y a).rep (y a).2.rep.smooth (y a).2.rep.irr
   have hjx : ∀ a, 1 ≤ jm (x a) (hx a) (y a).rep := fun a => by
     obtain ⟨φ, hφ⟩ := hemb a
     have := Model.nontrivial_of_isIrreducible (y a).2.rep.irr
@@ -54,7 +57,7 @@ theorem occurs_topCut (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ 
     exact Finset.sum_congr rfl fun a _ => hx a
   have hirr : π.IsIrreducible := hπ.2.1
   have hsm : IsSmooth π := hπ.hasSupport.isSmooth
-  have hle := GlobalTheory.T.jacquet_multiplicity_concat hA y hd c x hx hcat0 hjx π hsm (hasFiniteLength_of_isIrreducible hirr)
+  have hle := _root_.GlobalTheory.CompanionTheory.JmTrans.jm_le_jm_concat hA y hd c x hx hcat0 hjx π hsm (hasFiniteLength_of_isIrreducible hirr)
   have h1' : 1 ≤ jm (concat c x) hcat0 π := h1.trans hle
   obtain ⟨hl, hfine⟩ := (fineJac_all hA hZ Δ π hπ).2 _ (concat c x) hcat0 (fun i => hcusp _ _) h1'
   have hc : ∀ a, 0 < c a := fun a => by
@@ -100,7 +103,7 @@ theorem lSegJacquet : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
       (Fintype.sum_equiv (finCongr hl) _ _ fun i => by rw [concat_dec_topCut Δ c hc hl]; rfl).trans hdΔ
     have hxpos : ∀ a, 0 < ∑ i, (dec (topCut Δ c hc a) i).1 := fun a => by
       rw [sum_dec, deg_topCut]; exact Nat.mul_pos (hc a) Δ.d_pos
-    obtain ⟨σ, hσ, hσd, h1σ⟩ := GlobalTheory.T.concatenated_jacquet_multiplicity_factorization hA c (fun a => dec (topCut Δ c hc a)) hxpos hcat π hsm
+    obtain ⟨σ, hσ, hσd, h1σ⟩ := _root_.GlobalTheory.CompanionTheory.CoarseOcc.exists_one_le_jm_coarse hA c (fun a => dec (topCut Δ c hc a)) hxpos hcat π hsm
       (hasFiniteLength_of_isIrreducible hirr) (hread c hc hl hcat).ge
     have hσpos : ∀ a, 0 < (σ a).1 := fun a => (hσd a).symm ▸ hxpos a
     obtain ⟨c', hc', hl', -, -, hL'⟩ := occurs_topCut hA hZ Δ π hπ σ hσ hσpos h1σ

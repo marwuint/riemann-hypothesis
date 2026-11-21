@@ -1,8 +1,9 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjMemFixedPiN
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetProjectionSurjectiveHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetProjectionSurjectiveHolds
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCharacterExistsUnique
+import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.TwistedIndependenceLemma.TwistedIndependence
 open GlobalTheory.PRep PositivityTheory.SphericalProduct
 
 namespace GlobalTheory.CompanionTheory.Cass
@@ -16,9 +17,9 @@ theorem sphericalProduct_A4 : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsT
   have hsm : GlobalTheory.PRep.IsSmooth π := by
     unfold GlobalTheory.PRep.IsAdmissible at hπ
     exact hπ.1
-  have hH := GlobalTheory.T.hecke_character_exists_unique
+  have hH := _root_.GlobalTheory.CompanionTheory.HeckeFixed.heckeExistsUnique
   unfold PositivityTheory.Lbc.HeckeExistsUnique at hH
   obtain ⟨U, hU, -⟩ := hH G D.J D.isOpen_J D.isCompact_J V π hsm (t : G)
-  exact GlobalTheory.T.jacquet_projection_surjective_holds G D V π hπ t ht U hU
+  exact _root_.GlobalTheory.CompanionTheory.Cass.jacquet_projection_surjective G D V π hπ t ht U hU
 
 end GlobalTheory.CompanionTheory.Cass

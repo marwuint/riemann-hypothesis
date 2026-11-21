@@ -29,15 +29,6 @@ theorem UT.mul {A B : Matrix (Fin n) (Fin n) L} (hA : UT A) (hB : UT B) : UT (A 
       · rw [hA.1 i k h, zero_mul]
       · rw [hB.1 k i h, mul_zero]
 
-def pn (n a b : ℕ) : ℕ :=
-  if b = a then a + 1 else if b = a + 1 then a else
-    if b = n - 2 - a then n - 1 - a else if b = n - 1 - a then n - 2 - a else b
-
-theorem pn_lt {a b : ℕ} (h : 2 * (a + 2) ≤ n) (hb : b < n) : pn n a b < n := by
-  unfold pn; split_ifs <;> omega
-
-def pF (a : ℕ) (h : 2 * (a + 2) ≤ n) (b : Fin n) : Fin n := ⟨pn n a b.val, pn_lt h b.2⟩
-
 theorem sR_uR_mul_unip : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n : ℕ) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (v : GU σ n), IsUnipU v →
     ∃ y : L, ∀ x : L, ∃ b : GU σ n, IsUnipU b ∧
       sR σ hσ a h * uR σ hσ a h x * v = b * (sR σ hσ a h * uR σ hσ a h (x + y)) :=

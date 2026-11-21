@@ -95,113 +95,7 @@ def torusModel (x : Sp R ⟶ S) (X : Type) [AddCommGroup X] : LieModel (splitTor
   add := epsVec_add
   smul a c := (left_eq_epsScaleR_iff a (by rw [← Category.assoc, ← epsScaleR_base]) c _).2 rfl
 
-def regAct (O R : Type) [CommRing O] [CommRing R] : O →+* Module.End R (O →+ R) where
-  toFun a :=
-    { toFun := fun c => c.comp (DistribSMul.toAddMonoidHom O a)
-      map_add' := fun _ _ => rfl
-      map_smul' := fun _ _ => rfl }
-  map_one' := by ext c y; simp
-  map_mul' a b := by
-    ext c y
-    simp only [AddMonoidHom.comp_apply, DistribSMul.toAddMonoidHom_apply, smul_eq_mul, LinearMap.coe_mk, AddHom.coe_mk,
-      Module.End.mul_apply]
-    congr 1
-    ring
-  map_zero' := by ext c y; simp
-  map_add' a b := by ext c y; simp [add_mul]
-
-theorem torusModel_act (x : Sp R ⟶ S) :
-    (torusModel x O).IsActOf (GlobalTheory.Diag.diagAct S O O).act (regAct O R) :=
-  fun _ c => (GlobalTheory.Diag.epsVec_comp_diagMap c _).symm
-
-theorem mem_eigSp_regAct (τ : O →+* R) (c : O →+ R) : c ∈ eigSp (regAct O R) τ ↔ ∀ a y, c (a * y) = τ a * c y := by
-  simp [eigSp, Submodule.mem_iInf, sub_eq_zero, AddMonoidHom.ext_iff, regAct]
-
-theorem torus_frame (x : Sp R ⟶ S) (τ : O →+* R) :
-    IsEigFrame (GlobalTheory.Diag.diagAct S O O) x τ (fun _ : Fin 1 => (torusModel x O).pt τ.toAddMonoidHom) := by
-  refine (isEigFrame_iff (torusModel x O) _ _ (torusModel_act x) τ (fun _ : Fin 1 => τ.toAddMonoidHom)).2
-    ⟨Fintype.linearIndependent_iff.2 fun c hc i => ?_, le_antisymm ?_ fun w hw => ?_⟩
-  · have := DFunLike.congr_fun hc 1
-    rw [Subsingleton.elim i 0]
-    simpa using this
-  · refine Submodule.span_le.2 ?_
-    rintro _ ⟨i, rfl⟩
-    exact (mem_eigSp_regAct τ _).2 (by simp)
-  · rw [Submodule.mem_span_range_iff_exists_fun]
-    refine ⟨fun _ => w 1, ?_⟩
-    ext a
-    have := (mem_eigSp_regAct τ w).1 hw a 1
-    rw [_root_.mul_one] at this
-    simp [this, mul_comm]
-
-theorem torus_not_eig (x : Sp R ⟶ S) {τ σ : O →+* R} (h : τ ≠ σ) :
-    ¬ IsEigVec (GlobalTheory.Diag.diagAct S O O) x σ ((torusModel x O).pt τ.toAddMonoidHom) := fun H => h <| by
-  have := (mem_eigSp_regAct σ _).1 ((isEigVec_iff _ _ _ (torusModel_act x) σ _).1 H)
-  ext a
-  simpa using this a 1
-
-theorem torus_not_frame_nonunit (x : Sp R ⟶ S) (τ : O →+* R) {r : R} (hr : ¬ IsUnit r) :
-    ¬ IsEigFrame (GlobalTheory.Diag.diagAct S O O) x τ (fun _ : Fin 1 => (torusModel x O).pt (r • τ.toAddMonoidHom)) :=
-  fun H => hr <| by
-    have h := ((isEigFrame_iff (torusModel x O) _ _ (torusModel_act x) τ
-      (fun _ : Fin 1 => r • τ.toAddMonoidHom)).1 H).2
-    have hm : τ.toAddMonoidHom ∈ eigSp (regAct O R) τ := (mem_eigSp_regAct τ _).2 (by simp)
-    rw [← h, Submodule.mem_span_range_iff_exists_fun] at hm
-    obtain ⟨c, hc⟩ := hm
-    have := DFunLike.congr_fun hc 1
-    exact IsUnit.of_mul_eq_one (c 0) (by simpa [mul_comm] using this)
-
 end Frames
-
-section Gram
-
-theorem gram_herm {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {x : Sp ℂ ⟶ S} {n : ℕ}
-    {v : Fin n → (epsAt x ⟶ G)} {Γ : Matrix (Fin n) (Fin n) ℂ} (h : IsHodgeGram G L x v Γ) :
-    Γ.IsHermitian ∧ ∀ i, 0 ≤ (Γ i i).re := by
-  obtain ⟨Q, ψ, v', u, Hm, χ, W, -, -, hA, -, hΓ⟩ := h
-  refine ⟨?_, fun i => ?_⟩
-  · ext i j
-    rw [Matrix.conjTranspose_apply, hΓ, hΓ]
-    have e : star (hermForm Hm (W j) (W i)) = hermForm Hm (W i) (W j) := by
-      simp only [hermForm, dotProduct, Matrix.mulVec, star_sum, star_mul', Finset.mul_sum, Pi.star_apply, star_star]
-      rw [Finset.sum_comm]
-      refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-      rw [hA.1.apply a b]; ring
-    rw [star_mul', e]; simp
-  · rw [hΓ, Complex.re_ofReal_mul]
-    refine mul_nonneg Real.pi_pos.le ?_
-    by_cases h0 : W i = 0
-    · simp [h0, hermForm]
-    · exact (hA.2.1 _ h0).le
-
-theorem gram_exists (hT : ThetaUnifAV) (P : Out.PolAV (Sp ℂ)) :
-    ∃ (v : Fin P.g → (epsAt (𝟙 (Sp ℂ)) ⟶ P.A)) (Γ : Matrix (Fin P.g) (Fin P.g) ℂ),
-      (∀ i, IsTanAt P.A (𝟙 _) (v i)) ∧ IsHodgeGram P.A P.L (𝟙 _) v Γ ∧ ∀ i, 0 < (Γ i i).re := by
-  obtain ⟨rig, hr⟩ := P.rigid
-  obtain ⟨u, Hm, χ, -, hA, -, -, hv, -⟩ := hT P rig hr
-  choose v' hv' using fun i : Fin P.g => (hv (Pi.single i 1)).exists
-  refine ⟨fun i => Over.homMk (v' i).left ((Over.w (v' i)).trans (Category.comp_id _).symm),
-    fun i j => Real.pi * hermForm Hm (Pi.single i 1) (Pi.single j 1), fun i => ?_,
-    ⟨P, 𝟙 _, v', u, Hm, χ, fun i => Pi.single i 1, ?_, ?_, hA, fun i => ⟨Category.comp_id _, (hv' i).2⟩,
-      fun _ _ => rfl⟩, fun i => ?_⟩
-  · exact (hv' i).1.trans (congrArg Over.Hom.left (one_eq_one (M := P.A)))
-  · haveI : IsMonHom (Iso.refl P.A).hom := inferInstanceAs (IsMonHom (𝟙 P.A))
-    exact isGrpPullback_of_iso (Iso.refl P.A)
-  · exact (GlobalTheory.ThetaAffineGlue.lbIso_pull_id P.isLB).symm
-  · rw [Complex.re_ofReal_mul]
-    exact mul_pos Real.pi_pos (hA.2.1 _ (by simp))
-
-theorem gram_inhabited : ∃ (P : Out.PolAV (Sp ℂ)) (v : Fin P.g → (epsAt (𝟙 (Sp ℂ)) ⟶ P.A))
-    (Γ : Matrix (Fin P.g) (Fin P.g) ℂ), P.g = 1 ∧ (∀ i, IsTanAt P.A (𝟙 _) (v i)) ∧
-      IsHodgeGram P.A P.L (𝟙 _) v Γ ∧ ∀ i, 0 < (Γ i i).re := by
-  have hΔ : IsUnit (⟨0, 0, 0, -1, 0⟩ : WeierstrassCurve ℂ).Δ := by
-    simp [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆,
-      WeierstrassCurve.b₈]
-  obtain ⟨P, -, -, hP, -⟩ := GlobalTheory.WeierstrassCurve.exists_polAV ℂ _ hΔ
-  obtain ⟨v, Γ, h⟩ := gram_exists GlobalTheory.thetaUnifAV_all P
-  exact ⟨P, v, Γ, hP, h⟩
-
-end Gram
 
 section Form
 
@@ -256,30 +150,6 @@ theorem sesq_smul_left (D : Datum H) (c : 𝓞 E) (x y : D.La) : sesq D (c • x
 theorem sesq_smul_right (D : Datum H) (c : 𝓞 E) (x y : D.La) : sesq D x (H.bar c • y) = c * sesq D x y :=
   eq_of_trace fun a => by
     rw [trace_mul_sesq, ← D.adj, ← mul_smul, ← trace_mul_sesq, ← _root_.mul_assoc, mul_comm (a : E)]; simp
-
-theorem sesq_swap (D : Datum H) (x y : D.La) : sesq D y x = -IsCMField.complexConj E (sesq D x y) :=
-  eq_of_trace fun a => by
-    have hs : D.EF (a • y) x = -D.EF x (a • y) := by
-      have := D.alt (a • y + x)
-      simp only [map_add, LinearMap.add_apply, D.alt] at this
-      linarith
-    have h1 : D.EF x (a • y) = D.EF (H.bar.symm a • x) y := by rw [D.adj]; simp
-    have h2 : (a : E) = IsCMField.complexConj E (H.bar.symm a : 𝓞 E) := by rw [← H.bar_eq]; simp
-    rw [trace_mul_sesq, hs, h1, mul_neg, map_neg, h2, ← map_mul, Int.cast_neg, ← trace_mul_sesq]
-    exact congrArg _ (Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) _).symm
-
-theorem eq_zero_of_sesq (D : Datum H) (x : D.La) (h : ∀ y, sesq D x y = 0) : x = 0 :=
-  D.unimod.1 (by
-    ext y
-    have := trace_mul_sesq D x y 1
-    simp only [h, mul_zero, map_zero, one_smul] at this
-    simpa using this.symm)
-
-omit [NumberField E] [IsCMField E] in
-theorem sum_tyPart [Fintype (E →+* ℂ)] {g : ℕ} (ty : Fin g → (E →+* ℂ)) (z : Fin g → ℂ) : ∑ τ, tyPart ty τ z = z := by
-  classical
-  funext k
-  simp [tyPart, Finset.sum_apply]
 
 end Form
 

@@ -10,7 +10,14 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeElementComp
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotentsStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAntiStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantHaarAdelicUnitaryGroupHermitiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantHaarAdelicUnitaryGroupHermiti
+import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
+import Formalism.LocalToGlobal.IndefiniteReal.IndefiniteWeightData
+import Formalism.LocalToGlobal.IndefiniteReal.HeckeTupleStatement
+import Formalism.LocalRingCardinality.DataExtra
 
 noncomputable section
 
@@ -238,30 +245,6 @@ theorem LocRep.mult (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLev
   rw [h.translate hβ hP (hi v) (hJ' k hk)]
   simp only [heckeLin_apply, hT.lev v k hk, Finset.mul_sum]
 
-theorem LocRep.gaL_comm (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V}
-    {A : Finset (GA D V)} (h : LocRep (levG V β L) P x A) {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r)
-    (c : G → ℂ) {F : GA D V → ℂ} (hF : RInv (levG V β L) F) :
-    gaL V β L eG c (heckeLin V A F) = heckeLin V A (gaL V β L eG c F) := by
-  simp only [gaL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]
-  refine Finset.sum_congr rfl fun g _ => congrArg _ ?_
-  show actG0 V β L (eG g) (heckeLin V A F) = heckeLin V A (actG0 V β L (eG g) F)
-  unfold actG0
-  split_ifs with hk
-  · funext y
-    rw [h.translate hβ hP hF (κ := hk.choose) ⟨hk.choose_spec.1, hk.choose_spec.2.1, Subgroup.mem_top _⟩]
-    simp only [heckeLin_apply, Finset.mul_sum]
-  · rw [map_zero]
-
-theorem LocRep.good (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V}
-    {A : Finset (GA D V)} (h : LocRep (levG V β L) P x A) {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r)
-    (c : G → ℂ) {J' : Set (GA D V)} {χ' : GA D V → ℂ} (hJ' : ∀ k ∈ J', k ∈ levG V β (flagL L)) {T : MMap M}
-    (hT : T ∈ goodPart θ M J' χ' (gaL V β L eG c)) (hi : ∀ v, RInv (levG V β L) (T v)) :
-    heckeOn M A T ∈ goodPart θ M J' χ' (gaL V β L eG c) := by
-  rw [mem_goodPart] at hT ⊢
-  refine ⟨h.mult hβ hP hJ' hT.1 hi, fun v => ?_⟩
-  show gaL V β L eG c (heckeLin V A (T v)) = heckeLin V A (T v)
-  rw [h.gaL_comm hβ hP eG c (hi v), hT.2]
-
 variable {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} {HM : HMod (MMap M)} {U : Submodule ℂ (MMap M)} {c : ℂ}
 
 theorem exists_isMultIP (h : HM.Is U fun T T' => c * ipM M μ 𝓕 T T') (x y : HM.H) :
@@ -301,7 +284,7 @@ theorem inner_hecke (hχ : ∀ k ∈ levG V β L, levChi V β L k = 1) (hμ : μ
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
   haveI : BorelSpace (GA D V) := ⟨rfl⟩
   haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _
-  haveI := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D V μ hμ
+  haveI := _root_.GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ
   have hm : ∀ z, HM.e z ∈ Mult θ M (levS V β L) (levChi V β L) := fun z => hU (h.2.1 ▸ LinearMap.mem_range_self _ z)
   have ha : ∀ z v, IsAutFun V (HM.e z v) := fun z v =>
     (((GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 (hm z)).aut v).toIsAutFun

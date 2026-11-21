@@ -90,15 +90,6 @@ variable {L₁ : Level P X f₁ G₁ F₁ h₁} {M : CP B} (r : L₁.Red M)
 
 def pt : Over.mk (L₁.Q.B.hom ≫ f₁) ⟶ B := Over.homMk r.toB r.toB_pull.1.w
 
-def lamφ (c : 𝟙_ (Over S) ⟶ B) : Fin 4 → (L₁.Q.B.left ⟶ B.left) :=
-  ![((toUnit (Over.mk (L₁.Q.B.hom ≫ f₁)) ≫ c) * r.pt).left, (toUnit (Over.mk (L₁.Q.B.hom ≫ f₁)) ≫ c).left,
-    r.pt.left, (1 : Over.mk (L₁.Q.B.hom ≫ f₁) ⟶ B).left]
-
-def lamInv (c : 𝟙_ (Over S) ⟶ B) : LB L₁.Q.B.left := LB.LinComb M.L.L (r.lamφ c) ![-1, 1, 1, -1]
-
-def Represents (c : 𝟙_ (Over S) ⟶ B) (χ : X) : Prop :=
-  ∃ t : LB.Gen ((r.lamInv c).pull L₁.Q.q.left), L₁.Q.GenWt (r.lamInv c) t χ
-
 end Level.Red
 
 end Levels
@@ -151,9 +142,6 @@ structure Tower (P : CP G) (i₀ : splitTorus (Lv I 0) X ⟶ thickObj R I 0 G) w
 
 variable {I} {P : CP G} {i₀ : splitTorus (Lv I 0) X ⟶ thickObj R I 0 G}
 
-def Tower.formalTorus (W : Tower I P i₀) : FormalTorus I i₀ :=
-  ⟨fun e => (W.lv e).Q.i, fun e => (W.lv e).Q.i_hom, W.zero, fun e => (W.step e).torus⟩
-
 structure Alg (W : Tower I P i₀) where
 
   B : Over (Spec (CommRingCat.of R))
@@ -169,10 +157,6 @@ structure Alg (W : Tower I P i₀) where
   compat : ∀ e : ℕ, (W.step e).Compat (red e) (red (e + 1))
 
 attribute [instance] Alg.grp Alg.comm
-
-def Alg.Represents {W : Tower I P i₀} (A : Alg W) (e : ℕ) (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ A.B) (χ : X) :
-    Prop :=
-  (A.red e).Represents c χ
 
 end Formal
 
@@ -216,31 +200,6 @@ abbrev Tower := AlgebraLevelSetting.Tower (IsLocalRing.maximalIdeal V) S.P S.Q�
 abbrev Alg (W : S.Tower) := AlgebraLevelSetting.Alg W
 
 end HidaSetting
-
-theorem exists_three_or_seven (V : Type) [CommRing V] [IsLocalRing V] :
-    ∃ n : ℕ, (n = 3 ∨ n = 7) ∧ IsUnit (n : V) := by
-  have h : (7 : V) + (-2) * 3 = 1 := by norm_num
-  rcases IsLocalRing.isUnit_or_isUnit_of_add_one h with h | h
-  · exact ⟨7, Or.inr rfl, by exact_mod_cast h⟩
-  · exact ⟨3, Or.inl rfl, by exact_mod_cast isUnit_of_mul_isUnit_right h⟩
-
-def SymTriv.triv {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {f : S' ⟶ S}
-    {H : Over S'} [GrpObj H] (j : H.left ⟶ G.left) (hj : j ≫ G.hom = H.hom ≫ f) : SymTriv (CP.triv G) j hj where
-  s := unitGen _ _
-  gen := unitGen_isGen _ _
-  cub T x y u z J _ := by
-    have e : ∀ r, val (L := (CP.triv G).L.L) (unitGen ![j, H.hom ≫ f ≫ eSec G] ![1, -1]) r z J = 1 :=
-      fun r => val_unitGen _ _ _ _ _
-    have b : @id (T.left.presheaf.stalk z)ˣ (cubV (CP.triv G).c (T := Over.mk (T.hom ≫ f)) z J (toBase hj x)
-        (toBase hj y) (toBase hj u)) = 1 := cubV_trivCub G _ _ _ _ _
-    simp only [e, b, _root_.mul_one]
-  even T x z J _ := (val_unitGen _ _ _ _ _).trans ((congrArg₂ (· * ·) (val_sym_triv _ _ _ _)
-    (val_unitGen _ _ _ _ _)).trans (_root_.mul_one 1)).symm
-
-example {R : Type} [CommRing R] (I : Ideal R) {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
-    {X : Type} [AddCommGroup X] {i₀ : splitTorus (Lv I 0) X ⟶ thickObj R I 0 G} (F : FormalTorus I i₀) :
-    F.HasSymTriv (CP.triv G) :=
-  ⟨fun _ => SymTriv.triv _ _, fun _ _ _ _ _ _ => (val_unitGen _ _ _ _ _).trans (val_unitGen _ _ _ _ _).symm⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.AlgebraLevelSetting
 end

@@ -86,16 +86,6 @@ structure PullIdent (φ : R →+* R') (D : DegPre R) (D' : DegPre R') where
       (ptK_comp φ F (D.c (xe χ)) (D'.c χ) (c_eq χ) W g hg) (-1) (D'.psi χ)
       (LB.pullGen D.P.L _ _ (ψW.psi (xe χ)) g)
 
-example (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (h : PullIdent φ D D') :
-    D'.rank = D.rank :=
-  h.xe.toIntLinearEquiv.finrank_eq
-
-example (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (h : PullIdent φ D D') :
-    ∃ W : (Spec (CommRingCat.of R)).Opens, Nonempty (PsiOn D W) ∧ Nonempty W.toScheme := by
-  obtain ⟨W, ψW, g, -, -⟩ := h.w_psi
-  have p : (Spec (CommRingCat.of (FractionRing R'))) := (⊥ : PrimeSpectrum (FractionRing R'))
-  exact ⟨W, ⟨ψW⟩, ⟨g.base p⟩⟩
-
 end Pull
 
 end GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification

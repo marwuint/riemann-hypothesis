@@ -22,27 +22,6 @@ open Finset Matrix
 namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ}
 
-section Helpers
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-
-end Helpers
-
-section Wt
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
-  {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
-
-end Wt
-
-section Key
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
-  {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
-  {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
-
-end Key
-
 section Data
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}

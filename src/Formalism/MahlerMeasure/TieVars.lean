@@ -28,17 +28,4 @@ def TieVars {σ : Type} {r : ℕ} (w e : Fin r → σ) (zv sv : σ) : Prop :=
 def ZSFree {k σ : Type} [Field k] (zv sv : σ) (y : MvPolynomial σ k) : Prop :=
   ∀ m ∈ y.support, m zv = 0 ∧ m sv = 0
 
-def RemoveS : Prop :=
-  ∀ (k σ : Type) [Field k] [CharZero k] (r : ℕ) (w e : Fin r → σ) (zv sv : σ), TieVars w e zv sv → 1 ≤ r →
-    ∀ (o n z : ℕ) (y y' : MvPolynomial σ k),
-      Formalism.GM.BiHom w e o n y → Formalism.GM.BiHom w e o n y' → ZSFree zv sv y → ZSFree zv sv y' →
-      tieFh w e zv sv (tieP w e zv sv o n z y) = 0 ∧
-      fockK (tieP w e zv sv o n z y) (tieP w e zv sv o n z y') =
-        (z.factorial : k) * fockK y (Formalism.GM.tiePhi w e o n z y') ∧
-      ∀ j j' : ℕ,
-        fockK ((((j.factorial : k))⁻¹) • ((tieEh w e zv sv) ^ j) (tieP w e zv sv o n z y))
-              ((((j'.factorial : k))⁻¹) • ((tieEh w e zv sv) ^ j') (tieP w e zv sv o n z y')) =
-          if j = j' then (((o + n + r + z + 1 + j - 1).choose j : ℕ) : k) * (z.factorial : k) *
-            fockK y (Formalism.GM.tiePhi w e o n z y') else 0
-
 end Formalism.GM.M

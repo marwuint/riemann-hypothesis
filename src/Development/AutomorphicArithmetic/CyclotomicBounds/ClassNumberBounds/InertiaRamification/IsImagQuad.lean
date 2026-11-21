@@ -10,10 +10,6 @@ noncomputable def resDeg [NeZero N] (l : ℕ) [Fact l.Prime]
     (X : Subgroup (DirichletCharacter ℂ N)) : ℕ :=
   (inertiaUnits N l ⊔ charKer X).relIndex (decompUnits N l ⊔ charKer X)
 
-noncomputable def numPlaces [NeZero N] (l : ℕ) [Fact l.Prime]
-    (X : Subgroup (DirichletCharacter ℂ N)) : ℕ :=
-  (decompUnits N l ⊔ charKer X).index
-
 noncomputable def condDvd (N m : ℕ) : Subgroup (DirichletCharacter ℂ N) :=
   annihilator ℂ ((ZMod.unitsMap (Nat.gcd_dvd_left N m)).ker : Set (ZMod N)ˣ)
 

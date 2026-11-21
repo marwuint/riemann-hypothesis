@@ -1,5 +1,35 @@
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ParameterStatementAllStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenLocOfCenReal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroWild
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroSupport
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAboveL
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodRowCuspParam
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ParameterLawsEmpty
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverRowsAndMono
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistCharacterUnramifiedInf
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsotypicRealNonzero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SphericalInertiaOfIsotypic
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InfinityTypeOfLift
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RowLocalAll
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallySizesCongruencesHostFactsColumnChoices
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarisableOfIsSpehOne
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinIso
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RecT
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsComplementaryProductOfIsCuspidal
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
+import Formalism.SharpRestriction.LevelLetterCocycles.SphericalInertData
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseChangeDefiniteOfCmDatumRecLaws
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitaryOfIsCsd
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryOfLocalLanglands
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecProductSpehSatake
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PublishedInputsThirdLayer
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ThetaDataExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ParLaws
@@ -25,7 +55,7 @@ theorem conjDualParam_stable_of_prime_not_dividing_level_alt : _root_.GlobalTheo
   intro hN hM hL
   have hlift := _root_.GlobalTheory.T.liftAll_of_parIn_of_mtInput hN hL
   have hloc := _root_.GlobalTheory.T.local_component_of_par_in_third_layer hN hL
-  have hsz := GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices
+  have hsz := _root_.GlobalTheory.HeightCounting.Up.sizes_host_at_record
   refine Step.trans (Step.and (Step.and (Step.and (Step.of_evLgG (KP := KPx) (p := fun _ _ _ _ => True) hlift)
     (Step.of_evLgG hloc)) (Step.of_evLgG hsz)) hM) (Step.of_all ?_)
   rintro K B f T - hKP - ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩ w hS P x l

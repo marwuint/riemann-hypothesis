@@ -1,5 +1,29 @@
-import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowAsm
-import Formalism.LocalRingCardinality.SpanPowerMembership.EACentral
+import Formalism.LocalRingCardinality.DataKerI
+import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowQ
+import Formalism.LocalRingCardinality.SpanPowerMembership.NZTypeH
+import Formalism.LocalRingCardinality.SpanPowerMembership.TrivialColumnsRamifiedTop
+import Formalism.LocalRingCardinality.SpanPowerMembership.GPlacesExampleNatAct
+import Formalism.CyclotomicNorms.StatementT
+import Formalism.LocalRingCardinality.SpanPowerMembership.EntPlNonempty
+import Formalism.LocalRingCardinality.Lemmas
+import Formalism.LocalRingCardinality.SpanPowerMembership.NZColF
+import Formalism.LocalRingCardinality.SpanPowerMembership.NStageTrivialCharacterCoeffEq
+import Formalism.SharpRestriction.InertJacobiLevels.ExtraTheta
+import Formalism.SharpRestriction.CuspSpanNormBounds.CayleySignature
+import Formalism.SharpRestriction.Divisibility.InnerProductFormulaField
+import Formalism.SharpRestriction.InertJacobiLevels.ExtraEnt
+import Formalism.SharpRestriction.InertJacobiLevels.ExtraNew
+import Formalism.SharpRestriction.InertJacobiLevels.GaugeExists
+import Formalism.LocalRingCardinality.SpanPowerMembership.EMjNApply
+import Formalism.LocalRingCardinality.SpanPowerMembership.NZTypeI
+import Formalism.LocalRingCardinality.SpanPowerMembership.NZTypeL
+import Formalism.LocalRingCardinality.DataIdx
+import Formalism.LocalRingCardinality.SpanPowerMembership.DivXExample
+import Formalism.LocalRingCardinality.DataAmbForm
+import Formalism.LocalRingCardinality.DataKap
+import Formalism.LocalRingCardinality.DataDIVDefs
+import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowA
+import Formalism.LocalRingCardinality.SpanPowerMembership.NZRowC
 
 noncomputable section
 
@@ -54,33 +78,6 @@ variable (Lb : Lbl H) (hT2 : ∀ u, T u ≠ 2) (per : ∀ u : W, Bool → FK ((K
 local notation "DR" => (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
 instance levelRecordLocalSetEmpty : IsEmpty (DR).nd.Loc := ⟨fun i => Empty.elim i⟩
-
-def levelRecordStandardData : StdRows DR fun _ => d0 where
-  bt := fun _ _ => eb d0
-  phi := fun _ _ => LinearEquiv.refl _ _
-  hj := fun _ _ _ => rfl
-  hgen := fun _ _ => rfl
-  bM := fun _ => eb d0
-  hgM := fun _ => rfl
-  hth := fun _ _ _ => rfl
-
-abbrev row_E (C : TwCore (DR).R (DR).host (DR).what₂ (DR).LL0 (DR).nd) : NzE C := nzEL H Lb (rowsHN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per) (nHypN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per hg) C ht
-
-theorem row_he (C : TwCore (DR).R (DR).host (DR).what₂ (DR).LL0 (DR).nd) : ∀ g, (DR).what₂.embLL (((row_E H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C).eL g : ↥(DR).LL0) : (DR).what₂.LL) = (DR).ntypes.e0.coeff g :=
-  fun g => labelIdempotent_baseField H Lb (rowsHN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per) (nHypN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per hg) ⊤ ht G.tame g
-
-abbrev levelRecordTwistGap (C : TwCore (DR).R (DR).host (DR).what₂ (DR).LL0 (DR).nd) : TwGap DR := gapN DR C ((row_E H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C).toIn fun _ => d0) (row_he H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C)
-
-theorem rows_mem_baseField : ∀ x : (DR).what₂.LL, x ∈ (DR).LL0 := fun _ => trivial
-
-def fin_nch (C : TwCore (DR).R (DR).host (DR).what₂ (DR).LL0 (DR).nd) : NChoice (withTw DR (levelRecordTwistGap H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C)) :=
-  nchStd DR C (row_E H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) (fun _ => d0) (row_he H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) (levelRecordStandardData H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) (rows_mem_baseField H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
-
-theorem fin_nch_tie (C : TwCore (DR).R (DR).host (DR).what₂ (DR).LL0 (DR).nd) : NChTie (withTw DR (levelRecordTwistGap H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C)) (fin_nch H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) :=
-  nchStd_tie DR C (row_E H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) (fun _ => d0) (row_he H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) (levelRecordStandardData H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) (rows_mem_baseField H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
-
-def fin_nmj (C : TwCore (DR).R (DR).host (DR).what₂ (DR).LL0 (DR).nd) : NMj (withTw DR (levelRecordTwistGap H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C)) (fin_X H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat (levelRecordTwistGap H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C)) (fin_nch H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) :=
-  nmjStd DR C (row_E H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) (fun _ => d0) (row_he H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat C) (levelRecordStandardData H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) (rows_mem_baseField H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
 end Rec
 

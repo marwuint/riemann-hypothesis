@@ -8,7 +8,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AmpWin
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.L2SGPhiOfNeZeroAndLtInfty
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LocFactorAll
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LoopLocPf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LoopTieOf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.BesselOfWPf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LoopBTheta
 import Formalism.SharpRestriction.CuspSpanNormBounds.SchurRelationsDiscreteSeries
 import Formalism.SharpRestriction.CuspSpanNormBounds.LowestKTypeMultiplicity
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LocUniq
@@ -187,55 +189,6 @@ def XPinsP : Prop :=
       (∀ j, CoefPin hB u u' (e (plE D j)) (a j) (b j) (ξ j) (ξ' j) 1) ∧
       (∀ j, sclOf hB u u' (e (plE D j)) ≠ 0) ∧ (∀ j, cOf hB u (e (plE D j)) ≠ 0)
 
-variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
-theorem xLeavesP_of_pinsP (hJ : PI.BesselMapUniq.BesselMapUniq) (hP : XPinsP) : XLeavesP := by
-  intro CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq X0 sd C Th F0 what₂ vR Q hne hcb hcT hTies hC' hClp
-    hk18 hH0 hPl hSz hi hPt hNu
-  obtain ⟨θ, Ch, hB, a, b, ξ, ξ', hTT, hT, hT', hW, hA, hpin1, hscl, hcO⟩ :=
-    hP CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq hne hcb hcT hTies hC' hClp hk18 hH0 hPl hSz
-      hi hPt hNu
-  have hCl : (1000 : ℝ) ≤ Cl := by have := abs_nonneg (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose); linarith
-  have hS0 := hH0.1
-
-  have hrS : 2 * D.R.rS + 2 = D.R.m := Ranks.rS_two D.R
-  have hr : D.R.r = 2 * D.R.rS + D.R.k + 1 := by unfold Ranks.r; omega
-  have hkL := Formalism.MainNotions.BridgeLemma.szh_k_le hS0 (by linarith) τ
-  have hk5 : (5 : ℝ) ≤ (D.R.k : ℝ) := by exact_mod_cast Formalism.MainNotions.BridgeLemma.five_le_k D
-  have hL : (1 / 2 : ℝ) ≤ L.sc.L := by
-    by_contra hcn
-    push Not at hcn
-    have h1 : Real.exp (2 * L.sc.L) < Real.exp 1 := Real.exp_lt_exp.mpr (by linarith)
-    have h2 : Real.exp 1 < 3 := by have := Real.exp_one_lt_d9; linarith
-    linarith
-  have hf : 2 ≤ D.R.f := by
-    unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega
-  have hfR : (2 : ℝ) ≤ (D.R.f : ℝ) := by exact_mod_cast hf
-  have hf5 : (32 : ℝ) ≤ (D.R.f : ℝ) ^ 5 := by
-    have : (2 : ℝ) ^ 5 ≤ (D.R.f : ℝ) ^ 5 := pow_le_pow_left₀ (by norm_num) hfR 5
-    norm_num at this; linarith
-  have hrr : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ) := by rw [hr]
-  have hn1 : (1 : ℝ) ≤ (D.R.r : ℝ) := by rw [hr]; push_cast; have : (0 : ℝ) ≤ (D.R.rS : ℝ) := Nat.cast_nonneg _; linarith
-  have hn19 : 0 ≤ (D.R.r : ℝ) ^ 19 := by positivity
-  have hh16 : 16 * Cl * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L := by
-    have e1 : Cl * (D.R.r : ℝ) ^ 19 * 32 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 :=
-      mul_le_mul_of_nonneg_left hf5 (by positivity)
-    have e2 : Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * (1 / 2) ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L :=
-      mul_le_mul_of_nonneg_left hL (by positivity)
-    linarith
-  have hn1801 : 1801 ≤ 2 * D.R.rS + D.R.k + 1 := by omega
-  have hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS (Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L) := by
-    refine gapOK_mono (Formalism.L2.SG.Pf.WuDec.gapOK_of_big D.R.k D.R.rS (by omega) hn1801) ?_
-    rw [hrr]
-    have h1 : 1 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 := mul_le_mul_of_nonneg_right (by linarith) hn19
-    linarith
-  have hAch := le_of_le_of_eq (ac_le (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose) Cl L.sc.L D.R.rS D.R.k D.R.f hClp hf hL) (by rw [hrr])
-  refine ⟨θ, Ch, a, b, ξ, ξ', fun j => Formalism.L2.SG.Pf.Carrier.CarPinTor.ccOne Ch hB hJ L hCl hH0 u u' (e (plE D j)) hTT (hW j)
-    (hA j) hT hT' (a j) (b j) (ξ j) (ξ' j) (hpin1 j) (hscl j), ?_⟩
-  exact xLeafAt_of_pins T.X Ch hB hJ L hCl hH0 u u' e hPl (host_v D) CA (deOf D τ u) (deOf D τ u')
-    (lOf D (deOf D τ u) (deOf D τ u')) i0 i0' 1 (T.Y.FN u) (T.Y.FN u') νq _ a b ξ ξ' hTT hW hA hT hT' hpin1 hscl hcO
-    (fun _ => Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L) (fun j => Formalism.MainNotions.S.Inh.amp_isHCParam_lamD D _)
-    (fun j => Formalism.MainNotions.BridgeLemma.szh_gap hS0 _) (fun _ => hok) _ (le_max_left _ _) (le_max_right _ _) (fun _ => hAch) _ rfl
-
 def KFinNZ : Prop :=
   ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (θ : ℝ) (C : Choice X θ) (hB : WuBessel C) (u : D.what₂.Word) (τ : D.what₂.Tau),
     Formalism.L2.SG.ConcreteSettingExists.GapHyp D →
@@ -257,70 +210,6 @@ theorem inner_normalize_left {V : Type*} [NormedAddCommGroup V] [InnerProductSpa
   rw [hc]
   push_cast
   exact inv_mul_cancel₀ h
-
-variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
-
-theorem xPinsP_of (hJ : PI.BesselMapUniq.BesselMapUniq) (hNZ : KFinNZ) : XPinsP := by
-  intro CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq hne hcb hcT hTies hC' hClp hk18
-    hH0 hPl hSz hi hPt hNu
-  haveI : Nonempty D.what₂.Word := ⟨u⟩
-  have hCl : (1000 : ℝ) ≤ Cl := by have := abs_nonneg (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose); linarith
-  have hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D :=
-    Formalism.L2.SG.ThmSOwn.gap_hypothesis_of_hypotheses hH0.1 (by linarith) hC'
-  obtain ⟨Ch⟩ := Formalism.L2.SG.Pf.choiceExists T.X 1 one_pos
-  have hB : WuBessel Ch := Formalism.L2.SG.Pf.LoopLoc.wuBessel_of hG hJ Ch
-  have hLF := Formalism.L2.SG.Pf.LocF.locFactor_holds hG Ch
-  have hc : ∀ (w : D.what₂.Word) (t : D.what₂.Tau), 0 < cOf hB w t := fun w t =>
-    Formalism.L2.SG.Pf.AmpWin.cOf_pos hB (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB w t).1 (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB w t).2
-  have hscl : ∀ t, sclOf hB u u' t ≠ 0 := by
-    intro t
-    have h1 := Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB u' t
-    have hl : 0 < (l2SG (Ch.nuS u' t) (phiOf hB u' t)).toReal := ENNReal.toReal_pos h1.1 h1.2.ne
-    have hd : 0 < Module.finrank ℂ (T.X.Vloc u' (vOf T.X t)) := by
-      rcases Nat.eq_zero_or_pos (Module.finrank ℂ (T.X.Vloc u' (vOf T.X t))) with h | h
-      · exfalso
-        have : Subsingleton (T.X.Vloc u' (vOf T.X t)) := Module.finrank_zero_iff.1 h
-        apply h1.1
-        unfold l2SG
-        simp [Subsingleton.elim (phiOf hB u' t _) 0]
-      · exact h
-    unfold sclOf
-    have hpos : 0 < cOf hB u t * (Module.finrank ℂ (T.X.Vloc u' (vOf T.X t)) : ℝ) /
-        (l2SG (Ch.nuS u' t) (phiOf hB u' t)).toReal := div_pos (mul_pos (hc u t) (by exact_mod_cast hd)) hl
-    exact_mod_cast (Real.sqrt_pos.mpr hpos).ne'
-  have ha : ∀ j : Fin (nfE D), ∃ a : T.X.B.H (vOf T.X (e (plE D j))),
-      PI.UpqRep.IsKFinHpk (k := D.R.k) (r := D.R.rS) (sigB T.X (Ch.Q (e (plE D j))) (Ch.Qi (e (plE D j))) (e (plE D j))) a ∧
-      bOf hB u (e (plE D j)) a ≠ 0 := fun j => hNZ D T.X 1 Ch hB u (e (plE D j)) hG
-  have hb : ∀ j : Fin (nfE D), ∃ b : T.X.B.H (vOf T.X (e (plE D j))),
-      PI.UpqRep.IsKFinHpk (k := D.R.k) (r := D.R.rS) (sigB T.X (Ch.Q (e (plE D j))) (Ch.Qi (e (plE D j))) (e (plE D j))) b ∧
-      bOf hB u' (e (plE D j)) b ≠ 0 := fun j => hNZ D T.X 1 Ch hB u' (e (plE D j)) hG
-  choose a ha using ha
-  choose b hb using hb
-  refine ⟨1, Ch, hB, a, b, fun j => (((‖bOf hB u (e (plE D j)) (a j)‖ ^ 2 : ℝ) : ℂ))⁻¹ • bOf hB u (e (plE D j)) (a j),
-    fun j => (((‖bOf hB u' (e (plE D j)) (b j)‖ ^ 2 : ℝ) : ℂ))⁻¹ • bOf hB u' (e (plE D j)) (b j),
-    Formalism.MainNotions.SchurRelationsDiscreteSeries.hypTT_all u u', Nat.cast_pos.2 (D.mem u).A.T_prime.pos, Nat.cast_pos.2 (D.mem u').A.T_prime.pos,
-    fun j => Formalism.L2.SG.Pf.AmpWinRX.goodW_all Ch u u' (e (plE D j)),
-    fun j => goodS_of hB u u' (e (plE D j)) (Formalism.L2.SG.Pf.goodSRest_all hG hTies.dsig_tie hB u u' (e (plE D j))),
-    fun j => ⟨(ha j).1, (hb j).1, ?_, one_ne_zero⟩, fun j => hscl _, fun j => (hc u _).ne'⟩
-  rw [inner_normalize_right (ha j).2, inner_normalize_left (hb j).2, one_mul]
-
-variable [Fact Formalism.L2.SG.Pf.CarrierT.CoefCapAll] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
-
-theorem carrierP_of_kFinite (hT : CSTarget) (hJ : PI.BesselMapUniq.BesselMapUniq) (hNZ : KFinNZ) :
-    Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP := by
-  obtain ⟨hPA, hMP, hBB⟩ := hT
-  obtain ⟨Cb, hL⟩ := liftAt3_exists
-  exact Formalism.L2.SG.SpectralTiesReal.carrierP_of_repaired_model hPA Formalism.FourierDecayAlt.P.lemma_model hMP hBB Cb
-    (carrierXSideP_of_leaves Cb hL (xLeavesP_of_pinsP hJ (xPinsP_of hJ hNZ)))
-
-variable [Fact Formalism.L2.SG.Pf.CarrierT.CoefCapAll] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
-
-theorem carrierP_of_kfin4 (hT : CSTarget4) (hJ : PI.BesselMapUniq.BesselMapUniq) (hNZ : KFinNZ) :
-    Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP := by
-  obtain ⟨hPA, hMP, hBB⟩ := hT
-  obtain ⟨Cb, hL⟩ := liftAt3_exists
-  exact Formalism.L2.SG.SpectralTiesReal.carrierP_of_compact_model hPA Formalism.FourierDecayAlt.P.lemma_model hMP hBB Cb
-    (carrierXSideP_of_leaves Cb hL (xLeavesP_of_pinsP hJ (xPinsP_of hJ hNZ)))
 
 def KFinDense : Prop :=
   ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (H : Type) [NormedAddCommGroup H]
@@ -392,17 +281,5 @@ theorem kFinNZ_of (hD : KFinDense) : KFinNZ := by
     rw [hδ, ← mul_div_assoc, div_lt_iff₀ (by positivity)]
     nlinarith [abs_nonneg Cw]
   linarith
-
-variable [Fact Formalism.L2.SG.Pf.CarrierT.CoefCapAll] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
-
-theorem carrierP_of_dense (hT : CSTarget) (hJ : PI.BesselMapUniq.BesselMapUniq) (hD : KFinDense) :
-    Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP :=
-  carrierP_of_kFinite hT hJ (kFinNZ_of hD)
-
-variable [Fact Formalism.L2.SG.Pf.CarrierT.CoefCapAll] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
-
-theorem carrierP_of_dense4 (hT : CSTarget4) (hJ : PI.BesselMapUniq.BesselMapUniq) (hD : KFinDense) :
-    Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP :=
-  carrierP_of_kfin4 hT hJ (kFinNZ_of hD)
 
 end Formalism.L2.SG.Pf.CarrierXAll

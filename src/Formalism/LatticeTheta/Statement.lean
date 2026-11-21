@@ -16,9 +16,6 @@ abbrev dual (Λ : Submodule ℤ V) : Submodule ℤ V :=
 def theta (Λ : Submodule ℤ V) (t : ℝ) : ℝ :=
   ∑' l : Λ, Real.exp (-Real.pi * t * ‖(l : V)‖ ^ 2)
 
-def thetaShift (Λ : Submodule ℤ V) (t : ℝ) (x : V) : ℝ :=
-  ∑' l : Λ, Real.exp (-Real.pi * t * ‖(l : V) + x‖ ^ 2)
-
 variable (V) in
 
 def DualIsLattice [FiniteDimensional ℝ V] : Prop :=
@@ -60,33 +57,5 @@ def PoissonSchwartz [FiniteDimensional ℝ V] : Prop :=
       HasSum (fun l : Λ => f ((l : V) + x))
         ((ZLattice.covolume Λ : ℂ)⁻¹ * ∑' μ : dual Λ,
           (𝓕 (f : V → ℂ) : V → ℂ) μ * Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ)))
-
-variable (V) in
-
-def ThetaSummable [FiniteDimensional ℝ V] : Prop :=
-  ∀ (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (t : ℝ), 0 < t → ∀ x : V,
-    Summable (fun l : Λ => Real.exp (-Real.pi * t * ‖(l : V) + x‖ ^ 2))
-
-variable (V) in
-def ThetaPos [FiniteDimensional ℝ V] : Prop :=
-  ∀ (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (t : ℝ), 0 < t → 1 ≤ theta Λ t
-
-variable (V) in
-
-def ThetaInversion [FiniteDimensional ℝ V] : Prop :=
-  ∀ (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (t : ℝ), 0 < t →
-    theta Λ (1 / t) =
-      (ZLattice.covolume Λ)⁻¹ * t ^ ((Module.finrank ℝ V : ℝ) / 2) * theta (dual Λ) t
-
-variable (V) in
-
-def ThetaShiftInversion [FiniteDimensional ℝ V] : Prop :=
-  ∀ (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (t : ℝ), 0 < t → ∀ x : V,
-    Summable (fun μ : dual Λ => (Real.exp (-Real.pi * ‖(μ : V)‖ ^ 2 / t) : ℂ) *
-        Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ))) ∧
-    (thetaShift Λ t x : ℂ) =
-      (ZLattice.covolume Λ : ℂ)⁻¹ * ((t ^ (-(Module.finrank ℝ V : ℝ) / 2) : ℝ) : ℂ) *
-        ∑' μ : dual Λ, (Real.exp (-Real.pi * ‖(μ : V)‖ ^ 2 / t) : ℂ) *
-          Complex.exp (2 * Real.pi * Complex.I * (⟪(μ : V), x⟫ : ℝ))
 
 end Formalism.H

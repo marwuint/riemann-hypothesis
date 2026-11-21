@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ThConst
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CubicalReadingOneAnalyticFrameStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CubicalReadingOneAnalyticFrame
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsHolFamPullbackLiftOfCommonBase
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.JetRdMulInvPow
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CorrOfJetsOfAnalyticFrameProductsStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CorrOfJetsOfAnalyticFrameProducts
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.AppLESpMapJetPt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CmFrameJetPointsAreExponentialJets
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.JetReadingLinearSubstitutionPoints
@@ -192,7 +192,7 @@ theorem cub_jetRd (m : ℕ) :
   obtain ⟨hq, eq⟩ := jet_triple_points_eq_jet_exponentials Φ m _ _ _ _ _ _ (hj 0) (hj 1) (hj 2)
   rw [eq]
   refine GlobalTheory.AnValJetGlob.jetRd_pullGen _ _ _ _ g Φ.toAnFr 3 m _ _ _ _ _ _ _ hq fun v => ?_
-  have h := GlobalTheory.T.cubical_reading_one_analyticFrame E H Dw l Xo c y g ty el Φ (colsOf 3 g v 0) (colsOf 3 g v 1) (colsOf 3 g v 2)
+  have h := _root_.GlobalTheory.cubical_reading_one E H Dw l Xo c y g ty el Φ (colsOf 3 g v 0) (colsOf 3 g v 1) (colsOf 3 g v 2)
   have hv : ![colsOf 3 g v 0, colsOf 3 g v 1, colsOf 3 g v 2] = colsOf 3 g v := by
     funext i; fin_cases i <;> rfl
   rw [hv] at h
@@ -260,7 +260,7 @@ theorem first_partial_law : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   have i3 := (alg _ _ _ _ _ _ _ _ _ _ h3 h3).2.1
   have m23 := (alg _ _ _ _ _ _ _ _ _ _ i2 i3).1
   have m123 := (alg _ _ _ _ _ _ _ _ _ _ h1 m23).1
-  refine GlobalTheory.T.corr_of_jets_of_analytic_frame_products _ _ _ _ g Φ.toAnFr hI 3 m _ _ _ _ _ _ _ _ _ _ h0 m123 ?_
+  refine _root_.GlobalTheory.AnVal.JetCorr.corr_of_jetRd _ _ _ _ g Φ.toAnFr hI 3 m _ _ _ _ _ _ _ _ _ _ h0 m123 ?_
   refine sameSum_of_jetMap Φ.toAnFr m _ _ _ _ (fun I : Finset (Fin 3) => psumL 3 g ⟨I⟩) (fun I => I.down)
     (Sum.elim (fun K => K.down.biUnion ![{0, 1}, {2}])
       (Sum.elim (fun K => K.down.biUnion ![{0}, {2}]) (fun K => K.down.biUnion ![{1}, {2}]))) h0.1 (fun k => ?_) ?_

@@ -194,25 +194,6 @@ theorem block_action_integral (R0 : Subring K) {ι : Type} [Fintype ι] {n : ℕ
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
-theorem standard_delta_integral_coeffs (lam : ι → DomWeight n) {F : Pol K ι n} (hF : F ∈ delStd K lam) (m : (ι × Fin n × Fin n) →₀ ℕ) :
-    coeff m F ∈ (1 : Submodule (𝓞 K) K) := by
-  unfold delStd Formalism.GradedWeylDivisibility.tensorLat at hF
-  induction hF using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨f, hf, rfl⟩ := hx
-    choose f0 _ hf0 using fun s => Submodule.mem_map.1 (hf s)
-    have e : (∏ s, Formalism.GradedWeylDivisibility.blockEmb K s (f s)) = map (algebraMap (𝓞 K) K) (∏ s, Formalism.GradedWeylDivisibility.blockEmb (𝓞 K) s (f0 s)) := by
-      rw [map_prod]
-      refine Finset.prod_congr rfl fun s _ => ?_
-      rw [← hf0 s]
-      simp only [Formalism.GradedWeylDivisibility.blockEmb, toK, AlgHom.toLinearMap_apply, mapAlgHom_apply, map_rename]
-      rfl
-    rw [e, coeff_map]
-    exact Submodule.mem_one.2 ⟨_, rfl⟩
-  | zero => rw [coeff_zero]; exact zero_mem _
-  | add x y _ _ hx hy => rw [coeff_add]; exact add_mem hx hy
-  | smul c x _ hx => rw [coeff_smul]; exact Submodule.smul_mem _ c hx
-
 def twId (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) : Submodule (𝓞 K) K :=
   ⨅ (w : HeightOneSpectrum (𝓞 K)) (B : ι → GL (Fin n) K) (_ : ∀ τ, IsBasisAt w (M τ) (B τ)),
     (localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)).comap ((LinearMap.mulLeft K (detTwK lam B⁻¹)).restrictScalars (𝓞 K))
@@ -224,46 +205,6 @@ theorem mem_twId (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin 
 
 theorem le_localisation {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) W) :
     L ≤ localization₂ w.asIdeal L := fun x hx => ⟨1, one_mem _, by rwa [one_smul]⟩
-
-theorem coefficient_map_mem_twisted (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K)
-    (hg : ∀ τ, ∀ x ∈ M τ, ∀ a, ((g τ : Matrix (Fin n) (Fin n) K) *ᵥ x) a ∈ (1 : Submodule (𝓞 K) K))
-    (x : VV K lam) (hx : x ∈ delK lam M) (m : MonI lam) : cfMap lam g x m ∈ twId lam M := by
-  rw [mem_twId]
-  intro w B hB
-  have hx' : actP lam B⁻¹ x.1 ∈ localization₂ w.asIdeal (delStd K lam) := by
-    have h := hx
-    simp only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf] at h
-    exact h w B hB
-  have hF0 : actP lam B⁻¹ x.1 ∈ (map (σ := ι × Fin n × Fin n) (locRing w).subtype).range := by
-    refine mem_range_of_coeff_mem _ fun m' => ?_
-    obtain ⟨s, hs, hsF⟩ := hx'
-    rw [mem_locRing]
-    refine ⟨s, hs, ?_⟩
-    rw [← coeff_smul]
-    exact standard_delta_integral_coeffs lam hsF m'
-  have hU : ∀ τ a b, (((g * B) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ a b ∈ locRing w := by
-    intro τ a b
-    have hcol : (fun c => (B τ : Matrix (Fin n) (Fin n) K) c a) ∈ localization₂ w.asIdeal (M τ) := by
-      rw [hB τ]
-      exact le_localisation w _ (Submodule.subset_span ⟨a, rfl⟩)
-    obtain ⟨s, hs, hsx⟩ := hcol
-    rw [mem_locRing]
-    refine ⟨s, hs, ?_⟩
-    have := hg τ _ hsx b
-    rw [Matrix.mulVec_smul] at this
-    have e : (((g * B) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ a b =
-        ((g τ : Matrix (Fin n) (Fin n) K) *ᵥ fun c => (B τ : Matrix (Fin n) (Fin n) K) c a) b := by
-      simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
-    rw [e]
-    exact this
-  have hkey := coeff_mem_of_mem_range _ (block_action_integral (locRing w) _ hU hF0) m.1
-  have e : Formalism.GradedWeylDivisibility.blockAct K (fun τ => (((g * B) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ) (actP lam B⁻¹ x.1) =
-      detTwK lam B⁻¹ • trAct g x.1 := by
-    show trAct (g * B) (actP lam B⁻¹ x.1) = _
-    rw [trAct_mul]
-    simp only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, AlgHom.comp_apply, map_smul, transpose_action_inv_right]
-  rw [e, coeff_smul, smul_eq_mul, mem_locRing] at hkey
-  exact hkey
 
 end Int
 

@@ -2,9 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineNhdsAvoidingImagesOfSpecializationsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionSplitRegularDivisorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineNhdsAvoidingImagesOfSpecializations
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionSplitRegularDivisor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializes
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProporti
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -53,7 +56,7 @@ theorem exists_lifted_fn : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoether
 
   set T : Set Y := {v | v ≠ σ ∧ 0 < F.mult v} with hTdef
   have hT : T.Finite := F.finite_support_mult.subset fun v hv => hv.2.ne'
-  obtain ⟨U, e, hUa, hyU, hNe, hav⟩ := GlobalTheory.T.exists_affine_nhds_avoiding_images_of_specializations X Y s T σ y N hT
+  obtain ⟨U, e, hUa, hyU, hNe, hav⟩ := _root_.GlobalTheory.BadOpen.exists_affine_nhds_avoid X Y s T σ y N hT
     fun v hv w hvw hσw hwy => not_le.2 hv.2 (hF v w hv.1 hvw hσw hwy)
   have hTc : IsClosed (⋃ v ∈ T, closure ({v} : Set Y)) :=
     hT.isClosed_biUnion fun _ _ => isClosed_closure
@@ -82,7 +85,7 @@ theorem exists_lifted_fn : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoether
   have hinv : ∀ x ∈ W₁ ⊓ W₂, (pullCart s N - F).RegularAt x (e' : Y.functionField)⁻¹ := by
     intro x hx
     rw [key x hx.1.1, inv_mul_cancel₀ e'.ne_zero]
-    have h1 := (GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg Y (-F) x 1).2
+    have h1 := (_root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes Y (-F) x 1).2
     rw [Units.val_one] at h1
     refine h1 fun z hzx => ?_
     rw [(unitAt_one z).ord_eq_zero, zero_add, mult_neg]
@@ -92,7 +95,7 @@ theorem exists_lifted_fn : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoether
       exact hx.2.2 (specializes_iff_mem_closure.1 hzx)
     · exact hx.1.2 (Set.mem_iUnion₂.2 ⟨z, ⟨hzσ, hz⟩, specializes_iff_mem_closure.1 hzx⟩)
   obtain ⟨h₁, h₂, hsplit, hh₁, hh₂⟩ :=
-    GlobalTheory.T.rational_function_split_regular_divisor Y (pullCart s N - F) W₁ W₂ hc (e' : Y.functionField)⁻¹ hinv
+    _root_.GlobalTheory.ratsec_split_of_H1 Y (pullCart s N - F) W₁ W₂ hc (e' : Y.functionField)⁻¹ hinv
   have hσU : σ ∈ s ⁻¹ᵁ U := hσy.mem_open U.isOpen hyU
   refine ⟨h₂ * e', ?_, fun v hvσ hv hvy => ?_⟩
   · have hσW : σ ∈ W₁ := ⟨hσU, fun hσT => by

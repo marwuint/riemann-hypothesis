@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.RatTorsionFree
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.KisinCrTrivial
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FiniteCohomology
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.RestrictionToDecompositionGroup
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.ConstOfChar
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeformations.UniversalDiagonalOfTriangularPoints
@@ -31,36 +31,6 @@ private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   have hV : IsClopen (V : Set (G ⧸ N)) := ⟨V.isClosed_of_isOpen hVo, hVo⟩
   obtain ⟨u, hu, hux⟩ := hV.connectedComponent_subset V.one_mem hy
   exact hU (U.toSubgroup.inv_mem hu) (QuotientGroup.eq.1 hux)
-
-open Matrix Formalism.MainNotions.N in
-private theorem ss_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {ρ ρ' : Γ →* GL (Fin n) k} (h : GL (Fin n) k)
-    (hh : ∀ g, ρ' g = h * ρ g * h⁻¹) (hρ : IsSSRep ρ) : IsSSRep ρ' := by
-  let e : (Fin n → k) ≃ₗ[k] (Fin n → k) := Matrix.toLin'OfInv (M := (h : Matrix (Fin n) (Fin n) k))
-    (M' := ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (Units.mul_inv h) (Units.inv_mul h)
-  have he : ∀ v, e v = ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ v := fun v => rfl
-  have key : ∀ g v, e ((ρ' g : Matrix (Fin n) (Fin n) k) *ᵥ v) = (ρ g : Matrix (Fin n) (Fin n) k) *ᵥ e v := by
-    intro g v
-    rw [he, he, hh, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]
-    congr 2
-    group
-  intro W hW
-  obtain ⟨W', hW', hc⟩ := hρ (W.map (e : (Fin n → k) →ₗ[k] (Fin n → k))) (by
-    rintro g _ ⟨v, hv, rfl⟩
-    exact ⟨_, hW g v hv, key g v⟩)
-  refine ⟨W'.comap (e : (Fin n → k) →ₗ[k] (Fin n → k)), fun g v hv => ?_, ?_⟩
-  · show e _ ∈ W'
-    rw [key]
-    exact hW' g _ hv
-  · have := (Submodule.orderIsoMapComap e).symm.isCompl hc
-    have h2 : IsCompl ((W.map (e : (Fin n → k) →ₗ[k] (Fin n → k))).comap (e : (Fin n → k) →ₗ[k] (Fin n → k)))
-      (W'.comap (e : (Fin n → k) →ₗ[k] (Fin n → k))) := this
-    rwa [Submodule.comap_map_eq_of_injective e.injective] at h2
-
-private theorem autCsd_iso {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] {l : ℕ}
-    [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)} (h : Af.RepIso r r')
-    (H : Af.IsAutCsd ι r) : Af.IsAutCsd ι r' := by
-  obtain ⟨π, h1, h2, h3, h4⟩ := H
-  refine ⟨π, h1, h2, ss_conj h.choose h.choose_spec h3, h4.mono fun w ⟨B, hB, hB'⟩ => ⟨B, hB, hB'.of_iso h⟩⟩
 
 private theorem tw_iso {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k} (χ : Γ →* kˣ)
     (h : Af.RepIso r r') : Af.RepIso (Af.tw r χ) (Af.tw r' χ) := by
@@ -111,59 +81,3 @@ private theorem tri_of_char {O G A : Type} [CommRing O] [IsLocalRing O] [Finite 
   · rw [e]; exact hr.red g
   · rw [e]; exact hch g hg hη
 
-theorem UpperTheory.V.Pr.symmetric_cube_theorem_of_endomorphisms :
-    HostEnd → AutomorphyClauseStatement := by
-  intro H K _ _ _ hK Ω _ _ _ l _ ι c N _ e ψ o₁ hd S A F hF
-  obtain ⟨σ, hσ, hc⟩ := hF.cc
-  have hv : (A F.vl).valuation (l : Ω) < 1 := by simpa using (hF.isOver F.vl (l : 𝓞 ℚ)).2 hF.vl
-  obtain ⟨g₁, hM, ⟨U, hU, hfin⟩, haut⟩ := H K hK Ω l ι c N e ψ o₁ hd σ hσ (A F.vl) hv
-  have hη : ∀ g, F.η (toGS Ω _ g) = UnitaryThreeInertia.eta4 Ω g := fun g => by rw [← hF.η, hF.π]; rfl
-  have hΨ : ∀ g, F.Ψ (toGS Ω _ g) = Chr.Psi l e (Chr.dirG ℚ Ω ψ) g := fun g => by rw [← hF.Ψ, hF.π]; rfl
-  rw [hF.π] at hc
-  have hg : F.Marked (toGS Ω _ g₁) := ⟨(hη g₁).trans hM.ηg, by rw [hΨ]; exact hM.Ψg⟩
-  haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω
-  haveI hcl := isClosed_NS Ω (S : Set UnitaryThreeInertia.Pl)
-  haveI : CompactSpace (UnitaryThreeInertia.Gam Ω S) := inferInstance
-  haveI : T2Space (UnitaryThreeInertia.Gam Ω S) := inferInstance
-  haveI : TotallyDisconnectedSpace (UnitaryThreeInertia.Gam Ω S) := totDisc_quot _ hcl
-  have hOk := UnitaryThreeInertia.hostFrame_ok Ω c e ψ o₁ hd S A F hF
-  have hsurj : ∀ x : UnitaryThreeInertia.Gam Ω S, ∃ s, toGS Ω _ s = x := fun x => QuotientGroup.mk_surjective x
-  refine ⟨_, hg, fun R _ _ _ u hu => ?_⟩
-  have hM2 : Module.Finite c.O (UnitaryThreeInertia.wpart c.O u 0) := by
-    refine UnitaryThreeInertia.universal_diagonal_of_triangular_points F hOk (UnitaryThreeInertia.frame_class_one Ω c e ψ o₁ hd S A F hF) _ hg u hu fun B _ _ hB h0 r hr => ?_
-    haveI := hB.toIsDomain
-    haveI := hB.toIsDiscreteValuationRing
-    have ho := ordPt_of_isPt Ω c e ψ o₁ hd S A F hF σ g₁ hc r hr
-    refine (tri_of_char hOk.two h0 hM ho.red ho.norm U hU (hfin B h0 _ ho)).imp (fun h g hg => ?_) fun h g hg => ?_
-    · obtain ⟨s, rfl⟩ := hsurj g
-      exact h s ((hη s).symm.trans hg)
-    · obtain ⟨s, rfl⟩ := hsurj g
-      exact h s ((hη s).symm.trans hg)
-  refine ⟨hM2, fun ξ r h1 h2 => ?_⟩
-  have hz : F.IsCharZeroPt _ r := UnitaryThreeInertia.isCharZeroPt_of_isPtHom (l := l) F hOk _ hg u hu hM2 ξ r h1
-  have hirr := UnitaryThreeInertia.matIrr_open Ω c e ψ o₁ hd S A F hF _ hg r hz h2
-  obtain ⟨B, _, _, t, r', hr', ht⟩ := hz
-  have ho := ordPt_of_isPt Ω c e ψ o₁ hd S A F hF σ g₁ hc r' hr'
-  have hm : ∀ s, (r (toGS Ω _ s)).right = UnitaryThreeInertia.eta4 Ω s := fun s =>
-    ((h1 _).1.trans (hu.pt.mult _)).trans (hη s)
-  have hl : ∀ s ∈ (UnitaryThreeInertia.eta4 Ω).ker, (UnitaryThreeInertia.push B.val (r'.comp (toGS Ω _)) s).left =
-      tor _ t * (r (toGS Ω _ s)).left * (tor _ t)⁻¹ := fun s hs => by
-    rw [← conj_left r _ _ ((hm s).trans hs), ← ht]
-    rfl
-  haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
-  letI : Algebra K Ω := (IsAlgClosed.lift : K →ₐ[ℚ] Ω).toRingHom.toAlgebra
-  have hker : ∀ s : G K Ω, Base.galEmb ℚ K Ω s ∈ (UnitaryThreeInertia.eta4 Ω).ker := fun s => by
-    rw [← (UnitaryThreeInertia.gaussian_field_range_eq_ker_quartic_char.2 Ω K hK).1]
-    exact ⟨s, rfl⟩
-  let j : G K Ω →* (UnitaryThreeInertia.eta4 Ω).ker := (Base.galEmb ℚ K Ω).codRestrict _ hker
-  let ρ : G K Ω →* GL (Fin 3) (Qbar l) := (glPart (UnitaryThreeInertia.eta4 Ω) (r.comp (toGS Ω _)) hm).comp j
-  let ρ' : G K Ω →* GL (Fin 3) (Qbar l) :=
-    (glPart (UnitaryThreeInertia.eta4 Ω) (UnitaryThreeInertia.push B.val (r'.comp (toGS Ω _))) ho.red.mult).comp j
-  have hiso : Af.RepIso ρ ρ' := ⟨tor _ t, fun s => hl _ (hker s)⟩
-  have key := haut B _ ho (fun V hV hVη => matIrr_conj (tor _ t) (fun s hs => by
-    rw [mats, GG.mat, GG.mat, hl s (hVη hs), ← Units.val_mul, ← Units.val_mul]
-    congr 1
-    group) (hirr V hV hVη)) ρ' fun s => rfl
-  refine ⟨inferInstance, inferInstance, ρ, fun s => rfl, ?_⟩
-  rw [zpow_neg_one]
-  exact autCsd_iso (tw_iso _ hiso.symm') key

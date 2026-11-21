@@ -155,46 +155,6 @@ def SymplDetBound.Statement : Prop :=
     G ∈ symplecticGroup (Fin n) ℝ → G.PosDef →
     ∃ P ∈ symplecticGroup (Fin n) ℤ, (symplGram P G).toBlocks₁₁.det ≤ (2 * (n : ℝ)) ^ n
 
-example (n : ℕ) :
-    (1 : Matrix (Fin (n + 1) ⊕ Fin (n + 1)) (Fin (n + 1) ⊕ Fin (n + 1)) ℝ) ∈
-        symplecticGroup (Fin (n + 1)) ℝ ∧
-      (1 : Matrix (Fin (n + 1) ⊕ Fin (n + 1)) (Fin (n + 1) ⊕ Fin (n + 1)) ℝ).PosDef ∧
-      (1 : Matrix (Fin (n + 1) ⊕ Fin (n + 1)) (Fin (n + 1) ⊕ Fin (n + 1)) ℝ) (Sum.inl 0) (Sum.inl 0) ≠ 0 ∧
-      (1 : Matrix (Fin (n + 1) ⊕ Fin (n + 1)) (Fin (n + 1) ⊕ Fin (n + 1)) ℤ) ∈
-        symplecticGroup (Fin (n + 1)) ℤ :=
-  ⟨Submonoid.one_mem _, Matrix.PosDef.one, by simp, Submonoid.one_mem _⟩
-
-example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 ∧
-    siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 (Sum.inl 0) (Sum.inl 0) ≠ 0 := by
-  refine ⟨fun h => ?_, ?_⟩
-  · have := congrFun (congrFun h (Sum.inr 0)) (Sum.inr 0)
-    simp [siegelGram] at this
-  · simp [siegelGram]
-
-example (n : ℕ) : (1 : ℤ) * 1 - 0 * 0 = 1 ∧ (2 : ℤ) * 1 - 1 * 1 = 1 ∧
-    (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℤ) ∈ symplecticGroup (Fin n) ℤ :=
-  ⟨by norm_num, by norm_num, Submonoid.one_mem _⟩
-
-example : (-1 : ℤ) * 2 + 1 * 3 = 1 := by norm_num
-
-example : (1 : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0 ∧ |(1 : Matrix (Fin 2) (Fin 2) ℝ).det| = 1 ∧
-    (∀ i : Fin 2, (0 : ℝ) < (fun _ => 2) i) ∧ (1 : ℝ) < ∏ _i : Fin 2, (2 : ℝ) ∧
-    (1 : Matrix (Fin 2) (Fin 2) ℝ).PosDef ∧ (1 : Matrix (Fin 2) (Fin 2) ℝ).det = 1 := by
-  refine ⟨by simp, by simp, fun _ => by norm_num, by norm_num, Matrix.PosDef.one, by simp⟩
-
-example : (fun _ : Fin 1 => (1 : ℤ)) = (1 : ℤ) • (fun _ : Fin 1 => (1 : ℤ)) ∧
-    (fun _ : Fin 1 => (1 : ℤ)) ≠ 0 ∧
-    ∀ u : Fin 1 → ℤ, u ≠ 0 →
-      qf (1 : Matrix (Fin 1) (Fin 1) ℝ) (intVec fun _ => (1 : ℤ)) ≤ qf 1 (intVec u) := by
-  refine ⟨by simp, fun h => by simpa using congrFun h 0, ?_⟩
-  intro u hu
-  have h0 : u 0 ≠ 0 := by
-    intro h; apply hu; funext i; fin_cases i; exact h
-  have h1 : (1 : ℝ) ≤ |(u 0 : ℝ)| := by exact_mod_cast Int.one_le_abs h0
-  have h2 : (1 : ℝ) ≤ (u 0 : ℝ) * (u 0 : ℝ) := by
-    nlinarith [abs_mul_abs_self (u 0 : ℝ), abs_nonneg (u 0 : ℝ)]
-  simpa [qf, intVec, dotProduct] using h2
-
 end
 
 end GroundTheory.Heights₂.Heights

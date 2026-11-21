@@ -18,15 +18,6 @@ def AbsCont : Prop := ∀ (l : ℕ) [Fact l.Prime] (G : Type v) [Group G] [Topol
   (∀ (x : M) (k : ℕ), IsOpen {g : G | ρ g x - x ∈ K k}) →
   ∀ (φ : M →ₗ[ℤ_[l]] ℚ_[l]) (x : M), Continuous fun g => φ (ρ g x)
 
-def Stab : Prop := Base → ∀ (l : ℕ) [Fact l.Prime] (K : Type) [Field K], (l : K) ≠ 0 →
-  ∀ {X : Scheme.{0}} (p : X ⟶ Sp K), IsProper p → ∀ (n : ℤ) (x : Hl l (sch.obj (geom (AlgebraicClosure K) p)) n 0)
-    (k : ℕ), IsOpen {σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K |
-      (galHl l (AlgebraicClosure K) p n 0 σ x).1 k = x.1 k}
-
-def FinGen : Prop := Base → ∀ (l : ℕ) [Fact l.Prime] (K : Type) [Field K], (l : K) ≠ 0 →
-  ∀ {X : Scheme.{0}} (p : X ⟶ Sp K), IsProper p → ∀ n : ℤ,
-    Module.Finite ℤ_[l] (Hl l (sch.obj (geom (AlgebraicClosure K) p)) n 0)
-
 def evk (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ) (k : ℕ) : Hl l E n i →ₗ[ℤ_[l]] HtL l k E n i :=
   (LinearMap.proj (R := ℤ_[l]) (φ := fun k => HtL l k E n i) k).comp (HlSub l E n i).subtype
 

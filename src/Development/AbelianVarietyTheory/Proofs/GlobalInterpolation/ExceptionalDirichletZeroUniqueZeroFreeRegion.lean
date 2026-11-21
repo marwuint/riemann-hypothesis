@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ZerosDisc
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LFunctionConjEqZero
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrderNeTop
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ZeroFreePrincipal
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDirichletLFunctionZeroGapNearOneStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDirichletLFunctionZeroGapNearOne
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DirichletLZerosEqPrimitiveCharacterZerosStatement
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology GlobalTheory.Lin
 open scoped Classical
@@ -48,7 +48,7 @@ theorem main : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ : ℝ, 0 < c₁ → c₁ �
   obtain ⟨cu, hcu, hU⟩ := GlobalTheory.RealZeroNearOne.main
   obtain ⟨cp, hcp, hP⟩ := GlobalTheory.ZeroFreePrincipal.zero_free
   obtain ⟨cz, hcz, hZ⟩ := GlobalTheory.ZeroFreeComplex.zero_free_region
-  obtain ⟨cs, hcs, hS⟩ := GlobalTheory.T.exists_dirichletLFunction_zero_gap_near_one
+  obtain ⟨cs, hcs, hS⟩ := _root_.GlobalTheory.ZeroGapNearOne.exists_gap
   refine ⟨min (1 / 8) (min (cu / 2) (cp / 2)),
     lt_min (by norm_num) (lt_min (by linarith) (by linarith)), fun c₁ hc₁ hc₁0 => ?_⟩
   have hc18 : c₁ ≤ 1 / 8 := hc₁0.trans (min_le_left _ _)

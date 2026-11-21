@@ -2,7 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NefFibOfIsNef
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLocalSubringGenericPoint
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDimLeOfIsAlgebraic
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArithmeticVarietyDimZeroFinite
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers
+import Development.AbelianVarietyTheory.Definitions.Divisors.EqOfSpecializesOfFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallSectionHeightLowerBound
 
 set_option autoImplicit false
 
@@ -90,16 +92,5 @@ theorem dim_le_of_residueDegree_pos {Z' Z : Scheme.{0}} [IsIntegral Z'] [IsInteg
   have : FaithfulSMul Γ(Z, U) Γ(Z', V) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj
   have : Algebra.IsAlgebraic Γ(Z, U) Γ(Z', V) := Algebra.IsAlgebraic.of_injective ψ hψ
   exact GlobalTheory.ModelDom.ringKrullDim_le_of_isAlgebraic _ _
-
-theorem dim_eq_one : ∀ (Z' Z : Scheme.{0}) [IsIntegral Z'] [IsIntegral Z] [IsNoetherian Z] (f : Z' ⟶ Z)
-    [IsProper f], topologicalKrullDim Z = 1 → f (genericPoint Z') = genericPoint Z →
-    0 < f.residueDegree (genericPoint Z') → topologicalKrullDim Z' = 1 := by
-  intro Z' Z _ _ _ f _ hd hg hdeg
-  have : IsDominant f := ⟨(dense_iff_closure_eq.2 (genericPoint_spec Z)).mono
-    (Set.singleton_subset_iff.2 ⟨_, hg⟩)⟩
-  have := surjective_of_isDominant_of_isClosed_range f f.isClosedMap.isClosed_range
-  refine le_antisymm ((dim_le_of_residueDegree_pos f hg hdeg).trans hd.le) ?_
-  rw [← hd]
-  exact PosBaseChange.dim_le_of_isClosedMap f.isClosedMap f.surjective
 
 end GlobalTheory.ProperCover

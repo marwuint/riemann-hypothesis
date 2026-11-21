@@ -34,10 +34,6 @@ def SegreFlagCutChart.Statement : Prop :=
         (0 < k → ∀ q ∈ pointIdeal O (flagClosurePt y w e φ φ' t k), ∃ n : ℕ,
           u ^ n * q ∈ pointIdeal O (flagClosurePt y w e φ φ' t (k + 1)) ⊔ Ideal.span {l})
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

@@ -10,8 +10,6 @@ def ph (y : ℝ) : ℝ := y * Real.log y - y
 
 def wmean {ι : Type} [Fintype ι] (d X : ι → ℝ) : ℝ := (∑ i, d i * X i) / (∑ i, d i)
 
-def umean {ι : Type} [Fintype ι] (X : ι → ℝ) : ℝ := (∑ i, X i) / (Fintype.card ι : ℝ)
-
 structure Consts where
 
   cDiv : ℝ
@@ -98,10 +96,6 @@ def Tterm (u0 : U0) (u : W u0) : ℝ :=
   (4 * (f : ℝ) / D.T u0 u) *
     (|D.Ga u0| + D.Ta u0 + D.muMaxM u0 u - D.muM u0 u + 2 * (f : ℝ) * Real.log (D.T u0 u))
 
-def Lo (u0 : U0) (u : W u0) : ℝ :=
-  C.cSl1 * D.IO u0 + C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b') * Real.log (D.T u0 u)
-    + C.cSl1 * (m : ℝ) * D.B0 + D.Tterm u0 u
-
 def LoP : ℝ := C.cLoss * D.nT * (m : ℝ) * D.b * D.x ^ (C.eLoss * D.ε)
 
 def Main (u0 : U0) : ℝ :=
@@ -120,33 +114,14 @@ def DIV : Prop :=
     (∑ t, ((m : ℝ) * (ph (D.aT t) - D.aT t * D.logOm) - D.aT t * Real.log (D.T u0 u)))
       + C.cDiv * D.nT * D.a * D.La + C.cDiv * (m : ℝ) * (D.B0 + D.Nc) * D.x ^ (C.eDiv * D.ε)
 
-def EComp : Prop :=
-  ∀ u0 (u : W u0) (j : Fin m), |D.EeJ u0 u j - D.sumA * D.lg| ≤ C.cE * D.B0
-
 def HComp : Prop :=
   ∀ u0 (u u' : W u0),
     |(D.h u0 u + ∑ t, D.aT t * Real.log (D.T u0 u)) - (D.h u0 u' + ∑ t, D.aT t * Real.log (D.T u0 u'))|
       ≤ C.cH * (D.nT * D.a * D.La + (m : ℝ) * D.B0)
 
-def Count : Prop :=
-  ∀ u0 (u : W u0),
-    ((∑ j : Fin m, (1 / (f : ℝ)) * ∑ ρ : Fin f, Real.log (D.w u0 j ρ * D.v / π)) + (m : ℝ) * D.lg
-        - C.cCount * (D.L + (m : ℝ) ^ 2 * D.L / D.k) - 2 * D.logGam / ((f : ℝ) * D.k)
-        ≤ Real.log (D.T u0 u)) ∧
-    Real.log (D.T u0 u) ≤ C.cCount * (m : ℝ) * D.L ∧
-    ∀ u' : W u0, |Real.log (D.T u0 u) - Real.log (D.T u0 u')| ≤ C.cCount * Real.log D.k
-
 def Slopes : Prop :=
   ∀ u0 (u : W u0), -(C.cSlope * D.nT * D.a * D.La * (1 + (m : ℝ) / D.k)) ≤ D.muM u0 u ∧
     D.muMaxM u0 u ≤ C.cSlope * D.nT * D.a * D.La
-
-def SlopesN : Prop :=
-  ∀ u0 (u : W u0),
-    D.muMaxN u0 u ≤ D.muMaxM u0 u + D.Ga u0 + D.Fo u0 - D.Ee u0 u + C.cSl1 * (m : ℝ) * D.B0 ∧
-    D.muM u0 u + D.Ga u0 + D.Fo u0 - D.Ee u0 u - D.Lo C u0 u ≤ D.muN u0 u
-
-def Losses : Prop :=
-  umean (fun u0 => D.ASK u0 - D.Ga u0) ≤ D.LoP C ∧ umean D.IO ≤ D.LoP C
 
 def SlopeIneq : Prop :=
   ∀ u0, 0 ≤ D.del u0 → D.del u0 < 1 → 0 ≤ D.η u0 → 0 ≤ D.e u0 → D.e u0 ≤ 1 / 4 →
@@ -165,62 +140,6 @@ def FParams : Prop :=
 def Vvar : ℝ :=
   2 * (m : ℝ) * C.cE * D.B0 + C.cH * (D.nT * D.a * D.La + (m : ℝ) * D.B0)
     + D.sumA * (C.cCount * Real.log D.k)
-
-def MLo : ℝ :=
-  C.cSl1 * D.LoP C + C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b') * (C.cCount * (m : ℝ) * D.L)
-    + C.cSl1 * (m : ℝ) * D.B0 + umean (fun u0 => wmean (D.d u0) (D.Tterm u0))
-
-def UBar : ℝ :=
-  C.cSlope * D.nT * D.a * D.La * (2 + (m : ℝ) / D.k) + D.Vvar C + C.cSl1 * (m : ℝ) * D.B0 + D.MLo C
-
-def ErrX : ℝ :=
-  D.sumA * (C.cCount * (D.L + (m : ℝ) ^ 2 * D.L / D.k) + 2 * D.logGam / ((f : ℝ) * D.k))
-    + (C.cDiv * D.nT * D.a * D.La + C.cDiv * (m : ℝ) * (D.B0 + D.Nc) * D.x ^ (C.eDiv * D.ε))
-    + (m : ℝ) * C.cE * D.B0
-    + C.cSlope * D.nT * D.a * D.La * (1 + (m : ℝ) / D.k)
-    + umean (fun u0 => Real.log (Fintype.card (W u0) : ℝ))
-    + D.LoP C
-    + D.MLo C
-    + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH) * (D.UBar C + D.b)
-        + (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b))
-
-def MeanBoundSecondForm : Prop :=
-  Nonempty U0 → D.HidaSetting C → D.DIV C → D.EComp C → D.HComp C → D.Count C → D.Slopes C → D.SlopesN C →
-    D.Losses C → D.SlopeIneq → D.HHBound C → D.FParams →
-    umean D.ASK ≤ umean D.Main + D.ErrX C
-
-def TaBound (cTa Xp Bo : ℝ) : Prop :=
-  1 ≤ Xp ∧ 0 ≤ Bo ∧ ∀ u0, D.Ta u0 ≤ cTa * (m : ℝ) * D.nT * D.a * Real.log Xp + Bo
-
-def TaB (cTa Xp Bo : ℝ) : ℝ := cTa * (m : ℝ) * D.nT * D.a * Real.log Xp + Bo
-
-def TtermB (cTa Xp Bo : ℝ) (u0 : U0) (u : W u0) : ℝ :=
-  (4 * (f : ℝ) / D.T u0 u) *
-    (|D.Ga u0| + D.TaB cTa Xp Bo + D.muMaxM u0 u - D.muM u0 u + 2 * (f : ℝ) * Real.log (D.T u0 u))
-
-def MLoB (cTa Xp Bo : ℝ) : ℝ :=
-  C.cSl1 * D.LoP C + C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b') * (C.cCount * (m : ℝ) * D.L)
-    + C.cSl1 * (m : ℝ) * D.B0 + umean (fun u0 => wmean (D.d u0) (D.TtermB cTa Xp Bo u0))
-
-def UBarB (cTa Xp Bo : ℝ) : ℝ :=
-  C.cSlope * D.nT * D.a * D.La * (2 + (m : ℝ) / D.k) + D.Vvar C + C.cSl1 * (m : ℝ) * D.B0
-    + D.MLoB C cTa Xp Bo
-
-def ErrXB (cTa Xp Bo : ℝ) : ℝ :=
-  D.sumA * (C.cCount * (D.L + (m : ℝ) ^ 2 * D.L / D.k) + 2 * D.logGam / ((f : ℝ) * D.k))
-    + (C.cDiv * D.nT * D.a * D.La + C.cDiv * (m : ℝ) * (D.B0 + D.Nc) * D.x ^ (C.eDiv * D.ε))
-    + (m : ℝ) * C.cE * D.B0
-    + C.cSlope * D.nT * D.a * D.La * (1 + (m : ℝ) / D.k)
-    + umean (fun u0 => Real.log (Fintype.card (W u0) : ℝ))
-    + D.LoP C
-    + D.MLoB C cTa Xp Bo
-    + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH) * (D.UBarB C cTa Xp Bo + D.b)
-        + (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b))
-
-def MeanBoundOfTail (cTa Xp Bo : ℝ) : Prop :=
-  Nonempty U0 → D.HidaSetting C → D.DIV C → D.EComp C → D.HComp C → D.Count C → D.Slopes C →
-    D.SlopesN C → D.Losses C → D.SlopeIneq → D.HHBound C → D.FParams → D.TaBound cTa Xp Bo →
-    umean D.ASK ≤ umean D.Main + D.ErrXB C cTa Xp Bo
 
 end Data
 

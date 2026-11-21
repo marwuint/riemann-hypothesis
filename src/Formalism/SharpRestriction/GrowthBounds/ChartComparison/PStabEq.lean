@@ -351,24 +351,6 @@ theorem locHypC_locJ (hU : SameUlocJ hi S Uloc) (hB : FrRatJ t B) (hTc : HypTJC 
 
 end LocJ
 
-section Mu
-
-variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
-  {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
-
-def ClsPt (K : KerLabelsMu Tw u μ w h Lv) (st : ∀ j (hj : j + 1 ≤ D.R.m), StepIn (Tw.fm u μ) (j + 1) hj (gatJ Lv (j + 1))) : Prop :=
-  ∀ j (hj : j + 1 ≤ D.R.m) (β : (st j hj).Ch) (a : (st j hj).cmpt β) (L : (Fl.Pj (j + 1)).Tup)
-    (g : ∀ v, GL (Fin ((Fl.Pj (j + 1)).m + 1)) ((Fl.Pj (j + 1)).Qq v)),
-    (∀ v, L v = colSpan ((Fl.Pj (j + 1)).W v) (g v : Matrix (Fin ((Fl.Pj (j + 1)).m + 1)) (Fin ((Fl.Pj (j + 1)).m + 1))
-      ((Fl.Pj (j + 1)).Qq v))) →
-    ∀ (c : {c // (st j hj).chOf c = β}) (γ₀ : GL (Fin (D.R.N (j + 1))) D.host.E) (κ₀ : ((st j hj).K β).lev.U),
-      γ₀ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D (j + 1) hj) →
-      ((st j hj).loc β).IsPt a g
-        (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ₀ * (((st j hj).K β).y c).1 * κ₀.1) →
-      K.cls (j + 1) ((st j hj).eC ⟨β, a⟩) L = c.1
-
-end Mu
-
 end Formalism.MainNotions.G.CmpJ.PStabEq
 
 end

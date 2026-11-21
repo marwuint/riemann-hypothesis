@@ -105,26 +105,6 @@ theorem spehInf_eq (d : ℕ) (m : Multiset ℂ) : GlobalTheory.SphGal.spehInf d 
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
-theorem discreteSpectrum_of_discreteSpectrumGL : GlobalTheory.Published.DiscreteSpectrumGL →
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], DiscreteSpectrum E := by
-  intro H E _ _ _ N hN V hV
-  obtain ⟨a, d, π, -, hπ, hS⟩ := (H E N hN).1 V hV
-  have hSp := hS
-  obtain ⟨h, -⟩ := hSp
-  have hda : d * a = N := hS.mul_eq
-  have ha : 1 ≤ a := Nat.pos_of_mul_pos_left (by omega : 0 < d * a)
-  have hC := (H E N hN).2.2.2.2 V hV a d π hπ hS
-  obtain ⟨V₁, ⟨hV₁, hS₁⟩, -⟩ := (H E a ha).2.1 a 1 π (one_mul a) hπ
-  have hC₁ := (H E a ha).2.2.2.2 V₁ hV₁ a 1 π hπ hS₁
-  refine ⟨a, d, h, π, fun hc => GlobalTheory.DiscSpec.isCsd_of_isSpehOf H hN hV hc hπ hS, fun w σ' hσ' => ?_, fun τ m' hm' => ?_⟩
-  · refine ⟨GlobalTheory.T.discreteAutomorphicRepGL_localComponent_isUnitarisable E N V hV w σ' hσ', ?_⟩
-    obtain ⟨σ, -, hσ, -⟩ := hC.exLoc w
-    obtain ⟨-, τ, -, hτ⟩ := hC₁.exLoc w
-    refine ⟨σ, hσ, isUnitarisable_of_isSpeh_one σ.smooth σ.irred (hC₁.loc w σ τ hσ hτ)
-      (GlobalTheory.T.discreteAutomorphicRepGL_localComponent_isUnitarisable E a V₁ hV₁ w τ hτ), isSpehQuot_of_isSpeh h σ σ' (hC.loc w σ σ' hσ hσ')⟩
-  · obtain ⟨m, hm, hm''⟩ := hC.inf τ
-    exact ⟨m, hm, (hasInfCharGL_unique hV.ne_bot hm' hm'').trans (spehInf_eq d m)⟩
-
 end GlobalTheory.DiscreteSpectrumCM
 
 end

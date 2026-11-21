@@ -17,24 +17,6 @@ def wirtinger (f : (Fin N → ℂ) → ℂ) (j : Fin N) (z : Fin N → ℂ) : �
 def wirtingerBar (f : (Fin N → ℂ) → ℂ) (j : Fin N) (z : Fin N → ℂ) : ℂ :=
   (1 / 2 : ℂ) * (fderiv ℝ f z (Pi.single j 1) + Complex.I * fderiv ℝ f z (Pi.single j Complex.I))
 
-lemma fderiv_coord (k : Fin N) (z : Fin N → ℂ) :
-    fderiv ℝ (fun w : Fin N → ℂ => w k) z = ContinuousLinearMap.proj k :=
-  (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin N => ℂ) k).fderiv
-
-theorem wirtinger_coord (j k : Fin N) (z : Fin N → ℂ) :
-    wirtinger (fun w => w k) j z = if j = k then 1 else 0 := by
-  rw [wirtinger, fderiv_coord]
-  by_cases h : j = k
-  · subst h; simp; norm_num
-  · simp [Ne.symm h, h]
-
-theorem wirtingerBar_coord (j k : Fin N) (z : Fin N → ℂ) :
-    wirtingerBar (fun w => w k) j z = 0 := by
-  rw [wirtingerBar, fderiv_coord]
-  by_cases h : j = k
-  · subst h; simp
-  · simp [Ne.symm h]
-
 def normSqSum (z : Fin N → ℂ) : ℝ := ∑ j, ‖z j‖ ^ 2
 
 lemma normSqSum_nonneg (z : Fin N → ℂ) : 0 ≤ normSqSum z :=
@@ -167,23 +149,6 @@ lemma norm_dotProduct_sq_le (z x : Fin N → ℂ) :
   have h2 : (∑ j, ‖z j‖ * ‖x j‖) ^ 2 ≤ (∑ j, ‖z j‖ ^ 2) * (∑ j, ‖x j‖ ^ 2) :=
     Finset.sum_mul_sq_le_sq_mul_sq _ _ _
   exact (pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2
-
-theorem chernCoeff_posDef (i : Fin (N + 1)) (z : Fin N → ℂ) : (chernCoeff i z).PosDef := by
-  refine Matrix.PosDef.of_dotProduct_mulVec_pos ?_ ?_
-  · ext j k
-    simp only [Matrix.conjTranspose_apply, chernCoeff_apply, Matrix.one_apply]
-    by_cases h : j = k
-    · subst h; simp [mul_comm]
-    · simp [h, Ne.symm h, mul_comm]
-  · intro x hx
-    rw [chernCoeff_quadForm, Complex.zero_lt_real]
-    have hX : 0 < ∑ j, ‖x j‖ ^ 2 := normSq2_pos hx
-    have hCS := norm_dotProduct_sq_le z x
-    have hS := one_add_normSqSum_pos z
-    have hS0 := normSqSum_nonneg z
-    refine mul_pos (by positivity) ?_
-    rw [sub_pos, inv_mul_lt_iff₀ hS]
-    nlinarith
 
 theorem det_chernCoeff (i : Fin (N + 1)) (z : Fin N → ℂ) :
     (chernCoeff i z).det = (((1 / (2 * Real.pi)) ^ N / (1 + normSqSum z) ^ (N + 1) : ℝ) : ℂ) := by

@@ -55,11 +55,6 @@ theorem pow_apply_eq_zero {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStr
     · rw [ih i l hl, zero_mul]
     · rw [hX l j (by rw [Fin.le_def]; omega), mul_zero]
 
-theorem pow_card_eq_zero {d : ℕ} {X : Matrix (Fin d) (Fin d) ℂ} (hX : IsStrictUpper X) :
-    X ^ d = 0 := by
-  ext i j
-  exact pow_apply_eq_zero hX d i j (by have := j.2; omega)
-
 theorem pow_apply_zero {m : ℕ} {X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (hX : IsStrictUpper X) :
     ∀ (j : ℕ) (hj : j < m + 1), (X ^ j) 0 ⟨j, hj⟩ =
       ∏ k : Fin j, X ⟨k, by omega⟩ ⟨k + 1, by omega⟩ := by
@@ -194,34 +189,6 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.G6
 
-theorem corner_relation : Formalism.FourierDecayAlt.G.CornerRelation := by
-  intro n t c a b v
-  have hN : (-(strictUpper v)) ^ n = 0 :=
-    pow_card_eq_zero (isStrictUpper_neg (isStrictUpper_strictUpper v))
-  have key : ∀ j ∈ Finset.range n,
-      (rhoOf t a v ⬝ᵥ ((-(Xof t v)) ^ j *ᵥ (t • b))) * t ^ (n - 1 - j) =
-        t ^ n * (a ⬝ᵥ ((wMat n * ((1 - -(strictUpper v)) * (-(strictUpper v)) ^ j)) *ᵥ (t • b))) := by
-    intro j hj
-    have hj' := Finset.mem_range.mp hj
-    have e1 : -(Xof t v) = t • (-(strictUpper v)) := by simp [Xof]
-    have e2 : t ^ n = t * t ^ j * t ^ (n - 1 - j) := by
-      rw [← pow_succ', ← pow_add]; congr 1; omega
-    rw [e1, smul_pow, rhoOf, Formalism.FourierDecayAlt.G.upper, sub_neg_eq_add, Matrix.smul_mulVec, smul_dotProduct,
-      dotProduct_smul, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, e2, smul_eq_mul, smul_eq_mul,
-      Matrix.mul_assoc]
-    ring
-  rw [Finset.sum_congr rfl key, ← Finset.mul_sum, ← dotProduct_sum, ← Matrix.sum_mulVec,
-    ← Finset.mul_sum, ← Finset.mul_sum, mul_neg_geom_sum, hN, sub_zero, mul_one]
-  ring
-
-theorem corner_split : Formalism.FourierDecayAlt.G.CornerSplit := by
-  intro m X B ρ₁ ρ' t
-  simp only [Cof, R0, dotProduct, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Finset.sum_mul,
-    Nat.add_sub_cancel]
-  rw [← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [add_mul, Finset.sum_mul]; ring
-
 theorem leading_cofactor : Formalism.FourierDecayAlt.G.CofLead := by
   intro m X B ρ' hX
   constructor
@@ -232,62 +199,5 @@ theorem leading_cofactor : Formalism.FourierDecayAlt.G.CofLead := by
   · rw [R0, sum_mul_zero_pow m (fun j => ∑ k : Fin m, ρ' k * ((-X) ^ j *ᵥ B) k.succ)]
     refine Finset.sum_eq_zero fun k _ => ?_
     rw [pow_mulVec_succ (isStrictUpper_neg hX), mul_zero]
-
-theorem first_coordinate_limit : Formalism.FourierDecayAlt.G.Rho1Limit := by
-  intro m D σ ρ' X B hX
-  obtain ⟨h1, h2⟩ := leading_cofactor m X B ρ' hX
-  rw [rho1, h1, h2, zero_pow (Nat.succ_ne_zero m), zero_mul, zero_sub, sub_zero]
-  rcases neg_one_pow_eq_or ℂ m with h | h
-  · rw [pow_add, h]; norm_num
-  · rw [pow_add, h]; norm_num [neg_div_neg_eq]
-
-theorem cofactor_lower_bound : Formalism.FourierDecayAlt.G.CofLower := by
-  intro m Kc hK h0
-
-  obtain ⟨d, hd, hball⟩ := Metric.isOpen_iff.mp hK.isClosed.isOpen_compl 0 h0
-  have hD : ∀ D ∈ Kc, d ≤ ‖D‖ := by
-    intro D hDK
-    by_contra hlt
-    exact hball (by simpa [Metric.mem_ball] using not_le.mp hlt) hDK
-  set Cm : ℝ := ((m : ℝ) + 1) * ((m : ℝ) * ((m : ℝ) + 1) ^ m) with hCm
-  have hCm0 : 0 ≤ Cm := by positivity
-  set q : ℝ := d / (2 * (Cm + 1)) with hq
-  have hq0 : 0 < q := by positivity
-  refine ⟨min 1 (q ^ 2), d / 2, by positivity, by positivity, ?_⟩
-  intro ε hε hε2 D hDK t ht htle X B ρ₁ ρ' σ hS hX hB hρ₁ hρ' hσ hrel
-  have hT : 0 < ‖t‖ := norm_pos_iff.mpr ht
-  have hT1 : ‖t‖ ≤ 1 := le_trans htle (min_le_left _ _)
-  have hTq : ‖t‖ ≤ q ^ 2 := le_trans htle (min_le_right _ _)
-  set L : ℝ := ‖t‖ ^ (-ε) with hLdef
-  have hL : 1 ≤ L := Real.one_le_rpow_of_pos_of_le_one_of_nonpos hT hT1 (by linarith)
-  have hL0 : 0 < L := lt_of_lt_of_le one_pos hL
-  have hsq : L ^ (m + 2) * ‖t‖ ≤ q :=
-    le_trans (rpow_bound m hT hT1 hε2) (Real.sqrt_le_iff.mpr ⟨hq0.le, hTq⟩)
-  have hR := remainder_norm_le_strict_upper (t := t) hL hT1 hS hX hB hρ'
-  have h1 : ‖t ^ (m + 1) * σ‖ ≤ L ^ (m + 2) * ‖t‖ := by
-    rw [norm_mul, norm_pow, mul_comm]
-    refine mul_le_mul (le_trans hσ (le_self_pow₀ hL (by omega)))
-      (pow_le_of_le_one hT.le hT1 (by omega)) (by positivity) (by positivity)
-  have h2 : ‖Cof X B t * ρ₁‖ ≤ ‖Cof X B t‖ * L := by
-    rw [norm_mul]
-    exact mul_le_mul_of_nonneg_left hρ₁ (norm_nonneg _)
-  have hDeq : D = t ^ (m + 1) * σ - Cof X B t * ρ₁ - R0 X B ρ' t := by
-    rw [hrel]; ring
-  have h3 : ‖D‖ ≤ L ^ (m + 2) * ‖t‖ + ‖Cof X B t‖ * L + Cm * (L ^ (m + 2) * ‖t‖) := by
-    calc ‖D‖ = ‖t ^ (m + 1) * σ - Cof X B t * ρ₁ - R0 X B ρ' t‖ := by rw [← hDeq]
-      _ ≤ ‖t ^ (m + 1) * σ‖ + ‖Cof X B t * ρ₁‖ + ‖R0 X B ρ' t‖ :=
-          le_trans (norm_sub_le _ _) (add_le_add_left (norm_sub_le _ _) _)
-      _ ≤ _ := add_le_add (add_le_add h1 h2) hR
-  have h4 : (Cm + 1) * (L ^ (m + 2) * ‖t‖) ≤ d / 2 := by
-    calc (Cm + 1) * (L ^ (m + 2) * ‖t‖) ≤ (Cm + 1) * q :=
-          mul_le_mul_of_nonneg_left hsq (by positivity)
-      _ = d / 2 := by rw [hq]; field_simp
-  have h5 : d / 2 ≤ ‖Cof X B t‖ * L := by
-    have := hD D hDK
-    nlinarith
-  have hinv : ‖t‖ ^ ε = L⁻¹ := by
-    rw [hLdef, Real.rpow_neg hT.le, inv_inv]
-  rw [hinv, ← div_eq_mul_inv, div_le_iff₀ hL0]
-  exact h5
 
 end Formalism.FourierDecayAlt.P

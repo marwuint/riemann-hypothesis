@@ -16,14 +16,6 @@ def LinN {C : Type} [CommRing C] {dd : ℕ} (f : Pt C 1 dd) : Prop :=
   ∀ i (μ : Fin 1 × Fin dd →₀ ℕ), μ.degree ≤ 1 →
     MvPowerSeries.coeff μ (f i) = MvPowerSeries.coeff μ (MvPowerSeries.X ((0 : Fin 1), i) : PS C 1 dd)
 
-def LogSt : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (dd : ℕ) (G : FGLaw C dd), ∃ lg : Pt C 1 dd, LinN lg ∧
-    ∀ i, ev (n := 2) ![addOf G.F (pt C dd 0) (pt C dd 1)] (lg i) =
-      ev (n := 2) ![pt C dd 0] (lg i) + ev (n := 2) ![pt C dd 1] (lg i)
-
-def RInvSt : Prop :=
-  ∀ (C : Type) [Field C] (dd : ℕ) (φ : Pt C 1 dd), LinN φ → ∃ ψ : Pt C 1 dd, LinN ψ ∧ comp1 φ ψ = pt C dd 0
-
 section Gen
 
 variable {C : Type} [CommRing C] {dd : ℕ}

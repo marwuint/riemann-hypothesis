@@ -1,11 +1,15 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasisStatement
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.ExistsDualLatticesStatement
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasisStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.ExistsDualLattices
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasis
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.ActQIsLocallyConstant
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GrowthGaloisInvariantsModPrimePowerLattice
 
@@ -146,24 +150,5 @@ theorem exists_div_class [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a ≠ 
   rw [show a • e g = a • ((y g : ↥L.T) : A.V) from rfl, hyV g, sub_sub_cancel]
 
 end Gen
-
-theorem card_lower_bound : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), TateFiniteness ((D.loc l).PD K) → FinZQ ((D.loc l).PD K) → ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ), ∀ ϖ : O, Irreducible ϖ → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank O (LatticeCohomology LA)) ≤ Nat.card (QuotientCohomology LA _ hI) := by
-  intro D l _ K hfin hZ LL _ _ _ O _ _ hO A LA ϖ hϖ r hI
-  obtain ⟨⟨hD, hV, hF⟩, -⟩ := id hO
-  obtain ⟨-, hB, -⟩ := GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hO A LA ϖ hϖ
-  have hW : (fun x => ϖ ^ r • x) '' (LA.T : Set A.V) ∈ nhds (0 : A.V) := hB.mem_of_mem trivial
-  have := hfin LL O hO A LA
-  have := hZ LL O hO A LA ϖ hϖ r hI
-  have : Finite (QuotientCohomology LA _ hI) := Finite.of_surjective _ (Submodule.Quotient.mk_surjective _)
-  rw [pow_mul, ← GlobalTheory.CompanionTheory.GrowthOfInvariants.card_quot_pow ϖ hϖ.ne_zero r]
-  refine card_pow_le (ϖ ^ r) (fun c : ↥(latticeCocycles LA) => (Submodule.Quotient.mk c : LatticeCohomology LA))
-    (Submodule.Quotient.mk_surjective _)
-    (fun c => (Submodule.Quotient.mk ⟨redT LA _ c, redT_mem A LA hW hI c⟩ : QuotientCohomology LA _ hI)) ?_
-  intro x y h
-  rw [← Submodule.Quotient.mk_sub]
-  refine exists_div_class A LA (pow_ne_zero r hϖ.ne_zero) hI _ ?_
-  rw [map_sub]
-  have h' := (Submodule.Quotient.eq _).1 h
-  exact h'
 
 end PositivityTheory.LocalTateOrthogonality.Bk

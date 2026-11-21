@@ -10,9 +10,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HeckeLPartialContinuationHolds
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralNormSqMatrixCoefficientNeZeroDefiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCoefficientPureTensorEqSmulInnerStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixCoeffRightTranslateDefiniteFormScalarStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralNormSqMatrixCoefficientNeZeroDefinite
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCoefficientPureTensorEqSmulInner
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixCoeffRightTranslateDefiniteFormScalar
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef
 open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.IndefR.Links
@@ -48,10 +48,10 @@ theorem real_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (
     rw [map_zero]
     unfold RealDat.ptP
     exact map_zero _
-  have H2 := GlobalTheory.T.matrixCoeff_rightTranslate_definiteForm_scalar D G Pl0 T A Ks R F hG.core i t y m hm
+  have H2 := _root_.GlobalTheory.Core.Rk.RealCoef.rcoef_scalar D G Pl0 T A Ks R F hG.core i t y m hm
   obtain ⟨z2, h2, h2ne⟩ := H2
   refine ⟨innerₛₗ ℂ w, R.ioP i (PiTensorProduct.tprod ℂ v) w, fun ν 𝓕 hν mR hmR => ?_⟩
-  have H1 := GlobalTheory.T.weilCoefficient_pureTensor_eq_smul_inner D G Pl0 T A Ks R F hG.core hF i t v ν 𝓕 hν
+  have H1 := _root_.GlobalTheory.WeilCoefScalar.wcoef_pure_eq_smul_inner D G Pl0 T A Ks R F hG.core hF i t v ν 𝓕 hν
   obtain ⟨z1, h1, h1ne⟩ := H1
   have e1 : ∀ b : GinfC (Vc D i),
       GlobalTheory.Core.Rk.IP.wcoef (R.ωP i t) ν 𝓕 (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) w))
@@ -69,7 +69,7 @@ theorem real_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (
         ring
   rw [integral_congr_ae (Filter.Eventually.of_forall e), integral_const_mul, integral_complex_ofReal]
   exact mul_ne_zero (mul_ne_zero (h1ne w hJ) (h2ne hy)) (Complex.ofReal_ne_zero.2
-    (GlobalTheory.T.integral_normSq_matrix_coefficient_ne_zero_definite D (Vc D i) (D.sp.V_sig _) (hG.core.models.vpos i) (R.cV i) (hG.core.models.cV i) w hw mR hmR))
+    (_root_.GlobalTheory.integral_normSq_coef_ne_zero D (Vc D i) (D.sp.V_sig _) (hG.core.models.vpos i) (R.cV i) (hG.core.models.cV i) w hw mR hmR))
 
 end GlobalTheory.Core.Rk.RealOcc
 

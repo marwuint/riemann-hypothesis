@@ -57,20 +57,6 @@ def StableBlock : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
         (∀ j, ‖val T e₁ e₂ (B₁ j) 0‖ < ρ) → Small ρ fun k => geomSt2 S l₁ l₂ (fam Z T φ e₁ e₂ k) -
           c * (∏ w ∈ Z, trc (τ w).ρ (KGL w n) fun g => φ w (g, 1)) * val T e₁ e₂ B 0 ^ k
 
-def CuspRead : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (K : Subgroup (GL (Fin N) (Af E))) (W : Submodule ℂ (Kinf E N → ℂ))
-  (bad : Set (Pl E)) (m₀ : (E →+* ℂ) → Multiset ℂ) (X : Set (CuspSub E N)), IsOpen (K : Set (GL (Fin N) (Af E))) →
-  FiniteDimensional ℂ W → bad.Finite → (∀ w ∉ bad, ∀ k ∈ KGL w N, locGL E N w k ∈ K) → X.Subsingleton →
-  (∀ π ∈ X, ∀ ψ ∈ π.V, ∀ t g, ψ.1 (splitCentre E N t * g) = ψ.1 g) →
-  ∃ (J : Type) (_ : Fintype J) (D : J → CD E N) (C : J → Pl E → Multiset ℂˣ),
-    (∀ j, (∀ π ∈ X, ¬ (D j).Has π) ∧ ∀ w ∉ bad, (D j).Sat w (C j w)) ∧
-    ∀ (φ : ℕ → Sm E N) (m : ℕ → (E →+* ℂ) → Multiset ℂ) (B : ℕ → Pl E → Multiset ℂˣ),
-      (∀ k, φ k ≠ 0 ∧ IsAutForm (φ k) ∧ PositivityTheory.Rg.BcB.SpectralAccumulation.TypeB K W (φ k) ∧ Cj.S.HasCap (φ k) (m k) ∧
-        (∀ w ∉ bad, IsSatVecGL w (Cj.S.fL N w) (φ k) (B k w)) ∧
-        ∀ π ∈ X, ∀ ψ ∈ π.V, ∀ z : ℂ, ¬ ∀ g, (φ k).1 g = ψ.1 g * Complex.exp (z * PositivityTheory.Rg.BcB.logAbs g.val.det)) →
-      (∀ τ (ε : ℝ), 0 < ε → ∀ᶠ k in atTop, Multiset.Rel (fun x y => ‖x - y‖ ≤ ε) (m k τ) (m₀ τ)) →
-      ∃ (j : J) (s : ℕ → ℕ), StrictMono s ∧ ∀ w ∉ bad, ∀ i : ℕ,
-        Tendsto (fun k => satEig (qV E w) N (B (s k) w) i) atTop (𝓝 (satEig (qV E w) N (C j w) i))
-
 def Peak : Prop := ∀ (B : Type) [CommRing B] [StarRing B] [Algebra ℂ B] [StarModule ℂ B] (H : Type) [NormedAddCommGroup H]
   [InnerProductSpace ℂ H] [CompleteSpace H] (R : B →⋆ₐ[ℂ] (H →L[ℂ] H)) (A : StarSubalgebra ℂ B) (p : A →⋆ₐ[ℂ] ℂ) (a₀ : A) (x : B)
   (ρ : ℝ), p a₀ = 1 → 0 < ρ →

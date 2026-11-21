@@ -19,10 +19,6 @@ def TwistedDualGensExpress.Statement : Prop :=
       (∀ l, r l ∈ chartRing R (segreVec y) c) ∧
       algebraMap R Ω ϖ ^ n • φ' m = ∑ l, (r l * ∏ k, y ⟨k, c k⟩ ^ (a' k - a k)) • φ l
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

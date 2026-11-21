@@ -315,31 +315,6 @@ def ChiVal : Prop :=
 theorem chiC_mul (i : Fin D.R.m) (g g' : G) : chiC R i (g * g') = chiC R i g * chiC R i g' := by
   simp only [chiC, map_mul, Pi.mul_apply, Finset.prod_mul_distrib]
 
-theorem chiIs_chiTop (h : ChiVal R) (i : Fin D.R.m) : ChiIs R i (chiTop R i) := by
-  have h1 : ∀ g, ∃ a, D.what₂.embLL a = (chiC R i g : ℂ) := fun g => by
-    have : ((chiC R i g : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange := by
-      rw [chiC, Units.coe_prod]
-      exact prod_mem fun PP _ => h i PP.1 PP.2 _
-    exact this
-  choose a ha using h1
-  have hne : ∀ g, a g ≠ 0 := fun g h0 => (chiC R i g).ne_zero (by rw [← ha, h0, map_zero])
-  have hex : ∃ chi, ChiIs R i chi :=
-    ⟨MonoidHom.mk' (fun g => Units.mk0 (a g) (hne g)) fun g g' => Units.ext (D.what₂.embLL.injective (by
-      simp only [Units.val_mk0, Units.val_mul, map_mul, ha, chiC_mul])), ha⟩
-  rw [chiTop, dif_pos hex]
-  exact hex.choose_spec
-
-theorem chiVal_of_roots (h : ∀ PP ∈ R.Pg, ∃ z : D.what₂.LL, IsPrimitiveRoot z (Nat.card (kP PP)ˣ))
-    (hf : ∀ PP ∈ R.Pg, Finite (kP PP)) : ChiVal R := by
-  intro i PP hPP x
-  obtain ⟨z, hz⟩ := h PP hPP
-  have := hf PP hPP
-  have : NeZero (Nat.card (kP PP)ˣ) := ⟨Nat.card_pos.ne'⟩
-  have h1 : ((R.chi ((i : ℕ) + 1) PP x : ℂˣ) : ℂ) ^ Nat.card (kP PP)ˣ = 1 := by
-    rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]
-  obtain ⟨k, -, hk⟩ := (hz.map_of_injective D.what₂.embLL.injective).eq_pow_of_pow_eq_one h1
-  exact ⟨z ^ k, by rw [map_pow, hk]⟩
-
 def RhoTie : Prop :=
   ∀ i, (∃ ρ, RhoIs (sg0 D A) ((R.FW i).j (sg0 D A)) (R.HW i _).e (actW R i _) (R.FW i).chi ρ) →
     RhoIs (sg0 D A) ((R.FW i).j (sg0 D A)) (R.HW i _).e (actW R i _) (R.FW i).chi (R.FW i).ρ
@@ -478,22 +453,11 @@ def formsN (i : Fin D.R.m) (n : ℕ) : FormsL D.what₂.LL T.Q.c.F (Fin n → D.
   chi := chiTop R i
   j := jL T R κ v₀ i n
 
-def formsOfTop (i : Fin D.R.m) : FormsL D.what₂.LL T.Q.c.F (Fin (R.nW i) → D.what₂.LL) (fun σ => (R.HW i σ).H) G :=
-  formsN T R κ v₀ i (R.nW i)
-
 abbrev topN (n : Fin D.R.m → ℕ) : RealDat D A T.Q.c.F := updFW R n fun i => formsN T R κ v₀ i (n i)
 
 abbrev topR : RealDat D A T.Q.c.F := topN T R κ v₀ (nTop T κ)
 
-def FWEq : Prop := ∀ i, R.FW i = formsOfTop T R κ v₀ i
-
-theorem fwEq_topN (n : Fin D.R.m → ℕ) : FWEq T (topN T R κ v₀ n) κ v₀ := fun _ => rfl
-
 def DimMatch : Prop := ∀ i, R.nW i = nTop T κ i
-
-def FormsExist : Prop := Nonempty (FWTie T (topN T R κ v₀ R.nW) κ v₀)
-
-def FormsExistTop : Prop := Nonempty (FWTie T (topR T R κ v₀) κ v₀)
 
 theorem isKsForm_formsN {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) : (formsN T R κ v₀ i m).IsKsForm := by
   have e : crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m = crd D.what₂.LL hb.some := crdOr_eq hb
@@ -615,12 +579,6 @@ def tieN (n : Fin D.R.m → ℕ) (h : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c
     (congrArg (evAt R i σ (v₀ i σ)) (jL_crdOr T R κ v₀ (hb i) σ f)).trans
       (jTop_good T R κ v₀ hσ hV ⟨resK σ hj.choose (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) (n i)), hj.choose_spec⟩ f)
 
-theorem formsExistTop_of (h : TieIn T R κ v₀) : FormsExistTop T R κ v₀ :=
-  ⟨tieN T R κ v₀ _ h (hasB_nTop T h.laws κ)⟩
-
-theorem formsExist_of (h : TieIn T R κ v₀) (hd : DimMatch T R κ) : FormsExist T R κ v₀ :=
-  ⟨tieN T R κ v₀ _ h fun i => hd i ▸ hasB_nTop T h.laws κ i⟩
-
 theorem tieIn_top (h : LawsJ T) (ha : AlgTie T) (hs : ∀ i σ, LowSm (R.MW i σ)) (hc : ChiR T R) (hb : IsBaseClassLevelAdapted T R) :
     TieIn T R (kapTop D) (v0 R) :=
   ⟨h, ha, kapIs_kapTop D, fun i σ => extremal_vector_is_chosen R i σ (hs i σ), hc, hb⟩
@@ -681,11 +639,6 @@ section Rows
 variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
   (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (n : Fin D.R.m → ℕ)
 
-theorem rhoTie_topN : RhoTie (topN T R κ v₀ n) := fun _ h => rhoOr_spec h
-
-theorem chiW_topN (h : ChiVal R) : (topN T R κ v₀ n).grp_chiW := fun i g =>
-  (chiIs_chiTop R h i g).trans (Units.coe_prod _ _)
-
 theorem barTie_tieN (hl : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) :
     BarTie (tieN T R κ v₀ n hl hb) := fun i σ hσ hV => by
   refine ⟨fun h => ?_, fun h => jL_eq_zero T R κ v₀ (n i) (top_lift_vanishes_off_good_embeddings T R κ v₀ hσ hV h)⟩
@@ -694,19 +647,6 @@ theorem barTie_tieN (hl : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c.F (Cu T κ 
 
 def IntAll {i : Fin D.R.m} (f : Cu T κ i) : Prop :=
   ∀ la (y : T.PtM ((i : ℕ) + 1) la), 0 ≤ y.1 (f : T.R ((i : ℕ) + 1))
-
-theorem mem_MK_formsN {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) (x : Fin m → D.what₂.LL) :
-    x ∈ (formsN T R κ v₀ i m).MK ↔ ∃ f, IntAll T κ f ∧ crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f = x := by
-  have key : ∀ f la y, (formsN T R κ v₀ i m).nrm la y ⟨crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f, f, rfl⟩ ≤ 1 ↔
-      0 ≤ y.1 (f : T.R ((i : ℕ) + 1)) := fun f la y =>
-    (congrArg (fun g : Cu T κ i => T.nrmM ((i : ℕ) + 1) la y (g : T.R ((i : ℕ) + 1)) ≤ 1) (secOr_apply hb f)).to_iff.trans
-      (T.nrmM_le_one_iff _ la y _)
-  rw [FormsL.mem_MK]
-  constructor
-  · rintro ⟨⟨f, rfl⟩, h⟩
-    exact ⟨f, fun la y => (key f la y).1 (h la y), rfl⟩
-  · rintro ⟨f, h, rfl⟩
-    exact ⟨⟨f, rfl⟩, fun la y => (key f la y).2 (h la y)⟩
 
 def JUnif : Prop :=
   ∀ i σ, (∀ (m : ℕ) (b : Fin m → Cu T κ i), LinearIndependent T.Q.c.F b →
@@ -751,52 +691,10 @@ theorem lUnif_topN (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) (he : R.models_H
     rw [← rho_formsN T R κ v₀ hu he (hb i) h] at h1
     exact h1
 
-theorem mkStable_formsN (hu : JUnif T R κ v₀) (he : R.models_HW) (hg : GeoAct T R κ v₀) {i : Fin D.R.m} {m : ℕ}
-    (hb : HasB T.Q.c.F (Cu T κ i) m) : (formsN T R κ v₀ i m).MKStable := fun g x => by
-  obtain ⟨ρC, h⟩ := hg i
-  have h1 : ∀ f, (formsN T R κ v₀ i m).ρ g (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f) =
-      crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m (ρC g f) := fun f => by
-    rw [rho_formsN T R κ v₀ hu he hb h, crdOr_eq hb]
-    exact rhoB_crd _ ρC g f
-  constructor
-  · rintro ⟨f, rfl⟩
-    exact ⟨_, (h1 f).symm⟩
-  · intro hx
-    obtain ⟨f, hf, rfl⟩ := (mem_MK_formsN T R κ v₀ hb x).1 hx
-    exact (mem_MK_formsN T R κ v₀ hb _).2 ⟨_, h.2 g f hf, (h1 f).symm⟩
-
-theorem mkFull_formsN (hl : LatFull T κ) {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) :
-    (formsN T R κ v₀ i m).MKFull :=
-  mkFull_of _ (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m) rfl (fun x => (mem_MK_formsN T R κ v₀ hb x).trans
-    (exists_congr fun _ => and_congr ⟨fun h la v hv => h la ⟨v, hv⟩, fun h la y => h la y.1 y.2⟩ Iff.rfl)) (hl i)
-
-theorem lIntegral_topN (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) (he : R.models_HW) (hu : JUnif T R κ v₀)
-    (hg : GeoAct T R κ v₀) (hl : LatFull T κ) : (topN T R κ v₀ n).LIntegral := fun i =>
-  ⟨isKsForm_formsN T R κ v₀ (hb i), mkFull_formsN T R κ v₀ hl (hb i), mkStable_formsN T R κ v₀ hu he hg (hb i)⟩
-
-def FormsExistAll : Prop :=
-  ∃ t : FWTie T (topR T R κ v₀) κ v₀, RhoTie (topR T R κ v₀) ∧ BarTie t ∧ (topR T R κ v₀).grp_chiW
-
-theorem formsExistAll_of (h : TieIn T R κ v₀) (hc : ChiVal R) : FormsExistAll T R κ v₀ :=
-  ⟨tieN T R κ v₀ _ h (hasB_nTop T h.laws κ), rhoTie_topN T R κ v₀ _, barTie_tieN T R κ v₀ _ h _, chiW_topN T R κ v₀ _ hc⟩
-
-theorem formsExistTop_iff : FormsExistTop T R κ v₀ ↔ TieIn T R κ v₀ :=
-  ⟨fun ⟨t⟩ => ⟨t.laws, t.alg_eq, t.kap, t.hv₀, t.chiR, t.x0⟩, formsExistTop_of T R κ v₀⟩
-
-theorem evaluates_tieN_iff (h : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) :
-    (tieN T R κ v₀ n h hb).Evaluates ↔ JEvExists T R κ v₀ :=
-  ⟨fun ht => (tieN T R κ v₀ n h hb).jEvExists ht, fun hj => (tieN T R κ v₀ n h hb).evaluates hj⟩
-
 theorem FWTie.dimMatch {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
     {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
     (t : FWTie T R κ v₀) : DimMatch T R κ := fun i =>
   (finrank_of_isKsForm (R.FW i) (t.ks i)).trans (t.e i).finrank_eq.symm
-
-theorem tie_of_fwEq (h : TieIn T R κ v₀) (hd : DimMatch T R κ) (hf : FWEq T R κ v₀) : Nonempty (FWTie T R κ v₀) := by
-  have h1 : ∀ FW, FW = (fun i => formsN T R κ v₀ i (R.nW i)) → Nonempty (FWTie T (updFW R R.nW FW) κ v₀) := by
-    rintro _ rfl
-    exact formsExist_of T R κ v₀ h hd
-  exact h1 R.FW (funext hf)
 
 end Rows
 

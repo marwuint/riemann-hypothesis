@@ -51,24 +51,7 @@ instance : Subsingleton (hypComplement hG v0 w0G) :=
   ⟨fun a b => Subtype.ext ((eq_zero_of_mem_hypComplementG a.2).trans
     (eq_zero_of_mem_hypComplementG b.2).symm)⟩
 
-def complementFormG : HermitianForm ℚ Eg (hypComplement hG v0 w0G) where
-  toSesq := 0
-  isSymm := ⟨fun x y => by
-    change conjHom ℚ Eg (0 : Eg) = (0 : Eg)
-    exact map_zero _⟩
-  nonsingular := by
-    refine ⟨fun a b _ => Subsingleton.elim a b, fun φ => ⟨0, ?_⟩⟩
-    ext x
-    rw [Subsingleton.elim x 0]
-    simp
-
 end GaussianPlane
-
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
 
 end
 

@@ -7,7 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeTheta
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMovesOfSelfDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitBlockCosetThetaVectorMemThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitSupportedUnitaryMovingToSelfDualSkewLStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaNormBoundHypothesesSatisfiedStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaNormBoundHypothesesSatisfied
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+import Formalism.PairingDivisors.StatementH
 open scoped Pointwise
 open Formalism.BasicNotions Formalism.IndefR.Links IsDedekindDomain NumberField
 open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3
@@ -133,7 +135,7 @@ theorem om_unitVec_eig : ∀ (D : D7) (δ t0 : ℂ) (hc : Crv D ⊤ δ) (ht : GL
   have h1 := (GlobalTheory.InducedType.induced_type D).1
   have he := hv.1
   have hT := VacMove.vac_TT h1 hc he
-  have hI : Inp D := GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied D
+  have hI : Inp D := _root_.GlobalTheory.NormSum.inp_all D
   have hev : Even (a * d) := hd.mul_left a
   have hcc : D.host.conj • D.host.conj • 𝔪 = 𝔪 := by
     have h2 : D.host.conj * D.host.conj = 1 := AlgEquiv.ext fun x => VacMove.conj_conj D x

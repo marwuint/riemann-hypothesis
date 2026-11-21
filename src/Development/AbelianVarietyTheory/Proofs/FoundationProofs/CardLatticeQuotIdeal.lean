@@ -88,8 +88,3 @@ theorem coefLat_eq (D : D7) (cc : Ideal (𝓞 D.host.K)) :
 
 end GlobalTheory.MatrixLatticeIndex
 
-open GlobalTheory.NormSum.MovedLattice GlobalTheory.MatrixLatticeIndex in
-
-theorem GlobalTheory.MatrixLatticeIndex.card_lattice_quot_ideal : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (a d : ℕ) (q : Ideal (𝓞 D.host.E)), cc ≠ ⊥ → q ≠ ⊥ → Nat.card (lat0 D cc a d ⧸ (latQ D cc a d q).addSubgroupOf (lat0 D cc a d)) = Ideal.absNorm q ^ (a * d) := by
-  intro D cc a d q hcc hq
-  rw [card_matIn, coefLat_eq, relIndex_smul _ (mul_ne_zero (ext_ne_zero D hcc) (inverseHalfDifferent_ne_zero D)) q hq]

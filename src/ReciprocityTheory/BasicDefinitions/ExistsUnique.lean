@@ -15,8 +15,6 @@ class IsCNL (O : Type u) (A : Type w) [CommRing O] [IsLocalRing O] [CommRing A] 
 
 attribute [instance] IsCNL.noeth IsCNL.complete IsCNL.localHom
 
-abbrev PS (O : Type u) [CommRing O] (a : ℕ) : Type u := MvPowerSeries (Fin a) O
-
 structure Pattern (n : ℕ) where
   rel : Fin n → Fin n → Prop
   refl : ∀ i, rel i i
@@ -26,20 +24,8 @@ namespace Pattern
 
 variable {n : ℕ}
 
-def full (n : ℕ) : Pattern n := ⟨fun _ _ => True, fun _ => trivial, fun _ _ _ _ _ => trivial⟩
-
-def upper (n : ℕ) : Pattern n := ⟨fun i j => i ≤ j, fun i => le_refl i, fun _ _ _ h h' => le_trans h h'⟩
-
-def diag (n : ℕ) : Pattern n := ⟨fun i j => i = j, fun _ => rfl, fun _ _ _ h h' => h.trans h'⟩
-
 def Mem (S : Pattern n) {A : Type*} [Zero A] (X : Matrix (Fin n) (Fin n) A) : Prop :=
   ∀ i j, ¬ S.rel i j → X i j = 0
-
-def mat (S : Pattern n) (A : Type*) [CommRing A] : Submodule A (Matrix (Fin n) (Fin n) A) where
-  carrier := {X | S.Mem X}
-  add_mem' := fun {X Y} hX hY i j h => by simp [hX i j h, hY i j h]
-  zero_mem' := fun _ _ _ => rfl
-  smul_mem' := fun c X hX i j h => by simp [hX i j h]
 
 end Pattern
 
@@ -47,10 +33,6 @@ section Lift
 
 variable (O : Type u) [CommRing O] [IsLocalRing O]
 variable {G : Type v} [Group G] [TopologicalSpace G] {n : ℕ}
-
-structure IsResidual (S : Pattern n) (rbar : G →* GL (Fin n) (ResidueField O)) : Prop where
-  cont : IsOpen {g : G | rbar g = 1}
-  mem : ∀ g, S.Mem (rbar g).val
 
 structure IsLift (S : Pattern n) (rbar : G →* GL (Fin n) (ResidueField O))
     {A : Type w} [CommRing A] [IsLocalRing A] [Algebra O A] [IsLocalHom (algebraMap O A)]
@@ -63,15 +45,6 @@ def push {A : Type w} {B : Type w'} [CommRing A] [CommRing B] [Algebra O A] [Alg
     (ρ : G →* GL (Fin n) A) : G →* GL (Fin n) B :=
   (Matrix.GeneralLinearGroup.map f.toRingHom).comp ρ
 
-structure IsUniversal (S : Pattern n) (rbar : G →* GL (Fin n) (ResidueField O))
-    (R : Type u) [CommRing R] [IsLocalRing R] [Algebra O R] [IsCNL O R] (ρu : G →* GL (Fin n) R) : Prop where
-  isLift : IsLift O S rbar ρu
-  existsUnique : ∀ (A : Type u) [CommRing A] [IsLocalRing A] [Algebra O A] [IsCNL O A]
-    (ρ : G →* GL (Fin n) A), IsLift O S rbar ρ → ∃! f : R →ₐ[O] A, push O f ρu = ρ
-
 end Lift
-
-def MazurFin (p : ℕ) (G : Type v) [Group G] [TopologicalSpace G] : Prop :=
-  ∀ H : OpenSubgroup G, Finite (ContinuousMonoidHom H (Multiplicative (ZMod p)))
 
 end ReciprocityTheory.Def

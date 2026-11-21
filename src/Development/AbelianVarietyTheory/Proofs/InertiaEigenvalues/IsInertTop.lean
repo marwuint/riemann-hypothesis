@@ -45,15 +45,6 @@ def VacPair (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV 
     (∀ τ, IsCartanInv (gramAt D W τ) (s τ)) ∧
     IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f₀
 
-def StdBase {V W : HSp D} (B : Base V W) : Prop :=
-  V.gram = 1 ∧ V.SigOK ∧ (B.F.ΛS : Set (Fin V.rank → D.host.E)) = L0c D V ∧ (B.F.ΛT : Set (Fin W.rank → D.host.E)) = L0c D W ∧
-    (B.F.ΛS : Set (Fin V.rank → D.host.E)) = (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E))
-
-def Induces (W : HSp D) (l : Geo.Tor.Level H) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)) (u : GA D W)
-    (g : Dw.La →ₗ[𝓞 D.host.E] Dw.La) : Prop :=
-  u ∈ GfC W ∧ gLat W u = Formalism.L2.Pj.latHat W ∧ ∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 D.host.E) Dw.La), ∃ w ∈ latGHat W 1,
-    (finHom W u).1.mulVec (finVec W (ι a)) - finVec W (ι (g a)) = (l.M : ℕ) • w
-
 def clsScal (χ : (AE D)ˣ →* Circle) (y : (AE D)ˣ) {n : ℕ} (Λ : GenLat D.host.E n) (r : ℕ) : ℂ :=
   ((χ y : Circle) : ℂ)⁻¹ * ((Real.sqrt ((((Λ.La ⊓ Formalism.L2.Pj.stdLat D.host.E n).toAddSubgroup.addSubgroupOf
     Λ.La.toAddSubgroup).index : ℝ) ^ r) : ℝ) : ℂ)⁻¹
@@ -63,12 +54,6 @@ variable (Dw) in
 def IsLetters {m n : ℕ} (lt : LtN Dw n ≃ FVar D m n) : Prop :=
   ∀ ℓ, (lt ℓ).2.2 = ℓ.2.2 ∧ ((ℓ.1 = tauE D (lt ℓ).1 ∧ ((lt ℓ).2.1 : ℕ) = ℓ.2.1) ∨
     (ℓ.1 = conjEmb (tauE D (lt ℓ).1) ∧ ((lt ℓ).2.1 : ℕ) = Dw.p + ℓ.2.1))
-
-variable (Dw) in
-
-def WtIs {n : ℕ} (w : Weight D n) (a : (D.host.E →+* ℂ) × ℕ → ℕ) : Prop :=
-  ∀ ρ, w.p ρ = Dw.p ∧ w.q ρ = Dw.q ∧ (∀ i < Dw.p, a (tauE D ρ, i) = w.ap ρ i) ∧
-    ∀ i < Dw.q, a (conjEmb (tauE D ρ), i) = w.am ρ i
 
 variable (Dw) in
 
@@ -101,13 +86,6 @@ def MarkedVal {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (θ : InfFam D) (W :
     ∀ (y₂ : FrPt d.Xo₂ d.c₂ ℂ) (A₂ : AnFib X bas idx e (frMove θ W hr X k (fun τ => x₀ τ.1)) X.Λ y₂), A₂.Marked mk →
       evR d.Xo₂ d.c₂ f y₂ = ν k
 
-def FibreMove {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (W : HSp D)
-    (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)) {A : Type} (ν : GA D W → A) (cs : A → Rul d.Xo₂ d.c₂) : Prop :=
-  ∀ (s : Sim Dw) (ρ : d.Xo₂.X ≅ d.Xo₂.X) (u : GA D W), d.Xo₂.LevAut s ρ → Induces W d.l₂ ι u (s.f d.l₂.M) →
-    ∀ a a', (∀ h, ν (h * u) = a' ↔ ν h = a) →
-      ∀ (K : Type) [Field K] [Algebra d.c₂.F K] (y y' : FrPt d.Xo₂ d.c₂ K),
-        y'.x = CategoryTheory.CategoryStruct.comp y.x ρ.hom → evR d.Xo₂ d.c₂ (cs a') y' = evR d.Xo₂ d.c₂ (cs a) y
-
 def IsThetaSum {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) {T : Type} [Fintype T] (cs : T → Rul d.Xo₂ d.c₂)
     (w : T → (Fin n → LevQ Dw d.l₂) → c.F) (La : GenLat D.host.E n) (N : ℕ) (P : T → MvPolynomial (LtN Dw n) c.F)
     (f : Rul Xo c) : Prop :=
@@ -118,47 +96,9 @@ def IsThetaSum {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) {T : Type} [Fintype
         (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) (P t)) y₂ (v t)) ∧
       evR Xo c f y = ∑ t, evR d.Xo₂ d.c₂ (cs t) y₂ * v t
 
-variable (l) in
-
-def CoverFor (p : ℕ) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) : Prop :=
-  ∃ (pd : ℕ) (I : Ideal (𝓞 D.host.E)) (l₂ : Geo.Tor.Level H), GlobalTheory.CoverHalf.IsCoverLevel l pd I l₂ ∧ ¬ p ∣ pd ∧
-    ∀ PP ∈ Q, I.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ PP.asIdeal ∧ (pd : 𝓞 D.host.E) ∈ PP.asIdeal
-
-def UnramOver (F F₁ : IntermediateField ℚ ℂ) (p : ℕ) : Prop :=
-  ∀ τ : ℂ ≃+* ℂ, (∀ x ∈ F, τ x = x) → (∀ x ∈ F₁, τ x ∈ F₁) ∧
-    ∀ O : ValuationSubring ℂ, (p : ℂ) ∈ O.nonunits → (∀ x : ℂ, IsAlgebraic ℚ x → x ∈ O → τ x - x ∈ O.nonunits) →
-      ∀ x ∈ F₁, τ x = x
-
-def IsInert (A : ValuationSubring ℂ) (K : Subfield ℂ) : Prop :=
-  ∀ τ : ℂ ≃+* ℂ, (∀ x ∈ K, τ x = x) → ∀ x : ℂ, IsAlgebraic ℚ x → x ∈ A → τ x - x ∈ A.nonunits
-
 def intOf (A : ValuationSubring ℂ) (K : Subfield ℂ) : Subring ℂ := A.toSubring ⊓ K.toSubring
 
 theorem mem_intOf {A : ValuationSubring ℂ} {K : Subfield ℂ} {x : ℂ} : x ∈ intOf A K ↔ x ∈ A ∧ x ∈ K := Iff.rfl
-
-def PlaceOf (A : ValuationSubring ℂ) (F : IntermediateField ℚ ℂ) [NumberField F] (la : HeightOneSpectrum (𝓞 F)) : Prop :=
-  ∀ x : F, la.valuation F x ≤ 1 ↔ (x : ℂ) ∈ A
-
-def ValIn (t : Twist D Circle) (K : Subfield ℂ) : Prop :=
-  (∃ m : ℕ, 0 < m ∧ ∀ x, t.chi x ^ m = 1) ∧ (∀ x, ((t.chi x : Circle) : ℂ) ∈ K) ∧
-    ∀ PP ∈ t.Q, ∀ u, ((t.res PP u : Circle) : ℂ) ∈ K
-
-def HeckeIn (χ : Formalism.L2.Host.HChar D.host.E) (b : ℕ) (K : Subfield ℂ) : Prop :=
-  ∀ P : HeightOneSpectrum (𝓞 D.host.E), (b : 𝓞 D.host.E) ∉ P.asIdeal → GlobalTheory.IdemSupport.cP P ≠ P →
-    ((χ.val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ) ∈ K
-
-def formLat (O : Subring ℂ) {c : Coeff l} (la : HeightOneSpectrum (𝓞 c.F)) {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
-    (σ : c.F →+* ℂ) (W : HSp D) (dict : GA D W → Σ k, Frame ((U σ).X k).Ψ r) (mu : GA D W → ℂ) (cc : (U σ).Comp → ℂ)
-    (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Submodule O (GA D W → ℂ) :=
-  Submodule.span O {φ | ∃ f ∈ GlobalTheory.GoodPts.supSet Xo c la (cusp Xo c U a n),
-    φ = (lieFac Dw (xiR D) a : ℂ) • adel W dict (muPin W dict mu cc) (rdU (U σ) f)}
-
-theorem isInert_top (A : ValuationSubring ℂ) : IsInert A ⊤ := fun τ h x _ _ => by
-  rw [h x trivial, sub_self]
-  exact zero_mem _
-
-theorem IsInert.mono {A : ValuationSubring ℂ} {K K' : Subfield ℂ} (h : IsInert A K) (hK : K ≤ K') : IsInert A K' :=
-  fun τ hτ => h τ fun x hx => hτ x (hK hx)
 
 end GlobalTheory.SingleDatum
 

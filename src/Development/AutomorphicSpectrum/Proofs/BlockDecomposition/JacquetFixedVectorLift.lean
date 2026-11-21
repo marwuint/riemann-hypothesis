@@ -1,23 +1,18 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetHeckeCompatHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjectionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetHeckeCompatHolds
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjection
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusTrivialOnLeviCompactStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactGroupFiniteCosetReps
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetHeckeConditionHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetHeckeConditionHolds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralStrictlyDominantExistsStatement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsFixedLift
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.VecStab
 
 open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 noncomputable section
 
 namespace GlobalTheory.CompanionTheory.JacquetLemma
-
-noncomputable def vecStab {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V) (u : V) :
-    Subgroup G :=
-  _root_.UpperTheory.Reformulated.B.VectorStabilizer₂.vecStab π u
 
 def cosetStab {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
     (q : Submodule ℂ V) (u : V) : Subgroup G where
@@ -76,8 +71,8 @@ namespace GlobalTheory.CompanionTheory.JacquetLemma
 theorem jacquet_surjective : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N h : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (J : Subgroup (GL (Fin N) k)), IsOpen (J : Set (GL (Fin N) k)) → IsCompact (J : Set (GL (Fin N) k)) → HasIwahoriFact k N J d hd → (∀ a, 0 < d a) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsAdmissible π → ∀ w ∈ fixed (jac (stdBlocks d hd) π) (KM k N J d hd), ∃ v : fixed π J, (Submodule.Quotient.mk (v : V) : Jacquet π (unipRad k (stdBlocks d hd))) = w := by
   intro k _ _ _ _ N h d hd J hJo hJc hI hpos V _ _ π hπ w hw
   obtain ⟨a, hac, hstrict, hshrink⟩ := GlobalTheory.T.central_strictly_dominant_exists k N h d hd J hJo hJc hI hpos
-  obtain ⟨T, hT⟩ := GlobalTheory.T.jacquet_hecke_condition_holds k N J hJo hJc V π hπ.1 (leviEmb k (stdBlocks d hd) a)
-  have hC2 := GlobalTheory.T.jacquet_hecke_compat_holds k N h d hd J hJo hJc hI hpos V π hπ.1 a hstrict.1 T hT
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.CompanionTheory.HeckeExist.exists_heckeOp k N J hJo hJc V π hπ.1 (leviEmb k (stdBlocks d hd) a)
+  have hC2 := _root_.GlobalTheory.CompanionTheory.Lbc.jacquet_hecke_operator_compat k N h d hd J hJo hJc hI hpos V π hπ.1 a hstrict.1 T hT
   haveI : FiniteDimensional ℂ (fixed π J) := hπ.2 J hJo hJc
   set q := twKer π (unipRad k (stdBlocks d hd)) 1 with hq
   let p : fixed π J →ₗ[ℂ] (V ⧸ q) := q.mkQ.comp (fixed π J).subtype

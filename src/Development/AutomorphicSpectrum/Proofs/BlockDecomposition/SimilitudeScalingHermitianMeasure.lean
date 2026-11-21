@@ -3,7 +3,8 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMe
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentForm
 import Development.WeilBound.CoreStatements.ThetaDilations.SdTransport
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalHHermScal
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatrixEulerProductStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatrixEulerProduct
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
@@ -51,7 +52,7 @@ def scalEquiv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
     [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R]
     (n : ℕ) (l : F) (hl : l ≠ 0) : HermR R σ n ≃ₜ+ HermR R σ n :=
   have hc : ∀ a : R, Continuous (scalH R σ (n := n) a) := fun a => by
-    obtain ⟨iTR, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+    obtain ⟨iTR, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
     haveI := iTR
     exact Continuous.subtype_mk ((continuous_const_smul _).comp continuous_subtype_val) _
   have hm : algebraMap F R l * algebraMap F R l⁻¹ = 1 := by
@@ -104,7 +105,7 @@ theorem local_scal {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   haveI := hLC
   haveI := hSC
   haveI := hT2
-  obtain ⟨iTR, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+  obtain ⟨iTR, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   haveI := iTR
   obtain ⟨jLC, jSC, jT2, jB, -⟩ := GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hcm R 1
   haveI := jLC
@@ -118,7 +119,7 @@ theorem scal_module : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   have hdet : (oneByOne l : Matrix (Fin 1) (Fin 1) E).det ≠ 0 := by
     rw [Matrix.det_fin_one]
     exact (map_ne_zero (algebraMap F E)).2 hl
-  obtain ⟨ci, c, hu, hi, hv⟩ := GlobalTheory.T.hermitian_matrix_euler_product F E σ hcm 1 (oneByOne l) hdet
+  obtain ⟨ci, c, hu, hi, hv⟩ := _root_.GlobalTheory.CompanionTheory.SW.pf_herm F E σ hcm 1 (oneByOne l) hdet
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
   haveI : ∀ v, BorelSpace (Fv F v) := fun _ => ⟨rfl⟩
   refine ⟨NNReal.sqrt ci, fun v => NNReal.sqrt (c v), (PositivityTheory.PlacePermOperatorBicommutantSpan.up_alg F ci ci c c hu hu).2.2.2.2.2.1, ?_, ?_⟩

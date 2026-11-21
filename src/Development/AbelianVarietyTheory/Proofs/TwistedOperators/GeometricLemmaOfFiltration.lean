@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GeometricLemmaCellSemisimplificationGLStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GeometricLemmaCellSemisimplificationGL
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
 
 namespace GlobalTheory
 
@@ -9,6 +10,6 @@ theorem geometricLemma_of_filtration :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemmaFiltration →
       GlobalTheory.Published.GeometricLemma := by
   intro hB hF k _ _ _ _
-  exact ⟨hF k, GlobalTheory.T.geometricLemma_cell_semisimplification_GL hB k⟩
+  exact ⟨hF k, _root_.GlobalTheory.SmGL.CellSemis.cellSemisimplification hB k⟩
 
 end GlobalTheory

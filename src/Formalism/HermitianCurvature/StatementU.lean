@@ -150,23 +150,11 @@ def LowWSpec : Prop :=
   ∀ (p : ℕ) (σ : Equiv.Perm (Fin p)) (l : Matrix (Fin p) (Fin p) ℂ),
     (G.IsLowerUni l ∧ G.IsLowerUni (wP σ * l * (wP σ)⁻¹)) ↔ ∃ v : LW σ → ℂ, l = lowW σ v
 
-def HeadOrbit : Prop :=
-  ∀ (p : ℕ) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ), (∀ i, d i ≠ 0) →
-    (∀ l u : Matrix (Fin p) (Fin p) ℂ, G.IsLowerUni l → G.IsUpperUni u →
-      ∃! q : (LW σ → ℂ) × (G.UT p → ℂ), l * hMat σ d * u = headH σ d q.1 q.2) ∧
-    ∀ q : (LW σ → ℂ) × (G.UT p → ℂ), ∃ l u : Matrix (Fin p) (Fin p) ℂ, G.IsLowerUni l ∧ G.IsUpperUni u ∧
-      l * hMat σ d * u = headH σ d q.1 q.2
-
 def CharBlock : Prop :=
   ∀ (p s : ℕ) (a : Fin s → Fin p → ℂ) (b : Fin p → Fin s → ℂ) (lh uh : Matrix (Fin p) (Fin p) ℂ)
     (l u : Matrix (Fin s) (Fin s) ℂ), G.IsLowerUni lh → G.IsLowerUni l → G.IsUpperUni uh → G.IsUpperUni u →
     subS (blk2 1 0 (Matrix.of a) 1 * blk2 lh 0 0 l) = subS lh + cornerA a + subS l ∧
     supS (blk2 uh 0 0 u * blk2 1 (Matrix.of b) 0 1) = supS uh + cornerB b + supS u
-
-def CornerInv : Prop :=
-  ∀ (p s : ℕ) (a : Fin s → Fin p → ℂ) (b : Fin p → Fin s → ℂ) (lh uh : Matrix (Fin p) (Fin p) ℂ)
-    (l u : Matrix (Fin s) (Fin s) ℂ), G.IsLowerUni lh → G.IsLowerUni l → G.IsUpperUni uh → G.IsUpperUni u →
-    cornerA (l * Matrix.of a * lh⁻¹) = cornerA a ∧ cornerB (uh⁻¹ * Matrix.of b * u) = cornerB b
 
 def ZhSlice : Prop :=
   ∀ (k j ρ : ℕ) (x x' : RC k j ρ) (Z : Matrix (Fin j) (Fin j) ℂ) (γ : B.Mat k ρ),
@@ -432,13 +420,6 @@ def StarPi : Prop :=
   ∀ (k j ρ : ℕ) (ι E : Type) [Fintype ι] [NormedAddCommGroup E] [NormedSpace ℂ E] (F₁ : B.Mat k (j + ρ) → ι → E)
     (A₁ B₁ : ℝ) (Q : ℕ) (K : Set ℝ), 0 ≤ B₁ → (∀ i, Star k j ρ (fun g => F₁ g i) A₁ Q B₁ K) → Star k j ρ F₁ A₁ Q B₁ K
 
-def BudgetWord : Prop :=
-  ∀ N j r : ℕ, 1 ≤ j → j ≤ r →
-    N * j ≤ N * r ∧ (N * j + N * j ^ 2) + j * (N * j) ≤ 3 * N * r ^ 2
-
-def BudgetWordStar : Prop :=
-  ∀ N r n : ℕ, 2 * r + 2 ≤ n → 3 * N * r ^ 2 ≤ N * n ^ 2 + n ^ 3
-
 def DerivativeBudgetCount : Prop :=
   ∀ (r m mmB o κjo As : ℕ) (Cc A₀ : ℝ), 1 ≤ r → m + 1 ≤ As → mmB ≤ As → o ≤ As → κjo ≤ As → 20 ≤ Cc →
     Cc * ((r : ℝ) + 1) ^ 4 * (As : ℝ) ≤ A₀ →
@@ -539,60 +520,9 @@ def DerivBoundOfDecay : Prop :=
     (∀ Z : G.Mat s, G.detM Z ≠ 0 → ContDiffAt ℝ k Φ Z ∧ ∀ q ≤ k, ‖iteratedFDeriv ℝ q Φ Z‖ ≤ K * (1 + ‖Z‖) ^ (-A)) →
     G.DerivBound k Kd (fun Z => K * min 1 (‖Z‖ ^ (-A))) Φ
 
-def DerivBoundComp : Prop :=
-  ∀ (s k : ℕ) (V V' : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
-    (T : V →L[ℂ] V') (Φ : G.Mat s → V) (Kd : Set ℂ) (bd : G.Mat s → ℝ),
-    G.DerivBound k Kd bd Φ → G.DerivBound k Kd (fun Z => ‖T‖ * bd Z) (fun Z => T (Φ Z))
-
-def SeminormCompletion : Prop :=
-  ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (p : Seminorm ℂ V) (Cp : ℝ), (∀ v, p v ≤ Cp * ‖v‖) →
-    ∃ (V' : Type) (_ : NormedAddCommGroup V') (_ : NormedSpace ℂ V'), CompleteSpace V' ∧
-      ∃ T : V →L[ℂ] V', (∀ v, ‖T v‖ = p v) ∧ DenseRange T
-
-def CCS {k ρ : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (a : ℝ) (mm : ℕ) (S : Set (B.Mat k ρ))
-    (F : B.Mat k ρ → E) : Prop :=
-  B.InCC a mm F ∧ ∀ g ∈ B.GV k ρ, g ∉ S → F g = 0
-
-def PosP {k ρ : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (bet : (B.Mat k ρ → E) → (B.Mat k ρ → E) → ℂ) (a : ℝ) (mm : ℕ) (S : Set (B.Mat k ρ)) : Prop :=
-  B.SesqOn (CCS a mm S) bet ∧ ∀ x, CCS a mm S x → (bet x x).im = 0 ∧ 0 ≤ (bet x x).re
-
-def LBound {k ρ : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (bet : (B.Mat k ρ → E) → (B.Mat k ρ → E) → ℂ) (AB : ℝ) (mmB : ℕ) (S : Set (B.Mat k ρ)) (Cp : ℝ) : Prop :=
-  ∀ (x : B.Mat k ρ → E) (c : ℝ), B.CCle AB mmB x c → (∀ g ∈ B.GV k ρ, g ∉ S → x g = 0) → ‖bet x x‖ ≤ (Cp * c) ^ 2
-
 def CCMono : Prop :=
   ∀ (k ρ : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (a AB c : ℝ) (mm : ℕ) (F : B.Mat k ρ → E),
     AB ≤ a → B.CCle a mm F c → B.CCle AB mm F c
-
-def SeminormOfForm : Prop :=
-  ∀ (k ρ : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (bet : (B.Mat k ρ → E) → (B.Mat k ρ → E) → ℂ) (a AB Cp : ℝ) (mmB : ℕ) (S : Set (B.Mat k ρ)),
-    AB ≤ a → 0 ≤ Cp → PosP bet a mmB S → LBound bet AB mmB S Cp →
-    ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (M : CCModel k ρ E a mmB S V),
-      ∃ p : Seminorm ℂ V, (∀ v, p v ^ 2 = (bet (M.ev v) (M.ev v)).re) ∧ ∀ v, p v ≤ Cp * ‖v‖
-
-def UseDerivBound : Prop :=
-  ∀ C₁ C₂ : ℕ, ∃ Cc : ℝ,
-  ∀ (k p s ρ : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (ι : Type) [Fintype ι]
-    (U : UData k p s ρ Wp Wq ι), U.Ok C₂ → ∀ A₀ : ℝ, Cc * (((p + s + ρ : ℕ) : ℝ) + 1) ^ 4 * (U.As : ℝ) ≤ A₀ →
-    ((C₁ : ℝ) + 1) * (((p + s + ρ : ℕ) : ℝ) + 1) ^ 3 * (U.As : ℝ) ≤ U.a C₂ A₀ ∧
-    (C₁ : ℝ) * (s : ℝ) ^ 2 ≤ U.a C₂ A₀ ∧ U.AB ≤ U.a C₂ A₀ ∧
-    ∃ C : ℝ, ∀ (bet : (B.Mat k ρ → ι → (Wq →L[ℂ] Wp)) → (B.Mat k ρ → ι → (Wq →L[ℂ] Wp)) → ℂ) (Cp : ℝ), 0 ≤ Cp →
-      PosP bet (U.a C₂ A₀) U.mmB U.S → LBound bet U.AB U.mmB U.S Cp →
-      (∀ x y x' y' : B.Mat k ρ → ι → (Wq →L[ℂ] Wp), (∀ g ∈ B.GV k ρ, x g = x' g) → (∀ g ∈ B.GV k ρ, y g = y' g) →
-        bet x y = bet x' y') →
-      ∀ (f : B.Mat k (p + s + ρ) → (Wq →L[ℂ] Wp)) (c : ℝ), B.CCle A₀ (3 * U.As) f c →
-      ∃ (V' : Type) (_ : NormedAddCommGroup V') (_ : NormedSpace ℂ V'), CompleteSpace V' ∧ ∃ Φ' : G.Mat s → V',
-        (∀ (J : Finset (G.Mat s)) (w : G.Mat s → ℂ), (∀ Z ∈ J, G.detM Z ≠ 0) →
-          ‖∑ Z ∈ J, w Z • Φ' Z‖ ^ 2 = (bet (∑ Z ∈ J, w Z • U.Phi f Z) (∑ Z ∈ J, w Z • U.Phi f Z)).re) ∧
-        ∀ Kd : Set ℂ, (0 : ℂ) ∉ Kd →
-          G.DerivBound (C₂ * s ^ 2) Kd (fun Z => C * Cp * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀)))) Φ'
-
-def UseDerivBoundOfParts : Prop :=
-  GermExpansionHypothesis → CCModelExists → CCMono → SeminormOfForm → SeminormCompletion → DerivBoundOfDecay → DerivBoundComp →
-    UseDerivBound
 
 def Mlev (k ρ : ℕ) : ℕ := k + 2 * ρ + 3
 
@@ -639,27 +569,6 @@ def UseGerm : Prop :=
 def UseGermOfParts : Prop :=
   G.GermRate → G.DetMatch → GermExpansionHypothesis → DerivBoundOfDecay → PowerMatch → ScaleMatch → UseGerm
 
-def GermInForm : Prop :=
-  ∃ (C₂ : ℕ) (Cc : ℝ),
-  ∀ (k p m ρ : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (ι : Type) [Fintype ι]
-    (U : UData k p (m + 1 + 1) ρ Wp Wq ι), U.Ok C₂ →
-    ∀ A₀ : ℝ, Cc * (((p + (m + 1 + 1) + ρ : ℕ) : ℝ) + 1) ^ 4 * (U.As : ℝ) ≤ A₀ →
-    ∀ Kc : Set ℂ, IsCompact Kc → (0 : ℂ) ∉ Kc → ∃ Cst : ℝ,
-    ∀ (bet : (B.Mat k ρ → ι → (Wq →L[ℂ] Wp)) → (B.Mat k ρ → ι → (Wq →L[ℂ] Wp)) → ℂ) (Cp : ℝ), 0 ≤ Cp →
-      PosP bet (U.a C₂ A₀) U.mmB U.S → LBound bet U.AB U.mmB U.S Cp →
-      (∀ x y x' y' : B.Mat k ρ → ι → (Wq →L[ℂ] Wp), (∀ g ∈ B.GV k ρ, x g = x' g) → (∀ g ∈ B.GV k ρ, y g = y' g) →
-        bet x y = bet x' y') →
-      ∀ (f : B.Mat k (p + (m + 1 + 1) + ρ) → (Wq →L[ℂ] Wp)) (c : ℝ), B.CCle A₀ (3 * U.As) f c →
-      ∃ (V' : Type) (_ : NormedAddCommGroup V') (_ : NormedSpace ℂ V'), CompleteSpace V' ∧
-        ∃ Φ' : G.Mat (m + 1 + 1) → V',
-        (∀ (J : Finset (G.Mat (m + 1 + 1))) (w : G.Mat (m + 1 + 1) → ℂ), (∀ Z ∈ J, G.detM Z ≠ 0) →
-          ‖∑ Z ∈ J, w Z • Φ' Z‖ ^ 2 = (bet (∑ Z ∈ J, w Z • U.Phi f Z) (∑ Z ∈ J, w Z • U.Phi f Z)).re) ∧
-        ∀ t c' : ℂ, t ≠ 0 → c' * t ^ (m + 1) ∈ Kc →
-          ‖G.remainder betaU m (fun _ => 1) Φ' t c'‖ ≤ Cst * Cp * c * ‖t‖
-
-def GermInFormOfParts : Prop := G.GermRate → G.DetMatch → UseDerivBound → ScaleMatch → GermInForm
-
 section top
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
@@ -694,20 +603,6 @@ def TopCells : Prop :=
       (∀ CC : G.Mat s, Integrable (fun η : XiH p s σ => psiH β σ η • Φ0 (ZjH σ d η CC)) (muXiH p s σ)) ∧
       DecayAll q (fun i => e i / (5 * ((p + s : ℕ) : ℝ))) (Cst * K) (PhiTop β σ d Φ0)
 
-def TopCellsOfParts : Prop := ZjAffine → BlockHeadSizes → SizesTop → IntTop → TopCells
-
-def BudgetTop : Prop :=
-  ∀ C₁ C₂ Ca : ℕ, ∃ Cc : ℝ, ∀ (r n s As al : ℕ) (A A₀ : ℝ), 2 * r + 2 ≤ n → s ≤ r + 1 → n ^ 3 ≤ As →
-    al ≤ C₂ * s ^ 2 + 1 → Cc * ((r : ℝ) + 1) ^ 4 * (As : ℝ) ≤ A₀ → A₀ - (Ca : ℝ) * (r : ℝ) * (As : ℝ) ≤ A →
-    (C₁ : ℝ) * (s : ℝ) ^ 3 ≤
-      (A - (Ca : ℝ) * ((n : ℝ) ^ 2 + (r : ℝ) ^ 3 + (r : ℝ) * (al : ℝ))) / (5 * ((r : ℝ) + 1)) - (Ca : ℝ) * (r : ℝ) ^ 2
-
-def BudgetTopConv : Prop :=
-  ∀ C₁ C₂ Ca : ℕ, ∃ Cc : ℝ, ∀ (r n s As al : ℕ) (A A₀ : ℝ), 2 * r + 2 ≤ n → 1 ≤ s → s ≤ r + 1 → n ^ 3 ≤ As →
-    al ≤ C₂ * s ^ 2 + 1 → Cc * ((r : ℝ) + 1) ^ 4 * (As : ℝ) ≤ A₀ → A₀ - (Ca : ℝ) * (r : ℝ) * (As : ℝ) ≤ A →
-    (C₁ : ℝ) * (s : ℝ) ^ 2 + 2 * ((r : ℝ) + 1) ^ 2 <
-      (A - (Ca : ℝ) * ((n : ℝ) ^ 2 + (r : ℝ) ^ 3 + (r : ℝ) * (al : ℝ))) / (5 * ((r : ℝ) + 1)) - (Ca : ℝ) * (r : ℝ) ^ 2
-
 def UseGermTop : Prop :=
   ∃ C₁ C₂ : ℕ, ∀ (p m : ℕ) (β : ℂ), β ≠ 0 → ∀ (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ), (∀ i, d i ≠ 0) →
     ∀ (e : ℕ → ℝ) (A : ℝ), (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2 ≤ A →
@@ -720,18 +615,5 @@ def UseGermTop : Prop :=
         ‖G.remainder β m (fun _ => 1) (PhiTop β σ d Φ0) t c‖ ≤ Cst * K * ‖t‖
 
 def UseGermTopOfParts : Prop := G.GermRate → G.DetMatch → TopCells → DerivBoundOfDecay → UseGermTop
-
-def UseGermTopCount : Prop :=
-  ∃ C₂ : ℕ, ∀ Ca : ℕ, ∃ Cc : ℝ, ∀ (p m : ℕ) (β : ℂ), β ≠ 0 → ∀ (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ),
-    (∀ i, d i ≠ 0) → ∀ (n As : ℕ) (A A₀ : ℝ), 2 * (p + m + 1) + 2 ≤ n → n ^ 3 ≤ As →
-    Cc * (((p + m + 1 : ℕ) : ℝ) + 1) ^ 4 * (As : ℝ) ≤ A₀ → A₀ - (Ca : ℝ) * ((p + m + 1 : ℕ) : ℝ) * (As : ℝ) ≤ A →
-    ∀ Kc : Set ℂ, IsCompact Kc → (0 : ℂ) ∉ Kc → ∃ Cst : ℝ,
-    ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] (Φ0 : G.Mat (p + (m + 1 + 1)) → V)
-      (K : ℝ), DecayAll (C₂ * (m + 2) ^ 2)
-        (fun i => A - (Ca : ℝ) * ((n : ℝ) ^ 2 + ((p + m + 1 : ℕ) : ℝ) ^ 3 + ((p + m + 1 : ℕ) : ℝ) * (i : ℝ))) K Φ0 →
-      ∀ t c : ℂ, t ≠ 0 → c * t ^ (m + 1) ∈ Kc →
-        ‖G.remainder β m (fun _ => 1) (PhiTop β σ d Φ0) t c‖ ≤ Cst * K * ‖t‖
-
-def UseGermTopCountOfParts : Prop := UseGermTop → BudgetTopConv → UseGermTopCount
 
 end Formalism.FourierDecayAlt.U

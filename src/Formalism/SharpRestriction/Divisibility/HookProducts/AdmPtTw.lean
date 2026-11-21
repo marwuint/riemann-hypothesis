@@ -111,7 +111,4 @@ theorem lowerTieTwAt_integral (h : LowerTieTwAt D T u μ) : ∃ hr : (T.fm u μ)
     rw [hP τ]; exact brOneIsBr D u τ (interlaceTr D u hI τ)
   exact ⟨PRat_ofT P h4 hz, Pt_integralT P h4 hz _⟩
 
-theorem twisted_chain_integral_of_lowerTieTwAt (h : ∀ u μ, μ ≠ D.what₂.mu0 → LowerTieTwAt D T u μ) : Formalism.MainNotions.WeightDegreeSizes.TwistedChainIntegral D T :=
-  fun u μ hμ => lowerTieTwAt_integral (h u μ hμ)
-
 end Formalism.MainNotions.DIV.HookProducts.AdmPtTw

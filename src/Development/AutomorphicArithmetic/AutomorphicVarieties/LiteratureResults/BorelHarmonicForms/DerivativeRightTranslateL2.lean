@@ -198,12 +198,6 @@ structure IsHarm (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) (r : ℝ) 
   closed : dCo (smLie Ξ) ω = 0
   coclosed : Coclosed (smAdj Ξ r) e ω
 
-omit [IsTotallyComplex E] in
-
-def UnitsTriv [IsTotallyComplex E] (Ξ : AlgRep E a) : Prop :=
-  ∃ N : ℕ, 0 < N ∧ ∀ u : (𝓞 E)ˣ,
-    ratC Ξ (GeneralLinearGroup.scalar (Fin a) (Units.map (algebraMap (𝓞 E) E).toMonoidHom (u ^ N))) = 1
-
 omit [NumberField E] [IsTotallyComplex E] in
 variable (E) in
 
@@ -445,42 +439,6 @@ def HarmEx : Prop :=
     ∀ (π : CuspSub E a) (Ξ : AlgRep E a) (r : ℝ), HasOne Ξ r → IsCohFor π Ξ → HasFixed π.finPart U →
     ∃ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))), ω ≠ 0 ∧ IsHarm U Ξ r e ω ∧ ∀ X, ω X ∈ tens Ξ.d π.V
 
-def CentreLie : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M] (κ : Kinf E a → Module.End ℂ M) (L : Lie E a →ₗ[ℝ] Module.End ℂ M),
-    (∀ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] M), IsCochain κ ω → dCo L ω = 0 ∧ InfEq L ω) →
-    ∀ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] M), IsCochain κ ω → ∀ (z : Cinf E) X, L (toL (Matrix.scalar (Fin a) z)) (ω X) = 0
-
-def Flow : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ : AlgRep E a) (m : (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))) (X : Matrix (Fin a) (Fin a) (Cinf E)) (y : GL (Fin a) (Cinf E)),
-    y.val = NormedSpace.exp X → smLie Ξ (toL X) m = 0 → ∀ g,
-      Ξ.mat y *ᵥ (fun i => (cmp i m).1 (g * infGL E a y)) = fun i => (cmp i m).1 g
-
-def UnitPow : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) →
-    ∃ N : ℕ, 0 < N ∧ ∀ u : (𝓞 E)ˣ, GeneralLinearGroup.map (algebraMap E (Af E))
-      (GeneralLinearGroup.scalar (Fin a) (Units.map (algebraMap (𝓞 E) E).toMonoidHom (u ^ N))) ∈ U
-
-def UnitAbs : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) → ∀ (Ξ : AlgRep E a) (m : (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))), m ≠ 0 →
-    (∀ i γ g, (cmp i m).1 (ratGL E a γ * g) = (cmp i m).1 g) → (∀ i, ∀ u ∈ U, act (.fin u) (cmp i m) = cmp i m) →
-    (∀ z : Cinf E, smLie Ξ (toL (Matrix.scalar (Fin a) z)) m = 0) → UnitsTriv Ξ
-
-def UnitTriv : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a → ∀ (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) →
-    IsCompact (U : Set (GL (Fin a) (Af E))) → ∀ (π : CuspSub E a) (Ξ : AlgRep E a), IsCohFor π Ξ → HasFixed π.finPart U →
-    UnitsTriv Ξ
-
-def SmallLev : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) →
-    IsCompact (U : Set (GL (Fin a) (Af E))) → ∃ U' ≤ U, IsOpen (U' : Set (GL (Fin a) (Af E))) ∧
-      IsCompact (U' : Set (GL (Fin a) (Af E))) ∧ ∀ (γ : GL (Fin a) E) (g : GL (Fin a) (Af E)),
-        g⁻¹ * GeneralLinearGroup.map (algebraMap E (Af E)) γ * g ∈ U' → IsOfFinOrder γ → γ = 1
-
-def Orth : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a → ∀ (n : ℕ) (e : Fin n → Herm E a), IsFrame e → ∀ (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) →
-    ∀ (Ξ : AlgRep E a) (r : ℝ), HasOne Ξ r → ∀ (q : ℕ) (η : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))),
-      IsRelCochain Ξ (IsCuspFn U Ξ) η → IsHarm U Ξ r e (dCo (smLie Ξ) η) → dCo (smLie Ξ) η = 0
-
 def HarmLin : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (n : ℕ) (e : Fin n → Herm E a) (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) (r : ℝ) (q : ℕ),
     (∀ (s : ℕ) (ω : Fin s → Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))) (c : Fin s → ℂ), (∀ i, IsHarm U Ξ r e (ω i)) →
@@ -488,11 +446,6 @@ def HarmLin : Prop :=
     ∀ ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)), (IsHarm U Ξ r e ω → IsRelCochain Ξ (IsLevelFn U Ξ) ω) ∧
       ∀ U' ≤ U, (IsHarm U Ξ r e ω → IsHarm U' Ξ r e ω) ∧
         (IsRelCochain Ξ (IsLevelFn U Ξ) ω → IsRelCochain Ξ (IsLevelFn U' Ξ) ω)
-
-def NoExact : Prop :=
-  BorelC → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a → ∀ (n : ℕ) (e : Fin n → Herm E a), IsFrame e → ∀ (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) →
-    IsCompact (U : Set (GL (Fin a) (Af E))) → ∀ (Ξ : AlgRep E a) (r : ℝ), HasOne Ξ r → UnitsTriv Ξ →
-    ∀ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))), IsHarm U Ξ r e ω → IsRelExact U Ξ ω → ω = 0
 
 def IndepAbs : Prop :=
   ∀ (O W : Type) [AddCommGroup W] [Module ℂ W] (A : O → Module.End ℂ W) (s : ℕ) (V : Fin s → Submodule ℂ W)
@@ -509,32 +462,5 @@ def Count : Prop :=
   ∀ (X : Type) (S : Finset X) (deg : X → ℕ) (κ : ℕ → Cardinal.{0}),
     (∀ (q s : ℕ) (f : Fin s → X), Function.Injective f → (∀ i, f i ∈ S ∧ deg (f i) = q) → (s : Cardinal) ≤ κ q) →
     (S.card : Cardinal) ≤ Cardinal.sum κ
-
-theorem borelInjC_of_steps (hD : DeRhamInj) (h1 : FrameEx) (h2 : OneReal) (h3 : HarmEx) (h4 : UnitTriv) (h5 : HarmLin)
-    (h6 : NoExact) (h7 : Indep) (h8 : Count) (hB : BorelC) : UpperTheory.V.Published.BorelInjC := by
-  intro E _ _ _ a ha U hUo hUc Ξ S hS hC
-  classical
-  obtain ⟨n, e, he⟩ := h1 E a
-  obtain ⟨r, hr⟩ := h2 E a Ξ
-  have hex : ∀ π : CuspSub E a, ∃ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))),
-      π ∈ S → ω ≠ 0 ∧ IsHarm U Ξ r e ω ∧ ∀ X, ω X ∈ tens Ξ.d π.V := fun π => by
-    by_cases h : π ∈ S
-    · obtain ⟨q, ω, hω⟩ := h3 E a ha n e he U hUc π Ξ r hr (hC π h).1 (hC π h).2
-      exact ⟨q, ω, fun _ => hω⟩
-    · exact ⟨0, 0, fun h' => absurd h' h⟩
-  choose deg w hw using hex
-  refine h8 _ S deg _ fun q s f hf hq => ?_
-  have hex2 : ∀ i, ∃ ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)),
-      ω ≠ 0 ∧ IsHarm U Ξ r e ω ∧ ∀ X, ω X ∈ tens Ξ.d (f i).V := fun i => by
-    obtain ⟨hi, rfl⟩ := hq i
-    exact ⟨w _, hw _ hi⟩
-  choose ω h0 hH hV using hex2
-  refine hD E a ha U hUo hUc Ξ q s ω (fun i => ⟨((h5 E a n e U Ξ r q).2 _).1 (hH i), (hH i).closed⟩) fun c hc => ?_
-  rcases Nat.eq_zero_or_pos s with rfl | hs
-  · exact Subsingleton.elim _ _
-  have hi := (hq ⟨0, hs⟩).1
-  exact h7 E a Ξ.d q s f (fun i j h => hf (hS _ (hq i).1 _ (hq j).1 h)) ω h0 hV c
-    (h6 hB E a ha n e he U hUo hUc Ξ r hr (h4 E a ha U hUo hUc _ Ξ (hC _ hi).1 (hC _ hi).2) q _
-      ((h5 E a n e U Ξ r q).1 s ω c hH) hc)
 
 end UpperTheory.V.Lit.Bor

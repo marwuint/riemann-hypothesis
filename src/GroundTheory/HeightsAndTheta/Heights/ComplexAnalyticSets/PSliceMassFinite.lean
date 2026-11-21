@@ -1,8 +1,13 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceMassFinite
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceFormMass
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
+import ReciprocityTheory.AnalyticForms.MaIntEmpty
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.BergmanProjective
+import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.AMassStA
 import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartHomogenise
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.MeasurableOfContinuousOnNeZero
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -60,28 +65,6 @@ theorem SliceMassFinite.exists_projClosure {n e : ℕ} (I : Ideal (MvPolynomial 
         rfl
   obtain ⟨F, hFW⟩ := (IndefiniteRowSideFullHecke.ComplexSets.exists_isChowForm_iff (e := e + 1) hW).mpr ⟨hP, hdimW⟩
   exact ⟨W, F, hW, hFW, hℓW, hWI⟩
-
-theorem SliceMassFinite.proof (hF : SliceFormMass.Statement) : SliceMassFinite.Statement := by
-  intro n d h I ℓ A hI hℓ hdim hA
-  cases d with
-  | zero =>
-    have hconst : chartAbsDens I A (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) =
-        fun _ => chartAbsDens I A (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) 0 :=
-      funext fun y => congrArg _ (Subsingleton.elim y 0)
-    rw [hconst]
-    have : IsFiniteMeasure (volume : Measure (Fin 0 → ℂ)) := by
-      rw [MeasureTheory.volume_pi, Measure.pi_of_empty (x := 0)]
-      infer_instance
-    exact integrable_const _
-  | succ e =>
-    obtain ⟨W, F, hW, hFW, hℓW, hWI⟩ := SliceMassFinite.exists_projClosure I ℓ hI hℓ hdim
-    have hA2 : IsFiniteProjection (W ⊔ Ideal.span {linForm ℓ - 1}) A := by
-      rw [hWI]
-      exact hA
-    have hmass := hF n e h W F ℓ A (fun _ => 1) (fun _ => 1) (fun _ _ => 0) hW hFW hℓW hA2
-      (fun _ _ _ => rfl) continuousOn_const (fun _ _ _ _ => rfl) (fun _ => contDiffOn_const)
-    rw [hWI] at hmass
-    simpa only [one_mul, add_zero] using hmass
 
 end
 

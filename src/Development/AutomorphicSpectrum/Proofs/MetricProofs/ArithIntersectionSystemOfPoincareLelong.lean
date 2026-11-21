@@ -6,9 +6,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.ContractMixedFieldStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Metrics₂.PoincareLelong
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntersectionExistsOfPoincareLelongStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeAndCoordinatesOfResolutionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeAndCoordinatesOfResolution
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ArithSystem
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFVert
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFIntZero
@@ -43,8 +47,8 @@ theorem arithIntersectionSystem_of_poincareLelong_resK :
     GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement →
       ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement := fun hPL hRK =>
   Targets.ArithIntersectionSystem.of_found
-    (GlobalTheory.T.intersection_exists_of_poincare_lelong hPL (GlobalTheory.T.resolution_exists_of_resolution_statement hRK))
-    (GlobalTheory.T.degree_and_coordinates_of_resolution (GlobalTheory.T.resolution_exists_of_resolution_statement hRK)).2
+    (GlobalTheory.T.intersection_exists_of_poincare_lelong hPL (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hRK))
+    (_root_.GlobalTheory.CompanionTheory.Ar.Pub.genDeg_and_pfCoord (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hRK)).2
     contractMixed_closed
 
 end GlobalTheory.CompanionTheory.Ar.Pub

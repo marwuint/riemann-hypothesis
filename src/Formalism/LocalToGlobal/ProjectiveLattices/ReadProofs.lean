@@ -23,58 +23,6 @@ def WtC (σ : c.F →+* ℂ) : Prop :=
   ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ f ∈ sec Xo c a n, ∀ (t : Ix Dw → (CAt σ)ˣ) (y y' : FrPt Xo c (CAt σ)),
     FrBor t y y' → evR Xo c f y' = wchar (ex Dw a n) t * evR Xo c f y
 
-theorem testRd_of (σ : c.F →+* ℂ)
-    (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (hU : IsUnf (U σ))
-    (hB : BCEx Xo c σ) (hC : WtC Xo c σ) : TestRd Xo c U σ := by
-  intro a n hd p y ψ
-  obtain ⟨z, hz⟩ := hB p y ψ
-  obtain ⟨-, -, hcov, -⟩ := hU
-  obtain ⟨k, x, t, ht⟩ := hcov z
-  refine ⟨k, x, toC (wchar (ex Dw a n) t), fun f hf => ?_⟩
-  have hft : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨p, ψ, y, hz⟩
-  have e2 := hW f hf.1
-  have hev : evR Xo c f z = ψ (f p y) := by
-    unfold evR evalAt
-    rw [dif_pos hft]
-    exact e2 _ _ _ _ _ _ _ _ hft.choose_spec.choose_spec.choose_spec hz
-  have hwt := hC a n hd f hf t ((U σ).un k x) z ht
-  have hr : rdU (U σ) f k x.1 = toC (evR Xo c f ((U σ).un k x)) := by
-    simp only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos x.2, Subtype.coe_eta]
-  rw [hr, ← hev, hwt]
-  all_goals rfl
-
-theorem rdDomInj_of (h : ∀ σ, GoodEmb c σ → TestRd Xo c U σ) : RdDomInj Xo c U := by
-  intro a n hd σ hσ f hf h0
-  funext p y
-  show f p y = 0
-  refine eq_zero_of_cpts σ p _ fun ψ => ?_
-  obtain ⟨k, x, u, hk⟩ := h σ hσ a n hd p y ψ
-  have e := hk f (cusp_le_sec Xo c U a n hf)
-  rw [h0 k x.1 x.2, mul_zero] at e
-  exact e
-
-theorem rdIndep_of (σ : c.F →+* ℂ) (h : TestRd Xo c U σ) : RdIndep Xo c U σ := by
-  haveI : CharZero c.F := RingHom.charZero σ
-  intro a k hd n b hb hli
-  rw [Fintype.linearIndependent_iff]
-  intro w hw
-  have hθ : ∀ θ : Module.Dual c.F (CAt σ), ∀ i, θ (toCAt σ (w i)) = 0 := by
-    intro θ
-    have hz : ∑ i, θ (toCAt σ (w i)) • b i = 0 := by
-      funext p y
-      have hpt := descend_cpts σ p (fun i => b i p y) w (fun ψ => by
-        obtain ⟨k', x, u, hk⟩ := h a k hd p y ψ
-        have e1 : ∀ i, w i * cvalR σ (ψ (b i p y)) = u * (w i * rdU (U σ) (b i) k' x.1) := by
-          intro i; rw [hk (b i) (hb i)]; ring
-        have e2 := congrFun (congrFun hw k') x.1
-        simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at e2
-        simp_rw [e1]
-        rw [← Finset.mul_sum, e2, mul_zero]) θ
-      simpa [Finset.sum_apply] using hpt
-    exact fun i => Fintype.linearIndependent_iff.1 hli _ hz i
-  intro i
-  exact (Module.forall_dual_apply_eq_zero_iff c.F (toCAt σ (w i))).1 fun θ => hθ θ i
-
 section Adelic
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}

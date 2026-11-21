@@ -32,19 +32,6 @@ theorem sum_secFun_eq' {x : Ix κ → Ω} {n r : ℕ} {b : Fin r → MvPolynomia
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_zsmul, map_zsmul, zsmul_eq_mul, hbf j, secFun_map_intQ]
 
-theorem bNormSq_le_of_pts' {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
-    (hg : IsGood D x m μ) {n r : ℕ} (s : Fin r → (Ix κ → ℂ) → ℂ) (c : Fin r → ℂ) {B : ℝ}
-    (h : ∀ z ∈ pts (coordIdeal ℤ x), ‖∑ j, c j * s j z‖ ^ 2 * wgt m n z ≤ B) :
-    bNormSq μ s (wgt m n) c ≤ B := by
-  have := hg.vol.1
-  have hae : ∀ᵐ z ∂μ, z ∈ pts (coordIdeal ℤ x) := ae_iff.mpr hg.vol.2.1
-  unfold bNormSq
-  calc ∫ z, ‖∑ j, c j * s j z‖ ^ 2 * wgt m n z ∂μ ≤ ∫ _z, B ∂μ := by
-        refine integral_mono_of_nonneg (ae_of_all _ fun z => ?_) (integrable_const B) ?_
-        · exact mul_nonneg (sq_nonneg _) (inv_nonneg.mpr (pow_nonneg (m.nonneg z) _))
-        · filter_upwards [hae] with z hz using h z hz
-    _ = B := by simp
-
 theorem sum_mulVec_secFun {x : Ix κ → Ω} {n r R : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : IsSecBasis x n b) (M : Matrix (Fin r) (Fin R) ℤ) (Q : Fin R → MvPolynomial (Ix κ) ℤ)
     (hQ : ∀ p, (Q p).IsHomogeneous n)

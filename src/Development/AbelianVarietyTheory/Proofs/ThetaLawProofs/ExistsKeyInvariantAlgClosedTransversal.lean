@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsInvariantOfSplitZerosTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsInvariantOfSplitZerosTorsion
 import Development.AbelianVarietyTheory.Definitions.KeyFormula.IsSquareDeterminantComparison
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
@@ -34,6 +34,6 @@ theorem exists_enum_torsion (hL : Out.Laws) {K : Type} [Field K] [IsAlgClosed K]
 theorem exists_kaVal_of_isAlgClosed : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (d : ℕ) (s : Fin x.P.g → RR x n) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), admitted x.P.g n l l' al → ((degProd x.P.g n l l' : ℕ) : K) ≠ 0 → EtZ x s z ch → ∃ κ, KaVal x n l l' al s κ := by
   intro hL K _ _ x n l l' al d s z ch hA hN hZ
   obtain ⟨ξ, h₁, h₂⟩ := exists_enum_torsion hL x _ hN
-  exact GlobalTheory.T.exists_invariant_of_split_zeros_torsion hL K x n l l' al d s z ch ξ hA (Ne.isUnit hN) hZ h₁ h₂
+  exact _root_.GlobalTheory.exists_kaVal_of_split hL K x n l l' al d s z ch ξ hA (Ne.isUnit hN) hZ h₁ h₂
 
 end GlobalTheory.KeyKa

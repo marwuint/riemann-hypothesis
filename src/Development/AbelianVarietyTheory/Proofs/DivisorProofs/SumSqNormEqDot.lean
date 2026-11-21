@@ -33,10 +33,6 @@ theorem form_sum_left {K V : Type} [Field K] [AddCommGroup V] [Module K V] (nm :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, nm.conj_symm]
 
-def basisGram {K V : Type} [Field K] [AddCommGroup V] [Module K V] (nm : HermFam K V)
-    (σ : K →+* ℂ) {ι : Type} (b : Module.Basis ι K V) : Matrix ι ι ℂ :=
-  Matrix.of fun i j => nm.form σ (b i) (b j)
-
 end GlobalTheory.HermFamFrame
 
 end

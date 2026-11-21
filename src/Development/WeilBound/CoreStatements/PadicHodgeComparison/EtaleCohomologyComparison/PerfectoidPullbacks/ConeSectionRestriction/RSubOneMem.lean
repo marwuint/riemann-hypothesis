@@ -4,8 +4,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedLogMul
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeLiftRatioMemIdealStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeCocycleClosedStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeCocycleClassIndependentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConeLiftStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupremumTwistingOpensEqTopStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConeLift
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupremumTwistingOpensEqTop
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -61,9 +61,9 @@ theorem zK_precomp {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {g : C ⥤
 end K
 
 theorem lift_exists {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (D : E.LineData X)
-    (s : ℕ) : Nonempty (CLiftK (KS q s (𝒱D D)).ι D) := GlobalTheory.T.exists_cone_lift q D s
+    (s : ℕ) : Nonempty (CLiftK (KS q s (𝒱D D)).ι D) := _root_.GlobalTheory.CompanionTheory.ConeLiftEx.nonempty_cLiftK q D s
 
 theorem sSup_𝒱D {R : Type} [CommRing R] {X : Scheme.{0}} (D : E.LineData X) (N : ℕ)
-    (i : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace R N) (h : IsTautologicalLineAt D N i) : sSup (𝒱D D) = ⊤ := GlobalTheory.T.supremum_twisting_opens_eq_top D N i h
+    (i : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace R N) (h : IsTautologicalLineAt D N i) : sSup (𝒱D D) = ⊤ := _root_.GlobalTheory.CompanionTheory.ConeCover.main D N i h
 
 end CrystallineSemistableComparison.Pb

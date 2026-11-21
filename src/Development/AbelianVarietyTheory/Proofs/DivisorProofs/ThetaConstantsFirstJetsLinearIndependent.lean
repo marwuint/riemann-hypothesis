@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.KeyPBIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSiegel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffTopMonEqZero
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PsiScal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanThetaTranslatesTorsionEqTopStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsLineBundlePowSeparateFirstJetsOriginStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearSectionValueAbelianPowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanThetaTranslatesTorsionEqTop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsLineBundlePowSeparateFirstJetsOrigin
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearSectionValueAbelianPower
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory.MBModel GlobalTheory.KeyCl GlobalTheory.Ex GlobalTheory.MBLow GlobalTheory.SecJet
@@ -24,7 +24,7 @@ theorem main : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : KeyIn 
   have hy : ∀ j : Fin g, epsLift (x.v (j.cast hg.symm)) ≫ (fst (baseOver (Sp K)) x.P.A).left =
       spMap (algebraMap K (DualNumber K)) := fun j => by
     rw [epsLift, ← Over.comp_left, lift_fst]; rfl
-  choose f hf using fun j : Fin g => GlobalTheory.T.exists_linear_sectionValue_abelianPower K x (m ^ 2) (fun _ => i₀) (DualNumber K) _ (hy j)
+  choose f hf using fun j : Fin g => _root_.GlobalTheory.SecValLin.exists_linear_valR_sec K x (m ^ 2) (fun _ => i₀) (DualNumber K) _ (hy j)
   set a := c₀ - ∑ j, c j * c' j with ha
   let Φ : EA x.P (𝟙 (Sp K)) (m ^ 2) →ₗ[K] K :=
     a • ((TrivSqZeroExt.fstHom K K K).toLinearMap ∘ₗ f j₀) + ∑ j, c j • (TrivSqZeroExt.sndHom K K ∘ₗ f j)
@@ -47,9 +47,9 @@ theorem main : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : KeyIn 
       exact Finset.sum_congr rfl fun j _ => by ring
     rw [e1, ha]
     linear_combination r * hrel i
-  have hspan := GlobalTheory.T.span_thetaTranslates_torsion_eq_top K x m hm hm3 I pt hpt th hth U t hUt
+  have hspan := _root_.GlobalTheory.TSpan.span_eq_top K x m hm hm3 I pt hpt th hth U t hUt
   have hΦ0 : Φ = 0 := LinearMap.ext_on_range hspan fun i => by rw [hΦt i, LinearMap.zero_apply]
-  have hsep := GlobalTheory.T.sections_lineBundlePow_separate_firstJets_origin K x g hg (m ^ 2) (by nlinarith) i₀ hi₀ j₀ a c fun s => by
+  have hsep := _root_.GlobalTheory.MBLow.JetSep.sep K x g hg (m ^ 2) (by nlinarith) i₀ hi₀ j₀ a c fun s => by
     have h := congrArg (fun F => F (SecMod.mk (fst (baseOver (Sp K)) x.P.A).left s)) hΦ0
     simp only [LinearMap.zero_apply, hΦ] at h
     rw [hf j₀, Finset.sum_congr rfl fun j _ => by rw [hf j]] at h

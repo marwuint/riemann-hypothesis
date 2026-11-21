@@ -82,16 +82,6 @@ theorem per_tMapD_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
   rw [CapelliMinorRestriction.per_eq, CapelliMinorRestriction.per_eq, ← integral_smul]
   exact integral_congr_ae (perI_tMapD_single σ z hz P hP μW μN hW hN ψ π x₀ w d m ξ g hg)
 
-theorem per_add (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (ψ : Mat k r → ℂ)
-    (π : Mat k r → (Vp →L[ℂ] Vp)) (F₁ F₂ : Mat k r → ℂ) (ξ : Vp) (x : Mat k r)
-    (h₁ : Integrable (CapelliMinorRestriction.perI P ψ π F₁ ξ x) (μW.prod μN))
-    (h₂ : Integrable (CapelliMinorRestriction.perI P ψ π F₂ ξ x) (μW.prod μN)) :
-    per P μW μN ψ π (fun G => F₁ G + F₂ G) ξ x = per P μW μN ψ π F₁ ξ x + per P μW μN ψ π F₂ ξ x := by
-  rw [CapelliMinorRestriction.per_eq, CapelliMinorRestriction.per_eq, CapelliMinorRestriction.per_eq, ← integral_add h₁ h₂]
-  congr 1
-  funext p
-  simp [CapelliMinorRestriction.perI, add_smul]
-
 end ConjugateTransportSingles
 
 end ReciprocityTheory.ChartRestriction.DS.Lap

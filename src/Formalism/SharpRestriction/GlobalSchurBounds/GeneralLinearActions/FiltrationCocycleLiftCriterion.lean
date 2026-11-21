@@ -29,8 +29,6 @@ open Classical in
 def psi0 {N : ℕ} (χ : DirichletCharacter ℂ N) (u : ℝ) : ℂ :=
   (∑ n ∈ Finset.Icc 1 ⌊u⌋₊, (abelian₂ n : ℂ) * χ (n : ZMod N)) - (if χ = 1 then (u : ℂ) else 0)
 
-def cn (x : ℝ) (n : ℕ) : ℝ := abelian₂ n * min 1 (x / n)
-
 def zz (x : ℝ) : ℝ := x ^ (400 : ℕ)
 
 def X1 (x eps : ℝ) : ℝ := Real.exp (x ^ (eps / 5))

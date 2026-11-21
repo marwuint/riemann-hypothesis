@@ -37,10 +37,4 @@ theorem exists_ne_zero_mul_conj_eq_of_unitary (D : D7) (z : unitary D.host.E) :
     · rw [← Formalism.BasicNotions.Examples₂.star_eq_conj]; exact key x
   · exact ⟨_, h1, by rw [← Formalism.BasicNotions.Examples₂.star_eq_conj]; exact key 1⟩
 
-section Comparison₂
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Y : DivX D} {cX : ExtraC}
-
-end Comparison₂
-
 end GlobalTheory.NormOneHilbert90Units

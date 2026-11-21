@@ -7,11 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorS
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpBinomialPowerSubOneSeriesIntegralityCompositio
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffShiftS
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmLatticeHeisenbergRelationsOneVariableStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmLatticeHeisenbergRelationsOneVariable
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesMultiplicativeShiftCompAndSubstStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallTorsionKilledByPrimePowersStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaNormQuotientEllipticUnitSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmEvenThetaSeriesChartCoeffIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallTorsionKilledByPrimePowers
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaNormQuotientEllipticUnitSeries
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmEvenThetaSeriesChartCoeffIntegral
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesShiftEqTranslateStatement
 
 open PowerSeries GlobalTheory.MomOne
@@ -142,7 +142,7 @@ theorem W_mul_eq (d : ℕ) (ι : ℂ ≃+* ℂ_[q]) (θ : ℂ → ℂ) (hd : d.P
       calc _ ≤ (q : ℝ) ^ (-(2 * n : ℤ)) * 1 :=
             mul_le_mul hvn (hle _ (hmul _ _ hv hβ)) (norm_nonneg _) (by positivity)
         _ = _ := by push_cast; ring
-  have hW := (GlobalTheory.T.cmLattice_heisenberg_relations_one_variable d hd.pos).2.2.2.2.1 (((1 : ℕ) : ℂ) * v / (q : ℂ) ^ n)
+  have hW := (_root_.GlobalTheory.MomOne.heisenbergOne d hd.pos).2.2.2.2.1 (((1 : ℕ) : ℂ) * v / (q : ℂ) ^ n)
     ((α - 1) * v / (q : ℂ) ^ n) θ (by omega) (by
       convert hc using 1
       simp only [map_div₀, map_mul, map_pow, Complex.conj_natCast]
@@ -168,15 +168,15 @@ theorem theta_shift : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]) 
   have hθy : θ y ≠ 0 := by
     intro h0
     have h1 := hθ.2.2.2.2 y h0
-    have := (GlobalTheory.T.smallTorsion_killed_by_prime_powers d q M ω hd hd7 hs hL hM).2.2.2 y 1 0 o1 one_ne_zero
+    have := (_root_.GlobalTheory.MomOne.smallTors d q M ω hd hd7 hs hL hM).2.2.2 y 1 0 o1 one_ne_zero
       ⟨1, one_pos, Nat.coprime_one_left q, ⟨0, 0, by simp⟩⟩ (by simpa using h1) hA.1
     exact not_half d hd.pos this.2
   have hθan : AnalyticAt ℂ θ 0 := hθ.1.analyticAt 0
   have hWan : AnalyticAt ℂ (W1 d y θ) 0 :=
-    ((GlobalTheory.T.cmLattice_heisenberg_relations_one_variable d hd.pos).2.2.1 y θ hθ.1).2.analyticAt 0
+    ((_root_.GlobalTheory.MomOne.heisenbergOne d hd.pos).2.2.1 y θ hθ.1).2.analyticAt 0
   set f := hat M.ι (C ω * logS) θ with hf
   set g := hat M.ι (C ω * logS) (W1 d y θ) with hg
-  have hfb : Bd 1 f := GlobalTheory.T.cm_even_theta_series_chart_coeff_integral d q M ω θ hd hd7 hs hL hM hθ
+  have hfb : Bd 1 f := _root_.GlobalTheory.MomOne.theta_series_integral d q M ω θ hd hd7 hs hL hM hθ
   have hf0 : constantCoeff f = 1 := by rw [hf, ht0, hθ.2.1, map_one]
   have hff : f * f⁻¹ = 1 := PowerSeries.mul_inv_cancel f (by rw [hf0]; exact one_ne_zero)
   have hfi : Bd 1 f⁻¹ := (GlobalTheory.MomOne.sup_norm_laws q).2.2.1 f _ hfb (by rw [hf0, norm_one]) hff
@@ -235,7 +235,7 @@ theorem theta_shift : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]) 
       omega
     refine ⟨m, hm2, hmn, ⟨s * N, by rw [hmdef]; ring⟩, ?_⟩
     obtain ⟨ε, hε1, hε2, -, hε4, hε5, hε6⟩ :=
-      GlobalTheory.T.thetaNormQuotient_elliptic_unitSeries d q M ω θ hd hd7 hs hL hM hθ α m hα hα0 hm
+      _root_.GlobalTheory.MomOne.ThetaQuot.theta_quot d q M ω θ hd hd7 hs hL hM hθ α m hα hα0 hm
     obtain ⟨ψ, hψ1, hψ2, hψ3⟩ := GlobalTheory.T.cpTransportedTaylorSeries_shift_eq_translate q M ω ζ y ε hM hA hε1 hε2 ⟨1, hε4⟩
     have hWW := W_mul_eq d M.ι θ hd hd7 hs hθ n y hy α hα (he1.trans hlen)
     have e1 : f.subst (mulS a : ℂ_[q]⟦X⟧) = f ^ m * hat M.ι (C ω * logS) ε := by

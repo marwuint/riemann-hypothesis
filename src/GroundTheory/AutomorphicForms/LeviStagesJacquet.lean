@@ -177,10 +177,6 @@ theorem sqrtModularLeviPar_mul_inv (q : leviPar F n β γ) :
     sqrtModularLeviPar F n β γ q * invSqrtModularLeviPar F n β γ q = 1 :=
   mul_inv_cancel₀ (sqrtModularLeviPar_ne_zero q)
 
-theorem sqrtModular_ne_zero {α : Type*} [LinearOrder α] {β : Fin n → α} (p : blockUpper F n β) :
-    sqrtModular F n β p ≠ 0 :=
-  left_ne_zero_of_mul_eq_one (sqrtModular_mul_invSqrtModular p)
-
 theorem sqrtModular_refine (h : Refines β γ) (q : leviPar F n β γ) :
     sqrtModular F n γ ⟨q, q.2.2⟩ =
       sqrtModular F n β ⟨q, levi_le_blockUpper q.2.1⟩ * sqrtModularLeviPar F n β γ q := by

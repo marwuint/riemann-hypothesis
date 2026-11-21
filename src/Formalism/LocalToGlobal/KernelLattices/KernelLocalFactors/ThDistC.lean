@@ -147,60 +147,6 @@ theorem thDistC_det (sS sT : SB → X.E → X.K) (ha : MuDetLaw a mI sS) (hb : M
     ring
   · rw [smul_zero]
 
-theorem jetAdd_of (hfin : LatFin (X := X) a b Sall) (hadd : A.IndAdd a b Sall D) (hsm : A.IndSmooth a b Sall D)
-    (hrat : A.JetsRat a b Sall D) : A.JetAdd a b Sall D := by
-  intro N N' c c' x hc hc' hR m
-  have := hfin N N' c c' hR.1 hR.2.1 hc hc'
-  let _ := Fintype.ofFinite (↥(mulLat c (homAt Sall N N')) ⧸ (mulLat (c * c') (homAt Sall N N')).comap (mulLat c (homAt Sall N N')).subtype)
-  unfold latSum
-  rw [finsum_eq_sum_of_fintype]
-  set rep := fun z : ↥(mulLat c (homAt Sall N N')) ⧸ (mulLat (c * c') (homAt Sall N N')).comap (mulLat c (homAt Sall N N')).subtype =>
-    ((Function.surjInv (Submodule.Quotient.mk_surjective ((mulLat (c * c') (homAt Sall N N')).comap (mulLat c (homAt Sall N N')).subtype)) z :
-      ↥(mulLat c (homAt Sall N N'))) : HomE X.E a b) with hrep
-  have hRz : ∀ z, InRange Sall D (c * c') N N' (x + rep z) := fun z => hR.add (Subtype.coe_prop _)
-  have h1 : A.thInd Sall N N' c x = fun w => ∑ z, A.thInd Sall N N' (c * c') (x + rep z) w := by
-    funext w
-    rw [hadd N N' c c' x hc hc' hR w]
-    unfold latSum
-    rw [finsum_eq_sum_of_fintype]
-  have h2 : derivAt0 (A.thInd Sall N N' c x) m = ∑ z, derivAt0 (A.thInd Sall N N' (c * c') (x + rep z)) m := by
-    unfold derivAt0
-    rw [h1, iteratedFDeriv_sum (fun z _ => hsm N N' (c * c') (x + rep z) (hRz z) _)]
-    rw [Finset.sum_apply, _root_.sum_apply]
-  choose k hk using fun z => hrat N N' (c * c') (x + rep z) (hRz z) m
-  have h3 : (A.chiF a b N N')⁻¹ * jetC A.cD (A.thInd Sall N N' c x) m = A.σ₀ (∑ z, k z) := by
-    rw [map_sum]
-    simp only [hk]
-    unfold jetC
-    rw [h2, Finset.mul_sum, Finset.mul_sum]
-  unfold Amb.jetK
-  rw [h3, desc_map]
-  refine Finset.sum_congr rfl fun z _ => ?_
-  show k z = desc A.σ₀ ((A.chiF a b N N')⁻¹ * jetC A.cD (A.thInd Sall N N' (c * c') (x + rep z)) m)
-  rw [← hk z, desc_map]
-
-theorem thDistC_add (hfin : LatFin (X := X) a b Sall) (hadd : A.JetAdd a b Sall D)
-    (N : Submodule (𝓞 X.E) (Sp X.E a)) (fr : Frs X.E a SB) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (fr' : Frs X.E b SB)
-    (c c' : ℕ) (x : HomE X.E a b) (hc : 0 < c) (hc' : 0 < c') (hR : InRange Sall D (c * c') N N' x) :
-    thDistC A Sall SB D sel mU mI lam lam' n N fr N' fr' c x =
-      latSum (mulLat c (homAt Sall N N')) (mulLat (c * c') (homAt Sall N N')) fun y =>
-        thDistC A Sall SB D sel mU mI lam lam' n N fr N' fr' (c * c') (x + y) := by
-  have := hfin N N' c c' hR.1 hR.2.1 hc hc'
-  let _ := Fintype.ofFinite (↥(mulLat c (homAt Sall N N')) ⧸ (mulLat (c * c') (homAt Sall N N')).comap (mulLat c (homAt Sall N N')).subtype)
-  have hJ : A.jetK Sall N N' c x = fun m => ∑ z : ↥(mulLat c (homAt Sall N N')) ⧸ (mulLat (c * c') (homAt Sall N N')).comap (mulLat c (homAt Sall N N')).subtype,
-      A.jetK Sall N N' (c * c') (x + ((Function.surjInv (Submodule.Quotient.mk_surjective
-        ((mulLat (c * c') (homAt Sall N N')).comap (mulLat c (homAt Sall N N')).subtype)) z : ↥(mulLat c (homAt Sall N N'))) : HomE X.E a b)) m := by
-    funext m
-    rw [hadd N N' c c' x hc hc' hR m]
-    unfold latSum
-    rw [finsum_eq_sum_of_fintype]
-  unfold latSum
-  rw [finsum_eq_sum_of_fintype]
-  unfold thDistC
-  rw [if_pos ⟨(Dvd.intro _ rfl).trans hR.2.2.2.1, hR.2.2.2.2⟩, hJ, jetOp_sum, Finset.smul_sum]
-  refine Finset.sum_congr rfl fun z _ => ?_
-  exact (if_pos ⟨hR.2.2.2.1, mem_divLat_add D c _ hR.2.2.2.2 (Subtype.coe_prop _)⟩).symm
-
 theorem thDistC_equiv (hD : 0 < D) (rho : UF X.E a →* Module.End X.K (DIV.VV X.K lam)) (rho' : UF X.E b →* Module.End X.K (DIV.VV X.K lam'))
     (heq : ThEquivP (thDistC A Sall SB D sel mU mI lam lam' n) Sall D rho rho')
     (γ : UF X.E a) (γ' : UF X.E b) (N : Submodule (𝓞 X.E) (Sp X.E a)) (fr : Frs X.E a SB) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (fr' : Frs X.E b SB)
@@ -214,17 +160,6 @@ theorem thDistC_equiv (hD : 0 < D) (rho : UF X.E a →* Module.End X.K (DIV.VV X
       rw [divLat_gmap_iff]; exact hR
     unfold thDistC
     rw [if_neg hR, if_neg hR', LinearMap.zero_comp, LinearMap.comp_zero]
-
-theorem thDistC_ok (hD : 0 < D) (rho : UF X.E a →* Module.End X.K (DIV.VV X.K lam)) (rho' : UF X.E b →* Module.End X.K (DIV.VV X.K lam'))
-    (sS sT : SB → X.E → X.K) (hfin : LatFin (X := X) a b Sall) (hadd : A.JetAdd a b Sall D)
-    (heq : ThEquivP (thDistC A Sall SB D sel mU mI lam lam' n) Sall D rho rho')
-    (ha : MuDetLaw a mI sS) (hb : MuDetLaw b mI sS) (hi : UnitInv sS sT) :
-    ThDist.Ok (thDistC A Sall SB D sel mU mI lam lam' n) Sall D rho rho' sS sT where
-  cong := fun N fr N' fr' c x x' _ _ h => thDistC_cong A Sall SB sel mU mI lam lam' n D N fr N' fr' c x x' h
-  add := fun N fr N' fr' c c' x hN hN' hc hc' hd hx =>
-    thDistC_add A Sall SB sel mU mI lam lam' n D hfin hadd N fr N' fr' c c' x hc hc' ⟨hN, hN', Nat.mul_pos hc hc', hd, hx⟩
-  equiv := thDistC_equiv A Sall SB sel mU mI lam lam' n D hD rho rho' heq
-  det := fun N fr N' fr' c x κ κ' _ _ => thDistC_det A Sall SB sel mU mI lam lam' n D sS sT ha hb hi N fr N' fr' c x κ κ'
 
 end Props
 
@@ -249,42 +184,6 @@ theorem unitInv_rho (i : ℕ) : UnitInv (rhoS Ch sel mu i) (rhoT Ch sel mu i) :=
   · rw [unitV_inv, inv_inv]
 
 variable {u : Pr.Word} {m2 : ℕ} (T : ChTh W sel mu u m2) (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel mu cst L u m2 b)
-
-theorem chKer_mat (P : LevFam X.E X.K R.r Pr.vGs) (hM : MatEquiv W Ch sel mu cst L T) (h1 : Cp1Equiv W Ch sel mu cst L T b hY)
-    (h2 : Cp2Equiv W Ch sel mu cst L T b hY P) (i : ℕ) (hi : i < m2) (al : L.β i) (be : L.β (i + 1))
-    (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1)) :
-    ((chKer W Ch sel mu cst L T b hY P hM h1 h2).kk i al be).k p p' =
-      kerOf (T.th i) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.deco.1.N (frsF sel mu p)
-        p'.deco.1.N (frsF sel mu p') (XiEntry Ch sel mu cst L i al be p p') := by
-  show ((if h : i < m2 then ClsKer.mk (matK W Ch sel mu cst L T i al be) (hM i h al be) else zeroKer _ _ :
-    ClsKer ((chF W sel mu L u i).mem al) ((chF W sel mu L u (i + 1)).mem be))).k p p' = _
-  rw [dif_pos hi]
-  rfl
-
-theorem chainKernel_penultimate_eq_on (P : LevFam X.E X.K R.r Pr.vGs) (hM : MatEquiv W Ch sel mu cst L T) (h1 : Cp1Equiv W Ch sel mu cst L T b hY)
-    (h2 : Cp2Equiv W Ch sel mu cst L T b hY P) (al : L.β m2) (p₀ : ChPt (R := R) sel mu u m2) (p : ChPt (R := R) sel mu u (m2 + 1))
-    (Y : Set (Sp X.E (R.N (m2 + 1)))) (hYm : Y ∈ ybSet sel mu cst p.deco.1.N) :
-    ((chKer W Ch sel mu cst L T b hY P hM h1 h2).cp al).k1 p₀ p Y =
-      kerOf (T.th m2) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p₀.deco.1.N (frsF sel mu p₀)
-        p.deco.1.N (frsF sel mu p) (XiCpl1 Ch sel mu cst L m2 al p₀ p Y) :=
-  if_pos hYm
-
-theorem chainKernel_coupled_eq_on (P : LevFam X.E X.K R.r Pr.vGs) (hM : MatEquiv W Ch sel mu cst L T) (h1 : Cp1Equiv W Ch sel mu cst L T b hY)
-    (h2 : Cp2Equiv W Ch sel mu cst L T b hY P) (al : L.β m2) (p : ChPt (R := R) sel mu u (m2 + 1))
-    (Y : Set (Sp X.E (R.N (m2 + 1)))) (d : RowPt Pr R sel mu) (hYm : Y ∈ ybSet sel mu cst p.deco.1.N) :
-    ((chKer W Ch sel mu cst L T b hY P hM h1 h2).cp al).k2 p Y d =
-      kerOf T.top (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.deco.1.N (frsF sel mu p)
-        (tilQ sel mu u d).1.N (frsT sel mu u d) (XiCpl2 Ch sel mu cst m2 p Y d) :=
-  if_pos hYm
-
-theorem chKer_shape (P : LevFam X.E X.K R.r Pr.vGs) (hM : MatEquiv W Ch sel mu cst L T) (h1 : Cp1Equiv W Ch sel mu cst L T b hY)
-    (h2 : Cp2Equiv W Ch sel mu cst L T b hY P)
-    (hlev : (cst.sharp = false ∧ P = rP0 Ch) ∨ (cst.sharp = true ∧ P = rPsymF Ch)) :
-    (chKer W Ch sel mu cst L T b hY P hM h1 h2).Shape T where
-  lev := hlev
-  mat i hi al be p p' := chKer_mat W Ch sel mu cst L T b hY P hM h1 h2 i hi al be p p'
-  cp1 al p₀ p Y hYm := chainKernel_penultimate_eq_on W Ch sel mu cst L T b hY P hM h1 h2 al p₀ p Y hYm
-  cp2 al p Y d hYm := chainKernel_coupled_eq_on W Ch sel mu cst L T b hY P hM h1 h2 al p Y d hYm
 
 end Chain
 
@@ -408,13 +307,6 @@ theorem jetLin_mixed (J : (DVar ι a b →₀ ℕ) → K) (p : (ι × Fin b × F
     jetLin J (monomial (p.mapDomain Sum.inl + m.mapDomain Sum.inr) c) = monomial p (c * J m) := by
   rw [jetLin_monomial, comapDomain_inl_mapDomain_add, comapDomain_inr_mapDomain_add]
 
-theorem jetMap_one (J : (DVar ι a b →₀ ℕ) → K) : jetMap J (fun _ => 0) (1 : Pol K ι a) = C (J 0) := by
-  unfold jetMap
-  simp only [LinearMap.comp_apply, LinearMap.mulRight_apply, pow_zero, Finset.prod_const_one, mul_one,
-    AlgHom.toLinearMap_apply, map_one]
-  rw [← MvPolynomial.C_1, MvPolynomial.C_apply, jetLin_monomial]
-  simp only [Finsupp.comapDomain_zero, one_mul, MvPolynomial.C_apply]
-
 end Tests
 
 section Tests2
@@ -485,101 +377,13 @@ theorem stepC_eq_stepT (hq : MuqTie Ch sel mu cst) (A : Amb X) (u : Pr.Word) (i 
   unfold stepC stepT
   rw [muAt_eq_muAtT Ch sel mu cst hq i hi]
 
-theorem stepC_ok (A : Amb X) (u : Pr.Word) (i : ℕ) (hi : i < R.m) {b : ℕ} (lam' : X.Tau → DomWeight b) (hT : 0 < Pr.T u)
-    (rho : UF X.E (R.N i) →* Module.End X.K (DIV.VV X.K (W.lamTrue u i))) (rho' : UF X.E b →* Module.End X.K (DIV.VV X.K lam'))
-    (hq : MuqTie Ch sel mu cst)
-    (hs : A.StepHyp (R.N i) b (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u))
-    (heqT : ThEquivP (stepT W Ch sel mu cst A u i lam') (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) rho rho') :
-    ThDist.Ok (stepC W Ch sel mu cst A u i lam') (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) rho rho'
-      (rhoS Ch sel mu i) (rhoT Ch sel mu i) :=
-  have heq : ThEquivP (stepC W Ch sel mu cst A u i lam') (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) rho rho' := by
-    rw [stepC_eq_stepT W Ch sel mu cst hq A u i hi lam']; exact heqT
-  thDistC_ok A (Sall sel mu u) (rowSG Pr sel mu) sel (mUof Ch mu i) (muAt Ch sel mu cst i) (W.lamTrue u i) lam' (nuLast W u i) _
-    (modulus_pos sel mu cst u hT) rho rho' _ _ hs.1
-    (jetAdd_of A (Sall sel mu u) _ hs.1 hs.2.1 (indSmooth_of A _ _ _ _ hs.2.2.1) hs.2.2.2) heq
-    (muDetLaw_chain Ch sel mu cst i _) (muDetLaw_chain Ch sel mu cst i _) (unitInv_rho Ch sel mu i)
-
-theorem chTh_ok (A : Amb X) (u : Pr.Word) (m2 : ℕ) (hm : m2 + 1 < R.m) (hT : 0 < Pr.T u) (hq : MuqTie Ch sel mu cst)
-    (hs : ∀ i, i ≤ m2 → A.StepHyp (R.N i) (R.N (i + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u))
-    (hst : A.StepHyp (R.N (m2 + 1)) (R.N R.m) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u))
-    (heq : ∀ i, i ≤ m2 → ThEquivP ((chThT W Ch sel mu cst A u m2).th i) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u)
-      (colValF W sel mu u i).rho (colValF W sel mu u (i + 1)).rho)
-    (htop : ThEquivP (chThT W Ch sel mu cst A u m2).top (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u)
-      (colValF W sel mu u (m2 + 1)).rho (colVal W u R.m (Pr.vT u) (rowSG Pr sel mu)).rho) :
-    ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2) where
-  th i hi := stepC_ok W Ch sel mu cst A u i (by omega) _ hT _ _ hq (hs i hi) (heq i hi)
-  top := stepC_ok W Ch sel mu cst A u (m2 + 1) hm _ hT _ _ hq hst htop
-
-theorem chKerC_shape (A : Amb X) (u : Pr.Word) (m2 : ℕ) (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel mu cst L u m2 b)
-    (P : LevFam X.E X.K R.r Pr.vGs) (h : KerEquivC W Ch sel mu cst L A u m2 b hY P)
-    (hlev : (cst.sharp = false ∧ P = rP0 Ch) ∨ (cst.sharp = true ∧ P = rPsymF Ch)) :
-    (chKerC W Ch sel mu cst L A u m2 b hY P h).Shape (chTh W Ch sel mu cst A u m2) :=
-  chKer_shape W Ch sel mu cst L _ b hY P h.1 h.2.1 h.2.2 hlev
-
 end Final2
 
 section QTest
 
-theorem valuation_self {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal)
-    (h0 : 0 < q) : LocE.vP P q (q : E) = 1 := by
-  have hqE : (q : E) ≠ 0 := by exact_mod_cast h0.ne'
-  have hnu : ¬ IsUnit (0 : 𝓞 E ⧸ P.asIdeal) := not_isUnit_zero
-  have key : ∀ z : ℤ, IsUnit (redP P ((q : E) / (q : E) ^ z)) ↔ z = 1 := by
-    intro z
-    constructor
-    · intro h
-      by_contra hz
-      rcases lt_or_gt_of_ne hz with hlt | hgt
-      · obtain ⟨k, hk⟩ : ∃ k : ℕ, z = -(k : ℤ) := ⟨(-z).toNat, by omega⟩
-        have e : (q : E) / (q : E) ^ z = algebraMap (𝓞 E) E (((q : ℕ) : 𝓞 E) ^ (k + 1)) := by
-          rw [hk, zpow_neg, zpow_natCast, div_inv_eq_mul, map_pow, map_natCast, pow_succ']
-        rw [e, reduction_coe] at h
-        have h1 : Ideal.Quotient.mk P.asIdeal (((q : ℕ) : 𝓞 E) ^ (k + 1)) = 0 :=
-          Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_of_mem _ hq _ (Nat.succ_pos k))
-        rw [h1] at h; exact hnu h
-      · obtain ⟨k, hk⟩ : ∃ k : ℕ, z = (k : ℤ) + 2 := ⟨(z - 2).toNat, by omega⟩
-        have e : (q : E) / (q : E) ^ z = ((q : E) ^ (k + 1))⁻¹ := by
-          have e1 : (q : E) ^ z = (q : E) ^ (k + 1) * (q : E) := by
-            rw [hk, ← pow_succ, ← zpow_natCast]; congr 1
-          rw [e1, div_mul_eq_div_div_swap, div_self hqE, one_div]
-        have hni : ¬ IntAt P ((q : E) / (q : E) ^ z) := by
-          rintro ⟨r, s, hs, hrs⟩
-          apply hs
-          have h2 : algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E (r * ((q : ℕ) : 𝓞 E) ^ (k + 1)) := by
-            rw [map_mul, ← hrs, e, map_pow, map_natCast, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hqE), mul_one]
-          rw [(FaithfulSMul.algebraMap_injective (𝓞 E) E) h2]
-          exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hq _ (Nat.succ_pos k))
-        rw [reduction_eq_zero_of_not_integral P hni] at h; exact hnu h
-    · rintro rfl
-      rw [zpow_one, div_self hqE]
-      have h3 : (1 : E) = algebraMap (𝓞 E) E 1 := (map_one _).symm
-      rw [h3, reduction_coe, map_one]; exact isUnit_one
-  unfold LocE.vP
-  have h4 : (fun z : ℤ => IsUnit (redP P ((q : E) / (q : E) ^ z))) = fun z => z = 1 := funext fun z => propext (key z)
-  rw [h4]
-  exact Classical.epsilon_spec (p := fun z : ℤ => z = 1) ⟨1, rfl⟩
-
-theorem locChar_q {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} (q : ℕ)
-    (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (h0 : 0 < q) (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) : LocE.locChar q cq χ (q : E) = cq := by
-  have hqE : (q : E) ≠ 0 := by exact_mod_cast h0.ne'
-  have h1 : redP P (1 : E) = 1 := by
-    have h3 : (1 : E) = algebraMap (𝓞 E) E 1 := (map_one _).symm
-    rw [h3, reduction_coe, map_one]
-  have hu : IsUnit (redP P (1 : E)) := by rw [h1]; exact isUnit_one
-  unfold LocE.locChar
-  rw [valuation_self P q hq h0, zpow_one, zpow_one, div_self hqE]
-  unfold LocE.unitV
-  rw [dif_pos hu]
-  have h2 : hu.unit = 1 := Units.ext (by rw [IsUnit.unit_spec, h1]; rfl)
-  rw [h2, map_one, Units.val_one, mul_one]
-
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
-
-theorem muAt_q (i : ℕ) (P : rowSG Pr sel mu) : muAt Ch sel mu cst i P ((Col.qOf P.1 : ℕ) : X.E) = cst.muq (i + 1) P := by
-  unfold muAt
-  exact locChar_q _ (Ideal.absNorm_mem P.1.asIdeal) (qOf_pos P.1) _ _
 
 theorem muqTie_of_ok (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) {G : ChGlob X R.m} {m2 : ℕ} (hL : L.Ok Ch sel mu cst G m2) :
     MuqTie Ch sel mu cst := by
@@ -611,15 +415,6 @@ theorem jetOp_coe {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ} (lam
   rw [e]
 
 variable {X : Fields} (A : Amb X) {a b : ℕ} (Sall SB : Finset (HeightOneSpectrum (𝓞 X.E))) (D : ℕ)
-
-theorem jetK_spec (hrat : A.JetsRat a b Sall D) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (c : ℕ)
-    (x : HomE X.E a b) (hR : InRange Sall D c N N' x) (m : DVar X.Tau a b →₀ ℕ) :
-    A.σ₀ (A.jetK Sall N N' c x m) = (A.chiF a b N N')⁻¹ * jetC A.cD (A.thInd Sall N N' c x) m := by
-  obtain ⟨k, hk⟩ := hrat N N' c x hR m
-  have hex : ∃ k' : X.K, A.σ₀ k' = (A.chiF a b N N')⁻¹ * jetC A.cD (A.thInd Sall N N' c x) m := ⟨k, hk⟩
-  unfold Amb.jetK desc
-  rw [dif_pos hex]
-  exact hex.choose_spec
 
 end ReadBack
 
@@ -770,19 +565,8 @@ theorem cplEq1_of_on {K : Type} [Field K] [NumberField K] [StarRing K] {S₀ S :
   · exact h g₀ g d₀ d y hy
   · rw [h0 d₀ d y hy, h0 _ _ _ (fun h' => hy ((Y.equiv g d y).1 h')), LinearMap.zero_comp, LinearMap.comp_zero]
 
-theorem cplEq2_of_on {K : Type} [Field K] [NumberField K] [StarRing K] {S S₁ : GSD K} (Y : Cpl S) (k2 : S.D → Y.Yb → S₁.D → (S.V →ₗ[K] S₁.V))
-    (h : CplEq2On Y k2) (h0 : ∀ d y d₁, y ∉ Y.ys d → k2 d y d₁ = 0) : CplEq2 Y k2 := by
-  intro g g₁ d y d₁
-  by_cases hy : y ∈ Y.ys d
-  · exact h g g₁ d y d₁ hy
-  · rw [h0 d y d₁ hy, h0 _ _ _ (fun h' => hy ((Y.equiv g d y).1 h')), LinearMap.zero_comp, LinearMap.comp_zero]
-
 theorem cp1Equiv_of_on (h : Cp1EquivOn W Ch sel mu cst L T b hY) : Cp1Equiv W Ch sel mu cst L T b hY := fun al =>
   cplEq1_of_on _ _ (h al) fun _ _ _ hy => if_neg hy
-
-theorem cp2Equiv_of_on (P : LevFam X.E X.K R.r Pr.vGs) (h : Cp2EquivOn W Ch sel mu cst L T b hY P) :
-    Cp2Equiv W Ch sel mu cst L T b hY P :=
-  cplEq2_of_on _ _ h fun _ _ _ hy => if_neg hy
 
 end OnYs
 
@@ -1868,11 +1652,6 @@ theorem indAdd_of (hD : 0 < D) (hfin : LatFin (X := X) a b Sall) (hT : A.IndTieD
 
 end AddMain
 
-theorem stepHyp_of_la {X : Fields} (A : Amb X) (a b : ℕ) (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) (D : ℕ) (hD : 0 < D)
-    (h : A.LaHyp a b Sall) (hfin : LatFin (X := X) a b Sall) (hsm : A.ESmooth a b) (hrat : A.JetsRat a b Sall D) : A.StepHyp a b Sall D := by
-  unfold Amb.StepHyp
-  exact ⟨hfin, indAdd_of A a b Sall D hD hfin (indTieD_of_la A a b Sall D hD h), hsm, hrat⟩
-
 section QValU
 
 open Formalism.UG Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory IsDedekindDomain.HeightOneSpectrum
@@ -1966,15 +1745,6 @@ theorem qu_one_sub_mem (v : HeightOneSpectrum (𝓞 F)) (I : Ideal (𝓞 E)) (k 
     rfl
   rw [e2]
   exact Ideal.add_mem _ (Ideal.mem_map_of_mem _ (hI a hak)) (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hI r hrk)))
-
-theorem qu_idem (v : HeightOneSpectrum (𝓞 F)) : quE E v * quE E v = quE E v := by
-  apply Subtype.ext
-  show ((1 : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1) * ((1 : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1) = (1 : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1
-  rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← Formalism.L2.G.sgl_mul, one_mul]
-
-theorem qu_prV (v v' : HeightOneSpectrum (𝓞 F)) (h : v' ≠ v) : prV (E := E) v' ((quE E v : RInt F E) : AfE F E) = 0 := by
-  show (Algebra.TensorProduct.map (AlgHom.id F E) (evalV F v')) ((1 : E) ⊗ₜ[F] Formalism.L2.G.sgl F v 1) = 0
-  rw [Algebra.TensorProduct.map_tmul, Formalism.L2.G.sgl_apply_ne F v 1 h, TensorProduct.tmul_zero]
 
 end QU
 

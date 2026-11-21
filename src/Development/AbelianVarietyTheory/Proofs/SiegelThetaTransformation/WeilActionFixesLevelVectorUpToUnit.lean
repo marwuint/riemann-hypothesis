@@ -6,10 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelTe
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticCharacterRealFinitePointsMatchStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompact
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaFunctionSpaceHeisenbergLawsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteAdelicLatticeTransportLawsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteAdelicLatticeTransportLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeLatticeVacuumTransportStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelDatumVectorEqThetaOfTestFunctionStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FinitePointsCarryLatticeVacuumToMovedVacuumStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FinitePointsCarryLatticeVacuumToMovedVacuum
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.L2.Pj MeasureTheory IsDedekindDomain NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Ker
@@ -21,31 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker.LevEig
 
-section Alg
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ} {X : Data E r} (L : SW.Level X)
-
-omit [IsCMField E] in
-
-theorem full_smul {𝔞 : Ideal (𝓞 E)} (h : 𝔞 ≠ ⊥) {N : Lt E r}
-    (hN : N.FG ∧ Submodule.span E (N : Set (Fin r → E)) = ⊤) :
-    (𝔞 • N).FG ∧ Submodule.span E ((𝔞 • N : Lt E r) : Set (Fin r → E)) = ⊤ := by
-  refine ⟨Submodule.FG.of_le hN.1 Submodule.smul_le_right, ?_⟩
-  obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h
-  have h0 : (a : E) ≠ 0 := by simpa using ha0
-  rw [eq_top_iff, ← hN.2, Submodule.span_le]
-  exact fun v hv => (Submodule.smul_mem_iff _ h0).1
-    (Submodule.subset_span (Submodule.smul_mem_smul ha hv))
-
-end Alg
-
 section Hat
 
 variable {D : D7} {k : ℕ}
-
-theorem mul_mem_intAf {a b : Af D.host.F} (ha : a ∈ intAf D.host.F) (hb : b ∈ intAf D.host.F) :
-    a * b ∈ intAf D.host.F := fun v => by
-  rw [map_mul]; exact mul_mem (ha v) (hb v)
 
 theorem one_mem_intAf : (1 : Af D.host.F) ∈ intAf D.host.F := fun v => by
   rw [map_one]; exact one_mem _
@@ -90,75 +68,10 @@ theorem fmt_one (V : HSp D) : fmt V 1 = 1 := by
 
 variable {S T : HSp D}
 
-noncomputable def col (j : Fin S.rank) : WO S T →+ (Fin T.rank → AfE D) :=
-  AddMonoidHom.mk' (fun w a => finPart D (w a j)) fun _ _ => funext fun _ => RingHom.map_add _ _ _
-
 theorem actO_sub (h : GA D S) (g : GA D T) (w w' : WO S T) :
     actO S T h g (w - w') = actO S T h g w - actO S T h g w' := by
   simp only [actO, Matrix.mul_sub, Matrix.sub_mul]
 
 end Hat
-
-section Mov
-
-variable {D : D7} {S T : HSp D}
-
-theorem isMov_conj {V : HSp D} {g : GA D V} (h : IsMov (fmt V g) (stdL D.host.E V.rank) (stdL D.host.E V.rank)) :
-    IsMov (fmtC V g) (stdL D.host.E V.rank) (stdL D.host.E V.rank) := by
-  let c : AfE D →+* AfE D := sigR (Af D.host.F) D.sp.cm.sig
-  have c2 (x : AfE D) : c (c x) = x := by
-    induction x using TensorProduct.induction_on with
-    | zero => rw [c.map_zero, c.map_zero]
-    | tmul a x => exact congrArg (fun t => a ⊗ₜ[D.host.F] t) (star_star x)
-    | add x y hx hy => rw [c.map_add, c.map_add, hx, hy]
-  have c3 (x : Formalism.L2.Theta.AE D) : finPart D (cA D x) = c (finPart D x) := by
-    induction x using TensorProduct.induction_on with
-    | zero => rw [RingHom.map_zero, RingHom.map_zero, c.map_zero]
-    | tmul a x => rfl
-    | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, c.map_add, hx, hy]
-  have c4 : fmtC V g = (fmt V g).map c := by ext i j; exact c3 _
-  have c5 {u} (hu : u ∈ hatV (stdL D.host.E V.rank)) : c ∘ u ∈ hatV (stdL D.host.E V.rank) := by
-    refine hatV_map (c.toAddMonoidHom.compLeft _) _ (fun a ha x hx => ?_) hu
-    refine tmul_mem_hatV ha (x := fun i => cc (x i)) ?_
-    induction hx using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨i, rfl⟩ := hx
-      refine Submodule.subset_span ⟨i, funext fun j => ?_⟩
-      by_cases e : j = i <;> simp [e, cc]
-    | zero => simp only [cc, Pi.zero_apply, map_zero]; exact (stdL D.host.E V.rank).zero_mem
-    | add x y _ _ hx hy => convert add_mem hx hy; simp [cc]
-    | smul b x _ hx =>
-      convert Submodule.smul_mem _ (Lev.bar b) hx
-      rw [Lev.O_smul, Lev.O_smul, Lev.coe_bar]
-      simp [cc]
-  have c6 (u : Fin V.rank → AfE D) : c ∘ c ∘ u = u := funext fun i => c2 _
-  have c7 (u : Fin V.rank → AfE D) : fmtC V g *ᵥ (c ∘ u) = c ∘ (fmt V g *ᵥ u) := by
-    rw [c4]; funext i; exact (RingHom.map_mulVec c _ _ i).symm
-  intro u
-  constructor
-  · intro hu
-    obtain ⟨u₀, h0, e⟩ := (h _).1 (c5 hu)
-    exact ⟨_, c5 h0, by rw [c7, ← e, c6]⟩
-  · rintro ⟨u₀, h0, rfl⟩
-    rw [← c6 u₀, c7]
-    exact c5 ((h _).2 ⟨_, c5 h0, rfl⟩)
-
-end Mov
-
-section Main
-
-variable {D : D7} {S T : HSp D} (C : Ctx S T) (Lv : SW.Level C.X)
-
-theorem full_Λ : C.X.Λ.FG ∧ Submodule.span D.host.E (C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤ :=
-  ⟨C.X.Λ_fg, C.X.Λ_span⟩
-
-theorem full_std (n : ℕ) : (stdL D.host.E n).FG ∧
-    Submodule.span D.host.E (stdL D.host.E n : Set (Fin n → D.host.E)) = ⊤ := by
-  refine ⟨Submodule.fg_span (Set.finite_range _), ?_⟩
-  rw [stdL, Submodule.span_span_of_tower]
-  convert (Pi.basisFun D.host.E (Fin n)).span_eq
-  simp
-
-end Main
 
 end GlobalTheory.Ker.LevEig

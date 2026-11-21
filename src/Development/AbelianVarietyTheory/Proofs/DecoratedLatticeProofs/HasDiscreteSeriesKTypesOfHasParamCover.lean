@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary�
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsOfIsDSPar
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.RhoCompactTwiceEqOfSignBlockOrdered
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDiscreteSeriesKTypesCoverOfFactorsThroughCoveStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDiscreteSeriesKTypesCoverOfFactorsThroughCove
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDiscreteSeriesKTypesOfSqrtDetTwistStatement
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Formalism.L2.Theta Matrix GlobalTheory.RealPar GlobalTheory.CoverDS
@@ -22,10 +22,10 @@ theorem hasTypes_of_hasParam_of_group : GlobalTheory.Dec.LowKMultOne → GlobalT
   obtain ⟨P, e, -, hB, hcase⟩ := isParam_cases hlam
   rcases hcase with rfl | rfl
   · obtain ⟨σ, hf, hds⟩ := (hasParam_iff_factors R hn P hB).1 hR
-    exact GlobalTheory.T.hasDiscreteSeriesKTypes_cover_of_factorsThroughCovering hL hK hD p q (p + q) e P T R σ hB hf hds
+    exact _root_.GlobalTheory.CoverDS.hasTypes_of_factors hL hK hD p q (p + q) e P T R σ hB hf hds
   · obtain ⟨σ, hπ, hds⟩ := (hasParam_half_iff R hn P hB).1 hR
     have hf : Factors (Cover.twist R).U e σ := (factors_twist_iff R σ).2 hπ
     exact GlobalTheory.T.hasDiscreteSeriesKTypes_of_sqrtDetTwist p q T R (blockPar P e)
-      (GlobalTheory.T.hasDiscreteSeriesKTypes_cover_of_factorsThroughCovering hL hK hD p q (p + q) e P T (Cover.twist R) σ hB hf hds)
+      (_root_.GlobalTheory.CoverDS.hasTypes_of_factors hL hK hD p q (p + q) e P T (Cover.twist R) σ hB hf hds)
 
 end GlobalTheory.CoverDS

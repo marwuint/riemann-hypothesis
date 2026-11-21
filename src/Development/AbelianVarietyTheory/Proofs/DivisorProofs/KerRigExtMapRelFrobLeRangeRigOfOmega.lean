@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigExtMapRelFrobCom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowFinrankCotangentLeFinrankFrobeniusKernelQuoti
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusKernelIdealEqKernelRelativeFrobeniusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppOneEqZeroOfKernelIdealOfCompEqPrimeSmulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppOneEqZeroOfKernelIdealOfCompEqPrimeSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemFrobeniusKernelIdealOfZeroDifferentialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivCocycleMemRangeCobOfPullbackMulPStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivCocycleMemRangeCobOfPullbackMulP
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjectiveOfEqZero
 
 set_option autoImplicit false
 
@@ -125,13 +126,13 @@ theorem ker_rigExtMap_relFrob_le_range_rigOfOmega (p : ℕ) [Fact p.Prime] (K : 
     exact map_mk_cobOne_eq_zero ((relFrob h G).app 1) hb0 hcob
   rw [hker] at hmem
   have hV : (verschiebung h G).app 1 (B₁.1 1) = 0 :=
-    GlobalTheory.T.app_one_eq_zero_of_kernel_ideal_of_comp_eq_prime_smul p K G (frobTwist h G) (relFrob h G) (verschiebung h G)
+    _root_.GlobalTheory.PDivGroup.app_one_eq_zero_of_mem_kerIdeal_of_comp_eq_prime_smul p K G (frobTwist h G) (relFrob h G) (verschiebung h G)
       (verschiebung_comp_relFrob h G) _ hmem
   have hcomp : cocyclesMap (verschiebung h G) (cocyclesMap (relFrob h G) c₁) =
       cocyclesMap (verschiebung h G ≫ relFrob h G) c₁ :=
     Subtype.ext (funext fun n => (pullTwo_comp _ _ _).symm)
   obtain ⟨B', hB'⟩ : c₁ ∈ LinearMap.range (frobTwist h G).cob := by
-    refine GlobalTheory.T.pDivCocycle_mem_range_cob_of_pullback_mulP (frobTwist h G) c₁ (funsMap (verschiebung h G) B₁) ?_ hV
+    refine _root_.GlobalTheory.cocycle_mem_range_cob_of_pullback_mulP (frobTwist h G) c₁ (funsMap (verschiebung h G) B₁) ?_ hV
     rw [← cocyclesMap_cob, hc₁, hcomp, verschiebung_comp_relFrob]
   set B₀ : (frobTwist h G).funs := B' + t • oneFun (frobTwist h G) with hB₀
   have hc0 : (frobTwist h G).cob B₀ = c := by

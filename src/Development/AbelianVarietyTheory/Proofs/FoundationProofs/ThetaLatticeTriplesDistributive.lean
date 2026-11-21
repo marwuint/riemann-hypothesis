@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMatrixProjectionSelfDualLatticesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMatrixProjectionSelfDualLattices
 
 noncomputable section
 
@@ -118,7 +118,7 @@ theorem dist_La : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : �
   intro D cc δ N N'
   refine ⟨?_, ?_, ?_⟩
   · intro L L₁ L₂ L₃ s1 s3 hb x hx y _ _
-    obtain ⟨P, h1, h2, h3⟩ := GlobalTheory.T.exists_matrix_projection_selfDual_lattices D N' L₁ L₃ s1 s3
+    obtain ⟨P, h1, h2, h3⟩ := _root_.GlobalTheory.LatticeProjection.exists_matrix_projection D N' L₁ L₃ s1 s3
     have k := bet_proj hb h1 h2 h3
     rw [← lft_add P x]
     refine add_mem (AddSubgroup.mem_sup_left ⟨lft_mem cc δ P (fun v hv => (k v hv).1) hx,
@@ -127,7 +127,7 @@ theorem dist_La : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : �
     · rw [one_sub_mulVec]; exact L₂.sub_mem hv (k v hv).2.1
     · rw [one_sub_mulVec]; exact (k v hv).2.2
   · intro L₁ L₂ L₃ L' s1 s3 hb x hx y _ _
-    obtain ⟨P, h1, h2, h3⟩ := GlobalTheory.T.exists_matrix_projection_selfDual_lattices D N L₁ L₃ s1 s3
+    obtain ⟨P, h1, h2, h3⟩ := _root_.GlobalTheory.LatticeProjection.exists_matrix_projection D N L₁ L₃ s1 s3
     have k := bet_proj hb h1 h2 h3
     rw [← rgt_add P x, add_comm]
     refine add_mem (AddSubgroup.mem_sup_left ⟨rgt_mem cc δ _ (fun v hv => ?_) hx,
@@ -137,7 +137,7 @@ theorem dist_La : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : �
     · rw [one_sub_mulVec]; exact hb.2 ⟨L₁.sub_mem hv (h1 v (Submodule.mem_sup_left hv)), h3 v hv⟩
     · rw [one_sub_mulVec]; exact L₂.sub_mem hv (k v hv).2.1
   · intro L₀ L L₀' L' s1 s3 x hx y hy hu
-    obtain ⟨P, h1, h2, h3⟩ := GlobalTheory.T.exists_matrix_projection_selfDual_lattices D N' L₀' L' s1 s3
+    obtain ⟨P, h1, h2, h3⟩ := _root_.GlobalTheory.LatticeProjection.exists_matrix_projection D N' L₀' L' s1 s3
     have q1 : ∀ v ∈ L₀', (1 - P).mulVec v ∈ L₀' := fun v hv => by
       rw [one_sub_mulVec]; exact L₀'.sub_mem hv (h1 v (Submodule.mem_sup_left hv))
     have q2 : ∀ v ∈ L₀', (1 - P).mulVec v ∈ L' := fun v hv => by

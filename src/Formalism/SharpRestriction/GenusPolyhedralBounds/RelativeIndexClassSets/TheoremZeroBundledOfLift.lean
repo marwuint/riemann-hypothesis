@@ -18,8 +18,4 @@ theorem lenPoleL_all {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} 
 theorem theorem_zero_of_named_inputs {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} : Conclusion1OfComb (D := D) (B := B) (P := P) :=
   theorem_zero_split_of_lengths lenBase_all lenPoleL_all
 
-theorem theorem_zero_bundled_of_lift {D : D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} (hL : LiftAll D B P) :
-    Conclusion1Of2 (D := D) (B := B) (P := P) :=
-  theorem_zero_bundled_of_split hL theorem_zero_of_named_inputs
-
 end Formalism.MainNotions.Gaps.EtaleWeightGaps

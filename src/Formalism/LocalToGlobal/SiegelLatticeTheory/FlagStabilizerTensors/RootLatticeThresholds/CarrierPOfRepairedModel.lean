@@ -1,5 +1,7 @@
 import Mathlib
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CarrierInputExistsRepaired
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CarrierInputExistsBuilt
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBJoint
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.TopPSD
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.TheoremSClosedP
 
 noncomputable section
@@ -31,21 +33,5 @@ def CarrierSideBoundPositive (Cb : ℝ) : Prop :=
       Formalism.L2.SG.Pf.CarrierT.CarrierDataBound T.X u u' 1 i0 i0' (T.Y.FN u) (T.Y.FN u') νq
         (massDataY T.X T.hb T.Y u u' X0 T.ψ sd C Th vR Q i0 i0' νq).IntN CA (gOf D e) (deOf D τ u) (deOf D τ u')
         (lOf D (deOf D τ u) (deOf D τ u')) C₆ Cc Cb
-
-theorem carrierP_of_repaired_model (hPA : P5.ThmPActual) (hLEM : MA.LemmaEModel) (hMP : JCT.ModelPlaceBuilt2)
-    (hBB : KB.BuiltBounds2) (Cb : ℝ) (hX : CarrierSideBoundPositive Cb) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP := by
-  obtain ⟨C₆, Cc, C₄, hC6, hC4, hmain⟩ :=
-    Formalism.L2.SG.Pf.CarrierT.carrier_input_exists_repaired hPA hLEM hMP hBB Cb
-  obtain ⟨CA₀, hrest⟩ := hX C₆ Cc hC6
-  refine ⟨C₄, CA₀, hC4, fun CA hCA h1CA C0 CG CDel cT Cb' a2 a3 a4 a5 a6 a7 => ?_⟩
-  obtain ⟨k0, hk0⟩ := hrest CA hCA h1CA C0 CG CDel cT Cb' a2 a3 a4 a5 a6 a7
-  refine ⟨k0, fun Cg cb Cw cTf CT C0f hcb hcT => ?_⟩
-  obtain ⟨C'₀, Cl₀, hcl⟩ := hk0 Cg cb Cw cTf CT C0f hcb hcT
-  refine ⟨C'₀, Cl₀, ?_⟩
-  intro C' Cl hC' hCl D L T u u' e τ Cp Th' i0 i0' νq X0 sd C Th F0 what₂ vR Q hTi hne hk hH0 hPl hSz hi hPt hNu
-  obtain ⟨Wp, Wq, i1, i2, i3, i4, i5, S, T', f, χ, ν', m₀, top, A₀, τ', Qm, Qim, eP, eQ, h1, h2, h3, h4, h5, h6, -, -,
-    h9, h10, h11, h12⟩ := hmain D T.X u u' 1 i0 i0' (T.Y.FN u) (T.Y.FN u') νq T.Y.δ T.Y.M _ CA _ _ _ _
-    (hcl C' Cl hC' hCl D L T u u' e τ Cp Th' i0 i0' νq X0 sd C Th vR Q hTi hne hk hH0 hPl hSz hi hPt hNu)
-  exact ⟨Wp, Wq, i1, i2, i3, i4, i5, S, T', f, ν', m₀, τ', Qm, Qim, eP, eQ, h1, h2, h3, h4, h5, h6, h9, h10, h11, h12⟩
 
 end Formalism.L2.SG.SpectralTiesReal

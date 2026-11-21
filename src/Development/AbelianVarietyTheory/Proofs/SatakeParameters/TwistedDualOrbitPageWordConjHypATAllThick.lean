@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComplexConjugationOrbitOneRealPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AlternatingWordLargeSizeNumericalBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EmbeddingSignAlternateOfSignNegStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualOrbitPageWordThickIffThickEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AlternatingWordLargeSizeNumericalBounds
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EmbeddingSignAlternateOfSignNeg
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualOrbitPageWordThickIffThickEmbedding
 
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
@@ -41,13 +41,13 @@ theorem conjWord_hypAT {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (�
   obtain ⟨hord, hplc⟩ := GlobalTheory.T.complexConjugation_orbit_one_realPlace τ
   have hth : ∀ i, (pageWord L j ε τ (D.R.cc)).thick i := by
     intro i
-    rw [GlobalTheory.T.twistedDualOrbitPageWord_thick_iff_thickEmbedding L C j ε τ (D.R.cc) hR i]
+    rw [_root_.GlobalTheory.HTW.pageWord_thick_iff L C j ε τ (D.R.cc) hR i]
     unfold Thick at hτ ⊢
     rw [hplc i]
     exact hτ
   refine ⟨⟨?_, ?_, ?_⟩, hth⟩
   · rw [hord]; exact even_two
-  · exact (GlobalTheory.T.embeddingSign_alternate_of_sign_neg ε τ (D.R.cc) rfl).2
+  · exact (_root_.GlobalTheory.signs_alternate_inert ε τ (D.R.cc) rfl).2
   · intro M hM i
     obtain ⟨hB, hroom⟩ := bHat_large_of_roomy L C hR
     have hη : (0 : ℝ) ≤ etaHat L := Nat.cast_nonneg _
@@ -63,7 +63,7 @@ theorem conjWord_hypAT {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (�
     have hMk := key k
     rw [hk] at hMk
     have hi := key i
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.alternatingWord_large_size_numerical_bounds l (bHat L) (etaHat L) (sHat L) (M : ℝ)
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.alternatingWord_numerical_bounds l (bHat L) (etaHat L) (sHat L) (M : ℝ)
       ((pageWord L j ε τ (D.R.cc)).sz i : ℝ) hl hB hη hS hroom
       (abs_le.2 ⟨by linarith [hMk.1], by linarith [hMk.2]⟩)
       (abs_le.2 ⟨by linarith [hi.1], by linarith [hi.2]⟩)

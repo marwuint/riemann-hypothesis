@@ -143,7 +143,7 @@ theorem isParam_lamM' {t : ℕ} {al be ga de : List ℚ} (h : HypA t al be ga de
       tauto
     · simp only [List.mem_append] at he ⊢
       tauto
-  obtain ⟨-, -, ⟨p1, p2, p3, p4⟩, -⟩ := GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t ga de al be h'
+  obtain ⟨-, -, ⟨p1, p2, p3, p4⟩, -⟩ := _root_.GlobalTheory.LowestTypes.lowest_types t ga de al be h'
   let σ : Ix (al.length + de.length) (ga.length + be.length + t) → Ix (ga.length + be.length + t) (al.length + de.length) :=
     Sum.swap
   have e : ∀ a, lamM' t al be ga de a = lamA' t ga de al be (σ a) := fun a => by rcases a with a | a <;> rfl
@@ -162,7 +162,7 @@ theorem exists_locIt_large {X : ProvA} (hX : ChosenSeries X) (h1 : ArchimedeanRa
     (hS : S τ = dualPar (signed (al ++ de) (ga ++ block t ++ be) aT))
     (hS' : S' τ = dualPar (signed (al ++ be) (ga ++ de) aS)) :
     (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, LocIt M M' τ aS aT A := by
-  obtain ⟨-, p1, -⟩ := GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hd.1
+  obtain ⟨-, p1, -⟩ := _root_.GlobalTheory.LowestTypes.lowest_types t al be ga de hd.1
   have p2 := isParam_lamM' hd.1
   have ht := hd.1.1
   have hn := hd.1.2.1
@@ -188,14 +188,14 @@ end GlobalTheory.Chain.RealItLarge
 theorem GlobalTheory.Chain.RealItLarge.itLarge : ∀ {D : D7} (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (t : ℕ) (aS aT : D.what₂.Tau → ℚ), GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → IsInfFam θ → (∀ τ, ∃ be de : List ℚ, Formalism.MainNotions.SchurIrreducible.DataARm t [] be [] de ∧ S τ = dualPar (GlobalTheory.Chain.signed de (Formalism.BasicNotions.TH.block t ++ be) (aT τ)) ∧ S' τ = dualPar (GlobalTheory.Chain.signed be de (aS τ))) → ∀ (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → (∀ τ, HasInfExp D χS τ (aS τ) ∧ HasInfExp D χT τ (aT τ)) → ∀ f, GlobalTheory.Chain.IsVacVec ψ θ M M' f → ∃ It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, IsItW θ M M' ω (GlobalTheory.Chain.ptOf ψ θ M M' f) It := by
   intro D V W S S' M M' θ ψ t aS aT hD hH hθ hP χS χT ω hω hexp f hf
   obtain ⟨X, hX, h1, h2⟩ := GlobalTheory.Chain.ItPairObj.exists_record hD hH
-  have hB := GlobalTheory.T.thetaModels_eq_coverDiscreteSeries hD hH D
+  have hB := _root_.GlobalTheory.modelsAreCoverSeries_of_hypotheses hD hH D
   have key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, GlobalTheory.Chain.RealIt.LocIt M M' τ (aS τ) (aT τ) A := fun τ => by
     obtain ⟨be, de, hd, e1, e2⟩ := hP τ
     exact GlobalTheory.Chain.RealItLarge.exists_locIt_large hX h1 h2 hB M M' τ (al := []) (ga := []) hd e1 e2
   choose hr A hA using key
   obtain ⟨It, I, hI⟩ := GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' aS aT A GlobalTheory.Contr.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA
-  have hc := fun τ => GlobalTheory.T.thetaVacuumCharacters_atRealPlaces D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (hexp τ).1 (hexp τ).2 hf
-  exact ⟨It, GlobalTheory.Chain.RealIt.isItW_of_globIt hθ hI hr (GlobalTheory.T.fockVectorsOverVacuumIsometry_of_skeletonDatum D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2
+  have hc := fun τ => _root_.GlobalTheory.vacChar_of_record D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (hexp τ).1 (hexp τ).2 hf
+  exact ⟨It, GlobalTheory.Chain.RealIt.isItW_of_globIt hθ hI hr (_root_.GlobalTheory.vacuumFock_all_records D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2
     (fun τ => (hc τ).2.1) fun τ => (hc τ).2.2⟩
 
 end

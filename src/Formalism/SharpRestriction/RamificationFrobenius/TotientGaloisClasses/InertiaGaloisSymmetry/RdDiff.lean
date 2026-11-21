@@ -57,25 +57,12 @@ private theorem log_abs_norm_sub_one_mul_totient_eq {m : ℕ} (hm : 1 < m) {L : 
   rw [habs, Real.log_pow, log_abs_eval_one_cyclotomic_eq_vonMangoldt hm, ← Module.finrank_mul_finrank ℚ ℚ⟮η - 1⟯ L, hdeg]
   push_cast; ring
 
-theorem log_norm_cyc {m : ℕ} (hm : 1 < m) {F : Type*} [Field F] [NumberField F] [IsCyclotomicExtension {m} ℚ F]
-    {η : F} (hη : IsPrimitiveRoot η m) : Real.log |((Algebra.norm ℚ (η - 1) : ℚ) : ℝ)| = vonMangoldt m := by
-  haveI : NeZero m := ⟨by omega⟩
-  have h := log_abs_norm_sub_one_mul_totient_eq hm hη
-  rw [IsCyclotomicExtension.finrank F (cyclotomic.irreducible_rat (by omega : 0 < m))] at h
-  have ht : (0 : ℝ) < m.totient := by exact_mod_cast Nat.totient_pos.2 (by omega)
-  exact mul_right_cancel₀ ht.ne' (h.trans (mul_comm _ _))
-
 private theorem absNorm_map_algebraMap_eq_pow_finrank {L E : Type*} [Field L] [NumberField L] [Field E] [NumberField E]
     [Algebra E L] (I : Ideal (𝓞 E)) :
     Ideal.absNorm (I.map (algebraMap (𝓞 E) (𝓞 L))) = Ideal.absNorm I ^ Module.finrank E L := by
   have hr : Module.finrank (𝓞 E) (𝓞 L) = Module.finrank E L := by
     exact (IsFractionRing.finrank_eq (𝓞 E) E (𝓞 L) L).symm
   rw [Ideal.absNorm_algebraMap (𝓞 E) (𝓞 L) I, hr]
-
-theorem log_norm_root {m : ℕ} (hm : 1 < m) {L : Type*} [Field L] [NumberField L] {η : L}
-    (hη : IsPrimitiveRoot η m) :
-    Real.log |((Algebra.norm ℚ (η - 1) : ℚ) : ℝ)| * (m.totient : ℝ) = (Module.finrank ℚ L : ℝ) * vonMangoldt m := by
-  exact log_abs_norm_sub_one_mul_totient_eq hm hη
 
 variable {N : ℕ} [NeZero N] {L : Type*} [Field L] [NumberField L] [IsCyclotomicExtension {N} ℚ L] {ζ : L}
   (hζ : IsPrimitiveRoot ζ N) (E : Type*) [Field E] [NumberField E] [Algebra E L]

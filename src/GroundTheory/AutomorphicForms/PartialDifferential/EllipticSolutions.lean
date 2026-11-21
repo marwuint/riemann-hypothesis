@@ -10,16 +10,6 @@ noncomputable section
 
 variable {n : ℕ}
 
-section Integrable
-
-variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-  [MeasurableSpace E] [BorelSpace E]
-
-def ofIntegrable {h : E → ℂ} (hh : Integrable h) : 𝓢'(E, ℂ) :=
-  MeasureTheory.Lp.toTemperedDistribution (hh.toL1 h)
-
-end Integrable
-
 theorem integrable_smul_of_locallyIntegrableOn {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     {Ω : Set E} {u : E → ℂ} (hu : LocallyIntegrableOn u Ω) {φ : 𝓢(E, ℂ)} (hφc : HasCompactSupport φ)

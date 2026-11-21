@@ -1,8 +1,8 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsAre
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairKernelMapsStepWeightValuesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairKernelTermTargetStabiliserLawStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairKernelMapsStepWeightValues
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairKernelTermTargetStabiliserLaw
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Forms Formalism.L2.Col Formalism.L2.DIV Formalism.HermitianLatticesTheory GlobalTheory.KerJ NumberField IsDedekindDomain Classical
 
@@ -33,8 +33,8 @@ theorem K_mem_Fi : ∀ (D : D7) (u : D.what₂.Word) (C : ColumnChain D.R D.what
   have hK : C.K i φ c' = ∑ c, C.wt i c • C.Kmap i c c' (φ c) := by
     simp only [ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM]
   rw [hK]
-  exact ⟨isVal_sum _ _ _ _ _ fun c => GlobalTheory.T.pair_kernel_maps_step_weight_values D u C A Pm M O i hi (hU i hi) c c' _ (hv c),
+  exact ⟨isVal_sum _ _ _ _ _ fun c => _root_.GlobalTheory.KerJ.Kmap_isVal D u C A Pm M O i hi (hU i hi) c c' _ (hv c),
     fun g hg => lawAt_sum O _ g _ _ _ fun c =>
-      GlobalTheory.T.pair_kernel_term_target_stabiliser_law D u C A Pm M O i hi (hU i hi) c c' (hd i hi c c') g (hT i hi c c' g hg) _ (hv c)⟩
+      _root_.GlobalTheory.KerJ.lawAt_Kmap D u C A Pm M O i hi (hU i hi) c c' (hd i hi c c') g (hT i hi c c' g hg) _ (hv c)⟩
 
 end GlobalTheory.KerJ.FiCore

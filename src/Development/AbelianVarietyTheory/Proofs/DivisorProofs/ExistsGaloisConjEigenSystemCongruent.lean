@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChebotarevDegreeOneIffCheb
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaloisLiftResidueCongruencePadicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearActionDualWeylTensorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaloisLiftResidueCongruencePadic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearActionDualWeylTensor
 
 open NumberField IsDedekindDomain Formalism.L2.DIV GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds Formalism.CohomologicalDescent.LD Formalism.RankGapBounds.FormsTensorLocalization
 
@@ -13,7 +13,7 @@ theorem isEig_map {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq
     (mu : ι → ℕ → ℕ) (g : PadicAlgCl l ≃+* PadicAlgCl l) (hg : ∀ x, g (F.emb x) = F.emb x)
     (θ : F.I → PadicAlgCl l) (h : F.IsEig mu θ) : F.IsEig mu (fun i => g (θ i)) := by
   obtain ⟨f, hf0, ⟨hΓ, hK⟩, hH⟩ := h
-  obtain ⟨Φ, hinj, hsm, hgrp⟩ := GlobalTheory.T.exists_semilinear_action_dualWeylTensor (PadicAlgCl l) ι N mu g
+  obtain ⟨Φ, hinj, hsm, hgrp⟩ := _root_.GlobalTheory.semilinear_transport (PadicAlgCl l) ι N mu g
   refine ⟨fun x => Φ (f x), ?_, ⟨fun γ hγ x => by simp only [hΓ γ hγ x], fun κ x => ?_⟩, fun i x => ?_⟩
   · intro h0
     apply hf0
@@ -36,7 +36,7 @@ theorem exists_eig_congr : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι]
     have : F.emb x ∈ Set.range F.emb := ⟨x, rfl⟩
     rw [hrange] at this
     exact this.1
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_galois_lift_residue_congruence_padic l L F.I θ θ0 hθ.1 hθ0.1 (by
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.ResidueLift.main l L F.I θ θ0 hθ.1 hθ0.1 (by
     intro p hp
     have hmem : p ∈ Set.range (MvPolynomial.map F.emb) := by
       rw [MvPolynomial.mem_range_map_iff_coeffs_subset]

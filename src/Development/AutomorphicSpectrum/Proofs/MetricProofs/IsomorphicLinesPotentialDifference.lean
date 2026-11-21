@@ -7,12 +7,20 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import ReciprocityTheory.AnalyticForms.LeviForms.UnifInt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereIntegralCongrPotentials
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodProjExistsStatementHolds
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LineIsomorphismDefectFunctionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LineIsomorphismDefectFunction
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntersectionFamilyDefectFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionFamilySymmetricStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionFamilySymmetric
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TelescopingCoordinateDifferenceStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereDifferenceTendstoZeroStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ResolutionStatementHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereDifferenceTendstoZero
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.CompRightEqZero
+import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ResolutionStatementHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
 
 noncomputable section
 
@@ -112,7 +120,7 @@ theorem step_eq (hR : RatRStatement) (hB : ResBridgeStatement) (hG : GoodProjExi
   have hIso : IsLineIso P (Re.line a₁ t).a (Re.line a₂ t).a f g := by
     rw [Re.line_deg, Re.line_deg]
     exact hiso
-  obtain ⟨w, hw, -, -⟩ := GlobalTheory.T.line_isomorphism_defect_function K ι P Re.J D Re.R (Re.line a₁ t) (Re.line a₂ t) f g Re.arith.2.1 hIso hl₁ hl₂
+  obtain ⟨w, hw, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.defect_exists_smooth K ι P Re.J D Re.R (Re.line a₁ t) (Re.line a₂ t) f g Re.arith.2.1 hIso hl₁ hl₂
   have h := GlobalTheory.T.intersection_family_defect_formula hR hB hG hA K ι (II K ι) hI P Re.J D Re.R (fun j => Re.line (u j) t) (Re.line a₁ t)
     (Re.line a₂ t) f g w Re.arith (fun j => Re.line_smooth _ t h0 h1) hl₁ hl₂ hIso hw
   rw [h]
@@ -161,7 +169,7 @@ theorem cmp_one : Inputs → AvoidStatement → ∀ (II : IntersectionSystem), I
     let c : Fin (D + 1) → σ ⊕ σ := fun j => if j < i then Sum.inr (w j) else Sum.inl (w j)
     let c' : Fin (D + 1) → σ ⊕ σ := fun j => if j ≤ i then Sum.inr (w j) else Sum.inl (w j)
     let u : Fin D → σ ⊕ σ := fun j => c (i.succAbove j)
-    have hT := GlobalTheory.T.monge_ampere_difference_tendsto_zero hIn.convergenceSigned D σ S d hd hph (w i) u
+    have hT := _root_.GlobalTheory.CompanionTheory.Ar.PB.an_two_weights_close hIn.convergenceSigned D σ S d hd hph (w i) u
     refine hT.congr' ?_
     filter_upwards [Ioc_mem_nhdsGT ht] with t ht'
     have h0 := ht'.1
@@ -173,12 +181,12 @@ theorem cmp_one : Inputs → AvoidStatement → ∀ (II : IntersectionSystem), I
       have hne : i.succAbove j ≠ i := Fin.succAbove_ne i j
       have hiff : i.succAbove j ≤ i ↔ i.succAbove j < i := ⟨fun h => lt_of_le_of_ne h hne, le_of_lt⟩
       simp only [c', u, c, hiff]
-    have s₁ := GlobalTheory.T.intersection_family_symmetric K ι (II K ι) hI P D (fun j => Re.line (c j) t) i Re.arith
+    have s₁ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.movePositionToLast K ι (II K ι) hI P D (fun j => Re.line (c j) t) i Re.arith
       (fun j => Re.line_smooth _ t h0 h1)
-    have s₂ := GlobalTheory.T.intersection_family_symmetric K ι (II K ι) hI P D (fun j => Re.line (c' j) t) i Re.arith
+    have s₂ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.movePositionToLast K ι (II K ι) hI P D (fun j => Re.line (c' j) t) i Re.arith
       (fun j => Re.line_smooth _ t h0 h1)
     simp only [hci, hci', hcc] at s₁ s₂
-    have hs := step_eq hIn.ratR (GlobalTheory.T.resolution_statement_holds) GlobalTheory.CompanionTheory.Ar.Link.goodProjExistsStatement_holds hA II hI Re
+    have hs := step_eq hIn.ratR (_root_.GlobalTheory.CompanionTheory.Ar.Link.resBridgeStatement_holds) GlobalTheory.CompanionTheory.Ar.Link.goodProjExistsStatement_holds hA II hI Re
       (Sum.inl (w i)) (Sum.inr (w i)) (f (w i)) (g (w i)) (d (w i)) (hiso (w i)) (hd (w i)) (hlog (w i)) u t h0 h1
     show mInt S.A _ _ = Re.num II t c - Re.num II t c'
     simp only [Realis.num]

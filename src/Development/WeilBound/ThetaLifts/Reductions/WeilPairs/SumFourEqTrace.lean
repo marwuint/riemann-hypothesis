@@ -202,19 +202,6 @@ theorem eventually_fix (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : 
   · filter_upwards [hu, hv] with p h3 h4 using by rw [map_add, h3, h4]
   · filter_upwards [hu] with p h3 using by rw [map_smul, h3]
 
-theorem cont (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : σ ξ₀ = -ξ₀)
-    (h : IsLatRepF σ JS JT ξ₀ ψ hc Λ w lam Om) (f : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ) (u : WOF F E nS nT) :
-    Continuous fun p => (Om p f : WOF F E nS nT → ℂ) u := by
-  haveI := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)
-  haveI : IsTopologicalGroup (GAF σ JS) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ JS))
-  haveI : IsTopologicalGroup (GAF σ JT) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ JT))
-  refine continuous_iff_continuousAt.2 fun q => ?_
-  have h1 : Filter.Tendsto (fun p => q⁻¹ * p) (𝓝 q) (𝓝 1) :=
-    (continuous_const.mul continuous_id).tendsto' q 1 (inv_mul_cancel q)
-  refine continuousAt_const.congr (f := fun _ => (Om q f : WOF F E nS nT → ℂ) u) ?_
-  filter_upwards [h1.eventually (eventually_fix hσ hS hT hξ h f)] with p hp
-  conv_rhs => rw [← mul_inv_cancel_left q p, map_mul, Module.End.mul_apply, hp]
-
 end PositivityTheory.ThKW.LatA
 
 end

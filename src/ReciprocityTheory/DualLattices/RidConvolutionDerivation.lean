@@ -56,24 +56,6 @@ lemma counit_convD (δ : A →ₗ[R] R) (f : A) :
     Coalgebra.rTensor_counit_comul]
   simp
 
-lemma convD_groupLike (δ : A →ₗ[R] R) {χ : A} (h : IsGroupLikeElem R χ) :
-    convD δ χ = δ χ • χ := by
-  simp [convD, h.comul_eq_tmul_self]
-
-lemma IsPtDer.map_one {δ : A →ₗ[R] R} (hδ : IsPtDer δ) : δ 1 = 0 := by
-  have h := hδ 1 1
-  simp only [mul_one, Bialgebra.counit_one, one_mul] at h
-  linear_combination -h
-
-lemma IsPtDer.map_sq {δ : A →ₗ[R] R} (hδ : IsPtDer δ) {f : A}
-    (hf : f ∈ RingHom.ker (Bialgebra.counitAlgHom R A) ^ 2) : δ f = 0 := by
-  rw [pow_two] at hf
-  refine Submodule.mul_induction_on hf ?_ ?_
-  · intro a ha b hb
-    rw [RingHom.mem_ker, Bialgebra.counitAlgHom_apply] at ha hb
-    rw [hδ, ha, hb]; ring
-  · intro a b ha hb; rw [map_add, ha, hb, add_zero]
-
 end Bialg
 
 section Chain

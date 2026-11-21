@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumOfDescendedMultiplicationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentOfEqualisedProperCoverNormalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumOfDescendedMultiplication
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentOfEqualisedProperCoverNormal
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -49,7 +50,7 @@ theorem unit_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     simp only [h, Category.assoc, pullback.condition]
     rw [← Category.assoc, hx₀s]
     simp
-  obtain ⟨φ, hmon, hφ⟩ := GlobalTheory.T.exists_descentDatum_of_descendedMultiplication R hA S π hP hS hI G' hSA N hL
+  obtain ⟨φ, hmon, hφ⟩ := _root_.GlobalTheory.Mum.Desc.exists_datum R hA S π hP hS hI G' hSA N hL
   let x := (1 : Over.mk (𝟙 (pullback π π)) ⟶ (Over.pullback (pullback.fst π π)).obj G').left
   have hxs : x ≫ pullback.snd G'.hom (pullback.fst π π) = 𝟙 _ := by
     simpa using Over.w (1 : Over.mk (𝟙 (pullback π π)) ⟶ (Over.pullback (pullback.fst π π)).obj G')
@@ -72,8 +73,8 @@ theorem unit_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
   have heq : pullback.fst π π ≫ h = pullback.snd π π ≫ h := by
     rw [← hy1, hy, Category.assoc]
   have sq : IsPullback π (𝟙 S) (𝟙 (Sp R)) π := IsPullback.of_vert_isIso ⟨by simp⟩
-  obtain ⟨e, he, -⟩ := GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S (Sp R) S N.U.left π (𝟙 _) π (𝟙 S) hP hS hI inferInstance sq h heq
-  obtain ⟨e₁, -, huniq⟩ := GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S (Sp R) S (Sp R) π (𝟙 _) π (𝟙 S) hP hS hI inferInstance sq π
+  obtain ⟨e, he, -⟩ := _root_.GlobalTheory.MorDescent.descend R S (Sp R) S N.U.left π (𝟙 _) π (𝟙 S) hP hS hI inferInstance sq h heq
+  obtain ⟨e₁, -, huniq⟩ := _root_.GlobalTheory.MorDescent.descend R S (Sp R) S (Sp R) π (𝟙 _) π (𝟙 S) hP hS hI inferInstance sq π
     pullback.condition
   refine ⟨e, ?_, x₀, he.symm, hx₀s, hx₀u⟩
   rw [huniq (e ≫ N.U.hom) (show π ≫ e ≫ N.U.hom = π by rw [← Category.assoc, he, hh]),

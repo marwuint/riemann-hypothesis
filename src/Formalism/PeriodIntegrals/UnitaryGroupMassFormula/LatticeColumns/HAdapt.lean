@@ -90,40 +90,6 @@ theorem forall_frame_iff (P : Frame E n r) (Φ : (Fin n → E) → Prop) :
       rw [Fin.append_right] at h
       exact h
 
-theorem vecAt_pe (P : Frame E n r) (b : Fin (r + 1)) : vecAt (k := k) P (pe b) = F0 P b := by
-  induction b using Fin.lastCases with
-  | last =>
-    unfold pe F0
-    split_ifs with h
-    · exact absurd h (by simp)
-    · rw [Fin.snoc_last]
-      rfl
-  | cast a =>
-    unfold pe F0
-    split_ifs with h
-    · rw [Fin.snoc_castSucc]
-      rfl
-    · exact absurd a.isLt h
-
-theorem dlH_pe (b : Fin (r + 1)) : dlH (pe (k := k) b) = pf b := by
-  induction b using Fin.lastCases with
-  | last =>
-    unfold pe pf
-    split_ifs with h
-    · exact absurd h (by simp)
-    · rfl
-  | cast a =>
-    unfold pe pf
-    split_ifs with h
-    · rfl
-    · exact absurd a.isLt h
-
-theorem not_isW_pe (b : Fin (r + 1)) : ¬ IsW (pe (k := k) b) := by
-  unfold pe
-  split_ifs with h
-  · exact not_isW_inl _
-  · exact not_isWeightIndex_inr ()
-
 end Pos
 
 section Red
@@ -201,14 +167,6 @@ def SplitBasisAdaptedFrame (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X)
         l s • Pi.single (dlH s) 1) ∧
       LatBasis X p θ (reindex₂ X p Q)
 
-theorem stAdaptQ_of_H (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (h : SplitBasisAdaptedFrame X u p) : StAdaptQ X u p := by
-  obtain ⟨θ, hθ, Q, l, hl, h1, h2, hL⟩ := h
-  refine ⟨θ, hθ, Q, fun b => l (pe b), fun b => hl _ (not_isW_pe b), fun b => ?_, fun b => ?_, hL⟩
-  · have h := h1 (pe b) (not_isW_pe b)
-    rwa [vecAt_pe] at h
-  · have h := h2 (pe b) (not_isW_pe b)
-    rwa [vecAt_pe, dlH_pe] at h
-
 theorem reindex_mulVec_comp {R n ι : Type} [CommRing R] [Fintype n] [DecidableEq n] [Fintype ι] [DecidableEq ι]
     (e : n ≃ ι) (M : Matrix n n R) (v : n → R) :
     Matrix.reindex e e M *ᵥ (v ∘ e.symm) = (M *ᵥ v) ∘ e.symm := by
@@ -266,15 +224,6 @@ theorem hH_of_form (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X)
     fun v w => e.symm.surjective.injective_comp_right.eq_iff
   rw [hg1v, reindex_mulVec_comp, reindex_mulVec_comp, hinj, hinj]
 
-theorem hModel_of_adapt0 (hC : LatCoreX) (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (h : SplitBasisAdaptedFrame X u p) :
-    HModel X u p := by
-  obtain ⟨θ, hθ, Q, l, hl, hy1, hy2, hL⟩ := h
-  have hKs : ((KvA X p.1 : Subgroup (HAp X p)) : Set (HAp X p)) = KvX X p := rfl
-  obtain ⟨ψ, hψ, hker, hform⟩ := hC X p θ hθ Q hL (KvA X p.1) hKs
-  refine ⟨ψ, 1, hψ, hker, fun x => ?_⟩
-  simp only [inv_one, one_mul, mul_one]
-  exact hH_of_form X u p θ hθ Q l hl hy1 hy2 ψ hform x
-
 def WClause (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
     (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (Q : GL (Idx D.R.rS D.R.k) (FpX X p)) : Prop :=
   ∀ i : Fin D.R.k, ∃ c : Idx D.R.rS D.R.k → Op X p,
@@ -295,18 +244,5 @@ def HAdaptQ (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p
           (pr2 θ (ratV (F := X.B.I.F) (FpX X p) (vecAt (frameOf X u) s)) ∘ (idxEquiv X).symm)) =
         l s • Pi.single (dlH s) 1) ∧
       LatBasis X p θ (reindex₂ X p Q) ∧ WClause X hb u p θ Q
-
-theorem adaptedFrame_of_adaptedQ (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
-    (h : HAdaptQ X hb u p) : SplitBasisAdaptedFrame X u p := by
-  obtain ⟨θ, hθ, Q, l, hl, h1, h2, hL, -⟩ := h
-  exact ⟨θ, hθ, Q, l, hl, h1, h2, hL⟩
-
-theorem hModel_of_adapt (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
-    (h : HAdaptQ X hb u p) : HModel X u p :=
-  hModel_of_adapt0 latCoreX_holds X u p (adaptedFrame_of_adaptedQ X hb u p h)
-
-theorem stAdaptQ_of_full (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
-    (h : HAdaptQ X hb u p) : StAdaptQ X u p :=
-  stAdaptQ_of_H X u p (adaptedFrame_of_adaptedQ X hb u p h)
 
 end PIW.MassDataColumns

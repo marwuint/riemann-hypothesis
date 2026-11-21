@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctions
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -53,7 +53,7 @@ theorem morphism_descends : ∀ (R : Type) [CommRing R] (S Y Z W : Scheme.{0}) (
   have hg := IsOpenImmersion.lift_fac O'.ι _ hrange
   haveI hiso : IsIso (p.app (V.ι ''ᵁ ⊤)) :=
     (ConcreteCategory.isIso_iff_bijective _).mpr
-      (GlobalTheory.T.app_bijective_of_flat_baseChange_globalFunctions R S Y Z π y p q inferInstance inferInstance hbij hflat hpb _)
+      (_root_.GlobalTheory.Mum.app_bijective_of_flat_baseChange R S Y Z π y p q inferInstance inferInstance hbij hflat hpb _)
   haveI : IsIso (p ∣_ V).appTop := by
     rw [morphismRestrict_appTop]
     refine @IsIso.comp_isIso _ _ _ _ _ _ _ hiso ?_

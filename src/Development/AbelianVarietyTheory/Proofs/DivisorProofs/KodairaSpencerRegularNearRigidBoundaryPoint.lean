@@ -2,18 +2,20 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivationExtendsCompletedToricChartRingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKodairaSpencerOfLogDerivationChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactOfLeAffineOpenToroidalModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedSingletonGenericFibreOfMaximalAffineOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharZeroOfToricChartToGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAbelianLocusToricChartIffNotMemBoundaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivationExtendsCompletedToricChartRing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKodairaSpencerOfLogDerivationChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactOfLeAffineOpenToroidalModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsTailMore
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedSingletonGenericFibreOfMaximalAffineOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharZeroOfToricChartToGenericFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAbelianLocusToricChartIffNotMemBoundary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricChartCompGenericFibreInclusionEqSpecChartMaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricChartRingMapFlatAndComapMaximalIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenInteriorContainingToricChartGenerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentBasisPullbackToSpecOfAffineOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsDescendAlongFlatMapToLocalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerChartEqAtGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricChartRingMapFlatAndComapMaximalIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenInteriorContainingToricChartGener
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentBasisPullbackToSpecOfAffineOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsDescendAlongFlatMapToLocalDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerChartEqAtGenericPoint
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -35,24 +37,24 @@ theorem isKS_regular_at_boundary : ∀ (E : Type) [Field E] [NumberField E] [IsC
   obtain ⟨x', rfl⟩ := (genι Y).surjective x
   have hbd : x' ∈ genBd Y := mem_genBd_iff.2 fun h => hxint (by
     rw [← SetLike.mem_coe, coe_interior]; exact h)
-  have hcl : IsClosed ({x'} : Set (gen Y)) := GlobalTheory.T.isClosed_singleton_genericFibre_of_maximal_affineOpen E H Dw l Xo c Y U m hm x' hxU hxm
+  have hcl : IsClosed ({x'} : Set (gen Y)) := _root_.GlobalTheory.LocReg.isClosed_singleton_gen E H Dw l Xo c Y U m hm x' hxU hxm
   obtain ⟨k, _, m', d, ξ, t, P, gam, h₀, h₁, h₂, h₃, ⟨φ⟩, h₅, h₆, -⟩ := hchart x' hbd hcl
   subst h₀
   have hx : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1 := hxU
-  haveI : CharZero k := GlobalTheory.T.charZero_of_toricChart_to_genericFibre E H Dw l Xo c Y k m' d ξ
-  obtain ⟨D', hD', hDlog⟩ := GlobalTheory.T.logDerivation_extends_completed_toricChart_ring E H Dw l Xo c Y U D k m' d ξ hx h₁ h₂
+  haveI : CharZero k := _root_.GlobalTheory.LocReg.charZero_of_chart E H Dw l Xo c Y k m' d ξ
+  obtain ⟨D', hD', hDlog⟩ := _root_.GlobalTheory.ChartDer.logDer_extend_chartRing E H Dw l Xo c Y U D k m' d ξ hx h₁ h₂
   have hfac := GlobalTheory.T.toricChart_comp_genericFibreInclusion_eq_spec_chartMap E H Dw l Xo c Y U k m' d ξ hx
-  obtain ⟨vR, hvR, hbR, hcomp⟩ := GlobalTheory.T.exists_tangentBasis_pullback_to_spec_of_affineOpen E H Y.X Y.t U _ (GlobalTheory.LocReg.chartHom Y U ξ hx) t _ hfac φ n v hv hbasis
-  have hab := GlobalTheory.T.mem_abelianLocus_toricChart_iff_not_mem_boundary E H Dw l Xo c Y k m' d ξ t φ h₃
+  obtain ⟨vR, hvR, hbR, hcomp⟩ := _root_.GlobalTheory.LocReg.BasisPull.exists_basis_pull E H Y.X Y.t U _ (GlobalTheory.LocReg.chartHom Y U ξ hx) t _ hfac φ n v hv hbasis
+  have hab := _root_.GlobalTheory.ChartAbLocus.mem_abLocus_iff E H Dw l Xo c Y k m' d ξ t φ h₃
   have hlin : LinearIndependent ℤ (fun i => (gam i : LinearMap.BilinForm ℤ P.D.toPre.X)) :=
     h₆.linearIndependent.map' (Submodule.subtype _) (by simp)
-  obtain ⟨ΘR, hΘR⟩ := GlobalTheory.T.exists_kodairaSpencer_of_logDerivation_chart E H k m' d t P (fun i => gam i) h₅ hlin hab n vR hvR hbR D' hDlog
-  obtain ⟨h, hhW, hh0⟩ := GlobalTheory.T.exists_basicOpen_interior_containing_toricChart_generic E H Dw l Xo c Y U W hW k m' d ξ hx h₃
-  obtain ⟨hflat, hcomap⟩ := GlobalTheory.T.toricChart_ringMap_flat_and_comap_maximalIdeal E H Dw l Xo c Y U k m' d ξ hx h₁ m hm hxm
-  have hWc := GlobalTheory.T.isCompact_of_le_affineOpen_toroidalModel E H Dw l Xo c Y U W.1 (hW.le.trans inf_le_left)
-  obtain ⟨g, hg, hs⟩ := GlobalTheory.T.sections_descend_along_flat_map_to_localDomain Y.X U W.1 (hW.le.trans inf_le_left) hWc _ (GlobalTheory.LocReg.chartHom Y U ξ hx) hflat m hcomap
+  obtain ⟨ΘR, hΘR⟩ := _root_.GlobalTheory.LogKSChart.exists_isKS_of_logDer E H k m' d t P (fun i => gam i) h₅ hlin hab n vR hvR hbR D' hDlog
+  obtain ⟨h, hhW, hh0⟩ := _root_.GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero E H Dw l Xo c Y U W hW k m' d ξ hx h₃
+  obtain ⟨hflat, hcomap⟩ := _root_.GlobalTheory.LocRegFlat.chartHom_flat_comap E H Dw l Xo c Y U k m' d ξ hx h₁ m hm hxm
+  have hWc := _root_.GlobalTheory.ModelQC.isCompact_of_le_affineOpen E H Dw l Xo c Y U W.1 (hW.le.trans inf_le_left)
+  obtain ⟨g, hg, hs⟩ := _root_.GlobalTheory.LocRegDesc.descent Y.X U W.1 (hW.le.trans inf_le_left) hWc _ (GlobalTheory.LocReg.chartHom Y U ξ hx) hflat m hcomap
     h hhW hh0 (Fin n × Fin n) (fun p => Θ p.1 p.2) (fun p s N e => Dvd.intro _
-      (GlobalTheory.T.kodairaSpencer_chart_eq_at_generic_point E H Dw l Xo c Y hpq hsm U W hW n v hv hbasis D DW Θ hDW hKS k m' d ξ hx t φ h₁ h₃ vR hvR hcomp D' hD' ΘR hΘR
+      (_root_.GlobalTheory.LocRegCmp.ks_chart_eq E H Dw l Xo c Y hpq hsm U W hW n v hv hbasis D DW Θ hDW hKS k m' d ξ hx t φ h₁ h₃ vR hvR hcomp D' hD' ΘR hΘR
         h hhW hh0 p.1 p.2 s N e).symm)
   exact ⟨g, hg, fun a b => hs (a, b)⟩
 

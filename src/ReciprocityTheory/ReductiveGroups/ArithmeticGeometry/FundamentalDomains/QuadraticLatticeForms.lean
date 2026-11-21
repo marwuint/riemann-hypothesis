@@ -100,10 +100,6 @@ noncomputable def Sg : (X.Ψ → Fin r → ℂ) →ₗ[ℝ] (X.Ψ → Fin r → 
   map_add' u w := by funext τ a; simp [mul_add]
   map_smul' k u := by funext τ a; simp [Complex.real_smul]; ring
 
-theorem sgn_sq (a : ℕ) : sgn X.p0 a * sgn X.p0 a = 1 := by
-  unfold sgn
-  split_ifs <;> norm_num
-
 noncomputable def Qy (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (v : Fin r → E) : ℝ :=
   ∑ τ, X.c τ * ∑ a, ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 v) a‖ ^ 2
 

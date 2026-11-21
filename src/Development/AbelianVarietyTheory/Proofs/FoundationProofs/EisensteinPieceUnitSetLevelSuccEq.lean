@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PieceEqPieceT
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EePosFalseDvd
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxSumRowLiftsDistributionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumGl2FirstColumnUnitSetSuccFibreStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxSumRowLiftsDistribution
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumGl2FirstColumnUnitSetSuccFibre
 import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
 
 noncomputable section
@@ -79,7 +79,7 @@ theorem sum_preimage_fibre (p : ℕ) [Fact p.Prime] (n : ℕ) (hn : 1 ≤ n) (K 
     simp only [mem_filter, unitSet, mem_univ, true_and]
     exact ⟨fun h => h.2, fun h => ⟨hX γ h, h⟩⟩
   rw [hS, Finset.sum_filter]
-  have h1 := GlobalTheory.T.sum_gl2FirstColumnUnitSet_succ_fibre p n K (fun g => if g ∈ X then G g else 0) Φ hn
+  have h1 := _root_.GlobalTheory.KummerEisensteinGalois.sum_unitSet_succ_fibre p n K (fun g => if g ∈ X then G g else 0) Φ hn
   simp only [ite_mul, zero_mul] at h1
   rw [h1, ← Finset.sum_filter, hX']
 
@@ -140,8 +140,8 @@ theorem GlobalTheory.KummerEisensteinGalois.pieceT_unitSet_level_succ : ∀ (p :
     have hu : ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0).val ∧ ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0).val := by
       exact hX γ hγ
     rw [cauchyProduct_fourfold_finsetSum]
-    simp only [GlobalTheory.T.smoothedEisensteinFx_sum_row_lifts_distribution p N n (k - 1) K ζ c ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 1) v.1 v.2 w.1 w.2 hζ hN hpN hn hj hc hu.1 h1 h2,
-      GlobalTheory.T.smoothedEisensteinFx_sum_row_lifts_distribution p N n 1 K ζ d ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 1) v'.1 v'.2 w'.1 w'.2 hζ hN hpN hn le_rfl hd hu.2 h3 h4]
+    simp only [_root_.GlobalTheory.KummerEisensteinGalois.RowFibre.smF_sum_lifts p N n (k - 1) K ζ c ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 1) v.1 v.2 w.1 w.2 hζ hN hpN hn hj hc hu.1 h1 h2,
+      _root_.GlobalTheory.KummerEisensteinGalois.RowFibre.smF_sum_lifts p N n 1 K ζ d ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 1) v'.1 v'.2 w'.1 w'.2 hζ hN hpN hn le_rfl hd hu.2 h3 h4]
     rw [vp_cmul p hp0]
     unfold cmul
     rw [Finset.mul_sum]

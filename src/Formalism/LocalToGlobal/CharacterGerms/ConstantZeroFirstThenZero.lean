@@ -39,11 +39,6 @@ theorem constant_zero_zero_first : Z0 (![0, pt C dd 0] : Fin 2 → Pt C 1 dd) :=
   intro k i
   fin_cases k <;> simp [pt]
 
-theorem constant_zero_singleton {a : Pt C 2 dd} (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) : Z0 (![a] : Fin 1 → Pt C 2 dd) := by
-  intro k i
-  fin_cases k
-  simpa using ha i
-
 theorem group_law_zero_right_one (G : FGLaw C dd) (i : Fin dd) :
     ev (n := 1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) (G.F i) = pt C dd 0 i := by
   conv_lhs => rw [← G.comm i]
@@ -375,8 +370,5 @@ theorem first_step_second_half : FirstStepSecondHalfCondition := by
     rw [e]
     exact (mms_frobTw_sub hc hcB).add hFc
   exact mms_of_frobTw hFd
-
-theorem rank_maximal_of_first_half (hP : FirstStepFirstHalfCondition) : RankMaximalOfNondegenerate :=
-  rank_maximal_of_halves hP first_step_second_half
 
 end Formalism.L2.FormalSeriesBounds

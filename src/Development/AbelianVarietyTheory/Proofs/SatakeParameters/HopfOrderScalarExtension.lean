@@ -57,10 +57,6 @@ open Matrix
 
 variable {n : ℕ}
 
-def phi (h X : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (s : Fin n → Prop) [DecidablePred s] :
-    ({i // s i} → ℂ) →ₗ[ℂ] (Fin n → ℂ) :=
-  Matrix.mulVecLin X ∘ₗ Matrix.mulVecLin (hh.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) ∘ₗ extZero s
-
 theorem sum_pos (h : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (w : {i // 0 < hh.eigenvalues i} → ℂ)
     (hw : w ≠ 0) : 0 < ∑ i, hh.eigenvalues i * Complex.normSq (extZero (fun i => 0 < hh.eigenvalues i) w i) := by
   obtain ⟨j, hj⟩ := Function.ne_iff.mp hw

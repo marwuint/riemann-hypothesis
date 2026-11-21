@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartSingleton
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderEqGenericPoint
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithAmbientVerticalOrArithmeticVarietyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFormulaArithmeticCurveRationalFunctionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalDivisorDegreeZeroFiniteFieldCurveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithAmbientVerticalOrArithmeticVariety
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFormulaArithmeticCurveRationalFunction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalDivisorDegreeZeroFiniteFieldCurve
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -85,16 +85,16 @@ theorem main : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLo
     ring
   unfold recVal
   rw [hsum, mixArch_zero, mixArch_zero]
-  rcases GlobalTheory.T.projArithAmbient_vertical_or_arithmeticVariety k Y q hA (0 + 1) hd with ⟨l, hl, ⟨alg⟩, hemp⟩ | ⟨e, he, hq⟩
+  rcases _root_.GlobalTheory.MixHt.amb_vertical_or_arithVar k Y q hA (0 + 1) hd with ⟨l, hl, ⟨alg⟩, hemp⟩ | ⟨e, he, hq⟩
   · have h0 : ∑ᶠ z, (Scheme.ord (f : Y.functionField) z : ℝ) * c z = 0 :=
-      @GlobalTheory.T.principalDivisor_degree_zero_finiteField_curve k _ Y _ _ q hA hd l hl alg (f : Y.functionField) f.ne_zero
+      @_root_.GlobalTheory.PrincDegZero.finsum_ord_mul_log_card_eq_zero k _ Y _ _ q hA hd l hl alg (f : Y.functionField) f.ne_zero
     rw [h0, archInt_eq_zero hemp, archInt_eq_zero hemp]
     ring
   · obtain rfl : e = 0 := by omega
     have := hq.finite_emb
     rw [GlobalTheory.ArchDimZero.main k Y q hq N (HermLB.triv q) r hr,
       GlobalTheory.ArchDimZero.main k Y q hq N (HermLB.triv q) r' hr',
-      GlobalTheory.T.productFormula_arithmeticCurve_rationalFunction k Y q hq (f : Y.functionField) f.ne_zero]
+      _root_.GlobalTheory.CurveProd.product_formula_curve k Y q hq (f : Y.functionField) f.ne_zero]
     have hlog (σ : k →+* ℂ) (y : CxPts q σ) : logNorm (N.φ σ) r' y =
         Real.log ‖ratVal (f : Y.functionField) y‖ + logNorm (N.φ σ) r y := by
       have hy := GlobalTheory.TwistTop.under_eq_genericPoint hq y

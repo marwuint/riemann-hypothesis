@@ -65,13 +65,6 @@ theorem map_K (j : H.E →ₐ[ℚ] Qb) : H.K.map j = KQ H.d := by
   have hb : j H.sqd ^ 2 = ((-(H.d : ℤ) : ℤ) : Qb) := by rw [← map_pow, H.sqd_sq]; simp
   rw [K, adjoin_map, Set.image_singleton, KQ, sqQ_eq hb]
 
-theorem mem_K_iff (j : H.E →ₐ[ℚ] Qb) (x : H.E) : x ∈ H.K ↔ j x ∈ KQ H.d := by
-  rw [← H.map_K j, IntermediateField.mem_map]
-  constructor
-  · intro hx; exact ⟨_, hx, rfl⟩
-  · rintro ⟨y, hy, hxy⟩
-    rwa [← j.toRingHom.injective hxy]
-
 theorem FQ_le_EQ : H.FQ ≤ H.EQ := iSup_le fun j => by
   rintro _ ⟨x, -, rfl⟩
   exact H.mem_EQ j x
@@ -103,12 +96,6 @@ instance normal_EQ : Normal ℚ H.EQ := by
 instance fin_FQ : FiniteDimensional ℚ H.FQ :=
   FiniteDimensional.of_injective (inclusion H.FQ_le_EQ).toLinearMap (inclusion H.FQ_le_EQ).toRingHom.injective
 
-theorem FQ_real (τ : Qb →+* ℂ) {y : Qb} (hy : y ∈ H.FQ) : starRingEnd ℂ (τ y) = τ y := by
-  obtain ⟨j⟩ := H.nonempty_emb
-  rw [← H.map_FI j] at hy
-  obtain ⟨x, hx, rfl⟩ := hy
-  exact hx (τ.comp j.toRingHom)
-
 variable {H}
 
 theorem actsAs_of_one {s : H.EQ →ₐ[ℚ] Qb} {g : φ.GG} (j : H.E →ₐ[ℚ] Qb)
@@ -118,41 +105,7 @@ theorem actsAs_of_one {s : H.EQ →ₐ[ℚ] Qb} {g : φ.GG} (j : H.E →ₐ[ℚ]
   have h1 : (⟨j' x, H.mem_EQ j' x⟩ : H.EQ) = ⟨j (σ x), H.mem_EQ j _⟩ := Subtype.ext (hσ x)
   rw [h1, h, hσ, ← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, H.gal_comm]
 
-theorem ActsAs.unique {s s' : H.EQ →ₐ[ℚ] Qb} {g : φ.GG} (h : H.ActsAs s g) (h' : H.ActsAs s' g) : s = s' := by
-  obtain ⟨j⟩ := H.nonempty_emb
-  ext y
-  obtain ⟨x, rfl⟩ := (H.jOf j).surjective y
-  exact (h j x).trans (h' j x).symm
-
-theorem ActsAs.label_unique {s : H.EQ →ₐ[ℚ] Qb} {g g' : φ.GG} (h : H.ActsAs s g) (h' : H.ActsAs s g') : g = g' := by
-  obtain ⟨j⟩ := H.nonempty_emb
-  apply H.gal.symm.injective
-  ext x
-  exact j.toRingHom.injective ((h j x).symm.trans (h' j x))
-
-theorem ActsAs.sqrt_d {s : H.EQ →ₐ[ℚ] Qb} {g : φ.GG} (h : H.ActsAs s g) (x : H.EQ) (hx : (x : Qb) ∈ sqrts (-(H.d : ℤ))) :
-    s x = (((g.1.2 : ℤˣ) : ℤ) : Qb) * x := by
-  obtain ⟨j⟩ := H.nonempty_emb
-  obtain ⟨y, rfl⟩ := (H.jOf j).surjective x
-  have hy : y ^ 2 = H.sqd ^ 2 := by
-    apply j.toRingHom.injective
-    show j (y ^ 2) = j (H.sqd ^ 2)
-    rw [H.sqd_sq, map_pow, show j y ^ 2 = ((-(H.d : ℤ) : ℤ) : Qb) from hx]; simp
-  have h1 := H.gal_sqd (H.gal.symm g)
-  rw [MulEquiv.apply_symm_apply] at h1
-  refine (h j y).trans ?_
-  rw [jOf_coe]
-  rcases sq_eq_sq_iff_eq_or_eq_neg.mp hy with rfl | rfl
-  · rw [h1, map_mul, map_intCast]
-  · rw [map_neg, h1, map_neg, map_neg, map_mul, map_intCast, mul_neg]
-
 variable (H)
-
-theorem actsAs_gal (j : H.E →ₐ[ℚ] Qb) (σ : H.E ≃ₐ[ℚ] H.E) :
-    H.ActsAs ((j.comp (σ : H.E →ₐ[ℚ] H.E)).comp ((H.jOf j).symm : H.EQ →ₐ[ℚ] H.E)) (H.gal σ) := by
-  refine actsAs_of_one j fun x => ?_
-  show j (σ ((H.jOf j).symm (H.jOf j x))) = _
-  rw [AlgEquiv.symm_apply_apply, MulEquiv.symm_apply_apply]
 
 theorem adjoin_cycZeta : IntermediateField.adjoin ℚ ({H.cycZeta} : Set (Cond.Cyc H.condN)) = ⊤ := by
   rw [eq_top_iff]

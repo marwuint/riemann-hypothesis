@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTheoremPicClassOverOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTheoremPicClassOverOpen
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.EqOfAgreeOnTorsion
@@ -44,8 +44,8 @@ theorem GlobalTheory.twice_cls_eq_zero_of_translates_mem : ∀ (S : Scheme.{0}) 
       rw [← cancel_mono W.ι, Category.assoc, Category.assoc, Scheme.homOfLE_ι, Scheme.homOfLE_ι,
         liftU_fac, IsOpenImmersion.lift_fac]
     rw [hcU, ← GlobalTheory.CechPic.pull_comp, e, GlobalTheory.CechPic.pull_comp, hc, map_zero]
-  have s1 := GlobalTheory.T.square_theorem_pic_class_over_open S A ‹_› U cU Y (liftU A U Y hY) hY (liftU_fac A U Y hY) x a
-  have s2 := GlobalTheory.T.square_theorem_pic_class_over_open S A ‹_› U cU Y (liftU A U Y hY) hY (liftU_fac A U Y hY) v a
+  have s1 := _root_.GlobalTheory.SquareOpen.pull_mul_add_pull_mul_inv_of_opens S A ‹_› U cU Y (liftU A U Y hY) hY (liftU_fac A U Y hY) x a
+  have s2 := _root_.GlobalTheory.SquareOpen.pull_mul_add_pull_mul_inv_of_opens S A ‹_› U cU Y (liftU A U Y hY) hY (liftU_fac A U Y hY) v a
   rw [zero_of _ (fun y => (hxa y).1), zero_of _ (fun y => (hxa y).2.1)] at s1
   rw [zero_of _ (fun y => (hxa y).2.2.1), zero_of _ (fun y => (hxa y).2.2.2), zero_of _ hv] at s2
   have two : 2 • GlobalTheory.CechPic.pull (liftU A U Y hY x) cU = 0 := by

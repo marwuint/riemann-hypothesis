@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionMultilinearSlotStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionMultilinear
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PZhangLowerX
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar.Top
@@ -29,7 +29,7 @@ theorem ht_combLine_integral_multiple : ∀ II : IntersectionSystem, IsFullInter
     intro i
     obtain rfl : i = 0 := Subsingleton.elim _ _
     exact M.A_smooth
-  have h := GlobalTheory.T.arith_intersection_multilinear II hII M.K M.ι W 1 ![M.A] 0 (Option (Ψ × Fin N)) (M.line t) n hW.1 hL hl
+  have h := _root_.GlobalTheory.CompanionTheory.Ar.Top.intersection_combLine II hII M.K M.ι W 1 ![M.A] 0 (Option (Ψ × Fin N)) (M.line t) n hW.1 hL hl
   simp only [hupd] at h
   have hd : (degC W : ℝ) ≠ 0 := by exact_mod_cast hpos.ne'
   rw [h, RootModel.ht, mul_assoc, div_mul_cancel₀ _ hd, Finset.mul_sum]

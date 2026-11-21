@@ -4,8 +4,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
 import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlueLineBundlesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LbIsoOfDisjointCoverStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlueLineBundles
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LbIsoOfDisjointCover
 
 open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -73,8 +73,8 @@ theorem GlobalTheory.exists_lineBundle_extension_of_isDomain : ∀ (X Y : Scheme
       (L.pull (j ⁻¹ᵁ V a).ι) (pull_isLB hL _)
     exact ⟨M, hM, φ, hφ⟩
   choose M hM hML using key
-  obtain ⟨N, hN, hNM⟩ := GlobalTheory.T.exists_lineBundle_glue_disjoint_cover X A V hd hc M hM
-  refine ⟨N, hN, GlobalTheory.T.lbIso_of_lbIso_on_disjoint_cover Y A (fun a => j ⁻¹ᵁ V a) (fun a b y ha hb => hd a b _ ha hb)
+  obtain ⟨N, hN, hNM⟩ := _root_.GlobalTheory.glue_lineBundles X A V hd hc M hM
+  refine ⟨N, hN, _root_.GlobalTheory.DisjointCoverLB.lbIso_of_disjoint_cover Y A (fun a => j ⁻¹ᵁ V a) (fun a b y ha hb => hd a b _ ha hb)
     (fun y => hc (j y)) _ _ (pull_isLB hN j) hL fun a => ?_⟩
   have e1 : LBIso ((N.pull j).pull (j ⁻¹ᵁ V a).ι) ((N.pull (V a).ι).pull (j ∣_ V a)) :=
     LBIso.trans (pull_isLB (pull_isLB hN j) _) (pull_isLB hN _) (pull_isLB (pull_isLB hN _) _)

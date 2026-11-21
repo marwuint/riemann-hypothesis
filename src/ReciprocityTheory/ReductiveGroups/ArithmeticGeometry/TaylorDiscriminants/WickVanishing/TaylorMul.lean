@@ -99,12 +99,6 @@ theorem deriv_analytic {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω �
     ContDiffAt ℂ ω (fun y => fderiv ℂ θ y v) 0 :=
   (hθ.fderiv_right (by simp)).clm_apply contDiffAt_const
 
-theorem tay_cons_deriv {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (v : Fin g → ℂ) (s : Multiset (Fin g → ℂ)) :
-    tay θ (v ::ₘ s) = tay (fun y => fderiv ℂ θ y v) s := by
-  ext n
-  show mD θ 0 (dirs n + v ::ₘ s) / fct n = mD (fun y => fderiv ℂ θ y v) 0 (dirs n + s) / fct n
-  rw [Multiset.add_cons, mD_cons_deriv hθ]
-
 theorem pderiv_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (j : Fin g) :
     pderiv ℂ ((0 : Fin 1), j) (tay θ 0) = tay (fun y => fderiv ℂ θ y (Pi.single j 1)) 0 := by
   ext n

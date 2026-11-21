@@ -5,7 +5,11 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseLinkOfNonzeroDelta
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.BaseExP
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ProvisionExtensionLink
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.Imports
+import Mathlib
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardTrivialFirstComponent
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
+import Development.AutomorphicArithmetic.WeightCongruences.IsRootOfIntegral
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.MuCardLeTwo
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.DetIdealsKernelNormOne
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.GMConjTranspose
@@ -38,7 +42,6 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqL
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLMain
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLMat
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.SqLTop
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.PolFamInhabited
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.RightMoveTrianglesOfUnit
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.Family
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.HfArith
@@ -50,7 +53,6 @@ import Formalism.LocalToGlobal.KernelLattices.ColumnData.IopIso
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IopNorm
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsometryLinkageTrivialLevel
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsometryLinkageAtSplitPrime
-import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkChi
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkThIndep
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.LinkThU
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.SelfDual
@@ -113,55 +115,9 @@ def Base.LocNormMM (a₀ : ℕ) (b₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d)
 
 end Defs
 
-def KappaOn (Q : Car → ℕ → Prop) (D : Car) : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ), Formalism.L2.Ker.Cd.TaylorLogMetric.IsCurveIdeal D cc → Formalism.L2.Ker.Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-    ∀ (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]), Q D p → B.KappaAt p ι
-
-def KappaAll (D : Car) : Prop := KappaOn (fun _ _ => True) D
-
-def KappaSplit (D : Car) : Prop := KappaOn SplitK D
-
 def LamTie : Prop :=
   ∀ (D : Car) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)), s.Ok →
     lamF (ambOf s B χ cD) N N' = s.laF B.tor (s.lat N) (s.lat N')
-
-def KerStdAmb : Prop :=
-  ∀ (D : Car) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
-    (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
-    (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]),
-    s.Ok → Formalism.L2.Ker.Cd.TaylorLogMetric.IsCurveIdeal D cc → Formalism.L2.Ker.Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → Formalism.L2.Ker.Cd.TaylorLogMetric.IsChi D χ → CmOK a₀ b₀ c₀ D.host.d → B.IsCm a₀ b₀ ha hd lam hlam →
-    Even a → Even b → IsSdLat N → IsSdLat N' → s.StdAtP p N → s.StdAtP p N' →
-    ¬ (p : ℤ) ∣ NumberField.discr X.E → (∀ τ, ‖ι (cD τ)‖ ≤ 1) →
-    IntCurve (curveL p (cmL a₀ b₀ D.host.d ha hd lam hlam) ι) →
-    KerStd (ambOf s B χ cD) N N' a₀ b₀ c₀ ha hd lam hlam p ι
-
-def KerStdLatOn (Q : Car → ℕ → Prop) : Prop :=
-  ∀ (D : Car) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
-    (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
-    (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]),
-    s.Ok → Formalism.L2.Ker.Cd.TaylorLogMetric.IsCurveIdeal D cc → Formalism.L2.Ker.Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → Formalism.L2.Ker.Cd.TaylorLogMetric.IsChi D χ → CmOK a₀ b₀ c₀ D.host.d →
-    (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ →
-    Even a → Even b → IsSdLat N → IsSdLat N' → s.StdAtP p N → s.StdAtP p N' →
-    ¬ (p : ℤ) ∣ NumberField.discr X.E → (∀ τ, ‖ι (cD τ)‖ ≤ 1) → 5 ≤ p → Q D p →
-    KerStd (ambOf s B χ cD) N N' a₀ b₀ c₀ ha hd lam hlam p ι
-
-def KerStdLat : Prop := KerStdLatOn fun _ _ => True
-
-def KerStdLatSplit : Prop := KerStdLatOn SplitK
-
-def KerStdExOn (Q : Car → ℕ → Prop) : Prop :=
-  ∀ (D : Car) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ),
-    s.Ok → Formalism.L2.Ker.Cd.TaylorLogMetric.IsCurveIdeal D cc → Formalism.L2.Ker.Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → Formalism.L2.Ker.Cd.TaylorLogMetric.IsChi D χ →
-    ∃ (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0), CmOK a₀ b₀ c₀ D.host.d ∧
-      (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ ∧
-      ∀ (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]),
-        Even a → Even b → IsSdLat N → IsSdLat N' → s.StdAtP p N → s.StdAtP p N' →
-        ¬ (p : ℤ) ∣ NumberField.discr X.E → (∀ τ, ‖ι (cD τ)‖ ≤ 1) → 5 ≤ p → Q D p →
-        KerStd (ambOf s B χ cD) N N' a₀ b₀ c₀ ha hd lam hlam p ι
-
-def KerStdEx : Prop := KerStdExOn fun _ _ => True
-
-def KerStdExSplit : Prop := KerStdExOn SplitK
 
 end Formalism.L2.Ker.Cd

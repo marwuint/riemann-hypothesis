@@ -111,16 +111,6 @@ def RealPtNZSt (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T
     ∀ (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w), NZAt hG (F : T.R j) →
       ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F)) ≠ 0
 
-theorem realPtSt_of_NZ {h : LawsP T} {j : ℕ} {hj : InR D j} {hG : GenFrEx (T.Q.Xo j) T.Q.c} {ka wL wF : WeightFamilies.Wt D j}
-    {G : GlobalFamilyData (recPlus h j hj) ka wL wF} {la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)}
-    {hU : IsUnif (OsK (recPlus h j hj) la G.w) (unifO (recPlus h j hj) la G.N)} [∀ ζ : PtsG G la, IsDVRAt ζ]
-    (hR : RealPtNZSt h j hj hG G la hU) :
-    @RealPtSt D (recB h.toLawsCore) T.G.P j (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj) ka wL wF G la hU
-      ‹∀ ζ : PtsG G la, IsDVRAt ζ› := by
-  intro ζ
-  obtain ⟨y, Tc, ι, hl, hunr, ev, hu, hv, hdeg, -⟩ := hR ζ
-  exact ⟨y, Tc, ι, hl, hunr, ev, hu, hv, hdeg⟩
-
 end Main
 
 end Formalism.L2.Pj

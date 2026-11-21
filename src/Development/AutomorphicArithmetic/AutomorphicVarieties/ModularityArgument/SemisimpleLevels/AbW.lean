@@ -16,11 +16,7 @@ def AbW (x : WD h) : Prop :=
 
 def Cmp (x y : WD h) : Prop := AbW x ∨ AbW y → x = y
 
-theorem Cmp.of_eq {x y : WD h} (e : x = y) : Cmp x y := fun _ => e
-
 theorem Cmp.left {x y : WD h} (c : Cmp x y) (a : AbW x) : x = y := c (Or.inl a)
-
-theorem Cmp.right {x y : WD h} (c : Cmp x y) (a : AbW y) : x = y := c (Or.inr a)
 
 end UpperTheory.V.Lev
 

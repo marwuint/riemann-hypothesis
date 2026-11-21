@@ -35,43 +35,6 @@ def IsDeltaInv (ρ : Setup D.ntw) (u : ∀ i : D.ntw.Tw, Bool → PlE D.host →
 
 end Delta
 
-section Pin
-
-variable (Rl cG S) (YS : NX.NExpRealS Rl cG S)
-
-set_option synthInstance.maxHeartbeats 400000 in
-
-def PinDFor (ρ : Setup D.ntw)
-    (hk : ∀ i j b, ℕ → PlE D.host → Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)) : Prop :=
-  ∀ (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (hs : ∀ j, 1 ≤ j → j ≤ D.R.m → NX.HeckeStabR S j (hL j)),
-    GlobalTheory.ExportPin.Reads Rl cG S YS hL → ∃ u : ∀ i : D.ntw.Tw, Bool → PlE D.host → (D.ntw.O i)ˣ,
-      (∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (k : ℕ) (P : PlE D.host) (x : D.nexp.Fm i j b), P ∉ D.ntw.S0 i →
-        Formalism.BasicNotions.IsSplitPl D.host P → k ≤ D.R.r →
-        YS.eF i j b h1 h2 (hk i j b k P x) =
-          (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P)) ^ k •
-            NX.hkFR S i j b (hL j) (hs j h1 h2) k P (YS.eF i j b h1 h2 x)) ∧
-      IsDeltaInv ρ u
-
-set_option synthInstance.maxHeartbeats 400000 in
-
-def HeckePinD (ρ : Setup D.ntw) : Prop :=
-  ∀ (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (hs : ∀ j, 1 ≤ j → j ≤ D.R.m → NX.HeckeStabR S j (hL j)),
-    GlobalTheory.ExportPin.Reads Rl cG S YS hL → ∃ u : ∀ i : D.ntw.Tw, Bool → PlE D.host → (D.ntw.O i)ˣ,
-      (∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (k : ℕ) (P : PlE D.host) (x : D.nexp.Fm i j b), P ∉ D.ntw.S0 i →
-        Formalism.BasicNotions.IsSplitPl D.host P → k ≤ D.R.r →
-        YS.eF i j b h1 h2 (D.nexp.hkF i j b k P x) =
-          (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P)) ^ k •
-            NX.hkFR S i j b (hL j) (hs j h1 h2) k P (YS.eF i j b h1 h2 x)) ∧
-      ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (P : PlE D.host), HkIdx i k P →
-        ∀ (α : GA D (Wc D j)) (z : (AE D)ˣ), IsHeckeAt (Wc D j) P k α → IsDetAt (idemAt P) (Wc D j) α z →
-          ρ.eO i b (u i b P) ^ k = (((ρ.B i j b).de.chi z : Circle) : ℂ)⁻¹
-
-def ReadsExist : Prop :=
-  ∃ (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
-    (_ : ∀ j, 1 ≤ j → j ≤ D.R.m → NX.HeckeStabR S j (hL j)), GlobalTheory.ExportPin.Reads Rl cG S YS hL
-
-end Pin
-
 section Read
 
 variable (YS : NX.NExpRealS Rl cG S) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)

@@ -43,8 +43,6 @@ abbrev Ylat (A : DatAt Y P) : Type := A.U.D.toPre.X
 def beta (A : DatAt Y P) (a b : A.Ylat) : ℝ :=
   betaAt A.U.D.toPre ((intO ↥C.S).subtype.comp A.f) p a b
 
-theorem data_at_point_n3 (A : DatAt Y P) : UniformisationConclusion A.t (A.ι ⁻¹' abLocus Y.t.G) := ⟨A.U, A.unitOn, A.tors⟩
-
 theorem beta_symm (A : DatAt Y P) (a b : A.Ylat) : A.beta a b = A.beta b a :=
   betaAt_symm _ _ _ a b
 

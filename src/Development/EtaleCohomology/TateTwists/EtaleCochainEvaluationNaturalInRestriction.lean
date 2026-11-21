@@ -1,4 +1,5 @@
-import Development.EtaleCohomology.TateTwists.UnitClassSpec
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
@@ -8,22 +9,6 @@ def EtaleCochainEvaluationNaturalInRestriction : Prop :=
   ∀ {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U),
     ev α p s h V ((E.obj (op (SimplexCategory.mk p))).map g.op x) = Sec.res g (ev α p s h U x)
-
-def UnitClassExists : Prop :=
-  ∀ (q : ℕ) [NeZero q] (E : Spc), Inv q E → ∃ α : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0,
-    ∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ
-
-def UnitClassUnique : Prop :=
-  ∀ (q : ℕ) [NeZero q] (E : Spc), Inv q E → ∀ α β : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0,
-    (∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ) →
-    (∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev β.1 0 0 (by simp) U x = resGen 0 ζ) →
-    CohomologyClass.mk α = CohomologyClass.mk β
-
-def DegreeZeroCocyclePullback : Prop :=
-  ∀ {R : Type} [CommRing R] (F : Shv R) {E E' : Spc} (f : E ⟶ E') (α : Cocycle ((chains R).obj E') (res R F) 0),
-    ∃ β : Cocycle ((chains R).obj E) (res R F) 0, pull R f F 0 (CohomologyClass.mk α) = CohomologyClass.mk β ∧
-      ∀ (U : Scheme.{0}) (x : Sx E 0 U),
-        ev β.1 0 0 (by simp) U x = ev α.1 0 0 (by simp) U ((f.app (op (SimplexCategory.mk 0))).app (op U) x)
 
 theorem freeGen_nat {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     (((free R).obj P).obj.map g.op).hom (freeGen R P U x) = freeGen R P V (P.map g.op x) := by

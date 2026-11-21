@@ -45,18 +45,6 @@ variable {K L} in
 theorem baseChange_mk (A : CSA.{u, u} K) :
     baseChange K L ⟦A⟧ = ⟦baseChangeCSA L A⟧ := rfl
 
-theorem baseChange_comp (M : Type u) [Field M] [Algebra K M] [Algebra L M]
-    [IsScalarTower K L M] :
-    (baseChange L M).comp (baseChange K L) = baseChange K M := by
-  ext x
-  induction x using Quotient.inductionOn with
-  | h A => exact Quotient.sound <| isBrauerEquivalent_of_algEquiv (baseChangeCSATower L M A)
-
-theorem baseChange_baseChange (M : Type u) [Field M] [Algebra K M] [Algebra L M]
-    [IsScalarTower K L M] (x : BrauerGroup.{u, u} K) :
-    baseChange L M (baseChange K L x) = baseChange K M x :=
-  DFunLike.congr_fun (baseChange_comp K L M) x
-
 end Hom
 
 section Relative

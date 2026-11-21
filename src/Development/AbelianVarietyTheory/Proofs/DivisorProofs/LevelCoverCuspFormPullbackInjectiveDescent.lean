@@ -4,13 +4,14 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Uppe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinearIndependentRulBC
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionPullbackExistsUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NvalNonnegIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormIffLevelCoverPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonLevelCoverPullbackProbabilityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionConstantOnFibresDescendsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormIffLevelCoverPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonLevelCoverPullbackProbability
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionConstantOnFibresDescends
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuliLawsCoefficientFieldChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralRuleRuleBaseChangeCoeffFieldIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntValuationPrimeBack
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisStableLatticeRationalSpanInclusionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisStableLatticeRationalSpanInclusions
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentIdealSmulMemSpanRational
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ValuesAlgIffValuesUnitOfNe
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.L2.Theta Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.AllWt GlobalTheory.LevGeo GlobalTheory.LevPull GlobalTheory.FieldBC
 open scoped ENNReal
@@ -175,7 +176,7 @@ theorem span_integral_descent {c c' : Coeff l} (hle : c.F ≤ c'.F) {r : ℕ} (U
     have := GlobalTheory.GalSup.intAt_galois _ H Dw l Xo c c' hle a n s' hs' m (fun i => d.eF.symm (v i))
       (fun i => (b i : Rul Xo c)) (fun i => hsecC (b i)) hv
     simpa only [e] using this
-  have hT := (GlobalTheory.T.galois_stable_lattice_rational_span_inclusions c.F d.c₂.F d.c₂.F m M hstab).2
+  have hT := (_root_.GlobalTheory.span_rational_le_span_and_different_smul_le c.F d.c₂.F d.c₂.F m M hstab).2
   have hΦμ : Φ μ = g := by
     rw [hΦ, ← hx]
     exact Finset.sum_congr rfl fun i _ => by rw [hb i]
@@ -227,7 +228,7 @@ theorem levRing_descent : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRes
     (hlin.1 a n _ (hsecC f)).1
   have hsec₂ : ∀ g : cuspW d.Xo₂ d.c₂ U₂ (wtZ a n), (g : Rul d.Xo₂ d.c₂) ∈ sec d.Xo₂ d.c₂ a n := fun g =>
     cusp_le_sec _ _ _ _ _ ((cuspW_wtZ (U := U₂) a n).le g.2)
-  have hcusp := GlobalTheory.T.cuspForm_iff_levelCover_pullback D j H Dw l Xo c' (unfBC hle U) (fun σ => dict (σ.comp (incF c c' hle))) d U₂ dict₂ hL'
+  have hcusp := _root_.GlobalTheory.LevCusp.cusp_iff_pull D j H Dw l Xo c' (unfBC hle U) (fun σ => dict (σ.comp (incF c c' hle))) d U₂ dict₂ hL'
     hL₂ hlev a n hdom hev
   have hint := GlobalTheory.CoverInt.pull_intAt_iff _ H Dw l Xo c' d h1 hlev hB a n
   obtain ⟨π, hπ⟩ := exists_pullMap hle U d U₂ a n hU fun f g hg hp => by
@@ -256,7 +257,7 @@ theorem levRing_descent : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRes
     simpa using this
   · intro σ₂ f
     obtain ⟨h, hn⟩ := hN' a n hdom f
-    rw [GlobalTheory.T.peterssonNorm_eq_of_levelCover_pullback D j H Dw l Xo c' (unfBC hle U) (fun σ => dict (σ.comp (incF c c' hle))) d U₂ dict₂ hL' hL₂ hlev
+    rw [_root_.GlobalTheory.LevPullNorm.levPull_normW D j H Dw l Xo c' (unfBC hle U) (fun σ => dict (σ.comp (incF c c' hle))) d U₂ dict₂ hL' hL₂ hlev
       a n hdom hev ⟨_, h⟩ (π f) (hπ f) σ₂, hn]
     rfl
   · intro g
@@ -270,7 +271,7 @@ theorem levRing_descent : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRes
       | add x y _ _ hx hy => exact fibConst_add hx hy
       | smul t x _ hx => exact fibConst_smul t hx
     · intro hF
-      obtain ⟨f', hf', hp⟩ := GlobalTheory.T.section_constant_on_fibres_descends _ H Dw l Xo c' d h1 hlev a n _ (hsec₂ g) hF
+      obtain ⟨f', hf', hp⟩ := _root_.GlobalTheory.CoverDesc.section_descends _ H Dw l Xo c' d h1 hlev a n _ (hsec₂ g) hF
       have hc' : f' ∈ cusp Xo c' (unfBC hle U) a n := (hcusp _ hf' _ (hsec₂ g) hp).1 (by rw [← cuspW_wtZ]; exact g.2)
       rw [GlobalTheory.CuspFieldChange.cusp_unfBC_eq_span hle U a n] at hc'
       have key : ∀ x ∈ Submodule.span c'.F (rulBC hle '' (cusp Xo c U a n : Set (Rul Xo c))),

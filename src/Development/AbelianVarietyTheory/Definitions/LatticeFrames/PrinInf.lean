@@ -83,10 +83,6 @@ def DownNe (D : D7) : Prop :=
     IsWeilDatumO ψ A W χA χW om → Places A β Z → m.IsHaarMeasure → Form θ A cA β Z χW W.rank t u par →
     Occ ψ θ sW om m β Z u Φ → ¬ NoLift ψ om m u
 
-example (ψ : AddChar (AF D.host.F) ℂ) {A W : HSp D} (om : WRep A W) (m : Measure (GA D A)) : NoLift ψ om m 0 := by
-  intro f _ h
-  simp [up, AutomorphicL2Unitary.descend]
-
 end GlobalTheory.Core.Rk.Exh
 
 end

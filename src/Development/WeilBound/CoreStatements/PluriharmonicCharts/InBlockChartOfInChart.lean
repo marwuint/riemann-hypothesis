@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.OmHeightslockG
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAtStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import GroundTheory.HeightsAndTheta.Heights.Intersections.AvoidRing
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB
 open GroundTheory.Heights₂.Heights.LowerBoundFree
@@ -71,7 +74,7 @@ theorem exists_frameDomain {Z : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (C
       ∀ p : Cpt ξ, InChart ξ (segreCoord x) c p → unitAt ξ p f → InBlockChart ξ x c p ∧ G (ptIdeal ξ x p) := by
   obtain ⟨d, h, hd, h0, hG⟩ := hG
   refine ⟨MvPolynomial.aeval x h / ∏ k, x ⟨k, c k⟩ ^ d k, ⟨hc, _,
-    (GlobalTheory.T.valAt_iff_value_at Z Ω ξ K J x tie z w hz hw _ _).1 (valAt_form hw hz hc hd), ?_⟩, fun p hp hu => ?_⟩
+    (_root_.GlobalTheory.CompanionTheory.Ar.valAt_iff_isValueAt_coords Z Ω ξ K J x tie z w hz hw _ _).1 (valAt_form hw hz hc hd), ?_⟩, fun p hp hu => ?_⟩
   · rw [form_mem_mCoordIdeal_iff w hd] at h0
     exact div_ne_zero h0 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))
   · have hb := inBlockChart_of_inChart hp

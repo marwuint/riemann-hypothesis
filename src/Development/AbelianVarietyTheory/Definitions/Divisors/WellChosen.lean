@@ -31,33 +31,6 @@ structure Quoted : Prop where
 
 variable {F : Type} [Field F] [NumberField F]
 
-def rho0 (T : Tuple F) (l : ℕ) : ℝ := 8 * T.D * T.del * T.n * l * T.abelian₂
-
-def rho1 (T : Tuple F) (l : ℕ) : ℝ := rho0 T l * (1 + 1 / (8 * T.D * T.del))
-
-structure WellChosen (T : Tuple F) (h : ℝ) (l : ℕ) (E : Type) [Field E] [NumberField E] [Algebra F E]
-    (s : Fin T.D → Fin T.N → E) : Prop where
-  lt_l : T.theta h ^ 20 < l
-  l_le : (l : ℝ) ≤ 2 * T.theta h ^ 20
-  mem : ∀ i, s i ∈ T.latticeOver E
-  good : T.IsGoodSection E s
-  card : ((T.geomPts E (T.linSection E s)).ncard : ℤ) = T.del
-  ne : ∀ i, s i ≠ 0
-  norm_le : ∀ i (τ : E →+* ℂ), T.normAt τ (s i) ≤ rho1 T l
-  lower : ((T.D : ℝ) + 1) * T.del * h + T.D * T.del * Real.log (rho0 T l) -
-    T.del * (((T.D : ℝ) + 1) * (harmonic (T.N - 1) : ℝ) / 2 + Real.log 2 / T.del + 1 / 8) ≤
-      T.cycleHeight E (T.linSection E s)
-  upper : T.cycleHeight E (T.linSection E s) ≤ ((T.D : ℝ) + 1) * T.del * h + T.del * ∑ i, T.meanLogNorm (s i)
-  residue : ∀ P : Ideal (𝓞 E), P.IsPrime → P ≠ ⊥ → l ≤ Ideal.absNorm P
-
-def DelPos : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] (T : Tuple F), T.IsGeometric → T.Birational → 0 < T.del
-
-def Choice : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] (T : Tuple F), IsTotallyComplex F → T.IsAdelic → ∀ h, T.IsHeight h →
-    ∃ (l : ℕ) (E : Type) (_ : Field E) (_ : NumberField E) (_ : Algebra F E) (s : Fin T.D → Fin T.N → E),
-      WellChosen T h l E s
-
 def Split (T : Tuple F) (E : Type) [Field E] [Algebra F E] (s : Fin T.D → Fin T.N → E) : Prop :=
   ∀ x : Sp (AlgebraicClosure E) ⟶ (T.linSection E s).subscheme,
     x ≫ (T.linSection E s).subschemeι ≫ (T.toLinSys.baseChange E).str = spMap (algebraMap E (AlgebraicClosure E)) →
@@ -79,16 +52,6 @@ structure Coord {K : Type} [Field K] [NumberField K] (G : Geo K) {s : Fin G.D �
     csq (hs.normOn j) σ c g =
       ∑ p, ‖∑ i, c i * σ (ev j (g i) p)‖ ^ 2 / (c₂ σ p * archSize (G.A σ) (fun k => σ (y p k)) ^ j) ^ 2
 
-def Claim (X : Data F) (C h J : ℝ) : Prop :=
-  0 ≤ X.z ∧ X.z ≤ 1 ∧
-    (1 - X.z) * (X.T * h - 3 * ((X.D : ℝ) + 1) * |h| - J - C * (X.D : ℝ) ^ 2 * (X.logRho C h + Real.log X.T) -
-        ((X.T : ℝ) + X.D + 1) * Real.log X.beta - ((X.T : ℝ) + (X.D : ℝ) ^ 2) * (X.g + 2)) -
-      X.z * (X.T * (Real.log 2 + X.logRho C h + Real.log X.beta / 2) + Real.log X.LamD + Real.log X.LamT) ≤
-    X.degM X.T / X.d
-
-def HSBound : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] (X : Data F), X.Hyp → ∀ h, X.IsHeight h → ∀ C, 26 ≤ C → 0 < X.d ∧ Claim X C h X.J
-
 def RankLow : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] (G : Geo F), IsNef F G.LA → IsBig F G.LA → ∀ T : ℕ,
     ((T - 1).choose G.D : ℤ) * G.del ≤ Module.finrank F (G.global T)
@@ -103,11 +66,5 @@ def FilMono : Prop :=
     ∀ (s : Fin G.D → Fin G.N → K), G.IsGood s → ∀ (a j l : ℕ) (h : j + a = l), G.D ≤ j →
       ∀ f ∈ Fil (G.ideal s) a (G.global l), ∃ m : MonoDeg (Fin G.D) a → G.Sec j,
         (∀ α, m α ∈ G.global j) ∧ f = ∑ α, mulPow G s h α (m α)
-
-def Extension : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (G : Geo K) (s : Fin G.D → Fin G.N → K) (hs : G.IsGood s), (∀ i, s i ≠ 0) →
-    ∀ (σ : K →+* ℂ) (j : ℕ), G.D ≤ j → ExtensionBound σ hs j
-
-example (X : Data F) (C h J : ℝ) (H : Claim X C h J) : X.z ≤ 1 := H.2.1
 
 end GlobalTheory.HSCore

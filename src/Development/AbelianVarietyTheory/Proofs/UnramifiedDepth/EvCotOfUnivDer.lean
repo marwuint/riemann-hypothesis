@@ -9,23 +9,6 @@ namespace GlobalTheory
 
 namespace CotOf
 
-variable {R₀ : Type} [CommRing R₀]
-variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : BX R₀} {Tw : ATowerL R₀ p} {Dt : DualTower Tw}
-  [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
-  {cp : (Tw.O : Type)}
-
-variable (D : Dat p g B Tw Dt Oe σ cp)
-
-section
-variable (C : Type) [Field C] [Algebra (Tw.O : Type) C]
-
-end
-
-lemma val_smul {G : Type} [AddCommGroup G] (x : G) (hx : p • x = 0) (n : ℕ) :
-    (n : ZMod p).val • x = n • x := by
-  rw [ZMod.val_natCast]
-  conv_rhs => rw [← Nat.mod_add_div n p, add_nsmul, mul_nsmul, hx, smul_zero, add_zero]
-
 end CotOf
 
 open TensorProduct IsLocalRing Matrix in

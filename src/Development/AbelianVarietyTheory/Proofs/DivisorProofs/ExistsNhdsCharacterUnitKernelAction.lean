@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrys
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCharacter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelActionIsPullbackProdMapTorsorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKernelActionTripleOverlapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocallyTrivialUnitCocycleSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKernelActionTripleOverlap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocallyTrivialUnitCocycleScheme
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsTorusAndQuotientHom
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
@@ -24,7 +24,7 @@ theorem exists_nhds_charUnit : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj 
   have hpb := GlobalTheory.T.kernelAction_isPullback_prodMap_torsor S A A' N T i q hi hq hk
   have hpb' : IsPullback (prMap A N T).left (actMap i T).left (pmap q T).left (pmap q T).left :=
     hpb.map (Over.forget S)
-  obtain ⟨W, m₁₂, m₂₃, m₁₃, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_kernelAction_triple_overlap S A N T i χ hi hχ
+  obtain ⟨W, m₁₂, m₂₃, m₁₃, h1, h2, h3, h4⟩ := _root_.GlobalTheory.CharKer.triOverlap S A N T i χ hi hχ
   have hpq : pmap q T = q ▷ T := by
     apply CartesianMonoidalCategory.hom_ext <;> simp [pmap]
   have hsq := GlobalTheory.SemiRigid.isPullback_whiskerRight q T
@@ -34,7 +34,7 @@ theorem exists_nhds_charUnit : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj 
     rw [hpq]; exact MorphismProperty.of_isPullback hsq inferInstance
   have hS : Surjective (pmap q T).left := by
     rw [hpq]; exact MorphismProperty.of_isPullback hsq inferInstance
-  exact GlobalTheory.T.locally_trivial_unit_cocycle_scheme _ _ _ _ (pmap q T).left (actMap i T).left (prMap A N T).left m₁₂ m₂₃ m₁₃ _
+  exact _root_.GlobalTheory.CharKer.exists_local_charUnit _ _ _ _ (pmap q T).left (actMap i T).left (prMap A N T).left m₁₂ m₂₃ m₁₃ _
     hA hF hS hpb' h1 h2 h3 h4 y
 
 end GlobalTheory.CharKer

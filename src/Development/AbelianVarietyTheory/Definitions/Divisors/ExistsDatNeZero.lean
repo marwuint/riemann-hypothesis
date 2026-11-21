@@ -90,12 +90,6 @@ def IsAdd (f : Fn1 A) (g : Fn2 A) : Prop :=
   ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x y : Pt A D),
     g D' (spOver φ ≫ x) (spOver φ ≫ y) - φ (g D x y) = f D D' φ (x * y) - f D D' φ x - f D D' φ y
 
-def IsAddRed (W : K → A.left.Opens) (f : Fn1 A) (g : Fn2 A) : Prop :=
-  ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x y : Pt A D),
-    Sm W x → Sm W y → Sm W (x * y) → Sm W (1 : Pt A D) →
-    g D' (spOver φ ≫ x) (spOver φ ≫ y) - φ (g D x y) =
-      f D D' φ (x * y) - f D D' φ x - f D D' φ y + f D D' φ 1
-
 def IsSymCoc (g : Fn2 A) : Prop :=
   ∀ (D : Type) [CommRing D] [Algebra R D],
     (∀ x y : Pt A D, g D x y = g D y x) ∧
@@ -192,69 +186,6 @@ def Dat.zero (t : G.TorsionTower A) : Dat t 0 where
     change (0 : _) = 0 - G.res n 0
     simp
 
-theorem fv_of_form {X : Over (Sp R)} (f : Form (X.hom ≫ 𝟙 _)) (D : Type) [CommRing D] [Algebra R D] (D' : Type)
-    [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt X D) : fv f.1 D D' φ x = 0 :=
-  f.2 (trivMap φ x) rfl rfl
-
-def Dat.ofForm (t : G.TorsionTower A) (f : Form (A.hom ≫ 𝟙 _)) (hf : Form.cl _ f ∈ primDR A) : Dat t ⟨_, hf⟩ where
-  f := f.1
-  cl := rfl
-  g := fun _ _ _ _ _ ↦ 0
-  add := fun _ _ _ _ _ _ φ _ _ ↦ by simp [fv_of_form]
-  h := 0
-  res := fun n ↦ by simp [fv_of_form]
-
-theorem Dat.coc_ofForm (t : G.TorsionTower A) (f : Form (A.hom ≫ 𝟙 _)) (hf : Form.cl _ f ∈ primDR A) (n : ℕ) :
-    (Dat.ofForm t f hf).coc n = 0 := by
-  simp [Dat.coc, Dat.ofForm, fv_of_form]
-
-theorem Dat.om_ofForm (t : G.TorsionTower A) (f : Form (A.hom ≫ 𝟙 _)) (hf : Form.cl _ f ∈ primDR A) (n : ℕ) :
-    (Dat.ofForm t f hf).om n = cotVal f.1 (t.y n) := by
-  change cotVal f.1 (t.y n) - dUnit R (0 : G.A n) = _
-  rw [dUnit, map_zero, sub_zero]
-
-theorem cotVal_form_res (t : G.TorsionTower A) (f : Form (A.hom ≫ 𝟙 _)) (n : ℕ) :
-    cotMap (G.res n) (cotVal f.1 (t.y (n + 1))) = cotVal f.1 (t.y n) := by
-  letI := cotOp R (G.A n)
-  letI := cotOp R (G.A (n + 1))
-  haveI := cotCentral R (G.A n)
-  haveI := cotCentral R (G.A (n + 1))
-  haveI := cotTower R (G.A n)
-  haveI := cotTower R (G.A (n + 1))
-  have e : spOver (TrivSqZeroExt.map (cotMap (G.res n))) ≫ spOver (cotPt R (G.A (n + 1))) ≫ t.y (n + 1) =
-      spOver (cotPt R (G.A n)) ≫ t.y n := by
-    rw [← t.res n, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]
-    congr 2
-    refine AlgHom.ext fun a ↦ ?_
-    ext
-    · simp [cotPt, TrivSqZeroExt.algebraMap_eq_inl]
-    · simp [cotPt, TrivSqZeroExt.algebraMap_eq_inl]
-  have := (cotExt R (G.A (n + 1))).val_map (cotExt R (G.A n)) (TrivSqZeroExt.map (cotMap (G.res n))) (AlgHom.id R R)
-    (fun c ↦ (TrivSqZeroExt.fst_map _ c).symm) (fun c ↦ TrivSqZeroExt.map_inl _ c) _ (Pt.w _) _ (Pt.w _)
-    (congrArg Over.Hom.left e) f
-  simp only [cotVal, fv_of_form, sub_zero]
-  rw [this]
-  exact (TrivSqZeroExt.snd_map _ _).symm
-
-theorem isCan_ofForm (t : G.TorsionTower A) (f : Form (A.hom ≫ 𝟙 _)) (hf : Form.cl _ f ∈ primDR A) :
-    IsCan t ⟨_, hf⟩ (G.rigOfOmega ⟨fun n ↦ cotVal f.1 (t.y n), cotVal_form_res t f⟩) :=
-  ⟨Dat.ofForm t f hf, 0, _, fun n ↦ (Dat.coc_ofForm t f hf n).symm, fun n ↦ (Dat.om_ofForm t f hf n).symm, rfl⟩
-
-def Dat.dlog (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] :
-    Dat (PDivGroup.muTower p R) ⟨_, MultGrp.cl_dlog_mem (R := R)⟩ :=
-  Dat.ofForm _ (MultGrp.dlog R) _
-
-theorem prim_dlog_ne_zero [Nontrivial R] :
-    (⟨_, MultGrp.cl_dlog_mem (R := R)⟩ : primDR (ReciprocityTheory.ChartRestriction.G.Semi.Gm (Sp R))) ≠ 0 :=
-  fun h ↦ MultGrp.cl_dlog_ne_zero (congrArg Subtype.val h)
-
-theorem Dat.dlog_f_ne_zero (p : ℕ) [Fact p.Prime] [Nontrivial R] : (Dat.dlog p R).f ≠ 0 := fun h ↦
-  MultGrp.cl_dlog_ne_zero (R := R) ((Dat.dlog p R).cl.symm.trans (by rw [h]; exact map_zero _))
-
-theorem exists_dat_ne_zero (R : Type) [CommRing R] [Nontrivial R] (p : ℕ) [Fact p.Prime] :
-    ∃ c, Nonempty (Dat (PDivGroup.muTower p R) c) ∧ c ≠ 0 :=
-  ⟨_, ⟨Dat.dlog p R⟩, prim_dlog_ne_zero⟩
-
 end Can
 
 section Contract
@@ -300,14 +231,5 @@ def IsContr (z : C2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _))) (v : epsR R ⟶ B) (
     κ D D' φ x = TrivSqZeroExt.snd (R := D') (z _ _ _ s τ - z _ _ _ a s' - z _ _ _ i τ + z _ _ _ b i')
 
 end Contract
-
-section Cube
-
-variable {H : Over (Sp R)} [GrpObj H] [IsCommMonObj H] {L : RigLB H}
-
-def cubAt (c : CubicalStr H L) {D : Type} [CommRing D] [Algebra R D] (x y z : Pt H D) (J : thK → L.L.ι) : D :=
-  evU (lift x (lift y z)).left (LB.wchart L.L (thφ H (x3 H)) J) (c.t.s J).val
-
-end Cube
 
 end GlobalTheory.PtExt

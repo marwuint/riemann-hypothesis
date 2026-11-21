@@ -32,12 +32,6 @@ theorem goodAU_iso {π π' : NG.AutRep L n} (h : π.Iso π') (hg : GoodAU π) : 
 
 namespace Old
 
-def Sph0 (π : NG.AutRep L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : Prop := π.SphAt v
-
-theorem sphGood (s : Sw) {π : NG.AutRep L n} {v} (_h : π.SphAt v) : NoSplit L v → GoodAU π := s.elim
-
-theorem sphMk {π : NG.AutRep L n} {v} (h : Sph0 π v) (_hg : NoSplit L v → GoodAU π) : π.SphAt v := h
-
 end Old
 
 namespace New

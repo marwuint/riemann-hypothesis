@@ -8,10 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InSupportOfIsSub
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInSupportOfMultiProd
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraMapIntertwiningMapBijectiveOfIsSmooth
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IrreducibleSubquotientEigenvectorStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalJacquetSubquotientAtMostOneNonemptyBlockStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JacquetRankOneCentralStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IrreducibleGl1IsoDetStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IrreducibleSubquotientEigenvector
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalJacquetSubquotientAtMostOneNonemptyBlock
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JacquetRankOneCentral
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IrreducibleGl1IsoDet
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -59,7 +59,7 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.Pro
 theorem card_le_ncard_unrTwist : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s s' : ℕ) (χ : kˣ →* ℂˣ) (π : Irr k n) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a)) (d' : Fin s' → ℕ) (e : (Σ j, Fin (d' j)) ≃ Fin n) (A : Finset (Fin s')) (x : GlobalTheory.PRep.Jacquet π.π (GlobalTheory.SmGL.unipRad k e)), GlobalTheory.SmGL.IsSmoothChar χ → GlobalTheory.SmGL.IsCuspSupport π.π d (fun a => (σ a).π) → (∀ j ∈ A, d' j = 1) → x ≠ 0 → (∀ j ∈ A, ∀ g ∈ GlobalTheory.SplitWeil.KO k (Fin (d' j)), GlobalTheory.SmGL.jac e π.π (Pi.mulSingle j g) x = (χ (Matrix.GeneralLinearGroup.det g) : ℂ) • x) → A.card ≤ Set.ncard {a | d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (GlobalTheory.SmGL.detRep (Fin (d a)) (χ * GlobalTheory.SmGL.unrChar k α)))} := by
   intro _ hG k _ _ _ _ n s s' χ π d σ d' e A x hχ hcs hA hx hact
   obtain ⟨-, hσ, e₀, hsub⟩ := hcs
-  obtain ⟨Y, _, _, τ, y, hτ, hτs, hy, hτy⟩ := GlobalTheory.T.irreducible_subquotient_eigenvector _ _ (jac e π.π) x hx
+  obtain ⟨Y, _, _, τ, y, hτ, hτs, hy, hτy⟩ := _root_.GlobalTheory.VecSubquot.exists_irreducible_subquotient_of_ne_zero _ _ (jac e π.π) x hx
   have hτP : IsSubquotient τ (jac e (multiProd e₀ fun a => (σ a).π)) :=
     hτs.trans (GlobalTheory.JacquetExact.isSubquotient_jac e (isSmooth_parInd _ _) hsub)
   obtain ⟨b, f, g, t, hrow, hcol⟩ := exists_cell_of_isSubquotient (hG k).1 (hG k).2 e₀ e
@@ -79,7 +79,7 @@ theorem card_le_ncard_unrTwist : GlobalTheory.Published.BernsteinZelevinskyFinit
   choose! ι hι1 hι0 using hcolj
 
   have hrow1 : ∀ i j j', 0 < b.1 i j → 0 < b.1 i j' → j = j' := fun i =>
-    GlobalTheory.T.cuspidal_jacquet_subquotient_at_most_one_nonempty_block k (d i) _ (σ i).π s' (b.1 i) (f i) _ (fun j => (t i j).ρ) (hσ i).2.2
+    _root_.GlobalTheory.SmGL.CuspRow.block_unique_of_isCuspidal k (d i) _ (σ i).π s' (b.1 i) (f i) _ (fun j => (t i j).ρ) (hσ i).2.2
       (fun j => Model.nontrivial_of_isIrreducible (t i j).irr) (hrow i)
 
   have hd1 : ∀ j ∈ A, d (ι j) = 1 := by
@@ -104,7 +104,7 @@ theorem card_le_ncard_unrTwist : GlobalTheory.Published.BernsteinZelevinskyFinit
     have hT : ∀ (z : kˣ) (v : ⨂[ℂ] j', (t i j').V),
         piTensor (fun j' => (t i j').ρ) (Pi.mulSingle j (GeneralLinearGroup.scalar (Fin (b.1 i j)) z)) v =
           (ω z : ℂ) • v := fun z v =>
-      Model.scalar_of_isSubquotient (hrow i) (GlobalTheory.T.jacquet_rank_one_central k (d i) _ (σ i).π ω s' (b.1 i) (f i) j (hd1 j hj)
+      Model.scalar_of_isSubquotient (hrow i) (_root_.GlobalTheory.JacGL1.jac_mulSingle_scalar k (d i) _ (σ i).π ω s' (b.1 i) (f i) j (hd1 j hj)
         (hι1 j hj) hω z) v
     have hωt : HasCentralChar (t i j).ρ ω := by
       obtain ⟨ω', -, hω'⟩ := GlobalTheory.LocGL.exists_smooth_hasCentralChar (t i j).smooth (t i j).irr
@@ -124,7 +124,7 @@ theorem card_le_ncard_unrTwist : GlobalTheory.Published.BernsteinZelevinskyFinit
       rw [det_scalar_one (hA j hj)] at h2
       exact Units.ext (smul_left_injective ℂ hy (h1.symm.trans h2))
     obtain ⟨α, hα⟩ := eq_mul_unrChar_of_eq_on_units k χ ω hωχ
-    exact ⟨hd1 j hj, α, hα ▸ GlobalTheory.T.irreducible_gl1_iso_det k (d i) _ (σ i).π ω (hd1 j hj) (σ i).irr hω⟩
+    exact ⟨hd1 j hj, α, hα ▸ _root_.GlobalTheory.GLOneChar.equiv_detRep_of_isIrreducible k (d i) _ (σ i).π ω (hd1 j hj) (σ i).irr hω⟩
   rw [← Set.ncard_coe_finset]
   exact Set.ncard_le_ncard_of_injOn ι hmem hinj (Set.toFinite _)
 

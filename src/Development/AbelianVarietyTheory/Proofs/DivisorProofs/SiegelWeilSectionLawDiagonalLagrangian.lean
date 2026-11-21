@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumCMPreservesSchwartzHeisenber
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepresentationValueAtOriginLeviFactor
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicGLCircleCharacterTrivialOnDetOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalLagrangianIntegralSiegelParabolicTransfo
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceSiegelLawDiagonalLagrangianCharacter
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryHeckeCharEqOneOfTrivialOverSplitPlacesCmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtensionAdelesStableRangeOneStatement
+import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.DiagonalLagrangianIntegralSiegelParabolicTransfo
+import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.SplitPlaceSiegelLawDiagonalLagrangianCharacter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryHeckeCharEqOneOfTrivialOverSplitPlacesCm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtensionAdelesStableRangeOne
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
@@ -42,7 +42,7 @@ theorem two_isUnit (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
 theorem char_det_one (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (α : GL (Fin n) (AF F ⊗[F] E) →* Circle) (a : GL (Fin n) (AF F ⊗[F] E))
     (ha : Matrix.GeneralLinearGroup.det a = 1) : α a = 1 :=
-  MonoidHom.mem_ker.mp (GlobalTheory.T.special_linear_generated_by_transvections (AF F ⊗[F] E) (GlobalTheory.T.extensionAdeles_stableRange_one F E) n α.ker
+  MonoidHom.mem_ker.mp (GlobalTheory.T.special_linear_generated_by_transvections (AF F ⊗[F] E) (_root_.GlobalTheory.StableRange.adeles_tensor_stableRange_one F E) n α.ker
     (fun i j hij t u hu => MonoidHom.mem_ker.mpr (GlobalTheory.glChar_transvection (two_isUnit F E) α i j hij t u hu)) a ha)
 
 theorem lagr_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
@@ -59,14 +59,14 @@ theorem lagr_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
           ∀ f, IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ f →
             GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) (ωd (1, h) f) = (χS (Matrix.GeneralLinearGroup.det t) : ℂ) * ((((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det t)) : ℝ) ^ ((Fintype.card (Fin nS) : ℝ) / 2) : ℝ) : ℂ) * GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) f := by
   intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd
-  obtain ⟨α, hαc, hαr, hlaw⟩ := GlobalTheory.T.diagonal_lagrangian_integral_siegel_parabolic_transform F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd
+  obtain ⟨α, hαc, hαr, hlaw⟩ := _root_.PositivityTheory.ThKW.lagrangian_integral_fundamental_domain F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd
   intro h t hht f hf
   by_cases h0 : ∀ g, IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ g →
       GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) g = 0
   · rw [h0 _ (hωd.om_pres _ f hf), h0 f hf, mul_zero]
   push_neg at h0
   obtain ⟨f₀, hf₀, hne⟩ := h0
-  have hsp := GlobalTheory.T.splitPlace_siegelLaw_diagonalLagrangian_character F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd α hlaw f₀ hf₀ hne
+  have hsp := _root_.PositivityTheory.ThKW.lagrangian_integral_parseval F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd α hlaw f₀ hf₀ hne
   have hα : ∀ a : GL (Fin nT) (AF F ⊗[F] E), α a = χS (Matrix.GeneralLinearGroup.det a) := by
     rcases Nat.eq_zero_or_pos nT with hn0 | hpos
     · intro a
@@ -81,7 +81,7 @@ theorem lagr_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
         rw [MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, hωd.hecS.2 x, inv_one, mul_one,
           GlobalTheory.LeviOrigin.dgU_map (incAF F E) nT i0 x]
         exact hαr _
-    have hν1 := GlobalTheory.T.unitaryHeckeChar_eq_one_of_trivial_over_split_places_cm F E σ B hB _ hhec (by
+    have hν1 := _root_.GlobalTheory.HeckeSplitBase.heckeChar_eq_one_of_split F E σ B hB _ hhec (by
       intro e he x hx
       have h2 := hsp e he (GlobalTheory.LeviOrigin.dgU nT i0 x) (by
         intro k l

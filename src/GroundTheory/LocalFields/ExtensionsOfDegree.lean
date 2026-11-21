@@ -196,25 +196,4 @@ theorem monicOfCoeffs_sub_monicOfCoeffs {n : ℕ} (c d : Fin n → R) :
 
 end MonicOfCoeffs
 
-section Eisenstein
-
-variable {L : Type*} [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
-
-end Eisenstein
-
-section Main
-
-variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-
-section Valued
-
-variable {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω]
-  [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
-
-end Valued
-
-variable (Ω : Type*) [Field Ω] [Algebra K Ω]
-
-end Main
-
 end GroundTheory.LocalField

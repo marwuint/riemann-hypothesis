@@ -36,8 +36,4 @@ def GraphChangeOfModel.Statement : Prop :=
       (∀ j, ∀ z ∈ mcPts P, (L₁ j).h z = (L j).h (formApply g z)) →
       I K ι P d L₁ = (J (fibreIdeal Sum.inr G) 0 Fin.elim0 : ℝ) * I K₂ ι₂ (imageZ inrV (graphIdeal P g)) d L
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.HilbertSamuel

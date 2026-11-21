@@ -1,9 +1,9 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LevelChainValuations.LatDefs
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.GrSplit
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeFiltrationLTorsionFreeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeFiltrationLTorsionFree
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemLatticeSubIffSumStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeFiltrationComapSpanPowStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeFiltrationComapSpanPow
 
 set_option autoImplicit false
 
@@ -123,7 +123,7 @@ theorem tf_pow {m : ℕ} (h : Lat.Hyp f ξ l m) (hc : Lat.DPClosed (Lat.ι f ξ 
   | zero => simpa using H
   | succ n ih =>
     rw [pow_succ', mul_assoc] at H
-    exact ih (GlobalTheory.T.lattice_filtration_l_torsion_free f ξ l M m h hc r _ H)
+    exact ih (_root_.GlobalTheory.CompanionTheory.Lat.quot_pdP_no_torsion f ξ l M m h hc r _ H)
 
 theorem lat_ι_mem_T_zero (x : Lat.A f ξ l M) : Lat.ι f ξ l M x ∈ T f ξ l M 0 :=
   mem_T_zero f ξ l M (Subtype.prop x)
@@ -134,7 +134,7 @@ theorem closed_succ {m : ℕ} (h : Lat.Hyp f ξ l m) (hc : Lat.DPClosed (Lat.ι 
     (x : Lat.A f ξ l M)
     (hx : ∀ n : ℕ, x ∈ Ideal.span {(l : Lat.A f ξ l M) ^ n} ⊔ pdP (Lat.γ f ξ l M hc) (r + 1)) :
     x ∈ pdP (Lat.γ f ξ l M hc) (r + 1) := by
-  have E := GlobalTheory.T.lattice_filtration_comap_span_pow f ξ l M m h hc
+  have E := _root_.GlobalTheory.CompanionTheory.LatPdpEq.dividedPowerFiltration_eq f ξ l M m h hc
   have hle : pdP (Lat.γ f ξ l M hc) (r + 1) ≤ pdP (Lat.γ f ξ l M hc) r := by
     rw [E, E]
     exact Ideal.comap_mono (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ (Nat.le_succ r)))
@@ -185,7 +185,7 @@ theorem closed : ∀ {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f :
   induction r with
   | zero =>
     intro x _
-    rw [GlobalTheory.T.lattice_filtration_comap_span_pow f ξ l M m h hc 0]
+    rw [_root_.GlobalTheory.CompanionTheory.LatPdpEq.dividedPowerFiltration_eq f ξ l M m h hc 0]
     simp
   | succ r ih => exact closed_succ h hc r ih
 

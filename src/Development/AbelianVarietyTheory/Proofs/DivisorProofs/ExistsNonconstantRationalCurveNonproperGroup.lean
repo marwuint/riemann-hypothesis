@@ -36,11 +36,11 @@ theorem exists_rational_family {G : Over (Sp k)} [GrpObj G] (hG : SmConn G)
       (f : Fin r → A) (Pd : Polynomial k) (P : Fin r → Polynomial k) (ψ : k → (A →ₐ[k] k)) (t₁ t₂ : k),
       IsChart G j ε f ∧ Pd ≠ 0 ∧ (∀ t, Pd.eval t ≠ 0 → ∀ i, ψ t (f i) * Pd.eval t = (P i).eval t) ∧
       Pd.eval t₁ ≠ 0 ∧ Pd.eval t₂ ≠ 0 ∧ ψ t₁ ≠ ψ t₂ := by
-  obtain ⟨A, _, _, j, ε, r, f, hc⟩ := GlobalTheory.T.exists_affineUnitChart_smoothGroupScheme k G hG
+  obtain ⟨A, _, _, j, ε, r, f, hc⟩ := _root_.GlobalTheory.SS.ArcInf.exists_isChart k G hG
   obtain ⟨h, d, hd1, hh1, ht⟩ := GlobalTheory.T.exists_arcQuotient_twoVariable_coords k G A j ε r f hc a
   have hsep := hG.2.2.1
-  have hXd := mt ((GlobalTheory.T.subst_two_variables_identities_alt k).1 d).1.1 hd1
-  have hXh := fun i => ((GlobalTheory.T.subst_two_variables_identities_alt k).1 (h i)).1.2 (hh1 i)
+  have hXd := mt ((_root_.GlobalTheory.subst_two_variables_identities k).1 d).1.1 hd1
+  have hXh := fun i => ((_root_.GlobalTheory.subst_two_variables_identities k).1 (h i)).1.2 (hh1 i)
   have hd' : (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) ≠ 0 := fun e => hXd (e ▸ dvd_zero _)
   have hd : d ≠ 0 := by
     rintro rfl
@@ -50,7 +50,7 @@ theorem exists_rational_family {G : Over (Sp k)} [GrpObj G] (hG : SmConn G)
   by_cases hQ : ∀ i, MvPowerSeries.weightedOrder (![1, 1] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) < MvPowerSeries.weightedOrder (![1, 1] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))
   · exfalso
     obtain ⟨Pd, P, ψ, hPd, hP, hg⟩ := ht.shear hc hd' le_rfl le_rfl (fun i => (hQ i).le)
-    obtain ⟨ch1, ch2⟩ := GlobalTheory.T.relation_of_gen_of_order_eq k (fun z w => Rel a z w 1)
+    obtain ⟨ch1, ch2⟩ := _root_.GlobalTheory.powerSeries_generic_relation_chain k (fun z w => Rel a z w 1)
       (fun m n => ∀ z : PowerSeries k, z.order = (m : ℕ∞) →
         ∃ S : Set k, S.Finite ∧ ∀ t, t ∉ S → Rel a z (PowerSeries.C t * PowerSeries.X ^ n) 1)
       (fun z w h => by simpa using h.symm) (fun x y z h h' => by simpa using h.trans h') (fun _ _ h => h)
@@ -68,15 +68,15 @@ theorem exists_rational_family {G : Over (Sp k)} [GrpObj G] (hG : SmConn G)
         rw [(hP i).2 (hQ i), Polynomial.eval_zero, mul_eq_zero] at this
         rw [hc.2.2.2, this.resolve_right hp]
       rwa [this, hc.2.1, e] at h2)
-    obtain ⟨-, s2, s3, s4⟩ := GlobalTheory.T.weightedOrder_slope_comparison_alt k r h d hd _ (fun _ _ => Iff.rfl)
+    obtain ⟨-, s2, s3, s4⟩ := _root_.GlobalTheory.SS.weightedOrder_slope_comparison k r h d hd _ (fun _ _ => Iff.rfl)
     obtain ⟨m₀, hm₀⟩ := s2 (ht.lt_of_rel hc hd le_rfl le_rfl g11)
     have all := ch2 (m₀ + 1) fun m hm =>
       ht.gen_of_lt hc hd (m := m) (n := m + 1) (by omega) (by omega) (hm₀ m (by omega))
-    refine hna (GlobalTheory.T.arc_extends_of_regular_second_axis k G A j ε r f hc a h d hd ht (s4 fun n hn => ?_))
+    refine hna (_root_.GlobalTheory.SS.ArcInf.extends_of_regular_second_axis k G A j ε r f hc a h d hd ht (s4 fun n hn => ?_))
     refine (s3 1 n (m₀ + 1) (by omega)).1 (ht.lt_of_rel hc hd (by omega) (Nat.mul_pos (by omega) hn) ?_)
     intro z w hz hw
     exact all _ _ z w (by omega) (Nat.le_mul_of_pos_right _ hn) hz hw
-  · obtain ⟨m, n, hm, hmn, hle, i, hi⟩ := (GlobalTheory.T.weightedOrder_slope_comparison_alt k r (fun i => (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))) _ hd' _
+  · obtain ⟨m, n, hm, hmn, hle, i, hi⟩ := (_root_.GlobalTheory.SS.weightedOrder_slope_comparison k r (fun i => (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))) _ hd' _
       (fun _ _ => Iff.rfl)).1 hXh hXd ⟨1, 1, le_rfl, le_rfl, hQ⟩
     obtain ⟨Pd, P, ψ, hPd, hP, hg⟩ := ht.shear hc hd' hm (hm.trans hmn) hle
     have hPi : P i ≠ 0 := fun e => ((hP i).1 e).ne hi

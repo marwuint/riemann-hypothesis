@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.MinpolyIrreducibleNatDegreeOfRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnitaryRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.MarkedSumIrr
 
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
@@ -24,11 +25,5 @@ theorem pairOf_β {G : HTGroup p} (F : Form G) (r : grp G F.β) (h : RegEl G (r 
 
 theorem pairOf_γ {G : HTGroup p} (F : Form G) (r : grp G F.β) (h : RegEl G (r : G.Cˣ × ℚˣ).1) :
     (pairOf F r h).γ = (r : G.Cˣ × ℚˣ).1 := rfl
-
-open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example in
-
-example : ∃ (h : RegEl (ex 1 one_ne_zero) exPair.γ),
-    pairOf (Form.ofPair exPair) ⟨(exPair.γ, exPair.c), exPair.sim, by show (0:ℚ) < 5; norm_num⟩ h = exPair :=
-  ⟨exPair.reg, rfl⟩
 
 end GlobalTheory.LKCx

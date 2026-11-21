@@ -4,28 +4,28 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrys
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentingSchemeOfFiniteSurjectiveLiftStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitsPatch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsAdditiveLineBundleFamiliesCompareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveFamilyOfPullbackFiniteSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveFamilyOfPullbackFiniteSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConductorSquareFlatBaseChangeSchemesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchingSquareUnitsPatchStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLocalGeneratorNearFiniteSetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalGeneratorFiniteCoverNearPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitLiftClosedSubschemeNearFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitRatioLocalGeneratorsCommonPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundlePinchedOfMatchingGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartOffClosedPartFromBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenSaturatedBasicOpenPreimageStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineNbhdBasicOpenStandardSmoothStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartsRestrictMatchingOpensStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartsAffineOfSpectraStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushoutQuotientSurjectiveKerEqMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubmersivePresentationAddZeroVariablesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorsAdaptedToQuotientGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRelationsLiftVanishingConductorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchingSquareUnitsPatch
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLocalGeneratorNearFiniteSet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalGeneratorFiniteCoverNearPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitLiftClosedSubschemeNearFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitRatioLocalGeneratorsCommonPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundlePinchedOfMatchingGenerators
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartOffClosedPartFromBase
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenSaturatedBasicOpenPreimage
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineNbhdBasicOpenStandardSmooth
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartsRestrictMatchingOpens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartsAffineOfSpectra
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushoutQuotientSurjectiveKerEqMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubmersivePresentationAddZeroVariables
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorsAdaptedToQuotientGenerators
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRelationsLiftVanishingConductor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanRelationsConductorOfEvalEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubOneMemMulKerNakayamaFlatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMvPolynomialLiftConductorCoeffsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubOneMemMulKerNakayamaFlat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMvPolynomialLiftConductorCoeffs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStandardSmoothLocalizationAwayJacobianDvdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPushoutLocalizedPresentationBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPushoutLocalizedPresentationBaseChange
 
 set_option autoImplicit false
 noncomputable section
@@ -46,14 +46,14 @@ theorem exists_standardSmooth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
   haveI : Algebra.Smooth R' C' := hφ
   haveI : IsNoetherianRing R' := IsNoetherianRing.of_finite R R'
   obtain ⟨ν₀, σ₀, _, _, P₀, hP₀⟩ := (show Algebra.IsStandardSmoothOfRelativeDimension g (R ⧸ c) D from hδ).out
-  obtain ⟨hπ, hker⟩ := GlobalTheory.T.pushout_quotient_surjective_ker_eq_map R C' E c _ π _ h1
-  obtain ⟨κ, _, ξ, hξ, hsurj⟩ := GlobalTheory.T.exists_generators_adapted_to_quotient_generators R (R ⧸ c) R' C' D E ν₀ (algebraMap R R') (Ideal.Quotient.mk c) π ψ P₀.val
+  obtain ⟨hπ, hker⟩ := _root_.GlobalTheory.pushout_quotient_map_eq_quotient_map_ideal R C' E c _ π _ h1
+  obtain ⟨κ, _, ξ, hξ, hsurj⟩ := _root_.GlobalTheory.pinch_gens_adapted R (R ⧸ c) R' C' D E ν₀ (algebraMap R R') (Ideal.Quotient.mk c) π ψ P₀.val
     Ideal.Quotient.mk_surjective hπ P₀.aeval_val_surjective h2
-  obtain ⟨P, hP⟩ := GlobalTheory.T.exists_submersivePresentation_add_zero_variables (R ⧸ c) D ν₀ σ₀ κ P₀
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero (R ⧸ c) D ν₀ σ₀ κ P₀
   rw [← hP] at hξ
   have hw : ψ.comp ((algebraMap (R ⧸ c) D).comp (Ideal.Quotient.mk c)) =
       (π.comp (algebraMap R' C')).comp (algebraMap R R') := congrArg CommRingCat.Hom.hom h2.w
-  choose F hF hF0 using fun s ↦ GlobalTheory.T.exists_relations_lift_vanishing_conductor GlobalTheory.T.exists_mvPolynomial_lift_conductor_coeffs R R' C' D E _ c hc π ψ P.val ξ hker hw hξ hsurj (P.relation s)
+  choose F hF hF0 using fun s ↦ _root_.GlobalTheory.Pinch.relations_lift_vanishing _root_.GlobalTheory.exists_mvPolynomial_lift_of_mem_conductor R R' C' D E _ c hc π ψ P.val ξ hker hw hξ hsurj (P.relation s)
     (P.aeval_val_relation s)
   have hrel : (fun s ↦ map (Ideal.Quotient.mk c) (F s)) = P.relation := funext hF
   have hkP : RingHom.ker (aeval P.val : MvPolynomial _ (R ⧸ c) →ₐ[R ⧸ c] D) =
@@ -66,12 +66,12 @@ theorem exists_standardSmooth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
       ψ (aeval P.val (map (Ideal.Quotient.mk c) G)) := fun G ↦ by
     rw [key, aeval_def, eval₂_comp_left, eval₂_map, eval₂_map]
     exact congrArg (fun f ↦ eval₂ f _ G) hw.symm
-  obtain ⟨s', hs1, hs2⟩ := GlobalTheory.T.exists_sub_one_mem_mul_ker_nakayama_flat R' (MvPolynomial (κ ⊕ ν₀) R') C' (aeval ξ) hsurj
+  obtain ⟨s', hs1, hs2⟩ := _root_.GlobalTheory.Pinch.exists_sub_one_mem_mul_ker_le R' (MvPolynomial (κ ⊕ ν₀) R') C' (aeval ξ) hsurj
     (Ideal.span (Set.range fun s ↦ map (algebraMap R R') (F s))) (c.map (algebraMap R R'))
     (Ideal.span_le.2 (by rintro _ ⟨s, rfl⟩; exact hF0 s))
     (fun G hG ↦ GlobalTheory.T.mem_span_relations_conductor_of_eval_eq_zero R R' D E _ _ (algebraMap R R') c (π.comp φ) ψ P.val F P.aeval_val_surjective hkP h2 G
       (by rw [← key, show aeval ξ G = 0 from hG, map_zero]))
-  obtain ⟨H, hH0, hH⟩ := GlobalTheory.T.exists_mvPolynomial_lift_conductor_coeffs R R' _ c hc _ hs1
+  obtain ⟨H, hH0, hH⟩ := _root_.GlobalTheory.exists_mvPolynomial_lift_of_mem_conductor R R' _ c hc _ hs1
   letI : Fintype (κ ⊕ σ₀) := Fintype.ofFinite _
   let Δ : MvPolynomial (κ ⊕ ν₀) R := (Matrix.of fun s t ↦ pderiv (P.map s) (F t)).det
   have hΔ : aeval P.val (map (Ideal.Quotient.mk c) (Δ * (H + 1))) = P.jacobian := by
@@ -82,11 +82,11 @@ theorem exists_standardSmooth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
     rw [P.jacobiMatrix_apply, ← hF, pderiv_map]
     rfl
   have hu : IsUnit (aeval P.val (map (Ideal.Quotient.mk c) (Δ * (H + 1)))) := hΔ ▸ P.jacobian_isUnit
-  obtain ⟨α, hα, hα'⟩ := GlobalTheory.T.isPushout_localized_presentation_baseChange R R' C' (Localization.Away (aeval ξ (map (algebraMap R R') (Δ * (H + 1))))) _ _
+  obtain ⟨α, hα, hα'⟩ := _root_.GlobalTheory.Pinch.isPushout_localization_baseChange R R' C' (Localization.Away (aeval ξ (map (algebraMap R R') (Δ * (H + 1))))) _ _
     (algebraMap R R') F (Δ * (H + 1)) ξ hsurj hF0 (fun G hG ↦ by
       rw [map_mul, map_add, hH, map_one, sub_add_cancel, _root_.mul_assoc]
       exact Ideal.mul_mem_left _ _ (hs2 G hG)) inferInstance
-  obtain ⟨β, hβ, hβ'⟩ := GlobalTheory.T.isPushout_localized_presentation_baseChange R (R ⧸ c) D D _ _ (Ideal.Quotient.mk c) F (Δ * (H + 1)) P.val
+  obtain ⟨β, hβ, hβ'⟩ := _root_.GlobalTheory.Pinch.isPushout_localization_baseChange R (R ⧸ c) D D _ _ (Ideal.Quotient.mk c) F (Δ * (H + 1)) P.val
     P.aeval_val_surjective (fun s ↦ by rw [hF]; exact P.aeval_val_relation s)
     (fun G hG ↦ Ideal.mul_mem_left _ _ (hkP ▸ hG)) (IsLocalization.away_of_isUnit_of_bijective _ hu Function.bijective_id)
   have ht : IsUnit (π (aeval ξ (map (algebraMap R R') (Δ * (H + 1))))) := by
@@ -147,7 +147,7 @@ theorem pinched : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [
   intro R _ _ R' _ _ _ hinj c hc g B' C Y b' e i q hb he hF h1 h2 x
   by_cases hx : (b' ≫ spMap (algebraMap R R')) x ∈ Set.range (spMap (Ideal.Quotient.mk c))
   swap
-  · exact GlobalTheory.T.pinched_chart_off_closed_part_from_base R R' hinj c hc g B' C Y b' e i q hb x hx
+  · exact _root_.GlobalTheory.Pinch.pinched_off R R' hinj c hc g B' C Y b' e i q hb x hx
   have hfin : IsFinite (spMap (algebraMap R R')) :=
     (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)
   have hcl : IsClosedImmersion (spMap (Ideal.Quotient.mk c)) :=
@@ -156,12 +156,12 @@ theorem pinched : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [
     obtain ⟨t, ht⟩ := hx
     obtain ⟨y, hy, -⟩ := Scheme.exists_preimage_of_isPullback h1 x t ht.symm
     exact ⟨y, hy⟩
-  obtain ⟨O, hO, hyO, hstd⟩ := GlobalTheory.T.exists_affine_nbhd_basicOpen_standardSmooth g C _ e he (q y)
-  obtain ⟨V', r, hV', hy, hV⟩ := GlobalTheory.T.exists_affine_open_saturated_basicOpen_preimage B' C Y i q (MorphismProperty.of_isPullback h1.flip hcl)
+  obtain ⟨O, hO, hyO, hstd⟩ := _root_.GlobalTheory.Pinch.exists_affine_basicOpen_standardSmooth g C _ e he (q y)
+  obtain ⟨V', r, hV', hy, hV⟩ := _root_.GlobalTheory.Pinch.exists_affine_basicOpen_nbhd B' C Y i q (MorphismProperty.of_isPullback h1.flip hcl)
     (MorphismProperty.of_isPullback h2.flip hfin) hF y O hO hyO
-  obtain ⟨q₀, k1, k2, k3⟩ := GlobalTheory.T.pinched_charts_restrict_matching_opens g _ _ _ B' C Y _ _ b' e i q h1 h2 V' (C.basicOpen r) hV
+  obtain ⟨q₀, k1, k2, k3⟩ := _root_.GlobalTheory.Pinch.restrict_pinched g _ _ _ B' C Y _ _ b' e i q h1 h2 V' (C.basicOpen r) hV
   have hsm : Smooth b' := SmoothOfRelativeDimension.smooth g b'
-  have := k3 _ (GlobalTheory.T.pinched_charts_affine_of_spectra pinched_spec R R' hinj c hc g _ _ _ (V'.ι ≫ b') ((C.basicOpen r).ι ≫ e) (i ∣_ V') q₀ hV'
+  have := k3 _ (_root_.GlobalTheory.Pinch.Aff.pinched_affine_of_spec pinched_spec R R' hinj c hc g _ _ _ (V'.ι ≫ b') ((C.basicOpen r).ι ≫ e) (i ∣_ V') q₀ hV'
     (hO.basicOpen r) inferInstance (hstd r) k1 k2 ⟨y, hy⟩)
   have e0 : V'.ι ((i ∣_ V') ⟨y, hy⟩) = i y :=
     (Scheme.Hom.comp_apply (i ∣_ V') V'.ι ⟨y, hy⟩).symm.trans (by rw [morphismRestrict_ι]; rfl)
@@ -177,11 +177,11 @@ theorem exists_pic_patch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z �
   have loc : ∀ x : X, ∃ (W : X.Opens) (a : ∀ k, Γ(X', p ⁻¹ᵁ W ⊓ L'.U k)ˣ) (b : ∀ l, Γ(Z, i ⁻¹ᵁ W ⊓ N.U l)ˣ),
       x ∈ W ∧ GlobalTheory.Pinch.LocGen L' (p ⁻¹ᵁ W) a ∧ GlobalTheory.Pinch.LocGen N (i ⁻¹ᵁ W) b ∧ GlobalTheory.Pinch.Matches i' p' w a b := by
     intro x
-    obtain ⟨W₁, a, h₁, ha⟩ := GlobalTheory.T.exists_local_generator_finite_cover_near_point GlobalTheory.T.exists_lineBundle_localGenerator_near_finiteSet X X' p hp L' hL' x
-    obtain ⟨W₂, b, h₂, hb⟩ := GlobalTheory.T.exists_local_generator_finite_cover_near_point GlobalTheory.T.exists_lineBundle_localGenerator_near_finiteSet X Z i inferInstance N hN x
-    obtain ⟨u, hu⟩ := GlobalTheory.T.exists_unit_ratio_local_generators_common_pullback X' Z Z' i' p' L' N hL' hN w hw _ _ a b ha hb (i' ⁻¹ᵁ (p ⁻¹ᵁ (W₁ ⊓ W₂)))
+    obtain ⟨W₁, a, h₁, ha⟩ := _root_.GlobalTheory.Pinch.locGen_near_fibre_of_finite _root_.GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite X X' p hp L' hL' x
+    obtain ⟨W₂, b, h₂, hb⟩ := _root_.GlobalTheory.Pinch.locGen_near_fibre_of_finite _root_.GlobalTheory.Pinch.Semiloc.exists_locGen_near_finite X Z i inferInstance N hN x
+    obtain ⟨u, hu⟩ := _root_.GlobalTheory.Pinch.exists_ratio_unit X' Z Z' i' p' L' N hL' hN w hw _ _ a b ha hb (i' ⁻¹ᵁ (p ⁻¹ᵁ (W₁ ⊓ W₂)))
       (fun z hz ↦ hz.1) (fun z hz ↦ show i (p' z) ∈ W₂ from hw' z ▸ hz.2)
-    obtain ⟨W, u', hW, hx, hu'⟩ := GlobalTheory.T.exists_unit_lift_closed_subscheme_near_fibre X X' Z Z' p i i' p' hsq hp hi (W₁ ⊓ W₂) x ⟨h₁, h₂⟩ u
+    obtain ⟨W, u', hW, hx, hu'⟩ := _root_.GlobalTheory.Pinch.unit_lift_near_fibre X X' Z Z' p i i' p' hsq hp hi (W₁ ⊓ W₂) x ⟨h₁, h₂⟩ u
     have l₁ : ∀ k, p ⁻¹ᵁ W ⊓ L'.U k ≤ p ⁻¹ᵁ W₁ ⊓ L'.U k := fun k y hy ↦ ⟨(hW hy.1).1, hy.2⟩
     have l₂ : ∀ l, i ⁻¹ᵁ W ⊓ N.U l ≤ i ⁻¹ᵁ W₂ ⊓ N.U l := fun k y hy ↦ ⟨(hW hy.1).2, hy.2⟩
     refine ⟨W, fun k ↦ res inf_le_left u' * res (l₁ k) (a k), fun l ↦ res (l₂ l) (b l), hx, ?_, ?_, ?_⟩
@@ -200,7 +200,7 @@ theorem exists_pic_patch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z �
       rw [map_mul, gm_res _ _ _ m, gm_res _ _ _ m, gm_res _ _ _ m', hu' z h1]
       exact hu z k l (hW h1) hk hl
   choose W a b hx ha hb hm using loc
-  obtain ⟨L, hL, hiso⟩ := GlobalTheory.T.exists_lineBundle_pinched_of_matching_generators X X' Z Z' p i i' p' hsq.w (GlobalTheory.T.pinchingSquare_unitsPatch X X' Z Z' p i i' p' hsq inferInstance hi hc)
+  obtain ⟨L, hL, hiso⟩ := _root_.GlobalTheory.Pinch.exists_lb_of_matching_gens X X' Z Z' p i i' p' hsq.w (_root_.GlobalTheory.Pinch.unitsPatch X X' Z Z' p i i' p' hsq inferInstance hi hc)
     L' N hL' hN w W a b hx ha hb hm
   exact ⟨cls L hL, (cls_eq_iff (pull_isLB hL p) hL').2 hiso⟩
 
@@ -285,7 +285,7 @@ theorem hasRep_pinched : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : O
       have := congrArg (GlobalTheory.CechPic.pull (A ◁ yo).left) ((same_iff hP'.fam.isLB hQ.fam.isLB _ _).1 hS)
       simp only [pull_evc, whiskerLeft_fst, whiskerLeft_snd_assoc, hy1', hy2'] at this ⊢
       exact this)
-  obtain ⟨M, hM, hMS⟩ := GlobalTheory.T.exists_additiveFamily_of_pullback_finiteSurjective _ A Uo U'o hA po hp hps _ hN c₀ hc₀
+  obtain ⟨M, hM, hMS⟩ := _root_.GlobalTheory.Pinch.exists_fam_of_pull _ A Uo U'o hA po hp hps _ hN c₀ hc₀
   let S' : Over (Sp R) := Over.mk (spMap (algebraMap R R'))
   let r : Uo ⊗ S' ⟶ U'o := Over.homMk h1.isoPullback.inv (by
     change h1.isoPullback.inv ≫ p ≫ u = pullback.fst u (spMap (algebraMap R R')) ≫ u

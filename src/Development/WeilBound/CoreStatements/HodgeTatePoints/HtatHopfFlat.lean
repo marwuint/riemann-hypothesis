@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.Models
+import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseChangePointsCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseChangePointsCompat
 import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfSec
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatDesc
+
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
@@ -321,7 +322,7 @@ theorem val_mem_span [Finite T] [Module.Flat R R'] (Γ : QFGroup R T) (Γ' : QFG
     refine Submodule.subset_span ⟨fun t => valAt (Γ.pt t).left ⊤ (top_le_pre _) s, ⟨s, fun _ _ => rfl⟩, ?_⟩
     funext t
     rw [← valAt_comp (Γ'.pt t).left F ⊤ ⊤ _ (top_le_pre _) (top_le_pre _),
-      valAt_congr (GlobalTheory.T.base_change_points_compat R T Γ R' Γ' F hbc κ hκ t) _ _ (top_le_pre _),
+      valAt_congr (_root_.GlobalTheory.CompanionTheory.Ar.BT.genericPoint_baseChange R T Γ R' Γ' F hbc κ hκ t) _ _ (top_le_pre _),
       valAt_map κ _ _ (top_le_pre _)]
   · intro c n hn
     have : (fun t => valAt (Γ'.pt t).left ⊤ (top_le_pre _) (((Γ'.G.hom.appLE ⊤ ⊤ (top_le_pre _)).hom c) * n)) =
@@ -389,7 +390,7 @@ lemma ext_le_btOrder [Finite T] (Γ : QFGroup R T) (Γ' : QFGroup R' T) (F : Γ'
   obtain ⟨s, hs⟩ := (mem_btOrder_iff Γ f).1 hf t
   refine ⟨(F.appLE ⊤ ⊤ (top_le_pre _)).hom s, fun h hh => ?_⟩
   rw [← valAt_comp (Γ'.pt h).left F ⊤ ⊤ _ _ (top_le_pre _),
-    valAt_congr (GlobalTheory.T.base_change_points_compat R T Γ R' Γ' F hbc κ hκ h) _ _ (top_le_pre _),
+    valAt_congr (_root_.GlobalTheory.CompanionTheory.Ar.BT.genericPoint_baseChange R T Γ R' Γ' F hbc κ hκ h) _ _ (top_le_pre _),
     valAt_map κ _ _ (top_le_pre _), hs h, hκ']
 
 end Sch

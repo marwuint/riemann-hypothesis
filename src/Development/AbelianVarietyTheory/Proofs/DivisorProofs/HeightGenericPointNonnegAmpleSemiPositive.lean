@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricDegreePosOfAmpleSemiPositiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeightAddMulGeometricDegreeNonnegOfSmallSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogCountRadiusOneLowerBoundAmpleSemiPosStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricDegreePosOfAmpleSemiPositive
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeightAddMulGeometricDegreeNonnegOfSmallSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogCountRadiusOneLowerBoundAmpleSemiPos
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsBaseBundlesAndTrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallSectionsTwistedPowerEncardEqBall
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
@@ -15,7 +15,7 @@ theorem GlobalTheory.HSNef.height_generic_nonneg_of_ample : GlobalTheory.Publish
   intro hAr hHS k _ X _ p D hX hD C h hA hS hH hnn
   by_contra hc
   push_neg at hc
-  have hg : 0 < gdeg C D := GlobalTheory.T.geometricDegree_pos_of_ample_semiPositive hAr hHS k X p D hX C hA hS
+  have hg : 0 < gdeg C D := _root_.GlobalTheory.HSNef.gdeg_pos_of_ample hAr hHS k X p D hX C hA hS
   set c := h (genericPoint X) with hcdef
   set g := gdeg C D with hgdef
   have hD' : (1 : ℝ) ≤ D := by exact_mod_cast hD
@@ -42,7 +42,7 @@ theorem GlobalTheory.HSNef.height_generic_nonneg_of_ample : GlobalTheory.Publish
   have hrep : P.Rep 1 0 C' := hPL ▸ (GlobalTheory.VolBr.Pair.rep_base k X p P).1
   have hfac : (0 : ℝ) < ((D + 1).factorial : ℝ) := by positivity
   have hε : 0 < α / (2 * ((D + 1).factorial : ℝ)) := by positivity
-  obtain ⟨m, hm, hm0⟩ := ((GlobalTheory.T.log_count_radius_one_lower_bound_ample_semiPos hHS k X p D hX P 1 0 0 0 C' α hrep hA' hS' hα' _ hε).and
+  obtain ⟨m, hm, hm0⟩ := ((_root_.GlobalTheory.HSNef.lc_one_eventually_ge hHS k X p D hX P 1 0 0 0 C' α hrep hA' hS' hα' _ hε).and
     (eventually_gt_atTop 0)).exists
   have hcoef : α / ((D + 1).factorial : ℝ) - α / (2 * ((D + 1).factorial : ℝ)) = α / (2 * ((D + 1).factorial : ℝ)) := by
     field_simp; ring
@@ -66,5 +66,5 @@ theorem GlobalTheory.HSNef.height_generic_nonneg_of_ample : GlobalTheory.Publish
     by_cases ha0 : a = 0
     · exact ⟨b, hb, fun hb0 => hab (ha0.trans hb0.symm)⟩
     · exact ⟨a, ha, ha0⟩
-  have := GlobalTheory.T.height_add_mul_geometricDegree_nonneg_of_smallSection hAr k X p D hX hD C h hS hH hnn m u hm0 hu0 hex
+  have := _root_.GlobalTheory.HSNef.height_add_mul_gdeg_nonneg_of_smallSec hAr k X p D hX hD C h hS hH hnn m u hm0 hu0 hex
   linarith

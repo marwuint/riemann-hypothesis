@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionUnramifiedOfHasGoodReductionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionUnramifiedImpTateModuleAndInfiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfiniteTorsionUnramifiedOfTateModuleUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionUnramifiedOfHasGoodReduction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionUnramifiedImpTateModuleAndInfinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfiniteTorsionUnramifiedOfTateModuleUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.GoodReduction.HasGoodReductionOfInfiniteTorsionUnramified
 
 set_option autoImplicit false
@@ -21,12 +21,12 @@ open GlobalTheory
 
 theorem neronOggShafarevich : NeronOggShafarevichSt := by
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA
-  tfae_have 1 → 2 := GlobalTheory.T.torsionUnramified_of_hasGoodReduction_alt R K Ω V hV A
-  tfae_have 2 → 4 := fun hb => (GlobalTheory.T.torsionUnramified_imp_tateModule_and_infinite R K Ω V A hb).1
-  tfae_have 2 → 3 := fun hb => (GlobalTheory.T.torsionUnramified_imp_tateModule_and_infinite R K Ω V A hb).2
+  tfae_have 1 → 2 := _root_.GlobalTheory.Published.AbVarRed.torsionUnramified_of_hasGoodReduction R K Ω V hV A
+  tfae_have 2 → 4 := fun hb => (_root_.GlobalTheory.Proof.torsionUnramified_imp_tate_and_infinite R K Ω V A hb).1
+  tfae_have 2 → 3 := fun hb => (_root_.GlobalTheory.Proof.torsionUnramified_imp_tate_and_infinite R K Ω V A hb).2
   tfae_have 4 → 3 := by
     rintro ⟨l, hf, hl, ht⟩
-    exact GlobalTheory.T.infinite_torsionUnramified_of_tateModuleUnramified R K Ω V hV A hA l hl ht
+    exact _root_.GlobalTheory.AbVarRed.infinite_torsionUnramified_of_tateUnramified R K Ω V hV A hA l hl ht
   tfae_have 3 → 1 := UpperTheory.Lit.Nos.C6.hasGoodReduction_of_infinite_torsionUnramified R K Ω V hV A hA
   tfae_finish
 

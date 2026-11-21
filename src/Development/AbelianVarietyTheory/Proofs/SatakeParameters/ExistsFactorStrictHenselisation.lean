@@ -1,9 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CmpBijectiveIff
+import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.HenselianLocalRingOfIsAdicComplete
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsSepClosedResidueFieldPowerSeriesComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStrictHenselisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStrictHenselisationOfDirectedUnion
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRingHomOfIsStrictHenselisation
-open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.FormalInv.Fib GlobalTheory.NCyc
+
+open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.NCyc
 
 namespace GlobalTheory.StrictHensFactor
 

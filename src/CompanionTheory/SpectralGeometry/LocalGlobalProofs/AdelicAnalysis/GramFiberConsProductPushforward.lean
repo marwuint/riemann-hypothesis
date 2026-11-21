@@ -1,15 +1,16 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StageData
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneVectorCcOfSiegelWeil
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHomeomorphTensorProductMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductIntegralStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductDisintegrationStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureGeneralRankExtensionStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHomeomorphTensorProductMeasure
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductIntegral
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductDisintegration
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureGeneralRankExtension
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductFubiniStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureConsProductStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasureConsProduct
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.PiLocalization₂ NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -74,30 +75,30 @@ theorem fold : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   have hσ := D.hCM
   have hlam := D.hlam
   haveI := hlam
-  obtain ⟨hKring, hKlc, hKsc, hKt2, hsig, htr, -, -, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R
+  obtain ⟨hKring, hKlc, hKsc, hKt2, hsig, htr, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R
   haveI := hKring
   haveI := hKlc
   haveI := hKsc
   haveI := hKt2
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
-  obtain ⟨hκh, -, hνh⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hσ R d b lam hlam
+  obtain ⟨hκh, -, hνh⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ R d b lam hlam
   haveI := hκh
   haveI hHb : ∀ m, BorelSpace (HermR R σ m) := fun _ => ⟨rfl⟩
   haveI hHlc : ∀ m, LocallyCompactSpace (HermR R σ m) := fun m =>
-    (GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hσ R m).1
+    (_root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R m).1
   haveI hHsc : ∀ m, SecondCountableTopology (HermR R σ m) := fun m =>
-    (GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hσ R m).2.1
+    (_root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R m).2.1
   haveI : (coordHerm R σ b lam n).IsAddHaarMeasure := hνh n
   haveI : SigmaFinite (coordK R b lam) := inferInstance
   haveI : SigmaFinite (coordHerm R σ b lam n) := inferInstance
-  obtain ⟨e, he00, he0j, heij, hemap⟩ := GlobalTheory.T.coordinate_homeomorph_tensor_product_measure F E σ hσ R d b lam hlam n
+  obtain ⟨e, he00, he0j, heij, hemap⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermSplit.herm_split F E σ hσ R d b lam hlam n
   obtain ⟨hs0c, hacS, hcvc, hschc, hBopen⟩ :=
-    GlobalTheory.T.continuousOn_schur_coordinates_and_isOpen_Bset F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D
-  have hGon0 := GlobalTheory.T.gram_fiber_cons_lintegral_eq_scale_mul_Pint F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D φ hφ
+    _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.Coord.coords F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D
+  have hGon0 := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.lintegral_fibS_of_mem F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D φ hφ
   have hmeas := GlobalTheory.T.measurable_Pint' F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D φ hφ
-  have hsubst := GlobalTheory.T.lintegral_coordK_coordHerm_scale_shear F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D
+  have hsubst := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.subst_row_translate F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D
   have hUnt : IsOpen (Unt σ R n) :=
-    (GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ hσ M n J D.hJ R D.hR d b lam hlam m' D.hm').1
+    (_root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.gramFib_basic F E σ hσ M n J D.hJ R D.hR d b lam hlam m' D.hm').1
   have hGoff0 : ∀ S, S ∉ Bset R σ t a B₀ →
       ∫⁻ v, φ v ∂(fibS σ J t m₁ m' s B₀ a κ₁ cm S) = 0 := by
     intro S hS

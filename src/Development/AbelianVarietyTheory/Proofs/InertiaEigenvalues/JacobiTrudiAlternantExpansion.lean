@@ -231,10 +231,4 @@ theorem alternant_staircase_mul_antidiagonal {A : Type} [CommRing A] (m d : ℕ)
     exact ⟨a, b, hab, hne⟩
   rw [Matrix.det_zero_of_column_eq hne' (fun k => by simp [antisymMat, hab]), map_zero, zero_mul]
 
-example : alternant ℤ 2 (staircase 2) *
-    ∑ k ∈ Finset.Nat.antidiagonalTuple 2 1, ∏ j, MvPolynomial.C ((k j : ℤ) + 1) * MvPolynomial.X j ^ (k j) =
-      ∑ l ∈ antiParts 2 1, MvPolynomial.C (jtDet 2 (fun k => (k : ℤ) + 1) l) *
-        alternant ℤ 2 (fun i => l i + staircase 2 i) :=
-  alternant_staircase_mul_antidiagonal 2 1 (fun k => (k : ℤ) + 1)
-
 end GlobalTheory.JSW

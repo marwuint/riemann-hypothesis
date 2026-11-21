@@ -8,7 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinates
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairCoordinatesTransportInnerDataStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermsCorrespondStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFactsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabilizerCommensurableInvVolumeSmulComplementStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabilizerCommensurableInvVolumeSmulComplement
+import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesComplementUnitaryActsOnTermsStatement
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
@@ -50,7 +51,7 @@ theorem stab_commensurable : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologi
     rw [MulAction.mem_stabilizer_iff.mp hxs] at h1
     have h2 := (GlobalTheory.T.hermitian_double_coset_term_basic_facts M.L r k S _ _ ht).2.2.2.2.2.2.2 _ h1
     exact Subgroup.mem_inf.mpr ⟨hx0, MulAction.mem_stabilizer_iff.mpr h2⟩
-  have volH := GlobalTheory.T.stabilizer_commensurable_invVolume_smul_complement M.L r k S
+  have volH := _root_.GlobalTheory.HL.Frames.stab_commensurable_invVol_smul M.L r k S
   have cLam : ∀ (d : LocNG.Datum P) (τ : Term V M r), LocNG.IsTermOver P d τ →
       S.complementReferenceCompactSubgroup.Commensurable (S.H0 ⊓ MulAction.stabilizer S.GLV (c.lat τ.abelian₂)) := by
     intro d τ h

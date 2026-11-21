@@ -58,10 +58,6 @@ theorem conj_b : H.conj H.sqrtMinusD = - H.sqrtMinusD := by
   rw [H.gal_sqd, show H.gal H.conj = R.cc from H.gal.apply_symm_apply _]
   simp [Formalism.HC.Frame.cc, c0]
 
-theorem sqrt_d_pos : 0 < Real.sqrt H.d := by
-  obtain ⟨-, hd, -⟩ := H.hyp
-  exact Real.sqrt_pos.2 (by exact_mod_cast hd.pos)
-
 theorem b_ne_zero : H.sqrtMinusD ≠ 0 := by
   obtain ⟨-, hd, -⟩ := H.hyp
   intro h

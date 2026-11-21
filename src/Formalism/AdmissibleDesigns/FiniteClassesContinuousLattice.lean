@@ -205,9 +205,6 @@ theorem locRep_mkK (ρM : Representation O Γ M) (g : Γ) (m : M) :
 def finLoc (ρM : Representation O Γ M) : Submodule O (Γ → M) :=
   finPre e PD ι (locRep ρM) mkK
 
-def finiteClassesModelLattice (ρM : Representation O Γ M) : Submodule O (Formalism.NG.H1z ρM) :=
-  finiteClassesModel e PD ι (locRep ρM) ρM mkK
-
 def finiteClassesContinuousLattice [TopologicalSpace Γ] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul O M]
     (ρM : Representation O Γ M) : Submodule O (ReciprocityTheory.Gal.H1 ρM) :=
   finiteClassesContinuous e PD ι (locRep ρM) ρM mkK
@@ -653,16 +650,5 @@ theorem comp_mem_Lx {P : Type} [AddCommGroup P] [Module R' P] [Module (D.nd.O i)
   exact sub_mem h1 h2
 
 end PrfCol
-
-section PrfKappa
-
-open Formalism.MainNotions Formalism.MainNotions.N NumberField IsDedekindDomain Formalism.NG
-
-variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
-  {X' : Type} {d : Type} [Fintype d] [DecidableEq d]
-  {R' : Subalgebra (D.nd.O i) (X' → Matrix d d (FractionRing (D.nd.O i)))} {Tc : Type} [CommRing Tc] [Algebra Tc R']
-  (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
-
-end PrfKappa
 
 end Formalism.MainNotions.N.KHf

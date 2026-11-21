@@ -32,9 +32,6 @@ theorem matrixExtendByZero_mul (X Y : Matrix (Fin a) (Fin a) R) : ext0 e X * ext
 theorem matrixExtendByZero_add (X Y : Matrix (Fin a) (Fin a) R) : ext0 e (X + Y) = ext0 e X + ext0 e Y := by
   simp only [ext0, Matrix.mul_add, Matrix.add_mul]
 
-theorem extension_zero_sub (X Y : Matrix (Fin a) (Fin a) R) : ext0 e (X - Y) = ext0 e X - ext0 e Y := by
-  simp only [ext0, Matrix.mul_sub, Matrix.sub_mul]
-
 theorem matrixExtendByZero_zero : ext0 e (0 : Matrix (Fin a) (Fin a) R) = 0 := by simp [ext0]
 
 theorem matrixExtendByZero_apply (X : Matrix (Fin a) (Fin a) R) (i j : Fin a) : ext0 e X (e i) (e j) = X i j := by

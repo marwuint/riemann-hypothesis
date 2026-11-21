@@ -35,7 +35,7 @@ theorem gaussGL_inv {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ : 
 theorem gaussGL_mul_inv {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ : kˣ →* ℂˣ) (r : ℕ)
     (hψ : ψ.IsPrimitive) (hξ : ξ ≠ 1) :
     gaussGL ψ ξ r * gaussGL ψ⁻¹ ξ⁻¹ r = (Fintype.card k : ℂ) ^ (r ^ 2) := by
-  obtain ⟨hnorm, -⟩ := GlobalTheory.T.galois_matrix_gaussSum_eq_char_pow_mul k ψ ξ r hψ hξ (gaussGL ψ ξ r) rfl
+  obtain ⟨hnorm, -⟩ := _root_.GlobalTheory.complexMatrixGaussSum_norm_integral_galois k ψ ξ r hψ hξ (gaussGL ψ ξ r) rfl
   rw [gaussGL_inv, Complex.mul_conj, Complex.normSq_eq_norm_sq, hnorm]
   push_cast
   rfl

@@ -1,5 +1,7 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PositiveDegreeClassesDieOnEtaleCoverStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PositiveDegreeClassesDieOnEtaleCover
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.BijectiveRestrictPointsOfEtaleOfHenselian
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
@@ -69,7 +71,7 @@ theorem UpperTheory.etaleCohomology_functorialityAxioms_hold_of_sheafAxioms :
   refine ⟨fun x y => ?_⟩
   have key : ∀ z : H R (sp A) F n, z = 0 := by
     intro z
-    obtain ⟨Y, f, hE, hS, hz⟩ := GlobalTheory.T.positiveDegreeClasses_die_on_etaleCover R (Spec (CommRingCat.of A)) F n hn z
+    obtain ⟨Y, f, hE, hS, hz⟩ := _root_.GlobalTheory.EtC.classes_die_on_etale_cover R (Spec (CommRingCat.of A)) F n hn z
     obtain ⟨s, hs⟩ := exists_section_of_etale_henselian A f
     calc z = pull R (𝟙 _) F n z := (pull_id R _ F n z).symm
       _ = pull R (sch.map (s ≫ f)) F n z := by rw [hs, CategoryTheory.Functor.map_id]

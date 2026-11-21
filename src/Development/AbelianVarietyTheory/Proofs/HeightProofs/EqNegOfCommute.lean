@@ -2,37 +2,36 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsTopologicalRingAE
 import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CmTypeRestrictRealSubfieldInfinitePlaceBijectiveStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsRealChartInfiniteAdelesCmTypeStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CmTypeRestrictRealSubfieldInfinitePlaceBijective
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsRealChartInfiniteAdelesCmType
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsIsArchimedeanAdeleChartOfRealChartStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDirectionalDerivFormulaAndSmoothStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CanonicalCommutationRelationsWeylNumberStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDirectionalDerivFormulaAndSmooth
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CanonicalCommutationRelationsWeylNumber
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemOfIsKilledByOperatorProductsVacuumCreationStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsKilledByOperatorProductsSuccCreationApplyStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SymplecticValTauCompatStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SymplecticValTauCompat
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SymplecticRealPartVanishStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.RealAdeleExtAndStandardCharacterFormulaStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.RealAdeleExtAndStandardCharacterFormula
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryActionAtRealPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsRealPointUnitaryWithComponentsStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.HermitianMajorantIsCartanInvolutionAndCommuteIffStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.NegTraceSymplecticFormComplexStructurePosStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.HermitianMajorantIsCartanInvolutionAndCommuteIff
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.NegTraceSymplecticFormComplexStructurePos
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ComplexStructureOfInvolutionsPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSubmoduleThetaFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmoothIffRealCoordinatesAndRealLinesStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmoothIffRealCoordinatesAndRealLines
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContinuousOfHeisenbergLevelAndSmoothStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDerivativeQuasiInvariantAndLevelStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPosNatMemOpenAdeleSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDerivativeQuasiInvariantAndLevel
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPosNatMemOpenAdeleSubgroup
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SpanRealProjectionRationalPointsEqTopStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.BddAboveOfSpanningPeriodsStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.NormThetaFunctionPeriodicRealVariablesStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SignInvolutionDiagonalIffStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.FrameBasisMatrixOrthogonalPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.JpqMulMonomialEqMulSignDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSignatureDecompositionDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsAdaptedBasisOrthogonalStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsHeisenbergDerivativeLinearOperatorsStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDerivativeCommutatorRelationStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.EqZeroOfCreationEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.FrameBasisMatrixOrthogonalProperties
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.JpqMulMonomialEqMulSignDiagonal
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSignatureDecompositionDiagonal
+import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsOrthogonalBasisDotProductApplyEq
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsHeisenbergDerivativeLinearOperators
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDerivativeCommutatorRelation
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.EqZeroOfCreationEqZero
 
 noncomputable section
 
@@ -46,11 +45,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
 
 theorem exists_chart (hθ : IsInfFam θ) : ∃ σ, Chart θ σ := by
-  obtain ⟨ρ, h1, h2, h3⟩ := GlobalTheory.T.exists_real_chart_infiniteAdeles_cmType D θ hθ (GlobalTheory.T.cmType_restrict_realSubfield_infinitePlace_bijective D)
+  obtain ⟨ρ, h1, h2, h3⟩ := _root_.GlobalTheory.FockCompare.exists_real_chart D θ hθ (_root_.GlobalTheory.CMTypePlaces.places_bijective D)
   exact GlobalTheory.T.exists_isArchimedeanAdeleChart_of_real_chart D θ hθ ρ h1 h2 h3
 
 theorem valTau_sympl (hθ : IsInfFam θ) (V W : HSp D) (τ : D.what₂.Tau) (x y : WA V W) :
-    valTau θ τ (sympl V W x y) = symplC V W τ (wAt θ V W τ x) (wAt θ V W τ y) := GlobalTheory.T.symplectic_val_tau_compat D θ hθ V W τ x y
+    valTau θ τ (sympl V W x y) = symplC V W τ (wAt θ V W τ x) (wAt θ V W τ y) := _root_.GlobalTheory.FockCompare.SymplVal.valTau_sympl D θ hθ V W τ x y
 
 theorem valTau_sub (τ : D.what₂.Tau) (a b : AF D.host.F) : valTau θ τ (a - b) = valTau θ τ a - valTau θ τ b := by
   unfold valTau
@@ -78,7 +77,7 @@ theorem isRealW_neg {V W : HSp D} {x : WA V W} (hx : IsRealW V W x) : IsRealW V 
 theorem Rel.cart {V : HSp D} (hV : V.SigOK) {τ : D.what₂.Tau} {A s} (h : Rel V τ A s) :
     IsCart (gramAt D V τ) (thAt V τ s) ∧ ∀ g : Matrix (Fin V.rank) (Fin V.rank) ℂ,
       (∃ b : Mat (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2, IsKC b ∧ b * A = A * g) ↔ Commute g (thAt V τ s) := by
-  refine GlobalTheory.T.hermitianMajorant_isCartanInvolution_and_commute_iff _ _ _ ?_ A _ _ ?_ h.1 h.2
+  refine _root_.GlobalTheory.FockCompare.CartanRel.cartan_rel _ _ _ ?_ A _ _ ?_ h.1 h.2
   · have := (Formalism.UG.P.sig_data _ _ _ (hV (tauE D τ))).1
     rw [Fintype.card_fin] at this
     exact this.symm
@@ -114,14 +113,14 @@ theorem symplC_jAt_le (τ : D.what₂.Tau) (x : WC V W) : symplC V W τ (jAt V W
     rw [zero_smul, zero_mul] at this
     rw [hx] at this ⊢
     exact this.le
-  · have := GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) x hx
+  · have := _root_.GlobalTheory.FockCompare.symplC_jAt_neg D V W τ _ _ (hs τ) (hs' τ) x hx
     linarith
 
 theorem Chart.omR_pos (h : Chart θ σ) (u : RW V W) (hu : u ≠ 0) : 0 < omR V W u (jR V W s s' u) := by
   rw [h.omR_skew, omR_apply, ← Finset.sum_neg_distrib]
   obtain ⟨τ, hτ⟩ := Function.ne_iff.1 hu
   exact Finset.sum_pos' (fun τ _ => neg_nonneg.2 (symplC_jAt_le hs hs' τ _))
-    ⟨τ, Finset.mem_univ _, GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) (u τ) hτ⟩
+    ⟨τ, Finset.mem_univ _, _root_.GlobalTheory.FockCompare.symplC_jAt_neg D V W τ _ _ (hs τ) (hs' τ) (u τ) hτ⟩
 
 end Cx
 
@@ -153,7 +152,7 @@ theorem isFockCx_sign (h : Chart θ σ) {V W : HSp D} (hV : V.SigOK) (hW : W.Sig
     fun z τ => by rw [valTau_sympl h.inf, h.wAt_iota]; rfl
   have h4 : ∀ y : RW V W, (∀ τ, 0 ≤ symplC V W τ (jR V W s s' y τ) (y τ)) → y = 0 := fun y hy => funext fun τ => by
     by_contra hne
-    have := GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) (y τ) hne
+    have := _root_.GlobalTheory.FockCompare.symplC_jAt_neg D V W τ _ _ (hs τ) (hs' τ) (y τ) hne
     have h5 := hy τ
     rw [jR_apply] at h5
     linarith
@@ -199,7 +198,7 @@ theorem isFockCx_of_sign (h : Chart θ σ) {V W : HSp D} (hV : V.SigOK) (hW : W.
     rw [map_neg, piW_apply, hJ _ (hr _ hx), hJ _ hx, jAt_smul, smul_smul, hεε, one_smul, (hal τ).1]
     rfl
   · rw [← sub_eq_zero]
-    refine (GlobalTheory.T.realAdele_ext_and_standardCharacter_formula D θ σ h _ ?_).1 fun τ => ?_
+    refine (_root_.GlobalTheory.FockCompare.real_adele_ext_and_char D θ σ h _ ?_).1 fun τ => ?_
     · rw [map_sub, (GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inl (hr _ hx)), (GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inl hx), sub_zero]
     · rw [valTau_sub, valTau_sympl h.inf, valTau_sympl h.inf, hJ _ hx, hJ _ hy, symplC_smul_left, symplC_smul_right,
         ← mul_assoc, hεε, one_mul, (hal τ).2.1, sub_self]
@@ -216,23 +215,12 @@ theorem isFockCx_of_sign (h : Chart θ σ) {V W : HSp D} (hV : V.SigOK) (hW : W.
     congr 1
     funext τ
     by_contra hne
-    have h1 := GlobalTheory.T.neg_traceSymplecticForm_complexStructure_pos D V W τ _ _ (hs τ) (hs' τ) (wAt θ V W τ x) hne
+    have h1 := _root_.GlobalTheory.FockCompare.symplC_jAt_neg D V W τ _ _ (hs τ) (hs' τ) (wAt θ V W τ x) hne
     have h2 := h0 τ
     rw [valTau_sympl h.inf, hJ _ hx, symplC_smul_left] at h2
     rcases mul_eq_zero.1 h2 with h3 | h3
     · rw [h3] at hεε; norm_num at hεε
     · rw [h3] at h1; norm_num at h1
-
-theorem isFockCx_iff (hθ : IsInfFam θ) {V W : HSp D} (hV : V.SigOK) (hW : W.SigOK) {A B} {s : InvFam V} {s' : InvFam W}
-    (hA : ∀ τ, Rel V τ (A τ) (s τ)) (hB : ∀ τ, Rel W τ (B τ) (s' τ)) (J : WA V W →+ WA V W) :
-    IsFockCx θ V W A B J ↔ Continuous J ∧ (∀ x, IsRealW V W x → IsRealW V W (J x)) ∧
-      ∃ ε : ℝ, (ε = 1 ∨ ε = -1) ∧
-        ∀ x, IsRealW V W x → ∀ τ, wAt θ V W τ (J x) = ε • jAt V W τ (s τ) (s' τ) (wAt θ V W τ x) := by
-  obtain ⟨σ, h⟩ := exists_chart hθ
-  refine ⟨fun hJ => ⟨hJ.cont, hJ.real, ?_⟩, fun ⟨hc, hr, ε, hε, hJ⟩ => isFockCx_of_sign h hV hW hA hB hc hr hε hJ⟩
-  rcases isFockCx_sign h hV hW hA hB hJ with h1 | h1
-  · exact ⟨1, Or.inl rfl, fun x hx τ => by rw [one_smul]; exact congrFun (h1 x hx) τ⟩
-  · exact ⟨-1, Or.inr rfl, fun x hx τ => by rw [neg_one_smul]; exact congrFun (h1 x hx) τ⟩
 
 section Killed
 
@@ -278,7 +266,7 @@ theorem Chart.psi_symplH (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (w : WA V
     ψ (symplH V W w (iotaW σ V W x)) =
       Complex.exp (-(Real.pi * Complex.I) * (omR V W (piW θ V W w) x : ℝ)) := by
   unfold symplH
-  rw [(GlobalTheory.T.realAdele_ext_and_standardCharacter_formula D θ σ h _ ((GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inr (h.real_iota V W x)))).2 ψ hψ, omR_apply]
+  rw [(_root_.GlobalTheory.FockCompare.real_adele_ext_and_char D θ σ h _ ((GlobalTheory.T.symplectic_real_part_vanish D V W _ _).1 (Or.inr (h.real_iota V W x)))).2 ψ hψ, omR_apply]
   congr 3
   refine Finset.sum_congr rfl fun τ _ => ?_
   rw [valTau_sympl h.inf, h.wAt_iota]
@@ -290,15 +278,15 @@ theorem Chart.dRho_eq_hD (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {L : ℝ 
   unfold dRho hD Heisenberg₂
   congr 1
   funext t
-  rw [(GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.1 L hL t, h.psi_symplH hψ]
+  rw [(_root_.GlobalTheory.FockCompare.smooth_iff_sm_and_real_lines D θ σ h V W).2.1 L hL t, h.psi_symplH hψ]
 
 theorem Chart.exists_line (h : Chart θ σ) (u : RW V W) : ∃ L : ℝ →+ WA V W, IsRealDir V W L ∧ piW θ V W (L 1) = u := by
-  obtain ⟨L, hL, e⟩ := (GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.2 u
+  obtain ⟨L, hL, e⟩ := (_root_.GlobalTheory.FockCompare.smooth_iff_sm_and_real_lines D θ σ h V W).2.2 u
   exact ⟨L, hL, by rw [e, one_smul, h.pi_iota]⟩
 
 theorem Chart.pi_line (h : Chart θ σ) {L : ℝ →+ WA V W} (hL : IsRealDir V W L) (t : ℝ) :
     piW θ V W (L t) = t • piW θ V W (L 1) := by
-  rw [(GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).2.1 L hL t, h.pi_iota]
+  rw [(_root_.GlobalTheory.FockCompare.smooth_iff_sm_and_real_lines D θ σ h V W).2.1 L hL t, h.pi_iota]
 
 theorem Chart.isJPair_iff (h : Chart θ σ) (s : InvFam V) (s' : InvFam W) (L L' : ℝ →+ WA V W) :
     IsJPair θ V W s s' L L' ↔ IsRealDir V W L ∧ IsRealDir V W L' ∧ piW θ V W (L' 1) = jR V W s s' (piW θ V W (L 1)) := by
@@ -308,14 +296,14 @@ theorem Chart.isJPair_iff (h : Chart θ σ) (s : InvFam V) (s' : InvFam W) (L L'
   exact congrFun this τ
 
 theorem Chart.sm (h : Chart θ σ) {f : WA V W → ℂ} (hf : IsThetaFun ψ V W f) : Sm (iotaW σ V W) f :=
-  ((GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).1 f).1 hf.smooth
+  ((_root_.GlobalTheory.FockCompare.smooth_iff_sm_and_real_lines D θ σ h V W).1 f).1 hf.smooth
 
 theorem Chart.theta_hD (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WA V W → ℂ} (hf : IsThetaFun ψ V W f)
     (u : RW V W) : IsThetaFun ψ V W (hD (iotaW σ V W) (piW θ V W) (omR V W) u f) := by
-  have hsm := (GlobalTheory.T.heisenbergDirectionalDeriv_formula_and_smooth _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) f (h.sm hf) u).2
+  have hsm := (_root_.GlobalTheory.FockCompare.hD_formula_smooth _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) f (h.sm hf) u).2
   obtain ⟨L, hL, rfl⟩ := h.exists_line u
   rw [← h.dRho_eq_hD hψ hL] at hsm ⊢
-  have hd := GlobalTheory.T.heisenbergDerivative_quasiInvariant_and_level D ψ V W L f
+  have hd := _root_.GlobalTheory.FockCompare.dRho_quasi_and_level D ψ V W L f
   have hlev : ∃ U : AddSubgroup (WA V W), IsOpen (U : Set (WA V W)) ∧
       ∀ u ∈ U, u.map (infPart D) = 0 → Heisenberg₂ ψ V W u (dRho ψ V W L f) = dRho ψ V W L f := by
     obtain ⟨U, hU, hl⟩ := hf.level
@@ -328,14 +316,14 @@ theorem Chart.theta_hD (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WA V W
     rw [h1, h2, mul_zero]
     exact ⟨rfl, rfl⟩
   exact ⟨hd.1 hf.quasi, hlev, GlobalTheory.T.continuous_of_heisenberg_level_and_smooth D θ σ h ψ hψ.1.1 V W _ hlev hsm,
-    ((GlobalTheory.T.smooth_iff_realCoordinates_and_real_lines D θ σ h V W).1 _).2 hsm⟩
+    ((_root_.GlobalTheory.FockCompare.smooth_iff_sm_and_real_lines D θ σ h V W).1 _).2 hsm⟩
 
 theorem Chart.bounded (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WA V W → ℂ} (hf : IsThetaFun ψ V W f)
     (w : WA V W) : ∃ C : ℝ, ∀ x, ‖f (w + iotaW σ V W x)‖ ≤ C := by
   refine GlobalTheory.T.exists_le_of_continuous_of_spanning_periods _ (fun x => ‖f (w + iotaW σ V W x)‖) (h.sm hf w).continuous.norm _
     (GlobalTheory.T.span_realProjection_rationalPoints_eq_top D θ σ h V W) ?_
   rintro _ ⟨γ, rfl⟩
-  obtain ⟨N, hN, e⟩ := GlobalTheory.T.norm_thetaFunction_periodic_real_variables D θ σ h ψ hψ.1.2.1 (GlobalTheory.T.exists_pos_nat_mem_open_adele_subgroup D.host.F) V W f hf γ
+  obtain ⟨N, hN, e⟩ := GlobalTheory.T.norm_thetaFunction_periodic_real_variables D θ σ h ψ hψ.1.2.1 (_root_.GlobalTheory.AdelicFactorial.exists_nat_mem_of_isOpen D.host.F) V W f hf γ
   exact ⟨N, hN, fun x => by rw [map_add, ← add_assoc, e]⟩
 
 theorem Chart.killed_iff (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {M : Submodule ℂ (WA V W → ℂ)}
@@ -388,19 +376,19 @@ theorem isPolFock_iff (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (hV : V.Si
   have hs := fun τ => ((hA τ).cart hV).1
   have hs' := fun τ => ((hB τ).cart hW).1
   obtain ⟨M, hM⟩ := GlobalTheory.T.exists_submodule_thetaFunctions D ψ V W
-  have hform := fun f hf u => (GlobalTheory.T.heisenbergDirectionalDeriv_formula_and_smooth _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) f hf u).1
-  obtain ⟨Dop, hD1, hD2, hD3⟩ := GlobalTheory.T.exists_heisenberg_derivative_linear_operators _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform M
+  have hform := fun f hf u => (_root_.GlobalTheory.FockCompare.hD_formula_smooth _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) f hf u).1
+  obtain ⟨Dop, hD1, hD2, hD3⟩ := _root_.GlobalTheory.FockCompare.exists_heisenberg_operators _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform M
     (fun f hf => h.sm ((hM f).1 hf)) fun u f hf => (hM _).2 (h.theta_hD hψ ((hM f).1 hf) u)
   have hκ : -(2 * Real.pi * Complex.I : ℂ) ≠ 0 := neg_ne_zero.2 Complex.two_pi_I_ne_zero
   have hcomm : ∀ u v, Dop u * Dop v - Dop v * Dop u =
       (-(2 * Real.pi * Complex.I) * (omR V W u v : ℝ) : ℂ) • (1 : Module.End ℂ M) := fun u v => by
     refine LinearMap.ext fun m => Subtype.ext ?_
     rw [LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, Submodule.coe_sub, hD1, hD1, hD1, hD1,
-      GlobalTheory.T.heisenbergDerivative_commutator_relation _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform (h.omR_skew V W) _
+      _root_.GlobalTheory.FockCompare.heisenberg_derivative_commutator _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform (h.omR_skew V W) _
         (h.sm ((hM _).1 m.2))]
     rfl
   set j := jR V W s s' with hjdef
-  obtain ⟨hβ, n, e, lam, hlam, hE⟩ := GlobalTheory.T.canonicalCommutationRelations_weylNumber M _ Dop (omR V W) _ j hD2 hD3 hκ hcomm (h.omR_skew V W)
+  obtain ⟨hβ, n, e, lam, hlam, hE⟩ := _root_.GlobalTheory.WeylNumber.weyl_number M _ Dop (omR V W) _ j hD2 hD3 hκ hcomm (h.omR_skew V W)
     (jR_jR hs hs') (omR_jR hs hs') (h.omR_pos hs hs')
   have hann : ∀ L L', IsJPair θ V W s s' L L' → ∀ m : M, ann ψ V W L L' m =
       ((Dop (piW θ V W (L 1)) + Complex.I • Dop (j (piW θ V W (L 1)))) m : M) := fun L L' hp m => by
@@ -440,7 +428,7 @@ theorem isPolFock_iff (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (hV : V.Si
         rw [this] at hk
         exact hnil N _ hk
       · obtain ⟨u, hu⟩ := not_forall.1 h0
-        obtain ⟨-, n', e', lam', hlam', hE'⟩ := GlobalTheory.T.canonicalCommutationRelations_weylNumber M _ Dop (-omR V W) (2 * Real.pi * Complex.I) (-j) hD2 hD3
+        obtain ⟨-, n', e', lam', hlam', hE'⟩ := _root_.GlobalTheory.WeylNumber.weyl_number M _ Dop (-omR V W) (2 * Real.pi * Complex.I) (-j) hD2 hD3
           Complex.two_pi_I_ne_zero (fun u v => by rw [hcomm]; simp)
           (fun u v => by simp only [LinearMap.neg_apply]; rw [h.omR_skew])
           (fun u => by simp only [LinearMap.neg_apply, map_neg, neg_neg]; exact jR_jR hs hs' u)
@@ -449,7 +437,7 @@ theorem isPolFock_iff (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (hV : V.Si
         have := GlobalTheory.T.mem_of_isKilledByOperatorProducts_vacuum_creation _ M (fun u => Dop u + Complex.I • Dop ((-j) u)) (fun u => Dop u - Complex.I • Dop ((-j) u))
           n' e' lam' hlam' hE' ⊥ (fun m hm => by
             rw [Submodule.mem_bot]
-            refine Subtype.ext (GlobalTheory.T.eq_zero_of_hD_sub_I_smul_hD_eq_zero_of_bounded _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform
+            refine Subtype.ext (_root_.GlobalTheory.FockCompare.eq_zero_of_creation_eq_zero _ _ (iotaW σ V W) (piW θ V W) (omR V W) (h.pi_iota V W) hform
               (h.omR_skew V W) m (h.sm ((hM _).1 m.2)) (h.bounded hψ ((hM _).1 m.2)) u (j u) (h.omR_pos hs hs' u hu) ?_)
             have h3 : (Dop u + Complex.I • Dop ((-j) u)) m = 0 := hm u
             have h2 : Dop ((-j) u) = -Dop (j u) := by
@@ -492,28 +480,6 @@ end Fock
 
 variable {X : ThetaX D} {T : ThetaTied D X}
 
-def TieOn (Wl : WeilTied D X T) (s : ∀ V : HSp D, InvFam V) : Prop :=
-  AllSome (IsInfFam (D := D)) fun θ => ∀ V W : HSp D, V.rank ≠ W.rank → V.SigOK → W.SigOK →
-    X.kfin V W = polSch Wl θ V W (s V) (s W)
-
-def Matches {Wl : WeilTied D X T} (K : Formalism.L2.Theta.KfinTied Wl)
-    (b : ∀ V : HSp D, Module.Basis (Fin V.rank) D.host.E V.V) (s : ∀ V : HSp D, InvFam V) : Prop :=
-  ∀ V : HSp D, V.SigOK → K.bas V = V.frame.toMatrix (b V) ∧ Adapted V (b V) (s V) ∧ IsSignFam V (s V) ∧
-    ∀ τ, Rel V τ (K.cpt V τ) (s V τ)
-
-theorem kfin_iff (Wl : WeilTied D X T)
-    (A : ∀ (V : HSp D) (τ : D.what₂.Tau), Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ)
-    (s : ∀ V : HSp D, InvFam V) (h : ∀ V : HSp D, V.SigOK → ∀ τ, Rel V τ (A V τ) (s V τ)) :
-    (AllSome (IsInfFam (D := D)) fun θ => ∀ (V W : HSp D), V.rank ≠ W.rank → V.SigOK → W.SigOK →
-      ∀ Φ : X.Sch V W, Φ ∈ X.kfin V W ↔ IsPolFock Wl.ψ θ V W (A V) (A W) (Wl.evS V W Φ)) ↔ TieOn Wl s := by
-  refine and_congr Iff.rfl (forall_congr' fun θ => forall_congr' fun hθ => forall_congr' fun V => forall_congr' fun W =>
-    forall_congr' fun hr => forall_congr' fun hV => forall_congr' fun hW => ?_)
-  rw [Submodule.ext_iff]
-  refine forall_congr' fun Φ => iff_congr Iff.rfl ?_
-  have hΦ : Wl.evS V W Φ ∈ {f | IsThetaFun Wl.ψ V W f} := by
-    rw [← Wl.evS_range V W hr]; exact ⟨Φ, rfl⟩
-  exact isPolFock_iff hθ Wl.ψ_std hV hW (h V hV) (h W hW) hΦ
-
 theorem sig_add {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) :
     (V.sig (tauE D τ)).1 + (V.sig (tauE D τ)).2 = V.rank := by
   have := (Formalism.UG.P.sig_data _ _ _ (hV (tauE D τ))).1
@@ -527,128 +493,19 @@ theorem rel_of_monomial {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) (b : Mod
     (hA : Aᴴ * Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 * A = gramAt D V τ)
     (hm : ∀ a i j, (A * (V.frame.toMatrix b).map (tauE D τ)) a i ≠ 0 →
       (A * (V.frame.toMatrix b).map (tauE D τ)) a j ≠ 0 → i = j) : Rel V τ A s := by
-  obtain ⟨hu, -, h3⟩ := (GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 b
+  obtain ⟨hu, -, h3⟩ := (_root_.GlobalTheory.FockBasisMatrix.basis_matrix D V).2 b
   obtain ⟨hd, hdiag, hth⟩ := h3 hb τ
   set Q := (V.frame.toMatrix b).map (tauE D τ) with hQ
   have hQu : IsUnit Q.det := by
     rw [hQ, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
     exact hu.map _
-  have h1 := GlobalTheory.T.Jpq_mul_monomial_eq_mul_sign_diagonal _ _ _ (sig_add hV τ) (A * Q) _ hd (by
+  have h1 := _root_.GlobalTheory.MonomialSign.Jpq_mul_eq _ _ _ (sig_add hV τ) (A * Q) _ hd (by
     rw [← hdiag, ← hA, Matrix.conjTranspose_mul]
     simp only [Matrix.mul_assoc]) hm
   refine ⟨hA, ?_⟩
   rw [Matrix.mul_assoc, ← hth s hs, ← Matrix.mul_assoc, ← Matrix.mul_assoc] at h1
   have h2 := congrArg (· * Q⁻¹) h1
   simpa only [Matrix.mul_nonsing_inv_cancel_right _ _ hQu] using h2
-
-theorem toSign {Wl : WeilTied D X T} (K : Formalism.L2.Theta.KfinTied Wl) : ∃ b s, Matches K b s ∧ TieOn Wl s := by
-  classical
-  have hb : ∀ V : HSp D, ∃ b : Module.Basis (Fin V.rank) D.host.E V.V, V.SigOK → K.bas V = V.frame.toMatrix b := fun V => by
-    by_cases hV : V.SigOK
-    · obtain ⟨b, hb⟩ := (GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).1 _ (K.bas_unit V hV)
-      exact ⟨b, fun _ => hb⟩
-    · exact ⟨V.frame, fun h => absurd h hV⟩
-  choose b hb using hb
-  let s : ∀ V : HSp D, InvFam V := fun V τ => (b V).constr D.host.E fun i =>
-    if 0 < (tauE D τ (V.hT (b V i) (b V i))).re then b V i else -b V i
-  have hs : ∀ V τ i, s V τ (b V i) = if 0 < (tauE D τ (V.hT (b V i) (b V i))).re then b V i else -b V i :=
-    fun V τ i => (b V).constr_basis _ _ i
-  have hM : Matches K b s := fun V hV => by
-    have ho : ∀ i j, i ≠ j → V.hT (b V i) (b V j) = 0 := fun i j hij => by
-      rw [← ((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)).2.1 i j, ← hb V hV]
-      exact K.bas_orth V hV i j hij
-    have h1 := fun τ => (GlobalTheory.T.sign_involution_diagonal_iff D V (b V) ho τ (s V τ)).2 (hs V τ)
-    refine ⟨hb V hV, ⟨ho, fun τ => (h1 τ).2⟩, fun τ => (h1 τ).1, fun τ =>
-      rel_of_monomial hV τ (b V) ho (hs V τ) (K.cpt_gram V hV τ) ?_⟩
-    rw [← hb V hV]
-    exact K.cpt_bas V hV τ
-  exact ⟨b, s, hM, (kfin_iff Wl K.cpt s fun V hV => (hM V hV).2.2.2).1 K.kfin⟩
-
-theorem ofSign {Wl : WeilTied D X T} (b : ∀ V : HSp D, Module.Basis (Fin V.rank) D.host.E V.V)
-    (s : ∀ V : HSp D, InvFam V) (h : ∀ V : HSp D, V.SigOK → Adapted V (b V) (s V) ∧ IsSignFam V (s V))
-    (ht : TieOn Wl s) : ∃ K : Formalism.L2.Theta.KfinTied Wl, Matches K b s := by
-  have hA : ∀ (V : HSp D) (τ : D.what₂.Tau),
-      ∃ A : Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ, V.SigOK →
-        Rel V τ A (s V τ) ∧ ∀ a i j, (A * (V.frame.toMatrix (b V)).map (tauE D τ)) a i ≠ 0 →
-          (A * (V.frame.toMatrix (b V)).map (tauE D τ)) a j ≠ 0 → i = j := fun V τ => by
-    by_cases hV : V.SigOK
-    · obtain ⟨⟨ho, hpm⟩, hsf⟩ := h V hV
-      obtain ⟨hu, -, h3⟩ := (GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)
-      obtain ⟨hd, hdiag, -⟩ := h3 ho τ
-      obtain ⟨A, h1, h2⟩ := GlobalTheory.T.exists_signature_decomposition_diagonal _ _ _ (gramAt D V τ) _ _ (hV (tauE D τ)) (by
-        rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
-        exact (hu.map _).ne_zero) hd hdiag
-      exact ⟨A, fun _ => ⟨rel_of_monomial hV τ (b V) ho
-        ((GlobalTheory.T.sign_involution_diagonal_iff D V (b V) ho τ (s V τ)).1 ⟨hsf τ, hpm τ⟩) h1 h2, h2⟩⟩
-    · exact ⟨0, fun h => absurd h hV⟩
-  choose A hA using hA
-  exact ⟨{ cpt := A
-           cpt_gram := fun V hV τ => (hA V τ hV).1.1
-           bas := fun V => V.frame.toMatrix (b V)
-           bas_unit := fun V _ => ((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)).1
-           bas_orth := fun V hV i j hij => by
-            rw [((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 (b V)).2.1 i j]; exact (h V hV).1.1 i j hij
-           cpt_bas := fun V hV τ => (hA V τ hV).2
-           kfin := (kfin_iff Wl A s fun V hV τ => (hA V τ hV).1).2 ht },
-    fun V hV => ⟨rfl, (h V hV).1, (h V hV).2, fun τ => (hA V τ hV).1⟩⟩
-
-def OneBasis (V : HSp D) (s : InvFam V) : Prop := IsSignFam V s ∧ ∃ b, Adapted V b s
-
-theorem tied_iff (Wl : WeilTied D X T) :
-    Nonempty (Formalism.L2.Theta.KfinTied Wl) ↔ ∃ s, (∀ V : HSp D, V.SigOK → OneBasis V (s V)) ∧ TieOn Wl s := by
-  constructor
-  · rintro ⟨K⟩
-    obtain ⟨b, s, hM, ht⟩ := toSign K
-    exact ⟨s, fun V hV => ⟨(hM V hV).2.2.1, b V, (hM V hV).2.1⟩, ht⟩
-  · rintro ⟨s, hs, ht⟩
-    have : ∀ V : HSp D, ∃ b, V.SigOK → Adapted V b (s V) := fun V => by
-      by_cases hV : V.SigOK
-      · obtain ⟨b, hb⟩ := (hs V hV).2
-        exact ⟨b, fun _ => hb⟩
-      · exact ⟨V.frame, fun h => absurd h hV⟩
-    choose b hb using this
-    obtain ⟨K, -⟩ := ofSign b s (fun V hV => ⟨hb V hV, (hs V hV).1⟩) ht
-    exact ⟨K⟩
-
-theorem tieOn_of_tiedBy {Wl : WeilTied D X T} {s : ∀ V : HSp D, InvFam V} (h : KfinWeilCompatibleWith Wl s) : TieOn Wl s :=
-  ⟨h.2.1, fun θ hθ V W hr _ _ => h.2.2 θ hθ V W hr⟩
-
-theorem oneBasis_of_std {A Y : HSp D} {ι : A.V →ₗ[D.host.E] Y.V} {n : ℕ} {c : Prop} {s : InvFam Y}
-    (h : IsStdDec A Y ι n c s) : OneBasis Y s := by
-  obtain ⟨e, f, z, -, -, -, -, -, h⟩ := h
-  have hP : ∀ τ, ∀ x ∈ LinearMap.range ι ⊔ Submodule.span D.host.E (Set.range fun i => e i + f i), s τ x = x := fun τ => by
-    have : LinearMap.range ι ⊔ Submodule.span D.host.E (Set.range fun i => e i + f i) ≤
-        LinearMap.eqLocus (s τ) LinearMap.id := sup_le (by rintro _ ⟨x, rfl⟩; exact (h τ).2.1 x)
-          (Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ((h τ).2.2.1 i).1))
-    exact fun x hx => this hx
-  have hN : ∀ τ, ∀ x ∈ Submodule.span D.host.E (Set.range fun i => e i - f i) ⊔ Submodule.span D.host.E {z},
-      s τ x = -x := fun τ => by
-    have : Submodule.span D.host.E (Set.range fun i => e i - f i) ⊔ Submodule.span D.host.E {z} ≤
-        LinearMap.eqLocus (s τ) (-LinearMap.id) :=
-      sup_le (Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ((h τ).2.2.1 i).2))
-        (Submodule.span_le.2 (by rintro _ rfl; exact (h τ).2.2.2))
-    exact fun x hx => this hx
-  obtain ⟨τ₀, -⟩ := (GlobalTheory.T.cmType_restrict_realSubfield_infinitePlace_bijective D).2 (Classical.arbitrary _)
-  exact ⟨fun τ => ⟨_, _, (h τ).1, hP τ, hN τ⟩, GlobalTheory.T.exists_adapted_basis_orthogonal D Y s _ _ τ₀ (h τ₀).1 fun τ => ⟨hP τ, hN τ⟩⟩
-
-theorem compare (Wl : WeilTied D X T) :
-    (∀ K : Formalism.L2.Theta.KfinTied Wl, ∃ b s, Matches K b s ∧ TieOn Wl s) ∧
-    (∀ (b : ∀ V : HSp D, Module.Basis (Fin V.rank) D.host.E V.V) (s : ∀ V : HSp D, InvFam V),
-      (∀ V : HSp D, V.SigOK → Adapted V (b V) (s V) ∧ IsSignFam V (s V)) → TieOn Wl s →
-        ∃ K : Formalism.L2.Theta.KfinTied Wl, Matches K b s) ∧
-    (∀ θ : InfFam D, IsInfFam θ → ∀ V W : HSp D, V.SigOK → W.SigOK → ∀ A B (s : InvFam V) (s' : InvFam W),
-      (∀ τ, Rel V τ (A τ) (s τ)) → (∀ τ, Rel W τ (B τ) (s' τ)) →
-      (∀ g, IsKinf θ V A g ↔ g ∈ Kinf θ V s) ∧
-      (∀ J, IsFockCx θ V W A B J ↔ Continuous J ∧ (∀ x, IsRealW V W x → IsRealW V W (J x)) ∧
-        ∃ ε : ℝ, (ε = 1 ∨ ε = -1) ∧
-          ∀ x, IsRealW V W x → ∀ τ, wAt θ V W τ (J x) = ε • jAt V W τ (s τ) (s' τ) (wAt θ V W τ x)) ∧
-      ∀ f, IsThetaFun Wl.ψ V W f → (IsPolFock Wl.ψ θ V W A B f ↔ f ∈ polFun Wl.ψ θ V W s s')) ∧
-    (∀ s, KfinWeilCompatibleWith Wl s → (∀ V : HSp D, V.SigOK → ∃ b, Adapted V b (s V)) → Nonempty (Formalism.L2.Theta.KfinTied Wl)) ∧
-    ∀ s, TowerAdapted X s → ∀ t, Odd t → D.R.r + 5 ≤ t → ∀ j, j < D.R.m → OneBasis (X.Ys t j) (s (X.Ys t j)) :=
-  ⟨toSign, ofSign, fun _ hθ _ _ hV hW _ _ _ _ hA hB => ⟨isKinf_iff hV hA, isFockCx_iff hθ hV hW hA hB,
-      fun _ hf => isPolFock_iff hθ Wl.ψ_std hV hW hA hB hf⟩,
-    fun s h hb => (tied_iff Wl).2 ⟨s, fun V hV => ⟨h.1 V, hb V hV⟩, tieOn_of_tiedBy h⟩,
-    fun _ h t ht hr j hj => oneBasis_of_std (h t ht hr j hj)⟩
 
 end GlobalTheory.FockCompare
 

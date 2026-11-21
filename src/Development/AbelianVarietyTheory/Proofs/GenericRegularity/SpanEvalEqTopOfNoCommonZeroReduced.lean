@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.RegularCharts.SCharts
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NaturalRuleValueBaseChangeOfIsReducedStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NaturalRuleValueBaseChangeOfIsReduced
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
@@ -21,7 +21,7 @@ theorem span_evR_eq_top_of_noCommonZero : ∀ (E : Type) [Field E] [NumberField 
   obtain ⟨z, hz⟩ := hL.bc S T φ y
   obtain ⟨i, hi⟩ := hnz T z
   apply hi
-  rw [GlobalTheory.T.naturalRule_value_baseChange_of_isReduced E H Dw l Xo c hL a n (ws i) (hws i) S T φ y z hz]
+  rw [_root_.GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n (ws i) (hws i) S T φ y z hz]
   have hm : evR Xo c (ws i) y ∈ M := hle (Ideal.subset_span ⟨i, rfl⟩)
   have h0 : Ideal.Quotient.mkₐ c.F M (evR Xo c (ws i) y) = 0 := Ideal.Quotient.eq_zero_iff_mem.2 hm
   show (IsScalarTower.toAlgHom c.F (S ⧸ M) T) (Ideal.Quotient.mkₐ c.F M (evR Xo c (ws i) y)) = 0

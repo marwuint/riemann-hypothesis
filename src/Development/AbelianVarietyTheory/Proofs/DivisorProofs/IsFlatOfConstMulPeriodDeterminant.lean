@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDerivAt0CompLinea
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigFrameMatch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PerValMulWedgeCoord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVecEquiv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexPointsComponentSamePeriodSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexPointsComponentSamePeriodSpace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStalkFactor
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPeriodsInFrameOffBoundary
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodLinearAlgebraHodgeSequenceExact
@@ -196,7 +196,7 @@ theorem isFlatAt_of_eq_perVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     y y' v w v' w' hf hf' o o' m m' g g' u u' Hm Hm' χ χ' φ V W₀ V' W₀' z Δ Δ' hAH hAH' hφ a1 a2 a3 a4 hΔ hΔ'
   obtain ⟨i, P₀, P, W, Q, p1, p2, p3, p4, p5, p6, p7⟩ := exists_data Fu hτ hx hres hval hf m hAH a1 a2
   obtain ⟨i', P₀', P', W', Q', q1, q2, q3, q4, q5, q6, q7⟩ := exists_data Fu hτ hx hres hval hf' m' hAH' a3 a4
-  obtain rfl : i = i' := GlobalTheory.T.complexPoints_component_same_periodSpace E H D l Xo c O β Y U e g₀ _ Fu i i' P₀ P₀' y y' B io hU hio hr hs hf.1 hf'.1
+  obtain rfl : i = i' := _root_.GlobalTheory.DetLine.SameIndex.index_eq E H D l Xo c O β Y U e g₀ _ Fu i i' P₀ P₀' y y' B io hU hio hr hs hf.1 hf'.1
     hf.2.1 hf'.2.1 p1 q1 p2 q2
   obtain ⟨gm, hlev, hgm⟩ := exists_lev hφ (Fu.t_surj i) p3 q3
   have hiso : IsIsom (Fu.Di i) gm := fun a b => by

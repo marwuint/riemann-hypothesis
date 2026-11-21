@@ -300,10 +300,6 @@ theorem degree_dual : φ.dual.degree = φ.degree := by
   rw [degree_comp, degree_mulIsogeny, Int.natAbs_natCast, sq] at h
   exact Nat.eq_of_mul_eq_mul_right φ.degree_pos h
 
-theorem eq_dual_of_comp {ψ : Isogeny E' E}
-    (h : ψ.comp φ = mulIsogeny E φ.degree (Nat.cast_ne_zero.mpr φ.degree_pos.ne')) : ψ = φ.dual :=
-  comp_cancel_right φ (h.trans φ.dual_comp.symm)
-
 theorem pointMap_surjective : Function.Surjective φ.pointMap := by
   intro Q
   obtain ⟨P, hP⟩ := exists_zsmul_eq E' (Nat.cast_ne_zero.mpr φ.degree_pos.ne' : (φ.degree : ℤ) ≠ 0) Q

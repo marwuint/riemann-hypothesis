@@ -33,11 +33,6 @@ theorem isOrderingRule_toList :
     IsOrderingRule (fun α : Λ →₀ ℕ => (Finsupp.toMultiset α).toList) :=
   fun _ => Multiset.coe_toList _
 
-theorem IsOrderingRule.length_eq {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord)
-    (α : Λ →₀ ℕ) : (ord α).length = degree α := by
-  rw [← Multiset.coe_card, h α, Finsupp.card_toMultiset]
-  rfl
-
 noncomputable def opPoly (D : Λ → B) (ord : (Λ →₀ ℕ) → List Λ) : MvPolynomial Λ R →ₗ[R] B :=
   (MvPolynomial.basisMonomials Λ R).constr R (fun α => opWord D (ord α))
 
@@ -92,13 +87,6 @@ noncomputable def commEval (D : Λ → B) (hD : ∀ l l', Commute (D l) (D l')) 
   opPoly_X D isOrderingRule_toList l
 
 end Words
-
-section General
-
-variable {R A M Λ : Type*} [CommRing R] [CommRing A] [Algebra R A]
-  [AddCommGroup M] [Module R M] [Module A M]
-
-end General
 
 section Constant
 
@@ -245,37 +233,6 @@ theorem mem_germIdeal_pow_iff_le_order [Finite σ] {n : ℕ} {g : MvPowerSeries 
 
 variable [Finite σ]
 
-noncomputable def leadingForm (N : ℕ) : MvPowerSeries σ R →ₗ[R] MvPolynomial σ R :=
-  MvPolynomial.homogeneousComponent N ∘ₗ truncTotal (N + 1)
-
-noncomputable def derivAtOrigin (D : Derivation R (MvPowerSeries σ R) (MvPowerSeries σ R)) :
-    σ → R := fun i => constantCoeff (D (X i))
-
 end Series
-
-section Symbol
-
-open MvPowerSeries
-
-variable {R σ Λ M : Type*} [CommRing R] [Finite σ] [AddCommGroup M] [Module R M]
-  [Module (MvPowerSeries σ R) M]
-
-variable [IsScalarTower R (MvPowerSeries σ R) M]
-
-end Symbol
-
-section Example
-
-open MvPowerSeries
-
-end Example
-
-section Legendre
-
-variable {l : ℕ} [hl : Fact l.Prime]
-
-variable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
-
-end Legendre
 
 end GlobalTheory

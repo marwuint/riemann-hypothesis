@@ -151,24 +151,6 @@ theorem det_isIntegral {E : Type*} [Field E] {n : Type*} [Fintype n] [DecidableE
   rw [← hM, ← RingHom.map_det]
   exact (M'.det).2
 
-theorem MinorInt_holds : Formalism.MainNotions.KTwoMinorIntegrality.MinorInt := by
-  intro D X u t hF l hl
-  obtain ⟨-, -, hRow, hOK⟩ := hF
-  have hU : Formalism.HermitianLatticesTheory.IsUnimodular (hS D).hT (X.abelian₂ t) := hRow.2.1.2.1
-  have he : ∀ a, (X.fl t).fl.e a ∈ X.abelian₂ t := e_mem_lam D (X.abelian₂ t) (lf D (X.fl t).fl) hRow.2.2
-  have he' : ∀ a, (X.fl' t).fl.e a ∈ X.abelian₂ t := e_mem_lam D (X.abelian₂ t) (X.fl' t) hOK.2
-  have hl' : l ≤ D.R.rS + 1 := by omega
-  unfold Dl leadMinorE
-  rw [dif_pos hl']
-  apply det_isIntegral
-  intro i j
-  have hi : Fin.castLE hl' i = Fin.castSucc ⟨i, by omega⟩ := Fin.ext rfl
-  have hj : Fin.castLE hl' j = Fin.castSucc ⟨j, by omega⟩ := Fin.ext rfl
-  simp only [Matrix.submatrix_apply, Zhat, brS]
-  rw [hi, hj]
-  simp only [FlagG.fvec, Fin.snoc_castSucc]
-  exact pair_int D hU (he' _) (he _)
-
 end Formalism.MainNotions.MinorIntegralityTorus
 
 end

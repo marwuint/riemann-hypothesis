@@ -1,5 +1,12 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsPeriodMapDet
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PrCloudAddPrNode
+import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.RhoCompactTwiceEqOfSignBlockOrdered
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SchurOrthogonalityIndefiniteUnitaryGroup
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.HaarUniquenessConjugation
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.MulConjTransposeEqOneOfOrthonormal
 import Formalism.FormalDegreeBessel.FinalG
 
 open Matrix MeasureTheory Finset Formalism.QuantumDeterminants Formalism.MainNotions.S
@@ -114,76 +121,5 @@ theorem lA_right (z : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) {t : Mat k r}
     exact Unitary.star_mem ht
   unfold lA
   simp only [Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, eucl_unitary h1]
-
-theorem measurable_lA (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) :
-    Measurable fun x : Mt k r => lA k r z (Matrix.of x) a := by
-  refine measurable_of_Iio fun t => ?_
-  have ho : IsOpen {x : Mt k r | ∃ y ∈ flagSpan k r a, eucl (Matrix.of x *ᵥ (fvec k r z a - y)) < t} := by
-    simp only [Set.ofPred_exists, Set.ofPred_and]
-    refine isOpen_iUnion fun y => IsOpen.inter isOpen_const (isOpen_lt ?_ continuous_const)
-    simp only [eucl, Matrix.mulVec, dotProduct, Matrix.of_apply]
-    fun_prop
-  have hi : Measurable fun x : Mt k r => (fun i j => (Matrix.of x)⁻¹ i j : Mt k r) := by
-    have h1 : Continuous fun x : Mt k r => (Matrix.of x).det := Continuous.matrix_det continuous_id
-    have h2 : Continuous fun x : Mt k r => (Matrix.of x).adjugate := Continuous.matrix_adjugate continuous_id
-    refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
-    simp only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]
-    exact h1.measurable.inv.mul (h2.matrix_elem i j).measurable
-  convert hi ho.measurableSet using 1
-  ext x
-  simp only [Set.mem_preimage, Set.mem_Iio, Set.mem_ofPred_eq, lA]
-  refine (csInf_lt_iff ?_ ?_).trans ⟨?_, ?_⟩
-  · exact ⟨0, by rintro _ ⟨y, -, rfl⟩; exact Real.sqrt_nonneg _⟩
-  · exact Set.nonempty_of_mem (x := eucl ((Matrix.of x)⁻¹ *ᵥ (fvec k r z a - 0))) ⟨0, Submodule.zero_mem _, rfl⟩
-  · rintro ⟨_, ⟨y, hy, rfl⟩, h⟩; exact ⟨y, hy, h⟩
-  · rintro ⟨y, hy, h⟩; exact ⟨_, ⟨y, hy, rfl⟩, h⟩
-
-theorem exists_filt_zero (hA : LowAny) (hK : LowestK) {P : Mat k r} {A : HRep k r} {μ : Fin (2 * r + k + 1) → ℝ}
-    {F : Flag k r} {κ : ℝ} (hP : IsCayleyU k r (sgnCN k r) P) (hμ : IsHCParam μ) (hD : A.IsDSAt P μ) (hF : F.Ok κ)
-    {B : A.H → F.W} (hB : F.Iso A B) {w : A.H} (hw : w ∈ A.iso P (lowK (sgnCN k r) μ)) :
-    ∃ w₀ ∈ A.filt P μ 0, ‖w₀‖ₑ = ‖w‖ₑ ∧ ∀ Φ : (Fin (r + 1) → ℝ) → ℝ, Measurable Φ →
-      A.mass F.ν B (fun g => Φ (lA k r F.z g)) w = A.mass F.ν B (fun g => Φ (lA k r F.z g)) w₀ := by
-  obtain ⟨v, hv, hv0, hvw⟩ := (hK k r P A μ hP hμ hD).1.2.2.2.1
-  have hf : v ∈ A.filt P μ 0 := Submodule.subset_span ⟨_, _, by simp [dist1], by simp [dist1], hv, hvw⟩
-  have hn : ‖w‖ = ‖((‖w‖ / ‖v‖ : ℝ) : ℂ) • v‖ := by
-    rw [norm_smul, Complex.norm_real, Real.norm_of_nonneg (by positivity), div_mul_cancel₀ _ (norm_ne_zero_iff.2 hv0)]
-  refine ⟨((‖w‖ / ‖v‖ : ℝ) : ℂ) • v, Submodule.smul_mem _ _ hf, ?_, fun Φ hΦ => ?_⟩
-  · rw [← ofReal_norm, ← ofReal_norm, ← hn]
-  · refine hA k r P A μ F κ hP hμ hD hF B hB _ (hΦ.comp (measurable_pi_lambda _ (measurable_lA F.z))) ?_ ?_ w hw _
-      (Submodule.smul_mem _ _ hv) hn
-    · intro g _ s hs
-      exact congrArg Φ (funext (lA_left hF.1 hs g))
-    · intro g _ t _ ht
-      exact congrArg Φ (funext (lA_right F.z g ht))
-
-theorem isHCParam_of_setup {c Ch bv h q : ℝ} {P : Mat k r} {lam μ : Fin (2 * r + k + 1) → ℝ}
-    {R : (Fin (2 * r + k + 1) → ℝ) → HRep k r} (hS : Setup k r c Ch P lam bv h q R) (hμ : InPP lam q μ) :
-    IsHCParam μ := by
-  refine ⟨fun a b hab => ?_, fun a => ?_⟩
-  · linarith [hμ.gap hab.ne, hS.2.2.1.le_gap hS.2.1 hab, hS.2.1.1.1 hab]
-  · obtain ⟨m, hm⟩ := hμ.1 a
-    obtain ⟨m', hm'⟩ := hS.2.1.1.2 a
-    exact ⟨m + m', by rw [Int.cast_add]; linarith⟩
-
-theorem momentLow : LowAny → MomentCor → LowestK → MomentLow := by
-  intro hA hC hK c hc
-  obtain ⟨Ch, hCh, H⟩ := hC c hc
-  refine ⟨Ch, hCh, fun k r P lam bv h q₀ b R hS F κ hF hZ hT q μ B hB w hw => ⟨fun h1 h2 => ?_, fun l hl h1 h2 => ?_⟩⟩
-  · have h0 : InPP lam q₀ μ := h1.mono (sub_le_self _ (Nat.cast_nonneg _))
-    obtain ⟨w₀, hw₀, hn, hm⟩ := exists_filt_zero hA hK hS.1 (isHCParam_of_setup hS h0) (hS.2.2.2.2 μ h0) hF hB hw
-    have h3 := (H k r P lam bv h q₀ b R hS F κ hF hZ hT 0 q μ B hB w₀ hw₀).1 h1 (by rwa [zero_add])
-    rw [MomAll, hn] at h3
-    refine ⟨fun a => ⟨?_, ?_⟩, fun t ht => ?_⟩
-    · exact (hm (fun x => x a ^ (2 * q)) (by fun_prop)).trans_le (h3.1 a).1
-    · exact (hm (fun x => (x a)⁻¹ ^ (2 * q)) (by fun_prop)).trans_le (h3.1 a).2
-    · refine (hm (Set.indicator {x | ∃ a, t * H1 k r (Tz k r F.z) κ b 4 bv ≤ max (x a) (x a)⁻¹} 1)
-        (measurable_one.indicator ?_)).trans_le (h3.2 t ht)
-      rw [Set.ofPred_exists]
-      exact MeasurableSet.iUnion fun a => measurableSet_le measurable_const (by fun_prop)
-  · have h0 : InPP lam q₀ μ := h1.mono (sub_le_self _ (Nat.cast_nonneg _))
-    obtain ⟨w₀, hw₀, hn, hm⟩ := exists_filt_zero hA hK hS.1 (isHCParam_of_setup hS h0) (hS.2.2.2.2 μ h0) hF hB hw
-    have h3 := (H k r P lam bv h q₀ b R hS F κ hF hZ hT 0 q μ B hB w₀ hw₀).2 l hl h1 (by rwa [zero_add])
-    rw [MomProd, hn] at h3
-    exact (hm (fun x => (∏ a : Fin l, x (Fin.castLE hl a)) ^ (2 * q)) (by fun_prop)).trans_le h3
 
 end GlobalTheory.Mom.LowVec

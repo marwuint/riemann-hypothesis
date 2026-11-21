@@ -44,8 +44,4 @@ def absBd (k r : ℕ) (H₁ De D : ℝ) : ℝ :=
   (4 * r : ℝ) ^ (44 * r ^ 3) * H₁ ^ (24 * r ^ 3) * De ^ (14 * r ^ 2) *
     (8 * Real.pi * Real.exp 1 / k) ^ (r * (k - 2 - r)) * (D ^ (k - 2 - r))⁻¹
 
-example : BlockAnti (r := 1) (fun _ => 0) !![2] := by
-  refine ⟨monotone_const, by simp, fun _ _ _ => rfl, fun a b a' b' _ _ _ => ?_⟩
-  fin_cases a; fin_cases b; fin_cases a'; fin_cases b'; simp
-
 end GlobalTheory.Amp

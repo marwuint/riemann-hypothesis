@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesCoeffNormBou
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesInChartRingHomLaws
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesMultiplicativeChart
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpBinomialPowerSubOneSeriesIntegralityCompositio
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallTorsionKilledByPrimePowersStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmEvenThetaSeriesChartCoeffIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallTorsionKilledByPrimePowers
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmEvenThetaSeriesChartCoeffIntegral
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesTranslateNormLeStatement
 
 open PowerSeries GlobalTheory.MomOne
@@ -107,7 +107,7 @@ theorem bd_translate : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q])
   have hb1 : ∀ B, Bd B (hat M.ι (C ω * logS) ψ) → Bd B (hat M.ι (C ω * logS) φm) := by
     intro B hB
     by_cases hsm : M.Small (-t')
-    · have hin : InOK d (-t') := (GlobalTheory.T.smallTorsion_killed_by_prime_powers d q M ω hd h16 hsp hOK hch).2.2.1 (-t')
+    · have hin : InOK d (-t') := (_root_.GlobalTheory.MomOne.smallTors d q M ω hd h16 hsp hOK hch).2.2.1 (-t')
         ⟨s * s, Nat.mul_pos hs hs, Nat.Coprime.mul_left hsq hsq, by
           have : ((s * s : ℕ) : ℂ) * (-t') = -((s : ℂ) * t) := by
             rw [← hst']; push_cast; ring
@@ -156,7 +156,7 @@ theorem bd_translate : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q])
     have e' : φp = fun z => f ((s : ℂ) * z) := rfl
     rw [e', e] at hP1
     exact (hmul.2.2.2.1 (s : ℤ_[q]) _ 1 (PadicInt.norm_natCast_eq_one_iff.2 hsq.symm)).1 hP1
-  have hθ1 := GlobalTheory.T.cm_even_theta_series_chart_coeff_integral d q M ω θ hd h16 hsp hOK hch hth
+  have hθ1 := _root_.GlobalTheory.MomOne.theta_series_integral d q M ω θ hd h16 hsp hOK hch hth
   have hfin : hat M.ι (C ω * logS) (U1 d t θ) = hat M.ι (C ω * logS) f * hat M.ι (C ω * logS) θ := by
     rw [← (hat1.1 f θ hfa hθa).2.1]
     apply (hat1.1 _ _ hUa (hfa.mul hθa)).2.2.1

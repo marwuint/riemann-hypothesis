@@ -3,8 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedC
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.JointQ
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CmQuadraticFormEqAlternatingForm
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsImagQuadraticHost
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.PrincipalRayPrimesSplitCompletelyWeberValuesStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CompleteSplittingCompositumDegreeOnePrimeStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.PrincipalRayPrimesSplitCompletelyWeberValues
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CompleteSplittingCompositumDegreeOnePrime
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.XiValIffXiAt
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RayFieldTheta
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.LeOfFiniteSplitNotSplitBauer
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeberInvariantTorsionValuesSubsetOfContainsRayFi
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContainsRayFieldOfRay
@@ -47,7 +51,7 @@ theorem weberSet_subset_ray : ∀ (P : Pre) (δ : FieldDat P) (L : PeriodPair), 
     obtain ⟨x, rfl⟩ := hKE hz
     exact δ.isRay.emb_mem x
   have hCK := containsRayField_sub P δ K hKE hKR
-  obtain ⟨inst, S, hS⟩ := GlobalTheory.T.principalRayPrimes_splitCompletely_weberValues K h2 hd L hP n hn
+  obtain ⟨inst, S, hS⟩ := _root_.GlobalTheory.WeberSplitAny.splits_completely_of_three_le K h2 hd L hP n hn
   haveI := GlobalTheory.FieldSize.WeberIn.numberField_adjoin K δ.ray (weberSet L n)
   have hm0 : ((modulus P : ℕ) : 𝓞 δ.ray) ≠ 0 := by
     exact_mod_cast modulus_ne_zero P
@@ -75,7 +79,7 @@ theorem weberSet_subset_ray : ∀ (P : Pre) (δ : FieldDat P) (L : PeriodPair), 
       ⟨𝔓.asIdeal.comap (RingOfIntegers.mapRingHom (IntermediateField.inclusion hKR).toRingHom),
         Ideal.comap_isPrime _ _, hne⟩
     apply hnot
-    refine GlobalTheory.T.completeSplitting_compositum_degreeOnePrime K δ.ray hKR (weberSet L n) 𝔭 𝔓 rfl hN ?_
+    refine _root_.GlobalTheory.SplitCompositum.ncard_eq_finrank_adjoin K δ.ray hKR (weberSet L n) 𝔭 𝔓 rfl hN ?_
     have h𝔭 : 𝔭.asIdeal = Ideal.span {α} := hα
     rw [h𝔭]
     exact hS α _ hp hc.2 (by rw [← hα, ← hN]) (Ideal.mem_span_singleton.2 h1')

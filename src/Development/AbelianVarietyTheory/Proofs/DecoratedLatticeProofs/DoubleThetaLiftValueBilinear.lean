@@ -32,7 +32,7 @@ theorem per_int {ρ : ℕ} (B : BesLev D ρ) {ψ : AddChar (AF D.host.F) ℂ} (h
     {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ) {f : GA D B.V → ℂ} (hf : f ∈ contLeft B.V) :
     (∀ h, IntegrableOn (GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h) B.vN.𝓝 B.vN.ν) ∧
       IntegrableOn (fun h => ∫ n in B.vN.𝓝, GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n ∂B.vN.ν) B.vA.𝓕 B.vA.μ := by
-  obtain ⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩ := GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D ρ B
+  obtain ⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩ := _root_.GlobalTheory.BesselQuot.besGrp_quotient D ρ B
   obtain ⟨Cφ, hCφ⟩ := GlobalTheory.Unf.EvalCont.bounded_of_contAut B.cpt hφ
   have hμ : B.vA.μ B.vA.𝓕 < ⊤ := GlobalTheory.Unf.vol_fund_lt_top B.cpt B.vA
   have hν1 : B.vN.ν B.vN.𝓝 = 1 := B.vN.unit.2.2
@@ -132,7 +132,7 @@ theorem GlobalTheory.TriStep.valK_bilin : ∀ (D : D7) (ψ : AddChar (AF D.host.
     rw [map_smul, biComb_smul, GlobalTheory.SeeSawRhs.biLift_smul, GlobalTheory.SeeSawStep.per_smul_left, smul_eq_mul]
   · intro Ξ f g
     simp only [GlobalTheory.TriStep.valK]
-    obtain ⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩ := GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D σ S.B'
+    obtain ⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩ := _root_.GlobalTheory.BesselQuot.besGrp_quotient D σ S.B'
     obtain ⟨Cp, hadd, -⟩ := per_add_bound S.B' hψ (hA Ξ) Ω hΩc hΩ
     exact hadd _ _ (hf f) (hf g)
   · intro a Ξ f

@@ -8,6 +8,4 @@ namespace PI.PC
 
 theorem psiUpperBound_holds : CHUpper := chUpper_of chebyshevConstantNumeric dUpper sandwich
 
-theorem psiLowerBound_holds : CHLower := chLower_of chebyshevConstantNumeric dLower sandwich
-
 end PI.PC

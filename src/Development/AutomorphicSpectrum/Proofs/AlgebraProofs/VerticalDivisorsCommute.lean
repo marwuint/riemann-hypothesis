@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CutEffectiveDivisorStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CutEffectiveDivisor
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Statements
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
 
 namespace GlobalTheory.CompanionTheory.CommAlg.VerticalDivisors
@@ -7,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.CommAlg.VerticalDivisors
 open GroundTheory.Heights₂.Heights.NumbersDVR
 
 theorem verticalDivisorsCommute : VerticalDivisorsCommute.Statement.{0} :=
-  VerticalDivisorsCommute.proof GlobalTheory.T.cut_effective_divisor Representative.full
+  VerticalDivisorsCommute.proof _root_.GlobalTheory.CompanionTheory.Ar.Num.CutClosed.main Representative.full
     IntNumAddFirst.full DivCycleFiniteSupport.full MinimalPrimeMultiHomog.full
     SupSpanMultiHomog.full SpecialQuotDim.full SpecialIdealCorresp.full SpecialIdealMultiHomog.full
     DimStrictDrop.full

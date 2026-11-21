@@ -54,40 +54,6 @@ theorem integerAlgEquiv_mem_maximalIdeal_iff (τ : Gal(w.adicCompletion L/v.adic
       x ∈ 𝓂[w.adicCompletion L] := by
   simpa using integerAlgEquiv_mem_maximalIdeal_pow_iff τ 1 x
 
-theorem mem_inertia_iff_decompositionToLocal_mem (σ : MulAction.stabilizer Gal(L/K) w.asIdeal) :
-    (σ : Gal(L/K)) ∈ w.asIdeal.inertia Gal(L/K) ↔
-      decompositionToLocal v w σ ∈
-        lowerRamificationGroup (v.adicCompletion K) (w.adicCompletion L) 0 := by
-  have h0 : ((0 : ℕ) : ℤ) = 0 := rfl
-  rw [← h0, mem_lowerRamificationGroup_natCast_iff, zero_add, pow_one]
-  change (∀ r : 𝓞 L, (σ : Gal(L/K)) • r - r ∈ w.asIdeal) ↔ _
-  constructor
-  · intro h x
-    obtain ⟨r, hr⟩ := exists_sub_ringOfIntegersToInteger_mem w x
-    have h1 := (integerAlgEquiv_mem_maximalIdeal_iff v w (decompositionToLocal v w σ) _).2 hr
-    have h2 : integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L)
-        (decompositionToLocal v w σ) (ringOfIntegersToInteger w r) -
-          ringOfIntegersToInteger w r ∈ 𝓂[w.adicCompletion L] := by
-      rw [integerAlgEquiv_ringOfIntegersToInteger, ← map_sub,
-        ringOfIntegersToInteger_mem_maximalIdeal_iff]
-      exact h r
-    rw [map_sub] at h1
-    have : integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L)
-        (decompositionToLocal v w σ) x - x =
-        (integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L)
-          (decompositionToLocal v w σ) x - integerAlgEquiv (v.adicCompletion K)
-            (w.adicCompletion L) (decompositionToLocal v w σ) (ringOfIntegersToInteger w r)) +
-        (integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L)
-          (decompositionToLocal v w σ) (ringOfIntegersToInteger w r) -
-            ringOfIntegersToInteger w r) - (x - ringOfIntegersToInteger w r) := by
-      ring
-    rw [this]
-    exact sub_mem (add_mem h1 h2) hr
-  · intro h r
-    have := h (ringOfIntegersToInteger w r)
-    rwa [integerAlgEquiv_ringOfIntegersToInteger, ← map_sub,
-      ringOfIntegersToInteger_mem_maximalIdeal_iff] at this
-
 end Inertia
 
 section Frobenius
@@ -149,12 +115,6 @@ theorem isArithFrobAt_iff_decompositionToLocal (σ : MulAction.stabilizer Gal(L/
     rwa [integerAlgEquiv_ringOfIntegersToInteger, ← map_pow, ← map_sub,
       ringOfIntegersToInteger_mem_maximalIdeal_iff] at this
 
-theorem decompositionToLocal_arithFrobAt (x : 𝒪[w.adicCompletion L]) :
-    integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L)
-        (decompositionToLocal v w (arithFrobAtDecomposition w)) x -
-      x ^ Nat.card 𝓀[v.adicCompletion K] ∈ 𝓂[w.adicCompletion L] :=
-  (isArithFrobAt_iff_decompositionToLocal v w _).1 (IsArithFrobAt.arithFrobAt _ _ _) x
-
 omit [Algebra (v.adicCompletion K) (w.adicCompletion L)]
   [ContinuousSMul (v.adicCompletion K) (w.adicCompletion L)]
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)] in
@@ -181,31 +141,5 @@ theorem eq_decompositionToLocal_arithFrobAt (he : w.asIdeal.ramificationIdx (�
   exact Subtype.ext hmem
 
 end Frobenius
-
-section InertiaGalois
-
-variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
-  [IsGalois K L]
-  (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
-  [Algebra (v.adicCompletion K) (w.adicCompletion L)]
-  [ContinuousSMul (v.adicCompletion K) (w.adicCompletion L)]
-  [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
-
-theorem map_inertia_decompositionMulEquiv :
-    ((w.asIdeal.inertia Gal(L/K)).subgroupOf (MulAction.stabilizer Gal(L/K) w.asIdeal)).map
-        (decompositionMulEquiv v w).toMonoidHom =
-      lowerRamificationGroup (v.adicCompletion K) (w.adicCompletion L) 0 := by
-  ext τ
-  obtain ⟨σ, rfl⟩ := (decompositionMulEquiv v w).surjective τ
-  rw [Subgroup.mem_map]
-  constructor
-  · rintro ⟨σ', hσ', h⟩
-    rw [← h]
-    exact (mem_inertia_iff_decompositionToLocal_mem v w σ').1 (Subgroup.mem_subgroupOf.1 hσ')
-  · intro h
-    exact ⟨σ, Subgroup.mem_subgroupOf.2 ((mem_inertia_iff_decompositionToLocal_mem v w σ).2 h),
-      rfl⟩
-
-end InertiaGalois
 
 end GroundTheory.Global

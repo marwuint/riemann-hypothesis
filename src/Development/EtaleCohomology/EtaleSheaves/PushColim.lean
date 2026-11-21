@@ -1,5 +1,5 @@
 import Development.EtaleCohomology.EtaleSheaves.KernelLocalization.RangeOfBd
-import Development.EtaleCohomology.EtaleSheaves.KillKerPf
+import Development.EtaleCohomology.EtaleSheaves.LocalDescent
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_E3Cut LateralTheory.E.StalkCut LateralTheory.E.DescLocPf

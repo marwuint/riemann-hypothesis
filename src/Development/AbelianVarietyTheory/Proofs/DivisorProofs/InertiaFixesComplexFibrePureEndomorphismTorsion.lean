@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPureBCId
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlgebraisation
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointEqOfResidueEqInvertibleOrderStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointEqOfResidueEqInvertibleOrder
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsoBaseChangesOfCongruentMapsPureHodgeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsComplexEmbeddingFractionFieldCdvr
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsAlgebraMapEqOfValVLeOne
@@ -129,7 +129,7 @@ theorem exists_isGrpPullback_of_inertia : GlobalTheory.Published.FormalAlgebrais
     change (t ≫ φ') ≫ P.A.hom = spMap b
     rw [Category.assoc, hφ'.1.w, reassoc_of% ht₂])
   have hz : z ^ n = 1 := (pow_eq_one_iff hφ' yT z rfl n).1 hyT
-  have hzy : z = restrict (spMap b) y := GlobalTheory.T.torsion_point_eq_of_residue_eq_invertible_order (𝓞 N) P T.V b n hnu z _ hz (restrict_pow _ hy) (by
+  have hzy : z = restrict (spMap b) y := _root_.GlobalTheory.TorsionReduction.eq_of_residue_eq (𝓞 N) P T.V b n hnu z _ hz (restrict_pow _ hy) (by
     change spMap (IsLocalRing.residue T.V) ≫ t ≫ φ' = spMap (IsLocalRing.residue T.V) ≫ spMap b ≫ y.left
     rw [← Category.assoc, ← hred _ (by rw [Category.assoc, ht₂, Category.comp_id]), Category.assoc, ht₁,
       reassoc_of% er])

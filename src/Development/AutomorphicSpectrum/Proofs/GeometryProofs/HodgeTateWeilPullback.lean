@@ -5,14 +5,15 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsVBOneOfChartGenerators
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompat
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilLocalStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilUnique
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilLocal
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualMapSnd
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullTorsionPullbackPointsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingTransportRelationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiAbelianOfPullbackStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullTorsionPullbackPoints
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentSectionAdditiveStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingTransportRelation
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiAbelianOfPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualNumberSectionDerivationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackSmoothStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackSmooth
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -84,7 +85,7 @@ theorem om_pull {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ :
     (hjd : ∀ w v, jd w (j v) = i (w v)) : M'.omLat = M.omLat.pull ξ' f jd := by
   funext q'
   obtain ⟨r, B, B', v, v', hBB, hl, hl', hv, hv', hvv⟩ :=
-    GlobalTheory.T.lie_model_pullback_smooth X X' Ω Ω' ξ ξ' hξ hξ' f i hd G G' φ hp hs E M E' M' j hj q'
+    _root_.GlobalTheory.CompanionTheory.Ar.LiePull.frame X X' Ω Ω' ξ ξ' hξ hξ' f i hd G G' φ hp hs E M E' M' j hj q'
   obtain ⟨h', hreg, -⟩ := RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q'
   rw [Lat.pull_apply _ hd]
   have hcoord : ∀ k, B.coord k ∈ M.omLat ⟨f q'.1, hd.specializes q'⟩ := by
@@ -161,7 +162,7 @@ theorem ht_pull {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ :
     (hw : M.IsHTAt L n y ⟨f q'.1, hd.specializes q'⟩ w) : M'.IsHTAt L' n y' q' (jd w) := by
   obtain ⟨hwω, W, s, hη, hT, hD⟩ := hw
   obtain ⟨r, B, B', v, v', hBB, hl, hl', hv, hv', hvv⟩ :=
-    GlobalTheory.T.lie_model_pullback_smooth X X' Ω Ω' ξ ξ' hξ hξ' f i hd G G' φ hp hs E M E' M' j hj q'
+    _root_.GlobalTheory.CompanionTheory.Ar.LiePull.frame X X' Ω Ω' ξ ξ' hξ hξ' f i hd G G' φ hp hs E M E' M' j hj q'
   obtain ⟨h', hreg, -⟩ := RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q'
   have hom := om_pull hξ hξ' hd hp hs M M' j jd hj hjd
   have hη' : (η[G']).left q'.1 ∈ φ ⁻¹ᵁ W := by
@@ -203,9 +204,9 @@ theorem main : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type) [Field �
   haveI : IsCommMonObj G := hG.comm
   haveI : CharZero Ω' := charZero_of_injective_ringHom i.injective
   have hs : Smooth G.hom := hG.smooth
-  have hG' : IsSemiAbelian G' := GlobalTheory.T.semi_abelian_of_pullback X X' G G' f φ hp hG
-  obtain ⟨hF', t1, t2, tm, tu1, tu2⟩ := GlobalTheory.T.full_torsion_pullback_points X X' Ω Ω' ξ ξ' f i hd G G' φ hp n hF
-  obtain ⟨c1, c2⟩ := GlobalTheory.T.weil_pairing_transport_relation Ω Ω' i (Over.mk ξ ⟶ G) (Over.mk ξ' ⟶ G') (fun a c => a.left ≫ φ = spMap i ≫ c.left)
+  have hG' : IsSemiAbelian G' := _root_.GlobalTheory.CompanionTheory.Ar.isSemiAbelian_of_isGrpPullback X X' G G' f φ hp hG
+  obtain ⟨hF', t1, t2, tm, tu1, tu2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TorsPull.torsion_of_pullback X X' Ω Ω' ξ ξ' f i hd G G' φ hp n hF
+  obtain ⟨c1, c2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TorsionChars.chars_descend Ω Ω' i (Over.mk ξ ⟶ G) (Over.mk ξ' ⟶ G') (fun a c => a.left ≫ φ = spMap i ≫ c.left)
     n hn t1 t2 tm tu1 tu2 e e' (fun x g g' _ hg hg' => he.mul_right x g g' ‹_› hg hg') he.perfect he.nondeg
     (fun x g g' _ hg hg' => he'.mul_right x g g' ‹_› hg hg') he'.perfect
   have om := om_pull hξ hξ' hd hp hs M M' j jd hj hjd
@@ -226,16 +227,16 @@ theorem main : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type) [Field �
   · refine Submodule.span_le.2 ?_
     rintro w' ⟨y', hy', hw'⟩
     obtain ⟨y, hy, hc⟩ := c1 y' hy'
-    obtain ⟨⟨U, hU, wf, hwf⟩, -⟩ := GlobalTheory.T.hodge_tate_weil_local X Ω ξ hξ hN G hG L n hn hF e he E M ⟨f q'.1, hsp⟩
+    obtain ⟨⟨U, hU, wf, hwf⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.htLat_exists_lifts X Ω ξ hξ hN G hG L n hn hF e he E M ⟨f q'.1, hsp⟩
     have h0 := hwf y hy ⟨f q'.1, hsp⟩ hU
     have h1 := hpull q' hy hy' hc h0
-    obtain ⟨u, hu, rfl⟩ := (GlobalTheory.T.hodge_tate_weil_unique X' Ω' ξ' hξ' hN' G' hG' L' n hn hF' e' he' E' M' y' q' _ w' hy' h1).1 hw'
+    obtain ⟨u, hu, rfl⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.HtUniq.isHTAt_iff X' Ω' ξ' hξ' hN' G' hG' L' n hn hF' e' he' E' M' y' q' _ w' hy' h1).1 hw'
     refine add_mem (Submodule.subset_span ⟨wf y, Submodule.subset_span ⟨y, hy, h0⟩, rfl⟩) ?_
     clear hw'
     rw [om, Lat.pull_apply _ hd] at hu
     have hnz : ∀ z ∈ M.omLat ⟨f q'.1, hsp⟩, n • z ∈ M.htOm L n ⟨f q'.1, hsp⟩ := by
       intro z hz
-      have h2 := (GlobalTheory.T.hodge_tate_weil_unique X Ω ξ hξ hN G hG L n hn hF e he E M y ⟨f q'.1, hsp⟩ _ (wf y + n • z) hy h0).2 ⟨z, hz, rfl⟩
+      have h2 := (_root_.GlobalTheory.CompanionTheory.Ar.HtUniq.isHTAt_iff X Ω ξ hξ hN G hG L n hn hF e he E M y ⟨f q'.1, hsp⟩ _ (wf y + n • z) hy h0).2 ⟨z, hz, rfl⟩
       have h3 : wf y + n • z ∈ M.htOm L n ⟨f q'.1, hsp⟩ := Submodule.subset_span ⟨y, hy, h2⟩
       have h4 : wf y ∈ M.htOm L n ⟨f q'.1, hsp⟩ := Submodule.subset_span ⟨y, hy, h0⟩
       simpa using sub_mem h3 h4

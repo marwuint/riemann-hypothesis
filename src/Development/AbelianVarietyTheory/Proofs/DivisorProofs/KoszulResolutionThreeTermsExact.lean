@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTo
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeaklyRegularRelationsEqKoszulRelationsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeaklyRegularRelationsEqKoszulRelations
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.AbLaw GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.AbCoh
@@ -75,7 +75,7 @@ theorem GlobalTheory.koszul_resolution_three_terms : ∀ (O : Type) [CommRing O]
     constructor
     · intro hy
       rw [Fintype.linearCombination_apply] at hy
-      obtain ⟨c, hd, hs, rfl⟩ := GlobalTheory.T.weaklyRegular_relations_eq_koszulRelations O g f hreg y (by simpa [smul_eq_mul] using hy)
+      obtain ⟨c, hd, hs, rfl⟩ := _root_.GlobalTheory.weaklyRegular_relations_koszul O g f hreg y (by simpa [smul_eq_mul] using hy)
       obtain ⟨x, hx⟩ := exists_skew_eq c hd hs
       exact ⟨x, by rw [d₂_apply, hx]⟩
     · rintro ⟨x, rfl⟩

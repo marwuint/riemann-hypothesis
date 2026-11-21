@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.NonemptyEquivParIndZero
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsSumMultiplicityOne
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivProdIrrZero
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.LocGL.ProjLine ValuativeRel
 
@@ -71,29 +72,11 @@ theorem exh_deg_zero (c : IrrCl (GL (Fin 0) k)) : IsL (0 : Multiset (Segment k))
     (PiTensorProduct.isEmptyEquiv (Fin 0)) c.rep.ρ c.rep.irr
   exact (isCosocle_self c.rep.irr).of_equiv (.refl _) φ.symm
 
-theorem exh_not_zero (x : IrrGL k) (hx : 0 < x.1) : ¬ IsL (0 : Multiset (Segment k)) x.rep := by
-  rintro ⟨h, y, hd, ⟨Δ, ⟨hΔ, -⟩, -⟩, -⟩
-  have : h = 0 := by simpa using congrArg Multiset.card hΔ
-  subst this
-  simp at hd
-  omega
-
 theorem exh_le_one (x : IrrGL k) (hx : x.1 ≤ 1) : ∃ 𝔪 : Multiset (Segment k), IsL 𝔪 x.rep := by
   obtain ⟨n, c⟩ := x
   obtain rfl | rfl : n = 0 ∨ n = 1 := by simp at hx; omega
   · exact ⟨0, exh_deg_zero c⟩
   · exact exh_deg_one c
-
-theorem exh_char_two {η : kˣ →* ℂˣ} (hη : IsSmoothChar η) :
-    ∃ 𝔪 : Multiset (Segment k), IsL 𝔪 (IrrGL.rep ⟨2, (IrrRep.det (Fin 2) η hη).cl⟩) := by
-  have hχ := hη.mul (isSmoothChar_absPow (k := k) (-(1 / 2)))
-  have h := isL_detRep_two hχ
-  have e : η * absPow k (-(1 / 2)) * absPow k (1 / 2) = η := by
-    rw [mul_assoc, ← absPow_add]; simp
-  rw [e] at h
-  exact ⟨_, h.of_equiv (equivRep (IrrRep.det (Fin 2) η hη))⟩
-
-example : IsNonarchimedeanLocalField ℚ_[2] ∧ CharZero ℚ_[2] := ⟨inferInstance, inferInstance⟩
 
 end GlobalTheory.LocGL
 end

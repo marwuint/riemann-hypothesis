@@ -5,19 +5,19 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FibOfZero
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SelfDualUnramifiedPlaces
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.DualExponentDensity
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadraticUnramifiedIffInertOrSplitStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFieldAdicCompletionTensorOfInertStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NotIsFieldAdicCompletionTensorOfSplitStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdditiveCharConductorExistsStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralClosureCompletedCMAlgebraCompactOpenStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFieldAdicCompletionTensorOfInert
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NotIsFieldAdicCompletionTensorOfSplit
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdditiveCharConductorExists
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralClosureCompletedCMAlgebraCompactOpen
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianFormFiniteZerosOnLineCmExtStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsCompactOpenUnitsSubgroupContinuousSqrtStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AddHaarMapSmulOfNormEqOneStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqZeroOfFiniteInterLinesStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AveragedFibreMeasureComplFibreEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AveragedFibreMeasureComplFibreEqZero
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HaarDisintegrationAveragedFibreMeasuresStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegrableContinuousOnAveragedFibreIntegralStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsFibreFamilyUnivOfNullConeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ContDensityOnEqFibreMassStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ContDensityOnEqFibreMass
 
 open scoped TensorProduct
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -80,7 +80,7 @@ theorem lattice_compact_open (hσ : IsCMExt F E σ)
     IsCompact (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.latTup v L) ∧ IsOpen (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.latTup v L) := by
   haveI := modTop (E := E) v
   haveI := topRing (E := E) v
-  obtain ⟨hc, ho⟩ := GlobalTheory.T.integralClosure_completedCMAlgebra_compact_open F E σ hσ v
+  obtain ⟨hc, ho⟩ := _root_.GlobalTheory.CompletedOrder.isCompact_isOpen_integralClosure F E σ hσ v
   obtain ⟨n, x, hx⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hfg
   let f : (Fin n → Fv F v ⊗[F] E) →ₗ[Fv F v ⊗[F] E] (Fin M → Fv F v ⊗[F] E) :=
     Fintype.linearCombination _ x
@@ -131,7 +131,7 @@ theorem null_and_exists (hσ : IsCMExt F E σ) (hM : 1 ≤ M) (hJ : IsHermND σ 
   refine ⟨GlobalTheory.QuadFibre.fibOf μ ν (fun X => qR (Fv F v) σ J (X 0)) U s, fun b => ?_,
     fun φ hφ => ?_, fun φ h1 h2 _ => ?_⟩
   · rw [Set.inter_univ]
-    exact GlobalTheory.T.averagedFibreMeasure_compl_fibre_eq_zero (Fv F v) _ μ ν _ hq (q_smul v σ J) U s hs b
+    exact _root_.GlobalTheory.QuadFibre.fibOf_compl_fibre (Fv F v) _ μ ν _ hq (q_smul v σ J) U s hs b
   · rw [Measure.restrict_univ]
     exact GlobalTheory.T.haar_disintegration_averagedFibreMeasures (Fv F v) _ μ ν _ hq (q_smul v σ J) U s hs (GlobalTheory.T.map_smul_addHaar_of_norm_eq_one (Fv F v) _ μ) hnull φ hφ
   · exact GlobalTheory.T.integrable_continuousOn_averagedFibreIntegral (Fv F v) _ μ ν _ hq (q_smul v σ J) U s hs φ h1 h2
@@ -148,13 +148,13 @@ theorem isEtaAt_iff (h2 : Module.finrank F E = 2) (η : ℤ) :
   unfold GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta
   constructor
   · rintro (⟨h, rfl⟩ | ⟨h, rfl⟩)
-    · exact ⟨(GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).2 (Or.inl h), by rw [if_pos (GlobalTheory.T.isField_adicCompletion_tensor_of_inert F E h2 v h)]; simp⟩
-    · exact ⟨(GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).2 (Or.inr h), by rw [if_neg (GlobalTheory.T.not_isField_adicCompletion_tensor_of_split F E h2 v h)]; simp⟩
+    · exact ⟨(GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).2 (Or.inl h), by rw [if_pos (_root_.GlobalTheory.InertField.isField_of_inert F E h2 v h)]; simp⟩
+    · exact ⟨(GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).2 (Or.inr h), by rw [if_neg (_root_.GlobalTheory.SplitPlace.not_isField_of_split F E h2 v h)]; simp⟩
   · rintro ⟨h, hη⟩
     rcases (GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).1 h with h | h
-    · rw [if_pos (GlobalTheory.T.isField_adicCompletion_tensor_of_inert F E h2 v h)] at hη
+    · rw [if_pos (_root_.GlobalTheory.InertField.isField_of_inert F E h2 v h)] at hη
       exact Or.inl ⟨h, by exact_mod_cast hη⟩
-    · rw [if_neg (GlobalTheory.T.not_isField_adicCompletion_tensor_of_split F E h2 v h)] at hη
+    · rw [if_neg (_root_.GlobalTheory.SplitPlace.not_isField_of_split F E h2 v h)] at hη
       exact Or.inr ⟨h, by exact_mod_cast hη⟩
 
 theorem exists_eta : ∃ η : ℤ, (η : ℝ) = GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta F E v := by
@@ -209,7 +209,7 @@ theorem localDensity_iff :
   constructor
   · intro h F E _ _ _ _ _ σ hσ M J hM hJ v η hη ψ hψ
     obtain ⟨hu, hη'⟩ := (isEtaAt_iff F E v hσ.2.2.1 η).1 hη
-    refine ⟨GlobalTheory.T.additive_char_conductor_exists F v ψ hψ.1 hψ.2.1 hψ.2.2, fun c hc L hL μ hμ ν hν => ?_⟩
+    refine ⟨_root_.GlobalTheory.CharConductor.exists_conductor_exponent F v ψ hψ.1 hψ.2.1 hψ.2.2, fun c hc L hL μ hμ ν hν => ?_⟩
     obtain ⟨a1, a2, a3⟩ := h F E σ hσ M hM J hJ v hu ψ hψ c hc L hL μ hμ ν hν
     rw [vol_eq] at a1
     rw [volInt_eq] at a2
@@ -245,7 +245,7 @@ theorem localDensity_iff :
       rw [← dens_eq v c M η hη']
       have := GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.one_lt_resCard F v
       exact mul_nonneg (by positivity) (GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.density_factor_pos F E v M hM).le
-    rw [GlobalTheory.T.contDensity_eq_fibre_measure_of_compact_open (Fv F v) _ μ ν _ hq fib0 hfib0 _ hLc hLo g hg t ht0, (key fib0 hfib0).2 t ht,
+    rw [_root_.GlobalTheory.contDensityOn_eq_fibre_mass (Fv F v) _ μ ν _ hq fib0 hfib0 _ hLc hLo g hg t ht0, (key fib0 hfib0).2 t ht,
       (key fib0 hfib0).1, ENNReal.toReal_ofReal hpos]
   · intro h F E _ _ _ _ _ σ hσ M hM J hJ v hu ψ hψ c hc L hL μ hμ ν hν
     obtain ⟨η, hη⟩ := exists_eta F E v

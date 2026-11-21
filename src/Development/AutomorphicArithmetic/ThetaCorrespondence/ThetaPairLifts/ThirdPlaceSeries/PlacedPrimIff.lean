@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SingleMemGluedIff
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.STiesR
@@ -21,15 +21,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 200000
 set_option maxHeartbeats 1000000
 namespace GlobalTheory.MiTop.Scale.Glue
-open GlobalTheory.FinPl.FrameLat
-variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 end GlobalTheory.MiTop.Scale.Glue
 namespace GlobalTheory.MiTop.Scale
-variable {D : D7}
-section Com
-variable {c : Comm D} {v : VCom c} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  {ι : Type} {o : TDat c k ι}
-end Com
 end GlobalTheory.MiTop.Scale
 namespace GlobalTheory.MiTop
 open Formalism.MainNotions Formalism.DivisionValues Formalism.L2 Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR.Mult Formalism.IndefR.Cx Formalism.IndefR.Links GlobalTheory.MiS GlobalTheory.Core.Mi GlobalTheory.Fam GlobalTheory.MiTop.Scale

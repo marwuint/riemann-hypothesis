@@ -1,5 +1,10 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.RationalSeriesCoeffAtState
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalRowSeries
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
+import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaLocalInputs
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AuxiliaryPrimeNeTypePrime
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockOfApply
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PublishedInputsThirdLayer
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SameGaloisLevelExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RootsOfUnityRingLeWittIntegers
@@ -37,7 +42,7 @@ theorem rational_series_coeff_at_state_alt : _root_.GlobalTheory.HeightCounting.
   have hX : GlobalTheory.TwInputs.FieldOk X := h3 x.o.Z X x.m.z.lev.C
   obtain ⟨xd, hxd⟩ := h4 P x ⟨l.toLI, l.b.toSeriesState⟩
   obtain ⟨hU, hψ⟩ := h5 P x l
-  obtain ⟨f', s1, s2, s3⟩ := GlobalTheory.T.exists_rationalHeckeOperators_adelicReading hP.decay hS.hkTr hS.hkRead (Dof x) X _ l.b.YS
+  obtain ⟨f', s1, s2, s3⟩ := _root_.GlobalTheory.HeckeFamRead.exists_family_reads hP.decay hS.hkTr hS.hkRead (Dof x) X _ l.b.YS
   obtain ⟨H, r1, r2⟩ := GlobalTheory.TwInputs.AtLayer.exists_hecke X _ l.b.YS l.b.ser.ex f' s1 s2 s3 l.b.Bs.cHk l.b.Bs.cHk_del
     (GlobalTheory.TwInputs.AtLayer.hkF_zero_of_sideB l.b.Bs l.rat.In.hL_zero)
   let Y : GlobalTheory.TwInputs.SerSide X (twEOf xd) :=
@@ -68,7 +73,7 @@ theorem rational_series_coeff_at_state_alt : _root_.GlobalTheory.HeightCounting.
         have := hxd i j b (Finset.mem_Icc.1 hj).1 (Finset.mem_Icc.1 hj).2
         change a ∈ xd.xd0 i j b
         rw [this]; trivial }
-  exact (GlobalTheory.T.thetaSeries_rationality_and_coefficientBound hP.decay hP.what₂.art hS.rat hS.int (Dof x) X _ Y hX).1
+  exact (_root_.GlobalTheory.Unframe.rat_and_xiBdd hP.decay hP.what₂.art hS.rat hS.int (Dof x) X _ Y hX).1
 end GlobalTheory.PlaceRead.SeriesAtState
 end
 section

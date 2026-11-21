@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsE8WeightedBundle
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarizedSpecializationFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEighthPowerEndomorphismActingByMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarizedSpecializationField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEighthPowerEndomorphismActingByMatrix
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.E8ActionProductEqOneStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.E8ActionRelativelyAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.E8FibrationAlgebraicallyClosedFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.E8FibrationAlgebraicallyClosedField
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
@@ -36,12 +36,12 @@ theorem eighthPowerFibre_thetaObj : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W
       ∃ a, q ≫ ψ = (t.lab a).left := by
   intro W hW gQ
   obtain ⟨κ, hκ⟩ := GlobalTheory.T.e8_act_linComb_relAmple W hW
-  obtain ⟨Mat, hMat⟩ := GlobalTheory.T.e8_fibration_algebraically_closed_field W hW gQ
+  obtain ⟨Mat, hMat⟩ := _root_.GlobalTheory.Poinc.Sep.E8Fibration.Lab.exists_symplectic_labels W hW gQ
   refine ⟨Fin 2, inferInstance, Mat, κ, 0, 1, ?_⟩
   intro l hl hlo j hj V V₁ _ _ _ _ _ hCN hlu Q hQ ρ hρ D e hS K _ _ ev k₀ hk₀
-  obtain ⟨P', ψ, B, _, M, pr, hg, hψ, hL, hB, hpr, hE, hpt⟩ := GlobalTheory.T.exists_polarized_specialization_field W gQ V V₁ Q hQ ρ hρ D e hS K ev
+  obtain ⟨P', ψ, B, _, M, pr, hg, hψ, hL, hB, hpr, hE, hpt⟩ := _root_.GlobalTheory.Poinc.Sep.E8Fibration.fibre_exists W gQ V V₁ Q hQ ρ hρ D e hS K ev
   haveI : IsCommMonObj B := hB.1.comm
-  choose act hact1 hact2 using fun i : Fin 2 => GlobalTheory.T.exists_eighth_power_endomorphism_acting_by_matrix _ _ _ pr hpr (E8Fibration.actMat W i)
+  choose act hact1 hact2 using fun i : Fin 2 => _root_.GlobalTheory.Poinc.Sep.E8Fibration.exists_monHom_actsBy _ _ _ pr hpr (E8Fibration.actMat W i)
   have hlK : (l : K) ≠ 0 := by
     have := hlu.map ev
     rw [map_natCast] at this

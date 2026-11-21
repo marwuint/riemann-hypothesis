@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.HermitianForms.TiedSym
 import Formalism.LocalToGlobal.GroupLattices.DownNaturalLevelZero
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GSplit
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelCharacterNoBlocksPthRootOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelCharacterNoBlocksPthRootOfUnity
 open Formalism.BasicNotions Formalism.L2.Forms NumberField IsDedekindDomain Matrix Formalism.UG
 open scoped TensorProduct
 
@@ -34,7 +34,7 @@ theorem unipotent_type_character_finite_order : ∀ (F E : Type) [Field F] [Numb
   refine Finset.prod_induction _ P hm h1 fun i _ => ?_
   refine finprod_induction P h1 hm fun v => ?_
   refine finprod_induction P h1 hm fun h => ?_
-  obtain ⟨⟨r, hr⟩, hpow⟩ := GlobalTheory.T.level_character_no_blocks_pth_root_of_unity (kv F v) K s (gp i) (hp i)
+  obtain ⟨⟨r, hr⟩, hpow⟩ := _root_.GlobalTheory.lamJ_zero_blocks_mem_range_and_pow_eq_one (kv F v) K s (gp i) (hp i)
     (natCast_residueField_completion_eq_zero F v (gp i) h) (hζ i) n (G.psi0 i v h) (G.chiB i v h) a t skip
     (redM F v (G.mat i v h (L.fr i v h) (bc (prV (E := E) v) x.1)))
   refine ⟨?_, r⁻¹, by rw [map_inv₀, hr]⟩

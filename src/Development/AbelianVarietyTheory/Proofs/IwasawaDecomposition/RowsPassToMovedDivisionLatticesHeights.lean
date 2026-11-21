@@ -110,13 +110,6 @@ theorem readSame : ReadSame N h t (readMv N h t) (readLMv N h t) where
 
 end Main
 
-theorem rows_move : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl)
-    (O : Obj2 (w.D Z)) (t : RowsT K w Z Wt O.p0) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)
-    (O' : Obj2 (w.D (Db.setDivZ Z N h))), O' = O.tr N h →
-    ∃ t' : RowsT K w (Db.setDivZ Z N h) Wt O'.p0, RowsSame t t' ∧ HEq (SRe.pkOf t') ((SRe.pkOf t).up Z Z.S N h) ∧
-      (ObjT O t → ObjT O' t') ∧ (Nonempty (RXs t) → Nonempty (RXs t')) :=
-  fun K B f T w Z Wt O t N h O' hO => rows_move_of_read K B f T w Z Wt O t N h O' hO ⟨_, _, readSame N h t⟩
-
 set_option maxHeartbeats 800000 in
 
 theorem datMv_geo {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}

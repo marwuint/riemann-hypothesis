@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaTranslateRangeGap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThFEqIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelLiftIsLiftPrincipalLevelDatumRealisation
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaLiftEqMultiplePrincipalLevelClassSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumPrincipalLevelEqConstMulClassSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockReadingTranslatedFormMemComplexFormsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaLiftEqMultiplePrincipalLevelClassSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumPrincipalLevelEqConstMulClassSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockReadingTranslatedFormMemComplexForms
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links IsDedekindDomain NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.ExportSeries GlobalTheory.SeriesTie GlobalTheory.TwInputs GlobalTheory.TwSys GlobalTheory.TwAll GlobalTheory.SupLaw GlobalTheory.LiftLeaf
 open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ BasisOf)
 open scoped TensorProduct
@@ -25,7 +25,7 @@ theorem exists_thetaLift_eq_classSum : ∀ (D : D7) (X : RealSide D) (E : Integr
   classical
   intro D X E Y i j b t hxi hQ y hy
   obtain ⟨u, hu⟩ := GlobalTheory.LiftClassSum.exists_low D X E Y j
-  obtain ⟨m, h₀, c, z, hh₀, hz, hP⟩ := GlobalTheory.T.thetaLift_eq_multiple_principalLevel_classSum D X E Y i j b t hxi hQ y u
+  obtain ⟨m, h₀, c, z, hh₀, hz, hP⟩ := _root_.GlobalTheory.LiftClassSumPrinc.thF_eq_classSum_princ D X E Y i j b t hxi hQ y u
   have hB : (Y.Z.ρ.B i j b).Good := Y.Z.good.base i j b
   have hq : (Y.Z.ρ.tw i b 0 ∅ 1).Q = ∅ := half_empty _
   have hc : (Y.Z.ρ.tw i b 0 ∅ 1).chi = 1 := charOf_one _ _
@@ -42,9 +42,9 @@ theorem exists_thetaLift_eq_classSum : ∀ (D : D7) (X : RealSide D) (E : Integr
   have htup : GlobalTheory.ConjTwist.IsTupOf X.R.toRealDat (Y.Z.ρ.B i j b) (Y.Z.ρ.tw i b 0 ∅ 1) t :=
     ⟨by rw [hxi, hc, mul_one], by rw [hQ, hq, Finset.union_empty]⟩
   have hW : (Y.Z.ρ.B i j b).IsWeil (Y.Z.ρ.tw i b 0 ∅ 1).chi (X.R.ωP j t) := hBase.isWeil X.char.thP.ωP htup
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.classSum_principalLevel_eq_const_mul_classSum D _ _ (Y.Z.ρ.B i j b) hB (D.sp.V_sig _) _ hψ hA _ hW m h₀ hh₀ _
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.ClassSumPrinc.classSum_princ_eq D _ _ (Y.Z.ρ.B i j b) hB (D.sp.V_sig _) _ hψ hA _ hW m h₀ hh₀ _
     (Y.Z.ρ.rep i j b (Y.Z.ρ.tw i b 0 ∅ 1)) (Y.Z.good.classes i j b _ hψ hA)
-  have hF := GlobalTheory.T.fockReading_translatedForm_mem_complexForms D X E Y i j b t hxi hQ y hy u hu z hz
+  have hF := _root_.GlobalTheory.FockReadForms.fockRead_mem_formsC D X E Y i j b t hxi hQ y hy u hu z hz
   refine ⟨(c * κ) • (fun h => X.R.ioP j (PiTensorProduct.tprod ℂ u) ((X.R.HV j t).e y (h * z))), Submodule.smul_mem _ _ hF, ?_⟩
   refine (congrArg (fun v => X.R.thF j t y v) hu.symm).trans (hP.trans ?_)
   exact (congrArg (c • ·) (hκ _ hF)).trans ((smul_smul c κ _).trans (LinearMap.map_smul _ _ _).symm)

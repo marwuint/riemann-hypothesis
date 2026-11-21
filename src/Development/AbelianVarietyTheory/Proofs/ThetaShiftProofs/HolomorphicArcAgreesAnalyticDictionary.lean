@@ -241,13 +241,13 @@ theorem im_hermForm_eq (hL : Out.Laws) (hL2 : Out.Laws2) (hP : ∀ w v, Ha.y v =
     rw [← (Fu.sig Ha.i).1, ← (Fu.sig Ha.i).2]
     exact PeriodCompare.isTypeFn_of_isPeriod (Ha.period _ hw)
   obtain ⟨th, hth⟩ := (ThetaOverField.nonzero_generates hL hL2 ℂ a.D₀ ⟨fun _ => 0, fun _ _ => by simp⟩).2.2
-  obtain ⟨Θ⟩ := T.arc_model_witness_extension hL hL2 E H Dw l Xo c σ O β Y a χ W g ty Fu Ha hty th hth
+  obtain ⟨Θ⟩ := _root_.GlobalTheory.ArcTheta.nonempty_thetaDat hL hL2 E H Dw l Xo c σ O β Y a χ W g ty Fu Ha hty th hth
   let p : (Fin g ⊕ Fin g → ℤ) →+ (Fin g → ℂ) := (Ha.Pw w).comp Θ.bas.toAddMonoidHom
   have hp : ∀ v, p v = Ha.Pw w (Θ.bas v) := fun _ => rfl
   obtain ⟨wL, hwL⟩ : LBIso a.D₀.P.L (a.D₀.P.L.pull (𝟙 _)) :=
     LBIso.chartPull (chartPullId _) (Geo.Tor.chartPullPull _ _ _ rfl) (PolBaseChange.lbIso_refl a.D₀.P.isLB)
   obtain ⟨fr, f₁, f₂, f₃, -, f₅⟩ := Θ.onB w hw
-  obtain ⟨ρ, r₁, r₂, r₃⟩ := T.exists_entire_unit_appellHumbert_frame_ratio a.D₀.P.A _ a.D₀.P.L a.D₀.P.L a.D₀.P.isLB a.D₀.P.isLB (𝟙 _) wL hwL g _ u Hm χ' hAH
+  obtain ⟨ρ, r₁, r₂, r₃⟩ := _root_.GlobalTheory.FrameCompare.exists_entire_unit_automorphy a.D₀.P.A _ a.D₀.P.L a.D₀.P.L a.D₀.P.isLB a.D₀.P.isLB (𝟙 _) wL hwL g _ u Hm χ' hAH
     _ F (fun z => (Category.comp_id _).trans (hF z)) fr th _ f₁ f₂ f₃ f₅
   obtain ⟨t₁, t₂, t₃⟩ := T.thetaCharOff_ne_zero_differentiable_quasiPeriodic' g Θ.S (Θ.τ w) Θ.c₁ Θ.c₂ (Θ.pos w hw).1 (Θ.pos w hw).2 Θ.half₁ Θ.half₂ Θ.c₁_S
   have hfac : ∀ v, Ha.y (Θ.bas v) = 0 → ∃ a₁ b₁ : ℂ, a₁ ≠ 0 ∧
@@ -277,7 +277,7 @@ theorem im_hermForm_eq (hL : Out.Laws) (hL2 : Out.Laws2) (hP : ∀ w v, Ha.y v =
   obtain ⟨v₂, rfl⟩ := Θ.bas.surjective v₂
   obtain ⟨a₁, b₁, ha₁, e₁, e₁'⟩ := hfac v₁ h₁
   obtain ⟨a₂, b₂, ha₂, e₂, e₂'⟩ := hfac v₂ h₂
-  have hc := T.factor_exponent_commutator_eq_of_quasiPeriodic g _ ρ _ _ _ _ _ _ a₁ a₂ b₁ b₂ hθd hθ r₁ r₂ ha₁ ha₂ e₁ e₂ e₁' e₂'
+  have hc := _root_.GlobalTheory.factor_commutator_eq_of_nonvanishing g _ ρ _ _ _ _ _ _ a₁ a₂ b₁ b₂ hθd hθ r₁ r₂ ha₁ ha₂ e₁ e₂ e₁' e₂'
   simp only [piHerm, dotForm, LinearMap.coe_mk, AddHom.coe_mk, mulVec_period Θ.h (Θ.τ w) p (Θ.per w)] at hc
   rw [hermForm_swap hAH.1] at hc
   rw [← hP w _ h₁, ← hP w _ h₂, Θ.sympl]

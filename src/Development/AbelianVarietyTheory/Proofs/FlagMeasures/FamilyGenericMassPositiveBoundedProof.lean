@@ -5,14 +5,16 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.DataInst
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InVolumesAtOfSWS
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GlobSet
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DifferentLocalIdentityFamiliesLemmaHStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MatchedFamilyMassLawBaseSituationStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagNormsCongrModLevelSqStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GenericMassLeHeightPowMulGluedCountStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluedLatticeWeightedCountLeExplicitStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeanCountConstantEqUnscaledMainConstantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormsInvariantsGenericRationalFramePairStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramInvariantPowLeHaarWeightStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DifferentLocalIdentityFamiliesLemmaH
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.NGHTie
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MatchedFamilyMassLawBaseSituation
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagNormsCongrModLevelSq
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GenericMassLeHeightPowMulGluedCount
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluedLatticeWeightedCountLeExplicit
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeanCountConstantEqUnscaledMainConstant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormsInvariantsGenericRationalFramePair
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramInvariantPowLeHaarWeight
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RowsConc
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.TermLoc Formalism.L2.SG.RowsConc Formalism.L2.SG.NGCut Formalism.L2.SG.NGAnalytic Formalism.FourierDecayAlt Formalism.L2.SG.NGData Formalism.L2.SG.NGLocModel Formalism.L2.SG.FamDefs GlobalTheory.Unfold GlobalTheory.LocOver GlobalTheory.GenMass
 open scoped Classical ENNReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -20,7 +22,7 @@ namespace GlobalTheory.WeightsFamPf
 
 theorem weightsFam_of (hS : PI.VolStabS.MassDataS.SWXS) : GlobalTheory.SnFam.WeightsFam := by
   intro Cg cb Cw cT CT C0
-  obtain ⟨aH, bH, hH⟩ := GlobalTheory.T.differentLocalIdentity_familiesLemmaH Cg cb Cw cT CT C0
+  obtain ⟨aH, bH, hH⟩ := _root_.GlobalTheory.HTieLeaf.main Cg cb Cw cT CT C0
   refine ⟨max aH 2, bH, fun C' Cl e1 e2 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire _hBk
     K S TS cls hFQ γ _hγ Fm hFT _hRel _hTerm hG5 => ?_⟩
   have hC' : (2 : ℝ) ≤ C' := le_trans (le_max_right _ _) e1
@@ -53,18 +55,18 @@ theorem weightsFam_of (hS : PI.VolStabS.MassDataS.SWXS) : GlobalTheory.SnFam.Wei
     have hnat : D.R.m + D.R.f + 5 ≤ D.R.k := by exact_mod_cast hreal
     omega
 
-  have hLaw := GlobalTheory.T.matchedFamily_mass_law_base_situation Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc K S TS cls hFQ γ Fm hFT hG5
+  have hLaw := _root_.GlobalTheory.FinitePlaceMassFactors.tied_mass_law Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc K S TS cls hFQ γ Fm hFT hG5
   obtain ⟨_w0, F, F', _Y0, _hw0, _hn, _hZ, _hTP, hBase, _hML, _hgenL⟩ := id hLaw
-  have hcong := GlobalTheory.T.flagNorms_congr_mod_level_sq D (zOf Y) Fm.FP u u' F F' hBase.1 (fun p => (hBase.2.1 p).2.2.2.2.2.2)
+  have hcong := _root_.GlobalTheory.NormCong.norms_congr D (zOf Y) Fm.FP u u' F F' hBase.1 (fun p => (hBase.2.1 p).2.2.2.2.2.2)
 
-  obtain ⟨hpos, hHp, w, G', hw, hzt, hTP', hcell, hglue⟩ := GlobalTheory.T.genericMass_le_heightPow_mul_gluedCount D X Y u u' hk4 Fm γ hG5.1 hLaw
+  obtain ⟨hpos, hHp, w, G', hw, hzt, hTP', hcell, hglue⟩ := _root_.GlobalTheory.GenMassBound.genericMass_le_heightPow_mul_glueSum D X Y u u' hk4 Fm γ hG5.1 hLaw
   obtain ⟨-, -, -, -, -, -, ⟨_, _, -, -, -, -, -, hLT⟩, -⟩ := hc.2.2
-  obtain ⟨s, hgl, hs⟩ := GlobalTheory.T.gluedLattice_weightedCount_le_explicit D X Y u u' hLT hk5 hcong G' hzt hTP'
+  obtain ⟨s, hgl, hs⟩ := _root_.GlobalTheory.GlueCount.glueSum_le D X Y u u' hLT hk5 hcong G' hzt hTP'
   obtain ⟨hne, hngen⟩ := hglue s hgl
   obtain ⟨⟨Λ, hΛ, hEZ⟩, hgs⟩ := hs hne
-  obtain ⟨hfac, hAA⟩ := GlobalTheory.T.meanCountConstant_eq_unscaledMainConstant hS Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc hk5 hcong hb X0 ψ hT sd C Th F0 what₂
+  obtain ⟨hfac, hAA⟩ := _root_.GlobalTheory.CountConst.countConst_eq_unscaledConst hS Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc hk5 hcong hb X0 ψ hT sd C Th F0 what₂
     vR Q i0 i0' νq
-  obtain ⟨hDl, hNG, hLam⟩ := GlobalTheory.T.norms_invariants_generic_rational_framePair D X Y u u' hcong G' Λ w hzt hTP' hΛ hEZ hcell
+  obtain ⟨hDl, hNG, hLam⟩ := _root_.GlobalTheory.GenMass.Norms.norms_generic D X Y u u' hcong G' Λ w hzt hTP' hΛ hEZ hcell
   have hHT := hH C' Cl hCH e2 D large₂ X Y u u' hc TS cls (nmlOf Y u u') γ Fm hFT
   subst hw
   have hrd : 0 < D.host.rdE := by
@@ -98,7 +100,7 @@ theorem weightsFam_of (hS : PI.VolStabS.MassDataS.SWXS) : GlobalTheory.SnFam.Wei
     rw [hHPdef]
     unfold HPt
     exact le_mul_of_one_le_left hND0 h1
-  have hhaar := GlobalTheory.T.gram_invariant_pow_le_haar_weight D.host.E D.R.rS D.R.k (Tu D u * Tu D u') D.host.rdE HP (toPts w) hrd hDl hND
+  have hhaar := _root_.GlobalTheory.HaarWeight.gram_pow_le_haar D.host.E D.R.rS D.R.k (Tu D u * Tu D u') D.host.rdE HP (toPts w) hrd hDl hND
   rw [← hHT] at hngen
   have hY0 : 0 ≤ NGPt D.host.rdE (Tu D u * Tu D u') (toPts w) ^ (D.R.k - 1) := by
     apply pow_nonneg

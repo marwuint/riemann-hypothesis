@@ -119,21 +119,6 @@ theorem lag_exists (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ : Is
   obtain ⟨E, hE, hEA⟩ := lag_exists_sum hR₀ hθ (Fin m) _ hB hBdet
   exact ⟨_, lag_reindex s A E hE hEA⟩
 
-theorem pair_base_of_lag {ι : Type} [Fintype ι] [DecidableEq ι] (A e h h₁ : Matrix ι ι R) (c : R)
-    (hh : h = c • h₁) (hh₁ : IsUnit h₁.det) (he : e * e = e) (heA : eᴴ * A = A * (1 - e)) :
-    ∃ e f : Matrix ι ι R, e * e = e ∧ eᴴ * A = A * (1 - e) ∧ e * h = h * f := by
-  refine ⟨e, h₁⁻¹ * e * h₁, he, heA, ?_⟩
-  rw [hh, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
-    mul_nonsing_inv h₁ hh₁, Matrix.one_mul]
-
-theorem pair_base (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ : IsUnit (θ - star θ))
-    {ι : Type} [Fintype ι] [DecidableEq ι] (hι : Even (Fintype.card ι)) (A : Matrix ι ι R)
-    (hA : Aᴴ = A) (hdet : IsUnit A.det) (h h₁ : Matrix ι ι R) (c : R)
-    (hh : h = c • h₁) (hh₁ : IsUnit h₁.det) :
-    ∃ e f : Matrix ι ι R, e * e = e ∧ eᴴ * A = A * (1 - e) ∧ e * h = h * f := by
-  obtain ⟨e, he, heA⟩ := lag_exists hR₀ hθ hι A hA hdet
-  exact pair_base_of_lag A e h h₁ c hh hh₁ he heA
-
 end Main
 
 end PI.LocCartanPair

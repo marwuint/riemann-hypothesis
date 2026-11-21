@@ -12,24 +12,6 @@ open ReciprocityTheory.ChartRestriction.L3 ReciprocityTheory.ChartRestriction.L3
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
-theorem nat_denom (e : E) : ∃ m : ℕ, 0 < m ∧ ∃ r : 𝓞 E, (m : E) * e = algebraMap (𝓞 E) E r := by
-  have hQi : IsIntegral ℚ e := Algebra.IsIntegral.isIntegral (R := ℚ) e
-  obtain ⟨y, hy0, hint⟩ : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * e) := by
-    have hZ : IsAlgebraic ℤ e := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr hQi.isAlgebraic
-    obtain ⟨y, hy0, hi⟩ := hZ.exists_integral_multiple
-    exact ⟨y, hy0, by simpa [zsmul_eq_mul] using hi⟩
-  have hint' : IsIntegral ℤ ((y.natAbs : E) * e) := by
-    rcases Int.natAbs_eq y with h | h
-    · rw [h] at hint
-      rwa [Int.cast_natCast] at hint
-    · rw [h] at hint
-      have h2 := hint.neg
-      push_cast at h2
-      simpa using h2
-  refine ⟨y.natAbs, Int.natAbs_pos.mpr hy0, ?_⟩
-  exact ⟨IsIntegralClosure.mk' (𝓞 E) ((y.natAbs : E) * e) hint',
-    (IsIntegralClosure.algebraMap_mk' (𝓞 E) _ hint').symm⟩
-
 theorem vec_denom (M : Submodule (𝓞 E) (Fin n → E)) (hsp : Submodule.span E (M : Set (Fin n → E)) = ⊤)
     (v : Fin n → E) : ∃ m : ℕ, 0 < m ∧ (m : 𝓞 E) • v ∈ M := by
   first | exact Bl.DenominatorsAlt.goal1 .. | (apply Bl.DenominatorsAlt.goal1 <;> assumption) | (intros; apply Bl.DenominatorsAlt.goal1 <;> assumption)

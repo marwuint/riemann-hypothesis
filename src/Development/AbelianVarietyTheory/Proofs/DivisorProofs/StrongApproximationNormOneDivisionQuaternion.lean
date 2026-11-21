@@ -2,12 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.OneMemH0WeightZero
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FujisakiDivisionQuaternionAlgebraModCentreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FujisakiDivisionQuaternionAlgebraModCentre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureNormOneProductsSubgroupPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInverseConjMemClosureOfIsCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormOneQuaternionNearConjRationalTimesSupportedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuaternionAlgebraTopologicalRingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPlacesIdempotentNearOneAdelesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInverseConjMemClosureOfIsCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormOneQuaternionNearConjRationalTimesSupported
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuaternionAlgebraTopologicalRing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPlacesIdempotentNearOneAdeles
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemClosureRationalNormOneOfIdempotentConjStatement
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.QSA GlobalTheory.Published
 open Matrix
@@ -113,7 +113,7 @@ theorem strongApproximation_normOne_divisionQuaternion : ∀ (F : Type) [Field F
   intro F _ _ a b ha hb hdiv S₁ S₂ ε hε hS hsurj g hg
   have hee : ε * ε = ε := isPlacesIdem_idem hε
   obtain ⟨hmul, -, -, -⟩ := GlobalTheory.T.closure_normOneProducts_h0_properties F a b ε hee
-  obtain ⟨htr, -, -, hT2⟩ := GlobalTheory.T.quaternion_algebra_topological_ring (AF F) (algebraMap F (AF F) a) (algebraMap F (AF F) b)
+  obtain ⟨htr, -, -, hT2⟩ := _root_.GlobalTheory.quaternion_isTopologicalRing_nrm_re_t2 (AF F) (algebraMap F (AF F) a) (algebraMap F (AF F) b)
   haveI : IsTopologicalRing (DA F a b) := htr
   haveI : T2Space (AF F) := by
     haveI : T2Space (InfiniteAdeleRing F) := inferInstanceAs (T2Space (∀ w : InfinitePlace F, w.Completion))
@@ -122,7 +122,7 @@ theorem strongApproximation_normOne_divisionQuaternion : ∀ (F : Type) [Field F
       (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))
     exact inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))
   haveI : T2Space (DA F a b) := hT2 inferInstance
-  obtain ⟨C, hC, hfuj⟩ := GlobalTheory.T.fujisaki_divisionQuaternionAlgebra_mod_centre F a b ha hb hdiv
+  obtain ⟨C, hC, hfuj⟩ := _root_.GlobalTheory.QSA.FujisakiQ.fujisaki_mod_centre F a b ha hb hdiv
 
   have key : ∀ (T₁ : Finset (InfinitePlace F)) (T₂ : Finset (HeightOneSpectrum (𝓞 F))) (η : AF F),
       IsPlacesIdem T₁ T₂ η → ∀ g : DA F a b, nrm g = 1 → η • (g - 1) = g - 1 → g ∈ closure (H0 (a := a) (b := b) ε) := by
@@ -143,10 +143,10 @@ theorem strongApproximation_normOne_divisionQuaternion : ∀ (F : Type) [Field F
     have hW : ∀ W ∈ 𝓝 gN, ∃ c ∈ C, ∃ c' ∈ C, c * c' = 1 ∧ c' * c = 1 ∧ ∃ w ∈ W, c * w * c' ∈ H0 (a := a) (b := b) ε := by
       intro W hW
       obtain ⟨w, hwW, y, hy, γ, hγ, h, hh, hhε, hyw⟩ :=
-        GlobalTheory.T.normOneQuaternion_near_conj_rational_times_supported F a b ha hb S₁ S₂ ε hε hS hsurj gN hgN1 hgNε W hW
+        _root_.GlobalTheory.QSAStep.key_step F a b ha hb S₁ S₂ ε hε hS hsurj gN hgN1 hgNε W hW
       obtain ⟨δ, l, c, c', hδ, hl, hc, hc', hcc', hc'c, rfl⟩ := hfuj y hy
       exact ⟨c, hc, c', hc', hcc', hc'c, w, hwW, conj_mem_normOneIdempotentSubgroup_of_rational_relation ε w c c' l hl δ γ hδ hγ h hh hhε hcc' hyw⟩
-    obtain ⟨c, -, c', -, hcc', hc'c, hmem⟩ := GlobalTheory.T.exists_conj_mem_closure_of_isCompact (DA F a b) (H0 (a := a) (b := b) ε) C hC gN hW
+    obtain ⟨c, -, c', -, hcc', hc'c, hmem⟩ := _root_.GlobalTheory.exists_inverse_conj_mem_closure_of_isCompact (DA F a b) (H0 (a := a) (b := b) ε) C hC gN hW
     have hgN := GlobalTheory.T.mem_closure_rationalNormOne_of_idempotent_conj F a b ha hb T₁ T₂ η hη ε hee gN hgN1 hgNη c c' hcc' hc'c hmem
     rw [← hprod]
     exact hmul _ hgN _ (subset_closure hgS)
@@ -157,7 +157,7 @@ theorem strongApproximation_normOne_divisionQuaternion : ∀ (F : Type) [Field F
   intro V hV
   have hpre : (fun η : AF F => η • (g - 1) + 1) ⁻¹' V ∈ 𝓝 (1 : AF F) :=
     hφ.continuousAt.preimage_mem_nhds (by rwa [one_smul, sub_add_cancel])
-  obtain ⟨T₁, T₂, η, hη, hηV⟩ := GlobalTheory.T.exists_placesIdempotent_near_one_adeles F _ hpre
+  obtain ⟨T₁, T₂, η, hη, hηV⟩ := _root_.GlobalTheory.placesIdem_tendsto_one F _ hpre
   have hηη : η * η = η := isPlacesIdem_idem hη
   refine ⟨η • (g - 1) + 1, hηV, key T₁ T₂ η hη _ ?_ ?_⟩
   · rw [nrm_trunc η hηη, hg]; ring

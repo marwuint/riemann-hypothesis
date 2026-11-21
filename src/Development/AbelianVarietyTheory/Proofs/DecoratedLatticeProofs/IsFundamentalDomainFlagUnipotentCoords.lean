@@ -8,9 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitar
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GinfCSecondCountable
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulRightInvariantOfFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittFlagUnipotentFixerFundamentalDomainLayers
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsRationalWittFlagCoordinatesOfMemUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuasiMeasurePreservingAdelicUnitriangularLeftMulStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuasiMeasurePreservingSkewHermitianCongruenceUniStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsRationalWittFlagCoordinatesOfMemUnipotent
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentFourierJacobiGroupStructure
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittSmallGroupEmbeddingMemPointwiseStabilizerIso
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuasiMeasurePreservingAdelicUnitriangularLeftMul
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuasiMeasurePreservingSkewHermitianCongruenceUni
 
 noncomputable section
 
@@ -209,12 +211,12 @@ theorem fundDomain_coords : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec
       ((g • x : flagN d) : GA D V) = ((g : flagN d) : GA D V) * (x : GA D V) := fun _ _ => rfl
   refine isFundamentalDomain_three (mA := lC) (mB := vb.μ) (ν := vU.ν) ((ratMx D ρ ρ).addSubgroupOf (skewA D ρ))
     (ratMx D ρ V₀.rank) (UXQ D ρ) (fun u => skewConj u.1.1) (fun u b => u.1.1 ⬝ b)
-    (GlobalTheory.T.quasiMeasurePreserving_skewHermitianCongruence_unitriangular D ρ lC hlC) (GlobalTheory.T.quasiMeasurePreserving_adelicUnitriangular_left_mul D ρ V₀.rank vb.μ vb.covol.1) (cComm V₀) hκ e ?_ ?_ ?_ hC vb.covol.2.1 hU
+    (_root_.GlobalTheory.Unf.SkewConjQmp.quasiMeasurePreserving_skewConj D ρ lC hlC) (_root_.GlobalTheory.LeftUniQmp.qmp_left_uni D ρ V₀.rank vb.μ vb.covol.1) (cComm V₀) hκ e ?_ ?_ ?_ hC vb.covol.2.1 hU
   · intro g g' x h
     rw [Subgroup.smul_def, Subgroup.smul_def] at h
     exact Subtype.ext (mul_right_cancel h)
   · intro g
-    obtain ⟨c, b, u, hg, hc, hb, hu⟩ := GlobalTheory.T.exists_rational_wittFlagCoordinates_of_mem_unipotent D V V₀ ρ d g.1.1 (Subgroup.mem_subgroupOf.1 g.2) g.1.2
+    obtain ⟨c, b, u, hg, hc, hb, hu⟩ := _root_.GlobalTheory.RatCoord.rat_coords_of_mem_flagN D V V₀ ρ d g.1.1 (Subgroup.mem_subgroupOf.1 g.2) g.1.2
     refine ⟨⟨c, AddSubgroup.mem_addSubgroupOf.2 hc⟩, ⟨b, hb⟩, ⟨u, hu⟩, fun p => Subtype.ext ?_⟩
     rw [hsm, hg]
     exact key c b u p

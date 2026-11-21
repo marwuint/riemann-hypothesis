@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordEquivSymmApply
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsHermitianIsometryMatrixIffMemIsometriesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFrameUnitriangularIffFlagPreservedStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsometrySubOneOrthogonalLeCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualLatticeCoordinatesImageIffPreservedStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalIsometryCoordinateMatrixRealPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelTransportConjPlaceMatricesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualLatticeCoordinatesImageIffPreserved
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalIsometryCoordinateMatrixRealPlace
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelTransportConjPlaceMatrices
 
 noncomputable section
 open scoped Classical ENNReal
@@ -22,19 +22,19 @@ theorem nO_eq_nLam_coords : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Cho
     intro n γ hγ
     constructor
     · rintro ⟨⟨h1, h2, h3⟩, h4⟩
-      exact ⟨⟨(GlobalTheory.T.isHermitianIsometryMatrix_iff_mem_isometries X n γ hγ).1 h1, (GlobalTheory.T.selfDualLatticeCoordinates_image_iff_preserved X n γ hγ).1 h4⟩, (GlobalTheory.T.isotropicFrame_unitriangular_iff_flag_preserved X u n γ hγ).1 h2,
+      exact ⟨⟨(GlobalTheory.T.isHermitianIsometryMatrix_iff_mem_isometries X n γ hγ).1 h1, (_root_.GlobalTheory.CovDomGrp.latMap_Lc_iff X n γ hγ).1 h4⟩, (GlobalTheory.T.isotropicFrame_unitriangular_iff_flag_preserved X u n γ hγ).1 h2,
         (GlobalTheory.T.isometry_sub_one_orthogonal_le_coordinates X u n γ hγ).1 h3⟩
     · rintro ⟨⟨h1, h4⟩, h2, h3⟩
       exact ⟨⟨(GlobalTheory.T.isHermitianIsometryMatrix_iff_mem_isometries X n γ hγ).2 h1, (GlobalTheory.T.isotropicFrame_unitriangular_iff_flag_preserved X u n γ hγ).2 h2, (GlobalTheory.T.isometry_sub_one_orthogonal_le_coordinates X u n γ hγ).2 h3⟩,
-        (GlobalTheory.T.selfDualLatticeCoordinates_image_iff_preserved X n γ hγ).2 h4⟩
+        (_root_.GlobalTheory.CovDomGrp.latMap_Lc_iff X n γ hγ).2 h4⟩
   refine ⟨fun γ hγ => ?_, fun s hs => ?_⟩
   · obtain ⟨n, hn⟩ := exists_equiv X γ hγ.1.1
     have hnL := (key n γ hn).1 hγ
     obtain ⟨x, hx⟩ := Formalism.L2.SG.Pf.ratPt_holds D X n hnL.1.1
     exact ⟨x.1, (Formalism.L2.SG.Pf.NcReal.JX.NOf.noratC_holds X u x.1).2 ⟨x, n, hx, rfl, hnL⟩,
-      GlobalTheory.T.besselModelTransport_conj_placeMatrices X C x.1 γ (GlobalTheory.T.rationalIsometry_coordinateMatrix_realPlace X n γ hx hn)⟩
+      _root_.GlobalTheory.CovDomGrp.Transp.transp X C x.1 γ (_root_.GlobalTheory.CovDomGrp.coordMat_place X n γ hx hn)⟩
   · obtain ⟨x, n, hx, rfl, hnL⟩ := (Formalism.L2.SG.Pf.NcReal.JX.NOf.noratC_holds X u s).1 hs
     obtain ⟨γ, hγ⟩ := exists_mat X n
-    exact ⟨γ, (key n γ hγ).2 hnL, GlobalTheory.T.besselModelTransport_conj_placeMatrices X C x.1 γ (GlobalTheory.T.rationalIsometry_coordinateMatrix_realPlace X n γ hx hγ)⟩
+    exact ⟨γ, (key n γ hγ).2 hnL, _root_.GlobalTheory.CovDomGrp.Transp.transp X C x.1 γ (_root_.GlobalTheory.CovDomGrp.coordMat_place X n γ hx hγ)⟩
 
 end GlobalTheory.CovDomGrp

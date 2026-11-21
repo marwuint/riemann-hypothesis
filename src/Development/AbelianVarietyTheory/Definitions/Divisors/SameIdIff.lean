@@ -65,12 +65,6 @@ def LiftAt (g : ℕ) {B S' : Over S} (b : B ⟶ S') (P : LB (A ⊗ B).left) (x :
 
 variable {A}
 
-theorem Rep.of_isDual {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (h : IsDual A B P) : Rep A (toUnit B) P where
-  fam := ⟨h.isLB, h.additive⟩
-  univ T t N hN := by
-    obtain ⟨x, hx, hu⟩ := h.univ T N hN.isLB hN.add
-    exact ⟨x, ⟨toUnit_unique _ _, hx⟩, fun y hy ↦ hu y hy.2⟩
-
 omit [GrpObj A] in
 
 theorem same_id_iff {T U : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left} (hN : N.IsLB) (hM : M.IsLB)

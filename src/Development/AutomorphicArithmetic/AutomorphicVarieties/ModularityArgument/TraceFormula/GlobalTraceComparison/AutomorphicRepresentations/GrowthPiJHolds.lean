@@ -53,6 +53,4 @@ theorem growthPiJ_holds : PositivityTheory.Rg.BcB.Desc.GrowthPiJ :=
   DiscreteGroups.T1.G.rGrowthPiJ_of (fun _ _ => uncutHalf) (fun _ _ => cutTail) PositivityTheory.Rg.BcB.CV.ellFormula2J
     PositivityTheory.Rg.BcB.E1.sFun_holds DiscreteGroups.T1.G.Dcy.piVecEx_holds DiscreteGroups.T1.G.piInv
 
-theorem growthPi_holds : PositivityTheory.Rg.BcB.Desc.GrowthPi := growthPiJ_holds
-
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi

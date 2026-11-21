@@ -310,8 +310,6 @@ theorem cjD_βR (hTT : 0 ≤ P.TT) : cjD P (βR P) = βRb P := extD P fun q => b
 
 theorem cjD_βDb (hTT : 0 ≤ P.TT) : cjD P (βDb P) = βD P := by rw [← cjD_βD hTT, cjD_cjD]
 
-theorem cjD_βRb (hTT : 0 ≤ P.TT) : cjD P (βRb P) = βR P := by rw [← cjD_βR hTT, cjD_cjD]
-
 theorem prod_norm_ne (q : Qp P.r P.TT) : ∏ l, ‖q.1.1 l‖ ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun l _ => norm_ne_zero_iff.2 (q.2.1 l)
 

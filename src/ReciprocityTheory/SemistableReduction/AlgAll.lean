@@ -18,8 +18,6 @@ theorem fieldOfS : FieldOfSStatement := genericImageFinite
 
 theorem dedekindRank : DedekindRankStatement := integralClosureRank_and_residueTrdegLe.1
 
-theorem tr : TRStatement := residueTrdegLe
-
 theorem residueTrdeg : ResidueTrdegStatement := residueTrdeg_holds residueTrdegLe
 
 theorem normLength : NormLengthStatement := gaugeSplitting_holds

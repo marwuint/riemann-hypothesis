@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchemeTheoreticallyDominantOfGermInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreDenseAffineChartPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreDenseAffineChartPrimes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnnihilatorAvoidsFibreMinimalPrimesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAlgebraLocalizationEqZeroOfAvoidFibreMinimStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonZeroDivisorLocalizationGeneralOfNoetherianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAlgebraLocalizationEqZeroOfAvoidFibreMinim
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonZeroDivisorLocalizationGeneralOfNoetherian
 open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.FibreDense
@@ -21,7 +21,7 @@ theorem alg (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Algebra.Smooth
   obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal I hI
   let u : PrimeSpectrum B := ⟨m, hm.isPrime⟩
   obtain ⟨g, hg, hgQ⟩ := GlobalTheory.T.exists_annihilator_not_mem_minimalPrimes_le A B b h u
-  have h0 := GlobalTheory.T.nonZeroDivisor_localization_general_of_noetherian GlobalTheory.T.smooth_algebra_localization_eq_zero_of_avoid_fibre_minimal A B b g u hg hgQ
+  have h0 := _root_.GlobalTheory.NzdDescent.of_noetherian _root_.GlobalTheory.FlatFibreRegular.localization_eq_zero_of_mul_eq_zero A B b g u hg hgQ
   obtain ⟨s, hs⟩ := (IsLocalization.map_eq_zero_iff u.asIdeal.primeCompl _ b).1 h0
   exact s.2 (hle (by simpa [I] using hs))
 
@@ -30,7 +30,7 @@ theorem dense (X T : Scheme.{0}) (p : X ⟶ T) [Smooth p] (W : X.Opens)
   refine GlobalTheory.T.schemeTheoreticallyDominant_of_germ_injective X T p W fun U V hU hV e b hb => ?_
   letI := (p.appLE V U e).hom.toAlgebra
   haveI : Algebra.Smooth Γ(T, V) Γ(X, U) := HasRingHomProperty.appLE @Smooth p ‹_› ⟨V, hV⟩ ⟨U, hU⟩ e
-  exact alg Γ(T, V) Γ(X, U) b (GlobalTheory.T.mem_closure_annihilator_primes_inter_fibre X T p W U V hU hV e hW b hb)
+  exact alg Γ(T, V) Γ(X, U) b (_root_.GlobalTheory.fibre_dense_affine_chart_primes X T p W U V hU hV e hW b hb)
 
 theorem ext_of_dominant {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s] (h : f ≫ s = g ≫ s)
     (d : W ⟶ X) [IsSchemeTheoreticallyDominant d] (hU : d ≫ f = d ≫ g) : f = g := by

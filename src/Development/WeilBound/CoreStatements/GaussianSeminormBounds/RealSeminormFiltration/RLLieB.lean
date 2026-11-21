@@ -31,11 +31,6 @@ theorem rhoS_apply (w : l ⊕ l → ℝ) (f : Sch l) (x : EuclideanSpace ℝ l) 
   rw [rhoS, ContinuousLinearMap.comp_apply, smulLeftCLM_apply_apply (phase_tg w)]
   simp
 
-theorem rho_toLp (w : l ⊕ l → ℝ) (f : Sch l) : rho w (f.toLp 2 volume) = (rhoS w f).toLp 2 volume := by
-  refine Lp.ext ((coeFn_rho w _).trans ((rhoFun_congr w (f.coeFn_toLp 2 volume)).trans ?_))
-  filter_upwards [(rhoS w f).coeFn_toLp 2 volume] with x hx
-  rw [hx, rhoS_apply, rhoFun]
-
 theorem hasDerivAt_rhoS (w : l ⊕ l → ℝ) (f : Sch l) (T : Sch l →L[ℂ] ℂ) :
     HasDerivAt (fun t : ℝ => T (rhoS (t • w) f)) (T (dRho w f)) 0 := by
   obtain ⟨G, hG, hD⟩ := Der.hl_deriv (pPart w) (-innerSL ℝ (qPart w)) f
@@ -120,33 +115,6 @@ structure Meta : Type 1 where
     ∀ f : Sch l, HasDerivAt (fun t => (om (γ t) f).toLp 2 volume) ((quad X f).toLp 2 volume) 0
 
 attribute [instance] Meta.grp Meta.top
-
-theorem exists_meta (h : GlobalTheory.Published.RealMetaplecticRepresentation) : Nonempty (Meta l) := by
-  rcases isEmpty_or_nonempty l with hl | hl
-  · refine ⟨{ G := Matrix.symplecticGroup l ℝ, pr := MonoidHom.id _, om := 1, quot := IsQuotientMap.id
-              sgn := fun _ _ => .inl rfl, cont := fun f => continuous_const (y := f.toLp 2 volume), bdd := fun g => ⟨1, fun _ => rfl⟩
-              cov := fun g w f => by rw [Subsingleton.elim (_ *ᵥ w) w]; rfl
-              line := fun X _ => ⟨fun _ => 1, continuous_const, rfl, fun _ _ => (one_mul _).symm,
-                fun _ => Subsingleton.elim _ _, fun f => ?_⟩ }⟩
-    have : quad X f = 0 := by simp [quad]
-    rw [this, ← toLpCLM_apply (𝕜 := ℂ) (f := 0), map_zero]
-    exact hasDerivAt_const _ _
-  · obtain ⟨G, _, _, _, pr, om, omS, ⟨h1, h2, ε, -, h3, h4⟩, h5, h6, h7, -, h8⟩ := h l
-    have inj := SchwartzMap.injective_toLp (E := EuclideanSpace ℝ l) (F := ℂ) 2 volume
-    refine ⟨{ G := G, pr := pr, om := omS, quot := h1.isQuotientMap h2, sgn := fun g hg => ?_, cont := fun f => ?_
-              bdd := fun g => ⟨(om g).toContinuousLinearEquiv, fun f => (h7 g f).symm⟩
-              cov := fun g w f => inj ?_, line := fun X hX => ?_ }⟩
-    · rcases (h3 g).1 hg with rfl | rfl
-      · exact .inl (map_one _)
-      · refine .inr (ContinuousLinearMap.ext fun f => inj ?_)
-        show (omS g f).toLp 2 volume = (-f).toLp 2 volume
-        rw [← h7, h4, ← toLpCLM_apply (𝕜 := ℂ) (f := -f), map_neg, toLpCLM_apply]
-    · simp only [← h7]
-      exact h5 _
-    · show (omS g _).toLp 2 volume = (rhoS _ _).toLp 2 volume
-      rw [← h7, ← rho_toLp, ← rho_toLp, h6, h7]
-    · simp only [← h7]
-      exact h8 X hX
 
 theorem Meta.covD (M : Meta l) (g : M.G) (w : l ⊕ l → ℝ) :
     M.om g * dRho w = dRho ((M.pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) * M.om g := by

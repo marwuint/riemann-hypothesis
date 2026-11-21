@@ -1,11 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipParLeUnipFlag
 import Development.AbelianVarietyTheory.Definitions.Foundations.ConstTermOnMulLeftOfNormalizer
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValEq
+
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB GlobalTheory.ThK.FlagCT GlobalTheory.ThK.FlagPar
-open GlobalTheory.ThK.SmoothLev
 open scoped ContDiff
 
 noncomputable section
@@ -32,10 +31,6 @@ theorem isSmModOn_const (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
     IsSmModOn σ J Γ fun _ => c :=
   have h := GlobalTheory.SiegelSet.isSmoothModerate_const σ J c
   ⟨fun _ _ _ => rfl, h.level, h.cont, h.smooth, h.growth⟩
-
-def ratLevi (σ : E →ₐ[F] E) {d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H : Plane E d d₁) (J' : Matrix (Fin d) (Fin d) E) :
-    Set (GAd σ J') :=
-  {γ' | ∃ γ ∈ ratU σ W.J, γ.1 = γ'.1 ∧ ∃ h₁ : UA σ W₁.J, IsLevi (W₁ := W₁) H 1 h₁ γ}
 
 end GlobalTheory.ThK.SmoothLev
 

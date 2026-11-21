@@ -19,7 +19,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.NormalDecomposition.LiftHeckeOpera
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Formalism.SharpRestriction.ElevenLe
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartW
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftScalarIdentityMatchingAdjointInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftScalarIdentityMatchingAdjointInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreClausesOfWeakCharacterisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperspecialFixesVacuaGoodInertPlace
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ScalarHypothesesOfTopRows
@@ -41,7 +41,7 @@ theorem pThmB_short : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheor
   obtain ⟨-, hSF, -, -⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hCh hEx
   have hFix := GlobalTheory.FixAllGood.fixAll_of_good R F hCh hEx
   obtain ⟨hScal, hMatch, hInj, -⟩ :=
-    GlobalTheory.T.thetaLift_scalarIdentity_matching_adjointInjective hDS hHCF hHCM hCW hCusp hHowe hWS hSWc hSEc hUD hBZ R.toRealDat F.lv2 hGiven hcc
+    _root_.GlobalTheory.ScalAll.scal_matchUp_upInj hDS hHCF hHCM hCW hCusp hHowe hWS hSWc hSEc hUD hBZ R.toRealDat F.lv2 hGiven hcc
       hCh.allPl hFix R.SF hSF hTR
   exact GlobalTheory.ThmBFromScal.pThmB R F hOk hCh hEx hScal hMatch
     (GlobalTheory.CarriesOne.parts_eq_of_carries hHowe hCusp R F hOk hCh hEx hHk hInj)

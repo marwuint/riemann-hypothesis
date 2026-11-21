@@ -66,14 +66,6 @@ theorem cA_logTeich (η : Reformulated.AutPerF.tateModule l (OC l))
     Reformulated.AutPerF.Acris.log_congr _ hu (by rw [Reformulated.AutPerF.tateModule.coe_map, tiltMap_eq])]
   exact acrisNHom_log l _ hu (ACris.mu_mem_ker h)
 
-theorem untilt_εO : PreTilt.untilt (PositivityTheory.LocInh.εO l) = 1 := by
-  have h1 : Formalism.Per6.tiltMap l (PositivityTheory.LocInh.εO l) = epsilon l := PositivityTheory.LocInh.tiltMap_tiltInv l _
-  have h2 := Reformulated.AutPerF.Tilt.untilt_map (e l).toRingHom (PositivityTheory.LocInh.εO l)
-  rw [tiltMap_eq, h1, untilt_epsilon] at h2
-  apply (e l).injective
-  rw [map_one]
-  exact h2.symm
-
 theorem cA_logTeich_eps (h0 : PreTilt.untilt (PositivityTheory.LocInh.εO l) = 1) :
     cA l (Reformulated.AutPerF.Acris.logTeich ⟨PositivityTheory.LocInh.εO l, h0⟩) = Formalism.Per6.tA l := by
   have h1 : Formalism.Per6.tiltMap l (PositivityTheory.LocInh.εO l) = epsilon l := PositivityTheory.LocInh.tiltMap_tiltInv l _

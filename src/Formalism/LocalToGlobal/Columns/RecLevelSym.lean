@@ -52,15 +52,7 @@ def colLevSym (Ch : Chars X Pr R.m) (j : ℕ) : LevFam X.E X.K (R.N j) Pr.vGs :=
     ⟨HXmsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m R.rS (r_le_N_of_le (by omega)),
       lamXmsym (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N j) R.k R.r R.t R.m R.rS (r_le_N_of_le (by omega))⟩
 
-@[reducible] def colGSDSym (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (u : Pr.Word) (j : ℕ) : GSD X.K :=
-  formGSD (colVal W u j (Pr.vT u) Pr.vGs) (colLevSym Ch j)
-
 variable (hc : Formalism.BasicNotions.CMData X.F X.E) (Ch : Chars X Pr R.m)
-
-def colUSym (u : Pr.Word) (j : ℕ) : Subgroup (GL (Fin (R.N j)) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) :=
-  levU hc (R.N j) (Pr.vT u) Pr.vGs (colLevSym Ch j).grp
-
-def colTypSym (u : Pr.Word) (j : ℕ) : colUSym hc Ch u j →* X.Kˣ := levTyp (colLevSym Ch j).chr
 
 end ColsSym
 
@@ -102,14 +94,6 @@ theorem N_pred_eq {j : ℕ} (hj : j + 1 = R.m) : R.N j = R.r + j * R.t := by
   have h := Y_eq_X_add (R := R) (j := j) (by omega)
   rw [show R.m - 1 - j = 0 by omega, add_zero] at h
   exact h.symm
-
-theorem colUSym_eq_lev (u : Pr.Word) {j : ℕ} (hj : j + 1 = R.m) :
-    colUSym hc Ch u j = Formalism.L2.DIV.lev hc 1 1
-        (parDat (r_le_N_of_le hj.ge) R.t j (rPsymF Ch) (fun w => extChi fun s => Ch.chi s w)) ⊓
-      ⨅ Q ∈ Pr.vT u, mirAt (F := X.F) (R.N j) Q := by
-  unfold colUSym
-  rw [colLevSym_pred Ch hj]
-  exact levU_parFam_eq_lev_inf hc (r_le_N_of_le hj.ge) (t_pos R) (N_pred_eq hj) _ _ _
 
 theorem colLevSym_zero : colLevSym Ch 0 = colLev Ch 0 := by
   funext w
@@ -233,11 +217,6 @@ theorem r_eq_sym (R : Ranks) : R.r = R.k + 2 * R.rS + 1 := by
   omega
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-
-theorem rPsymF_lam_val (w : {w // w ∈ Pr.vGs}) (M : ↥(rPsymF Ch w).H) :
-    (((rPsymF Ch w).lam M : X.Kˣ) : X.K) =
-      Ch.psi0 w (supSum R.r (SPsymF R.r R.k) (M.1 : Matrix (Fin R.r) (Fin R.r) (𝓞 X.E ⧸ w.1.asIdeal))) :=
-  chiSymF_val (r_eq_sym R) (Ch.psi0 w) M
 
 end SymRanks
 

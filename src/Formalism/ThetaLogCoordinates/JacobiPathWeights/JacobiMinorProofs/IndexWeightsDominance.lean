@@ -77,18 +77,6 @@ theorem idxWeight_eq {n : ℕ} (I : ℤ → Finset (Fin n)) (S : Finset ℤ) (hS
       simp [hm, hc, h0]
   · simp [hm]
 
-theorem weight_torus {n : ℕ} (isVec : ℕ → Bool) (e : ℕ × Fin n →₀ ℕ) (m : Fin n) :
-    Finsupp.weight (torusW isVec) e m =
-      Finsupp.weight
-        (fun x : ℕ × Fin n => if x.2 = m then (if isVec x.1 then (1 : ℤ) else -1) else 0) e := by
-  simp only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply]
-  refine Finset.sum_congr rfl fun x _ => ?_
-  by_cases hx : x.2 = m
-  · subst hx
-    by_cases hv : isVec x.1 <;> simp [torusW, hv]
-  · have hx' : m ≠ x.2 := fun h => hx h.symm
-    by_cases hv : isVec x.1 <;> simp [torusW, hv, hx, hx', Pi.single_apply]
-
 end A3comb
 
 open A3comb in

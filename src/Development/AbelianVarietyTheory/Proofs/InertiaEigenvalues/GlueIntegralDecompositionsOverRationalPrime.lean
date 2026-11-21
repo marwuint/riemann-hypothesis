@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.TwistSeries
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLevels
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPartitionOneIntegralAtPlaces
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitScalarSmulCoreIntegralAdelicFormPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitScalarSmulCoreIntegralAdelicFormPlaces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelFormCompatBaseEmbedding
 open NumberField IsDedekindDomain
 open scoped TensorProduct
@@ -61,7 +61,7 @@ theorem glue : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A 
       {p | p.asIdeal = la.1.asIdeal.comap (RingOfIntegers.mapRingHom C.inc)} := fun la => by
     ext p; simp [below]
   choose t ht htψ using fun (la : S') (a : Fin (m' la)) =>
-    GlobalTheory.T.exists_unitScalar_smul_coreIntegralAdelicForm_places D T hT i (κ i) (GlobalTheory.AdTh.lastPos_of_kapIs h6.kap i)
+    _root_.GlobalTheory.ScaleInt.smul_mem_baseInt D T hT i (κ i) (GlobalTheory.AdTh.lastPos_of_kapIs h6.kap i)
       (la.1.asIdeal.comap (RingOfIntegers.mapRingHom C.inc))
       (Ideal.IsPrime.comap _ (hK := la.1.isPrime)) (below C.inc S) (finite_below C.inc hfin) (ψ' la a)
       (hset la ▸ hψ' la a)

@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCoverComponentOverBaseRationalIsometry
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCoverPullbackReadingEqUnitConstPowMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCoverPullbackReadingEqUnitConstPowMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenScal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonLevelCoverPullbackProbability
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCuspFormPullbackGoodCover
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoverPullbackMemBoundedCuspidalHolomorphic
@@ -160,7 +161,7 @@ theorem level_transport (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestricti
           (rdU (U₂ τ) g y.1 y.2 ≠ 0 ↔ rdU (U (τ.comp (d.eF : c.F →+* d.c₂.F))) f (φ y).1 (φ y).2 ≠ 0) := by
   have hσ : GoodEmb c (τ.comp (d.eF : c.F →+* d.c₂.F)) := good_comp d τ hτ
   choose π δ hGm hIso hLat hOv using over_comp_lat D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd τ hτ
-  choose t ht hread using fun k₂ => GlobalTheory.T.levelCover_pullback_reading_eq_unitConst_pow_mul D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd τ hτ k₂ (π k₂) (δ k₂)
+  choose t ht hread using fun k₂ => _root_.GlobalTheory.LevRead.reading_pull D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd τ hτ k₂ (π k₂) (δ k₂)
     (hGm k₂) (hIso k₂) (hOv k₂)
   have hΨ' : ∀ k₂ ρ, ρ ∈ ((U₂ τ).X k₂).Ψ ↔ ρ ∈ ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)).Ψ := fun k₂ ρ =>
     (((hL₂.unf τ hτ).2.1 k₂).2 ρ).trans (((hL.unf _ hσ).2.1 (π k₂)).2 ρ).symm
@@ -204,7 +205,7 @@ theorem cover_transport (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (
             ptN (modelWt (T.U j (Y.resEmb σ)) (wtZ a n)) (rdU (T.U j (Y.resEmb σ)) f) (φ y) ∧
           (rdU (Y.U σ) g y.1 y.2 ≠ 0 ↔ rdU (T.U j (Y.resEmb σ)) f (φ y).1 (φ y).2 ≠ 0) := by
   have hL := GlobalTheory.LevGeo.laws_core D T j hT hj
-  obtain ⟨hL', -⟩ := GlobalTheory.T.moduliLaws_coefficientFieldChange D j _ _ _ _ _ Y.c' Y.hle _ _ hL
+  obtain ⟨hL', -⟩ := _root_.GlobalTheory.LawsFieldChange.laws_fieldChange D j _ _ _ _ _ Y.c' Y.hle _ _ hL
   obtain ⟨hL₂, -, hP⟩ := GlobalTheory.DeepLaws.laws_galois_pull D T j Y e o hT hj hG hG.unit hG.modelW
   obtain ⟨φ, h1, h2⟩ := level_transport D j _ _ _ _ _ _ _ Y.d _ _ hL' hL₂ hG.lev.1 a n ha σ hσ
   refine ⟨φ, h1, fun f hf => ?_⟩

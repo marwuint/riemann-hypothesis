@@ -3,7 +3,19 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoun
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeTensorPowerDegree
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DetLatticeFrameGen
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DeterminantLatticeGenerator
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 
@@ -185,8 +197,8 @@ theorem det_pull {L : Lat ξ V} {r m : ℕ} {s : Fin m → V} {U : Submodule Ω 
     have hcf' := hcf _ trivial hU₂
     obtain ⟨T, hT⟩ := exists_mat (Ω := Ω) (b := c) (s := s) fun k => by
       rw [hsU, ← hc]; exact Submodule.subset_span ⟨k, rfl⟩
-    refine ⟨T.det, GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen X Ω ξ V L r s c T _ hs hcf' hT, ?_⟩
-    have h2 := GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen X' Ω' ξ' V' (L.pull ξ' f j) r b₀ (fun k => j (c k)) (T₁ * i.mapMatrix T) q hb₀
+    refine ⟨T.det, _root_.LevelTowerAlt.determinant_lattice_generator X Ω ξ V L r s c T _ hs hcf' hT, ?_⟩
+    have h2 := _root_.LevelTowerAlt.determinant_lattice_generator X' Ω' ξ' V' (L.pull ξ' f j) r b₀ (fun k => j (c k)) (T₁ * i.mapMatrix T) q hb₀
       (frame_pull hj (hli _ _ hcf'.1) h hreg hcf') fun k => by
         rw [hT k, map_sum]
         simp only [hj, hT₁, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul, RingHom.mapMatrix_apply,

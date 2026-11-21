@@ -43,10 +43,6 @@ theorem toENNReal_sum {ι : Type} (s : Finset ι) (f : ι → ℕ∞) :
     ((∑ a ∈ s, f a : ℕ∞) : ℝ≥0∞) = ∑ a ∈ s, (f a : ℝ≥0∞) :=
   map_sum ENat.toENNRealRingHom f s
 
-section Hyp
-
-end Hyp
-
 section Terms
 
 variable (D : D7) (i : D.nd.Loc)
@@ -101,18 +97,6 @@ theorem conclusion_iff (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O
   exact div_le_iff_lengths _ _ _ _ _ _ (ramLen_ne D i).1 (ramLen_ne D i).2
 
 end Terms
-
-def LengthBoundLoc (D : D7) (L : SizeData₂ D) (i : D.nd.Loc) : Prop :=
-  LevelStarExponents.lStar L < (D.nd.l i : ℝ) → D.nd.l i ≠ D.host.g 0 → D.nd.l i ≠ D.host.g 1 →
-    D.nd.l i ∉ SelmerSumLargePrime.excPrimes L →
-    HG D.nd D.naut i →
-    ∀ r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)), GoodR D.nd i r →
-    ∀ π ∈ D.nd.Z i, ∀ ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i), SelmerSumLargePrime.IsBlockSplit D i (r π) ρ →
-      SelmerSumLargePrime.ccLen D i π ≤ SelmerSumLargePrime.selLen D i ρ π + SelmerSumLargePrime.ramLen D i * SelmerSumLargePrime.shaSum D i +
-        SelmerSumLargePrime.ramLen D i * (padicValNat (D.nd.l i) (hE D.host) : ℕ∞) + SelmerSumLargePrime.twistLen D i
-
-def TiedF {eps : ℝ} (Fm : FamP eps) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (a : Fm.Ix x) (i : (Fm.D x a).nd.Loc), BaseSizes.WeightTie (Fm.D x a) i
 
 end GlobalTheory.Proof.QuotientLengthInfimum
 

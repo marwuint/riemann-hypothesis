@@ -7,9 +7,6 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.
 
 namespace PositivityTheory.Rg.Rs
 
-def ExhReg : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), 1 ≤ N → ∀ V : Submodule ℂ (Sm E N), IsDiscrete V → ∀ τ, RegInt V τ →
-  ∃ (a d : ℕ) (π : CuspSub E a), π.IsUnitary ∧ IsNormalised π ∧ IsSpehOf V π d
-
 def Dich : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), 1 ≤ N → ∀ V : Submodule ℂ (Sm E N), IsDiscrete V →
   (∃ π : CuspSub E N, π.IsUnitary ∧ IsNormalised π ∧ ∀ π', π.Iso π' → AscEmb V π' 1) ∨ ∃ r, 0 < r ∧ r < N ∧ (ExpV r V).Nonempty
 

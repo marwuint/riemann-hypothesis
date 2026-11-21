@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.TheoremZeroOfReducedInputs
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.CombBound4Of
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.DescentStatementPf
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionaryStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InBasisIffPointValuesLinearIndependentSpanStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IndepSpanRankTransferLargeFieldComplexStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.DescSt
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionary
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InBasisIffPointValuesLinearIndependentSpan
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IndepSpanRankTransferLargeFieldComplex
 
 noncomputable section
 
@@ -58,8 +58,8 @@ end Weights
 
 theorem inContainMR_of_anFacts : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData X ka wL wF) (R : Rdg X) (t : Idx D j G.N → ℂ) (T : ℕ) (CR c : ℝ) (δ : ℕ) (xs : Fin δ → R.Y), R.Generic t → AnFacts R G.w t ka wF T (WeightFamilies.MggK B CR T c j ka) xs → addL wF wL T = ka → WeightFamilies.dimY D j ≤ T → ∀ S : Scal B, Submodule.span B.KO ((X.Thc S.s0 (X.wF0 wL wF) : Submodule (𝓞 B.KO) _) : Set (B.Cusp j (X.wF0 wL wF))) = ⊤ → ∀ la, InBasis G la → InContainMR G la S CR T c := by
   intro D B P j X ka wL wF G R t T CR c δ xs hgen hA hka hDT S hTh la hB
-  obtain ⟨hsec, hC, hCw, hmul, -, -, hsp, -⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la G.N wL G.w t
-  obtain ⟨hli, hdel⟩ := (GlobalTheory.T.inBasis_iff_pointValues_linearIndependent_span D B P j X ka wL wF G R t T _ δ xs hgen hA hka la).1 hB
+  obtain ⟨hsec, hC, hCw, hmul, -, -, hsp, -⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la G.N wL G.w t
+  obtain ⟨hli, hdel⟩ := (_root_.GlobalTheory.Shares.inBasis_iff_vals D B P j X ka wL wF G R t T _ δ xs hgen hA hka la).1 hB
   have hs1 : ∀ i, toRp X la G.N (secP X G.w i) = sec X la G.w i := fun i => (hsec i).1
   have hs2 : ∀ i, R.toFn t (secP X G.w i) = R.s G.w t i := fun i => (hsec i).2.1
   have hs3 : ∀ i, OfWt X wL (secP X G.w i) := fun i => (hsec i).2.2
@@ -114,7 +114,7 @@ theorem inContainMR_of_anFacts : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : M
     hle (hcon (Submodule.subset_span ⟨F, hF, rfl⟩))
   obtain ⟨n, a, g, hsum⟩ := Submodule.mem_span_set'.1 hmem
   choose p hp hpg using fun i => (g i).2
-  have htr := (GlobalTheory.T.indep_span_rank_transfer_largeField_complex D B P j X R la G.N t hgen ka (Fin n) p (fun i => (hp i).1)).2.1
+  have htr := (_root_.GlobalTheory.reading_transfer D B P j X R la G.N t hgen ka (Fin n) p (fun i => (hp i).1)).2.1
     (MvPolynomial.C (X.inc ka F)) (hCw _ _)
   rw [(hC _).1, (hC _).2] at htr
   have h2 : R.ev (X.inc ka F) ∈ Submodule.span ℂ (Set.range fun i => R.toFn t (p i)) := by

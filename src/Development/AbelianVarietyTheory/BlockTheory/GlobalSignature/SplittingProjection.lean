@@ -42,24 +42,6 @@ abbrev locLat {n : Type} [Fintype n] [DecidableEq n] (v : HeightOneSpectrum (�
     (Λ : Submodule (𝓞 E) (n → E)) : Submodule (intV E v) (n → E ⊗[F] v.adicCompletion F) :=
   latS (F := F) (v.adicCompletion F) (intV E v) Λ
 
-theorem mem_primeOf_prP {σ : E →ₐ[F] E} (hφ : IsSplitting σ v φ) (a : intV E v) :
-    a ∈ primeOf (prP φ) ↔ Valued.v (prP φ a) < 1 := by
-  refine ⟨fun h => ?_, fun h => Ideal.subset_span h⟩
-  induction h using Submodule.span_induction with
-  | mem x hx => exact hx
-  | zero => simp
-  | add x y _ _ hx hy =>
-    rw [Subring.coe_add, map_add]
-    exact lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hx hy)
-  | smul c x _ hx =>
-    have hc : Valued.v (prP φ c) ≤ 1 := ((hφ.2.2 c).1 c.2).1
-    rw [smul_eq_mul, Subring.coe_mul, map_mul, map_mul]
-    exact mul_lt_one_of_nonneg_of_lt_one_right hc zero_le' hx
-
-theorem primeOf_prP_ne_top {σ : E →ₐ[F] E} (hφ : IsSplitting σ v φ) : primeOf (prP φ) ≠ ⊤ := by
-  rw [Ideal.ne_top_iff_one, mem_primeOf_prP φ hφ]
-  simp
-
 end Local
 
 section Level
@@ -126,20 +108,11 @@ def HasOverLattice (L : ColLevel R F E sp gp C A clsLat) : Prop :=
     (∀ v, L.Uloc v ≤ levelVL sp.cm.sig sp.gram0 v N) ∧
     L.U ≤ levelAfL sp.cm.sig sp.gram0 N
 
-def IndexAtT (L : ColLevel R F E sp gp C A clsLat) : Prop :=
-  ∀ N, IsOverLattice L N → ∀ (v : HeightOneSpectrum (𝓞 F)) (h : (A.T : 𝓞 F) ∈ v.asIdeal) φ,
-    LocalAtT L N v h φ → (L.Uloc v).relIndex (levelVL sp.cm.sig sp.gram0 v N) = A.T ^ R.k - 1
-
 end Level
 
 def SelfDualOverBase : Prop :=
   ∀ (D : D7) (Lv : LevelData D) (u : D.what₂.Word),
     letI := D.host.cmStar
     Formalism.MainNotions.StandardLattice.SplitsF D (D.mem u).A.T → HasOverLattice (Lv u)
-
-def IndexOverBase : Prop :=
-  ∀ (D : D7) (Lv : LevelData D) (u : D.what₂.Word),
-    letI := D.host.cmStar
-    Formalism.MainNotions.StandardLattice.SplitsF D (D.mem u).A.T → IndexAtT (Lv u)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SplittingProjection

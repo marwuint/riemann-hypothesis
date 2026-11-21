@@ -95,16 +95,6 @@ theorem galK_comm {R : Ranks} (H : Host R) (σ τ : H.E ≃ₐ[H.K] H.E) : σ * 
   ext x
   exact AlgEquiv.congr_fun h x
 
-theorem central_of_support {G : Type} [Group G] (z : MonoidAlgebra ℂ G)
-    (h : ∀ g, g ≠ 1 → z.coeff g = 0) : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ G) := by
-  have : z = algebraMap ℂ (MonoidAlgebra ℂ G) (z.coeff 1) := by
-    ext g
-    by_cases hg : g = 1
-    · subst hg; simp
-    · rw [h g hg]; simp [Finsupp.single_eq_of_ne hg]
-  rw [this]
-  exact Subalgebra.algebraMap_mem _ _
-
 set_option synthInstance.maxHeartbeats 400000 in
 
 def toyNtypes (ht : THyp H) (htm : TameHyp H)

@@ -2,7 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedVectorEqOfStandardData
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
 import Formalism.LocalToGlobal.HilbertRowConditions.TiedEMt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnChoiceTwistedChainsFormsClassesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnChoiceTwistedChainsFormsClasses
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
+import Formalism.LocalToGlobal.HermitianForms.TiedTwJSym
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
@@ -19,7 +21,7 @@ theorem tw_ties_with_points : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.
         IsExt (I.rec7 l Z) (z0 X u) (inclE (F := (I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) g'.1 g.1 →
         PtOf (g * k β) (tilF I.sel (I.tup a) u d)) := by
   intro B X I hI hP l Z l0 inQ H F hQ hF hH
-  obtain ⟨T, J, W, h0, hW, hJ⟩ := GlobalTheory.T.trueColumnChoice_twistedChains_formsClasses I hI hP l Z l0 inQ H F hQ hF hH (fun u => (hF u).2.2)
+  obtain ⟨T, J, W, h0, hW, hJ⟩ := _root_.GlobalTheory.Mem.Col2.TC.tw_chains I hI hP l Z l0 inQ H F hQ hF hH (fun u => (hF u).2.2)
   exact ⟨T, J, W, h0, hW, hJ, fun u a ha h1 => hW.topk u a ha h1⟩
 
 end GlobalTheory.Mem.Col2.TC

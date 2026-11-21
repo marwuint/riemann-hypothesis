@@ -67,29 +67,8 @@ attribute [instance] Fr.eeRing Fr.eeAlgA Fr.eeAlgO Fr.eeTow
 def val (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (c : O) : ℝ :=
   ((IsDiscreteValuationRing.addVal O c).toNat : ℝ) / ((IsDiscreteValuationRing.addVal O (l : O)).toNat : ℝ)
 
-open Classical in
-
-def valTop (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (c : O) :
-    WithTop ℝ :=
-  if c = 0 then ⊤ else (val l c : ℝ)
-
-theorem valTop_zero (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] :
-    valTop l (0 : O) = ⊤ := if_pos rfl
-
-theorem valTop_of_ne (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    {c : O} (hc : c ≠ 0) : valTop l c = (val l c : ℝ) := if_neg hc
-
-theorem val_natCast_self (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (h0 : (l : O) ≠ 0) (h1 : ¬ IsUnit (l : O)) : val l (l : O) = 1 := by
-  refine div_self ?_
-  rw [Nat.cast_ne_zero, Ne, ENat.toNat_eq_zero, not_or, IsDiscreteValuationRing.addVal_eq_zero_iff,
-    IsDiscreteValuationRing.addVal_eq_top_iff]
-  exact ⟨h1, h0⟩
-
 def LenLe (l : ℕ) (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] (b : ℝ) : Prop :=
   ∃ m k : ℕ, Module.length O M = m ∧ Module.length O (O ⧸ Ideal.span {(l : O)}) = k ∧ (m : ℝ) ≤ b * k
-
-def eF (l r : ℕ) : ℕ := r + padicValNat l r.factorial
 
 inductive Size (l : ℕ) (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] :
     Submodule O M → Submodule O M → ℕ → ℝ → Prop
@@ -99,33 +78,15 @@ inductive Size (l : ℕ) (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Mo
   | len (A B C : Submodule O M) (μ : ℕ) (x y : ℝ) (h : Size l O M A B μ x) (hBC : B ≤ C)
       (hC : LenLe l O (↥C ⧸ B.comap C.subtype) y) : Size l O M A C μ (x + y)
 
-def InId {O : Type} [CommRing O] (c : O) (g f : O⟦X⟧) : Prop := f ∈ Ideal.span {C c, g}
-
-def killer (l : ℕ) {O : Type} [CommRing O] (χ : Oˣ) (m : ℕ) (J : Finset ℤ) : Polynomial O :=
-  (∏ i ∈ J.erase 0, (Polynomial.X ^ (l ^ m) - Polynomial.C ((χ ^ (i * (l : ℤ) ^ m) : Oˣ) : O))) *
-    ∑ k ∈ Finset.range (l ^ m), Polynomial.X ^ k
-
 namespace Fr
 
 variable {l : ℕ} {O : Type} [CommRing O] (R : Fr l O)
 
 def IsA : Prop := R.e = 1 ∧ ∀ τ, R.ϖ τ = -(l : O)
 
-def IsCyc : Prop :=
-  ∃ j γ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧, Function.Injective j ∧ Associated (j X) (X ^ R.s) ∧
-    (∀ a, j (R.φ a) = (j a).subst ((1 + X : O⟦X⟧) ^ l - 1)) ∧ (∀ a, j (R.γ a) = γ₀ (j a)) ∧
-    (∀ b : O⟦X⟧, γ₀ (b.subst ((1 + X : O⟦X⟧) ^ l - 1)) = (γ₀ b).subst ((1 + X : O⟦X⟧) ^ l - 1)) ∧
-    constantCoeff (γ₀ X) = 0 ∧ coeff 1 (γ₀ X) = (R.χ : O)
-
-theorem isUnit_γX_div_X : IsUnit (1 + (R.κ : O⟦X⟧) * R.E) := by
-  rw [isUnit_iff_constantCoeff, R.χ_zero]
-  exact R.χ.isUnit.pow _
-
 def p (k : ℕ) : O⟦X⟧ := (R.φ ^ k) R.E
 
 def IsLam (f : O⟦X⟧) : Prop := ∃ m : Multiset ℕ, f = (m.map R.p).prod
-
-def pp (j : ℕ) (a : ℕ → ℕ) : O⟦X⟧ := ∏ k ∈ Finset.range j, R.p k ^ a k
 
 abbrev ι : O⟦X⟧ →+* R.EE := algebraMap O⟦X⟧ R.EE
 
@@ -137,8 +98,6 @@ variable [IsDomain O]
 def toL (_R : Fr l O) : O⟦X⟧ →+* (FractionRing O)⟦X⟧ := PowerSeries.map (algebraMap O (FractionRing O))
 
 def γL (f : (FractionRing O)⟦X⟧) : (FractionRing O)⟦X⟧ := f.subst (R.toL (R.γ X))
-
-def φL (f : (FractionRing O)⟦X⟧) : (FractionRing O)⟦X⟧ := f.subst (R.toL (R.φ X))
 
 def levL (τ : Fin R.e) : O⟦X⟧ →+* (FractionRing O)⟦X⟧ := R.toL.comp (R.lev τ).toRingEquiv.toRingHom
 
@@ -170,46 +129,6 @@ def one (R : Fr l O) (n g : ℕ) : Sys R n g where
   G_one := fun _ => ⟨0, by simp⟩
   Φ_inv := fun _ => ⟨0, 1, by simp⟩
   comm := fun _ => by simp
-
-def twistNeg (R : Fr l O) (n : ℕ) : Sys R n 1 where
-  M := R.s
-  Φ := fun _ => ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) • 1
-  G := fun _ => (C ((R.χ : O) ^ R.s) * ((R.isUnit_γX_div_X.unit⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧)) • 1
-  G_one := fun _ => by
-    have hw := R.isUnit_γX_div_X.unit_spec
-    set w := R.isUnit_γX_div_X.unit
-    have h0 : constantCoeff ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * (R.χ : O) ^ R.s = 1 := by
-      rw [← R.χ_zero, ← hw, ← map_mul]; simp
-    have : (X : O⟦X⟧) ∣ C ((R.χ : O) ^ R.s) * ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) - 1 := by
-      rw [X_dvd_iff]; simp only [map_sub, map_mul, constantCoeff_C, map_one]; rw [mul_comm, h0]; simp
-    obtain ⟨b, hb⟩ := this
-    refine ⟨b • 1, ?_⟩
-    rw [smul_smul, ← hb, sub_smul]; simp
-  Φ_inv := fun _ => ⟨0, (R.u : O⟦X⟧) • 1, by simp [smul_smul]⟩
-  comm := fun _ => by
-    have hw := R.isUnit_γX_div_X.unit_spec
-    set w := R.isUnit_γX_div_X.unit
-    have hc := R.comm X
-    rw [R.γ_X, R.φ_X, ← hw, map_mul, R.φ_X, map_mul, map_mul, map_pow, R.γ_X, ← hw] at hc
-    have h1 : (R.u : O⟦X⟧) * R.E ^ R.s * R.φ w = R.γ R.u * w * R.γ R.E ^ R.s := by
-      apply X_mul_cancel; linear_combination hc
-    have a1 : R.γ ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * R.γ R.u = 1 := by rw [← map_mul]; simp
-    have a2 : R.φ ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * R.φ w = 1 := by rw [← map_mul]; simp
-    have a3 : ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * w = 1 := by simp
-    have a4 : ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * R.u = 1 := by simp
-    have hC : R.φ (C ((R.χ : O) ^ R.s)) = C ((R.χ : O) ^ R.s) := R.φ.commutes _
-    ext1 i j
-    have hij : i = j := Subsingleton.elim _ _
-    subst hij
-    simp only [Matrix.smul_apply, Matrix.mul_apply, Matrix.map_apply, Finset.univ_unique,
-      Finset.sum_singleton, Subsingleton.elim i default, Matrix.one_apply_eq, smul_eq_mul, map_mul,
-      map_one, mul_one, hC]
-    set c := C ((R.χ : O) ^ R.s)
-    set wi := ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧)
-    set ui := ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧)
-    linear_combination (c * wi * R.γ ui * ui * R.φ wi) * h1
-      - (R.E ^ R.s * c * wi * R.γ ui) * (a4 * (R.φ wi * R.φ w)) - (R.E ^ R.s * c * wi * R.γ ui) * a2
-      + (R.γ R.E ^ R.s * c * ui * R.φ wi * (wi * w)) * a1 + (R.γ R.E ^ R.s * c * ui * R.φ wi) * a3
 
 def φl (i : ZMod n) : (Fin r → R.EE) →ₗ[O] (Fin r → R.EE) :=
   ((Ring.inverse (R.ι R.E) ^ S.M • (S.Φ i).map R.ι).mulVecLin.restrictScalars O).comp
@@ -252,26 +171,6 @@ def IntRep (pr : DD R n r × DD R n r) : Prop :=
 def Zf : Submodule O (DD R n r × DD R n r) :=
   Submodule.span O {pr | pr ∈ S.Z1 ∧ ∃ a : ℕ, ∃ b ∈ S.B1, IntRep ((l ^ a : ℕ) • pr + b)} ⊔ S.B1
 
-def FIN (g : ℕ) : Prop :=
-  ∃ t : Finset (DD R n r × DD R n r), t.card ≤ g ∧ Submodule.span O (t : Set _) ⊔ S.B1 = S.Zf
-
-def IsCls (m : ℕ) (y z : DD R n r) : Prop := (y, z) ∈ S.Z1 ∧ ∀ i, InMul (X ^ m) (R.N0 r) (z i)
-
-def IsRel (c : ZMod n) (j : ℕ) (f : O⟦X⟧) (g : ℕ) (w z : Fin r → R.EE) : Prop :=
-  ∃ (ρ k : ℕ) (W t : Fin r → R.EE), f ∣ ((R.φ ^ j) X) ^ ρ ∧ InMul X (R.N0 r) W ∧
-    InMul (X ^ ρ) (R.N0 r) ((S.γl c W - W) - (l ^ k : ℕ) • (S.γl c w - w)) ∧ t ∈ S.P c j ∧
-    InMul f (S.P c j) ((l ^ k : ℕ) • t - (l ^ g : ℕ) • S.φit c j W) ∧
-    z = (l ^ g : ℕ) • S.φit c j w - t
-
-def IsRho (c : ZMod n) (j : ℕ) (f : O⟦X⟧) (g m : ℕ) (w : Fin r → R.EE)
-    (pr : DD R n r × DD R n r) : Prop :=
-  ∃ (z : Fin r → R.EE) (z' : DD R n r), S.IsRel c j f g w z ∧
-    S.IsCls m (Pi.single (c + (j : ZMod n)) z) z' ∧ pr - (Pi.single (c + (j : ZMod n)) z, z') ∈ S.B1
-
-def Up (i : ZMod n) (f : O⟦X⟧) : Prop := ∀ x ∈ S.P (i - 1) 1, f • x ∈ R.N0 r
-
-def Down (i : ZMod n) (f : O⟦X⟧) : Prop := ∀ x ∈ R.N0 r, f • x ∈ S.P (i - 1) 1
-
 def d (i : ZMod n) : (Fin r → R.EE) →ₗ[O] (Fin r → R.EE) :=
   (Ring.inverse (R.ι X)) • (S.γl i - LinearMap.id)
 
@@ -305,9 +204,6 @@ def count (i : ZMod n) (τ : Fin R.e) (a b : ℤ) : ℕ :=
   Module.finrank (FractionRing O) (S.Fil i τ a) - Module.finrank (FractionRing O) (S.Fil i τ (b + 1))
 
 end Sys
-
-def D0 (O : Type) [CommRing O] [IsDomain O] (r : ℕ) : Submodule O (Fin r → FractionRing O) :=
-  Submodule.pi Set.univ fun _ => LinearMap.range (Algebra.linearMap O (FractionRing O))
 
 structure Hom {l : ℕ} {O : Type} [CommRing O] {R : Fr l O} {n r r' : ℕ} (S : Sys R n r)
     (S' : Sys R n r') where
@@ -357,25 +253,9 @@ def Lifts (c : O) : Prop := ∀ pr ∈ S'.Zf, c • pr ∈ F.ImF
 
 def LiftF (e : ℕ) : Prop := F.Lifts ((l : O) ^ e)
 
-def ColLe (b : ℝ) : Prop := LenLe l O (↥S'.Zf ⧸ F.ImF.comap S'.Zf.subtype) b
-
 def Kills (i : ZMod n) (f : O⟦X⟧) : Prop :=
   ∀ y ∈ R.N0 r', ∃ x ∈ R.N0 r, F.fl i x = f • y
 
-def IsSES (F : Hom S S') (F' : Hom S' S'') : Prop :=
-  F'.Onto ∧ ∀ i, Function.Injective (F.fl i) ∧ (∀ x, F'.fl i x = 0 ↔ ∃ y, F.fl i y = x) ∧
-    ∀ y, F.fl i y ∈ R.N0 r' → y ∈ R.N0 r
-
-def IsClassOf {g : ℕ} (F : Hom S S') (F' : Hom S' (Sys.one R n g)) (a : Fin g → O)
-    (pr : DD R n r × DD R n r) : Prop :=
-  ∃ x : DD R n r', (∀ i k, F'.fD x i k = algebraMap O R.EE (a k)) ∧
-    F.fD pr.1 = S'.φD x - x ∧ F.fD pr.2 = S'.γD x - x
-
 end Hom
-
-def ExtProp {l : ℕ} {O : Type} [CommRing O] {R : Fr l O} {n r : ℕ} (S : Sys R n r) : Prop :=
-  ∀ (g : ℕ) (pr : Fin g → DD R n r × DD R n r), (∀ k, pr k ∈ S.Zf) →
-    ∃ (Y : Sys R n (r + g)) (F : Hom S Y) (F' : Hom Y (Sys.one R n g)), F.IsSES F' ∧
-      ∀ k, F.IsClassOf F' (Pi.single k 1) (pr k)
 
 end GlobalTheory.NB

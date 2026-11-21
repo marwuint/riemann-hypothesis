@@ -18,11 +18,6 @@ def badV (D : D7) (i : D.ntw.Tw) (Q : Finset (PlE D.host)) :
   {v | ∃ w : PlE D.host, NG.OverPl w v ∧
     (w ∈ Q ∨ (∃ k, w ∈ placesOver D.host.E (D.host.g k)) ∨ w ∈ D.ntw.pD i)}
 
-def heckeSetF (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
-    Set (Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)) :=
-  {T | ∃ (k : ℕ) (P : PlE D.host), 1 ≤ k ∧ k ≤ D.R.r ∧ IsSplitPl D.host P ∧ P ∉ D.ntw.S0 i ∧
-    T = D.nexp.hkF i j b k P}
-
 abbrev TWSet (D : D7) (i : D.ntw.Tw) (Q : Finset (PlE D.host)) : Prop :=
   Formalism.MainNotions.NAdm.TWSet D.ntw i Q
 
@@ -177,15 +172,6 @@ def HWAtF (c : L →+* L) {W : Type} [AddCommGroup W] [Module K W] (ρ : Represe
       Matrix.mulVec (Matrix.of fun a a' => MvPolynomial.eval (evPtF c τ B) (P a a')) v =
         (∏ a, (B.val a a) ^ (lam a)) • v
 
-theorem hwAtF_trivial (c : L →+* L) (τ : L →+* K) :
-    HWAtF (n := n) c (Representation.trivial K (GQ L n) K) τ 0 := by
-  refine ⟨Unit, inferInstance, inferInstance, Module.Basis.singleton Unit K, fun _ _ => 1,
-    fun γ γ₀ _ => ?_, fun _ => 1, fun h => one_ne_zero (congrFun h ()), fun B _ => ?_⟩
-  · ext a a'
-    simp [LinearMap.toMatrix_apply, Representation.trivial]
-  · ext a
-    simp [Matrix.mulVec, dotProduct]
-
 end HW
 
 def embEL0 (D : D7) : D.host.E →+* ↥D.LL0 where
@@ -275,183 +261,8 @@ structure NExpTied (D : D7) where
 
 attribute [instance] NExpTied.acgWt NExpTied.modWt NExpTied.fdWt
 
-theorem eAlg_eq_of_eLL0_eq {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
-    {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} {tw : NTw R H what₂ LL0 N} (Y Y' : NExp R H what₂ LL0 N tw)
-    (h : Y.eLL0 = Y'.eLL0) (i : tw.Tw) (b : Bool) : Y.eAlg i b = Y'.eAlg i b := by
-  refine MonoidAlgebra.ext (Finsupp.ext fun g => ?_)
-  rw [Y.eAlg_def, Y'.eAlg_def, h]
-
-theorem NExpTied.primRoot {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.ntw.Tw) (k : Fin 2)
-    (v : D.nd.PlG k) : ∃ ζ : FractionRing (D.ntw.O i), IsPrimitiveRoot ζ (D.host.g k) := by
-  obtain ⟨θ, hθ, -⟩ := T.psiU_gen i true
-  exact ⟨_, char_one_prim (D.host.g_prime k) (θ ⟨k, v⟩) (hθ hr ⟨k, v⟩)⟩
-
-theorem NExpTied.psiU_ne_one {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.ntw.Tw) (b : Bool) (k : Fin 2)
-    (v : D.nd.PlG k) : ∃ u : D.nexp.U, D.nexp.psiU i b u ≠ 1 := by
-  classical
-  have : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩
-  obtain ⟨θ, hθ, hψ⟩ := T.psiU_gen i b
-  have hu : tvAt (p := fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) hr ⟨k, v⟩ ∈ D.nexp.U := by
-    rw [T.U_eq]; exact tvAt_mem hr _
-  refine ⟨⟨_, hu⟩, ?_⟩
-  rw [hψ, stdVal_tvAt]
-  exact char_one_ne (θ ⟨k, v⟩) (hθ hr ⟨k, v⟩)
-
-theorem NExpTied.U_ne_bot {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.ntw.Tw) (k : Fin 2) (v : D.nd.PlG k) :
-    D.nexp.U ≠ ⊥ := by
-  intro h
-  obtain ⟨u, hu⟩ := T.psiU_ne_one hr i true k v
-  have : u = 1 := Subtype.ext (by simpa [h] using u.2)
-  exact hu (by rw [this, map_one])
-
-theorem NX.isStdGeneric_inv {ι : Type} [Fintype ι] {p : ι → ℕ} {r : ℕ} {K : Type} [Field K] {S : Subgroup (GProd p r)}
-    (ψ ψ' : S →* Kˣ) (h : ∀ u, ψ' u = (ψ u)⁻¹) (hg : IsStdGeneric p r ψ) : IsStdGeneric p r ψ' := by
-  obtain ⟨θ, hθ, hψ⟩ := hg
-  refine ⟨fun x => (θ x)⁻¹, fun hr x hx => hθ hr x (inv_eq_one.mp hx), fun u => ?_⟩
-  rw [h, hψ]
-  simp only [stdVal, MonoidHom.inv_apply, Finset.prod_inv_distrib]
-
-theorem NExpTied.delU_ne_one {D : D7} (T : NExpTied D) {i : D.ntw.Tw} {Q : Finset (PlE D.host)} {M : ℕ}
-    (hQ : NX.AdmQ D i Q M) (hM : 1 ≤ M) {P : PlE D.host} (hP : P ∈ Q)
-    (A : ValuationSubring D.nd.Om) (hA : IsPlaceOver A P) : D.nexp.delU i Q M ≠ 1 := by
-  intro h1
-  have hl : (D.ntw.l i).Prime := (D.ntw.lPrime i).out
-  have h2 : 1 < D.ntw.l i ^ M := Nat.one_lt_pow (by omega) hl.one_lt
-  have : Fact (1 < D.ntw.l i ^ M) := ⟨h2⟩
-  obtain ⟨σ, hσ⟩ := (T.delU_ine i Q M hQ P hP).1 A hA 1
-  rw [h1] at hσ
-  simp at hσ
-
-theorem NExpTied.delU_fac {D : D7} (T : NExpTied D) (i : D.ntw.Tw) (Q : Finset (PlE D.host)) (M : ℕ) (hQ : TWSet D i Q) :
-    ∃ f : D.ntw.RCG i Q →* Multiplicative (DelQM D.host (D.ntw.l i) Q M),
-      D.nexp.delU i Q M = f.comp (D.ntw.art i Q) := by
-  have : Fact (D.ntw.l i).Prime := D.ntw.lPrime i
-  have : NeZero (D.ntw.l i ^ M) := ⟨pow_ne_zero _ (Fact.out : (D.ntw.l i).Prime).ne_zero⟩
-  obtain ⟨f, hf⟩ := D.ntw.art_univ i Q (fun v hv => (hQ v hv).2)
-    (Multiplicative (DelQM D.host (D.ntw.l i) Q M))
-    (fun x => ⟨M, by
-      apply Multiplicative.toAdd.injective
-      funext q
-      simp [toAdd_pow, nsmul_eq_mul]⟩)
-    (D.nexp.delU i Q M) (T.delU_cont i Q M) (D.nexp.delU_anti i Q M)
-    (fun v hv A hA σ hσ => D.nexp.delU_unr i Q M v hv A hA σ hσ)
-  exact ⟨f, hf.symm⟩
-
 namespace NX
 
-theorem MtVReal.conds_one {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
-    {ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
-    [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
-    {τ : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ}
-    (M : MtVReal D i j b k Q ψ e W₀ ρ₀ τ) :
-    (1 : GAf D.host.E D.R.nV) ∈ Umax D.host.E D.R.nV ∧
-    (∀ kv, InLevG (M.sp (pG D kv)).v D.R.r (locM (M.sp (pG D kv)) (1 : GAf D.host.E D.R.nV))) ∧
-    (∀ P ∈ M.QP, InParah (M.sp P).v D.R.r (locM (M.sp P) (1 : GAf D.host.E D.R.nV))) ∧
-    (∀ P ∈ M.DP, InParah (M.sp P).v D.R.r (locM (M.sp P) (1 : GAf D.host.E D.R.nV))) := by
-  refine ⟨(Umax D.host.E D.R.nV).one_mem, fun kv => ?_, fun P _ => ?_, fun P _ => ?_⟩
-  · simpa [locM] using inLevG_one (n := D.R.nV) (M.sp (pG D kv)).v D.R.r
-  · simpa [locM] using inParah_one (n := D.R.nV) (M.sp P).v D.R.r
-  · simpa [locM] using inParah_one (n := D.R.nV) (M.sp P).v D.R.r
-
-theorem gVal_isUnit (D : D7) (i : D.ntw.Tw) (k : ℕ) (b : Bool) (kv : Σ k : Fin 2, D.nd.PlG k)
-    (s : SplitPlace D.host.E) (red : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1))
-    (τ : (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ)
-    (x : Matrix (Fin D.R.nV) (Fin D.R.nV) (s.v.adicCompletion (maximalRealSubfield D.host.E))) :
-    IsUnit (gVal D i k b kv s red τ x) := by
-  classical
-  unfold gVal
-  refine IsUnit.mul (IsUnit.map _ ?_) ?_
-  · unfold psiUTot
-    split_ifs
-    · exact Units.isUnit _
-    · exact isUnit_one
-  · split_ifs
-    · exact (Units.isUnit _).map _
-    · exact isUnit_one
-
-theorem MtVReal.qprod_eq {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
-    {ψ ψ' : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
-    [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
-    {τ : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ}
-    (M : MtVReal D i j b k Q ψ e W₀ ρ₀ τ) (M' : MtVReal D i j b k Q ψ' e W₀ ρ₀ τ)
-    (hJ : M.J = M'.J) (hχ : ∀ κ (h : κ ∈ M.J) (h' : κ ∈ M'.J), M.χ ⟨κ, h⟩ = M'.χ ⟨κ, h'⟩)
-    (hQP : M'.QP = M.QP) (hDP : M'.DP = M.DP) (hsp : M'.sp = M.sp)
-    (hg : ∀ κ, (∏ kv : (Σ kk : Fin 2, D.nd.PlG kk),
-        gVal D i k b kv (M.sp (pG D kv)) (M.redG kv) (τ kv) (locM (M.sp (pG D kv)) κ)) =
-      ∏ kv : (Σ kk : Fin 2, D.nd.PlG kk),
-        gVal D i k b kv (M'.sp (pG D kv)) (M'.redG kv) (τ kv) (locM (M'.sp (pG D kv)) κ))
-    (κ : GAf D.host.E D.R.nV) (h : κ ∈ M.J) :
-    (∏ P ∈ M.QP, ofOk D i k (tameVal ψ P e (resRep (M.sp P) P (detT D.R.r (locM (M.sp P) κ)))).1) =
-      ∏ P ∈ M.QP, ofOk D i k (tameVal ψ' P e (resRep (M.sp P) P (detT D.R.r (locM (M.sp P) κ)))).1 := by
-  have h' : κ ∈ M'.J := hJ ▸ h
-  have e1 := M.chi_eq κ h
-  have e2 := M'.chi_eq κ h'
-  rw [hχ κ h h', e2, hQP, hDP, ← hg κ, hsp] at e1
-  have hA : (∏ kv : (Σ kk : Fin 2, D.nd.PlG kk),
-      gVal D i k b kv (M.sp (pG D kv)) (M.redG kv) (τ kv) (locM (M.sp (pG D kv)) κ)) ≠ 0 :=
-    Finset.prod_ne_zero_iff.mpr fun kv _ => (gVal_isUnit D i k b kv _ _ _ _).ne_zero
-  have hC : (∏ P ∈ M.DP, ofO0 D i k (tameVal (D.ntw.delta i) P (if b then e else -e)
-      (resRep (M.sp P) P (detT D.R.r (locM (M.sp P) κ)))).1) ≠ 0 :=
-    Finset.prod_ne_zero_iff.mpr fun P _ => ((Units.isUnit _).map (ofO0 D i k)).ne_zero
-  exact (mul_left_cancel₀ hA (mul_right_cancel₀ hC e1)).symm
-
-example {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
-    {ψ ψ' : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
-    [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
-    {τ : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ}
-    (M : MtVReal D i j b k Q ψ e W₀ ρ₀ τ)
-    (E' : D.nexp.MtV i j b k Q ψ' ≃ₗ[Kk D i k] D.nexp.MtV i j b k Q ψ) : True := by
-  fail_if_success
-    have _x : MtVReal D i j b k Q ψ' e W₀ ρ₀ τ := { M with real := E'.trans M.real }
-  trivial
-
-def MtVReal.transferTame {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
-    {ψ ψ' : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
-    [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
-    {τ : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ}
-    (M : MtVReal D i j b k Q ψ e W₀ ρ₀ τ) (hT : ∀ P u, tameVal ψ P e u = tameVal ψ' P e u)
-    (E' : D.nexp.MtV i j b k Q ψ' ≃ₗ[Kk D i k] D.nexp.MtV i j b k Q ψ) :
-    MtVReal D i j b k Q ψ' e W₀ ρ₀ τ :=
-  { M with
-    chi_eq := fun κ h => by rw [M.chi_eq κ h]; simp only [hT]
-    real := E'.trans M.real }
-
-theorem MtVReal.finrank_W {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
-    {ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
-    [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
-    {τ : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ}
-    (M : MtVReal D i j b k Q ψ e W₀ ρ₀ τ) :
-    Module.finrank (Kk D i k) M.W = Module.finrank (FractionRing (D.ntw.O i)) W₀ := by
-  obtain ⟨ι, _, _, b₀, b₁, -⟩ := M.bc
-  rw [Module.finrank_eq_card_basis b₀, Module.finrank_eq_card_basis b₁]
-
 end NX
-
-theorem NExpTied.infOf_hw_eq {D : D7} (T T' : NExpTied D) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (t : D.what₂.Tau) (hj : 1 ≤ j)
-    (hjm : j ≤ D.R.m) (sh : ℂ) (hsh : D.naut.infG D.naut.etaT (embT D t) = {sh}) {lam lam' : Fin D.R.nV → ℤ}
-    (h : HWAtF (cE D) (T.rhoW i j b).dual (kEmb D i b t) lam)
-    (h' : HWAtF (cE D) (T'.rhoW i j b).dual (kEmb D i b t) lam') : NG.infOf lam = NG.infOf lam' := by
-  rw [T.rhoW_wt i j b t hj hjm sh lam hsh h, T'.rhoW_wt i j b t hj hjm sh lam' hsh h']
-
-def HWDet (D : D7) (i : D.ntw.Tw) (b : Bool) : Prop :=
-  ∀ (W W' : Type) [AddCommGroup W] [Module (FractionRing (D.ntw.O i)) W] [AddCommGroup W']
-    [Module (FractionRing (D.ntw.O i)) W'] (ρ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W)
-    (ρ' : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W'),
-    ρ.IsIrreducible → ρ'.IsIrreducible → IsAlgWeightF D.host.E D.R.nV (FractionRing (D.ntw.O i)) ρ →
-    IsAlgWeightF D.host.E D.R.nV (FractionRing (D.ntw.O i)) ρ' →
-    (∀ t : D.what₂.Tau, ∃ lam lam' : Fin D.R.nV → ℤ, HWAtF (cE D) ρ.dual (kEmb D i b t) lam ∧
-      HWAtF (cE D) ρ'.dual (kEmb D i b t) lam' ∧ NG.infOf lam = NG.infOf lam') →
-    ∃ e : W ≃ₗ[FractionRing (D.ntw.O i)] W', ∀ γ x, e (ρ γ x) = ρ' γ (e x)
-
-theorem NExpTied.rhoW_iso {D : D7} (T T' : NExpTied D) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (hj : 1 ≤ j) (hjm : j ≤ D.R.m)
-    (hsh : ∀ t : D.what₂.Tau, ∃ sh, D.naut.infG D.naut.etaT (embT D t) = {sh}) (hD : HWDet D i b) :
-    ∃ e : T.Wt i j b ≃ₗ[FractionRing (D.ntw.O i)] T'.Wt i j b,
-      ∀ γ x, e (T.rhoW i j b γ x) = T'.rhoW i j b γ (e x) := by
-  refine hD _ _ (T.rhoW i j b) (T'.rhoW i j b) (T.rhoW_irr i j b hj hjm) (T'.rhoW_irr i j b hj hjm) (T.rhoW_alg i j b hj hjm)
-    (T'.rhoW_alg i j b hj hjm) fun t => ?_
-  obtain ⟨sh, hs⟩ := hsh t
-  obtain ⟨lam, hl⟩ := T.rhoW_hw i j b t hj hjm
-  obtain ⟨lam', hl'⟩ := T'.rhoW_hw i j b t hj hjm
-  exact ⟨lam, lam', hl, hl', T.infOf_hw_eq T' i j b t hj hjm sh hs hl hl'⟩
 
 end Formalism.L2

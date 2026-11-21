@@ -13,8 +13,10 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilPairingEqO
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsCubeLBPairingIsoBaseChange
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilEqIffHermFormEqComplex
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.DegOfLatRankEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanLogNormEmbeddingsRingHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegISupMapRankOneLatticeOfGramStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanLogNormEmbeddingsRingHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegISupMapRankOneLatticeOfGram
+import ReciprocityTheory.GeometryOfNumbers.LatticeCovolumes.ArakelovDegreeEqDegreeOfFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexISupMapEqPow
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM
 
 noncomputable section
@@ -105,13 +107,13 @@ theorem side (hU : ThetaUnifAV) (hL : Out.Laws) {E : Type} [Field E] [NumberFiel
       hB.form s (M b c) (M a c) = s (y a b) * hA.form s c c := fun s a b c hc =>
     gram_images hU hL E H K σ₁ A B FA FB hA hB (f a) (f b) (M a) (M b) (g a b) hhA hhB (hf a) (hf b) (hw a b)
       (hM a) (hM b) τ s c hc
-  obtain ⟨hne, hdeg⟩ := GlobalTheory.T.deg_iSup_map_rankOne_lattice_of_gram K _ _ hA hB n M _ y (GlobalTheory.CM.DegBound.eigLat_fg FA A.t.act τ) hr hi hind hgr
+  obtain ⟨hne, hdeg⟩ := _root_.GlobalTheory.deg_iSup_map_of_gram K _ _ hA hB n M _ y (GlobalTheory.CM.DegBound.eigLat_fg FA A.t.act τ) hr hi hind hgr
   have hdet : y.det = ((τ g.det : 𝓞 K) : K) := by
     rw [hy, show (fun x : 𝓞 E => (τ x : K)) = ⇑((algebraMap (𝓞 K) K).comp τ) from rfl, ← RingHom.mapMatrix_apply,
       ← RingHom.map_det]
     rfl
   refine ⟨fun h0 => hne (by rw [hdet, h0, map_zero]; rfl), ?_⟩
-  have hn := GlobalTheory.T.mean_log_norm_embeddings_ringHom_eq E K τ g.det
+  have hn := _root_.GlobalTheory.mean_log_norm_embeddings_ringHom E K τ g.det
   rw [hdeg, ← hΩ, hdet]
   have e : (∑ s : K →+* ℂ, Real.log ‖s ((τ g.det : 𝓞 K) : K)‖) / (2 * (Module.finrank ℚ K : ℝ)) =
       Real.log |((Algebra.norm ℚ ((g.det : 𝓞 E) : E) : ℚ) : ℝ)| / (2 * (Module.finrank ℚ E : ℝ)) := by

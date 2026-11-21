@@ -67,26 +67,7 @@ variable {D : D7} (X : HidaSetting D) (G : GoodOp X) (j : D.what₂.EE ≃ₗᵢ
   (cF : (Fin ((fc P.zs).Df1.nV Bs.μ0) → ℂ) →ₗ[ℂ] D.what₂.Amb D.what₂.mu0)
   (eR : D.what₂.EE →ₗ[ℂ] P.EE)
 
-def ChainTie : Prop :=
-  ∀ u (x : Fin ((fc P.zs).Dc.a (m u)) → K) (y : Fin ((fc P.zs).Df1.nV Bs.μ0) → K),
-    D.what₂.perCol u D.what₂.mu0 ((cφ u).symm (cpt Bs.v0.embedding x)) (cF (cpt Bs.v0.embedding y)) =
-      Bs.v0.embedding ((fc P.zs).Dc.Pt (m u) Bs.μ0 x y)
-
 def GoodPartHasComplexCoordinates : Prop := D.what₂.V0 D.what₂.mu0 ≤ LinearMap.range cF
-
-def RowTie : Prop :=
-  (∀ F, eR F ∈ P.EEl true) ∧ (∀ e ∈ P.EEl true, ∃ F, eR F = e) ∧ (∃ c : ℝ, 0 < c ∧ ∀ F, ‖eR F‖ = c * ‖F‖) ∧
-    ∀ y : Fin ((fc P.zs).Df1.nV Bs.μ0) → K,
-      P.Θ Bs.μ0 (P.jR Bs.μ0 (eV Bs.μ0 y)) = eR (D.what₂.iota D.what₂.mu0 (cF (cpt Bs.v0.embedding y)))
-
-def ColNorm : Prop :=
-  ∀ u, ∃ c : ℝ, 0 < c ∧ ∀ φ : D.what₂.Mu u, Formalism.DivisionValues.fnorm ((fc P.zs).Dc.Xc (m u) Bs.v0) (cφ u φ) = c * ‖φ‖
-
-def PairTie : Prop :=
-  ∀ u, ∃ κ : ℂ, κ ≠ 0 ∧ ∀ (F : D.what₂.EE) (φ : D.what₂.Mu u) (T : Cu X u hK),
-    colDictL X (Tr u) hK T = ((D.eMu u φ : (D.mem u).A.Mram) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) →
-      ⟪sEE (eR F), (fc P.zs).Sp.Pu (m u) (cφ u φ)⟫_ℂ =
-        κ * ⟪((conjHH X G (j F) : HHX X) : L2X X), PuFun X u hK (Dt u) T⟫_ℂ
 
 end Read
 

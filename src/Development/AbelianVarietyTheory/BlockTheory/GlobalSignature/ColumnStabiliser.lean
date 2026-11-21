@@ -41,27 +41,6 @@ def ColStabTrivialAt (D : D7) (Lv : LevelData D) (u : D.what₂.Word) : Prop :=
 def ColStabTrivial : Prop :=
   ∀ (D : D7) (Lv : LevelData D) (u : D.what₂.Word), ColStabTrivialAt D Lv u
 
-example (D : D7) : GBig D ↔ ∃ i : Fin 2, 2 * D.R.f * D.R.k + 1 < D.host.g i := by
-  unfold GBig
-  exact exists_congr fun i => by omega
-
-example (h : ColStabTrivial) (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (hg : GBig D)
-    (hs : ∀ i : Fin 2, SplitsF D (D.host.g i)) (c : (D.mem u).C.cls 0)
-    (γ : (D.mem u).C.stab 0 c) : γ = 1 := by
-  let _ := D.host.cmStar
-  have hb := h D Lv u hg hs ((Lv u).y c)
-  have hr := ((Lv u).stabI_range c ((Lv u).stabI c γ).1 ((Lv u).stabI c γ).2).1 ⟨γ, rfl⟩
-  have hm : ((Lv u).stabI c γ).1 ∈ colStab D Lv u ((Lv u).y c) := by
-    rw [mem_colStab]
-    refine ⟨((Lv u).stabI c γ).2, ?_⟩
-    obtain ⟨x, hx, hx'⟩ := hr
-    rw [← hx']
-    simpa [mul_assoc] using hx
-  rw [hb, Subgroup.mem_bot] at hm
-  apply (Lv u).stabI_inj c
-  rw [map_one]
-  exact Subtype.ext hm
-
 theorem map_colStab (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     letI := D.host.cmStar
     ∀ y : UPts D.sp.cm.sig D.sp.gram0 (FiniteAdeleRing (𝓞 D.host.F) D.host.F),

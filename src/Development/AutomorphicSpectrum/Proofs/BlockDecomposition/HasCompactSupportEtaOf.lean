@@ -1,10 +1,12 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LastRowMulRowGLInv
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicLatticeOpenCompactStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicLatticeOpenCompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AnnihilatorAdelicLatticeCompactStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoxFourierIntegralBoundStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicVectorIntegralProductStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteVectorMeasureIsAddHaarStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanCharacterRealPairingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanCharacterRealPairing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousSInf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothCutoffTranslateContDiffStatement
 
 noncomputable section
@@ -195,7 +197,7 @@ theorem inf_ft (h4 : S4) (h8 : S8) {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {
     ∃ C : ℝ, ∀ (z : Fin k → Cinf E) (g : GA E k),
       ‖∫ x, (b x : ℂ) * φ (g * (infGL E k (rowGL x))⁻¹) * ψ (sInf E (∑ i, x i * z i)) ∂nuInf E k‖ ≤
         C * ((1 + ‖z‖) ^ M)⁻¹ := by
-  obtain ⟨β, hβ, hψβ⟩ := GlobalTheory.T.archimedean_character_real_pairing (E := E) (k := k) h8 hψ
+  obtain ⟨β, hβ, hψβ⟩ := _root_.GlobalTheory.CompanionTheory.JSPair.exists_pairing (E := E) (k := k) h8 hψ
   haveI := GlobalTheory.T.infinite_vector_measure_isAddHaar E k
   set F : (Fin k → Cinf E) → XB E k := fun x => (b x : ℂ) • Rt E k (infGL E k (rowGL x))⁻¹ φ with hF
   have hFs : ContDiff ℝ ∞ F := GlobalTheory.T.smooth_cutoff_translate_contDiff hφ hb hu
@@ -352,7 +354,7 @@ theorem cut_of (h0 : PositivityTheory.jumpWindows.G0) (h4 : S4) (h8 : S8) (hk : 
       IsUnit (lastEnt t) ∧ repW k w (rowGL t) φ = φ)
     (hsm : ∀ y, etaOf b (latS S B : Set (Af E)) y ≠ 0 → sOf S y ∈ C₀) :
     Cut ψ S U φ (etaOf b (latS S B : Set (Af E))) (sOf S) := by
-  obtain ⟨hLo, hLc⟩ := GlobalTheory.T.finite_adelic_lattice_open_compact S B hBo hBI
+  obtain ⟨hLo, hLc⟩ := _root_.GlobalTheory.CompanionTheory.CutOff.latS_isOpen_isCompact S B hBo hBI
   have hLcl : IsClosed (latS S B : Set (Af E)) := AddSubgroup.isClosed_of_isOpen _ hLo
   have hf : Continuous fun y : Fin k → Ad E => fun i => pFin E (y i) :=
     continuous_pi fun i => (GlobalTheory.CuspRep.GASplit.continuous_pFin E).comp (continuous_apply i)

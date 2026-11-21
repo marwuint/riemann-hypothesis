@@ -1,10 +1,12 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLiftSpread
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLiftAtPrime
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLiftModelNef
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLiftModelGen
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLiftModel
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKleimanScheme
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBridgeFull
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLiftBirationalAmple
 import GroundTheory.HeightsAndTheta.Heights.Intersections.IsSmoothMetricOfIsSmoothHerm
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
@@ -134,13 +136,6 @@ theorem LiftModel.birational_of_subfamily {Ω : Type} [Field Ω] {r : ℕ} (x₃
   · rw [hev, hev]
     exact hgs
 
-theorem LiftModel.isProjVarF_genIdeal {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type}
-    [Field Ω] {y : (Σ k, ι k) → Ω} {D : ℕ} (hV : IsArithVar (mCoordIdeal y) (D + 1)) :
-    IsProjVarF (KH.genIdeal y) D := by
-  classical
-  have h := GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.isProjVarQ_of_isArithVar hV
-  exact ⟨(GroundTheory.Heights₂.Heights.NumbersDVR.Objects.isMultiProjPrime_iff _).mp h.1, h.2⟩
-
 theorem LiftModel.core {K : Type} [Fintype K] {ι : K → Type} {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω)
     (N : K → ℤ) (B : ∀ r : ℕ, (Fin r → Ω) → Prop) {q₁ m t₁ : ℕ} (hq₁ : 1 ≤ q₁) (hm : 1 ≤ m)
     (h₁ : ∀ t : ℕ, t₁ ≤ t → ∃ (r : ℕ) (x' : Fin r → Ω), (∀ j, x' j ∈ chartLat y ((t * q₁) • N) 1) ∧
@@ -196,33 +191,6 @@ theorem LiftModel.core {K : Type} [Fintype K] {ι : K → Type} {Ω : Type} [Fie
   obtain ⟨F, hFmem, hFgen, hF₃⟩ :=
     LiftModel.combine y ((t * Q) • N) (by omega) x₁ hx₁ hg₁ rP xP hxP hgP x₃ hx₃
   exact ⟨t * Q, F, Nat.one_le_iff_ne_zero.mpr (by positivity), hFmem, hFgen, r₃, x₃, hF₃, hB₃⟩
-
-theorem LiftModelGen.proof (hS : LiftSpread.Statement) (hA : LiftAtPrime.Statement) : LiftModelGen.Statement := by
-  intro K _ _ ι _ _ Ω _ _ y D N hV hQ hF
-  classical
-  obtain ⟨q₁, m, t₁, hq₁, hm, h₁⟩ := hS K ι Ω y D N hV hQ
-  have hP := fun p (hp : p ∈ m.primeFactors) =>
-    hA K ι Ω y D N p hV (Nat.prime_of_mem_primeFactors hp) (hF p (Nat.prime_of_mem_primeFactors hp))
-  choose! qP tP hqP hP using hP
-  obtain ⟨a, F, ha, hmem, hgen, -⟩ := LiftModel.core y N (fun _ _ => True) hq₁ hm h₁ qP tP hqP hP
-    (q₃ := 1) (t₃ := 0) le_rfl fun _ _ => ⟨0, Fin.elim0, fun j => j.elim0, trivial⟩
-  exact ⟨a, {x // x ∈ F}, inferInstance, Subtype.val, ha, fun j => hmem j j.2, hgen⟩
-
-theorem LiftModelNef.proof (hKA : KH.KAmpStatement) (hS : LiftSpread.Statement) (hA : LiftAtPrime.Statement)
-    (hB : LiftBirationalNef.Statement) : LiftModelNef.Statement := by
-  intro K _ _ ι _ _ Ω _ _ y D α b a₀ I hI hV hbir hnef hb ha₀ hF
-  classical
-  have hQ : KH.AmpleV ℚ (KH.genIdeal y) (b • α + fun _ => (a₀ : ℤ)) :=
-    hKA ℚ K ι I (KH.genIdeal y) D α b a₀ hI (LiftModel.isProjVarF_genIdeal hV) hnef hb ha₀
-  obtain ⟨q₁, m, t₁, hq₁, hm, h₁⟩ := hS K ι Ω y D _ hV hQ
-  have hP := fun p (hp : p ∈ m.primeFactors) =>
-    hA K ι Ω y D _ p hV (Nat.prime_of_mem_primeFactors hp) (hF p (Nat.prime_of_mem_primeFactors hp))
-  choose! qP tP hqP hP using hP
-  obtain ⟨q₃, t₃, hq₃, h₃⟩ := hB K ι Ω y D α b a₀ I hI hV hbir hnef hb ha₀
-  obtain ⟨a, F, ha, hmem, hgen, r, x₃, hx₃F, hbir₃⟩ :=
-    LiftModel.core y _ (fun r x => Birational (fun p : Σ _ : Unit, Fin r => x p.2)) hq₁ hm h₁ qP tP hqP hP hq₃ h₃
-  exact ⟨a, {x // x ∈ F}, inferInstance, Subtype.val, ha, fun j => hmem j j.2, hgen,
-    LiftModel.birational_of_subfamily x₃ F hx₃F hbir₃⟩
 
 theorem LiftModel.proof (hS : LiftSpread.Statement) (hA : LiftAtPrime.Statement)
     (hB : LiftBirationalAmple.Statement) : LiftModel.Statement := by

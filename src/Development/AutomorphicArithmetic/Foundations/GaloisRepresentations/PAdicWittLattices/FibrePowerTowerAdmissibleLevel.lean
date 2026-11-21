@@ -49,8 +49,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.PTwFEt
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.PSigmaFEt
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.PTwMem
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.PSumFn
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.PMemOp
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.TransCancel
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.PKSNice
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.ExistsDeeperNormalLevel
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.SplitsBasicHolds
@@ -142,12 +141,6 @@ theorem transCancel_holds : TransCancel := @pTransCancel @multBasic_holds @relCo
 theorem twFEt_holds : TwFEt := @pTwFEt @fEtBasic_holds @twGal_holds
 
 theorem sigmaFEt_holds : SigmaFEt := @pSigmaFEt
-
-theorem twMem_holds : TwMem.{u} := @pTwMem.{u} @splitsPts_holds @ptsOfSplits_holds @sigmaFEt_holds @twFEt_holds @twSplit_holds
-
-theorem sumFn_holds : SumFn.{u} := @pSumFn.{u}
-
-theorem memOp_holds : MemOp.{u} := @pMemOp.{u} @kNBasic_holds @plInv_holds.{u} @hopDeep_holds.{u} @hopEx_holds.{u} @twMem_holds.{u} @sumFn_holds.{u}
 
 theorem kSNice_holds : KSNice := @pKSNice @kNBasic_holds @powSm_holds @twFEt_holds @sigmaFEt_holds
 

@@ -13,8 +13,6 @@ def conv {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) (a b : G → 
 def CptMod {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G) (F : G → ℂ) : Prop :=
   ∃ C : Set G, IsCompact C ∧ ∀ g, F g ≠ 0 → ∃ h ∈ H, ∃ c ∈ C, g = h * c
 
-example {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G) : CptMod H 0 := ⟨∅, isCompact_empty, fun _ h => absurd rfl h⟩
-
 def GLTop : Prop :=
   ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ),
     LocallyCompactSpace (GL (Fin n) E) ∧ SecondCountableTopology (GL (Fin n) E) ∧ T2Space (GL (Fin n) E) ∧
@@ -78,12 +76,6 @@ def QuotConj : Prop :=
     ∀ F : G → ℂ, Measurable F → (∀ h ∈ H, ∀ g, F (h * g) = F g) →
     quotIntegral μG H' μ' (fun g => F (y * g)) = quotIntegral μG H μ F
 
-def QuotScale : Prop :=
-  ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
-    [MeasurableSpace G] [BorelSpace G] (μG : Measure G), μG.IsHaarMeasure → ∀ (H : Subgroup G) (μ : Measure H), SFinite μ → μ.IsInvInvariant →
-    ∀ c : NNReal, c ≠ 0 → ∀ F : G → ℂ, Measurable F → (∀ h ∈ H, ∀ g, F (h * g) = F g) →
-    quotIntegral μG H (c • μ) F = ((c : ℝ) : ℂ)⁻¹ * quotIntegral μG H μ F
-
 def NormEx : Prop :=
   ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G], (∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G)) → ∀ H : Subgroup G, IsClosed (H : Set G) →
@@ -145,14 +137,6 @@ def TwOrbFin : Prop :=
     (∃ ρ, IsQuotNormaliser (twCent (sigmaGL σ) δ) μ ρ) ∧
     (∀ ρ, IsQuotNormaliser (twCent (sigmaGL σ) δ) μ ρ → Integrable (fun g => φ (twConj (sigmaGL σ) g δ) * ((ρ g).toReal : ℂ)) μE) ∧
     ((∀ g, 0 ≤ (φ g).re) → (∃ g, (φ (twConj (sigmaGL σ) g δ)).re ≠ 0) → 0 < (twOrbIntegralC (sigmaGL σ) μE δ μ φ).re)
-
-def OrbFin : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (n : ℕ) [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)]
-    (μk : Measure (GL (Fin n) k)), μk.IsHaarMeasure → ∀ f : GL (Fin n) k → ℂ, Continuous f → HasCompactSupport f →
-    ∀ γ : GL (Fin n) k, IsRegSemisimple γ → ∀ μ : Measure (Subgroup.centralizer {γ}), μ.IsHaarMeasure →
-    (∃ ρ, IsQuotNormaliser (Subgroup.centralizer {γ}) μ ρ) ∧
-    (∀ ρ, IsQuotNormaliser (Subgroup.centralizer {γ}) μ ρ → Integrable (fun g => f (g⁻¹ * γ * g) * ((ρ g).toReal : ℂ)) μk) ∧
-    ((∀ g, 0 ≤ (f g).re) → (∃ g, (f (g⁻¹ * γ * g)).re ≠ 0) → 0 < (orbIntegralC μk γ μ f).re)
 
 def TwOrbLin : Prop :=
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

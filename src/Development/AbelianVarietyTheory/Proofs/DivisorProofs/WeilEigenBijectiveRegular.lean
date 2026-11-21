@@ -9,10 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianAdaptedPla
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantFinprodSchwartzBruhatFiniteAdel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportFinprodSchwartzBruhatFiniteAdel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBijectionRightInverseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenSurjectiveExtendsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenInjectiveExtendsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveGoodModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectivePairStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenSurjectiveExtends
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenInjectiveExtends
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveGoodModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectivePair
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory GlobalTheory.DoublingEv
 open scoped Matrix ENNReal
@@ -32,8 +32,8 @@ theorem isTame_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   obtain ⟨m, c, φ, hφ, hstd, rfl⟩ := GlobalTheory.MixEvAdm.sb_decomp F (Fin n × Fin d) g hg
   obtain ⟨ei, ev, -, hev, hloc⟩ := hE.loc
   have hbi : Function.Bijective ei :=
-    ⟨GlobalTheory.T.weil_eigen_injective_extends F E σ B n d X W M M₁ hP.good e hbij.injOn ei ev (fun v => (hev v).1) hloc,
-      GlobalTheory.T.weil_eigen_surjective_extends F E σ B n d X W M M₁ hP.good hM₁ e hbij.surjOn ei ev hev hloc⟩
+    ⟨_root_.GlobalTheory.EvInj.ei_injective F E σ B n d X W M M₁ hP.good e hbij.injOn ei ev (fun v => (hev v).1) hloc,
+      _root_.GlobalTheory.ArchSurj.surjective_arch F E σ B n d X W M M₁ hP.good hM₁ e hbij.surjOn ei ev hev hloc⟩
   obtain ⟨S, hS⟩ := GlobalTheory.T.schwartz_bijection_right_inverse _ _ ei hbi
   have hpre : ∀ j v, ∃ ψ ∈ SB (Fin n × Fin d → Fv F v), ev v ψ = φ j v ∧ (φ j v = M₁.vac v → ψ = M.vac v) := by
     intro j v
@@ -103,15 +103,15 @@ theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
       have r1 : d'.rho B.ψ w = M.co.rho B.ψ wᵀ := by unfold Darboux.rho; rw [e1]
       have r2 : d₁'.rho B.ψ w = M₁.co.rho B.ψ wᵀ := by unfold Darboux.rho; rw [e2]
       have hm : M.co.rho B.ψ wᵀ Φ ∈ schA F (Fin n × Fin d) :=
-        GlobalTheory.T.schroedinger_preserves_adelic_schwartz F B.ψ hpair.base.std _ (M.co.e wᵀ) Φ hΦ
+        _root_.GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hpair.base.std _ (M.co.e wᵀ) Φ hΦ
       have := hev.Heisenberg₂ wᵀ Φ hΦ
       rw [h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one] at this
       rw [r1, r2, hTe _ hm, hTe _ hΦ, this]
-    · refine (GlobalTheory.T.weil_eigen_bijective_good_model F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij l).trans
+    · refine (_root_.GlobalTheory.ModelAdmUnconditional.model_admissible_iff_evaluation F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij l).trans
         (GlobalTheory.DblInt.adm_congr ?_)
       intro Φ hΦ
       simp [hTe Φ hΦ]
-    · obtain ⟨c, hc⟩ := GlobalTheory.T.weil_eigen_bijective_pair F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij μ hμ
+    · obtain ⟨c, hc⟩ := _root_.GlobalTheory.EvalUnitUnconditional.exists_const F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij μ hμ
       exact ⟨c, fun Φ hΦ => by rw [hTe Φ hΦ]; exact hc Φ hΦ⟩
   have ht : IsTame F T.toLinearMap := by
     intro g hg

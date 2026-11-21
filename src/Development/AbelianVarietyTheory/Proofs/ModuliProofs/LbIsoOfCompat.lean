@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SeesawRigidifiedLineBundleDenseFibresStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SeesawRigidifiedLineBundleDenseFibres
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
@@ -24,7 +24,7 @@ theorem lbIso_of_compat : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b 
       ∃ w : ((LB.div (t'.L.pull φ) t.L).pull f).Gen, w.IsGen := fun f e => by
     refine (CechPic.cls_eq_zero_iff (pull_isLB hN f)).1 ?_
     rw [CechPic.cls_pull hN, CechPic.cls_div hp t.isLB, map_sub, CechPic.cls_pull t'.isLB, ← CechPic.pull_comp, e, sub_self]
-  refine GlobalTheory.T.seesaw_rigidified_lineBundle_dense_fibres R t.A t.L _ Sg t.ab t.isLB t.ample hN hd (key _ ?_) fun p hpS => ?_
+  refine _root_.GlobalTheory.seesaw_rigidified_of_dense R t.A t.L _ Sg t.ab t.isLB t.ample hN hd (key _ ?_) fun p hpS => ?_
   · have e : eSec t.A ≫ φ = eSec t'.A := (PolBaseChange.eSec_comm hφ).trans (Category.id_comp _)
     have e₁ := (CechPic.cls_eq_zero_iff (pull_isLB t.isLB _)).2 t.rigid
     have e₂ := (CechPic.cls_eq_zero_iff (pull_isLB t'.isLB _)).2 t'.rigid

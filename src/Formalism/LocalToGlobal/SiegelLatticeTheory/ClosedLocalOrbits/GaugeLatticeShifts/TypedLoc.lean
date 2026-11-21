@@ -103,8 +103,6 @@ open NumberField IsDedekindDomain
 
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
-theorem int_tower : IsScalarTower ℤ (𝓞 K) (𝓞 L) := inferInstance
-
 theorem tower_ef {p : ℕ} (hp : p.Prime)
     (h : ({v : HeightOneSpectrum (𝓞 L) | ((p : ℕ) : 𝓞 L) ∈ v.asIdeal}).ncard = Module.finrank ℚ L)
     (v : HeightOneSpectrum (𝓞 K)) (hv : ((p : ℕ) : 𝓞 K) ∈ v.asIdeal) :
@@ -732,10 +730,6 @@ open Formalism.MainNotions.S NumberField IsDedekindDomain IsDedekindDomain.Heigh
 open scoped TensorProduct
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
-
-theorem ew_split_holds (v : HeightOneSpectrum (𝓞 X.B.I.F)) (hv : ((X.B.g : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal) :
-    Formalism.UG.prV (E := X.B.I.E) v X.ew + Formalism.UG.sigR X.B.I.cm.sig (v.adicCompletion X.B.I.F) (Formalism.UG.prV (E := X.B.I.E) v X.ew) = 1 :=
-  eV_add X v hv
 
 namespace TypedLoc
 

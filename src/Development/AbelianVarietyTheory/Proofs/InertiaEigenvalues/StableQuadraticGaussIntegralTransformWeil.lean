@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGroupSignMulAndNegOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralMulNormStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussAtUniformiserStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGroupSignMulAndNegOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralMulNorm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussAtUniformiser
 open GlobalTheory.JR GlobalTheory.JR.WeilQuad Matrix MeasureTheory Filter Topology
 
 noncomputable section
@@ -34,17 +34,17 @@ theorem gauss_transform : ∀ (F E : Type) [NontriviallyNormedField F] [Nontrivi
   intro F E _ _ _ _ _ A ψ x μ ω hH u G G₁ hG hG₁
   have hω := hH.2.2.2.2
   by_cases hu : ∃ y, A.NL y = u
-  · have h1 := GlobalTheory.T.stableQuadraticGaussIntegral_mul_norm F E A ψ x μ ω hH 1 u hu G₁ (by simpa using hG₁)
+  · have h1 := _root_.GlobalTheory.JR.WeilQuad.GaussTrans.main F E A ψ x μ ω hH 1 u hu G₁ (by simpa using hG₁)
     rw [one_mul] at h1
     rw [isStableGauss_unique A ψ x μ _ hG h1, (hω u).1 hu]; ring
-  · obtain ⟨ϖ, hϖ, hGϖ⟩ := GlobalTheory.T.exists_nonNorm_uniformizer_isStableGauss F E A ψ x μ ω hH G₁ hG₁
+  · obtain ⟨ϖ, hϖ, hGϖ⟩ := _root_.GlobalTheory.JR.WeilQuad.NonNorm.gauss_at_uniformiser F E A ψ x μ ω hH G₁ hG₁
     have hps : ϖ * (ϖ⁻¹ * u) = u := mul_inv_cancel_left ϖ u
     have hs : ∃ y, A.NL y = ((ϖ⁻¹ * u : A.Kˣ) : A.K) := by
       by_contra hs
-      have hm := (GlobalTheory.T.normGroupSign_mul_and_neg_one F E A ψ x μ ω hH).1 ϖ (ϖ⁻¹ * u)
+      have hm := (_root_.GlobalTheory.JR.WeilQuad.NormSign.omega_mul_neg_one F E A ψ x μ ω hH).1 ϖ (ϖ⁻¹ * u)
       rw [hps, (hω u).2 hu, (hω ϖ).2 hϖ, (hω _).2 hs] at hm
       norm_num at hm
-    have h2 := GlobalTheory.T.stableQuadraticGaussIntegral_mul_norm F E A ψ x μ ω hH ϖ (ϖ⁻¹ * u) hs _ hGϖ
+    have h2 := _root_.GlobalTheory.JR.WeilQuad.GaussTrans.main F E A ψ x μ ω hH ϖ (ϖ⁻¹ * u) hs _ hGϖ
     rw [hps] at h2
     rw [isStableGauss_unique A ψ x μ _ hG h2, (hω u).2 hu]
     have e1 := absK_units_ne A ϖ

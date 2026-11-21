@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensor
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PureTensorOInjective
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfPderivStable
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitianStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitian
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasDerivAtHeisenbergMatrixCoeffRealLineSkewStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting GlobalTheory.PlaceTensor
@@ -547,8 +547,8 @@ theorem acts_by_fockP : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
     rw [hann, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (onb_diag (bT ρ)).2.2,
       Matrix.mul_nonsing_inv_cancel_right _ _ (onb_diag (bS ρ)).2.2] at this
     exact this
-  have ip := fun g (hg : IsThetaFunO ψ S T g) => GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ g h hg ht
-  have ip' := fun g (hg : IsThetaFunO ψ S T g) => GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ h g ht hg
+  have ip := fun g (hg : IsThetaFunO ψ S T g) => _root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ g h hg ht
+  have ip' := fun g (hg : IsThetaFunO ψ S T g) => _root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ h g ht hg
   let L : thetaSub S T ψ →ₗ[ℂ] ℂ :=
     { toFun := fun g => ipO μ 𝓕 g h
       map_add' := fun g g' => ((ip g g.2).2.2.2.1 g' g'.2).1
@@ -561,8 +561,8 @@ theorem acts_by_fockP : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
     have z : ipO μ 𝓕 g (ann (pS ρ) (pT ρ) (d ρ) N h : thetaSub S T ψ) = 0 := by
       rw [k1]; simp [ipO]
     rw [ann, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add,
-      ((GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ _ g (d ρ N h).2 g.2).2.2.2.1 _ (I • d ρ _ h).2).2, Submodule.coe_smul,
-      ((GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ g _ g.2 (d ρ _ h).2).2.2.1 I).2, conj_I] at z
+      ((_root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ _ g (d ρ N h).2 g.2).2.2.2.1 _ (I • d ρ _ h).2).2, Submodule.coe_smul,
+      ((_root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ g _ g.2 (d ρ _ h).2).2.2.1 I).2, conj_I] at z
     rw [cre, LinearMap.sub_apply, LinearMap.smul_apply, map_sub, map_smul, sk, sk, smul_eq_mul]
     linear_combination -z
   have l2 : L (E F) = 0 := by

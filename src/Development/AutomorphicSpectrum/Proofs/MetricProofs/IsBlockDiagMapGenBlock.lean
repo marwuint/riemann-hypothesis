@@ -19,26 +19,6 @@ theorem isMultiHomog_mul_alt {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHom
   obtain ⟨m₁, h₁, m₂, h₂, rfl⟩ := Finset.mem_add.mp (MvPolynomial.support_mul f g hm)
   simp [Finset.sum_add_distrib, hf m₁ h₁ k, hg m₂ h₂ k]
 
-theorem isMultiHomog_add_alt {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
-    IsMultiHomog (f + g) a := by
-  classical
-  intro m hm k
-  rcases Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h
-  · exact hf m h k
-  · exact hg m h k
-
-theorem isMultiHomog_zero_alt (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
-  intro m hm
-  simp at hm
-
-theorem isMultiHomog_one_alt : IsMultiHomog (1 : MRing ι) 0 := by
-  classical
-  intro m hm k
-  have : m = 0 := by
-    have h := MvPolynomial.support_monomial_subset (s := (0 : (Σ k, ι k) →₀ ℕ)) (a := (1 : ℤ)) hm
-    simpa using h
-  simp [this]
-
 theorem isMultiHomog_rename_base {σ : Type} (blk : σ → Option K) {d' : NonPluckerBlocks blk → ℕ}
     {g : MRing (baseIdx ι blk)} (hg : IsMultiHomog g d') :
     open Classical in
@@ -69,18 +49,6 @@ def IsFormQuot {Φ : Type} [Field Φ] (y : (Σ k, ι k) → Φ) (s : Φ) : Prop 
 
 variable {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
 
-theorem IsFormQuot.zero : IsFormQuot y 0 :=
-  ⟨0, 0, 1, isMultiHomog_zero_alt _, isMultiHomog_one_alt, by simp, by simp⟩
-
-theorem IsFormQuot.add {s t : Φ} (hs : IsFormQuot y s) (ht : IsFormQuot y t) : IsFormQuot y (s + t) := by
-  obtain ⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩ := hs
-  obtain ⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩ := ht
-  refine ⟨d₁ + d₂, g₁ * h₂ + g₂ * h₁, h₁ * h₂,
-    isMultiHomog_add_alt (isMultiHomog_mul_alt hg₁ hh₂) (by rw [add_comm d₁]; exact isMultiHomog_mul_alt hg₂ hh₁),
-    isMultiHomog_mul_alt hh₁ hh₂, by rw [map_mul]; exact mul_ne_zero hy₁ hy₂, ?_⟩
-  rw [map_add, map_mul, map_mul, map_mul, e₁, e₂]
-  ring
-
 theorem IsFormQuot.mul {s t : Φ} (hs : IsFormQuot y s) (ht : IsFormQuot y t) : IsFormQuot y (s * t) := by
   obtain ⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩ := hs
   obtain ⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩ := ht
@@ -88,25 +56,6 @@ theorem IsFormQuot.mul {s t : Φ} (hs : IsFormQuot y s) (ht : IsFormQuot y t) : 
     by rw [map_mul]; exact mul_ne_zero hy₁ hy₂, ?_⟩
   rw [map_mul, map_mul, e₁, e₂]
   ring
-
-theorem IsFormQuot.inv {s : Φ} (hs : IsFormQuot y s) : IsFormQuot y s⁻¹ := by
-  by_cases h0 : s = 0
-  · rw [h0, inv_zero]
-    exact IsFormQuot.zero
-  · obtain ⟨d, g, h, hg, hh, hy, e⟩ := hs
-    refine ⟨d, h, g, hh, hg, by rw [e]; exact mul_ne_zero h0 hy, ?_⟩
-    rw [e]
-    field_simp
-
-theorem IsFormQuot.sum {α : Type} (A : Finset α) {f : α → Φ} (hf : ∀ a ∈ A, IsFormQuot y (f a)) :
-    IsFormQuot y (∑ a ∈ A, f a) := by
-  classical
-  induction A using Finset.induction_on with
-  | empty => simpa using IsFormQuot.zero
-  | insert a A ha ih =>
-    rw [Finset.sum_insert ha]
-    exact (hf a (Finset.mem_insert_self _ _)).add
-      (ih fun b hb => hf b (Finset.mem_insert_of_mem hb))
 
 end Homog
 
@@ -179,43 +128,6 @@ theorem minorIJ_block_zero {R : Type} [CommRing R] {j : ℕ} {i : Fin N} {h : Ma
   · unfold minorIJ
     rw [dif_neg e]
 
-def genBlock (Ω : Type) [Field Ω] (N j : ℕ) : Matrix (Fin N) (Fin N) (MvPolynomial (Fin N × Fin N) Ω) :=
-  fun a b => if ((a : ℕ) < N - j ↔ (b : ℕ) < N - j) then X (a, b) else 0
-
-theorem isBlockDiag_inv {F : Type} [Field F] {j : ℕ} {T : Matrix (Fin N) (Fin N) F} (hT : IsBlockDiag j T)
-    (hd : T.det ≠ 0) : IsBlockDiag j T⁻¹ := by
-  classical
-  haveI : Invertible T := Matrix.invertibleOfIsUnitDet T (isUnit_iff_ne_zero.mpr hd)
-  have h1 : T.BlockTriangular (fun a : Fin N => if (a : ℕ) < N - j then 0 else 1) := by
-    intro a b hab
-    refine hT a b fun hiff => ?_
-    simp only [hiff] at hab
-    exact lt_irrefl _ hab
-  have h2 : T.BlockTriangular (fun a : Fin N => if (a : ℕ) < N - j then 1 else 0) := by
-    intro a b hab
-    refine hT a b fun hiff => ?_
-    simp only [hiff] at hab
-    exact lt_irrefl _ hab
-  have i1 := Matrix.blockTriangular_inv_of_blockTriangular h1
-  have i2 := Matrix.blockTriangular_inv_of_blockTriangular h2
-  intro a b hab
-  by_cases ha : (a : ℕ) < N - j
-  · have hb : ¬ (b : ℕ) < N - j := fun hb => hab (iff_of_true ha hb)
-    refine i2 ?_
-    simp [ha, hb]
-  · have hb : (b : ℕ) < N - j := by
-      by_contra hb
-      exact hab (iff_of_false ha hb)
-    refine i1 ?_
-    simp [ha, hb]
-
 end Minors
-
-section Model
-
-variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
-  {Ψ : Type} {N j : ℕ}
-
-end Model
 
 end GlobalTheory.CompanionTheory.Ar.PB

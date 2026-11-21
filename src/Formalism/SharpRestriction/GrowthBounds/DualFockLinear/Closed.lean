@@ -46,19 +46,4 @@ theorem theorem_II_closed_of_test_bound : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : Form
   exact theorem_II_of_split_cloud_bounds D CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60 hA (H D CLa Ck Crk Cdeg hA)
     (plane_gram_of_admitted D CLa Ck Crk Cdeg hA le_rfl) (rest6a D CLa Ck Crk Cdeg) h6b
 
-theorem stmtE_of_rests (D : Formalism.BasicNotions.D7)
-    (h : ∀ CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ,
-      RestCloudB D CLa Ck Crk Cdeg ∧ RestFlat D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18) : tableLineDegreeFive.ClosedFormOfAdmitted D := by
-  obtain ⟨C, _, H⟩ := theorem_II_closed_of_test_bound
-  intro CLa Ck Crk Cdeg hA
-  obtain ⟨h1, h2⟩ := h CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60
-  exact H D CLa Ck Crk Cdeg hA (test_bound_of_two_halves D CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60 h1 h2)
-
-theorem stmtE_of_rest6b (D : Formalism.BasicNotions.D7)
-    (h : ∀ CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ, RemainingInputsAfter D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18) :
-    tableLineDegreeFive.ClosedFormOfAdmitted D := by
-  obtain ⟨C, _, H⟩ := theorem_II_closed_of_test_bound
-  intro CLa Ck Crk Cdeg hA
-  exact H D CLa Ck Crk Cdeg hA (h CLa Ck Crk Cdeg C (C + 1) C 26 2 24 60)
-
 end Formalism.MainNotions.TestSideCounting

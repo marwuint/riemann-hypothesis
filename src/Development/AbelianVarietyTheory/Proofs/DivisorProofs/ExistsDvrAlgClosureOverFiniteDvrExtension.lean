@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominatingDvrContainingFinsetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RamificationLeCardOfSpanStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominatingDvrContainingFinset
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RamificationLeCardOfSpan
 open IsLocalRing
 
 namespace GlobalTheory
@@ -48,7 +48,7 @@ theorem exists_dvr_over_finite_ext : ∀ (V W : Type) [CommRing V] [IsDomain V] 
     simp only [hs, Finset.mem_image, Finset.mem_univ, true_and] at hx hy
     obtain ⟨i, rfl⟩ := hx; obtain ⟨j, rfl⟩ := hy
     rw [← map_mul]; exact K1 _
-  obtain ⟨T'', hT'', hle, hsT, hdom, hden⟩ := GlobalTheory.T.exists_dominating_dvr_containing_finset F T' hT' s h1 hmul
+  obtain ⟨T'', hT'', hle, hsT, hdom, hden⟩ := _root_.GlobalTheory.DomDVR.exists_dominating_dvr F T' hT' s h1 hmul
   have K2 : ∀ x ∈ Submodule.span T' (s : Set F), x ∈ T'' := by
     intro x hx
     induction hx using Submodule.span_induction with
@@ -62,7 +62,7 @@ theorem exists_dvr_over_finite_ext : ∀ (V W : Type) [CommRing V] [IsDomain V] 
   haveI := hT''
   obtain ⟨πV, hπV⟩ := IsDiscreteValuationRing.exists_irreducible V
   have hfπ := hirr πV hπV
-  obtain ⟨ϖ, hϖ, e', he1, he2, hassoc⟩ := GlobalTheory.T.exists_irreducible_pow_associated_le_card_of_span F T' T'' hT' hT'' hle hdom s hden (f πV) hfπ
+  obtain ⟨ϖ, hϖ, e', he1, he2, hassoc⟩ := _root_.GlobalTheory.ramification_le_card_of_span F T' T'' hT' hT'' hle hdom s hden (f πV) hfπ
   obtain ⟨πW, hπW⟩ := IsDiscreteValuationRing.exists_irreducible W
   have hioπ : io πV ≠ 0 := fun h => hπV.ne_zero (hinj (by rw [h, map_zero]))
   obtain ⟨a, ha⟩ := IsDiscreteValuationRing.associated_pow_irreducible hioπ hπW

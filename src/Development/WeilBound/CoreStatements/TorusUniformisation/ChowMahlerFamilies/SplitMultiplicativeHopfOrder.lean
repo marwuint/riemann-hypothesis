@@ -2,23 +2,31 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FromNAdd
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedFlagStatement
 import Development.WeilBound.CoreStatements.HodgeTatePoints.FinitePartExtensionCore
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderBaseChangeGenericStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderBaseChangeGeneric
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.WeilBound.CoreStatements.HodgeTatePoints.StightBad
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusPointOverFractionFieldStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingIsoFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderIsHopfOrderStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroupStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongOrderDividesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPullbackCorrespondenceStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExtensionOrderEqSpanStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusPointOverFractionField
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingIsoFinite
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderIsHopfOrder
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroup
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongOrderDivides
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.AdelicGroupAlgebraActionInjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPullbackCorrespondence
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExtensionOrderEqSpan
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualTopTwoNeTop
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteOpenHopfOrder
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsGrpObjOfFlatClosed
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MhQuot
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MhTorusA
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfSub
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderContainsCharactersStatement
 import Development.WeilBound.CoreStatements.HodgeTatePoints.ExistsDenOfOpen
 import Development.WeilBound.CoreStatements.HodgeTatePoints.ExtTensor
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MiTors
@@ -31,8 +39,12 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.IsAbFactorTens
 import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfMain
 import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfFin
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsUniqueFactorCompletedStalkOfMap
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherianStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralClosureFiniteLocalCompleteMixedCharStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherian
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralClosureFiniteLocalCompleteMixedChar
+import Formalism.LocalToGlobal.ProjectiveLattices.BetaAtSymm
+import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompleteDvrFiniteSubalgebra
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFiniteExtensionSplitSpecialFibrePoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaNZOfPolAt
@@ -333,7 +345,7 @@ theorem mu_torus : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed 
     have := inj ((hs t).symm.trans (e ▸ h' t))
     rwa [_root_.one_mul] at this
   · rintro _ ⟨χ, rfl⟩
-    refine GlobalTheory.T.hopf_order_contains_characters R T _ (Htat.bt_sub_hopf R T Γ ⊤ ⟨?_, fun _ => trivial, fun _ _ _ _ _ _ => trivial,
+    refine _root_.GlobalTheory.CompanionTheory.Ar.BT.char_mem_hopfOrder R T _ (Htat.bt_sub_hopf R T Γ ⊤ ⟨?_, fun _ => trivial, fun _ _ _ _ _ _ => trivial,
       fun _ _ _ _ => trivial⟩) χ
     rw [← Scheme.topIso_hom]
     infer_instance
@@ -372,7 +384,7 @@ theorem exists_complete_normal (V : Type) [CommRing V] [IsDomain V] [IsLocalRing
   have hfg : (maximalIdeal R₂).FG := IsNoetherian.noetherian _
   obtain ⟨k, hk⟩ := Ideal.exists_pow_le_of_le_radical_of_fg (hm₂.trans hnil) (hfg.map f₂)
   let R₃ := AdicCompletion (maximalIdeal R₂) R₂
-  haveI : IsNoetherianRing R₃ := GlobalTheory.T.isNoetherianRing_adicCompletion_of_noetherian R₂ _
+  haveI : IsNoetherianRing R₃ := _root_.GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion R₂ _
   obtain ⟨ψ, hψ, -⟩ := GlobalTheory.exists_extend_adicCompletion f₂ (maximalIdeal R₂) _ hk
   haveI l₃ : IsLocalHom ψ := @GlobalTheory.isLocalHom_of_extend_adicCompletion _ _ _ _ _ _ hfg ψ (hψ ▸ l₂)
   let S₀ : Subring V := ψ.range
@@ -385,7 +397,7 @@ theorem exists_complete_normal (V : Type) [CommRing V] [IsDomain V] [IsLocalRing
     rintro ⟨_, a, rfl⟩ ha
     exact ((isUnit_map_iff ψ a).1 ha).map ψ.rangeRestrict⟩
   have hp₀ : (p : S₀) ∈ maximalIdeal S₀ := fun h => hpV (by simpa using h.map S₀.subtype)
-  obtain ⟨hfin, hl, hN, hc⟩ := GlobalTheory.T.integralClosure_finite_local_complete_mixedChar S₀ p hp hp₀ hN₀ hc₀
+  obtain ⟨hfin, hl, hN, hc⟩ := _root_.GlobalTheory.normalisation_finite_local_complete_of_mixedChar S₀ p hp hp₀ hN₀ hc₀
   let D := integralClosure S₀ (FractionRing S₀)
   let K := FractionRing V
   have hi : Function.Injective ((algebraMap V K).comp S₀.subtype) :=
@@ -488,8 +500,8 @@ theorem exists_unif {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   obtain ⟨A, -, gen, hgen, hL, -⟩ := GlobalTheory.LN.exists_polAV_of_polAt h1 h2 E H R t' hpol'
   obtain ⟨P, hPL, -⟩ := GlobalTheory.UU.exists_cp_of_isSymmetric h1 R A t'.G t'.semi gen hgen t'.PP t'.cub t'.sym
   have hσ : ∃ (σ : LB.Sec P.L.L) (k : P.L.L.ι), σ.f k ≠ 0 := by
-    rw [hPL]; exact GlobalTheory.T.exists_nonzero_section_of_polarised_generic_fibre E H R t' hpol'
-  obtain ⟨Dd, U, -, -⟩ := GlobalTheory.T.semiabelian_generic_fibre_polarization_iso R hA t'.G P t'.semi (hPL ▸ GlobalTheory.LN.UnifPrime.hypW_of_triple t') hs' A gen hgen
+    rw [hPL]; exact _root_.GlobalTheory.ThetaDomain.exists_sec_ne_zero_of_polAt E H R t' hpol'
+  obtain ⟨Dd, U, -, -⟩ := _root_.GlobalTheory.SectionUnif.exists_unif_of_ne_zero R hA t'.G P t'.semi (hPL ▸ GlobalTheory.LN.UnifPrime.hypW_of_triple t') hs' A gen hgen
     (hPL ▸ hL) hσ
   exact ⟨R, _, _, _, g₁.comp g₀, h, t', m.φ, Dd, A, hN, hic, hc, hi, e, m.cart, ⟨U.toUnifPre⟩⟩
 
@@ -574,7 +586,7 @@ theorem pt_inj (Γ : QFGroup R T) : Function.Injective Γ.pt := fun s t h =>
   Γ.pt_inj s t default default (by rw [h])
 
 theorem exists_pt (Γ : QFGroup R T) (κ : BT.genPt R ⟶ Γ.G) : ∃ t, Γ.pt t = κ := by
-  obtain ⟨t, ht⟩ := GlobalTheory.T.torus_point_over_fraction_field R T Γ (FractionRing R) (RingHom.id _) κ.left (Over.w κ)
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_eq_comp_pt R T Γ (FractionRing R) (RingHom.id _) κ.left (Over.w κ)
   refine ⟨t, Over.OverMorphism.ext (ht.trans ?_).symm⟩
   rw [CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]
 
@@ -667,7 +679,7 @@ theorem exists_struct (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNo
   obtain ⟨H, Γf, u, hH, _, hop, hcl, hr, hfin, hu⟩ := sub_qf R T Γ W hsub
   obtain ⟨M, C, _, _, ΓM, ΓB, iM, iB, a, b, hM, hB, _, _, ha, hbf, hbs, hpb, -⟩ :=
     PositivityTheory.HtPt.Stight.D1.finitePart_extension R D A G U p hp1 T Γ i hi H Γf u hop hfin fun g hg => hr ▸ hWc g hg
-  have hT : ∀ t : T, t ^ p = 1 := GlobalTheory.T.torsion_along_order_divides R T Γ _ G _ p i hi
+  have hT : ∀ t : T, t ^ p = 1 := _root_.GlobalTheory.CompanionTheory.Ar.BT.TorsionKilled.pow_eq_one R T Γ _ G _ p i hi
   obtain ⟨α, hα⟩ := exists_map ΓM Γf a
   obtain ⟨π, hπ⟩ := exists_map Γf ΓB b
   have hαi : Function.Injective α := fun m m' h => by
@@ -694,9 +706,9 @@ theorem exists_struct (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNo
     (QuotientGroup.mk'_surjective H) fun t => (QuotientGroup.eq_one_iff t).trans
       ⟨fun h => ⟨⟨t, h⟩, rfl⟩, fun ⟨m, h⟩ => h ▸ m.2⟩
   have hAf := PositivityTheory.HtPt.Htat.bt_hopf R H Γf
-  have r₁ : resOrder H.subtype (Γ.btOrder ⊤) = Γf.btOrder ⊤ := PositivityTheory.HtPt.Mk.res_bt_order_top @GlobalTheory.T.exists_base_change_group R T Γ H Γf u H.subtype hu hcl
+  have r₁ : resOrder H.subtype (Γ.btOrder ⊤) = Γf.btOrder ⊤ := PositivityTheory.HtPt.Mk.res_bt_order_top @_root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective R T Γ H Γf u H.subtype hu hcl
   have r₂ : resOrder α (Γf.btOrder ⊤) = muOrder R M :=
-    (PositivityTheory.HtPt.Mk.res_bt_order_top @GlobalTheory.T.exists_base_change_group R H Γf M ΓM a α hα ha).trans (mu_torus R M ΓM _ p iM hp1 hM).2
+    (PositivityTheory.HtPt.Mk.res_bt_order_top @_root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective R H Γf M ΓM a α hα ha).trans (mu_torus R M ΓM _ p iM hp1 hM).2
   have := D.toPre.P.isAb.proper
   have r₃ : quotOrder π (Γf.btOrder ⊤) = ΓB.btOrder ⊤ := PositivityTheory.HtPt.Mh.quot R C ΓB H Γf b π hπ hfin
     (PositivityTheory.HtPt.Mi.torsion_finite R C ΓB _ _ _ p iB hB inferInstance) hbf hbs
@@ -743,13 +755,13 @@ theorem exists_rep (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsInteg
     ∃ (Tr : TorsRep G p) (pt : Additive T → (sp (R₀ := V) V ⟶ G)), IsTorsPts G p pt ∧
       ∀ f, f ∈ torsFun C Tr pt ↔ ∃ a ∈ Γ.btOrder ⊤, f = fun x => algebraMap V C (a x.toMul) := by
   let A := Γ.btOrder ⊤
-  have hA : IsHopfOrder A := GlobalTheory.T.btOrder_isHopfOrder V T Γ ⊤
+  have hA : IsHopfOrder A := _root_.GlobalTheory.CompanionTheory.Ar.BT.btOrder_isHopfOrder_of_finOpenSub V T Γ ⊤
     ⟨by rw [← Scheme.topIso_hom]; infer_instance, fun _ => trivial, fun _ _ _ _ _ _ => trivial, fun _ _ _ _ => trivial⟩
   have := hA.finite
   have := hA.projective
   have hfree : Module.Free V A := Module.free_of_flat_of_isLocalRing
   obtain ⟨j, hj, -⟩ := PositivityTheory.HtPt.Mh.emb V T Γ
-  have := GlobalTheory.T.btOrder_embedding_iso_finite V T Γ j hj hfin
+  have := _root_.GlobalTheory.CompanionTheory.Ar.BT.FiniteIso.isIso_of_finite V T Γ j hj hfin
   let iG : Γ.G ⟶ G := Over.homMk i (ht.isOver.trans (Category.comp_id _))
   let w : sp (R₀ := V) A ⟶ Γ.G := Over.homMk (inv j) (by
     rw [← hj.isOver, IsIso.inv_hom_id_assoc]; rfl)
@@ -863,7 +875,7 @@ theorem spn_span (h : R →+* V) (S : Set (T → R)) (u : N → T) :
 theorem spn_ext [CommGroup T] (φ : R →+* R') (h : R' →+* V) (A : Subalgebra R (T → R)) (u : N → T) :
     spn C h (extOrder φ A : Set (T → R')) u = spn C (h.comp φ) A u := by
   have e : (extOrder φ A : Set (T → R')) = Submodule.span R' {g : T → R' | ∃ f ∈ A, g = fun t => φ (f t)} :=
-    Set.ext (GlobalTheory.T.extension_order_eq_span R T R' φ A)
+    Set.ext (_root_.GlobalTheory.CompanionTheory.Ar.BT.ExtSpan.extOrder_eq_span R T R' φ A)
   rw [e, spn_span]
   refine congrArg (Submodule.span V) (Set.ext fun f => ⟨?_, ?_⟩)
   · rintro ⟨_, ⟨a, ha, rfl⟩, rfl⟩
@@ -926,7 +938,7 @@ theorem mu_eq [IsDomain R] [IsDomain V] [IsIntegrallyClosed V] [CommGroup T] [Fi
       { toFun := r
         map_one' := hv.hom_inj (by simp [hr])
         map_mul' := fun a b => hv.hom_inj (by simp [hr, AddChar.map_add_eq_mul]) }
-    have := GlobalTheory.T.hopf_order_contains_characters V T _ hB χ.toHomUnits
+    have := _root_.GlobalTheory.CompanionTheory.Ar.BT.char_mem_hopfOrder V T _ hB χ.toHomUnits
     have e := spn_ext (C := C) h (RingHom.id V) (muOrder R T) (Additive.toMul (α := T))
     rw [RingHom.id_comp] at e
     rw [← e]
@@ -997,7 +1009,7 @@ theorem core (hD : HodgeTateDatumStatement) (hO : OrdinaryCurveStatement) (p : �
       IsTight v p (spn C h (Γ.btOrder ⊤) (Multiplicative.ofAdd (α := N))) := by
   classical
   obtain ⟨M, B, Q, _, _, _, ΓB, iB, e, hB, hmu, hsp⟩ := exists_struct R D A G U p _ Γ i hi
-  have hT : ∀ t : Multiplicative N, t ^ p = 1 := GlobalTheory.T.torsion_along_order_divides R _ Γ _ G _ p i hi
+  have hT : ∀ t : Multiplicative N, t ^ p = 1 := _root_.GlobalTheory.CompanionTheory.Ar.BT.TorsionKilled.pow_eq_one R _ Γ _ G _ p i hi
   have hT' : ∀ z : (M × B) × Q, z ^ p = 1 := fun z => e.injective (by rw [map_pow, hT, map_one])
   haveI : Finite ((M × B) × Q) := Finite.of_equiv _ e.toEquiv.symm
   haveI : Finite M := Finite.of_injective (fun m : M => (((m, 1), 1) : (M × B) × Q)) fun _ _ h =>
@@ -1016,10 +1028,10 @@ theorem core (hD : HodgeTateDatumStatement) (hO : OrdinaryCurveStatement) (p : �
     have e₁ : x₀ = toBase pA.w x := Over.OverMorphism.ext hx
     have e₂ : y₀ = toBase pA.w y := Over.OverMorphism.ext hy
     rw [e₁, e₂, ← mA]; rfl⟩
-  obtain ⟨Γ', F, hF⟩ := GlobalTheory.T.exists_base_change_group R B ΓB V h hh
-  have t₁ := GlobalTheory.T.torsion_along_base_change R B ΓB _ _ _ p iB hB V h Γ' F hF
+  obtain ⟨Γ', F, hF⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective R B ΓB V h hh
+  have t₁ := _root_.GlobalTheory.CompanionTheory.Ar.TorBC.isTorsionAlong_baseChange R B ΓB _ _ _ p iB hB V h Γ' F hF
   rw [Category.comp_id] at t₁
-  obtain ⟨i₀, -, t₀⟩ := (GlobalTheory.T.torsion_pullback_correspondence V B Γ' _ (spMap h) _ P'.A gA p gpA).1 _ t₁
+  obtain ⟨i₀, -, t₀⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.torsionAlong_iff_pullback_torsion V B Γ' _ (spMap h) _ P'.A gA p gpA).1 _ t₁
   have := P'.isAb.proper
   obtain ⟨Tr, pt, hpt, hTr⟩ := exists_rep V C B Γ' P'.A p i₀ t₀
     (PositivityTheory.HtPt.Mi.torsion_finite V B Γ' _ _ _ p i₀ t₀ inferInstance)
@@ -1028,7 +1040,7 @@ theorem core (hD : HodgeTateDatumStatement) (hO : OrdinaryCurveStatement) (p : �
     rw [RingHom.id_comp] at e₁
     rw [← e₁, ← Submodule.span_eq (torsFun C Tr pt)]
     refine congrArg (Submodule.span V) (Set.ext fun f => (hTr f).trans ?_)
-    rw [(GlobalTheory.T.btOrder_base_change_generic R B ΓB V Γ' F hF).2]
+    rw [(_root_.GlobalTheory.CompanionTheory.Ar.BT.btOrder_baseChange R B ΓB V Γ' F hF).2]
     rfl
   have key := PositivityTheory.HtPt.Stight.BadRed.main hD hO p C v V hv hp hc P' Tr (Additive B) pt hpt (Additive M) (Additive Q)
     (fun x => congrArg (fun z => z.1.1) (hT' ((x.toMul, 1), 1))) (fun x => congrArg (fun z => z.2) (hT' (1, x.toMul)))
@@ -1106,9 +1118,9 @@ theorem PositivityTheory.Xgn.tight_hopf_order_test : GlobalTheory.CompanionTheor
   haveI : CharZero R := h.charZero
   have hg : Function.Injective g := Function.Injective.of_comp (f := h) (by rw [← RingHom.coe_comp, hgf]; exact hf)
   letI : Algebra (CR O y c') R := g.toAlgebra
-  obtain ⟨Γ', F', hF⟩ := GlobalTheory.T.exists_base_change_group _ _ P.Γ₁ R g hg
-  have t₁ := GlobalTheory.T.torsion_along_base_change _ _ P.Γ₁ _ _ _ p P.i₁ P.tors₁ R g Γ' F' hF
-  obtain ⟨i₀, -, t₂⟩ := (GlobalTheory.T.torsion_pullback_correspondence R _ Γ' _ _ _ t'.G ψ p hpb).1 _ t₁
+  obtain ⟨Γ', F', hF⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective _ _ P.Γ₁ R g hg
+  have t₁ := _root_.GlobalTheory.CompanionTheory.Ar.TorBC.isTorsionAlong_baseChange _ _ P.Γ₁ _ _ _ p P.i₁ P.tors₁ R g Γ' F' hF
+  obtain ⟨i₀, -, t₂⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.torsionAlong_iff_pullback_torsion R _ Γ' _ _ _ t'.G ψ p hpb).1 _ t₁
   have key := core hD hO p C v RC hint hvp hcompl R h hh Dd A' t'.G U _ Γ' i₀ t₂
-  rw [(GlobalTheory.T.btOrder_base_change_generic _ _ P.Γ₁ R Γ' F' hF).2, spn_ext, show h.comp (algebraMap (CR O y c') R) = f from hgf] at key
+  rw [(_root_.GlobalTheory.CompanionTheory.Ar.BT.btOrder_baseChange _ _ P.Γ₁ R Γ' F' hF).2, spn_ext, show h.comp (algebraMap (CR O y c') R) = f from hgf] at key
   exact key

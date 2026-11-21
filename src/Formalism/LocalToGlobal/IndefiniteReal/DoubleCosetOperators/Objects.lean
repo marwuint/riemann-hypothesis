@@ -81,11 +81,6 @@ instance towFm (i : tw.Tw) (j : ℕ) (b : Bool) :
     IsScalarTower (tw.O i) (FractionRing (tw.O i)) (Fm S i j b) :=
   IsScalarTower.of_algebraMap_smul fun _ _ => rfl
 
-theorem finiteDimensional_Fm (i : tw.Tw) (j : ℕ) (b : Bool) [FiniteDimensional S.Ks (FmK S j)] :
-    FiniteDimensional (FractionRing (tw.O i)) (Fm S i j b) := by
-  change Module.Finite (KB S i b) (KB S i b ⊗[S.Ks] FmK S j)
-  infer_instance
-
 def Bsup (i : tw.Tw) (j : ℕ) (b : Bool) : Submodule (tw.O i) (Fm S i j b) :=
   Submodule.span (tw.O i)
     {f | ∃ x : FmK S j, (show ↥(S.A j).WK from x).1 ∈ (S.A j).MK ∧
@@ -164,37 +159,6 @@ def inWL (j : ℕ) : ↥LL0 ⊗[S.Ks] FmK S j →ₗ[S.Ks] S.WL j :=
         rw [Algebra.smul_def, IntermediateField.coe_mul, mul_smul]
         change ((S.kKs c : ↥LL0) : what₂.LL) • _ = _
         rw [S.kKs_spec, algebraMap_smul] }
-
-def IsThOf (j : ℕ) (σ0 : what₂.LL →+* ℂ) (thC : S.W j σ0) (x : ↥LL0 ⊗[S.Ks] FmK S j) : Prop :=
-  (S.A j).j σ0 (inWL S j x) = thC
-
-theorem IsThOf.unique {j : ℕ} {σ0 : what₂.LL →+* ℂ} {thC : S.W j σ0} {x y : ↥LL0 ⊗[S.Ks] FmK S j}
-    (hinj : Function.Injective fun z : ↥LL0 ⊗[S.Ks] FmK S j => (S.A j).j σ0 (inWL S j z))
-    (hx : IsThOf S j σ0 thC x) (hy : IsThOf S j σ0 thC y) : x = y :=
-  hinj ((show (S.A j).j σ0 (inWL S j x) = thC from hx).trans (show (S.A j).j σ0 (inWL S j y) = thC from hy).symm)
-
-def ThExists {Dat : Type} (j : ℕ) (σ0 : what₂.LL →+* ℂ) (thC : Dat → S.W j σ0) : Prop :=
-  ∀ d, ∃ x : ↥LL0 ⊗[S.Ks] FmK S j, IsThOf S j σ0 (thC d) x
-
-def thK {Dat : Type} (j : ℕ) (σ0 : what₂.LL →+* ℂ) (thC : Dat → S.W j σ0) (h : ThExists S j σ0 thC) (d : Dat) :
-    ↥LL0 ⊗[S.Ks] FmK S j :=
-  (h d).choose
-
-theorem thK_spec {Dat : Type} (j : ℕ) (σ0 : what₂.LL →+* ℂ) (thC : Dat → S.W j σ0) (h : ThExists S j σ0 thC)
-    (d : Dat) : IsThOf S j σ0 (thC d) (thK S j σ0 thC h d) :=
-  (h d).choose_spec
-
-def readLL0Ks (i : tw.Tw) (b : Bool) : ↥LL0 →ₗ[S.Ks] KB S i b where
-  toFun := readLL0 S i b
-  map_add' := map_add _
-  map_smul' c x := by
-    change readLL0 S i b (S.kKs c * x) = ιK S i b c * readLL0 S i b x
-    rw [map_mul]
-    rfl
-
-def thOf {Dat : Type} (i : tw.Tw) (j : ℕ) (b : Bool) (σ0 : what₂.LL →+* ℂ) (thC : Dat → S.W j σ0)
-    (h : ThExists S j σ0 thC) (d : Dat) : Fm S i j b :=
-  (LinearMap.rTensor (FmK S j) (readLL0Ks S i b) (thK S j σ0 thC h d) : KB S i b ⊗[S.Ks] FmK S j)
 
 end Act
 

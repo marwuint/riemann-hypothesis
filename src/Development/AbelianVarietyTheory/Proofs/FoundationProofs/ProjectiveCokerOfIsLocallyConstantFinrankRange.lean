@@ -81,14 +81,6 @@ theorem projective_of_finite_of_isLocallyConstant_finrank_fiber [IsReduced R] [M
   have := finitePresentation_of_isLocallyConstant_finrank_fiber h
   projective_of_isLocallyConstant_finrank_fiber h
 
-theorem projective_of_finite_of_finrank_fiber_eq [IsReduced R] [Module.Finite R M] (ρ : ℕ)
-    (h : ∀ p : PrimeSpectrum R,
-      finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) = ρ) :
-    Module.Projective R M ∧ ∀ p : PrimeSpectrum R, Module.rankAtStalk M p = ρ := by
-  have : Module.Projective R M := projective_of_finite_of_isLocallyConstant_finrank_fiber
-    (IsLocallyConstant.of_constant _ fun p q => (h p).trans (h q).symm)
-  exact ⟨this, fun p => (Module.rankAtStalk_eq p).trans (h p)⟩
-
 theorem finrank_tensorProduct_eq_finrank_fiber (k : Type*) [Field k] [Algebra R k]
     (p : PrimeSpectrum R) (hp : p.asIdeal = RingHom.ker (algebraMap R k)) :
     finrank k (k ⊗[R] M) = finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) := by
@@ -137,13 +129,6 @@ theorem exists_comp_comp_eq_of_isLocallyConstant_finrank_range [IsReduced R]
   have := projective_coker_of_isLocallyConstant_finrank_range φ h
   exists_comp_comp_eq_of_projective φ
 
-theorem exists_retraction_range_of_generalizedInverse (φ : E →ₗ[R] F) (s : F →ₗ[R] E)
-    (hs : φ ∘ₗ s ∘ₗ φ = φ) :
-    ∃ r : F →ₗ[R] LinearMap.range φ, r ∘ₗ (LinearMap.range φ).subtype = LinearMap.id := by
-  refine ⟨φ.rangeRestrict ∘ₗ s, LinearMap.ext ?_⟩
-  rintro ⟨_, x, rfl⟩
-  exact Subtype.ext (LinearMap.congr_fun hs x)
-
 theorem exists_retraction_ker_of_generalizedInverse (φ : E →ₗ[R] F) (s : F →ₗ[R] E)
     (hs : φ ∘ₗ s ∘ₗ φ = φ) :
     ∃ r : E →ₗ[R] LinearMap.ker φ, r ∘ₗ (LinearMap.ker φ).subtype = LinearMap.id := by
@@ -170,90 +155,10 @@ theorem baseChange_ker_of_comp_comp_eq (φ : E →ₗ[R] F) (s : F →ₗ[R] E)
     obtain ⟨y, hy⟩ := (tensorKer_bijective_of_comp_comp_eq S S φ s hs).2 ⟨z, hz⟩
     exact ⟨y, (LinearMap.tensorKer_coe S S φ y).symm.trans (congrArg Subtype.val hy)⟩
 
-theorem finrank_baseChange_eq_of_injective (P : Submodule R E) (k : Type*) [Field k] [Algebra R k]
-    (h : Injective (P.subtype.lTensor k)) :
-    finrank k (k ⊗[R] P) = finrank k (P.baseChange k) :=
-  (LinearEquiv.ofInjective (P.subtype.baseChange k) h).finrank_eq
-
 universe u v
-
-theorem finite_projective_of_isLocallyConstant_finrank_range [IsReduced R]
-    [Module.Finite R E] [Module.Projective R E] [Module.Finite R F] [Module.Projective R F]
-    (φ : E →ₗ[R] F)
-    (h : IsLocallyConstant fun p : PrimeSpectrum R => finrank p.asIdeal.ResidueField
-      (LinearMap.range (φ.baseChange p.asIdeal.ResidueField))) :
-    (Module.Finite R (LinearMap.range φ) ∧ Module.Projective R (LinearMap.range φ)) ∧
-    (Module.Finite R (LinearMap.ker φ) ∧ Module.Projective R (LinearMap.ker φ)) ∧
-    (Module.Finite R (F ⧸ LinearMap.range φ) ∧ Module.Projective R (F ⧸ LinearMap.range φ)) ∧
-    (∃ P : Submodule R E, IsCompl (LinearMap.ker φ) P) ∧
-    (∃ Q : Submodule R F, IsCompl (LinearMap.range φ) Q) ∧
-    (∀ p : PrimeSpectrum R, Module.rankAtStalk (LinearMap.range φ) p =
-      finrank p.asIdeal.ResidueField (LinearMap.range (φ.baseChange p.asIdeal.ResidueField))) ∧
-    (∀ p : PrimeSpectrum R, Module.rankAtStalk (LinearMap.ker φ) p =
-      finrank p.asIdeal.ResidueField (LinearMap.ker (φ.baseChange p.asIdeal.ResidueField))) ∧
-    (∀ (S : Type u) (N : Type v) [CommRing S] [Algebra R S] [AddCommGroup N] [Module R N]
-      [Module S N] [IsScalarTower R S N], Bijective (LinearMap.tensorKer S N φ) ∧
-        Injective ((LinearMap.range φ).subtype.lTensor N)) ∧
-    ∀ (S : Type u) [CommRing S] [Algebra R S],
-      (LinearMap.ker φ).baseChange S = LinearMap.ker (φ.baseChange S) ∧
-        Injective ((LinearMap.ker φ).subtype.baseChange S) := by
-  obtain ⟨s, hs⟩ := exists_comp_comp_eq_of_isLocallyConstant_finrank_range φ h
-  obtain ⟨r, hr⟩ := exists_retraction_range_of_generalizedInverse φ s hs
-  obtain ⟨t, ht⟩ := exists_retraction_ker_of_generalizedInverse φ s hs
-  have h1 : Module.Projective R (LinearMap.range φ) := Module.Projective.of_split _ r hr
-  have h2 : Module.Finite R (LinearMap.ker φ) := Module.Finite.of_surjective t
-    (RightInverse.surjective (g := (LinearMap.ker φ).subtype) (LinearMap.congr_fun ht))
-  have h3 : Module.Projective R (LinearMap.ker φ) := Module.Projective.of_split _ t ht
-  refine ⟨⟨inferInstance, h1⟩, ⟨h2, h3⟩,
-    ⟨inferInstance, projective_coker_of_isLocallyConstant_finrank_range φ h⟩,
-    ⟨_, LinearMap.isCompl_of_proj (LinearMap.congr_fun ht)⟩,
-    ⟨_, LinearMap.isCompl_of_proj (LinearMap.congr_fun hr)⟩, fun p => ?_, fun p => ?_,
-    fun S N _ _ _ _ _ _ => ⟨tensorKer_bijective_of_comp_comp_eq S N φ s hs,
-      lTensor_subtype_injective_of_retraction _ r hr N⟩,
-    fun S _ _ => ⟨baseChange_ker_of_comp_comp_eq φ s hs S,
-      lTensor_subtype_injective_of_retraction _ t ht S⟩⟩
-  · rw [Module.rankAtStalk_eq, ← baseChange_range]
-    exact finrank_baseChange_eq_of_injective _ _ (lTensor_subtype_injective_of_retraction _ r hr _)
-  · rw [Module.rankAtStalk_eq, ← baseChange_ker_of_comp_comp_eq φ s hs]
-    exact finrank_baseChange_eq_of_injective _ _ (lTensor_subtype_injective_of_retraction _ t ht _)
 
 end Map
 
 universe u v w
-
-theorem finite_projective_of_constant_fiber_rank {R : Type*} [CommRing R] [IsReduced R] :
-    (∀ {E F : Type w} [AddCommGroup E] [Module R E] [AddCommGroup F] [Module R F]
-      [Module.Finite R E] [Module.Projective R E] [Module.Finite R F] [Module.Projective R F]
-      (φ : E →ₗ[R] F) (ρ : ℕ),
-      (∀ p : PrimeSpectrum R, finrank p.asIdeal.ResidueField
-        (LinearMap.range (φ.baseChange p.asIdeal.ResidueField)) = ρ) →
-      (Module.Finite R (LinearMap.range φ) ∧ Module.Projective R (LinearMap.range φ)) ∧
-      (Module.Finite R (LinearMap.ker φ) ∧ Module.Projective R (LinearMap.ker φ)) ∧
-      (Module.Finite R (F ⧸ LinearMap.range φ) ∧ Module.Projective R (F ⧸ LinearMap.range φ)) ∧
-      (∃ P : Submodule R E, IsCompl (LinearMap.ker φ) P) ∧
-      (∃ Q : Submodule R F, IsCompl (LinearMap.range φ) Q) ∧
-      (∀ p : PrimeSpectrum R, Module.rankAtStalk (LinearMap.range φ) p = ρ) ∧
-      (∀ (S : Type u) (N : Type v) [CommRing S] [Algebra R S] [AddCommGroup N] [Module R N]
-        [Module S N] [IsScalarTower R S N], Bijective (LinearMap.tensorKer S N φ)) ∧
-      ∀ (S : Type u) [CommRing S] [Algebra R S],
-        (LinearMap.ker φ).baseChange S = LinearMap.ker (φ.baseChange S) ∧
-          Injective ((LinearMap.ker φ).subtype.baseChange S)) ∧
-    ∀ {M : Type w} [AddCommGroup M] [Module R M] [Module.Finite R M] (ρ : ℕ),
-      (∀ p : PrimeSpectrum R,
-        finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) = ρ) →
-      Module.Projective R M ∧ ∀ p : PrimeSpectrum R, Module.rankAtStalk M p = ρ := by
-  refine ⟨fun φ ρ h => ?_, fun ρ h => projective_of_finite_of_finrank_fiber_eq ρ h⟩
-  obtain ⟨h1, h2, h3, h4, h5, h6, -, h7, h8⟩ :=
-    finite_projective_of_isLocallyConstant_finrank_range.{u, v} φ
-      (IsLocallyConstant.of_constant _ fun p q => (h p).trans (h q).symm)
-  exact ⟨h1, h2, h3, h4, h5, fun p => (h6 p).trans (h p), fun S N _ _ _ _ _ _ => (h7 S N).1, h8⟩
-
-example (p : PrimeSpectrum ℤ) : finrank p.asIdeal.ResidueField (LinearMap.range
-    (((LinearMap.lsmul ℤ ℤ 2).coprod (LinearMap.lsmul ℤ ℤ 3)).baseChange
-      p.asIdeal.ResidueField)) = 1 := by
-  have hs : Surjective ((LinearMap.lsmul ℤ ℤ 2).coprod (LinearMap.lsmul ℤ ℤ 3)) :=
-    fun z => ⟨(-z, z), by simp; ring⟩
-  rw [← baseChange_range, LinearMap.range_eq_top.2 hs, Submodule.baseChange_top, finrank_top,
-    Module.finrank_baseChange, Module.finrank_self]
 
 end GlobalTheory

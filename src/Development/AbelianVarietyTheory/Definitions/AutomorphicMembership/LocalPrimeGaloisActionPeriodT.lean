@@ -280,8 +280,6 @@ theorem phiSt_injective : Function.Injective (phiSt P) := by
       map_one, one_mul, comp_X]
   exact map_injective (P.φB : P.R.B →+* P.R.B) (phiB_injective P) (by rw [← e, ← e, hpq])
 
-example : monSt P X = -1 := by simp
-
 end Ring
 
 end GlobalTheory.Pst

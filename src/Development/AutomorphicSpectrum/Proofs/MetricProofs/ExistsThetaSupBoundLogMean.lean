@@ -4,13 +4,13 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimens
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordWeak
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierQuadraticCharacterStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueUniqueBaseChangeStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFullTorsionNumberFieldStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TorsionValueNormEqThetaNormStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionEvenBoundStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TorsionValueNormEqThetaNorm
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionEvenBound
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights TensorProduct
@@ -219,7 +219,7 @@ theorem tors_mean (D : PPData H L) (th : Out.H0 D.t.PP.L 1) (f : ∀ σ, D.Frame
   choose r hr using hex
   have hnorm : ∀ (τ : K →+* ℂ) (i) (w : Fin D.g → ℂ), (y τ i).left = (f (res τ)).pt w →
       ‖τ (T i)‖ = (f (res τ)).nrm 1 (θ (res τ)) w ^ (m ^ 2) := fun τ i w hw =>
-    GlobalTheory.T.torsion_value_norm_eq_theta_norm E H L D (res τ) (f _) 1 th (θ _) (y τ i) w m (τ (T i)) (hθ _) hw (hyT τ i)
+    _root_.GlobalTheory.CompanionTheory.Ar.Sl.TorsArch.torsVal_norm E H L D (res τ) (f _) 1 th (θ _) (y τ i) w m (τ (T i)) (hθ _) hw (hyT τ i)
   have hm2 : m ^ 2 ≠ 0 := by positivity
   have hne : ∀ (τ : K →+* ℂ) (i) (w : Fin D.g → ℂ), (y τ i).left = (f (res τ)).pt w →
       (T i ≠ 0 ↔ θ (res τ) w ≠ 0) := by
@@ -453,13 +453,13 @@ theorem mean_log_sup : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [Number
     [Field L] [NumberField L] (D : PPData H L) (th : Out.H0 D.t.PP.L 1) (Φ : ℝ), 1 ≤ D.g → 0 ≤ Φ → D.HasTheta th Φ →
     ∃ M : (L →+* ℂ) → ℝ, (∀ σ, 0 < M σ) ∧ D.SupLe th M ∧
       mean L (fun σ => Real.log (M σ)) ≤ Φ + C * D.g * Real.log (2 + D.g + Φ) := by
-  obtain ⟨C₀, hC₀, hN⟩ := GlobalTheory.T.theta_function_even_bound
+  obtain ⟨C₀, hC₀, hN⟩ := _root_.GlobalTheory.CompanionTheory.Ar.NForm.nform
   obtain ⟨C, hC, hW⟩ := WeakMatrixArithmetic.intersectionNumber_baseChange C₀ hC₀
   obtain ⟨C', hC', hF⟩ := final_bound C₀ C hC₀ hC
   refine ⟨C', hC', ?_⟩
   intro E _ _ _ H L _ _ D th Φ hg hΦ hth
   obtain ⟨b, hb, hmean⟩ := hth
-  have hfr := GlobalTheory.T.theta_function_archimedean_frame E H L D
+  have hfr := _root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L D
   have hun := GlobalTheory.T.theta_multiplier_quadratic_character E H L D
   have hdata : ∀ (σ : L →+* ℂ) (a : D.Frame σ), ∃ (θ : (Fin D.g → ℂ) → ℂ) (ρ : ℝ), a.IsFn th θ ∧ 0 < ρ ∧
       ρ ≤ √(2 * D.g) ∧ 0 < b σ ∧ (∀ w, a.nrm 1 θ w ≤ b σ * Real.exp (Ef D.g C₀ ρ)) ∧

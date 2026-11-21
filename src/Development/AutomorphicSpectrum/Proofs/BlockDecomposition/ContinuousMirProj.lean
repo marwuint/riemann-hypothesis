@@ -28,8 +28,4 @@ theorem continuous_mirProj (n : ℕ) : Continuous (mirabolicProjection k n) := b
   rw [this]
   exact hblock.comp hinv
 
-theorem smPsiPlus : SmPsiPlus k := by
-  intro n W _ _ σ hσ w
-  exact (hσ w).preimage (continuous_mirProj k n)
-
 end GlobalTheory.CompanionTheory.BZMirFun

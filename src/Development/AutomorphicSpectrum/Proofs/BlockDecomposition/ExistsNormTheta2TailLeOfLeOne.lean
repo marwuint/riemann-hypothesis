@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul
-import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.RankOneEisenstein.Theta2Integral
+import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.RankOneEisenstein.GodementEis
+import GroundTheory.GlobalFields.TateThesis.TateMain
 
 open NumberField Matrix MeasureTheory Filter Topology
 open scoped NumberField.AdeleRing SchwartzMap ContDiff
@@ -145,11 +146,5 @@ set_option maxSynthPendingDepth 1
 set_option synthInstance.maxSize 1000
 
 variable {K : Type _} [Field K] [NumberField K]
-
-noncomputable def contragredient (h : GL (Fin 2) 𝔸[K]) : GL (Fin 2) 𝔸[K] :=
-  ⟨((h⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K])ᵀ,
-    (h : Matrix (Fin 2) (Fin 2) 𝔸[K])ᵀ,
-    by rw [← transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, transpose_one],
-    by rw [← transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, transpose_one]⟩
 
 end GlobalTheory.CompanionTheory.EisRk1

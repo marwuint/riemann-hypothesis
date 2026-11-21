@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnsheet
 import Development.AutomorphicSpectrum.PublishedTheorems.Divisibility₂.PairingExists
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegrableOnAndSetIntegralOfEmbeddings
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChernPartSheetImageEqStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChernPartSheetImageEq
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SheetIsOpenEmbeddingRangeStatement
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -32,7 +32,7 @@ theorem chernInt_eq_finsum_sheets : ∀ (k : Type) [CommRing k] [IsDomain k] [Ch
   have hfin : Finite (k →+* ℂ) := Sheet.finite_ringHom k
   have key := fun ε : ℤˣ => integrableOn_and_setIntegral_of_embeddings (k →+* ℂ) (CxPts t τ)
     (fun σ => CxPts p σ) (fun σ => sheet (p := p) (σ := σ) t τ) hemb huniq (ψ.chernPart D ε)
-    (fun σ => (φ σ).chernPart D ε) (fun σ S' hS' => GlobalTheory.T.chernPart_sheet_image_eq k X p t τ hP σ D B φ ψ hW hφ hψ ε S' hS') S hS f
+    (fun σ => (φ σ).chernPart D ε) (fun σ S' hS' => _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.chernPart_sheet k X p t τ hP σ D B φ ψ hW hφ hψ ε S' hS') S hS f
   obtain ⟨h1, h1'⟩ := key 1
   obtain ⟨h2, h2'⟩ := key (-1)
   refine ⟨?_, ?_⟩

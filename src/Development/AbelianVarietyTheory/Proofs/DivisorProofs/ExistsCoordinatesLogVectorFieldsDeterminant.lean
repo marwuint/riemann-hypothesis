@@ -1,9 +1,10 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBaseFrame
 import Development.AbelianVarietyTheory.Definitions.Divisors.P22
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncStalkRegularParametersFromAffineOpenStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncStalkRegularParametersFromAffineOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAffineOpenFinitePresentationStalkKaehlerFrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordinatesExtendingRegularParametersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivationDetEqUnitMulProdNormalCrossingsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordinatesExtendingRegularParameters
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivationDetEqUnitMulProdNormalCrossings
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenTopFormFrameOfStalkKaehlerBasisStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafEqSpanOnBasicOpensOfStalkPrincipalStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
@@ -28,7 +29,7 @@ theorem GlobalTheory.LogPole.exists_coord_logDet : ∀ (E : Type) [Field E] [Num
     have h' := hf.res hW h
     rw [TopForm.resForm_dOn] at h'
     simpa only [LB.resG_resG] using h'
-  obtain ⟨hreg, m, a, J, hRsp, hIa⟩ := GlobalTheory.T.snc_stalk_regularParameters_from_affineOpen TF.Y.X (LogKS.boundary TF.Y) TF.snc U x₀ hx₀
+  obtain ⟨hreg, m, a, J, hRsp, hIa⟩ := _root_.GlobalTheory.SncStalk.stalk_snc TF.Y.X (LogKS.boundary TF.Y) TF.snc U x₀ hx₀
   haveI := TF.smooth
   obtain ⟨hfp, hfree, hfin, hrank⟩ := GlobalTheory.T.smooth_affineOpen_finitePresentation_stalkKaehler_free_rank c.F TF.Y.X TF.Y.s Dw.dim U x₀ hx₀
   letI : Algebra c.F Γ(TF.Y.X, U.1) := (algX TF.Y.s U.1).toAlgebra
@@ -42,7 +43,7 @@ theorem GlobalTheory.LogPole.exists_coord_logDet : ∀ (E : Type) [Field E] [Num
   haveI : IsNoetherianRing Γ(TF.Y.X, U.1) := Algebra.FiniteType.isNoetherianRing c.F _
   haveI : IsNoetherianRing (TF.Y.X.presheaf.stalk x₀) :=
     IsLocalization.isNoetherianRing (U.2.primeIdealOf ⟨x₀, hx₀⟩).asIdeal.primeCompl _ inferInstance
-  have h3 := GlobalTheory.T.exists_coordinates_extending_regular_parameters c.F Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀)
+  have h3 := _root_.GlobalTheory.exists_coords_extending_regularParams c.F Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀)
     (U.2.primeIdealOf ⟨x₀, hx₀⟩).asIdeal Dw.dim hrank m a hRsp
   obtain ⟨x, e, hxe, bs, hbs⟩ := h3
   have hxe' : (fun j => x (e j)) = a := funext hxe
@@ -58,7 +59,7 @@ theorem GlobalTheory.LogPole.exists_coord_logDet : ∀ (E : Type) [Field E] [Num
     have := congrArg Subtype.val (b.sum_repr D')
     rw [Submodule.coe_sum] at this
     exact this.symm
-  have h4 := GlobalTheory.T.logDerivation_det_eq_unit_mul_prod_normalCrossings c.F Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) (U.2.primeIdealOf ⟨x₀, hx₀⟩).asIdeal
+  have h4 := _root_.GlobalTheory.logDet_local_eq_unit_mul_prod c.F Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) (U.2.primeIdealOf ⟨x₀, hx₀⟩).asIdeal
     Dw.dim m x e J (by simp only [hxe]; exact hRsp) ⟨bs, hbs⟩ ((LogKS.boundary TF.Y).ideal U) hI
     (fun j => (b j).1) (fun j c' => (b j).2.1 c') (fun j => (b j).2.2) hspan
   obtain ⟨u, hu⟩ := h4

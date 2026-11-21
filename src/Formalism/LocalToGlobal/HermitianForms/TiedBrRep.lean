@@ -73,37 +73,4 @@ end Row
 
 variable {D : D7} {u : D.what₂.Word}
 
-set_option maxHeartbeats 2000000 in
-
-theorem val_rep (Tf : FormsTied D u) (φ : Formalism.MainNotions.product_first_zeroth_parts.Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m) (c : (D.fm u).clsP) :
-    ∃ P ∈ CSpan ((D.fm u).lam D.R.m), ∀ s, Tf.eWz ((D.mem u).P.evz φ) c s =
-      fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P ((Tf.val D.R.m le_rfl).eY s) := by
-  have hF := ((Tf.val D.R.m le_rfl).Fi φ).1 hφ
-  obtain ⟨g, hg, hres⟩ := Submodule.mem_map.1 hF
-  have hval := (Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) ((Tf.cls D.R.m le_rfl).y ((D.fm u).til c)) (Set.mem_univ _)
-  obtain ⟨P0, hP0, hfn⟩ := Submodule.mem_map.1 hval
-  have hP0' : P0 ∈ CSpan ((D.fm u).lam D.R.m) := by
-    have := CSpan_shW ((D.fm u).lam D.R.m) (fun _ => ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ))
-    unfold lamT at hP0
-    rw [this] at hP0
-    exact hP0
-  have hφv : ∀ z, φ ((D.fm u).til c) ((Tf.val D.R.m le_rfl).eY.symm z) =
-      fnOf _ (shiftOf (lamT u D.R.m)) 1 P0 z := by
-    intro z
-    have := congrFun (congrFun hres ((D.fm u).til c)) z
-    rw [← this, hfn]
-    rfl
-  set ginv : GL (Fin (D.R.N D.R.m)) D.host.E := ((Tf.til.ga c).1)⁻¹
-  set M' : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ := atInf (embT D) (ginv : Matrix _ _ D.host.E)
-  have hB := mZ_isUnit (bZ_isUnit Tf)
-  obtain ⟨P, hP, hPy⟩ := exists_rep ((D.fm u).lam D.R.m) _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) M' hB
-    (isUnit_det_atInf (embT D) ginv) P0 hP0' ((((Tf.cls D.R.m le_rfl).lev.chi (Tf.tilAd.ka c))⁻¹ : ℂˣ) : ℂ)
-  refine ⟨P, hP, fun s => ?_⟩
-  rw [Tf.evz φ c s ((Tf.val D.R.m le_rfl).eY.symm (((Tf.val D.R.m le_rfl).eY s).tr M' (isUnit_det_atInf (embT D) ginv)))]
-  · rw [hφv]; exact hPy _
-  · intro τ
-    simp only [Equiv.apply_symm_apply]
-    show ((Tf.val D.R.m le_rfl).eY s).1 τ = atInf (embT D) (Tf.til.ga c).1.1 τ * (M' τ * ((Tf.val D.R.m le_rfl).eY s).1 τ)
-    rw [← Matrix.mul_assoc, atInf_mul_inv, Matrix.one_mul]
-
 end Formalism.L2.Forms

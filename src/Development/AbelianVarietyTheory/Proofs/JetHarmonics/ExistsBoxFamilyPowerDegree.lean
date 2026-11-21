@@ -1,5 +1,6 @@
 import Mathlib
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExpandsPullOne
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullExp
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FamMod
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdExpPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdFam
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdBox
@@ -22,32 +23,6 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.IntegralBox
 
 open GlobalTheory.BoxIndep GlobalTheory.FieldBaseChange
-
-theorem span_of_indep_residue {V M M' : Type} [CommRing V] [IsLocalRing V] [AddCommGroup M] [Module V M]
-    [AddCommGroup M'] [Module (ResidueField V) M'] (π : M →ₛₗ[residue V] M') {I : Type} [Fintype I]
-    (b t : I → M) (hb : ∀ s, ∃ c : I → V, s = ∑ i, c i • b i)
-    (ht : ∀ c : I → ResidueField V, ∑ a, c a • π (t a) = 0 → c = 0) (s : M) :
-    ∃ c : I → V, s = ∑ a, c a • t a := by
-  classical
-  choose w hw using fun a => hb (t a)
-  let A : Matrix I I V := Matrix.of w
-  have hA : IsUnit A.det := by
-    rw [← residue_ne_zero_iff_isUnit, RingHom.map_det]
-    intro h
-    obtain ⟨c, hc, hc'⟩ := Matrix.exists_vecMul_eq_zero_iff.2 h
-    refine hc (ht c ?_)
-    have e : ∀ i, ∑ a, c a * residue V (w a i) = 0 := fun i => congrFun hc' i
-    simp only [hw, map_sum, map_smulₛₗ, Finset.smul_sum, smul_smul]
-    rw [Finset.sum_comm]
-    exact Finset.sum_eq_zero fun i _ => by rw [← Finset.sum_smul, e, zero_smul]
-  obtain ⟨d, rfl⟩ := hb s
-  refine ⟨Matrix.vecMul d A⁻¹, ?_⟩
-  have e : ∀ i, ∑ a, Matrix.vecMul d A⁻¹ a * w a i = d i := fun i =>
-    congrFun (show Matrix.vecMul (Matrix.vecMul d A⁻¹) A = d by
-      rw [Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]) i
-  simp only [hw, Finset.smul_sum, smul_smul]
-  rw [Finset.sum_comm]
-  exact Finset.sum_congr rfl fun i _ => by rw [← Finset.sum_smul, e]
 
 theorem exists_tensor_pow (F O : Type) [Field F] [CommRing O] [Algebra F O] {m : ℕ} (j : ℕ)
     (β : Fin j → Fin m → O) (hβ : ∀ i, LinearIndependent F (β i)) :
@@ -224,22 +199,5 @@ theorem box_indep {V : Type} [CommRing V] [IsDomain V] {F : Type} [Field F] (φ 
   refine Eq.trans (congrArg _ (((Finset.prod_congr rfl fun i _ => hv i (a i)).trans Finset.prod_mul_distrib).trans
     (congrArg _ (hu a).symm))) ?_
   exact (congrArg _ (_root_.mul_assoc _ _ _).symm).trans (mul_left_comm _ _ _)
-
-theorem main : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (j : ℕ) (D D' : DegPre V) (pD : IsPowDeg D' D j) (k : ℕ), 1 ≤ k → ∀ (α' : D'.X) (β' : D'.SecB k α'), ∃ (l : ℕ) (c : Fin l → V) (f : Fin l → Fin j → ∀ α : D.X, D.SecB k α) (f' : Fin l → ∀ α : D'.X, D'.SecB k α), (∀ a, IsBoxFamB pD k (f' a) (f a)) ∧ ∀ jj, β'.f jj = ∑ a, constFn D'.P.A.hom _ (c a) * (f' a α').f jj := by
-  intro _ _ _ hT V _ _ _ _ j D D' pD k hk α' β'
-  choose b _ hb using exists_basis (residue V) D hT hk
-  obtain ⟨b', hb', -⟩ := exists_basis (residue V) D' hT hk α'
-  have hg := (rank_and_g_of_isPowDeg V j D D' pD).2
-  let e : Fin (k ^ D'.P.g) ≃ (Fin j → Fin (k ^ D.P.g)) := Fintype.equivOfCardEq (by
-    simp [hg, ← pow_mul, mul_comm])
-  obtain ⟨c, hc⟩ := span_of_indep_residue (pullBC (residue V) D' k α') b'
-    (fun n => boxFamB pD k (fun i α => b α (e n i)) α') hb' (fun c hc => by
-      have := box_indep (residue V) pD b hb α' (fun a => c (e.symm a)) (by
-        rw [← hc, ← e.sum_comp]
-        simp only [Equiv.symm_apply_apply])
-      funext n
-      simpa using congrFun this (e n)) β'
-  exact ⟨_, c, fun n i α => b α (e n i), fun n => boxFamB pD k (fun i α => b α (e n i)),
-    fun n => isBoxFamB_boxFamB pD k _, (ZH.BasisBaseChange.isLin_iff D'.P.A.hom _ c β').2 hc⟩
 
 end GlobalTheory.IntegralBox

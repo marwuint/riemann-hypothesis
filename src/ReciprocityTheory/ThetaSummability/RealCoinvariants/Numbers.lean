@@ -37,21 +37,11 @@ def Q' : ℕ := D.a' - D.q
 def e : ℝ := ((D.a : ℝ) - D.a') / 2
 def c₁ : ℝ := ((D.R : ℝ) - D.S) / 2
 def c₂ : ℝ := ((D.P : ℝ) - D.Q) / 2
-def c₂' : ℝ := ((D.P' : ℝ) - D.Q') / 2
 def x₁ : ℝ := (D.κ : ℝ) / 2 - D.c₁ + D.c₂
-def x₂ : ℝ := D.c₂
-def y₁ : ℝ := (D.κ : ℝ) / 2 + D.c₁ - D.c₂
 def y₂ : ℝ := -D.c₂
 
 def ω : ℝ := D.x₁ - D.y₂
 
-def ω' : ℝ := D.y₁ - D.x₂
-
 end RealData
-
-def exampleData : RealData := ⟨9, 5, 1, 1, 16⟩
-
-theorem exampleData_hyp : exampleData.Hyp := by
-  constructor <;> norm_num [exampleData]
 
 end ReciprocityTheory.ThetaSummability.Real

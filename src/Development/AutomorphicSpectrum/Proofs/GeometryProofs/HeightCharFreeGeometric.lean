@@ -3,16 +3,18 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QQuasiCompact
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairingStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KernelRankBoundNormValuationStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeKernelRankBoundNormStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperMultiplicationKernelStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFiniteKernelNonzeroStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFormalGermLocalStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KernelRankBoundNormValuation
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeKernelRankBoundNorm
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperMultiplicationKernel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFiniteKernelNonzero
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFormalGermLocal
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientOfPowerFnsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperHasPowerFnsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientLatticeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientBilinearStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperHasPowerFns
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientLattice
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientBilinear
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
 open scoped CategoryTheory.Obj
@@ -230,15 +232,15 @@ open LemFGeo in
 theorem hfree_geom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X), PowFns t → ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X), GeomPF t x → ∀ (d r : ℕ) (g : GermAt t x d), HChar g.B r → HFree g.B r := by
   intro E _ _ _ H _ hbar X t hP k _ _ p _ _ x hG d r g hc
   obtain ⟨Q⟩ := GlobalTheory.T.abelian_quotient_of_power_fns E H X t hP k p x hG
-  obtain ⟨d', ⟨gB⟩⟩ := GlobalTheory.T.exists_formal_germ_local E H hbar (Sp k) Q.tB (GlobalTheory.T.proper_has_power_fns E H k Q.tB Q.proper) k (𝟙 (Sp k))
-  obtain ⟨Λ, _, _, _, _, P, j, hD, hs, hi, hk, hρ, hj⟩ := GlobalTheory.T.abelian_quotient_lattice E H hbar X t k p x Q d d' g gB
-  obtain ⟨Z, hZ⟩ := GlobalTheory.T.abelian_quotient_bilinear E H hbar X t k p x Q d d' g gB P hD
-  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := GlobalTheory.T.formal_hermitian_action_pairing k d (𝓞 E) g.B
+  obtain ⟨d', ⟨gB⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.germAt_exists_of_isLocalRing E H hbar (Sp k) Q.tB (_root_.GlobalTheory.CompanionTheory.Ar.Conj.ProperPowFns.powFns_of_proper_algClosed E H k Q.tB Q.proper) k (𝟙 (Sp k))
+  obtain ⟨Λ, _, _, _, _, P, j, hD, hs, hi, hk, hρ, hj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieSeq.lie_seq E H hbar X t k p x Q d d' g gB
+  obtain ⟨Z, hZ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.frame_gauge E H hbar X t k p x Q d d' g gB P hD
+  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint k d (𝓞 E) g.B
   let S : 𝓞 E → Module.End k (TensorProduct ℤ k Λ) := fun a =>
     LinearMap.baseChange k ((LinearMap.lsmul (𝓞 E) Λ a).restrictScalars ℤ)
   have hn : 0 < Module.finrank ℚ E := Module.finrank_pos
   have hN : Module.finrank k (TensorProduct ℤ k Λ) = Module.finrank ℚ E * Module.finrank (𝓞 E) Λ := by
-    have h := (GlobalTheory.T.lattice_kernel_rank_bound_norm E k p Λ (1 : 𝓞 E) one_ne_zero).2
+    have h := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.free_extension_kernel_bound_charpoly E k p Λ (1 : 𝓞 E) one_ne_zero).2
     have h' := congrArg Polynomial.natDegree h
     rwa [LinearMap.charpoly_natDegree, natDegree_charpoly_pow] at h'
   have h2d : 2 * d = Module.finrank ℚ E * r := by
@@ -271,11 +273,11 @@ theorem hfree_geom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
     rw [hZ a] at e1
     have e2 := ker_bound P (rho g.B a) (rho g.B (star a)) (P.transpose * bil (gB.B.ad a) 1 1 * P) (rho gB.B a)
       (rho gB.B (star a)) (bil (gB.B.ad a) 1 1) (S a) (S (star a)) j hs hi hk (hρ a) (hρ _) rfl (hj a) (hj _)
-    obtain ⟨⟨A, _, _, _, i, hpb⟩, hdeg⟩ := GlobalTheory.T.exists_finite_kernel_nonzero E H hbar k Q.tB Q.proper d' gB a ha
-    have e3 := GlobalTheory.T.proper_multiplication_kernel E H hbar k p Q.tB Q.proper Q.ktriv d' gB a A i hpb
+    obtain ⟨⟨A, _, _, _, i, hpb⟩, hdeg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.finrank_kernel_pow_degree_eq_norm_pow E H hbar k Q.tB Q.proper d' gB a ha
+    have e3 := _root_.GlobalTheory.CompanionTheory.Ar.Flat.lemF_ker_order_dvd E H hbar k p Q.tB Q.proper Q.ktriv d' gB a A i hpb
     have e5 := numeric (p := p) hn hN hdd h2d (hdeg A i hpb) hM e3
-    have e6 := (GlobalTheory.T.lattice_kernel_rank_bound_norm E k p Λ a ha).1
-    have e7 := (GlobalTheory.T.lattice_kernel_rank_bound_norm E k p Λ (star a) hba).1
+    have e6 := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.free_extension_kernel_bound_charpoly E k p Λ a ha).1
+    have e7 := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.free_extension_kernel_bound_charpoly E k p Λ (star a) hba).1
     rw [hnorm] at e7
     have e8 : Module.finrank k (LinearMap.ker (Tm (rho gB.B a) (rho gB.B (star a)) (bil (gB.B.ad a) 1 1))) =
       Module.finrank k (LinearMap.ker (rhoH gB.B a)) := rfl
@@ -284,7 +286,7 @@ theorem hfree_geom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
     have e10 : Module.finrank k (LinearMap.ker (S (star a))) ≤ _ := e7
     rw [e1]
     exact e2.trans ((add_le_add (add_le_add e10 le_rfl) e9).trans e5)
-  obtain ⟨y, hy1, hy2⟩ := GlobalTheory.T.exists_free_basis_of_kernel_rank_le_norm_valuation E k ((Fin d → k) × (Fin d → k)) p r ρH
+  obtain ⟨y, hy1, hy2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.lemF_algebra E k ((Fin d → k) × (Fin d → k)) p r ρH
     (fun a => by rw [hρH]; exact hc a) (fun a ha => by rw [hρH]; exact hb a ha)
   simp only [hρH] at hy1 hy2
   exact ⟨y, hy1, hy2⟩

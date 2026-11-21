@@ -106,13 +106,6 @@ theorem toP_eq_zero_iff (c : FirstDeRham s) : toP s c = 0 ↔ c ∈ F1 s := by
     rw [map_zero]
     exact (f.2 (Pt.Hom.triv φ) rfl rfl).symm
 
-theorem H1OnPoints_eq_zero_of_isIso (s : X ⟶ Sp R) [IsIso s] (c : H1OnPoints s) : c = 0 := by
-  have hx : inv s ≫ s = spMap (algebraMap R R) := by rw [IsIso.inv_hom_id]; exact (GlobalTheory.Cris.spMap_id R).symm
-  refine H1.eq_zero_of_isInitial _ (T₀ := ⟨R, inv s, hx⟩)
-    (Limits.IsInitial.ofUniqueHom (fun T ↦ (⟨Algebra.ofId R T.B, ?_⟩ : Pt.Hom ⟨R, inv s, hx⟩ T)) fun T m ↦ ?_) c
-  · rw [IsIso.comp_inv_eq]; exact T.w.symm
-  · exact hom_ext fun b ↦ (m.ρ.commutes b).trans ((Algebra.ofId R T.B).commutes b).symm
-
 def epsFn {Y : Scheme.{0}} (t : Y ⟶ Sp (DualNumber R)) : Γ(Y, ⊤) :=
   GlobalTheory.AbLaw.cst t ⊤ DualNumber.eps
 
@@ -143,22 +136,5 @@ structure IsE (E : ETy) : Prop where
 def SurjAll : Prop :=
   ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → Function.Surjective (toP (A.hom ≫ 𝟙 _))
-
-def IsoAll : Prop :=
-  ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
-    SmoothOfRelativeDimension g A.hom → ∀ (L : LB A.left), L.IsLB → ∀ ψ : LinearMap.BilinForm R (HdR A),
-      IsPolForm (dp0 R) (𝟙 _) A L ψ → ∀ x ∈ Fil A, ∀ y ∈ Fil A, ψ x y = 0
-
-def PerfField : Prop :=
-  ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
-    SmoothOfRelativeDimension g A.hom → ∀ (L : LB A.left), L.IsLB → ∀ ψ : LinearMap.BilinForm K (HdR A),
-      IsPolForm (dp0 K) (𝟙 _) A L ψ → ReciprocityTheory.ChartRestriction.G.Out.KTriv A L → LinearMap.IsPerfPair ψ
-
-def AddEps : Prop :=
-  ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A →
-    ∀ (M : LB (A ⊗ epsR R).left) (hM : M.IsLB),
-      (∀ (Y : Over (Sp R)) (t : Y ⟶ epsR R), GlobalTheory.AbDual.evc hM (1 : Y ⟶ A) t = 0) →
-      (∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ epsR R), t.left = Y.hom ≫ GlobalTheory.DeRham.epsRed R →
-        GlobalTheory.AbDual.evc hM a t = 0) → GlobalTheory.AbDual.IsAdditive M
 
 end CrystallinePoints.Pd

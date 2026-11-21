@@ -12,12 +12,6 @@ open GlobalTheory.KZ GlobalTheory.K4
 
 namespace UpperTheory.V.Z.Kato.Sym
 
-section
-
-variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} {X : Tower Ω ε} {m : ℕ}
-
-end
-
 private theorem ne_zero_of_pow_eq_io_of_ne_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {x : Kb X} {w : X.K} (hx : x ^ m = io X w) (hw : w ≠ 0) :
     x ≠ 0 := by

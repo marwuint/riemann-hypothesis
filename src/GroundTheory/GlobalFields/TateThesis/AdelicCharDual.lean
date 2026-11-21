@@ -49,11 +49,6 @@ theorem mixedToInfinite_mixedEmbedding (k : K) :
   rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
   exact (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm_apply_apply _
 
-omit [NumberField K] in
-theorem mixedToInfinite_mul (m m' : mixedSpace K) :
-    mixedToInfinite K (m * m') = mixedToInfinite K m * mixedToInfinite K m' :=
-  map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm m m'
-
 theorem mixedTrace_homeomorphMixedSpace (x : InfiniteAdeleRing K) :
     mixedTrace K (homeomorphMixedSpace K x) = infiniteTrace K x := by
   classical
@@ -343,25 +338,6 @@ theorem existsUnique_eq_adelicChar_mul (χ : AddChar 𝔸[K] Circle) (hχ : Cont
     rw [h, ← mul_assoc, ← map_mul, div_eq_mul_inv]
   exact ⟨ξ' / δ, hex, fun η hη => eq_of_forall_adelicChar_mul_eq fun x =>
     (hη x).symm.trans (hex x)⟩
-
-theorem existsUnique_adeleQuotient_char_eq (χ : AddChar (AdeleQuotient K) Circle)
-    (hχ : Continuous χ) :
-    ∃! ξ : K, ∀ x : 𝔸[K],
-      χ (QuotientAddGroup.mk x) = adelicChar K (algebraMap K 𝔸[K] ξ * x) :=
-  existsUnique_eq_adelicChar_mul (χ.compAddMonoidHom (QuotientAddGroup.mk' _))
-    (hχ.comp continuous_quot_mk) fun k => by
-      show χ (QuotientAddGroup.mk (algebraMap K 𝔸[K] k)) = 1
-      have hk : algebraMap K 𝔸[K] k ∈ AdeleRing.principalSubgroup (𝓞 K) K :=
-        RingHom.mem_range_self _ k
-      rw [(QuotientAddGroup.eq_zero_iff _).mpr hk, AddChar.map_zero_eq_one]
-
-theorem continuous_adelicChar_mul (ξ : K) :
-    Continuous fun x : 𝔸[K] => adelicChar K (algebraMap K 𝔸[K] ξ * x) :=
-  (continuous_adelicChar (K := K)).comp (continuous_const.mul continuous_id)
-
-theorem adelicChar_mul_algebraMap (ξ k : K) :
-    adelicChar K (algebraMap K 𝔸[K] ξ * algebraMap K 𝔸[K] k) = 1 := by
-  rw [← map_mul, adelicChar_algebraMap]
 
 end
 

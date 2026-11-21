@@ -85,11 +85,6 @@ theorem toLocalQuotients_eq_zero_iff {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I
   simp only [toLocalQuotients_apply, DFinsupp.coe_zero, Pi.zero_apply,
     Submodule.Quotient.mk_eq_zero]
 
-theorem ker_toLocalQuotients {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) :
-    LinearMap.ker (toLocalQuotients hI) = (I : Submodule (𝓞 K) K) := by
-  ext x
-  rw [LinearMap.mem_ker, toLocalQuotients_eq_zero_iff, mem_coe]
-
 theorem toLocalQuotients_surjective {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) :
     Function.Surjective (toLocalQuotients hI) := by
   classical
@@ -189,54 +184,6 @@ theorem smulQuotient_mk_eq_mk_iff (s : IdeleGroup K) (I : 𝓘) (x y : K) :
   refine forall_congr' fun v ↦ ?_
   rw [DFinsupp.mapRange.linearEquiv_apply, DFinsupp.mapRange_apply, toLocalQuotients_apply,
     toLocalQuotients_apply, localMul_mk, Submodule.Quotient.eq]
-
-theorem mul_mem_localIdeal_smul (s : IdeleGroup K) (I : 𝓘) (v : HeightOneSpectrum (𝓞 K))
-    {w : v.adicCompletion K} (hw : w ∈ localIdeal (I : FractionalIdeal (𝓞 K)⁰ K) v) :
-    (finiteProj v s : v.adicCompletion K) * w ∈
-      localIdeal ((s • I : 𝓘) : FractionalIdeal (𝓞 K)⁰ K) v := by
-  rw [localIdeal_smul]
-  exact ⟨w, hw, by simp only [LinearMap.mulLeft_apply, coe_finiteProj]⟩
-
-theorem smulQuotient_one_apply (I : 𝓘)
-    (q : K ⧸ ((I : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) :
-    smulQuotient 1 I q = Submodule.quotEquivOfEq _ _ (by rw [one_smul]) q := by
-  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  rw [Submodule.quotEquivOfEq_mk, smulQuotient_mk_eq_mk_iff]
-  intro v
-  rw [map_one, Units.val_one, one_mul, sub_self]
-  exact zero_mem _
-
-theorem smulQuotient_mul_apply (s t : IdeleGroup K) (I : 𝓘)
-    (q : K ⧸ ((I : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) :
-    smulQuotient (s * t) I q =
-      Submodule.quotEquivOfEq _ _ (by rw [mul_smul]) (smulQuotient s (t • I) (smulQuotient t I q)) := by
-  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  obtain ⟨y, hy⟩ := Submodule.Quotient.mk_surjective _ (smulQuotient t I (Submodule.Quotient.mk x))
-  obtain ⟨z, hz⟩ := Submodule.Quotient.mk_surjective _
-    (smulQuotient s (t • I) (Submodule.Quotient.mk y))
-  rw [← hy, ← hz, Submodule.quotEquivOfEq_mk, smulQuotient_mk_eq_mk_iff]
-  have hy' := (smulQuotient_mk_eq_mk_iff t I x y).1 hy.symm
-  have hz' := (smulQuotient_mk_eq_mk_iff s (t • I) y z).1 hz.symm
-  intro v
-  have h := add_mem (mul_mem_localIdeal_smul s (t • I) v (hy' v)) (hz' v)
-  have e : ((finiteProj v (s * t) : (v.adicCompletion K)ˣ) : v.adicCompletion K) *
-      (x : v.adicCompletion K) - (z : v.adicCompletion K) =
-      (finiteProj v s : v.adicCompletion K) * ((finiteProj v t : v.adicCompletion K) *
-        (x : v.adicCompletion K) - (y : v.adicCompletion K)) +
-      ((finiteProj v s : v.adicCompletion K) * (y : v.adicCompletion K) -
-        (z : v.adicCompletion K)) := by
-    rw [map_mul, Units.val_mul]
-    ring
-  rw [e, mul_smul]
-  exact h
-
-theorem smulQuotient_diagonal_mk (a : Kˣ) (I : 𝓘) (x : K) :
-    smulQuotient (diagonal K a) I (Submodule.Quotient.mk x) =
-      Submodule.Quotient.mk ((a : K) * x) := by
-  rw [smulQuotient_mk_eq_mk_iff]
-  intro v
-  rw [coe_finiteProj_diagonal, ← adicCompletion.coe_mul, sub_self]
-  exact zero_mem _
 
 end IdeleGroup
 

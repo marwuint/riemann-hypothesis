@@ -103,11 +103,6 @@ def SH (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra
 def SmConn {S : Scheme.{0}} (G : Over S) [GrpObj G] : Prop :=
   IsCommMonObj G ∧ Smooth G.hom ∧ IsSeparated G.hom ∧ QuasiCompact G.hom ∧ GeometricallyConnected G.hom
 
-def FrobLike {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (F : End G) (q : ℕ) : Prop :=
-  IsMonHom (show G ⟶ G from F) ∧ ∀ (U : G.left.Opens) (f : Γ(G.left, U)), Set.range (η[G]).left ⊆ U → ∃ m : ℕ, 1 ≤ m ∧ ∃ (U' : G.left.Opens)
-    (h : U' ≤ U) (h' : U' ≤ (show G ⟶ G from F ^ m).left ⁻¹ᵁ U), Set.range (η[G]).left ⊆ U' ∧
-    ((show G ⟶ G from F ^ m).left.appLE U U' h').hom f = (G.left.presheaf.map (homOfLE h).op).hom f ^ (q ^ m)
-
 def Wt {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] (i : splitTorus S X ⟶ G) (V : G.left.Opens)
     (u : Γ(G.left, V)) (χ : X) : Prop :=
   ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (h₁ : ⊤ ≤ ((t ≫ i) * g).left ⁻¹ᵁ V) (h₂ : ⊤ ≤ g.left ⁻¹ᵁ V),
@@ -129,28 +124,6 @@ def Defect {R B R' : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRing R']
 
 def Unr {R : Type} [CommRing R] (π : R) (R' : Type) [CommRing R'] [Algebra R R'] : Prop :=
   ∃ _ : IsDomain R', IsDiscreteValuationRing R' ∧ Irreducible (algebraMap R R' π)
-
-def Model.ofScheme (R : Type) [CommRing R] (K : Type) [Field K] [Algebra R K] (Y : Over (Sp R))
-    [h₁ : Smooth Y.hom] [h₂ : IsSeparated Y.hom] [h₃ : QuasiCompact Y.hom] :
-    Model R ((Over.pullback (spMap (algebraMap R K))).obj Y) := ⟨Y, Iso.refl _, h₁, h₂, h₃⟩
-
-def Model.ofAlgebra (R : Type) [CommRing R] (K : Type) [Field K] [Algebra R K] (B : Type) [CommRing B] [Algebra R B]
-    [Algebra.Smooth R B] :
-    Model R ((Over.pullback (spMap (algebraMap R K))).obj (Over.mk (spMap (algebraMap R B)))) where
-  Y := Over.mk (spMap (algebraMap R B))
-  e := Iso.refl _
-  smooth := by
-    show Smooth (Spec.map (CommRingCat.ofHom (algebraMap R B)))
-    rw [HasRingHomProperty.Spec_iff (P := @Smooth)]
-    exact RingHom.smooth_algebraMap.mpr inferInstance
-  sep := by show IsSeparated (Spec.map _); infer_instance
-  qc := by show QuasiCompact (Spec.map _); infer_instance
-
-example (R : Type) [CommRing R] (K : Type) [Field K] [Algebra R K] (n : ℕ) :
-    Model R ((Over.pullback (spMap (algebraMap R K))).obj
-      (Over.mk (spMap (algebraMap R (MvPolynomial (Fin n) R))))) :=
-  haveI : Algebra.Smooth R (MvPolynomial (Fin n) R) := ⟨inferInstance, inferInstance⟩
-  Model.ofAlgebra R K (MvPolynomial (Fin n) R)
 
 theorem Model.j_hom (M : Model R A) : M.j ≫ M.Y.hom = A.hom ≫ spMap (algebraMap R K) := by
   unfold Model.j
@@ -183,159 +156,6 @@ def VF.zero (A : Over (Sp K)) : VF A where
   leibniz _ _ _ := by simp
   const _ _ := rfl
   res _ _ _ _ := by simp
-
-section LocDer
-variable {k B : Type} [CommRing k] [CommRing B] [Algebra k B] (d : Derivation k B B) (S : Submonoid B)
-
-def derDual : B →+* DualNumber (Localization S) where
-  toFun b := (algebraMap B (Localization S) b, algebraMap B (Localization S) (d b))
-  map_one' := TrivSqZeroExt.ext (map_one _) (by
-    show algebraMap B (Localization S) (d 1) = 0
-    rw [Derivation.map_one_eq_zero, map_zero])
-  map_mul' a b := TrivSqZeroExt.ext (map_mul _ a b) (by
-    refine Eq.trans ?_ (DualNumber.snd_mul _ _).symm
-    show algebraMap B (Localization S) (d (a * b)) = algebraMap B (Localization S) a * algebraMap B (Localization S) (d b) +
-      algebraMap B (Localization S) (d a) * algebraMap B (Localization S) b
-    rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul]; ring)
-  map_zero' := TrivSqZeroExt.ext (map_zero _) (by
-    show algebraMap B (Localization S) (d 0) = 0
-    rw [map_zero, map_zero])
-  map_add' a b := TrivSqZeroExt.ext (map_add _ a b) (by
-    show algebraMap B (Localization S) (d (a + b)) = algebraMap B (Localization S) (d a) + algebraMap B (Localization S) (d b)
-    rw [map_add, map_add])
-
-theorem derDual_isUnit (s : S) : IsUnit (derDual d S s) := by
-  refine TrivSqZeroExt.isUnit_iff_isUnit_fst.mpr ?_
-  exact IsLocalization.map_units (Localization S) s
-
-def locDual : Localization S →+* DualNumber (Localization S) := IsLocalization.lift (derDual_isUnit d S)
-
-theorem locDual_fst (x : Localization S) : (locDual d S x).fst = x := by
-  let φ : Localization S →+* Localization S :=
-    (TrivSqZeroExt.fstHom (Localization S) (Localization S) (Localization S)).toRingHom.comp (locDual d S)
-  have hφ : φ = RingHom.id _ := by
-    refine IsLocalization.ringHom_ext S (RingHom.ext fun b => ?_)
-    simp only [φ, RingHom.comp_apply, locDual, IsLocalization.lift_eq, RingHom.id_apply]
-    rfl
-  exact RingHom.congr_fun hφ x
-
-def locDer : Localization S →+ Localization S where
-  toFun x := (locDual d S x).snd
-  map_zero' := by simp
-  map_add' a b := by simp
-
-theorem locDer_mul (x y : Localization S) : locDer d S (x * y) = x * locDer d S y + y * locDer d S x := by
-  show (locDual d S (x * y)).snd = x * (locDual d S y).snd + y * (locDual d S x).snd
-  rw [map_mul, DualNumber.snd_mul, locDual_fst, locDual_fst]
-  ring
-
-theorem locDer_algebraMap (b : B) : locDer d S (algebraMap B _ b) = algebraMap B _ (d b) := by
-  show (locDual d S (algebraMap B _ b)).snd = _
-  unfold locDual
-  rw [IsLocalization.lift_eq]
-  rfl
-
-theorem locDer_mk (a : B) (s : S) :
-    locDer d S (Localization.mk a s) = Localization.mk (s.1 * d a - a * d s.1) (s * s) := by
-  have hu : IsUnit (algebraMap B (Localization S) s) := IsLocalization.map_units (Localization S) s
-  rw [Localization.mk_eq_mk']
-  have key := locDer_mul d S (IsLocalization.mk' (Localization S) a s) (algebraMap B _ s)
-  rw [IsLocalization.mk'_spec, locDer_algebraMap, locDer_algebraMap] at key
-  have spec : algebraMap B (Localization S) s * IsLocalization.mk' (Localization S) a s = algebraMap B _ a :=
-    IsLocalization.mk'_spec' _ _ _
-  have spec2 : algebraMap B (Localization S) s * algebraMap B (Localization S) s *
-      IsLocalization.mk' (Localization S) (s.1 * d a - a * d s.1) (s * s) = algebraMap B _ (s.1 * d a - a * d s.1) := by
-    rw [← map_mul, ← Submonoid.coe_mul, IsLocalization.mk'_spec']
-  refine (hu.mul hu).mul_left_cancel ?_
-  rw [spec2, map_sub, map_mul, map_mul]
-  linear_combination (-algebraMap B (Localization S) s) * key - algebraMap B (Localization S) (d s.1) * spec
-end LocDer
-
-section SpecVF
-variable {B : Type} [CommRing B] [Algebra K B]
-
-abbrev denoms (B : Type) [CommRing B] (x : PrimeSpectrum B) : Submonoid B := x.asIdeal.primeCompl
-
-def secDer (d : Derivation K B B) (U : (Sp B).Opens) : Γ(Sp B, U) →+ Γ(Sp B, U) where
-  toFun s := ⟨fun x => locDer d (denoms B x.1) (s.1 x), fun x => by
-    obtain ⟨V, m, i, r, t, w⟩ := s.2 x
-    refine ⟨V, m, i, t * d r - r * d t, t * t, fun y => ?_⟩
-    obtain ⟨ht, hw⟩ := w y
-    refine ⟨(denoms B y.1).mul_mem ht ht, ?_⟩
-    exact (congrArg (locDer d (denoms B y.1)) hw).trans (locDer_mk d (denoms B y.1) r ⟨t, ht⟩)⟩
-  map_zero' := Subtype.ext (funext fun x => map_zero (locDer d (denoms B x.1)))
-  map_add' a b := Subtype.ext (funext fun x => map_add (locDer d (denoms B x.1)) (a.1 x) (b.1 x))
-
-def fnOn (B : Type) [CommRing B] (U : (Sp B).Opens) : B →+* Γ(Sp B, U) :=
-  ((Sp B).presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom
-
-theorem secDer_fnOn (d : Derivation K B B) (U : (Sp B).Opens) (b : B) : secDer d U (fnOn B U b) = fnOn B U (d b) := by
-  apply Subtype.ext
-  funext x
-  show locDer d (denoms B x.1) ((fnOn B U b).1 x) = (fnOn B U (d b)).1 x
-  have h : ∀ c : B, (fnOn B U c).1 x = algebraMap B (Localization (denoms B x.1)) c := fun c => rfl
-  rw [h, h, locDer_algebraMap]
-
-theorem cstK_spec (U : (Sp B).Opens) (c : K) :
-    cstK (Over.mk (spMap (algebraMap K B))) U c = fnOn B U (algebraMap K B c) := by
-  have e := congrArg (fun g => (g ≫ (Sp B).presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom c)
-    (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap K B)))
-  exact e.symm
-
-def VF.ofDerivation (d : Derivation K B B) : VF (Over.mk (spMap (algebraMap K B))) where
-  D U := secDer d U
-  leibniz U a b := Subtype.ext (funext fun x => locDer_mul d (denoms B x.1) (a.1 x) (b.1 x))
-  const U c := by
-    have := secDer_fnOn d U (algebraMap K B c)
-    rw [Derivation.map_algebraMap, map_zero] at this
-    exact (congrArg (secDer d U) (cstK_spec U c)).trans this
-  res U V h a := rfl
-
-theorem VF.ofDerivation_fnOn (d : Derivation K B B) (U : (Sp B).Opens) (b : B) :
-    (VF.ofDerivation d).D U (fnOn B U b) = fnOn B U (d b) := secDer_fnOn d U b
-
-theorem jac_pderiv (n : ℕ) (U : (Sp (MvPolynomial (Fin n) K)).Opens) :
-    jac (A := Over.mk (spMap (algebraMap K (MvPolynomial (Fin n) K))))
-      (fun i : Fin n => VF.ofDerivation (MvPolynomial.pderiv i)) U
-      (fun j => fnOn _ U (MvPolynomial.X j)) = 1 := by
-  unfold jac
-  convert Matrix.det_one (n := Fin n)
-  ext i j
-  rw [Matrix.of_apply, VF.ofDerivation_fnOn, MvPolynomial.pderiv_X, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h; simp
-  · simp [h, Ne.symm h]
-
-theorem isFrame_pderiv (n : ℕ) :
-    IsFrame (A := Over.mk (spMap (algebraMap K (MvPolynomial (Fin n) K))))
-      (fun i : Fin n => VF.ofDerivation (MvPolynomial.pderiv i)) := by
-  refine ⟨?_, fun x => ⟨⊤, fun j => fnOn _ ⊤ (MvPolynomial.X j), trivial, ?_⟩⟩
-  · rw [Fintype.card_fin]
-    have hA : Algebra.IsStandardSmoothOfRelativeDimension n K (MvPolynomial (Fin n) K) := by
-      let v : PEmpty.{1} → MvPolynomial (Fin n) K := PEmpty.elim
-      let P0 := Algebra.PreSubmersivePresentation.naive (v := v) (PEmpty.elim : PEmpty.{1} → Fin n)
-        (fun a => a.elim)
-      let P : Algebra.SubmersivePresentation K _ (Fin n) PEmpty.{1} := ⟨P0, by
-        rw [Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Matrix.det_isEmpty, map_one]
-        exact isUnit_one⟩
-      have hI : Ideal.span (Set.range v) = ⊥ := by simp [v]
-      let e : (MvPolynomial (Fin n) K ⧸ Ideal.span (Set.range v)) ≃ₐ[K] MvPolynomial (Fin n) K :=
-        (Ideal.quotientEquivAlgOfEq K hI).trans
-          (AlgEquiv.ofRingEquiv (f := RingEquiv.quotientBot _) (fun r => RingEquiv.quotientBot_mk _))
-      exact (P.ofAlgEquiv e).isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])
-    show SmoothOfRelativeDimension n (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin n) K))))
-    rw [HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension n)]
-    exact RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _
-      ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap n).mpr hA)
-  · rw [jac_pderiv]; exact isUnit_one
-end SpecVF
-
-theorem polyPt_X {S : Scheme.{0}} {G Z : Over S} [GrpObj G] (F : End G) (x : Z ⟶ G) :
-    polyPt F Polynomial.X x = x ≫ (show G ⟶ G from F) := by
-  simp [polyPt, List.range_succ, Polynomial.coeff_X]
-
-theorem unr_self {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {π : R} (h : Irreducible π) :
-    Unr π R := ⟨inferInstance, inferInstance, h⟩
 
 end GlobalTheory.SS
 end

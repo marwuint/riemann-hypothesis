@@ -202,13 +202,4 @@ theorem ProperIntersectionLength_holds : ProperIntersectionLength := fun _ _ _ _
   ProperCut.topSelf_eq_length f hf hL s hfin hCM fun _ hy =>
     ((ProperCut.ringKrullDim_stalk_eq f (ProperCut.isClosed_singleton_of_finite f _ hfin hy)).trans hd).ge
 
-example (h : ProperIntersectionLength) {F : Type} [Field F] (Y : ProjVar.Var F) (L : LB Y.X) (hL : L.IsLB)
-    (s : Fin Y.dim → L.Sec) (hfin : ((cutIdeal hL s).support : Set Y.X).Finite) :
-    letI := algebraΓOfHom Y.str
-    letI := algebraΓOfHom ((cutIdeal hL s).subschemeι ≫ Y.str)
-    topSelfIntersection F L Y.dim = Module.finrank F Γ((cutIdeal hL s).subscheme, ⊤) :=
-  (h F Y.X Y.str Y.dim Y.isProjOver Y.topologicalKrullDim_eq L hL s hfin fun _ hy =>
-    ProperCut.isCM_stalk_of_smooth Y.str Y.smooth_str
-      (ProperCut.isClosed_singleton_of_finite Y.str _ hfin hy)).2.2.2.2.2
-
 end GlobalTheory.Published

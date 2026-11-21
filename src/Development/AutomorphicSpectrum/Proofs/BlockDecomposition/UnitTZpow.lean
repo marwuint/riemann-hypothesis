@@ -1,6 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.WittExactSequences.IsCompl
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectTensorGeneratedLiftStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectTensorGeneratedLift
 
 open TensorProduct CrystallineSemistableComparison.D
 open scoped LaurentPolynomial
@@ -8,12 +8,6 @@ open scoped LaurentPolynomial
 noncomputable section
 
 namespace GlobalTheory.CompanionTheory.PerfBC
-
-def unitT (R : Type) [CommRing R] : (R[T;T⁻¹])ˣ where
-  val := LaurentPolynomial.T 1
-  inv := LaurentPolynomial.T (-1)
-  val_inv := by rw [← LaurentPolynomial.T_add]; simp
-  inv_val := by rw [← LaurentPolynomial.T_add]; simp
 
 theorem bc_laur : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B] (K : Type) [CommRing K] [Algebra A K] (i : A[T;T⁻¹] →ₐ[A] B) (f g : A), Pf p A → Pf p K → PQ p (i : A[T;T⁻¹] →+* B) (Ideal.span {LaurentPolynomial.C f - LaurentPolynomial.T 1 * LaurentPolynomial.C g}) → ∃ i₁ : K[T;T⁻¹] →+* B ⊗[A] K, PQ p i₁ (Ideal.span {LaurentPolynomial.C (algebraMap A K f) - LaurentPolynomial.T 1 * LaurentPolynomial.C (algebraMap A K g)}) ∧ (∀ a, i₁ (LaurentPolynomial.C a) = (1 : B) ⊗ₜ[A] a) ∧ ∀ n : ℤ, i₁ (LaurentPolynomial.T n) = i (LaurentPolynomial.T n) ⊗ₜ[A] (1 : K) := by
   intro p _ A _ B _ _ K _ _ i f g hA hK hPQ
@@ -86,7 +80,7 @@ theorem bc_laur : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type)
     rw [Ideal.map_span, Set.image_singleton, map_sub, map_mul, hjC, hjC, hjT]
   refine ⟨i₁, ?_, hC, hT⟩
   rw [← hmap]
-  exact GlobalTheory.T.perfect_tensor_generated_lift p A A[T;T⁻¹] B K K[T;T⁻¹] i _ LaurentPolynomial.C j i₁ hA hK hPQ hcomp hgen
+  exact _root_.GlobalTheory.CompanionTheory.PerfectRing.pq_baseChange p A A[T;T⁻¹] B K K[T;T⁻¹] i _ LaurentPolynomial.C j i₁ hA hK hPQ hcomp hgen
     hC hij
 
 end GlobalTheory.CompanionTheory.PerfBC

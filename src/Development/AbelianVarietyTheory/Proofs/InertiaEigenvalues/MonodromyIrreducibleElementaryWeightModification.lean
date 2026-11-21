@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamPeriodRingFieldTPowFiltrationUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FundamentalLemmaLatticeFrobFixedForallDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueIndepOfNotReducibleOverUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRepOfFrobeniusFixedFrameChangeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamPeriodRingFieldTPowFiltrationUnits
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FundamentalLemmaLatticeFrobFixedForallDegree
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueIndepOfNotReducibleOverUnramified
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRepOfFrobeniusFixedFrameChange
 
 noncomputable section
 
@@ -15,7 +15,7 @@ namespace GlobalTheory.PMon
 theorem modStep_holds : ModStep := by
   intro l _ P AI T n _ _ K r ρ w x y hxy hR hF hS
   choose U hU hUe using hF
-  obtain ⟨hfield, -, -, -, hval, hmul, -⟩ := GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T
+  obtain ⟨hfield, -, -, -, hval, hmul, -⟩ := _root_.GlobalTheory.PMon.bdR_tied l P AI T
   haveI : Nontrivial P.R.BdR := ⟨hfield.exists_pair_ne⟩
   have hsum : ∀ (s : Finset n) (f : n → P.R.BdR), (∀ k ∈ s, f k ∈ Fil P 1) → ∑ k ∈ s, f k ∈ Fil P 1 := by
     intro s f hf
@@ -47,10 +47,10 @@ theorem modStep_holds : ModStep := by
     rw [Matrix.mul_apply, Matrix.mul_diagonal] at h
     simp only [Matrix.map_apply] at h
     rw [Matrix.mulVec, dotProduct, h, Pi.smul_apply, smul_eq_mul, mul_comm]
-  have hind := GlobalTheory.T.residue_indep_of_not_reducibleOverUnramified l P AI T n K r ρ (x.1 : ℕ) (fun i => (U x.1 : Matrix n n P.R.BdR) i x.2) (w x.1 x.2)
+  have hind := _root_.GlobalTheory.PMon.residue_indep_of_not_splits l P AI T n K r ρ (x.1 : ℕ) (fun i => (U x.1 : Matrix n n P.R.BdR) i x.2) (w x.1 x.2)
     hR hS (fun i => (hU x.1).1 i x.2) hcol heig
-  obtain ⟨A, hA, hW⟩ := GlobalTheory.T.fundamentalLemmaLatticeFrobFixed_forall_degree r l P AI T n U x y hxy (fun m => hU m) hind
-  exact GlobalTheory.T.exists_rep_of_frobeniusFixed_frame_change l P AI T n K r ρ w (fun m j => eps x y (m, j)) U A hR hUe hA hW
+  obtain ⟨A, hA, hW⟩ := _root_.GlobalTheory.PMon.flAt_all r l P AI T n U x y hxy (fun m => hU m) hind
+  exact _root_.GlobalTheory.PMon.exists_rep_of_fixed_frame_change l P AI T n K r ρ w (fun m j => eps x y (m, j)) U A hR hUe hA hW
 
 end GlobalTheory.PMon
 

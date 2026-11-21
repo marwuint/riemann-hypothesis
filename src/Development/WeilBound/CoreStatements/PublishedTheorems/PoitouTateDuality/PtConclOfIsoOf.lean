@@ -1,13 +1,13 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.GelfandSpectralNormalisation.NormalisedInvariants.PTConclAt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NineTermExactIff
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaloisGroupTransportIsomorphismStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaloisGroupTransportIsomorphism
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RingIsomorphismTransportsPlacesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotallyComplexOfRingEquivStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotallyComplexOfRingEquiv
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.PtfsHyp
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RingEquivTransportsDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RingEquivTransportsDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InertiaQuotientTransportStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RingEquivCyclotomicCharacterStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RingEquivCyclotomicCharacter
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RingEquivTransportsInertiaStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RingEquivTransportsResidueStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PoitouTateSequenceTransportStatement
@@ -22,11 +22,11 @@ namespace PositivityTheory.PTN
 theorem ptConcl_of_iso_of (hL : PositivityTheory.PTN.LocHyp) : ∀ (F Ω F' Ω' : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (e : F ≃+* F') (E : Ω ≃+* Ω'), (∀ x : F, E (algebraMap F Ω x) = algebraMap F' Ω' (e x)) → PTConclAt F' Ω' → PTConclAt F Ω := by
   intro F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE hPT
   intro l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ
-  obtain ⟨Φ, hΦ⟩ := GlobalTheory.T.galois_group_transport_isomorphism F Ω F' Ω' e E hE
+  obtain ⟨Φ, hΦ⟩ := _root_.GlobalTheory.CompanionTheory.PTIso.exists_galContinuousMulEquiv F Ω F' Ω' e E hE
   obtain ⟨eO, eV, heO, hV, hV2, hN⟩ := GlobalTheory.T.ring_isomorphism_transports_places F F' e
   have hloc := hL F Ω F' Ω' e E hE Φ hΦ
-  have hpl := GlobalTheory.T.ring_equiv_transports_decomposition F Ω F' Ω' e E hE eO eV heO hV
-  have hcyc := GlobalTheory.T.ring_equiv_cyclotomic_character F Ω F' Ω' e E hE Φ hΦ l r
+  have hpl := _root_.GlobalTheory.CompanionTheory.PTIso.isPlaceOver_transfer_fieldIso F Ω F' Ω' e E hE eO eV heO hV
+  have hcyc := _root_.GlobalTheory.CompanionTheory.PTIso.cycMod_intrinsic F Ω F' Ω' e E hE Φ hΦ l r
   obtain ⟨inv', hinv'⟩ := GlobalTheory.T.ring_equiv_transports_inertia F Ω F' Ω' e E hE Φ hΦ
     (fun A A' hA σ => (hloc A A' hA σ).1) l r hcyc inv
 
@@ -60,7 +60,7 @@ theorem ptConcl_of_iso_of (hL : PositivityTheory.PTN.LocHyp) : ∀ (F Ω F' Ω' 
     ρ.comp (Ψ.symm : GS Ω' (S' : Set (HeightOneSpectrum (𝓞 F'))) →* _)
   have hρ' : ContAction ρ' := hρ.comp' Ψ.symm.continuous
 
-  have hl' : l ≠ 2 ∨ IsTotallyComplex F' := hl.imp id (GlobalTheory.T.totally_complex_of_ring_equiv F F' e)
+  have hl' : l ≠ 2 ∨ IsTotallyComplex F' := hl.imp id (_root_.GlobalTheory.CompanionTheory.PTIso.isTotallyComplex_of_ringEquiv F F' e)
   have hζ' : IsPrimitiveRoot (E ζ) (l ^ r) := hζ.map_of_injective E.injective
   have hnorm' : InvNormalised (E ζ) inv' := by
     intro A' v' hP

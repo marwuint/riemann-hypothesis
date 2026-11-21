@@ -272,68 +272,6 @@ def GalD : Prop :=
 
 end Links
 
-structure CxLinks (X : CxData A) (Y : CxCol (fc := fc) X) (C CH : ℝ) : Prop where
-
-  stable : X.zs.Stable
-
-  inBlock : X.zs.InBlock
-
-  ratZ : X.RatZ
-
-  pos : ∀ b, (lv (fc X.zs) b).Pos
-
-  proviso : ∀ b, (lv (fc X.zs) b).Proviso
-
-  types : ∀ b, (lv (fc X.zs) b).Types
-
-  partsOrth : ∀ b, X.PartsOrth b (fc := fc)
-
-  h0 : X.H0
-
-  h2 : ∀ b, X.H2 cr b
-
-  ratMu : ∀ b, X.RATmu cr b
-
-  h3 : ∀ b, X.H3 cr b
-
-  h4pos : X.H4pos
-
-  h4 : ∀ b, X.H4 cr b
-
-  kForm : ∀ b, X.KForm b
-
-  mLat : ∀ b, X.MLat b
-
-  ewNorm : ∀ b, X.EWnorm b
-
-  h5 : ∀ b, X.H5 cr b
-
-  ratTh : ∀ b, X.RATth cr b
-
-  h3W : ∀ b, X.H3W cr b
-
-  thmA : ∀ b, X.ThmA cr b
-
-  galD : ∀ b, X.GalD cr b
-
-  l1d : ∀ b, (X.data cr b).DimensionsOfPartsAgree
-
-  l3 : (X.data cr false).L3 ((fc X.zs).Z.num C CH)
-
-  on : (X.data cr false).ON ((fc X.zs).Z.num C CH)
-
-  l6 : (X.data cr true).L6 ((fc X.zs).Z.num C CH)
-
-  l1b : (X.colOf cr Y).PairingFactorsThroughPeriods
-
-  l1e : (X.colOf cr Y).L1e
-
-  untw : (X.data cr false).Untwisted ((fc X.zs).Z.num C CH)
-
-  passage : Passage ((fc X.zs).Z.num C CH) (X.data cr false) (X.data cr true)
-
-  fun0 : (X.data cr false).FUN ((fc X.zs).Z.num C CH)
-
 end CxData
 
 end Formalism.IndefR.Cx

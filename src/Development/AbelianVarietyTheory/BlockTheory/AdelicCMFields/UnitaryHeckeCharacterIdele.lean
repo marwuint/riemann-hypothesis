@@ -60,13 +60,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
   haveI := _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.IsCMExtension.isCMField F E
   exact IsCMField.complexConj_apply_apply E x
 
-theorem conj_ne_one [IsCMExtension F E] : conj F E ≠ 1 := by
-  haveI := IsCMExtension.isCMField F E
-  intro h
-  apply IsCMField.complexConj_ne_one E
-  ext x
-  exact DFunLike.congr_fun h x
-
 end CM
 
 abbrev Idele (K : Type) [Field K] [NumberField K] : Type := (AdeleRing (𝓞 K) K)ˣ
@@ -227,13 +220,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
   @_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap_principalIdele E E _ _ _ _
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E).toRingEquiv.toRingHom.toAlgebra x
 
-example : IsCMExtension (maximalRealSubfield (CyclotomicField 4 ℚ)) (CyclotomicField 4 ℚ) :=
-  haveI : IsCyclotomicExtension {4} ℚ (CyclotomicField 4 ℚ) :=
-    CyclotomicField.isCyclotomicExtension 4 ℚ
-  haveI : IsCMField (CyclotomicField 4 ℚ) :=
-    IsCyclotomicExtension.Rat.isCMField _ (S := {4}) ⟨4, rfl, by norm_num⟩
-  inferInstance
-
 variable {E : Type} [Field E] [NumberField E]
 
 open scoped Classical in
@@ -261,26 +247,10 @@ def trivial (E : Type) [Field E] [NumberField E] : UnitaryHeckeChar E where
   continuous_toHom := continuous_const
   map_principal _ := rfl
 
-def mul (χ ψ : UnitaryHeckeChar E) : UnitaryHeckeChar E where
-  toHom := χ.toHom * ψ.toHom
-  continuous_toHom := χ.continuous_toHom.mul ψ.continuous_toHom
-  map_principal x := by simp [χ.map_principal, ψ.map_principal]
-
 def inv (χ : UnitaryHeckeChar E) : UnitaryHeckeChar E where
   toHom := χ.toHom⁻¹
   continuous_toHom := χ.continuous_toHom.inv
   map_principal x := by simp [χ.map_principal]
-
-def restrict (F : Type) [Field F] [NumberField F] [Algebra F E] (χ : UnitaryHeckeChar E) :
-    UnitaryHeckeChar F where
-  toHom := χ.toHom.comp (ideleMap F E)
-  continuous_toHom := χ.continuous_toHom.comp (continuous_ideleMap F E)
-  map_principal x := by
-    rw [MonoidHom.comp_apply, ideleMap_principalIdele, χ.map_principal]
-
-def IsTrivialOn (F : Type) [Field F] [NumberField F] [Algebra F E] (χ : UnitaryHeckeChar E) :
-    Prop :=
-  ∀ x : Idele F, χ.toHom (ideleMap F E x) = 1
 
 def localComponent (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
     (P.adicCompletion E)ˣ →* Circle :=
@@ -338,39 +308,8 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
     (h : ¬ χ.IsUnramifiedAt P) : χ.valueAt P = 0 := by
   simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt, h]
 
-theorem norm_valueAt_le (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
-    ‖χ.valueAt P‖ ≤ 1 := by
-  unfold valueAt
-  split_ifs
-  · exact (Circle.norm_coe _).le
-  · simp
-
 def eulerFactor (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) (s : ℂ) : ℂ :=
   (1 - χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s))⁻¹
-
-def finiteL (χ : UnitaryHeckeChar E) (s : {s : ℂ // 1 < s.re}) : ℂ :=
-  ∏' P : HeightOneSpectrum (𝓞 E), χ.eulerFactor P s
-
-example (P : HeightOneSpectrum (𝓞 E)) : (trivial E).valueAt P = 1 := by
-  have h : (trivial E).IsUnramifiedAt P := fun _ _ => rfl
-  rw [valueAt, if_pos h]
-  rfl
-
-theorem norm_term_le (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) (s : ℂ) :
-    ‖χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)‖ ≤
-      (Ideal.absNorm P.asIdeal : ℝ) ^ (-s.re) := by
-  have h := NumberField.HeightOneSpectrum.one_lt_absNorm P
-  rw [norm_mul, Complex.norm_natCast_cpow_of_pos (by omega), Complex.neg_re]
-  exact mul_le_of_le_one_left (by positivity) (χ.norm_valueAt_le P)
-
-theorem one_sub_ne_zero (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) {s : ℂ}
-    (hs : 0 < s.re) : 1 - χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s) ≠ 0 := by
-  intro h
-  have h1 := χ.norm_term_le P s
-  rw [← sub_eq_zero.mp h, norm_one] at h1
-  have h2 : (1 : ℝ) < Ideal.absNorm P.asIdeal := by
-    exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm P
-  exact absurd (Real.rpow_lt_one_of_one_lt_of_neg h2 (neg_neg_of_pos hs)) (not_lt.mpr h1)
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in
@@ -431,21 +370,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
     _ ≤ Module.finrank ℚ E * ∑' m : Nat.Primes, ((m : ℕ) : ℝ) ^ (-σ) := by
         gcongr
         exact hsP.sum_le_tsum _ fun _ _ => by positivity
-
-theorem multipliable_eulerFactor (χ : UnitaryHeckeChar E) {s : ℂ} (hs : 1 < s.re) :
-    Multipliable fun P => χ.eulerFactor P s := by
-  have h1 : Summable fun P : HeightOneSpectrum (𝓞 E) =>
-      χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s) :=
-    Summable.of_norm_bounded (summable_absNorm_rpow hs) fun P => χ.norm_term_le P s
-  have h2 := h1.clog_one_sub.neg.hasSum.cexp.multipliable
-  refine h2.congr fun P => ?_
-  simp only [Function.comp_apply]
-  rw [Complex.exp_neg, Complex.exp_log (χ.one_sub_ne_zero P (by linarith))]
-  rfl
-
-theorem hasProd_eulerFactor (χ : UnitaryHeckeChar E) (s : {s : ℂ // 1 < s.re}) :
-    HasProd (fun P => χ.eulerFactor P s) (χ.finiteL s) :=
-  (χ.multipliable_eulerFactor s.2).hasProd
 
 end UnitaryHeckeChar
 
@@ -517,32 +441,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
     rw [← FinitePlace.mk_apply]
     rfl
   rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm, MonoidHom.mul_apply, hinf, hfin, prod_abs_eq_one x.ne_zero]
-
-theorem continuous_finiteIdeleNorm : Continuous (finiteIdeleNorm (E := E)) := by
-  have hO : IsOpen {a : FiniteAdeleRing (𝓞 E) E | ∀ v, a v ∈ v.adicCompletionIntegers E} :=
-    RestrictedProduct.isOpen_forall_mem
-      (A := fun v : HeightOneSpectrum (𝓞 E) => (v.adicCompletionIntegers E : Set (v.adicCompletion E)))
-      fun _ => Valued.isOpen_valuationSubring _
-  have h1 : Continuous fun x : Idele E => x.val.2 := continuous_snd.comp Units.continuous_val
-  have h2 : Continuous fun x : Idele E => (x⁻¹).val.2 := h1.comp continuous_inv
-  have key : ∀ y : Idele E, (∀ v, y.val.2 v ∈ v.adicCompletionIntegers E) →
-      (∀ v, (y⁻¹).val.2 v ∈ v.adicCompletionIntegers E) → finiteIdeleNorm y = 1 := by
-    intro y hy hy'
-    refine finprod_eq_one_of_forall_eq_one fun v => norm_eq_one_of_valued ?_
-    have e : y.val.2 v * (y⁻¹).val.2 v = 1 :=
-      congrArg (fun a : AdeleRing (𝓞 E) E => a.2 v) y.mul_inv
-    have e' := congrArg Valued.v e
-    rw [map_mul, map_one] at e'
-    exact eq_one_of_one_le_mul_left (hy v) (hy' v) e'.ge
-  refine continuous_iff_continuousAt.mpr fun x => ?_
-  have hc : Continuous fun y : Idele E => x⁻¹ * y := continuous_const.mul continuous_id
-  have hU := (hO.preimage (h1.comp hc)).inter (hO.preimage (h2.comp hc))
-  refine (continuousAt_const (y := finiteIdeleNorm x)).congr ?_
-  filter_upwards [hU.mem_nhds (x := x) ⟨fun v => by
-    simp only [Function.comp_apply, inv_mul_cancel]; exact one_mem _, fun v => by
-    simp only [Function.comp_apply, inv_mul_cancel, inv_one]; exact one_mem _⟩] with y hy
-  have := key _ hy.1 hy.2
-  rw [← mul_one (finiteIdeleNorm x), ← this, ← map_mul, mul_inv_cancel_left]
 
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Filter in
 open scoped RestrictedProduct in

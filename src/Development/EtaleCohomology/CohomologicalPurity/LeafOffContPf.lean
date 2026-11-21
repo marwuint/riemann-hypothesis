@@ -52,15 +52,6 @@ theorem off_span_singleton (A : Type) [CommRing A] (f : A) :
   change (PrimeSpectrum.zeroLocus ((Ideal.span {f} : Ideal A) : Set A))ᶜ = _
   rw [PrimeSpectrum.zeroLocus_span, PrimeSpectrum.basicOpen_eq_zeroLocus_compl]
 
-theorem off_span_union (A : Type) [CommRing A] (u v : Set A) :
-    off A (Ideal.span (u ∪ v)) = off A (Ideal.span u) ⊔ off A (Ideal.span v) := by
-  apply TopologicalSpace.Opens.ext
-  change (PrimeSpectrum.zeroLocus ((Ideal.span (u ∪ v) : Ideal A) : Set A))ᶜ =
-    (PrimeSpectrum.zeroLocus ((Ideal.span u : Ideal A) : Set A))ᶜ ∪
-      (PrimeSpectrum.zeroLocus ((Ideal.span v : Ideal A) : Set A))ᶜ
-  rw [PrimeSpectrum.zeroLocus_span, PrimeSpectrum.zeroLocus_span, PrimeSpectrum.zeroLocus_span,
-    PrimeSpectrum.zeroLocus_union, Set.compl_inter]
-
 theorem range_fin_succ {A : Type} {r : ℕ} (x : Fin (r + 1) → A) :
     Set.range x = Set.range (fun k : Fin r => x k.castSucc) ∪ {x (Fin.last r)} := by
   rw [Set.union_singleton]

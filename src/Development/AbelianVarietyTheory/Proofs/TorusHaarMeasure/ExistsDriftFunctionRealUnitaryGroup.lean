@@ -2,7 +2,7 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspidalExponentialDecay
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.DetNeZeroOfIsOrth
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.GramDetInequalitiesClosedFormsStatement
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.GramDetInequalitiesClosedForms
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsDriftFunctionOrthonormalHermitianFrames
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.FrameStepOfRightMulRealUnitaryGroup
 
@@ -12,14 +12,6 @@ open scoped ComplexOrder ENNReal Matrix
 namespace GlobalTheory.DriftUnitary
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-
-lemma cmType_nonempty {r : ℕ} (X : Data E r) : Nonempty X.Ψ := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  by_cases h : τ ∈ X.Ψ
-  · exact ⟨⟨τ, h⟩⟩
-  · refine ⟨⟨ComplexEmbedding.conjugate τ, ?_⟩⟩
-    by_contra h'
-    exact h ((X.cmType τ).2 h')
 
 open NumberField MeasureTheory Topology in
 open scoped ComplexOrder ENNReal Matrix in

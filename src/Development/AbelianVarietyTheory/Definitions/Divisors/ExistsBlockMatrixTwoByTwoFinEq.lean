@@ -104,11 +104,6 @@ theorem mat_nLoc (b : HermR R σ n) : matR R σ (nLoc R σ hQ b) = StdUnn.blk4 1
 
 theorem mat_wLoc : matR R σ (wLoc R σ hQ) = StdUnn.blk4 0 1 (-1) 0 := rfl
 
-theorem nLoc_add (b b' : HermR R σ n) : nLoc R σ hQ (b + b') = nLoc R σ hQ b * nLoc R σ hQ b' :=
-  ext_matR (by
-    simp only [matR_mul, mat_nLoc, StdUnn.Model.submatrix_fromBlocks_mul, AddSubgroup.coe_add]
-    simp [add_comm])
-
 @[simp] theorem nLoc_zero : nLoc R σ hQ (0 : HermR R σ n) = 1 :=
   ext_matR (by rw [mat_nLoc, matR_one]; simpa using StdUnn.Model.block_matrix_one)
 
@@ -221,51 +216,8 @@ theorem mLoc_mem_upP (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1)
 
 variable {R' : Type} [CommRing R'] [Algebra F R']
 
-variable {R σ} in
-
-theorem sigR_map (φ : R →ₐ[F] R') (y : R ⊗[F] E) :
-    sigR R' σ (Algebra.TensorProduct.map φ (AlgHom.id F E) y) =
-      Algebra.TensorProduct.map φ (AlgHom.id F E) (sigR R σ y) := by
-  induction y using TensorProduct.induction_on with
-  | zero => simp
-  | tmul r e => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]
-  | add x y hx hy => simp only [map_add, hx, hy]
-
-variable {R σ} in
-
-def hermMap (φ : R →ₐ[F] R') : HermR R σ n →+ HermR R' σ n where
-  toFun b := ⟨b.1.map (Algebra.TensorProduct.map φ (AlgHom.id F E)), fun i j => by
-    simp only [Matrix.map_apply, sigR_map, b.2 i j]⟩
-  map_zero' := Subtype.ext (by ext i j; simp)
-  map_add' b b' := Subtype.ext (by ext i j; simp)
-
 variable (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
 include hQ
-
-theorem mapH_nLoc (φ : R →ₐ[F] R') (b : HermR R σ n) :
-    GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ (nLoc R σ hQ b) = nLoc R' σ hQ (hermMap φ b) := by
-  refine ext_matR (Matrix.ext fun r s => (GlobalTheory.AutFunCompare.mat_mapH σ Q φ _ r s).trans ?_)
-  have := congrFun (congrFun (blockMatrix_map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom 1 b.1 0 1) r) s
-  rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _)] at this
-  exact this
-
-theorem mapH_wLoc (φ : R →ₐ[F] R') : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ (wLoc R σ hQ) = wLoc R' σ hQ := by
-  refine ext_matR (Matrix.ext fun r s => (GlobalTheory.AutFunCompare.mat_mapH σ Q φ _ r s).trans ?_)
-  have := congrFun (congrFun (blockMatrix_map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom 0 1 (-1) 0) r) s
-  rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _),
-    Matrix.map_neg _ (map_neg _), Matrix.map_one _ (map_zero _) (map_one _)] at this
-  exact this
-
-theorem continuous_nLoc [TopologicalSpace R] [IsTopologicalRing R] [FiniteDimensional F E] :
-    Continuous (nLoc R σ hQ (n := n)) := by
-  haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
-  haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _
-  rw [(isEmbedding_matHom R σ Q).continuous_iff, Units.continuous_iff]
-  constructor
-  · exact ((continuous_const.matrix_fromBlocks continuous_subtype_val continuous_const continuous_const).matrix_submatrix
-      _ _ : Continuous fun b : HermR R σ n => StdUnn.blk4 1 b.1 0 1)
-  · exact ((continuous_const.matrix_fromBlocks continuous_subtype_val.neg continuous_const continuous_const).matrix_submatrix
-      _ _ : Continuous fun b : HermR R σ n => StdUnn.blk4 1 (-b.1) 0 1)
 
 end More
 
@@ -306,25 +258,6 @@ theorem mem_siegelParabolic_iff_lowerLeft_eq_zero (hQ : Q = StdUnn.blk4 0 1 (-1)
   rw [JR_eq R hQ, e, cT_blk4, cT_zero', StdUnn.Model.submatrix_fromBlocks_mul, StdUnn.Model.submatrix_fromBlocks_mul] at hu
   exact mem_siegelParabolic_of_blockUpperTriangular e (d' := cT (sigR R σ) a) (by simpa using (StdUnn.Model.blockMatrixTwoByTwoFin_injective hu).2.1)
 
-theorem wLoc_notMem_upP (hQ : Q = StdUnn.blk4 0 1 (-1) 0) [Nontrivial (R ⊗[F] E)] (hn : 0 < n) :
-    wLoc R σ hQ ∉ upperParabolic R σ Q := fun h => by
-  have := lower_eq_zero h ⟨0, hn⟩ ⟨0, hn⟩
-  rw [mat_wLoc, StdUnn.blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply] at this
-  simp at this
-
-theorem nLoc_injective (hQ : Q = StdUnn.blk4 0 1 (-1) 0) : Function.Injective (nLoc R σ hQ) := fun _ _ e =>
-  Subtype.ext (StdUnn.Model.blockMatrixTwoByTwoFin_injective (congrArg (matR R σ) e)).2.1
-
-theorem mLoc_mul (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (a a' : GL (Fin n) (R ⊗[F] E)) :
-    mLoc R σ hσ hQ (a * a') = mLoc R σ hσ hQ a * mLoc R σ hσ hQ a' :=
-  ext_matR (by
-    simp only [matR_mul, mat_mLoc, StdUnn.Model.submatrix_fromBlocks_mul, mul_inv_rev, Units.val_mul, cT_mul, mul_zero, zero_mul,
-      add_zero, zero_add])
-
-theorem mLoc_one (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) :
-    mLoc R σ hσ hQ (1 : GL (Fin n) (R ⊗[F] E)) = 1 :=
-  ext_matR (by rw [mat_mLoc, inv_one, Units.val_one, cT_one', StdUnn.Model.block_matrix_one, matR_one])
-
 variable {R' : Type} [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R')
 
 theorem matR_mapH (g : HA R σ Q) : matR R' σ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ g) =
@@ -341,14 +274,6 @@ theorem aUp_mapH (p : upperParabolic R σ Q) : aUp R' σ Q ⟨GlobalTheory.Indef
     Units.map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom.toMonoidHom (aUp R σ Q p) :=
   Units.ext ((congrArg (fun M => (StdUnn.blkA M).det) (matR_mapH φ p.1)).trans
     (RingHom.map_det (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom (StdUnn.blkA (matR R σ p.1))).symm)
-
-theorem mapH_mLoc (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (a : GL (Fin n) (R ⊗[F] E)) :
-    GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ (mLoc R σ hσ hQ a) =
-      mLoc R' σ hσ hQ (bc (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom a) := by
-  refine ext_matR ?_
-  rw [matR_mapH, mat_mLoc, mat_mLoc, blockMatrix_map, Matrix.map_zero _ (map_zero _), ← map_inv]
-  congr 1
-  exact Matrix.ext fun i j => (sigR_map φ _).symm
 
 variable [TopologicalSpace R]
 
@@ -414,39 +339,13 @@ def IntwConv [TopologicalSpace R] (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measur
 
 variable {R σ Q ν K}
 
-theorem hgtUp_pos (g : HA R σ Q) : 0 < hgtUp R σ Q ν K g := iwAbs_pos _ K g
-
 theorem flatUp_apply (Φ : HA R σ Q → ℂ) (s₀ s : ℂ) (g : HA R σ Q) :
     flatUp R σ Q ν K Φ s₀ s g = Φ g * npow (hgtUp R σ Q ν K g) (s - s₀) := rfl
 
 @[simp] theorem flatUp_self (Φ : HA R σ Q → ℂ) (s₀ : ℂ) : flatUp R σ Q ν K Φ s₀ s₀ = Φ := flatSec_self Φ s₀
 
-theorem flatUp_flatUp (Φ : HA R σ Q → ℂ) (s₀ s₁ s : ℂ) :
-    flatUp R σ Q ν K (flatUp R σ Q ν K Φ s₀ s₁) s₁ s = flatUp R σ Q ν K Φ s₀ s := flatSec_flatSec Φ s₀ s₁ s
-
-theorem sphUp_ne_zero (s : ℂ) (g : HA R σ Q) : sphUp R σ Q ν K s g ≠ 0 := npow_ne_zero (hgtUp_pos g) _
-
-theorem flatUp_sphUp (s₀ s : ℂ) : flatUp R σ Q ν K (sphUp R σ Q ν K s₀) s₀ s = sphUp R σ Q ν K s := funext fun g => by
-  rw [flatUp_apply, sphUp, sphUp, ← npow_add (hgtUp_pos g)]
-  congr 1; ring
-
 theorem hgtUp_mul (h : IsIwasawaUp R σ Q ν K) (p : upperParabolic R σ Q) {k : HA R σ Q} (hk : k ∈ K) :
     hgtUp R σ Q ν K (p * k) = ν (aUp R σ Q p) := h.iwAbs_mul p hk
-
-theorem hgtUp_left (h : IsIwasawaUp R σ Q ν K) (p : upperParabolic R σ Q) (g : HA R σ Q) :
-    hgtUp R σ Q ν K (p * g) = ν (aUp R σ Q p) * hgtUp R σ Q ν K g := h.iwAbs_left p g
-
-theorem hgtUp_right (h : IsIwasawaUp R σ Q ν K) (g : HA R σ Q) {k : HA R σ Q} (hk : k ∈ K) :
-    hgtUp R σ Q ν K (g * k) = hgtUp R σ Q ν K g := h.iwAbs_right g hk
-
-theorem hgtUp_of_mem (h : IsIwasawaUp R σ Q ν K) {k : HA R σ Q} (hk : k ∈ K) : hgtUp R σ Q ν K k = 1 := h.iwAbs_of_mem hk
-
-theorem sphUp_of_mem (h : IsIwasawaUp R σ Q ν K) (s : ℂ) {k : HA R σ Q} (hk : k ∈ K) : sphUp R σ Q ν K s k = 1 := by
-  rw [sphUp, hgtUp_of_mem h hk, one_npow]
-
-theorem hgtUp_mLoc (h : IsIwasawaUp R σ Q ν K) (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
-    (a : GL (Fin n) (R ⊗[F] E)) : hgtUp R σ Q ν K (mLoc R σ hσ hQ a) = ν (Matrix.GeneralLinearGroup.det a) :=
-  (h.iwAbs_coe ⟨_, mLoc_mem_upP R σ hσ hQ a⟩).trans (congrArg ν (aUp_mLoc R σ hσ hQ a))
 
 variable [TopologicalSpace R]
 
@@ -455,16 +354,6 @@ theorem mem_psUp {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q →
       Φ (p * g) = μ (aUp R σ Q p) * npow (ν (aUp R σ Q p)) (s + (n : ℂ) / 2) * Φ g) ∧ Continuous Φ ∧ IsKFinite K Φ :=
   Iff.rfl
 
-theorem apply_nLoc_mul (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q → ℂ}
-    (hΦ : Φ ∈ psUp R σ Q ν K μ s) (b : HermR R σ n) (g : HA R σ Q) : Φ (nLoc R σ hQ b * g) = Φ g := by
-  simpa using (mem_psUp.1 hΦ).1 ⟨_, nLoc_mem_upP hQ b⟩ g
-
-theorem apply_mLoc_mul (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ}
-    {Φ : HA R σ Q → ℂ} (hΦ : Φ ∈ psUp R σ Q ν K μ s) (a : GL (Fin n) (R ⊗[F] E)) (g : HA R σ Q) :
-    Φ (mLoc R σ hσ hQ a * g) = μ (Matrix.GeneralLinearGroup.det a) *
-      npow (ν (Matrix.GeneralLinearGroup.det a)) (s + (n : ℂ) / 2) * Φ g := by
-  simpa only [aUp_mLoc] using (mem_psUp.1 hΦ).1 ⟨_, mLoc_mem_upP R σ hσ hQ a⟩ g
-
 theorem intwLoc_eq (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measure (HermR R σ n)) (f : ℂ → HA R σ Q → ℂ) (s : ℂ)
     (g : HA R σ Q) : intwLoc R σ hQ db f s g = ∫ b, f s (wLoc R σ hQ * nLoc R σ hQ b * g) ∂db := rfl
 
@@ -472,37 +361,11 @@ theorem intwConv_iff (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measure (HermR R σ
     (g : HA R σ Q) :
     IntwConv R σ hQ db f s g ↔ Integrable (fun b => f s (wLoc R σ hQ * nLoc R σ hQ b * g)) db := Iff.rfl
 
-theorem intwLoc_add (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {db : Measure (HermR R σ n)} {f f' : ℂ → HA R σ Q → ℂ} {s : ℂ}
-    {g : HA R σ Q} (h : IntwConv R σ hQ db f s g) (h' : IntwConv R σ hQ db f' s g) :
-    intwLoc R σ hQ db (f + f') s g = intwLoc R σ hQ db f s g + intwLoc R σ hQ db f' s g := integral_add h h'
-
-theorem intwLoc_nLoc_mul [IsTopologicalRing R] [FiniteDimensional F E] (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
-    (db : Measure (HermR R σ n)) [db.IsAddRightInvariant] (f : ℂ → HA R σ Q → ℂ) (s : ℂ) (b₀ : HermR R σ n)
-    (g : HA R σ Q) : intwLoc R σ hQ db f s (nLoc R σ hQ b₀ * g) = intwLoc R σ hQ db f s g := by
-  haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)
-  haveI : BorelSpace (HermR R σ n) := ⟨rfl⟩
-  rw [intwLoc, intwLoc, ← integral_add_right_eq_self (fun b => f s (wLoc R σ hQ * nLoc R σ hQ b * g)) b₀]
-  simp only [nLoc_add, mul_assoc]
-
 variable [IsTopologicalRing R] [FiniteDimensional F E] [T2Space R]
-
-theorem hgtUp_mul_of_isCompact (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q))) (p : upperParabolic R σ Q) {k : HA R σ Q}
-    (hk : k ∈ K) : hgtUp R σ Q ν K (p * k) = ν (aUp R σ Q p) :=
-  iwAbs_mul_of_triv (triv_of_isCompact (δ := ν.comp (aUp R σ Q)) isClosed_upP (hν.comp continuous_aUp) hK) p hk
 
 theorem isIwasawaUp_of_isCompact (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q)))
     (h : ∀ g : HA R σ Q, ∃ p : upperParabolic R σ Q, ∃ k ∈ K, g = p * k) : IsIwasawaUp R σ Q ν K :=
   isIwasawa_of_isCompact isClosed_upP (hν.comp continuous_aUp) hK h
-
-theorem continuous_hgtUp (h : IsIwasawaUp R σ Q ν K) (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q))) :
-    Continuous (hgtUp R σ Q ν K) := h.continuous_iwAbs isClosed_upP (hν.comp continuous_aUp) hK
-
-theorem sphUp_mem (h : IsIwasawaUp R σ Q ν K) (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q))) (s : ℂ) :
-    sphUp R σ Q ν K s ∈ psUp R σ Q ν K 1 s := h.npow_iwAbs_mem isClosed_upP (hν.comp continuous_aUp) hK _
-
-theorem flatUp_mem (h : IsIwasawaUp R σ Q ν K) (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q)))
-    {μ : (R ⊗[F] E)ˣ →* Circle} {s₀ : ℂ} {Φ : HA R σ Q → ℂ} (hΦ : Φ ∈ psUp R σ Q ν K μ s₀) (s : ℂ) :
-    flatUp R σ Q ν K Φ s₀ s ∈ psUp R σ Q ν K μ s := h.flatSec_mem isClosed_upP (hν.comp continuous_aUp) hK hΦ s
 
 end Sections
 
@@ -533,25 +396,6 @@ theorem emb_mem_KUpAd {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ Q v} (hk : k
     · subst e; simpa using hk
     · simp [proj_emb_ne σ Q e], fun w => by simp⟩
 
-theorem embArch_mem_KUpAd {w : InfinitePlace F} {k : GArch σ Q w} (hk : k ∈ KUpArch σ Q w) :
-    embArch σ Q w k ∈ KUpAd σ Q :=
-  mem_KUpAd.2 ⟨fun u => by simp, fun u => by
-    by_cases e : u = w
-    · subst e; simpa using hk
-    · simp [projArch_embArch_ne σ Q e]⟩
-
-theorem proj_nLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (v : HeightOneSpectrum (𝓞 F)) (b : HermR (AF F) σ n) :
-    proj σ Q v (nLoc _ σ hQ b) = nLoc _ σ hQ (hermMap (evFin F v) b) := mapH_nLoc _ σ hQ _ b
-
-theorem projArch_nLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (w : InfinitePlace F) (b : HermR (AF F) σ n) :
-    projArch σ Q w (nLoc _ σ hQ b) = nLoc _ σ hQ (hermMap (evInf F w) b) := mapH_nLoc _ σ hQ _ b
-
-theorem proj_wLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (v : HeightOneSpectrum (𝓞 F)) :
-    proj σ Q v (wLoc _ σ hQ) = wLoc _ σ hQ := mapH_wLoc _ σ hQ _
-
-theorem projArch_wLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (w : InfinitePlace F) :
-    projArch σ Q w (wLoc _ σ hQ) = wLoc _ σ hQ := mapH_wLoc _ σ hQ _
-
 def projUp (v : HeightOneSpectrum (𝓞 F)) : upperParabolic (AF F) σ Q →* upperParabolic (Fv F v) σ Q :=
   ((proj σ Q v).comp (Subgroup.subtype _)).codRestrict _ fun p => mapH_mem_upP _ p.2
 
@@ -574,11 +418,6 @@ theorem exists_mul_fin (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (AF F) σ 
     (v : HeightOneSpectrum (𝓞 F)) (g : GLoc σ Q v) : ∃ p : upperParabolic (Fv F v) σ Q, ∃ k ∈ KUpFin σ Q v, g = p * k := by
   obtain ⟨p, k, hk, e⟩ := hI (emb σ Q v g)
   exact ⟨projUp v p, _, (mem_KUpAd.1 hk).1 v, by rw [coe_projUp, ← map_mul, ← e, proj_emb_self]⟩
-
-theorem exists_mul_arch (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (AF F) σ Q, ∃ k ∈ KUpAd σ Q, g = p * k)
-    (w : InfinitePlace F) (g : GArch σ Q w) : ∃ p : upperParabolic w.Completion σ Q, ∃ k ∈ KUpArch σ Q w, g = p * k := by
-  obtain ⟨p, k, hk, e⟩ := hI (embArch σ Q w g)
-  exact ⟨projArchUp w p, _, (mem_KUpAd.1 hk).2 w, by rw [coe_projArchUp, ← map_mul, ← e, projArch_embArch_self]⟩
 
 end
 
@@ -621,39 +460,9 @@ theorem aUp_embUp (v : HeightOneSpectrum (𝓞 F)) (p : upperParabolic (Fv F v) 
     · subst e; rw [unitFin_ideleAt_self, show projUp u (embUp u p) = p from Subtype.ext (by simp)]
     · rw [unitFin_ideleAt_ne e, show projUp u (embUp v p) = 1 from Subtype.ext (proj_emb_ne σ Q e _), map_one]
 
-theorem aUp_embArchUp (w : InfinitePlace F) (p : upperParabolic w.Completion σ Q) :
-    aUp _ σ Q (embArchUp w p) = ideleAtInf F E w (aUp _ σ Q p) :=
-  idele_ext (fun u => by
-    rw [← aUp_projArchUp]
-    by_cases e : u = w
-    · subst e; rw [unitInf_ideleAtInf_self, show projArchUp u (embArchUp u p) = p from Subtype.ext (by simp)]
-    · rw [unitInf_ideleAtInf_ne e, show projArchUp u (embArchUp w p) = 1 from
-        Subtype.ext (projArch_embArch_ne σ Q e _), map_one]) fun v => by
-    rw [← aUp_projUp, unitFin_ideleAtInf, show projUp v (embArchUp w p) = 1 from Subtype.ext (by simp), map_one]
-
 theorem isCompact_KUpFin (v : HeightOneSpectrum (𝓞 F)) : IsCompact (KUpFin σ Q v : Set (GLoc σ Q v)) :=
   haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
   isCompact_stabLoc σ Q _ v
-
-theorem isOpen_KUpFin (v : HeightOneSpectrum (𝓞 F)) : IsOpen (KUpFin σ Q v : Set (GLoc σ Q v)) :=
-  haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
-  isOpen_stabLoc σ Q _ v
-
-theorem isCompact_KUpArch (hc : IsCMExt F E σ) (w : InfinitePlace F) : IsCompact (KUpArch σ Q w : Set (GArch σ Q w)) :=
-  Frames.isCompact_stabArch hc Q w _
-
-theorem isCompact_KUpAd (hc : IsCMExt F E σ) : IsCompact (KUpAd σ Q : Set (GAd σ Q)) :=
-  haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
-  isCompact_levelAll hc Q _ _
-
-theorem eventually_proj_mem_KUpFin (g : GAd σ Q) : ∀ᶠ v in Filter.cofinite, proj σ Q v g ∈ KUpFin σ Q v :=
-  haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
-  eventually_proj_mem_stabLoc σ Q _ g
-
-theorem finite_mulSupport_hgtUp (g : GAd σ Q) :
-    (Function.mulSupport fun v => hgtUp _ σ Q (absEv F E v) (KUpFin σ Q v) (proj σ Q v g)).Finite :=
-  (Filter.eventually_cofinite.1 (eventually_proj_mem_KUpFin g)).subset fun v hv h' => hv (by
-    simpa using hgtUp_mul_of_isCompact (continuous_absEv v) (isCompact_KUpFin v) 1 h')
 
 variable (hc : IsCMExt F E σ) (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (AF F) σ Q, ∃ k ∈ KUpAd σ Q, g = p * k)
 
@@ -663,24 +472,6 @@ theorem isIwasawaUp_fin_of (v : HeightOneSpectrum (𝓞 F)) : IsIwasawaUp _ σ Q
   isIwasawaUp_of_isCompact (continuous_absEv v) (isCompact_KUpFin v) (exists_mul_fin hI v)
 
 include hc hI
-
-theorem isIwasawaUp_arch_of (w : InfinitePlace F) : IsIwasawaUp _ σ Q (absEw F E w) (KUpArch σ Q w) :=
-  isIwasawaUp_of_isCompact (continuous_absEw w) (isCompact_KUpArch hc w) (exists_mul_arch hI w)
-
-theorem isIwasawaUp_ad_of : IsIwasawaUp _ σ Q (absE F E) (KUpAd σ Q) :=
-  haveI := t2Space_adeleRing' (F := F)
-  isIwasawaUp_of_isCompact continuous_absE (isCompact_KUpAd hc) hI
-
-theorem hgtUp_ad_eq_of (g : GAd σ Q) : hgtUp _ σ Q (absE F E) (KUpAd σ Q) g =
-    (∏ w, hgtUp _ σ Q (absEw F E w) (KUpArch σ Q w) (projArch σ Q w g)) *
-      ∏ᶠ v, hgtUp _ σ Q (absEv F E v) (KUpFin σ Q v) (proj σ Q v g) := by
-  obtain ⟨p, k, hk, rfl⟩ := hI g
-  rw [hgtUp_mul (isIwasawaUp_ad_of hc hI) p hk, absE_apply]
-  congr 1
-  · exact Finset.prod_congr rfl fun w _ => by
-      rw [map_mul, ← coe_projArchUp, hgtUp_mul (isIwasawaUp_arch_of hc hI w) _ ((mem_KUpAd.1 hk).2 w), aUp_projArchUp]
-  · exact finprod_congr fun v => by
-      rw [map_mul, ← coe_projUp, hgtUp_mul (isIwasawaUp_fin_of hI v) _ ((mem_KUpAd.1 hk).1 v), aUp_projUp]
 
 end Places
 
@@ -708,45 +499,6 @@ theorem exists_mul_adele (g : StdUnn.G D n) : ∃ p : upperParabolic (AF D.host.
 theorem isIwasawaUp_fin (v : HeightOneSpectrum (𝓞 D.host.F)) :
     IsIwasawaUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEv D.host.F D.host.E v) (KUpFin _ _ v) :=
   isIwasawaUp_fin_of (exists_mul_adele D n) v
-
-theorem isIwasawaUp_arch (w : InfinitePlace D.host.F) :
-    IsIwasawaUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEw D.host.F D.host.E w) (KUpArch _ _ w) :=
-  isIwasawaUp_arch_of (isCMExt_host D) (exists_mul_adele D n) w
-
-theorem isIwasawaUp_ad : IsIwasawaUp _ D.sp.cm.sig (StdUnn.Jst D n) (absA D) (StdUnn.K D n) :=
-  isIwasawaUp_ad_of (isCMExt_host D) (exists_mul_adele D n)
-
-theorem sphUp_mem_fin (v : HeightOneSpectrum (𝓞 D.host.F)) (s : ℂ) :
-    sphUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEv D.host.F D.host.E v) (KUpFin _ _ v) s ∈
-      psUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEv D.host.F D.host.E v) (KUpFin _ _ v) 1 s :=
-  sphUp_mem (isIwasawaUp_fin D n v) (continuous_absEv v) (isCompact_KUpFin v) s
-
-theorem sphUp_mem_arch (w : InfinitePlace D.host.F) (s : ℂ) :
-    sphUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEw D.host.F D.host.E w) (KUpArch _ _ w) s ∈
-      psUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEw D.host.F D.host.E w) (KUpArch _ _ w) 1 s :=
-  sphUp_mem (isIwasawaUp_arch D n w) (continuous_absEw w) (isCompact_KUpArch (isCMExt_host D) w) s
-
-variable {D n} in
-
-theorem isHeight_iff {H : StdUnn.G D n → ℝ≥0} :
-    StdUnn.IsHeight H ↔ H = hgtUp _ D.sp.cm.sig (StdUnn.Jst D n) (absA D) (StdUnn.K D n) := by
-  constructor
-  · intro h
-    funext g
-    obtain ⟨p, k, hk, rfl⟩ := exists_mul_adele D n g
-    rw [hgtUp_mul (isIwasawaUp_ad D n) p hk]
-    exact h p p.2 (leviUp _ _ _ p) rfl k hk
-  · rintro rfl p hp a ha k hk
-    rw [show a = leviUp (AF D.host.F) D.sp.cm.sig (StdUnn.Jst D n) ⟨p, hp⟩ from Units.ext ha.symm]
-    exact hgtUp_mul (isIwasawaUp_ad D n) ⟨p, hp⟩ hk
-
-variable {D n} in
-
-theorem isHeight_eq_prod {H : StdUnn.G D n → ℝ≥0} (h : StdUnn.IsHeight H) (g : StdUnn.G D n) : H g =
-    (∏ w, hgtUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEw D.host.F D.host.E w) (KUpArch _ _ w) (projArch _ _ w g)) *
-      ∏ᶠ v, hgtUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEv D.host.F D.host.E v) (KUpFin _ _ v) (proj _ _ v g) := by
-  rw [isHeight_iff.1 h]
-  exact hgtUp_ad_eq_of (isCMExt_host D) (exists_mul_adele D n) g
 
 theorem hermN_eq : ResAniso.hermN D n = HermR (AF D.host.F) D.sp.cm.sig n :=
   AddSubgroup.ext fun _ => Matrix.ext_iff.symm
@@ -776,57 +528,7 @@ variable {D n}
 
 theorem hermEquiv_eq (b : ResAniso.hermN D n) : hermEquiv D n b = hermAddEquiv D n b := rfl
 
-theorem isAddHaarMeasure_map_hermEquiv (db : Measure (ResAniso.hermN D n)) [db.IsAddHaarMeasure] :
-    (db.map (hermEquiv D n)).IsAddHaarMeasure := by
-  obtain ⟨i1, -⟩ := GlobalTheory.MixModel.lattice_Mx D n n
-  haveI : BorelSpace (Mx D n n) := ⟨rfl⟩
-  haveI : BorelSpace (HermR (AF D.host.F) D.sp.cm.sig n) := ⟨rfl⟩
-  exact (hermAddEquiv D n).isAddHaarMeasure_map db (continuous_hermAddEquiv D n) (continuous_hermAddEquiv_symm D n)
-
-theorem nElt_eq (b : ResAniso.hermN D n) :
-    ResAniso.nElt b = nLoc (AF D.host.F) D.sp.cm.sig (Jst_eq D n) (hermEquiv D n b) :=
-  ext_matR (ResAniso.mat_nElt b)
-
-theorem wElt_eq : ResAniso.wElt D n = wLoc (AF D.host.F) D.sp.cm.sig (Jst_eq D n) := ext_matR (ResAniso.mat_wElt D n)
-
-theorem intw_eq (db : Measure (ResAniso.hermN D n)) (f : ℂ → StdUnn.G D n → ℂ) (s : ℂ) (g : StdUnn.G D n) :
-    ResAniso.intw db f s g = intwLoc (AF D.host.F) D.sp.cm.sig (Jst_eq D n) (db.map (hermEquiv D n)) f s g := by
-  rw [intwLoc, (hermEquiv D n).measurableEmbedding.integral_map]
-  simp only [ResAniso.intw, nElt_eq, wElt_eq]
-
-theorem intwConv_map_iff (db : Measure (ResAniso.hermN D n)) (f : ℂ → StdUnn.G D n → ℂ) (s : ℂ) (g : StdUnn.G D n) :
-    IntwConv (AF D.host.F) D.sp.cm.sig (Jst_eq D n) (db.map (hermEquiv D n)) f s g ↔
-      Integrable (fun b => f s (ResAniso.wElt D n * ResAniso.nElt b * g)) db := by
-  rw [IntwConv, (hermEquiv D n).measurableEmbedding.integrable_map_iff]
-  simp only [nElt_eq, wElt_eq]
-  rfl
-
 end Datum
-
-section Tests
-
-variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : ℕ}
-  {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
-
-example : matR R σ (wLoc R σ hQ * wLoc R σ hQ) = StdUnn.blk4 (-1) 0 0 (-1) := by
-  simp [matR_mul, mat_wLoc, StdUnn.Model.submatrix_fromBlocks_mul]
-
-example (b : HermR R σ n) : matR R σ (wLoc R σ hQ * nLoc R σ hQ b) = StdUnn.blk4 0 1 (-1) (-b.1) := by
-  simp [matR_mul, mat_wLoc, mat_nLoc, StdUnn.Model.submatrix_fromBlocks_mul]
-
-example (hσ : ∀ x, σ (σ x) = x) (a : GL (Fin n) (R ⊗[F] E)) (b b' : HermR R σ n)
-    (h : b'.1 = a.1 * b.1 * cT (sigR R σ) a.1) :
-    mLoc R σ hσ hQ a * nLoc R σ hQ b = nLoc R σ hQ b' * mLoc R σ hσ hQ a :=
-  ext_matR (by
-    simp only [matR_mul, mat_mLoc, mat_nLoc, StdUnn.Model.submatrix_fromBlocks_mul, h, mul_zero, zero_mul, add_zero, zero_add, mul_one,
-      one_mul]
-    rw [mul_assoc _ (cT _ _), ← cT_mul, Units.inv_mul, cT_one', mul_one])
-
-example [TopologicalSpace R] [MeasurableSingletonClass (HermR R σ n)] (f : ℂ → HA R σ Q → ℂ) (s : ℂ) (g : HA R σ Q) :
-    IntwConv R σ hQ (Measure.dirac 0) f s g ∧ intwLoc R σ hQ (Measure.dirac 0) f s g = f s (wLoc R σ hQ * g) :=
-  ⟨integrable_dirac (by simp), by rw [intwLoc, integral_dirac, nLoc_zero, mul_one]⟩
-
-end Tests
 
 end GlobalTheory.LocIntw
 

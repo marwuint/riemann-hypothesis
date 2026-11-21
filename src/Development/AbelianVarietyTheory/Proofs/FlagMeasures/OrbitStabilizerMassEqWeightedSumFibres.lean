@@ -6,11 +6,6 @@ open scoped ENNReal Classical
 
 namespace GlobalTheory.Mass.OrbFib
 
-section
-variable {G γ : Type} [Group G] [MulAction G γ]
-
-end
-
 variable {G α β : Type} [Group G] [MulAction G α] [MulAction G β]
 
 open NumberField Matrix in

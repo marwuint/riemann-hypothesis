@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.KeyFormula.GeomIntSelf
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SiegelFamilyNearbyPeriodsSameComponent
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SqOfCalculus
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelSquareRootWeilPairingStandardStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAppellHumbertUnimodularRiemannFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeLiftOfLevelSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymplecticBasisCongrLevelModStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelPeriodOfSymplecticBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolUnifCompLinearEquivExistsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelSquareRootWeilPairingStandard
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAppellHumbertUnimodularRiemannForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeLiftOfLevelSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymplecticBasisCongrLevelMod
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelPeriodOfSymplecticBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolUnifCompLinearEquivExists
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -48,15 +48,15 @@ theorem perLev_of_level (h k : ℕ) (P : Out.PolAV (Sp ℂ)) (lev : (Fin h ⊕ F
     (weil : ∀ (a b : Fin h ⊕ Fin h → ℤ) (e : ℂˣ), (e : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (omegaStd a b : ℂ) / k) →
       Out.WeilIs P.A P.L k (lev a) (lev b) (unitOn e)) :
     ∃ τ : Matrix (Fin h) (Fin h) ℂ, PerLev P τ k lev := by
-  obtain ⟨u, Hm, χ, Ef, hAH, hEf, hbij, halt, hfree, hfin, hrank, hW⟩ := GlobalTheory.T.exists_appellHumbert_unimodular_riemannForm h P hg
-  obtain ⟨l, hl, hdvd⟩ := GlobalTheory.T.exists_lattice_lift_of_level_section h k P lev u Ef hk add tors weil (fun x y e he => hW k x y e hk he)
-  obtain ⟨B, hB, hBl⟩ := GlobalTheory.T.exists_symplectic_basis_congr_level_mod h k u.Λ Ef l hk hrank halt hbij hdvd
+  obtain ⟨u, Hm, χ, Ef, hAH, hEf, hbij, halt, hfree, hfin, hrank, hW⟩ := _root_.GlobalTheory.PolUnif.exists_unif_riemannForm h P hg
+  obtain ⟨l, hl, hdvd⟩ := _root_.GlobalTheory.LevelLift.exists_lattice_lift h k P lev u Ef hk add tors weil (fun x y e he => hW k x y e hk he)
+  obtain ⟨B, hB, hBl⟩ := _root_.GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr h k u.Λ Ef l hk hrank halt hbij hdvd
   let v : Fin h ⊕ Fin h → (Fin h → ℂ) := fun i => (B (Pi.single i 1) : Fin h → ℂ)
   have hv : ∀ i j, (hermForm Hm (v i) (v j)).im =
       (omegaStd (Pi.single i 1 : Fin h ⊕ Fin h → ℤ) (Pi.single j 1) : ℝ) := fun i j => by
     rw [← hEf, hB]
-  obtain ⟨τ, T, hs, hp, hT⟩ := GlobalTheory.T.exists_siegel_period_of_symplectic_basis h Hm v hAH.1 hAH.2.1 hv
-  obtain ⟨u', hex, hΛ⟩ := GlobalTheory.T.holUnif_comp_linearEquiv_exists h P.A P.L u T
+  obtain ⟨τ, T, hs, hp, hT⟩ := _root_.GlobalTheory.RiemannRel.exists_siegel_of_symplectic h Hm v hAH.1 hAH.2.1 hv
+  obtain ⟨u', hex, hΛ⟩ := _root_.GlobalTheory.KeyFam.holUnif_transport_linearEquiv h P.A P.L u T
   have hBa : ∀ a, (B a : Fin h → ℂ) = ∑ i, a i • v i := fun a => by
     conv_lhs => rw [show a = ∑ i, a i • (Pi.single i 1 : Fin h ⊕ Fin h → ℤ) by
       ext j; simp [Finset.sum_apply, Pi.single_apply]]
@@ -85,7 +85,7 @@ theorem exists_ptAt : ∀ (h k : ℕ) (K : Type) [Field K] (ζ : K) (σ : K →+
   intro h k K _ ζ σ F _ hk hodd hζ p hp
   obtain ⟨P, φ, hsq⟩ := sqrt_at_point h k K ζ σ F hk hζ p
   obtain ⟨lev, hlev, add, tors⟩ := levels_pull F.univ p P φ hsq
-  have weil := GlobalTheory.T.siegel_square_root_weil_pairing_standard h k K ζ σ F.X F.s F.univ p P φ lev hk hodd hζ hp hsq hlev add tors
+  have weil := _root_.GlobalTheory.SqRootPairing.weilIs_lev_of_sqOf h k K ζ σ F.X F.s F.univ p P φ lev hk hodd hζ hp hsq hlev add tors
   obtain ⟨τ, hτ⟩ := perLev_of_level h k P lev hsq.2.1 (by omega) add tors weil
   exact ⟨τ, P, lev, φ, hτ, hsq, hlev⟩
 

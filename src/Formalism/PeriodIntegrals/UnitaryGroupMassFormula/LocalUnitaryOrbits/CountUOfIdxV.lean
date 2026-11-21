@@ -72,8 +72,4 @@ theorem idxU_of (a : ℕ) (Y : TupV (E := E) v n a) (h : IdxV σ J ψ v Λ a Y) 
     rw [← hV, AddSubgroup.relIndex, AddSubgroup.index]
   rw [hq, ← pow_mul]
 
-theorem countU_of_idxV (a : ℕ) (Y : TupV (E := E) v n a) (hO : LamOpen v Λ a)
-    (hI : IdxV σ J ψ v Λ a Y) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=
-  countU_of_open σ J ψ v Λ a Y hO (idxU_of σ J ψ v Λ a Y hI) hR
-
 end PI.OmLocU

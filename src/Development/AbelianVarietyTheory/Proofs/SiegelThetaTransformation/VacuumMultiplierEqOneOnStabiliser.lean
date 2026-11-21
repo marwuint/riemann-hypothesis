@@ -4,7 +4,8 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CuspFree
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.AnChartAsm
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DetFrameNeZero
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.VacuumMultiplierTrivialPrincipalCongruenceStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.VacuumMultiplierTrivialPrincipalCongruence
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -39,7 +40,7 @@ theorem GlobalTheory.Dict.mult_eq_one_on_stab : ∀ (E : Type) [Field E] [Number
   obtain ⟨hsd, -, -, hsh⟩ := hlat L hL
   have hfix' : mapL ga (D.sh L) = D.sh L := by rw [← (hsh ga hga).2, hfix]
   have hvac := hv L hL
-  have hw := GlobalTheory.T.vacuumMultiplier_trivial_principalCongruence E r X g bas idx n hs hev H D' φ hr hinj hsp hEF (D.sh L) hsd l.M l.three_le ga hu
+  have hw := _root_.GlobalTheory.VacMult.wG_vac_eq E r X g bas idx n hs hev H D' φ hr hinj hsp hEF (D.sh L) hsd l.M l.three_le ga hu
     hfix' h2 (v₀ L) (hT.w ▸ hvac)
   have hlam : D.lam ⟨k, hk⟩ = 1 := hT.det _ (h3 ⟨k, hk⟩ hred l.three_le)
   have e := hmu ga hga L hL ⟨k, hk⟩ hred

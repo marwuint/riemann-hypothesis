@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NegRankMulLogLeLogCovolumeHermitianStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NegRankMulLogLeLogCovolumeHermitian
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.ExistsNsmulMem
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsSelfDualE
 import Formalism.LocalToGlobal.Columns.CoefficientsModP.PairingNondegenerateHolds
@@ -19,7 +19,7 @@ theorem muMaxDef_le_log_of_integral : ∀ (K : Type) [Field K] [NumberField K] [
   have hX : ∀ v, IsUnit (X v).det := fun v => (hH.2 v).1
   refine Formalism.LFunctionChainParameters.slopeLatticeData.muMaxDef_le _ X hL0 fun Q hQ hQ0 => ?_
   have hQfg : Q.FG := Formalism.LFunctionChainParameters.slopeLatticeData.fg_of_le hL hQ
-  have h := GlobalTheory.T.neg_rank_mul_log_le_log_covolume_hermitian K v₀ hv d H X hH s hs Q hQfg fun x hx y hy => hint x (hQ hx) y (hQ hy)
+  have h := _root_.GlobalTheory.neg_rank_mul_log_le_lcv K v₀ hv d H X hH s hs Q hQfg fun x hx y hy => hint x (hQ hx) y (hQ hy)
   rw [Formalism.LFunctionChainParameters.slopeLatticeData.muDef_eq_log _ X hX hQfg hQ0]
   have hj : (0 : ℝ) < (Formalism.HN.rkK Q : ℝ) := by exact_mod_cast Formalism.LFunctionChainParameters.slopeLatticeData.rkK_pos hQ0
   have hn : (0 : ℝ) < (Module.finrank ℚ K : ℝ) := by

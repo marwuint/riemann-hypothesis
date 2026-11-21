@@ -1,6 +1,10 @@
 import Formalism.LocalToGlobal.Columns.ChainLawLev
-import Formalism.LocalToGlobal.Columns.ChainLawXiStmt
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.KerEquivStmt
+import Formalism.LocalToGlobal.Columns.ChainInst
+import Formalism.LocalToGlobal.Columns.ChainLawPhi
+import Mathlib
+import Formalism.LocalToGlobal.KernelLattices.ColInst
+import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
+import Formalism.LocalToGlobal.Columns.ChainInstY
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
 import Formalism.LocalToGlobal.Columns.RecLevelSym
 import Formalism.LocalToGlobal.Columns.ChainOne
@@ -40,13 +44,5 @@ theorem clX_unitV_inv (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a : E} (hu : Int
   exact eq_inv_of_mul_eq_one_left hm.symm
 
 end Units
-
-section Assembly
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
-  {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
-  {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
-
-end Assembly
 
 end Formalism.L2.Col

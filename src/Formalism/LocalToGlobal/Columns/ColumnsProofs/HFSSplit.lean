@@ -164,17 +164,8 @@ end GSDBC
 
 end Lifts
 
-section HeckeLift
-
-variable {K L : Type} [Field K] [NumberField K] [StarRing K] [Field L] [NumberField L] [StarRing L] {ι : K →+* L}
-  {S : GSD K} {S' : GSD L} (b : GSDBC ι S S')
-  {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
-  (c : DecoPts S E n ST SG) (c' : DecoPts S' E n ST SG)
-
 namespace GSDBC
 
 end GSDBC
-
-end HeckeLift
 
 end Formalism.L2.Col

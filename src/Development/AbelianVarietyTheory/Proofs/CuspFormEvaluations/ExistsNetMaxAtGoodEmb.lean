@@ -5,9 +5,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Sup
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LatOfLamSt
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsNetAllComponentsMax
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsRankOneCuspDataLogBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsClearingIntegersPrincipalDatumHostStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LogCardComponentsLeAtGoodEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsRankOneCuspDataLogBounds
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsClearingIntegersPrincipalDatumHost
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LogCardComponentsLeAtGoodEmbedding
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.RunIn
 
@@ -18,9 +18,9 @@ theorem exists_net_max_at_goodEmb : ∀ (D : D7) (T : Top D) (_h : LawsP T), Gam
 
   have hne0 : Nonempty (T.U j σ).Comp := ⟨(T.dict j σ 1).1⟩
   obtain ⟨-, hlrd, hd, hcc, hlf, -, -, -, hn⟩ := id hw
-  obtain ⟨-, -, -, -, -, hfdeg, hdE, -, hfr, hf1, -, -, -⟩ := GlobalTheory.T.exists_clearing_integers_principalDatum_host D large₂.sc.L hL hlrd hd hcc
-  obtain ⟨e, M, wg, hM1, hMl, hwg, hwgl, -, hk⟩ := GlobalTheory.T.exists_rankOne_cuspData_log_bounds D T h hG large₂ j hj w hw hL hrn σ hσ
-  have hcard := GlobalTheory.T.log_card_components_le_at_good_embedding D T h large₂ j hj w hw hL hrn hf σ hσ
+  obtain ⟨-, -, -, -, -, hfdeg, hdE, -, hfr, hf1, -, -, -⟩ := _root_.GlobalTheory.HostClear.host_clear D large₂.sc.L hL hlrd hd hcc
+  obtain ⟨e, M, wg, hM1, hMl, hwg, hwgl, -, hk⟩ := _root_.GlobalTheory.CuspDataBounds.cusp_data_bounds D T h hG large₂ j hj w hw hL hrn σ hσ
+  have hcard := _root_.GlobalTheory.RunIn.log_card_comp_le D T h large₂ j hj w hw hL hrn hf σ hσ
   have hL1 : (1 : ℝ) ≤ large₂.sc.L := by linarith
   have hr1 : 1 ≤ D.R.r := le_trans hf1 hfr
   have hF1 : (1 : ℝ) ≤ (fdeg D.host.E : ℝ) := by rw [hfdeg]; exact_mod_cast hf1

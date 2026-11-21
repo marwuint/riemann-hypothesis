@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpMapFactorResidueFieldOfClosedPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreProductCoordinateIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreProductCoordinateIndependent
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -61,7 +61,7 @@ theorem Near.closed_fibre_constant : ∀ (R : Type) [CommRing R] [IsDomain R] [I
       rw [pullback.lift_fst, ← e]; simp only [Category.assoc]
   obtain ⟨s, x, y, hs, hx, hy, hxy⟩ := key t rfl
   obtain ⟨s', x', y', hs', hx', hy', hxy'⟩ := key t' hc₀
-  have e := GlobalTheory.T.closedFibre_product_coordinate_independent R M G' E N fU l hl hf hπ (P.residueField w) κ s s' _ _ (t ≫ h) (t' ≫ h) x y x' y'
+  have e := _root_.GlobalTheory.Mum.Near.closed_product_unique R M G' E N fU l hl hf hπ (P.residueField w) κ s s' _ _ (t ≫ h) (t' ≫ h) x y x' y'
     hs hs' hx hy hxy hx' hy' hxy'
   have := congrArg (fun g : Sp (P.residueField w) ⟶ N.U.left => g (IsLocalRing.closedPoint _)) e
   rw [← ht (IsLocalRing.closedPoint _), ← ht' (IsLocalRing.closedPoint _)]

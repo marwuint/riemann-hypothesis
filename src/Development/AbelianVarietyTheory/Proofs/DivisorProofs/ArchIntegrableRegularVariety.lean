@@ -136,25 +136,4 @@ theorem exists_integrableOn [SecondCountableTopology (CxPts p σ)] (hσ : Functi
     simp only [Function.comp_apply, Pi.sub_apply, c.e.left_inv (hSs hz)] at hv ⊢
     rw [logNorm_eq φ hr hz.1 (hSi z hz), e, mul_div_cancel_right₀ _ hv.2]
 
-theorem archIntegrable : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
-    {D : ℕ}, GlobalTheory.CxForm.IsRegVar p D → ∀ (M N : HermLB p) {r : N.B.ι → X.functionFieldˣ} (hr : IsRatSec N.B r),
-      M.ArchIntegrable N D hr := by
-  intro k _ X _ p D hX M N r hr σ
-  have := hX.toIsArithVar.compactSpace σ
-  have := CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver
-  obtain ⟨R⟩ := RegGenSmooth.genSmooth hX.toIsArithVar hX.regular σ
-  have hσ : Function.Injective σ := ChernNull.injective_of_arithVar hX.toIsArithVar σ
-  have key (ε : ℤˣ) : IntegrableOn (logNorm (N.φ σ) r) (offSupp p σ (N.div hr))
-      ((M.φ σ).chernPart D ε) := by
-    have h (y : CxPts p σ) : ∃ O ∈ 𝓝 y, IntegrableOn (logNorm (N.φ σ) r)
-        (offSupp p σ (N.div hr) ∩ O) ((M.φ σ).chernPart D ε) :=
-      have ⟨_, hi⟩ := R.cover y
-      exists_integrableOn hσ (M.cInf σ) (N.cInf σ) hr ε _ hi
-    choose O hO hint using h
-    obtain ⟨t, -, ht⟩ := isCompact_univ.elim_nhds_subcover O fun y _ => hO y
-    refine ((integrableOn_finset_iUnion (s := t)).2 fun y _ => hint y).mono_set fun z hz => ?_
-    obtain ⟨y, hy, hz'⟩ := mem_iUnion₂.1 (ht (mem_univ z))
-    exact mem_iUnion₂.2 ⟨y, hy, hz, hz'⟩
-  exact ⟨key 1, key (-1)⟩
-
 end GlobalTheory.LogNormInt

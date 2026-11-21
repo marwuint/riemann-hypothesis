@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.GlobalFields.Artin.MackeyFrobenius
+import GroundTheory.GlobalFields.Artin.Mackey
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -44,12 +45,5 @@ instance normal_subgroupOf_conj [(I.subgroupOf D).Normal] (x : G) :
       ((MulAut.conj x • D : Subgroup G).subgroupOf H)).Normal := by
   rw [← ker_dxToQuot (H := H) (D := D) (I := I) x]
   infer_instance
-
-def dxQuotToQuot (H D I : Subgroup G) [(I.subgroupOf D).Normal] (x : G) :
-    (MulAut.conj x • D : Subgroup G).subgroupOf H ⧸
-        ((MulAut.conj x • I : Subgroup G).subgroupOf H).subgroupOf
-          ((MulAut.conj x • D : Subgroup G).subgroupOf H) →*
-      D ⧸ I.subgroupOf D :=
-  QuotientGroup.lift _ (dxToQuot H D I x) (ker_dxToQuot x).symm.le
 
 end GroundTheory.Global.Artin

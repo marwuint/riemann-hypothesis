@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Localisatio
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteRationalConjMemBoundedCompact
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIndexConj
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumSmallerLevel
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDoubleCosetsDefiniteUnitaryMaximalLevel
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain Polynomial GlobalTheory.EtaJoin GlobalTheory.CoefDuty
 
@@ -364,7 +364,7 @@ theorem petForm_rt (hβ : IsInvForm a β) {f f' : GAf L n → a.W} (hf : f ∈ N
     have e : h⁻¹ * (h * x * h⁻¹) * h = x := by group
     rwa [e] at hx'
   have hJU := hJle.trans (congSub_le_umax (L := L) (n := n) (lev f * lev f'))
-  have huni := (GlobalTheory.T.maxCompactUnitary_conj_relIndex_eq L n h⁻¹).2
+  have huni := (_root_.GlobalTheory.UnimodMass.umax_relIndex_conj L n h⁻¹).2
   have hidx := relIndex_conj h (congSub_le_umax N') hJU huni
   have hmul := Subgroup.relIndex_mul_relIndex _ _ _ hJle (congSub_le_umax (L := L) (n := n) (lev f * lev f'))
   have hKne := congSub_relIndex_ne_zero (L := L) (n := n) hN'

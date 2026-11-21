@@ -56,10 +56,6 @@ section Form
 
 variable {K : Type*} [Field K] {V : Type*} [AddCommGroup V] [Module K V]
 
-theorem HermFam.form_add_left (h : HermFam K V) (σ : K →+* ℂ) (x x' y : V) :
-    h.form σ (x + x') y = h.form σ x y + h.form σ x' y := by
-  rw [← h.conj_symm, h.add_right, map_add, h.conj_symm, h.conj_symm]
-
 theorem HermFam.form_smul_left (h : HermFam K V) (σ : K →+* ℂ) (a : K) (x y : V) :
     h.form σ (a • x) y = starRingEnd ℂ (σ a) * h.form σ x y := by
   rw [← h.conj_symm, h.smul_right, map_mul, h.conj_symm]
@@ -85,11 +81,5 @@ theorem HermFam.form_expand (h : HermFam K V) (σ : K →+* ℂ) {n : ℕ} (c : 
   ring
 
 end Form
-
-section Places
-
-variable {K : Type*} [Field K] [NumberField K]
-
-end Places
 
 end ReciprocityTheory.GeometryOfNumbersTheory

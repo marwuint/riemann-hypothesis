@@ -203,10 +203,6 @@ def shimUJunk {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.K
   alg := algJunk D w.N
   pad := padJunk D w.N w.j w.j_le jC
 
-theorem shimU_nonempty {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ))
-    (w : Dat D Lev) : Nonempty (ShimU D (geoDegenerateNoTau D.what₂.LL) jC ngJunk w) :=
-  ⟨shimUJunk D jC w⟩
-
 section FlagZ
 
 variable (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ)
@@ -219,20 +215,6 @@ def linRootZ (lam : ι → Fin N → ℤ) : MvPolynomial (ι × Fin N) ℤ :=
   -∑ x : ι × Fin N, MvPolynomial.C (lam x.1 x.2) * MvPolynomial.X x
 
 def flagDegZ (lam : ι → Fin N → ℤ) : ℤ := degFlZ ι N (linRootZ ι N lam ^ Formalism.DegreeFormula.dimFl ι N)
-
-theorem linRoot_intCast (lam : ι → Fin N → ℤ) :
-    Formalism.DegreeFormula.linRoot (fun τ i => (lam τ i : ℝ)) =
-      MvPolynomial.map (Int.castRingHom ℝ) (linRootZ ι N lam) := by
-  simp [Formalism.DegreeFormula.linRoot, linRootZ, map_neg, map_sum, map_mul, MvPolynomial.map_X]
-
-theorem flagDeg_intCast (lam : ι → Fin N → ℤ) :
-    Formalism.DegreeFormula.flagDeg ι N (fun τ i => (lam τ i : ℝ)) = (flagDegZ ι N lam : ℝ) := by
-  rw [Formalism.DegreeFormula.flagDeg, linRoot_intCast, Formalism.DegreeFormula.degFl, flagDegZ, degFlZ]
-  push_cast
-  congr 1
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [← map_pow, MvPolynomial.coeff_map]
-  rfl
 
 end FlagZ
 
@@ -305,21 +287,6 @@ open Classical in
   supFin_twist := by intros; simp
   regOn := fun _ _ _ _ _ => True
 
-theorem geoFl_inter (F : Type) [Field F] [NumberField F] [StarRing F] (Tau : Type) [Fintype Tau] (N : ℕ)
-    (lam : Tau → Fin N → ℤ) :
-    (((geoDegenerate F Tau).inter N (fun _ => lam) : ℤ) : ℝ) =
-      (by classical exact Formalism.DegreeFormula.flagDeg Tau N (fun τ i => (lam τ i : ℝ))) := by
-  classical
-  show (((if h : 0 < Formalism.DegreeFormula.dimFl Tau N then flagDegZ Tau N lam else flagDegZ Tau N 0 : ℤ)) : ℝ) = _
-  split_ifs with h
-  · rw [flagDeg_intCast]
-  · have h0 : Formalism.DegreeFormula.dimFl Tau N = 0 := by omega
-    rw [← flagDeg_intCast]
-    simp only [Formalism.DegreeFormula.flagDeg, h0, pow_zero]
-
-def jcJunk (p : ℕ) [Fact p.Prime] : DV.KW p →+* ℂ :=
-  (Formalism.BasicNotions.Examples₂.teich_Om_equiv p).some.toRingHom.comp (algebraMap (DV.KW p) (Formalism.BasicNotions.Examples₂.TeichOm p))
-
 def ng1 : NgPkg where
   NgC := fun _ => PUnit
   NgC_ne := fun _ => ⟨PUnit.unit⟩
@@ -338,16 +305,6 @@ def localBasisTwo (r j p : ℕ) (hp : p.Prime) : BoundaryLocalData.LocB D (loc2 
     split_ifs with h
     · nlinarith [h]
     · simp)
-
-theorem local_form_positive_definite (r j p : ℕ) {Z : (loc2 D r j p).Mdl} (y : (loc2 D r j p).Pt Z) (n : ℕ)
-    (b : Module.Basis (Fin n) ℤ ((loc2 D r j p).Ylat y)) (x : Fin n → ℝ) :
-    x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * (loc2 D r j p).be y (b i) (b k) :=
-  fun hx => pd_of_int ((loc2 D r j p).be y) ((loc2 D r j p).be_symm y)
-    (fun a a' => beK_int D (rkB (rho2 r) y) a a') ((loc2 D r j p).be_pos y) b x hx
-
-theorem local_model_bad_reduction (r j p : ℕ) (hr : 2 ≤ r) :
-    ∃ y : (loc2 D r j p).Pt (loc2 D r j p).Xm, ¬ (loc2 D r j p).good y :=
-  ⟨true, locT_not_good D r j p (cfJunk p) (rho2 r) (by simp [rho2, hr])⟩
 
 def padDegenerate (N j : ℕ) (hj : j ≤ N) (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) :
     PadPkg D N j PUnit jC ng1 where
@@ -407,76 +364,6 @@ def shimUFl {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW 
   cx := cxJunk D.what₂.Tau w.N w.j
   alg := algDegenerate D w.N
   pad := padDegenerate D w.N w.j w.j_le jC
-
-theorem mumfordU_fl {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) (w : Dat D Lev) :
-    MumfordU (shimUFl D jC w) := by
-  intro c la
-  show (((geoDegenerate D.what₂.LL D.what₂.Tau).inter w.N (fun _ => la) : ℤ) : ℝ) = 1 * _
-  rw [one_mul]
-  exact geoFl_inter D.what₂.LL D.what₂.Tau w.N la
-
-theorem curveHTDom_fl {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ))
-    (w : Dat D Lev) : CurveHTDom (shimUFl D jC w) := by
-  intro p n Z' _ _ _ c
-  exact ⟨(), 1, one_pos, fun τ i => by
-    show ((1 : ℕ) : ℝ) * (0 : ℝ) = (((0 : ℤ)) : ℝ)
-    simp⟩
-
-section Ar
-
-variable (Tau : Type) [Fintype Tau] (N : ℕ)
-
-def prB (b : Bool) : MvPolynomial (DV.Vm Tau N) ℝ →ₐ[ℝ] MvPolynomial (DV.Rt Tau N) ℝ :=
-  MvPolynomial.aeval (fun v => match v with
-    | Sum.inl (b', x) => if b' = b then MvPolynomial.X x else 0
-    | Sum.inr _ => 0)
-
-theorem prB_true_HT (P : MvPolynomial (DV.Rt Tau N) ℝ) : prB Tau N true (DV.tagHT Tau N P) = P := by
-  unfold prB DV.tagHT
-  rw [MvPolynomial.aeval_rename]
-  exact MvPolynomial.aeval_X_left_apply P
-
-theorem prB_false_DR (P : MvPolynomial (DV.Rt Tau N) ℝ) : prB Tau N false (DV.tagDR Tau N P) = P := by
-  unfold prB DV.tagDR
-  rw [MvPolynomial.aeval_rename]
-  exact MvPolynomial.aeval_X_left_apply P
-
-theorem prB_false_HT (P : MvPolynomial (DV.Rt Tau N) ℝ) :
-    prB Tau N false (DV.tagHT Tau N P) = MvPolynomial.C (MvPolynomial.constantCoeff P) := by
-  unfold prB DV.tagHT
-  rw [MvPolynomial.aeval_rename]
-  exact MvPolynomial.aeval_zero P
-
-theorem prB_true_DR (P : MvPolynomial (DV.Rt Tau N) ℝ) :
-    prB Tau N true (DV.tagDR Tau N P) = MvPolynomial.C (MvPolynomial.constantCoeff P) := by
-  unfold prB DV.tagDR
-  rw [MvPolynomial.aeval_rename]
-  exact MvPolynomial.aeval_zero P
-
-theorem exists_arMix (A : Finset ℕ → ℝ → MvPolynomial (DV.Rt Tau N) ℝ →ₗ[ℝ] ℝ)
-    (hA : ∀ S R (P : MvPolynomial (DV.Rt Tau N) ℝ) (d : ℕ),
-      d ≠ Formalism.DegreeFormula.dimFl Tau N + 1 → P.IsHomogeneous d → A S R P = 0) :
-    ∃ M : Finset ℕ → ℝ → ℕ → MvPolynomial (DV.Vm Tau N) ℝ →ₗ[ℝ] ℝ,
-      (∀ S R p P, M S R p (DV.tagHT Tau N P) = A (insert p S) R P) ∧
-      (∀ S R p P, M S R p (DV.tagDR Tau N P) = A (S.erase p) R P) := by
-  have h0 : ∀ S R (c : ℝ), A S R (MvPolynomial.C c) = 0 := fun S R c =>
-    hA S R _ 0 (Nat.succ_ne_zero _).symm (MvPolynomial.isHomogeneous_C _ c)
-  refine ⟨fun S R p => (A (insert p S) R) ∘ₗ (prB Tau N true).toLinearMap +
-    (A (S.erase p) R) ∘ₗ (prB Tau N false).toLinearMap, fun S R p P => ?_, fun S R p P => ?_⟩
-  · simp [prB_true_HT, prB_false_HT, h0]
-  · simp [prB_true_DR, prB_false_DR, h0]
-
-theorem exists_arDeg (x : DV.Rt Tau N) :
-    ∃ A : MvPolynomial (DV.Rt Tau N) ℝ →ₗ[ℝ] ℝ, A ≠ 0 ∧ ∀ (P : MvPolynomial (DV.Rt Tau N) ℝ) (d : ℕ),
-      d ≠ Formalism.DegreeFormula.dimFl Tau N + 1 → P.IsHomogeneous d → A P = 0 := by
-  classical
-  refine ⟨MvPolynomial.lcoeff ℝ (Finsupp.single x (Formalism.DegreeFormula.dimFl Tau N + 1)), fun h => ?_, fun P d hd hP => ?_⟩
-  · have := congrArg (fun f => f (MvPolynomial.monomial (Finsupp.single x (Formalism.DegreeFormula.dimFl Tau N + 1)) 1)) h
-    simp at this
-  · refine hP.coeff_eq_zero ?_
-    simpa using hd.symm
-
-end Ar
 
 def formsFl (KO : Type) [Field KO] [NumberField KO] (eO : 𝓞 KO ≃+* D.what₂.O) (kL : KO →+* D.what₂.LL)
     (kL_eO : ∀ x : 𝓞 KO, kL (x : KO) = D.what₂.OtoLL (eO x))
@@ -561,29 +448,6 @@ def formsFl (KO : Type) [Field KO] [NumberField KO] (eO : 𝓞 KO ≃+* D.what�
     · rw [vEK_mul la hF, vEK_of_ne la hF]
   thAll := fun _ _ => ⊥
   shortTh := fun _ _ => ⊥
-
-def famFl (KO : Type) [Field KO] [NumberField KO] (eO : 𝓞 KO ≃+* D.what₂.O) (kL : KO →+* D.what₂.LL)
-    (kL_eO : ∀ x : 𝓞 KO, kL (x : KO) = D.what₂.OtoLL (eO x)) :
-    ShimFam D (geoDegenerate D.what₂.LL D.what₂.Tau) PUnit where
-  levPr := fun _ => Finset.univ.image D.host.g
-  levPr_prime := fun _ p hp => by
-    obtain ⟨i, _, rfl⟩ := Finset.mem_image.1 hp
-    exact D.host.g_prime i
-  κg := PUnit.unit
-  levPr_κg := rfl
-  jC := fun p _ _ => jcJunk p
-  ng := ng1
-  U := fun w => shimUFl D _ w
-  forms := formsFl D KO eO kL kL_eO _ _ _ (fun _ _ => true)
-
-theorem forms_forces_inj {G : DV.Geo D.what₂.LL} {NW : ℕ → ℕ} {CompW : ℕ → Type} [∀ j, Fintype (CompW j)]
-    {algW : ∀ j, AlgPkg G D.what₂.Tau (NW j) (CompW j)} {PtY : ℕ → ℕ → Type}
-    (P : FormsPkg D G NW CompW algW PtY) : Function.Injective D.what₂.OtoLL := by
-  intro a b h
-  obtain ⟨x, rfl⟩ := P.eO.surjective a
-  obtain ⟨y, rfl⟩ := P.eO.surjective b
-  rw [← P.kL_eO, ← P.kL_eO] at h
-  rw [RingOfIntegers.ext (P.kL.injective h)]
 
 section Tied
 
@@ -744,13 +608,6 @@ theorem tiedX_junk : TiedX (jC := jC) (ng := ngJunk) (compatibleDivisorData D jC
       lw := fun _ _ _ _ _ => HEq.rfl }
   lev_κg := rfl
 
-include X0 in
-
-theorem tiedX_exists : ∃ (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ levPr κ, p.Prime) (κg : X.Lev)
-    (ePl : ∀ (p : ℕ) [Fact p.Prime], X.PlP p ≃ PlL D p) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ngJunk w)
-    (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp), TiedX X levPr hlev κg ePl U eC :=
-  ⟨_, _, _, _, _, _, _, tiedX_junk D jC X0⟩
-
 end Tied
 
 section TiedFl
@@ -888,36 +745,6 @@ theorem tiedX_fl : TiedX (jC := jC) (ng := ng1) (divXFl D jC X0) (fun _ => Finse
       ybd := fun _ _ _ _ => HEq.rfl
       lw := fun _ _ _ _ _ => HEq.rfl }
   lev_κg := rfl
-
-include X0 in
-
-theorem joint_fl : ∃ (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ levPr κ, p.Prime) (κg : X.Lev)
-    (ePl : ∀ (p : ℕ) [Fact p.Prime], X.PlP p ≃ PlL D p) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng1 w)
-    (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp), TiedX X levPr hlev κg ePl U eC ∧
-      (∀ w, MumfordU (U w)) ∧ (∀ w, CurveHTDom (U w)) ∧
-      (∀ w (p : ℕ) [Fact p.Prime], Nonempty ((U w).pad.CurveHT p)) :=
-  ⟨_, _, _, _, _, _, _, tiedX_fl D jC X0, fun w => mumfordU_fl D jC w, fun w => curveHTDom_fl D jC w,
-    fun _ p _ => ⟨⟨(plL_ne D p).some, PUnit.unit⟩⟩⟩
-
-theorem prov_divXFl_nonempty : Nonempty (IntegralModelsLocalData.Prov D (divXFl D jC X0)) := by
-  classical
-  let I := {ij : ℕ × ℕ // ∃ w : Dat D Unit, w.Indef ∧ w.N = ij.1 ∧ w.j = ij.2}
-  let dat : I → Dat D Unit := fun i => Classical.choose i.2
-  have hI : ∀ i, (dat i).Indef := fun i => (Classical.choose_spec i.2).1
-  refine ⟨settingVarietiesOverData (divXFl D jC X0) I dat hI (fun w => shimUFl D jC w) (fun S κ hS => ?_)⟩
-  let w := (shimuraDatumOfSetting (divXFl D jC X0) S κ hS).1
-  have hw : w.Indef := (shimuraDatumOfSetting (divXFl D jC X0) S κ hS).2
-  have hwS : w.S = S := rfl
-  let i : I := ⟨(w.N, w.j), w, hw, rfl, rfl⟩
-  refine ⟨i, ?_⟩
-  have hs := Classical.choose_spec i.2
-  have eN : recN D S = recN D (dat i).S := by rw [← hwS, recN_dat, recN_dat]; exact hs.2.1.symm
-  have eJ : recJ D S = recJ D (dat i).S := by rw [← hwS, recJ_dat D w hw, recJ_dat D _ hs.1]; exact hs.2.2.symm
-  have e : (divXFl D jC X0).shv S κ = (divXFl D jC X0).shv (dat i).S (dat i).κ :=
-    shimXFl_congr D jC _ _ _ _ eN eJ
-  rw [e]
-  exact ⟨tieOf (divXFl D jC X0) _ (prime_of_mem_image D) _ (tiedX_fl D jC X0).shv
-    (fun w _ => curveHTDom_fl D jC w) I dat hI i⟩
 
 end TiedFl
 

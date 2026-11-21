@@ -8,10 +8,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationLtOneIffNorm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftQMk
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsExactLocalConditionDataAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedEnlargementCutCocyclesBlochKatoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemFinitePartOfLiftStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoboundaryDescentEnlargementCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedCocycleDescentEnlargementStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedEnlargementCutCocyclesBlochKato
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemFinitePartOfLift
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoboundaryDescentEnlargementCoefficients
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedCocycleDescentEnlargement
 
 noncomputable section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut
@@ -27,11 +27,11 @@ theorem main : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D
     GlobalTheory.T.exists_exactLocalConditionData_at_place D HW F i r ρ π hadm20 hJa hGood hπ hG2 hG3 hCont hDec hEps h5 hsm hq hd hposition w hw
   have hTop : tableLineDegreeTwo.TopCore (Br.PD D.loc D.nbr i w hw) (embC HW C hA) lam (IK (D.nbr i w hw).Kw) :=
     hconds (D.nd.l i) (D.nbr i w hw).Kw C.LL hA lam hlam
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.unramifiedEnlargement_cut_cocycles_blochKato D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hS hGood hπ hDec hCont
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.UseLoc.Cases.main D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hS hGood hπ hDec hCont
   refine ⟨?_, ?_, ?_⟩
   · have hsub : ∀ z ∈ cutCoc i w hw r Set.univ (WpO D.nd i ρ π),
         z ∈ HfD (Br.PD D.loc D.nbr i w hw) (Br.locLat D.nbr i w hw (WpO D.nd i ρ π)) :=
-      fun z hz => GlobalTheory.T.mem_finite_part_of_lift D i w hw C D.R.r _ z (h1 z hz)
+      fun z hz => _root_.GlobalTheory.UseLoc.DescHf.descHf D i w hw C D.R.r _ z (h1 z hz)
     have hle := Submodule.span_le.2 hsub
     unfold LocBound lenModN
     have h0 : Module.length (Br.OLL D.nbr i w hw)
@@ -46,9 +46,9 @@ theorem main : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D
     rw [h0]
     exact zero_le
   · intro c hc z hz
-    exact GlobalTheory.T.coboundary_descent_enlargement_coefficients D i w hw C 1 _ z (h2 c hc z hz)
+    exact _root_.GlobalTheory.UseLoc.DescBD.main D i w hw C 1 _ z (h2 c hc z hz)
   · intro z hz
-    have := GlobalTheory.T.unramifiedCocycle_descent_enlargement D i w hw C 1 _ _ z (h3 z hz)
+    have := _root_.GlobalTheory.UseLoc.descUr_mem D i w hw C 1 _ _ z (h3 z hz)
     rwa [← GlobalTheory.BridgeInertia.inertEq D i w hw] at this
 
 end GlobalTheory.UseLoc

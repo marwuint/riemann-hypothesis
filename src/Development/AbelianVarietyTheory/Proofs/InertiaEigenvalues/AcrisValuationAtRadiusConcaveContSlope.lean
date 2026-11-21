@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOnGaussNormAcrisRadiusIcoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonomialLtOfBoundedIntervalEndsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefiniteStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisLocallyMonomialStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOnGaussNormAcrisRadiusIco
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonomialLtOfBoundedIntervalEnds
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefinite
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisLocallyMonomial
 
 noncomputable section
 
@@ -35,14 +35,14 @@ lemma logb_gaussNormAcrisRadius_convex {x : Formalism.Per.Acris l} (hx : x ≠ 0
   have hm1 : t * r₁ + (1 - t) * r₂ ≤ 1 := by nlinarith
   obtain ⟨a0, b0⟩ := prime_rpow_neg_mem_Ico_inv_one (l := l) hm0 hm1
   have hle : (l : ℝ) ^ (-r₁) ≤ (l : ℝ) ^ (-r₂) := Real.rpow_le_rpow_of_exponent_le hL.le (by linarith)
-  have key := GlobalTheory.T.gaussNormAcris_logConvex_in_radius l x _ _ t a1 hle b2 ht0 ht1
+  have key := _root_.GlobalTheory.PMon.Gauss.gC_logConvex l x _ _ t a1 hle b2 ht0 ht1
   have heq : ((l : ℝ) ^ (-r₁)) ^ t * ((l : ℝ) ^ (-r₂)) ^ (1 - t) = (l : ℝ) ^ (-(t * r₁ + (1 - t) * r₂)) := by
     rw [← Real.rpow_mul hL0.le, ← Real.rpow_mul hL0.le, ← Real.rpow_add hL0]
     congr 1; ring
   rw [heq] at key
-  have p1 := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx _ a1 b1
-  have p2 := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx _ a2 b2
-  have p0 := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx _ a0 b0
+  have p1 := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x hx _ a1 b1
+  have p2 := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x hx _ a2 b2
+  have p0 := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x hx _ a0 b0
   calc Real.logb l (gC l ((l : ℝ) ^ (-(t * r₁ + (1 - t) * r₂))) x)
       ≤ Real.logb l (gC l ((l : ℝ) ^ (-r₁)) x ^ t * gC l ((l : ℝ) ^ (-r₂)) x ^ (1 - t)) :=
         Real.logb_le_logb_of_le hL p0 key
@@ -74,9 +74,9 @@ theorem vr_continuousOn_Ioc {x : Formalism.Per.Acris l} (hx : x ≠ 0) :
   have hc1 : Continuous (fun r : ℝ => (l : ℝ) ^ (-r)) :=
     Continuous.rpow continuous_const continuous_neg (fun _ => Or.inl hL0.ne')
   have hc2 : ContinuousOn (fun r : ℝ => gC l ((l : ℝ) ^ (-r)) x) (Set.Ioc 0 1) :=
-    (GlobalTheory.T.continuousOn_gaussNormAcrisRadius_Ico l x).comp hc1.continuousOn hmaps
+    (_root_.GlobalTheory.PMon.Gauss.continuousOn_gC_target l x).comp hc1.continuousOn hmaps
   have hpos : ∀ r ∈ Set.Ioc (0 : ℝ) 1, gC l ((l : ℝ) ^ (-r)) x ≠ 0 := fun r hr =>
-    (GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx _ (prime_rpow_neg_mem_Ico_inv_one hr.1 hr.2).1 (prime_rpow_neg_mem_Ico_inv_one hr.1 hr.2).2).ne'
+    (_root_.GlobalTheory.PMon.Gauss.gC_pos_target l x hx _ (prime_rpow_neg_mem_Ico_inv_one hr.1 hr.2).1 (prime_rpow_neg_mem_Ico_inv_one hr.1 hr.2).2).ne'
   simp only [vr, Real.logb]
   exact ((hc2.log hpos).div_const _).neg
 
@@ -89,7 +89,7 @@ theorem vr_right_affine {x : Formalism.Per.Acris l} (hx : x ≠ 0) :
   obtain ⟨a, b⟩ := prime_rpow_neg_mem_Ico_inv_one (l := l) hr.1 hr.2.le
   have hlt : (l : ℝ)⁻¹ < (l : ℝ) ^ (-r) := by
     rw [← Real.rpow_neg_one]; exact Real.rpow_lt_rpow_of_exponent_lt hL (by linarith [hr.2])
-  obtain ⟨c, k, ρ₁, hc, hρ₁, hρ₁r, hmon⟩ := (GlobalTheory.T.gaussNormAcris_locally_monomial l x hx _ a b).2 hlt
+  obtain ⟨c, k, ρ₁, hc, hρ₁, hρ₁r, hmon⟩ := (_root_.GlobalTheory.PMon.Gauss.gC_monomial_near l x hx _ a b).2 hlt
   have hρ₁0 : 0 < ρ₁ := lt_of_lt_of_le (inv_pos.mpr hL0) hρ₁
   have hsr : r < -Real.logb l ρ₁ := by
     have := Real.logb_lt_logb hL hρ₁0 hρ₁r

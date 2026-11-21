@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Cu
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCompOfIsTraceClass
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableDescendOrbitSum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralNormRmulLe
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryAutomorphicConvolutionMemCuspidalOfRadicaStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumCuspidalMultiplicityTraceStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryAutomorphicConvolutionMemCuspidalOfRadica
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumCuspidalMultiplicityTrace
 
 noncomputable section
 
@@ -49,13 +49,13 @@ theorem cuspidalOperators : GlobalTheory.Published.CuspTraceClass → ∀ (D : D
     [μ.IsHaarMeasure] [μ.IsMulRightInvariant], CuspidalOperators V μ := by
   intro hCT D V μ _ _ f hf h1 h2
   have c := GlobalTheory.Orb.continuous_of_mem_ccAd hf
-  have m1 : GlobalTheory.IndefiniteRowSideFullHecke.TraceKernelDecomposition.MapsIntoCusp V μ f := GlobalTheory.T.unitaryAutomorphicConvolution_mem_cuspidal_of_radical_zero D V μ f hf h1
+  have m1 : GlobalTheory.IndefiniteRowSideFullHecke.TraceKernelDecomposition.MapsIntoCusp V μ f := _root_.GlobalTheory.RopCusp.ropG_mem_L2cusp D V μ f hf h1
   have m2 : GlobalTheory.IndefiniteRowSideFullHecke.TraceKernelDecomposition.MapsIntoCusp V μ (starFn f) :=
-    GlobalTheory.T.unitaryAutomorphicConvolution_mem_cuspidal_of_radical_zero D V μ (starFn f) (GlobalTheory.Orb.starFn_mem_ccAd hf) h2
+    _root_.GlobalTheory.RopCusp.ropG_mem_L2cusp D V μ (starFn f) (GlobalTheory.Orb.starFn_mem_ccAd hf) h2
   have hd := GlobalTheory.CuspSpectrum.traceIsDiagonal (μ := μ) hCT hf m2
   have hk := fun (F : DividedPowerChartLift V μ) (x : GA D V) =>
     GlobalTheory.AutomorphicL2KernelIntegral.convR_eq_integral_kernelQ (GA D V) (GQ V) μ f c.1 c.2 F x
-  obtain ⟨t1, t2, t3⟩ := GlobalTheory.T.hasSum_cuspidalMultiplicity_trace hCT D V μ f hf
+  obtain ⟨t1, t2, t3⟩ := _root_.GlobalTheory.CuspTraceSum.hasSum_mCusp_repTrace hCT D V μ f hf
   have etr : trace (RopG V μ f) = trace (RcuspOp V μ f) := by
     rw [GlobalTheory.TraceDiagonal.RopG_eq_comp c.1 c.2 m2]
     exact trace_comp_comp_of_comp_eq_id _ _

@@ -417,9 +417,4 @@ theorem phi_eq (H : Hyp D) {c : Mat k r → ℂ} {C a : ℝ} (hc : Coef c C a) (
   filter_upwards [bp_ae_mem D.haarG] with g hg
   rw [fold_sq D H hc ξ hg, Complex.ofReal_mul]
 
-theorem phi_re_nonneg (H : Hyp D) {c : Mat k r → ℂ} {C a : ℝ} (hc : Coef c C a) (ξ : Wp) :
-    0 ≤ (∫ g, phi D c ξ (Matrix.of g) ∂D.μG).re := by
-  rw [phi_eq D H hc ξ, Complex.ofReal_re]
-  exact integral_nonneg fun g => mul_nonneg (bet_nonneg D _) (sq_nonneg _)
-
 end ReciprocityTheory.ChartRestriction.DS.Mult1.BesselPositivity

@@ -158,8 +158,6 @@ theorem n_pos' : 0 < R.n := by
   have h2 := R.two_le_m
   omega
 theorem two_pow_le_n : 2 ^ R.e ≤ R.n := Nat.le_of_dvd R.n_pos' R.toFrame.two_pow_dvd_ord
-theorem baseRank_le_rank : R.n0 ≤ R.n := R.toFrame.cyclic_order_le_exponent
-
 end Ranks
 
 namespace Host
@@ -174,73 +172,6 @@ theorem four_le_two_pow : 4 ≤ 2 ^ R.e := by
 
 include H in
 theorem four_le_n' : 4 ≤ R.n := le_trans (four_le_two_pow H) R.two_pow_le_n
-
-include H in
-theorem psAt_prime {p : ℕ} (hp : p.Prime) (h : ¬ p ∣ H.condN) : H.psAt p = jacobiSym (-(H.q : ℤ)) p := by
-  have hc : Nat.Coprime p H.condN := (Nat.Prime.coprime_iff_not_dvd hp).2 h
-  have hh := H.hyp
-  unfold HostHyp at hh
-  obtain ⟨hq, -, hq8, -, -⟩ := hh
-  have hq4 : H.q % 4 = 3 := by omega
-  have h2 : p ≠ 2 := by
-    intro h2
-    apply h
-    rw [h2]
-    have h5 : 2 ∣ H.QS := dvd_trans (dvd_pow_self 2 (by omega)) H.tower_dvd
-    exact dvd_mul_of_dvd_left (dvd_mul_of_dvd_left h5 _) _
-  have hpo : Odd p := hp.odd_of_ne_two h2
-  have hqo : Odd H.q := hq.odd_of_ne_two (by omega)
-  have step1 : H.psAt p = jacobiSym (p : ℤ) H.q := by
-    unfold HostRaw.psAt
-    rw [dif_pos hc, H.flPS (ZMod.unitOfCoprime p hc)]
-    apply jacobiSym.mod_left'
-    rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Int.natCast_mod]
-    apply Int.emod_emod_of_dvd
-    exact Int.natCast_dvd_natCast.mpr (dvd_mul_of_dvd_left (dvd_mul_left _ _) _)
-  have h4 : p % 4 = 1 ∨ p % 4 = 3 := by
-    have := Nat.odd_iff.mp hpo
-    omega
-  rw [step1, jacobiSym.neg _ hpo]
-  rcases h4 with h1 | h3
-  · rw [ZMod.χ₄_nat_one_mod_four h1, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four h1 hqo]
-  · rw [ZMod.χ₄_nat_three_mod_four h3, jacobiSym.quadratic_reciprocity_three_mod_four h3 hq4]
-    ring
-
-private theorem sum_even_of_prod_neg_one_zpow_eq_one {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι]
-    (k : ι → ℤ) (h : ∏ τ, (-1 : K) ^ k τ = 1) : ∃ z : ℤ, ∑ τ, k τ = 2 * z := by
-  have key : ∀ τ, (-1 : K) ^ k τ = (((-1 : Kˣ) ^ k τ : Kˣ) : K) := fun τ => by
-    rw [Units.val_zpow_eq_zpow_val, Units.val_neg, Units.val_one]
-  have hsum : ∀ s : Finset ι, ∏ τ ∈ s, (-1 : Kˣ) ^ k τ = (-1 : Kˣ) ^ (∑ τ ∈ s, k τ) := by
-    classical
-    intro s
-    refine Finset.induction_on s ?_ ?_
-    · simp
-    · intro a s ha ih
-      rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add]
-  rw [Finset.prod_congr rfl (fun τ _ => key τ), ← Units.coe_prod, hsum] at h
-  rcases Int.even_or_odd (∑ τ, k τ) with ⟨w, hw⟩ | hodd
-  · exact ⟨w, by rw [hw]; ring⟩
-  · exfalso
-    rw [hodd.neg_one_zpow, Units.val_neg, Units.val_one] at h
-    have h4 : (2 : K) = 0 := by linear_combination -h
-    norm_num at h4
-
-variable {H} in
-
-theorem MuCond.even_im_hermitian_sub {ι : Type} [Fintype ι] {g : ι → R.GG} {e : ι → ℚ} (h : H.MuCond g e) (he : ∀ τ, ∃ z : ℤ, e τ = z) :
-    ∃ z : ℤ, ∑ τ, e τ = 2 * z := by
-  have h1 := h (-1) ⟨2, by norm_num, by norm_num⟩
-  simp only [map_neg, map_one] at h1
-  obtain ⟨w, hw⟩ := sum_even_of_prod_neg_one_zpow_eq_one (fun τ => (e τ).num) h1
-  refine ⟨w, ?_⟩
-  have hnum : ∀ τ, (((e τ).num : ℤ) : ℚ) = e τ := fun τ => by
-    obtain ⟨z, hz⟩ := he τ
-    rw [hz]
-    simp
-  have h3 : ((∑ τ, (e τ).num : ℤ) : ℚ) = ((2 * w : ℤ) : ℚ) := by exact_mod_cast hw
-  push_cast at h3
-  simp only [hnum] at h3
-  exact h3
 
 theorem finrank_E' : Module.finrank ℚ H.E = 2 * R.f := by
   rw [H.der.finrank_E]

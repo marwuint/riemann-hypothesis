@@ -4,9 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveC
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechDeRhamComparisonBijectiveCupSmooth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullOverOneEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeOfCrystallineComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafComparisonInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffinePairRestrictionInjectiveFirstCohomologyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeOfCrystallineComparison
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafComparisonInjective
+import Development.AbelianVarietyTheory.Definitions.Divisors.ComparisonMemCechHodgeFiltration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffinePairRestrictionInjectiveFirstCohomology
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormValueOnTangentVectorEqZeroOfGlobalFormZeroStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmpFormEqZeroOfTangent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteProjectiveOfLocalBasis
@@ -134,7 +135,7 @@ theorem glob_surjective (hC : GlobalTheory.Published.CrystallineSmoothLift) (hH 
   have hF : clForm _ ωc ∈ CechHodgeFiltration (A.hom ≫ 𝟙 (Sp R)) := by rw [cechHodgeFiltration_eq_range]; exact ⟨ωc, rfl⟩
   have h1 : c ∈ F1 (A.hom ≫ 𝟙 (Sp R)) := by
     change toH1O _ c = 0
-    apply GlobalTheory.T.structure_sheaf_comparison_injective R A.left _
+    apply _root_.GlobalTheory.CechDR.cmpO_injective R A.left _
     rw [← structureSheaf_comparison_comm, map_zero, hc]
     exact hF
   rw [hodgeFiltration_eq_range] at h1
@@ -304,7 +305,7 @@ theorem exists_tangent_residue (hC : GlobalTheory.Published.CrystallineSmoothLif
       ∀ c, IsPullForm m.w c (e (1 ⊗ₜ c)) :=
     ((hH R A g hab hdim).2.2.2.2.2 K B.left B.hom φ hφ.1).2.1
   have hp : ∀ f, glob _ (m.pullForm f) = e (1 ⊗ₜ glob _ f) := fun f ↦
-    (GlobalTheory.T.affinePairRestriction_injective_firstCohomology φ (B.hom ≫ 𝟙 (Sp K))).2.1 ((isPullForm_glob m f).symm.trans (he _))
+    (_root_.GlobalTheory.CechDR.pairRes_injective φ (B.hom ≫ 𝟙 (Sp K))).2.1 ((isPullForm_glob m f).symm.trans (he _))
   obtain ⟨v', hv'⟩ := exists_tangent_field hC hH B g hab' hdim' hy
     (Module.Dual.baseChange K ψ ∘ₗ e.symm.toLinearMap)
   have hb : ∀ i, ∃ u : K, u ≠ 0 ∧ ∃ v, ∀ f,

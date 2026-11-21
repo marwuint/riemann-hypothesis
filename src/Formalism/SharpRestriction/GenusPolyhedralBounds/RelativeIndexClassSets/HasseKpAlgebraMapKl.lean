@@ -177,18 +177,6 @@ theorem der_apply (τ : A →+* MvPowerSeries σ A) (h : IsTay τ) (hR : ∀ r :
 
 end Lin
 
-theorem cw_C (d : A →+ A) (a : A) : cw d (C a : MvPowerSeries σ A) = C (d a) := by
-  classical
-  ext n
-  rw [coeff_cw, MvPowerSeries.coeff_C, MvPowerSeries.coeff_C]
-  split_ifs <;> simp
-
-theorem cw_X (d : A →+ A) (h1 : d 1 = 0) (q : σ) : cw d (X q : MvPowerSeries σ A) = 0 := by
-  classical
-  ext n
-  rw [coeff_cw, MvPowerSeries.coeff_X]
-  split_ifs <;> simp [h1]
-
 section Poly
 variable (σ) (R : Type*) [CommRing R]
 
@@ -214,13 +202,6 @@ theorem pol_isCst (r : R) : IsCst (pol σ R) (algebraMap R (MvPolynomial σ R) r
   unfold IsCst
   rw [MvPolynomial.algebraMap_eq]
   exact pol_C σ R r
-
-theorem pol_dv_X [DecidableEq σ] (p q : σ) : dv (pol σ R) p (MvPolynomial.X q) = if p = q then 1 else 0 := by
-  rw [dv, co_apply, pol_X, map_add, MvPowerSeries.coeff_C, MvPowerSeries.coeff_X,
-    if_neg (Finsupp.single_ne_zero.mpr one_ne_zero), zero_add]
-  by_cases hpq : p = q
-  · subst hpq; simp
-  · rw [if_neg hpq, if_neg]; exact fun h => hpq (Finsupp.single_left_injective one_ne_zero h)
 
 theorem pol_iterAt (p : σ) (x : MvPolynomial σ R) : IterAt (pol σ R) p x := by
   classical
@@ -253,15 +234,6 @@ theorem pol_iterAt (p : σ) (x : MvPolynomial σ R) : IterAt (pol σ R) p x := b
   · exact IsCst.iterAt (τ := pol σ R) (pol_C σ R a) p
   · exact hf.add hg
   · exact hf.mul (pol_isTay σ R) (hX n)
-
-theorem pol_der (p : σ) : der R (pol σ R) (pol_isTay σ R) (pol_isCst σ R) p = MvPolynomial.pderiv p := by
-  classical
-  apply MvPolynomial.derivation_ext
-  intro i
-  rw [der_apply, pol_dv_X, MvPolynomial.pderiv_X]
-  by_cases h : p = i
-  · subst h; simp
-  · simp [h, Pi.single_apply, Ne.symm h]
 
 end Poly
 
@@ -345,16 +317,6 @@ theorem dv_comm (hi : ∀ p x, IterAt τ p x) (p q : σ) (x : A) : dv τ p (dv �
   change dv τ p (co τ (Finsupp.single q 1) x) = dv τ q (co τ (Finsupp.single p 1) x)
   rw [dv_co hi p (Finsupp.single q 1) x, dv_co hi q (Finsupp.single p 1) x, add_comm (Finsupp.single q 1), hsym]
 
-theorem dv_iterate_co (hi : ∀ p x, IterAt τ p x) (p : σ) (n : ℕ) (β : σ →₀ ℕ) (x : A) :
-    (dv τ p)^[n] (co τ β x) = ((β p + 1).ascFactorial n) • co τ (β + Finsupp.single p n) x := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [Function.iterate_succ_apply', ih, map_nsmul, dv_co hi, smul_smul, add_assoc, ← Finsupp.single_add]
-    congr 1
-    rw [Nat.ascFactorial_succ, Finsupp.add_apply, Finsupp.single_eq_same]
-    ring
-
 theorem IsCst.of_mul {s y : A} (hs : IsCst τ s) (hsy : IsCst τ (s * y)) (hu : IsUnit s) : IsCst τ y := by
   have hs' : τ s = C s := hs
   have hsy' : τ (s * y) = C (s * y) := hsy
@@ -372,62 +334,6 @@ theorem itD_pairwise (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (al
 def itD (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (s : Finset σ) (β : σ →₀ ℕ) :
     Module.End R A :=
   s.noncommProd (fun p => hs R τ hR (Finsupp.single p 1) ^ β p) (itD_pairwise R hi hR s β)
-
-theorem itD_empty (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (β : σ →₀ ℕ) :
-    itD R hi hR ∅ β = 1 := by
-  rw [itD, Finset.noncommProd_empty]
-
-theorem itD_insert [DecidableEq σ] (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r))
-    {s : Finset σ} {a : σ} (ha : a ∉ s) (β : σ →₀ ℕ) :
-    itD R hi hR (insert a s) β = hs R τ hR (Finsupp.single a 1) ^ β a * itD R hi hR s β := by
-  unfold itD
-  first
-    | exact Finset.noncommProd_insert_of_notMem _ _ _ _ ha
-    | exact Finset.noncommProd_insert_of_not_mem _ _ _ _ ha
-
-theorem itD_co (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r)) (s : Finset σ)
-    (β γ : σ →₀ ℕ) (x : A) : itD R hi hR s β (co τ γ x) =
-      (∏ p ∈ s, (γ p + 1).ascFactorial (β p)) • co τ (γ + ∑ p ∈ s, Finsupp.single p (β p)) x := by
-  classical
-  refine Finset.induction_on s ?_ ?_
-  · simp [itD_empty]
-  · intro a s ha ih
-    have hS : (∑ p ∈ s, Finsupp.single p (β p)) a = 0 := by
-      rw [Finsupp.finset_sum_apply]
-      exact Finset.sum_eq_zero fun p hp => by
-        rw [Finsupp.single_apply, if_neg]; rintro rfl; exact ha hp
-    have hpow : ∀ (n : ℕ) (y : A), ((hs R τ hR (Finsupp.single a 1)) ^ n) y = (dv τ a)^[n] y := by
-      intro n y
-      first
-        | (rw [Module.End.pow_apply]; rfl)
-        | (rw [LinearMap.pow_apply]; rfl)
-        | (induction n generalizing y with
-            | zero => rfl
-            | succ n ih2 => rw [pow_succ, Function.iterate_succ_apply, ← ih2]; rfl)
-    rw [itD_insert R hi hR ha]
-    first | rw [Module.End.mul_apply] | rw [LinearMap.mul_apply]
-    rw [ih, map_nsmul, hpow, dv_iterate_co hi,
-      smul_smul, Finset.prod_insert ha, Finset.sum_insert ha, Finsupp.add_apply, hS, add_zero,
-      show γ + ∑ p ∈ s, Finsupp.single p (β p) + Finsupp.single a (β a) =
-        γ + (Finsupp.single a (β a) + ∑ p ∈ s, Finsupp.single p (β p)) by abel, mul_comm]
-
-theorem itD_apply (h : IsTay τ) (hi : ∀ p x, IterAt τ p x) (hR : ∀ r : R, IsCst τ (algebraMap R A r))
-    (s : Finset σ) (β : σ →₀ ℕ) (hs : β.support ⊆ s) (x : A) :
-    itD R hi hR s β x = (∏ p ∈ s, (β p).factorial) • co τ β x := by
-  classical
-  have hsum : ∑ p ∈ s, Finsupp.single p (β p) = β := by
-    ext q
-    rw [Finsupp.finset_sum_apply]
-    simp only [Finsupp.single_apply, Finset.sum_ite_eq', Finset.sum_ite_eq]
-    split_ifs with hq
-    · rfl
-    · by_contra hne
-      exact hq (hs (Finsupp.mem_support_iff.mpr fun h' => hne h'.symm))
-  have key := itD_co R hi hR s β 0 x
-  simp only [co_zero h, zero_add, hsum] at key
-  rw [key]
-  congr 1
-  exact Finset.prod_congr rfl fun p _ => by simp [Nat.one_ascFactorial]
 
 end Iter
 
@@ -556,18 +462,6 @@ theorem hasseOp_single (p : Idx D j N) (x : Op X la N) : hasseOp X la N (Finsupp
 
 theorem hasseOp_zero (x : Op X la N) : hasseOp X la N 0 x = x := Tay.co_zero (tayOp_isTay X la N) x
 
-theorem hasseOp_mul (β : Idx D j N →₀ ℕ) (x y : Op X la N) : hasseOp X la N β (x * y) =
-    ∑ q ∈ antidiagonal β, hasseOp X la N q.1 x * hasseOp X la N q.2 y := Tay.co_mul (tayOp X la N) β x y
-
-theorem pdOp_hasseOp (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Op X la N) :
-    pdOp X la N p (hasseOp X la N β x) = (β p + 1) • hasseOp X la N (β + Finsupp.single p 1) x := Tay.dv_co (tayOp_iterAt X la N) p β x
-
-theorem pdOp_algebraMap (p : Idx D j N) (f : Pol X la N) :
-    pdOp X la N p (algebraMap (Pol X la N) (Op X la N) f) =
-      algebraMap (Pol X la N) (Op X la N) (MvPolynomial.pderiv p f) := by
-  rw [pdOp, Tay.der_apply, tayOp, Tay.loc_dv]
-  exact congrArg _ (DFunLike.congr_fun (Tay.pol_der (Idx D j N) (X.Ol la) p) f)
-
 theorem tayOp_Tv (q : Idx D j N) : tayOp X la N (Tv X la N q) = MvPowerSeries.C (Tv X la N q) + MvPowerSeries.X q := by
   show tayOp X la N (algebraMap (Pol X la N) (Op X la N) (MvPolynomial.X q)) = _
   rw [tayOp, Tay.loc_algebraMap, tayPol, Tay.pol_X, map_add, MvPowerSeries.map_C, MvPowerSeries.map_X] <;> rfl
@@ -589,23 +483,9 @@ theorem pdOp_Tv (p q : Idx D j N) : pdOp X la N p (Tv X la N q) = if p = q then 
 
 theorem hasseKp_single (p : Idx D j N) (x : Kp X la N) : hasseKp X la N (Finsupp.single p 1) x = pdKp X la N p x := rfl
 
-theorem hasseKp_zero (x : Kp X la N) : hasseKp X la N 0 x = x := Tay.co_zero (tayKp_isTay X la N) x
-
-theorem hasseKp_mul (β : Idx D j N →₀ ℕ) (x y : Kp X la N) : hasseKp X la N β (x * y) =
-    ∑ q ∈ antidiagonal β, hasseKp X la N q.1 x * hasseKp X la N q.2 y := Tay.co_mul (tayKp X la N) β x y
-
-theorem pdKp_hasseKp (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Kp X la N) :
-    pdKp X la N p (hasseKp X la N β x) = (β p + 1) • hasseKp X la N (β + Finsupp.single p 1) x := Tay.dv_co (tayKp_iterAt X la N) p β x
-
 theorem hasseKp_algebraMap (β : Idx D j N →₀ ℕ) (x : Op X la N) :
     hasseKp X la N β (algebraMap (Op X la N) (Kp X la N) x) =
       algebraMap (Op X la N) (Kp X la N) (hasseOp X la N β x) := Tay.loc_co (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) β x
-
-theorem pdKp_algebraMap (p : Idx D j N) (x : Op X la N) :
-    pdKp X la N p (algebraMap (Op X la N) (Kp X la N) x) = algebraMap (Op X la N) (Kp X la N) (pdOp X la N p x) := Tay.loc_dv (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N) p x
-
-theorem hasseKp_algebraMap_Kl {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (c : X.Kl la) :
-    hasseKp X la N β (algebraMap (X.Kl la) (Kp X la N) c) = 0 := (tayKp_isCst X la N c).co hβ
 
 theorem hasseRp_single (p : Idx D j N) (x : Rp X la N) : hasseRp X la N (Finsupp.single p 1) x = pdRp X la N p x := rfl
 
@@ -614,17 +494,9 @@ theorem hasseRp_zero (x : Rp X la N) : hasseRp X la N 0 x = x := Tay.co_zero (ta
 theorem hasseRp_mul (β : Idx D j N →₀ ℕ) (x y : Rp X la N) : hasseRp X la N β (x * y) =
     ∑ q ∈ antidiagonal β, hasseRp X la N q.1 x * hasseRp X la N q.2 y := Tay.co_mul (tayRp X la N) β x y
 
-theorem pdRp_hasseRp (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Rp X la N) :
-    pdRp X la N p (hasseRp X la N β x) = (β p + 1) • hasseRp X la N (β + Finsupp.single p 1) x := Tay.dv_co (tayRp_iterAt X la N) p β x
-
 theorem hasseRp_tmul (β : Idx D j N →₀ ℕ) (k : Kp X la N) (v : X.Vl la) :
     hasseRp X la N β (k ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) =
       (hasseKp X la N β k ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) := Tay.tens_co_tmul (X.Kl la) (X.Vl la) (tayKp X la N) (tayKp_isCst X la N) β k v
-
-theorem hasseRp_eq_rTensor (β : Idx D j N →₀ ℕ) :
-    hasseRp X la N β = LinearMap.rTensor (X.Vl la) (hasseKp X la N β) := by
-  refine TensorProduct.ext' fun k v => ?_
-  exact hasseRp_tmul X la β k v
 
 theorem hasseRp_smul_bcV (β : Idx D j N →₀ ℕ) (k : Kp X la N) (v : X.Vl la) :
     hasseRp X la N β (k • bcV X la N v) = hasseKp X la N β k • bcV X la N v := by
@@ -662,9 +534,6 @@ theorem hasseRp_emb {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (F : X.Forms) :
   rw [show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]
   exact hasseRp_bcV X la hβ _
 
-theorem hasseRp_bcV_mul (β : Idx D j N →₀ ℕ) (v : X.Vl la) (x : Rp X la N) :
-    hasseRp X la N β (bcV X la N v * x) = bcV X la N v * hasseRp X la N β x := (tayRp_isCst_bcV X la N v).co_mul β x
-
 theorem pdRp_bcV (p : Idx D j N) (v : X.Vl la) : pdRp X la N p (bcV X la N v) = 0 := (tayRp_isCst_bcV X la N v).dv p
 
 theorem pdRp_emb (p : Idx D j N) (F : X.Forms) : pdRp X la N p (emb X la N F) = 0 := by
@@ -682,12 +551,6 @@ variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ}
 theorem tayRp_isCst_emb (F : X.Forms) : Tay.IsCst (tayRp X la N) (emb X la N F) := by
   rw [show emb X la N F = bcV X la N ((1 : X.Kl la) ⊗ₜ[B.KO] F) from rfl]
   exact tayRp_isCst_bcV X la N _
-
-theorem hasseRp_smul_Op (β : Idx D j N →₀ ℕ) (a : Op X la N) (x : Rp X la N) : hasseRp X la N β (a • x) =
-    ∑ q ∈ antidiagonal β, hasseOp X la N q.1 a • hasseRp X la N q.2 x := by
-  rw [← algebraMap_smul (Kp X la N) a x, hasseRp_smul]
-  refine Finset.sum_congr rfl fun q _ => ?_
-  rw [hasseKp_algebraMap, algebraMap_smul]
 
 theorem hasseRp_of_isCst {t : Rp X la N} (ht : Tay.IsCst (tayRp X la N) t) (β : Idx D j N →₀ ℕ) :
     hasseRp X la N β t = if β = 0 then t else 0 := by
@@ -708,21 +571,6 @@ theorem hasseRp_mem_span_Kp {T : Set (Rp X la N)} (hT : ∀ t ∈ T, Tay.IsCst (
   | add x y _ _ hx hy => rw [map_add]; exact add_mem (hx β) (hy β)
   | smul k x _ hx =>
     rw [hasseRp_smul]
-    exact Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (hx q.2)
-
-theorem hasseRp_mem_span_Op {T : Set (Rp X la N)} (hT : ∀ t ∈ T, Tay.IsCst (tayRp X la N) t) {x : Rp X la N}
-    (hx : x ∈ Submodule.span (Op X la N) T) (β : Idx D j N →₀ ℕ) :
-    hasseRp X la N β x ∈ Submodule.span (Op X la N) T := by
-  induction hx using Submodule.span_induction generalizing β with
-  | mem t ht =>
-    rw [hasseRp_of_isCst X la (hT t ht)]
-    split_ifs
-    · exact Submodule.subset_span ht
-    · exact zero_mem _
-  | zero => rw [map_zero]; exact zero_mem _
-  | add x y _ _ hx hy => rw [map_add]; exact add_mem (hx β) (hy β)
-  | smul k x _ hx =>
-    rw [hasseRp_smul_Op]
     exact Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (hx q.2)
 
 theorem hasseRp_mem_Vw {u : WeightFamilies.Wt D j} {x : Rp X la N} (hx : x ∈ Vw X la N u) (β : Idx D j N →₀ ℕ) :
@@ -773,13 +621,8 @@ theorem hasse_single (p : Idx D j N) (x : Lc X la w) : hasse X la w (Finsupp.sin
 
 theorem hasse_zero (x : Lc X la w) : hasse X la w 0 x = x := Tay.co_zero (tayLc_isTay X la w) x
 
-theorem hasse_zero' : hasse X la w 0 = LinearMap.id := LinearMap.ext (hasse_zero X la w)
-
 theorem hasse_mul (β : Idx D j N →₀ ℕ) (x y : Lc X la w) : hasse X la w β (x * y) =
     ∑ q ∈ antidiagonal β, hasse X la w q.1 x * hasse X la w q.2 y := Tay.co_mul (tayLc X la w) β x y
-
-theorem pdLc_hasse (p : Idx D j N) (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
-    pdLc X la w p (hasse X la w β x) = (β p + 1) • hasse X la w (β + Finsupp.single p 1) x := Tay.dv_co (tayLc_iterAt X la w) p β x
 
 theorem pdLc_comm (p q : Idx D j N) (x : Lc X la w) :
     pdLc X la w p (pdLc X la w q x) = pdLc X la w q (pdLc X la w p x) := Tay.dv_comm (tayLc_iterAt X la w) p q x
@@ -790,17 +633,9 @@ theorem hasse_algebraMap (β : Idx D j N →₀ ℕ) (x : Rp X la N) :
 theorem pdLc_algebraMap (p : Idx D j N) (x : Rp X la N) :
     pdLc X la w p (algebraMap (Rp X la N) (Lc X la w) x) = algebraMap (Rp X la N) (Lc X la w) (pdRp X la N p x) := Tay.loc_dv (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N) p x
 
-theorem hasse_bcV {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (v : X.Vl la) :
-    hasse X la w β (algebraMap (Rp X la N) (Lc X la w) (bcV X la N v)) = 0 := by
-  rw [hasse_algebraMap, hasseRp_bcV X la hβ, map_zero]
-
 theorem hasse_emb {β : Idx D j N →₀ ℕ} (hβ : β ≠ 0) (F : X.Forms) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) (emb X la N F)) = 0 := by
   rw [hasse_algebraMap, hasseRp_emb X la hβ, map_zero]
-
-theorem pdLc_emb (p : Idx D j N) (F : X.Forms) :
-    pdLc X la w p (algebraMap (Rp X la N) (Lc X la w) (emb X la N F)) = 0 := by
-  rw [pdLc_algebraMap, pdRp_emb, map_zero]
 
 theorem hasse_bcV_mul (β : Idx D j N →₀ ℕ) (v : X.Vl la) (x : Lc X la w) :
     hasse X la w β (algebraMap (Rp X la N) (Lc X la w) (bcV X la N v) * x) =
@@ -841,36 +676,10 @@ theorem iterPd_eq (β : Idx D j N →₀ ℕ) : iterPd X la w β =
       Module.End (X.Kl la) (Lc X la w)) ^ β p)
       (fun p _ q _ _ => Commute.pow_pow (LinearMap.ext fun x => pdLc_comm X la w p q x) _ _) := rfl
 
-theorem iterPd_apply (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
-    iterPd X la w β x = (∏ p, (β p).factorial) • hasse X la w β x := Tay.itD_apply (X.Kl la) (tayLc_isTay X la w) (tayLc_iterAt X la w) (tayLc_isCst X la w)
-    Finset.univ β (Finset.subset_univ _) x
-
 theorem Kl_charZero : CharZero (X.Kl la) := by
   first
     | infer_instance
     | exact charZero_of_injective_algebraMap (algebraMap B.KO (X.Kl la)).injective
-
-theorem hasse_eq (β : Idx D j N →₀ ℕ) (x : Lc X la w) :
-    hasse X la w β x = ((∏ p, (β p).factorial : ℕ) : X.Kl la)⁻¹ • iterPd X la w β x := by
-  haveI := Kl_charZero X la
-  rw [iterPd_apply, ← Nat.cast_smul_eq_nsmul (X.Kl la), smul_smul, inv_mul_cancel₀, one_smul]
-  exact Nat.cast_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun p _ => Nat.factorial_ne_zero (β p))
-
-end
-
-section
-variable (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
-
-theorem pdLc_mk' (p : Idx D j N) (x : Rp X la N) (s : Submonoid.powers (sec X la w 0)) :
-    algebraMap (Rp X la N) (Lc X la w) (s * s) * pdLc X la w p (IsLocalization.mk' (Lc X la w) x s) =
-      algebraMap (Rp X la N) (Lc X la w) (s * pdRp X la N p x - x * pdRp X la N p s) := by
-  have h1 : algebraMap (Rp X la N) (Lc X la w) s * IsLocalization.mk' (Lc X la w) x s =
-      algebraMap (Rp X la N) (Lc X la w) x := IsLocalization.mk'_spec' _ _ _
-  have h2 := congrArg (fun z => pdLc X la w p z) h1
-  simp only [Derivation.leibniz, pdLc_algebraMap, smul_eq_mul] at h2
-  simp only [map_mul, map_sub, Submonoid.coe_mul]
-  linear_combination (algebraMap (Rp X la N) (Lc X la w) s) * h2 -
-    (algebraMap (Rp X la N) (Lc X la w) (pdRp X la N p s)) * h1
 
 end
 

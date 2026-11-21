@@ -1,6 +1,8 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.CoverLowOfCov
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamExistsHodgeTateEigenbasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateNoTwistedInvariantsComplexPadicStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateNoTwistedInvariantsComplexPadic
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemClosureOfJumps
 import Formalism.LocalToGlobal.CyclotomicLocalNorms.AddValuationAlgebraMapPadicIntUnitEqZero
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
@@ -195,7 +197,7 @@ theorem UpperTheory.Gal.G3.jJumpOfHT2 :
   obtain ⟨i, hi⟩ := hc0
   have hki : k i = a := by
     by_contra hne
-    exact hi (GlobalTheory.T.tate_no_twisted_invariants_complexPadic l P AI hT K'' (k i - a) (sub_ne_zero.2 hne) (c i) fun g =>
+    exact hi (_root_.GlobalTheory.TateChiQ.tate_chiQ l P AI hT K'' (k i - a) (sub_ne_zero.2 hne) (c i) fun g =>
       UpperTheory.Gal.G3.chi_solve _ _ _ _ _ (hcoord g g.2 i))
   rw [← hJm, ← hki]
   exact Multiset.mem_map_of_mem k (Finset.mem_univ_val i)

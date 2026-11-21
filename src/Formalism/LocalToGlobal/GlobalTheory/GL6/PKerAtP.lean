@@ -67,43 +67,6 @@ theorem exists_smul_eq_smul_of_mem_ideal_smul {W : Type} [AddCommGroup W] [Modul
   obtain ⟨y, hy, e⟩ := h M x hx
   exact ⟨s, hs, y, hy, e⟩
 
-theorem unr_sup_le {n : ℕ} (A : AtTTied u) (v : (D.mem u).A.vT) (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
-    (z z' : Fin n → D.host.E) (hzz : ∃ t : 𝓞 D.host.E, t ∉ A.Pv v ∧ t • (z - z') ∈ A.Pv v • L) :
-    Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (L ⊔ Submodule.span (𝓞 D.host.E) {(((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • z}) ≤
-      Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (L ⊔ Submodule.span (𝓞 D.host.E) {(((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • z'}) := by
-  obtain ⟨t, ht, htz⟩ := hzz
-  obtain ⟨s, hs, y, hy, e⟩ := exists_smul_eq_smul_of_mem_ideal_smul A v L _ htz
-  have hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0 := Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero
-
-  have key : (s * t) • ((((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • z) =
-      (s * t) • ((((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • z') + y := by
-    have e' : (s * t) • (z - z') = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y := by rw [mul_smul, e]
-    have e2 : (s * t) • z = (s * t) • z' + (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y := by
-      rw [← e', smul_sub]; abel
-    have e3 : (((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y) = y := by
-      rw [show ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y) = (((D.mem u).A.T : ℕ) : D.host.E) • y from
-        (Nat.cast_smul_eq_nsmul (𝓞 D.host.E) _ y).trans (Nat.cast_smul_eq_nsmul D.host.E _ y).symm]
-      rw [smul_smul, inv_mul_cancel₀ hT0, one_smul]
-    rw [smul_comm (s * t) ((((D.mem u).A.T : ℕ) : D.host.E)⁻¹) z, e2, smul_add, e3,
-      smul_comm ((((D.mem u).A.T : ℕ) : D.host.E)⁻¹) (s * t) z']
-  intro x hx
-  obtain ⟨r, hr, hrx⟩ := (rlv_mem_locP _ _ _).1 hx
-  obtain ⟨l, hl, w, hw, ex⟩ := Submodule.mem_sup.1 hrx
-  obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hw
-  refine (rlv_mem_locP _ _ _).2 ⟨s * t * r, ?_, ?_⟩
-  · exact fun h => (Ideal.IsPrime.mem_or_mem inferInstance h).elim
-      (fun h' => (Ideal.IsPrime.mem_or_mem inferInstance h').elim hs ht) hr
-  · rw [mul_smul, ← ex, smul_add, smul_comm (s * t) a, key, smul_add]
-    refine Submodule.add_mem _ (Submodule.mem_sup_left (L.smul_mem _ hl)) ?_
-    refine Submodule.add_mem _ ?_ (Submodule.mem_sup_left (L.smul_mem _ hy))
-    refine Submodule.mem_sup_right ?_
-    rw [smul_comm a (s * t)]
-    exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))
-
-def TLdInt (D : D7) (u : D.what₂.Word) : Prop :=
-  ∀ i (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i), ∀ y ∈ Ld D u i hi c,
-    (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y ∈ clsCrd D u i hi c
-
 end Unr
 
 section TLd
@@ -139,14 +102,6 @@ theorem tld_isLat (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
   exact K.isLat_lat (D.clsLat_lat u i c)
 
 end TLd
-
-section TLdLoc
-
-open Matrix Formalism.UG
-
-variable {D : D7} {u : D.what₂.Word}
-
-end TLdLoc
 
 section SFGen
 

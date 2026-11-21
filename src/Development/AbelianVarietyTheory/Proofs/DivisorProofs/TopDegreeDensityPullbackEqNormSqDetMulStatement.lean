@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDegreeDensityPullbackEqNormSqDetMul
-import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
+
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ComplexConjugate
 set_option maxHeartbeats 1000000 in

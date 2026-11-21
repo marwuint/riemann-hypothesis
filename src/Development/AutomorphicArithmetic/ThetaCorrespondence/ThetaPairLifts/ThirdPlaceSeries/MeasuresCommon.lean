@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsGeometricMeasureVolume
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TrueW
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
@@ -26,10 +26,10 @@ theorem measures_common_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} 
   have hm2 := D.R.two_le_m
   haveI : ∀ V : HSp D, SecondCountableTopology (GA D V) := fun V =>
     (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1
-  choose μf hμf using fun j => (GlobalTheory.T.exists_haar_finitePoints_fourierJacobi_bessel D (Yc D j)).1
-  obtain ⟨μT, hμT⟩ := (GlobalTheory.T.exists_haar_finitePoints_fourierJacobi_bessel D D.sp.X').1
-  choose ρJ hρJ using fun j ρ h => ((GlobalTheory.T.exists_haar_finitePoints_fourierJacobi_bessel D (Yc D (j + 1))).2 _ _ (y.jac j ρ h).d).1
-  choose ρB hρB using fun j ρ h => ((GlobalTheory.T.exists_haar_finitePoints_fourierJacobi_bessel D (Yc D j)).2 _ _ (y.bes j ρ h).d).2 _ _ (y.bes j ρ h).o
+  choose μf hμf using fun j => (_root_.GlobalTheory.HaarExist.haar_exists D (Yc D j)).1
+  obtain ⟨μT, hμT⟩ := (_root_.GlobalTheory.HaarExist.haar_exists D D.sp.X').1
+  choose ρJ hρJ using fun j ρ h => ((_root_.GlobalTheory.HaarExist.haar_exists D (Yc D (j + 1))).2 _ _ (y.jac j ρ h).d).1
+  choose ρB hρB using fun j ρ h => ((_root_.GlobalTheory.HaarExist.haar_exists D (Yc D j)).2 _ _ (y.bes j ρ h).d).2 _ _ (y.bes j ρ h).o
   have hc : ∀ k, ∃ ν₀ : Measure (GA D (Yc D k)), ν₀.IsHaarMeasure ∧ (k < D.R.m → ∀ t,
       μf k {g | Lev.finE (Yc D k) g.1 ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D k).gram ((_root_.GlobalTheory.Fam.pk_z W).βY k) ((_root_.GlobalTheory.Fam.pk_z W).datYt t k (_root_.GlobalTheory.Fam.pk_z W).triv)} ≠ 0 ∧
       μf k {g | Lev.finE (Yc D k) g.1 ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D k).gram ((_root_.GlobalTheory.Fam.pk_z W).βY k) ((_root_.GlobalTheory.Fam.pk_z W).datYt t k (_root_.GlobalTheory.Fam.pk_z W).triv)} ≠ ⊤ ∧
@@ -54,7 +54,7 @@ theorem measures_common_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} 
     (fun _ m => m.IsHaarMeasure ∧ IsProbabilityMeasure m) (fun _ _ h => h.1) μT hμT (fun t => (_root_.GlobalTheory.Fam.pk_z W).νX t)
     (fun t => (hM.νX t).1)
   have hLH : ∀ j (h : j + 2 * 0 + 2 = D.R.m), (Measure.map (y.jac j 0 h).d.emb0 (a.x (j + 1)).vol.μ).IsHaarMeasure :=
-    fun j h => GlobalTheory.T.isHaarMeasure_map_emb0_of_rank_zero_decomposition D _ _ _ _ (a.x (j + 1)).vol.haar
+    fun j h => _root_.GlobalTheory.HaarEmb.map_wittEmbedding_zero_rank_isHaarMeasure D _ _ _ _ (a.x (j + 1)).vol.haar
   let vS : ∀ j, Vol (Yc D (j + 1)) := fun j => if h : j + 2 * 0 + 2 = D.R.m then volOf _ (hLH j h)
     else volOf (ν₀ (j + 1)) (hν₀H (j + 1))
   have hvS1 : ∀ j (h : j + 2 * 0 + 2 = D.R.m), (vS j).μ = Measure.map (y.jac j 0 h).d.emb0 (a.x (j + 1)).vol.μ := by

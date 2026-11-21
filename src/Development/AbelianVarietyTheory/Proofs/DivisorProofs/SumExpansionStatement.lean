@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SumExpSt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumExactExponentsSmulMemLocalizedCoeffLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumExactExponentsSmulMemLocalizedCoeffLattice
+import Formalism.PieriBlockIdeals.StatementLA
+import Formalism.LocalToGlobal.Divisibility.CoefMod
+import Formalism.LocalToGlobal.Divisibility.RowLat
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SplitOffBadOfSuppSplitOff
 import Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightShiftEqDetMul
 import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
@@ -120,12 +123,10 @@ theorem lIncl_sumExp (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what
   rw [hJ]
   refine cutLat_locIncl (blk p j t).S _ w.asIdeal _ (fun c => ?_) z hz
   refine locIncl_of_equiv e w.asIdeal _ _ _ _ _ (hNab c) (hDel c) ?_
-  exact GlobalTheory.T.sum_exactExponents_smul_mem_localizedCoeffLattice _ _ _ _ _ _ _ (GlobalTheory.RepsCompare.isLattice_hLat _ _) w
+  exact _root_.GlobalTheory.OntoExponentsLat.exZ_sum_smul_mem_locP_delAtr _ _ _ _ _ _ _ (GlobalTheory.RepsCompare.isLattice_hLat _ _) w
 
 end Point
 
-theorem sumExpSt : SumExpSt :=
-  ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => EvPt.of_forall fun _ _ _ p _ _ j P W hD _ t w => lIncl_sumExp p j P W hD t w⟩⟩
 end GlobalTheory.ExpTie
 
 end

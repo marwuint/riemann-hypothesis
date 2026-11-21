@@ -50,10 +50,6 @@ theorem Mmat_map (u : Fin 2 → Fin r → E) (β : Matrix (Fin 2) (Fin 2) E) (τ
     simp [h, Matrix.map_apply, Data.Mmat, Data.zmat, Data.embH, Data.emb, map_add, map_mul, map_sum,
       X.tau_kappa0 τ, cc, NumberField.IsCMField.complexEmbedding_complexConj] <;> ring
 
-theorem embH_add (β β' : Matrix (Fin 2) (Fin 2) E) : X.embH (β + β') = X.embH β + X.embH β' := by
-  funext τ i k
-  simp [Data.embH]
-
 theorem Mmat_zero (u : Fin 2 → Fin r → E) : X.Mmat u 0 = 1 := by
   ext a j
   simp [Data.Mmat, Matrix.one_apply]
@@ -106,11 +102,6 @@ noncomputable def gam (u : Fin 2 → Fin r → E) (hu : ∀ i k, herm X.Gm (u i)
     (β : Matrix (Fin 2) (Fin 2) E) : GL (Fin r) E :=
   ⟨X.Mmat u β, X.Mmat u (-β), by rw [X.Mmat_mul u hu, add_neg_cancel, Mmat_zero],
     by rw [X.Mmat_mul u hu, neg_add_cancel, Mmat_zero]⟩
-
-theorem emb_mulVec (τ : E →+* ℂ) (M : Matrix (Fin r) (Fin r) E) (v : Fin r → E) :
-    emb τ (M *ᵥ v) = (M.map τ) *ᵥ emb τ v := by
-  funext a
-  simp [Data.emb, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]
 
 private lemma cc_herm_Gm_eq_herm_swap (x y : Fin r → E) : cc (herm X.Gm x y) = herm X.Gm y x := by
   simp only [herm, cc, map_sum, map_mul, NumberField.IsCMField.complexConj_apply_apply]

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyBaseChangeIffAndDegreeEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyCompAndDegreeMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyBaseChangeIffAndDegreeEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyCompAndDegreeMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankMulEq
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteAndFlatMulAbelianScheme
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FlatAndSurjectiveOfIsFiniteAbelianEnd
@@ -41,7 +41,7 @@ theorem natCast_algClosed (k : Type) [Field k] [IsAlgClosed k] (A : AbVar k) (n 
 theorem natCast (K : Type) [Field K] (A : AbVar K) (n : ℕ) (hn : n ≠ 0) :
     IsIsogeny ((n : ℤ) • 𝟙 A) ∧ deg ((n : ℤ) • 𝟙 A) = n ^ (2 * A.dim) := by
   obtain ⟨h1, h2⟩ := natCast_algClosed (AlgebraicClosure K) (baseChange (AlgebraicClosure K) A) n hn
-  obtain ⟨e1, e2⟩ := GlobalTheory.T.isogeny_baseChange_iff_and_degree_eq K (AlgebraicClosure K) A A ((n : ℤ) • 𝟙 A)
+  obtain ⟨e1, e2⟩ := _root_.GlobalTheory.AV.AbVar.isIsogeny_bcMap_iff_and_deg_bcMap K (AlgebraicClosure K) A A ((n : ℤ) • 𝟙 A)
   rw [bcMap_natCast_smul_id] at e1 e2
   exact ⟨e1.1 h1, e2.symm.trans h2⟩
 
@@ -65,7 +65,7 @@ theorem mul_isogeny : ∀ (K : Type) [Field K] (A : AbVar K) (n : ℤ), n ≠ 0 
       rw [Preadditive.comp_neg, Category.comp_id, ← neg_smul, ← h]
     obtain ⟨h1, h2⟩ := natCast K A n.natAbs (Int.natAbs_ne_zero.2 hn)
     obtain ⟨h3, h4⟩ := neg_one K A
-    obtain ⟨h5, h6⟩ := GlobalTheory.T.isogeny_comp_and_degree_mul K A A A _ _ h1 h3
+    obtain ⟨h5, h6⟩ := _root_.GlobalTheory.AV.AbVar.isIsogeny_comp_and_deg_comp K A A A _ _ h1 h3
     rw [e]
     exact ⟨h5, by rw [h6, h2, h4, _root_.mul_one]⟩
 

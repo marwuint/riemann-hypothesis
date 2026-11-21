@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentativesStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EvenOrderNormsOneAddFourMulOfNoRootStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EvenOrderNormsOneAddFourMulOfNoRoot
 
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
@@ -28,7 +28,7 @@ theorem exists_not_mem_sq_add_sub (F : Type) [Field F] [NumberField F]
 
 theorem exists_evenNorms_unit : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)), ∃ Δ : v.adicCompletion F, EvenNorms Valued.v Δ ∧ Valued.v Δ = 1 ∧ Valued.v (Δ - 1) ≤ Valued.v (4 : v.adicCompletion F) := by
   intro F _ _ v
-  obtain ⟨_, hval, hrep, -⟩ := GlobalTheory.T.exists_global_uniformizer_residue_representatives F v
+  obtain ⟨_, hval, hrep, -⟩ := _root_.GlobalTheory.QNorm.exists_uniformizer_and_residue_representatives F v
   obtain ⟨ρ, hρ⟩ := exists_not_mem_sq_add_sub F v
   set r : v.adicCompletion F := algebraMap F (v.adicCompletion F) (ρ : F) with hr
   have h2 : (2 : v.adicCompletion F) ≠ 0 := by
@@ -55,7 +55,7 @@ theorem exists_evenNorms_unit : ∀ (F : Type) [Field F] [NumberField F] (v : He
       exact lt_of_le_of_lt (mul_le_of_le_one_right' h3) ha
     have e : x ^ 2 + x - r = (x - b) * (x + b + 1) + (b ^ 2 + b - r) := by ring
     rw [e, Valuation.map_add_eq_of_lt_right _ hsmall, hab]
-  refine ⟨1 + 4 * r, GlobalTheory.T.evenOrderNorms_one_add_four_mul_of_no_root _ Valued.v r h2 (hint ρ) key, ?_, ?_⟩
+  refine ⟨1 + 4 * r, _root_.GlobalTheory.QNorm.evenNorms_one_add_four_mul _ Valued.v r h2 (hint ρ) key, ?_, ?_⟩
   · have h2le : Valued.v (2 : v.adicCompletion F) ≤ 1 := by
       rw [← one_add_one_eq_two]
       exact Valuation.map_add_le _ (by simp) (by simp)

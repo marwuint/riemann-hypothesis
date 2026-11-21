@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LePreimageOfCompEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteModificationIntegralElementsRegularStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteModificationIntegralElementsRegular
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtLIPreimageMono
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorizationThroughFiniteModificationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreSectionsInjectiveFlatIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorizationThroughFiniteModification
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreSectionsInjectiveFlatIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPreimageOfLocalPreimagesInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAffineChartCoverOverModificationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAffineChartCoverOverModification
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPulledBackPowerSectionOfLocalLiftsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumMulPulledBackFunctionsGenericFibreEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumMulPulledBackFunctionsGenericFibreEq
 
 noncomputable section
 
@@ -41,7 +41,7 @@ private theorem secK_extend_locInt {X X' Y Z : Scheme.{0}} (L : LB X) (f : X' �
 
 theorem extend_locInt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R] (M : Modif R) (G : Over M.S), Smooth G.hom → QuasiCompact G.hom → GeometricallyIrreducible G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)) (hpb : IsPullback α t G.hom M.gp) (I : Type) [Finite I] (k : I → ℕ) (s : ∀ i, SecK L α (k i)), (∀ i, LocInt M G L α t hpb.w (s i)) → ∃ (M' : Modif R) (h : M'.S ⟶ M.S), IsFinite h ∧ M'.gp ≫ h = M.gp ∧ h ≫ M.π = M'.π ∧ ∀ i, ∃ σ : SecK L (pullback.fst G.hom h) (k i), Agree L σ (s i) := by
   intro R _ _ _ _ _ M G hsm hqc hgi L hL Y α t hpb I _ k s hs
-  obtain ⟨n, j, W, U, hcov, hWj, hWU, hWaff, hUaff⟩ := GlobalTheory.T.exists_finite_affine_chart_cover_over_modification R M G hqc L hL
+  obtain ⟨n, j, W, U, hcov, hWj, hWU, hWaff, hUaff⟩ := _root_.GlobalTheory.Mum.exists_finite_affine_chart_cover R M G hqc L hL
   have key : ∀ (i : I) (b : Fin n), ∃ (nn : ℕ) (c : Fin nn → Γ(G.left, W b))
       (bb : Fin nn → Γ(Sp (FractionRing R), M.gp ⁻¹ᵁ U b)),
       (∀ m, (M.gp.app (U b)).hom.IsIntegralElem (bb m)) ∧
@@ -52,7 +52,7 @@ theorem extend_locInt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
   choose nn c bb hint heq using key
   let Ix := Σ (p : I × Fin n), Fin (nn p.1 p.2)
   let e : Ix ≃ Fin (Nat.card Ix) := Finite.equivFin Ix
-  obtain ⟨M', h, hgp, hfin, hπ, hlift⟩ := GlobalTheory.T.exists_finiteModification_integral_elements_regular R M (Nat.card Ix) (fun q => U (e.symm q).1.2)
+  obtain ⟨M', h, hgp, hfin, hπ, hlift⟩ := _root_.GlobalTheory.Mum.finiteModif_regular R M (Nat.card Ix) (fun q => U (e.symm q).1.2)
     (fun q => bb (e.symm q).1.1 (e.symm q).1.2 (e.symm q).2) (fun q => hUaff _) (fun q => hint _ _ _)
   have hlift' : ∀ x : Ix, ∃ cc : Γ(M'.S, h ⁻¹ᵁ U x.1.2),
       (M'.gp.appLE (h ⁻¹ᵁ U x.1.2) (M.gp ⁻¹ᵁ U x.1.2) (le_preimage_of_comp_eq M.gp M'.gp h hgp (U x.1.2))).hom cc =
@@ -74,11 +74,11 @@ theorem extend_locInt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
   haveI := hsm
   haveI : Flat G.hom := inferInstance
   have hflat : Flat (pullback.snd G.hom h) := inferInstance
-  have hinj := GlobalTheory.T.genericFibre_sections_injective_flat_integral (FractionRing R) (pullback.snd G.hom h) M'.gp l t hpb' hflat M'.integral M'.dominant
+  have hinj := _root_.GlobalTheory.Mum.genFib_app_injective (FractionRing R) (pullback.snd G.hom h) M'.gp l t hpb' hflat M'.integral M'.dominant
   obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_pulledBackPowerSection_of_local_lifts L (pullback.fst G.hom h) l α hl1 (k i) hinj (s i) n j
     (fun b => pullback.fst G.hom h ⁻¹ᵁ W b) ((pullback.fst G.hom h).iSup_preimage_eq_top hcov)
     (fun b => extLI_preimage_mono _ (hWj b)) (fun b => by
-      obtain ⟨y, hy⟩ := GlobalTheory.T.sum_mul_pulledBack_functions_genericFibre_eq G.hom h M.gp M'.gp hgp (pullback.fst G.hom h) (pullback.snd G.hom h)
+      obtain ⟨y, hy⟩ := _root_.GlobalTheory.Mum.exists_app_eq_sum_mul_of_comm G.hom h M.gp M'.gp hgp (pullback.fst G.hom h) (pullback.snd G.hom h)
         pullback.condition α t hpb.w l hl1 hl2 (W b) (U b) (hWU b) (nn i b) (c i b) (bb i b)
         (fun m => cc ⟨(i, b), m⟩) (fun m => hcc ⟨(i, b), m⟩)
       refine ⟨y, hy.trans ?_⟩
@@ -87,7 +87,7 @@ theorem extend_locInt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
   refine ⟨σ, ?_⟩
   intro Z p p' hp z J hJ
   have hp2 : p ≫ pullback.snd G.hom h = p' ≫ t ≫ M'.gp := by
-    have := GlobalTheory.T.factorization_through_finite_modification R M M' h hfin hgp Z (p ≫ pullback.snd G.hom h) (p' ≫ t) (by
+    have := _root_.GlobalTheory.Mum.finite_modif_eq_gp R M M' h hfin hgp Z (p ≫ pullback.snd G.hom h) (p' ≫ t) (by
       rw [Category.assoc, ← pullback.condition, ← Category.assoc, hp, Category.assoc, hpb.w, Category.assoc])
     rw [this, Category.assoc]
   have hpl : p = p' ≫ l := pullback.hom_ext (by rw [hp, Category.assoc, hl1]) (by rw [hp2, Category.assoc, hl2])

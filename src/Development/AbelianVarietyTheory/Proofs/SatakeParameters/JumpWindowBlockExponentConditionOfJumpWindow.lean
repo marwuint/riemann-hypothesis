@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JumpWindow
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinrankMaxUnramifiedSubfieldPadicFinExtPos
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JumpWindowAndBlockExponentOfEmbeddingsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JumpWindowAndBlockExponentOfEmbeddings
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationLtOneIffNorm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankLeOfSubsetClosureRange
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalFieldUnramified
@@ -41,7 +41,7 @@ theorem jointTB_of_jumpWindow : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc 
     unfold LocalSituation.vdegMs
     rw [hs1, hell]
     exact hv1 m hm
-  have key := GlobalTheory.T.jumpWindow_and_blockExponent_of_embeddings (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs) Y h₁ D.R.nV (4 * D.R.n) D.R.t
+  have key := _root_.GlobalTheory.HubLoc.window_and_cTB_of_jumps_at_embeddings (LocalSituation.sit D.loc HW (D.nd.l i) (D.locA (D.nd.l i)) (D.nbr i w hw).Kw 1 CL hs) Y h₁ D.R.nV (4 * D.R.n) D.R.t
     hs1 hcard hdeg hgK (hvd _ (by unfold LocalSituation.mN; omega)) ht (fun τ => by
       obtain ⟨U, hU1, hU2, hU3⟩ := hJ w hw CL h τ
       exact ⟨U, hU1, hU2, fun a ha => hU3 a (hY τ a ha)⟩)

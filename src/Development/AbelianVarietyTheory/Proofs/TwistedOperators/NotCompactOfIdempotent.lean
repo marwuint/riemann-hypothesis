@@ -300,9 +300,6 @@ theorem _root_.GlobalTheory.RegSS.cT_smul (σ : A →+* A) (c : A) (a : Matrix n
   ext i j
   simp [_root_.Formalism.UG.cT]
 
-theorem cT_cT (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (a : Matrix n n A) : cT σ (cT σ a) = a := by
-  ext i j; simp [cT, hσ]
-
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in

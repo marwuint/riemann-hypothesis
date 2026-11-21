@@ -1,13 +1,20 @@
 import Mathlib
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.Imports
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevEAddTwo
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGlModuleLevelSumNormSqLeStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyEndomorphismsModularStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselCayleySideBoundStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupBesselGrowthStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuotientMeasureAeMemAndMeasurableBesselModelStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.NumericalFamilyShapeGaps
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGlModuleLevelSumNormSqLe
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyEndomorphismsModular
+import Formalism.RealPlaceAnalysis.StatementE
+import Formalism.RealPlaceAnalysis.StatementKT
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselCayleySideBound
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupBesselGrowth
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuotientMeasureAeMemAndMeasurableBesselModel
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
 
 namespace GlobalTheory
@@ -77,16 +84,16 @@ theorem iterate_bound {X M ι : Type} [MeasurableSpace X] [NormedAddCommGroup M]
 
 theorem ratio_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (l : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ) (Q : Mx k r) (E : ∀ ν, Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ (R ν).smSub), SetupG lam u b bv ga h q0 z π μW μN μG νq R l dg → PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) Q → (∀ ν, n1 ν ≤ q0 → (R ν).IsE Q (E ν) ∧ Formalism.REAL.GlRel (E ν)) → ∀ ν, n1 ν ≤ q0 → ∀ (j q : ℕ), j + 2 * q ≤ 4 * (2 * r + k + 1) ^ 2 → ∀ (a : Fin r) (w : (R ν).smSub), Lev (PI.BesselPeriodGGP.eps48 k r) (E ν) (fun a => lam a + ((ν : Fin (2 * r + k + 1) → ℤ) a : ℝ)) j w → ∫⁻ x, ENNReal.ofReal ((lenA k r z (Matrix.of x) a.succ / lenA k r z (Matrix.of x) a.castSucc) ^ (2 * q) * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ ENNReal.ofReal ((b ^ 2) ^ (2 * q) * ‖w‖ ^ 2) := by
   intro hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R l dg Q E hS hQ hE ν hn j q hjq a w hw
-  have h0all := (Gp91.GlobalTheory.T.bessel_functional_l2_bound_and_isometry hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hn).1
+  have h0all := (_root_.Gp91.GlobalTheory.MomMass.mom_mass hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hn).1
   obtain ⟨hnum, hfam, hside, hsf⟩ := hS
   have hk : 1 ≤ k := hnum.1
   have hDG := hfam ν hn
   obtain ⟨hE1, hGl⟩ := hE ν hn
-  have hMod := Gp91.GlobalTheory.T.cayley_endomorphisms_modular hH k r _ _ (R ν) hk hDG Q (E ν) hQ hE1
+  have hMod := _root_.Gp91.GlobalTheory.isMod_smooth_of_isDS hH k r _ _ (R ν) hk hDG Q (E ν) hQ hE1
   obtain ⟨hBeL, hdg, -⟩ := hsf ν hn
   have hKF : PI.KFinSmooth := hH.1.2.2.1
   obtain ⟨hae, -, hlen, hmeas⟩ :=
-    Gp91.GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hKF k r _ _ (R ν) Wp z π u μW μN μG νq hDG hside
+    _root_.Gp91.GlobalTheory.quotMeas_ae_mem_and_measurable hKF k r _ _ (R ν) Wp z π u μW μN μG νq hDG hside
   have hν : ∀ i, |((ν i : ℤ) : ℝ)| ≤ q0 := by
     intro i
     have h1 : (ν i).natAbs ≤ n1 ν :=
@@ -195,7 +202,7 @@ theorem ratio_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup
     exact mul_nonneg hdg.le (sq_nonneg _)
   · filter_upwards [hae] with x hx
     intro v
-    have h1 := Gp91.GlobalTheory.T.bessel_cayley_side_bound hKF k r _ _ (R ν) Wp z π u μW μN μG νq (l ν) Q (E ν) hDG hside
+    have h1 := _root_.Gp91.GlobalTheory.MomentPointwise.pointwise hKF k r _ _ (R ν) Wp z π u μW μN μG νq (l ν) Q (E ν) hDG hside
       hBeL.1 hQ hE1 (Matrix.of x) hx a v
     have h2 := mul_le_mul_of_nonneg_left h1 hdg.le
     simp only [Finset.mul_sum] at h2
@@ -206,7 +213,7 @@ theorem ratio_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup
   · intro j' v hv c e
     exact _root_.GlobalTheory.lev_E_add_two _ _ _ _ _ j' v hGl hMod.2.1 hv c e
   · intro j' v hj' hv
-    have := _root_.GlobalTheory.T.unitaryGlModule_level_sum_norm_sq_le _ _ _ _ _ k j' bv b v hMod hShape hbvb hj' hv
+    have := _root_.GlobalTheory.lev_gl_size _ _ _ _ _ k j' bv b v hMod hShape hbvb hj' hv
     calc _ ≤ b ^ 4 * ‖v‖ ^ 2 := this
       _ = (b ^ 2) ^ 2 * ‖v‖ ^ 2 := by ring
   · intro v

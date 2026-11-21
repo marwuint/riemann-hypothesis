@@ -107,7 +107,7 @@ theorem exists_chart_cm (hc : CMData (maximalRealSubfield E) E)
         ∀ g, (IsFin hc V (ι g) ∧ Stab hc V (ι g)) ↔ g.1 ∈ GLint (Fin V.rank) (intL _) := by
   have hur := unramified hc
   obtain ⟨σ, ϖ, hσE, hU⟩ := GlobalTheory.FixedPrime.exists_isUnramInv v P hin
-  obtain ⟨ψ, hψE, hψσ, hψO⟩ := GlobalTheory.T.exists_ringEquiv_tensor_inert_adicCompletion E v P hin σ hσE hU.2.1
+  obtain ⟨ψ, hψE, hψσ, hψO⟩ := _root_.GlobalTheory.InertCompletion.exists_ringEquiv_completion E v P hin σ hσE hU.2.1
   let ψ' : LocAlg v →+* P.adicCompletion E := ψ
   have hO : ∀ z, z ∈ ordAt E v ↔ ψ' z ∈ intL _ := fun z => (mem_ordAt_iff v z).trans (hψO z)
   let π : AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* P.adicCompletion E :=

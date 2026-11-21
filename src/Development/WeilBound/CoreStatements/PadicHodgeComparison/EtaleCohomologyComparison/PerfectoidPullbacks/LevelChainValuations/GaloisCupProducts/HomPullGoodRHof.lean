@@ -46,16 +46,6 @@ def homPull : Hom (chainOf hL N s hQN rHN) (chainOf hL M s hQM rHM) where
 
 namespace PullbackComparison
 
-def etaPull : (nmS (nmPullB L u hu) 1 s).o.G ⋙ (smB N s hL hQN).o.G ⟶
-      (smB M s hL hQM).o.G ⋙ (nmS (nmPullA L u hu) l s).o.G where
-  app T := ObjectProperty.homMk (mkH (RingHom.id T.obj.B) (fun r => rfl)
-    (DPMorphism.id T.obj.δ).isDPMorphism (fun _ h => h)
-    (Subtype.ext (Prod.ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun a => LevelChangeComparison.qid _ (fun _ h => h) _))
-      ((LevelChangeComparison.spec_qid _ (fun _ h => h) _).trans (by
-        show ((T.obj.y.1.2 ≫ Model.genMap u hu) ≫ pullback.fst _ _ : _ ⟶ N.X) = (T.obj.y.1.2 ≫ pullback.fst _ _) ≫ u
-        simp only [Category.assoc, Model.genMap, pullback.lift_fst])))))
-  naturality _ _ f := ObjectProperty.hom_ext _ (CrystallineSemistableComparison.Pb.hom_ext rfl)
-
 end PullbackComparison
 
 end

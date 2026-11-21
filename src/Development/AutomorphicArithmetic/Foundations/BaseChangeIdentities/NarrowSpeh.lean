@@ -1,5 +1,26 @@
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.Narrow
-import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.DiscreteSpectrumUnitarity.BcSpeh
+import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.TwistedSlicesSquareIntegrable
+import Development.WeilBound.CoreStatements.AutomorphicKernels.ResidualSpectrumHilbertSum.ResidualSpectrumTensors.Development
+import Development.WeilBound.CoreStatements.AutomorphicKernels.ResidualSpectrumHilbertSum.ResidualSpectrumTensors.CuspDiscrete
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsSpehOfOfIsQuotOf
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpehDataUnique
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DiscreteSpectrumOfResidual
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarisableOfIsSpehOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisOfPolarized
+import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsNormalisedOfIsDiscrete
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedThetaSub
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitAtOfIsSplitPl
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParameterSphericalProductSpehQuotients
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseChangeSpehOfDiscreteSeries
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpehShapeIffOfDiscreteSpectrum
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockValAe
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjugateSplitPlaceOffStableSet
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFamilyIffRationalHecke
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DiscreteLeOfClosureClasses
 
 noncomputable section
 
@@ -73,14 +94,14 @@ theorem baseChange_speh_of_discreteSeries (H : AscComp)
       (hm0 i τ) ?_
     rw [hmm i τ, hmm j τ, hd, hasInfChar_eq_of_sigma hs (hm1 i τ) (hm1 j τ)]
   · intro w s ϖ q hs hU α hα
-    exact GlobalTheory.T.satakeParameter_spherical_product_spehQuotients E w c n a d h (ρ · w) (σ · w) (fun i => (hpos i).2) (fun i => hsp i w) _
+    exact _root_.GlobalTheory.SatInd.satake_locProd_speh E w c n a d h (ρ · w) (σ · w) (fun i => (hpos i).2) (fun i => hsp i w) _
       (bc.inert w s ϖ q hs hU α hα)
 
 theorem bcSpeh_of (H2 : AscComp) (H1 : DefiniteN) : BcSpeh := by
   intro E _ _ _ hE n hn π hπ
   obtain ⟨c, N, h, V, σ, m, bc⟩ := H1 E hE n hn π hπ
   choose a d P _ hPn hPc hPs using bc.csd
-  exact baseChange_speh_of_discreteSeries H2 GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary hn hπ bc a d P hPn hPs hPc fun i => (ascEmb_mul_eq (hPs i)).symm
+  exact baseChange_speh_of_discreteSeries H2 _root_.GlobalTheory.DefU.exists_hasWeightAt_of_isAutRepU hn hπ bc a d P hPn hPs hPc fun i => (ascEmb_mul_eq (hPs i)).symm
 
 end UpperTheory.BaseChangeIdentities
 

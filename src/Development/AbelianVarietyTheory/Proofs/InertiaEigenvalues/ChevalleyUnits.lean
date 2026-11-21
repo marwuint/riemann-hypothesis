@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevDegreeOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowDescentCyclotomicStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteGaloisContainsRootsOfUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowDescentCyclotomic
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteGaloisContainsRootsOfUnits
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFrobFixesRootOfOneModPlaceStatement
 
 noncomputable section
@@ -48,7 +48,7 @@ theorem core (E : Type) [Field E] [NumberField E] (l r b : ℕ) (hl : l.Prime) (
   classical
   have hm : 0 < l ^ r := pow_pos hl.pos r
   set m := l ^ r with hmdef
-  obtain ⟨M, hM0, hmM, hD⟩ := GlobalTheory.T.exists_pow_descent_cyclotomic' E l r hl
+  obtain ⟨M, hM0, hmM, hD⟩ := _root_.GlobalTheory.exists_pow_descent_cyclotomic E l r hl
   let Ω := AlgebraicClosure E
   haveI : NeZero (M : Ω) := ⟨by exact_mod_cast hM0.ne'⟩
   obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot Ω M
@@ -61,7 +61,7 @@ theorem core (E : Type) [Field E] [NumberField E] (l r b : ℕ) (hl : l.Prime) (
   let ζK : K := ⟨ζ, IntermediateField.mem_adjoin_simple_self E ζ⟩
   have hζK : IsPrimitiveRoot ζK M :=
     (show IsPrimitiveRoot (algebraMap K Ω ζK) M from hζ).of_map_of_injective (algebraMap K Ω).injective
-  obtain ⟨L, hLfin, hLgal, hLroots⟩ := GlobalTheory.T.exists_finite_galois_contains_roots_of_units E K Ω M hM0 ⟨ζK, hζK⟩
+  obtain ⟨L, hLfin, hLgal, hLroots⟩ := _root_.GlobalTheory.KummerUnits.exists_finite_galois_mem_of_pow_eq_unit E K Ω M hM0 ⟨ζK, hζK⟩
   let S : Set (HeightOneSpectrum (𝓞 K)) := {v | ((M * b : ℕ) : 𝓞 K) ∈ v.asIdeal}
   have hS : S.Finite := by
     have hne : Ideal.span {((M * b : ℕ) : 𝓞 K)} ≠ 0 := by

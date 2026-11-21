@@ -3,12 +3,15 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.LiftFrameEmbeddingB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinIndMapRangeField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JKInvOfTriv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelMapExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralHeckeEigensystemDeligneSerreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralHeckeEigensystemDeligneSerre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuleFiniteFrameLatticeFormsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentFrameFormsBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftFormsToLatticeOfFiniteInvertibleStabilisersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitNatCastFrameCoeffRingNotDvdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylEqBotOfNotAntitoneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftFormsToLatticeOfFiniteInvertibleStabilisers
+import Formalism.SatakeDualWeyl.Statement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitNatCastFrameCoeffRingNotDvd
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylEqBotOfNotAntitone
+import Formalism.GradedWeylDivisibility.StatementA
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds Formalism.CohomologicalDescent.LD Formalism.RankGapBounds.FormsTensorLocalization
 
@@ -41,7 +44,7 @@ theorem loc_subsingleton {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
 
 theorem nabla_zero_of_not_antitone {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (F : Frame l ι N)
     (mu : ι → ℕ → ℕ) (τ0 : ι) (hτ0 : ¬ Antitone (res N (mu τ0))) : ∀ z : NablaT F.O N mu, z = 0 := by
-  have hbot := GlobalTheory.T.dualWeyl_eq_bot_of_not_antitone' F.O N (res N (mu τ0)) hτ0
+  have hbot := _root_.GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone F.O N (res N (mu τ0)) hτ0
   intro z
   induction z using PiTensorProduct.induction_on with
   | smul_tprod r x =>
@@ -99,14 +102,14 @@ theorem ann_lift (hOk : F.Ok) (hJ : F.IsJ lam jK) (hJm : F.IsJ mu jKm)
   have hψs : ∀ (c : F.O) (w : Gm), ψ (c • w) = c • ψ w := by
     intro c w
     rw [← algebraMap_smul (alg F.O N lam) c w, hψc]
-  obtain ⟨Fm, hFm, hFπ⟩ := GlobalTheory.T.lift_forms_to_lattice_of_finite_invertible_stabilisers F.O F.G F.Γ F.K (NablaT F.O N mu)
+  obtain ⟨Fm, hFm, hFπ⟩ := _root_.GlobalTheory.lift_forms_of_card_isUnit F.O F.G F.Γ F.K (NablaT F.O N mu)
       (NablaT F.O N mu ⧸ (Ideal.span {ϖ} • ⊤ : Submodule F.O (NablaT F.O N mu)))
       (repOf F.O (A := alg F.O N mu) jKm (NablaT F.O N mu)) (Submodule.mkQ _) (Submodule.mkQ_surjective _)
       (by
         intro κ x hx
         rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hx ⊢
         exact quot_ker_stable F mu jKm ϖ κ x hx)
-      (fun g => ⟨(hOk.tame g).1, GlobalTheory.T.isUnit_natCast_frameCoeffRing_not_dvd l ι N F hOk _ (hOk.tame g).2⟩)
+      (fun g => ⟨(hOk.tame g).1, _root_.GlobalTheory.ExpFrame.Frame.isUnit_natCast_of_not_dvd l ι N F hOk _ (hOk.tame g).2⟩)
       (fun g => ψ ((y : F.G → Gm) g))
       (by
         intro γ g κ yy hyy
@@ -216,7 +219,7 @@ theorem eig_of_ann (hOk : F.Ok) (hJm : F.IsJ mu jKm) (hHm : F.IsHecke mu jKm (Na
   have h2 := tf_forms F mu jKm hOk b hbi
   have h3 := GlobalTheory.T.linearIndependent_frameForms_baseChange l ι N F mu jKm b hbi hOk hbli
   have h4 := jmap_equiv F mu jKm hHm b
-  have h5 := @GlobalTheory.T.exists_integral_hecke_eigensystem_deligne_serre l _ F.O _ _ _ F.emb hOk.ring.1 hOk.ring.2 F.I (Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu)) _ _ _ _ h1
+  have h5 := @_root_.GlobalTheory.DeligneSerre.exists_integral_eigensystem l _ F.O _ _ _ F.emb hOk.ring.1 hOk.ring.2 F.I (Forms F.O (A := alg F.O N mu) F.Γ jKm (NablaT F.O N mu)) _ _ _ _ h1
   obtain ⟨θ, hθ1, hθ2, v, hvspan, hv0, hvT⟩ := h5 h2 (F.G → NablaT (PadicAlgCl l) N mu) (jmap F mu jKm b) (heckeQ F mu) h3 h4 m inferInstance hannM
   exact ⟨θ, ⟨v, hv0, form_of_mem_span F mu jKm hJm b hbg v hvspan, fun i g => congrFun (hvT i) g⟩, hθ1, hθ2⟩
 

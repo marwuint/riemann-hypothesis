@@ -1,12 +1,15 @@
 import Mathlib
-import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasBareNormDisc
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicEmbeddingValuationSubringStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicEmbeddingValuationSubring
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.ThmFlatA
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FinConstFor
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicEmbeddingDiscreteValuationRingStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PartIHolds
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ModuliSchemesExist
@@ -31,7 +34,7 @@ theorem PositivityTheory.Ar2.exists_local_model_dvr : ∀ (E : Type) [Field E] [
   classical
   haveI : FiniteDimensional ℚ c.F := c.fin
   haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }
-  obtain ⟨W, hWp, hW⟩ := GlobalTheory.T.padic_embedding_valuation_subring c.F p κ
+  obtain ⟨W, hWp, hW⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_valuationSubring_of_padicEmbedding c.F p κ
   obtain ⟨V, hDVR, hVn, -, -⟩ := GlobalTheory.T.padic_embedding_discrete_valuation_ring c.F p κ
   have hVeq : c.V W = V := by
     ext x

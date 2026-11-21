@@ -123,10 +123,6 @@ theorem Rel.point {X : Scheme.{0}} (p : Sp R ⟶ X) (U : X.Opens) (h : p (spMap 
 def toStk (V : Type) [CommRing V] [IsDomain V] : V →+* (Sp V).presheaf.stalk (gen V) :=
   ((Sp V).presheaf.germ ⊤ (gen V) trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom
 
-theorem toStk_injective : Function.Injective (toStk V) :=
-  (germ_injective_of_isIntegral (Sp V) (U := ⊤) (gen V) trivial).comp
-    (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of V)).inv).1
-
 theorem toStk_map (r : R) : toStk V (g r) = gs (spMap g) (gen V) ⊤ (DegPre.toOpen (R := R) ⊤ r) := by
   rw [gs_eq _ _ ⊤ trivial, BetaAdd.toOpen_top]
   have e := congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))
@@ -526,9 +522,6 @@ theorem nonempty_reading (hp : 1 < p) (A : DatAt Y P) : Nonempty (Reading A) := 
       rw [e', norm_div, norm_mul]
       field_simp
   exact ⟨⟨e, he, t, hv, hs, h₃, hb, h₁⟩⟩
-
-theorem Reading.eq_of_isTauVal {A : DatAt Y P} (ρ : Reading A) {a b : A.Ylat} {s : ↥C.S} (h : IsTauVal A.f (ρ.e a b) s) :
-    s = ρ.t a b := h.unique (exists_coord A) (coord_ne A) (ρ.isVal a b)
 
 theorem Reading.add_right {A : DatAt Y P} (ρ : Reading A) (a b b' : A.Ylat) : ρ.t a (b + b') = ρ.t a b * ρ.t a b' := by
   rw [ρ.symm, ρ.add_left, ρ.symm b, ρ.symm b']

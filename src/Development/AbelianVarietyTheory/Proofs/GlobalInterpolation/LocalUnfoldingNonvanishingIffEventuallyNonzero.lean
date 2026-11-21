@@ -7,21 +7,21 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtP
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TwistPrimeDatumIntegralSupportAndInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeSandwichOfLatticeNormalFormStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeNormalFormCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeNormalFormCoordinates
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsNormalFormLattice
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfoldingStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedBoxSumAtPrimeEqOfBoundedSchwartzStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfolding
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedBoxSumAtPrimeEqOfBoundedSchwartz
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingIntegrandBoundedSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumCosetRepsNeZeroIffCommensurableStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumCosetRepsNeZeroIffCommensurable
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalFractionsRepresentPrimeNormQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VectorsLinearMapsBoundedDenominatorsAtPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VectorsLinearMapsBoundedDenominatorsAtPrime
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.BoxSumNeZeroInvariantAffineChangeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingAffineSpaceMemIffIntrinsicStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingAffineSpaceMemIffIntrinsic
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentRadicalsActAffineUnfoldingSpacesStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingCharacterArgumentCompUnipotentRadicalsStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingBoundedIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ParahoricLeIntegralGlStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelEqParahoricCategoryStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingBoundedIntegral
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ParahoricLeIntegralGl
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelEqParahoricCategory
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharacterNeZeroOfNeZeroStatement
 
 open NumberField IsDedekindDomain
@@ -68,15 +68,15 @@ theorem unfNe_transfer [CharZero K] (hP : IndefiniteRowSideFullHecke.SourceLatti
     (hrel : ∀ x, Psi' x = C * Psi (r.toLinearMap ∘ₗ x ∘ₗ r'.toLinearMap)) (H : UnfNe P psi Psi) : UnfNe P psi Psi' := by
   obtain ⟨A₀, B₀, H⟩ := H
   obtain ⟨xj', hx⟩ := Function.ne_iff.1 (H (max A₀ N) (max B₀ N) (le_max_left _ _) (le_max_left _ _))
-  obtain ⟨xj, T, b, hT⟩ := GlobalTheory.T.unipotentRadicals_act_affine_unfoldingSpaces GlobalTheory.T.exists_xx1_eq_iff_inX_eN_Ufl_conditions E n' c' n c hc hc' r hr r' hr' xj'
-  obtain ⟨d, hd⟩ := GlobalTheory.T.unfoldingCharacterArgument_comp_unipotentRadicals GlobalTheory.T.exists_xx1_eq_iff_inX_eN_Ufl_conditions E n' c' n c hc hc' r hr r' hr'
+  obtain ⟨xj, T, b, hT⟩ := GlobalTheory.T.unipotentRadicals_act_affine_unfoldingSpaces _root_.GlobalTheory.Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic E n' c' n c hc hc' r hr r' hr' xj'
+  obtain ⟨d, hd⟩ := GlobalTheory.T.unfoldingCharacterArgument_comp_unipotentRadicals _root_.GlobalTheory.Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic E n' c' n c hc hc' r hr r' hr'
   have I1 := GlobalTheory.T.localUnfoldingIntegrand_boundedSchwartz E K P n' c' n c psi D N Psi hN hpsi h1 xj'
   have I2 := GlobalTheory.T.localUnfoldingIntegrand_boundedSchwartz E K P n' c' n c psi D N Psi' hN hpsi h2 xj
-  obtain ⟨A₁, B₁, hA⟩ := GlobalTheory.T.boxSum_ne_zero_invariant_affineChange GlobalTheory.T.vectors_linearMaps_bounded_denominators_atPrime GlobalTheory.T.sum_coset_reps_ne_zero_iff_commensurable GlobalTheory.T.rationalFractions_represent_primeNormQuotient E K P hP _ (integrand psi Psi xj') N I1.1 T b
+  obtain ⟨A₁, B₁, hA⟩ := GlobalTheory.T.boxSum_ne_zero_invariant_affineChange _root_.GlobalTheory.Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators _root_.GlobalTheory.Proof.sum_coset_reps_ne_zero_iff_commensurable.sum_reps_ne_zero_iff GlobalTheory.T.rationalFractions_represent_primeNormQuotient E K P hP _ (integrand psi Psi xj') N I1.1 T b
   refine ⟨max A₁ N, max B₁ N, fun A B hA' hB' => Function.ne_iff.2 ⟨xj, ?_⟩⟩
   have h3 : boxSum P A B (integrand psi Psi xj') ≠ 0 := by
-    rw [GlobalTheory.T.weightedBoxSumAtPrime_eq_of_boundedSchwartz E K P hP.1 _ _ N I1.1 A B (le_of_max_le_right hA') (le_of_max_le_right hB'),
-      ← GlobalTheory.T.weightedBoxSumAtPrime_eq_of_boundedSchwartz E K P hP.1 _ _ N I1.1 (max A₀ N) (max B₀ N) (le_max_right _ _) (le_max_right _ _)]
+    rw [_root_.GlobalTheory.boxSum_eq_of_funBdd E K P hP.1 _ _ N I1.1 A B (le_of_max_le_right hA') (le_of_max_le_right hB'),
+      ← _root_.GlobalTheory.boxSum_eq_of_funBdd E K P hP.1 _ _ N I1.1 (max A₀ N) (max B₀ N) (le_max_right _ _) (le_max_right _ _)]
     exact hx
   have h4 := (hA A B (le_of_max_le_left hA') (le_of_max_le_left hB')).2 h3
   have hdep : ∀ t, Psi (Loc.xx1 xj' (T t + b)) ≠ 0 → IntAt P ((qOf P : E) ^ D * d) ∧

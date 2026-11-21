@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTransformDarbouxModelLinearInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTransformDarbouxModelLinearInjective
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilFactorizationStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilFactorization
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.EmbeddingXiZeroNeZero
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -44,15 +44,15 @@ theorem theta_surj : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fun
   have hV' : Γ.V'.J.det ≠ 0 := by
     rw [h.JW₁, Matrix.det_smul]
     exact mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (gram_det_ne W₁)
-  obtain ⟨hmain, hmain'⟩ := GlobalTheory.T.seesaw_weil_factorization hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTr hTr' R Rf hM
+  obtain ⟨hmain, hmain'⟩ := _root_.GlobalTheory.DarbImage.thetaImage hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTr hTr' R Rf hM
   refine ⟨?_, ?_⟩
-  · obtain ⟨T, hT1, -⟩ := GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M ψ (sgn true W).gram e hG hstd hV hX (gram_det_ne _)
+  · obtain ⟨T, hT1, -⟩ := _root_.GlobalTheory.ThetaTransformInj.linear_injective D Γ.M ψ (sgn true W).gram e hG hstd hV hX (gram_det_ne _)
     intro Φ hΦ
     rw [← hmain T hT1] at hΦ
     obtain ⟨Ψ, hΨ, rfl⟩ := Submodule.mem_map.1 hΦ
     refine ⟨Ψ, hΨ, (hT1 Ψ ?_).symm⟩
     exact GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz D.sp.cm.sig Γ.V Γ.W Γ.M Bs.ψ Bs.emb hM.triple.geo.hM hΨ
-  · obtain ⟨T, hT1, -⟩ := GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M' ψ (sgn false W₁).gram e hG' hstd hV' hX (gram_det_ne _)
+  · obtain ⟨T, hT1, -⟩ := _root_.GlobalTheory.ThetaTransformInj.linear_injective D Γ.M' ψ (sgn false W₁).gram e hG' hstd hV' hX (gram_det_ne _)
     intro Φ hΦ
     rw [← hmain' T hT1] at hΦ
     obtain ⟨Ψ, hΨ, rfl⟩ := Submodule.mem_map.1 hΦ

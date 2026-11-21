@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.InfUniv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupObjectLiftDividedPowers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorModOfTmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCrystalReductionSquareZeroArtinianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCrystalReductionSquareZeroArtinian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstDeRhamHomologyProjectiveOverTensorIntegersStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveTensorOfFibreProjectiveStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamHomologyClosedFibreSurjectiveKernelStatement
@@ -31,7 +31,7 @@ theorem crys_projective : ∀ (F : Type) [Field F] [NumberField F] (C C₀ : Typ
     rw [hsq] at h2
     exact one_ne_zero ((Submodule.mem_bot C).1 h2)
   haveI : IsLocalRing C₀ := IsLocalRing.of_surjective' π hπ
-  obtain ⟨red, hfin, hproj, hsurj, hker, -, hequiv, -⟩ := GlobalTheory.T.exists_crystal_reduction_squareZero_artinian C C₀ π hπ hsq A₀ hA O a
+  obtain ⟨red, hfin, hproj, hsurj, hker, -, hequiv, -⟩ := _root_.GlobalTheory.CrysRed.exists_crysRed C C₀ π hπ hsq A₀ hA O a
   let a' : OAct (𝓞 F) A₀ :=
     { act := fun x ↦ a.act (algebraMap (𝓞 F) O x)
       hom := fun x ↦ a.hom _

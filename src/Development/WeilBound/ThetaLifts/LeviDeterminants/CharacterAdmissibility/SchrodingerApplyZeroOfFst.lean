@@ -15,9 +15,6 @@ theorem schrodinger_translate_apply (x : κ → R) (φ : (κ → R) → ℂ) : s
 theorem schrodinger_apply_zero_of_fst {w : V R κ} (h : w.1 = 0) (φ : (κ → R) → ℂ) : schr ψ w φ 0 = φ 0 := by
   simp [schr, h]
 
-theorem schr_smul (w : V R κ) (a : ℂ) (φ : (κ → R) → ℂ) : schr ψ w (a • φ) = a • schr ψ w φ := by
-  funext z; simp only [schr, Pi.smul_apply, smul_eq_mul]; ring
-
 theorem schr_zero (φ : (κ → R) → ℂ) : schr ψ (0 : V R κ) φ = φ := by
   funext z; simp [schr]
 

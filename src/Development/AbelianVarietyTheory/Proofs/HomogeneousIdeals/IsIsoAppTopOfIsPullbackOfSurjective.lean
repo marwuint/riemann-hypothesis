@@ -516,13 +516,6 @@ theorem isIso_appTop_of_isAffine (p : X ⟶ S) [IsAffine S] [IsLocallyNoetherian
     (pullback.lift_snd _ _ _)
   exact isIso_appTop_of_isPullback_of_surjective (.of_hasPullback p (i ≫ p))
 
-theorem isIso_app (p : X ⟶ S) [IsLocallyNoetherian S] [Flat p]
-    [UniversallyClosed p] [LocallyOfFiniteType p] [GeometricallyIntegral p] (U : S.Opens) :
-    IsIso (p.app U) :=
-  isIso_app_of_forall_affineOpens p (fun V ↦
-    have : IsAffine V.1 := V.2
-    isIso_appTop_of_isAffine (p ∣_ V.1)) U
-
 end Main
 
 section Limit

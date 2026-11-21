@@ -4,11 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsIsUnitField
 open GlobalTheory.KeyKa
 
 namespace GlobalTheory.KeyKa.KoszulTors
-section Alg
-variable {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ}
-
-end Alg
-
 variable {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ} in
 private lemma kosD_inl_indep_ev
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev ev' : ∀ j, Matrix (Fin d) (Fin (N j)) R)

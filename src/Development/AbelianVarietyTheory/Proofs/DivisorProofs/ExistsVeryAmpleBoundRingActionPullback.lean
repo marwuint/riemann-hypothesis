@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EffOfSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionNonzeroChartOfEffectiveClassStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsEffectivePicClassAddIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsEffectivePicClassPullbackVeryAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNsmulVeryAmpleSubIsEffectivePicClassStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsEffectivePicClassPullbackVeryAmple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNsmulVeryAmpleSubIsEffectivePicClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubeTheoremPicardGroupStatement
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry NumberField MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.UU
 open scoped CategoryTheory.Obj
@@ -47,7 +47,7 @@ open GlobalTheory.CechPic GlobalTheory.EffBound
 
 theorem pull_pow (k : Type) [Field k] (B : Over (Sp k)) [GrpObj B] [IsCommMonObj B] (M : GlobalTheory.UU.CP B) (f : B ⟶ B) (n : ℕ) :
     pull (f ^ n).left (cls M.L.L M.L.isLB) = (n ^ 2) • pull f.left (cls M.L.L M.L.isLB) := by
-  have h := GlobalTheory.T.lbIso_pw_sq_pull_pow_of_isLocalRing k B M n
+  have h := _root_.GlobalTheory.UU.lbIso_pw_pull_pow_local k B M n
   have e : pull (𝟙 B ^ n).left (cls M.L.L M.L.isLB) = ((n : ℤ) ^ 2) • cls M.L.L M.L.isLB := by
     rw [← cls_pull M.L.isLB _ (pull_isLB M.L.isLB _),
       ← (cls_eq_iff (isLB_pw M.L.isLB _) (pull_isLB M.L.isLB _)).2 h, cls_pw]
@@ -139,7 +139,7 @@ theorem exists_effective_bound : ∀ (E : Type) [Field E] [NumberField E] (k : T
   haveI : GeometricallyIntegral A.hom :=
     GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected
   haveI : IsIntegral A.left := GeometricallyIntegral.isIntegral_of_subsingleton A.hom
-  have hproj := GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k A hB
+  have hproj := _root_.GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme k A hB
   obtain ⟨H, m, s, hH, hs, hsym⟩ := GlobalTheory.SymVeryAmple.exists_symmetric_veryAmpleBy k A hB hproj
   obtain ⟨r, hr⟩ : ∃ r : LB.Gen (H.pull (eSec A)), r.IsGen :=
     DVR.exists_gen_of_isLB_local (V := k) _ (pull_isLB hH _)
@@ -149,7 +149,7 @@ theorem exists_effective_bound : ∀ (E : Type) [Field E] [NumberField E] (k : T
   subst hL
   obtain ⟨c0, hc0⟩ : ∃ c0, cls M.L.L M.L.isLB = c0 := ⟨_, rfl⟩
   have hEF : ∀ φ : A ⟶ A, Eff (pull φ.left c0) := fun φ =>
-    hc0 ▸ GlobalTheory.T.isEffectivePicClass_pullback_veryAmple k A.hom M.L.L m s M.L.isLB hs φ.left inferInstance
+    hc0 ▸ _root_.GlobalTheory.EffBound.eff_pull_of_veryAmpleBy k A.hom M.L.L m s M.L.isLB hs φ.left inferInstance
   have h1 : pull (1 : A ⟶ A).left c0 = 0 := hc0 ▸ pull_one A M
   have hE0 : Eff (0 : Pic A.left) := h1 ▸ hEF 1
   have hEc : Eff c0 := by
@@ -165,7 +165,7 @@ theorem exists_effective_bound : ∀ (E : Type) [Field E] [NumberField E] (k : T
     rw [e']
     exact hEF _
   have hc : ∀ i, ∃ ci : ℕ, Eff (ci • c0 - pull (act.act (a i)).left c0) := fun i => by
-    obtain ⟨ci, h⟩ := GlobalTheory.T.exists_nsmul_veryAmple_sub_isEffectivePicClass k A.left A.hom M.L.L m s _ M.L.isLB (pull_isLB M.L.isLB (act.act (a i)).left) hs
+    obtain ⟨ci, h⟩ := _root_.GlobalTheory.EffBound.exists_nsmul_sub_eff k A.left A.hom M.L.L m s _ M.L.isLB (pull_isLB M.L.isLB (act.act (a i)).left) hs
     rw [cls_pull M.L.isLB, hc0] at h
     exact ⟨ci, h⟩
   choose ci hci using hc

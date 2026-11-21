@@ -7,7 +7,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqu
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionTangentExactStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionModuleStructureStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceBasisExistsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenDecompositionExactSequenceStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenDecompositionExactSequence
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmTypeEigenMultiplicityOfDensePrimes
 
 noncomputable section
 
@@ -98,7 +100,7 @@ theorem lieMult_abPart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain ⟨b₁, hb₁, hb₁'⟩ := (lieMult_iff_family M₁ D ρ₁ hρ₁ τ _).1
     ((GlobalTheory.Diag.lieMult_iff (spMap g) τ _).2 ⟨bas⟩)
   obtain ⟨b₂, hb₂, hb₂'⟩ := (lieMult_iff_family M₂ P.tK.act ρ₂ hρ₂ τ n).1 hn
-  obtain ⟨hle, b₃, hb₃⟩ := GlobalTheory.T.eigen_decomposition_exact_sequence E k _ _ _ ρ₁ ρ₂ ρ₃ f h finj hsur hex eqf eqh τ _ n b₁ b₂ hb₁ hb₁' hb₂ hb₂'
+  obtain ⟨hle, b₃, hb₃⟩ := _root_.GlobalTheory.CompanionTheory.Ar.EigExact.exists_basis_eigSp_quot E k _ _ _ ρ₁ ρ₂ ρ₃ f h finj hsur hex eqf eqh τ _ n b₁ b₂ hb₁ hb₁' hb₂ hb₂'
   exact ⟨hle, (lieMult_iff_family M₃ P.tB.act ρ₃ hρ₃ τ _).2 ⟨b₃, hb₃⟩⟩
 
 end GlobalTheory.CompanionTheory.Ar.AbMult

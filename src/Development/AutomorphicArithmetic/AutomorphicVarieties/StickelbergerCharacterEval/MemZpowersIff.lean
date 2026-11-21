@@ -14,8 +14,6 @@ def rel (c : Γ) (ε : ℤ) : MonoidAlgebra A Γ := MonoidAlgebra.single c 1 - (
 
 abbrev Rq (c : Γ) (ε : ℤ) : Type := MonoidAlgebra A Γ ⧸ Ideal.span {rel A c ε}
 
-abbrev Rqz (c : Γ) (ε : ℤ) (z : MonoidAlgebra A Γ) : Type := MonoidAlgebra A Γ ⧸ Ideal.span {rel A c ε, z}
-
 abbrev cls (c : Γ) (ε : ℤ) : MonoidAlgebra A Γ →+* Rq A c ε := Ideal.Quotient.mk _
 
 variable {A}
@@ -146,15 +144,6 @@ def InPow (l : ℕ) [Fact l.Prime] (t : ℕ) (x : ℚ) : Prop := x / (l : ℚ) ^
 theorem intAt_iff {Γ : Type} [CommGroup Γ] (l : ℕ) [Fact l.Prime] (t : ℕ) (z : MonoidAlgebra ℚ Γ) :
     IntAt l t z ↔ ∀ g, InPow l t (z.coeff g) := Iff.rfl
 
-theorem InPow.zero (l : ℕ) [Fact l.Prime] (t : ℕ) : InPow l t 0 := by
-  simp [InPow]
-
-theorem InPow.add {l : ℕ} [Fact l.Prime] {t : ℕ} {x y : ℚ} (hx : InPow l t x) (hy : InPow l t y) : InPow l t (x + y) := by
-  rw [InPow, add_div]; exact (Zl l).add_mem hx hy
-
-theorem InPow.mul {l : ℕ} [Fact l.Prime] {t : ℕ} {x y : ℚ} (hx : x ∈ Zl l) (hy : InPow l t y) : InPow l t (x * y) := by
-  rw [InPow, mul_div_assoc]; exact (Zl l).mul_mem hx hy
-
 theorem InPow.mem {l : ℕ} [Fact l.Prime] {t : ℕ} {x : ℚ} (hx : InPow l t x) : x ∈ Zl l := by
   have hl : (l : ℚ) ^ t ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
   have := (Zl l).mul_mem hx (pow_mem (natCast_mem (Zl l) l) t)
@@ -165,10 +154,6 @@ def denY (N k : ℕ) : ℕ := N * k * (k + 1).factorial
 def sizeY (N a k : ℕ) : ℕ := 2 * a ^ k * N ^ k * k.factorial
 
 def bdX (N a k : ℕ) : ℕ := denY N k * sizeY N a k
-
-def BD (r N a e : ℕ) : ℝ :=
-  r * ((e + 2) * Real.logb 2 N + (e + 1) * Real.logb 2 a + 1 +
-    Real.logb 2 ((e + 1) * (e + 1).factorial * (e + 2).factorial))
 
 theorem denY_pos {N k : ℕ} (hN : 0 < N) (hk : 0 < k) : 0 < denY N k := by
   unfold denY; positivity

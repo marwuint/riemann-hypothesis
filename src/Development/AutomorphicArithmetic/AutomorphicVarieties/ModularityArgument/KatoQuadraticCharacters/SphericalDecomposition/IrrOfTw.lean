@@ -38,17 +38,3 @@ private theorem open_ker {K Ω C : Type} [Field K] [NumberField K] [Field Ω] [A
 
 end UpperTheory.V.Z.Kato.WeilSphericalRecords.TwistWitness
 
-open UpperTheory.V.Z.Kato.WeilSphericalRecords.TwistWitness in
-theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.twWit :
-    Af.Hypotheses₂ → AIsoTw → TwWit := by
-  intro P hI l _ Ω _ _ _ ι n W M φ hM hφ hW K _ _ _ _ _ _ hK hirr
-  haveI : Algebra.IsAlgebraic ℚ K := inferInstance
-  haveI : IsAlgClosure K Ω :=
-    ⟨IsAlgClosure.isAlgClosed ℚ, (IsAlgClosure.isAlgebraic (R := ℚ) (K := Ω)).tower_top K⟩
-  rw [comp_tw] at hirr ⊢
-  have hW' := hW K hK (irr_of_tw _ _ hirr)
-  have hs := (UpperTheory.V.Sd.algCyc P K Ω l ι).1 0 (φ.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω))
-    (open_ker hM hφ)
-  rw [zpow_zero, one_mul] at hs
-  obtain ⟨hc, art, χ, a, h⟩ := hs
-  exact (hI P K Ω l ι n _ hW').2 _ ⟨χ, hc, art, a, h⟩

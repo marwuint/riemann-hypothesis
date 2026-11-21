@@ -13,18 +13,9 @@ variable {G K R : Type} [Group G] [Field K] [CommRing R] [Algebra K R]
 def IsRightAct (st : G → R →ₐ[K] R) : Prop :=
   (∀ x, st 1 x = x) ∧ ∀ h h' x, st (h * h') x = st h' (st h x)
 
-theorem isRightAct_inv (ρ : G →* (R →ₐ[K] R)) : IsRightAct (fun h => ρ h⁻¹) :=
-  ⟨fun x => by simp, fun h h' x => by simp only [mul_inv_rev, map_mul]; rfl⟩
-
 theorem IsRightAct.comp {st : G → R →ₐ[K] R} (h : IsRightAct st) {G' : Type} [Group G'] (f : G' →* G) :
     IsRightAct (fun g => st (f g)) :=
   ⟨fun x => by simp only [map_one]; exact h.1 x, fun a b x => by simp only [map_mul]; exact h.2 _ _ x⟩
-
-def funPull (K : Type) [Field K] {Z : Type} [MulAction G Z] (h : G) : (Z → K) →ₐ[K] (Z → K) :=
-  Pi.algHom _ _ fun z => Pi.evalAlgHom K (fun _ : Z => K) (h • z)
-
-theorem isRightAct_funPull {Z : Type} [MulAction G Z] : IsRightAct (funPull K (Z := Z) (G := G)) :=
-  ⟨fun x => funext fun z => congrArg x (one_smul G z), fun h h' x => funext fun z => congrArg x (mul_smul h h' z)⟩
 
 variable (st : G → R →ₐ[K] R)
 
@@ -56,11 +47,6 @@ def IsRightAct.leftRep {st : G → R →ₐ[K] R} (hs : IsRightAct st) : Represe
 theorem IsRightAct.leftRep_apply {st : G → R →ₐ[K] R} (hs : IsRightAct st) (g : G) (x : R) :
     hs.leftRep g x = st g⁻¹ x := rfl
 
-theorem IsRightAct.mem_eigen_iff {st : G → R →ₐ[K] R} (hs : IsRightAct st) {χ : G →* Kˣ} {F : R} :
-    F ∈ eigen st χ ↔ ∀ g, hs.leftRep g F = ((χ⁻¹ g : Kˣ) : K) • F :=
-  ⟨fun h g => by rw [hs.leftRep_apply, h g⁻¹, map_inv]; rfl,
-    fun h g => by have := h g⁻¹; rwa [hs.leftRep_apply, inv_inv, MonoidHom.inv_apply, map_inv, inv_inv] at this⟩
-
 def IsRightAct.subRep {st : G → R →ₐ[K] R} (hs : IsRightAct st) (C : Submodule K R)
     (hC : ∀ h, ∀ x ∈ C, st h x ∈ C) : Representation K G C :=
   hs.leftRep.subrepresentation C fun g x hx => hC g⁻¹ x hx
@@ -70,31 +56,6 @@ theorem IsRightAct.subRep_apply {st : G → R →ₐ[K] R} (hs : IsRightAct st) 
 
 def algOp (e : MonoidAlgebra K G) : Module.End K R :=
   Finsupp.linearCombination K (fun g => (st g⁻¹).toLinearMap) e.coeff
-
-theorem algOp_single (g : G) (a : K) (x : R) : algOp st (MonoidAlgebra.single g a) x = a • st g⁻¹ x := by
-  simp [algOp]
-
-theorem algOp_apply [Fintype G] (e : MonoidAlgebra K G) (x : R) :
-    algOp st e x = ∑ g, e.coeff g • st g⁻¹ x := by
-  rw [algOp, Finsupp.linearCombination_apply,
-    Finsupp.sum_fintype _ (fun i a => a • (st i⁻¹).toLinearMap) (fun _ => zero_smul _ _), LinearMap.sum_apply]
-  rfl
-
-theorem IsRightAct.algOp_eq {st : G → R →ₐ[K] R} (hs : IsRightAct st) (e : MonoidAlgebra K G) :
-    algOp st e = hs.leftRep.asAlgebraHom e := by
-  induction e using MonoidAlgebra.induction_linear with
-  | zero => simp [algOp]
-  | add a b ha hb => rw [map_add, ← ha, ← hb]; simp [algOp]
-  | single g a => ext x; rw [algOp_single, Representation.asAlgebraHom_single]; rfl
-
-theorem IsRightAct.algOp_mul {st : G → R →ₐ[K] R} (hs : IsRightAct st) (e e' : MonoidAlgebra K G) :
-    algOp st (e * e') = algOp st e * algOp st e' := by
-  rw [hs.algOp_eq, hs.algOp_eq, hs.algOp_eq, map_mul]
-
-theorem algOp_mem {C : Submodule K R} (hC : ∀ h, ∀ x ∈ C, st h x ∈ C) (e : MonoidAlgebra K G) {x : R} (hx : x ∈ C) :
-    algOp st e x ∈ C := by
-  rw [algOp, Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]
-  exact C.sum_mem fun g _ => C.smul_mem _ (hC _ x hx)
 
 variable [Fintype G]
 
@@ -108,11 +69,6 @@ def ph (χ : G →* Kˣ) (u : R) : R →ₗ[K] (G → R) :=
 
 theorem ph_apply (χ : G →* Kˣ) (u f : R) (h : G) : ph st χ u f h = tr st χ (f * st h u) := rfl
 
-def ps (u : R) : (G → R) →ₗ[K] R := ∑ h, LinearMap.mulRight K (st h u) ∘ₗ LinearMap.proj h
-
-theorem ps_apply (u : R) (F : G → R) : ps st u F = ∑ h, F h * st h u := by
-  rw [ps, LinearMap.sum_apply]; rfl
-
 theorem IsRightAct.tr_mem_eigen {st : G → R →ₐ[K] R} (hs : IsRightAct st) (χ : G →* Kˣ) (F : R) :
     tr st χ F ∈ eigen st χ := fun g => by
   rw [tr_apply, map_sum, Finset.smul_sum]
@@ -120,19 +76,6 @@ theorem IsRightAct.tr_mem_eigen {st : G → R →ₐ[K] R} (hs : IsRightAct st) 
   rw [map_smul, ← hs.2, smul_smul, Equiv.coe_mulRight, map_mul]
   congr 1
   simp
-
-theorem tr_of_mem_eigen {χ : G →* Kˣ} {F : R} (hF : F ∈ eigen st χ) : tr st χ F = (Fintype.card G : K) • F := by
-  rw [tr_apply, Finset.sum_congr rfl (g := fun _ => F) fun h _ => by rw [hF h, smul_smul]; simp]
-  simp [Nat.cast_smul_eq_nsmul]
-
-theorem tr_mem {C : Submodule K R} (hC : ∀ h, ∀ x ∈ C, st h x ∈ C) (χ : G →* Kˣ) {x : R} (hx : x ∈ C) :
-    tr st χ x ∈ C := by
-  rw [tr_apply]; exact C.sum_mem fun g _ => C.smul_mem _ (hC _ x hx)
-
-example [DecidableEq G] (h g : G) :
-    groupMat (funPull K (Z := G)) (Pi.single (1 : G) (1 : K)) h g 1 = if h * g = 1 then 1 else 0 := by
-  show (Pi.single (1 : G) (1 : K) : G → K) ((h * g) • (1 : G)) = _
-  simp [Pi.single_apply]
 
 end Right
 
@@ -145,8 +88,6 @@ def latCap (L : Submodule O C) (W : Submodule K R) : Submodule O C :=
   L ⊓ (W.comap C.subtype).restrictScalars O
 
 theorem mem_latCap {L : Submodule O C} {W : Submodule K R} {F : C} : F ∈ latCap L W ↔ F ∈ L ∧ (F : R) ∈ W := Iff.rfl
-
-theorem latCap_le (L : Submodule O C) (W : Submodule K R) : latCap L W ≤ L := inf_le_left
 
 def spanQ (N : Submodule O C) : Submodule K R := (Submodule.span K (N : Set C)).map C.subtype
 
@@ -166,13 +107,6 @@ theorem mem_cutLat_iff {N : Submodule O C} {T : Module.End K R} (hT : IsIdempote
       have e' : T x = F := e
       rw [← e']; exact congrArg (fun S : Module.End K R => S x) hT,
     fun e => ⟨F, mem_spanQ hF, e⟩⟩
-
-theorem cutLat_one (N : Submodule O C) : cutLat N 1 = N :=
-  Submodule.ext fun _ => (mem_cutLat_iff IsIdempotentElem.one).trans (and_iff_left rfl)
-
-theorem cutLat_zero (N : Submodule O C) : cutLat N 0 = ⊥ :=
-  Submodule.ext fun F => (mem_cutLat_iff IsIdempotentElem.zero).trans
-    ⟨fun h => Subtype.ext h.2.symm, fun h => by obtain rfl : F = 0 := h; exact ⟨N.zero_mem, rfl⟩⟩
 
 end Lat
 
@@ -272,12 +206,6 @@ theorem smul_top_qMod : I • (⊤ : Submodule O (QMod N I)) = ⊥ :=
 theorem trivMod_sup : trivMod N I (I ⊔ J) = trivMod N I J := by
   ext γ
   rw [mem_trivMod, mem_trivMod, Submodule.sup_smul, smul_top_qMod, bot_sup_eq]
-
-example : trivMod N I ⊤ = ⊤ ∧ trivMod N I I = ⊥ := by
-  refine ⟨eq_top_iff.2 fun γ _ q => by simp, eq_bot_iff.2 fun γ hγ => LinearEquiv.ext fun q => ?_⟩
-  have := hγ q
-  rw [smul_top_qMod] at this
-  exact sub_eq_zero.1 this
 
 theorem mem_iInf_smul_top {ι M : Type} [Finite ι] [AddCommGroup M] [Module O M] {Js : ι → Ideal O}
     (hc : Pairwise (Function.onFun IsCoprime Js)) {x : M} (hx : ∀ i, x ∈ Js i • (⊤ : Submodule O M)) :

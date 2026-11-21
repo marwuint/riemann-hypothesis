@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubs
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicFamilyOfHomsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicFamilyOfHoms
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsDomainAway
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
@@ -97,7 +97,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Flat.SmoothChart.exists_polydisc_chart :
     rw [hψ₀, hxs] at h
     have h' := Spec.map_injective h
     exact (congrArg CommRingCat.Hom.hom h').symm
-  obtain ⟨Ψ, hol, h0, hbase, hvan⟩ := GlobalTheory.T.holomorphic_family_of_homs K Γ(X, X.basicOpen f) d σ ψ₀ hσ
+  obtain ⟨Ψ, hol, h0, hbase, hvan⟩ := _root_.GlobalTheory.CompanionTheory.ChartRing.exists_polydisc_chart K Γ(X, X.basicOpen f) d σ ψ₀ hσ
   refine ⟨X.basicOpen f, hV, Ψ, (X.basicOpen_le f).trans hV₁W, hol, ?_, ?_, hvan⟩
   · rw [h0]; exact hψ₀
   · intro z hz

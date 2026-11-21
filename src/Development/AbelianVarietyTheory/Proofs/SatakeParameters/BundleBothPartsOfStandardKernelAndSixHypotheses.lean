@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.InertKernelTheory.StatementJets
 import Formalism.LocalToGlobal.InertKernelTheory.StatementAlgT
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HasPartAnd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingY
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TuplesHaveLocalModelsAtConstructedPointOverTrueCStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TuplesHaveLocalModelsAtConstructedPointOverTrueC
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowTwUHolds
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowAtOfStdTie
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd NumberField IsDedekindDomain
@@ -19,7 +19,7 @@ theorem servH_row (hA : Formalism.L2.KerInert.AlgTAll) (hG : Formalism.L2.KerIne
       RowE Q Lk (fun _ D O c b => StdTie D O (ker D O c b)) → Row Q Lk (ServH ker) := by
   intro Bd Q Lk ker hQ hT
   have hM : RowE Q Lk (fun _ D O _ _ => ModelsAt D O) :=
-    RowE.of_all fun _ K β _ _ _ hq _ => GlobalTheory.T.tuplesHaveLocalModels_at_constructedPoint_over_trueColumns hE hX K β (hQ _ _ _ _ _ hq)
+    RowE.of_all fun _ K β _ _ _ hq _ => _root_.GlobalTheory.Svd.modelsAt_bpt hE hX K β (hQ _ _ _ _ _ hq)
   exact Row.and (GlobalTheory.Svd.rowTwU Q Lk hM) (GlobalTheory.Pdv.rowAt_of_stdTie hA hG hC hI Q Lk ker hT)
 
 end GlobalTheory.Svd

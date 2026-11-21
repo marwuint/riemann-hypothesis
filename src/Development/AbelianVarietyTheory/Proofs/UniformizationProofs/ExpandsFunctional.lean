@@ -39,12 +39,6 @@ theorem res_cstHom (π : Y ⟶ Spec (CommRingCat.of K)) {W W' : Y.Opens} (h : W'
     (Y.presheaf.map (homOfLE h).op).hom (cstHom π W c) = cstHom π W' c :=
   SecOps.resTop_res h _
 
-theorem app_cstHom (π : Y ⟶ Spec (CommRingCat.of K)) (q : Y' ⟶ Y) (W : Y.Opens) (c : K) :
-    (q.app W).hom (cstHom π W c) = cstHom (q ≫ π) (q ⁻¹ᵁ W) c := by
-  have e := congrArg (fun f => f.hom (scal π c)) (q.naturality (homOfLE (le_top : W ≤ ⊤)).op)
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at e
-  exact e
-
 def IsComb (π : Y ⟶ Spec (CommRingCat.of K)) {M : LB Y} {Λ : Type} [Fintype Λ] (s : LB.Sec M) (c : Λ → K)
     (t : Λ → LB.Sec M) : Prop :=
   ∀ jj, s.f jj = ∑ l, cstHom π (M.U jj) (c l) * (t l).f jj
@@ -71,57 +65,6 @@ theorem IsComb.unique {s s' : LB.Sec M} {c : Λ → K} {t : Λ → LB.Sec M}
   SecOps.sec_ext fun jj => (h jj).trans (h' jj).symm
 
 end Comb
-
-section Box
-
-variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ}
-  {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
-  {LG : LB G.left} {LG' : LB G'.left}
-
-theorem prK_snd (pG : IsPowGrp G' G j) (i : Fin j) :
-    prK pG i ≫ pullback.snd G.hom (jK R) = pullback.snd G'.hom (jK R) :=
-  Over.w ((Over.pullback (jK R)).map (pG.pr i))
-
-theorem box_multilinear (hL : LG.IsLB) (pG : IsPowGrp G' G j) (w : LB.Iso LG' (boxLB LG pG.pr)) (k : ℕ)
-    {Λ : Type} [Fintype Λ]
-    (σ : Λ → LB.Sec (LB.LinComb LG (K := Fin 1) (fun _ => pullback.fst G.hom (jK R)) (fun _ => (k : ℤ))))
-    (σ' : (Fin j → Λ) →
-      LB.Sec (LB.LinComb LG' (K := Fin 1) (fun _ => pullback.fst G'.hom (jK R)) (fun _ => (k : ℤ))))
-    (hσ : ∀ a, IsBoxSecK pG w k (σ' a) (fun i => σ (a i)))
-    (s : Fin j → LB.Sec (LB.LinComb LG (K := Fin 1) (fun _ => pullback.fst G.hom (jK R)) (fun _ => (k : ℤ))))
-    (s' : LB.Sec (LB.LinComb LG' (K := Fin 1) (fun _ => pullback.fst G'.hom (jK R)) (fun _ => (k : ℤ))))
-    (hs : IsBoxSecK pG w k s' s) (c : Fin j → Λ → FractionRing R)
-    (hc : ∀ i, IsComb (pullback.snd G.hom (jK R)) (s i) (c i) σ) :
-    IsComb (pullback.snd G'.hom (jK R)) s' (fun a => ∏ i, c i (a i)) σ' := by
-  classical
-  intro jj
-  obtain ⟨jL, rfl⟩ : ∃ jL, jj = fun _ => jL := ⟨jj 0, funext fun i => by rw [Subsingleton.elim i 0]⟩
-  refine fn_ext fun y hy => ?_
-  choose jN hN using fun i => exists_chart hL ((pG.pr i).left (pullback.fst G'.hom (jK R) y))
-  have hW : (𝟙 (pullback G'.hom (jK R)) : _ ⟶ _) y ∈
-      pullback.fst G'.hom (jK R) ⁻¹ᵁ (LB.div (boxLB LG pG.pr) LG').U (jN, jL) :=
-    ⟨Set.mem_iInter.2 hN, Set.mem_iInter.1 hy 0⟩
-  refine (gs_res _ y (boxSec_le_a pG jN jL) hW _).symm.trans
-    (Eq.trans (congrArg _ ?_) (gs_res _ y (boxSec_le_a pG jN jL) hW _))
-  refine (Units.mul_right_inj
-    ((pullU (Y := pullback G'.hom (jK R)) (pullback.fst G'.hom (jK R)) _ (w.s (jN, jL))) ^ k)).1 ?_
-  refine (hs jN jL).trans ?_
-  erw [map_sum, Finset.mul_sum]
-  have e : ∀ i, ((pullback G'.hom (jK R)).presheaf.map (homOfLE (boxSec_le_b pG jN jL i)).op).hom
-      (((prK pG i).app _).hom ((s i).f (fun _ => jN i))) =
-      ∑ l, cstHom (pullback.snd G'.hom (jK R)) _ (c i l) *
-        ((pullback G'.hom (jK R)).presheaf.map (homOfLE (boxSec_le_b pG jN jL i)).op).hom
-          (((prK pG i).app _).hom ((σ l).f (fun _ => jN i))) := fun i => by
-    erw [hc i (fun _ => jN i), map_sum, map_sum]
-    refine Finset.sum_congr rfl fun l _ => ?_
-    erw [map_mul, map_mul, app_cstHom, res_cstHom, prK_snd]
-  rw [Finset.prod_congr rfl fun i _ => e i, Finset.prod_univ_sum, Fintype.piFinset_univ]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  rw [Finset.prod_mul_distrib, ← map_prod]
-  erw [map_mul, mul_left_comm]
-  exact congrArg₂ (· * ·) (res_cstHom _ _ _).symm (hσ a jN jL).symm
-
-end Box
 
 section Exp
 
@@ -165,58 +108,6 @@ theorem expBij_of_basis (hR : AdmBase R I) {Λ : Type} [Fintype Λ]
       have e' : b.equivFun E = c := by rw [e, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]
       exact hc.unique (e' ▸ hs)
 
-theorem span_of_expBij (h : U.ExpBij k) {Λ : Type} [Fintype Λ]
-    (b : Module.Basis Λ (FractionRing R) (Fam D.toPre (FractionRing R) k)) (σ : Λ → U.SecK k)
-    (hσ : ∀ l, U.Expands k (σ l) (b l)) (s : U.SecK k) : ∃ c, IsComb (pullback.snd G.hom (jK R)) s c σ := by
-  obtain ⟨E, hE⟩ := (h.1 s).exists
-  obtain ⟨t, ht⟩ := exists_isComb (pullback.snd G.hom (jK R)) (b.equivFun E) σ
-  have := expands_comb U k hσ ht
-  rw [b.sum_equivFun] at this
-  exact ⟨_, (h.2 E).unique this hE ▸ ht⟩
-
 end Exp
-
-theorem unifPow_full (hL : Laws) (hL₂ : Laws2) (R : Type) [CommRing R] [IsDomain R] (I : Ideal R)
-    (hR : AdmBase R I) : UnifPowSt3 (R := R) (I := I) := by
-  intro D A G _ _ U j D' A' G' _ _ pD pA pG
-  obtain ⟨U', wL, H⟩ := GlobalTheory.T.uniformisation_power_without_expansion hL.globalFns R I j D D' A A' G G' pD pA pG U.toUnifPre
-  have hexp : ∀ k : ℕ, 1 ≤ k → U'.ExpBij k := by
-    intro k hk
-    classical
-    obtain ⟨hf, hd⟩ := GlobalTheory.FamDimension.main hL.globalFns hL.cube hL.square hL₂.secTwist R I D (FractionRing R) k hk
-    obtain ⟨hf', hd'⟩ := GlobalTheory.FamDimension.main hL.globalFns hL.cube hL.square hL₂.secTwist R I D' (FractionRing R) k hk
-    obtain ⟨hr, hg⟩ := rank_and_g_of_isPowDeg R j D.toPre D'.toPre pD
-    obtain ⟨hex, hsp⟩ := GenericBoxSpan.main hL R I j D D' A A' G G' pD pA pG U' U.toUnifPre wL H k hk
-    let b := Module.finBasisOfFinrankEq (FractionRing R) (Fam D.toPre (FractionRing R) k) hd
-    choose σ hσ using fun l => ((U.expand k hk).2 (b l)).exists
-    choose b' hb' using fun a : Fin j → Fin _ =>
-      BoxFamily.exists_isBoxFam hL.globalFns R j D.toPre D'.toPre pD (FractionRing R) k (fun i => b (a i))
-    choose σ' hσ' using fun a : Fin j → Fin _ => hex (fun i => σ (a i))
-    have hli := boxFam_linearIndependent R j D.toPre D'.toPre pD (FractionRing R) k _ b b.linearIndependent b' hb'
-    have hcard : Fintype.card (Fin j → Fin (k ^ (D.toPre.rank + D.toPre.P.g))) =
-        Module.finrank (FractionRing R) (Fam D'.toPre (FractionRing R) k) := by
-      rw [hd', hr, hg, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, ← pow_mul, ← mul_add, mul_comm]
-    haveI : Nonempty (Fin (k ^ (D.toPre.rank + D.toPre.P.g))) := ⟨⟨0, pow_pos hk _⟩⟩
-    refine expBij_of_basis U' k hR (basisOfLinearIndependentOfCardEqFinrank hli hcard) σ' (fun a => ?_) (fun s₀ => ?_)
-    · rw [coe_basisOfLinearIndependentOfCardEqFinrank]
-      exact ExpandsBoxPre.main R I j D D' A A' G G' pD pA pG U' U.toUnifPre wL H k _ _ (fun i => hσ (a i)) _ _
-        (hσ' a) (hb' a)
-    · obtain ⟨n, c, s, s', hs, h₀⟩ := hsp s₀
-      choose d hd using fun l i => span_of_expBij U.toUnifPre k (U.expand k hk) b σ hσ (s l i)
-      exact ⟨_, IsComb.trans (c := c) (t := s') h₀ fun l =>
-        box_multilinear U.LG.isLB pG wL k σ σ' hσ' (s l) (s' l) (hs l) (d l) (hd l)⟩
-  obtain ⟨h₁, h₂, h₃, h₄, h₅, h₆⟩ := H
-  exact ⟨⟨U', hexp⟩, ⟨⟨⟨⟨h₁, wL, h₂, h₃, h₄⟩, h₅⟩, h₆⟩⟩⟩
-
-theorem main : Laws → Laws2 → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → UnifPowSt3 (R := R) (I := I) ∧ UnifPowSt2 (R := R) (I := I) ∧ UnifPowSt (R := R) (I := I) := by
-  intro hL hL₂ R _ _ I hR
-  have h := unifPow_full hL hL₂ R I hR
-  refine ⟨h, ?_, ?_⟩
-  · intro D A G _ _ U j D' A' G' _ _ pD pA pG
-    obtain ⟨U', ⟨P⟩⟩ := h D A G U j D' A' G' pD pA pG
-    exact ⟨U', ⟨P.toUnifPowOf2⟩⟩
-  · intro D A G _ _ U j D' A' G' _ _ pD pA pG
-    obtain ⟨U', ⟨P⟩⟩ := h D A G U j D' A' G' pD pA pG
-    exact ⟨U', ⟨P.toUnifPowOf2.toUnifPowOf⟩⟩
 
 end GlobalTheory.UnifPowAdm

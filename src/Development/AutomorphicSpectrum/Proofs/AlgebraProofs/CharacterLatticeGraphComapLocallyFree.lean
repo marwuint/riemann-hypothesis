@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLatticeData
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocFreeMapMkQIff
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KernelGraphBaseChangeHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeQuotientStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChange
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KernelGraphBaseChangeHolds
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeQuotient
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.Imports
 
 open GlobalTheory.CompanionTheory.Ar.Num
@@ -88,7 +88,7 @@ theorem stepKer : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : 
   · have h0 : χ τ 0 = 0 := (hχ.2.2.2.2 τ).1
     exact (LocFreeSchanuel.main R 1 (r τ) (D.xId (χ τ) i)
       ((D.stepGraph τ (χ τ) i).map (AddMonoidHom.snd _ _)) (D.kk τ ((i : ℕ) + 1))
-      (D.stepGraph τ (χ τ) i) (((GlobalTheory.T.lattice_good_base_change D R p w χ hχ hB hG1).1 τ).2.2.2 i) (hG2.step τ i)
+      (D.stepGraph τ (χ τ) i) (((_root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main D R p w χ hχ hB hG1).1 τ).2.2.2 i) (hG2.step τ i)
       (hG2.kk τ _) (stepGraph_stable D hB τ (χ τ) i)
       (fun c m h => ⟨fst_mem_xId_of_mem_stepGraph D hB τ (χ τ) i h, ⟨(c, m), h, rfl⟩⟩)
       (fun c h => exists_mem_stepGraph_of_mem_xId D hB τ (χ τ) h0 i h)
@@ -97,7 +97,7 @@ theorem stepKer : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : 
         rintro _ ⟨⟨c, m⟩, h, rfl⟩
         exact ⟨c, h⟩)).2
   · have hst := stepGraph_stable D hB τ (χ τ) i
-    rw [(GlobalTheory.T.kernel_graph_base_change_holds D R p w χ hχ hB hG1 C RC hRC τ).2 i]
+    rw [(_root_.GlobalTheory.CompanionTheory.Ar.Num.kernel_graph_base_change D R p w χ hχ hB hG1 C RC hRC τ).2 i]
     let sw := (AddEquiv.prodComm (M := Ω) (N := Fin (r τ) → Ω)).toAddMonoidHom
     let Δ' : AddSubgroup ((Fin (r τ) → Ω) × Ω) := (D.stepGraph τ (χ τ) i).map sw
     have hst' : ∀ a ∈ R, ∀ v ∈ Δ', a • v ∈ Δ' := by
@@ -107,7 +107,7 @@ theorem stepKer : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : 
         (D.stepGraph τ (χ τ) i).map (AddMonoidHom.snd _ _) := by
       rw [AddSubgroup.map_map]
       rfl
-    have key := (GlobalTheory.T.locally_free_base_change_quotient R RC hRC (bcMap Ω C (Fin (r τ))) (Algebra.linearMap Ω C)
+    have key := (_root_.GlobalTheory.CompanionTheory.Ar.GraphRestrict.main R RC hRC (bcMap Ω C (Fin (r τ))) (Algebra.linearMap Ω C)
       (isBaseChange_bcMap Ω C _) (IsBaseChange.linearMap Ω C) Δ' ⊥ (r τ) hst'
       (hfst ▸ hG2.step τ i) bot_le (by
         intro a _ v hv

@@ -47,31 +47,9 @@ theorem seq_pow_self (y : Tilt p R) (n : ℕ) : seq n y ^ p ^ n = PreTilt.untilt
 theorem ext_seq {x y : Tilt p R} (h : ∀ n, seq n x = seq n y) : x = y :=
   (seqEquiv p R).symm.injective (Perfection.extMonoid h)
 
-theorem ofSeq_seq (y : Tilt p R) : ofSeq (fun n => seq n y) (seq_succ_pow y) = y :=
-  ext_seq fun n => seq_ofSeq _ _ n
-
-theorem mk_seq (y : Tilt p R) (n : ℕ) :
-    Ideal.Quotient.mk (span {(p : R)}) (seq n y) = PreTilt.coeff n y := by
-  obtain ⟨z, rfl⟩ := (seqEquiv p R).surjective y
-  simp only [seq, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]
-  rfl
-
 theorem seq_frobeniusEquiv_symm (y : Tilt p R) (n : ℕ) :
     seq n ((frobeniusEquiv (Tilt p R) p).symm y) = seq (n + 1) y := by
   conv_rhs => rw [← frobeniusEquiv_symm_pow_p (Tilt p R) p y, map_pow, seq_succ_pow]
-
-theorem seq_eq_untilt (y : Tilt p R) (n : ℕ) :
-    seq n y = PreTilt.untilt (((frobeniusEquiv (Tilt p R) p).symm)^[n] y) := by
-  induction n generalizing y with
-  | zero => exact seq_zero y
-  | succ n ih => rw [Function.iterate_succ_apply, ← ih, seq_frobeniusEquiv_symm]
-
-theorem seq_map (f : R →+* S) (y : Tilt p R) (n : ℕ) : seq n (map p f y) = f (seq n y) := by
-  have : map p f y = ofSeq (fun n => f (seq n y)) (fun n => by rw [← map_pow, seq_succ_pow]) := by
-    refine ext fun n => ?_
-    rw [coeff_map, ← mk_seq, ← mk_seq, seq_ofSeq]
-    rfl
-  rw [this, seq_ofSeq]
 
 end Tilt
 
@@ -178,11 +156,6 @@ theorem exists_padicPow_eq (η : tateModule p R) {a : ℤ_[p]} {m k : ℕ}
   push_cast
   linear_combination hb
 
-theorem map_padicPow (f : R →+* S) (η : tateModule p R) (η' : tateModule p S)
-    (h : Tilt.map p f η.1 = η'.1) (a : ℤ_[p]) :
-    Tilt.map p f (padicPow η a).1 = (padicPow η' a).1 :=
-  Tilt.ext_seq fun n => by rw [seq_map, seq_padicPow, seq_padicPow, map_pow, ← seq_map, h]
-
 end tateModule
 
 open Tilt tateModule
@@ -252,11 +225,6 @@ def IsPrimitive.padicPowEquiv {ε : tateModule p R} (hε : IsPrimitive ε) :
 
 @[simp] theorem IsPrimitive.padicPowEquiv_apply {ε : tateModule p R} (hε : IsPrimitive ε)
     (a : ℤ_[p]) : hε.padicPowEquiv (Multiplicative.ofAdd a) = padicPow ε a := rfl
-
-def IsPrimitive.linearEquiv {ε : tateModule p R} (hε : IsPrimitive ε) :
-    ℤ_[p] ≃ₗ[ℤ_[p]] Additive (tateModule p R) :=
-  LinearEquiv.ofBijective (LinearMap.toSpanSingleton ℤ_[p] _ (Additive.ofMul ε))
-    ⟨fun _ _ h => hε.padicPow_injective h, fun η => hε.padicPow_surjective η.toMul⟩
 
 theorem IsPrimitive.exists_unit {ε ε' : tateModule p R} (hε : IsPrimitive ε)
     (hε' : IsPrimitive ε') : ∃ a : ℤ_[p]ˣ, ε' = padicPow ε a := by
@@ -329,13 +297,6 @@ def eps : tateModule p R := (exists_isPrimitive p R).choose
 variable (p R) in
 theorem isPrimitive_eps : IsPrimitive (eps p R) := (exists_isPrimitive p R).choose_spec
 
-theorem tateModule.map_eq_padicPow_cyclotomicCharacter (e : R ≃+* R) (η : tateModule p R) :
-    Tilt.map p (e : R →+* R) η.1 = (padicPow η (cyclotomicCharacter R p e)).1 := by
-  haveI := (isPrimitive_eps p R).hasEnoughRootsOfUnity
-  refine Tilt.ext_seq fun n => ?_
-  rw [seq_map, seq_padicPow]
-  exact cyclotomicCharacter.spec p e _ (seq_pow_eq_one η n)
-
 end Good
 
 namespace PFlat
@@ -385,10 +346,6 @@ theorem twist_surjective (ϖ : PFlat p R) : Function.Surjective fun η => ϖ.twi
     rw [← hc, mul_one, seq_zero, seq_zero, ϖ.2, ϖ'.2]
   · change seq n (ofSeq c hp * ϖ.1) = _
     rw [map_mul, seq_ofSeq, hc, mul_comm]
-
-theorem existsUnique_twist (ϖ ϖ' : PFlat p R) : ∃! η : tateModule p R, ϖ' = ϖ.twist η := by
-  obtain ⟨η, hη⟩ := twist_surjective ϖ ϖ'
-  exact ⟨η, hη.symm, fun η' h => twist_injective ϖ (h.symm.trans hη.symm)⟩
 
 def div (ϖ' ϖ : PFlat p R) : tateModule p R := (twist_surjective ϖ ϖ').choose
 

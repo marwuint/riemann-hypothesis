@@ -1,14 +1,17 @@
 import Mathlib
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuationTheory
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.TypicalCurveStructureConstants
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.RootStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.FactorialWeightedSumBound
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.OmBStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.WtSubOneLe
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogFGLDepthStagesLowAImports
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypicalCurvesTangentAndBasesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RootExtractionLemmaSheafStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GluedBlocksMulInvIntegralUnitDetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RootTrickFinsetCurvesBlockInverseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RebasedTypicalCurvesIsBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanTangentOfTypeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypicalCurvesTangentAndBases
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RootExtractionLemmaSheaf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GluedBlocksMulInvIntegralUnitDet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RootTrickFinsetCurvesBlockInverse
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RebasedTypicalCurvesIsBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanTangentOfType
 
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh
 
@@ -61,7 +64,7 @@ theorem exists_stage [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prime) (hv :
         (∀ b, (b = a ∨ (a ∈ S (ty a) ∧ b ∈ S (ty a))) → tangent (γ' b) ∈ U) →
           tangent (γ a) ∈ U) ∧
       ∀ a ∈ S (ty a), a ∉ D (ty a) → G.lc p (γ' a) n ∈ W (ty a) := by
-  have key := fun i => GlobalTheory.T.root_trick_finset_curves_block_inverse GlobalTheory.T.root_extraction_lemma_sheaf C v p hp hv d h ty i G γ (S i) (fun a _ => hB.1 a)
+  have key := fun i => _root_.GlobalTheory.RootFin.root_fin _root_.GlobalTheory.RootTrick.root_statement C v p hp hv d h ty i G γ (S i) (fun a _ => hB.1 a)
     (fun a ha => hS i a ha ▸ hB.2.1 a) n j hn ((Fin d → C) ⧸ W i) (W i).mkQ (by
       obtain ⟨t, ht, hta⟩ := hW i
       have := finrank_mod_le (W i) t ((fun a => G.lc p (γ a) n) '' (S i : Set (Fin d)))
@@ -69,8 +72,8 @@ theorem exists_stage [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prime) (hv :
       rw [Set.image_image] at this
       exact this.trans ht)
   choose x y D hDS hDj hxi hyi hxs hys hxy hLa using key
-  obtain ⟨hXi, hXY, hXd⟩ := GlobalTheory.T.glued_blocks_mul_inv_integral_unit_det C v d (ZMod h) ty S x y hS hxs hys hxi hyi hxy
-  obtain ⟨hB', htan, hlc⟩ := GlobalTheory.T.rebased_typical_curves_isBasis C v p hp hv d h ty G γ (glue ty S x) hB hXi hXd (by
+  obtain ⟨hXi, hXY, hXd⟩ := _root_.GlobalTheory.GlueBlocks.glue_mul_glue_inv C v d (ZMod h) ty S x y hS hxs hys hxi hyi hxy
+  obtain ⟨hB', htan, hlc⟩ := _root_.GlobalTheory.DepthStages.RebaseBasis.rebase_isBasis C v p hp hv d h ty G γ (glue ty S x) hB hXi hXd (by
     intro a b hab
     rcases glue_ne_zero hxs hab with rfl | ⟨-, hb⟩
     · rfl
@@ -173,7 +176,7 @@ theorem exists_stageInv_zero [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prim
       simp only [if_neg hc] at ha
       omega
     refine ⟨(Submodule.mem_bot C).1 (hW a (by simpa using hc.1) hc.2), ?_⟩
-    refine Submodule.span_mono ?_ (GlobalTheory.T.mem_span_tangent_of_type_of_isBasis C v p d h ty G γ' hB' (ty a + 2) _ fun c hc' =>
+    refine Submodule.span_mono ?_ (_root_.GlobalTheory.span_tangent_of_type C v p d h ty G γ' hB' (ty a + 2) _ fun c hc' =>
       (hB'.2.1 a).2 2 c (by simpa using hc'))
     rintro _ ⟨b, rfl⟩
     refine ⟨⟨b.1, b.2, ?_⟩, rfl⟩

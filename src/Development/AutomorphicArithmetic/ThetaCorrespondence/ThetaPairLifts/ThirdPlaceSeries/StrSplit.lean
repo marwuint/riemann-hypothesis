@@ -1,5 +1,15 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaEigenCompatibilityFifth
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsUniqueVec
+import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoOneOfSummable
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GoodLabelsRankPartParameterCuspidal
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeightRegularOfExt
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaEigenCompatibilityEighth
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTwistPlacesAboveK
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BaseChangeTwistedCuspParts
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GoodPlaceIsSplit
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.DictStatement
@@ -17,7 +27,7 @@ theorem GlobalTheory.EigStrSplit.str_split_alt : GlobalTheory.Published.Automorp
   intro hAF hL D P X hA h41 h7 htl i hμ j hj x hx f hf y hy hy0 hh hops s B hs hB w hw hsp
   obtain ⟨Q, hQx, hu, hBQ⟩ := _root_.GlobalTheory.T.theta_eigen_compatibility_eighth_alt hAF hL D P X hA h41 h7 htl i hμ j hj x hx f hf y hy hy0 hh hops s B hs hB w hw hsp
   obtain ⟨-, Sig, ⟨P0, hP0, hbc⟩, hgood⟩ := hx
-  have hcusp := GlobalTheory.T.goodLabels_rank_part_parameter_cuspidal D htl i x Sig ⟨P0, hP0, hbc⟩ hgood
+  have hcusp := _root_.GlobalTheory.GoodCuspPoint.main D htl i x Sig ⟨P0, hP0, hbc⟩ hgood
   obtain ⟨hS, hQ⟩ := _root_.GlobalTheory.T.good_place_not_mem_S_and_Q_of_tieLab hL D P X hA h41 htl i w hw
   have hz := _root_.GlobalTheory.T.isSplit_at_good_heightOne_place_of_used0 hAF hL D P X hA htl i hμ j hj w hw hsp
   obtain ⟨B', e, hB'⟩ := _root_.GlobalTheory.T.isSplit_of_isBCV_twistIso_of_isCuspIso hAF hL D P h41 h7 htl i x Q P0 Sig hQx hP0 hcusp hbc w hsp hS hQ hu _ hz

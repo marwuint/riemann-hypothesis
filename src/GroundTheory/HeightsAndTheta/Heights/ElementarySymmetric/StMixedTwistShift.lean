@@ -22,16 +22,6 @@ def MixedTwistShift.Statement : Prop :=
             (twistSys k x ((c : ℤ) + d))) =
         if IsSubvar x qq n then interNum qq (fun i => (L i).toSubSystem) else 0
 
-theorem mixedTwistShift_hyps (k : Type u) [Field k] :
-    (primeOf (S := k) (genericPt k 1)).IsPrime ∧
-      (∀ f ∈ primeOf (S := k) (genericPt k 1), ∀ d : ℕ,
-        homogeneousComponent d f ∈ primeOf (S := k) (genericPt k 1)) ∧
-      primeOf (S := k) (genericPt k 1) ≤ primeOf (S := k) (genericPt k 1) ∧
-      ringKrullDim (Poly k 1 ⧸ primeOf (S := k) (genericPt k 1)) ≤ ((1 + 1 : ℕ) : WithBot ℕ∞) ∧
-      Nonempty (Fin 1 → LineBundle k (genericPt k 1)) :=
-  ⟨(isSubvar_genericPt k 1).isPrime, (isSubvar_genericPt k 1).homog, le_rfl,
-    (isSubvar_genericPt k 1).dim.le, ⟨![twistBundle k (genericPt k 1) 1]⟩⟩
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

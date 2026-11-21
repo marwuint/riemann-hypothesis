@@ -1,7 +1,9 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowDict
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.RowDictPf
-import Formalism.SharpRestriction.LevelLetterCocycles.StatementFamilies.ArithmeticCylinders
+import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
+import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
+import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.LevelLetterCocycles.CylinderCountFamily
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCountP
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BunExists
@@ -524,22 +526,6 @@ variable {X} {ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ} {hJ : EJId
 theorem thirdTie_allRows : LabelCountGoodInjective (allRowsOf X ψ₀ hJ hU hO hI hL) :=
   (Classical.choose_spec (Classical.choose_spec hL)).2
 
-theorem admissibleLevel_allRows (hψ : ∀ k, ψ₀ k ≠ 1) (hL6 : ConclusionL D) (hg : ∀ k, 2 * D.R.r ≤ D.host.g k) :
-    PlaceLawIdempotents (allRowsOf X ψ₀ hJ hU hO hI hL) 6 :=
-  place_law_of_statement _ hL6 hg fun k _ => ⟨ψ₀ k, hψ k, Or.inr rfl⟩
-
-theorem thirdTieNumbers_allRows : LabelCountSpace (allRowsOf X ψ₀ hJ hU hO hI hL).toAt :=
-  labelCountSpace_toAt_of_labelCountGoodInjective _ thirdTie_allRows
-
-theorem admissibleCount_allRows (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
-    (h1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb) (hL6 : ConclusionL D)
-    (hg : ∀ k, 2 * D.R.r ≤ D.host.g k) (hC : TieCountAt (allRowsOf X ψ₀ hJ hU hO hI hL).toAt n₀ Alev C₃ cb)
-    (hP : Formalism.MainNotions.N.CylinderCountFamily.PCountTie D (allRowsOf X ψ₀ hJ hU hO hI hL).toAt) (hA : TieAdmG D) :
-    Formalism.MainNotions.N.CylinderCountFamily.CylinderCountUniformAt D (allRowsOf X ψ₀ hJ hU hO hI hL).toAt n₀ Alev C₃ c₃ cb 6 :=
-  ⟨Formalism.MainNotions.N.CylinderCountFamily.countCylAt_of D _ h1 hC hP,
-    admissibleLevel_allRows (X := X) (hJ := hJ) (hU := hU) (hO := hO) (hI := hI) (hL := hL) hψ hL6 hg,
-    thirdTieNumbers_allRows (X := X) (hJ := hJ) (hU := hU) (hO := hO) (hI := hI) (hL := hL), hC, hA⟩
-
 end Ctor
 
 section Ctor2
@@ -610,54 +596,6 @@ instance KgN_normal (m : ℕ) : (KgN I m).Normal := ⟨fun _ hn g => Kg_conj' I 
 
 instance KSub_compact : CompactSpace (KSub I) :=
   isCompact_iff_compactSpace.mp (Formalism.L2.SG.Closed.AutKCompact_holds I)
-
-theorem finite_quot (m : ℕ) (hm : 1 ≤ m) : Finite (KSub I ⧸ KgN I m) :=
-  Subgroup.quotient_finite_of_isOpen _ ((I.topf_open m hm).preimage continuous_subtype_val)
-
-def KCRT (m₁ m₂ : ℕ) : Prop := ∀ x ∈ I.Kset, ∃ k₁ ∈ I.Kg m₁, ∃ k₂ ∈ I.Kg m₂, x = k₁ * k₂
-
-open Classical in
-
-def redQ (m₁ m₂ : ℕ) (x : I.Gf) : (KSub I ⧸ KgN I m₁) × (KSub I ⧸ KgN I m₂) :=
-  if hx : x ∈ I.Kset then
-    ((QuotientGroup.mk (⟨x, hx⟩ : KSub I) : KSub I ⧸ KgN I m₁), (QuotientGroup.mk (⟨x, hx⟩ : KSub I) : KSub I ⧸ KgN I m₂))
-  else 1
-
-def redDatumQ (m₁ m₂ : ℕ) (h₁ : 1 ≤ m₁) (h₂ : 1 ≤ m₂) (hC : KCRT I m₁ m₂) : I.RedDatum m₁ m₂ where
-  G₁ := KSub I ⧸ KgN I m₁
-  G₂ := KSub I ⧸ KgN I m₂
-  fin₁ := haveI := finite_quot I m₁ h₁; Fintype.ofFinite _
-  fin₂ := haveI := finite_quot I m₂ h₂; Fintype.ofFinite _
-  red := redQ I m₁ m₂
-  red_mul := fun x hx y hy => by
-    simp only [redQ, dif_pos hx, dif_pos hy, dif_pos (K_mul I hx hy)]
-    rfl
-  red_surj := fun a => by
-    obtain ⟨u₁, hu₁⟩ := QuotientGroup.mk_surjective a.1
-    obtain ⟨u₂, hu₂⟩ := QuotientGroup.mk_surjective a.2
-    obtain ⟨k₁, hk₁, k₂, hk₂, he⟩ := hC _ (K_mul I (K_inv I u₁.2) u₂.2)
-    have hxK : (u₁ : I.Gf) * k₁ ∈ I.Kset := K_mul I u₁.2 hk₁.1
-    refine ⟨(u₁ : I.Gf) * k₁, hxK, ?_⟩
-    have hu₂' : (u₂ : I.Gf) = (u₁ : I.Gf) * (k₁ * k₂) := by rw [← he]; group
-    simp only [redQ, dif_pos hxK]
-    refine Prod.ext ?_ ?_
-    · rw [← hu₁]
-      refine QuotientGroup.eq.mpr ?_
-      show ((u₁ : I.Gf) * k₁)⁻¹ * (u₁ : I.Gf) ∈ I.Kg m₁
-      have : ((u₁ : I.Gf) * k₁)⁻¹ * (u₁ : I.Gf) = k₁⁻¹ := by group
-      rw [this]; exact Kg_inv' I m₁ hk₁
-    · rw [← hu₂]
-      refine QuotientGroup.eq.mpr ?_
-      show ((u₁ : I.Gf) * k₁)⁻¹ * (u₂ : I.Gf) ∈ I.Kg m₂
-      rw [hu₂']
-      have : ((u₁ : I.Gf) * k₁)⁻¹ * ((u₁ : I.Gf) * (k₁ * k₂)) = k₂ := by group
-      rw [this]; exact hk₂
-  red_fib₁ := fun x hx y hy => by
-    simp only [redQ, dif_pos hx, dif_pos hy]
-    exact QuotientGroup.eq
-  red_fib₂ := fun x hx y hy => by
-    simp only [redQ, dif_pos hx, dif_pos hy]
-    exact QuotientGroup.eq
 
 end RedQ
 
@@ -730,31 +668,7 @@ theorem tieCountAt_allRowsOf {n₀ : ℕ} {Alev C₃ cb : ℝ} (hB : CountBase X
     fun v => X.ds v, fun v => X.low v, X.B.tens_spec, inferInstance, X.B.fund_spec, X.B.R_spec,
     reT_spec X hI _⟩, hgap, hC, hf, hb, hpos⟩
 
-theorem admissibleCount_allRows_alt (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
-    (h1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb) (hL6 : ConclusionL D)
-    (hg : ∀ k, 2 * D.R.r ≤ D.host.g k) (hB : CountBase X n₀ Alev C₃ cb)
-    (hA : ∀ (k : Fin 2) (S : Set (Tup D k)), EtAlg X (cyl D k S)) (hUn : ∀ (k : Fin 2) (S : Set (Tup D k)), EtUnip X k S)
-    (hP : Formalism.MainNotions.N.CylinderCountFamily.PCountTie D (allRowsOf X ψ₀ hJ hU hO hI hL).toAt) (hAd : TieAdmG D) :
-    Formalism.MainNotions.N.CylinderCountFamily.CylinderCountUniformAt D (allRowsOf X ψ₀ hJ hU hO hI hL).toAt n₀ Alev C₃ c₃ cb 6 :=
-  admissibleCount_allRows (X := X) (hJ := hJ) (hU := hU) (hO := hO) (hI := hI) (hL := hL) hψ h1 hL6 hg
-    (tieCountAt_allRowsOf hB hA hUn) hP hAd
-
 end CountPf
-
-section FinalK
-
-variable {D : D7} (X : HidaSetting D)
-
-theorem admissibleCount_allRows_unipotent (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (hK : RedKerOne X) (hO : EtOne X ψ₀)
-    (hL : RowsLab X) (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
-    (h1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb) (hL6 : ConclusionL D)
-    (hg : ∀ k, 2 * D.R.r ≤ D.host.g k) (hB : CountBase X n₀ Alev C₃ cb)
-    (hA : ∀ (k : Fin 2) (S : Set (Tup D k)), EtAlg X (cyl D k S)) (hUn : ∀ (k : Fin 2) (S : Set (Tup D k)), EtUnip X k S)
-    (hP : Formalism.MainNotions.N.CylinderCountFamily.PCountTie D (allRowsOfK X ψ₀ hK hO hL).toAt) (hAd : TieAdmG D) :
-    Formalism.MainNotions.N.CylinderCountFamily.CylinderCountUniformAt D (allRowsOfK X ψ₀ hK hO hL).toAt n₀ Alev C₃ c₃ cb 6 :=
-  admissibleCount_allRows_alt hψ h1 hL6 hg hB hA hUn hP hAd
-
-end FinalK
 
 section Count
 
@@ -1104,16 +1018,6 @@ variable {D : D7} (X : HidaSetting D)
 def allRowsOfP (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (h0 : RedKerP X 0) (h1 : RedKerP X 1)
     (hO : EtOne X ψ₀) (hL : RowsLab X) : AllRows D :=
   allRowsOfK X ψ₀ (redKerOne_of X h0 h1) hO hL
-
-theorem admissibleCount_allRows_partner (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (h0 : RedKerP X 0) (h1 : RedKerP X 1)
-    (hO : EtOne X ψ₀) (hL : RowsLab X) (hψ : ∀ k, ψ₀ k ≠ 1) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
-    (hC1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb) (hL6 : ConclusionL D)
-    (hg : ∀ k, 2 * D.R.r ≤ D.host.g k) (hB : CountBase X n₀ Alev C₃ cb)
-    (hA : ∀ (k : Fin 2) (S : Set (Tup D k)), EtAlg X (cyl D k S))
-    (hP : Formalism.MainNotions.N.CylinderCountFamily.PCountTie D (allRowsOfP X ψ₀ h0 h1 hO hL).toAt) (hAd : TieAdmG D) :
-    Formalism.MainNotions.N.CylinderCountFamily.CylinderCountUniformAt D (allRowsOfP X ψ₀ h0 h1 hO hL).toAt n₀ Alev C₃ c₃ cb 6 :=
-  admissibleCount_allRows_unipotent X ψ₀ _ hO hL hψ hC1 hL6 hg hB hA
-    (fun k S => etUnip_of X k (by fin_cases k; exacts [h1, h0]) S) hP hAd
 
 end FinalP
 

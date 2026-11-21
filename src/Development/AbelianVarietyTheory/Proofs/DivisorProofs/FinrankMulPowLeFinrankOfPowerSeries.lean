@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentOfDistinctValuationLikeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankLeCardValuesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentOfDistinctValuationLike
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankLeCardValues
 
 open Filter Topology
 
@@ -317,7 +317,7 @@ theorem finrank_mul_pow_le_finrank_of_powerSeries :
   have h1 : ∀ (c : ℂ) (u : A), c ≠ 0 → val φ (c • u) = val φ u := fun c u hc => val_smul c u hc
   have h2 := val_add hinj
   have h3 := val_sub hinj
-  obtain ⟨b, hbF, hbinj⟩ := GlobalTheory.T.exists_injective_values_on_finrank_family ℂ A _ (val φ) h1 h2 h3 F
+  obtain ⟨b, hbF, hbinj⟩ := _root_.GlobalTheory.finrank_le_card_values ℂ A _ (val φ) h1 h2 h3 F
   have hbne : ∀ i, ∃ k, evalAt φ k (b i) ≠ 0 := fun i => exists_evalAt_ne_zero hinj (hbF i).2
   have hex : ∀ i, ∃ e : Fin D →₀ ℕ, lexOrder (evalAt φ (firstIdx φ (b i)) (b i)) =
       ((toLex e : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ))) :=
@@ -348,7 +348,7 @@ theorem finrank_mul_pow_le_finrank_of_powerSeries :
     have haa : a = a' := funext fun d => Fin.ext (hcoord d).2
     rw [haa]
   have hli : LinearIndependent ℂ w :=
-    GlobalTheory.T.linearIndependent_of_injective_valuationLike ℂ A _ _ (val φ) h1 h2 w (fun p => (hwv p).1) hwinj
+    _root_.GlobalTheory.linearIndependent_of_distinct_valuationLike ℂ A _ _ (val φ) h1 h2 w (fun p => (hwv p).1) hwinj
   have hwG : ∀ p, w p ∈ G := fun p =>
     expand_mem x c F G m hG (b p.1) (hbF p.1).1 (fun d => (p.2 d : ℕ)) (fun d => (p.2 d).2)
   let wG : Fin (Module.finrank ℂ F) × (Fin D → Fin m) → G := fun p => ⟨w p, hwG p⟩

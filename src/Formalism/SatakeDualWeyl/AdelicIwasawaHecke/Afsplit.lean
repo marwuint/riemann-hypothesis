@@ -429,63 +429,6 @@ theorem afsplitE_snd_eq_one (g : UPts σ J 𝔸) :
     rw [hI]
     linear_combination hZ
 
-theorem afsplitE_level :
-    ((levelAf σ J).subgroupOf (UPts σ J 𝔸)).map (afsplitE σ J v).toMonoidHom =
-      ((levelV σ J v).subgroupOf (UPts σ J (v.adicCompletion F))).prod
-        ((levelAf σ J).subgroupOf (afsplitKer σ J v)) := by
-  have hAf : ∀ x : GL n (E ⊗[F] 𝔸), x ∈ levelAf σ J ↔ x ∈ UPts σ J 𝔸 ∧
-      ((∀ i j, (x : Matrix n n (E ⊗[F] 𝔸)) i j ∈ tensInt (F := F) 𝔸 (intOE E) (intAd F)) ∧
-       (∀ i j, ((x⁻¹ : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸)) i j ∈
-          tensInt (F := F) 𝔸 (intOE E) (intAd F))) :=
-    fun x => Subgroup.mem_inf.trans (and_congr Iff.rfl (afsplit_stab_iff _ x))
-  have hV : ∀ x : GL n (E ⊗[F] v.adicCompletion F), x ∈ levelV σ J v ↔
-      x ∈ UPts σ J (v.adicCompletion F) ∧
-      ((∀ i j, (x : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈
-          tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) ∧
-       (∀ i j, ((x⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈
-          tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring)) :=
-    fun x => Subgroup.mem_inf.trans (and_congr Iff.rfl (afsplit_stab_iff _ x))
-  ext p
-  obtain ⟨⟨h, hh⟩, ⟨k, hk⟩⟩ := p
-  simp only [Subgroup.mem_map_equiv, Subgroup.mem_prod, Subgroup.mem_subgroupOf, afsplitE_symm]
-  rw [hAf, hV, hAf]
-  have hkU := (Subgroup.mem_inf.mp hk).1
-  have h1mem : ∀ i j, (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈
-      tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring :=
-    fun i j => afsplit_one_mem _ i j
-  constructor
-  · rintro ⟨-, hC, hCi⟩
-    have hki : k⁻¹ ∈ afsplitKer σ J v := inv_mem hk
-    have eh : ∀ i j, prV (E := E) v (afsplitC v (h : Matrix n n (E ⊗[F] v.adicCompletion F))
-        (k : Matrix n n (E ⊗[F] 𝔸)) i j) = (h : Matrix n n (E ⊗[F] v.adicCompletion F)) i j :=
-      fun i j => congrFun (congrFun (C_map_prV_lemma_5 v (h : Matrix n n (E ⊗[F] v.adicCompletion F))
-        (k : Matrix n n (E ⊗[F] 𝔸))) i) j
-    have ehi : ∀ i j, prV (E := E) v (afsplitC v ((h⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) :
-        Matrix n n (E ⊗[F] v.adicCompletion F)) ((k⁻¹ : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸)) i j) =
-        ((h⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) i j :=
-      fun i j => congrFun (congrFun (C_map_prV_lemma_5 v ((h⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) :
-        Matrix n n (E ⊗[F] v.adicCompletion F)) ((k⁻¹ : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸))) i) j
-    have ek : afsplitU v 1 (afsplitU v h k) = k := afsplit_right2 σ J v h k hk
-    have eki : afsplitU v 1 (afsplitU v h⁻¹ k⁻¹) = k⁻¹ := afsplit_right2 σ J v h⁻¹ k⁻¹ hki
-    refine ⟨⟨hh, fun i j => ?_, fun i j => ?_⟩, ⟨hkU, fun i j => ?_, fun i j => ?_⟩⟩
-    · rw [← eh]
-      exact afsplit_prV_int v _ (hC i j)
-    · rw [← ehi]
-      exact afsplit_prV_int v _ (hCi i j)
-    · rw [← ek]
-      exact afsplitC_int v _ _ h1mem hC i j
-    · rw [← eki]
-      exact afsplitC_int v _ _ h1mem hCi i j
-  · rintro ⟨⟨-, hh1, hh2⟩, ⟨-, hk1, hk2⟩⟩
-    exact ⟨afsplitU_mem v σ J h k hh hkU, fun i j => afsplitC_int v _ _ hh1 hk1 i j,
-      fun i j => afsplitC_int v _ _ hh2 hk2 i j⟩
-
 end Iso
-
-theorem finite_adele_split_off_holds : Formalism.UG.AfSplitOff := by
-  unfold AfSplitOff
-  intro F E _ _ _ _ _ n _ _ σ J v
-  exact ⟨↥(afsplitKer σ J v), inferInstance, (levelAf σ J).subgroupOf (afsplitKer σ J v), afsplitE σ J v,
-    fun g => afsplitE_fst σ J v g, fun g => afsplitE_snd_eq_one σ J v g, afsplitE_level σ J v⟩
 
 end Formalism.UG.P

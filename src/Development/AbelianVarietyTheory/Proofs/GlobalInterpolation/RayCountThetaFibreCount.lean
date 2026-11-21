@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNotPrimePow
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QFormCountStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaQFormStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QFormCount
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaQForm
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassIdealCountEqNcardShiftedBinaryFormStatement
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem
 open scoped Classical
@@ -65,14 +65,14 @@ theorem rayCountTheta : ∀ (K : Type) [Field K] [NumberField K] (d M : ℕ) (x 
     rw [hs]
     field_simp
   refine ⟨fun y hy => ?_, fun t ht0 ht1 => ?_⟩
-  · have h94 := GlobalTheory.T.abs_ncard_qForm_le_sub_pi_div_sqrt_mul_le_ten_sqrt α γ l θ₁ θ₂ y hα hγ hy
+  · have h94 := _root_.GlobalTheory.Hk.qForm_count α γ l θ₁ θ₂ y hα hγ hy
     have hsum : ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, aRay D g n =
         (({v : ℤ × ℤ | qForm α γ l θ₁ θ₂ v ≤ y}.ncard : ℕ) : ℝ) := by
       simp only [ha]
       exact rayCountTheta_fibre_count (qForm α γ l θ₁ θ₂) q hq1 hq y hy h94.1
     rw [hsum, ← hC]
     exact h94.2
-  · have h96 := GlobalTheory.T.summable_and_abs_tsum_exp_neg_qForm_sub_le α γ l θ₁ θ₂ t (by linarith) (by linarith) ht0
+  · have h96 := _root_.GlobalTheory.Hk.theta_qForm α γ l θ₁ θ₂ t (by linarith) (by linarith) ht0
     have htsum : ∑' n : ℕ, aRay D g n * Real.exp (-(t * n)) =
         ∑' v : ℤ × ℤ, Real.exp (-(t * qForm α γ l θ₁ θ₂ v)) := by
       simp only [ha]

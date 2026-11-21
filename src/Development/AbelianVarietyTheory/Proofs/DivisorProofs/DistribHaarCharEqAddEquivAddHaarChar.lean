@@ -55,26 +55,4 @@ def evalUnitCE (R : Type) [AddCommGroup R] [TopologicalSpace R] : (Unit → R) �
   continuous_toFun := continuous_apply ()
   continuous_invFun := continuous_pi fun _ => continuous_id
 
-theorem modu_norm_eq_absE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], NumberField.IsTotallyReal F →
-    ∀ t : (AE F E)ˣ, (((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) t) : ℝ≥0) : ℝ) = (absE F E t : ℝ) := by
-  intro F E _ _ _ _ _ hF t
-  haveI := hF
-  letI : MeasurableSpace (AF F) := borel _
-  haveI : BorelSpace (AF F) := ⟨rfl⟩
-  set a : (AF F)ˣ := Units.map (Algebra.norm (AF F) : AE F E →* AF F) t with ha
-  let M : Matrix Unit Unit (AF F) := fun _ _ => (a : AF F)
-  have hdet : M.det = (a : AF F) := Matrix.det_unique M
-  have hM : IsUnit M.det := hdet ▸ a.isUnit
-  have hχ := GlobalTheory.ModuLR.chi_AF F M hM
-  have htr := GlobalTheory.ModuLR.addEquivAddHaarChar_transport (evalUnitCE (AF F)) (GlobalTheory.ModuLR.mulVecCE M hM)
-  have hext : ((evalUnitCE (AF F)).symm.trans (GlobalTheory.ModuLR.mulVecCE M hM)).trans (evalUnitCE (AF F)) = mulUnitCE a := by
-    ext x
-    show (M *ᵥ fun _ => x) () = (a : AF F) * x
-    simp [Matrix.mulVec, dotProduct, M]
-  rw [hext] at htr
-  show ((distribHaarChar (AdeleRing (𝓞 F) F) a : ℝ≥0) : ℝ) = _
-  rw [show distribHaarChar (AdeleRing (𝓞 F) F) a = distribHaarChar (AF F) a from rfl,
-    distribHaarChar_eq_addEquivAddHaarChar, htr, hχ, hdet]
-  exact GlobalTheory.absE_eq_prod_norm_fstA_sndA F E t
-
 end GlobalTheory.ModuNorm

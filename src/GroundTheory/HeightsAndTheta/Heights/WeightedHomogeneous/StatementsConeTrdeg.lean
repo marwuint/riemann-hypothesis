@@ -14,10 +14,6 @@ def ConeTrdeg.Statement : Prop :=
       Geo.IsHorizontal (Geo.mCoordIdeal y) →
         Algebra.trdeg ℤ (Geo.MRing ι ⧸ Geo.mCoordIdeal y) = Algebra.trdeg ℤ Ω + Fintype.card K
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights

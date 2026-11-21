@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramUnipotentStabili
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeCongruenceStabiliser
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoveringOHolds
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniquePlace
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruenceStabUFromIntegralUnipotentIsometryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruenceStabUFromIntegralUnipotentIsometry
 import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
 open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt GlobalTheory.LoopC
 open scoped ENNReal Classical
@@ -567,7 +567,7 @@ theorem covolume_term : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ 
   obtain ⟨hc, hfE, -, hm, hrd1, hs, hnorm, -, -, hw⟩ := GlobalTheory.real_places_facts D
   obtain ⟨⟨hS0, -⟩, hSt, -⟩ := hH
   obtain ⟨-, -, hmf, -, hlf, -, -, -, -, -, hlrd, -, -, -, -, -, -, -, -, -, -, -, hT, -⟩ := hS0
-  obtain ⟨I, hI, hNI, hcong⟩ := GlobalTheory.T.congruence_stabU_from_integral_unipotent_isometry D u u' F0 Λ hSt hF0 hΛ F' hF'
+  obtain ⟨I, hI, hNI, hcong⟩ := _root_.GlobalTheory.LoopV.Cong.congruence_mem D u u' F0 Λ hSt hF0 hΛ F' hF'
   have hr : 1 ≤ D.R.rS := hSt.1
   have hL1 : 1 ≤ large₂.sc.L := Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
   have hbe : Real.exp 1 ≤ large₂.sc.b := Real.exp_le_exp.2 hL1

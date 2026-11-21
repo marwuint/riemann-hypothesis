@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.CharacterGerms.NegMem
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AddCurveStableOfIntegralGaugedFormalGroupLawStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugedCurveLogarithmsClosedUnderTadicLimitsStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugedCurveLogarithmsClosedUnderTadicLimits
 
 open scoped BigOperators
 open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formalism.L2.Pj GlobalTheory.RowLaw ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
@@ -101,7 +101,7 @@ theorem sumV_mem_tySet : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d
   have hP : ∀ M, ∑ s ∈ Finset.range M, Vpow s (y s) ∈ X.TySet V g := fun M =>
     X.sum_mem V g h0 (X.add_mem V g hA hX.uint) _ _ fun s _ => vpow_mem X V g _ (hy s) s
   rw [mem_tySet_iff]
-  refine GlobalTheory.T.gaugedCurveLogarithms_closed_under_tadicLimits C V d I κ X hX g (fun M => logOf X V g (∑ s ∈ Finset.range M, Vpow s (y s))) _
+  refine _root_.GlobalTheory.RowLaw.cv_closed_under_limits C V d I κ X hX g (fun M => logOf X V g (∑ s ∈ Finset.range M, Vpow s (y s))) _
     (fun M => (mem_tySet_iff X V g _).1 (hP M)) fun m => ⟨m + 1, fun M hM => ?_⟩
   exact coeff_logOf_congr X V g m fun s hs n => partial_eq y s M (by omega) n
 

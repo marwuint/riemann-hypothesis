@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisHodgeOfCuspidal
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EventuallyUnr
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRecTLocRecT
@@ -49,10 +49,6 @@ theorem locPar_ofChar_unr_and_frobEig (hL : _root_.UpperTheory.Zero.LLC.RecTExis
   rw [e2, WD.frobEig_diag]
   exact ⟨(WD.unr_mk _).2 (WDRep.unr_diag _), by simp⟩
 end CharUnr
-section Twist
-end Twist
-section G
-end G
 end GlobalTheory.HodgeOfTrue
 end
 end

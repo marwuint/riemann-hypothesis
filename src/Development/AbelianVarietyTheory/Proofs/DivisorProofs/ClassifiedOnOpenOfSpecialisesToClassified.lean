@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiUnitOnBasicOpenOfComesFromBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTripleMapOfSameUniformisedCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperRelAmpleKTrivOfTrivialisationsGenerateStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTripleMapOfSameUniformisedCoords
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperRelAmpleKTrivOfTrivialisationsGenerate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryModuliObjectSpreadNormalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreTorsionRationalOfBaseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreTorsionRationalOfBase
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolarizationTransferModels
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelQuotientRepresentsReduced
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsRatAwayIff
@@ -49,9 +49,9 @@ theorem GlobalTheory.clsOpen : ∀ {E : Type} [Field E] [NumberField E] [IsCMFie
     · exact ⟨1, by rw [pow_one, hf_def]; exact Finset.dvd_prod_of_mem _ (Finset.mem_univ i)⟩
     · exact ⟨0, (hu j).dvd⟩)
   obtain ⟨tO, ⟨mO⟩⟩ := GlobalTheory.TraitOrder.exists_pull (spMap (algebraMap R A)) t₁
-  obtain ⟨hpr, ham, hkt⟩ := GlobalTheory.T.isProper_relAmple_kTriv_of_trivialisations_generate R hR t₁ P₁ f hψ tO mO
+  obtain ⟨hpr, ham, hkt⟩ := _root_.GlobalTheory.UCanon.Principal.isProper_relAmple_kTriv_of_psiUnitOn R hR t₁ P₁ f hψ tO mO
   have htors : GlobalTheory.TChart.TorsRat tO.G l.M' :=
-    (GlobalTheory.TorsAway.torsRat_away_iff R f t₁.G tO.G mO.φ mO.cart l.M').1 (GlobalTheory.T.genericFibre_torsion_rational_of_base L R hR t₁ P₁ iw s ε e₁ hε hsk hD₁)
+    (GlobalTheory.TorsAway.torsRat_away_iff R f t₁.G tO.G mO.φ mO.cart l.M').1 (_root_.GlobalTheory.UCanon.torsRat_of_divFrom L R hR t₁ P₁ iw s ε e₁ hε hsk hD₁)
   let K := FractionRing V
   have hunitK : IsUnit (((algebraMap V K).comp θ) f) := by
     rw [RingHom.comp_apply]
@@ -70,7 +70,7 @@ theorem GlobalTheory.clsOpen : ∀ {E : Type} [Field E] [NumberField E] [IsCMFie
     rw [Category.assoc, pullback.condition, ← Category.assoc, C.y_over, spMap_comp' incl bA, ← Category.assoc,
       ← spMap_comp' bA g, hgb, spMap_comp']
   obtain ⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩ := (genOf_iff Xo c C.y C.t).1 C.gen
-  obtain ⟨bc⟩ := GlobalTheory.T.exists_tripleMap_of_same_uniformised_coords L R V hR hV t₁ P₁ C.t C.P iw θ hθ s ε e₁ e hθk hD₁ hD
+  obtain ⟨bc⟩ := _root_.GlobalTheory.UCanon.sabMap_of_same_coords L R V hR hV t₁ P₁ C.t C.P iw θ hθ s ε e₁ e hθk hD₁ hD
   obtain ⟨n₁⟩ := GlobalTheory.TraitOrder.cancel (Category.id_comp _) m₂ mK.toSABMap
   obtain ⟨n₂⟩ := GlobalTheory.TraitOrder.comp rfl bc m₁
   obtain ⟨n₃⟩ := GlobalTheory.TraitOrder.comp (Category.id_comp _) n₂ n₁

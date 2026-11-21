@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SphericalEisensteinConvergence
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EisensteinIsotropicLine
+import Development.AbelianVarietyTheory.Definitions.Foundations.AnalyticOnNhdTsumNpow
 import Development.AbelianVarietyTheory.Definitions.Divisors.LocallyCompactSpaceAxis
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GodementSectionInvariantConvergent
 
@@ -65,16 +66,6 @@ abbrev tor (l : Fin j → ℤ) : GL (Fin j) (AF F ⊗[F] E) := GlobalTheory.Eis.
 variable (F) in
 
 abbrev bse : ℝ := 4 ^ Fintype.card (InfinitePlace F)
-
-example (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E) :
-    Crd σ J C D Z J₀ 1 0 0 := ⟨by simp, by simp, by simp [plus, cT]⟩
-
-example (h : IsCMExt F E σ) : Fr σ !![0, 1; 1, 0] (!![1; 0] : Matrix (Fin 2) (Fin 1) E) !![0; 1]
-    (0 : Matrix (Fin 2) (Fin 0) E) 1 := by
-  refine ⟨h, ⟨fun i j => ?_, by simp⟩, ⟨fun i => i.elim0, by simp⟩, ?_, ?_, ?_, ?_, Subsingleton.elim _ _, Subsingleton.elim _ _,
-    Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, ?_, rfl⟩
-  · fin_cases i <;> fin_cases j <;> simp
-  all_goals ext i j; fin_cases i <;> fin_cases j <;> simp [cT, Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]
 
 end GlobalTheory.SphEis
 

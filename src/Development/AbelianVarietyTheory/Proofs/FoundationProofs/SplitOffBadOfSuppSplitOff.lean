@@ -83,21 +83,6 @@ theorem moved_of_hom {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 
 variable {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G)
 
-theorem finite_stab {J J' : Subgroup G} (hle : J' ≤ J) {I : Type} {y : I → G} (hy : Bridge.IsReps ι J y)
-    (hfin : ∀ i, Finite (Bridge.stab ι J (y i))) (g : G) : Finite (Bridge.stab ι J' g) := by
-  obtain ⟨i, ⟨γ, k, rfl⟩, -⟩ := hy g
-  have := hfin i
-  refine Finite.of_injective (β := Bridge.stab ι J (y i)) (fun δ => ⟨γ⁻¹ * δ.1 * γ, ?_⟩) ?_
-  · have h := hle ((Bridge.mem_stab ι).1 δ.2)
-    rw [Bridge.mem_stab]
-    have := J.mul_mem (J.mul_mem k.2 h) (J.inv_mem k.2)
-    convert this using 1
-    simp only [map_mul, map_inv]
-    group
-  · intro a b h
-    have h' : γ⁻¹ * a.1 * γ = γ⁻¹ * b.1 * γ := congrArg Subtype.val h
-    exact Subtype.ext (mul_left_cancel (mul_right_cancel h'))
-
 end Generic
 
 section Support
@@ -217,10 +202,6 @@ theorem inv_mulVec_mem_iff (V : HSp D) (g : Bridge.Gf V) (x : Fin V.rank → D.h
     rw [← e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
     exact hz
 
-theorem isTransl_iff_latOf (V : HSp D) (g : Bridge.Gf V) (L : Lat V) :
-    IsTransl V (latC V) g L ↔ (L : Set (Fin V.rank → D.host.E)) = latOf D.host.F g.1.1 (latC V) := by
-  simp only [IsTransl, inv_mulVec_mem_iff, Set.ext_iff, SetLike.mem_coe]
-
 theorem coe_hLat (V : HSp D) (g : Bridge.Gf V) :
     (Bridge.hLat V g : Set (Fin V.rank → D.host.E)) = latOf D.host.F g.1.1 (latC V) := by
   obtain ⟨-, -, hfg, hsp, -⟩ := latHat_eq_hat_and_gram D V
@@ -231,10 +212,6 @@ theorem coe_hLat (V : HSp D) (g : Bridge.Gf V) :
     congr 1
     exact Set.ext fun x => inv_mulVec_mem_iff V g x
   rw [this, hΛ]
-
-theorem isTransl_iff {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat V} (hβ : IsSDFrame V β Λ 1) (g : Bridge.Gf V)
-    (L : Lat V) : IsTransl V Λ g L ↔ L = Bridge.hLat V g := by
-  rw [GlobalTheory.PrincInLevel.eq_latC hβ, isTransl_iff_latOf, ← coe_hLat, SetLike.coe_set_eq]
 
 theorem conj_mulVec_mem {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β : GL (Fin n) R) (y : GL (Fin n) S) (z : Fin n → R)
     (hz : ∀ j, ((β⁻¹).1 *ᵥ z) j ∈ S) (i : Fin n) :
@@ -263,14 +240,6 @@ theorem mulVec_mem_hat {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat 
   rw [AlgEquiv.eq_symm_apply]
   exact RingHom.map_mulVec (Lev.swapAE D) k.1.1 z i
 
-theorem isOpenLev_levEnv {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat V} (hβ : IsSDFrame V β Λ 1)
-    (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {N : ℕ} (hN : 0 < N)
-    (hL : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) : IsOpenLev V (levEnv V β L).J := by
-  have : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _
-  have : IsTopologicalGroup (GA D V) := inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))
-  exact Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (PrincLevel.finCong_mem_nhds V hN)
-    fun k hk => GlobalTheory.PrincInLevel.finCong_mem_levEnv D V β Λ L N k hβ hL hk)
-
 theorem isUnA_gf (V : HSp D) (g : Bridge.Gf V) : IsUnA (cF D) V.gramᵀ g.1.1 := by
   obtain ⟨_, g, rfl⟩ := g
   intro x y
@@ -283,86 +252,6 @@ theorem isLattice_hLat (V : HSp D) (g : Bridge.Gf V) : Submodule.IsLattice D.hos
   rw [SetLike.coe_injective ((coe_hLat V g).trans hΛ.symm)]
   exact ⟨h1, h2⟩
 
-theorem dualL_hLat (V : HSp D) (g : Bridge.Gf V) : Formalism.L2.Herm.dualL D.sp.cm V (Bridge.hLat V g) = Bridge.hLat V g := by
-  obtain ⟨-, -, hfg, hsp, c2, -, -, gh, gd, -, hsd⟩ := latHat_eq_hat_and_gram D V
-  have key := latOf_selfDual D.host.F D.host.E V.rank (latC V) (cF D) V.gramᵀ 1 g.1 hfg hsp c2 gh gd one_ne_zero hsd
-    (isUnA_gf V g)
-  unfold Formalism.L2.Herm.dualL
-  conv_rhs => rw [← Submodule.span_eq (Bridge.hLat V g)]
-  congr 1
-  ext v
-  rw [coe_hLat, ← key, ← coe_hLat]
-  refine forall_congr' fun y => imp_congr_right fun _ => ?_
-  have e : Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram y v = ∑ a, ∑ b, v a * V.gramᵀ a b * cF D (y b) := by
-    unfold Formalism.UG.hform
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-    change star (y b) * V.gram b a * v a = v a * V.gram b a * star (y b)
-    ring
-  rw [e, FractionalIdeal.mem_one_iff]
-  exact Iff.rfl
-
-theorem exists_pos_bd (V : HSp D) (N : ℕ) (e : Af D.host.F)
-    (he : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (N : 𝓞 D.host.F) ∈ v.asIdeal → e v = 0)
-    (M : Matrix (Fin V.rank) (Fin V.rank) (RA D.host.F D.host.E))
-    (hM : (e ⊗ₜ[D.host.F] (1 : D.host.E) : RA D.host.F D.host.E) • (M - 1) = M - 1) :
-    ∃ t : ℕ, 0 < t ∧ t.Coprime N ∧ Bd (latC V) (t : 𝓞 D.host.E) M := by
-  obtain ⟨-, -, hfg, hsp, -⟩ := latHat_eq_hat_and_gram D V
-  obtain ⟨t, ht, hb⟩ := exists_nat_bd _ hfg hsp N e he M hM
-  rcases t.eq_zero_or_pos with rfl | h0
-  · obtain ⟨d, hd, h⟩ := (idempotent_adeles_small_matrices D.host.F D.host.E _ _ hfg hsp).2.1 M
-    refine ⟨d, hd, by rw [(Nat.coprime_zero_left N).1 ht]; exact Nat.coprime_one_right d, fun z hz => ?_⟩
-    have : ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] ((d : 𝓞 D.host.E) : D.host.E) : RA D.host.F D.host.E) =
-        (d : RA D.host.F D.host.E) := by
-      rw [show ((d : 𝓞 D.host.E) : D.host.E) = (d : D.host.E) from map_natCast (algebraMap (𝓞 D.host.E) D.host.E) d]
-      exact map_natCast (Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] RA D.host.F D.host.E) d
-    rw [this, Nat.cast_smul_eq_nsmul]
-    exact h z hz
-  · exact ⟨t, h0, ht, hb⟩
-
-theorem exists_commens (V : HSp D) (N : ℕ) (g : Bridge.Gf V) (hs : SuppSplitOff V N g) :
-    ∃ M : ℕ, 0 < M ∧ M.Coprime N ∧ (∀ x ∈ latC V, (M : D.host.E) • x ∈ Bridge.hLat V g) ∧
-      ∀ x ∈ Bridge.hLat V g, (M : D.host.E) • x ∈ latC V := by
-  obtain ⟨-, -, hfg, hsp, -⟩ := latHat_eq_hat_and_gram D V
-  obtain ⟨e, -, -, he, hcut⟩ := (suppSplitOff_iff V N g).1 hs
-  have he' : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (N : 𝓞 D.host.F) ∈ v.asIdeal → e v = 0 := fun v hv => by
-    by_contra h0
-    exact (he v h0).2 hv
-  obtain ⟨t, h0, ht, hb⟩ := exists_pos_bd V N e he' _ hcut
-  obtain ⟨t', h0', ht', hb'⟩ := exists_pos_bd V N e he' _ (cut_inv g.1 _ hcut)
-  have h1 := hb.mul (t' : 𝓞 D.host.E)
-  have h2 := hb'.mul (t : 𝓞 D.host.E)
-  rw [mul_comm] at h2
-  rw [← Nat.cast_mul] at h1 h2
-  have h3 := smul_mem_of_bd hfg hsp (coe_hLat V g) h1 h2
-  simp only [Nat.cast_smul_eq_nsmul] at h3 ⊢
-  exact ⟨t' * t, Nat.mul_pos h0' h0, Nat.Coprime.mul_left ht' ht, h3.2, h3.1⟩
-
-theorem isLatReps_of_isAdReps {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat V} (hβ : IsSDFrame V β Λ 1)
-    (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {J' : Subgroup (Bridge.Gf V)} (hle : J' ≤ (levEnv V β L).J) {bad n : ℕ}
-    {h : Fin n → Bridge.Gf V} {Lh : Fin n → Lat V} {gam : Fin n → ℕ} (H : IsAdReps V Λ J' bad h Lh gam) :
-    IsLatReps V Λ bad Lh := by
-  obtain ⟨h1, h2, h3, -⟩ := H
-  have hL : ∀ a, Lh a = Bridge.hLat V (h a) := fun a => (isTransl_iff hβ _ _).1 (h3 a)
-  refine ⟨fun a => ?_, fun g M hM => ?_⟩
-  · rw [hL, GlobalTheory.PrincInLevel.eq_latC hβ]
-    exact ⟨isLattice_hLat V _, dualL_hLat V _, exists_commens V bad _ (h2 a)⟩
-  · obtain ⟨a, ⟨γ, k, rfl⟩, -⟩ := h1 g
-    obtain ⟨γ', hγ', e⟩ := γ.2
-    have hr : IsRat V γ.1 γ' := e.symm
-    refine ⟨a, γ', hγ', fun x => ?_⟩
-    rw [h3 a, hM]
-    have e1 : (finHom V γ.1).1 *ᵥ fv D.host.F x = fv D.host.F (γ'.1 *ᵥ x) :=
-      ((RatElt.rational_elements D V).2.2.2.2 _ _ hr).1 x
-    change ((h a).1⁻¹).1 *ᵥ fv D.host.F x ∈ hat D.host.F _ ↔
-      ((finHom V γ.1 * (h a).1 * k.1.1)⁻¹).1 *ᵥ fv D.host.F (γ'.1 *ᵥ x) ∈ hat D.host.F _
-    rw [← e1, Matrix.mulVec_mulVec, ← Units.val_mul,
-      show (finHom V γ.1 * (h a).1 * k.1.1)⁻¹ * finHom V γ.1 = k.1.1⁻¹ * (h a).1⁻¹ by group, Units.val_mul,
-      ← Matrix.mulVec_mulVec]
-    refine ⟨fun hx => mulVec_mem_hat hβ L (inv_mem (hle k.2)) hx, fun hx => ?_⟩
-    have := mulVec_mem_hat hβ L (hle k.2) hx
-    rwa [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec] at this
-
 end Lattices
 
 section Row
@@ -373,15 +262,6 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T)
 
 theorem levJ_eq : FWT.levJ R i t = levJ R.toLevCh i t := rfl
-
-theorem finite_stab_of_le {J' : Subgroup (Bridge.Gf (Vc D i))} (hle : J' ≤ FWT.levJ R i t) (g : Bridge.Gf (Vc D i)) :
-    Finite (Bridge.stab (Bridge.ratF (Vc D i)) J' g) :=
-  finite_stab _ hle (y := (R.B.L i t).pres.y) (R.B.L i t).pres.reps
-    (fun c => Finite.of_equiv _ ((R.B.L i t).pres.stabI c).toEquiv) g
-
-def RepsREx (K' : Type) [Field K'] (N : ℕ) : Prop :=
-  ∃ (Cl : Type) (_ : Fintype Cl) (h : Cl → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))) (bad : ℕ)
-    (Lh : Cl → Lat (Vc D i)) (gam : Cl → ℕ) (vol : K'), N ∣ bad ∧ FWT.RepsR R i t h bad J' Lh gam vol
 
 end Row
 

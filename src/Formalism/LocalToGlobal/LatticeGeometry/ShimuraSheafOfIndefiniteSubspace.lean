@@ -126,83 +126,8 @@ structure TiedX (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ 
 
   lev_κg : levPr κg = Finset.univ.image D.host.g
 
-theorem comp_nonempty (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
-    (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) (j : ℕ) (h1 : 1 ≤ j)
-    (h2 : j ≤ D.R.m) : Nonempty (X.Comp j) :=
-  (eC j h1 h2).nonempty_congr.mpr (U (datW D κg j)).compNe
-
-def MumfordU {w : Dat D Lev} (U : ShimU D G jC ng w) : Prop :=
-  ∀ (c : U.Comp) (la : D.what₂.Tau → Fin w.N → ℤ),
-    ((G.inter (U.alg.Yv c) (fun _ => U.alg.Lw c la) : ℤ) : ℝ) =
-      U.cx.volC c * (by classical exact Formalism.DegreeFormula.flagDeg D.what₂.Tau w.N (fun τ i => (la τ i : ℝ)))
-
-theorem chern_linRoot_pow {w : Dat D Lev} (U : ShimU D G jC ng w) (hM : MumfordU U)
-    (la : D.what₂.Tau → Fin w.N → ℤ) :
-    U.cx.chern (Formalism.DegreeFormula.linRoot (fun τ i => (la τ i : ℝ)) ^ Formalism.DegreeFormula.dimFl D.what₂.Tau w.N) =
-      ∑ c, ((G.inter (U.alg.Yv c) (fun _ => U.alg.Lw c la) : ℤ) : ℝ) := by
-  have h1 : U.cx.chern (Formalism.DegreeFormula.linRoot (fun τ i => (la τ i : ℝ)) ^ Formalism.DegreeFormula.dimFl D.what₂.Tau w.N) =
-      U.cx.vol * (by classical exact Formalism.DegreeFormula.flagDeg D.what₂.Tau w.N (fun τ i => (la τ i : ℝ))) := by
-    simp only [CxPkg.chern, chernOf, degFlL, Formalism.DegreeFormula.flagDeg, Formalism.DegreeFormula.degFl, LinearMap.smul_apply,
-      LinearMap.sum_apply, MvPolynomial.lcoeff_apply, smul_eq_mul]
-  rw [h1, CxPkg.vol, Finset.sum_mul]
-  exact Finset.sum_congr rfl (fun c _ => (hM c la).symm)
-
 theorem psiOf_cm (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+* ℂ) (τ : DV.Emb D p) :
     τ ∈ DV.PsiOf D jc ↔ DV.cEmb D τ ∉ DV.PsiOf D jc := by
   exact cm_type_meets_conjugate_pair p jc τ
-
-def CurveHTDom {w : Dat D Lev} (U : ShimU D G jC ng w) : Prop :=
-  ∀ (p : ℕ) (n : ℕ) (Z' : (U.pad.loc p).Mdl), p.Prime → 3 ≤ n →
-    (U.pad.loc p).IsHTBlowup Z' ((U.pad.loc p).Xn n) → ∀ c : U.pad.CurveHT p,
-      ∃ (C : (U.pad.ex p).CrvS Z') (m : ℕ), 0 < m ∧ ∀ (τ : D.what₂.Tau) (i : Fin w.N),
-        (m : ℝ) * U.pad.degHT p c (τ, i) = ((U.pad.ex p).degGr C (D.eTau τ) ((i : ℕ) + 1) : ℝ)
-
-theorem shimura_sheaf_of_indefinite_subspace (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ levPr κ, p.Prime)
-    (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w) (hT : CompatibleLevelPrimes X levPr hlev U) (κg : X.Lev) {j : ℕ}
-    (h1 : 1 ≤ j) (h2 : j < D.R.m) :
-    X.shv (letI := D.host.cmStar; D.sp.W j) κg =
-      toShimX (U (datW D κg j)) (datW_indef D κg h1 h2) (levPr κg) (hlev κg) := by
-  have hj : jcl D j = j := by
-    unfold jcl
-    rw [min_eq_left h2.le, max_eq_right h1]
-  have hS : (datW D κg j).S = (letI := D.host.cmStar; D.sp.W j) := by
-    dsimp only [datW]
-    rw [hj]
-  have h := hT.shv (datW D κg j) (datW_indef D κg h1 h2)
-  rw [hS] at h
-  exact h
-
-theorem chern_toShimX {w : Dat D Lev} (U : ShimU D G jC ng w) (h : w.Indef) (lev : Finset ℕ)
-    (hlev : ∀ p ∈ lev, p.Prime) (Q : MvPolynomial (DV.Rt D.what₂.Tau w.N) ℝ) :
-    (toShimX U h lev hlev).chern Q =
-      (toShimX U h lev hlev).vol * (by classical exact Formalism.DegreeFormula.degFl D.what₂.Tau w.N Q) := by
-  show U.cx.chern Q = U.cx.vol * _
-  simp only [CxPkg.chern, chernOf, degFlL, Formalism.DegreeFormula.degFl, LinearMap.smul_apply,
-    LinearMap.sum_apply, MvPolynomial.lcoeff_apply, smul_eq_mul]
-
-theorem compNe_of (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
-    (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) : Formalism.MainNotions.placeRankTwoOne.CompNe D X :=
-  fun j h1 h2 => comp_nonempty X κg U eC j h1 h2
-
-theorem dim_Yv (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
-    (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) (hG : CompatibleGeometry X κg U eC) {j : ℕ} (h1 : 1 ≤ j)
-    (h2 : j ≤ D.R.m) (c : X.Comp j) : X.geo.dim (X.Yv j c) = Formalism.DegreeFormula.dimFl D.what₂.Tau D.R.r := by
-  rw [hG.yv j h1 h2 c, (U (datW D κg j)).alg.dim_eq, datW_N]
-
-theorem inter_congr (G : DV.Geo D.what₂.LL) {Y Y' : G.Var} (h : Y = Y') (a : G.Dv Y) (a' : G.Dv Y')
-    (ha : HEq a a') : G.inter Y (fun _ => a) = G.inter Y' (fun _ => a') := by
-  subst h
-  rw [eq_of_heq ha]
-
-theorem chern_record (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
-    (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) (hG : CompatibleGeometry X κg U eC) {j : ℕ} (h1 : 1 ≤ j)
-    (h2 : j ≤ D.R.m) (hM : MumfordU (U (datW D κg j))) (la : D.what₂.Tau → Fin D.R.r → ℤ) :
-    (U (datW D κg j)).cx.chern (Formalism.DegreeFormula.linRoot (fun τ i => ((la τ (Fin.cast (datW_N D κg j) i) : ℤ) : ℝ)) ^
-        Formalism.DegreeFormula.dimFl D.what₂.Tau (datW D κg j).N) =
-      ∑ c, ((X.geo.inter (X.Yv j c) (fun _ => X.Lw j c la) : ℤ) : ℝ) := by
-  rw [chern_linRoot_pow (U (datW D κg j)) hM (fun τ i => la τ (Fin.cast (datW_N D κg j) i))]
-  symm
-  refine Fintype.sum_equiv (eC j h1 h2) _ _ (fun c => ?_)
-  exact congrArg (fun n : ℤ => (n : ℝ)) (inter_congr X.geo (hG.yv j h1 h2 c) _ _ (hG.lw j h1 h2 c la))
 
 end Formalism.L2.Geo

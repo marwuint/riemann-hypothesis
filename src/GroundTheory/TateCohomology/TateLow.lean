@@ -342,15 +342,6 @@ noncomputable def tateCohomologyNegOneIso :
     NatIso.ofComponents (fun M => (tateNegOneData M).homologyIso)
       (fun {X Y} f => (tateNegOneMapData f).homologyMap_comm)
 
-lemma tateCohomologyNegOneIso_hom_homologyπ (M : Rep.{u} R G) (z : (tateComplex M).cycles (-1))
-    (x : LinearMap.ker M.ρ.norm)
-    (hx : (chainsIso₀ M).inv.hom x = ((tateComplex M).iCycles (-1)).hom z) :
-    ((tateCohomologyNegOneIso R G).app M).hom.hom (((tateComplex M).homologyπ (-1)).hom z) =
-      Submodule.Quotient.mk x :=
-  homologyFunctorIso'_moduleLeftHomologyData_apply (tateComplex M) (-2) (-1) 0 (by norm_num)
-    (by norm_num) (LinearMap.ker M.ρ.norm) (tateNegOneι M) (tateNegOneι_injective M)
-    (tateNegOneι_range M) (augmentationKerNorm M) (tateNegOne_mem_iff M) z x hx
-
 theorem isZero_tateCohomology_neg_one_iff (M : Rep.{u} R G) :
     IsZero (tateCohomology M (-1)) ↔ LinearMap.ker M.ρ.norm = Coinvariants.ker M.ρ := by
   rw [((tateCohomologyNegOneIso R G).app M).isZero_iff, ModuleCat.isZero_iff_subsingleton]

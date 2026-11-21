@@ -460,25 +460,6 @@ theorem exists_idealsPrimeTo_eq_span {F : Type} [Field F] [NumberField F] {𝔪 
   rw [Units.val_mk0, FractionalIdeal.coeIdeal_span_singleton]
   exact count_span_eq_zero h0 hc w hw
 
-theorem kills_of_rayPrincipal {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] {𝔪 : Ideal (𝓞 F)}
-    {A : Type} [CommGroup A] (f : idealsPrimeTo 𝔪 →* A) (hf : ∀ J : idealsPrimeTo 𝔪, J.1 ∈ rayPrincipal 𝔪 → f J = 1)
-    (x : 𝓞 F) (J : idealsPrimeTo 𝔪) (hx : x - 1 ∈ 𝔪)
-    (hJ : (J.1 : FractionalIdeal (𝓞 F)⁰ F) = (Ideal.span {x} : Ideal (𝓞 F))) : f J = 1 := by
-  have h0 := ne_zero_of_eq_span hJ
-  refine hf J ⟨Units.mk0 (x : F) h0, ⟨x, 1, ⟨fun h => h0 (by simp [h]), one_ne_zero,
-    Ideal.isCoprime_iff_exists.2 ⟨x, Ideal.mem_span_singleton_self x, _, 𝔪.neg_mem hx, by ring⟩,
-    by simp [← Ideal.one_eq_top, isCoprime_one_left], hx, fun φ => ?_⟩, by simp⟩, Units.ext ?_⟩
-  · exact absurd (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun y => Complex.conj_ofReal (φ y)))
-      (IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ))
-  · rw [coe_toPrincipalIdeal, hJ, FractionalIdeal.coeIdeal_span_singleton]
-    rfl
-
-example {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] (𝔪 : Ideal (𝓞 F)) (x : 𝓞 F) (J : idealsPrimeTo 𝔪)
-    (hx : x - 1 ∈ 𝔪) (hJ : (J.1 : FractionalIdeal (𝓞 F)⁰ F) = (Ideal.span {x} : Ideal (𝓞 F))) :
-    (QuotientGroup.mk J : RayClassGroup 𝔪) = 1 :=
-  kills_of_rayPrincipal (A := RayClassGroup 𝔪) (QuotientGroup.mk' ((rayPrincipal 𝔪).subgroupOf (idealsPrimeTo 𝔪)))
-    (fun I h => (QuotientGroup.eq_one_iff I).2 h) x J hx hJ
-
 end GlobalTheory.Published
 
 end

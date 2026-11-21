@@ -28,13 +28,6 @@ theorem meas_Xi : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => Xi S w
     measM_mul (measM_tau _ (OF.measM_upper measurable_snd.snd.snd.fst)) measurable_snd.snd.snd.snd
   exact (measurable_snd.fst.fst.prodMk h1).prodMk (measurable_snd.snd.fst.prodMk h2)
 
-theorem measurable_coordinate_map : Measurable fun q : RR k r w => Xi0 S w q := by
-  have h1 : MeasM fun q : RR k r w => C2.tauM k r S.z (lowP w q.1.2.1)ᴴ * Matrix.of q.1.2.2 :=
-    measM_mul (measM_tau _ (measM_star (OF.measM_lowP w measurable_fst.snd.fst))) measurable_fst.snd.snd
-  have h2 : MeasM fun q : RR k r w => C2.tauM k r S.z' (G.upper q.2.2.1) * Matrix.of q.2.2.2 :=
-    measM_mul (measM_tau _ (OF.measM_upper measurable_snd.snd.fst)) measurable_snd.snd.snd
-  exact (measurable_fst.fst.prodMk h1).prodMk (measurable_snd.fst.prodMk h2)
-
 variable {μ0 μ0' : Measure (Mt k r)} (hμ0 : B.IsHaarOn (C2.N0set k r S.z) μ0)
   (hμ0' : B.IsHaarOn (C2.N0set k r S.z') μ0')
 

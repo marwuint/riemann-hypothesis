@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsGenSimilitudePull
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsEnumKerTransposeSimilitudePointsStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsEnumKerTransposeSimilitudePoints
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNormalisedIsoPullbackMulByMStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNormalisingUnitSimilitudeOriginStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.BoxProductsBasisSpanPowObjSectionsStatement
@@ -120,7 +120,7 @@ theorem exists_l2Val : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x 
   classical
   have hm0 : m ≠ 0 := fun h => hm (by rw [h, Nat.cast_zero])
   have hL := x.P.isLB
-  obtain ⟨ξ, hξ, hk⟩ := GlobalTheory.T.exists_enum_ker_transpose_similitude_points laws K x m al hm hal
+  obtain ⟨ξ, hξ, hk⟩ := _root_.GlobalTheory.KeyKa.exists_enum_ker_transpose laws K x m al hm hal
   obtain ⟨mu, hmu, hmuv⟩ := GlobalTheory.T.exists_normalised_iso_pullback_mul_by_m laws K x m
   choose w hw using fun I => GlobalTheory.SimilPull.exists_gen_similitude_pull laws K x m al (ξ I) hal (hk I)
   choose rho hrho using fun I => GlobalTheory.T.exists_normalising_unit_similitude_origin K x m al (ξ I) mu (w I) hm0 hal (hk I) hmu (hw I)

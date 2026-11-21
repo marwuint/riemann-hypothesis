@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingCharacterEqFinrankInteStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCharacterQuotientOfInjectiveIntertwiningStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingCharacterEqFinrankInte
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCharacterQuotientOfInjectiveIntertwining
 open GlobalTheory.BI
 namespace GlobalTheory.BI
 
@@ -11,7 +11,7 @@ theorem exists_isChar_eq_add_of_pair_ne_zero : ∀ (K L : Type) [Field K] [Field
   obtain ⟨n, ρ, ha⟩ := ha
   have hφ' : φ = fun g => algebraMap K L (σ.character g) := funext hφ
   have ha' : a = fun g => algebraMap K L (ρ.character g) := funext ha
-  have h := GlobalTheory.T.finiteGroupFunctionPairing_character_eq_finrank_intertwining K L G (Fin m → K) (Fin n → K) σ ρ
+  have h := _root_.GlobalTheory.BI.pair_character_eq_finrank K L G (Fin m → K) (Fin n → K) σ ρ
   rw [← hφ', ← ha'] at h
   have hex : ∃ f : Representation.IntertwiningMap σ ρ, f ≠ 0 := by
     by_contra hne
@@ -23,7 +23,7 @@ theorem exists_isChar_eq_add_of_pair_ne_zero : ∀ (K L : Type) [Field K] [Field
   obtain ⟨f, hf⟩ := hex
   haveI := hσ
   have hi := (Representation.IsIrreducible.injective_or_eq_zero f).resolve_right hf
-  obtain ⟨c, hc, hc'⟩ := GlobalTheory.T.exists_character_quotient_of_injective_intertwining K L G (Fin n → K) (Fin m → K) ρ σ f hi
+  obtain ⟨c, hc, hc'⟩ := _root_.GlobalTheory.BI.exists_isChar_eq_add_of_injective K L G (Fin n → K) (Fin m → K) ρ σ f hi
   refine ⟨c, hc, funext fun g => ?_⟩
   rw [Pi.add_apply, ha g, hφ g, hc' g]
 

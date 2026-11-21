@@ -18,12 +18,6 @@ def BlockImageChi.Statement : Prop :=
       ∫ a, g (resPt d' a) ∂d'.dV = ∫ a, g (blockMapC d₀.k₀ M (blockPt d₀ a)) ∂d₀.dV) →
     ∀ n, blockChi d₀ n = resChi d' n
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

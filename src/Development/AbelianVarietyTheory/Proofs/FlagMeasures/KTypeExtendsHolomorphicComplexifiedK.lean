@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HolomorphicExtensionCompactRepStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EqZeroOnKCOfEqZeroOnKsetStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HolomorphicExtensionCompactRep
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EqZeroOnKCOfEqZeroOnKset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestWeightVectorFixedByLowerUnitriangularStatement
 
 open Matrix Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Dec
@@ -78,11 +78,11 @@ theorem mul_on_KC
   have hd' : DifferentiableOn ℂ (fun y : Fin n → Fin n → ℂ => τ (Matrix.of y)) {y | Matrix.of y ∈ KC ε} :=
     hd.mono fun y hy => hy.1
   have h1 : ∀ a ∈ Kset ε, ∀ b ∈ KC ε, τ (a * b * 1) - τ a * τ b = 0 := fun a ha =>
-    GlobalTheory.T.eq_zero_on_KC_of_eq_zero_on_Kset' n ε B (fun y => τ (a * y * 1) - τ a * τ y)
+    _root_.GlobalTheory.Dec.KCIdent.eq_zero_on_KC_of_eq_zero_on_Kset n ε B (fun y => τ (a * y * 1) - τ a * τ y)
       ((differentiableOn_mul hd (mem_KC ha).1 isUnit_one).sub (hd'.const_mul _))
       fun k hk => by rw [Matrix.mul_one, hm a ha k hk, sub_self]
   intro a ha b hb
-  have h2 := GlobalTheory.T.eq_zero_on_KC_of_eq_zero_on_Kset' n ε B (fun y => τ (1 * y * b) - τ y * τ b)
+  have h2 := _root_.GlobalTheory.Dec.KCIdent.eq_zero_on_KC_of_eq_zero_on_Kset n ε B (fun y => τ (1 * y * b) - τ y * τ b)
     ((differentiableOn_mul hd isUnit_one hb.1).sub (hd'.mul_const _))
     (fun k hk => by simpa using h1 k hk b hb) a ha
   simpa [sub_eq_zero] using h2
@@ -107,7 +107,7 @@ theorem adj_on_KC {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     have h2 := (((hc u v).differentiableAt (isOpen_units.mem_nhds hz')).comp (star z) (ht (star z))).star_star
     rw [star_star] at h2
     exact h2.differentiableWithinAt
-  have h3 := GlobalTheory.T.eq_zero_on_KC_of_eq_zero_on_Kset' n ε ℂ (fun y => ⟪v, τ y u⟫_ℂ - star ⟪u, τ yᴴ v⟫_ℂ)
+  have h3 := _root_.GlobalTheory.Dec.KCIdent.eq_zero_on_KC_of_eq_zero_on_Kset n ε ℂ (fun y => ⟪v, τ y u⟫_ℂ - star ⟪u, τ yᴴ v⟫_ℂ)
     (((hc v u).mono fun y hy => hy.1).sub h1)
     (fun k hk => by rw [← hK k hk, Complex.star_def, inner_conj_symm, sub_self]) y hy
   rw [← inner_conj_symm, sub_eq_zero.1 h3, Complex.star_def, Complex.conj_conj]
@@ -135,7 +135,7 @@ theorem tauExists : TauExists := by
     rw [Topology.IsInducing.subtypeVal.continuousOn_iff]
     refine ContinuousOn.congr ((hcont v).comp ?_ fun k hk => conj_mem hk) fun k hk => hπ k hk v
     exact (continuous_id.matrix_map continuous_star).continuousOn
-  obtain ⟨τ, hd, hτ⟩ := GlobalTheory.T.holomorphic_extension_compact_rep n ε (S →L[ℂ] S) π hπ1 hπm hπc
+  obtain ⟨τ, hd, hτ⟩ := _root_.GlobalTheory.HolExt.exists_holomorphic_extension n ε (S →L[ℂ] S) π hπ1 hπm hπc
   have hτσ : ∀ k ∈ Kset ε, ∀ v : S, (τ k v : H) = σ (k.map star) v := fun k hk v => by
     rw [hτ k hk, hπ k hk]
   have hτ1 : τ 1 = 1 := by rw [hτ 1 one_mem_K, hπ1]

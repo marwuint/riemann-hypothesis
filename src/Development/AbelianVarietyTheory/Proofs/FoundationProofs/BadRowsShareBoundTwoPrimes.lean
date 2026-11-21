@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNontrivial
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GroupAlgebraOperatorConvolutionCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExteriorTensorProductConvolutionCalculusStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GroupAlgebraOperatorConvolutionCalculus
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExteriorTensorProductConvolutionCalculus
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SubgroupCharacterIdempotentPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LevelDatumSubgroupCharacterPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodTupleProjectorIsProjCentralStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BadLabelTupleWeightLeBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodTupleProjectorIsProjCentral
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BadLabelTupleWeightLeBound
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankRangeLeSumThreeComplementsStatement
 
 open Polynomial Classical GlobalTheory.BadShare
@@ -53,10 +53,10 @@ theorem abstract_step (H₁ H₂ : Type) [Group H₁] [Fintype H₁] [Group H₂
       |(rk ρ e : ℝ) - c * (e 1).re| ≤ ep * (c * (e 1).re)) :
     (1 - (1 + ep) / (1 - ep) * (max 0 W₁ + max 0 W₂)) * (rk ρ (tens2 E₁ E₂) : ℝ)
       ≤ (rk ρ (conv (tens2 A₁ A₂) (tens2 E₁ E₂)) : ℝ) := by
-  obtain ⟨hop, hone, -, -, -, -, -⟩ := GlobalTheory.T.groupAlgebraOperator_convolution_calculus (H₁ × H₂) M ρ
-  obtain ⟨-, -, has₁, hd₁, hp₁, hq₁, -⟩ := GlobalTheory.T.groupAlgebraOperator_convolution_calculus H₁ ℂ 1
-  obtain ⟨-, -, has₂, hd₂, hp₂, hq₂, -⟩ := GlobalTheory.T.groupAlgebraOperator_convolution_calculus H₂ ℂ 1
-  obtain ⟨-, -, tc, tp, td, ts⟩ := GlobalTheory.T.exteriorTensorProduct_convolution_calculus Unit H₁ H₂
+  obtain ⟨hop, hone, -, -, -, -, -⟩ := _root_.GlobalTheory.BadShare.convCalc (H₁ × H₂) M ρ
+  obtain ⟨-, -, has₁, hd₁, hp₁, hq₁, -⟩ := _root_.GlobalTheory.BadShare.convCalc H₁ ℂ 1
+  obtain ⟨-, -, has₂, hd₂, hp₂, hq₂, -⟩ := _root_.GlobalTheory.BadShare.convCalc H₂ ℂ 1
+  obtain ⟨-, -, tc, tp, td, ts⟩ := _root_.GlobalTheory.BadShare.tens_calculus Unit H₁ H₂
   have P₁ : IsProj (conv (dirac - A₁) E₁) := hp₁ _ _ (hq₁ _ hA₁) hE₁ (by
     rw [(has₁ dirac A₁ E₁).2.1, (has₁ dirac A₁ E₁).2.2, (hd₁ E₁).1, (hd₁ E₁).2, c₁])
   have P₂ : IsProj (conv (dirac - A₂) E₂) := hp₂ _ _ (hq₂ _ hA₂) hE₂ (by
@@ -87,7 +87,7 @@ theorem abstract_step (H₁ H₂ : Type) [Group H₁] [Fintype H₁] [Group H₂
 theorem level_proj (g : ℕ) [Fact g.Prime] (N : ℕ) (ι : Type) [Fintype ι] (L : ι → Lev g N) :
     IsProj (tens fun v => (L v).e) ∧ ∀ γ, (tens fun v => (L v).e) γ ≠ 0 → AllUnip γ := by
   constructor
-  · refine (GlobalTheory.T.exteriorTensorProduct_convolution_calculus ι (GG g N) Unit).2.1 _ fun v => ?_
+  · refine (_root_.GlobalTheory.BadShare.tens_calculus ι (GG g N) Unit).2.1 _ fun v => ?_
     obtain ⟨a, b, c, d, -⟩ := GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N (L v)
     exact (GlobalTheory.T.subgroupCharacterIdempotent_properties (GG g N) ℂ 1 _ _ a b c d).1
   · intro γ h v
@@ -101,10 +101,10 @@ theorem bad_share : ∀ (g₁ g₂ : ℕ) [Fact g₁.Prime] [Fact g₂.Prime] (N
   obtain ⟨c, -, hc⟩ := hc
   obtain ⟨pE₁, u₁⟩ := level_proj g₁ N ι₁ L₁
   obtain ⟨pE₂, u₂⟩ := level_proj g₂ N ι₂ L₂
-  obtain ⟨pA₁, c₁⟩ := GlobalTheory.T.goodTupleProjector_isProj_central g₁ N m ι₁ τ₁ ch₁ s₁
-  obtain ⟨pA₂, c₂⟩ := GlobalTheory.T.goodTupleProjector_isProj_central g₂ N m ι₂ τ₂ ch₂ s₂
-  obtain ⟨w₁, hw₁, hW₁⟩ := GlobalTheory.T.badLabelTuple_weight_le_bound g₁ N m q d ι₁ L₁ τ₁ ch₁ hN ok₁ s₁
-  obtain ⟨w₂, hw₂, hW₂⟩ := GlobalTheory.T.badLabelTuple_weight_le_bound g₂ N m q d ι₂ L₂ τ₂ ch₂ hN ok₂ s₂
+  obtain ⟨pA₁, c₁⟩ := _root_.GlobalTheory.BadShare.eGood_isProj_central g₁ N m ι₁ τ₁ ch₁ s₁
+  obtain ⟨pA₂, c₂⟩ := _root_.GlobalTheory.BadShare.eGood_isProj_central g₂ N m ι₂ τ₂ ch₂ s₂
+  obtain ⟨w₁, hw₁, hW₁⟩ := _root_.GlobalTheory.BadShare.badWeight_le g₁ N m q d ι₁ L₁ τ₁ ch₁ hN ok₁ s₁
+  obtain ⟨w₂, hw₂, hW₂⟩ := _root_.GlobalTheory.BadShare.badWeight_le g₂ N m q d ι₂ L₂ τ₂ ch₂ hN ok₂ s₂
   exact abstract_step _ _ M ρ AllUnip AllUnip _ _ _ _ pE₁ pE₂ pA₁ pA₂ c₁ c₂ u₁ u₂ w₁ w₂ _ _ hw₁ hw₂ hW₁ hW₂
     ep c h0 h1 hc
 

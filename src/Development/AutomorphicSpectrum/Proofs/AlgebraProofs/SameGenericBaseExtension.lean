@@ -7,7 +7,7 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGeneric
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairNumberRelabel
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinJoinPull
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparisonStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparison
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChain
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagDifferenceStatement
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XPullPreserve
@@ -192,7 +192,7 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
     ⟨fun j i => b j i ∘ (Equiv.sumAssoc K K' K₁).symm, by
       funext j i k
       simp⟩
-  obtain ⟨-, f, g, hfp⟩ := GlobalTheory.T.same_generic_flag_comparison O Ω _ _ (joinCoord (joinCoord x z) z₁)
+  obtain ⟨-, f, g, hfp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagPairOfFrames.main O Ω _ _ (joinCoord (joinCoord x z) z₁)
     ϖ hϖ d hM₁ N V (F 0) (F 1) hs₁ w w _ _ (hF 0).2 (hF 1).2 (fun i j hij => by
       simp [Finsupp.single_apply, hij.ne])
   have hσ := assocEquiv_fst ι ι' ι₁

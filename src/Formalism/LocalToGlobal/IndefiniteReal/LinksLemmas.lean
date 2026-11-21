@@ -1,5 +1,15 @@
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
-import Formalism.LocalToGlobal.IndefiniteReal.CxCore
+import Mathlib
+import Formalism.LocalToGlobal.IndefiniteReal.CxToPkgFamIn
+import Formalism.LocalToGlobal.IndefiniteReal.MemRangeAdjointOfKerStable
+import Formalism.LocalToGlobal.IndefiniteReal.EqZeroOfMemRangeAdjoint
+import Formalism.LocalToGlobal.IndefiniteReal.EqZeroOfRangeAdjoint
+import Formalism.LocalToGlobal.IndefiniteReal.FinrankISupLeSum
+import Formalism.LocalToGlobal.IndefiniteReal.CutPassage
+import Formalism.LocalToGlobal.IndefiniteReal.CxCutEP
+import Formalism.LocalToGlobal.IndefiniteReal.CxCutPO
+import Formalism.LocalToGlobal.IndefiniteReal.LiftCoordinatesInGoodPartOfDefinite
+import Formalism.LocalToGlobal.IndefiniteReal.EigSumLeComapSemi
 import Formalism.LocalToGlobal.IndefiniteReal.LiftGoodPartComplexEqRange
 import Formalism.LocalToGlobal.IndefiniteReal.BridgeLemmas
 import Formalism.LocalToGlobal.IndefiniteReal.ArithLemmas
@@ -105,30 +115,6 @@ theorem kForm_semi {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X]
 
 end Semi
 
-theorem hMod_exists {X : Type} [AddCommGroup X] [Module ℂ X] (V : Submodule ℂ X) [FiniteDimensional ℂ V]
-    (ip : X → X → ℂ) (hadd : ∀ x ∈ V, ∀ y ∈ V, ∀ z ∈ V, ip (x + y) z = ip x z + ip y z)
-    (hsm : ∀ (c : ℂ), ∀ x ∈ V, ∀ y ∈ V, ip (c • x) y = star c * ip x y)
-    (hsym : ∀ x ∈ V, ∀ y ∈ V, star (ip y x) = ip x y) (hpos : ∀ x ∈ V, 0 ≤ (ip x x).re)
-    (hdef : ∀ x ∈ V, ip x x = 0 → x = 0) : ∃ M : HMod X, M.Is V ip := by
-  let core : InnerProductSpace.Core ℂ V :=
-    { inner := fun x y => ip x y
-      conj_inner_symm := fun x y => hsym x x.2 y y.2
-      re_inner_nonneg := fun x => hpos x x.2
-      add_left := fun x y z => hadd x x.2 y y.2 z z.2
-      smul_left := fun x y r => hsm r x x.2 y y.2
-      definite := fun x h => Subtype.ext (hdef x x.2 h) }
-  letI : NormedAddCommGroup V := core.toNormedAddCommGroup
-  letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore core.toCore
-  exact ⟨{ H := V, fH := ‹FiniteDimensional ℂ V›, e := V.subtype }, V.injective_subtype, V.range_subtype, fun _ _ => rfl⟩
-
-theorem vw_root {K : Type} [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K)) (a : K) (n : ℕ) (hn : 0 < n)
-    (h : a ^ n = 1) : Formalism.DivisionValues.vw w a = 0 := by
-  have h1 : (n : ℤ) * Formalism.DivisionValues.vw w a = 0 := by
-    unfold Formalism.DivisionValues.vw
-    rw [← FractionalIdeal.count_pow, FractionalIdeal.spanSingleton_pow, h, FractionalIdeal.spanSingleton_one,
-      FractionalIdeal.count_one]
-  exact (mul_eq_zero.1 h1).resolve_left (by exact_mod_cast hn.ne')
-
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
@@ -196,55 +182,6 @@ theorem jIsoL_gen (hM : R.IsModels) (cv : CrdV A.fam.amb)
 theorem jIsoL_of (hM : R.IsModels) : (R.toCx F).JIsoL (cvOf A F.P0 F.ψ0 F.P1 F.ψ1) :=
   jIsoL_gen hM _ fun _ _ _ _ => rfl
 
-theorem prod_lamN (t : T) (p : A.fam.base.Ix) :
-    ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN t j p = ∏ j : Fin D.R.m, R.lam j t p A.v0 := by
-  have h1 : ∀ n : ℕ, ∀ g : ℕ → ℝ, ∏ j ∈ Finset.Icc 1 n, g j = ∏ j ∈ Finset.range n, g (j + 1) := by
-    intro n g
-    induction n with
-    | zero => simp
-    | succ n ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Finset.prod_range_succ]
-  rw [h1, ← Fin.prod_univ_eq_prod_range]
-  refine Finset.prod_congr rfl fun j _ => ?_
-  unfold lamN
-  rw [dif_pos (by simp)]
-  exact congrArg (fun k => R.lam k t p A.v0) (Fin.ext (Nat.add_sub_cancel _ _))
-
-set_option maxHeartbeats 1000000 in
-theorem thmAop_of (h : ∀ i t, Lift.IsLamP (R.thG i t) (LinearMap.adjoint (R.thG i t)) (R.Wp i) fun p => R.lam i t p A.v0)
-    (b : Bool) : (R.toCx F).ThmAop b := by
-  intro j t p w hw
-  have hw1 : Tw.out (s := twAt D.what₂.embLL A.v0) (E := (R.HW j (sg0 D A)).H) w ∈ R.Wp j p := hw.1
-  have key : Tw.map (twAt D.what₂.embLL A.v0) (R.thG j t) (LinearMap.adjoint (Tw.map (twAt D.what₂.embLL A.v0) (R.thG j t)) w) =
-      ((R.lam j t p A.v0 : ℝ) : ℂ) • w := by
-    rw [Tw.adjoint_map]
-    show Tw.mk _ (R.thG j t (LinearMap.adjoint (R.thG j t) (Tw.out (s := twAt D.what₂.embLL A.v0) (E := (R.HW j (sg0 D A)).H) w))) = _
-    rw [h j t p _ hw1, Tw.mk_smul, cj_ofReal]
-    rfl
-  exact key
-
-set_option maxHeartbeats 1000000 in
-theorem thmBop_of (h : Lift.IsKap D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) R.EEp R.lamN R.kap) (b : Bool) :
-    (R.toCx F).ThmBop b := by
-  intro t p e he
-  have he1 : Tw.out (s := twAt D.what₂.embLL A.v0) (E := R.HE.H) e ∈ R.EEp p := he.1
-  have key : Tw.map (twAt D.what₂.embLL A.v0) (R.Th t) (LinearMap.adjoint (Tw.map (twAt D.what₂.embLL A.v0) (R.Th t)) e) =
-      ((R.kap * ∏ j : Fin D.R.m, R.lam j t p A.v0 : ℝ) : ℂ) • e := by
-    rw [Tw.adjoint_map]
-    show Tw.mk _ (R.Th t (LinearMap.adjoint (R.Th t) (Tw.out (s := twAt D.what₂.embLL A.v0) (E := R.HE.H) e))) = _
-    have h2 := h t p (Tw.out (s := twAt D.what₂.embLL A.v0) (E := R.HE.H) e) he1
-    rw [LinearMap.comp_apply] at h2
-    rw [h2, Tw.mk_smul, cj_ofReal, prod_lamN]
-    rfl
-  exact key
-
-theorem zetaOK_of (Y : RealCol R F) (hY : Y.Char) : (R.toCx F).ZetaOK (fc := F.fc) Y.ζ := by
-  refine ⟨hY.zeta0, fun u t h0 => ?_, fun u w => ?_⟩
-  · obtain ⟨n, hn, h⟩ := hY.zeta u t
-    rw [h0, zero_pow hn.ne'] at h
-    exact zero_ne_one h
-  · obtain ⟨n, hn, h⟩ := hY.zeta u ((R.toCx F).μ w)
-    exact vw_root w _ n hn h
-
 end RealDat
 
 end Links
@@ -265,16 +202,7 @@ abbrev cv : CrdV A.fam.amb := cvOf A F.P0 F.ψ0 F.P1 F.ψ1
 def PThmA : Prop :=
   ∀ i t, Lift.IsLamP (R.thG i t) (LinearMap.adjoint (R.thG i t)) (R.Wp i) fun p => R.lam i t p A.v0
 
-def PThmB : Prop := Lift.IsKap D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) R.EEp R.lamN R.kap
-
-def TopMult : Prop :=
-  ∀ t, LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e) =
-    MultT R.θ R.MX (levS _ R.βX (R.datXt t)) (levChi _ R.βX (R.datXt t))
-
 def PConj : Prop := ∀ i, (R.FW i).GalA
-
-def PEig : Prop :=
-  ∃ C0 C1, LiftsEig A (R.toCx F) F.P0 F.ψ0 C0 ∧ LiftsEig A (R.toCx F) F.P1 F.ψ1 C1 ∧ LiftsTyp A C0 ∧ LiftsTyp A C1
 
 def PHecke : Prop := (∃ hE, HeckeThetaR A (R.toCx F) hE) ∧ ∃ hW, HeckeThetaL A (R.toCx F) hW
 
@@ -282,212 +210,19 @@ def PGUnit : Prop := CxPass.GUnit A (R.toCx F) (R.gEx F) ∧ CxPass.GUnitL A (R.
 
 def PGEquiv : Prop := CxPass.GEquiv A (R.toCx F) (R.gEx F) ∧ CxPass.GEquivL A (R.toCx F) (R.gWx F)
 
-def PLevE : Prop :=
-  CxPass.LevType A (R.toCx F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) (R.gEx F) false F.P0 F.ψ0 ∧
-    CxPass.LevType A (R.toCx F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) (R.gEx F) true F.P1 F.ψ1 ∧
-    CxPass.PrincipalInjectiveCommonRange A (R.toCx F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc)
-
 def PLevW : Prop :=
   CxPass.LevTypeL A (R.toCx F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) (R.gWx F) false F.P0 F.ψ0 ∧
     CxPass.LevTypeL A (R.toCx F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) (R.gWx F) true F.P1 F.ψ1
 
 variable {R F}
 
-theorem inNonzeroPlaces_recursive_iff (C CH : ℝ) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) : R.NonzeroIndexPlace F w ↔ (R.toCx F).W1 F.cr (R.num F C CH) w := by
-  constructor
-  · rintro ⟨w', hw | hw, i, h⟩
-    · subst hw
-      rcases h with h | h | h | h | h
-      · exact ⟨i, Or.inl h⟩
-      · exact ⟨i, Or.inr (Or.inl h)⟩
-      · exact ⟨i, Or.inr (Or.inr (Or.inl h))⟩
-      · exact ⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))⟩
-      · exact ⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h))))⟩
-    · subst hw
-      rw [ValuationRepresentative.conjPl_conjPl] at h
-      rcases h with h | h | h | h | h
-      · exact ⟨i, Or.inr (Or.inl h)⟩
-      · exact ⟨i, Or.inl h⟩
-      · exact ⟨i, Or.inr (Or.inr (Or.inr (Or.inl h)))⟩
-      · exact ⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h))))⟩
-      · exact ⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))⟩
-  · rintro ⟨i, h | h | h | h | h | h⟩
-    · exact ⟨w, Or.inl rfl, i, Or.inl h⟩
-    · exact ⟨w, Or.inl rfl, i, Or.inr (Or.inl h)⟩
-    · exact ⟨w, Or.inl rfl, i, Or.inr (Or.inr (Or.inl h))⟩
-    · exact ⟨conjPl w, Or.inr rfl, i, Or.inr (Or.inr (Or.inl h))⟩
-    · exact ⟨w, Or.inl rfl, i, Or.inr (Or.inr (Or.inr (Or.inl h)))⟩
-    · exact ⟨w, Or.inl rfl, i, Or.inr (Or.inr (Or.inr (Or.inr h)))⟩
-
 end RealDat
-
-open RealDat in
-
-structure PrimLinks (R : RealDat D A Ks) (F : Face D A) (Y : RealDat.RealCol R F) (C CH : ℝ) : Prop where
-  heckeR : HeckeRatAllR A
-  heckeL : HeckeRatAllL A
-  hecke : R.PHecke F
-  gUnit : R.PGUnit F
-  gEquiv : R.PGEquiv F
-  block : R.LBlock F
-  ratZ : R.LRatZ F
-  eig : R.PEig F
-  pos : R.LPos F
-  posScal : R.LPosScal
-  levE : R.PLevE F
-  thmB : R.PThmB
-  sumE : ∀ b, (R.toCx F).PartsE b
-  ratMu : R.LRatMu F
-  unif : R.LUnif
-  conj : R.PConj
-  levelW : R.LLevelW F
-  integral : R.LIntegral
-  mLat : R.LMLat F
-  levW : R.PLevW F
-  thmA : R.PThmA
-  sumW : ∀ b, (R.toCx F).PartsW b
-  ratTh : R.LRatTh F
-  scalConj : R.LScalConj F
-  dimParts : ∀ b, (R.toCx F).DimParts b
-  covol : R.LCovol F C CH
-  onto : R.LOnto F C CH
-  lamLow : R.LLamLow F C CH
-  btVanish : (R.toCx F).BtVanish (fc := F.fc)
-  mi0 : (R.toCx F).MatrixIdentityOffBase F.cr Y.ζ
-  period : LPeriod Y
-  passage : R.LPassage F C CH
-  fun0 : R.LFun F C CH
-
-theorem cxLinks_of_prims {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) {R : RealDat D A Ks} {F : Face D A}
-    {Y : RealDat.RealCol R F} {C CH : ℝ} (hC : R.Char F) (hY : Y.Char) (hP : PrimLinks R F Y C CH) :
-    (R.toCx F).CxLinks F.cr Y.toCol C CH := by
-  obtain ⟨C0, C1, e0, e1, t0, t1⟩ := hP.eig
-  obtain ⟨⟨hE, hhE⟩, ⟨hW, hhW⟩⟩ := hP.hecke
-  have kR := RealDat.kFormR_of (F := F) hC.models
-  have kL := RealDat.kFormL_of (F := F) hC.models
-  have jR := RealDat.jIsoR_of (F := F) hC.models
-  have jL := RealDat.jIsoL_of (F := F) hC.models
-  exact links_of_core (s := s) (C0 := C0) (C1 := C1) (hE := hE) (hW := hW) (gE := R.gEx F) (gW := R.gWx F)
-    { kFormR := kR
-      kFormL := kL
-      jIsoR := jR
-      jIsoL := jL
-      npTie := ⟨rfl, rfl⟩
-      ok := hOk
-      sep := hsep
-      heckeR := hP.heckeR
-      heckeL := hP.heckeL
-      thetaR := hhE
-      thetaL := hhW
-      gUnit := hP.gUnit.1
-      gEquiv := hP.gEquiv.1
-      lev0 := hP.levE.1
-      lev1 := hP.levE.2.1
-      h2P := hP.levE.2.2
-      gUnitL := hP.gUnit.2
-      gEquivL := hP.gEquiv.2
-      lower_level_lift_type := hP.levW.1
-      upper_level_lift_type := hP.levW.2
-      inBlock := hP.block
-      ratZ := hP.ratZ
-      eig0 := e0
-      eig1 := e1
-      typ0 := t0
-      typ1 := t1
-      pos := hP.pos
-      h0 := RealDat.h0 hC.tup
-      w1 := fun w hw => hC.tup.tw w ((RealDat.inNonzeroPlaces_recursive_iff C CH w).2 hw)
-      h4pos := ⟨fun _ => hP.posScal.1, hP.posScal.2, RealDat.nP_pos⟩
-      thmBop := RealDat.thmBop_of hP.thmB
-      partsE := hP.sumE
-      ratMu := hP.ratMu
-      kForm := RealDat.kForm hP.unif
-      mLat := hP.mLat
-      ewNorm := RealDat.ewNorm
-      thmAop := RealDat.thmAop_of hP.thmA
-      partsW := hP.sumW
-      ratTh := hP.ratTh
-      galD := hP.scalConj
-      dimParts := hP.dimParts
-      l3 := hP.covol
-      on := hP.onto
-      l6 := hP.lamLow
-      btVanish := hP.btVanish
-      mi0 := hP.mi0
-      zetaOK := RealDat.zetaOK_of Y hY
-      l1e := hP.period
-      fun0 := hP.fun0 } hP.passage
-
-def primPkg {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R : RealDat D A Ks) (F : Face D A) (Y : RealDat.RealCol R F)
-    (C CH : ℝ) (hC : R.Char F) (hY : Y.Char) (hP : PrimLinks R F Y C CH) :
-    IndefPkg A.fam.amb (faceOf A F.P0 F.ψ0 F.P1 F.ψ1 F.Dc F.Sp F.Zsc) C CH :=
-  cxPkgF A hOk hsep F.P0 F.ψ0 F.P1 F.ψ1 F.Dc F.Sp F.Zsc (R.toCx F) Y.toCol C CH (cxLinks_of_prims hOk hsep hC hY hP)
-
-theorem primPkg_spec {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R : RealDat D A Ks) (F : Face D A)
-    (Y : RealDat.RealCol R F) (C CH : ℝ) (hC : R.Char F) (hY : Y.Char) (hP : PrimLinks R F Y C CH) :
-    (primPkg hOk hsep R F Y C CH hC hY hP).Zs = (R.toCx F).zs ∧
-      (primPkg hOk hsep R F Y C CH hC hY hP).core.base.toIndefData = (R.toCx F).data F.cr false ∧
-      (primPkg hOk hsep R F Y C CH hC hY hP).core.cols.toIndefData = (R.toCx F).data F.cr true ∧
-      (primPkg hOk hsep R F Y C CH hC hY hP).core.base.μ = R.mu :=
-  ⟨rfl, rfl, rfl, rfl⟩
 
 end Prim
 
-section Geo
-
-open Formalism.L2.Geo Formalism.MainNotions
-
-variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
-  {Gm : DV.Geo D.what₂.LL} {Lv : Type} {Fam : ShimFam D Gm Lv} (Kp : FormsKPkg Fam) [Algebra Kp.fs.KO D.what₂.LL]
-
-def posEmb (σ : D.what₂.LL →+* ℂ) : Prop := ∀ ρ, labE σ (lab σ ρ) = tauE D ρ
-
-def GeoTied (R : RealDat D A Kp.fs.KO) (e : G ≃* Kp.Hb) : Prop :=
-  Arith.FormsL.PosOK posEmb D.what₂.embLL ∧ ∀ i : Fin D.R.m, ∃ (w : WeightFamilies.Wt D ((i : ℕ) + 1)) (ι : Kp.fs.Cusp ((i : ℕ) + 1) w →ₗ[Kp.fs.KO] (Fin (R.nW i) → D.what₂.LL)),
-    Arith.CompatibleAtCompactLevel Kp e posEmb (R.νW i (R.fdW i)).toReal ((i : ℕ) + 1) w (R.FW i) ι
-
-def CharG (R : RealDat D A Kp.fs.KO) (F : Face D A) (e : G ≃* Kp.Hb) : Prop := R.Char F ∧ GeoTied Kp R e
-
-end Geo
-
-section Exist
-
-open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
-
-variable (D) in
-
-def WeilExists : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsStdChar D ψ (-1) → IsHeckeChar D χS →
-    IsHeckeChar D χT → ResEta D χS S.rank → ResEta D χT T.rank → ∃ ω, IsWeilDatumO ψ S T χS χT ω
-
-variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
-  {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-
 namespace RealDat
 
-variable (R : RealDat D A Ks) (F : Face D A)
-
-def Base : Prop := R.toLevCh.Is A.μ0 ∧ R.IsGrp F ∧ R.IsFam ∧ R.IsModels
-
 end RealDat
-
-variable (D A Ks) in
-
-def BaseExists (F : Face D A) : Prop := ∃ R : RealDat D A Ks, R.Base F
-
-def ChainExists (F : Face D A) : Prop :=
-  ∀ R : RealDat D A Ks, R.Base F → IsStdChar D R.ψ (-1) → ∃ ωY ωX vac vacX vY vX ItY ItX ioY ioX Th,
-    RealDat.IsChain { R with ωY := ωY, ωX := ωX, vac := vac, vacX := vacX, vY := vY, vX := vX, ItY := ItY, ItX := ItX,
-                             ioY := ioY, ioX := ioX, Th := Th }
-
-def ThPExists (F : Face D A) : Prop :=
-  ∀ R : RealDat D A Ks, R.Base F → IsStdChar D R.ψ (-1) → ∃ ωP vacP vP ioP thF thG,
-    RealDat.IsThP { R with ωP := ωP, vacP := vacP, vP := vP, ioP := ioP, thF := thF, thG := thG }
-
-def TupExists (R : RealDat D A Ks) (F : Face D A) : Prop :=
-  ∃ mu twPl, RealDat.IsTup { R with mu := mu, twPl := twPl } F
-
-end Exist
 
 section Host
 
@@ -502,15 +237,6 @@ structure HostHyp : Prop where
   cloudGap : ∀ τ : D.what₂.Tau, 100 * (D.R.r : ℚ) ^ 4 ≤ Formalism.L2.NTheta.lamAt (D.hc τ) (D.R.k - 2) - Formalism.L2.NTheta.lamAt (D.hc τ) (D.R.k - 1)
   nodeGap : D.NodeGap (4 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 3 + 2 * D.R.t + 6)
   nodeGapR : D.NodeGap (256 * (D.R.r : ℝ) ^ 4)
-
-open Formalism.L2.Geo Formalism.MainNotions Formalism.IndefR.Cx in
-
-def geoPkg {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Gm : DV.Geo D.what₂.LL} {Lv : Type}
-    {Fam : ShimFam D Gm Lv} (Kp : FormsKPkg Fam) [Algebra Kp.fs.KO D.what₂.LL] {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
-    (R : RealDat D A Kp.fs.KO) (F : Face D A) (e : G ≃* Kp.Hb) (Y : RealDat.RealCol R F) (C CH : ℝ) (_hH : HostHyp D)
-    (hG : CharG Kp R F e) (hY : Y.Char) (hP : PrimLinks R F Y C CH) :
-    IndefPkg A.fam.amb (faceOf A F.P0 F.ψ0 F.P1 F.ψ1 F.Dc F.Sp F.Zsc) C CH :=
-  primPkg hOk hsep R F Y C CH hG.1 hY hP
 
 end Host
 

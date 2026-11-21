@@ -12,7 +12,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfinitesimalCh
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvariantHermitianForm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRightHaarMeasure
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspRapidDecaySiegelGL
-import Development.WeilBound.CoreStatements.SatakeConjugation.ConjPl
+import Development.WeilBound.CoreStatements.SatakeConjugation.CsdIff
+import Formalism.LocalToGlobal.PlaceMapInjectivity.MapPlInjective
 
 noncomputable section
 
@@ -37,8 +38,6 @@ theorem infChar_conj {a : ℕ} (P : CuspSub E a) (hn : IsNormalised P) (τ : E �
   have := h2
   obtain ⟨B, hB⟩ := GlobalTheory.CompanionTheory.ClozelHerm.exists_isHerm GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL E a μ P hn
   exact GlobalTheory.CompanionTheory.Clozel.hasInfChar_conj_eq E a P B hB τ m m' hm hm'
-
-def strSum (d : ℕ) (m : Multiset ℂ) : Multiset ℂ := ∑ k : Fin d, m.map (· + (spehExp d k : ℂ))
 
 end PositivityTheory.Rg.BcB.F.Rig.B
 

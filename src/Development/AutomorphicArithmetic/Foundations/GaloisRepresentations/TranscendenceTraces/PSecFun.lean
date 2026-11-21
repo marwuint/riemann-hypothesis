@@ -2,7 +2,9 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TranscendenceTraces.IsolateSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistSectionsLocallyGeneratedStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocallyIffAffineEtalePointCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsSepGlueOfSurjectiveFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsSepGlueOfSurjectiveFamily
+import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistReductionResolutionMapGenerator
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
@@ -27,7 +29,7 @@ private theorem res_eq_of_range {q : ℕ} {i : ℤ} {U V : Scheme.{0}} (g : V �
   obtain ⟨t, -, -⟩ := Scheme.Pullback.exists_preimage_pullback (f := x) (g := g)
     (IsLocalRing.closedPoint Ω) v hv.symm
   have hE : Etale (pullback.fst x g) := inferInstance
-  have hz := (GlobalTheory.T.etaleSheafSections_sep_glue_of_surjective_family _ (tw q i) (gp Ω) Unit (fun _ => pullback x g) (fun _ => pullback.fst x g)
+  have hz := (_root_.GlobalTheory.EtC.sec_sep_glue_of_points _ (tw q i) (gp Ω) Unit (fun _ => pullback x g) (fun _ => pullback.fst x g)
     (fun _ => hE) (fun u => ⟨(), t, Subsingleton.elim _ _⟩)).1 (Sec.res x y - c • Sec.res x G) (fun _ => by
       rw [res_sub', res_nsmul', res_res, res_res, pullback.condition, ← res_res, ← res_res, h, res_nsmul', sub_self])
   exact sub_eq_zero.mp hz

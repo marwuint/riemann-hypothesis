@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryLocalFinitenessRegularSemisimpleCentraliz
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryLevelSubgroupProperties
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseDoubleCosetNonsplitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseDoubleCosetNonsplit
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Heckecomm
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FixedSpaceRankOne.FinrankFixedEqOne
@@ -47,22 +47,12 @@ theorem gelPair_split (n : ℕ) (w : Pl E) (hw : IsSplitAt w) : GelPair (KL n w)
 
 theorem gelPair_inert (hE : Unr E) (n : ℕ) (w : Pl E) (hw : ¬ IsSplitAt w) : GelPair (KL n w) :=
   ⟨relIndex_conj_KL_ne_zero n w, fun g => g⁻¹, fun a b => mul_inv_rev a b, fun a => inv_inv a,
-    fun g => GlobalTheory.T.inverse_double_coset_nonsplit E hE w hw n g, fun _ hk => (KL n w).inv_mem hk⟩
+    fun g => _root_.GlobalTheory.CompanionTheory.InvDoubleCoset.inv_mem_doubleCoset E hE w hw n g, fun _ hk => (KL n w).inv_mem hk⟩
 
 theorem gelPair_KL (hE : Unr E) (n : ℕ) (w : Pl E) : GelPair (KL n w) := by
   by_cases hw : IsSplitAt w
   · exact gelPair_split n w hw
   · exact gelPair_inert hE n w hw
-
-theorem sphOne_uncond : PositivityTheory.Rg.BcB.F.Eig.SphOne := by
-  intro E _ _ _ hE n w σ hne hfd
-  haveI := hfd
-  exact finrank_fixed_eq_one (gelPair_KL hE n w) σ.ρ σ.irred hne
-
-theorem sphOne : PositivityTheory.Rg.BcB.F.Eig.LocAlg → PositivityTheory.Rg.BcB.F.Eig.SphOne := by
-  intro _ E _ _ _ hE n w σ hne hfd
-  haveI := hfd
-  exact finrank_fixed_eq_one (gelPair_KL hE n w) σ.ρ σ.irred hne
 
 end PositivityTheory.Rg.BcB.F.EigA
 

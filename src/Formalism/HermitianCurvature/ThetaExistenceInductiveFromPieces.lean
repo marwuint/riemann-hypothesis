@@ -279,31 +279,6 @@ def Exhaust : Prop :=
     ∃ Om : ℕ → Set K, (∀ j, IsOmega s (Om j)) ∧ (∀ j, Om j ⊆ Om (j + 1)) ∧
       ∀ z : Kˣ, ∃ j, (z : K) ∈ Om j
 
-def Param : Prop :=
-  ∀ (K : Type) [CommRing K] (m : ℕ) (t : Kˣ) (c : K) (u' : Matrix (Fin m) (Fin m) K)
-    (a : Matrix Unit (Fin m) K) (b : Matrix (Fin m) Unit K), IsUpUni u' →
-    ∀ w : Matrix (Fin m) (Fin m) K, (w = Matrix.of fun i j => if j = Fin.rev i then 1 else 0) →
-    fromBlocks 1 0 a 1 * fromBlocks ((t : K) • w) 0 0 (Matrix.of fun _ _ => c) *
-        fromBlocks u' b 0 1 =
-      fromBlocks (w * ((t : K) • u')) (w * ((t : K) • b)) (a * w * ((t : K) • u'))
-        ((Matrix.of fun _ _ => c) + a * w * ((t : K) • u') * ((t : K) • u')⁻¹ * ((t : K) • b)) ∧
-    ∀ i : Fin m, i.val = 0 → (a * w * ((t : K) • u')) () i = (t : K) * a () (Fin.rev i)
-
-def CritPoints : Prop :=
-  ∀ (K : Type) [CommRing K] (m : ℕ), 1 ≤ m → ∀ (D' : Kˣ) (x : Fin m → Kˣ),
-    (∀ k, x k * ∏ j, x j = D') ↔ ∃ z : Kˣ, (∀ k, x k = z) ∧ z ^ (m + 1) = D'
-
-def CritValue : Prop :=
-  ∀ (K : Type) [CommRing K] (m : ℕ) (z : Kˣ),
-    g0 ((z : K) ^ (m + 1)) (fun _ : Fin m => (z : K)) = ((m + 1 : ℕ) : K) * (z : K)
-
-def HessianJet : Prop :=
-  ∀ (m : ℕ) (d : Fin m →₀ ℕ),
-    d ∈ ((∏ k : Fin m, (1 + MvPolynomial.X k)) *
-      (1 - ∑ k : Fin m, MvPolynomial.X k + MvPolynomial.C (1 / 2 : ℚ) *
-        (∑ k : Fin m, MvPolynomial.X k ^ 2 + (∑ k : Fin m, MvPolynomial.X k) ^ 2)) -
-      1 : MvPolynomial (Fin m) ℚ).support → 3 ≤ d.sum fun _ e => e
-
 def HessDet : Prop :=
   ∀ (K : Type) [CommRing K] (m : ℕ) (a : Kˣ),
     (hessM m a).det = ((m + 1 : ℕ) : K) * ((a⁻¹ : Kˣ) : K) ^ m
@@ -726,18 +701,5 @@ def ThOmAssemble : Prop :=
 def ThetaExistenceInductive : Prop :=
   ThOm → SupportModule → NsSupport → CSizeOne → Exhaust → LatFinite → PSDEntryBound → PSDClosed →
     BoundedSubseq → ThetaExistsStep
-
-def ThetaExistenceInductiveFromPieces : Prop :=
-  AvgBoundAssemble → GaussHessAssemble → StationaryAssemble → GermPhiAssemble → GermAssemble →
-    GermKernelAssemble → GermIdentityAssemble → ThOmAssemble → ThetaExistenceInductive →
-  MeanSplit → POrth → OrthNorm → ParsevalGroup → GramRealiseCut → PSDEntryBound → PSDClosed →
-  BoundedSubseq → LatFinite → IntLatRefine → IntKRefine → VolScale → PerpLat → CharMean → PerpDual →
-  LatChoice → ModLocConst → SmallUnits → SmallModules → RootsFinite → RootsSeparated → Exhaust →
-  HessDet → GaussModulus → GaussIndep → GaussAdmSmall →
-  NonStationary → MorseLemma → OscReduction → OscInvariant → HeadReduction → KpFromBB → KpHerm →
-  ShiftUnit → ShiftSmall → CutSame → RootCorr → SquareNear → PhaseDiff → LocConst → ChangeVar → CrossVanish →
-  CSizeAddBlock → UGramEq → UNormBound → CutPSD → UBlock → AvgDataExists → CutNormEval → ThxLower →
-  ThxBasic → ThxSum → SupportModule → CSizeOne →
-  ModMul → IntFinite → KpGram → KpBlockDiag → NsSupport → ThetaExistsStep
 
 end Formalism.FourierDecayAlt.A6

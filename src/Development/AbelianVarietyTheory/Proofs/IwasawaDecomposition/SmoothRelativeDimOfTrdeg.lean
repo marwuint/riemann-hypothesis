@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrdegResidueFieldEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResidueFieldIsAlgebraicOfEtale
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResidueFieldIsoInvCompSpec
 
 open AlgebraicGeometry CategoryTheory Limits
 
@@ -79,35 +78,6 @@ theorem exists_minimal_in_fibre {R B : Type} [CommRing R] [CommRing B] (φ : R �
   refine ⟨OrderDual.ofDual m, hm.prop.1, hm.prop.2.1, hm.prop.2.2, fun P' h1 h2 h3 => ?_⟩
   have := hm.eq_of_ge (y := OrderDual.toDual P') ⟨h1, h2.trans hm.prop.2.1, h3⟩ h2
   exact congrArg OrderDual.ofDual this
-
-theorem trdeg_residueFieldMap_openImmersion_square :
-    ∀ {X Y X' Y' : Scheme.{0}} (g : X' ⟶ Y') (f : X ⟶ Y) (jX : X' ⟶ X) (jY : Y' ⟶ Y)
-    [IsOpenImmersion jX] [IsOpenImmersion jY], g ≫ jY = jX ≫ f → ∀ x : X',
-    @Algebra.trdeg (Y.residueField (f (jX x))) (X.residueField (jX x)) _ _
-      (f.residueFieldMap (jX x)).hom.toAlgebra =
-    @Algebra.trdeg (Y'.residueField (g x)) (X'.residueField x) _ _
-      (g.residueFieldMap x).hom.toAlgebra := by
-  intro X Y X' Y' g f jX jY _ _ e x
-  have hpt : jY (g x) = f (jX x) := by
-    rw [← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply]
-  have hc := Scheme.Hom.residueFieldMap_congr e x
-  rw [Scheme.residueFieldMap_comp, Scheme.residueFieldMap_comp] at hc
-  let C : Y.residueField (jY (g x)) ≅ Y.residueField (f (jX x)) := Y.residueFieldCongr hpt
-  have hc' : jY.residueFieldMap (g x) ≫ g.residueFieldMap x =
-      C.hom ≫ f.residueFieldMap (jX x) ≫ jX.residueFieldMap x := hc
-  let eU : Y.residueField (f (jX x)) ≅ Y'.residueField (g x) :=
-    C.symm ≪≫ asIso (jY.residueFieldMap (g x))
-  let eV : X.residueField (jX x) ≅ X'.residueField x := asIso (jX.residueFieldMap x)
-  refine GlobalTheory.trdeg_eq_of_ringEquiv_square _ _ eU.commRingCatIsoToRingEquiv
-    eV.commRingCatIsoToRingEquiv ?_
-  have key : C.inv ≫ jY.residueFieldMap (g x) ≫ g.residueFieldMap x =
-      f.residueFieldMap (jX x) ≫ jX.residueFieldMap x := by
-    rw [hc']; simp
-  have key2 := congrArg CommRingCat.Hom.hom key
-  simp only [CommRingCat.hom_comp] at key2
-  ext y
-  have key3 := congrArg (fun φ => φ y) key2
-  simpa [eU, eV] using key3
 
 open AlgebraicGeometry CategoryTheory Limits in
 private lemma specMap_residueFieldMap_conj_eq_ofHom_map {R S : CommRingCat.{0}} (φ : R ⟶ S)

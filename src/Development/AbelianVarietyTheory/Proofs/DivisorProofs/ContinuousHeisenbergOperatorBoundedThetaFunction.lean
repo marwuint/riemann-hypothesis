@@ -39,5 +39,3 @@ theorem continuous_rhoBF (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
 
 end GlobalTheory.RealWeilF
 
-example : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (nS nT : ℕ)
-    (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ), ∀ f : BBF σ JS JT ξ₀ ψ, Continuous fun w => rhoBF σ JS JT ξ₀ ψ hψ w f := GlobalTheory.RealWeilF.continuous_rhoBF

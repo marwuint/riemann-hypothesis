@@ -1,9 +1,15 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.DegPushTest
 import Development.WeilBound.CoreStatements.VolumeEquality.DegPushPF
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.GenericFibreIntersectionPullback
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionMultilinearAllStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MonomialLinesPermutationStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConjStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionMultilinearAll
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MonomialLinesPermutation
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConj
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
 
 open MvPolynomial Filter Topology ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top SheetDecomposition
@@ -87,7 +93,7 @@ theorem arFun_word (hII : IsFullIntersectionSystem II) (t : ℝ) (w : Fin (dimFl
     rfl
   have h3 : (∑ j, Finsupp.single (some (w j)) 1 : Option (Ψ × Fin N) →₀ ℕ) none = 0 := by
     simp [Finsupp.finsetSum_apply]
-  obtain ⟨h2, -, -, h4⟩ := GlobalTheory.T.monomial_lines_permutation II hII.1 M.K M.ι M.P _ _ (M.line t) (fun j => some (w j)) M.arith (line_smooth M t)
+  obtain ⟨h2, -, -, h4⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.monoLines_monomial_word II hII.1 M.K M.ι M.P _ _ (M.line t) (fun j => some (w j)) M.arith (line_smooth M t)
   have hδ : (M.δ : ℝ) ≠ 0 := Nat.cast_ne_zero.2 M.δ_pos.ne'
   rw [h1, RootModel.arFun, Module.Basis.constr_basis, RootModel.arMono, if_pos h2, h3, pow_zero, mul_one,
     div_mul_cancel₀ _ hδ, h4]
@@ -97,7 +103,7 @@ theorem arFun_prod (hII : IsFullIntersectionSystem II) (t : ℝ) {d : ℕ} (hd :
     M.arFun II t (toA (∏ j, ∑ x, c j x • X x)) * M.δ = II M.K M.ι M.P d fun j => combLine (M.x t) (c j) := by
   classical
   subst hd
-  rw [GlobalTheory.T.arith_intersection_multilinear_all II hII M.K M.ι M.P _ _ (M.x t) c M.arith (M.x_smooth t), Fintype.prod_sum]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.Top.intersection_combLine_expansion II hII M.K M.ι M.P _ _ (M.x t) c M.arith (M.x_smooth t), Fintype.prod_sum]
   have h1 : ∀ w : Fin (dimFl Ψ N + 1) → Ψ × Fin N, toA (∏ j, c j (w j) • X (w j) : RP Ψ N) =
       ((∏ j, c j (w j) : ℤ) : ℝ) • toA (∏ j, X (w j)) := fun w => by
     rw [Finset.prod_smul, Int.cast_smul_eq_zsmul, toA, toA, map_zsmul]
@@ -113,7 +119,7 @@ theorem geoFun_pts (hI : PB.Inputs) (t : ℝ) {d : ℕ} (hd : d = dimFl Ψ N) (c
   classical
   subst hd
   have h := GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree hI.degree M.K M.ι M.P _ (fun j => combLine (M.x t) (c j)) M.arith
-    fun j => (GlobalTheory.T.hermitian_combination_smooth_conj _ _ _ _ _).1 (M.x_smooth t)
+    fun j => (_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj _ _ _ _ _).1 (M.x_smooth t)
   refine (geoFun_prod M hI c).trans (Eq.trans ?_ h.symm)
   simp only [combLine, M.x_deg]
 

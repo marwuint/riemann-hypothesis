@@ -4,18 +4,21 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePointsCycAway
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpPolarizationPullbackStable
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaPointDeterminesAndEndDeterminedTorsion
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveHomogeneousCoordsBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveHomogeneousCoordsFieldDetermineDescendStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSymmetricFunctionsDegreeFactorialScaledFiniStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantListAlgClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreExistsGeneratorStableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasThetaConstantsTwoLevelsMoveCartesianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelThetaPointOfThetaConstantsLevelSquareStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveHomogeneousCoordsBasicProperties
+import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
+import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveHomogeneousCoordsFieldDetermineDescend
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSymmetricFunctionsDegreeFactorialScaledFini
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantListAlgClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreExistsGeneratorStable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasThetaConstantsTwoLevelsMoveCartesian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelThetaPointOfThetaConstantsLevelSquare
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.FiniteDimensionalBase
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ObjIsAbelianSchemeDimRigidifiedSym
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSiegelPointsE8ThetaPowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSiegelPointsE8ThetaPower
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.SiegTh Classical
@@ -37,7 +40,7 @@ theorem sharpOver_of_polIso {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix 
 theorem finite_sharp (g n : ℕ) (hn : 2 ≤ n) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W)
     (K : Type) [Field K] [IsAlgClosed K] (Q : PolAV (Sp K)) :
     Set.Finite {y : Sp K ⟶ F.X | GlobalTheory.Poinc.SharpOver F W Q y} :=
-  GlobalTheory.T.finite_siegelPoints_e8ThetaPower g n (by omega) F W hW K Q
+  _root_.GlobalTheory.SharpFiniteTh.finite_sharpOver g n (by omega) F W hW K Q
 
 def ThData {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) {K : Type} [Field K] (y : Sp K ⟶ F.X)
     (h m : ℕ) (ze : Γ(Sp K, ⊤)ˣ) (v : (Fin (2 * h) → ZMod (m ^ 2)) → Γ((baseOver (Sp K)).left, ⊤)) : Prop :=
@@ -84,8 +87,8 @@ theorem finite_fibres : ∀ (ℓ : ℕ), ℓ.Prime → Odd ℓ → ∀ (g : ℕ)
   have hz' := hz.map_of_injective eK.injective
   set ze : Γ(Sp K, ⊤)ˣ := (hz'.isUnit hpos.ne').unit with hzedef
   have hze : IsPrimitiveRoot ze ((ℓ ^ j) ^ 2) := hz'.isUnit_unit hpos.ne'
-  obtain ⟨⟨e, he⟩, -⟩ := (GlobalTheory.T.projectiveHomogeneousCoords_basic_properties).2.2 (cycAway n) K N (x ≫ f)
-  obtain ⟨T, hT⟩ := GlobalTheory.T.thetaSymmetricFunctionsDegreeFactorial_scaled_finite K (N + 1) e
+  obtain ⟨⟨e, he⟩, -⟩ := (_root_.GlobalTheory.UMin.CrdBasic.pCrd_basic).2.2 (cycAway n) K N (x ≫ f)
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.UMin.symTup_scale_finite K (N + 1) e
   haveI := P.isAb.comm
   haveI : NeZero ((ℓ ^ j) ^ 2) := ⟨hpos.ne'⟩
   refine (Set.finite_iUnion fun d : T × ((Fin (2 * (8 * g)) → ZMod ((ℓ ^ j) ^ 2)) → Fin (N + 1)) =>
@@ -96,21 +99,21 @@ theorem finite_fibres : ∀ (ℓ : ℕ), ℓ.Prime → Odd ℓ → ∀ (g : ℕ)
   obtain ⟨Q, α, hQg, hpb, hQL⟩ := GlobalTheory.PureType.exists_baseChange GlobalTheory.abelianSchemeLaws_all.1.polBaseChange y P
   have hQg' : Q.g = 8 * g := hQg.trans hPg
   have hfib : PolFib P.A P.L (8 * g) (y ≫ 𝟙 F.X) := ⟨Q, α, hQg', by rwa [Category.comp_id], hQL⟩
-  obtain ⟨⟨θ, hθ⟩, -⟩ := GlobalTheory.T.principallyPolarisedFibre_exists_generator_stable _ P.A P.L P.isLB (8 * g) K _ hfib
-  obtain ⟨pt, cy, hcy⟩ := GlobalTheory.T.exists_thetaConstantList_algClosed _ P.A P.L rig P.isLB hrig (8 * g) (ℓ ^ j) (N + 1) K _ θ hmo hm0 hN hfib
+  obtain ⟨⟨θ, hθ⟩, -⟩ := _root_.GlobalTheory.UMin.gen_of_polFib _ P.A P.L P.isLB (8 * g) K _ hfib
+  obtain ⟨pt, cy, hcy⟩ := _root_.GlobalTheory.UMin.exists_thList _ P.A P.L rig P.isLB hrig (8 * g) (ℓ ^ j) (N + 1) K _ θ hmo hm0 hN hfib
   have hH : HasTh P.A P.L rig (ℓ ^ j) (y ≫ 𝟙 F.X) cy := ⟨θ, pt, hθ, hcy⟩
   have hP1 : PCrd (y ≫ f) (symTup cy) := hmap.1 K y cy hH
   rw [hy'] at hP1
-  obtain ⟨a, ha0, ha⟩ := (GlobalTheory.T.projectiveHomogeneousCoords_field_determine_descend).2.1 (cycAway n) K N (x ≫ f) e (symTup cy) he hP1
+  obtain ⟨a, ha0, ha⟩ := (_root_.GlobalTheory.UMin.CrdUniq.main).2.1 (cycAway n) K N (x ≫ f) e (symTup cy) he hP1
   obtain ⟨mu, hmu0, hmuT⟩ := hT cy a ha0 ha
   haveI := Q.isAb.comm
   obtain ⟨rigQ, hrigQ⟩ := Q.rigid
   have hQ : HasTh Q.A Q.L rigQ (ℓ ^ j) (𝟙 (Sp K)) cy := by
     rw [hasTh_iff] at hH ⊢
-    refine (GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian _ P.A P.L rig P.isLB hrig (Sp K) Q.A Q.L rigQ y α Q.isLB hrigQ hpb hQL (ℓ ^ j) (ℓ ^ j)
+    refine (_root_.GlobalTheory.UMin.ThMove.hasTh₂_move _ P.A P.L rig P.isLB hrig (Sp K) Q.A Q.L rigQ y α Q.isLB hrigQ hpb hQL (ℓ ^ j) (ℓ ^ j)
       (N + 1) (N + 1) K (𝟙 _) cy cy).2 ?_
     simpa only [Category.id_comp, Category.comp_id] using hH
-  obtain ⟨lev, β, hβ⟩ := GlobalTheory.T.exists_level_thetaPoint_of_thetaConstants_level_square K Q rigQ (8 * g) (ℓ ^ j) (N + 1) hQg' cy ze hrigQ hmo hm0 hze hQ
+  obtain ⟨lev, β, hβ⟩ := _root_.GlobalTheory.UMin.exists_level_isThetaPt_of_hasTh K Q rigQ (8 * g) (ℓ ^ j) (N + 1) hQg' cy ze hrigQ hmo hm0 hze hQ
   have hSQ : GlobalTheory.Poinc.SharpOver F W Q y := by
     simpa using GlobalTheory.Poinc.sharpOver_pullback g n _ _ F W _ _ P Q (𝟙 F.X) y α hSh hpb hQL
   exact Set.mem_iUnion.2 ⟨(⟨_, hmuT⟩, β), Q, hQg', lev, hSQ, hβ mu hmu0⟩

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsInverseIsogenyPolAVStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsInverseIsogenyPolAV
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueHomOfIsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AbelianSchemeHomExtendsDedekindOfIsGrpPullbackAl
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AbelianSchemeSurjectiveOfOntoComplexPoints
@@ -46,7 +46,7 @@ theorem exists_inverse_isogeny_ringOfIntegers :
     rw [Over.w Φ₀, Over.w Φ]
     exact hφ.1
   have hs₀ : Surjective Φ₀.left := MorphismProperty.of_isPullback (P := @Surjective) hpb hs
-  obtain ⟨N, ψ₀, hN, hψ₀, e₁, e₂⟩ := GlobalTheory.T.exists_inverse_isogeny_of_surjective_polAV hT hL K σ Q Q' Φ₀ (hQ.trans (hg.trans hQ'.symm)) hm₀ hs₀
+  obtain ⟨N, ψ₀, hN, hψ₀, e₁, e₂⟩ := _root_.GlobalTheory.exists_inverse_isogeny_polAV hT hL K σ Q Q' Φ₀ (hQ.trans (hg.trans hQ'.symm)) hm₀ hs₀
   obtain ⟨ψ, hψ, eψ, -⟩ := abelianScheme_hom_extends_dedekind_of_isGrpPullback hE (𝓞 K) K P'.A P.A Q'.A Q.A φ' φ
     P'.isAb P.isAb hφ' hφ ψ₀ hψ₀
   refine ⟨N, ψ, hN, hψ, ?_, ?_⟩

@@ -70,27 +70,6 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {Aᵥ Cᵥ : ∀ v, Rep.{u} k (H v)} [∀ v, IsDiscreteRep (Aᵥ v)] [∀ v, IsDiscreteRep (Cᵥ v)]
   {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v} {c : ∀ v, Rep.res (φ v).toMonoidHom C ⟶ Cᵥ v}
 
-theorem compactCup_homologyπ_eq_homologyδ (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v, Aᵥ v ⊗ Rep.res (φ v).toMonoidHom B ⟶ Cᵥ v)
-    (hμ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μ ≫ c v =
-      resTensorHom (φ v).toMonoidHom (a v) (𝟙 _) ≫ μᵥ v)
-    {p s m : ℕ} (h : p + 1 + s = m + 1) (X : (compactCochains φ A Aᵥ a).cycles (p + 1))
-    (e : (cochainsComplex B).cycles s) (q : (cochainsComplex C).X m)
-    (w : (piComplex fun v => cochainsComplex (Cᵥ v)).cycles m)
-    (hq : ((cochainsComplex C).d m (m + 1)).hom q = cupPairingCochains μ h
-      (((compactCochains φ A Aᵥ a).iCycles (p + 1)).hom X).1 (((cochainsComplex B).iCycles s).hom e))
-    (hw : ((piComplex fun v => cochainsComplex (Cᵥ v)).iCycles m).hom w =
-      (LeibnizPairing.pi fun v => cupLeibniz (μᵥ v)).μ (show p + s = m by omega)
-        (show (piComplex fun v => cochainsComplex (Aᵥ v)).X p from
-          (((compactCochains φ A Aᵥ a).iCycles (p + 1)).hom X).2)
-        (((localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) fun _ => 𝟙 _).f s).hom
-          (((cochainsComplex B).iCycles s).hom e)) -
-      ((localRes φ C Cᵥ c).f m).hom q) :
-    compactCup φ μ μᵥ hμ h (((compactCochains φ A Aᵥ a).homologyπ (p + 1)).hom X)
-        (((cochainsComplex B).homologyπ s).hom e) =
-      (mappingCoconeNat.homologyδ (localRes φ C Cᵥ c) m).hom
-        (((piComplex fun v => cochainsComplex (Cᵥ v)).homologyπ m).hom w) :=
-  LeibnizPairing.coconeLeft_homology_eq_homologyδ _ _ _ (localRes_cupPairingCochains φ μ μᵥ hμ) h X e q w hq hw
-
 omit [IsDiscreteRep A] [IsDiscreteRep B] [∀ v, IsDiscreteRep (Aᵥ v)] in
 
 theorem homologyδ_homologyπ_eq_localToCompact {m : ℕ}

@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSimilitudeTriangularPeriodsOfHeckePoint
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingForms
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermFormEqOfImEqOnSpanningLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqOfFlagOfHermFormPreservingStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermFormEqOfImEqOnSpanningLattice
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqOfFlagOfHermFormPreserving
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyTransferEquiv
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.HalfDepthValuations
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.HkSupSizedOfHkSup
@@ -179,10 +180,10 @@ theorem eq_of_hkRelFr_frBor : ∀ {E : Type} [Field E] [NumberField E] [NumberFi
       rfl
   obtain ⟨Hm, -, hpos, hHm⟩ := per''.2.2.2.2
   have hform : ∀ x y, hermForm Hm (h x) (h y) = hermForm Hm (h' x) (h' y) :=
-    GlobalTheory.T.hermForm_eq_of_im_eq_on_spanning_family Pm per.2.2.2.1 Hm h.toLinearMap h'.toLinearMap fun a b => by
+    _root_.GlobalTheory.hermForm_eq_of_im_eq_on_spanning_lattice Pm per.2.2.2.1 Hm h.toLinearMap h'.toLinearMap fun a b => by
       simp only [LinearEquiv.coe_coe]
       rw [← hh, ← hh, ← hh', ← hh', hHm, hHm, hiso, hiso']
-  have hhh := GlobalTheory.T.eq_of_flag_of_hermForm_preserving e Hm hpos h h' hform bv (p : ℂ) hp0
+  have hhh := _root_.GlobalTheory.FlagEq.eq_of_flag_of_hermForm e Hm hpos h h' hform bv (p : ℂ) hp0
     (col z t ψ h hL (fun w v a b => (hder w v a b).1) ht hB)
     (col z' t' ψ' h' hL' (fun w v a b => (hder w v a b).2) ht' hB')
   exact Subtype.ext (hker hhh)

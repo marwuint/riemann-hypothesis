@@ -30,25 +30,6 @@ theorem vge_of_zero {k : ℕ} {α : D.toPre.X}
 
 end Basic
 
-theorem n4 : ValuationBoundAtZero := by
-  intro V _ _ _ ϖ hϖ D Q _ F _ _ v hv m _ R' β s hsupp hnu w hw q hq
-  classical
-  obtain ⟨x, hx, hsum⟩ := hw
-  have hxq : ∀ α, ((q : ℚ) : WithTop ℚ) ≤ v (x α) := by
-    intro α
-    by_cases h : ∃ z, α = β + R' • z
-    · obtain ⟨z, rfl⟩ := h
-      have h1 := GC.valuation_ge_at_zero hϖ hv (hnu (β + R' • z)) (hx _)
-      refine le_trans (WithTop.coe_le_coe.2 ?_) h1
-      rw [zero_add]; exact hq z
-    · push Not at h
-      exact GC.valuation_ge_at_zero hϖ hv (vge_of_zero (v := v) (hsupp α h) q) (hx α)
-  obtain ⟨S, hS⟩ := hsum q
-  have h1 := hS S le_rfl
-  have h2 : ((q : ℚ) : WithTop ℚ) ≤ v (∑ α ∈ S, x α) := AddValuation.map_le_sum v fun α _ => hxq α
-  have h3 := AddValuation.map_le_add v h1 h2
-  rwa [sub_add_cancel] at h3
-
 section Q
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}

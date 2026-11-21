@@ -1,7 +1,8 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PFibreLocal
-import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StDiagFibreMoment
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsAntisym
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StDiagFibreFubini
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter
@@ -64,19 +65,6 @@ theorem sum_diagWordMomentPoly (k : ℕ) :
     FibreLocal.integrable_mul _ (continuous_coeff_aeval _ m)]
   rw [← map_sum, ← map_sum, ← map_sum, sum_words]
   rfl
-
-theorem fibreMomentPoly_eq (k : ℕ) :
-    fibreMomentPoly k = C (-kappa k) * (∑ i, X i ^ 2) ^ (k - 1) := by
-  have h := FibreLocal.proof.2.1 k (MvPolynomial (Fin 3) ℝ) X
-  rwa [aeval_X_left_apply, MvPolynomial.algebraMap_eq] at h
-
-theorem proof (h : DiagFibreFubini.Statement) : DiagFibreMoment.Statement := by
-  intro D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD
-  obtain ⟨Λ, hw, hp⟩ := h D S X A X₀ X₁ A₀ hX hA hAb p0 p1 pA k hk hkD
-  rw [Finset.sum_congr rfl fun i hi => hw i (Finset.mem_range.1 hi), ← Finset.mul_sum, ← map_sum,
-    sum_diagWordMomentPoly, fibreMomentPoly_eq, hp, FibreLocal.pushMomentPoly_eq k hk, C_mul', map_smul,
-    map_neg, smul_eq_mul]
-  ring
 
 end DiagFibreMoment
 

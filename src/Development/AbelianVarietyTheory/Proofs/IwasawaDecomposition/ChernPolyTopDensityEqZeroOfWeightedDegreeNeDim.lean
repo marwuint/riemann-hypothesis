@@ -103,5 +103,3 @@ theorem GlobalTheory.GoodMetric.chernTop_eq_zero_of_weightedHomogeneous (n : ℕ
     aeval_isWeightedHomogeneous hQ _ fun x => chernPoly_isHomogeneous _ _ _
   rw [chernTop, topCoeff_eq_zero h hd, Complex.zero_re, mul_zero]
 
-example : ∀ (n : ℕ) (ι : Type) (m : ι → ℕ) (G : ReciprocityTheory.L2DbarEstimates.V n → FlagBundle.Mat m ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) (Q : MvPolynomial (ι × ℕ) ℝ) (d : ℕ), MvPolynomial.IsWeightedHomogeneous (Prod.snd : ι × ℕ → ℕ) Q d → d ≠ n → chernTop Q G v = 0 :=
-  GlobalTheory.GoodMetric.chernTop_eq_zero_of_weightedHomogeneous

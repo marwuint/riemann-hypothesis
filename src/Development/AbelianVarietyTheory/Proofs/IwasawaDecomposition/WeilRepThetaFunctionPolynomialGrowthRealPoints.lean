@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOneP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOscillatorActionUnitaryPolynomialBoundStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeakWeilRepEqUnitSmulOscillatorRealPointsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeakWeilRepEqUnitSmulOscillatorRealPoints
 
 noncomputable section
 
@@ -57,7 +57,7 @@ theorem sum_mM_le (θ : InfF D) (S T : HSp D) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (a 
 
 theorem one_add_normInf_mul (θ : InfF D) (V : HSp D) (g h : GA D V) :
     1 + normInf θ V (g * h) ≤ (1 + normInf θ V g) * (1 + normInf θ V h) := by
-  have h1 := (GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V).1 g h
+  have h1 := (_root_.GlobalTheory.SmoothForms.normInf_mul_le_and_le_height D θ V).1 g h
   have ha := GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) g
   have hb := GlobalTheory.SmoothForms.normInf_nonneg (θ := θ) h
   nlinarith
@@ -70,8 +70,8 @@ theorem om_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D �
       (GlobalTheory.RealWeil.BB ψ S T) (GlobalTheory.RealWeil.rhoV hψ σ S T) (GlobalTheory.RealWeil.isHeis_rhoB h hψ) (GA D S × GA D T)
       (GlobalTheory.RealWeil.mM θ S T) (GlobalTheory.RealWeil.mM_unitary hθ)
   obtain ⟨K, hK0, hK⟩ := sum_mM_le θ S T
-  obtain ⟨-, -, -, -, -, s6, s7, -⟩ := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ S
-  obtain ⟨-, -, -, -, -, t6, t7, -⟩ := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ T
+  obtain ⟨-, -, -, -, -, s6, s7, -⟩ := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ S
+  obtain ⟨-, -, -, -, -, t6, t7, -⟩ := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ T
   refine ⟨N, fun f hf x y => ?_⟩
   obtain ⟨k, hk, a₀, ha₀, rfl⟩ := s7 x
   obtain ⟨k', hk', b₀, hb₀, rfl⟩ := t7 y
@@ -82,7 +82,7 @@ theorem om_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D �
   refine ⟨|C| * (K * ((1 + normInf θ S a₀) * (1 + normInf θ T b₀))) ^ N, fun a ha b hb w => ?_⟩
   have haa := mul_mem ha₀ ha
   have hbb := mul_mem hb₀ hb
-  obtain ⟨c, hc, hcF⟩ := GlobalTheory.T.weakWeilRep_eq_unit_smul_oscillator_real_points D θ σ h ψ hψ S T om hom Ω hosc _ haa _ hbb
+  obtain ⟨c, hc, hcF⟩ := _root_.GlobalTheory.Mem.LiftCmp.weil_eq_smul_osc D θ σ h ψ hψ S T om hom Ω hosc _ haa _ hbb
   have e : ((k * a₀ * a, k' * b₀ * b) : GA D S × GA D T) = (a₀ * a, b₀ * b) * (k, k') := by
     rw [Prod.mk_mul_mk, s6 _ haa k hk, t6 _ hbb k' hk', mul_assoc, mul_assoc]
   have e2 := hcF _ hF

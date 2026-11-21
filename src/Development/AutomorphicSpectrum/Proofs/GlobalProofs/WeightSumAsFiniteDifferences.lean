@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlin
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniValuesNegativeIntegersRationalStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceConeTermEqStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceConeTermEq
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SizePowerLeInverseSquareProductStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummableInverseSquareProductStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HighDifferenceVanishesNegativeIntegerStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummableInverseSquareProduct
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HighDifferenceVanishesNegativeInteger
 
 set_option autoImplicit false
 
@@ -30,9 +30,9 @@ theorem differentiableOn_tsum_weighted_DL_halfplane : ∀ (ι : Type) [Fintype �
     obtain ⟨C, hC0, hC⟩ := GlobalTheory.T.real_difference_cone_bound ι r a b ha hb B R cs 0
     refine Complex.differentiableOn_tsum_of_summable_norm
       (u := fun m : Fin r → ℕ => Cu * C * ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹)
-      ((GlobalTheory.T.summable_inverse_square_product r).mul_left _) ?_ (hopen R) ?_
+      ((_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.summable_prod_inv_one_add_sq r).mul_left _) ?_ (hopen R) ?_
     · intro m
-      exact ((GlobalTheory.T.finite_difference_cone_term_differentiable ι r a b ha hb cs m).const_mul _).differentiableOn
+      exact ((_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DL_coneTerm_differentiable ι r a b ha hb cs m).const_mul _).differentiableOn
     · intro m s hs
       have hprod : 0 ≤ ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹ :=
         Finset.prod_nonneg fun i _ => by positivity
@@ -48,7 +48,7 @@ theorem differentiableOn_tsum_weighted_DL_halfplane : ∀ (ι : Type) [Fintype �
         simp only [Pi.zero_apply, Nat.cast_zero, Finset.sum_const_zero, sub_zero] at hbound
         have hsize := GlobalTheory.T.size_power_le_inverse_square_product r (Fintype.card ι) B N cs m hN hcount
         have hDL : ‖DL cs (coneTerm a b s) m‖ ≤ C * ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹ := by
-          rw [GlobalTheory.T.finite_difference_cone_term_eq ι r a b s cs m]
+          rw [_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DL_coneTerm_eq_DLR ι r a b s cs m]
           exact hbound.trans (mul_le_mul_of_nonneg_left hsize hC0)
         rw [norm_mul, Complex.norm_ratCast, mul_assoc]
         exact mul_le_mul (hCu m) hDL (norm_nonneg _) hCu0

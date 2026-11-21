@@ -78,17 +78,6 @@ theorem theta_map (f : R →+* S) (x : BdRPlus p R) :
   apply theta_eq_of_eval_one
   rw [eval_map, ← ha, Ideal.quotientMap_mk]
 
-theorem map_mem_fil (f : R →+* S) {n : ℕ} {x : BdRPlus p R} (hx : x ∈ fil p R n) :
-    map p f x ∈ fil p S n :=
-  pow_le_comap_pow (I := RingHom.ker (theta p R)) (J := RingHom.ker (theta p S)) (f := map p f)
-    (fun y hy => by
-      rw [Ideal.mem_comap, RingHom.mem_ker, theta_map, RingHom.mem_ker.1 hy, map_zero]) n hx
-
-theorem map_log (f : R →+* S) (u : BdRPlus p R) (hu : theta p R u = 1) :
-    map p f (log u hu) = log (map p f u) (by rw [theta_map, hu, map_one]) := by
-  refine ext_eval fun n => ?_
-  rw [eval_map, eval_log, eval_log, map_truncLog, ← eval_map, map_sub (map p f), map_one]
-
 variable (p) in
 
 def mapEquiv (e : R ≃+* S) : BdRPlus p R ≃+* BdRPlus p S :=
@@ -128,18 +117,6 @@ theorem map_map (e : R ≃+* S) (e' : S ≃+* U) (x : BdR p R) :
     map p e' (map p e x) = map p (e.trans e') x :=
   RingHom.congr_fun (hom_ext (f := (map p e').toRingHom.comp (map p e).toRingHom)
     (g := (map p (e.trans e')).toRingHom) (by simp [BdRPlus.map_map])) x
-
-theorem map_mem_filNat (e : R ≃+* S) {n : ℕ} {x : BdR p R} (hx : x ∈ filNat p R n) :
-    map p e x ∈ filNat p S n := by
-  obtain ⟨y, hy, rfl⟩ := hx
-  exact ⟨_, BdRPlus.map_mem_fil (e : R →+* S) hy, (map_algebraMap e y).symm⟩
-
-theorem map_mem_fil (e : R ≃+* S) {i : ℤ} {x : BdR p R} (hx : x ∈ fil p R i) :
-    map p e x ∈ fil p S i := by
-  rw [fil, Submodule.mem_div_iff_forall_mul_mem] at hx ⊢
-  intro y hy
-  have h := map_mem_filNat e (hx _ (map_mem_filNat e.symm hy))
-  rwa [map_mul, map_map, RingEquiv.symm_trans_self, map_refl] at h
 
 end BdR
 

@@ -4,7 +4,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.MvSecValComp
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackIffStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackIff
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
@@ -222,7 +223,7 @@ theorem lie_model_transport_isomorphism : ∀ (E : Type) [Field E] [NumberField 
           Out.WeilIs t'.G t'.PP.L (n : ℤ) a' b' (unitOn c) := by
     intro n k _ z' z hz a' b' a b c ha hb hw
     subst hz
-    exact (GlobalTheory.T.weil_pairing_pullback_iff E H X X' t t' e.hom m k z' a' b' a b n c ha hb).mpr hw
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.WeilPull.main E H X X' t t' e.hom m k z' a' b' a b n c ha hb).mpr hw
   have hW2 : ∀ (n : ℕ) (k : Type) [Field k] (z' : Sp k ⟶ X) (z : Sp k ⟶ X'), z' ≫ e.inv = z →
       ∀ (a' b' : Over.mk z' ⟶ t.G) (a b : Over.mk z ⟶ t'.G) (c : kˣ), a'.left ≫ inv m.φ = a.left →
         b'.left ≫ inv m.φ = b.left → Out.WeilIs t'.G t'.PP.L (n : ℤ) a b (unitOn c) →
@@ -232,7 +233,7 @@ theorem lie_model_transport_isomorphism : ∀ (E : Type) [Field E] [NumberField 
     subst hz2
     have ha' : a.left ≫ m.φ = a'.left := by rw [← ha, Category.assoc, ψφ, Category.comp_id]
     have hb' : b.left ≫ m.φ = b'.left := by rw [← hb, Category.assoc, ψφ, Category.comp_id]
-    exact (GlobalTheory.T.weil_pairing_pullback_iff E H X X' t t' e.hom m k z a b a' b' n c ha' hb').mp hw
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.WeilPull.main E H X X' t t' e.hom m k z a b a' b' n c ha' hb').mp hw
   refine ⟨M', hM', ?_, ?_, ?_⟩
   · intro n hT k _ i g' hpow
     have hy : (spMap i ≫ ξ') ≫ e.hom = spMap i ≫ ξ := by rw [Category.assoc, hξ]

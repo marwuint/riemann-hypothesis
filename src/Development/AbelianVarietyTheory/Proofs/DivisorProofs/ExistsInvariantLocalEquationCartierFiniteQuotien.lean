@@ -1,7 +1,8 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FromSpecResidueFieldCompAutEqOfFixes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierSectionGeneratesAtVanishesAtFinsetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineFunctionWeightedTranslatesUnitAtStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineFunctionWeightedTranslatesUnitAt
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -169,7 +170,7 @@ theorem exists_invariant_isEqn : ∀ (F : Type) [Field F] [CharZero F] (X W : Sc
     refine ⟨(n : X.presheaf.stalk x), ?_, map_natCast _ n⟩
     rw [← map_natCast φF.hom n]
     exact (IsUnit.mk0 (n : F) (Nat.cast_ne_zero.2 hn)).map _
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_affineFunction_weighted_translates_unitAt X (q ⁻¹ᵁ V) hU x hxU ι σ u
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.CharIndepAt.main X (q ⁻¹ᵁ V) hU x hxU ι σ u
     (fun i f hf => regAt_sig ρ i.1 (by rw [i.2]; exact hf))
     (fun i f hf => zeroAt_sig ρ i.1 (by rw [i.2]; exact hf))
     (fun i => (hu i).regAt)

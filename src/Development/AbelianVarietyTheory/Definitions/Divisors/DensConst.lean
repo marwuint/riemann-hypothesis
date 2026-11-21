@@ -89,39 +89,4 @@ theorem dens_const (N : MLine p σ) (c : AlgChart p σ D) (y : CxPts p σ) :
 theorem part_const (N : MLine p σ) (ε : ℤˣ) : part (fun _ : Fin D => N) ε = N.φ.chernPart D ε := by
   simp only [part, Weight.chernPart, dens_const]
 
-section Generic
-
-variable (t : X ⟶ Sp ℤ)
-
-def gX : Scheme.{0} := pullback t (spMap (Int.castRingHom ℚ))
-
-def gj : gX t ⟶ X := pullback.fst _ _
-
-def gq : gX t ⟶ Sp ℚ := pullback.snd _ _
-
-def gΦ (z : CxPts (gq t) (Rat.castHom ℂ)) : CxPts t (Int.castRingHom ℂ) :=
-  ⟨z.1 ≫ gj t, specZIsTerminal.hom_ext _ _⟩
-
-theorem continuous_gΦ : Continuous (gΦ t) := continuous_of_comp (f := gj t) fun _ => rfl
-
-variable {t}
-
-theorem cInfAt_gΦ {f : CxPts t (Int.castRingHom ℂ) → ℝ} {z : CxPts (gq t) (Rat.castHom ℂ)} (h : CInfAt f (gΦ t z)) :
-    CInfAt (fun w => f (gΦ t w)) z := by
-  obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
-  have e (a : Γ(X, W)) (w : CxPts (gq t) (Rat.castHom ℂ)) :
-      ev (gq t) _ (gj t ⁻¹ᵁ W) ((gj t).app W a) w = ev t _ W a (gΦ t w) := (valR_comp w.1 (gj t) W a).symm
-  refine ⟨gj t ⁻¹ᵁ W, ι, inferInstance, fun a => (gj t).app W (g a), F, O, h₁, h₂, ?_, h₄, ?_⟩
-  · simpa only [e] using h₃
-  · simp only [e]
-    exact (continuous_gΦ t).continuousAt.eventually h₅
-
-def MLine.gen (A : MLine t (Int.castRingHom ℂ)) : MLine (gq t) (Rat.castHom ℂ) where
-  B := A.B.pull (gj t)
-  φ := A.φ.linComb (κ := PUnit) (fun _ => gj t) (fun _ => 1) (fun _ => gΦ t) fun _ _ => rfl
-  cInf j z hz := (cInfAt_gΦ (A.cInf _ _ (mem_of_mem_linComb (m := fun _ => gΦ t z)
-    (fun _ => rfl) hz PUnit.unit))).congr (.of_forall fun w => by simp [Weight.linComb])
-
-end Generic
-
 end GlobalTheory.Mix

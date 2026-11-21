@@ -111,7 +111,7 @@ theorem UpperTheory.repData_geometric_points_of_subData :
   obtain ⟨mm, hmm⟩ := IsogRep.exists_comp m₀' Rd.m₀
   have hφ : m.φ = m₀'.φ ≫ Rd.m₀.φ := by
     rw [← hmm]
-    exact GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique_of_base_eq p D R b N hN hNp _ _ _ _ o ox _ _ m mm rfl
+    exact _root_.GlobalTheory.UPel.HT.Rigid.objMap_phi_unique p D R b N hN hNp _ _ _ _ o ox _ _ m mm rfl
   obtain ⟨h, rfl⟩ : ∃ h, secEquiv hp₀ h = a₀ := ⟨(secEquiv hp₀).symm a₀, MulEquiv.apply_symm_apply _ _⟩
   have haa : a = secEquiv hp' h := by
     apply Over.OverMorphism.ext

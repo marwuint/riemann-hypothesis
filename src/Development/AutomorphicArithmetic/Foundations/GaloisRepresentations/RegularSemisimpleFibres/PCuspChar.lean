@@ -1,8 +1,11 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.ResEmbCompat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabel
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentationStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation
+import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsStandardUnipotentRadicalBijOnNilradicalStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveExtendZeroOfSumUnipotentRadicalStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveExtendZeroOfSumUnipotentRadical
+import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
 
@@ -56,10 +59,10 @@ theorem cuspChar : CuspChar := by
   intro F _ _ θ hθ m hm W _ _ _ κ hirr hcusp
   classical
   haveI : Fintype F := Fintype.ofFinite F
-  have hc := GlobalTheory.T.isCharacterOverSubfield_of_representation ℂ ℂ (GL (Fin m) F) W κ
+  have hc := _root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ (GL (Fin m) F) W κ
   have hprim : GlobalTheory.CuspGL.IsPrimitive
       (GlobalTheory.CuspGL.extZero (fun g : GL (Fin m) F => algebraMap ℂ ℂ (κ.character g))) := by
-    refine GlobalTheory.T.isPrimitive_extendZero_of_sum_unipotentRadical F m _ hc.1 fun a h0 ham => ?_
+    refine _root_.GlobalTheory.CuspGL.isPrimitive_extZero_of_sum_unipotent F m _ hc.1 fun a h0 ham => ?_
     obtain ⟨A, H, -, hH, -⟩ := GlobalTheory.T.exists_standardUnipotentRadical_bijOn_nilradical F m a ham.le
     have hd : ∑ b, (![a, m - a] : Fin 2 → ℕ) b = m := by
       simp [Fin.sum_univ_two]

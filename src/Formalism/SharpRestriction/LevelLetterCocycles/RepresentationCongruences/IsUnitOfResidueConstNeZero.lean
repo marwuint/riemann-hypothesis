@@ -41,24 +41,6 @@ theorem residueConst_phi_eq (P : PhiData O l) (f : O⟦X⟧) : residueConst (P.�
   rw [map_add, map_mul, map_add, map_mul, hX, mul_zero, zero_add, hCa]
   rw [residueConst_apply, residueConst_apply, PowerSeries.constantCoeff_C]
 
-theorem residueConst_p1_eq_zero (P : PhiData O l) : residueConst (P.p 1) = 0 := by
-  have hl2 : 2 ≤ l := (Fact.out : l.Prime).two_le
-  have hCa : ∀ a : O, P.φ (C a) = C a := by
-    intro a
-    first
-    | exact P.φ.commutes a
-    | simpa using P.φ.commutes a
-    | simpa [PowerSeries.algebraMap_apply'] using P.φ.commutes a
-    | simpa [PowerSeries.algebraMap_apply] using P.φ.commutes a
-  unfold PhiData.p
-  rw [Function.iterate_one]
-  have h6 : P.φ (X - C (l : O)) = P.u * (X - C (l : O)) * X ^ (l - 1) := P.6
-  rw [map_sub, hCa] at h6
-  have h6' : P.φ X = P.u * (X - C (l : O)) * X ^ (l - 1) + C (l : O) := by rw [← h6]; ring
-  rw [h6', map_add, map_mul, map_pow, residueConst_X_eq_zero, zero_pow (by omega), mul_zero, zero_add,
-    residueConst_apply, PowerSeries.constantCoeff_C]
-  exact (IsLocalRing.residue_eq_zero_iff _).2 P.4
-
 theorem level_poly_decomposition (P : PhiData O l) (s : ℕ) (hs : 1 ≤ s) :
     ∃ e h : O⟦X⟧, P.p s = C (l : O) * e + X ^ l * h ∧ residueConst e ≠ 0 := by
   unfold PhiData.p

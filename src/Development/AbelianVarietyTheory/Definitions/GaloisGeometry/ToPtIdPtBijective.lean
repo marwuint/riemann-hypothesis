@@ -104,16 +104,7 @@ end Coef
 
 abbrev HdR (s : X ⟶ Sp k) (n : ℕ) : Type 1 := Hyp (OPt s) n
 
-abbrev HdRF (s : X ⟶ Sp k) (p n : ℕ) : Type 1 := HypF (OPt s) p n
-
-abbrev HPt (s : X ⟶ Sp k) (q a : ℕ) : Type 1 := CatH.H (OmF (OPt s) q) a
-
 abbrev HdR.fil (s : X ⟶ Sp k) (p n : ℕ) : Submodule k (HdR s n) := Hyp.fil (OPt s) p n
-
-abbrev HdRF.toHdR (s : X ⟶ Sp k) (p n : ℕ) : HdRF s p n →ₗ[k] HdR s n := HypF.toHyp (OPt s) p n
-
-abbrev HdRF.lead (s : X ⟶ Sp k) {a p n : ℕ} (h : a + p = n) : HdRF s p n →ₗ[k] HPt s p a :=
-  HypF.lead (OPt s) h
 
 section Pull
 
@@ -146,13 +137,6 @@ theorem ptCoef_comp {φ : X' ⟶ X} {ψ : X'' ⟶ X'} (h : φ ≫ s = s' ≫ spM
       spMap (mp (OPt s'') a : (OPt s'').obj T →+* (OPt s'').obj T') ≫ (T.x ≫ ψ) ≫ φ = (T'.x ≫ ψ) ≫ φ) :
     ptCoef (F := OPt s'') (fun T ↦ (T.x ≫ ψ) ≫ φ) hx hc = (pullCoef h).comp (pullCoef h') := rfl
 
-theorem HdR.pull_id (n : ℕ) (c : HdR s n) : HdR.pull (f := 𝟙 X) (Category.id_comp s) n c = c := by
-  refine (LinearMap.congr_fun (pull_ptCoef_congr (F := OPt s) (σ := RingHom.id k)
-    (fun T ↦ T.x ≫ 𝟙 X) (comp_w (over_id (Category.id_comp s)))
-    (fun _ _ a ↦ (Category.assoc _ _ _).symm.trans (congrArg (· ≫ 𝟙 X) a.2))
-    (x' := fun T ↦ T.x) (fun T ↦ T.w) (fun _ _ a ↦ a.2) (fun T ↦ Category.comp_id T.x) n) c).trans ?_
-  exact (congrArg (fun m ↦ Hyp.pull m n c) ptCoef_self).trans (Hyp.pull_id c)
-
 theorem HdR.pullSemi_comp {φ : X' ⟶ X} {ψ : X'' ⟶ X'} (h : φ ≫ s = s' ≫ spMap σ)
     (h' : ψ ≫ s' = s'' ≫ spMap τ) (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (n : ℕ) (c : HdR s n) :
     HdR.pullSemi h'' n c = HdR.pullSemi h' n (HdR.pullSemi h n c) := by
@@ -175,51 +159,7 @@ theorem HdR.pull_comp {s' : X' ⟶ Sp k} {s'' : X'' ⟶ Sp k} {f : X' ⟶ X} {g 
     HdR.pull (f := g ≫ f) (by rw [Category.assoc, hf, hg]) n c = HdR.pull hg n (HdR.pull hf n c) :=
   HdR.pullSemi_comp (over_id hf) (over_id hg) _ n c
 
-theorem HdR.pullSemi_mem_fil {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) {p n : ℕ} {c : HdR s n}
-    (hc : c ∈ HdR.fil s p n) : HdR.pullSemi h n c ∈ HdR.fil s' p n :=
-  Hyp.pull_mem_fil (pullCoef h) hc
-
-theorem HdR.pull_mem_fil {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') {p n : ℕ} {c : HdR s n}
-    (hc : c ∈ HdR.fil s p n) : HdR.pull hf n c ∈ HdR.fil s' p n :=
-  HdR.pullSemi_mem_fil (over_id hf) hc
-
-def HdRF.pullSemi {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) (p n : ℕ) : HdRF s p n →ₛₗ[σ] HdRF s' p n :=
-  HypF.pull (pullCoef h) p n
-
-theorem HdRF.toHdR_pullSemi {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) {p n : ℕ} (c : HdRF s p n) :
-    HdRF.toHdR s' p n (HdRF.pullSemi h p n c) = HdR.pullSemi h n (HdRF.toHdR s p n c) :=
-  HypF.toHyp_pull (pullCoef h) c
-
 end Pull
-
-section Aff
-
-variable (s : X ⟶ Sp k)
-
-def affCoef : CoefMap (RingHom.id k) (OPt s) (OAff s) :=
-  ptCoef (F := OAff s) (fun U ↦ affPt s U.unop) (fun U ↦ affPt_w s U.unop)
-    fun _ _ a ↦ affPt_res s (leOfHom a.unop)
-
-def HdR.toAff (n : ℕ) : HdR s n →ₗ[k] Hyp (OAff s) n := Hyp.pull (affCoef s) n
-
-theorem HdR.toAff_mem_fil {p n : ℕ} {c : HdR s n} (hc : c ∈ HdR.fil s p n) :
-    HdR.toAff s n c ∈ Hyp.fil (OAff s) p n :=
-  Hyp.pull_mem_fil (affCoef s) hc
-
-end Aff
-
-section Fil
-
-variable (s : X ⟶ Sp k)
-
-theorem HdR.fil_zero (n : ℕ) : HdR.fil s 0 n = ⊤ := Hyp.fil_zero _ n
-
-theorem HdR.fil_succ (n : ℕ) : HdR.fil s (n + 1) n = ⊥ := Hyp.fil_eq_bot _ (Nat.lt_succ_self n)
-
-theorem HdR.fil_anti {p p' : ℕ} (h : p ≤ p') (n : ℕ) : HdR.fil s p' n ≤ HdR.fil s p n :=
-  Hyp.fil_anti _ h n
-
-end Fil
 
 section Affine
 
@@ -262,16 +202,6 @@ def HdR.ofForm (n : ℕ) : LinearMap.ker (dOm k B n) →ₗ[k] HdR (algStr k B) 
   coneCl (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B)) (fun T ↦ toPt T)
     (fun _ _ φ b ↦ toPt_comp φ b) n
 
-theorem HdR.ofForm_mem_fil {n : ℕ} (ω : LinearMap.ker (dOm k B n)) :
-    HdR.ofForm n ω ∈ HdR.fil (algStr k B) n n :=
-  coneCl_mem_fil (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B)) (fun T ↦ toPt T)
-    (fun _ _ φ b ↦ toPt_comp φ b) ω
-
-theorem HdR.ofForm_eq_zero_iff {n : ℕ} (ω : LinearMap.ker (dOm k B (n + 1))) :
-    HdR.ofForm (n + 1) ω = 0 ↔ ∃ η, dOm k B n η = ω.1 :=
-  coneCl_eq_zero_iff (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B)) (fun T ↦ toPt T)
-    (fun _ _ φ b ↦ toPt_comp φ b) (T₀ := idPt k B) toPt_idPt_bijective ω
-
 def HdR.affZeroEquiv : LinearMap.ker (dOm k B 0) ≃ₗ[k] HdR (algStr k B) 0 :=
   LinearEquiv.ofBijective (HdR.ofForm 0) (coneCl_zero_bijective (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B))
     (fun T ↦ toPt T) (fun _ _ φ b ↦ toPt_comp φ b) (T₀ := idPt k B) toPt_idPt_bijective idPt_isInitial)
@@ -292,40 +222,6 @@ def HdR.pointEquiv : k ≃ₗ[k] HdR (algStr k k) 0 :=
   (fn0 k).symm ≪≫ₗ (LinearEquiv.ofTop _ (eq_top_iff.2 fun x _ ↦ LinearMap.mem_ker.2 (dOm_zero_self k x))).symm ≪≫ₗ
     HdR.affZeroEquiv
 
-open Polynomial in
-variable (k) in
-
-def tdtForm : LinearMap.ker (dOm k k[X] 1) :=
-  ⟨⟨ι1 ((Polynomial.X : k[X]) • D k k[X] Polynomial.X), ι_mem _⟩, by
-    rw [LinearMap.mem_ker, ← dOne_eq_dOm, dOne_line]⟩
-
-open Polynomial in
-
-theorem HdR.ofForm_tdt_ne_zero [Nontrivial k] (h2 : (2 : k) = 0) : HdR.ofForm 1 (tdtForm k) ≠ 0 := by
-  rw [Ne, HdR.ofForm_eq_zero_iff]
-  rintro ⟨η, hη⟩
-  have e1 := congrArg Subtype.val hη
-  rw [coe_dOm, coe_eq_algebraMap_zeroEquiv η, dDR_algebraMap] at e1
-  have e2 := ExteriorAlgebra.ι_inj k[X] _ _ |>.1 e1
-  have f3 := congrArg (polynomialEquiv k) e2
-  simp only [Derivation.coeFn_coe, map_smul, polynomialEquiv_D, derivative_X, smul_eq_mul,
-    mul_one] at f3
-  have := congrArg (coeff · 1) f3
-  simp only [coeff_derivative, coeff_X_one] at this
-  have hc := this
-  rw [show ((1 : ℕ) : k) + 1 = 2 by norm_num, h2, mul_zero] at hc
-  exact zero_ne_one hc
-
 end Affine
-
-example (s : X ⟶ Sp k) : Module k (HdR s 5) := inferInstance
-
-example (s : X ⟶ Sp k) : HdR.fil s 2 1 = ⊥ := HdR.fil_succ s 1
-
-example : Nontrivial (HdR (algStr ℤ ℤ) 0) := (HdR.pointEquiv ℤ).symm.toEquiv.nontrivial
-
-example : HdR.fil (algStr (ZMod 2) (Polynomial (ZMod 2))) 1 1 ≠ ⊥ := fun h ↦
-  HdR.ofForm_tdt_ne_zero (k := ZMod 2) rfl
-    ((Submodule.mem_bot _).1 (h ▸ HdR.ofForm_mem_fil (tdtForm (ZMod 2))))
 
 end GlobalTheory.HodgeCoh

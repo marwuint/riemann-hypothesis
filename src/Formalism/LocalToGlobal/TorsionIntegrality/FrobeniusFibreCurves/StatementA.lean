@@ -61,23 +61,9 @@ def WSecond : Prop :=
     PowerSeries.coeff 1 w = 0 ∧
       dz (dz w) = 2 + 4 * PowerSeries.C A * w + 6 * PowerSeries.C kap * w ^ 2
 
-def WEven : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (A kap : K) (w : PowerSeries K), IsW A kap w →
-    ∀ n, Odd n → PowerSeries.coeff n w = 0
-
 def WOfWp : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (g2 g3 e1 : K) (P : PowerSeries K), IsWp g2 g3 P →
     4 * e1 ^ 3 - g2 * e1 - g3 = 0 → IsW (3 * e1) (3 * e1 ^ 2 - g2 / 4) (wOf e1 P)
-
-def AddSigma1Log : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (A kap e1 : K) (w : PowerSeries K), IsW A kap w →
-    par0 (sigmaOneSeries e1 kap w) = fLog (1 - MvPowerSeries.C kap * at1 0 w * at1 1 w)
-
-def AddSigma1 : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (A kap e1 : K) (w : PowerSeries K), IsW A kap w →
-    atS (sigma1 e1 kap w) * atD (sigma1 e1 kap w) =
-      at1 0 (sigma1 e1 kap w) ^ 2 * at1 1 (sigma1 e1 kap w) ^ 2 *
-        (1 - MvPowerSeries.C kap * at1 0 w * at1 1 w)
 
 def DqRule : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (P : PowerSeries K),
@@ -103,16 +89,5 @@ def Sigma1Sq : Prop :=
     4 * e1 ^ 3 - g2 * e1 - g3 = 0 →
     PowerSeries.X ^ 2 * sigma1 e1 (3 * e1 ^ 2 - g2 / 4) (wOf e1 P) ^ 2 =
       sigma P ^ 2 * (1 + PowerSeries.X ^ 2 * P - PowerSeries.C e1 * PowerSeries.X ^ 2)
-
-def SigmaOdd : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (P : PowerSeries K),
-    (∀ n, Odd n → PowerSeries.coeff n P = 0) →
-    PowerSeries.coeff 1 (sigma P) = 1 ∧ ∀ n, Even n → PowerSeries.coeff n (sigma P) = 0
-
-def Sigma1Even : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (e1 kap : K) (w : PowerSeries K),
-    (∀ n, Odd n → PowerSeries.coeff n w = 0) →
-    PowerSeries.constantCoeff (sigma1 e1 kap w) = 1 ∧
-      ∀ n, Odd n → PowerSeries.coeff n (sigma1 e1 kap w) = 0
 
 end Formalism.L2.Th1.B

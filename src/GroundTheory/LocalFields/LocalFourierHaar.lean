@@ -159,14 +159,6 @@ theorem modulus_inv (x : K) : modulus x⁻¹ = (modulus x)⁻¹ := by
   · simp [hx]
   rw [modulus_of_ne_zero hx, modulus_of_ne_zero (inv_ne_zero hx), ord_inv hx, zpow_neg]
 
-theorem modulus_le_one_iff {x : K} : modulus x ≤ 1 ↔ x ∈ 𝒪[K] := by
-  by_cases hx : x = 0
-  · simp only [hx, modulus_zero, zero_le, true_iff]
-    exact zero_mem _
-  rw [modulus_of_ne_zero hx, ← mem_valBall_zero_iff, mem_valBall_iff_le_ord hx,
-    zpow_le_one_iff_right₀ one_lt_residueCard_nnreal]
-  omega
-
 theorem modulus_eq_one_iff {x : K} : modulus x = 1 ↔ x ≠ 0 ∧ ord x = 0 := by
   by_cases hx : x = 0
   · simp [hx]

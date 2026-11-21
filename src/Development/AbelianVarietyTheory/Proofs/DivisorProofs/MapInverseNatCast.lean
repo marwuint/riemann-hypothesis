@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTwistedThetaValue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistedThetaValueSubsingletonBaseStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTwistedThetaValuePullbackBaseChangeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTwistedThetaValueTranslateOrthogonalTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedThetaValueEqRootMulThetaOperatorValueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedThetaValueEqRootMulThetaOperatorValue
 
 noncomputable section
 
@@ -249,10 +249,6 @@ theorem IsGenLab.exists_conj (hx : IsGenLab ρ ρ' lab φ P₀ a a' x) (σ : Ω'
       exact ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) hs)).symm
     · rw [Category.assoc, Category.assoc, ht₂, reassoc_of% e₀, e₀, Category.comp_id]
 
-theorem eStd_nsmul_right {g n : ℕ} (b b' : Fin g ⊕ Fin g → ZMod n) (k : ℕ) : eStd g n b (k • b') = k • eStd g n b b' := by
-  simp only [eStd, Pi.smul_apply, nsmul_eq_mul, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun _ _ => by ring
-
 open Classical in
 
 theorem exists_parts [ArithBase o Ω] [ArithBase o' Ω'] (hS : USame ρ ρ' lab φ) {m : ℕ} (hm : S'.N = m ^ 2)
@@ -280,7 +276,7 @@ theorem exists_parts [ArithBase o Ω] [ArithBase o' Ω'] (hS : USame ρ ρ' lab 
   refine ⟨fun b κ => algebraMap o' Ω' (Ring.inverse (Nat.card (S'.perp H) : o')) *
     (∑ t : S'.perp H, algebraMap o' Ω' (S'.ζN ^ (-(wtChar S' _ b t)).val) * V κ t) / φ (S.th x₀),
     fun b κ hn => by simp [hV₀ κ hn], fun b κ h hh e => ?_, fun b b' e => by simp only [e], fun σ hσ hφ => ?_⟩
-  · obtain ⟨ξ, ⟨k, hk, hξ⟩, hc⟩ := GlobalTheory.T.twistedThetaValue_eq_root_mul_thetaOperatorValue ρ ρ' lab φ P₀ a a' x hx m hm κ x₀ h e
+  · obtain ⟨ξ, ⟨k, hk, hξ⟩, hc⟩ := _root_.GlobalTheory.UPoinc.TwCompare.twVal_eq_root_mul ρ ρ' lab φ P₀ a a' x hx m hm κ x₀ h e
     refine ⟨ξ, k, hk, hξ, ?_⟩
     have hv : ∀ t : S'.perp H, V κ t =
         (ξ * φ (S.th x₀) / S'.th (lab x₀)) * ∑ j, algebraMap o' Ω' (S'.ρ t j ρ'.i₀) * S'.ev h j := fun t => by

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCanonicalModuleSuccessor
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
@@ -10,8 +10,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 noncomputable section
 namespace GlobalTheory.RowModCanon
-open MeasureTheory Formalism.L2.Theta Formalism.IndefR.Mult Formalism.IndefR.PeterssonHilbertSpace
-open scoped InnerProductSpace
 end GlobalTheory.RowModCanon
 namespace GlobalTheory.RowModCanon
 open MeasureTheory Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Lev
@@ -31,7 +29,7 @@ theorem main_alt_alt : GlobalTheory.Published.HarishChandraFinite → GlobalTheo
   have hSA : SchurAll D := fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2
   have hHA : HCAll D := fun V _ S θ M J χ => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ 0 ∅).1
   have hStd : GlobalTheory.Mem.R3.StdFrame hA.hF (X.PW j) := hA.stdW j
-  have hcc := GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r
+  have hcc := _root_.GlobalTheory.CongConjugate.congConj D.host.E D.R.r
   obtain ⟨hlin, hherm, hpos⟩ := GlobalTheory.FinTypesRows.minf_sesq (M := X.R.MW j (sg0 D X.A)) (θ := X.R.θ) (X.R.νW j) (X.R.fdW j)
     (X.PW j) hSA hSig hθ hHaar hFD
   have hT := X.recR.tied.lift
@@ -77,7 +75,7 @@ theorem main_alt_alt : GlobalTheory.Published.HarishChandraFinite → GlobalTheo
               exact mul_pos hc (hpos x hx hx0)
             stab := fun h x hx => GlobalTheory.FinTypesRows.minf_stable (X.PW j) hcc h hx
             inv := fun h x hx y hy => by
-              rw [GlobalTheory.T.schur_pairing_invariant_under_standard_group D (Wc D j) _ X.R.θ (X.R.MW j (sg0 D X.A)) D.R.r (X.PW j) (X.R.νW j) (X.R.fdW j) hSA hSig hθ
+              rw [_root_.GlobalTheory.SchurPairingInvariant.ipM_actM D (Wc D j) _ X.R.θ (X.R.MW j (sg0 D X.A)) D.R.r (X.PW j) (X.R.νW j) (X.R.fdW j) hSA hSig hθ
                 hHaar hFD h x hx y hy]
             smooth := fun x hx => GlobalTheory.FinTypesRows.minf_smooth (X.PW j) hx
             adm := fun N hN => GlobalTheory.FinTypesRows.minf_adm (X.PW j) hHA hSig hθ (GlobalTheory.FinTypesRows.levN_open (X.PW j) hStd) N hN

@@ -12,14 +12,14 @@ import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIs
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.MapPderiv
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsNilpotentGroupChartSmoothCommGroupStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsLinearDataOfSplitFormalGroupExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.UniformizationSplitFormalGroupLawEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsHodgeTateDatumPolarisedAbelianCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearDataHodgeTateInclusionStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupLawJacobianExtensionChangeCoeffStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NilChartOfIsChartJStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPowerSeriesReadingGroupHomNilpotentChartsStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsNilpotentGroupChartSmoothCommGroup
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsLinearDataOfSplitFormalGroupExtension
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.UniformizationSplitFormalGroupLawEquivariant
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsHodgeTateDatumPolarisedAbelianCharacters
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearDataHodgeTateInclusion
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupLawJacobianExtensionChangeCoeff
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NilChartOfIsChartJ
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPowerSeriesReadingGroupHomNilpotentCharts
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PadicIntAlgebraOfIsAdicCompleteMatrixUnique
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.RosatiAdjOfPoints
 
@@ -58,24 +58,24 @@ theorem hodgeTate_inclusion_chart : ∀ (p : ℕ) [Fact p.Prime], HTFSt p := by
     intro m
     obtain ⟨h1, h2, -, h4⟩ := h T hp G D A x d F xx hC C v O hv iota hiota m
     exact ⟨h1, h2, h4⟩
-  obtain ⟨X, hX, -⟩ := GlobalTheory.T.exists_nilChart_reads_of_isChartJ T G x.1 d F xx hC
-  obtain ⟨FB, xB, hxB⟩ := GlobalTheory.T.exists_nilpotentGroupChart_smooth_commGroup T D.toPre.P.A D.toPre.P.g D.toPre.P.5
-  obtain ⟨r, J, Q, hEx, -⟩ := GlobalTheory.T.uniformization_split_formal_group_law_equivariant T (IsLocalRing.maximalIdeal T) D A G x d D.toPre.P.g F FB X xB hX hxB
+  obtain ⟨X, hX, -⟩ := _root_.GlobalTheory.ChF.nilChart_of_isChartJ T G x.1 d F xx hC
+  obtain ⟨FB, xB, hxB⟩ := _root_.GlobalTheory.ChF.exists_nilChart T D.toPre.P.A D.toPre.P.g D.toPre.P.5
+  obtain ⟨r, J, Q, hEx, -⟩ := _root_.GlobalTheory.unif_extSer_equivariant T (IsLocalRing.maximalIdeal T) D A G x d D.toPre.P.g F FB X xB hX hxB
   obtain ⟨o, ho⟩ := GlobalTheory.exists_oAct_int hcube (Spec (CommRingCat.of T)) D.toPre.P
   have hα : ∀ a : ℤ, ∃ φ, Reads xB xB (o.act a) φ := fun a =>
-    GlobalTheory.T.exists_powerSeries_reading_groupHom_nilpotentCharts T D.toPre.P.A D.toPre.P.A D.toPre.P.g D.toPre.P.g FB.F FB.F xB xB hxB hxB (o.act a)
+    _root_.GlobalTheory.ChF.exists_reads T D.toPre.P.A D.toPre.P.A D.toPre.P.g D.toPre.P.g FB.F FB.F xB xB hxB hxB (o.act a)
       (by rw [ho a]; exact GlobalTheory.IntAct.isMonHom_id_zpow a)
   choose α hα using hα
-  obtain ⟨hmapF, -, hmapEx⟩ := GlobalTheory.T.formalGroupLaw_jacobian_extension_changeCoeff T O iota
+  obtain ⟨hmapF, -, hmapEx⟩ := _root_.GlobalTheory.ChF.changeCoeff_law_lin_extSer T O iota
   obtain ⟨F', hF'⟩ := hmapF d F
   obtain ⟨FB', hFB'⟩ := hmapF D.toPre.P.g FB
   obtain ⟨cp, hUp, H, S, hP, hPL, hS, hSa, hSu⟩ :=
-    GlobalTheory.T.exists_hodgeTateDatum_polarisedAbelian_characters p C v O hv T iota D.toPre.P D.toPre.P.g rfl ℤ o FB xB hxB α hα
+    _root_.GlobalTheory.ChF.exists_htd_characters_base p C v O hv T iota D.toPre.P D.toPre.P.g rfl ℤ o FB xB hxB α hα
   have hαB : ∀ a : ℤ, lin (fun j => MvPowerSeries.map iota (α a j)) =
       (a : Matrix (Fin D.toPre.P.g) (Fin D.toPre.P.g) O) := fun a =>
     eq_intCast_of_conj H.ρL S _ hS a (hSa a)
   obtain ⟨cp', hUp', H', B, m, u, hu, hLin⟩ :=
-    GlobalTheory.T.exists_linearData_of_split_formalGroup_extension p C v O hv ℤ d D.toPre.P.g r F' FB' (fun j => MvPowerSeries.map iota (J j))
+    _root_.GlobalTheory.ChF.exists_linDat_of_extSer p C v O hv ℤ d D.toPre.P.g r F' FB' (fun j => MvPowerSeries.map iota (J j))
       (fun j => MvPowerSeries.map iota (Q j)) (by rw [hF', hFB']; exact hmapEx d D.toPre.P.g r F FB J Q hEx)
       (by rw [hF']; exact hFH) (Int.castRingHom _) (Int.castRingHom _)
       (fun a j => MvPowerSeries.map iota (α a j))
@@ -88,7 +88,7 @@ theorem hodgeTate_inclusion_chart : ∀ (p : ℕ) [Fact p.Prime], HTFSt p := by
       ⟨cp, hUp, H, S, hP, hPL, hS, hSa, by rw [hFB']; exact hSu⟩
   refine ⟨m, u, fun k => hF' ▸ hu k, ?_⟩
   intro c hc f
-  exact GlobalTheory.T.linearData_hodgeTate_inclusion p C v O hv ℤ cp' hUp' D.toPre.P.g H' d r m _ B (Int.castRingHom _) (Int.castRingHom _)
+  exact _root_.GlobalTheory.ChF.linDat_hodgeTate_inclusion p C v O hv ℤ cp' hUp' D.toPre.P.g H' d r m _ B (Int.castRingHom _) (Int.castRingHom _)
     (fun k => dl (u k)) hLin c hc f
 
 end GlobalTheory.ChF

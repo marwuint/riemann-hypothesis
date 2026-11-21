@@ -203,8 +203,8 @@ section Rec
 attribute [local instance] gtGroup
 
 theorem recognitionSt : RecognitionSt :=
-  recognition_iff.2 (uRecDvr_of_uRec (GlobalTheory.T.degenerationRecognition_of_abelianPartsIsoLabels (GlobalTheory.T.abelianPartsIsoLabels_of_thetaPoint_and_values GlobalTheory.firstFiveLaws.1
-    GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion.1 (GlobalTheory.T.abelianPartValues_of_expansionLaws GlobalTheory.firstFiveLaws.1))))
+  recognition_iff.2 (uRecDvr_of_uRec (_root_.GlobalTheory.Ex.Recognition.urec_of_abelian (_root_.GlobalTheory.Ex.AbPartIso.main GlobalTheory.firstFiveLaws.1
+    GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion.1 (_root_.GlobalTheory.ThetaInValues.brUth_of_laws GlobalTheory.firstFiveLaws.1))))
 
 def upQ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     (hb : D.TauBimult) {k : ℕ} (p : QkPt D F k) : QkPt D F (k ^ 2) :=

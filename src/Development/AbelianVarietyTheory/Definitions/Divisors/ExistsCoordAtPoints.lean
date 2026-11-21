@@ -28,9 +28,6 @@ def pt : G.Pt K := ⟨x.1 ≫ (G.ideal s).subschemeι, (Category.assoc _ _ _).tr
 def along {Ω : Type} [Field Ω] (φ : K →+* Ω) : Points.PtsOver ((G.ideal s).subschemeι ≫ G.str) (spMap φ) :=
   ⟨spMap φ ≫ x.1, by rw [Category.assoc, x.2, spMap, spMap, ← Spec.map_comp]; rfl⟩
 
-def nrm (j : ℕ) (τ : K →+* ℂ) (g : G.SecOn s j) : ℝ :=
-  Real.sqrt ((Geo.weightOn s j τ).nsq (cval τ g) (x.along τ))
-
 def gen (k : Fin G.n) : K := ∑ j, G.w j k * G.coords x.pt.1 j
 
 def c₁ (τ : K →+* ℂ) : ℝ := archSize (G.A τ) fun j => τ (G.coords x.pt.1 j)
@@ -55,12 +52,6 @@ theorem c₂_pos (τ : K →+* ℂ) : 0 < x.c₂ τ := archSize_pos (G.herm₂ �
   G.alg₂.bpf.coords_ne_zero x.pt.1 (funext fun k => (map_eq_zero τ).1 (congrFun h k))
 
 theorem ht_eq_pointHeight : x.ht = pointHeight G.w G.A (G.coords x.pt.1) := rfl
-
-theorem ht_eq_ptHeight : x.ht = G.ptHeight x.pt := by
-  have := vecHeight_smul_algebraMap K K _ _ G.w G.A G.geom.alg.spans G.herm K (G.coords x.pt.1) 1
-    (G.geom.alg.bpf.coords_ne_zero _) one_ne_zero
-  rw [one_smul] at this
-  exact this.symm
 
 theorem c₂_conj (τ : K →+* ℂ) : x.c₂ ((starRingEnd ℂ).comp τ) = x.c₂ τ := by
   let w (σ : K →+* ℂ) : CxPts G.str σ := Points.PtsOver.map (G.ideal s).subschemeι rfl (spMap σ) (x.along σ)
@@ -107,14 +98,6 @@ theorem nsq_eq (j : ℕ) (τ : K →+* ℂ) {ι : Type} [Fintype ι] (c : ι →
   refine ((congrFun (Finset.sum_apply _ _ _) _).trans (Finset.sum_apply _ _ _)).trans ?_
   exact Finset.sum_congr rfl fun i _ => congrArg (c i * ·)
     ((cval_eq_val τ _ _ _ mem_ptsIn_top hw).trans (evalPt_spMap_comp τ x.1 _ _ _ _))
-
-theorem nrm_eq (j : ℕ) (τ : K →+* ℂ) (g : G.SecOn s j) :
-    x.nrm j τ g = ‖τ (x.val j g)‖ / (x.c₂ τ * x.c₁ τ ^ j) := by
-  have := x.nsq_eq j τ (fun _ : Unit => 1) fun _ => g
-  simp only [Finset.univ_unique, Finset.sum_singleton, one_smul, one_mul] at this
-  have p₁ := x.c₁_pos τ
-  have p₂ := x.c₂_pos τ
-  rw [nrm, this, ← div_pow, Real.sqrt_sq (by positivity)]
 
 theorem val_mulSecOn (j : ℕ) (u : Fin G.N → K) (g : G.SecOn s j) :
     x.val (j + 1) (mulSecOn G.isLB₂ G.isLB (G.comb u) (Nat.cast_succ j).symm g) =
@@ -185,21 +168,6 @@ theorem exists_coord_atPoints (hs : G.IsGood s)
   refine (csq_pointHerm _ _ _ σ c g).trans ?_
   rw [← finsum_comp_equiv (x.trans (Equiv.ofBijective _ (RatPt.along_bijective hs h σ))), finsum_eq_sum_of_fintype]
   exact Finset.sum_congr rfl fun p _ => (x p).nsq_eq j σ c g
-
-theorem Coord.AtPoints.norm_ev {hs : G.IsGood s} {δ : ℕ} {Co : Coord G hs δ} {x : Fin δ ≃ RatPt G s} (h : Co.AtPoints x)
-    (p : Fin δ) (τ : K →+* ℂ) (g : G.SecOn s 0) : ‖τ (Co.ev 0 g p)‖ / Co.c₂ τ p = (x p).nrm 0 τ g := by
-  rw [RatPt.nrm_eq, (h p).1, (h p).2.2, pow_zero, mul_one]
-
-theorem Coord.AtPoints.vecHt_eq {hs : G.IsGood s} {δ : ℕ} {Co : Coord G hs δ} {x : Fin δ ≃ RatPt G s} (h : Co.AtPoints x)
-    (p : Fin δ) : vecHt (fun k => Co.gen k p) (fun τ => Co.c₁ τ p) = (x p).ht := by
-  simp only [Coord.gen, Coord.c₁, (h p).2.1]
-  rfl
-
-theorem nrm_normOn_sq_eq (hs : G.IsGood s)
-    (h : Function.Surjective fun x : RatPt G s => x.along (algebraMap K (AlgebraicClosure K))) (j : ℕ) (τ : K →+* ℂ)
-    (g : G.SecOn s j) : (hs.normOn j).nrm τ g ^ 2 = ∑ᶠ x : RatPt G s, x.nrm j τ g ^ 2 := by
-  rw [hs.nrm_normOn_sq, ← finsum_comp_equiv (Equiv.ofBijective _ (RatPt.along_bijective hs h τ))]
-  exact finsum_congr fun x => (Real.sq_sqrt (Weight.nsq_nonneg _ _ _)).symm
 
 section Split
 

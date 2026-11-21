@@ -136,9 +136,6 @@ def quotientPositiveRealFactorEquiv :
       reciprocityMap x :=
   rfl
 
-theorem compactSpace_gal_maxCyclotomic : CompactSpace Gal(maxCyclotomic/ℚ) :=
-  inferInstance
-
 instance compactSpace_quotientPositiveRealFactor :
     CompactSpace (IdeleClassGroup ℚ ⧸ positiveRealFactor) :=
   quotientPositiveRealFactorEquiv.toHomeomorph.symm.compactSpace

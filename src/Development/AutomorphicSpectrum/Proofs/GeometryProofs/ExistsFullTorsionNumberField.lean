@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsThetaMeanSqu
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimensionPushDownGrassmannianHeightBounds
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrame
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AbelianVarietyTorsionCardEqPowProof
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteAndFlatTorsion
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnramifiedExtTorsionPointsGoodReduction
@@ -316,7 +316,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [Number
 theorem dim_eq (D : PPData H L) (hA : IsAbelianScheme D.tK.G) {g : ℕ}
     (hg : SmoothOfRelativeDimension g D.tK.G.hom) : g = D.g := by
   obtain ⟨σ⟩ : Nonempty (L →+* ℂ) := inferInstance
-  obtain ⟨a⟩ := (GlobalTheory.T.theta_function_archimedean_frame E H L D σ).1
+  obtain ⟨a⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L D σ).1
   have h1 := card_torsion_of_lattice a.u.ex a.u.ex_add a.u.ex_onto a.u.Λ a.u.ker a.u.discrete a.u.full 2
     (by norm_num)
   have h2 := card_points D.tK.G hA hg (spMap σ) 2 (by norm_num)

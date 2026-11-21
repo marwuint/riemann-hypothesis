@@ -5,12 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedLaurent
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCompletedLaurentQuotPrimeEquivLaurentFp
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEqExpOfRat
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraicElementApproximation
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AutomorphismOnExtensionPointwiseStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AutomorphismExtensionUniformStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrobeniusPowerBasisIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrobeniusPowerReductionCongruenceStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LaurentSeriesAlgebraicConstantStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ResidueAlgebraicPolynomialDivisibleStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AutomorphismOnExtensionPointwise
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AutomorphismExtensionUniform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrobeniusPowerBasisIndependent
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrobeniusPowerReductionCongruence
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LaurentSeriesAlgebraicConstant
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ResidueAlgebraicPolynomialDivisible
 
 noncomputable section
 
@@ -63,13 +64,13 @@ theorem orth (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 :
     (T : K5.Tower p Ωl) (n : ℕ) (f : (O0 p)[X]) (hf : f.natDegree < p ^ n)
     (hlt : v (aeval (T.qq n) f) < 1) : C (p : O0 p) ∣ f := by
   obtain ⟨φ, hq, hφ⟩ := exists_red (p := p)
-  have h2 := GlobalTheory.T.frobenius_power_reduction_congruence p Ωl h v hv h1 T n f hf
+  have h2 := _root_.GlobalTheory.aeval_qq_pow_sub_lt_one p Ωl h v hv h1 T n f hf
   have h3 : v (aeval (T.qq n) f ^ (p ^ n)) < 1 := by
     rw [map_pow]; exact pow_lt_one₀ zero_le hlt (pow_pos hp.out.pos n).ne'
   have h4 := v.map_sub_lt h3 h2
   rw [sub_sub_cancel, v_alg_lt_iff hv h1, ← hφ] at h4
   simp only [map_sum, map_mul, map_pow, hq] at h4
-  have h5 := GlobalTheory.T.frobenius_power_basis_independent p n (fun i => φ (f.coeff i)) h4
+  have h5 := _root_.GlobalTheory.laurent_pow_indep_over_prime_pow_powers p n (fun i => φ (f.coeff i)) h4
   rw [C_dvd_iff_dvd_coeff]
   intro i
   by_cases hi : i < p ^ n
@@ -80,13 +81,13 @@ theorem res (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : 
     (T : K5.Tower p Ωl) (n : ℕ) (f : (O0 p)[X]) (hf : f.natDegree < p ^ n)
     (halg : IsAlgebraic ℤ (aeval (T.qq n) f)) : ∃ m : ℤ, v (aeval (T.qq n) f - m) < 1 := by
   obtain ⟨φ, hq, hφ⟩ := exists_red (p := p)
-  have h2 := GlobalTheory.T.frobenius_power_reduction_congruence p Ωl h v hv h1 T n f hf
+  have h2 := _root_.GlobalTheory.aeval_qq_pow_sub_lt_one p Ωl h v hv h1 T n f hf
   have hy := v_aeval_le hv T n f
   set y := aeval (T.qq n) f
   set b := ∑ i ∈ Finset.range (p ^ n), f.coeff i ^ (p ^ n) * qO p ^ i
-  obtain ⟨P, hP0, hP⟩ := GlobalTheory.T.residue_algebraic_polynomial_divisible p Ωl h v hv h1 (y ^ p ^ n) b (halg.pow _)
+  obtain ⟨P, hP0, hP⟩ := _root_.GlobalTheory.K5.exists_int_poly_root_mod_p p Ωl h v hv h1 (y ^ p ^ n) b (halg.pow _)
     (by rw [map_pow]; exact pow_le_one₀ zero_le hy) h2
-  obtain ⟨c, hc⟩ := GlobalTheory.T.laurent_series_algebraic_constant (ZMod p) (φ b) ⟨_, hP0, by
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.laurentSeries_eq_C_of_root (ZMod p) (φ b) ⟨_, hP0, by
     rw [← (hφ _).2 hP, eval₂_map, aeval_def, hom_eval₂]
     congr 1
     exact RingHom.ext_int _ _⟩
@@ -196,7 +197,7 @@ theorem up (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v
     rw [← aeval_map_algebraMap (FractionRing (O0 p)), hdf, ← Algebra.smul_def, ← hf,
       ← algebraMap_smul (FractionRing (O0 p)) d f, map_smul, algebraMap_smul]
     rfl
-  obtain ⟨g, hg⟩ := GlobalTheory.T.automorphism_extension_uniform Ω Ωl K j s (GlobalTheory.T.automorphism_on_extension_pointwise Ω Ωl K j s hfix)
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.exists_algEquiv_inducing_of_forall_conj Ω Ωl K j s (_root_.GlobalTheory.exists_algEquiv_apply_eq_of_fixes_preimage_base Ω Ωl K j s hfix)
   refine ⟨(g.restrictScalars (FractionRing (O0 p))).restrictScalars (O0 p), ?_, hg⟩
   exact g.commutes ⟨T.qq n, IntermediateField.mem_adjoin_simple_self _ _⟩
 

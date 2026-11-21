@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsIntegralOfTorsion
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppTopBijectiveAndSurjectiveNormalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppTopBijectiveAndSurjectiveNormalDomain
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackPowersCartesianGroupSquareStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTransportedGeneratorDescendBijectiveAppStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicalStructureOfPushedPointValuesCubeFunctionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicalStructureOfPushedPointValuesCubeFunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubeSymmCompatDescendsFromPushedPointsStatement
 
 noncomputable section
@@ -45,7 +46,7 @@ theorem exists_cp_descent : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
   obtain ⟨w, hw⟩ := hLw
   obtain ⟨_, -, _, -⟩ := hR
   have hp := (isGen_iff w).1 hw
-  obtain ⟨hbijπ, hsurjπ⟩ := GlobalTheory.T.appTop_bijective_and_surjective_normalDomain R M
+  obtain ⟨hbijπ, hsurjπ⟩ := _root_.GlobalTheory.Mum.Modif.appTop_bijective_surjective R M
   have := M.proper
   have hf1 : Flat G.hom := by have := hG.smooth; infer_instance
   have hf2 : Flat (G2 G).hom := flat_tensor _ _
@@ -54,7 +55,7 @@ theorem exists_cp_descent : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
   have key : ∀ {Y Z : Scheme.{0}} (y : Y ⟶ Sp R) (p : Z ⟶ Y) (q : Z ⟶ M.S), Flat y → IsPullback p q y M.π →
       (∀ V, Function.Bijective (p.app V).hom) ∧ (∀ {X : Scheme.{0}} (a b : Y ⟶ X), p ≫ a = p ≫ b → a = b) := by
     intro Y Z y p q hy hpb
-    have hb := GlobalTheory.T.app_bijective_of_flat_baseChange_globalFunctions R M.S Y Z M.π y p q inferInstance inferInstance hbijπ hy hpb
+    have hb := _root_.GlobalTheory.Mum.app_bijective_of_flat_baseChange R M.S Y Z M.π y p q inferInstance inferInstance hbijπ hy hpb
     have : Surjective p := MorphismProperty.of_isPullback hpb.flip hsurjπ
     exact ⟨hb, fun a b e => cancel_of_surjective p (fun V => (hb V).1) a b e⟩
   obtain ⟨A2, A3, A4⟩ := GlobalTheory.T.isPullback_powers_cartesian_group_square h
@@ -102,7 +103,7 @@ theorem exists_cp_descent : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
     intro T z I J hI hJ a
     exact (vs _ a.left z I J hI hJ).trans
       (congrArg₂ (· * ·) (GlobalTheory.UU.prod_sym a (fun q => gw w q z (I (q ≫ β)) (J q))) rfl)
-  obtain ⟨c, hct⟩ := GlobalTheory.T.cubicalStructure_of_pushed_point_values_cube_function h L₁ t ht (fun U => (k2.1 U).1) k2.2 (fun U => (k3.1 U).1) k3.2
+  obtain ⟨c, hct⟩ := _root_.GlobalTheory.Mum.cubicalStr_of_push_val h L₁ t ht (fun U => (k2.1 U).1) k2.2 (fun U => (k3.1 U).1) k3.2
     (fun U => (k4.1 U).1) k4.2 fun T z I hI => by
       obtain ⟨J, hJ⟩ := GlobalTheory.UU.exists_good_pt P'.L.isLB z
       refine GlobalTheory.CubTransport.isCub_of_twist (isCub_cubV P'.c hJ) (MonoidHom.id _) (fun a => (Wf z I J a)⁻¹)

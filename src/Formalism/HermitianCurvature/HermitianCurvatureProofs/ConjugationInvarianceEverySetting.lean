@@ -223,10 +223,6 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
-theorem weyl_haar_from_compact : Formalism.FourierDecayAlt.B2.HaarWFromCompact := by
-  intro h1 h2 h3 k r z hz hT
-  exact h1 k r _ (h2 k r z) (h3 k r z hz hT)
-
 theorem conjugation_invariance_of_parts : Formalism.FourierDecayAlt.B2.AssembleConjInv := by
   intro hCC hN hW hK hU
   have raw : ConjInvRaw := by

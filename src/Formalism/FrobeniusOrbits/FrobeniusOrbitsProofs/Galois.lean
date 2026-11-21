@@ -100,13 +100,6 @@ theorem layer_galois (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Function.Bijective (galMap h.1 a b) :=
   layerGalois (e + 2) q d (by omega) hqd L ζ a b h
 
-theorem galMap_one (h : IsLayer (e + 2) q d ζ a b) :
-    galMap h.1 a b (1 : Gal(L/ℚ)) = 1 := by
-  have hs : ∀ x : L, sgn (1 : Gal(L/ℚ)) x = 1 := fun x => by
-    rw [sgn.eq_1, if_pos (AlgEquiv.one_apply x)]
-  rw [galMap.eq_1, map_one, hs, hs]
-  rfl
-
 theorem fix_of_sgn_one {K : Type*} [Field K] [Algebra ℚ K] {σ : Gal(K/ℚ)} {x : K}
     (hs : sgn σ x = 1) : σ x = x := by
   rw [sgn.eq_1] at hs
@@ -417,7 +410,5 @@ theorem hostGalSpec : HostGalSpec := by
     show hPart e ζ a b σ = hcl e u ↔ _
     rw [hPart_lift h hστ, hcl_eq_iff, ← trace_eq_iff_units h.1, hστ, ← apply_theta h.1 τ]
     exact Iff.rfl
-
-theorem hostGaloisCore : HostFixed ∧ HostGalois ∧ HostGalSpec := ⟨hostFixed, hostGalois, hostGalSpec⟩
 
 end Formalism.FrobeniusOrbits

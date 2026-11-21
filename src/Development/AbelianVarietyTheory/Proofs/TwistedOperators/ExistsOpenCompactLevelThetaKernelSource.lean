@@ -19,8 +19,8 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicU
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsHeckeOpFullDualLab
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLowestKTypeFockMapThetaVectors
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenFixingNegativeVacuumDefiniteBottomStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DefiniteBottomDeepPointsFixLatticeStdFirstStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenFixingNegativeVacuumDefiniteBottom
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DefiniteBottomDeepPointsFixLatticeStdFirst
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim
 open Formalism.L2.Host (HChar)
@@ -75,7 +75,7 @@ theorem dat_fix : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Gri
     ∃ U : Subgroup (GA D A), IsOpen (U : Set (GA D A)) ∧ GinfC A ≤ U ∧
       ∀ k ∈ U, k ∈ GfC A → X.ω t (k, 1) X.vac = X.vac → X.ω t (k, 1) (X.f t) = X.f t := by
   intro D T L sc G W i j A A' WW X hX t
-  obtain ⟨U, hUo, hUinf, hU⟩ := GlobalTheory.T.definiteBottom_deepPoints_fix_lattice_stdFirst hX t
+  obtain ⟨U, hUo, hUinf, hU⟩ := _root_.GlobalTheory.StdFstFix.stdFst_fixed hX t
   refine ⟨U, hUo, hUinf, fun k hkU hkf hv => ?_⟩
   obtain ⟨hΛ, hΦ⟩ := hU k hkU hkf
   have hW : IsWeilDatumO W.ψ (GlobalTheory.Grid.neg A) WW _ _ ((X.ω t).toSgn true) := hX.is.weil t
@@ -100,7 +100,7 @@ theorem exists_level_ker : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
       ∀ (P : PolF D WW.rank A.rank) (h : GA D WW), ∀ k ∈ Lev.levA A K, ∀ g,
         X.ker W.ψ W.θ t P h (g * k) = X.ker W.ψ W.θ t P h g := by
   intro D T L sc G W i j A A' WW X hX t
-  obtain ⟨U₁, hU₁o, hU₁inf, hU₁⟩ := GlobalTheory.T.exists_open_fixing_negative_vacuum_definite_bottom hX t
+  obtain ⟨U₁, hU₁o, hU₁inf, hU₁⟩ := _root_.GlobalTheory.VacFixNeg.exists_open_fix_vac_neg hX t
   obtain ⟨U₂, hU₂o, hU₂inf, hU₂⟩ := dat_fix hX t
   obtain ⟨K, hK, hKU⟩ := level_of_open A (U₁ ⊓ U₂) (hU₁o.inter hU₂o) (le_inf hU₁inf hU₂inf)
   refine ⟨K, hK, fun P h k hk g => ?_⟩

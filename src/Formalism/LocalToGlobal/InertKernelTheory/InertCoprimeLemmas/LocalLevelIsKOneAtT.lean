@@ -177,13 +177,6 @@ theorem resV_subst_diag [Finite ι] {f : κ → ι} (hf : Function.Injective f) 
   · push_neg at hi
     rw [resFam_off f i hi, h0 i hi, ← MvPowerSeries.coe_substAlgHom ha', map_zero]
 
-theorem subst_psubst {σ τ : Type} {b : σ → MvPowerSeries τ R} (hb : MvPowerSeries.HasSubst b)
-    {c : MvPowerSeries σ R} (hc : MvPowerSeries.constantCoeff c = 0) (L : PowerSeries R) :
-    MvPowerSeries.subst b (PowerSeries.subst c L) = PowerSeries.subst (MvPowerSeries.subst b c) L := by
-  have hc' : MvPowerSeries.HasSubst (fun _ : Unit => c) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hc)
-  rw [PowerSeries.subst, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hc' hb]
-
 private theorem cc_psubst_lemma {τ : Type} {c : MvPowerSeries τ R} (hc : MvPowerSeries.constantCoeff c = 0)
     {L : PowerSeries R} (hL : PowerSeries.constantCoeff L = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst c L) = 0 := by

@@ -222,65 +222,8 @@ end GlobalTheory.Port
 
 end
 
-section
 namespace GlobalTheory.Port
 
-open Formalism Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.G.ChartsLv
-
-open Formalism.BasicNotions Formalism.L2.Forms NumberField IsDedekindDomain Matrix Formalism.UG Formalism.MainNotions.G.CmpJ Formalism.MainNotions.G.ChartsLv Formalism.L2.G.Cmp
-open scoped TensorProduct
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-section Gen
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
-  {gp : Fin 2 → ℕ} {LL : Type} [Field LL]
-
-theorem chiRat_of_glevH {S : StepLevel F E σ J T f bad} {G : GLoc F E σ gp}
-    {H : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp a : 𝓞 F) ∈ v.asIdeal → Subgroup (GL (Fin n) (kv F v))}
-    {lam : ∀ a v h, H a v h →* ℂˣ} (L : GLevH S G H lam) (emb : LL →+* ℂ)
-    (hl : ∀ a v h (M : H a v h), ∃ k : LL, emb k = ((lam a v h M : ℂˣ) : ℂ)) : ChiRatAll S emb := by
-  intro κ
-  have h : (S.chi κ : ℂ) ∈ emb.fieldRange := by
-    rw [L.chi_eq κ]
-    refine prod_mem fun a _ => ?_
-    refine finprod_induction (fun z : ℂ => z ∈ emb.fieldRange) (one_mem _) (fun x y hx hy => mul_mem hx hy) fun v => ?_
-    refine finprod_induction (fun z : ℂ => z ∈ emb.fieldRange) (one_mem _) (fun x y hx hy => mul_mem hx hy) fun hv => ?_
-    obtain ⟨k, hk⟩ := hl a v hv (L.red a v hv κ)
-    exact inv_mem (RingHom.mem_fieldRange.2 ⟨k, hk⟩)
-  exact RingHom.mem_fieldRange.1 h
-
-end Gen
-
-variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
-
-def LamCRat (F : FormsTiedSym D u Ch chOf) : Prop :=
-  ∀ i β a v h (M : F.H i β a v h), ∃ k : D.what₂.LL, D.what₂.embLL k = ((F.lamC i β a v h M : ℂˣ) : ℂ)
-
-def LamMRat (F : FormsTiedSym D u Ch chOf) : Prop :=
-  ∀ a v h (M : HSym D (D.R.N D.R.m) true v), ∃ k : D.what₂.LL, D.what₂.embLL k = ((F.lamM a v h M : ℂˣ) : ℂ)
-
-theorem chiRat_top (F : FormsTiedSym D u Ch chOf) (hM : LamMRat F) (j : ℕ) (hj : j ≤ D.R.m) (h : j = D.R.m) :
-    ChiRatAll (F.cls j hj (Or.inr h)).lev D.what₂.embLL := by
-  subst h
-  exact chiRat_of_glevH F.glevM D.what₂.embLL hM
-
-set_option maxHeartbeats 2000000 in
-
-theorem ratMem_of (F : FormsTiedSym D u Ch chOf) (hC : LamCRat F) (hM : LamMRat F) (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) :
-    ∀ β, ChiRatAll ((formsInMem F dt i hi).K β).lev D.what₂.embLL := by
-  by_cases h : i + 1 = D.R.m
-  · rw [formsInMem_top F dt i hi h]
-    intro β
-    exact chiRat_top F hM (i + 1) hi h
-  · rw [formsInMem_mid F dt i hi (by omega)]
-    intro β
-    exact chiRat_of_glevH (F.glevC (i + 1) _ _ β) D.what₂.embLL (hC (i + 1) β)
-
 end GlobalTheory.Port
-
-end
 
 end

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LbIsoCubeLBMulRightOf
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.TensorPairingIdentityOfPureTensorsStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.TensorPairingIdentityOfPureTensors
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
@@ -37,7 +37,7 @@ theorem exists_famLift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     have := T.t.act.hom s
     refine t.ten.hom_ext fun a => ?_
     rw [← Category.assoc, ← t.lin, ht, ← Category.assoc, ht, map_smul, hsmul]
-  · refine GlobalTheory.T.tensor_pairing_identity_of_pure_tensors _ _ _ _ _ _ _ t.ten _ _ _ t.ten _ _ _ _ _ _ _ _ T.t.PP.isLB T₁.t.PP.isLB
+  · refine _root_.GlobalTheory.LamCalc.lamEq_of_tmul _ _ _ _ _ _ _ t.ten _ _ _ t.ten _ _ _ _ _ _ _ _ T.t.PP.isLB T₁.t.PP.isLB
       ⟨T.t.cub.t, T.t.cub.isGen⟩ ⟨T₁.t.cub.t, T₁.t.cub.isGen⟩ hm hm (T₁.t.act.hom c) inferInstance fun a b => ?_
     rw [ht, ht, ← t.lin, Category.comp_id]
     have e := hlam (f a) (f b)

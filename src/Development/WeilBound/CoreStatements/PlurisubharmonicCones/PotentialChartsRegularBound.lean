@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoun
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LimsupAddTendsto
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivializationStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivialization
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -84,7 +84,7 @@ theorem exists_factor {ψ : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ)} (hψ :
       ∀ᶠ u in 𝓝 v, F u ∈ ball (0 : Fin D.n → ℂ) 1 ∧ M.proj ((D.chart a).γ (F u)) = ψ.symm u := by
   obtain ⟨U, hU, hx, s, hs, hh⟩ := M.sections (ψ.symm v)
   obtain ⟨a, t₀, ht₀, c, hc, e⟩ := D.chart_cover _ (hs _ hx).1
-  obtain ⟨V, T, hV, hV0, hT, -, hTz⟩ := GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a t₀ (mem_ball_zero_iff.2 (by linarith))
+  obtain ⟨V, T, hV, hV0, hT, -, hTz⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.chart_torus_open K J II Ψ Ω W D a t₀ (mem_ball_zero_iff.2 (by linarith))
   let σ : (Fin D.n → ℂ) → (Σ k, J k) → ℂ := fun u => torusSmul (fun k => (c k)⁻¹) (s (ψ.symm u))
   have hσ : AnalyticAt ℂ σ v := analyticAt_pi_iff.2 fun p => analyticAt_const.mul (analyticAt_sec M hψ hh hv hx p)
   have hσv : σ v ∈ V := by
@@ -283,7 +283,7 @@ theorem LevelTowerAlt.potential_charts_regular_bound : ∀ (K : Type) [Fintype K
       (g := fun u => ph0 M ref w ((P.chart j).symm u)) (C := C) (P.q_smooth j).continuousOn
       (fun v hv => hCb _ ((symm_mem_Yo M P hA j hv.1).2 hv.2))
       (fun v hv => (hloc j v hv).1.continuousWithinAt)
-      (GlobalTheory.T.plurisubharmonic_local _ _ _ ((P.chart j).open_target.sdiff (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _))
+      (_root_.GlobalTheory.CompanionTheory.AnForm.PshLocal.isPsh_of_locally _ _ _ ((P.chart j).open_target.sdiff (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _))
         fun v hv => (hloc j v hv).2)
       (fun v hv => if_pos ((symm_mem_Yo M P hA j hv.1).2 hv.2)) fun v hv hS => ?_
     show ph M ref w ((P.chart j).symm v) = _

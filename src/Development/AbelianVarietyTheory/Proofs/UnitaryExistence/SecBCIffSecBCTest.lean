@@ -49,54 +49,8 @@ theorem fromT_of_res (hBC : HasBC Xo c) {S : Type} [CommRing S] [Algebra c.F S] 
   have h₂ : FrMap (homRes hle hq h β) y₁ (y.res hle h) := map_cancel hBC e hy₁ hy₀
   exact ⟨q, β, y₁.ext hle hq, (frMap_res_iff hle hq h β (y₁.ext hle hq) y).1 h₂⟩
 
-theorem isBCTest_of_isBC (hWD : ValueWD Xo c) {m : ℕ} {f' : Rul Xo c'} {as : Fin m → c'.F} {fs : Fin m → Rul Xo c}
-    (hf' : Natural c' f') (hfs : ∀ i, Natural c (fs i)) (h : IsBC hle f' as fs) : IsBCTest hle f' as fs := by
-  intro p' _ hp y' p φ y hy
-  rw [← evR_test hf' p' y', h p'.R hp y']
-  exact Finset.sum_congr rfl fun i _ => congrArg _ (evR_of_map hWD (hfs i) hy)
-
-theorem isBC_of_isBCTest (hWD : ValueWD Xo c) (hBC : HasBC Xo c) (hT : AllTest Xo c) {m : ℕ} {f' : Rul Xo c'}
-    {as : Fin m → c'.F} {fs : Fin m → Rul Xo c} (hfs : ∀ i, Natural c (fs i)) (h : IsBCTest hle f' as fs) :
-    IsBC hle f' as fs := by
-  intro S _ _ _ hS y
-  by_cases hy : FromT y
-  · obtain ⟨q, ψ, y', hy', hev⟩ := evR_spec hy
-    let : Algebra c.F q.R := ((algebraMap c'.F q.R).comp (incF c c' hle)).toAlgebra
-    have hq : AlgOver c c' hle q.R := fun _ => rfl
-    have : IsReduced q.R := (Ideal.isRadical_iff_quotient_reduced _).1 q.rad
-    obtain ⟨p, φ, y₀, hy₀⟩ := hT q.R (y'.res hle hq)
-    have h₂ := map_trans _ _ hy₀ ((frMap_res_iff hle hq hS ψ y' y).2 hy')
-    rw [hev, h q hq y' p φ y₀ hy₀, map_sum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [map_mul, ψ.commutes, evR_of_map hWD (hfs i) h₂]
-    rfl
-  · have hy' : ¬ FromT (y.res hle hS) := fun h' => hy (fromT_of_res hle hBC hS y h')
-    rw [evR_not hy]
-    exact (Finset.sum_eq_zero fun i _ => by rw [evR_not hy', mul_zero]).symm
-
-theorem isBC_iff_isBCTest {m : ℕ} {f' : Rul Xo c'} {as : Fin m → c'.F} {fs : Fin m → Rul Xo c}
-    (hf' : Natural c' f') (hfs : ∀ i, Natural c (fs i)) : IsBC hle f' as fs ↔ IsBCTest hle f' as fs :=
-  have hS := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
-  have hWD : ValueWD Xo c := evalWD_fr (frChartF_of (GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c))
-  ⟨isBCTest_of_isBC hle hWD hf' hfs,
-    isBC_of_isBCTest hle hWD (hasBC_of hS) (GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c) hfs⟩
-
 variable (Xo)
 
-theorem secBC_iff_secBCTest (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
-    GlobalTheory.IndefiniteRowSideFullHecke.SectionBaseChangeTests.SecBC Xo hle a n ↔ SecBCTest Xo hle a n :=
-  forall₂_congr fun _ hf' => exists₃_congr fun _ _ _ => and_congr_right fun hfs =>
-    isBC_iff_isBCTest hle hf'.1 fun i => (hfs i).1
-
 theorem secBC_iff_forall : Formalism.L2.Pj.SecBC Xo hle ↔ ∀ a n, GlobalTheory.IndefiniteRowSideFullHecke.SectionBaseChangeTests.SecBC Xo hle a n := Iff.rfl
-
-theorem secBC_typings_equiv :
-    (Formalism.L2.Pj.SecBC Xo hle ↔ ∀ a n, GlobalTheory.IndefiniteRowSideFullHecke.SectionBaseChangeTests.SecBC Xo hle a n) ∧
-    (Formalism.L2.Pj.SecBC Xo hle ↔ SecBCAll Xo hle) ∧
-    (∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (f' : Rul Xo c') (as : Fin m → c'.F) (fs : Fin m → Rul Xo c),
-      f' ∈ sec Xo c' a n → (∀ i, fs i ∈ sec Xo c a n) → (IsBC hle f' as fs ↔ IsBCTest hle f' as fs)) ∧
-    (Formalism.L2.Pj.SecBC Xo hle ↔ ∀ a n, SecBCTest Xo hle a n) :=
-  ⟨Iff.rfl, Iff.rfl, fun _ _ _ _ _ _ hf' hfs => isBC_iff_isBCTest hle hf'.1 fun i => (hfs i).1,
-    forall₂_congr fun a n => secBC_iff_secBCTest Xo hle a n⟩
 
 end GlobalTheory.SecFieldCompare

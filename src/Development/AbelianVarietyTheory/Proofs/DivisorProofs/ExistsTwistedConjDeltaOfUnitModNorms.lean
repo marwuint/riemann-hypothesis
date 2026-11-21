@@ -2,11 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarizedCuspidal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMat
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharpolyMulLeftGeneratorEqMapSymmStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharpolyMulLeftGeneratorEqMapSymm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FullLatticeSandwichBetweenIntegralElements
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjOfCharpolyEqOfCharpolySeparableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraceFormOfUnitaryGeneratorInvariantFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceFormGramAsymmetryForcesBetaRelationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjOfCharpolyEqOfCharpolySeparable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCyclicVectorOfSeparableCharpoly
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraceFormOfUnitaryGeneratorInvariantForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceFormGramAsymmetryForcesBetaRelation
 open NumberField GlobalTheory.UnitaryBC IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep Formalism.UG GlobalTheory.BCT
 open scoped Classical
 
@@ -129,7 +130,7 @@ theorem exists_twConj_dlt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   have hQm : Q.Monic := hy ▸ Matrix.charpoly_monic _
   have hQd : Q.natDegree = m := by rw [← hy, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
   have hfin : Module.finrank K.E B.A = Q.natDegree := by rw [Module.finrank_eq_card_basis b, Fintype.card_fin, hQd]
-  have hcp := GlobalTheory.T.charpoly_mulLeft_generator_eq_map_symm K B _ e u Q hQm hadj hu hfin
+  have hcp := _root_.GlobalTheory.charpoly_mulLeft_eq_map_symm K B _ e u Q hQm hadj hu hfin
   have hU : (GlobalTheory.TwLat.mulMat e b u).charpoly = Q := by
     have : GlobalTheory.TwLat.mulMat e b u = (LinearMap.toMatrix b b (LinearMap.mulLeft K.E u)).map (e : K.E →+* w.adicCompletion E) := rfl
     rw [this, Matrix.charpoly_map, LinearMap.charpoly_toMatrix, hcp, Polynomial.map_map]
@@ -143,7 +144,7 @@ theorem exists_twConj_dlt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     rw [hcp]; exact hQ.map
   have hnd : (Algebra.traceForm K.E B.A).Nondegenerate := GlobalTheory.UnitLemma.Sandwich.traceForm_nondegenerate B' hP'
 
-  obtain ⟨P, hP⟩ := GlobalTheory.T.conj_of_charpoly_eq_of_charpoly_separable _ m (nrmL m w y).val (GlobalTheory.TwLat.mulMat e b u) (by rw [hy, hU]) (by rw [hy]; exact hQ)
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.SimSep.conj_of_charpoly_eq_of_separable _ m (nrmL m w y).val (GlobalTheory.TwLat.mulMat e b u) (by rw [hy, hU]) (by rw [hy]; exact hQ)
   rw [hnr] at hP
   obtain ⟨hn1, hn2⟩ := normId _ (cj w) hcc m y
   set N := (y * thetaGL m (cj w) y).val with hN
@@ -165,7 +166,7 @@ theorem exists_twConj_dlt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
           simp only [Matrix.mul_assoc]
       _ = P.valᵀ * (Nᵀ * Gy * cm N) * cm P.val := by rw [h1, h2]; simp only [Matrix.mul_assoc]
       _ = P.valᵀ * Gy * cm P.val := by rw [hn1]
-  obtain ⟨β, hβ⟩ := GlobalTheory.T.exists_traceForm_of_unitaryGenerator_invariant_form E w K e he B m b u hadj huu hnd Gu.val hinv
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.TwLat.BetaEx.exists_beta E w K e he B m b u hadj huu hnd Gu.val hinv
   have hsym : cm (GlobalTheory.TwLat.gram e b β) = (-1 : w.adicCompletion E) ^ (m - 1) • ((GlobalTheory.TwLat.gram e b β)ᵀ * U) := by
     rw [hβ, hGu, map_mul, map_mul, hn2]
     have hcP : cm (P.valᵀ) = (cm P.val)ᵀ := rfl
@@ -174,7 +175,7 @@ theorem exists_twConj_dlt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     congr 1
     simp only [Matrix.mul_assoc, hP]
   have hGunit : IsUnit (GlobalTheory.TwLat.gram e b β) := hβ ▸ Gu.isUnit
-  obtain ⟨hσβ, hβu⟩ := GlobalTheory.T.traceFormGram_asymmetry_forces_beta_relation E w K e he B m b u β hnd hGunit hsym
+  obtain ⟨hσβ, hβu⟩ := _root_.GlobalTheory.TwLat.betaSym E w K e he B m b u β hnd hGunit hsym
   refine ⟨β₀⁻¹ * hβu.unit, ?_, P⁻¹, ?_⟩
   · have hi : (((β₀⁻¹ : B.Aˣ) : B.A)) * β₀ = 1 := by simp
     have hi' : B.σ (β₀ : B.A) * B.σ ((β₀⁻¹ : B.Aˣ) : B.A) = 1 := by rw [← map_mul]; simp

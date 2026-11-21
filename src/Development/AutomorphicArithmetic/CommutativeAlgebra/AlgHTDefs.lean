@@ -45,16 +45,4 @@ structure TowAb (t : Tow b N V s) where
 
 attribute [instance] TowAb.grp TowAb.comm
 
-structure TowAlg (t : Tow b N V s) extends TowAb t where
-  act : OActN D.O A
-  act_b : ∀ e c, ((t.o e).act.act c).left ≫ b e = b e ≫ (act.act c).left
-  P : LB (G2 A).left
-  isLB : P.IsLB
-
-  b₂ : ∀ e, (G2 (t.o e).A).left ⟶ (G2 A).left
-  sq : ∀ e, IsSquare (b e) (b₂ e)
-  pol : ∀ e, LBIso (t.o e).P (P.pull (b₂ e))
-  eta : D.La → (𝟙_ (Over (Sp V)) ⟶ A)
-  eta_b : ∀ e y, ((t.o e).eta y).left ≫ b e = th V e ≫ (eta y).left
-
 end UpperTheory.AlgHT

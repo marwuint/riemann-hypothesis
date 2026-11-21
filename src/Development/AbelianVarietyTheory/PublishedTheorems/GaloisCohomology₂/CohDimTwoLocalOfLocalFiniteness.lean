@@ -85,15 +85,6 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   (l : ℕ) [Fact l.Prime] {R : Type*} [CommRing R] {M : Type} [AddCommGroup M] [Module R M]
   [Finite M] [TopologicalSpace M] [DiscreteTopology M]
 
-theorem CohDimTwoGlobal.of_nsmul (h : CohDimTwoGlobal) [IsTotallyComplex F] (r : ℕ)
-    (hM : ∀ m : M, (l ^ r) • m = 0) {S : Finset (HeightOneSpectrum (𝓞 F))}
-    (rhoS : Representation R (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M)
-    (hS : ContainsAbove S l) (hc : ContAction rhoS) (n : ℕ) (hn : 3 ≤ n) :
-    Subsingleton (Hn rhoS n) := by
-  letI : Module (ZMod (l ^ r)) M := AddCommGroup.zmodModule hM
-  exact subsingleton_Hn_of_action_eq rhoS (zmodRep (l ^ r) rhoS) (fun _ _ => rfl) n (by omega)
-    (h F Ω l r M S (zmodRep (l ^ r) rhoS) hS hc n hn)
-
 theorem CohDimTwoLocal.of_nsmul (h : CohDimTwoLocal) (r : ℕ)
     (hM : ∀ m : M, (l ^ r) • m = 0) {v : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω}
     (rho : Representation R (Dec (F := F) A) M)

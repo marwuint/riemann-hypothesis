@@ -244,13 +244,6 @@ lemma aeval_projectionPoly_eq_zero_of_pow_eq (T : Module.End LL W) (u : LLˣ) (�
   simp only [map_mul]
   rw [map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, hT, sub_self, zero_mul, zero_mul]
 
-lemma eval_PP (u : LLˣ) (ℓ E : ℕ) (JS : Finset ℤ) :
-    (PPoly u ℓ E JS).eval 1 =
-      (∏ i ∈ JS.erase 0, (1 - ((u ^ (i * ((ℓ ^ E : ℕ) : ℤ)) : LLˣ) : LL))) * ((ℓ ^ E : ℕ) : LL) := by
-  first
-    | simp [PPoly, Polynomial.eval_prod, Polynomial.eval_finset_sum]
-    | simp [PPoly, Polynomial.eval_prod, Polynomial.eval_finset_sum, mul_comm]
-
 lemma aeval_prod_one (T : Module.End LL W) (N : ℕ) (hT : T ^ N = 1) (s : Finset ℤ) (c : ℤ → LL) :
     Polynomial.aeval T (∏ i ∈ s, ((Polynomial.X : Polynomial LL) ^ N - Polynomial.C (c i))) =
       algebraMap LL (Module.End LL W) (∏ i ∈ s, (1 - c i)) := by
@@ -675,11 +668,6 @@ lemma nbK_win (kind : Kind) (g b : ℤ) (hg : 0 ≤ g) (hb : kind ≠ Kind.thin 
     (try split_ifs at h) <;>
     first | exact absurd rfl h | omega | (have := hb (by decide); omega)
 
-lemma nbK_zero (kind : Kind) (g b : ℤ) (hg : 0 ≤ g) (hb : kind ≠ Kind.thin → g < b)
-    (U : Submodule LL D) : NbK kind b U (0 + g) = NbK kind b U 0 := by
-  cases kind <;> simp only [NbK, NbThin, NbUp, NbDown] <;> (try split_ifs) <;>
-    first | rfl | omega | (have := hb (by decide); omega)
-
 end
 end SlopeTestRemainingChoices
 
@@ -690,86 +678,6 @@ theorem xi_gamma_commute : XiGam := by
   intro i
   rw [cf_gam]
   exact Ti_mem Lev i (X i) (hf i)
-
-theorem graded_pieces_finite : KillingPolynomialFinite := by
-  rintro LL D _ _ _ X X' ⟨hm, ⟨lo, hlo⟩, ⟨hi, hhi⟩⟩ ⟨hm', ⟨lo', hlo'⟩, ⟨hi', hhi'⟩⟩
-  apply (Set.finite_Icc (min lo lo') (max hi hi')).subset
-  intro i hne
-  simp only [Set.mem_setOf_eq] at hne
-  simp only [Set.mem_Icc]
-  by_contra hc
-  apply hne
-  rcases not_and_or.mp hc with h | h
-  · have h1 : X i = ⊥ := le_bot_iff.mp (by rw [← hlo]; exact hm (by omega))
-    have h2 : X' i = ⊥ := le_bot_iff.mp (by rw [← hlo']; exact hm' (by omega))
-    rw [h1, h2]
-  · have h1 : X i = ⊤ := top_le_iff.mp (by rw [← hhi]; exact hm (by omega))
-    have h2 : X' i = ⊤ := top_le_iff.mp (by rw [← hhi']; exact hm' (by omega))
-    rw [h1, h2]
-
-theorem graded_first_clause : CoeffIterateGamma := by
-  intro LL Ks Δ D _ _ _ _ _ Lev ℓ s E h1 hE f i
-  rw [cf_iter, Ti_pow Lev (ℓ ^ E) (iter_of_le Lev.σ ℓ s E h1.1 hE) i]
-  first
-    | exact Module.algebraMap_end_apply _ _ _ _
-    | rw [Module.algebraMap_end_apply]
-    | simp [Algebra.algebraMap_eq_smul_one]
-
-theorem graded_third_clause : K2iii := by
-  intro LL Ks Δ D _ _ _ _ _ Lev ℓ s hℓ h1 hV X X' hXX' f hf hδ hγ
-  obtain ⟨d, hd⟩ := k2iii_core Lev ℓ s hℓ h1 hV X' f hδ hγ
-  have h0 : (1 : Ks) ⊗ₜ[LL] d ∈ (X 0).baseChange Ks := by
-    have a1 := (mem_Xi.mp hd) 0
-    have a2 := (mem_Xi.mp hf) 0
-    rw [cf_sub, cf_cst_zero] at a1
-    have hle : (X' 0).baseChange Ks ≤ (X 0).baseChange Ks := by
-      first
-        | exact Submodule.baseChange_mono Ks (hXX' 0)
-        | (apply Submodule.span_mono
-           rintro x ⟨y, hy, rfl⟩
-           exact ⟨y, hXX' 0 hy, rfl⟩)
-    have a3 : cf f 0 - (1 : Ks) ⊗ₜ[LL] d ∈ (X 0).baseChange Ks := hle a1
-    have a4 := Submodule.sub_mem _ a2 a3
-    rwa [sub_sub_cancel] at a4
-  obtain ⟨d', hd', heq⟩ := exists_const_mem (X 0) d h0
-  refine ⟨d', hd', ?_⟩
-  have e : cstD (LL := LL) Ks d' = cstD Ks d := by
-    unfold cstD
-    rw [heq]
-  rw [e]
-  exact hd
-
-theorem continuation_chart_defined : KillingPolyConst := by
-  intro LL Ks Δ D _ _ _ _ _ _ Lev ℓ s E hℓ h1 hd hE JS X X' hI f hf
-  have hN : ((ℓ ^ E : ℕ) : LL) ≠ 0 := Nat.cast_ne_zero.mpr (pow_pos hℓ E).ne'
-  refine ⟨fun hinv => ?_, fun h0 => ?_⟩
-  · obtain ⟨d0, hd0, hsum⟩ := trace_sum_descends_to_base Lev ℓ s E h1 hd hE (X 0) (cf f 0) ((mem_Xi.mp hf) 0)
-      (fun j => inv_zero Lev f hinv j)
-    refine ⟨((ℓ ^ E : ℕ) : LL)⁻¹ • d0, (X 0).smul_mem _ hd0, ?_, ?_⟩
-    · rw [hsum, ← TensorProduct.tmul_smul, smul_smul, mul_inv_cancel₀ hN, one_smul]
-    · rw [mem_Xi]
-      intro i
-      rw [cf_sub]
-      by_cases hi : i = 0
-      · subst hi
-        have e : (PPoly Lev.u ℓ E JS).eval 1 • (((ℓ ^ E : ℕ) : LL)⁻¹ • d0) =
-            (∏ i ∈ JS.erase 0, (1 - ((Lev.u ^ (i * ((ℓ ^ E : ℕ) : ℤ)) : LLˣ) : LL))) • d0 := by
-          rw [eval_PP, smul_smul, mul_assoc, mul_inv_cancel₀ hN, mul_one]
-        rw [polynomial_action_constant_coeff Lev ℓ s E h1 hE JS f, hsum, cf_cst_zero, e, TensorProduct.tmul_smul, sub_self]
-        exact Submodule.zero_mem _
-      · rw [cf_cst_ne _ hi, sub_zero]
-        exact polynomial_action_coeff_mem Lev ℓ s E h1 hE JS X X' hI f hf i (Or.inl hi)
-  · rw [mem_Xi]
-    intro i
-    exact polynomial_action_coeff_mem Lev ℓ s E h1 hE JS X X' hI f hf i (Or.inr h0)
-
-theorem polynomial_action_constant : PActConst := by
-  intro LL Ks Δ D _ _ _ _ _ Lev P d
-  exact pAct_cst Lev P d
-
-theorem graded_fourth_first_estimate : ExistsConstOfInvariantMod := by
-  intro LL Ks Δ D _ _ _ _ _ Lev ℓ s hℓ h1 hV Fil f hδ hγ
-  exact k2iii_core Lev ℓ s hℓ h1 hV (fun i => Fil (-i)) f hδ hγ
 
 theorem graded_fourth_second_estimate : KillingPolyShape := by
   intro LL Ks Δ D _ _ _ _ _ Lev ℓ s E h1 hE kind g b U JS hg hb hW f d hf
@@ -860,60 +768,8 @@ end Formalism.ExponentWindows.G
 
 namespace Formalism.ExponentWindows.G
 
-open TensorProduct SlopeTestRemainingChoices
-
 namespace SlopeTestRemainingChoices
-section
-variable {LL W : Type} [Field LL] [AddCommGroup W] [Module LL W]
-
-lemma aeval_prod_zero (T : Module.End LL W) (N : ℕ) (I : Finset ℤ) (c : ℤ → LL) (i : ℤ) (hi : i ∈ I)
-    (hT : T ^ N = algebraMap LL (Module.End LL W) (c i)) :
-    Polynomial.aeval T (∏ j ∈ I, ((Polynomial.X : Polynomial LL) ^ N - Polynomial.C (c j))) = 0 := by
-  rw [← Finset.mul_prod_erase I (fun j => (Polynomial.X : Polynomial LL) ^ N - Polynomial.C (c j)) hi]
-  simp only [map_mul]
-  rw [map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, hT, sub_self, zero_mul]
-
-lemma sep_prod (N : ℕ) (hN : (N : LL) ≠ 0) (I : Finset ℤ) (c : ℤ → LL) (h0 : ∀ i ∈ I, c i ≠ 0)
-    (hinj : ∀ i ∈ I, ∀ j ∈ I, i ≠ j → c i ≠ c j) :
-    (∏ j ∈ I, ((Polynomial.X : Polynomial LL) ^ N - Polynomial.C (c j))).Separable := by
-  apply Polynomial.separable_prod'
-  · intro x hx y hy hxy
-    have hne : c y - c x ≠ 0 := sub_ne_zero.mpr (hinj y hy x hx (Ne.symm hxy))
-    show IsCoprime ((Polynomial.X : Polynomial LL) ^ N - Polynomial.C (c x))
-      ((Polynomial.X : Polynomial LL) ^ N - Polynomial.C (c y))
-    refine ⟨Polynomial.C (c y - c x)⁻¹, -Polynomial.C (c y - c x)⁻¹, ?_⟩
-    calc _ = Polynomial.C ((c y - c x)⁻¹ * (c y - c x)) := by
-          simp only [Polynomial.C_mul, Polynomial.C_sub]
-          ring
-      _ = 1 := by rw [inv_mul_cancel₀ hne, Polynomial.C_1]
-  · intro x hx
-    exact Polynomial.separable_X_pow_sub_C (c x) hN (h0 x hx)
-
-end
 end SlopeTestRemainingChoices
-
-theorem graded_second_clause : K2ii := by
-  intro LL Ks Δ D _ _ _ _ _ _ Lev ℓ s hℓ h1 hV I X X' hI
-  refine ⟨sep_prod (ℓ ^ s) (Nat.cast_ne_zero.mpr (pow_pos hℓ s).ne') I _ ?_ ?_, fun f hf => ?_⟩
-  · intro i _
-    exact Units.ne_zero _
-  · intro i _ j _ hij heq
-    have heq' : Lev.u ^ (i * ((ℓ ^ s : ℕ) : ℤ)) = Lev.u ^ (j * ((ℓ ^ s : ℕ) : ℤ)) := Units.ext heq
-    apply hV ((i - j) * ((ℓ ^ s : ℕ) : ℤ))
-      (mul_ne_zero (sub_ne_zero.mpr hij) (Nat.cast_ne_zero.mpr (pow_pos hℓ s).ne'))
-    rw [sub_mul, zpow_sub, heq']
-    first | exact div_self' _ | exact mul_inv_cancel _ | simp
-  · rw [mem_Xi] at hf ⊢
-    intro i
-    rw [cf_pAct]
-    by_cases hX : X i = X' i
-    · rw [← hX]
-      exact aeval_Ti_mem Lev i (X i) _ (hf i)
-    · rw [aeval_prod_zero (Ti Lev D i) (ℓ ^ s) I
-        (fun j => ((Lev.u ^ (j * ((ℓ ^ s : ℕ) : ℤ)) : LLˣ) : LL)) i (hI i hX)
-        (Ti_pow Lev (ℓ ^ s) h1.1 i),
-        LinearMap.zero_apply]
-      exact Submodule.zero_mem _
 
 end Formalism.ExponentWindows.G
 
@@ -1144,20 +1000,5 @@ theorem descent_fixed_points_holds : DcFixOf := by
 end Formalism.ExponentWindows.G
 
 namespace Formalism.ExponentWindows.G
-
-theorem polynomial_evaluation_holds_alt : PPeval := by
-  intro R _ u ℓ E JS
-  first
-    | simp [PPoly, Polynomial.eval_prod, Polynomial.eval_finset_sum, mul_comm]
-    | (unfold PPoly
-       rw [Polynomial.eval_mul, Polynomial.eval_prod, Polynomial.eval_finset_sum]
-       simp
-       ring)
-
-theorem graded_model_holds : GradedModel := ⟨xi_module_structure, xi_shift_holds, graded_semilinear_holds, xi_gamma_commute, graded_pieces_finite, graded_first_clause,
-  graded_second_clause, graded_third_clause, continuation_chart_defined, polynomial_evaluation_holds_alt, polynomial_action_constant, graded_fourth_first_estimate, graded_fourth_second_estimate,
-  graded_fourth_estimate, reduction_degree_module⟩
-
-theorem level_hypotheses_hold : LevelHypsOf := ⟨reduction_degree_holds, graded_third_clause_holds, constant_term_second_form, constant_term_fourth_form, descent_fixed_points_holds⟩
 
 end Formalism.ExponentWindows.G

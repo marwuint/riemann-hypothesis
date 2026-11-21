@@ -81,45 +81,6 @@ theorem fundOf_spec {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u :
   · exact h0.choose_spec
   · exact absurd (hF t) h0
 
-theorem OOt_eq_zero (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) (Y : Full X) {u u' : D.what₂.Word}
-    (hw : ∀ τ, uS D u τ ≠ uS D u' τ)
-    (hF : FundExists X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
-    (hI : OOIntAll X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
-    (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) (hr : t.relevant) (hG : t.G = 0) :
-    OOt t = 0 := by
-  obtain ⟨hrel, hG0⟩ := hRR D X Y u u' t hr hG
-  have hfs := fundOf_spec hF t
-  have hcov := hCov D X u u' t.lam t.lam' t.rep hrel (FundOf t) hfs (hI t)
-  exact hSch D X u u' t.lam t.lam' t.rep hw hrel hG0 (OOt t) hcov
-
-theorem kppTermZero_of_cut (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) (hV : LemmaVC)
-    (Y : Full X) {u u' : D.what₂.Word} (hw : ∀ τ, uS D u τ ≠ uS D u' τ)
-    (hF : FundExists X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
-    (hI : OOIntAll X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
-    Formalism.L2.SG.RowsOther.KppTermZero (Y.tO u u') := by
-  intro t ht
-  have hG : t.G = 0 := by
-    by_contra hne
-    have h1 : Gt t = 0 := ht.1
-    simp [Gt, hne] at h1
-  have ha : aTerm (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0 := by
-    by_cases hr : t.relevant
-    · exact aTerm_eq_zero_of_OOt _ _ _ _ t (OOt_eq_zero hRR hCov hSch Y hw hF hI t hr hG)
-    · exact hV D X Y u u' hF hI t hr
-  show Formalism.L2.SG.PackageTie.hsEmb (aTerm (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t) = 0
-  rw [ha, map_zero]
-
-theorem kppOffC_of_cut (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAllC) (hV : LemmaVC)
-    (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) : Formalism.L2.SG.RowsConc.KppOffC := by
-  intro Cg cb Cw cT CT C0
-  refine ⟨0, 0, ?_⟩
-  intro C' Cl _ _ D large₂ X Y u u' hH hT huu
-  have hWu := hT.2.2.2.2.1
-  have hFu := hFold D X Y u hT.1 hWu
-  have hFu' := hFold D X Y u' hT.1 hWu
-  exact kppTermZero_of_cut hRR hCov hSch hV Y (words_differ hH huu) (hFE D X Y u u')
-    (hOI D X Y u u' hFu hFu' (hFE D X Y u u'))
-
 end Asm
 
 end Formalism.L2.SG.KappaOffDiagonal

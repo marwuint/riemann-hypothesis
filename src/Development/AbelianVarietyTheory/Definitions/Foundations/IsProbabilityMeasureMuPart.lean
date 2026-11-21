@@ -146,23 +146,6 @@ end Indep
 theorem deg_bot (N : (K →+* ℂ) → V → ℝ) : deg N (⊥ : Submodule (𝓞 K) V) = 0 := by
   simp [deg, Formalism.HN.rkK]
 
-theorem slope_sq_line [IsTotallyComplex K] (x : K) (hx : x ≠ 0) :
-    slope_sq (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖) (Submodule.span (𝓞 K) {x}) =
-      -((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v : InfinitePlace K, 2 * Real.log (v x)) := by
-  letI : StarRing K := starRingOfComm
-  have hn : ∀ v y, Formalism.HermitianLatticesTheory.normAt (Basis.singleton Unit K) (fun _ : InfinitePlace K => (1 : Matrix Unit Unit ℂ)) v y =
-      ‖v.embedding y‖ := fun v y => by
-    simp [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]
-  have h : IsGram (Basis.singleton Unit K) (fun _ : InfinitePlace K => (1 : Matrix Unit Unit ℂ))
-      (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖) := fun v => ⟨by simp, hn v⟩
-  rw [slope_sq_eq h (Submodule.fg_span (Set.finite_singleton x)),
-    Formalism.ExtensionFiltration.muDef_line_eq _ _ (fun v => (h v).1) x hx]
-  simp [hn, InfinitePlace.norm_embedding_eq]
-
-example [IsTotallyComplex K] :
-    slope_sq (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖) (Submodule.span (𝓞 K) {(1 : K)}) = 0 := by
-  rw [slope_sq_line 1 one_ne_zero]; simp
-
 end Gram
 
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH
@@ -286,15 +269,6 @@ theorem exOf_weightOf (a : (E →+* ℂ) × ℕ → ℤ) (m : ℤ) : exOf Dw (we
       have h2 : Dw.q - 1 - (Dw.p + (Dw.q - 1 - (i : ℕ)) - Dw.p) = i := by omega
       simp only [weightOf, h1, if_false, h2, conjEmb_conjEmb]
       ring
-
-example (w : ℤ) (τ : Psi H) (i j : ℕ) (hi : i < Dw.p) (hj : j < Dw.q) :
-    (wtOf Dw (fun _ _ => w) 0).1 (τ.1, i) = w ∧ (wtOf Dw (fun _ _ => w) 0).1 (conjEmb τ.1, j) = -w := by
-  rw [wtOf_big _ _ _ _ hi, wtOf_small _ _ _ _ hj]; simp
-
-example (τ : Psi H) (i j : ℕ) (hi : i < Dw.p) (hj : j < Dw.q) :
-    (wtOf Dw (fun _ k => if (k : ℕ) < Dw.p then 0 else -1) 0).1 (τ.1, i) = 0 ∧
-      (wtOf Dw (fun _ k => if (k : ℕ) < Dw.p then 0 else -1) 0).1 (conjEmb τ.1, j) = 1 := by
-  rw [wtOf_big _ _ _ _ hi, wtOf_small _ _ _ _ hj]; simp [hi]
 
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
@@ -542,10 +516,6 @@ theorem evC_eq_zero (h : GenFrEx Xo c) {Z Z' : Comp Xo c} (hne : Z' ≠ Z) {f : 
     evC h Z' f = 0 :=
   hf _ _ (liesOff_genFr h hne)
 
-example (h : GenFrEx Xo c) (ht : GenFromTest Xo c h) {Z Z' : Comp Xo c} (hne : Z' ≠ Z) :
-    (1 : Rul Xo c) ∉ suppOn Z := fun h1 =>
-  one_ne_zero ((evalAt_one _ _ _ (ht Z')).symm.trans (evC_eq_zero h hne h1))
-
 section Inst
 
 abbrev subModuleInt {K R : Type} [Field K] [CommRing R] [Algebra K R] [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R]
@@ -587,8 +557,6 @@ def latW (G : WTZ E) : Submodule (𝓞 c.F) (cuspW Xo c U G) := supLat _
 
 def latOn (Z : Comp Xo c) (G : WTZ E) : Submodule (𝓞 c.F) (cuspOn U Z G) := supLat _
 
-def latZ (la : Weight Dw) (m : ℤ) : Submodule (𝓞 c.F) (cuspW Xo c U (wtOf Dw la m)) := latW U (wtOf Dw la m)
-
 theorem mem_latOn {Z : Comp Xo c} {G : WTZ E} {f : cuspOn U Z G} :
     f ∈ latOn U Z G ↔ (⟨f, cuspOn_le U Z G f.2⟩ : cuspW Xo c U G) ∈ latW U G := Iff.rfl
 
@@ -606,8 +574,6 @@ theorem ptN_nonneg (la : ∀ k, Wt (X k).Ψ r) (P : FDSec X) (z : Σ k, Frame (X
 def classesOver (A : Set (Σ k, Frame (X k).Ψ r)) : Set (AutQ V) := {q | dict q.out ∈ A}
 
 def muPart (A : Set (Σ k, Frame (X k).Ψ r)) : Measure (AutQ V) := ProbabilityTheory.cond (muQ1 V) (classesOver V dict A)
-
-def muComp (k : Cp) : Measure (AutQ V) := muPart V dict {z | z.1 = k}
 
 theorem isProbabilityMeasure_muPart {A : Set (Σ k, Frame (X k).Ψ r)} (h : muQ1 V (classesOver V dict A) ≠ 0) :
     IsProbabilityMeasure (muPart V dict A) :=
@@ -815,13 +781,9 @@ def rankOn (Z : Comp Xo c) (G : WTZ E) : ℕ := Formalism.HN.rkK (latOn U Z G)
 
 def slopeW_sq (G : WTZ E) : ℝ := slope_sq (normW U x V dict G) (latW U G)
 
-def slopeOn_sq (Z : Comp Xo c) (G : WTZ E) : ℝ := slope_sq (normOn U x V dict Z G) (latOn U Z G)
-
 def degW (G : WTZ E) : ℝ := deg (normW U x V dict G) (latW U G)
 
 def degOn (Z : Comp Xo c) (G : WTZ E) : ℝ := deg (normOn U x V dict Z G) (latOn U Z G)
-
-def degZ (la : Weight Dw) (m : ℤ) : ℝ := degW U x V dict (wtOf Dw la m)
 
 theorem degW_eq (G : WTZ E) : degW U x V dict G = (rankW U G : ℝ) * (slopeW_sq U x V dict G / 2) := rfl
 

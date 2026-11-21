@@ -1,7 +1,9 @@
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.WeylGroupActions.TorusMovesCharacter
 import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.BesselOrbitConvolutions.DDFormC
-import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.BesselOrbitConvolutions.AtFormC
-import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.BesselOrbitConvolutions.AtFormAdmC
+import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.BesselOrbitConvolutions.AtFormAdmOneOfSteps
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.L2NormScaling
+import Mathlib
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ZeroOfAe
 import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.BesselOrbitConvolutions.JacquetFunctionalNormalization
 import CompanionTheory.HarishChandraModules.BesselParameterIntegrals.SecondCountableQuotients.ModExists
 
@@ -159,16 +161,6 @@ theorem dDForm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
   DDSmoothness.GC.discrete_form_one_side psi_constant schur_hermitian norm_inverse_bound
     growth_spherical_bound growth_group_bound decDD beConv normIdSm beBessel shapeC inputs_holds
     k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS
-
-theorem atForm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
-    AtForm z c π μW μN μG νq σ :=
-  DDSmoothness.GC.smooth_K_finite_form_one_side schur_hermitian beConv normIdSm beBessel shapeC kFinForm zeroCase
-    inputs_holds k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS
-
-theorem atFormAdm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
-    AtFormAdm z c π μW μN μG νq σ w0 :=
-  UnipotentHaarMeasurability.GC.smooth_admissible_form_one_side schur_hermitian beConv normIdSm beBessel shapeC kFinForm
-    zeroCase zeroCaseDD inputs_holds k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS
 
 end Forms
 

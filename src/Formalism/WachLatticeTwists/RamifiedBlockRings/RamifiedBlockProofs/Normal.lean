@@ -87,68 +87,6 @@ theorem rank_map_conj {F : Type*} [Field F] (f : O →+* F) (P Q : Matrix r r O)
   apply Fintype.card_congr
   exact Equiv.subtypeEquivRight fun j => by rcases hd j with h | h <;> simp [h]
 
-open Polynomial in
-theorem charpolyRev_conj [Nontrivial O] (P Q : Matrix r r O) (d : r → O)
-    (hd : ∀ j, d j = 0 ∨ d j = 1) (hPQ : P * Q = 1) :
-    (P * Matrix.diagonal d * Q).charpolyRev = (1 - X) ^ (Nat.card {j // d j = 1}) := by
-  classical
-  have hPQ' : P.map (Polynomial.C : O →+* Polynomial O) * Q.map Polynomial.C = 1 := by
-    simpa [Matrix.map_mul] using congrArg (fun M => M.map (Polynomial.C : O →+* Polynomial O)) hPQ
-  have hdiag : Matrix.diagonal (fun j => (1 : Polynomial O) - Polynomial.X * Polynomial.C (d j)) =
-      1 - (Polynomial.X : Polynomial O) • Matrix.diagonal (fun j => Polynomial.C (d j)) := by
-    ext i j
-    by_cases h : i = j <;> simp [h, Matrix.diagonal_apply, Matrix.one_apply]
-  have key : (1 : Matrix r r (Polynomial O)) - (Polynomial.X : Polynomial O) •
-      (P * Matrix.diagonal d * Q).map Polynomial.C =
-      P.map Polynomial.C * Matrix.diagonal (fun j => 1 - Polynomial.X * Polynomial.C (d j)) *
-        Q.map Polynomial.C := by
-    rw [Matrix.map_mul, Matrix.map_mul, Matrix.diagonal_map (map_zero _), hdiag, Matrix.mul_sub,
-      Matrix.sub_mul, Matrix.mul_one, hPQ', Matrix.mul_smul, Matrix.smul_mul]
-  have hfac : ∀ j, ((1 : Polynomial O) - Polynomial.X * Polynomial.C (d j)) =
-      if d j = 1 then 1 - Polynomial.X else 1 := fun j => by
-    rcases hd j with h | h <;> simp [h]
-  unfold Matrix.charpolyRev
-  rw [key, Matrix.det_mul, Matrix.det_mul, mul_comm (Matrix.det (P.map Polynomial.C)), mul_assoc,
-    ← Matrix.det_mul, hPQ', Matrix.det_one, mul_one, Matrix.det_diagonal]
-  simp_rw [hfac]
-  rw [Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]
-  congr 1
-  simp [Nat.card_eq_fintype_card, Fintype.card_subtype]
-
 end Normal
-
-open Polynomial in
-theorem rankConst : StatRankConst := by
-  unfold StatRankConst
-  intro O _ _ _ X T d _ _ hT e he hcoef x y
-  classical
-  have hid : ∀ z, IsIdempotentElem (e z) := fun z => congrFun he z
-  choose P Q dd hdd hPQ hQP heq using fun z => idem_normal_form (e z) (hid z)
-  have hrk : ∀ z, ((e z).map (algebraMap O (FractionRing O))).rank = Nat.card {j // dd z j = 1} := by
-    intro z
-    rw [heq z]
-    exact rank_map_conj _ (P z) (Q z) (dd z) (hdd z) (hPQ z) (hQP z)
-  have hcp : ∀ z, (e z).charpolyRev = (1 - Polynomial.X) ^ Nat.card {j // dd z j = 1} := by
-    intro z
-    rw [heq z]
-    exact charpolyRev_conj (P z) (Q z) (dd z) (hdd z) (hPQ z)
-  rw [hrk, hrk]
-  have hres : ∀ k, IsLocalRing.residue O
-      (((1 - Polynomial.X : Polynomial O) ^ Nat.card {j // dd x j = 1}).coeff k) =
-      IsLocalRing.residue O (((1 - Polynomial.X : Polynomial O) ^ Nat.card {j // dd y j = 1}).coeff k) := by
-    intro k
-    have := resConst O X T hT _ (hcoef k) x y
-    simpa only [hcp] using this
-  have hpoly : ((1 - Polynomial.X : Polynomial O) ^ Nat.card {j // dd x j = 1}).map (IsLocalRing.residue O) =
-      ((1 - Polynomial.X : Polynomial O) ^ Nat.card {j // dd y j = 1}).map (IsLocalRing.residue O) := by
-    ext k
-    simp only [Polynomial.coeff_map]
-    exact hres k
-  have hdeg : ∀ m : ℕ, (((1 - Polynomial.X : Polynomial O) ^ m).map (IsLocalRing.residue O)).natDegree = m := by
-    intro m
-    rw [Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_one, Polynomial.map_X, Polynomial.natDegree_pow,
-      Polynomial.natDegree_sub_eq_right_of_natDegree_lt] <;> simp
-  have := congrArg Polynomial.natDegree hpoly
-  rwa [hdeg, hdeg] at this
 
 end Formalism.RepresentationBoundsCohomology.ringDataObjects

@@ -104,22 +104,4 @@ theorem lowAt_of_cover (p : PtAt ex Csz) (i : Fin D.R.m) (PP CS CF CU : ℝ) (hC
   unfold RingAt at hR
   exact numeric (by linarith) hbE hbK hMK (by linarith) hd hR
 
-theorem low : Size → LowDef → DeepEx → DeepGood → Ring → Maps → Rk → Gmin → Flat → ULow → Low := by
-  intro hS hD hE hG hR hM hK hGm hF hU
-  refine Closed.imp (((((((((hS.and hD).and hE).and hG).and hR).and hM).and hK).and hGm).and hF).and hU) ?_
-  intro eps Fm CH _ hh
-  obtain ⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨CS, -, aS⟩, CD, -, aD⟩, _, -, aE⟩, _, -, aG⟩, _, -, aR⟩, _, -, aM⟩, _, -, aK⟩, _, -, aGm⟩,
-    CF, hCF, aF⟩, CU, hCU, aU⟩ := hh
-  refine ⟨max CD (2 * (CF + CU) + 9), le_max_of_le_right (by linarith), ?_⟩
-  obtain ⟨x0, h⟩ := ((((((((aS.and aD).and aE).and aG).and aR).and aM).and aK).and aGm).and aF).and aU
-  refine ⟨x0, fun x hx hle ι p hp i => ?_⟩
-  obtain ⟨⟨⟨⟨⟨⟨⟨⟨⟨bS, bD⟩, bE⟩, bG⟩, bR⟩, bM⟩, bK⟩, bGm⟩, bF⟩, bU⟩ := h x hx hle ι p hp
-  have hS' := bS i
-  have hE0 : 0 ≤ unitE p := by obtain ⟨a, b, -⟩ := hS'; linarith
-  rcases (Nat.succ_le_of_lt i.isLt).eq_or_lt with heq | hlt
-  · exact lowAt_mono (bD i heq) (le_max_left _ _) hE0
-  · obtain ⟨Y, hY⟩ := bE i hlt
-    exact lowAt_mono (lowAt_of_cover p i _ CS CF CU hCF hCU hS' Y (bG i hlt Y hY) (bR i hlt Y hY) (bM i hlt Y hY)
-      (bK i hlt Y hY) (bGm i hlt Y hY) (bF i hlt Y hY) (bU i hlt Y hY)) (le_max_right _ _) hE0
-
 end GlobalTheory.CovTop.LowCover

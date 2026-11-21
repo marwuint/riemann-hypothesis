@@ -136,10 +136,6 @@ theorem SameFactors.pi {ι : Type} [Finite ι] {N N' : ι → Type} [∀ j, AddC
   exact (SameFactors.pi_fin (N := fun j => N (e.symm j)) (N' := fun j => N' (e.symm j))
     fun j => h (e.symm j)).congr (LinearEquiv.piCongrLeft R N e.symm) (LinearEquiv.piCongrLeft R N' e.symm)
 
-theorem SameFactors.prod_comm (hA : IsFiniteLength R A) (hC : IsFiniteLength R C) :
-    SameFactors R (A × C) (C × A) :=
-  ((SameFactors.refl hA).prod (SameFactors.refl hC)).congr (LinearEquiv.refl _ _) (LinearEquiv.prodComm R A C)
-
 end Ss
 
 section Rep

@@ -61,52 +61,6 @@ def AnalyticDerivBound.Statement : Prop :=
     IsOpen U → AnalyticOnNhd ℂ f U → IsCompact K → K ⊆ U →
     ∃ A : ℝ, 0 < A ∧ ∀ x ∈ K, DifferentiableAt ℝ f x ∧ ‖f x‖ ≤ A ∧ ‖fderiv ℝ f x‖ ≤ A
 
-def ChartFrameDeriv.Statement : Prop :=
-  ∀ D : PeriodChartData, ∃ A : ℝ, 0 < A ∧ ∀ p ∈ D.K, ∀ j l,
-    DifferentiableAt ℝ (fun q => D.f q j l) p ∧ ‖D.f p j l‖ ≤ A ∧
-      ‖fderiv ℝ (fun q => D.f q j l) p‖ ≤ A
-
-def CuspTimeDeriv.Statement : Prop :=
-  ∀ D : PeriodChartData, ∀ z ∈ D.Ustar, ∀ i : Fin D.a,
-    DifferentiableAt ℝ (fun w => cuspTime D.a_le w i) z ∧
-      ‖fderiv ℝ (fun w => cuspTime D.a_le w i) z‖ ≤ Real.exp (D.radius z / 2)
-
-def ChartImagDeriv.Statement : Prop :=
-  ∀ D : PeriodChartData, ∃ A : ℝ, 0 < A ∧ ∀ p ∈ D.K, p.1 ∈ D.Ustar → ∀ j l,
-    DifferentiableAt ℝ (fun q : (Fin D.n → ℂ) × (Fin D.m → ℂ) => D.Y q.1 j l) p ∧
-      ‖fderiv ℝ (fun q : (Fin D.n → ℂ) × (Fin D.m → ℂ) => D.Y q.1 j l) p‖ ≤
-        A * Real.exp (D.radius p.1 / 2)
-
-theorem InvEntryBound.hypotheses_met :
-    (1 : Matrix (Fin 2) (Fin 2) ℝ) - (1 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ) = 0 ∧
-      (0 : Matrix (Fin 2) (Fin 2) ℝ).PosSemidef :=
-  ⟨by simp, PosSemidef.zero⟩
-
-theorem InvEntryDeriv.hypotheses_met :
-    ((fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℝ)) 0 - (1 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ)).PosSemidef ∧
-      ∀ j l : Fin 2, DifferentiableAt ℝ (fun q : ℝ => (fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℝ)) q j l) 0 ∧
-        ‖fderiv ℝ (fun q : ℝ => (fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℝ)) q j l) 0‖ ≤ 0 := by
-  refine ⟨by simpa using PosSemidef.zero, fun j l => ⟨differentiableAt_const _, ?_⟩⟩
-  simp
-
-theorem MatrixDetDeriv.hypotheses_met :
-    ∀ j l : Fin 2, DifferentiableAt ℝ (fun q : ℝ => (fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) q j l) 0 ∧
-      ‖(fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) 0 j l‖ ≤ 1 ∧
-      ‖fderiv ℝ (fun q : ℝ => (fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) q j l) 0‖ ≤ 0 := by
-  intro j l
-  refine ⟨differentiableAt_const _, ?_, by simp⟩
-  by_cases h : j = l <;> simp [Matrix.one_apply, h]
-
-theorem LogDetGramDeriv.hypotheses_met :
-    (1 : ℝ) ≤ ((1 : Matrix (Fin 1) (Fin 1) ℂ)ᴴ * ((1 : Matrix (Fin 1) (Fin 1) ℝ)⁻¹).map
-      (fun x : ℝ => (x : ℂ)) * (1 : Matrix (Fin 1) (Fin 1) ℂ)).det.re := by
-  simp
-
-theorem AnalyticDerivBound.hypotheses_met :
-    IsOpen (Set.univ : Set ℂ) ∧ AnalyticOnNhd ℂ (fun x : ℂ => x) Set.univ ∧
-      IsCompact (Metric.closedBall (0 : ℂ) 1) ∧ Metric.closedBall (0 : ℂ) 1 ⊆ Set.univ :=
-  ⟨isOpen_univ, analyticOnNhd_id, isCompact_closedBall _ _, Set.subset_univ _⟩
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PullData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationBaseChangeOfKernelInGeneratingOpen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActsOnThickeningsOfPullbackUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearRingActionGenericFibreOfActsAsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActsOnThickeningsOfPullbackUniformisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearRingActionGenericFibreOfActsAs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentFactorUniformisedGroupsBaseChange
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
@@ -20,8 +20,8 @@ theorem GlobalTheory.Mum.ulin_pull : ∀ (R V : Type) [CommRing R] [IsDomain R] 
   have mR : IsMonHom (Iso.refl ((Over.pullback (specOf θ)).obj G)).hom := by show IsMonHom (𝟙 _); infer_instance
   obtain ⟨D₁, A₁, hD, U₁, hU⟩ := GlobalTheory.Mum.unif_baseChange_of_psiUnitOn R bR D A G hG U V bV.1 θ hθ W hψ hW _ (Iso.refl _) mR
   obtain ⟨m, o₁, hx, ho⟩ := GlobalTheory.FactorPull.degAct_pull GlobalTheory.firstFiveLaws.1.globalFns R V θ _ _ hD O o
-  obtain ⟨oA₁, lin₁⟩ := GlobalTheory.T.exists_linear_ringAction_genericFibre_of_actsAs V bV D₁ A₁ _ (IsSemiAbelian.pullback _ G hG) U₁ O o₁ (GlobalTheory.FactorPull.ringActPull (specOf θ) oG) fun a =>
-    GlobalTheory.T.actsOnThickenings_of_pullback_uniformisation R V θ _ _ D D₁ hD A A₁ G _ (Iso.refl _) U U₁ hU (o.onB.act a) (fun χ => star a • χ) (oG.act a) _ _ _ (o₁.onB.hom a)
+  obtain ⟨oA₁, lin₁⟩ := _root_.GlobalTheory.Mum.exists_oAct_oLinear_of_actsAs V bV D₁ A₁ _ (IsSemiAbelian.pullback _ G hG) U₁ O o₁ (GlobalTheory.FactorPull.ringActPull (specOf θ) oG) fun a =>
+    _root_.GlobalTheory.Mum.actsAs_of_isPullUnif R V θ _ _ D D₁ hD A A₁ G _ (Iso.refl _) U U₁ hU (o.onB.act a) (fun χ => star a • χ) (oG.act a) _ _ _ (o₁.onB.hom a)
       (fun e => ⟨lin.q_lin e a, lin.i_lin e a⟩) ((Category.comp_id _).trans (Category.id_comp _).symm) (ho a) (hx (star a))
   obtain ⟨wL, hwL, -⟩ := hU.lg
   refine ⟨D₁, hD, A₁, U₁, m, o₁, oA₁, _, ?_, hx, fun a => GlobalTheory.PullLinear.act_proj _ hD.e.hom (ho a), fun _ => rfl, lin₁⟩

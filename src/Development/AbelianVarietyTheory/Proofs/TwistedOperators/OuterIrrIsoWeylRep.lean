@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyInvFunEquiv
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPiTensorMvPolynomialProdEquivStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPiTensorMvPolynomialProdEquiv
 
 noncomputable section
 
@@ -215,7 +215,7 @@ private theorem span_irr_orbit_extremal_eq_univ (n : ℕ) (μ : DomWeight n) :
 theorem outer_irr_iso_weylRep (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (hn : 0 < n) (lam : ι → ℕ → ℤ)
     (μ : ι → DomWeight n) (h : ∀ τ (i : Fin n), (μ τ).w i = lam τ i) :
     Iso (outer fun τ => irr n (μ τ)) (weylRep n lam) := by
-  obtain ⟨e, he⟩ := GlobalTheory.T.exists_piTensor_mvPolynomial_prod_equiv ι (Fin n × Fin n)
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.PolyTensor.exists_piTensor_equiv ι (Fin n × Fin n)
   let j : (⨂[ℂ] τ, nablaSq ℂ n (μ τ)) →ₗ[ℂ] Pol ι n n :=
     e.toLinearMap ∘ₗ PiTensorProduct.map fun τ => (nablaSq ℂ n (μ τ)).subtype
   have hjt : ∀ f : ∀ τ, nablaSq ℂ n (μ τ), j (PiTensorProduct.tprod ℂ f) =

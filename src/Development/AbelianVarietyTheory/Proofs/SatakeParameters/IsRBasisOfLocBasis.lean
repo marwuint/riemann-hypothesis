@@ -124,54 +124,6 @@ theorem exists_locBasis (D : D7) (ρ : D.host.E →+* ℂ_[p]) {N : ℕ} (L : Su
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl fun a _ => by rw [← hn a]; ring
 
-theorem isRBasis_of_locBasis (D : D7) (ρ : D.host.E →+* ℂ_[p]) {N : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
-    {P : Matrix (Fin N) (Fin N) D.host.E} (h : TaylorLogMetric.LocBasisW D ρ L P) : IsRBasis D ρ L (P.map ρ) := by
-  obtain ⟨h1, h2, h3⟩ := h
-  refine ⟨?_, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)⟩
-  · have := ρ.map_det P
-    rw [RingHom.mapMatrix_apply] at this
-    rw [← this]
-    exact (map_ne_zero ρ).2 h1
-  · rintro _ ⟨a, rfl⟩
-    obtain ⟨s, hs, hL⟩ := h2 a
-    have h0 : ρ (s : D.host.E) ≠ 0 := norm_pos_iff.1 (by rw [hs]; exact one_pos)
-    have hm := Submodule.smul_mem _ (⟨(ρ (s : D.host.E))⁻¹, (mem_int_iff _).2 (by rw [norm_inv, hs, inv_one])⟩ : 𝓞_ℂ_[p])
-      (Submodule.subset_span (R := 𝓞_ℂ_[p])
-        (Set.mem_image_of_mem (fun (x : Fin N → D.host.E) k => ρ (x k)) (show _ ∈ (L : Set _) from hL)))
-    refine Set.mem_of_eq_of_mem (funext fun k => ?_) hm
-    change ρ (P k a) = (ρ (s : D.host.E))⁻¹ * ρ ((s : D.host.E) * P k a)
-    rw [map_mul, inv_mul_cancel_left₀ h0]
-  · rintro _ ⟨x, hx, rfl⟩
-    obtain ⟨s, hs, c, hc⟩ := h3 x hx
-    have h0 : ρ (s : D.host.E) ≠ 0 := norm_pos_iff.1 (by rw [hs]; exact one_pos)
-    refine (Submodule.mem_span_range_iff_exists_fun _).2
-      ⟨fun a => ⟨(ρ (s : D.host.E))⁻¹ * ρ (c a : D.host.E), (mem_int_iff _).2 ?_⟩, ?_⟩
-    · rw [norm_mul, norm_inv, hs, inv_one, one_mul]
-      exact norm_int_le ρ _
-    · funext k
-      have hk := congrFun hc k
-      rw [Finset.sum_apply] at hk ⊢
-      change (s : D.host.E) * x k = ∑ a, (c a : D.host.E) * P k a at hk
-      change ∑ a, (ρ (s : D.host.E))⁻¹ * ρ (c a : D.host.E) * ρ (P k a) = ρ (x k)
-      simp only [mul_assoc, ← map_mul, ← Finset.mul_sum, ← map_sum]
-      rw [← hk, map_mul, inv_mul_cancel_left₀ h0]
-
-theorem transition_integral (D : D7) (ρ : D.host.E → ℂ_[p]) {N : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
-    {g h : Matrix (Fin N) (Fin N) ℂ_[p]} (hg : IsRBasis D ρ L g) (hh : IsRBasis D ρ L h) (a b : Fin N) :
-    ‖(h⁻¹ * g) a b‖ ≤ 1 := by
-  have h1 : (fun k => g k b) ∈ Submodule.span 𝓞_ℂ_[p] (Set.range fun a : Fin N => fun k => h k a) := by
-    rw [hh.2, ← hg.2]
-    exact Submodule.subset_span ⟨b, rfl⟩
-  obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun _).1 h1
-  have h2 : (fun k => g k b) = h.mulVec fun a => (c a : ℂ_[p]) := by
-    rw [← hc]
-    funext k
-    rw [Finset.sum_apply]
-    exact Finset.sum_congr rfl fun a _ => mul_comm _ _
-  have h3 : (h⁻¹ * g) a b = (h⁻¹.mulVec fun k => g k b) a := rfl
-  rw [h3, h2, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (Ne.isUnit hh.1), Matrix.one_mulVec]
-  exact (mem_int_iff _).1 (c a).2
-
 theorem exists_tauHom (D : D7) (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) :
     ∃ ρ : D.host.E →+* ℂ_[p], TaylorLogMetric.tauEmb D lam τ = ρ := by
   have h : ∀ x, TaylorLogMetric.embT D τ x ∈ TaylorLogMetric.Qbar := fun x =>

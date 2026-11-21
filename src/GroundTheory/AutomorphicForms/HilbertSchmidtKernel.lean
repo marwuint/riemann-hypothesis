@@ -146,61 +146,7 @@ theorem norm_kernelOpₗ_le (f : Lp 𝕜 2 ν) : ‖kernelOpₗ k f‖ ≤ ‖k�
 def kernelOp : Lp 𝕜 2 ν →L[𝕜] Lp 𝕜 2 μ :=
   (kernelOpₗ k).mkContinuous ‖k‖ (norm_kernelOpₗ_le k)
 
-theorem kernelOp_apply_ae (f : Lp 𝕜 2 ν) :
-    kernelOp k f =ᵐ[μ] fun x => ∫ y, k (x, y) * f y ∂ν :=
-  kernelOpₗ_apply_ae k f
-
-theorem exists_row {x : X} (hx : ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν < ∞) :
-    ∃ h : Lp 𝕜 2 ν, ‖h‖ₑ ^ 2 = ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν ∧
-      ∀ f : Lp 𝕜 2 ν, kernelFun (ν := ν) k f x = ⟪h, f⟫_𝕜 := by
-  have hconj : ∀ y, ‖conj (k (x, y))‖ₑ = ‖k (x, y)‖ₑ := fun y => by
-    rw [← ofReal_norm, ← ofReal_norm, RCLike.norm_conj]
-  have hm : MemLp (fun y => conj (k (x, y))) 2 ν := by
-    refine ⟨(RCLike.continuous_conj.comp_aestronglyMeasurable
-      (measurable_row k x).aestronglyMeasurable), lt_top_of_sq_lt_top ?_⟩
-    rw [eLpNorm_two_sq]
-    simpa only [hconj] using hx
-  refine ⟨hm.toLp _, ?_, fun f => ?_⟩
-  · rw [Lp.enorm_def, eLpNorm_congr_ae hm.coeFn_toLp, eLpNorm_two_sq]
-    simp only [hconj]
-  · rw [MeasureTheory.L2.inner_def, kernelFun]
-    refine integral_congr_ae ?_
-    filter_upwards [hm.coeFn_toLp] with y hy
-    rw [RCLike.inner_apply, hy, RCLike.conj_conj, mul_comm]
-
-theorem hsNormSq_kernelOp_le : hsNormSq (kernelOp k) ≤ ‖k‖ₑ ^ 2 := by
-  let b := stdHilbertBasis 𝕜 (Lp 𝕜 2 ν)
-  rw [hsNormSq]
-  refine ENNReal.summable.tsum_le_of_sum_le fun s => ?_
-  calc ∑ i ∈ s, ‖kernelOp k (b i)‖ₑ ^ 2
-      = ∑ i ∈ s, ∫⁻ x, ‖kernelFun (ν := ν) k (b i) x‖ₑ ^ 2 ∂μ :=
-        Finset.sum_congr rfl fun i _ => enorm_kernelOpₗ_sq k (b i)
-    _ = ∫⁻ x, ∑ i ∈ s, ‖kernelFun (ν := ν) k (b i) x‖ₑ ^ 2 ∂μ :=
-        (lintegral_finsetSum' s fun i _ =>
-          ((aestronglyMeasurable_kernelFun k (b i)).enorm.pow_const 2)).symm
-    _ ≤ ∫⁻ x, ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν ∂μ := by
-        refine lintegral_mono_ae ?_
-        filter_upwards [ae_rowSq_lt_top k] with x hx
-        obtain ⟨h, hh, hK⟩ := exists_row k hx
-        calc ∑ i ∈ s, ‖kernelFun (ν := ν) k (b i) x‖ₑ ^ 2
-            = ∑ i ∈ s, ‖⟪b i, h⟫_𝕜‖ₑ ^ 2 :=
-              Finset.sum_congr rfl fun i _ => by rw [hK, enorm_inner_comm]
-          _ ≤ ∑' i, ‖⟪b i, h⟫_𝕜‖ₑ ^ 2 := ENNReal.sum_le_tsum s
-          _ = ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν := by rw [← enorm_sq_eq_tsum b, hh]
-    _ = ‖k‖ₑ ^ 2 := lintegral_rowSq k
-
-theorem kernelOp_isHilbertSchmidt : IsHilbertSchmidt (kernelOp k) :=
-  (hsNormSq_kernelOp_le k).trans_lt (ENNReal.pow_lt_top enorm_lt_top)
-
 end Kernel
-
-theorem kernelOp_toLp_apply_ae {k : X × Y → 𝕜} (hk : MemLp k 2 (μ.prod ν)) (f : Lp 𝕜 2 ν) :
-    kernelOp (hk.toLp k) f =ᵐ[μ] fun x => ∫ y, k (x, y) * f y ∂ν := by
-  filter_upwards [kernelOp_apply_ae (hk.toLp k) f, Measure.ae_ae_of_ae_prod hk.coeFn_toLp] with x h1 h2
-  rw [h1]
-  refine integral_congr_ae ?_
-  filter_upwards [h2] with y hy
-  rw [hy]
 
 end
 

@@ -132,15 +132,6 @@ theorem mdisc_const (A : Matrix (Fin D) (Fin D) ℂ) : mdisc (fun _ => A) = A.de
   field_simp
   rfl
 
-theorem det_sum_smul_eq_sum_mdisc {m : ℕ} (c : Fin m → ℂ)
-    (A : Fin m → Matrix (Fin D) (Fin D) ℂ) :
-    (∑ j, c j • A j).det = ∑ f : Fin D → Fin m, (∏ k, c (f k)) * mdisc (A ∘ f) := by
-  rw [← mdisc_const, ← mdiscML_apply, MultilinearMap.map_sum]
-  refine Finset.sum_congr rfl fun f _ => ?_
-  have := MultilinearMap.map_smul_univ (mdiscML (D := D)) (fun i => c (f i)) (fun i => A (f i))
-  rw [this, smul_eq_mul, mdiscML_apply]
-  rfl
-
 private lemma exists_perm_mem_iff (T : Finset (Fin D)) :
     ∃ σ : Equiv.Perm (Fin D), ∀ k, σ k ∈ T ↔ (k : ℕ) < T.card := by
   classical
@@ -204,20 +195,9 @@ theorem star_mdisc (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
   simp only [mdisc, star_mul', star_sum, ← Matrix.conjTranspose_sum, Matrix.det_conjTranspose,
     star_pow, star_neg, star_one, star_div₀, star_natCast]
 
-theorem mdisc_im_eq_zero_of_isHermitian (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
-    (hA : ∀ k, (A k).IsHermitian) : (mdisc A).im = 0 := by
-  have h := star_mdisc A
-  have e : (fun k => (A k)ᴴ) = A := funext fun k => (hA k).eq
-  rw [e] at h
-  exact Complex.conj_eq_iff_im.1 h
-
 theorem mdisc_nonneg_of_posSemidef (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
     (hA : ∀ k, (A k).PosSemidef) : (mdisc A).im = 0 ∧ 0 ≤ (mdisc A).re := by
   exact mixedDiscriminant_nonneg_of_gram A hA
-
-theorem mdisc_pos_of_posDef (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
-    (hA : ∀ k, (A k).PosDef) : (mdisc A).im = 0 ∧ 0 < (mdisc A).re := by
-  exact mixedDiscriminant_pos_of_gram A hA
 
 theorem mdisc_re_mono (A B : Fin D → Matrix (Fin D) (Fin D) ℂ) (hA : ∀ k, (A k).PosSemidef)
     (hAB : ∀ k, (B k - A k).PosSemidef) : (mdisc A).re ≤ (mdisc B).re := by
@@ -234,14 +214,6 @@ theorem mdisc_mul_mul (B C : Matrix (Fin D) (Fin D) ℂ) (A : Fin D → Matrix (
   simp_rw [h, Finset.mul_sum]
   exact Finset.sum_congr rfl fun S _ => by ring
 
-theorem mdisc_conjTranspose_mul_mul (P : Matrix (Fin D) (Fin D) ℂ)
-    (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
-    mdisc (fun k => Pᴴ * A k * P) = (Complex.normSq P.det : ℂ) * mdisc A := by
-  rw [mdisc_mul_mul, Matrix.det_conjTranspose]
-  congr 1
-  rw [mul_comm]
-  exact Complex.mul_conj _
-
 theorem mdisc_transpose_mul_mul_conj (J : Matrix (Fin D) (Fin D) ℂ)
     (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     mdisc (fun k => Jᵀ * A k * J.map (starRingEnd ℂ)) = (Complex.normSq J.det : ℂ) * mdisc A := by
@@ -249,23 +221,6 @@ theorem mdisc_transpose_mul_mul_conj (J : Matrix (Fin D) (Fin D) ℂ)
     show (J.map (starRingEnd ℂ)).det = starRingEnd ℂ J.det from (RingHom.map_det _ _).symm]
   congr 1
   exact Complex.mul_conj _
-
-theorem mdisc_transpose_mul_mul_conj_eq_zero {E : ℕ} (J : Matrix (Fin E) (Fin D) ℂ)
-    (A : Fin D → Matrix (Fin E) (Fin E) ℂ) (w : Fin D → ℂ) (hw : w ≠ 0) (hJw : J *ᵥ w = 0) :
-    mdisc (fun k => Jᵀ * A k * J.map (starRingEnd ℂ)) = 0 := by
-  classical
-  have hc : J.map (starRingEnd ℂ) *ᵥ star w = star (J *ᵥ w) := by
-    ext i
-    simp [Matrix.mulVec, dotProduct, star_sum]
-  have hv : ∀ k, (Jᵀ * A k * J.map (starRingEnd ℂ)) *ᵥ star w = 0 := by
-    intro k
-    rw [← Matrix.mulVec_mulVec, hc, hJw, star_zero, Matrix.mulVec_zero]
-  have hw' : star w ≠ 0 := by simpa using hw
-  have h0 : ∀ S : Finset (Fin D), (∑ k ∈ S, Jᵀ * A k * J.map (starRingEnd ℂ)).det = 0 := by
-    intro S
-    exact Matrix.exists_mulVec_eq_zero_iff.1
-      ⟨star w, hw', by rw [Matrix.sum_mulVec]; exact Finset.sum_eq_zero fun k _ => hv k⟩
-  simp [mdisc, h0]
 
 private lemma posSemidef_of_sub_of_add {A B : Matrix (Fin D) (Fin D) ℂ} (h1 : (B - A).PosSemidef)
     (h2 : (A + B).PosSemidef) : B.PosSemidef := by
@@ -342,45 +297,6 @@ theorem norm_mdisc_le_of_abs_le (A B : Fin D → Matrix (Fin D) (Fin D) ℂ)
           Finset.powerset_univ] at this
         rw [this]
         norm_num
-
-theorem mdisc_cons_single_zero {n : ℕ} (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
-    mdisc (Fin.cons (Matrix.single 0 0 1) B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) =
-      (1 / ((n : ℂ) + 1)) * mdisc (fun k => (B k).submatrix Fin.succ Fin.succ) := by
-  set A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ :=
-    Fin.cons (Matrix.single 0 0 1) B with hA
-  rw [mdisc_eq_sum_perm, mdisc_eq_sum_perm,
-    ← Equiv.sum_comp (Equiv.Perm.decomposeFin (n := n)).symm, Fintype.sum_prod_type,
-    Finset.sum_eq_single (0 : Fin (n + 1))]
-  · have hterm : ∀ τ : Equiv.Perm (Fin n),
-        (Matrix.of fun i j => A (Equiv.Perm.decomposeFin.symm (0, τ) j) i j).det =
-          (Matrix.of fun i j => (B (τ j)).submatrix Fin.succ Fin.succ i j).det := by
-      intro τ
-      rw [Matrix.det_succ_column_zero, Finset.sum_eq_single 0]
-      · simp only [Matrix.of_apply, Equiv.Perm.decomposeFin_symm_apply_zero, hA, Fin.cons_zero,
-          Matrix.single_apply, and_self, if_true, Fin.val_zero, pow_zero, one_mul]
-        congr 1
-      · intro b _ hb
-        simp [hA, Equiv.Perm.decomposeFin_symm_apply_zero, Ne.symm hb]
-      · simp
-    simp_rw [hterm]
-    rw [Nat.factorial_succ, Nat.cast_mul, Nat.cast_succ]
-    have h1 : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast n.factorial_ne_zero
-    have h2 : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast n.succ_ne_zero
-    field_simp
-  · intro p _ hp
-    refine Finset.sum_eq_zero fun τ _ => ?_
-    set σ := Equiv.Perm.decomposeFin.symm (p, τ) with hσ
-    have hσ0 : σ 0 = p := Equiv.Perm.decomposeFin_symm_apply_zero p τ
-    have hj : σ.symm 0 ≠ 0 := by
-      intro h
-      apply hp
-      have := σ.apply_symm_apply 0
-      rw [h, hσ0] at this
-      exact this
-    apply Matrix.det_eq_zero_of_column_eq_zero (σ.symm 0)
-    intro i
-    simp [hA, Ne.symm hj]
-  · simp
 
 theorem maDens_nonneg_of_posSemidef (φ : Fin D → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ)
     (hφ : ∀ k, (hessC (φ k) z).PosSemidef) : 0 ≤ maDens φ z := by

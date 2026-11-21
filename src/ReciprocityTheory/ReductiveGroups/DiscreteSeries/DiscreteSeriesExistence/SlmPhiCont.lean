@@ -370,38 +370,6 @@ theorem slm_dS {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) {
   rw [hγ1]
   simp only [Matrix.mul_one]
 
-theorem slm_mem_smD {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) :
-    toL2 ε F ∈ smD ε (rreg ε) :=
-  ((exists_smoothDerived ε (rreg ε)).choose_spec.choose_spec.1 _).2 (slm_smooth hF)
-
-theorem slm_smE {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : IsSmoothL2 ε F) (a b : Fin n) :
-    ((smE ε (rreg ε) a b ⟨toL2 ε F, slm_mem_smD hF⟩ : smD ε (rreg ε)) : L2 ε) =
-      toL2 ε (Formalism.REAL.Eab ε a b F) := by
-  have hσ := rreg_isURepOn ε
-  obtain ⟨hc1, hc2, hdec, -⟩ := Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)
-  rw [smE_apply hσ]
-  show dS (rreg ε) (S7.cpart1 ε (Matrix.single a b 1)) (toL2 ε F) +
-      Complex.I • dS (rreg ε) (S7.cpart2 ε (Matrix.single a b 1)) (toL2 ε F) =
-    toL2 ε (Formalism.REAL.Eab ε a b F)
-  rw [slm_dS (X := S7.cpart1 ε (Matrix.single a b 1)) hF hc1,
-    slm_dS (X := S7.cpart2 ε (Matrix.single a b 1)) hF hc2]
-  have hZ : S7.cpart1 ε (Matrix.single a b 1) + Complex.I • S7.cpart2 ε (Matrix.single a b 1) =
-      Matrix.single a b 1 := hdec.symm
-  calc ∑ c, ∑ d, S7.cpart1 ε (Matrix.single a b 1) c d • toL2 ε (Formalism.REAL.Eab ε c d F) +
-        Complex.I • ∑ c, ∑ d, S7.cpart2 ε (Matrix.single a b 1) c d • toL2 ε (Formalism.REAL.Eab ε c d F)
-      = ∑ c, ∑ d, (S7.cpart1 ε (Matrix.single a b 1) + Complex.I • S7.cpart2 ε (Matrix.single a b 1)) c d •
-          toL2 ε (Formalism.REAL.Eab ε c d F) := by
-        simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, Finset.sum_add_distrib,
-          Finset.smul_sum, smul_smul]
-    _ = ∑ c, ∑ d, (Matrix.single a b 1 : Matrix (Fin n) (Fin n) ℂ) c d • toL2 ε (Formalism.REAL.Eab ε c d F) := by
-        rw [hZ]
-    _ = toL2 ε (Formalism.REAL.Eab ε a b F) := by
-        rw [Finset.sum_eq_single a (fun c _ hc => Finset.sum_eq_zero fun d _ => by
-            simp [Ne.symm hc]) (fun h => absurd (Finset.mem_univ _) h),
-          Finset.sum_eq_single b (fun d _ hd => by simp [Ne.symm hd])
-            (fun h => absurd (Finset.mem_univ _) h)]
-        simp
-
 end Spec
 
 end ReciprocityTheory.ChartRestriction.DS

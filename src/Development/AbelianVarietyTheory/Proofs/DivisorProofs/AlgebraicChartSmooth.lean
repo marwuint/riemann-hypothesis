@@ -60,8 +60,4 @@ theorem smooth_of_etale {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k
   rw [e]
   exact h₂
 
-theorem smooth_chart (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ)
-    (c : AlgChart p σ D) : SmoothOfRelativeDimension D (c.U.ι ≫ p) :=
-  smooth_of_etale p c.affine c.x c.etale
-
 end GlobalTheory.ChartSmooth

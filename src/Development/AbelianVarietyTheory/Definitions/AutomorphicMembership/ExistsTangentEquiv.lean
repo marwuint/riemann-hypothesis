@@ -2,8 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LinearIndependentVec
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.EpsZeroCompOfIsTanAtG
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppLESecEpsZeroEpsFn
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsTotallyComplexOfI
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BddAboveSubDegsOfJointlyMono
+import Development.AbelianVarietyTheory.Definitions.Foundations.RootOfUnityEightQMemCoeffGaloisSubfield
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGaloisSubfieldConjStable
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFinsetTypeNormPrincipal
+import Formalism.LocalToGlobal.LatticeGeometry.CmTypeMeetsConjugatePair
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsBaseTwoWords
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGloballyGeneratedIffGeneratingSections
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsCohSubDegEqSum
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivOfIsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBasisOfIntFrame
@@ -161,211 +167,12 @@ instance At.nonempty_crvQ (ct : At S κ p) : Nonempty ct.CrvQ := by
 
 end Inhabitants
 
-section Steps
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
-  {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
-  {Z : Mdl Y i₀}
-
-theorem IntChart.left_vec_map (q : IntChart Z) {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') {x : Sp R ⟶ Z.X}
-    {x' : Sp R' ⟶ Z.X} (hx : spMap ψ ≫ x = x') (h : ⊤ ≤ x ⁻¹ᵁ q.U) (h' : ⊤ ≤ x' ⁻¹ᵁ q.U) (σ : E →+* ℂ)
-    (a : Fin (Dw.mult σ)) : (tv (q.vec x' h' σ a)).left = spMap (dualMap ψ) ≫ (tv (q.vec x h σ a)).left := by
-  have e : spMap (ψ.comp (valMap x _ h).hom) ≫ q.aff.fromSpec = x' := by
-    rw [← hx, ← spMap_comp_spMap, Category.assoc, spMap_valMap]
-  rw [q.vec_eq _ e, IntChart.vec, left_tanOf, left_tanOf, Vecs.bc, Vecs.bc, dual_comp]
-
-theorem IntChart.exists_basis (q : IntChart Z) {R : Type} [CommRing R] (x : Sp R ⟶ Z.X) (h : ⊤ ≤ x ⁻¹ᵁ q.U)
-    (σ : E →+* ℂ) : ∃ (n : ℕ) (e : Fin (Dw.mult σ) ↪ Fin n) (b : Module.Basis (Fin n) R (TanM (x ≫ Z.π) (Y Z.i).t.G)),
-      ∀ a, b (e a) = q.vec x h σ a := by
-  obtain ⟨n, v, e, he, hv, hb⟩ := q.int.1 σ
-  have hx : spMap (valMap x _ h).hom ≫ q.aff.fromSpec ≫ Z.π = x ≫ Z.π := by rw [← Category.assoc, spMap_valMap]
-  have hv' := fun i => isTan_map _ hx (hv i)
-  have key (u : TanM (x ≫ Z.π) (Y Z.i).t.G) : ∃! cf : Fin n → R, ∑ i, cf i • tanOf (hv' i) = u := by
-    simpa only [comb_iff hv' _ (isTan_tv u), eq_comm (b := ∑ _, _), show tanOf (isTan_tv u) = u from tan_ext rfl] using
-      basis_map _ hx hv hb _ (isTan_tv u)
-  refine ⟨n, e, .mk (v := fun i => tanOf (hv' i)) (Fintype.linearIndependent_iffₛ.2 fun f g hfg =>
-    congrFun ((key _).unique hfg rfl)) fun u _ => (Submodule.mem_span_range_iff_exists_fun R).2 (key u).exists,
-    fun a => ?_⟩
-  rw [Module.Basis.mk_apply]
-  exact tan_ext (by rw [IntChart.vec, left_tanOf, left_tanOf, he a]; rfl)
-
 namespace Curve
-
-variable {k : Type} [Field k] (c : Curve k Z.X) (hZ : HasDR Z)
-
-theorem isAffineOpen_inf {T T' : c.C.Opens} (hT : IsAffineOpen T) (hT' : IsAffineOpen T') : IsAffineOpen (T ⊓ T') := by
-  have := c.isProjCurve.isProperCurve.isProper
-  have : IsSeparated (terminal.from c.C) := by
-    rw [← terminal.comp_from (strHom k c.C)]
-    infer_instance
-  exact hT.inf hT'
-
-theorem exists_subsheaf {α : Type} [Fintype α] (rk : α → ℕ) (σ : α → (E →+* ℂ)) (ix : ∀ a, Fin (Dw.mult (σ a))) (P : Prop)
-    (hb : ∀ (q : IntChart Z) (R : Type) [CommRing R] (x : Sp R ⟶ Z.X) (h : ⊤ ≤ x ⁻¹ᵁ q.U),
-      ∃ (κ : Type) (_ : Fintype κ) (e : α ↪ κ) (b : Module.Basis κ R (TanM (x ≫ Z.π) (Y Z.i).t.G)),
-        (P → Function.Surjective e) ∧ ∀ a, b (e a) = q.vec x h (σ a) (ix a))
-    (ht : ∀ (q q' : IntChart Z) (R : Type) [CommRing R] (x : Sp R ⟶ Z.X) (h : ⊤ ≤ x ⁻¹ᵁ q.U) (h' : ⊤ ≤ x ⁻¹ᵁ q'.U) (a : α),
-      ∃ cf : α → R, cf a = valR x _ (q'.chg q hZ (σ a) (ix a) (ix a)) ∧ (∀ b, b ≠ a → rk a ≤ rk b → cf b = 0) ∧
-        q'.vec x h' (σ a) (ix a) = ∑ b, cf b • q.vec x h (σ b) (ix b))
-    (S : Finset α) (hS : ∀ a ∈ S, ∀ b, rk b < rk a → b ∈ S) :
-    ∃ (G : c.C.Modules) (i : G ⟶ c.lie), IsCohSub i ∧ deg k G = ∑ a ∈ S, c.degStep hZ (σ a) (ix a) ∧
-      (P → S = Finset.univ → IsIso i) := by
-  obtain ⟨Ψ, hΨ⟩ := exists_tangent_equiv c.tMap
-  obtain ⟨g, hg⟩ := c.exists_isVB_lie
-  have := hg.isQuasicoherent
-  let J := {q : c.C.Opens × IntChart Z // CoordOpen c.t q.1 ∧ q.1 ≤ c.f ⁻¹ᵁ q.2.U}
-  have hin {T : c.C.Opens} (hT : IsAffineOpen T) {U : Z.X.Opens} (h : T ≤ c.f ⁻¹ᵁ U) : ⊤ ≤ (affPt hT ≫ c.f) ⁻¹ᵁ U :=
-    fun z hz => h (le_preimage_affPt hT hz)
-  have hc : ⨆ j : J, j.1.1 = ⊤ := top_unique fun x _ => by
-    obtain ⟨q, hq⟩ := hZ.exists_intChart (c.f x)
-    obtain ⟨T, hT, hx, hle⟩ := exists_coordOpen c.t (V := c.f ⁻¹ᵁ q.U) hq
-    exact Opens.mem_iSup.2 ⟨⟨(T, q), hT, hle⟩, hx⟩
-  choose κ _ e b hP hbe using fun j : J => hb j.1.2 _ (affPt j.2.1.1 ≫ c.f) (hin _ j.2.2)
-  let B (j : J) := (b j).map (Ψ _ j.2.1 _ (Category.assoc _ _ _).symm)
-  have hB (j : J) : VB.IsFrame (B j) := Summand.isFrame_of_affine_basis j.2.1.1 _
-  have hres (j : J) {T : c.C.Opens} (hT : CoordOpen c.t T) (h : T ≤ j.1.1) (a : α) : resM c.lie h (B j (e j a)) =
-      Ψ T hT _ (Category.assoc _ _ _).symm (j.1.2.vec _ (hin hT.1 (h.trans j.2.2)) (σ a) (ix a)) := by
-    rw [Module.Basis.map_apply, hbe]
-    exact (hΨ _ _ _ _ _ _ _ _ h _ _ (j.1.2.left_vec_map _ (by rw [← Category.assoc, spMap_affPt]) _ _ _ _)).symm
-  obtain ⟨G, i, hi, hd, hs⟩ := GlobalTheory.TriangularFrames.exists_isCohSub_deg_eq_sum k c.C c.isProjCurve c.lie J _ hc κ (fun j => B j) hB α rk e
-    (fun a => (grLB hZ (-oneAt Dw (σ a) (ix a))).pull c.f) (fun a => LB.isLB_pull (isLB_grLB hZ _) _)
-    (fun _ j _ => j.1.2) (fun a j => j.2.2.trans (GlobalTheory.LB.pull_U (L := grLB hZ _) c.f fun _ => j.1.2).ge)
-    (fun j j' a => by
-      have hT := j.2.1.mono (c.isAffineOpen_inf j.2.1.1 j'.2.1.1) inf_le_left
-      have h := hin hT.1 (inf_le_left.trans j.2.2)
-      have h' := hin hT.1 (inf_le_right.trans j'.2.2)
-      obtain ⟨cf, h₁, h₂, h₃⟩ := ht j.1.2 j'.1.2 _ _ h h' a
-      refine ⟨cf, h₁.trans (.symm ?_), h₂, ?_⟩
-      · refine (GlobalTheory.LB.resG_pull_g (L := grLB hZ _) c.f _ _ _).trans ((valR_affPt hT.1 _).symm.trans
-          ((valR_appLE _ _ _ (le_preimage_affPt hT.1) _).trans ?_))
-        exact (congrArg _ (IntChart.tr_neg_oneAt j.1.2 j'.1.2 hZ _ _)).trans (valR_res _ _ (le_preimage_inf h h') _)
-      · simp only [hres _ hT, h₃, map_sum, map_smul]) S hS
-  refine ⟨G, i, hi, hd, fun hp hS => ?_⟩
-  have := hi.mono
-  refine Twist.isIso_of_cover i hc fun j V hV => ⟨QCoh.injective_app_of_mono i V, fun x => (hs j V hV x).2 ?_⟩
-  refine Submodule.span_mono ?_ ((isFrame_iff.1 (hB j) V hV).2 Submodule.mem_top)
-  rintro _ ⟨m, rfl⟩
-  obtain ⟨a, rfl⟩ := hP j hp m
-  exact ⟨a, by simp [hS], rfl⟩
-
-theorem isMaxSubDeg_Pm : IsMaxSubDeg k c.lie c.Pm := by
-  obtain ⟨g, hg⟩ := c.exists_isVB_lie
-  obtain ⟨P, hP⟩ := exists_isMaxSubDeg_iff.2 (GlobalTheory.VB.bddAbove_subDegs_of_isVB k c.C c.isProjCurve _ g hg)
-  rwa [c.Pm_eq hP]
-
-theorem sum_degStep_mem (σ : E →+* ℂ) (n : ℕ) : ∑ m ∈ Finset.range n, c.degStep hZ σ m ∈ subDegs k c.lie := by
-  obtain ⟨G, i, hi, hd, -⟩ := c.exists_subsheaf hZ (α := Fin (Dw.mult σ)) Fin.val (fun _ => σ) id False
-    (fun q R _ x h => have ⟨_, e, b, hb⟩ := q.exists_basis x h σ; ⟨_, inferInstance, e, b, False.elim, hb⟩)
-    (fun q q' R _ x h h' a => ⟨_, rfl, fun b hb hab => by
-      rw [q'.chg_eq_zero q hZ σ (lt_of_le_of_ne hab hb.symm), valR_zero_fn], q'.vec_eq_sum q hZ x h' h σ a⟩)
-    (Finset.univ.filter fun a => a.val < n) (by simp only [Finset.mem_filter, Finset.mem_univ, true_and]; omega)
-  refine ⟨G, i, hi, hd.trans ?_⟩
-  refine Finset.sum_bij_ne_zero (fun a _ _ => a.val) (fun a ha _ => by simpa using ha)
-    (fun _ _ _ _ _ _ => Fin.ext) (fun m hm h0 => ?_) fun _ _ _ => rfl
-  have : m < Dw.mult σ := lt_of_not_ge fun h => h0 (c.degStep_eq_zero hZ h)
-  exact ⟨⟨m, this⟩, by simpa using hm, h0, rfl⟩
-
-theorem sum_degStep_le (σ : E →+* ℂ) (n : ℕ) : ∑ m ∈ Finset.range n, c.degStep hZ σ m ≤ c.Pm :=
-  c.isMaxSubDeg_Pm.2 (c.sum_degStep_mem hZ σ n)
-
-theorem deg_lie (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (hu : ¬ p ∣ (discr E).natAbs) :
-    deg k c.lie = ∑ σ, ∑ m ∈ Finset.range (Dw.mult σ), c.degStep hZ σ m := by
-  classical
-  obtain ⟨G, i, -, hd, hi⟩ := c.exists_subsheaf hZ (α := Σ σ : E →+* ℂ, Fin (Dw.mult σ)) (fun a => a.2.val) Sigma.fst
-    Sigma.snd True
-    (fun q R _ x h => by
-      obtain ⟨b, hb⟩ := GlobalTheory.TotalFrame.exists_basis_of_intFrame E H Dw Xo p W hp hW hu Y i₀ Z q.U q.aff q.w q.int R _ x (spMap_valMap q.aff x h)
-      exact ⟨_, inferInstance, .refl _, b, fun _ => Function.surjective_id, fun a => tan_ext (hb a.1 a.2)⟩)
-    (fun q q' R _ x h h' ⟨σ, a⟩ => by
-      refine ⟨fun b => (Pi.single σ (fun b => valR x _ (q'.chg q hZ σ a b)) : ∀ σ, Fin (Dw.mult σ) → R) b.1 b.2,
-        by simp, fun ⟨σ', b⟩ hb hab => ?_, ?_⟩
-      · by_cases e : σ' = σ
-        · subst e
-          simp only [Pi.single_eq_same]
-          rw [q'.chg_eq_zero q hZ σ' (lt_of_le_of_ne hab fun e : a = b => hb (e ▸ rfl)), valR_zero_fn]
-        · simp [e]
-      · rw [Fintype.sum_sigma, Finset.sum_eq_single σ (fun σ' _ e => by simp [e]) (by simp)]
-        simpa only [Pi.single_eq_same] using q'.vec_eq_sum q hZ x h' h σ a)
-    Finset.univ (by simp)
-  have := hi trivial rfl
-  rw [← deg_congr k (asIso i), hd, Fintype.sum_sigma]
-  exact Finset.sum_congr rfl fun σ _ => Fin.sum_univ_eq_sum_range (c.degStep hZ σ) _
 
 end Curve
 
-end Steps
-
-section Place
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ModuliIntegralCharts GlobalTheory.ShFam
-
-variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ}
-
-theorem sum_emb_eq (D : D7) (F : (D.host.E →+* ℂ) → ℤ) :
-    ∑ σ, F σ = ∑ᶠ τ : PsiT D, (F (embOf D τ) + F (conjEmb (embOf D τ))) := by
-  have := Fintype.ofEquiv _ D.eTau
-  have e (τ : PsiT D) : embOf D τ = D.host.emb τ := by rw [embOf, DV.tauEmb, Equiv.apply_symm_apply]
-  rw [finsum_eq_sum_of_fintype, Finset.sum_add_distrib]
-  refine (Fintype.sum_bijective _ (GlobalTheory.Mem.BaseEx.sum_emb_bijective D.host) _ _ ?_).symm.trans (Fintype.sum_sum_type
-    (Sum.elim (fun τ => F (embOf D τ)) fun τ => F (conjEmb (embOf D τ))))
-  rintro (τ | τ)
-  · exact congrArg F (e τ)
-  · exact congrArg (fun σ => F (conjEmb σ)) (e τ)
-
 namespace At
 
-variable (ct : At S κ p) {k : Type} [Field k] (c : Curve k ct.YY.X)
-
-theorem degLie_false (τ : PsiT D) : ct.degLie c τ false =
-    ∑ m ∈ Finset.range (S.Dw.mult (embOf D τ)), c.degStep ct.hasDR (embOf D τ) m := by
-  rw [mult_embOf]
-  exact ct.sum_degPiece_head c τ le_rfl
-
-theorem degLie_true (τ : PsiT D) : ct.degLie c τ true =
-    ∑ m ∈ Finset.range (S.Dw.mult (conjEmb (embOf D τ))), c.degStep ct.hasDR (conjEmb (embOf D τ)) m := by
-  rw [mult_conj_embOf]
-  exact ct.sum_degPiece_tail c τ le_rfl
-
-theorem eDeg_eq (hu : DV.UnramE D p) : c.eDeg = -∑ᶠ τ, (ct.degLie c τ false + ct.degLie c τ true) := by
-  simp only [degLie_false, degLie_true]
-  rw [Curve.eDeg, c.deg_lie ct.hasDR ct.hp ct.hW hu, sum_emb_eq]
-
 end At
-
-def crdTrue (ct : At S κ p) : CrDSt ct where
-  nefQ := ct.nefQ
-  Crv := ct.Crv
-  eDeg c := c.eDeg
-  Pm c := c.Pm
-  Pm_nonneg c := c.isMaxSubDeg_Pm.nonneg
-  degLie c := ct.degLie c
-  degLdR c := ct.degWt c
-  CrvQ := ct.CrvQ
-  degGrQ c := ct.degPiece c
-  nefQ_def _ := Iff.rfl
-  degGrD c := ct.degPiece c
-  degLdR_def _ _ := rfl
-  degLie_f _ _ := rfl
-  degLie_alt _ _ := rfl
-  eDeg_def hu c := ct.eDeg_eq c hu
-  Pm_head c τ _ _ h := (ct.sum_degPiece_head c τ h).trans_le (c.sum_degStep_le _ _ _)
-  Pm_tail c τ _ h _ := (ct.sum_degPiece_tail c τ h).trans_le (c.sum_degStep_le _ _ _)
-
-example (ct : At S κ p) : (crdTrue ct).nefQ 0 := fun c => by simp [At.degWt]
-
-example (ct : At S κ p) (c : ct.Crv) (τ : PsiT D) (hj : 1 ≤ j) :
-    (crdTrue ct).degGrD c τ 1 ∈ subDegs ct.Fbar c.lie ∧
-      (crdTrue ct).degLdR c (fun τ' i => At.indWt τ 1 τ' i) = -((crdTrue ct).degGrD c τ 1 : ℝ) := by
-  refine ⟨?_, ?_⟩
-  · have := c.sum_degStep_mem ct.hasDR (embOf D τ) 1
-    rwa [← ct.sum_degPiece_head c τ hj, Finset.Icc_self, Finset.sum_singleton] at this
-  · refine (ct.degWt_intCast c _ (isGrLB_grLB ct.hasDR _)).trans ?_
-    rw [← c.degGr_eq ct.hasDR (isGrLB_grLB ct.hasDR _)]
-    change _ = -((c.degGr ct.hasDR (-_) : ℤ) : ℝ)
-    simp
-
-example (ct : At S κ p) : Nonempty (crdTrue ct).Crv ∧ Nonempty (crdTrue ct).CrvQ := ⟨ct.nonempty_crv, ct.nonempty_crvQ⟩
-
-end Place
 
 end GlobalTheory.LocM

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.CongWtLvLac
+import Development.AbelianVarietyTheory.Definitions.Divisors.OverPair
 
 noncomputable section
 
@@ -109,7 +109,5 @@ theorem exists_embedding (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈
 end GlobalTheory.CongW.PlaceEmb
 
 namespace GlobalTheory.CongW
-
-open Formalism.ConjugateSelfDual
 
 end GlobalTheory.CongW

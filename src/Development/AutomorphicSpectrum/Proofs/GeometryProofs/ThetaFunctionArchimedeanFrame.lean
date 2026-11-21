@@ -7,10 +7,12 @@ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfV
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbelianSchemeGerms
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartCoordinatesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierNormalFormStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaBasisOfFactorStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionsFiniteDimStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartCoordinates
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HodgeIPIffHodgeFormConj
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierNormalForm
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaBasisOfFactor
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionsFiniteDim
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentSpaceEquivHolUnifStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolUnifCompareIsogenyStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelComplexBaseChange
@@ -20,15 +22,15 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.GenBridgeA
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PFibreMahlerForms
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexAbelianFibreAmpleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsArchimedeanFrameStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionDifferentiableStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexAbelianFibreAmple
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsArchimedeanFrame
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionUnique
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionDifferentiable
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FnFactorStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationIsoTransferStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationDimEqPpDimStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoordinatesUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArchimedeanFrameOfPullbackStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationDimEqPpDim
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoordinatesUnique
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArchimedeanFrameOfPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonzeroCoordsOfNonzeroVectorStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -46,10 +48,10 @@ theorem exists_goodUnif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   intro E _ _ _ H X t z t' m hP hA
   have hab : IsAbelianScheme t'.G := AbelianSchemeGerms.isAbelianScheme_of_proper t'.G t'.semi
   obtain ⟨g, hg⟩ := GlobalTheory.AbelianDim.exists_relDim ℂ t'.G hab
-  obtain ⟨u₀, hc⟩ := GlobalTheory.T.exists_exp_chart_coordinates t'.G t'.PP.L g hab hA hg
-  obtain ⟨u, Hm, χ, hex, hH, hχ, hlaw⟩ := GlobalTheory.T.theta_multiplier_normal_form t'.G t'.PP t'.cub g u₀
-  obtain ⟨N, J, Θ, hN, hd, hq, hne, hsep⟩ := GlobalTheory.T.exists_theta_basis_of_factor t'.G t'.PP.L g u Hm χ t'.PP.isLB hab hA hlaw
-  have hpos := GlobalTheory.T.theta_functions_finite_dim g u.Λ u.discrete u.full Hm χ N J Θ hH hχ hN hd hq hne hsep
+  obtain ⟨u₀, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.AVExp.exists_holUnif t'.G t'.PP.L g hab hA hg
+  obtain ⟨u, Hm, χ, hex, hH, hχ, hlaw⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_appellHumbert_frame_of_cubical t'.G t'.PP t'.cub g u₀
+  obtain ⟨N, J, Θ, hN, hd, hq, hne, hsep⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SecTheta.exists_theta_family t'.G t'.PP.L g u Hm χ t'.PP.isLB hab hA hlaw
+  have hpos := _root_.GlobalTheory.CompanionTheory.Ar.HodgeFormAna.pos_of_theta_power g u.Λ u.discrete u.full Hm χ N J Θ hH hχ hN hd hq hne hsep
   have hAH : u.IsAH Hm χ := ⟨hH, hpos, hχ, hlaw⟩
   obtain ⟨ht₁, ht₂⟩ := @GlobalTheory.TangentOrigin.tangent_bijection_of_values @GlobalTheory.valAt'_rules t'.G _ t'.PP.L g u
     (by simpa only [hex] using hc)
@@ -64,20 +66,20 @@ open GlobalTheory.CompanionTheory.Ar.Sl.FrameEx in
 
 theorem GlobalTheory.CompanionTheory.Ar.Sl.frames_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ), Nonempty (D.Frame σ) ∧ ∀ a : D.Frame σ, (∀ (n : ℕ) (s : Out.H0 D.t.PP.L n), ∃! θ, a.IsFn s θ) ∧ (∀ (n : ℕ) (s : Out.H0 D.t.PP.L n) θ, a.IsFn s θ → a.IsTheta n θ) ∧ ∀ x : D.B.carrier, (∃! c, D.IsVec a x c) ∧ ∀ c, D.IsVec a x c → D.len σ x ^ 2 = Real.pi * (a.herm c c).re ∧ (x ≠ 0 → c ≠ 0) := by
   intro E _ _ _ H L _ _ D σ
-  obtain ⟨t', m, hP, hA⟩ := GlobalTheory.T.complex_abelian_fibre_ample E H L D σ
+  obtain ⟨t', m, hP, hA⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.FibrePol.exists_fibre_pol E H L D σ
   obtain ⟨hab, g, u, Hm, χ, hAH, d₁, d₂⟩ := exists_goodUnif E H _ D.t (emb σ) t' m hP hA
   have hcart : IsGrpPullback t'.G D.t.G (emb σ) m.φ := m.cart
-  have hg : D.g = g := GlobalTheory.T.uniformization_dim_eq_pp_dim E H L D σ t'.G m.φ _ g u hcart d₁ d₂
+  have hg : D.g = g := _root_.GlobalTheory.CompanionTheory.Ar.Sl.rank_eq_unif_dim E H L D σ t'.G m.φ _ g u hcart d₁ d₂
   subst hg
-  refine ⟨GlobalTheory.T.exists_archimedean_frame _ D.t.G D.t.PP (emb σ) t'.G m.φ D.g u Hm χ hcart hAH, fun a => ?_⟩
+  refine ⟨_root_.GlobalTheory.CompanionTheory.Ar.Sl.exists_archFrame_of_isAH _ D.t.G D.t.PP (emb σ) t'.G m.φ D.g u Hm χ hcart hAH, fun a => ?_⟩
   obtain ⟨e, hmon, -⟩ := grpPullback_iso a.cart hcart
   haveI := hmon
   obtain ⟨a₁, a₂⟩ := GlobalTheory.T.uniformization_iso_transfer t'.G a.A _ _ D.g u a.u e hab d₁ d₂
-  refine ⟨fun n s => GlobalTheory.T.theta_function_unique _ D.t.G D.t.PP (emb σ) D.g a n s,
-    fun n s θ h => ⟨GlobalTheory.T.theta_function_differentiable _ D.t.G D.t.PP (emb σ) D.g a n s θ h,
+  refine ⟨fun n s => _root_.GlobalTheory.CompanionTheory.Ar.Sl.frame_fn_existsUnique _ D.t.G D.t.PP (emb σ) D.g a n s,
+    fun n s θ h => ⟨_root_.GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable _ D.t.G D.t.PP (emb σ) D.g a n s θ h,
       GlobalTheory.T.theta_add_lattice_eq_of_isFn _ D.t.G D.t.PP (emb σ) D.g a n s θ h⟩,
-    fun x => ⟨GlobalTheory.T.frame_coordinates_unique E H L D σ a a₁ a₂ x, fun c hc => ?_⟩⟩
-  have hl := GlobalTheory.T.archimedean_frame_of_pullback E H L D σ t'.G m.φ D.g u Hm χ hab hcart d₁ d₂ hAH a x c hc
+    fun x => ⟨_root_.GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique E H L D σ a a₁ a₂ x, fun c hc => ?_⟩⟩
+  have hl := _root_.GlobalTheory.CompanionTheory.Ar.Sl.FrameLen.len_sq_eq_pi_herm E H L D σ t'.G m.φ D.g u Hm χ hab hcart d₁ d₂ hAH a x c hc
   exact ⟨hl, GlobalTheory.T.nonzero_coords_of_nonzero_vector E H L D σ a x c hl⟩
 
 end

@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCechRepresentativeChernClassTangentValueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCechRepresentativeChernClassTangentValue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualMapCompDualMap
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoincareDeRhamDuality.DeRhamPerfectPairing.EqOneOfIsRep
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoincareDeRhamDuality.DeRhamPerfectPairing.FinrankOfRankAtStalk
 
@@ -41,7 +42,7 @@ theorem perfect_field (hF : AbelianDeRham.Free) (hH : AbelianDeRham.Hodge) {K : 
   have hch' : IsChern (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L (∑ k, cup _ (H1.mk _ (z k)) (Form.cl _ (ω k))) := by
     simpa only [hz] using hch
   let J : Type := {p : A.left.affineOpens × L.ι // p.1.1 ≤ L.U p.2}
-  have hr := GlobalTheory.T.isCechRepresentative_chernClass_tangentValue K A hA L hL I z ω hch' v hv.1 J (fun j ↦ j.1.1) (fun j ↦ j.1.2) fun j ↦ j.2
+  have hr := _root_.GlobalTheory.CechKS.isRep_chern_tanVal K A hA L hL I z ω hch' v hv.1 J (fun j ↦ j.1.1) (fun j ↦ j.1.2) fun j ↦ j.2
   have hcov : ⨆ j : J, j.1.1.1 = ⊤ := by
     refine eq_top_iff.2 fun p _ ↦ ?_
     obtain ⟨k, hk⟩ := TopologicalSpace.Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ p))

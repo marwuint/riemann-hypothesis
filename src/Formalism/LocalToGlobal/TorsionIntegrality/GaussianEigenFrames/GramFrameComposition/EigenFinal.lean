@@ -14,14 +14,6 @@ open Formalism.L2.Th1.G (betaPair)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.DworkPowerSeriesWeights (JetsIntegral jetPair jetPairPoly minorProd)
 
-theorem TensorNorm_of (h : TensorBlock) : TensorNorm := by
-  intro p _ ι L n _ hm E _ H _ _ emb Ja Jl Jr _ _ _ v hA hl hr N0 N1 Gc P P' A th u hth hform hAeq hG hu hu1 hP hP' t ab ab'
-  obtain ⟨e, he, heq⟩ := h ℂ_[p] E H emb Ja Jl Jr hA hl hr N0 N1 Gc P P' th u hth hG hu hu1 hP hP' t ab ab'
-  refine ⟨e, he, ?_⟩
-  rw [← heq]
-  refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
-  rw [hAeq, hAeq, hform]
-
 namespace EigenLocalizationShapes
 
 theorem pair (hE : EigenFrameE) (hI : IotaOK) {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ)
@@ -56,42 +48,5 @@ theorem ShapeEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ShapeLoc) : Shape
   obtain ⟨-, hth, q, hq⟩ := EigenLocalizationShapes.pair hE hI ha hdK lam hlam hcm hm Λ θ p hpd ι hN v A u E cE s δ emb act hF
   exact h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q
     (le_of_eq hth) hq
-
-theorem ThmBEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ThmBLoc) : ThmBEigenLoc := by
-  intro a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1
-    A u E _ _ _ cE s δ emb act hF
-  obtain ⟨-, hth, q, hq⟩ := EigenLocalizationShapes.pair hE hI ha hdK lam hlam hcm hm Λ θ p hpd ι hN v A u E cE s δ emb act hF
-  exact h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q
-    (le_of_eq hth) hq
-
-theorem ThmBGaussEigenLoc_of (hE : EigenFrameE) (hI : IotaOK) (h : ThmBGaussLoc) : ThmBGaussEigenLoc := by
-  intro a₀ b₀ c₀ dK ha hdK lam hlam hcm n _ _ hm Λ hsd hst θ hθ p _ hpd ι hW hN κx _ r t N hr hN0 hpN ht J _ v H _ _ N0 N1
-    A u E _ _ _ cE s δ emb act hF
-  obtain ⟨hp, hth, q, hq⟩ := EigenLocalizationShapes.pair hE hI ha hdK lam hlam hcm hm Λ θ p hpd ι hN v A u E cE s δ emb act hF
-  have hc : (dK : ℂ_[p]) = (p : ℂ_[p]) := congrArg (Nat.cast : ℕ → ℂ_[p]) hp.symm
-  rw [hc] at hth
-  exact h a₀ b₀ c₀ dK ha hdK lam hlam hcm n hm Λ hsd hst θ hθ p hpd ι hW hN κx r t N hr hN0 hpN ht J v H N0 N1 A u _ q
-    (le_of_eq hth) hq
-
-theorem ShapeEigenFree_of (hN : LocNormFree) (h : ShapeEigenLoc) : ShapeEigenFree := by
-  intro a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat
-  obtain ⟨κ, k1, k2, k3, hκ⟩ := hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat
-  refine ⟨κ, k1, k2, k3, ?_⟩
-  intro θ hθ hten p _ hd ι hW
-  exact h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)
-
-theorem ThmBEigenFree_of (hN : LocNormFree) (h : ThmBEigenLoc) : ThmBEigenFree := by
-  intro a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat
-  obtain ⟨κ, k1, k2, k3, hκ⟩ := hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat
-  refine ⟨κ, k1, k2, k3, ?_⟩
-  intro θ hθ hten p _ hd ι hW
-  exact h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)
-
-theorem ThmBGaussEigenFree_of (hN : LocNormFree) (h : ThmBGaussEigenLoc) : ThmBGaussEigenFree := by
-  intro a₀ b₀ c₀ dK ha hdK lam hlam hcmok n _ _ hm Λ g₀ hLat
-  obtain ⟨κ, k1, k2, k3, hκ⟩ := hN a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ g₀ hLat
-  refine ⟨κ, k1, k2, k3, ?_⟩
-  intro θ hθ hten p _ hd ι hW
-  exact h a₀ b₀ c₀ dK ha hdK lam hlam hcmok n hm Λ hLat.2.1 hLat.2.2.1 θ hθ p hd ι hW (hκ θ hθ hten p ι)
 
 end Formalism.L2.Th1.GD

@@ -70,9 +70,6 @@ theorem lw_rtransl (t : Mat k r) : ∀ (u : List (Mat k r)) (f : Mat k r → E),
     show LdV X (u.foldr LdV (fun y => f (y * t))) g = LdV X (u.foldr LdV f) (g * t)
     rw [lw_rtransl t u f, ldV_rtransl]
 
-theorem dLR_rtransl (t : Mat k r) (u : List (Mat k r)) (f : Mat k r → E) :
-    dLR u [] (fun y => f (y * t)) = fun y => dLR u [] f (y * t) := lw_rtransl t u f
-
 end words
 
 section post

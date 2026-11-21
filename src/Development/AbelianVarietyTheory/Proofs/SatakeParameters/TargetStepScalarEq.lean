@@ -2,9 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RealAt
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RkLe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EquivFrameBTheta
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteModelStageWeightsEqChainWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DetRationalUnitaryOrthonormalChangeMatricesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepCharacterDetRationalIsometryStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteModelStageWeightsEqChainWeights
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DetRationalUnitaryOrthonormalChangeMatrices
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Reframe
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSpBot
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepCharacterDetRationalIsometry
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelProjection Formalism.L2.KerInert.QuadraticBaseChangeGL3 Formalism.L2.KerInert.SecondKernelDifference Formalism.L2.KerInert.SecondKernelHermitian Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.KerInert.SecondKernelInstances Formalism.L2.KerInert.SecondKernelSeries GlobalTheory.TwV GlobalTheory.TwV.DelB GlobalTheory.TwV.DelA
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -23,9 +25,9 @@ theorem target_scalar : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H
         d.uT S j La' * kT J j hj La'.1) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S d j hj La'
   have hjm : j < D.R.m := hj
-  have hW := (GlobalTheory.T.kernelSite_modelStageWeights_eq_chainWeights S j hjm ⟨La'.1⟩).dv
-  obtain ⟨e, he, hmu⟩ := GlobalTheory.T.stepCharacter_det_rationalIsometry S j hjm
-  have hG := GlobalTheory.T.det_rational_unitary_orthonormalChange_matrices S (j + 1) hj
+  have hW := (_root_.GlobalTheory.TwV.DelA.wtOK_sites S j hjm ⟨La'.1⟩).dv
+  obtain ⟨e, he, hmu⟩ := _root_.GlobalTheory.TwV.muT_det_ratA S j hjm
+  have hG := _root_.GlobalTheory.TwV.DelB.gMat_det S (j + 1) hj
   set γ := d.gam (j + 1) hj La' with hγ
   have hmem : γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D (j + 1) hj) := d.mem (j + 1) hj La'
   have hmuγ := hmu (j + 1) hj γ hmem

@@ -127,22 +127,6 @@ theorem exists_mem_nonzeroLocus (P : Out.PolAV (Sp K)) (th : P.L.Sec) (h : ∃ i
     exact hi ((basicOpen_eq_bot_iff _).1 (eq_bot_iff.2 fun z hz => hn ⟨z, hz⟩))
   exact ⟨z, Subsingleton.elim (α := PrimeSpectrum K) _ _, TopologicalSpace.Opens.mem_iSup.2 ⟨i, hz⟩⟩
 
-theorem exists_keyIn_of_sec (P : Out.PolAV (Sp K)) (hg : 1 ≤ P.g) (th : P.L.Sec) (h : ∃ i, th.f i ≠ 0) :
-    ∃ rig hr hth v hv, (⟨P, hg, rig, hr, th, hth, v, hv⟩ : KeyIn K).P = P := by
-  obtain ⟨rig, hr⟩ := P.rigid
-  obtain ⟨v, hv⟩ := exists_isLieBasis P.A P.smoothDim
-  exact ⟨rig, hr, exists_mem_nonzeroLocus P th h, v, hv, rfl⟩
-
-theorem exists_keyIn (hT : Out.SecTwistSt) (P : Out.PolAV (Sp K)) (hg : 1 ≤ P.g) : ∃ x : KeyIn K, x.P = P := by
-  obtain ⟨b, hb⟩ := principalPolarisation_exists_unique_section hT P
-  obtain ⟨a, -, hu⟩ := hb b
-  have h : ∃ i, b.f i ≠ 0 := by
-    by_contra hn
-    push Not at hn
-    exact zero_ne_one ((hu 0 fun i => by rw [hn i, mul_zero]).trans (hu 1 fun i => by rw [hn i, mul_zero]).symm)
-  obtain ⟨rig, hr, hth, v, hv, e⟩ := exists_keyIn_of_sec P hg b h
-  exact ⟨_, e⟩
-
 theorem keyPB_refl {R : Type} [CommRing R] (x : KeyIn R) : KeyPB x x (RingHom.id R) := by
   have e : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
   have e' : spMap (RingHom.id (DualNumber R)) = 𝟙 (Sp (DualNumber R)) := Spec.map_id _

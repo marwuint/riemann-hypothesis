@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DirectSumCancelRightStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DirectSumCancelRight
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MonodromyZeroOfWeilDeligneRepClassIff
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LpCharCompatibilitiesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeilDeligneParameterTensorOneDimInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeilDeligneParameterTensorOneDimInjective
 
 namespace GlobalTheory.RowLaws
 
@@ -33,10 +34,10 @@ theorem paramLaws_of_tie (T : WDTie N A) : ParamLaws N A := by
     have hχ : (T.e w χ).lpDim = 1 := by rw [T.dim, h]
     have := congrArg (T.e w) hab
     rw [T.char _ _ _ h, T.char _ _ _ h] at this
-    exact GlobalTheory.T.weilDeligneParameter_tensor_oneDim_injective _ _ _ _ _ _ _ _ hχ this
+    exact _root_.GlobalTheory.WeilDeligne.lpChar_left_injective_of_lpDim_one _ _ _ _ _ _ _ _ hχ this
   · have := congrArg (T.e w) h
     rw [T.sum, T.sum] at this
-    exact GlobalTheory.T.directSum_cancel_right _ _ _ _ _ _ _ _ this
+    exact _root_.GlobalTheory.WeilDeligne.WD.lpSum_cancel_right _ _ _ _ _ _ _ _ this
 
 theorem cancel_of_tie (T : WDTie N A) : Cancel N A := fun w a b c h => (paramLaws_of_tie T w).2.2.2.2 a b c h
 

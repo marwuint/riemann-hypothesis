@@ -8,8 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.Doubled
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.MapConjInv
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaSummableAndDeterminesTestFn
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.SW GlobalTheory.ThFr ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
 open scoped ComplexConjugate ComplexOrder Real Classical
@@ -46,7 +47,7 @@ theorem eisTerm_graph : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   obtain ⟨hΦ, hΦd, -⟩ := DblEx.dbl_spec E r X g bas idx n hs hn φ₁ φ₂ h₁ h₂
   obtain ⟨hΦ', hΦ'd, -⟩ :=
     DblEx.dbl_spec E r X g bas idx n hs hn φ₁ (wG X bas idx γ φ₂) h₁ hsb₂
-  obtain ⟨hW, hWT, -⟩ := GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E X.Ψ hT n r hn (iota X 1 γ) hU (dbl X bas idx φ₁ φ₂) hΦ
+  obtain ⟨hW, hWT, -⟩ := _root_.GlobalTheory.SW.weil_action E X.Ψ hT n r hn (iota X 1 γ) hU (dbl X bas idx φ₁ φ₂) hΦ
 
   have key : ∀ u v : Fin n → Fin g → ℂ,
       thH X.Ψ (weil X.Ψ (iota X 1 γ) (dbl X bas idx φ₁ φ₂)) (dblZ X x₁ (lact γ x₂))
@@ -69,7 +70,7 @@ theorem eisTerm_graph : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
 
   have hW' : weil X.Ψ (iota X 1 γ) (dbl X bas idx φ₁ φ₂) =
       a • dbl X bas idx φ₁ (wG X bas idx γ φ₂) := by
-    refine (thH_summable_and_inj E X.Ψ hT n r _ hW _ hZ').2 _ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear E _ _ _ _ hΦ' hΦ').2.1 a) ?_
+    refine (thH_summable_and_inj E X.Ψ hT n r _ hW _ hZ').2 _ ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear E _ _ _ _ hΦ' hΦ').2.1 a) ?_
     intro z z'
     obtain ⟨u, v, rfl, rfl⟩ := DblEx.dblz_surj E r X g idx n x₁ hx₁ (lact γ x₂) hγx₂ z z'
     rw [key u v]

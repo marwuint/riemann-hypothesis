@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OnWithOfIsEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexBoundParameterRequirementsEventuallyFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexBoundParameterRequirementsEventuallyFamily
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.RowsOfPageFix
 import Formalism.LocalRingCardinality.NFLeTwoMulTSq
 
@@ -19,7 +19,7 @@ theorem pageNum_along : ∀ x₁ : ℝ, Closed FamHyp fun Fm _ => ∃ x0 : ℝ, 
     PageNum (Fm.parT x hx ι) x₁ ∧ 3 ≤ (Fm.L x ι).sc.x ∧ ((Fm.D x ι).R.k : ℝ) * (Fm.L x ι).sc.b' ≤ (Fm.L x ι).sc.b ∧
       3 ≤ (Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 5) ∧ 8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 4 ≤ (Fm.D x ι).R.nV := by
   intro x₁
-  obtain ⟨ε1, hε1, hS⟩ := GlobalTheory.T.indexBoundParameterRequirements_eventually_family
+  obtain ⟨ε1, hε1, hS⟩ := _root_.GlobalTheory.OntoSizeRows.sizeRows_along
   refine ⟨ε1, hε1, fun eps he hle => ?_⟩
   obtain ⟨K, hK⟩ := hS eps he hle
   refine ⟨K.sup ⟨1000, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hc hL => ?_⟩

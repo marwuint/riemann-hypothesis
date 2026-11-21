@@ -28,9 +28,6 @@ theorem EntryLe.add (h : EntryLe M x) (h' : EntryLe N y) : EntryLe (M + N) (x + 
 theorem EntryLe.sub (h : EntryLe M x) (h' : EntryLe N y) : EntryLe (M - N) (x + y) :=
   fun i j => (norm_sub_le _ _).trans (add_le_add (h i j) (h' i j))
 
-theorem EntryLe.neg (h : EntryLe M x) : EntryLe (-M) x := fun i j => by
-  simpa using h i j
-
 theorem EntryLe.mul (hx : 0 ≤ x) (h : EntryLe M x) (h' : EntryLe N y) :
     EntryLe (M * N) (Fintype.card K * x * y) := by
   intro i j

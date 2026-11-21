@@ -235,8 +235,6 @@ end PoitouTateDualityHypotheses
 
 namespace PoitouTateHypotheses
 
-variable {φ D t inv}
-
 end PoitouTateHypotheses
 
 end GroundTheory.ProfCoh

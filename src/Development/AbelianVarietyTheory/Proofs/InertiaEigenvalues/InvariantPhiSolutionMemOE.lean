@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LadicDescentStepToOEStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LadicDescentStepToOE
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinOEStabilityPropertiesStatement
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
@@ -18,7 +18,7 @@ theorem invariant_phi_solution_approx (l : ℕ) [Fact l.Prime] (K : FinExt l) (b
   | zero => exact fun x b _ _ _ j => ⟨0, bk.OE.zero_mem, by simp⟩
   | succ n ih =>
     intro x b hb hx hg j
-    obtain ⟨v, x', b', hv, hb', hxv, hx', hg'⟩ := GlobalTheory.T.ladic_descent_step_to_OE l K bk κ x b c hc hb hx hg
+    obtain ⟨v, x', b', hv, hb', hxv, hx', hg'⟩ := _root_.GlobalTheory.BSP.BK.descent_step l K bk κ x b c hc hb hx hg
     obtain ⟨v', hv', y, hy⟩ := ih x' b' hb' hx' hg' j
     refine ⟨v j + ((l : ℕ) : WCb l) * v', bk.OE.add_mem (hv j) (bk.OE.mul_mem (natCast_mem bk.OE l) hv'), y, ?_⟩
     rw [hxv j]

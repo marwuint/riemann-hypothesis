@@ -20,38 +20,6 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
-section thr
-
-theorem thr_of_budget {k r m N : ℕ} {A₀ : ℝ}
-    (hm : 6 * ((r : ℝ) + 1) * m + 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 ≤ A₀)
-    (hA : 10 * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀) :
-    JF.TransportedAlt k r A₀ m := by
-  unfold JF.TransportedAlt
-  have hr0 : (0 : ℝ) ≤ r := Nat.cast_nonneg r
-  have hk0 : (0 : ℝ) ≤ k := Nat.cast_nonneg k
-  have hn : ((2 * r + k + 1 : ℕ) : ℝ) = 2 * (r : ℝ) + k + 1 := by push_cast; ring
-  rw [hn] at hm ⊢
-  rw [lt_div_iff₀ (by positivity)]
-  rcases Nat.eq_zero_or_pos m with h0 | hpos
-  · subst h0
-    simp only [Nat.cast_zero, mul_zero, sub_zero] at hm ⊢
-    have hn1 : (1 : ℝ) ≤ 2 * (r : ℝ) + k + 1 := by linarith
-    have hr1 : (1 : ℝ) ≤ (r : ℝ) + 1 := by linarith
-    have hP : 1 ≤ ((r : ℝ) + 1) ^ 3 * (2 * (r : ℝ) + k + 1) :=
-      one_le_mul_of_one_le_of_one_le (one_le_pow₀ hr1) hn1
-    have h3 : ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2 ≤ ((r : ℝ) + 1) ^ 4 * (2 * (r : ℝ) + k + 1) ^ 3 := by
-      calc ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2 = ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2 * 1 := by ring
-        _ ≤ ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2 * (((r : ℝ) + 1) ^ 3 * (2 * (r : ℝ) + k + 1)) :=
-            mul_le_mul_of_nonneg_left hP (by positivity)
-        _ = ((r : ℝ) + 1) ^ 4 * (2 * (r : ℝ) + k + 1) ^ 3 := by ring
-    have hN : 0 ≤ ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2) := by positivity
-    have hpos2 : 0 < ((r : ℝ) + 1) * (2 * (r : ℝ) + k + 1) ^ 2 := by positivity
-    nlinarith [h3, hN, hpos2, hA]
-  · have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast hpos
-    nlinarith [hm, hm1]
-
-end thr
-
 section jf
 
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]

@@ -21,19 +21,4 @@ theorem isSBHalf_halfInd {D : D7} {m n : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D
     rw [one_smul] at h
     exact ht (by simp [halfInd, h])
 
-theorem thetaAt_eq_sum_heis_of_fourier_sum :
-    ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : AE D) (Λ : AddSubgroup (WO S T)) (f₀ Φ f : WO S T → ℂ) (Y : Finset (WO S T)) (a : WO S T → ℂ), IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Φ f → (∀ u ∈ Λ, u.map (fun z => e * z) ∈ Λ) → (∀ y ∈ Y, IsHalf (cA D e) y) → (∀ t, Φ t = halfInd e Λ t * ∑ y ∈ Y, a y * ψ (symplO S T t y)) → f = ∑ y ∈ Y, a y • heisO ψ S T y f₀ := by
-  intro D ψ S T e Λ f₀ Φ f Y a hθ _ hY hΦ
-  obtain ⟨⟨Tm, hTm⟩, hall⟩ := hθ
-  have hΦ' : Φ = ∑ y ∈ Y, a y • fun t => ψ (symplO S T t y) * halfInd e Λ t := by
-    funext t
-    rw [hΦ t, Finset.sum_apply, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun y _ => ?_
-    simp only [Pi.smul_apply, smul_eq_mul]
-    ring
-  have hvac : Tm (halfInd e Λ) = f₀ := by simpa using hTm.vac
-  rw [hall Tm hTm, hΦ', map_sum]
-  refine Finset.sum_congr rfl fun y hy => ?_
-  rw [map_smul, hTm.modul _ (isSBHalf_halfInd e Λ) y (hY y hy), hvac]
-
 end GlobalTheory

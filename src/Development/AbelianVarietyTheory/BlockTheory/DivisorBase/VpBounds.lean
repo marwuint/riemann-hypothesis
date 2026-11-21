@@ -59,10 +59,6 @@ def IsClassTerm (φ : I → E →+* ℂ) (s : ℕ) (κ : I → ℕ) (c : Ideal (
 def IsPicChar (c : Ideal (OF E)) (ψ : HChar E) : Prop :=
   (∀ x : Eˣ, infPart ψ x = 1) ∧ ∀ u ∈ hatOUnits c, finPart ψ u = 1
 
-def IsLevelChar (φ : I → E →+* ℂ) (s : ℕ) (κ : I → ℕ) (𝔣 : Ideal (OF E)) (χ : HChar E) : Prop :=
-  IsUnitary χ ∧ TrivOnF χ ∧ HasInf χ φ (fun i => (κ i : ℤ) + s) ∧
-    ∀ (v : HeightOneSpectrum (OF E)) (P : HeightOneSpectrum (𝓞 E)), Over P v → LevelLe χ P (expIn 𝔣 v)
-
 def betaBound_vp (d s : ℕ) (κ : I → ℕ) (𝔣 : Ideal (OF E)) (z : ClassGroup (OF E) → ℚ) (l : ℕ) : ℝ :=
   12 * ((cE_vp l z : ℝ) + n_vp d s κ 𝔣 l + (Formalism.PairingDivisionLocalBalance.wtM (2 * s) κ : ℝ) * (a0 𝔣 l : ℝ))
 
@@ -81,19 +77,6 @@ def ToricDenominator : Prop :=
       ∀ (κ : I → ℕ) (𝔣 : Ideal (OF E)) (Λ : PeriodPair) (χ : HChar E),
         IsBaseCond 𝔣 → IsIntLattice d Λ → IsValChar φ s κ 𝔣 ∅ χ → DenomBound d s φ κ 𝔣 Λ z χ
 
-def ToricDenominatorLevel : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I]
-    (d : ℕ) (φ : I → E →+* ℂ) (s : ℕ), IsFieldData d φ → 1 ≤ s →
-    ∃ z : ClassGroup (OF E) → ℚ, IsClassZetaVals (2 * s) z ∧
-      ∀ (κ : I → ℕ) (𝔣 : Ideal (OF E)) (Λ : PeriodPair) (χ : HChar E),
-        IsBaseCond 𝔣 → IsIntLattice d Λ → IsLevelChar φ s κ 𝔣 χ → DenomBound d s φ κ 𝔣 Λ z χ
-
-theorem ToricDenominatorLevel.exact (h : ToricDenominatorLevel) : ToricDenominator := by
-  intro E _ _ _ _ I _ d φ s hd hs
-  obtain ⟨z, hz, H⟩ := h E I d φ s hd hs
-  refine ⟨z, hz, fun κ 𝔣 Λ χ h𝔣 hΛ hχ => H κ 𝔣 Λ χ h𝔣 hΛ ⟨hχ.1, hχ.2.1, hχ.2.2.1, fun v P hP => ?_⟩⟩
-  exact (((hχ.2.2.2 v P hP).2 (by simp)) _).2 le_rfl
-
 theorem expIn_le_two {𝔣 : Ideal (OF E)} (h : IsBaseCond 𝔣) (v : HeightOneSpectrum (OF E)) : expIn 𝔣 v ≤ 2 := by
   by_cases hv : v.asIdeal ∣ 𝔣
   · exact (h.2.2 v hv).2.1
@@ -102,10 +85,5 @@ theorem expIn_le_two {𝔣 : Ideal (OF E)} (h : IsBaseCond 𝔣) (v : HeightOneS
 theorem expIn_le_maxConductorExponentOverPrime {𝔣 : Ideal (OF E)} (h : IsBaseCond 𝔣) {l : ℕ} {v : HeightOneSpectrum (OF E)}
     (hv : (l : OF E) ∈ v.asIdeal) : expIn 𝔣 v ≤ a0 𝔣 l :=
   le_csSup ⟨2, by rintro _ ⟨w, -, rfl⟩; exact expIn_le_two h w⟩ ⟨v, hv, rfl⟩
-
-example (l : ℕ) (a : ℂ) (h : ValGe_vp l 0 a) : IntAt l a := by
-  simpa using h 0 1 one_pos (by simp)
-
-example (c : Ideal (OF E)) : IsPicChar c (1 : HChar E) := ⟨fun _ => rfl, fun _ _ => rfl⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds

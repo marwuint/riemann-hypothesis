@@ -1,7 +1,8 @@
 import Formalism.WachLatticeTwists.SplitLocalLifts.Statement
-import Formalism.WachLatticeTwists.CoprimeLiftBounds.WachTwistTheorem
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.SelmerInjColumnPlace
-import Formalism.WachLatticeTwists.StatementSplit
+import Formalism.WachLatticeTwists.Statement
+import Formalism.CharacterColumnKernels.CharacterColumnKernelEqualityForm
 import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
 
 open Finset Classical
@@ -33,9 +34,6 @@ def mapH1 (ρ₁ : Representation O D M₁) (ρ₂ : Representation O D M₂) (p
     show ρ₂ g (p v) - p v = p ((x : D → M₁) g)
     rw [← hp, ← map_sub]
     exact congrArg p h)
-
-def clsOf (ρ : Representation O D M₁) (c : D → M₁) : H1z ρ :=
-  if h : c ∈ coZ1s ρ then Submodule.mkQ _ ⟨c, h⟩ else 0
 
 end Map
 
@@ -115,35 +113,5 @@ def StatColFun : Prop :=
     ∀ (K : G → A) (Kz : coZ1s (resRep (uRep O (M := P) r χ) Dl)),
     (∀ g : Dl, K g = inc ((Kz : Dl → P) g)) → Submodule.mkQ _ Kz ∈ Hf₁ →
     ∀ s : V, (fun g : Dl => K g • s) ∈ Lf
-
-def StatRowLift : Prop :=
-  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (H₁ Cs : Type*) [AddCommGroup H₁] [Module O H₁] [AddCommGroup Cs] [Module O Cs]
-    (Hf₁ : Submodule O H₁) (Fs : Submodule O Cs) (g : H₁ →ₗ[O] Cs) (ℓ e' : ℕ),
-    LiftO ℓ Hf₁ Fs g e' →
-    (∀ x : Fs, ((ℓ : O) ^ e') • x ∈ (Hf₁.map g).comap Fs.subtype) ∧
-    (Module.Finite O Fs →
-      Module.length O (Fs ⧸ (Hf₁.map g).comap Fs.subtype) ≤
-        (Module.finrank O Fs : ℕ∞) * ((e' : ℕ∞) * Module.length O (O ⧸ Ideal.span {(ℓ : O)})) +
-          Module.length O (Submodule.torsion O Fs))
-
-def StatRowIm : Prop :=
-  ∀ (O Dw T₁ T₂ : Type*) [CommRing O] [Group Dw] [AddCommGroup T₁] [Module O T₁] [AddCommGroup T₂]
-    [Module O T₂] (ρ₁ : Representation O Dw T₁) (ρ₂ : Representation O Dw T₂) (π : T₁ →ₗ[O] T₂)
-    (hπ : IsEquivMap ρ₁ ρ₂ π) (C₁ : (Dw → T₁) → Prop)
-    (Hf₁ : Submodule O (H1z ρ₁)) (Fs : Submodule O (H1z ρ₂)),
-    (∀ x ∈ Hf₁, mapH1 ρ₁ ρ₂ π hπ x ∈ Fs) →
-    (∀ x ∈ Hf₁, ∃ a : coZ1s ρ₁, C₁ a ∧ Submodule.mkQ _ a = x) →
-    (∀ x ∈ Hf₁.map (mapH1 ρ₁ ρ₂ π hπ), ∃ a ∈ characterColumnKernelSet ρ₁, C₁ a ∧ x = clsOf ρ₂ (fun g => π (a g))) ∧
-    Hf₁.map (mapH1 ρ₁ ρ₂ π hπ) ≤ Fs
-
-def StatLocLift : Prop :=
-  (∀ (O A HV : Type) [CommRing O] [AddCommGroup A] [Module O A] [AddCommGroup HV] [Module O HV]
-    (q : HV →ₗ[O] A) (P : LOC.DirectPush O A HV q) (ℓ e' : ℕ),
-    LiftO ℓ P.HfL P.HfY P.p1 e' ↔ P.Lift ℓ e') ∧
-  (∀ (O A HT' : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [AddCommGroup A] [Module O A] [AddCommGroup HT'] [Module O HT']
-    (pr : A →ₗ[O] HT' →ₗ[O] KO O) (Q : LOC.DualPush O A HT' pr) (HfT' : Submodule O HT')
-    (ℓ e' : ℕ), LiftO ℓ Q.HfLb HfT' Q.p1 e' ↔ Q.Lift HfT' ℓ e')
 
 end Formalism.RepresentationBoundsCohomology.JL

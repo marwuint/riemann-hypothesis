@@ -233,9 +233,6 @@ theorem annHi_lt (k : ℕ) : annHi ρ0 k < ρ0 := by
   have : (1 : ℝ) < 2 ^ (k + 1) := one_lt_pow₀ (by norm_num) (by omega)
   nlinarith
 
-theorem annHi_succ (k : ℕ) : annHi ρ0 (k + 1) = annLo ρ0 k := by
-  unfold annHi annLo; ring_nf
-
 theorem exists_ann {s : ℝ} (hs0 : 0 < s) (hs : s ≤ (ρ0 : ℝ) / 2) :
     ∃ k, annLo ρ0 k ≤ s ∧ s ≤ annHi ρ0 k := by
   have ht : 1 ≤ (ρ0 : ℝ) / 2 / s := by rw [le_div_iff₀ hs0, one_mul]; exact hs

@@ -1,10 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePlancherelSchrodingerIntertwinerStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfLatticeIffFrameAdjointIsIntegralMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointFrameMatrixAddIntegralReductionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointFrameMatrixReductionEqZeroOffPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHalfLatticeAdjointFrameReductionsEqStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDualHalfLatticeDetectingCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePlancherelSchrodingerIntertwiner
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfLatticeIffFrameAdjointIsIntegralMatrix
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointFrameMatrixAddIntegralReduction
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointFrameMatrixReductionEqZeroOffPlaces
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHalfLatticeAdjointFrameReductionsEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDualHalfLatticeDetectingCharacter
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SuppInd
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfLinearCocycle
@@ -92,7 +92,7 @@ theorem normSq_thetaAt_halfProd : ∀ {D : D7} {G : Type} [Group G] [Fintype G] 
   set S := R.Pg ∪ R.Q t with hS
   set Λ := latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (fun _ => True) with hΛ
   let FM := frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i)
-  have hlat := GlobalTheory.T.halfLattice_iff_frameAdjoint_isIntegralMatrix R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he
+  have hlat := _root_.GlobalTheory.HalfLatFrames.halfLat_iff_isIntM R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he
   let Λc : AddSubgroup (WO (Vc D i) (Wc D i)) :=
     { carrier := {x | x ∈ Λ ∧ IsHalf (cA D e) x}
       add_mem' := fun {a b} ha hb => ⟨Λ.add_mem ha.1 hb.1, fun p q => by
@@ -107,7 +107,7 @@ theorem normSq_thetaAt_halfProd : ∀ {D : D7} {G : Type} [Group G] [Fintype G] 
   let Gt := ∀ PP : ↥S, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP.1)
   let red : Λc →+ Gt := AddMonoidHom.mk' (fun x PP => redM PP.1 (FM x.1)) (fun x y => by
     funext PP
-    exact (GlobalTheory.T.adjointFrameMatrix_add_integral_reduction (Vc D i) (Wc D i) (R.βV i) (R.βW i) x.1 y.1 ((hmem _).1 x.2).2 ((hmem _).1 y.2).2).2 PP.1)
+    exact (_root_.GlobalTheory.FrameAdjAdd.frMapAdj_add_isIntM_redM (Vc D i) (Wc D i) (R.βV i) (R.βW i) x.1 y.1 ((hmem _).1 x.2).2 ((hmem _).1 y.2).2).2 PP.1)
   let ext : Gt → ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP) :=
     fun z PP => if hP : PP ∈ S then z ⟨PP, hP⟩ else 0
   obtain ⟨Tm, hTm⟩ := hθ.1
@@ -123,15 +123,15 @@ theorem normSq_thetaAt_halfProd : ∀ {D : D7} {G : Type} [Group G] [Fintype G] 
       by_cases hP : PP ∈ S
       · simp only [ext, dif_pos hP]; rfl
       · simp only [ext, dif_neg hP]
-        exact GlobalTheory.T.adjointFrameMatrix_reduction_eq_zero_off_places R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he x hx.1 hx.2 PP hP
+        exact _root_.GlobalTheory.AdjRedOff.redM_frMapAdj_off R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he x hx.1 hx.2 PP hP
     · have hx' : x ∉ Λc := fun h' => hx ((hmem x).1 h')
       rw [if_neg hx, dif_neg hx']
-  have key := GlobalTheory.T.finite_plancherel_schrodinger_intertwiner_alt R.ψ (symplO (Vc D i) (Wc D i)) Λc red Tm (heisO R.ψ (Vc D i) (Wc D i))
+  have key := _root_.GlobalTheory.finite_plancherel_schrodinger_intertwiner R.ψ (symplO (Vc D i) (Wc D i)) Λc red Tm (heisO R.ψ (Vc D i) (Wc D i))
     (IsSBHalf (cA D e) Λ) (IsHalf (cA D (cA D e))) (IsThetaFunO R.ψ (Vc D i) (Wc D i))
     (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.ipO μ 𝓧) f₀ (fun z => Gd (ext z))
     (by
       intro z
-      obtain ⟨x, hx1, hx2, hx3⟩ := GlobalTheory.T.exists_halfLattice_adjointFrame_reductions_eq R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he (ext z)
+      obtain ⟨x, hx1, hx2, hx3⟩ := _root_.GlobalTheory.AdjRedOnto.exists_half_redM_eq R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he (ext z)
       refine ⟨⟨x, (hmem x).2 ⟨hx1, hx2⟩⟩, ?_⟩
       funext PP
       show redM PP.1 (FM x) = z PP
@@ -159,7 +159,7 @@ theorem normSq_thetaAt_halfProd : ∀ {D : D7} {G : Type} [Group G] [Fintype G] 
       have hx2 := (hmem _).1 x.2
       obtain ⟨PP, hPP⟩ : ∃ PP : ↥S, redM PP.1 (FM x.1) ≠ 0 := by
         by_contra hc; push_neg at hc; exact hx (funext hc)
-      obtain ⟨y, hy1, hy2, hy3⟩ := GlobalTheory.T.exists_dual_half_lattice_detecting_character R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he x.1 hx2.1 hx2.2
+      obtain ⟨y, hy1, hy2, hy3⟩ := _root_.GlobalTheory.HalfDuality.exists_dual_half R F hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he x.1 hx2.1 hx2.2
         ⟨PP.1, PP.2, hPP⟩
       refine ⟨y, hy1, fun k hk => ?_, hy3⟩
       have hk2 := (hmem _).1 k.2

@@ -30,10 +30,6 @@ theorem herm (x y : α) : conj (P.K y x) = P.K x y := by
   have := congrFun (congrFun h ⟨x, hx⟩) ⟨y, hy⟩
   simpa [Matrix.conjTranspose_apply, Matrix.of_apply] using this
 
-theorem fm_inner_add (x : α) (g₁ g₂ : α →₀ ℂ) :
-    ((g₁ + g₂).sum fun y b => P.K x y * b) = (g₁.sum fun y b => P.K x y * b) + g₂.sum fun y b => P.K x y * b :=
-  Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by ring)
-
 theorem fm_add_left (f₁ f₂ g : α →₀ ℂ) : P.fm (f₁ + f₂) g = P.fm f₁ g + P.fm f₂ g := by
   unfold fm
   exact Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by simp [map_add]; ring)

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapNormCoeff
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharpolyBaseChangeIntegrallyClosedStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharpolyBaseChangeIntegrallyClosed
 open CategoryTheory Polynomial GlobalTheory.NormalDescent
 
 namespace GlobalTheory.NormalDescent
@@ -13,7 +13,7 @@ theorem exists_normCoeff_not_mem {A B : Type} [CommRing A] [IsDomain A] [IsInteg
   letI := φ.toAlgebra
   haveI : Module.Finite A B := hφ
   set K := FractionRing A
-  obtain ⟨P, hP⟩ := GlobalTheory.T.exists_charpoly_baseChange_integrallyClosed (K := K) φ hφ b
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.NormalDescent.exists_map_eq_charK (K := K) φ hφ b
   have hinj : Function.Injective (algebraMap A K) := IsFractionRing.injective A K
   have hdeg : (charK φ hφ K b).natDegree = P.natDegree := by
     rw [← hP]; exact natDegree_map_eq_of_injective hinj P

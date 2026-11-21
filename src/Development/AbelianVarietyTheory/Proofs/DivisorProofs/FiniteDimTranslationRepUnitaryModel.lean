@@ -50,30 +50,4 @@ end GlobalTheory.ThetaCplV.UnitaryTrick
 
 namespace GlobalTheory.ThetaCplV
 
-open UnitaryTrick in
-
-theorem exists_isURep_of_stable : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] (j : K →* G), Continuous j → ∀ H : Subgroup G, (∀ k, j k ∈ H) → ∀ T : Submodule ℂ (G → ℂ), FiniteDimensional ℂ T → (∀ t ∈ T, Continuous t) → (∀ h, ∀ t ∈ T, GlobalTheory.ThetaCplV.rt H h t ∈ T) → ∃ (m : ℕ) (τ : K → (EuclideanSpace ℂ (Fin m) →L[ℂ] EuclideanSpace ℂ (Fin m))), GlobalTheory.Dec.IsURep τ ∧ ∀ f ∈ GlobalTheory.ThetaCplV.typeSet (GlobalTheory.ThetaCplV.rt H) ⊤ T, ∃ L : EuclideanSpace ℂ (Fin m) →ₗ[ℂ] (G → ℂ), (∀ k w x, L (τ k w) x = L w (x * j k)) ∧ f ∈ LinearMap.range L := by
-  intro G _ _ _ K _ _ _ _ j hj H hjH T hT hcont hst
-  let ρ : Representation ℂ K T :=
-    { toFun := fun k => (rt H ⟨j k, hjH k⟩).restrict (fun t ht => hst _ t ht)
-      map_one' := by ext t x; simp
-      map_mul' := fun a b => by ext t x; simp [mul_assoc] }
-  have hρv : ∀ k (v : T), ((ρ k v : T) : G → ℂ) = fun x => (v : G → ℂ) (x * j k) := fun _ _ => rfl
-  have hρc : ∀ v : T, Continuous fun k => ρ k v := by
-    intro v
-    refine Continuous.subtype_mk ?_ _
-    change Continuous fun k => fun x => (v : G → ℂ) (x * j k)
-    exact continuous_pi fun x => (hcont v v.2).comp (continuous_const.mul hj)
-  have hρφ : ∀ (φ : T →ₗ[ℂ] ℂ) (v : T), Continuous fun k => φ (ρ k v) := fun φ v =>
-    (LinearMap.continuous_of_finiteDimensional φ).comp (hρc v)
-  obtain ⟨c, hc⟩ := GlobalTheory.exists_invariant_core ρ hρc
-  obtain ⟨d, τ, e, hτ, he⟩ := exists_isURep_of_core ρ hρφ c hc
-  refine ⟨d, τ, hτ, fun f hf => ?_⟩
-  obtain ⟨L₀, -, heq, t, rfl⟩ := hf
-  refine ⟨L₀ ∘ₗ e.symm.toLinearMap, fun k w x => ?_, ⟨e t, by simp⟩⟩
-  have h1 : e.symm (τ k w) = ρ k (e.symm w) := by
-    rw [LinearEquiv.symm_apply_eq, he, LinearEquiv.apply_symm_apply]
-  simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, h1]
-  rw [heq ⟨j k, hjH k⟩ (e.symm w) (ρ k (e.symm w)) rfl, rt_apply]
-
 end GlobalTheory.ThetaCplV

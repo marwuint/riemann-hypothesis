@@ -20,13 +20,6 @@ def latticeHomEquiv : latticeHom L₁ L₂ ≃+ isogHom (weierstrassCurve L₁) 
   right_inv Q := latticeToHom_homConst Q
   map_add' := latticeToHom_add
 
-theorem homPt_latticeHomEquiv (α : latticeHom L₁ L₂) (z : ℂ) :
-    homPt (latticeHomEquiv L₁ L₂ α) (toPoint L₁ z) = toPoint L₂ (α * z) :=
-  homPt_latticeToHom α z
-
-def torusHom (α : latticeHom L₁ L₂) : Torus L₁ →+ Torus L₂ :=
-  QuotientAddGroup.map _ _ (AddMonoidHom.mulLeft (α : ℂ)) fun l hl ↦ α.2 l hl
-
 variable (L : PeriodPair)
 
 def latticeEnd : Subring ℂ where
@@ -66,47 +59,6 @@ def mulLattice (α : latticeHom L₁ L₂) : AddSubgroup L₂.lattice where
 theorem mem_mulLattice {α : latticeHom L₁ L₂} {w : L₂.lattice} :
     w ∈ mulLattice α ↔ ∃ l ∈ L₁.lattice, (w : ℂ) = α * l :=
   Iff.rfl
-
-def kerMap (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
-    L₂.lattice →+ (homPt (latticeHomEquiv L₁ L₂ α)).ker where
-  toFun w := ⟨toPoint L₁ (w / α), by
-    rw [AddMonoidHom.mem_ker, homPt_latticeHomEquiv, mul_div_cancel₀ _ h0]
-    exact toPoint_of_mem w.2⟩
-  map_zero' := by
-    apply Subtype.ext
-    simp
-  map_add' a b := by
-    apply Subtype.ext
-    simp only [Submodule.coe_add, add_div, AddMemClass.mk_add_mk, toPoint_add]
-
-theorem kerMap_surjective (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
-    Function.Surjective (kerMap α h0) := by
-  rintro ⟨P, hP⟩
-  obtain ⟨z, rfl⟩ := toPoint_surjective (L := L₁) P
-  rw [AddMonoidHom.mem_ker, homPt_latticeHomEquiv, toPoint_eq_zero_iff] at hP
-  refine ⟨⟨_, hP⟩, Subtype.ext ?_⟩
-  show toPoint L₁ (α * z / α) = toPoint L₁ z
-  rw [mul_div_cancel_left₀ _ h0]
-
-theorem ker_kerMap (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
-    (kerMap α h0).ker = mulLattice α := by
-  ext w
-  rw [AddMonoidHom.mem_ker, mem_mulLattice]
-  constructor
-  · intro h
-    have h' : toPoint L₁ (w / α) = 0 := congrArg Subtype.val h
-    rw [toPoint_eq_zero_iff] at h'
-    exact ⟨_, h', by rw [mul_div_cancel₀ _ h0]⟩
-  · rintro ⟨l, hl, hw⟩
-    apply Subtype.ext
-    show toPoint L₁ (w / α) = 0
-    rw [hw, mul_div_cancel_left₀ _ h0]
-    exact toPoint_of_mem hl
-
-def kerEquiv (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
-    (homPt (latticeHomEquiv L₁ L₂ α)).ker ≃+ L₂.lattice ⧸ mulLattice α :=
-  ((QuotientAddGroup.quotientAddEquivOfEq (ker_kerMap α h0)).symm.trans
-    (QuotientAddGroup.quotientKerEquivOfSurjective _ (kerMap_surjective α h0))).symm
 
 end Elliptic
 end GroundTheory.Global

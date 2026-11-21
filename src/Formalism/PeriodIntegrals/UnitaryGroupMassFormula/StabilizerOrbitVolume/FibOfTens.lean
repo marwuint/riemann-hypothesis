@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibInfEx
+import Formalism.PeriodIntegrals.VolFromSW
 
 noncomputable section
 
@@ -33,21 +33,6 @@ def TensFacts (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E
     Continuous (gramR R σ J (n := a)) ∧ (∀ X, gramR R σ J (n := a) X ∈ HermR R σ a) ∧
     IsOpen {X : Fin a → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X}
 
-def TensAll : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
-  TensFacts F E σ M J a (Ainf F) ∧ ∀ v : HeightOneSpectrum (𝓞 F), TensFacts F E σ M J a (Fv F v)
-
-def DensInf : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
-  ∀ ψ, IsCharAF F ψ → ∀ μinf, SdW F E σ M J (Ainf F) (psiInf F ψ) a μinf →
-    ∀ νinf, SdHerm F E σ (Ainf F) (psiInf F ψ) a νinf →
-      DensAll μinf (gramR (Ainf F) σ J) Subtype.val νinf
-        {X | LinearIndependent (Ainf F ⊗[F] E) X}
-
-def DensV : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
-  ∀ ψ, IsCharAF F ψ → ∀ v : HeightOneSpectrum (𝓞 F),
-    ∀ μv, SdW F E σ M J (Fv F v) (psiV F ψ v) a μv →
-    ∀ νv, SdHerm F E σ (Fv F v) (psiV F ψ v) a νv →
-      DensAll μv (gramR (Fv F v) σ J) Subtype.val νv {X | LinearIndependent (Fv F v ⊗[F] E) X}
-
 theorem fib_of_tens {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} {a : ℕ} {R : Type} [CommRing R] [Algebra F R]
     [TopologicalSpace R] (hG : FibOfDens) (hT : TensFacts F E σ M J a R)
@@ -71,15 +56,5 @@ theorem fib_of_tens {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →�
     Topology.IsInducing.subtypeVal.secondCountableTopology
   exact hG _ _ _ μ ν inferInstance inferInstance inferInstance _ _ _ h5
     h4.isClosedEmbedding_subtypeVal (fun X => ⟨⟨_, h6 X⟩, rfl⟩) h7 hD
-
-theorem fibInfEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensInf) : FibInfEx := by
-  intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν
-  exact fib_of_tens hG (hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).1 μinf νinf hμ.1 hν.1
-    (hD F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ μinf hμ νinf hν)
-
-theorem fibVEx_of (hG : FibOfDens) (hT : TensAll) (hD : DensV) : FibVEx := by
-  intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν
-  exact fib_of_tens hG ((hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v) μv νv hμ.1 hν.1
-    (hD F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν)
 
 end PI.VolStabSW

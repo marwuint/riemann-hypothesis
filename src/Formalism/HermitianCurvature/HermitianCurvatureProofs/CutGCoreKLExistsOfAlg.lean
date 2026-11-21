@@ -106,9 +106,6 @@ theorem projI_ne (h : DirectSum.IsInternal S) {i j : ι} (hij : j ≠ i) (x : S 
   rw [projI_apply]
   exact DirectSum.IsInternal.ofBijective_coeLinearMap_of_ne h hij x
 
-theorem projI_mem (h : DirectSum.IsInternal S) {i : ι} {v : V} (hv : v ∈ S i) : projI h i v = ⟨v, hv⟩ :=
-  projI_self h ⟨v, hv⟩
-
 theorem projI_sum (h : DirectSum.IsInternal S) (y : ∀ j, S j) (i : ι) : projI h i (∑ j, (y j : V)) = y i := by
   rw [map_sum, Finset.sum_eq_single i (fun j _ hj => projI_ne h hj (y j)) (fun hi => absurd (Finset.mem_univ i) hi)]
   exact projI_self h (y i)

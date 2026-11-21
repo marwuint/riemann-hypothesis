@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ChainOfK
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.QuotientIsAbelianSchemeOfQuotientScheme
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GlueSchemesOverOpensAlongCocycle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianQuotientAffineCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalQuotientTransitionIsomorphismsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalQuotientTransitionIsomorphisms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalQuotientTransitionCocycleStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedQuotientMapOfLocalQuotientsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackGluedQuotientKernelPairOfCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackGluedQuotientKernelPairOfCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GluedQuotientMapFiniteFlatSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeOfChartsSurjectiveImageStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeOfChartsSurjectiveImage
 
 set_option autoImplicit false
 noncomputable section
@@ -28,7 +28,7 @@ theorem quotGlobal_holds : QuotGlobal := by
   have hsurj : ∀ j, Surjective (q j).left := fun j => (hq j).2.2.2.2.1
   have hqc : ∀ j, QuasiCompact (q j).left := fun j => by have := hfin j; infer_instance
   have hsq : ∀ j, _ := fun j => (hq j).2.2.2.2.2
-  obtain ⟨b, hb1, hb2, hchar⟩ := GlobalTheory.T.exists_local_quotient_transition_isomorphisms S S.affineCover A H i B q hflat hsurj hqc hsq
+  obtain ⟨b, hb1, hb2, hchar⟩ := _root_.GlobalTheory.QuotTransition.exists_transition S S.affineCover A H i B q hflat hsurj hqc hsq
   have hcoc := GlobalTheory.T.local_quotient_transition_cocycle S S.affineCover A H i B q b hflat hsurj hqc hb1 hchar
   obtain ⟨G0, F, ψ, hψ, hψ2⟩ := GlobalTheory.CocycleGlue.exists_glue (fun j => S.affineCover.X j) (fun j => (B j).left)
     (fun j => S.affineCover.f j) (fun j => inferInstance) (fun j => (B j).hom)
@@ -39,12 +39,12 @@ theorem quotGlobal_holds : QuotGlobal := by
   let G : Over S := Over.mk F
   let Q : A ⟶ G := Over.homMk Qm hQF
   have hpb : IsPullback ((fst H A ≫ i) * snd H A) (snd H A) Q Q :=
-    GlobalTheory.T.isPullback_gluedQuotient_kernelPair_of_cover S S.affineCover A H G i Q B ψ q hψ hQm hsq
+    _root_.GlobalTheory.GlueQuotPB.isPullback_translation_of_cover S S.affineCover A H G i Q B ψ q hψ hQm hsq
   obtain ⟨hQfin, hQfl, hQs⟩ := GlobalTheory.T.gluedQuotientMap_finite_flat_surjective S S.affineCover A G Q B ψ q hψ hQm hfin hflat hsurj
   have : IsCommMonObj A := hA.comm
   have : IsMonHom i := hi
   have : QuasiCompact Q.left := inferInstance
   obtain ⟨instG, hcomm, hhom, -⟩ := GlobalTheory.AbelianQuotient.exists_grpObj i Q hpb
-  exact ⟨G, instG, Q, GlobalTheory.T.isAbelianScheme_of_charts_surjective_image S S.affineCover A G Q B ψ hA hcomm hQs hψ (fun j => (hq j).1), hhom, hQfin, hQfl, hQs, hpb⟩
+  exact ⟨G, instG, Q, _root_.GlobalTheory.QuotAbelian.isAbelianScheme_of_charts_of_surjective S S.affineCover A G Q B ψ hA hcomm hQs hψ (fun j => (hq j).1), hhom, hQfin, hQfl, hQs, hpb⟩
 
 end GlobalTheory.IwLevel

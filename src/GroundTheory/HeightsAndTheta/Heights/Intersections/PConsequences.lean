@@ -49,8 +49,6 @@ theorem tensor_sqMetric_a {A : HermLine ι} {α β : K → ℕ} (h : ∀ k, (α 
   rw [← h k]
   ring
 
-theorem ArithmeticIntersectionSecond.proof : ArithmeticIntersectionSecond.Statement := metricChange
-
 theorem Conservation.proof : Conservation.Statement := Conservation.statement_holds
 
 theorem InductiveIntersectionFormula.proof : InductiveIntersectionFormula.Statement := by
@@ -80,22 +78,6 @@ theorem InductiveIntersectionFormula.proof : InductiveIntersectionFormula.Statem
     rw [hmult W hW.2 ((hhor W hW.2).2 hW.1)]
   rw [recR_eq] at hRf hRg
   linarith
-
-theorem ArithmeticIntersectionFifth.proof (h₀ : ArithVarZeroStatement) : ArithmeticIntersectionFifth.Statement := by
-  intro K _ ι _ I hI P A s hP hA ⟨a, ha, hs, hsP⟩
-  have hR := hI.2.2 P 0 Fin.elim0 A s a hP (fun j ↦ j.elim0) hA ha hs hsP
-  have hsnoc : (Fin.snoc (Fin.elim0 : Fin 0 → HermLine ι) A : Fin (0 + 1) → HermLine ι) = ![A] := by
-    funext j
-    fin_cases j
-    rfl
-  rw [hsnoc] at hR
-  rw [hR, recR_eq]
-  congr 1
-  unfold cycR vertR
-  refine finsum_mem_congr rfl fun W hW ↦ ?_
-  have hnh : ¬ IsHorizontal W := fun hh ↦
-    h₀ K ι W ((divSuppArith K ι P 0 A s W hP ⟨a, ha, hs, hsP⟩ hW).1 hh)
-  rw [if_neg hnh, if_neg hnh]
 
 theorem ae_eval_ne_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) {h : MRing ι} (hh : ∃ a, IsMultiHomog h a)

@@ -6,7 +6,9 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzTwChar
 import Development.DiscreteGroups.GlobalIrreducibility.DzKSchur
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroSupercuspidalCuspidalModule
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RegularLocalOfDepthZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreduciblesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreducibles
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsCuspSpaceBot
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
 
 noncomputable section
@@ -193,7 +195,7 @@ theorem UpperTheory.Zero.LLC.typeEx :
         rw [he1, he0s]) τ' hinf'
     obtain ⟨φ, h0, hφ⟩ := hR
     obtain ⟨φ', h0', hφ'⟩ := hR'
-    obtain ⟨ω, hω⟩ := (GlobalTheory.T.centralCharacter_subquotient_productIrreducibles (w.adicCompletion E)).1 (GlobalTheory.LocLanglands.cls σ)
+    obtain ⟨ω, hω⟩ := (_root_.GlobalTheory.GamMul.centralChar_subquotient_prodIrr (w.adicCompletion E)).1 (GlobalTheory.LocLanglands.cls σ)
     have F := fixed_eq_range i hi τ hτ R ω hω φ h0 hφ
     have F' := fixed_eq_range i hi τ' hτ' R ω hω φ' h0' hφ'
     exact char_eq τ τ' φ φ' F.1 F'.1 (F.2.symm.trans F'.2)

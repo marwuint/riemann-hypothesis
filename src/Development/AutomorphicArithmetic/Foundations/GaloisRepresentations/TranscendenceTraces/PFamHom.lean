@@ -10,13 +10,6 @@ private noncomputable def postFam {Z S : Scheme.{0}} {p : Z ⟶ S} {R : Type} [C
     change Sec.res s.g (Sec.map m (t.app B a)) = Sec.map m (t.app A (Sec.res s.k a))
     rw [← t.nat s a, map_res]
 
-private noncomputable def preFam {Z S : Scheme.{0}} {p : Z ⟶ S} {R : Type} [CommRing R] {G K J : Shv R}
-    (d : G ⟶ K) (t : Fam0 p K J) : Fam0 p G J where
-  app A := (t.app A).comp ((d.hom.app (op A.V)).hom.toAddMonoidHom)
-  nat {A B} s a := by
-    change Sec.res s.g (t.app B (Sec.map d a)) = t.app A (Sec.map d (Sec.res s.k a))
-    rw [t.nat s, map_res]
-
 theorem UpperTheory.Gal.TranscendenceTraces.famHom_of :
     FamHom := by
   intro Q Z S p Φ _ e hrep I J

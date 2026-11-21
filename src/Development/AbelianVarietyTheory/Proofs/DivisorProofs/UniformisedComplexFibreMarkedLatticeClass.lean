@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.Uniformised
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagFormTwoSmulAndKerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagFormTwoSmulAndKer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUnique
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
@@ -252,7 +253,7 @@ theorem unifAt_cls : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Comm
       have hw := hweil n (f n a) (f n a')
         (Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF (f n a) (f n a') : ℂ) / n)) (Complex.exp_ne_zero _))
         hn rfl
-      have hu := GlobalTheory.T.weilPairing_complex_value_unique (Sp ℂ) o.A D.g o.ab h _ hL (𝟙 _) n _ _ _ _ hiso hw
+      have hu := _root_.GlobalTheory.WeilComplexUnique.weilIs_unitOn_unique_complex (Sp ℂ) o.A D.g o.ab h _ hL (𝟙 _) n _ _ _ _ hiso hw
       have hu' := congrArg (fun u : ℂˣ => (u : ℂ)) hu
       simp only [Units.val_zpow_eq_zpow_val, Units.val_mk0] at hu'
       rw [(hν n hn hnp).2, ← Complex.exp_int_mul] at hu'
@@ -267,7 +268,7 @@ theorem unifAt_cls : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Comm
       rw [hpl]
       exact hd
   ·
-    obtain ⟨E₁, hE, hcrit⟩ := GlobalTheory.T.diag_form_two_smul_and_ker_alt o.A D.g o.ab h o.P o.isLB o.rig₁ o.rig₂ o.symm o.ample e D'.La P D'.EF
+    obtain ⟨E₁, hE, hcrit⟩ := _root_.GlobalTheory.SymBirig.diag_form_two_smul_and_ker o.A D.g o.ab h o.P o.isLB o.rig₁ o.rig₂ o.symm o.ample e D'.La P D'.EF
       hexp hinj hker hweil
     obtain ⟨ee, hee, hkerP⟩ := o.kerP
     have hE₁ : ∀ x, E₁ x = 0 → x = 0 := fun x hx => D'.nondeg x fun y => by

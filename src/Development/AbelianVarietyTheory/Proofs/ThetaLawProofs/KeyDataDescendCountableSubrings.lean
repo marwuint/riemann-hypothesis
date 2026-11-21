@@ -21,7 +21,7 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsProjByBaseChan
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProperOfIsProjBy
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.MorphismDescendsToSubring
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsCountableLocalPidSubring
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.VeryAmpleByDescendsCountableSubringStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.VeryAmpleByDescendsCountableSubring
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsRefinementOfIsLimit
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.GrpObjDescendsFaithfullyFlat
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.PolarisationOfFaithfullyFlat
@@ -128,7 +128,7 @@ theorem exists_polAV_descent (hL : Out.Laws) (R : Type) [CommRing R] [IsDomain R
   have := P.isAb.smooth
   obtain ⟨Hb, hH, m, s, hs⟩ := AbProj.isProjBy_of_isPullback P (IsPullback.id_horiz P.A.hom)
   obtain ⟨R₀, _, _, X₀, f₀, π, H₀, s₀, hc₀, -, -, -, hπ, hfl, hH₀, hs₀, -⟩ :=
-    GlobalTheory.T.veryAmpleBy_descends_to_countable_subring R P.A.left P.A.hom Hb m s ∅ hH hs Set.countable_empty
+    _root_.GlobalTheory.veryAmpleBy_descends_countable_subring R P.A.left P.A.hom Hb m s ∅ hH hs Set.countable_empty
   have hp₀ : AbLaw.IsProjBy f₀ := ⟨H₀, hH₀, m, s₀, hs₀⟩
   have hpr : IsProper f₀ := AbLaw.isProper_of_isProjBy R₀ X₀ f₀ hp₀
   have hfp : LocallyOfFinitePresentation f₀ := inferInstance

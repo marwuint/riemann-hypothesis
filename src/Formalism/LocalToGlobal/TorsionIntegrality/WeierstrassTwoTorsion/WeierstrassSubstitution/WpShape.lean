@@ -394,10 +394,6 @@ end WpSh
 
 open WpSh
 
-theorem weierstrass_p_unique : WpUnique.{u} := by
-  intro K _ _ g2 g3 r r' h h'
-  exact cleared_unique (cleared_of_ode h) (cleared_of_ode h')
-
 theorem wpShape_of (hE : ExpSpec.{u}) (hO : WpODE.{u}) : WpShape.{u} := by
   intro K _ _ W
   obtain ⟨h1, h2⟩ := wpL_shape hE hO W

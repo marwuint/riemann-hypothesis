@@ -11,12 +11,12 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfS
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueSection
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.UnLocal
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnitAtDivOfIsGenAt
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothAlgebraEqZeroOfVanishOpenStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothAlgebraEqZeroOfVanishOpen
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AnalyticChartVanishingSectionStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitOfNonvanishingPointsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleFromUnitRatiosStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AnalyticChartUnitSectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OverlappingAnalyticChartsRatioStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AnalyticChartUnitSection
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OverlappingAnalyticChartsRatio
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 open ReciprocityTheory.ChartRestriction.G.TB.ValAt ReciprocityTheory.ChartRestriction.G.PullbackSections
@@ -47,12 +47,12 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 theorem gaga_rat_C : GagaSections → ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (Ω : Type) [Field Ω] [Algebra ℂ Ω] (ξ : Sp Ω ⟶ X) (L : Lat ξ Ω) (W : X.Opens) (F : (Sp ℂ ⟶ X) → ℂ), IsProper s → Smooth s → ξ ≫ s = spMap (algebraMap ℂ Ω) → IsCptGen ξ → ConstClosed ℂ Ω → L.IsVB 1 ⊤ → genPt ξ ∈ W → (∀ p : Cpt ξ, p.1 ∈ W → L.IsGenAt p 1) → (∀ (x : Sp ℂ ⟶ X) (h : genPt ξ ⤳ centre x), x ≫ s = spMap (RingHom.id ℂ) → ∃ t : Ω, L.IsGenAt ⟨centre x, h⟩ t ∧ ExtendsUnitAt s (RingHom.id ℂ) ξ W F t x) → ∃ (f : Ω) (κ : ℂ), κ ≠ 0 ∧ (∀ p : Cpt ξ, L.IsGenAt p f) ∧ ∀ y : Sp ℂ ⟶ X, y ≫ s = spMap (RingHom.id ℂ) → ⊤ ≤ y ⁻¹ᵁ W → genPt ξ ⤳ centre y → ValAt ξ y f (κ * F y) := by
-  have dens := GlobalTheory.T.smooth_algebra_eq_zero_of_vanish_open
+  have dens := _root_.GlobalTheory.CompanionTheory.Ar.Flat.GagaC.eq_zero_of_forall_points_eq_zero
   have chart := GlobalTheory.T.analytic_chart_vanishing_section
   have unit := GlobalTheory.T.is_unit_of_nonvanishing_points
   have trans := GlobalTheory.T.line_bundle_from_unit_ratios
-  have hch := GlobalTheory.T.analytic_chart_unit_section
-  have cmp := GlobalTheory.T.overlapping_analytic_charts_ratio
+  have hch := _root_.GlobalTheory.CompanionTheory.Ar.Flat.GagaC.exists_hChart_of_extendsUnitAt
+  have cmp := _root_.GlobalTheory.CompanionTheory.Ar.Flat.GagaC.Compare.eq_val_mul
   intro hG X s Ω _ _ ξ L W F hp hs hξs hgen hcl hVB hW h1 hext
   haveI : Smooth s := hs
   haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s

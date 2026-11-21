@@ -242,28 +242,6 @@ theorem isSemisimpleRepresentation_of_invariant_core {G V : Type*} [Group G] [Ad
   rw [@norm_eq_sqrt_re_inner 𝕜, @norm_eq_sqrt_re_inner 𝕜]
   exact congrArg (fun z : 𝕜 => √(RCLike.re z)) (hc k v v)
 
-theorem isIrreducible_toRepresentation_of_isAtom {F G V : Type*} [Field F] [Monoid G]
-    [AddCommGroup V] [Module F V] {ρ : Representation F G V} {U : Subrepresentation ρ}
-    (hU : IsAtom U) : U.toRepresentation.IsIrreducible := by
-  have hne : U.toSubmodule ≠ ⊥ := fun h => hU.1 (Subrepresentation.toSubmodule_injective h)
-  have hnt : Nontrivial (Subrepresentation U.toRepresentation) := by
-    refine ⟨⊥, ⊤, fun h => hne ?_⟩
-    have h' : (⊥ : Submodule F U.toSubmodule) = ⊤ := congrArg Subrepresentation.toSubmodule h
-    rw [← U.toSubmodule.map_subtype_top, ← h', Submodule.map_bot]
-  refine ⟨fun S => ?_⟩
-  let T : Subrepresentation ρ := ⟨S.toSubmodule.map U.toSubmodule.subtype, by
-    rintro g _ ⟨x, hx, rfl⟩
-    exact ⟨_, S.apply_mem_toSubmodule g hx, rfl⟩⟩
-  have hT : T ≤ U := U.toSubmodule.map_subtype_le S.toSubmodule
-  have hinj := Submodule.map_injective_of_injective U.toSubmodule.injective_subtype
-  rcases hU.le_iff.mp hT with h | h
-  · left
-    refine Subrepresentation.toSubmodule_injective (hinj ?_)
-    exact (congrArg Subrepresentation.toSubmodule h).trans (Submodule.map_bot _).symm
-  · right
-    refine Subrepresentation.toSubmodule_injective (hinj ?_)
-    exact (congrArg Subrepresentation.toSubmodule h).trans U.toSubmodule.map_subtype_top.symm
-
 variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
 
 @[reducible] noncomputable def averageCore [MeasurableSpace K] [BorelSpace K] {V E : Type*}

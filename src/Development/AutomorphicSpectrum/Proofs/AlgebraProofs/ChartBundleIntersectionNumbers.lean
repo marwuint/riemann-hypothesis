@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TrivFlagMo
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.FlagMinor
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrBundleStatementAStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrBundleStatementBStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleProductStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrBundleStatementA
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrBundleStatementB
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleProduct
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)
@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.QuotIsoCk
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d N N₁ : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (V₁ : Type) [AddCommGroup V₁] [Module Ω V₁] (E E' : ChartBundle O (mseg x) N V) (F F' : ChartBundle O (mseg x) N₁ V₁), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → SameGeneric O x E E' → SameGeneric O x F F' → QuotIso O x E E' F F' → ∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → ck O x d N E E' k L Q = ck O x d N₁ F F' k L Q := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d N N₁ V _ _ V₁ _ _ E E' F F' hM hE hF hQ k hk1 hk2 q L Q hQh
   obtain ⟨P, hP⟩ := hQ
-  obtain ⟨S, hS⟩ := (GlobalTheory.T.chart_bundle_product O Ω K ι x).1 N N₁ V V₁ E F
+  obtain ⟨S, hS⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.BundleOps.main O Ω K ι x).1 N N₁ V V₁ E F
   have hSP : SameGeneric O x S P := by
     intro s hs
     obtain ⟨h1, h2, h3, h4⟩ := hP s hs
@@ -41,8 +41,8 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
     ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩
   have hrefF : SameGeneric O x F F := fun s _ =>
     ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩
-  have zE := (GlobalTheory.T.dvr_bundle_statement_a O Ω K ι x d N V E E E hM hrefE hrefE k hk1 hk2 q L Q hQh).2
-  have zF := (GlobalTheory.T.dvr_bundle_statement_a O Ω K ι x d N₁ V₁ F F F hM hrefF hrefF k hk1 hk2 q L Q hQh).2
+  have zE := (_root_.GlobalTheory.CompanionTheory.Ar.Num.Cocycle.main O Ω K ι x d N V E E E hM hrefE hrefE k hk1 hk2 q L Q hQh).2
+  have zF := (_root_.GlobalTheory.CompanionTheory.Ar.Num.Cocycle.main O Ω K ι x d N₁ V₁ F F F hM hrefF hrefF k hk1 hk2 q L Q hQh).2
   have s1 : IsSubQuot O x S (LinearMap.inl Ω V V₁) (LinearMap.snd Ω V V₁) E F := by
     refine ⟨LinearMap.inl_injective, LinearMap.snd_surjective, LinearMap.range_inl Ω V V₁,
       fun s hs => ⟨?_, ?_⟩⟩
@@ -93,9 +93,9 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
         exact ⟨(v, w), h, rfl⟩
       · rintro ⟨⟨v', w⟩, h, rfl⟩
         exact ⟨w, h⟩
-  have e1 := GlobalTheory.T.dvr_bundle_statement_b O Ω K ι x d (N + N₁) N N₁ (V × V₁) V V₁ S P _ _ E E' F F hM hSP s1 s2
+  have e1 := _root_.GlobalTheory.CompanionTheory.Ar.Num.SubQuotCk.main O Ω K ι x d (N + N₁) N N₁ (V × V₁) V V₁ S P _ _ E E' F F hM hSP s1 s2
     k hk1 hk2 q L Q hQh
-  have e2 := GlobalTheory.T.dvr_bundle_statement_b O Ω K ι x d (N + N₁) N₁ N (V × V₁) V₁ V S P _ _ F F' E E hM hSP s3 s4
+  have e2 := _root_.GlobalTheory.CompanionTheory.Ar.Num.SubQuotCk.main O Ω K ι x d (N + N₁) N₁ N (V × V₁) V₁ V S P _ _ F F' E E hM hSP s3 s4
     k hk1 hk2 q L Q hQh
   omega
 

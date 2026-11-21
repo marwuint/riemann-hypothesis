@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplAtFactorOfIsAdicComplete
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularLocalRingAndIsDomainOfIsComplAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CotangentIndepOfIsComplAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingEquivPowerSeriesPrescribedParametersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingEquivPowerSeriesPrescribedParameters
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UChart GlobalTheory.UCanon
@@ -52,7 +52,7 @@ theorem exists_chartRing_factor : ∀ (W : Type) [CommRing W] [IsRegularLocalRin
     exact cotangent_indep_of_isComplAt W (Fin m ⊕ Fin N) R ψ hψ hψC m (Function.Embedding.inl) ht a
       (Ideal.mem_sup_left ha) i
   have hQR : Nonempty (ℚ →+* R) := ⟨(ψ.comp MvPolynomial.C).comp hQ.some⟩
-  obtain ⟨k, _, e, σ, hσ⟩ := GlobalTheory.T.exists_ringEquiv_powerSeries_prescribed_parameters R hψ.2.1 hQR m t ht hind
+  obtain ⟨k, _, e, σ, hσ⟩ := _root_.GlobalTheory.CohenChart.exists_ringEquiv_chartRing R hψ.2.1 hQR m t ht hind
   refine ⟨k, inferInstance, e, (σ : R →+* ChartRing k m e).comp ψ, θ.comp (σ.symm : ChartRing k m e →+* R),
     isComplAt_ringEquiv_comp ψ σ hψ, inferInstance, ?_, ?_, ?_⟩
   · rw [← hθψ]; ext x <;> simp

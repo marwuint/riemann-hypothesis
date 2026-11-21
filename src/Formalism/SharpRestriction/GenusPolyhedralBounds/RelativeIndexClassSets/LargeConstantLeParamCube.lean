@@ -110,12 +110,6 @@ theorem TO_le_sq : TO ≤ TO ^ 2 := by
   have h1 : TO * 1 ≤ TO * TO := mul_le_mul_of_nonneg_left h.one_le_order_alt (by linarith [h.one_le_order_alt])
   nlinarith
 
-theorem kl_ge : b ≤ D2 * nW + 2 * r + (TO + D2) * q0 := by
-  have hq := h.modulus_pos_alt
-  have h1 : 0 ≤ D2 * nW := mul_nonneg (by linarith [h.two_le_degree_alt]) (by linarith [h.forty_le_weight_count])
-  have h2 : 0 ≤ D2 * q0 := mul_nonneg (by linarith [h.two_le_degree_alt]) hq.le
-  linarith [h.q0lo, h.r6]
-
 theorem kl_le : D2 * nW + 2 * r + (TO + D2) * q0 ≤ 3 * TO + 2 * b := by
   have hq := h.modulus_pos_alt
   have h40 : 40 * D2 * q0 ≤ TO * q0 := mul_le_mul_of_nonneg_right h.forty_mul_degree_le_order hq.le
@@ -180,40 +174,6 @@ theorem sK {s : ℝ} (hs : s ≤ A * (D2 * nW + 2 * r + (TO + D2) * q0 + r * ((T
   have f3 : A * b = A * b := rfl
   have hAb : b ≤ A * b := hBA
   nlinarith
-
-theorem sL {s : ℝ} (hs : s ≤ A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) : s * TO ≤ 2 * A * b := by
-  have hT1 := h.one_le_order_alt
-  have hT0 : (0 : ℝ) ≤ TO := by linarith
-  have hA1 : (1 : ℝ) ≤ A := by linarith [h.forty_eight_le_constant]
-  have hA0 : (0 : ℝ) ≤ A := by linarith
-  have hr0 : (0 : ℝ) ≤ r := by linarith [h.r6]
-  have hrA : r ≤ A := by linarith [h.rA]
-  have hD2 := h.two_le_degree_alt
-  have hQ := h.Q_le
-  have hnW := h.nW_le
-  have hq := h.q0hi
-  have hX : s * TO ≤ (A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) * TO :=
-    mul_le_mul_of_nonneg_right hs hT0
-  have e1 : r * (TO + D2 + 2 * r) ≤ A * (3 * TO) := mul_le_mul hrA hQ (by linarith) hA0
-  have e2 : r * (TO + D2 + 2 * r) * TO ≤ A * (3 * TO) * TO := mul_le_mul_of_nonneg_right e1 hT0
-  have e3 : nW * TO ≤ TO * TO := mul_le_mul_of_nonneg_right hnW hT0
-  have e4 : A * (TO * q0) ≤ A * (b + TO) := mul_le_mul_of_nonneg_left hq hA0
-  have e5 : A * (r * (TO + D2 + 2 * r) * TO) ≤ A * (A * (3 * TO) * TO) := mul_le_mul_of_nonneg_left e2 hA0
-  have e6 : A * (nW * TO) ≤ A * (TO * TO) := mul_le_mul_of_nonneg_left e3 hA0
-  have eX : (A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) * TO =
-      A * (TO * q0) + A * (r * (TO + D2 + 2 * r) * TO) + A * (nW * TO) + TO := by ring
-  have hATO : 1 ≤ A * TO := one_le_mul_of_one_le_of_one_le hA1 hT1
-  have hTA : TO ≤ A * TO := le_mul_of_one_le_left hT0 hA1
-  have p1 : A * TO * 1 ≤ A * TO * (A * TO) := mul_le_mul_of_nonneg_left hATO (by linarith)
-  have p2 : A * TO * TO ≤ A * TO * (A * TO) := mul_le_mul_of_nonneg_left hTA (by linarith)
-  have eA : A * (A * (3 * TO) * TO) = 3 * (A * TO * (A * TO)) := by ring
-  have eB : A * (TO * TO) = A * TO * TO := by ring
-  have eP : A * TO * (A * TO) = A ^ 2 * TO ^ 2 := by ring
-  have eC : A * (b + TO) = A * b + A * TO := by ring
-  have hB := h.toBs.ATOb
-  have hP0 : (0 : ℝ) ≤ A ^ 2 * TO ^ 2 := by positivity
-  have hAb := h.b_le_Ab
-  linarith
 
 theorem dL {d : ℝ} (hd : d ≤ A * (q0 + r * (TO + D2 + 2 * r))) : d ≤ 2 * A * b := by
   have hT1 := h.one_le_order_alt
@@ -372,27 +332,5 @@ theorem g_gt {s q : ℝ} (hs : s ≤ 4 * A * b) (hq : (k * b) ^ 8 ≤ q) : 2 * s
   linarith
 
 end Rn
-
-theorem polyA {Z PP tableDegreeThreeBase PO lk Dp : ℝ} (hZ : 10 ^ 60 ≤ Z) (hPP : Z ^ 12 ≤ PP) (hP0 : tableDegreeThreeBase ≤ 30 * Z)
-    (hPO : PO ≤ 217 * Z ^ 2) (hl1 : 1 ≤ lk) (hl : lk ≤ 6 * Z) (hD : 1 ≤ Dp) :
-    (2 * 0 + 1 / 2 + tableDegreeThreeBase * lk + 3 / 2 * (Z * lk + PO) ≤ PP) ∧
-    (60 * 0 + 180 * (1 / 2) + 44 * (2 * 0 + 1 / 2 + tableDegreeThreeBase * lk + 3 / 2 * (Z * lk + PO)) + 22 * (2 * Z) ≤ PP ^ 2 * Dp) := by
-  have hZ1 : (1 : ℝ) ≤ Z := le_trans (by norm_num) hZ
-  have hZ0 : (0 : ℝ) ≤ Z := by linarith
-  have hZZ : Z ≤ Z ^ 10 := by simpa using pow_le_pow_right₀ hZ1 (show 1 ≤ 10 by norm_num)
-  have hZ10 : (10 : ℝ) ^ 60 ≤ Z ^ 10 := le_trans hZ hZZ
-  have hZ12 : Z ^ 2 * 10 ^ 60 ≤ Z ^ 2 * Z ^ 10 := mul_le_mul_of_nonneg_left hZ10 (sq_nonneg Z)
-  have e12 : Z ^ 2 * Z ^ 10 = Z ^ 12 := by ring
-  have hZ2 : (1 : ℝ) ≤ Z ^ 2 := by nlinarith
-  have a1 : tableDegreeThreeBase * lk ≤ 30 * Z * lk := mul_le_mul_of_nonneg_right hP0 (by linarith)
-  have a2 : 30 * Z * lk ≤ 30 * Z * (6 * Z) := mul_le_mul_of_nonneg_left hl (by linarith)
-  have a3 : Z * lk ≤ Z * (6 * Z) := mul_le_mul_of_nonneg_left hl hZ0
-  have hE : 2 * 0 + 1 / 2 + tableDegreeThreeBase * lk + 3 / 2 * (Z * lk + PO) ≤ 600 * Z ^ 2 := by nlinarith
-  have hP1 : (1 : ℝ) ≤ PP := by nlinarith
-  have hPsq : PP * 1 ≤ PP * PP := mul_le_mul_of_nonneg_left hP1 (by linarith)
-  have hPD : PP ^ 2 * 1 ≤ PP ^ 2 * Dp := mul_le_mul_of_nonneg_left hD (sq_nonneg PP)
-  constructor
-  · nlinarith
-  · nlinarith
 
 end Formalism.MainNotions.Gaps.EtaleWeightGaps.Num

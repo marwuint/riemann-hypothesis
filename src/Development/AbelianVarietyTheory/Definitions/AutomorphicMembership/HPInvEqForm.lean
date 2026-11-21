@@ -215,27 +215,6 @@ theorem hP_inv_moeb {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Mat
   rw [← hP_moeb hg hz, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_nonsing_inv_cancel_left _ _ hu',
     Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
-def autE (g : GL (Fin p ⊕ Fin q) ℂ) (z : Matrix (Fin p) (Fin q) ℂ) :
-    Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := fromBlocks (jW g z) 0 0 (kapQ g z)
-
-theorem autE_isUnit {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
-    (hz : z ∈ hcDom p q) : IsUnit (autE g z).det := by
-  unfold autE
-  rw [det_fromBlocks_zero₁₂]
-  exact (jW_isUnit hg hz).mul (kapQ_isUnit hg hz)
-
-theorem mul_frame {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
-    (hz : z ∈ hcDom p q) :
-    (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * fromBlocks 1 z 0 1 =
-      fromBlocks 1 (moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) z) 0 1 *
-        fromBlocks (jW g z) 0 (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₂₁ (kapQ g z) := by
-  have e := moeb_mul_kapQ hg hz
-  unfold jW
-  conv_lhs => rw [← fromBlocks_toBlocks (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)]
-  rw [fromBlocks_multiply, fromBlocks_multiply]
-  simp only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, e, sub_add_cancel]
-  rfl
-
 def tanAct (g : GL (Fin p ⊕ Fin q) ℂ) (z ξ : Matrix (Fin p) (Fin q) ℂ) : Matrix (Fin p) (Fin q) ℂ :=
   jW g z * ξ * (kapQ g z)⁻¹
 
@@ -254,14 +233,6 @@ theorem blkMet_posDef {A : Matrix (Fin p) (Fin p) ℂ} {B : Matrix (Fin q) (Fin 
   rw [Matrix.isUnit_iff_isUnit_det, det_fromBlocks_zero₁₂]
   exact (isUnit_iff_ne_zero.mpr hA.det_pos.ne').mul (isUnit_iff_ne_zero.mpr hB.det_pos.ne')
 
-theorem autE_blkMet (g : GL (Fin p ⊕ Fin q) ℂ) (z : Matrix (Fin p) (Fin q) ℂ)
-    (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin q) (Fin q) ℂ) :
-    (autE g z)ᴴ * blkMet A B * autE g z =
-      blkMet ((jW g z)ᴴ * A * jW g z) ((kapQ g z)ᴴ * B * kapQ g z) := by
-  unfold autE blkMet
-  rw [fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]
-  simp [Matrix.mul_assoc]
-
 def hodge (c : ℝ) (z : Matrix (Fin p) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ :=
   blkMet ((c : ℂ) • (hP z)⁻¹) ((c : ℂ) • hQ z)
 
@@ -270,25 +241,5 @@ theorem hodge_posDef {c : ℝ} (hc : 0 < c) {z : Matrix (Fin p) (Fin q) ℂ} (hz
   unfold hodge
   have hc' : (0 : ℂ) < (c : ℂ) := Complex.zero_lt_real.mpr hc
   exact blkMet_posDef ((hP_inv_posDef hz).smul hc') ((show (hQ z).PosDef from hz).smul hc')
-
-theorem hodge_moeb (c : ℝ) {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
-    (hz : z ∈ hcDom p q) :
-    (autE g z)ᴴ * hodge c (moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) z) * autE g z = hodge c z := by
-  unfold hodge
-  rw [autE_blkMet]
-  simp only [Matrix.mul_smul, Matrix.smul_mul]
-  rw [hP_inv_moeb hg hz, hQ_moeb hg hz]
-
-theorem det_hodge (c : ℝ) {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) :
-    (hodge c z).det = (c : ℂ) ^ (p + q) := by
-  unfold hodge blkMet
-  have hdet : (hP z).det = (hQ z).det := Matrix.det_one_sub_mul_comm z zᴴ
-  have hne : (hQ z).det ≠ 0 := (show (hQ z).PosDef from hz).det_pos.ne'
-  rw [det_fromBlocks_zero₁₂, det_smul, det_smul, det_nonsing_inv, Fintype.card_fin, Fintype.card_fin, hdet,
-    Ring.inverse_eq_inv', pow_add]
-  field_simp
-
-example (c : ℝ) : hodge c (0 : Matrix (Fin p) (Fin q) ℂ) = (c : ℂ) • 1 := by
-  simp [hodge, blkMet, hP, hQ, ← fromBlocks_one, fromBlocks_smul]
 
 end GlobalTheory.HodgeDomain

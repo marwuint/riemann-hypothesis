@@ -1,6 +1,8 @@
 import Mathlib
-import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.RankOneEisenstein.Theta2Integral
+import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.RankOneEisenstein.GodementEis
+import GroundTheory.GlobalFields.TateThesis.TateMain
 import GroundTheory.GlobalFields.TateThesis.TateThetaDecay
+
 set_option maxSynthPendingDepth 1
 
 open NumberField NumberField.mixedEmbedding IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
@@ -70,29 +72,6 @@ theorem exists_ideal_of_isCompact {S : Set 𝔸ᶠ[K]} (hS : IsCompact S) :
       field_simp
     rw [mixedEmbedding.norm_eq_norm, Rat.cast_abs, hξN, abs_mul, abs_inv]
     exact le_mul_of_one_le_left (by positivity) (one_le_abs_norm_of_ne_zero hr'0)
-
-theorem decay_real_bound {A B Z X₀ X₁ t κ : ℝ} {k n r : ℕ} (hA : 0 ≤ A) (hB : 0 < B) (hX₀ : 0 < X₀)
-    (hX₁ : 0 < X₁) (ht : 0 < t) (hκ : 0 < κ) (h₀ : X₀ / B ≤ Z) (h₁ : X₁ / B ≤ Z)
-    (h₂ : t * κ ≤ Z ^ n) :
-    A * (Z ^ (k + k + n * r))⁻¹ ≤
-      (t ^ r)⁻¹ * (A * B ^ (k + k) * (κ ^ r)⁻¹ * ((X₀ ^ k)⁻¹ * (X₁ ^ k)⁻¹)) := by
-  have hY₀ : 0 < X₀ / B := div_pos hX₀ hB
-  have hY₁ : 0 < X₁ / B := div_pos hX₁ hB
-  have htκ : 0 < t * κ := mul_pos ht hκ
-  have g₀ : (Z ^ k)⁻¹ ≤ ((X₀ / B) ^ k)⁻¹ := inv_anti₀ (pow_pos hY₀ k) (pow_le_pow_left₀ hY₀.le h₀ k)
-  have g₁ : (Z ^ k)⁻¹ ≤ ((X₁ / B) ^ k)⁻¹ := inv_anti₀ (pow_pos hY₁ k) (pow_le_pow_left₀ hY₁.le h₁ k)
-  have g₂ : ((Z ^ n) ^ r)⁻¹ ≤ ((t * κ) ^ r)⁻¹ :=
-    inv_anti₀ (pow_pos htκ r) (pow_le_pow_left₀ htκ.le h₂ r)
-  have hZ : 0 < Z := hY₀.trans_le h₀
-  calc A * (Z ^ (k + k + n * r))⁻¹ = A * ((Z ^ k)⁻¹ * (Z ^ k)⁻¹ * ((Z ^ n) ^ r)⁻¹) := by
-        rw [pow_add, pow_add, pow_mul, mul_inv, mul_inv]
-    _ ≤ A * (((X₀ / B) ^ k)⁻¹ * ((X₁ / B) ^ k)⁻¹ * ((t * κ) ^ r)⁻¹) := by
-        refine mul_le_mul_of_nonneg_left ?_ hA
-        exact mul_le_mul (mul_le_mul g₀ g₁ (by positivity) (by positivity)) g₂ (by positivity)
-          (by positivity)
-    _ = (t ^ r)⁻¹ * (A * B ^ (k + k) * (κ ^ r)⁻¹ * ((X₀ ^ k)⁻¹ * (X₁ ^ k)⁻¹)) := by
-        rw [div_pow, div_pow, inv_div, inv_div, mul_pow, mul_inv, pow_add]
-        field_simp
 
 theorem norm_le_norm_infC_moduleSection_mul (w : InfinitePlace K) {t : {x : ℝ // 0 < x}}
     (ht : 1 ≤ (t : ℝ)) (x : mixedSpace K) :

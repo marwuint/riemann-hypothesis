@@ -11,7 +11,8 @@ import Development.AutomorphicSpectrum.Statements.AlgebraStatements.OrdinaryCurv
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedFlagStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAbelianVarietyPTorsionStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.OrderPSquaredExtremalColengthStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAugmentationTheoremStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAugmentationTheorem
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedAFStatement
 import ReciprocityTheory.DualLattices.MemAugIdeal
 import ReciprocityTheory.DualLattices.IsLocalOfIntegers
 import ReciprocityTheory.DualLattices.ProdDvdOfIso
@@ -162,7 +163,7 @@ theorem ordinaryCurve_of_hodgeTate : HodgeTateDatumStatement → OrdinaryCurveSt
   letI : Algebra ℤ_[p] R := f.toAlgebra
   obtain ⟨P, z, hg, hz, hk⟩ := GlobalTheory.T.polarised_abelian_variety_p_torsion p C v R hv hlt hc
   obtain ⟨⟨T⟩, cp, hs, H, pt, hpt, hH⟩ := hht p C v R hv hlt hc P
-  obtain ⟨pt', h1, h2⟩ := OrdCurve.reindex GlobalTheory.T.polarised_augmentation_theorem hlt hs T P.g hg H pt hpt (hH T) hz hk
+  obtain ⟨pt', h1, h2⟩ := OrdCurve.reindex _root_.GlobalTheory.CompanionTheory.Ar.GR.polarisedAF hlt hs T P.g hg H pt hpt (hH T) hz hk
   exact ⟨P.A, P.grp, P.L, P.isAb, P.isLB, P.ample, T, pt', h1, h2⟩
 
 end GlobalTheory.CompanionTheory.Ar.GR

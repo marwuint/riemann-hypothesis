@@ -17,12 +17,14 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Continuous
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSchrodingerIntertwinerIntegralMatrices
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMatrixTranslationModulationIrreduc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchroedingerEigenvectorCompactCocycle
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergPreservesSchwartzBStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergPreservesSchwartzB
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntIndFromCols
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsDoubleDescentOfParity
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiThetaOfVac
 
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVacuumTransverseLagrangianLocalFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVacuumTransverseLagrangianLocalField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatVectorIrreducibleTranslationsCharaStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
@@ -171,7 +173,7 @@ theorem intertwiner_matrix : ∀ {k : Type} [Field k] [ValuativeRel k] [Topologi
     rw [hτa, hμa, hμa, hτa, GlobalTheory.VacLoc.schr_comm, hTM]
   have hτ0 : ∀ f, τ 0 f = f := fun f => by rw [hτa, map_zero]; exact GlobalTheory.VacLoc.schr_zero_vec ψ0 f
   have hμ0 : ∀ f, μ 0 f = f := fun f => by rw [hμa, map_zero]; exact GlobalTheory.VacLoc.schr_zero_vec ψ0 f
-  obtain ⟨f₀, hf₀SB, hf₀ne, hf₀T, hf₀M⟩ := GlobalTheory.T.exists_vacuum_transverseLagrangian_localField ψ0 hcont hc wT wM hTT hMM hTM hspan
+  obtain ⟨f₀, hf₀SB, hf₀ne, hf₀T, hf₀M⟩ := _root_.GlobalTheory.LagVac.exists_vacuum ψ0 hcont hc wT wM hTT hMM hTM hspan
   have hint : ∀ z : Matrix (Fin n) (Fin d) k,
       (∀ u : Matrix (Fin n) (Fin d) k, (∀ r q, u r q ∈ 𝒪[k]) → χ u z = 1) → ∀ r q, z r q ∈ 𝒪[k] := by
     intro z hz r q
@@ -213,7 +215,7 @@ theorem intertwiner_matrix : ∀ {k : Type} [Field k] [ValuativeRel k] [Topologi
     intro Φ
     refine (Submodule.span_le.2 ?_) (hTmspan Φ)
     rintro _ ⟨w, rfl⟩
-    exact GlobalTheory.T.schroedingerOperatorHeisenberg_preserves_schwartzBruhat ψ0 hcont _ _ (GlobalTheory.T.schroedingerOperatorHeisenberg_preserves_schwartzBruhat ψ0 hcont _ _ hf₀SB)
+    exact _root_.GlobalTheory.Adopt.schroedingerOperatorHeisenberg_preserves_schwartzBruhat ψ0 hcont _ _ (_root_.GlobalTheory.Adopt.schroedingerOperatorHeisenberg_preserves_schwartzBruhat ψ0 hcont _ _ hf₀SB)
   have hmodSB : ∀ Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k), ∀ z,
       (fun t => χ t z * Φ t) ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) :=
     fun Φ hΦ z => modul_mem ψ0 hcont hc hΦ z

@@ -4,7 +4,7 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentatio
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RealTransport.RealTransport
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
-import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.LocalGlobalCompatibilityReal
+import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.LocCompROfAdmissibleReal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.HasSatOfFixed
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RecOfRecLiteral
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
@@ -60,15 +60,6 @@ section Par
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
-theorem unr_of_hasFixed {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) {n : ℕ}
-    (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (hf : HasFixed σ.ρ (GlobalTheory.LFun.KGL w n)) :
-    (rc (cls (ParLaws.toRep σ))).unr := by
-  refine (ParLaws.unr_iff H _).2 ?_
-  unfold GlobalTheory.SmGL.IsSpherical GlobalTheory.SmGL.IsSphericalFor
-  rw [GlobalTheory.SmGL.SphCompletion.KO_completion w n]
-  obtain ⟨v, h0, hv⟩ := hf
-  exact (Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩
-
 theorem ine_trivial {x : WD h} (hx : x.unr) (hd : 1 ≤ x.lpDim) {ξ : Weil h →* ℂˣ} (hξ : IsSmooth ξ)
     (ht : (x.lpChar (WD.lpOfChar h ξ hξ)).unr) (s : Ine (F := E) A) : ξ (ineIncl h s) = 1 := by
   rw [lpChar_lpOfChar] at ht
@@ -87,40 +78,3 @@ end Par
 
 end GlobalTheory.RealGal.TwistUnr
 
-open GlobalTheory.RealGal.TwistUnr in
-
-theorem GlobalTheory.RealGal.unrAt_of_isoTwist : GlobalTheory.Mem.LiteralAutomorphy.LitN → AdmissibleReal → ∀ (F : Type) [Field F] [NumberField F]
-    [IsTotallyReal F] (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (η : HChar F), IsoTwist π η →
-    ∀ (u : HeightOneSpectrum (𝓞 F)) (B : Multiset ℂˣ), π.HasSat u B → η.UnrAt u := by
-  intro LN hA F _ _ _ a ha π η hT u B hB
-  have hL := GlobalTheory.T.local_global_compatibility_real hA
-  have L := LN.loc
-  obtain ⟨σ, hσ⟩ := (hL F a π u).1
-  have hσ' := isLocComp_twist hT hσ
-  obtain ⟨A, hAu⟩ := exists_isPlaceOver (AlgebraicClosure F) u
-  obtain ⟨rc, hrc⟩ := L.llc F (AlgebraicClosure F) A u hAu
-  have H : IsRec hAu rc := GlobalTheory.LocLanglands.isRec_of_isRecLit L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz
-    F (AlgebraicClosure F) A u hAu rc hrc
-  have u1 := unr_of_hasFixed H σ (hasFixed_of_hasSat hL hB hσ)
-  have u2 := unr_of_hasFixed H _ (hasFixed_of_hasSat hL hB hσ')
-  obtain ⟨ar, har, ε, -, LL⟩ := H
-  have hs := GlobalTheory.HeckeComp.smooth_loc η u
-  have e : rc (cls (ParLaws.toRep (σ.twist (GlobalTheory.CuspRep.CuspSub.locDet a η u) (TR.CuspSub.isOpen_ker_locDet η u)))) =
-      (rc (cls (ParLaws.toRep σ))).lpChar (rc (.ofChar (η.loc u) hs)) := by
-    rw [← LL.twist]
-    exact congrArg _ (IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm
-  rw [e, LL.one] at u2
-  have hd : 1 ≤ (rc (cls (ParLaws.toRep σ))).lpDim := by rw [LL.dim]; exact ha
-  have hi := ine_trivial u1 hd _ u2
-  have hU : (WD.lpOfChar hAu ((η.loc u).comp ar) (har.smooth hs)).unr := by
-    rw [WD.lpOfChar, WD.unr_mk]
-    refine ⟨rfl, fun s => LinearMap.ext fun v => funext fun i => ?_⟩
-    have := hi s
-    simp [this]
-  have hU' := (GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff har hs).1 hU
-  intro x hx
-  refine hU' x ?_
-  have h0 : Valued.v (x : u.adicCompletion F) ≠ 0 := by simp
-  rw [← GlobalTheory.SmGL.ord_eq_zero_iff, GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero]
-  unfold IsUnitAt at hx
-  rw [hx, WithZero.log_one]

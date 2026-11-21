@@ -27,121 +27,7 @@ def formMap : (Fin n → K) →ₛₗ[e] W where
 
 theorem formMap_apply (x : Fin n → K) : formMap e c x = ∑ i, e (x i) • c i := rfl
 
-theorem repr_formMap (x : Fin n → K) (i : Fin n) : c.repr (formMap e c x) i = e (x i) := by
-  rw [formMap_apply, c.repr_sum_self]
-
-theorem formMap_injective : Function.Injective (formMap e c) := by
-  intro x y h
-  funext i
-  apply e.injective
-  rw [← repr_formMap e c, ← repr_formMap e c, h]
-
-theorem formMap_basisFun (i : Fin n) : formMap e c (Pi.basisFun K (Fin n) i) = c i := by
-  apply c.repr.injective
-  ext k
-  rw [repr_formMap, Pi.basisFun_apply, c.repr_self, Finsupp.single_apply, Pi.single_apply]
-  by_cases h : k = i
-  · subst h; simp
-  · rw [if_neg h, if_neg (fun h' => h h'.symm), map_zero]
-
-theorem mem_range_formMap {v : W} (hv : ∀ i, c.repr v i ∈ Set.range e) :
-    v ∈ Set.range (formMap e c) := by
-  choose x hx using hv
-  refine ⟨x, c.repr.injective ?_⟩
-  ext i
-  rw [repr_formMap, hx]
-
-theorem span_eq_top_of_formMap (S : Set (Fin n → K))
-    (h : Submodule.span ℂ (formMap e c '' S) = ⊤) : Submodule.span K S = ⊤ := by
-  by_contra hne
-  obtain ⟨f, hf, hle⟩ := Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)
-  let ψ : W →ₗ[ℂ] ℂ := c.constr ℂ (fun i => e (f (Pi.basisFun K (Fin n) i)))
-  have hψ : ∀ x, ψ (formMap e c x) = e (f x) := by
-    intro x
-    rw [formMap_apply, map_sum]
-    conv_rhs => rw [← (Pi.basisFun K (Fin n)).sum_repr x, map_sum, map_sum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    simp [ψ]
-  have h0 : ψ = 0 := by
-    apply LinearMap.ext_on h
-    rintro _ ⟨x, hx, rfl⟩
-    have : f x = 0 := hle (Submodule.subset_span hx)
-    rw [hψ, this, map_zero, LinearMap.zero_apply]
-  apply hf
-  ext x
-  have := hψ (Pi.single x 1)
-  rw [h0, LinearMap.zero_apply] at this
-  simpa using this.symm
-
 end Form
-
-theorem exists_hLat_form (K : Type) [Field K] [NumberField K] [StarRing K] (e : K →+* ℂ) (W : Type)
-    [NormedAddCommGroup W] [InnerProductSpace ℂ W] (n : ℕ) (c : Module.Basis (Fin n) ℂ W)
-    (gen : Finset W) (hspan : Submodule.span ℂ (gen : Set W) = ⊤)
-    (hrat : ∀ v ∈ gen, ∀ i, c.repr v i ∈ Set.range e) :
-    ∃ (H : HLat K) (j : H.V →ₛₗ[e] W), H.Good ∧
-      (LinearIndependent ℂ (fun i => j (H.b i)) ∧
-        Submodule.span ℂ (Set.range (fun i => j (H.b i))) = ⊤) ∧
-      (∀ x, x ∈ H.L ↔ ∃ a : W → 𝓞 K, j x = ∑ v ∈ gen, e ((a v : 𝓞 K) : K) • v) ∧
-      (∀ x ∈ gen, x ∈ Set.range j) ∧
-      (∀ x, Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord H.b H.X (InfinitePlace.mk e) x) = ‖j x‖) := by
-  classical
-  obtain ⟨X, hX, hn⟩ := GlobalTheory.exists_frames_normAt_eq_norm K e W n c ⊥
-  have hpre : ∀ v : W, ∃ x : Fin n → K, v ∈ gen → formMap e c x = v := by
-    intro v
-    by_cases hv : v ∈ gen
-    · obtain ⟨x, hx⟩ := mem_range_formMap e c (hrat v hv)
-      exact ⟨x, fun _ => hx⟩
-    · exact ⟨0, fun h => absurd h hv⟩
-  choose pre hpre using hpre
-  have hb : (fun i => formMap e c (Pi.basisFun K (Fin n) i)) = c :=
-    funext (formMap_basisFun e c)
-  have hsum : ∀ a : W → 𝓞 K, formMap e c (∑ v ∈ gen, a v • pre v) =
-      ∑ v ∈ gen, e ((a v : 𝓞 K) : K) • v := by
-    intro a
-    rw [map_sum]
-    refine Finset.sum_congr rfl fun v hv => ?_
-    rw [show a v • pre v = ((a v : 𝓞 K) : K) • pre v from rfl, LinearMap.map_smulₛₗ, hpre v hv]
-  refine ⟨HLat.mk (Fin n → K) (Fin n) (Pi.basisFun K (Fin n)) X
-    (Submodule.span (𝓞 K) (pre '' (gen : Set W))), formMap e c, ⟨hX, ?_, ?_⟩, ⟨?_, ?_⟩, ?_, ?_, hn⟩
-  · exact Submodule.fg_span (gen.finite_toSet.image pre)
-  · apply span_eq_top_of_formMap e c
-    rw [eq_top_iff, ← hspan]
-    apply Submodule.span_mono
-    intro v hv
-    exact ⟨pre v, Submodule.subset_span ⟨v, hv, rfl⟩, hpre v hv⟩
-  · show LinearIndependent ℂ (fun i => formMap e c (Pi.basisFun K (Fin n) i))
-    rw [hb]; exact c.linearIndependent
-  · show Submodule.span ℂ (Set.range (fun i => formMap e c (Pi.basisFun K (Fin n) i))) = ⊤
-    rw [hb]; exact c.span_eq
-  · intro (x : Fin n → K)
-    show x ∈ Submodule.span (𝓞 K) (pre '' (gen : Set W)) ↔ ∃ a : W → 𝓞 K,
-      formMap e c x = ∑ v ∈ gen, e ((a v : 𝓞 K) : K) • v
-    constructor
-    · intro hx
-      induction hx using Submodule.span_induction with
-      | mem x hx =>
-        obtain ⟨v, hv, rfl⟩ := hx
-        refine ⟨fun w => if w = v then 1 else 0, ?_⟩
-        rw [hpre v hv, Finset.sum_eq_single_of_mem v hv (fun w _ hw => by simp [hw])]
-        simp
-      | zero => exact ⟨0, by simp⟩
-      | add x y _ _ hx hy =>
-        obtain ⟨a, ha⟩ := hx
-        obtain ⟨b, hb⟩ := hy
-        exact ⟨a + b, by simp [ha, hb, add_smul, Finset.sum_add_distrib]⟩
-      | smul r x _ hx =>
-        obtain ⟨a, ha⟩ := hx
-        refine ⟨fun w => r * a w, ?_⟩
-        rw [show r • x = (r : K) • x from rfl, LinearMap.map_smulₛₗ, ha, Finset.smul_sum]
-        simp [mul_smul]
-    · rintro ⟨a, ha⟩
-      rw [← hsum a, (formMap_injective e c).eq_iff] at ha
-      rw [ha]
-      exact Submodule.sum_mem _ fun v hv =>
-        Submodule.smul_mem _ _ (Submodule.subset_span ⟨v, hv, rfl⟩)
-  · intro v hv
-    exact ⟨pre v, hpre v hv⟩
 
 structure MjForm (D : D7) (j : ℕ) where
 
@@ -156,27 +42,6 @@ structure MjForm (D : D7) (j : ℕ) where
   sub : 1 ≤ j → j ≤ D.R.m → ∀ x ∈ (D.what₂.MjLat j).gen, x ∈ Set.range jm
   metric : ∀ x, Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord H.b H.X
     (InfinitePlace.mk D.what₂.embLL) x) = ‖jm x‖
-
-theorem nonempty_mjForm (D : D7) (j : ℕ)
-    (h : 1 ≤ j → j ≤ D.R.m → ∃ (n : ℕ) (c : Module.Basis (Fin n) ℂ (D.what₂.Mj j)),
-      ∀ v ∈ (D.what₂.MjLat j).gen, ∀ i, c.repr v i ∈ Set.range D.what₂.embLL) :
-    Nonempty (MjForm D j) := by
-  classical
-  by_cases hj : 1 ≤ j ∧ j ≤ D.R.m
-  · obtain ⟨n, c, hc⟩ := h hj.1 hj.2
-    obtain ⟨H, jm, h1, h2, h3, h4, h5⟩ := exists_hLat_form D.what₂.LL D.what₂.embLL (D.what₂.Mj j) n c
-      _ (D.what₂.MjLat j).span_top hc
-    exact ⟨⟨H, jm, h1, h2, fun _ _ => h3, fun _ _ => h4, h5⟩⟩
-  · let c := Module.finBasis ℂ (D.what₂.Mj j)
-    obtain ⟨H, jm, h1, h2, -, -, h5⟩ := exists_hLat_form D.what₂.LL D.what₂.embLL (D.what₂.Mj j) _ c
-      (Finset.univ.image c) (by simp) (by
-        intro v hv i
-        obtain ⟨k, -, rfl⟩ := Finset.mem_image.1 hv
-        rw [c.repr_self, Finsupp.single_apply]
-        split_ifs
-        · exact ⟨1, map_one _⟩
-        · exact ⟨0, map_zero _⟩)
-    exact ⟨⟨H, jm, h1, h2, fun a b => absurd ⟨a, b⟩ hj, fun a b => absurd ⟨a, b⟩ hj, h5⟩⟩
 
 theorem resChar_eq_iff (D : D7) {p : ℕ} (hp : p.Prime) (w : D.what₂.places.Pl) :
     D.what₂.places.resChar w = p ↔ (p : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
@@ -292,16 +157,6 @@ def provisionalDivX (D : D7) (G : DV.Geo D.what₂.LL) (Y : G.Var)
     surfDegOm := fun s => s.elim
     SurfFp := Empty
     surfFpCh2 := fun s => s.elim }
-
-theorem exists_provisionalDivX : ∀ D : D7, (∀ j, 1 ≤ j → j ≤ D.R.m →
-    ∃ (n : ℕ) (c : Module.Basis (Fin n) ℂ (D.what₂.Mj j)),
-      ∀ v ∈ (D.what₂.MjLat j).gen, ∀ i, c.repr v i ∈ Set.range D.what₂.embLL) →
-    ∃ X : DivX D, DV.KapRBase X := by
-  intro D h
-  obtain ⟨G, Y, -⟩ := GlobalTheory.PointGeometry.exists_geo D.what₂.LL
-  exact ⟨provisionalDivX D G Y (fun p _ => (GlobalTheory.WittFracComplex.nonempty_ringHom_complex p).some)
-    (fun p _ r => (GlobalTheory.nonempty_admissibleModel D p _ (max r 2) 1 (by omega)).some)
-    (fun j => (nonempty_mjForm D j (h j)).some), rfl⟩
 
 end GlobalTheory
 

@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockBaseChange
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockDataLevelFormsTransportFieldMapStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendedDataLiftBlockDatumEqBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendedDataLiftBlockDatumEqBaseChange
 
 noncomputable section
 
@@ -40,7 +40,7 @@ theorem defLat0_baseChange : GlobalTheory.Published.DiscreteSeriesCover → Glob
           ∀ x y : Fin (((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).side3 z.F.P0 z.F.ψ0 (zsOf z.R z.F)).dZ j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0) → (w.st Z).toD7.what₂.LL, Formalism.DivisionValues.hform (((famR (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) z'.Xg z'.tr).side3 z'.F.P0 z'.F.ψ0 (zsOf z'.R z'.F)).HT j' (famR (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) z'.Xg z'.tr).A.μ0) (Matrix.mulVec G fun k => φ (x k)) (Matrix.mulVec G fun k => φ (y k)) =
             φ (Formalism.DivisionValues.hform (((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).side3 z.F.P0 z.F.ψ0 (zsOf z.R z.F)).HT j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0) x y)) := by
   intro h1 h2 h3 h4 h5 h6 h7
-  refine StepW.trans (GlobalTheory.T.extendedData_lift_blockDatum_eq_baseChange h1 h2 h3 h4 h5 h6 h7) (StepW.of_all ?_)
+  refine StepW.trans (_root_.GlobalTheory.Mem.R3.TwistedPlaceExtensions.blockBC_lift h1 h2 h3 h4 h5 h6 h7) (StepW.of_all ?_)
   intro K B' f' T' w' _ _ H B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ
   obtain ⟨e, he⟩ := H B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ
   have hstar : ∀ x, φ (star x) = star (φ x) := fun x =>

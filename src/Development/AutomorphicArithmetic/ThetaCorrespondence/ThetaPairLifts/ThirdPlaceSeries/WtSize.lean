@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightParamCoeffSumLeAtIndex
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HostN
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.WtNZ
@@ -18,25 +18,14 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.CovTop.WtRun
-open GlobalTheory.FlagTan (dimFlag)
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
-variable (P : WtPar Dw)
-end GlobalTheory.CovTop.WtRun
-namespace GlobalTheory.CovTop.WtRun
-open GlobalTheory.FlagTan (dimFlag)
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
-variable (P : WtPar Dw)
-end GlobalTheory.CovTop.WtRun
-namespace GlobalTheory.CovTop.WtRun
-open GlobalTheory.FlagTan (dimFlag)
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
-variable (P : WtPar Dw)
 end GlobalTheory.CovTop.WtRun
 namespace GlobalTheory.CovTop.WtRun
 end GlobalTheory.CovTop.WtRun
 namespace GlobalTheory.CovTop.WtRun
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
-  {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
+end GlobalTheory.CovTop.WtRun
+namespace GlobalTheory.CovTop.WtRun
+end GlobalTheory.CovTop.WtRun
+namespace GlobalTheory.CovTop.WtRun
 end GlobalTheory.CovTop.WtRun
 namespace GlobalTheory.CovTop.WtRun
 theorem wt_size_alt : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ j ≤ lenT p i PP, ∑ τ, ∑ k, |((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt j τ k : ℝ)| ≤ zBase (Fm.L x ι) ^ 2 * kap p i := by

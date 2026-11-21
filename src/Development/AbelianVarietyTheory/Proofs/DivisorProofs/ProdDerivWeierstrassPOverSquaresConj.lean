@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DatumOfIsIntegersLa
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjKernelMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqrtNegPrimeKernelCyclicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardSqModPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdDerivWeierstrassPOverSquaresNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonzeroSquaresModPrimeMulPermUpToSignStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjKernelMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqrtNegPrimeKernelCyclic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardSqModPrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdDerivWeierstrassPOverSquaresNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonzeroSquaresModPrimeMulPermUpToSign
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -27,11 +27,11 @@ lemma dwp_eq_of_sub_mem (L : PeriodPair) {z w : ℂ} (h : z - w ∈ L.lattice) :
 
 theorem sqProd_conj : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ), p.Prime → p % 4 = 3 → 3 < p → Datum p F L t → ∀ σ : ℂ ≃+* ℂ, (∀ x ∈ F, σ x = x) → (σ (sqProd p L t) = sqProd p L t ∧ ∃ e : Sq p ≃ Sq p, ∀ k, GlobalTheory.ConjPoint.IsConj L L σ (sqPt p t k) (sqPt p t (e k))) ∨ σ (sqProd p L t) = -sqProd p L t := by
   intro p F L t hp hp4 hp3 hD σ hσ
-  obtain ⟨c, hpc, hc⟩ := GlobalTheory.T.exists_conj_kernel_mul' p F L t hp hp4 hp3 hD σ hσ
-  obtain ⟨e, ε, hε, he⟩ := GlobalTheory.T.nonzeroSquaresModPrime_mul_perm_up_to_sign p c hp hp4 hpc
-  have hker := (GlobalTheory.T.sqrtNegPrime_kernel_cyclic p F L t hp hp4 hp3 hD).1
-  obtain ⟨hne, -⟩ := GlobalTheory.T.prodDerivWeierstrassPOverSquares_ne_zero p F L t hp hp4 hp3 hD
-  obtain ⟨-, hodd⟩ := GlobalTheory.T.two_mul_card_sq_add_one_eq_and_odd_of_mod_four_eq_three p hp hp4
+  obtain ⟨c, hpc, hc⟩ := _root_.GlobalTheory.CMModel.exists_conj_kernel_mul p F L t hp hp4 hp3 hD σ hσ
+  obtain ⟨e, ε, hε, he⟩ := _root_.GlobalTheory.CMModel.sq_perm_mul p c hp hp4 hpc
+  have hker := (_root_.GlobalTheory.CMModel.ker_sqrtNegNat_cyclic p F L t hp hp4 hp3 hD).1
+  obtain ⟨hne, -⟩ := _root_.GlobalTheory.CMModel.SqNe.sqPt_and_sqProd_ne_zero p F L t hp hp4 hp3 hD
+  obtain ⟨-, hodd⟩ := _root_.GlobalTheory.CMModel.card_sq_mod_prime p hp hp4
   have hmem : ∀ k : Sq p, ((k.1 : ℕ) : ℂ) * ((c : ℂ) * t) - (ε : ℂ) * sqPt p t (e k) ∈ L.lattice := by
     intro k
     have := (hker _).2 (he k)

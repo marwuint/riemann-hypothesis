@@ -54,16 +54,6 @@ def fockOf {V W : HSp D} {S S' : D.what₂.Tau → SPar} (ψ : AddChar (AF D.hos
     (M : DSModel V S) (M' : DSModel W S') (f : WO V W → ℂ) : PolF D W.rank V.rank → (WO V W → ℂ) :=
   pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f
 
-def ItPair (D : D7) : Prop :=
-  ∀ (i : Fin D.R.m), StepGap D i →
-    ∀ (θ : InfFam D), IsInfFam θ → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
-    ∀ (V W : HSp D) (S S' : D.what₂.Tau → SPar), S = parB (Ptw D) i → S' = parB (Ptw D) ((i : ℕ) + 1) →
-    ∀ (M : DSModel V S) (M' : DSModel W S'),
-      ∃ It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, It ≠ 0 ∧
-        ∀ (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (f : WO V W → ℂ),
-          StepWeil ψ i V W ω → VacVec ψ θ M M' f → f ≠ 0 →
-            IsItW θ M M' ω (fockOf ψ θ M M' f) It
-
 end GlobalTheory.IndefiniteRowSideFullHecke.WeilSignShift
 
 end

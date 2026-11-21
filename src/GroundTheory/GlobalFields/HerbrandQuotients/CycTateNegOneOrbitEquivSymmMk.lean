@@ -376,34 +376,6 @@ noncomputable def cycTateNegOneOrbitEquiv [Fintype G] (ρ : Representation k G (
     (orbitNegOneMap_surjective ρ hρ x₀ D hD ρ₀ hρ₀ τ hτ)
     (orbitNegOneMap_eq_zero_iff ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ)
 
-theorem cycTateNegOneOrbitEquiv_symm_mk [Fintype G] [DecidableEq X]
-    (ρ : Representation k G (∀ x, M x))
-    (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]
-    (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀) (ρ₀ : Representation k D (M x₀))
-    (hρ₀ : ∀ (d : D) (f : ∀ x, M x), ρ d f x₀ = ρ₀ d (f x₀)) (σ : G)
-    (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (τ : D) (hτ : ∀ d, d ∈ Subgroup.zpowers τ)
-    (b : (cycNorm ρ₀).ker) :
-    (cycTateNegOneOrbitEquiv ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ).symm (QuotientAddGroup.mk b) =
-      QuotientAddGroup.mk ⟨Pi.single x₀ (b : M x₀), single_mem_ker_cycNorm hρ hD hρ₀ b.2⟩ := by
-  rw [AddEquiv.symm_apply_eq, eq_comm]
-  let _ : Finite X := finite_of_isPretransitive G x₀
-  let _ : Fintype X := Fintype.ofFinite X
-  show orbitNegOneMap ρ x₀ D hD ρ₀ hρ₀ τ _ = _
-  rw [orbitNegOneMap_apply, KerModRange.mk_eq_mk_iff]
-  show orbitCores ρ x₀ (Pi.single x₀ (b : M x₀)) - (b : M x₀) ∈ (cycSubOne ρ₀ τ).range
-  rw [orbitCores_single hρ hD hρ₀]
-  exact apply_sub_self_mem_range_cycSubOne ρ₀ hτ _ _
-
-theorem cycHerbrand_orbit [Fintype G] (ρ : Representation k G (∀ x, M x))
-    (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]
-    (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀) (ρ₀ : Representation k D (M x₀))
-    (hρ₀ : ∀ (d : D) (f : ∀ x, M x), ρ d f x₀ = ρ₀ d (f x₀)) (σ : G)
-    (hσ : ∀ g, g ∈ Subgroup.zpowers σ) (τ : D) (hτ : ∀ d, d ∈ Subgroup.zpowers τ) :
-    cycHerbrand ρ σ = cycHerbrand ρ₀ τ := by
-  rw [cycHerbrand_eq, cycHerbrand_eq,
-    Nat.card_congr (cycTateZeroOrbitEquiv ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ).toEquiv,
-    Nat.card_congr (cycTateNegOneOrbitEquiv ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ).toEquiv]
-
 end Orbit
 
 end GroundTheory.Global

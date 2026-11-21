@@ -105,9 +105,6 @@ theorem finrank_eq_of_injective {M N : Type} [AddCommGroup M] [AddCommGroup N] [
   rw [e.finrank_eq]
   omega
 
-theorem ConjDual.finrank_eq_one (H : Host E) : finrank (𝓞 E) (ConjDual H) = 1 := by
-  rw [← finrank_eq_of_injective _ (traceDual_injective H) finrank_int.symm, finrank_self]
-
 abbrev HypLattice (H : Host E) : Type := 𝓞 E × ConjDual H
 
 theorem finrank_hypLattice (H : Host E) : finrank (𝓞 E) (HypLattice H) = 2 := by
@@ -329,26 +326,6 @@ theorem trace_hypJ_comp : LinearMap.trace ℝ _ (hypJ H ∘ₗ A) = 0 := by
 
 end Action
 
-theorem hypJ_inl (H : Host E) (x : 𝓞 E) :
-    hypJ H (1 ⊗ₜ (x, 0)) = 1 ⊗ₜ (0, traceDual H x) := by
-  apply (hypRealBasis H).repr.injective
-  have h := LinearMap.toMatrix_mulVec_repr (hypRealBasis H) (hypRealBasis H) (hypJ H) (1 ⊗ₜ (x, 0))
-  apply DFunLike.coe_injective
-  rw [← h, toMatrix_hypJ]
-  have hx : ∀ y, trForm H x y =
-      ∑ j, trForm H y (RingOfIntegers.basis E j) * (RingOfIntegers.basis E).repr x j := by
-    intro y
-    rw [trForm_symm]
-    conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr x]
-    simp only [map_sum, map_zsmul]
-    simp [mul_comm]
-  ext (i | i) <;>
-    simp [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, hypRealBasis, hypBasis_repr_inl, hypBasis_repr_inr, gram, hx]
-
-theorem hypJ_inr (H : Host E) (x : 𝓞 E) :
-    hypJ H (1 ⊗ₜ (0, traceDual H x)) = -(1 ⊗ₜ (x, 0)) := by
-  rw [← hypJ_inl, hypJ_hypJ]
-
 @[reducible] def hypDatum (H : Host E) : Datum H where
   La := HypLattice H
   fin := inferInstance
@@ -380,27 +357,6 @@ theorem hypDatum_smul (H : Host E) (a x : 𝓞 E) (f : ConjDual H) :
 
 theorem hypDatum_EF_inl_inl (H : Host E) (x y : 𝓞 E) : (hypDatum H).EF (x, 0) (y, 0) = 0 := by simp
 
-theorem hypDatum_EF_inr_inr (H : Host E) (f g : ConjDual H) : (hypDatum H).EF (0, f) (0, g) = 0 := by simp
-
-theorem hypDatum_EF_inr_inl (H : Host E) (f : ConjDual H) (y : 𝓞 E) :
-    (hypDatum H).EF (0, f) (y, 0) = toDual H f y := by simp
-
 instance instNonemptyDatum (H : Host E) : Nonempty (Datum H) := ⟨hypDatum H⟩
-
-example (H : Host E) : finrank (𝓞 E) (hypDatum H).La = 2 := (hypDatum H).rank
-
-example (H : Host E) : (hypDatum H).EF (0, traceDual H 1) (1, 0) = finrank ℚ E := by
-  simp [trForm_one_one]
-
-example (H : Host E) (f : ConjDual H) (x : 𝓞 E) : toDual H (H.rt • f) x = -toDual H f (H.rt * x) := by simp
-
-example (H : Host E) (a : 𝓞 E) :
-    LinearMap.trace ℝ _ ((DistribSMul.toLinearMap ℤ (HypLattice H) a).baseChange ℝ) =
-      2 * (Algebra.trace ℤ (𝓞 E) a : ℤ) :=
-  trace_of_smul H a _ fun _ => rfl
-
-example : finrank ℤ (hypDatum host).La = 24 := by
-  change finrank ℤ (𝓞 E21 × ConjDual host) = 24
-  rw [finrank_prod, finrank_int, RingOfIntegers.rank, finrank_rat_E21_eq_twelve]
 
 end GlobalTheory.HostModel

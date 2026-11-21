@@ -9,24 +9,27 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitIdealC
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FractionalIdealCompletionLocallyPrincipal
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CoprimeScalingIdealValuationLe
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLatticeRationalLineTraceFractionalIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowLatticeSelfDualComponentsRescaledWordFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowLatticeSelfDualComponentsRescaledWordFrame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLineStableLatticeSplitsAlongWittSelfDualStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselLevelLineVectorPrimitiveRowLatticeNormStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowLineIdealEqInverseDifferentPowStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TransportCorrectionCarriesColumnLatticeRowTraceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PsiPrimitiveOfInverseDifferentLinesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomotheticOfMonomialPrimitiveSelfDualCoresStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselLevelLineVectorPrimitiveRowLatticeNorm
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowLineIdealEqInverseDifferentPow
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TransportCorrectionCarriesColumnLatticeRowTrace
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PsiPrimitiveOfInverseDifferentLines
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomotheticOfMonomialPrimitiveSelfDualCores
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceComponentMonomialLatticeSplitCoreStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.InverseDifferentPowCompletionTrivialAtSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLatticeSplitsOffUnitNormLineAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticesSameSplitShapeCarriedByCentralStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastWittLineOfBesselJacobiLatticesGoodStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilShapeOfFrameMovesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemChainLevelIffCarriesLatticeOffLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.InverseDifferentPowCompletionTrivialAtSplitPlace
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLatticeSplitsOffUnitNormLineAtPlace
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticesSameSplitShapeCarriedByCentral
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastWittLineOfBesselJacobiLatticesGood
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FrameVectorLatticeCriterion
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemIdAtOfSupp
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualImageAdelicPointWittCore
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationXiZeroEqOne
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemChainLevelIffCarriesLatticeOffLevel
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralElementHomotheticGluedCoresStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ColumnLevelIffRowLatticeKeptAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittCoreEmbeddingStabilisesIffCoreStabilisesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthogonalSumCoresHomotheticOffLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ColumnLevelIffRowLatticeKeptAtPlace
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittCoreEmbeddingStabilisesIffCoreStabilises
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthogonalSumCoresHomotheticOffLevel
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralGlueLocalHomothetiesStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsFrameFinitePartMulOfCarriesLatticeStatement
 
@@ -175,13 +178,13 @@ theorem rows_shape (hE : GlobalTheory.Core.Mi.IdE X) (hF : B.FrameAt μ lam) :
     (∀ v (i : Fin D.R.rS), ∀ a ∈ idAt D (· = v), colMul B.d.jY i a ∈ latV (D.sp.Y 0) (latS D) (· = v) ↔
       incA D (star (GlobalTheory.Core.SBesEx.scl μ lam i))⁻¹ * a ∈ idV (dI D ^ (D.R.rS - i.1))⁻¹ v) ∧
     ∀ v, LineAt (vecB B.o B.ζ) μ (coreLat B.d (latS D)) v := by
-  obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.rowLattice_selfDual_components_rescaled_word_frame D X h u ψ _ B μ lam hE hF
+  obtain ⟨h1, h2, h3, h4⟩ := _root_.GlobalTheory.Core.Mi.LatMatch.latS_rescaled_frame D X h u ψ _ B μ lam hE hF
   obtain ⟨h5, h6⟩ := GlobalTheory.T.selfDual_lineStable_lattice_splitsAlongWitt_selfDualCore D _ _ _ B.d (latS D) h1 h2
-  obtain ⟨h7, -, h8⟩ := GlobalTheory.T.besselLevelLineVector_primitive_rowLattice_norm D X h u ψ _ B μ lam hE hF
+  obtain ⟨h7, -, h8⟩ := _root_.GlobalTheory.Core.Mi.LatMatch.sz_tied D X h u ψ _ B μ lam hE hF
   refine ⟨h1, h5, h6, fun v i => ?_, fun v i => ?_, fun v a ha => ?_⟩
-  · rw [← GlobalTheory.T.rowLineIdeal_eq_inverseDifferent_pow D i]
+  · rw [← _root_.GlobalTheory.Core.Mi.LatMatch.DiffInv.aaD_eq_dI_pow D i]
     exact line_loc h1 (col_e_ne B.d i) (scl_ne hF i) (h3 i) v
-  · rw [← GlobalTheory.T.rowLineIdeal_eq_inverseDifferent_pow D i]
+  · rw [← _root_.GlobalTheory.Core.Mi.LatMatch.DiffInv.aaD_eq_dI_pow D i]
     exact line_loc h1 (col_e'_ne B.d i) (inv_ne_zero (star_ne_zero.2 (scl_ne hF i))) (h4 i) v
   · rw [line_loc h5 h8 hF.ne h7 v a ha, GlobalTheory.SeeSaw.idV_one_eq_intAt]
 
@@ -191,7 +194,7 @@ theorem rows_trace (hE : GlobalTheory.Core.Mi.IdE X) (hF : B.FrameAt μ lam) (hM
     (hA : B.Adapted tr.wt) (h0 : IsTransportAdelicCorrection tr a₀) (v : GlobalTheory.FinPl.Pl D) {N : Lat (D.sp.X 0)}
     (hN : latV (D.sp.X 0) N (· = v) = latV (D.sp.X 0) (lat0 F) (· = v)) : TraceAt B.o a₀ N (coreLat B.d (latS D)) v := by
   intro y hy
-  rw [hN, GlobalTheory.T.transportCorrection_carries_columnLattice_rowTrace D X h u ψ F tr hK B a₀ hE hM hA h0 v y hy, j_zero_mul_mem_lattice_iff B.d _ _ v ((rows_shape hE hF).2.2.1 v)]
+  rw [hN, _root_.GlobalTheory.Core.Mi.LatMatch.TraceX.trace_iff D X h u ψ F tr hK B a₀ hE hM hA h0 v y hy, j_zero_mul_mem_lattice_iff B.d _ _ v ((rows_shape hE hF).2.2.1 v)]
 
 theorem loc_of_core (hψ : IsStdChar D ψ (-1)) (hE : GlobalTheory.Core.Mi.IdE X) (hF : B.FrameAt μ lam) {v : GlobalTheory.FinPl.Pl D}
     (hg : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal) {L : Lat (D.sp.Y 0)} {M : Lat B.V₀}
@@ -205,10 +208,10 @@ theorem loc_of_core (hψ : IsStdChar D ψ (-1)) (hE : GlobalTheory.Core.Mi.IdE X
   obtain ⟨s1, s2, s3, s4, -, s6⟩ := rows_shape hE hF
   have hl : lam = ((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E) ∨ lam = -((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E) := by
     rw [← X.g_eq]; exact hF.sign
-  obtain ⟨p1, p2⟩ := GlobalTheory.T.psi_primitive_of_inverseDifferent_lines D ψ hψ _ _ _ B.d (vecB B.o B.ζ) (latS D) _ μ v hF.ne (s6 v) (fun i x hx => by
+  obtain ⟨p1, p2⟩ := _root_.GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines D ψ hψ _ _ _ B.d (vecB B.o B.ζ) (latS D) _ μ v hF.ne (s6 v) (fun i x hx => by
     rw [s4 v i x hx, GlobalTheory.Core.SBesEx.scl, mul_comm μ, map_mul, mul_assoc, pow_mul_mem_iff hg hl])
-  exact ⟨a, c, ha, hc, GlobalTheory.T.sMoves_emb0_of_sMoves_selfDual D ψ _ _ _ B.d (vecB B.o B.ζ) L (latS D) M _ v c _ hL s1 hM
-    (GlobalTheory.T.besselLevelLineVector_primitive_rowLattice_norm D X h u ψ _ B μ lam hE hF).2.2 h1 (s3 v) h2 p1 h3 p2 hc (emb_fix _ _ _) hm⟩
+  exact ⟨a, c, ha, hc, _root_.GlobalTheory.Core.Mi.LatMatch.homothetic_of_monomial_primitive_selfDual_cores D ψ _ _ _ B.d (vecB B.o B.ζ) L (latS D) M _ v c _ hL s1 hM
+    (_root_.GlobalTheory.Core.Mi.LatMatch.sz_tied D X h u ψ _ B μ lam hE hF).2.2 h1 (s3 v) h2 p1 h3 p2 hc (emb_fix _ _ _) hm⟩
 
 theorem loc_level (hE : GlobalTheory.Core.Mi.IdE X) (hF : B.FrameAt μ lam) (hM : Formalism.L2.SG.ColDict.LevelMatch X tr hK)
     (hA : B.Adapted tr.wt) (h0 : IsTransportAdelicCorrection tr a₀) {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
@@ -222,11 +225,11 @@ theorem loc_level (hE : GlobalTheory.Core.Mi.IdE X) (hF : B.FrameAt μ lam) (hM 
     ∃ (a : GA D (D.sp.X 0)) (c : AE D), CenAt (D.sp.X 0) p.v a ∧ NormOneAt p.v c ∧
       SMoves (D.sp.Y 0) c (embA B.d B.o (a₀ * a)) L (latS D) p.v := by
   obtain ⟨s1, s2, s3, s4, s5, s6⟩ := rows_shape hE hF
-  obtain ⟨-, z2, -⟩ := GlobalTheory.T.besselLevelLineVector_primitive_rowLattice_norm D X h u ψ _ B μ lam hE hF
+  obtain ⟨-, z2, -⟩ := _root_.GlobalTheory.Core.Mi.LatMatch.sz_tied D X h u ψ _ B μ lam hE hF
   have hS := GlobalTheory.T.splitPlaceComponent_monomialLattice_splitCore D k p _ _ _ _ _ B.d B.o B.ζ (latS D) _ N (fun i => GlobalTheory.Core.SBesEx.scl μ lam i)
     (fun i => (star (GlobalTheory.Core.SBesEx.scl μ lam i))⁻¹) μ a₀ (s3 _)
-    (fun i x hx => by rw [s4 _ i x hx, (GlobalTheory.T.inverseDifferentPow_completion_trivial_at_splitPlace D k p hp _ _).1]) (fun i x hx => by rw [s5 _ i x hx, (GlobalTheory.T.inverseDifferentPow_completion_trivial_at_splitPlace D k p hp _ _).2])
-    (s6 _) (GlobalTheory.T.selfDualLattice_splitsOff_unitNormLine_at_place D _ _ _ B.o B.ζ _ μ _ _ B.line s2 hF.ne (s6 _) z2 hT) (rows_trace hE hF hM hA h0 _ hN)
+    (fun i x hx => by rw [s4 _ i x hx, (_root_.GlobalTheory.Core.Mi.LatMatch.idV_dI_pow_unit D k p hp _ _).1]) (fun i x hx => by rw [s5 _ i x hx, (_root_.GlobalTheory.Core.Mi.LatMatch.idV_dI_pow_unit D k p hp _ _).2])
+    (s6 _) (_root_.GlobalTheory.Core.Mi.LatMatch.SplitOff.splitsAt D _ _ _ B.o B.ζ _ μ _ _ B.line s2 hF.ne (s6 _) z2 hT) (rows_trace hE hF hM hA h0 _ hN)
   set f : D.host.E →+* k := p.pr.comp (incA D) with hf
   have hfe : ∀ x, p.pr (incA D x) = f x := fun _ => rfl
   have vg : valuation k (f lam) = valuation k ϖ := by
@@ -243,7 +246,7 @@ theorem loc_level (hE : GlobalTheory.Core.Mi.IdE X) (hF : B.FrameAt μ lam) (hM 
     have hT' := val_nat p hT
     rw [z2, hfe, map_neg, Valuation.map_neg, map_mul, map_mul, map_mul, map_mul, ← hfe (Nat.cast _), hT', mul_one] at hz
     exact eq_inv_of_mul_eq_one_right hz
-  refine GlobalTheory.T.lattices_same_splitShape_carried_by_central D k p _ _ _ _ _ B.d B.o B.ζ L (latS D) N N _ _ _ _ _ _ (ϖ ^ (D.R.rS + 1) * f μ)⁻¹ a₀ B.line hL s1 hW hS rfl
+  refine _root_.GlobalTheory.Core.Mi.LatMatch.sMoves_of_wShape D k p _ _ _ _ _ B.d B.o B.ζ L (latS D) N N _ _ _ _ _ _ (ϖ ^ (D.R.rS + 1) * f μ)⁻¹ a₀ B.line hL s1 hW hS rfl
     (inv_ne_zero (mul_ne_zero (pow_ne_zero _ ((Valuation.ne_zero_iff _).1 hϖ0)) ((map_ne_zero f).2 hF.ne))) (fun i => ?_)
     (fun i => ?_) ?_
   · have e : D.R.rS + 1 = (D.R.rS - i.1) + (i.1 + 1) := by have := i.2; omega
@@ -328,26 +331,6 @@ def ChainFacts (L : Lat (D.sp.Y 0)) (b : GlobalTheory.SeeSaw.BesAt (D.sp.Y 0) (D
       (FiniteAdeleRing (𝓞 D.host.F) D.host.F), GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a = y.1.1 →
       ((y : GL _ _) ∈ F.cls0.lev.U ↔ Moves (D.sp.Y 0) (embA b.d b.o a) L L (· = v))
 
-theorem good_zero (hO : GlobalTheory.FinPl.PinOff o) (ρ : ℕ) (h0 : 0 + 2 * ρ + 2 = D.R.m) :
-    (∀ v, v ∉ d.c.S → GoodBF d.c.ψ (d.B 0 ρ h0) ((d.jac 0 ρ h0).lev (d.x (0 + 1)).vol) (o.L 0) (o.M 0 ρ h0) (o.L (0 + 1))
-      (d.x (0 + 1)).L v) ∧
-    ∀ i, GluedCore (d.B 0 ρ h0) (o.M 0 ρ h0) o.q (o.β 0 i) (o.β₀ 0 ρ h0 i) (o.Q 0 i) := by
-  cases ρ with
-  | zero => exact ⟨fun v hv => (hO.goodLast 0 h0 v hv).1, hO.gluedLast 0 h0⟩
-  | succ σ => exact ⟨(hO.shape 0 σ h0).good, (hO.shape 0 σ h0).gl⟩
-
-theorem chainFacts (h0 : 0 + 2 * D.R.rS + 2 = D.R.m) (hB : d.Base) (hO : GlobalTheory.FinPl.PinOff o) (hLev : LevX F d h0) :
-    ChainFacts o G F (o.L 0) (d.bes 0 D.R.rS h0) := by
-  have hm : 0 < D.R.m := by omega
-  obtain ⟨g1, g2⟩ := good_zero o hO _ h0
-  refine ⟨o.M 0 _ h0, fun v hv => ⟨(g1 v hv).sdV₀, (g1 v hv).monoV, (g1 v hv).prim,
-    GlobalTheory.T.lastWittLine_of_besselJacobiLatticesGood D _ hB.com.std _ _ _ _ _ _ _ v (g1 v hv)⟩, fun v hv hT => hO.core 0 _ h0 v hv hT,
-    fun i => ⟨_, (g2 i).sum, (g2 i).lat⟩, fun PP => ⟨(G PP).hz_unit 0 _ h0,
-      GlobalTheory.T.weil_shape_of_frame_moves D u d o.τ PP.1 (G PP) _ h0 (o.L 0) (hB.st 0 hm).frame ((hO.moves 0 hm).2 _)⟩, fun v hv a ha y hy => ?_⟩
-  rw [(hLev a (mem_GfC_of_grpAt ha) y hy).1]
-  exact (GlobalTheory.T.mem_chainLevel_iff_carriesLattice_offLevel D d.c 0 (d.st 0) (hB.st 0 hm) v hv _ (conj_mem_grpAt (embA_mem_grpAt _ _ ha) _)).trans
-    (moves_conj ((hO.moves 0 hm).2 _) _)
-
 end Chain
 
 def toBes {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {u : D.what₂.Word}
@@ -402,65 +385,6 @@ theorem stab_of_frame (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I
         _ = x * κ * x⁻¹ := by rw [← this]; group
     rw [← map_inv, ← map_mul, ← map_mul, inv_inv, e0]
   rw [e1, mem_St_mul, e2, ← (hR _).2, e3, kset_conj _ (X.xu_K u), (hR κ).1]
-
-set_option maxHeartbeats 1000000 in
-
-theorem stab_match : ∀ (D : D7) (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u) (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : GlobalTheory.FinPl.OffDat d k ι) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d o.τ PP.1) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), GlobalTheory.Core.Mi.IdE S.X → d.Base → IsTypePlaces d.c.Pg → GlobalTheory.FinPl.PinOff o → GlobalTheory.LocMod.PinGBy G o.cG → (∀ v : GlobalTheory.FinPl.Pl D, o.atT v ↔ (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal) → (∀ v : GlobalTheory.FinPl.Pl D, ¬ o.atT v → GlobalTheory.FinPl.latV (D.sp.X 0) (d.x 0).L (· = v) = GlobalTheory.FinPl.latV (D.sp.X 0) ((F₀ u).cls0.lev.Lb.map ((LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)))).toLinearMap.restrictScalars (𝓞 D.host.E))) (· = v)) → LevX (F₀ u) d h0 → ∀ (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0)), B.lev = d.B 0 D.R.rS h0 → B.Adapted (S.tr u).wt → B.FrameTied → ∀ a₀ : GA D (D.sp.X 0), IsTransportAdelicCorrection (S.tr u) a₀ → ∃ a ∈ GfC (D.sp.X 0), a ∈ Subgroup.center (GA D (D.sp.X 0)) ∧ ∀ κ : GA D (D.sp.Y 0), (κ ∈ GfC (D.sp.Y 0) ∧ finE (D.sp.Y 0) κ ∈ St (finE (D.sp.Y 0) (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from d.t 0)) * d.bot.β)) ↔ ((iotaX S.X S.inst κ).1 = 1 ∧ (iotaX S.X S.inst κ).2 ∈ S.X.B.I.Kset) := by
-  intro D u F₀ S d k _ _ _ _ ι o G h0 hE hB hT hO hG hA hL hLev B hBl hBa hBf a₀ ha₀
-  obtain ⟨μ, lam, hF⟩ := hBf
-  have hm : 0 < D.R.m := by omega
-  have hC := chainFacts o G (F₀ u) h0 hB hO hLev
-  have hb : (show GlobalTheory.SeeSaw.BesAt (D.sp.Y 0) (D.sp.X 0) D.R.rS from d.bes 0 D.R.rS h0) = toBes B := eq_toBes B _ _ hBl
-  replace hC : ChainFacts o G (F₀ u) (o.L 0) (toBes B) := hb ▸ hC
-  obtain ⟨M, c1, c2, c3, c4, c5⟩ := hC
-  have hL0 : IsSelfDualC (D.sp.Y 0) (o.L 0) := (hO.moves 0 hm).1
-  obtain ⟨s1, s2, s3, -, -, s6⟩ := rows_shape hE hF
-  obtain ⟨-, z2, -⟩ := GlobalTheory.T.besselLevelLineVector_primitive_rowLattice_norm D S.X S.inst u d.c.ψ _ B μ lam hE hF
-  have hg : ∀ v : GlobalTheory.FinPl.Pl D, v ∉ d.c.S → ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal := by
-    intro v hv h
-    obtain ⟨PP, ⟨h1, h2⟩, -⟩ := hT.2 v h
-    exact hv (Finset.mem_image.2 ⟨PP, h1, h2⟩)
-  have loc : ∀ v : GlobalTheory.FinPl.Pl D, ∃ (a : GA D (D.sp.X 0)) (c : AE D), CenAt (D.sp.X 0) v a ∧ NormOneAt v c ∧
-      SMoves (D.sp.Y 0) c (embA B.d B.o (a₀ * a)) (o.L 0) (latS D) v := by
-    intro v
-    by_cases hv : v ∈ d.c.S
-    · obtain ⟨PP, hP, rfl⟩ := Finset.mem_image.1 hv
-      obtain ⟨ε, hε, he⟩ := (G ⟨PP, hP⟩).q.above
-      have hu := GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP _ ε (G ⟨PP, hP⟩).idem hε he
-      have hnT : ¬ o.atT (G ⟨PP, hP⟩).q.v := by
-        rintro ⟨i, hi⟩
-        exact hO.off i (hi ▸ hu ▸ hv)
-      obtain ⟨q⟩ : Nonempty (GlobalTheory.LatPair.Unif (G ⟨PP, hP⟩).k) := inferInstance
-      have hϖ := (GlobalTheory.SeeSaw.LevelTest.val_eq_unif (G ⟨PP, hP⟩).q (G ⟨PP, hP⟩).idem q (hT.1 PP hP)
-        (GlobalTheory.SeeSaw.LevelTest.g_notMem_sq PP)).trans (GlobalTheory.SeeSaw.LevelTest.unif_val q (G ⟨PP, hP⟩).S.unif)
-      rw [hu]
-      exact loc_level hE hF (S.lev u) hBa ha₀ (G ⟨PP, hP⟩).q (G ⟨PP, hP⟩).unit _ (by simpa using hϖ)
-        (fun h => hnT ((hA _).2 h)) (c4 ⟨PP, hP⟩).1 hL0 (hL _ hnT) (c4 ⟨PP, hP⟩).2
-    · obtain ⟨d1, d2, d3, d4⟩ := c1 v hv
-      refine loc_of_core hB.com.std hE hF (hg v hv) hL0 d1 d2 d3 d4 ?_
-      by_cases hvT : o.atT v
-      · have hTv := (hA v).1 hvT
-        obtain ⟨i, rfl⟩ := hvT
-        obtain ⟨β₀, e1, e2⟩ := c3 i
-        have hr : 3 ≤ Fintype.card (Fin (D.sp.X 0).rank) := by
-          have h1 := D.R.m_add_three_le_k
-          rw [Fintype.card_fin, D.sp.X_rank 0 (Nat.zero_le _), Ranks.N]
-          omega
-        refine GlobalTheory.T.exists_central_element_homothetic_gluedCores D k (o.p i) _ _ _ B.o B.ζ _ (o.β 0 i) β₀ M _ μ _ o.q (o.Q 0 i) a₀ hr e1 d1 s2 e2 hF.ne (s6 _) z2
-          (GlobalTheory.SeeSaw.LevelTest.unifT_of _ _ hTv) fun a ha => ?_
-        obtain ⟨y, hy, hU⟩ := GlobalTheory.T.columnLevel_iff_rowLattice_kept_at_place D S.X S.inst u d.c.ψ (F₀ u) (S.tr u) S.Y.hK B a₀ hE (S.lev u) hBa ha₀ _ (hg _ hv) a ha
-        exact ((GlobalTheory.T.wittCoreEmbedding_stabilises_iff_core_stabilises D _ _ _ B.d _ _ _ _ d2).symm.trans ((c5 _ hv a ha y hy).symm.trans hU)).trans
-          (GlobalTheory.T.wittCoreEmbedding_stabilises_iff_core_stabilises D _ _ _ B.d _ _ _ _ (s3 _))
-      · obtain ⟨LL, e1, e2⟩ := c2 v hv hvT
-        have hTv : (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal := fun h => hvT ((hA v).2 h)
-        exact GlobalTheory.T.orthogonalSumCores_homothetic_off_level D _ _ _ B.o B.ζ M _ (d.x 0).L LL μ _ v a₀ B.line e1 e2
-          (rows_trace hE hF (S.lev u) hBa ha₀ v (hL v hvT))
-          (GlobalTheory.T.selfDualLattice_splitsOff_unitNormLine_at_place D _ _ _ B.o B.ζ _ μ _ v B.line s2 hF.ne (s6 v) z2 hTv) hF.ne (s6 v) z2 hTv
-  obtain ⟨a, haf, hac, z, hz, hmv⟩ := GlobalTheory.T.exists_central_glue_localHomotheties D (D.sp.Y 0) (D.sp.X 0) (embA B.d B.o) (embA B.d B.o a₀) (o.L 0) (latS D) hL0 s1
-    (fun v a ha => embA_mem_grpAt _ _ ha) (fun v => by simpa only [map_mul] using loc v)
-  rw [← map_mul] at hmv
-  exact ⟨a, haf, hac, stab_of_frame S.X S.inst u d.bot.β _ _ z hz
-    (GlobalTheory.T.isFrame_finitePart_mul_of_carries_lattice D (D.sp.Y 0) _ d.bot.Λ (latS D) d.bot.β (moves_trans ((hO.moves 0 hm).2 _) hmv) (hB.st 0 hm).frame)⟩
 
 end GlobalTheory.Core.Mi.LatMatch
 

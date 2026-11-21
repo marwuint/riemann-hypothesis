@@ -102,17 +102,6 @@ private theorem hom_substInj {R : Type*} [CommRing R] {ι : Type*} (f : PowerSer
     exact isUnit_one
   exact sub_eq_zero.1 (hU.mul_left_eq_zero.1 key2)
 
-theorem homId_statement : HomId := by
-  unfold HomId
-  intro R _ F
-  refine ⟨by simp, ?_⟩
-  rw [PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero F.zero_constantCoeff)]
-  have hXY : ![atX (PowerSeries.X : PowerSeries R), atY PowerSeries.X] = MvPowerSeries.X := by
-    funext s
-    fin_cases s <;> simp [atX, atY, PowerSeries.subst_X (PowerSeries.HasSubst.X _)]
-  rw [hXY, MvPowerSeries.subst_self]
-  rfl
-
 theorem homComp_statement : HomComp := by
   unfold HomComp
   intro R _ F G H f g hf hg
@@ -166,12 +155,5 @@ theorem substInjective_statement : SubstInjective := by
   unfold SubstInjective
   intro R _ ι f a b h0 h1 ha hb h
   exact hom_substInj f a b h0 h1 ha hb h
-
-theorem log_determines_law : LogDeterminesLaw := by
-  unfold LogDeterminesLaw
-  intro R _ F G f hF hG
-  apply FormalGroup.ext
-  apply hom_substInj f _ _ hF.1 hF.2.1 F.zero_constantCoeff G.zero_constantCoeff
-  rw [hF.2.2, hG.2.2]
 
 end Formalism.G

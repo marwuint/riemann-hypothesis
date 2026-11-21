@@ -47,8 +47,6 @@ lemma val_one : (1 : Grp U h).val = 1 := rfl
 
 lemma emb : IsClosedEmbedding (val : Grp U h → Mx k r) := h.closed.isClosedEmbedding_subtypeVal
 
-lemma range_val : Set.range (val : Grp U h → Mx k r) = U := Subtype.range_val
-
 instance : IsTopologicalGroup (Grp U h) where
   continuous_mul := by
     rw [emb.isInducing.continuous_iff]

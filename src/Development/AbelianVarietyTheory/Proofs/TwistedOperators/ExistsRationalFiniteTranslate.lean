@@ -45,47 +45,6 @@ theorem eqAt_trans {D : D7} {N : ℕ} {q : ℕ} {L L₁ L₂ : Submodule (𝓞 D
     have h1 : ((a : D.host.E) • ((b : D.host.E) • x)) ∈ L := hL₁' _ (hL₂' x hx)
     rwa [smul_smul, ← Nat.cast_mul] at h1
 
-theorem exists_dec : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
-    {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
-    (ch : Choice R), ch.Is → ∀ (X : Node), DefNode D.R.m X → ∀ (Q : Finset ℕ), (∀ q ∈ Q, q.Prime) → ∀ x : FinPt ch.G X,
-    ∃ r s x₀ : FinPt ch.G X, GlobalTheory.MovedKappaEx.RatFin _ r ∧ s ∈ GlobalTheory.MovedKappaEx.splitOff _ Q ∧
-      GlobalTheory.SumSize.latAt ch.S.toGridChoice X x₀ = stdL D _ ∧ (∀ q ∈ Q, EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice X (s * x₀)) (stdL D _)) ∧ x = r * s * x₀ := by
-  intro _ _ D Γ _ _ Pl0 T A Ks _ _ _ R ch _ X hX Q hQ x
-  set S := ch.S.toGridChoice with hSdef
-  set u := S.N.u X with hudef
-  have hN : 0 < ∏ q ∈ Q, q := Finset.prod_pos fun q hq => (hQ q hq).pos
-
-  obtain ⟨r, s, k, hr, hs, hk, hxu⟩ :=
-    GlobalTheory.RatSplitLat.exists_rat_split_lat (ch.G.V X) (S.N.fr X) (∏ q ∈ Q, q) hN (x * u)
-  have hsQ : s ∈ GlobalTheory.MovedKappaEx.splitOff _ Q := GlobalTheory.MovedKappaEx.mem_splitOff_of_suppSplit _ Q s hs
-  have hstd : GlobalTheory.SumSize.latAt S X (k * u⁻¹) = stdL D _ := GlobalTheory.LatStdStab.latAt_mul_inv_eq_stdL S X hX k hk
-  refine ⟨r, s, k * u⁻¹, hr, hsQ, hstd, fun q hq => ?_, ?_⟩
-  ·
-    have key : ∀ g ∈ GlobalTheory.MovedKappaEx.splitOff (ch.G.V X) Q, ∀ y : FinPt ch.G X,
-        EqAt D q (GlobalTheory.SumSize.latAt S X (g * y)) (GlobalTheory.SumSize.latAt S X y) := by
-      intro g hg
-      induction hg using Subgroup.closure_induction with
-      | mem g hgen =>
-        obtain ⟨e, he, hoff, hsupp⟩ := hgen
-        intro y
-        exact GlobalTheory.MovedSplitEq.eqAt_latAt_mul S X hX q (hQ q hq) e he (hoff q hq) g y hsupp
-      | one =>
-        intro y
-        rw [one_mul]
-        exact _root_.GlobalTheory.MovedKappaDec.eqAt_refl q _
-      | mul g₁ g₂ _ _ ih₁ ih₂ =>
-        intro y
-        rw [mul_assoc]
-        exact _root_.GlobalTheory.MovedKappaDec.eqAt_trans (ih₁ (g₂ * y)) (ih₂ y)
-      | inv g _ ih =>
-        intro y
-        have h := ih (g⁻¹ * y)
-        rw [mul_inv_cancel_left] at h
-        exact _root_.GlobalTheory.MovedKappaDec.eqAt_symm h
-    have h := key s hsQ (k * u⁻¹)
-    rwa [hstd] at h
-  · rw [← mul_assoc, ← hxu, mul_inv_cancel_right]
-
 end GlobalTheory.MovedKappaDec
 
 end

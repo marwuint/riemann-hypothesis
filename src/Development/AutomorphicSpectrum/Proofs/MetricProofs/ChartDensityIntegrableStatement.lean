@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartDensityIntegrable
-import Mathlib
 import Development.AutomorphicSpectrum.PublishedTheorems.Metrics₂.PoincareLelong
 import Development.AutomorphicSpectrum.PublishedTheorems.Metrics₂.SheetDensityEqSetSheetDensity
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
@@ -13,6 +12,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.CxPosDens
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.CxSimple
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.SegreChartProjObjects
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemChartComponents
+
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar.Pub.CxInt GlobalTheory.CompanionTheory.Ar.Pub.CxComp Filter Topology
 open ReciprocityTheory.AnForm.R (conePts)
 open GlobalTheory.CompanionTheory.Ar.Pub.CxChart (chartSet chartComponents chartSection domCell absLogNorm)

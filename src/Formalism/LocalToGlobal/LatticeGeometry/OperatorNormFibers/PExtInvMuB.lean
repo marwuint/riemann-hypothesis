@@ -45,17 +45,6 @@ theorem card_fiber [IsTotallyComplex K] (v : InfinitePlace K) :
   rw [h0, h1, Set.ncard_empty, mul_zero, add_zero, Set.ncard_coe_finset] at h
   exact h
 
-theorem prod_comap [IsTotallyComplex K] (g : InfinitePlace K → ℝ) :
-    ∏ v' : InfinitePlace K', g (v'.comap (algebraMap K K')) = (∏ v, g v) ^ finrank K K' := by
-  classical
-  rw [← Finset.prod_fiberwise Finset.univ (fun v' : InfinitePlace K' => v'.comap (algebraMap K K'))
-    (fun v' => g (v'.comap (algebraMap K K'))), ← Finset.prod_pow]
-  refine Finset.prod_congr rfl fun v _ => ?_
-  rw [Finset.prod_congr rfl (fun v' hv' => congrArg g (Finset.mem_filter.1 hv').2),
-    Finset.prod_const]
-  congr 1
-  convert card_fiber K K' v
-
 theorem nPl_ext [IsTotallyComplex K] [IsTotallyComplex K'] : nPl K' = finrank K K' * nPl K := by
   have h1 := sizeMu_finrank_eq K
   have h2 := sizeMu_finrank_eq K'

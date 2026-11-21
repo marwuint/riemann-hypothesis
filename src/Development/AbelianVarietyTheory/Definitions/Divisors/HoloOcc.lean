@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.TransferToDefiniteQuaternion
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.CuspSemisimpleReal
+import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ShortLatticeUnitarize.Unitarize
 
 noncomputable section
 
@@ -16,8 +17,5 @@ def IsHolo (lam : InfinitePlace F → DomWeight 2) (φ : TR.Sm F 2) : Prop :=
   TR.IsCuspForm φ ∧ ∀ v, TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = (Complex.I * (kw lam v : ℂ)) • φ ∧
     TR.Eop v 0 0 φ - TR.Eop v 1 1 φ = Complex.I • (TR.Eop v 0 1 φ + TR.Eop v 1 0 φ) ∧
     ∀ u : ℂ, TR.cap v u φ = (((GlobalTheory.UnitaryBC.infOfWeight (lam v)).map Neg.neg).map (u + ·)).prod • φ
-
-def HoloOcc (lam : InfinitePlace F → DomWeight 2) (τ : SmIrr (GL (Fin 2) (Af F))) : Prop :=
-  ∃ f : τ.V →ₗ[ℂ] TR.Sm F 2, f ≠ 0 ∧ (∀ x, IsHolo lam (f x)) ∧ ∀ g x, f (τ.ρ g x) = TR.finRep F 2 g (f x)
 
 end GlobalTheory.TfJl

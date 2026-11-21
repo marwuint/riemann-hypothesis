@@ -65,9 +65,6 @@ def SenIs (k : Type) [Field k] [Algebra O k] (g : W.Gam) (a : LetA O n) (i : ZMo
       ∃ hs : (qN W T i 1).submoduleOf (qN W T i 0) ≤ ((qN W T i 1).submoduleOf (qN W T i 0)).comap nb,
         EigWith ((Submodule.mapQ _ _ nb hs).baseChange k) S
 
-def IsGenWith (g : W.Gam) (i : ZMod n) (b : W.DD T) (a : LetA O n) : Prop :=
-  b ∈ NΔl W T i ∧ (∀ x ∈ NΔl W T i, ∃ c ∈ W.AΔ, x = c • b) ∧ W.γD T g b = a • b
-
 def SenPair (g : W.Gam) (a : LetA O n) (i : ZMod n) (U : Multiset ℤ) (w : ℤ) : Prop :=
   (∀ j j' : ℤ, j < j' → DiagQuot W T g a i j j' (eigMs LL PD.p U w j j')) ∧
     ∀ (k : Type) [Field k] [Algebra O k], Function.Surjective (algebraMap O k) →
@@ -95,28 +92,5 @@ theorem IsNab.unique {g : W.Gam} {a : LetA O n} {i : ZMod n} {j : ℤ}
   LinearMap.ext fun x => Subtype.ext (h ((h₁ x).trans (h₂ x).symm))
 
 end Generic
-
-example : cc 5 0 = 0 ∧ cc 5 1 = -1 ∧ cc 5 (-1) = 1 / 6 := by
-  refine ⟨?_, ?_, ?_⟩ <;> norm_num [cc]
-
-def SenWeightsAt (l : ℕ) [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) : Prop :=
-  5 ≤ l → ∀ (K LL : FinExt l) (hA : CaseA K LL) (g : (H.W K 1 LL hA.2.2).Gam),
-    (((H.W K 1 LL hA.2.2).χΓ g : (↥(OL LL))ˣ) : ↥(OL LL)) = 1 + (l : ↥(OL LL)) →
-    ∀ (h : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ) (U : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Multiset ℤ)
-      (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)),
-      CrysWith (P.PD K) (H.W K 1 LL hA.2.2).emb T.ρ U → (∀ i, ∀ u ∈ U i, 0 ≤ u ∧ u ≤ h i) →
-      (∀ i, SenPair (H.W K 1 LL hA.2.2) T g 1 i (U i) 0) ∧
-        ∀ (χ₁ : ↥(GK K) →* (↥(OL LL))ˣ) (w : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℤ)
-          (hχ : IsCrysChar (LL := ↥LL.1) (P.PD K) (H.W K 1 LL hA.2.2).emb χ₁ w),
-          (∀ i, 0 ≤ w i ∧ w i ≤ h i) →
-          ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K)))
-            (b : (H.W K 1 LL hA.2.2).DD (charLat ℚ_[l] Subtype.val_injective χ₁ hχ.1))
-            (a : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))),
-            IsGenWith (H.W K 1 LL hA.2.2) (charLat ℚ_[l] Subtype.val_injective χ₁ hχ.1) g i b a →
-              SenPair (H.W K 1 LL hA.2.2) T g a i (U i) (w i)
-
-def SenWeights : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
-    ∀ (H : LocHW l P) (F : LocFon l P AI H), LocCmpT l P AI H F → SenWeightsAt l P H
 
 end GlobalTheory.IndefiniteRowSideFullHecke.DiagonalQuotientEigen

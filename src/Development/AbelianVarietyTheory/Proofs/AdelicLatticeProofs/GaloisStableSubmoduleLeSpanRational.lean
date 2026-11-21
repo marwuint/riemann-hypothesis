@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatOfForallComplexRingEquivFixedStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatOfForallComplexRingEquivFixed
 
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
@@ -29,7 +29,7 @@ private theorem exists_rational_support_subset_of_galois_stable {V κ : Type} [A
   by_cases hfix : ∀ σ : ℂ ≃+* ℂ, ∀ k,
       σ (b.repr ((b.repr w k₀)⁻¹ • w) k) = b.repr ((b.repr w k₀)⁻¹ • w) k
   ·
-    refine ⟨_, hvW, ?_, fun k => GlobalTheory.T.exists_rat_of_forall_complex_ringEquiv_fixed _ (fun σ => hfix σ k), ?_⟩
+    refine ⟨_, hvW, ?_, fun k => _root_.GlobalTheory.ClassFin.exists_rat_of_forall_ringEquiv_fixed _ (fun σ => hfix σ k), ?_⟩
     · intro h0
       rw [h0, map_zero, Finsupp.zero_apply] at hv1
       exact zero_ne_one hv1

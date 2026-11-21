@@ -7,9 +7,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ProjectiveRepresentationPullbackCoordinates
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SecCoordBcScaleUnique
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocallyStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinatesPullIsoNonzeroLocusStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsNonzeroCoordinateAffineChartStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocally
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinatesPullIsoNonzeroLocus
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsNonzeroCoordinateAffineChart
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -35,7 +35,7 @@ theorem cover {K σ : Type} [CommRing K] {I : Ideal (MvPolynomial σ K)} {Z : Sc
   obtain ⟨hLB, hpt, -⟩ := h
   rw [eq_top_iff]
   rintro z -
-  obtain ⟨R, _, x, v, -, ⟨q, rfl⟩, hv⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally Z M σ th hLB).2.2 z
+  obtain ⟨R, _, x, v, -, ⟨q, rfl⟩, hv⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local Z M σ th hLB).2.2 z
   have hβ : x ≫ p = spMap (Spec.preimage (x ≫ p)).hom := by
     unfold spMap
     simp
@@ -47,7 +47,7 @@ theorem cover {K σ : Type} [CommRing K] {I : Ideal (MvPolynomial σ K)} {Z : Sc
     rw [eq_top_iff, ← hspan, Ideal.span_le]
     rintro _ ⟨i, rfl⟩
     exact hno i
-  exact TopologicalSpace.Opens.mem_iSup.2 ⟨i, ((GlobalTheory.T.sectionCoordinates_pull_iso_nonzeroLocus Z M σ th hLB).2.2 R x v i q hv).2 hi⟩
+  exact TopologicalSpace.Opens.mem_iSup.2 ⟨i, ((_root_.GlobalTheory.ZM.CoordMove.secCoord_pull_iso_locus Z M σ th hLB).2.2 R x v i q hv).2 hi⟩
 
 theorem ratios {K σ S : Type} [CommRing K] [CommRing S] {Z : Scheme.{0}} {p : Z ⟶ Sp K} {M : LB Z}
     {th : σ → M.Sec} (i : σ) (D : Z.Opens) (x : Sp S ⟶ Z) [IsOpenImmersion x] (hD : x.opensRange = D)
@@ -134,7 +134,7 @@ theorem ratios {K σ S : Type} [CommRing K] [CommRing S] {Z : Scheme.{0}} {p : Z
 theorem vAmp_of_projRep : ∀ (K σ : Type) [Field K] [Finite σ] (I : Ideal (MvPolynomial σ K)) (Z : Scheme.{0}) (p : Z ⟶ Sp K) (M : LB Z) (th : σ → M.Sec), ProjRep I p M th → VAmp p M th := by
   intro K σ _ _ I Z p M th h
   refine ⟨cover h, fun i => ?_⟩
-  obtain ⟨x, hx, hrange, hxs, hsc⟩ := GlobalTheory.T.exists_nonzeroCoordinate_affineChart K σ I Z p M th i h
+  obtain ⟨x, hx, hrange, hxs, hsc⟩ := _root_.GlobalTheory.ZM.CoordChart.exists_chart K σ I Z p M th i h
   have hD : x.opensRange = Out.nonzeroLocus (th i) := TopologicalSpace.Opens.ext hrange
   refine ⟨hD ▸ isAffineOpen_opensRange x, ?_⟩
   refine ratios i _ x hD _ hxs _ hsc ?_ ?_

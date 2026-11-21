@@ -3,8 +3,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsE
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfSpecializes
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueSection
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermStalkClosedPointToBaseChange
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineLatticeGenericSectionsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgClosedTensorIsDomainStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineLatticeGenericSections
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgClosedTensorIsDomain
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FlatBCSec
 
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat TensorProduct
@@ -468,7 +468,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (X : Scheme.{0}) (Ω : Type) [Field 
     have hy' : algebraMap O Ω y ≠ 0 := fun h => hy (hO (h.trans (map_zero _).symm))
     rw [map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, div_mul_eq_mul_div,
       eq_div_iff hy', e]
-  haveI hT : IsDomain (Ω ⊗[K] C) := GlobalTheory.T.alg_closed_tensor_isDomain K Ω C (fun a ha => by
+  haveI hT : IsDomain (Ω ⊗[K] C) := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isDomain_tensor_of_algebraically_closed_constants K Ω C (fun a ha => by
     obtain ⟨x, y, hy, e⟩ := hcc a ((IsFractionRing.isAlgebraic_iff O K Ω).2 ha)
     exact ⟨algebraMap O K x / algebraMap O K y, by
       have := hfrac x y a 1 hy (by rw [e, mul_one])
@@ -564,7 +564,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (X : Scheme.{0}) (Ω : Type) [Field 
     (fun p => hinj (by rw [hτφ, hφs, hxφ]; field_simp [hei p]))
     (fun p => hinj (by rw [hφs, hυφ, hyφ]; field_simp [hei p, ht0]))
     (fun a ha hreg => by
-      obtain ⟨u, v, hv, ee⟩ := (GlobalTheory.T.line_lattice_generic_sections X Ω ξ O s h1 hO hg hcc
+      obtain ⟨u, v, hv, ee⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.mem_lat_genFibre_iff_const_mul X Ω ξ O s h1 hO hg hcc
         (fun p => Submodule.span (regAt ξ p) {1}) 1 (fun p _ => ⟨one_ne_zero, rfl⟩) a).1
         (fun p hp => Submodule.mem_span_singleton.2 ⟨⟨a, hreg ⟨p, hp⟩⟩, mul_one a⟩)
       have := hfrac u v a 1 hv ee
@@ -572,7 +572,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (X : Scheme.{0}) (Ω : Type) [Field 
       exact ⟨_, this⟩)
     (fun t ht hr u hu => by
       have hLt' := hLt t ht hr
-      obtain ⟨a, b, hb, ee⟩ := (GlobalTheory.T.line_lattice_generic_sections X Ω ξ O s h1 hO hg hcc L t hLt' u).1 (fun p hp => by
+      obtain ⟨a, b, hb, ee⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.mem_lat_genFibre_iff_const_mul X Ω ξ O s h1 hO hg hcc L t hLt' u).1 (fun p hp => by
         have hpe := hWL ⟨p, hp⟩ p hp (hpW ⟨p, hp⟩)
         rw [hpe.2]
         exact Submodule.mem_span_singleton.2 ⟨⟨_, hu ⟨p, hp⟩⟩, by

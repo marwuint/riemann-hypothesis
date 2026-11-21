@@ -616,26 +616,11 @@ theorem grCubeMap_congr {f g : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap 
     (hg : IsGradedMap ℳ 𝒩 g) (h : f = g) (n : ℤ) : grCubeMap hf n = grCubeMap hg n := by
   subst h; rfl
 
-def grCubeIso [Decomposition ℳ] [Decomposition 𝒩] {e : M ≃ₗ[MvPolynomial ι R] N}
-    (he : IsGradedMap ℳ 𝒩 e.toLinearMap) (n : ℤ) : grCube ι ℳ n ≅ grCube ι 𝒩 n where
-  hom := grCubeMap he n
-  inv := grCubeMap he.symm n
-  hom_inv_id := by
-    rw [← grCubeMap_comp, grCubeMap_congr _ (IsGradedMap.id ι ℳ) (by simp), grCubeMap_id]
-  inv_hom_id := by
-    rw [← grCubeMap_comp, grCubeMap_congr _ (IsGradedMap.id ι 𝒩) (by simp), grCubeMap_id]
-
 variable [LinearOrder ι]
 
 variable (ℳ) in
 
 theorem grCech_eq (n : ℤ) : grCech ι ℳ n = cechComplex (grCube ι ℳ n) := rfl
-
-variable (ℳ) in
-
-theorem grCech_d (n : ℤ) (p : ℕ) :
-    (grCech ι ℳ n).d p (p + 1) = ModuleCat.ofHom (Cube.d (grCube ι ℳ n) (p + 1)) :=
-  cechComplex_d _ p
 
 def grCechMap {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) (n : ℤ) :
     grCech ι ℳ n ⟶ grCech ι 𝒩 n := cechComplexMap (grCubeMap hf n)
@@ -657,16 +642,6 @@ theorem isIso_grCechMap [Decomposition ℳ] [Decomposition 𝒩] {f : M →ₗ[M
     (h₂ : ∀ (i : ι) y, ∃ k : ℕ, (X i : MvPolynomial ι R) ^ k • y ∈ LinearMap.range f) (n : ℤ) :
     IsIso (grCechMap hf n) :=
   isIso_cechComplexMap _ fun _ ⟨i, hi⟩ => homLocMap_bijective_of_X hf hi (h₁ i) (h₂ i) n
-
-variable (ℳ) in
-
-def grCechShiftIso (d n : ℤ) : grCech ι (grShift ℳ d) n ≅ grCech ι ℳ (n + d) :=
-  (cechFunctor ι R).mapIso (grCubeShiftIso ℳ d n)
-
-variable (ℳ) in
-
-def grHShiftIso (d n : ℤ) (p : ℕ) : grH ι (grShift ℳ d) n p ≅ grH ι ℳ (n + d) p :=
-  HomologicalComplex.homologyMapIso (grCechShiftIso ℳ d n) p
 
 variable (ι ℳ) in
 
@@ -759,10 +734,6 @@ abbrev cubes (n : ℤ) : ShortComplex (Cube.{u} ι R) :=
 
 variable [LinearOrder ι]
 
-abbrev cech (n : ℤ) : ShortComplex (CochainComplex (ModuleCat.{u} R) ℕ) :=
-  ShortComplex.mk (grCechMap h.graded_f n) (grCechMap h.graded_g n)
-    ((h.cubes n).map (cechFunctor ι R)).zero
-
 variable [Decomposition ℳ] [Decomposition 𝒩] [Decomposition 𝒬]
 
 omit [LinearOrder ι] in
@@ -773,22 +744,6 @@ theorem cubes_shortExact (n : ℤ) (s : Finset ι) :
 
 theorem cubeComplex_shortExact (n : ℤ) : ((h.cubes n).map (cubeFunctor ι R)).ShortExact :=
   cubeFunctor_shortExact _ (h.cubes_shortExact n)
-
-theorem cech_shortExact (n : ℤ) : (h.cech n).ShortExact :=
-  cechFunctor_shortExact _ fun s _ => h.cubes_shortExact n s
-
-def δ (n : ℤ) (p : ℕ) : grH ι 𝒬 n p ⟶ grH ι ℳ n (p + 1) :=
-  (h.cech_shortExact n).δ p (p + 1) rfl
-
-theorem exact_δ_map (n : ℤ) (p : ℕ) :
-    Function.Exact (h.δ n p).hom (grHMap h.graded_f n (p + 1)).hom :=
-  (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
-    ((h.cech_shortExact n).homology_exact₁ p (p + 1) rfl)
-
-theorem exact_map_δ (n : ℤ) (p : ℕ) :
-    Function.Exact (grHMap h.graded_g n p).hom (h.δ n p).hom :=
-  (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
-    ((h.cech_shortExact n).homology_exact₃ p (p + 1) rfl)
 
 end GradedShortExact
 
@@ -808,20 +763,7 @@ def grCubePiIso (n : ℤ) : grCube ι (grPi ℳ) n ≅ Cube.directSum fun k => g
 
 variable [LinearOrder ι]
 
-variable (ι) in
-
-def grCechPiIso (n : ℤ) :
-    grCech ι (grPi ℳ) n ≅ cechComplex (Cube.directSum fun k => grCube ι (ℳ k) n) :=
-  (cechFunctor ι R).mapIso (grCubePiIso ι ℳ n)
-
 variable [Finite ι]
-
-variable (ι) in
-
-def grHPiEquiv [DecidableEq κ] (n : ℤ) (p : ℕ) :
-    grH ι (grPi ℳ) n p ≃ₗ[R] ⨁ k, grH ι (ℳ k) n p :=
-  (HomologicalComplex.homologyMapIso (grCechPiIso ι ℳ n) p).toLinearEquiv ≪≫ₗ
-    (cechHomologyDirectSumEquiv (fun k => grCube ι (ℳ k) n) p).symm
 
 theorem cubeComplex_grPi_exactAt_iff (n : ℤ) (p : ℕ) :
     (cubeComplex (grCube ι (grPi ℳ) n)).ExactAt p ↔
@@ -839,83 +781,6 @@ variable {ι : Type} {R : Type u} [CommRing R]
 theorem xProd_smul_injective (s : Finset ι) :
     Function.Injective fun p : MvPolynomial ι R => xProd R s • p :=
   (IsRegular.prod fun _ _ => MvPolynomial.isRegular_X).left
-
-example (d : Fin 3 → ℤ) : Nonempty (Decomposition (grFree ι R d)) ∧
-    PolyGradedSMul ι (grFree ι R d) := ⟨⟨inferInstance⟩, inferInstance⟩
-
-example (d : ℤ) (i : ι) : (1 : MvPolynomial ι R) ∈ grShift (polyGrading ι R) (-d) d ∧
-    (X i : MvPolynomial ι R) ∈ grShift (polyGrading ι R) d (1 - d) :=
-  ⟨by simpa using SetLike.one_mem_graded _, by simpa using X_mem_polyGrading i⟩
-
-example (i j : ι) : awayFrac _ (xProd R {i}) 1 (X j) ∈ homLoc (polyGrading ι R) {i} 0 :=
-  awayFrac_mem_homLoc (X_mem_polyGrading j) (by simp)
-
-example [Nontrivial R] (i : ι) :
-    awayFrac _ (xProd R {i}) 1 1 ∈ homLoc (polyGrading ι R) {i} (-1) ∧
-      awayFrac (MvPolynomial ι R) (xProd R {i}) 1 1 ≠ 0 ∧
-      awayFrac _ (xProd R {i}) 1 1 ∉ homLoc (polyGrading ι R) {i} 1 := by
-  have h₁ : awayFrac _ (xProd R {i}) 1 1 ∈ homLoc (polyGrading ι R) {i} (-1) :=
-    awayFrac_mem_homLoc (SetLike.one_mem_graded _) (by simp)
-  have h₂ : awayFrac (MvPolynomial ι R) (xProd R {i}) 1 1 ≠ 0 :=
-    (map_ne_zero_iff _ (awayFrac_injective (xProd_smul_injective _) 1)).2 one_ne_zero
-  exact ⟨h₁, h₂, fun h => absurd (degree_eq_of_mem_mem _ h₁ h h₂) (by decide)⟩
-
-example : locRes (X : Fin 2 → MvPolynomial (Fin 2) ℤ) (MvPolynomial (Fin 2) ℤ)
-    (show ({0} : Finset (Fin 2)) ⊆ {0, 1} by decide) (awayFrac _ _ 1 1) =
-    awayFrac _ _ 1 (X 1) := by
-  rw [locRes_awayFrac X _ (c := X 1) (by simp [mul_comm])]
-  simp
-
-example : ¬ Limits.IsZero (grH (Fin 1) (polyGrading (Fin 1) ℤ) (-1) 0) := by
-  rw [← HomologicalComplex.exactAt_iff_isZero_homology, cochainComplex_exactAt_zero_iff,
-    grCech_d _ _ 0]
-  intro h
-  have := Cube.subsingleton_term (grCube (Fin 1) (polyGrading (Fin 1) ℤ) (-1)) (p := 2) (by simp)
-  let z : Cube.Term (grCube (Fin 1) (polyGrading (Fin 1) ℤ) (-1)) 1 := fun s =>
-    ⟨awayFrac _ _ 1 1, awayFrac_mem_homLoc (SetLike.one_mem_graded _) (by simp [s.2])⟩
-  have hz : z = 0 := h (Subsingleton.elim (α := Cube.Term _ 2) _ _)
-  exact (map_ne_zero_iff _ (awayFrac_injective (xProd_smul_injective {0}) 1)).2 one_ne_zero
-    (congrArg Subtype.val (congrFun hz ⟨{0}, rfl⟩))
-
-example : ¬ Limits.IsZero (grH (Fin 2) (polyGrading (Fin 2) ℤ) (-2) 1) := by
-  rw [← HomologicalComplex.exactAt_iff_isZero_homology, grCech_eq, cechComplex_exactAt_succ_iff _ 0]
-  intro h
-  have := Cube.subsingleton_term (grCube (Fin 2) (polyGrading (Fin 2) ℤ) (-2)) (p := 3) (by simp)
-  let z : homLoc (polyGrading (Fin 2) ℤ) ({0, 1} : Finset (Fin 2)) (-2) :=
-    ⟨awayFrac _ _ 1 1, awayFrac_mem_homLoc (SetLike.one_mem_graded _) (by simp)⟩
-  obtain ⟨x, hx⟩ := (h ((Cube.termTwoFinTwo (grCube (Fin 2) (polyGrading (Fin 2) ℤ) (-2))).symm
-    z)).1 (Subsingleton.elim _ _)
-  have e := Cube.d_one_finTwo _ x
-  rw [hx] at e
-  replace e := (LinearEquiv.apply_symm_apply _ _).symm.trans e
-  obtain ⟨a, ha⟩ := exists_awayFrac_of_mem_homLoc _ (Cube.termOneFinTwo _ x).1.2
-  obtain ⟨b, hb⟩ := exists_awayFrac_of_mem_homLoc _ (Cube.termOneFinTwo _ x).2.2
-  obtain ⟨p, -, hp⟩ := ha (1 + (a + b)) (by omega)
-  obtain ⟨q, -, hq⟩ := hb (1 + (a + b)) (by omega)
-  have e' : z.1 = locRes X _ (by decide) (Cube.termOneFinTwo _ x).2.1 -
-      locRes X _ (by decide) (Cube.termOneFinTwo _ x).1.1 := congrArg Subtype.val e
-  rw [← hp, ← hq, locRes_awayFrac X _ (c := X 0) (by simp),
-    locRes_awayFrac X _ (c := X 1) (by simp [mul_comm]), ← map_sub] at e'
-  have e'' := congrArg (coeff (Finsupp.single 0 (a + b) + Finsupp.single 1 (a + b)))
-    (awayFrac_injective (xProd_smul_injective _) _
-      ((awayFrac_add_pow_smul _ 1 (a + b) 1).trans e'))
-  clear * - e''
-  generalize a + b = c at e''
-  rw [smul_eq_mul, smul_eq_mul, smul_eq_mul, coeff_sub, X_pow_eq_monomial, X_pow_eq_monomial,
-    coeff_monomial_mul', coeff_monomial_mul', if_neg (by rw [Finsupp.single_le_iff]; simp),
-    if_neg (by rw [Finsupp.single_le_iff]; simp)] at e''
-  simp [xProd, mul_pow, X_pow_eq_monomial] at e''
-
-variable (ι R) in
-
-theorem operatorsCommute_id :
-    OperatorsCommute (ι := ι) (R := R) (A := fun _ => R) fun _ _ => LinearMap.id :=
-  fun _ _ _ _ => rfl
-
-example (n : ℤ) : PolyGradedSMul ι (GrSum.grading (operatorsCommute_id ι R)) ∧
-    Nonempty (Decomposition (GrSum.grading (operatorsCommute_id ι R))) ∧
-    Nonempty (R ≃ₗ[R] GrSum.grading (operatorsCommute_id ι R) n) :=
-  ⟨inferInstance, ⟨inferInstance⟩, ⟨GrSum.pieceEquiv (operatorsCommute_id ι R) n⟩⟩
 
 end Examples
 

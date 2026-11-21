@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.No
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormLinearCombination
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmMemArchSmooth
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieDerivativeConvolutionKernelStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieDerivativeConvolutionKernel
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModerateGrowthConvolutionIntegralStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.L2ConvolutionLocallyCompactMemStatement
 
@@ -68,7 +68,7 @@ theorem isCuspForm_cpt (c : Kinf E a) {φ : Sm E a} (h : IsCuspForm φ) : IsCusp
     refine Submodule.subset_span ⟨c' * c, ?_⟩
     change _ = (cptRep E a c' * cptRep E a c) φ
     rw [← map_mul]
-  · exact zfin_of_comm _ (fun z hz => GlobalTheory.T.mem_zalg_commute_compactRep E a c z hz) hA.zfin
+  · exact zfin_of_comm _ (fun z hz => _root_.GlobalTheory.ZalgCpt.zalg_comm_cptRep E a c z hz) hA.zfin
   · obtain ⟨C, N, h1⟩ := growth_mul (Unitary.toUnits c) (hA.growth g)
     refine ⟨C, N, fun y => ?_⟩
     change ‖φ.1 (g * infGL E a y * infGL E a (Unitary.toUnits c))‖ ≤ _
@@ -152,12 +152,12 @@ theorem exists_stable (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] 
   | lie X =>
     letI : MeasurableSpace (AutomorphicForm.archGroup E a) := borel _
     haveI : BorelSpace (AutomorphicForm.archGroup E a) := ⟨rfl⟩
-    obtain ⟨D, hD, hDc, hrep⟩ := GlobalTheory.T.lie_derivative_convolution_kernel E a (Measure.haar : Measure (AutomorphicForm.archGroup E a)) φ h1.1 X
+    obtain ⟨D, hD, hDc, hrep⟩ := _root_.GlobalTheory.CompanionTheory.LieConv.lie_eq_conv E a (Measure.haar : Measure (AutomorphicForm.archGroup E a)) φ h1.1 X
     have hc : Continuous φ.1 := ContAut.continuous_of_isOpen_stab E a φ h1.1.level
     obtain ⟨h', hW⟩ := GlobalTheory.T.l2_convolution_locally_compact_mem (latticeGL E a) μ (Measure.haar : Measure (AutomorphicForm.archGroup E a))
       (AutomorphicForm.infEmb E a) AutomorphicForm.continuous_infEmb D hD hDc φ.1 (lie E a X φ).1 hc h3 hrep
     refine ⟨⟨⟨fun γ g => lieD_left X (h1.1.left γ) g, ?_, GlobalTheory.T.finiteDimensional_span_compact_orbit_lieDerivative E a X φ h1.1.kfin,
-      GlobalTheory.CuspStab.zfin_of_comm _ (fun z hz => GlobalTheory.T.mem_zalg_commute_lie_action E a X z hz) h1.1.zfin,
+      GlobalTheory.CuspStab.zfin_of_comm _ (fun z hz => _root_.GlobalTheory.CuspRep.Zalg_mul_lie E a X z hz) h1.1.zfin,
       GlobalTheory.T.moderate_growth_convolution_integral E a _ φ.1 _ hc h1.1.growth D hD hDc hrep⟩, GlobalTheory.T.isCuspidal_lieAction_of_isCuspForm E a X φ h1⟩,
       fun t g => lieD_left X (h2 t) g, h', hW H hS h4⟩
     exact GlobalTheory.CuspStab.level_of_le h1.1.level fun k hk => by

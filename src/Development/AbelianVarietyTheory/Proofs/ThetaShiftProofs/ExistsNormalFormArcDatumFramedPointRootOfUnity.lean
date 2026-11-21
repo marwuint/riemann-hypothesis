@@ -7,14 +7,18 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsSmulPtSmulPt
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsTangentOfIsLieImage
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePoint
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentModuleUniversalGroupStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentModuleUniversalGroup
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsOpenImmersionJKPowerSeries
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsIntegralElemOfIsAlgebraicInt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertible
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangularStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangular
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieCombStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThetaGeneratorEqRootOfUnityMulStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThetaGeneratorEqRootOfUnityMul
 
 noncomputable section
 
@@ -63,21 +67,6 @@ theorem scale_over (s : S) : spMap (epsScaleR s) ≫ spMap (algebraMap S (DualNu
   rw [← spMap_comp]
   congr 1
   ext r <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
-
-theorem eig_iff (w : epsR S ⟶ t'.G) (a : 𝓞 E) (s : S) :
-    (w.left ≫ m.φ) ≫ (Xo.univ.t.act.act a).left = spMap (epsMul s) ≫ w.left ≫ m.φ ↔
-      (w ≫ t'.act.act a).left = spMap (epsScaleR s) ≫ w.left := by
-  have hw : w.left ≫ t'.G.hom = spMap (algebraMap S (DualNumber S)) := Over.w w
-  have e : (w.left ≫ m.φ) ≫ (Xo.univ.t.act.act a).left = (w ≫ t'.act.act a).left ≫ m.φ := by
-    rw [Over.comp_left, Category.assoc, Category.assoc, m.act]
-  rw [e]
-  constructor
-  · intro h
-    apply m.cart.1.hom_ext
-    · rw [Category.assoc]; exact h
-    · rw [Over.w, Category.assoc, hw, scale_over]; rfl
-  · intro h
-    rw [h, Category.assoc]; rfl
 
 theorem exists_lift {T : Over (Sp S)} (v : T.left ⟶ Xo.univ.t.G.left) (hv : v ≫ Xo.univ.t.G.hom = T.hom ≫ x) :
     ∃ w : T ⟶ t'.G, w.left ≫ m.φ = v :=
@@ -369,7 +358,7 @@ theorem isoMaps_scale {w : LB.Iso t.PP.L (Xo.univ.t.PP.L.pull m.φ)} {s s' : LB.
 theorem eq_of_isCombAt {n : ℕ} {u u' U : Fin n → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)}
     {X : Matrix (Fin n) (Fin n) S} (hX : IsUnit X.det) (hu : ∀ k, IsTanAt x (u k)) (hu' : ∀ k, IsTanAt x (u' k))
     (h : ∀ i, IsCombAt x u (X i) (U i)) (h' : ∀ i, IsCombAt x u' (X i) (U i)) : u = u' := by
-  obtain ⟨N, _, _, v, ρ, hv, htan, hcomb, -, -⟩ := GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo S x
+  obtain ⟨N, _, _, v, ρ, hv, htan, hcomb, -, -⟩ := _root_.GlobalTheory.TanMod.exists_tangent_module E H Dw l Xo S x
   choose b hb using fun k => (htan _).1 (hu k)
   choose b' hb' using fun k => (htan _).1 (hu' k)
   obtain rfl : u = fun k => v (b k) := funext fun k => (hb k).symm
@@ -431,13 +420,13 @@ theorem exists_frame (hL : Out.Laws) (hL2 : Out.Laws2) {E : Type} [Field E] [Num
   obtain ⟨w, gw', rw', -⟩ := m.lin
   obtain ⟨s₁, hs₁⟩ := exists_reads m yF.s
   obtain ⟨σ₁, hσ₁⟩ := exists_isoMaps w gw' Xo.univ.t.PP.isLB t.PP.isLB s₁
-  obtain ⟨ξ, N, hN, hξ, hσξ⟩ := GlobalTheory.T.theta_generator_eq_rootOfUnity_mul_alt hL hL2 E H Dw l Xo c S t yF.x m m1 w w1 σ₁ σ' s₁ s1 yF.s yF.gen
+  obtain ⟨ξ, N, hN, hξ, hσξ⟩ := _root_.GlobalTheory.theta_generator_eq_rootOfUnity_mul hL hL2 E H Dw l Xo c S t yF.x m m1 w w1 σ₁ σ' s₁ s1 yF.s yF.gen
     ⟨gw', rw'⟩ r1 hσ₁ i1 hs₁ hg
   have hζ : ξ * ξ ^ (N - 1) = 1 := by rw [← pow_succ', Nat.sub_add_cancel hN, hξ]
   obtain ⟨y₀, hy₀⟩ := (GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c _ (fun τ => (X τ)⁻¹) ξ yF).1
     (fun τ => Matrix.isUnit_nonsing_inv_det _ (hX τ)) (IsUnit.of_mul_eq_one _ hζ)
   have hchg : FrChg X (ξ ^ (N - 1)) y₀ yF := by
-    obtain ⟨c1, c2, -⟩ := GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S
+    obtain ⟨c1, c2, -⟩ := _root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S
     refine (c1 _ _ _ _ _ _ _ hy₀).2 ?_
     rw [mul_comm, hζ, funext fun τ => Matrix.mul_nonsing_inv _ (hX τ)]
     exact c2 yF
@@ -468,9 +457,9 @@ theorem exists_frame (hL : Out.Laws) (hL2 : Out.Laws2) {E : Type} [Field E] [Num
     exact h2
   refine ⟨ξ ^ (N - 1), N, _, hN, by rw [← pow_mul, mul_comm, pow_mul, hξ, one_pow], hchg, fun ht => core e v u hv hu
     (fun τ k => isTangent_baseChange m2.cart (hu τ k)
-      (((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hL.globalFns E H Dw l Xo c _ _ Y K _ _ χ W (e τ k)).2 _ (hv τ k)).1 (ht τ k))) hcomb, ?_⟩
+      (((_root_.GlobalTheory.ConstLie.main hL.globalFns E H Dw l Xo c _ _ Y K _ _ χ W (e τ k)).2 _ (hv τ k)).1 (ht τ k))) hcomb, ?_⟩
   choose e₀ he₀ using fun τ k => exists_gtComb (Pi.single k (1 : K)) (e τ)
-  choose v₀ hv₀ using fun τ k => (GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hL.globalFns E H Dw l Xo c _ _ Y K _ _ χ W (e₀ τ k)).1.exists
+  choose v₀ hv₀ using fun τ k => (_root_.GlobalTheory.ConstLie.main hL.globalFns E H Dw l Xo c _ _ Y K _ _ χ W (e₀ τ k)).1.exists
   choose u' hu' using fun τ k => exists_baseChange m2.cart (v₀ τ k)
   have hl : ∀ τ k, IsLieComb (Pi.single k (1 : S)) (u τ) (u' τ k) := fun τ k => by
     have h := isLieComb_baseChange m2.cart (hu τ) (hu' τ k)

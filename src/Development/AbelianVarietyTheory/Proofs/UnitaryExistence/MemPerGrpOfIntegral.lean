@@ -12,7 +12,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.
 import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianFormAtFrameLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FockHxDifferentiable
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaValueStandardLatticeEqClassicalThetaStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaValueStandardLatticeEqClassicalTheta
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsBaseClassLevelAdapted
+import Formalism.LocalToGlobal.ProjectiveLattices.CuspFree
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.AnChartAsm
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsTorusOfSelfD
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsIntegralHarmonicNeZeroAndIsHomogeneous
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaRuleExistsAndEval
@@ -460,7 +463,7 @@ theorem exists_thGen_ne_zero (hC : Formalism.MainNotions.ModuliIntegralCharts.H1
   obtain ⟨⟨f, hf, -⟩, hev⟩ := GlobalTheory.thetaRule_exists_and_eval hC E H Dw l Xo c nab hnab a n xs P hP
   refine ⟨f, ⟨xs, P, hP, hf⟩, ?_⟩
   rintro rfl
-  have hval := GlobalTheory.T.thetaValue_standardLattice_eq_classicalTheta hC E H Dw l Xo c r W.g (U.X k) Dc.bas Dc.idx W.e x.1 (U.X k).Λ (unC U k x) A Dc.sympl x.2
+  have hval := _root_.GlobalTheory.Dict.thVal_eq_thP hC E H Dw l Xo c r W.g (U.X k) Dc.bas Dc.idx W.e x.1 (U.X k).Λ (unC U k x) A Dc.sympl x.2
     hL Dw.p n Dc.hr Dc.eL hU.1 hD.2 (fun ℓ => he ▸ Dc.dir_eq ℓ) nab hnab θ v κ hrd hv hκ (W.mark k) hmk hA xs
     (Matrix.of Y) (fun b => ⟨⟨xs b, hxs b, by rw [sub_self]; exact zero_mem _, hY b⟩, 2, hY' b⟩) a P hP _
     (hev 0 hf ℂ (unC U k x))

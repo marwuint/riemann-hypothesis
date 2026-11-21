@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EqZeroOfMemMapPow
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharValMultiplicativeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharValMultiplicative
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SpecialMapFinite
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj
@@ -22,7 +22,7 @@ theorem charVal_comp {A A' : Type} [CommRing A] [CommRing A'] {a : Sp A ⟶ S} {
     (e : spMap h ≫ a = a') (t : Over.mk a ⟶ splitTorus S X) (χ : X) :
     charVal ((Over.homMk (spMap h) e : Over.mk a' ⟶ Over.mk a) ≫ t) χ = h (charVal t χ) := by
   subst e
-  exact (GlobalTheory.T.charVal_multiplicative S X A a).2.2.2.2.2 A' h t _ (by simp) χ
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X A a).2.2.2.2.2 A' h t _ (by simp) χ
 
 theorem exists_factor {M : Type} [CommMonoid M] (Y : AddSubgroup X) (f : X → M) (h0 : f 0 = 1)
     (hadd : ∀ x y, f (x + y) = f x * f y) (hY : ∀ y ∈ Y, f y = 1) :
@@ -78,10 +78,10 @@ theorem killsOver_of_forall_pow : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [
   let c := algebraMap R (AddMonoidAlgebra R (X ⧸ Y))
   let w₀ : Multiplicative X →* AddMonoidAlgebra R (X ⧸ Y) :=
     (AddMonoidAlgebra.of R (X ⧸ Y)).comp (AddMonoidHom.toMultiplicative (QuotientAddGroup.mk' Y))
-  obtain ⟨t₀, ht₀⟩ := (GlobalTheory.T.charVal_multiplicative S X _ (spMap c ≫ b)).2.2.2.2.1 w₀
+  obtain ⟨t₀, ht₀⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X _ (spMap c ≫ b)).2.2.2.2.1 w₀
   have ht₀' : ∀ χ : X, charVal t₀ χ = AddMonoidAlgebra.single (χ : X ⧸ Y) 1 := fun χ => ht₀ χ
   have hone := universal_one u Y b hk t₀ ht₀'
-  have hpts := (GlobalTheory.T.charVal_multiplicative S X A (spMap g ≫ b))
+  have hpts := (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X A (spMap g ≫ b))
   obtain ⟨v, hv⟩ := exists_factor Y (charVal t) (hpts.2.2.2.1 t).1 (hpts.2.2.2.1 t).2 ht
   let h : AddMonoidAlgebra R (X ⧸ Y) →+* A :=
     AddMonoidAlgebra.liftNCRingHom g v (fun _ _ => Commute.all _ _)

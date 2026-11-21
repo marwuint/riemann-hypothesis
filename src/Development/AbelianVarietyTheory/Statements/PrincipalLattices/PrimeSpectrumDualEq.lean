@@ -9,57 +9,7 @@ open scoped UpperHalfPlane
 
 namespace GlobalTheory.CMCurveTest
 
-theorem w_sq {d : ℕ} (h4 : d % 4 = 3) {w : ℂ} (hw : w = (1 + Complex.I * √d) / 2) :
-    w ^ 2 + (((1 + d) / 4 : ℕ) : ℂ) = w := by
-  have h : ((((1 + d) / 4 : ℕ) : ℂ)) * 4 = 1 + d := by
-    have : (1 + d) / 4 * 4 = 1 + d := by omega
-    exact_mod_cast this
-  have h2 : ((√d : ℝ) : ℂ) ^ 2 = d := by
-    rw [← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]
-    simp
-  rw [hw]
-  linear_combination h / 4 + Complex.I ^ 2 * h2 / 4 + (d : ℂ) * Complex.I_sq / 4
-
 theorem mul_eq_lift {S : Scheme.{0}} (P : Out.PolAV S) (a b : P.A ⟶ P.A) : a * b = lift a b ≫ μ[P.A] := rfl
-
-theorem mean_log_of_cmCurve (h : CMCurve) {d : ℕ} [NeZero d] (h7 : 7 ≤ d) (hs : Squarefree d) (h4 : d % 4 = 3)
-    {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) :
-    ∃ (M : IntermediateField ℚ ℂ) (_ : NumberField M) (P : Out.PolAV (Sp (𝓞 M))) (v : epsR (𝓞 M) ⟶ P.A)
-      (n : (M →+* ℂ) → ℝ), P.g = 1 ∧ IsLieBasis ![v] ∧ (∀ s, 0 < n s) ∧
-      (∀ s r, IsLieNormSq P v (s.comp (algebraMap (𝓞 M) M)) r ↔ r = n s) ∧
-      (∃ (P' : Out.PolAV (Sp ℂ)) (φ : P'.A.left ⟶ P.A.left) (u : HolUnif P'.A P'.L P'.g) (c : ℂ),
-        IsPolFibre ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M)) P P' φ ∧ c ≠ 0 ∧
-        ∀ z, z ∈ u.Λ ↔ ∃ a b : ℤ, z = fun _ => c * (a + b * ((1 + Complex.I * √d) / 2))) ∧
-      ((-((∑ s, Real.log (n s)) / Module.finrank ℚ M) : ℝ) : ℂ) =
-        (Real.eulerMascheroniConstant + Real.log (2 * Real.pi / √d) : ℝ) - deriv χ.LFunction 1 / χ.LFunction 1 := by
-  obtain ⟨K, _, _, h2, hr, hD, ⟨σ⟩, hτ⟩ := cmCurve_hypotheses.2.2 d h7 hs h4
-  obtain ⟨τ, hτ⟩ := hτ σ
-  obtain ⟨M, _, w, P, v, hw, hg, hv, -, ha, hn, hb⟩ := h d h7 hs h4 K h2 hr
-  choose n hn0 hn using hn
-  obtain ⟨P', φ, -, u, -, -, -, hP, -⟩ := (hn (algebraMap M ℂ) _).2 rfl
-  obtain ⟨c, hc, hl⟩ := ha P' φ hP u
-  refine ⟨M, inferInstance, P, v, n, hg, hv, hn0, hn, ⟨P', φ, u, c, hP, hc, by simpa only [hw] using hl⟩, ?_⟩
-  rw [hb n (fun s => (hn s _).2 rfl) σ τ hτ]
-  have e := (LFunction_one_and_mean_log_eta h2 hD (by omega) hχ σ hτ).2
-  have hh : (0 : ℝ) < classNumber K := by exact_mod_cast classNumber_pos K
-  have hd : (0 : ℝ) < √d := Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < d))
-  have e1 : -((∑ C, -Real.log (4 * Real.pi * (τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4)) / classNumber K) =
-      Real.log (4 * Real.pi) + (∑ C, Real.log ((τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4)) / classNumber K := by
-    have : ∀ C, Real.log (4 * Real.pi * (τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4) =
-        Real.log (4 * Real.pi) + Real.log ((τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4) := fun C => by
-      rw [_root_.mul_assoc (4 * Real.pi), Real.log_mul (by positivity) (mul_ne_zero (τ C).im_ne_zero
-        (pow_ne_zero _ (norm_ne_zero_iff.2 (ModularForm.eta_ne_zero (τ C).2))))]
-    simp only [this, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
-    rw [show (Fintype.card (ClassGroup (𝓞 K)) : ℝ) = classNumber K from rfl]
-    field_simp
-  have e2 : Real.log (2 * Real.pi / √d) = Real.log (4 * Real.pi) - Real.log (2 * √d) := by
-    rw [← Real.log_div (by positivity) (by positivity)]
-    congr 1
-    field_simp
-    norm_num
-  rw [e1, Complex.ofReal_add, e, e2]
-  push_cast
-  ring
 
 variable {R : Type} [CommRing R]
 
@@ -110,24 +60,5 @@ theorem isDiff_scaleVec {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
   rw [e]
   refine (congrArg TrivSqZeroExt.snd e2).trans ?_
   simp [epsScaleR]
-
-theorem isLieNormSq_scaleVec {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {s : R →+* ℂ} {r : ℝ}
-    (h : IsLieNormSq P v s r) (c : R) : IsLieNormSq P (scaleVec c v) s (‖s c‖ ^ 2 * r) := by
-  obtain ⟨P', φ, v', u, Hm, χ, w, h1, h2, h3, h4, rfl⟩ := h
-  refine ⟨P', φ, scaleVec (s c) v', u, Hm, χ, s c • w, h1, isVecOver_scaleVec h2 c, h3, isDiff_scaleVec u h4 _, ?_⟩
-  have : hermForm Hm (s c • w) (s c • w) = (‖s c‖ ^ 2 : ℝ) * hermForm Hm w w := by
-    simp only [hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]
-    rw [← _root_.mul_assoc, Complex.star_def, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, mul_comm (s c)]
-  rw [this, Complex.re_ofReal_mul]
-  ring
-
-theorem two_smul_generator {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} {s : R →+* ℂ} {r : ℝ}
-    (h : IsLieNormSq P v s r) : IsLieNormSq P (scaleVec 2 v) s (4 * r) ∧ IsLieNormSq P (scaleVec 0 v) s 0 := by
-  have h2 := isLieNormSq_scaleVec h 2
-  have h0 := isLieNormSq_scaleVec h 0
-  rw [map_ofNat, Complex.norm_ofNat] at h2
-  rw [map_zero, norm_zero] at h0
-  norm_num at h2 h0
-  exact ⟨h2, h0⟩
 
 end GlobalTheory.CMCurveTest

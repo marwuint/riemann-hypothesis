@@ -74,8 +74,3 @@ theorem flat_tensor_invariants (R R' O : Type) [CommRing R] [CommRing R'] [Algeb
 
 end GlobalTheory.InvAlg
 
-example : ∀ (R R' O : Type) [CommRing R] [CommRing R'] [Algebra R R'] [CommRing O] [Algebra R O] [Module.Flat R O],
-    Function.Injective (algebraMap R R') → GlobalTheory.Mum.IsGal (algebraMap R R') →
-    Function.Injective (algebraMap O (TensorProduct R O R')) ∧
-    ∀ t : TensorProduct R O R', (∀ σ, GlobalTheory.InvAlg.galTensor O σ t = t) →
-      t ∈ Set.range (algebraMap O (TensorProduct R O R')) := GlobalTheory.InvAlg.flat_tensor_invariants

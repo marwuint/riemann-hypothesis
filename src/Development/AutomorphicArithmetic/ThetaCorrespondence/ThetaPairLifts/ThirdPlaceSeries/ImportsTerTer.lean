@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjugatePlaceCompletionIsoTame
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -21,7 +21,7 @@ theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
   have hj : j.1 + 1 = D.nd.j i := by simp only [j]; omega
   have hconj : IsConjPl D.host (D.naut.plGw k v) s.w := by
     rw [hs]; exact GlobalTheory.DimPartsCompare.isConjPl_cPl _
-  obtain ⟨hw₀, hi₀⟩ := GlobalTheory.T.conjugateSplitPlace_eq_conjugatePlace_and_embedding D s _ hconj
+  obtain ⟨hw₀, hi₀⟩ := _root_.GlobalTheory.TypeTame.conjSP_w_of_isConjPl D s _ hconj
   obtain ⟨ψ₀, ξ, hψ, hξ, hU⟩ := P.H.level.uni i j hj k v (GlobalTheory.TypeTame.conjSP s) hw₀
   have hcc : ∀ x : D.host.E, D.host.conj (D.host.conj x) = x := fun x => by
     letI := Formalism.BasicNotions.Host.cmStar D.host
@@ -34,7 +34,7 @@ theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
     rwa [GlobalTheory.DimPartsCompare.cPl_cPl, ← hs] at this
   have hμ := hS.mu i s.w hw j hj
   have hrel : ∀ u, ξ⁻¹ u = (S i s.w hw).mu (Units.map c.toMonoidHom u) := by
-    refine GlobalTheory.T.splitPlace_unitsCharacter_eq_of_agree_on_field s c hc hcs _ _ hμ.1 ?_ ?_
+    refine _root_.GlobalTheory.ConjDense.eq_of_agree s c hc hcs _ _ hμ.1 ?_ ?_
     · obtain ⟨N, hN⟩ := hξ.1
       exact ⟨N, fun u hu => by rw [MonoidHom.inv_apply, hN u hu, inv_one]⟩
     · intro x
@@ -69,14 +69,14 @@ theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
     have := congrFun h0 (g * y⁻¹)
     simpa [NG.rt] using this
   · intro x hxT hxB
-    have hv := GlobalTheory.T.splitPlace_completionIso_preserves_valuation s c hc hcs
-    have hab := GlobalTheory.T.conjugateSplitPlace_unitaryLoc_eq_transpose_inv D.R.nV s x
+    have hv := _root_.GlobalTheory.SplitConjVal.valuation_eq s c hc hcs
+    have hab := _root_.GlobalTheory.ConjLoc.loc_conjSP D.R.nV s x
     obtain ⟨κ, hκ⟩ : ∃ κ : GAf D.host.E D.R.nV, κ = y⁻¹ * x * y := ⟨_, rfl⟩
     have hκT : TrivOutside {s.v} κ := hκ ▸ GlobalTheory.TypeBlockConj.trivOutside_mul (GlobalTheory.TypeBlockConj.trivOutside_mul (GlobalTheory.TypeBlockConj.trivOutside_inv hyT) hxT) hyT
     have hκloc : (GlobalTheory.TypeTame.conjSP s).loc D.R.nV κ = d * (GlobalTheory.TypeTame.conjSP s).loc D.R.nV x * d⁻¹ := by
       rw [hκ, map_mul, map_mul, map_inv, hyd, inv_inv]
-    obtain ⟨hUni, hsup⟩ := GlobalTheory.T.diagUniformiserConj_transposeInv_mem_upperParahoric s D.R.r D.R.t c hv (s.loc D.R.nV x) ((GlobalTheory.TypeTame.conjSP s).loc D.R.nV x) hab hxB ϖ hϖ d rfl
-    obtain ⟨u, hu, hbc⟩ := GlobalTheory.T.blockCharacter_eq_inv_at_transposeInv_lowerBlockDet s D.R.r D.R.t c hv (s.loc D.R.nV x) ((GlobalTheory.TypeTame.conjSP s).loc D.R.nV x) hab hxB ϖ hϖ d rfl
+    obtain ⟨hUni, hsup⟩ := _root_.GlobalTheory.BlockConj.conj_transpose_inv_uniRT s D.R.r D.R.t c hv (s.loc D.R.nV x) ((GlobalTheory.TypeTame.conjSP s).loc D.R.nV x) hab hxB ϖ hϖ d rfl
+    obtain ⟨u, hu, hbc⟩ := _root_.GlobalTheory.BlockConjDet.blockChar_eq_inv_detDD s D.R.r D.R.t c hv (s.loc D.R.nV x) ((GlobalTheory.TypeTame.conjSP s).loc D.R.nV x) hab hxB ϖ hϖ d rfl
     have hκJ : κ ∈ (P.M.loc i).J := (hU.mem κ hκT).2 (by rw [hκloc]; exact hUni)
     have hchr := hU.chr κ hκJ hκT u (by rw [hu, hκloc]; rfl)
     rw [hψ.1 _ (by rw [hκloc]; exact hsup), one_mul] at hchr

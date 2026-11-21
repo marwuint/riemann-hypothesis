@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DecompositionGroupLocalGalois
-import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNormalised
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAlgHomMulEquivDec
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowCharPowEqSelf
@@ -10,6 +9,7 @@ import GroundTheory.ProfiniteCohomology.GaloisCohomology.IsZeroGroupCohomologyQu
 import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
 import GroundTheory.GlobalFields.LocalFieldAtPlace
 import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.TransportA
+
 open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Published GlobalTheory.Published.PoitouTate
 open GroundTheory.ProfCoh GroundTheory.LocalField ValuativeRel CategoryTheory
 set_option maxHeartbeats 1000000 in

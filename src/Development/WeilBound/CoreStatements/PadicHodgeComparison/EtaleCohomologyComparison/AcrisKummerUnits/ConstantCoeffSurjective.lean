@@ -95,10 +95,6 @@ def PFil0 : Ideal A.Acr0 := Ideal.span {(l : A.Acr0)} ⊔ A.Fil0 1
 
 def expand (c : ℕ →₀ A.A) : A.Acr 1 := c.sum fun k a => A.aTo1 a * A.dxi 1 (l * k)
 
-def idemSum (n : ℕ) (e : ZMod (l ^ n) → A.A) : A.Wn n :=
-  haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
-  ∑ c : ZMod (l ^ n), (c.val : A.Wn n) * Ideal.Quotient.mk _ (WittVector.teichmuller l (e c))
-
 def contR (Γ : Type) [TopologicalSpace Γ] : Subring (Γ → A.A) where
   carrier := {f | ∀ k : ℕ, IsLocallyConstant fun γ => Ideal.Quotient.mk (Ideal.span {A.pi ^ k}) (f γ)}
   mul_mem' hf hg k := by simp only [Pi.mul_apply, map_mul]; exact (hf k).mul (hg k)

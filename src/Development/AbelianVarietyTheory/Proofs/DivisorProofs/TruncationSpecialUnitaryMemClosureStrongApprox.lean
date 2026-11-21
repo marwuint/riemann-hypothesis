@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureDivMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TruncMemSUAdelic
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecialUnitaryEqProdQuasiReflectionPairsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiReflectionPairTruncationMemClosureStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecialUnitaryEqProdQuasiReflectionPairs
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiReflectionPairTruncationMemClosure
 
 noncomputable section
 
@@ -44,7 +44,7 @@ theorem assemble : (∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
       obtain ⟨p₂, hp₂, e₂⟩ := ih (fun p hp => hl p (List.mem_cons_of_mem _ hp))
       obtain ⟨hx, hy, hu⟩ := hl q List.mem_cons_self
       obtain ⟨z, hzz, c1, c2⟩ := hz q.1 q.2.1 hx hy
-      obtain ⟨p₁, e₁, hp₁⟩ := GlobalTheory.T.quasiReflectionPair_truncation_mem_closure H1 F E σ hcm M J hJ S₁' S₂' ε' hε' hne η hηη q.1 q.2.1 z q.2.2 hu hx hy
+      obtain ⟨p₁, e₁, hp₁⟩ := _root_.GlobalTheory.SUPair.trunc_pair_mem H1 F E σ hcm M J hJ S₁' S₂' ε' hε' hne η hηη q.1 q.2.1 z q.2.2 hu hx hy
         hzz c1 c2
       refine ⟨p₁ * p₂, K.mul_mem (hmono hp₁) hp₂, ?_⟩
       rw [List.map_cons, List.prod_cons, ← e₁, ← e₂]
@@ -63,7 +63,7 @@ theorem assemble : (∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
     have hinj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
       Algebra.TensorProduct.includeRight_injective (algebraMap F (AF F)).injective
     exact hinj (h.trans (map_one _).symm)
-  obtain ⟨l, hl, hle⟩ := GlobalTheory.T.specialUnitary_eq_prod_quasiReflectionPairs F E σ hcm M J hJ g0 hg0 hdet
+  obtain ⟨l, hl, hle⟩ := _root_.GlobalTheory.SUGenPairs.eq_prod_pairs F E σ hcm M J hJ g0 hg0 hdet
   obtain ⟨p, hp, hpe⟩ := hlist l hl
   have hpg : p = ⟨g0, hg0⟩ := Subtype.ext (Units.ext (hpe.trans hle.symm))
   have hxe : x = trunc σ J η hηη ⟨g0, hg0⟩ := by

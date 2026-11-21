@@ -151,12 +151,6 @@ include hf in
 theorem embLC_int (x : OL p n L) : ‖embLC f L (algebraMap (OL p n L) L x)‖ ≤ 1 :=
   (iC_int_Cp f hf _).1 ((Oc_K L _).2 ⟨x, rfl⟩)
 
-theorem witt_embeddings_compatible (a : W2 p n) :
-    embLC f L (algebraMap (OO p n) L (algebraMap (W2 p n) (OO p n) a)) =
-      f (algebraMap (WW p) (K0 p) (gWW p n a)) := by
-  show iC f (gL L _) = _
-  rw [intermediate_map_witt_quadratic, iC_alg]
-
 end Conc
 
 end Formalism.L2.G.Pend

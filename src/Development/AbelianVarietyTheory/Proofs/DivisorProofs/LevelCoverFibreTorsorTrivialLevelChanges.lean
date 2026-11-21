@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrMoveTransfer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActLevOfLiftsOfEqOne
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapsClosed
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditionalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevMoveCommLevelMapOfTrivialModStatement
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevMoveCommLevelMapOfTrivialMod
+import Formalism.LocalToGlobal.ProjectiveLattices.IsLevMove
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelStructureChangeFramedGeometricPointUniqueStatement
 
 open AlgebraicGeometry CategoryTheory Limits NumberField
@@ -79,7 +81,7 @@ theorem fibre_torsor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       rw [e (LinearMap.id a) (g.f d.l₂.A a)]
       exact hmv.2.2 a
   · obtain ⟨ρ₂, ν₂, hi, hmv, hfr⟩ := hr
-    obtain ⟨e₁, e₂⟩ := GlobalTheory.T.levMove_comp_r_eq_of_trivial_mod E H Dw l Xo c 0 d hpq hlev hA hbase ρ₂ ν₂ (lift γ) LinearMap.id hi hmv hγ
+    obtain ⟨e₁, e₂⟩ := _root_.GlobalTheory.levMove_comm_levelMap_of_trivial_mod E H Dw l Xo c 0 d hpq hlev hA hbase ρ₂ ν₂ (lift γ) LinearMap.id hi hmv hγ
     obtain ⟨⟨ι, hι, hone⟩, -, -⟩ := GlobalTheory.T.framedPointMove_calculus E H Dw l Xo c
     exact GlobalTheory.frOver_of_square_of_frMove E H Dw l Xo c 0 d (𝟙 _) ι ρ₂ ν₂ d.r d.m (by rw [e₁, Category.comp_id])
       (by rw [e₂, hι, Category.comp_id]) k y y y₂ y₂' hy (hone k y) hfr

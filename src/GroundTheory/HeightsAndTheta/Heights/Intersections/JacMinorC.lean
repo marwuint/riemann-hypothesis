@@ -1,7 +1,8 @@
 import Mathlib
 import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.HeightAddRingKrullDimQuotientMvPolynomialField
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.GenSmooth
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterMinorA
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.IsIntersectionFamily
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
@@ -231,34 +232,5 @@ theorem exists_jacobian_minor_not_mem_charZero {F : Type} [Field F] [CharZero F]
     rfl
   rw [hM']
   exact h1
-
-section Minors
-
-open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.MultiHomogZ
-
-variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {R : Type} [CommRing R]
-
-theorem isMultiHomog_det_pderiv_over {s c : ℕ} (G : Fin s → MRingOver R ι)
-    (hG : ∀ i, ∃ a, IsMultiHomog (G i) a) (a : Fin c → Fin s) (b : Fin c → Σ k, ι k) :
-    ∃ d, IsMultiHomog (Matrix.det (Matrix.of fun i j => pderiv (b j) (G (a i)))) d := by
-  choose dG hdG using hG
-  refine ⟨_, isMultiHomog_of_blkWtZ (n := fun k =>
-    ∑ i, ((dG (a i) k : ℤ) - blkWtZ k (b i))) fun k => ?_⟩
-  rw [Matrix.det_apply]
-  refine IsWeightedHomogeneous.sum _ _ _ fun σ _ => ?_
-  have hp : IsWeightedHomogeneous (blkWtZ (ι := ι) k)
-      (∏ i, (Matrix.of fun i j => pderiv (b j) (G (a i))) (σ i) i)
-      (∑ i, ((dG (a (σ i)) k : ℤ) - blkWtZ k (b i))) :=
-    IsWeightedHomogeneous.prod _ _ _ fun i _ =>
-      isWeightedHomogeneous_pderiv_int (isWeightedHomogeneous_blkWtZ (hdG (a (σ i))) k) (b i)
-  have e : ∑ i, ((dG (a (σ i)) k : ℤ) - blkWtZ k (b i)) = ∑ i, ((dG (a i) k : ℤ) - blkWtZ k (b i)) := by
-    simp only [Finset.sum_sub_distrib]
-    congr 1
-    exact Equiv.sum_comp σ (fun i => (dG (a i) k : ℤ))
-  rw [e] at hp
-  rw [Units.smul_def, zsmul_eq_mul, ← map_intCast (C : R →+* MRingOver R ι), ← zero_add (∑ i, _)]
-  exact (isWeightedHomogeneous_C _ _).mul hp
-
-end Minors
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter

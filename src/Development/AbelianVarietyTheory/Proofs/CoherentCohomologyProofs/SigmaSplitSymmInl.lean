@@ -27,22 +27,6 @@ variable {K n : Type*} [NormedField K]
 def EntriesBounded (M : Matrix n n K) (c : ℝ) : Prop :=
   ∀ i j, ‖M i j‖ ≤ c
 
-theorem EntriesBounded.mono {M : Matrix n n K} {c d : ℝ} (h : EntriesBounded M c)
-    (hcd : c ≤ d) : EntriesBounded M d :=
-  fun i j => (h i j).trans hcd
-
-theorem EntriesBounded.mul [IsUltrametricDist K] [Fintype n] {M N : Matrix n n K} {c d : ℝ}
-    (hM : EntriesBounded M c) (hN : EntriesBounded N d) :
-    EntriesBounded (M * N) (c * d) := by
-  intro i j
-  have hc : 0 ≤ c := (norm_nonneg _).trans (hM i j)
-  have hd : 0 ≤ d := (norm_nonneg _).trans (hN i j)
-  rw [Matrix.mul_apply]
-  refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hc hd) ?_
-  intro k _
-  rw [norm_mul]
-  exact mul_le_mul (hM i k) (hN k j) (norm_nonneg _) hc
-
 end Bounded
 
 section DropLast

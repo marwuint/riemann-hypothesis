@@ -57,10 +57,4 @@ end GlobalTheory.HermSD
 
 namespace GlobalTheory.HermSD
 
-theorem isHermND_one {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) :
-    IsHermND σ (1 : Matrix (Fin 1) (Fin 1) E) := by
-  refine ⟨fun i j => ?_, by simp⟩
-  rw [Subsingleton.elim i 0, Subsingleton.elim j 0]
-  simp
-
 end GlobalTheory.HermSD

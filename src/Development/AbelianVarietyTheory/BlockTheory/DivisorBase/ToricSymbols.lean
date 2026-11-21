@@ -68,22 +68,4 @@ theorem isTwistedSum_iff_isToricSum {φ : I → E →+* ℂ} {s : ℕ} {κ : I �
     ring
   simp only [IsTwistedSum, IsToricSum, key]
 
-example {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)} {χ : HChar E} (T : ℂ) :
-    IsTwistedSum φ s κ c χ 1 T ↔ IsToricSum φ s κ c χ T := by
-  simp [IsTwistedSum, IsToricSum, lamF]
-
-example (K : Type) [Field K] [NumberField K] [Algebra K E] (c : Ideal (OF E)) (a : Kˣ) :
-    classOf K c (Units.map (algebraMap K (Af K)).toMonoidHom a) = 1 := by
-  rw [classOf, QuotientGroup.eq_one_iff]
-  refine Subgroup.mem_sup_left ⟨Units.map (algebraMap K E).toMonoidHom a, Units.ext ?_⟩
-  exact (GlobalTheory.AdeleBaseChange.adMap_algebraMap (a : K)).symm
-
-example {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] {art : Ideles K →* Gab K Ω} (h : IsGlobalArtin art)
-    (v : HeightOneSpectrum (𝓞 K)) (A : ValuationSubring Ω) (hA : Formalism.ConjugateSelfDual.IsPlaceOver A v) :
-    ∃ σ : Formalism.ConjugateSelfDual.G K Ω, Formalism.ConjugateSelfDual.IsFrob (F := K) A (Formalism.ConjugateSelfDual.normV v) σ ∧ IsSymbol art (unifAt v) σ := by
-  obtain ⟨σ, hσ, e⟩ := (h.frob v A hA _).1 ⟨_, Formalism.L2.Host.unif_spec v, rfl⟩
-  refine ⟨σ, hσ, ?_⟩
-  rw [map_inv, inv_eq_iff_eq_inv] at e
-  exact e.symm
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols

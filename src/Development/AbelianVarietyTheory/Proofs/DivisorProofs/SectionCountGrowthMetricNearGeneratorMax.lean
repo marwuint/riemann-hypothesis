@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CountGrowthExponentialRadiiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankFunctionFieldQuotientSubfieldEqDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CountGrowthExponentialRadii
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankFunctionFieldQuotientSubfieldEqDegree
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelLowerBoundCountRankAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelUpperBoundCountRankAmpleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelUpperBoundCountRankAmple
 
 set_option autoImplicit false
 
@@ -16,8 +16,8 @@ namespace GlobalTheory.HSAmp
 
 theorem lc_exp_bounds : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ κ t : ℝ, 0 < κ → κ ≤ 1 → 0 < t → (∀ l (σ : k →+* ℂ) (y : CxPts p σ), P.nu e 0 σ y (x l) ≤ 1) → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ l, κ ≤ P.nu e 0 σ y (x l)) → ∀ ε : ℝ, 0 < ε → ∀ᶠ m : ℕ in atTop, gdeg P.L D / D.factorial * t - ε ≤ P.lc m 1 (Real.exp (t * m)) / (m : ℝ) ^ (D + 1) ∧ P.lc m 1 (Real.exp (t * m)) / (m : ℝ) ^ (D + 1) ≤ gdeg P.L D / D.factorial * (t - Real.log κ / e) + ε := by
   intro hA k _ X _ p D hp P hL e x hx κ t hκ hκ1 ht h1 h2 ε hε
-  have hdeg := GlobalTheory.T.finrank_functionField_quotientSubfield_eq_degree hA k X p D hp P hL e x hx
-  have hup := GlobalTheory.T.arithHilbertSamuel_upperBound_count_rank_ample k X p D hp P hL e x hx
+  have hdeg := _root_.GlobalTheory.HSAmp.finrank_ratF_eq_gdeg hA k X p D hp P hL e x hx
+  have hup := _root_.GlobalTheory.HSAmp.HSUpper.upper_bound k X p D hp P hL e x hx
   have hlo := GlobalTheory.T.arithHilbertSamuel_lowerBound_count_rank_ample k X p D hp P hL e x hx
   have he : (0 : ℝ) < e := by exact_mod_cast hx.pos
   have hfin : ∀ (m : ℕ) (R : ℝ), 0 ≤ R → (P.Bl m 1 R).Finite := by
@@ -25,7 +25,7 @@ theorem lc_exp_bounds : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRi
     obtain ⟨c, C, _, h⟩ := hup m 1
     have := ((h 0).2.2 R κ hR hκ h2).1
     simpa using this
-  have key := GlobalTheory.T.count_growth_exponential_radii D e (Module.finrank (ratF x) X.functionField) (fun m R => (P.Bl m 1 R).ncard) κ t
+  have key := _root_.GlobalTheory.hsGrowth_exp_radius D e (Module.finrank (ratF x) X.functionField) (fun m R => (P.Bl m 1 R).ncard) κ t
     hx.pos hκ hκ1 ht
     (fun m R R' hR hRR' => Set.ncard_le_ncard
       (fun f hf => ⟨hf.1, fun σ y => (hf.2 σ y).trans hRR'⟩) (hfin m R' (hR.trans hRR')))

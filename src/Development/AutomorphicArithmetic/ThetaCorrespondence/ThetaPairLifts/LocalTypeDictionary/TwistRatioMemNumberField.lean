@@ -11,7 +11,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 noncomputable section
 namespace GlobalTheory.RowEx.RatioField
-open GlobalTheory.FunObj.SqNum GlobalTheory.CMVal
 end GlobalTheory.RowEx.RatioField
 namespace GlobalTheory.RowEx.RatioField
 open GlobalTheory.FunObj.SqNum GlobalTheory.CMVal

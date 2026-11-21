@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistedModelAdmissibleCocycles
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.OnePlusPowerAssembly
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ModelObjAndAbcStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ModelObjAndAbc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PhiGammaLatticeFamiliesShiftInclusion
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenMultiplicityShiftLatticeVariablePow
 
@@ -129,8 +129,8 @@ end
 
 theorem model_char_sign : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T2 l → Dt.T3 l → ∀ (e : ℤ), 0 ≤ e → e < Dt.t → ∀ N : Lats k n 1, M.Model (chr (M.ω ^ (-e))) N → ∃ κ : ZMod n → ℤ, ∀ i, N i = sh (κ i) (M.Nχ e i) ∧ |κ i| ≤ Dt.sg l i ∧ (Dt.ty i = LType.G → 0 ≤ κ (i - 1)) ∧ (Dt.ty i = LType.Bd → κ (i - 1) ≤ 0) ∧ ∀ x, sen ((F.D (chr (M.ω ^ (-e)))).γ i) (N i) x = resCount {e - κ i} 0 x := by
   intro k G _ _ l n _ _ _ R F r Dt M h1 _ _ e he0 het N hN
-  obtain ⟨-, hL, hAB, -⟩ := GlobalTheory.T.obj_and_abc_of_model F M (chr (M.ω ^ (-e))) N hN
-  obtain ⟨-, hL0, hAB0, -⟩ := GlobalTheory.T.obj_and_abc_of_model F M (chr (M.ω ^ (-e))) (M.Nχ e) (M.χ_model e he0 het)
+  obtain ⟨-, hL, hAB, -⟩ := _root_.GlobalTheory.Models.model_obj_and_abc F M (chr (M.ω ^ (-e))) N hN
+  obtain ⟨-, hL0, hAB0, -⟩ := _root_.GlobalTheory.Models.model_obj_and_abc F M (chr (M.ω ^ (-e))) (M.Nχ e) (M.χ_model e he0 het)
   have hχ := M.χ_lat e (by omega) het
   choose κ hκ using fun i => exists_eq_sh (hL i) (hL0 i)
   have key : ∀ i {a b : ℤ}, sh a (M.Nχ e i) ≤ sh b (M.Nχ e i) → b ≤ a :=

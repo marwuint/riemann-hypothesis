@@ -16,12 +16,6 @@ noncomputable def UpperTheory.Reformulated.B.Qk30.loweringMonoid.{u_1, u_2} :
         (E : UpperTheory.Reformulated.B.Qk30.GLOps n K V) ↦
       Submonoid.closure {g : Module.End K V | ∃ (c : Fin n), ∃ d < c, g = E c d}
 
-theorem UpperTheory.Reformulated.B.Qk30.aux3.{u_1, u_2} :
-    ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V],
-      SMulCommClass K K V := by
-  intro K V _ _ _
-  infer_instance
-
 noncomputable def UpperTheory.Reformulated.B.Qk30.weightSp.{u_2, u_3} :
     {n : ℕ} →
       {K : Type u_2} →

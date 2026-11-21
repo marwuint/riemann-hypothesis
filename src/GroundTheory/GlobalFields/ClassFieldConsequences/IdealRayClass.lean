@@ -42,11 +42,6 @@ theorem toFractionalIdeal_mem_coprimeIdeals {x : IdeleGroup K} (hx : x ∈ 𝔪.
     toFractionalIdeal x ∈ 𝔪.coprimeIdeals := fun v hv ↦ by
   rw [count_toFractionalIdeal, 𝔪.ord_eq_zero_of_mem_idelesOneMod hx hv]
 
-theorem toPrincipalIdeal_mem_coprimeIdeals {a : Kˣ} (ha : a ∈ 𝔪.rayUnits) :
-    toPrincipalIdeal (𝓞 K) K a ∈ 𝔪.coprimeIdeals := by
-  rw [← toFractionalIdeal_diagonal]
-  exact 𝔪.toFractionalIdeal_mem_coprimeIdeals ha
-
 def principalRay : Subgroup 𝔪.coprimeIdeals :=
   (𝔪.rayUnits.map (toPrincipalIdeal (𝓞 K) K)).subgroupOf 𝔪.coprimeIdeals
 
@@ -226,21 +221,6 @@ theorem rayClassGroupEquiv_mk {x : IdeleGroup K} (hx : x ∈ 𝔪.idelesOneMod) 
     rfl
   rw [rayClassGroupEquiv, MulEquiv.trans_apply, MulEquiv.trans_apply, h]
   rfl
-
-def quotientEquivIdealRayClassGroup :
-    IdeleClassGroup K ⧸ 𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K) ≃* 𝔪.IdealRayClassGroup :=
-  𝔪.quotientMapCongruenceEquiv.trans 𝔪.rayClassGroupEquiv
-
-theorem quotientEquivIdealRayClassGroup_mk {x : IdeleGroup K} (hx : x ∈ 𝔪.idelesOneMod) :
-    𝔪.quotientEquivIdealRayClassGroup (QuotientGroup.mk (IdeleClassGroup.mk K x)) =
-      QuotientGroup.mk (⟨toFractionalIdeal x, 𝔪.toFractionalIdeal_mem_coprimeIdeals hx⟩ :
-        𝔪.coprimeIdeals) := by
-  rw [quotientEquivIdealRayClassGroup, MulEquiv.trans_apply, quotientMapCongruenceEquiv_mk,
-    rayClassGroupEquiv_mk _ hx]
-
-def idealRayClassGroupEquiv_of_real_eq_univ (h : 𝔪.real = Set.univ) :
-    _root_.GroundTheory.Global.RayClassGroup K 𝔪.ideal ≃* 𝔪.IdealRayClassGroup :=
-  (𝔪.rayClassGroupEquiv_of_real_eq_univ h).symm.trans 𝔪.rayClassGroupEquiv
 
 instance : Finite 𝔪.IdealRayClassGroup :=
   Finite.of_equiv _ 𝔪.rayClassGroupEquiv.toEquiv

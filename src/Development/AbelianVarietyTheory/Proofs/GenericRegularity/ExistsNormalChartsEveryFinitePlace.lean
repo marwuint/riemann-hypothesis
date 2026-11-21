@@ -4,9 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.RegularCharts.SCharts
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFiniteIntegralChartCoverFlagSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFiniteIntegralChartCoverFlagSpace
+import Development.AbelianVarietyTheory.Definitions.RegularCharts.MatrixTwoByTwoCongr
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsRefinedCoveringChartFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsOfCoveringChartsStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsOfCoveringCharts
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
@@ -22,14 +23,14 @@ theorem exists_sCharts : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt →
   obtain ⟨Y, hY⟩ := hM
   have := isDiscreteValuationRing_valuationSubring_place la
 
-  obtain ⟨J, hJ, P, hP⟩ := GlobalTheory.T.exists_finite_integral_chart_cover_flagSpace hST E H Dw l Xo c hEv.bc (la.valuation c.F).valuationSubring Y hY
+  obtain ⟨J, hJ, P, hP⟩ := _root_.GlobalTheory.Reg.exists_finite_pchart_cover hST E H Dw l Xo c hEv.bc (la.valuation c.F).valuationSubring Y hY
   have := hJ
-  obtain ⟨S, hS, -⟩ := GlobalTheory.T.exists_normal_charts_of_covering_charts E H Dw l Xo c hEv hDiag la J P hP
+  obtain ⟨S, hS, -⟩ := _root_.GlobalTheory.Reg.exists_scharts_of_covers E H Dw l Xo c hEv hDiag la J P hP
   refine ⟨⟨S, hS⟩, fun a n m ws hws hnz => ?_⟩
 
   obtain ⟨J', hJ', P', hP', hF⟩ := GlobalTheory.T.exists_refined_covering_chart_family E H Dw l Xo c hEv _ _ J P hP a n m ws hws hnz
   have := hJ'
-  obtain ⟨S', hS', hW⟩ := GlobalTheory.T.exists_normal_charts_of_covering_charts E H Dw l Xo c hEv hDiag la J' P' hP'
+  obtain ⟨S', hS', hW⟩ := _root_.GlobalTheory.Reg.exists_scharts_of_covers E H Dw l Xo c hEv hDiag la J' P' hP'
   exact ⟨S', hW m ws hF, hS'⟩
 
 end GlobalTheory.Reg

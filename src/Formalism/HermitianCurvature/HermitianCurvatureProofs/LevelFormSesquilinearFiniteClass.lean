@@ -151,9 +151,6 @@ end Formalism.FourierDecayAlt.P.JCx2
 
 namespace Formalism.FourierDecayAlt.P
 
-open Formalism.FourierDecayAlt
-open scoped ComplexOrder
-
 end Formalism.FourierDecayAlt.P
 
 namespace Formalism.FourierDecayAlt.P
@@ -1725,11 +1722,6 @@ def sqGood (d : ℕ) (c : Mat k r → ℂ) : Prop :=
   (∀ F : Mat k r → (Wq →L[ℂ] Wp), CkOn (⊤ : ℕ∞) (GV k r) F → CkOn (⊤ : ℕ∞) (GV k r) (fun g => c g • F g)) ∧
   ∀ (A : ℝ) (m : ℕ) (F : Mat k r → (Wq →L[ℂ] Wp)), InCC (A + d) m F → InCC A m (fun g => c g • F g)
 
-def sqOp (d o : ℕ) (Θ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)) : Prop :=
-  (∀ F, CkOn (⊤ : ℕ∞) (GV k r) F → CkOn (⊤ : ℕ∞) (GV k r) (Θ F)) ∧
-  ∀ (A : ℝ) (m : ℕ) (F : Mat k r → (Wq →L[ℂ] Wp)), CkOn (⊤ : ℕ∞) (GV k r) F → InCC (A + d) (m + o) F →
-    InCC A m (Θ F)
-
 variable {Wp Wq}
 
 theorem sq_inCC_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A A' : ℝ} {m m' : ℕ}
@@ -1911,13 +1903,6 @@ section sqLin
 variable {k r : ℕ} (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
-def sqS (N : ℕ) (Θ : D.Op (Mat k r → (Wq →L[ℂ] Wp))) : Prop :=
-  sqOp Wp Wq (2 * N) ((2 * r + k + 1) * N) Θ ∧
-  (∀ (F F' : Mat k r → (Wq →L[ℂ] Wp)) (c : ℂ), CkOn (⊤ : ℕ∞) (GV k r) F → CkOn (⊤ : ℕ∞) (GV k r) F' →
-    ∀ g ∈ GV k r, Θ (F + c • F') g = Θ F g + c • Θ F' g) ∧
-  (∀ F F' : Mat k r → (Wq →L[ℂ] Wp), CkOn (⊤ : ℕ∞) (GV k r) F → CkOn (⊤ : ℕ∞) (GV k r) F' →
-    (∀ g ∈ GV k r, F g = F' g) → ∀ g ∈ GV k r, Θ F g = Θ F' g)
-
 variable {Wp Wq}
 
 theorem sq_glev0 (g : Mat k r) : g ∈ Q.Glev k r 0 ↔ g ∈ GV k r := by
@@ -2006,11 +1991,6 @@ end sqBeta
 end Formalism.FourierDecayAlt.P.JCx2
 
 namespace Formalism.FourierDecayAlt.P
-
-open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.JCx2
-open scoped ComplexConjugate
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 end Formalism.FourierDecayAlt.P
 
@@ -2625,11 +2605,6 @@ def pdGood (d : ℕ) (c : Mat k r → ℂ) : Prop :=
   ∀ (A : ℝ) (m : ℕ), ∃ K : ℝ, 0 ≤ K ∧ ∀ (F : Mat k r → (Wq →L[ℂ] Wp)) (b : ℝ), CCle (A + d) m F b →
     CCle A m (fun g => c g • F g) (K * b)
 
-def pdOp (d o : ℕ) (Θ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)) : Prop :=
-  (∀ F, CkOn (⊤ : ℕ∞) (GV k r) F → CkOn (⊤ : ℕ∞) (GV k r) (Θ F)) ∧
-  ∀ (A : ℝ) (m : ℕ), ∃ K : ℝ, 0 ≤ K ∧ ∀ (F : Mat k r → (Wq →L[ℂ] Wp)) (b : ℝ), CkOn (⊤ : ℕ∞) (GV k r) F →
-    CCle (A + d) (m + o) F b → CCle A m (Θ F) (K * b)
-
 variable {Wp Wq}
 
 theorem pd_ccle_nonneg {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ} {F : Mat k r → E}
@@ -2744,18 +2719,6 @@ end pdQuant
 end Formalism.FourierDecayAlt.P.JCx2
 
 namespace Formalism.FourierDecayAlt.P.JCx2
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-section pdOps
-
-variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq]
-
-def pdS (N : ℕ) (Θ : D.Op (Mat k r → (Wq →L[ℂ] Wp))) : Prop :=
-  pdOp Wp Wq (2 * N) ((2 * r + k + 1) * N) Θ
-
-end pdOps
 
 end Formalism.FourierDecayAlt.P.JCx2
 
@@ -3183,16 +3146,7 @@ end Formalism.FourierDecayAlt.P.JCx2
 
 namespace Formalism.FourierDecayAlt.P.JCx2
 
-open Formalism.FourierDecayAlt.P.BetaSesquilinearity
-open scoped ComplexOrder ComplexConjugate
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
 end Formalism.FourierDecayAlt.P.JCx2
-
-end
-
-section
 
 end
 
@@ -3249,51 +3203,6 @@ end classesM
 end Formalism.FourierDecayAlt.P.JCx2
 
 namespace Formalism.FourierDecayAlt.P
-
-open Formalism.FourierDecayAlt
-open scoped ComplexOrder
-
-theorem theorem_P_module_moderate_growth : Formalism.FourierDecayAlt.JC.ThmPModuleOfActualMM := by
-  intro hP hRMF hPD hSesq Wp Wq _ _ _ _ _ _ P0 T l0 N admitted A mm hl0 hl0k hAdmN hA hmm hdata
-  refine ⟨fun j => JCx2.KKcM (T.bs j) A mm, fun j w hw => ?_, fun j F ε hε hF hF1 hF3 => ⟨ε, hε, hF1, hF, hF3⟩⟩
-  have hlen := hAdmN w hw
-  have hA' : P5.Auser P0 w.length + 1 ≤ A := le_trans (by linarith [JCx2.auser_mono P0 hlen]) hA
-  have hmm' : P5.mmUser P0 w.length ≤ mm := le_trans (JCx2.mmUser_mono P0 hlen) hmm
-  have hmemK : ∀ x : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp),
-      x ∈ Submodule.pi Set.univ (fun _ => JCx2.KKcM (T.bs j) A mm) →
-      ∃ ε, 0 < ε ∧ ∀ a, JC.CCCoefM (T.bs j) A mm ε (x a) := by
-    intro x hx
-    exact JCx2.exists_common_eps (fun a ε => JC.CCCoefM (T.bs j) A mm ε (x a))
-      (fun a ε ε' _ h hF => JCx2.cCCoefM_mono h hF) (fun a => hx a (Set.mem_univ a))
-  refine ⟨fun x hx x' hx' y hy c => ?_, fun x hx => ?_⟩
-  · obtain ⟨e1, he1, h1⟩ := hmemK x hx
-    obtain ⟨e2, he2, h2⟩ := hmemK x' hx'
-    obtain ⟨e3, he3, h3⟩ := hmemK y hy
-    have hε : 0 < min e1 (min e2 e3) := lt_min he1 (lt_min he2 he3)
-    exact hSesq Wp Wq P0 T (M.sgn P0 l0) j w A mm _ hε hA' hmm' x x' y c
-      (fun a => JCx2.cCCoefM_mono (min_le_left _ _) (h1 a))
-      (fun a => JCx2.cCCoefM_mono ((min_le_right _ _).trans (min_le_left _ _)) (h2 a))
-      (fun a => JCx2.cCCoefM_mono ((min_le_right _ _).trans (min_le_right _ _)) (h3 a))
-  · obtain ⟨ε, hε, hxε⟩ := hmemK x hx
-    refine hPD Wp Wq P0 T (M.sgn P0 l0) j w A mm ε hε hA' hmm' ?_ x hxε
-    intro ε₁ hε₁ v hvn
-    obtain ⟨X, μ, L, st, hD, hOK⟩ := hdata j
-    obtain ⟨Cst, hC, hform⟩ := hRMF Wp Wq P0 T j X μ L st l0 hD
-    have hAu : P5.Auser (JC.parLev P0 j) (Fintype.card (Fin w.length)) ≤ A := by
-      rw [Fintype.card_fin]
-      linarith [JCx2.auser_parLev P0 j w.length]
-    have hmu : P5.mmUser (JC.parLev P0 j) (Fintype.card (Fin w.length)) ≤ mm := by
-      rw [Fintype.card_fin]
-      exact (JCx2.mmUser_parLev P0 j w.length).trans hmm'
-    obtain ⟨K, hThm, -, -, hJ⟩ := hP Wp Wq (Fin w.length) (JC.parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π
-      (T.bs j).π' X μ L st l0 (T.bs j) A mm hD hl0 hl0k rfl rfl rfl rfl hAu hmu
-    choose Φ hΦK hΦ using fun a => hJ (v a) ε₁ hε₁ (hvn a).2.1 (hvn a).2.2
-    rw [hform w v v Φ Φ ε₁ hε₁ hvn hvn hΦ hΦ]
-    have hpos := ((hThm (D.positionted w) (hOK w hw)).2.2 0 (fun _ => 1) (fun _ => one_ne_zero)).2 Φ
-      (fun a _ => hΦK a)
-    have hpos' : 0 ≤ P5.form μ 0 (P5.act (P5.RRi L st 0 (D.positionted w)) Φ) Φ 0 :=
-      hpos.trans_eq (JCx2.form_zero_indep μ _ _ _ _)
-    exact mul_nonneg (by exact_mod_cast hC.le) hpos'
 
 end Formalism.FourierDecayAlt.P
 

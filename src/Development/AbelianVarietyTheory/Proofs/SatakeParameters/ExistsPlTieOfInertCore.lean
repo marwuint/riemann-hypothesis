@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GlobSpecOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FractionRingFrobeniusAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsDvrExtensionEmbedding
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFieldsOkEleven
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPlTieOfCore
 
 open NumberField IsDedekindDomain IsLocalRing Formalism.MainNotions.G Formalism.L2.Col Formalism.BasicNotions
 
@@ -318,16 +318,8 @@ theorem Good.exists_pow [Algebra.IsUnramifiedAt ℤ Q.asIdeal] (h : Good Q i) (h
 
 end Local
 
-section Types
-
-variable {X : Fields} {Kf : Type} [Field Kf] (eK : X.K →+* Kf)
-
-end Types
-
 end GlobalTheory.GO.PlWitt
 
 namespace GlobalTheory.GO
-
-open PlWitt
 
 end GlobalTheory.GO

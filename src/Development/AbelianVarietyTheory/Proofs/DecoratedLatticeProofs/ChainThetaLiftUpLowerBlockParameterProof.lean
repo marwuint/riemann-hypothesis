@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerBlockParameterTransferInvariantPairingStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LinearModelTwistPlaceInThetaFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerBlockParameterTransferInvariantPairing
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCoType
+import Formalism.LocalToGlobal.Columns.HeckeSp
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LinearModelTwistPlaceInThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsChartsAtTwistPlacesChain
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaIntegralConjCuspFormParameterTransfer
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainUpwardLiftHeckeParamTransferred
@@ -102,7 +104,7 @@ theorem GlobalTheory.ChainTw.upQ_holds : GlobalTheory.Published.CuspRapidDecay �
   obtain ⟨μS, -, hμS⟩ := hμ (c.chS (k + 1))
   obtain ⟨μT, -, hμT⟩ := hμ (c.chT (k + 1))
   obtain ⟨W, hW, hΦ, T, hT0, hTθ, hTω⟩ :=
-    GlobalTheory.T.linearModel_twistPlace_in_thetaFunctions D hN c w hw k hk s s' hs hs' p hp PP hPP v φv hφv ι ι' hι hι' μS μT ξl hμS hμT hξl φ
+    _root_.GlobalTheory.ChainTw.linModel_theta D hN c w hw k hk s s' hs hs' p hp PP hPP v φv hφv ι ι' hι hι' μS μT ξl hμS hμT hξl φ
   have hsrc := hu v₀ PP hPP v φv hφv x ϖ hx ξl hξl ι hι
   obtain ⟨e, he, hx1, hx2, hϖ⟩ := hx
   have hSϖ : μS ϖ = Circle.toUnits (c.chS (k + 1) x) := hμS x ϖ ⟨e, he, hx1, hx2⟩
@@ -199,7 +201,7 @@ theorem GlobalTheory.ChainTw.upQ_holds : GlobalTheory.Published.CuspRapidDecay �
       (fun γ hγ g => by simp only [thetaKO_left hp.weil (hTθ u₁) γ hγ, (hXp z z.2).2 γ hγ]) (ι a)
   have hx0 : GlobalTheory.ParHecke.IsGen ρ ξl ϖ (qPar c PP x k) ⟨cy, hcy⟩ :=
     isGen_of_injective X.subtype (fun _ _ => rfl) Subtype.val_injective hsrc
-  have key := GlobalTheory.T.lowerBlockParameter_transfer_invariantPairing (Fv D.host.F v) (Fin D.R.r) (Blocks k D.R.t) (Blocks (k + 1) D.R.t) ϖ hϖ D.R.t hcard ξl μS μT
+  have key := _root_.GlobalTheory.ParHeckeTransfer.transfer (Fv D.host.F v) (Fin D.R.r) (Blocks k D.R.t) (Blocks (k + 1) D.R.t) ϖ hϖ D.R.t hcard ξl μS μT
     htame hunS hunT W hW hΦ X ρ ⟨cy, hcy⟩ (qPar c PP x k) hx0 (GA D s'.V → ℂ) ((GlobalTheory.PRep.rightReg ℂ (GA D s'.V) ℂ).comp ι') b hb
   have hval : b ⟨GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.datum ξl⁻¹, hΦ⟩ ⟨cy, hcy⟩ = fun y => conj (p.up φ F y) := by
     funext y

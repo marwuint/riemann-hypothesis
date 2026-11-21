@@ -137,35 +137,6 @@ theorem infMat_unitary (h : IsCMExt F E σ) {τ : E →+* ℂ} {θ : Ainf F ⊗[
   rw [← JR_map J hθ]
   exact h2.symm.trans (congrArg (fun X => X.map θ) hm)
 
-theorem exists_real_point (h : IsCMExt F E σ) (hJ : J.det ≠ 0) {I : Type} {τ : I → (E →+* ℂ)} (hτ : IsCMFam τ)
-    {θ : I → (Ainf F ⊗[F] E →+* ℂ)} (hθ : ∀ ρ, IsInfEmb (τ ρ) (θ ρ)) (u : I → Matrix (Fin M) (Fin M) ℂ)
-    (hu : ∀ ρ, (u ρ)ᴴ * J.map (τ ρ) * u ρ = J.map (τ ρ)) :
-    ∃ g : HA (AF F) σ J, finMat σ J g = 1 ∧ ∀ ρ, infMat σ J (θ ρ) g = u ρ := by
-  obtain ⟨a, ha, hau⟩ := GlobalTheory.Member.Arch.exists_lift (sigR (Ainf F) σ) θ (infEmb_bijective h hτ hθ)
-    (fun ρ => infEmb_sigR h (hθ ρ)) (JR (Ainf F) J) (fun ρ => by
-      rw [JR_map J (hθ ρ)]
-      have : (J.map (τ ρ)).det = τ ρ J.det := ((τ ρ).map_det J).symm
-      rw [this]
-      exact (map_ne_zero (τ ρ)).2 hJ) u (fun ρ => by rw [JR_map J (hθ ρ)]; exact hu ρ)
-  let p := (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom
-  let q := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom
-  obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv F E
-  have hi : ∀ x y, p x = p y → q x = q y → x = y := fun x y h1 h2 =>
-    e.injective (Prod.ext (((he x).1.trans h1).trans (he y).1.symm) (((he x).2.trans h2).trans (he y).2.symm))
-  have hs : ∀ a b, ∃ x, p x = a ∧ q x = b := fun a b => by
-    refine ⟨e.symm (a, b), (he _).1.symm.trans ?_, (he _).2.symm.trans ?_⟩ <;> simp
-  obtain ⟨g, g1, g2⟩ := GlobalTheory.UnitarySplit.gl_glue p q hi hs a 1
-  have hg : g ∈ HR (AF F) σ J := by
-    refine (GlobalTheory.UnitarySplit.mem_iff p q hi (sigR _ σ) (sigR _ σ) (sigR _ σ) (GlobalTheory.UnitarySplit.map_sig _ _)
-      (GlobalTheory.UnitarySplit.map_sig _ _) (JR _ J) g).2 ⟨?_, ?_⟩
-    · rw [g1, GlobalTheory.UnitarySplit.map_JR]
-      exact ha
-    · rw [g2]
-      exact one_mem _
-  refine ⟨⟨g, hg⟩, congrArg Units.val g2, fun ρ => ?_⟩
-  rw [← hau, ← g1]
-  rfl
-
 variable (σ) in
 
 def stab (L : Set (Fin M → E)) : Subgroup (HA (AF F) σ J) where

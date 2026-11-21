@@ -31,21 +31,6 @@ theorem cv_vanish (f : PowerSeries R) (g : ℤ → M) (hg : ∀ k < 0, g k = 0) 
   intro j hj
   rw [PowerSeries.X_pow_dvd_iff.mp hf j (Finset.mem_range.mp hj), zero_smul]
 
-theorem cv_zero_term (f : PowerSeries R) (g : ℤ → M) (hg : ∀ k < 0, g k = 0) :
-    cv f g 0 = constantCoeff f • g 0 := by
-  rw [cv_eq_sum f g 0 hg 0 1 (by omega), Finset.sum_range_one]
-  simp [PowerSeries.coeff_zero_eq_constantCoeff_apply]
-
-theorem cv_add (f : PowerSeries R) (g g' : ℤ → M) (m : ℤ) (hg : ∀ k < m, g k = 0)
-    (hg' : ∀ k < m, g' k = 0) (k : ℤ) : cv f (g + g') k = cv f g k + cv f g' k := by
-  obtain ⟨N, hN⟩ := exists_nat_gt (k - m)
-  have hs : ∀ j < m, (g + g') j = 0 := fun j hj => by
-    rw [Pi.add_apply, hg j hj, hg' j hj, add_zero]
-  rw [cv_eq_sum f (g + g') m hs k N hN, cv_eq_sum f g m hg k N hN,
-    cv_eq_sum f g' m hg' k N hN, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [Pi.add_apply, smul_add]
-
 theorem cv_map {M' : Type} [AddCommGroup M'] [Module R M'] (L : M →ₗ[R] M') (f : PowerSeries R) (g : ℤ → M)
     (m : ℤ) (hg : ∀ k < m, g k = 0) (k : ℤ) : L (cv f g k) = cv f (fun k => L (g k)) k := by
   obtain ⟨N, hN⟩ := exists_nat_gt (k - m)

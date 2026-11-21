@@ -1,11 +1,26 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TraitOrdOfTraitOrdPt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DvrPointBoundaryCompatible
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLinForms
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BlowPolSt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonomialFormOnChartRing
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FormallyUnramifiedEtaleCompletion
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyFiniteRootsOfBimul
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntOfIsIntegral
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolarizationTransferModels
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFrameOfFreeSec
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialSupportHolds
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcDataPsiValuationEqHalfForm
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcGenericPointDescendsToPowerSeries
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.AdmissibleBasePowerSeriesSpanX
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SemiAbelianModelDeterminedByGenericFibre
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PelTrivialisationIsUnitOnAbelianLocus
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPsiCoordOfIsPsiCoord
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleBaseOfCompleteNormalLocalCharZero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BoundaryFormBaseChangeDvrStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BoundaryFormBaseChangeDvr
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralClosureFiniteLocalCompleteMixedChar
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CohenStructureFiniteOverNormalCompleteSubring
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformisationTrivialTorusAbelianLocus
+
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef GlobalTheory.Cartier
@@ -187,119 +202,5 @@ theorem exists_factor {R W : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRin
     ⟨IsNoetherianRing.of_finite S _, integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing S),
       CompleteFiniteExtension.isAdicComplete_of_finite_local S _, RingHom.charZero g'⟩, inferInstance, hinj, fun r => ?_⟩
   exact IsFractionRing.injective W (FractionRing W) ((hg' _).trans (hK _))
-
-open GlobalTheory.TraitChartForm in
-
-theorem exists_quot_coord {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
-    {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
-    (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)) (m : SABMap t Z.t ξ) (P : PELUnif (maximalIdeal R) t) (hR : IsCN R)
-    (hT : P.TorsionIso) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : CDvr V) (g : R →+* V)
-    (hg : ¬ IsLocalHom g) (hgen : ∀ p, (jK V ≫ spMap g ≫ ξ) p ∈ Set.range Z.j) (tV : SAB H (Sp V))
-    (mV : SABMap tV Z.t (spMap g ≫ ξ)) (PV : PELUnif (maximalIdeal V) tV) :
-    ∃ ρ : P.D.toPre.X →ₗ[𝓞 E] PV.D.toPre.X, Function.Surjective ρ ∧
-      ∀ y r r', PsiCoord P.D.toPre y r → PsiCoord PV.D.toPre (ρ y) r' → Associated (g r) r' := by
-  obtain ⟨hRN, hRI, hRA, hR0⟩ := hR
-  have hV' := hV
-  obtain ⟨hVd, hVc, hV0⟩ := hV'
-  obtain ⟨L₁, L₂, L₃, L₄, L₅⟩ := GlobalTheory.firstFiveLaws
-  obtain ⟨N, _, _, _, φ, g', hN, hφ, hg', hfac⟩ := exists_factor g
-  have hN' := hN
-  obtain ⟨hNN, hNI, hNA, hN0⟩ := hN'
-  have hsp : spMap g' ≫ spMap φ = spMap g := GlobalTheory.Ex.UnifModel.spMap_comp hfac
-  obtain ⟨tN, ⟨mN⟩⟩ := GlobalTheory.TraitOrder.exists_pull (spMap φ) t
-  obtain ⟨nN⟩ := GlobalTheory.TraitOrder.comp rfl m mN
-  obtain ⟨k⟩ := GlobalTheory.TraitOrder.cancel (show spMap g' ≫ (spMap φ ≫ ξ) = spMap g ≫ ξ by rw [← Category.assoc, hsp]) nN mV
-  have hbot : spMap g' (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V) = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum N) := by
-    rw [← ker_eq_spMap_bot]
-    exact PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot g').1 hg')
-  have hj : ξ (spMap φ (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum N)) ∈ Set.range Z.j := by
-    let p : Sp (FractionRing V) := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing V))
-    have := hgen p
-    rwa [← hsp, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, jK_apply_eq_bot V p, hbot] at this
-  obtain ⟨y, hy⟩ := GlobalTheory.TraitRank.exists_generic_of_range Z N (spMap φ ≫ ξ) (by
-    rintro _ ⟨p, rfl⟩
-    rw [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, jK_apply_eq_bot N p]
-    exact hj)
-  obtain ⟨B, -, gen, hB, hw, -⟩ := GlobalTheory.LN.exists_polAV_of_polAt L₁ L₂ E H N tN
-    (GlobalTheory.GoodTrait.polAt_of_point Z nN _ y hy)
-  have hloc : ∀ a ∈ maximalIdeal R, φ a ∈ maximalIdeal N := fun a ha =>
-    (mem_maximalIdeal _).2 fun h => (mem_maximalIdeal _).1 ha (isUnit_of_map_unit φ a h)
-  have hRo : IsOpen (abLocus t.G) := GlobalTheory.AbLocusOpen.isOpen_abLocus_local t.G t.semi
-  have hAdm : admitted R (maximalIdeal R) := ⟨⟨hRN, inferInstance, hRI, hRA⟩, hRA, hR0, inferInstance,
-    by letI := Ideal.Quotient.field (maximalIdeal R); infer_instance⟩
-  have hψ : ∀ y, PsiUnitOn P.D.toPre y (abLocus t.G) :=
-    GlobalTheory.psiUnitOn_abLocus_pel L₁ L₂ L₃ L₄ L₅ E H R (maximalIdeal R) hAdm t P hT hRo
-  have hker : (⟨RingHom.ker φ, RingHom.ker_isPrime φ⟩ : PrimeSpectrum R) ∈ abLocus t.G := by
-    rw [ker_eq_spMap_bot]
-    refine (abLocus_pullback abLocusOne Z.t.semi m.cart.1 _).1 ?_
-    obtain ⟨w, hw⟩ := hj
-    rw [← hw]
-    exact j_mem_abLocus Z w
-  obtain ⟨PN, e, he⟩ := GlobalTheory.PelCoordPull.exists_pelUnif_psiCoord E H R N φ t tN mN P (abLocus t.G) hRN hRI hRA
-    hNN hNI hNA hloc hRo subset_rfl hψ hker ⟨B, gen, hB, hw⟩
-  have hg'l : ¬ IsLocalHom g' := fun h => hg ⟨fun a ha => isUnit_of_map_unit φ a
-    (isUnit_of_map_unit g' _ (by rwa [hfac]))⟩
-  obtain ⟨ρ, hρ, hc⟩ := GlobalTheory.T.boundary_form_base_change_dvr E H N tN PN hN
-    (GlobalTheory.FlatTors.torsionIso_holds E H N _ (admissibleBase_of_completeNormalLocalCharZero hN) tN PN) V hV g' hg' hg'l tV k PV
-  refine ⟨ρ ∘ₗ e.toLinearMap, hρ.comp e.surjective, fun x r r' hr hr' => ?_⟩
-  obtain ⟨u, hu⟩ := he x r hr
-  have := hc (e x) _ r' hu hr'
-  rw [map_mul, hfac] at this
-  exact (associated_unit_mul_left _ _ (u.isUnit.map g')).symm.trans this
-
-open GlobalTheory.TraitChartForm in
-
-theorem main : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)) (_ : SABMap t Z.t ξ) (P : PELUnif (maximalIdeal R) t), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → P.TorsionIso → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (χ : Sp W ⟶ Z.X) (tW : SAB H (Sp W)) (_ : SABMap tW Z.t χ) (PW : PELUnif (maximalIdeal W) tW), Set.range (jK W ≫ χ) ⊆ Set.range Z.j → ∀ be ∈ levelForms H 1 PW.D.toPre.X, IsMonomial PW.D.toPre ![ϖ] ![be] → ∀ hs : χ (closedPoint W) ⤳ ξ (closedPoint R), χ (closedPoint W) ≠ ξ (closedPoint R) → ringKrullDim (Z.X.presheaf.stalk (χ (closedPoint W))) = 1 → ∀ (W' : Type) [CommRing W'] [IsDomain W'] [IsLocalRing W'] (ι : W →+* W') (g : R →+* W'), CDvr W' → Irreducible (ι ϖ) → (∀ a, g ((Scheme.stalkClosedPointTo ξ).hom a) = ι ((Scheme.stalkClosedPointTo χ).hom ((Z.X.presheaf.stalkSpecializes hs).hom a))) → ∃ (e : P.D.toPre.X →ₗ[𝓞 E] PW.D.toPre.X), Function.Surjective e ∧ FormAt P.D.toPre g (ι ϖ) (be.compl₁₂ e.toAddMonoidHom.toIntLinearMap e.toAddMonoidHom.toIntLinearMap) := by
-  intro E _ _ _ H D l Xo c Z R _ _ _ ξ t m P hR _ _ hT W _ _ _ hW ϖ hϖ χ tW mW PW hχ be _ hmon hs hne _ W' _ _ _ ι g
-    hW' hι hcomm
-  have hWc := hW
-  obtain ⟨hWd, hWa, hW0⟩ := hWc
-  have hWc' := hW'
-  obtain ⟨hWd', hWa', hW0'⟩ := hWc'
-  have cW : IsCN W := ⟨inferInstance, inferInstance, hWa, hW0⟩
-  have cW' : IsCN W' := ⟨inferInstance, inferInstance, hWa', hW0'⟩
-  have hloc : IsLocalHom ι := ⟨fun a ha => by
-    by_contra h
-    obtain ⟨b, rfl⟩ := Ideal.mem_span_singleton.1 (hϖ.maximalIdeal_eq.le h)
-    exact hι.not_isUnit (isUnit_of_mul_isUnit_left (by rwa [map_mul] at ha))⟩
-  have hinj : Function.Injective ι := (injective_iff_map_eq_zero ι).2 fun a ha => by
-    by_contra h
-    obtain ⟨n, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h hϖ
-    rw [map_mul, map_pow, (u.isUnit.map ι).mul_right_eq_zero] at ha
-    exact pow_ne_zero n hι.ne_zero ha
-  have hc : spMap g ≫ ξ = spMap ι ≫ χ := by
-    conv_lhs => rw [← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ]
-    conv_rhs => rw [← Scheme.Spec_stalkClosedPointTo_fromSpecStalk χ, ← Scheme.SpecMap_stalkSpecializes_fromSpecStalk hs]
-    simp only [← Category.assoc, ← Spec.map_comp]
-    congr 2
-    exact CommRingCat.hom_ext (RingHom.ext hcomm)
-  have hg : ¬ IsLocalHom g := fun h => hne (by
-    have e : ξ (spMap g (closedPoint W')) = χ (spMap ι (closedPoint W')) :=
-      (Scheme.Hom.comp_apply _ _ _).symm.trans
-        ((congrArg (fun f : Sp W' ⟶ Z.X => f (closedPoint W')) hc).trans (Scheme.Hom.comp_apply _ _ _))
-    have e₁ : spMap g (closedPoint W') = closedPoint R := comap_closedPoint g
-    have e₂ : spMap ι (closedPoint W') = closedPoint W := comap_closedPoint ι
-    rw [e₁, e₂] at e
-    exact e.symm)
-  have hgen : ∀ p, (jK W' ≫ spMap g ≫ ξ) p ∈ Set.range Z.j := fun p => by
-    let q : Sp (FractionRing W) := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing W))
-    have hb : spMap ι (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum W') = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum W) := by
-      rw [← ker_eq_spMap_bot]
-      exact PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot ι).1 hinj)
-    rw [hc, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, jK_apply_eq_bot W' p, hb, ← jK_apply_eq_bot W q,
-      ← Scheme.Hom.comp_apply]
-    exact hχ ⟨q, rfl⟩
-  obtain ⟨tV, mV, PV, e, -, he⟩ := pullSt E H W W' ι tW PW cW cW' hinj hloc
-    (GlobalTheory.FlatTors.torsionIso_holds E H W _ (admissibleBase_of_completeNormalLocalCharZero cW) tW PW)
-  obtain ⟨nV⟩ := GlobalTheory.TraitOrder.comp hc.symm mW mV
-  obtain ⟨ρ, hρ, hρc⟩ := exists_quot_coord Z ξ t m P hR hT hW' g hg hgen tV nV PV
-  refine ⟨e.toLinearMap ∘ₗ ρ, e.surjective.comp hρ, fun y => ?_⟩
-  obtain ⟨r, hr⟩ := (GlobalTheory.PeriodFormCompare.exists_psiCoord_iff P.D.toPre y).2
-    (GlobalTheory.PeriodFormCompare.psiIn_top P.D y)
-  obtain ⟨u₀, n, hn, hcW⟩ := hmon (e (ρ y))
-  obtain ⟨u₁, h₁⟩ := he (ρ y) _ hcW
-  refine ⟨r, n 0, hr, by simpa using hn 0, (hρc y r _ hr h₁).trans ?_⟩
-  simp only [Fin.prod_univ_one, Matrix.cons_val_zero, map_mul, map_pow]
-  exact (associated_unit_mul_left _ _ u₁.isUnit).trans (associated_unit_mul_left _ _ (u₀.isUnit.map ι))
 
 end GlobalTheory.FarTrait

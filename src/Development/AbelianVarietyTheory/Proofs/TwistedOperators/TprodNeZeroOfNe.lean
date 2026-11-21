@@ -120,8 +120,6 @@ theorem contrTensor : ContrTensor := by
 
 theorem contraction : Contraction := ⟨contrHilbert, contrTensor⟩
 
-theorem contrTensorModels : ContrTensorModels := contrTensorModels_of contrTensor
-
 end GlobalTheory.Contr
 
 end

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfInjectiveModMaximalIdealStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfInjectiveModMaximalIdeal
 
 open CategoryTheory CategoryTheory.Limits TensorProduct
 
@@ -13,7 +13,7 @@ theorem flat_coker_of_complex_exact_mod_maximalIdeal : ∀ (V A : Type) [CommRin
     exact hdd 0 x
   let u : (D 1 ⧸ LinearMap.range (d 1)) →ₗ[A] D 0 := (LinearMap.range (d 1)).liftQ (d 0) hle
   have hr : LinearMap.range u = LinearMap.range (d 0) := Submodule.range_liftQ _ _ _
-  have h := GlobalTheory.T.flat_quotient_range_of_injective_mod_maximal V A (D 1 ⧸ LinearMap.range (d 1)) (D 0) u (by
+  have h := _root_.GlobalTheory.flat_coker_of_injective_mod_maximalIdeal V A (D 1 ⧸ LinearMap.range (d 1)) (D 0) u (by
     intro x hx
     obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     have hy : y ∈ LinearMap.range (d 1) ⊔ (J • ⊤ : Submodule A (D 1)) := hex 0 y hx

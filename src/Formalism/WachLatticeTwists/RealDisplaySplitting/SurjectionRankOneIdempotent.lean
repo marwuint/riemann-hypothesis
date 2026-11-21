@@ -55,9 +55,4 @@ def SurjectionRankOneIdempotent (O : Type) [CommRing O] [IsDomain O] [IsDiscrete
     (∀ v : LatM O (FractionRing O) n ρ, ∃ c : O, c ≠ 0 ∧ c • v ∈ LinearMap.range (iLM O n ρ)) ∧
     e₁ • v₁ = v₁ ∧ (∀ v : LatM O O n ρ, ∃ c : A, (c * e₁) • v₁ = v)
 
-def ScalarActionOnBlock (O : Type) [CommRing O] (A : Type) [Ring A] (M : Type) [AddCommGroup M] [Module A M] [Module O M]
-    (E : A) (δO : O) : Prop :=
-  (∀ c : A, ∃ x ∈ Ideal.span {δO}, ∀ m : M, (c * E) • m = x • m) ∧
-  (∀ x ∈ Ideal.span {δO}, ∃ c : A, ∀ m : M, (c * E) • m = x • m)
-
 end Formalism.RepresentationBoundsCohomology.SF

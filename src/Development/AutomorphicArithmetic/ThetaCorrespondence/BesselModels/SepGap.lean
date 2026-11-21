@@ -2,9 +2,11 @@ import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.BesselModels.BurGapOfHyp
 import Development.AutomorphicArithmetic.ThetaCorrespondence.BesselModels.GapArith
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeparationLineOfBessel
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsBesselFrameOfBesselDatumRealPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StandardCharTraceSingleRealPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselCharacterRealPlaceUnipotentEqTraceStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsBesselFrameOfBesselDatumRealPlace
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ParRowZero
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StandardCharTraceSingleRealPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselCharacterRealPlaceUnipotentEqTrace
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TopLineFromSeparation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FactorisationFromTopLine
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.InfFam
@@ -157,13 +159,13 @@ theorem lastVertex_besselDatum_isFrame_isGeneric {D : D7} {T : Type} {L : LevCh 
       (fun k => tauE D τ (G.besTop.z k)) ∧
     GlobalTheory.RealBessel.IsGeneric (gramAt D (G.V (.grid D.R.m 0)) τ) (G.besTop.e.map (tauE D τ)) (fun k => tauE D τ (G.besTop.z k))
       fun u => besChar W.ψ G.besTop (atTau W.θ _ τ u) := by
-  refine ⟨GlobalTheory.T.isBesselFrame_of_besselDatum_realPlace D _ _ _ (G.rowDec 0 (by have := D.R.two_le_m; omega)).isom G.besTop τ, ?_⟩
+  refine ⟨_root_.GlobalTheory.BesselFrameReal.isFrame_of_besDat D _ _ _ (G.rowDec 0 (by have := D.R.two_le_m; omega)).isom G.besTop τ, ?_⟩
   refine ⟨fun j => -(4 * Real.pi : ℂ) * tauE D τ (G.besTop.c j), fun j => ?_, fun u hu a ha => ?_⟩
   · refine mul_ne_zero (neg_ne_zero.2 (by exact_mod_cast (by positivity : (4 * Real.pi : ℝ) ≠ 0))) ?_
     exact (map_ne_zero _).2 (G.besTop.c_ne j)
-  · obtain ⟨t, h1, h2, h3, h4⟩ := GlobalTheory.T.besselCharacter_realPlace_unipotent_eq_trace D W.θ W.θ_is W.ψ _ _ _ G.besTop τ u hu a ha
+  · obtain ⟨t, h1, h2, h3, h4⟩ := _root_.GlobalTheory.BesselCoords.besChar_atTau_coords D W.θ W.θ_is W.ψ _ _ _ G.besTop τ u hu a ha
     show besChar W.ψ G.besTop (atTau W.θ _ τ u) = _
-    rw [h4, GlobalTheory.T.standardChar_trace_single_realPlace D W.ψ W.ψ_std W.θ W.θ_is τ t h1 h2, h3, Finset.mul_sum]
+    rw [h4, _root_.GlobalTheory.PhaseReal.psi_trace_single D W.ψ W.ψ_std W.θ W.θ_is τ t h1 h2, h3, Finset.mul_sum]
     simp only [mul_assoc]
 
 set_option maxHeartbeats 1600000 in

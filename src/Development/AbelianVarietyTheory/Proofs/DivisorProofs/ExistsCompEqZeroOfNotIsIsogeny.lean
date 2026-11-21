@@ -3,10 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorsionTowersOfDivisibleGroup
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.FrobFieldExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittVectorColengthRangeEqDetValuationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittVectorColengthRangeEqDetValuation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyDieudonneIntegralityFactorisationStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqPowSmulOfPDivGroupTorsionTowerMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneIntegralityAndFaithfulStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EndIsogenyAlgebraFiniteFinrankLeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EndIsogenyAlgebraInjectiveClearDenom
@@ -86,7 +88,7 @@ theorem norm_det_eq_norm_deg : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : 
     (ψ : ℤ_[p] →+* (WittVector p k)) (f : End A) (d : ℤ_[p]),
     LinearMap.det (T.map (t.map t (Hom.hom f))) = ψ d → ‖d‖ = ‖((deg (A := A) (B := A) f : ℕ) : ℤ_[p])‖ := by
   intro p _ T k _ _ _ A G t _ _ ψ f d hd
-  have hlen := GlobalTheory.T.wittVector_colength_range_eq_det_valuation p k (T.M G) ψ (T.map (t.map t (Hom.hom f))) d hd
+  have hlen := _root_.GlobalTheory.Dieu.ColenDet.colength_det p k (T.M G) ψ (T.map (t.map t (Hom.hom f))) d hd
   by_cases hf : IsIsogeny (A := A) (B := A) f
   · have hb := (GlobalTheory.T.abelianVariety_dieudonne_integrality_factorisation p T k A A G G t t f).2.1 hf
     have hpos := (isogeny_flat_finrank k A A f hf).2.2.1
@@ -96,7 +98,7 @@ theorem norm_det_eq_norm_deg : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : 
     apply hlen.2.1
     intro hinj
     obtain ⟨g, hg0, hfg⟩ := exists_comp_eq_zero_of_not_isIsogeny A f hf
-    have hfun := GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G G G trivial trivial trivial
+    have hfun := _root_.GlobalTheory.Dieu.base_functor_props p (fun _ _ _ => True) T.base k G G G trivial trivial trivial
     have hcomp : t.map t (Hom.hom f) ≫ t.map t (Hom.hom g) = 0 := by
       have e1 : Hom.hom f ≫ Hom.hom g = (1 : A.X ⟶ A.X) := by rw [← comp_hom, hfg, zero_hom]
       exact (TorsionTower.map_comp t t t _ _).symm.trans ((t.map_congr t e1).trans (TorsionTower.map_one t t))

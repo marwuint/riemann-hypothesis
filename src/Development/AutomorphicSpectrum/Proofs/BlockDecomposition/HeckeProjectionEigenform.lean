@@ -234,34 +234,6 @@ theorem det_eq_of_comps {h h' : G2}
 
 end Local
 
-theorem pure_conj {k N : ℕ} {χ : DirichletCharacter ℂ N} {a : ℕ → ℂ} (hp : Pure k N χ a) {p : ℕ} (pp : p.Prime)
-    (hN : ¬ p ∣ N) (hχ : ‖χ p‖ = 1) : χ p * conj (a p) = a p := by
-  obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq ((a p) ^ 2 - 4 * (χ p * (p : ℂ) ^ (k - 1))) (n := 2) (by norm_num)
-  set α : ℂ := (a p + z) / 2 with hα
-  set β : ℂ := (a p - z) / 2 with hβ
-  have hs : α + β = a p := by rw [hα, hβ]; ring
-  have hm : α * β = χ p * (p : ℂ) ^ (k - 1) := by
-    rw [hα, hβ]; linear_combination (-1 / 4 : ℂ) * hz
-  have hn := hp p pp hN α β hs hm
-  have hQ0 : ((p : ℂ) ^ (k - 1)) ≠ 0 := pow_ne_zero _ (by exact_mod_cast pp.ne_zero)
-  have hnorm : ‖α‖ * ‖β‖ = (p : ℝ) ^ (k - 1) := by
-    rw [← norm_mul, hm, norm_mul, hχ, one_mul, norm_pow, Complex.norm_natCast]
-  have hA : α * conj α = (p : ℂ) ^ (k - 1) := by
-    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, pow_two]
-    nth_rewrite 2 [hn]
-    rw [hnorm]; push_cast; rfl
-  have hB : β * conj β = (p : ℂ) ^ (k - 1) := by
-    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, pow_two]
-    nth_rewrite 1 [← hn]
-    rw [hnorm]; push_cast; rfl
-  have e1 : β = χ p * conj α := by
-    apply mul_left_cancel₀ hQ0
-    linear_combination (-β) * hA + conj α * hm
-  have e2 : α = χ p * conj β := by
-    apply mul_left_cancel₀ hQ0
-    linear_combination (-α) * hB + conj β * hm
-  rw [← hs, map_add, mul_add, ← e1, ← e2, add_comm]
-
 section Key
 
 theorem det_diag_adelic_GL2 {R : Type*} [CommRing R] (a d : Rˣ) : GeneralLinearGroup.det (dg2 a d) = a * d := by
@@ -392,65 +364,6 @@ theorem eig_relation {φ : G2 → ℂ} {ω c : HeckeCharacter ℚ} {μ : Measure
 
 theorem toIdele_mul (c d : HeckeCharacter ℚ) (z : Jd) :
     (((c * d).toIdele z : Circle) : ℂ) = (c.toIdele z : ℂ) * d.toIdele z := rfl
-
-theorem g6 : Ad3.R.B0 → Ad3.R.C1 → Ad3.R.G1 → Ad3.R.F0b → Ad3.R.F1 → Ad3.R.F3 → Ad3.R.F5 → Ad3.R.G6 := by
-  intro hB hC hG hF0b hF1 hF3 hF5
-  intro k N _ hk χ hχ f a hf ha ω φ hOm hLift hPure μ 𝓕 mK 𝓓 hSet S hS c hcf hc1 hcu x h hUn hne
-  obtain ⟨hBv, -, -, hext, -, -, -, hlast⟩ := hB
-  obtain ⟨hsign, -⟩ := hF1 k N χ f a hf ha.2.1 ω hOm
-  have hOL := hF0b k N χ hχ hsign ω hOm
-  obtain ⟨⟨C, hC'⟩, -⟩ := hF5 k N hk χ hχ f a hf ha ω φ hOm hLift
-  have hH : Hk k N a ω φ := hF3 k N hk χ hχ f a hf ha ω φ hOm hLift
-  have hc := hLift.cont
-  have hl := hLift.left
-  have hcen := hLift.cen
-  have h1 := hG μ 𝓕 mK 𝓓 hSet
-  have hP0 : Pr μ 𝓕 φ c 1 h ≠ 0 := by simpa [Pr, Fn] using hne
-  have hc2 : c * c = 1 := by
-    by_contra hne2
-    apply hP0
-    refine (h1 (Fn φ c 1 h) (continuous_Fn hc c 1 h) ⟨_, norm_Fn_le hC' c 1 h⟩ (Fn_left hl 1 h)).2.1 (c * c)
-      (by rw [← pow_two]; exact hcf.pow) (fun z g => ?_) hne2
-    rw [Fn_scal hcen, toIdele_mul]
-  have hG' : ∀ F : G2 → ℂ, Continuous F → (∃ C, ∀ g, ‖F g‖ ≤ C) → LInv F → CInv F →
-      ∀ h, ∫ g in 𝓕 ∩ band, F (g * h) ∂μ = ∫ g in 𝓕 ∩ band, F g ∂μ :=
-    fun F a1 a2 a3 a4 h' => (h1 F a1 a2 a3).1 a4 h'
-  refine ⟨c, hc1, by rw [pow_two, hc2], ?_⟩
-  filter_upwards [S.finite_toSet.eventually_cofinite_notMem] with v hv
-  have hvS : v ∉ S := fun e => hv e
-  have hvN : ¬ pOf v ∣ N := fun e => hvS (hS v e)
-  refine ⟨hcu v hvS, ?_⟩
-  obtain ⟨hstd, -, hpr, -, -, hloc, -⟩ := hBv v
-  obtain ⟨ϖ, B, hR⟩ := (hC (Qv v) (localAdelicChar ℚ v) hstd).1
-  have hrel := eig_relation hc hC' hl hcen hc2 hG' hSet.vol hloc hext (hlast v) (hcu v hvS) (hH.good v hvN) hR
-    (hUn.2.1 v hvS) hP0
-  obtain ⟨hωu, hωχ⟩ := hOL.good v hvN
-  have e1 : localChar ω v ϖ = localChar ω v (unifUnit (Qv v)) := quasiChar_apply_eq_of_isUnramified hωu hR.1
-  have e2 : localChar c v ϖ = localChar c v (unifUnit (Qv v)) := quasiChar_apply_eq_of_isUnramified (hcu v hvS) hR.1
-  have hχn : ‖χ (pOf v)‖ = 1 := by
-    rw [← hωχ, GroundTheory.Automorphic.GodementSection.coe_localChar]
-    exact Circle.norm_coe _
-  have hconj := pure_conj hPure hpr hvN hχn
-  rw [e1, hωχ] at hrel
-  by_cases ha0 : a (pOf v) = 0
-  · exact Or.inr ha0
-  left
-  set r : ℝ := (pOf v : ℝ) ^ (1 - (k : ℝ) / 2) with hr
-  have hr0 : (r : ℂ) ≠ 0 := by
-    have : r ≠ 0 := (Real.rpow_pos_of_pos (by exact_mod_cast hpr.pos) _).ne'
-    exact_mod_cast this
-  have e3 : ((localChar c v ϖ⁻¹ : ℂˣ) : ℂ) = 1 := by
-    have e4 : lamOf k a v = a (pOf v) * (r : ℂ) := rfl
-    rw [e4, map_mul, Complex.conj_ofReal] at hrel
-    have e5 : a (pOf v) * (r : ℂ) * (((localChar c v ϖ⁻¹ : ℂˣ) : ℂ) - 1) = 0 := by
-      linear_combination (-1 : ℂ) * hrel + ((localChar c v ϖ⁻¹ : ℂˣ) : ℂ) * (r : ℂ) * hconj * (-1 : ℂ)
-    rcases mul_eq_zero.1 e5 with e6 | e6
-    · exact absurd e6 (mul_ne_zero ha0 hr0)
-    · exact sub_eq_zero.1 e6
-  rw [← e2]
-  have e7 : localChar c v ϖ⁻¹ = 1 := Units.ext e3
-  rw [map_inv] at e7
-  exact inv_eq_one.1 e7
 
 end GlobalTheory.CompanionTheory.RankinSelbergHeckeProjection
 

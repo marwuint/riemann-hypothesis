@@ -1,6 +1,7 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.AlgDimSt
 import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.HeightAddRingKrullDimQuotientMvPolynomialField
-import ReciprocityTheory.CommutativeAlgebra.WeakRegularity.RingKrullDimQuotientAddOneLeOfLt
+import ReciprocityTheory.CommutativeAlgebra.ChainConnInDim
+import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.RingKrullDimQuotientOfMemAssociatedPrimes
 import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.LocDim
 import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.Bridge
 import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.DimFormulaOfSurjective
@@ -11,36 +12,10 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KrullDimensio
 
 open ReciprocityTheory.CA
 
-theorem lt_of_add_one_le_fin (x y : WithBot ℕ∞) (n : ℕ) (hx : x ≠ ⊥) (hxn : x ≤ n)
-    (h : x + 1 ≤ y) : x < y := by
-  induction x using WithBot.recBotCoe with
-  | bot => exact absurd rfl hx
-  | coe a =>
-  induction y using WithBot.recBotCoe with
-  | bot => exact absurd h (by simp)
-  | coe b =>
-  norm_cast at h hxn ⊢
-  induction a using ENat.recTopCoe with
-  | top => exact absurd hxn (by simp)
-  | coe a =>
-  induction b using ENat.recTopCoe with
-  | top => exact WithTop.coe_lt_top a
-  | coe b =>
-  norm_cast at h ⊢
-
 theorem ringKrullDim_quotient_ne_bot {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) :
     ringKrullDim (R ⧸ I) ≠ ⊥ := by
   have : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hI
   exact ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial
-
-theorem dimLt' : DimLtStatement := by
-  intro F _ σ _ V W hV hW hVW
-  have h1 := ReciprocityTheory.CA.Link.ringKrullDim_quotient_add_one_le_of_lt hVW
-  have h2 : ringKrullDim (MvPolynomial σ F ⧸ W) ≤ (Fintype.card σ : ℕ) := by
-    refine (ringKrullDim_quotient_le W).trans (le_of_eq ?_)
-    rw [MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field,
-      Nat.card_eq_fintype_card, zero_add]
-  exact lt_of_add_one_le_fin _ _ _ (ringKrullDim_quotient_ne_bot W hW.ne_top) h2 h1
 
 theorem isCM_atPrime_of_le {S : Type*} [CommRing S] (𝔐 W : Ideal S) [𝔐.IsPrime] [W.IsPrime]
     (h : IsCM (Localization.AtPrime 𝔐)) (hle : W ≤ 𝔐) : IsCM (Localization.AtPrime W) := by

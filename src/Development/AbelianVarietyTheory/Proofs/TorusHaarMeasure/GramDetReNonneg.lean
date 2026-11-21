@@ -2,7 +2,7 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspidalExponentialDecay
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsBasisAdaptedMem
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.GramDetInequalitiesClosedFormsStatement
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.GramDetInequalitiesClosedForms
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.RelIndexSpanNeZero
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.RelIndexIntegralSpanSupermultiplicativeStatement
 
@@ -61,7 +61,7 @@ theorem height_submodular : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → 
       exact mul_nonneg (gram_det_re_nonneg _) (gram_det_re_nonneg _)
     · intro τ _
       simp only [hsub]
-      exact (GlobalTheory.T.gramDet_inequalities_closed_forms).1 (Fin r) (Fin a) (Fin b) (Fin c) _
+      exact (_root_.GlobalTheory.gramDet_closed_forms).1 (Fin r) (Fin a) (Fin b) (Fin c) _
   · exact hI _ i1
   · exact hI _ i2
   · exact (GlobalTheory.T.relIndex_integralSpan_supermultiplicative) r X (Fin a) (Fin b) (Fin c) w hli hmem

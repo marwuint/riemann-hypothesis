@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.GhostFrobenius
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantPDivGroupOmegaTrivialHodgeTateBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantPDivGroupOmegaTrivialHodgeTateBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegrallyClosedInOfIntegers
 
 noncomputable section
@@ -50,7 +50,7 @@ theorem GlobalTheory.PDivLat.hasDatum_of_isConst : ∀ (p : ℕ) [Fact p.Prime] 
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG
   haveI := GlobalTheory.PointGroup.isIntegrallyClosedIn_of_integers hv
   haveI := isLocalRing_of_integers hv
-  obtain ⟨hω, hbij⟩ := GlobalTheory.T.constantPDivGroup_omega_trivial_hodgeTate_basis p C v O hv G hG
+  obtain ⟨hω, hbij⟩ := _root_.GlobalTheory.ConstHT.omega_const p C v O hv G hG
   haveI := GlobalTheory.PointGroup.finite_tate hv G
   haveI := GlobalTheory.PointGroup.free_tate hv G
   have hrank : Module.finrank ℤ_[p] G.Tate = G.height := G.finrank_tate C

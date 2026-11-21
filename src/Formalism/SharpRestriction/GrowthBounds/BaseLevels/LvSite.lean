@@ -1,6 +1,7 @@
 import Formalism.SharpRestriction.GrowthBounds.BaseLevels.LevelsGEmpty
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ClsCharted1AtInTw
-import Formalism.SharpRestriction.GrowthBounds.ChartComparison.MemAll
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison.OneChartLev
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison.BadQNotOver
 
 noncomputable section
 

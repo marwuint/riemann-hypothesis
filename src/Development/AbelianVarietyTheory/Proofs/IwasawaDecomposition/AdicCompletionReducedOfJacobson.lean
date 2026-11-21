@@ -1,12 +1,12 @@
 import Mathlib
 import ReciprocityTheory.CommutativeAlgebra.SaturatedChains.Integral
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDimLtTopOfEssFiniteTypeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AssociatedPrimeLocalizationDvrStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AssociatedPrimeLocalizationDvr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInjectiveAdicCompletionMapOfFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteIntegralClosureOfEssFiniteTypeIntDomainStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherianStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdicCompletionQuotientRingEquivStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsReducedOfNonZeroDivisorMemJacobsonOfAssociatedStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteIntegralClosureOfEssFiniteTypeIntDomain
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherian
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdicCompletionQuotientRingEquiv
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsReducedOfNonZeroDivisorMemJacobsonOfAssociated
 
 open IsLocalRing
 
@@ -50,7 +50,7 @@ theorem isReduced_of_normal (n : ℕ)
       (AdicCompletion.ofAlgEquiv (⊥ : Ideal N)).symm.injective
   obtain ⟨x, hxI, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hbot
   let R := AdicCompletion I N
-  haveI : IsNoetherianRing R := GlobalTheory.T.isNoetherianRing_adicCompletion_of_noetherian N I
+  haveI : IsNoetherianRing R := _root_.GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion N I
   haveI : Module.Flat N R := AdicCompletion.flat_of_isNoetherian I
   have hxR : algebraMap N R x ∈ nonZeroDivisors R := by
     have hxA : IsSMulRegular N x := IsSMulRegular.of_ne_zero hx0
@@ -65,7 +65,7 @@ theorem isReduced_of_normal (n : ℕ)
     exact IsAdicComplete.le_jacobson_bot (I.map (algebraMap N R)) (Ideal.mem_map_of_mem _ hxI)
   have hredq : ∀ q : Ideal N, q.IsPrime → x ∈ q → IsReduced (R ⧸ q.map (algebraMap N R)) := by
     intro q hq hxq
-    obtain ⟨e⟩ := GlobalTheory.T.nonempty_adicCompletion_quotient_ringEquiv N I q
+    obtain ⟨e⟩ := _root_.GlobalTheory.adicCompletion_quotient_ringEquiv N I q
     haveI : IsDomain (N ⧸ q) := Ideal.Quotient.isDomain q
     haveI : Algebra.EssFiniteType N (N ⧸ q) := inferInstance
     haveI hess : @Algebra.EssFiniteType ℤ (N ⧸ q) _ _ (Ring.toIntAlgebra _) := by
@@ -84,9 +84,9 @@ theorem isReduced_of_normal (n : ℕ)
     obtain ⟨m, hmn, hm⟩ := exists_lt_of_add_one_le _ n ringKrullDim_nonneg_of_nontrivial hd1
     haveI := ih m hmn (N ⧸ q) hm _ hj
     exact isReduced_of_injective e.toRingHom e.injective
-  refine GlobalTheory.T.isReduced_of_nonZeroDivisor_mem_jacobson_of_assocPrimes R (algebraMap N R x) hxR hxjac ?_
+  refine _root_.GlobalTheory.isReduced_of_nonZeroDivisor_mem_jacobson_of_associatedPrimes R (algebraMap N R x) hxR hxjac ?_
   intro P _ hP
-  obtain ⟨h1, -⟩ := GlobalTheory.T.associated_prime_localization_dvr N R x hx0 hredq P hP
+  obtain ⟨h1, -⟩ := _root_.GlobalTheory.exists_isDiscreteValuationRing_of_mem_associatedPrimes_quotient N R x hx0 hredq P hP
   exact h1
 
 theorem isReduced_of_dim_le : ∀ (n : ℕ) (D : Type) [CommRing D] [IsDomain D] [Algebra.EssFiniteType ℤ D],
@@ -99,7 +99,7 @@ theorem isReduced_of_dim_le : ∀ (n : ℕ) (D : Type) [CommRing D] [IsDomain D]
   haveI : IsNoetherianRing D := Algebra.EssFiniteType.isNoetherianRing ℤ D
 
   let N := integralClosure D (FractionRing D)
-  haveI : Module.Finite D N := GlobalTheory.T.finite_integralClosure_of_essFiniteType_int_domain D
+  haveI : Module.Finite D N := _root_.GlobalTheory.finite_integralClosure_of_essFiniteType_int D
   haveI : IsIntegrallyClosed N := integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing D)
   have hinj : Function.Injective (algebraMap D N) := by
     intro a b hab

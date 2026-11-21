@@ -35,12 +35,6 @@ theorem isBase_field (K : Type) [Field K] : IsBase K where
     rw [IsLocalRing.maximalIdeal_eq_bot]
     infer_instance
 
-theorem HasBase.of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S)
-    (h : HasBase R) : HasBase S := by
-  obtain ⟨A, _, _, i, hA, hi, hf⟩ := h
-  exact ⟨A, inferInstance, inferInstance, e.toRingHom.comp i, hA, e.injective.comp hi,
-    (RingHom.Finite.of_surjective _ e.surjective).comp hf⟩
-
 theorem isWeaklyRegularPairMod_one_left {A : Type} [CommRing A] (J : Ideal A) (v : A) : Reg2 J 1 v :=
   ⟨fun a h => by simpa using h, fun a _ => by simp⟩
 

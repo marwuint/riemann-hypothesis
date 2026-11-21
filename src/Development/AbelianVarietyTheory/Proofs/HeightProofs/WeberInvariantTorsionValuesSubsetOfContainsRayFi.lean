@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimens
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.XiValIffXiAt
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RayFieldTheta
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.PrincipalRayPrimesSplitCompletelyWeberValuesStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CompleteSplittingCompositumDegreeOnePrimeStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.PrincipalRayPrimesSplitCompletelyWeberValues
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CompleteSplittingCompositumDegreeOnePrime
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.LeOfFiniteSplitNotSplitBauer
 
 set_option autoImplicit false
@@ -52,7 +52,7 @@ theorem numberField_adjoin (K L : IntermediateField ℚ ℂ) [NumberField L] (S 
 
 theorem weberSet_subset : ∀ (K L : IntermediateField ℚ ℂ) [NumberField K] [NumberField L] [IsTotallyComplex K] (h : K ≤ L), Module.finrank ℚ K = 2 → discr K < -4 → ∀ P : PeriodPair, (∀ z, z ∈ P.lattice ↔ ∃ a : 𝓞 K, ((a : K) : ℂ) = z) → ∀ n : ℕ, 3 ≤ n → GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (IntermediateField.inclusion h).toRingHom n → weberSet P n ⊆ L := by
   intro K L _ _ _ h h2 hd P hP n hn hR
-  obtain ⟨inst, S, hS⟩ := GlobalTheory.T.principalRayPrimes_splitCompletely_weberValues K h2 hd P hP n hn
+  obtain ⟨inst, S, hS⟩ := _root_.GlobalTheory.WeberSplitAny.splits_completely_of_three_le K h2 hd P hP n hn
   haveI := numberField_adjoin K L (weberSet P n)
   have hn0 : (n : 𝓞 L) ≠ 0 := by
     exact_mod_cast (show n ≠ 0 by omega)
@@ -79,7 +79,7 @@ theorem weberSet_subset : ∀ (K L : IntermediateField ℚ ℂ) [NumberField K] 
       ⟨𝔓.asIdeal.comap (RingOfIntegers.mapRingHom (IntermediateField.inclusion h).toRingHom),
         Ideal.comap_isPrime _ _, hne⟩
     apply hnot
-    refine GlobalTheory.T.completeSplitting_compositum_degreeOnePrime K L h (weberSet P n) 𝔭 𝔓 rfl hN ?_
+    refine _root_.GlobalTheory.SplitCompositum.ncard_eq_finrank_adjoin K L h (weberSet P n) 𝔭 𝔓 rfl hN ?_
     have h𝔭 : 𝔭.asIdeal = Ideal.span {α} := hα
     rw [h𝔭]
     exact hS α _ hp hc.2 (by rw [← hα, ← hN]) (Ideal.mem_span_singleton.2 h1)

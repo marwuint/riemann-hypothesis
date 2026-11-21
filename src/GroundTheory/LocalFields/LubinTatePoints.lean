@@ -345,8 +345,6 @@ theorem val_mk (x : Ω) (hx : valuation Ω x < 1) : (mk x hx : IdealPoint Ω F).
 @[ext]
 theorem ext {x y : IdealPoint Ω F} (h : x.val = y.val) : x = y := Subtype.ext h
 
-theorem val_injective : Function.Injective (val : IdealPoint Ω F → Ω) := fun _ _ => ext
-
 end IdealPoint
 
 instance : Zero (IdealPoint Ω F) := ⟨IdealPoint.mk 0 (by simp)⟩
@@ -427,12 +425,6 @@ theorem evalPoint_neg {σ : Type*} [Finite σ] (x : σ → IdealPoint Ω F) (p :
   rw [evalPoint_val, FormalGroup.neg_point_val, PowerSeries.subst,
     psEval_subst' (fun _ => constantCoeff_point_val p) _ _ fun i => (x i).valuation_lt_one]
   rfl
-
-theorem psEval_apply_val {σ : Type*} [Finite σ] (φ : Hom F G) (p : F.Point σ) (x : σ → Ω)
-    (hx : ∀ i, valuation Ω (x i) < 1) :
-    psEval (φ.apply p).val x = psEval φ.toPowerSeries fun _ => psEval p.val x := by
-  rw [Hom.apply_val, PowerSeries.subst,
-    psEval_subst' (fun _ => constantCoeff_point_val p) _ _ hx]
 
 instance instAddGroup : AddGroup (IdealPoint Ω F) where
   add_assoc a b c := by

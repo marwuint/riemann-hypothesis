@@ -48,4 +48,3 @@ theorem FSDense_pf : FSDense := by
   have hc := (ProjectiveSpectrum.le_iff_mem_closure _ _ _).mp hle
   exact closure_mono (Set.singleton_subset_iff.mpr (Set.mem_range_self _)) hc
 
-theorem FinSurj_of_basic (h1 : PNBasic) (hA : FSAffine) : FinSurj := FinSurj_of h1 hA FSDense_pf

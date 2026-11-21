@@ -8,16 +8,6 @@ namespace Formalism.L2.Forms
 open Formalism.BasicNotions NumberField IsDedekindDomain Matrix Formalism.UG
 open scoped TensorProduct
 
-def IsUkKg {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
-    {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
-    (S : StepLevel F E σ J T f bad) (gp : Fin 2 → ℕ) : Prop :=
-  ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp i : 𝓞 F) ∈ v.asIdeal →
-    ∃ (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
-      (fr : GL (Fin n) (v.adicCompletion F)),
-      (∀ x, sp (sigR σ (v.adicCompletion F) x) = swapR _ (sp x)) ∧
-      ∀ x ∈ UPts σ J (v.adicCompletion F),
-        x ∈ S.Uloc v ↔ fr⁻¹ * bc ((RingHom.fst _ _).comp sp.toRingHom) x * fr ∈ iwU F n v
-
 variable {D : D7}
 
 def EvzTie {u : D.what₂.Word} {A : AtTTied u} {K : ClsPTied u} {P : LvTied u A D.R.m le_rfl}
@@ -81,8 +71,6 @@ def fcOf (R : Ranks) (i : ℕ) : ℕ := if R.m ≤ i + 1 then R.k else R.N i
 
 theorem fcOf_lt {R : Ranks} {i : ℕ} (h : i + 1 < R.m) : fcOf R i = R.N i := if_neg (Nat.not_le.2 h)
 
-theorem fcOf_ge {R : Ranks} {i : ℕ} (h : R.m ≤ i + 1) : fcOf R i = R.k := if_pos h
-
 set_option maxHeartbeats 1000000 in
 
 structure FormsTied (D : D7) (u : D.what₂.Word) where
@@ -118,12 +106,6 @@ structure FormsTied (D : D7) (u : D.what₂.Word) where
   per : PerTie u jM
 
   DGam : (D.mem u).C.DGam = (D.mem D.u₀).C.DGam
-
-theorem FormsTied.up {u : D.what₂.Word} (T : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) :
-    UpTie (T.lv i hi) (T.cls i hi) (T.val i hi) := (T.upN i hi).upTie
-
-theorem FormsTied.dn {u : D.what₂.Word} (T : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) :
-    DnTie (T.lv i hi) (T.cls i hi) (T.val i hi) := (T.dnN i hi).dnTie
 
 theorem Mu0_iff {u : D.what₂.Word} {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsTied u 0 (Nat.zero_le _)}
     (W : ValTied u eV 0 (Nat.zero_le _) K) (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) :

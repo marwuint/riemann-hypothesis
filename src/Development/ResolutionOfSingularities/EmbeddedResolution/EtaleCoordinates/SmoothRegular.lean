@@ -242,12 +242,6 @@ theorem isDomain_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     isRegularLocalRing_stalk_of_smooth p x
   exact IsRegularLocalRing.isDomain _
 
-theorem smooth_isRegularLocalRing_stalk {X : Scheme.{u}} {k : Type u} [Field k]
-    (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) (x : X) :
-    _root_.IsRegularLocalRing (X.presheaf.stalk x) := by
-  have := hp
-  exact isRegularLocalRing_stalk_of_smooth p x
-
 theorem smooth_isDomain_stalk {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) (x : X) :
     IsDomain (X.presheaf.stalk x) := by

@@ -12,14 +12,13 @@ open scoped TensorProduct NNReal Matrix Classical
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Ald.Asc
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end PositivityTheory.SiegelWeilFormula.Ald.Asc
 namespace PositivityTheory.SiegelWeilFormula.Ald
 open Asc in
 theorem bigT_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.BigT_k := by
   intro hT _hA F E _ _ _ _ _ σ d dd0 had hrat
   have hψ : IsStd d.B.ψ := d.ok.good.std
-  obtain ⟨S0, S0', hS⟩ := GlobalTheory.T.darbouxCoordinateChange_realised_with_double F E σ d.ok.good.cm d.B.ψ hψ (Fin d.m) (Fin d.n ⊕ Fin d.n) d.κ
+  obtain ⟨S0, S0', hS⟩ := _root_.GlobalTheory.TowU.darboux_change F E σ d.ok.good.cm d.B.ψ hψ (Fin d.m) (Fin d.n ⊕ Fin d.n) d.κ
     (Fin d.m × Fin d.n × Fin 2) _ d.dd dd0 (by exact d.ok.dbl.rat) (by exact hrat)
   have hop := hS.1
   have rhoS : ∀ w, ∀ φ ∈ schA F d.κ, S0 (d.dd.rho d.B.ψ w φ) = dd0.rho d.B.ψ w (S0 φ) := by
@@ -65,7 +64,7 @@ theorem bigT_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.BigT_k := by
       exact (Matrix.mul_assoc _ _ _).symm
     rw [e2]
     exact d.ok.dbl.kill _ _ (hop.pres' φ hφ)
-  obtain ⟨c, hc⟩ := GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F d.B.ψ hψ (Fin d.m × Fin d.n × Fin 2) l' hadm hinv
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CharInvForm.main F d.B.ψ hψ (Fin d.m × Fin d.n × Fin 2) l' hadm hinv
   have hform : ∀ Φ ∈ d.sch, ∀ X, d.T Φ X = c * S0 Φ (crdB d.bs X) := by
     intro Φ hΦ X
     have hΨ : d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) Φ ∈ schA F d.κ :=
@@ -80,7 +79,7 @@ theorem bigT_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.BigT_k := by
     simp [Darboux.rho, h0, schr]
   refine ⟨S0, S0', c, ?_, hS, hform⟩
   rintro rfl
-  obtain ⟨φ, hφ, hφ0⟩ := GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F d.κ
+  obtain ⟨φ, hφ, hφ0⟩ := _root_.GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F d.κ
   have hz : d.T φ = 0 := by
     funext X
     rw [hform φ hφ X, zero_mul]

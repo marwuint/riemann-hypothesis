@@ -40,18 +40,6 @@ def Depth2Dual : Prop :=
     depth2 (fun a => -ξ (Fin.rev a)) (fun a => M - lam (Fin.rev a)) (fun a => M - μ (Fin.rev a)) = depth2 ξ lam μ ∧
       (Antitone ξ → Antitone fun a => -ξ (Fin.rev a))
 
-def DnShift : Prop :=
-  ∀ (p w i q c : ℕ) (lam2 : Fin q → ℕ), (∀ b, lam2 b ≤ w) →
-    Dn p (w + c) i (fun b => lam2 b + c) = Dn p w i lam2
-
-def DnLastIndep : Prop :=
-  ∀ (p w i q M M' : ℕ) (lam2 : Fin q → ℕ), w ≤ M → (∀ b, w ≤ lam2 b ∧ lam2 b ≤ M) → M ≤ M' →
-    Dn p (M' - w) i (fun b : Fin q => M' - lam2 (Fin.rev b)) = Dn p (M - w) i (fun b : Fin q => M - lam2 (Fin.rev b))
-
-def LemmaDLastGraded_rank2 : Prop :=
-  ∀ (l w y M : ℕ) (ξ : Fin (1 + 1) → ℤ), l.Prime → w ≤ y → y ≤ M → Antitone ξ →
-    LemmaDLastGradedAt l 1 1 w M (fun _ : Fin 1 => y) ξ
-
 def PeelBoundLast : Prop :=
   BranchingBoundLastGradedOneRow → ∀ (l q w M : ℕ) (lam2 : Fin q → ℕ) (ξ : Fin (q + 1) → ℤ), l.Prime → Antitone lam2 →
     (∀ b, w ≤ lam2 b ∧ lam2 b ≤ M) → Antitone ξ →

@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScaleStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScale
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowNodeGap
 
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
@@ -10,7 +10,7 @@ namespace GlobalTheory.EX
 
 theorem szRow_sizeNodes : SzRow (fun _ _ L => SizeNodes L) := by
   intro eps he0 he1 C _
-  obtain ⟨x1, hx1⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he0 he1
+  obtain ⟨x1, hx1⟩ := _root_.GlobalTheory.EX.rank_basic_bounds eps he0 he1
   refine ⟨0, fun cD hcD => ⟨1300 + cD, fun ch hch => ⟨max x1 200, fun D L hε hx hV => ?_⟩⟩⟩
   simp only [max_le_iff, ge_iff_le] at hx hch
   obtain ⟨hxa, hxb⟩ := hx

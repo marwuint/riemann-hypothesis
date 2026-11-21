@@ -13,8 +13,6 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
 
 namespace Descent
 
-variable {P : PhiMod O K l e a ι} (Δ : Descent P)
-
 end Descent
 
 open PowerSeries Matrix in

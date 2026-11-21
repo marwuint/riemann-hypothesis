@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitarySatakeTransformEqOfBaseChangeSatakeParameStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitarySatakeTransformEqOfBaseChangeSatakeParame
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
 
 noncomputable section
 
@@ -68,7 +69,7 @@ theorem paramVec_add (hx : IsParamVec σ J L h ρ x B) (hx' : IsParamVec σ J L 
     · obtain rfl : c' = c := (InertChart.existsUnique_isConjAt σ hw h).unique he'.1 he.1
       have h1 := IsSatVecU.of_unif hU' hU (IsSatVecU.of_chart he' he hx')
       have h2 : IsSatVecU ϖ (qV F v) (ρ.comp e.symm.toMonoidHom) x' α := ⟨h1.1, h1.2.1, fun t ht => by
-        rw [h1.2.2 t ht, GlobalTheory.T.unitarySatakeTransform_eq_of_baseChangeSatakeParameter_eq (w.adicCompletion E) ϖ c' (qV F v) n hU α' α (hB'.symm.trans hB) t ht]⟩
+        rw [h1.2.2 t ht, _root_.GlobalTheory.SatBc.satU_eq_of_bcParam_eq (w.adicCompletion E) ϖ c' (qV F v) n hU α' α (hB'.symm.trans hB) t ht]⟩
       exact Or.inr ⟨hw, c', ϖ, e, α, hU, he, satU_add hU hx h2 h0, hB⟩
 
 end Vec
@@ -155,4 +156,3 @@ theorem isPar_add_smul : ∀ (D : D7) (c : Com D) (s : PiLocalization₂ D), (�
 
 end GlobalTheory.ChainOnto
 
-example : ∀ (D : D7) (c : GlobalTheory.ChainOnto.Com D) (s : GlobalTheory.ChainOnto.PiLocalization₂ D), (∀ (u u' : s.CC c) B B' (a : ℂ), GlobalTheory.ChainOnto.IsPar u B → GlobalTheory.ChainOnto.IsPar u' B' → (∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))), B w = B' w) → u + a • u' ≠ 0 → GlobalTheory.ChainOnto.IsPar (u + a • u') B) ∧ ∀ (u : s.CC c) B (a : ℂ), GlobalTheory.ChainOnto.IsPar u B → a ≠ 0 → GlobalTheory.ChainOnto.IsPar (a • u) B := GlobalTheory.ChainOnto.isPar_add_smul

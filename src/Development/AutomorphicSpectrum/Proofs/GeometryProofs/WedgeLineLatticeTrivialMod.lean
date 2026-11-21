@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeLineLatticeVectorBundleStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeLineLatticeVectorBundle
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DetFromColsFrameChange
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FromRowsMulFromColsSplit
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle
@@ -442,7 +442,7 @@ section Main
 
 theorem trivMod_lineLat : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (A B : Lat ξ E) (p q : ℕ) (V V' : Submodule Ω E) (a : ⋀[Ω]^p E) (b : ⋀[Ω]^q E) (ϖ : Ω), IsCptGen ξ → ϖ ≠ 0 → (∀ x, ϖ ∈ regAt ξ x) → A.IsVB p V → B.IsVB q V' → a ≠ 0 → b ≠ 0 → (∃ x f, IsCoeffAt A B p q a b x f) → ExactModLat A B ϖ (p + q) → TrivMod (lineLat A B p q a b) ϖ := by
   intro X Ω _ ξ E _ _ A B p q V V' a b ϖ _ h0 hϖ hA hB ha hb ⟨x₀, f, hf⟩ ⟨J, J', hE⟩
-  obtain ⟨hL, hGen, hFr⟩ := GlobalTheory.T.wedge_line_lattice_vector_bundle X Ω ξ E A B p q V V' Set.univ a b hA hB ha hb ⟨x₀, trivial, f, hf⟩
+  obtain ⟨hL, hGen, hFr⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.lineLat_isVBOn_gen_frames X Ω ξ E A B p q V V' Set.univ a b hA hB ha hb ⟨x₀, trivial, f, hf⟩
   have hcoef : ∀ x : Cpt ξ, ∃ α₀ β₀ : Ω, A.wedge p x = Submodule.span (regAt ξ x) {α₀ • a} ∧
       B.wedge q x = Submodule.span (regAt ξ x) {β₀ • b} := by
     intro x

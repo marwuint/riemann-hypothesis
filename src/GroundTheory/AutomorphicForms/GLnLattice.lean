@@ -142,137 +142,9 @@ theorem smul_standard_eq_iff {g : GL (Fin n) F} :
   rw [← mapSubmodule_standardLattice_eq_iff]
   exact Subtype.ext_iff
 
-theorem stabilizer_standard :
-    MulAction.stabilizer (GL (Fin n) F) (standard F n) = integralGL F n := by
-  ext g
-  rw [MulAction.mem_stabilizer_iff, smul_standard_eq_iff]
-
 theorem smul_standard_eq_smul_standard_iff {g h : GL (Fin n) F} :
     g • standard F n = h • standard F n ↔ g⁻¹ * h ∈ integralGL F n := by
   rw [eq_comm, ← inv_smul_eq_iff, smul_smul, smul_standard_eq_iff]
-
-section MaximalCompact
-
-theorem transvection_mem_integer {i j : Fin n} {c : F} (hc : c ∈ 𝒪[F]) (a b : Fin n) :
-    Matrix.transvection i j c a b ∈ 𝒪[F] := by
-  rw [Matrix.transvection, Matrix.add_apply]
-  refine Subring.add_mem _ ?_ ?_
-  · rw [Matrix.one_apply]
-    split_ifs <;> simp
-  · rw [Matrix.single_apply]
-    split_ifs
-    · exact hc
-    · exact Subring.zero_mem _
-
-def transvectionGL {i j : Fin n} (hij : i ≠ j) : GL (Fin n) F :=
-  ⟨Matrix.transvection i j 1, Matrix.transvection i j (-1),
-    by rw [Matrix.transvection_mul_transvection_same _ _ hij, add_neg_cancel,
-      Matrix.transvection_zero],
-    by rw [Matrix.transvection_mul_transvection_same _ _ hij, neg_add_cancel,
-      Matrix.transvection_zero]⟩
-
-theorem transvectionGL_mem {i j : Fin n} (hij : i ≠ j) : transvectionGL F n hij ∈ integralGL F n :=
-  (mem_integralGL_iff F n).mpr ⟨transvection_mem_integer F n (Subring.one_mem _),
-    transvection_mem_integer F n (Subring.neg_mem _ (Subring.one_mem _))⟩
-
-theorem conj_mem_integralGL_of_conj_inv_mem {g : GL (Fin n) F}
-    (hg : ∀ k ∈ integralGL F n, g⁻¹ * k * g ∈ integralGL F n) {k : GL (Fin n) F}
-    (hk : k ∈ integralGL F n) : g * k * g⁻¹ ∈ integralGL F n := by
-  rcases isEmpty_or_nonempty (Fin n) with hn | hn
-  · exact (mem_integralGL_iff F n).mpr ⟨fun i => isEmptyElim i, fun i => isEmptyElim i⟩
-  set A : Matrix (Fin n) (Fin n) F := (g : Matrix (Fin n) (Fin n) F) with hAdef
-  set B : Matrix (Fin n) (Fin n) F := ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)
-    with hBdef
-  have hAB : A * B = 1 := Units.mul_inv g
-  have hBA : B * A = 1 := Units.inv_mul g
-  obtain ⟨⟨j₀, k₀⟩, -, hmax⟩ := Finset.exists_max_image Finset.univ
-    (fun p : Fin n × Fin n => valuation F (A p.1 p.2)) Finset.univ_nonempty
-  set a := A j₀ k₀ with ha_def
-  have hmax' : ∀ i j, valuation F (A i j) ≤ valuation F a := fun i j =>
-    hmax (i, j) (Finset.mem_univ _)
-  have ha : a ≠ 0 := by
-    intro h0
-    have hA0 : A = 0 := Matrix.ext fun i j => by
-      have := hmax' i j
-      rw [h0, map_zero, le_zero_iff, map_eq_zero] at this
-      exact this
-    have := congrFun (congrFun hAB j₀) j₀
-    rw [hA0, zero_mul, Matrix.zero_apply, Matrix.one_apply_eq] at this
-    exact zero_ne_one this
-  have hva : 0 < valuation F a := zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr ha)
-
-  have hconj : ∀ k ∈ integralGL F n, B * (k : Matrix (Fin n) (Fin n) F) * A ∈ integralMatrices F n :=
-    fun k hk => (mem_integralMatrices F n).mpr ((mem_integralGL_iff F n).mp (hg k hk)).1
-  have hsingle_ne : ∀ i t : Fin n, i ≠ t →
-      B * Matrix.single i t (1 : F) * A ∈ integralMatrices F n := by
-    intro i t hit
-    have h := hconj _ (transvectionGL_mem F n hit)
-    have : B * Matrix.single i t (1 : F) * A =
-        B * ((transvectionGL F n hit : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * A - 1 := by
-      change _ = B * Matrix.transvection i t 1 * A - 1
-      rw [Matrix.transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hBA,
-        add_sub_cancel_left]
-    rw [this]
-    exact Subring.sub_mem _ h (Subring.one_mem _)
-  have hsingle : ∀ i, B * Matrix.single i j₀ (1 : F) * A ∈ integralMatrices F n := by
-    intro i
-    by_cases hi : i = j₀
-    · subst hi
-      by_cases ht : ∃ t, t ≠ i
-      · obtain ⟨t, ht⟩ := ht
-        have : B * Matrix.single i i (1 : F) * A =
-            (B * Matrix.single i t (1 : F) * A) * (B * Matrix.single t i (1 : F) * A) := by
-          have hs : Matrix.single i i (1 : F) = Matrix.single i t 1 * Matrix.single t i 1 := by
-            rw [Matrix.single_mul_single_same, mul_one]
-          rw [hs]
-          simp only [Matrix.mul_assoc]
-          rw [← Matrix.mul_assoc A B, hAB, Matrix.one_mul]
-        rw [this]
-        exact Subring.mul_mem _ (hsingle_ne i t (Ne.symm ht)) (hsingle_ne t i ht)
-      · push Not at ht
-        have h1 : Matrix.single i i (1 : F) = 1 := Matrix.ext fun x y => by
-          rw [ht x, ht y, Matrix.single_apply, Matrix.one_apply_eq]
-          simp
-        rw [h1, Matrix.mul_one, hBA]
-        exact Subring.one_mem _
-    · exact hsingle_ne i j₀ hi
-
-  have hB' : a • B ∈ integralMatrices F n := by
-    refine (mem_integralMatrices F n).mpr fun l i => ?_
-    have h := (mem_integralMatrices F n).mp (hsingle i) l k₀
-    have : (B * Matrix.single i j₀ (1 : F) * A) l k₀ = B l i * a := by
-      rw [Matrix.mul_apply, Finset.sum_eq_single j₀]
-      · rw [Matrix.mul_single_apply_same, mul_one]
-      · intro x _ hx
-        rw [Matrix.mul_single_apply_of_ne _ _ _ _ _ hx, zero_mul]
-      · simp
-    rw [this] at h
-    rw [Matrix.smul_apply, smul_eq_mul, mul_comm]
-    exact h
-  have hA' : a⁻¹ • A ∈ integralMatrices F n := by
-    refine (mem_integralMatrices F n).mpr fun i j => ?_
-    rw [Matrix.smul_apply, smul_eq_mul, Valuation.mem_integer_iff, map_mul, map_inv₀,
-      inv_mul_le_iff₀ hva, mul_one]
-    exact hmax' i j
-
-  have hmain : ∀ k' ∈ integralGL F n,
-      ((g * k' * g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) ∈ integralMatrices F n := by
-    intro k' hk'
-    have hk'' : (k' : Matrix (Fin n) (Fin n) F) ∈ integralMatrices F n :=
-      (mem_integralMatrices F n).mpr ((mem_integralGL_iff F n).mp hk').1
-    have : ((g * k' * g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
-        a⁻¹ • A * (k' : Matrix (Fin n) (Fin n) F) * (a • B) := by
-      rw [Units.val_mul, Units.val_mul]
-      simp only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ ha, one_smul]
-      rfl
-    rw [this]
-    exact Subring.mul_mem _ (Subring.mul_mem _ hA' hk'') hB'
-  refine (mem_integralGL_iff F n).mpr ⟨(mem_integralMatrices F n).mp (hmain k hk), ?_⟩
-  have : (g * k * g⁻¹)⁻¹ = g * k⁻¹ * g⁻¹ := by group
-  rw [this]
-  exact (mem_integralMatrices F n).mp (hmain _ (inv_mem hk))
-
-end MaximalCompact
 
 end Algebraic
 
@@ -321,13 +193,6 @@ def quotientEquivLattice : GL (Fin n) F ⧸ integralGL F n ≃ Lattice F n :=
 theorem quotientEquivLattice_mk (g : GL (Fin n) F) :
     quotientEquivLattice F n (g : GL (Fin n) F ⧸ integralGL F n) = g • standard F n :=
   rfl
-
-theorem quotientEquivLattice_smul (g : GL (Fin n) F) (x : GL (Fin n) F ⧸ integralGL F n) :
-    quotientEquivLattice F n (g • x) = g • quotientEquivLattice F n x := by
-  induction x using QuotientGroup.induction_on with
-  | H a =>
-    rw [MulAction.Quotient.smul_mk, quotientEquivLattice_mk, quotientEquivLattice_mk, smul_eq_mul,
-      mul_smul]
 
 end Topological
 
@@ -422,71 +287,6 @@ theorem exists_conj_le_integralGL {H : Subgroup (GL (Fin n) F)}
   have hgL : mapSubmodule F n g (standardLattice F n) = L := congrArg Subtype.val hg
   refine ⟨g, fun h hh => (mapSubmodule_standardLattice_eq_iff F n).mp ?_⟩
   rw [mapSubmodule_mul, mapSubmodule_mul, hgL, hstab h hh, ← hgL, mapSubmodule_inv_mapSubmodule]
-
-omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
-
-theorem mem_map_conj {g x : GL (Fin n) F} {H : Subgroup (GL (Fin n) F)} :
-    x ∈ H.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * x * g ∈ H := by
-  constructor
-  · rintro ⟨y, hy, rfl⟩
-    have : g⁻¹ * (MulAut.conj g).toMonoidHom y * g = y := by
-      simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
-      group
-    rwa [this]
-  · intro hx
-    refine ⟨g⁻¹ * x * g, hx, ?_⟩
-    simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
-    group
-
-theorem isCompact_map_conj (g : GL (Fin n) F) {H : Subgroup (GL (Fin n) F)}
-    (hH : IsCompact (H : Set (GL (Fin n) F))) :
-    IsCompact (H.map (MulAut.conj g).toMonoidHom : Set (GL (Fin n) F)) := by
-  rw [Subgroup.coe_map]
-  refine hH.image ?_
-  have : ⇑(MulAut.conj g).toMonoidHom = fun x => g * x * g⁻¹ := rfl
-  rw [this]
-  fun_prop
-
-theorem eq_integralGL_of_isCompact_of_le {H : Subgroup (GL (Fin n) F)}
-    (hH : IsCompact (H : Set (GL (Fin n) F))) (hle : integralGL F n ≤ H) :
-    H = integralGL F n := by
-  obtain ⟨g, hg⟩ := exists_conj_le_integralGL F n hH
-  refine le_antisymm (fun h hh => ?_) hle
-  have h1 := conj_mem_integralGL_of_conj_inv_mem F n (fun k hk => hg k (hle hk)) (hg h hh)
-  have : g * (g⁻¹ * h * g) * g⁻¹ = h := by group
-  rwa [this] at h1
-
-def IsMaximalCompact {G : Type*} [Group G] [TopologicalSpace G] (H : Subgroup G) : Prop :=
-  IsCompact (H : Set G) ∧ ∀ H' : Subgroup G, IsCompact (H' : Set G) → H ≤ H' → H' = H
-
-theorem isMaximalCompact_integralGL : IsMaximalCompact (integralGL F n) :=
-  ⟨isCompact_integralGL F n, fun _ hH' hle => eq_integralGL_of_isCompact_of_le F n hH' hle⟩
-
-theorem isMaximalCompact_iff {H : Subgroup (GL (Fin n) F)} :
-    IsMaximalCompact H ↔ ∃ g : GL (Fin n) F, H = (integralGL F n).map (MulAut.conj g).toMonoidHom := by
-  constructor
-  · rintro ⟨hc, hmax⟩
-    obtain ⟨g, hg⟩ := exists_conj_le_integralGL F n hc
-    refine ⟨g, (hmax _ (isCompact_map_conj F n g (isCompact_integralGL F n))
-      fun h hh => (mem_map_conj F n).mpr (hg h hh)).symm⟩
-  · rintro ⟨g, rfl⟩
-    refine ⟨isCompact_map_conj F n g (isCompact_integralGL F n), fun H' hH' hle => ?_⟩
-
-    have hK : integralGL F n ≤ H'.map (MulAut.conj g⁻¹).toMonoidHom := fun k hk => by
-      rw [mem_map_conj, inv_inv]
-      have : g * k * g⁻¹ ∈ (integralGL F n).map (MulAut.conj g).toMonoidHom := by
-        rw [mem_map_conj]
-        have : g⁻¹ * (g * k * g⁻¹) * g = k := by group
-        rwa [this]
-      exact hle this
-    have heq := eq_integralGL_of_isCompact_of_le F n (isCompact_map_conj F n g⁻¹ hH') hK
-    refine le_antisymm (fun h hh => ?_) hle
-    rw [mem_map_conj]
-    have : g⁻¹ * h * g ∈ H'.map (MulAut.conj g⁻¹).toMonoidHom := by
-      rw [mem_map_conj, inv_inv]
-      have : g * (g⁻¹ * h * g) * g⁻¹ = h := by group
-      rwa [this]
-    rwa [heq] at this
 
 end Compact
 

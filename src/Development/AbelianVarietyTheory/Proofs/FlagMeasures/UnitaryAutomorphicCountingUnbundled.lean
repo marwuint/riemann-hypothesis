@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.LatticeCountingTheorem
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NcardPrimesOverEqFinrankOfAbsNormEqOfNotMemSqStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NcardPrimesOverEqFinrankOfAbsNormEqOfNotMemSq
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SchurOrthogonalityIndefiniteUnitaryGroup
 
 open MeasureTheory NumberField Formalism.MainNotions.S
@@ -61,7 +61,7 @@ theorem count_unbundled : GlobalTheory.IndefiniteRowSideFullHecke.LatticeCountin
   have hC' : 8 * 10 ^ 14 * (A + 4) ≤ C := (le_max_right _ _).trans hC
   have hH : GlobalTheory.Count.CountHyp B A n₀ (fun v => fdegOf (Formalism.REAL.muG (I.ε v)) (σ v) (w v)) p q b := by
     refine ⟨fun v => ⟨hHC v, hDS v, hlow v, hfd v⟩, hpq, le_trans hn₁ hn, hq, le_exp_of_log_le hrd, hf, hb,
-      le_exp_of_log_le hbb, hlam, hg, hgb, hpr, hg₀, GlobalTheory.T.ncard_primesOver_eq_finrank_of_unramified_split I.E g₀ hpr hsplit, ?_⟩
+      le_exp_of_log_le hbb, hlam, hg, hgb, hpr, hg₀, _root_.GlobalTheory.ncard_primesOver_eq_finrank_of_absNorm_eq_of_not_mem_sq I.E g₀ hpr hsplit, ?_⟩
     intro v a a' haa
     refine le_trans ?_ (hgap v a a' haa)
     refine le_trans ?_ hh

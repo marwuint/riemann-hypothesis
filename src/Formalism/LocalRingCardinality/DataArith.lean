@@ -2,9 +2,7 @@ import Mathlib
 import Formalism.LocalRingCardinality.Params
 import Formalism.HarderNarasimhan.StatementPl
 import Formalism.HarderNarasimhan.QuotRealize
-import Formalism.HarderNarasimhan.StatementFrame
-import Formalism.LatticeLocalGlobal.Statement
-import Formalism.LatticeLocalGlobal.LatticeLocalGlobalOfGlobal
+import Formalism.CorankShare.StatementFR
 
 open Module NumberField IsDedekindDomain
 
@@ -24,14 +22,6 @@ def idxW {n : Type} [Fintype n] [DecidableEq n] (w : HeightOneSpectrum R) (γ : 
 
 end Val
 
-def bridge_ccb_unit : Prop :=
-  ∀ (R L : Type) [CommRing R] [IsDedekindDomain R] [Field L] [Algebra R L] [IsFractionRing R L]
-    (w : HeightOneSpectrum R) (x : L), x ≠ 0 → (w.valuation L x = 1 ↔ vAdd w x = 0)
-
-def bridge_ccb_integral : Prop :=
-  ∀ (R L : Type) [CommRing R] [IsDedekindDomain R] [Field L] [Algebra R L] [IsFractionRing R L]
-    (w : HeightOneSpectrum R) (x : L), w.valuation L x ≤ 1 ↔ 0 ≤ vAdd w x
-
 section Places
 
 variable (K : Type) [Field K] [NumberField K]
@@ -41,8 +31,6 @@ def lw (w : HeightOneSpectrum (𝓞 K)) : ℝ :=
 
 def eWL (w : HeightOneSpectrum (𝓞 K)) : ℕ := w.asIdeal.ramificationIdx ℤ
 
-def unitRule (w : HeightOneSpectrum (𝓞 K)) (y : ℝ) : ℝ := (eWL K w : ℝ) * y
-
 def sizeOfVal (w : HeightOneSpectrum (𝓞 K)) (y : ℝ) : ℝ := 2 * lw K w * y
 
 end Places
@@ -50,13 +38,6 @@ end Places
 def bridge_unit_rule : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (l : ℕ) (w : HeightOneSpectrum (𝓞 K)), l.Prime →
     ((l : 𝓞 K) ∈ w.asIdeal) → vAdd w ((l : ℕ) : K) = (eWL K w : ℤ)
-
-open Classical in
-
-def FactUnitNormalisation : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (p : ℕ), p.Prime →
-    (∑ᶠ w : HeightOneSpectrum (𝓞 K),
-        if ((p : 𝓞 K) ∈ w.asIdeal) then 2 * lw K w * (eWL K w : ℝ) else 0) = 2 * Real.log p
 
 structure HLat (K : Type) [Field K] [NumberField K] [StarRing K] where
   V : Type
@@ -171,29 +152,11 @@ def d (u : Words) : ℕ := dU D.Nu u
 
 def R : ℕ := Rsum D.Nu
 
-def s : ℝ := sFrame D.Nu D.h
-
-def uF [Nonempty Words] : ℝ := uFrame D.Nu D.h
-
 def AllGood : Prop := D.RR.Good ∧ ∀ u, (D.Nu u).Good
 
 def OneMapIntoCC : Prop := ∀ u, (D.Nu u).L.map ((D.Bk u).restrictScalars (𝓞 K)) ≤ D.cc
 
-def HBound : Prop :=
-  ∀ u, Formalism.HN.htMap (D.Nu u).b (D.Nu u).X D.RR.dualB D.RR.dualX (D.Bk u) ≤ D.h u
-
-def DelPNonneg : Prop := 0 ≤ D.delP
-
 end DivData
-
-def RankBoundMonotoneInDimension : Prop :=
-  ∀ (a q η : ℝ) (D Dall : ℕ), 0 < D → D ≤ Dall → 0 ≤ η →
-    a ≤ (1 + η) * q ^ 2 / (Dall : ℝ) → a ≤ (1 + η) * q ^ 2 / (D : ℝ)
-
-def FactHHcc : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (Words : Type)
-    [Fintype Words] (D : DivData K Words), D.RR.Good → 0 < D.RR.rank →
-    D.s - D.RR.muMinDual ≤ D.HH
 
 def bSize (x ε : ℝ) : ℝ := Real.exp (x ^ ε)
 
@@ -203,9 +166,5 @@ def rankBudget (R : Ranks) (x ε : ℝ) : ℝ := (R.n : ℝ) * x ^ (-ε)
 
 def budgetNc (R : Ranks) (x ε : ℝ) (T2card : ℕ) : ℝ :=
   (T2card : ℝ) * R.k * bSize x ε * x ^ ε / ((R.n : ℝ) * rankBudget R x ε)
-
-def FactNc : Prop :=
-  ∀ (R : Ranks) (x ε : ℝ) (T2card : ℕ), 0 < x →
-    budgetNc R x ε T2card = (T2card : ℝ) * R.k * bSize x ε * x ^ (2 * ε) / ((R.n : ℝ) ^ 2)
 
 end Formalism.BasicNotions

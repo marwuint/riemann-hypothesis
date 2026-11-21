@@ -12,7 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.BijectiveRestri
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ValuationRingOfFlatOfFormallyUnramified
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsUnitNatCastSections
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMulEquivOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CardTorsionPointsAbelianVarietyStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CardTorsionPointsAbelianVariety
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -225,7 +228,7 @@ theorem card_torsion (hL : Laws) {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : 
   obtain ⟨e, -⟩ := exists_mulEquiv_of_isGrpPullback (isGrpPullback_pullback G t) (𝟙 _) t
     (Category.id_comp t).symm
   rw [Nat.card_congr (torsionEquiv G n _),
-    ← GlobalTheory.T.card_torsion_points_abelianVariety hL.globalFns hL.rigidity K ((Over.pullback t).obj G) g n hB' hg' hn]
+    ← _root_.GlobalTheory.UU.TorsionCount.card_torsion_points hL.globalFns hL.rigidity K ((Over.pullback t).obj G) g n hB' hg' hn]
   refine (Nat.card_congr (e.toEquiv.subtypeEquiv fun x => ?_)).symm
   show x ^ n = 1 ↔ e x ^ n = 1
   rw [← map_pow, MulEquiv.map_eq_one_iff]

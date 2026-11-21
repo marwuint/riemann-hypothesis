@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiagMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerUnitsFiniteModPowersAtLevel
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussExtensionUniqueOfGaussStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussExtensionUniqueOfGauss
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinsetSpanPrincipalCongruenceLevelFunctionStatement
 
 open scoped MatrixGroups TensorProduct
@@ -119,7 +119,7 @@ theorem gauss_unique_root : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgCl
     intro h
     have h1 : IsAlgebraic Ω (ι X.jK) := h.algHom L.val
     exact transcendental_j X ((isAlgebraic_algHom_iff ι ι.toRingHom.injective).1 h1)
-  obtain ⟨S, hS⟩ := GlobalTheory.T.gauss_valuationSubring_unique_away_finset (F := Ω) (⟨t, ht⟩ : L) htr hfin
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.BertiniNoether.gauss_extension_unique_of_gauss (F := Ω) (⟨t, ht⟩ : L) htr hfin
   have hlev : ∀ f : X.K, Lev X M₀ f → algebraMap X.K E f ∈ L := by
     intro f hf
     have hsp := hT f hf

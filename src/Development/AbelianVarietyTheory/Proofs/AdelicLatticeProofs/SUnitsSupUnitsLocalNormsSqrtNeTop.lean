@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FirstInequalitySUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoPowLeIndexLocalNormsSqrtExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FirstInequalitySUnits
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoPowLeIndexLocalNormsSqrtExtension
 
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
@@ -25,8 +25,8 @@ theorem normSub_id_le_locNorm (F : Type) [Field F] [NumberField F] (δ : F)
 
 theorem sUnits_sup_locNorm_ne_top : ∀ (F : Type) [Field F] [NumberField F] (δ : Fˣ) (S : Finset (HeightOneSpectrum (𝓞 F))), admitted F S → δ ∈ sUnits F S → ¬ IsSquare (δ : F) → sUnits F S ⊔ locNorm F δ S ≠ ⊤ := by
   intro F _ _ δ S hS hδ hsq htop
-  obtain ⟨hne, hle⟩ := GlobalTheory.T.two_mul_relIndex_normSub_sUnits_le F δ S hS hδ hsq
-  obtain ⟨-, hge⟩ := GlobalTheory.T.two_pow_le_index_localNormsSqrtExtension F (δ : F) S δ.ne_zero
+  obtain ⟨hne, hle⟩ := _root_.GlobalTheory.QNorm.first_inequality_sUnits F δ S hS hδ hsq
+  obtain ⟨-, hge⟩ := _root_.GlobalTheory.QNorm.two_pow_le_index_locNorm F (δ : F) S δ.ne_zero
   have h1 : (locNorm F δ S).index = (locNorm F δ S).relIndex (sUnits F S) := by
     rw [← Subgroup.relIndex_top_right, ← htop, Subgroup.relIndex_sup_right]
   have h2 : (locNorm F δ S).relIndex (sUnits F S) ≤

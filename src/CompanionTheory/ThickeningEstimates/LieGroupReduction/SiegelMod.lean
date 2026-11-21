@@ -1,6 +1,9 @@
 import CompanionTheory.ThickeningEstimates.LieGroupReduction.SiegelHaar
 import Formalism.SatakeDualWeyl.Statement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharEqOfIsOpenEmbeddingRestrictStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharEqOfIsOpenEmbeddingRestrict
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MulVecCEApply
+import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharProdCongrStatement
 
 set_option linter.unusedSectionVars false
@@ -119,16 +122,6 @@ theorem Fr.eich_mul (h : Fr s J X Y) {Z₀ Z : Matrix (Fin n) (Fin k) R} (h₀ :
 
 theorem eich_zero : eich s J X 0 0 = 1 := by simp [eich, cT_zero]
 
-theorem Fr.eich_unitary (h : Fr s J X Y) {Z : Matrix (Fin n) (Fin k) R} (hZ : cT s X * J * Z = 0)
-    {c : Matrix (Fin k) (Fin k) R} (hc : cT s c + c + cT s Z * J * Z = 0) :
-    cT s (eich s J X Z c) * J * eich s J X Z c = J := by
-  have e : cT s (eich s J X Z c) * J = J * eich s J X (-Z) (cT s c) := by
-    simp only [eich, cT_add, cT_sub, cT_mul, cT_one, cT_neg, h.cc, h.herm, Matrix.mul_add, Matrix.mul_sub, Matrix.add_mul,
-      Matrix.sub_mul, Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg, Matrix.one_mul, Matrix.mul_one]
-    abel
-  rw [e, Matrix.mul_assoc, h.eich_mul (by rw [Matrix.mul_neg, hZ, neg_zero]) hZ, cT_neg, Matrix.neg_mul, Matrix.neg_mul,
-    sub_neg_eq_add, hc, neg_add_cancel, eich_zero, Matrix.mul_one]
-
 variable (s J X Y) in
 
 def W1 : AddSubgroup (Matrix (Fin n) (Fin k) R) where
@@ -189,12 +182,6 @@ def Fr.nMat (h : Fr s J X Y) : Heis h.β →* Matrix (Fin n) (Fin n) R where
 theorem Fr.nMat_apply (h : Fr s J X Y) (x : Heis h.β) :
     h.nMat x = eich s J X x.1.1 (x.2.1 - (⅟2 : R) • (cT s x.1.1 * J * x.1.1)) := rfl
 
-theorem Fr.nMat_unitary (h : Fr s J X Y) (x : Heis h.β) : cT s (h.nMat x) * J * h.nMat x = J :=
-  h.eich_unitary x.1.2.1 (by
-    rw [cT_sub, cT_smul, s_half, h.swap, show cT s x.2.1 = -x.2.1 from x.2.2]
-    conv_lhs => enter [2]; rw [← half_add (cT s x.1.1 * J * x.1.1)]
-    abel)
-
 theorem Fr.decomp_inj (h : Fr s J X Y) {Z Z' : Matrix (Fin n) (Fin k) R} (hZ : cT s Y * J * Z = 0) (hZ' : cT s Y * J * Z' = 0)
     {c c' : Matrix (Fin k) (Fin k) R} (e : Y + Z + X * c = Y + Z' + X * c') : Z = Z' ∧ c = c' := by
   have e1 := congrArg (cT s Y * J * ·) e
@@ -246,239 +233,11 @@ instance scMat (a b : ℕ) : SecondCountableTopology (Matrix (Fin a) (Fin b) R) 
 instance scSub {a b : ℕ} (W : AddSubgroup (Matrix (Fin a) (Fin b) R)) : SecondCountableTopology W :=
   TopologicalSpace.Subtype.secondCountableTopology (W : Set (Matrix (Fin a) (Fin b) R))
 
-omit [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] in
-theorem continuous_cT (hs : Continuous s) {a b T : Type} [TopologicalSpace T] {f : T → Matrix a b R} (hf : Continuous f) :
-    Continuous fun x => cT s (f x) := (hf.matrix_map hs).matrix_transpose
-
-omit [LocallyCompactSpace R] [SecondCountableTopology R] in
-theorem isClosed_frame_annihilator : IsClosed (W1 s J X Y : Set (Matrix (Fin n) (Fin k) R)) :=
-  (isClosed_eq (continuous_const.matrix_mul continuous_id) continuous_const).inter
-    (isClosed_eq (continuous_const.matrix_mul continuous_id) continuous_const)
-
-omit [LocallyCompactSpace R] [SecondCountableTopology R] in
-theorem isClosed_skew_hermitian (hs : Continuous s) : IsClosed (W2 s k : Set (Matrix (Fin k) (Fin k) R)) :=
-  isClosed_eq (continuous_cT hs continuous_id) continuous_neg
-
-def scal {a b : ℕ} (W : AddSubgroup (Matrix (Fin a) (Fin b) R)) (u : Rˣ) (h : ∀ x ∈ W, u.1 • x ∈ W)
-    (h' : ∀ x ∈ W, u⁻¹.1 • x ∈ W) : W ≃ₜ+ W where
-  toFun x := ⟨u.1 • x.1, h _ x.2⟩
-  invFun x := ⟨u⁻¹.1 • x.1, h' _ x.2⟩
-  left_inv x := Subtype.ext (by simp [smul_smul])
-  right_inv x := Subtype.ext (by simp [smul_smul])
-  map_add' x y := Subtype.ext (smul_add _ _ _)
-  continuous_toFun := (continuous_subtype_val.const_smul u.1).subtype_mk _
-  continuous_invFun := (continuous_subtype_val.const_smul u⁻¹.1).subtype_mk _
-
-def scalM (a b : ℕ) (u : Rˣ) : Matrix (Fin a) (Fin b) R ≃ₜ+ Matrix (Fin a) (Fin b) R where
-  toFun x := u.1 • x
-  invFun x := u⁻¹.1 • x
-  left_inv x := by simp [smul_smul]
-  right_inv x := by simp [smul_smul]
-  map_add' x y := smul_add _ _ _
-  continuous_toFun := continuous_id.const_smul u.1
-  continuous_invFun := continuous_id.const_smul u⁻¹.1
-
 @[reducible] def msMat (a b : ℕ) : MeasurableSpace (Matrix (Fin a) (Fin b) R) := borel _
 
 attribute [local instance] msMat
 
 local instance (a b : ℕ) : BorelSpace (Matrix (Fin a) (Fin b) R) := ⟨rfl⟩
-
-omit [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] in
-theorem smul_mem_frame_annihilator (c : R) (x) (hx : x ∈ W1 s J X Y) : c • x ∈ W1 s J X Y :=
-  ⟨by rw [Matrix.mul_smul, hx.1, smul_zero], by rw [Matrix.mul_smul, hx.2, smul_zero]⟩
-
-omit [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] in
-theorem smul_mem_skew_hermitian {c : R} (hc : s c = c) (x) (hx : x ∈ W2 s k) : c • x ∈ W2 s k :=
-  show cT s _ = _ by rw [cT_smul, hc, show cT s x = -x from hx, smul_neg]
-
-omit [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] in
-theorem s_inv {u : Rˣ} (hu : s u = u) : s u⁻¹.1 = u⁻¹.1 :=
-  (Units.inv_eq_of_mul_eq_one_right (by rw [← hu, ← map_mul, Units.mul_inv, map_one])).symm
-
-theorem haar_character_frame_annihilator (h : Fr s J X Y) [LocallyCompactSpace (W1 s J X Y)] (u : Rˣ) :
-    addEquivAddHaarChar (scalM n k u) = addEquivAddHaarChar (scal (W1 s J X Y) u (smul_mem_frame_annihilator _) (smul_mem_frame_annihilator _)) *
-      (addEquivAddHaarChar (scalM k k u) * addEquivAddHaarChar (scalM k k u)) := by
-  rw [← GlobalTheory.T.addEquivAddHaarChar_prodCongr, ← GlobalTheory.T.addEquivAddHaarChar_prodCongr]
-  let e : (W1 s J X Y × Matrix (Fin k) (Fin k) R × Matrix (Fin k) (Fin k) R) ≃ₜ+ Matrix (Fin n) (Fin k) R :=
-    { toFun := fun p => p.1.1 + X * p.2.1 + Y * p.2.2
-      invFun := fun U => (⟨U - X * (cT s Y * J * U) - Y * (cT s X * J * U),
-        by simp only [Matrix.mul_sub, ← Matrix.mul_assoc _ X, ← Matrix.mul_assoc _ Y, h.xy, h.xx]; simp,
-        by simp only [Matrix.mul_sub, ← Matrix.mul_assoc _ X, ← Matrix.mul_assoc _ Y, h.yy, h.yx]; simp⟩,
-        cT s Y * J * U, cT s X * J * U)
-      left_inv := fun p => by
-        have e1 : cT s Y * J * (p.1.1 + X * p.2.1 + Y * p.2.2) = p.2.1 := by
-          simp only [Matrix.mul_add, ← Matrix.mul_assoc _ X, ← Matrix.mul_assoc _ Y, h.yy, h.yx, p.1.2.2]; simp
-        have e2 : cT s X * J * (p.1.1 + X * p.2.1 + Y * p.2.2) = p.2.2 := by
-          simp only [Matrix.mul_add, ← Matrix.mul_assoc _ X, ← Matrix.mul_assoc _ Y, h.xy, h.xx, p.1.2.1]; simp
-        refine Prod.ext (Subtype.ext ?_) (Prod.ext e1 e2)
-        simp only [e1, e2]
-        abel
-      right_inv := fun U => by simp only; abel
-      map_add' := fun p q => by simp only [Prod.fst_add, Prod.snd_add, AddSubgroup.coe_add, Matrix.mul_add]; abel
-      continuous_toFun := ((continuous_subtype_val.comp continuous_fst).add
-        (continuous_const.matrix_mul continuous_snd.fst)).add (continuous_const.matrix_mul continuous_snd.snd)
-      continuous_invFun := (((continuous_id.sub (continuous_const.matrix_mul (continuous_const.matrix_mul continuous_id))).sub
-        (continuous_const.matrix_mul (continuous_const.matrix_mul continuous_id))).subtype_mk _).prodMk
-        ((continuous_const.matrix_mul continuous_id).prodMk (continuous_const.matrix_mul continuous_id)) }
-  refine GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ e.toAddMonoidHom e.toHomeomorph.isOpenEmbedding _ _ fun p => ?_
-  change u.1 • (p.1.1 + X * p.2.1 + Y * p.2.2) = u.1 • p.1.1 + X * (u.1 • p.2.1) + Y * (u.1 • p.2.2)
-  simp only [smul_add, Matrix.mul_smul]
-
-theorem haar_character_skew_hermitian [Invertible (2 : R)] (hs : Continuous s) (hss : ∀ x, s (s x) = x) [LocallyCompactSpace (W2 s k)]
-    (ω : Rˣ) (hω : s ω = -ω) {u : Rˣ} (hu : s u = u) :
-    addEquivAddHaarChar (scalM k k u) = addEquivAddHaarChar (scal (W2 s k) u (smul_mem_skew_hermitian hu) (smul_mem_skew_hermitian (s_inv hu))) *
-      addEquivAddHaarChar (scal (W2 s k) u (smul_mem_skew_hermitian hu) (smul_mem_skew_hermitian (s_inv hu))) := by
-  rw [← GlobalTheory.T.addEquivAddHaarChar_prodCongr]
-  have cc : ∀ P : Matrix (Fin k) (Fin k) R, cT s (cT s P) = P := fun P => Matrix.ext fun _ _ => hss _
-  have hω' : s ω⁻¹.1 = -ω⁻¹.1 := by
-    have : s ω⁻¹.1 * ω = -1 := by rw [← neg_neg ω.1, ← hω, mul_neg, ← map_mul, Units.inv_mul, map_one]
-    rw [← mul_one (s _), ← ω.mul_inv, ← mul_assoc, this, neg_one_mul]
-  let e : (W2 s k × W2 s k) ≃ₜ+ Matrix (Fin k) (Fin k) R :=
-    { toFun := fun p => p.1.1 + ω.1 • p.2.1
-      invFun := fun U => (⟨(⅟2 : R) • (U - cT s U), show cT s _ = _ by
-          rw [cT_smul, s_half, cT_sub, cc, ← smul_neg, neg_sub]⟩,
-        ⟨ω⁻¹.1 • (⅟2 : R) • (U + cT s U), show cT s _ = _ by
-          rw [cT_smul, cT_smul, s_half, cT_add, cc, hω', neg_smul, add_comm]⟩)
-      left_inv := fun p => by
-        have e1 : cT s (p.1.1 + ω.1 • p.2.1) = -p.1.1 + ω.1 • p.2.1 := by
-          rw [cT_add, cT_smul, hω, show cT s p.1.1 = -p.1.1 from p.1.2, show cT s p.2.1 = -p.2.1 from p.2.2, neg_smul_neg]
-        refine Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)
-        · simp only [e1]
-          rw [show p.1.1 + ω.1 • p.2.1 - (-p.1.1 + ω.1 • p.2.1) = p.1.1 + p.1.1 by abel, smul_add, half_add]
-        · simp only [e1]
-          rw [show p.1.1 + ω.1 • p.2.1 + (-p.1.1 + ω.1 • p.2.1) = ω.1 • p.2.1 + ω.1 • p.2.1 by abel, smul_add, half_add,
-            smul_smul, Units.inv_mul, one_smul]
-      right_inv := fun U => by
-        simp only [smul_smul ω.1, Units.mul_inv, one_smul, ← smul_add]
-        rw [show U - cT s U + (U + cT s U) = U + U by abel, smul_add, half_add]
-      map_add' := fun p q => by simp only [Prod.fst_add, Prod.snd_add, AddSubgroup.coe_add, smul_add]; abel
-      continuous_toFun := (continuous_subtype_val.comp continuous_fst).add
-        ((continuous_subtype_val.comp continuous_snd).const_smul ω.1)
-      continuous_invFun := (((continuous_id.sub (continuous_cT hs continuous_id)).const_smul (⅟2 : R)).subtype_mk _).prodMk
-        ((((continuous_id.add (continuous_cT hs continuous_id)).const_smul (⅟2 : R)).const_smul ω⁻¹.1).subtype_mk _) }
-  refine GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ e.toAddMonoidHom e.toHomeomorph.isOpenEmbedding _ _ fun p => ?_
-  change u.1 • (p.1.1 + ω.1 • p.2.1) = u.1 • p.1.1 + ω.1 • u.1 • p.2.1
-  rw [smul_add, smul_comm]
-
-theorem char_conj [Invertible (2 : R)] (h : Fr s J X Y) (hs : Continuous s) (ω : Rˣ) (hω : s ω = -ω) {u : Rˣ} (hu : s u = u)
-    {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H]
-    [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (j : H →* GL (Fin n) R)
-    (hj : IsEmbedding j) (hU : ∀ p, cT s (j p).1 * J * (j p).1 = J) (hP : ∀ p, ∃ B : Matrix (Fin k) (Fin k) R, (j p).1 * X = X * B)
-    (hN : ∀ x, ∃ p, (j p).1 = h.nMat x) (b : H) (bX : (j b).1 * X = u.1 • X) (bY : (j b).1 * Y = u⁻¹.1 • Y)
-    (bZ : ∀ (m : ℕ) (Z : Matrix (Fin n) (Fin m) R), cT s X * J * Z = 0 → cT s Y * J * Z = 0 → (j b).1 * Z = Z)
-    (φ : H ≃ₜ* H) (hφ : ∀ p, φ p = b * p * b⁻¹) :
-    mulEquivHaarChar φ * addEquivAddHaarChar (scalM k k u) = addEquivAddHaarChar (scalM n k u) := by
-  have : LocallyCompactSpace (W1 s J X Y) := isClosed_frame_annihilator.locallyCompactSpace
-  have : LocallyCompactSpace (W2 s k) := (isClosed_skew_hermitian hs).locallyCompactSpace
-  have c1 : Continuous fun Z : W1 s J X Y => Z.1 := continuous_subtype_val
-  have hβ : Continuous fun p : W1 s J X Y × W1 s J X Y => h.β p.1 p.2 :=
-    (((((continuous_cT hs (c1.comp continuous_snd)).matrix_mul continuous_const).matrix_mul (c1.comp continuous_fst)).sub
-      (((continuous_cT hs (c1.comp continuous_fst)).matrix_mul continuous_const).matrix_mul
-        (c1.comp continuous_snd))).const_smul (⅟2 : R)).subtype_mk fun p => (h.β p.1 p.2).2
-  have := Heis.isTopologicalGroup h.β hβ
-  have hu2 : s (u * u).1 = (u * u).1 := by rw [Units.val_mul, map_mul, hu]
-  let θ₁ := scal (W1 s J X Y) u (smul_mem_frame_annihilator _) (smul_mem_frame_annihilator _)
-  let θ := scal (W2 s k) u (smul_mem_skew_hermitian hu) (smul_mem_skew_hermitian (s_inv hu))
-  let θ₂ := θ.trans θ
-  let ψ : Heis h.β ≃ₜ* Heis h.β :=
-    { toFun := fun x => (θ₁ x.1, θ₂ x.2)
-      invFun := fun x => (θ₁.symm x.1, θ₂.symm x.2)
-      left_inv := fun x => Prod.ext (θ₁.symm_apply_apply _) (θ₂.symm_apply_apply _)
-      right_inv := fun x => Prod.ext (θ₁.apply_symm_apply _) (θ₂.apply_symm_apply _)
-      map_mul' := fun x y => Prod.ext (map_add θ₁ _ _) (Subtype.ext (by
-        change u.1 • u.1 • (x.2.1 + y.2.1 + (h.β x.1 y.1).1) =
-          u.1 • u.1 • x.2.1 + u.1 • u.1 • y.2.1 + (h.β (θ₁ x.1) (θ₁ y.1)).1
-        rw [h.β_val, h.β_val]
-        change _ = _ + (⅟2 : R) • (cT s (u.1 • y.1.1) * J * (u.1 • x.1.1) - cT s (u.1 • x.1.1) * J * (u.1 • y.1.1))
-        simp only [cT_smul, hu, Matrix.smul_mul, Matrix.mul_smul, smul_add, ← smul_sub, smul_comm (⅟2 : R) u.1]))
-      continuous_toFun := θ₁.continuous.prodMap θ₂.continuous
-      continuous_invFun := θ₁.symm.continuous.prodMap θ₂.symm.continuous }
-  choose ι₀ hι₀ using hN
-  have jinj : ∀ {p q}, (j p).1 = (j q).1 → p = q := fun e => hj.injective (Units.ext e)
-  let ι : Heis h.β →* H := MonoidHom.mk' ι₀ fun x y => jinj (by rw [map_mul, Units.val_mul, hι₀, hι₀, hι₀, map_mul])
-  have hι : ∀ x, (j (ι x)).1 = h.nMat x := hι₀
-  have cn : Continuous h.nMat := by
-    have d1 : Continuous fun x : Heis h.β => x.1.1 := c1.comp continuous_fst
-    have d2 : Continuous fun x : Heis h.β => x.2.1 := continuous_subtype_val.comp continuous_snd
-    exact ((continuous_const.add (d1.matrix_mul continuous_const)).sub
-      (continuous_const.matrix_mul ((continuous_cT hs d1).matrix_mul continuous_const))).add
-      ((continuous_const.matrix_mul (d2.sub ((((continuous_cT hs d1).matrix_mul continuous_const).matrix_mul d1).const_smul
-        (⅟2 : R)))).matrix_mul continuous_const)
-  have cι : Continuous ι := hj.continuous_iff.2 (Units.continuous_iff.2
-    ⟨cn.congr fun x => (hι x).symm, (cn.comp continuous_inv).congr fun x => by
-      rw [Function.comp, Function.comp, ← map_inv, ← map_inv, hι]⟩)
-  have cj : Continuous fun p => (j p).1 := Units.continuous_val.comp hj.continuous
-  let B : H → Matrix (Fin k) (Fin k) R := fun p => cT s Y * J * ((j p).1 * X)
-  have hB : ∀ p, (j p).1 * X = X * B p := fun p => by
-    obtain ⟨B', e⟩ := hP p
-    rw [show B p = B' from (h.par (hU p) e).1, e]
-  let W : H → Matrix (Fin n) (Fin k) R := fun p => (j p).1 * Y * cT s (B p)
-  have cW : Continuous W := (cj.matrix_mul continuous_const).matrix_mul
-    (continuous_cT hs (continuous_const.matrix_mul (cj.matrix_mul continuous_const)))
-  have W1' : ∀ p, cT s X * J * W p = 1 := fun p => by rw [← Matrix.mul_assoc, (h.par (hU p) (hB p)).2.2.1]
-  have W2' : ∀ p, cT s (W p) * J * W p = 0 := fun p => by
-    simp only [W]
-    rw [Matrix.mul_assoc (j p).1, gram_unitary (hU p), cT_mul, Matrix.mul_assoc _ (cT s Y), ← Matrix.mul_assoc,
-      Matrix.mul_assoc _ _ Y, h.yy]
-    simp
-  let π : H → Heis h.β := fun p => h.pt (W p) (W1' p) (W2' p)
-  have hπ : ∀ p, h.nMat (π p) * Y = W p := fun p => h.nMat_pt _ _ _
-  have cπ : Continuous π :=
-    (((cW.sub continuous_const).sub (continuous_const.matrix_mul (continuous_const.matrix_mul cW))).subtype_mk _).prodMk
-      ((((continuous_const.matrix_mul cW).sub (((continuous_cT hs cW).matrix_mul continuous_const).matrix_mul
-        continuous_const)).const_smul (⅟2 : R)).subtype_mk _)
-  have nX : ∀ x, h.nMat x * X = X := fun x => h.eich_X x.1.2.1 _
-  have Beq : ∀ p B', (j p).1 * X = X * B' → B p = B' := fun p B' e => (h.par (hU p) e).1
-  have bb : (j b).1 * (j b⁻¹).1 = 1 := by rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
-  have bb' : (j b⁻¹).1 * (j b).1 = 1 := mul_eq_one_comm.1 bb
-  have bX' : (j b⁻¹).1 * X = u⁻¹.1 • X := by
-    have := congrArg (fun M => u⁻¹.1 • (j b⁻¹).1 * M) bX
-    simpa [← Matrix.mul_assoc, bb', smul_smul] using this.symm
-  have bY' : (j b⁻¹).1 * Y = u.1 • Y := by
-    have := congrArg (fun M => u.1 • (j b⁻¹).1 * M) bY
-    simpa [← Matrix.mul_assoc, bb', smul_smul] using this.symm
-  have bJ : ∀ Z : Matrix (Fin n) (Fin k) R, cT s Z * J * (j b⁻¹).1 = cT s ((j b).1 * Z) * J := fun Z => by
-    rw [← gram_unitary (hU b) Z, bb, Matrix.mul_one]
-  have hφι : ∀ x, φ (ι x) = ι (ψ x) := fun x => jinj (by
-    rw [hφ, map_mul, map_mul, Units.val_mul, Units.val_mul, hι, hι, h.nMat_apply, h.nMat_apply]
-    change _ = eich s J X (u.1 • x.1.1) (u.1 • u.1 • x.2.1 - (⅟2 : R) • (cT s (u.1 • x.1.1) * J * (u.1 • x.1.1)))
-    simp only [eich, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub (j b).1, Matrix.sub_mul _ _ (j b⁻¹).1, Matrix.mul_one, bb,
-      ← Matrix.mul_assoc (j b).1, bX, bZ _ _ x.1.2.1 x.1.2.2, cT_smul, hu,
-      Matrix.smul_mul, Matrix.mul_smul, smul_comm (⅟2 : R) u.1, ← smul_sub]
-    have e1 : cT s X * J * (j b⁻¹).1 = u.1 • (cT s X * J) := by rw [bJ, bX, cT_smul, hu, Matrix.smul_mul]
-    have e2 : cT s x.1.1 * J * (j b⁻¹).1 = cT s x.1.1 * J := by rw [bJ, bZ _ _ x.1.2.1 x.1.2.2]
-    rw [Matrix.mul_assoc x.1.1 (cT s X * J), Matrix.mul_assoc X (cT s x.1.1 * J),
-      Matrix.mul_assoc _ (cT s X * J) (j b⁻¹).1, e1, e2]
-    simp only [Matrix.mul_smul])
-  have h1 : ∀ p, π (φ p) = ψ (π p) := fun p => h.nMat_inj (by
-    have e : B (φ p) = B p := Beq _ _ (by
-      rw [hφ, map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc, bX', Matrix.mul_smul, Matrix.mul_assoc, hB,
-        ← Matrix.mul_assoc, bX, Matrix.smul_mul, smul_smul, Units.inv_mul, one_smul])
-    rw [hπ, ← hι, ← hφι, hφ (ι _), map_mul, map_mul, Units.val_mul, Units.val_mul, hι, Matrix.mul_assoc, bY', Matrix.mul_smul,
-      Matrix.mul_assoc, hπ]
-    simp only [W]
-    rw [e, hφ, map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc _ _ Y, bY']
-    simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc])
-  have key := char_eq_of_retract ι cι π cπ (fun x p => h.nMat_inj (by
-    have e : B (ι x * p) = B p := Beq _ _ (by
-      rw [map_mul, Units.val_mul, Matrix.mul_assoc, hB, ← Matrix.mul_assoc, hι, nX])
-    rw [hπ, map_mul, Matrix.mul_assoc, hπ]
-    simp only [W]
-    rw [e, map_mul, Units.val_mul, hι]
-    simp only [Matrix.mul_assoc])) φ ψ h1 (fun p => by
-    rw [h1, ← hφι, ← map_inv φ, ← map_mul φ, hφ, mul_inv_eq_iff_eq_mul]
-    apply jinj
-    rw [map_mul j b, map_mul j _ b, Units.val_mul, Units.val_mul]
-    refine h.comm (hU _) (hB _) (D := cT s X * J * ((j p).1 * Y)) ?_ (B' := u.1 • 1) (D' := u⁻¹.1 • 1) (by simp [bX])
-      (by simp [bY]) (by simp) (by simp) (bZ n)
-    rw [map_mul, Units.val_mul, Matrix.mul_assoc, ← map_inv, hι]
-    have e : (j p).1 * Y = h.nMat (π p) * Y * (cT s X * J * ((j p).1 * Y)) := by
-      rw [hπ, Matrix.mul_assoc, (h.par (hU p) (hB p)).2.1, Matrix.mul_one]
-    conv_lhs => rw [e]
-    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc _ (h.nMat _) Y, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mul])
-  rw [key, Heis.char_eq h.β hβ ψ θ₁ θ₂ fun _ => rfl, haar_character_frame_annihilator h u, addEquivAddHaarChar_trans, ← haar_character_skew_hermitian hs h.ss ω hω hu,
-    mul_assoc]
 
 end Top
 

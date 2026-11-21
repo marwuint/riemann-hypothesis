@@ -88,21 +88,11 @@ structure ValLat where
 
 variable {M w}
 
-def PairGe (V : ValLat M w) (i : ℕ) (s : ℝ) : Prop :=
-  ∃ a : D.what₂.LL, (a = 0 ∨ ur D w s ≤ (vAdd (D.plEq w) a : ℝ)) ∧
-    ∀ (c : C.cls i) (c' : C.cls (i + 1)), ∀ f ∈ V.val i c, ∃ g ∈ V.val (i + 1) c', C.Kmap i c c' f = D.what₂.embLL a • g
-
 end Layer
 
 structure Vals (D : D7) (Dx : DivX D) (T : TwForms D) where
   v0 : ∀ u (w : D.what₂.places.Pl), LevelFree Dx u D.what₂.mu0 w → ValLat (D.fm u) w
   vT : ∀ u μ (w : D.what₂.places.Pl), LevelFree Dx u μ w → ValLat (T.fm u μ) w
-
-def EntPair (E : Ent D) (Dx : DivX D) (T : TwForms D) (V : Vals D Dx T) : Prop :=
-  (∀ u (w : D.what₂.places.Pl) (hL : LevelFree Dx u D.what₂.mu0 w), ∀ i < D.R.m, ∀ B : ℝ, EntGe E u D.what₂.mu0 w i B →
-    PairGe (V.v0 u w hL) i B) ∧
-  ∀ u μ, DV.Used D μ → μ ≠ D.what₂.mu0 → ∀ (w : D.what₂.places.Pl) (hL : LevelFree Dx u μ w), ∀ i < D.R.m, ∀ B : ℝ, EntGe E u μ w i B →
-    PairGe (V.vT u μ w hL) i B
 
 def KFi (D : D7) (T : TwForms D) : Prop :=
   (∀ u, ∀ i < D.R.m, ∀ φ ∈ (D.fm u).Fi i, (D.mem u).C.K i φ ∈ (D.fm u).Fi (i + 1)) ∧
@@ -116,8 +106,6 @@ def SupSpansPsiPart (D : D7) (sp : ℝ) : Prop := sp = 0 ∨ (sp = 1 ∧ Stab0 D
 def ConclusionW (D : D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (N0 N1 : ℕ) (nu : Pl D → YoungDiagram) (Th : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[l]) (B : ℝ),
     product_zeroth_first_parts.KvalGe N0 N1 l nu Th B ↔ product_zeroth_first_parts.ExpansionCoeffValuationGe N0 N1 l nu Th B
-
-def WeightsFromStandardBasis (D : D7) : Prop := product_zeroth_first_parts.MinorProdSpanHasCompl → ConclusionW D
 
 def orbMap (D : D7) (p : ℕ) (z : Pl D) (s : ZMod (nP D p)) : Pl D := posPl D p z s.val
 
@@ -328,8 +316,6 @@ theorem corollary_two_same_constant (Lo : product_zeroth_first_parts.Loc) (C : �
 def OrbitLetterBoundsAll (C6 Cd : ℝ) : Prop :=
   (∀ Lo : product_zeroth_first_parts.Loc, Lo.AdmB → Lo.ThmA Cd ∧ Cor2 Lo C6 Cd) ∧ ∀ Lo : product_zeroth_first_parts.Loc1, Lo.AdmB → Lo.ThmOne Cd
 
-theorem twoConstantBounds_of_one {C : ℝ} (h : product_zeroth_first_parts.ExportAllConjugates C) : OrbitLetterBoundsAll C C := h
-
 def OrbitBoundWithoutOperator (E : Ent D) (X : Inst D L) (K : Consts) : Prop :=
   ∀ (w : D.what₂.places.Pl) (h : OrbOK D (D.what₂.places.resChar w)), IsResidueClassZero D (D.what₂.places.resChar w) →
     hP D (D.what₂.places.resChar w) ≠ 0 → (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n → ∀ u, ∀ i < D.R.m, ∀ t0 ∈ reps X (D.what₂.places.resChar w),
@@ -462,16 +448,6 @@ theorem valuationAtDiscriminant_iff (D : D7) (L : SizeData₂ D) (K : Consts) (D
 
 theorem liftIntegrality_iff (D : D7) (Dx : DivX D) (T : TwForms D) (sp : ℝ) : WeilJacquetShalikaLaw.IsotypicPartsInternalDirectSum D Dx T sp = LiftIntegrality D Dx T sp := rfl
 
-def JetTie (E : Ent D) (Dx : DivX D) (Xp : product_zeroth_first_parts.Prov D) : Prop :=
-  (∀ u μ (w : D.what₂.places.Pl) (h : OrbOK D (D.what₂.places.resChar w)), LevelFree Dx u μ w →
-    ((IsResidueClassZero D (D.what₂.places.resChar w) ∧ HEv D (D.what₂.places.resChar w)) ∨ IsSg D (D.what₂.places.resChar w)) →
-    ∀ i < D.R.m, ∀ L L' z, ∃ σ : D.jet.Sit, D.jet.jOf σ = i + 1 ∧
-      Xp.loc σ = orbLoc E (D.what₂.places.resChar w) h u i z (restr D (D.what₂.places.resChar w) z (E.Th u μ w i L L'))) ∧
-  ∀ u μ (w : D.what₂.places.Pl) (h5 : 5 ≤ D.what₂.places.resChar w), LevelFree Dx u μ w →
-    IsResidueClassZero D (D.what₂.places.resChar w) → hP D (D.what₂.places.resChar w) = 0 →
-    ∀ i < D.R.m, ∀ L L' z, ∃ σ : D.jet.Sit1, D.jet.j1Of σ = i + 1 ∧
-      Xp.loc1 σ = oneLoc E (D.what₂.places.resChar w) h5 u i z (restr1 D (D.what₂.places.resChar w) z (E.Th u μ w i L L'))
-
 def AdmK (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (E : Ent D) (ce : ErrC) (C6 Cd : ℝ) : Prop :=
   OrbitParityCond D ∧ TypePrimeNotDiscriminant D ∧ EvenConditionsInert E Dx ∧ EvenConditionsAtC E Dx ∧ OrbitLetterBoundsAll C6 Cd ∧ OrbitBoundWithoutOperator E X K ∧ JetIntegralityBis E Dx ∧ ThetaKernelShapeAtD E Dx ∧
     Shape D L X E ∧ CLarge C6 Cd K ce
@@ -480,27 +456,12 @@ def admitted (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX
     Prop :=
   KForm E Dx T sp ∧ AdmK D L X K Dx E ce C6 Cd
 
-def AdmV (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (T : TwForms D) (E : Ent D) (V : Vals D Dx T) (ce : ErrC)
-    (sp C6 Cd : ℝ) : Prop :=
-  EntPair E Dx T V ∧ KFi D T ∧ SupSpansPsiPart D sp ∧ AdmK D L X K Dx E ce C6 Cd
-
 def Conclusion₂ (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (T : TwForms D) (E : Ent D) (lev : LevelData D)
     (Xe : ErrX D) (ce : ErrC) (sp C : ℝ) : Prop :=
   ValuationComposition D T ∧ OrbitsAddLowerBound E ∧ OrbitsAddAtConjugate E ∧ OrbitRestriction E ∧ OrbitRestrictionAtConjugate E ∧ OrbitValuationBound E X K ce ∧ EntriesAtInert E Dx X K ce ∧ EntriesAtC E Dx L C ∧
     EntriesAtDiscriminant E Dx ∧ OrbitSumBound X K ce ∧ ValuationSumBound E L ce C ∧ OneLiftInertBound D L X K Dx T lev Xe ce sp ∧ OneLiftAtC D L K Dx T lev Xe ce sp ∧
     OneLiftAtDiscriminant D L K Dx T lev Xe ce sp ∧ NoOperatorOrbitBound D L X K Dx T lev Xe ce sp ∧ JetConsequence D L K Dx T lev Xe ce sp ∧
     ValuationAtDiscriminant D L K Dx T lev Xe ce sp ∧ LiftIntegrality D Dx T sp
-
-def Stmt (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (C6 Cd : ℝ) : Prop :=
-  ∀ (T : TwForms D) (E : Ent D) (lev : LevelData D) (Xe : ErrX D) (ce : ErrC), ∀ sp ∈ ({0, 1} : Set ℝ),
-    admitted D L X K Dx T E ce sp C6 Cd → Conclusion₂ D L X K Dx T E lev Xe ce sp Cd
-
-def LiftBoundsWithValues (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (C6 Cd : ℝ) : Prop :=
-  ∀ (T : TwForms D) (E : Ent D) (V : Vals D Dx T) (lev : LevelData D) (Xe : ErrX D) (ce : ErrC), ∀ sp ∈ ({0, 1} : Set ℝ),
-    AdmV D L X K Dx T E V ce sp C6 Cd → KForm E Dx T sp ∧ Conclusion₂ D L X K Dx T E lev Xe ce sp Cd
-
-def KudlaFamilyStatement (C6 Cd : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  ∀ x (_hx : Fm.x1 < x) (i : Fm.Ix x), Stmt (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK (Fm.X x i) C6 Cd
 
 theorem val_nat_nonneg (w : D.what₂.places.Pl) (n : ℕ) : (0 : WithTop ℤ) ≤ D.what₂.places.val w (n : D.what₂.LL) := by
   induction n with
@@ -569,127 +530,6 @@ theorem vAdd_pow (w : D.what₂.places.Pl) (k : ℕ) :
   | succ k ih =>
     rw [pow_succ, vAdd_mul w (pow_ne_zero _ (p_ne w)) (p_ne w), ih, vAdd_p]
     push_cast; ring
-
-section Layer
-
-variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
-  {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {w : D.what₂.places.Pl}
-
-theorem classSum (V : ValLat M w) {i : ℕ} (hi : i < D.R.m) {s : ℝ} {n : ℕ} (hn : n ≠ 0)
-    (hdiv : ∀ c, Nat.card (C.stab i c) ∣ n) (hF : ∀ φ ∈ M.Fi i, C.K i φ ∈ M.Fi (i + 1)) (hP : PairGe V i s) :
-    KG M w i (s - (padicValNat (D.what₂.places.resChar w) n : ℝ)) := by
-  intro x hx
-  obtain ⟨a, ha, hpair⟩ := hP
-  have hφ := (V.lat_iff i hi.le (M.emb i x)).1 ⟨x, Submodule.subset_span hx, rfl⟩
-  by_cases ha0 : a = 0
-  · refine ⟨0, ?_, 0, 0, Submodule.zero_mem _, by simp, Or.inl rfl⟩
-    rw [map_zero]
-    funext c'
-    show (0 : C.Y (i + 1) → ℂ) = ∑ c, C.wt i c • C.Kmap i c c' (M.emb i x c)
-    symm
-    refine Finset.sum_eq_zero fun c _ => ?_
-    obtain ⟨g, _, hg⟩ := hpair c c' _ (hφ.2 c)
-    rw [hg, ha0, map_zero, zero_smul, smul_zero]
-  · choose g hgmem hg using fun c c' => hpair c c' _ (hφ.2 c)
-    have hpp := D.what₂.places.resChar_prime w
-    obtain ⟨k, hk⟩ : ∃ k, k = padicValNat (D.what₂.places.resChar w) n := ⟨_, rfl⟩
-    obtain ⟨n', hn'⟩ : ∃ n', n' = n / D.what₂.places.resChar w ^ n.factorization (D.what₂.places.resChar w) := ⟨_, rfl⟩
-    have hfac : n.factorization (D.what₂.places.resChar w) = k := by rw [hk, Nat.factorization_def n hpp]
-    have hprod : D.what₂.places.resChar w ^ k * n' = n := by
-      rw [hn', ← hfac]; exact Nat.ordProj_mul_ordCompl_eq_self n _
-    have hcop : Nat.Coprime n' (D.what₂.places.resChar w) := by
-      rw [hn']; exact (Nat.coprime_ordCompl hpp hn).symm
-    have hn'0 : n' ≠ 0 := by rintro rfl; simp at hprod; exact hn hprod.symm
-    have hcard : ∀ c, Nat.card (C.stab i c) ≠ 0 := fun c => Nat.card_pos.ne'
-    have hq : ∀ c, n / Nat.card (C.stab i c) * Nat.card (C.stab i c) = D.what₂.places.resChar w ^ k * n' := fun c => by
-      rw [hprod]; exact Nat.div_mul_cancel (hdiv c)
-    have hq0 : ∀ c, n / Nat.card (C.stab i c) ≠ 0 := fun c h0 => by
-      have := hq c; rw [h0, zero_mul, hprod] at this; exact hn this.symm
-    let r : C.cls i → D.what₂.LL := fun c => ((n / Nat.card (C.stab i c) : ℕ) : D.what₂.LL) * ((n' : ℕ) : D.what₂.LL)⁻¹
-    have hr : ∀ c, r c ∈ intW D.what₂.places w := fun c => by
-      show (0 : WithTop ℤ) ≤ D.what₂.places.val w (r c)
-      rw [AddValuation.map_mul, AddValuation.map_inv, val_coprime w n' hcop, neg_zero, add_zero]
-      exact val_nat_nonneg w _
-    let pk : D.what₂.LL := ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k
-    have hpk : pk ≠ 0 := pow_ne_zero _ (p_ne w)
-    have hwt : ∀ c, C.wt i c = D.what₂.embLL (pk⁻¹ * r c) := fun c => by
-      have e1 : ((n / Nat.card (C.stab i c) : ℕ) : ℂ) * ((Nat.card (C.stab i c) : ℕ) : ℂ) =
-          ((D.what₂.places.resChar w : ℕ) : ℂ) ^ k * ((n' : ℕ) : ℂ) := by exact_mod_cast hq c
-      have c1 : ((Nat.card (C.stab i c) : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (hcard c)
-      have c2 : ((n / Nat.card (C.stab i c) : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (hq0 c)
-      have c3 : ((D.what₂.places.resChar w : ℕ) : ℂ) ^ k ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 hpp.ne_zero)
-      have c4 : ((n' : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn'0
-      show (((Nat.card (C.stab i c) : ℕ) : ℂ))⁻¹ = _
-      simp only [pk, r, map_mul, map_inv₀, map_pow, map_natCast]
-      field_simp
-      linear_combination (-1 : ℂ) * e1
-    let b : D.what₂.LL := a * pk⁻¹
-    have hb0 : b ≠ 0 := mul_ne_zero ha0 (inv_ne_zero hpk)
-    let ψ : C.cls (i + 1) → C.Y (i + 1) → ℂ := fun c' => ∑ c, D.what₂.embLL (r c) • g c c'
-    have hK : C.K i (M.emb i x) = D.what₂.embLL b • ψ := by
-      funext c'
-      show ∑ c, C.wt i c • C.Kmap i c c' (M.emb i x c) = D.what₂.embLL b • ∑ c, D.what₂.embLL (r c) • g c c'
-      rw [Finset.smul_sum]
-      refine Finset.sum_congr rfl fun c _ => ?_
-      rw [hg c c', hwt c, smul_smul, smul_smul, ← map_mul, ← map_mul]
-      congr 2
-      simp only [b]; ring
-    have hbC : D.what₂.embLL b ≠ 0 := (map_ne_zero D.what₂.embLL).2 hb0
-    have hψF : ψ ∈ M.Fi (i + 1) := by
-      have : ψ = (D.what₂.embLL b)⁻¹ • C.K i (M.emb i x) := by rw [hK, smul_smul, inv_mul_cancel₀ hbC, one_smul]
-      rw [this]
-      exact Submodule.smul_mem _ _ (hF _ hφ.1)
-    obtain ⟨z, hz, hzψ⟩ := (V.lat_iff (i + 1) hi ψ).2
-      ⟨hψF, fun c' => AddSubgroup.sum_mem _ fun c _ => V.val_smul _ _ _ (hr c) _ (hgmem c c')⟩
-    refine ⟨b • z, ?_, b, z, hz, rfl, Or.inr ?_⟩
-    · rw [LinearMap.map_smulₛₗ, hzψ, hK]
-    · have h1 := ha.resolve_left ha0
-      have h2 : vAdd (D.plEq w) a = vAdd (D.plEq w) b + (k : ℤ) * (D.what₂.places.ramIdx w : ℤ) := by
-        rw [← vAdd_pow w k, ← vAdd_mul w hb0 hpk]
-        congr 1
-        simp only [b]; rw [mul_assoc, inv_mul_cancel₀ hpk, mul_one]
-      rw [← hk]
-      have h3 : (vAdd (D.plEq w) a : ℝ) = (vAdd (D.plEq w) b : ℝ) + (k : ℝ) * (D.what₂.places.ramIdx w : ℝ) := by
-        exact_mod_cast h2
-      unfold ur at h1 ⊢
-      nlinarith [h1, h3]
-
-end Layer
-
-theorem kform_of (E : Ent D) (Dx : DivX D) (T : TwForms D) (V : Vals D Dx T) (hE : EntPair E Dx T V) (hK : KFi D T)
-    {sp : ℝ} (hsp : sp = 0 ∨ (sp = 1 ∧ Stab0 D)) : KForm E Dx T sp := by
-  intro hG u μ w hUs hL i hi B hB
-  have key0 : B - (if i = 0 then 1 - sp else 1) * vDG D u w = B - vDG D u w ∨ (i = 0 ∧ sp = 1 ∧ Stab0 D) := by
-    by_cases h0 : i = 0
-    · rcases hsp with h | h
-      · left; rw [if_pos h0, h]; ring
-      · right; exact ⟨h0, h.1, h.2⟩
-    · left; rw [if_neg h0]; ring
-  refine ⟨fun hμ => ?_, fun hμ => ?_⟩
-  · subst hμ
-    have hE' := hE.1 u w hL i hi B hB
-    rcases key0 with h | ⟨h0, h1, hS⟩
-    · rw [h]
-      exact classSum (V.v0 u w hL) hi (D.mem u).C.DGam_pos.ne' (fun c => (D.mem u).C.dvd_DGam i hi.le c) (hK.1 u i hi) hE'
-    · subst h0
-      have := classSum (V.v0 u w hL) hi one_ne_zero (fun c => by rw [hS.1 u c]) (hK.1 u 0 hi) hE'
-      have e : B - (if (0 : ℕ) = 0 then 1 - sp else 1) * vDG D u w =
-          B - (padicValNat (D.what₂.places.resChar w) 1 : ℝ) := by simp [h1]
-      rw [e]
-      exact this
-  · have hE' := hE.2 u μ hUs hμ w hL i hi B hB
-    rcases key0 with h | ⟨h0, h1, hS⟩
-    · rw [h]
-      have := classSum (V.vT u μ w hL) hi (D.chTw u μ).DGam_pos.ne' (fun c => (D.chTw u μ).dvd_DGam i hi.le c) (hK.2 u μ hUs i hi)
-        hE'
-      rw [hG.one u u μ] at this
-      exact this
-    · subst h0
-      have := classSum (V.vT u μ w hL) hi one_ne_zero (fun c => by rw [hS.2 u μ hUs c]) (hK.2 u μ hUs 0 hi) hE'
-      have e : B - (if (0 : ℕ) = 0 then 1 - sp else 1) * vDG D u w =
-          B - (padicValNat (D.what₂.places.resChar w) 1 : ℝ) := by simp [h1]
-      rw [e]
-      exact this
 
 theorem mem_intW (w : D.what₂.places.Pl) {a : D.what₂.LL} (ha : a ≠ 0) (h : 0 ≤ vAdd (D.plEq w) a) :
     a ∈ intW D.what₂.places w := by
@@ -1342,13 +1182,6 @@ theorem lift_bounds_of_essential {X : Inst D L} {K : Consts} {Dx : DivX D} {T : 
     Conclusion₂ D L X K Dx T E lev Xe ce sp C :=
   lift_bounds_of_kernelForm hA.1 hA.2 hC
 
-theorem kernelAdm_of_values {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {V : Vals D Dx T} {ce : ErrC} {sp C6 C : ℝ}
-    (hA : AdmV D L X K Dx T E V ce sp C6 C) : admitted D L X K Dx T E ce sp C6 C :=
-  ⟨kform_of E Dx T V hA.1 hA.2.1 hA.2.2.1, hA.2.2.2⟩
-
-theorem stmtV_of_stmt {X : Inst D L} {K : Consts} {Dx : DivX D} {C6 C : ℝ} (h : Stmt D L X K Dx C6 C) : LiftBoundsWithValues D L X K Dx C6 C :=
-  fun T E _ lev Xe ce sp hsp hA => ⟨(kernelAdm_of_values hA).1, h T E lev Xe ce sp hsp (kernelAdm_of_values hA)⟩
-
 section Ker
 
 variable {Dx : DivX D} {T : TwForms D}
@@ -1367,12 +1200,6 @@ def ofKer (hν : NuRowOK D) (Ek : KerEnt D Dx T) (ep : ∀ w : D.what₂.places.
 def KmapRat (Ek : KerEnt D Dx T) : Prop :=
   ∀ u μ (w : D.what₂.places.Pl), DV.Used D μ → LevFree Dx u μ w → ∀ i < D.R.m, ∀ (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1))
     (v : Ek.VQ u μ i c), ∃ v' : Ek.VQ u μ (i + 1) c', Ek.ev u μ (i + 1) c' v' = (D.chTw u μ).Kmap i c c' (Ek.ev u μ i c v)
-
-def Mu0Tie (D : D7) (T : TwForms D) : Prop :=
-  ∀ u (w : D.what₂.places.Pl) (i : ℕ), i < D.R.m → ∀ s : ℝ, KGeTw T u D.what₂.mu0 w i s → KGe0 D u w i s
-
-def KernelFormRational (hν : NuRowOK D) (Ek : KerEnt D Dx T) (sp : ℝ) : Prop :=
-  ConclusionW D → Ek.UnUnit → KmapRat Ek → KFi D T → SupSpansPsiPart D sp → ∀ ep be sg, KForm (ofKer hν Ek ep be sg) Dx T sp
 
 theorem vAdd_inv (w : D.what₂.places.Pl) {a : D.what₂.LL} (ha : a ≠ 0) :
     vAdd (D.plEq w) a⁻¹ = - vAdd (D.plEq w) a := by
@@ -1654,11 +1481,6 @@ theorem kform_of_ker (E : KerEnt D Dx T) (Ee : Ent D) (hν : ∀ u i, Ee.nu u i 
   refine ⟨fun hμ => ?_, fun _ => key⟩
   subst hμ
   exact kernelValuation_of_twisted T u w hi key
-
-theorem stmtK (hν : NuRowOK D) (Ek : KerEnt D Dx T) (sp : ℝ) : KernelFormRational hν Ek sp := by
-  intro hW hU hR hK hsp ep be sg
-  exact kform_of_ker Ek (ofKer hν Ek ep be sg) (fun _ _ => rfl) rfl
-    (fun u μ w i c c' B h => (hW _ _ _ _ _ B).1 h) hU hR hK hsp
 
 end Ker
 

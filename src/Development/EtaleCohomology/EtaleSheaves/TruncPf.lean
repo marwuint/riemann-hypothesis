@@ -9,13 +9,6 @@ namespace LateralTheory.E.TruncPf
 def TruncBij : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {K K' : Cx R} (g : K ⟶ K') (n : ℤ),
   (∀ p : ℤ, -(n + 1) ≤ p → IsIso (g.f p)) → ∀ m : ℤ, m ≤ n → Function.Bijective (HK.pull R g F m)
 
-def TruncData : Prop := ∀ (R : Type) [CommRing R] {K L : Cx R} (f : K ⟶ L) (n : ℤ),
-  (∀ i : ℤ, 0 < i → IsZero (K.X i) ∧ IsZero (L.X i)) →
-  ∃ (P : ℕ) (K' L' : Cx R) (f' : K' ⟶ L') (g : K ⟶ K') (h : L ⟶ L'),
-    (∀ i : ℤ, (0 < i ∨ i < -(P : ℤ)) → IsZero (K'.X i) ∧ IsZero (L'.X i)) ∧ g ≫ f' = f ≫ h ∧
-    (∀ p : ℤ, -(n + 1) ≤ p → IsIso (g.f p) ∧ IsIso (h.f p)) ∧
-    (∀ p : ℤ, p < -(n + 1) → IsZero (K'.X p) ∧ IsZero (L'.X p))
-
 variable (R : Type) [CommRing R] (F : Shv R)
 
 theorem toHom_inj {K : Cx R} (m : ℤ) {x y : HK R K F m}
@@ -68,29 +61,5 @@ theorem relK_of_square {K L K' L' : Cx R} (f : K ⟶ L) (f' : K' ⟶ L') (g : K 
     rw [key, key] at hx
     rw [hf'.2 ((hg n le_rfl).1 hx)]
 
-theorem piece_transfer {K L K' L' : Cx R} (f : K ⟶ L) (f' : K' ⟶ L') (g : K ⟶ K') (h : L ⟶ L')
-    (w : g ≫ f' = f ≫ h) (n : ℤ) (p : ℕ) (hg : IsIso (g.f (-(p : ℤ)))) (hh : IsIso (h.f (-(p : ℤ))))
-    (hp : RelK R F n (pieceC R f p)) : RelK R F n (pieceC R f' p) := by
-  refine relK_of_square R F (pieceC R f' p) (pieceC R f p)
-    ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).map (inv (g.f _)))
-    ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).map (inv (h.f _))) ?_ n
-    (fun m _ => pull_bij_of_iso R F _ m) (fun m _ => pull_bij_of_iso R F _ m) hp
-  simp only [pieceC, ← Functor.map_comp]
-  congr 1
-  rw [IsIso.inv_comp_eq, ← Category.assoc, IsIso.eq_comp_inv]
-  have := congrArg (fun φ => HomologicalComplex.Hom.f φ (-(p : ℤ))) w
-  simp only [HomologicalComplex.comp_f] at this
-  exact this.symm
-
 end LateralTheory.E.TruncPf
 
-open LateralTheory.E.TruncPf in
-theorem LateralTheory.E.TruncPf.Trunc_of (hB : TruncBij) (hD : TruncData) : LateralTheory.E.FiltPf.Trunc := by
-  intro R _ F K L f n hz
-  obtain ⟨P, K', L', f', g, h, hb, w, hiso, hzero⟩ := hD R f n hz
-  refine ⟨P, K', L', f', hb, fun hp p => ?_, relK_of_square R F f f' g h w n
-    (hB R F g n fun q hq => (hiso q hq).1) (hB R F h n fun q hq => (hiso q hq).2)⟩
-  by_cases hq : -(n + 1) ≤ -(p : ℤ)
-  · exact piece_transfer R F f f' g h w n p (hiso _ hq).1 (hiso _ hq).2 (hp p)
-  · exact relK_of_isZero R F _ n
-      (Functor.map_isZero _ (hzero _ (by omega)).1) (Functor.map_isZero _ (hzero _ (by omega)).2)

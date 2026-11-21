@@ -90,6 +90,4 @@ theorem isCuspForm_iff (φ : TR.Sm E a) : TR.IsCuspForm φ ↔ φ.1 ∈ cuspForm
 
 theorem cuspForms_le_Sm : cuspForms E a ≤ TR.Sm E a := fun _ h => (sm_eq E a).ge h.1.isSmooth.1
 
-theorem automorphicForms_le_Sm : automorphicForms E a ≤ TR.Sm E a := fun _ h => (sm_eq E a).ge h.isSmooth.1
-
 end UpperTheory.V.Fb

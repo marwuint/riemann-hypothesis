@@ -1,11 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceChangeBaseVacuumHeisenbergCombinationStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceChangeBaseVacuumHeisenbergCombination
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFramePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DataAsCombinationsAtSplitPlacesProofStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DataAsCombinationsAtSplitPlacesProof
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLatticePrescribedFinitelyManySplitPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceDataDistinctPlacesCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUnique
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceDataDistinctPlacesCommute
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OverAllExists
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticeVacuumIffPlacewise
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactMapsPair
@@ -31,8 +34,8 @@ theorem cc (hstd : IsStdChar D ψ (-1)) (hu : p.UnitAA) {NS NS' : Lat S} {NT NT'
     {ΛS : Submodule 𝒪[k] (n' → k)} {ΛT : Submodule 𝒪[k] (n → k)} (hS : α.IsLat NS ΛS) (hS' : α.IsLat NS' ΛS)
     (hT : β.IsLat NT ΛT) (hT' : β.IsLat NT' ΛT) {f : WO S T → ℂ} (hf : Vac ψ S T NS NT (· = p.v) f) :
     Vac ψ S T NS' NT' (· = p.v) f ∧ ∀ Ψ h, Over ψ α β NS NT f Ψ h → Over ψ α β NS' NT' f Ψ h := by
-  have hb := (GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hstd S T α β NS NT h1 h2 f hf).2.2 hu ΛS ΛT hS hT
-  exact (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k p n n' ψ hstd hu S T α β NS NS' NT NT' h1 h2 h3 h4).1 ΛS ΛT hS' hT' f f hb
+  have hb := (_root_.GlobalTheory.FinPl.overBasic D k p n n' ψ hstd S T α β NS NT h1 h2 f hf).2.2 hu ΛS ΛT hS hT
+  exact (_root_.GlobalTheory.FinPl.Rebase.rebase D k p n n' ψ hstd hu S T α β NS NS' NT NT' h1 h2 h3 h4).1 ΛS ΛT hS' hT' f f hb
 
 theorem sp1 (hstd : IsStdChar D ψ (-1)) (hu : p.UnitAA) {NS N'S : Lat S} {NT N'T : Lat T}
     (h1 : IsSelfDualC S NS) (h2 : IsSelfDualC T NT) (h3 : IsSelfDualC S N'S) (h4 : IsSelfDualC T N'T)
@@ -40,12 +43,12 @@ theorem sp1 (hstd : IsStdChar D ψ (-1)) (hu : p.UnitAA) {NS N'S : Lat S} {NT N'
     (hAS : α.IsLat NS AS) (hAT : β.IsLat NT AT) (hA'S : α.IsLat N'S A'S) (hA'T : β.IsLat N'T A'T)
     {f₀ g : WO S T → ℂ} (hf₀ : Vac ψ S T NS NT (· = p.v) f₀) (hg : Over ψ α β NS NT f₀ (latInd A'S A'T) g) :
     Vac ψ S T N'S N'T (· = p.v) g ∧ ∀ Ψ h, Over ψ α β NS NT f₀ Ψ h ↔ Over ψ α β N'S N'T g Ψ h := by
-  have R := (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k p n n' ψ hstd hu S T α β NS N'S NT N'T h1 h2 h3 h4).1 A'S A'T hA'S hA'T f₀ g hg
+  have R := (_root_.GlobalTheory.FinPl.Rebase.rebase D k p n n' ψ hstd hu S T α β NS N'S NT N'T h1 h2 h3 h4).1 A'S A'T hA'S hA'T f₀ g hg
   refine ⟨R.1, fun Ψ h => ⟨R.2 Ψ h, fun hh => ?_⟩⟩
-  obtain ⟨g', hg', huniq⟩ := (GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hstd S T α β N'S N'T h3 h4 g R.1).1 (latInd AS AT)
+  obtain ⟨g', hg', huniq⟩ := (_root_.GlobalTheory.FinPl.overBasic D k p n n' ψ hstd S T α β N'S N'T h3 h4 g R.1).1 (latInd AS AT)
     (latInd_mem_SB AS AT)
-  have R' := (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k p n n' ψ hstd hu S T α β N'S NS N'T NT h3 h4 h1 h2).1 AS AT hAS hAT g g' hg'
-  have hself := (GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hstd S T α β NS NT h1 h2 f₀ hf₀).2.2 hu AS AT hAS hAT
+  have R' := (_root_.GlobalTheory.FinPl.Rebase.rebase D k p n n' ψ hstd hu S T α β N'S NS N'T NT h3 h4 h1 h2).1 AS AT hAS hAT g g' hg'
+  have hself := (_root_.GlobalTheory.FinPl.overBasic D k p n n' ψ hstd S T α β NS NT h1 h2 f₀ hf₀).2.2 hu AS AT hAS hAT
   have he : f₀ = g' := huniq f₀ (R.2 _ _ hself)
   rw [he]
   exact R'.2 Ψ h hh
@@ -92,7 +95,7 @@ theorem overAll_self (hstd : IsStdChar D ψ (-1)) (hunit : ∀ i, (p i).UnitAA) 
   | nil => exact ValDbl.overAll_nil.2 rfl
   | cons i l ih =>
     exact ValDbl.overAll_cons.2 ⟨f, ih (fun j hj => hf j (List.mem_cons_of_mem _ hj)),
-      (GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k (p i) n n' ψ hstd S T (α i) (β i) NS NT h1 h2 f (hf i List.mem_cons_self)).2.2 (hunit i)
+      (_root_.GlobalTheory.FinPl.overBasic D k (p i) n n' ψ hstd S T (α i) (β i) NS NT h1 h2 f (hf i List.mem_cons_self)).2.2 (hunit i)
         (AS i) (AT i) (hA i).1 (hA i).2⟩
 
 variable {NS : Lat S} {NT : Lat T} {Ψ : ι → Matrix n n' k → ℂ}
@@ -112,7 +115,7 @@ theorem swap_fwd (hstd : IsStdChar D ψ (-1)) (hunit : ∀ i, (p i).UnitAA) (hin
     have hil' : i ∉ l := fun h' => hil (List.mem_cons_of_mem _ h')
     obtain ⟨m, hm, hmO⟩ := ValDbl.overAll_cons.1 hh
     have hmv := ValDbl.overAll_vac hstd hinj l b m hm i hil' hb
-    obtain ⟨g', hg'1, hg'2⟩ := GlobalTheory.T.splitPlaceData_distinct_places_commute D k (p j) (p i) n n' n n' ψ hstd (hunit j) (hunit i)
+    obtain ⟨g', hg'1, hg'2⟩ := _root_.GlobalTheory.FinPl.overSwap D k (p j) (p i) n n' n n' ψ hstd (hunit j) (hunit i)
       (fun e => hij (hinj e.symm)) S T (α j) (β j) (α i) (β i) NS NT m h f' (Ψ j) (Ψ i) hmv hmO hO
     obtain ⟨k', hk', hl⟩ := ih hil' g' ⟨m, hm, hg'1⟩
     exact ⟨k', hk', ValDbl.overAll_cons.2 ⟨g', hl, hg'2⟩⟩
@@ -135,7 +138,7 @@ theorem swap_bwd (hstd : IsStdChar D ψ (-1)) (hunit : ∀ i, (p i).UnitAA) (hin
     obtain ⟨m, hm, hmO⟩ := ValDbl.overAll_cons.1 hl
     obtain ⟨h₀, hh₀, hO₀⟩ := ih hnd.2 hil' (fun j' hj' => hb j' (List.mem_cons_of_mem _ hj')) m ⟨k', hk', hm⟩
     have hv := ValDbl.overAll_vac hstd hinj l b h₀ hh₀ j hnd.1 (hb j List.mem_cons_self)
-    obtain ⟨g', hg'1, hg'2⟩ := GlobalTheory.T.splitPlaceData_distinct_places_commute D k (p i) (p j) n n' n n' ψ hstd (hunit i) (hunit j)
+    obtain ⟨g', hg'1, hg'2⟩ := _root_.GlobalTheory.FinPl.overSwap D k (p i) (p j) n n' n n' ψ hstd (hunit i) (hunit j)
       (fun e => hij (hinj e)) S T (α i) (β i) (α j) (β j) NS NT h₀ m f' (Ψ i) (Ψ j) hv hO₀ hmO
     exact ⟨g', ValDbl.overAll_cons.2 ⟨h₀, hh₀, hg'1⟩, hg'2⟩
 
@@ -273,9 +276,9 @@ theorem rebaseAll : ∀ D : D7, RebaseAll D := by
     fun j => ⟨hALS1 j, hAMS1 j, hALT1 j, hAMT1 j⟩
   have hA : ∀ j, (α j).IsLat LS (ALS j) ∧ (α j).IsLat MS (AMS j) ∧ (β j).IsLat LT (ALT j) ∧ (β j).IsLat MT (AMT j) :=
     fun j => ⟨hALS2 j, hAMS2 j, hALT2 j, hAMT2 j⟩
-  obtain ⟨e, he1, he2⟩ := (GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι p I P hPl n n' ψ hstd S T α β LS LT hLS hLT
+  obtain ⟨e, he1, he2⟩ := (_root_.GlobalTheory.FinPl.allComb D k ι p I P hPl n n' ψ hstd S T α β LS LT hLS hLT
     (fun i => latInd (AMS i) (AMT i))).1 (fun i => by haveI := hAMS1 i; haveI := hAMT1 i; exact latInd_mem_SB _ _)
-  have AC' := GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι p I P hPl n n' ψ hstd S T α β MS MT hMS hMT (fun i => latInd (ALS i) (ALT i))
+  have AC' := _root_.GlobalTheory.FinPl.allComb D k ι p I P hPl n n' ψ hstd S T α β MS MT hMS hMT (fun i => latInd (ALS i) (ALT i))
   obtain ⟨e', he'1, he'2⟩ := AC'.1 (fun i => by haveI := hALS1 i; haveI := hALT1 i; exact latInd_mem_SB _ _)
   refine ⟨e, e', he1, he'1, fun f hf => ?_⟩
   have hfv : ∀ j, Vac ψ S T LS LT (· = (p j).v) f := fun j => ValDbl.vac_at ((hPl.mem _).2 ⟨j, rfl⟩) hf

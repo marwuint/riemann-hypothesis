@@ -110,10 +110,6 @@ structure Out where
   C5 : ℝ
   full : Prop
 
-def FC.out (C : FC) : Out :=
-  ⟨C.Cc, C.CT2, C.P.CLw, C.P.Cj0, C.P.cw, C.P.CYL, C.P.Cpde, C.P.CccK, C.T.Cp, C.T.eP, C.T.cTO, C.CTu, C.P.CetaF, C.Cdg,
-    C.C5, C.full⟩
-
 def bTopOf {D : D7} (L : SizeData₂ D) : ℝ :=
   L.sc.b' + 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / (D.R.k : ℝ)
 
@@ -183,38 +179,9 @@ def Rowq (x eps : ℝ) (n q d : ℕ) : Prop :=
   (∀ p : ℕ, p.Prime → (p : ℝ) ≤ x ^ (eps / 5) → GlobalTheoryTheory.kronSym (-(d : ℤ)) p = 1) ∧
   Real.log (4 * n * q * d) ≤ 2 * x ^ (eps / 5) * Real.log x ^ 2
 
-structure MoreH (sc : Scale) (C : FC) (Y : Σ R : Ranks, Host R) : Prop where
-  t2 : Y.2.secondSet_card_lower_bound
-  tt : sc.delta1 * Y.1.n / 2 ≤ (Y.2.TT.card : ℝ) ∧ (Y.2.TT.card : ℝ) ≤ 2 * sc.delta1 * Y.1.n
-  qd : C.full → QDq sc.x sc.eps C.C5 Y.2.q Y.2.d
-  boxes : C.full → Boxq sc.x sc.eps Y.2.q Y.2.d
-  what₂ : C.full → Rowq sc.x sc.eps Y.1.n Y.2.q Y.2.d
-
-@[ext] structure Shd where
-  R : Ranks
-  TTn : Finset ℕ
-  T2 : Finset ℕ
-  q : ℕ
-  d : ℕ
-  g : Fin 2 → ℕ
-  pde : ℕ
-  pde' : ℕ
-  bits : ℕ → Bool
-  LaG : ℝ
-  etaSz : ℝ
-  Sc : ℝ
-  hP : ℕ → ℕ
-  bs : ℕ → ℕ → ℕ
-  off : ℕ → ℕ → ℝ
-  kapI : ℕ → (n' : ℕ) → Finset (Fin n') → (Fin n' → ℤ) → (Fin n' → ℤ) → ℝ
-  ep : ℕ → ℕ
-
 def Win (sc : Scale) (k : ℕ) (TTn : Finset ℕ) (bTop : ℝ) (a b : ℕ → ℤ) : Prop :=
   ∀ t ∈ TTn, (sc.a ≤ (a t : ℝ) ∧ (a t : ℝ) ≤ sc.a + sc.a / ((k : ℝ) * sc.x ^ (Scale.A / 2))) ∧
     sc.b' ≤ (b t : ℝ) ∧ (b t : ℝ) ≤ bTop
-
-def Shd.bTop (S : Shd) (sc : Scale) : ℝ :=
-  sc.b' + 2 * (S.R.n : ℝ) * sc.delta1 * sc.x ^ sc.eps * S.LaG * sc.b' / (S.R.k : ℝ)
 
 end Formalism.MainNotions.Inhab
 

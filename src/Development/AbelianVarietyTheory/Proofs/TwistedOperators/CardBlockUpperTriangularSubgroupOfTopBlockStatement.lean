@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardBlockUpperTriangularSubgroupOfTopBlock
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlockPartitionOfEqTwoBlock
+
 open Matrix Formalism.L2.DIV GlobalTheory.ParIndex
 
 set_option maxHeartbeats 1000000 in

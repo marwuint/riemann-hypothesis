@@ -11,26 +11,6 @@ namespace Formalism.L2.Ker
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Th1.H Formalism.MainNotions
 
-theorem mem_rangeIF {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) (z : ℂ) : z ∈ rangeIF σ ↔ ∃ k : K, σ k = z := by
-  unfold rangeIF
-  rw [AlgHom.mem_fieldRange]
-  rfl
-
-theorem withK_embC {X : Fields} (A : Amb X) (M : IntermediateField ℚ ℂ) [NumberField M] [StarRing M] (hM : ∀ τ x, X.embC A.σ₀ τ x ∈ M) :
-    (fieldsWithK X M fun τ => (X.embC A.σ₀ τ).codRestrict M (hM τ)).embC (A.withK M hM).σ₀ = X.embC A.σ₀ := by
-  funext τ
-  exact RingHom.ext fun x => rfl
-
-theorem withK_thInd {X : Fields} (A : Amb X) (M : IntermediateField ℚ ℂ) [NumberField M] [StarRing M] (hM : ∀ τ x, X.embC A.σ₀ τ x ∈ M)
-    {a b : ℕ} (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (c : ℕ) (x : HomE X.E a b) :
-    (A.withK M hM).thInd Sall N N' c x = A.thInd Sall N N' c x := by
-  have h := withK_embC A M hM
-  unfold Amb.thInd
-  rw [h]
-  rfl
-
-theorem jets_rational_of_degree_form : JetsRatDegOf := fun _ _ _ _ _ _ _ h N N' c x hr m _ => h N N' c x hr m
-
 theorem evG_id_map {K : Type} [Field K] {ι : Type} [Fintype ι] {a : ℕ} {Y : Type} (fr : Y → ι → Matrix (Fin a) (Fin a) ℂ) (sh : ι → ℤ) (σ : K →+* ℂ)
     (P : DIV.Pol K ι a) : evG fr sh (RingHom.id ℂ) (MvPolynomial.map σ P) = evG fr sh σ P := by
   funext y

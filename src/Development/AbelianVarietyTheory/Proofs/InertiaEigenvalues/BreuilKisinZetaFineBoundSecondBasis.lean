@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinIntegralityComputationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZetaSeriesHigherTermsMemLPowBreuilKisinStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowSmulConnectionSeriesTermMemLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinIntegralityComputation
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomialAction
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZetaSeriesHigherTermsMemLPowBreuilKisin
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowSmulConnectionSeriesTermMemLattice
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.XPowSmulMemPrimePowAddFiltrationPhiModuleStatement
 
 open PowerSeries GlobalTheory.BK
@@ -14,10 +15,10 @@ theorem zeta_Y'_fine_bound : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUl
   obtain ⟨y₀, ⟨hy₀, -⟩, rfl⟩ := hy
   have hy₀' : E K l e ^ η • y₀ ∈ D.M := hy₀
   show ∃ p ∈ D.L, ∃ f ∈ D.FilMM (10 * H), D.zeta ((X : K⟦X⟧) ^ e • y₀) = _
-  obtain ⟨r, hr, hT⟩ := GlobalTheory.T.zeta_series_higher_terms_mem_lPow_breuilKisin O K l e a ι η H D y₀ hη hηH hl hy₀'
-  obtain ⟨w₁, hw₁, hB⟩ := GlobalTheory.T.prime_pow_smul_connection_series_term_mem_lattice O K l e a ι η H D y₀ hη hy₀' 0
+  obtain ⟨r, hr, hT⟩ := _root_.GlobalTheory.zeta_add_lphi_conn_mem O K l e a ι η H D y₀ hη hηH hl hy₀'
+  obtain ⟨w₁, hw₁, hB⟩ := _root_.GlobalTheory.BK.lphi_pow_conn_X_pow_smul_mem O K l e a ι η H D y₀ hη hy₀' 0
   obtain ⟨s, hs, f, hf, hD⟩ := GlobalTheory.T.X_pow_smul_mem_prime_pow_add_filtration_phiModule O K l e a ι D.toPhiMod (10 * H) (by omega) w₁ hw₁
-  have hIC := GlobalTheory.T.breuilKisin_integrality_computation O K l e a ι η H D hηH (by omega)
+  have hIC := _root_.GlobalTheory.IntegralityComp.integralityComputation O K l e a ι η H D hηH (by omega)
   obtain ⟨p₁, hp₁, f₁, hf₁, rfl⟩ := hIC.1 s hs
   obtain ⟨p₂, hp₂, f₂, hf₂, rfl⟩ := hIC.1 r hr
   have hsm : ∀ {R : Type} [Semiring R] [Module R (Vec K a ι)] (W : Submodule R (Vec K a ι)) (k : ℕ)

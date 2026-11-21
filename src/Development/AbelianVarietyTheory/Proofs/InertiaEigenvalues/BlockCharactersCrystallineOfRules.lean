@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BlockCharactersCrystalline
-import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.PrimeTypeRows
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
+import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RepresentationOverSumChar
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CrystallineSubrepresentation
 import Development.AbelianVarietyTheory.Counterexamples.NonGaloisSurvey.CrystallineCyclotomic
@@ -175,9 +177,6 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 
 theorem act_smul (g : G) (c : Qp) (b : B) : PD.actB g (c • b) = c • PD.actB g b :=
   ((PD.actB g).toAlgHom.toLinearMap.restrictScalars Qp).map_smul c b
-
-theorem act_algebraMap (g : G) (c : Qp) : PD.actB g (algebraMap Qp B c) = algebraMap Qp B c := by
-  rw [IsScalarTower.algebraMap_apply Qp K₀ B, AlgEquiv.commutes]
 
 def coordAct (A : G → Matrix (Fin n) (Fin n) Qp) (g : G) : (Fin n → B) →+ (Fin n → B) where
   toFun x := ((A g).map (algebraMap Qp B)).mulVec fun i => PD.actB g (x i)
@@ -418,10 +417,6 @@ section Place
 variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
   (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
-theorem locChi_inv (χ : GE D.nd →* (D.nd.O i)ˣ) :
-    Br.locChi D.nbr i w hw χ⁻¹ = (Br.locChi D.nbr i w hw χ)⁻¹ :=
-  MonoidHom.ext fun _ => map_inv (Units.map (D.nbr i w hw).toLL.toMonoidHom) _
-
 theorem locChi_zpow (χ : GE D.nd →* (D.nd.O i)ˣ) (n : ℤ) :
     Br.locChi D.nbr i w hw (χ ^ n) = (Br.locChi D.nbr i w hw χ) ^ n :=
   MonoidHom.ext fun _ => map_zpow (Units.map (D.nbr i w hw).toLL.toMonoidHom) _ n
@@ -448,73 +443,8 @@ theorem chiRatioCrysAt : BlockCharactersCrystallineNonGaloisCusps.ChiRatioCrysAt
     rw [BlockCharactersCrystallineNonGaloisCusps.chiRatio_eq D i c h1 h2]
     exact charCrysAt_eps_zpow D i w hw _⟩
 
-theorem charCrysAt_of_constituent
-    (hS : CrystallineSubrepresentation.SubCrys (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw)) {n : ℕ}
-    (χ : GE D.nd →* (D.nd.O i)ˣ) (M : GE D.nd →* Matrix (Fin n) (Fin n) (D.nd.O i))
-    (h : BlockCharactersCrystallineNonGaloisCusps.IsConstituent D i χ M) (hc : BlockCharactersCrystallineNonGaloisCusps.MatCrysAt D i w hw M) :
-    BlockCharactersCrystallineNonGaloisCusps.CharCrysAt D i w hw χ := by
-  obtain ⟨v, hv, hg⟩ := h
-  let v' : Fin n → Br.LL D.nbr i w hw := fun a => Br.toLLK (D.nbr i w hw) (v a)
-  have hv' : v' ≠ 0 := by
-    intro h0
-    apply hv
-    funext a
-    exact (Br.toLLK (D.nbr i w hw)).injective ((congrFun h0 a).trans (map_zero _).symm)
-  have key : ∀ g : Br.G D.nbr i w hw, (Br.loc D.nbr i w hw M g).mulVec v' =
-      ((Br.locChi D.nbr i w hw χ g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) • v' := by
-    intro g
-    funext a
-    have h1 := congrArg (Br.toLLK (D.nbr i w hw))
-      (congrFun (hg (decS D.nd w (Br.iota D.nbr i w hw g))) a)
-    have h2 : (mapM (toK D.nd i) M (decS D.nd w (Br.iota D.nbr i w hw g))).mulVec v a =
-        ∑ b, toK D.nd i (M (decS D.nd w (Br.iota D.nbr i w hw g)) a b) * v b := rfl
-    rw [h2, map_sum, Pi.smul_apply, smul_eq_mul, map_mul, WordJumpsCompare.toLLK_toK] at h1
-    simp only [map_mul, WordJumpsCompare.toLLK_toK] at h1
-    rw [Pi.smul_apply, smul_eq_mul, WordJumpsCompare.locChi_apply]
-    exact h1
-  refine hS _ (matRep (Br.loc D.nbr i w hw M)) _ _ (LinearMap.toSpanSingleton _ _ v') (fun g c => ?_)
-    (LinearMap.ker_eq_bot.mp (LinearMap.ker_toSpanSingleton _ hv')) hc
-  change (((Br.locChi D.nbr i w hw χ g : (Br.LL D.nbr i w hw)ˣ) :
-    Br.LL D.nbr i w hw) • c) • v' = (Br.loc D.nbr i w hw M g).mulVec (c • v')
-  rw [Matrix.mulVec_smul, key, smul_smul, smul_eq_mul, mul_comm]
-
-theorem blockCrysAt_of_rules
-    (hS : CrystallineSubrepresentation.SubCrys (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw))
-    (hD : CrystallineSubrepresentation.DualCrys (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw)) {n : ℕ}
-    (M : GE D.nd →* Matrix (Fin n) (Fin n) (D.nd.O i))
-    (h : BlockCharactersCrystallineNonGaloisCusps.IsConstituent D i (chiU D.nd i 1) M) (hc : BlockCharactersCrystallineNonGaloisCusps.MatCrysAt D i w hw M) :
-    BlockCharactersCrystallineNonGaloisCusps.BlockCrysAt D i w hw := by
-  refine ⟨?_, chiRatioCrysAt D i w hw⟩
-  unfold BlockCharactersCrystallineNonGaloisCusps.ChiOneInvCrysAt BlockCharactersCrystallineNonGaloisCusps.CharCrysAt
-  rw [locChi_inv]
-  exact isCrys_inv _ hS hD _ (charCrysAt_of_constituent D i w hw hS _ M h hc)
-
 theorem matCrysAt_iff {n : ℕ} (r : GE D.nd →* GL (Fin n) (D.nd.O i)) :
     BlockCharactersCrystallineNonGaloisCusps.MatCrysAt D i w hw ((Units.coeHom _).comp r) ↔ Br.IsCrysW D.loc D.nbr i w hw r := Iff.rfl
-
-theorem isConstituent_of_splitsAs (r : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))
-    (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)) (h : RepresentationOverSumChar.SplitsAs D.nd i r ρ) :
-    BlockCharactersCrystallineNonGaloisCusps.IsConstituent D i (chiU D.nd i 1) ((Units.coeHom _).comp r) := by
-  obtain ⟨e, he⟩ := h
-  let c : Fin D.R.t := ⟨0, D.R.t_odd.pos⟩
-  refine ⟨e.symm (Pi.single (Sum.inr c) 1), ?_, fun g => ?_⟩
-  · intro h0
-    have h1 := congrArg (fun u => e u (Sum.inr c)) h0
-    simp at h1
-  · apply e.injective
-    have h2 := he g (e.symm (Pi.single (Sum.inr c) 1))
-    rw [map_smul, e.apply_symm_apply]
-    rw [e.apply_symm_apply] at h2
-    refine h2.trans ?_
-    change ((RepresentationOverSumChar.sumChi D.nd i ρ g).map (toK D.nd i)).mulVec _ = _
-    rw [Matrix.mulVec_single_one]
-    funext a
-    rcases a with a | a
-    · simp [RepresentationOverSumChar.sumChi, RepresentationOverSumChar.blockSum]
-    · by_cases ha : a = c
-      · subst ha
-        simp [RepresentationOverSumChar.sumChi, RepresentationOverSumChar.blockSum, c]
-      · simp [RepresentationOverSumChar.sumChi, RepresentationOverSumChar.blockSum, ha]
 
 end Place
 
@@ -524,26 +454,5 @@ def SubDualRules : Prop :=
 
 theorem subDualRules_of_fontaine (h : GlobalTheory.Published.FontaineBcris) : SubDualRules :=
   fun _ _ _ _ ⟨T⟩ => sub_dual_of_tied T fun C => ⟨h.tensorInj C, h.regular C⟩
-
-theorem blockCharactersCrystalline_of_rules (h : SubDualRules) : BlockCharactersCrystallineNonGaloisCusps.BlockCharactersCrystalline :=
-  fun D i _ _ _ π _ hχ w hw hc =>
-    have hR := h (D.nd.l i) (D.loc _) (D.locA _) ⟨D.locT _⟩
-    blockCrysAt_of_rules D i w hw (hR.1 _ _) (hR.2 _ _) _ hχ (hc π)
-
-theorem blockCharactersCrystalline (h : GlobalTheory.Published.FontaineBcris) : BlockCharactersCrystallineNonGaloisCusps.BlockCharactersCrystalline :=
-  blockCharactersCrystalline_of_rules (subDualRules_of_fontaine h)
-
-def Splitting_at (D : D7) : Prop :=
-  ∀ i : D.nd.Loc, BlockCharactersCrystallineNonGaloisCusps.NoLevelPrime D i → (∃ a, PrimeTypeWeightPartitions.IsWeight D i a) ∧
-    ∀ π ∈ D.nd.Z i, ∃ r ρ, IsHeckeGalois D.nd i π r ∧ RepresentationOverSumChar.SplitsAs D.nd i r ρ
-
-theorem blockCrys_at_of_rows (h : GlobalTheory.Published.FontaineBcris) (D : D7) (hG : PrimeTypeWeightPartitions.Crys_at D)
-    (hS : Splitting_at D) : BlockCharactersCrystallineNonGaloisCusps.BlockCrys_at D := by
-  rintro i hi ⟨π, hπ⟩ w hw
-  obtain ⟨⟨a, ha⟩, hZ⟩ := hS i hi
-  obtain ⟨r, ρ, hr, hρ⟩ := hZ π hπ
-  have hR := subDualRules_of_fontaine h (D.nd.l i) (D.loc _) (D.locA _) ⟨D.locT _⟩
-  exact blockCrysAt_of_rules D i w hw (hR.1 _ _) (hR.2 _ _) _ (isConstituent_of_splitsAs D i r ρ hρ)
-    ((matCrysAt_iff D i w hw r).2 (hG i hi a ha π r hr w hw).1)
 
 end GlobalTheory.BlockCrys

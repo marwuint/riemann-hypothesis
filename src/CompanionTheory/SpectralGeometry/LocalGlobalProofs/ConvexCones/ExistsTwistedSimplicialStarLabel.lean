@@ -3,7 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSu
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultCellsAmong
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CellFaceRestrictionStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CellFaceRestriction
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolyFanFaceCutByIntLinearFormIsCell
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRealRel
 
 noncomputable section
 
@@ -58,7 +60,7 @@ theorem exists_isTwG_simpLab_star : ∀ (O : Type) [CommRing O] [IsDedekindDomai
   · obtain ⟨m₁, δ, hδ, hli, hinj, hγδ⟩ := hSL.2 X hX m γ hγ
     obtain ⟨g, hg1, hg2, hg3⟩ := exists_cut_of_cell_le O bar φ X m₁ m δ γ hδ hγ hγδ
     obtain ⟨m₂, s, hfs⟩ := exists_isFaceCut δ g hg1
-    have hδs : IsCell bar φ (fun j => δ (s j)) := GlobalTheory.T.cell_face_restriction O bar hb q φ hφ X hX (hDom X) m₁ δ hδ m₂ s g hfs
+    have hδs : IsCell bar φ (fun j => δ (s j)) := _root_.GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut O bar hb q φ hφ X hX (hDom X) m₁ δ hδ m₂ s g hfs
     have hfree' : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone (fun j => δ (s j)) β → w.evalZ β = 0 :=
       fun β hb hp hc => hfree β hb hp (hg3 β hb hp (inRCone_of_sub s hc) (IsFaceCut.apply_eq_zero hfs hc))
     have hcell' := hS.1 X hX m₂ _ hδs hfree'
@@ -72,7 +74,7 @@ theorem exists_isTwG_simpLab_star : ∀ (O : Type) [CommRing O] [IsDedekindDomai
       exact s.injective (hinj (Real.exp_injective (by linarith)))
     · exact inRCone_trans (fun k => inRCone_face hfs (hγδ k) (hg2 k)) (hin j)
   · obtain ⟨m₁, δ, hδ, hli, hinj, hγδ⟩ := hSL.2 X hX m γ hγ
-    have hγs : IsCell bar φ (fun j => γ (s j)) := GlobalTheory.T.cell_face_restriction O bar hb q φ hφ X hX (hDom X) m γ hγ m' s h hf
+    have hγs : IsCell bar φ (fun j => γ (s j)) := _root_.GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut O bar hb q φ hφ X hX (hDom X) m γ hγ m' s h hf
     obtain ⟨g, hg1, hg2, hg3⟩ :=
       exists_cut_of_cell_le O bar φ X m₁ m' δ (fun j => γ (s j)) hδ hγs (fun k => hγδ (s k))
     obtain ⟨m₂, s', hfs⟩ := exists_isFaceCut δ g hg1

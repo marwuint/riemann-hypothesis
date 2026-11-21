@@ -537,17 +537,6 @@ theorem flat_of_isCM_of_quasiFinite [IsRegularLocalRing A] [IsLocalRing B]
   flat_of_isCM_of_ringKrullDim_add_le hB
     ((add_le_add_right ringKrullDim_quotient_map_maximalIdeal_le_zero _).trans (by rwa [add_zero]))
 
-theorem flat_of_isRegularLocalRing_of_quasiFinite [IsRegularLocalRing A] [IsRegularLocalRing B]
-    [IsLocalHom (algebraMap A B)] [Algebra.QuasiFinite A B]
-    (hd : ringKrullDim A = ringKrullDim B) : Module.Flat A B :=
-  flat_of_isCM_of_quasiFinite (isCM_of_isRegularLocalRing B) hd.le
-
-theorem free_of_isRegularLocalRing_of_finite [IsRegularLocalRing A] [IsRegularLocalRing B]
-    [IsLocalHom (algebraMap A B)] [Module.Finite A B]
-    (hd : ringKrullDim A = ringKrullDim B) : Module.Free A B :=
-  have := flat_of_isRegularLocalRing_of_quasiFinite hd
-  Module.free_of_flat_of_isLocalRing
-
 theorem flat_localization_atPrime_of_isCM (p : Ideal A) [p.IsPrime] (q : Ideal B) [q.IsPrime]
     [q.LiesOver p] [IsRegularLocalRing (Localization.AtPrime p)] [Algebra.QuasiFiniteAt A q]
     (hB : IsCM (Localization.AtPrime q)) (hd : p.height ≤ q.height) :
@@ -573,13 +562,6 @@ theorem flat_of_isRegularRing_of_isRegularRing [IsRegularRing A] [IsRegularRing 
     [Algebra.QuasiFinite A B]
     (hd : ∀ q : Ideal B, q.IsMaximal → (q.under A).height ≤ q.height) : Module.Flat A B :=
   flat_of_isRegularRing_of_isCM (fun _ _ => isCM_of_isRegularLocalRing _) hd
-
-example (p : ℕ) [Fact p.Prime] : RingTheory.Sequence.IsRegular ℤ_[p] [(p : ℤ_[p]) ^ 2] := by
-  refine isRegular_of_radical_eq_maximalIdeal ?_ ?_
-  · rw [Ideal.ofList_singleton, ← Ideal.span_singleton_pow, Ideal.radical_pow _ two_ne_zero,
-      ← PadicInt.maximalIdeal_eq_span_p, (maximalIdeal.isMaximal _).isPrime.radical]
-  · rw [IsDiscreteValuationRing.ringKrullDim_eq_one]
-    simp
 
 end Miracle
 

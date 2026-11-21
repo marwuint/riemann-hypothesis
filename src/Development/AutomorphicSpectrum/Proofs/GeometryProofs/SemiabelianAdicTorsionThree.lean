@@ -2,8 +2,12 @@ import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RelOfTorsion
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderValueEval
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingOpenCoverStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianAdicTorsionOneStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingOpenCover
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianAdicTorsionOne
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 
 noncomputable section
@@ -366,7 +370,7 @@ theorem der_unique [Finite T] [Module.Projective R L]
   constructor
   · rintro ⟨s', hs', hv'⟩
     have hss : s' = s := by
-      refine sub_eq_zero.mp (GlobalTheory.T.section_eq_zero_of_values R T Γ ⊤ (s' - s) ?_)
+      refine sub_eq_zero.mp (_root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic R T Γ ⊤ (s' - s) ?_)
       intro t h
       rw [ValEmb.valAt_sub]
       exact sub_eq_zero.mpr ((hs' t).trans (hs t).symm)
@@ -486,10 +490,10 @@ theorem der_main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClose
   haveI : IsIntegrallyClosed O := inferInstance
   haveI : Smooth G.hom := hG.smooth
   haveI : Finite (LevGrp La p n) := finite_levGrp' (Fact.out) n
-  haveI : Module.Projective O L := (GlobalTheory.T.lie_model_finite_base_change S G O y L M).2.1
-  obtain ⟨U, H, hfin, -⟩ := GlobalTheory.T.semiabelian_adic_torsion_one p C v O hv hp hO S G hG y La X
-  obtain ⟨j, hj, -⟩ := GlobalTheory.T.existsUnique_btOrder_embedding O _ (X.Γ n)
-  haveI := (GlobalTheory.T.btOrder_embedding_open_cover O _ (X.Γ n) (U n) (hfin n) j hj).1
+  haveI : Module.Projective O L := (_root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange S G O y L M).2.1
+  obtain ⟨U, H, hfin, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.tw_hopf_main p C v O hv hp hO S G hG y La X
+  obtain ⟨j, hj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.exists_unique_emb_btOrder_top O _ (X.Γ n)
+  haveI := (_root_.GlobalTheory.CompanionTheory.Ar.BT.EmbSub.openImmersion_translatesCover O _ (X.Γ n) (U n) (hfin n) j hj).1
   exact der_all (X.Γ n) (X.tors n) M hj (U n) (hfin n).one
 
 end GlobalTheory.CompanionTheory.Ar.HT.TwDer

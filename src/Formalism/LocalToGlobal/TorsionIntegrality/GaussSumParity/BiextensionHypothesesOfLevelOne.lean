@@ -36,6 +36,4 @@ theorem meanSimeq : MeanSimeq := MeanSimeq_of' meanSimeqL beTilXY letterShift
 theorem biextension_points_integral : BiextensionPointsIntegral := biextension_points_of_exp_spec expSpec meanSimeqL
 theorem b0 : B0 := biextension_of_exp_spec expSpec biextension_points_integral
 theorem oneLetterHalf : OneLetterHalf := OneLetterHalf_of meanSimeqL
-theorem single_letter_theta_factorization : SingleLetterThetaFactorization := single_letter_of_half oneLetterHalf
-
 end Formalism.L2.Th1.D

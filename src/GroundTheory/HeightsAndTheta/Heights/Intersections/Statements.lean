@@ -45,10 +45,6 @@ theorem isSmoothHerm_fsLine (n : ℕ) : IsSmoothHerm (fsLine n) := by
     exact (Finset.sum_pos' (fun j _ => sq_nonneg ‖z ⟨k, j⟩‖)
       ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩).ne'
 
-theorem DegreeGeneric.hyps_inhabited :
-    IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (1 + 1) ∧ ∀ j, IsSmoothHerm (![fsLine 2] j) :=
-  ⟨isArithVar_projLine, fun j => by fin_cases j; exact isSmoothHerm_fsLine 2⟩
-
 end
 
 end GroundTheory.Heights₂.Heights.Inter

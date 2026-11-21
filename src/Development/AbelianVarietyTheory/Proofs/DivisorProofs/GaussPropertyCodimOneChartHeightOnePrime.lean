@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightLeOneOfFlat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussAtCompAlg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FnOfPreimageMemSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescentDataChartsCommonStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescentDataChartsCommon
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussAtHeightOneVerticalPointStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIndepDenom
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierSectionsFlatBaseChangeLinearlyDisjointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierSectionsFlatBaseChangeLinearlyDisjoint
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef
@@ -178,7 +178,7 @@ theorem linDisj_pullback {T D : Type} [CommRing T] [CommRing D] {a : T →+* D} 
     (hp : IsPullback π p' G.hom (spMap a)) (hθ : PFF (𝟙 _) π θ) :
     LinDisj (GlobalTheory.Desc.cst G.hom) (GlobalTheory.Desc.cst p') θ := by
   have := hG.separated
-  refine (GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint T D a ha G.left X' X' G.hom p' (𝟙 _) π θ hG.quasiCompact inferInstance
+  refine (_root_.GlobalTheory.SecFlatBC.sections_linDisj_flatBaseChange T D a ha G.left X' X' G.hom p' (𝟙 _) π θ hG.quasiCompact inferInstance
     (by rwa [Category.id_comp]) hθ 0 0 fun v g hg => ?_).1
   have h₁ : UnitAt (π v) ((g : G.left.functionField) / (1 : G.left.functionFieldˣ)) :=
     germOf_eq_iff.1 (show germOf (π v) 1 = germOf (π v) g from hg)
@@ -199,7 +199,7 @@ theorem gaussAt_vert : ∀ (σ : Setup) (x : Sp σ.R) (z : (σ.C x).G.left), Ver
   obtain ⟨Ω, _, u, u', hu, hu', huu⟩ :=
     exists_common_field (σ.ρ x) (σ.ρ p) q (closedPoint (σ.C p).R) hcen.symm
   obtain ⟨E, _, _, _, a, b, v, H, _, _, πa, πb, θa, θb, ha, hb, hab, hv, hva, hvb, hm, hH, ⟨hπa, -⟩,
-    ⟨hπb, -⟩, hθa, hθb, hθ⟩ := GlobalTheory.T.abelianSchemeDescentData_charts_common σ x p Ω u u' hu' huu
+    ⟨hπb, -⟩, hθa, hθb, hθ⟩ := _root_.GlobalTheory.Desc.setup_common σ x p Ω u u' hu' huu
   have := hH.smooth
   have := hH.geomConnected
   have hca : (maximalIdeal E).comap a = q.asIdeal := by
@@ -269,7 +269,7 @@ theorem gaussAt_vert : ∀ (σ : Setup) (x : Sp σ.R) (z : (σ.C x).G.left), Ver
       (fun s hs => notMem_maximalIdeal.1 fun h => hs (by rw [← hca]; exact h))
       (fun t ht => by rwa [← hca] at ht) (comp_cst (σ.hθ x) (σ.cart x).w)
       (comp_cst hθa (by rw [Category.id_comp]; exact hπa.w))
-      (GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R _ (σ.ρ x) (σ.flat x) _ _ _ (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom (σ.V x).ι (σ.φ x)
+      (_root_.GlobalTheory.SecFlatBC.sections_linDisj_flatBaseChange σ.R _ (σ.ρ x) (σ.flat x) _ _ _ (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom (σ.V x).ι (σ.φ x)
         (σ.θ x) inferInstance inferInstance (σ.cart x) (σ.hθ x) σ.D (σ.D₁ x) (σ.pull x)).1
       (linDisj_pullback ha (σ.C x).semi hπa hθa) ra g₃
   · rw [← ra, ← Set.preimage_comp, ← RingHom.coe_comp, hθ, RingHom.coe_comp, Set.preimage_comp, rb]

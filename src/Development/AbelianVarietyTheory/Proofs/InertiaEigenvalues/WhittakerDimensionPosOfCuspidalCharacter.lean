@@ -1,10 +1,11 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenRegularCharacters
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionTwoBlockCuspidalEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionTwoBlockCuspidalEqZero
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassFunctionDegreeEqSumDerivativesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeFieldStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeField
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegree
 
 noncomputable section
 
@@ -51,7 +52,7 @@ theorem GlobalTheory.GLq.wh_cusp_pos : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddCha
     have hmd : m < d := Finset.mem_range.mp hm
     have hz : res m (d - m) χ 1 = fun _ => 0 := by
       funext y
-      exact GlobalTheory.T.harishChandraRestrictionTwoBlock_cuspidal_eq_zero g d m χ hc (Nat.pos_of_ne_zero hm0) hmd 1 y
+      exact _root_.GlobalTheory.GLq.res_cusp_eq_zero g d m χ hc (Nat.pos_of_ne_zero hm0) hmd 1 y
     have : der ψ m χ 1 = 0 := by
       show wh ψ (res m (d - m) χ 1) = 0
       rw [hz]
@@ -67,12 +68,11 @@ theorem GlobalTheory.GLq.wh_cusp_pos : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddCha
   rw [h0] at hder
   obtain ⟨V, _, hV⟩ := hirr
   have hchar : IsChar χ := ⟨V, hV⟩
-  obtain ⟨d', hd'pos, hd'⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g d) (eU g d ψ) χ).2.1 ⟨V, ‹_›, hV⟩
-  obtain ⟨n, hn⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g d) (eU g d ψ) χ).1 (GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField g d 0 0 ψ).1 hchar
+  obtain ⟨d', hd'pos, hd'⟩ := (_root_.GlobalTheory.GLq.trIdem (Gn g d) (eU g d ψ) χ).2.1 ⟨V, ‹_›, hV⟩
+  obtain ⟨n, hn⟩ := (_root_.GlobalTheory.GLq.trIdem (Gn g d) (eU g d ψ) χ).1 (_root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField g d 0 0 ψ).1 hchar
   have hwh : wh ψ χ = n := hn
   refine ⟨n, Nat.pos_of_ne_zero ?_, hwh⟩
   rintro rfl
   rw [hwh, Nat.cast_zero, zero_mul, hd'] at hder
   exact absurd hder (by exact_mod_cast hd'pos.ne')
 
-example : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → ∀ (d : ℕ) (χ : Gn g d → ℂ), IsCusp χ → ∃ m : ℕ, 0 < m ∧ wh ψ χ = m := GlobalTheory.GLq.wh_cusp_pos

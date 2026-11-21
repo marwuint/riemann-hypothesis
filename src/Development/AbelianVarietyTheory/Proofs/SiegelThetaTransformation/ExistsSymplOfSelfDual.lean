@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMul
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DualRestrictSurjectiveOfIsTorsionFreeQuotient
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFundamentalDomainMeanNormSqThetaChar
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PeriodCoordinateThetaOfSignedHeisenbergVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DetHermitianFormAtFramePeriodCoordsOfUnitFrameStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PeriodCoordinateThetaOfSignedHeisenbergVacuum
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DetHermitianFormAtFramePeriodCoordsOfUnitFrame
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -226,7 +226,7 @@ theorem exists_factor {α : Type} {n : ℕ} {θ θ₀ : α → ℂ} {K : ℂ} (h
 theorem norm_factor_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L : Lt E r, SelfD X L → ∀ v : TF n g, IsVac X bas w (tens (stdL E n) L) v → ∃ ρ : ℝ, 0 < ρ ∧ ∀ x ∈ X.dom, IsUnitFr X x → ∀ (θ : (Fin g → ℂ) → ℂ) (κ : ℂ), IsTheta1 X bas idx w x L θ → MeanOne X bas idx x L θ → (∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z) → ‖κ‖ = ρ := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw' L hL v hv
   obtain ⟨b, hb, hb'⟩ := exists_sympl_of_selfD hs hL
-  obtain ⟨c₁, c₂, C, hC, h₁, h₂, hx'⟩ := GlobalTheory.T.periodCoordinateTheta_of_signedHeisenbergVacuum E r X g bas idx n hs hn w hw hw' L hL v hv b hb hb'
+  obtain ⟨c₁, c₂, C, hC, h₁, h₂, hx'⟩ := _root_.GlobalTheory.Dict.VacForm.thA_vacuum E r X g bas idx n hs hn w hw hw' L hL v hv b hb hb'
   have hc : ∀ τ : X.Ψ, 0 < X.c τ := fun τ => by
     have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero_iff τ.1 τ.1.injective).2 X.ξ0_ne
     unfold Data.c
@@ -292,7 +292,7 @@ theorem norm_factor_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     rw [eps1, Complex.norm_exp]
     simp) hFd hm
   have hY := hτ.2.det_pos
-  have hdet := GlobalTheory.T.det_hermitianFormAtFramePeriodCoords_of_unitFrame E r X g bas idx n hs hn x hx hu
+  have hdet := _root_.GlobalTheory.Dict.det_hx_of_isUnitFr E r X g bas idx n hs hn x hx hu
     (hᵀ * ((τ.map Complex.im)⁻¹.map fun t : ℝ => (t : ℂ)) * h.map (starRingEnd ℂ)) (fun z w' => by
       have : star (h *ᵥ w') = h.map (starRingEnd ℂ) *ᵥ star w' := by
         funext i; simp [mulVec, dotProduct]

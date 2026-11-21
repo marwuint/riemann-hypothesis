@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsKerRepCyclotomicNeOneNormalFormStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsKerRepCyclotomicNeOneNormalForm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 
@@ -10,7 +10,7 @@ theorem h1dual_of_vanish_fix : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field �
     (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ z ∈ Z1 (Loc.colRep (dual1 W)),
     (∀ g ∈ N0g W, z g = 0) → z ∈ ReciprocityTheory.Gal.B1 (Loc.colRep (dual1 W)) := by
   intro l _ Ω _ _ _ e S A W hW z hz hN
-  obtain ⟨a, haK, hae⟩ := GlobalTheory.T.exists_ker_rep_cyclotomic_ne_one_normalForm l Ω e S A W hW
+  obtain ⟨a, haK, hae⟩ := _root_.GlobalTheory.Ord2.exists_ker_eps_ne_one l Ω e S A W hW
   have hWa : W a = 1 := haK
   have hdual : ∀ v : Fin 2 → Qbar l, Loc.colRep (dual1 W) a v = eps l a • v := by
     intro v

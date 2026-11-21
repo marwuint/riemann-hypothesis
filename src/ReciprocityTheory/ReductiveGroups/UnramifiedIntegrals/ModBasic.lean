@@ -117,25 +117,8 @@ theorem zetaC_pow_self {m : ℕ} (hm : 0 < m) : zetaC m ^ m = 1 := by
   have : (m : ℂ) * (2 * Real.pi * Complex.I / m) = 2 * Real.pi * Complex.I := by field_simp
   rw [this, Complex.exp_two_pi_mul_I]
 
-theorem zetaC_mul {a e : ℕ} (ha : 0 < a) (he : 0 < e) : zetaC (a * e) ^ a = zetaC e := by
-  unfold zetaC
-  rw [← Complex.exp_nat_mul]
-  have ha' : (a : ℂ) ≠ 0 := by exact_mod_cast ha.ne'
-  have he' : (e : ℂ) ≠ 0 := by exact_mod_cast he.ne'
-  congr 1
-  push_cast
-  field_simp
-
 theorem zetaC_mem (m : ℕ) : zetaC m ∈ Rm m := by
   exact Subring.subset_closure (Set.mem_singleton _)
-
-theorem zetaC_inv_mem {m : ℕ} (hm : 0 < m) : (zetaC m)⁻¹ ∈ Rm m := by
-  have h : (zetaC m)⁻¹ = zetaC m ^ (m - 1) := by
-    symm
-    apply eq_inv_of_mul_eq_one_left
-    rw [← pow_succ, Nat.sub_add_cancel hm, zetaC_pow_self hm]
-  rw [h]
-  exact pow_mem (zetaC_mem m) _
 
 theorem Rm_isIntegral {m : ℕ} (hm : 0 < m) {x : ℂ} (hx : x ∈ Rm m) : IsIntegral ℤ x := by
   have hζ : IsIntegral ℤ (zetaC m) :=

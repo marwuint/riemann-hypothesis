@@ -234,6 +234,4 @@ theorem GCob_of (hW : WAdd) (hP : WPrimeU) : GCob := by
     (subst_wg (MvPowerSeries.constantCoeff_X (1 : Fin 2)) hg) (subst_wg hL.1 hg)
     (X_ne 0) (X_ne 1)
 
-theorem GCob_of' (hW : WAdd) : GCob := GCob_of hW weierstrass_derivative_unit_holds
-
 end Formalism.L2.Th1.B.GCob

@@ -4,17 +4,17 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.T2SpaceLocalLa
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrComplete
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomic
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaActionReduction
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWachModuleGeneratorReductionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWachModuleGeneratorReduction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReductionCyclotomicEndoEqFrobeniusLaurentStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDiagonalRingHomOfLetterwiseReductionsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDiagonalRingHomOfLetterwiseReductions
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusFixedTensorEqConstantStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentWittTiltEqZeroOfResidueZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentWittTiltEqZeroOfResidueZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KernelInverseFibreProductLatticesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeQuotientsClosedSubQuotSumStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedOfFixedByDeltaGammaLiftsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerRootsActFaithfullyLaurentStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLetterBijectionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReductionMapPi0Statement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReductionMapPi0
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankAndKernelOfLetterImageTensorStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsExactFunctorPhiGammaOfFramesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrameOfTorsionInvariantsStatement
@@ -128,8 +128,8 @@ theorem eps_ext [NeZero n] {x y : Rk} (h : ∀ i, eps E ρ i * x = eps E ρ i * 
 theorem exists_isRed [NeZero n] (lam : O) (h1 : Function.Surjective (algebraMap O k))
     (h2 : ∀ x, algebraMap O k x = 0 ↔ lam ∣ x) (h3 : algebraMap O LL lam ≠ 0) (hp : ((PD.p : ℕ) : k) = 0)
     (h4 : ∀ i, eps E ρ i ≠ 0) : ∃ κ : k⸨X⸩ →+* Rk, IsRed E ρ (k := k) lam κ := by
-  obtain ⟨p, p1, p2, p3⟩ := GlobalTheory.T.exists_wachModule_generator_reduction W lam h1 h2 hp
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.exists_ringHom_of_idempotent_surjective_family (ZMod n) W.EE k⸨X⸩ Rk (fun i => algebraMap (LetA O n) W.EE (letE i))
+  obtain ⟨p, p1, p2, p3⟩ := _root_.GlobalTheory.RedFun.exists_letter_reduction W lam h1 h2 hp
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.exists_diagonal_ringHom_of_letterwise_reductions (ZMod n) W.EE k⸨X⸩ Rk (fun i => algebraMap (LetA O n) W.EE (letE i))
     (fun i => by rw [← map_mul, letE_mul_self]) (fun i j h => by rw [← map_mul, letE_mul_ne h, map_zero])
     (by rw [← map_sum, sum_letE, map_one]) p (rE E ρ) p2 (fun i x hx => by
       obtain ⟨e', he'⟩ := p3 i x hx
@@ -542,7 +542,7 @@ theorem exists_pres_tensor (E : EtTie W RA RW inclR φR gR πA) [IsDomain O] [Is
     (fun g h x => HerrClass.map_id_comp _ _ _ (amul g h) x)
     (fun x => by rw [aone, Algebra.TensorProduct.map_id]; rfl)
     (fun g x => HerrClass.map_id_comm _ _ _ _ (hcomm g) x)
-    hfix R ι hι (by rw [hv, GlobalTheory.T.reduction_map_pi0 W l hp e he]) e he hc γ hγ hden τ hτ hτ1
+    hfix R ι hι (by rw [hv, _root_.GlobalTheory.RedFun.map_pi0 W l hp e he]) e he hc γ hγ hden τ hτ hτ1
 
 end Comparison₂
 
@@ -564,7 +564,7 @@ theorem realD : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
   have hm := EtaleExact.map_ne_top_of_tie (E.E S.K 1 S.LL S.hyp.1.2.1.2.2).tie
     (by rw [hp]; exact EtaleExact.isUnit_or_dvd_pow P S.LL) (by rw [hp]; exact EtaleExact.sep_RW S.LL)
   obtain ⟨F, hF⟩ := exists_pres_tensor (E.E S.K 1 S.LL S.hyp.1.2.1.2.2).tie Subtype.val_injective hm l hp
-    S.Γ.lam hk.1 hk.2 S.hyp.1.2.2.2.2.2.ne_zero (GlobalTheory.T.idempotent_witt_tilt_eq_zero_of_residue_zero P S.LL k S.Γ.lam hk.1 hk.2)
+    S.Γ.lam hk.1 hk.2 S.hyp.1.2.2.2.2.2.ne_zero (_root_.GlobalTheory.IdemVanish.idem_eq_zero P S.LL k S.Γ.lam hk.1 hk.2)
     (fun g h => HerrClass.gRW_mul AI S.LL g h) (gRW_one AI S.LL) (fun g => HerrClass.phi_gRW AI S.LL g)
     (GlobalTheory.T.frobenius_fixed_tensor_eq_constant S.LL k) R ι hι hv e he hc γ hγ2 (hden γ hγ1) τ t1 t3
   exact ⟨R, ι, hι, F, τ, γ, t2, hγ1, hF⟩

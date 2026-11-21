@@ -9,7 +9,7 @@ import ReciprocityTheory.AdicCompleteness.IsAdicCompleteComapConstantCoeff
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GenericSectionExtendsNormal
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGenOfFrames
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SectionFramesMoveToCoverAndRingExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SectionFramesMoveToCoverAndRingExtension
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecMapFromSpecOfRangeSubset
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IntegralClosureFiniteLocalOfIsAdicComplete
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -126,8 +126,8 @@ theorem exists_extension : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberFi
   have hx : (spMap f ≫ z) ≫ π = spMap (f.comp σ) ≫ y₁ ≫ Y.j := by
     rw [Category.assoc, hz, spMap_comp, Category.assoc]
   have hP := polAt_moduli Y y₁
-  obtain ⟨θ, hθ, bθ⟩ := GlobalTheory.T.sectionFrames_move_to_cover_and_ringExtension hL hL₂ E H _ Z Y.t t π mt R₁ R₂ g₂ _ hf _ _ hx hP 1 1 _ hθ₁
-  obtain ⟨ff, hff, bff⟩ := GlobalTheory.T.sectionFrames_move_to_cover_and_ringExtension hL hL₂ E H _ Z Y.t t π mt R₁ R₂ g₂ _ hf _ _ hx hP (m ^ 2) n _ hf₁
+  obtain ⟨θ, hθ, bθ⟩ := _root_.GlobalTheory.FramePull.frame_pull hL hL₂ E H _ Z Y.t t π mt R₁ R₂ g₂ _ hf _ _ hx hP 1 1 _ hθ₁
+  obtain ⟨ff, hff, bff⟩ := _root_.GlobalTheory.FramePull.frame_pull hL hL₂ E H _ Z Y.t t π mt R₁ R₂ g₂ _ hf _ _ hx hP (m ^ 2) n _ hf₁
   obtain ⟨θ', rfl⟩ : ∃ θ', θ = fun _ : Fin 1 => θ' := ⟨θ 0, funext fun i => by rw [Subsingleton.elim i 0]⟩
   have hab : Set.range (spMap f ≫ z) ⊆ abLocus t.G := by
     rintro _ ⟨p, rfl⟩

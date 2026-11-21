@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBdRPlusFrameOfPeriodMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamPeriodRingFieldTPowFiltrationUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBdRPlusFrameOfPeriodMatrix
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamPeriodRingFieldTPowFiltrationUnits
 
 noncomputable section
 
@@ -63,7 +63,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 theorem tz_facts {AI : LocAinf l P} (T : LocTied l P AI) :
     (∀ (a : ℤ) (g : GQ l), P.actQdR g (tz P a) = algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l]) * tz P a) ∧
     (∀ a b : ℤ, tz P (a + b) = tz P a * tz P b) ∧ tz P 0 = 1 := by
-  obtain ⟨-, -, -, -, -, -, -, hact, hadd, h0, -⟩ := GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P _ T
+  obtain ⟨-, -, -, -, -, -, -, hact, hadd, h0, -⟩ := _root_.GlobalTheory.PMon.bdR_tied l P _ T
   exact ⟨hact, hadd, h0⟩
 
 variable {n : Type} [Fintype n] [DecidableEq n]
@@ -86,7 +86,7 @@ theorem frameEx : FrameEx := by
           (U : Matrix n n P.R.BdR) * Matrix.diagonal fun j =>
             algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ w j : ℚ_[l]ˣ) : ℚ_[l]) := fun m => by
       obtain ⟨Q, hQ⟩ := hD m
-      exact GlobalTheory.T.exists_bdRPlus_frame_of_period_matrix l P AI T n K (matD P ρ m) Q (matD_mem P ρ m) hQ
+      exact _root_.GlobalTheory.PMon.FrameOne.frame_of_period_matrix l P AI T n K (matD P ρ m) Q (matD_mem P ρ m) hQ
     choose U w hU using H
     exact ⟨w, fun m => ⟨U m, (hU m).1, (hU m).2⟩⟩
   · rintro ⟨w, hw⟩ m

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CompactCasimirBoundProjectionDualTensorStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CompactCasimirBoundEmbeddedComponentStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CompactCasimirBoundProjectionDualTensor
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CompactCasimirBoundEmbeddedComponent
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AlgTensWtNear
 open Finset BranchingSupport Formalism.REAL Formalism.QuantumDeterminants
 open scoped InnerProductSpace
@@ -20,8 +20,8 @@ theorem lev_io_pr_single : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSp
   have hs0 : 0 ≤ Real.sqrt (n : ℝ) := Real.sqrt_nonneg _
   have h0 : 0 ≤ Real.sqrt (ckv ε (lowK ε μ)) + 4 * (n : ℝ) * (j : ℝ) := by positivity
   refine ⟨?_, ?_⟩
-  · have h1 := GlobalTheory.T.compactCasimirBound_projection_dualTensor M n ε E N F io pr _ w hE hF hT h0 hc s c
-    have h2 := GlobalTheory.T.compactCasimirBound_embedded_component M n ε E N F io pr _ s _ hE hF hT (by linarith) h1 d
+  · have h1 := _root_.GlobalTheory.casKLe_proj_single M n ε E N F io pr _ w hE hF hT h0 hc s c
+    have h2 := _root_.GlobalTheory.casKLe_io_component M n ε E N F io pr _ s _ hE hF hT (by linarith) h1 d
     obtain ⟨S, hS1, hS2, hS3, hS4⟩ := h2
     refine ⟨S, hS1, hS2, hS3, fun x hx => (hS4 x hx).trans ?_⟩
     apply mul_le_mul_of_nonneg_right _ (by positivity)

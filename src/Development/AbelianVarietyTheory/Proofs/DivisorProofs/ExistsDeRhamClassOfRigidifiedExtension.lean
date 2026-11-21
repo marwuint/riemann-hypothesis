@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCocyclesOmega
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneDiagSumEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagSumCoc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorsCharTorsVal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupCocycleMemCobRangeOfDiagonalSumZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimitiveDeRhamClassTorsionCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupCocycleMemCobRangeOfDiagonalSumZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimitiveDeRhamClassTorsionCharacter
 
 set_option autoImplicit false
 
@@ -51,7 +51,7 @@ theorem exists_isCan_rigToExt_eq : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [Comm
   have hcob : cobOne R (G.A N) (diagSum R (G.A N) (p ^ N) (z.1 N)) = 0 := by
     rw [cobOne_diagSum_eq p R G N (p ^ N) hq _ (z.2 N).1, pullTwo_mulBy_pow_self, sub_self]
   obtain ⟨β, hβ, hβy⟩ := exists_isTorsChar p R A G t N _ hcob
-  obtain ⟨c, d, hd⟩ := GlobalTheory.T.exists_primitive_deRham_class_torsion_character p R N hN A hA hP hS G t β hβ
+  obtain ⟨c, d, hd⟩ := _root_.GlobalTheory.PtExt.exists_dat_chi_eq p R N hN A hA hP hS G t β hβ
   obtain ⟨z', w', hz', hw'⟩ := Dat.exists_cocycles_omega R A hA p G t c d
   refine ⟨c, G.rigMk (z', w'), ⟨d, z', w', hz', hw', rfl⟩, ?_⟩
   have h1 : diagSum R (G.A N) (p ^ N) (z'.1 N) = diagSum R (G.A N) (p ^ N) (z.1 N) := by
@@ -60,7 +60,7 @@ theorem exists_isCan_rigToExt_eq : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [Comm
     rwa [spOver_id, Category.id_comp] at h2
   have hdiag : diagSum R (G.A N) (p ^ N) ((z' - z).1 N) = 0 := by
     rw [Submodule.coe_sub, Pi.sub_apply, map_sub, h1, sub_self]
-  have hmem := GlobalTheory.T.pDivGroup_cocycle_mem_cob_range_of_diagonalSum_zero p R N hN G (z' - z) hdiag
+  have hmem := _root_.GlobalTheory.PtExt.cocycle_mem_range_cob_of_diagSum_eq_zero p R N hN G (z' - z) hdiag
   show G.rigToExt (Submodule.Quotient.mk (z', w')) = G.rigToExt (Submodule.Quotient.mk (z, w))
   simp only [PDivGroup.rigToExt, Submodule.mapQ_apply, LinearMap.fst_apply]
   exact (Submodule.Quotient.eq _).2 hmem

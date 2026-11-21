@@ -1,16 +1,35 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LevelFree
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsPshPull
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivializationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProjectionOfChartAnalyticStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalFactorSmoothHermitianMetricStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgePotentialSmoothOffBoundaryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBoundsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsPositivePotentialDominatingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionVerticalFactorStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedHodgeMetricSmoothStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalHodgeMetricLogFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BlockPullbackHermLineStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConjStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivialization
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProjectionOfChartAnalytic
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.VerticalFactorSmoothLine
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.MuPotentialSmoothOffBoundary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBounds
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsPositivePotentialDominating
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PositionPot
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionVerticalFactor
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesLimitTTop
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogRatio
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorPos
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedHodgeMetricSmooth
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalHodgeMetricLogFormula
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BlockPullbackHermLine
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConj
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
 
 open Filter Topology ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -41,7 +60,7 @@ theorem exists_read {z₀ : (Σ k, J k) → ℂ} (hz₀ : z₀ ∈ mcPts (mCoord
       ∀ᶠ z in 𝓝 z₀, z ∈ mcPts (mCoordIdeal D.y) → T z ∈ Metric.ball 0 1 ∧ SameOrbit z ((D.chart a).γ (T z)) := by
   obtain ⟨a, t₀, ht₀, c, hc, rfl⟩ := D.chart_cover z₀ hz₀
   have hb : t₀ ∈ Metric.ball (0 : Fin D.n → ℂ) 1 := mem_ball_zero_iff.2 (ht₀.trans_lt (by norm_num))
-  obtain ⟨V, T, hV, hm, hT, h0, h⟩ := GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a t₀ hb
+  obtain ⟨V, T, hV, hm, hT, h0, h⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.chart_torus_open K J II Ψ Ω W D a t₀ hb
   have hs : ∀ z, AnalyticAt ℂ (torusSmul (ι := J) fun k => (c k)⁻¹) z := fun z =>
     analyticAt_pi_iff.2 fun p => analyticAt_const.mul ((ContinuousLinearMap.proj (R := ℂ) p).analyticAt z)
   have e0 : torusSmul (fun k => (c k)⁻¹) (torusSmul c ((D.chart a).γ t₀)) = (D.chart a).γ t₀ :=
@@ -62,7 +81,7 @@ theorem contOn_Xo (Hd : HodgeData D) (ref : HermLine J) (ha : (muLine Hd).a = re
   have h0 := h.self_of_nhds hz₀.1
   have hoff : T z₀ ∈ offBd D a := ⟨hb, fun hm => hz₀.2 (bd_orbit D h0.2 hm)⟩
   have h1 : ContinuousAt (fun t => phMu Hd ((D.chart a).γ t)) (T z₀) :=
-    ((GlobalTheory.T.hodge_potential_smooth_off_boundary K J II Ψ Ω W D Hd).1 a).continuousOn.continuousAt ((SncPiece.isOpen_offBd D a).mem_nhds hoff)
+    ((_root_.LevelTowerAlt.mu_potential_smooth_off_boundary K J II Ψ Ω W D Hd).1 a).continuousOn.continuousAt ((SncPiece.isOpen_offBd D a).mem_nhds hoff)
   have hγ := ((D.chart a).analytic _ hb).continuousAt
   have hm := (D.chart a).mem _ hb
   have ho : IsOpen {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
@@ -135,7 +154,7 @@ theorem holoMap_proj (M : XModel D) {e : ℕ} {X : Type} [TopologicalSpace X] (A
     have h0 := h.self_of_nhds (hm x x (hU x).2)
     have hp : ∀ z ∈ mcPts (mCoordIdeal D.y), T z ∈ Metric.ball 0 1 ∧ SameOrbit z ((D.chart a).γ (T z)) →
         M.proj ((D.chart a).γ (T z)) = M.proj z := fun z hz h' => (proj_eq M hz ((D.chart a).mem _ h'.1)).2 h'.2
-    have h1 := (GlobalTheory.T.projection_of_chart_analytic K J II Ψ Ω W D M a k _ hb (by
+    have h1 := (_root_.GlobalTheory.CompanionTheory.Relay.projection_of_chart_analytic K J II Ψ Ω W D M a k _ hb (by
       rw [hp _ (hm x x (hU x).2) h0, hx]; exact hy.2)).1
     have h2 : AnalyticAt ℂ (fun y' => lv x ((A.chart j).symm y')) y :=
       analyticAt_pi_iff.2 fun p => hl x p j y ⟨hy.1, by rw [Set.mem_preimage, ← hx]; exact (hU x).2⟩
@@ -151,7 +170,7 @@ theorem holoMap_proj (M : XModel D) {e : ℕ} {X : Type} [TopologicalSpace X] (A
 theorem baseSide (hU : RegUnif) : BaseSide := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M S B K' _ J' _ P' B' e R κ v Θ Mt hS hv hP hΘ hΘp hMt
   classical
-  have hpl := GlobalTheory.T.block_pullback_herm_line K J K' J' κ v hv
+  have hpl := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap K J K' J' κ v hv
   let lv : R.X → R.X → (Σ k, J k) → ℂ := fun x y p => R.lift x y (v p)
   have hm : ∀ x, ∀ y ∈ R.U x, lv x y ∈ mcPts (mCoordIdeal D.y) := fun x y hy => hP ▸ hpl.2.2.1 P' _ (R.mem x y hy)
   have ho : ∀ x, ∀ y ∈ R.U x, M.proj (lv y y) = M.proj (lv x y) := by
@@ -162,9 +181,9 @@ theorem baseSide (hU : RegUnif) : BaseSide := by
   have hπ := holoMap_proj D M R.A R.U (fun x => ⟨R.isOpen_U x, R.mem_U x⟩) lv (fun x p => R.holo x _) hm ho
   set π : R.X → M.Xc := fun x => M.proj (lv x x) with hπd
   have hSB : ∀ p : D.SB B, (p : ℕ) ∈ D.S := fun p => (Finset.mem_filter.1 p.2).1
-  choose Ap hAa hAs hAc hAh using fun p : D.SB B => (GlobalTheory.T.vertical_factor_smooth_hermitian_metric K J II Ψ Ω W D p (hSB p)).1
+  choose Ap hAa hAs hAc hAh using fun p : D.SB B => (_root_.LevelTowerAlt.vertical_factor_smooth_line K J II Ψ Ω W D p (hSB p)).1
   let N₀ : HermLine J := Top.combLine (fun o : Option (D.SB B) => o.elim S.ref Ap) fun _ => 1
-  have hN : IsSmoothHerm N₀ := (GlobalTheory.T.hermitian_combination_smooth_conj K J _ _ _).1 fun o => by
+  have hN : IsSmoothHerm N₀ := (_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj K J _ _ _).1 fun o => by
     cases o
     exacts [S.ref_smooth, hAs _]
   have hNa : N₀.a = muTwDeg Hd B := by
@@ -181,16 +200,16 @@ theorem baseSide (hU : RegUnif) : BaseSide := by
   obtain ⟨ref, href⟩ := (hpl.1 N₀).exists
   obtain ⟨V, g, hV, hg, hgS, hgz⟩ := exists_ext D Hd M S
   obtain ⟨⟨C₁, hC₁⟩, hun⟩ := hU K J _ _ M D.Xo _ S V g hS hV hg hgS
-  obtain ⟨Θ', hΘ', hΘ'p, -⟩ := GlobalTheory.T.exists_positive_potential_dominating K J II Ψ Ω W D M S.R.th S.R.th_pot
-  obtain ⟨-, ⟨C₂, hC₂⟩, hw⟩ := GlobalTheory.T.regularized_weight_psh_and_bounds K J _ _ M D.Xo _ S Θ' hS hΘ' hΘ'p
+  obtain ⟨Θ', hΘ', hΘ'p, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.exists_posPot_dominating K J II Ψ Ω W D M S.R.th S.R.th_pot
+  obtain ⟨-, ⟨C₂, hC₂⟩, hw⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.tied_regularisation_weak K J _ _ M D.Xo _ S Θ' hS hΘ' hΘ'p
   obtain ⟨C₃, hC₃⟩ := exists_psh_pull hπ hΘ hΘp (pot_rsmul hΘ' 1)
-  have hreg := GlobalTheory.T.regularized_hodge_metric_smooth K J II Ψ Ω W D Hd M S B hS
+  have hreg := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.muReg_smooth_log K J II Ψ Ω W D Hd M S B hS
   have hloc : ∀ x, LocRe R.A (fun y => Real.log (N₀.h (lv x y)) - S.R.th.φ (π x) (π y)) x := by
     intro x
     obtain ⟨U, hUo, hxU, -, s, hs, hs', G, hG, hG'⟩ := S.th_ref (π x) (π x) (S.R.th.mem_U _)
     have h1 : LocRe M.atlas (fun y => S.R.th.φ (π x) y - Real.log (S.ref.h (s y))) (π x) := ⟨U, hUo, hxU, G, hG, hG'⟩
     have h2 : LocRe M.atlas (fun y => ∑ p ∈ D.SB B, Real.log (D.vertFactor p (s y))) (π x) := LocRe.sum _ fun p hp => by
-      obtain ⟨V', a1, a2, -, a3⟩ := GlobalTheory.T.local_section_vertical_factor II Ψ K J Ω W D p M U s (hSB ⟨p, hp⟩) hUo (fun y hy => (hs y hy).1) hs' _ hxU
+      obtain ⟨V', a1, a2, -, a3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.Mix.log_vertFactor_eq_re_holo II Ψ K J Ω W D p M U s (hSB ⟨p, hp⟩) hUo (fun y hy => (hs y hy).1) hs' _ hxU
       exact ⟨V', a1, a2, a3⟩
     have hO : IsOpen (R.U x ∩ π ⁻¹' U) := (R.isOpen_U x).inter (hUo.preimage hπ.1)
     have h3 := locRe_orbit (A := R.A) N₀ hO (s := lv x) (s' := fun y => s (π y))
@@ -209,7 +228,7 @@ theorem baseSide (hU : RegUnif) : BaseSide := by
   have hmu : ∀ x, Real.log ((muVert Hd B).h (lv x x)) = Real.log (N₀.h (lv x x)) + g (π x) := by
     intro x
     have hx := hm x x (R.mem_U x)
-    rw [GlobalTheory.T.vertical_hodge_metric_log_formula K J II Ψ Ω W D Hd B _ hx, hNh _ hx, (hgz _ hx).2]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Cusp.log_muVert_h_of_mem K J II Ψ Ω W D Hd B _ hx, hNh _ hx, (hgz _ hx).2]
     ring
   refine ⟨ref, max C₁ C₃, hpl.2.1 _ _ href hN, ?_, fun K₀ hK₀ hKc => ?_⟩
   · filter_upwards [hreg, hC₁, hC₂, hw 1 one_pos, hval] with t h1 h2 h3 h4 h5

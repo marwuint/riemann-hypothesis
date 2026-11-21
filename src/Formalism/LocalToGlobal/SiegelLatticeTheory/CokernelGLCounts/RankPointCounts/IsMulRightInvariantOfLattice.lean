@@ -198,13 +198,6 @@ theorem haar_map_inv_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgro
   change μ.inv = μ
   rw [hc, e3, one_smul]
 
-theorem haar_map_conj_of_lattice (μ : Measure H) [IsHaarMeasure μ] (Γ : Subgroup H) [Countable Γ]
-    [DiscreteTopology Γ] {K : Set H} (hK : IsCompact K) (hcov : ∀ x : H, ∃ s ∈ Γ, s * x ∈ K) (n : H) :
-    μ.map (fun x => n⁻¹ * x * n) = μ := by
-  have e : (fun x => n⁻¹ * x * n) = (· * n) ∘ (n⁻¹ * ·) := rfl
-  rw [e, ← map_map (measurable_mul_const n) (measurable_const_mul n⁻¹), map_mul_left_eq_self μ n⁻¹,
-    haar_map_mul_right_of_lattice μ Γ hK hcov n]
-
 end Lattice
 
 section Bounded

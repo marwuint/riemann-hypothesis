@@ -35,9 +35,6 @@ theorem thetaChar_eq_tsum (a b : Fin 2) (z τ : ℂ) :
   congr 1
   ring
 
-theorem thetaChar_zero_zero (z τ : ℂ) : thetaChar 0 0 z τ = jacobiTheta₂ z τ := by
-  simp [thetaChar]
-
 theorem jacobiTheta₂_half (a b : Fin 2) (τ : ℂ) :
     jacobiTheta₂ ((((a : ℕ) : ℂ) * τ + ((b : ℕ) : ℂ)) / 2) τ =
       cexp (-((Real.pi : ℂ) * I * ((a : ℕ) : ℂ) ^ 2 * τ / 4) -
@@ -49,23 +46,5 @@ theorem jacobiTheta₂_half (a b : Fin 2) (τ : ℂ) :
       ((Real.pi : ℂ) * I * ((a : ℕ) : ℂ) ^ 2 * τ / 4 +
         (Real.pi : ℂ) * I * ((a : ℕ) : ℂ) * (((b : ℕ) : ℂ) / 2)) = 0 := by ring
   rw [this, Complex.exp_zero, one_mul]
-
-example : ∃ (Λ : AddSubgroup ℂ) (ω₁ τ t₀ : ℂ), ω₁ ≠ 0 ∧ 0 < τ.im ∧ IsPeriodLattice Λ ω₁ τ ∧
-    2 * t₀ ∈ Λ ∧ t₀ ∉ Λ := by
-  have h : IsPeriodLattice (AddSubgroup.closure {1, I}) 1 I := by
-    intro x
-    rw [AddSubgroup.mem_closure_pair]
-    constructor
-    · rintro ⟨m, n, rfl⟩
-      exact ⟨m, n, by simp⟩
-    · rintro ⟨m, n, rfl⟩
-      exact ⟨m, n, by simp⟩
-  refine ⟨_, 1, I, 1 / 2, one_ne_zero, by simp, h, (h _).2 ⟨1, 0, by norm_num⟩, fun hx => ?_⟩
-  obtain ⟨m, n, hmn⟩ := (h _).1 hx
-  have h1 := congrArg Complex.re hmn
-  simp at h1
-  have h2 : (2 * m : ℝ) = 1 := by rw [← h1]; norm_num
-  have h3 : (2 * m : ℤ) = 1 := by exact_mod_cast h2
-  omega
 
 end GlobalTheory.IndefiniteRowSideFullHecke.JacobiThetaHalfCharacteristic

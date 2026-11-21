@@ -12,14 +12,18 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceSymplecticSelfZeroSplitSupported
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianSelfDualLatticeSpaceFormHermitianNondeg
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSmulOfCommuteHeisenbergLinearModelSchwartzBruhStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityTensorModelVWStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPartialFourierColumnBlockSchwartzBruhatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSmulOfCommuteHeisenbergLinearModelSchwartzBruh
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityTensorModelVW
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPartialFourierColumnBlockSchwartzBruhat
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialFourierSumInverseOfLatticeDepth
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorSymplecticFormAtSplitFinitePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorIsotropicTranslationCharSplitStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlaceIsoReadingComponentsCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMixedLagrangianChartIntegralRowChangeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorIsotropicTranslationCharSplit
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlaceIsoReadingComponentsCharacters
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMixedLagrangianChartIntegralRowChange
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -129,7 +133,7 @@ theorem exists_mixed {k R C : Type} [Field k] [ValuativeRel k] [TopologicalSpace
         χ (pairM (a x) (b u) - pairM (b x) (a u))) :
     ∃ ι, IsLagrModel M ψ v A A' co ι ∧ ∀ φ ∈ GlobalTheory.WeilM.SB _, ∀ m, IsNatDatum ϖ m (ι φ) →
       ι₀ φ = fun Z => fourierSum ψ₀⁻¹ ϖ m P (ι φ) (chart j eA eC g h Z) := by
-  obtain ⟨𝓕, f1, f2, f3, f4⟩ := GlobalTheory.T.exists_partialFourier_columnBlock_schwartzBruhat k R C ψ₀ ϖ P hϖ hψ
+  obtain ⟨𝓕, f1, f2, f3, f4⟩ := _root_.GlobalTheory.ColFourier.exists_blockFourier k R C ψ₀ ϖ P hϖ hψ
   obtain ⟨Θ, hΘ⟩ := exists_homeo j eA eC g h hj.1 hj.2.1
   let ι₁ := LinearMap.funLeft ℂ ℂ Θ.symm ∘ₗ ι₀
   have b1 : Set.BijOn ι₁ (GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v) : Set _) (GlobalTheory.WeilM.SB (Matrix R C k) : Set _) := (bijOn_funLeft Θ).comp hb
@@ -252,7 +256,7 @@ theorem exists_right_translate (hT : IsTriple B G X om om') (dV : G.V.J.det ≠ 
       Acts (evFin F v) (om (1, h)) φ φ₃ ∧ ∀ Z, ι φ₃ Z = c' * ι φ (Z * (invT (c⁻¹ * k * c)).val) := by
   have hcm := hT.base.cm
   have hstd := hT.base.std
-  choose! S hSB hS using GlobalTheory.T.weilRepresentationLocality_tensorModelVW B G X om om' hT v h hh
+  choose! S hSB hS using _root_.GlobalTheory.WeilLocalityVW.locality B G X om om' hT v h hh
   obtain ⟨R, hR0, hR⟩ := GlobalTheory.RestWitness.exists_rest (Fin a × Fin (a + a')) v
   have hinv := (hR 0 (Submodule.zero_mem _)).1
   have hW := GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil
@@ -281,7 +285,7 @@ theorem exists_right_translate (hT : IsTriple B G X om om') (dV : G.V.J.det ≠ 
       pairM (coX t b c u) (coY σ G.V G.W t b c u) = 0 → ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v), ∀ Z,
       ι (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v u) φ) Z =
         GlobalTheory.LatVac.psiAt B.ψ v (pairM Z (coY σ G.V G.W t b c u)) * ι φ (Z + coX t b c u) := fun u hu h0 φ hφ =>
-    (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hcm G.V G.W hT.geo.hV.herm hT.geo.hW.skew dV dW G.M B.ψ hstd t b c u hu h0 φ hφ _ (hsb u φ hφ)
+    (_root_.GlobalTheory.HeisFlip.heis_trans_char hcm G.V G.W hT.geo.hV.herm hT.geo.hW.skew dV dW G.M B.ψ hstd t b c u hu h0 φ hφ _ (hsb u φ hφ)
       (hbr u hu φ)).1 ι hι
   set H : GL (Fin (a + a')) (Fv F v) := c⁻¹ * k * c with hH
   have uV := isUnit_det_map t dV
@@ -328,7 +332,7 @@ theorem exists_right_translate (hT : IsTriple B G X om om') (dV : G.V.J.det ≠ 
   choose uM m1 m2 m3 using exM
   have p0 : ∀ Z : Matrix (Fin a) (Fin (a + a')) (Fv F v), pairM Z 0 = 0 := fun Z => by simp [pairM]
   have p1 : ∀ Z : Matrix (Fin a) (Fin (a + a')) (Fv F v), pairM 0 Z = 0 := fun Z => by simp [pairM]
-  obtain ⟨c', hc'⟩ := GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v)
+  obtain ⟨c', hc'⟩ := _root_.GlobalTheory.LinSchur.eq_smul_of_commute (GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v)
     (GlobalTheory.SchrSB.continuous_psiAt _ hstd.1 _) (GlobalTheory.PsiNontriv.psiAt_ne_one _ hstd _) ι (fun x Y => ι (S x) (Y * H.valᵀ)) hι.bij
     (fun x hx y hy r => by funext Y; simp only [hlin x hx y hy r, map_add, map_smul, Pi.add_apply, Pi.smul_apply])
     (fun C => schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v (uT C)))
@@ -453,7 +457,7 @@ theorem mixed_compare : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G
   have hT := hm.triple
   let v' : Bs.P := ⟨v, hP⟩
   have hτ : splitPrime (Bs.τ v') = w := hti.2.2.2 v' w hw hv
-  obtain ⟨jj, j1, j2, -, j4⟩ := GlobalTheory.T.exists_placeIso_reading_components_characters hL W t i j X h.α h.β (Bs.τ v') w hτ
+  obtain ⟨jj, j1, j2, -, j4⟩ := _root_.GlobalTheory.FlipMatch.exists_placeIso_chars hL W t i j X h.α h.β (Bs.τ v') w hτ
   have back : ∀ {m n : Type} (A : Matrix m n (Kw w)), (A.map jj.symm).map jj = A := fun A => by ext; simp
   let C₁ := GeneralLinearGroup.map (jj.symm : Kw w →+* Fv D.host.F v) (loc w (B.β i (j + 1)))
   let C₂ := -GeneralLinearGroup.map (jj.symm : Kw w →+* Fv D.host.F v) (loc w (B.β (i + 1) j))
@@ -467,7 +471,7 @@ theorem mixed_compare : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G
     congr 1
     · exact back _
     · exact (Matrix.map_neg _ (map_neg jj) _).trans (congrArg Neg.neg (back _))
-  obtain ⟨g, -, cA⟩ := GlobalTheory.T.exists_mixedLagrangian_chart_integral_rowChange hL W B t i j M e Bs Γ X om om' h hT hti v' w hτ jj j1 j2 cc hcc
+  obtain ⟨g, -, cA⟩ := _root_.GlobalTheory.FlipMatch.RowChart.exists_mixChart hL W B t i j M e Bs Γ X om om' h hT hti v' w hτ jj j1 j2 cc hcc
   have hb : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := fun hmem => hst.2 w hw (by
     have e : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) =
         (D.host.d : 𝓞 D.host.E) * ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) := by push_cast; ring
@@ -480,7 +484,7 @@ theorem mixed_compare : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G
   have hA' := hA
   rw [h.ψ] at hA'
   obtain ⟨ι, i1, i2⟩ := exists_mixed (M := Γ.M) (ψ := W.ψ) hS.unif hS.cond j2 hξ j4 (h := invT cc) cA hA'.bij
-    (fun u hu h0 φ hφ φ₁ h₁ ha => (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hT.base.cm Γ.V Γ.W hT.geo.hV.herm hT.geo.hW.skew dV dW Γ.M W.ψ hstd _ _ _ u hu h0
+    (fun u hu h0 φ hφ φ₁ h₁ ha => (_root_.GlobalTheory.HeisFlip.heis_trans_char hT.base.cm Γ.V Γ.W hT.geo.hV.herm hT.geo.hW.skew dV dW Γ.M W.ψ hstd _ _ _ u hu h0
       φ hφ φ₁ h₁ ha).1 ιA hA')
     fun x u hx hu => GlobalTheory.T.tensorSymplecticForm_at_split_finite_place hT.base.cm Γ.V Γ.W hT.geo.hV.herm hT.geo.hW.skew W.ψ _ _ _ x u hx hu
   have h1 := GivenAdm.givenLevel_open hL hw ((i : ℕ), (j : ℕ))

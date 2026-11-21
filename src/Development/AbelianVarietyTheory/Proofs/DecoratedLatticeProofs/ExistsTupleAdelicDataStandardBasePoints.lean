@@ -3,10 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SplitPart
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevChiEqOne
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.XiEqXiOffMul
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsTupleChainAdelicDataStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsTupleChainAdelicData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMemberStepCharts
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsAdelicReadingLastStepTrivialOffLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsPointOfDecoratedLatticeUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsPointOfDecoratedLatticeUnique
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Forms Formalism.UG
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.MixPer GlobalTheory.Core.Rk GlobalTheory.AdForm
 open scoped TensorProduct Classical
@@ -20,7 +21,7 @@ set_option maxHeartbeats 1000000 in
 
 theorem exists_twDat_baseStd : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι), ∃ (Ch : ℕ → Type) (_ : ∀ i, Fintype (Ch i)) (A : TwDat I l Z u a Ch), A.Is ∧ Nonempty (Unique (Ch B.R.m)) ∧ (∀ i, Nonempty (Idx I.sel (I.tup a) (I.idx a) i) → Nonempty (Ch i)) ∧ GlobalTheory.QTw.BaseCommon A ∧ (∀ i, i < B.R.m → ∀ β, A.kb i β = TC.kStd X u (B.R.N i)) ∧ ∀ i, i ≤ B.R.m → ∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), ((B.T u : ℕ) : 𝓞 B.host.F) ∉ v.asIdeal → (i < B.R.m ∨ ¬ I.UnderQ a v) → Formalism.UG.bc (Formalism.UG.prV (E := B.host.E) v) (A.kb i β) = 1 ∧ ∀ i, i < B.R.m → ∀ β, A.kb i β = TC.kStd X u (B.R.N i) := by
   intro B X I hI hP l Z u a
-  obtain ⟨Ch, hF, A, hA, hU, hk⟩ := GlobalTheory.T.exists_tupleChain_adelicData I hI hP l Z u a
+  obtain ⟨Ch, hF, A, hA, hU, hk⟩ := _root_.GlobalTheory.AdForm.exists_twDat I hI hP l Z u a
   obtain ⟨A₁, hA₁, hk₁, hm₁⟩ := GlobalTheory.T.exists_adelicReading_lastStep_trivial_off_level I hI hP l Z u a Ch A hA hU
   have hkb : ∀ i, i ≤ B.R.m → ∀ β β', A₁.kb i β = A₁.kb i β' := by
     intro i hi β β'
@@ -47,7 +48,7 @@ theorem exists_twDat_baseStd : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I
     have e1 := (hA₁.base i hi β).1
     have e2 := (hA₁.base i hi β').1
     rw [hkb i hi β β'] at e1
-    exact GlobalTheory.T.isPointOfDecoratedLattice_unique _ _ _ _ (IsPtOf.of_extTo (I.Q_subset_SQ a) hd e1) (IsPtOf.of_extTo (I.Q_subset_SQ a) hd e2)
+    exact _root_.GlobalTheory.Mem.Col2.PtUniq.isPtOf_unique _ _ _ _ (IsPtOf.of_extTo (I.Q_subset_SQ a) hd e1) (IsPtOf.of_extTo (I.Q_subset_SQ a) hd e2)
   · intro i hi β
     exact (hk₁ i hi β).trans (hk i hi β)
   · intro i hi β v hv hq

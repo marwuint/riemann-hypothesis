@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsConjSplitPointLatticeLinearMap
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCmCurveHomOfPureTypeVectorAnyLevelStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CmCurveHomExistsPureTypeVectorAnyLevelStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCmCurveHomOfPureTypeVectorAnyLevel
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CmCurveHomExistsPureTypeVectorAnyLevel
 
 noncomputable section
 
@@ -33,10 +33,10 @@ theorem exists_lin (h₁ : 1 ≤ D.p + D.q) (h₂ : σ (baseKA l).ρ = H.rt0) (h
   have key : ∀ a : lat hP (((ε : ℤ) : ℂ) * H.rt0), ∃ a' ∈ lat hP' (((ε : ℤ) : ℂ) * H.rt0),
       ∀ z : ℂ, U ≫ F.ex i P (f z • P a) = F.ex i' P' (z • P' a') := by
     rintro ⟨a, ha⟩
-    obtain ⟨φ, -, hφ⟩ := GlobalTheory.T.exists_cmCurve_hom_of_pureType_vector_anyLevel E H D l Xo σ g ty F h₁ h₂ h₃ C i P hP ε a ha
+    obtain ⟨φ, -, hφ⟩ := _root_.GlobalTheory.CompRat.exists_hom_of_pureType_of_level E H D l Xo σ g ty F h₁ h₂ h₃ C i P hP ε a ha
     have hx : ∀ z w, F.ex i P (f (z + w) • P a) = F.ex i P (f z • P a) * F.ex i P (f w • P a) := fun z w => by
       rw [ex_congr_type F hP ε ha (hadd z w), add_smul, F.ex_add i P hP]
-    refine GlobalTheory.T.cmCurveHom_exists_pureTypeVector_anyLevel E H D l Xo σ g ty F h₁ h₂ h₃ C i' P' hP' (io ≫ φ) (fun z => U ≫ F.ex i P (f z • P a)) ε
+    refine _root_.GlobalTheory.CurveHomLiftAnyLevel.exists_pure_vector E H D l Xo σ g ty F h₁ h₂ h₃ C i' P' hP' (io ≫ φ) (fun z => U ≫ F.ex i P (f z • P a)) ε
       (fun z => ?_) (fun z w => ?_) (fun z => ?_)
     · rw [← Category.assoc, hf, Category.assoc, hφ]; rfl
     · show U ≫ _ = (U ≫ _) * (U ≫ _)

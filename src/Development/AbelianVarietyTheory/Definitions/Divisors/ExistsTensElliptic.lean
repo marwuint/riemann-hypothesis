@@ -88,29 +88,4 @@ theorem exists_psi (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {B'
   exact (a.trans (congrArg₂ (· * ·) b hv)).trans
     (formula_trans D W pr hw x y hx z₀ J J₀ hJ hJ₀ (J' x.left) (J₁ x.left) (hJ' _) (hJ₁ _)).symm
 
-theorem exists_tens [IsLocalRing R] [IsNoetherianRing R] (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
-    (hp : ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef) (hd : IsUnit (W + W.transpose).det) :
-    ∃ D' : DegPre R, D'.P.g = r * D.P.g ∧ Nonempty (Tens D D' W) := by
-  obtain ⟨P', pr, hpr, ⟨lim⟩, hg, w, hw⟩ := PowPol.exists_pow_polAV R D.P W hp hd
-  obtain ⟨D₀, rfl, -⟩ := GlobalTheory.SelfUnif.exists_degData GlobalTheory.firstFiveLaws.1.cube (maximalIdeal R) P'
-  let c : (Fin r → D.X) → (𝟙_ _ ⟶ D₀.toPre.P.A) := fun y => lim.lift (Fan.mk _ fun i => D.c (y i))
-  have hc : ∀ y i, c y ≫ pr i = D.c (y i) := fun y i => lim.fac _ ⟨i⟩
-  have hx : ∀ y i, (toUnit (TK R) ≫ c y) ≫ pr i = toUnit (TK R) ≫ D.c (y i) := fun y i => by rw [Category.assoc, hc]
-  choose ps hps hv using fun y : Fin r → D.X =>
-    exists_psi D W D₀.toPre.P.isLB pr hw (toUnit (TK R) ≫ c y) y (hx y)
-  refine ⟨{ D₀.toPre with
-            X := Fin r → D.X
-            addX := inferInstance
-            freeX := inferInstance
-            finX := inferInstance
-            c := c
-            c_add := fun a b => lim.hom_ext fun i => ?_
-            psi := ps
-            psi_gen := hps }, hg,
-    ⟨{ pr := pr, pr_hom := hpr, lim := lim, xe := AddEquiv.refl _, c_pr := hc, w := w, w_gen := hw, psi := hv }⟩⟩
-  have := hpr i.as
-  change c (a + b) ≫ pr i.as = (c a * c b) ≫ pr i.as
-  rw [MonObj.mul_comp, hc, hc, hc]
-  exact D.c_add _ _
-
 end GlobalTheory.Mum.TraitWit

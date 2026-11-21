@@ -81,19 +81,6 @@ def ForPairs (Q : ∀ {n : ℕ} (ε : Fin (n + 1) → Bool) (_ : Fin (n + 1) →
     (ν : Measure (UJ ε')), ν.IsHaarMeasure → Fits ε ε' e → Par ε lam ε' mu B → IsDS ε lam π → IsDS ε' mu σ →
     Q ε lam ε' mu B e π σ ν
 
-def RealPlace : Prop := ForPairs fun ε lam ε' mu B e _ _ _ _ _ _ _ _ π σ ν => HeWord ε lam ε' mu → Out ε ε' e B π σ ν
-
-def Moment : Prop := ForPairs fun {n} ε lam ε' _ B e H H' _ _ _ _ _ _ π σ ν =>
-  ∀ (P : H →L[ℂ] H') (w : H') (κ : ℝ), Intertw ε' e π σ P → ‖w‖ = 1 → ‖ContinuousLinearMap.adjoint P w‖ = 1 → 0 < κ →
-    Integrable (fun h : UJ ε' => ⟪w, σ (um h) w⟫_ℂ) ν →
-    (∀ x : UJ ε', ∫ h : UJ ε', conj ⟪w, σ (um h) w⟫_ℂ * conj ⟪w, σ (um (h⁻¹ * x)) w⟫_ℂ ∂ν = κ * conj ⟪w, σ (um x) w⟫_ℂ) →
-    (∀ a b : H, ∫ h : UJ ε', conj ⟪w, σ (um h) w⟫_ℂ * ⟪b, π (emb e (um h)) a⟫_ℂ ∂ν =
-      κ * (⟪b, ContinuousLinearMap.adjoint P w⟫_ℂ * ⟪ContinuousLinearMap.adjoint P w, a⟫_ℂ)) →
-    ∀ v ∈ lowKSub ε lam π, ‖v‖ = 1 →
-      ∫⁻ g : UJ ε, ENNReal.ofReal (colSq (um g⁻¹) (zi e) * ‖⟪ContinuousLinearMap.adjoint P w, π (um g) v⟫_ℂ‖ ^ 2) ∂(muG ε) ≤
-        ENNReal.ofReal ((8 * ((n : ℝ) + 1) * B) ^ (8 * (n + 1))) *
-          ∫⁻ g : UJ ε, ENNReal.ofReal (‖⟪ContinuousLinearMap.adjoint P w, π (um g) v⟫_ℂ‖ ^ 2) ∂(muG ε)
-
 def WordBd : Prop :=
   ∀ (m : ℕ) (ε : Fin m → Bool) (lam : Fin m → ℝ) (B : ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (π : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)), 2 ≤ m → Formalism.QuantumDeterminants.IsHCParam lam → IsDS ε lam π → (∀ a, |lam a| ≤ B) →
@@ -101,15 +88,6 @@ def WordBd : Prop :=
     ∀ v ∈ lowKSub ε lam π, v ∈ PI.PhMeasCore.smoothVecs (Jm ε) π ∧
       ∀ (S : ℕ) (W : List (Matrix (Fin m) (Fin m) ℂ)), W.length ≤ S → (∀ X ∈ W, hs X ≤ 1) →
         ‖dsigCW ε π W v‖ ≤ (8 * Real.sqrt m * (B + S)) ^ W.length * ‖v‖
-
-def HeBranching : Prop :=
-  ∀ (n : ℕ) (ε : Fin (n + 1) → Bool) (lam : Fin (n + 1) → ℝ) (ε' : Fin n → Bool) (mu : Fin n → ℝ)
-    (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (H H' : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
-    (π : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ → (H →L[ℂ] H)) (σ : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')),
-    Fits ε ε' e → Formalism.QuantumDeterminants.IsHCParam lam → Formalism.QuantumDeterminants.IsHCParam mu → IsDS ε lam π → IsDS ε' mu σ → HeWord ε lam ε' mu →
-    ∃ i : H' →ₗᵢ[ℂ] H, (∀ h : UJ ε', ∀ x, i (σ (um h) x) = π (emb e (um h)) (i x)) ∧
-      ∀ j : H' →L[ℂ] H, (∀ h : UJ ε', ∀ x, j (σ (um h) x) = π (emb e (um h)) (j x)) → ∃ c : ℂ, ∀ x, j x = c • i x
 
 section Tens
 

@@ -31,10 +31,6 @@ def PairConeAlg.Statement : Prop :=
                 (fun _ : Unit => C (pairProjCoord y e φ φ' t ⟨none, m'⟩) * X none))))
           (C (pairProjCoord y e φ φ' t p) * X p.1)
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

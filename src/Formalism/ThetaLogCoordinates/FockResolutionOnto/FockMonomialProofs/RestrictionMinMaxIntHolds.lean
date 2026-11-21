@@ -507,11 +507,6 @@ theorem wtComp_Y [NeZero r] (LL : Letters N) {q : ℕ} (J : Fin q → ℕ) (M : 
 
 end WtComp
 
-section MulX
-variable {p : ℕ} [Fact p.Prime] {N r : ℕ}
-
-end MulX
-
 theorem res_hw {p : ℕ} [Fact p.Prime] {N r : ℕ} (LL : Letters N) (j : ℕ) (ρ : Fin r) (w : Fin r → ℤ) (i : Fin N)
     (e : ℕ) : ∀ x ∈ HWC p LL j (univ.erase ρ) w, resL p (i, ρ) e x ∈ HWC p LL j (univ.erase ρ) w := by
   intro x hx
@@ -540,21 +535,5 @@ theorem restriction_min_max_holds : ResMM := by
     obtain ⟨hhY, hhH⟩ := Submodule.mem_inf.mp hh1
     exact Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨restriction_into_holds p K r LL J M ρ e1 hr hρ hv hHP h hhY,
       res_hw LL (K + 1) ρ w (Fin.last K) 0 h hhH⟩, resL_keep_supp (Fin.last K, ρ) 0 _ h hhW⟩
-
-theorem restriction_min_max_int_holds : ResMMZ := by
-  intro p _ K r _ LL q J M ρ w e1 hr hρ hv hHP hHE hSat x hx hxI
-  obtain ⟨hx1, hxW⟩ := Submodule.mem_inf.mp hx
-  obtain ⟨hxX, hxH⟩ := Submodule.mem_inf.mp hx1
-  obtain ⟨h0, hh0, hh0I, hres⟩ := hSat x hxX hxI
-  obtain ⟨PE, hPE, -, hInt⟩ := hypE_eproj LL ρ e1 hHE (K + 1) le_rfl w
-  have hY := wtComp_Y LL J M w h0 hh0
-  have hW := wtComp_mem (p := p) LL (K + 1) w h0
-  refine ⟨((p : ℚ_[p]) ^ e1) • PE (wtComp p LL (K + 1) w h0), Submodule.mem_inf.mpr
-    ⟨Submodule.smul_mem (MMw p LL J M ρ w) _ (eproj_Y LL J M ρ w e1 hHP PE hPE _ hY hW),
-      hInt _ (Submodule.mem_inf.mpr ⟨(Submodule.mem_inf.mp hY).1, wtComp_int LL (K + 1) w h0 hh0I⟩) hW⟩, ?_⟩
-  change resL p (Fin.last K, ρ) 0 (((p : ℚ_[p]) ^ e1) • PE (wtComp p LL (K + 1) w h0)) = _
-  change resL p (Fin.last K, ρ) 0 h0 = x at hres
-  rw [map_smul, ← eproj_res LL (K + 1) ρ w PE hPE (Fin.last K) 0 _ hW, wtComp_res, hres,
-    wtComp_fix LL (K + 1) w x hxW, eproj_fix LL (K + 1) ρ w PE hPE x (Submodule.mem_inf.mpr ⟨hxH, hxW⟩)]
 
 end Formalism.InvariantFactorPaths.L4

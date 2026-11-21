@@ -110,7 +110,7 @@ theorem exists_unitary_e0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   obtain ⟨b1, b2, b3, b4⟩ := hE_hypOne_basis σ J
   have hX := gramE_pair σ (hypOne J) (q 0) y hxx hxy hyx hyy
   have hY := gramE_pair σ (hypOne J) _ _ b1 b2 b3 b4
-  obtain ⟨g, hgU, hgX⟩ := GlobalTheory.T.witt_extension_global F E σ hCM (M + 2) (hypOne J) hK 2 _ _ (hX.trans hY.symm)
+  obtain ⟨g, hgU, hgX⟩ := _root_.GlobalTheory.CompanionTheory.SW.WittE.witt_tuple F E σ hCM (M + 2) (hypOne J) hK 2 _ _ (hX.trans hY.symm)
     (by rw [hX]; simp [Matrix.det_fin_two_of])
   refine ⟨⟨g, hgU⟩, ?_⟩
   funext a

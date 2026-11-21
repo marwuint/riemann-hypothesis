@@ -1,5 +1,10 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifConjA
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateUniversalFamilyStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateUniversalFamily
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
+import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
+import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
 
 noncomputable section
 
@@ -38,7 +43,7 @@ theorem vecAt_conj {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ}
 
 theorem kUnifConj : KUnifConj := by
   rintro E _ _ _ H D l Xo c Y sm j j' n g q κ ⟨U⟩
-  choose F' hq hσ hform hR using fun k => GlobalTheory.T.conjugate_universal_family E (CMType H) j j' n g (U.Di k).La (U.F k)
+  choose F' hq hσ hform hR using fun k => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.exists_conj_univFam E (CMType H) j j' n g (U.Di k).La (U.F k)
   have hcanc : ∀ {X : Scheme.{0}} {a b : Sp ℂ ⟶ X}, spMap (starRingEnd ℂ) ≫ a = spMap (starRingEnd ℂ) ≫ b → a = b :=
     fun {X a b} e => by rw [← Cj.cj_cj a, e, Cj.cj_cj]
   have hs : spMap (((starRingEnd ℂ).comp κ).comp (algebraMap (𝓞 c.F) c.F)) =

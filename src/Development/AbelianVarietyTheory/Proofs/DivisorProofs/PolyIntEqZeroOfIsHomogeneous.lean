@@ -28,9 +28,6 @@ theorem polyWt_smul (c : ℝ) (F : MvPolynomial ι ℝ) (f : Fin e → ι) :
 
 variable {X : Type*} [TopologicalSpace X]
 
-def combPot (P : ι → LocPot X) (n : ι → ℤ) : LocPot X :=
-  (Finset.univ : Finset ι).toList.foldr (fun i Q => (P i).zsmul (n i) + Q) (LocPot.ofFun fun _ => 0)
-
 def polyInt (A : FinHolAtlas e X) (P : ι → LocPot X) (F : MvPolynomial ι ℝ) (g : X → ℝ) : ℝ :=
   ∑ f : Fin e → ι, polyWt F f * mInt A (P ∘ f) g
 
@@ -53,17 +50,5 @@ def polyIntL (A : FinHolAtlas e X) (P : ι → LocPot X) (g : X → ℝ) : MvPol
 end GlobalTheory.ChernPoly
 
 namespace GlobalTheory.ChernPoly
-
-open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-
-variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ} {ι : Type} [Fintype ι]
-  [DecidableEq ι]
-
-open scoped Classical in
-
-def cxPolyInt (R : ∀ σ : k →+* ℂ, AnRead p σ D) (L : ι → HermLB p) (F : MvPolynomial ι ℝ)
-    (g : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) : ℝ :=
-  ∑ᶠ σ, if h : CompactSpace (CxPts p σ) then
-    (haveI := h; polyInt (R σ).finAtlas (fun i => ((L i).φ σ).locPot) F (g σ)) else 0
 
 end GlobalTheory.ChernPoly

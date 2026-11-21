@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoFiniteTrivialRepUnramifiedColumnPlacesAStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelmerLengthBoundAtPointStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoAnnihilatorAllOfTateDualityEulerCharStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateFinitenessAllOfLocalTateDualityStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelmerLengthBoundAtPoint
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.LargeLevelLemmas
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoAnnihilatorAllOfTateDualityEulerChar
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateFinitenessAllOfLocalTateDuality
 import Formalism.AdmissibleDesigns.RestrictedSevenEightOfFull
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Formalism.GaloisCohomology.LocalTateDualityK
@@ -17,8 +19,8 @@ theorem boundAtPoint_all_localisations_of_objectConditions : GlobalTheory.Publis
   have a51 := h51 i hl0 hl1 r ρ π dc lenRow e' cB hR hA
   obtain ⟨G1, G2, G3, G4, G5, G5x, G6, BK, TB, ROW, LIFT, Cont, SS, Decomp, Eps, Comparison₂, Shape, Font, H2, CFT⟩ := hA
   have TB78 : EmbeddingTypes.admTB i r π dc cB := fun w hw _ C hC => TB w hw C hC
-  exact GlobalTheory.T.globalLatticeIndexTheorem_of_lengthBoundAtPlaces hGAR hLTD hLEC D i r ρ π dc lenRow e' cB G1 G2 G3 G4 G5 G5x G6 BK
-    (GlobalTheory.T.blochKatoAnnihilator_all_of_tateDuality_eulerChar hBK hLTD hLEC D i) Cont Decomp Font (GlobalTheory.T.tateFinitenessAll_of_localTateDuality hLTD D i) Comparison₂ a51
+  exact _root_.GlobalTheory.SelmerBoundAtPoint.main hGAR hLTD hLEC D i r ρ π dc lenRow e' cB G1 G2 G3 G4 G5 G5x G6 BK
+    (_root_.GlobalTheory.BKaRows.bkaAll_of_hypotheses hBK hLTD hLEC D i) Cont Decomp Font (_root_.GlobalTheory.finAll_of_localTateDuality hLTD D i) Comparison₂ a51
     (GlobalTheory.T.unramifiedTrivialH1f_of_decl D i dc) ROW LIFT TB78 hl0 hl1
 
 end GlobalTheory.LocalisationBoundAtPoint

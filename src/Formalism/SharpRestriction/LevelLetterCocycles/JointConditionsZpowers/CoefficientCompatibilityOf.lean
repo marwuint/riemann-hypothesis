@@ -106,34 +106,4 @@ def AbsIrreducibleDistinct (D : D7) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) : Prop :=
   ∀ x, AbsIrrDistinct (repK D.nd i r x)
 
-theorem galois_condition_three_of (D : D7) (i : D.nd.Loc)
-    (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
-    (h32 : Formalism.MainNotions.SumRepresentations.Conclusion41 D) (hr : GoodR D.nd i r)
-    (hdec : Formalism.MainNotions.TruncatedSeriesCountingIdentities.SemisimpleDecomposition (D := D) i r ρ π)
-    (hcont : Continuous (fun g => ((ρ π g : GL (Fin D.R.r) (D.nd.O i)) :
-      Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i))))
-    (hHG : HG D.nd D.naut i) (hN9 : ResidualIrreducibleRankR D) (hB : LitBurnside (G D.host.E D.nd.Om))
-    (hc : AbsIrreducibleDistinct D i r) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG3 (D := D) i r ρ π := by
-  have h2 : ∀ x (g : GE D.nd), (mapM (IsLocalRing.residue (D.nd.O i)) (rO D.nd i r x) g).charpoly =
-      (mapM (IsLocalRing.residue (D.nd.O i)) (rhoO D.nd i ρ π) g).charpoly *
-        ∏ c ∈ Finset.Icc 1 D.R.t,
-          (X - C (IsLocalRing.residue (D.nd.O i) ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i))) := by
-    intro x g
-    have e1 := (((h32 i).2.2 r hr).2.2.1).2 x π g
-    have e2 := congrArg (Polynomial.map (IsLocalRing.residue (D.nd.O i))) (charpoly_of_decomp D i r ρ π hdec g)
-    rw [Polynomial.map_mul, Polynomial.map_prod, ← Matrix.charpoly_map, ← Matrix.charpoly_map] at e2
-    refine e1.trans (e2.trans ?_)
-    congr 1
-    refine Finset.prod_congr rfl fun c _ => ?_
-    simp
-  refine ⟨hc, h2, ?_⟩
-  have hrb : IsRhoBar D.nd i (redRep D.nd i (ρ π)) := by
-    refine ⟨isOpen_ker_redRep D i _ hcont, ?_⟩
-    intro x w hw B σ hB' hσ
-    rw [← (hr x).2.2 w hw B σ hB' hσ, ← Matrix.charpoly_map]
-    exact (h2 x σ).symm
-  have h3 := hB (D.nd.l i) D.R.r _ (hN9 i hHG _ hrb).1
-  exact span_descent (D.naut.kFbar i) (fun g => mapM (IsLocalRing.residue (D.nd.O i)) (rhoO D.nd i ρ π) g) h3
-
 end Formalism.MainNotions.N

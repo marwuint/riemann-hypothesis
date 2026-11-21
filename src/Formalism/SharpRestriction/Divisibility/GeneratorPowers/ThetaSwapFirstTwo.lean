@@ -96,10 +96,6 @@ theorem relabel_jpt {n n' : ℕ} (m : ℕ) (σ : Fin n → Fin n') (i : Fin n) :
 
 end Pts
 
-section Gen
-
-end Gen
-
 section Ser
 
 variable {S : Type} [CommRing S] (d : ℕ)
@@ -155,34 +151,7 @@ theorem cc_psIn {n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (f : PS S n d) :
        rw [cc_aeval _ (fun p => by simp)]
        exact cc_psTrunc m f)
 
-theorem jetSubstP_congr {κ κ' : Type} (m : ℕ) (φ φ' : κ → MvPolynomial κ' S)
-    (hφ : ∀ i, constantCoeff (φ i) = 0) (hφ' : ∀ i, constantCoeff (φ' i) = 0)
-    (h : ∀ i, Ideal.Quotient.mk (orig S κ' ^ (m + 1)) (φ i) = Ideal.Quotient.mk _ (φ' i)) :
-    jetSubstP m φ = jetSubstP m φ' := by
-  refine DFunLike.ext _ _ fun x => ?_
-  obtain ⟨P, rfl⟩ := Ideal.Quotient.mk_surjective (I := orig S κ ^ (m + 1)) x
-  simp only [jetSubstP_mk_eq_mk_aeval_sub_C, hφ, hφ', map_zero, sub_zero]
-  exact DFunLike.congr_fun (MvPolynomial.ringHom_ext
-    (f := (Ideal.Quotient.mk (orig S κ' ^ (m + 1))).comp (aeval φ).toRingHom)
-    (g := (Ideal.Quotient.mk (orig S κ' ^ (m + 1))).comp (aeval φ').toRingHom)
-    (fun r => by simp) (fun i => by simpa using h i)) P
-
 end Ser
-
-section Comm
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
-variable {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G)
-
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt)
-
-abbrev L3 (m : ℕ) (a b c : Fin 3) : jOG x0 d m 3 ⟶ t.G ⊗ (t.G ⊗ t.G) :=
-  lift (jptG t x0 d x m a) (lift (jptG t x0 d x m b) (jptG t x0 d x m c))
-
-abbrev Th3 (m : ℕ) (a b c : Fin 3) :=
-  LB.pullGen t.PP.L (thφ t.G (x3 t.G)) thε t.cub.t (L3 t x0 d x m a b c).left
-
-end Comm
 
 section AxTools
 

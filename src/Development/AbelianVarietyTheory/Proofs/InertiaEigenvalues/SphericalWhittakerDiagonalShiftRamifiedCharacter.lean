@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CondExpEqZeroO
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnrOutside
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhitMulLocGLDiagPowOfFixed
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhittakerEqZeroOfNotAntitoneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhittakerEqZeroOfNotAntitone
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
 
 noncomputable section
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep Formalism.UG GlobalTheory.LFun
@@ -143,7 +144,7 @@ theorem main_of_fixed (m : ℕ) (π : CuspSub E (m + 1)) (w : HeightOneSpectrum 
     by_cases hanti : Antitone ν
     · have hpos : ∀ i, 0 ≤ ν i := fun i => hν.trans (hanti (Fin.le_last i))
       have hsat := hα.2 φ hφ h0
-      have hmain := GlobalTheory.T.shintani_formula_alt E w (m + 1) _ hψ (f φ) α hN hK ?_ ϖ hϖ (fun i => (ν i).toNat)
+      have hmain := _root_.GlobalTheory.JSW.shintani_formula E w (m + 1) _ hψ (f φ) α hN hK ?_ ϖ hϖ (fun i => (ν i).toNat)
       · rw [GlobalTheory.RSCell.sphZ, if_pos hanti, tD_eq_diagPow ϖ ν hpos]
         exact hmain
       · intro ϖ' hϖ' j hj
@@ -165,7 +166,7 @@ theorem main_of_fixed (m : ℕ) (π : CuspSub E (m + 1)) (w : HeightOneSpectrum 
         have h2 := Int.toNat_of_nonneg (hpos j)
         simp only [ν'] at this h1 h2
         omega
-      have hz := GlobalTheory.T.whittaker_diagonal_eq_zero_of_not_antitone E w (m + 1) _ hψ (fun h => f φ (h * z))
+      have hz := _root_.GlobalTheory.JSW.whittaker_eq_zero_of_not_antitone E w (m + 1) _ hψ (fun h => f φ (h * z))
         (fun u hu h => by simp only [mul_assoc]; exact hN u hu (h * z))
         (fun h k hk => by
           show f φ (h * k * z) = f φ (h * z)

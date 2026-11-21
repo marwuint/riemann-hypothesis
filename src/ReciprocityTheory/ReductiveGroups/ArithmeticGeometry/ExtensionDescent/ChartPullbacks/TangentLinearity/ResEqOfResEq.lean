@@ -102,14 +102,6 @@ lemma corr_pull_comp {φ : K → (Y ⟶ X)} {ε : K → ℤ} (c : LB.Gen (LB.Lin
   rw [pullGen_s_val, pullGen_s_val, pullGen_s_val]
   exact (appLE_appLE_lemma_2 g1 g2 _ _ _ _).trans (appLE_res_lemma_3 (g2 ≫ g1) _ _ _).symm
 
-lemma corr_pull_one (h : Z ⟶ Y) :
-    LB.Gen.Corr L _ _ PEmpty.elim PEmpty.elim (LB.pullGen L (Y := Y) (K := PEmpty) PEmpty.elim
-      PEmpty.elim (LB.oneGen L) h) (LB.oneGen L) := by
-  intro j j' _ _ _
-  delta LB.pullGen LB.oneGen
-  simp only [map_one]
-  exact (res_one_lemma _).trans (res_one_lemma _).symm
-
 lemma appLE_one {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y)
     (hC : LB.Gen.Corr L _ ε PEmpty.elim PEmpty.elim (LB.pullGen L φ ε t h) (LB.oneGen L))
     (j : K → L.ι) (hj : LB.Coh L (fun k => h ≫ φ k) j) (V : Z.Opens)

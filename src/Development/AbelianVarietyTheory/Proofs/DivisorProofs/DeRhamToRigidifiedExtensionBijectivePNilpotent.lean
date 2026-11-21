@@ -11,11 +11,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InjectiveOfDualMapS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveOfRangeSupSmulTopEqTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OmegaLevelBijectiveOfPowEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjectiveOfPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieCompHodgeToOmegaEqLinearFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusCanonicalLiftPrimitiveHodgeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHodgeFiltrationToPDivOmegaLinearMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveHodgeToOmegaSpanModMaximalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDeRhamClassOfRigidifiedExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieCompHodgeToOmegaEqLinearForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusCanonicalLiftPrimitiveHodge
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHodgeFiltrationToPDivOmegaLinearMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveHodgeToOmegaSpanModMaximal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDeRhamClassOfRigidifiedExtension
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct WithConv
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap epsR IsTangent IsGrpPullback)
 open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB CubicalStr Theta thφ thε thK x3)
@@ -34,7 +34,7 @@ theorem bijective_of_isCan_of_isNilpotent_of_hodgeDeRham : GlobalTheory.Publishe
   obtain ⟨hLie, hCompl, hFfin, hFproj, -⟩ := hHo R A g hA hg
   have hO : Function.Surjective (toH1O (A.hom ≫ 𝟙 _)) :=
     GlobalTheory.PtExt.toH1O_surjective_of_abelian hH R A g hA hg
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_hodgeFiltration_to_pDivOmega_linearMap p R N hN A hA G t
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.PtExt.exists_hodge_to_omega p R N hN A hA G t
 
   haveI : Module.Finite R (Cot R (G.A N)) := .of_surjective _ (AugCot.d_surjective _)
   haveI : Module.Finite R G.omega :=
@@ -44,23 +44,23 @@ theorem bijective_of_isCan_of_isNilpotent_of_hodgeDeRham : GlobalTheory.Publishe
 
   have hψs : Function.Surjective ψ :=
     GlobalTheory.surjective_of_range_sup_smul_top_eq_top R _ G.omega ψ
-      (GlobalTheory.T.primitive_hodge_to_omega_span_mod_maximal hH p R N hN A g hA hg G t ψ hψ)
+      (_root_.GlobalTheory.PtExt.psi_sup_smul_top_eq_top hH p R N hN A g hA hg G t ψ hψ)
   have hψi : Function.Injective ψ := by
     refine GlobalTheory.injective_of_dualMap_surjective_of_projective R _ G.omega ψ fun l => ?_
-    obtain ⟨x, hx⟩ := GlobalTheory.T.exists_lie_comp_hodgeToOmega_eq_linearForm p R N hN A hA hLie hCompl G t ψ hψ l
+    obtain ⟨x, hx⟩ := _root_.GlobalTheory.PtExt.exists_lie_comp_psi_eq p R N hN A hA hLie hCompl G t ψ hψ l
     exact ⟨x, LinearMap.ext fun c => hx c⟩
 
   have hLF : ∀ c : PrimitiveSubmodule A, L c.1 = G.rigOfOmega (ψ c) := fun c =>
     GlobalTheory.PtExt.isCan_unique R A p G t c.1 hA _ _ (hL c.1) (hψ c)
   refine ⟨(injective_iff_map_eq_zero L).2 fun c hc => ?_, fun x => ?_⟩
   · have hcF : c ∈ PrimitiveSubmodule A :=
-      GlobalTheory.T.mem_primitiveSubmodule_of_isCan_of_rigToExt_eq_zero p R N hN A hA G t c (L c) (hL c) (by rw [hc, map_zero])
+      _root_.GlobalTheory.PtExt.mem_F1prim_of_rigToExt_eq_zero_of_pow_eq_zero p R N hN A hA G t c (L c) (hL c) (by rw [hc, map_zero])
     have h1 : G.rigOfOmega (ψ ⟨c, hcF⟩) = 0 := by rw [← hLF ⟨c, hcF⟩]; exact hc
     have h2 : ψ ⟨c, hcF⟩ = 0 :=
       PDivGroup.rigOfOmega_injective_of_pow p R N hN G (by rw [h1, map_zero])
     have h3 : (⟨c, hcF⟩ : PrimitiveSubmodule A) = 0 := hψi (by rw [h2, map_zero])
     exact congrArg Subtype.val h3
-  · obtain ⟨c, x', hcx', hx'⟩ := GlobalTheory.T.exists_deRham_class_of_rigidified_extension p R N hN A hA hAll hO G t x
+  · obtain ⟨c, x', hcx', hx'⟩ := _root_.GlobalTheory.PtExt.exists_isCan_rigToExt_eq p R N hN A hA hAll hO G t x
     have hx'L : x' = L c := GlobalTheory.PtExt.isCan_unique R A p G t c hA _ _ hcx' (hL c)
     have hd : G.rigToExt (x - L c) = 0 := by rw [map_sub, ← hx'L, hx', sub_self]
     obtain ⟨w, hw⟩ := (G.exact_rigOfOmega_rigToExt (x - L c)).1 hd

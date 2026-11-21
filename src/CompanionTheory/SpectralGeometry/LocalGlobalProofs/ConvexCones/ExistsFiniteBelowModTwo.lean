@@ -1,7 +1,7 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DicksonExistsFiniteSubfamilyBelowStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.FinitePosDefFormSublevelStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.FinitePosDefFormSublevel
 
 set_option autoImplicit false
 
@@ -81,7 +81,7 @@ theorem finite_isMin2 : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] [M
     ?_, ?_⟩
   · refine Set.finite_iUnion fun S => ?_
     split_ifs with hpos
-    · exact GlobalTheory.T.finite_pos_def_form_sublevel X (Q S) (fun y z => by
+    · exact _root_.GlobalTheory.CompanionTheory.Ar.Fan.sublevel_finite X (Q S) (fun y z => by
         rw [hQ, hQ]
         exact Finset.sum_congr rfl fun i _ => hsym i y z) hpos _
     · exact Set.finite_empty

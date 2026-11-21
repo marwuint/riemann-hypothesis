@@ -45,19 +45,6 @@ def lineDataHodge (II : IntersectionSystem)
 def lineDataHodgeZero : ComponentDataHodge zeroSystem Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) :=
   lineDataHodge zeroSystem fun _ _ => le_rfl
 
-theorem finrank_lineDataHodge_F (II : IntersectionSystem) (hII) :
-    Module.finrank Ω ((lineDataHodge II hII).F ()) = 1 := by
-  show Module.finrank Ω (Submodule.span Ω ((Pi.basisFun Ω (Fin 2)) '' {i | (i : ℕ) < 1})) = 1
-  have : (Pi.basisFun Ω (Fin 2)) '' {i | (i : ℕ) < 1} = {Pi.basisFun Ω (Fin 2) 0} := by
-    ext v
-    simp only [Set.mem_image, Set.mem_setOf_eq, Set.mem_singleton_iff]
-    constructor
-    · rintro ⟨i, hi, rfl⟩
-      rw [show i = 0 from Fin.ext (Nat.lt_one_iff.mp hi)]
-    · rintro rfl
-      exact ⟨0, by simp, rfl⟩
-  rw [this, finrank_span_singleton ((Pi.basisFun Ω (Fin 2)).ne_zero 0)]
-
 end Line
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

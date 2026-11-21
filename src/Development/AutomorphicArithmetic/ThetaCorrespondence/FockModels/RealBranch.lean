@@ -1,5 +1,7 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.BranchInput
-import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.FunctionalsSeparateFromRealInput
+import Mathlib
+import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.BranchPeriod
+import Development.AutomorphicArithmetic.ThetaCorrespondence.BesselModels.Separate
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule
 import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.WeightOccurrence.Occ
 import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.SchurEigenProjections.SeedBaseCases.SeedBOf
@@ -233,9 +235,5 @@ theorem realInputE_holds : Branch.RealInputE :=
     (Branch.projLarge_of (PositivityTheory.RgHe.A.Pf.seedB_of PositivityTheory.RgHe.LowestKTypeModel.seed PositivityTheory.RgHe.occ)
       (PositivityTheory.RgHe.A.Pf.bigProjP PositivityTheory.RgHe.A.Pf.momentP CompanionTheory.Lime.T3.analytic_estimates))
     (Branch.eigMap_of GlobalTheory.CompanionTheory.RgHeA.eigA GlobalTheory.CompanionTheory.RgHeA.TMapPf.tMap)
-
-theorem functionalsSeparate_free (P : GlobalTheory.FunPr.Hypotheses₂) (hH : GlobalTheory.Hk3.HoweUnram)
-    (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent) : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate :=
-  functionalsSeparate_of_input P hH hSW realInputE_holds
 
 end UpperTheory.Lit

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjectionStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeEigenProjections
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 
 noncomputable section
@@ -68,7 +68,7 @@ theorem eigComp_eq_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain ⟨N, a, c, h⟩ := exists_coeffs s
   refine ⟨N, a, c, ?_⟩
   intro g Λ _ _ R z
-  obtain ⟨-, -, hs, hsum, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
+  obtain ⟨-, -, hs, hsum, -⟩ := _root_.LevelTowerAlt.riemann_lattice_eigen_projections E g Λ Unit R
   have hB : ∀ (b : 𝓞 E) (t : E →+* ℂ), R.B b (eigComp R.B (t.comp (algebraMap (𝓞 E) E)) z) =
       t (algebraMap (𝓞 E) E b) • eigComp R.B (t.comp (algebraMap (𝓞 E) E)) z := by
     intro b t

@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorFundamentalExactSequenceCrystalline
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlochKatoCocycleOfCrysDeRhamPair
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineCoboundaryLift
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBoundsCrystallineDeRhamConcreteRingsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBoundsCrystallineDeRhamConcreteRings
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 
 noncomputable section
@@ -346,7 +346,7 @@ theorem h1f_finrank : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAin
             finrank LL ↥(DdR (P.PD K) A.ρ ⊓ FilV (P.PD K) (LL := LL) (V := A.V) 0)) := by
   intro l _ P AI hT K LL _ _ _ O _ _ hO A hdr
   have hfs := GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI hT K LL A.V
-  have hfont := GlobalTheory.T.fontaine_bounds_crystalline_deRham_concrete_rings l P AI hT K LL O hO A
+  have hfont := _root_.GlobalTheory.Per.FontaineTied.fontCore_all_of_tied l P AI hT K LL O hO A
   exact H1f_dim_formula (P.PD K) A.ρ A.cont hfs.2
     (fun d₁ h₁ d₂ h₂ => GlobalTheory.FundDel.connecting_cocycle l P AI hT K LL O hO A d₁ h₁ d₂ h₂)
     (GlobalTheory.CobCrisLift.coboundary_lift l P AI hT K LL O hO A hdr) hfont.1.1 hfont.2.1.1

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteEtalePointOfExt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpPullbackPointDescendsAlgClosedSubfieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpPullbackPointDescendsAlgClosedSubfield
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsMulEquivPointsOfIsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -70,7 +70,7 @@ theorem pulledObj_descends_with_points : ∀ {E : Type} [Field E] [NumberField E
       · rw [Category.assoc, h₁, (hc' _).2.1]
       · rw [Category.assoc, hθ.1.w, ← Category.assoc, hxs, (hc' _).1]; simp
     have hM' : 0 < l.M' := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
-    obtain ⟨y₀, hy₀⟩ := GlobalTheory.T.grpPullback_point_descends_algClosed_subfield K k₀ hk₀ B₀ o'.t.G (θ ≫ π₀) hB₀ h1 l.M' hM' xp (c₀ (e.symm y))
+    obtain ⟨y₀, hy₀⟩ := _root_.GlobalTheory.AlgClosedDescent.grpPullback_point_descends K k₀ hk₀ B₀ o'.t.G (θ ≫ π₀) hB₀ h1 l.M' hM' xp (c₀ (e.symm y))
       (by rw [← Category.assoc, hsec, (hc' _).2.2])
     exact ⟨y₀, hy₀⟩
 

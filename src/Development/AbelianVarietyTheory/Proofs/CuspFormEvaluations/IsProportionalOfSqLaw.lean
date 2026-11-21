@@ -21,13 +21,6 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {g : ℕ}
 
-def latMult (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (a b : Fin g → ℝ) (l : X.Λ) : ℂ :=
-  canMult a b (fun i => bas.symm l (Sum.inl i)) (fun i => bas.symm l (Sum.inr i))
-
-def IsMatched (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (a b : Fin g → ℝ)
-    (bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (a' b' : Fin g → ℝ) : Prop :=
-  IsSympl X bas ∧ IsSympl X bas' ∧ ∀ l, latMult X bas a b l = latMult X bas' a' b' l
-
 def chgMat (bas bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ :=
   LinearMap.toMatrix' (bas'.trans bas.symm).toLinearMap
 
@@ -108,35 +101,6 @@ theorem canFn_entire (a b : Fin g → ℝ) : Differentiable ℂ (canFn X bas idx
   rw [hf]
   exact (GlobalTheory.CanTh.differentiable_canTh (tauMat_im_posDef idx hs hx) a b).comp
     (LinearMap.toContinuousLinearMap (hMat X bas idx x).mulVecLin).differentiable
-
-theorem exists_canFn_ne_zero (a b : Fin g → ℝ) : ∃ z, canFn X bas idx a b x z ≠ 0 := by
-  by_contra hc
-  push_neg at hc
-  apply GlobalTheory.CanTh.canTh_ne_zero (tauMat_isSymm idx hs hx) (tauMat_im_posDef idx hs hx) a b
-  funext ζ
-  have hz := hc ((hMat X bas idx x)⁻¹ *ᵥ ζ)
-  rwa [canFn_eq_canTh_mulVec, Matrix.mulVec_mulVec,
-    Matrix.mul_nonsing_inv _ (isUnit_det_hMat idx hs hx), Matrix.one_mulVec] at hz
-
-theorem canFn_add_per (a b : Fin g → ℝ) (l : X.Λ) (z : Fin g → ℂ) :
-    canFn X bas idx a b x (z + per X x l ∘ idx) = latMult X bas a b l *
-      cexp (π * hermForm (Hm X bas idx x) z (per X x l ∘ idx) +
-        π / 2 * hermForm (Hm X bas idx x) (per X x l ∘ idx) (per X x l ∘ idx)) *
-      canFn X bas idx a b x z := by
-  obtain ⟨c, rfl⟩ := bas.surjective l
-  have hc : bas c = bas (Sum.elim (fun i => c (Sum.inl i)) (fun i => c (Sum.inr i))) := by
-    congr 1
-    ext j
-    cases j <;> rfl
-  have hp : hMat X bas idx x *ᵥ (per X x (bas c) ∘ idx) =
-      (fun i => ((c (Sum.inl i) : ℤ) : ℂ)) + tauMat X bas idx x *ᵥ fun i => ((c (Sum.inr i) : ℤ) : ℂ) := by
-    rw [hc]
-    exact hMat_mulVec_per_bas idx hs hx _ _
-  rw [canFn_eq_canTh_mulVec, canFn_eq_canTh_mulVec, Matrix.mulVec_add, hermForm_Hm, hermForm_Hm, hp,
-    GlobalTheory.CanTh.canTh_add_period (tauMat_isSymm idx hs hx) (tauMat_im_posDef idx hs hx) a b
-      (fun i => c (Sum.inl i)) (fun i => c (Sum.inr i)) rfl]
-  simp only [latMult, LinearEquiv.symm_apply_apply]
-  rfl
 
 theorem canFn_translate (a b : Fin g → ℝ) (u : Fin g ⊕ Fin g → ℝ) {y : Fin g → ℂ}
     (hy : y = perCx X bas idx x fun s => (u s : ℂ)) (z : Fin g → ℂ) :
@@ -362,38 +326,6 @@ theorem exists_sq_law_zero : ∃ (k k' : Fin g → ℤ) (c : ℂ), c ^ 4 = 1 ∧
 
 end Symplectic
 
-theorem exists_int_of_canMult_eq {a b a' b' : Fin g → ℝ}
-    (h : ∀ m n, canMult a b m n = canMult a' b' m n) :
-    ∃ n m : Fin g → ℤ, a' = a + (fun i => (n i : ℝ)) ∧ b' = b + fun i => (m i : ℝ) := by
-  have hπ : (2 * π * I : ℂ) ≠ 0 := by simp [Real.pi_ne_zero, Complex.I_ne_zero]
-  have hd : ∀ (c : Fin g → ℝ) (i : Fin g), (c ⬝ᵥ fun j => ((Pi.single i (1 : ℤ) : Fin g → ℤ) j : ℝ)) = c i := by
-    intro c i
-    simp [dotProduct, Pi.single_apply]
-  have hz : ∀ c : Fin g → ℝ, (c ⬝ᵥ fun _ => (0 : ℝ)) = 0 := fun c => by simp [dotProduct]
-  have ha : ∀ i, ∃ k : ℤ, a' i = a i + k := by
-    intro i
-    have e := h (Pi.single i 1) 0
-    simp only [canMult, hd, hz, dotProduct_zero, Pi.zero_apply, Int.cast_zero, Complex.ofReal_zero] at e
-    obtain ⟨k, hk⟩ := Complex.exp_eq_exp_iff_exists_int.1 e
-    refine ⟨-k, ?_⟩
-    have h2 : ((a' i : ℝ) : ℂ) * (2 * π * I) = ((a i + ((-k : ℤ) : ℝ) : ℝ) : ℂ) * (2 * π * I) := by
-      push_cast
-      linear_combination -hk
-    exact_mod_cast mul_right_cancel₀ hπ h2
-  have hb : ∀ i, ∃ k : ℤ, b' i = b i + k := by
-    intro i
-    have e := h 0 (Pi.single i 1)
-    simp only [canMult, hd, hz, zero_dotProduct, Pi.zero_apply, Int.cast_zero, Complex.ofReal_zero] at e
-    obtain ⟨k, hk⟩ := Complex.exp_eq_exp_iff_exists_int.1 e
-    refine ⟨k, ?_⟩
-    have h2 : ((b' i : ℝ) : ℂ) * (2 * π * I) = ((b i + ((k : ℤ) : ℝ) : ℝ) : ℂ) * (2 * π * I) := by
-      push_cast
-      linear_combination hk
-    exact_mod_cast mul_right_cancel₀ hπ h2
-  choose n hn using ha
-  choose m hm using hb
-  exact ⟨n, m, funext hn, funext hm⟩
-
 variable (X) in
 
 def IsProportional (κ : ℂ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (a b : Fin g → ℝ)
@@ -404,16 +336,6 @@ def IsProportional (κ : ℂ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ)
 section Proportional
 
 variable {idx} {bas bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {κ : ℂ} {a b a' b' : Fin g → ℝ}
-
-theorem IsProportional.add_int (h : IsProportional X idx κ bas a b bas' a' b') (n m : Fin g → ℤ) :
-    IsProportional X idx (κ * cexp (2 * π * I * ((a' ⬝ᵥ fun i => (m i : ℝ) : ℝ) : ℂ)) ^ 2) bas a b
-      bas' (a' + fun i => (n i : ℝ)) (b' + fun i => (m i : ℝ)) := by
-  intro x hx
-  obtain ⟨μ, hμ, hf⟩ := h x hx
-  refine ⟨cexp (2 * π * I * ((a' ⬝ᵥ fun i => (m i : ℝ) : ℝ) : ℂ)) * μ, ?_, fun z => ?_⟩
-  · linear_combination (cexp (2 * π * I * ((a' ⬝ᵥ fun i => (m i : ℝ) : ℝ) : ℂ))) ^ 2 * hμ
-  · rw [canFn_eq_canTh_mulVec, GlobalTheory.CanTh.canTh_add_int, ← canFn_eq_canTh_mulVec, hf z]
-    ring
 
 variable (hs : IsSympl X bas) (hs' : IsSympl X bas')
 include hs hs'
@@ -464,43 +386,6 @@ theorem IsProportional.translate (h : IsProportional X idx κ bas a b bas' a' b'
   linear_combination (translConst b (u ∘ Sum.inr) (u ∘ Sum.inl) /
     translConst b' (u' ∘ Sum.inr) (u' ∘ Sum.inl)) ^ 2 * hμ
 
-private theorem chartRestrictionData_dom_nonempty : X.dom.Nonempty := by
-  choose P hP hG using X.signature
-  refine ⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩
-  have hd : dmin X.Gm (fun τ => P τ) τ i = ∏ j : Fin i, ((sgn X.p0 j : ℝ) : ℂ) := by
-    unfold dmin lminor
-    rw [show mat (fun τ => P τ) τ = P τ from rfl, hG τ,
-      show Fin.castLE (Nat.le_of_lt_succ i.isLt) = ⇑(Fin.castLEEmb (Nat.le_of_lt_succ i.isLt)) from rfl,
-      Matrix.submatrix_diagonal_embedding, Matrix.det_diagonal]
-    rfl
-  have h1 : ∀ a, sgn X.p0 a * sgn X.p0 a = 1 := fun a => by
-    unfold sgn
-    split_ifs <;> norm_num
-  rw [hd, ← Complex.ofReal_prod, Complex.ofReal_re, Fin.prod_univ_eq_prod_range (fun j => sgn X.p0 j), psgn,
-    ← Finset.prod_mul_distrib, Finset.prod_congr rfl (fun a _ => h1 a), Finset.prod_const_one]
-  exact one_pos
-
-theorem IsProportional.isMatched (h : IsProportional X idx κ bas a b bas' a' b') :
-    IsMatched X bas a b bas' a' b' := by
-  refine ⟨hs, hs', fun l => ?_⟩
-  obtain ⟨x, hx⟩ := chartRestrictionData_dom_nonempty hs hs'
-  obtain ⟨μ, -, hf⟩ := h x hx
-  have hμ0 : μ ≠ 0 := by
-    rintro rfl
-    obtain ⟨w, hw⟩ := exists_canFn_ne_zero idx hs' hx a' b'
-    exact hw (by rw [hf w, zero_mul])
-  obtain ⟨z, hz⟩ := exists_canFn_ne_zero idx hs hx a b
-  have e1 := canFn_add_per idx hs hx a b l z
-  have e2 := canFn_add_per idx hs' hx a' b' l z
-  rw [hf, hf, hermForm_Hm_indep idx hs hs' hx, hermForm_Hm_indep idx hs hs' hx, e1] at e2
-  have key : ∀ {L1 L2 E F : ℂ}, μ * (L1 * E * F) = L2 * E * (μ * F) → E ≠ 0 → F ≠ 0 → L1 = L2 := by
-    intro L1 L2 E F he hE hF
-    have h0 : (L1 - L2) * (μ * E * F) = 0 := by linear_combination he
-    rcases mul_eq_zero.1 h0 with h1 | h1
-    · exact sub_eq_zero.1 h1
-    · exact absurd h1 (mul_ne_zero (mul_ne_zero hμ0 hE) hF)
-  exact key e2 (Complex.exp_ne_zero _) hz
-
 variable (idx) in
 
 theorem exists_isProportional : ∃ k k' : Fin g → ℤ, ∀ u u' : Fin g ⊕ Fin g → ℝ,
@@ -519,31 +404,6 @@ theorem exists_isProportional : ∃ k k' : Fin g → ℤ, ∀ u u' : Fin g ⊕ F
   refine ⟨_, ?_, hpt⟩
   rw [norm_mul, norm_pow, norm_div, GlobalTheory.CanTh.norm_translConst, GlobalTheory.CanTh.norm_translConst, hcn]
   norm_num
-
-omit hs hs' in
-variable (idx) in
-
-theorem IsMatched.exists_isProportional (h : IsMatched X bas a b bas' a' b') :
-    ∃ κ : ℂ, ‖κ‖ = 1 ∧ IsProportional X idx κ bas a b bas' a' b' := by
-  obtain ⟨hs, hs', hl⟩ := h
-  obtain ⟨k, k', hk⟩ := GlobalTheory.ThFr.exists_isProportional idx hs hs'
-  have hu : IsSamePt X bas bas' (Sum.elim b a)
-      ((chgMat X bas' bas).map (Int.cast : ℤ → ℝ) *ᵥ Sum.elim b a) := IsSamePt.symm rfl
-  obtain ⟨κ, hκ, hp⟩ := hk _ _ hu
-  have hm := (hp.isMatched hs hs').2.2
-  have hcm : ∀ m n, canMult ((fun i => (k i : ℝ) / 2) +
-        ((chgMat X bas' bas).map (Int.cast : ℤ → ℝ) *ᵥ Sum.elim b a) ∘ Sum.inr)
-      ((fun i => (k' i : ℝ) / 2) + ((chgMat X bas' bas).map (Int.cast : ℤ → ℝ) *ᵥ Sum.elim b a) ∘ Sum.inl)
-      m n = canMult a' b' m n := by
-    intro m n
-    have e := (hm (bas' (Sum.elim m n))).symm.trans (hl (bas' (Sum.elim m n)))
-    simpa only [latMult, LinearEquiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr] using e
-  obtain ⟨n, m, hn, hm'⟩ := exists_int_of_canMult_eq hcm
-  have hq := hp.add_int n m
-  rw [hn, hm']
-  refine ⟨_, ?_, hq⟩
-  rw [norm_mul, norm_pow, hκ, Complex.norm_exp]
-  simp
 
 end Proportional
 

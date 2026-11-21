@@ -12,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLocalValueOfQu
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IoConstOfMem
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GnFixZeta
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsReparametrizationByTowerParameter
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelLogCoordsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelLogCoords
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPrimitiveExpansionQuotientLevelOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesNotZeroDivisorModPrimePow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesInvertibleModPrimePow
@@ -486,9 +486,9 @@ theorem GlobalTheory.pair_edge_dlog : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → 
   obtain ⟨ψ, hψ⟩ := exists_isReb p Ωl hclo T L
   obtain ⟨io, hio⟩ := GlobalTheory.IoEx.exists_isIo ε X hj p hp2 A hpA Ωl hclo T j hcusp L ψ hψ
   obtain ⟨ι, hι⟩ := GlobalTheory.K5.Basic.exists_isEmb T L
-  obtain ⟨u, αa, βa, za, za', hdla, hua, hEva, hαa, hβa⟩ := GlobalTheory.T.siegel_logCoords_alt ε X hj p hp2 A hpA Ωl hclo T j hcusp L ψ io hL1 hψ hio
+  obtain ⟨u, αa, βa, za, za', hdla, hua, hEva, hαa, hβa⟩ := _root_.GlobalTheory.SiegLog.siegel_logCoords ε X hj p hp2 A hpA Ωl hclo T j hcusp L ψ io hL1 hψ hio
     ι hι N c A₁ a₂ g ha₂ hNa hN hNp hc1 hcc hA₁ ⟨e a, he a⟩ ha
-  obtain ⟨v, αb, βb, zb, zb', hdlb, hvb, hEvb, hαb, hβb⟩ := GlobalTheory.T.siegel_logCoords_alt ε X hj p hp2 A hpA Ωl hclo T j hcusp L ψ io hL1 hψ hio
+  obtain ⟨v, αb, βb, zb, zb', hdlb, hvb, hEvb, hαb, hβb⟩ := _root_.GlobalTheory.SiegLog.siegel_logCoords ε X hj p hp2 A hpA Ωl hclo T j hcusp L ψ io hL1 hψ hio
     ι hι N d B₁ b₂ h hb₂ hNb hN hNp hd1 hdc hB₁ ⟨e b, he b⟩ hb
   obtain ⟨E, hEK⟩ := extend_to_closure K Ω' Ωl (io.comp (e.codRestrict (KT X (p ^ L)) he))
   replace hEK : ∀ k, E (algebraMap K Ω' k) = io ⟨e k, he k⟩ := hEK

@@ -209,10 +209,6 @@ theorem IrrW.lpDim_pos (z : IrrW h) : 0 < z.1.lpDim := by
   rw [WD.lpDim_mk]
   exact finrank_pos
 
-def IrrW.ofRep (ρ : Representation ℂ (Weil h) V) (hρ : IsSmooth ρ) (hirr : ρ.IsIrreducible) :
-    IrrW h :=
-  ⟨WD.mk (wdOfRep ρ hρ inferInstance), (isIrrWD_mk _).2 hirr⟩
-
 theorem isIrrWD_lpTwist {x : WD h} (hx : IsIrrWD x) (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) :
     IsIrrWD (x.lpTwist χ hχ) := by
   obtain ⟨n, a, rfl, ha⟩ := hx
@@ -319,17 +315,6 @@ theorem absChar_of_mem_frobCoset (s : ℂ) {r : ℕ} {τ : Weil h} (hτ : τ ∈
 @[simp] theorem absChar_zero : absChar h 0 = 1 :=
   MonoidHom.ext fun σ => Units.ext (by simp [absChar_apply])
 
-theorem absChar_add (s t : ℂ) : absChar h (s + t) = absChar h s * absChar h t :=
-  MonoidHom.ext fun σ => Units.ext (by
-    rw [MonoidHom.mul_apply, Units.val_mul, absChar_apply, absChar_apply, absChar_apply, add_mul]
-    exact Complex.cpow_add _ _ (Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot))
-
-section Artin
-
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-
-end Artin
-
 variable (h) in
 
 abbrev VR : Type := IrrW h →₀ ℚ
@@ -428,10 +413,6 @@ theorem ext_tr {x y : VR h} (H : ∀ τ, tr τ x = tr τ y) : x = y := by
 
 @[simp] theorem tw_zero (x : VR h) : tw 0 x = x := ext_tr fun τ => by simp [tr_tw]
 
-theorem tw_tw (s t : ℂ) (x : VR h) : tw t (tw s x) = tw (s + t) x := ext_tr fun τ => by
-  simp only [tw, tr_twist, absChar_add, MonoidHom.mul_apply, Units.val_mul]
-  ring
-
 theorem exists_list_tr (x : WD h) :
     ∃ l : List (IrrW h), ∀ τ, tr τ (l.map irr).sum = trW x τ := by
   induction x using WD.ind with
@@ -480,12 +461,6 @@ def ofRep (ρ : Representation ℂ (Weil h) V) (hρ : IsSmooth ρ)
     (hss : ρ.IsSemisimpleRepresentation) : dim h (ofRep ρ hρ hss) = finrank ℂ V := by
   simp [ofRep]
 
-variable (h) in
-
-def IsGenuine (n : ℕ) (x : VR h) : Prop :=
-  ∃ (ρ : Representation ℂ (Weil h) (Fin n → ℂ)) (hρ : IsSmooth ρ)
-    (hss : ρ.IsSemisimpleRepresentation), ofRep ρ hρ hss = x
-
 def ofChar (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) : VR h := irr (IrrW.ofChar χ hχ)
 
 @[simp] theorem tr_ofChar (τ : Weil h) (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) :
@@ -504,24 +479,6 @@ def triv : VR h := ofChar 1 (IsSmooth.of_trivial fun _ => rfl)
   have := tr_triv (1 : Weil h)
   rw [tr_one] at this
   exact_mod_cast this
-
-example : tr (frob h)⁻¹ (tw 1 (triv h)) = ((normV w : ℕ) : ℂ)⁻¹ := by
-  rw [tr_tw_of_mem_frobCoset (r := 1) 1 (by simp)]
-  simp [Complex.cpow_neg_one]
-
-example : (1 / 2 : ℚ) • triv h ∈ posCone h ∧ dim h ((1 / 2 : ℚ) • triv h) = 1 / 2 ∧
-    (1 / 2 : ℚ) • triv h ∉ intLattice h := by
-  refine ⟨fun z => mul_nonneg (by norm_num) (irr_mem_posCone _ z), by simp, fun H => ?_⟩
-  obtain ⟨m, hm⟩ := H (IrrW.ofChar 1 (IsSmooth.of_trivial fun _ => rfl))
-  have h1 : (1 : ℚ) = 2 * m := by
-    rw [← hm]; simp [triv, ofChar, irr]
-  have h2 : (1 : ℤ) = 2 * m := by exact_mod_cast h1
-  omega
-
-example : dim h (ofWD (WD.lpSp h 2)) = 2 := by simp
-
-example (r : ℕ) : frob h ∉ frobCoset h r := by
-  rw [mem_frobCoset, deg_frob]; omega
 
 end VR
 

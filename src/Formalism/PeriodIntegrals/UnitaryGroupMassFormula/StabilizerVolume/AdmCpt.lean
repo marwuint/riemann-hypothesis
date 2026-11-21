@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.NuNeSt
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.VolStabFromSWS
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.PosNear
 
 noncomputable section
@@ -100,7 +100,5 @@ theorem factor_ne_zero (hae : ∀ᶠ v in cofinite, Φv v = (latV b v).indicator
 end PI.VolStabS.AdmissibleCompactSupport
 
 namespace PI.VolStabS
-
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.VolFromSW PI.VolStabS.AdmissibleCompactSupport
 
 end PI.VolStabS

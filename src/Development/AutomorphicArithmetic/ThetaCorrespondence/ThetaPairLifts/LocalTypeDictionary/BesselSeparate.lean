@@ -8,6 +8,6 @@ namespace UpperTheory.Lit
 open GlobalTheory.SepRows
 theorem bessel_separate_of_step_gap (P : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hT : RowTower) :
     SizeGap → GoodRows → RowConv → WeakSep → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate :=
-  Bur.separate_of_burGapPos burGapPos GlobalTheory.T.dualCoefSpace_isTensorOverRealPlaces (_root_.GlobalTheory.T.theta_lifts_separate_points P) hT
+  Bur.separate_of_burGapPos burGapPos _root_.GlobalTheory.CoefTensorProof.coefTensor (_root_.GlobalTheory.T.theta_lifts_separate_points P) hT
 end UpperTheory.Lit
 end

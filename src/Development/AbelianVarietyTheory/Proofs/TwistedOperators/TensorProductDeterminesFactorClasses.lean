@@ -14,8 +14,6 @@ open GlobalTheory.SmGL
 variable {β : Type} [Fintype β] [DecidableEq β] {X : β → Type} [∀ a, AddCommGroup (X a)]
   [∀ a, Module ℂ (X a)]
 
-def contrML (l : ∀ a, X a →ₗ[ℂ] ℂ) (j : β) : MultilinearMap ℂ X (X j) := GlobalTheory.MultilinearContraction.contractMultilinear l j
-
 def contr (l : ∀ a, X a →ₗ[ℂ] ℂ) (j : β) : (PiTensorProduct ℂ X) →ₗ[ℂ] X j := GlobalTheory.MultilinearContraction.contract l j
 
 theorem contr_tprod (l : ∀ a, X a →ₗ[ℂ] ℂ) (j : β) (x : ∀ a, X a) :

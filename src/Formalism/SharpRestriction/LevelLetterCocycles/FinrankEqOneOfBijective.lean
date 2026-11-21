@@ -201,13 +201,6 @@ theorem lift_of {Cc : ℝ} (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (h
         (Finset.le_sup (f := fun c => max (rF PD.p n H₁ c) (rF PD.p n (Mi + hi) c)) hc))
   exact hw e₀ he
 
-theorem finrank_eq_one_of_bijective_algebraMap (hK : Function.Bijective (algebraMap K₀ K)) : Module.finrank K₀ K = 1 := by
-  rw [← (AlgEquiv.ofBijective (Algebra.ofId K₀ K) hK).toLinearEquiv.finrank_eq, Module.finrank_self]
-
-theorem DelF_card_eq_p_sub_one (hK : Function.Bijective (algebraMap K₀ K)) (hs : W.s = 1) (hp : PD.p ≠ 2)
-    {T : LocLat G Qp LL O} (h9 : Formalism.MainNotions.DeltaInvariantLattices.p9 W T) : W.DelF.card = PD.p - 1 := by
-  rw [(h9 hs hp).1, finrank_eq_one_of_bijective_algebraMap hK, Nat.div_one]
-
 theorem jumpsLet_ext (hH : HodgeExact PD LL O) {T Y : LocLat G Qp LL O} (ι : LatHom T.L Y.L)
     (π : LatHom Y.L W.one.L) (hses : IsSESLat (Qp := Qp) ι π) (hY : CrysLat PD Y)
     (Mi hi : ZMod n → ℕ) (hJ : Formalism.MainNotions.LiftingTheory.JumpsLet W T Mi hi) : Formalism.MainNotions.LiftingTheory.JumpsLet W Y Mi hi := by

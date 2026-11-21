@@ -1,12 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHomologyOneTwoDualResolutionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFreeComplexMumfordBundleOriginStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSubgroupSchemeIdealGeneratedByDimElementsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmpleKernelFiniteSubgroupSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedSubfunctorStalkIdealCriterionStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkOfSmoothLocalStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExactDualMapOfExactFibresOfIsRegularLocalRingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHomologyOneTwoDualResolution
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFreeComplexMumfordBundleOrigin
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSubgroupSchemeIdealGeneratedByDimElements
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmpleKernelFiniteSubgroupScheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedSubfunctorStalkIdealCriterion
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkOfSmoothLocal
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExactDualMapOfExactFibresOfIsRegularLocalRing
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyFiniteOfAffineCover
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
@@ -41,13 +46,13 @@ theorem isClosed_origin (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (p : S
 
 theorem cechLB_triv_finrank_one_two : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → A.left.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (∀ i, Module.Finite K ((cechLB A.hom (LB.triv A.left) D).homology i)) ∧ Module.finrank K ((cechLB A.hom (LB.triv A.left) D).homology 1) = g ∧ Module.finrank K ((cechLB A.hom (LB.triv A.left) D).homology 2) ≤ g.choose 2 := by
   intro K _ _ A _ g hA hsm κ _ _ D hD hcov
-  obtain ⟨L, H, _, j, hL, hproj, hgen, hj, hci, hfin, hK⟩ := GlobalTheory.T.exists_ample_kernel_finite_subgroupScheme K A hA
+  obtain ⟨L, H, _, j, hL, hproj, hgen, hj, hci, hfin, hK⟩ := _root_.GlobalTheory.KernelSubgroup.exists_finite_subgroup_kernel K A hA
   obtain ⟨p⟩ : Nonempty (Sp K) := inferInstance
   have hx₀ : (η[A]).left.base p ∈ Set.range (η[A]).left.base := ⟨p, rfl⟩
   obtain ⟨J, C, φ, hJ, hφ, hfree, hbdd, hcok, hfib, hiso⟩ :=
-    GlobalTheory.T.exists_free_complex_structureSheaf_cech_origin K A g hA hsm L H j hL hproj hgen hj hci hfin hK _ hx₀
-  obtain ⟨f, hf⟩ := GlobalTheory.T.finiteSubgroupScheme_ideal_generated_by_dim_elements K A g hA hsm H j hj hci hfin _ hx₀ J hJ
-  obtain ⟨hJt, hart⟩ := GlobalTheory.T.closed_subfunctor_stalk_ideal_criterion K A H j hj hci hfin _ hx₀ J hJ
+    _root_.GlobalTheory.MumfordLocalComplex.exists_ideal_free_complex_at_origin K A g hA hsm L H j hL hproj hgen hj hci hfin hK _ hx₀
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.FinSubGen.ideal_eq_span_fin K A g hA hsm H j hj hci hfin _ hx₀ J hJ
+  obtain ⟨hJt, hart⟩ := _root_.GlobalTheory.FinStalk.stalk_quotient_ne_top_and_isArtinianRing K A H j hj hci hfin _ hx₀ J hJ
   subst hf
   let σ : K →+* A.left.presheaf.stalk ((η[A]).left.base p) :=
     ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ A.hom.appTop ≫
@@ -59,7 +64,7 @@ theorem cechLB_triv_finrank_one_two : ∀ (K : Type) [Field K] [IsAlgClosed K] (
     rcases eq_or_ne a 0 with rfl | h
     · simp at ha
     · exact h.isUnit⟩
-  obtain ⟨-, -, hreg, hdim⟩ := GlobalTheory.T.stalk_regular_flat_of_smooth K A.left A.hom g hsm _ (isClosed_origin K A p) σ hσ hloc
+  obtain ⟨-, -, hreg, hdim⟩ := _root_.GlobalTheory.StabFlat.stalk_of_smooth_local K A.left A.hom g hsm _ (isClosed_origin K A p) σ hσ hloc
   have hbot : (IsLocalRing.maximalIdeal K).map σ = ⊥ := by
     rw [IsLocalRing.maximalIdeal_eq_bot, Ideal.map_bot]
   let e := (Ideal.quotEquivOfEq hbot).trans (RingEquiv.quotientBot (A.left.presheaf.stalk ((η[A]).left.base p)))
@@ -68,8 +73,8 @@ theorem cechLB_triv_finrank_one_two : ∀ (K : Type) [Field K] [IsAlgClosed K] (
   have hdim' : ringKrullDim (A.left.presheaf.stalk ((η[A]).left.base p)) = g := by
     rw [← ringKrullDim_eq_of_ringEquiv e]
     exact hdim
-  have hex := GlobalTheory.T.exact_dualMap_of_exactAt_extendScalars_fibres _ g hdim' C hfree hbdd hfib
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.finrank_homology_one_two_dualResolution _ g hdim' f hJt hart C hfree hex hcok K φ hφ
+  have hex := _root_.GlobalTheory.exact_dualMap_of_exact_fibres_of_isRegularLocalRing _ g hdim' C hfree hbdd hfib
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.finrank_homology_one_two_of_dual_resolution _ g hdim' f hJt hart C hfree hex hcok K φ hφ
   haveI := hA.proper
   refine ⟨fun i => ?_, ?_, ?_⟩
   · exact GlobalTheory.AbLaw.cechLB_homology_finite_of_affine_cover K A.left A.hom (LB.triv A.left) κ D

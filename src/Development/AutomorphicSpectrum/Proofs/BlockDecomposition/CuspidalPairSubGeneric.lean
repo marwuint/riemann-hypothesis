@@ -19,7 +19,6 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwoSegmentNonge
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericCommutationOfReorder
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwKerWhitCharReflect
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerHeredityGenericProduct
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericProdIrrOfGenericProdIff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerHeredity
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsIrrRepInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductSingleNonzeroFactorEquiv
@@ -74,13 +73,13 @@ theorem exists_equiv_of_cell {l : ℕ} (x y : Fin l → IrrGL k) (hxc : ∀ a, (
     ∃ e : Fin l ≃ Fin l, ∀ a, y a = x (e a) := by
   have hG := GlobalTheory.CompanionTheory.GeoLink.geometricLemma
   have hBZ := GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
-  have hτ : (piTensor fun j => (y j).rep).IsIrreducible := GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => (y j).2.rep
+  have hτ : (piTensor fun j => (y j).rep).IsIrreducible := _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun j => (y j).2.rep
   have hτs : IsSmooth (piTensor fun j => (y j).rep) := isSmooth_piTensor fun j => (y j).2.rep.smooth
   obtain ⟨s, hrow, hcol⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_of_cell (hG k).2 f g (fun i => (x i).2.rep.smooth)
     (fun i => (x i).2.rep.hasFiniteLength) hτ hτs h0
   have hR : ∀ i, ∃ t : Fin l → Multiset (IrrGL k), (∀ j, HasSupport (s i j).ρ (t j)) ∧ {x i} = ∑ j, t j :=
     fun i => GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_sum_of_jac hG hBZ (hasSupport_self (hxc i)) (f i)
-      (GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => s i j) (hrow i)
+      (_root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun j => s i j) (hrow i)
       (fun j => s i j) (fun j => GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle _ (fun j => (s i j).irr) j)
   choose t ht hAt using hR
   have hC : ∀ j, HasSupport (y j).rep (∑ i, t i j) := by
@@ -128,7 +127,7 @@ theorem exists_equiv_of_jm_ne_zero {l N : ℕ} (x y : Fin l → IrrGL k) (hx : �
   classical
   haveI : Fintype (SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) := Fintype.ofFinite _
   have hτ : (piTensor fun j => (y j).rep).IsIrreducible :=
-    GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k _ _ fun j => (y j).2.rep
+    _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k _ _ fun j => (y j).2.rep
   let f : ∀ (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) i, (Σ j, Fin (b.1 i j)) ≃ Fin (x i).1 :=
     fun b => b.nonempty_rows.some
   let g : ∀ (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) j, (Σ i, Fin (b.1 i j)) ≃ Fin (y j).1 :=
@@ -238,80 +237,9 @@ theorem surjective_of_jm (hA : IrreducibleAdmissibleGL) {x y : IrrGL k} (hx : x.
 
 end Sat
 
-theorem isGeneric_of_injective {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
-    {ω : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W} (hω : IsSmooth ω) (hσ : IsSmooth σ)
-    (g : ω.IntertwiningMap σ) (hg : Function.Injective g) (h : IsGeneric ω) : IsGeneric σ := by
-  obtain ⟨ψ, hc, h1, h2⟩ := h
-  refine ⟨ψ, hc, h1, ?_⟩
-  unfold IsGenericFor at h2 ⊢
-  obtain ⟨q, hq⟩ := exists_ne (0 : TwJacquet ω (unipB k (Fin N)) (whitChar ψ N))
-  obtain ⟨w, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  have hw : w ∉ twKer ω (unipB k (Fin N)) (whitChar ψ N) := fun h => hq ((Submodule.Quotient.mk_eq_zero _).2 h)
-  have hgw : g w ∉ twKer σ (unipB k (Fin N)) (whitChar ψ N) := fun h =>
-    hw (GlobalTheory.CompanionTheory.PRep.WhitExact.twKer_whitChar_reflect k ψ hc N ω σ hω hσ g.toLinearMap hg
-      (fun a v => Representation.IntertwiningMap.isIntertwining _ _ g a v) w h)
-  exact ⟨Submodule.Quotient.mk (g w), 0, fun h => hgw ((Submodule.Quotient.mk_eq_zero _).1 h)⟩
-
 theorem nu_one_ne {x : IrrGL k} (hx : 0 < x.1) : x.nu 1 ≠ x := fun h => by
   have h1 : x.nu ((1 : ℕ) : ℂ) = x.nu ((0 : ℕ) : ℂ) := by simpa using h
   exact one_ne_zero (IrrGL.nu_natCast_inj hx |>.1 h1)
-
-theorem isGeneric_prodIrr (hCG : GlobalTheory.BZSeg.CuspGeneric k) {x y : IrrGL k} (hx : x.IsCusp) (hy : y.IsCusp) {N : ℕ}
-    (hd : ∑ a, (![x, y] a).1 = N) : IsGeneric (prodIrr ![x, y] hd) := by
-  have hG := GlobalTheory.CompanionTheory.BZMir.genericProdIrr_of_genericProdIff k
-    (GlobalTheory.CompanionTheory.Leib.genericProdIff_of_whitHeredity k (GlobalTheory.CompanionTheory.Rodier.whitHeredity k))
-  have hc : ∀ z : IrrGL k, z.IsCusp → IsGeneric z.rep := fun z hz =>
-    hCG z.1 _ z.rep hz.1 z.2.rep.smooth z.2.rep.irr hz.2
-  exact (hG 2 N ![x, y] hd).2 (Fin.forall_fin_two.2 ⟨hc x hx, hc y hy⟩)
-
-theorem cuspPairSubGeneric : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
-    GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.Published.GeometricLemmaFiltration → GlobalTheory.BZSeg.NuPair k →
-    GlobalTheory.BZSeg.CuspGeneric k → GlobalTheory.BZSeg.CuspPairSubGeneric k := by
-  intro k _ _ _ _ hA _ hNu hCG x y N hd hx hy hne W _ _ σ f hf hW
-  have hs := isSmooth_prodIrr ![x, y] hd
-  have hsq := IsSubquotient.of_injective f hf
-  have hσs := hsq.isSmooth hs
-  have hfl : HasFiniteLength (prodIrr ![x, y] hd) :=
-    GlobalTheory.ProdFiniteLength.multiProd_hasFiniteLength GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k 2 N
-      (fun a => (![x, y] a).1) (fun a => GlobalTheory.SplitRead.Irr.ofIrrRep (![x, y] a).2.rep) _
-  obtain ⟨S, g, hg⟩ := GlobalTheory.CompanionTheory.IrrSub.exists_irrRep_injective k N W _ σ (prodIrr ![x, y] hd) hσs hW hsq hfl
-  refine isGeneric_of_injective S.smooth hσs g hg ?_
-  by_contra hng
-  obtain ⟨α, β, β', hd1, hd2, hα, hβ, hββ, h1, h2⟩ := hNu N S.V S.ρ S.smooth S.irr hng
-  let ι : S.ρ.IntertwiningMap (prodIrr ![x, y] hd) := f.comp g
-  have hι : Function.Injective ι := hf.comp hg
-  haveI : Nontrivial S.V := GlobalTheory.JacFactor.nontrivial_of_isIrreducible S.irr
-  have hι0 : ∃ v, ι v ≠ 0 := by
-    obtain ⟨v, hv⟩ := exists_ne (0 : S.V)
-    exact ⟨v, fun h => hv (hι (h.trans (map_zero ι).symm))⟩
-  have hF : 1 ≤ jm ![x, y] hd S.ρ := GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA _ hd S.ρ S.smooth ι hι0
-  have hxc : ∀ a, (![x, y] a).IsCusp := Fin.forall_fin_two.2 ⟨hx, hy⟩
-  have key : ∀ (u : Fin 2 → IrrGL k) (hu : ∑ a, (u a).1 = N), (∀ a, 0 < (u a).1) → 1 ≤ jm u hu S.ρ →
-      u = ![x, y] ∨ u = ![y, x] := by
-    intro u hu hpos hj
-    have hj' := GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient u hu S.ρ _ hs (.of_injective ι hι)
-    obtain ⟨e, he⟩ := exists_equiv_of_jm_ne_zero ![x, y] u hd hu hxc hpos
-      (ENat.one_le_iff_ne_zero.1 (hj.trans hj'))
-    have hee : e 0 ≠ e 1 := fun h => by simpa using e.injective h
-    have key : ∀ a b : Fin 2, a ≠ b → (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) := by decide
-    rcases key _ _ hee with ⟨a, b⟩ | ⟨a, b⟩
-    · exact Or.inl (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))
-    · exact Or.inr (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))
-  have hp1 : ∀ a, 0 < (![α, β] a).1 := Fin.forall_fin_two.2 ⟨hα, hβ⟩
-  have hp2 : ∀ a, 0 < (![β', α.nu 1] a).1 := Fin.forall_fin_two.2 ⟨hββ ▸ hβ, hα⟩
-  have c1 := key _ hd1 hp1 h1
-  have c2 := key _ hd2 hp2 h2
-  have e0 : ∀ {a b c d : IrrGL k}, ![a, b] = ![c, d] → a = c ∧ b = d := fun h =>
-    ⟨congrFun h 0, congrFun h 1⟩
-  rcases c1 with c1 | c1 <;> obtain ⟨rfl, rfl⟩ := e0 c1
-  · rcases c2 with c2 | c2 <;> obtain ⟨-, h3⟩ := e0 c2
-    · exact hne h3.symm
-    · exact nu_one_ne hx.1 h3
-  · rcases c2 with c2 | c2 <;> obtain ⟨-, h3⟩ := e0 c2
-    · exact nu_one_ne hy.1 h3
-    · have hxy : β ≠ α := fun h => nu_one_ne hy.1 (h3.trans h)
-      have hsurj : Function.Surjective ι := surjective_of_jm hA hx hy hxy hd hd1 ι hι hF h1
-      exact hng (GlobalTheory.CompanionTheory.BZSeg.isGeneric_of_surjective ι hsurj (isGeneric_prodIrr hCG hx hy hd))
 
 end GlobalTheory.CompanionTheory.CuspPairSub
 end

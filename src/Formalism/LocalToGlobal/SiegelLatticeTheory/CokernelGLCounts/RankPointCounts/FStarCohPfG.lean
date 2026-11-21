@@ -164,8 +164,4 @@ theorem cohGood_of (hGG : GlobGramNe u u' F0 what₂) : CohGood Zd u u' F0 what�
     have h := (hXm _ hmem 0 (by simpa using h0)).1
     simpa using h
 
-theorem star_coherence_of_gram (hLp : CohLp Zd u u' F0 what₂) (hGG : GlobGramNe u u' F0 what₂) :
-    CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
-  star_coherence_of_good Zd hLp (cohGood_of Zd hGG)
-
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

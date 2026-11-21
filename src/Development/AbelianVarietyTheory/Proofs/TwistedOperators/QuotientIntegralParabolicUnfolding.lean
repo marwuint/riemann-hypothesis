@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalBasic
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentHaarAndModulusStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentHaarAndModulus
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx
 
 noncomputable section
@@ -261,7 +261,7 @@ theorem quotInt_unique_exists : ∀ (k : Type) [Field k] [ValuativeRel k] [Topol
   classical
   obtain ⟨bX, lX, sX, -, -, -, hXH, hXR⟩ := GlobalTheory.SplitWeil.volGL_haar k n ν
   obtain ⟨bG, lG, sG, hKc, hKo, -⟩ := GlobalTheory.SplitWeil.volGL_haar k (n ⊕ Fin c) ν
-  obtain ⟨hN, -, hH, hRi, hconj⟩ := GlobalTheory.T.rootExchangeUnipotent_haar_and_modulus k n c p hp hpc ν
+  obtain ⟨hN, -, hH, hRi, hconj⟩ := _root_.GlobalTheory.RootEx.VolN.volN_haar_and_modulus k n c p hp hpc ν
   obtain ⟨-, -, -, hnorm, hdec, -⟩ := GlobalTheory.RootEx.Radical.unipotent_radical_basic k n c p
   haveI : LocallyCompactSpace (N k n c p) := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace
   haveI : SecondCountableTopology (N k n c p) :=

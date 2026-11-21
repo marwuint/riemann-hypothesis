@@ -348,29 +348,6 @@ theorem eM_smul_right (r : ℝ) (x w : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ
     Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]
   ring
 
-theorem eM_zero_left (w : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ 0 w = 0 := by
-  simp [eM]
-
-theorem eM_zero_right (x : Matrix (Fin m) (Fin n) ℂ) : eM GS GT ξ x 0 = 0 := by
-  simp [eM]
-
-theorem eM_swap (hS : GSᴴ = GS) (hT : GTᴴ = GT) (hξ : starRingEnd ℂ ξ = -ξ) (x w : Matrix (Fin m) (Fin n) ℂ) :
-    eM GS GT ξ w x = -eM GS GT ξ x w := by
-  have key : (GS⁻¹ * xᴴ * GT * w).trace = star (GS⁻¹ * wᴴ * GT * x).trace := by
-    rw [← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul,
-      Matrix.conjTranspose_conjTranspose, hT, Matrix.conjTranspose_nonsing_inv, hS,
-      show xᴴ * (GT * (w * GS⁻¹)) = (xᴴ * GT * w) * GS⁻¹ by simp only [Matrix.mul_assoc],
-      Matrix.trace_mul_comm (xᴴ * GT * w)]
-    simp only [Matrix.mul_assoc]
-  have h1 : ξ.re = 0 := by
-    have := congrArg Complex.re hξ
-    simp only [Complex.conj_re, Complex.neg_re] at this
-    linarith
-  unfold eM
-  rw [key, ← starRingEnd_apply]
-  simp only [Complex.mul_re, Complex.conj_re, Complex.conj_im, h1]
-  ring
-
 theorem continuous_eM_left (w : Matrix (Fin m) (Fin n) ℂ) : Continuous fun z : Matrix (Fin m) (Fin n) ℂ => eM GS GT ξ z w := by
   unfold eM
   exact continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul
@@ -387,17 +364,6 @@ def eR (ρ : D.what₂.Tau) (x y : Matrix (Fin T.rank) (Fin S.rank) ℂ) : ℝ :
 
 def phR (a : WO S T) (u : V D T.rank S.rank) : ℝ :=
   ∑ ρ, eR S T ρ (compAt (Eqv.thetaC D) ρ a) (Matrix.of (u ρ))
-
-theorem gramAt_herm (W : HSp D) (ρ : D.what₂.Tau) : (gramAt D W ρ)ᴴ = gramAt D W ρ := by
-  ext i j
-  rw [Matrix.conjTranspose_apply, gramAt, Matrix.map_apply, Matrix.map_apply,
-    show star (tauE D ρ (W.gram j i)) = tauE D ρ (star (W.gram j i)) from (Eqv.tauE_star D ρ _).symm,
-    ← Matrix.conjTranspose_apply, Brg.gram_herm]
-
-theorem conj_purely_imaginary_generator (ρ : D.what₂.Tau) : starRingEnd ℂ (tauE D ρ D.host.xi0) = -tauE D ρ D.host.xi0 := by
-  rw [← Eqv.tauE_star, Brg.star_purely_imaginary_eq_neg, map_neg]
-
-theorem eR_swap (ρ : D.what₂.Tau) (x w : Matrix (Fin T.rank) (Fin S.rank) ℂ) : eR S T ρ w x = -eR S T ρ x w := eM_swap _ _ _ (gramAt_herm S ρ) (gramAt_herm T ρ) (conj_purely_imaginary_generator ρ) x w
 
 theorem compAt_add {m n : ℕ} (ρ : D.what₂.Tau) (a a' : Mx D m n) :
     compAt (Eqv.thetaC D) ρ (a + a') = compAt (Eqv.thetaC D) ρ a + compAt (Eqv.thetaC D) ρ a' := by
@@ -427,22 +393,6 @@ theorem phR_smul (a : WO S T) (r : ℝ) (u : V D T.rank S.rank) : phR S T a (r �
     simp [Complex.real_smul]
   rw [hm]
   exact eM_smul_right _ _ _ _ _ _
-
-theorem phR_sg (a : WO S T) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
-    phR S T a (sg τ z) = eR S T τ (compAt (Eqv.thetaC D) τ a) z := by
-  unfold phR
-  rw [Finset.sum_eq_single τ]
-  · congr 1
-    ext i j
-    simp [sg]
-  · intro ρ _ hρ
-    have hz : Matrix.of (sg (D := D) τ z ρ) = 0 := by
-      ext i j
-      simp [sg, hρ]
-    rw [hz]
-    exact eM_zero_right _ _ _ _
-  · intro h
-    exact absurd (Finset.mem_univ τ) h
 
 theorem map_inv_gram (W : HSp D) (ρ : D.what₂.Tau) : (W.gram⁻¹).map (tauE D ρ) = (gramAt D W ρ)⁻¹ := by
   symm
@@ -851,56 +801,6 @@ theorem theta_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ : D.
     rw [e]
     exact (contDiff_dRho_chart hψ hLine τ z hf w).comp A'.contDiff
 
-theorem fderiv_G_dRho (hψ : IsStdChar D ψ (-1)) (hLine : LineAtExists D) (τ' : D.what₂.Tau)
-    (w : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (x : WO S T)
-    (v : V D T.rank S.rank) :
-    fderiv ℝ (G (dRho (heisO ψ S T) (Eqv.thetaC D) τ' w f) x) 0 v =
-      -(Real.pi : ℂ) * Complex.I * (lCL S T (sg τ' w) v : ℂ) * f x +
-        -(Real.pi : ℂ) * Complex.I * (phR S T x (sg τ' w) : ℂ) * fderiv ℝ (G f x) 0 v +
-        fderiv ℝ (fderiv ℝ (G f x)) 0 v (sg τ' w) := by
-  have hGg : G (dRho (heisO ψ S T) (Eqv.thetaC D) τ' w f) x = fun u =>
-      -(Real.pi : ℂ) * Complex.I * ((phR S T x (sg τ' w) + lCL S T (sg τ' w) u : ℝ) : ℂ) * G f x u +
-        fderiv ℝ (G f x) u (sg τ' w) := by
-    funext u
-    exact dRho_chart hψ hLine τ' w hf x u
-  rw [hGg]
-  have hG0 : HasFDerivAt (G f x) (fderiv ℝ (G f x) 0) 0 := hasFDerivAt_G hf x 0
-  have hl : HasFDerivAt
-      (fun u : V D T.rank S.rank => -(Real.pi : ℂ) * Complex.I * ((phR S T x (sg τ' w) + lCL S T (sg τ' w) u : ℝ) : ℂ))
-      ((-(Real.pi : ℂ) * Complex.I) • (Complex.ofRealCLM.comp (lCL S T (sg τ' w)))) 0 := by
-    have h1 : HasFDerivAt (fun u => phR S T x (sg τ' w) + lCL S T (sg τ' w) u) (lCL S T (sg τ' w)) 0 :=
-      (lCL S T (sg τ' w)).hasFDerivAt.const_add _
-    have h2 := (Complex.ofRealCLM.hasFDerivAt.comp (0 : V D T.rank S.rank) h1).const_mul (-(Real.pi : ℂ) * Complex.I)
-    simpa [Function.comp_def] using h2
-  have hd2 : HasFDerivAt (fderiv ℝ (G f x)) (fderiv ℝ (fderiv ℝ (G f x)) 0) 0 :=
-    (((contDiff_infty_iff_fderiv.1 (contDiff_G hf x)).2.differentiable (by simp)) 0).hasFDerivAt
-  have h3 : HasFDerivAt (fun u => fderiv ℝ (G f x) u (sg τ' w)) ((fderiv ℝ (fderiv ℝ (G f x)) 0).flip (sg τ' w)) 0 := by
-    have := hd2.clm_apply (hasFDerivAt_const (sg (D := D) τ' w) (0 : V D T.rank S.rank))
-    simpa using this
-  have hall : HasFDerivAt (fun u : V D T.rank S.rank =>
-      -(Real.pi : ℂ) * Complex.I * ((phR S T x (sg τ' w) + lCL S T (sg τ' w) u : ℝ) : ℂ) * G f x u +
-        fderiv ℝ (G f x) u (sg τ' w)) _ 0 := (hl.mul hG0).add h3
-  rw [hall.fderiv]
-  simp [G]
-  ring
-
-open Classical in
-theorem lCL_sg (τ τ' : D.what₂.Tau) (z w : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
-    lCL S T (sg τ' w) (sg τ z) = if τ = τ' then eR S T τ z w else 0 := by
-  rw [lCL_apply, phR_sg, compAt_Lb]
-  by_cases h : τ = τ'
-  · subst h
-    rw [if_pos rfl]
-    congr 1
-    ext i j
-    simp [sg]
-  · rw [if_neg h]
-    have hz : Matrix.of (sg (D := D) τ z τ') = 0 := by
-      ext i j
-      simp [sg, Ne.symm h]
-    rw [hz]
-    exact eM_zero_left _ _ _ _
-
 end Calc
 
 theorem thetaDRho (D : D7) : ThetaDRho D := by
@@ -935,28 +835,6 @@ theorem dRhoLin (D : D7) : DRhoLin D := by
     rw [dRho_eq hψ hLine τ z x hdg, dRho_eq hψ hLine τ z x (hdf hf x), dRho_eq hψ hLine τ z x (hdf hg x), hG,
       fderiv_add (hdf hf x) ((hdf hg x).const_smul c), fderiv_const_smul (hdf hg x)]
     simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Pi.add_apply, Pi.smul_apply]
-    ring
-
-theorem dRhoComm (D : D7) : DRhoComm D := by
-  intro ψ θ hψ hθ hLine S T τ τ' z w f hf
-  obtain rfl := Eqv.eq_thetaC D hθ
-  have hg1 := theta_dRho hψ hLine τ' w hf
-  have hg2 := theta_dRho hψ hLine τ z hf
-  funext x
-  have hsym : IsSymmSndFDerivAt ℝ (G f x) 0 := (contDiff_G hf x).contDiffAt.isSymmSndFDerivAt (by simp; exact WithTop.coe_le_coe.2 le_top)
-  rw [Pi.sub_apply, dRho_eq hψ hLine τ z x (hasFDerivAt_G hg1 x 0).differentiableAt,
-    dRho_eq hψ hLine τ' w x (hasFDerivAt_G hg2 x 0).differentiableAt,
-    fderiv_G_dRho hψ hLine τ' w hf x, fderiv_G_dRho hψ hLine τ z hf x,
-    dRho_eq hψ hLine τ' w x (hasFDerivAt_G hf x 0).differentiableAt,
-    dRho_eq hψ hLine τ z x (hasFDerivAt_G hf x 0).differentiableAt,
-    hsym (sg τ' w) (sg τ z), lCL_sg, lCL_sg]
-  by_cases h : τ = τ'
-  · subst h
-    rw [if_pos rfl, if_pos rfl, if_pos rfl, eR_swap S T τ z w, Pi.smul_apply, smul_eq_mul, eR]
-    push_cast
-    ring
-  · rw [if_neg h, if_neg (Ne.symm h), if_neg h, Pi.zero_apply]
-    push_cast
     ring
 
 end Formalism.IndefR.Fock.DRho

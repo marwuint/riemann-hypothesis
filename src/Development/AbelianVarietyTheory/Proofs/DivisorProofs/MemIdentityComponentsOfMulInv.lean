@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdentityComponentsSmoothGroupSchemeMulMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdentityComponentsSmoothGroupSchemeMulMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvMemConnectedComponentInFibreStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
@@ -28,7 +28,7 @@ theorem mem_identityComponents_of_mul_inv :
     rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Over.comp_left, ← Over.comp_left, hφ, lift_fst]
   have e2 : (snd G G).left (φ.left w) = (μ[G]).left w := by
     rw [← Scheme.Hom.comp_apply, ← Over.comp_left, hφ, lift_snd]
-  have key := GlobalTheory.T.identityComponents_smooth_groupScheme_mul_mem S G hs (φ.left w) (e1 ▸ zi) (e2 ▸ zm)
+  have key := _root_.GlobalTheory.IdCompMul.mul_mem S G hs (φ.left w) (e1 ▸ zi) (e2 ▸ zm)
   have e3 : (μ[G]).left (φ.left w) = (snd G G).left w := by
     rw [← Scheme.Hom.comp_apply, ← Over.comp_left, hφ, identityComponent_shear_mul]
   rwa [e3] at key

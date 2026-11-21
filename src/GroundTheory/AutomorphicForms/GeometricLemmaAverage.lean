@@ -206,20 +206,6 @@ theorem avgOver_comp_mul_right (hf : AvgFinite K f) {k : G} (hk : k ∈ K) :
   rw [avgOver_eq_avgSub hN2 hNi, avgOver_eq_avgSub hN1 hNi]
   exact avgSub_comp_mul_right_of_normal hNi hN1 hk x
 
-theorem avgOver_of_forall (h : ∀ k ∈ K, ∀ y, f (y * k) = f y) : avgOver K f = f := by
-  classical
-  have hle : (⊤ : Subgroup K) ≤ (rightStab f).subgroupOf K := fun k _ => h k k.2
-  have hi : (⊤ : Subgroup K).index ≠ 0 := by rw [Subgroup.index_top]; exact one_ne_zero
-  have : (⊤ : Subgroup K).FiniteIndex := ⟨hi⟩
-  let _ := Fintype.ofFinite (K ⧸ (⊤ : Subgroup K))
-  funext x
-  rw [avgOver_eq_avgSub hle hi, avgSub_eq_sum]
-  have hterm : ∀ q : K ⧸ (⊤ : Subgroup K), f (x * ((Quotient.out q : K) : G)) = f x :=
-    fun q => h _ (Quotient.out q).2 x
-  rw [Fintype.sum_congr _ _ hterm, Finset.sum_const, Finset.card_univ,
-    ← Nat.card_eq_fintype_card, ← Subgroup.index, Subgroup.index_top, one_smul, Nat.cast_one,
-    inv_one, one_smul]
-
 theorem avgOver_add {g : G → W} (hf : AvgFinite K f) (hg : AvgFinite K g) :
     avgOver K (f + g) = avgOver K f + avgOver K g := by
   classical
@@ -402,13 +388,6 @@ theorem relVol_eq_relIndex_mul {K₀ K L : Subgroup G} (hLK : L ≤ K) (hL : L.r
       _ = (K₀.relIndex K : ℝ) / (K.relIndex K₀) := by
             rw [mul_div_mul_left _ _ hc']
   exact key.symm
-
-theorem relVol_map_conj (g : G) (K₀ K : Subgroup G) :
-    relVol (K₀.map (MulAut.conj g).toMonoidHom) (K.map (MulAut.conj g).toMonoidHom) =
-      relVol K₀ K := by
-  have hinj : Function.Injective (MulAut.conj g).toMonoidHom := (MulAut.conj g).injective
-  unfold relVol
-  rw [Subgroup.relIndex_map_map_of_injective _ _ hinj, Subgroup.relIndex_map_map_of_injective _ _ hinj]
 
 end Volume
 

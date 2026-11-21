@@ -229,15 +229,5 @@ theorem frobTw_of (h5 : 5 ≤ p) : FrobTw X E := by
 
 end Tw
 
-section abelian₂
-
-variable (X : Sys p) (E : Formalism.L2.G.Pend.CEmbC X.G) (D : Formalism.BasicNotions.D7)
-  (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
-
-end abelian₂
-
 end Formalism.L2.KerInert.RepFrob
 
-section
-set_option pp.fullNames true
-end

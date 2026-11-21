@@ -84,8 +84,6 @@ def γ (h : DPClosed (ι f ξ l M) (γB f ξ)) : DividedPowers (I f ξ l M) := d
 theorem ι_γ (h : DPClosed (ι f ξ l M) (γB f ξ)) {n : ℕ} {x : A f ξ l M} (hx : x ∈ I f ξ l M) :
     ι f ξ l M ((γ f ξ l M h).dpow n x) = (γB f ξ).dpow n (ι f ξ l M x) := dpComap_dpow _ h hx
 
-def mapM {M M' : ℕ} (h : sub f ξ l M ≤ sub f ξ l M') : A f ξ l M →+* A f ξ l M' := Subring.inclusion h
-
 structure Hyp (m : ℕ) : Prop where
   one_le : 1 ≤ m
   nil : f ξ ^ m = 0

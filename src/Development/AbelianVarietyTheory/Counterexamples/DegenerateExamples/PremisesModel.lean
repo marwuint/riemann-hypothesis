@@ -137,15 +137,4 @@ theorem _root_.GlobalTheory.IwahoriNewtonTest.intersectionNumber_baseChange : _r
   simp only [IsUnit.unit_spec]
   ring
 
-theorem premises_model :
-    (2 : ℤ_[2]) ∈ IsLocalRing.maximalIdeal ℤ_[2] ∧ (2 : ℤ_[2]) ≠ 0 ∧
-    StrictAnti (![1, 0] : Fin 2 → ℕ) ∧
-    (∀ i, IsUnit ((!![1, 1; 2, 1] : Matrix (Fin 2) (Fin 2) ℤ_[2]) i i)) ∧
-    (∀ i j, j < i → (2 : ℤ_[2]) ∣ (!![1, 1; 2, 1] : Matrix (Fin 2) (Fin 2) ℤ_[2]) i j) := by
-  refine ⟨?_, two_ne_zero, by decide, ?_, ?_⟩
-  · rw [PadicInt.maximalIdeal_eq_span_p]
-    exact Ideal.mem_span_singleton_self _
-  · intro i; fin_cases i <;> simp
-  · intro i j h; fin_cases i <;> fin_cases j <;> simp_all
-
 end GlobalTheory.IwahoriNewtonTest

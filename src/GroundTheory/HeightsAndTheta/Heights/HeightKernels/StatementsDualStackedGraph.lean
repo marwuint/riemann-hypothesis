@@ -63,10 +63,6 @@ def DualStackedGraphFibre.Statement : Prop :=
       ((∃ j, (L j).a = degFirst) →
         vertR (stackedGraph b' a) L (graphSecond t) - vertR (stackedGraph b' a) L (C (a t) * graphFirst t) = 0)
 
-example {T : Type} : ∀ j : Fin (1 - 1), ((Fin.elim0 j : HermLine (stackedBlocks T))).a = degFirst ∨
-    ((Fin.elim0 j : HermLine (stackedBlocks T))).a = degSecond :=
-  fun j => j.elim0
-
 theorem degFirst_inr : degFirst (Sum.inr ()) = 0 := by
   rw [degFirst, pullDeg, Function.extend_apply' _ _ _ (by rintro ⟨u, hu⟩; exact Sum.inl_ne_inr hu)]
   rfl

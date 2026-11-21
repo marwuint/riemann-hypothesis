@@ -86,38 +86,8 @@ theorem not_isGeneric_quotRep {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 
   rw [map_sub, map_smul, h3, smul_zero, sub_zero] at h2
   exact h2
 
-theorem exists_nonGeneric_quot {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
-    (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W)
-    (f : σ.IntertwiningMap π) (hf : Function.Injective f) (hns : ¬ Function.Surjective f) (hπ : IsSmooth π)
-    (hr : Module.rank ℂ (TwJacquet π (unipB k (Fin N)) (whitChar ψ N)) ≤ 1) (hσ : IsGeneric σ) :
-    ∃ (X : Type) (_ : AddCommGroup X) (_ : Module ℂ X) (τ : Representation ℂ (GL (Fin N) k) X)
-      (q : π.IntertwiningMap τ), Function.Surjective q ∧ Nontrivial X ∧ ¬ IsGeneric τ := by
-  refine ⟨V ⧸ LinearMap.range f.toLinearMap, inferInstance, inferInstance, quotRep π σ f,
-    ⟨(LinearMap.range f.toLinearMap).mkQ, fun g => ?_⟩, ?_, ?_, not_isGeneric_quotRep hψ h1 π σ f hf hπ hr hσ⟩
-  · ext v; rfl
-  · exact Submodule.mkQ_surjective _
-  · refine Submodule.Quotient.nontrivial_iff.2 fun h => hns ?_
-    exact LinearMap.range_eq_top.1 h
-
 end GlobalTheory.CompanionTheory.BZSeg.TwoSeg
 
 namespace GlobalTheory.CompanionTheory.BZSeg
-
-open GlobalTheory.CompanionTheory.BZSeg.TwoSeg
-
-set_option maxHeartbeats 3000000 in
-
-theorem twoSegNonGenQuot_of_char {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
-    [IsNonarchimedeanLocalField k] {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
-    (hsub : GlobalTheory.BZSeg.TwoSegGenericSub k) (hrank : GlobalTheory.BZSeg.WhitRankTwoSeg k) : GlobalTheory.BZSeg.TwoSegNonGenQuot k := by
-  intro Δ Δ' x y N hd hpre hx hy
-  obtain ⟨W, _, _, σ, f, hinj, hns, hgen⟩ := hsub Δ Δ' x y N hd hpre hx hy
-  exact exists_nonGeneric_quot hψ h1 _ σ f hinj hns (isSmooth_prodIrr _ hd) (hrank ψ hψ h1 Δ Δ' x y N hd hx hy) hgen
-
-theorem twoSegNonGenQuot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
-    GlobalTheory.BZSeg.TwoSegGenericSub k → GlobalTheory.BZSeg.WhitRankTwoSeg k → GlobalTheory.BZSeg.TwoSegNonGenQuot k := by
-  intro k _ _ _ _ hsub hrank
-  obtain ⟨ψ, hψ, h1⟩ := exists_continuous_addChar_ne_one k
-  exact twoSegNonGenQuot_of_char hψ h1 hsub hrank
 
 end GlobalTheory.CompanionTheory.BZSeg

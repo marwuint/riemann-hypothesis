@@ -224,23 +224,6 @@ theorem wordFacts_of_face (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word
       hNu.metric hRR.metric (D.div_good.2 u) D.div_good.1 hXc hXE (D.div.Bk u) (P.cols.col.B (wU u)) hBk)
     (Formalism.MainNotions.DIV.HookProducts.RBTie.muDual_tie D.div.RR P.cols.RR P.cols.XE eRR hRR.lat hRR.metric D.div_good.1 hXE) tH tFo tR
 
-theorem wordFacts_of_tied {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ} {A : FamIn D.what₂.LL G Pl0 T m}
-    {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ} {Zs : DefSub A.fam.amb}
-    {Df0' : DefSide A.fam.base} {Dc' : DefCols (A.side Ps ψs Zs)} {Sp' : SPer Dc'} {Nn' : IndefNum A.fam.base}
-    (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word)
-    (P : IndefCoreR Df0' (A.side Ps ψs Zs) Dc' Sp' Nn') {S0 : IndefData (A.side P0 ψ0 Zs)} {X0 : BaseLevelRowSide D}
-    {NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc'.a w) → D.what₂.LL)}
-    {I : DivisionCompatibilityData D A P0 ψ0 Ps ψs Zs S0 P.cols.toIndefData X0 Dc'}
-    (hT : DivisionCompatible D A P0 ψ0 Ps ψs Zs S0 P.cols.toIndefData X0 P.cols.col NuC I)
-    {Pl : Type} [Fintype Pl] [DecidableEq Pl] (R : RecNums A.fam.base.J Pl)
-    (Nu : Submodule (𝓞 D.what₂.LL) (Fin (Dc'.a (I.wU u)) → D.what₂.LL)) (sg : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ)
-    (hcl : DivClausesR P R (I.wU u) Nu sg) (hNs : NuC (I.wU u) = shiftLat Nu sg)
-    (tH : R.hu - meanLog P.cols.κ = D.div.h u) (tFo : 2 * FoOfR P = L.Fo)
-    (tR : R.rhs ≤ L.MAIN u + C * (D.host.TT.card : ℝ) * L.sc.a * L.La +
-      C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
-    WordFacts L C Cabs u :=
-  wordFacts_of_face L C Cabs u P I.wU NuC (I.eNu u) I.eRR (hT.cols.Nu u) hT.sharp.RR (hT.cols.Bk u) R Nu sg hcl hNs tH tFo tR
-
 end Clauses
 
 section PartB
@@ -316,13 +299,6 @@ def Compl3 (L : SizeData₂ D) (Z : DivX D) (Csz C : ℝ) : Prop :=
   ∀ u u', |(hExpl6 D L Z Csz u + (∑ t : D.host.TT, (L.aT t : ℝ)) * Real.log ((D.mem u).A.T : ℝ)) -
     (hExpl6 D L Z Csz u' + (∑ t : D.host.TT, (L.aT t : ℝ)) * Real.log ((D.mem u').A.T : ℝ))| ≤
     C * ((D.host.TT.card : ℝ) * L.sc.a * L.La + (D.R.m : ℝ) * L.B0)
-
-theorem slope_bound_of_word_facts (L : SizeData₂ D) (Z : DivX D) (N : NChoice D) (T : ThData D) (Csz C Cabs : ℝ)
-    (hh : ∀ u, D.div.h u = hExpl6 D L Z Csz u) (hW : ∀ u, WordFacts L C Cabs u) (h5 : Compl3 L Z Csz C) :
-    Formalism.MainNotions.LocalQuadraticParts.Conclusion1 D L Z N T Csz C Cabs := by
-  refine ⟨fun u => (hW u).1, fun u hu => ?_, fun _ u => ?_, h5⟩
-  · rw [← hh u]; exact (hW u).2.1 hu
-  · rw [← hh u]; exact (hW u).2.2
 
 theorem linkDIV_at_words (L : SizeData₂ D) (Z : DivX D) (Csz C Cabs CH : ℝ)
     (hh : ∀ u, D.div.h u = hExpl6 D L Z Csz u) (hW : ∀ u, WordFacts L C Cabs u) (h5 : Compl3 L Z Csz C)
@@ -434,46 +410,6 @@ structure DivisionPackage {D : D7} {L : SizeData₂ D} (Rw : DivisionRows L) (C 
 
 attribute [instance] DivisionPackage.plF DivisionPackage.plD
 
-def DivisionPackage.colBr {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C Cabs : ℝ} (P : DivisionPackage Rw C Cabs) : Formalism.L2.G.ServJoint.ColBr D where
-  Gp := Rw.G
-  Pl0 := Rw.Pl0
-  T := Rw.T
-  m := D.R.m
-  A := Rw.A
-  P0 := Rw.P0
-  ψ0 := Rw.ψ0
-  Ps := Rw.P1
-  ψs := Rw.ψ1
-  Zs := P.Pk.Zs
-  S0 := P.Pk.core.base.toIndefData
-  S1 := P.Pk.core.cols.toIndefData
-  X0 := P.X0
-  Dc := Rw.Dc P.Pk.Zs
-  I := P.I
-
-theorem DivisionPackage.colBr_tied {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C Cabs : ℝ} (P : DivisionPackage Rw C Cabs) : P.colBr.Tied where
-  ok := ⟨Rw.s, Rw.hOk⟩
-  mu := fun w => by
-    show D.what₂.muAt w = P.I.tup (P.Pk.core.cols.toIndefData.μ (D.plEq w))
-    rw [P.tied.tup.muAt w, P.tied.mu1]
-  sharp := P.tied.sharp
-  dcPt := P.dcPt
-
-theorem DivisionPackage.val2 {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C Cabs : ℝ} (P : DivisionPackage Rw C Cabs) (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L)
-    (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ) (hN : Formalism.BasicNotions.DV.NprimeDef D L) (u : D.what₂.Word) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) :
-    ∀ φ ∈ P.Nu u, ∀ F ∈ (Rw.A.side Rw.P1 Rw.ψ1 P.Pk.Zs).Mt (P.Pk.core.cols.μ w),
-      (Rw.Dc P.Pk.Zs).Pt (P.I.wU u) (P.Pk.core.cols.μ w) φ F = 0 ∨
-        sgRec L u w ≤ (vw w ((Rw.Dc P.Pk.Zs).Pt (P.I.wU u) (P.Pk.core.cols.μ w) φ F) : ℝ) :=
-  Formalism.L2.G.ServJoint.val2AllAtR D L P.colBr P.colBr_tied hcut h2 u (P.Nu u)
-    (Formalism.L2.G.ServJoint.nu_into L hN u (P.I.eNu u) (P.NuC (P.I.wU u)) (P.Nu u) (P.tied.cols.Nu u).lat (P.shift u)) w
-
-theorem DivisionPackage.wordFacts {D : D7} {L : SizeData₂ D} {Rw : DivisionRows L} {C Cabs : ℝ} (P : DivisionPackage Rw C Cabs) (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L)
-    (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ) (hN : Formalism.BasicNotions.DV.NprimeDef D L) (u : D.what₂.Word) : WordFacts L C Cabs u :=
-  wordFacts_of_tied L C Cabs u P.Pk.core P.tied (P.R u) (P.Nu u) (sgRec L u)
-    (linkDIV_L2R_clauses Rw.A Rw.hOk Rw.hsep Rw.P0 Rw.ψ0 Rw.P1 Rw.ψ1 Rw.Dc Rw.Sp Rw.Zsc P.cf P.Cp P.CHp P.Pk (P.R u) (P.I.wU u)
-      (P.Nu u) (sgRec L u) { toDivInputs0R := P.inp u, val2 := P.val2 h2 hcut hN u })
-    (P.shift u) (P.hTie u) P.foTie (P.rhs u)
-
 theorem WordFacts.mono {D : D7} {L : SizeData₂ D} {C C' Cabs Cabs' : ℝ} {u : D.what₂.Word} (h : WordFacts L C Cabs u)
     (hC : C ≤ C') (hC0 : 0 ≤ C') (hA : Cabs ≤ Cabs') (hLa : 0 ≤ L.La) : WordFacts L C' Cabs' u := by
   refine ⟨h.1, h.2.1, h.2.2.trans ?_⟩
@@ -517,69 +453,6 @@ theorem degree_weight_bound_mono {D : D7} {L : SizeData₂ D} {C C' : ℝ} (h : 
     Formalism.MainNotions.LocalQuadraticParts.adm11 D L C' := fun u j hj =>
   ⟨(h u j hj).1.trans (mul_le_mul_of_nonneg_right hC (Formalism.MainNotions.loss_bound_nonneg L)),
     (h u j hj).2.trans (mul_le_mul_of_nonneg_right hC (Formalism.MainNotions.loss_bound_nonneg L))⟩
-
-structure BridgeRows {eps : ℝ} (Fm : FamP eps) (Rw : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRows (Fm.L x i))
-    (Cabs CH : ℝ) : Prop where
-  pkg : DIVinN Fm → ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (h : Rw.1 ≤ x) (i : Fm.Ix x), Nonempty (DivisionPackage (Rw.2 x hx h i) C Cabs)
-  adm2 : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Formalism.MainNotions.LocalQuadraticParts.adm2 (Fm.D x i) (Fm.L x i)
-  cut : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∀ μ, Formalism.BasicNotions.DV.Used (Fm.D x i) μ → Formalism.L2.G.ServJoint.CutUp (Fm.D x i) μ
-  c3 : ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Compl3 (Fm.L x i) (Fm.X x i) Fm.Csz C
-  hh : DIVinN Fm → Formalism.MainNotions.LocalQuadraticParts.FrameNumberBoundFamily Fm Fm.Csz CH
-  c2 : Formalism.MainNotions.LocalQuadraticParts.ComplementTwoFamily Fm
-  c5 : Formalism.MainNotions.LocalQuadraticParts.ComplementCountFamily Fm
-  bu : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).BuRational
-  rr : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).RRFull
-  la : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La
-
-theorem linkDIVt_of_rows {eps : ℝ} (Fm : FamP eps)
-    (Rw : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRows (Fm.L x i)) (Cabs CH : ℝ)
-    (B : BridgeRows Fm Rw Cabs CH) : LinkDIVt Fm Cabs CH := by
-  intro _ hN
-  obtain ⟨C1, x1, h1⟩ := B.pkg hN
-  obtain ⟨xa, ha⟩ := B.adm2
-  obtain ⟨xo, ho⟩ := B.cut
-  obtain ⟨C3, x3, h3⟩ := B.c3
-  obtain ⟨xH, hH⟩ := B.hh hN
-  obtain ⟨C2, x2, h2⟩ := B.c2
-  obtain ⟨x5, h5⟩ := B.c5
-  obtain ⟨xb, hb⟩ := B.bu
-  obtain ⟨xr, hr⟩ := B.rr
-  obtain ⟨xl, hl⟩ := B.la
-  set M : ℝ := max x1 (max x3 (max xH (max x2 (max x5 (max xb (max xr (max xl (max xa (max xo (max Rw.1 (Fm.x1 + 1))))))))))) with hM
-  have g1 : x1 ≤ M := by rw [hM]; exact le_max_left _ _
-  have g3 : x3 ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have gH : xH ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have g2 : x2 ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have g5 : x5 ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have gb : xb ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have gr : xr ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have gl : xl ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have ga : xa ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have g0 : Fm.x1 + 1 ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, or_true]
-  have gw : Rw.1 ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  have go : xo ≤ M := by rw [hM]; simp only [le_max_iff, le_refl, true_or, or_true]
-  refine ⟨max (max C1 C3) (max C2 0), M, fun x hx i => ?_⟩
-  have hx1 : Fm.x1 < x := by linarith
-  have hLa := hl x (le_trans gl hx) i
-  have hC0 : (0 : ℝ) ≤ max (max C1 C3) (max C2 0) := le_trans (le_max_right _ _) (le_max_right _ _)
-  have hhx : ∀ u, (Fm.D x i).div.h u = hExpl6 (Fm.D x i) (Fm.L x i) (Fm.X x i) Fm.Csz u := Fm.h_eq x hx1 i
-  obtain ⟨P⟩ := h1 x (le_trans g1 hx) hx1 (le_trans gw hx) i
-  exact linkDIV_at_words (Fm.L x i) (Fm.X x i) Fm.Csz _ Cabs CH hhx
-    (fun u => (P.wordFacts (ha x (le_trans ga hx) i)
-      (ho x (le_trans go hx) i) (Fm.nprimeDef x hx1 i) u).mono (le_trans (le_max_left _ _) (le_max_left _ _)) hC0 le_rfl hLa)
-    ((h3 x (le_trans g3 hx) i).mono (le_trans (le_max_right _ _) (le_max_left _ _)) hLa)
-    (hH x (le_trans gH hx) hx1 i)
-    (degree_weight_bound_mono (h2 x (le_trans g2 hx) i) (le_trans (le_max_left _ _) (le_max_right _ _)))
-    (h5 x (le_trans g5 hx) i) (hb x (le_trans gb hx) i) (hr x (le_trans gr hx) i) (Formalism.MainNotions.WeightDegreeSizes.zero_gain_above_family Fm x hx1 i)
-
-theorem linkDIVt_closed (𝒟 : FamClass) (Cabs : ℝ)
-    (Rw : ∀ {eps : ℝ} (Fm : FamP eps), 𝒟 Fm → Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRows (Fm.L x i))
-    (h : Closed 𝒟 (fun Fm CH => ∀ hc : 𝒟 Fm, TuSize Fm → DGamSize Fm → BridgeRows Fm (Rw Fm hc) Cabs CH)) :
-    Closed 𝒟 (fun Fm CH => TuSize Fm → DGamSize Fm → LinkDIVt Fm Cabs CH) := by
-  obtain ⟨e1, he1, hP⟩ := h
-  refine ⟨e1, he1, fun e he hle => ?_⟩
-  obtain ⟨K, hK⟩ := hP e he hle
-  exact ⟨K, fun Fm CH hc hL hT hG => linkDIVt_of_rows Fm (Rw Fm hc) Cabs CH (hK Fm CH hc hL hc hT hG)⟩
 
 end PartD
 
@@ -693,15 +566,6 @@ theorem linkDIVt_of_rowsF {eps : ℝ} (Fm : FamP eps)
     (hH x (le_trans gH hx) hx1 i)
     (degree_weight_bound_mono (h2 x (le_trans g2 hx) i) (le_trans (le_max_left _ _) (le_max_right _ _)))
     (h5 x (le_trans g5 hx) i) (hb x (le_trans gb hx) i) (hr x (le_trans gr hx) i) (Formalism.MainNotions.WeightDegreeSizes.zero_gain_above_family Fm x hx1 i)
-
-theorem linkDIVt_closedF (𝒟 : FamClass) (Cabs : ℝ)
-    (Rw : ∀ {eps : ℝ} (Fm : FamP eps), 𝒟 Fm → Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsFace (Fm.L x i))
-    (h : Closed 𝒟 (fun Fm CH => ∀ hc : 𝒟 Fm, TuSize Fm → DGamSize Fm → BridgeRowsF Fm (Rw Fm hc) Cabs CH)) :
-    Closed 𝒟 (fun Fm CH => TuSize Fm → DGamSize Fm → LinkDIVt Fm Cabs CH) := by
-  obtain ⟨e1, he1, hP⟩ := h
-  refine ⟨e1, he1, fun e he hle => ?_⟩
-  obtain ⟨K, hK⟩ := hP e he hle
-  exact ⟨K, fun Fm CH hc hL hT hG => linkDIVt_of_rowsF Fm (Rw Fm hc) Cabs CH (hK Fm CH hc hL hc hT hG)⟩
 
 end PartE
 

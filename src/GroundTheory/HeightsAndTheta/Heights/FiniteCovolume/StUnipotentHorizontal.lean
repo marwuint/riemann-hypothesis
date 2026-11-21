@@ -19,12 +19,6 @@ def UnipotentHorizontal.Statement (h : HermitianForm F E W) (v : Basis ι E W) :
         ∃ t : InfinitePlace E → ℂ,
           unipCoord h v x₀ w₀ (δ * n) - (fun w => t w • vecAt v x₀ w) ∈ K
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenOfFgOfSpanEqTop
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCocyclesMulInvariantsDiscrete
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2LocalStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2Local
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoefficientRingIntegersCompactAdicPropertiesStatement
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 
@@ -34,7 +34,7 @@ theorem cocycles_finite (hT : Formalism.GaloisCohomology.LocalTateDualityK) (l :
   have hrho : ReciprocityTheory.Gal.ContAction rho := by
     refine continuous_prod_of_discrete_right.2 fun m => ?_
     exact (hlc m).continuous.comp hφ.2
-  have hH := (GlobalTheory.T.finite_H1_H2_local hT l K.1 hK (r + 1) M rho (Nat.succ_pos r) hrho).1
+  have hH := (_root_.GlobalTheory.finite_H1_H2_of_localTateDuality hT l K.1 hK (r + 1) M rho (Nat.succ_pos r) hrho).1
   have hZ := GlobalTheory.CocycleCount.card_cocycles_mul_invariants_discrete _ _ M rho hrho
   have hH1 : 0 < Nat.card (ReciprocityTheory.Gal.H1 rho) := Nat.card_pos
   have hM : 0 < Nat.card M := Nat.card_pos

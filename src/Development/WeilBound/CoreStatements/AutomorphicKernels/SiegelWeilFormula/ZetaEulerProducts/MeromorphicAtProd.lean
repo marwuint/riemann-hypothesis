@@ -30,12 +30,6 @@ theorem PO.mul (hf : PO f x k) (hg : PO g x l) : PO (fun s => f s * g s) x (k + 
 theorem PO.of_analytic (hf : AnalyticAt ℂ f x) : PO f x 0 :=
   ⟨f, hf, Filter.Eventually.of_forall fun s => by rw [pow_zero, one_mul]⟩
 
-theorem PO.congr (hf : PO f x k) (h : ∀ᶠ s in 𝓝[≠] x, f s = g s) : PO g x k := by
-  obtain ⟨H, hH, hev⟩ := hf
-  refine ⟨H, hH, ?_⟩
-  filter_upwards [hev, h] with s h1 h2
-  rw [h1, h2]
-
 theorem PO.prod {ι : Type*} (t : Finset ι) (F : ι → ℂ → ℂ) (K : ι → ℕ) (h : ∀ i ∈ t, PO (F i) x (K i)) :
     PO (fun s => ∏ i ∈ t, F i s) x (∑ i ∈ t, K i) := by
   classical

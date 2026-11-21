@@ -1,5 +1,5 @@
 import Mathlib
-import GroundTheory.ArithmeticGeometry.EtaleCompletion.ArtinApproximationData
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Arith.Etale

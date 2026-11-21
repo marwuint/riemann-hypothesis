@@ -3,14 +3,76 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsRealF
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalFlipOnVolumesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RangeSndRel
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOnOfRapidDec
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelMulConjCuspFormIntegrableOn
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspAlongOfPairLifts
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NegativeThetaLevelSecond
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralEqZeroOfForallApprox
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftLowerTowerVanishing
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NegativeThetaLevelSixth
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsAllTiedNotStable
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DiscreteSeriesHermitianUniqueOfClassification
+import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.FinitePartTypes
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.AutomorphicFormUniformLimitDiscreteSeriesSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NegativeThetaLevelFourth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaGrowthOfThetaSquareIntegrable
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.UnifModGrowthOfIsUnifModerate
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAutFunSmThetaLift
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsCuspFunOfApprox
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelIteratedIntegralsSwap
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsKernelApprox
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridDownArrowThetaFunctionFockDenseOfLevel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOnQuotHeightPowMulNorm
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.TypeAtOfDiscreteSeries
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsGrowthSobNeTopOfIsAutFunSm
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffDerivSnoc
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GrowthSobZeroNeTop
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsKFiniteIteratedCompactAverageApprox
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspFormKFiniteApprox
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AutCuspOfMemCusp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HorizontalThetaLevelFourth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjThetaKOMulIntegrableOn
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoubleNegSpaceUnitaryElementHeq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftDiagonalTypePreserved
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsCuspFunIffConstTerm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsCuspFunOfApproxAlt
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodParOfSigOK
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalGridNodeType
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOnThetaKOMulCusp
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToTWsmallZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignedUnitaryGroupCompat
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AutomorphicCuspFormsHermitianSpaceSignTwist
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NegativeParabolicThetaSeventh
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NegativeParabolicThetaEighth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjThetaKOMulCuspIntegrableOnFst
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VerticalThetaLevelSecond
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDimensionalModel
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalListedTopForms
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinCoefMultT
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAutFunSmRealProd
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDualFrameSpanUnitaryRepresentationStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesModelAdjointEqInvFiniteDimensional
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfInnerSmooth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlacePointCommuteOfNePlace
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSmoothAutomorphicFunctionTranslateAtRealPlace
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ModelTypeFormExpandsAlongDualFrame
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExpandPiOfExpandEachStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumProdUpdateRegroup
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftVerticalCuspidalSum
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalAlongRightGridArrows
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalAlongDownGridArrows
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalVectorsRowAndColumnPaths
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DownEqLiftP
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BplusEqCoef
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselPeriodLinearAndTranslationCombination
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselColumnScalarFunctionContinuousLeftInvariant
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.UnifModGrowthOfIsUnifModerate
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
@@ -92,27 +154,5 @@ theorem liftT_oppTens (τi : PolRow G × PolDown G →₀ ℂ) (τ : SchRow G ×
   simp only [oppTens, Finsupp.sum, map_sum, AddMonoidHom.mk'_apply, liftT_single, Finset.smul_sum, smul_smul]
 
 end Lin
-
-theorem linAt_big : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → Big fun ch => LinAt ch := by
-  intro hP hL
-  obtain ⟨a0, ha⟩ := Big.and (Big.and (GlobalTheory.T.cuspidal_flip_on_volumes hL hP) (GlobalTheory.EndCusp.formTop_isCuspListed hP)) colFn_cont_left
-  refine ⟨a0, fun ε CF hC => ?_⟩
-  obtain ⟨x, hx⟩ := ha ε CF hC
-  refine ⟨x, fun D large₂ he hxx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩
-  obtain ⟨⟨hstep, htop⟩, hcol⟩ := hx D large₂ he hxx Γ Pl0 T A Ks R F hS ch hch hsc
-  have hθ : IsInfFam ch.W.θ := by
-    rw [hch.toIsBase.weil.θ]
-    exact hS.core.models.inf
-  intro t a τ hτ M hM τi y
-  obtain ⟨e, he', φ, hφ, -⟩ := hτ
-  have hca : GlobalTheory.Unf.IsContAut _ (colFn ch a) := ⟨(hcol a).2, (hcol a).1⟩
-  have hFP : ∀ P : PolRow ch.G × PolDown ch.G, GlobalTheory.Unf.IsContAut _
-      (∑ d ∈ τ.support, τ d • liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y)) := fun P =>
-    GlobalTheory.SeeSaw.TrcProof.contAut_sum _ _ _ fun d hd =>
-      opp_contAut hP.cuspRapidDecay hθ (hstep t M hM) he' (htop t y) P d (φ d) (hφ d hd)
-  simp only [lhs, liftT_oppTens]
-  rw [bplus_fsum hch.toIsBase.vol hM hca _ _ _ fun P _ => hFP P, Finsupp.sum]
-  refine Finset.sum_congr rfl fun P _ => ?_
-  rw [Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
 
 end GlobalTheory.RowVal

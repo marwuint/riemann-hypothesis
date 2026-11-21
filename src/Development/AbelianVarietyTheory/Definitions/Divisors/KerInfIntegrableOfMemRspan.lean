@@ -151,48 +151,4 @@ theorem rspan_le_modGr (π : CuspSub E a) : rspan π ≤ modGr E a := by
             rw [mul_pow, mul_pow]; ring
         _ = _ := by rw [integral_const_mul]; ring
 
-theorem kerInf_integrable_of_mem_rspan {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ rspan π) {X : Type}
-    [MeasurableSpace X] {ν : Measure X} {k : X → ℂ} {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) (g : GA E a) :
-    Integrable (fun x => k x * F (g * infGL E a (γ x))) ν :=
-  integrable_of_modGr (rspan_le_modGr π hF) hk g
-
-theorem kerInf_add {π : CuspSub E a} {F G : GA E a → ℂ} (hF : F ∈ rspan π) (hG : G ∈ rspan π) {X : Type}
-    [MeasurableSpace X] {ν : Measure X} {k : X → ℂ} {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) :
-    kerInf ν k γ (F + G) = kerInf ν k γ F + kerInf ν k γ G := by
-  funext g
-  rw [Pi.add_apply, kerInf, kerInf, kerInf, ← integral_add (kerInf_integrable_of_mem_rspan hF hk g)
-    (kerInf_integrable_of_mem_rspan hG hk g)]
-  simp only [Pi.add_apply, mul_add]
-
-theorem rspan_triv (ha : a ≤ 1) : rspan (CuspSub.triv E ha) = Submodule.span ℂ {fun _ => 1} := by
-  rw [rspan_eq_mspanR, WhitModel.mspanR_triv]
-
-theorem rspan_twist_triv (ha : a ≤ 1) (χ : Formalism.L2.Host.HChar E) :
-    rspan ((CuspSub.triv E ha).twist χ) = Submodule.span ℂ {fun g => ((chiDet a χ g : ℂˣ) : ℂ)} := by
-  apply le_antisymm
-  · refine rspan_le ?_ (fun F hF h => ?_) fun F hF X _ ν _ k γ _ => ?_
-    · rintro _ ⟨φ, hφ, rfl⟩
-      obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ
-      exact Submodule.mem_span_singleton.2 ⟨c, by funext g; simp [oneFn]⟩
-    · obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hF
-      exact Submodule.mem_span_singleton.2 ⟨c * ((chiDet a χ h : ℂˣ) : ℂ), by funext g; simp; ring⟩
-    · obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hF
-      refine Submodule.mem_span_singleton.2 ⟨∫ x, k x * (c * ((chiDet a χ (infGL E a (γ x)) : ℂˣ) : ℂ)) ∂ν, ?_⟩
-      funext g
-      simp only [Pi.smul_apply, smul_eq_mul, kerInf, map_mul, Units.val_mul]
-      rw [← integral_mul_const]
-      congr 1; funext x; ring
-  · refine Submodule.span_le.2 ?_
-    rintro _ rfl
-    have h := mem_rspan (π := (CuspSub.triv E ha).twist χ) (φ := mulChi a χ (oneFn E a))
-      ⟨oneFn E a, Submodule.mem_span_singleton_self _, rfl⟩
-    have e : (mulChi a χ (oneFn E a)).1 = fun g => ((chiDet a χ g : ℂˣ) : ℂ) := by funext g; simp [oneFn]
-    rw [e] at h
-    exact h
-
-theorem plGL_injective (w : InfinitePlace E) : Function.Injective (plGL (a := a) w) := fun g h e => by
-  have h1 := map_plGL w g w
-  rw [e, map_plGL, if_pos rfl, if_pos rfl] at h1
-  exact h1.symm
-
 end GlobalTheory.JSW.RapidModel

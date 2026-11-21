@@ -132,7 +132,4 @@ def basePackageFullHecke (hC : PrimitiveStatementsWithPassage A3 P0 ψ0 P1 ψ1 D
 
 end CoreR3
 
-theorem package_from_primitive_statements : PackageFromComplexDataConditions (K := K) (G := G) (Pl0 := Pl0) (I0 := I0) (Ty := Ty) (T := T) (m := m) :=
-  fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hC => ⟨basePackageFullHecke hC⟩
-
 end Formalism.IndefR.Cx

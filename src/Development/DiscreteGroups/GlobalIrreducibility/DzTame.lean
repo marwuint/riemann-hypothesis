@@ -120,13 +120,6 @@ theorem isWild_of_tameSym {σ : Ine (F := E) A} (h : ∀ (x : Ω) (hx : x ≠ 0)
         mul_lt_mul_of_pos_right h2 hv
     _ = A.valuation x := one_mul _
 
-theorem isWild_commutator (s t : Ine (F := E) A) :
-    Formalism.MainNotions.BlochKatoReduction.IsWild A ((s * t * s⁻¹ * t⁻¹ : Ine (F := E) A) : G E Ω) := by
-  refine isWild_of_tameSym fun x hx => ?_
-  simp only [map_mul, map_inv]
-  rw [mul_comm (tameSym hx s) (tameSym hx t)]
-  group
-
 theorem isWild_frob {q : ℕ} {φ : G E Ω} (hφ : IsFrob A q φ) (s : Ine (F := E) A) :
     Formalism.MainNotions.BlochKatoReduction.IsWild A (((⟨φ * s * φ⁻¹, conj_mem_Ine hφ.1 s.2⟩ : Ine (F := E) A) * (s ^ q)⁻¹ :
       Ine (F := E) A) : G E Ω) := by

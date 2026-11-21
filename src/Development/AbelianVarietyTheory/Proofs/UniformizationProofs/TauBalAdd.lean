@@ -89,34 +89,4 @@ theorem ros_sum (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (f g f' g' : A ⟶ A
   simp only [← Category.assoc, r₀, r₁] at key
   exact key
 
-theorem tauBal_add : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (f g f' g' : D.P.A ⟶ D.P.A) [IsMonHom f] [IsMonHom g] [IsMonHom f'] [IsMonHom g'] (a b a' b' : D.X → D.X), (∀ y, D.c (a y) = D.c y ≫ f) → (∀ y, D.c (b y) = D.c y ≫ g) → (∀ y, D.c (a' y) = D.c y ≫ f') → (∀ y, D.c (b' y) = D.c y ≫ g') → RosatiAdj D.P.A D.P.L f g → RosatiAdj D.P.A D.P.L f' g' → D.TauBal f g a b → D.TauBal f' g' a' b' → D.TauBal (f * f') (g * g') (fun y => a y + a' y) (fun y => b y + b' y) := by
-  intro hG R _ _ D hB f g f' g' _ _ _ _ a b a' b' ca cb ca' cb' hr hr' hT hT' w hw w₀ x x'
-  obtain ⟨u, hu, h₀⟩ := exists_ros hG D.P.isAb D.P.isLB f g hr
-  obtain ⟨u', hu', h₀'⟩ := exists_ros hG D.P.isAb D.P.isLB f' g' hr'
-  refine corr_of_val D.P.isLB fun y J hJ => ?_
-  have lin : ∀ (f : D.P.A ⟶ D.P.A) (a : D.X → D.X), (∀ y, D.c (a y) = D.c y ≫ f) →
-      ∀ x, cP D (TK R) x ≫ f = cP D (TK R) (a x) := fun f a h x => by
-    rw [cP, cP, h, Category.assoc]
-  have C : IsCub (cubV D.cub (T := TK R) y J) := isCub_cubV D.cub hJ
-  have key := ros_sum D.cub hG D.P.isAb f g f' g' u hu h₀ u' hu' h₀' w hw w₀ (T := TK R) hJ (cP D _ x) (cP D _ x')
-  rw [lin f a ca, lin f' a' ca', lin g b cb, lin g' b' cb', C.s01, C.s12] at key
-  have B := (val_mul hJ _ _ _).symm.trans (val_corr hJ (hT u hu h₀ x x') (𝟙 _))
-  have B' := (val_mul hJ _ _ _).symm.trans (val_corr hJ (hT' u' hu' h₀' x x') (𝟙 _))
-  rw [val_pull hJ, Category.id_comp] at B B'
-  have B₀ : val (D.tau (a x) x') (𝟙 _) y J * val₂ u y J (cP D (TK R) x) (cP D (TK R) x') =
-      val (D.tau x (b x')) (𝟙 _) y J := B
-  have B₀' : val (D.tau (a' x) x') (𝟙 _) y J * val₂ u' y J (cP D (TK R) x) (cP D (TK R) x') =
-      val (D.tau x (b' x')) (𝟙 _) y J := B'
-  have M := tauK_mul hJ hB (a x) (a' x) x'
-  have M' := tauK_mul hJ hB (b x') (b' x') x
-  rw [tauK_symm hJ _ x, tauK_symm hJ _ x, tauK_symm hJ _ x] at M'
-  rw [val_mul hJ, val_pull hJ, Category.id_comp]
-  show val (D.tau (a x + a' x) x') (𝟙 _) y J * val₂ w y J (cP D (TK R) x) (cP D (TK R) x') =
-      val (D.tau x (b x' + b' x')) (𝟙 _) y J
-  have E := fun {p q : ((TK R).left.presheaf.stalk y)ˣ} (e : p = q) => congrArg Additive.ofMul e
-  have k₁ := E key; have k₂ := E B₀; have k₃ := E B₀'; have k₄ := E M; have k₅ := E M'
-  apply Additive.ofMul.injective
-  simp only [ofMul_mul] at k₁ k₂ k₃ k₄ k₅ ⊢
-  linear_combination (norm := abel) k₁ + k₂ + k₃ + k₄ - k₅
-
 end GlobalTheory.TauBalAdd

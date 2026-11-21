@@ -4,20 +4,6 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory
 
 namespace GlobalTheory
 
-noncomputable def euclideanLineIsometry : EuclideanSpace ℂ (Fin 1) ≃ₗᵢ[ℝ] ℂ where
-  toFun z := z 0
-  invFun w := WithLp.toLp 2 (fun _ => w)
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  left_inv z := by
-    ext i
-    rw [Subsingleton.elim i 0]
-  right_inv _ := rfl
-  norm_map' z := by
-    show ‖z 0‖ = ‖z‖
-    rw [EuclideanSpace.norm_eq]
-    simp
-
 theorem norm_sq_le_integral_square :
     ∃ C : ℝ, 0 < C ∧ ∀ (f : ℂ → ℂ) (ρ : ℂ) (r : ℝ), Differentiable ℂ f → 0 < r →
       ‖f ρ‖ ^ 2 ≤ C / r ^ 2 * ∫ σ in (ρ.re - r)..(ρ.re + r), ∫ t in (ρ.im - r)..(ρ.im + r),

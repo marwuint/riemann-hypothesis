@@ -478,23 +478,6 @@ theorem d_surjective : Function.Surjective (d he c.le) := fun s => by
   obtain ⟨a, rfl⟩ := AugCot.d_surjective _ x
   exact ⟨a, (c.augCotEquiv_d he a).symm⟩
 
-open scoped TensorProduct in
-
-def kaehlerEquiv : letI := c.algebra; letI := appLEAlgebra e c.le
-    Γ(conormal e, U) ≃ₗ[Γ(S, U)] Γ(S, U) ⊗[Γ(X, W)] Ω[Γ(X, W)⁄Γ(S, U)] :=
-  letI := c.algebra
-  letI := appLEAlgebra e c.le
-  (c.augCotEquiv he).symm ≪≫ₗ AugCot.kaehlerEquiv (c.aug he) fun _ => rfl
-
-open scoped TensorProduct in
-
-theorem kaehlerEquiv_d (a : Γ(X, W)) : letI := c.algebra; letI := appLEAlgebra e c.le
-    c.kaehlerEquiv he (d he c.le a) = 1 ⊗ₜ KaehlerDifferential.D _ _ a := by
-  letI := c.algebra
-  letI := appLEAlgebra e c.le
-  rw [← c.augCotEquiv_d he, kaehlerEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]
-  exact AugCot.kaehlerEquiv_d _ _ a
-
 end IsChart
 
 theorem hom_ext_of_local {α β : F ⟶ F'} (H : ∀ (V : S.Opens) (x : S), x ∈ V →
@@ -650,9 +633,5 @@ theorem exists_isVB_conormal [QuasiCompact e] [Smooth π] [PreconnectedSpace S] 
   obtain ⟨U, m, s, hx, hs⟩ := exists_isFrame he x
   obtain rfl : m = n := (hr hs hx).symm.trans (congrFun hn x)
   exact ⟨U, s, hx, hs⟩
-
-theorem isZero_conormal_id : IsZero (conormal (𝟙 S)) :=
-  (IsZero.iff_id_eq_zero _).2 ((map_id (Category.comp_id (𝟙 S)) rfl (Category.comp_id _)
-    (Category.comp_id _)).symm.trans (map_eq_zero (Category.comp_id _) _ _ _ (Category.comp_id _)))
 
 end GlobalTheory.Conormal

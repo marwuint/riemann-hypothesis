@@ -1,6 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.PartitionUnitySmooth.Smoothing
-import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.PartitionUnitySmooth.DotVecMulVec
-import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.PartitionUnitySmooth.GeomQuarter
+import Mathlib
 
 noncomputable section
 
@@ -8,8 +7,6 @@ open NumberField Matrix UpperTheory.V.KT UpperTheory.V.KL
 open scoped ComplexOrder
 
 namespace PositivityTheory.KB.SmoothPartitionUnityBasic
-
-open TraceLipschitz GeometricWindowBounds
 
 section GRLipPf
 

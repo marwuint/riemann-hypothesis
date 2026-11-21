@@ -60,13 +60,4 @@ theorem columnRowRanks_admissible_of_massFormula (D : D7) (Lv : LevelData D) (C 
     rw [em, ← Formalism.MainNotions.J.idxRowTie_holds D, hD]
     rfl
 
-theorem admissible_ranks_at_member : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL),
-    GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => Formalism.MainNotions.LocalBesselAndTopKernel.FamilyMidVolume D) := by
-  intro hL p
-  refine GlobalTheory.Fc.RowE.of_all fun κ K β c b h0 h1 h2 => ?_
-  obtain ⟨hv, -⟩ :=
-    GlobalTheory.Fc.built_val GlobalTheory.Fc.Bundle (Bl.IsGoodE p.s) (Bl.IsLinked p) κ β.D β.O c b (GlobalTheory.Fc.Built.intro h0 h1 h2)
-  exact columnRowRanks_admissible_of_massFormula β.D β.O.lev b.R.T.cols (dstar_mass K β.X β.c.isOver β.c.dsig_eq)
-    (GlobalTheory.Proof.ColumnStabilizerTrivialLocal.gBig_of_large (typePrimesLarge_of_val β.O.L hv)) (fun u => GlobalTheory.CollCompare.splits_level β.D u)
-
 end GlobalTheory.MemberRanks

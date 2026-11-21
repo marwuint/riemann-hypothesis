@@ -64,65 +64,6 @@ def IsZetaB (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (pr : X.Fn l → Fin 2 �
     ∃ b : (ZMod (l ^ r))ˣ → Fin 2 → Qbar l, (∀ y i, b y i ∈ cf.O) ∧ ∀ s y,
       Cv n (Y r s y) (pr (β s y) + (mat ρ s *ᵥ b (y * (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹) - b y))
 
-theorem Gamma_le_Gamma0 {l M : ℕ} (h : l ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma0 l := fun γ hγ => by
-  rw [CongruenceSubgroup.Gamma_mem] at hγ
-  rw [CongruenceSubgroup.Gamma0_mem, ZMod.intCast_zmod_eq_zero_iff_dvd]
-  exact (Int.natCast_dvd_natCast.2 h).trans ((ZMod.intCast_zmod_eq_zero_iff_dvd _ M).1 hγ.2.2.1)
-
-theorem crtF_mod_left (m N : ℕ) : ((crtF m N : ℤ) : ZMod m) = 0 := by
-  simp [crtF]
-
-theorem crtF_mod_right {m N : ℕ} [NeZero N] (h : Nat.Coprime m N) : ((crtF m N : ℤ) : ZMod N) = 1 := by
-  simp only [crtF, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val]
-  exact ZMod.mul_inv_of_unit _ ((ZMod.isUnit_iff_coprime m N).2 h)
-
-theorem sigN_mem_Gamma (m N : ℕ) : sigN m N ∈ CongruenceSubgroup.Gamma m := by
-  rw [CongruenceSubgroup.Gamma_mem]
-  simp [sigN, crtF_mod_left]
-
-theorem det_wMat (l N : ℕ) : (wMat l N).det = N := by
-  rw [wMat, Matrix.det_mul, (sigN l N).2, Matrix.det_fin_two_of]
-  simp
-
-theorem exists_wMat_mul {l N : ℕ} [NeZero N] (h : Nat.Coprime l N) {γ : SL(2, ℤ)} (hγ : γ ∈ Gam N l) :
-    ∃ γ' ∈ Gam N l, wMat l N * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (γ' : Matrix (Fin 2) (Fin 2) ℤ) * wMat l N := by
-  obtain ⟨h1, h0⟩ := hγ
-  obtain ⟨h00, h11, h10⟩ := (CongruenceSubgroup.Gamma1_mem _ _).1 h1
-  have hl : ((γ 1 0 : ℤ) : ZMod l) = 0 := CongruenceSubgroup.Gamma0_mem.1 h0
-  obtain ⟨t, ht⟩ : (N : ℤ) ∣ γ 1 0 := (ZMod.intCast_zmod_eq_zero_iff_dvd _ N).1 h10
-  have htl : (t : ZMod l) = 0 := by
-    rw [ht, Int.cast_mul, Int.cast_natCast] at hl
-    exact (((ZMod.isUnit_iff_coprime N l).2 h.symm).mul_right_eq_zero).1 hl
-  let δ : SL(2, ℤ) := ⟨!![γ 0 0, N * γ 0 1; t, γ 1 1], by
-    have e := γ.2
-    rw [Matrix.det_fin_two] at e
-    rw [Matrix.det_fin_two_of]
-    have e' : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1 := e
-    rw [ht] at e'
-    linarith⟩
-  have hδ : !![(N : ℤ), 0; 0, 1] * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (δ : Matrix (Fin 2) (Fin 2) ℤ) * !![(N : ℤ), 0; 0, 1] := by
-    ext i j
-    fin_cases i <;> fin_cases j <;> simp [δ, Matrix.mul_apply, Fin.sum_univ_two, ht] <;> ring
-  refine ⟨sigN l N * δ * (sigN l N)⁻¹, Subgroup.mem_inf.2 ⟨?_, ?_⟩, ?_⟩
-  · have hf := crtF_mod_right h
-    have hc : ((sigN l N * δ * (sigN l N)⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) =
-        !![1 - crtF l N ^ 2, crtF l N ^ 3 - 2 * crtF l N; crtF l N, 1 - crtF l N ^ 2] * !![γ 0 0, N * γ 0 1; t, γ 1 1] *
-          Matrix.adjugate !![1 - crtF l N ^ 2, crtF l N ^ 3 - 2 * crtF l N; crtF l N, 1 - crtF l N ^ 2] := by
-      rw [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv]
-      rfl
-    refine (CongruenceSubgroup.Gamma1_mem _ _).2 ⟨?_, ?_, ?_⟩ <;> rw [hc] <;>
-      simp [Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two, hf, h00, h11] <;> norm_num
-  · have hσ := Gamma_le_Gamma0 (dvd_refl l) (sigN_mem_Gamma l N)
-    exact mul_mem (mul_mem hσ (CongruenceSubgroup.Gamma0_mem.2 htl)) (inv_mem hσ)
-  · rw [wMat, Matrix.mul_assoc, hδ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.SpecialLinearGroup.coe_mul,
-      ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_right]
-
-theorem vecMul_gR (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : ZMod l) :
-    (![r₀, 1] : Fin 2 → ZMod l) ᵥ* ((GlobalTheory.ZetaB.gR l N r₀ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom (ZMod l))) =
-      ![0, 1] := by
-  ext i
-  fin_cases i <;> simp [GlobalTheory.ZetaB.gR, Matrix.vecMul, dotProduct, Fin.sum_univ_two, GlobalTheory.ZetaB.cR_mod l N hN]
-
 def lnFn (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) : Submodule ℤ_[l] (X.Fn l) :=
   Submodule.pi Set.univ fun _ => (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l))
 
@@ -197,16 +138,6 @@ theorem invMod_secT (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {n M : ℕ} (hM :
   rw [e]
   exact dvd_add ((hd _ (by push_cast; rw [hγ.1, sub_self])).mul_right _) ((hd _ hγ.2.1).mul_right _)
 
-theorem InvMod.wB {X : Tower Ω ε} {l N : ℕ} [Fact l.Prime] [NeZero N] (h : Nat.Coprime l N) {n : ℕ} {b : X.Fn l}
-    (hb : InvMod X l n (Gam N l) b) : InvMod X l n (Gam N l) (wB X l N b) := by
-  intro γ hγ
-  obtain ⟨γ', hγ', e⟩ := exists_wMat_mul h hγ
-  have hw : 0 < (wMat l N).det := by rw [det_wMat]; exact_mod_cast NeZero.pos N
-  have h1 := act_mem_lnFn X l (wMat l N) (hb γ' hγ')
-  rw [map_sub, Tower.act_act Ω ε X l _ _ (by rw [γ'.2]; exact one_pos) hw, ← e,
-    ← Tower.act_act Ω ε X l _ _ hw (by rw [γ.2]; exact one_pos)] at h1
-  exact h1
-
 theorem cycM_apply [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) {z : Ω} (hz : z ^ M = 1) :
     s z = z ^ (cycM M s : ZMod M).val := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -248,35 +179,5 @@ theorem shArg_mem_fixMu [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s : Ω ≃�
   unfold shArg
   rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, repM_apply M _ hz, cycM_apply M s (hz' _), hp, ← Units.val_mul,
     inv_mul_cancel_right, ← repM_apply (Ω := Ω) M y hz, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]
-
-example : (sigN 3 5 : Matrix (Fin 2) (Fin 2) ℤ) = !![-35, 204; 6, -35] := by
-  have h : crtF 3 5 = 6 := by
-    haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
-    have e : (((3 : ℕ) : ZMod 5))⁻¹ = 2 := inv_eq_of_mul_eq_one_right (by decide +revert)
-    rw [crtF, e]
-    rfl
-  simp [sigN, h]
-
-example (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : ZMod l) :
-    (![-r₀, -1] : Fin 2 → ZMod l) ᵥ* ((GlobalTheory.ZetaB.gR l N r₀ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.castRingHom (ZMod l))) =
-      -![0, 1] := by
-  rw [← vecMul_gR l N hN r₀, ← Matrix.neg_vecMul]
-  congr 1
-  ext i
-  fin_cases i <;> simp
-
-example (l N : ℕ) (r₀ : ZMod l) :
-    (![1, 0] : Fin 2 → ℤ) ᵥ* (GlobalTheory.ZetaB.gR l N r₀ : Matrix (Fin 2) (Fin 2) ℤ) = ![1, 0] := by
-  ext i
-  fin_cases i <;> simp [GlobalTheory.ZetaB.gR, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
-
-example (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (a : X.K) :
-    secT X l 1 a ![1, 0] = GlobalTheory.ZetaB.clsHat X l a ∧ secT X l 1 a ![0, 1] = 0 := by
-  simp [secT]
-
-example (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (s : Ω ≃ₐ[ℚ] Ω) (w : ℕ) (a : X.K) :
-    X.galB l s (secT X l w a) = secT X l w (X.gal s a) := by
-  unfold secT
-  rw [galB_section_zero, kmap_clsHat]
 
 end GlobalTheory.K4

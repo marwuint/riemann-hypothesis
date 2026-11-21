@@ -202,23 +202,6 @@ theorem thMM_analytic (B : Ker.Base D cc δ) (hS : B.StdOK) : AnalyticOnNhd ℂ 
 theorem fourth_tensor_theta_eq_kernel (B : Ker.Base D cc δ) (hS : B.StdOK) : tens4 B.thMM = B.kappa • kerB B :=
   (B.thMM_spec hS).2
 
-theorem kerB_analyticAt (B : Ker.Base D cc δ) (hS : B.StdOK) : AnalyticAt ℂ (kerB B) 0 := by
-  have h4 := Formalism.L2.Th1.H.FormalGroupLawNegation.analyticAt_tens4 (thMM_analytic B hS 0 (Set.mem_univ _))
-  rw [fourth_tensor_theta_eq_kernel B hS] at h4
-  have h5 := (analyticAt_const (v := B.kappa⁻¹)).smul h4
-  have e : ((fun _ : Fin 4 × D.what₂.Tau → ℂ => B.kappa⁻¹) • (B.kappa • kerB B) : (Fin 4 × D.what₂.Tau → ℂ) → ℂ) = kerB B := by
-    funext z
-    show B.kappa⁻¹ * (B.kappa * kerB B z) = kerB B z
-    rw [← mul_assoc, inv_mul_cancel₀ B.kappa_ne_zero, one_mul]
-  rw [e] at h5
-  exact h5
-
-theorem theta_fourfold_algebraic : ThMMAlg := by
-  intro D cc δ B hS hK hKer
-  refine fourth_tensor_algebraic _ B.thMM (thMM_analytic B hS) (B.thMM_ne_zero hS) ?_
-  rw [fourth_tensor_theta_eq_kernel B hS]
-  exact algMv_smul _ hK _ (kerB_analyticAt B hS) hKer
-
 end MM
 
 end AlgP
@@ -490,30 +473,6 @@ theorem mem_Qbar_of {M : IntermediateField ℚ ℂ} (hM : FiniteDimensional ℚ 
     x ∈ Formalism.MainNotions.TaylorLogMetric.Qbar :=
   mem_algebraicClosure_iff.2 ((Algebra.IsIntegral.isIntegral (⟨x, h⟩ : M)).map M.val).isAlgebraic
 
-theorem thZero_unc (B : Ker.Base D cc δ) (N N' : ℕ) :
-    B.thZero N N' ∘ (unc D N N').symm = fun w => ∏ b : Fin N' × Fin N, B.thMM (fun t => w (t, b)) := by
-  funext w
-  rw [Fintype.prod_prod_type]
-  rfl
-
-theorem thZero_coefIn (B : Ker.Base D cc δ) (hS : B.StdOK) (N N' : ℕ) (M : IntermediateField ℚ ℂ)
-    (hM : CoefInMv B.thMM M) :
-    Formalism.MainNotions.TaylorLogMetric.CoefIn D (B.thZero N N') M ∧ AnalyticOnNhd ℂ (B.thZero N N' ∘ (unc D N N').symm) Set.univ := by
-  have h := coefInMv_prod (fun (b : Fin N' × Fin N) (w : D.what₂.Tau × Fin N' × Fin N → ℂ) => B.thMM (fun t => w (t, b)))
-    (fun b => analyticOnNhd_sel _ (thMM_analytic B hS) (fun t => (t, b))) M
-    (fun b => coefInMv_sel _ (thMM_analytic B hS) (fun t => (t, b)) M hM)
-  rw [← thZero_unc] at h
-  exact ⟨fun α => taylor_mem_of D N N' _ h.2 M h.1 α, h.2⟩
-
-theorem zeroAlg_of (h : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Ker.Base D cc δ),
-    Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc → Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → KapAlg B ∧ KerAlg B) :
-    Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestB.ZeroAlg := by
-  intro D cc hcc δ hδ B N N' _ _
-  have hS : B.StdOK := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ
-  obtain ⟨hK, hKer⟩ := h D cc δ B hcc hδ
-  obtain ⟨M, hMf, hM⟩ := theta_fourfold_algebraic D cc δ B hS hK hKer
-  exact ⟨M, hMf, (thZero_coefIn B hS N N' M hM).1⟩
-
 end Zero
 
 end AlgP
@@ -739,25 +698,6 @@ namespace AlgP
 
 open NumberField Formalism.BasicNotions Classical
 
-theorem opU_zero {V : Type} [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1.H.Sesq V) (F : V → ℂ) :
-    Formalism.L2.Th1.H.opU H 0 F = F := by
-  funext z
-  simp [Formalism.L2.Th1.H.opU]
-
-theorem isTors_zero {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Ker.Base D cc δ) : IsTors B 0 :=
-  ⟨1, one_pos, by simpa using B.lamM.zero_mem⟩
-
-theorem kerAlg_of_trans {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Ker.Base D cc δ) (h : KerTransAlg B) :
-    KerAlg B := by
-  have := h 0 (isTors_zero B)
-  have e : diag4 (0 : D.what₂.Tau → ℂ) = 0 := rfl
-  rwa [e, opU_zero] at this
-
-theorem zeroAlg_of_trans (h : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Ker.Base D cc δ),
-    Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc → Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → KerTransAlg B) :
-    Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestB.ZeroAlg :=
-  zeroAlg_of fun D cc δ B hcc hδ => ⟨kapAlg_all B, kerAlg_of_trans B (h D cc δ B hcc hδ)⟩
-
 theorem algFact_of_trans (hSS : StdStep)
     (h : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Ker.Base D cc δ),
       Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc → Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → KerTransAlg B) : AlgFact :=
@@ -770,9 +710,6 @@ theorem algZero_of_trans (h : KerTransAll) : AlgZero := by
 
 theorem algFact_of_kerTrans (h : KerTransAll) : AlgFact :=
   algFact_of_trans pairs_standard_at_p h
-
-theorem zeroAlg_of_kerTrans (h : KerTransAll) : Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestB.ZeroAlg :=
-  zeroAlg_of_trans h
 
 end AlgP
 

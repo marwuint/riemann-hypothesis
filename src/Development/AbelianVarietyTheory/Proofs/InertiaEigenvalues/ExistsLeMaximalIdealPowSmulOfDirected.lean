@@ -6,54 +6,9 @@ open TensorProduct Polynomial IsLocalRing GlobalTheory.Pat
 
 namespace GlobalTheory.Chevalley
 
-theorem isArtinianRing_quotient_maximalIdeal_pow (B : Type) [CommRing B] [IsLocalRing B]
-    [IsNoetherianRing B] (k : ℕ) : IsArtinianRing (B ⧸ maximalIdeal B ^ k) := by
-  have hdim : Ring.KrullDimLE 0 (B ⧸ maximalIdeal B ^ k) := by
-    rw [Ring.krullDimLE_zero_iff]
-    intro Q hQ
-    have h1 : maximalIdeal B ^ k ≤ Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k)) :=
-      fun x hx ↦ by simp [Ideal.Quotient.eq_zero_iff_mem.2 hx]
-    have h2 : maximalIdeal B = Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k)) :=
-      (maximalIdeal.isMaximal B).eq_of_le (Ideal.IsPrime.ne_top inferInstance)
-        (Ideal.IsPrime.le_of_pow_le h1)
-    haveI h3 : (Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k))).IsMaximal :=
-      h2 ▸ maximalIdeal.isMaximal B
-    have h4 := Ideal.IsMaximal.map_of_surjective_of_ker_le
-      (f := Ideal.Quotient.mk (maximalIdeal B ^ k)) Ideal.Quotient.mk_surjective
-      (m := Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k))) (by simpa using h1)
-    rwa [Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective] at h4
-  exact IsNoetherianRing.isArtinianRing_of_krullDimLE_zero
-
-theorem isArtinian_quotient_smul_top (B M : Type) [CommRing B] [IsLocalRing B]
-    [IsNoetherianRing B] [AddCommGroup M] [Module B M] [Module.Finite B M] (k : ℕ) :
-    IsArtinian B (M ⧸ (maximalIdeal B ^ k • (⊤ : Submodule B M))) := by
-  haveI := isArtinianRing_quotient_maximalIdeal_pow B k
-  haveI : Module.Finite (B ⧸ maximalIdeal B ^ k) (M ⧸ (maximalIdeal B ^ k • (⊤ : Submodule B M))) :=
-    Module.Finite.of_restrictScalars_finite B (B ⧸ maximalIdeal B ^ k) _
-  exact isArtinian_of_surjective_algebraMap (R := B ⧸ maximalIdeal B ^ k) Ideal.Quotient.mk_surjective
-
 end GlobalTheory.Chevalley
 
 namespace GlobalTheory.Chevalley
-
-theorem exists_le_sup_maximalIdeal_pow_smul (B M ι : Type) [CommRing B] [IsLocalRing B]
-    [IsNoetherianRing B] [AddCommGroup M] [Module B M] [Module.Finite B M] (K : ι → Submodule B M)
-    [Nonempty ι] (hK : Directed (· ≥ ·) K) (k : ℕ) :
-    ∃ i, ∀ j, K i ≤ K j ⊔ maximalIdeal B ^ k • (⊤ : Submodule B M) := by
-  set P := maximalIdeal B ^ k • (⊤ : Submodule B M)
-  haveI := isArtinian_quotient_smul_top B M k
-  obtain ⟨_, ⟨i, rfl⟩, hmin⟩ := IsArtinian.set_has_minimal
-    (Set.range fun i ↦ (K i).map P.mkQ) (Set.range_nonempty _)
-  refine ⟨i, fun j ↦ ?_⟩
-  obtain ⟨l, hli, hlj⟩ := hK i j
-  have hle : (K l).map P.mkQ ≤ (K i).map P.mkQ := Submodule.map_mono hli
-  have heq : (K l).map P.mkQ = (K i).map P.mkQ := by
-    by_contra hne
-    exact hmin _ ⟨l, rfl⟩ (lt_of_le_of_ne hle hne)
-  have h2 : (K i).map P.mkQ ≤ (K j).map P.mkQ := heq ▸ Submodule.map_mono hlj
-  have h3 := Submodule.comap_mono (f := P.mkQ) h2
-  rw [Submodule.comap_map_mkQ, Submodule.comap_map_mkQ] at h3
-  exact le_sup_right.trans (h3.trans (by rw [sup_comm]))
 
 end GlobalTheory.Chevalley
 

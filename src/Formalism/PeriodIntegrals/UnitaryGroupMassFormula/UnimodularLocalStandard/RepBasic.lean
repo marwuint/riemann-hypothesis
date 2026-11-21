@@ -24,32 +24,6 @@ theorem rep_H_conj (z w : m → ℂ) : conj (stdH L m z w) = stdH L m w z := by
 theorem rep_H_re (z : m → ℂ) : ((stdH L m z z).re : ℂ) = stdH L m z z :=
   Complex.conj_eq_iff_re.mp (rep_H_conj L m z z)
 
-theorem rep_reflect (f w : m → ℂ) (hz : stdH L m (f - w) (f - w) ≠ 0) :
-    stdH L m (w + ((((stdH L m w w).re - (stdH L m f f).re) / (stdH L m (f - w) (f - w)).re : ℝ) : ℂ) • (f - w))
-      (w + ((((stdH L m w w).re - (stdH L m f f).re) / (stdH L m (f - w) (f - w)).re : ℝ) : ℂ) • (f - w)) =
-      stdH L m f f := by
-  set H := stdH L m
-  set t : ℝ := ((H w w).re - (H f f).re) / (H (f - w) (f - w)).re with ht_def
-  have htC : (t : ℂ) = (H w w - H f f) / H (f - w) (f - w) := by
-    rw [ht_def, Complex.ofReal_div, Complex.ofReal_sub, rep_H_re, rep_H_re, rep_H_re]
-  have hconj : conj (t : ℂ) = t := Complex.conj_ofReal t
-  have e1 : H (w + (t : ℂ) • (f - w)) (w + (t : ℂ) • (f - w)) =
-      H w w + t * (H w f - H w w) + t * (H f w - H w w) + t * t * H (f - w) (f - w) := by
-    simp only [map_add, map_smul, map_sub, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.sub_apply,
-      map_smulₛₗ, smul_eq_mul, hconj]
-    ring
-  have hNz : H (f - w) (f - w) = H f f - H f w - H w f + H w w := by
-    simp only [map_sub, LinearMap.sub_apply]; ring
-  have ht : (t : ℂ) * H (f - w) (f - w) = H w w - H f f := by
-    rw [htC, div_mul_cancel₀ _ hz]
-  rw [e1]
-  linear_combination ((t : ℂ) - 1) * ht + (t : ℂ) * hNz
-
-theorem rep_parallelogram (f w : m → ℂ) :
-    stdH L m (f - w) (f - w) + stdH L m (f - -w) (f - -w) = 2 * stdH L m f f + 2 * stdH L m w w := by
-  simp only [map_sub, map_neg, LinearMap.sub_apply, LinearMap.neg_apply]
-  ring
-
 end Form
 
 section Sat

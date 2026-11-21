@@ -8,21 +8,6 @@ namespace GlobalTheory.IndefiniteRowSideFullHecke.PolarLatticePairs
 open NumberField IsDedekindDomain Formalism.BasicNotions Classical Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3
 open scoped Pointwise
 
-def ratPts (D : D7) (N : ℕ) : Subgroup (GA D N) where
-  carrier := {g | (∃ γ, IsRat D (g : GL (Fin N) (AE D)) γ) ∧
-    ∃ γ, IsRat D ((g : GL (Fin N) (AE D))⁻¹) γ}
-  one_mem' := by
-    refine ⟨⟨1, ?_⟩, ⟨1, ?_⟩⟩ <;> simp [IsRat]
-  mul_mem' := by
-    rintro g h ⟨⟨γ, hγ⟩, ⟨γ', hγ'⟩⟩ ⟨⟨η, hη⟩, ⟨η', hη'⟩⟩
-    unfold IsRat at *
-    refine ⟨⟨γ * η, ?_⟩, ⟨η' * γ', ?_⟩⟩
-    · rw [Subgroup.coe_mul, Units.val_mul, hγ, hη, Matrix.map_mul]
-    · rw [Subgroup.coe_mul, mul_inv_rev, Units.val_mul, hγ', hη', Matrix.map_mul]
-  inv_mem' := by
-    rintro g ⟨h₁, h₂⟩
-    exact ⟨by simpa using h₂, by simpa using h₁⟩
-
 theorem mul_entry_mem (D : D7) {N : ℕ} {A B : Matrix (Fin N) (Fin N) (AE D)}
     (hA : ∀ i j, A i j ∈ OhE D) (hB : ∀ i j, B i j ∈ OhE D) (i j : Fin N) : (A * B) i j ∈ OhE D := by
   rw [Matrix.mul_apply]
@@ -106,31 +91,7 @@ def levelJ (D : D7) {N : ℕ} (𝔮 : Ideal (𝓞 D.host.E)) (I : Finset (Fin N)
     · rw [Subgroup.coe_inv]; exact g₂
     · rw [Subgroup.coe_inv, inv_inv]; exact g₁
 
-abbrev Cls (D : D7) {N : ℕ} (J : Subgroup (GA D N)) : Type :=
-  DoubleCoset.Quotient (ratPts D N : Set (GA D N)) (J : Set (GA D N))
-
-def stab (D : D7) {N : ℕ} (J : Subgroup (GA D N)) (x : GA D N) : Subgroup (GA D N) :=
-  ratPts D N ⊓ J.map (MulAut.conj x).toMonoidHom
-
-def classSum (D : D7) {N : ℕ} (J : Subgroup (GA D N)) {M : Type} [Field M] (φ : GA D N → M) : M :=
-  ∑ᶠ x : Cls D J, ((Nat.card (stab D J x.out) : ℕ) : M)⁻¹ * φ x.out
-
 abbrev RowSet (a d : ℕ) : Type := {s : Finset (Fin d) // s.card = a}
-
-def minor (D : D7) {a d : ℕ} (τ : D.what₂.Tau) (s : RowSet a d) : MvPolynomial (GL3Theta.Idx D a d) ℂ :=
-  Matrix.det (Matrix.of fun k j : Fin a =>
-    (MvPolynomial.X (τ, s.1.orderEmbOfFin s.2 k, j) : MvPolynomial (GL3Theta.Idx D a d) ℂ))
-
-abbrev Tup (D : D7) (a d : ℕ) (n : D.what₂.Tau → ℕ) : Type := (τ : D.what₂.Tau) → Fin (n τ) → RowSet a d
-
-def minorProd (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n) : MvPolynomial (GL3Theta.Idx D a d) ℂ :=
-  ∏ τ, ∏ k, minor D τ (T τ k)
-
-def nabla (D : D7) (a d : ℕ) (n : D.what₂.Tau → ℕ) : Submodule ℤ (MvPolynomial (GL3Theta.Idx D a d) ℂ) :=
-  Submodule.span ℤ (Set.range (minorProd D (a := a) (d := d) (n := n)))
-
-def gNormSq (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (l : Tup D a d n → ℂ) : ℝ :=
-  ∑ T, ‖l T‖ ^ 2
 
 def coefLat (D : D7) (cc : Ideal (𝓞 D.host.K)) : Submodule (𝓞 D.host.E) D.host.E :=
   Submodule.span (𝓞 D.host.E) {t | ∃ c ∈ cc, ∃ m ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E),
@@ -180,9 +141,6 @@ def levelIdeal (D : D7) (S : Finset (HeightOneSpectrum (𝓞 D.host.E))) (c : S 
   ∏ P : S, (P : HeightOneSpectrum (𝓞 D.host.E)).asIdeal ^ c P
 
 def withConj (D : D7) (𝔮 : Ideal (𝓞 D.host.E)) : Ideal (𝓞 D.host.E) := 𝔮 * ((D.host.conj : _) • 𝔮)
-
-def TrivMod (D : D7) {N : ℕ} (χ : HeckeU D N) (𝔪 : Ideal (𝓞 D.host.E)) : Prop :=
-  ∀ u, IntU D u → (u : AE D) - 1 ∈ idHat D 𝔪 → χ.f u = 1
 
 def UnrOutside (D : D7) {N : ℕ} (χ : HeckeU D N) (𝔪 : Ideal (𝓞 D.host.E)) : Prop :=
   ∀ u, IntU D u → (∀ k : ℕ, (u : AE D) - 1 ∈ idHat D (𝔪 ^ k)) → χ.f u = 1
@@ -243,54 +201,6 @@ structure PairDatum (D : D7) where
 
 namespace PairDatum
 
-variable {D : D7} (X : PairDatum D)
-
-def ideal : Ideal (𝓞 D.host.E) := levelIdeal D X.S X.c
-
-def level : ℕ := Ideal.absNorm X.ideal
-
-def F : VC D X.a X.d → ℂ := xiVec D X.cc X.δ X.ideal (fun x => ∏ P, X.Φ P x) X.e0
-
-def J : Subgroup (GA D X.d) := levelJ D X.ideal X.what₂.1
-
-def zPoly (h : GA D X.d) (P : nabla D X.a X.d X.n) : ℂ :=
-  classSum D (intPts D X.a) fun x =>
-    GL3Theta.applyAt0 D (P : MvPolynomial (GL3Theta.Idx D X.a X.d) ℂ) (X.W.Om x h X.F)
-
-def z (h : GA D X.d) (T : Tup D X.a X.d X.n) : ℂ :=
-  X.zPoly h ⟨minorProd D T, Submodule.subset_span ⟨T, rfl⟩⟩
-
-def normSq : ℝ := classSum D X.J fun h => gNormSq D (X.z h)
-
-def normSqConj (s : ℂ →+* ℂ) : ℝ := classSum D X.J fun h => gNormSq D fun T => s (X.z h T)
-
-def IsStandard : Prop :=
-  (∀ 𝔪 : Ideal (𝓞 D.host.E), 𝔪 ≠ ⊥ → (TrivMod D X.W.chV' 𝔪 ↔ 𝔪 ≤ withConj D X.ideal)) ∧
-  ∀ (P : X.S) (x : lat0 D X.cc X.a X.d),
-    (X.Φ P x ≠ 0 ↔
-      (∀ i ∉ X.what₂.1, ∀ j, (x : Matrix (Fin X.d) (Fin X.a) D.host.E) i j ∈
-        ((P : HeightOneSpectrum (𝓞 D.host.E)).asIdeal ^ X.c P) • coefLat D X.cc) ∧
-      (P : HeightOneSpectrum (𝓞 D.host.E)).valuation D.host.E
-        (((x : Matrix (Fin X.d) (Fin X.a) D.host.E).submatrix (X.what₂.1.orderEmbOfFin X.what₂.2) id).det) = 1) ∧
-    (X.Φ P x ≠ 0 → ∃ m : ℕ, 0 < m ∧ X.Φ P x ^ m = 1)
-
 end PairDatum
-
-theorem levelJ_le (D : D7) {N : ℕ} (𝔮 : Ideal (𝓞 D.host.E)) (I : Finset (Fin N)) :
-    levelJ D 𝔮 I ≤ intPts D N := fun _ h => h.1
-
-theorem levelJ_top (D : D7) {N : ℕ} (I : Finset (Fin N)) : levelJ D ⊤ I = intPts D N := by
-  have key : ∀ y ∈ OhE D, y ∈ idHat D ⊤ := by
-    intro y hy
-    exact AddSubgroup.subset_closure ⟨1, Submodule.mem_top, y, hy, by simp⟩
-  refine le_antisymm (levelJ_le D _ I) fun h hh => ⟨hh, ?_, ?_⟩
-  · intro i _ j _; exact key _ (hh i j).1
-  · intro i _ j _; exact key _ (hh i j).2
-
-example (D : D7) {a d : ℕ} (l : Tup D a d (fun _ => 0) → ℂ) :
-    gNormSq D l = ‖l (fun _ k => k.elim0)‖ ^ 2 := by
-  unfold gNormSq
-  refine Finset.sum_eq_single _ (fun T _ hT => absurd ?_ hT) (fun h => absurd (Finset.mem_univ _) h)
-  funext τ k; exact k.elim0
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PolarLatticePairs

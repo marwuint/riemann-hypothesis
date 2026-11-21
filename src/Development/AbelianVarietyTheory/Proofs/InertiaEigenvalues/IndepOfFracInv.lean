@@ -3,7 +3,7 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatioInvariantInK0Statement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatioInvariantInK0
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct
 
@@ -30,12 +30,6 @@ theorem comm_smul (b : B) (w : B ⊗[Qp] V) :
   | zero => simp
   | tmul c v => simp [TensorProduct.smul_tmul']
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
-
-theorem comm_smul₀ (c : K₀) (w : B ⊗[Qp] V) :
-    TensorProduct.comm Qp B V (c • w) =
-      mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c (TensorProduct.comm Qp B V w) := by
-  rw [← algebraMap_smul B c w, comm_smul (LL := LL)]
-  rfl
 
 end Generic
 

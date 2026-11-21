@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HermSysHypOneLeLambdaZero
 import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfVectorMultiplicationsMemFiltrationLattiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfVectorMultiplicationsMemFiltrationLatti
 open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools GlobalTheory.HilbertSamuel GlobalTheory.HSChoice GlobalTheory.HSShort
 
@@ -55,7 +55,7 @@ theorem cnrm_words_le (S : Sys F A) (hS : S.Hyp) (σ : F →+* ℂ) (u : Fin (S.
   | succ t ih =>
     intro β j l hl hlT m c f g hg
     obtain rfl : l = j + t + 1 := by omega
-    have hmem := (GlobalTheory.T.productOfVectorMultiplications_mem_filtration_lattice F A S hS j t (by omega)).1
+    have hmem := (_root_.GlobalTheory.HSShort.wordMem F A S hS j t (by omega)).1
     let g' : (Fin t → Fin S.N) × Fin m → S.V (j + t) := fun p =>
       ⟨word S.mul (fun q => Pi.single (p.1 q) 1) (f p.2), hmem _ _ (f p.2).2⟩
     have h₀ := ih (Fin.tail β) j (j + t) rfl (by omega) m c f g' (fun _ _ => rfl)
@@ -94,7 +94,7 @@ open GlobalTheory.HSShort.ColNorm in
 theorem GlobalTheory.HSShort.cnrm_col_le : ∀ (F A : Type) [Field F] [NumberField F] [AddCommGroup A] [Module F A] [Module (𝓞 F) A] [IsScalarTower (𝓞 F) F A] (S : Sys F A), S.Hyp → ∀ (d : ℕ) (b : Module.Basis (Fin d) F (S.V S.T)) (c : Fin d → A →ₗ[F] F), S.IsCo b c → ∀ (κ : S.Col) (σ : F →+* ℂ) (u : Fin (S.D + 1) × Fin S.N → ℂ), (∀ i, frameNorm (S.fr σ) (fun j => u (i, j)) = 1) → cnrm (S.nm S.T) σ (fun i => eval₂ σ u (coordP S.mul (c i) κ.β (κ.x : A))) b ≤ Real.sqrt S.beta ^ κ.t * (S.nm κ.j).nrm σ κ.x := by
   intro F A _ _ _ _ _ _ S hS d b c hc κ σ u hu
   obtain ⟨j, t, hjt, β, x⟩ := κ
-  have hmem := (GlobalTheory.T.productOfVectorMultiplications_mem_filtration_lattice F A S hS j t (by omega)).1
+  have hmem := (_root_.GlobalTheory.HSShort.wordMem F A S hS j t (by omega)).1
   let g : (Fin t → Fin S.N) × Fin 1 → S.V S.T := fun p =>
     ⟨word S.mul (fun q => Pi.single (p.1 q) 1) (x : A), by rw [← hjt]; exact hmem _ _ x.2⟩
   have key := cnrm_words_le S hS σ u hu t β j S.T hjt le_rfl 1 (fun _ => 1) (fun _ => x) g (fun _ _ => rfl)

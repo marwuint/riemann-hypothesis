@@ -7,17 +7,6 @@ namespace GlobalTheory
 
 namespace GramSubmodular
 
-variable {m α β γ : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ]
-  [DecidableEq α] [DecidableEq β] [DecidableEq γ]
-
-lemma gram_det_re_nonneg (U : Matrix m α ℂ) : 0 ≤ (Uᴴ * U).det.re :=
-  (Complex.nonneg_iff.mp (Matrix.posSemidef_conjTranspose_mul_self U).det_nonneg).1
-
-omit [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β] in
-lemma gram_fromCols (U : Matrix m α ℂ) (V : Matrix m β ℂ) :
-    (fromCols U V)ᴴ * fromCols U V = fromBlocks (Uᴴ * U) (Uᴴ * V) (Vᴴ * U) (Vᴴ * V) := by
-  rw [conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols]
-
 end GramSubmodular
 
 open MeasureTheory Topology Matrix in

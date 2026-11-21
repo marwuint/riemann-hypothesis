@@ -463,13 +463,6 @@ def E1 : AddSubgroup (W.map (algebraMap 𝒪 K)).toAffine.Point :=
     P = .some x y h → x ∉ Set.range (algebraMap 𝒪 K)}
     (by ext P; rw [Set.mem_ofPred_eq, ← mem_range_pointE_iff]; rfl)
 
-theorem E1_eq_range : E1 K W = (pointEHom K W).range :=
-  AddSubgroup.copy_eq _ _ _
-
-def e1Equiv : MaxIdealPoint (formalGroup W) ≃+ E1 K W :=
-  (AddMonoidHom.ofInjective (f := pointEHom K W) (pointE_injective K W)).trans
-    (AddEquiv.addSubgroupCongr (E1_eq_range K W).symm)
-
 end Points
 
 end

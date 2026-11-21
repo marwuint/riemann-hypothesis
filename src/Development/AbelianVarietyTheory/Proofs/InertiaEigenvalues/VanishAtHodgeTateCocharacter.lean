@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateWeightGradedStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateWeightGraded
 
 open MvPolynomial
 
@@ -164,7 +164,7 @@ theorem vanish_at_cocharacter : ∀ {C Γ n : Type} [Field C] [Group Γ] [MulSem
     show eval _ p = 0
     rw [hφ, Matrix.mul_assoc, hPQ, Matrix.mul_one]
     exact hf γ
-  have hgr := GlobalTheory.T.filter_weight_mem_of_tate_graded_stable χ hT (wt k) (vanJ ρ Pm) (vanJ_stable χ ρ hfix Pm k hP) _ hpJ
+  have hgr := _root_.GlobalTheory.tate_weight_graded χ hT (wt k) (vanJ ρ Pm) (vanJ_stable χ ρ hfix Pm k hP) _ hpJ
   have hzero : ∀ d : ℤ, eval (fun ij : n × n => Pm ij.1 ij.2)
       (AddMonoidAlgebra.ofCoeff ((AddMonoidAlgebra.coeff p).filter (fun m => wt k m = d)) :
         MvPolynomial (n × n) C) = 0 := by

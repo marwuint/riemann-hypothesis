@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TwistBaseCha
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FunctorialOfUnif
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EndomorphismTorusExtensionPeriodOfAdjoint
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionMapWelldefinedAdditiveCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingEqOfMumfordBundleIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionMapWelldefinedAdditiveCharacters
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingEqOfMumfordBundleIso
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 open scoped CategoryTheory.Obj
@@ -27,7 +27,7 @@ theorem periods_of_key : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (
   have inj₂ := GlobalTheory.IotaInj.main hL R I hA D₂ F
   have dv₁ := (gt_onto_divisible_kernel hL R I hA D₁ F).2.1
 
-  obtain ⟨ex, ad, tor⟩ := GlobalTheory.T.torusExtensionMap_welldefined_additive_characters R D₁.toPre D₂.toPre b h hlin.2.1 (fun χ => (hco χ).imp fun _ hu => hu.1) F
+  obtain ⟨ex, ad, tor⟩ := _root_.GlobalTheory.Mum.Two.act_two_hom R D₁.toPre D₂.toPre b h hlin.2.1 (fun χ => (hco χ).imp fun _ hu => hu.1) F
   choose mf hmf hmu using ex
   let m : GtPtF D₁.toPre F →+ GtPtF D₂.toPre F := AddMonoidHom.mk' mf fun x x' => (isAdd_iff_eq _ _ _).1
     (ad x x' (x + x') _ _ _ ((isAdd_iff_eq _ _ _).2 rfl) (hmf x) (hmf x') (hmf _))
@@ -54,8 +54,8 @@ theorem periods_of_key : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (
   refine GlobalTheory.KeyIota.eq_of_torsion_chars (F := F) fun k hk t ht => ?_
   obtain ⟨f₁, hf₁⟩ := GlobalTheory.TorsionIso.torsion_eq hL R I hA D₁ A₁ G₁ hG₁ U₁ F k hk
   obtain ⟨f₂, hf₂⟩ := GlobalTheory.TorsionIso.torsion_eq hL R I hA D₂ A₂ G₂ hG₂ U₂ F k hk
-  have wp₁ := GlobalTheory.T.weilQk_pairing_existsUnique_torus hL R I hA D₁ F k hk
-  have wp₂ := GlobalTheory.T.weilQk_pairing_existsUnique_torus hL R I hA D₂ F k hk
+  have wp₁ := _root_.GlobalTheory.weilQk_existsUnique hL R I hA D₁ F k hk
+  have wp₂ := _root_.GlobalTheory.weilQk_existsUnique hL R I hA D₂ F k hk
   have torp : ∀ p : QkPt D₁.toPre F k, f₁ p ^ k = 1 := fun p => by
     obtain ⟨w, hw⟩ := U₁.toUnifPre.ext
     exact ((hf₁.1 p _).2 rfl w hw).1
@@ -92,7 +92,7 @@ theorem periods_of_key : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (
 
   have w₁ := (hf₁.2.2.2.2 _ _ _).1 ((wp₁ qE p).2 (t.comp (AddMonoidHom.toMultiplicative E.h)) rfl hqEtor)
   rw [hqE, ← Category.comp_id (f₁ p)] at w₁
-  have w₂ := (GlobalTheory.T.commutator_pairing_eq_of_mumford_bundle_iso _ A₁ A₂ A₁ c c E.aA (𝟙 _) hc hc E.homA inferInstance hW F _ k (f₁ q) (f₁ p)
+  have w₂ := (_root_.GlobalTheory.Mum.Two.weilIs_iff_of_lbIso _ A₁ A₂ A₁ c c E.aA (𝟙 _) hc hc E.homA inferInstance hW F _ k (f₁ q) (f₁ p)
     (torp q) (torp p) _).2 w₁
   rw [← hqq', ← hpp'] at w₂
   have w₃ := (hf₂.2.2.2.2 _ _ _).2 w₂

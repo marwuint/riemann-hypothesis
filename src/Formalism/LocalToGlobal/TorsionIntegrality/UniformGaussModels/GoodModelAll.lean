@@ -49,14 +49,4 @@ def JetsCM : Prop :=
   ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ¬ p ∣ dK → ∀ ι : ℂ ≃+* ℂ_[p], IntCurve (curveL p L ι) →
     ∀ i : ℕ, 1 ≤ i → ‖Formalism.L2.Th1.C.jet (logSer (curveL p L ι)) (phC p L ι) i‖ ≤ 1
 
-def KernelJoint : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[p]), p ≠ 2 → IntCurve (curveL p L ι) →
-  ∀ (n : Type) [Fintype n],
-  ∀ ω₀ : ℂ, ω₀ ∈ L.lattice → ω₀ / 2 ∉ L.lattice →
-  ∀ (κ : Type) [Fintype κ] (r : κ → ℂ_[p]) (s : κ → n → ℂ) (N : ℕ), (∀ k, ‖r k‖ ≤ 1) → 0 < N →
-    ¬ p ∣ N → (∀ k i, (N : ℂ) * s k i ∈ L.lattice) →
-    ∃ G : MvPowerSeries n ℂ_[p], Formalism.L2.Th1.C.IntMv (unitBall ℂ_[p]) G ∧
-      thetaZ p L ι ω₀ r s = Formalism.L2.Th1.G.toZ (expSer (curveL p L ι))
-        (Formalism.L2.Th1.C.mvExp (-(Formalism.L2.Th1.G.phSum (fun _ => (1 : ℂ_[p])) (phC p L ι))) * G)
-
 end Formalism.L2.Th1.Top

@@ -80,8 +80,6 @@ def zeroOAct (O : Type) [Ring O] [StarRing O] (S : Scheme.{0}) : (zeroPolAV S).O
   rosati := fun _ _ => ⟨⊤, trivial, ⟨fun _ => 1⟩, by
     intro i j; erw [linComb_triv_g, _root_.one_mul]; dsimp only; repeat erw [map_one]⟩
 
-example (S : Scheme.{0}) : (zeroPolAV S).OAct ℤ := zeroOAct ℤ S
-
 end Inh
 
 end ReciprocityTheory.ChartRestriction.G.Out

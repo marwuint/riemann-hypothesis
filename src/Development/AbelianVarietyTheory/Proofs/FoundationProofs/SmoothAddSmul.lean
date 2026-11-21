@@ -228,28 +228,8 @@ theorem _root_.GlobalTheory.CapelliCentral.eabEnd_glRel : _root_.Formalism.REAL.
   rw [key]
   split_ifs <;> simp [hF]
 
-lemma tm_apply (u : ℂ) (a b : Fin n) (F : smoothSpace ε E) {f : Matrix (Fin n) (Fin n) ℂ → E}
-    (h : ∀ g, inUJ ε g → F.1 g = f g) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
-    (Tm (eabEnd ε E) u a b F).1 g = Top (EabV ε) u a b f g := by
-  unfold Tm Formalism.QuantumDeterminants.Top
-  rw [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, eabEnd_apply a b F h hg, ← h g hg]
-  split_ifs <;> simp
-
-lemma prod_apply (l : List (ℂ × Fin n × Fin n)) (F : smoothSpace ε E)
-    {f : Matrix (Fin n) (Fin n) ℂ → E} (h : ∀ g, inUJ ε g → F.1 g = f g) :
-    ∀ g, inUJ ε g → ((l.map fun p => Tm (eabEnd ε E) p.1 p.2.1 p.2.2).prod F).1 g =
-      (l.map fun p => Top (EabV ε) p.1 p.2.1 p.2.2).foldr (fun T h => T h) f g := by
-  induction l with
-  | nil => intro g hg; simpa using h g hg
-  | cons p l ih =>
-    intro g hg
-    rw [List.map_cons, List.map_cons, List.prod_cons, List.foldr_cons, Module.End.mul_apply]
-    exact tm_apply _ _ _ _ ih hg
-
 end GlobalTheory.CapelliCentral
 
 namespace GlobalTheory
-
-open Formalism.REAL Formalism.QuantumDeterminants CapelliCentral
 
 end GlobalTheory

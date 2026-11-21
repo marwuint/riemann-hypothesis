@@ -4,9 +4,9 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.SeamDefs
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HomogeneousRatioIsUnitStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HomogeneousRatioCocycleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalRestrictSectionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalRestrictSection
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictAppLECompatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacobianSpanLeSubalgebraStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacobianSpanLeSubalgebra
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -28,7 +28,7 @@ theorem yQ_mul : ∀ {K : Type} [Field K] {X : Scheme.{0}} {N m e : ℕ} (i : X 
     (i.appLE _ W ha).hom (yQ y hy a a) = 1 := GlobalTheory.T.homogeneous_ratio_cocycle
 
 theorem ev_rs : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} (T : Thick (smFun X q))
-    {V W : X.Opens} (h : V ≤ W) (hT : InU V T) (hT' : InU W T) (s : Γ(X, W)), ev T hT (rs h s) = ev T hT' s := GlobalTheory.T.eval_restrict_section
+    {V W : X.Opens} (h : V ≤ W) (hT : InU V T) (hT' : InU W T) (s : Γ(X, W)), ev T hT (rs h s) = ev T hT' s := _root_.GlobalTheory.CompanionTheory.ConeEval.ev_rs_eq
 
 theorem rs_appLE : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (U : Y.Opens) {V W : X.Opens} (h : V ≤ W) (hW : W ≤ f ⁻¹ᵁ U)
     (s : Γ(Y, U)), rs h ((f.appLE U W hW).hom s) = (f.appLE U V (h.trans hW)).hom s := GlobalTheory.T.restrict_appLE_compat
@@ -36,6 +36,6 @@ theorem rs_appLE : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (U : Y.Opens) {V W : X.O
 theorem jacSpan_le : ∀ {K : Type} [Field K] {X : Scheme.{0}} {V W : X.Opens} (h : V ≤ W) [Algebra K Γ(X, V)]
     (B : Subalgebra K Γ(X, V)), (B : Set Γ(X, V)) = Set.range (rs h) →
     ∀ {d m : ℕ} (D : Fin d → Derivation K Γ(X, V) Γ(X, V)) (κ : Fin m → Fin d),
-    jacSpan h (RingHom.id _) (fun k => D k) κ ≤ jacS B D κ := GlobalTheory.T.jacobian_span_le_subalgebra
+    jacSpan h (RingHom.id _) (fun k => D k) κ ≤ jacS B D κ := _root_.GlobalTheory.CompanionTheory.Cone.jacSpan_le_jacS
 
 end CrystallineSemistableComparison.Pb

@@ -48,27 +48,6 @@ def SiegelOne : Prop :=
       h.IsSymm → Formalism.HermitianLatticesTheory.IsOrthoLattice h L M →
       Formalism.HermitianLatticesTheory.mass h L = Formalism.HermitianLatticesTheory.massRatioRightSide K M * repMass h L 1
 
-def OrbitCount : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K], Formalism.HermitianLatticesTheory.IsCMUnram K →
-    ∀ (M : ℕ), 2 ≤ M →
-    ∀ (V V' : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
-      [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K V']
-      [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V']
-      (h : V →ₗ⋆[K] V →ₗ[K] K) (h' : V' →ₗ⋆[K] V' →ₗ[K] K)
-      (L : Submodule (𝓞 K) V) (L' : Submodule (𝓞 K) V'),
-      h.IsSymm → h'.IsSymm → Formalism.HermitianLatticesTheory.IsOrthoLattice h L M →
-      Formalism.HermitianLatticesTheory.IsOrthoLattice h' L' (M - 1) →
-      repMass h L 1 = Formalism.HermitianLatticesTheory.mass h' L'
-
-def GenusOrtho : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K], Formalism.HermitianLatticesTheory.IsCMUnram K →
-    ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
-      [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (I : Submodule (𝓞 K) V),
-      h.IsSymm → Formalism.HermitianLatticesTheory.IsOrthoLattice h I n →
-      ∀ L : Submodule (𝓞 K) V, L ∈ Formalism.HermitianLatticesTheory.genus h I ↔
-        (Submodule.IsLattice K L ∧
-          ∀ p : Ideal (𝓞 K), p.IsMaximal → Formalism.HermitianLatticesTheory.IsUnimodularAt h p L)
-
 def LandherrUnram : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K], Formalism.HermitianLatticesTheory.IsCMUnram K →
     ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V]
@@ -96,12 +75,5 @@ def DiscrTower : Prop :=
     Formalism.HermitianLatticesTheory.IsCMUnram K → (∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) →
       |(discr K : ℝ)| = (discr F : ℝ) ^ 2 ∧ finrank ℚ F = Formalism.HermitianLatticesTheory.fDeg K ∧
         (discr F : ℝ) = (2 * Formalism.HermitianLatticesTheory.vInv K) ^ Formalism.HermitianLatticesTheory.fDeg K
-
-def EulerEta : Prop :=
-  ∀ (K F : Type) [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K],
-    Formalism.HermitianLatticesTheory.IsCMUnram K → (∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) →
-    ∀ M : ℕ, 2 ≤ M →
-      Multipliable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Formalism.HermitianLatticesTheory.eulerFac K M P.1) ∧
-      0 < Formalism.HermitianLatticesTheory.lValEta K M ∧ Formalism.HermitianLatticesTheory.lValEta K M = lValEtaF K F M
 
 end Formalism.HermitianLattices.Ext.L3

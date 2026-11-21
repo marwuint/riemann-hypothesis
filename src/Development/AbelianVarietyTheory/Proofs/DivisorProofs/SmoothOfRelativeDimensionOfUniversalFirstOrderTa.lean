@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDefiniteDatumGoodObj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankKaehlerEqOfUniversalTangentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstOrderPointIffRingHomAffineOpenSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankKaehlerEqOfUniversalTangent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstOrderPointIffRingHomAffineOpenSections
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
@@ -24,13 +24,13 @@ theorem smoothOfRelativeDimension_of_universal_tangent : ∀ (B : Type) [CommRin
       rw [Scheme.range_fromSpecResidueField] at this
       rw [Set.mem_singleton_iff.1 this]
       exact hx
-    obtain ⟨φ, ψ, h1, h2, h3⟩ := GlobalTheory.T.firstOrderPoint_iff_ringHom_affineOpen_sections B X s U V hU hV e d k x hr (H k x)
+    obtain ⟨φ, ψ, h1, h2, h3⟩ := _root_.GlobalTheory.SchRing.deformation_on_sections B X s U V hU hV e d k x hr (H k x)
     have : Nontrivial Γ(X, V) := φ.domain_nontrivial
     have : Algebra.IsStandardSmooth Γ(Sp B, U) Γ(X, V) := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth P.dimension
     have : Module.Free Γ(X, V) Ω[Γ(X, V)⁄Γ(Sp B, U)] := Algebra.IsStandardSmooth.free_kaehlerDifferential
     have hrank : Module.finrank Γ(X, V) (Ω[Γ(X, V)⁄Γ(Sp B, U)]) = P.dimension :=
       Module.finrank_eq_of_rank_eq hP.rank_kaehlerDifferential
-    have hd : d = P.dimension := GlobalTheory.T.eq_of_universal_tangent_dualNumber _ _ k P.dimension d hrank φ ψ h1 h2 h3
+    have hd : d = P.dimension := _root_.GlobalTheory.finrank_kaehler_eq_of_universal_tangent _ _ k P.dimension d hrank φ ψ h1 h2 h3
     have h' : RingHom.IsStandardSmoothOfRelativeDimension P.dimension (s.appLE U V e).hom := hP
     have : IsAffine U := hU
     have : IsAffine V := hV

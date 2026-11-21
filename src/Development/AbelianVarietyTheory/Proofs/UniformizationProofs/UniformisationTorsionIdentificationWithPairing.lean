@@ -8,12 +8,12 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkInjective
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PtEqOfProportional
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.DimEqRankAddDimStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.DimEqRankAddDim
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.InducedFrobeniusCompUniqueOriginStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.InducesFrobeniusOnSectionsTranslationIffImageStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsInducedTranslationFrobeniusOnSectionsStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CardQuotientKTorsionPairsStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.WeilQkIsIffCommutatorPairingTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.WeilQkIsIffCommutatorPairingTorsion
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 open scoped CategoryTheory.Obj
@@ -47,12 +47,12 @@ theorem torsion_eq : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀
     exact (hf p w hw).1
   refine ⟨f, fun p x => ⟨fun h => huniq p _ _ h (hf p), fun h => h ▸ hf p⟩, ?_,
     fun p p' => ⟨fun h => hinj p p' (f p) (hf p) (h ▸ hf p'), hwd p p'⟩, ?_,
-    fun p p' z => GlobalTheory.T.weilQkIs_iff_commutatorPairing_torsion hL R I hI D A G hG U F k hk p p' _ _ (hf p) (hf p') z⟩
+    fun p p' z => _root_.GlobalTheory.UT.weilQkIs_iff_weilIs hL R I hI D A G hG U F k hk p p' _ _ (hf p) (hf p') z⟩
   · haveI : CharZero (FractionRing R) := inferInstance
     haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective
     have hA := (hL.1.mulN _ A k hk).2.2.2.2 F (jFK (R := R) F) (Nat.cast_ne_zero.2 (by omega))
     have hQ := GlobalTheory.T.card_quotient_kTorsion_pairs hL R I hI D F k hk
-    have hd := GlobalTheory.T.unif_g_eq_rank_add_g hL R I hI D A G hG U
+    have hd := _root_.GlobalTheory.UT.dim_eq_rank_add_dim hL R I hI D A G hG U
     let φ : Quot (QkPt.Equiv D.toPre F (k := k)) → {x : TFK (R := R) F ⟶ A.A // x ^ k = 1} :=
       Quot.lift (fun p => ⟨f p, hpow p⟩) (fun p p' h => Subtype.ext (hwd p p' h))
     have hφ : Function.Injective φ := by

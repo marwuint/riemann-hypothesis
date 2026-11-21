@@ -26,9 +26,6 @@ variable {p}
 theorem restGcA (X : Sys p) : RestGcA X :=
   restGcA_of (X := X) (restGc p)
 
-theorem th_restGcV (X : Sys p) : ea_RestGcV X :=
-  th_restGcV_of (X := X) (restGc p)
-
 theorem theta_kernel_expansion (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hA : admitted D X Y) : Conclusion1 D X Y :=
   baseChange_preserves_unitary_of D X Y hA (restBeta p) (restGc p)
 

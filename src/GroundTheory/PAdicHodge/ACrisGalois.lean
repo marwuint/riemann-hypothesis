@@ -183,12 +183,6 @@ theorem gal_smul_algebraMap_zero (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p)
       algebraMap (AInf ℂ_[p] p) (ACrisZero ℂ_[p] p) (σ • x) :=
   Subtype.ext (galAway_algebraMap σ x)
 
-theorem gal_smul_dpow (σ : Gal(PadicAlgCl p/K)) {x : AInf ℂ_[p] p} (hx : x ∈ RingHom.ker θ)
-    (n : ℕ) :
-    σ • (⟨dpow n x, dpow_mem hx n⟩ : ACrisZero ℂ_[p] p) =
-      ⟨dpow n (σ • x), dpow_mem (gal_smul_mem_ker σ hx) n⟩ :=
-  Subtype.ext (galAway_dpow σ n x)
-
 theorem galZero_one : galZero (1 : Gal(PadicAlgCl p/K)) = RingHom.id (ACrisZero ℂ_[p] p) :=
   RingHom.ext fun y => one_smul Gal(PadicAlgCl p/K) y
 
@@ -235,36 +229,6 @@ theorem gal_smul_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
       algebraMap (AInf ℂ_[p] p) (ACris ℂ_[p] p) (σ • x) := by
   rw [AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply, gal_smul_of,
     gal_smul_algebraMap_zero]
-
-theorem thetaAway_galAway (σ : Gal(PadicAlgCl p/K)) (y : 𝔸) :
-    thetaAway ℂ_[p] p (galAway σ y) = σ • thetaAway ℂ_[p] p y := by
-  have h : (thetaAway ℂ_[p] p).comp (galAway σ) =
-      ((galCp σ : ℂ_[p] ≃+* ℂ_[p]) : ℂ_[p] →+* ℂ_[p]).comp (thetaAway ℂ_[p] p) :=
-    IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun x => by
-      simp only [RingHom.comp_apply, galAway_algebraMap, thetaAway_algebraMap, RingEquiv.coe_toRingHom,
-        galCp_apply]
-      exact AInf.fontaineTheta_gal_smul σ x)
-  exact congrFun (congrArg DFunLike.coe h) y
-
-theorem thetaZero_gal_smul (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
-    ((thetaZero ℂ_[p] p (σ • y) : normInteger ℂ_[p]) : ℂ_[p]) =
-      σ • ((thetaZero ℂ_[p] p y : normInteger ℂ_[p]) : ℂ_[p]) := by
-  rw [coe_thetaZero, coe_thetaZero, coe_gal_smul_zero, thetaAway_galAway]
-
-theorem theta_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) :
-    ((theta ℂ_[p] p (σ • x) : normInteger ℂ_[p]) : ℂ_[p]) =
-      σ • ((theta ℂ_[p] p x : normInteger ℂ_[p]) : ℂ_[p]) := by
-  have h : (theta ℂ_[p] p).comp (galCris σ) =
-      (integerMap (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ)).comp
-        (theta ℂ_[p] p) :=
-    ringHom_ext fun y => by
-      apply Subtype.ext
-      rw [RingHom.comp_apply, RingHom.comp_apply, galCris_of, theta_of, theta_of,
-        coe_integerMap, thetaZero_gal_smul]
-      rfl
-  have h' := congrArg (fun f => ((f x : normInteger ℂ_[p]) : ℂ_[p])) h
-  simp only [RingHom.comp_apply, coe_integerMap] at h'
-  exact h'
 
 theorem phiAway_galAway (σ : Gal(PadicAlgCl p/K)) (y : 𝔸) :
     phiAway ℂ_[p] p (galAway σ y) = galAway σ (phiAway ℂ_[p] p y) := by

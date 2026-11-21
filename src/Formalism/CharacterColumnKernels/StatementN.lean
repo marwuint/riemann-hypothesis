@@ -100,30 +100,6 @@ def Ymod (r : G →* A) (χ : G →* T'ˣ) (E : A) : Submodule A A :=
 
 end Coc
 
-def StatCocycle : Prop :=
-  ∀ (T' A : Type*) [CommRing T'] [Ring A] [Algebra T' A] (G : Type*) [Group G] (r : G →* A)
-    (χ : G →* T'ˣ) (E : A) (g h : G),
-    ycoc r χ E (g * h) = ycoc r χ E g + (((χ g)⁻¹ : T'ˣ) : T') • r g * ycoc r χ E h
-
-def StatCocycleHom : Prop :=
-  ∀ (T' A M : Type*) [CommRing T'] [Ring A] [Algebra T' A] [AddCommGroup M] [Module A M]
-    [Module T' M] [IsScalarTower T' A M] (G : Type*) [Group G] (r : G →* A) (χ : G →* T'ˣ) (E : A),
-    let y : G → Ymod r χ E := fun g => ⟨ycoc r χ E g, Submodule.subset_span ⟨g, rfl⟩⟩
-    Function.Injective (fun (φ : Ymod r χ E →ₗ[A] M) (g : G) => φ (y g)) ∧
-    ∀ (φ : Ymod r χ E →ₗ[A] M) (g h : G),
-      φ (y (g * h)) = φ (y g) + (((χ g)⁻¹ : T'ˣ) : T') • (r g • φ (y h))
-
-def StatCoboundaryKill : Prop :=
-  ∀ (T' A W : Type*) [CommRing T'] [Ring A] [Algebra T' A] [AddCommGroup W] [Module A W]
-    [Module T' W] [IsScalarTower T' A W] (G : Type*) [Group G] (r : G →* A) (χ : G →* T'ˣ)
-    (E : A) (δ : T') (s : Finset G) (t : G → T'),
-    E = ∑ g ∈ s, t g • r g → E * E = δ • E → (∀ w : W, E • w = 0) →
-    (∀ w : W, (∑ g ∈ s, t g * ((χ g : T'ˣ) : T')) • w = δ • w) →
-    ∀ (φ : Ymod r χ E →ₗ[A] W) (w : W),
-      (∀ g, φ ⟨ycoc r χ E g, Submodule.subset_span ⟨g, rfl⟩⟩ =
-        ((((χ g)⁻¹ : T'ˣ) : T') • r g - 1) • w) →
-      (δ * δ) • w = 0
-
 section Lat
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X : Type*}
   {V : Type*} [AddCommGroup V] [Module (FractionRing O) V]
@@ -163,34 +139,6 @@ def StatCongBoundGood : Prop :=
     ∀ L : Submodule O V, L.FG → Submodule.span (FractionRing O) (L : Set V) = ⊤ →
       (∀ f : T, ∀ v ∈ L, act f v ∈ L) →
     ∀ (Z Zg : Finset X), Zg ⊆ Z → ∀ (a : Module.End (FractionRing O) V) (A : ℤ),
-      (∀ v ∈ L, a v ∈ L) → (∀ f : T, a * act f = act f * a) →
-      (∀ x ∈ Zg, ∀ v ∈ Vx T act x, a v = (A : FractionRing O) • v) →
-      (∀ x ∈ Z, x ∉ Zg → ∀ v ∈ Vx T act x, a v = 0) →
-      Module.length O (CongMod T act L (Zg : Set X)) ≤
-        ∑ x ∈ Zg, (Module.finrank (FractionRing O) (Vx T act x) : ℕ∞) *
-          (vcc T (Z : Set X) x + IsDiscreteValuationRing.addVal O (A : O))
-
-def StatCongBoundLarge : Prop :=
-  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (X : Type*) [Finite X]
-    (T : Subalgebra O (X → O)) [IsLocalRing T], (∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) →
-    ∀ (V : Type*) [AddCommGroup V] [Module (FractionRing O) V] [FiniteDimensional (FractionRing O) V]
-      [Module O V] [IsScalarTower O (FractionRing O) V]
-      (act : T →+* Module.End (FractionRing O) V), (⨆ x, Vx T act x) = ⊤ →
-    ∀ L : Submodule O V, L.FG → Submodule.span (FractionRing O) (L : Set V) = ⊤ →
-      (∀ f : T, ∀ v ∈ L, act f v ∈ L) →
-    ∀ Z : Finset X, (Z.card : Cardinal) ≤ Cardinal.mk (IsLocalRing.ResidueField O) →
-      Module.length O (CongMod T act L (Z : Set X)) ≤
-        ∑ x ∈ Z, (Module.finrank (FractionRing O) (Vx T act x) : ℕ∞) * vcc T (Z : Set X) x
-
-def StatCongBoundGoodLarge : Prop :=
-  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (X : Type*) [Finite X]
-    (T : Subalgebra O (X → O)) [IsLocalRing T], (∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) →
-    ∀ (V : Type*) [AddCommGroup V] [Module (FractionRing O) V] [FiniteDimensional (FractionRing O) V]
-      [Module O V] [IsScalarTower O (FractionRing O) V]
-      (act : T →+* Module.End (FractionRing O) V), (⨆ x, Vx T act x) = ⊤ →
-    ∀ L : Submodule O V, L.FG → Submodule.span (FractionRing O) (L : Set V) = ⊤ →
-      (∀ f : T, ∀ v ∈ L, act f v ∈ L) →
-    ∀ (Z Zg : Finset X), Zg ⊆ Z → (Z.card : Cardinal) ≤ Cardinal.mk (IsLocalRing.ResidueField O) → ∀ (a : Module.End (FractionRing O) V) (A : ℤ),
       (∀ v ∈ L, a v ∈ L) → (∀ f : T, a * act f = act f * a) →
       (∀ x ∈ Zg, ∀ v ∈ Vx T act x, a v = (A : FractionRing O) • v) →
       (∀ x ∈ Z, x ∉ Zg → ∀ v ∈ Vx T act x, a v = 0) →

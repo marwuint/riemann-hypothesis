@@ -36,7 +36,7 @@ theorem yFrame : YFrame := by
   obtain ⟨ε, hε⟩ := d.ok.frame.1
   have hεσ : σ (((ε : ℤ) : E)) = ((ε : ℤ) : E) := map_intCast σ _
   rcases d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩
-  · obtain ⟨ξ, hξ, hσξ⟩ := GlobalTheory.T.exists_ne_zero_conj_neg_of_cmExtension F E σ d.B d.ok.good
+  · obtain ⟨ξ, hξ, hσξ⟩ := _root_.GlobalTheory.CMTraceZero.exists_ne_zero_conj_neg F E σ d.B d.ok.good
     have hξ' : -ξ ≠ 0 := neg_ne_zero.2 hξ
     let J : Matrix (Fin n) (Fin n) E := ξ • 1
     have hJ : ∀ i j, σ (J j i) = (-1) * J i j := fun i j => by

@@ -14,9 +14,9 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EqOneOfSurjectiveApp
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsQProjOverCompOfIsFiniteNoetherianBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GaloisCoverDescentAndCartesianSquares
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDescentLinearisedLineBundleGaloisCoverStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenOfRigidifiedFaithfullyFlatDescentStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenOfRigidifiedFaithfullyFlatDescent
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProperAndExistsIsAmpleLB
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianSchemeDescendsGaloisCoverStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianSchemeDescendsGaloisCover
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleKTrivOfFiniteEtaleCover
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -145,7 +145,7 @@ theorem eq_zero_of_pull (hG : Out.GlobalFnsSt) {S S' : Scheme.{0}} (π : S' ⟶ 
     [QuasiCompact π] {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) (c : Pic A.left)
     (h₀ : pull (η[A]).left c = 0) (h₁ : pull (fibreProj A π).left c = 0) : c = 0 := by
   obtain ⟨N, hN, rfl⟩ := cls_surj c
-  exact (cls_eq_zero_iff hN).2 (T.exists_gen_of_rigidified_faithfullyFlat_descent hG S S' π A N hA hN ‹_› ‹_› ‹_›
+  exact (cls_eq_zero_iff hN).2 (_root_.GlobalTheory.exists_gen_of_rigidified_of_flat_baseChange hG S S' π A N hA hN ‹_› ‹_› ‹_›
     ((cls_eq_zero_iff (pull_isLB hN _)).1 h₀) ((cls_eq_zero_iff (pull_isLB hN _)).1 h₁))
 
 section Triple
@@ -237,7 +237,7 @@ theorem exists_sab_descent_of_galoisCover : Out.Laws → Out.Laws2 → (∀ (S :
     have := isProper_str K N
     exact LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str K N)
   have hB : IsAbelianScheme t.G := AbelianSchemeGerms.isAbelianScheme_of_proper _ t.semi
-  obtain ⟨A, _, φ, hA, gp, hφ⟩ := T.exists_abelianScheme_descent_of_galoisCover K X Y π sY Ga ρ t.G (fun a => (ν a).φ) hπ
+  obtain ⟨A, _, φ, hA, gp, hφ⟩ := _root_.GlobalTheory.abelianScheme_descends_galoisCover K X Y π sY Ga ρ t.G (fun a => (ν a).φ) hπ
     (RelAmpleQProj.isQProjOver_of_relAmple K X (π ≫ sY) t.G t.PP.L
       (isQProjOver_comp_of_isFinite_noetherian K X Y π sY hπ.fin hq) t.PP.isLB ha) hB (fun a => (ν a).cart) ν₁ νm
   have := hA.comm

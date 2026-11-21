@@ -143,39 +143,4 @@ theorem restricted_saturation_zero : ResSatLZero := by
       exact Submodule.mem_top
     · exact (hxk k).2 hk
 
-theorem gram_bound_pos_of_proj_sat (hX : HighestVectorProjectionPos) (hS : ResSatLThm) : GramBoundUnconditionalPos := by
-  intro p _ K r _ LLw q J M ρ a κ hr hρ hv ht hκ
-  rcases Nat.eq_zero_or_pos K with rfl | hK
-  · refine graded_bound_saturation_holds p 0 r LLw J M ρ (kapC p r LLw.total) 0 κ hr hρ hv (hypPE_setLast LLw ρ)
-      (fun e _ => restricted_saturation_zero p r _ J _ ρ hr hρ hv) ?_
-    rw [Nat.mul_zero, Nat.add_zero]
-    exact (kappa_numeric_holds p 0 r a LLw.total hr ht).trans hκ
-  · refine graded_bound_pos_of_proj hX p K r LLw J M ρ (kapC p r LLw.total)
-      (2 * (r.choose 2 * Nat.log p (4 * LLw.total + r - 1))) κ hK hr hρ hv (hypPE_setLast LLw ρ) ?_ (le_trans ?_ hκ)
-    · intro e _
-      have ht' := setLast_total_le LLw (LLw.deg (Fin.last K) - e) (Nat.sub_le _ _)
-      exact resSatL_mono _ J _ ρ
-        (Nat.mul_le_mul_left _ (Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega))))
-        (hS p K r (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ hr hρ hv)
-    · have h1 := numeric_product_inequality p a r (LLw.total + r - 1) (by omega)
-      have h2 := numeric_product_inequality p a r (4 * LLw.total + r - 1) (by omega)
-      have hQ := lg_nonneg p a r
-      have hK1 : (1 : ℝ) ≤ K := by exact_mod_cast hK
-      have hKQ := mul_nonneg (sub_nonneg.mpr hK1) hQ
-      have h3 : ((K : ℝ) + 3) * ((kapC p r LLw.total : ℕ) : ℝ) ≤ ((K : ℝ) + 3) * ((r : ℝ) ^ 2 / 2 * lgV2 p a r) :=
-        mul_le_mul_of_nonneg_left h1 (by positivity)
-      rw [Nat.cast_add, Nat.cast_mul, Nat.cast_mul (2 : ℕ), Nat.cast_mul (2 : ℕ)]
-      push_cast at h2 h3 ⊢
-      nlinarith
-
-theorem theoremMFree0_of (hX : HighestVectorProjectionPos) (hS : ResSatLThm) : TheoremMFree0 := by
-  obtain ⟨C₀, hC₀, hM⟩ := Formalism.InvariantFactorPaths.PW.Top.lattice_theorem_height_bound
-  refine ⟨C₀, hC₀, ?_⟩
-  intro p _ N r _ _ LL T a E κ Yl n₀ dd ρ hp hr hρ hadm hE hY hS' hdeg hz hκ hineq
-  refine hM p N r LL T a E κ Yl n₀ dd ρ hp hr hρ hadm hE hY hS' hdeg hz hκ hineq ?_
-  intro n hn i
-  exact gram_bound_pos_of_proj_sat hX hS p (T.pos i) r _ T.J (T.thrUpTo i) ρ a κ hr hρ (takeD_vec_last LL T hadm n i)
-    (takeD_total_le LL T hadm a Yl n₀ dd hS' hdeg n (grid_le T Yl n₀ dd n hn) i)
-    ((pos_num LL T hadm p a r i).trans hκ)
-
 end Formalism.InvariantFactorPaths.L4

@@ -1,7 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConjStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalOperatorEigenvaluesDeterminedByParamsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParametersBoundedEigenfunctionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConj
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalOperatorEigenvaluesDeterminedByParams
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParametersBoundedEigenfunction
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsParamFunVIffIsSysParamDOfLevel
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BcParamEqOfSatUEq
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ChainParSucc
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
@@ -39,7 +42,7 @@ theorem GlobalTheory.EvenOnto.parBound_of_rapidDecay : GlobalTheory.Published.Cu
   obtain ⟨v, hv⟩ := hex
   set f : GA D s.V → ℂ := fun g => conj (PiLocalization₂.val u v g) with hfdef
   have h3 : GlobalTheory.LFun.IsParamFunV s.V c.S f B := hpar v hv
-  obtain ⟨h4a, _⟩ := GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hCRD D c hc j hj s hs
+  obtain ⟨h4a, _⟩ := _root_.GlobalTheory.EvenOnto.ConjVal.values_conj_hecke hCRD D c hc j hj s hs
   obtain ⟨hcont, ⟨C, hC⟩, hinv, hlev, _⟩ := h4a u v
   have hsph : SphOff (s.J : Set (GA D s.V)) 1 c.S := hs.sph
   have hfmem : f ∈ GlobalTheory.FinZeta.bddAut s.V := by
@@ -55,8 +58,8 @@ theorem GlobalTheory.EvenOnto.parBound_of_rapidDecay : GlobalTheory.Published.Cu
   have hlev' : ∀ k ∈ (s.J : Set (GA D s.V)), ∀ g, f (g * k) = (1 : GA D s.V → ℂ) k * f g := by
     intro k hk g
     simp only [hfdef, hlev k hk g, Pi.one_apply, one_mul]
-  obtain ⟨a, ha⟩ := GlobalTheory.T.sphericalOperator_eigenvalues_determined_by_params D s.V (s.J : Set (GA D s.V)) 1 c.S hsph B
-  obtain ⟨B', hB', hbd⟩ := GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D s.V _ _ c.S hsph f hfmem hf0 hlev' a (fun P d R hR => ha f h3 P d R hR)
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.ParamEigen.eig_of_param D s.V (s.J : Set (GA D s.V)) 1 c.S hsph B
+  obtain ⟨B', hB', hbd⟩ := _root_.GlobalTheory.FinZeta.ParamBound.exists_param_bounded D s.V _ _ c.S hsph f hfmem hf0 hlev' a (fun P d R hR => ha f h3 P d R hR)
   intro w hw
   rw [GlobalTheory.LFun.IsParamVecOff.unique h3 hB' hw]
   exact hbd w hw

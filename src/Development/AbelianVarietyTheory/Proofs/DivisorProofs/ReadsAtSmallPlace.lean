@@ -1,15 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinIndOfBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualWeylTensorLiftCoefficientSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylTensorLiftEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPhiOfFrameInjectiveShiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLocalisedStandardWeylOfLiftMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnimodularMatricesPreserveFrameLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalBasisIntegralRelativeAdelicPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicPointIntegralRelativeLocalBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalBasisDualBasisEmbeddedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntermediateFieldPadicIntegersEqNormLeOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormLeOneIffIntegralAtPadicEmbeddingPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylTensorLiftEquivariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LamGApply
+import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPhiOfFrameInjectiveShift
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLocalisedStandardWeylOfLiftMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnimodularMatricesPreserveFrameLattices
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalBasisIntegralRelativeAdelicPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicPointIntegralRelativeLocalBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalBasisDualBasisEmbeddedLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntermediateFieldPadicIntegersEqNormLeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormLeOneIffIntegralAtPadicEmbeddingPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapEqOneOfIsLocEnv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SplitOffBadOfSuppSplitOff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TransportedLatticeLocalizationFreeLeCoefficientS
@@ -70,7 +72,7 @@ theorem exists_reading_lat {E K : Type} [Field E] [NumberField E] [Field K] [Num
       ∀ f : S.Forms, (∀ g, rd f g ∈ F.latD lamW) → ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ ∀ c, s • (f : S.Cl → S.V) c ∈ S.Del c := by
   obtain ⟨Φ, hΦ, hli⟩ := GlobalTheory.T.exists_dualWeylTensor_lift_coefficientSpace _ _ e0 _ _ lam lamW cs hS
   obtain ⟨θ, hs, hθ, hθi⟩ := exists_avatar io hio (bVV K lam) c0 hc1 hc2 Φ hli
-  have heq := GlobalTheory.T.dualWeylTensorLift_equivariant _ _ e0 _ _ lam lamW cs Φ hS hΦ
+  have heq := _root_.GlobalTheory.FrameRead.LiftEquiv.phi_equivariant _ _ e0 _ _ lam lamW cs Φ hS hΦ
   let Λ0 := lamG (PadicAlgCl l) n lamW cs
   let Λ : G →* Module.End (PadicAlgCl l) (NablaT (PadicAlgCl l) n lamW) := Λ0.comp m
   have hΛ : ∀ γ x, θ (ρ γ x) = Λ (ι γ) (θ x) := by
@@ -89,7 +91,7 @@ theorem exists_reading_lat {E K : Type} [Field E] [NumberField E] [Field K] [Num
     have hb := hS τ b
     show lamW τ b ≤ lamW τ a
     omega
-  have hstab := GlobalTheory.T.unimodular_matrices_preserve_frame_lattices l _ n lamW cs F hinj hanti
+  have hstab := _root_.GlobalTheory.FrameRead.lamG_mem_lattices l _ n lamW cs F hinj hanti
   have hlw : ((l : ℕ) : 𝓞 K) ∈ w.asIdeal := by
     rw [hw]
     have : e0 (((l : ℕ) : 𝓞 K) : K) = algebraMap ℚ_[l] (PadicAlgCl l) l := by simp
@@ -106,7 +108,7 @@ theorem exists_reading_lat {E K : Type} [Field E] [NumberField E] [Field K] [Num
       (∀ τ a b, (u τ).val a b ∈ Set.range F.emb ∧ (u τ)⁻¹.val a b ∈ Set.range F.emb) ∧
       ∀ v, Λ (P.y c)⁻¹ (Φ v) = Λ0 u (Φ (rhoK lam B⁻¹ v)) := by
     intro c
-    have hb := fun τ => GlobalTheory.T.localBasis_dualBasis_embeddedLattice _ _ _ _ lab τ w l Fact.out hlw _ (hlat c)
+    have hb := fun τ => _root_.GlobalTheory.LocBasisDual.basisAt_dualFr_tauLat _ _ _ _ lab τ w l Fact.out hlw _ (hlat c)
     rcases isEmpty_or_nonempty T with hE | ⟨⟨τ0⟩⟩
     · refine ⟨1, 1, fun τ => hE.elim τ, fun τ => hE.elim τ, fun τ => hE.elim τ, fun v => ?_⟩
       have : m (P.y c)⁻¹ = 1 := Subsingleton.elim _ _
@@ -140,7 +142,7 @@ theorem exists_reading_lat {E K : Type} [Field E] [NumberField E] [Field K] [Num
   · have hy : ∀ c, rd f (P.y c) ∈ F.latN lamW := fun c => by
       obtain ⟨B, u, -, hB, hu, hv⟩ := key c
       rw [h5, hce, hθ, hv]
-      refine (hstab u hu _).1 (GlobalTheory.T.isPhi_mem_latN_of_frame_injective_shift _ l w e0 _ _ lam lamW _ F Φ hw hinj hrange hS hΦ _ ?_)
+      refine (hstab u hu _).1 (_root_.GlobalTheory.FrameRead.lift_nabStd_mem_latN _ l w e0 _ _ lam lamW _ F Φ hw hinj hrange hS hΦ _ ?_)
       have hm : e ((f : S.Cl → S.V) c) ∈ nabAtr lab lam (Lat c) := hN c ▸ ⟨_, hf c, rfl⟩
       have hm' : ((e ((f : S.Cl → S.V) c) : VV K lam) : Pol K T n) ∈
         transLat lam (nabStd K lam) (fun τ => dualFr (tauLat lab τ (Lat c))) := hm
@@ -170,7 +172,7 @@ theorem exists_reading_lat {E K : Type} [Field E] [NumberField E] [Field K] [Num
         rw [← map_mul, inv_mul_cancel, map_one]
         rfl
       rw [h8] at h7
-      have h9 := GlobalTheory.T.mem_localisedStandardWeyl_of_lift_mem _ l w e0 _ _ lam lamW _ F Φ hw (fun x => ((hF _).1 ⟨x, rfl⟩).2) hS hΦ _ h7
+      have h9 := _root_.GlobalTheory.FrameRead.DelStd.mem_localization_standardWeylLattice _ l w e0 _ _ lam lamW _ F Φ hw (fun x => ((hF _).1 ⟨x, rfl⟩).2) hS hΦ _ h7
       have h10 : ((e ((f : S.Cl → S.V) c) : VV K lam) : Pol K T n) ∈
           Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (delP lam fun τ => dualFr (tauLat lab τ (Lat c))) := by
         rw [(GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 _ _ _ lam _ hlat' w B hB).2]
@@ -269,7 +271,7 @@ theorem reads_rank (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) [
   obtain ⟨gramR, c0R, c0L, tie⟩ := p.charW.base.fam.tie
   obtain ⟨e, -, hce, -, hN, hD⟩ := tie.coefL j (p.R.mu w)
   have hM := tie.mapL j
-  obtain ⟨hinj, hF⟩ := GlobalTheory.T.intermediateField_padic_integers_eq_norm_le_one _ Lf
+  obtain ⟨hinj, hF⟩ := _root_.GlobalTheory.FrameOf.intEmb_range_norm_le_one _ Lf
   have hev' : ∀ τ, EvOk (e0.comp (labLL D τ)) (ev τ) := hev
   have hk : ∀ (k : levJ p j (p.R.mu w)) τ, Matrix.GeneralLinearGroup.map (intEmb Lf) (kap k τ) = evG (Vc D j) ev k τ := by
     intro k τ
@@ -293,15 +295,15 @@ theorem reads_rank (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) [
     (fun c => hLat (Vc D j) ((p.R.B.L j (p.R.mu w)).pres.y c)) (fun c => GlobalTheory.RepsCompare.isLattice_hLat _ _) hN hD hM.2.1 hM.2.2 w e0 io hw hio
     (evG (Vc D j) ev)
     (fun γ => (evG_rat (Vc D j) (fun τ => (hev' τ).1) γ).imp fun γE h => ⟨hM.1 γ γE h.1, h.2⟩)
-    (fun c B hB τ a b => ⟨GlobalTheory.T.localBasis_integral_relative_adelicPoint (Vc D j) _ _ _ (hev' τ) (p.stdV j).2 _ B hB a b,
-      GlobalTheory.T.adelicPoint_integral_relative_localBasis (Vc D j) _ _ _ (hev' τ) (p.stdV j).2 _ B hB a b⟩)
+    (fun c B hB τ a b => ⟨_root_.GlobalTheory.LocBasisInt.locBasis_integral (Vc D j) _ _ _ (hev' τ) (p.stdV j).2 _ B hB a b,
+      _root_.GlobalTheory.LocBasisInt.norm_le_one_of_isLocBasis (Vc D j) _ _ _ (hev' τ) (p.stdV j).2 _ B hB a b⟩)
     lamW cs hS Lf hL
     (fun g τ a b => (IntermediateField.adjoin_le_iff.2 (by rintro _ ⟨x, rfl⟩; exact hL _)) ((hev' τ).2.2.2 _))
     (frameOf p j (p.R.mu w) (Formalism.EigenvalueLevelCeiling.plc w) _ Lf kap chi) hinj hF
     (fun k τ a b => ⟨(kap k τ).val a b, congrArg (fun M : GL _ _ => M.val a b) (hk k τ)⟩)
     (fun k => ⟨(((chi k)⁻¹ * ∏ τ, Matrix.GeneralLinearGroup.det (kap k τ) ^ cs τ : (intR Lf)ˣ) : intR Lf), (hsc k).1⟩)
   refine ⟨⟨e0, Subtype.val, rd, hw, fun x => (hF _).2 ⟨hL _, ?_⟩, fun f => ⟨?_, fun k g => ?_⟩, h3, fun i f g => ?_, h5, h6⟩, rfl, rfl⟩
-  · exact (GlobalTheory.T.norm_le_one_iff_integral_at_padicEmbedding_place _ _ w e0 hw _).2 ⟨1, (Ideal.ne_top_iff_one _).1 w.isPrime.ne_top, x, by simp⟩
+  · exact (_root_.GlobalTheory.FrameRead.norm_le_one_iff_integral_at _ _ w e0 hw _).2 ⟨1, (Ideal.ne_top_iff_one _).1 w.isPrime.ne_top, x, by simp⟩
   · rintro _ ⟨γ, rfl⟩ g
     exact h1 f γ g
   · have h7 := h2 f k g
@@ -319,12 +321,5 @@ theorem reads_rank (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) [
     rfl
 
 end Point
-
-theorem reads_of_small : InRange fun _ _ _ _ p j P W w => SmallAt p j P w → ReadsAt p j P W w := by
-  refine ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ =>
-    EvPt.of_forall fun x hx i p _ _ j P W hD _ w _ _ _ _ => ?_⟩⟩
-  choose cs hcs using hD.lam
-  exact ⟨false, fun τ => -cs τ, fun e0 io ev bs rk Lf _ kap chi hC hbs =>
-    reads_rank p j w W.lam cs hcs e0 io ev bs rk Lf kap chi hC hbs⟩
 
 end GlobalTheory.FrameRead

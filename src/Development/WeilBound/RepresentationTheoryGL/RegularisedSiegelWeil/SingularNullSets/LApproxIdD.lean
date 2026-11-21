@@ -34,8 +34,8 @@ theorem approxId_of (h1 : OneD) : ApproxId := by
   have : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_eq_succ (n := 1) hCM.2.2.1
   have : BorelSpace (AF D.host.F) := ⟨rfl⟩
   have : BorelSpace (Mx D t t) := ⟨rfl⟩
-  obtain ⟨eA, heA⟩ := GlobalTheory.T.exists_homeomorph_hermR_coordinates D.host.F D.host.E D.sp.cm.sig hCM (AF D.host.F) _ (Module.finBasis D.host.F D.host.E) t
-  obtain ⟨-, hBd⟩ := GlobalTheory.T.coordinate_form_symmetric_nondegenerate D.host.F D.host.E D.sp.cm.sig hCM _ (Module.finBasis D.host.F D.host.E) t
+  obtain ⟨eA, heA⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.hCo_continuousAddEquiv D.host.F D.host.E D.sp.cm.sig hCM (AF D.host.F) _ (Module.finBasis D.host.F D.host.E) t
+  obtain ⟨-, hBd⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestN.coordForm_isSymm_det_ne_zero D.host.F D.host.E D.sp.cm.sig hCM _ (Module.finBasis D.host.F D.host.E) t
   have hpair := GlobalTheory.T.hermitian_pairing_in_coordinates D.host.F D.host.E D.sp.cm.sig hCM (AF D.host.F) _ (Module.finBasis D.host.F D.host.E) t
   generalize Module.finBasis D.host.F D.host.E = b at heA hBd hpair
   have hε0 : IsIdF S ((1, LIdemEx.indS S) : AF D.host.F) := ⟨rfl, fun v => rfl⟩

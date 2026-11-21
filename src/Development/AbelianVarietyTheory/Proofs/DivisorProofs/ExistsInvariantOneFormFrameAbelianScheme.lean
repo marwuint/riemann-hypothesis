@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHod
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RedHomAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanInvariantOneFormsAffineOpenAbelianSchemeEqToStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRetractionDifferentialsInvariantOneFormsAfStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantOneFormsAbelianSchemeFiniteProjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRetractionDifferentialsInvariantOneFormsAf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantOneFormsAbelianSchemeFiniteProjective
 
 set_option autoImplicit false
 
@@ -31,7 +31,7 @@ theorem isBaseChange_invForm : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [Gr
     refine Submodule.span_le.2 ?_
     rintro _ ⟨w, rfl⟩
     exact ⟨1 ⊗ₜ w, by simp [L, f]⟩
-  obtain ⟨r, hr⟩ := GlobalTheory.T.exists_retraction_differentials_invariantOneForms_affine R A g hab hdim U
+  obtain ⟨r, hr⟩ := _root_.GlobalTheory.InvFormRetract.retract R A g hab hdim U
   have hl : ∀ x, r (L x) = x := by
     intro x
     induction x using TensorProduct.induction_on with
@@ -48,7 +48,7 @@ theorem isBaseChange_invForm : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [Gr
 theorem exists_invariant_frame : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ (M : Type) (_ : AddCommGroup M) (_ : Module R M) (j : M →ₗ[R] GlobForm A.hom), Module.Finite R M ∧ Module.Projective R M ∧ ∀ U : AffOp A.left, IsBaseChange (Sec A.hom U.unop.1) (evForm A.hom U ∘ₗ j) := by
   intro R _ A _ g hab hdim
   have hbc := isBaseChange_invForm R A g hab hdim
-  obtain ⟨hfin, hproj⟩ := GlobalTheory.T.invariantOneForms_abelianScheme_finite_projective R A g hab hdim hbc
+  obtain ⟨hfin, hproj⟩ := _root_.GlobalTheory.InvFormProj.finite_projective R A g hab hdim hbc
   exact ⟨InvForm A, inferInstance, inferInstance, (InvForm A).subtype, hfin, hproj, hbc⟩
 
 end GlobalTheory.InvFormBC

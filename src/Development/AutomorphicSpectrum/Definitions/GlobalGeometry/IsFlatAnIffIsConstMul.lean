@@ -65,17 +65,6 @@ def SameVec (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c) (v :
   ∃ u : Sp (DualNumber F) ⟶ Y.oF.t.G.left, u ≫ Y.oF.t.G.hom = spMap (algebraMap F (DualNumber F)) ≫ y ∧
     u ≫ Y.m0.toSABMap.φ = v.left ∧ u ≫ Y.m.φ = v'.left
 
-theorem exists_sameVec (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c)
-    (v : epsAt (under y) ⟶ Xo.univ.t.G) : ∃ v', SameVec Y y v v' := by
-  have hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _) := Y.m0.cart.1
-  have hq : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j := Y.m.cart.1
-  have hv : v.left ≫ Xo.univ.t.G.hom = (spMap (algebraMap F (DualNumber F)) ≫ y) ≫ pullback.fst _ _ := by
-    rw [Category.assoc]; exact Over.w v
-  refine ⟨Over.homMk (hp.lift _ _ hv ≫ Y.m.φ) ?_, hp.lift _ _ hv, hp.lift_snd _ _ _, hp.lift_fst _ _ _, rfl⟩
-  have : (hp.lift _ _ hv ≫ Y.m.φ) ≫ Y.t.G.hom = spMap (algebraMap F (DualNumber F)) ≫ y ≫ Y.j := by
-    rw [Category.assoc, hq.w, ← Category.assoc, hp.lift_snd, Category.assoc]
-  exact this
-
 theorem exists_sameVec_left (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c)
     (v' : epsAt (y ≫ Y.j) ⟶ Y.t.G) : ∃ v, SameVec Y y v v' := by
   have hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _) := Y.m0.cart.1
@@ -108,15 +97,6 @@ theorem SameVec.unique_left {Y : Model Xo c β} {F : Type} [Field F] {y : Sp F �
   have : u₁ = u₂ := hq.hom_ext (c₁.trans c₂.symm) (a₁.trans a₂.symm)
   ext1
   rw [← b₁, ← b₂, this]
-
-theorem sameVec_iff_of_mono (Y : Model Xo c β) [Mono Y.j] {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c)
-    (v : epsAt (under y) ⟶ Xo.univ.t.G) (v' : epsAt (y ≫ Y.j) ⟶ Y.t.G) :
-    SameVec Y y v v' ↔
-      ∃ u : Sp (DualNumber F) ⟶ Y.oF.t.G.left, u ≫ Y.m0.toSABMap.φ = v.left ∧ u ≫ Y.m.φ = v'.left := by
-  have hq : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j := Y.m.cart.1
-  refine ⟨fun ⟨u, _, a, b⟩ => ⟨u, a, b⟩, fun ⟨u, a, b⟩ => ⟨u, ?_, a, b⟩⟩
-  rw [← cancel_mono Y.j, Category.assoc, ← hq.w, ← Category.assoc, b, Category.assoc]
-  exact Over.w v'
 
 def Represents (Y : Model Xo c β) (U : Set (Xo.XF c)) (τ : E →+* ℂ) {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ Y.X}
     {V : Type} [AddCommGroup V] [Module Ω V] (M : LieModel Y.t.G ξ V) (a : ⋀[Ω]^D.p V) (b : ⋀[Ω]^D.q V)
@@ -196,37 +176,5 @@ theorem IsFlatAn.const_mul {U : Set (Xo.XF c)} {τ τ' : E →+* ℂ} {σ : c.F 
   intro P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8
   show k * Φ y v w * _ = _
   rw [_root_.mul_assoc, h P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8]
-
-theorem IsUnitAn.const_mul {τ : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : CFn Xo c} (h : IsUnitAn τ σ Φ) {k : ℂ}
-    (hk : ‖k‖ = 1) : IsUnitAn τ σ (fun y v w => k * Φ y v w) where
-  ne y v w hf := mul_ne_zero (by rintro rfl; simp at hk) (h.ne y v w hf)
-  chg y v w v' w' A B h1 h2 h3 h4 := by rw [_root_.mul_assoc, _root_.mul_assoc, h.chg y v w v' w' A B h1 h2 h3 h4]
-  norm y v w Γ Δ h1 h2 h3 := by rw [norm_mul, hk, _root_.one_mul]; exact h.norm y v w Γ Δ h1 h2 h3
-  hol R _ x vR wR m B ψ v w h1 h2 h3 := (h.hol R x vR wR m B ψ v w h1 h2 h3).const_mul k
-
-theorem ExtendsUnitAt.const_mul {K Ω : Type} [Field K] [Field Ω] {X : Scheme.{0}} {s : X ⟶ Sp K} {σ : K →+* ℂ}
-    {ξ : Sp Ω ⟶ X} {W : X.Opens} {F : (Sp ℂ ⟶ X) → ℂ} {t : Ω} {x : Sp ℂ ⟶ X}
-    (h : ExtendsUnitAt s σ ξ W F t x) {k : ℂ} (hk : k ≠ 0) : ExtendsUnitAt s σ ξ W (fun y => k * F y) t x := by
-  intro m B y h1 h2 h3 b₀ h4 h5
-  obtain ⟨ε, g, hε, hd, hg, H⟩ := h m B y h1 h2 h3 b₀ h4 h5
-  refine ⟨ε, fun b => k * g b, hε, hd.const_mul k, mul_ne_zero hk hg, fun b hb hW r hr => ?_⟩
-  show k * F (y b) = k * g b * r
-  rw [H b hb hW r hr, _root_.mul_assoc]
-
-theorem ExtendsUnitAt.eq_zero_iff {K Ω : Type} [Field K] [Field Ω] {X : Scheme.{0}} {s : X ⟶ Sp K} {σ : K →+* ℂ}
-    {ξ : Sp Ω ⟶ X} {W : X.Opens} {F : (Sp ℂ ⟶ X) → ℂ} {t : Ω} {x : Sp ℂ ⟶ X} (h : ExtendsUnitAt s σ ξ W F t x)
-    (hx : x ≫ s = spMap σ) (hW : ⊤ ≤ x ⁻¹ᵁ W) {r : ℂ} (hr : ValAt ξ x t r) : F x = 0 ↔ r = 0 := by
-  have hol : IsHolTo (Set.univ : Set (Fin 0 → ℂ)) (fun _ => x) := fun U f =>
-    ⟨isOpen_discrete _, differentiableOn_const _⟩
-  obtain ⟨ε, g, hε, -, hg, H⟩ := h 0 Set.univ (fun _ => x) isOpen_univ hol (fun _ _ => hx) 0 trivial rfl
-  rw [H 0 ⟨trivial, Metric.mem_ball_self hε⟩ hW r hr]
-  exact ⟨fun h0 => (mul_eq_zero.mp h0).resolve_left hg, fun h0 => by rw [h0, mul_zero]⟩
-
-theorem CptOver.isGeom_of_surjective {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U)
-    (h : Function.Surjective Z.inc) : Z.IsGeom := fun x _ => h x
-
-example {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) (τ : E →+* ℂ) {F : Type} [Field F]
-    (βF : c.F →+* F) (y : Sp F ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q) (hf : IsFramed U τ βF y v w) :
-    ¬ FlatOnModel Z τ (fun _ _ _ _ _ => 0) := fun h => h.isLineFn.ne F βF y v w hf rfl
 
 end GlobalTheory.CompanionTheory.Ar.Flat

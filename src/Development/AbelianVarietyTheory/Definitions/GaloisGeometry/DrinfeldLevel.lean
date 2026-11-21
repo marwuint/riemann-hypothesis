@@ -42,37 +42,7 @@ def IsFullSet (Z : Over S) {J : Type} (P : J → (𝟙_ (Over S) ⟶ Z)) : Prop 
 
 variable {O : Type} [CommRing O]
 
-structure DrinfeldLevel {G : Over S} [GrpObj G] [IsCommMonObj G] (a : OAct O G) (ϖ : O) (h m : ℕ) where
-
-  α : (Fin h → O ⧸ Ideal.span {ϖ ^ m}) → (𝟙_ (Over S) ⟶ G)
-  map_add : ∀ x y, α (x + y) = α x * α y
-  map_smul : ∀ (c : O) x, α (c • x) = α x ≫ a.act c
-  full : IsFullSet G α
-
 end GlobalTheory.DrinLev
 
 namespace GlobalTheory.DrinLev
-open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor
-
-def FreeChart.self (R : Type) [CommRing R] : FreeChart (Over.mk (𝟙 (Sp R))) where
-  R := R
-  t := 𝟙 _
-  B := R
-  e := (asIso (pullback.snd (𝟙 (Sp R)) (𝟙 (Sp R)))).symm
-  e_snd := by
-    simp only [Iso.symm_hom, asIso_inv, IsIso.inv_hom_id, Over.mk_hom]
-    simp [spMap, Algebra.algebraMap_self]
-
-example (R : Type) [CommRing R] [Nontrivial R] :
-    Module.finrank (FreeChart.self R).R (FreeChart.self R).B = 1 :=
-  Module.finrank_self R
-
-example (R : Type) [CommRing R] : IsFinLocFree (Over.mk (𝟙 (Sp R))) 1 := by
-  intro x
-  have : Nontrivial R := by
-    by_contra h
-    rw [not_nontrivial_iff_subsingleton] at h
-    exact (PrimeSpectrum.isEmpty_iff_subsingleton.mpr h).false x
-  exact ⟨FreeChart.self R, inferInstanceAs (IsOpenImmersion (𝟙 _)), ⟨x, rfl⟩, Module.finrank_self R⟩
-
 end GlobalTheory.DrinLev

@@ -44,9 +44,6 @@ def embP (τ : E →+* ℂ) : E →+* ↥C.S := P.fK.comp (embF c τ)
 
 abbrev intEmb (φ : E →+* ↥C.S) : 𝓞 E →+* ↥(intO ↥C.S) := HTLat.embO (integers C) φ
 
-theorem coe_intEmb_embP (τ : E →+* ℂ) (x : 𝓞 E) : (intEmb (embP P τ) x : ↥C.S) = P.emb τ x :=
-  HTLat.algebraMap_embO (integers C) _ x
-
 variable (A : DatAt Y P)
 
 def ray : letI := H.starRing; Ray A.U.oD := letI := H.starRing; Classical.choice inferInstance
@@ -104,17 +101,6 @@ def kapGt (τ : E →+* ℂ) (u u' : LieGt A τ) : ↥C.S :=
     kapExt (isLinearHom_pull A.f (q_lin A)) h.some (HTLat.isSplitting_embO (integers C)) (embP P τ) u.1 u'.1
   else 0
 
-open Classical in
-
-theorem kapB_of (h : Nonempty (Split A)) (τ : E →+* ℂ) (u u' : LieB A τ) :
-    kapB A τ u u' = kapAb h.some (HTLat.isSplitting_embO (integers C)) (embP P τ) u.1 u'.1 := dif_pos h
-
-open Classical in
-
-theorem kapGt_of (h : Nonempty (Split A)) (τ : E →+* ℂ) (u u' : LieGt A τ) : kapGt A τ u u' =
-    kapExt (isLinearHom_pull A.f (q_lin A)) h.some (HTLat.isSplitting_embO (integers C)) (embP P τ) u.1 u'.1 :=
-  dif_pos h
-
 variable {T : Type} (emb : T × Bool → E →+* ℂ)
 
 structure HarmAt : Type where
@@ -143,17 +129,6 @@ structure SecAt : Type where
 
 def SecAt.zero (k : ℕ) (hk : 0 < k) : SecAt A :=
   ⟨k, hk, fun _ => ⟨fun _ => 0, fun _ _ => by rw [map_zero, map_zero, mul_zero]⟩⟩
-
-theorem LG_eq : A.U.U.LG = A.t.PP := A.U.bundle
-
-def HarmAt.pow (u : ∀ t, LieGt A (emb (t, false))) (n : ℕ) (t : T) (k : Fin n) (m : ℕ) : HarmAt A emb :=
-  ⟨1, 0, n, fun t _ => u t, fun _ => Fin.elim0, MvPolynomial.X (Harm.xVar t 0 k) ^ m, fun _ _ b => b.elim0⟩
-
-example (u : ∀ t, LieGt A (emb (t, false))) (w : ∀ t, LieGt A (emb (t, true))) (t : T) : HarmAt A emb :=
-  ⟨1, 1, 2, fun t _ => u t, fun t _ => w t,
-    MvPolynomial.X (Harm.xVar t 0 0) * MvPolynomial.X (Harm.yVar t 0 1), fun t' a b => by
-      classical
-      simp [Harm.laplacian_apply, MvPolynomial.pderiv_X, Pi.single_apply, apply_ite (MvPolynomial.pderiv _)]⟩
 
 variable {A emb}
 
@@ -193,29 +168,9 @@ open Classical in
 
 def evGt (s : SecAt A) : ↥C.S := if h : ∃! v, Q.IsValG s v then h.choose else 1
 
-theorem evA_eq {s : SecAt A} (h : ∃! v, Q.IsValA s v) {v : ↥C.S} : Q.evA s = v ↔ Q.IsValA s v := by
-  rw [evA, dif_pos h]
-  exact ⟨fun e => e ▸ h.choose_spec.1, fun e => (h.choose_spec.2 v e).symm⟩
-
-theorem evGt_eq {s : SecAt A} (h : ∃! v, Q.IsValG s v) {v : ↥C.S} : Q.evGt s = v ↔ Q.IsValG s v := by
-  rw [evGt, dif_pos h]
-  exact ⟨fun e => e ▸ h.choose_spec.1, fun e => (h.choose_spec.2 v e).symm⟩
-
 end HarmAt
 
 variable (A)
-
-theorem incT_exact (τ : E →+* ℂ) : Function.Injective (incT A τ) ∧ Function.Exact (incT A τ) (resB A τ) :=
-  letI := H.starRing
-  eigMap_exact A.f (i_lin A) (q_lin A) (ray A).isKernel _
-
-theorem kapGt_eq (τ : E →+* ℂ) (u u' : LieGt A τ) : kapGt A τ u u' = kapB A τ (resB A τ u) (resB A τ u') := by
-  classical
-  by_cases h : Nonempty (Split A)
-  · rw [kapGt_of A h, kapB_of A h, kapExt_eq]
-    exact congrArg₂ (kapAb h.some _ _) (mapLinear_coe A.f (q_lin A) _ u) (mapLinear_coe A.f (q_lin A) _ u')
-  · have e : ∀ v v', kapB A τ v v' = 0 := fun _ _ => dif_neg h
-    exact (dif_neg h).trans (e _ _).symm
 
 end Point
 

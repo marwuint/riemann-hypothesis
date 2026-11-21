@@ -38,9 +38,6 @@ theorem euclidNorm_le_sqrt_mul (y : Fin n → E) : euclidNorm y ≤ √n * ‖y�
 theorem norm_le_euclidNorm_pi (y : Fin n → E) : ‖y‖ ≤ euclidNorm y :=
   (pi_norm_le_iff_of_nonneg (euclidNorm_nonneg y)).2 fun i => norm_le_euclidNorm y i
 
-theorem euclidNorm_pos {y : Fin n → E} (hy : y ≠ 0) : 0 < euclidNorm y :=
-  lt_of_lt_of_le (norm_pos_iff.2 hy) (norm_le_euclidNorm_pi y)
-
 theorem continuous_euclidNorm : Continuous (euclidNorm : (Fin n → E) → ℝ) :=
   Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ =>
     (continuous_norm.comp (continuous_apply i)).pow 2)

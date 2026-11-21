@@ -1,5 +1,7 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.LeftEquivariantFunctions.GLMatrixDerivatives.FrameDer
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionCompactStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionCompact
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.LeftEquivariantFunctions.GelfandFlags.IntSmooth
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveConeStructureStatement
 
 noncomputable section
@@ -120,7 +122,7 @@ theorem end1 : End1 := by
   have hcont : Continuous (fun x : G n => Fm (x : Mat n)) :=
     (trL_cont E.V).comp ((hk.comp_continuous hcontTw fun x => tw_mem (val_mem x) hdG).mul continuous_const)
   have hcs : HasCompactSupport (fun x : G n => Fm (x : Mat n)) := by
-    refine HasCompactSupport.intro (GlobalTheory.T.length_function_compact n R) fun x hx => ?_
+    refine HasCompactSupport.intro (_root_.GlobalTheory.CompanionTheory.LgBound.lgCpt n R) fun x hx => ?_
     simp only [Set.mem_ofPred_eq, not_le] at hx
     simp only [hFm, hR _ (val_mem x) hx, zero_mul, map_zero]
   refine ⟨hphi ▸ hcont.integrable_of_hasCompactSupport hcs, ?_⟩

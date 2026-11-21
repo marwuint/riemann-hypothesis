@@ -93,25 +93,4 @@ theorem endoG_of (h : EndoP fun _ _ _ _ _ D m => D.Inf m) : EndoBlockG := h
 
 theorem stableG_of (h : StableP fun _ _ _ _ _ D m => D.Inf m) : StableBlockG := h
 
-theorem cuspReadP_true (h : CuspRead) : CuspReadP fun _ _ _ _ _ _ _ => True := by
-  intro E _ _ _ N K W bad m₀ X h1 h2 h3 h4 h5 h6
-  obtain ⟨J, hJ, D, C, a1, a2⟩ := h E N K W bad m₀ X h1 h2 h3 h4 h5 h6
-  exact ⟨J, hJ, D, C, a1, fun _ => trivial, a2⟩
-
-theorem endo_of (P : Pred) (h : EndoP P) : EndoBlock := by
-  intro E _ _ _ hE a b hab S hS l₁ l₂ Z hZ φ h1 h2
-  obtain ⟨J, hJ, D₁, D₂, B₁, B₂, a1, -, a3⟩ := h E hE a b hab S hS l₁ l₂ Z hZ φ h1 h2
-  exact ⟨J, hJ, D₁, D₂, B₁, B₂, a1, fun T hT hd e₁ e₂ ρ hρ hv =>
-    a3 T (fun w hw => (hT w hw).1) hd e₁ e₂ ρ (fun w hw hn => absurd (hT w hw).2 hn) hρ hv⟩
-
-theorem stable_of (P : Pred) (h : StableP P) : StableBlock := by
-  intro E _ _ _ hE n hn π h1 h2
-  obtain ⟨l₁, hl⟩ := h E hE n hn π h1 h2
-  refine ⟨l₁, fun l₂ S hS Z hZ B τ hB hτ => ?_⟩
-  obtain ⟨c, hc, hφ⟩ := hl l₂ S hS Z hZ B τ hB hτ
-  refine ⟨c, hc, fun φ p1 p2 => ?_⟩
-  obtain ⟨J, hJ, D, B₁, a1, -, a3⟩ := hφ φ p1 p2
-  exact ⟨J, hJ, D, B₁, a1, fun T hT hd e₁ e₂ ρ hρ hv =>
-    a3 T (fun w hw => (hT w hw).1) hd e₁ e₂ ρ (fun w hw hn => absurd (hT w hw).2 hn) hρ hv⟩
-
 end UpperTheory.Zero.ConvolutionTheory.EB

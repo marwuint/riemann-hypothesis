@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveC
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgHomLiftsSqZeroClassifiedByDifferentials
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearLiftOfProjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulEqZeroOfMemMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDefectCoboundaryOfObstructionClassZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDefectCoboundaryOfObstructionClassZero
 open CategoryTheory AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.LiftSys GlobalTheory.Obs
@@ -57,7 +57,7 @@ theorem exists_isFun_of_isOb2_zero : ∀ (R R₀ : Type) [CommRing R] [CommRing 
     exact mul_eq_zero_of_mem_map hI (Ideal.mem_map_of_mem _ hrI) (hm T T' a)
   have hex : ∀ w : GlobForm s₀, ∃ m ∈ Wm, q m = v w := by
     intro w
-    obtain ⟨g, hg, hgθ⟩ := GlobalTheory.T.exists_defect_coboundary_of_obstructionClass_zero R R₀ I hI π hπ hk R₁ α _ (OAff s₀) L w θ hθ (hob w)
+    obtain ⟨g, hg, hgθ⟩ := _root_.GlobalTheory.ObsCob.exists_cob R R₀ I hI π hπ hk R₁ α _ (OAff s₀) L w θ hθ (hob w)
     refine ⟨g, hg, ?_⟩
     funext T T' T'' a b
     exact (hgθ T T' T'' a b).symm

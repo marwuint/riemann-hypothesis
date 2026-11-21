@@ -273,18 +273,8 @@ theorem liftPropsRapid_of_growth (D : D7) (hG : ThetaGrowth D) : LiftPropsRapid 
     exact ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top
       (sobO_ne_top hω.std hθ hμ.1 hμ.2.1 hf _)) (hdec F hF A)) (hC f hl F hF.rapidDec)
 
-theorem cuspRapidDecay_of_sobolev (hP : GlobalTheory.Published.CuspDecaySobolev) : GlobalTheory.Published.CuspRapidDecay := by
-  intro D θ hθ V e he φ ha hs hg hc
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
-  obtain rfl := GlobalTheory.SmoothForms.eq_expInf R he
-  exact ((rapidDec_iff_isRapidDecay hθ).1 (rapidDec_of_cuspDecaySobolev hP hθ ha
-    ((GlobalTheory.SmoothForms.smooth_iff R φ).2 hs) (unifModGrowth_of_isUnifModerate hθ hg) hc)).2.2
-
 theorem liftProps_of_rapidDecay (hP : GlobalTheory.Published.CuspRapidDecay) (D : D7) (hG : ThetaGrowth D) : LiftProps D :=
   liftProps_of_rapid hP (liftPropsRapid_of_growth D hG)
-
-theorem liftProps_of_growth (hP : GlobalTheory.Published.CuspDecaySobolev) (D : D7) (hG : ThetaGrowth D) : LiftProps D :=
-  liftProps_of_rapidDecay (cuspRapidDecay_of_sobolev hP) D hG
 
 end GlobalTheory.Chain.LiftReg
 

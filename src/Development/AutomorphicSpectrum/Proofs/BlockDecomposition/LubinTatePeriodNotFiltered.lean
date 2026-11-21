@@ -2,10 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalMod
 import GroundTheory.PAdicHodge.ExistsGalFixCyclotomicLayerCycloCharNeOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaloisActionPeriodProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodProductFiltrationLevelsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodProductFiltrationLevels
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HodgeTateCharacterWeightStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SenUnramifiedCharacterPeriodStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SenPeriodFiniteExtensionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SenPeriodFiniteExtension
 noncomputable section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
 open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.CompanionTheory.LTHodge GlobalTheory.CompanionTheory.LTPer
@@ -52,7 +52,7 @@ theorem exact_degrees_of_product : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (
       (GroundTheory.PAdicHodge.untilt_epsilon (p := l))
     have h3 := h2.symm.trans h1
     exact (algebraMap ℚ_[l] (Formalism.Per6.BdRp l)).injective (mul_right_cancel₀ htirr.ne_zero h3)
-  have hn : n = 1 := GlobalTheory.T.hodge_tate_character_weight L (GlobalTheory.T.sen_period_finite_extension GlobalTheory.T.sen_unramified_character_period L) u n
+  have hn : n = 1 := GlobalTheory.T.hodge_tate_character_weight L (_root_.GlobalTheory.CompanionTheory.LTPer.cycloChar_inertia_image_infinite GlobalTheory.T.sen_unramified_character_period L) u n
     (fun σ => Algebra.norm ℚ_[l] ((χ ⟨res σ, hres σ⟩ : (↥K.1)ˣ) : ↥K.1))
     (fun σ => by
       rw [← hTu']
@@ -60,6 +60,6 @@ theorem exact_degrees_of_product : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (
     (fun σ hσ => (hN (res σ) (hres σ) hσ).trans (hcyc σ))
   subst hn
   intro μ
-  exact GlobalTheory.T.period_product_filtration_levels s t K.1.val (hs _) u (by rw [hTu', pow_one]) ((ht _).2.2 rfl) μ (hs μ)
+  exact _root_.GlobalTheory.CompanionTheory.LTPer.prod_eq_t_mul_unit_count s t K.1.val (hs _) u (by rw [hTu', pow_one]) ((ht _).2.2 rfl) μ (hs μ)
 
 end GlobalTheory.CompanionTheory.LTPer

@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.ConstantCoeffSurjective
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.GaloisTwistIdentitySection
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SharpSurjectiveKerSpan
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UntiltAdicCompleteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UntiltAdicComplete
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MemPow
 
 set_option backward.isDefEq.respectTransparency false
@@ -92,7 +92,7 @@ theorem exists_compatible_roots_of_sharp : ∀ {l : ℕ} [Fact l.Prime] (A : PAl
     have := Ideal.Quotient.eq.1 h0
     rwa [pow_one, Ideal.mem_span_singleton] at this
   refine ⟨a, hroot, fun i => sub_eq_zero.1 ?_⟩
-  refine eq_zero_of_forall_pow_dvd (π := (l : A.U)) (GlobalTheory.T.untilt_adic_complete A).toIsHausdorff fun n => ?_
+  refine eq_zero_of_forall_pow_dvd (π := (l : A.U)) (_root_.GlobalTheory.CompanionTheory.Untilt.isAdicComplete_U A).toIsHausdorff fun n => ?_
   have h1 := dvd_sub_pow_of_dvd_sub (hl1 (i + n)) n
   rw [← map_pow, pow_pow_of_compatible hroot, pow_pow_of_compatible hu] at h1
   exact (pow_dvd_pow _ (Nat.le_succ n)).trans h1

@@ -1,6 +1,7 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HodgeIPIffHodgeFormConj
 open MvPolynomial AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cmp
@@ -262,7 +263,7 @@ theorem l_lineiso : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Comm
     simpa using ll_Xpow k (c k) 1
   obtain ⟨I, hI, hIW⟩ := ll_prime y c hyc hW hPW hc
   have hxc : (fun c' : (k : K) → ι k => ∏ k, y ⟨k, c' k⟩) c ≠ 0 := Finset.prod_ne_zero_iff.2 fun k _ => hyc k
-  obtain ⟨p, ⟨hp, hpI⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ _ _ htie c hxc I hI
+  obtain ⟨p, ⟨hp, hpI⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ _ _ htie c hxc I hI
   have e1 := hL.2 p trivial c hp
   have e2 := hL'.2 p trivial c hp
   rw [smul_smul] at e2
@@ -274,7 +275,7 @@ theorem l_lineiso : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Comm
     rw [hw, inv_div]
     exact ll_ratio _ hL.1 (mul_ne_zero hA' hρ) (e1.symm.trans e2).le
   have hw0 : w ≠ 0 := div_ne_zero (mul_ne_zero hA' hρ) hA
-  obtain ⟨s, hs, hsu, hsw⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ _ htie c p hp w).1 hw1
+  obtain ⟨s, hs, hsu, hsw⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ _ _ htie c p hp w).1 hw1
   have htu : unitAt ξ p (s * w) := ⟨mul_ne_zero hsu.1 hw0, mul_mem hsu.2.1 hw1, by
     rw [mul_inv]
     exact mul_mem hsu.2.2 hw2⟩

@@ -1,5 +1,20 @@
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RanksFramesOfSiegelWeil
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
+import Formalism.LocalToGlobal.ThresholdSelection
+import Formalism.SharpRestriction.GlobalSchurBounds.MassRatioUnfoldedOfTheoremTwo
+import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
+import Formalism.SharpRestriction.GlobalSchurBounds.TheoremThreeFamilyOfFormalDegreeInput
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHyperplaneVolumeRatioSiegelWeil
+import Formalism.SharpRestriction.SmoothDesignExistence.DGamSmooth
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassNumberAll
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstTypePrimeLargeOfRecord
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExactRanksOfRecord
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NcardPrimesOverOfNorm
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeEqMassOfReal
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RankConditionOfColumnsEqualSymmetricLevel
+import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
+import Formalism.LocalToGlobal.HermitianForms.BothSym
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TFrameOfRanksRowThree
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TSelF
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RanksAndFrameOfTiedClassStatement
 
@@ -12,6 +27,6 @@ theorem bothRowsFromSiegelWeil_alt :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ (𝒞 : FamClass), _root_.Formalism.L2.TwistSelection 𝒞 →
       (Closed 𝒞 fun Fm _ => PX.RanksF Fm 3 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu) ∧
         Closed 𝒞 fun Fm _ => PX.TFrame Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 :=
-  fun hSW => _root_.GlobalTheory.T.ranksF_tFrame_closed_of_mass_ratio (GlobalTheory.T.unitary_hyperplane_volumeRatio_siegelWeil hSW)
+  fun hSW => _root_.GlobalTheory.T.ranksF_tFrame_closed_of_mass_ratio (_root_.GlobalTheory.VolRatioFromSiegelWeil.volumeRatio hSW)
 end GlobalTheory
 end

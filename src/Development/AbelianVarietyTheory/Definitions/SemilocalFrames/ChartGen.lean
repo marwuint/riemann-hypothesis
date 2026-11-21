@@ -36,67 +36,11 @@ instance latAct (h : V →ₗ⋆[K] V →ₗ[K] K) : MulAction (Formalism.Hermit
       x ∈ Formalism.HermitianLatticesTheory.gmap (a : V ≃ₗ[K] V) (Formalism.HermitianLatticesTheory.gmap (b : V ≃ₗ[K] V) L)
     simp [Formalism.HermitianLatticesTheory.gmap]
 
-def gaG (h : V →ₗ⋆[K] V →ₗ[K] K) (A B : Submodule R V) : Subgroup (Formalism.HermitianLatticesTheory.isom h) where
-  carrier := {γ | (∀ x, (γ : V ≃ₗ[K] V) x ∈ A ↔ x ∈ A) ∧ (∀ x, (γ : V ≃ₗ[K] V) x ∈ B ↔ x ∈ B) ∧
-    ∀ x ∈ A, (γ : V ≃ₗ[K] V) x - x ∈ B}
-  one_mem' := ⟨fun _ => Iff.rfl, fun _ => Iff.rfl, fun x _ => by simp⟩
-  mul_mem' := by
-    rintro a b ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩
-    refine ⟨fun x => (a1 _).trans (b1 x), fun x => (a2 _).trans (b2 x), fun x hx => ?_⟩
-    have e : ((a * b : Formalism.HermitianLatticesTheory.isom h) : V ≃ₗ[K] V) x - x =
-        ((a : V ≃ₗ[K] V) ((b : V ≃ₗ[K] V) x) - (b : V ≃ₗ[K] V) x) + ((b : V ≃ₗ[K] V) x - x) := by
-      simp
-    rw [e]
-    exact B.add_mem (a3 _ ((b1 x).2 hx)) (b3 x hx)
-  inv_mem' := by
-    rintro a ⟨a1, a2, a3⟩
-    have e : ∀ x, (a : V ≃ₗ[K] V) (((a⁻¹ : Formalism.HermitianLatticesTheory.isom h) : V ≃ₗ[K] V) x) = x := fun x => by
-      simp
-    refine ⟨fun x => ?_, fun x => ?_, fun x hx => ?_⟩
-    · rw [← a1, e]
-    · rw [← a2, e]
-    · have hy : ((a⁻¹ : Formalism.HermitianLatticesTheory.isom h) : V ≃ₗ[K] V) x ∈ A := by rw [← a1, e]; exact hx
-      have := a3 _ hy
-      rw [e] at this
-      simpa using B.neg_mem this
-
-def lieL (h : V →ₗ⋆[K] V →ₗ[K] K) (A B : Submodule R V) : AddSubgroup (V →ₗ[K] V) where
-  carrier := {X | (∀ x y, h (X x) y + h x (X y) = 0) ∧ ∀ x ∈ A, X x ∈ B}
-  zero_mem' := ⟨fun x y => by simp, fun x _ => by simp⟩
-  add_mem' := by
-    rintro X Y ⟨h1, h2⟩ ⟨k1, k2⟩
-    refine ⟨fun x y => ?_, fun x hx => B.add_mem (h2 x hx) (k2 x hx)⟩
-    have a := h1 x y
-    have b := k1 x y
-    simp only [LinearMap.add_apply, map_add]
-    linear_combination a + b
-  neg_mem' := by
-    rintro X ⟨h1, h2⟩
-    refine ⟨fun x y => ?_, fun x hx => B.neg_mem (h2 x hx)⟩
-    have a := h1 x y
-    simp only [LinearMap.neg_apply, map_neg]
-    linear_combination -a
-
 def primeTo (d : R) : Submonoid R where
   carrier := {s | ∀ P : Ideal R, P.IsMaximal → d ∈ P → s ∉ P}
   one_mem' := fun P hP _ h1 => hP.ne_top ((Ideal.eq_top_iff_one P).2 h1)
   mul_mem' := fun ha hb P hP hd hab =>
     (hP.isPrime.mem_or_mem hab).elim (ha P hP hd) (hb P hP hd)
-
-def locD {W : Type*} [AddCommGroup W] [Module R W] (d : R) (L : Submodule R W) : Submodule R W :=
-  Formalism.HermitianLatticesTheory.locS (primeTo d) L
-
-def scl {W : Type*} [AddCommGroup W] [Module R W] (c : R) (L : Submodule R W) : Submodule R W :=
-  L.map (LinearMap.lsmul R W c)
-
-def gaD (h : V →ₗ⋆[K] V →ₗ[K] K) (d c : R) (M : Submodule R V) : Subgroup (Formalism.HermitianLatticesTheory.isom h) :=
-  gaG h (locD d (Formalism.HermitianLatticesTheory.dual h M)) (scl c (locD d M))
-
-def stabD (h : V →ₗ⋆[K] V →ₗ[K] K) (d : R) (M : Submodule R V) : Subgroup (Formalism.HermitianLatticesTheory.isom h) :=
-  MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom h) (locD d M)
-
-def agreeD (h : V →ₗ⋆[K] V →ₗ[K] K) (d : R) (M : Submodule R V) : Set (Submodule R V) :=
-  {N | N ∈ Formalism.HermitianLatticesTheory.genus h M ∧ locD d N = locD d M}
 
 def idxN {W : Type*} [AddCommGroup W] [Module R W] (A B : Submodule R W) : ℕ :=
   B.toAddSubgroup.relIndex A.toAddSubgroup
@@ -135,12 +79,5 @@ def qIn {K : Type*} [Field K] [NumberField K] (P : Ideal (𝓞 K)) : ℕ := Nat.
 def lamMax {K V : Type*} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (M : Submodule (𝓞 K) V) : ℝ :=
   ∏ᶠ P ∈ badP h M, ((qIn P : ℝ) ^ Module.finrank K V - (-1) ^ Module.finrank K V) / ((qIn P : ℝ) + 1)
-
-def ChartGen (A : Type) [CommRing A] [StarRing A] : Prop :=
-  ∀ (j : ℕ) (S : Matrix (Fin j) (Fin j) A), Sᴴ = S → ∀ Q : Matrix (Fin j) (Fin j) A → Prop,
-    (∀ (Y : Matrix (Fin j) (Fin j) A) (θ : A), θ + star θ = 1 → Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi S Y = 0 →
-      IsUnit (1 + θ • (S * Y)).det → Q Y) →
-    (∀ Y Y', Q Y → Q Y' → Q (Y + Y' + Y * S * Y')) →
-    ∀ Y, Formalism.HermitianLatticeCounting.LatticeSumBounds.Phi S Y = 0 → Q Y
 
 end GlobalTheory.Mass

@@ -7,8 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SqOfCalculus
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyPBRing
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.StalkOfAppLEEq
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.LbIsoDescendsToSubfieldContainingFinset
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsTwoTorsionTranslateSameLambdaBundleStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueKnownOfTwoTorsionTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsTwoTorsionTranslateSameLambdaBundle
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueKnownOfTwoTorsionTranslate
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
@@ -119,7 +119,7 @@ theorem known_of_point (hL : Out.Laws) (hT : ThetaUnifAV) {K F : Type} [Field K]
   let t : 𝟙_ (Over (Sp F)) ⟶ z.P.A :=
     Over.homMk (hχ.1.1.lift p (𝟙 _) (hp.trans (Category.id_comp _).symm)) (hχ.1.1.lift_snd _ _ _)
   have ht : t.left ≫ χ = p := hχ.1.1.lift_fst _ _ _
-  refine GlobalTheory.T.thetaFrameValueKnown_of_twoTorsion_translate hL hT F z y' e t hm ?_ ?_ ⟨_, known_of_keyPB hz hk⟩
+  refine _root_.GlobalTheory.KnownTwist.known_of_translate hL hT F z y' e t hm ?_ ?_ ⟨_, known_of_keyPB hz hk⟩
   · have h1 : (1 : 𝟙_ (Over (Sp F)) ⟶ z.P.A).left = eSec z.P.A := by
       rw [Hom.one_def, toUnit_unit, Category.id_comp]; rfl
     rw [pow_two]
@@ -175,7 +175,7 @@ theorem exists_point (hL : Out.Laws) {K Ω : Type} [Field K] [Field Ω] [IsAlgCl
     rw [isSquare_unique (isSquare_comp (isSquare_tensor e'.hom) s₂) s₂' he'] at k₁
     exact LBIso.trans (DVR.linComb_isLB _ P'.isLB _ _) (pull_isLB lQ _)
       (pull_isLB (DVR.linComb_isLB _ Q'.isLB _ _) _) i₂' k₁.symm
-  obtain ⟨t, ht, hi⟩ := GlobalTheory.T.exists_twoTorsion_translate_same_lambdaBundle hL Ω Q' P' e' hm hl'
+  obtain ⟨t, ht, hi⟩ := _root_.GlobalTheory.SameLam.exists_two_torsion_translate hL Ω Q' P' e' hm hl'
   refine ⟨t.left ≫ χ, P'.A, ψ, (e'.hom ≫ ((toUnit Q'.A ≫ t) * 𝟙 Q'.A)).left ≫ χ, ?_, ?_, hψ.1.1, ?_, ?_⟩
   · rw [Category.assoc, hχ.1.1.w, ← Category.assoc, Over.w t]
     exact Category.id_comp _

@@ -67,9 +67,6 @@ theorem TwAllAt.twAt {D : D7} {C : NChoice D} {T : ThData D} (h : TwAllAt D C T)
   have := (hS w hw).2 1 (by simp)
   rwa [zpow_one] at this
 
-theorem twAllAt_of_untwisted {D : D7} (C : NChoice D) (T : ThData D) (h : ∀ w, D.what₂.muAt w = D.what₂.mu0) : TwAllAt D C T :=
-  ⟨fun w hw => absurd (h w) hw, fun _ => 0, fun _ _ _ => ∅, fun w hw => absurd (h w) hw⟩
-
 end GlobalTheory.EX.DQ
 
 end

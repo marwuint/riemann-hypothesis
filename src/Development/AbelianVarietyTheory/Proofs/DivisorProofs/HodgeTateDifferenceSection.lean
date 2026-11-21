@@ -88,13 +88,4 @@ theorem exists_mul_factor {O : Type} [CommRing O] {C : Type} [CommRing C] [Algeb
     erw [pullbackSpecIso_hom_snd]
     erw [pullback.lift_snd]
 
-theorem exists_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)) (G' : Over (Sp O)) [GrpObj G'] (π : G'.left ⟶ t.G.left) (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) (S : Over (Sp O)) (x y : S ⟶ Hs P' x0 hu), ∃ z : S ⟶ Hs P' x0 hu, z ≫ aH P' x0 hu hg.1 = (x ≫ aH P' x0 hu hg.1) * (y ≫ aH P' x0 hu hg.1) := by
-  intro E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg S x y
-  obtain ⟨c, hc₁, hc₂⟩ := exists_mul_factor S x y
-  obtain ⟨z₀, hz₀⟩ := exists_mul_affine P' x0 hu hg
-    (Algebra.TensorProduct.includeLeft : Bt P' x0 hu →ₐ[O] Bt P' x0 hu ⊗[O] Bt P' x0 hu)
-    Algebra.TensorProduct.includeRight
-  refine ⟨c ≫ z₀, ?_⟩
-  rw [Category.assoc, hz₀, MonObj.comp_mul, ← Category.assoc, hc₁, ← Category.assoc, hc₂]
-
 end GlobalTheory.FinPartAt

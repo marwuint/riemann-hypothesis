@@ -1,6 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LevelChainValuations.LatCDefs
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegerMemLatticeSubBoundStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegerMemLatticeSubBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFinsetGenerators
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PadicIntMemSub
 
@@ -15,7 +15,7 @@ theorem exists_uniform_mem_sub : ∀ (l : ℕ) [Fact l.Prime]
   intro l _ K _
   classical
   obtain ⟨s, hs⟩ := GlobalTheory.CompanionTheory.LocalIntegers.exists_finset_generators l K
-  choose c hc using GlobalTheory.T.integer_mem_lattice_sub_bound l K
+  choose c hc using _root_.GlobalTheory.CompanionTheory.LatOKElem.ok_mem_sub l K
   refine ⟨2 * s.sup c, fun k a => ?_⟩
   obtain ⟨d, hd⟩ := hs a
   have h1 : Lat.kP l K a = ∑ i ∈ s, algClToBdR l (algebraMap ℚ_[l] (PadicAlgCl l) (d i : ℚ_[l])) *

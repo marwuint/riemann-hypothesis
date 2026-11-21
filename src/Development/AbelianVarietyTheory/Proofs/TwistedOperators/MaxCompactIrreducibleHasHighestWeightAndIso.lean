@@ -1,12 +1,14 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.PseudoCoefficientSeparation
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PseudoCoefficientUpqTrivial
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DiscreteSeriesCharacter
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.LanglandsClassification
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
 import Formalism.RealPlaceAnalysis.StatementE
 import Formalism.RealPlaceAnalysis.StatementB
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KStableSubspaceHasWeightVectorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteTorusWeightsFiniteDimensionalSubspaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaxCompactSpanHighestWeightLineStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsKEquivariantGraphGoursatStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KStableSubspaceHasWeightVector
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteTorusWeightsFiniteDimensionalSubspace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaxCompactSpanHighestWeightLine
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsKEquivariantGraphGoursat
 
 open MeasureTheory Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.FlagMeas GlobalTheory.GKModule GlobalTheory.RealInd GlobalTheory.OpTrace
 open GlobalTheory.SmoothGlob (lieSet)
@@ -174,10 +176,10 @@ theorem ktype_highest_weight : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [N
   refine ⟨?_, ?_⟩
   · intro S hfin hne hKS hirr
     classical
-    obtain ⟨F, hF⟩ := GlobalTheory.T.finite_torusWeights_finiteDimensional_subspace n ε H ρ S hfin
+    obtain ⟨F, hF⟩ := _root_.GlobalTheory.TorusWtFin.finite_weights n ε H ρ S hfin
     let Wt : Finset (Fin n → ℝ) :=
       F.filter (fun μ => ∃ v ∈ S, v ≠ 0 ∧ IsWtOn (Formalism.REAL.Kset ε) ρ μ v)
-    obtain ⟨μ0, v0, hv0S, hv00, hv0w⟩ := GlobalTheory.T.K_stable_subspace_has_weight_vector n ε H ρ hrep hcont hiso S hfin hKS hne
+    obtain ⟨μ0, v0, hv0S, hv00, hv0w⟩ := _root_.GlobalTheory.TorusWtExist.exists_torus_weight_vector n ε H ρ hrep hcont hiso S hfin hKS hne
     have hWne : Wt.Nonempty :=
       ⟨μ0, Finset.mem_filter.2 ⟨hF μ0 v0 hv0S hv00 hv0w, v0, hv0S, hv00, hv0w⟩⟩
     obtain ⟨Λ, hΛW, hΛmin⟩ := Finset.exists_min_image Wt idxSum hWne
@@ -192,7 +194,7 @@ theorem ktype_highest_weight : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [N
       rw [idxSum_add, idxSum_root] at h1
       have : ((a : ℕ) : ℝ) < (b : ℕ) := by exact_mod_cast hab
       linarith
-    obtain ⟨hdom, -⟩ := GlobalTheory.T.maxCompactSpan_highestWeight_line n ε H ρ hrep hcont hiso S hfin hKS Λ w hwS hw0 hww hraise
+    obtain ⟨hdom, -⟩ := _root_.GlobalTheory.KSpanHighest.kspan_highest n ε H ρ hrep hcont hiso S hfin hKS Λ w hwS hw0 hww hraise
     have hUS : orbSpan ε ρ w ≤ S := orbSpan_le hKS hwS
     have hwU : w ∈ orbSpan ε ρ w := mem_orbSpan hrep.1 w
     have hUeq : orbSpan ε ρ w = S := by
@@ -240,7 +242,7 @@ theorem ktype_highest_weight : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [N
       have e2 : s' = 0 := by
         by_contra h0; exact not_cdom_add_root ε Λ hab (hdom' _ s' hs' h0 h2)
       rw [e1, e2, add_zero]
-    obtain ⟨-, huniq⟩ := GlobalTheory.T.maxCompactSpan_highestWeight_line n ε H ρ hrep hcont hiso (S ⊔ S') hfinT hKT Λ (w + w') hsumT hsum0
+    obtain ⟨-, huniq⟩ := _root_.GlobalTheory.KSpanHighest.kspan_highest n ε H ρ hrep hcont hiso (S ⊔ S') hfinT hKT Λ (w + w') hsumT hsum0
       (isWtOn_add hww hww') hraise
     have hUT : orbSpan ε ρ (w + w') ≤ S ⊔ S' := orbSpan_le hKT hsumT
     have hUK := orbSpan_kstable hrep (w + w')
@@ -283,7 +285,7 @@ theorem ktype_highest_weight : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [N
         · exact hw0 h0
     have hUne : orbSpan ε ρ (w + w') ≠ ⊥ := by
       intro h; rw [h] at hwU; exact hsum0 ((Submodule.mem_bot ℂ).1 hwU)
-    obtain ⟨φ, hφK, hφS⟩ := GlobalTheory.T.exists_kEquivariant_graph_goursat n ε H ρ S S' (orbSpan ε ρ (w + w')) hKS hKS' hUK hirr hirr' hbot hUT hUS
+    obtain ⟨φ, hφK, hφS⟩ := _root_.GlobalTheory.KStableGraph.exists_kMap_onto n ε H ρ S S' (orbSpan ε ρ (w + w')) hKS hKS' hUK hirr hirr' hbot hUT hUS
       hUS' hUne
     have hperp : IsKStableOn ε ρ Sᗮ := orth_kstable n ε H ρ hrep hcont hiso S hKS
     haveI : CompleteSpace S := FiniteDimensional.complete ℂ S

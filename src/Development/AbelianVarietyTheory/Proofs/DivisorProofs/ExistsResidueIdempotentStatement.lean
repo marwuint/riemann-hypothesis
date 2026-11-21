@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResidueIdempotent
-import Mathlib
+
 open IsLocalRing
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in

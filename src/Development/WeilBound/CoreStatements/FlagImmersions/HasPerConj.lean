@@ -40,9 +40,9 @@ theorem hasPer_good {g : ℕ} (κ : c.F →+* ℂ) (ty : Fin g → (E →+* ℂ)
     exact hty
   have hR : ∀ t, ∃ R : RiemLat E g (FU.Di i).La, R.form = (FU.Di i).EF ∧ (t ∈ V' → R.P = P t) := fun t => by
     by_cases ht : t ∈ V'
-    · obtain ⟨R, h₁, h₂, -⟩ := GlobalTheory.T.exists_riemann_lattice_of_period E H (FU.Di i) g ty _ htyi (hP.1 t ht)
+    · obtain ⟨R, h₁, h₂, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.riemLat_of_period E H (FU.Di i) g ty _ htyi (hP.1 t ht)
       exact ⟨R, h₂, fun _ => h₁⟩
-    · obtain ⟨R, -, h₂, -⟩ := GlobalTheory.T.exists_riemann_lattice_of_period E H (FU.Di i) g ty _ htyi (hP.1 t₀ hm)
+    · obtain ⟨R, -, h₂, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.riemLat_of_period E H (FU.Di i) g ty _ htyi (hP.1 t₀ hm)
       exact ⟨R, h₂, fun h => absurd h ht⟩
   choose R hf hRP using hR
   refine ⟨g, _, inferInstance, inferInstance, R, V', hV', hm, hsub,

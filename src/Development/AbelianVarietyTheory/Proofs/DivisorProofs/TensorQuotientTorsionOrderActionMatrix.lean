@@ -1,16 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensFacts
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusExtensionActionInValues
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataValuesFactsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorTorusPointOfComponentTupleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorusValueCorrespondenceUniquePointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorusValueCorrespondencePeriodStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorusValueCorrespondenceMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataValuesFacts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorTorusPointOfComponentTuple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorusValueCorrespondenceUniquePoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorusValueCorrespondencePeriod
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorusValueCorrespondenceMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiValuesTensorDataMatrixActionStatement
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -45,10 +46,10 @@ variable {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matrix (Fin r) (Fin
   {φ : N'.A → Fin r → N.A} {e : N'.X → Fin r → N.X} {wv : N'.A → F}
 
 theorem rel_one (hF : TensFacts W φ e wv) : GtRelV W φ e wv 1 1 := by
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple F N N' W φ e wv hF 1
-  have h2 := GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv hF u u 1 1 hu hu
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.Mum.TensTor.VExist.gtRelV_exists F N N' W φ e wv hF 1
+  have h2 := _root_.GlobalTheory.Mum.TensTor.gtRelV_mul F N N' W φ e wv hF u u 1 1 hu hu
   rw [_root_.mul_one] at h2
-  have h3 : u * u = u := GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W φ e wv hF _ _ _ h2 hu
+  have h3 : u * u = u := _root_.GlobalTheory.Mum.TensTor.gtRelV_unique F N N' W φ e wv hF _ _ _ h2 hu
   rw [_root_.mul_eq_left] at h3
   exact h3 ▸ hu
 
@@ -57,7 +58,7 @@ theorem rel_pow (hF : TensFacts W φ e wv) {v' : N'.Gt} {vs : Fin r → N.Gt} (h
   | 0 => by simpa using rel_one hF
   | m + 1 => by
     rw [_root_.pow_succ, _root_.pow_succ]
-    exact GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv hF _ _ _ _ (rel_pow hF h m) h
+    exact _root_.GlobalTheory.Mum.TensTor.gtRelV_mul F N N' W φ e wv hF _ _ _ _ (rel_pow hF h m) h
 
 end V
 
@@ -93,7 +94,7 @@ open GlobalTheory.Mum.TensAct in
 theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ), (∀ a, (ρ a).transpose * (W + W.transpose) = (W + W.transpose) * ρ (H.bar a)) → ∀ [Module (𝓞 E) D'.toPre.X] (o : letI := H.starRing; D'.toPre.OAct (𝓞 E)), (letI := H.starRing; T.IsAct o ρ) → ∀ (g : ℕ) (ev : ∀ n : ℕ, ((Fin g → ℤ) × (Fin g → ℤ)) → QkPt D.toPre F n), (∀ n, 0 < n → ∀ a b, QkAdd (ev n a) (ev n b) (ev n (a + b))) → (∀ n, 0 < n → ∀ a b, QkPt.Equiv D.toPre F (ev n a) (ev n b) ↔ ∃ e, a = b + n • e) → ∀ n, 0 < n → ∀ (x : 𝓞 E) (a : Fin r → (Fin g → ℤ) × (Fin g → ℤ)) (p' q' : QkPt D'.toPre F n), PtRel T ν ν' p' (fun j => ev n (a j)) → PtRel T ν ν' q' (fun i => ev n (∑ j, ρ x i j • a j)) → (letI := H.starRing; QkAct o x p' q') := by
   intro R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' E _ _ _ H ρ hρ _ o hact g ev hadd hker n hn x a p' q' hp hq
   letI := H.starRing
-  have hF := GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν'
+  have hF := _root_.GlobalTheory.Mum.TensTor.tensFacts_holds R hR D D' W T F N N' ν ν'
   have hB := GtValues.points_correspond R D.toPre D.psi_even D.tau_bimult F N ν
   have hB' := GtValues.points_correspond R D'.toPre D'.psi_even D'.tau_bimult F N' ν'
   beta_reduce at hB hB'
@@ -112,7 +113,7 @@ theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDom
     rw [map_prod, toAdd_prod]
     simp only [map_zpow, toAdd_zpow]
     rfl
-  obtain ⟨w', hw'⟩ := GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple F N N' W _ _ _ hF ts
+  obtain ⟨w', hw'⟩ := _root_.GlobalTheory.Mum.TensTor.VExist.gtRelV_exists F N N' W _ _ _ hF ts
   have hb : w'.b = GlobalTheory.Relabel.actV ν' o.onB x q0.1.2.b := by
     apply hF.2.1.1
     funext i
@@ -133,7 +134,7 @@ theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDom
     rfl
   have hwn : w' ^ n = N'.io y'' := by
     have hpow := rel_pow hF hw' n
-    have hio := GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W _ _ _ hF y''
+    have hio := _root_.GlobalTheory.Mum.TensTor.gtRelV_io F N N' W _ _ _ hF y''
     have e1 : ts ^ n = fun j => N.io (TensTor.chi T ν ν' y'' j) := funext fun i => by
       rw [hey i, husy i, io_sum]
       simp only [Pi.pow_apply, ts, ← Finset.prod_pow]
@@ -141,7 +142,7 @@ theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDom
       rw [← (qs j).2]
       rw [← zpow_natCast, ← zpow_natCast ((qs j).1.2), ← zpow_mul, ← zpow_mul, mul_comm]
     rw [e1] at hpow
-    exact GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W _ _ _ hF _ _ _ hpow hio
+    exact _root_.GlobalTheory.Mum.TensTor.gtRelV_unique F N N' W _ _ _ hF _ _ _ hpow hio
   let tv : N'.QT n := ⟨(Multiplicative.ofAdd y'', w'), by rw [NumD.mem_QT]; exact hwn⟩
   obtain ⟨t', ht'⟩ := (hB'.2.2.2.2 n).2.1 tv
 
@@ -186,11 +187,11 @@ theorem GlobalTheory.Mum.TensAct.qkAct_tens : ∀ (R : Type) [CommRing R] [IsDom
       funext i
       rw [Pi.add_apply, Pi.smul_apply]
       rw [hrel1.1 i, hz1 i, hey i, hz']
-    · have hm := GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W _ _ _ hF _ _ _ _ hw' (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W _ _ _ hF z')
+    · have hm := _root_.GlobalTheory.Mum.TensTor.gtRelV_mul F N N' W _ _ _ hF _ _ _ _ hw' (_root_.GlobalTheory.Mum.TensTor.gtRelV_io F N N' W _ _ _ hF z')
       have e2 : ts * (fun j => N.io (TensTor.chi T ν ν' z' j)) = fun j => (qs1 j).1.2 := funext fun i => by
         rw [Pi.mul_apply, hz2 i, hts i, hz']
       rw [e2] at hm
-      exact GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W _ _ _ hF _ _ _ hrel1.2 hm
+      exact _root_.GlobalTheory.Mum.TensTor.gtRelV_unique F N N' W _ _ _ hF _ _ _ hrel1.2 hm
   refine ⟨t', ?_, ?_, ((hB'.2.2.2.2 n).2.2 t' q' tv q1 ht' hq1).2 hQ⟩
   · rw [← ht'.1]
     exact AddEquiv.apply_symm_apply _ _

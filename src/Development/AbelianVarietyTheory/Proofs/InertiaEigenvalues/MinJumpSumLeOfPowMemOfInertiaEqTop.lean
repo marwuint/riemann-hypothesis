@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperModCommutatorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardMulLeJumpSumOfMemUpperRamificationNotMemStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMemUpperRamificationGroupJumpSumNotMemStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedValuationOfPrimeOfGaloisExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMemUpperModCommutator
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardMulLeJumpSumOfMemUpperRamificationNotMem
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMemUpperRamificationGroupJumpSumNotMem
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedValuationOfPrimeOfGaloisExtension
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
@@ -18,17 +18,17 @@ theorem min_jumpSum_le_of_pow_mem_of_inertia_eq_top : ∀ (F L : Type) [Field F]
       simp [jumpSum]
     simp [hzero]
   ·
-    obtain ⟨e, he, hEe, hram⟩ := GlobalTheory.T.normalizedValuationOfPrime_of_galoisExtension F L p E hE
+    obtain ⟨e, he, hEe, hram⟩ := _root_.GlobalTheory.PMon.Ram.ordIs_of_ordIs_ext F L p E hE
     have hcard : ramificationIndex F L = Nat.card (L ≃ₐ[F] L) := by
       rw [hram, h0]; simp
     have hnpos : (0 : ℝ) < (Nat.card (L ≃ₐ[F] L) : ℝ) := by
       exact_mod_cast Nat.card_pos
 
-    obtain ⟨σ, hσ, hσB⟩ := GlobalTheory.T.exists_mem_upperRamificationGroup_jumpSum_not_mem' F L B h0 hB
+    obtain ⟨σ, hσ, hσB⟩ := _root_.GlobalTheory.PMon.Ram.exists_mem_upperRamificationGroup_jumpSum_not_mem F L B h0 hB
     have hv : (0 : ℝ) ≤ (jumpSum (wild F L) ⊤ B : ℝ) / (Nat.card (L ≃ₐ[F] L) : ℝ) := by
       positivity
 
-    obtain ⟨τ, hτ, hτC⟩ := GlobalTheory.T.exists_upper_mem_inv_mul_pow_mem_of_commutator F L p e _ C hcomm hv he σ hσ
+    obtain ⟨τ, hτ, hτC⟩ := _root_.GlobalTheory.PMon.Ram.pow_mem_upper_mod_commutator F L p e _ C hcomm hv he σ hσ
 
     have hτ' : τ ∉ C := by
       intro hτmem
@@ -37,7 +37,7 @@ theorem min_jumpSum_le_of_pow_mem_of_inertia_eq_top : ∀ (F L : Type) [Field F]
       have hsplit : σ ^ p = τ * (τ⁻¹ * σ ^ p) := by group
       rw [hsplit]
       exact C.mul_mem hτmem hτC
-    have key := GlobalTheory.T.card_mul_le_jumpSum_of_mem_upperRamification_not_mem F L C _ h0 τ hτ hτ'
+    have key := _root_.GlobalTheory.PMon.Ram.card_mul_le_jumpSum_of_mem_upper_not_mem F L C _ h0 τ hτ hτ'
     have hR : ((min (2 * jumpSum (wild F L) ⊤ B) (jumpSum (wild F L) ⊤ B + E) : ℕ) : ℝ)
         ≤ (jumpSum (wild F L) ⊤ C : ℝ) := by
       refine le_trans (le_of_eq ?_) key

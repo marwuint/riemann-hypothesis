@@ -19,16 +19,6 @@ namespace Formalism.DivisionValues
 
 namespace DivisorInequalityBounds
 
-theorem le_exp_half {x t : ℝ} (h : x ^ 2 ≤ Real.exp t) : x ≤ Real.exp (t / 2) := by
-  have he : Real.exp t = Real.exp (t / 2) ^ 2 := by
-    rw [← Real.exp_nat_mul]; congr 1; push_cast; ring
-  by_contra hlt
-  push_neg at hlt
-  nlinarith [Real.exp_pos (t / 2)]
-
-theorem log_exp_half_sq (t : ℝ) : Real.log (Real.exp (t / 2) ^ 2) = t := by
-  rw [← Real.exp_nat_mul, Real.log_exp]; push_cast; ring
-
 end DivisorInequalityBounds
 
 namespace DivisorInequalityBounds
@@ -90,122 +80,17 @@ end DivisorInequalityBounds
 
 theorem divisor_inequality_explicit : DivIneqRecord := DivisorInequalityBounds.divIneqRecord_of divisor_inequality
 
-section Rho
-
-open Formalism.DivisionValues.RationalHermitianForm Formalism.DivisionValues.StepBAux Formalism.DivisionValues.ConjugateWeightGram
-
 namespace DivisorInequalityBounds
-
-section LocalW
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K]
-
-end LocalW
 
 end DivisorInequalityBounds
 
 namespace DivisorInequalityBounds
 
-theorem vw_pow' {K : Type} [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K)) (a : K)
-    (ha : a ≠ 0) (n : ℕ) : vw w (a ^ n) = n * vw w a := by
-  induction n with
-  | zero => simpa using (valuation_basic_properties K w).2.2.2.2.1
-  | succ n ih =>
-    rw [pow_succ, ValuationRepresentative.vw_mul w _ _ (pow_ne_zero n ha) ha, ih]; push_cast; ring
-
 end DivisorInequalityBounds
-
-end Rho
 
 namespace DivisorInequalityBounds
 
-theorem image_eq {K Ω : Type} [Field K] [Field Ω] {n : ℕ} (j : K →+* Ω)
-    (𝒯 : Set (Matrix (Fin n) (Fin n) K)) (e : Matrix (Fin n) (Fin n) K) (hee : e * e = e)
-    (hcomm : ∀ T ∈ 𝒯, e * T = T * e) (χ : Matrix (Fin n) (Fin n) K → Ω) :
-    (simEig j 𝒯 χ).map (e.map j).mulVecLin = simEig j 𝒯 χ ⊓ simEig j {e} (fun _ => 1) := by
-  apply le_antisymm
-  · rintro _ ⟨x, hx, rfl⟩
-    refine ⟨?_, ?_⟩
-    · intro T hT
-      rw [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← Matrix.map_mul, ← hcomm T hT, Matrix.map_mul,
-        ← Matrix.mulVec_mulVec, hx T hT, Matrix.mulVec_smul]
-    · intro T hT
-      rw [Set.mem_singleton_iff.mp hT, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← Matrix.map_mul,
-        hee, one_smul]
-  · rintro x ⟨hx, hx1⟩
-    refine ⟨x, hx, ?_⟩
-    rw [Matrix.mulVecLin_apply, hx1 e rfl, one_smul]
-
-theorem goodFull {K Ω : Type} [Field K] [Field Ω] {n : ℕ} (j : K →+* Ω)
-    (𝒯 : Set (Matrix (Fin n) (Fin n) K)) (e : Matrix (Fin n) (Fin n) K)
-    (Z : Submodule K (Fin n → K)) (S : Set (Matrix (Fin n) (Fin n) K → Ω))
-    (hZ : extSpan j Z = ⨆ χ ∈ S, (simEig j 𝒯 χ ⊓ simEig j {e} (fun _ => 1))) :
-    IsFullEigSum j (𝒯 ∪ {e}) Z := by
-  classical
-  refine ⟨{χ' | χ' e = 1 ∧ ∃ χ ∈ S, ∀ T ∈ 𝒯, χ' T = χ T}, ?_⟩
-  rw [hZ]
-  apply le_antisymm
-  · refine iSup₂_le fun χ hχ => ?_
-    by_cases h : e ∈ 𝒯 ∧ χ e ≠ 1
-    · rintro x ⟨hx, hx1⟩
-      have h1 := hx e h.1
-      rw [hx1 e rfl, one_smul] at h1
-      have h2 : (1 - χ e) • x = 0 := by rw [sub_smul, one_smul, ← h1, sub_self]
-      rcases smul_eq_zero.mp h2 with h3 | h3
-      · exact absurd (sub_eq_zero.mp h3).symm h.2
-      · rw [h3]; exact Submodule.zero_mem _
-    · have hupd : ∀ T ∈ 𝒯, Function.update χ e 1 T = χ T := by
-        intro T hT
-        by_cases hTe : T = e
-        · subst hTe
-          rw [Function.update_self]
-          by_contra hne
-          exact h ⟨hT, fun h' => hne h'.symm⟩
-        · rw [Function.update_of_ne hTe]
-      have hmem : Function.update χ e 1 ∈ {χ' : Matrix (Fin n) (Fin n) K → Ω |
-          χ' e = 1 ∧ ∃ χ ∈ S, ∀ T ∈ 𝒯, χ' T = χ T} :=
-        ⟨Function.update_self _ _ _, χ, hχ, hupd⟩
-      refine le_trans ?_ (le_iSup₂ (f := fun χ' _ => simEig j (𝒯 ∪ {e}) χ') _ hmem)
-      rintro x ⟨hx, hx1⟩ T hT
-      rcases hT with hT | hT
-      · rw [hupd T hT]
-        exact hx T hT
-      · rw [Set.mem_singleton_iff.mp hT, Function.update_self]
-        exact hx1 e rfl
-  · refine iSup₂_le fun χ' hχ' => ?_
-    obtain ⟨h1, χ, hχ, h2⟩ := hχ'
-    refine le_trans ?_ (le_iSup₂ (f := fun χ _ => simEig j 𝒯 χ ⊓ simEig j {e} (fun _ => 1)) χ hχ)
-    intro x hx
-    refine ⟨fun T hT => ?_, fun T hT => ?_⟩
-    · rw [← h2 T hT]; exact hx T (Or.inl hT)
-    · rw [Set.mem_singleton_iff.mp hT, ← h1]; exact hx e (Or.inr rfl)
-
 end DivisorInequalityBounds
-
-open DivisorInequalityBounds in
-theorem good_twisted_lattice : GoodTwist := by
-  intro K _ _ _ K0 hK0 v0 hv0 n H hH hpos 𝒯 h0 hc ha e he0 hee hec hea Z Ω _ j S hZ σ
-  exact eigen_twist K K0 hK0 v0 hv0 n H hH hpos (𝒯 ∪ {e})
-    (by
-      rintro T (hT | hT)
-      · exact h0 T hT
-      · rw [Set.mem_singleton_iff.mp hT]; exact he0)
-    (by
-      rintro T (hT | hT) T' (hT' | hT')
-      · exact hc T hT T' hT'
-      · rw [Set.mem_singleton_iff.mp hT']; exact (hec T hT).symm
-      · rw [Set.mem_singleton_iff.mp hT]; exact hec T' hT'
-      · rw [Set.mem_singleton_iff.mp hT, Set.mem_singleton_iff.mp hT'])
-    (by
-      rintro T (hT | hT)
-      · obtain ⟨T', hT', h⟩ := ha T hT
-        exact ⟨T', Or.inl hT', h⟩
-      · rw [Set.mem_singleton_iff.mp hT]; exact ⟨e, Or.inr rfl, hea⟩)
-    Z Ω j
-    (by
-      apply goodFull j 𝒯 e Z S
-      rw [hZ]
-      simp only [image_eq j 𝒯 e hee hec]) σ
 
 namespace DivisorInequalityBounds
 

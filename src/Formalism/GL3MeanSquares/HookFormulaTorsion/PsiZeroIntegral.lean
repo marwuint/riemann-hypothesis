@@ -70,12 +70,6 @@ private lemma F_measurable (a : ℕ → ℂ) (m : ℂ) (s : ℂ) :
     Measurable (fun t : ℝ => rem a m t * (t : ℂ) ^ s) := by
   exact (rem_measurable a m).mul (Complex.measurable_ofReal.pow_const s)
 
-private lemma cpow_contOn (s : ℂ) : ContinuousOn (fun t : ℝ => (t : ℂ) ^ s) (Set.Ici 1) := by
-  intro t ht
-  have ht' : (0 : ℝ) < t := lt_of_lt_of_le one_pos ht
-  exact (Complex.continuous_ofReal.continuousAt.cpow continuousAt_const
-    (Complex.ofReal_mem_slitPlane.2 ht')).continuousWithinAt
-
 private lemma core_bigO {a : ℕ → ℂ} {m : ℂ} (h : RemBound a m) :
     (fun t : ℝ => rem a m t * (t : ℂ) ^ (-(((1 : ℝ) : ℂ) + 1))) =O[atTop] dom := by
   obtain ⟨K, x₁, hx₁, hK⟩ := h

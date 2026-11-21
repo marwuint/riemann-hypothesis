@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorTeichmullerIsAdicCompleteOfPerfectStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerDistinguishedRegularSequenceStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorTeichmullerIsAdicCompleteOfPerfect
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerDistinguishedRegularSequence
 
 open scoped NNReal
 
@@ -55,7 +55,7 @@ theorem teichmuller_pow_not_mem_span (hx : x ≠ 0) (hxu : ¬ IsUnit x) (he : 0 
   obtain ⟨c, hc⟩ := h
   have hT : WittVector.teichmuller l x ≠ 0 := by
     intro h0; apply hx; rw [← WittVector.teichmuller_coeff_zero l x, h0]; simp
-  obtain ⟨d, rfl⟩ := (GlobalTheory.T.teichmuller_distinguished_regular_sequence l O x e w E' hx he hw hE N c).1 ⟨1, by rw [← hc]; ring⟩
+  obtain ⟨d, rfl⟩ := (_root_.GlobalTheory.teichmuller_distinguished_regular l O x e w E' hx he hw hE N c).1 ⟨1, by rw [← hc]; ring⟩
   have h1 : E' * d = 1 := by
     apply mul_left_cancel₀ (pow_ne_zero N hT)
     linear_combination -hc
@@ -162,8 +162,8 @@ theorem teichmuller_distinguished_span_closed (hx : x ≠ 0) (he : 0 < e) (hw : 
     (h : ∀ k : ℕ, ∃ c : WittVector l O, a - WittVector.teichmuller l x ^ k * c ∈ Ideal.span {E'}) :
     a ∈ Ideal.span {E'} := by
   set T := WittVector.teichmuller l x with hTdef
-  have hcT := (GlobalTheory.T.wittVector_teichmuller_isAdicComplete_of_perfect l O x hx hc).1
-  have hreg := GlobalTheory.T.teichmuller_distinguished_regular_sequence l O x e w E' hx he hw hE
+  have hcT := (_root_.GlobalTheory.WittTeichComplete.main l O x hx hc).1
+  have hreg := _root_.GlobalTheory.teichmuller_distinguished_regular l O x e w E' hx he hw hE
   choose c hc' using h
   have hb : ∀ k, ∃ b : WittVector l O, a = E' * b + T ^ k * c k := by
     intro k

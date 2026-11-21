@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuationsStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuations
 
 noncomputable section
 
@@ -87,8 +87,8 @@ theorem deg_dual : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGr
       (d b₀).reindex (finCongr hrk), hfin.subset fun i hi h => hi ?_⟩
     exact isLatOf_reindex C i _ _ _ (isLatOf_dual C L B i b₀ _ (hd _) h)
   refine ⟨hbun, ?_, ?_⟩
-  · rw [(GlobalTheory.T.bundle_degree_eq_sum_valuations K C V' _ _ (d b₀) (fun i => d (b i)) hbun hd').2,
-      (GlobalTheory.T.bundle_degree_eq_sum_valuations K C V _ _ b₀ b hL hb).2, ← finsum_neg_distrib]
+  · rw [(_root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C V' _ _ (d b₀) (fun i => d (b i)) hbun hd').2,
+      (_root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C V _ _ b₀ b hL hb).2, ← finsum_neg_distrib]
     refine finsum_congr fun i => ?_
     rw [det_dual B b₀ (b i) _ _ (hd _) (hd _), map_inv₀, WithZero.log_inv, mul_neg]
   · funext i

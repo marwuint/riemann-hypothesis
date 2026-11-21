@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import Development.AbelianVarietyTheory.Definitions.Divisors.ProjectiveNotIsUnit
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveAlgebraisationFormalCompleteLoca
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeneratorSchemeLineBundleAffineFiniteTypeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeneratorSchemeLineBundleAffineFiniteType
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalAlgebraisationMorphismsStatement
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
@@ -38,7 +38,7 @@ theorem appLE_eq_of_gm {Y Y' B : Scheme.{0}} {N : LB B} (β : Y ⟶ Y') (b : Y �
 
 theorem exists_isGen_of_reductions : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (X : Over (Spec (CommRingCat.of R))), IsProper X.hom → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (b : ∀ e, (Y e).left ⟶ X.left), (∀ e, IsPullback (b e) (Y e).hom X.hom (thick R I e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∀ (N : LB X.left), N.IsLB → ∀ s : ∀ e (i : N.ι), Γ((Y e).left, b e ⁻¹ᵁ N.U i)ˣ, (∀ e z i i', b e z ∈ N.U i → b e z ∈ N.U i' → gm (𝟙 _) z _ (s e i) = gm (b e) z _ (N.g i i') * gm (𝟙 _) z _ (s e i')) → (∀ e z i, b e z ∈ N.U i → gm (β e) z _ (s (e + 1) i) = gm (𝟙 _) z _ (s e i)) → ∃ t : LB.Gen N, t.IsGen := by
   intro R _ _ I hI X hX Y β b hb hβ N hN s hs hsβ
-  obtain ⟨G, q, u, hqa, hql, hu, hU⟩ := GlobalTheory.T.generatorScheme_lineBundle_affine_finiteType X.left N hN
+  obtain ⟨G, q, u, hqa, hql, hu, hU⟩ := _root_.GlobalTheory.generatorScheme_affine_finiteType X.left N hN
   have hex := fun e => hU (Y e).left (b e) (s e) (res_compat_of_gm (b e) (s e) (fun z i i' => hs e z i i'))
   choose f hfq hfu using fun e => (hex e).exists
   have hfβ : ∀ e, β e ≫ f (e + 1) = f e := fun e =>

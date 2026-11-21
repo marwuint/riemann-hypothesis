@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowMinor
 import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardBaseFlagComplementIntegralLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DefiniteLatticeDiscriminantModuleCardDetSqStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameTermCountSublatticeBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsGramRepresentativeSizeLeHHSqStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardBaseFlagComplementIntegralLattice
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DefiniteLatticeDiscriminantModuleCardDetSq
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameTermCountSublatticeBound
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsGramRepresentativeSizeLeHHSq
 open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt GlobalTheory.LoopC
 open scoped ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -176,7 +176,7 @@ theorem subOK_of (D : D7) (L P : LatW D) (hL : L.FG) (hpos : IsPosDef (D.sp.X 0)
     rw [hspan]
   have hintS : Formalism.HermitianLatticesTheory.IsIntegralLat (D.sp.X 0).hT (sat D L P) :=
     fun x hx y hy => hint x (hsatL hx) y (hsatL hy)
-  obtain ⟨hd1, hd2, hsub⟩ := GlobalTheory.T.definiteLattice_discriminantModule_card_det_sq D (sat D L P) hfg hpos hintS
+  obtain ⟨hd1, hd2, hsub⟩ := _root_.GlobalTheory.LoopC.DetCard.main D (sat D L P) hfg hpos hintS
   obtain ⟨hi1, hdet⟩ := hsub P hPsat hrk
   have hdS0 : 0 ≤ detW D (sat D L P) := Real.sqrt_nonneg _
   have hdS1 : 1 ≤ detW D (sat D L P) := by
@@ -227,7 +227,7 @@ theorem frB_le (D : D7) (s : ℕ) (N De Q Hh : ℝ) (hN0 : 0 ≤ N) (hDe : 1 ≤
 
 theorem main : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A → ∀ F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u → ∀ Λ : LatV D, IsRowLat D F0 Λ → ∀ Z : GramM D, RelZ D Z → ∀ s : ℕ, 1 ≤ s → s ≤ D.R.k → ∀ P : LatW D, P ≤ L0X D Λ (lf D F0) → rkW D P = D.R.k - s → ∀ De Hh : ℝ, 1 ≤ De → detW D P ≤ De → HHZ D large₂.sc.b C Z ≤ Hh → De ≤ Hh ^ 3 → (cntCl (FrSet D Λ (lf D F0) ((Tu D u' : ℕ) : D.host.E) Z P) (TEqv D Λ (lf D F0)) : ℝ≥0∞) ≤ ENNReal.ofReal (NT D u ^ (2 * D.R.rS) * De ^ D.R.rS * 9 ^ (s * D.R.f) * Hh ^ (9 * s + 9 * s * D.R.rS + 16 * D.R.rS ^ 2)) := by
   intro Cg cb Cu cT CT C0 A
-  obtain ⟨C₁, hC₁⟩ := GlobalTheory.T.exists_gram_representative_size_le_HH_sq Cg cb Cu cT CT C0 A
+  obtain ⟨C₁, hC₁⟩ := _root_.GlobalTheory.LoopC.GramSize.main Cg cb Cu cT CT C0 A
   refine ⟨max C₁ (max 1 (2 * |CT|)), ?_⟩
   intro C hC D large₂ u u' C' Cl hCl hH F0 hF0e hF0z Λ hΛ Z hZ s hs1 hsk P hP hr De Hh hDe hd hHZ hDH
   have hbase : IsBase D u F0 := ⟨hF0e, hF0z⟩
@@ -237,7 +237,7 @@ theorem main : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, �
   have hC1 : 1 ≤ C := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC
   have hCT : 2 * |CT| ≤ C := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC
   have hCC₁ : C ≥ C₁ := le_trans (le_max_left _ _) hC
-  obtain ⟨-, -, hpos, hlat, hint, -, -⟩ := GlobalTheory.T.standardBaseFlag_complement_integralLattice D u u' F0 Λ hstand hbase hΛ
+  obtain ⟨-, -, hpos, hlat, hint, -, -⟩ := _root_.GlobalTheory.LoopC.Base.main D u u' F0 Λ hstand hbase hΛ
   have hsub : SubOK D (L0X D Λ (lf D F0)) P s De := subOK_of D _ P hlat.fg hpos hint hP s hr De hd
   have hNTZ : NT D u ^ 2 ≤ HHZ D large₂.sc.b C Z :=
     NT_sq_le D u large₂.sc.b C CT (one_le_b _) hC1 hCT (hTr u).2 Z
@@ -258,7 +258,7 @@ theorem main : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, �
   · obtain ⟨F', hF'⟩ := hne
     obtain ⟨Z₁, hZZ₁, hQ⟩ := hC₁ C hCC₁ D large₂ u u' C' Cl hCl hH F0 Λ hbase hΛ Z F' hZ hF'.1 hF'.2.1
     rw [frSet_congr D Λ (lf D F0) _ hZZ₁ P]
-    exact (GlobalTheory.T.frameTermCount_sublattice_bound D u u' F0 Λ hstand hbase hΛ P Z₁ s De _ hs1 hsk hsub hQ).trans
+    exact (_root_.GlobalTheory.LoopC.FrCount.main D u u' F0 Λ hstand hbase hΛ P Z₁ s De _ hs1 hsk hsub hQ).trans
       (ENNReal.ofReal_le_ofReal hbound)
   · rw [Set.not_nonempty_iff_eq_empty] at hne
     rw [hne]

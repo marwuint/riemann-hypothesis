@@ -13,9 +13,6 @@ section Defs
 variable {R K V : Type*} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
-def hdual (B : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V) : Submodule R V :=
-  ⨅ y ∈ L, (1 : Submodule R K).comap ((B y).restrictScalars R)
-
 def locS {W : Type*} [AddCommGroup W] [Module R W] (S : Submonoid R) (L : Submodule R W) :
     Submodule R W where
   carrier := {x | ∃ s ∈ S, s • x ∈ L}
@@ -48,36 +45,8 @@ end Defs
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 variable {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
-def dualInH (h : V →ₗ⋆[E] V →ₗ[E] E) (M : Submodule (𝓞 E) V) : Submodule (𝓞 E) V :=
-  hdual h M ⊓ (Submodule.span E (M : Set V)).restrictScalars (𝓞 E)
-
-def genIdxH (A B : Submodule (𝓞 E) V) : ℝ :=
-  ∏ᶠ P : HeightOneSpectrum (𝓞 E),
-    ((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ (haveI := P.isPrime; lidx P.asIdeal A B)
-
-def latDetH (h : V →ₗ⋆[E] V →ₗ[E] E) (M : Submodule (𝓞 E) V) : ℝ :=
-  Real.sqrt (genIdxH (dualInH h M) M)
-
-def pseudoSpan {ι : Type} [Fintype ι] (𝔞 : ι → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (v : ι → V) :
-    Submodule (𝓞 E) V :=
-  ⨆ a, ((𝔞 a : Submodule (𝓞 E) E)).map ((LinearMap.toSpanSingleton E V (v a)).restrictScalars (𝓞 E))
-
 end PI.IsoDetDefs
 
 namespace PI
-
-open NumberField PI.IsoDetDefs
-
-def IsoDet : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [StarRing E]
-    (V : Type) [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] [FiniteDimensional E V]
-    (h : V →ₗ⋆[E] V →ₗ[E] E), h.IsSymm →
-    ∀ (n : ℕ) (e e' : Fin n → V) (𝔞 : Fin n → FractionalIdeal (nonZeroDivisors (𝓞 E)) E),
-      (∀ a, 𝔞 a ≠ 0) →
-      (∀ a b, h (e a) (e b) = 0) → (∀ a b, h (e' a) (e' b) = 0) →
-      (Matrix.of fun a b => h (e a) (e' b)).det ≠ 0 →
-      latDetH h (pseudoSpan 𝔞 e ⊔ pseudoSpan 𝔞 e') ≤
-        |((Algebra.norm ℚ (Matrix.of fun a b => h (e a) (e' b)).det : ℚ) : ℝ)| *
-          ∏ a, ((FractionalIdeal.absNorm (𝔞 a) : ℚ) : ℝ) ^ 2
 
 end PI

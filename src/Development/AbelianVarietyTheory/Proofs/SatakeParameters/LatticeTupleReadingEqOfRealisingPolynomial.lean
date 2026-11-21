@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RealAt
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RkLe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EquivFrameBTheta
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RealAtSuccIffDecompositionValuesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleSuccLevelPointIsComponentPointInCharStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleDecompositionOccursInFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RealAtSuccIffDecompositionValues
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleSuccLevelPointIsComponentPointInChar
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleDecompositionOccursInFamily
 import Formalism.SharpRestriction.GrowthBounds.IntegralWeylLatticeSpan
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SecondKernelProjection
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ExistsIsCGBases
@@ -39,7 +39,7 @@ theorem rdJ_eq_of_realAt : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv 
   have hc0 : clsOf (H.core j hj) La.1 La.2 = c.1 := clsOf_eq (H.core j hj) hcls
   have hclsAt : clsAt X H (j + 1) La.1 La.2 = castCls (X.onCh j hj) (j + 1) c.1 := by
     rw [clsAt_succ X H j hj, hc0]
-  obtain ⟨g', hg', hpt'⟩ := GlobalTheory.T.latticeTupleSuccLevel_point_isComponentPointInChart S hDict j hj La hLa
+  obtain ⟨g', hg', hpt'⟩ := _root_.GlobalTheory.TwV.DelA.ptS_isPt S hDict j hj La hLa
   have hx : Formalism.UG.bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ *
       (((I.at' j hj).st.K ((I.at' j hj).st.eC.symm La.1).1).y c).1 * κ.1 ∈
       UPts (sigD D) (gramN D (j + 1) hj) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) :=
@@ -57,11 +57,11 @@ theorem rdJ_eq_of_realAt : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv 
     rw [hclsAt, J.st j hj, castSt_y]
     exact congrArg Subtype.val ((GlobalTheory.TwU.StepCharts.ofStepIn (I.at' j hj).st).y_eq c).symm
   let κ' : ((J.St (j + 1) hj).K (J.chart std (j + 1) hj La)).lev.U := ⟨(κ * κ₀).1, by rw [hU]; exact (κ * κ₀).2⟩
-  obtain ⟨d, hdγ, hdκ⟩ := GlobalTheory.T.latticeTupleDecomposition_occurs_in_family S hDict j hj La hLa γ hγ κ' (by
+  obtain ⟨d, hdγ, hdκ⟩ := _root_.GlobalTheory.TwV.DelA.dec_update S hDict j hj La hLa γ hγ κ' (by
     rw [e₀, hy]
     show _ = _ * _ * (κ.1 * κ₀.1)
     simp only [mul_assoc])
-  obtain ⟨c₂, κ₂, hc₂, hκ₂, -, hiff⟩ := GlobalTheory.T.realAt_succ_iff_decomposition_values S d j hj h La hLa
+  obtain ⟨c₂, κ₂, hc₂, hκ₂, -, hiff⟩ := _root_.GlobalTheory.TwV.DelA.realAt_succ_decomp S d j hj h La hLa
   have ec : c₂ = c := Subtype.ext (castCls_inj (X.onCh j hj) (j + 1) (hc₂.trans hclsAt))
   have eκ : κ₂ = κ * κ₀ := Subtype.ext (hκ₂.trans (by rw [hdκ]))
   have key := (hiff φ V).1 (hR d) z z' (by rw [hdγ]; exact hz)

@@ -1,22 +1,26 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNsqCanonicalAddChartPartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableNsqExtendAndPsiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishAtSimpleZeroOfWeightedSqIntegrableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenAtlasSectionNonvanishingSetAndMemIffStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNsqCanonicalAddChartPart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableNsqExtendAndPsi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishAtSimpleZeroOfWeightedSqIntegrable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenAtlasSectionNonvanishingSetAndMemIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.L2ExtensionAcrossDenseNonvanishingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureComplNonvanishingSetEqZeroOfDenseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureComplNonvanishingSetEqZeroOfDense
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
 theorem GlobalTheory.OTY.extension_values_at_zeros : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), 1 ≤ n → ∀ (E L : La) (s : Fin n → ι → Y → ℂ), (∀ k, A.IsSec L (s k)) → ∀ hS : (A.zeroSet s).Finite, (∀ P ∈ A.zeroSet s, jacAt A s P ≠ 0) → (∀ y, A.sqn L s y ≤ 1) → ∀ δ : ℝ, 0 < δ → ∀ (Λ : La) (τ : ι → Y → ℂ), A.IsSec Λ τ → Dense (nz A τ) → ∀ (Ω : Set Y) (h : ι → Y → ℂ) (T : ℝ) (θ : ℝ → ℝ), (IsOpen Ω ∧ A.IsSecOn (A.kap + E) Ω h ∧ (∀ i y, y ∉ Ω → h i y = 0)) → A.zeroSet s ⊆ Ω → IsCut T θ → ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + E) h y) ∂A.mu < ⊤ → ∀ F : ι → Y → ℂ, A.IsSecOn (A.kap + E) (nz A τ) F → ∫⁻ y in nz A τ, ENNReal.ofReal (A.nsq (A.kap + E) (fun i x => (θ (δ * psi A L s x) : ℂ) * h i x - F i x) y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y))) ∂A.mu < ⊤ → ∃ G : ι → Y → ℂ, A.IsSec (A.kap + E) G ∧ (∀ i y, y ∈ nz A τ → y ∈ (A.chart i).source → G i y = F i y) ∧ ∀ P ∈ A.zeroSet s, G (A.pick P) P = h (A.pick P) P := by
   intro n Y _ _ _ _ _ _ ι La _ A hn E L s hs hS hjac hle δ hδ Λ τ hτ hdense Ω h T θ hΩ hSΩ hθ hhint F hF hint
   obtain ⟨hΩo, hhsec, hh0⟩ := hΩ
-  have hUo : IsOpen (nz A τ) := (GlobalTheory.T.isOpen_atlasSectionNonvanishingSet_and_mem_iff n Y ι La A Λ τ hτ).1
-  have hmeas := GlobalTheory.T.measurable_nsq_and_psi_of_isSecOn n Y ι La A (A.kap + E) Ω h hΩo hhsec hh0
+  have hUo : IsOpen (nz A τ) := (_root_.GlobalTheory.OTY.isOpen_nz_and_mem_nz_iff n Y ι La A Λ τ hτ).1
+  have hmeas := _root_.GlobalTheory.OTY.measurable_nsq_extend_and_psi n Y ι La A (A.kap + E) Ω h hΩo hhsec hh0
   have hψm : Measurable (psi A L s) := hmeas.2 L s hs
   have hψle : ∀ y, psi A L s y ≤ 0 := fun y => by
     unfold psi
@@ -167,7 +171,7 @@ theorem GlobalTheory.OTY.extension_values_at_zeros : ∀ (n : ℕ) (Y : Type) [T
     have hWt : W ⊆ e.target := fun v hv => hv.1.1.1
     have hnull : volume (e.target ∩ e.symm ⁻¹' (nz A τ)ᶜ) = 0 := by
       have hmu0 : A.mu (e.source ∩ (nz A τ)ᶜ) = 0 :=
-        measure_mono_null Set.inter_subset_right (GlobalTheory.T.measure_compl_nonvanishingSet_eq_zero_of_dense n Y ι La A Λ τ hτ hdense)
+        measure_mono_null Set.inter_subset_right (_root_.GlobalTheory.zeroSet_null_of_dense_nz n Y ι La A Λ τ hτ hdense)
       rw [A.mu_chart i _ (e.open_source.measurableSet.inter hUo.measurableSet.compl)
         Set.inter_subset_left, e.image_source_inter_eq'] at hmu0
       have hBm : MeasurableSet (e.target ∩ e.symm ⁻¹' (nz A τ)ᶜ) := by
@@ -241,7 +245,7 @@ theorem GlobalTheory.OTY.extension_values_at_zeros : ∀ (n : ℕ) (Y : Type) [T
       have h4 : AEMeasurable (F i ∘ e.symm) (volume.restrict W) :=
         ((hF.1 i).continuousOn.mono (fun v hv => ⟨hWt hv, hv.1.2.2⟩)).aemeasurable hWm
       exact h1.mul ((h2.mul h3).sub h4)
-    have hconv := GlobalTheory.T.lintegral_nsq_canonical_add_chart_part n Y ι La A E i W D hWm hWt hcoc hDm
+    have hconv := _root_.GlobalTheory.OTY.lintegral_nsq_chart_part n Y ι La A E i W D hWm hWt hcoc hDm
     have hbound : ∫⁻ v in W, ENNReal.ofReal (‖D i (e.symm v)‖ ^ 2 * Real.exp (-A.ph E i (e.symm v))) < ⊤ := by
       rw [← hconv]
       refine lt_of_le_of_lt (lintegral_mono_set ?_)
@@ -301,6 +305,6 @@ theorem GlobalTheory.OTY.extension_values_at_zeros : ∀ (n : ℕ) (Y : Type) [T
           ENNReal.ofReal (‖D i (e.symm v)‖ ^ 2 * Real.exp (-A.ph E i (e.symm v))) :=
           lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
       _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hbound
-  have key := GlobalTheory.T.eq_zero_at_simple_zero_of_weighted_sq_integrable n hn (e P) O Z lam hOo hpO hZd hZp hdet hlam u hu hfin
+  have key := _root_.GlobalTheory.vanish_at_simple_zero_of_weighted_sq_integrable n hn (e P) O Z lam hOo hpO hZd hZp hdet hlam u hu hfin
   simp only [u, e.left_inv hPs, sub_eq_zero] at key
   exact key.symm

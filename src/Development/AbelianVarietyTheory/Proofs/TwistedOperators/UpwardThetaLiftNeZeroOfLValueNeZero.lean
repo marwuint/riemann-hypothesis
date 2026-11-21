@@ -18,8 +18,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Di
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ExistsIsParamFunOne
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftUpwardsNeZeroOfLValue
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaChainStageCartanFrameConjValuesCuspFormsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenThetaChainStepFockVectorsSphericalLatticeVacStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaChainStageCartanFrameConjValuesCuspForms
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenThetaChainStepFockVectorsSphericalLatticeVac
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open scoped TensorProduct InnerProductSpace ComplexConjugate
@@ -44,11 +44,11 @@ theorem upNe_of_heckeForm : ∀ D : D7, GlobalTheory.Core.Rk.IP.HeckeForm D → 
       intro g; simp [Step.zint, h0, PiLocalization₂.pet, Lift.pet, rTr]
     simp [this]
   have hparF := hpar v hF
-  obtain ⟨cA, a, hcA, hcart, hJ, hmaj, hmaj_eq, hA0⟩ := GlobalTheory.T.thetaChainStage_cartanFrame_conj_values_cuspForms D c hc k hk.le s hs
-  obtain ⟨-, -, -, hcartB, -, -, -, -⟩ := GlobalTheory.T.thetaChainStage_cartanFrame_conj_values_cuspForms D c hc (k + 1) hk s' hs'
+  obtain ⟨cA, a, hcA, hcart, hJ, hmaj, hmaj_eq, hA0⟩ := _root_.GlobalTheory.EvenOnto.conj_stage_val_mem_A0_and_cartan_frame D c hc k hk.le s hs
+  obtain ⟨-, -, -, hcartB, -, -, -, -⟩ := _root_.GlobalTheory.EvenOnto.conj_stage_val_mem_A0_and_cartan_frame D c hc (k + 1) hk s' hs'
   have hu1 : (fun g => conj (PiLocalization₂.val u v g)) ∈ GlobalTheory.Cusp.A0 c.θ s.V cA := hA0 u v hvK
   have hwitt : GlobalTheory.Cusp.wittIndex s'.V < c.t := hs'.witt
-  have hfock := GlobalTheory.T.evenThetaChainStep_fockVectors_spherical_latticeVacua D c hc k hk s s' hs hs' p hp
+  have hfock := _root_.GlobalTheory.EvenOnto.fock_sph_vac D c hc k hk s s' hs hs' p hp
   have hunrT := (hc.unr k hk)
   obtain ⟨-, -, hoff⟩ := GlobalTheory.T.doubledLatticeHeightFun_properties D s.V s.Λ a hs.selfDual hmaj
   have hmeas : MeasurableSet (intOff c s) := (hoff c.S).1.measurableSet
@@ -82,7 +82,7 @@ theorem upNe_of_heckeForm : ∀ D : D7, GlobalTheory.Core.Rk.IP.HeckeForm D → 
     (hp.pre.weil.om_cont _ hΦ 0).comp (continuous_id.prodMk continuous_const)
   have hrc : ∀ g, GlobalTheory.Core.Rk.IP.rcoef s.ν (fun x => conj (F x)) (fun x => conj (F x)) g = conj (s.pet (rTr s.V g F) F) := by
     intro g
-    have := GlobalTheory.T.integral_quotient_eq_setIntegral_fundamentalDomain D s.V s.ν s.fd hs.haar hs.fund (fun x => conj (F (x * g)) * conj (conj (F x)))
+    have := _root_.GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral D s.V s.ν s.fd hs.haar hs.fund (fun x => conj (F (x * g)) * conj (conj (F x)))
       (fun γ hγ x => by simp only [mul_assoc, hFl γ hγ]) (by fun_prop)
     simp only [GlobalTheory.Core.Rk.IP.rcoef, PiLocalization₂.pet, Lift.pet, rTr]
     rw [← integral_conj]
@@ -90,7 +90,7 @@ theorem upNe_of_heckeForm : ∀ D : D7, GlobalTheory.Core.Rk.IP.HeckeForm D → 
     exact this
   have hup : ∀ h, GlobalTheory.Core.Rk.IP.up p.ω s.ν (p.pt φ) (fun x => conj (F x)) h = conj (p.up φ F h) := by
     intro h
-    have := GlobalTheory.T.integral_quotient_eq_setIntegral_fundamentalDomain D s.V s.ν s.fd hs.haar hs.fund (fun g => thetaKO p.ω g h (p.pt φ) * conj (F g))
+    have := _root_.GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral D s.V s.ν s.fd hs.haar hs.fund (fun g => thetaKO p.ω g h (p.pt φ) * conj (F g))
       (fun γ hγ x => by simp only [hθl h γ hγ, hFl γ hγ]) (by have := hθc h; fun_prop)
     simp only [GlobalTheory.Core.Rk.IP.up, Step.up]
     rw [← integral_conj]

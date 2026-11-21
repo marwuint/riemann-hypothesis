@@ -3,24 +3,24 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrderedCechToCa
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivativeRealLieHomStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivativePreservesEquivariantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivativeLowerBlockAtOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionSmoothStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionSmooth
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionAtOneStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionParabolicEquivariantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionDerivativeAtOneStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionKHighestWeightStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFunctionKFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwasawaParabolicUnitaryStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwasawaParabolicUnitary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHaarUnitaryGroupStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralRightDerivativeEqZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KActionSkewAdjointL2Statement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.L2InnerProductHermitianFormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralRightDerivativeEqZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KActionSkewAdjointL2
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.L2InnerProductHermitianForm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqZeroOnUnitaryOfVanishAtOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsKFiniteSubmoduleContainingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterActsByScalarOnCyclicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandInvariantEvalLowestStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandInvariantCommuteGeneratorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandInvariantCommuteOfCommuteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandValuePermInvariantStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsKFiniteSubmoduleContaining
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterActsByScalarOnCyclic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandInvariantEvalLowest
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandInvariantCommuteGenerator
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandInvariantCommuteOfCommute
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandValuePermInvariant
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPermShiftedWeightEqInfCharStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightMemConeStatement
 
@@ -79,33 +79,33 @@ theorem model_of_ops (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hlev : IsLev l
       ∀ w ∈ S, w = 0) : Nonempty (Model lam lev) := by
   have gK := kF_gl gl1 gl2 cm
   have gB := barF_gl gl2
-  have lf := GlobalTheory.T.exists_k_finite_submodule_containing n V F1 F2 gl1 gl2 cm f gen S₀ fd hf st
+  have lf := _root_.GlobalTheory.CompanionTheory.ModelS.LocFin.cyclic_locFin n V F1 F2 gl1 gl2 cm f gen S₀ fd hf st
   have hlow : ∀ a b : Fin n, b < a → lev b ≤ lev a ∧ a ≠ b := fun a b h => ⟨hlev.1 h.le, h.ne'⟩
   refine ⟨{ W := V, F1 := F1, F2 := F2, f := f, gl1 := gl1, gl2 := gl2, comm := cm, unitK := unitK, locFin := lf,
             hw := hw, ne := fun h => hev (by rw [h, map_zero]), ch1 := ?_, ch2 := ?_, cone := ?_ }⟩
   · intro m x
-    refine GlobalTheory.T.center_acts_by_scalar_on_cyclic n V F1 F2 lf (gelA F1 m) (fun a b => ⟨GlobalTheory.T.gelfand_invariant_commute_generator n V F1 gl1 m a b, GlobalTheory.T.gelfand_invariant_commute_of_commute n V F1 (F2 a b)
+    refine _root_.GlobalTheory.CompanionTheory.ModelS.eq_smul_of_commute_of_ev n V F1 F2 lf (gelA F1 m) (fun a b => ⟨_root_.GlobalTheory.CompanionTheory.ModelS.gelA_central n V F1 gl1 m a b, _root_.GlobalTheory.CompanionTheory.ModelS.gelA_commute_of_units n V F1 (F2 a b)
       (fun c d => (cm c d a b).symm) m⟩) ev _ (fun v => ?_) sep x
-    have h := GlobalTheory.T.gelfand_invariant_eval_lowest n V F1 gl1 ev (fun a => (lam a : ℂ)) (fun a b hba v => e1l a b v (hlow a b hba).1 (hlow a b hba).2)
+    have h := _root_.GlobalTheory.CompanionTheory.EvGel.ev_gelA n V F1 gl1 ev (fun a => (lam a : ℂ)) (fun a b hba v => e1l a b v (hlow a b hba).1 (hlow a b hba).2)
       e1d m v
     rw [h]
     congr 2
     funext a
     simp [infOf]
   · intro m x
-    refine GlobalTheory.T.center_acts_by_scalar_on_cyclic n V F1 F2 lf (gelA (barF F2) m) (fun a b => ⟨?_, ?_⟩) ev _ (fun v => ?_) sep x
-    · refine GlobalTheory.T.gelfand_invariant_commute_of_commute n V (barF F2) (F1 a b) (fun c d => ?_) m
+    refine _root_.GlobalTheory.CompanionTheory.ModelS.eq_smul_of_commute_of_ev n V F1 F2 lf (gelA (barF F2) m) (fun a b => ⟨?_, ?_⟩) ev _ (fun v => ?_) sep x
+    · refine _root_.GlobalTheory.CompanionTheory.ModelS.gelA_commute_of_units n V (barF F2) (F1 a b) (fun c d => ?_) m
       simp only [barF, mul_neg, neg_mul, cm a b d c]
-    · have h := GlobalTheory.T.gelfand_invariant_commute_generator n V (barF F2) gB m b a
+    · have h := _root_.GlobalTheory.CompanionTheory.ModelS.gelA_central n V (barF F2) gB m b a
       simp only [barF, mul_neg, neg_mul, neg_inj] at h
       simpa [barF] using h
-    · have h := GlobalTheory.T.gelfand_invariant_eval_lowest n V (barF F2) gB ev (fun a => (yZ lam lev a : ℂ))
+    · have h := _root_.GlobalTheory.CompanionTheory.EvGel.ev_gelA n V (barF F2) gB ev (fun a => (yZ lam lev a : ℂ))
         (fun a b hba v => e2l a b v (hlow a b hba).1 (hlow a b hba).2) e2d m v
       rw [h]
       obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_perm_shifted_weight_eq_inf_char n lam lev hlev
       have : (fun a : Fin n => (yZ lam lev a : ℂ) + ((n : ℂ) - 1) / 2 - ((a : ℕ) : ℂ)) =
           fun a => infOf lam false (σ a) := funext hσ
-      rw [this, GlobalTheory.T.gelfand_value_perm_invariant n (infOf lam false) σ m]
+      rw [this, _root_.GlobalTheory.CompanionTheory.ModelS.gelfVal_perm n (infOf lam false) σ m]
   · intro ν x hx hx0
     set A := Algebra.adjoin ℂ {T : Module.End ℂ V | ∃ a b, T = kF F1 F2 a b} with hA
     refine GlobalTheory.T.highest_weight_mem_cone n V (kF F1 F2) gK lev hlev.1 ev (muQ lam lev) ν x hx (fun a b v hl hne => ?_) (fun a v => ?_) ?_
@@ -194,7 +194,7 @@ theorem modelEx_main : ModelEx := by
   letI : MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ) := borel _
   haveI : BorelSpace (Matrix.unitaryGroup (Fin n) ℂ) := ⟨rfl⟩
   obtain ⟨κ, hκ1, hκ2, hκ3⟩ := GlobalTheory.T.exists_haar_unitary_group n
-  have hmem := GlobalTheory.T.inducedFunction_smooth n lam hlam lev hlev
+  have hmem := _root_.GlobalTheory.CompanionTheory.ModelS.fRaw_mem_SmF n lam hlam lev hlev
   let F : SmF n := ⟨fRaw lam lev, hmem⟩
   have hF : F.1 = fRaw lam lev := rfl
   have hFe : F ∈ Eqv lev F.1 := fun p hp g hg => GlobalTheory.T.inducedFunction_parabolic_equivariant n lam hlam lev hlev p hp g hg
@@ -227,13 +227,13 @@ theorem modelEx_main : ModelEx := by
     intro a b w hw
     obtain ⟨T, hT, rfl⟩ := (hcyc w).1 hw
     exact (hcyc _).2 ⟨e2 DR a b * T, A.mul_mem (Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩) hT, rfl⟩
-  obtain ⟨hsym, hnn, hadd, hsm, hdef⟩ := GlobalTheory.T.l2_inner_product_hermitian_form n κ
+  obtain ⟨hsym, hnn, hadd, hsm, hdef⟩ := _root_.GlobalTheory.CompanionTheory.ModelS.L2InnerProduct.ipK_form n κ
   have hzero : ∀ w ∈ cyc F, (∀ k : Matrix.unitaryGroup (Fin n) ℂ, w.1 k.1 = 0) → w = 0 := by
     intro w hw hk
     apply Subtype.ext
     funext g
     by_cases hg : g ∈ GLs n
-    · obtain ⟨p, hp, k, rfl⟩ := GlobalTheory.T.iwasawa_parabolic_unitary n lev hlev.1 g hg
+    · obtain ⟨p, hp, k, rfl⟩ := _root_.GlobalTheory.CompanionTheory.ModelS.exists_Pb_mul_unitary n lev hlev.1 g hg
       have := hWE w hw p hp k.1 (GlobalTheory.CompanionTheory.ModelS.unit_mem k)
       simp [this, hk k]
     · exact w.2.2 g hg
@@ -261,7 +261,7 @@ theorem modelEx_main : ModelEx := by
     refine LinearMap.ext fun w => Subtype.ext ?_
     exact congrArg (fun T => T w.1) (cm a b c d)
   · intro a b x y
-    exact GlobalTheory.T.k_action_skew_adjoint_l2 n κ (GlobalTheory.T.integral_right_derivative_eq_zero n κ) a b x.1 y.1
+    exact _root_.GlobalTheory.CompanionTheory.ModelS.ipK_Kf_transpose n κ (_root_.GlobalTheory.CompanionTheory.ModelS.SkewInt.integral_Rd_skew n κ) a b x.1 y.1
   · intro x
     have key : ∀ T ∈ A, ∃ T' ∈ alg F1 F2, ∀ w : cyc F, ((T' w : cyc F) : SmF n) = T w.1 := by
       intro T hT

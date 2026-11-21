@@ -15,7 +15,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsTermBa
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpBijOfOnto
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FinrankFamOfExpBij
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecExpandsAtOfIntegralFamily
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsIntegralFamiliesSpanPullDegenerationStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsIntegralFamiliesSpanPullDegeneration
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpandsGTransport
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -76,7 +76,7 @@ theorem unifBaseChange :
     have hdA := finrank_fam_of_expBij hS R I hR D A G U.toUnifPre k hk (U.expand k hk)
     have hrk : D'.toPre.rank = D.toPre.rank := hD.xe.toIntLinearEquiv.finrank_eq
     refine ExpansionCriterion.expBij_of_onto hS R' I' hR' D' A' G' U' k hk hfin (by rw [hd', hrk, hgD, ← hd, hdA, hg]) fun F₀ => ?_
-    obtain ⟨n, F, f, F', f', hF, hspan⟩ := T.exists_integral_families_span_pullDegeneration hP hG hT R R' I hR φ D D'.toPre hD k hk
+    obtain ⟨n, F, f, F', f', hF, hspan⟩ := _root_.GlobalTheory.FamSpan.exists_span hP hG hT R R' I hR φ D D'.toPre hD k hk
     have hb : ∀ i, ∃ b : U'.SecK k, U'.Expands k b (F' i) := by
       intro i
       obtain ⟨σ, hσ⟩ := exists_sec_expandsAt_of_integral_family R I hR D A G U.toUnifPre k (fun F => ((U.expand k hk).2 F).exists) (F i) (f i)

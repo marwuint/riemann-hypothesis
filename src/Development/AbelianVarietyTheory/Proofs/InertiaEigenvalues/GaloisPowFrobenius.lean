@@ -74,5 +74,3 @@ theorem galois_pow_frobenius : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a]
 
 end GlobalTheory.FrobAction
 
-example : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (g : GQ l), ∃ m : ZMod a, ∀ x : Om l, x ^ l ^ a = x → g x = x ^ l ^ m.val :=
-  GlobalTheory.FrobAction.galois_pow_frobenius

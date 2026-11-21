@@ -35,14 +35,6 @@ theorem fk_eq_sum (F G : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (h : F.
   intro m _ hm
   rw [notMem_support_iff.mp hm]; ring
 
-theorem fk_eq_sum' (F G : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (h : G.support ⊆ s) :
-    fk F G = ∑ m ∈ s, F.coeff m * G.coeff m * wf m := by
-  rw [fk_eq_sum F G (F.support ∪ s) Finset.subset_union_left]
-  symm
-  apply Finset.sum_subset Finset.subset_union_right
-  intro m _ hm
-  rw [notMem_support_iff.mp (fun h' => hm (h h'))]; ring
-
 theorem fk_symm (F G : MvPolynomial σ K) : fk F G = fk G F := by
   rw [fk_eq_sum F G _ (Finset.subset_union_left (s₂ := G.support)),
     fk_eq_sum G F _ (Finset.subset_union_right (s₁ := F.support))]
@@ -286,26 +278,6 @@ section
 variable {K σ : Type} [Field K] [CharZero K] [Fintype σ] [DecidableEq σ] {r : ℕ} {w e : Fin r → σ}
   (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
 include hw he hwe
-
-theorem FE_one {a b : ℕ} {g : MvPolynomial σ K} (hg : BiHom w e a b g) :
-    tieF w e (tieE w e g) = tieE w e (tieF w e g) + ((a + b + r : ℕ) : K) • g := by
-  rw [tieE_apply', tieF_apply', F_S_mul hw he hwe g a b (euler_w_of_biHom w e hg) (euler_e_of_biHom w e hg),
-    ← tieF_apply', ← tieE_apply']
-
-theorem F_E_pow_gen {a b : ℕ} {y : MvPolynomial σ K} (hy : BiHom w e a b y) (j : ℕ) :
-    tieF w e ((tieE w e ^ (j + 1)) y) =
-      (tieE w e ^ (j + 1)) (tieF w e y) + (((j + 1) * (a + b + r + j) : ℕ) : K) • (tieE w e ^ j) y := by
-  induction j with
-  | zero =>
-    simp only [zero_add, pow_one, pow_zero, Module.End.one_apply, one_mul, add_zero]
-    exact FE_one hw he hwe hy
-  | succ j ih =>
-    have h2 := biHom_E_pow hw he hwe hy (j + 1)
-    rw [show tieE w e ^ (j + 1 + 1) = tieE w e * tieE w e ^ (j + 1) from pow_succ' _ _,
-      Module.End.mul_apply, FE_one hw he hwe h2, ih, map_add, map_smul, ← Module.End.mul_apply,
-      ← pow_succ', ← Module.End.mul_apply (tieE w e) (tieE w e ^ j), ← pow_succ', add_assoc, ← add_smul]
-    congr 2
-    push_cast; ring
 
 theorem Fpow_harm {u : MvPolynomial σ K} (hF : tieF w e u = 0) {t : ℕ} (ht : 1 ≤ t) :
     (tieF w e ^ t) u = 0 := by

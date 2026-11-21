@@ -57,14 +57,6 @@ def PhiTopAgree : Prop :=
       IsOrd (yPos xPos n') e' → IsOrd zPos e → ∀ x,
         (S.T (Fin τ)).PhiTop (toLoc ι e e' x) = σ₀ (LocE.PhiGS q ψ₀ χ κ S.ρ (κ + s + 1) τ (s + 2) c' n' 0 n x)
 
-def LevelAgree : Prop :=
-  ∀ (τ j c : ℕ) (h : j + c = s + 1) (n c₂ : ℕ), n = κ + j * (τ + 1) → c₂ = c →
-    ∀ (e : XIx (Fin κ) (Fin τ) j ⊕ Fin c ≃ Fin (n + c₂)), IsOrd (yPos xPos n) e →
-      ∀ (γ : Sp E (n + c₂) ≃ₗ[E] Sp E (n + c₂)) (g : GL (XIx (Fin κ) (Fin τ) j ⊕ Fin c) k), g.val = toLoc ι e e γ.toLinearMap →
-        (g ∈ ((S.T (Fin τ)).lev j c h).J ↔ γ ∈ LocE.JGsym P q κ S.ρ (κ + s + 1) τ n c₂) ∧
-        ∀ hg : g ∈ ((S.T (Fin τ)).lev j c h).J,
-          (((S.T (Fin τ)).lev j c h).lam ⟨g, hg⟩ : ℂ) = σ₀ (LocE.lamGBS q ψ₀ χ κ (κ + s + 1) τ j n c₂ γ.toLinearMap)
-
 end Loc
 
 def SumAgree : Prop :=

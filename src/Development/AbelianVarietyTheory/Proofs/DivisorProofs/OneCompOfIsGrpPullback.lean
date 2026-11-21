@@ -92,13 +92,4 @@ theorem isPrincipalPol_pull {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {
     rw [← CechPic.pull_comp, sqToBase_comp_sqMap h.1.w s h₁.1.w hφ, CechPic.pull_comp, hcL,
       pull_sqMap_lam h₁, CechPic.cls_pull hL]
 
-theorem exists_pull (S S' : Scheme.{0}) (P : PPAS S) (f : S' ⟶ S) :
-    ∃ (P' : PPAS S') (φ : P'.A.left ⟶ P.A.left), P'.g = P.g ∧ P'.IsPull P f φ := by
-  have h := isGrpPullback_pullback P.A f
-  exact ⟨{ A := (Over.pullback f).obj P.A
-           isAb := PolPull.isAbelianScheme_of_isGrpPullback P.isAb h
-           g := P.g
-           smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim
-           c := CechPic.pull (sqMap h.1.w) P.c
-           isPol := isPrincipalPol_pull h P.isPol }, pullback.fst P.A.hom f, rfl, h, rfl⟩
 end GlobalTheory.PPAS

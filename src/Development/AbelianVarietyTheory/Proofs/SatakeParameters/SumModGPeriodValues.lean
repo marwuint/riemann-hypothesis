@@ -5,7 +5,7 @@ noncomputable section
 
 namespace GlobalTheory.PadicUnfold.Period
 
-open Formalism.L2.Col GlobalTheory.IndefiniteRowSideFullHecke.UnfoldedLatticeData
+open Formalism.L2.Col
 
 def extZero {k : Type} [CommRing k] {n' n : ℕ} (c' c : ℕ) (y : (Fin n' → k) →ₗ[k] (Fin n → k)) :
     (Fin (n' + c') → k) →ₗ[k] (Fin (n + c) → k) :=

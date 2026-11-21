@@ -55,11 +55,4 @@ def ToroidalCharts : Prop :=
         SmoothOfRelativeDimension Dw.dim (genStr Y) ∧ FinalTheorems.Snc (genBdIdeal Y) ∧
           ∀ x ∈ genBd Y, GlobalTheory.MumfordChart.HasChart Y x
 
-theorem ToroidalCharts.exists_model (h : ToroidalCharts) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
-    {Dw : Datum H} (hr : 1 ≤ Dw.p + Dw.q) {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) :
-    ∃ Y : Model Xo c (RingHom.id c.F),
-      SmoothOfRelativeDimension Dw.dim (genStr Y) ∧ FinalTheorems.Snc (genBdIdeal Y) ∧ ∀ x ∈ genBd Y, HasToricChart Y x := by
-  obtain ⟨Y, h₁, h₂, h₃⟩ := h E H Dw hr l Xo c
-  exact ⟨Y, h₁, h₂, fun x hx => (GlobalTheory.MumfordChart.hasChart_iff Y x).1 (h₃ x hx)⟩
-
 end GlobalTheory.Published

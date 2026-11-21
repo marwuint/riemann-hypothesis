@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernDensity
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionTopCoeffComplexGermCongrStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionTopCoeffHolomorphicFrameChangeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionTopCoeffCompHolomorphicJacobianSqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChangeOfFrameHolomorphicInvertibleHolomorphicChaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChangeOfFrameHolomorphicInvertibleHolomorphicCha
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentiableOnHolomorphicChartTransEtaleChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtHolomorphicComplexChartOfSmoothAtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtHolomorphicComplexChartOfSmoothAt
 open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.GoodTop
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff Matrix
@@ -42,7 +42,7 @@ theorem corrTop_holoChart_trans : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X
     · filter_upwards [ho.mem_nhds hm] with w hw
       simp only [G₁, hback w hw]
 
-  have hρc : ContDiffAt ℝ ∞ ρc (c.e y) := GlobalTheory.T.contDiffAt_holomorphicComplexChart_of_smoothAt c.holo hcy (hρ y)
+  have hρc : ContDiffAt ℝ ∞ ρc (c.e y) := _root_.GlobalTheory.GoodTop.contDiffAt_holoChart c.holo hcy (hρ y)
   have hG₀ := hM₀.mContDiffAt_chart hy₀ c hcy hA ()
   have hG₀u := hM₀.isUnit_det_chart hy₀ c hcy hA ()
   have hG₁ := hM.mContDiffAt_chart hy c hcy hA ()
@@ -56,7 +56,7 @@ theorem corrTop_holoChart_trans : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X
     · rw [e₂]; exact hG₁
     · rw [e₂]; exact hG₁u
 
-  obtain ⟨hQ, hQu, hQh⟩ := GlobalTheory.T.changeOfFrame_holomorphic_invertible_holomorphicChart E (e := c.e) c.holo hcy hA hA'
+  obtain ⟨hQ, hQu, hQh⟩ := _root_.GlobalTheory.GoodTop.changeFrame_holoChart E (e := c.e) c.holo hcy hA hA'
   have step3 : corrC ρc (G₀ A) (G₁ A) (c.e y) = corrC ρc (G₀ A') (G₁ A') (c.e y) := by
     rw [← GlobalTheory.T.transgressionTopCoeff_holomorphic_frame_change ρc hG₀ hG₀u hG₁ hG₁u hQ hQu hQh]
     have hO : ∀ᶠ z in 𝓝 y, z ∈ ptsIn X.str σ O := (isOpen_ptsIn O).mem_nhds hy

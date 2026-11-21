@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsotropicMeanChangesByScalarOfTrivialActionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsotropicMeanChangesByScalarOfTrivialAction
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjEqZeroOfSymplO
 
 noncomputable section
@@ -145,7 +145,7 @@ theorem unit_product_rescale_disjoint_finsets {C : Matrix (Fin V.rank) (Fin r) D
     obtain ⟨r1, r2, r3⟩ := gen_relations h (x := mt V g - 1) g1' (by rw [h.hB]; exact g2)
       (fun v hv => g3 v (by rw [← h.hB']; exact hv))
     have g2' : rat B₀ ⬝ (mt V g - 1) = 0 := by rw [h.hB]; exact g2
-    obtain ⟨c, hc⟩ := GlobalTheory.T.isotropicMean_changes_by_scalar_of_trivial_action D V W W.rank r 1 (Cᴴ * V.gram) hP hQ
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.IsoMean.mean_scalar D V W W.rank r 1 (Cᴴ * V.gram) hP hQ
       (fun y y' => by rw [eI, eI]; exact symplO_iso_of C (iso_mulC hC y) y') ψ χS χT ω hω μ 𝓨 hcov g 1
       (fun y => by rw [eI]; exact gen_fix_iso h g2' y)
       (fun x hx => by

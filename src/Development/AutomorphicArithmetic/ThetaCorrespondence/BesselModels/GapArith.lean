@@ -28,13 +28,6 @@ theorem e_spec {a : ℕ} (ha : a < D.R.m) : (D.hc τ).e ⟨a, ha⟩ = ((num D C 
 theorem v_spec {a : ℕ} (ha : a < D.R.k - 1) : (D.hc τ).v ⟨a, ha⟩ = ((num D C τ).v (a + 2) : ℚ) :=
   (GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D C) (cen D C τ)).1 ⟨a, ha⟩
 
-theorem b_add_le_e {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) :
-    ((num D C τ).b l : ℚ) + ((D.R.t : ℚ) + 3) / 2 ≤ (num D C τ).e l := by
-  obtain ⟨a, rfl⟩ : ∃ a, l = a + 1 := ⟨l - 1, by omega⟩
-  have h := (D.hc τ).gap_be ⟨a, by omega⟩
-  rw [e_spec D C τ (by omega), b_spec D C τ (by omega)] at h
-  linarith
-
 theorem e_add_le_b {l : ℕ} (h1 : 1 ≤ l) (h2 : l + 1 ≤ D.R.m) :
     ((num D C τ).e l : ℚ) + ((D.R.t : ℚ) + 3) / 2 ≤ (num D C τ).b (l + 1) := by
   obtain ⟨a, rfl⟩ : ∃ a, l = a + 1 := ⟨l - 1, by omega⟩

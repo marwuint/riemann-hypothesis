@@ -242,11 +242,6 @@ variable (T : Core D) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (aL aF : ℕ 
 
 theorem depDataOf_pi : (depDataOf T EX Tn vd aL aF nW Dp Dm).pi = piOf T EX := rfl
 
-theorem depDataOf_page : (depDataOf T EX Tn vd aL aF nW Dp Dm).Q.g1 = D.host.g 0 ∧
-    (depDataOf T EX Tn vd aL aF nW Dp Dm).Q.g2 = D.host.g 1 ∧ (depDataOf T EX Tn vd aL aF nW Dp Dm).Q.q1 = D.host.q ∧
-    (depDataOf T EX Tn vd aL aF nW Dp Dm).Q.dd = D.host.d ∧ (depDataOf T EX Tn vd aL aF nW Dp Dm).Q.f = D.R.f ∧
-    (depDataOf T EX Tn vd aL aF nW Dp Dm).Q.r = D.R.r := ⟨rfl, rfl, rfl, rfl, rfl, rfl⟩
-
 theorem tPos_depDataOf : TPos (depDataOf T EX Tn vd aL aF nW Dp Dm) := by
   first
   | exact PNat.one_le Tn
@@ -261,12 +256,6 @@ theorem piHalf_depDataOf (h : LawsM T) : PiHalf T.Q.l (depDataOf T EX Tn vd aL a
   show Ideal.span {piOf T EX 0 * piOf T EX 1} = T.Q.l.Mb
   rw [← Ideal.span_singleton_mul_span_singleton, span_piOf T h EX 0, span_piOf T h EX 1, Mb_eq T h]
 
-theorem span_bar_mul (h : LawsM T) :
-    Ideal.span {T.Q.H.bar (piOf T EX 0) * T.Q.H.bar (piOf T EX 1)} =
-      T.Q.l.Mb.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) := by
-  rw [← Ideal.span_singleton_mul_span_singleton, span_bar_piOf T h EX 0, span_bar_piOf T h EX 1, Mb_eq T h,
-    Ideal.map_mul]
-
 theorem levelQ_depDataOf [StarRing (𝓞 D.host.E)] (h : LawsM T) :
     LevelQ (l := T.Q.l) (depDataOf T EX Tn vd aL aF nW Dp Dm) := by
   first
@@ -274,9 +263,6 @@ theorem levelQ_depDataOf [StarRing (𝓞 D.host.E)] (h : LawsM T) :
   | (unfold LevelQ; simp [level_M T h, depDataOf, depPageOf])
 
 def HalfEX (T : Core D) (EX : ErrX D) : Prop := ∀ i, barE D (EX.piG i) ∈ halfI T i
-
-theorem pi_eq_bar_of_halfEX (h : LawsM T) (hE : HalfEX T EX) (i : Fin 2) :
-    (depDataOf T EX Tn vd aL aF nW Dp Dm).pi i = barE D (EX.piG i) := (piOf_eq_bar_iff T h EX i).2 (hE i)
 
 theorem nnKAt_depDataOf [StarRing (𝓞 D.host.E)] {LL : Type} [Field LL] [NumberField LL] [Algebra (𝓞 D.host.E) LL]
     (h : LawsM T) (hE : HalfEX T EX) (j : ℕ) :

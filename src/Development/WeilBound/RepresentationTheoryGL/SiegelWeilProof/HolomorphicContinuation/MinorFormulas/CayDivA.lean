@@ -66,11 +66,6 @@ theorem rcp_comp {T U : Fm n →ₗ[ℂ] Fm n} (hT : RCP T) (hU : RCP U) : RCP (
 theorem rcp_add {T U : Fm n →ₗ[ℂ] Fm n} (hT : RCP T) (hU : RCP U) : RCP (T + U) := fun R q => by
   simp only [LinearMap.add_apply, hT R q, hU R q, add_mul]
 
-theorem rcp_smul (c : ℂ) {T : Fm n →ₗ[ℂ] Fm n} (hT : RCP T) : RCP (c • T) := fun R q => by
-  simp only [LinearMap.smul_apply, hT R q, smul_mul_assoc]
-
-theorem rcp_id : RCP (LinearMap.id : Fm n →ₗ[ℂ] Fm n) := fun _ _ => rfl
-
 theorem divZ_of_rcp {T : Fm n →ₗ[ℂ] Fm n} (hT : RCP T) {i : ℕ} {Q : Fm n} (hQ : DivZ i Q) : DivZ i (T Q) := by
   obtain ⟨R, rfl⟩ := (divZ_iff i Q).1 hQ
   exact (divZ_iff i _).2 ⟨T R, hT R _⟩

@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.BplusOfEquivariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemGLintOfEntries
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlacesApart
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeStabilizerOfLocalIntegralInBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralGLConjPlaceOfSelfDualBaseFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeStabilizerReductionEqLocalReductionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridBlockCongruenceTypePrimeDescriptionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridBlockCongruenceOffTypePrimeDescriptionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeStabilizerOfLocalIntegralInBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralGLConjPlaceOfSelfDualBaseFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeStabilizerReductionEqLocalReduction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridBlockCongruenceTypePrimeDescription
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridBlockCongruenceOffTypePrimeDescription
 
 noncomputable section
 
@@ -91,7 +91,7 @@ theorem prodLev_inf_UA {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Subm
       ((redFn β PP x : GL (Fin V.rank) (kP PP)) : Matrix (Fin V.rank) (Fin V.rank) (kP PP)) i j = 0 ↔
         valuation (Kw PP) ((inBasis rfl β PP x).1 i j) < 1 := by
     intro x hx PP i j
-    have e := GlobalTheory.T.latticeStabilizer_reduction_eq_local_reduction β x PP hx i j 0
+    have e := _root_.GlobalTheory.Adopt.latticeStabilizer_reduction_eq_local_reduction β x PP hx i j 0
     simpa using e
   have red1 : ∀ x ∈ St β, ∀ PP (i j : Fin V.rank),
       ((redFn β PP x : GL (Fin V.rank) (kP PP)) : Matrix (Fin V.rank) (Fin V.rank) (kP PP)) i j =
@@ -100,9 +100,9 @@ theorem prodLev_inf_UA {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Subm
     intro x hx PP i j
     by_cases hij : i = j
     · subst hij
-      have e := GlobalTheory.T.latticeStabilizer_reduction_eq_local_reduction β x PP hx i i 1
+      have e := _root_.GlobalTheory.Adopt.latticeStabilizer_reduction_eq_local_reduction β x PP hx i i 1
       simpa [Matrix.one_apply] using e
-    · have e := GlobalTheory.T.latticeStabilizer_reduction_eq_local_reduction β x PP hx i j 0
+    · have e := _root_.GlobalTheory.Adopt.latticeStabilizer_reduction_eq_local_reduction β x PP hx i j 0
       simpa [Matrix.one_apply, hij] using e
   ext x
   constructor
@@ -110,13 +110,13 @@ theorem prodLev_inf_UA {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Subm
     obtain ⟨h1, h2⟩ := Subgroup.mem_inf.1 hx
     have hA : ∀ w : P, LocCond w.1 (w.1 ∈ Ld.Pg) (w.1 ∈ Ld.Q) Ld.r Ld.t (inBasis rfl β w.1 x) :=
       fun w => (hloc w x).1 (Subgroup.mem_iInf.1 h1 w)
-    have hSt : x ∈ St β := GlobalTheory.T.mem_latticeStabilizer_of_local_integral_inBasis β x fun w => by
+    have hSt : x ∈ St β := _root_.GlobalTheory.Adopt.mem_latticeStabilizer_of_local_integral_inBasis β x fun w => by
       by_cases hw : ∃ w0 ∈ P, w.under (𝓞 D.host.F) = w0.under (𝓞 D.host.F)
       · obtain ⟨w0, hw0, e⟩ := hw
         have hK0 := (hA ⟨w0, hw0⟩).1
         rcases GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e with rfl | rfl
         · exact hK0
-        · exact GlobalTheory.T.integralGL_conjPlace_of_selfDual_baseFrame V β Λ hβ x hU w0 hK0
+        · exact _root_.GlobalTheory.ConjPlaceLev.inBasis_conjPl_mem_KO_of_isBaseFrame V β Λ hβ x hU w0 hK0
       · push_neg at hw
         exact Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h2 w) hw
     have hgP : ∀ PP ∈ Ld.Pg, redFn β PP x ∈ blockTri (blkOf Ld.r Ld.t) := fun PP hP => by
@@ -177,13 +177,13 @@ theorem levRow_zero_eq_lev : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Const
       rw [givenLevel_zero_iff G t w.1 D.R.m hm]
       by_cases hP : w.1 ∈ L.Pg
       · have hnq : w.1 ∉ L.Q t := Finset.disjoint_left.1 hdis hP
-        rw [GlobalTheory.T.thetaGridBlockCongruence_typePrime_description G t w.1 hP]
+        rw [_root_.GlobalTheory.Adopt.thetaGridBlockCongruence_typePrime_description G t w.1 hP]
         constructor
         · rintro ⟨h1, h2, h3⟩
           exact ⟨h1, fun _ => ⟨h2, h3⟩, fun hq => absurd hq hnq⟩
         · rintro ⟨h1, h2, -⟩
           exact ⟨h1, (h2 hP).1, (h2 hP).2⟩
-      · rw [GlobalTheory.T.thetaGridBlockCongruence_offTypePrime_description G t w.1 hP]
+      · rw [_root_.GlobalTheory.Adopt.thetaGridBlockCongruence_offTypePrime_description G t w.1 hP]
         constructor
         · rintro ⟨h1, h2⟩
           exact ⟨h1, fun hp => absurd hp hP, h2⟩

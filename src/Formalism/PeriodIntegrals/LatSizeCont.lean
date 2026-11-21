@@ -37,12 +37,6 @@ def ht {x : I.GA} (s : Sub I x) : ℝ :=
 
 def size {x : I.GA} (s : Sub I x) : ℝ := ht I s ^ ((1 : ℝ) / (2 * (I.f : ℝ) * (s.j : ℝ)))
 
-def tau1 (x : I.GA) : ℝ := min (1 / 2) (⨅ s : Sub I x, size I s)
-
 end Size
-
-def LatSizeCont : Prop :=
-  ∀ I : Formalism.MainNotions.S.AutInst, 1 ≤ I.n →
-    Continuous (Size.tau1 I) ∧ ∀ x : I.GA, 0 < Size.tau1 I x ∧ Size.tau1 I x ≤ 1 / 2
 
 end PI.LatSizeCont

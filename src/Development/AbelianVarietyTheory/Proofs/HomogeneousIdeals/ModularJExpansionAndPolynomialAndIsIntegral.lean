@@ -325,11 +325,6 @@ theorem isIntegral_modularJ_halfOneAddSqrtNeg (d : ℕ) (hd : d ≠ 0) :
   push_cast
   linear_combination ((√d : ℝ) : ℂ) ^ 2 * Complex.I_sq - h1
 
-theorem isIntegral_modularJ_of_sq_eq_neg {w : ℍ} {d : ℤ} (h : (2 * (w : ℂ) - 1) ^ 2 = -d) :
-    IsIntegral ℤ (modularJ w) :=
-  isIntegral_modularJ_of_quadratic (a := 4) (b := -4) (c := 1 + d) (by norm_num)
-    (by push_cast; linear_combination h)
-
 theorem exists_hasSum_modularJ_sub_inv : ∃ c : ℕ → ℤ, ∀ τ : ℍ,
     HasSum (fun n ↦ (c n : ℂ) * 𝕢 1 τ ^ n) (modularJ τ - (𝕢 1 τ)⁻¹) := by
   obtain ⟨J, hJ0, hJ⟩ := exists_hasQExpansion_modularJ
@@ -342,25 +337,5 @@ theorem exists_hasSum_modularJ_sub_inv : ∃ c : ℕ → ℤ, ∀ τ : ℍ,
     .of_qParam_mul (h1.congr fun τ ↦ by
       rw [mul_sub, mul_inv_cancel₀ (Periodic.qParam_ne_zero _)])
   exact ⟨fun n ↦ coeff n K, fun τ ↦ by simpa using h2 τ⟩
-
-open NumberField in
-
-theorem modularJ_expansion_and_polynomial_and_isIntegral :
-    (∃ c : ℕ → ℤ, ∀ τ : ℍ,
-      HasSum (fun n ↦ (c n : ℂ) * 𝕢 1 τ ^ n) (modularJ τ - (𝕢 1 τ)⁻¹)) ∧
-    (∀ (m : ℕ) (f : ℍ → ℂ), (∀ (γ : SL(2, ℤ)) (τ : ℍ), f (γ • τ) = f τ) → MDiff f →
-      (IsBoundedAtImInfty fun τ : ℍ ↦ 𝕢 1 τ ^ m * f τ) →
-      ∃ P : Polynomial ℂ, P.natDegree ≤ m ∧
-        (∀ i, P.coeff i ∈ AddSubgroup.closure
-          (Set.range fun k ↦ coeff k (qExpansion 1 fun τ ↦ 𝕢 1 τ ^ m * f τ))) ∧
-        ∀ τ, f τ = P.eval (modularJ τ)) ∧
-    (∀ (w : ℍ) (d : ℤ), (2 * (w : ℂ) - 1) ^ 2 = -d → IsIntegral ℤ (modularJ w)) ∧
-    (∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (ι : K →+* ℂ) (τ : ℍ),
-      (∀ α : 𝓞 K, ∀ x ∈ Submodule.span ℤ {(τ : ℂ), 1},
-        ι α * x ∈ Submodule.span ℤ {(τ : ℂ), 1}) → IsIntegral ℤ (modularJ τ)) :=
-  ⟨exists_hasSum_modularJ_sub_inv,
-    fun _ _ h1 h2 h3 ↦ let ⟨P, a, _, b⟩ := exists_polynomial_modularJ h1 h2 h3; ⟨P, a, b⟩,
-    fun _ _ ↦ isIntegral_modularJ_of_sq_eq_neg,
-    fun _ _ _ hK ι _ ↦ isIntegral_modularJ_of_ringOfIntegers hK ι⟩
 
 end GlobalTheory

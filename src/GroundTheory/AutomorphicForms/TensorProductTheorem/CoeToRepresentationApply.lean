@@ -46,10 +46,6 @@ theorem GKModule.apply_σ_mem (M : h.GKModule K V) (Y : Subrepresentation M.rep)
     (hy : y ∈ Y.toSubmodule) : M.σ k y ∈ Y.toSubmodule :=
   Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inr k)) hy
 
-theorem GKModule.apply_ρ_mem (M : h.GKModule K V) (Y : Subrepresentation M.rep)
-    (X : h.lieSubalgebra) {y : V} (hy : y ∈ Y.toSubmodule) : M.ρ X y ∈ Y.toSubmodule :=
-  Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inl X)) hy
-
 section SubQuot
 
 variable (M : h.GKModule K V) (U : Subrepresentation M.rep) (U₀ : Submodule ℂ U.toSubmodule)

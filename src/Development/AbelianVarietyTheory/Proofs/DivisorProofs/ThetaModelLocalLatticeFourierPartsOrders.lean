@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRankFormMinimalTuplesAtClosedPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRankFormMinimalTuplesAtClosedPoint
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorMatch
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegPull
@@ -22,7 +23,7 @@ theorem local_lattice_orders : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n �
     ⟨x, subset_closure rfl⟩
   have hxy : x ⤳ y := specializes_iff_mem_closure.2 hy
   obtain ⟨r, b₀, μ, e, h1, h2, h3, h4, h5, h6, h7⟩ :=
-    GlobalTheory.T.exists_rank_form_minimalTuples_at_closedPoint g n hg hn hodd F W hW o' Ω S ρ u hS hsh hgen hN M U₀ EE FinalForm hadm hEE y hyc
+    _root_.GlobalTheory.Poinc.Clocx.exists_at_closedPoint g n hg hn hodd F W hW o' Ω S ρ u hS hsh hgen hN M U₀ EE FinalForm hadm hEE y hyc
   exact ⟨r, b₀, μ, e, h1, h2, h3, h4, h5, h6, fun T ξ hT hξ => h7 T ξ hT (hξ.trans hxy)⟩
 
 end GlobalTheory.Poinc

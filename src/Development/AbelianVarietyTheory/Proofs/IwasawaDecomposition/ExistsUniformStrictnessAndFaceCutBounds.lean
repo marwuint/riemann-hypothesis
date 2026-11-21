@@ -176,7 +176,7 @@ theorem perModule_bound (hP : IsPolyFanOn bar φ X) : ∃ N₀ : ℕ, ∀ (m : �
   have hwδ : ∀ t, w t ∈ ratCone δ := by
     intro t
     obtain ⟨j, ⟨i, hij⟩, hj⟩ := hwj t
-    obtain ⟨k', b, hk', hb⟩ := GlobalTheory.T.cell_generator_mem_cone_of_smul_combination bar φ δ γ' i (k i) (a i) hδ hγ' (hk i) (hka i) j hij
+    obtain ⟨k', b, hk', hb⟩ := _root_.GlobalTheory.PolFan.cell_gen_mem_cone_of_smul bar φ δ γ' i (k i) (a i) hδ hγ' (hk i) (hka i) j hij
     rw [hj]
     exact mem_ratCone_of_eq_sum hk' b hb
   have hwb : ∀ t, w t ∈ balForms bar X := fun t => by
@@ -204,7 +204,7 @@ theorem uniform_bound (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
       [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X),
       IsCell H.bar ψ γ → ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), 0 < N ∧ N ≤ N₀ ∧ StrictWith H.bar ψ N ℓ γ := by
   classical
-  obtain ⟨n, R, hR, hcls⟩ := GlobalTheory.T.exists_fin_reps_projective_finrank_le_numberField E q
+  obtain ⟨n, R, hR, hcls⟩ := _root_.GlobalTheory.exists_fin_reps_projective_finrank_le E q
   have key : ∀ k, letI := (hR k).1; ∃ N₀ : ℕ, ∀ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ (R k)),
       IsCell H.bar ψ δ → ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ (R k) →ₗ[ℤ] ℤ), 0 < N ∧ N ≤ N₀ ∧
         StrictWith H.bar ψ N ℓ δ := fun k => by

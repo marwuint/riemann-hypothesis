@@ -110,12 +110,6 @@ theorem analyticOnNhd_of_continuousOn_of_separately {n : ℕ} {U : Set (Fin n �
   rw [fctl_kern hr g hz, cauchy_torus n g c ε hcb hsb (ε / 2) hr hrε z hz, ← mul_assoc,
     inv_mul_cancel₀ hne, one_mul]
 
-theorem differentiableOn_of_continuousOn_of_separately {n : ℕ} {U : Set (Fin n → ℂ)}
-    {g : (Fin n → ℂ) → ℂ} (hU : IsOpen U) (hc : ContinuousOn g U)
-    (hs : ∀ z ∈ U, ∀ i, DifferentiableAt ℂ (fun t => g (Function.update z i t)) (z i)) :
-    DifferentiableOn ℂ g U :=
-  (analyticOnNhd_of_continuousOn_of_separately hU hc hs).differentiableOn
-
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets

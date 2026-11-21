@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsOfPoint
-import Development.AbelianVarietyTheory.Definitions.Divisors.PerFactor
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMumfordFamOfSubsingleton
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TautBaseChangeTripleLiftLeft
@@ -61,62 +60,16 @@ end GlobalTheory.PolDeg.TautFrom
 
 namespace GlobalTheory.PolDeg.TautFrom
 
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
+end GlobalTheory.PolDeg.TautFrom
 
-section Base
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-def sq : (G2 (Bp T N)).left ⟶ (G2 T.B).left :=
-  (lift (pushPt (cart T N).1.w (fst (Bp T N) (Bp T N))) (pushPt (cart T N).1.w (snd (Bp T N) (Bp T N)))).left
-
-theorem lamφ_sq (I : ULift.{0} (Finset (Fin 2))) :
-    lamφ (Bp T N) I ≫ pullback.fst T.B.hom (fC N) = sq T N ≫ lamφ T.B I :=
-  psum_push (cart T N) _ _ (lift (pushPt (cart T N).1.w (fst (Bp T N) (Bp T N)))
-    (pushPt (cart T N).1.w (snd (Bp T N) (Bp T N)))) (fun i => by fin_cases i <;> simp [x2]) I.down
-
-end Base
+namespace GlobalTheory.PolDeg.TautFrom
 
 end GlobalTheory.PolDeg.TautFrom
 
 namespace GlobalTheory.PolDeg.TautFrom
 
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
-
-section Iso
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-def w0 : LB.Iso (abelian₂ T.B T.M.L) (abelian₂ T.B T.M.L) := ⟨fun p => (abelian₂ T.B T.M.L).g p.1 p.2⟩
-
-def wT : LB.Iso (abelian₂ (Bp T N) (Mp T N).L) ((abelian₂ T.B T.M.L).pull (sq T N)) :=
-  isoPull (chartPullLinComb T.M.L (pullback.fst T.B.hom (fC N)) (lamφ (Bp T N)) (lamφ T.B) lamε (sq T N)
-    (lamφ_sq T N)) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (abelian₂ T.B T.M.L) (sq T N) (sq T N) rfl) (w0 T)
-
-end Iso
-
 end GlobalTheory.PolDeg.TautFrom
 
 namespace GlobalTheory.PolDeg.TautFrom
-
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
-
-section Val
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-end Val
-
-end GlobalTheory.PolDeg.TautFrom
-
-namespace GlobalTheory.PolDeg.TautFrom
-
-open GlobalTheory.PolDeg.TautEx GlobalTheory.PrimCocycle
-
-section Main
-
-variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N : ℕ)
-
-end Main
 
 end GlobalTheory.PolDeg.TautFrom

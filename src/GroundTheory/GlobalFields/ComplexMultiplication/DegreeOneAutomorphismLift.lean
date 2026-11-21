@@ -48,10 +48,4 @@ theorem two_ne_zero_and_three_ne_zero_of_five_le_ringChar {k : Type*} [Field k]
   · have := Nat.le_of_dvd (by norm_num) ((ringChar.spec k 3).mp (by exact_mod_cast h3))
     omega
 
-section NumberField
-
-variable {L : Type*} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L))
-
-end NumberField
-
 end GroundTheory.Global

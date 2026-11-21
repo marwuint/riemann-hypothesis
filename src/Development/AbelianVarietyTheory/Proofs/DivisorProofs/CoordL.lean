@@ -29,6 +29,4 @@ def intPts (G : HTGroup p) (w : AwayP p) : Set (UPts G.star (w.1.adicCompletion 
       ((((h : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ × (w.1.adicCompletion ℚ)ˣ).2)⁻¹ : (w.1.adicCompletion ℚ)ˣ) :
         w.1.adicCompletion ℚ) ∈ w.1.adicCompletionIntegers ℚ}
 
-example (G : HTGroup p) (w : AwayP p) : compL G w 1 = 1 := map_one _
-
 end GlobalTheory.AwayOrb

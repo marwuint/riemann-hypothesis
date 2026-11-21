@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrthogonalAnisotropicPairPlaneMatricesFactsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixFixesLowRankProjectorOfFixesRationalKernelStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryFixingKernelEqOneAddLowRankOfUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuaternionMatrixEqOfUnitaryDetOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousOneAddLowRankEmbeddingQuaternionMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegInvRatioIsNormOfNegRatioIsNormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuaternionMatrixEqOfUnitaryDetOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousOneAddLowRankEmbeddingQuaternionMatrix
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegInvRatioIsNormOfNegRatioIsNorm
 
 noncomputable section
 
@@ -79,12 +79,12 @@ theorem plane_closure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   obtain ⟨hGemb, hXu⟩ := GlobalTheory.T.unitary_fixing_kernel_eq_oneAddLowRank_of_unitary _ c hcc M (J.map ιR) hJu A B H hBA h1 h2 G hGu hfixM
   have hdetX : (B * G * A).det = 1 := by
     rw [← det_emb hBA, ← hGemb]; exact StrongApprox.mem_SUAdelic.1 hg
-  obtain ⟨x, hxX⟩ := GlobalTheory.T.exists_quaternionMatrix_eq_of_unitary_det_one F E σ δ bs hb0 hb1 hbb f₁ f₂ hf₁0 hf₂0 (AF F) (B * G * A) (hH ▸ hXu) hdetX
+  obtain ⟨x, hxX⟩ := _root_.GlobalTheory.PlaneSU.exists_qm_eq_of_unitary F E σ δ bs hb0 hb1 hbb f₁ f₂ hf₁0 hf₂0 (AF F) (B * G * A) (hH ▸ hXu) hdetX
   have hx1 : nrm x = 1 := by
     apply hιinj
     rw [map_one, ← det_qm ι θ hθ, hxX, hdetX]
   have hpq : ∃ p q : AF F, ε * (algebraMap F (AF F) (-(f₂ / f₁)) - (p ^ 2 - algebraMap F (AF F) δ * q ^ 2)) = 0 := by
-    refine GlobalTheory.T.neg_inv_ratio_isNorm_of_neg_ratio_isNorm F E σ δ bs hb0 hb1 hbb f₁ f₂ hf₁0 hf₂0 (AF F) ε t ?_
+    refine _root_.GlobalTheory.PlaneSU.NormSwap.neg_inv_ratio_norm F E σ δ bs hb0 hb1 hbb f₁ f₂ hf₁0 hf₂0 (AF F) ε t ?_
     have e : inclR (F := F) (AF F) (hE σ J e₁ e₁ / hE σ J e₂ e₂) = algebraMap F (AF F ⊗[F] E) (f₁ / f₂) := by
       rw [← hf₁, ← hf₂, ← map_div₀]; exact hιR _
     rw [← e]; exact ht
@@ -115,7 +115,7 @@ theorem plane_closure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     · exact ((hco 1).neg).congr fun y => by simp [coords]
     · exact ((hco 2).neg).congr fun y => by simp [coords]
     · exact ((hco 3).neg).congr fun y => by simp [coords]
-  have hE0 := GlobalTheory.T.continuous_oneAddLowRankEmbedding_quaternionMatrix F E δ (-(f₂ / f₁)) M A B θ
+  have hE0 := _root_.GlobalTheory.emb_qm_continuous F E δ (-(f₂ / f₁)) M A B θ
   have hnstar : ∀ y : {y : DA F δ (-(f₂ / f₁)) // nrm y = 1}, nrm (star y.1) = 1 := fun y => by
     calc nrm (star y.1) = nrm y.1 := by simp [nrm]
       _ = 1 := y.2

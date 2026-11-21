@@ -9,8 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsProjByOf
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianSchemeCubicalBundleExistsAndMapsStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EqTopOfClosedFibre
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsVeryAmpleH1Zero
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsAbelianSchemeOfCompatibleThickeningsStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.DescendedBundleAmpleSpecialFibreStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsAbelianSchemeOfCompatibleThickenings
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.DescendedBundleAmpleSpecialFibre
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleIffVeryAmpleBy
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SectionPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.VeryAmpleByPull
@@ -221,7 +221,7 @@ theorem exists_alg (hG : GlobalFnsSt) (V : Type) [CommRing V] [IsDomain V] [IsDi
     GlobalTheory.Algebraise.algebraisation V Y β (fun e => isPullback_of_grp (hg e)) hf (fun e => (P e).L.L) v
       (fun e => ⟨(P e).L.isLB, hv e⟩) h₀
   have hp : IsProjBy B.hom := ⟨H, hH, n, σ, hva⟩
-  obtain ⟨grp, comm, hB, hgb⟩ := GlobalTheory.T.isAbelianScheme_of_compatible_thickenings V Y β hg B b hY hc hp hb hbβ
+  obtain ⟨grp, comm, hB, hgb⟩ := _root_.GlobalTheory.isAbelianScheme_of_thickenings V Y β hg B b hY hc hp hb hbβ
   have hamp : RelAmple B M := relAmple_of_lbIso hM hH hd hva (lbIso_of_levels hG hB hp (isLB_pw hM d) hH hb
     fun e => lbIso_pw_pull hM hH (P e).L.isLB (hiso e).1 (hiso e).2)
   obtain ⟨Q, rfl, hQ⟩ := exists_cp hG hB hp hM hY P hgb fun e => (hiso e).1
@@ -232,7 +232,7 @@ theorem nonempty_alg : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k
   haveI : IsDiscreteValuationRing V := s.cdvr.1
   haveI : IsAdicComplete (IsLocalRing.maximalIdeal V) V := s.cdvr.2.1
   obtain ⟨B, _, _, M, b, hB, ha, hb, hbβ⟩ := exists_alg hL.globalFns V (fun e => (t.l e).Q.B)
-    (fun e => (t.l e).Q.isAb) (fun e => (t.l e).D.M) t.β t.β_pb (GlobalTheory.T.descended_bundle_ample_special_fibre hcard hL V A G s t)
+    (fun e => (t.l e).Q.isAb) (fun e => (t.l e).D.M) t.β t.β_pb (_root_.GlobalTheory.UU.AmpleZero.relAmple_zero hcard hL V A G s t)
   exact ⟨{ B := B, isAb := hB, M := M, ample := ha, b := b, b_pb := hb, b_β := hbβ }⟩
 
 end GlobalTheory.AlgTower

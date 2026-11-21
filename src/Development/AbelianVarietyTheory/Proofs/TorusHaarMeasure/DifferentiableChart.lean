@@ -9,12 +9,19 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Uppe
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.OrthoStatementPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.RhGradFPfA
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.FirstMinimumInvariantContinuousPos
-import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.InterpolationPeaks
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.BasePsiLeviLowerBound
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.OneAddInvFirstMinimumLeOfMajorants
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.LeviFormWeightMetricOrthonormalDiagonal
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.BorelDiagNeZero
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.PhlaBlockWtCpt
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.SqLeQyOfLeFirstMinimum
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivity
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowDomainCriterionHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SublatticeCoefficients
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ConjugateConjugate
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MajLactRmul
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.EventuallyComparable
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MahlerCompactness
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsInvariantGe
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.CfwMOfExtraBounds
 
@@ -25,21 +32,6 @@ open MeasureTheory Topology
 open scoped ContDiff ENNReal
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
-
-theorem continuousAt_levi {n : ℕ} {f : V n → ℝ} {x : V n} (hf : ContDiffAt ℝ ∞ f x) (ξ : Fin n → ℂ) :
-    ContinuousAt (fun y => (leviV n (fun w => ((f w : ℝ) : ℂ)) y ξ).re) x := by
-  have h2 : ContDiffAt ℝ 2 f x := hf.of_le HE.two_le_inf
-  have hd : ContinuousAt (fderiv ℝ (fderiv ℝ f)) x :=
-    ((h2.fderiv_right (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)).continuousAt
-  set u : V n := ∑ k, ((ξ k).re • bas n k + (ξ k).im • Complex.I • bas n k)
-  set v : V n := ∑ k, ((ξ k).re • Complex.I • bas n k - (ξ k).im • bas n k)
-  have hc : ContinuousAt (fun y => (fderiv ℝ (fderiv ℝ f) y u u + fderiv ℝ (fderiv ℝ f) y v v) / 4) x :=
-    (((hd.clm_apply continuousAt_const).clm_apply continuousAt_const).add
-      ((hd.clm_apply continuousAt_const).clm_apply continuousAt_const)).div_const 4
-  refine hc.congr ?_
-  filter_upwards [h2.eventually (by simp)] with y hy
-  rw [← Y.LocalMaximumSecondDerivative.leviV_re_eq hy ξ]
-  ring
 
 theorem differentiable_chart (X : Data E r) (x0 : Frame X.Ψ r) : Differentiable ℂ (cpt X x0) :=
   IW.cpt_diff X x0
@@ -123,54 +115,5 @@ theorem levi_transport (X : Data E r) {x0 x1 : Frame X.Ψ r} (ho : IsOrth X x1) 
     unfold leviM
     rw [leviV_congr hev]
     exact congrArg Complex.re hc
-
-theorem frequently_overlap (X : Data E r) {x0 x1 : Frame X.Ψ r} (h0 : IsOrth X x0) (h1 : IsOrth X x1)
-    {z : V (nd X)} (hz : z ∈ OmF X x0) :
-    ∃ᶠ w in 𝓝 z, w ∈ OmF X x0 ∧ ∃ z1 ∈ OmF X x1, ∃ b ∈ Bor X.Ψ r, cpt X x0 w = rmul (cpt X x1 z1) b := by
-  obtain ⟨Δ, zOf, bOf, hΔ, -, hzd, -, hsplit, hinv⟩ := lu_holds r X x0 h0
-  obtain ⟨Δ', zOf', bOf', -, hden, -, -, hsplit', -⟩ := lu_holds r X x1 h1
-  have hone := hinv z hz _ (ExtFPf.oneF_mem X)
-  rw [ExtFPf.rmul_oneF] at hone
-  have hU : IsOpen {y | y ∈ X.dom ∧ Δ y ≠ 0} :=
-    (IW.isOpen_dom X).inter (isOpen_ne_fun hΔ.continuous continuous_const)
-  have hmem : cpt X x0 z ∈ {y | y ∈ X.dom ∧ Δ y ≠ 0} := ⟨hz, hone.1⟩
-  have hc : Filter.Tendsto zOf (𝓝 (cpt X x0 z)) (𝓝 z) := by
-    have := (hzd.continuousOn.continuousAt (hU.mem_nhds hmem)).tendsto
-    rwa [hone.2.1] at this
-  refine hc.frequently ?_
-  have hfr : ∃ᶠ y in 𝓝 (cpt X x0 z), Δ' y ≠ 0 := by
-    rw [Metric.nhds_basis_ball.frequently_iff]
-    intro ε hε
-    exact hden _ hz ε hε
-  refine (hfr.and_eventually (hU.mem_nhds hmem)).mono ?_
-  rintro y ⟨hy', hy, hyΔ⟩
-  obtain ⟨a1, a2, a3⟩ := hsplit y hy hyΔ
-  obtain ⟨b1, b2, b3⟩ := hsplit' y hy hy'
-  refine ⟨a1, _, b1, IW.bmul X (bOf' y) (IW.binv X (bOf y)), IW.bmul_mem X b2 (IW.binv_mem X a2), ?_⟩
-  rw [← IW.rmul_rmul, ← b3]
-  have := IW.rmul_binv X (cpt X x0 (zOf y)) a2
-  rw [← a3] at this
-  exact this.symm
-
-theorem ineq_transport (X : Data E r) {x0 x1 : Frame X.Ψ r} (h0 : IsOrth X x0) (h1 : IsOrth X x1)
-    (la la' : Wt X.Ψ r) (c : ℝ) {ψ : Frame X.Ψ r → ℝ} (hψ : IsInvFn X ψ)
-    (hs : ∀ x, IsOrth X x → ContDiffOn ℝ ∞ (fun z => ψ (cpt X x z)) (OmF X x))
-    (h : ∀ z ∈ OmF X x1, ∀ ξ, c * leviM X (phla X la') x1 z ξ ≤ leviM X (phla X la) x1 z ξ + leviM X ψ x1 z ξ) :
-    ∀ z ∈ OmF X x0, ∀ ξ, c * leviM X (phla X la') x0 z ξ ≤ leviM X (phla X la) x0 z ξ + leviM X ψ x0 z ξ := by
-  intro z hz ξ
-  have hfr : ∃ᶠ w in 𝓝 z, c * leviM X (phla X la') x0 w ξ ≤
-      leviM X (phla X la) x0 w ξ + leviM X ψ x0 w ξ := by
-    refine (frequently_overlap X h0 h1 hz).mono ?_
-    rintro w ⟨hw, z1, hz1, b, hb, e⟩
-    obtain ⟨ξ', e1, e2⟩ := levi_transport X h1 hw hz1 hb e ξ
-    rw [e1, e1, e2 ψ hψ (((hs x1 h1).contDiffAt ((ExF.isOpen_OmF X x1).mem_nhds hz1)).of_le HE.two_le_inf)]
-    exact h z1 hz1 ξ'
-  have c1 := continuousAt_levi (IW.phla_cpt_cdAt X x0 hz la') ξ
-  have c2 := continuousAt_levi (IW.phla_cpt_cdAt X x0 hz la) ξ
-  have c3 := continuousAt_levi ((hs x0 h0).contDiffAt ((ExF.isOpen_OmF X x0).mem_nhds hz)) ξ
-  by_contra hn
-  have := (c2.add c3).eventually_lt ((continuousAt_const (y := c)).mul c1) (not_le.1 hn)
-  obtain ⟨w, a, b⟩ := (hfr.and_eventually this).exists
-  exact absurd a (not_le.2 b)
 
 end GlobalTheory.InterpCompare

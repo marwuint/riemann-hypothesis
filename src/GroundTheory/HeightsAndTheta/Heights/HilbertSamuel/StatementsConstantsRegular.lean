@@ -13,10 +13,4 @@ def ConstantsRegular.Statement : Prop :=
     ∃ N : ℕ, 1 ≤ N ∧ ∀ (θ : 𝓞 F) (c : ∀ k, ι k), (∀ k, y ⟨k, c k⟩ ≠ 0) →
       (N : Ω) * algebraMap F Ω (θ : F) ∈ chartRingZ y c
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.HilbertSamuel

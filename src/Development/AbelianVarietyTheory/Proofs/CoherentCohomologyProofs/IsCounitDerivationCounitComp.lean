@@ -76,22 +76,6 @@ theorem contrRight_one (φ : H →ₗ[k] k) : contrRight φ 1 = φ 1 • (1 : H)
 theorem contrLeft_one (φ : H →ₗ[k] k) : contrLeft φ 1 = φ 1 • (1 : H) := by
   rw [Algebra.TensorProduct.one_def, contrLeft_tmul]
 
-theorem counit_contrRight (φ : H →ₗ[k] k) (s : H ⊗[k] H) :
-    Coalgebra.counit (R := k) (contrRight φ s) =
-      φ (contrLeft (Coalgebra.counit (R := k)) s) := by
-  induction s using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a b => simp [mul_comm]
-  | add x y hx hy => simp only [map_add, hx, hy]
-
-theorem counit_contrLeft (φ : H →ₗ[k] k) (s : H ⊗[k] H) :
-    Coalgebra.counit (R := k) (contrLeft φ s) =
-      φ (contrRight (Coalgebra.counit (R := k)) s) := by
-  induction s using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a b => simp [mul_comm]
-  | add x y hx hy => simp only [map_add, hx, hy]
-
 section Ring
 
 variable {k : Type*} {H : Type*} [CommRing k] [CommRing H] [Bialgebra k H]
@@ -125,22 +109,6 @@ theorem derivRight_apply (φ : H →ₗ[k] k) (hφ : IsCounitDerivation φ) (y :
 theorem derivLeft_apply (φ : H →ₗ[k] k) (hφ : IsCounitDerivation φ) (y : H) :
     derivLeft φ hφ y =
       TensorProduct.lid k H (LinearMap.rTensor H φ (Coalgebra.comul (R := k) y)) := rfl
-
-theorem counit_derivRight (φ : H →ₗ[k] k) (hφ : IsCounitDerivation φ) (y : H) :
-    Coalgebra.counit (R := k) (derivRight φ hφ y) = φ y := by
-  have h : derivRight φ hφ y = contrRight φ (Coalgebra.comul (R := k) y) := rfl
-  rw [h, counit_contrRight, contrLeft_counit_comul]
-
-theorem counit_derivLeft (φ : H →ₗ[k] k) (hφ : IsCounitDerivation φ) (y : H) :
-    Coalgebra.counit (R := k) (derivLeft φ hφ y) = φ y := by
-  have h : derivLeft φ hφ y = contrLeft φ (Coalgebra.comul (R := k) y) := rfl
-  rw [h, counit_contrLeft, contrRight_counit_comul]
-
-theorem isCounitDerivation_counit_comp (D : Derivation k H H) :
-    IsCounitDerivation (Coalgebra.counit (R := k) ∘ₗ D.toLinearMap) := by
-
-  intro a b
-  simp [Derivation.leibniz, Bialgebra.counit_mul]
 
 end Ring
 

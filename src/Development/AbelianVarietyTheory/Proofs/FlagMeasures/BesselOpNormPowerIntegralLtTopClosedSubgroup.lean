@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsFolnerUWset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselHaarFiniteCompactPosOpenStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroup
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
 
 noncomputable section
 
@@ -47,11 +47,11 @@ theorem opn_zero' : opn (0 : Mat k r) = 0 := by
   unfold opn; rw [map_zero, norm_zero]
 
 theorem norm_le_opn (x : Mt k r) : ‖x‖ ≤ opn (Matrix.of x) := by
-  have h := (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.2.1
+  have h := (_root_.GlobalTheory.SgInf.opn_facts k r).2.2.2.1
   exact (pi_norm_le_iff_of_nonneg (opn_nonneg _)).2 fun i =>
     (pi_norm_le_iff_of_nonneg (opn_nonneg _)).2 fun j => h _ i j
 
-theorem continuous_opn : Continuous (fun x : Mat k r => opn x) := (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.1
+theorem continuous_opn : Continuous (fun x : Mat k r => opn x) := (_root_.GlobalTheory.SgInf.opn_facts k r).2.2.1
 
 def nbhdU (k r : ℕ) : Set (Mt k r) := {x | opn (Matrix.of x - 1) < 1 / 4}
 
@@ -131,7 +131,7 @@ theorem exists_max_pack {S : Set (Mat k r)} (hS : IsClosedSub k r S) (R : ℝ) :
 theorem ballS_subset {S : Set (Mat k r)} (hS : IsClosedSub k r S) {R : ℝ} {F : Finset (Mat k r)}
     (hF : Pack S R F) (hmax : ∀ G, Pack S R G → G.card ≤ F.card) :
     ballS S R ⊆ ⋃ h ∈ F, lmulM h ⁻¹' ballS S 2 := by
-  have N := GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r
+  have N := _root_.GlobalTheory.SgInf.opn_facts k r
   rintro x ⟨hxS, hxR⟩
   set s : Mat k r := Matrix.of x with hsdef
   have hsG := hS.1 hxS
@@ -228,7 +228,7 @@ theorem normInt_lt_top : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k
   have hA0 : 0 < A := lt_of_le_of_lt (Nat.cast_nonneg d) hdA
   set K := volume (Metric.ball (0 : Mt k r) 1) / volume (nbhdU k r) * μ (ballS S 2) with hKdef
   have hK : K < ⊤ := by
-    have hV : μ (ballS S 2) < ⊤ := (GlobalTheory.T.closedSubgroupBessel_haar_finite_compact_pos_open k r S μ hS hμ).1 _ (GlobalTheory.T.isCompact_normBounded_besselClosedSubgroup k r S hS 2)
+    have hV : μ (ballS S 2) < ⊤ := (GlobalTheory.T.closedSubgroupBessel_haar_finite_compact_pos_open k r S μ hS hμ).1 _ (_root_.GlobalTheory.SgInf.isCompact_normBounded k r S hS 2)
     exact ENNReal.mul_lt_top (ENNReal.div_lt_top measure_ball_lt_top.ne volume_nbhdU_ne_zero) hV
   set q : ℝ := (2 : ℝ) ^ d * (2 : ℝ) ^ (-A) with hqdef
   have hq0 : 0 ≤ q := by positivity
@@ -245,7 +245,7 @@ theorem normInt_lt_top : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k
   have hpt : ∀ᵐ x ∂μ, ENNReal.ofReal (opn (Matrix.of x) ^ (-A)) ≤
       ∑' j : ℕ, (ballS S ((2 : ℝ) ^ (j + 1))).indicator (fun _ => ENNReal.ofReal (((2 : ℝ) ^ j) ^ (-A))) x := by
     filter_upwards [hae] with x hx
-    have h1 : 1 ≤ opn (Matrix.of x) := ((GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).1 _ (hS.1 hx)).2
+    have h1 : 1 ≤ opn (Matrix.of x) := ((_root_.GlobalTheory.SgInf.opn_facts k r).1 _ (hS.1 hx)).2
     have hex : ∃ j : ℕ, opn (Matrix.of x) < (2 : ℝ) ^ (j + 1) := by
       obtain ⟨j, hj⟩ := pow_unbounded_of_one_lt (opn (Matrix.of x)) (by norm_num : (1 : ℝ) < 2)
       exact ⟨j, hj.trans (pow_lt_pow_right₀ (by norm_num) (Nat.lt_succ_self j))⟩

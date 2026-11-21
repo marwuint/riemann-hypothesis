@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDetInt
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameHeckeCharSplitSupportedEqProdResidueStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameHeckeCharSplitSupportedEqProdResidue
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharTrivialOnIdempotentIntegralUnitsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelCharactersRamificationLevelPlacesStatement
 
@@ -79,7 +79,7 @@ theorem mu_val (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) {P : Finset (Pl D.host.E
   have hPu : P = L.Pg ∪ L.Q t := by
     ext PP
     rw [hP PP, Finset.mem_union]
-  have hA := GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D (L.mu0 ((j : ℕ) + 1)) (L.C.mu0 j) P e
+  have hA := _root_.GlobalTheory.TameSplitChar.char_eq_prod_res D (L.mu0 ((j : ℕ) + 1)) (L.C.mu0 j) P e
     (fun PP => if PP ∈ L.Pg then (L.chi ((j : ℕ) + 1) PP)⁻¹ else 1) (hL.mu0 j) he
     (fun PP hm => by
       by_cases hg : PP ∈ L.Pg
@@ -88,7 +88,7 @@ theorem mu_val (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) {P : Finset (Pl D.host.E
       · simp only [if_neg hg]
         have hq : PP ∈ L.Q t := ((hP PP).mp hm).resolve_left hg
         exact ⟨tameAt_of_unrAt (hQ PP hq), isRes_one (hQ PP hq)⟩) x a a' u hx ha hu
-  have hB := GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D (L.xi t) (L.xiH t) P e
+  have hB := _root_.GlobalTheory.TameSplitChar.char_eq_prod_res D (L.xi t) (L.xiH t) P e
     (fun PP => if PP ∈ L.Q t then L.xiR t PP else 1) (hL.xi t) he
     (fun PP hm => by
       by_cases hq : PP ∈ L.Q t
@@ -97,7 +97,7 @@ theorem mu_val (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) {P : Finset (Pl D.host.E
       · simp only [if_neg hq]
         have hg : PP ∈ L.Pg := ((hP PP).mp hm).resolve_right hq
         exact ⟨tameAt_of_unrAt (hPg PP hg), isRes_one (hPg PP hg)⟩) x a a' u hx ha hu
-  have hC := GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D L.eta L.C.eta P e (fun _ => 1) hL.eta he
+  have hC := _root_.GlobalTheory.TameSplitChar.char_eq_prod_res D L.eta L.C.eta P e (fun _ => 1) hL.eta he
     (fun PP _ => ⟨tameAt_of_unrAt (L.C.isEta.unr PP),
       isRes_one (L.C.isEta.unr PP)⟩) x a a' u hx ha hu
   rw [hPu, Finset.prod_union hdisj] at hA hB

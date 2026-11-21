@@ -718,13 +718,6 @@ theorem levOk_base (B : Base) (X : PreX B.toPre) : LevOk B.host (B.primes X).vGs
       rw [← e]
       exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ (by simpa using h1)) (Ideal.mul_mem_left _ _ (by simpa using h2))
 
-example (B : Base) (X : PreX B.toPre) (I : ColIn B X) (a : I.ι) (u : B.Word) (i : ℕ)
-    (p : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u i) : ℂˣ := rhoAt I.SQ I.C (I.xi a) i p
-
-example {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (f : Sp E 1 ≃ₗ[E] Sp E 1) :
-    compAt P (detIdl {P} (stdLat E 1) fun _ => f) = algebraMap E _ ((LinearEquiv.det f : Eˣ) : E) := by
-  rw [compAt_detIdl _ stdLat_lattice, if_pos (Finset.mem_singleton_self P)]
-
 end OverBase
 
 end GlobalTheory.Mem.Col2

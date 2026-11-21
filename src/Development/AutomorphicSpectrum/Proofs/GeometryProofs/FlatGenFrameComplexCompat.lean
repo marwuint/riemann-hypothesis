@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsConstMul
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FixedByAutomorphismsMemFieldStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramedPointDescendsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatGenFrameIndependentStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FixedByAutomorphismsMemField
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramedPointDescends
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatGenFrameIndependent
 
 noncomputable section
 
@@ -128,14 +128,14 @@ theorem ratio_at {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ₀ : FrameFn Xo c
 
 theorem flatGen_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ φ₀ : FrameFn Xo c) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n), IsTypeFn H D.p D.q ty → IsFlatGen U τ φ FU i → IsFlatGen U τ φ₀ FU i → (∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → Set.range y ⊆ U → ∃ P, IsPeriod (FU.Di i) ty P ∧ under y = FU.u i P) → ∃ a : c.F, a ≠ 0 ∧ ∀ (F : Type) [Field F] (β : c.F →+* F) y v w, IsFramed U τ β y v w → φ F y v w = β a * φ₀ F y v w := by
   intro E _ _ _ H D l Xo c U τ φ φ₀ g ty FU i hty hφ hφ₀ hper
-  obtain ⟨a, ha⟩ := GlobalTheory.T.flat_gen_frame_independent E H D l Xo c U τ φ φ₀ g ty FU i hty hφ hφ₀ hper
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.flatGen_ratio_complex E H D l Xo c U τ φ φ₀ g ty FU i hty hφ hφ₀ hper
   have hL := hφ.line
   have hL₀ := hφ₀.line
   by_cases hex : ∃ (y : Sp ℂ ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q),
       IsFramed U τ (algebraMap c.F ℂ) y v w
   · obtain ⟨y1, v1, w1, h1⟩ := hex
     obtain ⟨k, _, β₀, y₀, v₀, w₀, f, j, h₀, -, hj, -, hb⟩ :=
-      GlobalTheory.T.framed_point_descends E H D l Xo c U τ ℂ (algebraMap c.F ℂ) y1 v1 w1 h1
+      _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_framed_residue E H D l Xo c U τ ℂ (algebraMap c.F ℂ) y1 v1 w1 h1
     have hr := ratio_at hL hL₀ ha h₀ hb j hj
     have hne₀ : j (φ₀ k y₀ v₀ w₀) ≠ 0 := (map_ne_zero j).2 (hL₀.ne k β₀ y₀ v₀ w₀ h₀)
     have hfix : ∀ σ' : ℂ ≃+* ℂ, (∀ x ∈ c.F, σ' x = x) → σ' a = a := by
@@ -150,7 +150,7 @@ theorem flatGen_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       simp only [RingHom.comp_apply] at hr'
       rw [hr, map_mul] at hr'
       exact mul_right_cancel₀ ((map_ne_zero _).2 hne₀) hr'
-    have haF : a ∈ c.F := GlobalTheory.T.fixed_by_automorphisms_mem_field c.F a c.fin hfix
+    have haF : a ∈ c.F := _root_.GlobalTheory.CompanionTheory.Ar.Flat.mem_of_fixed_aut c.F a c.fin hfix
     refine ⟨⟨a, haF⟩, ?_, ?_⟩
     · intro h0
       have ha0 : a = 0 := congrArg Subtype.val h0
@@ -159,7 +159,7 @@ theorem flatGen_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       rw [hr, map_zero, ha0, zero_mul]
     · intro F _ β y v w hfr
       obtain ⟨k', _, β₀', y₀', v₀', w₀', f', j', h₀', hfβ', hj'', hy', hb'⟩ :=
-        GlobalTheory.T.framed_point_descends E H D l Xo c U τ F β y v w hfr
+        _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_framed_residue E H D l Xo c U τ F β y v w hfr
       subst hy'
       subst hfβ'
       have hr2 := ratio_at hL hL₀ ha h₀' hb' j' hj''
@@ -179,7 +179,7 @@ theorem flatGen_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   · refine ⟨1, one_ne_zero, fun F _ β y v w hfr => ?_⟩
     exfalso
     obtain ⟨k, _, β₀, y₀, v₀, w₀, f, j, h₀, -, hj, -, hb⟩ :=
-      GlobalTheory.T.framed_point_descends E H D l Xo c U τ F β y v w hfr
+      _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_framed_residue E H D l Xo c U τ F β y v w hfr
     obtain ⟨v', w', hfr', -, -⟩ := hb ℂ j
     rw [hj] at hfr'
     exact hex ⟨_, v', w', hfr'⟩

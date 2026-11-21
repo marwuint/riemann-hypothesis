@@ -7,11 +7,11 @@ import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTra
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PositionMv
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NotGeoClFalse
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnLocalDataTransportDivision
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConcreteSplitPrimeAutomorphicDataDivisionLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConcreteSplitPrimeAutomorphicDataDivisionLattice
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelTaylorSeriesPreservedDivisionLatticeChangeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaAutomorphicWeilDataPreservedDivisionLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DivisionLocalDataPreservedDivisionLatticeChangeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodTwistsThetaLatticesPreservedDivisionChangeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodTwistsThetaLatticesPreservedDivisionChange
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl NumberField IsDedekindDomain
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -25,7 +25,7 @@ set_option maxHeartbeats 16000000 in
 
 theorem witMv_of_positionMv : ∀ 𝒮 : Slots, PositionMv 𝒮 → WitMv 𝒮 := by
   intro 𝒮 hS K B f T w Z O x N h hE
-  have hR := GlobalTheory.T.concreteSplitPrimeAutomorphicData_divisionLatticeChange K.s (w.D Z) x.col.Gt x.col.cmp x.col.g.herm x.col.g.forms N h x.col.isRec
+  have hR := _root_.GlobalTheory.Mem.Top.Bl.WitTr.isRecG_setDiv K.s (w.D Z) x.col.Gt x.col.cmp x.col.g.herm x.col.g.forms N h x.col.isRec
   let col := columnLocalDataTransportDivision w Z N h x.col hR
   obtain ⟨k, hk⟩ := GlobalTheory.T.kernelTaylorSeries_preserved_divisionLatticeChange w Z x.col.toColT O.X O.Gy x.ker0 x.ker N h hE
   let n := nchTTr w Z N h x.n
@@ -68,7 +68,7 @@ theorem witMv_of_positionMv : ∀ 𝒮 : Slots, PositionMv 𝒮 → WitMv 𝒮 :
       real := { x.real with }
       dsig_eq := x.dsig_eq
       gauge := x.gauge
-      good := GlobalTheory.T.goodTwistsThetaLattices_preserved_divisionChange (w.D Z) O.nch O.xd N h x.good }, hk⟩
+      good := _root_.GlobalTheory.Mem.Top.Bl.WitTr.goodO_setDiv (w.D Z) O.nch O.xd N h x.good }, hk⟩
 
 end GlobalTheory.Mem.Top.Bl
 

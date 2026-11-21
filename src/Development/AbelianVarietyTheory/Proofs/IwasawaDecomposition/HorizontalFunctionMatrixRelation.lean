@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HorizontalCoordinatePolynomialBoundStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExponentialChartAtPointStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExponentialChartAtPoint
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousOnFrameDirectionsInverseStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HorizontalCoordinateLatticeIsometryDetOneStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConstantPeriodMarkingUniversalCoverStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodLinearAlgebraHodgeSequenceExactStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodLinearAlgebraHodgeSequenceExact
 
 set_option autoImplicit false
 
@@ -101,80 +101,5 @@ theorem differentiableOn_finset_prod {V J : Type} [NormedAddCommGroup V] [Normed
   | insert i u hi ih =>
     simp only [Finset.prod_insert hi]
     exact (h i (Finset.mem_insert_self i u)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
-
-theorem logGrowth_of_eq_perVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (τ : E →+* ℂ) (x : ∀ i, Idx Dw τ → (Fu.Di i).La) (hm : Fin Fu.n → Matrix (Idx Dw τ) (Idx Dw τ) E) (h : CxFr T.Z σ → ℂ), Formalism.L2.PjFree.GoodEmb c σ → 1 ≤ Dw.p + Dw.q → (∀ i, IsPerBasis (Fu.Di i) (x i) (hm i)) → (∀ a i Q, Per Fu a i Q → h a = perVal c σ τ (x i) (hm i) Q) → LogGrowth h := by
-  classical
-  intro E _ _ _ H Dw l Xo c O _ β Y T σ g e Fu τ x hm h hσ hpq hx hh x₀
-  obtain ⟨n, g', r, ka, ch, ex, lam, ρ, hx₀, he0, hL⟩ := GlobalTheory.T.exists_exponential_chart_at_point E H Dw l Xo c O β Y T σ hσ hpq x₀
-  obtain ⟨hE, hIn, -, hlam, C0, k0, hC0⟩ := id hL
-  refine ⟨ch.source ∩ ch ⁻¹' Metric.ball 0 (1 / 2),
-    fun y => ∏ j ∈ Finset.univ.filter (fun j : Fin n => (j : ℕ) < ka), ch y j, ?_, ?_, ?_, ?_, ?_⟩
-  · exact ch.isOpen_inter_preimage Metric.isOpen_ball
-  · refine ⟨hx₀, ?_⟩
-    simp only [Set.mem_preimage, he0, Metric.mem_ball, dist_self]
-    norm_num
-  · intro V _ _ _ B y hB hy hmaps
-    show DifferentiableOn ℂ (fun b => ∏ j ∈ Finset.univ.filter (fun j : Fin n => (j : ℕ) < ka), ch (y b) j) B
-    exact differentiableOn_finset_prod (f := fun j b => ch (y b) j)
-      fun j _ => hE.2.1 j V B y hB hy fun b hb => (hmaps hb).1
-  · intro y hy
-    simp only [Finset.prod_ne_zero_iff, Finset.mem_filter, Finset.mem_univ, true_and]
-    exact (hIn y hy.1).symm
-  · intro V _ _ _ B f hB hf hfN b₀ hb₀
-    obtain ⟨i, T₀, hT⟩ := GlobalTheory.T.exists_constant_periodMarking_universalCover E H Dw l Xo c O β T.Z σ g e Fu n g' r ka ch ex lam ρ hL
-    obtain ⟨C, k, hCk⟩ := GlobalTheory.T.horizontalCoordinate_polynomial_bound E H Dw l c σ (Fu.Di i) τ (x i) (hm i) g' r T₀ ρ (hx i)
-    obtain ⟨W, Wi, hW, hWi, hWW⟩ :=
-      GlobalTheory.T.exists_continuousOn_frameDirections_inverse E H Dw l Xo c O β T.Z σ n g' ch ex hE V B f hB hf fun b hb => (hfN b hb).1
-    obtain ⟨M, hM0, hMe⟩ := eventually_entries_le (hW.continuousAt (hB.mem_nhds hb₀))
-    obtain ⟨M', hM'0, hMe'⟩ := eventually_entries_le (hWi.continuousAt (hB.mem_nhds hb₀))
-    set K : ℝ := 1 + M + M' + |C0| * 5 ^ k0 with hK
-    have hc5 : 0 ≤ |C0| * 5 ^ k0 := by positivity
-    refine ⟨max C 0 * K ^ k, k0 * k, ?_⟩
-    filter_upwards [hMe, hMe', hB.mem_nhds hb₀] with b hbW hbWi hbB
-    intro hin
-    obtain ⟨hys, hyb⟩ := hfN b hbB
-    have hyb' : ‖ch (f b).1‖ < 1 / 2 := by
-      simpa only [Set.mem_preimage, Metric.mem_ball, dist_zero_right] using hyb
-    have hnz : ∀ j : Fin n, (j : ℕ) < ka → ch (f b).1 j ≠ 0 := (hIn _ hys).mp hin
-    obtain ⟨s, hsD, hsE, hsIm, hsB⟩ := exists_log_lift ka (ch (f b).1) hyb' hnz
-    have hsymm : ch.symm (logExp ka s) = (f b).1 := by rw [hsE]; exact ch.left_inv hys
-    obtain ⟨Q, gm, hPer, hIso, hQ⟩ := hT s hsD (f b) (W b) hsymm.symm (hWW b hbB).1
-    have hGood := GlobalTheory.T.periodLinearAlgebra_hodgeSequence_exact E H Dw l Xo c O β T.Z σ g e Fu τ (f b) i Q (x i) (hm i) hPer (hx i)
-    obtain ⟨hGood', hnorm, -⟩ := GlobalTheory.T.horizontalCoordinate_lattice_isometry_det_one E H Dw l c σ (Fu.Di i) τ (x i) (hm i) Q gm (hx i) hGood hIso
-    have hhb : h (f b) = perVal c σ τ (x i) (hm i) Q := hh (f b) i Q hPer
-    have hlamb : ‖lam s‖ ≤ C0 * (1 + ‖s‖) ^ k0 := hC0 s hsD (by rw [hsE]; exact hyb'.le) hsIm
-    set large₂ : ℝ := 1 + |Real.log ‖∏ j ∈ Finset.univ.filter (fun j : Fin n => (j : ℕ) < ka), ch (f b).1 j‖| with hLg
-    have hLg1 : 1 ≤ large₂ := le_add_of_nonneg_right (abs_nonneg _)
-    have hpowL : 1 ≤ large₂ ^ k0 := one_le_pow₀ hLg1
-    set A : ℝ := max 1 (max (max M M') ‖lam s‖) with hA
-    have hA1 : 1 ≤ A := le_max_left _ _
-    have hKle : K ≤ K * large₂ ^ k0 := le_mul_of_one_le_right (by linarith) hpowL
-    have hlam' : ‖lam s‖ ≤ K * large₂ ^ k0 := by
-      calc ‖lam s‖ ≤ C0 * (1 + ‖s‖) ^ k0 := hlamb
-        _ ≤ |C0| * (1 + ‖s‖) ^ k0 := mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)
-        _ ≤ |C0| * (5 * large₂) ^ k0 :=
-            mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hsB k0) (abs_nonneg _)
-        _ = (|C0| * 5 ^ k0) * large₂ ^ k0 := by rw [mul_pow]; ring
-        _ ≤ K * large₂ ^ k0 := mul_le_mul_of_nonneg_right (by linarith) (by positivity)
-    have hAK : A ≤ K * large₂ ^ k0 :=
-      max_le (by linarith) (max_le (max_le (by linarith) (by linarith)) hlam')
-    have hb := hCk (Q.comp gm.toLinearMap.toAddMonoidHom) (W b) (Wi b) (lam s) A hGood'
-      (hWW b hbB).2.1 (hWW b hbB).2.2 (fun v => hQ v) (hlam s hsD).2.2 hA1
-      (fun z j => (hbW z j).trans (le_trans (le_trans (le_max_left M M') (le_max_left _ _)) (le_max_right _ _)))
-      (fun j z => (hbWi j z).trans (le_trans (le_trans (le_max_right M M') (le_max_left _ _)) (le_max_right _ _)))
-      (fun m j => (norm_le_pi_norm (lam s m) j).trans
-        ((norm_le_pi_norm (lam s) m).trans (le_trans (le_max_right _ _) (le_max_right _ _))))
-    have hAk : A ^ k ≤ K ^ k * large₂ ^ (k0 * k) := by
-      calc A ^ k ≤ (K * large₂ ^ k0) ^ k := pow_le_pow_left₀ (by linarith) hAK k
-        _ = K ^ k * large₂ ^ (k0 * k) := by rw [mul_pow, ← pow_mul]
-    have hCA : C * A ^ k ≤ max C 0 * K ^ k * large₂ ^ (k0 * k) := by
-      calc C * A ^ k ≤ max C 0 * A ^ k := mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)
-        _ ≤ max C 0 * (K ^ k * large₂ ^ (k0 * k)) := mul_le_mul_of_nonneg_left hAk (le_max_right _ _)
-        _ = max C 0 * K ^ k * large₂ ^ (k0 * k) := by ring
-    have key1 : ‖h (f b)‖ ≤ max C 0 * K ^ k * large₂ ^ (k0 * k) := by
-      rw [hhb, ← hnorm]; exact hb.1.trans hCA
-    have key2 : ‖(h (f b))⁻¹‖ ≤ max C 0 * K ^ k * large₂ ^ (k0 * k) := by
-      rw [hhb, norm_inv, ← hnorm, ← norm_inv]; exact hb.2.trans hCA
-    exact ⟨key1, key2⟩
 
 end GlobalTheory.ShFam.Hor

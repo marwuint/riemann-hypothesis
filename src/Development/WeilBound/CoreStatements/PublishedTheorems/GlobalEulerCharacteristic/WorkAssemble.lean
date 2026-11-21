@@ -1,4 +1,4 @@
-import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.WorkEndn
+import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.WorkEndx
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.WorkSplit
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.WorkKilledB
 import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.RatioEqOneOfCyclic
@@ -29,14 +29,6 @@ theorem ratio_eq_one_of_coprime_cyclic' (ℓ : ℕ) [Fact ℓ.Prime] (K : Finite
     gsEulerRatio S M ιr = 1 :=
   W_killed_c.ratio_eq_one_of_cyclic ℓ K S hS hSℓ ιr L hL hN M hℓ htriv
     (fun L' _ hL' hle hcyc => W_killed_b.ratio_coind_cyclic ℓ K S hS hSℓ ιr L hL hN M hℓ htriv hK L' hL' hle hcyc)
-
-theorem ratioOneKilled_two (h : RatioOne 2 (fun K => NumberField.IsTotallyComplex K.1)) :
-    RatioOneKilled 2 (fun _ => True) := by
-  intro K S hS hS2 _ ιr M _ _ h2
-  obtain ⟨L, hKL, hL, hN, -, hc, htriv⟩ := W_split.exists_split 2 K S hS hS2 M
-  have htc : NumberField.IsTotallyComplex L.1 := hc.resolve_left (by simp)
-  exact ratio_eq_one_of_coprime_cyclic' 2 K S hS hS2 ιr L hL hN M h2 htriv
-    (W_endn.ending_narrow h K S hS hS2 ιr L hL hN M h2 htriv htc)
 
 theorem ratioOneKilled_of_lemmaX (ℓ : ℕ) [Fact ℓ.Prime] (hX : GlobalEulerCharCoprime) :
     RatioOneKilled ℓ (fun _ => True) := by

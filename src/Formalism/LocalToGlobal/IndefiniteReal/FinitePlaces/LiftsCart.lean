@@ -34,8 +34,6 @@ end Formalism.IndefR.Fin.Lifts
 
 namespace Formalism.IndefR.Fin
 
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
 end Formalism.IndefR.Fin
 
 end

@@ -11,21 +11,6 @@ open PowerSeries
 
 variable {K : Type} [Field K] [CharZero K]
 
-theorem even_iff_rescale (f : PowerSeries K) :
-    (∀ n, Odd n → coeff n f = 0) ↔ rescale (-1 : K) f = f := by
-  constructor
-  · intro h
-    ext n
-    rw [PowerSeries.coeff_rescale]
-    rcases Nat.even_or_odd n with he | ho
-    · rw [he.neg_one_pow, one_mul]
-    · rw [h n ho, mul_zero]
-  · intro h n hn
-    have h1 := congrArg (coeff n) h
-    rw [PowerSeries.coeff_rescale, hn.neg_one_pow] at h1
-    have h2 : (2 : K) * coeff n f = 0 := by linear_combination -h1
-    exact (mul_eq_zero.mp h2).resolve_left two_ne_zero
-
 theorem rescale_fExp (a : K) {f : PowerSeries K} (hf : constantCoeff f = 0) :
     rescale a (fExp f) = fExp (rescale a f) := by
   rw [PowerSeries.rescale_eq_subst, PowerSeries.rescale_eq_subst]
@@ -36,11 +21,6 @@ theorem rescale_fExp (a : K) {f : PowerSeries K} (hf : constantCoeff f = 0) :
     simp
   exact subst_fExp (φ := fun _ => (a • PowerSeries.X : PowerSeries K)) hφ hf
 
-theorem fExp_even {f : PowerSeries K} (hf : constantCoeff f = 0)
-    (h : ∀ n, Odd n → coeff n f = 0) : ∀ n, Odd n → coeff n (fExp f) = 0 := by
-  rw [even_iff_rescale] at h ⊢
-  rw [rescale_fExp _ hf, h]
-
 theorem coeff_prim_succ (f : PowerSeries K) (n : ℕ) :
     coeff (n + 1) (prim f) = coeff n f / ((n + 1 : ℕ) : K) := by
   simp [prim, PowerSeries.coeff_mk]
@@ -48,53 +28,12 @@ theorem coeff_prim_succ (f : PowerSeries K) (n : ℕ) :
 theorem coeff_zero_prim (f : PowerSeries K) : coeff 0 (prim f) = 0 := by
   simp [prim, PowerSeries.coeff_mk]
 
-theorem prim_prim_even {f : PowerSeries K} (h : ∀ n, Odd n → coeff n f = 0) :
-    ∀ n, Odd n → coeff n (prim (prim f)) = 0 := by
-  intro n hn
-  obtain ⟨k, rfl⟩ := hn
-  rw [coeff_prim_succ]
-  rcases k with _ | k
-  · simp [coeff_zero_prim]
-  · have e : 2 * (k + 1) = (2 * k + 1) + 1 := by ring
-    rw [e, coeff_prim_succ, h (2 * k + 1) ⟨k, rfl⟩]
-    simp
-
 theorem constantCoeff_sigS (P : PowerSeries K) : constantCoeff (sigS P) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, sigS, map_neg, coeff_zero_prim, neg_zero]
 
 theorem constantCoeff_sig1S (e1 kap : K) (w : PowerSeries K) :
     constantCoeff (sigmaOneSeries e1 kap w) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, sigmaOneSeries, map_neg, coeff_zero_prim, neg_zero]
-
-theorem sigmaSeriesOdd : SigmaOdd := by
-  intro K _ _ P hP
-  have hs : ∀ n, Odd n → coeff n (sigS P) = 0 := by
-    intro n hn
-    rw [sigS, map_neg, prim_prim_even hP n hn, neg_zero]
-  have he := fExp_even (constantCoeff_sigS P) hs
-  have h0 : PowerSeries.constantCoeff (fExp (sigS P) : PowerSeries K) = 1 :=
-    constantCoeff_fExp (constantCoeff_sigS P)
-  constructor
-  · have h1 := PowerSeries.coeff_succ_X_mul 0 (fExp (sigS P) : PowerSeries K)
-    simp only [zero_add] at h1
-    rw [sigma, h1, PowerSeries.coeff_zero_eq_constantCoeff_apply]
-    exact h0
-  · intro n hn
-    rcases n with _ | m
-    · simp [sigma]
-    · rw [sigma, PowerSeries.coeff_succ_X_mul]
-      exact he m (Nat.not_even_iff_odd.mp (Nat.even_add_one.mp hn))
-
-theorem sigmaOneEven : Sigma1Even := by
-  intro K _ _ e1 kap w hw
-  have hf : ∀ n, Odd n → coeff n (PowerSeries.C e1 + PowerSeries.C kap * w) = 0 := by
-    intro n hn
-    have hn0 : n ≠ 0 := hn.pos.ne'
-    simp [PowerSeries.coeff_C, hn0, PowerSeries.coeff_C_mul, hw n hn]
-  have hs : ∀ n, Odd n → coeff n (sigmaOneSeries e1 kap w) = 0 := by
-    intro n hn
-    rw [sigmaOneSeries, map_neg, prim_prim_even hf n hn, neg_zero]
-  exact ⟨constantCoeff_fExp (constantCoeff_sig1S e1 kap w), fExp_even (constantCoeff_sig1S e1 kap w) hs⟩
 
 private theorem pd_unit_eq_dz (f : PowerSeries K) : pd () f = dz f := by
   ext n

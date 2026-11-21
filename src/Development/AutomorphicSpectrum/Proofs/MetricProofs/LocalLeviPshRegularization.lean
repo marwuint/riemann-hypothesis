@@ -2,8 +2,8 @@ import Mathlib
 import ReciprocityTheory.AnalyticForms.LeviForms.RegGlue
 import ReciprocityTheory.AnalyticForms.LeviForms.RegChartC
 import ReciprocityTheory.AnalyticForms.LeviForms.TailCut
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalPshRegularizationLogBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalRegularizationGradientBoundStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalPshRegularizationLogBound
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalRegularizationGradientBound
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MollifyConvergesC2Rate
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
@@ -168,8 +168,8 @@ theorem regularise_one_chart :
       (oc_grad (oc_rLoc_ge S m hz.1).1 hC₅ hQ0 (hQ z hz.1).2 (hg z hz))
   obtain ⟨ρ⟩ := ReciprocityTheory.AnForm.A.mollifierInhabit_thm D
   obtain ⟨C₁, t₁, w, hC₁, ht₁, ht₁e, ht₁8, hW⟩ :=
-    GlobalTheory.T.local_psh_regularization_log_bound D S m (fun z => q z + ph z) (C₅ + Q) ρ hucont hupsh hubd
-  obtain ⟨t₂, ht₂, hN⟩ := GlobalTheory.T.local_regularization_gradient_bound D S m (fun z => q z + ph z) (C₅ + Q) K hm
+    _root_.GlobalTheory.CompanionTheory.Ar.Giv.molli_trunc_near_polyMax D S m (fun z => q z + ph z) (C₅ + Q) ρ hucont hupsh hubd
+  obtain ⟨t₂, ht₂, hN⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.polyMaxOff_le_of_rLoc_le D S m (fun z => q z + ph z) (C₅ + Q) K hm
     ((huS.differentiableOn (by simp)).mono hsub) hugrad
   obtain ⟨phT, hphT⟩ : ∃ phT : ℝ → (Fin D → ℂ) → ℝ,
       ∀ t z, phT t z = ReciprocityTheory.AnForm.A.molli ρ t (w t) z - q z := ⟨_, fun _ _ => rfl⟩

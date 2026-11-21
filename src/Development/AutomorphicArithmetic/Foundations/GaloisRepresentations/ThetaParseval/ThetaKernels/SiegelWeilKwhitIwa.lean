@@ -51,9 +51,6 @@ theorem kfin_om_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {Φ : 
   rintro _ ⟨k', rfl⟩
   refine Submodule.subset_span ⟨⟨k'.1 * k, d.K.mul_mem k'.2 hk⟩, ?_⟩
   simp [map_mul, Module.End.mul_apply]
-section Forms
-variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
-end Forms
 local notation:70 X:70 " ⬝ " Y:71 => @HMul.hMul _ _ _ Matrix.instHMulOfFintypeOfMulOfAddCommMonoid X Y
 theorem frame_form_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : ∃ C' : Matrix (Fin d.n) (Fin d.n) (AE F E),
     (incM F d.b.1)ᵀ * dbl (incM F d.Y.J) * (incM F d.b.1).map (cA σ) = Matrix.fromBlocks 0 1 C' 0 := by

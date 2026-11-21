@@ -132,35 +132,6 @@ lemma CechAcyclic.of_retract {G : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (ι' : 
   refine ⟨push U r n τ, ?_⟩
   rw [← push_d, hτ, push_comp, hr, push_id]
 
-variable {P} in
-
-lemma CechAcyclic.of_shortExact {F I Q : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (f : F ⟶ I) (g : I ⟶ Q)
-    (hfg : f ≫ g = 0)
-    (hinj : ∀ {n : ℕ} (i : Fin n → ι), Function.Injective (f.app (op (inter U i))))
-    (hex : ∀ {n : ℕ} (i : Fin n → ι) (y : I.obj (op (inter U i))),
-      g.app _ y = 0 → ∃ x, f.app _ x = y)
-    (hsurj : ∀ {n : ℕ} (i : Fin n → ι), Function.Surjective (g.app (op (inter U i))))
-    (hF : CechAcyclic F U) (hI : CechAcyclic I U) : CechAcyclic Q U := by
-  intro n σ hσ
-
-  choose τ hτ using fun i => hsurj i (σ i)
-  have hτ' : push U g (n + 1) τ = σ := funext hτ
-
-  have h0 : push U g (n + 2) (d I U (n + 1) τ) = 0 := by rw [push_d, hτ', hσ]
-  choose ρ hρ using fun j => hex j _ (congrFun h0 j)
-  have hρ' : push U f (n + 2) ρ = d I U (n + 1) τ := funext hρ
-
-  have hρc : d F U (n + 2) ρ = 0 := by
-    apply push_injective U f (n + 3) (fun j => hinj j)
-    rw [map_zero, push_d, hρ', d_d]
-  obtain ⟨α, hα⟩ := hF (n + 1) ρ hρc
-
-  have hc : d I U (n + 1) (τ - push U f (n + 1) α) = 0 := by
-    rw [map_sub, ← push_d, hα, hρ', sub_self]
-  obtain ⟨β, hβ⟩ := hI n _ hc
-  refine ⟨push U g n β, ?_⟩
-  rw [← push_d, hβ, map_sub, hτ', push_comp, hfg, push_zero', sub_zero]
-
 def discPresheaf (A : X → AddCommGrpCat.{u}) : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u} where
   obj W := AddCommGrpCat.of (∀ x : W.unop, A x.1)
   map h := AddCommGrpCat.ofHom

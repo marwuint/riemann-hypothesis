@@ -4,9 +4,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Go
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ChernWeilNumbers
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralOfEqMul
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicInvertibleFrameCoordinates
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernDensityFrameIndepChartJacobianFactorStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernDensityFrameIndepChartJacobianFactor
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AntisymmFibrePointTwo
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TopChernDensityInvariantHolomorphicFrameChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernTopChartIndependent
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableChernPolyTopDensityStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GluedChartDensityMeasureAddOfCompatibleOnStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GluedChartDensityMeasureAddOfCompatibleOn
+import Development.AbelianVarietyTheory.Definitions.Divisors.ChartMeasApplyOfSubset
 
 open AlgebraicGeometry MvPolynomial GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
@@ -110,7 +114,7 @@ theorem glueMeas_sum {J : Type} (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e 
   | insert a s ha ih =>
     simp only [Finset.sum_insert ha]
     rw [← ih]
-    exact GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS (ρ a) (fun i y => ∑ j ∈ s, ρ j i y) (hc a) (compat_sum s hc) (hm a)
+    exact _root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS (ρ a) (fun i y => ∑ j ∈ s, ρ j i y) (hc a) (compat_sum s hc) (hm a)
 
 end Glue
 
@@ -145,7 +149,7 @@ theorem aemeasurable_dens (E : Fr (ratOf X) m 0) (O : X.X.Opens) (H : Mat m X.Fn
   refine (ae_restrict_mem (hWo A).measurableSet).mono fun v hv => ?_
   obtain ⟨⟨hvt, hvS⟩, hvA⟩ := hv
   have hy : c.e.symm v ∈ c.e.source := c.e.map_target hvt
-  have := GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hvS c c hy hy (E.nonempty (under (c.e.symm v))).choose_spec hvA
+  have := _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans E O H hH R hvS c c hy hy (E.nonempty (under (c.e.symm v))).choose_spec hvA
   rw [c.transDet_self hy, norm_one, one_pow, one_mul, c.e.right_inv hvt] at this
   show chernTop R (fun w => H A (c.e.symm w)) v = chernTop R (fun w => H (E.nonempty (under (c.e.symm v))).choose (c.e.symm w)) (c.e (c.e.symm v))
   rw [c.e.right_inv hvt, this]
@@ -238,10 +242,10 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
     chernTop R' (fun v => H' j ((E' j).nonempty (under y)).choose (c.e.symm v)) (c.e y)
   have fc : ∀ i k y, y ∈ S → y ∈ (e i).source → y ∈ (e k).source →
       f i y = ‖transDet (e i) (e k) y‖ ^ 2 * f k y := fun i k y hy hi hk =>
-    GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hy i k hi hk (E.nonempty _).choose_spec (E.nonempty _).choose_spec
+    _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans E O H hH R hy i k hi hk (E.nonempty _).choose_spec (E.nonempty _).choose_spec
   have gc : ∀ j, ∀ i k y, y ∈ S → y ∈ (e i).source → y ∈ (e k).source →
       g j i y = ‖transDet (e i) (e k) y‖ ^ 2 * g j k y := fun j i k y hy hi hk =>
-    GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor (E' j) O (H' j) (hH' j) R' hy i k hi hk ((E' j).nonempty _).choose_spec
+    _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans (E' j) O (H' j) (hH' j) R' hy i k hi hk ((E' j).nonempty _).choose_spec
       ((E' j).nonempty _).choose_spec
   have fm : ∀ i, AEMeasurable (fun v => f i ((e i).symm v)) (volume.restrict ((e i).target ∩ (e i).symm ⁻¹' S)) :=
     fun i => aemeasurable_dens E O H hH R i
@@ -251,12 +255,12 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
   have hfg : ∀ i, ∀ y ∈ (e i).source, y ∈ S → f i y = ∑ j, a j * g j i y := by
     intro c y hc hy
     obtain ⟨A, hA, B, hB, h⟩ := hlin y hy c hc
-    have h1 := GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hy c c hc hc (E.nonempty (under y)).choose_spec hA
+    have h1 := _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans E O H hH R hy c c hc hc (E.nonempty (under y)).choose_spec hA
     rw [c.transDet_self hc, norm_one, one_pow, one_mul] at h1
     show chernTop R _ (c.e y) = _
     rw [h1, h]
     refine Finset.sum_congr rfl fun j _ => ?_
-    have h2 := GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor (E' j) O (H' j) (hH' j) R' hy c c hc hc ((E' j).nonempty (under y)).choose_spec (hB j)
+    have h2 := _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans (E' j) O (H' j) (hH' j) R' hy c c hc hc ((E' j).nonempty (under y)).choose_spec (hB j)
     rw [c.transDet_self hc, norm_one, one_pow, one_mul] at h2
     show _ = a j * chernTop R' _ (c.e y)
     rw [h2]
@@ -284,7 +288,7 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
         (fun j => ((cg j 1).add (cg j (-1))).const_mul _) (fun j => ((mg j 1).add (mg j (-1))).const_mul _)]
       refine ENNReal.sum_ne_top.2 fun j _ => ?_
       rw [glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top,
-        GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS (pg j 1) (pg j (-1)) (cg j 1) (cg j (-1)) (mg j 1)]
+        _root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS (pg j 1) (pg j (-1)) (cg j 1) (cg j (-1)) (mg j 1)]
       exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top
         (ENNReal.add_ne_top.2 ⟨hQ j 1 (Or.inl rfl), hQ j (-1) (Or.inr rfl)⟩)
     · show ENNReal.ofReal (s * f i y) ≤ _
@@ -299,13 +303,13 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
   have hT : ∀ j (u w : ℝ), glueMeas e (fun i y => ENNReal.ofReal u * pg j 1 i y + ENNReal.ofReal w * pg j (-1) i y) S =
       ENNReal.ofReal u * glueMeas e (pg j 1) S + ENNReal.ofReal w * glueMeas e (pg j (-1)) S := by
     intro j u w
-    rw [GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS _ _ ((cg j 1).const_mul _) ((cg j (-1)).const_mul _) ((mg j 1).const_mul _),
+    rw [_root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS _ _ ((cg j 1).const_mul _) ((cg j (-1)).const_mul _) ((mg j 1).const_mul _),
       glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top, glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top]
   have hside : ∀ (s : ℝ) (u w : J → ℝ), glueMeas e (fun i y => pf s i y + ∑ j, (ENNReal.ofReal (u j) * pg j 1 i y +
       ENNReal.ofReal (w j) * pg j (-1) i y)) S = glueMeas e (pf s) S + ∑ j, (ENNReal.ofReal (u j) *
       glueMeas e (pg j 1) S + ENNReal.ofReal (w j) * glueMeas e (pg j (-1)) S) := by
     intro s u w
-    rw [GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS _ _ (cf s) (compat_sum _ fun j => ((cg j 1).const_mul _).add ((cg j (-1)).const_mul _))
+    rw [_root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS _ _ (cf s) (compat_sum _ fun j => ((cg j 1).const_mul _).add ((cg j (-1)).const_mul _))
       (mf s), glueMeas_sum e hd hcov hS Finset.univ (fun j i y => ENNReal.ofReal (u j) * pg j 1 i y +
         ENNReal.ofReal (w j) * pg j (-1) i y) (fun j => ((cg j 1).const_mul _).add ((cg j (-1)).const_mul _))
         (fun j => ((mg j 1).const_mul _).add ((mg j (-1)).const_mul _))]

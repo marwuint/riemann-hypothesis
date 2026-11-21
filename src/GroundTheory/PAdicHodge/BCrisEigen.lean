@@ -1,7 +1,9 @@
 import Mathlib
-import GroundTheory.PAdicHodge.BCrisEigenFixed
+import GroundTheory.PAdicHodge.BCrisNewton
+import GroundTheory.PAdicHodge.GalSmulAlgebraMapPadicPlus
 import GroundTheory.PAdicHodge.BCrisEigenChar
 import GroundTheory.PAdicHodge.BCrisEigenMaps
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -252,24 +254,6 @@ theorem isUnit_of_forall_galB_eq_mul (hST : SenTateCharacters p)
       refine ⟨q, ?_⟩
       rw [← iotaB_galB (K := K) hε hζ σ b, hq, map_mul, iotaB_algebraMap_padic_bdRPlus])
   exact isUnit_of_twist hε hζ (L := L) hb0 hyu hf huL hc
-
-include hζ in
-set_option maxHeartbeats 3200000 in
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem isRegular_bCris (hST : SenTateCharacters p) {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
-    [FiniteDimensional ℚ_[p] K] :
-    letI := isDomain_bCris hε hζ
-    letI := galBAction (K := K) hε
-    haveI := smulCommClass_galBAction (K := K) hε
-    IsRegular Gal(PadicAlgCl p/K) ℚ_[p] (BCris hε) :=
-  letI := isDomain_bCris hε hζ
-  letI := galBAction (K := K) hε
-  haveI := smulCommClass_galBAction (K := K) hε
-  { image_fixedPoints := image_fixedPoints_fractionRing (K := K) hε hζ
-    isUnit_of_mem_span := fun b hb0 hb => isUnit_of_forall_galB_eq_mul hε hζ hST hb0 fun σ => by
-      obtain ⟨q, hq⟩ := Submodule.mem_span_singleton.1 (hb σ)
-      exact ⟨q, (hq.symm.trans (Algebra.smul_def q b) :)⟩ }
 
 end ACris
 

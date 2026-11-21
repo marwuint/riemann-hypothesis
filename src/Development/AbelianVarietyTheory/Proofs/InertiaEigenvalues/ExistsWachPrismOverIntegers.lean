@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsOfLay
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EmbWInjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CDvdOfMapEqZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicIntegersEqWittZetaSubOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniqueUnramifiedIntegersCoordsBasisStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniqueUnramifiedIntegersCoordsBasis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWachInclusionPowerSeriesIntoOneTmulAinfStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeomSumOneAddPrime
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgHomExtOfConstantCoeffZero
@@ -360,7 +360,7 @@ theorem GlobalTheory.PrismS.exists_prism : ∀ (l : ℕ) [Fact l.Prime] (P : Loc
     congr 2
     exact RingHom.ext fun z => (embW (Γ.emb i)).commutes z
   have h9 := fun (d : ℕ) (o : Module.Basis (Fin d) ℤ_[l] ↥(OL LL)) x =>
-    existsUnique_series (fun k => (embW (Γ.emb k)).toRingHom) o (GlobalTheory.T.existsUnique_unramifiedIntegers_coords_basis l K LL Γ.emb Γ.emb_bij.1 d o) x
+    existsUnique_series (fun k => (embW (Γ.emb k)).toRingHom) o (_root_.GlobalTheory.PrismSplit.existsUnique_coords l K LL Γ.emb Γ.emb_bij.1 d o) x
   refine ⟨prismS P hs _ hf str, _, evHom P hs hf str, ioHom P hs io hf hstr (io_phiS I hio hφ),
     fun g => actHom P hs hf hstr g (χ (g : GQ l) : ℤ_[l]) (hθ g),
     letEmb Γ.emb, PowerSeries.map (algebraMap ℤ_[l] (WK K)), (X : (WK K)⟦X⟧), QQ l (WK K) s,

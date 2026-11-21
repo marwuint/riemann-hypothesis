@@ -166,11 +166,6 @@ private theorem Hp_le_orth_Xsp (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : 
   intro x hx
   exact hy x (hX hx)
 
-theorem h_le_orth_second_frame (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.IsLattice D.host.E Λ) {T' : D.host.E}
-    (F' : LFlag (VS D) D.R.rS T') (hL : IsLift Λ (lf D F0)) (hL' : IsLift Λ F') :
-    Hp Λ (lf D F0) F' ≤ orth (VS D) (Xsp F') := by
-  exact Hp_le_orth_Xsp Λ hΛ _ F'
-
 end BwdBetaCut
 
 theorem betaCore₂_of (h1 : BetaRat Zd u u' F0 what₂) (h2 : ScalarOf Zd u u' F0 what₂) (h3 : BetaInt Zd u u' F0 what₂) :

@@ -53,8 +53,6 @@ structure IsOp (N : Submodule ℂ (Sm E a)) (T : Module.End ℂ (Sm E a)) : Prop
   lie : ∀ X, ∀ φ ∈ N, lie E a X (T φ) = T (lie E a X φ)
   rt : ∀ g, ∀ φ ∈ N, rt E a g (T φ) = T (rt E a g φ)
 
-theorem isOp_one (N : Submodule ℂ (Sm E a)) : IsOp N 1 := ⟨fun _ h => h, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
-
 def LocLim (f : ℕ → Sm E a) (φ : Sm E a) : Prop :=
   ∀ C : Set (GA E a), IsCompact C → TendstoUniformlyOn (fun k => (f k).1) φ.1 atTop C
 
@@ -260,11 +258,6 @@ def OpLim : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a → ∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (T : ℕ → HL μ →L[ℂ] HL μ) (P : HL μ →L[ℂ] HL μ), (∀ k, Comm (T k)) → Comm P →
     (∀ F, Tendsto (fun k => T k F) atTop (𝓝 (P F))) → ∀ (T' : ℕ → Module.End ℂ (Sm E a)) P', (∀ k, Lifts μ (T k) (T' k)) →
     Lifts μ P P' → ∀ φ ∈ gard μ, LocLim (fun k => T' k φ) (P' φ)
-
-def CasAd : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (n : ℕ) (e : Fin n → Herm E a), IsFrame e → ∀ (A : Type) [Ring A] [Module ℝ A] [IsScalarTower ℝ A A] [SMulCommClass ℝ A A]
-    (L : Lie E a →ₗ[ℝ] A) (u : A) (y : GL (Fin a) (Cinf E)),
-    (∀ X : Matrix (Fin a) (Fin a) (Cinf E), u * L (toL X) = L (toL (y.val * X * (y⁻¹).val)) * u) → Commute u (cas L e)
 
 def CasOp : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (n : ℕ) (e : Fin n → Herm E a), IsFrame e → ∀ r c : ℝ, (∀ X, Commute (lie E a X) (casA r c e)) ∧ (∀ g, Commute (rt E a g) (casA r c e)) ∧

@@ -184,15 +184,6 @@ theorem dualApp_theta (l : Γ(dual F, V)) {W : X.Opens} (h : W ≤ V) (e : T ≤
   rw [theta, adj_app]
   exact dualApp_pullForm f l h (hS.trans e) e' s
 
-theorem theta_naturality (φ : F ⟶ G) :
-    (Scheme.Modules.pullback f).map (dualMap φ) ≫ theta f F =
-      theta f G ≫ dualMap ((Scheme.Modules.pullback f).map φ) :=
-  pull_ext f fun V l => dual_pull_ext f le_rfl fun W h S hS e s => by
-    change dualApp ((theta f F).app _ (((Scheme.Modules.pullback f).map (dualMap φ)).app _ _)) hS _ =
-      dualApp ((theta f G).app _ _) hS (((Scheme.Modules.pullback f).map φ).app _ _)
-    rw [QCoh.pullback_map_app_pullbackSections, QCoh.pullback_map_app_pullbackSections,
-      dualApp_theta f _ h, dualApp_theta f _ h, dualApp_dualMap]
-
 theorem isIso_theta {r : ℕ} (h : IsVB F r) : IsIso (theta f F) := by
   have := h.isQuasicoherent
   have := h.dual.isQuasicoherent
@@ -206,9 +197,5 @@ theorem isIso_theta {r : ℕ} (h : IsVB F r) : IsIso (theta f F) := by
       exact (he.pullback_basis_repr f hW e' s i).symm
   rw [funext H]
   exact (he.pullback f).dual
-
-theorem exists_dual_pullback : ∀ (X Y : Scheme.{0}) (f : Y ⟶ X), ∃ θ : ∀ F : X.Modules, (Scheme.Modules.pullback f).obj (dual F) ⟶ dual ((Scheme.Modules.pullback f).obj F), (∀ (F G : X.Modules) (φ : F ⟶ G), (Scheme.Modules.pullback f).map (dualMap φ) ≫ θ F = θ G ≫ dualMap ((Scheme.Modules.pullback f).map φ)) ∧ (∀ (F : X.Modules) (V : X.Opens) (T : Y.Opens) (e : T ≤ f ⁻¹ᵁ V) (l : Γ(dual F, V)) (s : Γ(F, V)), dualApp ((θ F).app T (GlobalTheory.QCoh.pullbackSections f (dual F) e l)) le_rfl (GlobalTheory.QCoh.pullbackSections f F e s) = f.appLE V T e (dualApp l le_rfl s)) ∧ ∀ (F : X.Modules) (r : ℕ), IsVB F r → IsIso (θ F) :=
-  fun _ _ f => ⟨theta f, fun _ _ φ => theta_naturality f φ,
-    fun _ _ _ e l s => dualApp_theta f l le_rfl e le_rfl e s, fun _ _ h => isIso_theta f h⟩
 
 end GlobalTheory.DualPull

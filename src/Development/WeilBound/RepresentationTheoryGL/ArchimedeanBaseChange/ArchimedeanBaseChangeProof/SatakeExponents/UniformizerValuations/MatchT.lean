@@ -67,8 +67,6 @@ def MatchLin : Prop :=
     (∀ j, Continuous (f j) ∧ HasCompactSupport (f j) ∧ Continuous (φ j) ∧ HasCompactSupport (φ j)) →
     (∀ j, Match n a b w μ (f j) (φ j)) → Match n a b w μ (fun γ => ∑ j, c j * f j γ) (fun y => ∑ j, c j * φ j y)
 
-def MatchTOf : Prop := M4 → FUMul → DcosMul → MatchLin → MatchT
-
 def CtMul : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a : ℕ) (ha : a ≤ n) (w : Pl E), IsSplitAt w →
     ∀ μ : (w.adicCompletion E)ˣ →* ℂˣ, (∀ u : (w.adicCompletion E)ˣ, ordL (u : w.adicCompletion E) = 0 → μ u = 1) →

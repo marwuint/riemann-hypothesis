@@ -23,12 +23,6 @@ def inv (ψ : PChar) : PChar :=
     have h : ψ.χ.conductor = ψ.N := ψ.prim
     exact (DirichletCharacter.conductor_inv ψ.χ).trans h⟩
 
-theorem inv_inv (ψ : PChar) : ψ.inv.inv = ψ := by
-  cases ψ
-  simp only [inv]
-  congr 1
-  exact _root_.inv_inv _
-
 def of {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : PChar :=
   @PChar.mk χ.conductor ⟨χ.conductor_ne_zero⟩ χ.primitiveCharacter χ.primitiveCharacter_isPrimitive
 
@@ -63,15 +57,9 @@ variable (T : HType)
 
 def SM : Finset ℕ := (2 * T.P0 * ∏ ψ ∈ T.KEPT, ψ.N).primeFactors
 
-def P : ℕ := ∏ p ∈ (∏ l ∈ T.SM, l * (l - 1)).primeFactors.erase 2, p
-
 def z (X : ℝ) : ℝ := X ^ (T.eps / (5 * (T.J : ℝ)))
 
 def z' (X : ℝ) : ℝ := T.z X * Real.log (X ^ ((1 : ℝ) / T.J)) ^ 2
-
-def L (x : ℝ) : ℝ := x ^ T.eps
-
-def b (x : ℝ) : ℝ := Real.exp (T.L x)
 
 def X' (x : ℝ) : ℝ := Real.exp (x ^ (T.eps / 3))
 

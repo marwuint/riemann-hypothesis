@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPrismHomsAgreeWittAndModIdealStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsApproxRootEisensteinAwayPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalPeriodRingsSectionEqAinfToBdRPlusStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinApproxRootImageIndepStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ApproxRootSubUniformizerMemFilPStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsApproxRootEisensteinAwayPrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalPeriodRingsSectionEqAinfToBdRPlus
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinApproxRootImageIndep
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ApproxRootSubUniformizerMemFilP
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc
 open scoped Formalism.Per NNReal
@@ -84,7 +84,7 @@ theorem good_C (w : Wq l bk.a) :
   · have h := bk.θ_ev (bk.str.symm (Ideal.Quotient.mk _ (PowerSeries.C w))) (PowerSeries.C w)
       (bk.str.apply_symm_apply _).symm
     rw [bk.ev_C] at h
-    have h2 := GlobalTheory.T.localPeriodRings_section_eq_ainfToBdRPlus l bk.a C w
+    have h2 := _root_.GlobalTheory.SeedSec.o_eq_aDp_wA l bk.a C w
       (((bk.str.symm (Ideal.Quotient.mk _ (PowerSeries.C w)) : ↥(OL K)) : ↥K.1) : Om l)
       (by rw [h]; exact coe_intToOC K _)
     have h3 : oK K C (bk.str.symm (Ideal.Quotient.mk _ (PowerSeries.C w))) = aDp l (wA l bk.a w) := h2
@@ -94,8 +94,8 @@ theorem good_C (w : Wq l bk.a) :
     exact dvd_zero _
 
 theorem good_X : Good bk C n (bk.str.symm (Ideal.Quotient.mk _ X)) := by
-  obtain ⟨m, q, h1, h2⟩ := GlobalTheory.T.exists_approx_root_eisenstein_away_prime l K bk n
-  exact ⟨m, q, GlobalTheory.T.approxRoot_sub_uniformizer_mem_filP l K bk C n m q h1 h2, GlobalTheory.T.breuilKisin_approxRoot_image_indep l K bk n m q h1 h2⟩
+  obtain ⟨m, q, h1, h2⟩ := _root_.GlobalTheory.BSP.BK.exists_approx_root l K bk n
+  exact ⟨m, q, _root_.GlobalTheory.BSP.approxRoot_sub_mem_fil l K bk C n m q h1 h2, _root_.GlobalTheory.BSP.approx_root_indep l K bk n m q h1 h2⟩
 
 theorem good_poly (P : Polynomial (Wq l bk.a)) :
     Good bk C n (bk.str.symm (Ideal.Quotient.mk _ (P : bk.S))) := by

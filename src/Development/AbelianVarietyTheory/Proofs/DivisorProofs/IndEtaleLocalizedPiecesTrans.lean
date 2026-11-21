@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EssEtaleLocalLeOfDirectedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalRingEtaleOverIndEtaleDirectedUnionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EssEtaleLocalLeOfDirected
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalRingEtaleOverIndEtaleDirectedUnion
 open IsLocalRing
 
 namespace GlobalTheory
@@ -14,13 +14,13 @@ theorem indEtale_localPieces_trans : ∀ (R S T : Type) [CommRing R] [CommRing S
       (∀ m, ∀ x ∈ V m, ∀ y ∈ Tj j, x * y = 1 → ∃ z ∈ V m, x * z = 1) ∧ ∀ m, (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] V m)) := by
     intro j
     obtain ⟨B, _, _, _, Q, _, ⟨e⟩⟩ := hpc j
-    exact GlobalTheory.T.localRing_etale_over_indEtale_directedUnion R S T hS (Tj j) B Q ⟨e⟩
+    exact _root_.GlobalTheory.localDecomp_indEtale R S T hS (Tj j) B Q ⟨e⟩
   choose μ pre dir ne V hVmono hVle hVcov hVloc hVee using hK
   let P : Subalgebra R T → Prop := fun W => ∃ (j : κ) (m : μ j), V j m = W
   have key : ∀ (j₁ : κ) (m₁ : μ j₁) (j : κ), j₁ ≤ j → ∃ m : μ j, V j₁ m₁ ≤ V j m := by
     intro j₁ m₁ j hj
     letI := pre j; haveI := dir j; haveI := ne j
-    refine GlobalTheory.T.exists_le_of_essEtaleLocal_directed R T ((Tj j).restrictScalars R) (μ j) (V j) (hVmono j) ?_ ?_ (V j₁ m₁) ?_
+    refine _root_.GlobalTheory.essEtaleLocal_le_of_directed R T ((Tj j).restrictScalars R) (μ j) (V j) (hVmono j) ?_ ?_ (V j₁ m₁) ?_
       (hVee j₁ m₁)
     · intro x hx; exact hVcov j x hx
     · intro m x hx y hy hxy; exact hVloc j m x hx y hy hxy

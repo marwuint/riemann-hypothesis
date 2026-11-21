@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneAtOne
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualCoreComponentGluedAlongPairStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticeResiduePairEqScalarOfSameStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticeResiduePairEqScalarOfSameStabilizer
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralUnitaryScalarOfNormOneIdeleStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsNormOneIdeleWithSplitPlaceComponentStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthogonalEmbeddingKeepsGluedCoreIffFixesPairStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneHomothetyCarriesSelfDualOfSplitComponentStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthogonalEmbeddingKeepsGluedCoreIffFixesPair
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneHomothetyCarriesSelfDualOfSplitComponent
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualImageAdelicPointWittCoreStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualSplitComponentIsLatticeStabilizerEq
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaUnfoldingEquivariantUnitaryGroups
@@ -137,19 +137,19 @@ theorem exists_central_sMoves : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel 
     rw [e]
     exact (hlat x).symm
   have hstab : ∀ g : GL n k, g • P = P ↔ g • P' = P' := fun g => by
-    rw [← GlobalTheory.T.orthogonalEmbedding_keeps_gluedCore_iff_fixes_pair D k p S A L o ζ n β β₀ M q 1 P hsum hM one_ne_zero hW g,
-      ← GlobalTheory.T.orthogonalEmbedding_keeps_gluedCore_iff_fixes_pair D k p S A L o ζ n β β₀ M'' q _ P' hsum hsd'' hm hP' g,
+    rw [← _root_.GlobalTheory.Core.Mi.LatMatch.moves_emb_iff_smul_eq D k p S A L o ζ n β β₀ M q 1 P hsum hM one_ne_zero hW g,
+      ← _root_.GlobalTheory.Core.Mi.LatMatch.moves_emb_iff_smul_eq D k p S A L o ζ n β β₀ M'' q _ P' hsum hsd'' hm hP' g,
       hconj _ (GlobalTheory.FinPl.FrameLat.gl_mem_grpAt β g)]
     have e : o.emb (a₀ * β.gl g * a₀⁻¹, 1) = o.emb (a₀, 1) * o.emb (β.gl g, 1) * (o.emb (a₀, 1))⁻¹ := by
       rw [← map_inv, ← map_mul, ← map_mul, Prod.inv_mk, Prod.mk_mul_mk, Prod.mk_mul_mk, inv_one, mul_one, mul_one]
     rw [e, moves_conj hmv']
-  obtain ⟨g, s, hs, hg, hPP⟩ := GlobalTheory.T.latticeResiduePair_eq_scalar_of_same_stabilizer k n P P' hn hstab
+  obtain ⟨g, s, hs, hg, hPP⟩ := _root_.GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab k n P P' hn hstab
   obtain ⟨c, hc, hcpr⟩ := GlobalTheory.T.exists_normOneIdele_with_splitPlace_component D k p (p.pr (incA D μ))⁻¹ (inv_ne_zero hm)
   obtain ⟨c', hc', hc'pr⟩ := GlobalTheory.T.exists_normOneIdele_with_splitPlace_component D k p (s * p.pr (incA D μ)) (mul_ne_zero hs hm)
   obtain ⟨a, hcen, hamt⟩ := GlobalTheory.T.exists_centralUnitary_scalar_of_normOneIdele D A p.v c' hc'
   refine ⟨a, c, hcen, hc, ?_⟩
   have key : SMoves S c (o.emb (a, 1)) M M'' p.v := by
-    refine GlobalTheory.T.normOneHomothety_carries_selfDual_of_splitComponent D k p S M M'' c (o.emb (a, 1)) hM hsd'' hc fun x => ?_
+    refine _root_.GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp D k p S M M'' c (o.emb (a, 1)) hM hsd'' hc fun x => ?_
     have hx : x = β₀.b *ᵥ (β₀.b' *ᵥ x) := by rw [Matrix.mulVec_mulVec, β₀.bb', Matrix.one_mulVec]
     rw [hx, emb_central_frame hsum hamt, ← Matrix.mulVec_smul, hW, hP']
     refine (mem_gluedS_smul q hs hg hPP _ _).trans (iff_of_eq ?_)

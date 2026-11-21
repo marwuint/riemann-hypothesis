@@ -40,11 +40,6 @@ theorem cwl_coeffT_add (d : Fin r × Fin n →₀ ℕ)
   ext m
   simp [cwl_coeff_coeffT]
 
-theorem cwl_coeffT_zero (d : Fin r × Fin n →₀ ℕ) :
-    cwl_coeffT (R := R) d 0 = 0 := by
-  ext m
-  simp [cwl_coeff_coeffT]
-
 theorem cwl_coeffT_sum {ι : Type*} (s : Finset ι) (d : Fin r × Fin n →₀ ℕ)
     (G : ι → MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     cwl_coeffT d (∑ i ∈ s, G i) = ∑ i ∈ s, cwl_coeffT d (G i) := by

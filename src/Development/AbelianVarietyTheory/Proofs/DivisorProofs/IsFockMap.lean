@@ -18,35 +18,17 @@ def IsLift (x t : ℚ) (M : GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R
   Function.Surjective pr ∧ (∀ X f, pr (fockAct1 P Q R S X f) = ((x : ℂ) * X.trace) • pr f) ∧
     ∀ Y f, M.act Y (pr f) = pr (fockAct2 P Q R S Y f) + ((t : ℂ) * Y.trace) • pr f
 
-def Num (P Q P' Q' R S : ℕ) (κ : ℤ) : Prop :=
-  R = P + Q' ∧ S = Q + P' ∧ S < P ∧ S < Q' ∧ Even (R + S) ∧ Even κ ∧ ((R + S : ℕ) : ℤ) < κ
-
 def lam (P Q R S : ℕ) (κ : ℤ) : Ix R S → ℚ
   | .inl i => if (i : ℕ) < P then (κ : ℚ) / 2 - cPair R S + cPair P Q else cPair P Q
   | .inr j => if (j : ℕ) < Q then (κ : ℚ) / 2 + cPair R S - cPair P Q else -cPair P Q
 
-def casK (μ : Ix R S → ℚ) : ℚ :=
-  ∑ a, μ a ^ 2 + (∑ i : Fin R, μ (.inl i) * ((R : ℚ) - 1 - 2 * (i : ℕ))) + ∑ j : Fin S, μ (.inr j) * ((S : ℚ) - 1 - 2 * (j : ℕ))
-
 def addRoot (μ : Ix R S → ℚ) (a b : Ix R S) : Ix R S → ℚ :=
   fun c => μ c + (if c = a then 1 else 0) - (if c = b then 1 else 0)
 
-def Steep (M : GKMod R S) (Λ : Ix R S → ℚ) : Prop :=
-  ∀ a b, ¬ sameBlock a b → ∀ w, IsHW M.act (addRoot Λ a b) w → casK Λ + ((R + S : ℕ) : ℚ) < casK (addRoot Λ a b)
-
 def GenBy (M : GKMod R S) (Λ : Ix R S → ℚ) : Prop := ∃ v, IsHW M.act Λ v ∧ genSub M.act {v} = ⊤
-
-def IsQuot (M N : GKMod R S) (π : M.V →ₗ[ℂ] N.V) : Prop :=
-  Function.Surjective π ∧ ∀ Y v, π (M.act Y v) = N.act Y (π v)
 
 def ScalarEnd (M : GKMod R S) : Prop :=
   ∀ T : M.V →ₗ[ℂ] M.V, (∀ Z, T ∘ₗ M.act Z = M.act Z ∘ₗ T) → ∃ c : ℂ, T = c • LinearMap.id
-
-def HasForm (P Q R S : ℕ) (x : ℚ) : Prop :=
-  ∃ l : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] ℂ, l ≠ 0 ∧ ∀ X f, l (fockAct1 P Q R S X f) = (x : ℂ) * X.trace * l f
-
-def IsHarmVec (x : ℚ) (μ : Ix R S → ℚ) (f : Formalism.BasicNotions.TH.Pol P Q R S) : Prop :=
-  f ∈ harm2 P Q R S ∧ (∀ X, IsKC X → fockAct1 P Q R S X f = ((x : ℂ) * X.trace) • f) ∧ IsHW (fockAct2 P Q R S) μ f
 
 def heisOp (c : Matrix (Ix P Q) (Ix R S) ℂ) : Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S) :=
   ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) • ∑ l : Ln P Q R S,
@@ -56,14 +38,6 @@ def IsFrame {α : Type} [Fintype α] [DecidableEq α] (M : Matrix α α ℂ) (A 
   Aᵀ * M * A.map star = Jm P Q ∧ ∃ A' : Matrix (Ix P Q) α ℂ, A * A' = 1
 
 end OnePlace
-
-def MultOne : Prop :=
-  ∀ (R S : ℕ) (M : GKMod R S) (Λ : Ix R S → ℚ) (v : M.V), IsHW M.act Λ v → genSub M.act {v} = ⊤ → Steep M Λ →
-    ∀ w ∈ hwSub M.act Λ, ∃ c : ℂ, w = c • v
-
-def FormEx : Prop :=
-  ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), P ≤ R → Q ≤ S → 0 < k → 0 < k' → x - cPair R S = k → x + cPair R S = k' →
-    HasForm P Q R S x
 
 section Tensor
 
@@ -237,8 +211,6 @@ def Parity : Prop :=
 
 theorem lines_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     (X : Spc F E n) : Lines σ X = RLines σ (incM F X.J) := rfl
-
-example : IsFrame (P := 1) (Q := 1) (Jm 1 1) 1 := ⟨by simp [Matrix.map_one], 1, by simp⟩
 
 end GlobalTheory.RealLift
 

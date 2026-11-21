@@ -132,18 +132,9 @@ section Block
 variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {T : Type} {r : T → ℕ}
   {Orb : Type} {tau : Orb → Fin 2 → ZMod d → T} {o0 : Orb} {J0 : Fin 2 → Type} [∀ g, Fintype (J0 g)]
 
-def wRow (r : T → ℕ) (tau : Orb → Fin 2 → ZMod d → T) (o0 : Orb) {N : ℕ} (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ)
-    (x : Fin N × WV (IIof r tau o0)) : ℕ :=
-  if x.2.1 = g0 ∧ x.2.2.1 = t0 ∧ (x.2.2.2 : ℕ) = c0 then 1 else 0
-
 variable (X : RowData C V d (IIof r tau o0) J0) (F : Flag X)
   (hty : ∀ g (x : IIof r tau o0 g), (X.G g).ty (Sum.inl x) = x.1)
   (std : ∀ g t (c : Fin (X.rkF g t)), ((F.en g t c).2 : ℕ) = c.val)
-
-include hty in
-theorem en_fst (g : Fin 2) (t : ZMod d) (c : Fin (X.rkF g t)) : (F.en g t c).1 = t := by
-  rw [← hty g (F.en g t c)]
-  exact F.en_ty g t c
 
 include hty in
 theorem rkF_eq (g : Fin 2) (t : ZMod d) : X.rkF g t = r (tau o0 g t) := by
@@ -158,70 +149,6 @@ theorem rkF_eq (g : Fin 2) (t : ZMod d) : X.rkF g t = r (tau o0 g t) := by
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, hty] at hc'
     subst hc'
     exact ⟨c, Finset.mem_univ _, rfl⟩
-
-include hty std in
-theorem wRow_letter {N : ℕ} (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (t : ZMod d)
-    (x : Fin N × Fin (X.rkF g t)) :
-    wRow r tau o0 g0 t0 c0 (F.letter g t x) = if (g = g0 ∧ t = t0) ∧ (x.2 : ℕ) = c0 then 1 else 0 := by
-  unfold wRow Flag.letter
-  simp only [en_fst X F hty, std]
-  simp only [and_assoc]
-
-include hty std in
-theorem isWH_letter_minorK {N k : ℕ} (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (t : ZMod d) :
-    IsWeightedHomogeneous (wRow r tau o0 (N := N) g0 t0 c0) (rename (F.letter g t) (minorK C N (X.rkF g t) k))
-      (if k ≤ N ∧ k ≤ X.rkF g t ∧ (g = g0 ∧ t = t0) ∧ c0 < k then 1 else 0) := by
-  apply isWH_rename
-  exact isWH_minorK_row (R := C) (g = g0 ∧ t = t0) c0 (fun x => wRow_letter X F hty std g0 t0 c0 g t x)
-
-include hty in
-theorem num_ch (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (t : ZMod d) (u : ℕ) :
-    u • (if X.n ≤ X.n ∧ X.n ≤ X.rkF g t ∧ (g = g0 ∧ t = t0) ∧ c0 < X.n then 1 else 0) =
-      ∑ k ∈ Finset.Icc (c0 + 1) (r (tau o0 g0 t0)), (if g0 = g ∧ t0 = t ∧ k = X.n then u else 0) := by
-  by_cases hg : g0 = g ∧ t0 = t
-  · obtain ⟨rfl, rfl⟩ := hg
-    rw [rkF_eq X hty]
-    simp only [le_refl, true_and, eq_self_iff_true]
-    rw [Finset.sum_ite_eq']
-    simp only [Finset.mem_Icc]
-    by_cases hc : X.n ≤ r (tau o0 g0 t0) ∧ c0 < X.n
-    · rw [if_pos hc, if_pos ⟨by omega, hc.1⟩, smul_eq_mul, mul_one]
-    · rw [if_neg hc, if_neg (fun h => hc ⟨h.2, by omega⟩), smul_zero]
-  · rw [Finset.sum_eq_zero (fun k _ => if_neg (fun h => hg ⟨h.1, h.2.1⟩))]
-    rw [if_neg (fun h => hg ⟨h.2.2.1.1.symm, h.2.2.1.2.symm⟩), smul_zero]
-
-include hty in
-theorem num_mon (g0 : Fin 2) (t0 : ZMod d) (c0 : ℕ) (g : Fin 2) (e : ZMod d → ℕ → ℕ) (N : ℕ) :
-    (∑ t : ZMod d, ∑ k ∈ Finset.Icc 1 (min N (X.rkF g t)),
-      e t k • (if k ≤ N ∧ k ≤ X.rkF g t ∧ (g = g0 ∧ t = t0) ∧ c0 < k then 1 else 0)) =
-      ∑ k ∈ Finset.Icc (c0 + 1) (r (tau o0 g0 t0)),
-        (if g0 = g ∧ 1 ≤ k ∧ k ≤ min N (X.rkF g t0) then e t0 k else 0) := by
-  by_cases hg : g = g0
-  · subst hg
-    rw [Finset.sum_eq_single t0]
-    · rw [rkF_eq X hty]
-      have hL : ∀ k ∈ Finset.Icc 1 (min N (r (tau o0 g t0))),
-          e t0 k • (if k ≤ N ∧ k ≤ r (tau o0 g t0) ∧ (g = g ∧ t0 = t0) ∧ c0 < k then 1 else 0) =
-            if c0 < k then e t0 k else 0 := by
-        intro k hk
-        rw [Finset.mem_Icc] at hk
-        by_cases hc : c0 < k
-        · rw [if_pos ⟨by omega, by omega, ⟨rfl, rfl⟩, hc⟩, if_pos hc, smul_eq_mul, mul_one]
-        · rw [if_neg (fun h => hc h.2.2.2), if_neg hc, smul_zero]
-      rw [Finset.sum_congr rfl hL, ← Finset.sum_filter, ← Finset.sum_filter]
-      congr 1
-      ext k
-      simp only [Finset.mem_filter, Finset.mem_Icc, eq_self_iff_true, true_and]
-      omega
-    · intro t _ ht
-      apply Finset.sum_eq_zero
-      intro k _
-      rw [if_neg (fun h => ht h.2.2.1.2), smul_zero]
-    · simp
-  · trans 0
-    · exact Finset.sum_eq_zero fun t _ => Finset.sum_eq_zero fun k _ => by
-        rw [if_neg (fun h => hg h.2.2.1.1), smul_zero]
-    · exact (Finset.sum_eq_zero fun k _ => if_neg (fun h => hg h.1.symm)).symm
 
 end Block
 

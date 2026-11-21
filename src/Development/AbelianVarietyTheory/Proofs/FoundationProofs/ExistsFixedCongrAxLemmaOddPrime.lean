@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTLawAt
 import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeNatCastIff
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInductionStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInduction
 
 open Polynomial
 
@@ -142,7 +142,7 @@ theorem exists_fixed [IsAlgClosed K] {p : ℕ} (hp : p.Prime) (h1 : A.valuation 
   swap
   · refine ⟨α, fun h hh => ?_, by simpa using ge_zero _⟩
     exact Finset.card_le_one.mp (by omega : T.card ≤ 1) _ ((hmem _).mpr ⟨h, hh, rfl⟩) _ ((hmem _).mpr ⟨1, H.one_mem, rfl⟩)
-  obtain ⟨j, e, hj0, hj, hdvd, hloss⟩ := GlobalTheory.T.exists_choose_small_padicVal_ax_induction p hp T.card h2
+  obtain ⟨j, e, hj0, hj, hdvd, hloss⟩ := _root_.GlobalTheory.exists_choose_small_valuation_ax p hp T.card h2
   change _ + loss p _ ≤ loss p _ at hloss
   obtain ⟨β, hβ, hαβ⟩ := exists_root_hasseDeriv h0 h1.le T α (a := a) (fun t ht => by
     obtain ⟨h, hh, rfl⟩ := (hmem t).mp ht

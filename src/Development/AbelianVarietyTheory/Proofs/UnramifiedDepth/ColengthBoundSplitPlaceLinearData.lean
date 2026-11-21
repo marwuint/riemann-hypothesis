@@ -13,8 +13,8 @@ import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisI
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AbelianPartCokernelLengthLeStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsAbelianTorusGeneratorsAtPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DiscrPowerBasis
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenspaceDimAddSplitExactTransposeStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LatticeInequalityValuationIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenspaceDimAddSplitExactTranspose
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LatticeInequalityValuationIntegers
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HasLenExistsMonoFp
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PadicUnitQuotientPrincipalBasis
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenbasisRestrictionSurjectiveEquivariant
@@ -89,7 +89,7 @@ theorem colength_bound_linDat : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C
     intro τ hτ
     obtain ⟨W', hW''⟩ := hW' τ hτ
     have h1 := (GlobalTheory.ChF.eigB_res_surjective C v O hv OE d rm ρG τ W' hW'').2.2
-    have h2 := (GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C O OE d r g A B hL.exact ρG
+    have h2 := (_root_.GlobalTheory.EigAdd.eigDim_add_transpose C O OE d r g A B hL.exact ρG
       ((RingHom.mapMatrix (Int.castRingHom O)).comp N)
       (H.ρL.comp (Algebra.TensorProduct.includeRight : OE →ₐ[ℤ] ℤ_[p] ⊗[ℤ] OE).toRingHom)
       hL.eqB hL.eqA ((algebraMap O C).comp τ)).1
@@ -137,7 +137,7 @@ theorem colength_bound_linDat : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C
   have hcc : cw ≤ c := hmono _ _ f cw c hf hcw hc
   have hcw0 : (0 : ℝ) < cw := lt_of_lt_of_le (Real.rpow_pos_of_pos (by exact_mod_cast hp0) _) hcwb
   have hc0 : c ≠ 0 := (lt_of_lt_of_le (by exact_mod_cast hcw0) hcc : (0 : NNReal) < c).ne'
-  obtain ⟨x, hx, hineq⟩ := GlobalTheory.T.lattice_inequality_valuation_integers C v O hv ⟨_, hp0, hp1⟩ w.n rp h
+  obtain ⟨x, hx, hineq⟩ := _root_.GlobalTheory.ChF.lattice_ineq_integers C v O hv ⟨_, hp0, hp1⟩ w.n rp h
     (fun j => tauExt ((t j : Emb (O := O) w.e) : OE →+* O) α) hinj (LinearMap.range κ) hMfg
     (by rintro _ ⟨u, rfl⟩; exact hmem α u)
     (by

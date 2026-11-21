@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalSquaringPathsBaseChangeAndHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalSquaringPathsRigidOfProperCharZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecInjectiveRingMapCancellationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusRationalSquaringPathsRigidCharZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalSquaringPathsBaseChangeAndHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalSquaringPathsRigidOfProperCharZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecInjectiveRingMapCancellation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusRationalSquaringPathsRigidCharZero
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -26,10 +26,6 @@ theorem algebraMap_comp_C (Ω : Type) [Field Ω] :
   have := RatFunc.coe_coe (Polynomial.C c)
   simp only [Polynomial.coe_C] at this
   exact this.symm
-
-theorem unitSec_comp {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H) [IsMonHom f] :
-    unitSec G ≫ f.left = unitSec H := by
-  rw [unitSec, unitSec, sec, sec, ← Over.comp_left, IsMonHom.one_hom]
 
 theorem isLocalHom_field {K L : Type} [Field K] [Field L] (φ : K →+* L) : IsLocalHom φ :=
   ⟨fun x hx => by
@@ -76,8 +72,8 @@ theorem ratRigid_of_torusExtension : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (G
   haveI : IsProper E.B.hom := E.isAbelian.proper
   haveI := mono_i E
   haveI := isLocalHom_field (algebraMap (RatFunc Ω) (LaurentSeries Ω))
-  obtain ⟨-, bc2⟩ := GlobalTheory.T.formalSquaringPaths_baseChange_and_hom
-  obtain ⟨epi1, -⟩ := GlobalTheory.T.spec_injectiveRingMap_cancellation
+  obtain ⟨-, bc2⟩ := _root_.GlobalTheory.Nef.paths_bc
+  obtain ⟨epi1, -⟩ := _root_.GlobalTheory.Nef.spMap_injective_cancel
   set T := splitTorus (Sp Ω) E.X
   set a := algebraMap (RatFunc Ω) (LaurentSeries Ω)
   set ι₀ := algebraMap (PowerSeries Ω) (LaurentSeries Ω)
@@ -85,7 +81,7 @@ theorem ratRigid_of_torusExtension : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (G
   have hC : spMap a ≫ spMap RatFunc.C = spMap ι₀ ≫ spMap (PowerSeries.C (R := Ω)) := by
     rw [← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, algebraMap_comp_C]
   have hq : ξ ≫ E.q.left = spMap (PowerSeries.C (R := Ω)) ≫ unitSec E.B := by
-    have := GlobalTheory.T.rationalSquaringPathsRigid_of_proper_charZero Ω E.B inferInstance (ξ ≫ E.q.left) ((bc2 _ G E.B E.q Ω 2 (𝟙 _) ξ).1 hξ)
+    have := _root_.GlobalTheory.Nef.ratRigid_of_isProper_of_charZero Ω E.B inferInstance (ξ ≫ E.q.left) ((bc2 _ G E.B E.q Ω 2 (𝟙 _) ξ).1 hξ)
       ⟨β ≫ E.q.left, by rw [← Category.assoc, hβ, Category.assoc]⟩
     rw [this, triv, Category.id_comp]
   have hbase : ξ ≫ G.hom = spMap (PowerSeries.C (R := Ω)) := by
@@ -104,7 +100,7 @@ theorem ratRigid_of_torusExtension : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (G
         (bc2 _ T G E.i Ω 2 (𝟙 _) ζ).2.2, reassoc_of% hζ]
   have hrat : IsRatPath ζ :=
     ⟨βT, by rw [← cancel_mono E.i.left, Category.assoc, hβT, hβ, Category.assoc, hζ]⟩
-  have h := GlobalTheory.T.splitTorus_rationalSquaringPathsRigid_charZero Ω E.X ζ hpath hrat
+  have h := _root_.GlobalTheory.Nef.splitTorus_ratRigid Ω E.X ζ hpath hrat
   rw [← hζ, h, (bc2 _ T G E.i Ω 2 (𝟙 _) ζ).2.1]
 
 end GlobalTheory.Nef

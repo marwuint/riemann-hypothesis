@@ -306,35 +306,6 @@ theorem Lam_contr (m m' : Matrix (Fin k) (Fin k) A) (h : m * m' = 1) (y : Fin k 
 theorem Lam_empty (m : Matrix (Fin k) (Fin k) A) (J : Finset (Fin k)) (hJ : J ≠ ∅) : abelian₂ m ∅ J = 0 := by
   simp [abelian₂, img_empty, extOne, hJ]
 
-theorem Lam_empty_self (m : Matrix (Fin k) (Fin k) A) : abelian₂ m ∅ ∅ = 1 := by
-  simp [abelian₂, img_empty, extOne]
-
-theorem Lam_card (m : Matrix (Fin k) (Fin k) A) (I J : Finset (Fin k)) (h : I.card ≠ J.card) : abelian₂ m I J = 0 := by
-  have key : ∀ (I J : Finset (Fin k)), J.card ≠ I.card → img m I J = 0 := by
-    intro I
-    induction I using Finset.induction_on_max with
-    | empty =>
-      intro J hJ
-      rw [img_empty]
-      simp only [extOne]
-      rw [if_neg]
-      intro h
-      apply hJ
-      simp [h]
-    | insert b s hb ih =>
-      intro J hJ
-      have hbs : b ∉ s := fun h => lt_irrefl b (hb b h)
-      rw [img_insert_max m b s hb]
-      simp only [wedgeR]
-      apply Finset.sum_eq_zero
-      intro a ha
-      rw [ih (J.erase a) ?_, mul_zero]
-      rw [Finset.card_erase_of_mem ha]
-      rw [Finset.card_insert_eq_ite, if_neg hbs] at hJ
-      have := Finset.card_pos.2 ⟨a, ha⟩
-      omega
-  exact key I J (Ne.symm h)
-
 theorem Lam_map {A' : Type*} [CommRing A'] (φ : A →+* A') (m : Matrix (Fin k) (Fin k) A) :
     (abelian₂ m).map φ = abelian₂ (m.map φ) := by
   have key : ∀ (I J : Finset (Fin k)), φ (img m I J) = img (m.map φ) I J := by

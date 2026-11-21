@@ -229,22 +229,6 @@ def InsFree : Prop :=
     (∀ c, c ≠ a → FreeOf2 c M → FreeOf c (ins a M)) ∧
       ∀ b : SlopeTestRemainingChoices S A, FreeOf a b → (∀ i j, Commute b (M i j)) → Commute b (ins a M)
 
-def PositionRTTPlus : Prop :=
-  ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
-    [Fintype S] [DecidableEq S] (a : S) (M N : M2 (SlopeTestRemainingChoices S A)) (D : K),
-    FreeOf2 a M → FreeOf2 a N →
-    (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)) * E1 M * E2 N =
-      E2 N * E1 M * (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)) →
-    Rh0 a D * M * d0 (ins a N) = d0 (ins a N) * M * Rh0 a D
-
-def PositionRTTMinus : Prop :=
-  ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
-    [Fintype S] [DecidableEq S] (b : S) (M N : M2 (SlopeTestRemainingChoices S A)) (d : K),
-    FreeOf2 b M → FreeOf2 b N →
-    (d • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)) * E1 N * E2 M =
-      E2 M * E1 N * (d • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)) →
-    d0 (ins b Nᵀ) * Rht0 b d * M = M * Rht0 b d * d0 (ins b Nᵀ)
-
 def StartModule : Prop :=
   ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
     [Fintype S] [DecidableEq S] (QQ : K → M2 A) (q : K → K),
@@ -344,22 +328,6 @@ def SitesOK {K A : Type} [Field K] [Ring A] [StarRing A] [Algebra K A]
     (QQ : K → M2 A) (sites : List (Site A)) : Prop :=
   (∀ σ ∈ sites, IsSite σ ∧ QQCommutes QQ σ) ∧ sites.Pairwise SitesCommute
 
-def ExchVecA : Prop :=
-  ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
-    [Fintype S] [DecidableEq S] (QQ : K → M2 A) (sites : List (Site A)) (w : List (Letter K S)) (Y : K),
-    SitesOK QQ sites → Good w → Reg w Y →
-    ∀ (k : Fin 2) (z : Ix S),
-      (∑ l, ∑ z', (Xp w Y k l : SlopeTestRemainingChoices S A) z z' * (v0 sites Y l * uw sites w z')) =
-        uw sites w z * v0 sites Y k
-
-def ExchVecB : Prop :=
-  ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
-    [Fintype S] [DecidableEq S] (QQ : K → M2 A) (sites : List (Site A)) (w : List (Letter K S)) (Y : K),
-    SitesOK QQ sites → Good w → Reg w Y → star Y = Y →
-    ∀ (l : Fin 2) (z : Ix S),
-      (∑ k, ∑ z', star (v0 sites Y k) * (Xm w Y k l : SlopeTestRemainingChoices S A) z z' * uw sites w z') =
-        uw sites w z * star (v0 sites Y l)
-
 def CwEigen : Prop :=
   ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
     [Fintype S] [DecidableEq S] (QQ : K → M2 A) (sites : List (Site A)) (w : List (Letter K S)) (Y : K),
@@ -419,18 +387,6 @@ def KapFormula : Prop :=
   ∀ (K S : Type) [Field K] [StarRing K] (q : K → K) (w L : List (Letter K S)),
     Good (L ++ w) → Good (L.map dl ++ w) → DualOK q w L → kap q w L = kapF q w L
 
-def RhUU : Prop :=
-  ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
-    [Fintype S] [DecidableEq S] (a : S) (D s : K),
-    lift0 (Um (A := A) s) * d0 (ins a (lift0 (Um (A := A) s))) * Rh0 a D =
-      Rh0 a D * (lift0 (Um (A := A) s) * d0 (ins a (lift0 (Um (A := A) s))))
-
-def RhtUU : Prop :=
-  ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
-    [Fintype S] [DecidableEq S] (b : S) (d s : K),
-    d0 (ins b (lift0 (Um (A := A) (star s)))) * Rht0 b d * lift0 (Um (A := A) s)ᴴ =
-      lift0 (Um (A := A) s)ᴴ * Rht0 b d * d0 (ins b (lift0 (Um (A := A) (star s))))
-
 def PlaneWaveVec : Prop :=
   ∀ (K A S : Type) [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K A] [StarModule K A]
     [Fintype S] [DecidableEq S] (σ : Site A) (f fi : A) (s : K) (w : List (Letter K S)),
@@ -446,14 +402,5 @@ def PlaneWaveWord : Prop :=
     star (Vw f s w) * RRw QQ w * Vw f s w = RRw QQ w ∧
     ∀ Y, d0 (Viw fi s w) * TTw QQ w Y * d0 (Vw f s w) =
       lift0 (Um (A := A) s)ᴴ * TTw QQ w Y * lift0 (Um (A := A) s)
-
-def WordsAll : Prop :=
-  WordModule ∧ SiteStep ∧ EntryOne ∧ CwEigen ∧ UwProduct ∧ DualityList ∧ KapFormula ∧ PlaneWaveVec ∧
-    PlaneWaveWord
-
-def WordsAssemble : Prop :=
-  InsMul → InsStar → InsDiag → InsFree → PositionRTTPlus → PositionRTTMinus → StartModule → ExchPlus →
-  ExchMinus → LetterPlus → LetterMinus → WordFree → TTFactor → ExchangePlusFactor → ExchangeMinusFactorStar → ExchangeMinusFactorTranspose → ExchangePlusFactorTranspose →
-  XpFix → XmFix → ExchVecA → ExchVecB → DualPlus → DualMinus → RhUU → RhtUU → WordsAll
 
 end Formalism.FourierDecayAlt.Wd

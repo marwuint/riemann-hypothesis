@@ -1,12 +1,15 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsNefCountAlongMultiples
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.MoriwakiSt
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IsSemipositiveRelTrivLine
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsAmpleCountAlongMultiples
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsNefCountDimZero
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLiftModel
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGenDegGeomDeg
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PConstantShift
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IsSemipositiveRelConstShift
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.CharacterNondegenerate
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.CoeffLeOfEvalLeMul
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Targets
@@ -200,53 +203,6 @@ theorem le_arithmeticVolume_of_alongMultiples {Ω : Type} [Field Ω] {Pr : ℕ �
   have := le_limsup_of_frequently_le hfreq hbdd
   unfold arVolP
   linarith
-
-theorem statementB (hG2 : G2.Statement) (hAC : AmpleCountAlongMultiples.Statement)
-    (hGD : GenDegGeomDeg.Statement) (hPk : PackingStatement) : G6.StatementB := by
-  intro K _ ι _ Ω _ _ y D M P0 II hD hII har hb hM
-  obtain ⟨-, Cp, hCp⟩ := hPk K ι Ω y D M (chartLat y M.a) har hb hM.semipos.1
-    (fun τ _ hs' c hc' => isIntegral_algebraMap (x := (⟨_, hs' c hc'⟩ : chartRingZ y c)))
-  exact le_arithmeticVolume_of_alongMultiples hCp fun ε hε => big hG2 hAC hGD hPk K ι Ω y D M P0 II hD hII har hb hM ε hε
-
-theorem top_nonpos (hG2 : G2.Statement) (hAC : AmpleCountAlongMultiples.Statement)
-    (hGD : GenDegGeomDeg.Statement) (hPk : PackingStatement) (hN : ShiftNefBig.Statement)
-    (hV : ShiftVolumeBound.Statement) (hI : ShiftIntersectionPolynomial.Statement)
-    (hG : ShiftDegreePolynomial.Statement)
-    {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
-    {y : (Σ k, ι k) → Ω} {D : ℕ} {A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} {P0 : Ideal (MRing ι)}
-    {II : IntersectionSystem} (hD : 1 ≤ D) (hII : IsIntersectionSystem II)
-    (har : IsArithVar (mCoordIdeal y) (D + 1)) (hb : Birational y) (hP0 : P0 ≤ mCoordIdeal y)
-    (hs : IsSemipositiveRel P0 (mCoordIdeal y) A) (hnef : NefOnFibres (mCoordIdeal y) A.a)
-    (hc : IsConjInvariantH A) (hdeg : genDeg (mCoordIdeal y) D A.a ≤ 0) :
-    II K ι (mCoordIdeal y) (D + 1) (fun _ => A) ≤ 0 := by
-  have : CharZero Ω := ArithmeticVolumeDegreeZero.charZero_of_horizontal y har.2.2.1
-  have hB := statementB hG2 hAC hGD hPk
-  obtain ⟨C, hC0, hC⟩ := hV K ι Ω y D A P0 hD har hb hP0 hs hnef hc
-  obtain ⟨p, hpdeg, hpc, hp⟩ := hI K ι II (mCoordIdeal y) (D + 1) A (fsH ι) hII har hs.1
-    (GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs 1)
-  obtain ⟨r, hrdeg, hrc, hr⟩ := hG K ι (mCoordIdeal y) D A.a ((1 : ℤ) • (fsH ι).a) har
-  have hbound : ∀ q : ℕ, 1 ≤ q → p.eval (q : ℝ) ≤ C * ((q : ℝ) + 1) * r.eval (q : ℝ) := by
-    intro q hq
-    rw [← hp q, ← hr q]
-    exact (hB K ι Ω y D _ P0 II hD hII har hb (hN K ι Ω y D A P0 hD har hb hP0 hs hnef hc q hq)).trans (hC q hq)
-  rw [← hpc]
-  exact ArithmeticVolumeDegreeZero.coeff_le_of_eval_le_mul p r hC0 hpdeg hrdeg (by rw [hrc]; exact_mod_cast hdeg) hbound
-
-theorem proof (hG2 : G2.Statement) (hAC : AmpleCountAlongMultiples.Statement) (hGD : GenDegGeomDeg.Statement)
-    (hPk : PackingStatement) (hZ : NefCountDimZero.Statement) (hN : ShiftNefBig.Statement)
-    (hV : ShiftVolumeBound.Statement) (hI : ShiftIntersectionPolynomial.Statement)
-    (hG : ShiftDegreePolynomial.Statement) : NefCountAlongMultiples.Statement := by
-  intro K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen hht ε hε
-  by_cases hT : II K ι (mCoordIdeal y) (D + 1) (fun _ => A) - ε ≤ 0
-  · exact ⟨1, le_rfl, Eventually.of_forall fun n =>
-      (mul_nonpos_of_nonpos_of_nonneg hT (by positivity)).trans (Real.log_natCast_nonneg _)⟩
-  rcases Nat.eq_zero_or_pos D with rfl | hD
-  · refine ⟨1, le_rfl, ?_⟩
-    filter_upwards [hZ K ι Ω y A P0 II hII har hb hP0 hs hc hnef hgen hht ε hε] with n hn
-    simpa using hn
-  by_cases hg : genDeg (mCoordIdeal y) D A.a ≤ 0
-  · exact absurd (top_nonpos hG2 hAC hGD hPk hN hV hI hG hD hII har hb hP0 hs hnef hc hg) (by linarith)
-  exact big hG2 hAC hGD hPk K ι Ω y D A P0 II hD hII har hb ⟨hP0, hs, hc, hnef, by omega⟩ ε hε
 
 end NefCountAlongMultiples
 

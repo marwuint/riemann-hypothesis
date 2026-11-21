@@ -281,6 +281,4 @@ theorem restSplit : RestSplit := by
   have hfin := hg (e + β₀) hmem (by rw [hw]; exact ha)
   rwa [hw] at hfin
 
-theorem restOne_of' (hW : RestWord) (hT : RestTop) : RestOne := restOne_of hW hT restSplit
-
 end Formalism.MainNotions.G.ColumnFamilies

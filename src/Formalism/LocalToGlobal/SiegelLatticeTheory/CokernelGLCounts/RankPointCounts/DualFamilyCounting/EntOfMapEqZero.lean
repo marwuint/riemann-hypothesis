@@ -41,13 +41,8 @@ theorem ent_smul {J : Ideal (𝓞 K)} (a : 𝓞 K) {A : Matrix c c (𝓞 K)} (hA
 
 theorem ent_mono {I J : Ideal (𝓞 K)} (hIJ : I ≤ J) {A : Matrix c c (𝓞 K)} (hA : Ent I A) : Ent J A := fun i j => hIJ (hA i j)
 
-theorem ent_top (A : Matrix c c (𝓞 K)) : Ent (⊤ : Ideal (𝓞 K)) A := fun _ _ => Submodule.mem_top
-
 theorem ent_conjTranspose (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {A : Matrix c c (𝓞 K)}
     (hA : Ent (extP K 𝔭 ^ k) A) : Ent (extP K 𝔭 ^ k) Aᴴ := fun i j => conjO_mem_pow hF 𝔭 k _ (hA j i)
-
-theorem ent_smul_of_mem {J : Ideal (𝓞 K)} {x : 𝓞 K} (hx : x ∈ J) (A : Matrix c c (𝓞 K)) :
-    Ent J (x • A) := fun i j => J.mul_mem_right _ hx
 
 private theorem exists_add_conj_sub_one_mem_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) : ∃ t : 𝓞 K, t + conjO K t - 1 ∈ extP K 𝔭 := by

@@ -37,11 +37,6 @@ lemma normSq2_smul (t : ℂ) (v : ι → ℂ) : normSq2 (t • v) = ‖t‖ ^ 2 
 lemma euclideanNorm_smul (t : ℂ) (v : ι → ℂ) : norm2 (t • v) = ‖t‖ * norm2 v := by
   rw [norm2, normSq2_smul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]; rfl
 
-lemma norm_le_norm2 (v : ι → ℂ) (i : ι) : ‖v i‖ ≤ norm2 v := by
-  rw [norm2]
-  refine Real.le_sqrt_of_sq_le ?_
-  exact Finset.single_le_sum (f := fun j => ‖v j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)
-
 end Norm2
 
 namespace CP

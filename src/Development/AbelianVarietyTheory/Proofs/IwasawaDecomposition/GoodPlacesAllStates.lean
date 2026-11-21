@@ -98,9 +98,4 @@ theorem gPlaces (D : D7) : GPlaces D := by
 
 end GlobalTheory.TypePlacesCover
 
-open GlobalTheory.TypePlacesCover in
-
-theorem GlobalTheory.TypePlacesCover.gPlaces_all : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => LA hL x → GPlaces (Dof x) :=
-  fun _ => StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ => gPlaces (Dof x)
-
 end

@@ -14,17 +14,10 @@ open Formalism.BaseCaseIdentities (OrdGE)
 
 variable {C : Type} [Field C] {σ τ : Type}
 
-theorem jet_add_right (P : MvPolynomial σ C) (G H : MvPowerSeries σ C) :
-    jetAt0 P (G + H) = jetAt0 P G + jetAt0 P H := by
-  simp only [jetAt0, map_add, mul_add, Finset.sum_add_distrib]
-
 theorem jet_smul_right (P : MvPolynomial σ C) (a : C) (G : MvPowerSeries σ C) :
     jetAt0 P (a • G) = a * jetAt0 P G := by
   simp only [jetAt0, map_smul, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun m _ => by ring
-
-theorem jet_zero_right (P : MvPolynomial σ C) : jetAt0 P (0 : MvPowerSeries σ C) = 0 := by
-  simp [jetAt0]
 
 theorem jet_sum_right {ι : Type} (s : Finset ι) (P : MvPolynomial σ C)
     (G : ι → MvPowerSeries σ C) : jetAt0 P (∑ j ∈ s, G j) = ∑ j ∈ s, jetAt0 P (G j) := by
@@ -89,35 +82,6 @@ theorem jet_mul_C (p : MvPolynomial σ C) (a : C) (G : MvPowerSeries σ C) :
     rw [MvPolynomial.notMem_support_iff.1 hm, zero_mul, zero_mul]
   · rw [MvPolynomial.coeff_C_mul]
     ring
-
-def linT [Fintype σ] (M : τ → σ → C) : MvPolynomial τ C →ₐ[C] MvPolynomial σ C :=
-  MvPolynomial.aeval fun c => ∑ w, MvPolynomial.C (M c w) * MvPolynomial.X w
-
-theorem jet_subst_linS [Fintype σ] [Fintype τ] (M : τ → σ → C) (Q : MvPolynomial τ C)
-    (F : MvPowerSeries σ C) :
-    jetAt0 Q (subst (linS M) F) = jetAt0 (linT M Q) F := by
-  induction Q using MvPolynomial.induction_on generalizing F with
-  | C a =>
-    have h : linT M (MvPolynomial.C a) = MvPolynomial.C a := by
-      unfold linT; rw [MvPolynomial.aeval_C]; rfl
-    rw [h, jet_C, jet_C]
-    congr 1
-    have h0 := coeff_subst_linS_congr M (F := F) (G := MvPowerSeries.C (constantCoeff F)) (N := 0)
-      (fun μ hμ => by
-        have : μ = 0 := by
-          rw [← Finsupp.degree_eq_zero_iff]; omega
-        subst this
-        simp) 0 (by simp)
-    rw [subst_linS_C] at h0
-    simpa using h0
-  | add p q hp hq => rw [map_add, tpjet_jetAt0_add, tpjet_jetAt0_add, hp, hq]
-  | mul_X p c hp =>
-    rw [jet_mul_X, dVar_subst_linS, jet_sum_right, map_mul]
-    have h : linT M (MvPolynomial.X c) = ∑ w, MvPolynomial.C (M c w) * MvPolynomial.X w := by
-      unfold linT; rw [MvPolynomial.aeval_X]
-    rw [h, Finset.mul_sum, tpjet_jetAt0_sum]
-    refine Finset.sum_congr rfl fun w _ => ?_
-    rw [jet_smul_right, hp, ← mul_assoc, jet_mul_X, jet_mul_C]
 
 theorem coeff_mvExp_partial {h : MvPowerSeries σ C} (hh : OrdGE 1 h) (N : ℕ) (m : σ →₀ ℕ)
     (hm : m.degree ≤ N) :

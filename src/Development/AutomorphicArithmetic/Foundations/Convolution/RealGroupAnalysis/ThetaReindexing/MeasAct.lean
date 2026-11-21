@@ -77,15 +77,6 @@ private theorem theta_eq : rt D.θ = AdeleBaseChange.adeleBasis D.b 1 := by
 private theorem coordinate_one_zero : D.co 1 0 = 1 := by
   simp [Dat.co, one_eq D]
 
-private theorem coordinate_one_one : D.co 1 1 = 0 := by
-  simp [Dat.co, one_eq D]
-
-private theorem coordinate_squareRoot_zero : D.co (rt D.θ) 0 = 0 := by
-  simp [Dat.co, theta_eq D]
-
-private theorem coordinate_squareRoot_one : D.co (rt D.θ) 1 = 1 := by
-  simp [Dat.co, theta_eq D]
-
 private theorem act_aE (α : (A E)ˣ) (v : V4 F) :
     D.act (aE α) v = ![v 0, v 1 * D.co ((α : A E) * D.bar α) 0,
       v 2 * D.co (α : A E) 0 + v 3 * D.co ((α : A E) * rt D.θ) 0,

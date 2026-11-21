@@ -72,27 +72,7 @@ theorem wittIdx_eq_wittIndex (B : HSp D) : Formalism.MainNotions.SchurIrreducibl
   · exact h x hx y hy
   · exact mem_perp.1 (h hy) x hx
 
-theorem exists_lower_iff {i : ℕ} : (∃ B' : HSp D, IsWittLower B B' i ∧ B'.SigOK) ↔ i ≤ Formalism.MainNotions.SchurIrreducible.wittIdx B := by
-  rw [wittIdx_eq_wittIndex]; exact exists_isWittLower_iff
-
-theorem lowerLiftsZero_of_wittIdx_eq_zero (h : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0) (m : Measure (GA D A)) (ψ : AddChar (AF D.host.F) ℂ)
-    (χA χB : (AE D)ˣ →* Circle) (π : Submodule ℂ (GA D A → ℂ)) : LowerLiftsZero m ψ B χA χB π := fun i B' hi h1 h2 => by
-  have := exists_lower_iff.1 ⟨B', h1, h2⟩
-  omega
-
 variable {ω : GA D A × GA D B →* Module.End ℂ (WO A B → ℂ)} {m : Measure (GA D A)} {Φ : WO A B → ℂ} {f : GA D A → ℂ}
-
-theorem thetaLift_smul (c : ℂ) : thetaLift ω m Φ (c • f) = conj c • thetaLift ω m Φ f := funext fun h => by
-  simp only [thetaLift, Pi.smul_apply, smul_eq_mul]
-  rw [← petersson_conj_symm, petersson_smul_left, map_mul, petersson_conj_symm]
-
-example (D : D7) : ∃ A B : HSp D, A.SigOK ∧ A.rank < B.rank ∧ B.rank ≤ 2 * A.rank ∧
-    A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank ∧ ∀ τ, B.SigOK ∧ B.sig τ = (8, 1) := by
-  have h := Examples₂.lorentzSpace_signature_ok (E := D.host.E) Examples₂.star_isIntegral
-  have h1 : Formalism.MainNotions.SchurIrreducible.wittIdx (Examples₂.lorentzSpace (E := D.host.E) Examples₂.star_isIntegral) ≤ 1 :=
-    (WittSignature.wittIdx_le_signature _ _ h D.host.φ₀ (D.sp.cm.cmUnram.2.1 D.host.φ₀)).2
-  exact ⟨Examples₂.posSpace Examples₂.star_isIntegral 5, Examples₂.lorentzSpace Examples₂.star_isIntegral, Examples₂.posSpace_sigOK _ 5, (by decide : 5 < 8 + 1), (by decide : 8 + 1 ≤ 2 * 5),
-    (Nat.add_le_add_left h1 5).trans_lt (by decide : 5 + 1 < 8 + 1), fun _ => ⟨h, rfl⟩⟩
 
 end GlobalTheory.RallisIP
 

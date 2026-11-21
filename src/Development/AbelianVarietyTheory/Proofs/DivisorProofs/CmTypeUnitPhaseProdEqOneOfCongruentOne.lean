@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitRealOfCongrOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitRealOfCongrOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdArgRealUnitEqOneStatement
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
@@ -9,7 +9,7 @@ namespace GlobalTheory
 
 theorem weil_unit_phase_prod : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsCMField E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w) (q : ℕ), q.Prime → 2 < q → ¬ q ∣ Nat.card (Units.torsion E) → ∀ u : (𝓞 E)ˣ, (u : 𝓞 E) - 1 ∈ Ideal.span {((q : ℕ) : 𝓞 E)} → ∏ w : InfinitePlace F, ((emb w).1 ((u : 𝓞 E) : E) / ((‖(emb w).1 ((u : 𝓞 E) : E)‖ : ℝ) : ℂ)) = 1 := by
   intro F E _ _ _ _ _ _ σ h emb q hq hq2 ht u hu
-  have hr := GlobalTheory.T.unit_real_of_sub_one_mem_span_prime E q hq ht u hu
+  have hr := _root_.GlobalTheory.UnitReal.unit_real_of_congr_one E q hq ht u hu
   have hs := GlobalTheory.T.prod_arg_real_unit_eq_one' E q hq hq2 u hu hr
   obtain ⟨hF, hE, h2, -⟩ := h
   let f : InfinitePlace F → InfinitePlace E := fun w => InfinitePlace.mk (emb w).1

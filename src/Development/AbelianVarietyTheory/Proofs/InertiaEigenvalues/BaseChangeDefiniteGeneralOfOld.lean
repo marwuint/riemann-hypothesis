@@ -9,12 +9,25 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistRecCompat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BzfinHolds
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EpsilonFactorRecCompatible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneCharpolyTwistSpecial
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIrreducibleSecondFactorOfIrreducibleProductStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIrreducibleSecondFactorOfIrreducibleProduct
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitAtOfIsSplitPl
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalLanglandsSpehProduct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHasSatakeOfUnrT
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalOfLocalLanglands
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinIso
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RecT
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsComplementaryProductOfIsCuspidal
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
+import Formalism.SharpRestriction.LevelLetterCocycles.SphericalInertData
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitaryOfIsCsd
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DivisibleGroupTowerCompatibility
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CuspReadGIffCuspReadT
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CGTrueT
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspReadTOfCuspRead
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClsLocEqOfIsLocComp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFormsFiniteGL
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLocCompAndIsLocLoc
 
 noncomputable section
 
@@ -66,93 +79,7 @@ def GoodSplitU {n : ℕ} (U : Submodule ℂ (UA H.E n → ℂ)) : Prop :=
   ∀ w : PlE H, IsSplitPl H w → ∀ σ : LocIrr w n,
     IsCompAlong U (locU n w) ((cLoc w).comp (locU n w).subtype) σ.ρ → Good (GlobalTheory.BCSupport.clsOf σ)
 
-def UnitaryReadG (B : NBC A) (rc : RecMap A) (S : ∀ j, B.AU j → Prop) : Prop :=
-  ∀ j : ℕ, 1 ≤ j → j ≤ R.m → ∀ π : B.AU j, S j π → ∃ U : Submodule ℂ (UA H.E R.nV → ℂ), IsAutRepU U ∧ GoodSplitU U ∧
-    (∀ w : PlE H, IsSplitPl H w → ∀ σ : LocIrr w R.nV,
-      IsCompAlong U (locU R.nV w) ((cLoc w).comp (locU R.nV w).subtype) σ.ρ → B.locAU j π w = rc w R.nV σ) ∧
-    (∀ w : PlE H, ¬ IsSplitPl H w → B.sphAU j π w →
-      ∃ α, IsSatAt U w α ∧ B.satAU j π w = Finset.univ.val.map fun i => (α i : ℂ)) ∧
-    ∀ τ : H.E →+* ℂ, ∃ lam, HasWeightAt U τ lam ∧ B.infW j (B.wtAU j π) τ = infOfWeight lam
-
-def BaseChangeDefiniteG (B : NBC A) (S : ∀ j, B.AU j → Prop) : Prop :=
-  ∀ j : ℕ, 1 ≤ j → j ≤ R.m → ∀ π : B.AU j, S j π → GlobalTheory.IndefiniteRowSideFullHecke.BaseChangeDistinctness.SphericalInert B j π →
-    ∃ Pa : List (Part A.CG), GlobalTheory.IndefiniteRowSideFullHecke.BaseChangeDistinctness.IsBaseChange B j π Pa
-
 end Statements
-
-section Proof
-
-variable {A : NAut N}
-
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-
-end Proof
-
-section Frozen
-
-open Formalism.MainNotions
-
-def BaseChangeDefiniteGood (D : D7) (S : ∀ j, D.nbc.AU j → Prop) : Prop :=
-  SphericalInertData.HypEFK D → SphericalInertData.HypCM D → ∀ j, 1 ≤ j → j ≤ D.R.m → 1 ≤ D.R.nV →
-    (letI := D.host.cmStar; (D.sp.V j).IsDefinite) →
-    ∀ π : D.nbc.AU j, S j π → SphericalInertData.SphInert D.nd D.naut D.nbc j π → ∃ Pa, SphericalInertData.IsBC D.nd D.naut D.nbc j π Pa
-
-end Frozen
-
-section LawsCore
-
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-
-open GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Formalism.ConjugateSelfDual ReciprocityTheory.Gal
-
-variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-  {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
-  {ar : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h ar} {rc : IrrGL (w.adicCompletion E) → WD h}
-
-end LawsCore
-
-section LawsSpeh
-
-open GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.NuShift
-
-end LawsSpeh
-
-section SatCore
-
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-
-open GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Formalism.ConjugateSelfDual ReciprocityTheory.Gal
-
-variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-  {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
-  {ar : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h ar} {rc : IrrGL (w.adicCompletion E) → WD h}
-
-end SatCore
-
-section RecordLaws
-
-open GlobalTheory.LocGL GlobalTheory.WeilDeligne Formalism.ConjugateSelfDual ReciprocityTheory.Gal
-
-variable {A : NAut N} (T : GlobalTheory.RowTie.WDTie N A)
-  {rec : ∀ w : PlE H, IrrGL (w.adicCompletion H.E) → WD (E := H.E) (A := N.plOm.1 w) (w := w) (N.plOm.2 w)}
-
-open GlobalTheory.RecLaws GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Formalism.ConjugateSelfDual ReciprocityTheory.Gal
-
-end RecordLaws
-
-section Top
-
-open GlobalTheory.LocGL GlobalTheory.WeilDeligne Formalism.ConjugateSelfDual ReciprocityTheory.Gal
-
-end Top
-
-section RecordLawsFam
-
-open GlobalTheory.LocGL GlobalTheory.WeilDeligne Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.SmGL GlobalTheory.LocLanglands GlobalTheory.RecLaws
-
-variable {A : NAut N} (T : GlobalTheory.RowTie.WDTie N A) {rc : GlobalTheory.RecT.RecFam}
-
-end RecordLawsFam
 
 end GlobalTheory.DefiniteBCGood
 

@@ -21,8 +21,4 @@ def ArithmeticIntersectionVertical.Statement : Prop :=
             J' (fibreIdeal κ G') 0 Fin.elim0 * geoNum n (imageZ v W') a) ∨
       (imageZ v W' ∉ divSupp (imageZ v P') s ∧ geoNum n W' (fun j => pullDeg κ (a j)) = 0)
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

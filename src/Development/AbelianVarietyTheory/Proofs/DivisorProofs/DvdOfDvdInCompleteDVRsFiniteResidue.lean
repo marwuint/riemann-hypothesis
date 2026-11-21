@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitFiniteResidueCharZeroAvoidingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitFiniteResidueCharZeroAvoiding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfMemAdjoinInv
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -40,7 +40,7 @@ theorem dvd_of_forall_fintrait : ∀ (A : Type) [CommRing A] [IsDomain A] [IsInt
     have : CharZero S := charZero_of_injective_algebraMap hinjS
     obtain ⟨n, hn, hzn⟩ := exists_max_ideal_of_mem_nonunits hz
     have hfS : algebraMap A S f ≠ 0 := (map_ne_zero_iff _ hinjS).2 hf
-    obtain ⟨V, _, _, _, _, t, hc, hfin, htf, hcomap⟩ := GlobalTheory.T.exists_trait_finiteResidue_charZero_avoiding S n (algebraMap A S f) hn hfS
+    obtain ⟨V, _, _, _, _, t, hc, hfin, htf, hcomap⟩ := _root_.GlobalTheory.exists_trait_finite_residueField_charZero_avoiding S n (algebraMap A S f) hn hfS
     have hdiv := H V hc hfin (t.comp (algebraMap A S)) htf
     simp only [RingHom.comp_apply] at hdiv
     have hfa : algebraMap A S f = z * algebraMap A S a := by

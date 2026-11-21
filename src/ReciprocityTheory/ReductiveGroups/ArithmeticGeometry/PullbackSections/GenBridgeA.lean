@@ -30,14 +30,6 @@ theorem gm_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens
   rw [Category.comp_id] at e1
   rw [e1, e2, gs_unit (𝟙 Y) (r z) U (by simpa using hU) a, gs_unit ψ (r z) V hV b, h]
 
-theorem gs_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens} (hU : r z ∈ U)
-    (hV : ψ (r z) ∈ V) (a : Γ(Y, U)) (b : Γ(X, V)) (h : gs (𝟙 Y) (r z) U a = gs ψ (r z) V b) :
-    gs r z U a = gs (r ≫ ψ) z V b := by
-  have e1 := gs_comp_stalk r (𝟙 Y) z U (by simpa using hU) a
-  have e2 := gs_comp_stalk r ψ z V hV b
-  rw [Category.comp_id] at e1
-  rw [e1, e2, h]
-
 structure PullOf (L : LB X) (ψ : Y ⟶ X) (A : LB Y) where
   c : A.ι → L.ι
   d : L.ι → A.ι

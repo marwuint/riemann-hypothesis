@@ -37,12 +37,6 @@ def CohomRetract.Statement : Prop :=
     (𝓜 : GradedPMod S N M) (𝓜' : GradedPMod S N M') (f : GradedHom 𝓜 𝓜') (g : GradedHom 𝓜' 𝓜),
     Function.LeftInverse g.toLin f.toLin → ∀ (i : ℕ) (c : ℤ), Function.Injective (cohomMap f i c)
 
-section Hypotheses
-
-variable (k : Type u) [Field k] (N : ℕ)
-
-end Hypotheses
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

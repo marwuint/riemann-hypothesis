@@ -37,23 +37,6 @@ def chiDetG0 {E : Type} [Field E] [NumberField E] {K : Type} [Field K] (Pg : Fin
   ∏ w : ↥Pg, (χ w).comp (Matrix.GeneralLinearGroup.det.comp
     (Pi.evalMonoidHom (fun w : ↥Pg => GL (Fin r) (Formalism.L2.DIV.kP w.1)) w))
 
-def IsInvTame {K : Type} [Field K] (σ₀ : K →+* ℂ) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (μ : (AE D)ˣ →* Circle)
-    (χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* Kˣ) : Prop :=
-  ∀ (x : (AE D)ˣ) (u ub : (OAf D)ˣ), infPart D (x : AE D) = 1 →
-    ((u : OAf D) : EAf D) = swapAE D (finPart D (x : AE D)) →
-    ((ub : OAf D) : EAf D) = swapAE D (finPart D (cA D (x : AE D))) →
-    ((μ x : Circle) : ℂ) =
-      ∏ w : ↥Pg, (σ₀ ((χ w (Units.map (Formalism.L2.DIV.resS D.host.F w.1).toMonoidHom u) : Kˣ) : K))⁻¹ *
-        σ₀ ((χ w (Units.map (Formalism.L2.DIV.resS D.host.F w.1).toMonoidHom ub) : Kˣ) : K)
-
-def Induces {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (Dw : Datum H) (l : Level H) (V : HSp D) {r : ℕ} (hr : V.rank = r)
-    (ι₀ : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E)) (β : GL (Fin r) (EAf D)) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E))
-    (g : Formalism.L2.DIV.G0 Pg r) (γ : Dw.La →ₗ[𝓞 D.host.E] Dw.La) : Prop :=
-  ∀ κ, IsLift V hr β Pg g κ →
-    ∀ a ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • (⊤ : Submodule (𝓞 D.host.E) Dw.La),
-      ∃ w ∈ latGHat V 1,
-        (finHom V κ).1.mulVec (finVec V (ι₀ a ∘ Fin.cast hr)) - finVec V (ι₀ (γ a) ∘ Fin.cast hr) = (l.M : ℕ) • w
-
 def readAd (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (c : (T.U j σ).Comp → ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ)
     (f : T.R j) (h : GA D (T.V j σ)) : ℂ :=
   (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * (c (T.dict j σ h).1 * T.mu j σ h *
@@ -88,32 +71,5 @@ structure LevelActionLaws (T : CoreJ D) (j : ℕ) (β : GL (Fin D.R.r) (EAf D)) 
 
   integral : ∀ a n, Dom a n → ∀ g, ∀ f ∈ T.toCore.cuspA j a n, ∀ la,
     IntegralAt T.toCore j la f → IntegralAt T.toCore j la (geoAct T.toCore j γ g f)
-
-def GeoLevelAction : Prop :=
-  ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, InR D j →
-    ∀ (hr : (D.sp.W j).rank = D.R.r) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)),
-      (∀ w, w ∈ Pg ↔ T.Q.l.Mb ≤ w.asIdeal) →
-    ∀ β : GL (Fin D.R.r) (EAf D), IsLatBasis (D.sp.W j) hr β →
-    ∀ χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* (T.Q.c.F)ˣ,
-      IsInvTame T.toCore.σ₀ Pg (T.chiW j T.toCore.σ₀) χ →
-      (∀ g, ∃ γ₀, Induces (T.Q.Dw j) T.Q.l (D.sp.W j) hr (T.iota j) β Pg g γ₀) ∧
-      ∀ γ : Formalism.L2.DIV.G0 Pg D.R.r → (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La,
-        (∀ g, Induces (T.Q.Dw j) T.Q.l (D.sp.W j) hr (T.iota j) β Pg g (γ g)) → LevelActionLaws T j β Pg χ γ
-
-theorem chiDetG0_apply {E : Type} [Field E] [NumberField E] {K : Type} [Field K] (Pg : Finset (Formalism.L2.DIV.Pl E)) (r : ℕ)
-    (χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* Kˣ) (g : Formalism.L2.DIV.G0 Pg r) :
-    chiDetG0 Pg r χ g = ∏ w : ↥Pg, χ w (Matrix.GeneralLinearGroup.det (g w)) := by
-  simp only [chiDetG0, MonoidHom.finset_prod_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply]
-
-theorem isLift_one (V : HSp D) {r : ℕ} (hr : V.rank = r) (β : GL (Fin r) (EAf D))
-    (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) : IsLift V hr β Pg 1 1 := by
-
-  have h1 : finR V hr 1 ∈ Formalism.L2.DIV.St β := by
-    rw [map_one]
-    exact Subgroup.one_mem _
-  refine ⟨Subgroup.one_mem _, h1, fun w => ?_⟩
-  have e : (⟨finR V hr 1, h1⟩ : Formalism.L2.DIV.St β) = 1 := Subtype.ext (map_one _)
-  rw [e, map_one]
-  rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LatticeBasisLifts

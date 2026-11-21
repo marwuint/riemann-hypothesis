@@ -21,17 +21,6 @@ namespace GlobalTheory.CompanionTheory.SobSecK
 
 variable {n : ℕ}
 
-theorem far_Rd {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (X : Mat n) {f : Mat n → V} {R : ℝ}
-    (hR : ∀ y ∈ GLs n, R < lg y → f y = 0) : ∀ y ∈ GLs n, R < lg y → Rd X f y = 0 := by
-  intro y hy hl
-  simp only [Rd]
-  rw [RCalc.ByParts.fderiv_eq_zero_far GlobalTheory.CompanionTheory.LengthGL.lgFacts hR hy hl]
-  rfl
-
-theorem cpt_Rd {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (X : Mat n) {f : Mat n → V} (hc : Cpt f) :
-    Cpt (Rd X f) :=
-  hc.imp fun _ h => far_Rd X h
-
 section Int
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
@@ -93,15 +82,6 @@ theorem Hs.ext_on {f h : Hs μ V} (e : Set.EqOn f.fn h.fn (GLs n)) : f = h := by
   · exact e hy
   · exact (f.off hy).trans (h.off hy).symm
 
-def toH (μ : Measure (G n)) (f : Mat n → V) (hf : ContDiffOn ℝ ∞ f (GLs n)) (hc : Cpt f) : Hs μ V :=
-  ⟨(GLs n).indicator f, hf.congr fun y hy => Set.indicator_of_mem hy f,
-    hc.imp fun _ h y hy hl => (Set.indicator_of_mem hy f).trans (h y hy hl),
-    fun _ hy => Set.indicator_of_notMem hy f⟩
-
-theorem toH_fn {f : Mat n → V} {hf : ContDiffOn ℝ ∞ f (GLs n)} {hc : Cpt f} {y : Mat n} (hy : y ∈ GLs n) :
-    (toH μ f hf hc).fn y = f y :=
-  Set.indicator_of_mem hy f
-
 end Space
 
 section Inner
@@ -159,48 +139,5 @@ instance : NormedAddCommGroup (Hs μ V) := InnerProductSpace.Core.toNormedAddCom
 instance : InnerProductSpace ℂ (Hs μ V) := InnerProductSpace.ofCore core.toCore
 
 end Inner
-
-section Ops
-
-variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [MeasurableSpace (G n)]
-variable (μ : Measure (G n))
-
-def Xop (p : Ix n) : Module.End ℂ (Hs μ V) where
-  toFun f := toH μ (Rd (bs p) f.fn) (RCalc.Rd_contDiffOn _ f.smooth) (cpt_Rd _ f.cpt)
-  map_add' f h := Hs.ext_on fun y hy => by
-    simp only [Hs.add_fn, Pi.add_apply, toH_fn hy]
-    exact OmDec.Rd_add_right _ f.smooth h.smooth hy
-  map_smul' c f := Hs.ext_on fun y hy => by
-    simp only [Hs.smul_fn, Pi.smul_apply, toH_fn hy, RingHom.id_apply]
-    exact OmDec.Rd_smul_right _ _ f.smooth hy
-
-variable {μ}
-
-variable (μ)
-
-def Lh : Module.End ℂ (Hs μ V) := -∑ p : Ix n, Xop μ p * Xop μ p
-
-variable {μ} in
-theorem smooth_alt (T : V →L[ℂ] V) (f : Hs μ V) : ContDiffOn ℝ ∞ (fun y => T (f.fn y)) (GLs n) :=
-  (T.restrictScalars ℝ).contDiff.comp_contDiffOn f.smooth
-
-variable {μ} in
-theorem compact_support_apply_clm (T : V →L[ℂ] V) (f : Hs μ V) : Cpt (fun y => T (f.fn y)) :=
-  f.cpt.imp fun _ h y hy hl => by show T (f.fn y) = 0; rw [h y hy hl, map_zero]
-
-def Tm (T : V →L[ℂ] V) : Module.End ℂ (Hs μ V) where
-  toFun f := toH μ (fun y => T (f.fn y)) (smooth_alt T f) (compact_support_apply_clm T f)
-  map_add' f h := Hs.ext_on fun y hy => by
-    simp only [Hs.add_fn, Pi.add_apply]
-    rw [toH_fn hy, toH_fn hy, toH_fn hy]
-    simp only [Hs.add_fn, Pi.add_apply, map_add]
-  map_smul' c f := Hs.ext_on fun y hy => by
-    simp only [Hs.smul_fn, Pi.smul_apply, RingHom.id_apply]
-    rw [toH_fn hy, toH_fn hy]
-    simp only [Hs.smul_fn, Pi.smul_apply, map_smul]
-
-variable {μ}
-
-end Ops
 
 end GlobalTheory.CompanionTheory.SobSecK

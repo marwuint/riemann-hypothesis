@@ -5,7 +5,12 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGen
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GapN
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.KillNoneFormPoly
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformisedDegreePolynomialAntisymmetricStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformisedDegreePolynomialAntisymmetric
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.APrime
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.WeilBound.CoreStatements.FlagImmersions.HasPerConj
 import Development.WeilBound.CoreStatements.FlagImmersions.ExistsModelOfEq
 import Development.WeilBound.CoreStatements.FlagImmersions.NormDetEq
@@ -59,7 +64,7 @@ theorem AnalyticReference.gap_polynomial_positive : Top.Given → ∀ (E : Type)
     (RootFieldNumerics.flagImm_of RootFieldNumerics.rankLem) (RootFieldNumerics.countGen_of (RootFieldNumerics.genRigid_of RootFieldNumerics.frameVals)) hG (le_add_right hp) G A
   have hdim : Top.dimFl (CMType H) (D.p + D.q) = GroundTheory.Heights₂.Heights.antisymDegree (CMType H) (D.p + D.q) := by
     simp [Top.dimFl, GroundTheory.Heights₂.Heights.antisymDegree, Nat.choose_two_right]
-  obtain ⟨v, hv, hE⟩ := GlobalTheory.T.uniformised_degree_polynomial_antisymmetric hI (CMType H) (D.p + D.q) D.p _ (A.Sys.comap some) (Nat.le_add_right _ _) hdim hU
+  obtain ⟨v, hv, hE⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.anSys_proportional hI (CMType H) (D.p + D.q) D.p _ (A.Sys.comap some) (Nat.le_add_right _ _) hdim hU
   let lam : RootIx D → ℝ := fun p => (ν p : ℝ)
   have hgap : (fun a => (gapN ν a : ℝ)) = fun o : Option (RootIx D) => o.elim 0 (PB.gap lam) := by
     funext o

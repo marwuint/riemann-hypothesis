@@ -66,9 +66,6 @@ def daggerHom (S T : HSp D) : WO S T →+ WO T S where
   map_zero' := by simp [dagger]
   map_add' x y := by simp only [dagger, adj_add, Matrix.add_mul, Matrix.mul_add]
 
-theorem dagger_add (S T : HSp D) (x y : WO S T) : dagger S T (x + y) = dagger S T x + dagger S T y :=
-  (daggerHom S T).map_add x y
-
 theorem dagger_zero (S T : HSp D) : dagger S T 0 = 0 := (daggerHom S T).map_zero
 
 theorem continuous_dagger (S T : HSp D) : Continuous (dagger S T) :=

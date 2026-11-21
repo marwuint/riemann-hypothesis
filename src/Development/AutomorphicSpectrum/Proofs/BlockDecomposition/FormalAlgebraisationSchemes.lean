@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NonzeroLocusSecMonoConst
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformLiftingOfSectionsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformLiftingOfSections
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelativelyAmpleConsecutiveVeryAmpleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VeryAmpleTensorPowerSectionsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VeryAmpleTensorPowerSections
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VeryAmpleUnionSectionsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormalSectionsCompatibleSystemStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LineBundleRootFromRelationsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormalSectionsCompatibleSystem
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LineBundleRootFromRelations
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelativelyAmpleTwistDifferenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PullbackTwistIsoDifferenceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PullbackTwistIsoDifference
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw PositivityTheory.FormalThickening
 open GlobalTheory.ProjSpace GlobalTheory.QCoh.Qcqs GlobalTheory.Cartier
@@ -32,8 +32,8 @@ theorem exists_compatible {R : Type} [CommRing R] (I : Ideal R) {Y : ∀ e : ℕ
 theorem tower_sections : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → (∀ e, IsProper (Y e).hom) → ∀ (N : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (N e) ((N (e + 1)).pull (β e))), (∀ e, (N e).IsLB ∧ (v e).IsGen) → RelAmple (Y 0) (N 0) → ∃ (n p q : ℕ) (a : ∀ e, Fin (p + 1) → LB.Sec (pw (N e) (n : ℤ))) (c : ∀ e, Fin (q + 1) → LB.Sec (pw (N e) ((n : ℤ) + 1))), 1 ≤ n ∧ VeryAmpleBy (Y 0).hom (pw (N 0) (n : ℤ)) (a 0) ∧ VeryAmpleBy (Y 0).hom (pw (N 0) ((n : ℤ) + 1)) (c 0) ∧ (∀ e i, SecMaps (pullPow (v e) (n : ℤ)) (a e i) (secPull (a (e + 1) i) (β e))) ∧ (∀ e i, SecMaps (pullPow (v e) ((n : ℤ) + 1)) (c e i) (secPull (c (e + 1) i) (β e))) := by
   intro R _ _ I Y β hβ hP N v hN hA
   obtain ⟨d, hd, m₁, s, m₂, s', hs, hs'⟩ := GlobalTheory.T.relatively_ample_consecutive_very_ample (R ⧸ I ^ (0 + 1)) (Y 0) (N 0) (hN 0).1 hA
-  obtain ⟨t₁, ht₁⟩ := GlobalTheory.T.formal_line_bundle_very_ample_system R I Y β hβ hP N v hN d hd m₁ s hs
-  obtain ⟨t₂, ht₂⟩ := GlobalTheory.T.formal_line_bundle_very_ample_system R I Y β hβ hP N v hN (d + 1) (by omega) m₂ s' hs'
+  obtain ⟨t₁, ht₁⟩ := _root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.exists_uniform_lift R I Y β hβ hP N v hN d hd m₁ s hs
+  obtain ⟨t₂, ht₂⟩ := _root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.exists_uniform_lift R I Y β hβ hP N v hN (d + 1) (by omega) m₂ s' hs'
   set k := max t₁ t₂ with hk
   set t := 1 + (d + 1) * k with ht
   set t' := 1 + d * k with ht'
@@ -52,8 +52,8 @@ theorem tower_sections : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : I
   let E₂ : Fin (q + 1) ≃ (Fin t' → Fin (m₂ + 1)) := (Fintype.equivFinOfCardEq hq).symm
   have ht1 : 1 ≤ t := by omega
   have ht1' : 1 ≤ t' := by omega
-  have va := GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ t e₁.symm m₁ s (hN 0).1 ht1 hs p E₁
-  have vc := GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ t' e₂.symm m₂ s' (hN 0).1 ht1' hs' q E₂
+  have va := _root_.GlobalTheory.CompanionTheory.FormalAlg.veryAmpleBy_secMono _ (Y 0).hom (N 0) _ _ t e₁.symm m₁ s (hN 0).1 ht1 hs p E₁
+  have vc := _root_.GlobalTheory.CompanionTheory.FormalAlg.veryAmpleBy_secMono _ (Y 0).hom (N 0) _ _ t' e₂.symm m₂ s' (hN 0).1 ht1' hs' q E₂
   obtain ⟨a, ha0, ha⟩ := exists_compatible I (v := v) (ht₁ t h1 _ e₁) (fun j => secMono e₁.symm s (E₁ j))
   obtain ⟨c, hc0, hc⟩ := exists_compatible I (v := v) (ht₂ t' h2 _ e₂) (fun j => secMono e₂.symm s' (E₂ j))
   refine ⟨d * t, p, q, a, c, Nat.mul_pos hd ht1, ?_, ?_, ha, hc⟩
@@ -84,8 +84,8 @@ theorem schemes_of_closedProj : GEClosedProj → GlobalTheory.Published.FormalAl
   have hz2 : ∀ e w, z e (E.symm (Sum.inr (E₂.symm w))) = secMono h2 (c e) w := fun e w => by
     simp [z]
   have hva : VeryAmpleBy (Y 0).hom (pw (N 0) D) (z 0) := by
-    have x1 := GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ (n + 1) h1 p (a 0) (hN 0) (by omega) ha0 m₁ E₁
-    have x2 := GlobalTheory.T.very_ample_tensor_power_sections _ (Y 0).hom (N 0) _ _ n h2 q (c 0) (hN 0) hn hc0 m₂ E₂
+    have x1 := _root_.GlobalTheory.CompanionTheory.FormalAlg.veryAmpleBy_secMono _ (Y 0).hom (N 0) _ _ (n + 1) h1 p (a 0) (hN 0) (by omega) ha0 m₁ E₁
+    have x2 := _root_.GlobalTheory.CompanionTheory.FormalAlg.veryAmpleBy_secMono _ (Y 0).hom (N 0) _ _ n h2 q (c 0) (hN 0) hn hc0 m₂ E₂
     exact GlobalTheory.T.very_ample_union_sections _ (Y 0).hom _ (isLB_pw (hN 0) D) m₁ m₂ m _ _ E x1 x2
   have hzc : ∀ e j, SecMaps (pullPow (v e) D) (z e j) (secPull (z (e + 1) j) (β e)) := fun e j => by
     simp only [z]
@@ -93,7 +93,7 @@ theorem schemes_of_closedProj : GEClosedProj → GlobalTheory.Published.FormalAl
     · exact secMaps_secMono (v e) h1 (a e) (a (e + 1)) (hca e) _
     · exact secMaps_secMono (v e) h2 (c e) (c (e + 1)) (hcc e) _
   obtain ⟨X, Q, ζ, b, ω, hQ, hX, hXa, hb, hbc, hω, hωz, hquad, hcov⟩ :=
-    GlobalTheory.T.formal_sections_compatible_system hGE R I hI Y β hβ (fun e => pw (N e) D) (fun e => pullPow (v e) D)
+    _root_.GlobalTheory.CompanionTheory.FormalAlg.exists_tower_algebraisation hGE R I hI Y β hβ (fun e => pw (N e) D) (fun e => pullPow (v e) D)
       (fun e => ⟨isLB_pw (hN e) D, pullPow_isGen _ _ (hvg e)⟩) m z hzc hva
   let ia : (Fin (n + 1) → Fin (p + 1)) → Fin (m + 1) := fun w => E.symm (Sum.inl (E₁.symm w))
   let ic : (Fin n → Fin (q + 1)) → Fin (m + 1) := fun w => E.symm (Sum.inr (E₂.symm w))
@@ -109,15 +109,15 @@ theorem schemes_of_closedProj : GEClosedProj → GlobalTheory.Published.FormalAl
       refine iSup_congr fun i => ?_
       rw [hz2, nonzeroLocus_secMono_const h2 _ _ hn])
     rwa [iSup_range] at this
-  obtain ⟨A, ωA, hAL, hωA, hAc⟩ := GlobalTheory.T.line_bundle_root_from_relations X.left Q hQ (n + 1) (by omega) (Fin (p + 1)) (fun w => ζ (ia w))
+  obtain ⟨A, ωA, hAL, hωA, hAc⟩ := _root_.GlobalTheory.CompanionTheory.FormalAlg.exists_root_of_veronese X.left Q hQ (n + 1) (by omega) (Fin (p + 1)) (fun w => ζ (ia w))
     (fun w₁ w₂ w₃ w₄ hw c' => hquad _ _ _ _ (fun e c'' => by
       simp only [ia, hz1]; exact secMono_mul h1 (a e) w₁ w₂ w₃ w₄ hw c'') c') hA'
-  obtain ⟨C, ωC, hCL, hωC, hCc⟩ := GlobalTheory.T.line_bundle_root_from_relations X.left Q hQ n hn (Fin (q + 1)) (fun w => ζ (ic w))
+  obtain ⟨C, ωC, hCL, hωC, hCc⟩ := _root_.GlobalTheory.CompanionTheory.FormalAlg.exists_root_of_veronese X.left Q hQ n hn (Fin (q + 1)) (fun w => ζ (ic w))
     (fun w₁ w₂ w₃ w₄ hw c' => hquad _ _ _ _ (fun e c'' => by
       simp only [ic, hz2]; exact secMono_mul h2 (c e) w₁ w₂ w₃ w₄ hw c'') c') hC'
   refine ⟨X, tw C A (-1), b, hX, isLB_tw hCL hAL _,
     GlobalTheory.T.relatively_ample_twist_difference R X Q m ζ hQ hXa A C n hn hAL hCL ⟨ωA, hωA⟩ ⟨ωC, hωC⟩, hb, hbc, fun e => ?_⟩
-  refine GlobalTheory.T.pullback_twist_iso_difference (b e) A C (N e) n hAL hCL (hN e) ?_ ?_
+  refine _root_.GlobalTheory.CompanionTheory.FormalAlg.lbIso_pull_quot_of_consecutive_pw (b e) A C (N e) n hAL hCL (hN e) ?_ ?_
   · refine hAc _ (b e) (N e) n D h1 (a e) (ω e) (hN e) (hω e) fun w => ?_
     have := hωz e (ia w)
     simp only [ia, hz1] at this

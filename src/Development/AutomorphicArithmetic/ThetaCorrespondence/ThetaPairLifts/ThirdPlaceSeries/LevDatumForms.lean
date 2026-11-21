@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlacesOverRealSubfieldSplit
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 
 set_option synthInstance.maxHeartbeats 200000
@@ -38,30 +38,30 @@ theorem levDatum_forms_alt : GlobalTheory.Published.GlobalArtinReciprocity → �
     split_ifs at hP' with hh
     · exact hsplit P (Or.inr hP')
     · exact hsplit P (Or.inl hP')
-  obtain ⟨P₀, hP₀⟩ := GlobalTheory.T.auxiliaryPrimePlaces_nonempty D T i
-  haveI : Nonempty (SplitPlace D.host.E) := ⟨(GlobalTheory.T.exists_splitPlace_of_isSplitPlace_cmField D P₀ (hDs P₀ hP₀)).choose⟩
+  obtain ⟨P₀, hP₀⟩ := _root_.GlobalTheory.PdPlace.pD_nonempty D T i
+  haveI : Nonempty (SplitPlace D.host.E) := ⟨(_root_.GlobalTheory.HeightCounting.SplitPlaceOf.exists_splitPlace D P₀ (hDs P₀ hP₀)).choose⟩
   let sp : PlE D.host → SplitPlace D.host.E := fun P =>
-    if h : IsSplitPl D.host P then (GlobalTheory.T.exists_splitPlace_of_isSplitPlace_cmField D P h).choose else Classical.arbitrary _
+    if h : IsSplitPl D.host P then (_root_.GlobalTheory.HeightCounting.SplitPlaceOf.exists_splitPlace D P h).choose else Classical.arbitrary _
   have hsp : ∀ P, IsSplitPl D.host P → (sp P).w = P := fun P h => by
-    simp only [sp, dif_pos h]; exact (GlobalTheory.T.exists_splitPlace_of_isSplitPlace_cmField D P h).choose_spec
+    simp only [sp, dif_pos h]; exact (_root_.GlobalTheory.HeightCounting.SplitPlaceOf.exists_splitPlace D P h).choose_spec
   have hspw : ∀ P, (P ∈ qpOf D Pq Q ∨ P ∈ qpOf D Pq (T.pD i) ∨ ∃ kv, P = NX.pG D kv) → (sp P).w = P := by
     rintro P (h | h | ⟨kv, rfl⟩)
     · exact hsp P (hQs P (qpOf_sub D Pq Q h))
     · exact hsp P (hDs P (qpOf_sub D Pq _ h))
     · exact hsp _ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D kv.1 kv.2)
-  obtain ⟨hv, hdisj1, hdisj2, hpG⟩ := GlobalTheory.T.split_places_avoid_auxiliary D T i Q Pq sp hPq hQs hQ2 hDs hspw
+  obtain ⟨hv, hdisj1, hdisj2, hpG⟩ := _root_.GlobalTheory.LevelPlaceSep.levelPlaces_sep D T i Q Pq sp hPq hQs hQ2 hDs hspw
   let redG : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk),
       (sp (NX.pG D kv)).v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1) := fun kv =>
-    (GlobalTheory.T.exists_residueHom_zmod_at_typePlace D kv (sp (NX.pG D kv)) (hspw _ (Or.inr (Or.inr ⟨kv, rfl⟩)))).some
+    (_root_.GlobalTheory.TypePlaceResidue.residueHom_zmod D kv (sp (NX.pG D kv)) (hspw _ (Or.inr (Or.inr ⟨kv, rfl⟩)))).some
   have hψt := fun P (hP : P ∈ qpOf D Pq Q) =>
     GlobalTheory.T.tameValues_galoisChar_form_residue_unit_character ψ P 1 (T.l i) hopen (by simpa [placesOver] using hQl P (qpOf_sub D Pq Q hP)) (fun A _ σ _ => hl σ)
   have hδt := fun P (hP : P ∈ qpOf D Pq (T.pD i)) =>
     GlobalTheory.T.tameValues_galoisChar_form_residue_unit_character (T.delta i) P (if b then 1 else -1) 15 (T.delta_open i) (GlobalTheory.T.fifteen_not_mem_and_delta_inertia_order_divides_fifteen_pow D T i P (qpOf_sub D Pq _ hP)).1
       (GlobalTheory.T.fifteen_not_mem_and_delta_inertia_order_divides_fifteen_pow D T i P (qpOf_sub D Pq _ hP)).2
-  obtain ⟨J, χ, hJo, hhyp, hJm, hchi⟩ := GlobalTheory.T.exists_levelGroup_with_character_at_type_places D T In.θ i j b k Q ψ (qpOf D Pq Q) (qpOf D Pq (T.pD i)) sp redG
+  obtain ⟨J, χ, hJo, hhyp, hJm, hchi⟩ := _root_.GlobalTheory.LevGChar.levGroup_exists D T In.θ i j b k Q ψ (qpOf D Pq Q) (qpOf D Pq (T.pD i)) sp redG
     hspw hv hdisj1 hdisj2 hpG (qpOf_sub D Pq Q) (qpOf_sub D Pq _) hψt hδt
-  obtain ⟨hQc, hQn⟩ := GlobalTheory.T.chosenHalf_splitPlaces_meets_conjugatePair_once D Pq hPq Q hQs
-  obtain ⟨hDc, hDn⟩ := GlobalTheory.T.chosenHalf_splitPlaces_meets_conjugatePair_once D Pq hPq (T.pD i) hDs
+  obtain ⟨hQc, hQn⟩ := _root_.GlobalTheory.ChosenHalf.qpOf_half D Pq hPq Q hQs
+  obtain ⟨hDc, hDn⟩ := _root_.GlobalTheory.ChosenHalf.qpOf_half D Pq hPq (T.pD i) hDs
   refine ⟨⟨J, χ, qpOf D Pq Q, qpOf D Pq (T.pD i), sp, redG⟩,
     ⟨hJo, hhyp, rfl, rfl, qpOf_sub D Pq Q, hQc, hQn, qpOf_sub D Pq _, hDc, hDn, hspw, hJm, hchi⟩, ?_⟩
   exact typeSpF_finiteDimensional D.host.E D.R.nV _ (rhoKT D T wt i j b k) J χ hJo

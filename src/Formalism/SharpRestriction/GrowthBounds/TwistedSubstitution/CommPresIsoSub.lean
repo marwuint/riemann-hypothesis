@@ -22,21 +22,6 @@ theorem comm_Umon (A : Module.End K V) (hA : ∀ a b, A * E a b = E a b * A) : �
   | one => simp
   | mul x y _ _ hx hy => rw [← mul_assoc, hx, mul_assoc, hy, mul_assoc]
 
-theorem umon_mul_E (u : Module.End K V) (hu : u ∈ Umon E) (a b : Fin n) : E a b * u ∈ Umon E :=
-  Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu
-
-theorem E_pres_isoSub (a b : Fin n) (mu : Fin n → ℤ) : ∀ x ∈ isoSub E mu, E a b x ∈ isoSub E mu := by
-  intro x hx
-  unfold isoSub at hx ⊢
-  induction hx using Submodule.span_induction with
-  | mem y hy =>
-    obtain ⟨u, hu, v, hv, rfl⟩ := hy
-    apply Submodule.subset_span
-    exact ⟨E a b * u, umon_mul_E E u hu a b, v, hv, rfl⟩
-  | zero => rw [map_zero]; exact Submodule.zero_mem _
-  | add y z _ _ hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
-  | smul c y _ hy => rw [map_smul]; exact Submodule.smul_mem _ c hy
-
 theorem comm_pres_isoSub (A : Module.End K V) (hA : ∀ a b, A * E a b = E a b * A) (mu : Fin n → ℤ) :
     ∀ x ∈ isoSub E mu, A x ∈ isoSub E mu := by
   intro x hx
@@ -90,11 +75,6 @@ theorem comm_isoProj (A : Module.End K V) (hA : ∀ mu, ∀ x ∈ isoSub E mu, A
   refine Finset.sum_congr rfl fun mu _ => ?_
   rw [hproj mu _ (hA mu _ (hm mu)), hproj mu _ (hm mu)]
   split_ifs <;> simp
-
-theorem isoProj_comm_E (ee : (Fin n → ℤ) → Module.End K V) (hee : ∀ mu, IsIsoProj E mu (ee mu))
-    (hdec : ∀ G : V, ∃ T : Finset (Fin n → ℤ), G = ∑ mu ∈ T, ee mu G ∧ ∀ mu, ee mu G ∈ isoSub E mu)
-    (lam : Fin n → ℤ) (a b : Fin n) : ee lam * E a b = E a b * ee lam :=
-  comm_isoProj E (E a b) (fun mu => E_pres_isoSub E a b mu) ee hee hdec lam
 
 end Commutant
 
@@ -176,28 +156,6 @@ theorem jointE_pres (P : Submodule K V) (hP : ∀ i mu, ∀ F ∈ P, ee i mu F �
   induction (Finset.univ : Finset ι).toList with
   | nil => simpa using hF
   | cons i l ih => rw [List.map_cons, List.prod_cons, Module.End.mul_apply]; exact hP i _ _ ih
-
-theorem list_selfadj (B : V → V → K) (l : List (Module.End K V)) (hc : ∀ x ∈ l, ∀ y ∈ l, x * y = y * x)
-    (hB : ∀ a ∈ l, ∀ F G, B (a F) G = B F (a G)) : ∀ F G, B (l.prod F) G = B F (l.prod G) := by
-  induction l with
-  | nil => intro F G; simp
-  | cons a l ih =>
-    intro F G
-    have hcl : ∀ x ∈ l, ∀ y ∈ l, x * y = y * x := fun x hx y hy =>
-      hc x (List.mem_cons_of_mem _ hx) y (List.mem_cons_of_mem _ hy)
-    have hBl : ∀ b ∈ l, ∀ F G, B (b F) G = B F (b G) := fun b hb => hB b (List.mem_cons_of_mem _ hb)
-    rw [List.prod_cons, Module.End.mul_apply, hB a List.mem_cons_self, ih hcl hBl, ← Module.End.mul_apply]
-    have : Commute a l.prod :=
-      Commute.list_prod_right _ _ fun y hy => hc _ List.mem_cons_self y (List.mem_cons_of_mem _ hy)
-    rw [this.eq]
-
-theorem jointE_selfadj (hcomm : ∀ i i' mu mu', ee i mu * ee i' mu' = ee i' mu' * ee i mu) (B : V → V → K)
-    (hB : ∀ i mu F G, B (ee i mu F) G = B F (ee i mu G)) (ka : ι → Fin n → ℤ) (F G : V) :
-    B (jointE ee ka F) G = B F (jointE ee ka G) := by
-  refine list_selfadj B _ (jointE_comm hcomm ka) ?_ F G
-  intro a ha
-  obtain ⟨i, -, rfl⟩ := List.mem_map.1 ha
-  exact hB i (ka i)
 
 end Family
 

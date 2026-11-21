@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInertTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIsometrySignThird
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TranslateSumVacuumMovedByAdelicPairStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TranslateSumVacuumMovedByAdelicPair
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host
@@ -22,7 +22,7 @@ theorem thetaKO_transSum_eq_short_series : ∀ (D : D7) (H : Geo.Tor.Host D.host
   intro D H Dw ψ θ V W χV χW om ΛV ΛW s f₀ hVP ι hι hrt l₂ e he r g q0 hr X hq bas idx x₀ vr BW hM hS hx hinv hbas hvr
     bad N h k Λ mk e' Ps y hbad he' hPs hh hsupp hdet hΛ htriv hlev hmk Y hY v a hv hR w P d hd
   choose p hp using fun q => exists_finOf V W hr (Y q)
-  obtain ⟨hthP, hdat⟩ := GlobalTheory.T.translateSum_vacuum_moved_by_adelicPair D H Dw ψ θ V W χV χW om ΛV ΛW s f₀ hVP
+  obtain ⟨hthP, hdat⟩ := _root_.GlobalTheory.AdTh.MovedSum.moved_transSum D H Dw ψ θ V W χV χW om ΛV ΛW s f₀ hVP
     ι hι l₂ e he r hr bad N h k Λ mk hbad ⟨hh, e', Ps, he', hPs, hsupp⟩ hΛ htriv hlev hmk Y (fun q => (p q).1)
     (fun q => (p q).2) hY hp w
   obtain ⟨hP, -, hV0, hW0, hVs, hWs, hVstd, -, hvac⟩ := hVP
@@ -41,7 +41,7 @@ theorem thetaKO_transSum_eq_short_series : ∀ (D : D7) (H : Geo.Tor.Host D.host
       L₀ = Submodule.span (𝓞 D.host.E)
         {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ Bridge.hLat W (fin W k), w = a • v} →
       latR hr (latG W k) = latR hr L₀ := fun L₀ h₀ => by rw [h₀, hlat]
-  have hcl := GlobalTheory.T.weilRepresentation_split_support_projects_vacuum D _ _ _ _ _ _ _ hP _ g hr X bas idx hM hS H hrt _ _ Λ.La _ hV0 hVs hks hVstd hL _ _ hx'
+  have hcl := _root_.GlobalTheory.AdTh.SplitClass.om_reads_projA D _ _ _ _ _ _ _ hP _ g hr X bas idx hM hS H hrt _ _ Λ.La _ hV0 hVs hks hVstd hL _ _ hx'
     (isInvOf_move hr X hinv k) _ hvac' _ hR e' Ps h y he' hsupp hdet hΛ
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul, projA_smul, smul_smul] at hcl
   obtain ⟨-, hsd, huni, hfg⟩ := LatOf.isLatOf_tens D _ _ _ _ _ g hr X bas idx hψ hP.inf hP.std hP.even hM hS

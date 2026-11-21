@@ -30,11 +30,6 @@ theorem two_nsmul_cohomology_unitsLimitRep {r : ℕ} (hr : 4 ≤ r) (y : cohomol
   · have := subsingleton_localGaloisCohomology_of_isReal_of_odd v.1 v.2 ho
     exact Subsingleton.elim _ _
 
-theorem eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd {ℓ : ℕ} (hℓ : ℓ.Prime) (h2 : ℓ ≠ 2) {r : ℕ}
-    (hr : 4 ≤ r) (y : cohomology (unitsLimitRep K) r) {k : ℕ} (hk : ℓ ^ k • y = 0) : y = 0 :=
-  eq_zero_of_coprime_nsmul_eq_zero ((Nat.coprime_primes Nat.prime_two hℓ).2 h2.symm)
-    (two_nsmul_cohomology_unitsLimitRep hr y) hk
-
 end TwoTorsion
 
 variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) {ℓ : ℕ} (hℓ : ℓ.Prime)
@@ -83,26 +78,6 @@ theorem coe_sUnitsInflPrimaryEquiv_apply {r : ℕ} (hr : 4 ≤ r)
     (x : AddCommGroup.primaryComponent (cohomology (galSUnitsMax K.1 ℚ̄ S) r) ℓ) :
     (sUnitsInflPrimaryEquiv K S hℓ hS hr x : cohomology (unitsLimitRep K) r) = sUnitsInfl K S r x :=
   rfl
-
-section Odd
-
-include hℓ hS in
-
-theorem eq_zero_of_pow_nsmul_cohomology_gsUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ} (hr : 4 ≤ r)
-    (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) {k : ℕ} (hk : ℓ ^ k • x = 0) : x = 0 :=
-  eq_zero_of_gsUnitsInfl_eq_zero K S hℓ hS (by omega) x
-    (eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd hℓ h2 hr _ (k := k)
-      ((map_nsmul _ _ _).symm.trans ((congrArg _ hk).trans (map_zero _)))) hk
-
-include hℓ hS in
-
-theorem eq_zero_of_pow_nsmul_cohomology_sUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ} (hr : 4 ≤ r)
-    (x : cohomology (galSUnitsMax K.1 ℚ̄ S) r) {k : ℕ} (hk : ℓ ^ k • x = 0) : x = 0 :=
-  (isIsoModCoprime_sUnitsInfl K S hℓ hS hr).eq_zero_of_pow_nsmul
-    (eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd hℓ h2 hr _ (k := k)
-      ((map_nsmul _ _ _).symm.trans ((congrArg _ hk).trans (map_zero _)))) hk
-
-end Odd
 
 section Real
 

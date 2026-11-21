@@ -92,15 +92,6 @@ def IsNrm (G : HTGroup p) (r : ℕ) (γ : Gp G) (δ z : Gr G r) : Prop :=
 def carry (G : HTGroup p) (r : ℕ) (z : Gr G r) : Gp G →* Gr G r :=
   (MulAut.conj z⁻¹).toMonoidHom.comp (inclG G r)
 
-def lorb (G : HTGroup p) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) (γ : Gp G) : ℂ :=
-  if h : ∃ dz : Gr G r × Gr G r, IsNrm G r γ dz.1 dz.2 then
-    GlobalTheory.LKCount.orbC (sigG G r) K ((Subgroup.centralizer {γ} ⊓ Kp0 G).map (carry G r h.choose.2)) h.choose.1 φ
-  else 0
-
-def Match (G : HTGroup p) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) (K' : Subgroup (Gr G 1))
-    (f : Gr G 1 → ℂ) : Prop :=
-  ∀ γ : Gp G, regular₂ G γ → lorb G r K φ γ = lorb G 1 K' f γ
-
 def IsTest {H : Type} [Group H] (θ : H →* H) (K₀ K : Subgroup H) (φ : H → ℂ) : Prop :=
   Subgroup.Commensurable K K₀ ∧ K.map θ ≤ K ∧ (∀ k ∈ K, ∀ g, φ (k⁻¹ * g * θ k) = φ g) ∧
     ∃ S : Finset H, ∀ g, φ g ≠ 0 → ∃ s ∈ S, ∃ k₁ ∈ K₀, ∃ k₂ ∈ K₀, g = k₁ * s * k₂
@@ -204,25 +195,6 @@ def IsSel (G : HTGroup p) (sel : Polynomial G.F → ℂ) : Prop :=
   ∀ v : InfinitePlace G.F, sigPosH (G.gram_herm v) = 1 → ∀ P : Polynomial G.F, P.Monic → P.natDegree = G.n →
     P.eval₂ v.embedding (sel P) = 0
 
-def markedSum (G : HTGroup p) (wt sel : Polynomial G.F → ℂ) (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ)
-    (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) : ℂ :=
-  ∑ᶠ q : Cls G, if (Quot.out q).Mark (sel (Quot.out q).pol) then
-    wt (Quot.out q).pol * (Quot.out q).term Kf f r K φ else 0
-
-def fullSum (G : HTGroup p) (wt : Polynomial G.F → ℂ) (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ)
-    (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) : ℂ :=
-  ∑ᶠ q : Cls G, if ∃ μ, (Quot.out q).Mark μ then wt (Quot.out q).pol * (Quot.out q).term Kf f r K φ else 0
-
-def IsSimple (G : HTGroup p) : Prop := (∀ x : G.C, x ≠ 0 → IsUnit x) ∧ G.a = 1
-
-def Compare : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), IsSimple G → ∀ (wt sel : Polynomial G.F → ℂ), IsSel G sel →
-    ∀ (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →
-    ∀ (r : ℕ), 0 < r → ∀ (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ),
-      IsTest (sigG G r) (KHT p G.m G.n r G.Fw) K φ → IsTest (sigG G 1) (KHT p G.m G.n 1 G.Fw) K' f' →
-      Match G r K φ K' f' →
-      (G.n : ℂ) * markedSum G wt sel L.K.toSubgroup f r K φ = fullSum G wt L.K.toSubgroup f 1 K' f'
-
 end GlobalTheory.LKMid
 
 namespace GlobalTheory.LKMid
@@ -240,46 +212,6 @@ theorem sh_algebraMap (G : HTGroup p) (x : G.F) :
 
 theorem sh_one_eq (G : HTGroup p) : sh G 1 = 1 := by simp [sh]
 
-def Pair.ofScalar (G : HTGroup p) (hn : G.n = 1) (a : G.Fˣ) (c : ℚˣ)
-    (h : (a : G.F) * IsCMField.complexConj G.F a = algebraMap ℚ G.F c) : Pair G where
-  β := 1
-  γ := scal G a
-  c := c
-  sym := sh_one_eq G
-  sim := by
-    rw [scal_val, Units.val_one, mul_one, mul_one, sh_algebraMap, ← map_mul, h]
-    exact (IsScalarTower.algebraMap_apply ℚ G.F G.C _).symm
-  reg := by
-    rw [scal_val, minpoly.eq_X_sub_C, hn]
-    exact ⟨Polynomial.natDegree_X_sub_C _, Polynomial.separable_X_sub_C⟩
-  trivAf := ⟨1, 1, by simp [Triv, inC]⟩
-  trivR := ⟨1, by simp [Triv, inC]⟩
-
-theorem Pair.ofScalar_pol (G : HTGroup p) (hn : G.n = 1) (a : G.Fˣ) (c : ℚˣ)
-    (h : (a : G.F) * IsCMField.complexConj G.F a = algebraMap ℚ G.F c) :
-    (Pair.ofScalar G hn a c h).pol = Polynomial.X - Polynomial.C (a : G.F) := by
-  show minpoly G.F (algebraMap G.F G.C (a : G.F)) = _
-  exact minpoly.eq_X_sub_C _ _
-
-theorem exists_isSel (G : HTGroup p) (h : G.a ≤ 1) : ∃ sel, IsSel G sel := by
-  by_cases h0 : ∃ v : InfinitePlace G.F, sigPosH (G.gram_herm v) = 1
-  · obtain ⟨v0, hv0⟩ := h0
-    refine ⟨fun P => if hP : 0 < (P.map v0.embedding).degree then (Complex.exists_root hP).choose else 0, ?_⟩
-    intro v hv P hm hd
-    have h1 : Fintype.card {v : InfinitePlace G.F // sigPosH (G.gram_herm v) = 1} ≤ 1 := h
-    have hvv : v = v0 := congrArg Subtype.val (Fintype.card_le_one_iff.1 h1 ⟨v, hv⟩ ⟨v0, hv0⟩)
-    subst hvv
-    have hP : 0 < (P.map v.embedding).degree := by
-      rw [Polynomial.degree_eq_natDegree (hm.map _).ne_zero, hm.natDegree_map, hd]
-      exact_mod_cast G.n_pos
-    simp only [dif_pos hP]
-    rw [← Polynomial.eval_map]
-    exact (Complex.exists_root hP).choose_spec
-  · exact ⟨0, fun v hv _ _ _ => absurd ⟨v, hv⟩ h0⟩
-
-theorem exists_isSel_of_isSimple (G : HTGroup p) (h : IsSimple G) : ∃ sel, IsSel G sel :=
-  exists_isSel G h.2.le
-
 theorem isTest_indicator {H : Type} [Group H] (θ : H →* H) (K : Subgroup H) (hK : K.map θ ≤ K) :
     IsTest θ K K (Set.indicator (K : Set H) 1) := by
   refine ⟨Subgroup.Commensurable.refl K, hK, fun k hk g => ?_, {1}, fun g hg => ?_⟩
@@ -295,82 +227,9 @@ theorem isTest_indicator {H : Type} [Group H] (θ : H →* H) (K : Subgroup H) (
       by_contra hn; exact hg (by simp [Set.indicator_apply, hn])
     exact ⟨1, Finset.mem_singleton_self _, 1, K.one_mem, g, hgK, by simp⟩
 
-theorem match_refl (G : HTGroup p) (K : Subgroup (Gr G 1)) (φ : Gr G 1 → ℂ) : Match G 1 K φ K φ :=
-  fun _ _ => rfl
-
 end Inhabitants
 
 namespace Example
-
-open GlobalTheory.LKTrip.Example
-
-abbrev gi : QI := IsCyclotomicExtension.zeta 4 ℚ QI
-
-theorem conj_gi : IsCMField.complexConj QI gi = -gi := by
-  let φ : QI →+* ℂ := Classical.arbitrary _
-  apply φ.injective
-  rw [IsCMField.complexEmbedding_complexConj, map_neg]
-  have h3 : φ gi ^ 2 = Complex.I ^ 2 := by
-    rw [← map_pow, zeta_sq, map_neg, map_one, Complex.I_sq]
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h3 with h | h <;> rw [h] <;> simp
-
-theorem two_add_gi_ne_zero : (2 + gi : QI) ≠ 0 := by
-  intro h
-  have e : gi = -2 := by linear_combination h
-  have h2 : gi ^ 2 = -1 := zeta_sq
-  rw [e] at h2
-  norm_num at h2
-
-def a21 : QIˣ := Units.mk0 (2 + gi) two_add_gi_ne_zero
-
-theorem norm_gaussian_element_eq_five : ((a21 : QI)) * IsCMField.complexConj QI a21 = algebraMap ℚ QI ((Units.mk0 (5 : ℚ) (by norm_num) : ℚˣ) : ℚ) := by
-  show (2 + gi) * IsCMField.complexConj QI (2 + gi) = algebraMap ℚ QI 5
-  rw [map_add, conj_gi, map_ofNat, map_ofNat]
-  linear_combination (-1 : QI) * zeta_sq
-
-def exPair : Pair (ex 1 one_ne_zero) :=
-  Pair.ofScalar (ex 1 one_ne_zero) rfl a21 (Units.mk0 5 (by norm_num)) norm_gaussian_element_eq_five
-
-theorem isSimple_unitaryRankOne : IsSimple (ex 1 one_ne_zero) := by
-  refine ⟨fun x hx => ?_, a_ex_one⟩
-  have key : ∀ y : Matrix (Fin 1) (Fin 1) QI, y ≠ 0 → IsUnit y := by
-    intro y hy
-    rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_unique]
-    refine isUnit_iff_ne_zero.2 fun h => hy ?_
-    ext i j
-    rw [Subsingleton.elim i default, Subsingleton.elim j default, h]
-    rfl
-  exact key x hx
-
-theorem exPair_mark : ∃ μ : ℂ, exPair.Mark μ := by
-  have ha : 0 < (ex 1 one_ne_zero).a := by rw [a_ex_one]; exact one_pos
-  obtain ⟨⟨v, hv⟩⟩ := Fintype.card_pos_iff.1 ha
-  refine ⟨v.embedding (show (ex 1 one_ne_zero).F from (2 + gi : QI)), v, hv, fun _ => 1, ?_, ?_⟩
-  · show (ex 1 one_ne_zero).psi v (algebraMap (ex 1 one_ne_zero).F (ex 1 one_ne_zero).C (show (ex 1 one_ne_zero).F from (2 + gi : QI))) *ᵥ (fun _ => (1 : ℂ)) =
-      v.embedding (show (ex 1 one_ne_zero).F from (2 + gi : QI)) • (fun _ => (1 : ℂ))
-    rw [(ex 1 one_ne_zero).psi_F v, Matrix.scalar_apply]
-    ext i
-    rw [Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]
-  · show 0 < (star (fun _ => (1 : ℂ)) ⬝ᵥ (((ex 1 one_ne_zero).gram v *
-      (ex 1 one_ne_zero).psi v (((1 : (ex 1 one_ne_zero).Cˣ)⁻¹ : (ex 1 one_ne_zero).Cˣ) : (ex 1 one_ne_zero).C)) *ᵥ
-      (fun _ => (1 : ℂ)))).re
-    rw [inv_one, Units.val_one, map_one, Matrix.mul_one]
-    show 0 < (star (fun _ : Fin 1 => (1 : ℂ)) ⬝ᵥ (gramAt (Hc 1) (v.embedding : QI →+* ℂ) *ᵥ fun _ : Fin 1 => (1 : ℂ))).re
-    simp [gramAt, Hc, dotProduct, Matrix.mulVec]
-    have h1 : ((v.embedding : QI →+* ℂ) 1).re = 1 := by rw [map_one]; rfl
-    exact lt_of_lt_of_eq zero_lt_one h1.symm
-
-theorem exists_rootSelection_unitaryRankOne : ∃ sel, IsSel (ex 1 one_ne_zero) sel := exists_isSel_of_isSimple _ isSimple_unitaryRankOne
-
-theorem exists_cls_mark : ∃ q : Cls (ex 1 one_ne_zero), ∃ P : Pair (ex 1 one_ne_zero), Quot.mk _ P = q ∧ ∃ μ, P.Mark μ :=
-  ⟨Quot.mk _ exPair, exPair, rfl, exPair_mark⟩
-
-example : ((exPair.c : ℚˣ) : ℚ) = 5 := rfl
-
-example : exPair.pol = Polynomial.X - Polynomial.C (2 + gi) :=
-  Pair.ofScalar_pol (ex 1 one_ne_zero) rfl a21 _ norm_gaussian_element_eq_five
-
-example : Nonempty (ex 1 one_ne_zero).Level := GlobalTheory.LKTrip.LevelExists.level_exists 5 (ex 1 one_ne_zero)
 
 end Example
 

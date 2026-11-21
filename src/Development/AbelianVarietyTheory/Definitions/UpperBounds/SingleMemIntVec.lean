@@ -174,48 +174,4 @@ noncomputable def data : Data E r where
     ext a b
     simp [transvMat, hξ, Matrix.one_apply]
 
-theorem gram_one (τ : E →+* ℂ) (x : Matrix (Fin r) (Fin r) ℂ) :
-    gram τ (1 : Matrix (Fin r) (Fin r) E) x = (x.map conj)ᴴ * x.map conj := by
-  ext a b
-  simp [gram, hermC, col, Matrix.one_apply, apply_ite, Matrix.mul_apply]
-
-theorem mem_dom (x : Frame (data E r).Ψ r) : x ∈ (data E r).dom ↔ ∀ τ, (mat x τ).det ≠ 0 := by
-  refine ⟨fun h τ => (h τ).1, fun h τ => ⟨h τ, fun i => ?_⟩⟩
-  have hp : psgn r i = 1 := by
-    refine Finset.prod_eq_one fun a ha => ?_
-    have := Finset.mem_range.mp ha
-    have := i.isLt
-    exact if_pos (by omega)
-  have hd : ((mat x τ).map conj).det ≠ 0 := by
-    rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
-    simpa using h τ
-  have hpd : (gram τ.1 (1 : Matrix (Fin r) (Fin r) E) (mat x τ)).PosDef := by
-    rw [gram_one]
-    exact Matrix.PosDef.conjTranspose_mul_self _
-      (Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det _).mpr hd.isUnit))
-  have := (hpd.submatrix (Fin.castLE_injective (Nat.le_of_lt_succ i.isLt))).det_pos
-  change 0 < psgn r i * (lminor (gram τ.1 (1 : Matrix (Fin r) (Fin r) E) (mat x τ)) i).re
-  rw [hp, one_mul]
-  exact (Complex.lt_def.mp this).1
-
-omit [NumberField E] [IsCMField E] in
-
-theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact 1 x = x := by
-  funext τ
-  simp only [lact, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
-  rfl
-
-theorem card_cmType (X : Data E r) (h : Module.finrank ℚ E = 2) : Fintype.card X.Ψ = 1 := by
-  classical
-  have hc : Fintype.card (E →+* ℂ) = 2 := by rw [Embeddings.card, h]
-  have hb : X.Ψ.card = X.Ψᶜ.card := by
-    refine Finset.card_bij (fun τ _ => ComplexEmbedding.conjugate τ)
-      (fun τ hτ => Finset.mem_compl.mpr ((X.cmType τ).mp hτ)) (fun _ _ _ _ h => star_injective h)
-      fun τ hτ => ⟨ComplexEmbedding.conjugate τ, (X.cmType _).mpr ?_, star_star τ⟩
-    rw [show ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ from star_star τ]
-    exact Finset.mem_compl.mp hτ
-  have := X.Ψ.card_add_card_compl
-  rw [Fintype.card_coe]
-  omega
-
 end GlobalTheory.Up.Definite

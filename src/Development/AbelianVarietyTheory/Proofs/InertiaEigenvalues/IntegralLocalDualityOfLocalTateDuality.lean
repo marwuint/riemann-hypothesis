@@ -3,11 +3,12 @@ import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FactorMemCocyclesPowQuot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCompatibleSeqOfFiniteNonempty
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousQuotientTorsionBoundedStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousQuotientTorsionBounded
+import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DualLatticeCompactPowSmulNhdsBasisStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsContinuousCocycleLiftOfCompatibleStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteCocyclesQuotientPowSmulModuleStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCocycleCupNotCoboundaryFiniteLevelStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCocycleCupNotCoboundaryFiniteLevel
 
 open Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.Gal
 open Formalism.NG (KO)
@@ -27,7 +28,7 @@ theorem int_iso_of_localTateDuality (hT : Formalism.GaloisCohomology.LocalTateDu
   | H c => ?_
   by_contra hx0
   have hcB : (c : G → VT ⧸ D.T) ∉ B1 D.ρA := fun h => hx0 ((Submodule.Quotient.mk_eq_zero _).2 h)
-  obtain ⟨r, hr⟩ := GlobalTheory.T.continuous_quotient_torsion_bounded D.T hD.lat hD.openT ϖ hϖ (c : G → VT ⧸ D.T) c.2.1
+  obtain ⟨r, hr⟩ := _root_.GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact D.T hD.lat hD.openT ϖ hϖ (c : G → VT ⧸ D.T) c.2.1
   have hcyc : ∀ (g : G) (n : ℕ) (ζ : PadicAlgCl p), ζ ^ (p ^ n) = 1 → ∃ a : ℕ, (i g) ζ = ζ ^ a ∧
       ((D.ε g : Oˣ) : O) - (a : O) ∈ Ideal.span {(p : O) ^ n} := by
     intro g n ζ hζ
@@ -49,7 +50,7 @@ theorem int_iso_of_localTateDuality (hT : Formalism.GaloisCohomology.LocalTateDu
     (GlobalTheory.T.finite_cocycles_quotient_pow_smul_of_isOpen hT hK hO.p_mem i D.ρTl' (sub_contAction D.contT' _ D.stT') ϖ hϖ hopen (r + k)).subset
       (fun z hz => hz.1)
   have hne : ∀ k, (Y k).Nonempty := fun k => by
-    obtain ⟨z, hz, hz'⟩ := GlobalTheory.T.exists_cocycle_cup_not_coboundary_finiteLevel hT hK hO.ring hO.compact hO.t2 hO.adic hO.p_mem hO.p_ne hF.emb i D
+    obtain ⟨z, hz, hz'⟩ := _root_.GlobalTheory.LocDualFin.exists_cocycle_cup_not_cob hT hK hO.ring hO.compact hO.t2 hO.adic hO.p_mem hO.p_ne hF.emb i D
       hcyc hD.lat hD.perf hD.contT hD.openT hD.t2 hD.t2' hD.cs hD.cs' ϖ hϖ c.1 c.2 hcB r hr (r + k)
       (by omega)
     exact ⟨z, hz, hz'⟩

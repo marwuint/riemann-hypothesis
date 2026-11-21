@@ -15,7 +15,4 @@ private theorem intP_statement : IntP := by
 theorem extP : ExtP := extP_of intP_statement
 theorem dischargeW : DischargeW := dischargeW_of weylP
 theorem dischargeE : DischargeE := dischargeE_of extP
-theorem discharge_height_bound : HeightBoundImplication :=
-  discharge_of_pwe (dischargeP_of projection_lattice_holds comm_projection_holds intP_statement) dischargeW dischargeE
-
 end Formalism.InvariantFactorPaths.PW.Top

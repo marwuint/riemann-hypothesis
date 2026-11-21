@@ -31,33 +31,13 @@ theorem z_mem_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   intro x hx
   exact key x hx
 
-theorem e_mem {T : E} (F : LFlag S r T) (a : Fin r) : F.fl.e a ∈ Xflag F (a.val + 1) := by
-  have ha : a ∈ {i : Fin r | i.1 < a.val + 1} := Nat.lt_succ_self _
-  show F.fl.e a ∈ Submodule.span E (F.fl.e '' {i | i.1 < a.val + 1})
-  exact Submodule.subset_span (Set.mem_image_of_mem _ ha)
-
 end Formalism.MainNotions.S.Lem.Comparison₂
 
 end A
 
-section B
-open Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.BasicNotions NumberField
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
 namespace Formalism.MainNotions.S.Lem.Comparison₂
 
-theorem one_mem_NLam {D : D7} (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
-    (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ NLam Λ F := by
-  simp only [NLam, IsAutLam, Set.mem_setOf_eq]
-  refine ⟨⟨?_, ?_⟩, fun j x _ => by simp, fun x _ => by simp⟩
-  · exact (Formalism.HermitianLatticesTheory.isom _).one_mem
-  · ext x
-    simp [Formalism.HermitianLatticesTheory.gmap]
-
 end Formalism.MainNotions.S.Lem.Comparison₂
-end B
-
 section C
 open scoped Classical
 namespace Formalism.MainNotions.S.Lem.Cnt
@@ -123,21 +103,7 @@ theorem PEqv_refl (D : D7) (Λ : LatV D) {T T' : D.host.E} (F : LFlag (hS D) D.R
 end Formalism.MainNotions.S.Lem.Cnt
 end C
 
-section E
-
-open Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups
-
 namespace Formalism.MainNotions.S.Lem.Glob
 
-variable {D : Formalism.BasicNotions.D7}
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar in
-theorem Dmin_eq {n : ℕ} (w : Point D.host.E n) (l : ℕ) : Dmin w l = leadMinorE (ptMat w) l := by
-  first
-    | rfl
-    | (unfold Dmin leadMinorE; by_cases hl : l ≤ n <;> simp [hl])
-
 end Formalism.MainNotions.S.Lem.Glob
-end E
-
 end

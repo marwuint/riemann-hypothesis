@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLawsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLaws
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 open Filter Topology
@@ -58,7 +58,7 @@ theorem exists_eq_zero_of_prod {ι : Type} [DecidableEq ι] (s : Finset ι) (f :
       exact ⟨i, Finset.mem_insert_of_mem hi, hi'⟩
 
 theorem tendsto_mob (g : GQ) {x : ℂ} (hx : x ∈ Hs) : Tendsto (mob g) (𝓝[≠] x) (𝓝[≠] (mob g x)) := by
-  obtain ⟨hH, hmul, hone, hdiff, -, -⟩ := GlobalTheory.T.glTwoPosRatMobius_basic_laws
+  obtain ⟨hH, hmul, hone, hdiff, -, -⟩ := _root_.GlobalTheory.KZ.mob_laws
   rw [tendsto_nhdsWithin_iff]
   refine ⟨?_, ?_⟩
   · exact ((hdiff g).continuousOn.continuousAt (isOpen_Hs.mem_nhds hx)).tendsto.mono_left nhdsWithin_le_nhds
@@ -73,7 +73,7 @@ theorem tendsto_mob (g : GQ) {x : ℂ} (hx : x ∈ Hs) : Tendsto (mob g) (𝓝[�
 
 theorem germ_comp (g : GQ) (φ ψ : ℂ → ℂ) (h : (φ : Mero) = (ψ : Mero)) :
     ((fun z => φ (mob g z) : ℂ → ℂ) : Mero) = ((fun z => ψ (mob g z) : ℂ → ℂ) : Mero) := by
-  obtain ⟨hH, -, -, -, -, -⟩ := GlobalTheory.T.glTwoPosRatMobius_basic_laws
+  obtain ⟨hH, -, -, -, -, -⟩ := _root_.GlobalTheory.KZ.mob_laws
   apply Filter.Germ.coe_eq.mpr
   apply mem_codiscreteWithin_iff_forall_mem_nhdsNE.2
   intro x hx

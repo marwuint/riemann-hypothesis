@@ -82,6 +82,4 @@ end GlobalTheory.MumFam.TensPol
 
 namespace GlobalTheory.MumFam.TensPol
 
-open GlobalTheory.CechPic GlobalTheory.SiegelOfPolarised GlobalTheory.PrimNorm GlobalTheory.PrimNormPol GlobalTheory.SiegelPower
-
 end GlobalTheory.MumFam.TensPol

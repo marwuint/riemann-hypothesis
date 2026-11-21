@@ -20,15 +20,6 @@ theorem IsKFinite.mul {Φ Ψ : G → ℂ} (h : IsKFinite K Φ) (h' : IsKFinite K
   exact isKFinite_iff.2 ⟨W * W', Module.Finite.iff_fg.2 ((Module.Finite.iff_fg.1 hf).mul (Module.Finite.iff_fg.1 hf')),
     fun k hk => Submodule.mul_mem_mul (hW k hk) (hW' k hk)⟩
 
-theorem IsKFinite.prod {ι : Type} (S : Finset ι) {Φ : ι → G → ℂ} (h : ∀ i ∈ S, IsKFinite K (Φ i)) :
-    IsKFinite K fun g => ∏ i ∈ S, Φ i g := by
-  classical
-  induction S using Finset.induction_on with
-  | empty => exact .of_invariant fun _ _ _ => rfl
-  | insert i S hi ih =>
-    simp only [Finset.prod_insert hi]
-    exact (h i (Finset.mem_insert_self i S)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
-
 end KFinite
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

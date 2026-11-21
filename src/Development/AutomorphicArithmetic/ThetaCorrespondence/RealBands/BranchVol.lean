@@ -92,8 +92,8 @@ private theorem vol_arith (n : ℕ) (B : ℝ) (hn : 3 ≤ n) (hB : 1 ≤ B) :
 
 theorem UpperTheory.Lit.Branch.volDeg :
     VolDeg := by
-  have hVol : VolBall := GlobalTheory.T.volume_of_ball_bound
-  have hDegU : DegUpper := GlobalTheory.T.formalDegree_le_of_neighbourhoodVolume GlobalTheory.T.unitary_near_identity_eq_exp_log_bound GlobalTheory.T.lowestKType_lieWord_normBound hVol
+  have hVol : VolBall := _root_.GlobalTheory.SepReal.volBall
+  have hDegU : DegUpper := GlobalTheory.T.formalDegree_le_of_neighbourhoodVolume _root_.GlobalTheory.SepReal.logNear_holds _root_.GlobalTheory.SepReal.lieBound hVol
   refine ⟨11, by norm_num, ?_⟩
   intro n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ d hd
   have hn := hP.three_le

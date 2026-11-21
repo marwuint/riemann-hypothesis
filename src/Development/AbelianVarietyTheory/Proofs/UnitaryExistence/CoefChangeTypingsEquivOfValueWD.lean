@@ -7,7 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseC
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeCommBaseChange
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.FrameRingGlRing
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.EqZeroOfForallLTensorEqZero
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ChartCoverFOfSectionBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ChartCoverFOfSectionBaseChange
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 
 set_option synthInstance.maxHeartbeats 200000
 
@@ -75,69 +79,7 @@ def Compat (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] : Prop :=
 
 variable {c c'}
 
-theorem embK_inclF (τ : E →+* ℂ) (a : 𝓞 E) : inclF c c' hle (embK c τ a) = embK c' τ a :=
-  Subtype.ext rfl
-
-theorem sOf_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Compat c c' hle S) :
-    sOf c' S = sOf c S := by
-  unfold sOf
-  congr 1
-  ext a
-  simp only [RingHom.comp_apply]
-  rw [← h]
-  rfl
-
-theorem isEigAt_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Compat c c' hle S)
-    (τ : E →+* ℂ) (v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :
-    IsEigAt (Xo := Xo) c' τ v ↔ IsEigAt (Xo := Xo) c τ v := by
-  have h' : ∀ a : c.F, algebraMap c'.F S (inclF c c' hle a) = algebraMap c.F S a := h
-  unfold IsEigAt
-  simp only [← embK_inclF hle τ, h']
-
-def ptRes {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Compat c c' hle S)
-    (y : FrPt Xo c' S) : FrPt Xo c S where
-  x := y.x
-  x_over := y.x_over.trans (sOf_res hle h)
-  u := y.u
-  tan := y.tan
-  eig τ i := (isEigAt_res hle h τ _).1 (y.eig τ i)
-  basis τ w ht he := y.basis τ w ht ((isEigAt_res hle h τ w).2 he)
-  s := y.s
-  gen := y.gen
-
-def ptExt {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Compat c c' hle S)
-    (y : FrPt Xo c S) : FrPt Xo c' S where
-  x := y.x
-  x_over := y.x_over.trans (sOf_res hle h).symm
-  u := y.u
-  tan := y.tan
-  eig τ i := (isEigAt_res hle h τ _).2 (y.eig τ i)
-  basis τ w ht he := y.basis τ w ht ((isEigAt_res hle h τ w).1 he)
-  s := y.s
-  gen := y.gen
-
 variable {r : ℕ}
-
-def unifExt (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ' : c'.F →+* ℂ) : Unf Xo c' σ' r :=
-  letI : Algebra c.F (CAt σ') := (σ'.comp (inclF c c' hle)).toAlgebra
-  { Comp := (U (σ'.comp (inclF c c' hle))).Comp
-    fin := (U (σ'.comp (inclF c c' hle))).fin
-    X := (U (σ'.comp (inclF c c' hle))).X
-    un := fun k x => ptExt hle (S := CAt σ') (fun _ => rfl) ((U (σ'.comp (inclF c c' hle))).un k x) }
-
-def IsSum {m : ℕ} (f' : Rul Xo c') (as : Fin m → c'.F) (fs : Fin m → Rul Xo c) : Prop :=
-  ∀ (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Compat c c' hle S) (y : FrPt Xo c' S),
-    evR Xo c' f' y = ∑ i, algebraMap c'.F S (as i) * evR Xo c (fs i) (ptRes hle h y)
-
-def CuspSums (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) : Prop :=
-  ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f' ∈ cusp Xo c' (unifExt hle U) a n,
-    ∃ (m : ℕ) (as : Fin m → c'.F) (fs : Fin m → Rul Xo c), (∀ i, fs i ∈ cusp Xo c U a n) ∧ IsSum hle f' as fs
-
-def ActSums {G : Type} [Group G] (act : G → Rul Xo c →ₗ[c.F] Rul Xo c) (act' : G → Rul Xo c' →ₗ[c'.F] Rul Xo c') :
-    Prop :=
-  ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (g : G) (m : ℕ) (as : Fin m → c'.F) (fs : Fin m → Rul Xo c) (f' : Rul Xo c'),
-    f' ∈ sec Xo c' a n → (∀ i, fs i ∈ sec Xo c a n) →
-    IsSum hle f' as fs → IsSum hle (act' g f') as (fun i => act g (fs i))
 
 end First
 
@@ -285,16 +227,5 @@ theorem ruleUp_mem_sec (hWD : ValueWD Xo c) (hBC : HasBC Xo c) {a : (E →+* ℂ
     exact e3
 
 variable {r : ℕ}
-
-def ActSumsOn {G : Type} [Group G] (act : G → Rul Xo c →ₗ[c.F] Rul Xo c) (act' : G → Rul Xo c' →ₗ[c'.F] Rul Xo c')
-    (W : Submodule c.F (Rul Xo c)) (W' : Submodule c'.F (Rul Xo c')) : Prop :=
-  ∀ (g : G) (m : ℕ) (as : Fin m → c'.F) (fs : Fin m → Rul Xo c) (f' : Rul Xo c'),
-    f' ∈ W' → (∀ i, fs i ∈ W) → IsSum hle f' as fs → IsSum hle (act' g f') as (fun i => act g (fs i))
-
-def ExtendsOn {G : Type} [Group G] {W : Submodule c.F (Rul Xo c)} {W' : Submodule c'.F (Rul Xo c')}
-    (ρ : G →* Module.End c.F W) (ρ' : G →* Module.End c'.F W') : Prop :=
-  ∀ (g : G) (m : ℕ) (b : Fin m → c'.F) (f : Fin m → W) (f' : W'),
-    IsComb hle b (fun i => (f i : Rul Xo c)) (f' : Rul Xo c') →
-      IsComb hle b (fun i => (ρ g (f i) : Rul Xo c)) (ρ' g f' : Rul Xo c')
 
 end GlobalTheory.CoefChangeCompare

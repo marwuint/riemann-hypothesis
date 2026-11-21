@@ -2,9 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import Development.AbelianVarietyTheory.Definitions.Divisors.ProjectiveNotIsUnit
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveAlgebraisationFormalCompleteLoca
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousCorrectionNextLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsXPowMulSubMemVanishingIdealReductionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerSquaresStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousCorrectionNextLevel
+import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.ExistsAwayFracOfMemHomLoc
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsXPowMulSubMemVanishingIdealReduction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerSquares
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.FormalAlg GlobalTheory.Degen.FormalEmb
 
@@ -40,13 +42,13 @@ theorem exists_homogeneous_correction_succ : ∀ (R : Type) [CommRing R] [IsNoet
     veryAmpleBy_comp_quotient _ _ _ _ (hVA e)
   have c₁ : ∀ e, β e ≫ (Y (e + 1)).hom ≫ thick R I (e + 1) = (Y e).hom ≫ thick R I e := fun e => by
     rw [← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]
-  have hpb := (GlobalTheory.T.isPullback_thick_tower_squares R I Y β hβ).1
-  exact GlobalTheory.T.homogeneous_correction_next_level_alt R I n (fun e => vanIdeal ((Y e).hom ≫ thick R I e) (s e))
+  have hpb := (_root_.GlobalTheory.FormalAlg.towerSquares R I Y β hβ).1
+  exact _root_.GlobalTheory.homogeneous_correction_next_level R I n (fun e => vanIdeal ((Y e).hom ≫ thick R I e) (s e))
     (fun e _ _ _ h => mem_vanIdeal_of_sat _ _ (hVA e).1 h)
     (fun e a ha => (mem_vanIdeal _ _ _).2 fun k => by
       rw [MvPolynomial.eval₂Hom_C, cst_comp_spec, RingHom.comp_apply,
         Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero])
-    (fun e t F hF hK i => GlobalTheory.T.exists_X_pow_mul_sub_mem_vanishingIdeal_reduction R (I ^ (e + 1)) (Y (e + 1)).left (Y e).left
+    (fun e t F hF hK i => _root_.GlobalTheory.FormalAlg.exists_X_pow_mul_sub_mem_vanIdeal R (I ^ (e + 1)) (Y (e + 1)).left (Y e).left
       ((Y (e + 1)).hom ≫ thick R I (e + 1)) (β e) (Y e).hom (hpb e) (H (e + 1)) (H e) (v e) n (s (e + 1)) (s e)
       (hH _).1 (hH _).1 (hH e).2 (hs e) (hVAR (e + 1)) t F hF (by rw [c₁]; exact hK) i)
 

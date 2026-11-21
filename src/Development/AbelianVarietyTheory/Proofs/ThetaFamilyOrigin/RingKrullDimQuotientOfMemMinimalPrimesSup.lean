@@ -30,9 +30,6 @@ noncomputable def gradedQuotHilbertPoly (J : Ideal T) : ℚ[X] :=
 noncomputable def gradedQuotDeg (r : ℕ) (J : Ideal T) : ℚ :=
   (r.factorial : ℚ) * (gradedQuotHilbertPoly 𝒜 J).coeff r
 
-def relevantMinimalPrimes {ι : Type*} (x : ι → T) (J : Ideal T) : Set (Ideal T) :=
-  {Q | Q ∈ J.minimalPrimes ∧ ∃ i, x i ∉ Q}
-
 variable {𝒜} in
 theorem IsHilbertPoly.gradedQuotHilbertPoly_eq {J : Ideal T} {P : ℚ[X]}
     (hP : IsHilbertPoly (gradedQuotPiece 𝒜 J) P) : gradedQuotHilbertPoly 𝒜 J = P := by
@@ -482,13 +479,6 @@ theorem exists_ringKrullDim_quotient_eq_succ {P : Ideal T} [hP : P.IsPrime]
   have h2 : 0 < δ := by exact_mod_cast h1
   exact ⟨δ - 1, by rw [hδ, Nat.sub_add_cancel h2]⟩
 
-theorem ringKrullDim_quotient_eq_natDegree_add_one {P : Ideal T} [P.IsPrime]
-    (hI : P.IsHomogeneous 𝒜) (h : ∃ i, x i ∉ P) :
-    ringKrullDim (T ⧸ P) = ((gradedQuotHilbertPoly 𝒜 P).natDegree + 1 : ℕ) := by
-  obtain ⟨i, hi⟩ := h
-  obtain ⟨e, he⟩ := exists_ringKrullDim_quotient_eq_succ hx hfin hI hi
-  rw [natDegree_eq_of_degree_eq_some (degree_hilbertPoly_eq_of_isPrime hx hfin hI he), he]
-
 theorem exists_nat_gradedQuotDeg_eq {I : Ideal T} (hI : I.IsHomogeneous 𝒜) {r : ℕ}
     (hr : (gradedQuotHilbertPoly 𝒜 I).degree ≤ r) : ∃ D : ℕ, gradedQuotDeg 𝒜 r I = D := by
   obtain ⟨z, hz⟩ := exists_int_factorial_mul_coeff hr (by
@@ -565,78 +555,5 @@ theorem gradedQuotDeg_bot_le {r : ℕ} {c : ℚ}
   exact mul_le_mul_of_nonneg_left h3 (by positivity)
 
 end GradedBezout
-
-open GradedBezout in
-
-theorem graded_bezout_step [GradedAlgebra 𝒜] {ι : Type*} [Finite ι] (x : ι → T)
-    (hx : ∀ i, x i ∈ 𝒜 1) (hfin : Module.Finite (Algebra.adjoin K (Set.range x)) T) :
-    (∀ J : Ideal T, J.IsHomogeneous 𝒜 →
-      IsHilbertPoly (gradedQuotPiece 𝒜 J) (gradedQuotHilbertPoly 𝒜 J)) ∧
-    ∀ (P : Ideal T) (r : ℕ), P.IsPrime → P.IsHomogeneous 𝒜 → (∃ i, x i ∉ P) →
-      (gradedQuotHilbertPoly 𝒜 P).natDegree = r →
-      (ringKrullDim (T ⧸ P) = (r + 1 : ℕ) ∧ ∃ D : ℕ, 1 ≤ D ∧ gradedQuotDeg 𝒜 r P = D) ∧
-      ∀ (a : ℕ) (f : T), f ∈ 𝒜 a → f ∉ P →
-        (P ⊔ Ideal.span {f}).minimalPrimes.Finite ∧
-        (∀ Q ∈ (P ⊔ Ideal.span {f}).minimalPrimes,
-          Q.IsHomogeneous 𝒜 ∧ ringKrullDim (T ⧸ Q) = r) ∧
-        (1 ≤ r →
-          (∀ Q ∈ relevantMinimalPrimes x (P ⊔ Ideal.span {f}),
-            (gradedQuotHilbertPoly 𝒜 Q).natDegree = r - 1) ∧
-          ∑ᶠ Q ∈ relevantMinimalPrimes x (P ⊔ Ideal.span {f}), gradedQuotDeg 𝒜 (r - 1) Q ≤
-            a * gradedQuotDeg 𝒜 r P) := by
-  refine ⟨fun J hJ => isHilbertPoly hx hfin hJ, fun P r hp hP hi hr => ?_⟩
-  have hdim := ringKrullDim_quotient_eq_natDegree_add_one hx hfin hP hi
-  rw [hr] at hdim
-  refine ⟨⟨hdim, exists_pos_nat_gradedQuotDeg_eq hx hfin hP hdim⟩, fun a f hf hfP => ?_⟩
-  haveI := isNoetherianRing hfin
-  have hfinite := (P ⊔ Ideal.span {f}).finite_minimalPrimes_of_isNoetherianRing
-  have hQ : ∀ Q ∈ (P ⊔ Ideal.span {f}).minimalPrimes,
-      Q.IsHomogeneous 𝒜 ∧ ringKrullDim (T ⧸ Q) = r := fun Q hQ =>
-    ⟨isHomogeneous_of_mem_minimalPrimes _ (isHomogeneous_sup_span hP hf) hQ,
-      ringKrullDim_quotient_of_mem_minimalPrimes_sup hfin hdim hfP hQ⟩
-  refine ⟨hfinite, hQ, fun h1 => ?_⟩
-  obtain ⟨e, rfl⟩ : ∃ e, r = e + 1 := ⟨r - 1, by omega⟩
-  rw [Nat.add_sub_cancel]
-  refine ⟨fun Q h => ?_, ?_⟩
-  · haveI := h.1.1.1
-    exact natDegree_eq_of_degree_eq_some
-      (degree_hilbertPoly_eq_of_isPrime hx hfin (hQ Q h.1).1 (hQ Q h.1).2)
-  · have h2 : (relevantMinimalPrimes x (P ⊔ Ideal.span {f})).Finite :=
-      hfinite.subset fun _ h => h.1
-    rw [finsum_mem_eq_finite_toFinset_sum _ h2]
-    exact sum_gradedQuotDeg_le hx hfin hP hdim hf hfP _ fun Q h => (h2.mem_toFinset.1 h).1
-
-section PolynomialRing
-
-attribute [local instance] MvPolynomial.gradedAlgebra
-
-open MvPolynomial
-
-theorem finite_adjoin_range_X (ι : Type*) :
-    Module.Finite (Algebra.adjoin K (Set.range (MvPolynomial.X : ι → MvPolynomial ι K)))
-      (MvPolynomial ι K) :=
-  Module.Finite.of_surjective (Algebra.linearMap _ _) fun p =>
-    ⟨⟨p, by rw [adjoin_range_X]; trivial⟩, rfl⟩
-
-theorem gradedQuotHilbertPoly_mvPolynomial {ι : Type*} [Finite ι] {I : Ideal (MvPolynomial ι K)}
-    (hI : I.IsHomogeneous (homogeneousSubmodule ι K)) :
-    gradedQuotHilbertPoly (homogeneousSubmodule ι K) I = idealHilbertPoly I := by
-  apply polynomial_eq_of_eventually_eval_nat
-  filter_upwards [eventually_finrank_quotPiece hI, GradedBezout.eventually_finrank
-    (fun i => isHomogeneous_X K i) (finite_adjoin_range_X ι) hI] with n h1 h2
-  rw [← h1, ← h2, quotPiece_natCast, gradedQuotPiece_natCast]
-
-example : (⊥ : Ideal (MvPolynomial (Fin 2) K)).IsPrime ∧
-    (⊥ : Ideal (MvPolynomial (Fin 2) K)).IsHomogeneous (homogeneousSubmodule (Fin 2) K) ∧
-    (MvPolynomial.X 0 : MvPolynomial (Fin 2) K) ∉ (⊥ : Ideal (MvPolynomial (Fin 2) K)) ∧
-    (gradedQuotHilbertPoly (homogeneousSubmodule (Fin 2) K) ⊥).natDegree = 1 := by
-  refine ⟨inferInstance, Ideal.IsHomogeneous.bot _, MvPolynomial.X_ne_zero 0, ?_⟩
-  refine natDegree_eq_of_degree_eq_some (GradedBezout.degree_hilbertPoly_eq_of_isPrime
-    (fun i => isHomogeneous_X K i) (finite_adjoin_range_X _) (Ideal.IsHomogeneous.bot _) ?_)
-  rw [ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _),
-    MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
-  simp
-
-end PolynomialRing
 
 end GlobalTheory

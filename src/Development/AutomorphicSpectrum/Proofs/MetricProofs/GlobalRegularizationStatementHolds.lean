@@ -3,16 +3,16 @@ import ReciprocityTheory.AnalyticForms.LeviForms.RegGlue
 import ReciprocityTheory.AnalyticForms.LeviForms.RegChartC
 import ReciprocityTheory.AnalyticForms.LeviForms.TailCut
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LoglogQuotNonneg
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalLeviPshRegularizationStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalLeviPshRegularization
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.GluedLocalRegularizationsOnAtlasStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizationGlueC2ExplicitStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RefineAdaptedAtlasWithGradientStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LeviNonnegInChartOfPshStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothOnOfChartLeviNonnegStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogBoundTransferBetweenRadiiStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.EpsilonSchedulePropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizationGlueBoundsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.C2TendstoPullbackThroughChartStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizationGlueC2Explicit
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RefineAdaptedAtlasWithGradient
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LeviNonnegInChartOfPsh
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothOnOfChartLeviNonneg
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogBoundTransferBetweenRadii
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.EpsilonScheduleProperties
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizationGlueBounds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.C2TendstoPullbackThroughChart
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
 
@@ -20,13 +20,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 theorem regGlobalStatement_holds : RegGlobalStatement := by
   intro e X _ _ _ A B Θ L s n m W hΘ hΘpos hL hS hSNC hs hAd th ph C₅ hSW hGB
-  obtain ⟨B', x, hAd', hGB', hsrc⟩ := GlobalTheory.T.refine_adapted_atlas_with_gradient A B L th s ph C₅ hs hAd hGB
+  obtain ⟨B', x, hAd', hGB', hsrc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.refine_adapted_atlas A B L th s ph C₅ hs hAd hGB
   obtain ⟨hAB, h2, hcov, M, hM⟩ := hAd'
   choose S mm hm1 hbd hrl using hM
   have hcl : IsClosed (bdry s) := LeviFormBoundaryTopology.isClosed_bdry hS
   obtain ⟨hth, hphs, hpsh, hb⟩ := hSW
-  obtain ⟨C₅', hC₅'0, hconv⟩ := GlobalTheory.T.log_bound_transfer_between_radii C₅ M
-  obtain ⟨hlogd, hmono, hle, htend, hsmall, hmin⟩ := GlobalTheory.T.epsilon_schedule_properties
+  obtain ⟨C₅', hC₅'0, hconv⟩ := _root_.GlobalTheory.CompanionTheory.Metric.BoundConv.bound_conv C₅ M
+  obtain ⟨hlogd, hmono, hle, htend, hsmall, hmin⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.epsT_numerics
   have hrWge : ∀ y, Real.exp 1 ≤ rW L s y := rW_ge L s hs
   have h2le : ((2 : ℕ∞) : WithTop ℕ∞) ≤ ∞ := by exact_mod_cast le_top
   have hball : ∀ j, ∀ z ∈ ball (0 : Fin e → ℂ) 2 \ ReciprocityTheory.AnForm.A.coordDiv (S j),
@@ -45,7 +45,7 @@ theorem regGlobalStatement_holds : RegGlobalStatement := by
       (fun z => (fun z => th.φ (x j) ((B'.chart j).symm z)) z + (ph ∘ (B'.chart j).symm) z) := by
     intro j
     refine ⟨(((hq j).mono Set.diff_subset).add (hphj j)).of_le h2le, fun z hz w => ?_⟩
-    exact GlobalTheory.T.levi_nonneg_in_chart_of_psh A B' th ph (bdry s)ᶜ (x j) j hAB hth hcl.isOpen_compl hphs hpsh (hsrc j) z (hball j z hz) w
+    exact _root_.GlobalTheory.CompanionTheory.LeviChart.levi_nonneg_of_compat_fixedBase A B' th ph (bdry s)ᶜ (x j) j hAB hth hcl.isOpen_compl hphs hpsh (hsrc j) z (hball j z hz) w
   have hbnd : ∀ j, ∀ z ∈ ball (0 : Fin e → ℂ) 2 \ ReciprocityTheory.AnForm.A.coordDiv (S j),
       -C₅' * Real.log (rLoc (S j) (mm j) z) ≤ (ph ∘ (B'.chart j).symm) z ∧
         (ph ∘ (B'.chart j).symm) z ≤ C₅' := by
@@ -64,7 +64,7 @@ theorem regGlobalStatement_holds : RegGlobalStatement := by
     have hr := hrl j z (ball_subset_closedBall hz2.1) hzb
     have hrl' := RegularChartScaling.rLoc_ge (S j) (mm j) (RegularChartScaling.norm_coord_le_of_ball le_rfl hz2.1)
     exact (hconv _ _ 0 _ (hrWge _) hrl' hr).2 (hGB' j z hz.1 hzb)
-  have hch := fun j => GlobalTheory.T.local_levi_psh_regularization e (S j) (mm j) (fun z => th.φ (x j) ((B'.chart j).symm z))
+  have hch := fun j => _root_.GlobalTheory.CompanionTheory.Ar.Giv.regularise_one_chart e (S j) (mm j) (fun z => th.φ (x j) ((B'.chart j).symm z))
     (ph ∘ (B'.chart j).symm) C₅' M (hm1 j) (hq j) (hphj j) (hlevi j) (hbnd j) (hgrad j)
   choose Cj tj g hCj1 htj0 htje hgt hgC2 using hch
 
@@ -142,12 +142,12 @@ theorem regGlobalStatement_holds : RegGlobalStatement := by
     simp only [Function.comp_apply]
     linarith
 
-  obtain ⟨K, hK0, hgl⟩ := GlobalTheory.T.regularization_glue_C2_explicit A B' Θ th s ph hAB hcov h2 hΘ hΘpos hth hcl hphs
+  obtain ⟨K, hK0, hgl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.regularization_glue_C2 A B' Θ th s ph hAB hcov h2 hΘ hΘpos hth hcl hphs
   have hback : ∀ t, 0 < t → t ≤ t₀ → ∀ j, A.SmoothOn (chartBall B' j (5 / 4)) (g j t ∘ B'.chart j) ∧
       IsPshOn A (chartBall B' j (5 / 4)) (th + LocPot.ofFun (g j t ∘ B'.chart j)) := by
     intro t ht htt j
     obtain ⟨hgs, hglevi, -⟩ := hgt j t ht (htt.trans (ht₀j j))
-    exact GlobalTheory.T.smoothOn_of_chart_levi_nonneg A B' th (x j) j (ball (0 : Fin e → ℂ) (5 / 4)) (g j t) hAB hth (hsrc j) isOpen_ball
+    exact _root_.GlobalTheory.CompanionTheory.Metric.PshBack.smoothOn_isPshOn_chartBack A B' th (x j) j (ball (0 : Fin e → ℂ) (5 / 4)) (g j t) hAB hth (hsrc j) isOpen_ball
       (fun z hz => h2 j (ball_subset_closedBall (ball_subset_ball (by norm_num) hz))) hgs hglevi.2
   have hov : ∀ t, 0 < t → t ≤ t₀ → ∀ j k, ∀ y ∈ chartBall B' j (5 / 4) ∩ chartBall B' k (5 / 4),
       |(g j t ∘ B'.chart j) y - (g k t ∘ B'.chart k) y| ≤ epsT Cl t := by
@@ -178,10 +178,10 @@ theorem regGlobalStatement_holds : RegGlobalStatement := by
         have hzt : z ∈ (B'.chart j).target :=
           h2 j (ball_subset_closedBall (ball_subset_ball (by norm_num) (hK' hz).1))
         exact ⟨(hK' hz).1, fun hc => (hK' hz).2 ((hbd j z hzt).2 hc)⟩
-      exact GlobalTheory.T.C2_tendsto_pullback_through_chart (B'.chart j) (g j) (ph ∘ (B'.chart j).symm) K'
+      exact _root_.GlobalTheory.CompanionTheory.Metric.ChartPullBack.C2_tendsto_chart_pullback (B'.chart j) (g j) (ph ∘ (B'.chart j).symm) K'
         (fun z hz => h2 j (ball_subset_closedBall (ball_subset_ball (by norm_num) (hK' hz).1)))
         (hgC2 j K' hsub hK'c))
-  obtain ⟨C, hC⟩ := GlobalTheory.T.regularization_glue_bounds A B' Θ L th s ph C₅ K Cl t₀ (fun t j => g j t ∘ B'.chart j) F hΘ hΘpos hth hs hcov
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RegFin.isRegFamily_of_glue A B' Θ L th s ph C₅ K Cl t₀ (fun t j => g j t ∘ B'.chart j) F hΘ hΘpos hth hs hcov
     (fun y hy => (hb y hy).1) hK0 hCl1 ht₀0 ht₀e hF hloc hmono'
   exact ⟨C, t₀, F, hC, hFC2⟩
 

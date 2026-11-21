@@ -97,25 +97,6 @@ structure ActLaws : Prop where
 
 variable {pts mapR borR actR}
 
-def rhoW [Fintype ι] (hL : ActLaws pts mapR borR actR) (e : ι → ℕ) :
-    G →* Module.End K (secW pts mapR borR e) where
-  toFun g :=
-    { toFun := fun f => ⟨actL pts actR g f, actL_mem pts mapR borR actR hL.total hL.nat hL.bor e g f.2⟩
-      map_add' := fun f f' => Subtype.ext (map_add (actL pts actR g) f.1 f'.1)
-      map_smul' := fun c f => Subtype.ext (map_smul (actL pts actR g) c f.1) }
-  map_one' := by
-    ext f : 1
-    exact Subtype.ext (actL_one pts mapR actR hL.total hL.func hL.one f.2.1)
-  map_mul' g h := by
-    ext f : 1
-    exact Subtype.ext (actL_mul pts mapR actR hL.total hL.func hL.mul g h f.2.1)
-
-def RhoStabW [Fintype ι] (hL : ActLaws pts mapR borR actR) (e : ι → ℕ) (W : Submodule K (secW pts mapR borR e)) :
-    Prop :=
-  ∀ (g : G) (f : secW pts mapR borR e), f ∈ W → rhoW hL e g f ∈ W
-
-def chiDet {D L : Type} [CommGroup D] [Monoid L] (det : G →* D) (χ : D →* Lˣ) : G →* Lˣ := χ.comp det
-
 end Act
 
 end Formalism.L2.Pj

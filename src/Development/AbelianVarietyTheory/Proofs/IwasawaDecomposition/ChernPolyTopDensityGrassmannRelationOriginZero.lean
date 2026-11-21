@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.VecMulVecCom
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TopDegreeFormCoeffEqTensorSquareTopCoefficientStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TracePowGrassmannBlockCurvatureSupertraceZeroStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyRevMulCharpolyRevEqOneOfTracePowAddEqZerStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernCurvatureInvOneSubConjMulTransposeAtZeroStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernCurvatureInvOneSubConjMulTransposeAtZero
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum
 
 noncomputable section
 
@@ -27,7 +28,7 @@ theorem curvPoly_model {n r s : ℕ} (f g : Fin r → Fin s → Fin n) :
       (1 - (Matrix.of fun i j => u (f i j)).map (starRingEnd ℂ) * (Matrix.of fun i j => u (g i j))ᵀ)⁻¹) 0 =
       -Matrix.of fun i j => ∑ c, X (g i c, f j c) := by
   refine Matrix.ext fun i j => ?_
-  simp only [curvPoly, Matrix.of_apply, GlobalTheory.T.chernCurvature_inv_one_sub_conj_mul_transpose_at_zero, Matrix.neg_apply, Matrix.mul_apply, Matrix.conjTranspose_apply,
+  simp only [curvPoly, Matrix.of_apply, _root_.GlobalTheory.HermFrame.curv_inv_one_sub_conj_mul_transpose_zero, Matrix.neg_apply, Matrix.mul_apply, Matrix.conjTranspose_apply,
     coordVec, PiLp.single_apply, apply_ite star, star_one, star_zero, mul_ite, mul_one, mul_zero, map_neg, map_sum,
     neg_mul, Finset.sum_neg_distrib, Finset.sum_mul, neg_inj]
   have h (x y : Fin n) (c : Fin s) : C (if f j c = y then if g i c = x then (1 : ℂ) else 0 else 0) * X (x, y) =

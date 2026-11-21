@@ -198,11 +198,6 @@ theorem comap_span_image (hf : IsBaseChange L f) (N : Submodule K V) :
   have := (mem_span_image_iff hf N _).1 hv l
   rwa [← one_smul L (f v), contract_smul, hl, one_smul] at this
 
-theorem span_image_injective (hf : IsBaseChange L f) :
-    Function.Injective fun N : Submodule K V => Submodule.span L (f '' N) := fun N N' h => by
-  rw [← comap_span_image hf N, ← comap_span_image hf N']
-  exact congrArg (fun W : Submodule L M => (W.restrictScalars K).comap f) h
-
 theorem span_image_iInf (hf : IsBaseChange L f) {J : Sort*} (N : J → Submodule K V) :
     Submodule.span L (f '' (⨅ j, N j : Submodule K V)) = ⨅ j, Submodule.span L (f '' N j) := by
   ext x

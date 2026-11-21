@@ -203,24 +203,6 @@ theorem KernelFiniteFlatSt.kTriv_of_generic (hK : KernelFiniteFlatSt) {V K : Typ
 
 namespace PolExtSt
 
-variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K]
-
-theorem relAmple_and_kTriv (hP : PolExtSt) {A : Over (Sp V)} [GrpObj A] (hA : IsAbelianScheme A) {L : LB A.left}
-    (hL : L.IsLB) (hr : Out.Rigidified A L) (hs : Out.Sym A L) {A' : Over (Sp K)} [GrpObj A'] {φ : A'.left ⟶ A.left}
-    (h : IsGrpPullback A' A (spMap (algebraMap V K)) φ) {L' : LB A'.left} (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ))
-    (ha : Out.RelAmple A' L') (hk : Out.KTriv A' L') : Out.RelAmple A L ∧ Out.KTriv A L :=
-  have a := hP.1 V K A hA L hL hr hs A' φ h.1 L' hL' hw ha
-  ⟨a, hP.2.kTriv_of_generic hA hL a h hL' hw hk⟩
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
-
-theorem sab (hP : PolExtSt) (t : SAB H (Sp V)) (hA : IsAbelianScheme t.G) {A' : Over (Sp K)} [GrpObj A']
-    {φ : A'.left ⟶ t.G.left} (h : IsGrpPullback A' t.G (spMap (algebraMap V K)) φ) {L' : LB A'.left} (hL' : L'.IsLB)
-    (hw : LBIso L' (t.PP.L.pull φ)) (ha : Out.RelAmple A' L') (hk : Out.KTriv A' L') :
-    Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L := by
-  obtain ⟨_, w, hs, -⟩ := t.sym
-  exact hP.relAmple_and_kTriv hA t.PP.isLB ⟨t.PP.rig, t.PP.rigGen⟩ (sym_of_lbIso_neg ⟨w, hs⟩) h hL' hw ha hk
-
 end PolExtSt
 
 end Published

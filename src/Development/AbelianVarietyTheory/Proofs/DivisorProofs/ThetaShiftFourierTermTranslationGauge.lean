@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorPeriodD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMonomialPeriodUnitPartGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRaynaudPointUnitPartCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRaynaudGaugeGeneratorWeightNegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudSectionIdentityOfGenericFibreStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudSectionIdentityOfGenericFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlatEpiLiftRaynaudExtensionFractionPointStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudShiftUnitIdentityFractionFieldStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
@@ -170,7 +171,7 @@ theorem GlobalTheory.HeatShift.shift_term : ∀ (R : Type) [CommRing R] [IsDomai
   obtain ⟨⟨u, hu, hc⟩, -⟩ := gen_fe (D := Dd.toPre) (F := FractionRing R) GlobalTheory.SemiRigid.globalFns k mu α
   have C1 : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y.H.left) (z : Z) (J : (Z ⟶ Dd.toPre.P.A.left) → Dd.toPre.P.L.ι),
       Good Dd.toPre.P.L z J → gs r z ⊤ (scal Y.H.hom B₀) * sval ρ r z J = gs r z ⊤ (scal Y.H.hom b) * sval τ r z J := by
-    refine GlobalTheory.T.raynaud_section_identity_of_generic_fibre R Dd.toPre O oa Y k ρ τ B₀ b fun Z g r hr z J hJ => ?_
+    refine _root_.GlobalTheory.RayFlatDesc.main R Dd.toPre O oa Y k ρ τ B₀ b fun Z g r hr z J hJ => ?_
     let T : Over (Sp R) := Over.mk (g ≫ jK R)
     let y : T ⟶ Y.H := Over.homMk r hr
     let yp : T ⟶ Y.H := y * (toUnit T ≫ xp⁻¹)

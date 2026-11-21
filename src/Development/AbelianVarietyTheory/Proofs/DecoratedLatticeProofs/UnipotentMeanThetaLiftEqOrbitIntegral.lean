@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.KerBF
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaAbsoluteSum
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelMeanEqOrbitSumMeanStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaTermSeriesSummableModerateGrowthUniformStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedThetaSeriesTermsLawsUnipotentRationalStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelMeanEqOrbitSumMean
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaTermSeriesSummableModerateGrowthUniform
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedThetaSeriesTermsLawsUnipotentRational
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsClosedNFlag
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotropicUnipotentRadicalsRationalCocompact
@@ -28,14 +28,14 @@ theorem mean_lift_eq_orbit_integral : ∀ (D : D7), Descent D → ∀ (ψ : AddC
     inferInstanceAs (Countable (Fin W.rank → Fin ρ → D.host.E))
   haveI := vN.unit.1
   haveI := vW.haar
-  have hT := GlobalTheory.T.mixedThetaSeries_terms_laws_unipotent_rational D ψ V V₀ W ρ d χV χW om om' hw hw' vS
+  have hT := _root_.GlobalTheory.Unf.TermLaw.term_laws D ψ V V₀ W ρ d χV χW om om' hw hw' vS
   have hsplit : ∀ (g : GA D V) (h : GA D W), om (g, h) Φ = om (g, 1) (om (1, h) Φ) := by
     intro g h
     rw [show ((g, h) : GA D V × GA D W) = (g, 1) * (1, h) by simp, map_mul, Module.End.mul_apply]
   have hsum : ∀ (n : flagN d) (h : GA D W), HasSum (term ψ d W vS (om (n.1, h) Φ)) (om (n.1, h) Φ 0) :=
     fun n h => (hT _ (hw.om_pres _ _ hΦ)).2.2.2.2
 
-  obtain ⟨C, A, hC⟩ := GlobalTheory.T.thetaTermSeries_summable_moderateGrowth_uniform D ψ V V₀ W ρ d χV χW om om' hw hw' vS Φ hΦ
+  obtain ⟨C, A, hC⟩ := _root_.GlobalTheory.Unf.sum_term_bound D ψ V V₀ W ρ d χV χW om om' hw hw' vS Φ hΦ
   have hbd : ∀ (n : flagN d) (h : GA D W), ∑' x, ‖term ψ d W vS (om (n.1, h) Φ) x‖ₑ ≤
       ENNReal.ofReal (max C 0 * quotHeight W h ^ A) := fun n h => by
     have := hC 1 h n.1 n.2
@@ -123,7 +123,7 @@ theorem mean_lift_eq_orbit_integral : ∀ (D : D7), Descent D → ∀ (ψ : AddC
     _ = ∫ h in vW.𝓕, G h * ∫ n in vN.𝓝, ∑' x : Orb W x₀,
           Th n.1 * term ψ d W vS (om (n.1, 1) (om (1, h) Φ)) x.1 ∂vN.ν ∂vW.μ := by
         congr 1; funext h
-        rw [GlobalTheory.T.thetaKernel_mean_eq_orbit_sum_mean D hDesc ψ V V₀ W ρ d χV χW om om' hw hw' vS vN x₀ Th hB hTh _ (hw.om_pres _ _ hΦ)]
+        rw [_root_.GlobalTheory.Unf.mean_theta_orbit D hDesc ψ V V₀ W ρ d χV χW om om' hw hw' vS vN x₀ Th hB hTh _ (hw.om_pres _ _ hΦ)]
     _ = ∫ h in vW.𝓕, ∫ n in vN.𝓝, ∑' y : Orb W x₀,
           Th n.1 * G h * term ψ d W vS (om (n.1, h) Φ) y.1 ∂vN.ν ∂vW.μ := by
         congr 1; funext h; rw [← integral_const_mul]; congr 1; funext n

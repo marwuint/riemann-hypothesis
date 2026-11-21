@@ -7,7 +7,8 @@ import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Formalism.LocalRingCardinality.DataExtra
 import Formalism.LocalRingCardinality.DataTies
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitModulusConstantsEquivariantDictionaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitModulusConstantsEquivariantDictionary
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 
 set_option autoImplicit false
 
@@ -19,7 +20,7 @@ namespace GlobalTheory.OneMapAll
 
 theorem identityRow_of_core : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) , GlobalTheory.Hk3.Core R F → TieIn T R κ v₀ → IoExt R → ∀ i, GlobalTheory.OneMapAll.IdentityRow T R κ v₀ i := by
   intro hCI D G _ _ Pl0 T0 A T _ R F κ v₀ hR ht hio i Tp tup O _ hO
-  obtain ⟨cc, -, u, -, -, -, h⟩ := GlobalTheory.T.exists_unitModulus_constants_equivariant_dictionary hCI D G Pl0 T0 A T R F κ v₀ hR ht hio i Tp tup O hO
+  obtain ⟨cc, -, u, -, -, -, h⟩ := _root_.GlobalTheory.AdTh.exists_ccIs_equivAt_serOf_oneMapRow_core hCI D G Pl0 T0 A T R F κ v₀ hR ht hio i Tp tup O hO
   exact ⟨u • cc, 1, h⟩
 
 end GlobalTheory.OneMapAll

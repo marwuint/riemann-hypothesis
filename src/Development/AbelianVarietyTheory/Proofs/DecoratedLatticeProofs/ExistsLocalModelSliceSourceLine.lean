@@ -37,12 +37,6 @@ theorem map_ι_mul_rat {l m o : Type} [Fintype m] (M : Matrix l m k) (N : Matrix
   simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, ι_mul_right]
   rfl
 
-theorem rat_mul_map_ι {l m o : Type} [Fintype m] (N : Matrix l m D.host.E) (M : Matrix m o k) :
-    N.map (incA D) * M.map p.ι = (N.map (prH p) * M).map p.ι := by
-  ext i j
-  simp only [Matrix.mul_apply, Matrix.map_apply, map_sum, ι_mul_left]
-  rfl
-
 section Frames
 
 variable {ρ : ℕ} (B : BesLev D ρ) (S : HSp D) (s : k) {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']

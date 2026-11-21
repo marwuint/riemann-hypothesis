@@ -21,7 +21,7 @@ theorem exists_common_denominator_coeffs (D : Datum H) {p : ℕ} (x' : Fin p →
   have := D.fin
   obtain ⟨k, t, ht⟩ := Module.Finite.exists_fin (R := 𝓞 E) (M := D.La)
   have hpt : ∀ i a, ∃ n : ℕ, ¬ (ℓ : ℕ) ∣ n ∧ ∃ b : 𝓞 E, (n : E) * projectionCoeffs D x' (t i) a = b := fun i a => by
-    obtain ⟨n, b, hn, hb⟩ := (GlobalTheory.T.padic_integral_iff_denominator E ℓ _).1 (fun j => padic_norm_projectionCoeffs_le D x' ℓ hdet hlog (t i) a j)
+    obtain ⟨n, b, hn, hb⟩ := (_root_.GlobalTheory.CompanionTheory.Relay.padic_integral_iff_denominator E ℓ _).1 (fun j => padic_norm_projectionCoeffs_le D x' ℓ hdet hlog (t i) a j)
     exact ⟨n, hn, b, hb⟩
   choose n hn b hb using hpt
   refine ⟨∏ i, ∏ a, n i a, ?_, fun y a => ?_⟩

@@ -15,23 +15,6 @@ open scoped nonZeroDivisors Classical TensorProduct
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
-section Poly
-
-variable (c : Coeff l) {n : ℕ}
-
-theorem mult_le (hn : Dw.p + Dw.q ≤ n) (σ : E →+* ℂ) : Dw.mult σ ≤ n := by
-  unfold Datum.mult
-  split_ifs <;> omega
-
-def endCols (hn : Dw.p + Dw.q ≤ n) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) : Fin n :=
-  if InPsi H σ then Fin.castLE (mult_le hn σ) i else (Fin.castLE (mult_le hn σ) i).rev
-
-def revSign (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) : ℤˣ :=
-  ∏ σ : E →+* ℂ, ∏ i : Fin (Dw.mult σ),
-    (if InPsi H σ then 1 else Equiv.Perm.sign (Fin.revPerm (n := i.val + 1))) ^ aStep Dw a σ i.val
-
-end Poly
-
 section Adelic
 
 variable {n : ℕ}
@@ -169,22 +152,6 @@ def Guard (H : Host E) (bad : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) : Prop
   (⟨L⟩ : GenLat E n).Unimod ∧ (⟨L⟩ : GenLat E n).TrivAt bad ∧ GenLat.SplitSupp H (⟨L⟩ : GenLat E n)
 
 end Scalar
-
-section Comparison₂
-
-variable (c : Coeff l) {n : ℕ} {T : Type} [AddCommGroup T] [Module c.F T] [Module (𝓞 c.F) T]
-  [IsScalarTower (𝓞 c.F) c.F T]
-
-end Comparison₂
-
-section Twist
-
-variable (c : Coeff l) {n : ℕ} {T : Type} [AddCommGroup T] [Module c.F T] [Module (𝓞 c.F) T]
-  [IsScalarTower (𝓞 c.F) c.F T]
-
-def unitQuot (H : Host E) (y : ℕ) : E := (1 + y * (H.rt : E)) / (1 - y * (H.rt : E))
-
-end Twist
 
 section Indep
 

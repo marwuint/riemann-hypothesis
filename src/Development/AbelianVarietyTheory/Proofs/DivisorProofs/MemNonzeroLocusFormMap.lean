@@ -61,18 +61,6 @@ theorem dim_image_le (hf : IsClosedMap f) {C : Set S} (hC : IsClosed C) :
   ext ⟨y, hy⟩
   simp [Set.imageFactorization, Subtype.ext_iff]
 
-theorem dim_image_eq (hc : Continuous f) (hf : IsClosedMap f) (hd : ∀ y, _root_.IsDiscrete (f ⁻¹' {y})) {C : Set S}
-    (hC : IsClosed C) : topologicalKrullDim (f '' C) = topologicalKrullDim C := by
-  have := hC.isClosedEmbedding_subtypeVal.quasiSober
-  have := (hf C hC).isClosedEmbedding_subtypeVal.quasiSober
-  refine (dim_image_le hf hC).antisymm (dim_le_of_isDiscrete (f := Set.imageFactorization f C)
-    ((hc.comp continuous_subtype_val).subtype_mk _) fun y => ?_)
-  have := (hd y.1).preimage (f := (Subtype.val : C → S)) continuous_subtype_val.continuousOn
-    Subtype.val_injective
-  convert this using 1
-  ext ⟨x, hx⟩
-  simp [Set.imageFactorization, Subtype.ext_iff]
-
 end Dim
 
 section Nef
@@ -240,108 +228,9 @@ end GlobalTheory.PosBaseChange
 
 namespace GlobalTheory.Adelic
 
-open PosBaseChange MvPolynomial
-
 namespace LinSys
 
-variable {k : Type} [Field k] {S : LinSys k} (E : Type) [Field E] [Algebra k E]
-
-theorem baseHom_comp_bcFst {K : Type} [Field K] (x : Sp K ⟶ (S.baseChange E).Y) :
-    S.baseHom (x ≫ S.bcFst E) = ((S.baseChange E).baseHom x).comp (algebraMap k E) := by
-  refine baseHom_ptOver (S := S) ⟨x ≫ S.bcFst E, ?_⟩
-  rw [Category.assoc, (S.isPullback_baseChange E).w, ← Category.assoc, (S.baseChange E).comp_str, ← Spec.map_comp]
-  rfl
-
-theorem mem_nonzeroLocus_form_map {d : ℕ} {g : MvPolynomial (Fin S.N) k} (hg : g.IsHomogeneous d)
-    (y : (S.baseChange E).Y) : y ∈ nonzeroLocus ((S.baseChange E).form (hg.map (algebraMap k E))) ↔
-      S.bcFst E y ∈ nonzeroLocus (S.form hg) := by
-  obtain ⟨c, hc, h⟩ := S.exists_coords_baseChange E (resPt y)
-  have e := Twist.eval₂Hom_unit_mul (S.baseHom (resPt y ≫ S.bcFst E)) (Units.mk0 c hc)
-    (S.coords (resPt y ≫ S.bcFst E)) (mem_polyGrading_natCast.2 hg)
-  conv_lhs => rw [← ptOf_resPt y]
-  conv_rhs => rw [← ptOf_resPt y, ← ptOf_comp]
-  rw [← powVal_ne_zero_iff, ← powVal_ne_zero_iff, S.powVal_form]
-  erw [(S.baseChange E).powVal_form (resPt y) (hg.map (algebraMap k E)), h, eval₂_map]
-  rw [← baseHom_comp_bcFst]
-  exact not_congr ((Eq.congr_left e).trans (Units.mul_right_eq_zero (Units.mk0 c hc ^ (d : ℤ))))
-
-theorem NoContract.baseChange [FiniteDimensional k E] {bd : Set S.Y} (h : S.NoContract bd) :
-    (S.baseChange E).NoContract (S.bcFst E ⁻¹' bd) := fun C hC hi hd hb hc => by
-  have := isFinite_proj (S.isPullback_baseChange E)
-  have hm := (S.bcFst E).isClosedMap
-  refine h (S.bcFst E '' C) (hm C hC) (hi.image _ (S.bcFst E).continuous.continuousOn)
-    ((dim_image_eq (S.bcFst E).continuous hm (S.bcFst E).isDiscrete_preimage_singleton hC).trans hd)
-    (Set.disjoint_image_left.2 hb) ?_
-  rintro _ ⟨y, hy, rfl⟩ _ ⟨y', hy', rfl⟩ d g hg
-  rw [← mem_nonzeroLocus_form_map, ← mem_nonzeroLocus_form_map]
-  exact hc y hy y' hy' d _ _
-
-theorem eq_top_of_factor {Y : Scheme.{0}} {y : Y} (K : Subfield (Y.residueField y)) (w : Sp K ⟶ Y)
-    (h : spMap K.subtype ≫ w = resPt y) : K = ⊤ := by
-  obtain ⟨⟨z, φ⟩, rfl⟩ := (Scheme.SpecToEquivOfField K Y).symm.surjective w
-  simp only [Scheme.SpecToEquivOfField_symm_apply] at h
-  obtain rfl : z = y := by
-    have := congrArg ptOf h
-    rw [ptOf_resPt, ← Category.assoc, ptOf_comp] at this
-    exact (Scheme.fromSpecResidueField_apply _ _).symm.trans this
-  have h' : Spec.map (φ ≫ CommRingCat.ofHom K.subtype) = Spec.map (𝟙 _) := by
-    rw [← cancel_mono (Y.fromSpecResidueField z), Spec.map_comp, Spec.map_id, Category.assoc, Category.id_comp]
-    exact h
-  refine eq_top_iff.2 fun r _ => ?_
-  have := ConcreteCategory.congr_hom (Spec.map_injective h') r
-  exact (show ((φ r : K) : Y.residueField z) = r from this) ▸ (φ r).2
-
-theorem Birational.baseChange [IrreducibleSpace (S.baseChange E).Y] (h : S.Birational) :
-    (S.baseChange E).Birational := by
-  obtain ⟨η, hη, hr⟩ := h
-  refine ⟨genericPoint _, genericPoint_spec _, ?_⟩
-  set η' := genericPoint (S.baseChange E).Y
-  obtain rfl : S.bcFst E η' = η := by
-    have := (genericPoint_spec (S.baseChange E).Y).image (S.bcFst E).continuous
-    rw [Set.image_univ, (surjective_proj (S.isPullback_baseChange E)).range_eq, closure_univ] at this
-    exact this.eq hη
-  let τ := ((S.bcFst E).residueFieldMap η').hom
-  have hτ : spMap τ ≫ resPt (S.bcFst E η') = resPt η' ≫ S.bcFst E :=
-    Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField _ _
-  set K := (S.baseChange E).ratioField (resPt η')
-  have hE : ∀ a, (S.baseChange E).baseHom (resPt η') a ∈ K := fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)
-  have hb : τ.comp (S.baseHom (resPt (S.bcFst E η'))) =
-      ((S.baseChange E).baseHom (resPt η')).comp (algebraMap k E) := by
-    rw [← baseHom_comp_bcFst, ← hτ]
-    refine (baseHom_ptOver (S := S) ⟨spMap τ ≫ resPt (S.bcFst E η'), ?_⟩).symm
-    rw [Category.assoc, S.comp_str, ← Spec.map_comp]
-    rfl
-  have hK : ∀ a, τ a ∈ K := fun a => by
-    obtain ⟨c, hc, e⟩ := S.exists_coords_baseChange E (resPt η')
-    refine (show S.ratioField (resPt (S.bcFst E η')) ≤ K.comap τ from Subfield.closure_le.2 ?_) (hr.ge trivial)
-    rintro _ (⟨a, rfl⟩ | ⟨i, j, rfl⟩)
-    · exact Subfield.mem_comap.2 (Set.mem_of_eq_of_mem (RingHom.congr_fun hb a) (hE _))
-    · refine Subfield.subset_closure (Or.inr ⟨i, j, ?_⟩)
-      rw [e, ← hτ, coords_spMap_comp, map_div₀]
-      exact (mul_div_mul_left _ _ hc).symm
-  refine eq_top_of_factor K ((S.isPullback_baseChange E).lift
-    (spMap (τ.codRestrict K hK) ≫ resPt (S.bcFst E η'))
-    (spMap (((S.baseChange E).baseHom (resPt η')).codRestrict K hE)) ?_) ((S.isPullback_baseChange E).hom_ext ?_ ?_)
-  · rw [Category.assoc, S.comp_str, ← Spec.map_comp, ← Spec.map_comp]
-    exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => Subtype.ext (RingHom.congr_fun hb a)))
-  · rw [Category.assoc, IsPullback.lift_fst, ← Category.assoc, ← Spec.map_comp, ← hτ]
-    rfl
-  · rw [Category.assoc, IsPullback.lift_snd, (S.baseChange E).comp_str, ← Spec.map_comp]
-    rfl
-
 end LinSys
-
-theorem Tuple.IsBirationalOffBoundary.baseChange {F : Type} [Field F] [NumberField F] {T : Tuple F}
-    (h : T.IsBirationalOffBoundary) (hv : T.IsVariety) (E : Type) [Field E] [NumberField E] [Algebra F E] :
-    (T.baseChange E).IsBirationalOffBoundary := by
-  have := hv.isIntegral
-  have := (hv.baseChange E).isIntegral
-  have hl : nonzeroLocus (T.baseChange E).th = T.bcFst E ⁻¹ᵁ nonzeroLocus T.th :=
-    nonzeroLocus_chartSec _ T.th fun z _ _ => exists_chart (isLB_lbPow (LB.isLB_pull T.isLB _) _) z
-  refine ⟨h.birational.baseChange E, h.noContract.baseChange E, h.one_le, ?_,
-    fun y hy hy' => h.th_vanish _ hy (hl.le hy')⟩
-  obtain ⟨y, hy⟩ := surjective_proj (T.isPullback_baseChange E) (genericPoint T.Y)
-  exact sec_ne_zero_of_mem (x := y) (hl.ge (show T.bcFst E y ∈ _ from hy ▸ (sec_ne_zero_iff _).1 h.th_ne))
 
 end GlobalTheory.Adelic
 
@@ -354,10 +243,5 @@ theorem isNef_baseChange (h : IsNef F G.LA) : IsNef E (G.baseChange E).LA :=
 
 theorem isBig_baseChange (h : IsBig F G.LA) : IsBig E (G.baseChange E).LA :=
   PosBaseChange.isBig_baseChange (G.isPullback_fst E) G.geom.alg.variety.proj h
-
-variable {G} in
-
-theorem Positivity.baseChange (h : G.Positivity) : (G.baseChange E).Positivity :=
-  ⟨h.bir.baseChange G.geom.alg.variety E, G.isNef_baseChange E h.nef, G.isBig_baseChange E h.big⟩
 
 end GlobalTheory.HilbertSamuel.Geo

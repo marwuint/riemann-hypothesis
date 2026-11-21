@@ -1,6 +1,8 @@
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.DecIdentity
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.ProjectionMemPartialSpan
-import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.ImportsAlt
+import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.ValLamOfSubset
+import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MemSupportSumMonomial
+import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.TwistSliceCoeff
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembAlgF
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembDegF
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembLabF

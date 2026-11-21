@@ -73,17 +73,6 @@ theorem isMulCoboundary₂_div_of_algEquiv {g : (L ≃ₐ[K] L) × (L ≃ₐ[K] 
   rw [div_mul_eq_mul_div, div_eq_div_iff (hc0 _) (g (σ, τ)).ne_zero]
   linear_combination key σ τ
 
-theorem isMulCoboundary₂_of_algEquiv_matrix {ι : Type*} [Fintype ι] [DecidableEq ι]
-    (hf : IsMulCocycle₂ f) (e : CrossedProduct hf ≃ₐ[K] Matrix ι ι K) : IsMulCoboundary₂ f := by
-  have hcard : Fintype.card ι = Module.finrank K L := by
-    have h1 := e.toLinearEquiv.finrank_eq
-    rw [finrank_eq_sq, Module.finrank_matrix, Module.finrank_self, mul_one, ← sq] at h1
-    exact (Nat.pow_left_injective two_ne_zero h1).symm
-  have h := isMulCoboundary₂_div_of_algEquiv hf isMulCocycle₂_one
-    (e.trans ((Matrix.reindexAlgEquiv K K (Fintype.equivFinOfCardEq hcard)).trans
-      (matrixEquiv isMulCocycle₂_one).symm))
-  rwa [div_one] at h
-
 end CrossedProduct
 
 theorem nonempty_algEquiv_of_isBrauerEquivalent {K : Type u} [Field K] {A B : CSA.{u, v} K}

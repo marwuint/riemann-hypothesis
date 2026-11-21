@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolarizedTwistAbsPow
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EventuallyUnr
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExistsHasSatakeOfUnr
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRecTLocRecT
@@ -11,11 +11,6 @@ section
 noncomputable section
 namespace GlobalTheory.HeightCounting.Blocks
 open NumberField IsDedekindDomain Polynomial Filter
-section Satake
-open GlobalTheory.LFun GlobalTheory.PRep GlobalTheory.CuspRep Formalism.UG
-variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
-variable [IsTotallyComplex E]
-end Satake
 section Local
 open GlobalTheory.CuspRep GlobalTheory.CuspRep.ParLaws GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -35,12 +30,6 @@ theorem exists_satake_frobenius_eigenvalues_eq_inv_of_unramified (π : CG E a) (
   rw [e, _root_.GlobalTheory.CuspRep.ParLaws.reciprocity_eq_diagonal_inv_of_has_satake (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h) hα, WD.frobEig_diag, Multiset.map_map]
   rfl
 end Local
-section Polar
-end Polar
-section Record
-end Record
-section True
-end True
 end GlobalTheory.HeightCounting.Blocks
 namespace GlobalTheory.HeightCounting
 end GlobalTheory.HeightCounting

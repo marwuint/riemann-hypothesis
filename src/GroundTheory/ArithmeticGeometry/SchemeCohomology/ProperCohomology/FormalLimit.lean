@@ -45,25 +45,6 @@ lemma towerComp_apply_of_mem {x : ∀ n, E n} (hx : x ∈ towerLimit τ) (n k : 
     rw [hx (n + k)]
     exact ih
 
-lemma range_towerComp_succ_le (n k : ℕ) :
-    LinearMap.range (towerComp τ n (k + 1)) ≤ LinearMap.range (towerComp τ n k) := by
-  rw [towerComp_succ, LinearMap.range_comp]
-  exact LinearMap.map_le_range
-
-lemma range_towerComp_antitone (n : ℕ) {k l : ℕ} (h : k ≤ l) :
-    LinearMap.range (towerComp τ n l) ≤ LinearMap.range (towerComp τ n k) := by
-  induction l, h using Nat.le_induction with
-  | base => exact le_rfl
-  | succ l _ ih => exact (range_towerComp_succ_le τ n l).trans ih
-
-lemma towerComp_eq_zero_of_le {c : ℕ} (hc : ∀ n, towerComp τ n c = 0) (n j : ℕ) :
-    towerComp τ n (c + j) = 0 := by
-  induction j with
-  | zero => exact hc n
-  | succ j ih =>
-    change (towerComp τ n (c + j)).comp (τ (n + (c + j))) = 0
-    rw [ih, LinearMap.zero_comp]
-
 theorem towerLimit_eq_bot {c : ℕ} (hc : ∀ n, towerComp τ n c = 0) : towerLimit τ = ⊥ := by
   rw [eq_bot_iff]
   intro x hx
@@ -84,21 +65,6 @@ variable {A : Type u} [CommRing A]
   (ι : ∀ n, P n →ₗ[A] E n) (π : ∀ n, E n →ₗ[A] Q n)
   (hι : ∀ n, (τE n).comp (ι (n + 1)) = (ι n).comp (τP n))
   (hπ : ∀ n, (τQ n).comp (π (n + 1)) = (π n).comp (τE n))
-
-include hι in
-lemma towerComp_comp_of_comm (n k : ℕ) :
-    (towerComp τE n k).comp (ι (n + k)) = (ι n).comp (towerComp τP n k) := by
-  induction k with
-  | zero => rfl
-  | succ k ih =>
-    change ((towerComp τE n k).comp (τE (n + k))).comp (ι (n + k + 1)) =
-      (ι n).comp ((towerComp τP n k).comp (τP (n + k)))
-    rw [LinearMap.comp_assoc, hι (n + k), ← LinearMap.comp_assoc, ih, LinearMap.comp_assoc]
-
-include hπ in
-lemma towerComp_comp_of_comm' (n k : ℕ) :
-    (towerComp τQ n k).comp (π (n + k)) = (π n).comp (towerComp τE n k) :=
-  towerComp_comp_of_comm τE τQ π hπ n k
 
 variable (hinj : ∀ n, Function.Injective (ι n))
   (hex : ∀ n, LinearMap.range (ι n) = LinearMap.ker (π n))
@@ -153,35 +119,6 @@ def towerLimitEquivOfExact {c : ℕ} (hc : ∀ n, towerComp τQ n c = 0) :
 lemma towerLimitEquivOfExact_apply {c : ℕ} (hc : ∀ n, towerComp τQ n c = 0)
     (x : towerLimit τP) (n : ℕ) :
     (towerLimitEquivOfExact τP τE τQ ι π hι hπ hinj hex hc x).1 n = ι n (x.1 n) := rfl
-
-omit [∀ n, AddCommGroup (E n)] [∀ n, Module A (E n)] [∀ n, AddCommGroup (Q n)]
-  [∀ n, Module A (Q n)] in
-
-lemma surjective_towerComp (hsurj : ∀ n, Function.Surjective (τP n)) (n k : ℕ) :
-    Function.Surjective (towerComp τP n k) := by
-  induction k with
-  | zero => exact Function.surjective_id
-  | succ k ih =>
-    rw [towerComp_succ, LinearMap.coe_comp]
-    exact ih.comp (hsurj (n + k))
-
-include hι hπ hex in
-
-theorem range_towerComp_eq_of_exact (hsurj : ∀ n, Function.Surjective (τP n)) {c : ℕ}
-    (hc : ∀ n, towerComp τQ n c = 0) (n k : ℕ) (hk : c ≤ k) :
-    LinearMap.range (towerComp τE n k) = LinearMap.range (ι n) := by
-  apply le_antisymm
-  · rintro _ ⟨e, rfl⟩
-    rw [hex n, LinearMap.mem_ker]
-    obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le hk
-    have := congrArg (fun f => f e) (towerComp_comp_of_comm' τE τQ π hπ n (c + j))
-    simp only [LinearMap.comp_apply] at this
-    rw [← this, towerComp_eq_zero_of_le τQ hc n j, LinearMap.zero_apply]
-  · rintro _ ⟨p, rfl⟩
-    obtain ⟨p', rfl⟩ := surjective_towerComp τP hsurj n k p
-    refine ⟨ι (n + k) p', ?_⟩
-    have := congrArg (fun f => f p') (towerComp_comp_of_comm τP τE ι hι n k)
-    simpa only [LinearMap.comp_apply] using this
 
 end Exact
 

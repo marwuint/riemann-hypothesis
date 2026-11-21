@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParamTrivialBoundUnitaryGLStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumHeckeEigenvalueGeneratingSeriesGLStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParamTrivialBoundUnitaryGL
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumHeckeEigenvalueGeneratingSeriesGL
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum GlobalTheory.LFun GlobalTheory.AdelicU GlobalTheory.PRep GlobalTheory.FinZeta GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.LiftRows
 open Formalism.IndefR.Lev (levG levChi IsBaseFrame)
@@ -53,13 +53,13 @@ theorem hasSum_card_cosets_diag : GlobalTheory.Published.UnramifiedDoublingGL �
   have hfix : (1 : ℂ) ∈ fixed ρ (KGL w r) := GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl
   have heig : ∀ h ∈ Hecke ℂ (KGL w r), ∃ c : ℂ, heckeVec ρ (KGL w r) h 1 = c • (1 : ℂ) :=
     fun h _ => ⟨heckeVec ρ (KGL w r) h 1, by rw [smul_eq_mul, mul_one]⟩
-  obtain ⟨B, hB, hbd⟩ := GlobalTheory.T.exists_satakeParam_trivialBound_unitaryGL E w r ℂ ρ hu 1 one_ne_zero hfix heig
+  obtain ⟨B, hB, hbd⟩ := _root_.GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound E w r ℂ ρ hu 1 one_ne_zero hfix heig
   have hc : ∀ d, heckeVec ρ (KGL w r) (dosetInd ℂ (KGL w r) (T d)) 1 =
       (fun d => ((Nat.card {a : GL (Fin r) (w.adicCompletion E) ⧸ KGL w r // a.out ∈
         DoubleCoset.doubleCoset (T d) (KGL w r : Set (GL (Fin r) (w.adicCompletion E))) (KGL w r)} : ℝ) : ℂ)) d
         • (1 : ℂ) := fun d => heckeVec_trivial_dosetInd hK (T d)
   refine ⟨B, hbd, ?_⟩
-  have key := GlobalTheory.T.hasSum_heckeEigenvalue_generatingSeries_GL hP E w r ℂ ρ 1 B hB ϖ hϖ T hT _ hc
+  have key := _root_.GlobalTheory.FinZeta.GLSeries.hasSum_hecke_eigenvalues hP E w r ℂ ρ 1 B hB ϖ hϖ T hT _ hc
   beta_reduce at key
   exact key
 

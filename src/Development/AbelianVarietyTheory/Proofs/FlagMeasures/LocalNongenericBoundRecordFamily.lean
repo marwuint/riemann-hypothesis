@@ -1,7 +1,11 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.NonGenericAndKTwoTheorems
 import Formalism.SharpRestriction.CuspSpanNormBounds.UniformConstantsAndStatements
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetAmplitudeBoundLocalStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetAmplitudeBoundLocal
+import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
 
 open Formalism.BasicNotions Formalism.MainNotions
 
@@ -14,7 +18,7 @@ theorem local_nongeneric_bound_record_family :
   intro C hC
   have h1 : ∀ k r : ℕ, 4 * r + 7 ≤ k → Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound k r C := by
     intro k r hk F _ _ _ E _ _ _ _ M hM V _ _ H hV P hP
-    exact GlobalTheory.T.hermitianDoubleCoset_amplitude_bound_local C hC M hM H r k P hk hV hP
+    exact _root_.GlobalTheory.HL.AbstractBound.ngAt C hC M hM H r k P hk hV hP
   have h2 : ∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D C := fun D hk => h1 _ _ hk
   have h3 : ∀ D : D7, Formalism.MainNotions.UniformConstantsAndStatements.adm5 D C := fun D => h2 D
   exact ⟨h1, fun D => ⟨h2 D, h2 D, h3 D⟩, fun Fm => ⟨fun x i => h2 _, fun x i => h3 _⟩⟩

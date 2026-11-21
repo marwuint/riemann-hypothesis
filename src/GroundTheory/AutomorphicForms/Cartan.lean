@@ -322,10 +322,6 @@ theorem dominantEquivDoubleCoset_apply (μ : {μ : Fin n → ℤ // IsDominant �
       DoubleCoset.mk (integralGL F n) (integralGL F n) (diagPow F n μ) :=
   rfl
 
-section Lattices
-
-end Lattices
-
 end Local
 
 end Cartan

@@ -185,10 +185,6 @@ theorem map_mul_incM_transpose_eq {p q r : Type} [Fintype q] (w : InfinitePlace 
     (x * (incM F y)ᵀ).map (piInf (d.B.emb w)) = x.map (piInf (d.B.emb w)) * (y.map (d.B.emb w).1)ᵀ := by
   rw [Matrix.map_mul, Matrix.transpose_map, map_incM']
 
-theorem map_mul_incM {p q r : Type} [Fintype q] (w : InfinitePlace F) (x : Matrix p q (AE F E)) (y : Matrix q r E) :
-    (x * incM F y).map (piInf (d.B.emb w)) = x.map (piInf (d.B.emb w)) * y.map (d.B.emb w).1 := by
-  rw [Matrix.map_mul, map_incM']
-
 theorem T_D_vac (R : RD d) (g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ) {Φ : d.Fn} (hΦ : Φ ∈ d.sch)
     (hT : d.T Φ = vacF R g) {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) (X : Mx F E d.m d.n) :
     d.T (Box.D (d.dd.e u) Φ) X = (∑ w, Sw (d.A.J.map (d.B.emb w).1) ((R.fr w)⁻¹).1 (dbl (d.Y.J.map (d.B.emb w).1))

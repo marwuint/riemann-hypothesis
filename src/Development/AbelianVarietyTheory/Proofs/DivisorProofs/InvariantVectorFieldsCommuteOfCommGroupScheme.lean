@@ -61,9 +61,6 @@ theorem swap_dualMap_inc (φ : R →+* S) : (swap S).comp (dualMap ((inc S).comp
 theorem fst_comp_dualMap (φ : R →+* S) : (fstH S).comp (dualMap φ) = φ.comp (fstH R) := by
   refine RingHom.ext fun x => ?_; simp [dualMap]
 
-theorem inc_comp_fst : (inc R).comp (fstH R) = ((tm (0 • LinearMap.id : R →ₗ[R] R)) : DualNumber R →+* DualNumber R) := by
-  refine RingHom.ext fun x => ?_; ext <;> simp [tm, TrivSqZeroExt.algebraMap_eq_inl]
-
 end Rings2
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (ψ' : A →+* B) (ψ : B →+* C) :

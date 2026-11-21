@@ -1,10 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedStabX
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecMapApply
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantLinOm
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 
 noncomputable section
 
-open GlobalTheory.WeilM GlobalTheory.KSTransfer GlobalTheory.ParAvg MeasureTheory MeasureTheory.Measure
+open GlobalTheory.WeilM MeasureTheory MeasureTheory.Measure
 open scoped Matrix NNReal
 
 namespace GlobalTheory.ParAvg

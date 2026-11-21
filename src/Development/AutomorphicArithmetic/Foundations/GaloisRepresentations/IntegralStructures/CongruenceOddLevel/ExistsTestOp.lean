@@ -1,7 +1,14 @@
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LimWPhi
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLevelAwayAdapted
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUniqueSplitPlaceComponentDefiniteUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalOperatorActsByLocalComponentScalarStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalOperatorActsByLocalComponentScalar
+import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.HasLevel
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RegPolOfRepOf
+import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.FinrankAdjoinSqrtNegOne
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.ArthurClozelStrongTC
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsComplementaryProductOfIsCuspidal
 import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.SphericalOperatorsExist
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SeparatingAlgebras.CAllFin
 
@@ -29,7 +36,7 @@ theorem exists_op {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) (Kw : Subg
         ∀ σ : SmIrr (GL (Fin a) (w.adicCompletion E)),
           IsCompAlong U (locU a w) ((cLoc w).comp (locU a w).subtype) σ.ρ → e U = z σ := by
   classical
-  obtain ⟨t, ht, hact⟩ := GlobalTheory.T.localOperator_acts_by_localComponentScalar E a w hw Kw hc ho f z act
+  obtain ⟨t, ht, hact⟩ := _root_.GlobalTheory.Cong.opOf_locU_eq_smul E a w hw Kw hc ho f z act
   let e : Submodule ℂ (UA E a → ℂ) → ℂ := fun U =>
     if h : IsAutRepU U then z (GlobalTheory.T.exists_unique_splitPlaceComponent_definiteUnitary E a U h w hw).1.choose else 0
   have he : ∀ U, IsAutRepU U → ∀ φ ∈ U, (∀ x ∈ locU a w, cLoc w x ∈ Kw → RU E a x φ = φ) →
@@ -74,7 +81,7 @@ theorem exists_powOp {w : HeightOneSpectrum (𝓞 E)} (hw : IsSplitAt w) (n : �
     have h : ∃ B, GlobalTheory.LFun.HasSatGL w σ.ρ B := ⟨B, hB⟩
     simp only [z, dif_pos h]
     rw [GlobalTheory.LFun.HasSatGL.unique h.choose_spec hB]
-  obtain ⟨t, ht, hact⟩ := GlobalTheory.T.localOperator_acts_by_localComponentScalar E a w hw _ hc ho f z fun σ v hv => by
+  obtain ⟨t, ht, hact⟩ := _root_.GlobalTheory.Cong.opOf_locU_eq_smul E a w hw _ hc ho f z fun σ v hv => by
     by_cases h0 : v = 0
     · simp [h0, opOf]
     · obtain ⟨B, hB⟩ := h1 σ ((Submodule.ne_bot_iff _).2 ⟨v, hv, h0⟩)

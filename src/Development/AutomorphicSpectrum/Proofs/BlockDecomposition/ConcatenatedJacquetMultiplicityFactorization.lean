@@ -37,7 +37,7 @@ theorem exists_one_le_jm_coarse : ∀ {k : Type} [Field k] [ValuativeRel k] [Top
   let e' : ∀ a, (Σ b, Fin ((x a b).1)) ≃ Fin (d a) := fun a => stdBlocks (fun i => (x a i).1) rfl
   have hE : refinePlace e e' = stdBlocks (fun a => (concat c x a).1) hcat :=
     GlobalTheory.CompanionTheory.JmTrans.refinePlace_stdBlocks (x := fun a i => (x a i).1) hd (fun _ => rfl) hcat
-  obtain ⟨φS⟩ := GlobalTheory.T.jacquetModule_in_stages_refined_blocks k s N d e c (fun a b => (x a b).1) e' V π
+  obtain ⟨φS⟩ := _root_.GlobalTheory.JacStagesProof.jac_refinePlace_equiv k s N d e c (fun a b => (x a b).1) e' V π
   have hsub : IsSubquotient (piTensor fun l => (concat c x l).rep) (jac (refinePlace e e') π) := by
     rw [hE]
     exact jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h1)

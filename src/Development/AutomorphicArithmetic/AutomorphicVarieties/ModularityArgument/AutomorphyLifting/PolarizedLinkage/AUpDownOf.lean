@@ -402,10 +402,3 @@ private theorem good_all (h : Hyp) (d : ℕ) :
 
 end UpperTheory.V.Z.Win
 
-open UpperTheory.V.Z.Win in
-theorem UpperTheory.V.Z.Win.aUpDownOf :
-    UpperTheory.V.Z.Win.AUpDownOf := by
-  intro hW hF hT0 hT1 hU hO H R F K Ω _ _ _ _ _ _ _ _ _ _ _ _ _ hsol l _ ι n hn r hr hirr hpol ha hf
-  haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic
-  haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.tower_top (K := F) K⟩
-  exact good_all ⟨H, R, hW, hF, hT0, hT1, hU, hO⟩ _ F K Ω rfl hsol l ι n hn r hr hirr hpol ha hf

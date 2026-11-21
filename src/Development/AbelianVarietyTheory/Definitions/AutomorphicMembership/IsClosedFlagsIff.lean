@@ -25,10 +25,6 @@ variable {k V}
 
 def Frames.flags (b : Frames k V) : Flags k V := fun i => FullFlag.ofBasis (b i)
 
-theorem flags_surjective : Function.Surjective (Frames.flags (k := k) (V := V)) := fun F => by
-  choose b hb using fun i => (F i).exists_isAdapted_of_isLocalRing
-  exact ⟨b, funext fun i => FullFlag.isAdapted_iff.1 (hb i)⟩
-
 instance : TopologicalSpace (Flags k V) := .coinduced Frames.flags inferInstance
 
 instance [∀ i, FiniteDimensional k (V i)] : Nonempty (Flags k V) := ⟨Frames.flags fun i => finBasis k (V i)⟩
@@ -57,15 +53,6 @@ theorem step_flags_le {b : Frames k V} {i : ι} {n : ℕ} {P : Submodule k (V i)
   simp only
   omega
 
-theorem finrank_step (F : Flags k V) (i : ι) (n : ℕ) : finrank k (F.step i n) = min n (finrank k (V i)) := by
-  obtain ⟨b, rfl⟩ := flags_surjective F
-  change finrank k (Submodule.span k (b i '' _)) = _
-  rw [Set.image_eq_range]
-  refine (finrank_span_eq_card ((b i).linearIndependent.comp _ Subtype.val_injective)).trans ?_
-  rw [Fintype.card_subtype]
-  simp only [Set.mem_setOf_eq, Fin.lt_def, Fin.val_castSucc, Fin.card_filter_val_lt]
-  omega
-
 theorem Flags.ext {F F' : Flags k V} (h : ∀ i n, F.step i n = F'.step i n) : F = F' :=
   funext fun i => FullFlag.ext (funext fun n => by
     have := h i n
@@ -88,16 +75,5 @@ def between (n : ℕ) (A B : ∀ i, Submodule k (V i)) : Closeds (Flags k V) whe
         isClosed_zero (Algebra.subset_adjoin (.inl ⟨i, φ, a, rfl⟩))
 
 def dim (s : Closeds (Flags k V)) : ℕ := ((topologicalKrullDim (s : Set (Flags k V))).unbotD 0).toNat
-
-theorem dim_eq {s : Closeds (Flags k V)} {n : ℕ} (h : topologicalKrullDim (s : Set (Flags k V)) = n) : dim s = n := by
-  rw [dim, h]
-  rfl
-
-example (n : ℕ) : between (k := k) (V := V) n ⊥ ⊤ = ⊤ := Closeds.ext (Set.eq_univ_of_forall fun _ _ => ⟨bot_le, le_top⟩)
-
-example (n : ℕ) (i : ι) (h : n < finrank k (V i)) (F : Flags k V) : F ∉ between n ⊤ ⊤ := fun hF => by
-  have := finrank_step F i n
-  rw [top_le_iff.1 (hF i).1, finrank_top] at this
-  omega
 
 end GlobalTheory.FlagPts

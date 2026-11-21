@@ -1,5 +1,30 @@
 import Formalism.HermitianCurvature.StatementMA
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowerLevelsSameScalar
+import Formalism.HermitianCurvature.StatementM
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.Interlace
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.QuasiDeterminantFromEntries
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.AdmissibleRecOfAdmissibleWord
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.FrameOfAdmissibleWord
+import Formalism.HermitianCurvature.StatementWd
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PositionInsertionDiagonalCompat
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.KroneckerEmbedMulApply
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.SecondEmbedMulFirstEmbedApply
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.QEFirstMulSecondEqSwap
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.TransferMatrixFactorization
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.EntryCommuteTransposedRMatrix
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ScalarCommuteTransposedRMatrixEntry
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftMatrixTransferConjTransposeCommute
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.DiagScalarCommuteOfEntries
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PartialFlipCommuteDiagScalarOfFree
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.DiagScalarCommuteTransposedRMatrix
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.MultiplicationOpHom
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelNablaStarRelations
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.InterlaceSignTwo
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.EulerZetaGammaInvIdentity
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.RaisingConstantEqNablaStar
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.TransferRtt
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.WeightedSumDifferenceIdentity
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.GammaFamilyCommuteGenerators
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ModelWordsAssemble
 
 section
 
@@ -941,14 +966,10 @@ theorem kap_diag (f : Ty P → ℂ) (d : Ty P → D.Pr) :
 
 theorem kap_sc (f : Ty P → ℂ) (w : D.Pr) : Commute (kap P D f) (sc P D w) := kap_diag P D f _
 
-theorem kap_kap (f g : Ty P → ℂ) : Commute (kap P D f) (kap P D g) := kap_diag P D f _
-
 theorem star_kap (f : Ty P → ℂ) : star (kap P D f) = kap P D fun π => star (f π) := by
   rw [kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
   congr 1; funext π
   exact (algebraMap_star_comm (f π)).symm
-
-theorem kap_const (c : ℂ) : (kap P D fun _ => c) = algebraMap ℂ (A P D) c := (kap P D).commutes c
 
 theorem kap_mul (f g : Ty P → ℂ) : (kap P D fun π => f π * g π) = kap P D f * kap P D g :=
   map_mul (kap P D) f g
@@ -1003,13 +1024,8 @@ theorem gg_ggi : ggA P D * ggiA P D = 1 := by
   obtain ⟨-, -, -, -, -, -, h, -, -⟩ := levFns P D; exact h
 theorem ggi_gg : ggiA P D * ggA P D = 1 := by
   obtain ⟨-, -, -, -, -, -, -, h, -⟩ := levFns P D; exact h
-theorem gg_def : ggA P D = zA P D * zbA P D - algebraMap ℂ (A P D) (P.TT : ℂ) := by
-  obtain ⟨-, -, -, -, -, -, -, -, h⟩ := levFns P D; exact h
-theorem nabla_zeta_comm : nabA P D * zA P D = zA P D * nabA P D + 1 := (levNab P D).1
 theorem nab_gg : nabA P D * ggA P D = ggA P D * nabA P D + zbA P D := by
   obtain ⟨-, -, -, -, h, -, -⟩ := levNab P D; exact h
-theorem nabs_alt : nabsA P D * zA P D = zA P D * nabsA P D := by
-  obtain ⟨-, -, h, -, -, -, -⟩ := levNabs P D; exact h
 theorem nabs_gg : nabsA P D * ggA P D = ggA P D * nabsA P D - zA P D := by
   obtain ⟨-, -, -, -, h, -, -⟩ := levNabs P D; exact h
 theorem star_alt : star (zA P D) = zbA P D := (starGens P D).2.1
@@ -1024,20 +1040,6 @@ theorem l0_eq_neg_nabla_sub (Y : ℂ) : l0A P D Y = -nabA P D - (Y + 1 / 2) • 
 theorem raising_constant_eq_nabla_star (Y : ℂ) : m0A P D Y = -nabsA P D - (Y - 1 / 2) • (zA P D * ggiA P D) := by
   rw [m0A, Algebra.smul_def]
 
-theorem lowering_constant_zeta_comm (Y : ℂ) : l0A P D Y * zA P D = zA P D * l0A P D Y - 1 := by
-  have h : Commute (zbA P D * ggiA P D) (zA P D) := (fn_comm P D _ _ _ _).mul_left (fn_comm P D _ _ _ _)
-  rw [l0_eq_neg_nabla_sub, sub_mul, mul_sub, neg_mul, mul_neg, nabla_zeta_comm, smul_mul_assoc, mul_smul_comm, h.eq]
-  abel
-
-theorem raising_constant_commute_zeta (Y : ℂ) : Commute (m0A P D Y) (zA P D) := by
-  rw [raising_constant_eq_nabla_star]
-  exact ((show Commute (nabsA P D) (zA P D) from nabs_alt P D).neg_left).sub_left
-    (((fn_comm P D _ _ _ _).mul_left (fn_comm P D _ _ _ _)).smul_left _)
-
-theorem S21_commute_scalar (Y : ℂ) (w : D.Pr) : Commute (weightedSumBis P D Y) (sc P D w) := by
-  unfold weightedSumBis
-  exact Commute.sum_left _ _ _ fun l _ => (ss_sc P D l w).mul_left (kap_sc P D _ w)
-
 theorem upper_sum_commute_scalar (Y : ℂ) (w : D.Pr) : Commute (S12 P D Y) (sc P D w) := by
   unfold S12
   exact Commute.sum_left _ _ _ fun l _ => (kap_sc P D _ w).mul_left (sss_sc P D l w)
@@ -1046,31 +1048,6 @@ theorem quartic_sum_commute_scalar (Y : ℂ) (w : D.Pr) : Commute (S4 P D Y) (sc
   unfold S4
   exact Commute.sum_left _ _ _ fun l _ => Commute.sum_left _ _ _ fun j _ =>
     ((sss_sc P D l w).mul_left (ss_sc P D j w)).mul_left (kap_sc P D _ w)
-
-theorem commGroup_mul_eq_mul_mul_div {R : Type*} [Ring R] (a B c D e l z : R) (ha : Commute a z) (hB : Commute B z)
-    (hc : Commute c z) (hD : Commute D z) (he : Commute e z) (hl : l * z = z * l - 1) :
-    (a + B * l + c + D * l + e) * z - z * (a + B * l + c + D * l + e) = -(B + D) := by
-  have h1 : B * l * z = z * (B * l) - B := by
-    rw [mul_assoc, hl, mul_sub, mul_one, ← mul_assoc, hB.eq, mul_assoc]
-  have h2 : D * l * z = z * (D * l) - D := by
-    rw [mul_assoc, hl, mul_sub, mul_one, ← mul_assoc, hD.eq, mul_assoc]
-  simp only [add_mul, mul_add, h1, h2, ha.eq, hc.eq, he.eq]
-  abel
-
-theorem qQZeta : QQZeta := by
-  intro P D _ Y
-  have hgx : Commute (ggA P D * xA P D Y) (zA P D) := (fn_comm P D _ _ _ _).mul_left (kap_sc P D _ _)
-  refine ⟨?_, ?_, ?_, hgx⟩
-  · have h := commGroup_mul_eq_mul_mul_div 0 (ggA P D * xA P D Y) (weightedSumBis P D Y) 0 0 (l0A P D Y) (zA P D) (Commute.zero_left _) hgx
-      (S21_commute_scalar P D Y _) (Commute.zero_left _) (Commute.zero_left _) (lowering_constant_zeta_comm P D Y)
-    simpa [t21, t22] using h
-  · have h := commGroup_mul_eq_mul_mul_div (ggiA P D * (kap P D fun π => wC P π Y)) (ggA P D * xA P D Y * m0A P D Y)
-      (ggA P D * m0A P D Y * ggiA P D * weightedSumBis P D Y) (S12 P D Y) (ggiA P D * S4 P D Y) (l0A P D Y) (zA P D)
-      ((fn_comm P D _ _ _ _).mul_left (kap_sc P D _ _)) (hgx.mul_left (raising_constant_commute_zeta P D Y))
-      ((((fn_comm P D _ _ _ _).mul_left (raising_constant_commute_zeta P D Y)).mul_left (fn_comm P D _ _ _ _)).mul_left (S21_commute_scalar P D Y _))
-      (upper_sum_commute_scalar P D Y _) ((fn_comm P D _ _ _ _).mul_left (quartic_sum_commute_scalar P D Y _)) (lowering_constant_zeta_comm P D Y)
-    exact h
-  · exact (hgx.mul_left (raising_constant_commute_zeta P D Y)).add_left (upper_sum_commute_scalar P D Y _)
 
 theorem block_frame_conjugation_identity {R : Type*} [Ring R] [Algebra ℂ R] (g gi z N : R) (a e : ℂ) (h1 : g * gi = 1)
     (hN : N * g = g * N - e • z) (hzg : Commute z g) (hzgi : Commute z gi) :
@@ -1178,7 +1155,6 @@ theorem star_wC (π : Ty P) (Y : ℂ) : star (wC P π Y) = wC P π (star Y) := b
   rw [← Polynomial.eval₂_at_apply, ← Polynomial.eval_map, h3]
 
 theorem kap_ggi (f : Ty P → ℂ) : kap P D f * ggiA P D = ggiA P D * kap P D f := (kap_sc P D f _).eq
-theorem kap_gg (f : Ty P → ℂ) : kap P D f * ggA P D = ggA P D * kap P D f := (kap_sc P D f _).eq
 theorem quartic_sum_gamma_inv_comm (Y : ℂ) : S4 P D Y * ggiA P D = ggiA P D * S4 P D Y := (quartic_sum_commute_scalar P D Y _).eq
 
 theorem ggi_kap_gg (f : Ty P → ℂ) : ggiA P D * (kap P D f * ggA P D) = kap P D f := by
@@ -1276,222 +1252,7 @@ theorem Lead.mul (hf : Lead n c f) (hg : Lead m d g) : Lead (n + m) (c * d) fun 
   rw [hpf, hqg]
   exact (eval₂_mul_noncomm (RingHom.id R) _ fun k => (Algebra.commutes Y (q.coeff k)).symm).symm
 
-theorem Lead.add (hf : Lead n c f) (hg : Lead n d g) : Lead n (c + d) fun Y => f Y + g Y := by
-  obtain ⟨a, ha⟩ := hf
-  obtain ⟨b, hb⟩ := hg
-  refine ⟨fun i => a i + b i, fun Y => ?_⟩
-  beta_reduce
-  rw [ha, hb]
-  simp only [smul_add, sum_add_distrib]
-  abel
-
-theorem Lead.const (c : R) : Lead 0 c fun _ => c := ⟨0, fun Y => by simp⟩
-
-theorem Lead.succ (hf : Lead n c f) : Lead (n + 1) 0 f := by
-  obtain ⟨a, ha⟩ := hf
-  refine ⟨fun i => if i = n then c else a i, fun Y => ?_⟩
-  beta_reduce
-  rw [ha, sum_range_succ, if_pos rfl, smul_zero, zero_add, add_comm]
-  congr 1
-  exact sum_congr rfl fun i hi => by rw [if_neg (mem_range.1 hi).ne]
-
-theorem Lead.lt (hf : Lead n c f) (h : n < m) : Lead m 0 f := by
-  induction m, h using Nat.le_induction with
-  | base => exact hf.succ
-  | succ k _ ih => exact ih.succ
-
-theorem Lead.congr (hf : Lead n c f) (hn : n = m) (hc : c = d) (hg : ∀ Y, g Y = f Y) : Lead m d g := by
-  subst hn hc
-  obtain ⟨a, ha⟩ := hf
-  exact ⟨a, fun Y => by rw [hg, ha]⟩
-
-theorem Lead.const_mul (a : R) (hf : Lead n c f) : Lead n (a * c) fun Y => a * f Y :=
-  ((Lead.const a).mul hf).congr (zero_add n) rfl fun _ => rfl
-
-theorem Lead.mul_const (a : R) (hf : Lead n c f) : Lead n (c * a) fun Y => f Y * a :=
-  (hf.mul (Lead.const a)).congr (add_zero n) rfl fun _ => rfl
-
-theorem Lead.sum {ι : Type} (s : Finset ι) (F : ι → ℂ → R) (h : ∀ i ∈ s, Lead n 0 (F i)) :
-    Lead n 0 fun Y => ∑ i ∈ s, F i Y := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => exact ⟨0, fun Y => by simp⟩
-  | insert a s ha ih =>
-    exact ((h a (mem_insert_self a s)).add (ih fun i hi => h i (mem_insert_of_mem hi))).congr rfl
-      (add_zero 0) fun Y => sum_insert ha
-
-theorem Lead.lin (a b : R) : Lead 1 b fun Y => a + Y • b :=
-  ⟨fun _ => a, fun Y => by simp [add_comm]⟩
-
 end lead
-
-theorem lead_kap (n : ℕ) (p : Ty P → ℂ[X]) (c : Ty P → ℂ) (hp : ∀ π, (p π).natDegree ≤ n)
-    (hc : ∀ π, (p π).coeff n = c π) : Lead n (kap P D c) fun Y => kap P D fun π => (p π).eval Y := by
-  refine ⟨fun i => kap P D fun π => (p π).coeff i, fun Y => ?_⟩
-  have h : (fun π => (p π).eval Y) = Y ^ n • c + ∑ i ∈ range n, Y ^ i • fun π => (p π).coeff i := by
-    funext π
-    rw [eval_eq_sum_range' (Nat.lt_succ_of_le (hp π)), sum_range_succ, hc, add_comm]
-    simp [mul_comm]
-  beta_reduce
-  rw [h, map_add, map_smul, map_sum]
-  simp only [map_smul]
-
-theorem lead_prod (s : Finset ℕ) :
-    Lead s.card (1 : A P D) fun Y => kap P D fun π => ∏ i ∈ s, (Y + (rho P π i : ℂ)) := by
-  have hm : ∀ π : Ty P, (∏ i ∈ s, (X + C (rho P π i : ℂ))).Monic := fun π =>
-    monic_prod_of_monic _ _ fun _ _ => monic_X_add_C _
-  have hd : ∀ π : Ty P, (∏ i ∈ s, (X + C (rho P π i : ℂ))).natDegree = s.card := fun π => by
-    rw [natDegree_prod_of_monic _ _ fun _ _ => monic_X_add_C _]; simp
-  refine (lead_kap P D s.card (fun π => ∏ i ∈ s, (X + C (rho P π i : ℂ))) (fun _ => 1)
-    (fun π => (hd π).le) (fun π => ?_)).congr rfl (map_one (kap P D)) fun Y => ?_
-  · have := (hm π).coeff_natDegree
-    rwa [hd π] at this
-  · congr 1; funext π
-    simp [eval_prod]
-
-theorem card_I : (Icc 1 (P.k - 1)).card = P.k - 1 := by simp
-
-theorem lead_xA : Lead (P.k - 1) (1 : A P D) (xA P D) :=
-  (lead_prod P D (Icc 1 (P.k - 1))).congr (card_I P) rfl fun _ => rfl
-
-theorem lead_xEx (ex : Finset ℕ) (m : ℕ) (hm : P.k - 1 < m) :
-    Lead m (0 : A P D) fun Y => kap P D fun π => xEx P ex π Y :=
-  ((lead_prod P D (Icc 1 (P.k - 1) \ ex)).lt
-    (lt_of_le_of_lt ((card_le_card sdiff_subset).trans (card_I P).le) hm)).congr rfl rfl fun _ => rfl
-
-theorem leading_coeff_S21 (m : ℕ) (hm : P.k - 1 < m) : Lead m (0 : A P D) (weightedSumBis P D) :=
-  (Lead.sum _ _ fun l _ => ((lead_xEx P D {l} m hm).const_mul (SS P D l)).congr rfl (mul_zero _)
-    fun _ => rfl).congr rfl rfl fun _ => rfl
-
-theorem leading_term_upper_sum (m : ℕ) (hm : P.k - 1 < m) : Lead m (0 : A P D) (S12 P D) :=
-  (Lead.sum _ _ fun l _ => ((lead_xEx P D {l} m hm).mul_const (star (SS P D l))).congr rfl (zero_mul _)
-    fun _ => rfl).congr rfl rfl fun _ => rfl
-
-theorem leading_coeff_S4 (m : ℕ) (hm : P.k - 1 < m) : Lead m (0 : A P D) (S4 P D) :=
-  (Lead.sum _ _ fun l _ => Lead.sum _ _ fun j _ =>
-    ((lead_xEx P D {l, j} m hm).const_mul (star (SS P D l) * SS P D j)).congr rfl (mul_zero _)
-    fun _ => rfl).congr rfl rfl fun _ => rfl
-
-theorem leading_coeff_l0 : Lead 1 (-(zbA P D * ggiA P D)) (l0A P D) :=
-  (Lead.lin (-nabA P D - (1 / 2 : ℂ) • (zbA P D * ggiA P D)) (-(zbA P D * ggiA P D))).congr rfl rfl fun Y => by
-    rw [l0_eq_neg_nabla_sub, add_smul, smul_neg]; abel
-
-theorem leading_term_lowering_constant : Lead 1 (-(zA P D * ggiA P D)) (m0A P D) :=
-  (Lead.lin (-nabsA P D + (1 / 2 : ℂ) • (zA P D * ggiA P D)) (-(zA P D * ggiA P D))).congr rfl rfl fun Y => by
-    rw [raising_constant_eq_nabla_star, sub_smul, smul_neg]; abel
-
-theorem natDegree_x_polynomial (π : Ty P) : (coordinatePolynomial P π).natDegree = P.k - 1 := by
-  unfold coordinatePolynomial
-  rw [natDegree_prod_of_monic _ _ fun _ _ => monic_X_add_C _]
-  simp only [natDegree_X_add_C, sum_const, smul_eq_mul, mul_one]
-  exact card_I P
-
-theorem wNum_deg (hk : 1 ≤ P.k) (π : Ty P) : (wNum P π).natDegree ≤ 2 * P.k ∧
-    (wNum P π).coeff (2 * P.k) = -((P.T : ℂ) * P.T') := by
-  have hm : (∏ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ))))).Monic :=
-    monic_prod_of_monic _ _ fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _)
-  have hd : (∏ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ))))).natDegree
-      = 2 * P.k := by
-    rw [natDegree_prod_of_monic _ _ fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _)]
-    have : ∀ i ∈ Icc 1 P.k,
-        ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ)))).natDegree = 2 := fun i _ => by
-      rw [(monic_X_add_C _).natDegree_mul (monic_X_add_C _), natDegree_X_add_C, natDegree_X_add_C]
-    rw [sum_congr rfl this]
-    simp [mul_comm]
-  have he : ∀ (l : ℕ) (ρ : ℕ → ℂ), (∏ j ∈ (Icc 1 (P.k - 1)).erase l, (X + C (ρ j))).natDegree ≤ P.k - 1 := by
-    intro l ρ
-    rw [natDegree_prod_of_monic _ _ fun _ _ => monic_X_add_C _]
-    simp only [natDegree_X_add_C, sum_const, smul_eq_mul, mul_one]
-    exact (card_le_card (erase_subset _ _)).trans (card_I P).le
-  have ht : (∑ l ∈ Icc 1 (P.k - 1), C ((Nrm P l π : ℝ) : ℂ) *
-      ((∏ j ∈ (Icc 1 (P.k - 1)).erase l, (X + C (rho P π j : ℂ))) *
-        ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (X + C ((rho P π j : ℂ) + 1)))).natDegree ≤
-      (P.k - 1) + (P.k - 1) :=
-    natDegree_sum_le_of_forall_le _ _ fun l _ => (natDegree_C_mul_le _ _).trans
-      (natDegree_mul_le_of_le (he l _) (he l _))
-  have hq : (qP P).natDegree ≤ 2 * P.k := (natDegree_C_mul_le _ _).trans hd.le
-  constructor
-  · exact natDegree_add_le_of_degree_le hq (ht.trans (by omega))
-  · unfold wNum
-    rw [coeff_add, coeff_eq_zero_of_natDegree_lt (lt_of_le_of_lt ht (by omega)), add_zero, qP,
-      coeff_C_mul, ← hd, hm.coeff_natDegree, mul_one]
-
-theorem wq_deg (hP : P.OK) (π : Ty P) : (wNum P π /ₘ coordinatePolynomial P π).natDegree ≤ P.k + 1 ∧
-    (wNum P π /ₘ coordinatePolynomial P π).coeff (P.k + 1) = -((P.T : ℂ) * P.T') := by
-  have hk := hP.k_pos
-  have hm := coordinate_polynomial_monic P π
-  have hd := natDegree_x_polynomial P π
-  obtain ⟨h1, h2⟩ := wNum_deg P hk π
-  have h3 : (wNum P π /ₘ coordinatePolynomial P π).natDegree ≤ P.k + 1 := by
-    rw [natDegree_divByMonic _ hm, hd]; omega
-  refine ⟨h3, ?_⟩
-  have h6 := coeff_mul_add_eq_of_natDegree_le hd.le h3
-  rw [← weight_exact P hP π] at h6
-  have h7 : (coordinatePolynomial P π).coeff (P.k - 1) = 1 := by
-    have := hm.coeff_natDegree
-    rwa [hd] at this
-  have e : P.k - 1 + (P.k + 1) = 2 * P.k := by omega
-  rw [h7, one_mul, e, h2] at h6
-  exact h6.symm
-
-theorem gg_zb : ggA P D * zbA P D = zbA P D * ggA P D := (fn_comm P D _ _ _ _).eq
-theorem GG_commute_z : ggA P D * zA P D = zA P D * ggA P D := (fn_comm P D _ _ _ _).eq
-
-theorem gg_zb_ggi : ggA P D * (zbA P D * ggiA P D) = zbA P D := by
-  rw [← mul_assoc, gg_zb, mul_assoc, gg_ggi, mul_one]
-
-theorem gg_z_ggi : ggA P D * (zA P D * ggiA P D) = zA P D := by
-  rw [← mul_assoc, GG_commute_z, mul_assoc, gg_ggi, mul_one]
-
-theorem leading_coeff_t22 : Lead (P.k - 1) (ggA P D) (t22 P D) :=
-  ((lead_xA P D).const_mul (ggA P D)).congr rfl (mul_one _) fun _ => rfl
-
-theorem leading_term_lower_left (hk : 1 ≤ P.k) : Lead P.k (-zbA P D) (t21 P D) :=
-  ((((lead_xA P D).const_mul (ggA P D)).mul (leading_coeff_l0 P D)).congr (m := P.k) (by omega) rfl (fun _ => rfl)
-    |>.add (leading_coeff_S21 P D P.k (by omega))).congr rfl
-    (by rw [mul_one, mul_neg, gg_zb_ggi, add_zero]) fun _ => rfl
-
-theorem leading_coeff_t12 (hk : 1 ≤ P.k) : Lead P.k (-zA P D) (t12 P D) :=
-  ((((lead_xA P D).const_mul (ggA P D)).mul (leading_term_lowering_constant P D)).congr (m := P.k) (by omega) rfl (fun _ => rfl)
-    |>.add (leading_term_upper_sum P D P.k (by omega))).congr rfl
-    (by rw [mul_one, mul_neg, gg_z_ggi, add_zero]) fun _ => rfl
-
-theorem lead_coef : ggiA P D * (kap P D fun _ => -((P.T : ℂ) * P.T')) +
-    ggA P D * 1 * -(zA P D * ggiA P D) * -(zbA P D * ggiA P D) = 1 := by
-  have e : ggA P D * 1 * -(zA P D * ggiA P D) * -(zbA P D * ggiA P D) = zA P D * zbA P D * ggiA P D := by
-    rw [mul_one, mul_neg (ggA P D), gg_z_ggi, neg_mul_neg, mul_assoc]
-  rw [e, kap_const, ← Algebra.commutes, ← add_mul]
-  have h : algebraMap ℂ (A P D) (-((P.T : ℂ) * P.T')) + zA P D * zbA P D = ggA P D := by
-    rw [gg_def, map_neg, Par.TT]; push_cast; abel
-  rw [h, gg_ggi]
-
-theorem leading_coeff_t11 (hP : P.OK) : Lead (P.k + 1) (1 : A P D) (t11 P D) := by
-  have hk := hP.k_pos
-  have h1 : Lead (P.k + 1) (ggiA P D * (kap P D fun _ => -((P.T : ℂ) * P.T')))
-      fun Y => ggiA P D * (kap P D fun π => wC P π Y) :=
-    (lead_kap P D (P.k + 1) (fun π => wNum P π /ₘ coordinatePolynomial P π) _ (fun π => (wq_deg P hP π).1)
-      (fun π => (wq_deg P hP π).2)).const_mul (ggiA P D)
-  have h2 : Lead (P.k + 1) (ggA P D * 1 * -(zA P D * ggiA P D) * -(zbA P D * ggiA P D))
-      fun Y => ggA P D * xA P D Y * m0A P D Y * l0A P D Y :=
-    ((((lead_xA P D).const_mul (ggA P D)).mul (leading_term_lowering_constant P D)).mul (leading_coeff_l0 P D)).congr (by omega) rfl fun _ => rfl
-  have h3 : Lead (P.k + 1) (0 : A P D) fun Y => ggA P D * m0A P D Y * ggiA P D * weightedSumBis P D Y :=
-    ((((leading_term_lowering_constant P D).const_mul (ggA P D)).mul_const (ggiA P D)).mul (leading_coeff_S21 P D P.k (by omega))).congr
-      (by omega) (mul_zero _) fun _ => rfl
-  have h4 : Lead (P.k + 1) (0 : A P D) fun Y => S12 P D Y * l0A P D Y :=
-    ((leading_term_upper_sum P D P.k (by omega)).mul (leading_coeff_l0 P D)).congr rfl (zero_mul _) fun _ => rfl
-  have h5 : Lead (P.k + 1) (0 : A P D) fun Y => ggiA P D * S4 P D Y :=
-    ((leading_coeff_S4 P D (P.k + 1) (by omega)).const_mul (ggiA P D)).congr rfl (mul_zero _) fun _ => rfl
-  exact ((((h1.add h2).add h3).add h4).add h5).congr rfl
-    (by rw [lead_coef, add_zero, add_zero, add_zero]) fun _ => rfl
-
-theorem qQLeading : QQLeading := by
-  intro P D _ hP
-  have hk := hP.k_pos
-  obtain ⟨a11, h11⟩ := leading_coeff_t11 P D hP
-  obtain ⟨a12, h12⟩ := leading_coeff_t12 P D hk
-  obtain ⟨a21, h21⟩ := leading_term_lower_left P D hk
-  obtain ⟨a22, h22⟩ := leading_coeff_t22 P D
-  exact ⟨a11, a12, a21, a22, fun Y => ⟨h11 Y, by rw [h12 Y, smul_neg], by rw [h21 Y, smul_neg], h22 Y⟩⟩
 
 theorem xC_split (j : ℕ) (hj : j ∈ Icc 1 (P.k - 1)) (π : Ty P) (Y : ℂ) :
     xC P π Y = (Y + (rho P π j : ℂ)) * xEx P {j} π Y := by
@@ -1709,9 +1470,6 @@ namespace Formalism.FourierDecayAlt.P.MAx1
 
 theorem qQNormal : QQNormal := D5.qQNormal_of sSNorm
 theorem qQHerm : QQHerm := D5.qQHerm
-theorem qQLeading : QQLeading := D5.qQLeading
-theorem qQZeta : QQZeta := D5.qQZeta
-
 end Formalism.FourierDecayAlt.P.MAx1
 
 end
@@ -3223,7 +2981,6 @@ theorem N_zb : nabA P D * zbA P D = zbA P D * nabA P D := (levNab P D).2.2.1
 theorem nabla_gamma_relations : nabA P D * ggA P D = ggA P D * nabA P D + zbA P D := (levNab P D).2.2.2.2.1
 theorem nabla_star_gamma_relations : nabA P D * ggiA P D = ggiA P D * nabA P D - zbA P D * ggiA P D * ggiA P D := (levNab P D).2.2.2.2.2.1
 theorem Ns_zb : nabsA P D * zbA P D = zbA P D * nabsA P D - 1 := (levNabs P D).1
-theorem nabla_star_commute_z : nabsA P D * zA P D = zA P D * nabsA P D := (levNabs P D).2.2.1
 theorem nabla_star_mul_GG : nabsA P D * ggA P D = ggA P D * nabsA P D - zA P D := (levNabs P D).2.2.2.2.1
 theorem nabla_star_gamma_inv_comm : nabsA P D * ggiA P D = ggiA P D * nabsA P D + zA P D * ggiA P D * ggiA P D := (levNabs P D).2.2.2.2.2.1
 
@@ -3289,11 +3046,6 @@ theorem N_Lams (hS : NabSS) (u : ℂ) : nabA P D * Lams P D u = Lams P D u * nab
   have h := congrArg star (Ns_Lam P D hS (star u))
   rw [star_mul, star_sub, star_mul, star_mul, star_Lam, star_Ns, star_cz] at h
   rw [h, cc_sc, Lams_sc]; abel
-
-theorem Ns_Lams (hS : NabSS) (u : ℂ) : nabsA P D * Lams P D u = Lams P D u * nabsA P D + cz P D * Lams P D u := by
-  have h := congrArg star (N_Lam P D hS (star u))
-  rw [star_mul, star_sub, star_mul, star_mul, star_Lam, star_N, star_cc] at h
-  rw [h, cz_sc, Lams_sc]; abel
 
 theorem mt_eq (u : ℂ) : mt P D u = -nabsA P D - (u + 1 / 2) • cz P D + ggiA P D * Lams P D u := by
   unfold mt
@@ -5195,53 +4947,6 @@ theorem isStart_smul (QQ : ℂ → M2 A) (q : ℂ → ℂ) (s : ℂ) (hs : s * s
   · simp only [Matrix.transpose_smul, mul_smul_comm, smul_mul_assoc, smul_smul, hs, one_smul]
     exact (h.det Y).2
 
-def sStar (σ : Site A) : Site A := ⟨star σ.p, -star σ.ci, -star σ.c⟩
-
-theorem Ts_conj (σ : Site A) (Y : ℂ) : (Ts σ (star Y))ᴴ = Ts (sStar σ) Y := by
-  ext a b
-  fin_cases a <;> fin_cases b <;>
-    simp [Ts, Tm, sStar, Matrix.conjTranspose_apply, ← algebraMap_star_comm]
-
-theorem weyl_ci {p c ci : A} (h : WeylRel p c ci) : p * ci = ci * p - ci := by
-  obtain ⟨h1, h2, h3⟩ := h
-  have e : ci * (p * c) * ci = ci * (c * p + c) * ci := by rw [h3]
-  have l : ci * (p * c) * ci = ci * p := by rw [mul_assoc, mul_assoc, h1, mul_one]
-  have r : ci * (c * p + c) * ci = p * ci + ci := by
-    rw [mul_add, ← mul_assoc, h2, one_mul, add_mul, one_mul]
-  rw [l, r] at e
-  rw [e]; abel
-
-theorem weyl_star {σ : Site A} (h : WeylRel σ.p σ.c σ.ci) :
-    WeylRel (sStar σ).p (sStar σ).c (sStar σ).ci := by
-  have h4 := weyl_ci h
-  obtain ⟨h1, h2, h3⟩ := h
-  refine ⟨?_, ?_, ?_⟩
-  · show -star σ.ci * -star σ.c = 1
-    rw [neg_mul_neg, ← star_mul, h1, star_one]
-  · show -star σ.c * -star σ.ci = 1
-    rw [neg_mul_neg, ← star_mul, h2, star_one]
-  · show star σ.p * -star σ.ci = -star σ.ci * star σ.p + -star σ.ci
-    rw [mul_neg, neg_mul, ← star_mul, ← star_mul, h4, star_sub]; abel
-
-theorem isRTT_Tm {p c ci : A} (h : WeylRel p c ci) : IsRTT (fun Y : ℂ => Tm Y p c ci) :=
-  fun Y Y' => Formalism.YangianSpanCharacter.P.rttRelation ℂ A p c ci Y Y' h
-
-theorem isDet_Tm {p c ci : A} (h : WeylRel p c ci) : IsDet (fun Y : ℂ => Tm Y p c ci) (fun _ => 1) := by
-  intro Y
-  refine ⟨?_, ?_⟩
-  · rw [map_one, one_smul]
-    exact Formalism.YangianSpanCharacter.P.transposeSymplecticShift ℂ A p c ci Y h
-  · rw [map_one, one_smul]
-    obtain ⟨h1, h2, h3⟩ := h
-    have hc : algebraMap ℂ A Y * c = c * algebraMap ℂ A Y := Algebra.commutes _ _
-    ext a b
-    fin_cases a <;> fin_cases b
-    · simp [Tm, Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two, add_mul, mul_add, h3, hc]
-      abel
-    · simp [Tm, Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two, h1]
-    · simp [Tm, Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two, h2]
-    · simp [Tm, Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]
-
 theorem Ts_comm (σ : Site A) (x : A) (hp : Commute x σ.p) (hc : Commute x σ.c) (hci : Commute x σ.ci)
     (Y : ℂ) (a b : Fin 2) : Commute x (Ts σ Y a b) := by
   fin_cases a <;> fin_cases b
@@ -5251,58 +4956,6 @@ theorem Ts_comm (σ : Site A) (x : A) (hp : Commute x σ.p) (hc : Commute x σ.c
     exact hc.neg_right
   · exact hci
   · exact Commute.zero_right x
-
-theorem isStart_step (σ : Site A) (QQ : ℂ → M2 A) (q : ℂ → ℂ) (hσ : IsSite σ)
-    (hc : QQCommutes QQ σ) (h : IsStart QQ q) :
-    IsStart (fun Y => (Ts σ (star Y))ᴴ * QQ Y * Ts σ Y) q := by
-  obtain ⟨hW, hH⟩ := hσ
-  have mp : σ.p ∈ hol σ := by simp [hol]
-  have mc : σ.c ∈ hol σ := by simp [hol]
-  have mci : σ.ci ∈ hol σ := by simp [hol]
-  have c1 : EntriesCommute (fun Y : ℂ => Ts (sStar σ) Y) QQ := by
-    intro Y Y' i j k l
-    refine (Ts_comm (sStar σ) (QQ Y' k l) ?_ ?_ ?_ Y i j).symm
-    · exact hc Y' k l (star σ.p) (Or.inr (by rw [star_star]; exact mp))
-    · exact (hc Y' k l (star σ.ci) (Or.inr (by rw [star_star]; exact mci))).neg_right
-    · exact (hc Y' k l (star σ.c) (Or.inr (by rw [star_star]; exact mc))).neg_right
-  have c2 : EntriesCommute QQ (fun Y : ℂ => Ts σ Y) := by
-    intro Y Y' i j k l
-    exact Ts_comm σ (QQ Y i j) (hc Y i j _ (Or.inl mp)) (hc Y i j _ (Or.inl mc)) (hc Y i j _ (Or.inl mci)) Y' k l
-  have c3 : EntriesCommute (fun Y : ℂ => Ts (sStar σ) Y) (fun Y : ℂ => Ts σ Y) := by
-    intro Y Y' i j k l
-    have key : ∀ x ∈ hol σ, Commute (Ts (sStar σ) Y i j) x := fun x hx =>
-      (Ts_comm (sStar σ) x (hH x hx _ mp) (hH x hx _ mci).neg_right (hH x hx _ mc).neg_right Y i j).symm
-    exact Ts_comm σ _ (key _ mp) (key _ mc) (key _ mci) Y' k l
-  have hF := Formalism.FourierDecayAlt.P.W.wordFusion_list (R := ℂ) (B := A)
-    [(fun Y : ℂ => Ts (sStar σ) Y, fun _ => 1), (QQ, q), (fun Y : ℂ => Ts σ Y, fun _ => 1)]
-    (by
-      intro x hx
-      simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
-      rcases hx with rfl | rfl | rfl
-      · exact ⟨isRTT_Tm (weyl_star hW), isDet_Tm (weyl_star hW)⟩
-      · exact ⟨h.rtt, h.det⟩
-      · exact ⟨isRTT_Tm hW, isDet_Tm hW⟩)
-    (by
-      simp only [List.pairwise_cons, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq,
-        IsEmpty.forall_iff, implies_true, List.Pairwise.nil, and_true]
-      exact ⟨⟨c1, c3⟩, c2⟩)
-  have e1 : (fun Y => (Ts σ (star Y))ᴴ * QQ Y * Ts σ Y) = fun Y =>
-      (([(fun Y : ℂ => Ts (sStar σ) Y, fun _ => 1), (QQ, q), (fun Y : ℂ => Ts σ Y, fun _ => 1)] :
-        List ((ℂ → Matrix (Fin 2) (Fin 2) A) × (ℂ → ℂ))).map (fun x => x.1 Y)).prod := by
-    funext Y
-    rw [Ts_conj]
-    simp [mul_assoc]
-  have e2 : q = fun Y =>
-      (([(fun Y : ℂ => Ts (sStar σ) Y, fun _ => 1), (QQ, q), (fun Y : ℂ => Ts σ Y, fun _ => 1)] :
-        List ((ℂ → Matrix (Fin 2) (Fin 2) A) × (ℂ → ℂ))).map (fun x => x.2 Y)).prod := by
-    funext Y
-    simp
-  refine ⟨fun Y hY => ?_, ?_, ?_, h.q_real⟩
-  · simp only [hY, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, h.herm Y hY, mul_assoc]
-  · rw [e1]; exact hF.1
-  · rw [e1]
-    have := hF.2
-    rwa [← e2] at this
 
 end Abstract
 
@@ -5635,16 +5288,6 @@ theorem Ent.one : Ent C (1 : M2 A) := by
 theorem Ent.prod {l : List (M2 A)} (h : ∀ M ∈ l, Ent C M) : Ent C l.prod :=
   List.prod_induction (Ent C) (fun _ _ => Ent.mul) Ent.one h
 
-theorem Ent.Ts {σ : Site A} (hp : σ.p ∈ C) (hc : σ.c ∈ C) (hci : σ.ci ∈ C) (Y : ℂ) : Ent C (Ts σ Y) := by
-  intro a b
-  fin_cases a <;> fin_cases b
-  · show algebraMap ℂ A Y + σ.p ∈ C
-    exact add_mem (C.algebraMap_mem Y) hp
-  · show -σ.c ∈ C
-    exact neg_mem hc
-  · exact hci
-  · exact zero_mem C
-
 end Ent
 
 theorem QQr_ent (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P.r) (Y : ℂ) : Ent (Cen P D i) (QQr P D Y) := by
@@ -5686,11 +5329,6 @@ theorem commutes_of_ent (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P
     QQCommutes QQ (siteA P D i) :=
   fun Y a b x hx => (mem_Cen.1 (h Y a b) x hx).symm
 
-theorem Ts_ent (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i j : Fin P.r) (h : i ≠ j) (Y : ℂ) : Ent (Cen P D i) (Ts (siteA P D j) Y) := by
-  have key : ∀ y ∈ hol (siteA P D j), y ∈ Cen P D i := fun y hy =>
-    mem_Cen.2 fun g hg => sitesCommuteA P D i j h g hg y (Or.inl hy)
-  exact Ent.Ts (key _ (by simp [hol])) (key _ (by simp [hol])) (key _ (by simp [hol])) Y
-
 theorem mem_sitesFrom (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (n : ℕ) (σ : Site (A P D)) (h : σ ∈ sitesFromD P D n) :
     ∃ j : Fin P.r, n ≤ j ∧ σ = siteA P D j := by
   unfold sitesFromD at h
@@ -5699,64 +5337,6 @@ theorem mem_sitesFrom (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (n : ℕ) (�
   rw [List.length_drop, List.length_ofFn] at hk
   refine ⟨⟨n + k, by omega⟩, Nat.le_add_right _ _, ?_⟩
   rw [List.getElem_drop, List.getElem_ofFn]
-
-theorem QQlev_ent (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (l : ℕ) (i : Fin P.r) (Y : ℂ) : Ent (Cen P D i) (QQlev P D l (i + 1) Y) := by
-  have hT : ∀ Z : ℂ, Ent (Cen P D i) (((sitesFromD P D (i + 1)).map fun σ => Ts σ Z).prod) := by
-    intro Z
-    refine Ent.prod fun M hM => ?_
-    obtain ⟨σ, hσ, rfl⟩ := List.mem_map.1 hM
-    obtain ⟨j, hj, rfl⟩ := mem_sitesFrom P D _ σ hσ
-    refine Ts_ent P D i j ?_ Z
-    intro e
-    rw [e] at hj
-    omega
-  refine Ent.mul (Ent.mul ?_ (start_ent P D l i Y)) (hT Y)
-  intro a b
-  rw [Matrix.conjTranspose_apply]
-  exact star_mem_Cen (hT (star Y) b a)
-
-theorem sites_step (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P.r) : sitesFromD P D i = sitesFromD P D (i + 1) ++ [siteA P D i] := by
-  unfold sitesFromD
-  rw [List.drop_eq_getElem_cons (by simp), List.reverse_cons]
-  simp
-
-theorem chainM : ChainM := by
-  intro P D _ l
-  refine ⟨fun Y => ?_, fun i Y => ?_⟩
-  · have h : sitesFromD P D P.r = [] := by
-      unfold sitesFromD
-      rw [List.drop_eq_nil_of_le (by simp)]; rfl
-    simp [QQlev, h]
-  · simp only [QQlev, sites_step P D i, List.map_append, List.prod_append, List.map_cons, List.map_nil,
-      List.prod_cons, List.prod_nil, mul_one, Matrix.conjTranspose_mul, Matrix.mul_assoc]
-
-theorem lowerCommutes : LowerCommutes :=
-  fun P D _ l i => commutes_of_ent P D i _ (QQlev_ent P D l i)
-
-theorem lowerStart_of (h : StartIsStart) : LowerStart := by
-  intro P D _ hP l
-  have key : ∀ d i : ℕ, i + d = P.r → IsStart (QQlev P D l i) (qC P) := by
-    intro d
-    induction d with
-    | zero =>
-      intro i hi
-      have e : QQlev P D l i = (startM P D l).QQ := by
-        funext Y
-        rw [show i = P.r by omega]
-        exact (chainM P D l).1 Y
-      rw [e]
-      exact h P D hP l
-    | succ d ih =>
-      intro i hi
-      have hlt : i < P.r := by omega
-      have e : QQlev P D l i = fun Y => (Ts (siteA P D ⟨i, hlt⟩) (star Y))ᴴ * QQlev P D l (i + 1) Y *
-          Ts (siteA P D ⟨i, hlt⟩) Y := by
-        funext Y
-        exact (chainM P D l).2 ⟨i, hlt⟩ Y
-      rw [e]
-      exact isStart_step _ _ _ (isSiteA P D _) (lowerCommutes P D l ⟨i, hlt⟩) (ih (i + 1) (by omega))
-  intro i hi
-  exact key (P.r - i) i (by omega)
 
 end
 
@@ -5782,10 +5362,6 @@ theorem sitesOKM : SitesOKM := by
     rw [List.drop_zero, List.pairwise_reverse, List.pairwise_ofFn]
     intro i j hij
     exact WeylSymmetry.sitesCommuteA P D j i (ne_of_gt hij)
-
-theorem chainM : ChainM := WeylSymmetry.chainM
-
-theorem lowerCommutes : LowerCommutes := WeylSymmetry.lowerCommutes
 
 end Formalism.FourierDecayAlt.P.MAx1
 
@@ -6101,51 +5677,11 @@ theorem startIsStart : StartIsStart := startIsStartAssemble qQHerm qQRTT qQDet
 
 theorem startOK : StartOK := startAssemble startIsStart lower_left_commute sSScalar sSShift rho_raise
 
-theorem hahn_inv {r : ℕ} (f : M.Fn r) : (hahn r).inv f = f⁻¹ := by
-  show Ring.inverse f = f⁻¹
-  rw [Ring.inverse_eq_inv']
-
 end Formalism.FourierDecayAlt.P.MAx1
 
 namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.MA MAx1
-
-theorem hahn_laws_hold : Formalism.FourierDecayAlt.MA.HahnLaws := by
-  intro r TT
-  have hL := Formalism.FourierDecayAlt.P.euler_leibniz
-  have hC := Formalism.FourierDecayAlt.P.euler_coordinates
-  have hM := Formalism.FourierDecayAlt.P.euler_commute
-  have hN := Formalism.FourierDecayAlt.P.function_nonzero
-  refine ⟨fun v f g => hL r v f g, fun v w => (hC r v w 0).1, fun v w => hM r v w, fun v => ?_, ?_, ?_⟩
-  · exact isUnit_iff_ne_zero.2 (hN r v 0).1
-  · exact isUnit_iff_ne_zero.2 (hN r M.vz TT).2
-  · exact inferInstanceAs (Nontrivial (M.Fn r))
-
-theorem hahn_joint : Formalism.FourierDecayAlt.MA.HahnJoint := by
-  intro P
-  have hi : ∀ f : (hahn P.r).R, (hahn P.r).inv f = @Inv.inv (M.Fn P.r) _ f := fun f => hahn_inv f
-  have e_ci : ∀ l, ciA P (hahn P.r) l = M.ciA P l := fun l => by
-    simp only [ciA, M.ciA, sc, M.sc, DAlg.ciP, M.ciP, hi]; rfl
-  have e_cbi : ∀ l, cbiA P (hahn P.r) l = M.cbiA P l := fun l => by
-    simp only [cbiA, M.cbiA, sc, M.sc, DAlg.cbiP, M.cbiP, hi]; rfl
-  have e_zi : ziA P (hahn P.r) = M.ziA P := by simp only [ziA, M.ziA, sc, M.sc, DAlg.ziP, M.ziP, hi]; rfl
-  have e_zbi : zbiA P (hahn P.r) = M.zbiA P := by simp only [zbiA, M.zbiA, sc, M.sc, DAlg.zbiP, M.zbiP, hi]; rfl
-  have e_ggi : ggiA P (hahn P.r) = M.ggiA P := by simp only [ggiA, M.ggiA, sc, M.sc, DAlg.ggiP, M.ggiP, hi]; rfl
-  have e_dz : (hahn P.r).dzP = M.dzP := by simp only [DAlg.dzP, M.dzP, hi]; rfl
-  have e_dzb : (hahn P.r).dzbP = M.dzbP := by simp only [DAlg.dzbP, M.dzbP, hi]; rfl
-  have e_ggiP : (hahn P.r).ggiP P.TT = M.ggiP P.TT := by simp only [DAlg.ggiP, M.ggiP, hi]; rfl
-  have e_nab : nabA P (hahn P.r) = M.nabA P := by simp only [nabA, M.nabA, e_dz, e_ggiP]; rfl
-  have e_nabs : nabsA P (hahn P.r) = M.nabsA P := by simp only [nabsA, M.nabsA, e_dzb, e_ggiP]; rfl
-  have e_l0 : ∀ Y, l0A P (hahn P.r) Y = M.l0A P Y := fun Y => by simp only [l0A, M.l0A, e_nab, e_ggi]; rfl
-  have e_m0 : ∀ Y, m0A P (hahn P.r) Y = M.m0A P Y := fun Y => by simp only [m0A, M.m0A, e_nabs, e_ggi]; rfl
-  have e_QQ : ∀ Y, QQr P (hahn P.r) Y = M.QQr P Y := fun Y => by
-    simp only [QQr, M.QQr, t11, M.t11, t12, M.t12, t21, M.t21, t22, M.t22, e_l0, e_m0, e_ggi]; rfl
-  have e_ee : eeA P (hahn P.r) = M.eeA P := by funext Y; simp only [eeA, M.eeA, e_zbi]; rfl
-  refine ⟨fun l => rfl, fun l => rfl, fun l => rfl, e_ci, fun l => rfl, e_cbi, rfl, e_zi, rfl, e_zbi, rfl, e_ggi, e_nab,
-    e_nabs, fun l => rfl, fun l => ?_⟩
-  simp only [startM, M.startM, e_QQ, e_ee]
-  rfl
 
 theorem level_exists_alt : Formalism.FourierDecayAlt.MA.LevelExistsD := by
   intro P D hD

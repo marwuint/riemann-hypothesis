@@ -1,6 +1,9 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UValThruTopOfDisjoint
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryTraitThroughModuliGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitsOfModuliPointHaveIsomorphicProportionalLatStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryTraitThroughModuliGenericPoint
+import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitsOfModuliPointHaveIsomorphicProportionalLat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtPointLiftOfSurjectiveLocFinType
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDvrIntegralClosureFiniteFractionRi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperLiftTraitOfGenericLift
@@ -30,7 +33,7 @@ theorem evalZ_ram {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   have hB : GlobalTheory.Mum.Base T'.V := ⟨⟨inferInstance, inferInstance, inferInstance, hcpl⟩, hz⟩
   have hself : Associated (RingHom.id T'.V T'.ϖ) (T'.ϖ ^ 1) := by simp [Associated.refl]
   have hid : spMap (RingHom.id (FractionRing T'.V)) = 𝟙 _ := Spec.map_id _
-  obtain ⟨e, he⟩ := GlobalTheory.T.traitsOfModuliPoint_have_isomorphic_proportional_lattices E H Dw l Xo c T T' T'.V f (RingHom.id _) fK (RingHom.id _) hB hdvr hf
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.UPoinc.uTraitUniqSt_holds E H Dw l Xo c T T' T'.V f (RingHom.id _) fK (RingHom.id _) hB hdvr hf
     Function.injective_id hl inferInstance hK (fun _ => rfl) (by rw [hid, Category.id_comp, hy]) T'.ϖ m 1 T'.irr hm
     hself
   have hon : IsPolFanOn H.bar φ T.P.D.toPre.X := by
@@ -84,7 +87,7 @@ theorem _root_.GlobalTheory.UPoinc.ideal_orders_of_proper_model : ∀ (E : Type)
     rw [Category.assoc, hyK, spMap_comp, Category.assoc])
   have hB' : GlobalTheory.Mum.Base V' := ⟨⟨inferInstance, inferInstance, inferInstance, hc'⟩, inferInstance⟩
   obtain ⟨T₂, f₂, fK₂, hf₂i, hf₂l, -, hf₂K, hT₂y⟩ :=
-    GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint E H Dw l Xo c V' hB' inferInstance (spMap (τ.comp σ) ≫ y)
+    _root_.GlobalTheory.UTraitExt.uTraitExtSt E H Dw l Xo c V' hB' inferInstance (spMap (τ.comp σ) ≫ y)
   haveI := hfl
   haveI := hf₂l
   have hjK : ∀ {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] (u : R →+* S)

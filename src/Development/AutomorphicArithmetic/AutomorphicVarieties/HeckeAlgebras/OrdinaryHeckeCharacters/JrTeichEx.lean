@@ -178,21 +178,3 @@ private theorem jr_surj {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [Comm
 
 end Abstract
 
-attribute [-instance] UpperTheory.V.GradeZeroInterpolatingElement.instIsLocalRingSubtypePadicAlgClMemSubalgebraPadicIntO in
-theorem UpperTheory.V.Hi.jRing :
-    Af.HypothesesH → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
-    ∀ (V : s.Lev) (Q : QData V) (c : Coef l), ∀ (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ), ∀ (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) (R : HD Q ι Λ) (K : (hset Q R.τ₀).Lev), V.S' = s.S → ∀ J : Ideal B.B, R.IsJ B K J → B.RingProps Λ J := by
-  intro hP l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι B Λ R K _ J hJ
-  rcases hJ with ⟨-, rfl⟩ | ⟨hcomm, hco, f, hne, hmap, hsurj, hlam, rfl⟩
-  · refine jr_abs B Λ ⊤ (ι := Empty) (Qbar l) Empty.elim (fun i => i.elim) (fun _ _ => trivial) Empty.elim (fun i => i.elim)
-      (fun i => i.elim) (fun i => i.elim) (fun i => i.elim) (fun _ i => i.elim) (jr_isTeich c r) ?_ fun _ _ _ _ => trivial
-    exact RingHom.Finite.of_surjective _ fun b => ⟨0, Subsingleton.elim _ _⟩
-  have hAx := axU hP.litN l L Ω s n hn V Q c _ R.τ₀
-  obtain ⟨hdom, hden⟩ := denseU hP.litN l L Ω s n hn V Q c _ R.τ₀ r Λ R.θ R.theta
-  obtain ⟨-, hfin, htf, -⟩ := hiAlg L Ω l n c _ hAx Λ.Λ R.θ R.isWt R.a K hne
-  let lam : Wt L l n := fun _ => ⟨0, fun _ _ _ => le_rfl⟩
-  have hout := coreH hP.litN L Ω l n c _ hAx Λ.Λ R.θ R.isWt ι _ (autU hP l L Ω s n hn V Q c r ι _ R.τ₀ R.type) lam trivial
-    (hden lam) R.a K _ _ hmap
-  refine jr_surj B Λ f hsurj hlam (Qbar l) _ (hout.sep lam trivial (hden lam)) (fun x hx => ?_) (jr_isTeich c r) hfin (htf hdom)
-  obtain ⟨ρ, hc, -, hPU, hD, hfl⟩ := hout.pt lam trivial x hx.2.1
-  exact ⟨ρ, hD, hPU.form, fun v => (hfl hx v).1, hPU.type, fun h h' => point_rep_unramified_at_auxiliary_place hn B h _ _ hc h'⟩

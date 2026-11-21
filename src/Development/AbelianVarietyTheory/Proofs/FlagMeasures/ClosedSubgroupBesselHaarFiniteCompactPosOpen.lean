@@ -51,9 +51,4 @@ theorem haarOn_locFinite_openPos :
   rw [h2, add_zero] at h1
   exact lt_of_le_of_lt h1 h3
 
-example : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k r)), IsClosedSub k r S → IsHaarOn S μ →
-    (∀ C : Set (Mt k r), IsCompact C → μ C < ⊤) ∧
-    (∀ U : Set (Mt k r), IsOpen U → (∃ x ∈ U, Matrix.of x ∈ S) → 0 < μ U) :=
-  haarOn_locFinite_openPos
-
 end GlobalTheory.SgInf

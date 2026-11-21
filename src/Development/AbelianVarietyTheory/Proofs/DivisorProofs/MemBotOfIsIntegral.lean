@@ -45,27 +45,6 @@ theorem cyc4 (R : Type) [CommRing R] : cyclotomic 4 R = 1 + X ^ 2 := by
 def red : 𝓞 Qi →+* ZMod 5 :=
   (pbO.lift (2 : ZMod 5) (by rw [minpoly_ζO, cyc4]; simp; decide)).toRingHom
 
-theorem red_ζO : red ζO = 2 := by
-  simp [red, ← pbO_gen]
-
-theorem red_coord (a b : ℤ) : red (a + b * ζO) = a + 2 * b := by
-  simp [red_ζO]; ring
-
-theorem red_surj : Function.Surjective red := by
-  intro y
-  obtain ⟨n, rfl⟩ := ZMod.intCast_surjective y
-  exact ⟨n, by simp⟩
-
-def u : HeightOneSpectrum (𝓞 Qi) where
-  asIdeal := RingHom.ker red
-  isPrime := (RingHom.ker_isMaximal_of_surjective red red_surj).isPrime
-  ne_bot := by
-    intro h
-    have h5 : (5 : 𝓞 Qi) ∈ RingHom.ker red := by
-      rw [RingHom.mem_ker, map_ofNat]; decide
-    rw [h, Ideal.mem_bot] at h5
-    norm_num at h5
-
 end GlobalTheory.UPel.HT.Gauss
 
 namespace GlobalTheory.UPel.HT.Gauss
@@ -74,50 +53,6 @@ abbrev cO : 𝓞 Qi →+* 𝓞 Qi := (IsCMField.ringOfIntegersComplexConj Qi : �
 
 theorem cO_ζO : IsCMField.ringOfIntegersComplexConj Qi ζO = -ζO := by
   ext; simp [IsCMField.coe_ringOfIntegersComplexConj, coe_ζO, cc_ii]
-
-theorem red_cO_coord (a b : ℤ) : red (cO (a + b * ζO)) = a - 2 * b := by
-  simp [cO_ζO, red_ζO]; ring
-
-theorem mem_u {x : 𝓞 Qi} : x ∈ u.asIdeal ↔ red x = 0 := RingHom.mem_ker
-
-theorem five_eq : ((5 : ℕ) : 𝓞 Qi) = (2 - ζO) * (2 + ζO) := by
-  push_cast; linear_combination ζO_sq
-
-theorem red_two_sub : red (2 - ζO) = 0 := by
-  rw [map_sub, map_ofNat, red_ζO, sub_self]
-
-theorem red_cO_two_add : red (cO (2 + ζO)) = 0 := by
-  rw [map_add, map_ofNat, cO, RingHom.coe_coe, cO_ζO, map_add, map_neg, map_ofNat, red_ζO, add_neg_cancel]
-
-theorem red_cO_two_sub : red (cO (2 - ζO)) = 4 := by
-  rw [map_sub, map_ofNat, cO, RingHom.coe_coe, cO_ζO, map_sub, map_neg, map_ofNat, red_ζO]; decide
-
-theorem u_split : u.asIdeal * u.asIdeal.comap cO = Ideal.span {((5 : ℕ) : 𝓞 Qi)} := by
-  apply le_antisymm
-  · intro x hx
-    have h1 := Ideal.mul_le_inf hx
-    rw [Ideal.mem_inf, Ideal.mem_comap, mem_u, mem_u] at h1
-    obtain ⟨a, b, rfl⟩ := coordO x
-    rw [red_coord, red_cO_coord] at h1
-    obtain ⟨h1, h2⟩ := h1
-    have h5 : (5 : ZMod 5) = 0 := by decide
-    have ha : ((a : ℤ) : ZMod 5) = 0 := by linear_combination 3 * h1 + 3 * h2 - (a : ZMod 5) * h5
-    have hb : ((b : ℤ) : ZMod 5) = 0 := by linear_combination 4 * h1 - 4 * h2 - 3 * (b : ZMod 5) * h5
-    rw [ZMod.intCast_zmod_eq_zero_iff_dvd] at ha hb
-    obtain ⟨a', rfl⟩ := ha
-    obtain ⟨b', rfl⟩ := hb
-    rw [Ideal.mem_span_singleton]
-    exact ⟨a' + b' * ζO, by push_cast; ring⟩
-  · rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, five_eq]
-    apply Ideal.mul_mem_mul
-    · rw [mem_u]; exact red_two_sub
-    · rw [Ideal.mem_comap, mem_u]; exact red_cO_two_add
-
-theorem u_split_ne : u.asIdeal.comap cO ≠ u.asIdeal := by
-  intro h
-  have h1 : (2 - ζO) ∈ u.asIdeal := by rw [mem_u]; exact red_two_sub
-  rw [← h, Ideal.mem_comap, mem_u, red_cO_two_sub] at h1
-  revert h1; decide
 
 end GlobalTheory.UPel.HT.Gauss
 
@@ -181,22 +116,6 @@ def ψ : LinearMap.BilinForm ℚ Qi :=
 
 theorem ψ_apply (x y : Qi) : ψ x y = Algebra.trace ℚ Qi (-ii / 2 * x * IsCMField.complexConj Qi y) := rfl
 
-theorem ψ_coord (a b c d : ℚ) : ψ ((a : Qi) + b * ii) ((c : Qi) + d * ii) = b * c - a * d := by
-  rw [ψ_apply, cc_coord]
-  have : -ii / 2 * ((a : Qi) + b * ii) * ((c : Qi) - d * ii) =
-      (((b * c - a * d) / 2 : ℚ) : Qi) + ((-(a * c + b * d) / 2 : ℚ) : Qi) * ii := by
-    push_cast
-    linear_combination (-((b : Qi) * c - a * d) / 2 + (b : Qi) * d * ii / 2) * ii_mul
-  rw [this, trace_coord]; ring
-
-theorem ψ_alt (x : Qi) : ψ x x = 0 := by
-  obtain ⟨a, b, rfl⟩ := exists_coord x
-  rw [ψ_coord]; ring
-
-theorem ψ_adj (b x y : Qi) : ψ (b * x) y = ψ x (star b * y) := by
-  rw [ψ_apply, ψ_apply, star_eq, map_mul (IsCMField.complexConj Qi), IsCMField.complexConj_apply_apply]
-  congr 1; ring
-
 theorem pos (x : Qi) (hx : x ≠ 0) :
     0 < LinearMap.trace ℚ Qi (LinearMap.mulLeft ℚ (x * star x)) := by
   change 0 < Algebra.trace ℚ Qi (x * star x)
@@ -224,40 +143,13 @@ def τ₀ : Qi →+* ℂ := exists_τ.choose
 
 theorem τ₀_ii : τ₀ ii = Complex.I := exists_τ.choose_spec
 
-theorem τ₀_coord (a b : ℚ) : τ₀ ((a : Qi) + b * ii) = ⟨a, b⟩ := by
-  apply Complex.ext <;> simp [τ₀_ii]
-
 end GlobalTheory.UPel.HT.Gauss
 
 namespace GlobalTheory.UPel.HT.Gauss
 
 attribute [local instance] starQi
 
-theorem mem_bot_iff (x : Qi) : x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) ↔ ∃ a b : ℤ, x = a + b * ii := by
-  rw [Algebra.mem_bot]
-  constructor
-  · rintro ⟨y, rfl⟩
-    obtain ⟨a, b, rfl⟩ := coordO y
-    exact ⟨a, b, by simp [coe_ζO]⟩
-  · rintro ⟨a, b, rfl⟩
-    exact ⟨a + b * ζO, by simp [coe_ζO]⟩
-
-theorem mem_bot_of_isIntegral {x : Qi} (hx : IsIntegral ℤ x) : x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) :=
-  Algebra.mem_bot.2 ⟨⟨x, hx⟩, rfl⟩
-
 def Λ : Submodule ℤ Qi := Submodule.span ℤ (Set.range ![(1 : Qi), ii])
-
-theorem mem_Λ (x : Qi) : x ∈ Λ ↔ ∃ a b : ℤ, x = a + b * ii := by
-  rw [Λ, Submodule.mem_span_range_iff_exists_fun]
-  constructor
-  · rintro ⟨c, rfl⟩
-    exact ⟨c 0, c 1, by simp [Fin.sum_univ_two]⟩
-  · rintro ⟨a, b, rfl⟩
-    exact ⟨![a, b], by simp [Fin.sum_univ_two]⟩
-
-theorem Λ_eq : (Subalgebra.toSubmodule (⊥ : Subalgebra (𝓞 Qi) Qi)).restrictScalars ℤ = Λ := by
-  ext x
-  rw [Submodule.restrictScalars_mem, Subalgebra.mem_toSubmodule, mem_bot_iff, mem_Λ]
 
 theorem liZ : LinearIndependent ℤ ![(1 : Qi), ii] := by
   rw [LinearIndependent.pair_iff]
@@ -267,15 +159,6 @@ theorem liZ : LinearIndependent ℤ ![(1 : Qi), ii] := by
 
 def bΛ : Module.Basis (Fin 2) ℤ Λ := Module.Basis.span liZ
 
-theorem coe_bΛ (i : Fin 2) : (bΛ i : Qi) = ![(1 : Qi), ii] i :=
-  congrArg Subtype.val (Module.Basis.span_apply liZ i)
-
-theorem coe_eq_repr (x : Λ) : (x : Qi) = ((bΛ.repr x 0 : ℤ) : Qi) + ((bΛ.repr x 1 : ℤ) : Qi) * ii := by
-  have h := congrArg Subtype.val (bΛ.sum_repr x)
-  rw [← h]
-  simp only [Fin.sum_univ_two, Submodule.coe_add, Submodule.coe_smul, coe_bΛ, zsmul_eq_mul]
-  simp
-
 def E : LinearMap.BilinForm ℤ Λ :=
   LinearMap.mk₂ ℤ (fun x y => bΛ.repr x 1 * bΛ.repr y 0 - bΛ.repr x 0 * bΛ.repr y 1)
     (fun x x' y => by simp only [map_add, Finsupp.add_apply]; ring)
@@ -284,12 +167,6 @@ def E : LinearMap.BilinForm ℤ Λ :=
     (fun r x y => by simp only [map_smul, Finsupp.smul_apply, smul_eq_mul]; ring)
 
 theorem E_apply (x y : Λ) : E x y = bΛ.repr x 1 * bΛ.repr y 0 - bΛ.repr x 0 * bΛ.repr y 1 := rfl
-
-theorem E_eq (x y : Λ) : ((E x y : ℤ) : ℚ) = ψ x y := by
-  rw [coe_eq_repr x, coe_eq_repr y, E_apply]
-  have := ψ_coord (bΛ.repr x 0) (bΛ.repr x 1) (bΛ.repr y 0) (bΛ.repr y 1)
-  push_cast at this ⊢
-  rw [this]
 
 theorem bijective_of_gram {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     (b : Module.Basis (Fin 2) R M) (B : LinearMap.BilinForm R M) (h00 : B (b 0) (b 0) = 0)
@@ -317,18 +194,6 @@ theorem bijective_of_gram {R M : Type} [CommRing R] [AddCommGroup M] [Module R M
     refine ⟨-(f (b 1)) • b 0 + f (b 0) • b 1, b.ext fun j => ?_⟩
     fin_cases j <;> simp [h00, h01, h10, h11]
 
-theorem E_bΛ (i j : Fin 2) : E (bΛ i) (bΛ j) = ![![0, -1], ![1, 0]] i j := by
-  rw [E_apply]
-  fin_cases i <;> fin_cases j <;> simp [Module.Basis.repr_self, Finsupp.single_apply]
-
-theorem E_perfect : Function.Bijective (E.baseChange ℤ_[5]) := by
-  let b := Algebra.TensorProduct.basis ℤ_[5] bΛ
-  have hb : ∀ i j, E.baseChange ℤ_[5] (b i) (b j) = ((![![0, -1], ![1, 0]] i j : ℤ) : ℤ_[5]) := by
-    intro i j
-    simp only [b, Algebra.TensorProduct.basis_apply, LinearMap.BilinForm.baseChange_tmul, E_bΛ, mul_one,
-      zsmul_eq_mul]
-  refine bijective_of_gram b _ ?_ ?_ ?_ ?_ <;> rw [hb] <;> simp
-
 end GlobalTheory.UPel.HT.Gauss
 
 namespace GlobalTheory.UPel.HT.Gauss
@@ -337,138 +202,13 @@ attribute [local instance] starQi
 
 def c : ℂ := ((Real.sqrt (1 / 2) : ℝ) : ℂ)
 
-theorem c_ne : c ≠ 0 := by
-  simp [c]
-
-theorem c_sq : c * (starRingEnd ℂ) c = 1 / 2 := by
-  rw [c, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num
-
-def P : GL (Fin 1) ℂ :=
-  ⟨c • 1, c⁻¹ • 1, by rw [smul_mul_smul_comm, mul_inv_cancel₀ c_ne, one_mul, one_smul],
-    by rw [smul_mul_smul_comm, inv_mul_cancel₀ c_ne, one_mul, one_smul]⟩
-
-def hmat : Matrix (Fin 1) (Fin 1) ℂ :=
-  (P : Matrix (Fin 1) (Fin 1) ℂ) * diagonal (fun k : Fin 1 => if (k : ℕ) < 1 then (1 : ℂ) else -1) *
-    (P : Matrix (Fin 1) (Fin 1) ℂ)ᴴ
-
-theorem hmat_apply : hmat 0 0 = 1 / 2 := by
-  simp [hmat, P, Matrix.mul_apply, c_sq]
-
-theorem embOver_self : embOver Qi Qi (τ₀.comp (algebraMap Qi Qi)) = {τ₀} := by
-  ext τ; simp [embOver, Algebra.algebraMap_self]
-
-def ρ (τ : Qi →+* ℂ) : Qi →+* Matrix (Fin 1) (Fin 1) ℂ := (Matrix.scalar (Fin 1) : ℂ →+* _).comp τ
-
-open Classical in
-theorem sig : ∃ (ρ : (Qi →+* ℂ) → Qi →+* Matrix (Fin 1) (Fin 1) ℂ) (h : (Qi →+* ℂ) → Matrix (Fin 1) (Fin 1) ℂ),
-    (∀ τ a, ρ τ (algebraMap Qi Qi a) = Matrix.scalar (Fin 1) (τ a)) ∧
-    (∀ τ b, ρ τ (star b) = (ρ τ b)ᴴ) ∧
-    (∀ τ ∈ embOver Qi Qi (τ₀.comp (algebraMap Qi Qi)), HermSig (h τ) (if τ = τ₀ then 1 else 0)) ∧
-    ∀ x y, ((ψ x y : ℚ) : ℝ) =
-      ∑ τ ∈ embOver Qi Qi (τ₀.comp (algebraMap Qi Qi)), 2 * (trace (ρ τ x * h τ * (ρ τ y)ᴴ)).im := by
-  refine ⟨ρ, fun _ => hmat, fun τ a => rfl, fun τ b => ?_, fun τ hτ => ?_, fun x y => ?_⟩
-  · ext i j
-    fin_cases i; fin_cases j
-    simp [ρ, star_eq, IsCMField.complexEmbedding_complexConj]
-  · rw [embOver_self, Finset.mem_singleton] at hτ
-    rw [if_pos hτ]
-    exact ⟨le_rfl, P, rfl⟩
-  · rw [embOver_self, Finset.sum_singleton]
-    obtain ⟨a, b, rfl⟩ := exists_coord x
-    obtain ⟨c', d, rfl⟩ := exists_coord y
-    rw [ψ_coord]
-    simp only [ρ, RingHom.coe_comp, Function.comp_apply, τ₀_coord, Matrix.trace_fin_one, Matrix.mul_apply,
-      Finset.univ_unique, Finset.sum_singleton, Fin.default_eq_zero, Matrix.conjTranspose_apply, hmat_apply,
-      Matrix.scalar_apply, Matrix.diagonal_apply_eq]
-    simp [Complex.mul_im, Complex.mul_re]
-    push_cast; ring
-
 def m1 (A : Type) [CommRing A] : A ≃ₐ[A] Matrix (Fin 1) (Fin 1) A :=
   AlgEquiv.ofBijective (Algebra.ofId A _)
     ⟨fun a b h => by simpa [Matrix.algebraMap_eq_diagonal] using congrFun (congrFun h 0) 0,
      fun M => ⟨M 0 0, by ext i j; fin_cases i; fin_cases j; simp [Matrix.algebraMap_eq_diagonal]⟩⟩
 
-def splitW : u.adicCompletionIntegers Qi ⊗[𝓞 Qi] (⊥ : Subalgebra (𝓞 Qi) Qi) ≃ₐ[u.adicCompletionIntegers Qi]
-    Matrix (Fin 1) (Fin 1) (u.adicCompletionIntegers Qi) :=
-  (Algebra.TensorProduct.congr AlgEquiv.refl
-      (Algebra.botEquivOfInjective (FaithfulSMul.algebraMap_injective (𝓞 Qi) Qi))).trans
-    ((Algebra.TensorProduct.rid (𝓞 Qi) _ _).trans (m1 _))
-
-theorem OB_max (O : Subring Qi) (hO : ((⊥ : Subalgebra (𝓞 Qi) Qi) : Set Qi) ⊆ O) (hfg : O.toAddSubgroup.FG)
-    (x : Qi) (hx : x ∈ O) : ∃ m : ℕ, m.Coprime 5 ∧ (m : Qi) * x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) := by
-  refine ⟨1, Nat.coprime_one_left 5, ?_⟩
-  rw [Nat.cast_one, one_mul]
-  apply mem_bot_of_isIntegral
-  refine IsIntegral.of_mem_of_fg (subalgebraOfSubring O) ?_ x (mem_subalgebraOfSubring.2 hx)
-  rw [Submodule.fg_iff_addSubgroup_fg]
-  exact hfg
-
-theorem OB_span : Submodule.span ℚ ((⊥ : Subalgebra (𝓞 Qi) Qi) : Set Qi) = ⊤ := by
-  rw [eq_top_iff, ← bQ.span_eq, Submodule.span_le]
-  rintro _ ⟨i, rfl⟩
-  apply Submodule.subset_span
-  rw [SetLike.mem_coe, mem_bot_iff]
-  fin_cases i
-  · exact ⟨1, 0, by simp [bQ_zero]⟩
-  · exact ⟨0, 1, by simp [bQ_one]⟩
-
-theorem OB_star (x : Qi) (hx : x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi)) : star x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) := by
-  obtain ⟨a, b, rfl⟩ := (mem_bot_iff x).1 hx
-  rw [mem_bot_iff, star_eq]
-  refine ⟨a, -b, ?_⟩
-  have := cc_coord a b
-  push_cast at this ⊢
-  rw [this]; ring
-
 end GlobalTheory.UPel.HT.Gauss
 
 namespace GlobalTheory.UPel.HT
-
-open Gauss
-
-attribute [local instance] Gauss.starQi
-
-def gaussDatum : HTDatum Qi Qi 5 where
-  quad := finrank_Qi
-  u := Gauss.u
-  split := u_split
-  split_ne := u_split_ne
-  w := Gauss.u
-  w_over := by
-    ext x
-    rw [Ideal.mem_comap]
-    exact Iff.rfl
-  τ₀ := Gauss.τ₀
-  B := Qi
-  starB := starQi
-  n := 1
-  n_pos := one_pos
-  dim := by simp
-  star_F := fun _ => rfl
-  pos := Gauss.pos
-  OB := ⊥
-  OB_fg := by rw [Λ_eq]; exact Submodule.fg_span (Set.finite_range _)
-  OB_span := OB_span
-  OB_star := OB_star
-  OB_max := OB_max
-  splitW := Gauss.splitW
-  ψ := Gauss.ψ
-  alt := ψ_alt
-  adj := ψ_adj
-  sig := Gauss.sig
-  Λ := Gauss.Λ
-  Λ_fg := Submodule.fg_span (Set.finite_range _)
-  Λ_span := by rw [← Λ_eq]; exact OB_span
-  Λ_stable := by
-    intro b hb x hx
-    rw [← Λ_eq] at hx ⊢
-    exact Subalgebra.mul_mem _ hb hx
-  E := Gauss.E
-  E_eq := Gauss.E_eq
-  perfect := E_perfect
-
-example : gaussDatum.n = 1 := rfl
-
-example : gaussDatum.IsDivision := fun x hx => (isUnit_iff_ne_zero (G₀ := Qi)).2 hx
 
 end GlobalTheory.UPel.HT

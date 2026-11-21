@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSplitEtaleHermitianPairIsometryStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSplitEtaleHermitianPairIsometry
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedQuadraticIntegralTraceFormPerfectStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocallyConstantCompactSupportSlicesOperatorApplyStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteEtaleHermitianLinearEquivContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceTowerFiniteEtaleHermitianPairStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSelfDualPiHaarTraceStarDotProductUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportSelfDualHaarMeasureKernelAddEquivStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceTowerFiniteEtaleHermitianPair
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSelfDualPiHaarTraceStarDotProductUnramified
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportSelfDualHaarMeasureKernelAddEquiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceEqSumCoordsOfAlgEquivStatement
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
@@ -26,7 +26,7 @@ theorem sl2Map_wS {F K : Type} [Field F] [CommRing K] [Algebra F K] :
 
 theorem weilSL2_hermitian : WeilEt → GammaOne → ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∃ W : SpecialLinearGroup (Fin 2) F → (Hn r F E → ℂ) → Hn r F E → ℂ, IsTestRep W ∧ ∀ f, IsTest f → (∀ t X, W (nS t) f X = ψ (t * Algebra.trace F E (star X.2.1 ⬝ᵥ X.2.1) / 2) * f X) ∧ W (wS F) f = fourU M ψ f := by
   intro hW hG F E _ _ _ _ _ r M ψ hψ
-  obtain ⟨A, e, j, hj, hNe⟩ := GlobalTheory.T.exists_split_etaleHermitianPair_isometry F E r
+  obtain ⟨A, e, j, hj, hNe⟩ := _root_.GlobalTheory.JR.exists_split_et F E r
   haveI : LocallyCompactSpace E := Unram.lcE (F := F)
   haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E
   haveI : SecondCountableTopology E := secondCountable_of_proper
@@ -37,14 +37,14 @@ theorem weilSL2_hermitian : WeilEt → GammaOne → ∀ (F E : Type) [Nontrivial
   let jh : A.L ≃ₜ (Fin r → E) := { j.toEquiv with continuous_toFun := hjc, continuous_invFun := hjsc }
   let μE : Measure (Fin r → E) := Measure.pi fun _ => M.μE
   let B : (Fin r → E) → (Fin r → E) → ℂ := fun c b => ψ (Algebra.trace F E (star c ⬝ᵥ b))
-  have hsd : SelfDual μE B := GlobalTheory.T.isSelfDual_pi_haar_traceStarDotProduct_unramified F E r M ψ hψ
-  obtain ⟨hT1, hT2⟩ := GlobalTheory.T.transport_selfDualHaarMeasureKernel_addEquiv j.toAddEquiv hjc hjsc μE B
+  have hsd : SelfDual μE B := _root_.GlobalTheory.JR.selfDual_pi_trace F E r M ψ hψ
+  obtain ⟨hT1, hT2⟩ := _root_.GlobalTheory.transport_selfDual_fourB j.toAddEquiv hjc hjsc μE B
   have hker : A.kerL ψ ((1 : A.Kˣ) : A.K) = fun x y => B (j.toAddEquiv x) (j.toAddEquiv y) := by
     funext x y
     have h1 := hj x y
     simp only [map_one, one_mul] at h1
     show ψ (Algebra.trace F A.K (((1 : A.Kˣ) : A.K) * Algebra.trace A.K A.L (star x * y))) = ψ (Algebra.trace F E (star (j x) ⬝ᵥ j y))
-    rw [Units.val_one, one_mul, GlobalTheory.T.trace_tower_finiteEtaleHermitianPair, h1]
+    rw [Units.val_one, one_mul, _root_.GlobalTheory.trace_tower_et, h1]
   have hsdL : SelfDual (Measure.map j.toAddEquiv.symm μE) (A.kerL ψ ((1 : A.Kˣ) : A.K)) := by
     rw [hker]; exact hT1 hsd
   obtain ⟨γ, Wk, hWk⟩ := hW F E A ψ hψ 1 _ hsdL

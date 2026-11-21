@@ -16,9 +16,4 @@ def LagrangeIdealSg : Prop :=
       Ideal.span ({∏ a ∈ S₁, (Polynomial.X - Polynomial.C (c a)),
         ∏ b ∈ S₂, (Polynomial.X - Polynomial.C (c b))} : Set (Polynomial R))
 
-def WindowDiff : Prop :=
-  ∀ (ℓ : ℕ) [Fact ℓ.Prime] (a₀ : ℤ) (y D : ℕ) (S : Finset ℤ) (a : ℤ),
-    S ⊆ Finset.Icc a₀ (a₀ + y) → (∀ b ∈ S, |a - b| ≤ D) →
-    ((∑ b ∈ S.erase a, padicValInt ℓ (a - b) : ℕ) : ℝ) ≤ ((y : ℝ) + 1) / ((ℓ : ℝ) - 1) + Real.logb ℓ D
-
 end Formalism.ZetaNonvanishing.LIFTV

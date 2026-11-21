@@ -10,7 +10,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.LemmaS
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.DimStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExtAllInputs
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.GreedySplittingPrincipalTorusExistsStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.GreedySplittingPrincipalTorusExists
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.SplitSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GaussianTailBound
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CharStatementHolds
 
 open ReciprocityTheory.ChartRestriction.G.I2
@@ -24,7 +26,7 @@ theorem propA_holds : PropAStatement := propA GlobalTheory.packingCount GlobalTh
 theorem dim_holds : DimStatement := dim
 
 theorem J_holds : JStatement :=
-  jOf GlobalTheory.ext_all_inputs GlobalTheory.T.greedy_splitting_principal_torus_exists GlobalTheory.charStatement_holds
+  jOf GlobalTheory.ext_all_inputs _root_.GlobalTheory.greedy_splitting_exists GlobalTheory.charStatement_holds
     (colTorus GlobalTheory.ext_all_inputs propA_holds gSup_holds)
     (colAbel GlobalTheory.ext_all_inputs propA_holds gSup_holds)
     (colEmpty GlobalTheory.ext_all_inputs propA_holds gSup_holds)

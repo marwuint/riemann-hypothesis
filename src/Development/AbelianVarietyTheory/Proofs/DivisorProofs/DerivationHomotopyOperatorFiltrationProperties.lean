@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationContractionLieDerivativeDeRhamRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContractionLieDerivativeDivPowerCompatFiltrationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivPowerCompatRelFiltrationTwoSidedRelEqBotOfBasStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContractionLieDerivativeDivPowerCompatFiltration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivPowerCompatRelFiltrationTwoSidedRelEqBotOfBas
 open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.CxCoh GlobalTheory.PDA GlobalTheory.PDForm GlobalTheory.SmoothLift
 
 namespace GlobalTheory.PDForm.HotFil
@@ -11,9 +11,9 @@ theorem hot_fil : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : 
   intro R B _ _ _ J δ v e N hv he
   obtain ⟨hc0, -, -, -, -, hcdeg⟩ := (GlobalTheory.T.derivationContraction_lieDerivative_deRham_rules).1 R B v
   obtain ⟨-, -, -, -, -, hldeg⟩ := (GlobalTheory.T.derivationContraction_lieDerivative_deRham_rules).2 R B v
-  have hrel := (GlobalTheory.T.contraction_lieDerivative_divPowerCompat_filtration_rules).1
-  have hfil := (GlobalTheory.T.contraction_lieDerivative_divPowerCompat_filtration_rules).2
-  obtain ⟨-, -, -, -, hfil0, hanti, hsmul⟩ := (GlobalTheory.T.divPowerCompatRel_filtration_twoSided_rel_eq_bot_of_base).1 R B J δ
+  have hrel := (_root_.GlobalTheory.PDForm.ctr_lie_rel_filDR).1
+  have hfil := (_root_.GlobalTheory.PDForm.ctr_lie_rel_filDR).2
+  obtain ⟨-, -, -, -, hfil0, hanti, hsmul⟩ := (_root_.GlobalTheory.PDForm.rel_two_sided_and_bot).1 R B J δ
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro x y
     simp only [hot, map_add, smul_add, Finset.sum_add_distrib]

@@ -92,11 +92,6 @@ theorem sx_root (ζ : K0 p) (hζ : ζ ^ (p ^ 2 - 1) = 1) :
     show algebraMap (WW p) (K0 p) (((WittVector.teichmuller p ξ) ^ k) ^ p) = ζ ^ p
     rw [map_pow, map_pow, ← hk]
 
-def sx_j : Fin 2 → ℕ := ![0, 1]
-
-def sx_rho (p : ℕ) [Fact p.Prime] : ℕ → MvPowerSeries (Fin 2) (K0 p) :=
-  fun k => if k = 0 then MvPowerSeries.X 0 else if k = 1 then MvPowerSeries.X 1 else 0
-
 theorem sx_conj {be : MvPowerSeries (Fin 2) (K0 p)} (h : BeProp p be) (ζ : K0 p) (hζ : ζ ^ (p ^ 2 - 1) = 1) :
     Formalism.InvariantFactorPaths.G7.Simeq (MvPowerSeries.subst ![MvPowerSeries.C ζ * (MvPowerSeries.X 0 :
                 MvPowerSeries (Fin 2) (K0 p)), MvPowerSeries.X 1] (inParam p be))

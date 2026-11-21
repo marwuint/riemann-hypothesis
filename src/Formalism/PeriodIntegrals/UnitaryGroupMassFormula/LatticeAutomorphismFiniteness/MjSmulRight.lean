@@ -14,10 +14,6 @@ def mj (z x y : S.V) : E := S.hT x y - 2 / S.hT z z * (S.hT x z * S.hT z y)
 
 variable {S}
 
-theorem star_hzz (z : S.V) : star (S.hT z z) = S.hT z z := by
-  have h := S.herm.eq z z
-  rwa [starRingEnd_apply] at h
-
 theorem mj_add_left (z x x' y : S.V) : mj S z (x + x') y = mj S z x y + mj S z x' y := by
   simp only [mj, map_add, LinearMap.add_apply]
   ring

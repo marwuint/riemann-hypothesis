@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundleProductOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnsheet
 import Development.AutomorphicSpectrum.PublishedTheorems.Divisibility₂.PairingExists
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormSheetEqStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormSheetEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallSectionHeightLowerBound
 
 set_option autoImplicit false
@@ -52,7 +52,7 @@ theorem sum_logNorm_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInte
   have := Fintype.ofFinite (k →+* ℂ)
   have (σ : k →+* ℂ) := Fintype.ofFinite (CxPts p σ)
   have h₁ (σ : k →+* ℂ) (y : CxPts p σ) : logNorm ν r (sheet t τ y) = logNorm (M.φ σ) r y :=
-    GlobalTheory.T.logNorm_sheet_eq k X p t τ M.B M.φ ν hν r hr σ y (mem_offSupp.2 (by
+    _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.logNorm_sheet k X p t τ M.B M.φ ν hν r hr σ y (mem_offSupp.2 (by
       rw [hX.under_eq_genericPoint]
       exact CartierDiv.genericPoint_notMem_supp _))
   rw [← finsum_comp_equiv (sheetEquiv p t τ)]

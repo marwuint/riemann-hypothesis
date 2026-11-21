@@ -75,7 +75,7 @@ theorem eigLat_image_le_span_diff : ∀ (E : Type) [Field E] [NumberField E] [Is
   obtain ⟨QB, hdB, φB, fibB, vB, bB, hB1, hB2⟩ := exists_genFib_baseChange B B' mB FB
   let F₁A : GenFib A'.pol := GenFib.mk (withDim QA FA.P₀.g hdA) φA fibA vA bA
   let F₁B : GenFib B'.pol := GenFib.mk (withDim QB FB.P₀.g hdB) φB fibB vB bB
-  have hcB := GlobalTheory.T.integral_tangent_vector_coordinates K' _ F₁B
+  have hcB := _root_.GlobalTheory.CM.integral_tangent_coordinates K' _ F₁B
   choose M' hM' using fun i =>
     ((DiffCoord.existsUnique_isDiffOf K' A'.pol F₁A B'.pol F₁B (f' i) (hf' i).isMonHom).1).exists
   choose N' hN' using fun i =>

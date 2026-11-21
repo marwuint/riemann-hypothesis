@@ -7,8 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegA
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluingImageCardPowLeDefectGroupCard
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasicInequality
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmpSqLeCardMulSum
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassDefectOrderLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetMassLeAndFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassDefectOrderLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetMassLeAndFinite
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -65,7 +65,7 @@ theorem ampSq_le_of_zero (hk : 1 ≤ k) (P : S.Datum → Submodule L.O S.V → P
     have hH : 1 ≤ S.Hp := (GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ₀ h₀).2.2.2.2.1
     have hq : 2 ≤ S.q := (GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1
     refine (mass_mono S d _ (fun Λ => S.cardI d Λ = 1) fun Λ h1 h2 => ?_).trans
-      (((GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite L r k S hk d).1 1).trans (ENNReal.ofReal_le_ofReal ?_))
+      (((_root_.GlobalTheory.HL.MassGlue.mass_le_and_finite L r k S hk d).1 1).trans (ENNReal.ofReal_le_ofReal ?_))
     · have hb := (GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ h1).2.2.2.2.2.2.1.1 (hP d Λ h1 h2)
       obtain ⟨⟨i, hi⟩, hle, -⟩ := GlobalTheory.HL.SmallImage.small_image L r k S d Λ h1
       have : 0 < S.q ^ i := by positivity
@@ -97,14 +97,14 @@ theorem ampSq_defect_le (hk : 4 * r + 7 ≤ k) (hH : 0 ≤ S.Hp) (i : ℕ) :
     · refine (Finset.sum_le_card_nsmul _ _ (ENNReal.ofReal
         (S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * ((S.q ^ i : ℕ) : ℝ) ^ (k - 1)))
         fun j hj => ?_).trans ?_
-      · refine ((GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite L r k S hk1 d).1 _).trans (ENNReal.ofReal_le_ofReal ?_)
+      · refine ((_root_.GlobalTheory.HL.MassGlue.mass_le_and_finite L r k S hk1 d).1 _).trans (ENNReal.ofReal_le_ofReal ?_)
         have hji : S.q ^ j ≤ S.q ^ i :=
           Nat.pow_le_pow_right (by omega) (by have := Finset.mem_range.1 hj; omega)
         gcongr
       · rw [Finset.card_range, nsmul_eq_mul, ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ i + 1),
           ← ENNReal.ofReal_natCast, Nat.cast_succ]
   refine (ampSq_le_of_mass S hk1 _ _ hm).trans ?_
-  refine (mul_le_mul_right (GlobalTheory.T.sumData_mass_be_eq_le L r k S hk _ hβ) _).trans (le_of_eq ?_)
+  refine (mul_le_mul_right (_root_.GlobalTheory.DefectShare.mass_defect_order_le L r k S hk _ hβ) _).trans (le_of_eq ?_)
   rw [← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]
   congr 2
   field_simp

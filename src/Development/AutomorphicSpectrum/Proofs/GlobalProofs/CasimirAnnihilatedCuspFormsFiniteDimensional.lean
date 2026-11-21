@@ -133,7 +133,7 @@ theorem exists_gelfOp (hθ : IsInfFam θ) {τ : D.what₂.Tau} {e : Fin V.rank �
     ∃ C : Module.End ℂ (Mc θ V), (∀ φ : Mc θ V, gelf θ V τ 1 φ.1 = (C φ).1) ∧
       ∀ (μ : Measure (GA D V)) [μ.IsHaarMeasure] (φ ψ : Mc θ V),
         ⟪io μ hθ (C φ), io μ hθ ψ⟫_ℂ = ⟪io μ hθ φ, io μ hθ (C ψ)⟫_ℂ := by
-  obtain ⟨n₁, n₂, X, y, hX, hy, -, hq⟩ := GlobalTheory.T.lie_algebra_spanned_by_compact_and_frame D θ hθ V τ e P hP hg
+  obtain ⟨n₁, n₂, X, y, hX, hy, -, hq⟩ := _root_.GlobalTheory.CompanionTheory.HCCusp.quadGelf_frame D θ hθ V τ e P hP hg
   have hYl : ∀ b, P⁻¹ * y b * P ∈ lieAt V τ := fun b => lie_conj hP hg (hy b)
   refine ⟨quad hθ hX hYl, fun φ => ?_, fun μ _ φ ψ => quad_symm μ hθ hX hYl φ ψ⟩
   rw [hq φ.1 (smooth_of_mem φ), quad_apply]
@@ -145,7 +145,7 @@ theorem bd_der (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {�
     (hρ : IsContRep ρ) (E : Set (Mc θ V)) (hE : ∀ φ ∈ E, HasTypeAt θ V τ e P ρ φ.1) (C : Module.End ℂ (Mc θ V))
     (hC : ∀ φ : Mc θ V, gelf θ V τ 1 φ.1 = (C φ).1) (hb : Bd μ hθ E C)
     (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hZ : Z ∈ lieAt V τ) : Bd μ hθ E (der hθ τ hZ) := by
-  obtain ⟨n₁, n₂, X, y, hX, hy, hspan, hq⟩ := GlobalTheory.T.lie_algebra_spanned_by_compact_and_frame D θ hθ V τ e P hP hg
+  obtain ⟨n₁, n₂, X, y, hX, hy, hspan, hq⟩ := _root_.GlobalTheory.CompanionTheory.HCCusp.quadGelf_frame D θ hθ V τ e P hP hg
   have hYl : ∀ b, P⁻¹ * y b * P ∈ lieAt V τ := fun b => lie_conj hP hg (hy b)
   have bK : ∀ b, Bd μ hθ E (der hθ τ (hYl b)) := fun b =>
     (bd_ktype μ hθ hP ρ hρ (hy b) (hYl b)).mono fun φ hφ => hE φ hφ

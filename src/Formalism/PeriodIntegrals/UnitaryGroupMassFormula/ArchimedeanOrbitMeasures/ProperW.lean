@@ -96,8 +96,4 @@ theorem properOne_of (hW : WittInf) (hH : MassDataMassesW.HinfCompact) : ProperO
     rw [mul_smul, ← hvg', ← mul_smul, inv_mul_cancel, one_smul]
   · exact mul_inv_cancel_left (v * g') g
 
-theorem constTest_of_polar_witt (hP : PolarLoc) (hW : WittInf) (hH : MassDataMassesW.HinfCompact) (hI : InvNbhd) :
-    ConstTest :=
-  constTest_of_polar_one hP (properOne_of hW hH) hI
-
 end PI.AprimeInfW

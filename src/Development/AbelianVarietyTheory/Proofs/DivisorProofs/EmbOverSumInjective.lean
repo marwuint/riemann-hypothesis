@@ -1,7 +1,6 @@
 import Mathlib
 import GroundTheory.Brauer.TensorSimple
 import Development.AbelianVarietyTheory.Definitions.Divisors.PlacesOverU
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealRepTmul
 
 open NumberField Matrix GlobalTheory.UPel.HT
 open scoped TensorProduct ComplexConjugate
@@ -54,8 +53,5 @@ theorem span_range_eq_top {F B : Type} [Field F] [Ring B] [Algebra F B] [Algebra
 end GlobalTheory.UPel.HT.RealRepBij
 
 namespace GlobalTheory.UPel.HT.RealRepBij
-
-variable {K F : Type} [Field K] [NumberField K] [IsCMField K] [Field F] [NumberField F] [IsCMField F]
-  [Algebra K F] {p : ℕ} [Fact p.Prime]
 
 end GlobalTheory.UPel.HT.RealRepBij

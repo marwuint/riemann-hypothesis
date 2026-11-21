@@ -99,9 +99,6 @@ def TotF (p n : ℕ) : Submodule R (Tot F n) where
   zero_mem' _ _ := rfl
   smul_mem' r c hc b hb := by rw [Pi.smul_apply, hc b hb, smul_zero]
 
-theorem TotF_anti {p p' : ℕ} (h : p ≤ p') (n : ℕ) : TotF F p' n ≤ TotF F p n :=
-  fun _ hc b hb ↦ hc b (hb.trans_le h)
-
 theorem TotF_zero (n : ℕ) : TotF F 0 n = ⊤ :=
   eq_top_iff.2 fun _ _ _ hb ↦ absurd hb (Nat.not_lt_zero _)
 
@@ -117,10 +114,6 @@ def BF (p : ℕ) : ∀ n : ℕ, Submodule R (Tot F n)
 theorem BF_le_BTot (p : ℕ) : ∀ n : ℕ, BF F p n ≤ BTot F n
   | 0 => le_rfl
   | _ + 1 => LinearMap.map_le_range
-
-theorem BF_anti {p p' : ℕ} (h : p ≤ p') : ∀ n : ℕ, BF F p' n ≤ BF F p n
-  | 0 => le_rfl
-  | n + 1 => Submodule.map_mono (TotF_anti F h n)
 
 def HypF (p n : ℕ) : Type (max u v) := ZF F p n ⧸ (BF F p n).submoduleOf (ZF F p n)
 
@@ -141,14 +134,6 @@ theorem HypF.mk_eq_zero {p n : ℕ} {c : ZF F p n} : HypF.mk F p n c = 0 ↔ c.1
 def HypF.toHyp (p n : ℕ) : HypF F p n →ₗ[R] Hyp F n :=
   Submodule.mapQ _ _ (Submodule.inclusion inf_le_right) fun _ hc ↦ BF_le_BTot F p n hc
 
-def HypF.incl {p p' : ℕ} (h : p ≤ p') (n : ℕ) : HypF F p' n →ₗ[R] HypF F p n :=
-  Submodule.mapQ _ _ (Submodule.inclusion (inf_le_inf_right _ (TotF_anti F h n)))
-    fun _ hc ↦ BF_anti F h n hc
-
-theorem HypF.toHyp_incl {p p' : ℕ} (h : p ≤ p') (n : ℕ) (c : HypF F p' n) :
-    HypF.toHyp F p n (HypF.incl F h n c) = HypF.toHyp F p' n c := by
-  obtain ⟨c, rfl⟩ := HypF.mk_surjective F p' n c; rfl
-
 def Hyp.fil (p n : ℕ) : Submodule R (Hyp F n) := LinearMap.range (HypF.toHyp F p n)
 
 variable {F} in
@@ -162,18 +147,9 @@ theorem Hyp.mem_fil {p n : ℕ} {x : Hyp F n} :
   · rintro ⟨c, hc, rfl⟩
     exact ⟨HypF.mk F p n ⟨c.1, hc, c.2⟩, rfl⟩
 
-theorem Hyp.fil_anti {p p' : ℕ} (h : p ≤ p') (n : ℕ) : Hyp.fil F p' n ≤ Hyp.fil F p n := by
-  rintro _ ⟨c, rfl⟩
-  exact ⟨_, HypF.toHyp_incl F h n c⟩
-
 theorem Hyp.fil_zero (n : ℕ) : Hyp.fil F 0 n = ⊤ := eq_top_iff.2 fun x _ ↦ by
   obtain ⟨c, rfl⟩ := Hyp.mk_surjective F n x
   exact Hyp.mem_fil.2 ⟨c, by rw [TotF_zero]; trivial, rfl⟩
-
-theorem Hyp.fil_eq_bot {p n : ℕ} (h : n < p) : Hyp.fil F p n = ⊥ := eq_bot_iff.2 fun x hx ↦ by
-  obtain ⟨c, hc, rfl⟩ := Hyp.mem_fil.1 hx
-  rw [TotF_eq_bot F h] at hc
-  rw [show c = 0 from Subtype.ext hc, map_zero]; rfl
 
 theorem dH_lead {a p n : ℕ} (h : a + p = n) (c : ZF F p n) : dH F a p (c.1 ⟨(a, p), h⟩) = 0 := by
   have e := congrFun (show dTot F n c.1 = 0 from c.2.2) ⟨(a + 1, p), by omega⟩
@@ -182,26 +158,6 @@ theorem dH_lead {a p n : ℕ} (h : a + p = n) (c : ZF F p n) : dH F a p (c.1 ⟨
     · rfl
     · rw [totV_succ, c.2.1 _ (Nat.lt_succ_self p), map_zero, smul_zero]
   rwa [dTot_apply, hV, add_zero] at e
-
-def leadZ {a p n : ℕ} (h : a + p = n) : ZF F p n →ₗ[R] LinearMap.ker (CatH.d (OmF F p) a) :=
-  ((LinearMap.proj (⟨(a, p), h⟩ : Bidegree n)) ∘ₗ (ZF F p n).subtype).codRestrict _ (dH_lead F h)
-
-def HypF.lead {a p n : ℕ} (h : a + p = n) : HypF F p n →ₗ[R] CatH.H (OmF F p) a :=
-  Submodule.mapQ _ _ (leadZ F h) (by
-    intro c hc
-    change c.1 ⟨(a, p), h⟩ ∈ CatH.Bn (OmF F p) a
-    have hc' : c.1 ∈ BF F p n := hc
-    rcases n with _ | n
-    · rw [show c.1 = 0 from hc']; exact zero_mem _
-    obtain ⟨e, he, hd⟩ := hc'
-    have hV : totV F n e ⟨(a, p), h⟩ = 0 := by
-      rcases p with _ | p
-      · rfl
-      · rw [totV_succ, he _ (Nat.lt_succ_self p), map_zero, smul_zero]
-    rw [← hd, dTot_apply, hV, add_zero]
-    rcases a with _ | a
-    · exact zero_mem _
-    · exact ⟨_, rfl⟩)
 
 end Complex
 
@@ -250,38 +206,15 @@ theorem pullTot_mem_ZTot {n : ℕ} {c : Tot F n} (hc : c ∈ ZTot F n) : pullTot
   change dTot F' n _ = 0
   rw [dTot_pullTot, show dTot F n c = 0 from hc, map_zero]
 
-theorem pullTot_mem_TotF {p n : ℕ} {c : Tot F n} (hc : c ∈ TotF F p n) :
-    pullTot m n c ∈ TotF F' p n := fun b hb ↦ by rw [pullTot_apply, hc b hb, map_zero]
-
 theorem pullTot_mem_BTot : ∀ {n : ℕ} {c : Tot F n}, c ∈ BTot F n → pullTot m n c ∈ BTot F' n
   | 0, c, hc => by rw [show c = 0 from hc, map_zero]; exact zero_mem _
   | _ + 1, _, ⟨e, he⟩ => ⟨_, (dTot_pullTot m e).trans (congrArg _ he)⟩
 
-theorem pullTot_mem_BF {p : ℕ} : ∀ {n : ℕ} {c : Tot F n}, c ∈ BF F p n → pullTot m n c ∈ BF F' p n
-  | 0, c, hc => by rw [show c = 0 from hc, map_zero]; exact zero_mem _
-  | _ + 1, _, ⟨e, h, he⟩ => ⟨_, pullTot_mem_TotF m h, (dTot_pullTot m e).trans (congrArg _ he)⟩
-
 def pullZ (n : ℕ) : ZTot F n →ₛₗ[σ] ZTot F' n :=
   ((pullTot m n).domRestrict _).codRestrict _ fun c ↦ pullTot_mem_ZTot m c.2
 
-def pullZF (p n : ℕ) : ZF F p n →ₛₗ[σ] ZF F' p n :=
-  ((pullTot m n).domRestrict _).codRestrict _ fun c ↦
-    ⟨pullTot_mem_TotF m c.2.1, pullTot_mem_ZTot m c.2.2⟩
-
 def Hyp.pull (n : ℕ) : Hyp F n →ₛₗ[σ] Hyp F' n :=
   Submodule.mapQ _ _ (pullZ m n) fun _ hc ↦ pullTot_mem_BTot m hc
-
-def HypF.pull (p n : ℕ) : HypF F p n →ₛₗ[σ] HypF F' p n :=
-  Submodule.mapQ _ _ (pullZF m p n) fun _ hc ↦ pullTot_mem_BF m hc
-
-theorem HypF.toHyp_pull {p n : ℕ} (c : HypF F p n) :
-    HypF.toHyp F' p n (HypF.pull m p n c) = Hyp.pull m n (HypF.toHyp F p n c) := by
-  obtain ⟨c, rfl⟩ := HypF.mk_surjective F p n c; rfl
-
-theorem Hyp.pull_mem_fil {p n : ℕ} {x : Hyp F n} (hx : x ∈ Hyp.fil F p n) :
-    Hyp.pull m n x ∈ Hyp.fil F' p n := by
-  obtain ⟨c, rfl⟩ := hx
-  exact ⟨_, HypF.toHyp_pull m c⟩
 
 theorem pullTot_id {n : ℕ} (c : Tot F n) : pullTot (CoefMap.id F) n c = c :=
   funext fun b ↦ funext fun s ↦ SemiHom.mOm_id _ (fun _ ↦ rfl) (c b s)
@@ -292,23 +225,10 @@ theorem pullTot_comp (m' : CoefMap τ F' F'') {n : ℕ} (c : Tot F n) :
     (SemiHom.mOm_mOm (semiHom_coef m _) (semiHom_coef m' _) _ (fun _ ↦ rfl)
       (c b (s ⋙ m'.G ⋙ m.G))).symm
 
-theorem Hyp.pull_id {n : ℕ} (x : Hyp F n) : Hyp.pull (CoefMap.id F) n x = x := by
-  obtain ⟨c, rfl⟩ := Hyp.mk_surjective F n x
-  exact congrArg (Hyp.mk F n) (Subtype.ext (pullTot_id c.1))
-
 theorem Hyp.pull_comp (m' : CoefMap τ F' F'') {n : ℕ} (x : Hyp F n) :
     Hyp.pull (m.comp m') n x = Hyp.pull m' n (Hyp.pull m n x) := by
   obtain ⟨c, rfl⟩ := Hyp.mk_surjective F n x
   exact congrArg (Hyp.mk F'' n) (Subtype.ext (pullTot_comp m m' c.1))
-
-theorem HypF.pull_id {p n : ℕ} (x : HypF F p n) : HypF.pull (CoefMap.id F) p n x = x := by
-  obtain ⟨c, rfl⟩ := HypF.mk_surjective F p n x
-  exact congrArg (HypF.mk F p n) (Subtype.ext (pullTot_id c.1))
-
-theorem HypF.pull_comp (m' : CoefMap τ F' F'') {p n : ℕ} (x : HypF F p n) :
-    HypF.pull (m.comp m') p n x = HypF.pull m' p n (HypF.pull m p n x) := by
-  obtain ⟨c, rfl⟩ := HypF.mk_surjective F p n x
-  exact congrArg (HypF.mk F'' p n) (Subtype.ext (pullTot_comp m m' c.1))
 
 end Pull
 

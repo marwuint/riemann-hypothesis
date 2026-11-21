@@ -170,12 +170,4 @@ theorem mqDiscr_of (hQ : QuadDiscr) : MQDiscr := by
   rw [← Int.sign_mul_natAbs (discr E), hs, hnat]
   simp
 
-theorem hostDiscr_of (h : MQDiscr) : HostDiscr := by
-  intro q hq E _ _ α hα
-  unfold Formalism.Q3.Hyp3 at hq
-  obtain ⟨hq1, hinj⟩ := hq
-  rw [h 3 q (by norm_num) hq1 hinj E α hα, Fin.prod_univ_three]
-  push_cast
-  ring
-
 end Formalism.HF

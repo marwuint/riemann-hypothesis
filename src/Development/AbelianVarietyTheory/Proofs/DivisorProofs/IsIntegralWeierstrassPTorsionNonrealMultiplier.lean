@@ -6,11 +6,12 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModLatTau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JTEqAndPowTwelveEqDD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointOfLatticeTauLatticeMembership
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneityOfIsTauOfStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralJInvariantOfComplexMultiplicationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EisensteinWeierstrassValuesLatticeTauStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassPTorsionDifferenceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassPTorsionIntegralJStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneityOfIsTauOf
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralJInvariantOfComplexMultiplication
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EisensteinWeierstrassValuesLatticeTau
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassPTorsionDifference
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassPTorsionIntegralJ
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate
 open NumberField GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal ReciprocityTheory.ChartRestriction.L1 Formalism.L2.Th1.F
 open GlobalTheory.CMVal GlobalTheory.HeckeGal
@@ -21,7 +22,7 @@ namespace GlobalTheory.WpFam.LatTorsVal
 theorem exists_tors {L : PeriodPair} {c : ℂ} {τ : ℍ} (hτ : IsTauOf L c τ) (M : ℕ) [NeZero M] (P : ℂ)
     (hP : (M : ℂ) * P ∈ L.lattice) :
     ∃ x : Fin 2 → ZMod M, P - c * tors M τ x ∈ L.lattice ∧ (P ∉ L.lattice → x ≠ 0) := by
-  have hom := GlobalTheory.T.weierstrassP_homogeneity_of_isTauOf L c τ hτ
+  have hom := _root_.GlobalTheory.WpFam.homogeneity_of_isTauOf L c τ hτ
   have tm := GlobalTheory.WpFam.TorsMem.main M τ
   have hc : c ≠ 0 := hτ.1
   have hPz : P = c * (P / c) := by field_simp
@@ -54,18 +55,18 @@ theorem main : ∀ (L : PeriodPair) (β Ω : ℂ) (M : ℕ), MulStable L β → 
   intro L β Ω M hβ hβi hΩ hM
   haveI : NeZero M := ⟨hM.ne'⟩
   obtain ⟨c, τ, hτ⟩ := latTau L
-  have hj := GlobalTheory.T.isIntegral_jInvariant_of_complexMultiplication L c τ β hτ hβ hβi
+  have hj := _root_.GlobalTheory.JInt.main L c τ β hτ hβ hβi
   have hω := (GlobalTheory.QFam.jT_eq_and_pow_twelve_eq_DD L c τ hτ).2 Ω hΩ
-  have st := (GlobalTheory.T.eisensteinWeierstrass_values_lattice_tau L c Ω τ hτ).2 M
+  have st := (_root_.GlobalTheory.WpFam.TauVal.main L c Ω τ hτ).2 M
   refine ⟨fun P hP => ?_, fun P Q hP hQ hMP hMQ => ?_⟩
   · obtain ⟨x, hx, -⟩ := exists_tors hτ M P hP
     obtain ⟨e1, e2⟩ := wp_eq M P x hx
-    have hv := GlobalTheory.T.isIntegral_weierstrassP_torsion_integral_j M τ _ hj hω x
+    have hv := _root_.GlobalTheory.WpInt.main M τ _ hj hω x
     rw [e1, e2, mul_div_assoc, mul_div_assoc, ← (st x).1, ← (st x).2, ← mul_div_assoc, ← mul_div_assoc]
     exact hv
   · obtain ⟨x, hx, hx0⟩ := exists_tors hτ M P hMP
     obtain ⟨y, hy, hy0⟩ := exists_tors hτ M Q hMQ
-    have hv := GlobalTheory.T.isIntegral_weierstrassP_torsion_difference M τ _ hj hω x y (hx0 hP) (hy0 hQ)
+    have hv := _root_.GlobalTheory.WpFam.isIntegral_sq_mul_wp_sub_div M τ _ hj hω x y (hx0 hP) (hy0 hQ)
     rw [(wp_eq M P x hx).1, (wp_eq M Q y hy).1, mul_div_assoc, sub_div, ← (st x).1, ← (st y).1, ← sub_div,
       ← mul_div_assoc]
     exact hv

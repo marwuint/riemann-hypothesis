@@ -28,9 +28,6 @@ theorem _root_.GlobalTheory.WpFam.Act.vmul_one {N : ℕ} (x : Fin 2 → ZMod N) 
   unfold _root_.GlobalTheory.WpFam.vmul
   simp
 
-theorem zero_vmul {N : ℕ} (α : GL (Fin 2) (ZMod N)) : vmul (0 : Fin 2 → ZMod N) α = 0 := by
-  simp only [vmul, Matrix.zero_vecMul]
-
 theorem isRAct_gact (N : ℕ) (D : GL (Fin 2) (ZMod N)) : IsRAct (gact N D) := by
   constructor
   · intro x; simp [gact, redGL_one]

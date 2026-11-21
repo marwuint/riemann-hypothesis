@@ -6,13 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericResidueLinea
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.InterNumEqSumLengthMulInterNumRed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyConnectedOfSurjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GoodStalks
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AePolynomialNonvanishingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericSectionsCotangentIndepStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeaklyRegularOfCotangentIndepStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VarietyStalkRegularDimStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AePolynomialNonvanishing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericSectionsCotangentIndep
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeaklyRegularOfCotangentIndep
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VarietyStalkRegularDim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperplaneCutGoodStalksStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerCharZeroDimSupportStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedPointsCountComplexStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerCharZeroDimSupport
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedPointsCountComplex
 
 set_option autoImplicit false
 
@@ -21,7 +21,7 @@ noncomputable section
 open CategoryTheory AlgebraicGeometry TopologicalSpace MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
-open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.Published.ArDegreeModel GlobalTheory.QCoh
+open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.QCoh
 open IsLocalRing
 open GlobalTheory.CompanionTheory.KoszulCount
 
@@ -33,7 +33,7 @@ theorem goodStalks_structureModule {X : Scheme.{0}} [IsLocallyNoetherian X] {L :
     GoodStalks (structureModule X) t := by
   intro x i hx
   have := hreg x
-  obtain ⟨h₁, h₂⟩ := GlobalTheory.T.weakly_regular_of_cotangent_indep (X.presheaf.stalk x) d (fun j => germSec (t j) hx) (hdim x)
+  obtain ⟨h₁, h₂⟩ := _root_.GlobalTheory.CompanionTheory.RegSeq.isWeaklyRegular_and_length_quotient_le_one (X.presheaf.stalk x) d (fun j => germSec (t j) hx) (hdim x)
     (h x i hx)
   have e : ((structureModule X).presheaf.stalk x :) ≃ₗ[X.presheaf.stalk x] X.presheaf.stalk x :=
     structureModuleStalkEquiv x
@@ -68,7 +68,7 @@ theorem interNum_eq_ncard {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}}
       have e : Ideal.span (Set.range fun j : Fin 0 => germSec (t j) hi) = ⊥ := by simp
       rw [e, Submodule.bot_smul] at h
       rwa [(Submodule.quotEquivOfEqBot _ rfl).length_eq] at h
-    obtain ⟨h₁, h₂⟩ := GlobalTheory.T.euler_char_zero_dim_support hp F hd hlen
+    obtain ⟨h₁, h₂⟩ := _root_.GlobalTheory.CompanionTheory.KoszulCount.chi_eq_ncard_support hp F hd hlen
     have e : support F ∩ {x | ∀ j : Fin 0, x ∉ nonzeroLocus (t j)} = support F := by simp
     rw [e, interNum_of_isEmpty]
     exact ⟨h₁, h₂⟩
@@ -104,15 +104,15 @@ theorem secVal_comb (Y : Var ℂ) (L : LB Y.X) {n : ℕ} (c : Fin n → ℂ) (b 
 
 theorem koszul_count : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fnˣ) (hL : L.IsLB) (n : ℕ) (b : Fin n → L.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤), Presents Δ L r → ∀ᵐ C ∂(volume : Measure (Fin Y.dim → Fin n → ℂ)), ((({y : CxPts Y.str (RingHom.id ℂ) | ∀ (k : Fin Y.dim) (i : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0}).ncard : ℕ) : ℤ) = Y.inter fun _ => Δ := by
   intro Y Δ L r hL n b hb hP
-  obtain ⟨Q, hQ, hC⟩ := GlobalTheory.T.generic_sections_cotangent_indep Y L hL n Y.dim b hb
-  filter_upwards [GlobalTheory.T.ae_polynomial_nonvanishing _ _ Q hQ] with C hCQ
+  obtain ⟨Q, hQ, hC⟩ := _root_.GlobalTheory.CompanionTheory.KoszulCount.bertini_cotIndep Y L hL n Y.dim b hb
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.AePoly.ae_eval_matrix_ne_zero _ _ Q hQ] with C hCQ
   have hct := hC C hCQ
   set t : Fin Y.dim → L.Sec := fun k => ∑ j, algebraMap ℂ Γ(Y.X, ⊤) (C k j) • b j with ht
   have hp : IsProjOver (strHom ℂ Y.X) := by
     rw [GlobalTheory.strHom_eq Y.algebraMap_Γ]
     exact Y.isProjOver
   have hg : GoodStalks (structureModule Y.X) t :=
-    goodStalks_structureModule t (fun x => (GlobalTheory.T.variety_stalk_regular_dim Y x).1) (fun x => (GlobalTheory.T.variety_stalk_regular_dim Y x).2) hct
+    goodStalks_structureModule t (fun x => (_root_.GlobalTheory.CompanionTheory.KoszulCount.stalk_isRegularLocalRing_and_ringKrullDim_le Y x).1) (fun x => (_root_.GlobalTheory.CompanionTheory.KoszulCount.stalk_isRegularLocalRing_and_ringKrullDim_le Y x).2) hct
   obtain ⟨h₁, h₂⟩ := interNum_eq_ncard hp hL Y.dim (structureModule Y.X)
     (Y.isAmple_projective_O_one.finiteCohTwists Y.algebraMap_Γ _)
     (by rw [suppDim_structureModule, Y.topologicalKrullDim_eq]) t hg
@@ -133,7 +133,7 @@ theorem koszul_count : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → 
       exact (key k i hi).1 (h k i hi)
     · intro h k i hi
       exact (key k i hi).2 (h k)
-  rw [hset, GlobalTheory.T.closed_points_count_complex Y _ h₂, ← h₁]
+  rw [hset, _root_.GlobalTheory.CompanionTheory.KoszulCount.ncard_cxPts_over_closed Y _ h₂, ← h₁]
   exact (Var.inter_eq_of_toPic_eq (fun _ => hL) (fun _ => hP.toPic_eq)).symm
 
 end GlobalTheory.CompanionTheory.KoszulCount

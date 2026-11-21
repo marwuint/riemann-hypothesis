@@ -91,61 +91,6 @@ theorem dsW_integral (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (hφ : Continuo
     rw [this.deriv]
     simp [ex_zero, h.map_one]
 
-theorem map_integral_of_bound (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (hφ : Continuous φ)
-    (hc : HasCompactSupport φ) (hy : IsSm G σ (∫ g, φ g • σ g.mat v ∂μ)) {V : Type}
-    [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] {B : H → V}
-    (hadd : ∀ x, IsSm G σ x → ∀ y, IsSm G σ y → B (x + y) = B x + B y)
-    (hsmul : ∀ (a : ℂ) x, IsSm G σ x → B (a • x) = a • B x) {ι : Type} [Fintype ι]
-    {W : ι → List (Mat n)} (hW : ∀ i, LieW G (W i)) {C : ℝ}
-    (hB : ∀ x, IsSm G σ x → ‖B x‖ ≤ C * ∑ i, ‖dsW σ (W i) x‖) :
-    B (∫ g, φ g • σ g.mat v ∂μ) = ∫ g, φ g • B (σ g.mat v) ∂μ := by
-  let J : H → ι → H := fun v i => dsW σ (W i) v
-  let S₀ : Submodule ℂ ((ι → H) × V) :=
-    { carrier := {q | ∃ x, IsSm G σ x ∧ q = (J x, B x)}
-      add_mem' := by
-        rintro _ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩
-        exact ⟨a + b, ha.add hb, Prod.ext (funext fun i => (dsW_add h ha hb (hW i)).symm)
-          (hadd a ha b hb).symm⟩
-      zero_mem' := ⟨0, IsSm.zero, Prod.ext (funext fun i => by
-          simpa using (dsW_smul h (IsSm.zero (G := G) (σ := σ)) 0 (hW i)).symm) (by
-          simpa using (hsmul 0 0 IsSm.zero).symm)⟩
-      smul_mem' := by
-        rintro c _ ⟨a, ha, rfl⟩
-        exact ⟨c • a, ha.smul c, Prod.ext (funext fun i => (dsW_smul h ha c (hW i)).symm)
-          (hsmul c a ha).symm⟩ }
-  have hbd : ∀ q ∈ S₀.topologicalClosure, ‖q.2‖ ≤ C * ∑ i, ‖q.1 i‖ := fun q hq =>
-    closure_minimal (t := {q : (ι → H) × V | ‖q.2‖ ≤ C * ∑ i, ‖q.1 i‖})
-      (by rintro _ ⟨a, ha, rfl⟩; exact hB a ha) (isClosed_le (by fun_prop) (by fun_prop)) hq
-  have hJc : Continuous fun g : MG G hG => J (σ g.mat v) :=
-    continuous_pi fun i => continuous_orbit h hv (hW i)
-  have hBc : Continuous fun g : MG G hG => B (σ g.mat v) := by
-    refine continuous_iff_continuousAt.2 fun g₀ => ?_
-    rw [ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]
-    have hT : Continuous fun g : MG G hG =>
-        C * ∑ i, ‖dsW σ (W i) (σ g.mat v) - dsW σ (W i) (σ g₀.mat v)‖ :=
-      continuous_const.mul (continuous_finset_sum _ fun i _ =>
-        ((continuous_orbit h hv (hW i)).sub continuous_const).norm)
-    refine squeeze_zero (fun _ => norm_nonneg _) (fun g => ?_) (by simpa using hT.tendsto g₀)
-    exact hbd ((J (σ g.mat v), B (σ g.mat v)) - (J (σ g₀.mat v), B (σ g₀.mat v)))
-      (S₀.le_topologicalClosure
-        (sub_mem ⟨_, hv.apply h g.mem, rfl⟩ ⟨_, hv.apply h g₀.mem, rfl⟩))
-  have hi1 := integrable_csmul (μ := μ) hφ hc hJc
-  have hi2 := integrable_csmul (μ := μ) hφ hc hBc
-  have h1 : ∫ g, φ g • (J (σ g.mat v), B (σ g.mat v)) ∂μ ∈ S₀.topologicalClosure :=
-    integral_mem_of_isClosed _ S₀.isClosed_topologicalClosure fun g =>
-      Submodule.smul_mem _ _ (S₀.le_topologicalClosure ⟨_, hv.apply h g.mem, rfl⟩)
-  simp only [Prod.smul_mk] at h1
-  rw [integral_pair hi1 hi2] at h1
-  have h2 : ∫ g, φ g • J (σ g.mat v) ∂μ = J (∫ g, φ g • σ g.mat v ∂μ) := by
-    ext1 i
-    have := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : ι => H) i).integral_comp_comm hi1
-    simp only [ContinuousLinearMap.proj_apply, Pi.smul_apply] at this
-    rw [← this]
-    exact (dsW_integral h hv hφ hc (hW i)).symm
-  rw [h2] at h1
-  have h3 := hbd _ (sub_mem (S₀.le_topologicalClosure ⟨_, hy, rfl⟩) h1)
-  simpa [sub_eq_zero] using h3
-
 end Group
 
 theorem isSm_integral (hG : IsMatGroup G) (h : RepOn G σ) {v : H} (hv : IsSm G σ v)
@@ -166,32 +111,6 @@ theorem isSm_integral (hG : IsMatGroup G) (h : RepOn G σ) {v : H} (hv : IsSm G 
   refine integral_congr_ae ?_
   filter_upwards [hae] with g hg
   rw [map_smul, hFv _ (h.mul_mem _ ha _ hg), h.apply_mul ha hg]
-
-open PI.UpqRep in
-
-theorem intertwiner_commute : Formalism.FourierDecayAlt.ThreeDimData.IntCommute := by
-  intro k r ε lam H _ _ _ σ Wp _ _ _ _ μG B _ hσ hμ hadd hsmul ⟨C, Ws, hWs, hB⟩ x hx f hf hc
-  obtain ⟨P, ⟨⟨hP, hPJ⟩, -⟩, -, -, ⟨⟨h1, hm⟩, -, -⟩, -⟩ := hσ
-  have hG : PI.IsMatGroup (UH (Hpk k r)) := PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r
-  have h : RepOn (UH (Hpk k r)) σ := repOn_of_conj hP hPJ h1 hm
-  have hy := isSm_integral hG h hx hμ hf hc
-  refine ⟨hy, ?_⟩
-  have hι := MG.measurableEmbedding_toM (hG := hG)
-  have hmap := Quot.map_comap_toM hG (μ := μG) hμ.2.2.1
-  set μ' := μG.comap (MG.toM (hG := hG)) with hμ'
-  haveI : IsFiniteMeasureOnCompacts μ' := ⟨fun K hK => by
-    rw [hμ', hι.comap_apply]
-    exact Quot.IsHaarOnM.lt_top_of_isCompact hG hμ (hK.image (MG.continuous_mat (hG := hG)))⟩
-  rw [← hmap, hι.integral_map] at hy ⊢
-  rw [hι.integral_map]
-  refine map_integral_of_bound (hG := hG) (φ := fun g => f g.toM) h hx
-    (hf.comp MG.continuous_mat) (hc.comp_isClosedEmbedding MG.isClosedEmbedding_mat) hy hadd hsmul
-    (ι := Fin Ws.length) (W := Ws.get)
-    (fun i X hX t => ex_mem_of_lie (hWs _ (List.get_mem _ _) X hX) t) (C := C) fun y hy => ?_
-  refine (hB y hy).trans_eq ?_
-  congr 1
-  simp only [dsigW_eq', List.get_eq_getElem]
-  exact (Fin.sum_univ_fun_getElem Ws fun W => ‖dsW σ W y‖).symm
 
 end CompanionTheory.D.Upq.Sm
 

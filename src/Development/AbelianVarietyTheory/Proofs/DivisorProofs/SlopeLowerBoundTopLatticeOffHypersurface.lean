@@ -2,17 +2,17 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HermSysHypOneLeLambdaZero
 import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRightInvOfSpan
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeDegreeGeHeightPolynomialVectorsDetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiformHeightLowerBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermFamComplexTensorNormColumnUnitSpheresLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsShortColumnsDetNeZeroHilbertSamuelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankDeepestFiltrationStepEqRationalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeDegreeGeHeightPolynomialVectorsDet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiformHeightLowerBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermFamComplexTensorNormColumnUnitSpheresLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsShortColumnsDetNeZeroHilbertSamuel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankDeepestFiltrationStepEqRational
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowDvdOfSpecialisations
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClaimSOfNumbers
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetRationalSectionsEqPowProductLinearFormsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetRationalSectionsEqPowProductLinearForms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMultiHomogeneousCofactor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetIsMultiHomogeneous
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffLinearSubstColumnMemIntegralLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffLinearSubstColumnMemIntegralLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonomialCountsDegreeAndWeightedSum
 
 open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights ReciprocityTheory.GeometryOfNumbersTheory
@@ -124,20 +124,20 @@ theorem slopeBound : SlopeBound := by
   have hbd : ∀ s : Fin S.D → Fin S.N → F, eval (fun p => s p.1 p.2) Q ≠ 0 → S.deepRank s ≤ d := by
     intro s hs
     obtain ⟨E, A', _, _, _, _, Φ, -, -, -⟩ := hflat s hs
-    rw [← hfin]; exact (GlobalTheory.T.finrank_deepestFiltrationStep_eq_rational F A S hS E A' s δ Φ).2.2
+    rw [← hfin]; exact (_root_.GlobalTheory.HSShort.deepStep_finrank F A S hS E A' s δ Φ).2.2
   let P : ℕ → Prop := fun y => ∃ s : Fin S.D → Fin S.N → F, eval (fun p => s p.1 p.2) Q ≠ 0 ∧ S.deepRank s = y
   obtain ⟨s₁, hs₁⟩ := hex
   obtain ⟨s₀, hs₀, hy⟩ : P (Nat.findGreatest P d) := Nat.findGreatest_spec (hbd s₁ hs₁) ⟨s₁, hs₁, rfl⟩
   have hmax : ∀ s : Fin S.D → Fin S.N → F, eval (fun p => s p.1 p.2) Q ≠ 0 → S.deepRank s ≤ Nat.findGreatest P d :=
     fun s hs => Nat.le_findGreatest (hbd s hs) ⟨s, hs, rfl⟩
   obtain ⟨E₀, A₀, _, _, _, _, Φ₀, -, -, -⟩ := hflat s₀ hs₀
-  obtain ⟨col, m, ix, hsh, hshort, hcard, hdet⟩ := GlobalTheory.T.exists_short_columns_det_ne_zero_hilbertSamuel F A S hS E₀ A₀ s₀ δ Φ₀ d b c hco
+  obtain ⟨col, m, ix, hsh, hshort, hcard, hdet⟩ := _root_.GlobalTheory.HSShort.ChooseCols.exists_cols F A S hS E₀ A₀ s₀ δ Φ₀ d b c hco
   rw [hy] at hcard
   have hdiv : f ^ S.expo ∣ S.det c col := by
     refine GlobalTheory.HSShortDiv.pow_dvd_of_specialisations F S.D S.N δ S.expo f (S.det c col) Q hδ hfh hfi hQ ?_
     intro s hs
     obtain ⟨E, A', _, _, _, _, Φ, c', hc', hsp⟩ := hflat s hs
-    obtain ⟨γ, hγ⟩ := GlobalTheory.T.det_rational_sections_eq_pow_product_linearForms F A S hS E A' s δ Φ d b c hco col m ix hsh (hcard ▸ hmax s hs)
+    obtain ⟨γ, hγ⟩ := _root_.GlobalTheory.HSShort.det_rational_eq_pow F A S hS E A' s δ Φ d b c hco col m ix hsh (hcard ▸ hmax s hs)
     refine ⟨E, inferInstance, inferInstance, γ / c' ^ S.expo, fun l => ?_⟩
     have h1 := hγ (fun k => algebraMap F E (l k))
     have h2 : aeval (join (fun i k => algebraMap F E (s i k)) (fun k => algebraMap F E (l k))) f =
@@ -156,8 +156,8 @@ theorem slopeBound : SlopeBound := by
   have hfe0 : f ^ S.expo ≠ 0 := left_ne_zero_of_mul hdet'
   have hht : ht S.w S.fr (S.det c col) = S.expo * ht S.w S.fr f + ht S.w S.fr G' := by
     rw [hG', (htMul F _ _ _ S.w S.fr S.abelian₂ hS.lat).1 _ _ _ _ hfe0 hG0 hfe ha', ht_pow hS.lat hf0 hfh]
-  have hlowf := GlobalTheory.T.multiformHeight_lowerBound F (S.D + 1) S.N S.n S.w S.fr S.abelian₂ hS.lat (fun _ => δ) f hf0 hfh
-  have hlowG := GlobalTheory.T.multiformHeight_lowerBound F (S.D + 1) S.N S.n S.w S.fr S.abelian₂ hS.lat a' G' hG0 ha'
+  have hlowf := _root_.GlobalTheory.HtLowProof.htLow F (S.D + 1) S.N S.n S.w S.fr S.abelian₂ hS.lat (fun _ => δ) f hf0 hfh
+  have hlowG := _root_.GlobalTheory.HtLowProof.htLow F (S.D + 1) S.N S.n S.w S.fr S.abelian₂ hS.lat a' G' hG0 ha'
   let bnd : ℕ → ℝ := fun j => if j = 0 then S.Lam0 else if j = S.D then S.LamD else S.LamT
   let Bd : Fin d → ℝ := fun k => Real.sqrt S.beta ^ (col k).t * bnd (col k).j
   have hbnd1 : ∀ j, 1 ≤ bnd j := by
@@ -168,10 +168,10 @@ theorem slopeBound : SlopeBound := by
     · exact hS.one_le_LamT
   have hsb : 1 ≤ Real.sqrt S.beta := Real.one_le_sqrt.mpr hS.one_le_beta
   have hBd : ∀ k, 0 < Bd k := fun k => mul_pos (pow_pos (by linarith) _) (by linarith [hbnd1 (col k).j])
-  have htop := GlobalTheory.T.lattice_degree_ge_height_polynomialVectors_det F (S.V S.T) (S.nm S.T) (S.M S.T) d b (hS.full S.T le_rfl) (S.D + 1) S.N S.n S.w S.fr S.abelian₂
+  have htop := _root_.GlobalTheory.HSShort.deg_ge_ht_det F (S.V S.T) (S.nm S.T) (S.M S.T) d b (hS.full S.T le_rfl) (S.D + 1) S.N S.n S.w S.fr S.abelian₂
     hS.lat (Matrix.of fun i k => coordP S.mul (c i) (col k).β ((col k).x : A)) a Bd hdet ha hBd
-    (fun k m' => GlobalTheory.T.coeff_linearSubst_column_mem_integralLattice F A S hS d b c hco (col k) (hshort k).1 m')
-    (fun k σ u hu => (GlobalTheory.T.hermFamComplexTensorNorm_column_unitSpheres_le F A S hS d b c hco (col k) σ u hu).trans
+    (fun k m' => _root_.GlobalTheory.HSShort.colCoeff_mem F A S hS d b c hco (col k) (hshort k).1 m')
+    (fun k σ u hu => (_root_.GlobalTheory.HSShort.cnrm_col_le F A S hS d b c hco (col k) σ u hu).trans
       (mul_le_mul_of_nonneg_left ((hshort k).2 σ) (pow_nonneg (by linarith) _)))
 
   have hD1 := hS.one_le

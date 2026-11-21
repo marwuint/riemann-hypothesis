@@ -10,10 +10,6 @@ namespace GlobalTheory.CompanionTheory.SW.Core.Scale
 
 variable {F : Type} [Field F] [NumberField F]
 
-lemma one_mem_Oh : (1 : A F) ∈ Oh F := fun v => by
-  show (1 : v.adicCompletion F) ∈ v.adicCompletionIntegers F
-  exact one_mem _
-
 lemma add_mem_Oh {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x + y ∈ Oh F := fun v =>
   add_mem (hx v) (hy v)
 

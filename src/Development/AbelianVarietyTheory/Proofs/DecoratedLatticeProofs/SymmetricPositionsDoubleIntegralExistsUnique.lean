@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralMulOfSupport
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatSelfAverageHeisenbergStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiTargetBilinearFormIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBilinearPositionMiddleVertexStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearIsQuotIntTIntStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatSelfAverageHeisenberg
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiTargetBilinearFormIntegral
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBilinearPositionMiddleVertex
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearIsQuotIntTInt
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.PosOne
 open GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage (app HasTensorVal fl opEFJ IsQuotIntFJ IsFJ Represents)
 open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
@@ -99,7 +99,7 @@ theorem exists_fj_of_exUp {ρ : ℕ} (h1 : 1 ≤ ρ) (h2 : ρ < c) {ψ : AddChar
   have fj_apply : ∀ φ v Φ₀, fj φ v Φ₀ = f φ v Φ₀ := fun _ _ _ => rfl
   refine ⟨fj, ⟨hB, fun φ v Φ₀ => ⟨hI φ v Φ₀, fj_apply φ v Φ₀⟩⟩, fun φ v Φ₀ => ?_⟩
   obtain ⟨s1, -, s3⟩ := (hS (b φ) v).1 (hb φ)
-  have hh := (GlobalTheory.T.schwartzFourierTransformPi_surjective_schwartzBruhat k n ψ hψ hψ1 ν hν).1 Φ₀
+  have hh := (_root_.GlobalTheory.SplitWeil.FourierSurj.hat_surjective k n ψ hψ hψ1 ν hν).1 Φ₀
   rw [fj_apply]
   simp only [f, hBb, s3, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat, ← integral_const_mul, ← integral_mul_const]
   rw [integral_integral_swap]
@@ -140,7 +140,7 @@ theorem symDbl_existsUnique : ∀ (k : Type) [Field k] [ValuativeRel k] [Topolog
     (omR μ₁).comp (MonoidHom.inl (GL (n₀ ⊕ Fin (c + 1 + 1)) k) (GL (n₁ ⊕ Fin (c + 1)) k))
   have hρ₀s : IsSrc μ₁ ρ₀ := fun _ _ => rfl
 
-  obtain ⟨b, hbpos, hbq, -⟩ := GlobalTheory.T.exists_bilinear_position_middle_vertex k n₀ n₁ n₂ c ρ hcρ ψ hψ hψ1 ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ G₁ m₂ G₂ A σ hσ
+  obtain ⟨b, hbpos, hbq, -⟩ := _root_.GlobalTheory.PosOne.MidVertex.exists_bilPos_mid k n₀ n₁ n₂ c ρ hcρ ψ hψ hψ1 ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ G₁ m₂ G₂ A σ hσ
     T hT F ρ₁ hρ₁s
 
   obtain ⟨B, hBpos, hBb⟩ := bilPos_exUp_exists (c := c + 1) h1 (by omega) hψ hψ1 ν hρ₁ hbpos
@@ -149,7 +149,7 @@ theorem symDbl_existsUnique : ∀ (k : Type) [Field k] [ValuativeRel k] [Topolog
   have hw : ∀ h Ψ (Φ₀ : SB (n₁ → k)), IsQuotInt ν m₂ G₂ ρ
       (fun h' => app (T Ψ) (opEFJ ψ ν ρ Φ₀.1 (om μ₂ h h' Φ₂.1)) (σ h' F)) (fj Ψ (ρ₁ h Φ₂) Φ₀) := by
     intro h Ψ Φ₀
-    obtain ⟨-, hav⟩ := GlobalTheory.T.schwartzBruhat_self_average_heisenberg k n₂ n₁ c ρ h1 hρc ψ hψ hψ1 ν hν μ₂ hμ₂ (ρ₁ h Φ₂)
+    obtain ⟨-, hav⟩ := _root_.GlobalTheory.PosOne.avg_self_and_props k n₂ n₁ c ρ h1 hρc ψ hψ hψ1 ν hν μ₂ hμ₂ (ρ₁ h Φ₂)
     obtain ⟨hmem, hop, hL⟩ := hav Φ₀
     have e1 := hbq Ψ ⟨_, hmem⟩
     have e2 : b Ψ ⟨_, hmem⟩ = fj Ψ (ρ₁ h Φ₂) Φ₀ := by
@@ -164,9 +164,9 @@ theorem symDbl_existsUnique : ∀ (k : Type) [Field k] [ValuativeRel k] [Topolog
     simp only [omR_val, one_mul, mul_one] at this
     exact this.symm
 
-  have hiff := GlobalTheory.T.fourierJacobi_target_bilinear_form_integral k n₁ n₀ (c + 1) ρ h1 (by omega) ψ hψ hψ1 ν hν μ₁ hμ₁ m₁ G₁ _ ρ₁ hρ₁ fj B hrep hBpos
+  have hiff := _root_.GlobalTheory.PosOne.FJTarget.target_bilinear k n₁ n₀ (c + 1) ρ h1 (by omega) ψ hψ hψ1 ν hν μ₁ hμ₁ m₁ G₁ _ ρ₁ hρ₁ fj B hrep hBpos
     Φ₂ Φ₁
-  obtain ⟨Rr, hRr, -⟩ := GlobalTheory.T.exists_linear_isQuotInt_tInt_alt k n₁ n₀ (c + 1) (ρ + 1) (by omega) (by omega) ψ hψ hψ1 ν μ₁ hμ₁ m₁ G₁ _ ρ₁
+  obtain ⟨Rr, hRr, -⟩ := _root_.GlobalTheory.PosOne.RrLin.exists_linear_isQuotInt_tInt k n₁ n₀ (c + 1) (ρ + 1) (by omega) (by omega) ψ hψ hψ1 ν μ₁ hμ₁ m₁ G₁ _ ρ₁
     hρ₁ B hBpos Φ₂ ρ₀ hρ₀s
   refine ⟨Rr Φ₁, ⟨_, hw, (hiff _).1 (hRr Φ₁)⟩, ?_⟩
   rintro z ⟨w, hw', hz⟩

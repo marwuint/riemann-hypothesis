@@ -239,11 +239,6 @@ end Chars
 
 section Values
 
-theorem card_rowPar {R : Ranks} (P : HCParam R) : Multiset.card (rowPar P) = R.r := by
-  have h := R.m_add_three_le_k
-  simp only [rowPar, Multiset.card_add, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, Ranks.r]
-  omega
-
 theorem param_eq {R : Ranks} (P : HCParam R) (j : Fin R.m) :
     GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.param P j = rowPar P + GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.run P j := rfl
 
@@ -261,14 +256,6 @@ theorem normV_ne_zero (P : PlE D.host) : ((normV P : ℕ) : ℂ) ≠ 0 := Global
 variable (μ : HChar D.host.E) (π : D.naut.CG D.R.r) (P : PlE D.host)
 
 theorem heckeVal_zero : heckeVal μ π 0 P = 1 := by simp [heckeVal, Multiset.esymm]
-
-theorem card_satake (h : D.naut.unr (D.naut.locG π P)) : Multiset.card (satake μ π P) = D.R.r := by
-  rw [satake, Multiset.card_map, D.naut.frobEig_card _ h, D.naut.locG_dim]
-
-theorem heckeVal_top (h : D.naut.unr (D.naut.locG π P)) : heckeVal μ π D.R.r P = (satake μ π P).prod := by
-  rw [heckeVal, Nat.sub_self, mul_zero, Nat.zero_div, pow_zero, one_mul, Multiset.esymm, ← card_satake μ π P h,
-    Multiset.powersetCard_self]
-  simp
 
 theorem pow_mul_heckeVal {k : ℕ} (hk : k ≤ D.R.r) :
     ((normV P : ℕ) : ℂ) ^ (k * (k - 1) / 2) * heckeVal μ π k P =
@@ -341,40 +328,10 @@ theorem charpoly_smul_of_prod {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (m : Mu
     simp only [Function.comp_apply, eval_sub, eval_X, eval_C]
     field_simp
 
-theorem isGaloisRepOf_conj {a : ℕ} {π : D.naut.CG a} {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
-    {r r' : GalE D →* GL (Fin a) (Qbar l)} (h : IsGaloisRepOf D π l ι r) (A : GL (Fin a) (Qbar l))
-    (hA : ∀ g, r' g = A * r g * A⁻¹) : IsGaloisRepOf D π l ι r' := by
-  have hc : ∀ g, ((r' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly =
-      ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly := fun g => by
-    rw [hA, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
-  refine ⟨?_, GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate.isSSRep_conj A hA h.2.1, fun w hw => ⟨fun s hs => ?_, ?_, fun hu B s hB hs => ?_⟩⟩
-  · simp only [hA, Units.val_mul]
-    exact (continuous_const.mul h.1).mul continuous_const
-  · rw [hc]; exact (h.2.2 w hw).1 s hs
-  · rw [(h.2.2 w hw).2.1, show (r' : GalE D → _) = (MulAut.conj A) ∘ r from funext hA, Set.image_comp]
-    exact (Set.finite_image_iff (MulAut.conj A).injective.injOn).symm
-  · rw [hc]; exact (h.2.2 w hw).2.2 hu B s hB hs
-
 variable {C : CharFrame D} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om} {X : NTw D.R D.host D.what₂ D.LL0 D.nd}
   {i : X.Tw} {b : Bool} {ρ : Reading X i b} {s : X.Sig i} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
   {r : GalE D →* GL (Fin D.R.r) (Qbar (X.l i))} {ν : GalE D →* (X.O0 i)ˣ} {w : D.what₂.places.Pl}
   {red : Zbar (X.l i) →+* FbAt D w}
-
-theorem isTripleAt_of_conj (good : D.nd.goodRow σ) (occurs : D.what₂.isot (X.jS i s) σ ≠ ⊥) (param : IsParam σ π)
-    (gal : IsGaloisRepOf D π (X.l i) ρ.ι r) (shift : ∃ n, IsGal art ρ.κ ρ.ι (shiftChar C) n ν)
-    (A : GL (Fin D.R.r) (Qbar (X.l i)))
-    (rho : ∀ g, ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map (toQ ρ.κ) =
-      toQ ρ.κ ((ν g : (X.O0 i)ˣ) : X.O0 i) •
-        ((A * r g * A⁻¹ : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))))
-    (hecke : ∀ k P, k ≤ D.R.r → IsSplitPl D.host P → P ∉ X.S0 i → ∃ x : X.O0 i,
-      algebraMap (X.O0 i) (X.O i) x = X.hEig i s k P ∧ ρ.toC x = heckeVal (muBase C (X.l i) (jIdx s)) π k P)
-    (induces : ρ.Induces w) (residual : IsResidual ρ.ι r σ w red) : IsTripleAt C art ρ s := by
-  refine ⟨σ, π, (MulAut.conj A).toMonoidHom.comp r, ν, w, red, good, occurs, param,
-    isGaloisRepOf_conj gal A fun _ => rfl, shift, rho, hecke, induces, residual.ss, fun g => ?_, residual.teich⟩
-  obtain ⟨p, h1, h2⟩ := residual.charpoly g
-  refine ⟨p, h1.trans ?_, h2⟩
-  change _ = ((A * r g * A⁻¹ : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).charpoly
-  rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
 theorem jIdx_add_one (s : X.Sig i) : (jIdx s).1 + 1 = X.jS i s := by
   have := X.jS_range i s
@@ -386,45 +343,7 @@ theorem IsChars.chiS {ρ : Reading X i (X.side i s)} (h : IsChars C art ρ) :
   have := h.chi (jIdx s)
   rwa [jIdx_add_one] at this
 
-theorem IsTripleWith.hEig_zero (h : IsTripleWith C art ρ s σ π r ν w red) {P : PlE D.host} (hP : IsSplitPl D.host P)
-    (hS : P ∉ X.S0 i) : X.hEig i s 0 P = 1 := by
-  obtain ⟨x, h1, h2⟩ := h.hecke 0 P (Nat.zero_le _) hP hS
-  rw [heckeVal_zero, ← map_one ρ.toC] at h2
-  rw [← h1, ρ.toC_injective h2, map_one]
-
-theorem IsTripleWith.unr_of_notMem (h : IsTripleWith C art ρ s σ π r ν w red) {P : PlE D.host} (hS : P ∉ X.S0 i) :
-    D.naut.unr (D.naut.locG π P) := h.param.unr P fun k hk => hS (X.placesOver_subset_exceptional i k hk)
-
-theorem IsTripleWith.charpoly_frob (ha : IsGlobalArtin art) (h : IsTripleWith C art ρ s σ π r ν w red) {P : PlE D.host}
-    (hl : P ∉ placesOver D.host.E (X.l i)) (hg : ∀ k, P ∉ placesOver D.host.E (D.host.g k))
-    {B : ValuationSubring D.nd.Om} (hB : IsPlaceOver B P) {g : GalE D} (hF : IsFrob (F := D.host.E) B (normV P) g) :
-    ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).charpoly.map ρ.toC =
-      ((D.naut.frobEig (D.naut.locG π P)).map fun a => Polynomial.X - Polynomial.C
-        (a * ((normV P : ℕ) : ℂ) ^ (((1 - (D.R.r : ℝ)) / 2 : ℝ) : ℂ) * (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹)).prod := by
-  have hu := h.param.unr P hg
-  obtain ⟨n, hn⟩ := h.shift
-  have e1 := (h.gal.2.2 P hl).2.2 hu B g hB hF
-  have e2 := hn.frob ha (Or.inl hl) (shiftChar_unr C P) hB hF
-  rw [galPol, D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map] at e1
-  have e3 : ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map ρ.toC =
-      (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹ •
-        ((r g : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).map ρ.ι.toRingHom := by
-    ext x y
-    have := congrArg ρ.ι (congrFun (congrFun (h.rho g) x) y)
-    simpa [e2, Reading.toC_apply] using this
-  rw [← Matrix.charpoly_map, e3, charpoly_smul_of_prod _ _ _ e1, Multiset.map_map]
-  rfl
-
 variable {Y : NExp D.R D.host D.what₂ D.LL0 D.nd X}
-
-theorem IsTripleFor.triple (h : IsTripleFor C art Y) {i : X.Tw} (hi : X.NonzeroIndexPlace i) (s : X.Sig i) :
-    ∃ ρ : Reading X i (X.side i s), IsChars C art ρ ∧ IsTripleAt C art ρ s :=
-  let ⟨ρ, h1, h2⟩ := h.evidence i hi (X.side i s)
-  ⟨ρ, h1, h2 s rfl⟩
-
-theorem IsTripleOf.allGood (h : IsTripleOf Y) : GlobalTheory.TwSys.AllGood Y := let ⟨_, _, h⟩ := h; h.vec
-
-theorem IsTripleOf.sig_all (h : IsTripleOf Y) : Y.sig_all := let ⟨_, _, h⟩ := h; h.all
 
 end API
 

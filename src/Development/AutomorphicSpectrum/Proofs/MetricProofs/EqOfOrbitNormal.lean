@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsLocSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryTwistMinorOtherStepsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryTwistMinorOtherSteps
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedAtlasCompatibilityStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HoloOnDivCongr
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
@@ -273,7 +273,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
           have hia : i ≠ a := fun hia => hq₀ (by
             subst hia
             exact Option.some_injective _ (hp.symm.trans hk))
-          exact GlobalTheory.T.elementary_twist_minor_other_steps N j a b ca cb M.j_le hb hab hca hcb _ _ i hia I
+          exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.TransvOther.minorIJ_other_step N j a b ca cb M.j_le hb hab hca hcb _ _ i hia I
         · rw [if_neg ht]
     · obtain ⟨d, hd, hq'⟩ := hb₀ w (hVW hwV)
       rw [hcs' w hwV d hq' q.1]

@@ -1,5 +1,6 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfAtSmallPlaceStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfAtSmallPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassesAt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SmallnessCondition
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HalfAtInRange
 

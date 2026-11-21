@@ -132,8 +132,4 @@ theorem exists_open_fix_vac_source : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc
   exact ⟨GlobalTheory.VacFixTarget.congGroup A' (n₁.factorial * n.factorial),
     GlobalTheory.VacFixTarget.isOpen_congGroup A' (Nat.mul_pos n₁.factorial_pos n.factorial_pos), fun κ hU hκ => hn κ hκ hU⟩
 
-example : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
-    {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ t : T,
-    ∃ U : Subgroup (GA D A'), IsOpen (U : Set (GA D A')) ∧ ∀ κ ∈ U, κ ∈ GfC A' → X.ω' t (κ, 1) X.vac' = X.vac' := @exists_open_fix_vac_source
-
 end GlobalTheory.VacFixSource

@@ -1,5 +1,18 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.UnifVSpec
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.TopoAF
+import Formalism.PeriodIntegrals.VolFromSW
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
+import ReciprocityTheory.GeneralLinearIntegers.AlgebraMapIntMemOint
+import Formalism.PeriodIntegrals.WeilQuotMeas
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.StepBruhat
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.LintegralMulAvgComm
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.Bruhat
+import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotMeasUniq
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.DensGen
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.TensTop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.LocDensHC
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilStabilizerVolume.ExistsUnifFv
 
 noncomputable section
 
@@ -16,13 +29,6 @@ abbrev iO (a : 𝓞 F) : Fv F v := algebraMap F (Fv F v) (algebraMap (𝓞 F) F 
 theorem vcoe (x : F) : Valued.v (algebraMap F (Fv F v) x) = v.valuation F x := by
   rw [HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, Algebra.algebraMap_self,
     RingHom.id_apply, v.valuedAdicCompletion_eq_valuation']
-
-theorem lt_one_iff_le_expm1 (g : WithZero (Multiplicative ℤ)) : g < 1 ↔ g ≤ WithZero.exp (-1 : ℤ) := by
-  rcases eq_or_ne g 0 with rfl | hg
-  · simp
-  · obtain ⟨n, rfl⟩ : ∃ n : ℤ, g = WithZero.exp n := ⟨WithZero.log g, (WithZero.exp_log hg).symm⟩
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.exp_le_exp]
-    omega
 
 theorem v_iO_le (a : 𝓞 F) : Valued.v (iO v a) ≤ 1 := by
   rw [vcoe]; exact v.valuation_le_one a
@@ -128,92 +134,6 @@ theorem red_eq_zero_iff {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) :
 
 theorem red_zero : red v 0 = 0 := (red_eq_zero_iff v (zero_mem _)).2 (by simp)
 
-theorem red_neg {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : red v (-x) = -red v x := by
-  have h := red_add v hx (neg_mem hx)
-  rw [add_neg_cancel, red_zero] at h
-  exact (neg_eq_of_add_eq_zero_right h.symm).symm
-
-theorem red_surj (t : 𝓞 F ⧸ v.asIdeal) : ∃ x ∈ v.adicCompletionIntegers F, red v x = t := by
-  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective t
-  exact ⟨iO v a, mem_O_iO v a, red_iO v a⟩
-
-theorem lt_one_iff_unif (x : Fv F v) :
-    Valued.v x < 1 ↔ Valued.v ((unifV v)⁻¹ * x) ≤ 1 := by
-  have hπ := unifV_val v
-  rw [map_mul, map_inv₀, hπ, lt_one_iff_le_expm1]
-  constructor
-  · intro h
-    calc (WithZero.exp (-1 : ℤ))⁻¹ * Valued.v x ≤ (WithZero.exp (-1 : ℤ))⁻¹ * WithZero.exp (-1) :=
-          mul_le_mul' le_rfl h
-      _ = 1 := inv_mul_cancel₀ WithZero.exp_ne_zero
-  · intro h
-    have h2 := mul_le_mul' h (le_refl (WithZero.exp (-1 : ℤ)))
-    rwa [mul_comm, ← mul_assoc, mul_inv_cancel₀ WithZero.exp_ne_zero, one_mul, one_mul] at h2
-
-theorem ev_int (x : F) : ∀ᶠ v in cofinite,
-    algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F := by
-  have := HeightOneSpectrum.Support.finite (𝓞 F) x
-  rw [Filter.eventually_cofinite]
-  refine this.subset fun w hw => ?_
-  simp only [Set.mem_setOf_eq, HeightOneSpectrum.mem_adicCompletionIntegers, not_le, vcoe] at hw
-  exact hw
-
-theorem ev_unit {x : F} (hx : x ≠ 0) : ∀ᶠ v in cofinite,
-    Valued.v (algebraMap F (Fv F v) x) = 1 := by
-  filter_upwards [ev_int x, ev_int x⁻¹] with w h1 h2
-  rw [HeightOneSpectrum.mem_adicCompletionIntegers] at h1 h2
-  rw [map_inv₀, map_inv₀] at h2
-  have h0 : Valued.v (algebraMap F (Fv F w) x) ≠ 0 := by
-    rw [Valuation.ne_zero_iff]; simpa using hx
-  by_contra hne
-  have hlt : Valued.v (algebraMap F (Fv F w) x) < 1 := lt_of_le_of_ne h1 hne
-  exact absurd h2 (not_le.2 ((one_lt_inv₀ (zero_lt_iff.2 h0)).2 hlt))
-
 end Res
-
-section Count
-
-theorem measure_count {G V : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
-    [AddCommGroup V] [Finite V] (μ : Measure G) [μ.IsAddLeftInvariant] (L N : AddSubgroup G)
-    (hNL : N ≤ L) (hN : MeasurableSet (N : Set G)) (φ : G → V)
-    (hadd : ∀ x ∈ L, ∀ y ∈ L, φ (x + y) = φ x + φ y) (hker : ∀ x ∈ L, φ x = 0 ↔ x ∈ N)
-    (hsurj : ∀ w, ∃ x ∈ L, φ x = w) (S : Set V) :
-    μ {x | x ∈ L ∧ φ x ∈ S} = (Nat.card S : ENNReal) * μ N := by
-  choose l hlL hl using hsurj
-  have key : ∀ s x, -l s + x ∈ N ↔ x ∈ L ∧ φ x = s := by
-    intro s x
-    constructor
-    · intro h
-      have hx : x = l s + (-l s + x) := by abel
-      have hL : x ∈ L := by rw [hx]; exact L.add_mem (hlL s) (hNL h)
-      refine ⟨hL, ?_⟩
-      rw [hx, hadd _ (hlL s) _ (hNL h), hl, (hker _ (hNL h)).2 h, add_zero]
-    · rintro ⟨hL, rfl⟩
-      have hm : -l (φ x) + x ∈ L := L.add_mem (L.neg_mem (hlL _)) hL
-      refine (hker _ hm).1 ?_
-      have e := hadd _ (hlL (φ x)) _ hm
-      rw [show l (φ x) + (-l (φ x) + x) = x by abel, hl] at e
-      have e2 := e.symm
-      rwa [add_eq_left] at e2
-  have hfin : S.Finite := S.toFinite
-  have hset : {x | x ∈ L ∧ φ x ∈ S} =
-      ⋃ s ∈ hfin.toFinset, (fun x => -l s + x) ⁻¹' (N : Set G) := by
-    ext x
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe,
-      Set.Finite.mem_toFinset, exists_prop, key]
-    constructor
-    · rintro ⟨h1, h2⟩; exact ⟨_, h2, h1, rfl⟩
-    · rintro ⟨s, hs, h1, rfl⟩; exact ⟨h1, hs⟩
-  rw [hset, measure_biUnion_finset]
-  · simp only [measure_preimage_add]
-    rw [Finset.sum_const, nsmul_eq_mul, Nat.card_eq_card_finite_toFinset hfin]
-  · intro s _ t _ hst
-    refine Set.disjoint_left.2 fun x h1 h2 => hst ?_
-    simp only [Set.mem_preimage, SetLike.mem_coe, key] at h1 h2
-    rw [← h1.2, ← h2.2]
-  · intro s _
-    exact hN.preimage (measurable_const_add _)
-
-end Count
 
 end PI.VolStabW

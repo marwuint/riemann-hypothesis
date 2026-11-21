@@ -58,7 +58,7 @@ private theorem family (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F]
       refine (Set.finite_singleton 2).union ?_
       exact (Nat.divisors (discr F).natAbs).finite_toSet.subset fun p hp =>
         Nat.mem_divisors.2 ⟨hp, Int.natAbs_ne_zero.2 (discr_ne_zero F)⟩
-    refine ((GlobalTheory.T.infinite_primes_neg_square_padic (q : ℕ)).diff hbad).mono ?_
+    refine ((_root_.GlobalTheory.RealGal.PrimesNegSquare.infinite_primes_neg_isSquare (q : ℕ)).diff hbad).mono ?_
     rintro p ⟨⟨hp, hs⟩, hn⟩
     simp only [Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq, not_or] at hn
     exact ⟨hp, hs, hn.1, fun h => hn.2 (Int.natCast_dvd.1 h)⟩

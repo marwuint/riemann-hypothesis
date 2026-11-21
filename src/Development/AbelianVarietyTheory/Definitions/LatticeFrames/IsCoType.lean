@@ -52,18 +52,6 @@ def omTwo {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (
     (u : Matrix b a k → ℂ) : Matrix b a k → ℂ :=
   (((μS * μT⁻¹) (GeneralLinearGroup.det h) : ℂˣ) : ℂ) • om μT⁻¹ g h u
 
-example {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (A ⊕ D) k) V) (ξ : kˣ →* ℂˣ) (g : GL (A ⊕ D) k) :
-    IsTOp π ξ g 0 0 := fun R d _ => by simp
-
-example : IsReps (1 : GL (A ⊕ D) k) {1} (fun _ => 1) := by
-  refine ⟨fun j hj => ?_, fun j hj => ⟨1, ⟨by simp, by simpa using hj⟩, fun y hy => by simpa using hy.1⟩⟩
-  rw [Finset.mem_singleton] at hj
-  subst hj
-  refine ⟨one_mem _, ?_⟩
-  have : (1 : GL (A ⊕ D) k).1.toBlocks₂₂ = 1 := by
-    ext i j; simp [toBlocks₂₂, Matrix.one_apply]
-  rw [this]; simp
-
 end GlobalTheory.ParHecke
 
 end

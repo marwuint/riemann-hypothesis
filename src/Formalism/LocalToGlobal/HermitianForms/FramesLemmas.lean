@@ -65,10 +65,4 @@ theorem exists_isON_of_gram (σ : E →+* E) (emb : ι → E →+* ℂ) (hc : �
 
 end Gen
 
-theorem ValTied.exists_isON {D : D7} {u : D.what₂.Word} {eV : (D.mem u).A.vT ≃ PlT D u} {i : ℕ} {hi : i ≤ D.R.m}
-    {K : ClsTied u i hi} (W : ValTied u eV i hi K)
-    (hc : ∀ τ x, embT D τ (sigD D x) = starRingEnd ℂ (embT D τ x)) : ∃ o : Fr D i hi, o.IsON := by
-  obtain ⟨C, hC, -, -⟩ := W.de
-  exact exists_isON_of_gram (sigD D : D.host.E →+* D.host.E) (embT D) hc _ C hC
-
 end Formalism.L2.Forms

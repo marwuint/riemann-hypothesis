@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsLocSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartTransitionAnalyticStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartTransitionAnalytic
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PFsInvPow
 import ReciprocityTheory.AnalyticForms.LeviForms.TailCutA
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
@@ -39,7 +39,7 @@ theorem logNormSec_secPot_le : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀
         ((potA M τ a k₀).pos _ hmem).ne'
     refine hloc.congr ?_
     filter_upwards [hVo.mem_nhds hxV] with w hw
-    exact GlobalTheory.T.twisted_chart_transition_analytic K ι Φ y Ψ N j M n e Rb τ a k₀ ca cb RW pr x w (ψ x) (ψ w) (kb x) (kb w) (σ x) (σ w)
+    exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.locSec_norm_eq K ι Φ y Ψ N j M n e Rb τ a k₀ ca cb RW pr x w (ψ x) (ψ w) (kb x) (kb w) (σ x) (σ w)
       (i₀ x) (i₀ w) (V x) (V w) (u x) (u w) hb hW (hL x) (hL w) w ⟨hw, (hL w).2.2.1⟩
   obtain ⟨Cb, hCb⟩ := (isCompact_range hg).bddAbove
   refine ⟨Real.log (max Cb 1), fun w => ?_⟩

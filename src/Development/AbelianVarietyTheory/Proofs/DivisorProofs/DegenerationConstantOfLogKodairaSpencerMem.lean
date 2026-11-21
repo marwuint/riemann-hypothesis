@@ -5,12 +5,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopLePreimageOfClosedPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FromSpecAppLETopEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsTailMore
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConstAlongOfKodairaSpencerZeroChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConstAlongOfKodairaSpencerZeroChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharZeroOfToricChartToGenericFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAbelianLocusToricChartIffNotMemBoundary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricChartCompGenericFibreInclusionEqSpecChartMa
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentBasisPullbackToSpecOfAffineOpen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechKodairaSpencerPullbackSemiAbelianMapStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechKodairaSpencerPullbackSemiAbelianMap
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -93,7 +93,7 @@ theorem isConstAlong_of_ks_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     have h4 : ξ p ∉ genBd Y := fun h => h3 ((hBd p).1 h)
     rw [mem_genBd_iff, not_not, ← coe_interior] at h4
     exact h4
-  have hK := GlobalTheory.T.cechKodairaSpencer_pullback_semiAbelianMap E H Y.X (Sp (ChartRing k m' d)) Y.t t (ξ ≫ genι Y) φ (interior Y) _ U
+  have hK := _root_.GlobalTheory.KSBaseChange.isKS_pull E H Y.X (Sp (ChartRing k m' d)) Y.t t (ξ ≫ genι Y) φ (interior Y) _ U
     (⟨⊤, isAffineOpen_top _⟩ : (Sp (ChartRing k m' d)).affineOpens) hU hV n v vR hv hvR
     (fun i => by rw [hcomp i, happ]) D.1 D' (fun r => by
       rw [hD']
@@ -102,7 +102,7 @@ theorem isConstAlong_of_ks_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
         ((ξ ≫ genι Y).appLE U.1 ⊤ hU).hom (D.1 r)
       rw [← hval, hDR, hval, e]) Θ hKS
   rw [hD'] at hK
-  exact GlobalTheory.T.isConstAlong_of_kodairaSpencer_zero_chart E H k m' d t P (fun i => gam i) hMon hlin hab n vR hvR hbR DR a ha _ hK
+  exact _root_.GlobalTheory.KSConst.isConstAlong_of_ks_zero E H k m' d t P (fun i => gam i) hMon hlin hab n vR hvR hbR DR a ha _ hK
     (fun a b => valR_mem_maximalIdeal (ξ ≫ genι Y) U.1 hU (Θ a b) (hxm _ (hΘ a b))) ρ hρ
 
 end GlobalTheory.ChartConst

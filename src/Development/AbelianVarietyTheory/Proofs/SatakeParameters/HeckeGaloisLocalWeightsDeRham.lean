@@ -3,7 +3,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFacto
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsobaricDiscreteSelfDualStrongMultiplicityOne
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsEmbeddingPadicAlgClPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFiniteExtAbsIrrSubStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFiniteExtAbsIrrSub
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsConjDoubleBlockOfIsoSubspacesStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 
@@ -164,62 +164,5 @@ theorem continuous_blocks' {k Γ : Type} [Field k] [TopologicalSpace k] [IsTopol
 end GlobalTheory.AbsIrrConstituents
 
 namespace GlobalTheory.AbsIrrConstituents
-
-theorem absIrr_and_distinct_constituents : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm1 D → (∀ (i : D.nd.Loc) (x : D.nd.X i) (P : D.naut.AV i) (Pa : List (Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa → ∀ ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (Qbar (D.nd.l i)), SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ → (∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.wdOf i ρ w = D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2)) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i ρ w ∧ D.naut.wdOf i ρ w = D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2) ∧ ∀ τ, InducesW D.nd i τ w → D.naut.jumpsW i ρ τ = D.naut.locAutHodgeTateWeightsLevelZero i τ) → ∀ (i : D.nd.Loc) (r : D.nd.X i → (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i))), (∀ x, SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x (mapRep (iotaOQ D.nd D.naut i) (r x))) → SumRepresentations.At.G3a D.nd i r := by
-  intro D ht hadm hH i r hr
-  classical
-  letI alg : Algebra (Kf D.nd i) (Qbar (D.nd.l i)) := (D.naut.iotaQ i).toAlgebra
-  have hss : ∀ x, IsSSRep (mapRep (algebraMap (Kf D.nd i) (AlgebraicClosure (Kf D.nd i)))
-      (mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x))) := by
-    intro x
-    let f : AlgebraicClosure (Kf D.nd i) →ₐ[Kf D.nd i] Qbar (D.nd.l i) := IsAlgClosed.lift
-    letI : Algebra (AlgebraicClosure (Kf D.nd i)) (Qbar (D.nd.l i)) := f.toRingHom.toAlgebra
-    apply SumRepresentations.isSSRep_descent (L := Qbar (D.nd.l i))
-    have e : ((algebraMap (AlgebraicClosure (Kf D.nd i)) (Qbar (D.nd.l i))).comp
-        (algebraMap (Kf D.nd i) (AlgebraicClosure (Kf D.nd i)))).comp (algebraMap (D.nd.O i) (Kf D.nd i)) =
-        iotaOQ D.nd D.naut i := by
-      ext z
-      show f (algebraMap (Kf D.nd i) _ (algebraMap _ (Kf D.nd i) z)) = D.naut.iotaQ i (algebraMap _ _ z)
-      rw [f.commutes]; rfl
-    rw [← mapRep_comp, ← mapRep_comp, e]
-    exact (hr x).2.1
-  obtain ⟨K', hF, hA, hFD, hsplit⟩ :=
-    GlobalTheory.T.exists_finiteDimensional_ext_irrSub_absIrr (fun x => mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x)) hss
-  refine ⟨K', hF, hA, hFD, fun x => ⟨?_, ?_⟩⟩
-  · rw [mapRep_comp]; exact hsplit x
-  · intro W₁ W₂ h1 h2 hdis hiso
-    let f' : K' →ₐ[Kf D.nd i] Qbar (D.nd.l i) := IsAlgClosed.lift
-    have e' : (f'.toRingHom).comp ((algebraMap (Kf D.nd i) K').comp (algebraMap (D.nd.O i) (Kf D.nd i))) =
-        iotaOQ D.nd D.naut i := by
-      ext z
-      show f' (algebraMap (Kf D.nd i) K' (algebraMap _ (Kf D.nd i) z)) = D.naut.iotaQ i (algebraMap _ _ z)
-      rw [f'.commutes]; rfl
-    have hQ : mapRep f'.toRingHom (mapRep ((algebraMap (Kf D.nd i) K').comp (algebraMap (D.nd.O i) (Kf D.nd i))) (r x)) =
-        mapRep (iotaOQ D.nd D.naut i) (r x) := by
-      rw [← mapRep_comp, e']
-    have hssK : IsSSRep (mapRep ((algebraMap (Kf D.nd i) K').comp (algebraMap (D.nd.O i) (Kf D.nd i))) (r x)) := by
-      letI : Algebra K' (Qbar (D.nd.l i)) := f'.toRingHom.toAlgebra
-      apply SumRepresentations.isSSRep_descent (L := Qbar (D.nd.l i))
-      show IsSSRep (mapRep f'.toRingHom _)
-      rw [hQ]; exact (hr x).2.1
-    obtain ⟨d, u, σ, υ, h, Pm, hd, hrel⟩ := GlobalTheory.T.exists_conj_double_block_of_iso_subspaces _ W₁ W₂ hssK h1.2.1 h2.2.1 h1.1 hdis hiso
-    have hrelQ := rel_map' f'.toRingHom h _ σ υ Pm hrel
-    rw [hQ] at hrelQ
-    have hcQ : SumRepresentations.At.ContQ D.nd i (mapRep (iotaOQ D.nd D.naut i) (r x)) := (hr x).1
-    obtain ⟨hcA, hcυ⟩ := continuous_blocks' _ _ _ h _ hrelQ hcQ
-    have hcσ : SumRepresentations.At.ContQ D.nd i (mapRep f'.toRingHom σ) :=
-      (continuous_blocks' (SumRepresentations.At.sumRep (mapRep f'.toRingHom σ) (mapRep f'.toRingHom σ))
-        (mapRep f'.toRingHom σ) (mapRep f'.toRingHom σ) rfl 1 (fun g => by simp) hcA).1
-    obtain ⟨P, hP⟩ := D.naut.pt_surj i x
-    obtain ⟨Pa, hPa⟩ := hadm i P
-    obtain ⟨-, hon⟩ := hH i x P Pa hP hPa _ (hr x)
-    obtain ⟨τ, w, hτw⟩ := GlobalTheory.T.exists_padicAlgCl_embedding_and_place_norm_lt_one D.host.E (D.nd.l i)
-    have hpl : ∀ w', InducesW D.nd i τ w' → w' ∈ placesOver D.host.E (D.nd.l i) :=
-      fun w' hw' => mem_of_induces' D.host.E (D.nd.l i) τ w' hw'
-    have hτ : InducesW D.nd i τ w := hτw
-    have hJ := (hon w (hpl w hτ)).2.2 τ hτ
-    refine jumps_not_nodup' D ht i τ w (hpl w hτ) hτ hpl h _ _ _ _ hd hcQ hcσ hcυ hrelQ
-      (fun w' hw' => (hon w' (hpl w' hw')).1) ?_
-    rw [hJ]; exact fixedJumps_nodup D i P τ
 
 end GlobalTheory.AbsIrrConstituents

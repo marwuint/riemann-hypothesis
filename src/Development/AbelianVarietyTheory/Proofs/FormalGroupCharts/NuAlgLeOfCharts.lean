@@ -4,13 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralChartDirecti
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralChartFormalBiext
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StarRingExtOfStar
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.UniversalJetCoordinatesDimUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.UniversalJetCoordinatesDimUnique
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.SurjectiveAppTopIntegralModelSquareStatement
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsIsoIntegralModelsMatchingLieBasesStatement
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.LocalChartDepthEqIntegralBiextDepthStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.BiextensionDepthLeOfRelatedStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PushChartStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalBiextensionsRelatedOfTripleMapOverIdStatement
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.BiextensionDepthLeOfRelated
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PushChart
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalBiextensionsRelatedOfTripleMapOverId
 
 set_option autoImplicit false
 noncomputable section
@@ -47,12 +47,12 @@ theorem nuAlg_le_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     (heig : ∀ (a : 𝓞 E) (ℓ : Lt1 Dw), (dAct T.Fr B' a).mulVec (u' ℓ) = io (embK c ℓ.1 a) • u' ℓ)
     (ε k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (N : ℕ) :
     nuAlg Dw T B h u ε k a N ≤ nuAlg Dw T B' h' u' ε k a N := by
-  obtain ⟨x'', -, hx''u, -, -⟩ := GlobalTheory.T.pushChartAlt E H T.V t t' n d x
-  have hd : d = d' := GlobalTheory.T.universalJetCoordinates_dim_unique T.V t'.G d d' x'' x' (hx''u hu) hu'
+  obtain ⟨x'', -, hx''u, -, -⟩ := _root_.GlobalTheory.PushChart.pushChart E H T.V t t' n d x
+  have hd : d = d' := _root_.GlobalTheory.ChartCmp.univJ_dim_unique T.V t'.G d d' x'' x' (hx''u hu) hu'
   subst hd
-  obtain ⟨φ, φi, hrel, hlin⟩ := GlobalTheory.T.formal_biextensions_related_of_triple_map_over_id E H hs T.V t t' n hsurj d B B' (Fin d) (Fin d) tg tg' uv uv' x x' e e'
+  obtain ⟨φ, φi, hrel, hlin⟩ := _root_.GlobalTheory.ChartCmp.jrel_of_sabMap E H hs T.V t t' n hsurj d B B' (Fin d) (Fin d) tg tg' uv uv' x x' e e'
     hc hc' hu hu' hf hf'
-  refine GlobalTheory.T.biextension_depth_le_of_related E H Dw l Xo c hs T io d B B' φ φi h h' u u' hrel hg hg' heig ?_ ε k a N
+  refine _root_.GlobalTheory.ChartCmp.nuAlg_le_of_jrel E H Dw l Xo c hs T io d B B' φ φi h h' u u' hrel hg hg' heig ?_ ε k a N
   intro ℓ
   have hu1 : u ℓ = fun i => algebraMap T.V T.Fr (uT ℓ i) := funext (huT ℓ)
   have hu2 : u' ℓ = fun j => algebraMap T.V T.Fr (uT' ℓ j) := funext (huT' ℓ)

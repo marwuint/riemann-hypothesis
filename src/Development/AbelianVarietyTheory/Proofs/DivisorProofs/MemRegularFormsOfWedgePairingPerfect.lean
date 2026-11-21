@@ -161,11 +161,6 @@ theorem mem_omB_of_mul_mem_omB :
   have h1 : (1 : B) ∈ I := hI ▸ Submodule.mem_top
   simpa [I] using h1
 
-example : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (B : Subalgebra k K) [IsFractionRing B K]
-    [Algebra.Smooth k B] (d p q : ℕ), Module.finrank K Ω[K⁄k] = d → p + q = d →
-    ∀ y ∈ ⋀[K]^q Ω[K⁄k], (∀ a ∈ omB k K B p, a * y ∈ omB k K B d) → y ∈ omB k K B q :=
-  mem_omB_of_mul_mem_omB
-
 end Wedge
 
 end GlobalTheory.PD

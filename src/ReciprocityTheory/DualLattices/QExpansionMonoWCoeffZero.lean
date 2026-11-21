@@ -124,9 +124,4 @@ theorem coe_mem_monoSpanF (w : ℕ) (f : ModularForm 𝒮ℒ (w : ℤ)) : (⇑f 
     subst this
     simp
 
-noncomputable def coeLin (k : ℤ) : ModularForm 𝒮ℒ k →ₗ[ℂ] (ℍ → ℂ) where
-  toFun f := ⇑f
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-
 end ReciprocityTheory.PGsh

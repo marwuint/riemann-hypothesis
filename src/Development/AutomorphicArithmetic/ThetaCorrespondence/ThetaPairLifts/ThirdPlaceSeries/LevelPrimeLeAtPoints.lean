@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TraceUpperBoundAllMembers
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CoreAltAltBis
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ColumnChoiceWithTies
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TwistedBundle
@@ -11,13 +11,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LevelPrimeUpper
-open Formalism.MainNotions.StandardLattice Finset
 end GlobalTheory.LevelPrimeUpper
 namespace GlobalTheory.LevelPrimeUpper
-open Formalism.MainNotions.StandardLattice Finset
 end GlobalTheory.LevelPrimeUpper
 namespace GlobalTheory.LevelPrimeUpper
-open Formalism.MainNotions.StandardLattice Finset
 end GlobalTheory.LevelPrimeUpper
 namespace GlobalTheory.LevelPrimeUpper
 open Formalism.MainNotions.StandardLattice Finset

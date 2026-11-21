@@ -28,26 +28,5 @@ def H (J : QJ a t) (j : ℕ) (hj : j + 2 ≤ B.R.m) (α : J.Ch j) (i : Fin J.r) 
   prX (Cgrp (((J.G i).T (J.E i).δ (J.E i).tame (J.E i).η).lev j ((J.G i).s - j + 1) (by have := step_index_le_s J i hj; omega)).J
     ((J.E i).rep j ((J.G i).s - j) (Nat.add_sub_cancel' (step_index_le_s J i hj)) (α i)))
 
-def twAt (J : QJ a t) : GlobalTheory.FinPl.Pl (I.rec7 l Z) → Prop := fun v => ∃ i, (J.G i).q.v = v
-
-def relax (J : QJ a t) (j : ℕ) (hj : j + 2 ≤ B.R.m) (α : J.Ch j) : Subgroup (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)) :=
-  (J.A.U j (J.ι j α) ⊔ GlobalTheory.FinPl.grpAt _ (twAt J)) ⊓ GfC _ ⊓
-    (Subgroup.pi Set.univ fun i => KO (J.G i).k (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j)).comap (phi J j hj)
-
-def Up (a : GeoAll W u) (j : ℕ) (hj : j + 2 ≤ B.R.m) : Subgroup (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)) :=
-  if h : ∃ t, ∃ J : QJ a t, J.Reads ∧ Nonempty (J.Ch j) then
-    relax h.choose_spec.choose j hj h.choose_spec.choose_spec.2.some
-  else ⊥
-
-theorem Up_le (a : GeoAll W u) (j : ℕ) (hj : j + 2 ≤ B.R.m) : Up a j hj ≤ GfC _ := by
-  unfold Up
-  split_ifs
-  · intro g hg
-    exact (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hg).1).2
-  · exact bot_le
-
-theorem wt_eq {W : RealPack ex} {u : B.Word} {a : GeoAll W u} {t : W.P.T} (J : QJ a t) (j : ℕ) (hj : j + 2 ≤ B.R.m) (α : J.Ch j) (i : Fin J.r) :
-    (J.E i).wt j (α i) = ((((J.E i).m j (H J j hj α i)).toReal⁻¹ : ℝ) : ℂ) :=
-  (J.E i).wt_mid j ((J.G i).s - j) (Nat.add_sub_cancel' (step_index_le_s J i hj)) (α i)
 end GlobalTheory.LevProd
 end

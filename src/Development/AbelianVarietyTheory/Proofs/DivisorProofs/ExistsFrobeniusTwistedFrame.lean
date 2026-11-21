@@ -21,12 +21,6 @@ theorem phiR_tmul (a : Ainf p O) (l : Λ) : phiR (a ⊗ₜ[ℤ_[p]] l) = WittVec
 
 theorem psiR_tmul (a : Ainf p O) (l : Λ) : psiR (a ⊗ₜ[ℤ_[p]] l) = phiInv p O a ⊗ₜ l := rfl
 
-theorem eq_psiR {ψ : RL p O Λ →+* RL p O Λ} (hψ : IsPsi ψ) (r : RL p O Λ) : ψ r = psiR r := by
-  induction r using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a l => rw [hψ, psiR_tmul]
-  | add x y hx hy => rw [map_add, map_add, hx, hy]
-
 theorem phiR_psiR (r : RL p O Λ) : phiR (psiR r) = r := by
   induction r using TensorProduct.induction_on with
   | zero => simp
@@ -46,10 +40,6 @@ theorem phiR_smul (a : Ainf p O) (r : RL p O Λ) :
   | tmul x l => rw [TensorProduct.smul_tmul', phiR_tmul, phiR_tmul, TensorProduct.smul_tmul',
       smul_eq_mul, smul_eq_mul, map_mul]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
-
-theorem phiR_one_tmul_mul (l : Λ) (r : RL p O Λ) :
-    phiR (((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) * r) = ((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) * phiR r := by
-  rw [map_mul, phiR_tmul, map_one]
 
 variable {N h : ℕ}
 
@@ -86,29 +76,5 @@ theorem twist_apply (e : (Fin N → RL p O Λ) ≃ₗ[Ainf p O] (Fin h → Ainf 
 end GlobalTheory.DetInv.Twist
 
 namespace GlobalTheory.DetInv
-
-open Twist in
-
-theorem frame_twist : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
-    [IsAdicComplete (Ideal.span {(p : O)}) O] (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (N h : ℕ)
-    (ψ : RL p O Λ →+* RL p O Λ) (ρ : Λ → Matrix (Fin h) (Fin h) (Ainf p O))
-    (e : (Fin N → RL p O Λ) ≃ₗ[Ainf p O] (Fin h → Ainf p O)), IsPsi ψ → IsFrame ρ e →
-    ∃ e' : (Fin N → RL p O Λ) ≃ₗ[Ainf p O] (Fin h → Ainf p O),
-      IsFrame (fun l => (ρ l).map (phiInv p O)) e' ∧
-        ∀ w, e' (fun i => ψ (w i)) = fun j => phiInv p O (e w j) := by
-  intro p _ O _ _ _ Λ _ _ N h ψ ρ e hψ he
-  refine ⟨twist e, fun l w => ?_, fun w => ?_⟩
-  · rw [twist_apply, twist_apply]
-    have h1 : (fun i => phiR ((((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) • w) i)) =
-        ((1 : Ainf p O) ⊗ₜ[ℤ_[p]] l) • fun i => phiR (w i) := by
-      funext i
-      simp only [Pi.smul_apply, smul_eq_mul, phiR_one_tmul_mul]
-    rw [h1, he]
-    funext j
-    have := RingHom.map_mulVec (phiInv p O) (ρ l) (e (fun i => phiR (w i))) j
-    exact this
-  · rw [twist_apply]
-    funext j
-    simp only [eq_psiR hψ, phiR_psiR]
 
 end GlobalTheory.DetInv

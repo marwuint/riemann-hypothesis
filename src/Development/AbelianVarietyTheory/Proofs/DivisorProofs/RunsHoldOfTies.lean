@@ -5,7 +5,10 @@ import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.DepthCond
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceLatticeLeThetaLatticeAtPlace
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodLiftOnto
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ParametersOkOfLaws
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsConstantsIndexBoundHypothesesLiftWeightsStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsConstantsIndexBoundHypothesesLiftWeights
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.NormComparisonConstants
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.NoCommonZeroSt
+import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie
 
 set_option autoImplicit false
 
@@ -18,7 +21,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn
 
 theorem runsHold_of_ties : ∃ CK x₁ : ℝ, ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (J : CoreJ D) [Algebra J.Q.c.F D.what₂.LL] (R : RealDat D A J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie J R κ v₀) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (EX : ErrX D) (r : TwoRuns J G), CoreTies L EX J R → RunsOk fw r → OwnPin r → PageNum Tp x₁ → RunsHold Tp hK EX CK r := by
-  obtain ⟨CK, x₁, H⟩ := GlobalTheory.T.exists_constants_indexBound_hypotheses_liftWeights
+  obtain ⟨CK, x₁, H⟩ := _root_.GlobalTheory.FinalJoin2.hyp_concl_at_run
   refine ⟨CK, x₁, ?_⟩
   intro D G _ _ Pl0 T0 A J _ R F κ v₀ fw L Pm Tp hK EX r hc ok hown hnum v h hinj
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hnum

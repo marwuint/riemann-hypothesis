@@ -30,45 +30,7 @@ theorem lev_nsmul (N : ℕ) (t : Tate p M) (n : ℕ) : (N • t).lev n = t.lev n
   | zero => simp
   | succ N ih => rw [succ_nsmul, Tate.lev_add, ih, pow_succ]
 
-theorem tate_map_bijective [Fact p.Prime] {M' : Type} [CommGroup M'] {f : M →* M'} (hf : Function.Injective f)
-    (h : ∀ (n : ℕ) (y : M'), y ^ p ^ n = 1 → ∃ x, f x = y) : Function.Bijective (Tate.map p f) := by
-  refine ⟨Tate.map_injective hf, fun t => ?_⟩
-  choose s hs using fun n => h n _ (t.lev_pow n)
-  exact ⟨Tate.mk s fun n => ⟨hf (by rw [map_pow, hs, t.lev_pow, map_one]), hf (by rw [map_pow, hs, hs, t.lev_succ])⟩,
-    Tate.ext hs⟩
-
 end Tate
-
-section Algebraic
-
-variable {R Ω C : Type} [CommRing R] [Field Ω] [Field C] (α : R →+* Ω) (κ : Ω →+* C) {β : R →+* C}
-  (hβ : κ.comp α = β)
-
-def extPt : (Over.mk (spMap β) : Over (Sp R)) ⟶ Over.mk (spMap α) :=
-  Over.homMk (spMap κ) (by subst hβ; exact (Spec.map_comp _ _).symm)
-
-theorem extPt_injective (G : Over (Sp R)) : Function.Injective fun x : Over.mk (spMap α) ⟶ G => extPt α κ hβ ≫ x := by
-  haveI : Epi (spMap κ) := by
-    letI := κ.toAlgebra
-    haveI : Flat (spMap κ) := (Flat.SpecMap_iff).2 (inferInstanceAs (Module.Flat Ω C))
-    exact Flat.epi_of_flat_of_surjective _
-  exact fun x y h => Over.OverMorphism.ext ((cancel_epi (spMap κ)).1 (congrArg (·.left) h))
-
-theorem exists_extPt_eq [IsNoetherianRing R] [IsAlgClosed Ω] [IsAlgClosed C] [CharZero C] (B : Out.PolAV (Sp R)) {n : ℕ}
-    (hn : 1 ≤ n) (y : Over.mk (spMap β) ⟶ B.A) (hy : y ^ n = 1) :
-    ∃ x : Over.mk (spMap α) ⟶ B.A, x ^ n = 1 ∧ extPt α κ hβ ≫ x = y := by
-  haveI : CharZero Ω := κ.charZero
-  have h := (GlobalTheory.firstFiveLaws.1.mulN (Sp R) B n hn).2.2.2.2
-  have h1 := h Ω (spMap α) (Nat.cast_ne_zero.2 (by omega))
-  have h2 := h C (spMap β) (Nat.cast_ne_zero.2 (by omega))
-  haveI : Finite {x : Over.mk (spMap β) ⟶ B.A // x ^ n = 1} := Nat.finite_of_card_ne_zero (by rw [h2]; positivity)
-  let F : {x : Over.mk (spMap α) ⟶ B.A // x ^ n = 1} → {x : Over.mk (spMap β) ⟶ B.A // x ^ n = 1} := fun x =>
-    ⟨extPt α κ hβ ≫ x.1, by rw [← MonObj.comp_pow, x.2, MonObj.comp_one]⟩
-  have hF : Function.Injective F := fun x y e => Subtype.ext (extPt_injective α κ hβ _ (congrArg Subtype.val e))
-  obtain ⟨x, hx⟩ := (hF.bijective_of_nat_card_le (h2.trans h1.symm).le).2 ⟨y, hy⟩
-  exact ⟨x.1, x.2, congrArg Subtype.val hx⟩
-
-end Algebraic
 
 theorem lamEq_polPull {S S' : Scheme.{0}} (s : S' ⟶ S) {X Y A B : Out.PolAV S} {f₁ : X.A ⟶ A.A} {f₂ : Y.A ⟶ A.A}
     {g₁ : X.A ⟶ B.A} {g₂ : Y.A ⟶ B.A} (h : LamEq A.L f₁ f₂ B.L g₁ g₂) :
@@ -132,23 +94,6 @@ theorem ptsEquiv_homC (f : B.A ⟶ B'.A) (x : ChTor.Pts (goodPoint hv ε j B o).
 
 variable [IsAlgClosed C] [CharZero C]
 
-theorem exists_tateEquiv [IsNoetherianRing R] {Ω : Type} [Field Ω] [IsAlgClosed Ω] (α : R →+* Ω) (κ : Ω →+* C)
-    (h : κ.comp α = (algebraMap O C).comp j) :
-    ∃ e : ∀ (B : Out.PolAV (Sp R)) (o : B.OAct Λ), Tate p (Over.mk (spMap α) ⟶ B.A) ≃ₗ[ℤ_[p]] (goodPoint hv ε j B o).T,
-      ∀ (B B' : Out.PolAV (Sp R)) (o : B.OAct Λ) (o' : B'.OAct Λ) (f : B.A ⟶ B'.A) [IsMonHom f] (t),
-        e B' o' (Tate.map p (IndepPoint.ptsHom f _) t) = homT hv ε j o o' f (e B o t) := by
-  let F := fun (B : Out.PolAV (Sp R)) (o : B.OAct Λ) =>
-    (ptsEquiv hv ε j o).symm.toMonoidHom.comp (preHom (G := B.A) (extPt α κ h))
-  have hF : ∀ B o, Function.Bijective (Tate.map p (F B o)) := fun B o =>
-    tate_map_bijective ((ptsEquiv hv ε j o).symm.injective.comp (extPt_injective α κ h _)) fun n y hy => by
-      obtain ⟨x, -, hx⟩ := exists_extPt_eq α κ h B (one_le_ppow p n) (ptsEquiv hv ε j o y)
-        (by rw [← map_pow, hy, map_one])
-      exact ⟨x, (ptsEquiv hv ε j o).symm_apply_eq.2 hx⟩
-  refine ⟨fun B o => LinearEquiv.ofBijective _ (hF B o), fun B B' o o' f _ t => Tate.ext fun n => ?_⟩
-  refine (ptsEquiv hv ε j o').symm_apply_eq.2 ?_
-  rw [lev_homT, ptsEquiv_homC]
-  exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ f) ((ptsEquiv hv ε j o).apply_symm_apply _).symm)
-
 theorem pairT_homT_of_lamEq {X Y A B : Out.PolAV (Sp R)} (oX : X.OAct Λ) (oY : Y.OAct Λ) (oA : A.OAct Λ)
     (oB : B.OAct Λ) (f₁ : X.A ⟶ A.A) (f₂ : Y.A ⟶ A.A) (g₁ : X.A ⟶ B.A) (g₂ : Y.A ⟶ B.A) [IsMonHom f₁] [IsMonHom f₂]
     [IsMonHom g₁] [IsMonHom g₂] (h : LamEq A.L f₁ f₂ B.L g₁ g₂) (s : (goodPoint hv ε j X oX).T)
@@ -210,19 +155,6 @@ section Points
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] [IsAlgClosed C] [CharZero C]
 
-theorem pairV_baseChange [Algebra ℤ_[p] C] {X Y A B : Point p v O Λ} {f₁ : X.T →ₗ[ℤ_[p]] A.T} {f₂ : Y.T →ₗ[ℤ_[p]] A.T}
-    {g₁ : X.T →ₗ[ℤ_[p]] B.T} {g₂ : Y.T →ₗ[ℤ_[p]] B.T}
-    (h : ∀ s t, pairT A.A A.eps (f₁ s) (f₂ t) = pairT B.A B.eps (g₁ s) (g₂ t)) (x : X.V) (y : Y.V) :
-    A.pairV (f₁.baseChange C x) (f₂.baseChange C y) = B.pairV (g₁.baseChange C x) (g₂.baseChange C y) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']
-  | tmul c s =>
-    induction y using TensorProduct.induction_on with
-    | zero => simp
-    | add y y' hy hy' => simp only [map_add, hy, hy']
-    | tmul d t => exact congrArg (· • (c * d)) (h s t)
-
 theorem eq_zero_of_actT {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E)) (hg : 0 < P.A.g)
     {a : 𝓞 E} (h : ∀ t, P.actT a t = 0) : a = 0 := by
   by_contra ha
@@ -237,76 +169,6 @@ theorem eq_zero_of_actT {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)]
 
 variable {A A' B : Point p v O Λ} {m m' : ℕ} (φ : Fin m → (A.T →ₗ[ℤ_[p]] B.T)) (φ' : Fin m' → (A'.T →ₗ[ℤ_[p]] B.T))
   {N : ℕ} (hN : 0 < N) (ψ : Fin m → (B.T →ₗ[ℤ_[p]] A.T)) (ψ' : Fin m' → (B.T →ₗ[ℤ_[p]] A'.T))
-
-omit [IsAlgClosed C] in
-include hN in
-
-theorem bijective_of_inverse [Algebra ℤ_[p] C] (h1 : ∀ t, ∑ k, φ k (ψ k t) + ∑ k, φ' k (ψ' k t) = N • t)
-    (h2 : ∀ (s : Fin m → A.T) (s' : Fin m' → A'.T), (∀ l, ψ l (∑ k, φ k (s k) + ∑ k, φ' k (s' k)) = N • s l) ∧
-      ∀ l, ψ' l (∑ k, φ k (s k) + ∑ k, φ' k (s' k)) = N • s' l) :
-    Function.Bijective fun z : (Fin m → A.V) × (Fin m' → A'.V) =>
-      ∑ k, (φ k).baseChange C (z.1 k) + ∑ k, (φ' k).baseChange C (z.2 k) := by
-  classical
-  have hC : (N : C) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
-  have a1 : ∀ l k x, (ψ l).baseChange C ((φ k).baseChange C x) = if k = l then (N : C) • x else 0 := fun l k x => by
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]; split_ifs <;> simp
-    | tmul c t =>
-      have := (h2 (Pi.single k t) 0).1 l
-      rw [Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (by simp)] at this
-      simp only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, add_zero] at this
-      rw [LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, Nat.cast_smul_eq_nsmul]
-      split_ifs with h
-      · rw [h, Pi.single_eq_same, TensorProduct.tmul_smul]
-      · simp [Ne.symm h]
-  have a2 : ∀ l k x, (ψ l).baseChange C ((φ' k).baseChange C x) = 0 := fun l k x => by
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy, add_zero]
-    | tmul c t =>
-      have := (h2 0 (Pi.single k t)).1 l
-      rw [Finset.sum_eq_single k (f := fun b => φ' b _) (fun b _ hb => by simp [hb]) (by simp)] at this
-      simp only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, zero_add, smul_zero] at this
-      rw [LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, TensorProduct.tmul_zero]
-  have a3 : ∀ l k x, (ψ' l).baseChange C ((φ k).baseChange C x) = 0 := fun l k x => by
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy, add_zero]
-    | tmul c t =>
-      have := (h2 (Pi.single k t) 0).2 l
-      rw [Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (by simp)] at this
-      simp only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, add_zero, smul_zero] at this
-      rw [LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, TensorProduct.tmul_zero]
-  have a4 : ∀ l k x, (ψ' l).baseChange C ((φ' k).baseChange C x) = if k = l then (N : C) • x else 0 := fun l k x => by
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, hx, hy]; split_ifs <;> simp
-    | tmul c t =>
-      have := (h2 0 (Pi.single k t)).2 l
-      rw [Finset.sum_eq_single k (f := fun b => φ' b _) (fun b _ hb => by simp [hb]) (by simp)] at this
-      simp only [Pi.single_eq_same, Pi.zero_apply, map_zero, Finset.sum_const_zero, zero_add] at this
-      rw [LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, this, Nat.cast_smul_eq_nsmul]
-      split_ifs with h
-      · rw [h, Pi.single_eq_same, TensorProduct.tmul_smul]
-      · simp [Ne.symm h]
-  have a5 : ∀ x : B.V, ∑ k, (φ k).baseChange C ((ψ k).baseChange C x) +
-      ∑ k, (φ' k).baseChange C ((ψ' k).baseChange C x) = (N : C) • x := fun x => by
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | add x y hx hy => simp only [map_add, Finset.sum_add_distrib, smul_add, ← hx, ← hy]; abel
-    | tmul c t =>
-      simp only [LinearMap.baseChange_tmul, ← TensorProduct.tmul_sum, ← TensorProduct.tmul_add, h1]
-      rw [Nat.cast_smul_eq_nsmul, TensorProduct.tmul_smul]
-  refine ⟨fun z z' h => Prod.ext (funext fun l => ?_) (funext fun l => ?_), fun x => ?_⟩
-  · have := congrArg ((ψ l).baseChange C) h
-    simp only [map_add, map_sum, a1, a2, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this
-    exact smul_right_injective _ hC (add_right_cancel this)
-  · have := congrArg ((ψ' l).baseChange C) h
-    simp only [map_add, map_sum, a3, a4, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this
-    exact smul_right_injective _ hC (add_left_cancel this)
-  · refine ⟨(fun k => (ψ k).baseChange C ((N : C)⁻¹ • x), fun k => (ψ' k).baseChange C ((N : C)⁻¹ • x)), ?_⟩
-    exact (a5 _).trans (smul_inv_smul₀ hC x)
 
 include hN in
 

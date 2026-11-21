@@ -66,7 +66,4 @@ theorem kFac_differentiable : Differentiable ℂ (kFac F) := by
   refine DifferentiableAt.const_cpow (differentiableAt_id.const_mul _) (Or.inl ?_)
   exact_mod_cast (mul_pos two_pos Real.pi_pos).ne'
 
-example (𝔞 : Frac F) (σ : ℂ) (z : Emb F → ℂ) (a : F) : eisTerm 2 σ z (a, 0) = eisTerm 2 σ 0 (a, 0) := by
-  simp [eisTerm, latPt]
-
 end GlobalTheory.HeckeTwo

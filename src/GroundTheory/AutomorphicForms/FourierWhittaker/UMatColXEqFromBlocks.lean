@@ -27,9 +27,6 @@ theorem uN_add (X Y : Pos n → R) : uN (X + Y) = uN X + uN Y := by
 theorem uN_zero : uN (0 : Pos n → R) = 0 := by
   ext a b; simp only [uN_apply, Pi.zero_apply, Matrix.zero_apply]; split_ifs <;> rfl
 
-theorem uN_neg (X : Pos n → R) : uN (-X) = -uN X := by
-  ext a b; simp only [uN_apply, Pi.neg_apply, Matrix.neg_apply]; split_ifs <;> simp
-
 def uMat (X : Pos n → R) : Matrix (Fin n) (Fin n) R := 1 + uN X
 
 theorem uMat_apply (X : Pos n → R) (a b : Fin n) :
@@ -77,9 +74,6 @@ theorem colX_add (k : ℕ) (x y : Fin k → R) : colX (n := n) k (x + y) = colX 
 
 theorem colX_zero (k : ℕ) : colX (n := n) k (0 : Fin k → R) = 0 := by
   funext p; simp only [colX_apply, Pi.zero_apply]; split_ifs <;> rfl
-
-theorem colX_neg (k : ℕ) (x : Fin k → R) : colX (n := n) k (-x) = -colX k x := by
-  funext p; simp only [colX_apply, Pi.neg_apply]; split_ifs <;> simp
 
 theorem uN_mul_uN_colX {k : ℕ} {Y : Pos n → R} (hY : ∀ p : Pos n, p.1.2.val ≤ k → Y p = 0)
     (x : Fin k → R) : uN Y * uN (colX k x) = 0 := by

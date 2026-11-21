@@ -79,12 +79,6 @@ theorem _root_.GlobalTheory.PDivGroup.kerIdeal_mulP (n : ℕ) :
 
 end PDivGroup
 
-section TensorQuot
-
-variable {R k M : Type} [CommRing R] [CommRing k] [Algebra R k] [AddCommGroup M] [Module R M]
-
-end TensorQuot
-
 namespace PDivGroup
 
 end PDivGroup

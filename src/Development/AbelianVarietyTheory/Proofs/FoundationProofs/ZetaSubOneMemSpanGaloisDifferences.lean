@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralTraceEqZetaSubOneTopStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OneSubPrimeDivZetaSubOneMulIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralTraceEqZetaSubOneTop
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OneSubPrimeDivZetaSubOneMulIsUnit
 
 open GlobalTheory.K5 GlobalTheory.KumDlog
 
@@ -35,7 +35,7 @@ theorem zeta_sub_one_mem_span : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (�
   set I := Submodule.span C {y : Ω | ∃ x ∈ C, y = g x - x} with hI
   have hr0 : r ≠ 0 := by rintro rfl; exact hgr (map_zero g)
   obtain ⟨y, E, hy, hE, huniq, hsum⟩ :=
-    GlobalTheory.T.exists_integral_sum_conj_eq_zeta_sub_one p hp2 Ω hΩ T {r} (by simpa using hr) j hj
+    _root_.GlobalTheory.exists_integral_trace_eq_zeta_sub_one_top p hp2 Ω hΩ T {r} (by simpa using hr) j hj
   have hE' : ∀ e ∈ E, e ∈ Hinf T := hE
   have huniq' : ∀ h ∈ Hinf T, ∃! e, e ∈ E ∧ h y = e y ∧ h r = e r := by
     intro h hh; simpa using huniq h hh
@@ -165,7 +165,7 @@ theorem zeta_sub_one_mem_span : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (�
     rwa [hNd, hsumZ] at this
   have hτ0 : T.ζ j - 1 ≠ 0 :=
     sub_ne_zero.2 ((T.prim j).ne_one (Nat.one_lt_pow (by omega) hp.one_lt))
-  obtain ⟨hu0, huint⟩ := GlobalTheory.T.one_sub_prime_div_zeta_sub_one_mul_isUnit p hp2 Ω hΩ T j hj W hWC.1
+  obtain ⟨hu0, huint⟩ := _root_.GlobalTheory.K5.one_sub_p_div_zeta_mul_isUnit p hp2 Ω hΩ T j hj W hWC.1
   have huC : (1 - (p : Ω) / (T.ζ j - 1) * W)⁻¹ ∈ C := by
     refine ⟨huint, fun h hh => ?_⟩
     rw [mem_Hfix] at hh

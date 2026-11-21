@@ -124,13 +124,6 @@ private theorem exists_good {S : ℕ} {G : Set ℕ} (h : Windows S G) {r : ℝ} 
   have : (y' : ℝ) ≤ y + S := by exact_mod_cast (by omega : y' ≤ y + S)
   linarith
 
-private theorem logTerm_nonneg {l n : ℕ} (hl : 5 ≤ l) (hn : 1 ≤ n) :
-    0 ≤ (n : ℝ) * (Real.logb l n + 1) := by
-  have h1 : (1 : ℝ) < l := by exact_mod_cast (by omega : 1 < l)
-  have h2 : (1 : ℝ) ≤ n := by exact_mod_cast hn
-  have := Real.logb_nonneg h1 h2
-  positivity
-
 section
 variable {l d : ℕ} [NeZero d]
 

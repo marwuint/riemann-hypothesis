@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilOperatorConjHeisenbergMovedLattice
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KernelLatticesFormSelfDualTriples
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaFunctionsAllLevelsClosureStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaFunctionsAllLevelsClosure
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.InertSign
 open scoped BigOperators
 
@@ -28,12 +28,12 @@ theorem om_mem_Th_moved : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), 
   obtain ⟨hnice, -⟩ := GlobalTheory.ThetaTriple.klat_triples D cc δ hC N N'
   have n1 := hnice _ (Or.inr ⟨L₁, L₁', s1, s1', rfl⟩)
   have n2 := hnice _ (Or.inr ⟨L₂, L₂', s2, s2', rfl⟩)
-  obtain ⟨hT, hW, -⟩ := GlobalTheory.T.thetaFunctions_all_levels_closure D cc δ hC N N'
+  obtain ⟨hT, hW, -⟩ := _root_.GlobalTheory.ThetaLevels.levels_closed D cc δ hC N N'
   have hFT := hT L₁ L₁' s1 s1' F hF
   have hGT := W.maps g g' F hFT
   have hfix := ((n1.mem_ThSp F).1 hF).2
   refine (n2.mem_ThSp _).2 ⟨hGT.1, fun y hy => ?_⟩
-  obtain ⟨z, hz, -⟩ := GlobalTheory.T.exists_rationalPoint_of_mem_movedThetaLattice D hD cc δ hC.1.1 N N' _ _ L₂ L₂' h2 h2' y hy
+  obtain ⟨z, hz, -⟩ := _root_.GlobalTheory.NormSum.exists_pt_of_mem_La_moved D hD cc δ hC.1.1 N N' _ _ L₂ L₂' h2 h2' y hy
   have hWT : Wd D (tor0 D cc δ) y (W.Om g g' F) ∈ TT D (tor0 D cc δ) N N' := by
     rw [hz]; exact hW z _ hGT
   obtain ⟨x, hx, he⟩ := GlobalTheory.WeilEquiv.om_wd_moved D hD cc δ hC.1.1 N N' e0 W g⁻¹ (g * h) g'⁻¹ (g' * h')

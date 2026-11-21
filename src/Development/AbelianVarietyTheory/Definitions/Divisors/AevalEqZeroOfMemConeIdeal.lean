@@ -81,9 +81,6 @@ theorem coneIdeal_smul {a : Ω} (ha : a ≠ 0) (y : Fin N → Ω) : coneIdeal K 
   rw [← h2, h, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, mul_eq_zero,
     or_iff_right (pow_ne_zero _ ha)]
 
-theorem coneIdeal_eq_bot {y : Fin N → Ω} (h : AlgebraicIndependent K y) : coneIdeal K y = ⊥ :=
-  le_bot_iff.1 fun g hg => h.eq_zero_of_aeval_eq_zero g (aeval_eq_zero_of_mem_coneIdeal hg)
-
 def coordSubst {N' : ℕ} (M : Matrix (Fin N) (Fin N') K) : MvPolynomial (Fin N') K →ₐ[K] MvPolynomial (Fin N) K :=
   aeval fun k => ∑ j, C (M j k) * X j
 
@@ -277,25 +274,10 @@ end Image
 
 section Model
 
-abbrev StdField (N : ℕ) : Type := FractionRing (MvPolynomial (Fin N) ℚ)
-
 def pointOf (K : Type) [Field K] {Ω : Type} [Field Ω] [Algebra K Ω] {N : ℕ} (y : Fin N → Ω) : (Fin N → K) →ₗ[K] Ω :=
   (Pi.basisFun K (Fin N)).constr K y
 
-theorem imageIdeal_pointOf (K : Type) [Field K] {Ω : Type} [Field Ω] [Algebra K Ω] {N : ℕ} (y : Fin N → Ω) :
-    imageIdeal (pointOf K y) (Pi.basisFun K (Fin N)) = coneIdeal K y := by
-  simp only [imageIdeal, pointOf, Basis.constr_basis]
-
-abbrev stdPoint (N : ℕ) := pointOf ℚ fun j : Fin N => algebraMap (MvPolynomial (Fin N) ℚ) (StdField N) (X j)
-
-def stdNorm (N : ℕ) (σ : ℚ →+* ℂ) (x : Fin N → ℚ) : ℝ := Real.sqrt (∑ j, ‖σ (x j)‖ ^ 2)
-
 def stdLat (N : ℕ) : Submodule (𝓞 ℚ) (Fin N → ℚ) := Submodule.span (𝓞 ℚ) (Set.range (Pi.basisFun ℚ (Fin N)))
-
-theorem imageIdeal_std (N : ℕ) : imageIdeal (stdPoint N) (Pi.basisFun ℚ (Fin N)) = ⊥ := by
-  rw [imageIdeal_pointOf]
-  exact coneIdeal_eq_bot <| (MvPolynomial.algebraicIndependent_X (Fin N) ℚ).map'
-    (f := (algebraMap (MvPolynomial (Fin N) ℚ) (StdField N)).toRatAlgHom) (IsFractionRing.injective _ _)
 
 end Model
 
@@ -351,20 +333,9 @@ theorem rhoOf_lt_one {u' u : ι → Fin N → ℤ} (h' : ∀ τ, StrictAnti (u' 
     rhoOf u' u < 1 :=
   sub_lt_self _ (div_pos (Int.cast_pos.2 (vdm_pos h')) (Int.cast_pos.2 (vdm_pos h)))
 
-example : vdm (fun _ : Unit => ![(5 : ℤ), 2, 0]) = 30 := by decide
-
-example : rhoOf ((fun _ : Unit => ![(0 : ℤ), -8]) - (6 : ℤ) • barWt Unit 2 1) (fun _ => ![0, -8]) = 3 / 4 := by
-  have h1 : vdm ((fun _ : Unit => ![(0 : ℤ), -8]) - (6 : ℤ) • barWt Unit 2 1) = 2 := by decide
-  have h2 : vdm (fun _ : Unit => ![(0 : ℤ), -8]) = 8 := by decide
-  rw [rhoOf, h1, h2]; norm_num
-
 end Weights
 
 def cStar (n : ℕ) (abelian₂ : ℝ) : ℝ := Real.log (Real.sqrt n * abelian₂)
-
-theorem log_le_cStar {n : ℕ} {abelian₂ : ℝ} (hn : 1 ≤ n) (hL : 1 ≤ abelian₂) : 0 ≤ Real.log abelian₂ ∧ Real.log abelian₂ ≤ cStar n abelian₂ :=
-  ⟨Real.log_nonneg hL, Real.log_le_log (by linarith)
-    (le_mul_of_one_le_left (by linarith) (Real.one_le_sqrt.2 (by exact_mod_cast hn)))⟩
 
 section Growth
 
@@ -384,10 +355,6 @@ theorem logCard_top : logCard ⊤ = ⊤ := by simp [logCard]
 def countVol (D d a : ℕ) (m : ℕ → ℕ∞) : ℝ≥0∞ :=
   limsup (fun k : ℕ => (D.factorial : ℝ≥0∞) * logCard (m (a * k)) / ((d : ℝ≥0∞) * ((a * k : ℕ) : ℝ≥0∞) ^ (D + 1))) atTop
 
-theorem countVol_mono (D d a : ℕ) {m m' : ℕ → ℕ∞} (h : ∀ τ, m τ ≤ m' τ) : countVol D d a m ≤ countVol D d a m' :=
-  limsup_le_limsup (Eventually.of_forall fun k => ENNReal.div_le_div_right (mul_le_mul_right
-    (EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 (h _)))) _) _)
-
 def volSlope (δ : ℝ) (vol : ℝ → ℝ≥0∞) : EReal := ⨅ t : ℝ, ((vol t / ENNReal.ofReal δ : ℝ≥0∞) : EReal) - (t : EReal)
 
 theorem le_volSlope_iff {δ : ℝ} (hδ : 0 < δ) (vol : ℝ → ℝ≥0∞) (a : ℝ) :
@@ -402,23 +369,8 @@ theorem le_volSlope_iff {δ : ℝ} (hδ : 0 < δ) (vol : ℝ → ℝ≥0∞) (a 
     · rw [max_eq_right h0]; exact EReal.coe_ennreal_nonneg _
     · rwa [max_eq_left h0], fun h => (EReal.coe_le_coe_iff.2 (le_max_left _ _)).trans h⟩
 
-def degSlope (a : ℕ) (dg : ℕ → ℝ) (r : ℕ → ℕ) : EReal :=
-  liminf (fun k : ℕ => ((dg (a * k) / (((a * k : ℕ) : ℝ) * r (a * k)) : ℝ) : EReal)) atTop
-
 def IsLimSlope (D : ℕ) (ar geo : ℚ → ℝ) (a : ℝ) : Prop :=
   (∀ᶠ s : ℚ in 𝓝[>] 0, 0 < geo s) ∧ Tendsto (fun s : ℚ => ar s / (((D : ℝ) + 1) * geo s)) (𝓝[>] 0) (𝓝 a)
-
-theorem IsLimSlope.unique {D : ℕ} {ar geo : ℚ → ℝ} {a b : ℝ} (ha : IsLimSlope D ar geo a)
-    (hb : IsLimSlope D ar geo b) : a = b :=
-  tendsto_nhds_unique ha.2 hb.2
-
-example : IsLimSlope 1 (fun _ => 6) (fun _ => 1) 3 :=
-  ⟨Eventually.of_forall fun _ => one_pos, by norm_num⟩
-
-example : growth 1 (fun τ => τ) = 1 := by
-  rw [growth, ← limsup_const (f := (atTop : Filter ℕ)) (1 : ℝ≥0∞)]
-  refine limsup_congr ((eventually_ne_atTop 0).mono fun k hk => ?_)
-  simpa using ENNReal.div_self (Nat.cast_ne_zero.2 hk) (ENNReal.natCast_ne_top k)
 
 end Growth
 

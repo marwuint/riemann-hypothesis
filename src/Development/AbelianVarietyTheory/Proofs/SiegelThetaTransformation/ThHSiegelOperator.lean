@@ -13,22 +13,6 @@ variable {E : Type} [Field E] [NumberField E] (Ψ : Finset (E →+* ℂ)) {n N :
 def cons0 (x : Matrix (Fin n) (Fin N) E) : Matrix (Fin n) (Fin (N + 1)) E :=
   Matrix.of fun k => Fin.cons 0 (x k)
 
-omit [NumberField E] in
-theorem pushZ_mem {Z : CM Ψ N N} (h : Z ∈ Hn Ψ N) (v : Fin N → E) {t : ℝ} (ht : 0 ≤ t) :
-    pushZ Ψ Z v t ∈ Hn Ψ N := by
-  intro τ
-  have e : imH (pushZ Ψ Z v t τ) = imH (Z τ) +
-      (t : ℂ) • vecMulVec (fun a => τ.1 (v a)) (star fun a => τ.1 (v a)) := by
-    ext a b
-    simp only [imH, pushZ, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
-      conjTranspose_apply, vecMulVec_apply, smul_eq_mul, star_add, star_mul', Pi.star_apply,
-      RCLike.star_def, conj_I, conj_ofReal, conj_conj]
-    field_simp
-    ring
-  rw [e]
-  exact (h τ).add_posSemidef
-    ((posSemidef_vecMulVec_self_star _).smul (Complex.zero_le_real.2 ht))
-
 noncomputable def col (x : Matrix (Fin n) (Fin (N + 1)) E) : ℝ :=
   ∑ τ : Ψ, ∑ k, normSq (τ.1 (x k 0))
 

@@ -24,9 +24,6 @@ inductive Tile (P : Set V) (Q : Set V → Prop) : Set V → Prop
       Tile P Q (coneOn s)
   | union {A B : Set V} (hA : Tile P Q A) (hB : Tile P Q B) (hAB : Disjoint A B) : Tile P Q (A ∪ B)
 
-theorem tile_ray (P : Set V) (v : V) (hv : v ≠ 0) (hP : v ∈ P) : Tile P (fun _ => True) (coneOn {v}) :=
-  Tile.cone {v} (by simpa using LinearIndepOn.singleton (R := ℚ) (v := id) (i := v) (by simpa using hv)) (by simpa using hP) trivial
-
 def posCone (F : Type) [Field F] [NumberField F] : ConvexCone ℚ F where
   carrier := {x | TotPos F x}
   smul_mem' := by

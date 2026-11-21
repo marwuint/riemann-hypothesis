@@ -9,7 +9,17 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ValFinProdGen
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.TwistingStatementsOfLaws
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsBasisOfCoord
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ValuationThetaRatioEqBilinear
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionIsoOfLinearUniformisationTripleStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionIsoOfLinearUniformisationTriple
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DataRigidSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaVV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.VRatioGtStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PeriodicValuation
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBC
+import Development.AbelianVarietyTheory.Definitions.Uniformization.AllDV
 
 set_option autoImplicit false
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
@@ -31,7 +41,7 @@ theorem powPEL_of_laws : Laws → Laws2 → Laws3 → Laws4 → Laws5 → TwistB
     GlobalTheory.exists_pelUnif_of_unifPow h₁ h₂ h₄ hT T.V E H C.I.G P n D' A' G' pD pA pG U' PU oD' hx hB
   refine ⟨oA', hoA, GlobalTheory.QBox.main T.V ϖ hϖ n P.D D' pD Q hQ,
     GlobalTheory.exists_tateIso_of_isPowPolAV h₁ h₂ h₄ hT E H T.V n P.A A' pA F _ _ hoA Dw I, t', P', ?_, hP'⟩
-  exact GlobalTheory.T.torsionIso_of_linear_uniformisation_triple ⟨h₁, h₂, h₃, h₄, h₅⟩ (twistBCSpan_of hT) GlobalTheory.RatioVal.main
+  exact _root_.GlobalTheory.UT.torsionIso_of_pelUnif ⟨h₁, h₂, h₃, h₄, h₅⟩ (twistBCSpan_of hT) GlobalTheory.RatioVal.main
     (GlobalTheory.twisting_statements_of_laws h₁ hT).1 (GlobalTheory.UnitBallFree.main h₁.globalFns hT) E H T.V _ hA t' P'
 
 end GlobalTheory.PowGerm

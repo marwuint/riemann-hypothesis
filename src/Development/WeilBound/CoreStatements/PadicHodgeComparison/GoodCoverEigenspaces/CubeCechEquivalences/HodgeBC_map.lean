@@ -98,10 +98,6 @@ def hodgePullS (hg : g ≫ s = s' ≫ spMap φ) (j q : ℕ) : hodgeH s j q →�
   letI := algΓ s; letI := algΓ s'
   cohOn.pull (appTop_algebraMapS hg) (omegaPullS hg j) (le_refl (g ⁻¹ᵁ ⊤)) q
 
-example (hg : g ≫ s = s' ≫ spMap φ) (x : hodgeH s 1 1) (r : k) :
-    hodgePullS hg 1 1 (r • x) = φ r • hodgePullS hg 1 1 x :=
-  map_smulₛₗ _ r x
-
 end PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC
 
 end

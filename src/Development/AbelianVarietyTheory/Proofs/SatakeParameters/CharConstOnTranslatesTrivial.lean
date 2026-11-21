@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousCharUnitsComplexStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousCharUnitsComplex
 
 open Filter Topology
 
@@ -161,7 +161,7 @@ lemma exists_near (ψ : (ι → ℂˣ) →* ℂˣ) (hψ : Continuous ψ) (θ : �
 lemma char_trivial (e : ℂˣ →* ℂˣ) (he : Continuous e) (θ : ℂ) (hθ : θ.im ≠ 0) (C : ℝ)
     (hpos : ∀ (ρ : ℝ) (h : 0 < ρ), e (Units.mk0 _ (ofReal_ne h)) = 1)
     (hnear : ∀ R : ℝ, ∃ t : ℝ, |t - R| ≤ C ∧ e (Units.mk0 _ (add_ne hθ t)) = 1) : e = 1 := by
-  obtain ⟨s, n, hform⟩ := GlobalTheory.T.continuous_units_complex_hom_eq_exp_mul_arg_pow e he
+  obtain ⟨s, n, hform⟩ := _root_.GlobalTheory.continuous_char_units_complex e he
   have hs0 : ∀ x : ℝ, Complex.exp (s * x) = 1 := by
     intro x
     have h := hform (Units.mk0 _ (ofReal_ne (Real.exp_pos x)))

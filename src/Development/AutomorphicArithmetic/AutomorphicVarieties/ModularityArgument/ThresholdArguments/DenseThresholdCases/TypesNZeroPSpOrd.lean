@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.DiscreteSeriesCoefficientsCuspidal
+import Mathlib
 import PositivityTheory.AutomorphicForms.PublishedInputs.NonzeroTypes.PSpOrd
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.TypesNZeroSDefs
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.LitAut
@@ -11,7 +11,6 @@ noncomputable section
 open scoped Classical
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel Matrix
 namespace UpperTheory.TNZ.Grp.P_spOrd
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 end UpperTheory.TNZ.Grp.P_spOrd
 namespace UpperTheory.TNZ.Grp
 open UpperTheory.TNZ.Grp.P_spOrd GlobalTheory.LocGL.SupportRing

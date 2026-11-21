@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelChangeTransportersAllComponentsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelChangeTransportersAllComponents
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniqueUpToTargetGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdentityTransportsComponentToItselfStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLevelComponentTransportCompStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdentityTransportsComponentToItself
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLevelComponentTransportComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportIdentityOfMemComponentGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelActionMulAndFaithfulFiniteGroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelActionMulAndFaithfulFiniteGroup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelComponentTransportReadsCuspFormsConstMulStatement
 
 set_option autoImplicit false
@@ -38,12 +38,12 @@ theorem exists_transport : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi
             Submodule.Quotient.mk (p := p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (Lf k))) ⟨_, hw⟩ =
               φ k ((r.lev i g ^ n) ((φ k).symm (Submodule.Quotient.mk w))) := by
   intro D L hT Gi Gl Kc Y cX ex Csz p hp r h hr i v
-  obtain ⟨ψ, hex⟩ := GlobalTheory.T.exists_levelChange_transporters_all_components p hp r h hr i v
+  obtain ⟨ψ, hex⟩ := _root_.GlobalTheory.ShareOn.exists_transp_all p hp r h hr i v
   have uniq := GlobalTheory.T.unique_up_to_target_group p hp r h hr i v ψ
-  have one := GlobalTheory.T.identity_transports_component_to_itself p hp r h hr i v ψ
-  have comp := GlobalTheory.T.isLevelComponentTransport_comp p hp r h hr i v ψ
+  have one := _root_.GlobalTheory.ShareOn.isTransp_one p hp r h hr i v ψ
+  have comp := _root_.GlobalTheory.ShareOn.isTransp_comp p hp r h hr i v ψ
   have gam := GlobalTheory.T.isTransport_identity_of_mem_componentGroup p hp r h hr i v ψ
-  obtain ⟨lmul, linj⟩ := GlobalTheory.T.levelAction_mul_and_faithful_finiteGroup p hp r h hr i
+  obtain ⟨lmul, linj⟩ := _root_.GlobalTheory.LevelFaithful.lev_mul_and_faithful p hp r h hr i
   have c8 := GlobalTheory.T.levelComponentTransport_reads_cuspForms_const_mul p hp r h hr i v ψ
   choose act tr htr using fun (g : p.P.Gp) k => hex (r.lev i g⁻¹) k
   have lev1 : r.lev i 1 = 1 := by

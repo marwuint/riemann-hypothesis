@@ -15,10 +15,10 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMul
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaSeriesTestFunctionHolomorphicWeight
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianFormAtFrameLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FockHxDifferentiable
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SectionsReadAsTranslatesAtScaledPointStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HarmonicConnectionValueEqPolynomialDerivativeStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsEvenRepsTensorLatticeAndSumStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AnalyticFibreIsotropicPointsInjectiveRootsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SectionsReadAsTranslatesAtScaledPoint
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HarmonicConnectionValueEqPolynomialDerivative
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsEvenRepsTensorLatticeAndSum
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AnalyticFibreIsotropicPointsInjectiveRoots
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -207,9 +207,9 @@ theorem GlobalTheory.Dict.shortValAt_eq_thP : Formalism.MainNotions.ModuliIntegr
   have hΛ1 : Λ ∈ Vset E n 1 := by
     obtain ⟨h1, h2, s, hs, -, h3⟩ := hΛ
     exact ⟨h1, h2, s, hs, Nat.coprime_one_right s, h3⟩
-  obtain ⟨u, hu, huinj, hz, -, hsum⟩ := GlobalTheory.T.exists_even_reps_tensorLattice_and_sum E _ X g bas idx n hs hn (H.w0 : E) H.w0.isIntegral_coe hw L hL
+  obtain ⟨u, hu, huinj, hz, -, hsum⟩ := _root_.GlobalTheory.Dict.ZLat.exists_reps_sum E _ X g bas idx n hs hn (H.w0 : E) H.w0.isIntegral_coe hw L hL
     Λ hΛ1 N hodd (hN.2.2.trans inf_le_left)
-  obtain ⟨hgeo, hroot⟩ := GlobalTheory.T.analyticFibre_isotropic_points_injective_roots E H Dw l Xo c _ g X bas idx e x L y A hs hx hL n N Λ hodd.pos
+  obtain ⟨hgeo, hroot⟩ := _root_.GlobalTheory.Dict.points_inZh_geoInj_roots E H Dw l Xo c _ g X bas idx e x L y A hs hx hL n N Λ hodd.pos
   obtain ⟨hZ, hinj⟩ := hgeo _ u hu huinj
   replace hroot := hroot mk hmk hA hN.2.1 Y hY
   have hu2 (i b) : ∃ u' ∈ L, (N ^ 2 : ℕ) • ((N : E)⁻¹ • u i b) = (2 : ℕ) • u' := by
@@ -236,8 +236,8 @@ theorem GlobalTheory.Dict.shortValAt_eq_thP : Formalism.MainNotions.ModuliIntegr
       ∏ b, nab y ((N : ℤ) ^ 2) (F q i b) (colOf m b) =
       I2.polyDeriv (MvPolynomial.map (algebraMap c.F ℂ) P) (letterDir X hr idx ∘ eL)
         (fun z => κ * thA X bas idx (heisG X bas (Y q) (heisG X bas (u i) v)) x ((N : ℂ) • z)) 0 := by
-    rw [GlobalTheory.T.harmonicConnectionValue_eq_polynomial_derivative hC E H Dw l Xo c _ g X bas idx e x L y A hs hx hL nab hnab n N a P hP (F q i) _ fun b =>
-      (GlobalTheory.T.sections_read_as_translates_at_scaled_point E H Dw l Xo c _ g X bas idx e x L y A hs hx hL N hodd θ hθ).1 _ _ (hu2 i b)
+    rw [_root_.GlobalTheory.Dict.nab_harm_val_eq_polyDeriv hC E H Dw l Xo c _ g X bas idx e x L y A hs hx hL nab hnab n N a P hP (F q i) _ fun b =>
+      (_root_.GlobalTheory.Dict.reads_isUUOver_isVtOver E H Dw l Xo c _ g X bas idx e x L y A hs hx hL N hodd θ hθ).1 _ _ (hu2 i b)
         (hroot q b).2.2 _ (hF q i b)]
     congr 1
     · exact funext fun ℓ => (hdir ℓ).symm

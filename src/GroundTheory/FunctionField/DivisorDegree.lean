@@ -166,15 +166,6 @@ theorem deg_divisor (x : K) : deg (divisor x : Divisor k K) = 0 := by
   rw [← zeroDivisor_sub_poleDivisor, map_sub, deg_zeroDivisor halg, deg_poleDivisor halg,
     sub_self]
 
-theorem L_eq_bot_of_deg_neg {D : Divisor k K} (hD : deg D < 0) : L D = ⊥ := by
-  rw [eq_bot_iff]
-  intro z hz
-  rw [Submodule.mem_bot]
-  by_contra hz0
-  have h := deg_nonneg ((mem_L_iff_le hz0).1 hz)
-  rw [map_add, deg_divisor, zero_add] at h
-  omega
-
 theorem mul_mem_L {y : K} (hy : y ≠ 0) {E : Divisor k K} {z : K} (hz : z ∈ L (E + divisor y)) :
     y * z ∈ L E := by
   intro v
@@ -220,18 +211,6 @@ noncomputable def deg : Pic k K →+ ℤ :=
 theorem deg_mk (D : Divisor k K) :
     deg (QuotientAddGroup.mk D : Pic k K) = Divisor.deg D := rfl
 
-theorem finrank_L_eq_of_mk_eq {D E : Divisor k K}
-    (h : (QuotientAddGroup.mk D : Pic k K) = QuotientAddGroup.mk E) :
-    finrank k (Divisor.L E) = finrank k (Divisor.L D) := by
-  rw [QuotientAddGroup.eq] at h
-  obtain ⟨x, hx, hxD⟩ := mem_principalDivisors.1 h
-  have hE : E = D + divisor x := by rw [hxD]; abel
-  rw [hE, Divisor.finrank_L_add_divisor D hx]
-
 end Pic
-
-variable (k K) in
-
-noncomputable abbrev Pic0 : AddSubgroup (Pic k K) := (Pic.deg (k := k) (K := K)).ker
 
 end GroundTheory.FunctionField

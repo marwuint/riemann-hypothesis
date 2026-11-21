@@ -3,9 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitIffUnitAt
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueCentreLocalHomStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
 
 noncomputable section
 
@@ -289,7 +290,7 @@ theorem exists_local_ext {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x :
     · obtain ⟨h0, _, hinv⟩ := hM s
       exact IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ h0))
     · obtain ⟨s, hsA, hu, hsa⟩ :=
-        (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ o κ x T c p hp a).1 a.2
+        (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ o κ x T c p hp a).1 a.2
       refine ⟨(⟨s * a, hsa⟩, ⟨⟨s, hsA⟩, (hψ ⟨s, hsA⟩).2 hu⟩), Subtype.ext ?_⟩
       exact mul_comm (a : Ω) s
     · have : a = b := Subtype.ext (congrArg (fun q : regAt ξ p => (q : Ω)) e)
@@ -382,7 +383,7 @@ theorem existsUnique_point (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏
   haveI hIp : I.IsPrime := Ideal.comap_isPrime ψ _
   have hI : ∀ a, a ∉ I ↔ IsUnit (ψ a) := fun a => by
     simp [I, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
-  obtain ⟨p, ⟨hpc, hpu⟩, hpuniq⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ _ x T c hxc I hIp
+  obtain ⟨p, ⟨hpc, hpu⟩, hpuniq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ _ x T c hxc I hIp
   have hψu : ∀ a, IsUnit (ψ a) ↔ unitAt ξ p (a : Ω) := fun a => (hI a).symm.trans (hpu a)
   obtain ⟨φ, hφl, hφ⟩ := exists_local_ext T hpc ψ hψu
   obtain ⟨z, ⟨hzc, hzv⟩, hzuniq⟩ := GlobalTheory.T.existsUnique_centre_local_hom X Ω ξ hξ p R φ hφl
@@ -460,7 +461,7 @@ theorem existsUnique_point (T : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏
     refine ⟨congrArg Subtype.val hpp, fun a => ?_⟩
     have ha' : (a : Ω) ∈ regAt ξ ⟨centre z', h'⟩ := hpp ▸ a.2
     obtain ⟨r, hr⟩ := exists_valAt hξ h' ha'
-    obtain ⟨σ, hσA, hσu, hσa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ x T c p hpc a).1 a.2
+    obtain ⟨σ, hσA, hσu, hσa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ _ x T c p hpc a).1 a.2
     have e1 := valAt_mul hξ (hval' ⟨σ, hσA⟩) hr
     have e3 : ψ ⟨σ, hσA⟩ * r = ψ ⟨σ * a, hσa⟩ := valAt_unique hξ e1 (hval' ⟨σ * a, hσa⟩)
     have e4 : ψ ⟨σ, hσA⟩ * φ a = ψ ⟨σ * a, hσa⟩ := by

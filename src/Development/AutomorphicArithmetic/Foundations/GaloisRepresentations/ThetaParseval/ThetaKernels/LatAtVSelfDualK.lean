@@ -11,20 +11,8 @@ open scoped TensorProduct Matrix nonZeroDivisors
 open GlobalTheory.StdDual (codiff codiff_ne_zero one_le_codiff)
 noncomputable section
 namespace GlobalTheory.LatSelfDualAll
-section Scalar
-variable {F : Type} [Field F] [NumberField F]
-end Scalar
-section Lat
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-end Lat
 end GlobalTheory.LatSelfDualAll
 namespace GlobalTheory.LatSelfDualAll
-section Frame
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-end Frame
-section Gen
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-end Gen
 end GlobalTheory.LatSelfDualAll
 namespace GlobalTheory.LatSelfDualAll
 open GlobalTheory.InertSelfDual (exists_traceFamily det_ne_zero_of_herm det_ne_zero_of_skew decomp hTens_frame trace_expand)

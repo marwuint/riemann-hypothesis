@@ -57,33 +57,6 @@ variable (F : FamilyUnif Xo σ' ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fin g �
 
 theorem anX_left (m : ℕ) : (anX F i P hP y hy m).left = jetPt (anE F i P) (anHol F i P hP) m := rfl
 
-theorem anX_trunc (m : ℕ) :
-    homAt y.x (jetTrunc : Jet ℂ (Fin 1 × Fin g) (m + 1) →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) ≫ anX F i P hP y hy (m + 1) =
-      anX F i P hP y hy m := by
-  apply Over.OverMorphism.ext
-  rw [Over.comp_left, anX_left, anX_left]
-  exact jetPt_trunc (e := anE F i P) (hol := anHol F i P hP) m
-
-include hP in
-theorem ex_zero_eq_one : F.ex i P 0 = 1 := by
-  simpa using F.ex_add i P hP 0 0
-
-theorem anX_zero (m : ℕ) :
-    homAt y.x (jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) ≫ anX F i P hP y hy m = 1 := by
-  apply Over.OverMorphism.ext
-  rw [Over.comp_left, anX_left]
-  refine (jetPt_aug (anE F i P) (anHol F i P hP) m).trans ?_
-  show (F.ex i P 0).left = _
-  rw [ex_zero_eq_one F i P hP, one_left'', one_left'']
-  congr 1
-  rw [← hy]
-  have hid : spMap (RingHom.id ℂ) = 𝟙 _ := by
-    first
-      | simp [spMap]
-      | (simp only [spMap]
-         rw [show CommRingCat.ofHom (RingHom.id ℂ) = 𝟙 _ from rfl, Spec.map_id])
-  simp [overAt, hid]
-
 theorem basis_single (e' : Fin g ≃ Lt1 Dw) (v : Fin g → ℂ) :
     ∃! a : Lt1 Dw → ℂ, ∀ j, ∑ ℓ, a ℓ * (if j = e'.symm ℓ then (1 : ℂ) else 0) = v j := by
   have key : ∀ a : Lt1 Dw → ℂ, ∀ j, ∑ ℓ, a ℓ * (if j = e'.symm ℓ then (1 : ℂ) else 0) = a (e' j) := by
@@ -169,35 +142,6 @@ theorem jetSubstP_anAct (m : ℕ) (a : 𝓞 E) (b : Jet ℂ (Fin 1 × Fin g) m) 
   funext p
   exact key p
 
-theorem anX_act (m : ℕ) (a : 𝓞 E) :
-    anX F i P hP y hy m ≫ Xo.univ.t.act.act a =
-      homAt y.x (jetSubstP m fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2)) ≫ anX F i P hP y hy m := by
-  apply Over.OverMorphism.ext
-  simp only [Over.comp_left, anX_left, homAt, Over.homMk_left]
-  have hol' := isHolFam_comp (anE F i P) (anHol F i P hP) (Xo.univ.t.act.act a).left
-  have hc : ∀ z, anE F i P z ≫ (Xo.univ.t.act.act a).left = anE F i P (fun k => ty k (a : E) * z k) := fun z => by
-    unfold anE
-    rw [F.ex_lin i P hP a z, Over.comp_left]
-  have h0 : (fun z => anE F i P z ≫ (Xo.univ.t.act.act a).left) 0 = anE F i P 0 := by
-    show anE F i P 0 ≫ (Xo.univ.t.act.act a).left = anE F i P 0
-    rw [hc]
-    congr 1
-    funext k
-    simp
-  have hloc : IsLocalHom ((jetSubstP m fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2) :
-      Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m) := by
-    unfold jetSubstP
-    exact isLocalHom_jetMap _ _
-  rw [jetPt_comp (anE F i P) (anHol F i P hP) (Xo.univ.t.act.act a).left _ hol' (fun z => rfl) m]
-  refine (jetPt_precomp (anE F i P) (fun z => anE F i P z ≫ (Xo.univ.t.act.act a).left) (anHol F i P hP) hol' h0 m
-    ((jetSubstP m fun p : Fin 1 × Fin g => psTrunc m (anAct ty a p.2) :
-      Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m)
-    (hχl := hloc) ?_).symm
-  intro U hU f
-  simp_rw [hc]
-  rw [jetOf_scale m (fun k => ty k (a : E)) (contDiffAt_val (e := anE F i P) (hol := anHol F i P hP) hU f)]
-  exact jetSubstP_anAct m a _
-
 theorem fst_jetTan (ℓ : Fin 1 × Fin g) (a : Jet ℂ (Fin 1 × Fin g) (0 + 1)) :
     ((jetTan ℓ : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) a).fst =
       (jetAug : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] ℂ) a := by
@@ -237,47 +181,5 @@ theorem spMap_epsMul_zero_jetTan (ℓ : Fin 1 × Fin g) :
 
 theorem epsMul_one : epsMul (1 : ℂ) = RingHom.id (DualNumber ℂ) := by
   ext x <;> simp [epsMul]
-
-private theorem prod_ofFn_single_lemma {M : Type*} [Monoid M] :
-    ∀ (n : ℕ) (u : Fin n → M) (j : Fin n), (∀ i, i ≠ j → u i = 1) → (List.ofFn u).prod = u j := by
-  intro n
-  induction n with
-  | zero => intro u j; exact j.elim0
-  | succ n ih =>
-    intro u j h
-    rw [List.ofFn_succ, List.prod_cons]
-    cases j using Fin.cases with
-    | zero =>
-      have h1 : (List.ofFn fun i : Fin n => u i.succ).prod = 1 := by
-        apply List.prod_eq_one
-        intro x hx
-        obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hx
-        exact h i.succ (Fin.succ_ne_zero i)
-      rw [h1, _root_.mul_one]
-    | succ j' =>
-      rw [h 0 (Fin.succ_ne_zero j').symm, _root_.one_mul]
-      exact ih (fun i => u i.succ) j' (fun i hi => h i.succ (fun e => hi (Fin.succ_injective _ e)))
-
-theorem anX_tan (j0 : Fin g) (vt : Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)
-    (hd : IsDerivAt0 (anE F i P) (Pi.single j0 1) vt) :
-    IsCombAt y.x (m := g)
-      (fun j => (homAt y.x (jetTan ((0 : Fin 1), j) : Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) ≫
-        anX F i P hP y hy (0 + 1)).left) (fun j => if j = j0 then 1 else 0) vt := by
-  refine ⟨fun k => if k = j0 then homAt y.x (jetTan ((0 : Fin 1), j0) :
-      Jet ℂ (Fin 1 × Fin g) (0 + 1) →ₐ[ℂ] DualNumber ℂ) ≫ anX F i P hP y hy (0 + 1) else 1, fun k => ?_, ?_⟩
-  · by_cases hk : k = j0
-    · subst hk
-      simp only [if_true, epsMul_one]
-      simp [spMap]
-    · simp only [if_neg hk]
-      rw [one_left'']
-      simp only [Over.comp_left, homAt, Over.homMk_left, anX_left]
-      rw [← Category.assoc, spMap_epsMul_zero_jetTan, Category.assoc, jetPt_aug]
-      unfold anE
-      rw [ex_zero_eq_one F i P hP, one_left'']
-      simp only [Over.mk_hom, Category.assoc, hy]
-  · rw [prod_ofFn_single_lemma g _ j0 (fun k hk => if_neg hk), if_pos rfl]
-    simp only [Over.comp_left, homAt, Over.homMk_left, anX_left]
-    exact jetPt_tan (anE F i P) (anHol F i P hP) ((0 : Fin 1), j0) vt hd
 
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

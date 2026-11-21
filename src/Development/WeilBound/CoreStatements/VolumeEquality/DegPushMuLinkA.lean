@@ -1,5 +1,19 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.DegPushDefs
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DetLatticeFrameGenStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DeterminantLatticeGenerator
 
 noncomputable section
 
@@ -173,7 +187,7 @@ theorem mu_side {V : Type} [AddCommGroup V] [Module Ω V] (L : Lat ξ V) {r r' :
     rw [Matrix.mul_apply] at this
     rw [show T₀ k m = Tm m k from rfl, ← this]
     exact Finset.sum_congr rfl fun a _ => mul_comm _ _
-  refine ⟨(Pm⁻¹ * Tm).det, Tm.map i, GlobalTheory.T.det_lattice_frame_gen X Ω ξ V L r s b _ q hs hf hbs, ?_, le_antisymm (Submodule.span_le.2 ?_)
+  refine ⟨(Pm⁻¹ * Tm).det, Tm.map i, _root_.LevelTowerAlt.determinant_lattice_generator X Ω ξ V L r s b _ q hs hf hbs, ?_, le_antisymm (Submodule.span_le.2 ?_)
     (Submodule.span_le.2 ?_)⟩
   · rw [← Matrix.det_mul, hPT]
     exact (RingHom.map_det i _).symm

@@ -30,14 +30,14 @@ theorem embedding_of_exponent : ∀ (k : Type) [Field k] [ValuativeRel k] [Topol
       ∀ u ∈ PositivityTheory.Lbc.KM k n (Zls.Km k n (m + 1)) (fun _ : Fin n => 1) hd1,
         jac (stdBlocks (fun _ : Fin n => 1) hd1) π u w = w := by
     intro w
-    obtain ⟨m, hm, h⟩ := GlobalTheory.T.jacquet_vector_fixed_deep_level (k := k) n hd1 π hs w
+    obtain ⟨m, hm, h⟩ := _root_.GlobalTheory.CompanionTheory.JacSmooth.jac_fixed_of_smooth (k := k) n hd1 π hs w
     refine ⟨m - 1, ?_⟩
     rw [Nat.sub_add_cancel hm]
     exact h
   have hfd : ∀ m, FiniteDimensional ℂ ↥(⨅ u : PositivityTheory.Lbc.KM k n (Zls.Km k n (m + 1)) (fun _ : Fin n => 1) hd1,
       LinearMap.ker (jac (stdBlocks (fun _ : Fin n => 1) hd1) π (u : Levi k (fun _ : Fin n => Fin 1)) - 1)) := by
     intro m
-    haveI := GlobalTheory.T.jacquet_module_admissible_fixed (k := k) n hd1 π ha h0 h3 (m + 1) (by omega)
+    haveI := _root_.GlobalTheory.CompanionTheory.Jacquet.finiteDimensional_fixed_jac (k := k) n hd1 π ha h0 h3 (m + 1) (by omega)
     refine Submodule.finiteDimensional_of_le (S₂ := fixed (jac (stdBlocks (fun _ : Fin n => 1) hd1) π)
       (PositivityTheory.Lbc.KM k n (Zls.Km k n (m + 1)) (fun _ : Fin n => 1) hd1)) ?_
     intro w hw u
@@ -46,12 +46,12 @@ theorem embedding_of_exponent : ∀ (k : Type) [Field k] [ValuativeRel k] [Topol
     have h3' : jac (stdBlocks (fun _ : Fin n => 1) hd1) π (u : Levi k (fun _ : Fin n => Fin 1)) w = w := by
       simpa [sub_eq_zero] using h2
     simpa using h3'
-  obtain ⟨f, hf0, hf⟩ := GlobalTheory.T.generalized_eigenvector_exists (Levi k (fun _ : Fin n => Fin 1))
+  obtain ⟨f, hf0, hf⟩ := _root_.GlobalTheory.CompanionTheory.TorusQuot.exists_quotient_character (Levi k (fun _ : Fin n => Fin 1))
     (Jacquet π (unipRad k (stdBlocks (fun _ : Fin n => 1) hd1)))
     (jac (stdBlocks (fun _ : Fin n => 1) hd1) π) hcomm
     (fun m => PositivityTheory.Lbc.KM k n (Zls.Km k n (m + 1)) (fun _ : Fin n => 1) hd1) hanti hpow hsm hfd
     (GlobalTheory.CompanionTheory.PinLift.torusCharHom ξ) v hv0 hv
-  obtain ⟨g, w, hg⟩ := GlobalTheory.T.jacquet_cuspidal_support_of_functional n π ξ hξ hd f hf0 hf
+  obtain ⟨g, w, hg⟩ := _root_.GlobalTheory.CompanionTheory.CharTensor.chartotensor n π ξ hξ hd f hf0 hf
   obtain ⟨G, x, hx⟩ := GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr (fun a => IrrGL.ofChar (ξ a) (hξ a)) hd π hs g ⟨w, hg⟩
   refine ⟨G, ?_⟩
   have hso : IsSimpleOrder (Subrepresentation π) := hirr

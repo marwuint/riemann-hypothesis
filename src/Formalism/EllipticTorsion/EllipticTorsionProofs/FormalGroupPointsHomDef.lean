@@ -184,8 +184,6 @@ theorem evalMv2_subst_X0 (w : PowerSeries K) (a b : K) :
   unfold WeierstrassChordSeries.Wi at this
   simp [term, this]
 
-theorem integral_of_mem {F : MvPowerSeries (Fin 2) K} (h : F ∈ IL K) : IntegralMv F := h
-
 theorem coeff_subst_two (G s t : MvPowerSeries (Fin 2) K) (hs0 : MvPowerSeries.constantCoeff s = 0)
     (ht0 : MvPowerSeries.constantCoeff t = 0) (e : Fin 2 →₀ ℕ) :
     MvPowerSeries.coeff e (G.subst ![s, t]) =

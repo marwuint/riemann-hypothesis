@@ -175,8 +175,6 @@ section PrimeReciprocalSums
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
-def psiS (B : Bridge L) {V : Type} (ψ : SA B.Δ → V) (s : ↥((SUA L).subgroupOf (finU L 2))) : V := ψ ((eS B).symm s)
-
 instance suaNormal : (SUA L).Normal := by unfold SUA; infer_instance
 
 end PrimeReciprocalSums

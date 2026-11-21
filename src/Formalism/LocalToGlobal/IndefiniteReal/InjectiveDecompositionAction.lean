@@ -33,41 +33,6 @@ def FirstPropositionFrame (D : D7) : Subgroup (AE D)ˣ where
 def SuppAtU (D : D7) (e : AE D) (x : (AE D)ˣ) : Prop :=
   (e + cA D e) * ((x : AE D) - 1) = (x : AE D) - 1
 
-def SvNSchur (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) : Prop :=
-  ∀ T : Module.End ℂ (Hth ψ V W),
-    (∀ w₀ (Φ Φ' : Hth ψ V W), (Φ' : WA V W → ℂ) = Heisenberg₂ ψ V W w₀ Φ →
-      (T Φ' : WA V W → ℂ) = Heisenberg₂ ψ V W w₀ (T Φ)) →
-    (∀ (μ : Measure (WA V W)) (𝓕 : Set (WA V W)), μ.IsAddHaarMeasure →
-      IsAddFundamentalDomain (ratL V W) 𝓕 μ → ∀ Φ : Hth ψ V W,
-        ∫⁻ w in 𝓕, ‖(T Φ : WA V W → ℂ) w‖ₑ ^ 2 ∂μ = ∫⁻ w in 𝓕, ‖(Φ : WA V W → ℂ) w‖ₑ ^ 2 ∂μ) →
-    ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ Φ : Hth ψ V W, T Φ = c • Φ
-
-def ThetaNZ (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) : Prop :=
-  ∃ Φ : Hth ψ V W, (Φ : WA V W → ℂ) 0 ≠ 0
-
-def SplitFormsNZ (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) : Prop :=
-  ∀ e, IsSplitIdem D e → ∃ ℓ : Hth ψ V W →ₗ[ℂ] ℂ,
-    (∀ u : WA V W, (∀ i j, cA D e * u i j = u i j) →
-      ∀ Φ Φ' : Hth ψ V W, (Φ' : WA V W → ℂ) = Heisenberg₂ ψ V W u Φ → ℓ Φ' = ℓ Φ) ∧
-    ∃ Φ, ℓ Φ ≠ 0
-
-def CharDet (V : HSp D) : Prop :=
-  ∀ c : GA D V →* Circle, Continuous c →
-    ∃ lam : FirstPropositionFrame D →* Circle, Continuous lam ∧
-      ∀ (g : GA D V) (x : FirstPropositionFrame D), (((x : (AE D)ˣ)) : AE D) = (mt V g).det → c g = lam x
-
-def SecondCharacterFact (D : D7) : Prop :=
-  ∀ lam : FirstPropositionFrame D →* Circle, Continuous lam →
-    (∀ (x : FirstPropositionFrame D) (q : D.host.E), (((x : (AE D)ˣ)) : AE D) = incA D q → lam x = 1) →
-    (∀ e, IsSplitIdem D e → ∀ x : FirstPropositionFrame D, SuppAtU D e (x : (AE D)ˣ) → lam x = 1) →
-    ∀ x, lam x = 1
-
-def ConsequenceOfAdmissibleConstants : Prop :=
-  ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χ χ' : (AE D)ˣ →* Circle)
-    (ω ω' : GA D V × GA D W →* Module.End ℂ (Hth ψ V W)),
-    SvNSchur ψ V W → ThetaNZ ψ V W → SplitFormsNZ ψ V W → CharDet V → CharDet W → SecondCharacterFact D →
-    IsWeilDatum ψ V W χ χ' ω → IsWeilDatum ψ V W χ χ' ω' → ω = ω'
-
 end Formalism.IndefR.InjectiveDecompositionAction
 
 end

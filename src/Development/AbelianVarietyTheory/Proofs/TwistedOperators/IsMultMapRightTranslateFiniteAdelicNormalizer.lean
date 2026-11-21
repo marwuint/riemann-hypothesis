@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
 import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
 import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSmoothAutomorphicRightTranslateFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteRealPointsCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteRealPointsCommute
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum
 open scoped ComplexOrder
@@ -41,7 +41,7 @@ theorem isMultMap_rightTranslate_finite : ∀ {D : D7} {V : HSp D} {S : D.what�
     rw [LinearMap.compMultilinearMap_apply, hT.equiv τ g hg v w hw]
     funext x
     simp only [LinearMap.compMultilinearMap_apply, LinearMap.funLeft_apply, rTr]
-    rw [mul_assoc, mul_assoc, GlobalTheory.T.mul_comm_of_mem_GfC_of_mem_GinfC V κ _ hκ (atTau_mem_GinfC_twisted_operators θ V τ g)]
+    rw [mul_assoc, mul_assoc, _root_.GlobalTheory.FinRealComm.finite_real_points_commute V κ _ hκ (atTau_mem_GinfC_twisted_operators θ V τ g)]
   ·
     obtain ⟨ℓ, hℓ, hℓw⟩ := hT.cont τ v (x * κ)
     exact ⟨ℓ, hℓ, fun w => hℓw w⟩

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsL2OnDiagonalOfIsL2Metric
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Tri
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelativelyAcyclicOfCechVanishingAllCoversStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechNonvanishingLineBundleInvMixOneZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyCechVanishingAboveDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelativelyAcyclicOfCechVanishingAllCovers
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechNonvanishingLineBundleInvMixOneZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyCechVanishingAboveDegree
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SerreVanishingLineBundleInvMixFixedDifferenceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechNonvanishingInvMixPairKunnethIsogenyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechNonvanishingInvMixPairKunnethIsogeny
 
 set_option autoImplicit false
 
@@ -25,7 +25,7 @@ theorem stepTwo {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A
   have hd : (((1 : ℤ) * (-1) - 1 * 1 : ℤ) : K) ≠ 0 := by
     have : (((1 : ℤ) * (-1) - 1 * 1 : ℤ) : K) = -2 := by push_cast; ring
     rw [this]; exact neg_ne_zero.2 h2
-  obtain ⟨j₁, j₂, e, h₁, h₂⟩ := GlobalTheory.T.cech_nonvanishing_invMix_pair_kunneth_isogeny K A hA 1 1 1 (-1) (by norm_num) hd L hL a b j h
+  obtain ⟨j₁, j₂, e, h₁, h₂⟩ := _root_.GlobalTheory.AmpleGen.nv_mix_pair_of_nv K A hA 1 1 1 (-1) (by norm_num) hd L hL a b j h
   have t1 : tri 1 = 1 := by decide
   have t0 : tri (-1) = 0 := by decide
   simp only [t1, t0, neg_neg] at h₁ h₂
@@ -40,7 +40,7 @@ theorem stepFive {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj 
   have hd : (((1 : ℤ) * (-1) - 2 * 2 : ℤ) : K) ≠ 0 := by
     have : (((1 : ℤ) * (-1) - 2 * 2 : ℤ) : K) = -5 := by push_cast; ring
     rw [this]; exact neg_ne_zero.2 h5
-  obtain ⟨j₁, j₂, e, h₁, h₂⟩ := GlobalTheory.T.cech_nonvanishing_invMix_pair_kunneth_isogeny K A hA 1 2 2 (-1) (by norm_num) hd L hL a b j h
+  obtain ⟨j₁, j₂, e, h₁, h₂⟩ := _root_.GlobalTheory.AmpleGen.nv_mix_pair_of_nv K A hA 1 2 2 (-1) (by norm_num) hd L hL a b j h
   have t1 : tri 1 = 1 := by decide
   have t0 : tri (-1) = 0 := by decide
   have t2 : tri 2 = 3 := by decide
@@ -65,9 +65,9 @@ theorem step {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (
 
 theorem ampleVanishing : GlobalTheory.Published.AmpleVanishing := by
   intro K _ _ A _ hA L hL hamp
-  refine GlobalTheory.T.relativelyAcyclic_of_cech_vanishing_all_covers K A L fun j hj => ?_
-  have h0 := GlobalTheory.T.cechNonvanishing_lineBundleInvMix_one_zero K A L hL _ hj
-  obtain ⟨c, hc⟩ := GlobalTheory.T.abelianVariety_cech_vanishing_above_degree K A hA
+  refine _root_.GlobalTheory.AmpleGen.isRelAcyclic_of_not_NV K A L fun j hj => ?_
+  have h0 := _root_.GlobalTheory.AmpleGen.nv_mix_one_zero K A L hL _ hj
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.AmpleGen.not_NV_of_ge K A hA
   have hLB : ∀ a b : ℤ, (mix A L a b).IsLB := fun a b => LB.isLB_linComb hL _ _
 
   let S : ℕ → Prop := fun i => 1 ≤ i ∧ ∃ a b : ℕ, 1 ≤ a + b ∧ NV A (mix A L a b) i

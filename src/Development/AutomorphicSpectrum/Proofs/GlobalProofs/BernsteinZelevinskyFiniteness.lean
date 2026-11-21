@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IrreducibleSmoothAdmissibleGLStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetModuleFiniteLengthStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IrreducibleSmoothAdmissibleGL
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetModuleFiniteLength
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFiniteLengthStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionContragredientStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionContragredient
 
 namespace GlobalTheory.CompanionTheory.Published
 
 theorem bernsteinZelevinskyFiniteness : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
-  fun k _ _ _ _ => ⟨GlobalTheory.T.irreducible_smooth_admissible_GL k, GlobalTheory.T.jacquet_module_finite_length k, GlobalTheory.T.parabolic_induction_finite_length k, GlobalTheory.T.parabolic_induction_contragredient k⟩
+  fun k _ _ _ _ => ⟨_root_.GlobalTheory.CompanionTheory.SmGLBridge.irreducibleAdmissible k, _root_.GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k, GlobalTheory.T.parabolic_induction_finite_length k, _root_.GlobalTheory.CompanionTheory.Glob.inductionContragredient k⟩
 
 end GlobalTheory.CompanionTheory.Published

@@ -1,5 +1,11 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
-import Development.WeilBound.CoreStatements.NefModelVolumes.Nvuonto
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNormLe
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsVanBdOfMemExtVanZ
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.VuOntoC
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanBdLeSpace
+import Development.WeilBound.CoreStatements.NefModelVolumes.NV
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 
 section

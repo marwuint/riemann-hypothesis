@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerAnisotropicVectorEquivComplemen
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableSetOrbitExistsMeasurableSection
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StdHermitianFibreMeasureInvariantOrbitFiniteNonzStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueStdHermitianFibreProductOfRankGeThreStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicTwoStepMeasureOrthogonalBasesPlaneCompareStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueUnitaryTwoStepPairMeasureStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StdHermitianFibreMeasureInvariantOrbitFiniteNonz
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueStdHermitianFibreProductOfRankGeThre
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicTwoStepMeasureOrthogonalBasesPlaneCompare
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueUnitaryTwoStepPairMeasure
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal Matrix
@@ -407,20 +407,20 @@ theorem square : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   obtain ⟨d₁', ⟨e₁', he₁', -⟩, c₁'⟩ := GlobalTheory.FrameStep.frameStep F E σ hσ (AF F) _ J₁ y₁ b₁ C₁ J₀ h₁'
   obtain ⟨d₂, ⟨e₂, he₂, -⟩, c₂⟩ := GlobalTheory.FrameStep.frameStep F E σ hσ (AF F) _ J x₂ a₂ B₂ J₂ h₂
   obtain ⟨d₂', ⟨e₂', he₂', -⟩, c₂'⟩ := GlobalTheory.FrameStep.frameStep F E σ hσ (AF F) _ J₂ y₂ b₂ C₂ J₀ h₂'
-  obtain ⟨ν₁, n₁, -⟩ := GlobalTheory.T.existsUnique_stdHermitianFibreProduct_of_rank_ge_three F E σ hσ d b s _ J a₁ (by omega) h₁.1 h₁.2.1
-  obtain ⟨ν₁', n₁', -⟩ := GlobalTheory.T.existsUnique_stdHermitianFibreProduct_of_rank_ge_three F E σ hσ d b s _ J₁ b₁ (by omega) h₁'.1 h₁'.2.1
-  obtain ⟨ν₂, n₂, -⟩ := GlobalTheory.T.existsUnique_stdHermitianFibreProduct_of_rank_ge_three F E σ hσ d b s _ J a₂ (by omega) h₂.1 h₂.2.1
-  obtain ⟨ν₂', n₂', -⟩ := GlobalTheory.T.existsUnique_stdHermitianFibreProduct_of_rank_ge_three F E σ hσ d b s _ J₂ b₂ (by omega) h₂'.1 h₂'.2.1
-  obtain ⟨-, -, o₁, f₁, -⟩ := GlobalTheory.T.stdHermitianFibreMeasure_invariant_orbit_finite_nonzero F E σ hσ d b s _ J x₁ a₁ ν₁ h₁.1 h₁.2.1 h₁.2.2.1 n₁
+  obtain ⟨ν₁, n₁, -⟩ := _root_.GlobalTheory.GaugeEx.existsUnique_isStdX F E σ hσ d b s _ J a₁ (by omega) h₁.1 h₁.2.1
+  obtain ⟨ν₁', n₁', -⟩ := _root_.GlobalTheory.GaugeEx.existsUnique_isStdX F E σ hσ d b s _ J₁ b₁ (by omega) h₁'.1 h₁'.2.1
+  obtain ⟨ν₂, n₂, -⟩ := _root_.GlobalTheory.GaugeEx.existsUnique_isStdX F E σ hσ d b s _ J a₂ (by omega) h₂.1 h₂.2.1
+  obtain ⟨ν₂', n₂', -⟩ := _root_.GlobalTheory.GaugeEx.existsUnique_isStdX F E σ hσ d b s _ J₂ b₂ (by omega) h₂'.1 h₂'.2.1
+  obtain ⟨-, -, o₁, f₁, -⟩ := _root_.GlobalTheory.GaugeEx.StdProp.stdX_props F E σ hσ d b s _ J x₁ a₁ ν₁ h₁.1 h₁.2.1 h₁.2.2.1 n₁
   obtain ⟨-, i₁', o₁', f₁', -⟩ :=
-    GlobalTheory.T.stdHermitianFibreMeasure_invariant_orbit_finite_nonzero F E σ hσ d b s _ J₁ y₁ b₁ ν₁' h₁'.1 h₁'.2.1 h₁'.2.2.1 n₁'
-  obtain ⟨-, -, o₂, f₂, -⟩ := GlobalTheory.T.stdHermitianFibreMeasure_invariant_orbit_finite_nonzero F E σ hσ d b s _ J x₂ a₂ ν₂ h₂.1 h₂.2.1 h₂.2.2.1 n₂
+    _root_.GlobalTheory.GaugeEx.StdProp.stdX_props F E σ hσ d b s _ J₁ y₁ b₁ ν₁' h₁'.1 h₁'.2.1 h₁'.2.2.1 n₁'
+  obtain ⟨-, -, o₂, f₂, -⟩ := _root_.GlobalTheory.GaugeEx.StdProp.stdX_props F E σ hσ d b s _ J x₂ a₂ ν₂ h₂.1 h₂.2.1 h₂.2.2.1 n₂
   obtain ⟨-, i₂', o₂', f₂', -⟩ :=
-    GlobalTheory.T.stdHermitianFibreMeasure_invariant_orbit_finite_nonzero F E σ hσ d b s _ J₂ y₂ b₂ ν₂' h₂'.1 h₂'.2.1 h₂'.2.2.1 n₂'
-  obtain ⟨N₁, t₁, -⟩ := GlobalTheory.T.existsUnique_unitaryTwoStepPairMeasure F E σ hσ (AF F) _ J x₁ a₁ B₁ J₁ ν₁ ν₁' h₁ o₁ f₁ f₁' i₁'
-  obtain ⟨N₂, t₂, -⟩ := GlobalTheory.T.existsUnique_unitaryTwoStepPairMeasure F E σ hσ (AF F) _ J x₂ a₂ B₂ J₂ ν₂ ν₂' h₂ o₂ f₂ f₂' i₂'
+    _root_.GlobalTheory.GaugeEx.StdProp.stdX_props F E σ hσ d b s _ J₂ y₂ b₂ ν₂' h₂'.1 h₂'.2.1 h₂'.2.2.1 n₂'
+  obtain ⟨N₁, t₁, -⟩ := _root_.GlobalTheory.GaugeEx.twoStep_existsUnique F E σ hσ (AF F) _ J x₁ a₁ B₁ J₁ ν₁ ν₁' h₁ o₁ f₁ f₁' i₁'
+  obtain ⟨N₂, t₂, -⟩ := _root_.GlobalTheory.GaugeEx.twoStep_existsUnique F E σ hσ (AF F) _ J x₂ a₂ B₂ J₂ ν₂ ν₂' h₂ o₂ f₂ f₂' i₂'
   obtain ⟨γ, hγ⟩ := exists_gamma h₁ h₁' h₂ h₂' hBC d₁ d₁' d₂
-  have hN := GlobalTheory.T.adelicTwoStepMeasure_orthogonalBases_plane_compare F E σ hσ d b s _ J x₁ a₁ B₁ J₁ x₂ a₂ B₂ J₂ y₁ y₂ b₁ b₂ γ h₁ h₂ h₁'.2.1
+  have hN := _root_.GlobalTheory.GaugeEx.twoStep_adelic_swap F E σ hσ d b s _ J x₁ a₁ B₁ J₁ x₂ a₂ B₂ J₂ y₁ y₂ b₁ b₂ γ h₁ h₂ h₁'.2.1
     h₂'.2.1 h₁'.2.2.1 h₂'.2.2.1 hγ ν₁ ν₂ ν₁' ν₂' N₁ N₂ n₁ n₁' n₂ n₂' t₁ t₂
   set G : Matrix (Fin 2) (Fin 2) (AF F ⊗[F] E) :=
     (γ : Matrix (Fin 2) (Fin 2) E).map (inclR (F := F) (AF F)) with hG

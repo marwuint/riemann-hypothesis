@@ -6,9 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformiz
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ModuliUnivEtaKilled
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsPowMulCoprimeLe
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsTranslationSectionsUniversalObject
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatRootsStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatFullLinearLevelStructureStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsIsotropicGroupLatticeClassRepresentativesStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatRoots
+import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
+import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatFullLinearLevelStructure
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsIsotropicGroupLatticeClassRepresentatives
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatSplitIsotropicGroup
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
@@ -60,7 +64,7 @@ theorem descend (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (M :
 
 theorem exists_root (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (N : ℕ) (hN : 0 < N)
     (hx : AllRat Xo x (N ^ 2)) (t : ptO Xo x ⟶ Xo.univ.t.G) (ht : t ^ N = 1) : ∃ r, r ^ N = t := by
-  obtain ⟨B, _, φ, w, hφ, hw⟩ := GlobalTheory.T.exists_faithfullyFlat_nthRoots_of_torsion GlobalTheory.firstFiveLaws.1 E H Dw l Xo K x N N hN hN Unit
+  obtain ⟨B, _, φ, w, hφ, hw⟩ := _root_.GlobalTheory.exists_faithfullyFlat_roots GlobalTheory.firstFiveLaws.1 E H Dw l Xo K x N N hN hN Unit
     (fun _ => t) (fun _ => ht)
   obtain ⟨Ω, _, χ, x', g₁, g₂, h₁, h₂, h₃, h₄⟩ := descend Xo x _ hx φ hφ
   let g : ptO Xo (spMap φ ≫ x) ⟶ ptO Xo x := Over.homMk (spMap φ) rfl
@@ -74,7 +78,7 @@ theorem exists_linear_level (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K �
     (hx : AllRat Xo x k) : ∃ ev : Dw.La → (ptO Xo x ⟶ Xo.univ.t.G), (∀ a b, ev (a + b) = ev a * ev b) ∧
       (∀ (o : 𝓞 E) a, ev (o • a) = ev a ≫ Xo.univ.t.act.act o) ∧ (∀ a, ev (k • a) = 1) ∧
       ∀ a b, ev a = ev b → Dw.ModN k (a - b) := by
-  obtain ⟨B, _, φ, ev, hφ, hadd, hsm, hkill, hinj⟩ := GlobalTheory.T.exists_faithfullyFlat_full_linear_level_structure GlobalTheory.firstFiveLaws.1 E H Dw l Xo K x k hk
+  obtain ⟨B, _, φ, ev, hφ, hadd, hsm, hkill, hinj⟩ := _root_.GlobalTheory.exists_faithfullyFlat_linear_level GlobalTheory.firstFiveLaws.1 E H Dw l Xo K x k hk
   obtain ⟨Ω, _, χ, x', g₁, g₂, h₁, h₂, -, h₄⟩ := descend Xo x _ hx φ hφ
   choose e he using fun a => h₄ (ev a) (by rw [← map_nsmul_eq_pow_of_add_eq_mul ev hadd, hkill])
   refine ⟨e, fun a b => cancel_of_left_eq Xo _ g₂ h₂ ?_, fun o a => cancel_of_left_eq Xo _ g₂ h₂ ?_,
@@ -113,7 +117,7 @@ theorem exists_thetaVal_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
       (exists_root_killedBy_pow E H Dw l Xo _ _ _ N hN (hlev _).1 (hr q)).1
     have htN : ∀ q, t q ^ (N ^ 2) = 1 := fun q => by rw [pow_two, pow_mul, ht q, hlevN]
     obtain ⟨ev, hadd, hsm, hk, hinj⟩ := exists_linear_level Xo y.x (N ^ 2) (pow_pos hN 2) hx
-    obtain ⟨zz, hz, hzi, -⟩ := GlobalTheory.T.exists_isotropic_group_lattice_class_representatives E H Dw n Λ N hU hN (hle.trans inf_le_left)
+    obtain ⟨zz, hz, hzi, -⟩ := _root_.GlobalTheory.ZCount.exists_class_representatives E H Dw n Λ N hU hN (hle.trans inf_le_left)
     have hZ : ∀ i, InZh Xo Λ N (fun b => ev (zz i b)) := by
       refine fun i => ⟨fun b => ?_, ?_⟩
       · rw [← map_nsmul_eq_pow_of_add_eq_mul ev hadd, hk]

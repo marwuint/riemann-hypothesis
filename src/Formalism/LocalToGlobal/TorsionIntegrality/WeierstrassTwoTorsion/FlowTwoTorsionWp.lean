@@ -22,7 +22,6 @@ theorem integSpec : IntegSpec.{u} := integration_spec
 
 theorem flowNegUW : FlowNegUW.{u} := chartFlowNegation
 theorem chordRegular : ChordRegular.{u} := chordFormula
-theorem flowTranslate : FlowTranslate.{u} := flowTranslation
 theorem flowLogDeriv : FlowLogDeriv.{u} := flowLogDerivative
 theorem flowTwoTorsion : FlowTwoTorsion.{u} := twoTorsionTranslation
 theorem flowTwoTorsionWp : FlowTwoTorsionWp.{u} := twoTorsionTranslationWeierstrassForm
@@ -50,7 +49,6 @@ theorem fglSum : FglSum.{u} := formal_group_sum
 theorem tSpec : TSpec.{u} := tSpec_of iSerSpec
 theorem plusChord : PlusChord.{u} := plusChord_of flowL
 theorem plusFlow : PlusFlow.{u} := plusFlow_of dLSpec flowL
-theorem plusNeg : PlusNeg.{u} := plusNeg_of iSerSpec
 theorem plusMap : PlusMap.{u, v} := addition_map
 
 end Formalism.L2.Th1.A

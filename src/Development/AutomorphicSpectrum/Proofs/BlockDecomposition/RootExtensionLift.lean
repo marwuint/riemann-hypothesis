@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.MapUSharp
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.ValuationOfValuationModSquare
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodRingBaseChangeFromUniversalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodRingUniversalPropertyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodRingUniversalProperty
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EtaleLiftingOfNilIdeal
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry DividedPowers GroundTheory.PAdicHodge GlobalTheory.LogCris GlobalTheory.PDA CrystallineSemistableComparison CrystallineSemistableComparison.CH CrystallineSemistableComparison.PAlg CrystallineSemistableComparison.B
@@ -266,7 +266,7 @@ theorem tower_acr {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn O} {�
       exact this)
     (fun j => by rw [X.r_zero]; exact hg0 _ _ (𝓛.hT j).symm)
     (fun j m => by rw [← map_pow, X.r_succ])
-  obtain ⟨e', he'0, he'f⟩ := (GlobalTheory.T.period_ring_universal_property 𝒯.A n X.E h).1 f fun a => by
+  obtain ⟨e', he'0, he'f⟩ := (_root_.GlobalTheory.CompanionTheory.AcrUniv.maps_out 𝒯.A n X.E h).1 f fun a => by
     rw [← ho]; exact RingHom.congr_fun hfs a
   have he'm : ∀ x, e' (mapAcr 𝒯.A.fromBase n x) = h x := fun x => RingHom.congr_fun he'0 x
 
@@ -333,7 +333,7 @@ theorem tower_acr {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn O} {�
       rw [hπA, ← huPl _ _ ha]
       exact (huP _).symm
   have h1 : ∀ y, e (e' y) = y := fun y => by
-    have h4 := (GlobalTheory.T.period_ring_universal_property 𝒯.A n (𝒯.A.Acr n) (mapAcr 𝒯.A.fromBase n)).2 (e.comp e') (RingHom.id _)
+    have h4 := (_root_.GlobalTheory.CompanionTheory.AcrUniv.maps_out 𝒯.A n (𝒯.A.Acr n) (mapAcr 𝒯.A.fromBase n)).2 (e.comp e') (RingHom.id _)
       (RingHom.ext fun x => by rw [RingHom.comp_apply, RingHom.comp_apply, he'm, hh]) (RingHom.id_comp _)
       (fun a => by
         rw [← hPP]

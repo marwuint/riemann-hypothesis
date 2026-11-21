@@ -59,9 +59,6 @@ def fillAt (S : Sig A N j) (κ : Lv A) (p : ℕ) (hp : ¬ p.Prime) : LocAt S κ 
 def locAt (F : StFam S κ) (cts : Ats S κ) (p : ℕ) : LocAt S κ p :=
   if hp : p.Prime then @primeAt _ _ _ _ _ _ F cts p ⟨hp⟩ else fillAt S κ p hp
 
-theorem locAt_prime (F : StFam S κ) (cts : Ats S κ) (p : ℕ) [hp : Fact p.Prime] : locAt F cts p = primeAt F cts p :=
-  dif_pos hp.out
-
 def locStOf (F : StFam S κ) (cts : Ats S κ) : LocSt D N j ngTrue where
   loc p := (locAt F cts p).loc
   ex p := (locAt F cts p).ex
@@ -80,9 +77,5 @@ def globStOf (F : StFam S κ) (cts : Ats S κ) : GlobSt fun p => ((locStOf F cts
   nefFibM := QLB.NefFib
   ampleGen := QLB.AmpleGen
   limRA := QLB.LimRA
-
-theorem locStOf_loc (F : StFam S κ) (cts : Ats S κ) (p : ℕ) [Fact p.Prime] :
-    (locStOf F cts).loc p = Loc.pi fun v => (F.st (cts p v)).fix.loc :=
-  congrArg LocAt.loc (locAt_prime F cts p)
 
 end GlobalTheory.LocM

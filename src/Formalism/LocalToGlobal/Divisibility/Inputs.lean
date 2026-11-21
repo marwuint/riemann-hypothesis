@@ -463,10 +463,4 @@ structure DivInputs0 {Pl : Type} [Fintype Pl] [DecidableEq Pl] (P : IndefCore Df
 
   constant_ge_twenty_eight : 28 ≤ R.C0
 
-structure DivInputs {Pl : Type} [Fintype Pl] [DecidableEq Pl] (P : IndefCore Df0 Df1 Dc Sp N) (R : RecNums Bs.J Pl)
-    (u : Dc.Mem) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K)) (sg : HeightOneSpectrum (𝓞 K) → ℝ) extends DivInputs0 P R u Nu sg where
-
-  val2 : ∀ w, ∀ φ ∈ Nu, ∀ F ∈ Df1.Mt (P.cols.μ w),
-    Dc.Pt u (P.cols.μ w) φ F = 0 ∨ sg w ≤ (vw w (Dc.Pt u (P.cols.μ w) φ F) : ℝ)
-
 end Formalism.L2.DIV

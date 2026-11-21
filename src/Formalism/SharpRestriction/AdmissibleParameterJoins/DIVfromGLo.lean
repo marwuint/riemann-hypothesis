@@ -291,34 +291,6 @@ theorem levelPrime_setting_of_sizes {D : D7} {L : SizeData₂ D} {Cn cL : ℝ} (
     have : (0 : ℝ) ≤ ((D.fm u).bTop τ : ℤ) := by rw [bTop_eq]; linarith
     exact_mod_cast this
 
-theorem family_levelPrime_summary_closed {eps : ℝ} (Fm : FamP eps) (C : ℝ) (hT : TuSize Fm) (hDl : DlSize Fm)
-    (hE : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,
-      (∀ u, product_first_zeroth_parts.Conclusion2 (Fm.D x i) u) ∧ (∀ u, product_first_zeroth_parts.Conclusion5 (Fm.D x i) u C)) :
-    LocalQuadraticParts.LevelTFamily Fm := by
-  obtain ⟨Cn, hN⟩ := numsL_wtsL_fam Fm hT hDl
-  obtain ⟨x0, hN⟩ := hN Cn le_rfl 3 le_rfl
-  obtain ⟨x1, hT⟩ := hT
-  obtain ⟨x2, hE⟩ := hE
-  obtain ⟨x3, h3⟩ := flipTwoThree.le_rpow_for_large_x ((2 : ℝ) / 5) (by norm_num) 4
-  refine family_levelPrime_summary_simple Fm C 9 (by norm_num)
-    ⟨max (max x0 x1) (max (max x2 x3) (max 4 (Fm.x1 + 1))), fun x hx i => ?_⟩
-  have e0 : x ≥ x0 := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have e1 : x ≥ x1 := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have e2 : x ≥ x2 := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have e3 : x3 ≤ x := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have e4 : 4 ≤ x := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hx
-  have e5 : Fm.x1 < x := by
-    have := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx
-    linarith
-  have hsx : (Fm.L x i).sc.x = x := Fm.L_x x i e5
-  have hm : 4 ≤ (Fm.D x i).R.m := by
-    have z1 := (flipTwoThree.size_bounds_of_scale (Fm.L x i) (Fm.sizes x e5 i) (by rw [hsx]; exact e4)).1
-    rw [hsx] at z1
-    have : (4 : ℝ) ≤ (Fm.D x i).R.m := le_trans (h3 x e3) z1
-    exact_mod_cast this
-  exact ⟨(hE x e2 i).1, (hE x e2 i).2, fifthLevelSizes_of_weights (by norm_num) (hN x e0 i).1 (hN x e0 i).2,
-    levelPrime_setting_of_sizes le_rfl (hN x e0 i).1 (hN x e0 i).2 (hT x e1 i).1 hm⟩
-
 end Formalism.MainNotions.J
 
 end

@@ -12,14 +12,14 @@ import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.StalkOfAppLEEq
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SqOfCalculus
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsPointOfPerLev
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsPerLev
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsTwoTorsionTranslateSameLambdaBundleStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.PotentiallyKnownOfSameLambdaBundleStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.LiftIdempotentEqOfSameComplexComponentStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.GeomIntegralOfEtaleFaithfullyFlatCoverStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsTwoTorsionTranslateSameLambdaBundle
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.PotentiallyKnownOfSameLambdaBundle
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.LiftIdempotentEqOfSameComplexComponent
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.GeomIntegralOfEtaleFaithfullyFlatCover
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SiegelFamilyStandardLevelPointsSameComponentStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsSiegelFamilyOverNumberFieldStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNumberFieldPointSiegelFamilyKnownValueStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsSymmetricSqrtPrincipalSiegelFiniteEtaleStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsSiegelFamilyOverNumberField
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNumberFieldPointSiegelFamilyKnownValue
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsSymmetricSqrtPrincipalSiegelFiniteEtale
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsRigidTranslatePrincipalPolarisationOrderTwStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -66,7 +66,7 @@ theorem exists_translate (hL : Out.Laws) {h k : ℕ} {o : Type} [CommRing o] {ζ
   obtain ⟨P₁, π, hπ⟩ := exists_polPB hL.polBaseChange x Q
   have h₁ := (sqOf_calculus h k o ζ S (Sp R) (Sp ℂ) s c f).1 x Q P₁ φ π hQ hπ
   obtain ⟨e, he, -, hl⟩ := (sqOf_calculus h k o ζ S (Sp ℂ) (Sp ℂ) s c (x ≫ f)).2.1 P₁ P _ _ h₁ hP
-  obtain ⟨t₁, ht₁, hi⟩ := GlobalTheory.T.exists_twoTorsion_translate_same_lambdaBundle hL ℂ P₁ P e he hl
+  obtain ⟨t₁, ht₁, hi⟩ := _root_.GlobalTheory.SameLam.exists_two_torsion_translate hL ℂ P₁ P e he hl
   obtain ⟨t, ht, hy⟩ := hT ℂ _ (pushHom hπ.1 _ t₁) (by rw [← map_pow, ht₁, map_one])
   obtain ⟨Q', e', he', hg', hl', hi'⟩ := GlobalTheory.T.exists_rigidTranslate_principalPolarisation_order_two hL R Q t ht
   have hy' : t₁.left ≫ π = x ≫ t.left := by
@@ -138,11 +138,11 @@ open GlobalTheory.KeyFam.PolFamPf in
 
 theorem GlobalTheory.KeyFam.polFam : Out.Laws → Out.Laws2 → ThetaUnifAV → GlobalTheory.TorusAlgebraic → PolFam := by
   intro hL hL2 hU hA P hg
-  obtain ⟨k, K, _, _, ζ, σ, hk, ho, hζ, ⟨F⟩⟩ := GlobalTheory.T.exists_siegelFamily_over_numberField hL hL2 hU P.g hg
+  obtain ⟨k, K, _, _, ζ, σ, hk, ho, hζ, ⟨F⟩⟩ := _root_.GlobalTheory.SiegelFamilyNumberField.exists_sFam_numberField hL hL2 hU P.g hg
   obtain ⟨τ, lev, hper⟩ := exists_perLev hU P P.g k rfl
   obtain ⟨p, χ, hp, hP, hlev⟩ := exists_point_of_perLev hL P.g k K ζ σ F hg hk ho hζ P τ lev hper
   obtain ⟨K₁, _, _, j₁, σ₁, y, q, χy, τ', hσ, hq, hy, hyq, hpt⟩ :=
-    GlobalTheory.T.exists_numberField_point_siegelFamily_knownValue hL hU P.g k K ζ σ F hg hk ho hζ inferInstance
+    _root_.GlobalTheory.KeyFam.exists_known_point hL hU P.g k K ζ σ F hg hk ho hζ inferInstance
   have hq' : (spMap σ₁ ≫ q) ≫ F.s = spMap σ := by rw [Category.assoc, hq, ← spMap_comp, hσ]
   have hc := GlobalTheory.T.siegelFamily_standard_level_points_same_component hL hL2 hU hA P.g k K ζ σ F hg hk ho hζ τ τ' p _ hp hq' ⟨P, lev, χ, hper, hP, hlev⟩ hpt
   obtain ⟨R, _, i, a, p', q', hi, ha, rfl, rfl⟩ := exists_affine F.s F.qproj p q
@@ -157,7 +157,7 @@ theorem GlobalTheory.KeyFam.polFam : Out.Laws → Out.Laws2 → ThetaUnifAV → 
   have hsm : Smooth F.s := by
     have := F.smooth
     exact SmoothOfRelativeDimension.smooth (P.g * (P.g + 1) / 2) F.s
-  have hid := GlobalTheory.T.lift_idempotent_eq_of_sameComplexComponent K F.X F.s R i pA (σA.comp qA) hsm hi ha (by
+  have hid := _root_.GlobalTheory.KeyFam.lift_eq_of_sameComp_of_isIdempotentElem K F.X F.s R i pA (σA.comp qA) hsm hi ha (by
     have e : spMap (σA.comp qA).toRingHom ≫ i = spMap σ₁ ≫ spMap q' ≫ i := by
       rw [← Category.assoc, ← spMap_comp]; rfl
     rw [e]; exact hc)
@@ -170,7 +170,7 @@ theorem GlobalTheory.KeyFam.polFam : Out.Laws → Out.Laws2 → ThetaUnifAV → 
     refine isUnit_iff_ne_zero.2 fun h0 => ?_
     rw [h0, map_zero] at hζ
     exact Complex.exp_ne_zero _ hζ.symm
-  obtain ⟨R₁, _, _, Q, φ, ⟨c₁, c₂, c₃⟩, hQ, hT⟩ := GlobalTheory.T.exists_symmetric_sqrt_principal_siegel_finite_etale hL P.g k K ζ R F.X F.s F.univ i (by omega) hu F.princ
+  obtain ⟨R₁, _, _, Q, φ, ⟨c₁, c₂, c₃⟩, hQ, hT⟩ := _root_.GlobalTheory.SiegelSqrt.exists_sqrt hL P.g k K ζ R F.X F.s F.univ i (by omega) hu F.princ
   obtain ⟨p₁, hp₁⟩ := exists_lift_point (R₁ := R₁) p'
   obtain ⟨Q', φ', ψ, hQ', hψ⟩ := exists_translate hL F.univ _ Q φ hQ hT (spMap p₁) P χ (by
     rw [← Category.assoc, ← spMap_comp, hp₁]; exact hP)
@@ -180,7 +180,7 @@ theorem GlobalTheory.KeyFam.polFam : Out.Laws → Out.Laws2 → ThetaUnifAV → 
     { p₁ with commutes' := fun r => (DFunLike.congr_fun hp₁ (a r)).trans (DFunLike.congr_fun hp' r) }
   have hpp : p₁A.comp (IsScalarTower.toAlgHom K R R₁) = pA := AlgHom.ext fun r => DFunLike.congr_fun hp₁ r
   obtain ⟨k', _, _, S, _, _, j, s, s₀, ii, hS, hs, hs₀⟩ :=
-    GlobalTheory.T.geom_integral_of_etale_faithfully_flat_cover K R R₁ K₁ σA p₁A qA ⟨c₁, c₂, c₃⟩ (by rw [hpp]; exact hid)
+    _root_.GlobalTheory.KeyFam.exists_geomInt_piece_of_finite_etale K R R₁ K₁ σA p₁A qA ⟨c₁, c₂, c₃⟩ (by rw [hpp]; exact hid)
   obtain ⟨Q'', π, hπ⟩ := exists_polPB hL.polBaseChange (spMap j) Q'
   obtain ⟨ψ', hψ'⟩ := polPB_cancel (g := spMap s) hπ (by
     rw [← spMap_comp, hs]; exact hψ)
@@ -199,4 +199,4 @@ theorem GlobalTheory.KeyFam.polFam : Out.Laws → Out.Laws2 → ThetaUnifAV → 
       spMap_comp, Category.assoc]
   rw [e] at a₁
   obtain ⟨ε, hε, -, hl⟩ := (sqOf_calculus _ k K ζ F.X _ (Sp k') F.s F.univ _).2.1 _ _ _ _ a₂ a₁
-  exact GlobalTheory.T.potentiallyKnown_of_same_lambdaBundle hL hU k' y' P₀ ε hε hl hk'
+  exact _root_.GlobalTheory.KeyFam.SameLam.potKnown_of_lamIs hL hU k' y' P₀ ε hε hl hk'

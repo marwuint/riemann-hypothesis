@@ -244,6 +244,4 @@ theorem Gen_of (hR : RootPow) : LateralTheory.E.MulPf.Gen := by
     refine sep ⊤ (Scheme.etaleTopology.top_mem _) _ _ (fun Y f _ => ?_)
     refine hm j k l h X _ _ f _ (Good.res (Or.inr ⟨ζ, 1, 1, ?_, ?_, ?_⟩) f) <;> simp only [mul_one, one_smul]
 
-theorem Gen_of' (hR : LateralTheory.E.MulPf.RootPow) : LateralTheory.E.MulPf.Gen := Gen_of hR
-
 end LateralTheory.E.GenPf

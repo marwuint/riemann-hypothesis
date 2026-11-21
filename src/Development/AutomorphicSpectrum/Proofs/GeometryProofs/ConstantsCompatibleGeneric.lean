@@ -6,8 +6,9 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SabMapId
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeConstantRankStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelDominantHodgeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeConstantRank
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelDominantHodge
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -27,12 +28,12 @@ theorem exists_lie_eig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain ⟨Li₀, _, _, ⟨M₀⟩⟩ := GlobalTheory.CompanionTheory.Ar.lieModel_exists _ Y.t.G 𝔐.Ω₀ 𝔐.ξ₀
   obtain ⟨ρ₀, hρ₀, -⟩ := GlobalTheory.CompanionTheory.Ar.lieModel_exists_unique_act _ Y.t.G 𝔐.Ω₀ 𝔐.ξ₀ Li₀ M₀ (𝓞 E) Y.t.act.act
     Y.t.act.hom Y.t.act.one Y.t.act.mul Y.t.act.add
-  obtain ⟨j, hj, hsl, hli, -, -⟩ := GlobalTheory.T.lie_model_dominant_hodge E H Y.X Y.t 𝔐.X 𝔐.t 𝔐.f 𝔐.m 𝔐.Ω₀ Ω 𝔐.ξ₀ 𝔐.ξ 𝔐.fn Li₀ 𝔐.Li M₀ 𝔐.M
+  obtain ⟨j, hj, hsl, hli, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LiePullSab.lie_pull_lat E H Y.X Y.t 𝔐.X 𝔐.t 𝔐.f 𝔐.m 𝔐.Ω₀ Ω 𝔐.ξ₀ 𝔐.ξ 𝔐.fn Li₀ 𝔐.Li M₀ 𝔐.M
     𝔐.gen₀ 𝔐.tie.gen 𝔐.fn_over
   obtain ⟨m₀, -⟩ := GlobalTheory.CompanionTheory.Ar.exists_sabMap_id E H Y.X Y.t
-  obtain ⟨hfd₀, hrk₀⟩ := GlobalTheory.T.eigen_lattice_constant_rank E H D l Xo c Y Y.X 𝔐.Ω₀ 𝔐.ξ₀ (𝟙 _) y₁ Y.t m₀ Li₀ M₀ ρ₀ cst₀
+  obtain ⟨hfd₀, hrk₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.EigRank.eig_finrank_label E H D l Xo c Y Y.X 𝔐.Ω₀ 𝔐.ξ₀ (𝟙 _) y₁ Y.t m₀ Li₀ M₀ ρ₀ cst₀
     (by rw [Category.comp_id]; exact hy₁) (by rw [Category.id_comp]; exact hs₀) hρ₀
-  obtain ⟨hfd, hrk⟩ := GlobalTheory.T.eigen_lattice_constant_rank E H D l Xo c Y 𝔐.X Ω 𝔐.ξ 𝔐.f y₀ 𝔐.t 𝔐.m 𝔐.Li 𝔐.M 𝔐.ρ 𝔐.cst hy 𝔐.cst_over 𝔐.act
+  obtain ⟨hfd, hrk⟩ := _root_.GlobalTheory.CompanionTheory.Ar.EigRank.eig_finrank_label E H D l Xo c Y 𝔐.X Ω 𝔐.ξ 𝔐.f y₀ 𝔐.t 𝔐.m 𝔐.Li 𝔐.M 𝔐.ρ 𝔐.cst hy 𝔐.cst_over 𝔐.act
   have hρj : ∀ (a : 𝓞 E) e, j (ρ₀ a e) = 𝔐.ρ a (j e) := by
     intro a e
     apply 𝔐.M.inj

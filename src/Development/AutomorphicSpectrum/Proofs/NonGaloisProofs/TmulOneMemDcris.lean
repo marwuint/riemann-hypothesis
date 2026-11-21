@@ -1,10 +1,14 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoRightExact
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsComponentEquiv
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LinearRelationExactSequenceDimStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LinearRelationExactSequenceDim
 
 noncomputable section
 
@@ -199,7 +203,7 @@ theorem finrank_eq (hD : FiniteDimensional LL ↥(Dcris PD ρ)) (hR : FiniteDime
       refine ⟨d, e, 0, hef, rfl, rfl, fun g => ?_, rfl⟩
       rw [(mem_Dcris_iff PD ρ).1 hd g]
       simp
-  obtain ⟨-, hcount⟩ := GlobalTheory.T.linear_relation_exact_sequence_dim LL _ _ _ _ (aMap PD ρ) (bMap PD ρ) (relR PD ρ) hInj hRan hAll
+  obtain ⟨-, hcount⟩ := _root_.GlobalTheory.CompanionTheory.InertiaEigenvalues.finrank_along_relation LL _ _ _ _ (aMap PD ρ) (bMap PD ρ) (relR PD ρ) hInj hRan hAll
     hOnto hZero hBack
   rw [Module.finrank_prod, Module.finrank_prod] at hcount
   omega
@@ -222,7 +226,7 @@ theorem finite_periods {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l
   haveI : IsScalarTower ℚ_[l] ↥L.1 V := IsScalarTower.to₁₂₄ ℚ_[l] ↥L.1 LL V
   haveI : FiniteDimensional ↥L.1 V := Module.Finite.trans LL V
   have h1 := (GlobalTheory.T.fontaine_inequality_dcris_finite_concrete_rings l P AI T K L).2 V (GlobalTheory.BKRightExact.res ↥L.1 ρ)
-  have h2 := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K L V (GlobalTheory.BKRightExact.res ↥L.1 ρ)).1
+  have h2 := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K L V (GlobalTheory.BKRightExact.res ↥L.1 ρ)).1
   rw [GlobalTheory.BKRightExact.Dcris_res] at h1
   rw [GlobalTheory.BKRightExact.DdR_res] at h2
   have h1' : Module.Finite ↥L.1 ↥(Dcris (P.PD K) ρ) := h1

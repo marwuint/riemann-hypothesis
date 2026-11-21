@@ -17,12 +17,6 @@ def PullConeDegreeInt.Statement : Prop :=
       ∃ a : Fin (D + 1) → MRing ι, (∀ j, IsMultiHomog (a j) (d - e)) ∧
         (M : Ω) * aeval y g = ∑ j, aeval y (a j) * aeval y (L j)
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

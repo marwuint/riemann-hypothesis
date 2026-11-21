@@ -250,10 +250,6 @@ theorem rdE_eq (D : D7) : D.host.rdE = 2 * D.host.v := by
   rw [Host.v]
   ring
 
-theorem ka_eq (D : D7) : D.host.ka = 2 * Real.pi / D.host.rdE := by
-  rw [Host.ka, Host.v, div_div_eq_mul_div]
-  ring
-
 theorem cast_tri (m : ℕ) (hm : 1 ≤ m) : ((m * (m - 1) / 2 : ℕ) : ℝ) = (m : ℝ) * ((m : ℝ) - 1) / 2 := by
   have h2 : 2 ∣ m * (m - 1) := (Nat.even_mul_pred_self m).two_dvd
   have h3 : ((m * (m - 1) / 2 : ℕ) : ℝ) = ((m * (m - 1) : ℕ) : ℝ) / ((2 : ℕ) : ℝ) :=

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerExponentOfGaloisElementIsKummerCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CochainCoboundaryProdHomIdentitiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerGeneratorOfCharStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CochainCoboundaryProdHomIdentities
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerGeneratorOfChar
 open GlobalTheory.NeedB Polynomial
 
 namespace GlobalTheory
@@ -41,7 +41,7 @@ theorem eta_kummer_galoisInvariant : ∀ (K Ω : Type) [Field K] [CharZero K] [F
     MonoidHom.mk' (fun g => Multiplicative.ofAdd (kum ζ α g)) (fun g h => by simp [hαmul, ofAdd_add])
   let y : (Ω ≃ₐ[K] Ω) →* Multiplicative (ZMod N) :=
     MonoidHom.mk' (fun g => Multiplicative.ofAdd (kum ζ β g)) (fun g h => by simp [hβmul, ofAdd_add])
-  obtain ⟨-, hconj, hhom⟩ := GlobalTheory.T.eta_one_conj_mul_of_cup_coboundary (Ω ≃ₐ[K] Ω) N x y η (fun g h => hcob g h)
+  obtain ⟨-, hconj, hhom⟩ := _root_.GlobalTheory.cochain_coboundary_prod_hom_identities (Ω ≃ₐ[K] Ω) N x y η (fun g h => hcob g h)
 
   have memH : ∀ g : Ω ≃ₐ[K] Ω, g ∈ E.fixingSubgroup ↔ g α = α ∧ g β = β := by
     intro g
@@ -67,7 +67,7 @@ theorem eta_kummer_galoisInvariant : ∀ (K Ω : Type) [Field K] [CharZero K] [F
   have kβ0 : ∀ g ∈ E.fixingSubgroup, kum (N := N) ζ β g = 0 := fun g hg => (hβker g).2 ((memH g).1 hg).2
   have hηhom : ∀ g ∈ E.fixingSubgroup, ∀ h ∈ E.fixingSubgroup, η (g * h) = η g + η h :=
     fun g hg h _ => hhom g h (kα0 g hg)
-  obtain ⟨θ, hθ0, hθE, hθapp⟩ := GlobalTheory.T.exists_kummer_generator_of_locallyConstant_hom K Ω N ζ hN hζ hfix E η hη hηhom
+  obtain ⟨θ, hθ0, hθE, hθapp⟩ := _root_.GlobalTheory.kummer_generator_of_char K Ω N ζ hN hζ hfix E η hη hηhom
   have hkθ : ∀ g ∈ E.fixingSubgroup, η g = kum ζ θ g := fun g hg =>
     (kum_eq_of_apply hN hζ hθ0 g (η g) (hθapp g hg)).symm
   refine ⟨θ, hθ0, hθE, hkθ, fun s => ?_⟩

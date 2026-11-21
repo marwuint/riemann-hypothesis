@@ -41,19 +41,4 @@ def ValuationWindowLowerBound : Prop :=
       (-Real.logb p ‖lead‖ + (roots.map (fun ζ => vmin p h ((t₀ : K) - ζ))).sum) +
         E * ((roots.filter (fun ζ => ‖(t₀ : K) - ζ‖ ≤ (p : ℝ) ^ (-(h : ℤ)))).card : ℝ)
 
-open Classical in
-
-def WindowFull : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : Type) [NormedField K] [NormedAlgebra ℚ_[p] K] [IsUltrametricDist K]
-    (n del₀ h : ℕ) (E : ℝ) (c : Fin n → Fin n → ℕ → K) (lead : K) (roots : Multiset K) (t₀ : ℤ) (Y₀ : ℕ)
-    (La₀ : ℝ) (U V : ℤ → Matrix (Fin n) (Fin n) K) (d : ℤ → Fin n → K),
-    0 < Y₀ → Y₀ ≤ p ^ h → del₀ ≤ p ^ h → 0 < E → lead ≠ 0 → (∀ i j k, ‖c i j k‖ ≤ 1) →
-    (binMatK K del₀ c).det = Polynomial.C lead * (roots.map (fun ζ => X - Polynomial.C ζ)).prod →
-    (∀ t ∈ Ico t₀ (t₀ + Y₀), (∀ i j, ‖U t i j‖ ≤ 1) ∧ (∀ i j, ‖V t i j‖ ≤ 1) ∧
-      ‖(U t).det‖ = 1 ∧ ‖(V t).det‖ = 1 ∧
-      (binMatK K del₀ c).map (Polynomial.eval (t : K)) = U t * Matrix.diagonal (d t) * V t) →
-    -Real.logb p ‖lead‖ + (roots.card : ℝ) / ((p : ℝ) - 1) ≤ (n : ℝ) * La₀ →
-    (∑ t ∈ Ico t₀ (t₀ + Y₀), ((univ.filter (fun i => ‖d t i‖ ≤ (p : ℝ) ^ (-E))).card : ℝ)) / (Y₀ : ℝ) ≤
-      (n : ℝ) * ((del₀ : ℝ) / Y₀ + (La₀ + (del₀ : ℝ) * h / Y₀) / E)
-
 end Formalism.GM

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulEqRegularValueBasicOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularPeriodicRatioCoverFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulEqRegularValueBasicOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularPeriodicRatioCoverFamilies
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CechDR GlobalTheory.CechPer
@@ -12,12 +12,12 @@ namespace GlobalTheory.CechPer
 
 theorem isReg_of_isReg_sub : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (n : ℕ) (W : Fin n → A.left.Opens) (r : ∀ k, Fin n → Γ(A.left, W k)), IsRatioCover u.ex W r → ∀ (h : Fin n → (Fin g → ℂ) → ℂ), (∀ k, DifferentiableOn ℂ (h k) (pre u.ex (W k))) → (∀ k (l : u.Λ), ∀ z ∈ pre u.ex (W k), h k (z + l) = h k z) → (∀ k j, IsReg u.ex (W k ⊓ W j) (h k - h j)) → ∀ k, IsReg u.ex (W k) (h k) := by
   intro A _ g L u hA n W r hr h hd hp hreg l
-  obtain ⟨-, hdiff, -, hper, hinf, -, -, -, -, -, hbas, -⟩ := GlobalTheory.T.uniformisation_preimage_value_rules A g L u
+  obtain ⟨-, hdiff, -, hper, hinf, -, -, -, -, -, hbas, -⟩ := _root_.GlobalTheory.CechPer.pre_val_rules A g L u
   have hr' := hr
   obtain ⟨haff, -, hbo, -, hco⟩ := hr'
   have h1 : ∀ k, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → ∃ b : Γ(A.left, W k), ∀ z ∈ pre u.ex (A.left.basicOpen (r k l)),
       val u.ex (W k) b z = val u.ex (W k) (r k l) z ^ N * (h k - h l) z := fun k ↦
-    GlobalTheory.T.exists_pow_mul_eq_regularValue_basicOpen A g L u (W k) (haff k) (r k l) (h k - h l) (by rw [hbo]; exact hreg k l)
+    _root_.GlobalTheory.ClearDen.exists_pow_mul_eq_val A g L u (W k) (haff k) (r k l) (h k - h l) (by rw [hbo]; exact hreg k l)
   choose N₀ hN₀ using h1
   set N : ℕ := Finset.univ.sup N₀ with hN
   have h2 := fun k ↦ hN₀ k N (Finset.le_sup (f := N₀) (Finset.mem_univ k))
@@ -36,7 +36,7 @@ theorem isReg_of_isReg_sub : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : L
     rw [hbas, not_not] at hz
     simp only [σ]
     rw [hz, zero_mul]
-  have hσ := GlobalTheory.T.isRegular_periodic_ratioCover_families A g L u hA n W r hr (N + 1) σ
+  have hσ := _root_.GlobalTheory.CechPer.ratio_periodic_isReg A g L u hA n W r hr (N + 1) σ
     (fun k ↦ (hdiff _ (r k l)).mul ((((hdiff _ (r k l)).pow N).mul (hd k)).sub (hdiff _ (b k))))
     (fun k m z hz ↦ by simp only [σ]; rw [hper, hper, hp k m z hz])
     (fun k j z hk hj ↦ by

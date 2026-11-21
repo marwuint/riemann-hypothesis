@@ -121,49 +121,6 @@ theorem dense_mod (g : ℕ) (hg : 1 ≤ g) (y : FiniteAdeleRing (𝓞 F) F) (hy 
 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]
 
-theorem dense_modE (g : ℕ) (hg : 1 ≤ g) (a : E ⊗[F] Af F) (ha : a ∈ IntAf F E) :
-    ∃ b ∈ Formalism.UG.intOE E, ∃ c ∈ IntAf F E, a = b ⊗ₜ[F] (1 : Af F) + (g : E ⊗[F] Af F) * c := by
-  have gen1 : ∀ b ∈ Formalism.UG.intOE E, b ⊗ₜ[F] (1 : Af F) ∈ IntAf F E := fun b hb =>
-    Subring.subset_closure (Or.inl ⟨⟨b, hb⟩, rfl⟩)
-  have gen2 : ∀ y ∈ Formalism.UG.intAd F, (1 : E) ⊗ₜ[F] y ∈ IntAf F E := fun y hy =>
-    Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)
-  have hgI : (g : E ⊗[F] Af F) ∈ IntAf F E := natCast_mem _ g
-  induction ha using Subring.closure_induction with
-  | mem x hx =>
-    rcases hx with ⟨⟨b, hb⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩
-    · exact ⟨b, hb, 0, zero_mem _, by simp⟩
-    · obtain ⟨s, c, hc, e⟩ := dense_mod g hg y hy
-      have hint : IsIntegral ℤ (algebraMap F E (algebraMap (𝓞 F) F s)) :=
-        (RingOfIntegers.isIntegral_coe s).algebraMap
-      refine ⟨algebraMap F E (algebraMap (𝓞 F) F s), ⟨⟨_, hint⟩, rfl⟩, (1 : E) ⊗ₜ[F] c, gen2 c hc, ?_⟩
-      have e1 : (g : E ⊗[F] Af F) = (1 : E) ⊗ₜ[F] (g : Af F) := by
-        rw [← Algebra.TensorProduct.includeRight_apply, map_natCast]
-      have e2 : algebraMap F E (algebraMap (𝓞 F) F s) ⊗ₜ[F] (1 : Af F) =
-          (1 : E) ⊗ₜ[F] algebraMap F (Af F) (algebraMap (𝓞 F) F s) := by
-        rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one (A := Af F), TensorProduct.smul_tmul]
-      show (1 : E) ⊗ₜ[F] y = _
-      rw [e1, e2, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← TensorProduct.tmul_add, ← e]
-  | zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩
-  | one => exact ⟨1, one_mem _, 0, zero_mem _, by simp [Algebra.TensorProduct.one_def]⟩
-  | add x y _ _ hx hy =>
-    obtain ⟨b, hb, c, hc, rfl⟩ := hx
-    obtain ⟨b', hb', c', hc', rfl⟩ := hy
-    refine ⟨b + b', add_mem hb hb', c + c', add_mem hc hc', ?_⟩
-    rw [TensorProduct.add_tmul]; ring
-  | neg x _ hx =>
-    obtain ⟨b, hb, c, hc, rfl⟩ := hx
-    refine ⟨-b, neg_mem hb, -c, neg_mem hc, ?_⟩
-    rw [TensorProduct.neg_tmul]; ring
-  | mul x y _ _ hx hy =>
-    obtain ⟨b, hb, c, hc, rfl⟩ := hx
-    obtain ⟨b', hb', c', hc', rfl⟩ := hy
-    refine ⟨b * b', mul_mem hb hb',
-      b ⊗ₜ[F] (1 : Af F) * c' + c * b' ⊗ₜ[F] (1 : Af F) + (g : E ⊗[F] Af F) * c * c', ?_, ?_⟩
-    · exact add_mem (add_mem (mul_mem (gen1 b hb) hc') (mul_mem hc (gen1 b' hb'))) (mul_mem (mul_mem hgI hc) hc')
-    · rw [show (b * b') ⊗ₜ[F] (1 : Af F) = b ⊗ₜ[F] (1 : Af F) * b' ⊗ₜ[F] (1 : Af F) by
-        rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one]]
-      ring
-
 end Formalism.MainNotions.BridgeLevelGenB
 
 end

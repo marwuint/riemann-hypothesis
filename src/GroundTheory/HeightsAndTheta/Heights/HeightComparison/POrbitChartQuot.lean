@@ -155,12 +155,6 @@ theorem OrbitChartQuot.proof : OrbitChartQuot.Statement := by
       ← sup_assoc, sup_eq_left.mpr hV]
   exact ⟨(RingHom.quotientKerEquivOfSurjective hg).symm.trans (Ideal.quotEquivOfEq hker)⟩
 
-example : Nonempty ((chartRing samplePoint (fun _ ↦ 0) ⧸
-      chartPoint samplePoint (fun _ ↦ 0) (orbitIdeal samplePoint)) ≃+*
-    (MvPolynomial (Coord (fun _ : Unit ↦ 1)) ℤ ⧸ (orbitIdeal samplePoint ⊔
-      Ideal.span (Set.range fun k ↦ (X ⟨k, 0⟩ : MvPolynomial (Coord (fun _ : Unit ↦ 1)) ℤ) - 1)))) :=
-  OrbitChartQuot.proof Unit _ samplePoint _ (fun _ ↦ by simp [samplePoint]) _ le_rfl
-
 end
 
 end GroundTheory.Heights₂.Heights

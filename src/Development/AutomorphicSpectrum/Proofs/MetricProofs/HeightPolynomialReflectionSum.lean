@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.TsgPolyVolPolyCoeffEven
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.APrime
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
 import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.AgreementPos
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SquareSystemPolarVanishingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticSquareRegularizedConvergenceStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SquarePolarIntegralIdentityStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PolarIdentityFromSymmetricFormsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositiveStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SquareSystemPolarVanishing
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticSquareRegularizedConvergence
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SquarePolarIntegralIdentity
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PolarIdentityFromSymmetricForms
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositive
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 
@@ -42,13 +42,13 @@ theorem thmA_limit : Inputs → GroundTheory.Heights₂.Heights.Inter.FibreLocal
   intro hI hF II hII K _ ι _ d σ _ SY P Re a₀ ε Q c hc u
   have hpos : 0 < SY.t₀ := (SY.reg a₀).1
   have hposW : 0 < Q.an.SW.t₀ := (Q.an.SW.reg none).1
-  obtain ⟨C₃, s₀, -, hAg⟩ := GlobalTheory.T.agreement_positive hI (d + 1) σ SY 0 hpos
+  obtain ⟨C₃, s₀, -, hAg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.agreementPos hI (d + 1) σ SY 0 hpos
   have hlim := (hAg II hII K ι P Re).1
   have hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t ∧ t ≤ Q.an.SW.t₀ := by
     filter_upwards [Ioc_mem_nhdsGT hposW] with t ht using ⟨ht.1, ht.2⟩
-  refine GlobalTheory.T.polar_identity_from_symmetric_forms σ (d + 1) (Re.limNum II) SY.degNum kappa ε a₀ (Re.limNum_perm hII hpos)
+  refine _root_.GlobalTheory.CompanionTheory.Ar.PB.coefficient_identities_give_operator_identity σ (d + 1) (Re.limNum II) SY.degNum kappa ε a₀ (Re.limNum_perm hII hpos)
     SY.degNum_perm (fun n hn => ?_) c hc u
-  have hsq := GlobalTheory.T.square_system_polar_vanishing hI II hII K ι d σ SY P Re a₀ ε Q n hn
+  have hsq := _root_.GlobalTheory.CompanionTheory.Ar.PB.first_half_at_scale hI II hII K ι d σ SY P Re a₀ ε Q n hn
   refine ⟨?_, fun k hk hk2 => ?_⟩
   · have h1 := tendsto_polar (fun _ (x : σ) => (n x : ℝ)) hlim
     have h2 : Tendsto (fun t => polar (d + 2) (Re.num II t) fun _ (x : σ) => (n x : ℝ)) (𝓝[>] 0) (𝓝 0) :=
@@ -62,9 +62,9 @@ theorem thmA_limit : Inputs → GroundTheory.Heights₂.Heights.Inter.FibreLocal
           (fun w => mInt Q.an.SW.A (fun r => Q.an.SW.potH (w r)) Q.an.gH)
           (Q.an.wcoef (fun a => (n a : ℝ)) k i))) :=
       (tendsto_finsetSum _ fun i _ => tendsto_polar _ fun w =>
-        (GlobalTheory.T.analytic_square_regularized_convergence hI d σ SY a₀ ε Q.an w).2).neg
+        (_root_.GlobalTheory.CompanionTheory.Relay.analytic_square_regularized_convergence hI d σ SY a₀ ε Q.an w).2).neg
     have h3 := tendsto_nhds_unique (h1.congr' (hev.mono fun t ht => (hsq t ht.1 ht.2).2 k hk hk2)) h2
-    have h4 := GlobalTheory.T.square_polar_integral_identity hI hF d σ SY a₀ ε Q.an (fun a => (n a : ℝ)) (by simp [hn]) k hk hk2
+    have h4 := _root_.GlobalTheory.CompanionTheory.Ar.PB.AnSq.sum_polar_gH_eq hI hF d σ SY a₀ ε Q.an (fun a => (n a : ℝ)) (by simp [hn]) k hk hk2
     rw [h3, h4]
     ring
 

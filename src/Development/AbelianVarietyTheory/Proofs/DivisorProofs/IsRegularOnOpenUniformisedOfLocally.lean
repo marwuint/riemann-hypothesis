@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeISupOfUniformisationParametersCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeISupOfUniformisationParametersCover
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CechDR GlobalTheory.CechPer
@@ -18,11 +18,11 @@ theorem isReg_of_locally : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB 
   have hVU : ∀ i : K, V i ≤ U := fun i => hWU i.1 i.2
   have hb : ∀ i : K, ∃ b : Γ(A.left, V i), ∀ z ∈ pre u.ex (V i), k z = val u.ex (V i) b z := fun i => hreg i.1 i.2
   choose b hb using hb
-  have hcov : U ≤ ⨆ i, V i := GlobalTheory.T.le_iSup_of_uniformisationParameters_cover A g L u hA U K V fun z hz => ⟨⟨z, hz⟩, hzW z hz⟩
+  have hcov : U ≤ ⨆ i, V i := _root_.GlobalTheory.CechPer.le_iSup_of_pre_cover A g L u hA U K V fun z hz => ⟨⟨z, hz⟩, hzW z hz⟩
   have hcompat : TopCat.Presheaf.IsCompatible A.left.sheaf.1 V b := by
     intro i j
     rw [← sub_eq_zero]
-    refine GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA (V i ⊓ V j) _ fun z hz => ?_
+    refine _root_.GlobalTheory.ValInj.eq_zero_of_val_eq_zero A g L u hA (V i ⊓ V j) _ fun z hz => ?_
     have hz' := (GlobalTheory.top_le_preimage_inf (u.ex z).left (V i) (V j)).1 hz
     have e1 := GlobalTheory.valAt'_map (u.ex z).left (TopologicalSpace.Opens.infLELeft (V i) (V j)).op (b i) hz
     have e2 := GlobalTheory.valAt'_map (u.ex z).left (TopologicalSpace.Opens.infLERight (V i) (V j)).op (b j) hz

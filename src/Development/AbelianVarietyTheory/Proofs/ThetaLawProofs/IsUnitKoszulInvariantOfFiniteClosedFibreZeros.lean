@@ -18,11 +18,11 @@ import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyInvariant
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.TorsSqMap
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KaFormHomogeneous
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.PwIsoIsGen
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.BasisPowerSectionsLocalBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.BasisPowerSectionsLocalBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.MemNonzeroLocusVia
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantFromIntersectionUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsL2ValFieldOrDvrSplitKernelStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantBaseChange
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantFromIntersectionUnique
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsL2ValFieldOrDvrSplitKernel
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.CmpValBaseChangeSimilitudeStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DiscriminantEqJacobianCompleteIntersectionDvrStatement
 
@@ -426,12 +426,12 @@ theorem exists_unit_kaVal (laws : Out.Laws) {O : Type} [CommRing O] [IsDomain O]
     have hb : ∀ j, ∃ b : Fin ((k - j * n) ^ x.P.g) → RR x (k - j * n), ∃ lam : Oˣ, j ≤ x.P.g →
         IsBasis x b ∧ IsSquareDeterminantComparison x (k - j * n) (al (k - j * n)) b lam := fun j => by
       by_cases hj : j ≤ x.P.g
-      · obtain ⟨b, hb⟩ := (T.basis_powerSections_local_baseChange laws O x (k - j * n) (hpos j hj)).1
+      · obtain ⟨b, hb⟩ := (_root_.GlobalTheory.KeyBasis.main laws O x (k - j * n) (hpos j hj)).1
         obtain ⟨ξ, h₁, h₂⟩ := hξ k hk j hj
         haveI := x.P.isAb.comm
         have h₃ : ∀ I r, ξ I r ^ (k - j * n) = 1 := fun I r =>
           pow_eq_one_of_ker (hpos j hj) (hadm.2.2.2 _) (ξ I) (fun c => (List.prod_ofFn).symm.trans (h₂ I c)) r
-        obtain ⟨lam, hlam⟩ := T.exists_l2Val_field_or_dvr_split_kernel laws O x _ _ b ξ (hO _ (hpos j hj)) (hadm.2.2.2 _) hb (fun I I' hI p => by
+        obtain ⟨lam, hlam⟩ := _root_.GlobalTheory.SimilLocal.exists_l2Val laws O x _ _ b ξ (hO _ (hpos j hj)) (hadm.2.2.2 _) hb (fun I I' hI p => by
           by_contra h
           refine hI (h₁ (funext fun r => ?_))
           exact eq_of_pow_eq_one laws x (hpos j hj) (hO _ (hpos j hj)) (h₃ I r) (h₃ I' r) p
@@ -449,7 +449,7 @@ theorem exists_unit_kaVal (laws : Out.Laws) {O : Type} [CommRing O] [IsDomain O]
     choose b' hb' using fun j i => (hex _ (b j i)).exists
     refine ⟨b', lam, t, e, Units.mk0 _ hdl, fun j hj => ⟨?_, ?_⟩, ⟨fun i j j' => (m i j j').map f, fun i j hj i' => ?_, ?_⟩,
       Units.ext ?_⟩
-    · exact (T.basis_powerSections_local_baseChange laws O x _ (hpos j hj)).2 (b j) (hb j hj).1 F f x' φ w (b' j) hx (hb' j)
+    · exact (_root_.GlobalTheory.KeyBasis.main laws O x _ (hpos j hj)).2 (b j) (hb j hj).1 F f x' φ w (b' j) hx (hb' j)
     · exact T.l2ComparisonNumber_baseChange_similitude_alt O F x x' f φ w _ _ rfl (b j) (b' j) (lam j) (hadm.2.2.2 _) hx (hb' j) (hb j hj).2
     · have h₅ : (j + 1) * n ≤ x.P.g * n := Nat.mul_le_mul_right n hj
       have h₆ : n + (k - (j + 1) * n) = k - j * n := by
@@ -576,9 +576,9 @@ theorem isUnit_of_finite_zeros : Out.Laws → ∀ (O : Type) [CommRing O] [IsDom
       · have := congrArg u₁ (h₃ I r)
         simp only [map_list_prod, List.map_ofFn, Function.comp_def, map_zpow, map_one, hξ'] at this ⊢
         exact this
-  have h₁ := T.keyInvariant_baseChange laws F Ω xF y i ψ v n l l' al hg₁ sF s₁ κ (hg.symm ▸ hadm) H₁ hs₁ hκ
+  have h₁ := _root_.GlobalTheory.KaBaseChange.kaVal_baseChange laws F Ω xF y i ψ v n l l' al hg₁ sF s₁ κ (hg.symm ▸ hadm) H₁ hs₁ hκ
   have h₂ : i κ = g u := congrArg Units.val
-    (T.keyInvariantFromIntersection_unique laws Ω y n l l' al s₁ _ _ ((hg₁.trans hg).symm ▸ hadm) h₁ hu)
+    (_root_.GlobalTheory.KaUnique.kaVal_unique laws Ω y n l l' al s₁ _ _ ((hg₁.trans hg).symm ▸ hadm) h₁ hu)
   have h₃ : g (j a) = g (u ^ e : O'ˣ) := by
     refine (RingHom.congr_fun hsq a).trans ?_
     rw [RingHom.comp_apply, ← ha, map_zpow₀, h₂]

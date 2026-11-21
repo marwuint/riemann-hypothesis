@@ -24,6 +24,4 @@ def weberSet (L : PeriodPair) (n : ℕ) : Set ℂ :=
   insert (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2))
     {w | ∃ z ∈ L.lattice, z / n ∉ L.lattice ∧ w = L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP (z / n)}
 
-theorem finiteDimensional_of_sz {F : IntermediateField ℚ ℂ} {a b : ℝ} (h : Sz F a b) : FiniteDimensional ℚ F := h.1
-
 end GlobalTheory.FieldSize

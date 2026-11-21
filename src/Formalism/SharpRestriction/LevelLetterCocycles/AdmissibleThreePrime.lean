@@ -49,27 +49,4 @@ def LabelDegreeHypotheses (D : D7) : Prop :=
               (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k))
                 ((D.nd.chiT k v j : (ZMod (D.host.g k))ˣ) : ZMod (D.host.g k)))) ^ e₂)
 
-def Adm3p (D : D7) : Prop := SumRepresentations.tieLab D ∧ LabelDegreeHypotheses D
-
-def ThreePrimeTheorem (D : D7) : Prop := Adm3p D → TheoremThreePrime D
-
-def PlaceLawConstantSix {D : D7} (A : ArithmeticCylinders.AllRows D) : Prop := ArithmeticCylinders.PlaceLawIdempotents A 6
-
-def GLarge (D : D7) : Prop := ∀ k : Fin 2, 2 * D.R.r ≤ D.host.g k
-
-def VecData {D : D7} (A : ArithmeticCylinders.AllRows D) : Prop :=
-  ∀ (k : Fin 2) (v : D.nd.PlG k), ∃ ψ₀ : AddChar (ZMod (D.host.g k)) ℂ, ψ₀ ≠ 1 ∧
-    (A.eVec k v = ArithmeticCylinders.eUk D k ψ₀ ∨ A.eVec k v = ArithmeticCylinders.eJk D k ψ₀)
-
-def AdmCylindersL {D : D7} (A : ArithmeticCylinders.AllRows D) : Prop := ArithmeticCylinders.ConclusionL D ∧ GLarge D ∧ VecData A
-
-def PlaceLawTheorem {D : D7} (A : ArithmeticCylinders.AllRows D) : Prop := AdmCylindersL A → PlaceLawConstantSix A
-
-theorem place_law_theorem_holds {D : D7} (A : ArithmeticCylinders.AllRows D) : PlaceLawTheorem A :=
-  fun ⟨hL, hg, hV⟩ => ArithmeticCylinders.place_law_of_statement A hL hg hV
-
-theorem place_law_idempotents_six_of_lifting {D : D7} (A : ArithmeticCylinders.AllRows D) (hS : ArithmeticCylinders.LiftingLemmasStatement D) (hq : ArithmeticCylinders.admLq D) (hg : GLarge D)
-    (hV : VecData A) : ArithmeticCylinders.PlaceLawIdempotents A 6 :=
-  place_law_theorem_holds A ⟨hS hq, hg, hV⟩
-
 end Formalism.MainNotions.AdmissibleThreePrime

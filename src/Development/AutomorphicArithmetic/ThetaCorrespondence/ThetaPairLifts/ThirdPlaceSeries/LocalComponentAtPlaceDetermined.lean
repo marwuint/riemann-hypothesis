@@ -1,5 +1,21 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.LocalComponentAtPlaceDetermined
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChoiceSideTwistedConsistent
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
+import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaLocalInputs
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AuxiliaryPrimeNeTypePrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalRowSeries
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockOfApply
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistingOkClassAtPlace
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixBaseOfFixingField
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistConjugateTuplesSameRealisationExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTuplesOfLaws
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PureTensorOSmul
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateFunctionAtPlace
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChoiceSideWithE
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PublishedInputsThirdLayer
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SameGaloisLevelExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
@@ -27,8 +43,6 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 open GlobalTheory.HeightCounting.Up (PrN)
 namespace GlobalTheory.PlaceRead
-variable {D : D7} {c : NChoice D} {w : D.what₂.places.Pl}
-variable {ρ : Setup D.ntw} {hρ : ρ.Good} {j : Fin D.R.m} {rd : Rd ρ D.nexp (c.twI w) j (c.sd w)}
 end GlobalTheory.PlaceRead
 namespace GlobalTheory.PlaceRead
 variable {D : D7} {X : RealSide D} {X0 : BaseLevelRowSide D} {Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0} {S : NX.RatDat D.ntw}
@@ -57,21 +71,21 @@ theorem exists_local_component_at_place_alt (hCo : GlobalTheory.Published.Discre
   have hB := Z.good.base (c.twI w) j (c.sd w)
   have hBo : BaseOf X.R.toRealDat j (baseOf Z c w j) :=
     GlobalTheory.BigOn.Exp.TwConj.baseOf_of_realPin X.char.lev Z.good Z.pin (c.twI w) j (c.sd w)
-  obtain ⟨hg, ha, hcc⟩ := GlobalTheory.T.chosen_twist_via_embedding_good_conjugate D c w Z.ρ Z.good H.ok j ι
-  obtain ⟨hg', ha', -⟩ := GlobalTheory.T.chosen_twist_via_embedding_good_conjugate D c w Z.ρ Z.good H.ok j ε
+  obtain ⟨hg, ha, hcc⟩ := _root_.GlobalTheory.PlaceRead.twVia_good D c w Z.ρ Z.good H.ok j ι
+  obtain ⟨hg', ha', -⟩ := _root_.GlobalTheory.PlaceRead.twVia_good D c w Z.ρ Z.good H.ok j ε
   have hcj : ConjChar τ (twVia Z.ρ ι) (twVia Z.ρ ε) := hιε ▸ hcc τ
   obtain ⟨u, cc, κ, hu, hc, hκ, hval, hfn, hs, hν⟩ := GlobalTheory.T.exists_scale_twisted_place_coefficient_map D X X0 Y S YS Z c w j H
   obtain ⟨hfb, hfd⟩ := _root_.GlobalTheory.T.local_fixed_point_of_third_layer hP D X X0 Y S YS Z c w j H τ hfix
-  obtain ⟨C, hC1, hC2⟩ := GlobalTheory.T.conjugation_scaled_coords_integral_forms_twist D j _ hB hBo.lam (X.R.ioP j (PiTensorProduct.tprod ℂ u) ∘ₗ cc) κ hκ hval hfn τ hfix _ _ hg hg' hcj hfd
+  obtain ⟨C, hC1, hC2⟩ := _root_.GlobalTheory.PlaceConj.conj_lat D j _ hB hBo.lam (X.R.ioP j (PiTensorProduct.tprod ℂ u) ∘ₗ cc) κ hκ hval hfn τ hfix _ _ hg hg' hcj hfd
   have hω := Z.good.weil (c.twI w) j (c.sd w) _ hg
   have hω' := Z.good.weil (c.twI w) j (c.sd w) _ hg'
   have hcl' := Z.good.classes (c.twI w) j (c.sd w) _ hg' ha'
   have hcl : IsClassSystem (Vc D j) ((baseOf Z c w j).levJ (twVia Z.ρ ι)) (Z.ρ.rep (c.twI w) j (c.sd w) (twVia Z.ρ ε)) := by
     rw [← levJ_congr (baseOf Z c w j) hcj.1]
     exact hcl'
-  refine (GlobalTheory.T.thetaLift_twistLevelForm_eq_unit_mul_classSum D X j _ hB hBo _ _ hg ha (H.tup ι hι) _ hω _ _ hcl u).elim fun z hz => hz.elim fun a₀ hz => ?_
+  refine (_root_.GlobalTheory.LiftClassSumTwist.thF_eq_classSum D X j _ hB hBo _ _ hg ha (H.tup ι hι) _ hω _ _ hcl u).elim fun z hz => hz.elim fun a₀ hz => ?_
   obtain ⟨hz, ha₀, hth⟩ := hz
-  refine (GlobalTheory.T.classSums_conjugate_twists_conjugate_expansions D X j _ hB _ _ hg hg' ha (_root_.GlobalTheory.T.exists_local_tuple_of_discrete_series_read hCo hCW hHM hP D X X0 Y S YS Z c w j H ι hι τ hfix _ hg' hcj) u cc κ hu hc hκ τ hfb hfd
+  refine (_root_.GlobalTheory.PlaceClassSum.classSum_conj_place D X j _ hB _ _ hg hg' ha (_root_.GlobalTheory.T.exists_local_tuple_of_discrete_series_read hCo hCW hHM hP D X X0 Y S YS Z c w j H ι hι τ hfix _ hg' hcj) u cc κ hu hc hκ τ hfb hfd
     hcj _ _ hω hω').elim fun ζ hζ => ?_
   obtain ⟨hζ, hcs⟩ := hζ
   obtain ⟨hinj, hrange⟩ := GlobalTheory.T.definiteComplexForms_eq_twistComplexForms_fockModel D X X0 Y S YS Z c w j H ι hι u hu
@@ -94,10 +108,10 @@ theorem exists_local_component_at_place_alt (hCo : GlobalTheory.Published.Discre
 theorem exists_basisAt_latAt_thetaAt_of_atPlace (hCo : GlobalTheory.Published.DiscreteSeriesCover) (hCW : GlobalTheory.Published.CasselmanWallach) (hHM : GlobalTheory.Published.HarishChandraModules) (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (H : AtPlace Y Z c w j) :
     ∃ (e : D.what₂.MtL (D.what₂.muTw w) (j.1 + 1) →ₛₗ[c.embW w] Tgt c w (j.1 + 1)) (u : (FractionRing (c.Oe w))ˣ),
       BasisAt c w (j.1 + 1) e ∧ LatAt c w (j.1 + 1) e (u : FractionRing (c.Oe w)) ∧ ThetaAt Y YS c w j e (u : FractionRing (c.Oe w)) := by
-  obtain ⟨ε, hε⟩ := (GlobalTheory.T.exists_extension_complexDataEmbedding_restrict_coeffField D c w Z.ρ Z.good).1
+  obtain ⟨ε, hε⟩ := (_root_.GlobalTheory.PlaceRead.exists_extends_and_emb D c w Z.ρ Z.good).1
   refine (_root_.GlobalTheory.PlaceRead.exists_local_component_at_place_alt hCo hCW hHM hP H hε).elim fun Ψ h => h.elim fun N h => h.elim fun z₁ h => ?_
   obtain ⟨hind, hlat, hN, hz, hth⟩ := h
-  obtain ⟨hinj, hmt⟩ := GlobalTheory.T.definiteFormReading_injective_lattice_integralForms D c w Z.ρ Z.good j _ (Z.tie (c.twI w) j (c.sd w)) ε hε H.ok H.field.roots
+  obtain ⟨hinj, hmt⟩ := _root_.GlobalTheory.PlaceExp.rdE_injective_lattice D c w Z.ρ Z.good j _ (Z.tie (c.twI w) j (c.sd w)) ε hε H.ok H.field.roots
   have hsub : ∀ F ∈ Submodule.span (ringOf ε) (Ψ '' latS w (j.1 + 1)), ∃ y ∈ latT c w (j.1 + 1),
       rdE (Z.tie (c.twI w) j (c.sd w)) hε y = F := fun F hF => (hmt F).1 (hlat.ge hF)
   obtain ⟨e, he⟩ := exists_lift (c.embW w) ε _ hinj Ψ (GlobalTheory.T.rationalLatticeTwistedTuple_span_top D w (j.1 + 1)) fun x hx =>
@@ -148,7 +162,7 @@ theorem exists_basisAt_latAt_thetaAt_of_atPlace (hCo : GlobalTheory.Published.Di
   obtain ⟨o, ho⟩ : ∃ o : (c.Oe w)ˣ, ThetaAt Y YS c w j e (algebraMap (c.Oe w) (KE c w) o) := by
     by_cases hex : ∃ t : KE c w, ε t = z₁
     · obtain ⟨t, ht⟩ := hex
-      obtain ⟨o, rfl⟩ := GlobalTheory.T.exists_integral_unit_of_isUnitAwayFromLevel_embedding (c.Oe w) ε N t hN (ht ▸ hz)
+      obtain ⟨o, rfl⟩ := _root_.GlobalTheory.PlaceRead.unit_of_unitOff (c.Oe w) ε N t hN (ht ▸ hz)
       refine ⟨o, fun x hx n a f hf => ?_⟩
       obtain ⟨h0, h1⟩ := hco x hx n a f hf
       refine (Classical.em _).elim (fun hB => (h0 hB).trans ((smul_zero _).symm.trans (congrArg _ hB.symm))) fun hB => ?_
@@ -183,7 +197,7 @@ theorem exists_local_map_at_place_alt : GlobalTheory.Published.DiscreteSeriesCov
   obtain ⟨ψ0, -, k5, -⟩ := hside.nct.psi_eq
   exact _root_.GlobalTheory.PlaceRead.exists_basisAt_latAt_thetaAt_of_atPlace (X := X) (Y := x.r.Y) (YS := l.b.YS) (Z := l.b.ser.ex) hCo hCW hHM hP
     { pins := x.m.z.pins, intersectionNumber_baseChange := x.m.intersectionNumber_baseChange, field := hf, tw := hv, ok := hok v hv, cls := k1
-      emb := (GlobalTheory.T.exists_extension_complexDataEmbedding_restrict_coeffField _ ch v _ l.b.ser.ex.good).2 hside.nct
+      emb := (_root_.GlobalTheory.PlaceRead.exists_extends_and_emb _ ch v _ l.b.ser.ex.good).2 hside.nct
       val := fun σ => ⟨_, (k5 v σ).trans (IsScalarTower.algebraMap_apply _ _ _ _).symm⟩
       U_eq := k3, psi_eq := k4, ks := l.rat.In.ks _ (Nat.le_add_left _ _) i.2
       rat := h1 P x l _ (GlobalTheory.Mem.Top.twistedPlaceIndex_mem_firstPair_of_compatibleChoice _ ch hside.nct hf.galois v hv) i _

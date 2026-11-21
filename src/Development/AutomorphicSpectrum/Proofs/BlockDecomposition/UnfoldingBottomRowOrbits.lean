@@ -217,92 +217,10 @@ instance : IsFiniteMeasureOnCompacts (nu.map eB) := by
 
 instance : (nu.map eB).IsHaarMeasure := { }
 
-theorem lintegral_nu (G : Xc → ℝ≥0∞) (hG : Measurable G) :
-    ∫⁻ p, G p ∂nu = ∫⁻ z, ∫⁻ a, ∫⁻ x, G (z, a, x) * ENNReal.ofReal (md a)⁻¹
-      ∂adeleMeasure ℚ ∂ideleMeasure ℚ ∂ideleMeasure ℚ := by
-  rw [nu, lintegral_prod _ hG.aemeasurable]
-  refine lintegral_congr fun z => ?_
-  have hGz : Measurable (fun q : Jd × 𝔸[ℚ] => G (z, q)) := hG.comp measurable_prodMk_left
-  rw [lintegral_prod _ hGz.aemeasurable, wM,
-    lintegral_withDensity_eq_lintegral_mul _ measurable_wD hGz.lintegral_prod_right']
-  refine lintegral_congr fun a => ?_
-  have hGa : Measurable (fun x : 𝔸[ℚ] => G (z, a, x)) := hGz.comp measurable_prodMk_left
-  simp only [Pi.mul_apply]
-  rw [← lintegral_const_mul _ hGa]
-  exact lintegral_congr fun x => mul_comm _ _
-
-theorem isClosed_bo : IsClosed ((adelicBorel : Subgroup G2) : Set G2) := by
-  have h : ((adelicBorel : Subgroup G2) : Set G2) = {g : G2 | (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 0 = 0} := by
-    ext g
-    constructor
-    · intro hg
-      exact (Reduction.mem_adelicBorel.1 hg) (by decide : (0 : Fin 2) < 1)
-    · intro hg
-      refine Reduction.mem_adelicBorel.2 ?_
-      intro i j hij
-      fin_cases i <;> fin_cases j <;> simp_all
-  rw [h]
-  exact isClosed_eq (cont_entry 1 0) continuous_const
-
 instance : SecondCountableTopology Bo := TopologicalSpace.Subtype.secondCountableTopology _
 instance : SecondCountableTopology KA := TopologicalSpace.Subtype.secondCountableTopology _
 
-theorem meas_J (F : G2 → ℝ≥0∞) (hF : Measurable F) : Measurable (fun q : Xc × KA => F ((eB q.1).1 * q.2.1)) :=
-  hF.comp (((continuous_subtype_val.comp (eB.continuous.comp continuous_fst)).mul
-    (continuous_subtype_val.comp continuous_snd)).measurable)
-
-theorem meas_S (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
-    Measurable (fun s : Bo => ∫⁻ k : KA, F ((s : G2) * k) ∂mK) := by
-  have : Measurable (fun q : Bo × KA => F ((q.1 : G2) * q.2.1)) :=
-    hF.comp (((continuous_subtype_val.comp continuous_fst).mul
-      (continuous_subtype_val.comp continuous_snd)).measurable)
-  exact this.lintegral_prod_right'
-
 theorem pt_eq (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) : (eB (z, a, x)).1 * κ = pt x a z κ := rfl
-
-theorem inner_map (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
-    ∫⁻ s : Bo, ∫⁻ k : KA, F ((s : G2) * k) ∂mK ∂(nu.map eB) =
-      ∫⁻ p : Xc, ∫⁻ k : KA, F ((eB p).1 * k.1) ∂mK ∂nu :=
-  lintegral_map (meas_S mK F hF) eB.measurable
-
-theorem inner_swap (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
-    ∫⁻ p : Xc, ∫⁻ k : KA, F ((eB p).1 * k.1) ∂mK ∂nu = ∫⁻ k : KA, ∫⁻ p : Xc, F ((eB p).1 * k.1) ∂nu ∂mK :=
-  lintegral_lintegral_swap (f := fun (p : Xc) (k : KA) => F ((eB p).1 * k.1)) (meas_J F hF).aemeasurable
-
-theorem inner_nu (F : G2 → ℝ≥0∞) (hF : Measurable F) (κ : KA) :
-    ∫⁻ p : Xc, F ((eB p).1 * κ.1) ∂nu = ∫⁻ z, ∫⁻ a, ∫⁻ x, F (pt x a z κ.1) * ENNReal.ofReal (md a)⁻¹
-        ∂adeleMeasure ℚ ∂ideleMeasure ℚ ∂ideleMeasure ℚ := by
-  have h : Measurable (fun p : Xc => F ((eB p).1 * κ.1)) :=
-    hF.comp ((continuous_subtype_val.comp eB.continuous).mul continuous_const).measurable
-  rw [lintegral_nu _ h]
-  simp only [pt_eq]
-
-theorem inner_eq (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
-    ∫⁻ s : Bo, ∫⁻ k : KA, F ((s : G2) * k) ∂mK ∂(nu.map eB) =
-      ∫⁻ κ, ∫⁻ z, ∫⁻ a, ∫⁻ x, F (pt x a z κ.1) * ENNReal.ofReal (md a)⁻¹
-        ∂adeleMeasure ℚ ∂ideleMeasure ℚ ∂ideleMeasure ℚ ∂mK := by
-  rw [inner_map mK F hF, inner_swap mK F hF]
-  exact lintegral_congr fun κ => inner_nu F hF κ
-
-theorem surj_mulMap : Function.Surjective (HaarSK.mulMap (adelicBorel : Subgroup G2) (maxCompact : Subgroup G2)) := by
-  intro g
-  obtain ⟨b, hb, k, hk, rfl⟩ := Reduction.exists_adelicBorel_mul_maxCompact g
-  exact ⟨(⟨b, hb⟩, ⟨k, hk⟩), rfl⟩
-
-theorem coord_of (μ : Measure G2) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (mK : Measure KA) [mK.IsHaarMeasure]
-    [IsProbabilityMeasure mK] : ∃ C, Coord μ mK C := by
-  haveI : LocallyCompactSpace G2 := AdelicGLn.locallyCompactSpace ℚ 2
-  obtain ⟨c, hc0, hc⟩ := HaarSK.exists_lintegral_eq μ isClosed_bo Reduction.isCompact_maxCompact surj_mulMap
-    (nu.map eB) mK
-  exact ⟨c, hc0, fun F hF => (hc F hF).trans (congrArg _ (inner_eq mK F hF))⟩
-
-theorem coord_exists : Ad3.R.G2a := by
-  intro μ 𝓕 mK 𝓓 h
-  haveI := h.haar
-  haveI := h.right
-  haveI := h.haarK
-  haveI := h.probK
-  exact coord_of μ mK
 
 end GlobalTheory.CompanionTheory.RSCoord
 end

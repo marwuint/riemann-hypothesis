@@ -10,12 +10,12 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalSiegelOfGen
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.W8AddTransposeEqE8
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerAlongIdIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelConditionIffE8BundleKGroupTrivialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerSymmetricAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KGroupTrivialSpreadsFromDvrGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KGroupTrivialDescendsFlatSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NoetherianSubringPrimeContractionOrDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelConditionAlongBaseChangeOfPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelConditionIffE8BundleKGroupTrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerSymmetricAmple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KGroupTrivialSpreadsFromDvrGenericPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KGroupTrivialDescendsFlatSurjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NoetherianSubringPrimeContractionOrDvr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelConditionAlongBaseChangeOfPullback
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
@@ -30,25 +30,25 @@ theorem isPrincipal_of_subring : ∀ (h : ℕ) (R : Type) [CommRing R] (R₁ : S
   intro h R _ R₁ _ A _ P A₁ _ P₁ φ φ₂ hS hamp hpb hsq hiso hpr
   haveI : IsAbelianScheme A₁ := hS.1
   haveI : IsCommMonObj A₁ := IsAbelianScheme.comm
-  obtain ⟨hG, hL, hLa, hrig, hsym⟩ := GlobalTheory.T.eighth_power_symmetric_ample h A₁ P₁ hS hamp
-  have hf : KerAlong A₁ P₁ (spMap R₁.subtype) := GlobalTheory.T.kernel_condition_along_baseChange_of_pullback _ A P A₁ P₁ φ φ₂ hS.2.2.1 hpb hsq hiso hpr.2
-  have hfT := (GlobalTheory.T.kernel_condition_iff_e8Bundle_kGroup_trivial h A₁ P₁ hS hamp _).1 hf
+  obtain ⟨hG, hL, hLa, hrig, hsym⟩ := _root_.GlobalTheory.EighthPowerBundle.powLB_props h A₁ P₁ hS hamp
+  have hf : KerAlong A₁ P₁ (spMap R₁.subtype) := _root_.GlobalTheory.PrincSubring.kerAlong_of_pull _ A P A₁ P₁ φ φ₂ hS.2.2.1 hpb hsq hiso hpr.2
+  have hfT := (_root_.GlobalTheory.PrincSubring.kerAlong_iff_trivAlong h A₁ P₁ hS hamp _).1 hf
   have hK : Out.KTriv (Out.powObj A₁ 8) (powLB A₁ P₁) := by
     refine GlobalTheory.KTrivSpread.kTriv_of_primes GlobalTheory.abelianSchemeLaws_all.1.globalFns R₁ _ hG _ hL hLa fun p => ?_
-    rcases GlobalTheory.T.noetherian_subring_prime_contraction_or_dvr R R₁ p with hp | ⟨Q, k, _, i, j, V, _, _, _, ρ, e, h1, h2, hp⟩
+    rcases _root_.GlobalTheory.PrimeReach.prime_contraction_or_dvr R R₁ p with hp | ⟨Q, k, _, i, j, V, _, _, _, ρ, e, h1, h2, hp⟩
     · exact ⟨R, inferInstance, R₁.subtype, hp, hfT⟩
     · refine ⟨V, inferInstance, ρ, hp, ?_⟩
-      refine GlobalTheory.T.kGroup_trivial_spreads_from_dvr_generic_point _ _ hG hL hLa hrig hsym V (spMap ρ) ?_
+      refine _root_.GlobalTheory.KTrivDvrSpread.trivAlong_of_generic _ _ hG hL hLa hrig hsym V (spMap ρ) ?_
       have t1 := hfT.comp (spMap (algebraMap R Q.asIdeal.ResidueField))
       have e1 : spMap (algebraMap R Q.asIdeal.ResidueField) ≫ spMap R₁.subtype = spMap j ≫ spMap i := by
         rw [← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, h1]
       rw [e1] at t1
-      have t2 := (GlobalTheory.T.kGroup_trivial_descends_flat_surjective _ _ (spMap i) (spMap j) hL t1).comp (spMap e)
+      have t2 := (_root_.GlobalTheory.KTrivFlatDescent.trivAlong_of_flat_surjective _ _ (spMap i) (spMap j) hL t1).comp (spMap e)
       have e2 : spMap e ≫ spMap i = spMap (algebraMap V (FractionRing V)) ≫ spMap ρ := by
         rw [← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, h2]
       rwa [e2] at t2
   have hT : GlobalTheory.KTrivSpread.TrivAlong (Out.powObj A₁ 8) (powLB A₁ P₁) (𝟙 _) :=
     fun T a ha x hx => GlobalTheory.UU.kTriv_iff_forall.1 hK T x hx
-  exact ⟨hamp, fun T x hx => (GlobalTheory.T.kernel_condition_iff_e8Bundle_kGroup_trivial h A₁ P₁ hS hamp (𝟙 _)).2 hT T T.hom (Category.comp_id _) x hx⟩
+  exact ⟨hamp, fun T x hx => (_root_.GlobalTheory.PrincSubring.kerAlong_iff_trivAlong h A₁ P₁ hS hamp (𝟙 _)).2 hT T T.hom (Category.comp_id _) x hx⟩
 
 end GlobalTheory.PrincSubring

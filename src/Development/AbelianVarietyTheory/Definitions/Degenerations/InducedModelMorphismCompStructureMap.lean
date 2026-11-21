@@ -119,9 +119,6 @@ theorem res_resG {U V : M.Z.Opens} (h : V ≤ U) (hV : (V : Set M.Z).Nonempty) (
     M.res V hV (resG M.Z h f) = M.res U (hV.mono h) f := by
   rw [res_apply, res_apply, M.valF_resG h hV]
 
-theorem res_comp_resG {U V : M.Z.Opens} (h : V ≤ U) (hV : (V : Set M.Z).Nonempty) :
-    (M.res V hV).comp (resG M.Z h) = M.res U (hV.mono h) := RingHom.ext fun f => M.res_resG h hV f
-
 private theorem stalkClosedPointTo_injective :
     Function.Injective (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) M.pt).hom := by
   have hG : ∀ x : M.Z, x = genericPoint M.Z → IsField (M.Z.presheaf.stalk x) := by
@@ -555,9 +552,6 @@ theorem isUnit_valLoc_iff {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ 
   · intro ha
     exact ha.map _
 
-theorem isLocalHom_valLoc {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ M.Z) {z : M.Z}
-    (h : y (IsLocalRing.closedPoint C) = z) : IsLocalHom (valLoc y z (h ▸ specializes_rfl)) := ⟨fun a ha => (isUnit_valLoc_iff y h a).1 ha⟩
-
 theorem val_spMap_comp {C K : Type} [CommRing C] [IsLocalRing C] [Field K] (σ : C →+* K) (y : Sp C ⟶ M.Z)
     {z : M.Z} (h : y (IsLocalRing.closedPoint C) ⤳ z) (x : M.O z) :
     M.val (spMap σ ≫ y) x = σ (valLoc y z h x) := by
@@ -599,12 +593,6 @@ theorem val_ne_zero_iff {y : Sp K ⟶ M.Z} {z : M.Z} (h : Set.range y = {z}) (x 
   have hz : y (IsLocalRing.closedPoint K) = z :=
     Set.mem_singleton_iff.1 (h ▸ Set.mem_range_self (IsLocalRing.closedPoint K))
   rw [← isUnit_valLoc_iff y hz x, valLoc_eq_val, isUnit_iff_ne_zero]
-
-theorem ker_valHom (y : Sp K ⟶ M.Z) (z : M.Z) (h : Set.range y = {z}) :
-    RingHom.ker (valHom y z h) = IsLocalRing.maximalIdeal (M.O z) := by
-  ext x
-  rw [RingHom.mem_ker, valHom_apply, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← val_ne_zero_iff h,
-    not_not]
 
 variable {y : Sp K ⟶ M.Z} {z : M.Z}
 
@@ -798,24 +786,6 @@ theorem mem_const_iff {z : M.Z} {v : J → Ω} : v ∈ (const M J).E z ↔ ∀ j
       simp [Subalgebra.smul_def, Finset.sum_apply, Pi.single_apply]
     rw [e]
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
-
-variable {M} in
-
-def ofTuple {I : Type} [Finite I] (t : I → Ω) (h : M.HasDiv t) : M.Lat Unit where
-  E z := Submodule.span (M.O z) (Set.range fun i _ => t i)
-  loc z := by
-    obtain ⟨i, hi⟩ := h z
-    refine ⟨⟨_, M.isOpen_setOf_div t i⟩, Matrix.of fun _ _ => t i, hi, by simpa using hi.1, fun w hw => ?_⟩
-    refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)
-    · rintro _ ⟨j, rfl⟩
-      have e : (fun _ : Unit => t j) = (⟨t j / t i, hw.2 j⟩ : M.O w) • fun _ : Unit => t i := by
-        ext
-        simp [Subalgebra.smul_def, hi.1]
-      show (fun _ : Unit => t j) ∈ _
-      rw [e]
-      exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨(), rfl⟩)
-    · rintro _ ⟨_, rfl⟩
-      exact ⟨i, rfl⟩
 
 end Lat
 
@@ -1024,14 +994,6 @@ theorem isIntegrallyClosed_O_ofAffine [IsIntegrallyClosed A] (z : PrimeSpectrum 
   exact isIntegrallyClosed_of_isLocalization _ z.asIdeal.primeCompl
     (fun s hs => mem_nonZeroDivisors_of_ne_zero fun h => Ideal.mem_primeCompl_iff.1 hs (h ▸ z.asIdeal.zero_mem))
 
-theorem isHom_ofAffine {Ω' B : Type} [Field Ω'] [Algebra o Ω'] [CommRing B] [IsDomain B] [Algebra o B]
-    [Algebra.FiniteType o B] [Algebra B Ω'] [IsScalarTower o B Ω'] [IsFractionRing B Ω'] (φ : Ω →ₐ[o] Ω')
-    (ψ : A →+* B) (h : ∀ a, algebraMap B Ω' (ψ a) = φ (algebraMap A Ω a)) :
-    (ofAffine o Ω A).IsHom (ofAffine o Ω' B) φ (spMap ψ) := by
-  show spMap (algebraMap B Ω') ≫ spMap ψ = spMap φ.toRingHom ≫ spMap (algebraMap A Ω)
-  have e : (algebraMap B Ω').comp ψ = φ.toRingHom.comp (algebraMap A Ω) := RingHom.ext h
-  rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e]
-
 end Affine
 
 theorem isCl_ofAffine_self [IsDomain o] [IsFractionRing o Ω] {J : Type} (t : J → o)
@@ -1083,46 +1045,6 @@ theorem isCl_ofAffine_self [IsDomain o] [IsFractionRing o Ω] {J : Type} (t : J 
 variable (o) in
 
 abbrev affineLine [IsDomain o] : RatModel o (RatFunc o) := ofAffine o (RatFunc o) (Polynomial o)
-
-example : (ofAffine ℤ ℚ ℤ).IsCl (fun j => algebraMap ℤ ℚ (![2, 3] j)) ∧
-    (ofAffine ℤ ℚ ℤ).IsNm (fun j => algebraMap ℤ ℚ (![2, 3] j)) := by
-  have h : (ofAffine ℤ ℚ ℤ).IsCl (fun j => algebraMap ℤ ℚ (![2, 3] j)) := by
-    refine isCl_ofAffine_self _ ((Ideal.eq_top_iff_one _).2 ?_)
-    rw [show (1 : ℤ) = 3 - 2 by norm_num]
-    exact sub_mem (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)
-  exact ⟨h, h.isNm isIntegrallyClosed_O_ofAffine⟩
-
-example (z : PrimeSpectrum (Polynomial ℤ)) :
-    (RatFunc.X : RatFunc ℤ)⁻¹ ∈ (affineLine ℤ).O z ↔ Polynomial.X ∉ z.asIdeal :=
-  inv_mem_O_ofAffine_iff Polynomial.X_ne_zero
-
-example : (affineLine ℤ).val (spMap (Polynomial.eval₂RingHom (Int.castRingHom ℚ) 2))
-    (algebraMap (Polynomial ℤ) (RatFunc ℤ) (Polynomial.X ^ 2 + 1)) = 5 := by
-  rw [val_ofAffine]
-  norm_num
-
-example (z : PrimeSpectrum ℤ) :
-    (fun _ => (2 : ℚ)⁻¹) ∈ (Lat.const (ofAffine ℤ ℚ ℤ) Unit).E z ↔ 2 ∉ z.asIdeal :=
-  (Lat.mem_const_iff _).trans (forall_const Unit |>.trans (inv_mem_O_ofAffine_iff (o := ℤ) (Ω := ℚ) two_ne_zero))
-
-example (p : ℕ) [Fact p.Prime] : ∃ (z : (ofAffine ℤ ℚ ℤ).Z) (y : Sp (OO p) ⟶ (ofAffine ℤ ℚ ℤ).Z),
-    (ofAffine ℤ ℚ ℤ).Cen Set.univ z y ∧ (ofAffine ℤ ℚ ℤ).val (gPt p ≫ y) (algebraMap ℤ ℚ p) = p := by
-  refine ⟨_, spMap (Int.castRingHom (OO p)), ⟨rfl, Set.subset_univ _⟩, ?_⟩
-  refine (val_algebraMap (σ := Int.castRingHom _) ?_ _).trans (by simp)
-  show (gPt p ≫ spMap (Int.castRingHom (OO p))) ≫ spMap (algebraMap ℤ ℤ) = _
-  rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]
-  exact congrArg (fun φ => spMap φ) (RingHom.ext_int _ _)
-
-example : (affineLine ℤ).HasDiv (fun _ : Unit => 1) ∧ ¬ (affineLine ℤ).IsCl fun _ : Unit => 1 := by
-  refine ⟨fun z => ⟨(), one_ne_zero, fun _ => by simp⟩, fun h => ?_⟩
-  obtain ⟨U, -, -, hR⟩ := h.2 () one_ne_zero
-  have hX : algebraMap (Polynomial ℤ) (RatFunc ℤ) Polynomial.X ∈ (affineLine ℤ).ringOn U :=
-    mem_ringOn.2 fun z _ => algebraMap_mem_O_ofAffine z _
-  have hle : Algebra.adjoin ℤ (Set.range fun _ : Unit => (1 : RatFunc ℤ) / 1) ≤ ⊥ :=
-    Algebra.adjoin_le (by rintro _ ⟨_, rfl⟩; exact ⟨1, by simp⟩)
-  obtain ⟨c, hc⟩ := Algebra.mem_bot.1 (hle (hR ▸ hX))
-  rw [IsScalarTower.algebraMap_apply ℤ (Polynomial ℤ) (RatFunc ℤ)] at hc
-  exact Polynomial.X_ne_C c (IsFractionRing.injective _ _ hc).symm
 
 end RatModel
 end GlobalTheory.ZH

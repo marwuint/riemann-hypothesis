@@ -7,9 +7,9 @@ import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 import Formalism.LocalToGlobal.KernelLattices.AdaptedEnt
 import Formalism.LocalToGlobal.InertKernelTheory.StatementAlgT
 import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.OrbitAdmissibleOfSplitBound
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsStandardBasesLatticeAtPlaceOfAdaptedBasesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AtLinAdaptedCoefEqStandardSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.B0StandardSeriesAdmissibleStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsStandardBasesLatticeAtPlaceOfAdaptedBases
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AtLinAdaptedCoefEqStandardSeries
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.B0StandardSeriesAdmissible
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CombOfTied
 import Development.AutomorphicArithmetic.OrbitLabellings.LatticePairsOddDegreeIsometric
 
@@ -39,17 +39,17 @@ theorem frobeniusConjugation_conditions_adaptedKernelDatum_alt : Formalism.L2.Ke
     obtain ⟨hAdm, hComb⟩ := GlobalTheory.Ggeo.KerComb.comb_of_tied hAlg D L hT Gi Gl K Y cX ex t hHyp u μ w hLF' i hi c c'
     have hHA := hHost D t.cc t.δ t.B t.χ t.cc_ok t.δ_ok t.χ_ok (D.what₂.places.resChar w) (t.ent.lam w) h5 (Or.inl hC)
     have hS : StdBases D (t.ent.lam w) ((t.O u μ).lat i c).1 (Pm i c) :=
-      GlobalTheory.T.isStandardBasesLatticeAtPlace_of_adapted_bases D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat i c).2.1 (fun τ => hB i hi.le c τ)
+      _root_.GlobalTheory.KerStd.stdBases_of_basR D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat i c).2.1 (fun τ => hB i hi.le c τ)
         (fun τ τ' h => hConj i hi.le c τ τ' h)
     have hS' : StdBases D (t.ent.lam w) ((t.O u μ).lat (i + 1) c').1 (Pm (i + 1) c') :=
-      GlobalTheory.T.isStandardBasesLatticeAtPlace_of_adapted_bases D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat (i + 1) c').2.1 (fun τ => hB (i + 1) hi c' τ)
+      _root_.GlobalTheory.KerStd.stdBases_of_basR D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat (i + 1) c').2.1 (fun τ => hB (i + 1) hi c' τ)
         (fun τ τ' h => hConj (i + 1) hi c' τ τ' h)
     have key := hQ hHA h5 _ _ _ _ hAdm hS hS' _ hComb
-    rw [hTh i hi c c', GlobalTheory.T.atLin_adaptedCoef_eq_standardSeries]
+    rw [hTh i hi c c', _root_.GlobalTheory.atLin_adCoef_eq_stdSer]
     exact key
   refine ⟨fun u μ w hLF hC hP0 i hi _ c c' => ?_, fun u μ w hLF hC i hi _ c c' => ?_⟩
   · exact main u μ w hLF hC i hi c c' (OrbitPlaces.ThetaExpansionRealPlaces D (D.what₂.places.resChar w)) fun hHA h5 =>
-      GlobalTheory.T.thetaExpansionRealPlaces_stdSer_of_adm' D t.cc t.δ t.B t.χ (D.what₂.places.resChar w) (t.ent.lam w) hHA h5 hC hP0 _ _
+      _root_.GlobalTheory.KerStd.thetaExpansionRealPlaces_stdSer_of_adm D t.cc t.δ t.B t.χ (D.what₂.places.resChar w) (t.ent.lam w) hHA h5 hC hP0 _ _
   · have hodd : Odd (nP D (D.what₂.places.resChar w)) := by
       have hs : ¬ IsSg D (D.what₂.places.resChar w) := fun h => by
         have h1 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.inertClass := hC.1

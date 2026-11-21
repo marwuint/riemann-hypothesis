@@ -92,9 +92,6 @@ structure OnIn (R : RealDat D A Ks) where
 
   ad : ℕ → ℝ
 
-def OnIn.withNum {R : RealDat D A Ks} (I : OnIn R) (N : NumDatum) : OnIn R :=
-  { I with eps := N.sc.eps, Sc := N.Sc, eta := N.eta }
-
 abbrev Sb (R : RealDat D A Ks) (F : Face D A) := (R.toCx F).data F.cr false
 
 def eOn (R : RealDat D A Ks) (j : Fin D.R.m) : (Fin (R.nW j) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL) :=
@@ -170,50 +167,6 @@ variable (R : RealDat D A Ks) (F : Face D A) (c : OnConst) (I : OnIn R)
 
 theorem tieU_rfl : TieU (onObjOf R F c I) (fun v => uniSub (kP v.1) (D.R.r - 1)) := rfl
 
-theorem tieLevelNum : TieLevelNum (onObjOf R F c I) (D.R.r - 1) D.R.f := by
-  refine ⟨rfl, ?_⟩
-  show (D.R.r : ℝ) = ((D.R.r - 1 : ℕ) : ℝ) + 1
-  rw [← Nat.cast_add_one, r_pos]
-
 theorem proj_range (j : Fin D.R.m) : LinearMap.range ((onObjOf R F c I).e j) = (onObjOf R F c I).V₀ j := rfl
-
-theorem pageTies_rfl : OnPage.SecondRatioDefinition (onObjOf R F c I) ∧
-    OnPage.TieBp (onObjOf R F c I) ∧ OnPage.TieNc (onObjOf R F c I) := ⟨rfl, rfl, rfl⟩
-
-def TieUnit : Prop := (F.fc (R.toCx F).zs).Z.E1u = (onObjOf R F c I).E1u
-
-structure OnLeaves (N : IndefNum A.fam.base) : Prop where
-  mackey : LeafMackey (onObjOf R F c I)
-  sup : LeafSup (onObjOf R F c I)
-  proj : LeafProj (onObjOf R F c I)
-  coord : TieCoord (onObjOf R F c I)
-  span : LeafSpan (onObjOf R F c I)
-  lemmaS : LeafLemmaS (onObjOf R F c I)
-  t0 : LatticeIndexBoundAtPairs (onObjOf R F c I)
-  data : LeafData (onObjOf R F c I)
-  rankJ : LeafRankJ (onObjOf R F c I)
-  identity : LeafIdentity (onObjOf R F c I)
-  tw2 : LeafTW2 (onObjOf R F c I)
-  tw1 : LeafTW1 (onObjOf R F c I)
-  shareI : LeafShareI (onObjOf R F c I)
-  indexU : LeafIndexU (onObjOf R F c I)
-  badShare : LeafBadShare (onObjOf R F c I)
-  unip : LeafUnip (onObjOf R F c I)
-  depthGood : LeafDepthGood N (onObjOf R F c I)
-  depthRam : LeafDepthRam N (onObjOf R F c I)
-  depth2 : LeafDepth2 N (onObjOf R F c I)
-  depthLevel : LeafDepthLevel N (onObjOf R F c I)
-  page : LeafPage (onObjOf R F c I)
-  sizes : LeafSizes (onObjOf R F c I)
-  X : LeafX (onObjOf R F c I)
-  bad : LeafBad (onObjOf R F c I)
-  jSum : LeafJSum (onObjOf R F c I)
-  jExp : LeafJExp N (onObjOf R F c I)
-
-theorem onto_of_leaves (C CH : ℝ) (hRk : RankRows (Sb R F)) (hL : OnLeaves R F c I (R.num F C CH)) (hCE : c.CE ≤ C)
-    (hE : TieUnit R F c I) (tErr : TieErr (onObjOf R F c I)) : R.LOnto F C CH :=
-  on_of_leaves (R.num F C CH) (onObjOf R F c I) C hRk hL.mackey hL.sup hL.proj hL.coord hL.span hL.lemmaS hL.t0 hL.data
-    hL.rankJ hL.identity hL.tw2 hL.tw1 hL.shareI hL.indexU hL.badShare hL.unip hL.depthGood hL.depthRam hL.depth2
-    hL.depthLevel hL.page hL.sizes hL.X hL.bad hL.jSum hL.jExp hCE (fun _ => by show C * _ = C * _; rw [hE]) tErr
 
 end Formalism.IndefR.Obj

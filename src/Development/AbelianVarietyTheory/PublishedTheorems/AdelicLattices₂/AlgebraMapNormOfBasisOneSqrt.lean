@@ -70,19 +70,6 @@ namespace Landherr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {G G' : Matrix (Fin r) (Fin r) E}
 
-theorem congr_complex (h : ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc)
-    (τ : E →+* ℂ) :
-    ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ G'.map τ = Qᵀ * G.map τ * Q.map conj := by
-  obtain ⟨P, hP, rfl⟩ := h
-  refine ⟨P.map τ, ?_, ?_⟩
-  · have : (P.map τ).det = τ P.det := (RingHom.map_det τ P).symm
-    rw [this]
-    exact (map_ne_zero τ).mpr hP
-  · rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
-    congr 1
-    ext a b
-    exact embedding_cc τ _
-
 theorem det_norm (hG : G.det ≠ 0)
     (h : ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc) :
     ∃ x : E, G.det / G'.det = x * cc x := by
@@ -92,13 +79,6 @@ theorem det_norm (hG : G.det ≠ 0)
   have h2 := cc_ne_zero hP
   rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, det_map_cc, h1]
   field_simp
-
-theorem iff (H : Landherr) (hG : ∀ a b, cc (G a b) = G b a) (hG' : ∀ a b, cc (G' a b) = G' b a)
-    (hd : G.det ≠ 0) (hd' : G'.det ≠ 0) :
-    (∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc) ↔
-      (∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧
-        G'.map τ = Qᵀ * G.map τ * Q.map conj) ∧ ∃ x : E, G.det / G'.det = x * cc x :=
-  ⟨fun h => ⟨congr_complex h, det_norm hd h⟩, fun h => H E r G G' hG hG' hd hd' h.1 h.2⟩
 
 theorem size_zero (G G' : Matrix (Fin 0) (Fin 0) E) :
     ∃ P : Matrix (Fin 0) (Fin 0) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc :=
@@ -281,14 +261,6 @@ theorem exists_sq_real {θ : E} (hθ : cc θ = -θ) :
   ⟨⟨θ * θ, (IsCMField.complexConj_eq_self_iff E _).mp (by
     rw [map_mul, show IsCMField.complexConj E θ = -θ from hθ]; ring)⟩, rfl⟩
 
-theorem coe_norm_eq_mul_cc (x : E) :
-    ((Algebra.norm (maximalRealSubfield E) x : maximalRealSubfield E) : E) = x * cc x := by
-  obtain ⟨θ, h0, hθ⟩ := exists_cc_eq_neg E
-  obtain ⟨b, hb0, hb1⟩ := exists_basis_one_imaginary h0 hθ
-  obtain ⟨d, hd⟩ := exists_sq_real hθ
-  exact algebraMap_norm_of_basis_one_sqrt b hb0 d (by rw [hb1]; exact hd.symm)
-    (IsCMField.complexConj E).toAlgHom (by rw [hb1]; exact hθ) x
-
 variable (A : Type*) [CommRing A] [Algebra (maximalRealSubfield E) A]
 
 theorem norm_tmul_add_tmul {θ : E} (h0 : θ ≠ 0) (hθ : cc θ = -θ) {d : maximalRealSubfield E}
@@ -325,57 +297,6 @@ end CM
 
 namespace HasseNorm
 
-theorem local_of_global {K L : Type*} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
-    (A : Type*) [CommRing A] [Algebra K A] {a : K} (h : ∃ x : L, Algebra.norm K x = a) :
-    ∃ z : A ⊗[K] L, Algebra.norm A z = algebraMap K A a := by
-  obtain ⟨x, rfl⟩ := h
-  refine ⟨1 ⊗ₜ x, ?_⟩
-  rw [Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]
-  congr 1
-  exact (Algebra.baseChange_lmul x).symm
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-
-theorem infinite_of_pos (a : maximalRealSubfield E) (ha : ∀ τ : E →+* ℂ, 0 < (τ a).re)
-    (v : InfinitePlace (maximalRealSubfield E)) :
-    ∃ z : v.Completion ⊗[maximalRealSubfield E] E,
-      Algebra.norm v.Completion z = algebraMap (maximalRealSubfield E) v.Completion a := by
-  have hv : v.IsReal := IsTotallyReal.isReal v
-  let e := InfinitePlace.Completion.ringEquivRealOfIsReal hv
-  have he : e (algebraMap _ v.Completion a) = InfinitePlace.embedding_of_isReal hv a :=
-    InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv ((WithAbs.equiv v.1).symm a)
-  have hpos : 0 < InfinitePlace.embedding_of_isReal hv a := by
-    have h1 := ha (ComplexEmbedding.lift E v.embedding)
-    have h2 : ComplexEmbedding.lift E v.embedding (a : E) = v.embedding a :=
-      ComplexEmbedding.lift_algebraMap_apply E v.embedding a
-    rwa [h2, ← InfinitePlace.embedding_of_isReal_apply hv, Complex.ofReal_re] at h1
-  obtain ⟨θ, h0, hθ⟩ := exists_cc_eq_neg E
-  obtain ⟨d, hd⟩ := exists_sq_real hθ
-  refine ⟨_, (norm_tmul_add_tmul v.Completion h0 hθ hd
-    (e.symm (Real.sqrt (InfinitePlace.embedding_of_isReal hv a))) 0).trans ?_⟩
-  apply e.injective
-  rw [he, zero_pow two_ne_zero, mul_zero, sub_zero, map_pow, e.apply_symm_apply, Real.sq_sqrt hpos.le]
-
-theorem cm (H : HasseNorm) (a : maximalRealSubfield E) (ha : ∀ τ : E →+* ℂ, 0 < (τ a).re)
-    (hf : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)),
-      ∃ z : v.adicCompletion (maximalRealSubfield E) ⊗[maximalRealSubfield E] E,
-        Algebra.norm (v.adicCompletion (maximalRealSubfield E)) z =
-          algebraMap (maximalRealSubfield E) (v.adicCompletion (maximalRealSubfield E)) a) :
-    ∃ x : E, (a : E) = x * cc x := by
-  have : IsCyclic (E ≃ₐ[maximalRealSubfield E] E) :=
-    isCyclic_iff_exists_zpowers_eq_top.mpr ⟨_, IsCMField.zpowers_complexConj_eq_top E⟩
-  have h0 : a ≠ 0 := by
-    rintro rfl
-    simpa using ha (Classical.choice inferInstance)
-  obtain ⟨x, hx⟩ := H (maximalRealSubfield E) E a h0 hf (infinite_of_pos a ha)
-  exact ⟨x, by rw [← hx, coe_norm_eq_mul_cc]⟩
-
 end HasseNorm
-
-section Tests
-
-variable (E : Type) [Field E] [NumberField E] [IsCMField E]
-
-end Tests
 
 end GlobalTheory.Published

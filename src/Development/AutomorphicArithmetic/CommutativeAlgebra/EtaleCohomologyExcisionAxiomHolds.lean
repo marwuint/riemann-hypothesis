@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyNegativeVanishingDegreeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyNegativeVanishingDegreeZero
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechLevelRepresentableStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCechNerveBaseChangeIsPullbackStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeCechNerveAugmentationIsoStatement
@@ -27,7 +28,7 @@ private theorem bijective_pull_spMap_tw_zero : ∀ (q : ℕ) [NeZero q] (i : ℤ
     Function.Bijective (pull _ (spMap φ) (tw q i) 0) := by
   intro q _ i B B' _ _ φ hq ⟨ζ, hζ⟩ hid
   obtain ⟨E, hE⟩ := UpperTheory.exists_tateTwist_sections_equiv_locallyConstant q i
-  obtain ⟨-, e, he, -⟩ := GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)
+  obtain ⟨-, e, he, -⟩ := _root_.GlobalTheory.EtC.etale_cohomology_vanishing_negative_degree_zero (ZMod q) (tw q i)
   let g : Spec (CommRingCat.of B') ⟶ Spec (CommRingCat.of B) := Spec.map (CommRingCat.ofHom φ)
   let ζ₀ : Prim q Γ(Spec (CommRingCat.of B), ⊤) :=
     Prim.map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ⟨ζ, hq, hζ⟩
@@ -60,7 +61,7 @@ private theorem eqv_ring : ∀ (q : ℕ) (O R K : Type) [CommRing O] [CommRing R
     have : Algebra.IsIntegral R (R ⊗[O] K) := inferInstance
     exact Algebra.IsIntegral.trans R
   rcases lt_trichotomy n 0 with hn | rfl | hn
-  · have hs := (GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)).1
+  · have hs := (_root_.GlobalTheory.EtC.etale_cohomology_vanishing_negative_degree_zero (ZMod q) (tw q i)).1
     haveI := hs (sp R) n hn
     haveI := hs (sp (R ⊗[O] K)) n hn
     exact ⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨0, Subsingleton.elim _ _⟩⟩

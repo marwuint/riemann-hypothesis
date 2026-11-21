@@ -15,9 +15,9 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisedTes
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeZeroOfLe
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LePreimageOpenPartIffTestCoordinates
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomGenericPoint
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SpanRowsClassZeroEqInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGeometricTestMapClassicalPointStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsoSpecialFibreTestGeometricTestStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SpanRowsClassZeroEqInvariant
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGeometricTestMapClassicalPoint
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsoSpecialFibreTestGeometricTest
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusActionWeightedChartsStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -429,7 +429,7 @@ theorem exists_matrix [hA : ArithBase o Ω] (hB : BaseFacts S M U₀ EE) (Q : Cl
     rfl
   have hy₀ : ∀ a : o, y₀ (algebraMap o S.R a) = (ψ a : PadicAlgCl p) := fun a =>
     (c.at_ _).trans (RatModel.val_algebraMap hg a)
-  obtain ⟨hker, hcl, -⟩ := GlobalTheory.T.span_rows_classZero_eq_invariant o Ω S ρ p y₀ t fun a => by
+  obtain ⟨hker, hcl, -⟩ := _root_.GlobalTheory.ZH.span_rows_class_zero o Ω S ρ p y₀ t fun a => by
     rw [hy₀]
     exact (mem_OO_iff _).1 (ψ a).2
   obtain rfl : T = S.perp t.l.yy.ker := by

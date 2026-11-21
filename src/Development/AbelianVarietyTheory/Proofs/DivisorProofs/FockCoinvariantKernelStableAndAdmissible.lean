@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ActAtApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HoweHighestWeightSupStableLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsSupCoinvariantsEqTopStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionsLieRationalWeightsCommuteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionIsLocallyBlockUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsSupCoinvariantsEqTop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionsLieRationalWeightsCommute
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionIsLocallyBlockUnitary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensSpanOfKilled
 
@@ -16,7 +16,7 @@ namespace GlobalTheory.HoweR
 
 theorem coinv_stab_snd (P Q R S : ℕ) (x : ℂ) : Stab (fockAct2 P Q R S) (coinv P Q R S x) := by
   intro Z y hy
-  have hcomm := (GlobalTheory.T.fockActions_lie_rationalWeights_commute P Q R S).2.2.2.2
+  have hcomm := (_root_.GlobalTheory.HoweR.fock_lie_wts_comm P Q R S).2.2.2.2
   induction hy using Submodule.span_induction with
   | mem g hg =>
     obtain ⟨X, f, rfl⟩ := hg
@@ -41,12 +41,12 @@ theorem fockCoinvariantKernel_highestWeight_admissible (P Q R S : ℕ) (x : ℂ)
   intro B
   refine ⟨restrictTotalDegree (Ln P Q R S) ℂ ⌊((R + S : ℕ) : ℚ) * (B + |cPair P Q|)⌋₊, inferInstance, ?_⟩
   intro μ hμ v hv
-  obtain ⟨-, hL2, -, hw2, -⟩ := GlobalTheory.T.fockActions_lie_rationalWeights_commute P Q R S
-  have hgood : Good (fockAct2 P Q R S) := ⟨hL2, hw2, GlobalTheory.T.fockAction_isLocallyBlockUnitary P Q R S⟩
+  obtain ⟨-, hL2, -, hw2, -⟩ := _root_.GlobalTheory.HoweR.fock_lie_wts_comm P Q R S
+  have hgood : Good (fockAct2 P Q R S) := ⟨hL2, hw2, _root_.GlobalTheory.HoweR.fock_locU P Q R S⟩
   obtain ⟨hspan, -, hK2, -⟩ := GlobalTheory.FockAlg.harm_graded_stable P Q R S _ (Or.inr (Or.inl rfl))
   have hKc : KStable (fockAct2 P Q R S) (coinv P Q R S x) := fun X _ w hw => coinv_stab_snd P Q R S x X w hw
   have hv' : v ∈ (Submodule.span ℂ (harm2 P Q R S) ⊔ coinv P Q R S x) ⊓ hwSub (fockAct2 P Q R S) μ :=
-    ⟨by rw [GlobalTheory.T.fockHarmonics_sup_coinvariants_eq_top]; exact Submodule.mem_top, hv⟩
+    ⟨by rw [_root_.GlobalTheory.HoweR.span_harm2_sup_coinv_eq_univ]; exact Submodule.mem_top, hv⟩
   have hsplit := GlobalTheory.T.howeHighestWeight_sup_stable_le R S _ (fockAct2 P Q R S) hgood _ _ hK2 hKc μ hv'
   obtain ⟨h, hh, c, hc, rfl⟩ := Submodule.mem_sup.1 hsplit
   refine Submodule.add_mem_sup ?_ hc.1

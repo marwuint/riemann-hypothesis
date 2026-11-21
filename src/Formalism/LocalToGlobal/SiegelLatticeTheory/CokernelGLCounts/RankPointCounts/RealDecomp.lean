@@ -46,9 +46,4 @@ theorem liftDecompC_of_real (h : RealDecompC X Y u u') : LiftDecompC X Y u u' κ
   intro R ρ s hrel
   exact realDecompC_gamW X Y u u' h s.1 hrel (realDecomp_G_ne X Y u u' s.1 s.2.1)
 
-theorem decompPhaseC_of_real (h : RealDecompC X Y u u') (h6 : PhaseTieC X Y u u' κ) : DecompPhaseC X Y u u' κ := by
-  intro R ρ s hrel
-  obtain ⟨hex, g, hg, g', hg', heq⟩ := liftDecompC_of_real X Y u u' κ h R ρ s hrel
-  exact ⟨hex, g, hg, g', hg', heq, h6 R ρ s hrel g hg g' hg' heq⟩
-
 end Formalism.L2.SG.Pf.RowForm

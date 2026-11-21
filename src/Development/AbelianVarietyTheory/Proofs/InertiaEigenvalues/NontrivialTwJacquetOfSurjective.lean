@@ -244,68 +244,6 @@ theorem isGenericFor_twist_iff {ψ : AddChar k Circle} {π : Representation ℂ 
     rw [LinearMap.id_apply, e]
     exact sub_smul_mem_twKer' _ _ _ _ u.2 _
 
-theorem not_isGenericFor_detRep {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (hN : 2 ≤ N) (χ : kˣ →* ℂˣ) :
-    ¬ IsGenericFor ψ (detRep (Fin N) χ) := by
-  obtain ⟨z, hz⟩ := AddChar.ne_one_iff.1 hψ
-  let i0 : Fin N := ⟨0, by omega⟩
-  let i1 : Fin N := ⟨1, by omega⟩
-  have hlt : i0 < i1 := by simp [i0, i1, Fin.lt_def]
-  have hne : i0 ≠ i1 := ne_of_lt hlt
-
-  let g : GL (Fin N) k := Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.transvection i0 i1 z)
-    (by rw [Matrix.det_transvection_of_ne _ _ hne]; exact one_ne_zero)
-  have hg : ∀ i j, (g : Matrix (Fin N) (Fin N) k) i j =
-      (if i = j then 1 else 0) + (if i0 = i ∧ i1 = j then z else 0) := by
-    intro i j
-    simp [g, Matrix.transvection, Matrix.one_apply, Matrix.single_apply]
-  have hgU : g ∈ unipB k (Fin N) := by
-    refine (mem_unipB (R := k)).2 ⟨fun i j hji => ?_, fun i => ?_⟩
-    · have h1 : i ≠ j := ne_of_gt hji
-      have h2 : ¬ (i0 = i ∧ i1 = j) := by
-        rintro ⟨rfl, rfl⟩
-        exact lt_asymm hlt hji
-      rw [hg, if_neg h1, if_neg h2, add_zero]
-    · have h2 : ¬ (i0 = i ∧ i1 = i) := by
-        rintro ⟨rfl, h⟩
-        exact hne h.symm
-      rw [hg, if_pos rfl, if_neg h2, add_zero]
-  have hsum : ∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1, (g : Matrix (Fin N) (Fin N) k) p.1 p.2 = z := by
-    rw [Finset.sum_eq_single (i0, i1)]
-    · rw [hg, if_neg hne, if_pos ⟨rfl, rfl⟩, zero_add]
-    · intro p hp hpne
-      have hp2 : (p.2 : ℕ) = p.1 + 1 := (Finset.mem_filter.1 hp).2
-      have h1 : p.1 ≠ p.2 := by
-        intro h
-        rw [h] at hp2
-        omega
-      have h2 : ¬ (i0 = p.1 ∧ i1 = p.2) := fun h => hpne (Prod.ext h.1.symm h.2.symm)
-      rw [hg, if_neg h1, if_neg h2, add_zero]
-    · intro h
-      exact (h (by simp [i0, i1])).elim
-  have hθ : ((whitChar ψ N ⟨g, hgU⟩ : ℂˣ) : ℂ) = (ψ z : ℂ) := by
-    show ((Circle.toUnits (ψ (∑ p : Fin N × Fin N with (p.2 : ℕ) = p.1 + 1,
-      (g : Matrix (Fin N) (Fin N) k) p.1 p.2)) : ℂˣ) : ℂ) = _
-    rw [hsum, Circle.toUnits_apply, Units.val_mk0]
-  have hd : detRep (Fin N) χ g 1 = 1 := by
-    rw [detRep, ofChar_apply, detChar_apply, det_eq_one_of_mem_unipRad k hgU, map_one, Units.val_one,
-      mul_one]
-  have hw : (1 - (ψ z : ℂ)) ∈ twKer (detRep (Fin N) χ) (unipB k (Fin N)) (whitChar ψ N) := by
-    have h := sub_smul_mem_twKer' (detRep (Fin N) χ) (unipB k (Fin N)) (whitChar ψ N) g hgU 1
-    rwa [hd, hθ, smul_eq_mul, mul_one] at h
-  have hne1 : (1 - (ψ z : ℂ)) ≠ 0 := by
-    intro h0
-    exact hz (Circle.ext ((sub_eq_zero.1 h0).symm.trans Circle.coe_one.symm))
-  have htop : ∀ x : ℂ, x ∈ twKer (detRep (Fin N) χ) (unipB k (Fin N)) (whitChar ψ N) := by
-    intro x
-    have h := Submodule.smul_mem _ (x / (1 - (ψ z : ℂ))) hw
-    rwa [smul_eq_mul, div_mul_cancel₀ _ hne1] at h
-  intro H
-  unfold IsGenericFor at H
-  obtain ⟨p, q, hpq⟩ := H.exists_pair_ne
-  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ p
-  obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  exact hpq (by rw [(Submodule.Quotient.mk_eq_zero _).2 (htop x), (Submodule.Quotient.mk_eq_zero _).2 (htop y)])
-
 variable [TopologicalSpace k]
 
 theorem isGeneric_congr {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
@@ -317,11 +255,6 @@ theorem isGeneric_twist_iff {π : Representation ℂ (GL (Fin N) k) V} (χ : kˣ
     IsGeneric (twist π (detChar (Fin N) χ)) ↔ IsGeneric π := by
   unfold IsGeneric
   exact exists_congr fun ψ => and_congr_right fun _ => and_congr_right fun _ => isGenericFor_twist_iff χ
-
-theorem not_isGeneric_detRep (hN : 2 ≤ N) (χ : kˣ →* ℂˣ) : ¬ IsGeneric (detRep (Fin N) χ) := by
-  unfold IsGeneric
-  rintro ⟨ψ, -, h1, h⟩
-  exact not_isGenericFor_detRep h1 hN χ h
 
 variable [ValuativeRel k] [IsNonarchimedeanLocalField k]
 
@@ -338,10 +271,6 @@ theorem isGeneric_iff_isGenericFor {ψ : AddChar k Circle} (hψ : Continuous ψ)
     exact (isGenericFor_iff_of_continuous hψ h1 h' h1' π).2 hg
   · intro h
     exact ⟨ψ, hψ, h1, h⟩
-
-theorem isGeneric_detRep_one (χ : kˣ →* ℂˣ) : IsGeneric (detRep (Fin 1) χ) := by
-  obtain ⟨ψ, hψ, h1⟩ := exists_continuous_addChar_ne_one k
-  exact ⟨ψ, hψ, h1, isGenericFor_one ψ χ⟩
 
 end Generic
 

@@ -24,8 +24,8 @@ theorem polarization_pair_derivation (hP : _root_.GlobalTheory.FunPr.ThetaLocalI
       δ f ∈ M.Pol ψ τ ∧ ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f (δ f) := by
   intro γ hγ
   obtain ⟨m, u, v, c, c₀, hat, hQ⟩ := _root_.GlobalTheory.T.oscillator_lie_action_quadratic hP M ψ χX χW om hcm hψ hW γ hγ
-  choose Du hDu using fun i => GlobalTheory.T.exists_archSchwartz_derivative_heisenbergLine M ψ hψ (u i) (hat i).1
-  choose Dv hDv using fun i => GlobalTheory.T.exists_archSchwartz_derivative_heisenbergLine M ψ hψ (v i) (hat i).2
+  choose Du hDu using fun i => _root_.GlobalTheory.HeisDeriv.exists_actsD_heisLine M ψ hψ (u i) (hat i).1
+  choose Dv hDv using fun i => _root_.GlobalTheory.HeisDeriv.exists_actsD_heisLine M ψ hψ (v i) (hat i).2
   have closed : ∀ w, At (evI F) w → ∀ D : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d),
       (∀ f : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ w) f (D f)) → ∀ f ∈ M.Pol ψ τ, D f ∈ M.Pol ψ τ := by
     intro w hw D hD f hf

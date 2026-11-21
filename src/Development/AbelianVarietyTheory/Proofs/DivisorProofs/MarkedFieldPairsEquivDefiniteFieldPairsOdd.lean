@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiagHermitianTrivialOfSumFourSquares
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolynomialMoveDefiniteSimilitudePairMarkedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzTermEqDefinitePairOfLocalIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelatedPairsOrbitalTermEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzTermEqDefinitePairOfLocalIsometry
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelatedPairsOrbitalTermEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzPairScalarIsomorphicEquivalence
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MkEqIffRelAndOutRel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelatedPairsSamePolarization
@@ -168,13 +168,13 @@ theorem cls_equiv_dcls_irr : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a =
         (Quot.out (Quot.mk (DPair.Rel (G := G)) (FQ P hi hm) : DCls G)).term Kf f r K φ =
           P.term Kf f r K φ := by
     intro P hi hm
-    have h9 := GlobalTheory.T.related_pairs_orbital_term_eq p G (FQ P hi hm) _ (DPair.rel_out (FQ P hi hm))
+    have h9 := _root_.GlobalTheory.LKDef.DPair.rel_pol_c_term p G (FQ P hi hm) _ (DPair.rel_out (FQ P hi hm))
     refine ⟨?_, fun Kf f r K φ hr hf hφ => ?_⟩
     · rw [← h9.1]
       show minpoly G.F ((FQ P hi hm).γ : G.C) = minpoly G.F (P.γ : G.C)
       rw [hFγ P hi hm]
     · rw [← h9.2.2 Kf f r K φ hr hf hφ]
-      exact (GlobalTheory.T.kottwitzTerm_eq_definitePair_of_local_isometry p G P (FQ P hi hm) (hFγ P hi hm).symm (hFc P hi hm).symm (hFu P hi hm)
+      exact (_root_.GlobalTheory.LKDefTerm.term_eq_of_local_isom p G P (FQ P hi hm) (hFγ P hi hm).symm (hFc P hi hm).symm (hFu P hi hm)
         Kf f r K φ hr hf hφ).symm
   refine ⟨⟨fun q => ⟨(Quot.mk (DPair.Rel (G := G)) (FQ _ q.2.1 q.2.2) : DCls G), hFirr _ q.2.1 q.2.2⟩,
     fun q => ⟨(Quot.mk (Pair.Rel (G := G)) (BP _ q.2) : Cls G), hBok _ q.2⟩, fun q => ?_, fun q => ?_⟩,

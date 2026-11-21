@@ -5,7 +5,6 @@ import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
 import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.NcardPrimesOverOfSplitsCompl
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.ConcreteLevelAdelicSubset
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.GoodRecipPf
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.ReductionConjugacy
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.ReductionExists
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.RConvFExistsPf
@@ -49,20 +48,6 @@ theorem f_eq : X.B.I.f = D.R.f := by
   rw [e3] at e2
   unfold AutInst.f
   omega
-
-theorem rd_eq : X.B.I.rd = D.host.rdE := by
-  have hd : discr X.B.I.E = discr D.host.E := NumberField.discr_eq_discr_of_algEquiv X.B.I.E X.ιE.toRatAlgEquiv
-  have e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E :=
-    (X.ιE.toRatAlgEquiv).toLinearEquiv.finrank_eq
-  have e2 : Module.finrank ℚ X.B.I.F * Module.finrank X.B.I.F X.B.I.E = Module.finrank ℚ X.B.I.E :=
-    Module.finrank_mul_finrank ℚ X.B.I.F X.B.I.E
-  have e3 : Module.finrank X.B.I.F X.B.I.E = 2 := X.B.I.cm.deg2
-  have e4 : (Module.finrank ℚ D.host.E : ℝ) = 2 * (X.B.I.f : ℝ) := by
-    unfold AutInst.f
-    have : Module.finrank ℚ D.host.E = 2 * Module.finrank ℚ X.B.I.F := by rw [← e1, ← e2, e3, mul_comm]
-    rw [this]; push_cast; ring
-  unfold AutInst.rd Host.rdE
-  rw [hd, e4]
 
 section Real
 
@@ -225,12 +210,6 @@ theorem monicOf_coeff {K : Type} [Field K] {N : ℕ} {h : K[X]} (hm : h.Monic) (
   · rw [coeff_eq_zero_of_natDegree_lt (by rw [(monicOf_monic _).2]; exact hj),
       coeff_eq_zero_of_natDegree_lt (by rw [hd]; exact hj)]
 
-section Recip
-
-variable {g : ℕ} [Fact g.Prime] {f : (ZMod g)[X]}
-
-end Recip
-
 end E0
 
 section GoodOpEx
@@ -368,26 +347,6 @@ def DstarVol : Prop :=
   (∏ v, X.dv v) * X.B.I.vol X.B.μf X.B.fund / (X.B.μf X.B.I.Kset).toReal =
     Formalism.MainNotions.StandardLattice.volY0 D * ∏ ρ, D.dsig ρ
 
-theorem chi2_apply_one : X.chi2 1 = 1 := by
-  obtain ⟨h1, hmul, -, hχ, hn⟩ := Formalism.L2.SG.Closed.level_subgroup_is_group X
-  have e := hχ 1 h1 1 h1
-  rw [one_mul] at e
-  have hne : X.chi2 1 ≠ 0 := by
-    intro h0
-    have := hn 1 h1
-    rw [h0, norm_zero] at this
-    exact zero_ne_one this
-  have : X.chi2 1 * (X.chi2 1 - 1) = 0 := by rw [mul_sub, mul_one, ← e, sub_self]
-  rcases mul_eq_zero.1 this with h | h
-  · exact absurd h hne
-  · exact sub_eq_zero.1 h
-
-theorem e_one : X.B.e 1 = 1 / (X.volK2 : ℂ) := by
-  have h1 := (Formalism.L2.SG.Closed.level_subgroup_is_group X).1
-  rw [X.e_eq 1, if_pos (show (1 : X.B.I.Gf) ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw from h1)]
-  change star (X.chi2 1) / (X.volK2 : ℂ) = _
-  rw [chi2_apply_one, star_one]
-
 end Dstar
 
 section Schur
@@ -523,9 +482,6 @@ theorem dv_eq (hT : Formalism.BasicNotions.dsigTie D) (v : InfinitePlace X.B.I.F
 def DstarVolV : Prop :=
   X.B.I.vol X.B.μf X.B.fund / (X.B.μf X.B.I.Kset).toReal *
       ∏ _v : InfinitePlace X.B.I.F, (D.s.cdScale _ (epsSH D.R) : ℝ) = Formalism.MainNotions.StandardLattice.volY0 D
-
-def DstarVolCore : Prop :=
-  ∀ (D : D7) (X : HidaSetting D), Formalism.MainNotions.StandardLattice.VolTie D → Formalism.BasicNotions.cdScaleTie D → DstarVolV X
 
 theorem dstarVol_of (hT : Formalism.BasicNotions.dsigTie D) (hV : DstarVolV X) : DstarVol X := by
   unfold DstarVol

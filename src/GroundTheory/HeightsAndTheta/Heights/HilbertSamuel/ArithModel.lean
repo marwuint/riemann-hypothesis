@@ -18,10 +18,6 @@ section Homog
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
-theorem isMultiHomog_zero (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
-  intro m hm
-  simp at hm
-
 theorem isMultiHomog_one : IsMultiHomog (1 : MRing ι) 0 := by
   intro m hm k
   rw [support_one] at hm
@@ -71,11 +67,6 @@ abbrev Kfr : Type := FractionRing (MRing (GlobalTheory (Fin 2)))
 
 abbrev Xk (i : Fin 2) : Kfr := algebraMap (MRing (GlobalTheory (Fin 2))) Kfr (X ⟨(), i⟩)
 
-theorem Xk_ne_zero (i : Fin 2) : Xk i ≠ 0 := by
-  rw [Ne, ← map_zero (algebraMap (MRing (GlobalTheory (Fin 2))) Kfr),
-    (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr).eq_iff]
-  exact X_ne_zero _
-
 def u : Kfr := Xk 1 / Xk 0
 
 abbrev FnField : Type := Subfield.closure ({u} : Set Kfr)
@@ -86,152 +77,6 @@ def y : Ix (Fin 2) → FnField := fun p => ![1, uF] p.2
 
 @[simp] theorem y_zero : y ⟨(), 0⟩ = 1 := rfl
 @[simp] theorem y_one : y ⟨(), 1⟩ = uF := rfl
-
-abbrev incl : FnField →+* Kfr := (Subfield.closure ({u} : Set Kfr)).subtype
-
-theorem incl_y_mul (p : Ix (Fin 2)) : incl (y p) * Xk 0 = algebraMap _ Kfr (X p : MRing (GlobalTheory (Fin 2))) := by
-  obtain ⟨⟨⟩, i⟩ := p
-  fin_cases i
-  · simp [y]
-  · simp only [y, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]
-    change u * Xk 0 = Xk 1
-    rw [u, div_mul_cancel₀ _ (Xk_ne_zero 0)]
-
-theorem eval_coneMap (f : MRing (GlobalTheory (Fin 2))) :
-    Polynomial.eval₂ incl (Xk 0) (coneMap ℤ y f) = algebraMap _ Kfr f := by
-  have h : (Polynomial.eval₂RingHom incl (Xk 0)).comp (coneMap ℤ y).toRingHom =
-      algebraMap (MRing (GlobalTheory (Fin 2))) Kfr := by
-    refine MvPolynomial.ringHom_ext (fun n => by simp) (fun p => ?_)
-    simp only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
-      coneMap, aeval_X, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_mul, Polynomial.eval₂_C,
-      Polynomial.eval₂_X]
-    exact incl_y_mul p
-  exact congrArg (fun φ : MRing (GlobalTheory (Fin 2)) →+* Kfr => φ f) h
-
-theorem coordIdeal_y : coordIdeal ℤ y = ⊥ := by
-  rw [eq_bot_iff]
-  intro f hf
-  rw [Ideal.mem_bot]
-  have h0 : coneMap ℤ y f = 0 := hf
-  have h1 := eval_coneMap f
-  rw [h0, Polynomial.eval₂_zero] at h1
-  exact (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [← h1, map_zero])
-
-theorem eval_mConeMap (f : MRing (GlobalTheory (Fin 2))) :
-    MvPolynomial.eval₂ incl (fun _ => Xk 0) (mConeMap y f) = algebraMap _ Kfr f := by
-  have h : (MvPolynomial.eval₂Hom incl (fun _ : Unit => Xk 0)).comp (mConeMap y).toRingHom =
-      algebraMap (MRing (GlobalTheory (Fin 2))) Kfr := by
-    refine MvPolynomial.ringHom_ext (fun n => by simp) (fun p => ?_)
-    simp only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
-      mConeMap, aeval_X, coe_eval₂Hom, eval₂_mul, eval₂_C, eval₂_X]
-    exact incl_y_mul p
-  exact congrArg (fun φ : MRing (GlobalTheory (Fin 2)) →+* Kfr => φ f) h
-
-theorem mCoordIdeal_y : mCoordIdeal (ι := GlobalTheory (Fin 2)) y = ⊥ := by
-  rw [eq_bot_iff]
-  intro f hf
-  rw [Ideal.mem_bot]
-  have h0 : mConeMap y f = 0 := hf
-  have h1 := eval_mConeMap f
-  rw [h0, eval₂_zero] at h1
-  exact (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [← h1, map_zero])
-
-theorem isArithVar_y : IsArithVar (ι := GlobalTheory (Fin 2)) (coordIdeal ℤ y) 2 := by
-  rw [coordIdeal_y]
-  exact GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine
-
-theorem isArithVar_y' : IsArithVar (ι := GlobalTheory (Fin 2)) (mCoordIdeal y) 2 := by
-  rw [mCoordIdeal_y]
-  exact GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine
-
-theorem linearIndependent_y : LinearIndependent ℤ y := by
-  rw [Fintype.linearIndependent_iff]
-  intro g hg p
-  have hs : (g ⟨(), 0⟩ : FnField) + (g ⟨(), 1⟩ : FnField) * uF = 0 := by
-    rw [Fintype.sum_sigma] at hg
-    simpa [Fin.sum_univ_two, zsmul_eq_mul] using hg
-  have hK : algebraMap (MRing (GlobalTheory (Fin 2))) Kfr (C (g ⟨(), 0⟩) * X ⟨(), 0⟩ + C (g ⟨(), 1⟩) * X ⟨(), 1⟩) = 0 := by
-    have := congrArg (fun t => incl t * Xk 0) hs
-    simp only [map_add, map_mul, map_intCast, map_zero, zero_mul] at this
-    rw [map_add, map_mul, map_mul, ← this]
-    have hu : incl uF * Xk 0 = Xk 1 := incl_y_mul ⟨(), 1⟩
-    simp only [map_intCast, eq_intCast]
-    rw [add_mul, mul_assoc, hu]
-  have hP : C (g ⟨(), 0⟩) * X ⟨(), 0⟩ + C (g ⟨(), 1⟩) * (X ⟨(), 1⟩ : MRing (GlobalTheory (Fin 2))) = 0 :=
-    (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [hK, map_zero])
-  obtain ⟨⟨⟩, i⟩ := p
-  fin_cases i
-  · have := congrArg (eval (fun q : Ix (Fin 2) => ![(1 : ℤ), 0] q.2)) hP
-    simpa using this
-  · have := congrArg (eval (fun q : Ix (Fin 2) => ![(0 : ℤ), 1] q.2)) hP
-    simpa using this
-
-theorem birational_y : Birational (ι := GlobalTheory (Fin 2)) y := by
-  intro s
-  obtain ⟨s, hs⟩ := s
-  induction hs using Subfield.closure_induction with
-  | mem x hx =>
-    rw [Set.mem_singleton_iff] at hx
-    subst hx
-    refine ⟨fun _ => 1, X ⟨(), 1⟩, X ⟨(), 0⟩, ?_, ?_, ?_, ?_⟩
-    · convert isMultiHomog_X (ι := GlobalTheory (Fin 2)) ⟨(), 1⟩ using 1
-      funext k
-      simp
-    · convert isMultiHomog_X (ι := GlobalTheory (Fin 2)) ⟨(), 0⟩ using 1
-      funext k
-      simp
-    · simp
-    · simp only [aeval_X, y_zero, y_one, mul_one]
-      rfl
-  | one =>
-    refine ⟨0, 1, 1, isMultiHomog_one, isMultiHomog_one, by simp, ?_⟩
-    simp only [map_one, mul_one]
-    rfl
-  | add a b ha hb iha ihb =>
-    obtain ⟨d₁, g₁, h₁, hg₁, hh₁, hne₁, he₁⟩ := iha
-    obtain ⟨d₂, g₂, h₂, hg₂, hh₂, hne₂, he₂⟩ := ihb
-    have hsum : IsMultiHomog (g₁ * h₂ + g₂ * h₁) (d₁ + d₂) := by
-      refine mhAdd (mhMul hg₁ hh₂) ?_
-      rw [add_comm d₁]
-      exact mhMul hg₂ hh₁
-    refine ⟨d₁ + d₂, g₁ * h₂ + g₂ * h₁, h₁ * h₂, hsum, mhMul hh₁ hh₂, ?_, ?_⟩
-    · rw [map_mul]
-      exact mul_ne_zero hne₁ hne₂
-    · rw [map_add, map_mul, map_mul, map_mul, he₁, he₂]
-      have : (⟨a + b, add_mem ha hb⟩ : FnField) = ⟨a, ha⟩ + ⟨b, hb⟩ := rfl
-      rw [this]
-      ring
-  | neg a ha iha =>
-    obtain ⟨d, g, h, hg, hh, hne, he⟩ := iha
-    refine ⟨d, -g, h, mhNeg hg, hh, hne, ?_⟩
-    rw [map_neg, he]
-    have : (⟨-a, neg_mem ha⟩ : FnField) = -⟨a, ha⟩ := rfl
-    rw [this]
-    ring
-  | inv a ha iha =>
-    obtain ⟨d, g, h, hg, hh, hne, he⟩ := iha
-    by_cases ha0 : (⟨a, ha⟩ : FnField) = 0
-    · refine ⟨0, 0, 1, isMultiHomog_zero _, isMultiHomog_one, by simp, ?_⟩
-      have : (⟨a⁻¹, inv_mem ha⟩ : FnField) = (⟨a, ha⟩ : FnField)⁻¹ := rfl
-      rw [this, ha0]
-      simp
-    · have hg0 : aeval y g ≠ 0 := by
-        rw [he]
-        exact mul_ne_zero ha0 hne
-      refine ⟨d, h, g, hh, hg, hg0, ?_⟩
-      have : (⟨a⁻¹, inv_mem ha⟩ : FnField) = (⟨a, ha⟩ : FnField)⁻¹ := rfl
-      rw [this, he]
-      field_simp
-  | mul a b ha hb iha ihb =>
-    obtain ⟨d₁, g₁, h₁, hg₁, hh₁, hne₁, he₁⟩ := iha
-    obtain ⟨d₂, g₂, h₂, hg₂, hh₂, hne₂, he₂⟩ := ihb
-    refine ⟨d₁ + d₂, g₁ * g₂, h₁ * h₂, mhMul hg₁ hg₂, mhMul hh₁ hh₂, ?_, ?_⟩
-    · rw [map_mul]
-      exact mul_ne_zero hne₁ hne₂
-    · rw [map_mul, map_mul, he₁, he₂]
-      have : (⟨a * b, mul_mem ha hb⟩ : FnField) = ⟨a, ha⟩ * ⟨b, hb⟩ := rfl
-      rw [this]
-      ring
 
 section FS
 
@@ -352,23 +197,6 @@ theorem isConjInvariant_fs : IsConjInvariant (fsMetric J) := by
   change ‖WithLp.toLp 2 _‖ = ‖WithLp.toLp 2 z‖
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
   simp
-
-theorem isSmoothHerm_fs (κ : Type) [Fintype κ] : IsSmoothHerm (HermLine.ofCone (fsMetric (Ix κ))) := by
-  refine (isSmoothMetric_fs (J := Ix κ)).mono fun z hz h0 => ?_
-  obtain ⟨i, hi⟩ := hz ()
-  exact hi (congrFun h0 _)
-
-theorem isSemipositiveRel_fs {κ : Type} [Fintype κ] (P0 P : Ideal (MRing (GlobalTheory κ))) :
-    IsSemipositiveRel P0 P (HermLine.ofCone (fsMetric (Ix κ))) := by
-  refine ⟨isSmoothHerm_fs κ, fun z hz w _ => ?_⟩
-  have hz0 : z ≠ 0 := by
-    intro h0
-    obtain ⟨i, hi⟩ := hz.1 ()
-    exact hi (congrFun h0 _)
-  exact leviForm_log_fs_nonneg hz0 w
-
-theorem isConjInvariantH_fs (κ : Type) [Fintype κ] : IsConjInvariantH (HermLine.ofCone (fsMetric (Ix κ))) :=
-  fun z => isConjInvariant_fs z
 
 end FS
 

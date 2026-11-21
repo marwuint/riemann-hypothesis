@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfE
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaTestFunctionRayAsymptoticStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RayNormAndModuleFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaTestFunctionRayAsymptotic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RayNormAndModuleFormula
 
 noncomputable section
 
@@ -19,7 +19,7 @@ theorem count : PositivityTheory.Rg.Mass.Equi → ∀ (F : Type) [Field F] [Numb
     ∀ (ι : Type) [Fintype ι] (K : Set (ι → Ainf F)), IsCompact K → ∃ B : ℝ≥0, ∀ᶠ ε : ℝ in 𝓝[>] 0,
       ENNReal.ofReal (ε ^ (Module.finrank ℚ F * Fintype.card ι)) * cnt θ ι K ε ≤ B := by
   intro hEq F _ _ hF θ hθ li lam hli hlam ι _ K hK
-  obtain ⟨_, _, _, _, -⟩ := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hF
+  obtain ⟨_, _, _, _, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hF
   have : BorelSpace (Ainf F) := ⟨rfl⟩
   haveI := hli.1
   obtain ⟨f, hf1, -, hfc, hf01⟩ := exists_continuous_one_zero_of_isCompact
@@ -66,7 +66,7 @@ def box (F : Type) [Field F] [NumberField F] (ι : Type) (ρ : ℝ) : Set (ι �
 theorem cnt_anti {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F) (θ : ℝ →+* Ainf F) (hθ : Continuous θ)
     (r : ℝ → (AF F)ˣ) (hr : IsRay θ r) (ι : Type) (ρ : ℝ) {δ ε : ℝ} (hδ : 0 < δ) (hδε : δ ≤ ε) :
     cnt θ ι (box F ι ρ) ε ≤ cnt θ ι (box F ι ρ) δ := by
-  have hn := (GlobalTheory.T.ray_norm_and_module_formula F hF θ hθ r hr).1
+  have hn := (_root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.MdRay.norm_md_ray F hF θ hθ r hr).1
   have hm : ∀ y : ι → F, (fun i => θ ε * algebraMap F (Ainf F) (y i)) ∈ box F ι ρ →
       (fun i => θ δ * algebraMap F (Ainf F) (y i)) ∈ box F ι ρ := fun y h i w => by
     have e : ∀ t : ℝ, ‖(θ t * algebraMap F (Ainf F) (y i)) w‖ = |t| * ‖algebraMap F (Ainf F) (y i) w‖ := fun t => by
@@ -87,7 +87,7 @@ theorem cnt_anti {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F) (θ
 
 theorem isCompact_box {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F) (ι : Type) (ρ : ℝ) :
     IsCompact (box F ι ρ) := by
-  obtain ⟨_, _, _, _, -⟩ := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hF
+  obtain ⟨_, _, _, _, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hF
   have e : box F ι ρ = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall 0 ρ := by
     ext x
     exact ⟨fun h i _ w _ => mem_closedBall_zero_iff.2 (h i w),
@@ -144,7 +144,7 @@ theorem Th_le {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (b 
 
 theorem unit_bound : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (J : Matrix (Fin 1) (Fin 1) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (li : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf li → (∀ v, IsStdV v (lam v)) → ∀ θ : ℝ →+* Ainf F, Continuous θ → ∀ r, IsRay θ r → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (φ : (Fin 1 → Fin 1 → Ainf F ⊗[F] E) → ℝ) (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)), IsTest σ J b S φ A → ∀ K : Set (AF F ⊗[F] E)ˣ, IsCompact K → ∀ ε₁ : ℝ, ∃ C : ℝ≥0, ∀ k ∈ K, ∀ ε : ℝ, 0 < ε → ε ≤ ε₁ → ENNReal.ofReal (ε ^ (2 * Module.finrank ℚ F)) * Th φ A (k * ofF (r ε)) ≤ C := by
   intro hEq F E _ _ _ _ _ σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT K hK ε₁
-  obtain ⟨N, ρ, hN, hbox⟩ := GlobalTheory.T.theta_test_function_ray_asymptotic F E σ hcm J hJ d b θ r hr S φ A hT K hK
+  obtain ⟨N, ρ, hN, hbox⟩ := _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.Box.unit_box F E σ hcm J hJ d b θ r hr S φ A hT K hK
   have hd : d = 2 := by
     have := Module.finrank_eq_card_basis b
     rw [hcm.2.2.1] at this

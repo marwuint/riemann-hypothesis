@@ -12,7 +12,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLa
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOrEqOfPlaceIdem
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsValuationOneElementAtGridPlaces
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedHomLatticeOfMemLatticeHomCosetStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedHomLatticeOfMemLatticeHomCoset
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HostIdealUnitAtPlacesPrimeToLevel
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SepRows GlobalTheory.Asc
 open scoped TensorProduct
@@ -212,7 +213,7 @@ theorem GlobalTheory.CosDep.cosVec_dep : All fun {D} _ _ _ {G} W _ => ∀ i, i <
     exact GlobalTheory.PlaceModelInj.placeModel_ne_zero D W.ψ _ _ _ _ e _ _ Tm W.ψ_std hS hT e1 he.2 hinf hTm hne hSB
       (GlobalTheory.CosDep.cosInd_ne_zero e1 κ)
   · exact GlobalTheory.CosDep.isLatVac_of_cos W.ψ_std hS hT he (G.pl.modul_ne_bot sc) κ
-      (fun t ht => GlobalTheory.T.mem_completedHomLattice_of_mem_latticeHomCoset hS he (GlobalTheory.AAUnit.exists_valuation_one_element_at_grid_places hoff hL G) κ ht) hv.lat h fun u hu => ⟨hu.1, hu.2 e he⟩
+      (fun t ht => _root_.GlobalTheory.CosLatHalf.mem_latO_of_mem_cosSet hS he (GlobalTheory.AAUnit.exists_valuation_one_element_at_grid_places hoff hL G) κ ht) hv.lat h fun u hu => ⟨hu.1, hu.2 e he⟩
   · exact GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt W.ψ_std.1.1 W.θ_is hinf
       (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).conj.infPart_eq h hv.theta
       (GlobalTheory.RowTheta.isThetaFunO_cosVec W i hi κ) (hv.fock τ)

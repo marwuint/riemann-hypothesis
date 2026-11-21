@@ -153,18 +153,6 @@ variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
   {μ : Measure V} {ν : Measure X} {f : V → Y} {ι : X → Y} {U : Set V}
   [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts μ]
 
-theorem tsupport_extZ (U : Set V) (φ : U → ℝ) (hs : HasCompactSupport φ) :
-    tsupport (extZ U φ) ⊆ Subtype.val '' tsupport φ := by
-  have hK : IsCompact (Subtype.val '' tsupport φ) := hs.image continuous_subtype_val
-  apply closure_minimal _ hK.isClosed
-  intro v hv
-  by_contra h
-  apply hv
-  by_cases hU : v ∈ U
-  · simp only [extZ, hU, dite_true]
-    exact image_eq_zero_of_notMem_tsupport (fun hm => h ⟨⟨v, hU⟩, hm, rfl⟩)
-  · simp [extZ, hU]
-
 def lam (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) : C_c(U, ℝ) →ₚ[ℝ] ℝ :=
   PositiveLinearMap.mk₀
     { toFun := fun ψ => G hD (extZ U ψ) b
@@ -185,118 +173,6 @@ theorem lam_apply (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) (ψ : C_c(
 
 variable [OpensMeasurableSpace V]
 
-def fibG (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) : Measure V :=
-  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
-  (RealRMK.rieszMeasure (lam hD hU b)).map Subtype.val
-
-def restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) : C_c(U, ℝ) where
-  toFun := fun u => φ u
-  continuous_toFun := h.1.comp continuous_subtype_val
-  hasCompactSupport' := by
-    have hsub : tsupport φ ⊆ Set.range (Subtype.val : U → V) := by
-      rw [Subtype.range_coe]; exact h.2.2
-    have hK : IsCompact ((Subtype.val : U → V) ⁻¹' tsupport φ) :=
-      (Topology.IsInducing.subtypeVal.isCompact_preimage_iff hsub).2 h.2.1
-    exact HasCompactSupport.intro' hK ((isClosed_tsupport φ).preimage continuous_subtype_val)
-      fun u hu => image_eq_zero_of_notMem_tsupport hu
-
-theorem extZ_restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) :
-    extZ U (restr hU φ h) = φ := by
-  funext v
-  by_cases hv : v ∈ U
-  · simp [extZ, hv, restr]
-  · simp only [extZ, hv, dite_false]
-    exact (image_eq_zero_of_notMem_tsupport fun hm => hv (h.2.2 hm)).symm
-
-theorem fibG_integral (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) (φ : V → ℝ)
-    (h : IsCcOn U φ) :
-    Integrable φ (fibG hD hU b) ∧ ∫ v, φ v ∂(fibG hD hU b) = G hD φ b := by
-  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
-  have hme : MeasurableEmbedding (Subtype.val : U → V) :=
-    MeasurableEmbedding.subtype_coe hU.measurableSet
-  have hint : Integrable (restr hU φ h) (RealRMK.rieszMeasure (lam hD hU b)) :=
-    (restr hU φ h).continuous.integrable_of_hasCompactSupport (restr hU φ h).hasCompactSupport
-  refine ⟨(hme.integrable_map_iff).2 hint, ?_⟩
-  rw [fibG, hme.integral_map]
-  have := RealRMK.integral_rieszMeasure (lam hD hU b) (restr hU φ h)
-  rw [lam_apply, extZ_restr] at this
-  exact this
-
-theorem fibG_supp (hD : DensAll μ f ι ν U) (hU : IsOpen U) (hf : Continuous f)
-    (hι : Continuous ι) (b : X) : fibG hD hU b (f ⁻¹' {ι b} ∩ U)ᶜ = 0 := by
-  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
-  have hme : MeasurableEmbedding (Subtype.val : U → V) :=
-    MeasurableEmbedding.subtype_coe hU.measurableSet
-  rw [fibG, hme.map_apply]
-  have hOeq : (Subtype.val : U → V) ⁻¹' (f ⁻¹' {ι b} ∩ U)ᶜ = (f ∘ Subtype.val) ⁻¹' {ι b}ᶜ := by
-    ext u; simp [u.2]
-  have hO : IsOpen ((f ∘ Subtype.val : U → Y) ⁻¹' {ι b}ᶜ) :=
-    isOpen_compl_singleton.preimage (hf.comp continuous_subtype_val)
-  rw [hOeq]
-  refine le_antisymm ?_ bot_le
-  rw [hO.measure_eq_iSup_isCompact]
-  refine iSup_le fun K => iSup_le fun hKO => iSup_le fun hK => ?_
-  obtain ⟨g, hg1, hgc, hgO, hg01⟩ := exists_continuousMap_one_of_isCompact_subset_isOpen hK hO hKO
-  let ψ : C_c(U, ℝ) := ⟨g, hgc⟩
-  have hle := RealRMK.rieszMeasure_le_of_eq_one (lam hD hU b) (f := ψ) (fun x => (hg01 x).1) hK
-    (fun x hx => hg1 hx)
-  refine hle.trans (le_of_eq ?_)
-  rw [lam_apply]
-  have hcc : IsCcOn U (extZ U ψ) := extZ_props hU ψ ψ.continuous ψ.hasCompactSupport
-  have hts := tsupport_extZ U ψ ψ.hasCompactSupport
-  have hCc : IsCompact (f '' tsupport (extZ U ψ)) := hcc.2.1.image hf
-  set N : Set X := (ι ⁻¹' (f '' tsupport (extZ U ψ)))ᶜ with hN
-  have hNo : IsOpen N := (hCc.isClosed.preimage hι).isOpen_compl
-  have hbN : b ∈ N := by
-    rintro ⟨v, hv, hfv⟩
-    obtain ⟨u, hu, rfl⟩ := hts hv
-    exact hgO hu hfv
-  have hz := DensGen.eq_zero_of_setIntegral (ν := ν) (G hD (extZ U ψ)) N b (hNo.mem_nhds hbN)
-    (G_spec hD hcc).1.continuousOn (fun S hS hSN => by
-      rw [← (G_spec hD hcc).2 S hS]
-      refine setIntegral_eq_zero_of_forall_eq_zero fun v hv => ?_
-      by_contra hne
-      obtain ⟨s, hs, hfs⟩ := hv
-      exact hSN hs ⟨v, subset_tsupport _ hne, hfs.symm⟩)
-  rw [hz, ENNReal.ofReal_zero]
-
 end Riesz
-
-def DisintStep : Prop :=
-  ∀ (V X Y : Type) [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] [LocallyCompactSpace V]
-    [T2Space V] [SecondCountableTopology V] [TopologicalSpace X] [MeasurableSpace X]
-    [BorelSpace X] [LocallyCompactSpace X] [T2Space X] [SecondCountableTopology X]
-    [TopologicalSpace Y] [T2Space Y] (μ : Measure V) (ν : Measure X),
-    IsFiniteMeasureOnCompacts μ → IsFiniteMeasureOnCompacts ν → ν.IsOpenPosMeasure →
-    ∀ (f : V → Y) (ι : X → Y) (U : Set V), Continuous f → IsClosedEmbedding ι →
-      (∀ v, f v ∈ Set.range ι) → IsOpen U → ∀ fib : X → Measure V,
-      (∀ b, fib b (f ⁻¹' {ι b} ∩ U)ᶜ = 0) →
-      (∀ b K, IsCompact K → K ⊆ U → fib b K < ⊤) →
-      (∀ φ : V → ℝ, IsCcOn U φ → (∀ b, Integrable φ (fib b)) ∧
-        Continuous (fun b => ∫ v, φ v ∂(fib b)) ∧
-        ∀ S : Set X, IsCompact S → ∫ v in f ⁻¹' (ι '' S), φ v ∂μ = ∫ b in S, ∫ v, φ v ∂(fib b) ∂ν) →
-      ∀ φ : V → ENNReal, Measurable φ → ∫⁻ v in U, φ v ∂μ = ∫⁻ b, ∫⁻ v, φ v ∂(fib b) ∂ν
-
-theorem fibOfDens_of (hDis : DisintStep) : FibOfDens := by
-  intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν hpos f ι U hf hι hr hU hD
-  refine ⟨fibG hD hU, fibG_supp hD hU hf hι.continuous, ?_, fun φ hc hs hsu => ?_⟩
-  · have hint : ∀ φ : V → ℝ, IsCcOn U φ → (fun b => ∫ v, φ v ∂(fibG hD hU b)) = G hD φ :=
-      fun φ h => funext fun b => (fibG_integral hD hU b φ h).2
-    refine hDis V X Y μ ν hμ hν hpos f ι U hf hι hr hU (fibG hD hU)
-      (fibG_supp hD hU hf hι.continuous) (fun b K hK hKU => ?_) (fun φ h => ?_)
-    · haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
-      have hme : MeasurableEmbedding (Subtype.val : U → V) :=
-        MeasurableEmbedding.subtype_coe hU.measurableSet
-      rw [fibG, hme.map_apply]
-      have hsub : K ⊆ Set.range (Subtype.val : U → V) := by rw [Subtype.range_coe]; exact hKU
-      exact ((Topology.IsInducing.subtypeVal.isCompact_preimage_iff hsub).2 hK).measure_lt_top
-    · refine ⟨fun b => (fibG_integral hD hU b φ h).1, ?_, fun S hS => ?_⟩
-      · rw [hint φ h]; exact (G_spec hD h).1
-      · rw [hint φ h]; exact (G_spec hD h).2 S hS
-  · have h : IsCcOn U φ := ⟨hc, hs, hsu⟩
-    refine ⟨fun b _ => (fibG_integral hD hU b φ h).1, ?_⟩
-    have : (fun b => ∫ v, φ v ∂(fibG hD hU b)) = G hD φ :=
-      funext fun b => (fibG_integral hD hU b φ h).2
-    rw [this]; exact (G_spec hD h).1.continuousOn
 
 end PI.VolStabW.Glue

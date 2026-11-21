@@ -81,8 +81,5 @@ end GlobalTheory.CM.ConjDatum
 
 namespace GlobalTheory.CM
 
-theorem exists_conjDatum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), ∃ (D' : Datum H) (e : D'.La ≃+ D.La), D'.p = D.q ∧ D'.q = D.p ∧ (∀ (s : 𝓞 E) a, e (s • a) = H.bar s • e a) ∧ ∀ a b, D'.EF a b = D.EF (e a) (e b) :=
-  fun _ _ _ _ _ D => ⟨ConjDatum.conj D, ConjDatum.toLat D, rfl, rfl, ConjDatum.toLat_smul D, fun _ _ => rfl⟩
-
 end GlobalTheory.CM
 end

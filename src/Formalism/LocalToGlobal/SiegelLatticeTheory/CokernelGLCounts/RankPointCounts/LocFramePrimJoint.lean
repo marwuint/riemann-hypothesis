@@ -9,11 +9,6 @@ open scoped TensorProduct Classical
 
 namespace ChkLocFramePrim
 
-example {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (w : D.what₂.Word) (v : PlX X) :
-    PI.LocFramePrim.IsPrim v (LamX X)
-      (PI.LocFramePrim.locF v (PI.LocFramePrim.ratTup (PI.LocFramePrim.Fv X.B.I.F v) (F0 (frameOf X w)))) ↔
-    IsPrim v (LamX X) (locF v (ratTup (Fv X.B.I.F v) (F0 (frameOf X w)))) := Iff.rfl
-
 theorem primX_of (hS : PI.LocFramePrim.Statement) {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (w : D.what₂.Word)
     (Lb : Submodule (𝓞 X.B.I.E) (Fin X.B.I.n → X.B.I.E))
     (hFG : X.B.I.L.FG)

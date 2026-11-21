@@ -1,5 +1,5 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SizeCount.Development
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SizeCount.BlockRowLe
+import Formalism.PeriodIntegrals.SzCt
 
 noncomputable section
 
@@ -7,8 +7,6 @@ open Formalism.BasicNotions Formalism.MainNotions.G
 open scoped BigOperators
 
 namespace PI.SzCt.UnitaryGroupMassFormula
-
-open PI.SzCt.W
 
 theorem five_le_k (D : D7) : 5 ≤ D.R.k := by
   have h1 := D.R.m_add_three_le_k

@@ -9,7 +9,6 @@ noncomputable section
 open MeasureTheory Complex
 open scoped Real RealInnerProductSpace ComplexConjugate FourierTransform SchwartzMap
 namespace GlobalTheory.RealWeil.SchurSchwartz
-variable {l : Type} [Fintype l]
 end GlobalTheory.RealWeil.SchurSchwartz
 namespace GlobalTheory.RealWeil.SchurSchwartz
 variable {l : Type} [Fintype l]

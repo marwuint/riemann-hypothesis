@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsPlaceCofact
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ModelsOK
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Cobdry
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualOm
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ServedPrimePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ServedPrimeProperties
+import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
 import Development.AutomorphicArithmetic.OrbitLabellings.NotIsCsOfGIdx
 
 noncomputable section

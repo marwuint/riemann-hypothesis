@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareZeroMoveTensorHolomorphicStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareZeroMoveTensorHolomorphic
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsTaylorExpansionOrderOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsPeriodHom
@@ -37,7 +37,7 @@ theorem baseChange_tensor_holomorphic_closeness {I : Type} [Fintype I] {g : ℕ}
   | head hs _ ih =>
     intro φ hφ hφd
     obtain ⟨n, hnJ, hn2, hn⟩ := hs
-    obtain ⟨φ', hφ'⟩ := GlobalTheory.T.exists_squareZero_move_tensor_holomorphic φ n hn2
+    obtain ⟨φ', hφ'⟩ := _root_.GlobalTheory.SqZeroMove.sqZeroMove φ n hn2
     refine Relation.ReflTransGen.head ⟨n, hnJ, hn2, fun h => ?_⟩ (ih φ' (fun h => ?_) (fun d => ?_))
     · rw [RingHom.comp_apply, hφ']
       congr 1

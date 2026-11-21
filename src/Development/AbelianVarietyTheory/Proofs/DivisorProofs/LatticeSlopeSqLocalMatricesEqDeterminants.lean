@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdelicOne
 import Formalism.LocalToGlobal.CMDeterminantIdeals.StatementG
 import Formalism.PolynomialDimension.WeylDim
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLatticeLatticeOfLocalMatrixFamily
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGramFrameEmbeddingMatrixNormOfVectorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGramFrameEmbeddingMatrixNormOfVector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeDeterminantLineTwoHermitianLattices
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaxSlopeSqLeOfNoShortVector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalBasisLatticeOfInverseAdelicMatrixFamiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramDeterminantSmulStandardBasisInverseFramesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramDeterminantSmulStandardBasisInverseFrames
 
 open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.DualWeyl GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.DefPt MvPolynomial
 open scoped Matrix
@@ -28,7 +28,7 @@ theorem det_gramPl [StarRing K] {ι : Type} [Fintype ι] [DecidableEq ι] {n : �
     (Formalism.HN.gramPl (Pi.basisFun K ι) (fun v => (Y v.embedding)⁻¹) v
       (fun k => t • (Pi.single (eqv.symm k) 1 : ι → K))).det.re =
       ‖v.embedding t‖ ^ (2 * n) * ‖(Y v.embedding).det‖ ^ 2 :=
-  GlobalTheory.T.gramDeterminant_smul_standardBasis_inverse_frames K ι n eqv Y hY t v
+  _root_.GlobalTheory.DefPt.det_gramPl_smul_single K ι n eqv Y hY t v
 
 theorem smul_single_mem {ι : Type} [Fintype ι] [DecidableEq ι] (A : HeightOneSpectrum (𝓞 K) → Matrix ι ι K)
     (d : 𝓞 K) (hd : ∀ w, IntAt w ((d : K) • A w)) (i : ι) : (d : K) • (Pi.single i 1 : ι → K) ∈ locLat A := by
@@ -165,7 +165,7 @@ theorem GlobalTheory.LocMatSlope.slope_sq_locLat : ∀ (K : Type) [Field K] [Num
   set n := Fintype.card ι with hn
   set eqv : ι ≃ Fin n := Fintype.equivFin ι with heqv
   have hL := GlobalTheory.LocMatLat.isLattice_locLat K ι A hA
-  have hG := (GlobalTheory.T.isGramFrame_embeddingMatrixNormOfVector K ι Y hY).1
+  have hG := (_root_.GlobalTheory.DefPt.isGram_matNorm K ι Y hY).1
   rw [slope_sq_eq hG hL.fg]
   obtain ⟨d, hd0, hd⟩ := GlobalTheory.LocMatLat.exists_denom A (hA.2.subset fun w hw h => hw h.1)
   have hdK : (d : K) ≠ 0 := by simpa using hd0

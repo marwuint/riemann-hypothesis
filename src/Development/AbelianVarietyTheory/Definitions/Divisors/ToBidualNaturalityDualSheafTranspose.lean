@@ -445,11 +445,6 @@ theorem IsVB.isIso_toBidual_of_local_frames (h : IsVB F r) : IsIso (cartierDualT
   simp only [he.toBidual_app]
   exact he.dual.dual
 
-variable (X) in
-
-def dualFreeIso (ι : Type) [Fintype ι] : freeModule X ι ≅ dual (freeModule X ι) :=
-  (isFrame_freeFrame X ι).iso (isFrame_freeFrame X ι).dual
-
 namespace IsFrame
 
 variable [DecidableEq ι] {U' U'' : X.Opens} {e : ι → Γ(F, U)} {e' : ι → Γ(F, U')}
@@ -770,18 +765,5 @@ def IsVB.isoDet (h : IsVB F 1) : F ≅ toMod (det F 1) :=
       rw [funext this]
       exact he.wedge h⟩
   asIso φ
-
-theorem IsFrame.cls_det_eq_zero {e : Fin r → Γ(F, ⊤)} (he : IsFrame e) (h : (det F r).IsLB) :
-    CechPic.cls _ h = 0 := by
-  have H := (lbIso_det_of_frames (LB.isLB_triv X) (fun _ => e) (fun _ => he)
-    (fun _ _ => (IsFrame.detUnit_self he _ _).symm)).2
-  exact ((CechPic.cls_eq_iff (LB.isLB_triv X) h).2 H).symm.trans rfl
-
-example {e : Fin 2 → Γ(F, U)} (he : IsFrame e) :
-    (he.detUnit (he.comp_equiv (Equiv.swap 0 1)) le_rfl le_rfl : Γ(X, U)) = -1 := by
-  rw [IsFrame.val_detUnit]
-  have := (he.basis le_rfl).det.map_swap (he.basis le_rfl) (i := 0) (j := 1) (by decide)
-  rw [Module.Basis.det_self, he.coe_basis] at this
-  exact this
 
 end GlobalTheory.VB

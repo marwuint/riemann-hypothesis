@@ -1,5 +1,13 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AutomorphicArithmetic.LocalEmbeddings.StageGeoPass
+import Mathlib
+import Development.AutomorphicArithmetic.LocalEmbeddings.StageGeoDefs
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareCommutationIntegralIdentity
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjUInvMemGfC
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchOfPolMatch
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjUMeasurableEmbedding
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaIntegralModerateGrowthOfBoundedKernel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaIntegralsAgreeOfIntegrableKernel
 
@@ -123,7 +131,7 @@ theorem GlobalTheory.StageGeo.geometric_stage_constant_on_pure_tensors :
   have hrel : Φ' - Φ₀ ∈ finRel ωB (algF ψ θ false A₁ B) :=
     GlobalTheory.SquareAgree.CoinvPass.isDatum_unique cB.surjective (GlobalTheory.SquareAgree.CoinvPass.isDatum_sub hψ hD' hD0) hDΨ ▸ hΨ
   obtain ⟨hbd, hconv, -⟩ := hDec.2 Φ₀D h0s
-  obtain ⟨N, C, hmod⟩ := GlobalTheory.T.theta_integral_moderate_growth_of_bounded_kernel D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hO hν₁ hT Φ₀ Φ₀D hD0
+  obtain ⟨N, C, hmod⟩ := _root_.GlobalTheory.ModGrowth.modInt_of_bound D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hO hν₁ hT Φ₀ Φ₀D hD0
     hconv (by
       obtain ⟨C, k, hC⟩ := hbd 0
       exact ⟨C, k, fun g h => by simpa using hC g h⟩)

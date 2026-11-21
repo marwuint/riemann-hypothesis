@@ -186,13 +186,4 @@ theorem normalised_theta_value_bound {E : Type} [Field E] [NumberField E] [IsCMF
   rw [norm_mul, norm_inv, div_le_iff₀ hs', inv_mul_le_iff₀ hb]
   exact key.trans_eq (by ring)
 
-example {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (T : PT E) :
-    (∀ y ∈ ({0} : Finset (Fin n → Vsp T.dim)), y ∈ tensorLat T (ReciprocityTheory.GeometryOfNumbersTheory.stdLat E n)) ∧
-      ∀ y ∈ tensorLat T (ReciprocityTheory.GeometryOfNumbersTheory.stdLat E n),
-        ∃! r, r ∈ ({0} : Finset (Fin n → Vsp T.dim)) ∧ ∀ k, y k - r k ∈ T.L := by
-  refine ⟨fun y hy => by rw [Finset.mem_singleton.1 hy]; exact Submodule.zero_mem _,
-    fun y hy => ⟨0, ⟨Finset.mem_singleton_self _, fun k => ?_⟩,
-      fun r hr => Finset.mem_singleton.1 hr.1⟩⟩
-  simpa using mem_tensorLat_stdLat.1 hy k
-
 end GlobalTheory

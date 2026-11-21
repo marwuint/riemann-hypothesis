@@ -5,9 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubs
 import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAffineCoverInfClosed
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenProductSectionsIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorAlgebraProductDiagramCompatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPullOneBijectiveLatticeCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenProductSectionsIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorAlgebraProductDiagramCompat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPullOneBijectiveLatticeCover
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.AbLaw GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.AbCoh
@@ -60,7 +61,7 @@ theorem cup_tmul_injective : ∀ (K : Type) [Field K] (X Y : Over (Sp K)), IsSep
   intro K _ X Y hXs hXq hYs hYq n x y hsum
   obtain ⟨J, _, _, U, hU, hUi, hUc⟩ := GlobalTheory.exists_finite_affine_cover_infClosed K X.left X.hom hXs hXq
   obtain ⟨J', _, _, V, hV, hVi, hVc⟩ := GlobalTheory.exists_finite_affine_cover_infClosed K Y.left Y.hom hYs hYq
-  choose Wf h1 h2 i1 i2 hWe hi1 hi2 hbij using fun p : J × J' ↦ GlobalTheory.T.exists_affine_open_product_sections_iso K X Y (U p.1) (V p.2)
+  choose Wf h1 h2 i1 i2 hWe hi1 hi2 hbij using fun p : J × J' ↦ _root_.GlobalTheory.functions_on_product_of_affine_opens K X Y (U p.1) (V p.2)
   have hWm : Monotone Wf := fun p q hpq ↦ by
     show (Wf p).1 ≤ (Wf q).1
     rw [hWe p, hWe q]
@@ -111,8 +112,8 @@ theorem cup_tmul_injective : ∀ (K : Type) [Field K] (X Y : Over (Sp K)), IsSep
       (CoefMap.pullCohomologyOne_comp rV n₂ a)
     refine (congrArg ((rV.comp n₂).α T) (mp_id (OAff Y.hom) _ b)).trans ?_
     exact hi2 (T.1.unop, T.2.unop) b
-  have hbU : Function.Bijective rU.pull1 := GlobalTheory.T.cech_pull_one_bijective_lattice_cover K X.left X.hom J U hU hUi hUc
-  have hbV : Function.Bijective rV.pull1 := GlobalTheory.T.cech_pull_one_bijective_lattice_cover K Y.left Y.hom J' V hV hVi hVc
+  have hbU : Function.Bijective rU.pull1 := _root_.GlobalTheory.CoverO.restrict_bijective K X.left X.hom J U hU hUi hUc
+  have hbV : Function.Bijective rV.pull1 := _root_.GlobalTheory.CoverO.restrict_bijective K Y.left Y.hom J' V hV hVi hVc
   choose x' hx' using fun i ↦ H1.mk_surjective F (rU.pull1 (x i))
   choose y' hy' using fun i ↦ H1.mk_surjective G (rV.pull1 (y i))
   have hz : H2.mk E (∑ i, cupZ E (n₁.pullbackOneCocycle (x' i)) (n₂.pullbackOneCocycle (y' i))) = 0 := by
@@ -123,7 +124,7 @@ theorem cup_tmul_injective : ∀ (K : Type) [Field K] (X Y : Over (Sp K)), IsSep
     rw [CoefMap.pullCohomologyTwo_cup, key₁, key₂, ← hx', ← hy']
     rfl
   obtain ⟨f, hf⟩ := H2.mk_eq_zero.1 hz
-  have e := GlobalTheory.T.tensor_algebra_product_diagram_compat K Jᵒᵖ J'ᵒᵖ F G E j₁ j₂ nat₁ nat₂ (fun T ↦ hbij (T.1.unop, T.2.unop)) n x' y' f
+  have e := _root_.GlobalTheory.CatCoh.KunnethOne.sum_tmul_eq_zero_of_cup K Jᵒᵖ J'ᵒᵖ F G E j₁ j₂ nat₁ nat₂ (fun T ↦ hbij (T.1.unop, T.2.unop)) n x' y' f
     (fun T T' T'' a b ↦ by
       rw [hf]
       simp only [Submodule.coe_sum, Finset.sum_apply]

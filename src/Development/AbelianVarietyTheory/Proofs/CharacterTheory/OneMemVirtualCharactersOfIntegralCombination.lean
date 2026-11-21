@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIntRelationOfIsIntegralRelationStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharacterInnerEqIntMulCardStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIntRelationOfIsIntegralRelation
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharacterInnerEqIntMulCard
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
@@ -10,14 +10,14 @@ theorem one_mem_of_integral_combination : ∀ (G : Type) [Group G] [Finite G] (S
   intro G _ _ S hS ι _ r s hr hs hsum
   classical
   have := Fintype.ofFinite G
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_int_relation_of_isIntegral_relation ι r hr
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CuspGL.exists_int_retraction_of_isIntegral ι r hr
   have hone : (1 : G → ℂ) ∈ Virt ℂ ℂ G := AddSubgroup.subset_closure (isChar_one ℂ ℂ G)
   have hcomb : (∑ i, c i • s i) ∈ S := S.sum_mem fun i _ => S.zsmul_mem (hs i) (c i)
   set f : G → ℂ := (∑ i, c i • s i) - 1 with hf
   have hfV : f ∈ Virt ℂ ℂ G := (Virt ℂ ℂ G).sub_mem (hS hcomb) hone
   have hN : (Nat.card G : ℂ) ≠ 0 := by exact_mod_cast (Nat.card_pos (α := G)).ne'
-  choose m hm using fun i => GlobalTheory.T.virtualCharacter_inner_eq_int_mul_card G (s i) f (hS (hs i)) hfV
-  obtain ⟨d, hd⟩ := GlobalTheory.T.virtualCharacter_inner_eq_int_mul_card G 1 f hone hfV
+  choose m hm using fun i => _root_.GlobalTheory.BI.finsum_mul_star_virt_int G (s i) f (hS (hs i)) hfV
+  obtain ⟨d, hd⟩ := _root_.GlobalTheory.BI.finsum_mul_star_virt_int G 1 f hone hfV
   simp only [finsum_eq_sum_of_fintype] at hm hd
   have h1 : ∑ i, r i * (m i : ℂ) = d := by
     apply mul_right_cancel₀ hN

@@ -5,7 +5,7 @@ import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.CardCohomology
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.ApplySubrepresentationCongr
 import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.ToFunEqZeroOfForallIsCyclic
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseFixed
-import Development.WeilBound.CoreStatements.PublishedTheorems.GlobalEulerCharacteristic.IsTotallyComplexOfOdd
+import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.GlobalEulerFormulaInf
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global
 
@@ -25,10 +25,5 @@ instance isDiscreteRep_resTo {K : FiniteSubfield} (S : Set (HeightOneSpectrum (�
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] :
     IsDiscreteRep (resTo S K' hK' M) :=
   isDiscreteRep_res_gsBaseChange_symm S hK' _
-
-theorem isTotallyComplex_of_odd (L' L : FiniteSubfield) [Fact (L' ≤ L)]
-    (hodd : Odd (Module.finrank L'.1 L.1)) (htc : NumberField.IsTotallyComplex L.1) :
-    NumberField.IsTotallyComplex L'.1 :=
-  TotallyComplexOfOdd.isTotallyComplex_of_odd L' L hodd htc
 
 end PositivityTheory.Lit1.GEN.W_killed_a

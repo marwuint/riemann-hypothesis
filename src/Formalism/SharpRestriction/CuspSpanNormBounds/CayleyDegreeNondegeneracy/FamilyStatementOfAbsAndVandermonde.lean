@@ -140,15 +140,6 @@ theorem degree_ratio_one_of_vandermonde (D : D7) (large₂ : SizeData₂ D) (C' 
   rw [h hH τ w w' hTT θ hθ W hW lam' hl A hA I s hs A' hA', one_mul, Real.rpow_natCast, ← deg_cast_r]
   exact (deg_set_bound' hA.1 I s hs hA'.1).2
 
-section Fam
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-def deg_VandLineF (Cg cb Cu cT CT C0 C1 : ℝ) : Prop :=
-  ∀ Cn : ℝ, OwnEv Fm fun C' Cl x i => deg_VandLine (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 Cn C1
-
-end Fam
-
 end Formalism.MainNotions.BridgeLemma₂
 
 end

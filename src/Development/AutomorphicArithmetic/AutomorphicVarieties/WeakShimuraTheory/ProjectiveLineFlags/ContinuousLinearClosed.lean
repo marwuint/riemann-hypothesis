@@ -1,10 +1,5 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.ProjectiveLineFlags.PsPair
 
-section
-open IsLocalRing Matrix Polynomial UpperTheory.V.W
-
-end
-
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 private theorem eq_zero_of_smul_mul_eq_mul_of_isNilpotent_constantCoeff {K : Type} [Field K] {n : ℕ} (A Y : Matrix (Fin n) (Fin n) (PowerSeries K)) (e c : PowerSeries K)

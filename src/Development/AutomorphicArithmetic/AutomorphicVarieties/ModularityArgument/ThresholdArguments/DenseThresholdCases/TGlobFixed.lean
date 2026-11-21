@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.DiscreteSeriesCoefficientsCuspidal
+import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.GlobFixed
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AutomorphicFormHyp
 
@@ -8,7 +8,6 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Filter Topology Matrix
 namespace UpperTheory.V.Af.GlobalFixedVectors
-variable {F : Type} [Field F] [NumberField F] {n M : ℕ}
 end UpperTheory.V.Af.GlobalFixedVectors
 open UpperTheory.V.Af UpperTheory.V.Af.GlobalFixedVectors in
 theorem UpperTheory.V.Af.globFixed_alt :

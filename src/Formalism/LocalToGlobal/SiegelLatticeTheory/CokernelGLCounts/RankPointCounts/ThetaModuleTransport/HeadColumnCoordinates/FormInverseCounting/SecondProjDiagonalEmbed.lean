@@ -47,10 +47,6 @@ theorem secondProj_diagonalEmbed (hs : M.split = some g) (c : 𝒪[F]) : ph2 g (
   rw [AlgEquiv.commutes]
   rfl
 
-theorem sum_comm3 {n : Type} [Fintype n] (a b : n → F) (c : F) :
-    ∑ x, a x * b x * c = ∑ x, c * b x * a x := by
-  exact Finset.sum_congr rfl fun x _ => by ring
-
 theorem uV_llMap (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (Z : M.Mat (r + 1)) (TT : M.R) (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T')
     (hTT : g.e (TT : E) = (T, T')) (m : Fin (r + 1) → M.R) :

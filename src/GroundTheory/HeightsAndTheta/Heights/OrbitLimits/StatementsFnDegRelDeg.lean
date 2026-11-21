@@ -20,12 +20,6 @@ def FnDegRelDeg.Statement : Prop :=
       haveI := hP'.isPrime
       ReciprocityTheory.ChartRestriction.G.AI.I1.fnDeg v P' i' = relDeg ⟨κ, hκv.1⟩ P'
 
-section Inhabitants
-
-def firstFactor : (Σ _ : Unit, Fin 2) → (Σ _ : Fin 2, Fin 2) := fun p => ⟨0, p.2⟩
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.Targets

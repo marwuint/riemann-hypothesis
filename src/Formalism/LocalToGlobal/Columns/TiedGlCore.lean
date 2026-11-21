@@ -98,18 +98,6 @@ theorem gco_fr_lat (hT : v ∉ plUnder F ST) (x : Fin n → v.adicCompletion F) 
     · show (spl (spl.symm (x b, 0))).1 = x b
       rw [RingEquiv.apply_symm_apply]
 
-theorem gco_chi_unit (H : Subgroup (GLG E n SG)) (lam : H →* ℂˣ) (x : levU hc n ST SG H) :
-    ‖((levTyp lam x : ℂˣ) : ℂ)‖ = 1 := by
-  have hfin : Finite (GLG E n SG) := inferInstance
-  have hfo : IsOfFinOrder (levRed hc n ST SG H x) := isOfFinOrder_of_finite _
-  obtain ⟨N, hN, hpow⟩ := hfo.exists_pow_eq_one
-  have h1 : (levTyp lam x) ^ N = 1 := by
-    show ((lam (levRed hc n ST SG H x))⁻¹) ^ N = 1
-    rw [inv_pow, ← map_pow, hpow, map_one, inv_one]
-  have h2 : ((levTyp lam x : ℂˣ) : ℂ) ^ N = 1 := by
-    rw [← Units.val_pow_eq_pow_val, h1, Units.val_one]
-  exact Complex.norm_eq_one_of_pow_eq_one h2 hN.ne'
-
 end Core
 
 end Formalism.L2.Col

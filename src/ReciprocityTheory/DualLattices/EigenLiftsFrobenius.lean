@@ -40,14 +40,6 @@ lemma coefX_int (D : Lifts H U X) (hdet : (valM D).det ≠ 0)
   rw [coefX, hfv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet),
     Matrix.one_mulVec]
 
-lemma coefX_add (D : Lifts H U X) (f f' : Nb p g → C) :
-    coefX D (f + f') = coefX D f + coefX D f' := by
-  simp only [coefX, Matrix.mulVec_add]
-
-lemma coefX_smul (D : Lifts H U X) (c : C) (f : Nb p g → C) :
-    coefX D (c • f) = c • coefX D f := by
-  simp only [coefX, Matrix.mulVec_smul]
-
 lemma xL_pow_mem (D : Lifts H U X) (hp : 2 ≤ p) (j : Ix g) :
     (fun y => xL D j y ^ p) ∈ sqIdeal (augIdeal H.AA.carrier) := by
   have hx : xL D j ∈ augIdeal H.AA.carrier := D.x_mem j

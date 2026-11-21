@@ -7,8 +7,8 @@ import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMatrixOfIsLattice
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOneTmulMem
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompletedLatticeIntegralityFactsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAdelicUnitarySplitPlaceComponentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompletedLatticeIntegralityFacts
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAdelicUnitarySplitPlaceComponent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemHyperspecialOfSplitPlaceStabilizerStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotentsStatement
 
@@ -102,7 +102,7 @@ theorem change_unif {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E))
     have : ϖ = 0 := by exact_mod_cast h
     exact h2 (this ▸ zero_mem _)
   refine ⟨fun i => finPart D e * finPart D (incA D ((ϖ' : D.host.E) ^ k i / (ϖ : D.host.E) ^ k i)) * z i,
-    fun i => GlobalTheory.SplitLatBasis.mul_mem_intAE D ((GlobalTheory.T.completedLattice_integrality V).2.1 P e ϖ ϖ' he h1 h2 h1' h2' (k i)) (hz i), ?_⟩
+    fun i => GlobalTheory.SplitLatBasis.mul_mem_intAE D ((_root_.GlobalTheory.LatIntFacts.int_facts V).2.1 P e ϖ ϖ' he h1 h2 h1' h2' (k i)) (hz i), ?_⟩
   funext i
   have e1 : finPart D (incA D ((ϖ' : D.host.E) ^ k i)) = finPart D (incA D ((ϖ : D.host.E) ^ k i)) *
       finPart D (incA D ((ϖ' : D.host.E) ^ k i / (ϖ : D.host.E) ^ k i)) := by
@@ -117,14 +117,14 @@ theorem split_label : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.ho
   obtain ⟨-, B, hB1, hB2, hB3, hB4⟩ := hd
   obtain ⟨-, B', hB1', hB2', hB3', hB4'⟩ := hd'
   have hε : finPart D e * finPart D e = finPart D e := by rw [← map_mul, he.1.1]
-  obtain ⟨C, hBC, hCB⟩ := (GlobalTheory.T.completedLattice_integrality V).2.2 _ B hε fun y hy => (hB2 y hy).imp fun _ h => h.2
-  obtain ⟨C', hBC', hCB'⟩ := (GlobalTheory.T.completedLattice_integrality V).2.2 _ B' hε fun y hy => (hB2' y hy).imp fun _ h => h.2
+  obtain ⟨C, hBC, hCB⟩ := (_root_.GlobalTheory.LatIntFacts.int_facts V).2.2 _ B hε fun y hy => (hB2 y hy).imp fun _ h => h.2
+  obtain ⟨C', hBC', hCB'⟩ := (_root_.GlobalTheory.LatIntFacts.int_facts V).2.2 _ B' hε fun y hy => (hB2' y hy).imp fun _ h => h.2
   have hinv : finPart D e • ((B' * C) * (B * C')) = finPart D e • (1 : Matrix (Fin V.rank) (Fin V.rank) _) := by
     have := smul_mul_congr_right _ (smul_mul_congr_left _ hCB C') B'
     rw [Matrix.one_mul, hBC'] at this
     rw [← this]
     simp only [Matrix.mul_assoc]
-  obtain ⟨a, haS, ha⟩ := GlobalTheory.T.exists_adelic_unitary_split_place_component V e he.1 _ _ hinv
+  obtain ⟨a, haS, ha⟩ := _root_.GlobalTheory.SplitLift.split_lift V e he.1 _ _ hinv
   have hAB : finPart D e • (finMat D.sp.cm.sig V.gram a * B) = finPart D e • B' := by
     rw [smul_mul_congr_left _ ha B, Matrix.mul_assoc, smul_mul_congr_right _ hCB B', Matrix.mul_one]
   have hs := stab_of_bases (finPart D e) hε {y | y ∈ LamHat V} {z | IntVec z} hAB
@@ -142,7 +142,7 @@ theorem split_label : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.ho
     (fun i => finPart D (incA D ((ϖ : D.host.E) ^ d.getD i.1 0)))
     (fun i => finPart D (incA D ((ϖ' : D.host.E) ^ d.getD i.1 0))) hAB hN
     (Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_mul _ _ (a * α)⁻¹ α')
-    (fun y hy => (GlobalTheory.T.completedLattice_integrality V).1 _ (GlobalTheory.AdIdem.idempotent_mem_intAE D _ hε) y hy)
+    (fun y hy => (_root_.GlobalTheory.LatIntFacts.int_facts V).1 _ (GlobalTheory.AdIdem.idempotent_mem_intAE D _ hε) y hy)
     (fun z hz => change_unif V P e ϖ ϖ' _ he h1 h2 h1' h2' z hz)
     (fun z hz => change_unif V P e ϖ' ϖ _ he h1' h2' h1 h2 z hz)
     (fun y hy => hB3 y hy) (fun z hz => hB4 z hz) (fun y hy => hB3' y hy) (fun z hz => hB4' z hz)

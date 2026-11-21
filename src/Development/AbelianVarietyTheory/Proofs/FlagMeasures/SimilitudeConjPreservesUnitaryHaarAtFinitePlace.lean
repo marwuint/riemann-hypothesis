@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnitaryG
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalUnitaryGroupTuplesTopologicalFacts
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardFrameGramDetNeZero
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFlagDualBasis
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsHaarFrameStabiliserCompatibleFibreStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramMapFibreMeasureUnitriangularInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsHaarFrameStabiliserCompatibleFibre
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramMapFibreMeasureUnitriangularInvariant
 
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures
 open scoped TensorProduct ENNReal
@@ -267,7 +267,7 @@ theorem conj_preserves_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field 
     GlobalTheory.LocalUnitaryUnimod.unimodularOver_adicCompletion F E σ hCM n J hJ v
   haveI := hμG
   haveI := hright μG hμG
-  obtain ⟨μ1, hμ1, -, hw⟩ := GlobalTheory.T.exists_haar_frameStabiliser_compatible_fibre F E σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μG hμG
+  obtain ⟨μ1, hμ1, -, hw⟩ := _root_.GlobalTheory.LocalStabiliserHaar.exists_haar_stabiliser F E σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μG hμG
   set x0 := ratTup (F := F) (Fv F v) (F0 P) with hx0def
   set S := hermOf (Fv F v) σ (gramE σ J (F0 P)) hT with hS
   have hgram : gramR (Fv F v) σ J x0 = (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E)) :=
@@ -286,7 +286,7 @@ theorem conj_preserves_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field 
       (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E)) * u =
       (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E)) := by
     rw [← hgram, ← gramR_mv, ← hsu, gramR_smul]
-  have hfu := GlobalTheory.T.gramMap_fibreMeasure_unitriangular_invariant F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib S u hu1 hu2 hg
+  have hfu := _root_.GlobalTheory.FibreUnitri.fibre_unitri_invariant F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib S u hu1 hu2 hg
   have hdet : IsUnit u.det := by
     rw [det_unitriangular u hu1 hu2]
     exact isUnit_one

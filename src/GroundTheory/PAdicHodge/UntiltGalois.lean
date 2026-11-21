@@ -85,19 +85,6 @@ theorem algebraMap_integerTiltHom (N : IntermediateField K♭ C♭) (σ : N →�
   (Exists.choose_spec (p := fun a' => a' ∈ integerTilt K C p N ∧
       algebraMap 𝒪C♭ C♭ a' = ((σ ⟨algebraMap 𝒪C♭ C♭ a, a.2⟩ : N) : C♭)) _).2
 
-theorem integerTiltHom_comp (N : IntermediateField K♭ C♭) (σ τ : N →ₐ[K♭] N)
-    (hσ : ∀ x : N, ‖((σ x : N) : C♭)‖ = ‖(x : C♭)‖)
-    (hτ : ∀ x : N, ‖((τ x : N) : C♭)‖ = ‖(x : C♭)‖)
-    (hστ : ∀ x : N, ‖(((σ.comp τ) x : N) : C♭)‖ = ‖(x : C♭)‖) :
-    integerTiltHom N (σ.comp τ) hστ = (integerTiltHom N σ hσ).comp (integerTiltHom N τ hτ) := by
-  ext a
-  apply IsFractionRing.injective 𝒪C♭ C♭
-  rw [algebraMap_integerTiltHom, RingHom.comp_apply, algebraMap_integerTiltHom]
-  have : (⟨algebraMap 𝒪C♭ C♭ (integerTiltHom N τ hτ a : 𝒪C♭), (integerTiltHom N τ hτ a).2⟩ :
-      N) = τ ⟨algebraMap 𝒪C♭ C♭ a, a.2⟩ := Subtype.ext (algebraMap_integerTiltHom N τ hτ a)
-  rw [this]
-  rfl
-
 theorem integerTiltHom_id (N : IntermediateField K♭ C♭)
     (h : ∀ x : N, ‖(((AlgHom.id K♭ N) x : N) : C♭)‖ = ‖(x : C♭)‖) :
     integerTiltHom (p := p) N (AlgHom.id K♭ N) h = RingHom.id _ := by

@@ -12,8 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactAvera
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddHsConjLe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSmoothAutomorphicFunctionTranslateAtRealPlace
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsSmoothAutomorphicFunctionCompactFamilyAverageStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsCompactFiniteApproxIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.RankOneOperatorMemOfTranslationAverageClosedStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsCompactFiniteApproxIdentity
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobNorm
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.RankOneOperatorMemOfTranslationAverageClosed
 
 noncomputable section
 
@@ -219,7 +220,7 @@ theorem exists_rank_one (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ 
     ⟨_, GlobalTheory.Mem.RealTranslate.isAutFunSm_rTr_atTau D θ hθ V φ hφ τ _ (conj_inv_mem hP hJ hg),
       fun x S v ℓ C hS _ h => h.translate hσ.1 hS hg fun y hy => by
         simp only [res, rTr, at_mul hθ hP hJ hy hg, mul_assoc x]⟩
-  refine GlobalTheory.T.rankOneOperator_mem_of_translation_average_closed _ ε H σ hσ (Acts θ V τ ε σ P) htr (fun T T' hT hT' => ⟨fun φ hφ => ?_, fun φ hφ => ?_⟩) hsmul
+  refine _root_.GlobalTheory.TypeSum.rank_one_mem_of_closed _ ε H σ hσ (Acts θ V τ ε σ P) htr (fun T T' hT hT' => ⟨fun φ hφ => ?_, fun φ hφ => ?_⟩) hsmul
     (fun e he φ hφ => ⟨_, GlobalTheory.T.isSmoothAutomorphicFunction_compactFamily_average D θ hθ V τ (KG ε) (muK ε) _ continuous_conjK
       (fun k => conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))) e
       (by obtain ⟨F, -, h1, h2, -⟩ := he; exact h2 _ h1) φ hφ, moves_avg hθ hP hJ hσ he φ⟩) ?_ e he
@@ -306,7 +307,7 @@ theorem hasTypeAt_of_isTypeAt : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.hos
   have hk : Continuous fun k : KG ε => atTau θ V τ (P⁻¹ * toMK k * P) :=
     (continuousOn_atTau hθ V τ).comp_continuous continuous_conjK
       fun k => conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))
-  obtain ⟨e, he, hap⟩ := GlobalTheory.T.exists_compactFinite_approxIdentity _ ε (GA D V) (fun x k => φ (x * atTau θ V τ (P⁻¹ * toMK k * P)))
+  obtain ⟨e, he, hap⟩ := _root_.GlobalTheory.KFinApprox.approx_identity _ ε (GA D V) (fun x k => φ (x * atTau θ V τ (P⁻¹ * toMK k * P)))
     (hφ.cont.comp (continuous_fst.mul (hk.comp continuous_snd))) K hK δ hδ
   obtain ⟨m, a, c, ha, hQ, hA⟩ := exists_rank_one hθ hP hJ hσ he
   choose T hT hTv using fun j => exists_gkMap hθ hP hJ hσ hφ hW hc h (hA j)

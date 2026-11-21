@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlESymmApply
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClassLatticeSupPrimeDualLocalizationEqStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClassLatticeSupPrimeDualLocalizationEq
 
 open Formalism.BasicNotions Formalism.L2.Forms Formalism.UG Formalism.L2.GlobalTheoryTheory.LocalLatticeBases NumberField IsDedekindDomain Matrix GlobalTheory.LevelHecke
 open scoped TensorProduct
@@ -47,7 +47,7 @@ theorem up_move_incidence : ∀ (D : D7) (u : D.what₂.Word) (A : AtTTied u) (i
   refine ⟨fun y => ?_, (((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • z.1, ?_, ?_⟩
   · rw [Pr.mem_act]
     have h5 := pc_isKer P K v c' ((glE γ).symm y)
-    rw [GlobalTheory.T.classLattice_sup_primeDual_localization_eq D u A i hi K v c', ← mem_loc_map_equiv, map_glE, h2] at h5
+    rw [_root_.GlobalTheory.LevelHecke.loc_lk_eq_loc_cls D u A i hi K v c', ← mem_loc_map_equiv, map_glE, h2] at h5
     exact h5
   · refine act_pairOf_value (A.res v) (glE γ) _ _ (P.pr v c) (P.pr v c') _ _ (P.pr_smul v c) (P.pr_smul v c')
       _ z _ he h1 ?_ h4

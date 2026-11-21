@@ -2,13 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingY
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ModelsOK
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConstructedPointClassesEventuallyWorking
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleAdelicPointStepZeroStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleAdelicPointStepSuccStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroPointMemDoubleCosetClassRepStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SuccStepPointMemDoubleCosetClassRepStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroKernelLatticeEqPointKernelLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SuccStepKernelLatticeEqPointKernelLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleDetEqAdelicPointDetStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleAdelicPointStepZero
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.LocSpBot
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleAdelicPointStepSucc
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroPointMemDoubleCosetClassRep
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SuccStepPointMemDoubleCosetClassRep
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepZeroKernelLatticeEqPointKernelLattice
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SuccStepKernelLatticeEqPointKernelLattice
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleDetEqAdelicPointDet
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.Ker Formalism.L2.G.Pend Formalism.L2.KerInert GlobalTheory.TwV
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -18,8 +19,8 @@ theorem GlobalTheory.TwV.joint_dict : ∀ {D : D7} {L : SizeData₂ D} {hT : Gat
   intro j hj La hLa
   cases j with
   | zero =>
-    have hp := (GlobalTheory.T.lattice_tuple_adelic_point_step_zero t std J La).1
-    exact ⟨hp, GlobalTheory.T.stepZero_point_mem_doubleCoset_classRep t std J La hLa, GlobalTheory.T.stepZero_kernelLattice_eq_pointKernelLattice t std J La, GlobalTheory.T.lattice_tuple_det_eq_adelic_point_det t std J 0 hj La _ hp⟩
+    have hp := (_root_.GlobalTheory.TwV.Joint.isPt_pt_zero t std J La).1
+    exact ⟨hp, _root_.GlobalTheory.TwV.Joint.pt_zero_eq_rat_mul_rep_mul t std J La hLa, _root_.GlobalTheory.kerN_zero_eq_latK_pt t std J La, _root_.GlobalTheory.joint_dt_eq_det_of_isPt t std J 0 hj La _ hp⟩
   | succ j =>
-    have hp := (GlobalTheory.T.lattice_tuple_adelic_point_step_succ t std J j hj La).1
-    exact ⟨hp, GlobalTheory.T.succStep_point_mem_doubleCoset_classRep t std J j hj La hLa, GlobalTheory.T.succStep_kernelLattice_eq_pointKernelLattice t std J j hj La hLa, GlobalTheory.T.lattice_tuple_det_eq_adelic_point_det t std J (j + 1) hj La _ hp⟩
+    have hp := (_root_.GlobalTheory.TwV.Joint.pt_succ_isPt t std J j hj La).1
+    exact ⟨hp, _root_.GlobalTheory.TwV.Joint.pt_succ_coset t std J j hj La hLa, _root_.GlobalTheory.TwV.Joint.kerN_succ_heq t std J j hj La hLa, _root_.GlobalTheory.joint_dt_eq_det_of_isPt t std J (j + 1) hj La _ hp⟩

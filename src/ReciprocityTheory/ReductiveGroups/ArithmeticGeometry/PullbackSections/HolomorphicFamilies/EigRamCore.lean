@@ -31,19 +31,6 @@ private theorem smul_mulVec_lemma {S : Type} [CommRing S] {m : ℕ} (e : S)
   show e * A i j * v j = e * (A i j * v j)
   ring
 
-theorem actD_mulVec_eig (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k)
-    (v : Fin d → k) (hv : ∀ a, (M a).mulVec v = χ a • v) : (actD M b c).mulVec v = evD χ b c • v := by
-  have key : ∀ s : Finset (Fin n),
-      (∑ i ∈ s, c i • M (b i)).mulVec v = ∑ i ∈ s, (c i * χ (b i)) • v := by
-    intro s
-    refine Finset.induction_on s ?_ ?_
-    · simp
-    · intro j s hj ih
-      rw [Finset.sum_insert hj, Finset.sum_insert hj, Matrix.add_mulVec, ih,
-        smul_mulVec_lemma, hv, smul_smul]
-  unfold actD evD
-  rw [key, Finset.sum_smul]
-
 theorem eig_actD (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k)
     (h : IsEqv χ b c) (a : O) : M a * actD M b c = χ a • actD M b c := by
   obtain ⟨m, hm1, hm2⟩ := h a

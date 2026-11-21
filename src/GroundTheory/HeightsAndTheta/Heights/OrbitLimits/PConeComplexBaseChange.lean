@@ -1,7 +1,12 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsConeComplexBaseChange
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivPushA
+import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsArith
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.IsIntersectionFamily
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.IntToRat
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeCB
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -43,42 +48,5 @@ theorem dim_cancel_one {d : WithBot ℕ∞} {N : ℕ} (h : d + 1 = ((N + 1 : ℕ
   · push_cast; rw [add_comm]
 
 end ConeComplexBaseChange
-
-open ConeComplexBaseChange in
-
-theorem ConeComplexBaseChange.proof : ConeComplexBaseChange.Statement := by
-  intro K _ ι _ P n s W' Wa hV hs hW hWh hWa
-  obtain ⟨-, ⟨hPp, -, -⟩, hPh, hdim⟩ := hV
-  have hP' : ∀ m : ℤ, (C m : MRing ι) ∈ P → m = 0 := fun m hm => by
-    have : m ∈ P.comap (C : ℤ →+* MRing ι) := hm
-    rw [hPh] at this
-    exact this
-  obtain ⟨hQp, -, hQdim⟩ := ReciprocityTheory.AnForm.R.extQ_spec P hP'
-  have hmapP : P.map (MvPolynomial.map (Int.castRingHom ℂ)) =
-      (ReciprocityTheory.AnForm.R.extQ P).map (MvPolynomial.map (algebraMap ℚ ℂ)) := by
-    rw [map_int_complex_eq, ← Ideal.map_map]; rfl
-  have : W'.IsPrime := hW.1.1.1
-  refine ⟨?_, fun Q hQ => ⟨?_, ?_⟩, ?_⟩
-  · rw [hmapP]
-    exact ReciprocityTheory.AnForm.R.BaseChangeC.isRadical_map _
-  · have hQ' := hQ
-    rw [hmapP] at hQ'
-    rw [ReciprocityTheory.AnForm.R.BaseChangeC.ringKrullDim_of_mem_minimalPrimes_map _ Q hQ']
-    rw [hdim, show n + 2 + Fintype.card K = (n + Fintype.card K + 1) + 1 by omega] at hQdim
-    exact dim_cancel_one hQdim
-  · intro hsQ
-    apply hs
-    rw [← comap_of_minimal P hPh Q hQ]
-    exact hsQ
-  · have hco : Wa.comap (MvPolynomial.map (Int.castRingHom ℂ)) = W' := comap_of_minimal W' hWh Wa hWa
-    have hPW : P ⊔ Ideal.span {s} ≤ W' := hW.1.1.2
-    refine ⟨⟨hWa.1.1, le_trans (Ideal.map_mono hPW) hWa.1.2⟩, ?_⟩
-    rintro Q' ⟨hQ'p, hQ'le⟩ hQ'W
-    have h1 : P ⊔ Ideal.span {s} ≤ Q'.comap (MvPolynomial.map (Int.castRingHom ℂ)) :=
-      Ideal.map_le_iff_le_comap.mp hQ'le
-    have h2 : Q'.comap (MvPolynomial.map (Int.castRingHom ℂ)) ≤ W' := hco ▸ Ideal.comap_mono hQ'W
-    have h3 : W' ≤ Q'.comap (MvPolynomial.map (Int.castRingHom ℂ)) :=
-      hW.1.2 ⟨Ideal.comap_isPrime _ _, h1⟩ h2
-    exact hWa.2 ⟨hQ'p, Ideal.map_le_iff_le_comap.mpr h3⟩ hQ'W
 
 end GroundTheory.Heights₂.Heights.Targets

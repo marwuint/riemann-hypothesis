@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeriesUnitOfReadInjScaleRootConjRootCoordRange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvOfRoot
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
@@ -7,8 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StarMulSelfOfP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjFormsRescale
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SplitOffBadOfSuppSplitOff
 import Formalism.LocalToGlobal.Columns.CoefModAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientSpaceEndomorphismScalarSchurStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutesAllOfCommutesRationalUnitaryPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientSpaceEndomorphismScalarSchur
+import Formalism.LocalToGlobal.IndefiniteReal.BridgeTie
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutesAllOfCommutesRationalUnitaryPoints
 
 set_option autoImplicit false
 noncomputable section
@@ -52,7 +53,7 @@ theorem coef_root : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     intro γ γE hγ v
     apply hinj
     rw [← hcg, (h'.mapL i).1 γ γE hγ, hcg, (h.mapL i).1 γ γE hγ]
-  obtain ⟨a, ha⟩ := GlobalTheory.T.coefficientSpace_endomorphism_scalar_schur D.what₂.LL (lamL i) g (GlobalTheory.T.commutes_all_of_commutes_rationalUnitaryPoints D _ tauL h.tauL_ok (lamL i) g hcomm)
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.CoefSchur.endo_scalar D.what₂.LL (lamL i) g (_root_.GlobalTheory.RatDenseEnd.comm_all D _ tauL h.tauL_ok (lamL i) g hcomm)
   have hea : ∀ x, e x = a • e₂ x := fun x => by
     have h1 := ha (e₂ x)
     simpa [g] using h1

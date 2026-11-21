@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.HostSize
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SupBoundPageRows
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsCuspFormFourClausesExplicitConstantStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.LogCardComponentsLeOfRowsBoundStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.LogCardComponentsLeOfRowsBound
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ArchimedeanBoundTotalConstantSize
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.EtaForm GlobalTheory.EtaAn
 
@@ -26,7 +26,7 @@ theorem etEx_deg_two : ∀ (D : D7) (T : Top D) (h : LawsP T) (large₂ : SizeDa
   rw [hP]
   refine GlobalTheory.T.exists_cuspForm_four_clauses_explicitConstant D T h DF q R0 _ _ hrun (fun j hj => ?_) (by positivity)
   rw [min_self]
-  have hN := GlobalTheory.T.log_card_components_le_of_rows_bound D T h large₂ hrows j hj T.σ₀ T.good_σ₀
+  have hN := _root_.GlobalTheory.EtaAn.log_card_comp_le_of_rows D T h large₂ hrows j hj T.σ₀ T.good_σ₀
   obtain ⟨hL, lr, lρ, lf, -, hf⟩ := hrows
   have hm := D.R.two_le_m
   have hk := D.R.f_le_k

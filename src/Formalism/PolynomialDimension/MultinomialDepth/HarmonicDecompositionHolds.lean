@@ -468,22 +468,6 @@ theorem harProj_kill [CharZero K] (hk : 1 ≤ k) {A B : ℕ} (hA : 1 ≤ A) (hB 
   obtain ⟨g', hg', he⟩ := harProj_sub hhg
   exact har_inter hk (harProj_mem hk hhg) (Submodule.sub_mem _ hg hg') (by rw [mul_sub, ← he]; abel)
 
-theorem exists_laplacian_eq [CharZero K] (hk : 1 ≤ k) {A B : ℕ} {g : PolXY K k} (hg : g ∈ PolAB K k A B) :
-    ∃ f ∈ PolAB K k (A + 1) (B + 1), ctrF K k f = g := by
-  obtain ⟨w, hw, hgw⟩ := decomp_exists hk A B g hg
-  have h1 := min_le_left A B
-  have h2 := min_le_right A B
-  refine ⟨∑ j ∈ range (min A B + 1),
-    ((((j + 1) * (A - j + (B - j) + k + j) : ℕ) : K)⁻¹) • (hXY K k ^ (j + 1) * w j), ?_, ?_⟩
-  · refine Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ ?_
-    have hj' := Finset.mem_range.1 hj
-    have := h_pow_mul_mem (j + 1) (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 (hw j)).1
-    rwa [show A - j + (j + 1) = A + 1 by omega, show B - j + (j + 1) = B + 1 by omega] at this
-  · rw [map_sum, hgw]
-    refine Finset.sum_congr rfl fun j hj => ?_
-    rw [map_smul, ctr_h_pow_har j (hw j), smul_smul, inv_mul_cancel₀, one_smul]
-    exact Nat.cast_ne_zero.2 (Nat.mul_ne_zero (Nat.succ_ne_zero j) (by omega))
-
 theorem levelProj_apply (A B j : ℕ) (f : PolXY K k) : levelProj K k A B j f =
     hXY K k ^ j * (((((A + B + k - 2 * j + j - 1).choose j : ℕ) : K)⁻¹ * ((j.factorial : ℕ) : K)⁻¹) •
       harProj K k (A - j) (B - j) (ctrDiv K k j f)) := by
@@ -574,37 +558,6 @@ theorem isotypicProjection_holds : LevelProj := by
     simp
   · rw [if_neg (Ne.symm h), if_neg h]
 
-theorem laplacianSurjective_holds : CtrSurj := by
-  unfold CtrSurj
-  intro K _ _ k A B hk g hg
-  exact exists_laplacian_eq hk hg
-
-theorem harmonicDecomposition_holds : HarDecomp := by
-  unfold HarDecomp
-  intro K _ _ k A B hk f hf
-  obtain ⟨w, hw, hfw⟩ := decomp_exists hk A B f hf
-  have e2 := Fin.sum_univ_eq_sum_range (fun j => hXY K k ^ j * w j) (min A B + 1)
-  refine ⟨fun j => w j, ⟨fun j => hw j, hfw.trans e2.symm⟩, ?_⟩
-  rintro v ⟨hv, hfv⟩
-  funext j
-  have key := har_indep hk (min A B + 1) (fun j => A - j) (fun j => B - j)
-    (fun j => if h : j < min A B + 1 then v ⟨j, h⟩ - w j else 0)
-    (fun j => by
-      by_cases h : j < min A B + 1
-      · simp only [h, ↓reduceDIte]
-        exact Submodule.sub_mem _ (hv ⟨j, h⟩) (hw j)
-      · simp only [h, ↓reduceDIte]
-        exact Submodule.zero_mem _)
-    (by
-      have e1 := Fin.sum_univ_eq_sum_range
-        (fun j => hXY K k ^ j * (if h : j < min A B + 1 then v ⟨j, h⟩ - w j else 0)) (min A B + 1)
-      refine e1.symm.trans ?_
-      simp only [Fin.is_lt, ↓reduceDIte, Fin.eta, mul_sub, Finset.sum_sub_distrib]
-      rw [← hfv, e2, ← hfw, sub_self])
-  have := key j j.isLt
-  simp only [j.isLt, ↓reduceDIte, Fin.eta, sub_eq_zero] at this
-  exact this
-
 namespace Har2
 
 variable {K : Type} [Field K] {k : ℕ}
@@ -647,43 +600,6 @@ theorem finite_polAB (k' A B : ℕ) : Module.Finite K (PolAB K (k' + 1) A B) := 
     rw [finrank_polAB]
     exact Nat.mul_pos (Nat.choose_pos (by omega)) (Nat.choose_pos (by omega)))
 
-theorem finrank_har [CharZero K] (k' A B : ℕ) :
-    Module.finrank K (HarAB K (k' + 1) (A + 1) (B + 1)) + Module.finrank K (PolAB K (k' + 1) A B) =
-      Module.finrank K (PolAB K (k' + 1) (A + 1) (B + 1)) := by
-  have hk1 : (1 : ℕ) ≤ k' + 1 := by omega
-  haveI := finite_polAB (K := K) k' (A + 1) (B + 1)
-  have hmaps : ∀ x ∈ PolAB K (k' + 1) (A + 1) (B + 1), ctrF K (k' + 1) x ∈ PolAB K (k' + 1) A B :=
-    fun x hx => by simpa using ctrF_mem hx
-  let φ := (ctrF K (k' + 1)).restrict hmaps
-  have hsurj : LinearMap.range φ = ⊤ := by
-    refine LinearMap.range_eq_top.2 fun y => ?_
-    obtain ⟨f, hf, hfy⟩ := exists_laplacian_eq hk1 y.2
-    exact ⟨⟨f, hf⟩, Subtype.ext hfy⟩
-  have hker : (LinearMap.ker φ).map (PolAB K (k' + 1) (A + 1) (B + 1)).subtype =
-      HarAB K (k' + 1) (A + 1) (B + 1) := by
-    ext x
-    simp only [Submodule.mem_map, LinearMap.mem_ker, Submodule.subtype_apply]
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      exact mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.2 ⟨y.2, congrArg Subtype.val hy⟩
-    · intro hx
-      obtain ⟨h1, h2⟩ := mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 hx
-      exact ⟨⟨x, h1⟩, Subtype.ext h2, rfl⟩
-  have := LinearMap.finrank_range_add_finrank_ker φ
-  rw [hsurj, finrank_top, ← Submodule.finrank_map_subtype_eq, hker] at this
-  omega
-
 end Har2
-
-theorem harmonicFinrank_holds : HarDim := by
-  unfold HarDim
-  intro K _ _ k' A B
-  refine ⟨finrank_polAB k' A B, ?_, ?_, ?_⟩
-  · rw [← finrank_polAB (K := K) k' A B, ← finrank_polAB (K := K) k' (A + 1) (B + 1)]
-    exact finrank_har k' A B
-  · ext f
-    exact ⟨fun h => (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 h).1, har_of_right⟩
-  · ext f
-    exact ⟨fun h => (mem_HarAB_iff_mem_PolAB_and_ctrF_eq_zero.1 h).1, har_of_left⟩
 
 end Formalism.CountingSumsFrames

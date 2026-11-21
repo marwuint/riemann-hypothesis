@@ -129,27 +129,4 @@ theorem frame_stdX (X : HidaSetting D) (u : D.what₂.Word) :
     simp
   · exact Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero
 
-def withMeasL (X : HidaSetting D) (mg : Formalism.L2.SG.Measures.MeasG X.B.I.cm.sig X.B.I.J D.R.rS)
-    (hg : mg.IsTextNorm)
-    (mw : ∀ u, Formalism.L2.SG.Measures.MeasW X.B.I.cm.sig X.B.I.J
-      (⟨fun a => crdOf X.B.I X.ιE X.bas (X.eX a), fun a => crdOf X.B.I X.ιE X.bas (X.fY a),
-        crdOf X.B.I X.ιE X.bas (X.zu u)⟩ : Formalism.L2.SG.Sub.Frame X.B.I.E X.B.I.n D.R.rS))
-    (hw : ∀ u, (mw u).IsTextNorm) : HidaSetting D :=
-  { X with measG := mg, measG_norm := hg, measW := mw, measW_norm := hw }
-
-variable (D) in
-
-def RescaleStep3L : Prop :=
-  ∀ (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I), X.MeasTie hb →
-    ∃ (mg : Formalism.L2.SG.Measures.MeasG X.B.I.cm.sig X.B.I.J D.R.rS) (hg : mg.IsTextNorm)
-      (mw : ∀ u, Formalism.L2.SG.Measures.MeasW X.B.I.cm.sig X.B.I.J
-        (⟨fun a => crdOf X.B.I X.ιE X.bas (X.eX a), fun a => crdOf X.B.I X.ιE X.bas (X.fY a),
-          crdOf X.B.I X.ιE X.bas (X.zu u)⟩ : Formalism.L2.SG.Sub.Frame X.B.I.E X.B.I.n D.R.rS))
-      (hw : ∀ u, (mw u).IsTextNorm),
-      (withMeasL X mg hg mw hw).MeasTie hb ∧
-      ∃ ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF X.B.I.F ψ ∧
-        Formalism.L2.SG.LocVol.IsStdChar ψ ∧
-        Formalism.L2.SG.MassDataConc.MeasCompatψ (withMeasL X mg hg mw hw) ψ ∧
-        ∀ w, Formalism.L2.SG.LocVol.LocCompatX (withMeasL X mg hg mw hw) ψ w
-
 end Formalism.L2.SG.Pf.Rescale

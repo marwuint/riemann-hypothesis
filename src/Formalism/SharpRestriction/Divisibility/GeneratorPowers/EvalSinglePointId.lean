@@ -19,22 +19,6 @@ section Alg
 
 variable {S : Type} [CommRing S] {d : ℕ}
 
-theorem psJet_coe_trunc {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (g : MvPowerSeries κ S) :
-    psJet m ((psTrunc m g : MvPolynomial κ S) : MvPowerSeries κ S) = psJet m g := by
-  unfold Formalism.L2.Pj.psJet
-  congr 1
-  unfold Formalism.L2.Pj.psTrunc
-  refine Finset.sum_congr rfl fun e he => ?_
-  congr 1
-  rw [MvPolynomial.coeff_coe]
-  simp only [MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial]
-  rw [Finset.sum_eq_single e]
-  · simp
-  · intro b _ hb
-    simp [hb]
-  · intro h
-    exact absurd he h
-
 theorem eval_single_point_id (g : PS S 1 d) : ev (n := 1) ![pt S (n := 1) d 0] g = g := by
   have h : (fun p : Fin 1 × Fin d => (![pt S (n := 1) d 0] : Fin 1 → Pt S 1 d) p.1 p.2) =
       MvPowerSeries.X := by
@@ -201,21 +185,6 @@ private theorem app_res_top_lemma {Y Z : Scheme.{0}} (h : Z ⟶ Y) (W : Y.Opens)
     rw [← Category.assoc, Scheme.Hom.naturality, Category.assoc, ← Functor.map_comp]
     rfl
   exact congrArg (fun f => f.hom v) e
-
-theorem pullGen_scale {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ Xo.univ.t.G.left)) (ε : K → ℤ)
-    (v : Γ(Y, ⊤)ˣ) (g : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)) (h : Z ⟶ Y) :
-    LB.pullGen Xo.univ.t.PP.L φ ε (scaleGen φ ε v g) h =
-      scaleGen (fun k => h ≫ φ k) ε (Units.map h.appTop.hom.toMonoidHom v) (LB.pullGen Xo.univ.t.PP.L φ ε g h) := by
-  simp only [ReciprocityTheory.ChartRestriction.G.Semi.LB.pullGen, Formalism.L2.Pj.scaleGen]
-  congr 1
-  funext j
-  rw [map_mul, map_mul]
-  congr 1
-  apply Units.ext
-  first
-  | exact app_res_top_lemma h _ _ v.val
-  | (simp only [ReciprocityTheory.ChartRestriction.G.Semi.res, ReciprocityTheory.ChartRestriction.G.Semi.pullU, Units.coe_map, MonoidHom.coe_coe]
-     exact app_res_top_lemma h _ _ v.val)
 
 private theorem res_res_top_lemma {X : Scheme.{0}} {V W : X.Opens} (h2 : W ≤ V) (x : Γ(X, ⊤)ˣ) :
     ReciprocityTheory.ChartRestriction.G.Semi.res h2 (ReciprocityTheory.ChartRestriction.G.Semi.res (le_top : V ≤ ⊤) x) =

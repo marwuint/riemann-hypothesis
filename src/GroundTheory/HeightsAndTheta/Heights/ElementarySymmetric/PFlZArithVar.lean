@@ -1,8 +1,10 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StatementsFlZArithVar
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices.InstFintypeFlIdx
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagComplexPointsOverX
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StatementsFlZIdealEqCoord
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PFlagArithVar
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PBlockRatioAlg
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -90,23 +92,6 @@ omit [Fintype Ψ] [DecidableEq Ψ] in
 
 theorem flZIncr_eq : flZIncr Ψ N = Equiv.sigmaCongrRight (setIncrEquiv Ψ N) := rfl
 
-omit [Fintype Ψ] [DecidableEq Ψ] in
-
-theorem flZIncr_isBlockMap : IsBlockMap id (flZIncr Ψ N) := by
-  rw [flZIncr_eq]
-  refine ⟨Function.injective_id, (Equiv.sigmaCongrRight _).injective, fun _ => rfl, fun q _ => ?_⟩
-  exact (Equiv.sigmaCongrRight (setIncrEquiv Ψ N)).surjective q
-
 end FlZArithVar
-
-theorem FlZArithVar.proof (h : FlZIdealEqCoord.Statement) : FlZArithVar.Statement := by
-  intro Ψ _ _ _ N hN
-  have hA := FlagArithVar.proof Ψ N hN
-  have hI : IndefiniteRowSideFullHecke.LowerBoundFree.Nine.FlZIdeal Ψ N = imageZ (flZIncr Ψ N) (PFl Ψ N) := by
-    rw [h Ψ N, PFl]
-    exact GroundTheory.Heights₂.Heights.Inter.BlockRatioAlgebraic.mCoordIdeal_comp_v
-      (FlZArithVar.flZIncr_isBlockMap Ψ N) (yFl Ψ N)
-  rw [hI, imageZ, FlZArithVar.flZIncr_eq]
-  exact FlZArithVar.isArithVar_comap_rename_sigma (FlZArithVar.setIncrEquiv Ψ N) hA
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

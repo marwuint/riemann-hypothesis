@@ -11,9 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMulPowInte
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CentralInvolutionRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EpsMulOfCondExp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStepCharIdealValueEqBaseMulRootOfUnityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BasePlaceCharacterFactorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlaceStepFactorInverseAwayUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStepCharIdealValueEqBaseMulRootOfUnity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BasePlaceCharacterFactor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlaceStepFactorInverseAwayUnit
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Theta IsDedekindDomain NumberField Finset
 open Formalism.DivisionValues (vw)
@@ -79,17 +79,17 @@ theorem stepFac_ratio_core {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G
     rw [hst, hsplit] at h0
     have h1 := left_ne_zero_of_mul (right_ne_zero_of_mul h0)
     exact (Finset.prod_ne_zero_iff.1 h1) v (by simpa using hv)
-  have hS := fun (v : Bs.P) (hv : v.1 ∈ Sz) => GlobalTheory.T.base_place_character_factor G hL W S hN i j t Bs hB v hv s z (hne v hv)
+  have hS := fun (v : Bs.P) (hv : v.1 ∈ Sz) => _root_.GlobalTheory.SqStepArith.base_place_factor_zero G hL W S hN i j t Bs hB v hv s z (hne v hv)
   choose bS gS gS' hbS hgS hgS' heS using hS
   have hneT : ∀ v : Bs.P, v.1 ∈ X.T → v.1 ∉ Sz → f X v ≠ 0 := by
     intro v hv hv'
     rw [hst, hsplit] at h0
     have h1 := right_ne_zero_of_mul (right_ne_zero_of_mul h0)
     exact (Finset.prod_ne_zero_iff.1 h1) v (by simpa using And.intro hv hv')
-  have hTw := fun (v : Bs.P) (hv : v.1 ∈ X.T) (hv' : v.1 ∉ Sz) => GlobalTheory.T.twistPlace_stepFactor_inverse_awayUnit G hL W S hN i j t Bs hB v hv hv' s z (hneT v hv hv')
+  have hTw := fun (v : Bs.P) (hv : v.1 ∈ X.T) (hv' : v.1 ∉ Sz) => _root_.GlobalTheory.SqTwist.twist_factor G hL W S hN i j t Bs hB v hv hv' s z (hneT v hv hv')
   choose bT hbT heT using hTw
-  obtain ⟨b1, ⟨n1, hn1, hb1⟩, e1⟩ := GlobalTheory.T.squareStepChar_idealValue_eq_base_mul_rootOfUnity G hL W S hN i j t 𝔟
-  obtain ⟨b2, ⟨n2, hn2, hb2⟩, e2⟩ := GlobalTheory.T.squareStepChar_idealValue_eq_base_mul_rootOfUnity G hL W S hN i j t 𝔠
+  obtain ⟨b1, ⟨n1, hn1, hb1⟩, e1⟩ := _root_.GlobalTheory.SqStepIdeal.idealVal_chs_base G hL W S hN i j t 𝔟
+  obtain ⟨b2, ⟨n2, hn2, hb2⟩, e2⟩ := _root_.GlobalTheory.SqStepIdeal.idealVal_chs_base G hL W S hN i j t 𝔠
   let bS₁ : Bs.P → D.what₂.LL := fun v => if h : v.1 ∈ Sz then bS v h else 1
   let bT₁ : Bs.P → D.what₂.LL := fun v => if h : v.1 ∈ X.T ∧ v.1 ∉ Sz then bT v h.1 h.2 else 1
   let g : HeightOneSpectrum (𝓞 D.host.F) → 𝓞 D.what₂.LL := fun v => if h : v ∈ Bs.P ∧ v ∈ Sz then gS ⟨v, h.1⟩ h.2 else 1

@@ -3,8 +3,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoun
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.RegMaxReindex
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalFactorSmoothHermitianMetricStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightDominatesEventuallyStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.VerticalFactorSmoothLine
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightDominatesEventually
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -149,7 +149,7 @@ end LevelTowerAlt.Conj
 theorem LevelTowerAlt.tied_setting_symmetric_charts : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M : XModel D) (w : ((Σ k, J k) → ℂ) → ℝ) (S' : BoundedRegularisationSetting M D.Xo Hd.aMu w) (κ : Equiv.Perm (Fin S'.B.N)), S'.IsTied → SymmCharts M S'.B.toPotentialCharts κ → (∀ v, S'.ρ.toFun (star v) = S'.ρ.toFun v) → (∀ j, ∀ z ∈ mcPts (mCoordIdeal D.y), S'.η (κ j) (M.proj (conjVec z)) = S'.η j (M.proj z)) → IsConjInvariantH S'.ref → (∀ z ∈ mcPts (mCoordIdeal D.y), S'.B.ph (M.proj (conjVec z)) = S'.B.ph (M.proj z)) → ConjU S' := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M w S' κ hT hS hρ hη hrefc hph
   intro B p q _ _ _
-  have hev := (GlobalTheory.T.regularized_weight_dominates_eventually K J II Ψ Ω W D Hd M w S' hT).and
+  have hev := (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.bregWeight_ge_and_MUc_smooth K J II Ψ Ω W D Hd M w S' hT).and
     (LevelTowerAlt.Conj.eventually_margin S'.B.toPotentialCharts)
   obtain ⟨t₀, ht₀, hsub⟩ := mem_nhdsGT_iff_exists_Ioc_subset.1 hev
   refine ⟨t₀, ht₀, fun t' ht' ht'le => ?_⟩
@@ -167,7 +167,7 @@ theorem LevelTowerAlt.tied_setting_symmetric_charts : ∀ (K : Type) [Fintype K]
   have h3 : ∀ r ∈ D.SB B, D.vertFactor r (conjVec z) = D.vertFactor r z := by
     intro r hr
     have hrS : r ∈ D.S := (Finset.mem_filter.1 hr).1
-    obtain ⟨A, -, -, hAc, hAv⟩ := (GlobalTheory.T.vertical_factor_smooth_hermitian_metric K J II Ψ Ω W D r hrS).1
+    obtain ⟨A, -, -, hAc, hAv⟩ := (_root_.LevelTowerAlt.vertical_factor_smooth_line K J II Ψ Ω W D r hrS).1
     rw [← hAv _ hz, ← hAv _ hcz]
     exact hAc z
   have h4 : D.A'.h (conjVec z) = D.A'.h z := D.A'_conj z

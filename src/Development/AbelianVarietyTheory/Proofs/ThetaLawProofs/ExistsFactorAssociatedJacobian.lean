@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.KeyFormula.DegProd
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DiscrEqJacobianOfIntegralPointsStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DiscrEqJacobianOfIntegralPoints
 open GlobalTheory.KeyKa
 
 namespace GlobalTheory.DiscrJacobianBlocks
@@ -40,7 +40,7 @@ theorem exists_factor_associated_jacobian : ∀ (O : Type) [CommRing O] [IsDomai
     intro v a
     simp only [Matrix.mulVec, dotProduct, hev, map_sum, map_smul, smul_eq_mul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun k _ => by ring
-  have hloc := fun y : Y => GlobalTheory.T.exists_basis_discr_associated_prod_jacobian O g {a // p a = y} (F y) (fun a => e a.1)
+  have hloc := fun y : Y => _root_.GlobalTheory.KeyKa.discr_jacobian_of_points O g {a // p a = y} (F y) (fun a => e a.1)
     (by rintro ⟨a, rfl⟩ i; exact hF a i) (fun a i => hX a.1 i)
     (by
       intro G hG

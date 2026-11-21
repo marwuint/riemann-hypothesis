@@ -11,13 +11,15 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.NotTrivialAndTwist
 import Formalism.LocalToGlobal.GlobalTheory.GL5.Statement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.TorusWeightVectorIffCartanWeightVectorStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLieStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsKStableOnOfLieStableFiniteDimStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsKStableOnOfLieStableFiniteDim
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HighestWeightGeneratedWeightsBelowStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.DiscreteSeriesCoverIrreducibleUnitaryStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.BlockOrderedSquareIntegrableStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqEqOfOmegaDensity
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AtPlaceIffEqAtTau
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SchurOrthogonalityIndefiniteUnitaryGroupStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SchurOrthogonalityIndefiniteUnitaryGroup
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 
 noncomputable section
 
@@ -37,45 +39,6 @@ theorem ratEntry_cast (P : SignedPar n) (a : Fin n) : ((ratEntry P a : ℚ) : �
   unfold ratEntry
   push_cast
   linarith
-
-def toSPar (P : SignedPar n) : SPar := Finset.univ.image fun a => (ratEntry P a, P.sgn a)
-
-theorem isEnum_iff_eq (S : SPar) (P : SignedPar n) : IsEnum S P.lam P.sgn ↔ S = toSPar P := by
-  constructor
-  · rintro ⟨-, q, hq, rfl⟩
-    have : q = ratEntry P := funext fun a => by
-      have := hq a
-      rw [← ratEntry_cast] at this
-      exact_mod_cast this.symm
-    rw [this]; rfl
-  · rintro rfl
-    exact ⟨P.hc.1, ratEntry P, fun a => (ratEntry_cast P a).symm, rfl⟩
-
-theorem isEnum_toSPar (P : SignedPar n) : IsEnum (toSPar P) P.lam P.sgn := (isEnum_iff_eq _ P).2 rfl
-
-theorem goodPar_iff (p q : ℕ) (S : SPar) :
-    GoodPar n p q S ↔ ∃ P : SignedPar n, P.IsOfSig p q ∧ S = toSPar P := by
-  constructor
-  · rintro ⟨lam, ε, h1, h2, h3, h4⟩
-    exact ⟨⟨lam, ε, h2⟩, ⟨h3, h4⟩, (isEnum_iff_eq S ⟨lam, ε, h2⟩).1 h1⟩
-  · rintro ⟨P, h, rfl⟩
-    exact ⟨P.lam, P.sgn, isEnum_toSPar P, P.hc, h.1, h.2⟩
-
-theorem toSPar_injective : Function.Injective (toSPar (n := n)) := by
-  intro P P' h
-  have h1 := isEnum_toSPar P
-  rw [h] at h1
-  obtain ⟨a, b⟩ := GlobalTheory.SignedParTest.isEnum_unique h1 (isEnum_toSPar P')
-  cases P; cases P'
-  simp only at a b
-  subst a b
-  rfl
-
-def parEquiv (n p q : ℕ) : {P : SignedPar n // P.IsOfSig p q} ≃ {S : SPar // GoodPar n p q S} :=
-  Equiv.ofBijective (fun P => ⟨toSPar P.1, (goodPar_iff p q _).2 ⟨P.1, P.2, rfl⟩⟩)
-    ⟨fun P P' h => Subtype.ext (toSPar_injective (congrArg Subtype.val h)), fun S => by
-      obtain ⟨P, h, e⟩ := (goodPar_iff p q _).1 S.2
-      exact ⟨⟨P, h⟩, Subtype.ext e.symm⟩⟩
 
 end Par
 
@@ -178,57 +141,7 @@ theorem IsFrame.conj_mem {ε ε' : Fin n → Bool} {J A B A' : Matrix (Fin n) (F
         rw [h', ← h.1]; simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = _ := by rw [h.2.1]; simp
 
-theorem exists_frame {p q : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Formalism.UG.HasSignature J p q) (P : SignedPar n)
-    (hP : P.IsOfSig p q) : ∃ A B, IsFrame P.sgn J A B := by
-  obtain ⟨e', he'⟩ := exists_blockOrd P.sgn hP.1 hP.2
-  obtain ⟨e, Q, hQ⟩ := hJ
-  have hQ' : (Q : Mat p q)ᴴ * J.reindex e e * (Q : Mat p q) = Formalism.BasicNotions.TH.Jm p q := hQ
-  have h1 : ((Q⁻¹ : GL _ ℂ) : Mat p q)ᴴ * Formalism.BasicNotions.TH.Jm p q * ((Q⁻¹ : GL _ ℂ) : Mat p q) = J.reindex e e := by
-    rw [← hQ']
-    calc _ = ((Q : Mat p q) * ((Q⁻¹ : GL _ ℂ) : Mat p q))ᴴ * J.reindex e e * ((Q : Mat p q) * ((Q⁻¹ : GL _ ℂ) : Mat p q)) := by
-          simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
-      _ = _ := by rw [Units.mul_inv]; simp
-  refine ⟨((Q⁻¹ : GL _ ℂ) : Mat p q).submatrix e'.symm e, (Q : Mat p q).submatrix e e'.symm, ?_, ?_, ?_⟩
-  · rw [← he'.reindex_Jm, Matrix.conjTranspose_submatrix, Matrix.reindex_apply, Matrix.submatrix_mul_equiv,
-      Matrix.submatrix_mul_equiv, h1]
-    simp
-  · rw [Matrix.submatrix_mul_equiv, Units.inv_mul, Matrix.submatrix_one_equiv]
-  · rw [Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]
-
 end Iso
-
-section Adelic
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7}
-
-def transAt (θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
-    (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : Module.End ℂ (GA D V → ℂ) :=
-  LinearMap.funLeft ℂ ℂ fun x : GA D V => x * atTau θ V τ g
-
-end Adelic
-
-section Degree
-
-variable {D : D7}
-
-abbrev recMeasure (D : D7) {n : ℕ} (ε : Fin n → Bool) : Measure (Formalism.REAL.UJ ε) :=
-  (D.s.cdScale n ε : ENNReal) • Formalism.REAL.muG ε
-
-def rowPar (D : D7) (τ : D.what₂.Tau) : SignedPar (2 * D.R.rS + D.R.k + 1) :=
-  ⟨lamSH D.R (D.hc τ), epsSH D.R, Formalism.MainNotions.StandardLattice.line_param_harish_chandra D τ⟩
-
-theorem isFdeg_unique {n : ℕ} {ε : Fin n → Bool} {μ : Measure (Formalism.REAL.UJ ε)} {H : Type} [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] [Nontrivial H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d d' : ℝ}
-    (h : IsFdeg μ σ d) (h' : IsFdeg μ σ d') : d = d' := by
-  obtain ⟨v, hv⟩ := exists_ne (0 : H)
-  have e := (h.2 v v v v).2.symm.trans (h'.2 v v v v).2
-  have h0 : inner ℂ v v * inner ℂ v v ≠ 0 := mul_ne_zero (inner_self_ne_zero.2 hv) (inner_self_ne_zero.2 hv)
-  rw [div_eq_mul_inv, div_eq_mul_inv, mul_right_inj' h0, _root_.inv_inj] at e
-  exact_mod_cast e
-
-end Degree
 
 section Low
 
@@ -416,7 +329,7 @@ theorem isKTypeOf_of_isHW (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
     refine Submodule.eq_of_le_of_finrank_le h1 ?_
     rw [hW]
     exact Nat.find_min' hex ⟨W', ⟨Submodule.finiteDimensional_of_le h1, h2, v', h3, h4⟩, rfl⟩
-  have hSK := GlobalTheory.T.isKStableOn_of_lieStable_finiteDim p q n e ε T R σ h hσ W hf hK
+  have hSK := _root_.GlobalTheory.RealPar.isKStableOn_of_kStable p q n e ε T R σ h hσ W hf hK
   obtain ⟨hw1, hw2⟩ := (mem_hwSub _ _ _).1 hv.2
   have hle : ∀ S' : Submodule ℂ R.U.H, S' ≤ W.map R.ι → S'.comap R.ι ≤ W := fun S' h' =>
     (Submodule.comap_mono h').trans (Submodule.comap_map_eq_of_injective R.ι_inj W).le

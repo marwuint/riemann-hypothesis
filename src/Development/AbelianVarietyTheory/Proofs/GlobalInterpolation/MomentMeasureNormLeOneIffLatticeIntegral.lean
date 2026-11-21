@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
 import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.CokernelIndexFactors.StatementB
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDualBasisOfUnimodularLatticeAtPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChange
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsOfSpanImagQuadraticStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsOfSpanImagQuadratic
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqOfMoments
 open GlobalTheory.MomN Formalism.L2.Ker.JMB
 open scoped ComplexConjugate
@@ -186,7 +186,7 @@ theorem norm_le_one_iff_latInt : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* �
           fun j => (ι.symm (Ω / ι δ₀) / (s' : ℂ)) • c j := by
         funext j; simp only [smul_smul, div_eq_mul_inv]
       rw [e]; exact hmom
-    refine GlobalTheory.T.latticeJetsAreBoundedMoments_of_span_imagQuadratic q ι (Fin g → ℂ) S.d (Ω / ι δ₀) S.La.toAddSubgroup (Fin r) (fun j => (s' : ℂ)⁻¹ • c j) G
+    refine _root_.GlobalTheory.MomN.latInt_of_span q ι (Fin g → ℂ) S.d (Ω / ι δ₀) S.La.toAddSubgroup (Fin r) (fun j => (s' : ℂ)⁻¹ • c j) G
       hdp hd16 hsplit ?_ hM'
     intro x hx
     rw [Submodule.mem_toAddSubgroup] at hx

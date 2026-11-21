@@ -8,18 +8,6 @@ open NumberField Module ReciprocityTheory.GeometryOfNumbersTheory
 
 namespace GlobalTheory.LatticeExtension
 
-variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
-  {V V' : Type} [AddCommGroup V] [Module (𝓞 K) V] [AddCommGroup V'] [Module (𝓞 K) V']
-  [Module (𝓞 K') V'] [IsScalarTower (𝓞 K) (𝓞 K') V'] (φ : V →ₗ[𝓞 K] V')
-
-variable [Module K V] [IsScalarTower (𝓞 K) K V] [Module K' V'] [IsScalarTower (𝓞 K') K' V']
-
-theorem form_eq_sum {L : Type} [Field L] {n : ℕ} (h : HermFam L (Fin n → L)) (s : L →+* ℂ) (x y : Fin n → L) :
-    h.form s x y = ∑ a, ∑ b, starRingEnd ℂ (s (x a)) * s (y b) * h.form s (Pi.single a 1) (Pi.single b 1) := by
-  conv_lhs => rw [pi_eq_sum_univ' x, pi_eq_sum_univ' y]
-  simp only [h.ds_form_sum_left, h.ds_form_sum_right, h.ds_form_smul_left, h.smul_right, Finset.mul_sum,
-    mul_assoc]
-
 end GlobalTheory.LatticeExtension
 
 open NumberField Module in

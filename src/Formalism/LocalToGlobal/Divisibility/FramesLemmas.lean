@@ -123,10 +123,6 @@ theorem quotEqRestrC : QuotEqRestrC := by
   rw [Matrix.mul_assoc, hPG, Matrix.mul_assoc, ← Matrix.mul_assoc A⁻¹,
     Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp hA.isUnit), Matrix.one_mul, h1]
 
-theorem stdFrameRatHerm : StdFrameRatHerm := by
-  intro K _ _ _ K0 n H h1 h2
-  exact ⟨h1, fun v => frameOfSpec n _ (h2 v)⟩
-
 theorem stdFrameHermAt : StdFrameHermAt := by
   intro K _ _ v0 n H h2
   exact ⟨fun v => (frameOfSpec n _ (h2 v)).1, (frameOfSpec n _ (h2 v0)).2⟩
@@ -300,25 +296,11 @@ theorem majAt_congr_frame {K : Type} [Field K] [NumberField K] {n : ℕ}
       Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X2 v x y := by
   rw [majAt_eq, majAt_eq, h]
 
-theorem normAt_eq {K : Type} [Field K] [NumberField K] {n : ℕ}
-    (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K) (x : Fin n → K) :
-    Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X v x =
-      Real.sqrt (Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x x).re := by
-  simp only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.majAt]
-  congr 1
-  rw [Complex.re_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
-
 section Instances
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K]
 
 theorem isCMSub_cmMax' : IsCMSub (cmMax K) := fun σ _ ha => ha σ
-
-def sumP : Matrix (Fin 1) (Fin 2) K := Matrix.of fun _ _ => 1
-
-def diagE : Matrix (Fin 2) (Fin 1) K := Matrix.of fun _ _ => 1
 
 end Instances
 

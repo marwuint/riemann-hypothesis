@@ -4,17 +4,17 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.RigGen
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSmoothOfRelativeDimensionSpreadFromGenericStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGeometricallyConnectedAwayOfGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGroupLawSmoothProperModelOfGenericStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSmoothOfRelativeDimensionSpreadFromGeneric
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGeometricallyConnectedAwayOfGenericFibre
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGroupLawSmoothProperModelOfGeneric
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LineBundleSpreadsOutFromGenericFibreProperStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRigidificationSpreadFromGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSymmetricSpreadOutLineBundleAbelianSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRigidificationSpreadFromGenericFibre
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSymmetricSpreadOutLineBundleAbelianScheme
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClosedImmersionGenericUnitLocusStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsKernelPolarisationTrivialSpreadLocalisatioStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsKernelPolarisationTrivialSpreadLocalisatio
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSymmetryHypothesisSpreadFromGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPointIndependenceSpreadToGeometricFibresStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsLevelStructureOfGenericOfFibrewiseIndepStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPointIndependenceSpreadToGeometricFibres
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsLevelStructureOfGenericOfFibrewiseIndep
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -82,7 +82,7 @@ theorem polAV_spreads_out : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o
   have := isNoetherianRing_of_fg hR₀
   obtain ⟨X₀, f₀, φ₀, H₀, N, hf₀, p₀, hH₀, aH₀, hN, eH₀⟩ := exists_projective_model (R := R₀) P.A.hom
     (isAmpleLB_of_relAmple_of_isAffine P.A P.isLB P.ample) P.isLB
-  obtain ⟨a₀, ha₀, Hsm⟩ := GlobalTheory.T.exists_smoothOfRelativeDimension_spread_from_genericFibre R₀ Ω P.g X₀ _ f₀ _ φ₀ p₀ hf₀ P.smoothDim
+  obtain ⟨a₀, ha₀, Hsm⟩ := _root_.GlobalTheory.GenSpread.exists_smoothOfRelativeDimension R₀ Ω P.g X₀ _ f₀ _ φ₀ p₀ hf₀ P.smoothDim
   obtain ⟨R₁, g₁, le₁, hR₁, c₁, u₁, φ₁, e₁, p₁⟩ := exists_shrink hR₀ (fun _ : PUnit => a₀) (fun _ => ha₀) p₀
   have hsm₁ := Hsm R₁ g₁ (u₁ ⟨⟩) _ _ _ (IsPullback.of_hasPullback f₀ (spMap g₁))
   have hH₁ := pull_isLB hH₀ (pullback.fst f₀ (spMap g₁))
@@ -104,9 +104,9 @@ theorem polAV_spreads_out : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o
   have := isNoetherianRing_of_fg hR₁
   have hs₁ : Smooth f₁ := SmoothOfRelativeDimension.smooth P.g f₁
   have : LocallyOfFinitePresentation f₁ := inferInstance
-  obtain ⟨a₁, ha₁, Hconn⟩ := GlobalTheory.T.exists_geometricallyConnected_away_of_genericFibre R₁ Ω X₁ _ f₁ _ φ₁ p₁ hs₁
+  obtain ⟨a₁, ha₁, Hconn⟩ := _root_.GlobalTheory.GenSpread.exists_geometricallyConnected R₁ Ω X₁ _ f₁ _ φ₁ p₁ hs₁
     ((ProjSpace.isProjBy_iff_isProjOver f₁).2 (aH₁.isProjOver f₁)) P.isAb.geomConnected
-  obtain ⟨a₂, ha₂, Hgrp⟩ := GlobalTheory.T.exists_group_law_smooth_proper_model_of_generic R₁ Ω X₁ f₁ P.A φ₁ p₁ hs₁ hf₁
+  obtain ⟨a₂, ha₂, Hgrp⟩ := _root_.GlobalTheory.GenSpread.exists_grpObj R₁ Ω X₁ f₁ P.A φ₁ p₁ hs₁ hf₁
   obtain ⟨a₃, ha₃, Hlb⟩ := GlobalTheory.T.lineBundle_spreads_out_from_genericFibre_proper R₁ Ω X₁ _ f₁ _ φ₁ p₁ inferInstance hf₁ P.L P.isLB
   obtain ⟨a₄, ha₄, Hw⟩ := exists_hom f₁ f₁ p₁ (w₀.left ≫ φ₁) (by rw [Category.assoc, p₁.w, Over.w_assoc])
   obtain ⟨a₅, ha₅, Hwd⟩ := exists_hom f₁ f₁ p₁ (wd₀.left ≫ φ₁) (by rw [Category.assoc, p₁.w, Over.w_assoc])
@@ -162,12 +162,12 @@ theorem polAV_spreads_out : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o
   have := isFractionRing_of_forall_div hfr₂
   have := isNoetherianRing_of_fg hR₂
   have := hab.proper
-  obtain ⟨d₀, hd₀, Hrig⟩ := GlobalTheory.T.exists_rigidification_spread_from_genericFibre R₂ Ω G P.A φ₂ L₂ P.L hab hG hL₂ P.isLB eL₂ P.rigid
-  obtain ⟨d₁, hd₁, Hsym⟩ := GlobalTheory.T.exists_symmetric_spread_out_lineBundle_abelian_scheme R₂ Ω G P.A φ₂ L₂ P.L hab hG hL₂ P.isLB eL₂ P.sym
-  obtain ⟨d₂, hd₂, Hk⟩ := GlobalTheory.T.exists_kernelPolarisation_trivial_spread_localisation hL.globalFns R₂ Ω G P.A φ₂ L₂ P.L hab hG hL₂ P.isLB eL₂
+  obtain ⟨d₀, hd₀, Hrig⟩ := _root_.GlobalTheory.GenSpread.exists_rigidified R₂ Ω G P.A φ₂ L₂ P.L hab hG hL₂ P.isLB eL₂ P.rigid
+  obtain ⟨d₁, hd₁, Hsym⟩ := _root_.GlobalTheory.GenSpread.exists_sym R₂ Ω G P.A φ₂ L₂ P.L hab hG hL₂ P.isLB eL₂ P.sym
+  obtain ⟨d₂, hd₂, Hk⟩ := _root_.GlobalTheory.GenSpread.exists_kTriv hL.globalFns R₂ Ω G P.A φ₂ L₂ P.L hab hG hL₂ P.isLB eL₂
     ((ProjSpace.isProjBy_iff_isProjOver G.hom).2 (aH₂.isProjOver G.hom)) P.ktriv
   obtain ⟨d₃, hd₃, Hs⟩ := GlobalTheory.T.exists_symmetryHypothesis_spread_from_genericFibre R₂ Ω G P.A φ₂ L₂ P.L hab hG hL₂ P.isLB eL₂ w wd w₀ wd₀ hw hwd hw₀ hwd₀ hww hS₁ hS₂
-  obtain ⟨d₄, hd₄, Hi⟩ := GlobalTheory.T.exists_pointIndependence_spread_to_geometricFibres R₂ Ω G P.A φ₂ inferInstance hG _ M y lev.pt hy fun c c' h => by
+  obtain ⟨d₄, hd₄, Hi⟩ := _root_.GlobalTheory.GenSpread.exists_forall_linComb_injective R₂ Ω G P.A φ₂ inferInstance hG _ M y lev.pt hy fun c c' h => by
     refine lev.indep (AlgebraicClosure Ω) (spMap (algebraMap Ω _)) c c' ?_
     rw [← comp_linComb, ← comp_linComb, h]
   obtain ⟨d₅, hd₅, Ha⟩ := exists_isAmpleLB G.hom hG.1 hL₂ hH₂ P.isLB aH₂ hN eL₂ eH₂
@@ -212,7 +212,7 @@ theorem polAV_spreads_out : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o
     exact ⟨a, le₃ ha, b, le₃ hb, e⟩
   have := isFractionRing_of_forall_div hfr₃
   have := isNoetherianRing_of_fg hR₃
-  obtain ⟨lev', hlev⟩ := GlobalTheory.T.isLevelStructure_of_generic_of_fibrewise_indep hL R₃ Ω P' P φ₃ hG₃ eL₃ rfl M (Units.map (algebraMap o R₃).toMonoidHom ze) _
+  obtain ⟨lev', hlev⟩ := _root_.GlobalTheory.level_of_generic_of_indep hL R₃ Ω P' P φ₃ hG₃ eL₃ rfl M (Units.map (algebraMap o R₃).toMonoidHom ze) _
     (by simpa using hM.map (algebraMap o R₃)) rfl lev y' hy₃ (Hi R₃ g₃ (u₃ 4) _ _ y' q₃ hy')
   refine ⟨R₃, P', φ₃, lev', le₁.trans (le₂.trans le₃), hR₃, rfl, Hs R₃ g₃ (u₃ 3) _ _ _ q₃ hL₃ (lbIso_refl hL₃),
     hG₃, eL₃, ?_⟩

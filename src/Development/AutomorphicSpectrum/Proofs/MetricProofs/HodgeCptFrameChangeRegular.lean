@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.DetMemSubring
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializesOfUnits
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsComponentInChartRegularStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalFrameOfTwistGenerationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorRatioRegularOfMatrixIdentityStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsComponentInChartRegular
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoeffsRegularInChart
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalFrameOfTwistGeneration
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorRatioRegularOfMatrixIdentity
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorExpansionOfScaledProductStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.CauchyBinetSumPositionedMinorsStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TMatBlockDiagDetFactorsStatement
@@ -92,7 +93,7 @@ theorem frames_pure (A : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (x₀
   let υs : Ψ ⊕ Ψ → Ω := fun s => ((C s).submatrix (rowsOf c s) id).det
   have hu : ∀ s, υs s ≠ 0 ∧ υs s ∈ R ∧ (υs s)⁻¹ ∈ R ∧
       zOf A c s * (Ts s).det = (xcOf x₀ c ^ m s) ^ rk Ψ p q s * υs s := fun s =>
-    GlobalTheory.T.minor_ratio_regular_of_matrix_identity R (A s) (C s) (B s) (Ts s) _ (hAT s) (pow_ne_zero _ hx) (hT s) (hBC s) (hC s) (hB s) (rowsOf c s)
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.minor_isUnit_of_leftInverse R (A s) (C s) (B s) (Ts s) _ (hAT s) (pow_ne_zero _ hx) (hT s) (hBC s) (hC s) (hB s) (rowsOf c s)
       (hz s) (hr s)
   have hW : ∀ s, (Ts s).det = (xcOf x₀ c ^ m s) ^ rk Ψ p q s * υs s * (zOf A c s)⁻¹ := fun s => by
     have := (hu s).2.2.2
@@ -228,7 +229,7 @@ theorem frames_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   intro E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ hF tie Q hQ hrel hle
   classical
   choose cb hcb using hrel
-  obtain ⟨P, hP, hreg⟩ := GlobalTheory.T.exists_component_in_chart_regular _ tie Q hQ hle cb hcb
+  obtain ⟨P, hP, hreg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.exists_point_of_prime _ tie Q hQ hle cb hcb
   have hc0 := TiePrimes.ne_of_seg hP.1
   have hrat : ∀ k i, xb (aOf 𝔐 bW bO φ) x₀ ⟨k, i⟩ / xb (aOf 𝔐 bW bO φ) x₀ ⟨k, cb k⟩ ∈ regAt 𝔐.ξ P :=
     fun k i => TiePrimes.ratio_mem hP ⟨k, i⟩
@@ -237,7 +238,7 @@ theorem frames_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     rw [← Finset.prod_div_distrib]
     exact prod_mem fun k _ => hrat (baseInl k) (c' k)
   choose Ts C B hT hAT hBC hC hB using fun s =>
-    GlobalTheory.T.local_frame_of_twist_generation 𝔐.ξ (seg x₀) (LL 𝔐 s) (m s) (n s) (rk (CMType H) D.p D.q s) (VV 𝔐 s) (φ s) (cc 𝔐 bW bO s)
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.frames_at_point 𝔐.ξ (seg x₀) (LL 𝔐 s) (m s) (n s) (rk (CMType H) D.p D.q s) (VV 𝔐 s) (φ s) (cc 𝔐 bW bO s)
       (hF.1 s) (hF.2.1 s).1 (hF.2.1 s).2 (hF.2.2.1 s) P _ hin
   obtain ⟨F, rfl, h1, h2, h3⟩ := frames_pure (aOf 𝔐 bW bO φ) x₀ m (regAt 𝔐.ξ P) cb hc0 hrat Ts C B hT hAT hBC hC hB
   exact ⟨F, h1, hcb, fun r I => ⟨hreg _ (h2 r I).1, hreg _ (h2 r I).2⟩,

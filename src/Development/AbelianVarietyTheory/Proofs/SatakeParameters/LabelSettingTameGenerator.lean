@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NotIsobaricRi
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TeichmullerInertiaLabelCondition
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DepthZeroLabelsOfLabelLaws
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTameGenAt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerMaps
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.GoodChi
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodTupleConditionOfIdempotentZero
 
 noncomputable section
 
@@ -13,22 +14,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.WeilDeligne Formalism.CyclotomicNorms
 
 namespace GlobalTheory.LabLaws
-
-section WDLaws
-
-variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-variable {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver B w}
-variable {g : ℕ} [Fact g.Prime]
-
-theorem lab_lpTw (τ : Fbar g →* ℂ) (γ : G E Ω) (a : WD h) (s : ℝ) :
-    WD.lab τ γ (a.lpTw s) = WD.lab τ γ a :=
-  WD.lab_lpTw τ γ a s
-
-theorem natDegree_lab_le (τ : Fbar g →* ℂ) (γ : G E Ω) (a : WD h) :
-    (WD.lab τ γ a).natDegree ≤ a.lpDim :=
-  WD.natDegree_lab_le τ γ a
-
-end WDLaws
 
 section Comparison₂
 
@@ -50,20 +35,6 @@ theorem tieLab_of_labTie {T : GlobalTheory.RowTie.WDTie N A} {τ : ∀ k, Fb (H.
     rw [(hT k v).2.2, ← T.dim]
     exact WD.natDegree_lab_le _ _ _
 
-theorem labTame_of_labTie {T : GlobalTheory.RowTie.WDTie N A} {τ : ∀ k, Fb (H.g k) (H.g_prime k) →* ℂ}
-    {γ : Fin 2 → PlE H → G H.E N.Om} (hT : LabTie T τ γ) : GlobalTheory.RowTie.LabTame N A := by
-  intro k v a ha σ hσ hw
-  haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
-  rw [(hT k v).2.2, ← T.dim] at ha
-  rw [T.inePol _ a σ hσ, ← T.dim]
-  exact WD.inePol_wild_of_natDegree_lab ha hw
-
 end Comparison₂
-
-section Inhabited
-
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
-
-end Inhabited
 
 end GlobalTheory.LabLaws

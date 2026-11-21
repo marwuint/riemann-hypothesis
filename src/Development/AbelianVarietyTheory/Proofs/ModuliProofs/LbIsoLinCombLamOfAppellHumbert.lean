@@ -80,10 +80,6 @@ theorem hermForm_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → 
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
   simp [hermForm, add_dotProduct]
 
-theorem hermForm_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
-    hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
-  simp [hermForm, Matrix.mulVec_add, dotProduct_add]
-
 theorem hermForm_swap {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z w : Fin g → ℂ) :
     hermForm Hm w z = hermForm Hm z w - 2 * Complex.I * ((hermForm Hm z w).im : ℂ) := by
   have h : hermForm Hm w z = starRingEnd ℂ (hermForm Hm z w) := by

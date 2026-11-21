@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JacquetKernelEigenvectorEqZeroOfConstCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedJacquetKernelTwoBlockUnipotentLeStagesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JacquetModuleMaximalParabolicPrincipalSeriesTypeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedJacquetSurvivalProductOfTwoGroupsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JacquetKernelEigenvectorEqZeroOfConstCharacter
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedJacquetKernelTwoBlockUnipotentLeStages
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JacquetModuleMaximalParabolicPrincipalSeriesType
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedJacquetSurvivalProductOfTwoGroups
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeDataDependOnlyOnUnitsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BlockDiagonalPrincipalSeriesCongruenceSubgroupSpStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterBlockDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrderedCharacterFamilySplitsOrConstantOnUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterBlockDiagonal
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrderedCharacterFamilySplitsOrConstantOnUnits
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterEqOneNearOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTrivialOnUnitsModConductorUnitCharacterValuePrStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTrivialOnUnitsModConductorUnitCharacterValuePr
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 
@@ -20,11 +20,11 @@ theorem eq_zero_of_mem_twKer_unipB : ∀ (k : Type) [Field k] [ValuativeRel k] [
   induction n using Nat.strong_induction_on with
   | _ n ih =>
   intro ψ V _ _ π hπ hψ hord v hv heig
-  rcases GlobalTheory.T.orderedCharacterFamily_splits_or_constant_on_units k n ψ hord with ⟨r, hr0, hrn, hcut⟩ | ⟨χ, hχ, hag⟩
+  rcases _root_.GlobalTheory.PsType.cut_or_const k n ψ hord with ⟨r, hr0, hrn, hcut⟩ | ⟨χ, hχ, hag⟩
   swap
   · obtain ⟨hg, hth, -, -⟩ := GlobalTheory.T.principalSeriesType_data_depend_only_on_units k n ψ _ hag
     rw [hg, hth] at heig
-    exact GlobalTheory.T.jacquetKernel_eigenvector_eq_zero_of_const_character k n χ V π hπ (hχ hψ) v hv heig
+    exact _root_.GlobalTheory.PsType.eq_zero_of_isEig_const k n χ V π hπ (hχ hψ) v hv heig
   obtain ⟨t, rfl⟩ : ∃ t, n = r + t := ⟨n - r, by omega⟩
   have ht : 0 < t := by omega
   set e := stdSum (rfl : r + t = r + t) with he
@@ -39,7 +39,7 @@ theorem eq_zero_of_mem_twKer_unipB : ∀ (k : Type) [Field k] [ValuativeRel k] [
     have h0 : ((1 : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) i j = 0 := by
       simp [Matrix.one_apply_ne (ne_of_lt hij)]
     rw [h0]
-    exact (GlobalTheory.T.isTrivialOnUnitsModConductor_unitCharacterValue_props k).2.2.1 _
+    exact (_root_.GlobalTheory.PsType.triv_ev_props k).2.2.1 _
   let Q := twKer π (unipRad k (two e)) 1
   let ρ := jacU₂ e π
   have hρ : IsSmooth ρ := isSmooth_comp (isSmooth_jacU _ hπ) _ (continuous_leviTwo k)
@@ -47,7 +47,7 @@ theorem eq_zero_of_mem_twKer_unipB : ∀ (k : Type) [Field k] [ValuativeRel k] [
   let P : Submodule ℂ V := (twKer (ρ.comp (MonoidHom.inl _ _)) (unipB k (Fin r)) 1 ⊔
       twKer (ρ.comp (MonoidHom.inr _ _)) (unipB k (Fin t)) 1).comap Q.mkQ
   have hP : twKer π (unipB k (Fin (r + t))) 1 ≤ P := by
-    refine GlobalTheory.T.twistedJacquetKernel_twoBlock_unipotent_le_stages k r t V π P ?_ ?_ ?_
+    refine _root_.GlobalTheory.PsType.twKer_unipB_le_of_stages k r t V π P ?_ ?_ ?_
     · intro w hw
       refine Submodule.mem_comap.2 ?_
       rw [Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero Q).2 hw]
@@ -64,26 +64,26 @@ theorem eq_zero_of_mem_twKer_unipB : ∀ (k : Type) [Field k] [ValuativeRel k] [
       rfl
   have hx := hP hv
   have hzero : Q.mkQ v = 0 := by
-    refine GlobalTheory.T.twistedJacquet_survival_product_of_two_groups (GL (Fin r) k) (GL (Fin t) k) _ ρ hρ (unipB k (Fin r)) (unipB k (Fin t))
+    refine _root_.GlobalTheory.PsType.eq_zero_of_mem_sup_twKer_prod (GL (Fin r) k) (GL (Fin t) k) _ ρ hρ (unipB k (Fin r)) (unipB k (Fin t))
       (grp ψ₁) (grp ψ₂) (theta ψ₁) (theta ψ₂)
       (fun W _ _ σ hσ w hw hwe => ih r (by omega) ψ₁ W σ hσ hs₁ ho₁ w hw hwe)
       (fun W _ _ σ hσ w hw hwe => ih t (by omega) ψ₂ W σ hσ hs₂ ho₂ w hw hwe)
       (Q.mkQ v) hx ?_ ?_
     · intro a ha
       have hm : emb₂ k e (a, 1) ∈ grp ψ := (hmem a 1).2 ⟨ha, one_grp _ _⟩
-      have hth := GlobalTheory.T.principalSeriesTypeCharacter_blockDiagonal k r t ψ hord a ha 1 (one_grp _ _)
+      have hth := _root_.GlobalTheory.PsType.theta_emb₂_std k r t ψ hord a ha 1 (one_grp _ _)
       rw [(GlobalTheory.T.principalSeriesTypeCharacter_eq_one_near_one k t ψ₂ hs₂).1, mul_one] at hth
       show ρ (a, 1) (Q.mkQ v) = _
       rw [hact, heig _ hm, map_smul]
       exact congrArg (· • Q.mkQ v) hth
     · intro b hb
       have hm : emb₂ k e (1, b) ∈ grp ψ := (hmem 1 b).2 ⟨one_grp _ _, hb⟩
-      have hth := GlobalTheory.T.principalSeriesTypeCharacter_blockDiagonal k r t ψ hord 1 (one_grp _ _) b hb
+      have hth := _root_.GlobalTheory.PsType.theta_emb₂_std k r t ψ hord 1 (one_grp _ _) b hb
       rw [(GlobalTheory.T.principalSeriesTypeCharacter_eq_one_near_one k r ψ₁ hs₁).1, one_mul] at hth
       show ρ (1, b) (Q.mkQ v) = _
       rw [hact, heig _ hm, map_smul]
       exact congrArg (· • Q.mkQ v) hth
   have hvQ : v ∈ Q := (Submodule.Quotient.mk_eq_zero Q).1 hzero
-  exact GlobalTheory.T.jacquetModule_maximalParabolic_principalSeriesTypeEigen k r t ψ V π hπ hψ hord hcut v hvQ heig
+  exact _root_.GlobalTheory.PsType.eig_jacquet_zero k r t ψ V π hπ hψ hord hcut v hvQ heig
 
 end GlobalTheory.PsType

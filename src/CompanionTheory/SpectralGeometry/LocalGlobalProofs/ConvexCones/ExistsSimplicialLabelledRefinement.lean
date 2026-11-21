@@ -3,9 +3,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInvari
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SimpLabMinValOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SimplicialLabellingOfBarycentricStageZeroStatement
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsCarrierDimensionLabelStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierDimensionLabelBoundedStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.BarycentricStageExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInvariantCarrierDimPolyFan
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsCarrierDimensionLabel
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierDimensionLabelBounded
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFanCarrierDimensionBounded
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BarycentricSubdivisionStarStepCells
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.BarycentricStageExtension
 
 noncomputable section
 
@@ -15,8 +19,8 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan.SimplicialLabelRefinement
 
 theorem exists_simpLab_refinement : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (ψ : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsTwG w0 ψ → ∃ φ lab : InvFun O, IsPolyFan bar q φ ∧ IsTwG w0 φ ∧ IsTwG w0 lab ∧ SimpLab bar q φ lab ∧ Subordinate bar q φ ψ := by
   intro O _ _ _ _ bar w0 hb q ψ hD hψ hT
-  obtain ⟨lab, hlT, hlab⟩ := GlobalTheory.T.exists_carrier_dimension_label O bar w0 hb q ψ hD hψ hT
-  obtain ⟨N, hN⟩ := GlobalTheory.T.carrier_dimension_label_bounded O bar hb q ψ lab hlab
+  obtain ⟨lab, hlT, hlab⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.CarrierDimension.exists_isCarrierDim O bar w0 hb q ψ hD hψ hT
+  obtain ⟨N, hN⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.IntegerFinrankMultiplicativity.carrierDim_bounded O bar hb q ψ lab hlab
   have key : ∀ d : ℕ, ∃ φ : InvFun O, IsTwG w0 φ ∧ IsBaryStage bar q ψ lab φ (N - d) := by
     intro d
     induction d with
@@ -27,7 +31,7 @@ theorem exists_simpLab_refinement : ∀ (O : Type) [CommRing O] [IsDedekindDomai
       · exact ⟨φ, hφT, by rw [show N - (d + 1) = N - d by omega]; exact hφ⟩
       · have e : N - d = (N - (d + 1)) + 1 := by omega
         rw [e] at hφ
-        exact GlobalTheory.T.barycentric_stage_extension O bar w0 hb q ψ lab φ _ hD hψ hT hlT hlab hφT hφ
+        exact _root_.GlobalTheory.CompanionTheory.Ar.Fan.BarycentricSubdivision.baryStep O bar w0 hb q ψ lab φ _ hD hψ hT hlT hlab hφT hφ
   obtain ⟨φ, hφT, hφ⟩ := key N
   rw [Nat.sub_self] at hφ
   exact ⟨φ, lab, hφ.1, hφT, hlT, GlobalTheory.T.simplicialLabelling_of_barycentricStage_zero _ bar q ψ lab φ hlab hφ, hφ.2.1⟩

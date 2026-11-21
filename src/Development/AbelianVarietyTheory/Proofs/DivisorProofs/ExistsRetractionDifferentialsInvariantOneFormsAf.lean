@@ -5,9 +5,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUno
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RedHomAlgebraMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalOneFormEqZeroOfAffineCoverRestrictionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorKaehlerEqZeroOfDerivationsVanishStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGroupLawTranslateDerivationInvariantFormsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalOneFormEqZeroOfAffineCoverRestrictions
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorKaehlerEqZeroOfDerivationsVanish
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGroupLawTranslateDerivationInvariantForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveSpMapOfSq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfDerHomEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanInvariantOneFormsAffineOpenAbelianSchemeEqToStatement
 open CategoryTheory AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj
 open scoped TensorProduct
@@ -36,7 +38,7 @@ theorem injective_baseChange {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A
   haveI : CompactSpace A.left := ⟨by simpa using QuasiCompact.isCompact_preimage (f := A.hom) Set.univ isOpen_univ isCompact_univ⟩
   haveI : Algebra.Smooth R (Sec A.hom U.unop.1) := smooth_sec_affine A.hom U.unop
   haveI : Module.Flat R (Sec A.hom U.unop.1) := Algebra.Smooth.flat R _
-  obtain ⟨n, V, hV⟩ := GlobalTheory.T.exists_finite_affineCover_globalForm_eq_zero_of_restrictions R A.left A.hom inferInstance
+  obtain ⟨n, V, hV⟩ := _root_.GlobalTheory.CoverForms.eq_zero_of_cover R A.left A.hom inferInstance
   let f : ∀ k, InvForm A →ₗ[R] Ω[Sec A.hom (V k).unop.1⁄R] := fun k => evForm A.hom (V k) ∘ₗ (InvForm A).subtype
   let F : InvForm A →ₗ[R] ((k : Fin n) → Ω[Sec A.hom (V k).unop.1⁄R]) := LinearMap.pi f
   have hF : Function.Injective F := by
@@ -61,8 +63,8 @@ theorem injective_baseChange {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A
   funext k
   rw [hk, Pi.zero_apply]
   haveI : Algebra.Smooth R (Sec A.hom (V k).unop.1) := smooth_sec_affine A.hom (V k).unop
-  refine GlobalTheory.T.eq_zero_of_liftBaseChange_derivations_eq_zero R (Sec A.hom U.unop.1) _ inferInstance _ (fun θ hθ => ?_)
-  obtain ⟨ψ, hfst, hψ⟩ := GlobalTheory.T.exists_groupLawTranslate_derivation_invariantForms R A U (V k) θ hθ
+  refine _root_.GlobalTheory.tensor_kaehler_eq_zero_of_derivations_vanish R (Sec A.hom U.unop.1) _ inferInstance _ (fun θ hθ => ?_)
+  obtain ⟨ψ, hfst, hψ⟩ := _root_.GlobalTheory.InvForm.exists_transl_val R A U (V k) θ hθ
   have key : ∀ y, LinearMap.liftBaseChange (Sec A.hom U.unop.1) θ (LinearMap.lTensor (Sec A.hom U.unop.1) (f k) y) =
       dVal ψ (LinearMap.liftBaseChange (Sec A.hom U.unop.1) (evForm A.hom U ∘ₗ (InvForm A).subtype) y) := by
     intro y

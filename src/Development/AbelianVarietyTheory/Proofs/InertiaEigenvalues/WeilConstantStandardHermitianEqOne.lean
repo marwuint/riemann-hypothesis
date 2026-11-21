@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HermitianLatticeIsOpenIsCompactTestStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KerLEqTraceDotProductOfIsIsomStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HermitianLatticeIsOpenIsCompactTest
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KerLEqTraceDotProductOfIsIsom
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PsiKMulNLEqOneOnIntegralLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourierIndicatorHermitianIntegralLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourierIndicatorHermitianIntegralLattice
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.GammaOneProof
@@ -36,9 +36,9 @@ open GlobalTheory.GammaOneProof in
 
 theorem GlobalTheory.JR.gammaOne_holds : GammaOne := by
   intro F E _ _ _ _ _ A ψ hψ x μ hsd ω γ W hW r j hj
-  obtain ⟨hΛo, hΛc, hT⟩ := GlobalTheory.T.hermitianLattice_isOpen_isCompact_test F E A r j
+  obtain ⟨hΛo, hΛc, hT⟩ := _root_.GlobalTheory.JR.LatTop.lattice_isTest F E A r j
   have hN := GlobalTheory.T.psiK_mul_NL_eq_one_on_integral_lattice F E A ψ hψ (x : A.K) r j hj
-  have hFour := GlobalTheory.T.fourier_indicator_hermitianIntegralLattice F E A ψ hψ r j (A.kerL ψ x) (GlobalTheory.T.kerL_eq_trace_dotProduct_of_isIsom F E A ψ (x : A.K) r j hj) hΛo hΛc μ hsd.1
+  have hFour := _root_.GlobalTheory.JR.fourB_indicator_intLattice F E A ψ hψ r j (A.kerL ψ x) (_root_.GlobalTheory.JR.Et.kerL_eq_of_isIsom F E A ψ (x : A.K) r j hj) hΛo hΛc μ hsd.1
   set Λ : Set A.L := {y : A.L | ∀ i, ‖j y i‖ ≤ 1} with hΛ
   set φ0 : A.L → ℂ := Set.indicator Λ 1 with hφ0
   have h0 : (0 : A.L) ∈ Λ := by simp [hΛ]

@@ -130,14 +130,6 @@ end TCoord
 
 def TCoordSelfSt : Prop := AllSelf fun _ _ V _ _ _ _ X => ∀ Hc : ∀ g, X.CartHyp V g, RawChart.TCoordSt Hc
 
-theorem tcoordFB_holds : AllFB fun _ _ V _ _ _ _ X => ∀ Hc : ∀ g, X.CartHyp V g, RawChart.TCoordSt Hc := by
-  unfold AllFB
-  intro C _ _ V O _ _ dd Y d _ I _ p H S t ht g c
-  obtain ⟨w, hwI, hw⟩ := p.u_sat g
-  obtain ⟨P, hP0, hPI, hPlin, hPt⟩ := FormalGermZero.sys_P Y p (H g) (S g)
-  exact TCoord.tcoord_abs (Y.raw p) g w hwI hw (S g).tan (S g).unimod P hP0 hPI hPlin (t g) (ht g).1
-    (hPt (t g) (ht g)) c
-
 theorem tcoordSelf_holds : TCoordSelfSt := by
   unfold TCoordSelfSt AllSelf
   intro C _ _ V O _ _ dd Y d _ I0 _ p H

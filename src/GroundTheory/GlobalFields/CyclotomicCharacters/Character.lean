@@ -308,13 +308,6 @@ theorem toZModPow_toPadicInt (k : ℕ) (x : ℤ̂) :
       ProfiniteInteger.proj (primePowPNat ℓ k) x :=
   RingHom.congr_fun (PadicInt.lift_spec _ k) x
 
-theorem toPadicInt_character (σ : Gal(ℚ̄/ℚ)) :
-    toPadicInt ℓ (character σ : ℤ̂) =
-      (cyclotomicCharacter ℚ̄ ℓ (MulSemiringAction.toRingAut Gal(ℚ̄/ℚ) ℚ̄ σ) : ℤ_[ℓ]) := by
-  refine PadicInt.ext_of_toZModPow.mp fun k => ?_
-  rw [toZModPow_toPadicInt, cyclotomicCharacter.toZModPow, proj_character]
-  rfl
-
 end Padic
 
 end Cyclotomic

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemMonicSquarefreeUnitConstPolysIffMonicSquarefrStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardMonicSquarefreeUnitConstPolysGeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusCardBoundsAndMulStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardMonicSquarefreeUnitConstPolysGe
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusCardBoundsAndMul
 
 open Polynomial Classical GlobalTheory.BadShare
 
@@ -15,7 +15,7 @@ theorem one_sub_two_div_le_mass_true :
   have hpow : (0 : ℝ) < (g : ℝ) ^ N := pow_pos hg0 N
   have hterm : ∀ f ∈ sqSet g N, ((g : ℝ) ^ N)⁻¹ ≤ ((torusCard g f : ℝ))⁻¹ := by
     intro f hf
-    obtain ⟨h1, h2, -⟩ := (GlobalTheory.T.squarefreeLabelTorusCard_bounds_and_mul g).1 N f hf
+    obtain ⟨h1, h2, -⟩ := (_root_.GlobalTheory.BadShare.torusCard_bounds_mul g).1 N f hf
     have h1' : (0 : ℝ) < (torusCard g f : ℝ) := by exact_mod_cast h1
     have h2' : (torusCard g f : ℝ) ≤ (g : ℝ) ^ N := by exact_mod_cast h2
     exact inv_anti₀ h1' h2'
@@ -33,7 +33,7 @@ theorem one_sub_two_div_le_mass_true :
     have : (0 : ℝ) ≤ 2 / (g : ℝ) := by positivity
     simp only [pow_zero, inv_one, mul_one]
     linarith
-  · have hc := GlobalTheory.T.card_monicSquarefreeUnitConstPolys_ge g N hN
+  · have hc := _root_.GlobalTheory.BadShare.card_sqSet_ge g N hN
     obtain ⟨M, rfl⟩ : ∃ M, N = M + 1 := ⟨N - 1, by omega⟩
     rw [Nat.add_sub_cancel] at hc
     have he : 1 - 2 / (g : ℝ) = ((g : ℝ) ^ (M + 1) - 2 * (g : ℝ) ^ M) * ((g : ℝ) ^ (M + 1))⁻¹ := by

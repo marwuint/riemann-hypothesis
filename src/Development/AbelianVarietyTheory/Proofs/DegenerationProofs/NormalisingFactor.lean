@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLawsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLaws
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataPsiQuadraticGeneratorsLinearStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationWeilPairingPropertiesStatement
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex
@@ -59,7 +59,7 @@ theorem wQ_iff {k : ℕ} (hk : Odd k) (p : N.QT k) (w : Oˣ) :
   rw [e, odd_root_iff, eq_div_iff_mul_eq']
   have a := tk_pow N p p
   have b := (GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N 0 p.1.1.toAdd).1
-  have c := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB (2 * j + 1) 0 p.1.2.b 1).2.2.1
+  have c := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB (2 * j + 1) 0 p.1.2.b 1).2.2.1
   rw [← N.QT_pow_b p] at b
   replace a := congrArg Additive.ofMul a
   replace b := congrArg Additive.ofMul b
@@ -70,7 +70,7 @@ theorem wQ_iff {k : ℕ} (hk : Odd k) (p : N.QT k) (w : Oˣ) :
 
 theorem dbl_mul (x y : N.A) :
     dbl N.θ N.σ (x * y) * (N.θ (x * y) x y * N.θ x x y * N.θ y x y) = dbl N.θ N.σ x * dbl N.θ N.σ y := by
-  have a := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB 2 0 x y).2.1
+  have a := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB 2 0 x y).2.1
   have c := N.cub.coc x y y x
   rw [N.cub.s12 (x * y), N.cub.s12 x y x, N.cub.s12 x (y * y), N.cub.s12 y y x] at c
   simp only [mulq, cubN, Finset.prod_range_succ, Finset.prod_range_zero, pow_zero, pow_one, one_mul, mul_one,
@@ -107,7 +107,7 @@ theorem wQ_mul {k : ℕ} (hk : Odd k) (p p' : N.QT k) :
     simp only [NumD.wp, ofMul_mul, ofMul_div, ofMul_pow, ofMul_one] at a₁ b₁ k₁ t₁ t₂ t₃ w₂ w₃ d ⊢
     linear_combination (norm := module) a₁ + b₁ - k₁ - t₁ - t₂ - t₃ + w₂ + w₃ + (2 * j + 1) • d
   · have t := tk_pow N p p'
-    have m := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB k 0 p.1.2.b p'.1.2.b).2.1
+    have m := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB k 0 p.1.2.b p'.1.2.b).2.1
     have s := N.ψ_add p.1.1.toAdd p'.1.1.toAdd
     change _ = N.ψ (p.1.1.toAdd + p'.1.1.toAdd) * mulq N.θ N.σ k (p.1.2.b * p'.1.2.b)
     have a₂ := E a₂; have b₂ := E b₂; have k₁ := E k₁; have t := E t; have m := E m; have s := E s
@@ -136,7 +136,7 @@ theorem wQ_inv {k : ℕ} (hk : Odd k) (p : N.QT k) : N.wQ p⁻¹ * N.σ p.1.2.b 
     apply Additive.ofMul.injective
     simp only [NumD.wp, dbl, inv_inv, ofMul_mul, ofMul_div, ofMul_pow, ofMul_one] at a₁ t₁ t₂ w₁ s ⊢
     linear_combination (norm := module) a₁ + t₁ - t₂ + w₁ - k • s
-  · have m := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB k 0 p.1.2.b 1).2.2.2
+  · have m := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB k 0 p.1.2.b 1).2.2.2
     have s := N.even p.1.1.toAdd
     rw [← N.QT_pow_b p] at s
     change _ = N.ψ (-p.1.1.toAdd) * mulq N.θ N.σ k p.1.2.b⁻¹

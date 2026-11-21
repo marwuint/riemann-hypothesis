@@ -1,6 +1,6 @@
 import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ElementarySymmetricExpBound
 import Formalism.SubspaceCounting.SubspaceCountingProofs.ManyOrbits
-import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ProductIdealProofs.LePowOddOfFloorLogbLe
+import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ParamDefs
 
 noncomputable section
 
@@ -101,79 +101,5 @@ theorem inverse_shift : InvShift := by
         rw [smul_comm]
         exact Submodule.smul_mem _ _ ha
     exact Submodule.mem_sup.mpr ⟨_, hNANB (Submodule.smul_mem_pointwise_smul _ _ _ hp), _, hz', rfl⟩
-
-theorem max_eq_add_pp (x y : ℝ) : max x y = y + pp (x - y) := by
-  unfold pp
-  rcases le_total x y with h | h
-  · rw [max_eq_right h, max_eq_right (by linarith : x - y ≤ 0)]
-    ring
-  · rw [max_eq_left h, max_eq_left (by linarith : 0 ≤ x - y)]
-    ring
-
-theorem monoOp_eq_smul {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] {V : ℕ} (π : R)
-    (y : Fin V → Module.End R X) (m : ℕ) (Sv : Fin V → ℕ) (E : Fin V → Bool) :
-    monoOp π y m Sv E =
-      π ^ (∑ v, if E v = true then 0 else Sv v) • monoOp π y m (fun _ => 0) E := by
-  have hl : ∀ (c : Fin V → R) (f : Fin V → Module.End R X) (l : List (Fin V)),
-      (l.map fun v => c v • f v).prod = (l.map c).prod • (l.map f).prod := by
-    intro c f l
-    induction l with
-    | nil => simp
-    | cons a l ih => rw [List.map_cons, List.prod_cons, ih, List.map_cons, List.prod_cons,
-        List.map_cons, List.prod_cons, smul_mul_smul_comm]
-  have hf : (fun v => if E v = true then y v ^ m else (π ^ Sv v) • (1 : Module.End R X)) =
-      fun v => π ^ (if E v = true then 0 else Sv v) •
-        (if E v = true then y v ^ m else (π ^ (fun _ => 0) v) • (1 : Module.End R X)) := by
-    funext v
-    by_cases h : E v = true <;> simp [h]
-  unfold monoOp
-  rw [hf, hl, ← Fin.prod_univ_def, Finset.prod_pow_eq_pow_sum]
-
-theorem fil_pow_smul {R Z : Type} [CommRing R] [AddCommGroup Z] [Module R Z] (π : R) (vπ : ℝ)
-    (Fil : ℝ → Submodule R Z) (h : ∀ t z, z ∈ Fil t → π • z ∈ Fil (t + vπ)) (k : ℕ) :
-    ∀ t z, z ∈ Fil t → π ^ k • z ∈ Fil (t + vπ * (k : ℝ)) := by
-  induction k with
-  | zero => intro t z hz; simpa using hz
-  | succ k ih =>
-    intro t z hz
-    have h1 := h _ _ (ih t z hz)
-    rw [pow_succ', mul_smul]
-    convert h1 using 2
-    push_cast
-    ring
-
-theorem almost_everywhere_spherical : AlmostEverywhereSpherical := by
-  intro R X Z _ _ _ _ _ π vπ V m M y Sv K Fil g Pr g0 rest hanti hπ hS hE F hF
-  have key : ∀ E : Fin V → Bool, M.map (monoOp π y m Sv E) ≤
-      (Fil ((∑ j, ∑ v, max (g v j - Pr v j) (g0 v j)) + rest)).comap K := by
-    intro E
-    rintro _ ⟨x, hx, rfl⟩
-    rw [Submodule.mem_comap, monoOp_eq_smul, LinearMap.smul_apply, map_smul]
-    have h1 := fil_pow_smul π vπ Fil hπ (∑ v, if E v = true then 0 else Sv v) _ _ (hE E x hx)
-    refine hanti ?_ h1
-
-    have hsplit : ∀ j, ∑ v, max (g v j - Pr v j) (g0 v j) =
-        (∑ v with E v = true, max (g v j - Pr v j) (g0 v j)) + ∑ v with E v = false, g0 v j
-          + ∑ v with E v = false, pp (g v j - Pr v j - g0 v j) := by
-      intro j
-      rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun v => E v = true)]
-      simp only [Bool.not_eq_true]
-      rw [add_assoc, ← Finset.sum_add_distrib]
-      congr 1
-      exact Finset.sum_congr rfl fun v _ => max_eq_add_pp _ _
-    have hpp : ∑ j, ∑ v with E v = false, pp (g v j - Pr v j - g0 v j) ≤
-        vπ * ((∑ v, if E v = true then 0 else Sv v : ℕ) : ℝ) := by
-      rw [Finset.sum_comm]
-      calc ∑ v with E v = false, ∑ j, pp (g v j - Pr v j - g0 v j)
-          ≤ ∑ v with E v = false, vπ * (Sv v : ℝ) := Finset.sum_le_sum fun v _ => hS v
-        _ = vπ * ((∑ v, if E v = true then 0 else Sv v : ℕ) : ℝ) := by
-          rw [← Finset.mul_sum, Finset.sum_filter]
-          congr 1
-          push_cast
-          refine Finset.sum_congr rfl fun v _ => ?_
-          cases E v <;> simp
-    simp only [hsplit, Finset.sum_add_distrib]
-    linarith
-  exact iSup_le key hF
 
 end Formalism.InvariantFactorPaths.G0

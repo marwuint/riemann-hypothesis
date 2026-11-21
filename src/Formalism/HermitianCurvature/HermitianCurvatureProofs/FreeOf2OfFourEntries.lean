@@ -481,10 +481,6 @@ end Formalism.FourierDecayAlt.P.Fr5
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem gauss_form_plus_letter : Formalism.FourierDecayAlt.Fr.GaussFormPlus := by
-  intro A S _ _ _ _ _ _ r L f a Ya H
-  exact Fr5.gaussFormPlus L f a Ya H
-
 theorem plus_letter_form : Formalism.FourierDecayAlt.Fr.PlusForm := by
   intro A S _ _ _ _ _ _ r L f a Ya H
   exact Fr5.plusForm L f a Ya H

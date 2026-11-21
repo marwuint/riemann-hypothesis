@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightBoundedUnitStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AmpleHeightBoundsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.WeightedFlagDegreeLowerBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.OrthogonalFlagDegreeComparisonStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineHeightBoundedUnit
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AmpleHeightBounds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.WeightedFlagDegreeLowerBound
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsOrthFull
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.OrthogonalFlagDegreeComparison
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalNormOutsideFiniteSet
 import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.FieldChange
 
@@ -167,7 +168,7 @@ theorem flat_and_deg (A : FlagPair E Ψ a b) (hO : A.IsOrthFull) (h : Ψ × Fin 
     have h1 := abs_le.1 (hW τ i)
     have h2 := abs_le.1 (hB (τ, Fin.castAdd b i))
     linarith [h1.1, h1.2, h2.1, h2.2]
-  have h0 := (GlobalTheory.T.orthogonal_flag_degree_comparison K E Ψ a b A hO).1
+  have h0 := (_root_.GlobalTheory.CompanionTheory.Ar.FlagPair.two_sum_neg_degree_W K E Ψ a b A hO).1
   have h1 : ∑ τ, A.flatDeg τ ≤ Fintype.card Ψ * (Cs + ((a : ℝ) + b) * C) := by
     refine (Finset.sum_le_sum (g := fun _ => Cs + ((a : ℝ) + b) * C) fun τ _ => (le_abs_self _).trans (hf τ)).trans ?_
     rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
@@ -204,7 +205,7 @@ theorem refLower_of_fibre (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (j k : ℕ) 
     (hA : AmpleQ R.y R.A.a) (hFl : FlatUnit R) (hFi : FibreInput R) : RefLower R := by
   classical
   obtain ⟨C, hC0, hI⟩ := hFi
-  obtain ⟨⟨K₀, hK₀⟩, hB⟩ := GlobalTheory.T.ample_height_bounds R.K R.ι R.Ω R.y _ R.arith R.birational R.A R.A_smooth hA
+  obtain ⟨⟨K₀, hK₀⟩, hB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Ht.AmpleBd.height_bound R.K R.ι R.Ω R.y _ R.arith R.birational R.A R.A_smooth hA
   choose n c hn hbd using fun r => hB (R.x 1 r) (R.x_smooth 1 r)
   have hflat : ∀ τ, ∃ c' : ℝ, ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L (mCoordIdeal R.y),
       |∑ l, lineHt (R.x 1 (τ, l)) L w| ≤ c' := by
@@ -213,7 +214,7 @@ theorem refLower_of_fibre (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (j k : ℕ) 
     have ha : (combLine (fun l => R.x 1 (τ, l)) fun _ => 1).a = fun b => ∑ i, R.xdeg (τ, i) b := by
       funext b
       simp [combLine, Finset.sum_apply, R.x_deg]
-    obtain ⟨c', hc'⟩ := GlobalTheory.T.line_height_bounded_unit R.K R.ι R.Ω R.y _ R.arith R.birational
+    obtain ⟨c', hc'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Ht.lineHt_bounded_of_genUnit R.K R.ι R.Ω R.y _ R.arith R.birational
       (combLine (fun l => R.x 1 (τ, l)) fun _ => 1) kk u c0
       (isSmoothHerm_combLine_one _ fun l => R.x_smooth 1 _) hk (by rw [ha]; exact hu) (by rw [ha]; exact hv)
     refine ⟨c', fun L _ _ w hw => ?_⟩
@@ -308,7 +309,7 @@ theorem refLower_of_fibre (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (j k : ℕ) 
     rw [hm, hyy]
     exact hSl
   have hent : ∀ τ i, |mu τ i| ≤ 2 := fun τ i => (abs_entry_le mu τ i).trans hmu
-  have hlow := GlobalTheory.T.weighted_flag_degree_lower_bound L' E Ψ j k A mu 2 m Cf (fun τ a b hab => hd τ a b hab) hent hm0 hsl hfl
+  have hlow := _root_.GlobalTheory.CompanionTheory.Ar.LowerAny.lamDeg_lower L' E Ψ j k A mu 2 m Cf (fun τ a b hab => hd τ a b hab) hent hm0 hsl hfl
   have hup := lamDeg_le A (fun r => lineHt (R.x 1 r) L w) C hC0 hW hS mu hent
   simp only [← ha, ← hb, ← hf] at hup
   have hab : (j : ℝ) + 1 + ((k : ℝ) + 1) = a + b := by

@@ -1,5 +1,5 @@
 import Mathlib
-import CompanionTheory.EightfoldTheory.VariationTheory.PublishedTheorems.ImportsAlt
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.CuspSemisimpleReal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.HeckeAdjoints.IsHermOfInner
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.HeckeAdjoints.UnitTwist
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.CuspidalFiniteness.ExistsZalgOfCenterU
@@ -7,11 +7,12 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.F
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterAbsoluteValuePower
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterRamifiedFinite
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormHeckeEigenvalueLeCardCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeTjCosetsFiniteCardLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormHeckeEigenvalueLeCardCosets
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeTjCosetsFiniteCardLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeTnScalarUniformiserSingleTranslationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormRootLeCardMulBoundOfEsymmNormLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormInvLePowCardOfNormProdEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormRootLeCardMulBoundOfEsymmNormLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormInvLePowCardOfNormProdEqOne
 
 noncomputable section
 
@@ -34,11 +35,11 @@ theorem local_bound (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum 
 
   have he : ∀ j, 1 ≤ j → j ≤ n → ‖(B.map fun b : ℂˣ => (b : ℂ)).esymm j‖ ≤ (q : ℝ) ^ (n * n) := by
     intro j _ hjn
-    obtain ⟨hfin, hc⟩ := GlobalTheory.T.heckeTj_cosets_finite_card_le E w n ϖ hϖ j hjn
+    obtain ⟨hfin, hc⟩ := _root_.GlobalTheory.TjCount.tj_cosets_finite_card_le E w n ϖ hϖ j hjn
     have hh : ∀ g, ‖Formalism.UG.Tj ℂ n (Formalism.UG.Ov E w) ϖ j g‖ ≤ 1 := fun g => by
       unfold Formalism.UG.Tj
       exact (norm_indicator_le_norm_self _ _).trans (by simp)
-    have k1 := GlobalTheory.T.norm_heckeEigenvalue_le_card_cosets _ (GlobalTheory.LFun.KGL w n) V ρ Bf h1 h2 h3 _ x _ hh hfin hx0 (hT ϖ hϖ j hjn)
+    have k1 := _root_.GlobalTheory.LFun.norm_le_card_of_heckeVec_eq_smul _ (GlobalTheory.LFun.KGL w n) V ρ Bf h1 h2 h3 _ x _ hh hfin hx0 (hT ϖ hϖ j hjn)
     have k2 : ‖(B.map fun b : ℂˣ => (b : ℂ)).esymm j‖ ≤ ‖GlobalTheory.LFun.satEig q n B j‖ := by
       unfold GlobalTheory.LFun.satEig
       rw [norm_mul, Complex.norm_natCast_cpow_of_pos (by omega)]
@@ -58,7 +59,7 @@ theorem local_bound (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum 
     linarith
   have hup : ∀ b ∈ B, ‖(b : ℂ)‖ ≤ (q : ℝ) ^ (n * n + n) := by
     intro b hb
-    refine (GlobalTheory.T.norm_root_le_card_mul_bound_of_esymm_norm_le n B _ hcard (one_le_pow₀ hq1) he b hb).trans ?_
+    refine (_root_.GlobalTheory.cauchy_roots_bound n B _ hcard (one_le_pow₀ hq1) he b hb).trans ?_
     rw [pow_add, mul_comm]
     exact mul_le_mul_of_nonneg_left hnq (by positivity)
   refine fun b hb => ⟨hup b hb, ?_⟩
@@ -88,7 +89,7 @@ theorem local_bound (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum 
       have : (Complex.normSq c : ℂ) = 1 := by rw [Complex.normSq_eq_conj_mul_self]; exact e2
       exact_mod_cast this
     nlinarith [norm_nonneg c]
-  have := GlobalTheory.T.norm_inv_le_pow_card_of_norm_prod_eq_one' B _ (one_le_pow₀ hq1) hup hp b hb
+  have := _root_.GlobalTheory.norm_inv_le_pow_card_of_norm_prod_eq_one B _ (one_le_pow₀ hq1) hup hp b hb
   rwa [hcard] at this
 
 end GlobalTheory.HenQ

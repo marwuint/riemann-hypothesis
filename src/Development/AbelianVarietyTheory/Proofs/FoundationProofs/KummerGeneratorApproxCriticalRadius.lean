@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsImprovedApproxKummerGeneratorStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsImprovedApproxKummerGenerator
 open GlobalTheory.AlmostEt
 open scoped NNReal
 
@@ -29,7 +29,7 @@ theorem kummer_approx_critical : ∀ (L : Type) [Field L] (v : Valuation L ℝ�
     exact ⟨inv_lt_one_of_one_lt₀ hs, hθ, hvp⟩
   have step : ∀ y ∈ F, v (α - y) ≤ a → ∃ y' ∈ F, v (α - y') ^ p ≤ η * v (α - y) ^ p := by
     intro y hy hya
-    obtain ⟨y', hy', h⟩ := GlobalTheory.T.exists_improved_approx_kummer_generator L v p hp F θ hθ.le hvp.le hθF α y hα hy hya
+    obtain ⟨y', hy', h⟩ := _root_.GlobalTheory.AlmostEt.exists_approxRoot_step L v p hp F θ hθ.le hvp.le hθF α y hα hy hya
     refine ⟨y', hy', h.trans ?_⟩
     have hcb := hcon y hy
     set b := v (α - y)

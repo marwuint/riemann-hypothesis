@@ -26,6 +26,4 @@ instance completeSpace_finExt : CompleteSpace ↥LL.1 :=
   haveI := LL.2
   FiniteDimensional.complete ℚ_[l] ↥LL.1
 
-example : invL l (S ↥(OL LL) ↥LL.1 8) →+* Ahat ↥(OL LL) ↥LL.1 l 8 := toHatS ↥(OL LL) ↥LL.1 l 8
-
 end GlobalTheory.BK

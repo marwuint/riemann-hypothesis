@@ -3,7 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.Em
 import Development.WeilBound.CoreStatements.BranchingTraces.ContinuousEmb
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HilbertSchmidtNormSubmultiplicativeStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutatorCoerciveOnAnnihilatorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutantAnnihilatingVectorZeroStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutantAnnihilatingVectorZero
+import Formalism.RealPlaceAnalysis.Complexify
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialFractionCoefficientSignsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InterlacingSignatureParityStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnitaryInterlacingRealizationStatement
@@ -91,7 +93,7 @@ theorem frame : PositivityTheory.RgHe.Frame := by
     have hcyc : ∀ A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, A * X = X * A → A *ᵥ v = 0 → A = 0 := by
       intro A hA hAv
       rw [hX] at hA
-      exact GlobalTheory.T.commutant_annihilating_vector_zero g _ v hdet hdi (fun i => by rw [hinv]; exact hβ i) A hA hAv
+      exact _root_.GlobalTheory.CompanionTheory.RgHeFrame.commutant_cyclic_eq_zero g _ v hdet hdi (fun i => by rw [hinv]; exact hβ i) A hA hAv
     obtain ⟨c, hc, hAc⟩ := GlobalTheory.T.commutator_coercive_on_annihilator X v hcyc
     refine ⟨c * hs g * hs g⁻¹ + 1, by have := hs_nonneg' g; have := hs_nonneg' g⁻¹; positivity, fun h => ?_⟩
     set B := emb e (um h) with hB

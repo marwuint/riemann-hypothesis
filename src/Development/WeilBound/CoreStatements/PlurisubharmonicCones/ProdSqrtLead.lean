@@ -84,7 +84,7 @@ theorem gram_up (m : SABMap t' t f) (hξ : IsCptGen ξ) (hξ' : IsCptGen ξ') (h
   simp only [hbv]
   refine HodgePull.gram_comb MR (fun l => val (j (b l))) Γ p (fun a c => ?_) (HodgePull.hodgeInnerProduct_unique m) _ p q
   rw [← hw'e, ← hw'e]
-  refine ((GlobalTheory.T.hodge_inner_product_pullback_unique E H X' X t' t f m z (w' a) (w' c) (w a) (w c) (hww a) (hww c)).1 _).2 ?_
+  refine ((_root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H X' X t' t f m z (w' a) (w' c) (w a) (w c) (hww a) (hww c)).1 _).2 ?_
   rw [hwv, hwv]
   exact hI a c
 

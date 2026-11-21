@@ -92,21 +92,6 @@ theorem NefProductNonneg.interNum_nonneg (h : NefProductNonneg) (hp : IsProjOver
   rw [← hi D N fun i => (hN i).isLB]
   exact h _ X' D hp' (hd.trans hD) _ fun i => hn _ (hN i)
 
-theorem NefProductNonneg.interNumOn_nonneg (h : NefProductNonneg) (hp : IsProjOver (strHom k X))
-    {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] (hD : topologicalKrullDim Z = D)
-    {N : Fin D → LB X} (hN : ∀ j, IsNef k (N j)) : 0 ≤ interNumOn k i N := by
-  letI := algebraΓAlong k i
-  have hi := appTop_algebraMap_along k i
-  rw [interNumOn_eq_interNum_pull hi fun j => (hN j).isLB]
-  refine h.interNum_nonneg ?_ hD fun j => (hN j).pull_of_isClosedImmersion i hi
-  obtain ⟨n, e, he, hs⟩ := hp
-  exact ⟨n, i ≫ e, inferInstance, by rw [Category.assoc, hs, comp_strHom hi]⟩
-
-theorem NefProductNonneg.interNumRed_nonneg (h : NefProductNonneg) (hp : IsProjOver (strHom k X))
-    {Z : Closeds X} (hD : topologicalKrullDim (Z : Set X) = D)
-    {N : Fin D → LB X} (hN : ∀ j, IsNef k (N j)) : 0 ≤ interNumRed k Z N :=
-  h.interNumOn_nonneg hp (redι Z) ((topologicalKrullDim_red Z).trans hD) hN
-
 theorem NefRiemannRoch.isBigO (h : NefRiemannRoch) (hp : IsProjOver (strHom k X))
     (hD : topologicalKrullDim X = D) {L : LB X} (hL : IsNef k L) :
     (fun m : ℕ => (lbH0 k (lbPow L m) : ℝ) - (topSelfIntersection k L D : ℝ) * (m : ℝ) ^ D / D.factorial)
@@ -164,16 +149,5 @@ end AnyField
 
 theorem NefRiemannRoch.nefBigIff (h : NefRiemannRoch) : NefBigIff :=
   fun _ _ _ _ _ _ _ hp hD _ hL => h.isBig_iff hp hD hL
-
-open GlobalTheory.ProjSpace in
-
-example (k : Type) [Field k] (d : ℕ) :
-    IsIntegral (PSpace k (d + 1)) ∧ IsProjOver (strHom k (PSpace k (d + 1))) ∧
-    topologicalKrullDim (PSpace k (d + 1)) = (d + 1 : ℕ) ∧
-    IsNef k (O1 k (d + 1)) ∧ IsBig k (O1 k (d + 1)) ∧
-    IsNef k (LB.triv (PSpace k (d + 1))) ∧ ¬ IsBig k (LB.triv (PSpace k (d + 1))) := by
-  rw [strHom_eq (algebraMap_top_eq k (d + 1))]
-  exact ⟨inferInstance, isProjOver_str k _, topologicalKrullDim_eq k _, isNef_twistingSheaf k _, isBig_twistingSheaf k _,
-    (triv_nef_not_big k d).1, (triv_nef_not_big k d).2.2⟩
 
 end GlobalTheory.Published

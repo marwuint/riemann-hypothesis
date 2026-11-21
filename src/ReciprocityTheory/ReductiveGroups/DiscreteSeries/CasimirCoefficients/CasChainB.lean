@@ -153,43 +153,4 @@ lemma ccb_rdv (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → E}
   have h2 := h1.congr_of_eventuallyEq hfin
   rwa [Matrix.neg_mul, map_neg] at h2
 
-lemma ccb_diffAt_inv_mul (m : Matrix (Fin n) (Fin n) ℂ) {g : Matrix (Fin n) (Fin n) ℂ}
-    (hg : IsUnit g) : DifferentiableAt ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => z⁻¹ * m) g := by
-  have hdet : g.det ≠ 0 := ((Matrix.isUnit_iff_isUnit_det g).mp hg).ne_zero
-  have hentry : ∀ a b : Fin n,
-      Differentiable ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => z a b) := by
-    intro a b
-    exact (differentiable_apply (𝕜 := ℂ) (F' := fun _ : Fin n => ℂ) b).comp
-      (differentiable_apply (𝕜 := ℂ) (F' := fun _ : Fin n => Fin n → ℂ) a)
-  have hD : ∀ M : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
-      (∀ a b, Differentiable ℂ (fun z => M z a b)) → Differentiable ℂ (fun z => (M z).det) := by
-    intro M hM
-    simp_rw [det_apply']
-    refine Differentiable.fun_sum fun σ _ => ?_
-    refine (differentiable_const _).mul ?_
-    intro z
-    exact (HasFDerivAt.finsetProd (u := univ) (g := fun j w => M w (σ j) j)
-      fun j _ => (hM _ _ z).hasFDerivAt).differentiableAt
-  have hA : ∀ i k, Differentiable ℂ (fun z : Matrix (Fin n) (Fin n) ℂ => z.adjugate i k) := by
-    intro i k
-    simp only [adjugate_apply]
-    refine hD _ fun a b => ?_
-    simp only [updateRow_apply]
-    by_cases hab : a = k
-    · simp only [hab, if_true]; exact differentiable_const _
-    · simp only [hab, if_false]; exact hentry a b
-  have e : (fun z : Matrix (Fin n) (Fin n) ℂ => z⁻¹ * m) =
-      fun z => Matrix.of fun i j => ∑ k, ((z.det)⁻¹ * z.adjugate i k) * m k j := by
-    funext z
-    ext i j
-    simp [Matrix.inv_def, Ring.inverse_eq_inv, Matrix.mul_apply, Matrix.smul_apply]
-  rw [e]
-  have h : DifferentiableAt ℂ (fun z : Matrix (Fin n) (Fin n) ℂ =>
-      (fun i j => ∑ k, ((z.det)⁻¹ * z.adjugate i k) * m k j : Fin n → Fin n → ℂ)) g := by
-    refine differentiableAt_pi.mpr fun i => differentiableAt_pi.mpr fun j => ?_
-    refine DifferentiableAt.fun_sum fun k _ => ?_
-    exact ((((hD (fun z => z) hentry).differentiableAt.inv hdet).mul
-      (hA i k).differentiableAt).mul_const _)
-  exact h
-
 end ReciprocityTheory.ChartRestriction.DS.S7

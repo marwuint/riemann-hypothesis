@@ -260,29 +260,6 @@ theorem exists_approx_adele (b : FiniteAdeleRing R K) :
         | exact mul_le_mul_left hv2 _
     _ = 1 := inv_mul_cancel₀ hne
 
-theorem isInt_zero : IsInt (0 : FiniteAdeleRing R K) := by
-  intro v
-  first
-  | exact zero_mem _
-  | simp
-  | (show (0 : v.adicCompletion K) ∈ _; exact zero_mem _)
-
-theorem isInt_add {a b : FiniteAdeleRing R K} (ha : IsInt a) (hb : IsInt b) : IsInt (a + b) := by
-  intro v
-  first
-  | exact add_mem (ha v) (hb v)
-  | simpa using add_mem (ha v) (hb v)
-
-theorem isInt_mul {a b : FiniteAdeleRing R K} (ha : IsInt a) (hb : IsInt b) : IsInt (a * b) := by
-  intro v
-  rw [mulApp_lemma_4]
-  exact mul_mem (ha v) (hb v)
-
-theorem isInt_R (r : R) : IsInt (algebraMap R (FiniteAdeleRing R K) r) := by
-  intro v
-  rw [algApp_lemma_5]
-  exact int_R v r
-
 theorem mem_of_isInt (k : K) (h : IsInt (algebraMap K (FiniteAdeleRing R K) k)) :
     k ∈ (algebraMap R K).range := by
   refine IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one K k (fun v => ?_)

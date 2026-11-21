@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ValuesEqOfCommonPointStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ValuesEqOfCommonPoint
 
 noncomputable section
 
@@ -127,7 +127,7 @@ theorem val_unique (hl : EvLaws Xo c) {L : Type} [Field L] [Algebra c.F L] {y : 
   obtain ⟨C, ψ, z, t, hz, ht, rfl⟩ := h1
   obtain ⟨C', ψ', z', t', hz', ht', rfl⟩ := h2
   obtain ⟨-, hmul, hinv, -⟩ := GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L
-  have := (GlobalTheory.T.values_eq_of_common_point E H Dw l Xo c hl h C C' L ψ ψ' z z' _ hz hz'
+  have := (_root_.GlobalTheory.Reg.FChart.compat E H Dw l Xo c hl h C C' L ψ ψ' z z' _ hz hz'
     (hmul _ _ _ _ _ ht (hinv _ _ _ ht'))).2 e b (hb C) (hb C')
   rw [this, ← mul_assoc, ← wchar_mul, mul_comm t, mul_inv_cancel_left]
 

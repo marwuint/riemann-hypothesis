@@ -66,17 +66,6 @@ def formGroup : Subgroup 𝔄ˣ where
 
 theorem mem_formGroup {g : 𝔄ˣ} : g ∈ formGroup σ hσ1 hσ J ↔ σ g * J * g = J := Iff.rfl
 
-def formLie : Submodule ℝ 𝔄 where
-  carrier := {X | σ X * J + J * X = 0}
-  add_mem' {X Y} hX hY := by
-    simp only [mem_ofPred_eq, map_add, add_mul, mul_add] at hX hY ⊢
-    calc σ X * J + σ Y * J + (J * X + J * Y) = (σ X * J + J * X) + (σ Y * J + J * Y) := by abel
-      _ = 0 := by rw [hX, hY, add_zero]
-  zero_mem' := by simp
-  smul_mem' r X hX := by
-    simp only [mem_ofPred_eq, map_smul, smul_mul_assoc, mul_smul_comm] at hX ⊢
-    rw [← smul_add, hX, smul_zero]
-
 end FormGroup
 
 end

@@ -40,101 +40,6 @@ theorem U_eq_opU {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {a b : ℕ} (t
   congr 2
   ring
 
-theorem kerTh_expand {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) {a b : ℕ}
-    (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ)
-    (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a)) (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b))
-    (Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ) (z : TaylorLogMetric.VC D a b) :
-    Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl N N' Ξ z = ∑ x ∈ ptsX cc δ SS cl N N', ∑ y ∈ ptsB cc δ SS cl N N',
-      kerCoef cc δ SS cl N N' Ξ x y * TaylorLogMetric.U D B.tor (x + y) (B.eNat χ a b N N') z := by
-  simp only [U_eq_opU]
-  exact xiL_expand (hK D cc δ a b) (alK D cc δ a b) 1 (ptsX cc δ SS cl N N') (ptsA cc δ SS cl N N')
-    (ptsB cc δ SS cl N N') (onV (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ Ξ) (B.eNat χ a b N N') z
-
-theorem eqAt_refl {D : D7} (p : ℕ) {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : TaylorLogMetric.EqAt D p L L :=
-  ⟨1, Nat.coprime_one_left p, fun x hx => by simpa using hx, fun x hx => by simpa using hx⟩
-
-theorem combined_kernel : CombKer := by
-  intro D cc δ B χ a b SS cl N N' Ξ p _ lam hA hC hT hG
-  classical
-  let P := ptsX cc δ SS cl N N' ×ˢ ptsB cc δ SS cl N N'
-  let eqv := P.equivFin
-  let pt : Fin P.card → TaylorLogMetric.VC D a b := fun k => (eqv.symm k).1.1 + (eqv.symm k).1.2
-  let cf : Fin P.card → ℂ := fun k => kerCoef cc δ SS cl N N' Ξ (eqv.symm k).1.1 (eqv.symm k).1.2
-  have hmem : ∀ k, (eqv.symm k).1.1 ∈ ptsX cc δ SS cl N N' ∧ (eqv.symm k).1.2 ∈ ptsB cc δ SS cl N N' :=
-    fun k => Finset.mem_product.1 (eqv.symm k).2
-  have hfun : Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl N N' Ξ =
-      fun z => ∑ k, cf k * TaylorLogMetric.U D B.tor (pt k) (B.eNat χ a b N N') z := by
-    funext z
-    rw [kerTh_expand, ← Finset.sum_product' (f := fun x y =>
-      kerCoef cc δ SS cl N N' Ξ x y * TaylorLogMetric.U D B.tor (x + y) (B.eNat χ a b N N') z), ← Finset.sum_coe_sort]
-    exact (Equiv.sum_comp eqv.symm (fun q : P =>
-      kerCoef cc δ SS cl N N' Ξ q.1.1 q.1.2 * TaylorLogMetric.U D B.tor (q.1.1 + q.1.2) (B.eNat χ a b N N') z)).symm
-  have htors : ∀ k, TaylorLogMetric.TorsPrime D p (TaylorLogMetric.La D B.tor N N') (pt k) := fun k => hT _ (hmem k).1 _ (hmem k).2
-  have hlin := power_series_linearity D p lam a b P.card cf (fun k => TaylorLogMetric.U D B.tor (pt k) (B.eNat χ a b N N'))
-    (fun k => (hC _ (hmem k).1 _ (hmem k).2).1) (fun k => hG _ (htors k))
-  refine ⟨P.card, fun k => TaylorLogMetric.lamC lam (cf k), pt, fun _ => N, fun _ => N',
-    fun k => (hC _ (hmem k).1 _ (hmem k).2).2, htors, fun _ => ⟨hA, eqAt_refl p N, eqAt_refl p N'⟩, ?_⟩
-  show TaylorLogMetric.pSer D lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl N N' Ξ) = _
-  rw [hfun]
-  exact hlin
-
-theorem combAt_of {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.Sys p) [IsFractionRing X.G.O X.G.Kf]
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
-    (χ : TaylorLogMetric.IdE D → ℂ) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
-    (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
-    (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
-    (Ξ : ∀ j, X.Lt j → X.Lt (j + 1) → Formalism.L2.Col.HomE D.host.E ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ)
-    (h : ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-      TaylorLogMetric.admitted D _ _ (large₂ j L0 La') (Lg' j L0 La') ∧ CoefInt cc δ SS cl (large₂ j L0 La') (Lg' j L0 La') (Ξ j L0 La') lam ∧
-        PtTors cc δ SS cl (large₂ j L0 La') (Lg' j L0 La') p ∧ AlgTr B χ (large₂ j L0 La') (Lg' j L0 La') p) :
-    Rep.CombAt X hfin D large₂ Lg'
-      (fun j La La' => Formalism.L2.PairingIndexBounds.F.serP lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl (large₂ j La La') (Lg' j La La') (Ξ j La La')))
-      B.tor (B.eNat χ) lam := by
-  intro j L0 h0 La' hL'
-  obtain ⟨hA, hC, hT, hG⟩ := h j L0 h0 La' hL'
-  exact ⟨hA, combined_kernel D cc δ B χ _ _ SS cl _ _ _ p lam hA hC hT hG⟩
-
-theorem combined_kernel_scaled : CombKerS := by
-  intro D cc δ B χ a b SS cl N N' Ξ S p _ lam hA hL hF hS hΞ hp hLa hG
-  obtain ⟨n, r, t, hr, ht, hΘ⟩ := theta_coset_kernel D.host.E D.what₂.Tau a b (fun τ => TaylorLogMetric.embT D τ) δ D.host.d
-    (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹ (Formalism.L2.PairingIndexBounds.F.aaOf D cc) SS N N' cl S Ξ (B.eNat χ a b N N') hL hF.1 hF.2.1 hF.2.2 hS hΞ
-  have htors : ∀ k, TaylorLogMetric.TorsPrime D p (TaylorLogMetric.La D B.tor N N') (t k) := by
-    intro k
-    obtain ⟨m, hm, hmt⟩ := ht k
-    exact ⟨m, hm.1, ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 fun hd => hp (hm.2 p Fact.out hd)).symm, hLa hmt⟩
-  have hfun : Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl N N' Ξ =
-      fun z => ∑ k, r k * TaylorLogMetric.U D B.tor (t k) (B.eNat χ a b N N') z := by
-    funext z
-    simp only [U_eq_opU]
-    exact congrFun hΘ z
-  have hlin := power_series_linearity D p lam a b n r (fun k => TaylorLogMetric.U D B.tor (t k) (B.eNat χ a b N N'))
-    (fun k => (hr k).1) (fun k => hG _ (htors k))
-  refine ⟨n, fun k => TaylorLogMetric.lamC lam (r k), t, fun _ => N, fun _ => N',
-    fun k => (hr k).2 p lam hp, htors, fun _ => ⟨hA, eqAt_refl p N, eqAt_refl p N'⟩, ?_⟩
-  show TaylorLogMetric.pSer D lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl N N' Ξ) = _
-  rw [hfun]
-  exact hlin
-
-theorem combAtS_of {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.Sys p) [IsFractionRing X.G.O X.G.Kf]
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
-    (χ : TaylorLogMetric.IdE D → ℂ) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
-    (S : Finset ℕ) (hS : SNum S cl) (hp : p ∉ S)
-    (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
-    (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
-    (Ξ : ∀ j, X.Lt j → X.Lt (j + 1) → Formalism.L2.Col.HomE D.host.E ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ)
-    (hΞ : ∀ j La La' x, IntOff S (Ξ j La La' x))
-    (h : ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-      TaylorLogMetric.admitted D _ _ (large₂ j L0 La') (Lg' j L0 La') ∧
-        LatInt (hK D cc δ _ _) (Real.sqrt D.host.d / 2) (lamK cc δ (large₂ j L0 La') (Lg' j L0 La')) ∧
-        FinIdx cc δ SS cl (large₂ j L0 La') (Lg' j L0 La') ∧ LamIn cc δ (large₂ j L0 La') (Lg' j L0 La') ∧
-        AlgTr B χ (large₂ j L0 La') (Lg' j L0 La') p) :
-    Rep.CombAt X hfin D large₂ Lg'
-      (fun j La La' => Formalism.L2.PairingIndexBounds.F.serP lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl (large₂ j La La') (Lg' j La La') (Ξ j La La')))
-      B.tor (B.eNat χ) lam := by
-  intro j L0 h0 La' hL'
-  obtain ⟨hA, hL, hF, hLa, hG⟩ := h j L0 h0 La' hL'
-  exact ⟨hA, combined_kernel_scaled D cc δ B χ _ _ SS cl _ _ _ S p lam hA hL hF hS (hΞ j L0 La') hp hLa hG⟩
-
 theorem intOff_movD {E : Type} [Field E] {a b : ℕ} {S : Finset ℕ} (Φ : Formalism.L2.Col.HomE E a b → ℂ)
     (g : Formalism.L2.Col.Sp E a ≃ₗ[E] Formalism.L2.Col.Sp E a) (g' : Formalism.L2.Col.Sp E b ≃ₗ[E] Formalism.L2.Col.Sp E b)
     (h : ∀ y, IntOff S (Φ y)) (x : Formalism.L2.Col.HomE E a b) : IntOff S (Formalism.L2.PairingIndexBounds.F.movD Φ g g' x) :=
@@ -157,29 +62,6 @@ theorem combined_kernel_twisted : CombKerT := by
       simp only [U_eq_opU]
       exact congrFun hΘ z
   exact kernel_combination_form D cc δ (B.eNat χ) hTA S a b N N' _ hA hK p lam hp
-
-theorem combAtT_of {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.Sys p) [IsFractionRing X.G.O X.G.Kf]
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
-    (χ : TaylorLogMetric.IdE D → ℂ) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
-    (S : Finset ℕ) (hAA : (Formalism.L2.PairingIndexBounds.F.aaOf D cc).FG) (hcl : 0 < cl) (hS : SNum S cl) (hp : p ∉ S)
-    (hTA : TransAlg D B.tor (B.eNat χ))
-    (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
-    (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
-    (Ξ : ∀ j, X.Lt j → X.Lt (j + 1) → Formalism.L2.Col.HomE D.host.E ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ)
-    (hΞ : ∀ j La La' x, IntOff S (Ξ j La La' x))
-    (h : ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-      TaylorLogMetric.admitted D _ _ (large₂ j L0 La') (Lg' j L0 La') ∧ (Lg' j L0 La').FG ∧
-        Submodule.span D.host.E ((large₂ j L0 La' : Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E)) :
-          Set (Fin ((X.Pj j).m + 1) → D.host.E)) = ⊤ ∧
-        LaFacts (ι := D.what₂.Tau) (fun τ => TaylorLogMetric.embT D τ) δ D.host.d (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹
-          (Formalism.L2.PairingIndexBounds.F.aaOf D cc) (large₂ j L0 La') (Lg' j L0 La') ∧
-        LamIn cc δ (large₂ j L0 La') (Lg' j L0 La')) :
-    Rep.CombAt X hfin D large₂ Lg'
-      (fun j La La' => Formalism.L2.PairingIndexBounds.F.serP lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl (large₂ j La La') (Lg' j La La') (Ξ j La La')))
-      B.tor (B.eNat χ) lam := by
-  intro j L0 h0 La' hL'
-  obtain ⟨hA, hFG, hspan, hLa0, hLa⟩ := h j L0 h0 La' hL'
-  exact ⟨hA, combined_kernel_twisted D cc δ B χ _ _ SS cl _ _ _ S p lam hA hFG hspan hAA hLa0 hcl hS (hΞ j L0 La') hp hLa hTA⟩
 
 section LamInS
 
@@ -391,25 +273,5 @@ theorem aaOf_fg (cc : Ideal (𝓞 D.host.K)) : (Formalism.L2.PairingIndexBounds.
   exact Submodule.fg_of_fg_map_injective f hf h2
 
 end LamInS
-
-theorem combine_at_final_level {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.Sys p) [IsFractionRing X.G.O X.G.Kf]
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
-    (χ : TaylorLogMetric.IdE D → ℂ) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
-    (S : Finset ℕ) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hAlg : B.AlgT χ)
-    (hcl : 0 < cl) (hS : SNum S cl) (hp : p ∉ S)
-    (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
-    (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
-    (Ξ : ∀ j, X.Lt j → X.Lt (j + 1) → Formalism.L2.Col.HomE D.host.E ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ)
-    (hΞ : ∀ j La La' x, IntOff S (Ξ j La La' x))
-    (hA : ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-      TaylorLogMetric.admitted D _ _ (large₂ j L0 La') (Lg' j L0 La')) :
-    Rep.CombAt X hfin D large₂ Lg'
-      (fun j La La' => Formalism.L2.PairingIndexBounds.F.serP lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl (large₂ j La La') (Lg' j La La') (Ξ j La La')))
-      B.tor (B.eNat χ) lam := by
-  have hTA : TransAlg D B.tor (B.eNat χ) :=
-    transcendence_algebraic_eigen D cc δ B χ hcc hδ (KS.Lat.delta_ne hcc hδ) (B.stdOK hcc hδ) hAlg
-  refine combAtT_of X hfin D B χ SS cl lam S (aaOf_fg cc) hcl hS hp hTA large₂ Lg' Ξ hΞ fun j L0 h0 La' hL' => ?_
-  have h := hA j L0 h0 La' hL'
-  exact ⟨h, h.2.2.2.1, h.2.2.1.2.1, laFacts_of_adm B hcc hδ h, lambda_in_lattice_pair cc δ _ _⟩
 
 end Formalism.L2.KerInert.RepComb

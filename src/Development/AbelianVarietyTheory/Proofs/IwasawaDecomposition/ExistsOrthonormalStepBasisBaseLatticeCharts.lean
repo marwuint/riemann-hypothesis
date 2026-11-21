@@ -8,7 +8,9 @@ import Formalism.SharpRestriction.GrowthBounds.TwistedLevelAgreement.StepInTwK
 import Formalism.SharpRestriction.GrowthBounds.BaseLevels.LevelsGEmpty
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelsTwG
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplittingFstMemIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplittingFstMemIntegers
+import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel
+import Formalism.LocalRingCardinality.DataLevel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocLEqIntVOfDvdUnitStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl NumberField IsDedekindDomain
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -107,7 +109,7 @@ theorem stepBasis_std : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} 
         ((((w.D Z).mem u).A.T : ℕ) : 𝓞 (w.D Z).host.E) :=
       B.primes_piT_norm w.px u
     have L := @GlobalTheory.T.mem_locL_iff_forall_mem_intV_of_not_mem (w.D Z).host.F (w.D Z).host.E _ _ _ _ _ _ w' _ _ _ _ _ _ hT hπ hLb
-    have PI := @GlobalTheory.T.splitting_fst_mem_integers' (w.D Z).host.F (w.D Z).host.E _ _ _ _ _ w' _ ((t.g.herm.g u v hg).spl_alg w' h)
+    have PI := @_root_.GlobalTheory.splitting_fst_mem_integers (w.D Z).host.F (w.D Z).host.E _ _ _ _ _ w' _ ((t.g.herm.g u v hg).spl_alg w' h)
     constructor
     · rintro ⟨y, hy, hyx⟩ a
       rw [← hyx a]

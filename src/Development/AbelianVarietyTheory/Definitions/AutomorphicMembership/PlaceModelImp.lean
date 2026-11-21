@@ -166,16 +166,6 @@ theorem autFun_imp : ∀ V f, @IsAutFun a.D V f → @IsAutFun b.D ((V)) ((f)) :=
     level := (h.level)
     cont := (h.cont) }
 
-variable (a) in
-
-def autFunB : type_of% (@IsAutFun b.D) := @fun V f => @IsAutFun a.D ((V)) ((f))
-
-variable (a) in
-
-theorem autFun_eq : @IsAutFun b.D = @autFunB B C a b := by
-  funext V f
-  exact propext ⟨fun h => (autFun_imp a V f h), fun h => (@autFun_imp B C a b V f h)⟩
-
 theorem autFunSm_imp : ∀ θ V f, @IsAutFunSm a.D θ V f → @IsAutFunSm b.D ((θ)) ((V)) ((f)) := fun θ V f h =>
   { toIsAutFun := (autFun_imp b V f h.toIsAutFun)
     smooth := (h.smooth)
@@ -185,12 +175,6 @@ theorem autFunSm_imp : ∀ θ V f, @IsAutFunSm a.D θ V f → @IsAutFunSm b.D ((
 variable (a) in
 
 def autFunSmB : type_of% (@IsAutFunSm b.D) := @fun θ V f => @IsAutFunSm a.D ((θ)) ((V)) ((f))
-
-variable (a) in
-
-theorem autFunSm_eq : @IsAutFunSm b.D = @autFunSmB B C a b := by
-  funext θ V f
-  exact propext ⟨fun h => (autFunSm_imp a θ V f h), fun h => (@autFunSm_imp B C a b θ V f h)⟩
 
 theorem multMap_imp : ∀ V S θ M J χ f, @IsMultMap a.D V S θ M J χ f → @IsMultMap b.D ((V)) ((S)) ((θ)) ((ds b M)) ((J)) ((χ)) ((f)) := fun V S θ M J χ f h =>
   { aut := fun v => (autFunSm_imp b θ V (f v) (h.aut v))

@@ -2,27 +2,30 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsStrict
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralDegenerationValues
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPointsCorrespondValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamiliesValuesCorrespondStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamiliesValuesCorrespond
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
+import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionPairingValuesOfFamiliesValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesOfExpansionLawsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationValuesIntOfAdmissibleBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcTorsionValuesNormsIntegralPositiveStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesTorsionPairingSeparationIntegraStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantsEqDegenerationSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartsIsoLabelsOfThetaPointAndValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationRecognitionOfAbelianPartsIsoLabelsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesOfExpansionLaws
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationValuesIntOfAdmissibleBase
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcTorsionValuesNormsIntegralPositive
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesTorsionPairingSeparationIntegra
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantsEqDegenerationSeries
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartsIsoLabelsOfThetaPointAndValues
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationRecognitionOfAbelianPartsIsoLabels
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosed
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TraceFormTwistIsoOfPullback
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPullbackDegPreStrictLineBundleIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolarisationGeneratingSectionPullbackLocalBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationValuesOfStrictPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPullbackDegPreStrictLineBundleIso
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolarisationGeneratingSectionPullbackLocalBase
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationValuesOfStrictPullback
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcDatumPullbackRescaledMatchesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationValuesOfRescaledTwistedStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionLabelSystemsProportionalSeriesMatchTorsioStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationValuesOfRescaledTwisted
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionLabelSystemsProportionalSeriesMatchTorsio
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionLabelSystemsSeriesScalarIndependentOfLeveStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationIsoCommInducedLabelMapsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationIsoCommInducedLabelMaps
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionIsometryValuesIsTorsionLabelSystemStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionLabelSystemTwistByCompatibleRootsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionLabelSystemTwistByCompatibleRoots
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorsionIsometryUniformisedModelStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelSeriesEqUnitMulThetaPointStatement
 
@@ -44,14 +47,14 @@ theorem exists_twisted_pull (hL : Laws) [IsLocalRing O'] [IsNoetherianRing O'] (
     ∃ (DW : DegPre R) (_ : Module (𝓞 E) DW.X) (oW : letI := H.starRing; DW.OAct (𝓞 E)) (φ : _) (he : _) (w : _) (e : _)
       (νW : NumOf DW C (A.N.twist A.be u)), GlobalTheory.LN.Match a f u₀ DW oW φ he w e ∧ (∀ y, νW.eX y = e (A.ν.eX y)) ∧
       (∀ x, (νW.eA x).left ≫ φ = (A.ν.eA x).left) ∧ DW.PsiEven ∧ DW.TauBimult ∧ DW.P.g = a.D₀.P.g := by
-  obtain ⟨D', hD, hg, hs⟩ := GlobalTheory.T.exists_pullback_degPre_strict_lineBundle_iso hL O' R f a.D₀ ⊤ (ArcPull.nonempty_psiOn_top _ a.gen) trivial
-  obtain ⟨th', h₁, h₂⟩ := GlobalTheory.T.polarisation_generating_section_pullback_local_base hL O' R f a.D₀.P D'.P _ hD.w (pull_grp hD) hD.w_gen A.ν.th A.ν.th_gen
-  obtain ⟨ν', e₁, e₂⟩ := GlobalTheory.T.exists_degenerationValues_of_strict_pullback hL.globalFns O' R f a.D₀ D' hD hs C hf A.N A.ν th' h₁ h₂
+  obtain ⟨D', hD, hg, hs⟩ := _root_.GlobalTheory.StrictPull.exists_isPullDeg_strict hL O' R f a.D₀ ⊤ (ArcPull.nonempty_psiOn_top _ a.gen) trivial
+  obtain ⟨th', h₁, h₂⟩ := _root_.GlobalTheory.GeneratorPull.exists_generator_pull hL O' R f a.D₀.P D'.P _ hD.w (pull_grp hD) hD.w_gen A.ν.th A.ν.th_gen
+  obtain ⟨ν', e₁, e₂⟩ := _root_.GlobalTheory.ValuesStrictPull.exists_numOf_strict_pull hL.globalFns O' R f a.D₀ D' hD hs C hf A.N A.ν th' h₁ h₂
   have h0 : algebraMap R (FractionRing R) u₀ ≠ 0 := fun h => u.ne_zero (by rw [hu, h, map_zero])
   let q : D'.X → (FractionRing R)ˣ := fun y => Units.mk0 _ h0 ^ (a.be (hD.xe y) (hD.xe y) / 2)
   obtain ⟨m, oW, he, w, e, hM, hx, hE, hB⟩ := GlobalTheory.T.arcDatum_pullback_rescaled_matches hL.globalFns E H D l c O β O' b a R f D' hD u₀ (Units.mk0 _ h0) rfl q
     _ rfl fun _ => rfl
-  obtain ⟨νW, e₃, e₄⟩ := GlobalTheory.T.exists_degenerationValues_of_rescaled_twisted R D' C A.N ν' _ A.be u q fun y => by
+  obtain ⟨νW, e₃, e₄⟩ := _root_.GlobalTheory.RescaleValues.exists_numOf_rescale R D' C A.N ν' _ A.be u q fun y => by
     simp only [q, e₁, A.be_eq, Units.val_zpow_eq_zpow_val, map_zpow₀, Units.val_mk0, hu]
   refine ⟨_, m, oW, _, he, w, e, νW, hM, fun y => hD.xe.injective ?_, fun x => ?_, hE, hB, hg⟩
   · exact ((congrArg hD.xe (e₃ y)).trans (e₁ y)).trans (hx _).symm
@@ -82,10 +85,10 @@ theorem data_of_model : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
   have hL2 : Laws2 := hV.1.2.1
   obtain ⟨_, _⟩ := local_of_arcBase hO
   have hGt := GlobalTheory.T.torus_torsion_points_correspond_values
-  have hFam := GlobalTheory.T.families_values_correspond hL hL2
+  have hFam := _root_.GlobalTheory.Ex.brFam hL hL2
   have hWp := GlobalTheory.T.torsionPairing_values_of_familiesValues hGt hFam
-  have hUth := GlobalTheory.T.abelianPartValues_of_expansionLaws hL
-  have hUrec := GlobalTheory.T.degenerationRecognition_of_abelianPartsIsoLabels (GlobalTheory.T.abelianPartsIsoLabels_of_thetaPoint_and_values hL hT hUth)
+  have hUth := _root_.GlobalTheory.ThetaInValues.brUth_of_laws hL
+  have hUrec := _root_.GlobalTheory.Ex.Recognition.urec_of_abelian (_root_.GlobalTheory.Ex.AbPartIso.main hL hT hUth)
   have hDvr := M.cdv.1
   have hAdm : AdmBase M.W (IsLocalRing.maximalIdeal M.W) := ⟨inferInstance, inferInstance, inferInstance, M.cdv.2.1⟩
   have hn0 : (n : C) ≠ 0 := Nat.cast_ne_zero.2 hn.ne_zero
@@ -99,11 +102,11 @@ theorem data_of_model : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
   obtain ⟨N', ν', hI'⟩ := ValuesExist.exists_integral_values hL M.W M.P.D.toPre M.P.D.psi_even M.P.D.tau_bimult C S
     fun x => (hS _).2 (M.ext.1 x)
   have hI'' : ν'.IntN := ⟨S, hS, hI'⟩
-  obtain ⟨Q', hQ'⟩ := GlobalTheory.T.degenerationValues_int_of_admissibleBase M.W _ hAdm M.P.D C M.ext N' ν' hI''
-  obtain ⟨Q, hQ, -⟩ := (GlobalTheory.T.arcTorsionValues_norms_integral_positive E H D l Xo c W₀ Y O' b ϖ a hO C xO A hI).2.2 u hu1
-  have tN : A.N.toNumB.Tors n a.D₀.P.g := GlobalTheory.T.abelianPartValues_torsion_pairing_separation_integral hL hL2 hUth O' a.D₀ a.even a.bimult C xO A.N A.ν hI n hn ho hn1
+  obtain ⟨Q', hQ'⟩ := _root_.GlobalTheory.Ex.IntVal.main M.W _ hAdm M.P.D C M.ext N' ν' hI''
+  obtain ⟨Q, hQ, -⟩ := (_root_.GlobalTheory.Ex.UnitNorm.norms_of_arc_input E H D l Xo c W₀ Y O' b ϖ a hO C xO A hI).2.2 u hu1
+  have tN : A.N.toNumB.Tors n a.D₀.P.g := _root_.GlobalTheory.ValuesTorsion.tors_of_integral hL hL2 hUth O' a.D₀ a.even a.bimult C xO A.N A.ν hI n hn ho hn1
   have tW : (A.N.twist A.be u).toNumB.Tors n DW.P.g := hg ▸ tN
-  have tN' := GlobalTheory.T.abelianPartValues_torsion_pairing_separation_integral hL hL2 hUth M.W M.P.D.toPre M.P.D.psi_even M.P.D.tau_bimult C xW N' ν' hI'' n hn ho hn1
+  have tN' := _root_.GlobalTheory.ValuesTorsion.tors_of_integral hL hL2 hUth M.W M.P.D.toPre M.P.D.psi_even M.P.D.tau_bimult C xW N' ν' hI'' n hn ho hn1
 
   obtain ⟨lA, linA⟩ := GlobalTheory.T.torsionIsometry_values_isTorsionLabelSystem hGt hWp E H D O' a.D₀ a.oa a.even a.bimult C A.I A.N A.ν A.q A.hq
   have ex : ∀ (k : ℕ) (x : D.La), ∃ p : (A.N.twist A.be u).QT k, 0 < k → TwRel A.be u (r k) (A.q k x) p := fun k x => by
@@ -112,7 +115,7 @@ theorem data_of_model : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
     · obtain ⟨p, h, -⟩ := existsUnique_twRel A.be u (r k) (hr.pow hk) (A.q k x)
       exact ⟨p, fun _ => h⟩
   choose lab hlab using ex
-  have lT := GlobalTheory.T.torsionLabelSystem_twist_by_compatible_roots C A.N D.La D.EF A.I.ζ A.q _ A.be u r hr lA lab fun k hk x => hlab k x hk
+  have lT := _root_.GlobalTheory.TwistLabels.labels_twist C A.N D.La D.EF A.I.ζ A.q _ A.be u r hr lA lab fun k hk x => hlab k x hk
 
   obtain ⟨I', hζ, hTo⟩ := GlobalTheory.T.exists_torsion_isometry_uniformised_model hV.1 hGt E H D C o M N' ν'
   have G' := hGt M.W M.P.D.toPre M.P.D.psi_even M.P.D.tau_bimult C N' ν'
@@ -120,7 +123,7 @@ theorem data_of_model : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
   obtain ⟨lM, linM⟩ := GlobalTheory.T.torsionIsometry_values_isTorsionLabelSystem hGt hWp E H D M.W M.P.D.toPre M.P.oD M.P.D.psi_even M.P.D.tau_bimult C I' N' ν' lab' hlab'
   have refl' : ∀ k x, QkPt.Equiv _ C (I'.ev k x) (I'.ev k x) := fun k x =>
     ((G'.2.2.2.2 k).2.2 _ _ _ _ (hlab' k x) (hlab' k x)).2 ((N'.qEq_equivalence k).refl _)
-  have th := fun j => GlobalTheory.T.modelSeries_eq_unit_mul_thetaPoint hL (GlobalTheory.T.theta_constants_eq_degeneration_series hV hGt hFam) E H D C o M N' ν' (n ^ j) ho.pow (I'.ev _) (lab' _) _
+  have th := fun j => GlobalTheory.T.modelSeries_eq_unit_mul_thetaPoint hL (_root_.GlobalTheory.Ex.ThetaSeries.theta_const_eq_series hV hGt hFam) E H D C o M N' ν' (n ^ j) ho.pow (I'.ev _) (lab' _) _
     (fun x z hz => hTo _ (pow_pos (hp j) 2) x _ z (refl' _ x) hz) (hlab' _)
     ((hθ j).2 (lab _) fun x => hlab _ x (pow_pos (hp j) 2))
   have h3 : 3 ≤ n ^ 1 := by
@@ -129,15 +132,15 @@ theorem data_of_model : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
     rw [pow_one]; omega
   obtain ⟨c₀, hc₀, hc⟩ := GlobalTheory.T.torsionLabelSystems_series_scalar_independent_of_level C _ N' D.La D.EF A.I.ζ I'.ζ lab lab' n ho lT lM (fun j => (th j).1)
     (Function.ne_iff.1 ((th 1).2 h3))
-  obtain ⟨mt, hmt⟩ := GlobalTheory.T.torsionLabelSystems_proportional_series_match_torsion C _ N' D.La D.EF A.I.ζ I'.ζ lab lab' n hn ho (eq_zero_of_nsmul D) lT lM A.I.ζ_pow I'.ζ_pow
+  obtain ⟨mt, hmt⟩ := _root_.GlobalTheory.ModelData.LabelMatch.exists_match C _ N' D.La D.EF A.I.ζ I'.ζ lab lab' n hn ho (eq_zero_of_nsmul D) lT lM A.I.ζ_pow I'.ζ_pow
     (fun j => by rw [hζ]; exact (hθ j).1) c₀ hc₀ hc
   obtain ⟨J, hJ, hGeo⟩ := hUrec M.W DW M.P.D.toPre hE hB M.P.D.psi_even M.P.D.tau_bimult C _ N' νW ν' Q Q' n hn ho hn1
     hQ hQ' tW tN' mt
   have hJ' := fun j p p' h₁ h₂ => (hmt j p p').1 (hJ j p p' h₁ h₂)
   refine ⟨N', ν', J, fun x y => ?_, fun j x p q' p' z h₁ h₂ h₃ h₄ h₅ => ?_,
     DW, mW, oW, φ, he, w, e, νW, hM, hX, hA, hGeo⟩
-  · have key := GlobalTheory.T.degenerationIso_comm_induced_label_maps C _ N' D.La D.EF A.I.ζ I'.ζ lab lab' n hn.one_lt lT lM J hJ'
-      (fun j => (GlobalTheory.T.degenerationData_torsion_structure_algClosed C _ n _ hn0 tW j).2.2.1)
+  · have key := _root_.GlobalTheory.ModelData.iso_comm_of_labels C _ N' D.La D.EF A.I.ζ I'.ζ lab lab' n hn.one_lt lT lM J hJ'
+      (fun j => (_root_.GlobalTheory.Ex.QStr.qStructure C _ n _ hn0 tW j).2.2.1)
       (A.ν.eX.symm.toAddMonoidHom.comp ((DistribMulAction.toAddMonoidHom _ x).comp A.ν.eX.toAddMonoidHom))
       (ν'.eX.symm.toAddMonoidHom.comp ((DistribMulAction.toAddMonoidHom _ x).comp ν'.eX.toAddMonoidHom)) (x • ·)
       (fun j v => by

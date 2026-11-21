@@ -41,7 +41,4 @@ theorem subquotientStatement_of_quotient_zarhin_hodgeTate
   rw [← hAA]
   exact hret.2.2 K (by rw [hAA]; exact hgen)
 
-example : QuotientByFiniteFlatStatement → ZarhinStatement → HodgeTateDatumStatement →
-    SubquotientStatement := subquotientStatement_of_quotient_zarhin_hodgeTate
-
 end GlobalTheory.CompanionTheory.Ar.GR

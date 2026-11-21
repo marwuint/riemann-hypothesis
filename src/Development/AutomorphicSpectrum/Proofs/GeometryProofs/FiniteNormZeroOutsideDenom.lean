@@ -78,7 +78,7 @@ theorem lie_lift {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] [Smoo
       (Function.Injective g → Function.Injective b) := by
   letI := g.toAlgebra
   subst hx
-  obtain ⟨T, _, _, _, _, M'', j, hl, hj⟩ := GlobalTheory.T.exists_lie_model_base_change S G R R' x V M
+  obtain ⟨T, _, _, _, _, M'', j, hl, hj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagFib.lieModel_liftBaseChange S G R R' x V M
   obtain ⟨f, hf, -⟩ := lieModel_existsUnique_equiv S G R' _ T V' M'' M'
   refine ⟨f.toLinearMap.toAddMonoidHom.comp j.toAddMonoidHom, fun e => ?_, fun c e => ?_, ?_, fun hg => ?_⟩
   · have := hl e

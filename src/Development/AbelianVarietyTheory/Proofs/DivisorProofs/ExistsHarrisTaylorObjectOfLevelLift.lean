@@ -1,6 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelPosOfCoprime
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackTer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackBis
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianLocalRingOfIsAdicComplete
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Definitions.Degenerations.ExistsGenPullTriv
+import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
+import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelObjectPullbackExistsAndPrincipal
 
 noncomputable section
@@ -25,7 +32,7 @@ theorem exists_obj_of_isLift : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : T
     (mm : ObjMap (o''.forget N hd hc) o T.hom), ∀ a, (o''.eta a).left ≫ mm.φ = (lv a).left := by
   intro p _ D R _ b N N' hd hc S s o T lv hL
   obtain ⟨hadd, hker, hlin, hlev, hgeom⟩ := hL
-  obtain ⟨oT, ⟨mT⟩⟩ := GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N S T.left s T.hom o
+  obtain ⟨oT, ⟨mT⟩⟩ := _root_.GlobalTheory.HTPull.exists_objMap_pull p D R b N S T.left s T.hom o
   have pb := mT.cart
   let eta : D.La → (𝟙_ (Over T.left) ⟶ oT.A) := fun a =>
     Over.homMk (pb.1.lift (lv a).left (𝟙 _) (by rw [Over.w, Category.id_comp])) (pb.1.lift_snd _ _ _)

@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchSecOfUnf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.KoecherPrincipleUnitConstant
@@ -50,12 +50,6 @@ theorem GlobalTheory.FlatDenom.exists_archimedean_section_with_denominator : _ro
   have h1 : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q := (hG.unf Y.d.c₂.F.val.toRingHom rfl).1
   exact _root_.GlobalTheory.FlatDenom.exists_archimedean_section_of_unramified hP (by omega) hG.lev.2 hG.unf hG.geo _ Z τ
 namespace GlobalTheory.FlatDenom
-section Powers
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
-  {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ)
-  (Z : Comp Xo c)
-variable {U x Z} {la la' : GlobalTheory.AllWt.Weight Dw}
-end Powers
 end GlobalTheory.FlatDenom
 open Formalism.BasicNotions GlobalTheory.CovTop in
 set_option synthInstance.maxHeartbeats 400000 in

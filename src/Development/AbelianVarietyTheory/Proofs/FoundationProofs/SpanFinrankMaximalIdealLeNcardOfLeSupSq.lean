@@ -247,15 +247,6 @@ theorem formallyEtale_residueField_of_isMaximal (R k : Type*) [CommRing R] [Fiel
   have : Module.Finite k (ResidueField S) := finite_of_finite_type_of_isJacobsonRing _ _
   exact Algebra.FormallyEtale.of_isSeparable k _
 
-theorem formallySmooth_of_finrank_cotangentSpace_le (k S : Type*) [Field k] [PerfectField k]
-    [CommRing S] [IsLocalRing S] [Algebra k S] [Algebra.EssFiniteType k S] {d : ℕ}
-    (h₁ : (d : WithBot ℕ∞) ≤ ringKrullDim S)
-    (h₂ : Module.finrank (ResidueField S) (CotangentSpace S) ≤ d) :
-    Algebra.FormallySmooth k S :=
-  have : IsNoetherianRing S := Algebra.EssFiniteType.isNoetherianRing k S
-  have := (isRegularLocalRing_of_finrank_cotangentSpace_le S h₁ h₂).1
-  formallySmooth_of_isRegularLocalRing_of_perfectField k S
-
 theorem isSmoothAt_of_finrank_cotangent_le_of_perfectField (k : Type*) [Field k] [PerfectField k]
     {A : Type*} [CommRing A] [Algebra k A] [Algebra.FiniteType k A] (m : Ideal A) [m.IsMaximal]
     {d : ℕ} (h₁ : (d : WithBot ℕ∞) ≤ ringKrullDim (Localization.AtPrime m))
@@ -561,55 +552,6 @@ theorem isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective {d : ℕ}
     (Localization.AtPrime x) (h.trans hx)
   exact ⟨h₁, h₂, h₃, h₄, hx.antisymm (h₅ ▸ h)⟩
 
-theorem isSmoothAt_of_liesOver_of_flat_of_forall_finrank_cotangent_le {d : ℕ}
-    (hd : ∀ p ∈ minimalPrimes (K ⊗[V] A), (d : WithBot ℕ∞) ≤ ringKrullDim ((K ⊗[V] A) ⧸ p))
-    {B : Type*} [CommRing B] (φ : A →+* B) (hφ : Function.Surjective φ)
-    (hker : RingHom.ker φ = (maximalIdeal V).map (algebraMap V A))
-    (hx : ∀ x : Ideal B, x.IsMaximal → Module.finrank (B ⧸ x) x.Cotangent ≤ d)
-    (q : Ideal A) [q.IsPrime] [q.LiesOver (maximalIdeal V)] :
-    Algebra.IsSmoothAt V q ∧
-      ∃ f ∉ q, Algebra.IsStandardSmoothOfRelativeDimension d V (Localization.Away f) := by
-  have hkq : RingHom.ker φ ≤ q := by
-    rw [hker, Ideal.map_le_iff_le_comap]
-    exact (q.over_def (maximalIdeal V)).le
-  have hprime : (q.map φ).IsPrime := Ideal.map_isPrime_of_surjective hφ hkq
-  obtain ⟨x, hxm, hqx⟩ := Ideal.exists_le_maximal _ hprime.ne_top
-  obtain ⟨-, ⟨f, hf, hs⟩, -⟩ :=
-    isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V K hd φ hφ hker x (hx x hxm)
-  have hfq : f ∉ q := fun h ↦ hf (Ideal.map_le_iff_le_comap.mp hqx h)
-  refine ⟨?_, f, hfq, hs⟩
-  have : Algebra.FinitePresentation V A := Algebra.FinitePresentation.of_finiteType.mp ‹_›
-  have : Algebra.IsStandardSmooth V (Localization.Away f) := hs.isStandardSmooth d
-  exact (Algebra.basicOpen_subset_smoothLocus_iff (R := V) (f := f)).mpr inferInstance
-    (show (⟨q, ‹_›⟩ : PrimeSpectrum A) ∈ PrimeSpectrum.basicOpen f from hfq)
-
-theorem isSmoothAt_of_flat_of_finrank_cotangent_le {ϖ : V} (hϖ : Irreducible ϖ) {d : ℕ}
-    (hd : ∀ p ∈ minimalPrimes (K ⊗[V] A), ringKrullDim ((K ⊗[V] A) ⧸ p) = d)
-    (x : Ideal (A ⧸ Ideal.span {algebraMap V A ϖ})) [x.IsMaximal]
-    (hx : Module.finrank ((A ⧸ Ideal.span {algebraMap V A ϖ}) ⧸ x) x.Cotangent ≤ d) :
-    Algebra.IsSmoothAt V (x.comap (Ideal.Quotient.mk _)) ∧
-      (∃ f ∉ x.comap (Ideal.Quotient.mk _),
-        Algebra.IsStandardSmoothOfRelativeDimension d V (Localization.Away f)) ∧
-      IsRegularLocalRing (Localization.AtPrime x) ∧ ringKrullDim (Localization.AtPrime x) = d ∧
-      Module.finrank ((A ⧸ Ideal.span {algebraMap V A ϖ}) ⧸ x) x.Cotangent = d :=
-  isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V K (fun p hp ↦ (hd p hp).ge) _
-    Ideal.Quotient.mk_surjective
-    (Ideal.mk_ker.trans (map_maximalIdeal_eq_span_of_irreducible V hϖ).symm) x hx
-
-theorem isSmoothAt_of_flat_of_finrank_cotangent_le_tensor (k : Type*) [Field k] [Algebra V k]
-    (hk : Function.Surjective (algebraMap V k)) {d : ℕ}
-    (hd : ∀ p ∈ minimalPrimes (K ⊗[V] A), ringKrullDim ((K ⊗[V] A) ⧸ p) = d)
-    (x : Ideal (k ⊗[V] A)) [x.IsMaximal]
-    (hx : Module.finrank ((k ⊗[V] A) ⧸ x) x.Cotangent ≤ d) :
-    Algebra.IsSmoothAt V
-        (x.comap (Algebra.TensorProduct.includeRight : A →ₐ[V] k ⊗[V] A).toRingHom) ∧
-      (∃ f ∉ x.comap (Algebra.TensorProduct.includeRight : A →ₐ[V] k ⊗[V] A).toRingHom,
-        Algebra.IsStandardSmoothOfRelativeDimension d V (Localization.Away f)) ∧
-      IsRegularLocalRing (Localization.AtPrime x) ∧ ringKrullDim (Localization.AtPrime x) = d ∧
-      Module.finrank ((k ⊗[V] A) ⧸ x) x.Cotangent = d :=
-  isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V K (fun p hp ↦ (hd p hp).ge) _
-    (TensorProduct.mk_surjective V A k hk) (ker_includeRight_of_surjective V k hk) x hx
-
 end Main
 
 section Scheme
@@ -717,19 +659,6 @@ theorem topologicalKrullDim_closure_eq_ringKrullDim_quotient {K : Type u} [Field
     rw [Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]
     exact zero_mem _
 
-theorem closure_mem_irreducibleComponents_of_mem_minimalPrimes {Y : Scheme.{u}} {B : Type u}
-    [CommRing B] (j : Spec (.of B) ⟶ Y) [IsOpenImmersion j] (q : PrimeSpectrum B)
-    (hq : q.asIdeal ∈ minimalPrimes B) : closure {j q} ∈ irreducibleComponents Y := by
-  refine ⟨isIrreducible_singleton.closure, fun W hW hle ↦ ?_⟩
-  have hη := hW.isGenericPoint_genericPoint_closure
-  have h₁ : hW.genericPoint ⤳ j q := hη.specializes (subset_closure (hle (subset_closure rfl)))
-  obtain ⟨q', hq'⟩ := h₁.mem_open j.isOpenEmbedding.isOpen_range ⟨q, rfl⟩
-  rw [← hq'] at h₁ hη
-  have h₂ : q'.asIdeal ≤ q.asIdeal := (PrimeSpectrum.le_iff_specializes q' q).mpr
-    (j.isOpenEmbedding.isInducing.specializes_iff.mp h₁)
-  obtain rfl : q' = q := PrimeSpectrum.ext (h₂.antisymm (hq.2 ⟨q'.isPrime, bot_le⟩ h₂))
-  exact subset_closure.trans hη.def.ge
-
 variable (V K k : Type u) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   [PerfectField (ResidueField V)] [Field K] [Algebra V K] [IsFractionRing V K]
   [Field k] [Algebra V k] (hk : Function.Surjective (algebraMap V k))
@@ -740,108 +669,6 @@ variable (V K k : Type u) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 include hk h₀ h₁
 
-theorem exists_smoothOfRelativeDimension_of_flat_of_finrank_cotangentSpace_le {d : ℕ}
-    (hd : ∀ Z ∈ irreducibleComponents X₁, (d : WithBot ℕ∞) ≤ topologicalKrullDim Z)
-    (x : X₀) (hxc : IsClosed ({x} : Set X₀))
-    (hx : Module.finrank (ResidueField (X₀.presheaf.stalk x))
-      (CotangentSpace (X₀.presheaf.stalk x)) ≤ d) :
-    (∃ U : X.Opens, i₀ x ∈ U ∧ SmoothOfRelativeDimension d (U.ι ≫ f)) ∧
-      IsRegularLocalRing (X₀.presheaf.stalk x) ∧ ringKrullDim (X₀.presheaf.stalk x) = d ∧
-      Module.finrank (ResidueField (X₀.presheaf.stalk x))
-        (CotangentSpace (X₀.presheaf.stalk x)) = d := by
-  obtain ⟨A, _, _, j, _, q, hq, hj⟩ := exists_affine_chart_over f (i₀ x)
-  have : Algebra.FiniteType V A := RingHom.finiteType_algebraMap.mp <|
-    (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)
-      (φ := CommRingCat.ofHom (algebraMap V A))).mp (hj ▸ inferInstance)
-  have : Module.Flat V A := RingHom.flat_algebraMap_iff.mp <|
-    (HasRingHomProperty.Spec_iff (P := @Flat)
-      (φ := CommRingCat.ofHom (algebraMap V A))).mp (hj ▸ inferInstance)
-  have : LocallyOfFiniteType p₁ := MorphismProperty.of_isPullback h₁ ‹_›
-  obtain ⟨j₀, _, H₀⟩ := exists_affine_chart_of_isPullback h₀ j hj
-  obtain ⟨j₁, _, -⟩ := exists_affine_chart_of_isPullback h₁ j hj
-  obtain ⟨y, rfl, hy⟩ := Scheme.exists_preimage_of_isPullback H₀ x q hq.symm
-  have hmax : y.asIdeal.IsMaximal := by
-    refine (PrimeSpectrum.isClosed_singleton_iff_isMaximal y).mp ?_
-    have := hxc.preimage j₀.continuous
-    rwa [← Set.image_singleton, j₀.isOpenEmbedding.injective.preimage_image] at this
-  have hd' (p) (hp : p ∈ minimalPrimes (K ⊗[V] A)) :
-      (d : WithBot ℕ∞) ≤ ringKrullDim ((K ⊗[V] A) ⧸ p) :=
-    (hd _ (closure_mem_irreducibleComponents_of_mem_minimalPrimes j₁ ⟨p, hp.1.1⟩ hp)).trans_eq
-      (topologicalKrullDim_closure_eq_ringKrullDim_quotient p₁ j₁ ⟨p, hp.1.1⟩)
-  let e : Localization.AtPrime y.asIdeal ≃+* X₀.presheaf.stalk (j₀ y) :=
-    (asIso (j₀.stalkMap y) ≪≫ Spec.stalkIso (.of (k ⊗[V] A)) y).commRingCatIsoToRingEquiv.symm
-  let : Algebra (k ⊗[V] A) (X₀.presheaf.stalk (j₀ y)) :=
-    (e.toRingHom.comp (algebraMap _ _)).toAlgebra
-  have : IsLocalization.AtPrime (X₀.presheaf.stalk (j₀ y)) y.asIdeal :=
-    IsLocalization.isLocalization_of_algEquiv y.asIdeal.primeCompl
-      ({ e with commutes' _ := rfl } : Localization.AtPrime y.asIdeal ≃ₐ[k ⊗[V] A] _)
-  obtain ⟨-, ⟨g, hg, hs⟩, h⟩ := isSmoothAt_of_flat_of_finrank_cotangentSpace_le V K hd' _
-    (TensorProduct.mk_surjective V A k hk) (ker_includeRight_of_surjective V k hk) y.asIdeal _ hx
-  refine ⟨?_, h⟩
-  let j' := Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away g))) ≫ j
-  have hs' : SmoothOfRelativeDimension d (j' ≫ f) := by
-    rw [Category.assoc, hj, ← Spec.map_comp, ← CommRingCat.ofHom_comp,
-      ← IsScalarTower.algebraMap_eq, HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension d)]
-    exact RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _
-      ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap d).mpr hs)
-  refine ⟨j'.opensRange, ?_, ?_⟩
-  · obtain ⟨t, ht⟩ : q ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away g))) := by
-      rw [PrimeSpectrum.localization_away_comap_range _ g, ← hy]
-      exact hg
-    refine ⟨t, ?_⟩
-    rw [← hq, ← ht]
-    rfl
-  · rw [← j'.isoOpensRange_inv_comp, Category.assoc]
-    have := smoothOfRelativeDimension_comp 0 d j'.isoOpensRange.inv (j' ≫ f)
-    rwa [zero_add] at this
-
-theorem exists_smoothOfRelativeDimension_of_flat_of_forall_finrank_cotangentSpace_le {d : ℕ}
-    (hd : ∀ Z ∈ irreducibleComponents X₁, (d : WithBot ℕ∞) ≤ topologicalKrullDim Z)
-    (hx : ∀ x : X₀, IsClosed ({x} : Set X₀) → Module.finrank (ResidueField (X₀.presheaf.stalk x))
-      (CotangentSpace (X₀.presheaf.stalk x)) ≤ d) :
-    ∃ U : X.Opens, Set.range i₀ ⊆ U ∧ SmoothOfRelativeDimension d (U.ι ≫ f) := by
-  have : LocallyOfFiniteType p₀ := MorphismProperty.of_isPullback h₀ ‹_›
-  have : JacobsonSpace X₀ := LocallyOfFiniteType.jacobsonSpace p₀
-  choose U hU hs using fun x : closedPoints X₀ ↦
-    (exists_smoothOfRelativeDimension_of_flat_of_finrank_cotangentSpace_le V K k hk h₀ h₁ hd x.1
-      x.2 (hx x.1 x.2)).1
-  refine ⟨⨆ x, U x, ?_, ?_⟩
-  · rintro _ ⟨z, rfl⟩
-    obtain ⟨x, hx₁, hx₂⟩ := nonempty_inter_closedPoints (Z := closure {z})
-      ⟨z, subset_closure rfl⟩ isClosed_closure.isLocallyClosed
-    exact ((specializes_iff_mem_closure.mpr hx₁).map i₀.continuous).mem_open (⨆ x, U x).isOpen
-      (le_iSup U ⟨x, hx₂⟩ (hU ⟨x, hx₂⟩))
-  · have := HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension d)
-    refine IsZariskiLocalAtSource.of_openCover (Scheme.Opens.iSupOpenCover U) fun x ↦ ?_
-    have : (Scheme.Opens.iSupOpenCover U).f x ≫ (⨆ x, U x).ι = (U x).ι := by
-      simp [Scheme.Opens.iSupOpenCover]
-    rw [← Category.assoc, this]
-    exact hs x
-
 end Scheme
-
-example (V : Type u) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-    [PerfectField (ResidueField V)] (x : Ideal (Polynomial (ResidueField V))) [x.IsMaximal] :
-    Algebra.IsSmoothAt V (x.comap (Polynomial.mapRingHom (residue V))) ∧
-      Module.finrank (Polynomial (ResidueField V) ⧸ x) x.Cotangent = 1 := by
-  have h := isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V (FractionRing V)
-    (A := Polynomial V) (d := 1) ?_ (Polynomial.mapRingHom (residue V))
-    (Polynomial.map_surjective _ residue_surjective)
-    (by rw [Polynomial.ker_mapRingHom, ker_residue]; rfl) x ?_
-  · exact ⟨h.1, h.2.2.2.2⟩
-  · have : IsDomain (FractionRing V ⊗[V] Polynomial V) :=
-      (polyEquivTensor V (FractionRing V)).symm.toMulEquiv.isDomain
-    intro p hp
-    rw [IsDomain.minimalPrimes_eq_singleton_bot, Set.mem_singleton_iff] at hp
-    rw [hp, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _),
-      ringKrullDim_genericFibre_eq V (FractionRing V) (d := 1)
-        (by simp [Polynomial.trdeg_of_isDomain])]
-  · let := Ideal.Quotient.field x
-    obtain ⟨a, ha⟩ := IsPrincipalIdealRing.principal x
-    refine finrank_le_one (x.toCotangent ⟨a, ha.ge (Submodule.mem_span_singleton_self a)⟩)
-      fun w ↦ ?_
-    obtain ⟨⟨w, hw⟩, rfl⟩ := x.toCotangent_surjective w
-    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp (ha.le hw)
-    exact ⟨Ideal.Quotient.mk x c, (map_smul x.toCotangent c _).symm⟩
 
 end GlobalTheory

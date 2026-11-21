@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralMulNormStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralMulNorm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticStarStructure
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyMeasAndReps
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedQuadraticExistsIntegersUniformiserStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HermitianTraceDualIntegersEqUniformizerPowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HaarMeasureLUnitSmulAbsKSqStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticGaussIntegralStableOfDualLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueGaussIntegralNormFormStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedQuadraticExistsIntegersUniformiser
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HermitianTraceDualIntegersEqUniformizerPow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HaarMeasureLUnitSmulAbsKSq
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticGaussIntegralStableOfDualLattice
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueGaussIntegralNormForm
 open GlobalTheory.JR GlobalTheory.JR.WeilQuad Matrix MeasureTheory Filter Topology
 
 noncomputable section
@@ -94,7 +94,7 @@ theorem level0 : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNorme
   have hDeq : ((O.toAddSubgroup : AddSubgroup A.L) : Set A.L) =
       {y : A.L | ∀ m ∈ O.toAddSubgroup, A.kerL ψ (t * x) y m = 1} := by
     simpa using hD.symm
-  have hG := GlobalTheory.T.quadraticGaussIntegral_stable_of_dual_lattice F E A ψ x μ hψ hμ t O.toAddSubgroup O.toAddSubgroup hOo hOc hOo hOc
+  have hG := _root_.GlobalTheory.JR.WeilQuad.gaussInt_stable_of_dual F E A ψ x μ hψ hμ t O.toAddSubgroup O.toAddSubgroup hOo hOc hOo hOc
     (fun m hm => hM m hm) hDeq
   convert hG using 1
   simp only [gaussInt, Subring.coe_toAddSubgroup]
@@ -190,10 +190,10 @@ theorem level1 : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNorme
         have := congrArg (fun w => algebraMap A.K A.L ((ϖ⁻¹ : A.Kˣ) : A.K) * w) hzy
         simpa only [← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul] using this
       rw [hc]; exact hz
-  have hG := GlobalTheory.T.quadraticGaussIntegral_stable_of_dual_lattice F E A ψ x μ hψ hμ t M O.toAddSubgroup hMo hMc hOo hOc hM hDeq
+  have hG := _root_.GlobalTheory.JR.WeilQuad.gaussInt_stable_of_dual F E A ψ x μ hψ hμ t M O.toAddSubgroup hMo hMc hOo hOc hM hDeq
   convert hG using 1
   simp only [gaussInt, Subring.coe_toAddSubgroup]
-  rw [GlobalTheory.T.residue_gauss_integral_norm_form F E A ψ μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖu hdich hnorm hsc (t * x) hψϖ hnt]
+  rw [_root_.GlobalTheory.JR.ResidueGauss.residue_gauss_integral F E A ψ μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖu hdich hnorm hsc (t * x) hψϖ hnt]
 
 end Level1
 
@@ -201,9 +201,9 @@ theorem gauss_at_uniformiser : ∀ (F E : Type) [NontriviallyNormedField F] [Non
   intro F E _ _ _ _ _ A ψ x μ ω hH G₁ hG₁
   obtain ⟨hK, hL, hψ, hSD, hω⟩ := hH
   have hμ : μ.IsAddHaarMeasure := hSD.1
-  obtain ⟨ϖ, O, hOo, hOc, hOs, hϖn, hϖO, hϖu, hdich, htr, hnorm, hnb, hex⟩ := GlobalTheory.T.unramifiedQuadratic_exists_integers_uniformiser F E A hK hL
-  obtain ⟨e, he⟩ := GlobalTheory.T.hermitianTraceDual_integers_eq_uniformizer_pow F E A ψ hψ hK hL ϖ O hOo hOc hOs hϖO hϖu hdich hnb hex x
-  have hsc := GlobalTheory.T.haar_measure_L_unit_smul_absK_sq F E A μ hμ ϖ O
+  obtain ⟨ϖ, O, hOo, hOc, hOs, hϖn, hϖO, hϖu, hdich, htr, hnorm, hnb, hex⟩ := _root_.GlobalTheory.JR.UnramInt.main F E A hK hL
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.JR.DualLattice.dual_eq_zpow F E A ψ hψ hK hL ϖ O hOo hOc hOs hϖO hϖu hdich hnb hex x
+  have hsc := _root_.GlobalTheory.JR.ScaleHaarL.main F E A μ hμ ϖ O
 
   have hD : ∀ t : A.Kˣ, {y : A.L | ∀ m ∈ O, A.kerL ψ ((t : A.K) * x) y m = 1} =
       {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L ((t⁻¹ * ϖ ^ e : A.Kˣ) : A.K) * z} := fun t => by
@@ -217,7 +217,7 @@ theorem gauss_at_uniformiser : ∀ (F E : Type) [NontriviallyNormedField F] [Non
   have hmove : ∀ (t : A.Kˣ) (j : ℤ) (G : ℂ), IsStableGauss A ψ x μ (t : A.K) G →
       IsStableGauss A ψ x μ ((t * ϖ ^ (2 * j) : A.Kˣ) : A.K) (G * ((A.absK (ϖ : A.K) : ℂ) ^ (2 * j))⁻¹) :=
     fun t j G h => by
-      have := GlobalTheory.T.stableQuadraticGaussIntegral_mul_norm F E A ψ x μ ω ⟨hK, hL, hψ, hSD, hω⟩ t (ϖ ^ (2 * j)) (hnp j) G h
+      have := _root_.GlobalTheory.JR.WeilQuad.GaussTrans.main F E A ψ x μ ω ⟨hK, hL, hψ, hSD, hω⟩ t (ϖ ^ (2 * j)) (hnp j) G h
       rwa [absK_zpow, Complex.ofReal_zpow] at this
   have hb : (A.absK (ϖ : A.K) : ℂ) ≠ 0 := by exact_mod_cast (absK_pos A ϖ).ne'
   obtain ⟨k, r, hr, hek⟩ : ∃ k r : ℤ, (r = 0 ∨ r = 1) ∧ e = 2 * k + r :=

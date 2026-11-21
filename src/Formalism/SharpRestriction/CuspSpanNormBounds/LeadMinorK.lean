@@ -79,22 +79,9 @@ def LocOk0 (D : D7) (Ch Cg : ℝ) (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * 
       (Tz D.R.k D.R.rS L.z' * (κ / ka) ^ (2 * D.R.rS)) ka b ∧
     1 ≤ Tz D.R.k D.R.rS L.z * κ ^ (2 * D.R.rS) ∧ 1 ≤ Tz D.R.k D.R.rS L.z' * κ ^ (2 * D.R.rS)
 
-theorem LocOk.to0 {D : D7} {Ch Cg : ℝ} {L : LocBessel D.R.k D.R.rS} {lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ}
-    {ka b κ : ℝ} (h : LocOk D Ch Cg L lam0 ka b κ) : LocOk0 D Ch Cg L lam0 ka b κ :=
-  ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2.1.to0, h.2.2.2.2.2.2⟩
-
 def jNorm2 {k r : ℕ} (L : LocBessel k r) (F : Mx k r → (L.Wq →L[ℂ] L.Wp))
     (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : ENNReal :=
   jNormSq k r (Tz k r L.z) (Tz k r L.z') (fun p => Real.sqrt (hsNormSq (L.J F (bigCell k r p.1 (μsec p.2)))))
-
-def jNorm2W {k r : ℕ} (L : LocBessel k r) (F : Mx k r → (L.Wq →L[ℂ] L.Wp))
-    (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (φ : (Fin r → ℂ) × ℂ → ℂ) : ENNReal :=
-  jNormSq k r (Tz k r L.z) (Tz k r L.z') (fun p => ‖φ p‖ * Real.sqrt (hsNormSq (L.J F (bigCell k r p.1 (μsec p.2)))))
-
-def Dbig {r : ℕ} (l : ℕ) (p : (Fin r → ℂ) × ℂ) : ℂ :=
-  (∏ a : Fin r, if a.val < l then p.1 a else 1) * (if r < l then p.2 else 1)
-
-def Dpow {r : ℕ} (α : Fin (r + 1) → ℕ) (p : (Fin r → ℂ) × ℂ) : ℂ := ∏ l : Fin (r + 1), Dbig (l.val + 1) p ^ α l
 
 def Gpt {r : ℕ} (T T' : ℝ) (γ : Point ℂ (r + 1)) : ℝ :=
   Complex.normSq (leadMinor (ptMat γ) (r + 1) le_rfl) -
@@ -121,10 +108,6 @@ def shell {k r : ℕ} (L : LocBessel k r) (P : Mx k r) (j : ℕ) : Submodule ℂ
     IsKTypeOf L.ε (fun g => L.σ (P⁻¹ * g * P)) Λ' S ∧ v ∈ S ∧
       IsWtOn (Formalism.REAL.Kset L.ε) (fun g => L.σ (P⁻¹ * g * P)) ν v ∧
       l1 Λ' (lowK L.ε L.lam) ≤ j ∧ l1 ν (lowK L.ε L.lam) ≤ j}
-
-def Emom {k r : ℕ} (L : LocBessel k r) (Bf : L.Hs → L.Wp) (νq : Measure (Mt k r)) (w : L.Hs)
-    (X : Mx k r → ENNReal) : ENNReal :=
-  (ENNReal.ofReal (‖w‖ ^ 2))⁻¹ * ∫⁻ x, X (Matrix.of x) * (‖Bf (L.σ (Matrix.of x) w)‖₊ : ENNReal) ^ 2 ∂νq
 
 def frob {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := Real.sqrt (∑ i, ∑ j, Complex.normSq (g i j))
 
@@ -177,10 +160,6 @@ structure BData (Ch Cg : ℝ) (T T' : ℕ) (b dist : ℝ) where
   hsec : ∀ v, IsSection D.R.k D.R.rS (L v).z (L v).z' (μsec v)
   hT : ∀ v, Tz D.R.k D.R.rS (L v).z = T ∧ Tz D.R.k D.R.rS (L v).z' = T'
 
-def JSq {Ch Cg : ℝ} {T T' : ℕ} {b dist : ℝ} (X : BData D Ch Cg T T' b dist)
-    (γ : Point D.host.E (D.R.rS + 1)) : ENNReal :=
-  ∏ v, orbSq (X.L v) (X.f v) (ptLoc D v γ)
-
 def jSqG {Ch Cg : ℝ} {T T' : ℕ} {b dist : ℝ} (X : BData D Ch Cg T T' b dist) : ENNReal :=
   ∏ v, jNorm2 (X.L v) (X.f v) (X.μsec v)
 
@@ -214,10 +193,5 @@ def BpIneq (D : D7) (Cb : ℝ) (L : LocBessel D.R.k D.R.rS) (f : Mx D.R.k D.R.rS
     ENNReal.ofReal (b ^ (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4) *
         (max 1 (1 / Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ)) ^ (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2)) *
       jNorm2 L f μsec
-
-def BSum (D : D7) {Ch Cg : ℝ} {T T' : ℕ} {b dist : ℝ} (X : BData D Ch Cg T T' b dist)
-    (W : Point D.host.E (D.R.rS + 1) → ℝ) : ENNReal :=
-  ∑' γ : {γ : Point D.host.E (D.R.rS + 1) // IsBPt D T T' γ},
-    ENNReal.ofReal (wPt D γ.1 * ptWeightG D (rhoReal D) T T' γ.1.1 * W γ.1) * JSq D X γ.1
 
 end Formalism.MainNotions.S.ThB

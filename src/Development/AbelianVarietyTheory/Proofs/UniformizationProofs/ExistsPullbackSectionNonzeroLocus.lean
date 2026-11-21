@@ -18,28 +18,6 @@ namespace GlobalTheory.PolTranslate
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 
-theorem exists_pullback_section_nonzero_locus {X X' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (F : X' ⟶ X) (n : ℕ) (θ : H0 L n) :
-    ∃ θ' : H0 (L.pull F) n, ∀ y : X', y ∈ nonzeroLocus θ' ↔ F y ∈ nonzeroLocus θ := by
-  have hL' := pull_isLB hL F
-  have hw := (isGen_iff _).1 (idIso_isGen hL')
-  have hP := linComb_isLB L hL (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ))
-  have hP' := linComb_isLB (L.pull F) hL' (K := Fin 1) (fun _ => 𝟙 X') (fun _ => (n : ℤ))
-  obtain ⟨W, hW⟩ := LBIso.chartPull (chartPullId _) (chartPullOut L (fun _ : Fin 1 => 𝟙 X) (fun _ => (n : ℤ)) F _
-    fun _ => (Category.id_comp F).trans (Category.comp_id F).symm)
-    (iso_linComb hw (fun _ : Fin 1 => 𝟙 X') (fun _ => (n : ℤ)))
-  obtain ⟨s', hs'⟩ := sec_pull_down ((isGen_iff W).1 hW) hP hP' θ
-  refine ⟨s', fun y => ?_⟩
-  refine (mem_nonzeroLocus _ y).trans
-    (Iff.trans ⟨fun ⟨k, hk, u⟩ => ?_, fun ⟨j, hj, u⟩ => ?_⟩ (mem_nonzeroLocus _ (F y)).symm)
-  · obtain ⟨j, hj⟩ := exists_chart hP (F y)
-    have e := hs' _ (𝟙 _) y j k hj hk
-    rw [Category.id_comp, gs_stalkMap F y _ hj] at e
-    exact ⟨j, hj, (isUnit_map_iff (F.stalkMap y).hom _).1 ((congrArg IsUnit e).mpr ((Units.isUnit _).mul u))⟩
-  · obtain ⟨k, hk⟩ := exists_chart hP' y
-    have e := hs' _ (𝟙 _) y j k hj hk
-    rw [Category.id_comp] at e
-    exact ⟨k, hk, isUnit_of_mul_isUnit_right ((congrArg IsUnit ((gs_stalkMap F y _ hj _).symm.trans e)).mp (u.map _))⟩
-
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 noncomputable def transl (x : 𝟙_ (Over S) ⟶ A) : A ⟶ A := 𝟙 A * (toUnit A ≫ x)
@@ -101,23 +79,5 @@ theorem kTriv_transl {x : 𝟙_ (Over S) ⟶ A} (hx : x * x = 1) {L : LB A.left}
   rw [Category.assoc, ← Category.assoc n, hn, Category.assoc]
   fin_cases k
   exacts [congrArg (fun q => _ ≫ q.left) k₃, congrArg (fun q => _ ≫ q.left) k₂]
-
-theorem exists_translate : ∀ (K : Type) [Field K] (A : PolAV (Spec (CommRingCat.of K))) (x : 𝟙_ _ ⟶ A.A), x * x = 1 →
-    ∀ θ : H0 A.L 1, ∃ (A' : PolAV (Spec (CommRingCat.of K))) (e : A'.A ≅ A.A) (θ' : H0 A'.L 1), IsMonHom e.hom ∧
-      A'.g = A.g ∧ ∀ a : A'.A.left, a ∈ nonzeroLocus θ' ↔ (e.hom * (toUnit _ ≫ x)).left a ∈ nonzeroLocus θ := by
-  intro K _ A x hx θ
-  have hL' := pull_isLB A.isLB (transl x).left
-  have hw := (isGen_iff _).1 (idIso_isGen hL')
-  have e : (transl x).left ≫ (transl x).left = 𝟙 _ := congrArg (fun q => q.left) (transl_transl hx)
-  have : IsIso (transl x).left := ⟨⟨(transl x).left, e, e⟩⟩
-  have hp : IsPullback (transl x).left A.A.hom A.A.hom (𝟙 _) :=
-    IsPullback.of_horiz_isIso ⟨(Over.w _).trans (Category.comp_id _).symm⟩
-  obtain ⟨θ', hθ'⟩ := exists_pullback_section_nonzero_locus A.isLB (transl x).left 1 θ
-  exact ⟨{ A := A.A, isAb := A.isAb, g := A.g, smoothDim := A.smoothDim, L := A.L.pull (transl x).left, isLB := hL'
-           rigid := exists_gen_of_local (V := K) _ hL' (K := PUnit) (fun _ => eSec A.A) (fun _ => 1)
-           sym := sym_transl hx A.sym
-           ample := relAmple_pull hp A.isLB hL' hw ⊤ (isAffineOpen_top _) (fun _ => trivial) A.ample
-           ktriv := kTriv_transl hx A.isLB A.ktriv },
-    Iso.refl _, θ', inferInstanceAs (IsMonHom (𝟙 _)), rfl, hθ'⟩
 
 end GlobalTheory.PolTranslate

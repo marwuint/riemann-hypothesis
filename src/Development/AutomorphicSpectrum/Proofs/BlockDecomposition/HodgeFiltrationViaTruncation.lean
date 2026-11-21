@@ -1,22 +1,40 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.GlobSerreSt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsChartFromCoordinatesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FilteredCohomologyRestrictionBijectiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechRefinementCohomologyBijectiveStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FilteredCohomologyRestrictionBijective
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechRefinementCohomologyBijective
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.ZariskiCocycleRefinement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CohomologyVanishingAlongIdealFiltrationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteModulesSerreClassStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SerreClassOfCechSpectralSequenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverCohomologyFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverHigherCohomologyVanishesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteModulesSerreClass
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.InclStd
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SerreClassOfCechSpectralSequence
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverCohomologyFinite
+import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperFiniteness
+import GroundTheory.ArithmeticGeometry.SchemeCohomology.CechSeparated
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverHigherCohomologyVanishes
+import GroundTheory.ArithmeticGeometry.SchemeCohomology.AffineVanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechVanishingFromCoverStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSmoothCoordinateCoverStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinatesRestrictAffineOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinatesRestrictAffineOpen
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartIsGoodStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartDividedPowersGradedConstantStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationPropertyStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatBaseChangeCohomologyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationProperty
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatBaseChangeCohomology
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.Coords
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MemBoundariesZeroIff
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DoubleComplexMapMemTotal
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.FaceMapCompSuccAboveCastSucc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDesc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDifferentialOneInclusion
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TerminalRes
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousCochainFiltrationDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenOfThickeningMorphismStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenFiniteInfIffStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenFiniteInfIff
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SEqOne
+
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 
@@ -191,7 +209,7 @@ theorem loc_vanish (hG : KH.LocGr) (hP : KH.PolyTf) {V : X.Opens} {d : ℕ} (c :
   have hD : St (TFs s') {V} c'.D := ⟨hTF, V, rfl, c'.inV⟩
   obtain ⟨hpow, hc⟩ := GlobalTheory.T.chart_divided_powers_graded_constant c' hgood _ hQ hD
   obtain ⟨PQ, hPQ⟩ := hP (dividedPowersBot K) q (Ideal.Quotient.mk ⊥) 1 s' {V}
-  have hF := GlobalTheory.T.sheaf_filtration_property (St (TFs s') {V})
+  have hF := _root_.GlobalTheory.CompanionTheory.DPFil.isFil_sFil (St (TFs s') {V})
   have key := hG PQ hF (c'.frame hgood _ hQ hD) (fun T => ((c'.frame hgood _ hQ hD).ne T).some) hc (r : ℤ)
     (fun r' hr' => (hPQ r' (by omega)).1) j
   rcases lt_or_ge (r : ℤ) (j : ℤ) with hlt | hge
@@ -225,7 +243,7 @@ theorem glob_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : Co
     Subsingleton (HU (sq (thFil LL (r : ℤ)) (thFil LL ((r : ℤ) + 1))) (St (TFs s') (Set.range U.U)) j) := by
   refine (hV (sq (thFil LL (r : ℤ)) (thFil LL ((r : ℤ) + 1))) (TFs s') U.U 0).2.1 (fun S hS j => ?_) j
   obtain ⟨α, hα⟩ := id hS
-  obtain ⟨c', -⟩ := GlobalTheory.T.coordinates_restrict_affine_open (U.c α) (iInf₂_le α hα) (U.inter S hS)
+  obtain ⟨c', -⟩ := _root_.GlobalTheory.CompanionTheory.CoordRes.main (U.c α) (iInf₂_le α hα) (U.inter S hS)
   exact loc_vanish q hG hP c' r s' (hd α) hs j
 
 omit [CharZero K] in
@@ -238,9 +256,9 @@ theorem thick_vanish (hG : KH.LocGr) (hP : KH.PolyTf) (hV : KH.GlobVanSt) (U : C
   have hc : ∀ W ∈ ({⊤} : Set X.Opens), W ≤ sSup (Set.range U.U) := by
     intro W hW
     rw [Set.mem_singleton_iff.1 hW, sSup_range, U.cover]
-  have b1 := GlobalTheory.T.filtered_cohomology_restriction_bijective (⊤ : ObjectProperty (Thick LL)) 1 (r + 1) (Or.inl ⟨rfl, rfl⟩) {⊤} h1 (r : ℤ) ((r : ℤ) + 1)
+  have b1 := _root_.GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective (⊤ : ObjectProperty (Thick LL)) 1 (r + 1) (Or.inl ⟨rfl, rfl⟩) {⊤} h1 (r : ℤ) ((r : ℤ) + 1)
     (by push_cast; omega) j
-  have b2 := (GlobalTheory.T.cech_refinement_cohomology_bijective (TFs (r + 1)) (Or.inl ⟨rfl, 1, r + 1, rfl⟩) (Set.range U.U) {⊤} h2 hc j).1 (r : ℤ) ((r : ℤ) + 1)
+  have b2 := (_root_.GlobalTheory.CompanionTheory.NlZar.zariski_descent (TFs (r + 1)) (Or.inl ⟨rfl, 1, r + 1, rfl⟩) (Set.range U.U) {⊤} h2 hc j).1 (r : ℤ) ((r : ℤ) + 1)
   have b0 := restrict_bij (sq (thFil LL (r : ℤ)) (thFil LL ((r : ℤ) + 1))) (St (⊤ : ObjectProperty (Thick LL)) {⊤})
     (all_top q) j
   have : Subsingleton (CH.H (sq (sFil (St (TFs (r + 1)) (Set.range U.U)) (r : ℤ))
@@ -282,8 +300,8 @@ theorem chain_bij (s : ℕ) (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (r r'
   have hc : ∀ W ∈ ({⊤} : Set X.Opens), W ≤ sSup 𝒱 := by
     intro W hW
     rw [Set.mem_singleton_iff.1 hW, h𝒱]
-  have b1 := GlobalTheory.T.filtered_cohomology_restriction_bijective (⊤ : ObjectProperty (Thick LL)) 1 s (Or.inl ⟨rfl, rfl⟩) {⊤} (top_ge q s) r r' hr j
-  have b2 := (GlobalTheory.T.cech_refinement_cohomology_bijective (TFs s) (Or.inl ⟨rfl, 1, s, rfl⟩) 𝒱 {⊤} (st_le q s 𝒱) hc j).1 r r'
+  have b1 := _root_.GlobalTheory.CompanionTheory.PDTrunc.pull_incl_bijective (⊤ : ObjectProperty (Thick LL)) 1 s (Or.inl ⟨rfl, rfl⟩) {⊤} (top_ge q s) r r' hr j
+  have b2 := (_root_.GlobalTheory.CompanionTheory.NlZar.zariski_descent (TFs s) (Or.inl ⟨rfl, 1, s, rfl⟩) 𝒱 {⊤} (st_le q s 𝒱) hc j).1 r r'
   have b0 := restrict_bij (sq (thFil LL r) (thFil LL r')) (St (⊤ : ObjectProperty (Thick LL)) {⊤}) (all_top q) j
   exact b2.comp (b1.comp b0)
 

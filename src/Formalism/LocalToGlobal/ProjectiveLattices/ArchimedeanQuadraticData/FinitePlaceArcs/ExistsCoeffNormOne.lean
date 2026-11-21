@@ -8,20 +8,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Re
 
 namespace FinKey
 
-theorem eval_bind₁' {σ τ R : Type} [CommRing R] (Y : τ → R) (g : σ → MvPolynomial τ R)
-    (p : MvPolynomial σ R) : eval Y (bind₁ g p) = eval (fun x => eval Y (g x)) p := by
-  induction p using MvPolynomial.induction_on <;> simp_all
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 def frameLin {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (x : ArcLt Dw) : MvPolynomial (ArcLt Dw) K :=
   ∑ l : Fin (Dw.mult x.1), X ⟨x.1, x.2.1, l⟩ * C (Bm x.1 l x.2.2 * (lam x.1 x.2.2)⁻¹)
-
-theorem eval_frameLin {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
-    (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (Y : ArcLt Dw → K) (x : ArcLt Dw) :
-    eval Y (frameLin Bm lam x) = frameSub Bm lam Y x := by
-  simp only [frameLin, frameSub, map_sum, map_mul, eval_X, eval_C, Finset.sum_mul, mul_assoc]
 
 theorem frameLin_homog {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (x : ArcLt Dw) : (frameLin Bm lam x).IsHomogeneous 1 := by
@@ -30,39 +21,6 @@ theorem frameLin_homog {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (
   have h := (isHomogeneous_X K (⟨x.1, x.2.1, l⟩ : ArcLt Dw)).mul
     (isHomogeneous_C (ArcLt Dw) (Bm x.1 l x.2.2 * (lam x.1 x.2.2)⁻¹))
   rwa [add_zero] at h
-
-theorem subA_sum' {K : Type} [Field K] (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
-    (τ : E →+* ℂ) (i l : Fin (Dw.mult τ)) :
-    (∑ z : ArcLt Dw, C (subA A ⟨τ, i, l⟩ z) * (X z : MvPolynomial (ArcLt Dw) K)) =
-      ∑ k : Fin (Dw.mult τ), C (A τ k l) * X ⟨τ, i, k⟩ := subA_sum A ⟨τ, i, l⟩
-
-theorem bind_subA_frameLin {K : Type} [Field K]
-    (A Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K) (hAB : ∀ τ, A τ * Bm τ = 1)
-    (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (x : ArcLt Dw) :
-    bind₁ (fun y => ∑ z : ArcLt Dw, C (subA A y z) * (X z : MvPolynomial (ArcLt Dw) K)) (frameLin Bm lam x) =
-      C ((lam x.1 x.2.2)⁻¹) * X x := by
-  obtain ⟨τ, i, j⟩ := x
-  have key : ∀ k : Fin (Dw.mult τ), ∑ l, A τ k l * Bm τ l j = if k = j then 1 else 0 := by
-    intro k
-    have h := congrFun (congrFun (hAB τ) k) j
-    rwa [Matrix.mul_apply, Matrix.one_apply] at h
-  simp only [frameLin, map_sum, map_mul, bind₁_X_right, bind₁_C_right, subA_sum, Finset.sum_mul]
-  calc _ = ∑ k : Fin (Dw.mult τ), C ((∑ l, A τ k l * Bm τ l j) * (lam τ j)⁻¹) *
-          (X ⟨τ, i, k⟩ : MvPolynomial (ArcLt Dw) K) := by
-        show ∑ l : Fin (Dw.mult τ), ∑ k : Fin (Dw.mult τ), C (A τ k l) *
-          (X ⟨τ, i, k⟩ : MvPolynomial (ArcLt Dw) K) * (C (Bm τ l j) * C (lam τ j)⁻¹) = _
-        rw [Finset.sum_comm]
-        refine Finset.sum_congr rfl fun k _ => ?_
-        simp only [Finset.sum_mul, map_sum, map_mul]
-        refine Finset.sum_congr rfl fun l _ => ?_
-        ring
-    _ = C (lam τ j)⁻¹ * X ⟨τ, i, j⟩ := by
-        rw [Finset.sum_eq_single j]
-        · simp [key]
-        · intro k _ hkj
-          simp [key, hkj]
-        · intro h
-          exact absurd (Finset.mem_univ j) h
 
 private theorem eval_map_detZ_lemma {K : Type} [CommRing K] (D : Datum H) (x : ArcLt D → K) :
     eval x (map (Int.castRingHom K) (detZ D)) =

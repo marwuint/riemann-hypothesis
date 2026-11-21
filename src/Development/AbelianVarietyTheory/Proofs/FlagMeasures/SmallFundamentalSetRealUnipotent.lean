@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.CenteredPerpendicularSets
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsInStabilizerNilradicalLieTripleMulEqZero
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ComplexSpanAtRealPlaceAutPointLatticePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ComplexSpanAtRealPlaceAutPointLatticeProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnipotentRadicalMemAdelicStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PointConjMemCongruenceSubgroupOfCongrLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NilradicalFirstLayerCoveringRadiusLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NilradicalCenterIntegralCoveringRadiusStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NilradicalFirstLayerCoveringRadiusLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NilradicalCenterIntegralCoveringRadius
 
 open GlobalTheory.Count Formalism.MainNotions.S Formalism.HN Formalism.REAL Matrix NumberField MeasureTheory Finset
 open scoped InnerProductSpace
@@ -43,7 +43,7 @@ theorem exists_real (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n → I.E))
       calc _ = (I.P v * (I.P v)⁻¹) * ex (B v) * (I.P v * (I.P v)⁻¹) := by simp only [mul_assoc]
         _ = _ := by rw [P_mul_inv, one_mul, mul_one]
     show I.InUnipRad _ _ _ (I.P v * ((I.P v)⁻¹ * ex (B v) * I.P v) * (I.P v)⁻¹)
-    rw [h, ← (GlobalTheory.T.complexSpanAtRealPlace_autPointLattice_properties I x R).1 v]
+    rw [h, ← (_root_.GlobalTheory.RealSpan.spanAt_properties I x R).1 v]
     exact ex_unip (hB v)
   · have h : I.fmat (1 : I.Gf) = 1 := by simp [AutInst.fmat]
     simp only [h, AutInst.InUnipRad, sub_self, Matrix.zero_mulVec]
@@ -56,7 +56,7 @@ theorem exists_real_log (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n → I.E)) 
   have key : ∀ v, ∃ Y, InNil (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v) Y ∧
       ex Y = I.P v * uMat (ν v) * (I.P v)⁻¹ := fun v => by
     have h := hν.1 v
-    rw [← (GlobalTheory.T.complexSpanAtRealPlace_autPointLattice_properties I x R).1 v] at h
+    rw [← (_root_.GlobalTheory.RealSpan.spanAt_properties I x R).1 v] at h
     refine exists_log ?_ h
     have hx : (uMat (ν v))ᴴ * Jm (I.ε v) * uMat (ν v) = Jm (I.ε v) := (ν v).2
     rw [cT_conj]
@@ -141,9 +141,9 @@ theorem small_fundamental_set : ∀ (I : AutInst) (x : I.GA) (g : ℕ) (R : Subm
   have hg0 : (0 : ℝ) < g := by exact_mod_cast hg
   have hgc : ((g : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hg0.ne'
   have hreal : ∀ c : ℝ, starRingEnd ℂ (c : ℂ) = c := Complex.conj_ofReal
-  obtain ⟨-, -, -, hnil, hcen⟩ := GlobalTheory.T.complexSpanAtRealPlace_autPointLattice_properties I x R
+  obtain ⟨-, -, -, hnil, hcen⟩ := _root_.GlobalTheory.RealSpan.spanAt_properties I x R
   obtain ⟨Y, hY, hνY⟩ := exists_real_log I x R ν hν
-  obtain ⟨Y₀, hY₀, Z, hZ, hA⟩ := GlobalTheory.T.nilradical_first_layer_covering_radius_le I x R lo hi rho hsat hiso hhi hlarge hlo hlo0 hhl
+  obtain ⟨Y₀, hY₀, Z, hZ, hA⟩ := _root_.GlobalTheory.Count.FirstLayer.main I x R lo hi rho hsat hiso hhi hlarge hlo hlo0 hhl
     (fun v => (((2 * g : ℝ)⁻¹ : ℝ) : ℂ) • Y v) (fun v => nil_smul (hreal _) (hY v))
   have hY₀' := hnil Y₀ hY₀.1
   set A : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ := fun v => ((2 * g : ℝ) : ℂ) •
@@ -155,7 +155,7 @@ theorem small_fundamental_set : ∀ (I : AutInst) (x : I.GA) (g : ℕ) (R : Subm
     with hZ''def
   have hZ''c : Z'' ∈ cenReal I R := fun v =>
     cen_add (cen_smul (hreal _) (hZ v)) (cen_smul map_half (cen_comm (hAn v) (nil_smul (hreal _) (hY₀' v))))
-  obtain ⟨Z₀, hZ₀, hZ'⟩ := GlobalTheory.T.nilradicalCenter_integral_covering_radius I x R hi rho hsat hiso hhi hlarge hh2
+  obtain ⟨Z₀, hZ₀, hZ'⟩ := _root_.GlobalTheory.Count.CentralCover.main I x R hi rho hsat hiso hhi hlarge hh2
     (fun v => (((g : ℝ)⁻¹ : ℝ) : ℂ) • Z'' v) (fun v => cen_smul (hreal _) (hZ''c v))
   have hZ₀' := hcen Z₀ hZ₀.1
   set Z' : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ := fun v => ((g : ℝ) : ℂ) •

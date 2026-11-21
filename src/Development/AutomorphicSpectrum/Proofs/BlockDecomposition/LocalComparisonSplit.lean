@@ -6,7 +6,21 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGoodReduct
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairLocalAuxiliaryStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairInvolutionContinuous
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitPlaceLocalElement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedOrbitalPairConvolutionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedOrbitalPairConvolution
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.EulerFinOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralEqSumSmallerLevel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousInvolutiveLocalTransposeInverse
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIntegralFiniteSum
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiagonalDoubleCosetsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactPartDiagonalMap
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactConjugacyTransversal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeConvolutionSupport
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelIndexNeZeroOfOpenLe
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SwapTwistedCentralizerDiagonal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedOrbitalSwapConvolutionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightStabilizerConjBiinvariantFiniteIndex
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PLocPrjGOfNotMem
 
 noncomputable section
@@ -114,7 +128,7 @@ theorem locCompareSplit : LocCompareSplit := by
       show φ₁ w (e g).1 * φ₂ w (sgP a b w (e g).2) = _
       rw [he1, ← h2, fv_split S hS w hw hs])
   rw [ht, seen_split φ₁ φ₂ w hs, th_split a b w hs]
-  have hsc := GlobalTheory.T.twisted_orbital_pair_convolution _ (sgP a b w) (K2 a b w) hc hi hk hKo hKc (e y).1 (e y).2 (φ₁ w) (φ₂ w) L hLo hLK hLs hH₁ hH₂
+  have hsc := _root_.GlobalTheory.CompanionTheory.SplitConvF.splitConv_of_finite _ (sgP a b w) (K2 a b w) hc hi hk hKo hKc (e y).1 (e y).2 (φ₁ w) (φ₂ w) L hLo hLK hLs hH₁ hH₂
     (by rw [hN]; exact hG) (by rw [hN]; exact hF)
   rw [hN] at hsc
   exact hsc

@@ -1,4 +1,5 @@
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.NakayamaChar
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.ReducedBasisStatement
+import Mathlib
 
 set_option autoImplicit false
 
@@ -141,11 +142,6 @@ lemma val_sub_roots {N : ℕ} (hN : 1 ≤ N) (hvN : v (N : F) = 0) {z z' : F} (h
 section Core
 
 variable {W : Type} [AddCommGroup W] [Module F W] {n : ℕ} (b : Fin n → W)
-
-def emb : (Fin n → intRing v) →+ W where
-  toFun c := ∑ i, ((c i : intRing v) : F) • b i
-  map_zero' := by simp
-  map_add' c d := by simp [add_smul, Finset.sum_add_distrib]
 
 theorem span_of_eigen (UU Pos : W → Prop) (hb : LinearIndependent F b)
     (hUU : ∀ s, UU s ↔ ∃ c : Fin n → F, (∀ i, 0 ≤ v (c i)) ∧ s = ∑ i, c i • b i)

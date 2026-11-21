@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CubWeilOfInjective
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AlphaPMultiplicativeCharacterEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AlphaPMultiplicativeCharacterEqOne
 
 set_option autoImplicit false
 noncomputable section
@@ -43,7 +43,7 @@ theorem cubWeil_alpha_rational : ∀ (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Pr
     · exact ⟨1, fun h => absurd h ha⟩
   choose ζ hζ using hex
   intro A _ _ a ha
-  have key := GlobalTheory.T.alphaP_multiplicativeCharacter_eq_one Ω p (fun A _ _ a => unitsOfΓ s A (ζ A a)) ?_ ?_ A a ha
+  have key := _root_.GlobalTheory.AlphaChar.char_eq_one Ω p (fun A _ _ a => unitsOfΓ s A (ζ A a)) ?_ ?_ A a ha
   · have : ζ A a = 1 := unitsOfΓ_injective s A (key.trans (map_one _).symm)
     exact this ▸ hζ A a ha
   · intro A B _ _ _ _ f a ha

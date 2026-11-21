@@ -16,11 +16,6 @@ def OpUComm : Prop :=
     opU H x (opU H y F) z
       = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H x y : ℂ)) * opU H y (opU H x F) z
 
-def OpUNorm : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V), IsHerm H → ∀ (x : V) (F : V → ℂ) (z : V),
-    ‖opU H x F z‖ ^ 2 * Real.exp (-Real.pi * (H z z).re)
-      = ‖F (z + x)‖ ^ 2 * Real.exp (-Real.pi * (H (z + x) (z + x)).re)
-
 def OpUIsom : Prop :=
   ∀ (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (H : Sesq V) (H' : Sesq W)
     (g : V →ₗ[ℂ] W), IsIsom H H' g → ∀ (x : V) (G : W → ℂ) (z : V),

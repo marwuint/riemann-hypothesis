@@ -43,13 +43,13 @@ theorem kStable_of_lieStable (hP : GlobalTheory.FunPr.Hypotheses₂) {σ : E →
     {k : UA σ W.J} (hk : k ∈ KInf σ W B.emb) {f : SInf F (Fin n × Fin d)} (hf : f ∈ M.Pol B.ψ B.emb)
     {f₁ : SInf F (Fin n × Fin d)} (hact1 : Acts (evI F) (om (1, k)) f f₁) (hfN : p f ∈ N) : p f₁ ∈ N := by
   have hAL : ActsLaws := GlobalTheory.RealLift.actsLaws
-  have hfr : GlobalTheory.RealLift.FrameEx := GlobalTheory.T.cartanEigen_orthonormalFrame_exists
-  have hder : GlobalTheory.RealLift.DerEx := GlobalTheory.T.archHeisenbergDerivatives_exist
+  have hfr : GlobalTheory.RealLift.FrameEx := _root_.GlobalTheory.RealLift.frameEx_holds
+  have hder : GlobalTheory.RealLift.DerEx := _root_.GlobalTheory.HeisDer.derEx
   have hvl : GlobalTheory.RealLift.VacLine := GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder
-  have hfe : GlobalTheory.RealLift.FockEx := GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hder
-  have hls : GlobalTheory.RealLift.LieScalar := GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hP hder hvl
+  have hfe : GlobalTheory.RealLift.FockEx := _root_.GlobalTheory.FockMapEx.fockEx_of_derEx hder
+  have hls : GlobalTheory.RealLift.LieScalar := _root_.GlobalTheory.LieScal.lieScalar hP hder hvl
   have hpr : GlobalTheory.RealLift.PolRange := GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws hAL hder hvl
-  have hkl : GlobalTheory.RealLift.KLine := GlobalTheory.RealLift.kLine_of_lineEx GlobalTheory.T.unitaryLieElements_generate_oneParamLines
+  have hkl : GlobalTheory.RealLift.KLine := GlobalTheory.RealLift.kLine_of_lineEx _root_.GlobalTheory.RealLift.exists_line_of_upq
   choose A hA hAθ using fun w => hfr _ _ _ _ _ (hX.sig w) (hX.cartan w)
   choose C hC hCθ using fun w => hfr _ _ _ _ _ (hW.sig w) (hW.cartan w)
   have hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w) := fun w => by
@@ -66,7 +66,7 @@ theorem kStable_of_lieStable (hP : GlobalTheory.FunPr.Hypotheses₂) {σ : E →
     hkl F E σ (Fin d) _ _ B.emb (incM F W.J) Complex.I C W.θ hb.cm hC1 hCθ k hk.1 hk.2
   have hloc := GlobalTheory.RealLift.locFin_sumPl _ _ _
     (fun w => GlobalTheory.PolCompact.locFin_second r s r' s' (Yg w) (hKC w) (c w * (Yg w).trace))
-  obtain ⟨U, hU, hSA⟩ := GlobalTheory.T.weakExponential_action_on_fockVectors F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) hloc
+  obtain ⟨U, hU, hSA⟩ := _root_.GlobalTheory.ExpAct.expAct_fock F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) hloc
     (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hgen T)
   rw [← hr] at hf
   obtain ⟨T, rfl⟩ := hf

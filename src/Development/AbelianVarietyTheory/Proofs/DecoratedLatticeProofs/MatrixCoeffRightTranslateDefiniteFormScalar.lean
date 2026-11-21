@@ -7,7 +7,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HeckeLPartialContinuationHolds
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealInvariantSesquilinearFormEqSmulInnerStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealInvariantSesquilinearFormEqSmulInner
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DownwardThetaIntegralSobolevContinuous
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.UnimodGA
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DefiniteScalarComponentIsCuspAndCongruenceFixedA
@@ -72,7 +73,7 @@ theorem rcoef_of_fun {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (m : Measure
     intro u hu x x'
     rw [hB, hB, ← hshift u hu, ← hshift u hu]
     exact GlobalTheory.Cusp.petersson_rTr (hφ2 x) (hφ2 x') u
-  obtain ⟨z, hz⟩ := GlobalTheory.T.real_invariant_sesquilinear_form_eq_smul_inner D V c hc B hinv
+  obtain ⟨z, hz⟩ := _root_.GlobalTheory.CoefRealSchur.form_eq_smul_inner D V c hc B hinv
   refine ⟨z, fun w b hb => ?_, fun hY hz0 => ?_⟩
   · show GlobalTheory.Cusp.petersson V m (rTr V b (φ w)) (φ w) = _
     rw [hshift b hb, ← hB]

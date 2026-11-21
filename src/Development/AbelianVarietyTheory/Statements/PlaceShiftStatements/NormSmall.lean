@@ -2,7 +2,11 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksLemmas
 import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MemHalfCosetSelf
-import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.OneSquareClosed
+import Development.AbelianVarietyTheory.Definitions.Foundations.TupleConstantsNeZero
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.FunctionalLowerBoundOfConditionsNumeric
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.SlopeBoundSingleLiftOfDefinitions
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.SlopeBoundOfConditionsWithErrorForFrames
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive
 
 noncomputable section
 
@@ -114,10 +118,6 @@ def BotSmall : Prop := GBig fun {D} _ _ {sc} G μ₀ _ _ _ => GlobalTheory.NormS
 def NormBig : Prop := GBig fun {D} _ _ _ G _ _ _ _ => ∀ (δ t0 : ℂ) (i j : Fin D.R.m), ∃ A : ℂ, A ≠ 0 ∧
   ∀ t (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q) (Λ : ℂ → ℂ), IsBottom G t i j (modT G t) P P' → IsHeckeL (nuH G t i j) Λ →
     (P.norm : ℂ) = A * ∏ s ∈ Icc (1 - (e0 D i j : ℤ)) (h0 D i j : ℤ), Λ s
-
-def NormSmall : Prop := GBig fun {D} _ _ _ G _ _ _ _ => ∀ (δ t0 : ℂ) (i j : Fin D.R.m), ∃ A : ℂ, A ≠ 0 ∧
-  ∀ t (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q) (Λ : ℂ → ℂ), IsBottom G t i j (modT G t) P P' → IsHeckeL (nuH G t i j) Λ →
-    (P'.norm : ℂ) = A * ∏ s ∈ Icc (1 + (e0 D i j : ℤ)) (h0 D i j : ℤ), Λ s
 
 def BotNe : Prop := GBig fun {D} _ _ _ G μ₀ _ _ _ => ∀ (δ t0 : ℂ) (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q) (i j : Fin D.R.m),
   IsBottom G μ₀ i j (SqNum.condE G.pl) P P' → (∃ h T, P.coord h T ≠ 0) ∧ ∃ h T, P'.coord h T ≠ 0

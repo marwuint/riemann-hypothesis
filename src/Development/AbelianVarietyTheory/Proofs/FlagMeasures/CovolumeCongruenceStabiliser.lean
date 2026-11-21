@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OfRoots
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExponentialUnipotentStabilizerStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramUnipotentStabilizerBruhatCellConjRootStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramUnipotentLieLatticeDomainVolumeBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsCoveringSetExpLieLatticeRootGroupStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsCoveringSetExpLieLatticeRootGroup
 
 open NumberField Module Matrix Formalism.MainNotions.S GlobalTheory.LoopV
 open scoped ENNReal Classical
@@ -394,7 +394,7 @@ theorem covolume_congruence_stabiliser : ∀ (K : Type) [Field K] [NumberField K
     congr 1
     simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hUdet]
     rw [← Matrix.mul_assoc (expT X₁), hWe]
-  obtain ⟨Ω, hΩm, hΩv, hΩcov⟩ := GlobalTheory.T.exists_covering_set_exp_lie_lattice_rootGroup ι N (roots (ptMat p)) Λ' Ω' hRlt htrans hΩ'm hΩ'
+  obtain ⟨Ω, hΩm, hΩv, hΩcov⟩ := _root_.GlobalTheory.LoopV.Cover.cover ι N (roots (ptMat p)) Λ' Ω' hRlt htrans hΩ'm hΩ'
     hfin hd' hclos
   refine ⟨Ω, hΩm, ?_, fun c => ?_⟩
   · rw [hΩv]

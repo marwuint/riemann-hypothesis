@@ -158,9 +158,6 @@ theorem addCharEquiv_apply [Finite N] (χ : QZDual N) (a : N) :
 instance [Finite N] : Finite (QZDual N) :=
   Finite.of_injective _ (toAddMonoidHomEquiv (A := N)).injective
 
-theorem card_eq [Finite N] : Nat.card (QZDual N) = Nat.card N :=
-  (Nat.card_congr (toAddMonoidHomEquiv (A := N)).toEquiv).trans QZ.card_hom
-
 end QZDual
 
 end GroundTheory.ProfCoh

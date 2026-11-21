@@ -10,8 +10,8 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PAnResNullForm
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBergmanDensChartSum
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBergmanDensIntegrable
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBergmanIntegrable
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBetaSum
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBirationalCoordinates
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ArithModel
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBirationalModelExists
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PHeightsirationalHilb
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBlockChiCovolume
@@ -44,7 +44,8 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PDegLTGrowth
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PDegreePositive
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PDoubleComplexVanish
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PEmbeddingWeight
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PEventualPolyLine
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PEventualValueFacts
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PEventualPolynomial
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreRelLift
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFiltrationHilbSum
@@ -58,9 +59,13 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.GeneratedVOfGeneratedM
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGenOnFibres
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGenTwistGenerated
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedEffectiveSection
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedMixedNonneg
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsHilbert
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsPerturb
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGeneratedProductNonneg
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBridgeFull
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedNonzeroSection
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedOne
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedPow
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedProductNonneg
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedRestrict
@@ -72,14 +77,38 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGramContraction
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGraphIsometric
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGraphIsometricForms
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGridSum
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.SaturatedSaturation
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PHalving
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PBaseChange
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.Statements
+import GroundTheory.HeightsAndTheta.Theta.EisensteinZeta.WeilPolarization.IsSelfDualAtLatticeAtStd
+import GroundTheory.GlobalFields.Adele.Approximation
+import GroundTheory.GlobalFields.Adele.Discrete
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PLocalChange
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PNormComparison
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PDiagonalChange
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PExactSequence
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.LinearIndependentSumElimOfExact
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.Extension
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PGaussNormBasic
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.IsProbabilityMeasureSphereLaw
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.PRootsOfUnityValuation
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.ContinuousHermNormGroup
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.GaussSum
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.FieldChange
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerMul
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.SphereMean
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.DegreeTopEqArithDegree
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.FiniteSupportHeight
+import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PHilbFnValueSpan
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PHilbertDimZero
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PHilbertIncrement
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PHilbertModule
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PHyperplaneRegularSection
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PIntNumComponents
+import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
+import GroundTheory.HeightsAndTheta.Heights.Intersections.AnalyticResolutionHypothesesProjectiveLine
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyCN
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LengthLocalizedModuleQuotient
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LocalMultRadical
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPCProof
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PIntegralAgainstPositive
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PIntegralOfBergman
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PIntersectionRecursion
@@ -90,7 +119,7 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLiftBirationalAmple
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLiftSpread
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLocalBergmanBound
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLocalRep
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLogDetDerivative
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HasDerivAtDet
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMetricChange
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMetricTransportSmooth
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMinkowskiCount
@@ -156,7 +185,7 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSegreHilb
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSegrePrime
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSemiampleNef
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSemiposTwist
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSerreGen
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.AmpleSt
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSerreGraded
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PShiftDegreePolynomial
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PShiftIntersectionPolynomial
@@ -215,7 +244,10 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.PSemiPosTwist
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSheetHessPSD
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PSwapCycles
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PTorusInvLevi
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PZIntPoint
+import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDivPrincipalDegree
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.CycDim
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeN
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PHilbertPositive
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.BergmanLerpSelf
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PProjDegGenDeg
@@ -230,6 +262,7 @@ import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreChartDim
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreCoordGoodProj
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegrePartition
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterFib
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
@@ -270,23 +303,11 @@ theorem BergmanDensIntegrable.full : GroundTheory.Heights₂.Heights.HilbertSamu
 theorem BergmanIntegrable.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanIntegrable.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanIntegrable.proof
 
-theorem BetaSum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BetaSum.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.BetaSum.proof
-
-theorem BirationalCoordinates.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalCoordinates.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalCoordinates.proof
-
-theorem BirationalModelExists.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalModelExists.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.BirationalModelExists.proof
-
 theorem HilbFnValueSpan.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbFnValueSpan.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.HilbFnValueSpan.proof
 
 theorem BlockBirationalHilbert.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockBirationalHilbert.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockBirationalHilbert.proof HilbFnValueSpan.full
-
-theorem BlockChiCovolume.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockChiCovolume.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.BlockChiCovolume.proof
 
 theorem BlockGraphFibreRatio.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphFibreRatio.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockGraphFibreRatio.proof
@@ -366,18 +387,6 @@ theorem SectionsRank.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Sectio
 theorem BlockSectionsRank.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockSectionsRank.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockSectionsRank.proof RankOfSections.full GenericFibre.full SectionsRank.full BlockImageArith.full BlockImageGenDeg.full
 
-theorem ComplexTaylorTwo.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ComplexTaylorTwo.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ComplexTaylorTwo.proof
-
-theorem ChartBergmanBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartBergmanBound.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ChartBergmanBound.proof PolydiscSubmean.full ComplexTaylorTwo.full
-
-theorem ChartConstantsDetermined.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartConstantsDetermined.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ChartConstantsDetermined.proof
-
-theorem ChartDenominator.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartDenominator.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ChartDenominator.proof
-
 theorem ChartSupBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ChartSupBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ChartSupBound.proof
 
@@ -402,50 +411,17 @@ theorem ResolutionMetricPair.full : GroundTheory.Heights₂.Heights.HilbertSamue
 theorem ResolutionFormsIndependent.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionFormsIndependent.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionFormsIndependent.proof NonvanishingDense.full
 
-theorem ConjIntNum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConjIntNum.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ConjIntNum.proof
-
 theorem ConstantShift.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.proof
-
-theorem ConstantsDescend.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsDescend.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsDescend.proof
-
-theorem ConstantsRegular.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsRegular.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantsRegular.proof ConstantsDescend.full ChartConstantsDetermined.full
 
 theorem CoordArithOfFnField.full : GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.CoordArithOfFnField.proof
 
-theorem CovolumeLeGram.full : GroundTheory.Heights₂.Heights.HilbertSamuel.CovolumeLeGram.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.CovolumeLeGram.proof
-
-theorem CurvePointsFinite.full : GroundTheory.Heights₂.Heights.HilbertSamuel.CurvePointsFinite.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.CurvePointsFinite.proof
-
 theorem ResolutionInterpIntegral.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionInterpIntegral.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionInterpIntegral.proof
 
-theorem DegLTGrowth.full : GroundTheory.Heights₂.Heights.HilbertSamuel.DegLTGrowth.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.DegLTGrowth.proof
-
-theorem DegreePositive.full : GroundTheory.Heights₂.Heights.HilbertSamuel.DegreePositive.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.DegreePositive.proof
-
 theorem DoubleComplexVanish.full : GroundTheory.Heights₂.Heights.HilbertSamuel.DoubleComplexVanish.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.DoubleComplexVanish.proof
-
-theorem EmbeddingWeight.full : GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight.proof
-
-theorem EventualPolyLine.full : GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolyLine.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolyLine.proof
-
-theorem FibreRelLift.full : GroundTheory.Heights₂.Heights.HilbertSamuel.FibreRelLift.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.FibreRelLift.proof
-
-theorem FiltrationHilbSum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.FiltrationHilbSum.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.FiltrationHilbSum.proof
 
 theorem G1.full : GroundTheory.Heights₂.Heights.HilbertSamuel.G1.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.G1.proof
@@ -483,9 +459,6 @@ theorem GenDegMatAct.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenDeg
 theorem GenOnFibres.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenOnFibres.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GenOnFibres.proof
 
-theorem GeneratedOne.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedOne.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedOne.proof
-
 theorem GeneratedRestrict.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedRestrict.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedRestrict.proof
 
@@ -494,12 +467,6 @@ theorem GeneratedEffectiveSection.full : GroundTheory.Heights₂.Heights.Hilbert
 
 theorem GeneratedProductNonneg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedProductNonneg.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedProductNonneg.proof GeneratedRestrict.full GeneratedEffectiveSection.full
-
-theorem GeneratedMixedNonneg.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedMixedNonneg.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedMixedNonneg.proof GeneratedProductNonneg.full
-
-theorem GenDegTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegTwist.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.GenDegTwist.proof GenOnFibres.full GenericFibreVar.full GeneratedOne.full GeneratedMixedNonneg.full
 
 theorem QuotPartGraded.full : GroundTheory.Heights₂.Heights.HilbertSamuel.QuotPartGraded.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.QuotPartGraded.proof
@@ -513,92 +480,26 @@ theorem GenTwistGenerated.full : GroundTheory.Heights₂.Heights.HilbertSamuel.G
 theorem GeneratedNonzeroSection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedNonzeroSection.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedNonzeroSection.proof
 
-theorem GeneratedPow.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedPow.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.GeneratedPow.proof
-
 theorem GradedSubquot.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GradedSubquot.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GradedSubquot.proof
-
-theorem GramContraction.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GramContraction.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.GramContraction.proof
-
-theorem GraphIsometric.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometric.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometric.proof
 
 theorem GraphIsometricForms.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometricForms.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.GraphIsometricForms.proof
 
-theorem GridSum.full : GroundTheory.Heights₂.Heights.HilbertSamuel.GridSum.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.GridSum.proof
-
-theorem Had.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Had.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Had.proof
-
-theorem Halving.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Halving.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Halving.proof
-
-theorem HilbertDimZero.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertDimZero.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertDimZero.proof
-
-theorem IntersectionRecursion.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntersectionRecursion.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.IntersectionRecursion.proof
-
-theorem HilbertIncrement.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertIncrement.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertIncrement.proof IntersectionRecursion.full
-
-theorem MultigradedFiltration.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.proof
-
-theorem ModulesFromPrimes.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ModulesFromPrimes.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ModulesFromPrimes.proof MultigradedFiltration.full FiltrationHilbSum.full DegLTGrowth.full
-
-theorem HilbertPrime.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertPrime.Statement :=
-  GroundTheory.Heights₂.Heights.Kleiman.HilbertPositive.hilbertPrime
-
-theorem HilbertModule.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertModule.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertModule.proof ModulesFromPrimes.full HilbertPrime.full
-
 theorem HyperplaneRegularSection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.HyperplaneRegularSection.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.HyperplaneRegularSection.proof
-
-theorem IntNumComponents.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntNumComponents.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.IntNumComponents.proof
 
 theorem IntegralAgainstPositive.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralAgainstPositive.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralAgainstPositive.proof
 
-theorem IntegralOfBergman.full : GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralOfBergman.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.IntegralOfBergman.proof
-
-theorem L1Convergence.full : GroundTheory.Heights₂.Heights.HilbertSamuel.L1Convergence.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.L1Convergence.proof
-
-theorem L2GramLattice.full : GroundTheory.Heights₂.Heights.HilbertSamuel.L2GramLattice.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.L2GramLattice.proof
-
-theorem LatticeCount.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LatticeCount.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.LatticeCount.proof
-
 theorem LiftBirationalAmple.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.proof GeneratedNonzeroSection.full
-
-theorem LiftSpread.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LiftSpread.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.LiftSpread.proof
-
-theorem LocalBergmanBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LocalBergmanBound.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.LocalBergmanBound.proof ChartBergmanBound.full
 
 theorem LocalRep.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.proof
 
-theorem LogDetDerivative.full : GroundTheory.Heights₂.Heights.HilbertSamuel.LogDetDerivative.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.LogDetDerivative.proof
-
 theorem MetricTransportSmooth.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MetricTransportSmooth.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MetricTransportSmooth.proof
-
-theorem MinkowskiCount.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MinkowskiCount.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.MinkowskiCount.proof
 
 theorem MixedNumberPolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MixedNumberPolynomial.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.HilbertPositive.mixedNumber
@@ -609,23 +510,14 @@ theorem PolyNonnegAtZero.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Po
 theorem MixedTopAlgebra.full : GroundTheory.Heights₂.Heights.HilbertSamuel.MixedTopAlgebra.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.MixedTopAlgebra.proof PolyNonnegAtZero.full
 
-theorem NefOnGenericOfSemipos.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.proof
-
 theorem NmSectionsFinite.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsFinite.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsFinite.proof Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond
 
 theorem NmSectionsRankBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsRankBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.NmSectionsRankBound.proof NmSectionsFinite.full SecMRankBound.full
 
-theorem Packing.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Packing.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.Packing.proof
-
 theorem PerturbMonomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbMonomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbMonomial.proof GenDegAmple.full
-
-theorem PerturbSemipos.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbSemipos.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.PerturbSemipos.proof
 
 theorem PointHeightFS.full : GroundTheory.Heights₂.Heights.HilbertSamuel.PointHeightFS.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PointHeightFS.proof
@@ -657,44 +549,11 @@ theorem ProjFrameImage.full : GroundTheory.Heights₂.Heights.HilbertSamuel.Proj
 theorem RatNoetherFrame.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RatNoetherFrame.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RatNoetherFrame.proof
 
-theorem ReductionComplex.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionComplex.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ReductionComplex.proof
-
-theorem RelChartPoly.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelChartPoly.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.RelChartPoly.proof
-
 theorem RelLatticeFinite.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelLatticeFinite.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.RelLatticeFinite.proof RelSectionsLarge.full
 
-theorem RelTorsionBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelTorsionBound.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.RelTorsionBound.proof
-
-theorem RelOneStep.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RelOneStep.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.RelOneStep.proof RelChartPoly.full RelTorsionBound.full
-
-theorem ResVolume.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResVolume.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ResVolume.proof
-
-theorem RootGridLower.full : GroundTheory.Heights₂.Heights.HilbertSamuel.RootGridLower.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.RootGridLower.proof
-
-theorem ScaledFSHProps.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ScaledFSHProps.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ScaledFSHProps.proof
-
-theorem SecCochReduce.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SecCochReduce.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SecCochReduce.proof
-
-theorem SectionBounded.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBounded.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBounded.proof
-
-theorem SectionBoundedMul.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBoundedMul.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBoundedMul.proof
-
 theorem SectionOrderAtPoint.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionOrderAtPoint.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionOrderAtPoint.proof
-
-theorem SectionPointValue.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionPointValue.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SectionPointValue.proof
 
 theorem SectionProduct.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionProduct.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionProduct.proof
@@ -711,17 +570,8 @@ theorem SerreGraded.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SerreGr
 theorem SectionSpanStep.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSpanStep.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSpanStep.proof SpanStepHomog.full SerreGraded.full
 
-theorem SectionSupBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSupBound.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SectionSupBound.proof
-
 theorem SectionsDimZero.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsDimZero.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SectionsDimZero.proof
-
-theorem SemiampleNef.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SemiampleNef.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SemiampleNef.proof
-
-theorem SemiposTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SemiposTwist.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SemiposTwist.proof
 
 theorem ShiftDegreePolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftDegreePolynomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftDegreePolynomial.proof MixedNumberPolynomial.full
@@ -729,29 +579,11 @@ theorem ShiftDegreePolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamu
 theorem ShiftIntersectionPolynomial.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftIntersectionPolynomial.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ShiftIntersectionPolynomial.proof
 
-theorem SmallBallVolume.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SmallBallVolume.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SmallBallVolume.proof
-
-theorem SmallGenTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SmallGenTwist.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SmallGenTwist.proof
-
 theorem SmallSectionPointHeight.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SmallSectionPointHeight.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SmallSectionPointHeight.proof SectionOrderAtPoint.full
 
-theorem SpanningExtension.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SpanningExtension.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SpanningExtension.proof
-
-theorem SublatticeDegree.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SublatticeDegree.Statement :=
-  GroundTheory.Heights₂.Heights.Targets.SublatticeDegree.full
-
-theorem SublatticeExtension.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SublatticeExtension.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.SublatticeExtension.proof
-
 theorem SupBoundCount.full : GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundCount.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.SupBoundCount.proof
-
-theorem TopConstantTwist.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TopConstantTwist.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.TopConstantTwist.proof
 
 theorem TwoBlockFnField.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockFnField.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockFnField.proof
@@ -767,9 +599,6 @@ theorem TwoBlockCycleExpand.full : GroundTheory.Heights₂.Heights.HilbertSamuel
 
 theorem TwoBlockStepBound.full : GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockStepBound.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.TwoBlockStepBound.proof RankOfSections.full
-
-theorem UnitApprox.full : GroundTheory.Heights₂.Heights.HilbertSamuel.UnitApprox.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.UnitApprox.proof
 
 theorem VeroneseArith.full : GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseArith.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.VeroneseArith.proof
@@ -792,23 +621,8 @@ theorem ZCombExpand.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombEx
 theorem ZCombLimit.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombLimit.Statement :=
   GroundTheory.Heights₂.Heights.Swarm.ZCombLimit.proof
 
-theorem ZeroCocycleSection.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ZeroCocycleSection.Statement :=
-  GroundTheory.Heights₂.Heights.HilbertSamuel.ZeroCocycleSection.proof
-
-theorem Closed.IndefiniteRowSideFullHecke.Inter.ZIntPoint : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.ZIntPoint.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.ZIntPoint.proof
-
-theorem Closed.ReciprocityTheory.ChartRestriction.G.AI.I2.ArithVarZero : ReciprocityTheory.ChartRestriction.G.AI.I2.ArithVarZeroStatement :=
-  GroundTheory.Heights₂.Heights.Inter.arithVarZero
-
 theorem Closed.ReciprocityTheory.ChartRestriction.G.Geo.FibreFinite : ReciprocityTheory.ChartRestriction.G.Geo.FibreFiniteStatement :=
   ReciprocityTheory.ChartRestriction.G.Geo.fibreFinite
-
-theorem Closed.Inter.regularityPointsSum_holds : GroundTheory.Heights₂.Heights.Inter.regularityPointsSum_holds.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.regularityPointsSum_holds.proof
-
-theorem Closed.Inter.regularityEmbedding_holds : GroundTheory.Heights₂.Heights.Inter.regularityEmbedding_holds.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.regularityEmbedding_holds.proof
 
 theorem Closed.FieldNumbers.LocalizedQuotientLength : GroundTheory.Heights₂.Heights.FieldNumbers.LocalizedQuotientLength.Statement :=
   GroundTheory.Heights₂.Heights.FieldNumbers.LocalizedQuotientLength.proof
@@ -842,12 +656,6 @@ theorem Closed.Inter.regularityLocalCardinality_holds : GroundTheory.Heights₂.
 
 theorem Closed.PtsSumMeasurable : GroundTheory.Heights₂.Heights.PtsSumMeasurable.Statement :=
   GroundTheory.Heights₂.Heights.PtsSumMeasurable.proof
-
-theorem Closed.Inter.SwapCycles : GroundTheory.Heights₂.Heights.Inter.SwapCycles.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.SwapCycles.full
-
-theorem Closed.Inter.GeoNumCut : GroundTheory.Heights₂.Heights.Inter.GeoNumCut.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.GeoNumCut.full
 
 theorem Closed.Inter.TorusInvLevi : GroundTheory.Heights₂.Heights.Inter.TorusInvLevi.Statement :=
   GroundTheory.Heights₂.Heights.Inter.TorusInvLevi.proof
@@ -888,32 +696,8 @@ theorem Closed.TubeDeepWeightMass : GroundTheory.Heights₂.Heights.TubeDeepWeig
 theorem Closed.ChartMassCompact : GroundTheory.Heights₂.Heights.ChartMassCompact.Statement :=
   GroundTheory.Heights₂.Heights.ChartMassCompact.of_open Closed.SheetImageAreaSet
 
-theorem Closed.CutOffBoundaryBound : GroundTheory.Heights₂.Heights.CutOffBoundaryBound.Statement :=
-  GroundTheory.Heights₂.Heights.CutOffBoundaryBound.of_open Closed.SheetImageAreaSet
-
-theorem Closed.Inter.SheetHessPSD : GroundTheory.Heights₂.Heights.Inter.SheetHessPSD.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.SheetHessPSD.proof
-
 theorem Closed.Inter.RegCurvBound : GroundTheory.Heights₂.Heights.Inter.RegCurvBound.Statement :=
   GroundTheory.Heights₂.Heights.Inter.RegCurvBound.proof Closed.Inter.TorusInvLevi
-
-theorem Closed.Inter.HorizNotMem : GroundTheory.Heights₂.Heights.Inter.HorizNotMem.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.HorizNotMem.proof
-
-theorem Closed.Inter.RatioAlgDep : GroundTheory.Heights₂.Heights.Inter.RatioAlgDep.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.RatioAlgDep.proof
-
-theorem Closed.Inter.pointFormRank_holds : GroundTheory.Heights₂.Heights.Inter.pointFormRank_holds.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.pointFormRank_holds.proof Closed.Inter.RatioAlgDep
-
-theorem Closed.Inter.pointFormEuler_holds : GroundTheory.Heights₂.Heights.Inter.pointFormEuler_holds.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.pointFormEuler_holds.proof
-
-theorem Closed.Inter.pointForm_holds : GroundTheory.Heights₂.Heights.Inter.pointForm_holds.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.pointForm_holds.proof Closed.Inter.pointFormRank_holds Closed.Inter.pointFormEuler_holds
-
-theorem Closed.Inter.PFIntZero : GroundTheory.Heights₂.Heights.Inter.PFIntZero.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.PFIntZero.proof Closed.Inter.pointFormRank_holds
 
 theorem Closed.ReciprocityTheory.ChartRestriction.G.AI.I4.ImageCoord : ReciprocityTheory.ChartRestriction.G.AI.I4.ImageCoordStatement :=
   GroundTheory.Heights₂.Heights.Targets.ImageCoord.proof
@@ -929,8 +713,5 @@ theorem Closed.Inter.FibreIsolFinite : GroundTheory.Heights₂.Heights.Inter.Fib
 
 theorem Closed.Inter.ChartRankAdjoin : GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.Statement :=
   GroundTheory.Heights₂.Heights.Inter.ChartRankAdjoin.proof
-
-theorem Closed.Inter.pullbackBadImage_holds : GroundTheory.Heights₂.Heights.Inter.pullbackBadImage_holds.Statement :=
-  GroundTheory.Heights₂.Heights.Inter.pullbackBadImage_holds.proof
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

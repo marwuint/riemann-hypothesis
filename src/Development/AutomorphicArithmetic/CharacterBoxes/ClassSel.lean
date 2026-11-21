@@ -5,7 +5,8 @@ import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTra
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LogCondLeThree
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsClassSelOfRowL
 import Development.AutomorphicArithmetic.CharacterBoxes.ObjCTrue
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AddLargeBaseCoreSlotStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AddLargeBaseCoreSlot
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemberTopFinalContextParameters
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc NumberField IsDedekindDomain
 
@@ -21,7 +22,7 @@ theorem classSel : StandardLattice.SiegelMassRatioCM → (∀ D : D7, StandardLa
     @isSel_of_sAnd Bd Q' R Lk _ (cls (sAnd Q' R) Lk E) (pick (sAnd Q' R) Lk E) hs, hH⟩
   refine recS (QOf (sAnd Q' R) Lk E) cT fun hm => ?_
   obtain ⟨a, b, c, d⟩ := hc hm
-  have d' := GlobalTheory.T.secondG_sAnd_of_largeBase KP Q Q' R a (evG_of_ev r) d
+  have d' := _root_.GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase KP Q Q' R a (evG_of_ev r) d
   have h := memberTop_final_contextParameters h1 h2 KP Q (sAnd Q' R) (QOf (sAnd Q' R) Lk E) a b c d' hE
   have e : ∀ κ : Par, (fun D O => κ.Pos → QOf (sAnd Q' R) Lk E κ D O) = QOf (sAnd Q' R) Lk E κ :=
     fun κ => funext fun _ => funext fun _ => propext ⟨fun h' h0 => h' h0 h0, fun h' _ => h'⟩

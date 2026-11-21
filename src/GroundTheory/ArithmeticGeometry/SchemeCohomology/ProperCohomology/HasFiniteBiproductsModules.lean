@@ -42,14 +42,6 @@ lemma biproduct_app_eq_sum (U : X.Opens) (m : Γ(⨁ M, U)) :
       rfl
   exact this Finset.univ
 
-lemma biproduct_π_app_ι_app (U : X.Opens) (i j : ι) (x : Γ(M i, U)) :
-    (biproduct.π M j).app U ((biproduct.ι M i).app U x) =
-      if h : i = j then (eqToHom (congrArg M h)).app U x else 0 := by
-  rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, biproduct.ι_π]
-  split_ifs with h
-  · rfl
-  · rfl
-
 theorem isQuasicoherent_biproduct [∀ i, (M i).IsQuasicoherent] : (⨁ M).IsQuasicoherent := by
   refine isQuasicoherent_of_affineCover _ (fun V : X.affineOpens => (V : X.Opens)) (fun V => V.2)
     (iSup_affineOpens_eq_top X) ?_ ?_

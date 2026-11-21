@@ -1075,8 +1075,6 @@ theorem act_cont : Continuous (fun p : (m → m → ℂ) × (Q → m → ℂ) =>
   exact continuous_pi fun j =>
     (of_cont.comp continuous_fst).matrix_mulVec ((continuous_apply j).comp continuous_snd)
 
-def adjF (g : m → m → ℂ) : m → m → ℂ := (Matrix.of g).adjugate
-
 def invF (g : m → m → ℂ) : m → m → ℂ := ((Matrix.of g)⁻¹ : Matrix m m ℂ)
 
 theorem invF_meas : Measurable (invF : (m → m → ℂ) → m → m → ℂ) := by
@@ -1750,12 +1748,6 @@ theorem matrix_norm_ge_one : Formalism.FourierDecayAlt.B2.GNLower := by
     have : 1 ≤ 2 * r + k + 1 := Nat.le_add_left 1 _
     exact_mod_cast this
   nlinarith [sq_nonneg (B.gN (B2.Ppos k r * g * B2.Pneg k r))]
-
-theorem hilbert_schmidt_block : Formalism.FourierDecayAlt.B2.HSBlock := by
-  exact HermitianFormFactor.hsblock
-
-theorem norm_ball_volume_exact : Formalism.FourierDecayAlt.B2.VolExact := by
-  exact HermitianFormFactor.volExact
 
 theorem norm_ball_volume_sharp : Formalism.FourierDecayAlt.B2.VolSharp := by
   exact HermitianFormFactor.volSharp

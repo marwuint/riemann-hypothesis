@@ -30,15 +30,6 @@ def DivPushForwardLocal.Statement : Prop :=
       cycEval M (divCycle P' (rename (blockIncl j ι') a)) =
         relDeg j P' * divCycle (contractPrime j P') a W
 
-section Example
-
-abbrev LineRing : Type :=
-  MRing (fun k => addBlock (ProjIdx 1) 0 ((Function.Embedding.some : Unit ↪ Option Unit) k)) ℚ
-
-abbrev linePointIdeal : Ideal LineRing := Ideal.span {X ⟨(), (0 : Fin 2)⟩}
-
-end Example
-
 end
 
 end GroundTheory.Heights₂.Heights.FieldNumbers

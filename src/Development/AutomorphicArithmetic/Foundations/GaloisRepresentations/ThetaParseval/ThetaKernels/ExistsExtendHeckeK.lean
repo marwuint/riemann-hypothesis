@@ -28,7 +28,7 @@ theorem exists_extend_hecke_k : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
   have hkey : ∀ a : (AF F)ˣ, idFF F E a ∈ V → lam a = 1 := key σ hB.cm M hM lam h1 hMk
   have hN : 0 < 8 * M := by positivity
   have hWo : IsOpen (WE F E (8 * M) : Set (AF F ⊗[F] E)ˣ) := by
-    have ho := GlobalTheory.T.isOpen_integralTensorAdeleMultiples F E (8 * M) hN
+    have ho := _root_.GlobalTheory.HeckeExtend.CE_isOpen F E (8 * M) hN
     have hcv : Continuous fun z : (AF F ⊗[F] E)ˣ => (z : AF F ⊗[F] E) - 1 :=
       Units.continuous_val.sub continuous_const
     have hci : Continuous fun z : (AF F ⊗[F] E)ˣ => ((z⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1 :=

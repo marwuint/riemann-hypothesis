@@ -3,11 +3,11 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieChart
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinearStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationSheafGlueModulesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModulesGlueCoverStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationSheafGlueModules
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModulesGlueCover
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizedModuleBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualModuleFiniteProjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualModuleFiniteProjective
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualNumberPointsGlueStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj
@@ -41,7 +41,7 @@ theorem exists_tr {A B : Type} [CommRing A] [CommRing B] (a : Sp A ⟶ S) (b : S
     (M : LieModel G a E) (M' : LieModel G b E') :
     ∃ j : E →ₛₗ[c] E', ∀ e, (M'.pt (j e)).left = spMap (dualMap c) ≫ (M.pt e).left := by
   subst h
-  obtain ⟨j, hj, -⟩ := GlobalTheory.T.lie_model_existsUnique_semilinear S G A B c a E E' M M'
+  obtain ⟨j, hj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieBaseChange.existsUnique_semilinear_lifts S G A B c a E E' M M'
   refine ⟨j, fun e => ?_⟩
   have := hj e
   simpa [LieModel.Lifts] using this
@@ -149,7 +149,7 @@ theorem loc_of_family {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finit
     fun g => exists_trL (R := R) x (ptAt x g.1) (algebraMap R _) (fun _ => rfl) rfl M (mg g)
   choose ρ hρ using hρ
   have hglue := fun X => GlobalTheory.T.dual_number_points_glue X R J f hf
-  refine ⟨ρ, hρ, GlobalTheory.T.localization_sheaf_glue_modules R E J f hf F res ρ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩
+  refine ⟨ρ, hρ, _root_.GlobalTheory.CompanionTheory.BasicCover.isLocalizedModule_of_basic_cover R E J f hf F res ρ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩
   · intro g h y
     apply pt_left_inj (mg g)
     rw [hres, cmap_self, spMap_dual_id, Category.id_comp]
@@ -320,10 +320,10 @@ theorem fin_of_charts {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finit
     exact ⟨e, trivial⟩
   choose e _ using hcmp
   haveI : ∀ i, Module.Finite (Localization.Away (f i)) (P i →ₗ[R] Localization.Away (f i)) :=
-    fun i => (GlobalTheory.T.dual_module_finite_projective R (P i) (f i)).1
+    fun i => (_root_.GlobalTheory.CompanionTheory.Ggeo.HomDual.finite_projective_hom R (P i) (f i)).1
   haveI : ∀ i, Module.Projective (Localization.Away (f i)) (P i →ₗ[R] Localization.Away (f i)) :=
-    fun i => (GlobalTheory.T.dual_module_finite_projective R (P i) (f i)).2
-  refine GlobalTheory.T.projective_modules_glue_cover R E J f hf (fun i => P i →ₗ[R] Localization.Away (f i))
+    fun i => (_root_.GlobalTheory.CompanionTheory.Ggeo.HomDual.finite_projective_hom R (P i) (f i)).2
+  refine _root_.GlobalTheory.CompanionTheory.Ggeo.finite_projective_of_isLocalizedModule_cover R E J f hf (fun i => P i →ₗ[R] Localization.Away (f i))
     (fun i => (e i : _ →ₗ[R] _) ∘ₗ ρ ⟨f i, i, dvd_rfl⟩) fun i => ?_
   haveI := hloc i
   exact IsLocalizedModule.of_linearEquiv _ _ _

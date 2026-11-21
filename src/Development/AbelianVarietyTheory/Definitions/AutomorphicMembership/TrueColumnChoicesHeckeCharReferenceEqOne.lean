@@ -95,12 +95,6 @@ theorem chiId_span_singleton {L : Type} [Field L] [NumberField L] (χ : HChar L)
       ((∏ᶠ w : HeightOneSpectrum (𝓞 L), χ.val w ^ (ordF w u).toNat : ℂˣ) : ℂ) := by
   simp only [chiId, ordSub_span_singleton]
 
-theorem chiId_one {L : Type} [Field L] [NumberField L] (χ : HChar L) : chiId χ 1 = 1 := by
-  have h := chiId_span_singleton χ 1
-  rw [Units.val_one, ← Submodule.one_eq_span] at h
-  rw [h]
-  simp [ordF]
-
 theorem detId_std {R : Ranks} (H : Host R) (N : ℕ) : Th.detId H (Th.stdL H N) (Th.stdL H N) = 1 := by
   classical
   apply le_antisymm
@@ -315,9 +309,6 @@ theorem Ok.two_q_d_mem (h : I.Ok) : 2 ∈ I.S ∧ B.host.q ∈ I.S ∧ B.host.d 
   ⟨h.mem_of_dvd_QS Nat.prime_two ((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans B.host.tower_dvd),
     h.mem_of_dvd_QSq B.host.hyp.1 (dvd_mul_left _ _), h.ram_mem _ B.host.hyp.2.1 (dvd_mul_left _ _)⟩
 
-theorem Ok.not_dvd_condN (h : I.Ok) {p : ℕ} (hp : p.Prime) (hS : p ∉ I.S) : ¬ p ∣ B.host.condN :=
-  fun hd => hS (h.ram_mem p hp hd)
-
 theorem Ok.hm (h : I.Ok) : B.R.m = (B.R.m - 2) + 2 := (h.idx_ok I.mu0).hm
 
 end ColIn
@@ -354,22 +345,6 @@ theorem AmbIn.ok_iff (J : AmbIn B.host) :
 theorem duStarOf_eq (u : B.Word) : duStarOf B.host (B.hcW u) = StandardLattice.duStarU (assemble B C W V S N G) u := rfl
 
 end Record
-
-example {B : Base} {X : PreX B.toPre} (I : ColIn B X) (h : I.Ok) (v : HeightOneSpectrum (𝓞 B.host.E))
-    (hv : Formalism.L2.Host.OverP B.host B.host.pde v) : I.muStar ≠ I.mu0 := by
-  intro e
-  have h1 : I.C.del = 1 := by rw [← h.xi_star, e, h.trueColumnChoices_heckeChar_reference_eq_one]
-  have h2 := (I.C.isDel.ine v hv 1).1 fun x _ => by rw [h1]; simp
-  omega
-
-example {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field K] (σ : K →+* ℂ)
-    (μ : Chr F E K) (ξ : HChar E) (h : Reads σ μ ξ) (a : Ideles E) (ha : (a : AdeleRing (𝓞 E) E).2 = 1) : ξ.1 a = 1 := by
-  apply Units.ext
-  rw [h.apply a 1 (by rw [ha, Units.val_one, map_one])]
-  simp
-
-example {R : Ranks} (H : Host R) (χ : HChar H.E) (N N' : ℕ) : Th.chiFac H (chiId χ) N N' (Th.stdL H N) (Th.stdL H N') = 1 := by
-  simp [Th.chiFac, detId_std, chiId_one]
 
 end GlobalTheory.Mem.Col2
 

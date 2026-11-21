@@ -33,29 +33,6 @@ def CycPerfd.Over {p : ℕ} [Fact p.Prime] (S S' : CycPerfd p) [Algebra S.R S'.R
   (∀ a, fontaineTheta S'.R p (α a) = algebraMap S.R S'.R (fontaineTheta S.R p a)) ∧
     (∀ a, α (frobenius a) = frobenius (α a)) ∧ α (teichmuller p S.ε) = teichmuller p S'.ε
 
-def CycPerfd.ofIntegers (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
-    {v : Valuation C NNReal} (O : Type) [CommRing O] [Algebra O C]
-    [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O] (hv : v.Integers O) (ε : PreTilt O p)
-    (hε : IsPrimitiveRoot (((_root_.frobeniusEquiv (PreTilt O p) p).symm ε).untilt) p) : CycPerfd p where
-  R := O
-  reg := fun a b h => sub_eq_zero.1 (ReciprocityTheory.PGsh.Ainf.torsion_free p O hv 1 _ (by
-    have h' : (p : O) * a = (p : O) * b := h
-    rw [pow_one, sub_mul, mul_comm a, mul_comm b, h', sub_self]))
-  ε := ε
-  zeta_zero := (zeta_succ_pow ε 0).symm.trans hε.pow_eq_one
-  surj := ReciprocityTheory.PGsh.Ainf.theta_surj p O hv
-  ker_eq := ReciprocityTheory.PGsh.Ainf.ker_theta p O hv ε hε
-
-open scoped Formalism.Per in
-
-theorem CycPerfd.nonempty (p : ℕ) [Fact p.Prime] : ∃ S : CycPerfd p, IsPrimitiveRoot (zeta S.ε 1) p := by
-  obtain ⟨e, he⟩ := GlobalTheory.MemLoc.Model.exists_isEps p
-  exact ⟨CycPerfd.ofIntegers p (Formalism.Per.OC p) (PadicComplexInt.integers p) e he.isPrimitiveRoot_untilt,
-    he.isPrimitiveRoot_untilt⟩
-
-theorem CycPerfd.over_refl {p : ℕ} [Fact p.Prime] (S : CycPerfd p) : S.Over S (RingHom.id _) :=
-  ⟨fun _ => rfl, fun _ => rfl, rfl⟩
-
 def PrismaticDieudonnePerfd : Prop :=
   ∀ (p : ℕ) [Fact p.Prime],
   ∃ (M : ∀ S : CycPerfd p, PDivGroup p S.R → ModuleCat.{0} (Ainf p S.R))

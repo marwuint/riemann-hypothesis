@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPrincipalIdealRingWittPowerSeriesAwayPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPrincipalIdealRingWittPowerSeriesAwayPrime
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc
 open scoped Formalism.Per NNReal
 
@@ -119,7 +119,7 @@ theorem exists_lattice_basis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk :
       (l : bk.S) ^ c • Y = X * Q' := by
   intro l _ K bk d m n Y
   haveI := isDomain_loc bk
-  haveI := GlobalTheory.T.isPrincipalIdealRing_wittPowerSeries_away_prime l K bk
+  haveI := _root_.GlobalTheory.BSP.isPrincipalIdealRing_away_l l K bk
   set φ := algebraMap bk.S (Localization.Away (l : bk.S)) with hφ
   have hE : φ (bk.E ^ n) ≠ 0 := by
     rw [map_ne_zero_iff _ (inj_loc bk)]; exact pow_ne_zero _ bk.E_ne_zero

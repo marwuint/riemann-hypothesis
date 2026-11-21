@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MonodromyZeroOfWeilDeligneRepClassIff
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowEqPowOfWeilDegreeEqSmoothStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilGroupIsSemisimpleOfSemisimpleFrobStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowEqPowOfWeilDegreeEqSmooth
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilGroupIsSemisimpleOfSemisimpleFrob
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial Module GlobalTheory.WeilDeligne
 
@@ -140,7 +140,7 @@ theorem exists_frobenius_semisimplification : ∀ (E Ω : Type) [Field E] [Numbe
     exact (Units.mul_right_inj S).mp h3
   have huρ : ∀ τ, Commute (u : End ℂ V) (ρ τ) := by
     intro τ
-    obtain ⟨m, hm, e⟩ := GlobalTheory.T.exists_pow_eq_pow_of_weilDegree_eq_smooth E Ω A w h V ρ hρ (frob h) (τ * frob h * τ⁻¹) (by simp)
+    obtain ⟨m, hm, e⟩ := _root_.GlobalTheory.WeilDeligne.exists_pow_eq_pow_of_deg_eq E Ω A w h V ρ hρ (frob h) (τ * frob h * τ⁻¹) (by simp)
     have c1 : f ^ m * ρ τ = (1 : ℂ) • (ρ τ * f ^ m) := by
       rw [one_smul]
       conv_lhs => rw [hfdef, e]
@@ -174,7 +174,7 @@ theorem exists_frobenius_semisimplification : ∀ (E Ω : Type) [Field E] [Numbe
     rw [hρ', this]; simp
   have hfr : ρ' (frob h) = S := by
     rw [hρ', deg_frob, ← hfdef, ← hSu', mul_assoc, ← Units.val_mul]; simp
-  refine ⟨⟨ρ', N, hsm, GlobalTheory.T.weilGroup_isSemisimple_of_semisimple_frob E Ω A w h V ρ' hsm (frob h) deg_frob (hfr ▸ hss), hN,
+  refine ⟨⟨ρ', N, hsm, _root_.GlobalTheory.WeilDeligne.isSemisimple_of_isSemisimple_frob E Ω A w h V ρ' hsm (frob h) deg_frob (hfr ▸ hss), hN,
     fun σ => ?_⟩, u, rfl, hunil, huN, huρ, fun σ => ?_⟩
   · rw [hρ', mul_assoc, (huN.units_zpow_left (-deg σ)).eq, ← mul_assoc, hc, smul_mul_assoc,
       mul_assoc]

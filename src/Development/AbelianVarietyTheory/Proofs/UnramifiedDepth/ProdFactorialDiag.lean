@@ -394,30 +394,6 @@ theorem dg_apply_of_notMem (j : Fin N × Fin N' → σ) (f : ℕ → ℕ) (x : �
   · rw [Finsupp.single_apply, if_neg (fun h => hx _ h.symm)]
   · rfl
 
-theorem prod_factorial_diag (e : ℕ → ℕ) :
-    ∏ x : Fin N × Fin N', (if x.1.val = x.2.val then monAl N N' e x.1.val else 0).factorial =
-      ∏ ρ : Fin N, (monAl N N' e ρ.val).factorial := by
-  classical
-  rw [Fintype.prod_prod_type]
-  apply Finset.prod_congr rfl
-  intro b _
-  by_cases hb : b.val < N'
-  · rw [Finset.prod_eq_single ⟨b.val, hb⟩]
-    · simp
-    · intro c _ hc
-      rw [if_neg, Nat.factorial_zero]
-      intro h
-      exact hc (Fin.ext h.symm)
-    · intro h
-      exact absurd (Finset.mem_univ _) h
-  · rw [monAl_eq_zero e hb, Nat.factorial_zero]
-    apply Finset.prod_eq_one
-    intro c _
-    rw [if_neg, Nat.factorial_zero]
-    intro h
-    have h' : b.val = c.val := h
-    exact hb (by rw [h']; exact c.isLt)
-
 end Diagonal
 
 section Valuation
@@ -473,90 +449,5 @@ theorem val_nat {l : ℕ} (hl : l.Prime) (hv : v (l : C) = 1) {n : ℕ} (hn : n 
     nsmul_eq_mul, mul_one]
 
 end Valuation
-
-theorem mon_one_type : MON := by
-  classical
-  intro C _ _ N N' e t ht
-  classical
-  have hL := lead_monP (C := C) (p := fun x : Fin N × Fin N' => x.1.val = x.2.val) id (fun b c => Iff.rfl) e
-  have hG := low_monG (C := C) (N := N) (N' := N') id ht e
-  simp only [MvPolynomial.rename_id, AlgHom.id_apply] at hL
-  have hjet := jet_eq hL hG
-  have hm2 : mfact (dg (id : Fin N × Fin N' → Fin N × Fin N') (monAl N N' e)) =
-      ∏ ρ : Fin N, (monAl N N' e ρ.val).factorial := by
-    rw [GlobalTheory.LegendreFacts.mfact_eq_prod, ← prod_factorial_diag e]
-    apply Finset.prod_congr rfl
-    intro x _
-    obtain ⟨b, c⟩ := x
-    exact congrArg Nat.factorial (dg_apply id Function.injective_id _ b c)
-  refine ⟨?_, sum_monAl e, ?_⟩
-  · rw [← hm2]
-    exact hjet
-  · intro v l hl hv
-    set M := ∏ ρ : Fin N, (monAl N N' e ρ.val).factorial with hM
-    have hM0 : M ≠ 0 := Finset.prod_ne_zero_iff.2 (fun ρ _ => Nat.factorial_ne_zero _)
-    refine ⟨?_, ?_⟩
-    · rw [val_nat v hl hv hM0, WithTop.coe_le_coe]
-      let A : Fin N →₀ ℕ := Finsupp.equivFunOnFinite.symm (fun ρ => monAl N N' e ρ.val)
-      have hA1 : mfact A = M := by
-        rw [GlobalTheory.LegendreFacts.mfact_eq_prod]
-        rfl
-      have hA2 : A.degree = monDeg N N' e := by
-        rw [GlobalTheory.LegendreFacts.degree_eq_sum', ← sum_monAl e]
-        rfl
-      by_cases hd : 1 ≤ A.degree
-      · have h := ((GlobalTheory.LegendreFacts.legendre_facts l hl).2.2.1 (Fin N) A hd).2
-        rw [hA1, hA2] at h
-        exact h
-      · have hd0 : monDeg N N' e = 0 := by omega
-        have hall : ∀ ρ : Fin N, monAl N N' e ρ.val = 0 := by
-          intro ρ
-          have h := sum_monAl (N := N) (N' := N') e
-          rw [hd0] at h
-          exact (Finset.sum_eq_zero_iff.1 h) ρ (Finset.mem_univ _)
-        have hM1 : M = 1 := by
-          rw [hM]
-          simp [hall]
-        rw [hM1, hd0]
-        simp
-    · intro hlt
-      apply val_coprime v hl hv
-      rw [hM]
-      intro hdvd
-      obtain ⟨ρ, _, hρ⟩ := (Prime.dvd_finsetProd_iff hl.prime _).1 hdvd
-      exact absurd ((Nat.Prime.dvd_factorial hl).1 hρ) (not_le.2 (hlt ρ))
-
-theorem mon_types : MONTypes := by
-  classical
-  intro C _ _ B _ _ N N' e t ht
-  classical
-  let p : (Σ b : B, Fin N × Fin (N' b)) → Prop := fun x => x.2.1.val = x.2.2.val
-  have hL : Lead p (∑ b : B, dg (fun x => (⟨b, x⟩ : Σ b : B, Fin N × Fin (N' b))) (monAl N (N' b) (e b)))
-      (∏ b : B, MvPolynomial.rename (fun x => (⟨b, x⟩ : Σ b : B, Fin N × Fin (N' b)))
-        (monP C N (N' b) (e b))) :=
-    lead_prod _ _ _ (fun b _ => lead_monP _ (fun r c => Iff.rfl) (e b))
-  have hG : Low (∑ b : B, dg (fun x => (⟨b, x⟩ : Σ b : B, Fin N × Fin (N' b))) (monAl N (N' b) (e b)))
-      (∏ b : B, monG N (N' b) (e b) fun x => t ⟨b, x⟩) :=
-    low_prod _ _ _ (fun b _ => low_monG _ ht (e b))
-  rw [jet_eq hL hG, GlobalTheory.LegendreFacts.mfact_eq_prod, Fintype.prod_sigma]
-  congr 1
-  apply Finset.prod_congr rfl
-  intro b _
-  rw [← prod_factorial_diag (e b)]
-  apply Finset.prod_congr rfl
-  intro y _
-  congr 1
-  rw [Finsupp.finsetSum_apply, Finset.sum_eq_single b]
-  · obtain ⟨r, c⟩ := y
-    exact dg_apply _ (fun x y hxy => eq_of_heq (Sigma.mk.inj hxy).2) _ r c
-  · intro b' _ hb'
-    apply dg_apply_of_notMem
-    intro z hz
-    exact hb' (congrArg Sigma.fst hz).symm
-  · intro h
-    exact absurd (Finset.mem_univ b) h
-
-theorem main : MON ∧ MONTypes := by
-  exact ⟨mon_one_type, mon_types⟩
 
 end GlobalTheory.MinorGerm

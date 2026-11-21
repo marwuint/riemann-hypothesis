@@ -401,11 +401,6 @@ theorem log_covolume_slope_mu : LcvMu := by
   rw [hsum, hn]
   field_simp
 
-theorem covolume_formula : Formalism.HN.LcvFormula := by
-  intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e M he hM hM0 hsp
-  obtain ⟨-, -, -, hfin, hmu⟩ := log_covolume_slope_mu K V ι b X hX j e M he hM hM0 hsp
-  exact ⟨hfin, hmu⟩
-
 end Main
 
 section Mod
@@ -534,24 +529,6 @@ theorem index_slope_formula : Formalism.HN.IndexMu := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX M N hM hNM hN0 hrk
   exact ⟨muDef_index b X hX hM hNM hN0 hrk, muMaxDef_mono b X hX hM hNM hN0⟩
 
-theorem truncated_lattice_holds : Formalism.HN.CutLattice := by
-  intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX I hI M N' hM hM0 hN' hN'0 hrk
-  have hfg := idealSmul_fg I hM
-  refine ⟨?_, ?_⟩
-  · rw [← muMaxDef_fractional b X hX hM hM0 hI]
-    exact muMaxDef_mono b X hX hfg hN' hN'0
-  · rw [muDef_index b X hX hfg hN' hN'0 (by rw [hrk, rkK_idealSmul hI]),
-      muDef_fractional b X hX hM hM0 hI, rkK_idealSmul hI]
-
-theorem covolume_basis_free : LcvBasisFree := by
-  intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j j' e e' M he he' hM hM0 hsp hsp'
-  obtain ⟨hrk, hj, -, -, h1⟩ := log_covolume_slope_mu K V ι b X hX j e M he hM hM0 hsp
-  obtain ⟨-, -, -, -, h2⟩ := log_covolume_slope_mu K V ι b X hX j' e' M he' hM hM0 hsp'
-  have hj' : (rkK M : ℝ) ≠ 0 := by rw [hrk]; exact_mod_cast hj.ne'
-  rw [h1] at h2
-  have := (div_left_inj' hj').1 h2
-  linarith
-
 theorem covolume_exists : LcvExists := by
   intro K V _ _ _ _ _ _ _ M
   obtain ⟨s, hsN, hspan, hli⟩ := exists_linearIndependent K (M : Set V)
@@ -584,128 +561,6 @@ theorem covolume_free_module : LcvFree := by
   refine ⟨hfin0, ?_⟩
   rw [h1, hrk, lcv, hfin0, add_zero]
 
-section BaseChange
-
-open scoped Matrix
-
-variable {K V ι : Type} [Field K] [NumberField K] [StarRing K]
-  [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
-
-theorem fcoord_sum (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
-    {j : ℕ} (c : Fin j → K) (e : Fin j → V) :
-    fcoord b X v (∑ k, c k • e k) = ∑ k, v.embedding (c k) • fcoord b X v (e k) := by
-  let φ : V →+ (ι → ℂ) := AddMonoidHom.mk' (fcoord b X v) (fcoord_add b X v)
-  have h : φ (∑ k, c k • e k) = ∑ k, φ (c k • e k) := map_sum φ _ _
-  have h2 : ∀ x, φ x = fcoord b X v x := fun _ => rfl
-  simp only [h2] at h
-  rw [h]
-  exact Finset.sum_congr rfl fun k _ => HeightGram.fcoord_smul b X v (c k) (e k)
-
-theorem gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
-    (v : InfinitePlace K) {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K) :
-    gramPl b X v (fun a => ∑ c, g c a • e c) =
-      (g.map v.embedding)ᴴ * gramPl b X v e * g.map v.embedding := by
-  let Mv : Matrix ι (Fin j) ℂ := Matrix.of fun i a => fcoord b X v (e a) i
-  have hG : gramPl b X v e = Mvᴴ * Mv := by
-    ext a c
-    simp [gramPl, majAt, Mv, Matrix.mul_apply, Matrix.conjTranspose_apply]
-  have hG' : gramPl b X v (fun a => ∑ c, g c a • e c) =
-      (Mv * g.map v.embedding)ᴴ * (Mv * g.map v.embedding) := by
-    ext a c
-    simp only [gramPl, majAt, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply,
-      fcoord_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Mv, Matrix.map_apply]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    congr 1
-    · congr 1
-      exact Finset.sum_congr rfl fun k _ => mul_comm _ _
-    · exact Finset.sum_congr rfl fun k _ => mul_comm _ _
-  rw [hG', hG, Matrix.conjTranspose_mul]
-  simp only [Matrix.mul_assoc]
-
-theorem det_gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
-    (v : InfinitePlace K) {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K)
-    (him : (gramPl b X v e).det.im = 0) :
-    (gramPl b X v (fun a => ∑ c, g c a • e c)).det.re =
-      v g.det ^ 2 * (gramPl b X v e).det.re := by
-  have hdet : (g.map v.embedding).det = v.embedding g.det := by
-    rw [RingHom.map_det, RingHom.mapMatrix_apply]
-  have hw : (gramPl b X v e).det = (((gramPl b X v e).det.re : ℝ) : ℂ) :=
-    Complex.ext (by simp) (by simp [him])
-  rw [gramPl_baseChange, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hdet, hw]
-  have e1 : star (v.embedding g.det) * (((gramPl b X v e).det.re : ℝ) : ℂ) * v.embedding g.det =
-      ((Complex.normSq (v.embedding g.det) * (gramPl b X v e).det.re : ℝ) : ℂ) := by
-    rw [Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self, Complex.star_def]
-    ring
-  rw [e1, Complex.ofReal_re, Complex.normSq_eq_norm_sq, InfinitePlace.norm_embedding_eq,
-    Complex.ofReal_re]
-
-theorem span_baseChange {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K)
-    (hg : IsUnit g.det) :
-    Submodule.span K (Set.range fun a => ∑ c, g c a • e c) = Submodule.span K (Set.range e) := by
-  apply le_antisymm
-  · refine Submodule.span_le.2 ?_
-    rintro _ ⟨a, rfl⟩
-    exact Submodule.sum_mem _ fun c _ =>
-      Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self c))
-  · refine Submodule.span_le.2 ?_
-    rintro _ ⟨k, rfl⟩
-    have h : e k = ∑ a, g⁻¹ a k • ∑ c, g c a • e c := by
-      simp only [Finset.smul_sum, smul_smul]
-      rw [Finset.sum_comm]
-      have : ∀ c, ∑ a, (g⁻¹ a k * g c a) • e c = ((g * g⁻¹) c k) • e c := by
-        intro c
-        rw [← Finset.sum_smul, Matrix.mul_apply]
-        congr 1
-        exact Finset.sum_congr rfl fun a _ => mul_comm _ _
-      simp only [this, Matrix.mul_nonsing_inv g hg, Matrix.one_apply]
-      simp
-    rw [h]
-    exact Submodule.sum_mem _ fun a _ =>
-      Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self a))
-
-theorem linInd_baseChange {j : ℕ} (e : Fin j → V) (he : LinearIndependent K e)
-    (g : Matrix (Fin j) (Fin j) K) (hg : IsUnit g.det) :
-    LinearIndependent K (fun a => ∑ c, g c a • e c) := by
-  rw [linearIndependent_iff_card_eq_finrank_span, Set.finrank, span_baseChange e g hg]
-  exact linearIndependent_iff_card_eq_finrank_span.1 he
-
-end BaseChange
-
-theorem covolume_base_change : LcvBaseChange := by
-  intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e g M he hg hM hM0 hsp
-  have hd : g.det ≠ 0 := hg.ne_zero
-  have hn : (Module.finrank ℚ K : ℝ) = 2 * (nPl K : ℝ) := by
-    rw [sizeMu_finrank_eq K]; push_cast; ring
-  have hf : (nPl K : ℝ) ≠ 0 := by
-    have : 0 < nPl K := Fintype.card_pos
-    exact_mod_cast this.ne'
-  have hprod : ∏ v : InfinitePlace K, v g.det ^ 2 = |((Algebra.norm ℚ g.det : ℚ) : ℝ)| := by
-    have h := InfinitePlace.prod_eq_abs_norm g.det
-    rw [← Rat.cast_abs, ← h]
-    refine Finset.prod_congr rfl fun v _ => ?_
-    rw [InfinitePlace.mult, if_neg (InfinitePlace.not_isReal_iff_isComplex.2
-      (IsTotallyComplex.isComplex v))]
-  have hinf : lcvInf b X (fun a => ∑ c, g c a • e c) = lcvInf b X e +
-      2 / (Module.finrank ℚ K : ℝ) * Real.log |((Algebra.norm ℚ g.det : ℚ) : ℝ)| := by
-    unfold lcvInf
-    have h1 : ∀ v : InfinitePlace K,
-        Real.log (gramPl b X v (fun a => ∑ c, g c a • e c)).det.re =
-          Real.log (v g.det ^ 2) + Real.log (gramPl b X v e).det.re := by
-      intro v
-      obtain ⟨hp, him⟩ := gram_pos b X hX e he v
-      rw [det_gramPl_baseChange b X v e g him, Real.log_mul _ hp.ne']
-      exact pow_ne_zero _ ((map_ne_zero v).2 hd)
-    simp only [h1]
-    rw [Finset.sum_add_distrib, ← Real.log_prod (fun v _ =>
-      pow_ne_zero _ ((map_ne_zero v).2 hd)), hprod, hn]
-    field_simp
-    ring
-  refine ⟨hinf, ?_⟩
-  have hfree := covolume_basis_free K V ι b X hX j j e (fun a => ∑ c, g c a • e c) M he
-    (linInd_baseChange e he g hg) hM hM0 hsp (by rw [span_baseChange e g hg, hsp])
-  unfold lcv at hfree
-  linarith
-
 theorem covolume_ideal : LcvIdeal := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b j e I he hj hI
   have hfd : FiniteDimensional K V := Module.Finite.of_basis b
@@ -725,39 +580,5 @@ theorem covolume_ideal : LcvIdeal := by
   have hq : (Module.finrank ℚ K : ℝ) ≠ 0 := (finrank_pos' (K := K)).ne'
   field_simp at h2 ⊢
   linarith
-
-theorem lcv_nonvacuous :
-    letI : StarRing (CyclotomicField 3 ℚ) := starRingOfComm
-    0 < lcvFin (K := CyclotomicField 3 ℚ) (V := CyclotomicField 3 ℚ) (fun _ : Fin 1 => 1)
-      (idealSmul ((FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 (CyclotomicField 3 ℚ)))
-        (2 : CyclotomicField 3 ℚ) : FractionalIdeal (nonZeroDivisors (𝓞 (CyclotomicField 3 ℚ)))
-          (CyclotomicField 3 ℚ)) : Submodule (𝓞 (CyclotomicField 3 ℚ)) (CyclotomicField 3 ℚ))
-        (Submodule.span (𝓞 (CyclotomicField 3 ℚ)) (Set.range fun _ : Fin 1 => 1))) := by
-  let _ : StarRing (CyclotomicField 3 ℚ) := starRingOfComm
-  have hcyc : IsCyclotomicExtension {3} ℚ (CyclotomicField 3 ℚ) :=
-    CyclotomicField.isCyclotomicExtension 3 ℚ
-  have hTC : IsTotallyComplex (CyclotomicField 3 ℚ) :=
-    IsCyclotomicExtension.Rat.isTotallyComplex (n := 3) (CyclotomicField 3 ℚ) (by norm_num)
-  have he : LinearIndependent (CyclotomicField 3 ℚ)
-      (fun _ : Fin 1 => (1 : CyclotomicField 3 ℚ)) :=
-    LinearIndependent.of_subsingleton 0 one_ne_zero
-  have hI : (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 (CyclotomicField 3 ℚ)))
-      (2 : CyclotomicField 3 ℚ)) ≠ 0 := by
-    rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]; exact two_ne_zero
-  rw [covolume_ideal (CyclotomicField 3 ℚ) (CyclotomicField 3 ℚ) Unit
-    (Basis.singleton Unit (CyclotomicField 3 ℚ)) 1 _ _ he one_pos hI,
-    FractionalIdeal.absNorm_span_singleton]
-  have hn : Algebra.norm ℚ (2 : CyclotomicField 3 ℚ) =
-      2 ^ Module.finrank ℚ (CyclotomicField 3 ℚ) := by
-    have := Algebra.norm_algebraMap (S := CyclotomicField 3 ℚ) (2 : ℚ)
-    rwa [map_ofNat] at this
-  have hpos : 0 < Module.finrank ℚ (CyclotomicField 3 ℚ) := Module.finrank_pos
-  have h1 : (1 : ℝ) < ((|Algebra.norm ℚ (2 : CyclotomicField 3 ℚ)| : ℚ) : ℝ) := by
-    rw [hn, abs_of_pos (by positivity)]
-    push_cast
-    exact one_lt_pow₀ one_lt_two hpos.ne'
-  have h2 := Real.log_pos h1
-  have h3 : (0 : ℝ) < (Module.finrank ℚ (CyclotomicField 3 ℚ) : ℝ) := by exact_mod_cast hpos
-  positivity
 
 end Formalism.LFunctionChainParameters.LLcv

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPrimitiveRootAndRootsOfUnityStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtaleCocycleFirstChernClassTateTwist
 
@@ -26,7 +26,7 @@ theorem glue_sec (F G : Shv R) (Rel : ∀ U : Scheme.{0}, Sec F U → Sec G U �
     intro U x
     obtain ⟨S, hS, hP⟩ := hex U x
     choose s hs using hP
-    obtain ⟨a, ha⟩ := (GlobalTheory.T.etaleSheafSections_ext_and_glue R G U).2 S hS s (fun V W g k hg => by
+    obtain ⟨a, ha⟩ := (_root_.GlobalTheory.EtC.sec_ext_glue R G U).2 S hS s (fun V W g k hg => by
       refine huniq W (Sec.res (k ≫ g) x) _ _ ?_ (hs _ _ _)
       rw [← res_comp]
       exact hres _ _ _ _ _ (hs _ _ hg))

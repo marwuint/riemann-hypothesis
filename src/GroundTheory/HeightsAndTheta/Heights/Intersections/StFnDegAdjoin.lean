@@ -20,8 +20,4 @@ def FnDegAdjoin.Statement : Prop :=
         Module.finrank (Algebra.adjoin F (Set.range ((fun q => x' q / x' ⟨q.1, i' q.1⟩) ∘ v)))
           (Algebra.adjoin F (Set.range fun q => x' q / x' ⟨q.1, i' q.1⟩))
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

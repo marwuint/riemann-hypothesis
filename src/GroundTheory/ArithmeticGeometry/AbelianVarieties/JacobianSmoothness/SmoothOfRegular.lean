@@ -15,62 +15,13 @@ section Presentation
 variable {k : Type u} [Field k] {P S : Type u} [CommRing P] [CommRing S] [Algebra k P]
   [Algebra k S] [Algebra P S] [IsScalarTower k P S] [IsLocalRing P] [IsLocalRing S]
 
-def residueAlgEquivOfSurjective (hres : Function.Surjective (algebraMap k (ResidueField S))) :
-    k ≃ₐ[k] ResidueField S :=
-  AlgEquiv.ofBijective (Algebra.ofId k (ResidueField S))
-    ⟨(algebraMap k (ResidueField S)).injective, hres⟩
-
-def valueAt (hres : Function.Surjective (algebraMap k (ResidueField S))) : P →ₐ[k] k :=
-  (residueAlgEquivOfSurjective hres).symm.toAlgHom.comp
-    ((IsScalarTower.toAlgHom k S (ResidueField S)).comp (IsScalarTower.toAlgHom k P S))
-
 variable (hsurj : Function.Surjective (algebraMap P S))
   (hres : Function.Surjective (algebraMap k (ResidueField S)))
-
-omit [IsLocalRing P] in
-lemma algebraMap_valueAt (x : P) :
-    algebraMap k (ResidueField S) (valueAt hres x) = algebraMap P (ResidueField S) x := by
-  have h := (residueAlgEquivOfSurjective hres).apply_symm_apply
-    (algebraMap S (ResidueField S) (algebraMap P S x))
-  rw [IsScalarTower.algebraMap_apply P S (ResidueField S)]
-  exact h
 
 include hsurj in
 omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
 lemma comap_maximalIdeal_eq : (maximalIdeal S).comap (algebraMap P S) = maximalIdeal P :=
   eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ hsurj)
-
-include hsurj in
-omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
-lemma mem_maximalIdeal_iff (x : P) :
-    x ∈ maximalIdeal P ↔ algebraMap P (ResidueField S) x = 0 := by
-  rw [← comap_maximalIdeal_eq hsurj, Ideal.mem_comap, IsScalarTower.algebraMap_apply P S
-    (ResidueField S), ResidueField.algebraMap_eq, residue_eq_zero_iff]
-
-include hsurj in
-lemma sub_valueAt_mem (x : P) : x - algebraMap k P (valueAt hres x) ∈ maximalIdeal P := by
-  rw [mem_maximalIdeal_iff hsurj, map_sub, ← IsScalarTower.algebraMap_apply k P (ResidueField S),
-    algebraMap_valueAt, sub_self]
-
-def cotD : P →ₗ[k] (maximalIdeal P).Cotangent where
-  toFun x := (maximalIdeal P).toCotangent ⟨x - algebraMap k P (valueAt hres x),
-    sub_valueAt_mem hsurj hres x⟩
-  map_add' x y := by
-    rw [← map_add]
-    congr 1
-    ext
-    simp only [map_add, Submodule.coe_add]
-    ring
-  map_smul' c x := by
-    rw [RingHom.id_apply]
-    conv_rhs => rw [← algebraMap_smul P c, ← LinearMap.map_smul]
-    congr 1
-    ext
-    rw [Submodule.coe_smul, smul_eq_mul]
-    show c • x - algebraMap k P (valueAt hres (c • x)) =
-      algebraMap k P c * (x - algebraMap k P (valueAt hres x))
-    rw [map_smul, smul_eq_mul, map_mul, Algebra.smul_def]
-    ring
 
 omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
 include hsurj in

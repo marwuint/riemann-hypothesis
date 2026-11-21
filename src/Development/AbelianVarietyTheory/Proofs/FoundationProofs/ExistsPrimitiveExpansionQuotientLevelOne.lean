@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitJPolynomialBoundedDenominatorsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalCongruenceFunctionMemAdjoinJSiegelUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveConstMulOfBoundedExpansionStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalCongruenceFunctionMemAdjoinJSiegelUnits
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveConstMulOfBoundedExpansion
 open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 
@@ -62,7 +62,7 @@ theorem exists_prim_frac_level_one : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     simp [Nat.add_mod]
   have hcM : 6 * M + 1 ≡ 1 [MOD M] :=
     ((Nat.modEq_iff_dvd' (by omega)).mpr (by simp)).symm
-  have hfG := GlobalTheory.T.principalCongruenceFunction_mem_adjoin_j_siegelUnits ε X hj M (6 * M + 1) hM hc1 hc6 hcM f hfM
+  have hfG := _root_.GlobalTheory.KZ.FracGen.fracGen ε X hj M (6 * M + 1) hM hc1 hc6 hcM f hfM
   obtain ⟨P, hP, Q, hQ, hPQ⟩ := IntermediateField.mem_adjoin_iff_div.mp hfG
   have hQ0 : Q ≠ 0 := by
     rintro rfl
@@ -109,8 +109,8 @@ theorem exists_prim_frac_level_one : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     rw [hb0def]
     exact Finset.prod_ne_zero_iff.mpr (fun q _ => (map_ne_zero _).mpr hQ0)
   have ha0ne : f * b0 ≠ 0 := mul_ne_zero hf hb0ne
-  obtain ⟨κa, hκa, hPa, Sa, hSa⟩ := GlobalTheory.T.primitive_const_mul_of_bounded_expansion ε X hj l A hl (f * b0) ha0ne ha0bd
-  obtain ⟨κb, hκb, hPb, Sb, hSb⟩ := GlobalTheory.T.primitive_const_mul_of_bounded_expansion ε X hj l A hl b0 hb0ne hb0bd
+  obtain ⟨κa, hκa, hPa, Sa, hSa⟩ := _root_.GlobalTheory.PrimConst.prim_of_bounded ε X hj l A hl (f * b0) ha0ne ha0bd
+  obtain ⟨κb, hκb, hPb, Sb, hSb⟩ := _root_.GlobalTheory.PrimConst.prim_of_bounded ε X hj l A hl b0 hb0ne hb0bd
   refine ⟨algebraMap Ω X.K κa * (f * b0), algebraMap Ω X.K κb * b0, κb / κa, Sa ∪ Sb, div_ne_zero hκb hκa, ?_, hPa, hPb,
     ?_, fun r => ⟨?_, ?_⟩⟩
   · have e : algebraMap Ω X.K (κb / κa) * algebraMap Ω X.K κa = algebraMap Ω X.K κb := by

@@ -83,9 +83,6 @@ section Unit
 variable (δ : D.host.E) (hδ : D.sp.cm.sig δ = -δ) (hδ0 : δ ≠ 0) (Δ : D.host.F)
   (hΔ : algebraMap D.host.F D.host.E Δ = δ * δ)
 
-def Con (D : D7) (Δ : D.host.F) : Set (AF D.host.F × AF D.host.F) :=
-  {p | p.1 * p.1 - DA Δ * (p.2 * p.2) = 1}
-
 include hΔ in
 theorem pt_mul_conj {a b : AF D.host.F} (h : a * a - DA Δ * (b * b) = 1) :
     pt (D := D) δ a b * pt δ a (-b) = 1 := by
@@ -104,23 +101,6 @@ def mkU {a b : AF D.host.F} (h : a * a - DA Δ * (b * b) = 1) : FirstProposition
 
 @[simp] theorem mkU_val {a b : AF D.host.F} (h : a * a - DA Δ * (b * b) = 1) :
     (((mkU δ hδ Δ hΔ h : FirstPropositionFrame D) : (AE D)ˣ) : AE D) = pt δ a b := rfl
-
-include hδ hδ0 hΔ in
-theorem con_of_U1A (x : FirstPropositionFrame D) :
-    coA δ hδ hδ0 ((x : (AE D)ˣ) : AE D) * coA δ hδ hδ0 ((x : (AE D)ˣ) : AE D) -
-      DA Δ * (coB δ hδ hδ0 ((x : (AE D)ˣ) : AE D) * coB δ hδ hδ0 ((x : (AE D)ˣ) : AE D)) = 1 := by
-  have hx : ((x : (AE D)ˣ) : AE D) * cA D ((x : (AE D)ˣ) : AE D) = 1 := x.2
-  have e := pt_co δ hδ hδ0 ((x : (AE D)ˣ) : AE D)
-  set a := coA δ hδ hδ0 ((x : (AE D)ˣ) : AE D)
-  set b := coB δ hδ hδ0 ((x : (AE D)ˣ) : AE D)
-  rw [← e, cA_pt δ hδ, pt_norm δ Δ hΔ, ← pt_one δ] at hx
-  exact (pt_inj δ hδ hδ0 hx).1
-
-theorem continuous_mkU :
-    Continuous fun p : Con D Δ => (mkU δ hδ Δ hΔ (a := p.1.1) (b := p.1.2) p.2 : FirstPropositionFrame D) := by
-  refine Continuous.subtype_mk (Units.continuous_iff.mpr ⟨?_, ?_⟩) _
-  · exact (continuous_pt δ).comp continuous_subtype_val
-  · exact (continuous_pt δ).comp ((continuous_fst.prodMk continuous_snd.neg).comp continuous_subtype_val)
 
 theorem incA_eq_pt (α β : D.host.F) :
     incA D (algebraMap D.host.F D.host.E α + algebraMap D.host.F D.host.E β * δ) =

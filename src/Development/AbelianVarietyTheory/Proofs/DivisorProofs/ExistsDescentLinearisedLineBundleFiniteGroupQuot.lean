@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitOfCocycleRightActionCharZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitOfCocycleRightActionCharZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FromSpecResidueFieldCompAutEqOfFixesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantLocalEquationCartierFiniteQuotienStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldMapEqOfGroupInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionUnitAtPointOfFibreQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorGroupQuotientDescentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackCartierDivisorBundleEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionUnitAtPointOfFibreQuotient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorGroupQuotientDescent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackCartierDivisorBundleEq
 
 set_option autoImplicit false
 
@@ -90,7 +90,7 @@ theorem descent : ∀ (F : Type) [Field F] [NumberField F] (X W : Scheme.{0}) [I
       exact (zeroAt_iff.1 h0).2 (unitAt_genericPoint hne)
     rw [map_one, one_mul, inv_one, mul_one, sub_eq_zero, ← Units.val_one, Units.val_inj, inv_eq_one] at h1
     exact h1
-  obtain ⟨f, hf⟩ := GlobalTheory.T.hilbert90_finite_rightAction_charZero_field _ Γ σ hσ c hcoc' htriv
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.exists_unit_of_cocycle_rightAction_charZero _ Γ σ hσ c hcoc' htriv
   have hfu : ∀ γ, fnAct ρ γ f = c γ * f := fun γ => Units.ext (by rw [hσu, Units.val_mul]; exact hf γ)
   set D' := D - CartierDiv.principal f with hD'
   have hD : D' + CartierDiv.principal f = D := sub_add_cancel _ _
@@ -123,9 +123,9 @@ theorem descent : ∀ (F : Type) [Field F] [NumberField F] (X W : Scheme.{0}) [I
       exact Scheme.inv_hom_apply _ _
     have := hinv' γ⁻¹ ((ρ γ).hom x) g (by rw [hp]; exact hgx)
     rwa [hg] at this
-  obtain ⟨E, hE⟩ := GlobalTheory.T.exists_cartierDivisor_group_quotient_descent X W Γ ρ q hq D' key
+  obtain ⟨E, hE⟩ := _root_.GlobalTheory.Cartier.Descent.exists_cartierDiv_descent X W Γ ρ q hq D' key
   refine ⟨toLB E, isLB_toLB E, ?_⟩
-  rw [GlobalTheory.T.cechPicardPullback_cartierDivisorBundle_eq X W q D' E hE]
+  rw [_root_.GlobalTheory.Cartier.PullPres.pull_cls_toLB X W q D' E hE]
   calc cls (toLB D') (isLB_toLB D') = toPic D' := (toPic_apply D').symm
     _ = toPic D := by rw [hD', map_sub, toPic_principal, sub_zero]
     _ = cls L hL := hcls

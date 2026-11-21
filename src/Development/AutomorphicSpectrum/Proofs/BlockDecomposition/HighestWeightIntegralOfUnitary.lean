@@ -3,7 +3,8 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WtRInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHighestWeightHermitianDerivationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntertwinerEqZeroOfVanishOnHighestStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightTensorDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightTensorDecomposition
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeUnitaryActionStatement
 
 noncomputable section
@@ -39,7 +40,7 @@ theorem exists_map_out (H L : Type) [NormedAddCommGroup H] [InnerProductSpace �
       simp only [f, LinearMap.smulRight_apply]
       exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hdm)
     exact this
-  obtain ⟨T, hT, hi⟩ := GlobalTheory.T.highest_weight_tensor_decomposition L H K G μ hK hG hKs hGs (Submodule.span ℂ {v}) hsp f hf
+  obtain ⟨T, hT, hi⟩ := _root_.GlobalTheory.CompanionTheory.RealCount.ExtHw.kmap_extend L H K G μ hK hG hKs hGs (Submodule.span ℂ {v}) hsp f hf
   refine ⟨T, ?_, hi⟩
   have hvv : ⟪v, v⟫_ℂ ≠ 0 := inner_self_ne_zero.2 hv0
   have := hT ⟨v, Submodule.mem_span_singleton_self v⟩
@@ -64,7 +65,7 @@ theorem exists_map_in (H L : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ
       simp only [LinearMap.smulRight_apply]
       exact Submodule.smul_mem _ _ hvm
     exact this
-  obtain ⟨P, hP, hi⟩ := GlobalTheory.T.highest_weight_tensor_decomposition H L G K μ hG hK hGs hKs D hD (φ.smulRight v) hf
+  obtain ⟨P, hP, hi⟩ := _root_.GlobalTheory.CompanionTheory.RealCount.ExtHw.kmap_extend H L G K μ hG hK hGs hKs D hD (φ.smulRight v) hf
   exact ⟨P, fun d => by rw [hP d, LinearMap.smulRight_apply], hi⟩
 
 theorem eq_smul_id_of_apply (L : Type) [NormedAddCommGroup L] [InnerProductSpace ℂ L] [FiniteDimensional ℂ L]

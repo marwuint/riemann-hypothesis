@@ -124,15 +124,6 @@ theorem pendRest_ofS (Tf : FormsTiedSym D u Ch chOf)
     PendRestS Tf B gP :=
   ⟨exP_ofS Tf B hB, h.lat_co, h.pt_co, h.ipV_co, h.re_petersson_self_eq_sum_coord⟩
 
-theorem pendClauses_ofS (Tf : FormsTiedSym D u Ch chOf)
-    (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
-    (hB : ∀ w c, IsUnit (B w c).det)
-    (gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ) (h : RestrictionSymmetric Tf B gP) :
-    PendClausesS Tf B gP :=
-  { coM_mem := coM_mem_ofS Tf B hB, coM_inj := coM_inj_ofS Tf B hB, coP_mem := coP_mem_of_isUnit_det' Tf B hB,
-    coP_inj := coP_inj_of_isUnit_det' Tf B hB, exP := exP_ofS Tf B hB, lat_co := h.lat_co, pt_co := h.pt_co, ipV_co := h.ipV_co,
-    re_petersson_self_eq_sum_coord := h.re_petersson_self_eq_sum_coord }
-
 theorem brExists_of_rest4S (Tf : FormsTiedSym D u Ch chOf) (hL : LowerSymmetricCompatible Tf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hB : ∀ w c, IsUnit (B w c).det)

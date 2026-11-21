@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.OneMemNbh
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DiscreteBranchingUpq
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExists
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.FrobeniusBoundOfMulNearOne
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardLeOfSeparated
 

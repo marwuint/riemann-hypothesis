@@ -11,7 +11,8 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ProjectiveRepresenta
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalMultiplicationPullbackThetaEmbeddingI
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SpMapCompRingHomComp
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaEmbeddingSectionsBaseChangeAffine
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalMultiplicationPullbackThetaEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalMultiplicationPullbackThetaEmbedding
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -79,7 +80,7 @@ theorem exists_emb_field : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o
   have hLB : (Out.LPow t.A t.L ((m : ℤ) ^ 2) (Over.mk (𝟙 (Sp K)))).IsLB := by
     exact ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ t.isLB _ _
   obtain ⟨R', _, φ, σ, hφ, hp, hE, hP⟩ :=
-    GlobalTheory.T.exists_local_multiplicationPullback_theta_embedding hL hL2 o g N' J b (Sp K) s t m K (𝟙 _) w hm h2 hth (default : PrimeSpectrum K)
+    _root_.GlobalTheory.ZM.EmbedLocal.exists_emb_projRep hL hL2 o g N' J b (Sp K) s t m K (𝟙 _) w hm h2 hth (default : PrimeSpectrum K)
   obtain ⟨ψ, hψ⟩ := exists_section_spMap φ hφ _ hp
   let h : Over.mk (𝟙 (Sp K)) ⟶ Over.mk (spMap φ ≫ 𝟙 (Sp K)) := Over.homMk (spMap ψ) (by simpa using hψ)
   have hA1 : IsAffine (Over.mk (spMap φ ≫ 𝟙 (Sp K))).left :=

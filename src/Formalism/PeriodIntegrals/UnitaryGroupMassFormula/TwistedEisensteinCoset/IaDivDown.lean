@@ -113,8 +113,6 @@ theorem unitAt_mul {w w' : E} (h : UnitAt P w) (h' : UnitAt P w') : UnitAt P (w 
 
 theorem unitAt_one : UnitAt P (1 : E) := ⟨one_ne_zero, ia_one P, by rw [inv_one]; exact ia_one P⟩
 
-theorem unitAt_inv {w : E} (h : UnitAt P w) : UnitAt P w⁻¹ := ⟨inv_ne_zero h.1, h.2.2, by rw [inv_inv]; exact h.2.1⟩
-
 variable (hN : NTAll) (hp : (Ideal.absNorm P.asIdeal).Prime)
     (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2)
 include hN hp hq

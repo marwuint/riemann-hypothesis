@@ -244,99 +244,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (OnW OccursOn
 
 variable (D : D7)
 
-def DepthZeroLabels : Prop :=
-  ∀ (k : Fin 2) (v : D.nd.PlG k) (L : D.naut.LP (D.naut.plGw k v)),
-    (D.naut.items₂ k _ L).natDegree ≤ D.naut.lpDim L ∧
-    ((D.naut.items₂ k _ L).natDegree = D.naut.lpDim L →
-      ∀ s ∈ Ine (F := D.host.E) (D.nd.plOm.1 (D.naut.plGw k v)),
-        s ∈ wildSet D.nd (D.nd.plOm.1 (D.naut.plGw k v)) →
-        D.naut.inePol L s = (X - 1) ^ D.naut.lpDim L)
-
 section Blocks
 
 variable {D} {k : Fin 2} {v : D.nd.PlG k}
 
-def Full (L : D.naut.LP (D.naut.plGw k v)) : Prop :=
-  D.naut.items₂ k _ L ≠ 0 ∧ (D.naut.items₂ k _ L).natDegree = D.naut.lpDim L
-
 def rts (L : D.naut.LP (D.naut.plGw k v)) : Multiset (Fb (D.host.g k) (D.host.g_prime k)) :=
   @Formalism.CyclotomicNorms.rootsBar _ ⟨D.host.g_prime k⟩ (D.naut.items₂ k _ L)
-
-theorem full_sum (h : DepthZeroLabels D) {a b : D.naut.LP (D.naut.plGw k v)} (hab : Full (D.naut.lpSum a b)) :
-    Full a ∧ Full b ∧ rts (D.naut.lpSum a b) = rts a + rts b := by
-  haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-  obtain ⟨h0, h1⟩ := hab
-  rw [D.naut.inertiaCharpoly_add] at h0 h1
-  have ha := left_ne_zero_of_mul h0
-  have hb := right_ne_zero_of_mul h0
-  rw [natDegree_mul ha hb, D.naut.lpDim_sum] at h1
-  have h2 := (h k v a).1
-  have h3 := (h k v b).1
-  refine ⟨⟨ha, by omega⟩, ⟨hb, by omega⟩, ?_⟩
-  unfold rts
-  rw [D.naut.inertiaCharpoly_add, rootsBar_mul h0]
-
-theorem full_foldr (h : DepthZeroLabels D) {ι : Type} (F : ι → D.naut.LP (D.naut.plGw k v)) (l : List ι)
-    (hl : Full (l.foldr (fun x acc => D.naut.lpSum (F x) acc) (D.naut.lpZero _))) :
-    (∀ x ∈ l, Full (F x)) ∧
-      rts (l.foldr (fun x acc => D.naut.lpSum (F x) acc) (D.naut.lpZero _)) = (l.map fun x => rts (F x)).sum := by
-  induction l with
-  | nil =>
-    haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-    simp [rts, D.naut.inertiaCharpoly_zero, Formalism.CyclotomicNorms.rootsBar]
-  | cons x l ih =>
-    obtain ⟨h1, h2, h3⟩ := full_sum h hl
-    obtain ⟨h4, h5⟩ := ih h2
-    refine ⟨fun y hy => ?_, ?_⟩
-    · rcases List.mem_cons.1 hy with rfl | hy
-      · exact h1
-      · exact h4 y hy
-    · rw [List.foldr_cons, h3, h5, List.map_cons, List.sum_cons]
 
 theorem spehLoc_eq (p : Part D.naut.CG) (w : PlE D.host) :
     spehLoc D.nd D.naut p w = (List.range p.d).foldr (fun (j : ℕ) acc =>
       D.naut.lpSum (D.naut.lpTw (D.naut.locG p.π w) (((p.d : ℝ) - 1) / 2 - j)) acc) (D.naut.lpZero w) := by
   simp only [spehLoc, bind_pure_comp, List.map_eq_map, List.foldr_map]
-
-theorem rts_tw (L : D.naut.LP (D.naut.plGw k v)) {s s' : ℝ} (hs : Full (D.naut.lpTw L s))
-    (hs' : Full (D.naut.lpTw L s')) : rts (D.naut.lpTw L s) = rts (D.naut.lpTw L s') := by
-  haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-  have h1 := D.ntypes.inertiaCharpoly_type k v _ hs.2
-  have h2 := D.ntypes.inertiaCharpoly_type k v _ hs'.2
-  rw [D.naut.inePol_tw _ _ _ (D.ntypes.tg_mem k v)] at h1 h2
-  have h3 := congrArg Polynomial.roots (h1.symm.trans h2)
-  have e : ∀ m : Multiset (Formalism.CyclotomicNorms.Fbar (D.host.g k)),
-      ((m.map fun x => X - C (D.ntypes.teichC k x)).prod).roots = m.map (D.ntypes.teichC k) := fun m => by
-    rw [← roots_multiset_prod_X_sub_C (m.map (D.ntypes.teichC k)), Multiset.map_map]; rfl
-  rw [e, e] at h3
-  exact Multiset.map_injective (teich_injective _ (D.ntypes.teichC_inj k)) h3
-
-theorem blocks (h : DepthZeroLabels D) (Sig : List (Part D.naut.CG)) (hd : ∀ p ∈ Sig, 1 ≤ p.d)
-    (hf : Full (k := k) (v := v) (isoLoc D.nd D.naut Sig _)) :
-    haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-    ∃ L : List (ℕ × ℕ × Multiset (Formalism.CyclotomicNorms.Fbar (D.host.g k))),
-      (L.map fun p => (p.1, p.2.1)) = (Sig.map fun p => (p.a, p.d)) ∧
-      (∀ p ∈ L, Multiset.card p.2.2 = p.1 ∧ p.2.2.map (fun x => x ^ D.host.g k) = p.2.2) ∧
-      rts (k := k) (v := v) (isoLoc D.nd D.naut Sig _) = (L.map fun p => p.2.1 • p.2.2).sum := by
-  haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
-  obtain ⟨h1, h2⟩ := full_foldr h (fun p => spehLoc D.nd D.naut p (D.naut.plGw k v)) Sig hf
-  have h3 := fun (p : Part D.naut.CG) (hp : p ∈ Sig) => full_foldr h (fun j : ℕ => D.naut.lpTw (D.naut.locG p.π (D.naut.plGw k v))
-    (((p.d : ℝ) - 1) / 2 - j)) (List.range p.d) (spehLoc_eq p _ ▸ h1 p hp)
-  have h0 : ∀ p ∈ Sig, 0 ∈ List.range p.d := fun p hp => List.mem_range.2 (hd p hp)
-  refine ⟨Sig.map fun p => (p.a, p.d, rts (D.naut.lpTw (D.naut.locG p.π (D.naut.plGw k v))
-    (((p.d : ℝ) - 1) / 2 - (0 : ℕ)))), by rw [List.map_map]; rfl, fun q hq => ?_, ?_⟩
-  · obtain ⟨p, hp, rfl⟩ := List.mem_map.1 hq
-    refine ⟨?_, rootsBar_frob _⟩
-    have := ((h3 p hp).1 0 (h0 p hp)).2
-    rw [D.naut.lpDim_tw, D.naut.locG_dim] at this
-    exact (card_rootsBar _).trans this
-  · refine h2.trans ?_
-    rw [List.map_map]
-    congr 1
-    refine List.map_congr_left fun p hp => ?_
-    rw [spehLoc_eq, (h3 p hp).2]
-    rw [List.map_congr_left fun j hj => rts_tw _ ((h3 p hp).1 j hj) ((h3 p hp).1 0 (h0 p hp))]
-    simp
 
 end Blocks
 
@@ -361,27 +279,6 @@ theorem not_mem_of_ne {l : ℕ} (hl : l.Prime) (hne : l ≠ D.host.g k) :
 
 end TameClause
 
-def ResidualReading (σ : D.what₂.FT) (π : D.naut.CG D.R.r) : Prop :=
-  ∀ w : D.what₂.places.Pl,
-    haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩
-    ∃ (ι : Qbar (D.what₂.places.resChar w) ≃+* ℂ)
-      (red : Zbar (D.what₂.places.resChar w) →+* Formalism.CyclotomicNorms.Fbar (D.what₂.places.resChar w)),
-      (∀ r, IsGaloisRepOf D π _ ι r → IsReduction D red r (D.ntypes.rbar σ w)) ∧
-      ∀ k, D.what₂.places.resChar w ≠ D.host.g k → ∀ (v : D.nd.PlG k) x, x ≠ 0 →
-        ∀ z : Zbar (D.what₂.places.resChar w), (z : Qbar _) = ι.symm (D.ntypes.teichC k x) →
-          red z = D.ntypes.iota k v w x
-
-def ResidualLift (σ : D.what₂.FT) (π : D.naut.CG D.R.r) : Prop :=
-  ∀ w : D.what₂.places.Pl,
-    haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩
-    ∃ (ι : Qbar (D.what₂.places.resChar w) ≃+* ℂ)
-      (red : Zbar (D.what₂.places.resChar w) →+* Formalism.CyclotomicNorms.Fbar (D.what₂.places.resChar w))
-      (r : GalE D →* GL (Fin D.R.r) (Qbar (D.what₂.places.resChar w))),
-      IsGaloisRepOf D π _ ι r ∧ IsReduction D red r (D.ntypes.rbar σ w) ∧
-      ∀ k, D.what₂.places.resChar w ≠ D.host.g k → ∀ (v : D.nd.PlG k) x, x ≠ 0 →
-        ∀ z : Zbar (D.what₂.places.resChar w), (z : Qbar _) = ι.symm (D.ntypes.teichC k x) →
-          red z = D.ntypes.iota k v w x
-
 section Row
 
 open GlobalTheory.Proof.ListFormLabels (ListFormAt)
@@ -396,23 +293,11 @@ theorem odd_r (R : Ranks) : Odd R.r := by
 
 end Row
 
-def RowBaseChange : Prop :=
-  ∀ σ, OnW D σ → ∃ Sig, IsBaseChange D σ Sig ∧ ∀ π, Sig = [⟨D.R.r, π, 1⟩] → ResidualReading D σ π
-
 open GlobalTheory.Proof.ListFormLabels (ListFormAt)
 
 variable {D}
 
 variable (D)
-
-def RowParameter : Prop :=
-  ∀ (i : D.nd.Loc) (σ : D.what₂.FT), D.what₂.isot (D.nd.j i) σ ≠ ⊥ →
-    ∃ Sig, HasParamW D.nd D.naut i σ Sig ∧ (∀ p ∈ Sig, D.naut.csd p.π) ∧
-      ∀ τ, (isoInf D.nd D.naut Sig τ).Nodup ∧ ∀ z ∈ isoInf D.nd D.naut Sig τ, ∃ n : ℤ, z = (n : ℂ)
-
-def ResidualAtRows : Prop :=
-  ∀ (i : D.nd.Loc) (σ : D.what₂.FT) (π : D.naut.CG D.R.r), D.what₂.isot (D.nd.j i) σ ≠ ⊥ →
-    HasParamW D.nd D.naut i σ [⟨D.R.r, π, 1⟩] → D.naut.csd π → D.naut.ralg π → ResidualReading D σ π
 
 variable {D}
 

@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestriction
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwapStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwap
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartEighth
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
@@ -35,7 +35,7 @@ theorem pSgn_ne_zero {Ψ : Type} {N j : ℕ} (hj : j ≤ N) (keep : Ψ × Fin N 
       rw [dif_neg (fun h => lt_irrefl _ h.1), if_pos rfl]
     · unfold pMat lowMat
       rw [dif_neg (fun h => lt_asymm hab h.1), if_neg hab.ne]
-  exact (GlobalTheory.T.minorIJ_lowerUni_swap N _ _ _ _ hX ha hb q.1.2.1 (hc fun _ => 0).2).2
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.MatRead.minor_replace N _ _ _ _ hX ha hb q.1.2.1 (hc fun _ => 0).2).2
 
 section Flag
 
@@ -44,7 +44,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
   obtain ⟨hv, hcov, hF, hB, horb, hr, hh⟩ := H
   obtain ⟨hVo, hVt, -, -, hbl⟩ := hB
   have hbase : Set.MapsTo (pBase M v) (pO M Rb keep v F kb V r h) (mcPts (mCoordIdeal M.x)) := fun z hz =>
-    (GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hv hcov).1 z hz.1
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main K ι Φ y Ψ N j M keep Kk ιk κ v hv hcov).1 z hz.1
   have cU : Continuous (upV v) := continuous_upV v
   have cB : Continuous (pBase M v) := continuous_pi fun q =>
     (continuous_apply (⟨q.1.1, q.2⟩ : Σ k, ι k)).comp cU

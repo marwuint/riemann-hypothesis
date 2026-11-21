@@ -12,9 +12,6 @@ universe u v
 variable (p : ℕ) [Fact p.Prime]
 variable (R : Type u) [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
-@[reducible] def Ainf.weakTopology : TopologicalSpace (Ainf p R) :=
-  (span {(p : Ainf p R)} ⊔ RingHom.ker (Ainf.theta p R)).adicTopology
-
 instance Acris.topologicalSpace : TopologicalSpace (Acris p R) :=
   (span {(p : Acris p R)}).adicTopology
 
@@ -113,47 +110,6 @@ instance {G : Type*} [Group G] [MulSemiringAction G R] : ContinuousConstSMul G (
   ⟨fun g => Acris.continuous_ringHom (Acris.map p (MulSemiringAction.toRingHom G R g))⟩
 
 namespace Bst
-
-variable (p R) in
-
-def plus : Subring (Bst p R) :=
-  Subring.closure (Set.range (fun x : BcrisPlus p R =>
-    algebraMap (Bcris p R) (Bst p R) (algebraMap _ _ x)) ∪ Set.range logFlat)
-
-theorem algebraMap_mem_plus (x : BcrisPlus p R) :
-    algebraMap (Bcris p R) (Bst p R) (algebraMap _ _ x) ∈ plus p R :=
-  Subring.subset_closure (Or.inl ⟨x, rfl⟩)
-
-theorem logFlat_mem_plus (ϖ : PFlat p R) : logFlat ϖ ∈ plus p R :=
-  Subring.subset_closure (Or.inr ⟨ϖ, rfl⟩)
-
-theorem frob_mem_plus {x : Bst p R} (hx : x ∈ plus p R) : frob p R x ∈ plus p R := by
-  refine (show plus p R ≤ (plus p R).comap (frob p R) from Subring.closure_le.2 ?_) hx
-  rintro _ (⟨y, rfl⟩ | ⟨ϖ, rfl⟩)
-  · simpa using algebraMap_mem_plus _
-  · simpa using mul_mem (natCast_mem _ p) (logFlat_mem_plus ϖ)
-
-theorem smul_mem_plus {G : Type*} [Group G] [MulSemiringAction G R] (g : G) {x : Bst p R}
-    (hx : x ∈ plus p R) : g • x ∈ plus p R := by
-  refine (show plus p R ≤ (plus p R).comap (MulSemiringAction.toRingHom G _ g) from
-    Subring.closure_le.2 ?_) hx
-  rintro _ (⟨y, rfl⟩ | ⟨ϖ, rfl⟩)
-  · simpa [smul_algebraMap, Bcris.smul_algebraMap] using algebraMap_mem_plus _
-  · simpa [smul_logFlat] using logFlat_mem_plus _
-
-theorem monodromy_mem_plus {x : Bst p R} (hx : x ∈ plus p R) : monodromy p R x ∈ plus p R := by
-  induction hx using Subring.closure_induction with
-  | mem x hx =>
-    obtain ⟨y, rfl⟩ | ⟨ϖ, rfl⟩ := hx
-    · simp
-    · simp
-  | zero => simp
-  | one => simp
-  | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
-  | neg x _ hx => rw [map_neg]; exact neg_mem hx
-  | mul x y hx' hy' hx hy =>
-    rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]
-    exact add_mem (mul_mem hx' hy) (mul_mem hy' hx)
 
 end Bst
 

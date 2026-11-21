@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualOneFormsInvariantFieldsAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualOneFormsInvariantFieldsAffineOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResV
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
@@ -38,8 +38,8 @@ theorem entry_regular : ∀ (K : Type) [Field K] [CharZero K] (P₀ : Out.PolAV 
     unfold valR; rw [dif_pos hξW]; rfl
   have hδ' : ∀ b x, φ (dd b W x) = δ b (φ x) := fun b x => by
     rw [← hφ, ← hφ]; exact hδ b W x hξW
-  obtain ⟨N, g, f, hgf⟩ := GlobalTheory.T.exists_dual_oneForms_invariantFields_affineOpen K P₀ n v dd hinv W hW a
-  obtain ⟨N', g', f', hgf'⟩ := GlobalTheory.T.exists_dual_oneForms_invariantFields_affineOpen K P₀ n v dd hinv W hW e
+  obtain ⟨N, g, f, hgf⟩ := _root_.GlobalTheory.GcDual.exists_dual_forms K P₀ n v dd hinv W hW a
+  obtain ⟨N', g', f', hgf'⟩ := _root_.GlobalTheory.GcDual.exists_dual_forms K P₀ n v dd hinv W hW e
   choose h hh using fun (i : Fin N) (j : Fin N') => hΛ (f i) (f' j)
   have hh' : ∀ i j, φ (h i j) = ∑ a', ∑ e', Λ a' e' * δ a' (φ (f i)) * δ e' (φ (f' j)) := by
     intro i j; rw [← hφ, hh]; simp only [hφ]

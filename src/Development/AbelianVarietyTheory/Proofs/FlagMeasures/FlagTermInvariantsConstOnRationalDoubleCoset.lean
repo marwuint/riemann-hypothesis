@@ -9,7 +9,8 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TermAttractorConstant.S
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TermAttractorConstant.LeadMinorEMulUpper
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SatGram
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.PairValPf
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SameRowSameCosetScalarCorankOneStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SameRowSameCosetScalarCorankOne
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocOf
 
 open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp
   Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.HL GlobalTheory.LocOver
@@ -224,6 +225,6 @@ theorem GlobalTheory.HL.CosetConst.coset_const : ∀ (D : D7) (X : HidaSetting D
       GlobalTheory.HL.CosetConst.cell_iff_frames t₀ t hn hm h w]
   have hnml := GlobalTheory.HL.CosetConst.nml_eq t₀ t hn hm h
   refine ⟨hrl.2 hrel, ?_, GlobalTheory.HL.CosetConst.pt_eq t₀ t hrl hat, hnml,
-    fun hr => GlobalTheory.T.same_row_same_coset_scalar_corank_one D X Y u u' t₀ t hG hr.symm hnml.symm⟩
+    fun hr => _root_.GlobalTheory.SnFamCoset.scalar_of_same_coset D X Y u u' t₀ t hG hr.symm hnml.symm⟩
   rw [Formalism.L2.SG.Pf.SatGram.gterm_G (X := X) (Y := Y) (t := t),
     Formalism.L2.SG.Pf.SatGram.gterm_G (X := X) (Y := Y) (t := t₀), eG]

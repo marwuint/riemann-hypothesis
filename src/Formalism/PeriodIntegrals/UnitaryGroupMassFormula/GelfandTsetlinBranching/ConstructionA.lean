@@ -8,9 +8,6 @@ namespace PI.WGB
 
 open Formalism.BasicNotions MvPolynomial
 
-theorem extremalFacts_of (_h : PI.HwIrred) : ExtremalFacts :=
-  extremalFacts_proof_A
-
 theorem fixed_line_exists : FixedLine :=
   fixedLine_proof_A
 

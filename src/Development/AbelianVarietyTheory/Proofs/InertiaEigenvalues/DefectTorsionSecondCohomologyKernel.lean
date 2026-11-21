@@ -7,10 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HerrAAndNatura
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OneNotMemFilOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeGaloisTrivialModUniformizer
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H1fKsOntoUpToPow
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeHeightsFromHodgeJumpsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeHeightsFromHodgeJumps
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemWachNOfMapMemSaturatedStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachNCokernelKilledByPowerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachIntegralComplexCocycleClassFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachIntegralComplexCocycleClassFinite
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H1fClassWachPairJumpsStatement
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct GlobalTheory.NL Formalism.MainNotions.DeltaInvariantLattices
@@ -352,14 +352,14 @@ theorem defect_torsion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (
     l K s LL h T₀ T₁ T₂ ι π hses
   have hsat := GlobalTheory.T.mem_wachN_of_map_mem_saturated D HW F l K s LL h T₀ T₁ T₂ ι π c₀ c₁ c₂ hses
   have h2 := GlobalTheory.NL.WachLatticeTrivialModUniformizer.wachLattice_galois_trivial_mod_uniformizer D HW F Cm l K s LL h T₁ c₁
-  have hP5 := GlobalTheory.T.wachLattice_heights_from_hodgeJumps D HW F Cm l K s LL h T₁ M hh c₁ hJ
+  have hP5 := _root_.GlobalTheory.NL.Heights.heights_from_jumps D HW F Cm l K s LL h T₁ M hh c₁ hJ
   have hφ : ∀ x ∈ ((HW l).W K s LL h).N T₁,
       ((HW l).W K s LL h).Q ^ mx M • ((HW l).W K s LL h).φD T₁ x ∈ ((HW l).W K s LL h).N T₁ :=
     fun x hx => φ_mem ((HW l).W K s LL h) T₁ M hh hP5 x hx
-  have hc₁ := GlobalTheory.T.wachIntegralComplex_cocycle_class_finite D HW F l K s LL h T₁ M hh c₁ hJ
+  have hc₁ := _root_.GlobalTheory.NL.IntComplex.main D HW F l K s LL h T₁ M hh c₁ hJ
   have hj := (GlobalTheory.NL.JumpsSES.jumps_ses_and_one D HW l K s LL h T₀ T₁ T₂ ι π c₁ hses).1
   have hJ₂ := jumpsLet_quot ((HW l).W K s LL h) M hh hj hJ
-  have hc₂ := GlobalTheory.T.wachIntegralComplex_cocycle_class_finite D HW F l K s LL h T₂ M hh c₂ hJ₂
+  have hc₂ := _root_.GlobalTheory.NL.IntComplex.main D HW F l K s LL h T₂ M hh c₂ hJ₂
   obtain ⟨cc, hcz⟩ := GlobalTheory.T.wachN_cokernel_killed_by_power D HW F Cm l K s LL h T₀ T₁ T₂ ι π c₀ c₁ c₂ hses
   have hrex := GlobalTheory.NL.RightExactKs.h1fKs_onto_up_to_pow D HW l K s LL h T₁ T₂ π hses.2.1 c₁ c₂
   have hc3 := GlobalTheory.T.H1f_class_wach_pair_filtration_jumps D HW F Cm l K s LL h T₁ c₁ M hh hJ

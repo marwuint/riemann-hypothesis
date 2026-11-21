@@ -1,6 +1,8 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.TranscendentalPeriodUnits.CrystallineSemistableComparison
-import GroundTheory.PAdicHodge.WAFracB
+import GroundTheory.PAdicHodge.WAFracMain
+import GroundTheory.PAdicHodge.ExistsNormLeOfNormLtOneFinite
+import GroundTheory.PAdicHodge.BCrisNewton
 
 set_option backward.isDefEq.respectTransparency false
 
@@ -20,9 +22,5 @@ variable (l) in
 
 abbrev Fr : Subfield (BdR l) :=
   ACris.fracBCris (untilt_epsilon (p := l)) untilt_frobeniusEquiv_symm_epsilon_ne_one
-
-def cK (g : K.fixingSubgroup) : BdR l := qQ l (period_ring_base.κ g.1) * tQ l
-
-theorem σ_uQ (g : K.fixingSubgroup) : σD g.1 (uQ l) = uQ l + cK g := (period_ring_base.base l).σ_u g.1
 
 end CrystallineSemistableComparison

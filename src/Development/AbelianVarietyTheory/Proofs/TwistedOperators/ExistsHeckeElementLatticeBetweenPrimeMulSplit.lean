@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RealPo
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeSelfDualTraceForm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAnti
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceHeckeDoubleCosetCardGaussBinom
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneSubIdempotentSmulMemCompletionPrimeMulStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeckeElementIdempotentPartSplitPlaceLatticStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeElementKeepsOneSubIdempotentPartLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjPrimeSmulLatticeHeckeElementLeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneSubIdempotentSmulMemCompletionPrimeMul
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeckeElementIdempotentPartSplitPlaceLattic
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeElementKeepsOneSubIdempotentPartLattice
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjPrimeSmulLatticeHeckeElementLe
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
@@ -89,7 +89,7 @@ theorem mem_iff_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host
     refine (hrat v).1 ?_
     have hΛ : GlobalTheory.AdLat.fv D.host.F v ∈ GlobalTheory.AdLat.hat D.host.F ((latG V g : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E)) :=
       ((GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank _ h1 h2).1 v).2 hv
-    have h3 := hat_mono hPM (GlobalTheory.T.one_sub_idempotent_smul_mem_completion_prime_mul D P e V.rank (latG V g) he _ hΛ)
+    have h3 := hat_mono hPM (_root_.GlobalTheory.ComplOffPlace.one_sub_smul_mem D P e V.rank (latG V g) he _ hΛ)
     have hsplit : GlobalTheory.AdLat.fv D.host.F v = finPart D e • finVec V v + (1 - finPart D e) • finVec V v := by
       rw [← add_smul, add_sub_cancel, one_smul]; rfl
     rw [hsplit]
@@ -109,8 +109,8 @@ theorem exists_hecke : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.
     ∃ a₀ : GA D V, Formalism.L2.NTheta.IsHeckeElt V e (ϖ : D.host.E) k a₀ ∧ latG V (g * a₀) ⊓ latG V g = M ∧
       (Formalism.L2.Col.conjPrime₂ P).asIdeal • latG V (g * a₀) ≤ latG V g := by
   intro D V P e ϖ k g M he h1 h2 hPM hMΛ hidx
-  obtain ⟨a₀, hH, hloc⟩ := GlobalTheory.T.exists_heckeElement_idempotentPart_splitPlace_lattice D V P e ϖ k g M he h1 h2 hPM hMΛ hidx
-  refine ⟨a₀, hH, ?_, GlobalTheory.T.conjPrime_smul_lattice_heckeElement_le D V P e ϖ k g a₀ he h1 h2 hH⟩
+  obtain ⟨a₀, hH, hloc⟩ := _root_.GlobalTheory.HeckeLocLift.exists_hecke_ePart D V P e ϖ k g M he h1 h2 hPM hMΛ hidx
+  refine ⟨a₀, hH, ?_, _root_.GlobalTheory.HeckeConjPart.conj_part D V P e ϖ k g a₀ he h1 h2 hH⟩
   have hint : finPart D e ∈ intAE D := GlobalTheory.SplitPlace.idem_mem he.1.1
   ext v
   rw [Submodule.mem_inf]
@@ -127,6 +127,6 @@ theorem exists_hecke : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.
       rw [← add_smul, add_sub_cancel, one_smul]
     rw [hsplit]
     exact add_mem ((hloc v hg).2 ((mem_iff_ePart D V P e g M he hPM hMΛ v hg).1 hv))
-      (GlobalTheory.T.hecke_element_keeps_one_sub_idempotent_part_lattice D V e ϖ k g a₀ he.1 hH _ ((mem_latG_iff D V g v).1 hg))
+      (_root_.GlobalTheory.HeckeOffParts.off_parts D V e ϖ k g a₀ he.1 hH _ ((mem_latG_iff D V g v).1 hg))
 
 end GlobalTheory.HeckeLocStep

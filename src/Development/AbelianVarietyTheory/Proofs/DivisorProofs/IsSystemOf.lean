@@ -83,8 +83,6 @@ def AutAt (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau) (w : HeightOneSpectr
     (mu : D.what₂.Tau → ℕ → ℕ) (θ : F.I → PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w)), (∀ τ, Antitone (Formalism.CohomologicalDescent.LD.res P.Nr (mu τ))) → F.IsEig mu θ →
     ∃ π, IsSystemOf p j (p.R.mu w) T mu θ π
 
-def AutSt : Prop := InRange fun _ _ _ _ p j P W w => AutAt p j P W w
-
 end GlobalTheory.FrameAut
 
 end

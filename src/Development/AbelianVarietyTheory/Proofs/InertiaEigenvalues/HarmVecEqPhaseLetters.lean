@@ -68,7 +68,7 @@ theorem io_eq_phase_smul_letters : ∀ (D : D7) (G : Type) [Group G] [Fintype G]
   obtain ⟨f1, f2, f3, f4, f5⟩ := vec_fock_of_clauses D G Pl0 T0 A _ R hM hP i A.μ0 hstd
   obtain ⟨io, hw, hio⟩ := GlobalTheory.CoefMapRecord.exists_io_record D T.Q hT.laws.pins κ hT.kap i T.Q.c
   obtain ⟨hwok, cga, i1, i2, irng, i3, -, -, i4, -⟩ := hio
-  obtain ⟨n1, n2, n3, n4, hc0⟩ := GlobalTheory.T.complexCoefficientMap_coreField_properties D G Pl0 T0 A T R κ v₀ hT i hstd c0 hc hw hwok
+  obtain ⟨n1, n2, n3, n4, hc0⟩ := _root_.GlobalTheory.AdTh.CoefC.coefMap_complex_core D G Pl0 T0 A T R κ v₀ hT i hstd c0 hc hw hwok
   obtain ⟨r1, r2, -⟩ := GlobalTheory.RatGen.rational_points_generate D (Vc D i) (R.cV i) (hM.vpos i) hPr.sigV hcV
   obtain ⟨-, -, w1, w2, w3⟩ := GlobalTheory.WeightExponents.weight_exponents D T.Q hT.laws.pins _ (inR i) (κ i)
   have hty : IsTyp D T.Q.H := ⟨w1, w2⟩

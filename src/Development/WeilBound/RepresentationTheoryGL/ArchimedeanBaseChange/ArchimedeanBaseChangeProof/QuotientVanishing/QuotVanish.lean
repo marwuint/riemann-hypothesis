@@ -55,19 +55,6 @@ def uOf {K : Type} [Field K] {n : ℕ} {W₁ W₂ : Submodule K (Fin n → K)} (
     noncomm_ring
     rw [h3]; simp
 
-def NilChange : Prop := ∀ (n : ℕ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (hW : W₁ ≤ W₂) (e : GL (Fin n) ℂ),
-  (e * thetaR (starRingEnd ℂ) n e).val.charpoly.Separable → perpD (starRingEnd ℂ) e W₁ = W₂ →
-  perpD (starRingEnd ℂ) e W₂ = W₁ → ∀ [MeasurableSpace (nilrad W₁ W₂)] [BorelSpace (nilrad W₁ W₂)]
-  (ν : Measure (nilrad W₁ W₂)) [ν.IsAddHaarMeasure],
-  ∃ (Φ : nilrad W₁ W₂ ≃ᵐ nilrad W₁ W₂) (c : NNReal), 0 < c ∧ ν.map Φ = c • ν ∧
-    ∀ X, uOf hW (Φ X) * e = twConj (thetaR (starRingEnd ℂ) n) (uOf hW X) e
-
-def CentFlag : Prop := ∀ (n : ℕ) (d : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)),
-  (d * thetaR (starRingEnd ℂ) n d).val.charpoly.Separable → perpD (starRingEnd ℂ) d W₁ = W₂ →
-  perpD (starRingEnd ℂ) d W₂ = W₁ → twCent (thetaR (starRingEnd ℂ) n) d ≤ flagStab W₁ W₂ ∧
-  ∀ q ∈ flagStab W₁ W₂, perpD (starRingEnd ℂ) (twConj (thetaR (starRingEnd ℂ) n) q d) W₁ = W₂ ∧
-    perpD (starRingEnd ℂ) (twConj (thetaR (starRingEnd ℂ) n) q d) W₂ = W₁
-
 def QuotVanish : Prop := ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)]
   (μ : Measure (GL (Fin n) ℂ)) [μ.IsHaarMeasure] (d : GL (Fin n) ℂ) (μT : Measure (twCent (thetaR (starRingEnd ℂ) n) d))
   [μT.IsHaarMeasure] (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (hW : W₁ ≤ W₂) [MeasurableSpace (nilrad W₁ W₂)]
@@ -79,12 +66,6 @@ def QuotVanish : Prop := ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [Borel
 
 def KerFin : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (φ : GA E n → ℂ), IsTest φ →
   ∀ C : Set (GA E n), IsCompact C → Set.Finite {d : GL (Fin n) E | ∃ x ∈ C, φ (twConj (thetaA E n) x (ratGL E n d)) ≠ 0}
-
-def AbsUnfold : Prop := ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
-  [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (Γ Γ₀ : Subgroup G)
-  (Fd : Set G) (F : G → ℂ), Countable Γ → DiscreteTopology Γ → Γ₀ ≤ Γ → IsFundamentalDomain Γ Fd μ → Measurable F →
-  (∀ g ∈ Γ₀, ∀ x, F (g * x) = F x) → Integrable (fun x => ∑' q : Γ ⧸ Γ₀.subgroupOf Γ, ‖F ((q.out : G)⁻¹ * x)‖) (μ.restrict Fd) →
-  ∫ x in Fd, ∑' q : Γ ⧸ Γ₀.subgroupOf Γ, F ((q.out : G)⁻¹ * x) ∂μ = quotIntegral μ Γ₀ Measure.count F
 
 end PositivityTheory.Rg.BcB.D4
 

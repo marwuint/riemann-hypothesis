@@ -42,7 +42,7 @@ theorem value_descends (d : DeltaDat Xo c n) (hlev : d.IsLev) (G : Rul d.Xo₂ d
     refine ⟨fun b => ?_, heA⟩
     have := he b
     rwa [hM, Nat.mul_div_cancel_left _ (by have := l.three_le; omega)] at this
-  obtain ⟨hov1, hov2, -⟩ := GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n { d with r := r, m := m }
+  obtain ⟨hov1, hov2, -⟩ := _root_.GlobalTheory.frames_lift_to_cover hL E H Dw l Xo c n { d with r := r, m := m }
   obtain ⟨S, _, φ, j, x₂, f1, f2, f3, hj, hx, hx'⟩ :=
     exists_cover_point d.hF.symm r rF h1 h2 p.R y.x y.x_over
   letI : Algebra p.R S := φ.toAlgebra
@@ -127,7 +127,7 @@ theorem exists_sec_of_moveInv (d : DeltaDat Xo c n) (hlev : d.IsLev) {a : (E →
   have hL : Laws := GlobalTheory.firstFiveLaws.1
   have hAll := GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l Xo c
   have hd := value_descends d hlev G hG.1 hinv
-  obtain ⟨hlift, -, hbor⟩ := GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n d
+  obtain ⟨hlift, -, hbor⟩ := _root_.GlobalTheory.frames_lift_to_cover hL E H Dw l Xo c n d
   refine ⟨fun p y => (hd p y).exists.choose, ⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩, ?_⟩
   · refine (hd q z).unique (hd q z).exists.choose_spec ?_
     intro k _ _ _ _ hk χ w w₂ hw ho

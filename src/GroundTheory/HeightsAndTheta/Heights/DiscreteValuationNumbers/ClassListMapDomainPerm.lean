@@ -219,23 +219,6 @@ theorem pairNum_eq {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 
 end PairNumbers
 
-section DualGens
-
-variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
-
-end DualGens
-
-section ProjBundle
-
-variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
-
-def optIdx (M : ℕ) :
-    (Σ o : Option K, bundleIdx ι M o) → (Σ k : K ⊕ Unit, Sum.elim ι (fun _ : Unit => Fin M) k)
-  | ⟨none, l⟩ => ⟨Sum.inr (), l⟩
-  | ⟨some k, i⟩ => ⟨Sum.inl k, i⟩
-
-end ProjBundle
-
 section Joins
 
 variable {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type}
@@ -250,13 +233,5 @@ theorem joinForm_eq {R : Type*} [CommRing R] (f : MRing ι R) :
     joinForm (ι' := ι') f = rename (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar ι') f := rfl
 
 end Joins
-
-section Degenerate
-
-variable (O : Type*) [CommRing O] {Ω : Type*} [Field Ω] [Algebra O Ω]
-
-def zeroPt : (Σ _ : Unit, Fin 1) → Ω := fun _ => 0
-
-end Degenerate
 
 end GroundTheory.Heights₂.Heights.NumbersDVR.BundleExamples

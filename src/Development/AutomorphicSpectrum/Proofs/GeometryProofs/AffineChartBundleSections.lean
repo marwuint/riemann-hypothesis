@@ -7,15 +7,17 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubs
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicAffinePolydiscChartStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryChartFrameGrowthStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicAffinePolydiscChart
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryChartFrameGrowth
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VectorsAtComplexPointStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBdryChartOfHol
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackCorrespondence
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompat
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsActionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsAction
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.UnLocal
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
@@ -192,10 +194,10 @@ theorem indep_of_frame {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
   subst hy
   letI := ψ.toAlgebra
   obtain ⟨E', i1, i2, ⟨M'⟩⟩ := GlobalTheory.T.exists_lie_model S G ℂ (spMap ψ ≫ xR)
-  obtain ⟨j, hj, hlin, hb⟩ := GlobalTheory.T.lie_model_base_change_map S G R ℂ xR (Fin g → R) E' M M'
+  obtain ⟨j, hj, hlin, hb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange S G R ℂ xR (Fin g → R) E' M M'
   have hv' : v = fun i => M'.pt (j (u i)) :=
     funext fun i => Over.OverMorphism.ext ((hu i).trans (hj _).symm)
-  have hcomb := (GlobalTheory.T.lie_model_eigenvectors_action S ℂ G _ E' M').1
+  have hcomb := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Bridge.comb_eig_frame S ℂ G _ E' M').1
   have hind : LinearIndependent ℂ (fun i => j (u i)) := by
     rw [Fintype.linearIndependent_iff]
     intro c hc i
@@ -347,7 +349,7 @@ theorem chart_unit (Y : Model Xo c β) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (
       c1, c2, fun i => ⟨uu i, a2 i, a3 i⟩, fun j => ⟨uw j, b2 j, b3 j⟩⟩
   choose v w v₀ w₀ hF hS₁ hS₂ hc₁ hc₂ hl₁ hl₂ using key
   let φ : (Fin d → ℂ) → ℂ := fun z => if hz : z ∈ punct d a 1 then Φ (C.pt z ≫ k') (v z hz) (w z hz) else 0
-  obtain ⟨ρ', h₀, hρ', hρ1, hd, hne, hφ⟩ := GlobalTheory.T.boundary_chart_frame_growth E H D l Xo c τ σ Φ d a C k' u₁ u₂ φ h1 hr2 hr1 hU hk ind₁ ind₂
+  obtain ⟨ρ', h₀, hρ', hρ1, hd, hne, hφ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_unit_extension_of_bdryChart E H D l Xo c τ σ Φ d a C k' u₁ u₂ φ h1 hr2 hr1 hU hk ind₁ ind₂
     (fun z hz => ⟨v z hz, w z hz, hF z hz, hl₁ z hz, hl₂ z hz, by simp only [φ, dif_pos hz]⟩)
   refine ⟨ρ', h₀, hρ', hρ1, hd, hne, ?_⟩
   intro z hz vv ww vv₀ ww₀ s1 s2 t1 t2
@@ -365,7 +367,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Flat.flat_unit_along_families : ∀ (E :
   intro E _ _ _ H D l Xo c O _ β Y τ σ Φ X' π s' d W' jW A hA EB _ _ MB e₁ e₂ x h1 hr1 hr2 hU hπ hsm hsnc hj1 hj2 hxs hxA
     hframe m B y hB hy hyσ b₀ hb₀ hyb
   obtain ⟨V, hV, a, ψ, hVA, ha, hol, h0, -, hpts, hfam⟩ :=
-    GlobalTheory.T.holomorphic_affine_polydisc_chart c.F σ X' s' d ((W' : Set X')ᶜ) hsm hsnc x (π ⁻¹ᵁ A) hxs hxA
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.hol_polydisc_chart c.F σ X' s' d ((W' : Set X')ᶜ) hsm hsnc x (π ⁻¹ᵁ A) hxs hxA
   have hpt : ∀ z ∈ punct d a 1, spMap (ψ z) ≫ hV.fromSpec ≫ s' = spMap σ ∧
       centre (spMap (ψ z) ≫ hV.fromSpec) ∈ W' := fun z hz =>
     ⟨(hpts z hz.1).1, not_not.1 ((hpts z hz.1).2.2 hz)⟩

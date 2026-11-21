@@ -71,36 +71,4 @@ def GeneratedByAtMost {O M : Type} [CommRing O] [AddCommGroup M] [Module O M]
     (N : Submodule O M) (m : ℕ) : Prop :=
   ∃ s : Finset M, Submodule.span O (s : Set M) = N ∧ s.card ≤ m
 
-section Bound
-
-variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
-    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
-    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
-    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
-    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
-    {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
-
-def GeneratorBound (PD : PeriodData G Qp K₀ K B BdR) (T : LocLat G Qp LL O) (ϖ : O) : Prop :=
-  GeneratedByAtMost (latticeFiniteCohomology PD T.L)
-      (Module.finrank Qp K * Module.finrank O ↥T.L.T + h0ModResidueDim T.L ϖ) ∧
-    Module.finrank Qp K * Module.finrank O ↥T.L.T + h0ModResidueDim T.L ϖ ≤
-      (Module.finrank Qp K + 1) * Module.finrank O ↥T.L.T
-
-theorem GeneratorBound.le {PD : PeriodData G Qp K₀ K B BdR} {T : LocLat G Qp LL O} {ϖ : O}
-    (h : GeneratorBound PD T ϖ) :
-    GeneratedByAtMost (latticeFiniteCohomology PD T.L) ((Module.finrank Qp K + 1) * Module.finrank O ↥T.L.T) := by
-  obtain ⟨⟨s, hs, hc⟩, h2⟩ := h
-  exact ⟨s, hs, hc.trans h2⟩
-
-end Bound
-
-def H1fGeneratorBoundAt {l : ℕ} [Fact l.Prime] (P : LocPrime l) : Prop :=
-  ∀ (K LL : FinExt l), CaseA K LL →
-    ∀ ϖ : ↥(OL LL), Irreducible ϖ →
-      ∀ T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL), IsCrys (P.PD K) T.ρ →
-        GeneratorBound (P.PD K) T ϖ
-
-def H1fGeneratorBoundAlt : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), H1fGeneratorBoundAt P
-
 end GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions

@@ -80,31 +80,6 @@ structure Struct : Prop where
 
 end RunFrame
 
-section Frame
-
-variable {hR : Rd.ReadLimit} {π : CuspSub E n} {Z T₀ : Finset (Pl E)} {F₀ : Frame0 hR π} (F : RunFrame F₀ Z T₀)
-
-def gl (i : F₀.C.ι) (p : F.Γ × Bool) : BGen (F.B i) := if p.2 then (F.g p.1 i).adj else F.g p.1 i
-
-def ul (p : F.Γ × Bool) : U.UGen E n := if p.2 then (F.ug p.1).adj else F.ug p.1
-
-def bw (i : F₀.C.ι) (w : List (F.Γ × Bool)) : List (BGen (F.B i)) := List.replicate F.m (Sum.inr (F.β i)) ++ w.map (gl F i)
-
-def MM (i : F₀.C.ι) : Matrix (F.B i).I (F.B i).I ℂ := opM (F₀.A i).Ta (F₀.A i).Tb (tenN F.d.P (F.B i) (Equiv.refl _) F.d.one)
-
-def tw (i : F₀.C.ι) (ws : List (List (F.Γ × Bool))) : PT (F.B i) :=
-  BGen.wd (Sum.inr (F.t₁ i) :: (ws.map (bw F i)).flatten) (F.t₂ i)
-
-def WordIdAt : Prop := ∃ (cc : F₀.C.ι → ℂ) (c₀ : F₀.C.ι → ℝ), (∀ i, 0 ≤ c₀ i) ∧ cc F₀.i₀ ≠ 0 ∧ ∀ ws : List (List (F.Γ × Bool)), ws ≠ [] →
-  (∀ i, D4.IsTest2J (trM (tw F i ws).Φ (MM F i)) (c₀ i * (1 + (tw F i ws).T) + (tw F i ws).r)) ∧
-  LinearMap.trace ℂ _ ((F.R.u ^ ws.length * ((ws.flatten.map (ul F)).map F.R.op).prod :
-      EuclideanSpace ℂ (Fin F.R.d) →L[ℂ] EuclideanSpace ℂ (Fin F.R.d)) :
-      EuclideanSpace ℂ (Fin F.R.d) →ₗ[ℂ] EuclideanSpace ℂ (Fin F.R.d)) =
-    ∑ i, cc i * (BGen.sc (ws.map (bw F i)).flatten *
-      ellSum2 (F₀.C.μG (F₀.C.a i)) (F₀.C.μG (n - F₀.C.a i)) (trM (tw F i ws).Φ (MM F i)))
-
-end Frame
-
 end PositivityTheory.Rg.BcB.F.FrE
 
 end

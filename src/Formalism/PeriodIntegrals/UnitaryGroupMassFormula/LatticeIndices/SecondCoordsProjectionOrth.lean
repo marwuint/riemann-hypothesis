@@ -115,20 +115,6 @@ theorem adq_dotG {a a' b b' : IdxD D → FpX X p} (ha : ∀ i, a' i ∈ OvA X p)
   exact hadd _ _ (Finset.sum_induction _ (InG X p) hadd hzero fun i _ => key _ _ (hda i) (hb' i))
     (Finset.sum_induction _ (InG X p) hadd hzero fun i _ => key _ _ (hdb i) (ha i))
 
-theorem firstCoords_sub_adapted (v w : Fin X.B.I.n → TpX X p) :
-    crd1 X p θ Q v - crd1 X p θ Q w = crd1 X p θ Q (v - w) := by
-  simp only [crd1, ← Matrix.mulVec_sub]
-  congr 1
-  ext i
-  simp [pr1, Function.comp_def]
-
-theorem secondCoords_sub_adapted (v w : Fin X.B.I.n → TpX X p) :
-    crd2 X p θ Q v - crd2 X p θ Q w = crd2 X p θ Q (v - w) := by
-  simp only [crd2, ← Matrix.mulVec_sub]
-  congr 2
-  ext i
-  simp [pr2, Function.comp_def]
-
 theorem adq_lat_of (v w : Fin X.B.I.n → TpX X p)
     (hw : w ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))) (hd : v - w ∈ gLam X p) :
     v ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by

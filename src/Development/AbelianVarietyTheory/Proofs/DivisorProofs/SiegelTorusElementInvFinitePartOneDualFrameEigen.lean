@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.WeilThetaConvergence
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RealSizeNonneg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelTorusElementRealComponentsOfFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusElementDualFrameRowsEigenInverseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittFrameConjugateGramInvStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelTorusElementRealComponentsOfFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusElementDualFrameRowsEigenInverse
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittFrameConjugateGramInv
 open scoped Matrix NNReal ENNReal TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
@@ -40,7 +40,7 @@ theorem mapped {E : Type} [CommRing E] (f : E →+* ℂ) {m r : ℕ} (X Y : Matr
     exact congrFun this i
   have hne : ∀ i, ((t i : ℝ) : ℂ) ≠ 0 := fun i => Complex.ofReal_ne_zero.2 (ht i).ne'
   rw [hP] at hA ⊢
-  refine GlobalTheory.T.torusElement_dualFrameRows_eigen_inverse ℂ m r (X.map f) (Y.map f) (X'.map f) (Y'.map f) _ _ A B ?_ ?_ ?_ ?_ ?_ ?_ hX hY hA hAB
+  refine _root_.GlobalTheory.torus_dual_frame_rows_eigen ℂ m r (X.map f) (Y.map f) (X'.map f) (Y'.map f) _ _ A B ?_ ?_ ?_ ?_ ?_ ?_ hX hY hA hAB
   · rw [← Matrix.map_mul, xx, Matrix.map_zero _ (map_zero f)]
   · rw [← Matrix.map_mul, yy, Matrix.map_zero _ (map_zero f)]
   · rw [← Matrix.map_mul, xy, Matrix.map_one _ (map_zero f) (map_one f)]
@@ -52,7 +52,7 @@ theorem mapped {E : Type} [CommRing E] (f : E →+* ℂ) {m r : ℕ} (X Y : Matr
 
 theorem torus_inv : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (t : Fin r → ℝ), (∀ i, 0 < t i) → ∀ a : GA D V, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram X Y t a → (Formalism.L2.Theta.mt V a⁻¹).map (finPart D) = 1 ∧ ∀ τ, (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram).map (tauE D τ) * Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a⁻¹) = Matrix.diagonal (fun i => ((t i : ℝ) : ℂ)⁻¹) * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram).map (tauE D τ) ∧ (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram).map (tauE D τ) * Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a⁻¹) = Matrix.diagonal (fun i => ((t i : ℝ) : ℂ)) * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram).map (tauE D τ) ∧ (1 - X * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram) - Y * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram)).map (tauE D τ) * Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a⁻¹) = (1 - X * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram) - Y * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram)).map (tauE D τ) := by
   intro D θ hθ V r X Y hW t ht a ha
-  obtain ⟨hf, hr⟩ := GlobalTheory.T.siegelTorusElement_real_components_of_frame D θ hθ V r X Y t a ha
+  obtain ⟨hf, hr⟩ := _root_.GlobalTheory.TorusDict.torus_dict D θ hθ V r X Y t a ha
   have h1 : Formalism.L2.Theta.mt V a * Formalism.L2.Theta.mt V a⁻¹ = 1 := by simp [Formalism.L2.Theta.mt]
   refine ⟨?_, fun τ => ?_⟩
   · have h2 := congrArg (fun M => Matrix.map M (finPart D)) h1
@@ -66,6 +66,6 @@ theorem torus_inv : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D
         Matrix.map_mul (f := (θ τ).comp (infPart D))
       rw [← h3, h1]
       exact Matrix.map_one _ (map_zero ((θ τ).comp (infPart D))) (map_one ((θ τ).comp (infPart D)))
-    exact mapped (tauE D τ) X Y _ _ hW.xx hW.yy hW.xy (GlobalTheory.T.witt_frame_conjugate_gram_inv D V r X Y hW) t ht _ _ hX hY hz hAB
+    exact mapped (tauE D τ) X Y _ _ hW.xx hW.yy hW.xy (_root_.GlobalTheory.WittFrame.yx_eq_one D V r X Y hW) t ht _ _ hX hY hz hAB
 
 end GlobalTheory.TorusInv

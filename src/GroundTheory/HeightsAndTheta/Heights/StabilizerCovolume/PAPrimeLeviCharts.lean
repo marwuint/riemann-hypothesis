@@ -1,7 +1,10 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.StAPrimeLeviCharts
+import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.HtBoundary
+import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.BRegWeightLevi
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StNbarLeviChart
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StProjHoloLocal
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -133,126 +136,5 @@ theorem analyticAt_sec (M : CxModel P d) {e : OpenPartialHomeomorph M.Xc (Fin d 
 end Charts
 
 end APrimeLeviCharts
-
-theorem APrimeLeviCharts.proof (hP : ProjHoloLocal.Statement) : APrimeLeviCharts.Statement := by
-  intro II Ψ _ K _ ι _ Ω _ _ E _ _ D M C kc
-  classical
-  set ψ := C.chart kc with hψ
-  have hcompat : ReciprocityTheory.AnForm.M.IsCompatChart M.atlas ψ := C.compat kc
-  have hsm : IsSmoothHerm D.A' := D.A'_pos.1
-  set φ : ((Σ k, ι k) → ℂ) → ℝ := fun y => Real.log (D.A'.h y) with hφ
-
-  have hsec : ∀ x : M.Xc, ∃ s : M.Xc → (Σ k, ι k) → ℂ, ∃ U : Set M.Xc, IsOpen U ∧ x ∈ U ∧
-      (∀ y ∈ U, s y ∈ mcPts (mCoordIdeal D.y) ∧ M.proj (s y) = y) ∧
-        ∀ p, M.atlas.HoloOn U fun y => s y p := by
-    intro x
-    obtain ⟨U, hUo, hxU, s, hs, hsh⟩ := M.sections x
-    exact ⟨s, U, hUo, hxU, hs, hsh⟩
-  choose sec U hUo hxU hs hsh using hsec
-
-  have hNo : ∀ x, IsOpen (ψ.target ∩ ψ.symm ⁻¹' U x) := fun x =>
-    ψ.continuousOn_symm.isOpen_inter_preimage ψ.open_target (hUo x)
-
-  have hgan : ∀ x, ∀ u ∈ ψ.target ∩ ψ.symm ⁻¹' U x, AnalyticAt ℂ (fun u => sec x (ψ.symm u)) u :=
-    fun x u hu => APrimeLeviCharts.analyticAt_sec M hcompat (hUo x) (hsh x) hu.1 hu.2
-  have hgC : ∀ x, ∀ u ∈ ψ.target ∩ ψ.symm ⁻¹' U x, ContDiffAt ℝ 2 (φ ∘ fun u => sec x (ψ.symm u)) u :=
-    fun x u hu => (APrimeLeviCharts.contDiffAt_log_h hsm (hs x _ hu.2).1.1).comp u
-      (hgan x u hu).restrictScalars.contDiffAt
-
-  have hind : ∀ x₁ x₂, ∀ y ∈ ψ.target, ψ.symm y ∈ U x₁ → ψ.symm y ∈ U x₂ → ∀ v,
-      levi (φ ∘ fun u => sec x₁ (ψ.symm u)) y v = levi (φ ∘ fun u => sec x₂ (ψ.symm u)) y v := by
-    intro x₁ x₂ y hy h₁ h₂ v
-    have hO : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (U x₁ ∩ U x₂)) :=
-      ψ.continuousOn_symm.isOpen_inter_preimage ψ.open_target ((hUo x₁).inter (hUo x₂))
-    refine APrimeLeviCharts.levi_log_h_torus hsm (hgan x₁ y ⟨hy, h₁⟩) (hgan x₂ y ⟨hy, h₂⟩) ?_ v
-    filter_upwards [hO.mem_nhds ⟨hy, h₁, h₂⟩] with u hu
-    have e₁ := hs x₁ _ hu.2.1
-    have e₂ := hs x₂ _ hu.2.2
-    exact ⟨e₂.1.1, (M.fibre _ e₂.1 _ e₁.1).1 (by rw [e₁.2, e₂.2])⟩
-  refine ⟨fun y v => levi (φ ∘ fun u => sec (ψ.symm y) (ψ.symm u)) y v, ?_, ?_⟩
-  ·
-    intro p hp
-    set x₀ := ψ.symm p.1 with hx₀
-    have hp₀ : p.1 ∈ ψ.target ∩ ψ.symm ⁻¹' U x₀ := ⟨hp.1, hxU x₀⟩
-    have hC : ContinuousOn (fun q : (Fin D.n → ℂ) × (Fin D.n → ℂ) =>
-        levi (φ ∘ fun u => sec x₀ (ψ.symm u)) q.1 q.2) ((ψ.target ∩ ψ.symm ⁻¹' U x₀) ×ˢ Set.univ) :=
-      continuousOn_levi (hNo x₀) fun u hu => (hgC x₀ u hu).contDiffWithinAt
-    have hnhds : (ψ.target ∩ ψ.symm ⁻¹' U x₀) ×ˢ (Set.univ : Set (Fin D.n → ℂ)) ∈ 𝓝 p :=
-      prod_mem_nhds ((hNo x₀).mem_nhds hp₀) Filter.univ_mem
-    refine ((hC.continuousAt hnhds).congr ?_).continuousWithinAt
-    filter_upwards [hnhds] with q hq
-    exact (hind _ _ q.1 hq.1.1 (hxU _) hq.1.2 q.2).symm
-  ·
-    intro z hz hzs w v hv
-    obtain ⟨γ, hγ0, hγw, hγev, hγv⟩ := hv
-    obtain ⟨W, hWo, hzW, F, hFd, hF⟩ := hP II Ψ K ι Ω E D M ψ hcompat z hz hzs
-    set y₀ := ψ (M.proj z) with hy₀
-    set x := ψ.symm y₀ with hx
-    have hxz : x = M.proj z := ψ.left_inv hzs
-    have hy₀N : y₀ ∈ ψ.target ∩ ψ.symm ⁻¹' U x := ⟨ψ.map_source hzs, hxU x⟩
-
-    have hWγ : ∀ᶠ t in 𝓝 (0 : ℂ), γ t ∈ W :=
-      hγw.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hWo.mem_nhds hzW)
-    obtain ⟨S, hS, hSp⟩ := (hγev.and hWγ).exists_mem
-    have hγan : AnalyticAt ℂ γ 0 :=
-      DifferentiableOn.analyticAt (fun t ht => (hSp t ht).1.1.differentiableWithinAt) hS
-    set β : ℂ → Fin D.n → ℂ := fun t => F (γ t) with hβ
-    have hβan : AnalyticAt ℂ β 0 :=
-      DifferentiableOn.analyticAt (fun t ht =>
-        ((hFd.differentiableAt (hWo.mem_nhds (hSp t ht).2)).comp t (hSp t ht).1.1).differentiableWithinAt) hS
-    have hβψ : ∀ t ∈ S, M.proj (γ t) ∈ ψ.source ∧ ψ (M.proj (γ t)) = β t := fun t ht =>
-      hF (γ t) ⟨(hSp t ht).2, (hSp t ht).1.2⟩
-    have hβ0 : β 0 = y₀ := by
-      rw [← (hβψ 0 (mem_of_mem_nhds hS)).2, hγ0]
-    have hβv : HasDerivAt β v 0 := by
-      refine hγv.congr_of_eventuallyEq ?_
-      filter_upwards [hS] with t ht
-      exact (hβψ t ht).2.symm
-
-    have hβN : ∀ᶠ t in 𝓝 (0 : ℂ), β t ∈ ψ.target ∩ ψ.symm ⁻¹' U x :=
-      hβan.continuousAt.preimage_mem_nhds (by rw [hβ0]; exact (hNo x).mem_nhds hy₀N)
-    have hrelC : ∀ᶠ t in 𝓝 (0 : ℂ), (∀ k, ∃ i, sec x (ψ.symm (β t)) ⟨k, i⟩ ≠ 0) ∧
-        ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ γ t = torusSmul c (sec x (ψ.symm (β t))) := by
-      filter_upwards [hS, hβN] with t ht htN
-      have e₁ := hs x _ htN.2
-      have hpr : M.proj (γ t) = ψ.symm (β t) := by
-        rw [← (hβψ t ht).2, ψ.left_inv (hβψ t ht).1]
-      exact ⟨e₁.1.1, (M.fibre _ e₁.1 _ (hSp t ht).1.2).1 (by rw [e₁.2, hpr])⟩
-
-    set L₁ : (Fin 1 → ℂ) →L[ℂ] ℂ := ContinuousLinearMap.proj 0 with hL₁
-    have hL0 : L₁ 0 = 0 := map_zero L₁
-    have hLt : Tendsto L₁ (𝓝 0) (𝓝 0) := by
-      have h := L₁.continuous.tendsto 0
-      rwa [hL0] at h
-    set e₁ : Fin 1 → ℂ := fun _ => 1 with he₁
-    have hLe : L₁ e₁ = 1 := rfl
-    have hτ₁ : AnalyticAt ℂ (γ ∘ L₁) 0 := hγan.comp_of_eq (L₁.analyticAt 0) hL0
-    have hβL : AnalyticAt ℂ (β ∘ L₁) 0 := hβan.comp_of_eq (L₁.analyticAt 0) hL0
-    have hβL0 : (β ∘ L₁) 0 = y₀ := by simp [hL0, hβ0]
-    have hτ₂ : AnalyticAt ℂ ((fun u => sec x (ψ.symm u)) ∘ (β ∘ L₁)) 0 :=
-      (hgan x y₀ hy₀N).comp_of_eq hβL hβL0
-
-    have hγD : HasFDerivAt (γ ∘ L₁) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) w).comp L₁) 0 := by
-      have h := hγw.hasFDerivAt
-      rw [← hL0] at h
-      exact h.comp 0 L₁.hasFDerivAt
-    have s1 := levi_comp (φ := φ) e₁ hτ₁
-      (by simp only [Function.comp_apply, hL0, hγ0]; exact APrimeLeviCharts.contDiffAt_log_h hsm hz.1)
-    rw [hγD.fderiv] at s1
-    simp only [Function.comp_apply, hL0, hγ0, ContinuousLinearMap.coe_comp', ContinuousLinearMap.smulRight_apply,
-      ContinuousLinearMap.one_apply, hLe, one_smul] at s1
-
-    have hβD : HasFDerivAt (β ∘ L₁) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) v).comp L₁) 0 := by
-      have h := hβv.hasFDerivAt
-      rw [← hL0] at h
-      exact h.comp 0 L₁.hasFDerivAt
-    have s3 := levi_comp (φ := φ ∘ fun u => sec x (ψ.symm u)) e₁ hβL (by rw [hβL0]; exact hgC x y₀ hy₀N)
-    rw [hβD.fderiv, hβL0] at s3
-    simp only [ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.smulRight_apply,
-      ContinuousLinearMap.one_apply, hLe, one_smul] at s3
-
-    have s2 := APrimeLeviCharts.levi_log_h_torus hsm hτ₁ hτ₂ (hLt.eventually hrelC) e₁
-    rw [← s1]
-    exact s2.trans s3
 
 end GroundTheory.Heights₂.Heights.NineStatements

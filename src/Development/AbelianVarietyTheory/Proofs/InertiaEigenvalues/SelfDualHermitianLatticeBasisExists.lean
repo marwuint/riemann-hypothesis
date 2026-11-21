@@ -24,9 +24,6 @@ end GlobalTheory.SelfDualLattice
 
 namespace GlobalTheory.SelfDualLattice
 
-variable {K : UQ} {V : Type} [AddCommGroup V] [Module K.E V] [Module K.O V] [IsScalarTower K.O K.E V]
-  {h : V → V → K.E}
-
 end GlobalTheory.SelfDualLattice
 
 namespace GlobalTheory.SelfDualLattice

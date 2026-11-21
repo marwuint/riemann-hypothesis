@@ -2,12 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppSurjectiveOfOmegaMapSurjectiveConnectedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppSurjectiveOfOmegaMapSurjectiveConnected
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupIsogenyBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomSurjectiveIffFinrankKernelQuotientEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsConnIsEtSplittingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomSurjectiveIffFinrankKernelQuotientEqOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsConnIsEtSplitting
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigExtMapRelFrobCompRigOfOmega
+import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualIsConnOfIsEtPDivGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomEqZeroOfIsConnOfIsEtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomEqZeroOfIsConnOfIsEt
 
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 
@@ -84,10 +86,10 @@ theorem isIso_of_isIso_dualHom {G H : PDivGroup p k} (f : G ⟶ H) (h : IsIso (d
 
 theorem isIso_of_isConn_of_omegaMap_surjective [CharP k p] {G H : PDivGroup p k} (f : G ⟶ H)
     (hG : G.IsConn) (hf : IsIsog f) (hs : Function.Surjective (omegaMap G H f)) : IsIso f := by
-  have hsurj := GlobalTheory.T.app_surjective_of_omegaMap_surjective_connected p k G H f hG hs
+  have hsurj := _root_.GlobalTheory.PDivGroup.app_surjective_of_omegaMap_surjective p k G H f hG hs
   have hdeg : HasLogDeg f 0 := ⟨0, fun n _ => by
     rw [pow_zero]
-    exact (GlobalTheory.T.bialgHom_surjective_iff_finrank_kernelQuotient_eq_one k _ _ _).1 (hsurj n)⟩
+    exact (_root_.GlobalTheory.Dieu.surjective_iff_finrank_quot_kerIdeal_eq_one k _ _ _).1 (hsurj n)⟩
   exact ((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).2.2.2 H f hf).1 hdeg
 
 end Corner
@@ -97,10 +99,10 @@ theorem isIso_of_isIsog_of_omegaMap_surjective : ∀ (p : ℕ) [Fact p.Prime] (k
     Function.Surjective (omegaMap G H q) →
     Function.Surjective (omegaMap H.dual G.dual (dualHom G H q)) → IsIso q := by
   intro p _ k _ _ _ G H q hq hs hsd
-  obtain ⟨G₀, G₁, i₀, π₀, i₁, π₁, hG₀, hG₁, hi₀, hi₁, hG⟩ := GlobalTheory.T.exists_connected_etale_splitting_pDivGroup p k G
-  obtain ⟨H₀, H₁, j₀, r₀, j₁, r₁, hH₀, hH₁, hj₀, hj₁, hH⟩ := GlobalTheory.T.exists_connected_etale_splitting_pDivGroup p k H
+  obtain ⟨G₀, G₁, i₀, π₀, i₁, π₁, hG₀, hG₁, hi₀, hi₁, hG⟩ := _root_.GlobalTheory.PDivGroup.exists_isConn_isEt_splitting p k G
+  obtain ⟨H₀, H₁, j₀, r₀, j₁, r₁, hH₀, hH₁, hj₀, hj₁, hH⟩ := _root_.GlobalTheory.PDivGroup.exists_isConn_isEt_splitting p k H
   have z : ∀ {X Y : PDivGroup p k}, X.IsConn → Y.IsEt → (∀ f : X ⟶ Y, f = 0) ∧ ∀ f : Y ⟶ X, f = 0 :=
-    fun {X Y} hX hY => GlobalTheory.T.hom_eq_zero_of_isConn_of_isEt' p k X Y hX hY
+    fun {X Y} hX hY => _root_.GlobalTheory.PDivGroup.hom_eq_zero_of_isConn_of_isEt p k X Y hX hY
 
   have c₀ : i₀ ≫ q ≫ r₀ ≫ j₀ = i₀ ≫ q := by
     simpa only [Category.assoc] using

@@ -33,15 +33,10 @@ private theorem locProd_sum {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
     obtain ⟨E₁⟩ := MultiIrr.nonempty_prod₂_equiv_multiProd_succ (k := w.adicCompletion E) N hn fun i => (σ i).ρ
     have hs : IsSmooth (multiProd (stdBlocks (fun i : Fin s => N i.succ) rfl) fun i : Fin s => (σ i.succ).ρ) :=
       isSmooth_parInd _ _
-    have hi := GlobalTheory.T.isIrreducible_second_factor_of_irreducible_product _ _ _ _ _ _ (σ 0).ρ _ τ.ρ (σ 0).smooth (σ 0).irred hs τ.irred ⟨e.trans E₁.symm⟩
+    have hi := _root_.GlobalTheory.SmGL.ProdIrr.isIrreducible_of_prod₂ _ _ _ _ _ _ (σ 0).ρ _ τ.ρ (σ 0).smooth (σ 0).irred hs τ.irred ⟨e.trans E₁.symm⟩
     let σ' : SmIrr (GL (Fin (∑ i : Fin s, N i.succ)) (w.adicCompletion E)) := ⟨_, _, hs, hi⟩
     have h1 := L.prod (N 0) _ (ParLaws.toRep (σ 0)) (ParLaws.toRep σ') (ParLaws.toRep τ) ⟨e.trans E₁.symm⟩
     have h2 := ih (N := fun i : Fin s => N i.succ) rfl (fun i => σ i.succ) σ' ⟨.refl _⟩
     rw [List.ofFn_succ]
     exact h1.trans (congrArg _ h2)
 
-theorem UpperTheory.V.Z.Win.Gu.prodT :
-    HypothesesH → ExtraV → ProdT := by
-  intro _ X E Ω _ _ _ _ _ n c N hn w σ _ τ e A h rc hrc
-  obtain ⟨a, ha, ε, L⟩ := X E Ω A w h rc hrc
-  exact locProd_sum L hn σ τ e

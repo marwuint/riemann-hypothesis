@@ -5,8 +5,8 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimens
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SlopeBoundOfLargeDegreeLineStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyDegreeOfBadReductionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyBadReductionHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyDegreeOfBadReduction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KeyBadReductionHolds
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights TensorProduct
@@ -16,6 +16,6 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl
 
 theorem slopeBound_and_lemmaS_of_siegel :
     LineOfLargeDegree.Statement → SlopeBoundSt ∧ Prov.LemmaS := fun hS =>
-  GlobalTheory.T.slope_bound_of_large_degree_line hS (GlobalTheory.T.key_degree_of_bad_reduction GlobalTheory.T.key_bad_reduction_holds)
+  GlobalTheory.T.slope_bound_of_large_degree_line hS (_root_.GlobalTheory.CompanionTheory.Ar.Sl.keyDeg_of_keyBad _root_.GlobalTheory.CompanionTheory.Ar.Sl.KP.key_bad)
 
 end GlobalTheory.CompanionTheory.Ar.Sl

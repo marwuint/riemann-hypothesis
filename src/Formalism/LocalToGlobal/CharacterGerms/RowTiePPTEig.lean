@@ -1,18 +1,12 @@
-import Formalism.LocalToGlobal.CharacterGerms.RowTiePPTSelfClose
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePPTClose
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePStartSelf
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePProjLieSelf
-import Formalism.LocalToGlobal.CharacterGerms.ProjFBOfEig
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePKeyGlue
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePKeyDelta
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePSplitLA
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePKeyRes2
 
 namespace Formalism.L2.FormalSeriesBounds
-
-theorem ptFB_of_eig (hE : RowTiePKey.KeyEigSt) : PTFBSt :=
-  ptFB_of_proj2 (RowTiePProj.projFB_of RowTiePLSmall.lSmall_holds
-    (RowTiePLie.projLie_of (RowTiePKey.key_of hE RowTiePKeyRes.keyRes_holds RowTiePKey.keyDelta_holds)
-      RowTiePSplit.split_holds))
-
-theorem cartFB_of_eig (hE : RowTiePKey.KeyEigSt) : CartFBSt :=
-  cartFB_of_proj2 (RowTiePProj.projFB_of RowTiePLSmall.lSmall_holds
-    (RowTiePLie.projLie_of (RowTiePKey.key_of hE RowTiePKeyRes.keyRes_holds RowTiePKey.keyDelta_holds)
-      RowTiePSplit.split_holds))
 
 theorem ptSelf_of_eig (hE : RowTiePKey.KeyEigSt) : PTSelfSt :=
   ptSelf_of_start2 (allStartSelf_of_eig hE)

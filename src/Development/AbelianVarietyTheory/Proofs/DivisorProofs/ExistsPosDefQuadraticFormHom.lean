@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyExistsAmpleClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegOneLeftCompSelf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfDimEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfDimEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberMultilinearSymmStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyMumfordClassBilinearStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmplePullbackIntersectionDegreePosOfNeZeroStatement
@@ -40,7 +40,7 @@ theorem exists_posDef_quadratic_hom : ∀ (K : Type) [Field K] (A B : AbVar K), 
   obtain ⟨d, hdA, hd⟩ := GlobalTheory.AV.AbVar.exists_symm_ample K B
   obtain ⟨c, hc⟩ := GlobalTheory.AV.exists_isAmpleCls K A
   rcases hA : A.dim with _ | n
-  · refine ⟨fun _ => 0, fun _ _ => by simp, fun _ => le_rfl, fun f _ => GlobalTheory.T.eq_zero_of_dim_eq_zero' K A B (Or.inl hA) f⟩
+  · refine ⟨fun _ => 0, fun _ _ => by simp, fun _ => le_rfl, fun f _ => _root_.GlobalTheory.AV.AbVar.eq_zero_of_dim_eq_zero K A B (Or.inl hA) f⟩
   · obtain ⟨⟨M, hM⟩, -⟩ := GlobalTheory.T.intersection_number_multilinear_symm K A (Fin (n + 1)) (by simp [hA])
     refine ⟨fun f => inter A (Fin.cons (CechPic.pull f.hom.left d) (fun _ : Fin n => c) : Fin (n + 1) → Pic A.X.left), ?_, ?_, ?_⟩
     · intro f g

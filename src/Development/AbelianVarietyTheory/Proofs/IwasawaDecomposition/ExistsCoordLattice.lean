@@ -389,22 +389,6 @@ theorem splitLab_getD {n k i : ℕ} (hk : k ≤ n) (hi : i < n) :
     have : i - (n - k) < k := by omega
     simp [this]
 
-theorem splitLab_pairwise (n k : ℕ) : (splitLab n k).Pairwise (fun a b => b ≤ a) := by
-  unfold splitLab
-  rw [List.pairwise_append]
-  refine ⟨List.pairwise_replicate.2 (Or.inr le_rfl), List.pairwise_replicate.2 (Or.inr le_rfl), fun a ha b hb => ?_⟩
-  rw [List.eq_of_mem_replicate ha, List.eq_of_mem_replicate hb]
-  norm_num
-
-theorem suppF_inv {D : D7} (V : HSp D) (f : Formalism.L2.Theta.AE D) (g : GA D V) (hg : SuppF V f g) : SuppF V f g⁻¹ := by
-  have h1 : f • (mt V g - 1) = mt V g - 1 := Matrix.ext hg
-  have h2 : mt V g⁻¹ * mt V g = 1 := by
-    unfold Formalism.L2.Theta.mt
-    rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
-  have h3 : mt V g⁻¹ - 1 = -(mt V g⁻¹ * (mt V g - 1)) := by rw [mul_sub, h2, mul_one, neg_sub]
-  have h4 : f • (mt V g⁻¹ - 1) = mt V g⁻¹ - 1 := by rw [h3, smul_neg, ← Matrix.mul_smul, h1]
-  exact fun i j => congrFun (congrFun h4 i) j
-
 theorem exists_coord_lattice {D : D7} (V : HSp D) : ∃ L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E),
     (L : Set (Fin V.rank → D.host.E)) = L0c D V ∧ L.FG ∧
       Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤ := by
@@ -456,12 +440,5 @@ theorem divAt_inv {D : D7} (V : HSp D) (e : Formalism.L2.Theta.AE D) (P : Height
     (fun i => (splitLab V.rank k).getD i.1 0) (fun i => splitLab_getD hk i.2)
   rw [hL] at key
   exact key
-
-theorem splitDict : ∀ (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ)
-    (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), SplitDict (V := V) J χ Sb := by
-  intro D V J χ Sb P k R h
-  obtain ⟨e, ϖ, α, hS, he, hϖ, hϖ2, hk, hJ, hχ, hα, hR, hC⟩ := h
-  exact ⟨e, e + cA D e, ϖ, α⁻¹, hS, Or.inl ⟨he, rfl⟩, hϖ, hϖ2, splitLab_pairwise _ _, hJ, hχ,
-    suppF_inv V _ α hα.2.1, divAt_inv V e P he ϖ hϖ hϖ2 k hk α hα, hR, hC⟩
 
 end GlobalTheory.SplitHeckeLabel

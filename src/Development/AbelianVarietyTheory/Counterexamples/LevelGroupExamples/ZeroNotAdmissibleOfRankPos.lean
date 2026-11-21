@@ -175,15 +175,4 @@ theorem finite_LevQ : Finite (LevQ Dw l) := by
   haveI : Module.Finite (𝓞 E ⧸ l.Mb) (LevQ Dw l) := Module.Finite.of_restrictScalars_finite (𝓞 E) _ _
   exact Module.finite_of_finite (𝓞 E ⧸ l.Mb)
 
-theorem Mfr_ne_top (l : Level H) : Mfr l ≠ ⊤ := by
-  intro h
-  have h1 : (1 : 𝓞 E) ∈ l.Mb := by simpa using bar_mem_Mb (l := l) (a := 1) (h ▸ Submodule.mem_top)
-  have h2 := mul_mem_M h1 (show (1 : 𝓞 E) ∈ Mfr l from h ▸ Submodule.mem_top)
-  rw [one_mul, ← Ideal.eq_top_iff_one, Ideal.span_singleton_eq_top] at h2
-  have h3 : IsUnit (l.M : ℤ) := by
-    have : IsUnit (algebraMap ℤ (𝓞 E) (l.M : ℤ)) := by simpa using h2
-    exact (isUnit_map_iff (algebraMap ℤ (𝓞 E)) _).1 this
-  have := l.three_le
-  rcases Int.isUnit_iff.1 h3 with h | h <;> omega
-
 end GlobalTheory.LevelPairing

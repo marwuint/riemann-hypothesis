@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ComparisonMemCechHo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecPullA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlueFunctionsSpecFromPairsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleLocalSectionsRestrictCompatiblyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CochainValueOnThickeningHomEqSubOfGluedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CochainValueOnThickeningHomEqSubOfGlued
 
 set_option autoImplicit false
 
@@ -27,6 +27,6 @@ theorem cmpO_injective : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶
     fun T ↦ GlobalTheory.T.exists_glue_functions_spec_from_pairs T.obj.B (pt T) (hSec f g T) fun p q hpq ↦ GlobalTheory.T.cocycle_local_sections_restrict_compatibly f g hg' T p q hpq
   choose G hG using ex
   exact H1.mk_eq_zero.2 ⟨G, funext fun T ↦ funext fun T' ↦ funext fun φ ↦
-    (GlobalTheory.T.cochainValueOnThickeningHom_eq_sub_of_glued f g hg' φ (G T) (G T') (hG T) (hG T')).symm⟩
+    (_root_.GlobalTheory.CechDR.AffLoc.fv_eq_sub_of_glued f g hg' φ (G T) (G T') (hG T) (hG T')).symm⟩
 
 end GlobalTheory.CechDR

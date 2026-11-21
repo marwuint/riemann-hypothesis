@@ -55,6 +55,4 @@ theorem not_separable_charpoly : ∀ (F L C : Type) [Field F] [Field L] [Algebra
     rw [← e] at hc
     exact hns ((separable_map (algebraMap F L)).mp hc)
 
-example : ∀ (F L C : Type) [Field F] [Field L] [Algebra F L] [Ring C] [Algebra F C] [FiniteDimensional F C] (n : ℕ) (ι : C →ₐ[F] Matrix (Fin n) (Fin n) L) (y : C), ((minpoly F y).natDegree < n ∨ ((minpoly F y).natDegree = n ∧ ¬ (minpoly F y).Separable)) → ¬ (ι y).charpoly.Separable := not_separable_charpoly
-
 end GlobalTheory.SepCharpoly

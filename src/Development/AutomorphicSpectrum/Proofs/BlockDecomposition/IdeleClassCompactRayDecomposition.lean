@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfE
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleEqNormModuleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RayNormAndModuleFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleEqNormModule
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleConjugationInvariant
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleBaseChangeSq
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RayNormAndModuleFormula
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology Filter PositivityTheory.Rg.Base1 GroundTheory.Global GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil
 open scoped TensorProduct ENNReal NNReal Matrix Classical
 
@@ -41,11 +43,11 @@ theorem exists_unit_decomp (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hε : 0 < ε := Real.rpow_pos_of_pos hn _
   have hεm : md n = ε ^ m := (Real.rpow_inv_natCast_pow hn.le hm).symm
   have hray : md (r ε * r ε) = ε ^ m := by
-    have h1 := ((GlobalTheory.T.ray_norm_and_module_formula F hcm.1 θ hθ r hr).2 ε hε)
+    have h1 := ((_root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.MdRay.norm_md_ray F hcm.1 θ hθ r hr).2 ε hε)
     have h2 : md (r ε * r ε) = md (r ε) * md (r ε) := by simp [md, map_mul]
     rw [h2, h1, hmdef, two_mul, pow_add]
-  have hy := GlobalTheory.T.idele_module_eq_norm_module F E σ hcm y n hyn
-  have hu := GlobalTheory.T.idele_module_eq_norm_module F E σ hcm (ofF (r ε)) (r ε * r ε) (isNm_ofF σ (r ε))
+  have hy := _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.ideleModule_eq_md_of_isNm F E σ hcm y n hyn
+  have hu := _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.ideleModule_eq_md_of_isNm F E σ hcm (ofF (r ε)) (r ε * r ε) (isNm_ofF σ (r ε))
   set I := GroundTheory.BlockD.ThmBHecke.ideleEquiv F E with hI
   have hker : I (y * (ofF (r ε))⁻¹) ∈ IdeleGroup.normOneSubgroup E := by
     refine MonoidHom.mem_ker.2 (Subtype.ext ?_)

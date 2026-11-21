@@ -131,8 +131,6 @@ theorem ev_zero (n : ℕ) : I.ev n 0 = 1 := (evH I n).map_zero
 
 theorem ev_nsmul (n m : ℕ) (a : D.La) : I.ev n (m • a) = I.ev n a ^ m := (evH I n).map_nsmul m a
 
-theorem ev_sub (n : ℕ) (a b : D.La) : I.ev n (a - b) = I.ev n a / I.ev n b := (evH I n).map_sub a b
-
 theorem ev_pow {n : ℕ} (hn : 0 < n) (a : D.La) : I.ev n a ^ n = 1 := (I.onto n hn _).2 ⟨a, rfl⟩
 
 def Uniq (e : ℕ → Q → Q → kˣ → Prop) : Prop :=
@@ -410,52 +408,6 @@ theorem exists_subgroup [IsAlgClosed k] [CharZero k] (hf : Finite {x : Q // x ^ 
     · rw [mul_pow, t', one_mul]
       exact triv_symm I hu hp t (ht _ l₂') (o _ l₂')
     · exact triv_symm I hu hp t' (ht _ k₂') (o' _ k₂')
-
-omit h₁ hco in
-
-theorem card_datum_le [IsAlgClosed k] [CharZero k] (hf : Finite {x : Q // x ^ p = 1}) :
-    Nat.card C₀ ≤ Ideal.absNorm P ^ (D.p + D.q) := by
-  have ht : ∀ c ∈ C₀, c ^ p = 1 := fun c hc => datum_tors hρ hpP h₂ hc
-  have hc := card_orth I hu hp hf C₀ ht
-  have := D.fin
-  have := D.proj
-  have := hP.isPrime
-  have hP0 : P ≠ ⊥ := by
-    rintro rfl
-    exact Nat.cast_ne_zero.2 hp.ne' (Ideal.mem_bot.1 hpP)
-  have : Finite (𝓞 E ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P hP0
-  obtain ⟨φ, φ', s, hs, hφ, -⟩ := HeckeTate.exists_local_iso (R := 𝓞 E) (M := D.La) (M' := Fin (D.p + D.q) → 𝓞 E)
-    (by rw [D.rank, Module.finrank_fin_fun]) P
-  have fU : Finite {x : Q // x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1} :=
-    Finite.of_injective (β := {x : Q // x ^ p = 1}) (fun x => ⟨x.1, x.2.1⟩) fun a b h =>
-      Subtype.ext (congrArg (fun z : {x : Q // x ^ p = 1} => z.1) h)
-  let F : {x : Q // x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1} × (Fin (D.p + D.q) → 𝓞 E ⧸ P) → {x : Q // x ^ p = 1} :=
-    fun z => ⟨z.1.1 * I.ev p (φ' fun i => (z.2 i).out), by rw [mul_pow, z.1.2.1, ev_pow I hp, mul_one]⟩
-  have hF : Function.Surjective F := by
-    rintro ⟨x, hx⟩
-    obtain ⟨a, rfl⟩ := (I.onto p hp _).1 hx
-    obtain ⟨t, π, hπ, h⟩ := hP.exists_inv hs
-    let y : Fin (D.p + D.q) → 𝓞 E := t • φ a
-    let y' : Fin (D.p + D.q) → 𝓞 E := fun i => (Ideal.Quotient.mk P (y i)).out
-    have hm : a - φ' y' ∈ P • (⊤ : Submodule (𝓞 E) D.La) := by
-      have e₁ : a - φ' y' = π • a + φ' (y - y') := by
-        rw [map_sub, map_smul, hφ, smul_smul, ← add_sub_assoc, ← add_smul, add_comm π, h, one_smul]
-      rw [e₁]
-      refine add_mem (Submodule.smul_mem_smul hπ trivial) ?_
-      rw [pi_eq_sum_univ' (y - y'), map_sum]
-      refine sum_mem fun i _ => ?_
-      rw [map_smul]
-      exact Submodule.smul_mem_smul (Ideal.Quotient.eq.1 (Quotient.out_eq _).symm) trivial
-    refine ⟨(⟨I.ev p (a - φ' y'), ev_pow I hp _, ev_orth I hu hρ hp hpP h₂ hm⟩, fun i => Ideal.Quotient.mk P (y i)),
-      Subtype.ext ?_⟩
-    show I.ev p (a - φ' y') * I.ev p (φ' y') = _
-    rw [← I.add, sub_add_cancel]
-  have hle := Nat.card_le_card_of_surjective F hF
-  rw [Nat.card_prod, Nat.card_fun, ← hc, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin] at hle
-  have : Nonempty {x : Q // x ^ p = 1 ∧ ∀ c ∈ C₀, e p x c 1} := ⟨⟨1, one_pow _, fun c hc =>
-    triv_symm I hu hp (ht c hc) (one_pow _) (triv_one I hu hp (ht c hc))⟩⟩
-  rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  exact Nat.le_of_mul_le_mul_left hle Nat.card_pos
 
 omit h₁ h₂ in
 

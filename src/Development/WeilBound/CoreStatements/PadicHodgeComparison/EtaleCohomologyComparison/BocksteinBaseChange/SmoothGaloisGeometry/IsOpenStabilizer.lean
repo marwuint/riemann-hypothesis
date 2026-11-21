@@ -10,21 +10,6 @@ variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (R : Type) [CommRing 
 
 def act (σ : Ω ≃ₐ[k] Ω) : (Ω ⊗[k] R) ≃ₐ[k] (Ω ⊗[k] R) := Algebra.TensorProduct.congr σ AlgEquiv.refl
 
-def actHom : (Ω ≃ₐ[k] Ω) →* RingAut (Ω ⊗[k] R) where
-  toFun σ := (act R σ).toRingEquiv
-  map_one' := by
-    ext x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a r => simp [act]
-    | add x y hx hy => simp only [map_add] at hx hy ⊢; rw [hx, hy]
-  map_mul' σ τ := by
-    ext x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a r => simp [act]
-    | add x y hx hy => simp only [map_add] at hx hy ⊢; rw [hx, hy]
-
 @[simp] theorem act_tmul (σ : Ω ≃ₐ[k] Ω) (a : Ω) (r : R) : act R σ (a ⊗ₜ r) = σ a ⊗ₜ r := rfl
 
 theorem smul_eq_act (σ : Ω ≃ₐ[k] Ω) (x : Ω ⊗[k] R) : σ • x = act R σ x := by

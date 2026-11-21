@@ -17,12 +17,6 @@ theorem smul_pure {κ : Type} [Fintype κ] (c : ℂ) (f : SInf F κ) (φ : ∀ v
   funext x
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
-theorem DecOn.mono {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {T T' : Finset (Pl F)}
-    {Ψ : (Fin n × Fin d → AF F) → ℂ} {m : ℕ} {f : Fin m → SInf F (Fin n × Fin d)}
-    {φ : Fin m → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ} (hT : T ⊆ T') (h : DecOn B M T Ψ m f φ) :
-    DecOn B M T' Ψ m f φ :=
-  ⟨fun j => ⟨(h.1 j).1, (h.1 j).2.1, fun v hv => (h.1 j).2.2 v fun hv' => hv (hT hv')⟩, h.2⟩
-
 theorem exists_decOn_some {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (hΦ : Φ ∈ PolData B M) :
     ∃ (T₀ : Finset (Pl F)) (m : ℕ) (f : Fin m → SInf F (Fin n × Fin d))

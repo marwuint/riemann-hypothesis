@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmG2OfDecomposition
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.DeRhamFamilyAway
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MainAltAlt
 
@@ -9,17 +9,12 @@ section
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 noncomputable section
 namespace GlobalTheory.GTwoTheta
-open Formalism.MainNotions.AdmissibleParameterJ
-variable {D : D7}
 end GlobalTheory.GTwoTheta
 namespace GlobalTheory.GTwoTheta
-open Formalism.MainNotions.AdmissibleParameterJ
 end GlobalTheory.GTwoTheta
 namespace GlobalTheory.GTwoTheta
-open Formalism.MainNotions.AdmissibleParameterJ
 end GlobalTheory.GTwoTheta
 namespace GlobalTheory.GTwoTheta
-open Formalism.MainNotions.AdmissibleParameterJ
 end GlobalTheory.GTwoTheta
 namespace GlobalTheory.GTwoTheta
 open Formalism.MainNotions.AdmissibleParameterJ

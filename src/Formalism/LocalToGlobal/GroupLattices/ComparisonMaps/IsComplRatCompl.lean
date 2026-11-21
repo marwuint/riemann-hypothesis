@@ -77,26 +77,6 @@ theorem extK_apply (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Modu
   rw [← lc_repr_lemma c0 b x, Finsupp.apply_linearCombination, e1]
   exact lc_repr_lemma (c1.comp KL) b x
 
-theorem extK_unique (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Module.Basis ι LL V0)
-    (hli : LinearIndependent Kf fun i => c0 (b i)) (KL : V0 →ₗ[LL] V1) (g : W0 →ₗ[Kf] W1)
-    (hg : ∀ x, g (c0 x) = c1 (KL x)) (y : W0) (hy : y ∈ spanK c0) : g y = extK c0 c1 b hli KL y := by
-  unfold spanK at hy
-  induction hy using Submodule.span_induction with
-  | mem z hz =>
-    obtain ⟨x, rfl⟩ := hz
-    rw [hg, extK_apply]
-  | zero => simp
-  | add y z _ _ hy hz => rw [map_add, map_add, hy, hz]
-  | smul a y _ hy => rw [map_smul, map_smul, hy]
-
-theorem extK_mem_spanK (c0 : V0 →ₛₗ[e] W0) (c1 : V1 →ₛₗ[e] W1) (b : Module.Basis ι LL V0)
-    (hli : LinearIndependent Kf fun i => c0 (b i)) (KL : V0 →ₗ[LL] V1) (y : W0) :
-    extK c0 c1 b hli KL y ∈ spanK c1 := by
-  have h1 : extK c0 c1 b hli KL y ∈ LinearMap.range (Finsupp.linearCombination Kf fun i => c1 (KL (b i))) :=
-    LinearMap.mem_range.2 ⟨_, rfl⟩
-  rw [Finsupp.range_linearCombination] at h1
-  exact Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨KL (b i), rfl⟩) h1
-
 section Indep
 
 open TensorProduct
@@ -188,12 +168,6 @@ theorem ratMap_eq (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Fu
   simp only [ratMap, LinearMap.comp_apply]
   rw [hp, ratPart_spec]
   exact h.symm
-
-theorem ratMap_spec (e0 : V0 →ₛₗ[s] M0) (e1 : V1 →ₛₗ[s] M1) (hinj : Function.Injective e1) (f : M0 →ₗ[Cc] M1)
-    (h : ∀ x, ∃ y, e1 y = f (e0 x)) (x : V0) : e1 (ratMap e0 e1 hinj f x) = f (e0 x) := by
-  obtain ⟨y, hy⟩ := h x
-  rw [ratMap_eq e0 e1 hinj f x y hy]
-  exact hy
 
 end Rat
 

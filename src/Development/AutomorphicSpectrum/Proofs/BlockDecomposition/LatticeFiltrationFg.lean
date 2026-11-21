@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LevelChainValuations.LatDefs
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.GrSplit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemLatticeSubIffSumStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeFiltrationComapSpanPowStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeFiltrationComapSpanPow
 
 open DividedPowers CrystallineSemistableComparison.Pb
 
@@ -144,7 +144,7 @@ theorem dividedPowerFiltration_fg : ∀ {W B : Type} [CommRing W] [CommRing B] [
   intro W B _ _ _ f ξ l M m h hc r
   have key : pdP (Lat.γ f ξ l M hc) r =
       Ideal.span (Lat.dpA f ξ l M '' (↑(Finset.Ico r m) : Set ℕ)) := by
-    rw [GlobalTheory.T.lattice_filtration_comap_span_pow f ξ l M m h hc r]
+    rw [_root_.GlobalTheory.CompanionTheory.LatPdpEq.dividedPowerFiltration_eq f ξ l M m h hc r]
     apply le_antisymm
     · intro x hx
       have hxs : Lat.ι f ξ l M x ∈ Lat.sub f ξ l M := x.2

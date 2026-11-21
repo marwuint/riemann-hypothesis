@@ -298,20 +298,6 @@ def ofFrames (cm : Formalism.BasicNotions.CMData F E) (n : ℕ) (J : Matrix (Fin
       obtain ⟨_, ⟨g, hg, rfl⟩, h⟩ := (adelicBasis L hs hL (UPts cm.sig J (Af F))).nhds_one_hasBasis.mem_iff.1 hU
       exact ⟨g, hg, h⟩ }
 
-def ofLattice (cm : Formalism.BasicNotions.CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E)
-    (hJ : IsHerm (starRingEnd E) J) (hd : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → E))
-    (hs : Submodule.span E (L : Set (Fin n → E)) = ⊤) (hL : L.FG)
-    (hdual : ∀ x : Fin n → E, x ∈ L ↔ ∀ y ∈ L, hform (starRingEnd E) J y x ∈ (algebraMap (𝓞 E) E).range) :
-    AutInst :=
-  have h := fun v : InfinitePlace F =>
-    exists_frame (isHerm_map cm hJ (embOver E v)) (isUnit_det_map hd (embOver E v))
-  ofFrames cm n J hJ hd L hs hL hdual (fun v => (h v).choose) (embOver E) (embOver_algebraMap E)
-    (fun v => (h v).choose_spec.choose) (fun v => (h v).choose_spec.choose_spec.1)
-    (fun v => (h v).choose_spec.choose_spec.2)
-
-def LiesOver (I : AutInst) (F E : Type) [fF : Field F] [fE : Field E] [sE : StarRing E] [aFE : Algebra F E] : Prop :=
-  I.F = F ∧ I.E = E ∧ HEq I.fF fF ∧ HEq I.fE fE ∧ HEq I.sE sE ∧ HEq I.aFE aFE
-
 def signMat (E : Type) [Field E] {n : ℕ} (ε : Fin n → Bool) : Matrix (Fin n) (Fin n) E :=
   Matrix.diagonal fun a => if ε a then 1 else -1
 
@@ -375,23 +361,6 @@ def ofSigns (cm : Formalism.BasicNotions.CMData F E) {n : ℕ} (ε : Fin n → B
     (intLat_dual ε) (fun _ => ε) (embOver E) (embOver_algebraMap E) (fun _ => 1) (fun _ => isUnit_one)
     (fun v => by rw [signMat_map]; simp)
 
-def ofSignature (cm : Formalism.BasicNotions.CMData F E) (p q : ℕ) : AutInst := ofSigns cm (firstSigns (p + q) p)
-
-theorem ofSignature_spec (cm : Formalism.BasicNotions.CMData F E) (p q : ℕ) :
-    (ofSignature cm p q).n = p + q ∧ ∀ v, (ofSignature cm p q).pAt v = p ∧ (ofSignature cm p q).qAt v = q :=
-  ⟨rfl, fun _ => ⟨card_firstSigns_true (n := p + q) rfl, card_firstSigns_false (n := p + q) rfl⟩⟩
-
 end Inst
-
-theorem exists_host_signature (R : Formalism.BasicNotions.Ranks) (H : Formalism.BasicNotions.Host R) (p q : ℕ) :
-    ∃ I : AutInst, @LiesOver I H.F H.E _ _ H.cmStar _ ∧ I.n = p + q ∧ ∀ v, I.pAt v = p ∧ I.qAt v = q :=
-  letI := H.cmStar
-  ⟨ofSignature (GlobalTheory.Mem.host_cmData R H) p q, ⟨rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩,
-    ofSignature_spec _ p q⟩
-
-theorem exists_signature (p q : ℕ) : ∃ I : AutInst, I.n = p + q ∧ ∀ v, I.pAt v = p ∧ I.qAt v = q := by
-  obtain ⟨A⟩ := Formalism.MainNotions.Inhab.arith_nonempty 0 (4 * (2 * 0 + 15) * 9 + 1)
-  obtain ⟨I, -, h⟩ := exists_host_signature _ (Formalism.MainNotions.Inhab.hostOf (s := 0) A 0 0 0) p q
-  exact ⟨I, h⟩
 
 end GlobalTheory.AutInhab

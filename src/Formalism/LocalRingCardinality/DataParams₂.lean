@@ -241,8 +241,6 @@ def vonMangoldtClassSum (j : ℕ) (t : D.host.TT) (p : ℕ) : ℝ :=
   ∑ i ∈ Finset.range (Nat.log p (L.aT t).toNat + 2),
     if Odd i then max 0 ((L.aT t : ℝ) / (p : ℝ) ^ i - L.wPart j t p i) else 0
 
-def EtaSupp : Prop := ∀ j w, 1 ≤ j → j ≤ D.R.m → w ∉ L.supp → D.what₂.etaJ j w = 0
-
 def ZeroAbove : Prop := ∀ u, ∀ j ∈ lifts D, ∀ w, L.sc.X'' D.R.n < (D.what₂.places.resChar w : ℝ) →
   D.what₂.places.resChar w ≠ (D.mem u).A.T →
   D.what₂.places.resChar w ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ) →

@@ -4,8 +4,12 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixe
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.ConstInt
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.DvdOfModEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitEdgeClassKummerDlogCongruenceStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowRescaleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxCoefficientSeqOneMemSubringStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowRescale
+import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxCoefficientSeqOneMemSubring
+import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
 import Development.AutomorphicArithmetic.AutomorphicVarieties.EisensteinModularTowers.NormalModularTowerTopAlgebraModel
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
@@ -129,7 +133,7 @@ private theorem smF_mem [IsAlgClosed Ω] [CharZero Ω] (A : ValuationSubring Ω)
   have hz : ∀ e : ℤ, eOm ε (1 / (M : ℚ)) ^ e ∈ A := fun e => by
     refine root_mem A hM.ne' ?_
     rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζ.pow_eq_one, one_zpow]
-  exact GlobalTheory.T.smoothedEisensteinFxCoefficientSeq_one_mem_subring Ω A.toSubring c M _ a b hM hc h (hz b) (hz (-b)) k
+  exact _root_.GlobalTheory.KummerEisensteinGalois.smF_one_mem_subring Ω A.toSubring c M _ a b hM hc h (hz b) (hz (-b)) k
 
 private theorem not_dvd_of {l M : ℕ} {a : ℤ} (h : l ∣ M) (ha : ¬ (l : ℤ) ∣ a) : ¬ (M : ℤ) ∣ a :=
   fun h1 => ha ((Int.natCast_dvd_natCast.2 h).trans h1)
@@ -238,7 +242,7 @@ theorem UpperTheory.Kd.L.one :
   intro s hs hSt t ht φ hφ r
   have hsi : s⁻¹ ∈ fixMu Ω (topMu l n m N) := inv_mem hs
   obtain ⟨φ', hφ'⟩ := rescale_series φ hD0
-  have hdl := (GlobalTheory.T.isLogDerivQExpansionModPrimePow_rescale ε X hj l A hA n (N * N) _ _ φ φ' hNN hφ').1 hφ
+  have hdl := (_root_.GlobalTheory.Glue.isDl_rescale ε X hj l A hA n (N * N) _ _ φ φ' hNN hφ').1 hφ
   have hq : (((topMu l n m N : ℕ) : ℚ)) / ((N * N : ℕ) : ℚ) = (l : ℚ) ^ (m + n) := by
     have : ((N * N : ℕ) : ℚ) ≠ 0 := hD0.ne'
     rw [topMu, Nat.cast_mul, mul_div_assoc, div_self this, mul_one, Nat.cast_pow]

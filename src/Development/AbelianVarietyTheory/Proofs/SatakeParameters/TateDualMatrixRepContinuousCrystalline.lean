@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsJumpVOfMultVNe
 import Formalism.SharpRestriction.ParConsts
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientPow
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousCyclotomicCharacterPeriodDatumStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousCyclotomicCharacterPeriodDatum
 open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.FrobeniusOrbits
 
 noncomputable section
@@ -22,7 +22,7 @@ theorem tateDual_matRep_crys : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K 
       | infer_instance
       | exact Subring.instIsTopologicalRing LL.1.toSubring
       | exact inferInstanceAs (IsTopologicalRing ↥LL.1.toSubfield.toSubring)
-  have hχ := GlobalTheory.T.continuous_cyclotomicCharacter_periodDatum P K LL
+  have hχ := _root_.GlobalTheory.HTW.Rec.continuous_cycLL_period P K LL
   have hinv : Continuous fun g : ↥(GK K) => M g⁻¹ := hM.comp continuous_inv
   have hc : Continuous (twistM (dualM M) (cycLL (P.PD K) ↥LL.1)) := by
     change Continuous fun g => ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1) • (M g⁻¹).transpose

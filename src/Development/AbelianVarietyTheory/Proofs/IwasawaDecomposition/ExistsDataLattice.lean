@@ -14,39 +14,6 @@ open GlobalTheory.Up.Definite GlobalTheory.LatFin
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem norm_entry_le_one {Λ : Submodule (𝓞 E) (Fin r → E)} {γ : GL (Fin r) E}
-    (hγ : IsUStab (1 : Matrix (Fin r) (Fin r) E) Λ γ) (φ : E →+* ℂ) (a b : Fin r) :
-    ‖φ ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ 1 := by
-  have hcol : (γ : Matrix (Fin r) (Fin r) E) *ᵥ (Pi.single b 1) =
-      fun a => (γ : Matrix (Fin r) (Fin r) E) a b := by
-    ext a; simp
-  have h1 := congrArg φ (hγ.1 (Pi.single b 1) (Pi.single b 1))
-  rw [map_herm_one_self, map_herm_one_self, hcol] at h1
-  have h2 : ∑ a, ‖φ ((Pi.single b 1 : Fin r → E) a)‖ ^ 2 = 1 := by
-    rw [Finset.sum_eq_single b] <;> simp +contextual
-  have h3 := Complex.ofReal_injective h1
-  rw [h2] at h3
-  have h4 := Finset.single_le_sum (f := fun a => ‖φ ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ^ 2)
-    (fun _ _ => sq_nonneg _) (Finset.mem_univ a)
-  rw [h3] at h4
-  nlinarith [norm_nonneg (φ ((γ : Matrix (Fin r) (Fin r) E) a b))]
-
-theorem finite_stab (Λ : Submodule (𝓞 E) (Fin r → E)) (hfg : Λ.FG)
-    (hsp : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) :
-    {γ : GL (Fin r) E | IsUStab (1 : Matrix (Fin r) (Fin r) E) Λ γ}.Finite := by
-  obtain ⟨k, hk, hi⟩ := exists_common_den Λ hfg
-  choose l hl hm using fun b : Fin r => exists_int_smul_mem Λ hsp (Pi.single b 1)
-  have hfin := Set.Finite.pi' fun _ : Fin r => Set.Finite.pi' fun b : Fin r =>
-    finite_bounded (data E r).Ψ (data E r).cmType (k * l b) (mul_ne_zero hk (hl b)) 1
-  refine Set.Finite.of_finite_image
-    (f := fun γ : GL (Fin r) E => fun a b => (γ : Matrix (Fin r) (Fin r) E) a b)
-    (hfin.subset ?_) (fun x _ y _ h => Units.ext h)
-  rintro _ ⟨γ, hγ, rfl⟩ a b
-  refine ⟨?_, fun τ => norm_entry_le_one hγ τ.1 a b⟩
-  have := hi _ ((hγ.2 _).1 (hm b)) a
-  rw [Matrix.mulVec_smul, Matrix.mulVec_single_one] at this
-  simpa [mul_assoc, Matrix.col] using this
-
 open NumberField in
 open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in

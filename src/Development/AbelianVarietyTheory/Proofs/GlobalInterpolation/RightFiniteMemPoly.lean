@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemOfFiniteDimensionalSpanRightTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemOfFiniteDimensionalSpanRightTranslates
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CompactSpaceDefiniteUnitaryInfinitePointsStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryCoordinateAlgebraDenseStatement
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC
@@ -14,7 +14,7 @@ theorem rightFinite_mem_poly : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   haveI : T2Space (infU E n) := ⟨fun x y hxy => by
     obtain ⟨p, hp, hne⟩ := hsep x y hxy
     exact separated_by_continuous (hc p hp) hne⟩
-  refine GlobalTheory.T.mem_of_finiteDimensional_span_rightTranslates' (infU E n) (Algebra.adjoin ℂ _) hc hs hsep ?_ f hf hfin
+  refine _root_.GlobalTheory.UnitaryBC.mem_of_finiteDimensional_span_rightTranslates (infU E n) (Algebra.adjoin ℂ _) hc hs hsep ?_ f hf hfin
   intro p hp
   obtain ⟨m, a, b, hab, heq⟩ := hcop p hp
   refine ⟨m, fun i x => a i x⁻¹, b, fun i => ⟨hinv _ (hab i).1, hc _ (hab i).2⟩, ?_⟩

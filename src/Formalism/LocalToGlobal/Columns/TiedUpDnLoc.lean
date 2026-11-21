@@ -153,32 +153,6 @@ structure Deco.SameOff (v : HeightOneSpectrum (𝓞 F)) (d d' : Deco E n ST SG) 
   f : ∀ Q : ST, ¬ IsOver v Q.1 → d.f Q = d'.f Q
   be : ∀ w : SG, ¬ IsOver v w.1 → d.be w = d'.be w
 
-theorem updn_decoRaw_eq (v : HeightOneSpectrum (𝓞 F)) (x y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
-    (h : Deco.SameOff ST SG v (decoRaw ST SG y) (decoRaw ST SG x)) :
-    decoRaw ST SG (y * rll_put n v (bc (prV (E := E) v) (y⁻¹ * x))) = decoRaw ST SG x := by
-  have hv : bc (prV (E := E) v) (y * rll_put n v (bc (prV (E := E) v) (y⁻¹ * x))) = bc (prV (E := E) v) x := by
-    rw [map_mul, rll_put_self, ← map_mul, mul_inv_cancel_left]
-  have hw : ∀ Q : Pl E, ¬ IsOver v Q →
-      bc (prV (E := E) (Formalism.L2.DIV.underPl F Q)) (y * rll_put n v (bc (prV (E := E) v) (y⁻¹ * x))) =
-        bc (prV (E := E) (Formalism.L2.DIV.underPl F Q)) y := by
-    intro Q hQ
-    have hne : Formalism.L2.DIV.underPl F Q ≠ v := by
-      rintro rfl; exact hQ rfl
-    rw [map_mul, rll_put_ne n v _ hne, mul_one]
-  ext1
-  · refine Formalism.L2.DIV.eq_of_forall_localized_eq fun Q => ?_
-    by_cases hQ : IsOver v Q
-    · exact updn_mem_loc hQ hv
-    · exact (updn_mem_loc (v := Formalism.L2.DIV.underPl F Q) rfl (hw Q hQ)).trans (h.N Q hQ)
-  · funext Q
-    by_cases hQ : IsOver v Q.1
-    · exact updn_f_loc ST SG Q hQ hv
-    · exact (updn_f_loc ST SG (v := Formalism.L2.DIV.underPl F Q.1) Q rfl (hw Q.1 hQ)).trans (h.f Q hQ)
-  · funext w
-    by_cases hQ : IsOver v w.1
-    · exact updn_be_loc ST SG w hQ hv
-    · exact (updn_be_loc ST SG (v := Formalism.L2.DIV.underPl F w.1) w rfl (hw w.1 hQ)).trans (h.be w hQ)
-
 theorem Deco.SameOff.dia {v : HeightOneSpectrum (𝓞 F)} {d d' : Deco E n ST SG} (h : Deco.SameOff ST SG v d d')
     (c : DiaG E ST) : Deco.SameOff ST SG v (d.dia c) (d'.dia c) where
   N := h.N
@@ -189,43 +163,5 @@ theorem Deco.SameOff.dia {v : HeightOneSpectrum (𝓞 F)} {d d' : Deco E n ST SG
   be := h.be
 
 end Loc
-
-section Move
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
-
-theorem updn_move (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (v : HeightOneSpectrum (𝓞 F)) (d d₁ d' : DecoSet E n ST SG)
-    (h : Deco.SameOff ST SG v d.1 d₁.1) (g₀ : UF E n × H) (hg₀ : g₀ • d' = d₁) :
-    ∃ (γ : URat hc n) (η : UAd hc n) (κ : levU hc n ST SG H), ratHom hc n γ = g₀.1 ∧ levRed hc n ST SG H κ = g₀.2 ∧
-      (∀ v', v' ≠ v → bc (prV (E := E) v') (η : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1) ∧
-      bc (iA F E) (γ : GL (Fin n) E) * (ptOfD hc n ST SG c₀ d' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) =
-        (ptOfD hc n ST SG c₀ d : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * η * κ := by
-  set y := ptOfD hc n ST SG c₀ d with hy
-  set x := ptOfD hc n ST SG c₀ d₁ with hx
-  have hdy : decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d.dia c₀⁻¹ := decoOf_ptOf hc n ST SG hS _
-  have hdx : decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d₁.dia c₀⁻¹ := decoOf_ptOf hc n ST SG hS _
-  have hry : decoRaw ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d.1.dia c₀⁻¹ := by
-    rw [← rlc_decoOf_val hc n ST SG y.2, hdy]; rfl
-  have hrx : decoRaw ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d₁.1.dia c₀⁻¹ := by
-    rw [← rlc_decoOf_val hc n ST SG x.2, hdx]; rfl
-  let η : UAd hc n := ⟨rll_put n v (bc (prV (E := E) v) ((y⁻¹ * x : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))),
-    rll_put_mem_UAd hc n v (afsplit_bc_mem hc.sig 1 v _ (y⁻¹ * x).2)⟩
-  have key : decoOf ST SG ((y * η : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) =
-      g₀ • decoOf ST SG (ptOfD hc n ST SG c₀ d' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := by
-    have h1 : decoOf ST SG ((y * η : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d₁.dia c₀⁻¹ := by
-      apply Subtype.ext
-      rw [rlc_decoOf_val hc n ST SG (y * η).2]
-      refine Eq.trans ?_ hrx
-      exact updn_decoRaw_eq ST SG v _ _ (by rw [hry, hrx]; exact h.dia ST SG c₀⁻¹)
-    rw [h1]
-    unfold ptOfD
-    rw [decoOf_ptOf hc n ST SG hS, ← hg₀]
-    exact rla_dia_smulH n ST SG H c₀⁻¹ g₀ d'
-  obtain ⟨γ, κ, hγ, hκ, e⟩ := rlc_rel_of_orbit hc n ST SG H g₀ key
-  refine ⟨γ, η, κ, hγ, hκ, fun v' hv' => rll_put_ne n v v' hv' _, ?_⟩
-  rw [← Subgroup.coe_mul, e, inv_mul_cancel_right]
-
-end Move
 
 end Formalism.L2.Col

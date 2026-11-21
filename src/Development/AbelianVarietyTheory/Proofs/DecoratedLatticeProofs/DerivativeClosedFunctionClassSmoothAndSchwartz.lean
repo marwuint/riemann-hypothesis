@@ -22,7 +22,7 @@ theorem smooth_schwartz : ∀ (k : ℕ) (V : Set ((Fin k → ℝ) → ℂ)), (�
       (ContinuousLinearMap.proj i : (Fin k → ℝ) →L[ℝ] ℝ).smulRight (1 : ℂ) := by
     intro φ hφ
     funext x
-    have h := GlobalTheory.T.hasFDerivAt_of_continuous_coordinate_partials k φ (fun i => φ' φ hφ i) (fun i => hc _ (hφ' φ hφ i)) (fun i t => hD φ hφ i t) x
+    have h := _root_.GlobalTheory.hasFDerivAt_of_continuous_coordinate_line_derivs k φ (fun i => φ' φ hφ i) (fun i => hc _ (hφ' φ hφ i)) (fun i t => hD φ hφ i t) x
     rw [h.fderiv]
     refine Finset.sum_congr rfl fun i _ => ?_
     ext v

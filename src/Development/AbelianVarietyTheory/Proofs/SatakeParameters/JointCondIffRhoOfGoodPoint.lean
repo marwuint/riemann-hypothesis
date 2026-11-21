@@ -1,13 +1,12 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.ResidualIrreducibleOfTheorem
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.FrobeniusRankParts
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 
 noncomputable section
 
 namespace GlobalTheory.ParamRepCompare
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
-open GlobalTheory.IndefiniteRowSideFullHecke.FrobeniusTwistedRepresentations
 open scoped Pointwise
 
 section Inertia
@@ -65,12 +64,6 @@ theorem _root_.GlobalTheory.ParamRepCompare.conj_mem_Ine_of_smul_eq {A A' : Valu
     simp [AlgEquiv.smul_def]
 
 end Inertia
-
-section Clauses
-
-variable (D : D7)
-
-end Clauses
 
 end GlobalTheory.ParamRepCompare
 

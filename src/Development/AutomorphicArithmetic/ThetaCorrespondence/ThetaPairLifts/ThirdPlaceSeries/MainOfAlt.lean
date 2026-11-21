@@ -1,5 +1,9 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FormAtEachLocation
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsUniqueVec
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ISupIndepOfPairwiseOrthogonalDefinite
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvariantFormBoundedCongruence
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CoreStatement
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -33,6 +37,6 @@ theorem main_of_alt (pet : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L
     push_cast
     ring
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), ∀ i, MtForm D P.M i :=
-  _root_.GlobalTheory.FormAllLevels.main_of_alt GlobalTheory.T.exists_pos_classSum_eq_mul_invariantForm _root_.GlobalTheory.T.invariant_form_bounded_congruence_alt
+  _root_.GlobalTheory.FormAllLevels.main_of_alt _root_.GlobalTheory.petersson_form_classSum_comparison _root_.GlobalTheory.T.invariant_form_bounded_congruence_alt
 end GlobalTheory.FormAllLevels
 end

@@ -19,8 +19,6 @@ def ArithmeticVolumeBigDimensionOne.Statement : Prop :=
 
 namespace ArithmeticVolumeBigDimensionOne
 
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet
-
 end ArithmeticVolumeBigDimensionOne
 
 end

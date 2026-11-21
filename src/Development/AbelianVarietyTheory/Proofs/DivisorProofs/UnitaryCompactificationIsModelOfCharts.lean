@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBaseAlt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelQuotientRepresentsReduced
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemiAbelianDescentOfToricChartsCorrectedSeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTripleOnDescendedGroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemiAbelianDescentOfToricChartsCorrectedSe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTripleOnDescendedGroup
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UChart
@@ -17,8 +17,8 @@ theorem exists_model_of_charts : ∀ {E : Type} [Field E] [NumberField E] [IsCMF
   intro E _ _ _ H Dw l Xo c φ hpq hfan hsi Z zs i OZ N d J S π j _ BD hU hSep hPre
   obtain ⟨oF, ⟨m0⟩⟩ := GlobalTheory.LevelQuotRep.obj_pull_same Xo.univ
     (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))
-  obtain ⟨G, _, _, e, hGs, hGp, hGab, hGc⟩ := GlobalTheory.T.exists_semiAbelian_descent_of_toricCharts_corrected_sep Xo c φ hpq hfan hsi zs i OZ N d J π j BD hU hSep hPre oF.t m0.toSABMap
-  obtain ⟨t, htab, ⟨mt⟩, htc⟩ := GlobalTheory.T.exists_triple_on_descended_group Xo c φ hpq hfan hsi zs i OZ N d J π j BD hU hSep hPre oF.t m0.toSABMap G e hGs hGp hGc
+  obtain ⟨G, _, _, e, hGs, hGp, hGab, hGc⟩ := _root_.GlobalTheory.UChartDesc.exists_semiAbelian_of_charts_sepB Xo c φ hpq hfan hsi zs i OZ N d J π j BD hU hSep hPre oF.t m0.toSABMap
+  obtain ⟨t, htab, ⟨mt⟩, htc⟩ := _root_.GlobalTheory.DescTriple.exists_triple_of_group_sepB Xo c φ hpq hfan hsi zs i OZ N d J π j BD hU hSep hPre oF.t m0.toSABMap G e hGs hGp hGc
   obtain ⟨⟨-, -, -, -, hiz, -, -⟩, -, -, -, ⟨hNB, hproj, -, hjd, hji, -, -, -⟩, -⟩ := hU
   have eid : spMap (RingHom.id c.F) = 𝟙 _ := by simp [spMap]
   have hid : IsIso (spMap (RingHom.id c.F)) := by rw [eid]; infer_instance

@@ -19,4 +19,3 @@ theorem isUnimod_GG : ∀ (k r : ℕ) (μ : Measure (Mt k r)), IsHaarOn (GG k r)
 
 end GlobalTheory.SgInf
 
-example : ∀ (k r : ℕ) (μ : Measure (Mt k r)), IsHaarOn (GG k r) μ → IsUnimod (GG k r) μ := GlobalTheory.SgInf.isUnimod_GG

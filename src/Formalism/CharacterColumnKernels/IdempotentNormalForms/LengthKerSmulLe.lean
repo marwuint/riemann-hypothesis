@@ -185,20 +185,4 @@ theorem blockRhoAbs : StatBlockRhoAbs := by
           rw [Finset.sum_ite_mem, Finset.union_inter_cancel_left]
   exact le_trans hchain (IdempotentNormalFormsRhoFacts.final_arith _ _ _ _ _ _ _ _ _ hker hmid hSel)
 
-theorem kerCount : StatKerCount := by
-  intro O _ _ _ Hk _ _ ι cols ℓ δ e' j d _ Xw _ _ h0 hX f hf
-  classical
-  refine (Module.length_le_of_injective f hf).trans ?_
-  rw [Module.length_pi_of_fintype,
-    Finset.sum_coe_sort cols (fun w => Module.length O (ColData O ℓ δ (e' w) (j w) (Xw w) d))]
-  refine (Finset.sum_le_sum fun w _ =>
-    KernelLengthBounds.length_colData_le ℓ δ (e' w) (j w) (Xw w) d (h0 w) (hX w)).trans (le_of_eq ?_)
-  simp only [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, mul_assoc]
-
-theorem blockRhoCount : StatBlockRhoCount := by
-  intro O _ _ _ G _ d _ ρM H _ _ Ψ δ hδ ι _ what₂ cols D F lenRow Q s ℓ e' j h0
-  intro eO vδ N hrow hcol hQ hs Xw _ _ hX f hf
-  exact blockRhoAbs O G d ρM H Ψ δ hδ ι what₂ cols D F lenRow Q s ℓ e' j h0 hrow hcol hQ hs
-    (kerCount O (LinearMap.ker Ψ) ι cols ℓ δ e' j d Xw h0 hX f hf)
-
 end Formalism.NG

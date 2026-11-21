@@ -31,15 +31,4 @@ abbrev StepAt.toG (St : StepAt I O N) (hJ : IsHerm (sp.cm.sig : E →+* E) St.J)
   U := U
   U_eq := U_eq
 
-section Step
-
-variable (St : StepAt I O N) (hJ : IsHerm (sp.cm.sig : E →+* E) St.J) (hdet : IsUnit St.J.det)
-    (U : Subgroup (GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))
-    (U_eq : ∀ x, x ∈ U ↔ x ∈ UPts sp.cm.sig St.J (FiniteAdeleRing (𝓞 F) F) ∧ ∀ v, bc (prV (E := E) v) x ∈ St.Uloc v)
-    (hH : HypAtPS (St.toG hJ hdet U U_eq))
-    (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
-    (lam' : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom' : ∀ v, IsDominant (lam' v)) (hk : m + 1 = N)
-
-end Step
-
 end Formalism.L2.G

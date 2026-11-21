@@ -1,6 +1,6 @@
 import Mathlib
 import CompanionTheory.AutomorphicTheory.TemperedLocalSpectra.ObstructionLifting.H1StructureDimLe
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechFlatComplexStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechFlatComplex
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.SpecMapAppFromSpec
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.IsIsoOfClosedImmersion
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsPointOfIsAffine
@@ -42,7 +42,7 @@ theorem trivLocus : TrivLocus := trivLocus_pf
 
 theorem fewEquations : FewEquations := fewEquations_pf h1Le
 
-theorem ciFlat : CIFlat := GlobalTheory.T.CechFlatComplex
+theorem ciFlat : CIFlat := _root_.GlobalTheory.CompanionTheory.CIFlatPf.ciFlat
 
 theorem trivLocusFlat : TrivLocusFlat := @GlobalTheory.CompanionTheory.TrivFlat.trivLocusFlat fewEquations ciFlat
 

@@ -65,13 +65,6 @@ theorem polyGraded.equiv :
     gradedEquiv S N (Poly S N) (IndefiniteRowSideFullHecke.Kleiman.polyGraded S N) = Kleiman.polyGraded S N :=
   rfl
 
-theorem IsGradedHom.equiv {M' : Type} [AddCommGroup M'] [Module (Poly S N) M'] [Module S M']
-    [IsScalarTower S (Poly S N) M'] (G : IndefiniteRowSideFullHecke.Kleiman.GradedMod S N M) (G' : IndefiniteRowSideFullHecke.Kleiman.GradedMod S N M')
-    (f : M →ₗ[Poly S N] M') :
-    IndefiniteRowSideFullHecke.Kleiman.IsGradedHom S N G G' f ↔
-      ∃ g : Kleiman.GradedHom (gradedEquiv S N M G) (gradedEquiv S N M' G'), g.toLin = f :=
-  ⟨fun hf => ⟨⟨f, fun c m hm => hf c m hm⟩, rfl⟩, fun ⟨g, hg⟩ c m hm => hg ▸ g.map_piece c m hm⟩
-
 end Graded
 
 section Charts
@@ -155,24 +148,6 @@ theorem chartModule_of_ne_zero (F : Kleiman.SubSystem S x E) {i : Fin (N + 1)} (
     toIndefiniteRowSideFullHecke F i = (F.sub (Kleiman.singleChart h)).restrictScalars S :=
   dif_pos h
 
-theorem secs.equiv (F : Kleiman.SubSystem S x E) : IndefiniteRowSideFullHecke.Kleiman.secs S x (toIndefiniteRowSideFullHecke F) = F.secs := by
-  apply le_antisymm
-  · intro y hy
-    simp only [IndefiniteRowSideFullHecke.Kleiman.secs, Submodule.mem_iInf] at hy
-    rw [Kleiman.SubSystem.secs, Submodule.mem_iInf]
-    intro I
-    obtain ⟨i, hi⟩ := I.2.1
-    have hxi : x i ≠ 0 := (Kleiman.mem_support x).mp (I.2.2 hi)
-    have h1 := hy i hxi
-    rw [chartModule_of_ne_zero F hxi] at h1
-    exact F.mono _ I (Finset.singleton_subset_iff.mpr hi) y h1
-  · intro y hy
-    rw [Kleiman.SubSystem.secs, Submodule.mem_iInf] at hy
-    simp only [IndefiniteRowSideFullHecke.Kleiman.secs, Submodule.mem_iInf]
-    intro i hxi
-    rw [chartModule_of_ne_zero F hxi]
-    exact hy _
-
 theorem mem_twistA_iff (F : Fin (N + 1) → Submodule S E) (c : ℤ) (i : Fin (N + 1)) (z : E) :
     z ∈ IndefiniteRowSideFullHecke.Kleiman.twistA S x F c i ↔ ∃ y ∈ F i, z = x i ^ c • y := by
   constructor
@@ -228,96 +203,6 @@ theorem twist.equiv (F : Kleiman.SubSystem S x E) (c : ℤ) {i : Fin (N + 1)} (h
     mem_twist_twistSys_iff F c (Kleiman.singleChart h) (Finset.mem_singleton_self i)]
   rfl
 
-theorem span_image2_eq (A : Subalgebra S Ω) (T : Set E) :
-    Submodule.span S (Set.image2 (· • ·) (A : Set Ω) T) = (Submodule.span A T).restrictScalars S := by
-  apply le_antisymm
-  · rw [Submodule.span_le]
-    rintro _ ⟨a, ha, y, hy, rfl⟩
-    exact Submodule.smul_mem (Submodule.span A T) (⟨a, ha⟩ : A) (Submodule.subset_span hy)
-  · intro z hz
-    rw [Submodule.restrictScalars_mem] at hz
-    induction hz using Submodule.span_induction with
-    | mem y hy => exact Submodule.subset_span ⟨1, one_mem A, y, hy, one_smul Ω y⟩
-    | zero => exact zero_mem _
-    | add a b _ _ ha hb => exact add_mem ha hb
-    | smul a w hw0 hw =>
-      clear hw0
-      induction hw using Submodule.span_induction with
-      | mem z hz =>
-        obtain ⟨a', ha', y, hy, rfl⟩ := hz
-        exact Submodule.subset_span ⟨(a : Ω) * a', mul_mem a.2 ha', y, hy, mul_smul _ _ _⟩
-      | zero => rw [smul_zero]; exact zero_mem _
-      | add u v _ _ hu hv => rw [smul_add]; exact add_mem hu hv
-      | smul s u _ hu =>
-        show (a : Ω) • (s • u) ∈ _
-        rw [smul_comm]
-        exact Submodule.smul_mem _ s hu
-
-theorem Generated.equiv (F : Kleiman.SubFamily S x E) :
-    IndefiniteRowSideFullHecke.Kleiman.IsGenerated S x (toIndefiniteRowSideFullHecke F.toSubSystem) ↔ F.toSubSystem.Generated := by
-  have key : ∀ {i : Fin (N + 1)} (h : x i ≠ 0),
-      Submodule.span S (Set.image2 (· • ·) (ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x i : Set Ω)
-        (IndefiniteRowSideFullHecke.Kleiman.secs S x (toIndefiniteRowSideFullHecke F.toSubSystem) : Set E)) =
-      (Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart h)) (F.secs : Set E)).restrictScalars S := by
-    intro i h
-    rw [secs.equiv, chartRing.equiv S x h]
-    exact span_image2_eq _ _
-  constructor
-  · intro hg I
-    obtain ⟨i, hi⟩ := I.2.1
-    have hxi : x i ≠ 0 := (Kleiman.mem_support x).mp (I.2.2 hi)
-    have hsub : {i} ⊆ I.1 := Finset.singleton_subset_iff.mpr hi
-    have hi' : F.sub (Kleiman.singleChart hxi) =
-        Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart hxi)) (F.secs : Set E) := by
-      have := hg i hxi
-      rw [key hxi, chartModule_of_ne_zero _ hxi] at this
-      exact Submodule.restrictScalars_injective S _ _ this
-    apply le_antisymm
-    · rw [Submodule.span_le]
-      intro y hy
-      rw [Kleiman.SubSystem.secs, SetLike.mem_coe, Submodule.mem_iInf] at hy
-      exact hy I
-    · intro y hy
-      obtain ⟨a, ⟨u, hu⟩, hay⟩ := (F.mem_iff (Kleiman.singleChart hxi) I hsub y).mp hy
-      rw [hi'] at hay
-      have hmono : ∀ w ∈ Submodule.span (Kleiman.chartRing S x (Kleiman.singleChart hxi)) (F.secs : Set E),
-          w ∈ Submodule.span (Kleiman.chartRing S x I) (F.secs : Set E) := by
-        intro w hw
-        induction hw using Submodule.span_induction with
-        | mem z hz => exact Submodule.subset_span hz
-        | zero => exact zero_mem _
-        | add u v _ _ hu hv => exact add_mem hu hv
-        | smul b w _ hw =>
-          have : b • w = (Kleiman.chartIncl hsub b) • w := rfl
-          rw [this]
-          exact Submodule.smul_mem _ _ hw
-      have hay' := hmono _ hay
-      have hinv : ((↑u⁻¹ : Kleiman.chartRing S x I) : Ω) * (a : Ω) = 1 := by
-        have := congrArg Subtype.val (Units.inv_mul u)
-        rw [hu] at this
-        exact this
-      have hy' : y = (↑u⁻¹ : Kleiman.chartRing S x I) • ((a : Ω) • y) := by
-        rw [Subalgebra.smul_def, ← mul_smul, hinv, one_smul]
-      rw [hy']
-      exact Submodule.smul_mem _ _ hay'
-  · intro hg i hxi
-    rw [key hxi, chartModule_of_ne_zero _ hxi, hg]
-
-theorem bundleA.equiv {i : Fin (N + 1)} (h : x i ≠ 0) :
-    (IndefiniteRowSideFullHecke.Kleiman.bundleA S x).mods i = toIndefiniteRowSideFullHecke (Kleiman.twistSys S x 1) i := by
-  ext z
-  rw [chartModule_of_ne_zero _ h, Submodule.restrictScalars_mem]
-  change z ∈ Submodule.span S (((Subalgebra.toSubmodule (ReciprocityTheory.ChartRestriction.G.Geo.chartRing S x i)).map
-      (LinearMap.mulRight S (x i ^ (1 : ℕ))) : Submodule S Ω) : Set Ω) ↔
-    z ∈ Kleiman.twistMod S x 1 (Kleiman.singleChart h)
-  rw [Submodule.span_eq, Kleiman.twistMod_eq_span 1 _ (Finset.mem_singleton_self i), zpow_one,
-    Submodule.mem_span_singleton, Submodule.mem_map, chartRing.equiv S x h]
-  constructor
-  · rintro ⟨a, ha, rfl⟩
-    exact ⟨⟨a, ha⟩, by simp [Kleiman.chartRing_smul_def]⟩
-  · rintro ⟨a, rfl⟩
-    exact ⟨a, a.2, by simp [Kleiman.chartRing_smul_def]⟩
-
 theorem mul_eq_twist (P Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) :
     (P.sub I).restrictScalars S * (Q.sub I).restrictScalars S = ((P.twist Q).sub I).restrictScalars S := by
   apply le_antisymm
@@ -347,110 +232,7 @@ theorem lmul.equiv (P Q : Kleiman.SubSystem S x Ω) {i : Fin (N + 1)} (h : x i �
   rw [IndefiniteRowSideFullHecke.Kleiman.lmul, chartModule_of_ne_zero _ h, chartModule_of_ne_zero _ h, chartModule_of_ne_zero _ h]
   exact mul_eq_twist P Q _
 
-theorem lpow_zero (Q : Fin (N + 1) → Submodule S Ω) (i : Fin (N + 1)) : IndefiniteRowSideFullHecke.Kleiman.lpow S Q 0 i = 1 :=
-  pow_zero _
-
-theorem pow_zero_sub (Q : Kleiman.SubSystem S x Ω) (I : Kleiman.Chart x) (z : Ω) :
-    z ∈ (Q.pow 0).sub I ↔ z ∈ Kleiman.chartRing S x I := by
-  obtain ⟨i, hi⟩ := I.2.1
-  change z ∈ Kleiman.twistMod S x 0 I ↔ _
-  rw [Kleiman.twistMod_eq_span 0 I hi, zpow_zero, Submodule.mem_span_singleton]
-  constructor
-  · rintro ⟨a, rfl⟩
-    rw [Kleiman.chartRing_smul_def, mul_one]
-    exact a.2
-  · intro hz
-    exact ⟨⟨z, hz⟩, by rw [Kleiman.chartRing_smul_def, mul_one]⟩
-
-theorem lpow.equiv (Q : Kleiman.SubSystem S x Ω) {b : ℕ} (hb : 1 ≤ b) {i : Fin (N + 1)} (h : x i ≠ 0) :
-    IndefiniteRowSideFullHecke.Kleiman.lpow S (toIndefiniteRowSideFullHecke Q) b i = toIndefiniteRowSideFullHecke (Q.pow b) i := by
-  induction b, hb using Nat.le_induction with
-  | base =>
-    rw [IndefiniteRowSideFullHecke.Kleiman.lpow, pow_one]
-    change toIndefiniteRowSideFullHecke Q i = toIndefiniteRowSideFullHecke ((Q.pow 0).twist Q) i
-    rw [← lmul.equiv _ _ h, IndefiniteRowSideFullHecke.Kleiman.lmul]
-    apply le_antisymm
-    · intro q hq
-      have h1 : (1 : Ω) ∈ toIndefiniteRowSideFullHecke (Q.pow 0) i := by
-        rw [chartModule_of_ne_zero _ h, Submodule.restrictScalars_mem, pow_zero_sub]
-        exact one_mem _
-      simpa using Submodule.mul_mem_mul h1 hq
-    · rw [Submodule.mul_le]
-      intro a ha q hq
-      rw [chartModule_of_ne_zero _ h, Submodule.restrictScalars_mem, pow_zero_sub] at ha
-      rw [chartModule_of_ne_zero _ h, Submodule.restrictScalars_mem] at hq ⊢
-      exact Submodule.smul_mem _ (⟨a, ha⟩ : Kleiman.chartRing S x _) hq
-  | succ b hb ih =>
-    rw [IndefiniteRowSideFullHecke.Kleiman.lpow, pow_succ]
-    change IndefiniteRowSideFullHecke.Kleiman.lpow S (toIndefiniteRowSideFullHecke Q) b i * toIndefiniteRowSideFullHecke Q i = toIndefiniteRowSideFullHecke ((Q.pow b).twist Q) i
-    rw [ih, ← lmul.equiv _ _ h]
-    rfl
-
 end Families
-
-section Filtration
-
-variable (S : Type) [CommRing S] (N : ℕ)
-variable {M : Type} [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M]
-
-theorem isGradedSub_span_singleton (G : IndefiniteRowSideFullHecke.Kleiman.GradedMod S N M) {g : M} {d : ℤ}
-    (hg : g ∈ G.piece d) : IndefiniteRowSideFullHecke.Kleiman.IsGradedSub S N G (Submodule.span (Poly S N) {g}) := by
-  classical
-  apply le_antisymm
-  · intro z hz
-    rw [Submodule.restrictScalars_mem, Submodule.mem_span_singleton] at hz
-    obtain ⟨f, rfl⟩ := hz
-    rw [← sum_homogeneousComponent f, Finset.sum_smul]
-    refine sum_mem fun e _ => ?_
-    refine Submodule.mem_iSup_of_mem (d + e) ⟨?_, ?_⟩
-    · exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self g)
-    · have := (gradedEquiv S N M G).smul_mem e d _ g (homogeneousComponent_isHomogeneous e f) hg
-      exact this
-  · exact iSup_le fun _ => inf_le_left
-
-theorem isGradedSub_sup (G : IndefiniteRowSideFullHecke.Kleiman.GradedMod S N M) {L L' : Submodule (Poly S N) M}
-    (hL : IndefiniteRowSideFullHecke.Kleiman.IsGradedSub S N G L) (hL' : IndefiniteRowSideFullHecke.Kleiman.IsGradedSub S N G L') :
-    IndefiniteRowSideFullHecke.Kleiman.IsGradedSub S N G (L ⊔ L') := by
-  apply le_antisymm
-  · rw [Submodule.restrictScalars_sup, sup_le_iff]
-    constructor
-    · exact hL.le.trans (iSup_mono fun c => inf_le_inf_right _ le_sup_left)
-    · exact hL'.le.trans (iSup_mono fun c => inf_le_inf_right _ le_sup_right)
-  · exact iSup_le fun _ => inf_le_left
-
-def primeFiltEquiv (G : IndefiniteRowSideFullHecke.Kleiman.GradedMod S N M) :
-    IndefiniteRowSideFullHecke.Kleiman.PrimeFiltration S N G ≃ Kleiman.PrimeFilt (gradedEquiv S N M G) where
-  toFun F :=
-    { n := F.n, step := F.step, gen := F.gen, deg := F.deg, prime := F.prime
-      step_zero := F.step_zero, step_last := F.step_last, step_succ := F.step_succ, gen_mem := F.gen_mem
-      mem_prime := fun k p => (F.ann_gen k p).symm, isPrime := F.isPrime
-      isHomogeneous := fun k p hp d => F.homog k p hp d, ann_le := F.ann_le }
-  invFun F :=
-    { n := F.n, step := F.step
-      mono := Fin.monotone_iff_le_succ.mpr fun k => by rw [F.step_succ k]; exact le_sup_left
-      step_zero := F.step_zero, step_last := F.step_last
-      graded := by
-        intro k
-        induction k using Fin.induction with
-        | zero =>
-          rw [F.step_zero]
-          exact le_antisymm (by simp) (iSup_le fun _ => inf_le_left)
-        | succ k ih =>
-          rw [F.step_succ k]
-          exact isGradedSub_sup S N G ih (isGradedSub_span_singleton S N G (F.gen_mem k))
-      prime := F.prime, isPrime := F.isPrime, homog := fun k p hp d => F.isHomogeneous k p hp d
-      ann_le := F.ann_le, deg := F.deg, gen := F.gen, gen_mem := F.gen_mem, step_succ := F.step_succ
-      ann_gen := fun k f => (F.mem_prime k f).symm }
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-theorem PrimeFiltration.equiv (G : IndefiniteRowSideFullHecke.Kleiman.GradedMod S N M) (F : IndefiniteRowSideFullHecke.Kleiman.PrimeFiltration S N G) :
-    (primeFiltEquiv S N G F).n = F.n ∧ HEq (primeFiltEquiv S N G F).step F.step ∧
-      HEq (primeFiltEquiv S N G F).gen F.gen ∧ HEq (primeFiltEquiv S N G F).deg F.deg ∧
-      HEq (primeFiltEquiv S N G F).prime F.prime :=
-  ⟨rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
-
-end Filtration
 
 end
 

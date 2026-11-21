@@ -21,12 +21,15 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpa
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueAlgEquivOfCompatibleQuotient
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGtCoordOfTorusQuotient
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyFormalUniformisationTowerStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyAlgebraisationFormalTowerAmpleStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAdditiveWeightPointsOfTorusTowerStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CubicalBundleRelAmpleOfAmpleFibresStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KTrivOfClosedFibreLocalRingStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorusCoordinatesCompatOfTorusCompatStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyFormalUniformisationTower
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyAlgebraisationFormalTowerAmple
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAdditiveWeightPointsOfTorusTower
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CubicalBundleRelAmpleOfAmpleFibres
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KTrivOfClosedFibreLocalRing
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorusCoordinatesCompatOfTorusCompat
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueTorusCompat
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -385,23 +388,23 @@ theorem exists_preU_of_fibres (hF : Laws → Laws2 → Laws3 → USt → ∀ (R 
     have e : pullback.snd G.hom (jK R) = gen.hom.left ≫ A.A.hom := (Over.w gen.hom).symm
     have : IsIso gen.hom.left := inferInstanceAs (IsIso ((Over.forget _).map gen.hom))
     rw [e]; infer_instance
-  obtain ⟨X, _, _, _, ⟨T⟩⟩ := GlobalTheory.T.nonempty_formalUniformisationTower hL hL2 R I hR G P hs hW hpr hS
+  obtain ⟨X, _, _, _, ⟨T⟩⟩ := _root_.GlobalTheory.FormalTower.nonempty_towerR hL hL2 R I hR G P hs hW hpr hS
   have hf := hF hL hL2 hL3 hU R I hR G P hs hW A gen hgen hA X T
   have := isLocalRing_quot hI 0
   have e : I ^ (0 + 1) = I := pow_one I
   have : (I ^ (0 + 1)).IsPrime := e.symm ▸ hR.2.2.2.1
   have : IsPrincipalIdealRing (R ⧸ I ^ (0 + 1)) := e.symm ▸ hP
   have amp : RelAmple (T.l 0).Q.B (T.l 0).D.M.L.L :=
-    GlobalTheory.T.cubical_bundle_relAmple_of_ample_fibres hL hL2 (R ⧸ I ^ (0 + 1)) (isAdicComplete_quot hR.2.1 _) _ (T.l 0).Q.isAb (T.l 0).D.M
+    _root_.GlobalTheory.CubicalFibreAmple.relAmple_of_fibres hL hL2 (R ⧸ I ^ (0 + 1)) (isAdicComplete_quot hR.2.1 _) _ (T.l 0).Q.isAb (T.l 0).D.M
       fun k _ x => (hf k x).1
-  obtain ⟨a⟩ := GlobalTheory.T.nonempty_algebraisation_formal_tower_ample hL hL2 hE R I hR G P X T amp
+  obtain ⟨a⟩ := _root_.GlobalTheory.TowerAlg.nonempty_alg hL hL2 hE R I hR G P X T amp
   have k₀ : KTriv (T.l 0).Q.B (T.l 0).D.M.L.L :=
-    GlobalTheory.T.kTriv_of_closed_fibre_localRing hL hL2 (R ⧸ I ^ (0 + 1)) _ (T.l 0).Q.isAb _ (T.l 0).D.M.L.isLB amp (hf _ _).2
+    _root_.GlobalTheory.KTrivLocal.kTriv_of_closed_fibre hL hL2 (R ⧸ I ^ (0 + 1)) _ (T.l 0).Q.isAb _ (T.l 0).D.M.L.isLB amp (hf _ _).2
   obtain ⟨hb, v, hv⟩ := a.b_pb 0
-  have hK : KTriv a.B a.M.L.L := GlobalTheory.T.kTriv_of_closed_fibre_localRing hL hL2 R _ a.isAb _ a.M.L.isLB a.ample
+  have hK : KTriv a.B a.M.L.L := _root_.GlobalTheory.KTrivLocal.kTriv_of_closed_fibre hL hL2 R _ a.isAb _ a.M.L.isLB a.ample
     (kTriv_closedFibre (e.symm ▸ hI) hb a.M.L.isLB (T.l 0).D.M.L.isLB hv.gen k₀)
-  obtain ⟨c, hadd, hw⟩ := GlobalTheory.T.exists_additive_weightPoints_of_torusTower hL hL2 hE R I hR G P X T a hK
-  exact exists_preU hL.globalFns (fun D e => GlobalTheory.T.torusCoordinates_compat_of_torus_compat hL.globalFns R I D e G) hI hs T a hK c hadd hw A gen hgen hA
+  obtain ⟨c, hadd, hw⟩ := _root_.GlobalTheory.WeightPoint.exists_weightPoints hL hL2 hE R I hR G P X T a hK
+  exact exists_preU hL.globalFns (fun D e => _root_.GlobalTheory.gtCoord_compat_of_torusCompat hL.globalFns R I D e G) hI hs T a hK c hadd hw A gen hgen hA
 
 end GlobalTheory.PreUnifLocal
 end

@@ -1,14 +1,11 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.FixedIntegersIsUnitOfNotMemPrimeSpan
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFrobEqMulField
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Foundations.CyclotomicDvdExpandOfCoprime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LangXRoot
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
 namespace UpperTheory.Kd.C7.LangPolynomialRoots
-
-open GlobalTheory.LangWitt
-
-variable {p : ℕ} [hp : Fact p.Prime] {k : Type} [Field k] [CharP k p] [IsAlgClosed k]
-  {W : Type} [CommRing W]
 
 end UpperTheory.Kd.C7.LangPolynomialRoots
 

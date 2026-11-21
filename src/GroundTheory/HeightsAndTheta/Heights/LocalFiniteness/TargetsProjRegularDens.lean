@@ -9,8 +9,13 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLinearNoetherNo
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PChartEnergyDiagonal
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PSectionQuotLocal
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PVertPointLength
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PProjRankDropDens
 import Mathlib
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivPushA
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
+import ReciprocityTheory.AnalyticForms.AnalyticCharts.MaDensCompEqZeroOfRankLt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
+
 set_option maxSynthPendingDepth 1
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.MahlerSectionOfConst : GroundTheory.Heights₂.Heights.MahlerSectionOfConst.Statement :=

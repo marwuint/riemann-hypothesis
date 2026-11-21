@@ -275,40 +275,9 @@ def oneZ : LinearMap.ker (d F 0) := ⟨oneC μ, LinearMap.mem_ker.2 (d_oneC μ)�
 
 def oneH : H F 0 := Submodule.Quotient.mk (oneZ μ)
 
-theorem oneH_ne_zero (s : ComposableArrows C 0) (h : μ.one (s.obj (Fin.last 0)) ≠ 0) : oneH μ ≠ 0 := by
-  intro h0
-  have h1 := (Submodule.Quotient.mk_eq_zero _).1 h0
-  have h2 : (oneZ μ : Cn F 0) = 0 := (Submodule.mem_bot R).1 h1
-  exact h (congrFun h2 s)
-
 end Cup
 
 namespace Mor
-
-variable {R' : Type} [CommRing R'] {C' : Type u'} [Category.{v'} C'] {F' : C' ⥤ ModuleCat.{0} R'}
-  {σ : R →+* R'}
-
-def IsMult (M : Mor F F' σ) (μ : Mult F) (μ' : Mult F') : Prop :=
-  ∀ (T : C') (a b : F.obj (M.G.obj T)), M.τ T (μ.mul _ a b) = μ'.mul T (M.τ T a) (M.τ T b)
-
-theorem τ_ev (M : Mor F F' σ) {n k : ℕ} (s : ComposableArrows C' k) (p : Fin (n + 1) → Fin (k + 1))
-    (hp : Monotone p) (j : Fin (k + 1)) (h : p (Fin.last n) ≤ j) (x : Cn F n) :
-    M.τ _ (ev (s ⋙ M.G) p hp j h x) = ev s p hp j h (M.pullC n x) :=
-  M.nat _ _
-
-theorem pullC_cupC (M : Mor F F' σ) {μ : Mult F} {μ' : Mult F'} (hM : M.IsMult μ μ') {m n k : ℕ}
-    (h : m + n = k) (f : Cn F m) (g : Cn F n) :
-    M.pullC k (cupC μ h f g) = cupC μ' h (M.pullC m f) (M.pullC n g) := by
-  funext s
-  refine (hM _ _ _).trans ?_
-  exact congrArg₂ (fun x y => μ'.mul _ x y) (M.τ_ev _ _ _ _ _ f) (M.τ_ev _ _ _ _ _ g)
-
-theorem pull_cup (M : Mor F F' σ) {μ : Mult F} {μ' : Mult F'} (hM : M.IsMult μ μ') {m n k : ℕ}
-    (h : m + n = k) (x : H F m) (y : H F n) :
-    M.pull k (cup μ h x y) = cup μ' h (M.pull m x) (M.pull n y) := by
-  refine Submodule.Quotient.induction_on _ x fun f => ?_
-  refine Submodule.Quotient.induction_on _ y fun g => ?_
-  exact congrArg Submodule.Quotient.mk (Subtype.ext (M.pullC_cupC hM h f g))
 
 end Mor
 
@@ -321,10 +290,6 @@ variable {b : Base} (L : b.Fun)
 def cup {m n k : ℕ} (h : m + n = k) : H L m →ₗ[b.R] H L n →ₗ[b.R] H L k := CatH.cup (mult L) h
 
 def one : H L 0 := CatH.oneH (mult L)
-
-theorem Mor.pull_cup {b' : Base} {L' : b'.Fun} {σ : b.R →+* b'.R} (M : Mor L L' σ) {m n k : ℕ} (h : m + n = k)
-    (x : H L m) (y : H L n) : M.pull k (cup L h x y) = cup L' h (M.pull m x) (M.pull n y) :=
-  CatH.Mor.pull_cup _ (μ := mult L) (μ' := mult L') (fun _ _ _ => rfl) h x y
 
 structure LB where
 
@@ -344,12 +309,6 @@ def triv : LB L where
   g_map := fun {_ _ _ _} _ {_} _ _ => (map_one _).symm
   g_self _ := rfl
   g_comp _ _ _ := mul_one 1
-
-def ofComp (i : L.ι) : LB L where
-  g α β _ y := L.g α β i y
-  g_map := fun {_ _ _ _} φ {_} h1 h2 => L.g_map i φ h1 h2
-  g_self h := L.g_self i h
-  g_comp h1 h2 h3 := L.g_comp i h1 h2 h3
 
 def mul (E E' : LB L) : LB L where
   g α β _ y := E.g α β y * E'.g α β y
@@ -377,10 +336,6 @@ def IsDPLog {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (v a : 
   v - 1 ∈ J ∧ ∃ N : ℕ, (∀ n, N ≤ n → ((n - 1).factorial : B) * δ.dpow n (v - 1) = 0) ∧
     a = ∑ n ∈ Finset.Ico 1 N, (-1) ^ (n + 1) * ((n - 1).factorial : B) * δ.dpow n (v - 1)
 
-theorem isDPLog_one {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : IsDPLog δ 1 0 := by
-  refine ⟨by rw [sub_self]; exact J.zero_mem, 1, fun n hn => ?_, by simp⟩
-  rw [sub_self, δ.dpow_eval_zero (by omega), mul_zero]
-
 variable {L}
 
 def chainUnit (u : ∀ {T T' : Thick L}, (T ⟶ T') → T'.Bˣ) (s : ComposableArrows (Thick L) 2) :
@@ -397,12 +352,6 @@ def IsFirstChernClassOfLineBundle (E : LB L) (z : H L 2) : Prop :=
     (∀ s : ComposableArrows (Thick L) 2, IsDPLog (s.obj (Fin.last 2)).δ (chainUnit u s) (ℓ.1 s)) ∧
     Submodule.Quotient.mk ℓ = z
 
-theorem firstChernClass_trivialBundle : IsFirstChernClassOfLineBundle (LB.triv : LB L) 0 := by
-  refine ⟨fun _ => 1, 0, fun φ => map_one _, fun s => ?_, Submodule.Quotient.mk_zero _⟩
-  have e : chainUnit (fun _ => 1) s = 1 := by simp [chainUnit]
-  rw [e]
-  exact isDPLog_one (s.obj (Fin.last 2)).δ
-
 def Mor.catMor {b' : Base} {L' : b'.Fun} {σ : b.R →+* b'.R} (M : Mor L L' σ) : CatH.Mor (O L) (O L') σ where
   G := M.functor
   τ _ := { toFun := fun z => z, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
@@ -415,12 +364,5 @@ theorem IsFirstChernClassOfLineBundle.pull {b' : Base} {L' : b'.Fun} {σ : b.R �
     (hz : IsFirstChernClassOfLineBundle E z) : IsFirstChernClassOfLineBundle (E.pull M) (M.pull 2 z) := by
   obtain ⟨u, ℓ, hu, hℓ, rfl⟩ := hz
   exact ⟨fun φ => u (M.map φ), M.catMor.pullZ 2 ℓ, fun φ => hu (M.map φ), fun s => hℓ (s ⋙ M.functor), rfl⟩
-
-theorem one_node_ne_zero : (one Ex.nodeL : H Ex.nodeL 0) ≠ 0 :=
-  CatH.oneH_ne_zero _ (ComposableArrows.mk₀ Ex.T) (one_ne_zero (α := Ex.D))
-
-example : IsFirstChernClassOfLineBundle (LB.triv : LB Ex.nodeL) 0 := firstChernClass_trivialBundle
-
-example (T : Thick L) (x y : T.B) : (mult L).mul T x y = x * y := rfl
 
 end GlobalTheory.LogCris

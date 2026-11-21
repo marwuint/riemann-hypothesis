@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AdelicPairReducedBasisStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AdelicPairReducedBasis
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GlFreeAlgebraToSpecialLinearEmbInjectiveHomStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsQGroupWeilRestrictionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GlFreeAlgebraEmbIntegralAndRationalStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteAdelicDoubleCosetsOfRationalSLSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsQGroupWeilRestriction
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GlFreeAlgebraEmbIntegralAndRational
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteAdelicDoubleCosetsOfRationalSLSubgroup
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 open NumberField IsDedekindDomain
@@ -16,14 +16,14 @@ theorem classFinite_integralLevel : ∀ (F : Type) [Field F] [NumberField F] (n 
   classical
 
   obtain ⟨R, _, _, R₀, _, b, hAP, hred, hb, hint⟩ :=
-    GlobalTheory.T.adelic_pair_reduced_basis F _ (NumberField.RingOfIntegers.basis F)
-  obtain ⟨Γ, hΓ, hcorr⟩ := GlobalTheory.T.exists_isQGroup_weilRestriction_alt F _ (NumberField.integralBasis F) n S hS
+    _root_.GlobalTheory.AdeleFree.finiteAdele_free F _ (NumberField.RingOfIntegers.basis F)
+  obtain ⟨Γ, hΓ, hcorr⟩ := _root_.GlobalTheory.ClassFin.exists_isQGroup_weilRestriction F _ (NumberField.integralBasis F) n S hS
   have hbF : ∀ i, b i = algebraMap F (FiniteAdeleRing (𝓞 F) F) (NumberField.integralBasis F i) := by
     intro i
     rw [hb i, NumberField.integralBasis_apply]
   have hA := hcorr R (FiniteAdeleRing (𝓞 F) F) b hbF
   have hQ := hcorr ℚ F (NumberField.integralBasis F) (fun i => rfl)
-  obtain ⟨T₀, hT₀, hdec⟩ := GlobalTheory.T.finiteAdelicDoubleCosets_of_rational_SL_subgroup _ Γ R R₀ hΓ hAP
+  obtain ⟨T₀, hT₀, hdec⟩ := _root_.GlobalTheory.ClassFin.cf_of_isQGroup _ Γ R R₀ hΓ hAP
 
   let lift : Matrix ((Fin n × _) ⊕ Unit) ((Fin n × _) ⊕ Unit) R → GL (Fin n) (FiniteAdeleRing (𝓞 F) F) :=
     fun s => if h : ∃ g : GL (Fin n) (FiniteAdeleRing (𝓞 F) F),

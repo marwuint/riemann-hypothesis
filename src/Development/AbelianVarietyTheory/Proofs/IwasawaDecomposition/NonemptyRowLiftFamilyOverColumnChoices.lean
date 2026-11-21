@@ -3,11 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReadPk
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HdExists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodFactorisationScalarReferenceTupleEqOne
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteFormsAllTuplesCoordinateLawsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteFormsAllTuplesCoordinateLaws
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FormsCoordinatesIndexOfFamilyTupleEqStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPeriodMapFormsEquivRowLiftFormsUpperLevelStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowLiftReadingDefiniteFormCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowsDatumPrescribedTuplesDefinedWeightsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPeriodMapFormsEquivRowLiftFormsUpperLevel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowLiftReadingDefiniteFormCoordinates
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowsRestWordColumnUnitBaseTupleAlt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowsDatumPrescribedTuplesDefinedWeights
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Cx Formalism.IndefR.RecTie
 open scoped TensorProduct InnerProductSpace ComplexOrder
@@ -29,16 +30,16 @@ theorem rowPk_nonempty : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW
   obtain ⟨y, hy, -⟩ := HdExist.hd_exists (w.D Z₀) (Gc B w.px) (PlS B w.px) (PlI B w.px) (TupU w.I (usedOf w.I T Wt))
     (famR (w.st Z₀) w.I hX (usedOf w.I T Wt) z₀.Xg z₀.tr) z₀.core.Q.c.F z₀.R z₀.F z₀.cG z₀.pins hF hY hW
     (ixOf w.I (usedOf w.I T Wt)) tupT htt (ixOf_mu0F w.I _)
-  obtain ⟨hLA, hLL⟩ := GlobalTheory.T.definiteFormsAllTuples_coordinateLaws (w.st Z₀) w.px w.I hX z₀.Xg z₀.tr w.ok z₀.good.irr
+  obtain ⟨hLA, hLL⟩ := _root_.GlobalTheory.Mem.R3.Rw.Mats.mats_laws (w.st Z₀) w.px w.I hX z₀.Xg z₀.tr w.ok z₀.good.irr
   have hU := GlobalTheory.T.formsCoordinates_indexOfFamilyTuple_eq (w.st Z₀) w.px w.I hX (usedOf w.I T Wt) z₀.Xg z₀.tr
   have hO : ∀ o : (w.D Z₀).what₂.O, ∃ k : z₀.core.Q.c.F, algebraMap z₀.core.Q.c.F (w.D Z₀).what₂.LL k = (w.D Z₀).what₂.OtoLL o :=
     fun o => z₀.Ks_le _ (SetLike.coe_mem _)
-  obtain ⟨p, hpL, ⟨t⟩⟩ := GlobalTheory.T.exists_rowLiftReading_definiteFormCoordinates (w.D Z₀) (Gc B w.px) (PlS B w.px) (PlI B w.px) (TupU w.I (usedOf w.I T Wt))
+  obtain ⟨p, hpL, ⟨t⟩⟩ := _root_.GlobalTheory.Mem.R3.Rw.PkRead.exists_pkT (w.D Z₀) (Gc B w.px) (PlS B w.px) (PlI B w.px) (TupU w.I (usedOf w.I T Wt))
     (famR (w.st Z₀) w.I hX (usedOf w.I T Wt) z₀.Xg z₀.tr) z₀.core.Q.c.F z₀.R z₀.F z₀.cG hO hIn z₀.pins hH y
     (mAU (w.st Z₀) w.I hX z₀.Xg z₀.tr) (mLU (w.st Z₀) w.I hX z₀.Xg z₀.tr) hLA hLL
     (fun b t => by rw [hy]; exact (hU t).1 b) (fun i t => by rw [hy]; exact (hU t).2 i)
-  obtain ⟨d, ⟨per⟩⟩ := GlobalTheory.T.exists_periodMapForms_equiv_rowLiftForms_upperLevel B f T w Z₀ hX z₀.Xg z₀.tr p (fun a => t.tA true a)
-  obtain ⟨W₀, hmu, hkap, hsha⟩ := GlobalTheory.T.exists_rowsDatum_prescribedTuples_definedWeights B f T w hX Wt hWt
+  obtain ⟨d, ⟨per⟩⟩ := _root_.GlobalTheory.Mem.R3.Rw.PerId.exists_perT B f T w Z₀ hX z₀.Xg z₀.tr p (fun a => t.tA true a)
+  obtain ⟨W₀, hmu, hkap, hsha⟩ := _root_.GlobalTheory.Mem.R3.Rw.exists_rowsRest_muW B f T w hX Wt hWt
   obtain ⟨n, hn⟩ := exists_nums_numOK B w.C (Gc B w.px) p d W₀
   exact ⟨{
     y := y

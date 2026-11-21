@@ -9,10 +9,14 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeLinearE
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeBaseChangeConj
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConjugatePointSameCentre
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalSchemeCoordsInjective
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspCorrespondenceBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.CuspWeightInvariantUnderIsometryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.CuspWeightInvariantUnderConjugationStatement
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeIsometryTransport
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeConjugateCusp
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -41,7 +45,7 @@ theorem IsWeightAt.unique {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.
     valAt_eq Or.𝔐.tie.gen (Or.𝔐.all _) (hL' τ a) (hL τ a)
   subst hσ
   obtain ⟨φ, h1, h2, h3, -⟩ := GlobalTheory.CompanionTheory.Ar.Cusp.FibreUnique.exists_linearEquiv_of_fibreLatVec E H Or.𝔐.X Or.𝔐.t z g' g Λ' Λ R' R Empty _ _ _ hF' hF
-  exact (GlobalTheory.T.cusp_weight_invariant_under_isometry E g' Λ' (CMType H) R' σ' g Λ R φ (isCMFam_of_labVal Or hL) h1 h2 h3).1.symm ▸ rfl
+  exact (_root_.LevelTowerAlt.riemann_lattice_isometry_transport E g' Λ' (CMType H) R' σ' g Λ R φ (isCMFam_of_labVal Or hL) h1 h2 h3).1.symm ▸ rfl
 
 theorem IsWeightAt.nonneg {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.X} {x : ℝ} (h : IsWeightAt Or z x) : 0 ≤ x := by
   obtain ⟨g, Λ, i₁, i₂, R, σ, -, -, rfl⟩ := h
@@ -63,7 +67,7 @@ theorem exists_isWeightAt (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {z : Sp
 theorem IsWeightAt.conj {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.X} {x : ℝ} (h : IsWeightAt Or z x) :
     IsWeightAt Or (spMap (starRingEnd ℂ) ≫ z) x := by
   obtain ⟨g, Λ, i₁, i₂, R, σ, hF, hL, rfl⟩ := h
-  obtain ⟨-, R', hP, hH, hB, hW⟩ := GlobalTheory.T.cusp_weight_invariant_under_conjugation E g Λ (CMType H) R σ (isCMFam_of_labVal Or hL)
+  obtain ⟨-, R', hP, hH, hB, hW⟩ := _root_.LevelTowerAlt.riemann_lattice_conjugate_cusp E g Λ (CMType H) R σ (isCMFam_of_labVal Or hL)
   have hF' : FibreLat Or.𝔐.t (spMap (starRingEnd ℂ) ≫ z) R' :=
     (GlobalTheory.CompanionTheory.Ar.Cusp.FibreMove.fibreLat_move E H Or.𝔐.X Or.𝔐.X Or.𝔐.t Or.𝔐.t (𝟙 _) g Λ R R' z).2 hP hH
       (fun a x => by simpa using hB a (star x)) hF
@@ -140,7 +144,7 @@ theorem exists_cuspWeight : Top.Given → ∀ (E : Type) [Field E] [NumberField 
         have := hx.conj
         rwa [e] at this⟩
       rw [hU0 h, hU0 h']
-  · obtain ⟨z, -, hz⟩ := (GlobalTheory.T.complex_points_iff_centres Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie w).1 hX.1
+  · obtain ⟨z, -, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie w).1 hX.1
     have hi : Or.𝔐.Interior z := by
       by_contra hn
       exact hX.2 ((Or.bd z w hz).2 hn)

@@ -1,6 +1,6 @@
 import Formalism.CharacterColumnKernels.StatementN
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.GenFin
-import Formalism.CharacterColumnKernels.IdempotentNormalForms.DetTri
+import Formalism.CharacterColumnKernels.Statement
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.SingleEqSmul
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.VccSpan

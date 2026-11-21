@@ -9,7 +9,7 @@ import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.ZarhinStatem
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateDatumStatement
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.OrdinaryCurveStatement
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedFlagStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagComparisonTheoremStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagComparisonTheorem
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderRetractRestrictionStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderRetractElementaryStatement
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
@@ -28,7 +28,7 @@ theorem flagConcl_directFactor_of_subquotient :
   obtain ⟨⟨A', hA'⟩, -, hgen⟩ := GlobalTheory.T.hopf_order_retract_restriction p C v R hInt hp N AA Nw i π hπi hstab
   have ht' := GlobalTheory.T.hopf_order_retract_elementary p C v R hInt hp N hpN AA Nw i π hπi hstab htight
   rw [← hA'] at hFS ht' ⊢
-  refine GlobalTheory.T.flag_comparison_theorem p C v R hInt hp F Nw A' hFS ht' n b ?_ σ hσ
+  refine _root_.GlobalTheory.CompanionTheory.Ar.GR.flagStatement_holds p C v R hInt hp F Nw A' hFS ht' n b ?_ σ hσ
   intro k
   rw [hA']
   exact hgen _ (hS p C v R hInt hp hcomp N AA.carrier hab _)

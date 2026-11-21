@@ -21,6 +21,4 @@ theorem almostSep_subgroupOf (L : Type) [Field L] (v : Valuation L ℝ≥0) (G :
   · intro σ hσ
     exact hs.sum_out (σ : G) (fun h => hσ (Subgroup.mem_subgroupOf.mpr h))
 
-example : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G] [MulSemiringAction G L] (U H : Subgroup G), AlmostSep v U → AlmostSep v (U.subgroupOf H) := @almostSep_subgroupOf
-
 end GlobalTheory.AlmostEt

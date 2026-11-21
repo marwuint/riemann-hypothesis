@@ -23,11 +23,4 @@ theorem range_free (e : Module.End O V) (he : IsIdempotentElem e) : Module.Free 
   haveI : Module.FinitePresentation O (LinearMap.range e) := Module.finitePresentation_of_projective _ _
   exact Module.free_of_flat_of_isLocalRing
 
-section Split
-
-variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
-  {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-end Split
-
 end Formalism.L2.Pj.LocFrM

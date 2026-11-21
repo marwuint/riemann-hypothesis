@@ -19,12 +19,6 @@ def EmbeddingPieces.Statement : Prop :=
     ptsIntegral (mCoordIdeal y) (pot L) w =
       (∑ sg, c sg) / Fintype.card (F →+* ℂ) * ptsIntegral (mCoordIdeal y) (pot L) (fun _ => 1)
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

@@ -6,7 +6,17 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticEi
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TransPtBase
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SamePotBlock
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecondStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFramesAtPointStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFramesAtPoint
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsImg
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AevalNeZeroOfNotMem
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBlkCover
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
+import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackPullback
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
@@ -214,7 +224,7 @@ theorem met (CR : CovReal FA Cv) {z : (Σ k, ι' k) → ℂ} (hz : z ∈ mcPts (
       (M'.blk p).elim (Real.log ‖valAt M'.x (F'.υ p) (basePart M'.blk z)‖) (fun _ => 0) +
       Real.log ‖detFac j p.2 (Cv.trans F' F (basePart M'.blk z) p.1)‖ := by
   have hb := CPts.base_mem M' hz
-  have hbv := (GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ hb).1
+  have hbv := (_root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.Pt.main K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ hb).1
   have hI' := CoordinateConeArithVar.isMultiHomogIdeal y'
   obtain ⟨z₁, o₁, n₁⟩ := FibreCount.exists_normal_base M'.blk F'.c z fun k => FibreCount.chart_ne (hg'.1 k)
   obtain ⟨h, H⟩ := CPts.flag_fwd M' hF' (mem_mcPts_of_sameOrbit hI' o₁ hz)
@@ -315,10 +325,10 @@ theorem pot_loc (CR : CovReal FA Cv) (hy : IsArithVar (mCoordIdeal y) (d + 2))
     LocRe A x fun u => Real.log ((CR.Re.ref p).h (Z u)) - Real.log ((fsHerm ι (M.dy p)).h (Y u)) := by
   have hz := hm x hx
   have hb := CPts.base_mem M' hz
-  have hbv := fun u hu => (GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ (CPts.base_mem M' (hm u hu))).1
-  obtain ⟨F', hF', hg'⟩ := (GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').2.1 _ hb
-  obtain ⟨F, hF, hg⟩ := (GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).2.1 _ (hbv x hx)
-  obtain ⟨V, f, hV, hzV, hf, hs⟩ := GlobalTheory.T.flag_cover_frames_at_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F hz hF' hF hg' hg
+  have hbv := fun u hu => (_root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.Pt.main K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ (CPts.base_mem M' (hm u hu))).1
+  obtain ⟨F', hF', hg'⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.PB.CPts.main K' ι' Φ' y' Ψ N j M').2.1 _ hb
+  obtain ⟨F, hF, hg⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.PB.CPts.main K ι Φ y Ψ N j M).2.1 _ (hbv x hx)
+  obtain ⟨V, f, hV, hzV, hf, hs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.An.main K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ F' F hz hF' hF hg' hg
   have hO := isOpen_holo_preimage hW hZ hV
   have hxO : x ∈ W ∩ Z ⁻¹' V := ⟨hx, hzV⟩
   have hfZ : ∀ q, A.HoloOn (W ∩ Z ⁻¹' V) fun u => f (Z u) q := fun q =>

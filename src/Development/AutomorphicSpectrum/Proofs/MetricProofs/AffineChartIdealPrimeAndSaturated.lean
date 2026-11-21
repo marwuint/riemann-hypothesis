@@ -152,10 +152,6 @@ theorem theta_X (Q : Ideal (MvPolynomial (Σ k, ι k) ℂ)) [Q.IsPrime] (p : (k 
     (q : Σ k, ι k) : theta Q p (X q) = phi Q (X q) / phi Q (X ⟨q.1, p q.1⟩) := by
   simp [theta]
 
-theorem theta_C (Q : Ideal (MvPolynomial (Σ k, ι k) ℂ)) [Q.IsPrime] (p : (k : K) → ι k)
-    (c : ℂ) : theta Q p (C c) = phi Q (C c) := by
-  simp [theta]
-
 theorem phi_eq_prod_mul_theta (Q : Ideal (MvPolynomial (Σ k, ι k) ℂ)) [Q.IsPrime]
     (p : (k : K) → ι k) (hp : ∀ k, (X ⟨k, p k⟩ : MvPolynomial (Σ k, ι k) ℂ) ∉ Q)
     {f : MvPolynomial (Σ k, ι k) ℂ} {a : K → ℕ} (hf : IsMultiHomog f a) :

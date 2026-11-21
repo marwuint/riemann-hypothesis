@@ -26,10 +26,6 @@ def SegreFlagClosureTrdeg.Statement : Prop :=
           pointIdeal O (flagClosurePt y w e φ φ' t k)) =
         Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y) + ((k + 1 : ℕ) : Cardinal)
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

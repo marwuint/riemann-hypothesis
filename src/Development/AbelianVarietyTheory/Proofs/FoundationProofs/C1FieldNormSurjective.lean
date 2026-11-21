@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraNormEqHomogeneousPolynomialInCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraNormEqHomogeneousPolynomialInCoordinates
 open GlobalTheory.NeedB Polynomial
 
 namespace GlobalTheory
@@ -50,7 +50,7 @@ theorem norm_surjective_of_norm_form {K L : Type} [Field K] [Field L] [Algebra K
 theorem norm_surjective_of_is_c1 : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L], IsFirstChernClassOfLineBundle K →
     ∀ b : K, b ≠ 0 → ∃ x : L, Algebra.norm K x = b := by
   intro K L _ _ _ _ hC b _
-  obtain ⟨f, hf, hnorm⟩ := GlobalTheory.T.algebraNorm_eq_homogeneous_polynomial_in_coordinates K L
+  obtain ⟨f, hf, hnorm⟩ := _root_.GlobalTheory.norm_isHomogeneous_poly_coords K L
   exact norm_surjective_of_norm_form hC _ Module.finrank_pos (Module.finBasis K L) f hf hnorm
     (fun a => Algebra.norm_algebraMap a) b
 

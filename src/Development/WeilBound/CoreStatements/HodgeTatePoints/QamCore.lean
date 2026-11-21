@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslDiffEq
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArtinSchreierCocycleRootStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArtinSchreierCocycleRoot
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleCocyclePullbackTransformStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TruncatedExpansionPthPowerCoeffStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TruncatedExpansionPthPowerCoeff
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ZeroSectionSurjectiveStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowerSeriesExpansionInDeltaUniqueStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -274,7 +276,7 @@ theorem overlap [Fact p.Prime] [CharP k p] (ha : secZ G x p ≫ a = pullback.fst
   rw [Units.val_mul, Units.val_pow_eq_pow_val,
     res_value_compose _ _ (le_chart G x p L a ha (p : ℤ) j) i₁, res_value_compose _ _ (le_chart G x p L a ha (p : ℤ) j') i₂, h₁, h₂, hu,
     sum_res G x p inf_le_left i₁, sum_res G x p inf_le_right i₂] at hg'
-  refine GlobalTheory.T.truncated_expansion_pth_power_coeff _ _ ((prZ G x p).app _).hom (dltOn G x p _) p (cast_p G x _ _ p) (dltOn_pow G x p _)
+  refine _root_.GlobalTheory.CompanionTheory.Ar.CoefAlg.coeff_comparison _ _ ((prZ G x p).app _).hom (dltOn G x p _) p (cast_p G x _ _ p) (dltOn_pow G x p _)
     ?_ u _ _ u₀ ?_ ?_ hg'
   · intro c c' e
     exact (GlobalTheory.T.power_series_expansion_in_delta_unique X0 G k x p _ _).unique rfl e
@@ -384,7 +386,7 @@ theorem core_firstOrder : ∀ (X0 : Scheme.{0}) (G : Over X0) (k : Type) [Field 
       (cu j j') (hcu j j') (hcu0 j j')]
     ring
   obtain ⟨r, hr'⟩ := hr (cf j₀) (le_chart G x p L a ha (p : ℤ) j₀) (hcf j₀)
-  obtain ⟨s, hs⟩ := GlobalTheory.T.artin_schreier_cocycle_root (pullback G.hom x) p hZ L.ι (fun j => pullback.fst G.hom x ⁻¹ᵁ L.U j)
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.CechP.coboundary_of_pow_coboundary (pullback G.hom x) p hZ L.ι (fun j => pullback.fst G.hom x ⁻¹ᵁ L.U j)
     (fun j j' => cu j j' ⟨1, Nat.succ_lt_succ (Nat.Prime.pos Fact.out)⟩) (fun j => cf j (Fin.last p)) j₀ hnp ⟨r, hr'⟩
   exact second G x p L a hp hL ha s cu hA hB hcu hcu0 hs
 

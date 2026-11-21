@@ -254,10 +254,4 @@ end Forms
 def gxExample (LL : Type) [Field LL] [NumberField LL] (Tau : Type) : GlobalExtra LL Tau :=
   ⟨fun _ _ => 1, fun _ _ => one_pos, fun _ => 1, fun _ => one_pos⟩
 
-theorem dGam_le_example {R : Ranks} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R}
-    (C : ColumnChain R Tau hc) (h : C.DGam = 1) :
-    Real.log (C.DGam : ℝ) ≤ 0 * R.f * R.N R.m * Real.log ((R.f : ℝ) * R.N R.m) := by
-  rw [h]
-  simp
-
 end Formalism.BasicNotions.Examples₂

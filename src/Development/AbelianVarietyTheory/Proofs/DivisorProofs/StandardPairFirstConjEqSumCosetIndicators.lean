@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIdealIntegralTen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitDetCharIndicatorMulIntegralFrameStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairFirstMemberIntegralFrameEqStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitDetCharIndicatorEqOneOfCongruentOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralUnitaryLiftIdempotentPartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralUnitaryLiftIdempotentPart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaLiftIdempotentForm
 
 open NumberField IsDedekindDomain
 open scoped Classical Pointwise
@@ -153,7 +154,7 @@ theorem sum_eq {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (hG : GoodMod e 𝔪) {
       rw [topL, dif_pos ⟨i.2.trans_le had, j.2⟩]
       exact hc.1 _ _
     obtain ⟨S, -, he, -⟩ := id hG
-    obtain ⟨k, hk, hkN⟩ := GlobalTheory.T.exists_integral_unitary_lift_idempotentPart e S he _ hN x hx
+    obtain ⟨k, hk, hkN⟩ := _root_.GlobalTheory.StdRead.IntLift.exists_lift e S he _ hN x hx
     have h1 : ∀ i j, (topL a W - invM k) i j ∈ hatId D 𝔪 := fun i j => by
       have := GlobalTheory.FunObj.StdDatum.mul_mem_hatId (sub_mem (hN i j) ((GlobalTheory.NormSum.mem_intG k).1 hk i j).2) (one_sub_eps_mod hG)
       convert this using 1

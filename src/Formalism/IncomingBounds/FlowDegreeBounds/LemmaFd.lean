@@ -82,52 +82,6 @@ lemma cs_zero (D sig : ZMod d → ℝ) (x : ZMod d → ℕ → ℝ) (hx : IsFlow
     (Finset.mem_univ _)
   exact (Finset.sum_eq_zero_iff_of_nonneg (h2 s)).1 this i hi
 
-lemma flow_le (D : ZMod d → ℝ) (x : ZMod d → ℕ → ℝ) (hx : IsFlow l d D x) (t : ZMod d)
-    (i : ℕ) (hi : i ∈ oddLevels d) : (l : ℝ) ^ i * x t i ≤ D t := by
-  have hnn : ∀ j ∈ oddLevels d, 0 ≤ (l : ℝ) ^ j * x t j :=
-    fun j _ => mul_nonneg (by positivity) (hx.1 t j)
-  have h1 : (l : ℝ) ^ i * x t i ≤ ∑ j ∈ oddLevels d, (l : ℝ) ^ j * x t j :=
-    Finset.single_le_sum hnn hi
-  have h2 : 0 ≤ ∑ j ∈ oddLevels d, x (t - (j : ZMod d)) j :=
-    Finset.sum_nonneg fun j _ => hx.1 _ _
-  have h3 := hx.2 t
-  linarith
-
-private theorem oddLevels_subset_image_two_mul_add_one :
-    oddLevels d ⊆ (Finset.range d).image (fun k => 2 * k + 1) := by
-  intro i hi
-  have hlt := Finset.mem_range.1 (Finset.mem_filter.1 hi).1
-  obtain ⟨k, rfl⟩ := (Finset.mem_filter.1 hi).2
-  exact Finset.mem_image.2 ⟨k, Finset.mem_range.2 (by omega), rfl⟩
-
-lemma sum_inv_pow_le (hl : 3 ≤ l) : ∑ i ∈ oddLevels d, ((l : ℝ) ^ i)⁻¹ ≤ gam l := by
-  have hl' : (3 : ℝ) ≤ l := by exact_mod_cast hl
-  have hlpos : (0 : ℝ) < l := by linarith
-  have hq0 : (0 : ℝ) ≤ ((l : ℝ) ^ 2)⁻¹ := by positivity
-  have hq1 : ((l : ℝ) ^ 2)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (by nlinarith)
-  have h2 : (l : ℝ) ^ 2 - 1 ≠ 0 := by nlinarith
-  have h3 : (1 : ℝ) - ((l : ℝ) ^ 2)⁻¹ ≠ 0 := by linarith
-  calc ∑ i ∈ oddLevels d, ((l : ℝ) ^ i)⁻¹
-        ≤ ∑ i ∈ (Finset.range d).image (fun k => 2 * k + 1), ((l : ℝ) ^ i)⁻¹ :=
-          Finset.sum_le_sum_of_subset_of_nonneg oddLevels_subset_image_two_mul_add_one
-            (fun i _ _ => by positivity)
-      _ = ∑ k ∈ Finset.range d, ((l : ℝ) ^ (2 * k + 1))⁻¹ := by
-          refine Finset.sum_image ?_
-          intro a _ b _ h
-          have : 2 * a + 1 = 2 * b + 1 := h
-          omega
-      _ = ∑ k ∈ Finset.range d, (l : ℝ)⁻¹ * (((l : ℝ) ^ 2)⁻¹) ^ k := by
-          refine Finset.sum_congr rfl fun k _ => ?_
-          rw [pow_succ, pow_mul, mul_inv, inv_pow, mul_comm]
-      _ = (l : ℝ)⁻¹ * ∑ k ∈ Finset.range d, (((l : ℝ) ^ 2)⁻¹) ^ k := by rw [Finset.mul_sum]
-      _ ≤ (l : ℝ)⁻¹ * (1 / (1 - ((l : ℝ) ^ 2)⁻¹)) := by
-          gcongr
-          have := geom_sum_Ico_le_of_lt_one (m := 0) (n := d) hq0 hq1
-          simpa using this
-      _ = Formalism.IncomingBounds.gam l := by
-          unfold Formalism.IncomingBounds.gam
-          field_simp
-
 private theorem one_le_of_mem_oddLevels {i : ℕ} (hi : i ∈ oddLevels d) : 1 ≤ i := by
   obtain ⟨k, rfl⟩ := (Finset.mem_filter.1 hi).2
   omega
@@ -171,34 +125,6 @@ lemma fd_part1 (hl : 3 ≤ l) (D sig : ZMod d → ℝ) (hopt : IsOptDual l d D s
 end FlowDualityReindexing
 
 open FlowDualityReindexing
-
-theorem lemmaFd_of (hF : FlowAttained) (hA : LemmaFa) : LemmaFd := by
-  intro l d _ hl hd hev D sig hD hopt s hs
-  have hl' : (3 : ℝ) ≤ l := by exact_mod_cast hl
-  have hlpos : (0 : ℝ) < l := by linarith
-  refine ⟨fun x hx hval => Formalism.IncomingBounds.FlowDualityReindexing.fd_part1 hl D sig hopt s hs x hx hval, ?_⟩
-  obtain ⟨x, hx, hval⟩ := hF l d hl hd hev D hD
-  have hsat := (Formalism.IncomingBounds.FlowDualityReindexing.fd_part1 hl D sig hopt s hs x hx hval).2
-  have hb : D s ≤ ∑ i ∈ oddLevels d, D (s - (i : ZMod d)) / (l : ℝ) ^ i := by
-    rw [hsat]
-    refine Finset.sum_le_sum fun i hi => ?_
-    rw [le_div_iff₀ (pow_pos hlpos i), mul_comm]
-    exact Formalism.IncomingBounds.FlowDualityReindexing.flow_le D x hx (s - (i : ZMod d)) i hi
-  refine ⟨hb, fun _ => ?_⟩
-  obtain ⟨s', hs'⟩ := Finite.exists_max D
-  refine ⟨s', ?_⟩
-  have hP : 0 < gam l := by
-    unfold gam
-    exact div_pos hlpos (by nlinarith)
-  rw [div_le_iff₀ hP]
-  calc D s ≤ ∑ i ∈ oddLevels d, D (s - (i : ZMod d)) / (l : ℝ) ^ i := hb
-    _ ≤ ∑ i ∈ oddLevels d, D s' * ((l : ℝ) ^ i)⁻¹ :=
-        Finset.sum_le_sum fun i _ => by
-          rw [div_eq_mul_inv]
-          exact mul_le_mul_of_nonneg_right (hs' _) (by positivity)
-    _ = D s' * ∑ i ∈ oddLevels d, ((l : ℝ) ^ i)⁻¹ := by rw [Finset.mul_sum]
-    _ ≤ D s' * gam l :=
-        mul_le_mul_of_nonneg_left (Formalism.IncomingBounds.FlowDualityReindexing.sum_inv_pow_le hl) (hD s')
 
 theorem incomingBound_of (hF : FlowAttained) (hA : LemmaFa) : IncomingBound := by
   intro l d _ hl hd hev D sig hD hopt

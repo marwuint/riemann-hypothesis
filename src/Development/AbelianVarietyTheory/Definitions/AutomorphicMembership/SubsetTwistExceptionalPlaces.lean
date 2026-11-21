@@ -39,12 +39,6 @@ theorem OverSet.subset_twistExceptionalPlaces {D : D7} {S : Finset (PlE D.host)}
     rw [T.ringSpec_excludedPlaces_eq i]
     exact Or.inr (T.concreteTwistFrame_extraExcluded_over_smallPrimes i p (hs hp) hP)
 
-example (D : D7) : D.host.pde ∈ lowAll D := by simp [lowAll]
-
-example (D : D7) : 2 ∈ lowAll D := by simp [lowAll, lowPr]
-
-example (D : D7) (s : Finset ℕ) : OverSet D ∅ s := fun _ h => absurd h (Finset.notMem_empty _)
-
 structure Elem (D : D7) : Prop where
   star : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0
   int : ∀ j g, ∃ z : ℤ, eExp D j g = z
@@ -76,8 +70,6 @@ variable (R) in
 
 def hkNorm (i : Fin D.R.m) (k : ℕ) (P : PlE D.host) : ℂ :=
   (((R.C.mu0 i).val P : ℂˣ) : ℂ)⁻¹ ^ k * (((Nat.card (kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹
-
-example (i : Fin D.R.m) (P : PlE D.host) : hkNorm R i 0 P = 1 := by simp [hkNorm]
 
 variable (R) in
 

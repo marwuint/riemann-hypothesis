@@ -318,11 +318,6 @@ local instance instSCM : SecondCountableTopology (Matrix (Fin n) (Fin n) k) :=
 
 variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
-example : LocallyCompactSpace (Sp k n) := inferInstance
-example : TotallyDisconnectedSpace (Sp k n) := inferInstance
-example : LocallyCompactSpace (GL (Fin n) k) := inferInstance
-example : SecondCountableTopology (Matrix (Fin n) (Fin n) k) := inferInstance
-
 theorem support_in_orbit_closure (h1 : ZNClosed (k := k)) (h2 : FibZN (k := k)) (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k}
     (hc : c ∈ Z) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hs : Supp ξ (Fib Z (qZ Z c))) (hk : Kills ξ (UU ∩ {p | p.1 ∉ ZN Z})) :
     SuppU ξ (C0 Z c) := by

@@ -11,10 +11,4 @@ def annKO (O : Type*) [CommRing O] [IsDomain O] {H : Type*} [AddCommGroup H] [Mo
   zero_mem' := by intro x _; rfl
   smul_mem' := by intro c a ha x hx; simp [ha x hx]
 
-def StatDualColength : Prop :=
-  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (H : Type*) [AddCommGroup H] [Module O H] [Module.Finite O H] (I M : Submodule O H), I ≤ M →
-    Module.length O (annKO O I ⧸ (annKO O M).comap (annKO O I).subtype) =
-      Module.length O (M ⧸ I.comap M.subtype)
-
 end Formalism.RepresentationBoundsCohomology

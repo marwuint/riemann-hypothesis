@@ -448,9 +448,6 @@ theorem VanishesAt.mul (h : D.VanishesAt x f) (h' : E.RegularAt x f') :
 theorem regularAt_zero_iff : (0 : CartierDiv X).RegularAt x f ↔ RegAt x f := by
   rw [(isEqn_zero x).regularAt_iff, Units.val_one, mul_one]
 
-theorem generatesAt_zero_iff : (0 : CartierDiv X).GeneratesAt x f ↔ UnitAt x f := by
-  rw [(isEqn_zero x).generatesAt_iff, Units.val_one, mul_one]
-
 theorem RegularAt.regAt_mul (h : D.RegularAt x f) (h' : RegAt x f') : D.RegularAt x (f' * f) := by
   obtain ⟨g, hg, r⟩ := h
   refine ⟨g, hg, ?_⟩

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedV
 import Formalism.LocalToGlobal.KernelLattices.TopPin
 import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KmapOfOkOfVecP
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnPeriodLatticeVacuumSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnPeriodLatticeVacuumSmooth
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntAtOfLocTop
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaSupportInDivLattice
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDivLatticeQuotient
@@ -25,7 +25,7 @@ theorem rho_jet_mem : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → T
   classical
   intro B X I h hP l Z hJ u a i hi c c' e he
   obtain ⟨hX, hPr, -⟩ := base_fields_primes_ok B X
-  obtain ⟨hLa, hE⟩ := GlobalTheory.T.trueColumn_periodLattice_vacuumSmooth I h hP l Z a u i hi
+  obtain ⟨hLa, hE⟩ := _root_.GlobalTheory.Mem.Col2.TC.laHyp_eSmooth_true I h hP l Z a u i hi
   set p := (I.stp u a i).rep c
   set p' := (I.stp u a (i + 1)).rep c'
   have hN : IsSdLat p.1.1.deco.1.N := ⟨p.1.1.deco.2.lat, p.1.1.deco.2.uni⟩

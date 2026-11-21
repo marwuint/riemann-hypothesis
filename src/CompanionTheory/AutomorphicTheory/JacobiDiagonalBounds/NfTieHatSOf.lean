@@ -1,7 +1,8 @@
 import CompanionTheory.AutomorphicTheory.JacobiDiagonalBounds.EvQTrJBFF
 import CompanionTheory.AutomorphicTheory.JacobiDiagonalBounds.NFFinal
 import CompanionTheory.AutomorphicTheory.JacobiDiagonalBounds.Vander
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFCoreNS
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFCoreN
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFHatProdKBStmt
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.CutBP Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.Gauge Formalism.MainStatements.NFTie
 

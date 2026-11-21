@@ -20,8 +20,6 @@ namespace GlobalTheory.UnitGlue
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits
 
-def Xp (X : Scheme.{0}) (p : ℕ) : X.Opens := X.basicOpen (p : Γ(X, ⊤))
-
 variable {p : ℕ} [Fact p.Prime] {X : Scheme.{0}} {Xw : X.Opens} {K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]}
   (h : ∀ x : X, UnitChartAt p Xw K x)
 
@@ -41,46 +39,5 @@ theorem c_spec (x : X) : IsOpenImmersion (cξ h x) ∧ x ∈ Set.range (cξ h x)
   Classical.choose_spec (Classical.choose_spec (Classical.choose_spec (Classical.choose_spec (h x))))
 
 instance instOpenImmCξ (x : X) : IsOpenImmersion (cξ h x) := (c_spec h x).1
-
-def Uc (x : X) : X.Opens := cξ h x ''ᵁ ⊤
-
-def secMap (x : X) : cR h x →+* Γ(X, Uc h x) :=
-  ((cξ h x).appIso ⊤).inv.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (cR h x))).inv.hom
-
-theorem isUnit_natCast_res (x : X) :
-    IsUnit ((X.presheaf.map (homOfLE (inf_le_left : Uc h x ⊓ Xp X p ≤ Uc h x)).op).hom.comp (secMap h x) (p : cR h x)) := by
-  rw [map_natCast]
-  have h1 := (X.toRingedSpace.isUnit_res_basicOpen (p : Γ(X, ⊤))).map
-    (X.presheaf.map (homOfLE (inf_le_right : Uc h x ⊓ Xp X p ≤ Xp X p)).op).hom
-  simp only [map_natCast] at h1
-  erw [map_natCast] at h1
-  exact h1
-
-def ev (x : X) : Localization.Away (p : cR h x) →+* Γ(X, Uc h x ⊓ Xp X p) :=
-  IsLocalization.Away.lift (p : cR h x) (isUnit_natCast_res h x)
-
-def Cx (x : X) : Γ(X, Uc h x ⊓ Xp X p)ˣ := Units.map (ev h x).toMonoidHom (cu h x)
-
-def RatioProp (x y : X) (u : Γ(X, Uc h x ⊓ Uc h y)ˣ) : Prop :=
-  res (inf_le_left : Uc h x ⊓ Uc h y ⊓ Xp X p ≤ Uc h x ⊓ Uc h y) u *
-      res (le_inf (inf_le_left.trans inf_le_right) inf_le_right : Uc h x ⊓ Uc h y ⊓ Xp X p ≤ Uc h y ⊓ Xp X p) (Cx h y) =
-    res (le_inf (inf_le_left.trans inf_le_left) inf_le_right : Uc h x ⊓ Uc h y ⊓ Xp X p ≤ Uc h x ⊓ Xp X p) (Cx h x) ∧
-  ((u : Γ(X, Uc h x ⊓ Uc h y)) - 1) ∈ (Ideal.span {(p : Γ(X, Uc h x ⊓ Uc h y))}).radical
-
-open Classical in
-
-def gU (x y : X) : Γ(X, Uc h x ⊓ Uc h y)ˣ :=
-  if hh : ∃ u, RatioProp h x y u then hh.choose else 1
-
-def glueLB : LB X := ⟨X, Uc h, gU h⟩
-
-open Classical in
-
-def sigGen {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (f : X ⟶ Spec (.of O)) :
-    ((glueLB h).pull (genericι f)).Gen where
-  s := fun j =>
-    if hh : LB.wchart (glueLB h) (fun _ : PUnit => genericι f) j ≤ genericι f ⁻¹ᵁ (Uc h (j PUnit.unit) ⊓ Xp X p) then
-      res hh (pullU (genericι f) _ (Cx h (j PUnit.unit)))
-    else 1
 
 end GlobalTheory.UnitGlue

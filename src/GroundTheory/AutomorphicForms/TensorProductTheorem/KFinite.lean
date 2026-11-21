@@ -67,10 +67,6 @@ theorem exists_subrep_compl (h : IsKFinite σ) (v : X) {Y : Subrepresentation σ
       have := congrArg Subtype.val huc
       simpa using this
 
-variable (σ) in
-
-abbrev Alg := MonoidAlgebra ℂ K
-
 theorem isSemisimpleModule_asModule (h : IsKFinite σ) :
     IsSemisimpleModule (MonoidAlgebra ℂ K) σ.asModule := by
   set e := Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := σ)

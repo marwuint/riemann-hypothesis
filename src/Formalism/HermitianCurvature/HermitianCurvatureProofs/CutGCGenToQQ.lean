@@ -129,14 +129,6 @@ theorem intw_sub {A B : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} {A' B' :
   rw [sub_eq_add_neg, sub_eq_add_neg]
   exact intw_add hsm hA (intw_neg hsm hB)
 
-theorem intw_zero : Intw P Bs e 0 0 := by
-  intro Φ
-  show trR P Bs e 0 = MA.actA P 0 (trR P Bs e Φ)
-  rw [actA_zero]
-  have h := trR_smul hsm 0 Φ
-  rw [zero_smul, zero_smul] at h
-  exact h
-
 theorem intw_sum {ι : Type} (s : Finset ι) {A : ι → Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')}
     {A' : ι → MA.A P (MA.DQ P)} (h : ∀ i ∈ s, Intw P Bs e (A i) (A' i)) :
     Intw P Bs e (∑ i ∈ s, A i) (∑ i ∈ s, A' i) := by

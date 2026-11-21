@@ -142,33 +142,8 @@ def hermOfFun (a : K → ℤ) (F : ((Σ k, ι k) → ℂ) → ℝ) : HermLine ι
       refNorm a (orbitRep (torusSmul c z)))) = _
     rw [refNorm_smul, orbitRep_smul c hc, mul_assoc]
 
-def IsHomogOfDeg (a : K → ℤ) (F : ((Σ k, ι k) → ℂ) → ℝ) : Prop :=
-  ∀ (c : K → ℂ) (z : (Σ k, ι k) → ℂ), (∀ k, c k ≠ 0) → F (torusSmul c z) = (∏ k, ‖c k‖ ^ a k) * F z
-
 theorem prod_norm_zpow_pos {c : K → ℂ} (hc : ∀ k, c k ≠ 0) (a : K → ℤ) : 0 < ∏ k, ‖c k‖ ^ a k :=
   Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.mpr (hc k)) _
-
-theorem hermOfFun_h {a : K → ℤ} {F : ((Σ k, ι k) → ℂ) → ℝ} (hF : IsHomogOfDeg a F)
-    {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (hpos : 0 < F z) :
-    (hermOfFun ι a F).h z = F z := by
-  obtain ⟨c, hc, hzc⟩ := exists_eq_smul_orbitRep z
-  set w := orbitRep z with hw
-  have hP := prod_norm_zpow_pos hc a
-  have hFz : F z = (∏ k, ‖c k‖ ^ a k) * F w := by rw [hzc]; exact hF c w hc
-  have hRz : refNorm a z = (∏ k, ‖c k‖ ^ a k) * refNorm a w := by rw [hzc]; exact refNorm_smul a c w
-  have hwz : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0 := by
-    intro k
-    obtain ⟨i, hi⟩ := hz k
-    refine ⟨i, fun h0 => hi ?_⟩
-    rw [hzc]
-    simp [torusSmul, h0]
-  have hFw : 0 < F w := by
-    rw [hFz] at hpos
-    exact pos_of_mul_pos_right hpos hP.le
-  have hRw := refNorm_pos a hwz
-  show refNorm a z * Real.exp (Real.log (F w / refNorm a w)) = F z
-  rw [Real.exp_log (div_pos hFw hRw), hRz, hFz]
-  field_simp
 
 end Lines
 

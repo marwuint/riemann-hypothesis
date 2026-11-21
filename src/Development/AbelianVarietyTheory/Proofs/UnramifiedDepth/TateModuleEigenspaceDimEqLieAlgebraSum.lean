@@ -10,7 +10,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.B
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIsQProjOver
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenspaceDimAddSplitExactTransposeStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenspaceDimAddSplitExactTranspose
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2 GlobalTheory.ChF
@@ -121,7 +121,7 @@ private theorem td_field {C OE : Type} [Field C] [IsAlgClosed C] [CharZero C] [C
     · rw [← Matrix.submatrix_one_equiv e, ← h1]
       ext i j
       simp [Matrix.mul_apply]
-  have k1 := (GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C C OE (g + g) g g _ _ hsp ρ' L LT
+  have k1 := (_root_.GlobalTheory.EigAdd.eigDim_add_transpose C C OE (g + g) g g _ _ hsp ρ' L LT
     (fun a => by
       rw [hρ', Matrix.submatrix_mul_equiv, hH]
       ext i j
@@ -136,7 +136,7 @@ private theorem td_field {C OE : Type} [Field C] [IsAlgClosed C] [CharZero C] [C
       map_mul' := fun _ _ => Subsingleton.elim _ _
       map_zero' := rfl
       map_add' := fun _ _ => Subsingleton.elim _ _ }
-  have k2 := (GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C C OE g g 0 _ _ (splitEx_one g) (L.comp s) (L.comp s) Z
+  have k2 := (_root_.GlobalTheory.EigAdd.eigDim_add_transpose C C OE g g 0 _ _ (splitEx_one g) (L.comp s) (L.comp s) Z
     (fun a => Subsingleton.elim _ _) (fun a => by simp) τ).2
   have k3 : eigDim C ρ' τ = eigDim C ρ τ := td_reindex e ρ τ
   have k4 : eigDim C LT τ = eigDim C L (τ.comp s) := k2.trans (td_twist L τ s hs)

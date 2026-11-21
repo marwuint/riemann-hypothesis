@@ -2,10 +2,10 @@ import Mathlib
 import Formalism.UnipotentAdelicQuotients.CuspEllipticValues
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.MatrixTraceIffIsCharacterOverSubfieldComplexStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveExtendZeroOfSumUnipotentRadicalStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.MatrixTraceIffIsCharacterOverSubfieldComplex
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveExtendZeroOfSumUnipotentRadical
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EqOfIsPrimitiveOfEqOnEllipticFiniteGLStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IrreducibleOfVirtualCharacterNormOneStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IrreducibleOfVirtualCharacterNormOne
 
 namespace GlobalTheory.CuspGL
 
@@ -25,15 +25,15 @@ theorem irrChar_eq_one_of_subsingleton {G : Type} [Group G] [Fintype G] [Subsing
 
 theorem isIrrChar_of_norm_one {G : Type} [Group G] [Fintype G] (χ : G → ℂ)
     (h : CuspElliptic.IsIrrChar χ) : GlobalTheory.BI.IsIrrChar ℂ ℂ χ := by
-  have hc : GlobalTheory.BI.IsChar ℂ ℂ χ := (GlobalTheory.T.matrixTrace_iff_isCharacterOverSubfield_complex G χ).1 h.1
+  have hc : GlobalTheory.BI.IsChar ℂ ℂ χ := (_root_.GlobalTheory.BI.matrixChar_iff_isChar G χ).1 h.1
   have hv : χ ∈ GlobalTheory.BI.Virt ℂ ℂ G := AddSubgroup.subset_closure hc
   have hs : ∑ᶠ g, χ g * star (χ g) = (Nat.card G : ℂ) := by
     rw [finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card]; exact h.2
-  exact ((GlobalTheory.T.irreducible_of_virtualCharacter_norm_one G χ hv hs).2 hc).1
+  exact ((_root_.GlobalTheory.BI.irr_of_norm_one G χ hv hs).2 hc).1
 
 theorem isPrimitive_of_isCuspChar {F : Type} [Field F] [Fintype F] [DecidableEq F] {d : ℕ}
     (χ : GL (Fin d) F → ℂ) (h : CuspElliptic.IsCuspChar χ) : IsPrimitive (extZero χ) := by
-  refine GlobalTheory.T.isPrimitive_extendZero_of_sum_unipotentRadical F d χ ((GlobalTheory.T.matrixTrace_iff_isCharacterOverSubfield_complex _ χ).1 h.1.1) fun a ha had => ?_
+  refine _root_.GlobalTheory.CuspGL.isPrimitive_extZero_of_sum_unipotent F d χ ((_root_.GlobalTheory.BI.matrixChar_iff_isChar _ χ).1 h.1.1) fun a ha had => ?_
   have h0 := h.2 a ha had
   change ∑ᶠ u ∈ (CuspElliptic.unipBlock d a : Set (GL (Fin d) F)), χ u = 0
   rw [finsum_mem_def, finsum_eq_sum_of_fintype, ← h0]

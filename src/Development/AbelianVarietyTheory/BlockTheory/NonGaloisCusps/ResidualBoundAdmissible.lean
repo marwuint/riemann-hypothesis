@@ -35,8 +35,6 @@ def ResidualBoundOn (i : X.Tw) (Sg : Set (X.Sig i)) : Prop :=
             Computes bkP i s M (fun q => d (P q)) Q Φ →
               OrdLE X i M (Fin R ⊕ Fin R) (4 * D.R.r * R) Φ.det
 
-def ResidualBound (i : X.Tw) : Prop := ResidualBoundOn bkP i {s | goodS bkP i s}
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ResidualBoundAdmissible
 
 end

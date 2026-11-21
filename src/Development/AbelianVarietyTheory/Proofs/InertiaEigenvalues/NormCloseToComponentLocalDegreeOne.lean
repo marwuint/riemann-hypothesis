@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocUnitApply
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuedMapEqOfContinuousCompletionIsoExtendingStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormDivLocalEmbeddingCloseToOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuedMapEqOfContinuousCompletionIsoExtending
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormDivLocalEmbeddingCloseToOne
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 noncomputable section
 
@@ -32,10 +33,10 @@ theorem norm_div_close_to_one : ∀ (E E' : Type) [Field E] [NumberField E] [Fie
   have hσE : ∀ x : E, σ (algebraMap E E' x) = algebraMap E _ x := fun x => by
     simp only [hσ, RingHom.comp_apply, RingEquiv.coe_toRingHom, ← hcomp x, RingEquiv.symm_apply_apply]
   have hσv : ∀ x : E', Valued.v (σ x) = w'.valuation E' x := fun x => by
-    rw [← GlobalTheory.T.valued_map_eq_of_continuous_completionIso_extending E E' w w' i hi hcomp (σ x)]
+    rw [← _root_.GlobalTheory.CompletionIsom.valued_v_map E E' w w' i hi hcomp (σ x)]
     simp only [hσ, RingHom.comp_apply, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]
     exact valued_algebraMap_eq w' x
-  obtain ⟨M₁, hM₁⟩ := GlobalTheory.T.norm_div_localEmbedding_close_to_one E E' w w' σ hσE hσv M
+  obtain ⟨M₁, hM₁⟩ := _root_.GlobalTheory.NormCompat.RatioClose.norm_div_close_to_one E E' w w' σ hσE hσv M
   refine ⟨max (max M M₁) 1, fun c z hc hz hzw => ?_⟩
   have hle : ∀ k, k ≤ max (max M M₁) 1 → WithZero.exp (-((max (max M M₁) 1 : ℕ) : ℤ)) ≤ WithZero.exp (-(k : ℤ)) := fun k hk => by
     rw [WithZero.exp_le_exp]; omega

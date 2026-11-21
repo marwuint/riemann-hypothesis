@@ -353,13 +353,6 @@ def uActionCusp : UEnv K n →ₐ[ℝ] Module.End ℂ (cuspForms K n) where
       ((AutomorphicForm.uAction u ⟨φ, φ.2.1.isSmooth.1⟩ : archSmooth K n) :
         AdelicGLn.AdelicGL K n → ℂ) := rfl
 
-theorem uActionAF_finRep (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n)
-    (φ : automorphicForms K n) :
-    uActionAF K n u (finRep K n h φ) = finRep K n h (uActionAF K n u φ) := by
-  apply Subtype.ext
-  exact congrArg (fun ψ : archSmooth K n => (ψ : AdelicGLn.AdelicGL K n → ℂ))
-    (uAction_rtFin u h ⟨φ, φ.2.isSmooth.1⟩)
-
 theorem uActionCusp_finRepCusp (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n)
     (φ : cuspForms K n) :
     uActionCusp K n u (finRepCusp K n h φ) = finRepCusp K n h (uActionCusp K n u φ) := by
@@ -415,16 +408,6 @@ def gkModuleCusp : (isExpLieAlgebra K n).GKModule (archCompact K n) (cuspForms K
 
 @[simp] theorem gkModuleCusp_σ_apply (k : archCompact K n) (φ : cuspForms K n) :
     (gkModuleCusp K n).σ k φ = archCompactRepCusp K n k φ := rfl
-
-theorem gkModuleAF_ρ_finRep (X : (isExpLieAlgebra K n).lieSubalgebra)
-    (h : AdelicGLn.FiniteAdelicGL K n) (φ : automorphicForms K n) :
-    (gkModuleAF K n).ρ X (finRep K n h φ) = finRep K n h ((gkModuleAF K n).ρ X φ) :=
-  uActionAF_finRep _ h φ
-
-theorem gkModuleAF_σ_finRep (k : archCompact K n) (h : AdelicGLn.FiniteAdelicGL K n)
-    (φ : automorphicForms K n) :
-    (gkModuleAF K n).σ k (finRep K n h φ) = finRep K n h ((gkModuleAF K n).σ k φ) :=
-  (finRep_archCompactRep_comm h k φ).symm
 
 theorem gkModuleCusp_ρ_finRepCusp (X : (isExpLieAlgebra K n).lieSubalgebra)
     (h : AdelicGLn.FiniteAdelicGL K n) (φ : cuspForms K n) :

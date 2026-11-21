@@ -4,79 +4,24 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 
 section
 namespace ResidueCardinalityNilpotence
-section
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
-open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil
-attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.CompanionTheory.ResCardPlace
 end GlobalTheory.CompanionTheory.ResCardPlace
-end
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 noncomputable section
 namespace GlobalTheory.CompanionTheory.VolVal
-open GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx GlobalTheory.FunObj ValuativeRel Matrix
-section Unip
-variable {k : Type*} [Field k] {ι : Type*} [Fintype ι] [DecidableEq ι]
-end Unip
-section Sym
-variable {k : Type*} [Field k] {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ}
-end Sym
 end GlobalTheory.CompanionTheory.VolVal
 namespace GlobalTheory.CompanionTheory.VolVal
-open GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx GlobalTheory.FunObj ValuativeRel Matrix
-section Root
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  {ι : Type} [Fintype ι] [DecidableEq ι]
-variable {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
-end Root
 end GlobalTheory.CompanionTheory.VolVal
 namespace GlobalTheory.CompanionTheory.VolVal
-open GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx GlobalTheory.FunObj ValuativeRel Matrix
-open Formalism.BasicNotions Formalism.L2.DIV IsDedekindDomain NumberField
-open Formalism.DivisionValues (vw lw)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw
-  GlobalTheory.FunObj.borelSpaceKw
-section Place
-variable {D : D7}
-end Place
 end GlobalTheory.CompanionTheory.VolVal
 namespace GlobalTheory.CompanionTheory.VolVal
-open Formalism.DivisionValues (vw lw)
-open IsDedekindDomain NumberField
-section Val
-variable {K : Type} [Field K] [NumberField K] [StarRing K]
-end Val
 end GlobalTheory.CompanionTheory.VolVal
 namespace GlobalTheory.CompanionTheory.VolVal
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
-open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.SumSize GlobalTheory.FunObj.AaCoef
-open Formalism.DivisionValues (vw lw)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw
-  GlobalTheory.FunObj.borelSpaceKw
-section Factors
-variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
-end Factors
 end GlobalTheory.CompanionTheory.VolVal
 namespace GlobalTheory.CompanionTheory.VolVal
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
-open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.SumSize GlobalTheory.FunObj.AaCoef
-open Formalism.DivisionValues (vw lw)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw
-  GlobalTheory.FunObj.borelSpaceKw
-section Coef
-variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
-end Coef
 end GlobalTheory.CompanionTheory.VolVal
 namespace GlobalTheory.CompanionTheory.VolVal
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
-open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.SumSize GlobalTheory.FunObj.AaCoef
-open Formalism.DivisionValues (vw lw)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw
-  GlobalTheory.FunObj.borelSpaceKw
-section Loss
-variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
-end Loss
 end GlobalTheory.CompanionTheory.VolVal
 namespace GlobalTheory.CompanionTheory.VolVal
 open Formalism.BasicNotions Formalism.L2.DIV

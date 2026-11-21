@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedPointLengthFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedPointLengthFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothHermCombLine
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CoheightEqOneOfDimClosure
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLineBundleSectionsGenerateIdealSheaf
@@ -121,7 +121,7 @@ theorem chi_eq_geoNum : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (Z : Scheme.{0})
     exact key _ hcomap
   have hcl : topologicalKrullDim (closure ({genericPoint Z} : Set Z)) = (0 : ℕ) :=
     (dim_closure_generic Z).trans hd
-  have hL := GlobalTheory.T.mixed_point_length_formula m n Z f (genericPoint Z) hcl a
+  have hL := _root_.GlobalTheory.CompanionTheory.MixZ.PtLenProof.ptLen m n Z f (genericPoint Z) hcl a
   rw [hchar] at hL
   have hcard : Nat.card (Z.residueField (genericPoint Z)) = Nat.card Γ(Z, ⊤) :=
     (Nat.card_eq_of_bijective _ hb).symm

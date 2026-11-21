@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagWZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsMoreAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Decomposition
+
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels MeasureTheory GlobalTheory.LatVac GlobalTheory.InertVacLag GlobalTheory.InertLagChar
 open scoped TensorProduct Matrix GlobalTheory.VacAny
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -12,10 +12,6 @@ namespace GlobalTheory.SiegelDiagDecomp
 open Matrix
 
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) {β : Type} [Fintype β] [DecidableEq β]
-
-def nMat (β₀ : Matrix β β A) : Matrix (β ⊕ β) (β ⊕ β) A := fromBlocks (1 + β₀) (-β₀) β₀ (1 - β₀)
-
-def nInv (β₀ : Matrix β β A) : Matrix (β ⊕ β) (β ⊕ β) A := fromBlocks (1 - β₀) β₀ (-β₀) (1 + β₀)
 
 theorem diag_decomp : ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) (β : Type) [Fintype β] [DecidableEq β]
     (J : Matrix β β A), IsUnit J.det → ∀ e : R, e * e = e → ∀ g k : UG c J,

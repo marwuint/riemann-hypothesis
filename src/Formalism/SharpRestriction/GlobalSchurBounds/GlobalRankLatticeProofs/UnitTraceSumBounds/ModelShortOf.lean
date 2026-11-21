@@ -1,11 +1,9 @@
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
-import Formalism.SharpRestriction.GlobalSchurBounds.FormalGroupJets
-
-open Formalism.MainNotions.FormalGroupJets
+import Mathlib
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+import Formalism.SharpRestriction.GlobalSchurBounds.TaylorLogMetric
 
 namespace Formalism.MainNotions.Ext
-
-def FunEqAll : Prop := ∀ (l d : ℕ) [Fact l.Prime] [NeZero d], ExistsIntegralAdditionSeries l d
 
 end Formalism.MainNotions.Ext
 
@@ -33,14 +31,6 @@ end Formalism.MainNotions.Ext
 open Formalism.MainNotions.GL3Theta Formalism.MainNotions.TaylorLogMetric Formalism.BasicNotions NumberField
 
 namespace Formalism.MainNotions.Ext
-
-def ShortModel : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime], 5 ≤ p → ∀ W : WeierstrassCurve ℂ_[p],
-    IsIntP W.a₁ → IsIntP W.a₂ → IsIntP W.a₃ → IsIntP W.a₄ → IsIntP W.a₆ → ‖W.Δ‖ = 1 →
-    ∃ C : WeierstrassCurve.VariableChange ℂ_[p],
-      (C • W).a₁ = 0 ∧ (C • W).a₂ = 0 ∧ (C • W).a₃ = 0 ∧ IsIntP (C • W).a₄ ∧ IsIntP (C • W).a₆ ∧ ‖(C • W).Δ‖ = 1 ∧
-      (W.a₁ ∈ Wp p → W.a₂ ∈ Wp p → W.a₃ ∈ Wp p → W.a₄ ∈ Wp p → W.a₆ ∈ Wp p →
-        (C • W).a₄ ∈ Wp p ∧ (C • W).a₆ ∈ Wp p)
 
 def OkpInertG : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (c : K →+* K) (p : ℕ) [Fact p.Prime] (τ : K →+* ℂ_[p]),

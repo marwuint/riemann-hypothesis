@@ -55,26 +55,6 @@ variable {X : Scheme.{0}} (U : X.Opens)
 instance {i j : WalkingSpan} (f : i ⟶ j) : IsOpenImmersion ((span U.ι U.ι).map f) := by
   rcases f with _ | (_ | _) <;> (dsimp; infer_instance)
 
-theorem inl_ne_inr (x : X) (hx : x ∉ U) : pushout.inl U.ι U.ι ≠ pushout.inr U.ι U.ι := by
-  intro e
-  have h : colimit.ι (span U.ι U.ι) WalkingSpan.left x = colimit.ι (span U.ι U.ι) WalkingSpan.right x :=
-    congrArg (fun q : X ⟶ pushout U.ι U.ι => q x) e
-  obtain ⟨k, fi, fj, y, h₁, -⟩ := (Scheme.IsLocallyDirected.ι_eq_ι_iff _).1 h
-  rcases fi with _ | _
-  · exact nomatch (show WidePushoutShape.Hom (some WalkingPair.left) (some WalkingPair.right) from fj)
-  · exact hx (by
-      have : U.ι y = x := h₁
-      rw [← this]
-      exact y.2)
-
-abbrev signLB (Y : Scheme.{0}) : LB Y where
-  ι := Bool
-  U := fun _ => ⊤
-  g := fun i j => if i = j then 1 else -1
-
-def signGen {Y T : Scheme.{0}} (f : T ⟶ Y) : LB.Gen ((signLB Y).pull f) where
-  s := fun j => cond (j PUnit.unit) 1 (-1)
-
 end DoubledPoint
 
 end GlobalTheory

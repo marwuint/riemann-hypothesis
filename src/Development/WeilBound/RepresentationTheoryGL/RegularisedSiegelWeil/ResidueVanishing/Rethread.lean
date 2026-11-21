@@ -19,7 +19,7 @@ variable {D : D7}
 theorem downNe_of_core : ResidueKilled.DM → PositivityTheory.Rg.Rsw.ResCore →
     GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.SimplePole → ∀ D : D7, EulerRight D → DownNe D := by
   intro hDM hCore hSP D hER ψ θ A W t χA χW om cA a β Z m u par sW Φ hDef hSigW hW0 hrank hη hom hPl hm hForm hOcc hNo
-  obtain ⟨H, B, o, hd, hSigH, hSigB, hHr, hHsig, sH, hsH⟩ := GlobalTheory.T.exists_sum_hyperbolicPlanes_orthogonal_wittDecomposition D W t hSigW
+  obtain ⟨H, B, o, hd, hSigH, hSigB, hHr, hHsig, sH, hsH⟩ := _root_.GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec D W t hSigW
   obtain ⟨c, hHyp⟩ := hForm.str
   have ht : W.rank + 5 ≤ t := hHyp.2.1
   have hBr : B.rank = W.rank + 2 * t := by have := o.rank_add; omega
@@ -38,10 +38,10 @@ theorem downNe_of_core : ResidueKilled.DM → PositivityTheory.Rg.Rsw.ResCore �
     GlobalTheory.Core.Rk.exists_doubled_weilDatum GlobalTheory.weilRepresentationUnitaryPair D ψ A W χA χW om hom
   have hAH : A.rank ≤ H.rank := by omega
   obtain ⟨f, hf, hf0, hfvac, hfsph, hfκ, hfoff⟩ :=
-    GlobalTheory.T.exists_vacuumVector_principalCongruenceSupport D ψ θ A H χA omH (fun _ => 1) sH hDef.inf hη homH hDef.one hsH hAH β Z hPl
-  have hfb := GlobalTheory.T.definite_real_group_fixes_split_space_weil_vacuum D ψ θ A H t χA omH sH hDef.inf hη homH hDef.one hsH hSigH hHr hHsig f hf hfvac
+    _root_.GlobalTheory.Core.Rk.Small.exists_small_vac_vec D ψ θ A H χA omH (fun _ => 1) sH hDef.inf hη homH hDef.one hsH hAH β Z hPl
+  have hfb := _root_.GlobalTheory.VacuumSplitReal.vacuum_fixed D ψ θ A H t χA omH sH hDef.inf hη homH hDef.one hsH hSigH hHr hHsig f hf hfvac
   obtain ⟨sB, LB, hsB, hLB, hbF, hbS⟩ :=
-    GlobalTheory.T.boxProducts_orthogonalSum_target_cartan_fock D ψ θ A B W H o (fun _ => 1) sW sH hstd hDef.inf hOcc.cart hsH
+    _root_.GlobalTheory.Core.Rk.SumBox.box_sum_target D ψ θ A B W H o (fun _ => 1) sW sH hstd hDef.inf hOcc.cart hsH
   have hFs : IsFockVec ψ θ A B (fun _ => 1) sB (o.boxT A Φ f) := hbF Φ f hOcc.fock (fockVec_of_vac_nc hf hfvac)
   have hSs : IsSphOff ψ A B (frameLat A) LB (under Z) (o.boxT A Φ f) :=
     hbS (frameLat A) (under Z) Φ f hOcc.sph hfsph
@@ -63,7 +63,7 @@ theorem downNe_of_core : ResidueKilled.DM → PositivityTheory.Rg.Rsw.ResCore �
     (by omega) hrank (by omega) (by omega) χW omhB omhW homhB homhW ν 𝓕 hν m hm u huc hul hKill _ hφθ hφK
   obtain ⟨hZF, hEC, hAn, hReg, hint⟩ :=
     GlobalTheory.Core.Rk.Exh.zeta_eq_integral_integrand_nc hDM D ψ θ A B χA χW (fun _ => 1) sB t cA a omB ν 𝓕 hPair omhB homhB m hm _ hFs u hu
-  obtain ⟨hcc, -⟩ := GlobalTheory.T.definite_unitary_quotient_compact_fundamentalDomain D A hDef.sig hDef.pos m hm
+  obtain ⟨hcc, -⟩ := _root_.GlobalTheory.DefFund.coCpt_and_fundamentalDomain_subset_compact D A hDef.sig hDef.pos m hm
   have hRD := (GlobalTheory.Unf.contAut_rapidDec_bounded_integrable D A hcc (fun g => conj (u g))
     ⟨fun γ hγ g => by simp only [hul γ hγ g], Complex.continuous_conj.comp huc⟩).1
   have hμ : IsHeckeChar D χW⁻¹ :=
@@ -71,7 +71,7 @@ theorem downNe_of_core : ResidueKilled.DM → PositivityTheory.Rg.Rsw.ResCore �
   have hcoef := GlobalTheory.T.zeta_integral_eisenstein_residue D A χW⁻¹ hμ m hm _ hEC hAn hReg _ _ hRD hRD hZF
     (sZero A B) E₁ hE₁
   rw [hE₁0] at hcoef
-  obtain ⟨C, hC0, hC⟩ := GlobalTheory.T.levelPlaces_integral_nonzero_constant D ψ θ A cA a hDef B W H o χA χW omB om omH homB hom homH β Z hPl m hm u hu
+  obtain ⟨C, hC0, hC⟩ := _root_.GlobalTheory.Core.Rk.Exh.LocalConst.integral_const D ψ θ A cA a hDef B W H o χA χW omB om omH homB hom homH β Z hPl m hm u hu
     hForm.fix sW Φ hOcc f hf hf0 hfκ hfb hfoff ν 𝓕 hν
   have hsph : SphFun A (frameLat A) (under Z) u := sphFun_of_param_nc hForm.param
   have hUn : Unram ψ A B χW (frameLat A) LB (under Z) (o.boxT A Φ f) (o.boxT A Φ f) :=

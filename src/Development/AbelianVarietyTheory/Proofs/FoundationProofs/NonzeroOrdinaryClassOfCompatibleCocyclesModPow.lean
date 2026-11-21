@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowMulMemAdd
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EqZeroOfForallNormLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralLimitCompatibleModPrimePowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LimitOfApproximateCocyclesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDotProductEqOfPrimePowApproxQbarLStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemCoefRingInvertPrimeInvOfMemNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LimitOfApproximateCocycles
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDotProductEqOfPrimePowApproxQbarL
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemCoefRingInvertPrimeInvOfMemNeZero
 
 noncomputable section
 
@@ -20,7 +20,7 @@ theorem limit_nonzero_ordinary_class : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) 
   let z : G ℚ Ω → Fin 2 → Qbar l := fun s i => z0 (s, i)
   have hzO : ∀ s i, z s i ∈ c.O := fun s i => hz0O (s, i)
   have hza : ∀ n s, Cv n (z s) (a n s) := fun n s i => hz0 n (s, i)
-  have hZ : z ∈ Z1 (Loc.colRep W) := GlobalTheory.T.limit_of_approximate_cocycles l Ω W c hWint a z hcoc hloc hza
+  have hZ : z ∈ Z1 (Loc.colRep W) := _root_.GlobalTheory.Ord2.limit_cocycle_mem_cocycles l Ω W c hWint a z hcoc hloc hza
   have hcol : ∀ s (v : Fin 2 → Qbar l), Loc.colRep W s v = mat W s *ᵥ v := fun s v => by
     simp [Loc.colRep, Matrix.toLin'_apply]
   have hrow : ∀ s (y : Fin 2 → Qbar l) i, (fun j => (mat W s - 1) i j) ⬝ᵥ y = (mat W s *ᵥ y - y) i := by
@@ -37,7 +37,7 @@ theorem limit_nonzero_ordinary_class : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) 
   have hexact : ∀ H : Subgroup (G ℚ Ω), (∀ n, ∃ y : Fin 2 → Qbar l, ∀ s ∈ H, Cv n (a n s) (mat W s *ᵥ y - y)) →
       ∃ x : Fin 2 → Qbar l, ∀ s ∈ H, z s = mat W s *ᵥ x - x := by
     intro H hH
-    obtain ⟨x, hx⟩ := GlobalTheory.T.exists_dotProduct_eq_of_primePow_approx_qbarL l (↥H × Fin 2) 2 (fun p j => (mat W p.1 - 1) p.2 j) (fun p => z p.1 p.2) (fun n => by
+    obtain ⟨x, hx⟩ := _root_.GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow l (↥H × Fin 2) 2 (fun p j => (mat W p.1 - 1) p.2 j) (fun p => z p.1 p.2) (fun n => by
       obtain ⟨y, hy⟩ := hH n
       refine ⟨y, fun p => ?_⟩
       have h := cg_trans (hza n p.1 p.2) (hy p.1 p.1.2 p.2)
@@ -62,7 +62,7 @@ theorem limit_nonzero_ordinary_class : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) 
       rw [hzker s hsN]
       simp
   have hGr : Gr W A z := by
-    obtain ⟨y, hy⟩ := GlobalTheory.T.exists_dotProduct_eq_of_primePow_approx_qbarL l (↥(Dec (F := ℚ) A)) 1 (fun s _ => mat W s 1 1 - 1) (fun s => z s 1) (fun n => by
+    obtain ⟨y, hy⟩ := _root_.GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow l (↥(Dec (F := ℚ) A)) 1 (fun s _ => mat W s 1 1 - 1) (fun s => z s 1) (fun n => by
       obtain ⟨y, -, hy⟩ := hdec n
       refine ⟨fun _ => y, fun s => ?_⟩
       have h := cg_trans (hza n s 1) (hy s s.2)
@@ -96,7 +96,7 @@ theorem limit_nonzero_ordinary_class : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) 
   have hMx : (mat W g - 1) *ᵥ x = z g := by rw [hx g, hcol, Matrix.sub_mulVec, Matrix.one_mulVec]
   have hdx : (mat W g - 1).det • x = (mat W g - 1).adjugate *ᵥ z g := by
     rw [← hMx, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]
-  obtain ⟨k, hk⟩ := GlobalTheory.T.memCoefRingInvertPrime_inv_of_mem_ne_zero l c _ hdO hdg
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.Ord2.memE_inv_of_mem l c _ hdO hdg
   have hxE : VecE c x := ⟨k, fun i => by
     have e : x i = ((mat W g - 1).det)⁻¹ * ((mat W g - 1).adjugate *ᵥ z g) i := by
       rw [← hdx, Pi.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hdg, one_mul]

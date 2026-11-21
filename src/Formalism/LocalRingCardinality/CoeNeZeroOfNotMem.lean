@@ -453,47 +453,11 @@ theorem exists_fam_locP (w : HeightOneSpectrum (𝓞 K)) {A : Submodule (𝓞 K)
     rfl
   rw [h1, localization_map₂, hbK, ← localization_map₂, hmap]
 
-theorem famOf_famOf {ι : Type} [Fintype ι] (b : ι → V) (Q Z : Matrix ι ι K) :
-    famOf (famOf b Q) Z = famOf b (Q * Z) := by
-  funext i
-  unfold famOf
-  simp only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]
-  rw [Finset.sum_comm]
-  exact Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by rw [mul_comm]
-
-theorem det_ne_zero_of_li {ι : Type} [Fintype ι] [DecidableEq ι] (b : ι → V) (M : Matrix ι ι K)
-    (h : LinearIndependent K (famOf b M)) : M.det ≠ 0 := by
-  intro h0
-  obtain ⟨v, hv, hMv⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h0
-  have hy : ∑ i, v i • famOf b M i = 0 := by
-    unfold famOf
-    simp only [Finset.smul_sum, smul_smul]
-    rw [Finset.sum_comm]
-    refine Finset.sum_eq_zero fun k _ => ?_
-    rw [← Finset.sum_smul]
-    have : ∑ i, v i * M k i = (M.mulVec v) k := by
-      simp only [Matrix.mulVec, dotProduct]
-      exact Finset.sum_congr rfl fun i _ => mul_comm _ _
-    rw [this, hMv]; simp
-  exact hv (funext fun i => Fintype.linearIndependent_iff.1 h v hy i)
-
 theorem vAdd_mul (w : HeightOneSpectrum (𝓞 K)) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     vAdd w (x * y) = vAdd w x + vAdd w y := by
   unfold vAdd
   rw [map_mul, WithZero.log_mul ((map_ne_zero _).2 hx) ((map_ne_zero _).2 hy)]
   ring
-
-theorem li_of_semilinear {M : Type} [AddCommGroup M] [Module ℂ M] {σ : K →+* ℂ} (e : V →ₛₗ[σ] M) {ι : Type}
-    [Fintype ι] (v : ι → V) (h : LinearIndependent ℂ (fun i => e (v i))) : LinearIndependent K v := by
-  rw [Fintype.linearIndependent_iff]
-  intro g hg i
-  have h1 : ∑ i, σ (g i) • e (v i) = 0 := by
-    have := congrArg e hg
-    rw [map_sum, map_zero] at this
-    rw [← this]
-    exact Finset.sum_congr rfl fun i _ => by rw [map_smulₛₗ]
-  have := Fintype.linearIndependent_iff.1 h _ h1 i
-  exact (map_eq_zero σ).1 this
 
 end Gen
 
@@ -508,112 +472,15 @@ section Herm
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
-def IsStarPl (w w' : HeightOneSpectrum (𝓞 K)) : Prop :=
-  ∀ x y : 𝓞 K, (y : K) = star (x : K) → (x ∈ w'.asIdeal ↔ y ∈ w.asIdeal)
-
-theorem IsStarPl.symm {w w' : HeightOneSpectrum (𝓞 K)} (h : IsStarPl w w') : IsStarPl w' w :=
-  fun x y hxy => (h y x (by rw [hxy, star_star])).symm
-
-theorem h_smul_left (h : V →ₗ⋆[K] V →ₗ[K] K) (t : 𝓞 K) (x y : V) : h (t • x) y = star (t : K) * h x y := by
-  rw [← algebraMap_smul K t x, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]; rfl
-
-theorem h_smul_right (h : V →ₗ⋆[K] V →ₗ[K] K) (t : 𝓞 K) (x y : V) : h x (t • y) = (t : K) * h x y := by
-  rw [← algebraMap_smul K t y, map_smul, smul_eq_mul]
-
 theorem vAdd_inv (w : HeightOneSpectrum (𝓞 K)) (x : K) : vAdd w x⁻¹ = - vAdd w x := by
   unfold vAdd
   rw [map_inv₀, WithZero.log_inv]
-
-theorem localization_eq_of_semilocalization_eq (w : HeightOneSpectrum (𝓞 K)) {X Y : Submodule (𝓞 K) V}
-    (h : loc (K := K) w.asIdeal X = loc (K := K) w.asIdeal Y) : localization₂ w.asIdeal X = localization₂ w.asIdeal Y := by
-  have key : ∀ Z : Submodule (𝓞 K) V, localization₂ w.asIdeal (loc (K := K) w.asIdeal Z) = localization₂ w.asIdeal Z := by
-    intro Z
-    apply le_antisymm
-    · rintro x ⟨t, ht, s, hs, hx⟩
-      exact ⟨s * t, w.asIdeal.primeCompl.mul_mem (locBasic_hcompl_le (K := K) w.asIdeal hs) ht, by rwa [mul_smul]⟩
-    · exact locBasic_locS_mono _ (locBasic_le_locS _ _)
-  rw [← key X, h, key Y]
 
 end Herm
 
 end Formalism.BasicNotions.SkeletonIndexLemmas
 
 namespace Formalism.BasicNotions.Idx
-
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory SkeletonIndexLemmas
-
-theorem jMt_inj (D : D7) (μ : D.what₂.Tup) (j : ℕ) : Function.Injective (D.what₂.jMt μ j) := by
-  have hli := (D.what₂.jMt_basis μ j (Module.Free.chooseBasis _ _)).1
-  have : Fintype (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL μ j)) := @Fintype.ofFinite _ hli.finite
-  exact inj_of_li D.what₂.embLL (D.what₂.jMt μ j) (Module.Free.chooseBasis _ _) hli
-
-def hSes (D : D7) (h : HermRat D) (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
-    D.what₂.MtL μ j →ₗ⋆[D.what₂.LL] D.what₂.MtL μ j →ₗ[D.what₂.LL] D.what₂.LL :=
-  LinearMap.mk₂'ₛₗ (starRingEnd D.what₂.LL) (RingHom.id D.what₂.LL) (hLL D μ j)
-    (fun x y z => D.what₂.embLL.injective (by
-      simp only [map_add, hLL_spec D h μ j h1 h2, inner_add_left]))
-    (fun c x y => D.what₂.embLL.injective (by
-      rw [smul_eq_mul, map_mul, hLL_spec D h μ j h1 h2, hLL_spec D h μ j h1 h2, LinearMap.map_smulₛₗ,
-        inner_smul_left]
-      exact congrArg (· * _) (D.starLL_cx c).symm))
-    (fun x y z => D.what₂.embLL.injective (by
-      simp only [map_add, hLL_spec D h μ j h1 h2, inner_add_right]))
-    (fun c x y => D.what₂.embLL.injective (by
-      rw [RingHom.id_apply, smul_eq_mul, map_mul, hLL_spec D h μ j h1 h2, hLL_spec D h μ j h1 h2,
-        LinearMap.map_smulₛₗ, inner_smul_right]))
-
-theorem factStepBz {D : D7} (X : DivX D) : FactStepBz X := by
-  intro hθ μ j w h1 h2 n b b0 Z hb hb0 hli0 hsp0 hli hZ
-  set θ := thetaL X μ j (hθ μ j h1 h2) with hθd
-  set θ0 := thetaL X D.what₂.mu0 j (hθ D.what₂.mu0 j h1 h2) with hθ0d
-  have hs : ∀ x, X.jM j (θ x) = D.what₂.thetaP μ j (D.what₂.jMt μ j x) := thetaL_spec X μ j (hθ μ j h1 h2)
-  have hs0 : ∀ x, X.jM j (θ0 x) = D.what₂.thetaP D.what₂.mu0 j (D.what₂.jMt D.what₂.mu0 j x) :=
-    thetaL_spec X D.what₂.mu0 j (hθ D.what₂.mu0 j h1 h2)
-  have hc0 : LinearIndependent D.what₂.LL (fun k => θ0 (b0 k)) :=
-    li_of_semilinear (X.jM j) _ (by simpa only [hs0] using hli0)
-  have hc : LinearIndependent D.what₂.LL (fun i => θ (b i)) :=
-    li_of_semilinear (X.jM j) _ (by simpa only [hs] using hli)
-  have hcZ : (fun i => θ (b i)) = famOf (fun k => θ0 (b0 k)) Z := by
-    funext i
-    apply jM_inj X j
-    unfold famOf
-    rw [hs, hZ i, map_sum]
-    exact Finset.sum_congr rfl fun k _ => by rw [map_smulₛₗ, hs0]
-  have hdZ : Z.det ≠ 0 := det_ne_zero_of_li _ Z (hcZ ▸ hc)
-
-  have hn : Module.finrank D.what₂.LL (X.MjH j).V = n := by
-    rw [Module.finrank_eq_card_basis (X.MjH j).b,
-      ← Module.finrank_eq_card_basis (Module.Basis.mk (X.jM_basis j).1 (ge_of_eq (X.jM_basis j).2)),
-      Module.finrank_eq_card_basis (Module.Basis.mk hli0 (ge_of_eq hsp0)), Fintype.card_fin]
-  obtain ⟨-, hMfg, hMsp⟩ := X.MjH_good j
-  obtain ⟨m, hm⟩ := exists_basis_locP (D.plEq w) hMfg hMsp hn
-  let Q : Matrix (Fin n) (Fin n) D.what₂.LL := Matrix.of fun k i => m.repr (θ0 (b0 i)) k
-  have hc0Q : (fun k => θ0 (b0 k)) = famOf m Q := by
-    funext i
-    unfold famOf
-    exact (m.sum_repr _).symm
-  have hdQ : Q.det ≠ 0 := det_ne_zero_of_li _ Q (hc0Q ▸ hc0)
-  have hcQ : (fun i => θ (b i)) = famOf m (Q * Z) := by rw [hcZ, hc0Q, famOf_famOf]
-  have hT : localization₂ (D.plEq w).asIdeal (thTj X μ j) = localization₂ (D.plEq w).asIdeal (latOf (K := D.what₂.LL) (fun i => θ (b i))) := by
-    unfold thTj
-    rw [thImg_eq_map X μ j (hθ μ j h1 h2), localization_map₂, ← localization_eq_of_semilocalization_eq _ hb.2, ← localization_map₂]
-    congr 1
-    unfold latOf
-    rw [Submodule.map_span, ← Set.range_comp]
-    rfl
-  have hT0 : localization₂ (D.plEq w).asIdeal (thTj X D.what₂.mu0 j) =
-      localization₂ (D.plEq w).asIdeal (latOf (K := D.what₂.LL) (fun i => θ0 (b0 i))) := by
-    unfold thTj
-    rw [thImg_eq_map X D.what₂.mu0 j (hθ D.what₂.mu0 j h1 h2), localization_map₂, ← localization_eq_of_semilocalization_eq _ hb0.2, ← localization_map₂]
-    congr 1
-    unfold latOf
-    rw [Submodule.map_span, ← Set.range_comp]
-    rfl
-  unfold IjIdx
-  rw [lidx_congr _ hm.symm hT, lidx_congr _ hm.symm hT0, hcQ, hc0Q,
-    lidx_latOf _ m m.linearIndependent _ (by rw [Matrix.det_mul]; exact mul_ne_zero hdQ hdZ),
-    lidx_latOf _ m m.linearIndependent _ hdQ, Matrix.det_mul, vAdd_mul _ hdQ hdZ]
-  ring
 
 end Formalism.BasicNotions.Idx
 

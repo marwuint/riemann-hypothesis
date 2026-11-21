@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompLawsModelRootBo
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginExistsFormStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginWeightSectionStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscOrbitBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscRatioGrowthStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscRatioGrowth
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscComponentGrowthStatement
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ModelSmall
 import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
@@ -25,7 +25,7 @@ theorem cusp_mem_chartLatNm : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
   obtain ⟨R, w, hw, hval⟩ := GlobalTheory.T.comp_laws_model_root_bound hG E H Dw l Xo c r U h e hL x hx _ _ Y _ _ _ _ _ Fr Z Rd u f hf
   obtain ⟨f₀, hf₀, hint⟩ := GlobalTheory.T.root_origin_exists_form E H Dw l Xo c _ _ Y _ _ _ _ (o.toTowerOrigin.Or B b)
   obtain ⟨hJ, inst, hsm⟩ := o.smooth B b
-  refine GlobalTheory.T.holomorphic_disc_component_growth GlobalTheory.T.holomorphic_disc_ratio_growth _ _ _ (T.M B b).y (degOf (T.M B b) u) _
+  refine GlobalTheory.T.holomorphic_disc_component_growth _root_.GlobalTheory.CompanionTheory.Ar.Flat.PoleDisc.pole_disc _ _ _ (T.M B b).y (degOf (T.M B b) u) _
     (fun z => R * ∏ r, ((o.toTowerOrigin.Or B b).sing r).h z ^ nOf u (some r)) w f₀ (T.M B b).birational hsm hw hf₀
     hval ?_
   intro Zf hol hmem hne

@@ -403,10 +403,6 @@ theorem isProperOrbit_realUJ {ε : Fin m → Bool} {g : Formalism.REAL.UJ ε} (h
     IsProperOrbit (cent g) g :=
   isProperOrbit_of_isClosed (isClosed_class_realUJ hg)
 
-theorem isMulCommutative_cent_realUJ {ε : Fin m → Bool} {g : Formalism.REAL.UJ ε} (hg : IsRegSS (ujMat ε g)) :
-    IsMulCommutative (cent g) :=
-  isMulCommutative_cent (ι := ujMat ε) (Units.val_injective.comp Subtype.val_injective) hg
-
 theorem isRegSS_archMat_iff (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) {g : GArch σ J w} :
     IsRegSS (archMat σ J τ g) ↔ IsRegSS (matHom _ σ J g).1 := by
   refine ⟨fun hg => ?_, fun hg => (archMat_apply σ J τ g).symm ▸ hg.map (infEmb τ)⟩
@@ -415,14 +411,5 @@ theorem isRegSS_archMat_iff (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : Emb
   exact Matrix.ext fun i j => (e.symm_apply_apply _).symm
 
 end Points
-
-def IsRegClosed {H : Type} [Group H] [TopologicalSpace H] (g : H) : Prop :=
-  IsMulCommutative (cent g) ∧
-    (∀ [MeasurableSpace H] (dt : Measure (cent g)) [dt.IsMulLeftInvariant], dt.IsMulRightInvariant) ∧
-    IsClosed (range fun x : H => x⁻¹ * g * x) ∧ IsProperOrbit (cent g) g
-
-theorem IsRegClosed.of {H : Type} [Group H] [TopologicalSpace H] {g : H} (h1 : IsMulCommutative (cent g))
-    (h2 : IsClosed (range fun x : H => x⁻¹ * g * x)) (h3 : IsProperOrbit (cent g) g) : IsRegClosed g :=
-  ⟨h1, fun dt _ => isMulRightInvariant_cent h1 dt, h2, h3⟩
 
 end GlobalTheory.Orb

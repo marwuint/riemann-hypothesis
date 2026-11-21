@@ -36,34 +36,6 @@ theorem leviOne (u : ℂ → ℝ) (z : ℂ) :
   simp only [ReciprocityTheory.AnForm.levi, h1, h2, h3, laplacian_eq_fderiv_fderiv]
   simp [Φ, e0]
 
-theorem greenOrigin_main : GreenOriginStatement := by
-  intro u hu hc
-  obtain ⟨R, hR0, hR⟩ := exists_R_of_compact hc
-  have h := green_at hu 0 (R := R + 1) (by linarith) (fun z hz =>
-    image_eq_zero_of_notMem_tsupport fun hm => by
-      have := hR z hm; rw [sub_zero] at hz; linarith)
-  simpa using h
-
-theorem greenDdcOrigin_main : GreenDdcOriginStatement := by
-  intro u hu hc
-  obtain ⟨h1, h2⟩ := greenOrigin_main u hu hc
-  have e : (fun z : ℂ => Real.log ‖z‖ * ddcDens u z) =
-      fun z => (1 / (2 * Real.pi)) * (Real.log ‖z‖ * Δ u z) := by
-    funext z; simp only [ddcDens]; ring
-  rw [e]
-  refine ⟨h1.const_mul _, ?_⟩
-  rw [integral_const_mul, h2]
-  field_simp
-
-theorem greenPoint_main : GreenPointStatement := by
-  intro u a hu hc
-  obtain ⟨R, hR0, hR⟩ := exists_R_of_compact hc
-  exact green_at hu a (R := ‖a‖ + R + 1) (by positivity) (fun z hz =>
-    image_eq_zero_of_notMem_tsupport fun hm => by
-      have := hR z hm
-      have := norm_sub_le z a
-      linarith)
-
 theorem greenParamFiber_main : GreenParamFiberStatement := by
   intro E _ _ _ u hu hc p
   obtain ⟨R, hR0, hR⟩ := exists_R_of_compact hc
@@ -144,60 +116,7 @@ theorem greenParam_main : GreenParamStatement := by
   rw [integral_congr_ae (Eventually.of_forall fun p => (greenParamFiber_main E u hu hc p).2)]
   exact integral_const_mul _ _
 
-theorem greenMaDens_main : GreenMaDensStatement := by
-  intro u hu hc
-  set v : ℂ → ℝ := fun w => u (fun _ => w) with hv
-  have hvc : ContDiff ℝ 2 v := hu.comp (contDiff_pi.2 fun _ => contDiff_id)
-  obtain ⟨R, hR0, hR⟩ := exists_R_of_compact hc
-  have hvR : ∀ w, R + 1 ≤ ‖w - 0‖ → v w = 0 := fun w hw => by
-    show u (fun _ => w) = 0
-    exact image_eq_zero_of_notMem_tsupport fun hm => by
-      have := hR _ hm
-      have := norm_le_pi_norm (fun _ : Fin 1 => w) 0
-      simp only [sub_zero] at hw
-      linarith
-  obtain ⟨h1, h2⟩ := green_at hvc 0 (by linarith) hvR
-  simp only [sub_zero] at h1 h2
-  have hd : ∀ z : Fin 1 → ℂ, ReciprocityTheory.AnForm.maDens ![u] z =
-      (1 / (2 * Real.pi)) * Δ v (z 0) := by
-    intro z
-    have hu1 : (Finset.univ : Finset (Finset (Fin 1))) = {∅, {0}} := by decide
-    have hz : z = fun _ => z 0 := funext fun i => by fin_cases i; rfl
-    have hl : (ReciprocityTheory.AnForm.hessC u z 0 0).re = ReciprocityTheory.AnForm.levi u z (Pi.single 0 1) := by
-      simp [ReciprocityTheory.AnForm.hessC, ReciprocityTheory.AnForm.levi]
-    have huv : u = fun w : Fin 1 → ℂ => v (w 0) :=
-      funext fun w => congrArg u (funext fun i => by fin_cases i; rfl)
-    have hm : ReciprocityTheory.AnForm.maDens ![u] z = (2 / Real.pi) * (ReciprocityTheory.AnForm.hessC u z 0 0).re := by
-      simp [ReciprocityTheory.AnForm.maDens, ReciprocityTheory.AnForm.mdisc, hu1]
-    rw [hm, hl, huv, hz, leviOne v (z 0)]
-    ring
-  have e : (fun z : Fin 1 → ℂ => Real.log ‖z 0‖ * ReciprocityTheory.AnForm.maDens ![u] z) =
-      (fun w : ℂ => (1 / (2 * Real.pi)) * (Real.log ‖w‖ * Δ v w)) ∘
-        (MeasurableEquiv.funUnique (Fin 1) ℂ) := by
-    funext z; simp only [Function.comp, hd]; simp; ring
-  have mp := volume_preserving_funUnique (Fin 1) ℂ
-  have hi := mp.integral_comp (MeasurableEquiv.measurableEmbedding _)
-    (fun w : ℂ => (1 / (2 * Real.pi)) * (Real.log ‖w‖ * Δ v w))
-  have hv0 : v 0 = u 0 := rfl
-  rw [e]
-  refine ⟨(mp.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 (h1.const_mul _),
-    hi.trans ?_⟩
-  rw [integral_const_mul, h2, hv0]
-  field_simp
-
-theorem leviOneEqLaplacian_thm : LeviOneEqLaplacianStatement := leviOne
-
-theorem greenOrigin_thm : GreenOriginStatement := greenOrigin_main
-
-theorem greenDdcOrigin_thm : GreenDdcOriginStatement := greenDdcOrigin_main
-
-theorem greenPoint_thm : GreenPointStatement := greenPoint_main
-
-theorem greenParamFiber_thm : GreenParamFiberStatement := greenParamFiber_main
-
 theorem greenParam_thm : GreenParamStatement := greenParam_main
-
-theorem greenMaDens_thm : GreenMaDensStatement := greenMaDens_main
 
 end
 

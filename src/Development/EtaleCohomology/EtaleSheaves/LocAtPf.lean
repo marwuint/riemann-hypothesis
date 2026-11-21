@@ -66,9 +66,6 @@ lemma away_ext (a : DivIdx S) {R : CommRingCat.{0}} {f g : (Dg S).obj a ⟶ R}
   exact IsLocalization.ringHom_ext (M := Submonoid.powers (a.val : A))
     (S := Localization.Away (a.val : A)) (RingHom.ext h)
 
-lemma Dg_map_tN {a b : DivIdx S} (f : a ⟶ b) (x : A) :
-    (Dg S).map f ((tN S).app a x) = (tN S).app b x := tr_alg S f.le x
-
 variable (B : Type) [CommRing B] [Algebra A B] [IsLocalization S B]
 
 def sApp (a : DivIdx S) : CommRingCat.of (Localization.Away (a.val : A)) ⟶ CommRingCat.of B :=

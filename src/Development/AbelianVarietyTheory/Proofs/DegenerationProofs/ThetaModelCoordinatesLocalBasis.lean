@@ -9,9 +9,11 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheor
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitCharts
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsInvertibleMatrixChangeOfSpanEqStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsInvertibleMatrixChangeOfSpanEq
+import Development.AbelianVarietyTheory.Definitions.Degenerations.InducedModelMorphismCompStructureMap
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsAffineOpenNonzeroLocusOfUniversallyClosed
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLineBundleSectionsOfUnimodularTuplesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsAffineOpenOfLocalSectionCombinationLocusStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsAffineOpenOfLocalSectionCombinationLocus
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -221,7 +223,7 @@ theorem cover_affine (Q : Clos ρ M U₀ EE) {W : M.Z.Opens} (hW : IsAffineOpen 
     exact TopologicalSpace.Opens.mem_iSup.2
       ⟨i, (hy _).1 ((CrdCalc.crd_isUnit_iff i (hT l K y w h hw)).1 (Ne.isUnit hi))⟩
   · have := Q.proper
-    refine GlobalTheory.T.isAffineOpen_of_local_sectionCombination_locus Q.P.left M.Z Q.P.hom S.J _ W hW (hle i) fun z _ => ?_
+    refine _root_.GlobalTheory.ZH.CombLocus.isAffineOpen_of_comb Q.P.left M.Z Q.P.hom S.J _ W hW (hle i) fun z _ => ?_
     obtain ⟨l, hl⟩ := TopologicalSpace.Opens.mem_iSup.1 (Q.cover.ge (Set.mem_univ z))
     refine ⟨Q.W l, _, Q.σ l, m l i, hl, Q.aff l, hσ l, fun k => ((Q.imm l).2 k trivial).1, fun K _ y w h hw => ?_⟩
     exact (CrdCalc.crd_isUnit_iff i (hT l K y w h hw)).symm.trans isUnit_iff_ne_zero
@@ -237,7 +239,7 @@ theorem secO : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBa
   rintro o Ω _ _ _ _ S ρ M U₀ EE Q ex Z ⟨e, he, hu₀, hφ⟩ - hAb hind W b hW hb
   have hs : Function.Surjective Q.P.hom := fun z =>
     ⟨(ex.e ≫ Q.G.ι) z, by rw [← Scheme.Hom.comp_apply, Category.assoc, ex.e_sec]; rfl⟩
-  choose m m' hu hm using fun l => GlobalTheory.T.exists_invertible_matrix_change_of_span_eq o Ω M S.J W (Q.W l) b (Q.B l) (Q.c l)
+  choose m m' hu hm using fun l => _root_.GlobalTheory.ZH.exists_matrix_mul_eq_one_of_span_eq o Ω M S.J W (Q.W l) b (Q.B l) (Q.c l)
     (fun z hz => (hb z hz.1).symm.trans (Q.basis l z hz.2)) (Q.c_inv l)
   obtain ⟨L, T, hle, hT⟩ := exists_bundle Q hs W b m (fun l => ⟨_, hu l⟩) hm
   obtain ⟨hcov, haff⟩ := cover_affine Q hW m (fun l => ⟨_, hu l⟩) hle hT

@@ -20,15 +20,6 @@ def TorsionEquidistribution.Statement : Prop :=
       (torusTorsion n m \ Z).ncard ≤
         3 * {x ∈ torusTorsion n m \ Z | (1 / 4 : ℝ) ≤ ‖x ⟨0, hn⟩ + (c : AddCircle (1 : ℝ))‖}.ncard
 
-def ThirdDifferenceConstant.Statement : Prop :=
-  ∀ (A : Type u) [AddCommGroup A] (f : A → ℝ), (∃ C : ℝ, ∀ x, |f x| ≤ C) →
-    (∀ x y z, f (x + y + z) - f (x + y) - f (y + z) - f (x + z) + f x + f y + f z - f 0 = 0) →
-    ∀ x y, f x = f y
-
-def BoundedHomogeneousZero.Statement : Prop :=
-  ∀ (X : Type u) (D : X → X) (g : X → ℝ), (∃ C : ℝ, ∀ x, |g x| ≤ C) →
-    (∀ x, g (D x) = 4 * g x) → g = 0
-
 def SupOfOrthonormalSum.Statement : Prop :=
   ∀ (V : Type u) [AddCommGroup V] [Module ℂ V] (ι : Type v) [Fintype ι] (b : ι → V)
     (p : Seminorm ℂ V), (∀ i, p (b i) ≤ 1) →
@@ -47,20 +38,6 @@ def SlopeParameterChoice.Statement : Prop :=
       2 / SlopeParameterChoice.third g h *
         (g * Real.log (SlopeParameterChoice.level g h) - μ) →
     s ≤ C₄ * Real.log (2 + g + h)
-
-def MonomialNormLowerBound.Statement : Prop :=
-  ∀ (i : ℕ), 1 ≤ i → ∀ (n : ℕ) (a : Fin i → ℕ), ∑ j, a j = n →
-    (i : ℝ) ^ (-(n : ℤ)) * ((n : ℝ) + i) ^ (-(i : ℤ)) ≤
-      (∏ j, ((a j).factorial : ℝ)) * ((i - 1).factorial : ℝ) / ((n + i - 1).factorial : ℝ)
-
-def MonomialL2NormLowerBound.Statement : Prop :=
-  ∀ (N : ℕ) (a : Fin (N + 1) →₀ ℕ),
-    ((N + 1 : ℕ) : ℝ) ^ (-(a.degree : ℤ)) * ((a.degree : ℝ) + (N + 1 : ℕ)) ^ (-((N + 1 : ℕ) : ℤ)) ≤
-      CP.l2Norm (N := N) a.degree (monomial a (1 : ℂ)) ^ 2
-
-section Inhabitants
-
-end Inhabitants
 
 end
 

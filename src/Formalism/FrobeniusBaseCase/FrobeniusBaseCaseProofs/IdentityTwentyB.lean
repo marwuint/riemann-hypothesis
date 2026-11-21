@@ -2,33 +2,6 @@ import Formalism.FrobeniusBaseCase.Statement
 
 namespace Formalism.BaseCaseIdentities
 
-theorem id20_statement : Id20 := by
-  intro l i hl
-  have h2 : (2:ℝ) ≤ l := by exact_mod_cast hl
-  have hq : ((l:ℝ)^2 - 1) ≠ 0 := by nlinarith
-  have h1 : ((l:ℝ) - 1) ≠ 0 := by linarith
-  have hL : ((l:ℝ)^i) ≠ 0 := by positivity
-  constructor
-  · unfold gam rho; field_simp; ring
-  · unfold r1 del sg; field_simp; ring
-
-theorem slopeSumIdentity_statement : SlopeSumIdentity := by
-  intro l i hl
-  have h2 : (2:ℝ) ≤ l := by exact_mod_cast hl
-  have hq : ((l:ℝ)^2 - 1) ≠ 0 := by nlinarith
-  have h1 : ((l:ℝ) - 1) ≠ 0 := by linarith
-  have hL : ((l:ℝ)^i) ≠ 0 := by positivity
-  unfold Lnum r1 r2 Enum rho; field_simp; ring
-
-theorem geomSlopeIdentity_statement : GeomSlopeIdentity := by
-  intro l i hl hi
-  obtain ⟨t, rfl⟩ := hi
-  have h2 : (2:ℝ) ≤ l := by exact_mod_cast hl
-  have hq : ((l:ℝ)^2 - 1) ≠ 0 := by nlinarith
-  have hs : s0 (2 * t + 1) = t := by unfold s0; omega
-  rw [hs]
-  unfold qnum Enum rho; field_simp; ring
-
 theorem sqMulIdentity_statement : SqMulIdentity := by
   intro l hl
   have h2 : (2:ℝ) ≤ l := by exact_mod_cast hl

@@ -3,9 +3,9 @@ import Formalism.LocalToGlobal.GlobalTheory.GL5.PClassDecomp
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GenusMassStdAll
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DoubleCosetsMassLevel
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.NegGram
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VolEqMassSelfDualRankGeTwoStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianSpaceOppositeFormSignatureConditionStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VolumeNegativeDefiniteEqOppositeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VolEqMassSelfDualRankGeTwo
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianSpaceOppositeFormSignatureCondition
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VolumeNegativeDefiniteEqOpposite
 
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -26,13 +26,13 @@ theorem vol_eq_massI_all_sig : ∀ D : D7, VolTie D → Conclusion2 D → ∀ (W
     rw [← hrk]
     exact hv W hW (fun τ => by rw [hs τ, hrk]; rfl)
   · by_cases h2r : 2 ≤ P + Q
-    · exact GlobalTheory.T.vol_eq_mass_selfDual_rank_ge_two D hT h2 hv W P Q hW hs h2r
+    · exact _root_.GlobalTheory.Glob.vol_eq_massI_of_two_le_rank D hT h2 hv W P Q hW hs h2r
     · have hP : P = 0 := by omega
       have hQ1 : Q = 1 := by omega
       subst hP hQ1
       have e1 : D.vol W = D.vol (GlobalTheory.NegSpace.neg W) :=
-        GlobalTheory.T.volume_negativeDefinite_eq_opposite D hT W 1 hW hs
-      have hN : (GlobalTheory.NegSpace.neg W).SigOK := GlobalTheory.T.hermitianSpaceOppositeForm_signatureCondition _ W hW
+        _root_.GlobalTheory.NegVol.vol_neg_eq D hT W 1 hW hs
+      have hN : (GlobalTheory.NegSpace.neg W).SigOK := _root_.GlobalTheory.NegSpace.sigOK_neg _ W hW
       have e2 : D.vol (GlobalTheory.NegSpace.neg W) = massI D (GlobalTheory.NegSpace.neg W).rank :=
         hv _ hN (fun τ => by rw [GlobalTheory.NegSpace.neg_sig, hs τ, GlobalTheory.NegSpace.neg_rank, hrk])
       rw [e1, e2, GlobalTheory.NegSpace.neg_rank, hrk]

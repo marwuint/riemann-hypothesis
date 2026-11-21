@@ -3,7 +3,8 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.PairCalc
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorThroughIsogenyOfKillsKernel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrankStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrank
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeTorsionPointTrivialOfGeometricStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZarhinBundleKernelSecondCoordEquations
 
@@ -63,7 +64,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.quasiInv_of :
   have hgψ : ψ ≫ g.hom = 𝟙 o.A ^ c := by
     rw [← hfhom, ← hg]
     rfl
-  haveI : Flat (Over.Hom.left ψ) := (GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny κ Av Av' q hq).2.1
+  haveI : Flat (Over.Hom.left ψ) := (_root_.GlobalTheory.AV.AbVar.isogeny_flat_finrank κ Av Av' q hq).2.1
   haveI : Surjective (Over.Hom.left ψ) := hsur
   haveI : Epi (Over.Hom.left ψ) := Flat.epi_of_flat_of_surjective _
   refine ⟨g.hom, hgm, hgψ, ?_⟩

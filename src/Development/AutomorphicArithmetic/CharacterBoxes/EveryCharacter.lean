@@ -1,18 +1,52 @@
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ShapeOf
-import Development.AutomorphicArithmetic.CharacterBoxes.ShapeWin
+import Mathlib
+import Development.AutomorphicArithmetic.CharacterBoxes.ExS
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.APerTw
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DivRows3GIff
+import Formalism.LocalToGlobal.FiniteTOf
+import Formalism.LocalToGlobal.TieTwRecOf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.JoinSISel
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
+import Formalism.SharpRestriction.Divisibility.ClosedSizeLink.AdmissibleFamilyOfThreshold
+import Development.AutomorphicArithmetic.CharacterBoxes.DesWin
+import Development.AutomorphicArithmetic.CharacterBoxes.ZeroFreeAllOfTopG
+import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.RankConditionsOfLayerTwo
+import Formalism.LocalToGlobal.ClassS
+import Formalism.SharpRestriction.GlobalSchurBounds.TheoremThreeFamilyOfFormalDegreeInput
+import Formalism.SharpRestriction.GlobalSchurBounds.MainSup
+import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.MinkowskiQ
+import Formalism.SharpRestriction.SmoothDesignExistence.AdmissibleTopsMertens
+import Formalism.LocalToGlobal.GroupLattices.LinkGConcreteNoKer
+import Formalism.LocalToGlobal.ClassRec
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.EtaClosed
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LinkGl
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LinkIRROfJoinEx
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.BaseRowsEqRecordRows
+import Formalism.LocalToGlobal.BaseRankEqOfRealisation
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LinkSPos
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ResidEvFree
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.CountT
+import Formalism.SharpRestriction.GlobalSchurBounds.MassRatioUnfoldedOfTheoremTwo
+import Formalism.LocalToGlobal.SiegelLatticeTheory.WeightedGaugeFactors.FactsDS
+import Formalism.LocalToGlobal.GroupLattices.ServiceOfTiedSelection
+import Formalism.LocalToGlobal.GroupLattices.AdmissibleAtGeneratorPlaces
+import Formalism.SharpRestriction.GlobalSchurBounds.PlugDgt
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.AdmissibleOfTransported
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.FinXClosed
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.GapClosed
+import Formalism.LocalToGlobal.Divisibility.DivisibilityRemainder.NoColumnCase.LvlWire
+import Formalism.LocalToGlobal.Divisibility.DivisibilityRemainder.LinkedMeasures.SlopeId
+import Formalism.LocalToGlobal.Divisibility.DivisibilityRemainder.ValueBounds.SlopeMaxB
+import Formalism.LocalToGlobal.Divisibility.DivisibilityRemainder.AdmissibleClasses.LinkGCl
+import Formalism.LocalToGlobal.Divisibility.DivisibilityRemainder.SharpFunctions.FunTop
+import Formalism.LocalToGlobal.Divisibility.RecBridgeWire
+import Formalism.LocalToGlobal.Divisibility.DivisibilityRemainder.RationalColumns.BuRationalOf
+import Formalism.LocalToGlobal.PtKOfReal
+import Formalism.LocalToGlobal.Divisibility.SumLeEtaSumNum
 import Development.AutomorphicArithmetic.CharacterBoxes.SupplyChi
 import Development.AutomorphicArithmetic.CharacterBoxes.Imprimitive
 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Fc
 
-theorem UpperTheory.Top.plugWin (hG : GlobalTheory.GLq.Green) (hV : UpperTheory.Top.VWin)
-    (h : Nonempty (Hyps (fun 𝒞 => Closed 𝒞 fun Fm _ => LinkN Fm) DRS)) : Formalism.HC.ZeroFreeAll :=
-  h.elim fun h => UpperTheory.Top.zeroFreeAll_of_topG (la := 3 / 2) (by norm_num)
-    (GlobalTheory.Fc.shape_of _ _ _ _ (UpperTheory.Top.shapeWin hG) trivial trivial h) fun ψ => UpperTheory.Top.supplyChi ψ (hV ψ)
-
 def UpperTheory.EveryCharacter : Prop :=
   ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ), 1 / 2 < s.re → (χ ≠ 1 ∨ s ≠ 1) → DirichletCharacter.LFunction χ s ≠ 0
 
-theorem UpperTheory.Top.plugAll (hG : GlobalTheory.GLq.Green) (hV : UpperTheory.Top.VWin)
-    (h : Nonempty (Hyps (fun 𝒞 => Closed 𝒞 fun Fm _ => LinkN Fm) DRS)) : UpperTheory.EveryCharacter :=
-  UpperTheory.Top.imprimitive (UpperTheory.Top.plugWin hG hV h)

@@ -39,10 +39,6 @@ theorem mem_eigAt_of_forall_apply {x : I → K} {v : V} (h : ∀ i, op i v = x i
   rw [mem_maxGenEigenspace]
   exact ⟨1, by simp [h i]⟩
 
-theorem eigAt_eq_iInf_eigenspace (hss : ∀ i, (op i).IsFinitelySemisimple) (x : I → K) :
-    eigAt op x = ⨅ i, (op i).eigenspace (x i) :=
-  iInf_congr fun i => (hss i).maxGenEigenspace_eq_eigenspace (x i)
-
 theorem eq_of_occurs_of_le {x : I → K} (hx : Occurs op x) {i : I} {a : K}
     (h : eigAt op x ≤ (op i).maxGenEigenspace a) : x i = a :=
   eq_of_le_maxGen hx (eigAt_le op x i) h
@@ -91,8 +87,6 @@ theorem eigSum_or (C C' : (I → K) → Prop) :
     eigSum op (fun x => C x ∨ C' x) = eigSum op C ⊔ eigSum op C' := by
   simp only [eigSum, iSup_or, iSup_sup_eq]
 
-theorem eigSum_false : eigSum op (fun _ => False) = ⊥ := by simp [eigSum]
-
 theorem eigSum_true [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op) :
     eigSum op (fun _ => True) = ⊤ := by
   simpa [eigSum] using iSup_eigAt_eq_top hc hs
@@ -110,30 +104,6 @@ theorem isCompl_eigSum [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOve
   refine ⟨disjoint_eigSum hc fun x h h' => h' h, ?_⟩
   rw [codisjoint_iff, ← eigSum_or, ← eigSum_true hc hs]
   exact eigSum_congr fun x _ => ⟨fun _ => trivial, fun _ => em _⟩
-
-theorem eigSum_and [FiniteDimensional K V] (hc : PairComm op) (C C' : (I → K) → Prop) :
-    eigSum op (fun x => C x ∧ C' x) = eigSum op C ⊓ eigSum op C' := by
-  have e : eigSum op C = eigSum op (fun x => C x ∧ C' x) ⊔ eigSum op (fun x => C x ∧ ¬ C' x) := by
-    rw [← eigSum_or]
-    exact eigSum_congr fun x _ => by tauto
-  have hd : Disjoint (eigSum op fun x => C x ∧ ¬ C' x) (eigSum op C') :=
-    disjoint_eigSum hc fun x h h' => h.2 h'
-  rw [e, sup_inf_assoc_of_le _ (eigSum_mono fun x h => h.2), hd.eq_bot, sup_bot_eq]
-
-theorem finrank_eigSum [FiniteDimensional K V] (hc : PairComm op) {F : Finset (I → K)}
-    (hF : ∀ x, Occurs op x ↔ x ∈ F) (C : (I → K) → Prop) [DecidablePred C] :
-    finrank K (eigSum op C) = ∑ x ∈ F.filter C, finrank K (eigAt op x) := by
-  rw [eigSum_eq_sup hF, finrank_finset_sup (iSupIndep_eigAt hc)]
-
-theorem eigSum_ne_bot {C : (I → K) → Prop} {x : I → K} (hC : C x) (hx : Occurs op x) :
-    eigSum op C ≠ ⊥ := fun h => hx (eq_bot_iff.2 ((eigAt_le_eigSum hC).trans h.le))
-
-theorem eigSum_ne_top [FiniteDimensional K V] (hc : PairComm op) {C : (I → K) → Prop} {x : I → K}
-    (hC : ¬ C x) (hx : Occurs op x) : eigSum op C ≠ ⊤ := by
-  intro h
-  have hd : Disjoint (eigSum op C) (eigSum op fun x => ¬ C x) := disjoint_eigSum hc fun x h h' => h' h
-  rw [h, top_disjoint] at hd
-  exact eigSum_ne_bot (C := fun x => ¬ C x) hC hx hd
 
 theorem eigAt_le_comap {g : End K V} (hg : ∀ i, Commute (op i) g) (x : I → K) :
     eigAt op x ≤ (eigAt op x).comap g := by
@@ -174,20 +144,6 @@ theorem sub_eigProj_mem [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOv
     add_sub_cancel_left]
   exact hb
 
-theorem range_eigProj [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op)
-    (C : (I → K) → Prop) : LinearMap.range (eigProj hc hs C) = eigSum op C := by
-  apply le_antisymm
-  · rintro _ ⟨v, rfl⟩; exact eigProj_apply_mem hc hs C v
-  · intro v hv; exact ⟨v, eigProj_apply_of_mem hc hs hv⟩
-
-theorem ker_eigProj [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op)
-    (C : (I → K) → Prop) : LinearMap.ker (eigProj hc hs C) = eigSum op fun x => ¬ C x := by
-  apply le_antisymm
-  · intro v hv
-    have := sub_eigProj_mem hc hs C v
-    rwa [LinearMap.mem_ker.1 hv, sub_zero] at this
-  · intro v hv; exact eigProj_apply_of_mem_not hc hs hv
-
 theorem commute_eigProj [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op)
     (C : (I → K) → Prop) {g : End K V} (hg : ∀ i, Commute (op i) g) : Commute (eigProj hc hs C) g := by
   ext v
@@ -221,121 +177,7 @@ theorem PairComm.range (hc : PairComm op) : ∀ a ∈ Set.range op, ∀ b ∈ Se
   rintro _ ⟨i, rfl⟩ _ ⟨j, rfl⟩
   exact hc i j
 
-theorem commute_hAlg (hc : PairComm op) {a b : End K V} (ha : a ∈ hAlg O op) (hb : b ∈ hAlg O op) :
-    Commute a b :=
-  Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb fun b' hb' =>
-    (Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha fun a' ha' => hc.range b' hb' a' ha').symm
-
-theorem pt_algebraMap (ψ : hAlg O op →ₐ[O] O) (r : O) (h : algebraMap O (End K V) r ∈ hAlg O op) :
-    pt ψ ⟨algebraMap O (End K V) r, h⟩ = algebraMap O K r := by
-  have e : (⟨algebraMap O (End K V) r, h⟩ : hAlg O op) = algebraMap O (hAlg O op) r :=
-    Subtype.ext (Subalgebra.coe_algebraMap _ r).symm
-  rw [e, pt, AlgHom.commutes]
-  rfl
-
-theorem W_pt_eq_eigAt (hc : PairComm op) (ψ : hAlg O op →ₐ[O] O) :
-    W (hAlg O op) (pt ψ) = eigAt op (sysOf ψ) := by
-  apply le_antisymm
-  · exact le_iInf fun i => W_le _ (pt ψ) (hGen O op i)
-  · intro v hv
-    rw [W, Submodule.mem_iInf]
-    rintro ⟨t, ht⟩
-    induction ht using Algebra.adjoin_induction with
-    | mem x hx =>
-      obtain ⟨i, rfl⟩ := hx
-      exact eigAt_le op (sysOf ψ) i hv
-    | algebraMap r =>
-      rw [pt_algebraMap]
-      change v ∈ (algebraMap O (End K V) r).maxGenEigenspace _
-      rw [algebraMap_end_eq, maxGen_smul_one]
-      exact Submodule.mem_top
-    | add x y hx hy ihx ihy =>
-      have e : pt ψ ⟨x + y, add_mem hx hy⟩ = pt ψ ⟨x, hx⟩ + pt ψ ⟨y, hy⟩ := by
-        rw [show (⟨x + y, add_mem hx hy⟩ : hAlg O op) = ⟨x, hx⟩ + ⟨y, hy⟩ from rfl]
-        simp only [pt, map_add]
-      rw [e]
-      exact mem_maxGen_add (commute_hAlg hc hx hy) ihx ihy
-    | mul x y hx hy ihx ihy =>
-      have e : pt ψ ⟨x * y, mul_mem hx hy⟩ = pt ψ ⟨x, hx⟩ * pt ψ ⟨y, hy⟩ := by
-        rw [show (⟨x * y, mul_mem hx hy⟩ : hAlg O op) = ⟨x, hx⟩ * ⟨y, hy⟩ from rfl]
-        simp only [pt, map_mul]
-      rw [e]
-      exact mem_maxGen_mul (commute_hAlg hc hx hy) ihx ihy
-
-theorem exists_le_maxGen (hc : PairComm op) (x : I → K) (t : hAlg O op) :
-    ∃ μ, eigAt op x ≤ (t : End K V).maxGenEigenspace μ := by
-  obtain ⟨t, ht⟩ := t
-  induction ht using Algebra.adjoin_induction with
-  | mem y hy =>
-    obtain ⟨i, rfl⟩ := hy
-    exact ⟨x i, eigAt_le op x i⟩
-  | algebraMap r =>
-    refine ⟨algebraMap O K r, ?_⟩
-    change _ ≤ (algebraMap O (End K V) r).maxGenEigenspace _
-    rw [algebraMap_end_eq, maxGen_smul_one]
-    exact le_top
-  | add a b ha hb iha ihb =>
-    obtain ⟨α, hα⟩ := iha
-    obtain ⟨β, hβ⟩ := ihb
-    exact ⟨α + β, fun v hv => mem_maxGen_add (commute_hAlg hc ha hb) (hα hv) (hβ hv)⟩
-  | mul a b ha hb iha ihb =>
-    obtain ⟨α, hα⟩ := iha
-    obtain ⟨β, hβ⟩ := ihb
-    exact ⟨α * β, fun v hv => mem_maxGen_mul (commute_hAlg hc ha hb) (hα hv) (hβ hv)⟩
-
 variable [IsLocalRing O]
-
-theorem exists_pt_of_occurs (hc : PairComm op)
-    (hint : ∀ i μ, (op i).maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
-    (hinj : Function.Injective (algebraMap O K)) {x : I → K} (hx : Occurs op x) :
-    ∃ ψ : hAlg O op →ₐ[O] O, sysOf ψ = x := by
-  choose χ hχ using exists_le_maxGen (O := O) hc x
-  have hW : W (hAlg O op) χ ≠ ⊥ := fun h => hx (eq_bot_iff.2 ((le_iInf hχ).trans h.le))
-  obtain ⟨ψ, hψ⟩ := exists_pt hc.range
-    (by rintro _ ⟨i, rfl⟩ μ h; exact hint i μ h) hinj hW
-  refine ⟨ψ, funext fun i => ?_⟩
-  rw [sysOf, hψ]
-  exact (eq_of_occurs_of_le hx (hχ (hGen O op i))).symm
-
-theorem eigenSum_eq_iSup_weightSpaces (hc : PairComm op)
-    (hint : ∀ i μ, (op i).maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
-    (hinj : Function.Injective (algebraMap O K)) (C : (I → K) → Prop) :
-    eigSum op C = ⨆ (ψ : hAlg O op →ₐ[O] O) (_ : C (sysOf ψ)), W (hAlg O op) (pt ψ) := by
-  apply le_antisymm
-  · refine iSup₂_le fun x hx => ?_
-    by_cases h0 : eigAt op x = ⊥
-    · rw [h0]; exact bot_le
-    · obtain ⟨ψ, rfl⟩ := exists_pt_of_occurs hc hint hinj h0
-      rw [← W_pt_eq_eigAt hc]
-      exact le_iSup₂_of_le (f := fun (ψ : hAlg O op →ₐ[O] O) (_ : C (sysOf ψ)) => W (hAlg O op) (pt ψ))
-        ψ hx le_rfl
-  · refine iSup₂_le fun ψ hψ => ?_
-    rw [W_pt_eq_eigAt hc]
-    exact eigAt_le_eigSum hψ
-
-theorem part_eq_eigSum (hc : PairComm op) (𝔪 : Ideal (hAlg O op)) :
-    part (hAlg O op) 𝔪 = eigSum op fun x => ∃ ψ : hAlg O op →ₐ[O] O, sysOf ψ = x ∧ cls ψ = 𝔪 := by
-  apply le_antisymm
-  · refine iSup₂_le fun ψ hψ => ?_
-    rw [W_pt_eq_eigAt hc]
-    exact eigAt_le_eigSum ⟨ψ, rfl, hψ⟩
-  · refine iSup₂_le fun x hx => ?_
-    obtain ⟨ψ, rfl, hψ⟩ := hx
-    rw [← W_pt_eq_eigAt hc]
-    exact le_iSup₂_of_le (f := fun (ψ : hAlg O op →ₐ[O] O) (_ : cls ψ = 𝔪) => W (hAlg O op) (pt ψ))
-      ψ hψ le_rfl
-
-theorem off_eq_eigSum (hc : PairComm op) (𝔪 : Ideal (hAlg O op)) :
-    off (hAlg O op) 𝔪 = eigSum op fun x => ∃ ψ : hAlg O op →ₐ[O] O, sysOf ψ = x ∧ cls ψ ≠ 𝔪 := by
-  apply le_antisymm
-  · refine iSup₂_le fun ψ hψ => ?_
-    rw [W_pt_eq_eigAt hc]
-    exact eigAt_le_eigSum ⟨ψ, rfl, hψ⟩
-  · refine iSup₂_le fun x hx => ?_
-    obtain ⟨ψ, rfl, hψ⟩ := hx
-    rw [← W_pt_eq_eigAt hc]
-    exact le_iSup₂_of_le (f := fun (ψ : hAlg O op →ₐ[O] O) (_ : cls ψ ≠ 𝔪) => W (hAlg O op) (pt ψ))
-      ψ hψ le_rfl
 
 end Cov
 
@@ -351,149 +193,12 @@ def opL (op : I → End K V) (i : I) : End L (L ⊗[K] V) := (op i).baseChange L
 def eigSumOver (op : I → End K V) (C : (I → L) → Prop) : Submodule K V :=
   ((eigSum (opL L op) C).restrictScalars K).comap (TensorProduct.mk K L V 1)
 
-def Descends (op : I → End K V) (C : (I → L) → Prop) : Prop :=
-  (eigSumOver L op C).baseChange L = eigSum (opL L op) C
-
 variable {L} {op : I → End K V}
 
 theorem mem_eigSumOver {C : (I → L) → Prop} {v : V} :
     v ∈ eigSumOver L op C ↔ (1 : L) ⊗ₜ[K] v ∈ eigSum (opL L op) C := Iff.rfl
 
-theorem PairComm.opL (hc : PairComm op) : PairComm (opL L op) := by
-  intro i j
-  have h := hc i j
-  unfold Commute SemiconjBy at h ⊢
-  simp only [Formalism.L2.Col.opL, Module.End.mul_eq_comp, ← LinearMap.baseChange_comp] at h ⊢
-  rw [h]
-
-theorem pow_sub_tmul (f : End K V) (a : K) (k : ℕ) (v : V) :
-    ((f.baseChange L - algebraMap K L a • (1 : End L (L ⊗[K] V))) ^ k) ((1 : L) ⊗ₜ[K] v) =
-      (1 : L) ⊗ₜ[K] (((f - a • (1 : End K V)) ^ k) v) := by
-  induction k generalizing v with
-  | zero => simp
-  | succ k ih =>
-    rw [pow_succ, Module.End.mul_apply, pow_succ, Module.End.mul_apply, ← ih]
-    congr 1
-    simp only [LinearMap.sub_apply, LinearMap.baseChange_tmul, LinearMap.smul_apply,
-      Module.End.one_apply, TensorProduct.tmul_sub, TensorProduct.tmul_smul]
-    rw [algebraMap_smul]
-
-theorem tmul_mem_eigAt {x : I → K} {v : V} (hv : v ∈ eigAt op x) :
-    (1 : L) ⊗ₜ[K] v ∈ eigAt (opL L op) (fun i => algebraMap K L (x i)) := by
-  rw [eigAt, Submodule.mem_iInf]
-  intro i
-  obtain ⟨k, hk⟩ := (mem_maxGenEigenspace _ _ _).1 (eigAt_le op x i hv)
-  rw [mem_maxGenEigenspace]
-  exact ⟨k, by rw [Formalism.L2.Col.opL, pow_sub_tmul, hk, TensorProduct.tmul_zero]⟩
-
-theorem eigSum_le_eigSumOver (C : (I → L) → Prop) :
-    eigSum op (fun x => C fun i => algebraMap K L (x i)) ≤ eigSumOver L op C :=
-  iSup₂_le fun _ hx _ hv => mem_eigSumOver.2 (eigAt_le_eigSum hx (tmul_mem_eigAt hv))
-
-theorem tmul_one_injective : Function.Injective (fun v : V => (1 : L) ⊗ₜ[K] v) :=
-  Module.FaithfullyFlat.tensorProduct_mk_injective (A := K) (B := L) V
-
-theorem eigSumOver_eq_eigSum [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op)
-    (C : (I → L) → Prop) :
-    eigSumOver L op C = eigSum op (fun x => C fun i => algebraMap K L (x i)) := by
-  apply le_antisymm _ (eigSum_le_eigSumOver C)
-  intro v hv
-  obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.1
-    ((isCompl_eigSum hc hs (fun x => C fun i => algebraMap K L (x i))).sup_eq_top ▸
-      (Submodule.mem_top : v ∈ (⊤ : Submodule K V)))
-  have h1 : (1 : L) ⊗ₜ[K] b ∈ eigSum (opL L op) C := by
-    have := (eigSumOver L op C).sub_mem hv (eigSum_le_eigSumOver C ha)
-    rwa [add_sub_cancel_left] at this
-  have h2 : (1 : L) ⊗ₜ[K] b ∈ eigSum (opL L op) fun y => ¬ C y :=
-    eigSum_le_eigSumOver (fun y => ¬ C y) hb
-  have h0 := (disjoint_eigSum (hc.opL (L := L)) (C := C) (C' := fun y => ¬ C y)
-    fun _ h h' => h' h).le_bot ⟨h1, h2⟩
-  have hb0 : b = 0 := tmul_one_injective (L := L) (by
-    simp only [TensorProduct.tmul_zero]; exact (Submodule.mem_bot L).1 h0)
-  rw [hb0, add_zero]
-  exact ha
-
-theorem baseChange_le_of_le_eigSumOver {C : (I → L) → Prop} {p : Submodule K V}
-    (h : p ≤ eigSumOver L op C) : p.baseChange L ≤ eigSum (opL L op) C := by
-  rw [Submodule.baseChange_eq_span, Submodule.span_le]
-  rintro _ ⟨v, hv, rfl⟩
-  exact h hv
-
-theorem baseChange_sup_eq_top {p p' : Submodule K V} (h : p ⊔ p' = ⊤) :
-    p.baseChange L ⊔ p'.baseChange L = ⊤ := by
-  rw [eq_top_iff, ← Submodule.baseChange_top, ← h, Submodule.baseChange_eq_span, Submodule.span_le]
-  rintro _ ⟨v, hv, rfl⟩
-  obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.1 hv
-  rw [map_add]
-  exact add_mem (Submodule.mem_sup_left (Submodule.tmul_mem_baseChange_of_mem 1 ha))
-    (Submodule.mem_sup_right (Submodule.tmul_mem_baseChange_of_mem 1 hb))
-
-theorem descends_of_split [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op)
-    (C : (I → L) → Prop) : Descends L op C := by
-  apply le_antisymm (baseChange_le_of_le_eigSumOver le_rfl)
-  have hA := baseChange_le_of_le_eigSumOver (L := L) (op := op) (C := C) le_rfl
-  have hB := baseChange_le_of_le_eigSumOver (L := L) (op := op) (C := fun y => ¬ C y) le_rfl
-  have htop : (eigSumOver L op C).baseChange L ⊔ (eigSumOver L op fun y => ¬ C y).baseChange L = ⊤ := by
-    rw [eigSumOver_eq_eigSum hc hs, eigSumOver_eq_eigSum hc hs]
-    exact baseChange_sup_eq_top (isCompl_eigSum hc hs _).sup_eq_top
-  have hd : Disjoint (eigSum (opL L op) C) ((eigSumOver L op fun y => ¬ C y).baseChange L) :=
-    (disjoint_eigSum (hc.opL (L := L)) (C := C) (C' := fun y => ¬ C y) fun _ h h' => h' h).mono_right hB
-  calc eigSum (opL L op) C = ((eigSumOver L op C).baseChange L ⊔
-        (eigSumOver L op fun y => ¬ C y).baseChange L) ⊓ eigSum (opL L op) C := by
-        rw [htop, top_inf_eq]
-    _ = (eigSumOver L op C).baseChange L := by
-        rw [sup_inf_assoc_of_le _ hA, hd.symm.eq_bot, sup_bot_eq]
-    _ ≤ _ := le_rfl
-
 end BaseChange
-
-section Basis
-
-variable {K V I J : Type} [Field K] [AddCommGroup V] [Module K V] {op : I → End K V}
-
-theorem pairComm_of_basis (b : Basis J K V) (e : J → I → K) (h : ∀ i j, op i (b j) = e j i • b j) :
-    PairComm op := by
-  intro i i'
-  refine b.ext fun j => ?_
-  simp only [Module.End.mul_apply, h, map_smul]
-  rw [smul_comm]
-
-theorem splitOver_of_basis (b : Basis J K V) (e : J → I → K) (h : ∀ i j, op i (b j) = e j i • b j) :
-    SplitOver op := by
-  intro i
-  rw [eq_top_iff, ← b.span_eq, Submodule.span_le]
-  rintro _ ⟨j, rfl⟩
-  refine Submodule.mem_iSup_of_mem (e j i) ?_
-  rw [mem_maxGenEigenspace]
-  exact ⟨1, by simp [h i j]⟩
-
-theorem span_le_eigSum (b : Basis J K V) (e : J → I → K)
-    (h : ∀ i j, op i (b j) = e j i • b j) (C : (I → K) → Prop) :
-    Submodule.span K (b '' {j | C (e j)}) ≤ eigSum op C := by
-  rw [Submodule.span_le]
-  rintro _ ⟨j, hj, rfl⟩
-  exact eigAt_le_eigSum (C := C) (x := e j) hj (mem_eigAt_of_forall_apply fun i => h i j)
-
-theorem span_sup_span (b : Basis J K V) (e : J → I → K) (C : (I → K) → Prop) :
-    Submodule.span K (b '' {j | C (e j)}) ⊔ Submodule.span K (b '' {j | ¬ C (e j)}) = ⊤ := by
-  rw [← Submodule.span_union, ← Set.image_union, eq_top_iff, ← b.span_eq]
-  refine Submodule.span_mono ?_
-  rintro _ ⟨j, rfl⟩
-  exact ⟨j, em _, rfl⟩
-
-theorem eigSum_eq_span_of_basis [FiniteDimensional K V] (b : Basis J K V) (e : J → I → K)
-    (h : ∀ i j, op i (b j) = e j i • b j) (C : (I → K) → Prop) :
-    eigSum op C = Submodule.span K (b '' {j | C (e j)}) := by
-  have hc := pairComm_of_basis b e h
-  have hd : Disjoint (eigSum op C) (Submodule.span K (b '' {j | ¬ C (e j)})) :=
-    (disjoint_eigSum hc (C := C) (C' := fun y => ¬ C y) fun _ h h' => h' h).mono_right
-      (span_le_eigSum b e h fun y => ¬ C y)
-  apply le_antisymm _ (span_le_eigSum b e h C)
-  have e1 : eigSum op C = (Submodule.span K (b '' {j | C (e j)}) ⊔
-        Submodule.span K (b '' {j | ¬ C (e j)})) ⊓ eigSum op C := by
-    rw [span_sup_span b e C, top_inf_eq]
-  rw [e1, sup_inf_assoc_of_le _ (span_le_eigSum b e h C), hd.symm.eq_bot, sup_bot_eq]
-end Basis
 
 section Poly
 
@@ -582,35 +287,6 @@ structure BlockOk (t : ℕ) (bl : List (Pl → L)) : Prop where
   ne_nil : bl ≠ []
   ne_zero : ∀ ν ∈ bl, ∀ P, ν P ≠ 0
 
-theorem HasBlocks.of_nil (n : ℕ) (q : Pl → ℕ) (t : ℕ) (x : Pl × ℕ → L) : HasBlocks n q t [] x :=
-  fun _ => by simp
-
-theorem HasBlocks.of_len_zero (n : ℕ) (q : Pl → ℕ) (bl : List (Pl → L)) (x : Pl × ℕ → L) :
-    HasBlocks n q 0 bl x := fun P => by
-  have : (bl.map fun ν => blockPoly (ν P) (q P) 0) = bl.map fun _ => (1 : L[X]) := by
-    simp [blockPoly]
-  rw [this]
-  simp
-
-theorem blockPoly_zero_val (q t : ℕ) : blockPoly (0 : L) q t = 1 := by
-  simp [blockPoly]
-
-theorem blockPoly_eval_inv {ν : L} (hν : ν ≠ 0) (q : ℕ) {t : ℕ} (ht : 1 ≤ t) :
-    (blockPoly ν q t).eval ν⁻¹ = 0 := by
-  obtain ⟨s, rfl⟩ : ∃ s, t = s + 1 := ⟨t - 1, by omega⟩
-  rw [blockPoly_succ']
-  simp [hν]
-
-theorem HasBlocks.heckePoly_ne_one {n : ℕ} {q : Pl → ℕ} {t : ℕ} {bl : List (Pl → L)} {x : Pl × ℕ → L}
-    (hb : BlockOk t bl) (h : HasBlocks n q t bl x) (P : Pl) : heckePoly n q x P ≠ 1 := by
-  intro h1
-  obtain ⟨ν, bl', rfl⟩ := List.exists_cons_of_ne_nil hb.ne_nil
-  have hd := h P
-  rw [h1, List.map_cons, List.prod_cons] at hd
-  have h2 := Polynomial.eval_dvd (x := (ν P)⁻¹) ((Dvd.intro _ rfl).trans hd)
-  rw [blockPoly_eval_inv (hb.ne_zero ν (List.mem_cons_self) P) (q P) hb.one_le, eval_one, zero_dvd_iff] at h2
-  exact one_ne_zero h2
-
 theorem hasBlocks_map {L' : Type} [Field L'] (φ : L →+* L') (n : ℕ) (q : Pl → ℕ) (t : ℕ)
     (bl : List (Pl → L)) (x : Pl × ℕ → L) :
     HasBlocks n q t (bl.map fun ν P => φ (ν P)) (fun i => φ (x i)) ↔ HasBlocks n q t bl x := by
@@ -660,92 +336,7 @@ variable {K V Pl : Type} [Field K] [AddCommGroup V] [Module K V]
 def blockSum (n : ℕ) (q : Pl → ℕ) (t : ℕ) (bl : List (Pl → K)) (op : Pl × ℕ → End K V) : Submodule K V :=
   eigSum op (HasBlocks n q t bl)
 
-def blockSumOver (L : Type) [Field L] [Algebra K L] (n : ℕ) (q : Pl → ℕ) (t : ℕ) (bl : List (Pl → K))
-    (op : Pl × ℕ → End K V) : Submodule K V :=
-  eigSumOver L op (HasBlocks n q t (bl.map fun ν P => algebraMap K L (ν P)))
-
-theorem blockSumOver_eq_blockSum [FiniteDimensional K V] (L : Type) [Field L] [Algebra K L] (n : ℕ)
-    (q : Pl → ℕ) (t : ℕ) (bl : List (Pl → K)) {op : Pl × ℕ → End K V} (hc : PairComm op)
-    (hs : SplitOver op) : blockSumOver L n q t bl op = blockSum n q t bl op := by
-  rw [blockSumOver, eigSumOver_eq_eigSum hc hs, blockSum]
-  exact eigSum_congr fun x _ => hasBlocks_map (algebraMap K L) n q t bl x
-
-theorem HasBlocks.map_of_fixed {L : Type} [Field L] (φ : L →+* L) {n : ℕ} {q : Pl → ℕ} {t : ℕ}
-    {bl : List (Pl → L)} {x : Pl × ℕ → L} (hfix : ∀ ν ∈ bl, ∀ P, φ (ν P) = ν P)
-    (h : HasBlocks n q t bl x) : HasBlocks n q t bl fun i => φ (x i) := by
-  have e : (bl.map fun ν P => φ (ν P)) = bl := by
-    conv_rhs => rw [← List.map_id bl]
-    exact List.map_congr_left fun ν hν => funext fun P => hfix ν hν P
-  have h2 := (hasBlocks_map φ n q t bl x).2 h
-  rwa [e] at h2
-
-theorem HasBlocks.galois {K L : Type} [Field K] [Field L] [Algebra K L] (σ : L ≃ₐ[K] L) {n : ℕ} {q : Pl → ℕ}
-    {t : ℕ} {bl : List (Pl → K)} {x : Pl × ℕ → L}
-    (h : HasBlocks n q t (bl.map fun ν P => algebraMap K L (ν P)) x) :
-    HasBlocks n q t (bl.map fun ν P => algebraMap K L (ν P)) fun i => σ (x i) := by
-  refine HasBlocks.map_of_fixed (σ : L →+* L) ?_ h
-  intro ν hν P
-  obtain ⟨ν', _, rfl⟩ := List.mem_map.1 hν
-  exact σ.commutes (ν' P)
 end Block
-
-section Example
-
-open Polynomial
-
-def exSys : Fin 2 → Unit × ℕ → ℚ
-  | 0 => fun x => (gaussBin 2 2 x.2 : ℚ)
-  | 1 => fun x => if x.2 = 0 ∨ x.2 = 2 then 1 else 0
-
-def exOp (x : Unit × ℕ) : End ℚ (Fin 2 → ℚ) := LinearMap.pi fun j => exSys j x • LinearMap.proj j
-
-theorem exOp_apply (x : Unit × ℕ) (j : Fin 2) :
-    exOp x (Pi.basisFun ℚ (Fin 2) j) = exSys j x • Pi.basisFun ℚ (Fin 2) j := by
-  funext k
-  simp only [exOp, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.proj_apply, Pi.basisFun_apply,
-    Pi.smul_apply, Pi.single_apply, smul_eq_mul]
-  by_cases h : k = j
-  · rw [h]
-  · simp [h]
-
-theorem ex_has : HasBlocks 2 (fun _ : Unit => 2) 2 [fun _ => (1 : ℚ)] (exSys 0) := by
-  intro P
-  have h := heckePolyOf_gaussBin (L := ℚ) 2 2 1
-  simp only [one_pow, one_mul] at h
-  simp only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, heckePoly, exSys]
-  rw [h]
-
-theorem ex_has_not : ¬ HasBlocks 2 (fun _ : Unit => 2) 2 [fun _ => (1 : ℚ)] (exSys 1) := by
-  intro h
-  have h1 := h ()
-  simp only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one] at h1
-  have h2 := Polynomial.eval_dvd (x := (1 : ℚ)) h1
-  have e1 : (blockPoly (1 : ℚ) 2 2).eval 1 = 0 := by simp [blockPoly, Finset.prod_range_succ]
-  have e2 : (heckePoly 2 (fun _ : Unit => 2) (exSys 1) ()).eval 1 = 3 := by
-    simp [heckePoly, heckePolyOf, exSys, Finset.sum_range_succ]
-    norm_num
-  rw [e1, e2, zero_dvd_iff] at h2
-  norm_num at h2
-
-theorem ex_blockSum : blockSum 2 (fun _ : Unit => 2) 2 [fun _ => (1 : ℚ)] exOp =
-    Submodule.span ℚ {Pi.basisFun ℚ (Fin 2) 0} := by
-  rw [blockSum, eigSum_eq_span_of_basis (Pi.basisFun ℚ (Fin 2)) exSys fun i j => exOp_apply i j]
-  congr 1
-  ext v
-  simp only [Set.mem_image, Set.mem_ofPred_eq, Set.mem_singleton_iff]
-  constructor
-  · rintro ⟨j, hj, rfl⟩
-    fin_cases j
-    · rfl
-    · exact absurd hj ex_has_not
-  · rintro rfl
-    exact ⟨0, ex_has, rfl⟩
-
-theorem ex_finrank : finrank ℚ (blockSum 2 (fun _ : Unit => 2) 2 [fun _ => (1 : ℚ)] exOp) = 1 := by
-  rw [ex_blockSum]
-  exact finrank_span_singleton ((Pi.basisFun ℚ (Fin 2)).ne_zero 0)
-
-end Example
 
 section Nbr
 
@@ -896,18 +487,6 @@ abbrev LevOff (ST SG : Finset (HeightOneSpectrum (𝓞 E))) (S0 : Set (HeightOne
 
 def heckeFam (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpectrum (𝓞 E))) :
     LevOff ST SG S0 × ℕ → End K S.EqFun := fun x => (heckeD c x.1.1.asIdeal x.2).op
-
-def heckeAlgC (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpectrum (𝓞 E))) : Subalgebra K (End K S.EqFun) :=
-  hAlg K (heckeFam c S0)
-
-def blockSumC (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpectrum (𝓞 E))) (t : ℕ)
-    (bl : List (LevOff ST SG S0 → K)) (_hb : BlockOk t bl) : Submodule K S.EqFun :=
-  blockSum n SplitOff.q t bl (heckeFam c S0)
-
-def blockSumCOver (L : Type) [Field L] [Algebra K L] (c : DecoPts S E n ST SG)
-    (S0 : Set (HeightOneSpectrum (𝓞 E))) (t : ℕ) (bl : List (LevOff ST SG S0 → K)) (_hb : BlockOk t bl) :
-    Submodule K S.EqFun :=
-  blockSumOver L n SplitOff.q t bl (heckeFam c S0)
 
 end HeckeD
 
@@ -1088,15 +667,6 @@ theorem exists_heckeNbr_ker {N : Submodule (𝓞 E) (Sp E n)} (hlat : Submodule.
     exact ⟨a, haQ, a', haQ', fun x hx => h1 (Submodule.smul_mem_smul haP hx),
       fun x hx => h2 (Submodule.smul_mem_smul haP' hx)⟩
 
-theorem exists_heckeNbr {N : Submodule (𝓞 E) (Sp E n)} (hlat : Submodule.IsLattice E N)
-    (huni : IsUnimodular (hStd E n) N) (P : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ P ≠ P) {i : ℕ}
-    (φ : N →ₗ[𝓞 E] (Fin i → 𝓞 E ⧸ (conjPrime₂ P).asIdeal)) (hφ : Function.Surjective φ) :
-    ∃ N' : Submodule (𝓞 E) (Sp E n), Submodule.IsLattice E N' ∧ IsUnimodular (hStd E n) N' ∧
-      IsHeckeNbr P.asIdeal i N N' ∧
-      ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → Q ≠ conjPrime₂ P → SameAt Q N N' := by
-  obtain ⟨N', h1, h2, h3, h4, _⟩ := exists_heckeNbr_ker hlat huni P hne φ hφ
-  exact ⟨N', h1, h2, h3, h4⟩
-
 theorem IsHeckeNbr.eq_glue {N N' : Submodule (𝓞 E) (Sp E n)} (hlat : Submodule.IsLattice E N)
     (huni : IsUnimodular (hStd E n) N) (huni' : IsUnimodular (hStd E n) N')
     (P : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ P ≠ P) {i : ℕ} (h : IsHeckeNbr P.asIdeal i N N') :
@@ -1180,51 +750,6 @@ theorem Deco.Ok.replN {d : Deco E n ST SG} (hd : d.Ok) {N' : Submodule (𝓞 E) 
     rw [← mul_smul] at h4
     exact mem_smul_of_loc hx (fun hm => (w.1.isPrime.mem_or_mem hm).elim ha' ha) h4
 
-theorem DecoSet.heckeSet_nonempty_of_surj (d : DecoSet E n ST SG) (P : HeightOneSpectrum (𝓞 E))
-    (hne : conjPrime₂ P ≠ P) (hST : ∀ Q : ST, Q.1 ≠ P ∧ Q.1 ≠ conjPrime₂ P) (hSG : ∀ w : SG, w.1 ≠ P ∧ w.1 ≠ conjPrime₂ P)
-    {i : ℕ} (φ : d.1.N →ₗ[𝓞 E] (Fin i → 𝓞 E ⧸ (conjPrime₂ P).asIdeal)) (hφ : Function.Surjective φ) :
-    (d.heckeSet P.asIdeal i).Nonempty := by
-  obtain ⟨N', hl, hu, hnb, hsame⟩ := exists_heckeNbr d.2.lat d.2.uni P hne φ hφ
-  exact ⟨⟨{ N := N', f := d.1.f, be := d.1.be },
-    d.2.replN hl hu (fun Q => hsame Q.1 (hST Q).1 (hST Q).2) (fun w => hsame w.1 (hSG w).1 (hSG w).2)⟩,
-    hnb, rfl, rfl⟩
-
-theorem intAt_of_mem_stdLat (Q : HeightOneSpectrum (𝓞 E)) {x : Sp E n} (hx : x ∈ stdLat E n) (j : Fin n) :
-    IntAt Q (x j) := by
-  obtain ⟨r, hr⟩ := (mem_stdLat x).1 hx j
-  rw [← hr]
-  exact IntAt.coe Q r
-
-def redMap (Q : HeightOneSpectrum (𝓞 E)) {n i : ℕ} (h : i ≤ n) :
-    stdLat E n →ₗ[𝓞 E] (Fin i → 𝓞 E ⧸ Q.asIdeal) where
-  toFun x k := redP Q (x.1 (Fin.castLE h k))
-  map_add' x y := funext fun k =>
-    reduction_add (intAt_of_mem_stdLat Q x.2 _) (intAt_of_mem_stdLat Q y.2 _)
-  map_smul' c x := funext fun k => by
-    change redP Q (c • x.1 (Fin.castLE h k)) = c • redP Q (x.1 (Fin.castLE h k))
-    rw [redP_osmul c (intAt_of_mem_stdLat Q x.2 _), Algebra.smul_def, Ideal.Quotient.algebraMap_eq]
-
-theorem redMap_surjective (Q : HeightOneSpectrum (𝓞 E)) {n i : ℕ} (h : i ≤ n) :
-    Function.Surjective (redMap (E := E) Q h) := by
-  intro c
-  choose r hr using fun k => Ideal.Quotient.mk_surjective (c k)
-  refine ⟨⟨fun j => if hj : j.1 < i then algebraMap (𝓞 E) E (r ⟨j.1, hj⟩) else 0, ?_⟩, ?_⟩
-  · rw [mem_stdLat]
-    intro j
-    by_cases hj : j.1 < i
-    · exact ⟨r ⟨j.1, hj⟩, by rw [dif_pos hj]⟩
-    · exact ⟨0, by rw [dif_neg hj, map_zero]⟩
-  · funext k
-    change redP Q (if hj : (Fin.castLE h k).1 < i then algebraMap (𝓞 E) E (r ⟨(Fin.castLE h k).1, hj⟩) else 0) = c k
-    rw [dif_pos (by simp), reduction_coe]
-    exact hr k
-
-theorem DecoSet.heckeSet_base_nonempty [NeZero n] (P : HeightOneSpectrum (𝓞 E)) (hne : conjPrime₂ P ≠ P)
-    (hST : ∀ Q : ST, Q.1 ≠ P ∧ Q.1 ≠ conjPrime₂ P) (hSG : ∀ w : SG, w.1 ≠ P ∧ w.1 ≠ conjPrime₂ P) {i : ℕ}
-    (hi : i ≤ n) : ((DecoSet.base E n ST SG).heckeSet P.asIdeal i).Nonempty :=
-  DecoSet.heckeSet_nonempty_of_surj (DecoSet.base E n ST SG) P hne hST hSG (redMap (conjPrime₂ P) hi)
-    (redMap_surjective (conjPrime₂ P) hi)
-
 end Exist
 
 section Fam
@@ -1266,47 +791,7 @@ def HeckeComm (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpectrum (𝓞 E))) 
 def HeckeFieldsIn (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpectrum (𝓞 E))) : Prop :=
   SplitOver (heckeFam c S0)
 
-def blockProjC [FiniteDimensional K S.EqFun] (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpectrum (𝓞 E)))
-    (hc : HeckeComm c S0) (hs : HeckeFieldsIn c S0) (t : ℕ) (bl : List (LevOff ST SG S0 → K))
-    (_hb : BlockOk t bl) : End K S.EqFun :=
-  eigProj hc hs (HasBlocks n SplitOff.q t bl)
-
-theorem range_blockProjC [FiniteDimensional K S.EqFun] (c : DecoPts S E n ST SG)
-    (S0 : Set (HeightOneSpectrum (𝓞 E))) (hc : HeckeComm c S0) (hs : HeckeFieldsIn c S0) (t : ℕ)
-    (bl : List (LevOff ST SG S0 → K)) (hb : BlockOk t bl) :
-    LinearMap.range (blockProjC c S0 hc hs t bl hb) = blockSumC c S0 t bl hb :=
-  range_eigProj hc hs _
-
-theorem heckePoly_coeff_zero (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpectrum (𝓞 E)))
-    {x : LevOff ST SG S0 × ℕ → K} (hx : Occurs (heckeFam c S0) x) (P : LevOff ST SG S0) :
-    (heckePoly n SplitOff.q x P).coeff 0 = 1 := by
-  have h1 : x (P, 0) = 1 := hx.eq_one (heckeFam_zero c S0 P)
-  simp [heckePoly, heckePolyOf, Polynomial.coeff_X_pow, Finset.sum_ite_eq, h1]
-
 end Fam
-
-section Triv
-
-open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory
-
-variable (K : Type) [Field K] [NumberField K] [StarRing K]
-variable (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ)
-  (ST SG : Finset (HeightOneSpectrum (𝓞 E)))
-
-def trivPts : DecoPts (GSD.triv K (UF E n × GLG E n SG) (DecoSet E n ST SG)) E n ST SG where
-  pts := Equiv.refl _
-  hom := MonoidHom.id _
-  pts_smul := fun _ _ => rfl
-
-theorem heckeD_trivOne (P : Ideal (𝓞 E)) (i : ℕ) (d : DecoSet E n ST SG) :
-    (((heckeD (trivPts K E n ST SG) P i).op (GSD.trivOne K (UF E n × GLG E n SG) (DecoSet E n ST SG)) :
-      (GSD.triv K (UF E n × GLG E n SG) (DecoSet E n ST SG)).EqFun) : DecoSet E n ST SG → K) d =
-      (((trivPts K E n ST SG).nb P i d).card : K) := by
-  rw [heckeD_op_apply]
-  change ∑ _e ∈ (trivPts K E n ST SG).nb P i d, (1 : K) = _
-  rw [Finset.sum_const, nsmul_eq_mul, mul_one]
-
-end Triv
 
 section NonZero
 
@@ -1321,33 +806,12 @@ theorem SplitOff.ne_of_mem {S0 : Set (HeightOneSpectrum (𝓞 E))} (P : SplitOff
     {Q : HeightOneSpectrum (𝓞 E)} (hQ : Q ∈ S0) : Q ≠ P.1 ∧ Q ≠ conjPrime₂ P.1 :=
   ⟨fun h => P.2.2.1 (h ▸ hQ), fun h => P.2.2.2 Q hQ (by rw [conjIdeal_asIdeal, h])⟩
 
-theorem LevOff.notMem {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {S0 : Set (HeightOneSpectrum (𝓞 E))}
-    (P : LevOff ST SG S0) : (P.1 ∉ ST ∧ conjPrime₂ P.1 ∉ ST) ∧ (P.1 ∉ SG ∧ conjPrime₂ P.1 ∉ SG) ∧ (P.1 ∉ S0 ∧ conjPrime₂ P.1 ∉ S0) :=
-  ⟨⟨fun h => (SplitOff.ne_of_mem P (Or.inl (Or.inr h))).1 rfl, fun h => (SplitOff.ne_of_mem P (Or.inl (Or.inr h))).2 rfl⟩,
-    ⟨fun h => (SplitOff.ne_of_mem P (Or.inr h)).1 rfl, fun h => (SplitOff.ne_of_mem P (Or.inr h)).2 rfl⟩,
-    ⟨fun h => (SplitOff.ne_of_mem P (Or.inl (Or.inl h))).1 rfl, fun h => (SplitOff.ne_of_mem P (Or.inl (Or.inl h))).2 rfl⟩⟩
-
 theorem SplitOff.q_ne_zero {S0 : Set (HeightOneSpectrum (𝓞 E))} (P : SplitOff S0) : P.q ≠ 0 := by
   have : Finite (𝓞 E ⧸ P.1.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ P.1.ne_bot
   exact Nat.card_pos.ne'
 
 variable (K : Type) [Field K] [NumberField K] [StarRing K] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-theorem heckeFam_triv_ne_zero [NeZero n] (S0 : Set (HeightOneSpectrum (𝓞 E))) (P : LevOff ST SG S0) {i : ℕ}
-    (hi : i ≤ n) :
-    heckeFam (trivPts K E n ST SG) S0 (P, i) ≠ 0 := by
-  intro h
-  have h1 := heckeD_trivOne K E n ST SG P.1.asIdeal i (DecoSet.base E n ST SG)
-  have h2 : (heckeD (trivPts K E n ST SG) P.1.asIdeal i).op = 0 := h
-  rw [h2] at h1
-  obtain ⟨e, he⟩ := DecoSet.heckeSet_base_nonempty (ST := ST) (SG := SG) (n := n) P.1 P.conjP_ne
-    (fun Q => P.ne_of_mem (Or.inl (Or.inr Q.2))) (fun w => P.ne_of_mem (Or.inr w.2)) hi
-  have h3 : e ∈ (trivPts K E n ST SG).nb P.1.asIdeal i (DecoSet.base E n ST SG) :=
-    ((trivPts K E n ST SG).mem_nb_iff P.1 i _ e).2 he
-  have h4 : (((trivPts K E n ST SG).nb P.1.asIdeal i (DecoSet.base E n ST SG)).card : K) ≠ 0 :=
-    Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem h3)
-  exact h4 h1.symm
 
 end NonZero
 

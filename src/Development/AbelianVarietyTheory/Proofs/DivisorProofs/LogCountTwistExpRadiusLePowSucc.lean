@@ -2,9 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionBallFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionBallFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul
+import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.VolGe
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
@@ -19,14 +22,14 @@ theorem lc_twist_le_of_good {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral
     fun a e σ y f => mul_nonneg (norm_nonneg _) (Real.exp_pos _).le
   obtain ⟨htH, htn⟩ := hG.t_mem
   obtain ⟨hsH, hsn⟩ := hG.s_mem
-  obtain ⟨hpH, hpn⟩ := GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P (-1) b t htH N
-  obtain ⟨hqH, hqn⟩ := GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P 0 1 s hsH c
+  obtain ⟨hpH, hpn⟩ := _root_.GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P (-1) b t htH N
+  obtain ⟨hqH, hqn⟩ := _root_.GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow k X p P 0 1 s hsH c
   have e1 : (N : ℤ) + N * -1 + c * 0 = 0 := by ring
   have e2 : -(c : ℤ) + N * b + c * 1 = N * b := by ring
   have hmaps : ∀ f ∈ P.Bl N (-c) R, f * t ^ N * s ^ c ∈ P.Bl 0 ((N : ℤ) * b) R := by
     rintro f ⟨hfH, hfn⟩
-    obtain ⟨hH1, hn1⟩ := GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P N (-c) (N * -1) (N * b) f (t ^ N) hfH hpH
-    obtain ⟨hH, hn⟩ := GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P (N + N * -1) (-c + N * b) (c * 0) (c * 1) (f * t ^ N) (s ^ c) hH1 hqH
+    obtain ⟨hH1, hn1⟩ := _root_.GlobalTheory.VolBr.NuMul.mul_mem_H_and_nu_mul k X p P N (-c) (N * -1) (N * b) f (t ^ N) hfH hpH
+    obtain ⟨hH, hn⟩ := _root_.GlobalTheory.VolBr.NuMul.mul_mem_H_and_nu_mul k X p P (N + N * -1) (-c + N * b) (c * 0) (c * 1) (f * t ^ N) (s ^ c) hH1 hqH
     rw [e1, e2] at hH hn
     refine ⟨hH, fun σ y => ?_⟩
     rw [hn σ y, hn1 σ y, hpn σ y, hqn σ y]
@@ -62,7 +65,7 @@ theorem crude_upper_lc_twist : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsI
   have hpos : (0 : ℝ) < ((b * N : ℕ) : ℝ) ^ (D + 1) := by push_cast; positivity
   rw [e1, e2, div_lt_iff₀ hpos] at hN
   calc P.lc N (-c) (Real.exp (3 * N)) ≤ P.lc 0 ((N : ℤ) * b) (Real.exp (3 * N)) :=
-        lc_twist_le_of_good P hG N c _ (GlobalTheory.T.hermLineBundlePair_sectionBall_finite k X p D hX P 0 _ _)
+        lc_twist_le_of_good P hG N c _ (_root_.GlobalTheory.HSNef.bl_finite k X p D hX P 0 _ _)
     _ ≤ C * ((b * N : ℕ) : ℝ) ^ (D + 1) := hN.le
     _ = C * (b : ℝ) ^ (D + 1) * (N : ℝ) ^ (D + 1) := by push_cast; ring
 

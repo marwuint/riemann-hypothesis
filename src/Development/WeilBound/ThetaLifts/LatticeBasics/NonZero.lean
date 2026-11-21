@@ -32,13 +32,6 @@ theorem pairV' (h : IsTriple B G X om om') :
   ⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, hecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα,
     res_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩
 
-theorem occ_fin {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {o : Rep σ Y W} {v : Pl F} {P : Type} [AddCommGroup P] [Module ℂ P]
-    [Nontrivial P] {p : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] P} (h1 : (SB _).map p = ⊤) (h2 : augAt o v ≤ LinearMap.ker p) :
-    ∃ φ ∈ SB (Fin n × Fin d → Fv F v), φ ∉ augAt o v := by
-  obtain ⟨x, hx⟩ := exists_ne (0 : P)
-  obtain ⟨φ, hφ, rfl⟩ := Submodule.mem_map.1 (h1 ▸ Submodule.mem_top : x ∈ (SB _).map p)
-  exact ⟨φ, hφ, fun h => hx (h2 h)⟩
-
 theorem split_zero {W : Spc F E (a + a')} {d₁ : ℕ} (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (X : Chars F E) :
     Split2 (σ := σ) (W := W) W₁ H' X 0 0 0 :=
   ⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ => by simp⟩

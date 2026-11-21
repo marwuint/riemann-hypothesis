@@ -47,7 +47,7 @@ theorem mem_latRat (S T : HSp D) (hS : S.gram = 1) (hc : D.host.ccK = ⊤)
     (hN : IsSelfDualC S N) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E)
     (hγ : Matrix.toLin' γ ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') :
     γ ∈ GlobalTheory.LatVac.latRat S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E)) := by
-  obtain ⟨n, s, s', hs, hd⟩ := GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S N hN
+  obtain ⟨n, s, s', hs, hd⟩ := _root_.GlobalTheory.LatVacDual.dualFamily D S N hN
   rw [← LinearMap.toMatrix'_toLin' γ]
   refine Submodule.span_induction (p := fun φ _ => LinearMap.toMatrix' φ ∈
       GlobalTheory.LatVac.latRat S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E))) ?_ ?_ ?_ ?_ hγ
@@ -157,7 +157,7 @@ theorem sgnW_finTens {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
       (1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * hRat S T γ (w • γ)))) := by
     rw [symplOH, symplO_finTens, one_mul, one_mul, RingHom.map_mul]
     exact Prod.ext (mul_zero _) rfl
-  rw [sgnW, incA_smul_finTens, h3, GlobalTheory.T.stdChar_finitePart_rational_eq_exp_trace D ψ hψ,
+  rw [sgnW, incA_smul_finTens, h3, _root_.GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ,
     show (1 / 2 : D.host.F) = algebraMap ℚ D.host.F (1 / 2) by simp, ← Algebra.smul_def, map_smul,
     Algebra.trace_trace, smul_eq_mul]
   congr 1

@@ -15,9 +15,4 @@ def gamEquiv : ℚˣ ≃ Gam := (MonoidHom.ofInjective (IdeleGroup.diagonal_inje
 
 instance countable_gam : Countable Gam := gamEquiv.surjective.countable
 
-def iota (y : ℝ) : (InfiniteAdeleRing ℚ)ˣ :=
-  IdeleGroup.toInfinite ℚ (moduleSection Rat.infinitePlace (expPos y))
-
-def Rpos : Set (InfiniteAdeleRing ℚ)ˣ := {a | 0 < (realUnitsEquiv a : ℝ)}
-
 end Ad3.GM.UnfoldingIntegralBis

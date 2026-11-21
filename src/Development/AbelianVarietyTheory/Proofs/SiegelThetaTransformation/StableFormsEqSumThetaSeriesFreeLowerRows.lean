@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelThetaSpan
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructureProperties
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaSeriesLowerRowsZeroEqFreeLowerRowsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.VacuumMultiplierUnitaryCocycleStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsFormExtendToAllLatticesStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.VacuumMultiplierUnitaryCocycle
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsFormExtendToAllLattices
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -31,11 +31,11 @@ theorem GlobalTheory.Dict.stabForms_eq_sum_thP : ∀ (E : Type) [Field E] [Numbe
   intro E _ _ _ r X g q0 hr bas idx n hS hE hn4 D hn M 𝔐 𝔍 hM hMm hmf hcop v₀ hv mu hmu k k' Jx _ L Q
     hL hinj hfix hQ
 
-  obtain ⟨hnorm, -, hcoc⟩ := GlobalTheory.T.vacuum_multiplier_unitary_cocycle E r X g bas idx n hS hE D v₀ hv mu hmu
+  obtain ⟨hnorm, -, hcoc⟩ := _root_.GlobalTheory.Dict.vac_multiplier_cocycle E r X g bas idx n hS hE D v₀ hv mu hmu
 
-  have hsys := GlobalTheory.T.hermitianThetaLevelData_forms_system E r X g bas idx n hS hE hn4 D hn M hM hMm v₀ hv mu hmu
+  have hsys := _root_.GlobalTheory.SW.isSystem_level E r X g bas idx n hS hE hn4 D hn M hM hMm v₀ hv mu hmu
 
-  obtain ⟨F, hF, hFL⟩ := GlobalTheory.T.exists_form_extend_to_all_lattices E r X D.grp D.lats mu (wtOf X hr k k' n) Jx L Q hsys.un
+  obtain ⟨F, hF, hFL⟩ := _root_.GlobalTheory.Dict.exists_form_extend E r X D.grp D.lats mu (wtOf X hr k k' n) Jx L Q hsys.un
     (fun ga hga L' hL' => ⟨hsys.stab ga hga L' hL', hnorm ga hga L' hL'⟩) hcoc hL hinj hfix hQ
 
   obtain ⟨m, Λ, P, a, hΛP, hFsum⟩ :=

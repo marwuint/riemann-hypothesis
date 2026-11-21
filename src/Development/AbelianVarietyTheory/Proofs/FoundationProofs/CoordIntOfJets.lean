@@ -28,7 +28,7 @@ theorem term_bound_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translate
       (dl p + (if p = D.host.d then 1 / 4 else 0) + (padicValNat p Q : ℝ)) + ((P.a * P.d : ℕ) : ℝ) * (padicValNat p Q : ℝ)) := by
   classical
   obtain ⟨b, k, M, r, s, hOnB, hLoc, hM0, hMp, hLa, hr, hOm⟩ :=
-    GlobalTheory.T.kernelAtPrime_eq_sum_torsionTranslates D hI δ t0 Q P.crv P.pt0 P.level_pos P p lam g g' k' hk hg hg'
+    _root_.GlobalTheory.NormSum.kernel_eq_sum_translates D hI δ t0 Q P.crv P.pt0 P.level_pos P p lam g g' k' hk hg hg'
   obtain ⟨-, -, -, -, hLk⟩ := hL
   have hpp : p.Prime := Fact.out
   have hp0 : (0 : ℝ) < p := by exact_mod_cast hpp.pos
@@ -99,7 +99,7 @@ theorem coordInt_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_
   classical
   have hL' := hL
   obtain ⟨-, hdl0, -, -, -⟩ := hL'
-  have hcard : Fintype.card D.what₂.Tau = fF D := (GlobalTheory.T.derivationDenominators_and_hostField_sizes D hI.g1).2.2.2.2.1
+  have hcard : Fintype.card D.what₂.Tau = fF D := (_root_.GlobalTheory.NormSum.letters_and_sizes D hI.g1).2.2.2.2.1
   unfold CoordInt
   intro δ t0 p _ Q' hQ' P hP
   obtain ⟨hPd, hPn⟩ := hP
@@ -153,7 +153,7 @@ theorem coordInt_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_
       push_cast
       nlinarith [mul_le_mul ha hd (Nat.cast_nonneg _) (by positivity : (0 : ℝ) ≤ 2 * N)]
     refine bd_finsum (Real.rpow_nonneg hp0.le _) _ (fun q => ?_)
-    have hg1 := GlobalTheory.T.unitaryRationalConjIntersectionCard_dvd_invariant D P.a (intG D P.a) le_rfl (s q)
+    have hg1 := _root_.GlobalTheory.StabOrder.gam_ne_zero_dvd_invariant D P.a (intG D P.a) le_rfl (s q)
     have hdvd : gam D (intG D P.a) (s q) ∣ 8 ^ (4 * fF D * N) * (8 * fF D * N).factorial :=
       hg1.2.1.trans (GlobalTheory.NormVal.order_dvd (f := fF D) (le_trans P.a_le hPd))
     have hA := GlobalTheory.NormVal.Bd.inv_nat (p := p) hMN0 hdvd

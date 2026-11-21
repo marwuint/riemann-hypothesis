@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsBaseChart
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameMinorValueFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameMinorValueFormula
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockLUFactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LUTwistRefactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartTenthStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameLUMinorValueStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedFrameValueFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LUTwistRefactorization
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartTenth
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameLUMinorValue
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedFrameValueFormula
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WMan
@@ -20,7 +20,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
   have hctx' := hctx
   obtain ⟨hb, hab, hk, hca, hcb, hy, hF, hBC, hr, hrc, hh⟩ := hctx'
   obtain ⟨hmem, hsrc, hV, hden, hden2⟩ := hz
-  obtain ⟨hzb, hG, horb, h', t', hh', Hf, Hs⟩ := GlobalTheory.T.flag_adjacent_chart_tenth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h hctx z
+  obtain ⟨hzb, hG, horb, h', t', hh', Hf, Hs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.Onto.norm K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h hctx z
     ⟨hmem, hsrc, hV, hden, hden2⟩
   have hS := Pts.same_summand hb hab hca hcb
   have hj := M.j_le
@@ -50,7 +50,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     obtain ⟨k, hp⟩ : ∃ k, M.blk (τ', i) = some k := Option.ne_none_iff_exists'.1 fun e => (M.blk_none _).1 e hi
     obtain ⟨α, hα, hz₁⟩ := Hf (τ', i) k hp
     refine hden (τ', i) k hp ?_
-    rw [GlobalTheory.T.frame_minor_value_formula K ι Φ y Ψ N j M F zb (τ', i) k (h' τ') (h τ')⁻¹ (fstPt k₀ z) α _ hF hzb hG hp (hh' τ').1 hz₁]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.TwRead.main K ι Φ y Ψ N j M F zb (τ', i) k (h' τ') (h τ')⁻¹ (fstPt k₀ z) α _ hF hzb hG hp (hh' τ').1 hz₁]
     show α * minorIJ (G τ') _ _ = 0
     rw [h0, mul_zero]
   choose L U hLb hLu hUb hUt hUd hLU using fun τ' => GlobalTheory.T.block_LU_factorization N j (G τ') hj (hGb τ') (hGd τ') (hmin τ')
@@ -59,7 +59,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     exact Matrix.mul_nonsing_inv_cancel_left _ _ (hdu τ')
   have hlow : ∀ τ' (a' b' : Fin N), b' < a' → ((a' : ℕ) < N - j ↔ (b' : ℕ) < N - j) →
       lowRead M F zb h (fstPt k₀ z) τ' a' b' = L τ' a' b' := fun τ' a' b' e e' =>
-    GlobalTheory.T.frame_LU_minor_value K ι Φ y Ψ N j M F zb h τ' a' b' (fstPt k₀ z) (h' τ') (L τ') (U τ') hF hzb hG (hh' τ').1 (hLU τ')
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.LowRead.main K ι Φ y Ψ N j M F zb h τ' a' b' (fstPt k₀ z) (h' τ') (L τ') (U τ') hF hzb hG (hh' τ').1 (hLU τ')
       (hLb τ') (hLu τ') (hUb τ') (hUt τ') (fun c _ => hUd τ' c) e e' (fun k hp => Hf (τ', stepOf N j b') k hp)
   have hlm : ∀ τ', lowMat (wL ε w) τ' = L τ' := fun τ' => by
     ext a' b'
@@ -75,11 +75,11 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
   have hne2 : minorIJ (L τ * U τ * (1 + Matrix.single cb ca t')) (stepCols N j a) (stepCols N j a) ≠ 0 := by
     intro h0
     refine hden2 ?_
-    rw [GlobalTheory.T.frame_minor_value_formula K ι Φ y Ψ N j M F zb (τ, a) k₀ (h' τ * (1 + Matrix.single cb ca t')) (h τ)⁻¹ (sndPt k₀ z) α₂ _ hF hzb hG hk
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.TwRead.main K ι Φ y Ψ N j M F zb (τ, a) k₀ (h' τ * (1 + Matrix.single cb ca t')) (h τ)⁻¹ (sndPt k₀ z) α₂ _ hF hzb hG hk
       ((hh' τ).1.mul (Pts.transv_block hS t')) hz₂, ← Matrix.mul_assoc]
     show α₂ * minorIJ (G τ * _) _ _ = 0
     rw [hLU, h0, mul_zero]
-  obtain ⟨t, Vm, hVb, hVt, hVd, hUV⟩ := GlobalTheory.T.LU_twist_refactorization N j a ca cb (L τ) (U τ) t' hj hca hcb hS (hLb τ) (hLu τ) (hUb τ) (hUt τ)
+  obtain ⟨t, Vm, hVb, hVt, hVd, hUV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.Transv.main N j a ca cb (L τ) (U τ) t' hj hca hcb hS (hLb τ) (hLu τ) (hUb τ) (hUt τ)
     (hUd τ) hne2
   have hlt : ca < cb := by rw [Fin.lt_def]; omega
   have hstep : stepOf N j ca = a := by
@@ -110,7 +110,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     rw [hLe, if_pos rfl, (hLu τ).1, one_mul]
   have hsnd : lowRead M F zb h (sndPt k₀ z) τ cb ca = L τ cb ca + t := by
     rw [← hL2c]
-    refine GlobalTheory.T.frame_LU_minor_value K ι Φ y Ψ N j M F zb h τ cb ca (sndPt k₀ z) (h' τ * (1 + Matrix.single cb ca t')) _ Vm hF hzb hG
+    refine _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.LowRead.main K ι Φ y Ψ N j M F zb h τ cb ca (sndPt k₀ z) (h' τ * (1 + Matrix.single cb ca t')) _ Vm hF hzb hG
       ((hh' τ).1.mul (Pts.transv_block hS t')) ?_ ((hLb τ).mul (Pts.transv_block hS t)) hL2 hVb hVt hcc hlt hS.symm ?_
     · rw [← Matrix.mul_assoc]
       show G τ * _ = _
@@ -127,7 +127,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     rw [hlm, Matrix.mul_assoc, hhL]
   show SameOrbit (sqZ M F (bl (wB ε w)) (fun τ' => wH h ε τ' w) k₀ τ ca cb (wT ε w)) z
   rw [hwB, hwt]
-  refine GlobalTheory.T.twisted_frame_value_formula K ι Φ y Ψ N j M τ a k₀ ca cb F _ z _ U Vm t hk hzb hG horb
+  refine _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.sameOrbit_sqZ_of_flags K ι Φ y Ψ N j M τ a k₀ ca cb F _ z _ U Vm t hk hzb hG horb
     (fun τ' => ⟨hUb τ', hUt τ', hUd τ'⟩) hVb hVt hVd (fun p k hp => ?_) ⟨α₂, hα₂, fun m => ?_⟩
   · rw [hHU]
     exact Hf p k hp

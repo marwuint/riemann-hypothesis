@@ -44,30 +44,6 @@ def sec {A : Type} [CommRing A] (R : Matrix (Fin n) (Fin n) A) (h : R * R = R) :
     congr 2
     ring
 
-theorem su_mem (hS : GlobalTheory.Published.StrongApproxSU) (hc : IsCMExt F E σ) {X : Spc F E n} (hJ : IsHermND σ X.Jᵀ) (hn : 2 ≤ n)
-    (L : Subgroup (UA σ X.J)) (hL : IsClosed (L : Set (UA σ X.J))) (hr : ratU σ X.J ≤ L) {v : Pl F}
-    (hv : ∀ u ∈ UAt σ X (evFin F v), u ∈ L) {ε : AF F} {e : AE F E} (hε : GlobalTheory.Published.IsPlacesIdem ∅ {v} ε) (e1 : e * e = e)
-    (e2 : e * sigR (AF F) σ e = 0) (e3 : e + sigR (AF F) σ e = algebraMap (AF F) (AE F E) ε) (g : UA σ X.J)
-    (hg : (mat g).det = 1) : g ∈ L := by
-  let ι : HA (AF F) σ X.Jᵀ → UA σ X.J := fun x => ⟨HA.mat _ _ _ x, mem_UG_of.2 (show HR (AF F) σ X.Jᵀ from x).2⟩
-  have hι : Continuous ι := continuous_subtype_val.subtype_mk _
-  have z : ∀ t, evFin F v t = 0 → t * ε = 0 := fun t ht => by
-    refine Prod.ext (funext fun w => (congrArg (t.1 w * ·) (hε.2.1 w (Finset.notMem_empty w))).trans (mul_zero _))
-      (FiniteAdeleRing.ext _ fun u => ?_)
-    by_cases hu : u = v
-    · subst hu
-      exact (congrArg (· * ε.2 u) ht).trans (zero_mul _)
-    · exact (congrArg (t.2 u * ·) (hε.2.2.2 u fun x => hu (Finset.mem_singleton.1 x))).trans (mul_zero _)
-  refine closure_minimal (t := ι ⁻¹' L) ?_ (hL.preimage hι) (hS F E σ hc n _ hn hJ ∅ {v} ε hε
-    (GlobalTheory.Published.StrongApprox.not_isCompact_split σ hn hJ v ε (hε.2.2.1 v (Finset.mem_singleton_self v)) e e1 e2 e3)
-    (⟨g.1, mem_UG_of.1 g.2⟩ : HR (AF F) σ X.Jᵀ) (GlobalTheory.Published.StrongApprox.mem_SUAdelic.2 hg))
-  rintro _ ⟨γ, ⟨-, y, -, hy⟩, h, ⟨-, hh⟩, rfl⟩
-  have h1 : ι γ ∈ L := hr ⟨y, hy⟩
-  have h2 : ι h ∈ L := hv _ fun t ht => Matrix.ext fun i j => by
-    refine (congrArg (t • ·) (hh i j).symm).trans ?_
-    rw [← Algebra.smul_def, smul_smul, z t ht, zero_smul, Matrix.zero_apply]
-  exact mul_mem h1 h2
-
 theorem exists_sec (hc : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ Jᵀ) (hn : 1 ≤ n) :
     ∃ S : normOne (cA σ) →* UA σ J, Continuous S ∧ (∀ z, (mat (S z)).det = (z.1 : (AE F E)ˣ)) ∧
       (∀ z : normOne (cA σ), (∃ k : E, k ≠ 0 ∧ ((z.1 : (AE F E)ˣ) : AE F E) = inclR (F := F) (AF F) k) → S z ∈ ratU σ J) ∧
@@ -110,41 +86,6 @@ theorem conj_mem_UAt {X : Spc F E n} {R : Type} [Zero R] {ev : AF F → R} {u : 
     rw [mul_sub, sub_mul, mul_one]
     exact congrArg₂ (· - ·) rfl (Units.inv_mul g.1).symm
   rw [this, ← smul_mul_assoc, ← mul_smul_comm, hu t ht, mul_zero, zero_mul]
-
-theorem mem_of_good (hS : GlobalTheory.Published.StrongApproxSU) (hH : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (hc : IsCMExt F E σ)
-    [IsGalois ℚ E] {X : Spc F E n} (hJ : IsHermND σ X.Jᵀ) (hn : 2 ≤ n) (T : Finset (Pl F)) (L : Subgroup (UA σ X.J))
-    (hL : IsClosed (L : Set (UA σ X.J))) (hr : ratU σ X.J ≤ L)
-    (hv : ∀ v ∉ T, SplitsFully E v → ∀ u ∈ UAt σ X (evFin F v), u ∈ L) (g : UA σ X.J) : g ∈ L := by
-  obtain ⟨v, a, b, ε, e, hε, e1, e2, e3⟩ := exists_split hH hc T
-  obtain ⟨S, cS, s1, s2, s3⟩ := exists_sec hc hJ (by omega)
-  have hg : IsUnit (incM F X.J).det := by
-    rw [incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
-    exact (IsUnit.mk0 _ (Matrix.det_transpose X.J ▸ hJ.2)).map _
-  let z : normOne (cA σ) := ⟨_, det_mem_normOne ⟨fun a b => congrArg (inclR (F := F) (AF F)) (hJ.1 b a), hg⟩ g⟩
-  have h1 : S z ∈ L := normOne_mem hH hc T (L.comap S) (hL.preimage cS) (fun z h => hr (s2 z h))
-    (fun v a b z hz => hv v a b _ fun t ht => s3 z t (hz t ht)) z
-  have h2 : g * S z⁻¹ ∈ L := su_mem hS hc hJ hn L hL hr (hv v a b) hε e1 e2 e3 _ (by
-    rw [show mat (g * S z⁻¹) = mat g * mat (S z⁻¹) from rfl, Matrix.det_mul, s1]
-    exact z.1.mul_inv)
-  simpa using mul_mem h2 h1
-
-theorem constOfGood_of (hS : GlobalTheory.Published.StrongApproxSU) (hH : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) : ConstOfGood := by
-  intro F E _ _ _ _ _ σ B n X r s hB hX hn T f hf hr hv g
-  have := hB.galois
-  have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _
-  have : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
-  let L : Subgroup (UA σ X.J) :=
-    { carrier := ⋂ g, {x | f (x * g) = f g}
-      one_mem' := Set.mem_iInter.2 fun g => congrArg f (one_mul g)
-      mul_mem' := fun {a b} ha hb => Set.mem_iInter.2 fun g =>
-        (congrArg f (mul_assoc a b g)).trans ((Set.mem_iInter.1 ha _).trans (Set.mem_iInter.1 hb _))
-      inv_mem' := fun {a} ha => Set.mem_iInter.2 fun g =>
-        (Set.mem_iInter.1 ha _).symm.trans (congrArg f (mul_inv_cancel_left a g)) }
-  have := mem_of_good hS hH hB.cm (hermND_transpose hX) hn T L
-    (isClosed_iInter fun g => isClosed_eq (hf.comp (continuous_mul_const g)) continuous_const)
-    (fun γ h => Set.mem_iInter.2 (hr γ h)) (fun v a b u hu => Set.mem_iInter.2 fun g =>
-      (congrArg f (by group)).trans (hv v a b _ (conj_mem_UAt hu g) g)) g
-  exact (congrArg f (mul_one g)).symm.trans (Set.mem_iInter.1 this 1)
 
 end GlobalTheory.ThK.Dbl
 

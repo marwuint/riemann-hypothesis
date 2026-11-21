@@ -6,21 +6,6 @@ namespace GlobalTheory
 open WeierstrassCurve WeierstrassCurve.Affine Polynomial NumberField IsDedekindDomain
 open scoped nonZeroDivisors
 
-section Valuation
-
-variable (V : Type*) [CommRing V] [IsDomain V] [ValuationRing V] {K : Type*} [Field K] [CharZero K]
-  [Algebra V K] [IsFractionRing V K] {L : Type*} [Field L] [Algebra K L] [IsAlgClosed L]
-  {W : WeierstrassCurve K} [W.IsElliptic]
-
-end Valuation
-
-section Good
-
-variable (R : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {K : Type*} [Field K]
-  [Algebra R K] [IsFractionRing R K]
-
-end Good
-
 instance isDiscreteValuationRing_valuationSubringAtPrime {R : Type*} [CommRing R]
     [IsDedekindDomain R] (K : Type*) [Field K] [Algebra R K] [IsFractionRing R K]
     (p : HeightOneSpectrum R) : IsDiscreteValuationRing (p.valuationSubringAtPrime K) :=

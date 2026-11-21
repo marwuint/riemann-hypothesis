@@ -4,10 +4,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogPeriodLimit
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsIsChart
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeCovolumePositiveStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjectionStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.IsotropicSubmoduleNonzeroFamily
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeEigenProjections
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsIntPreimageOfOrthogonalKernelStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RiemannFormHermitianLatticeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RiemannFormHermitianLattice
 
 noncomputable section
 
@@ -364,7 +364,7 @@ theorem limit_form : ∀ (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.L
   · set y : Fin g → ℂ := ((A 0)ᵀ)⁻¹ *ᵥ v with hy
     have hvy : (A 0)ᵀ *ᵥ y = v := by
       rw [hy, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdetT, Matrix.one_mulVec]
-    obtain ⟨f1, -, f3⟩ := GlobalTheory.T.riemann_form_hermitian_lattice g (∑ j, B j) (T0 0) _ c h.c_pos hSPSD hτ hlow hGCh hrel
+    obtain ⟨f1, -, f3⟩ := _root_.GlobalTheory.CompanionTheory.RiemannForm.form_bounds g (∑ j, B j) (T0 0) _ c h.c_pos hSPSD hτ hlow hGCh hrel
       hkerG y
     have hval : v ⬝ᵥ chartQ Pr A T0 0 *ᵥ star v =
         y ⬝ᵥ (compInv Pr ((T0 0).map Complex.im)).map (fun x : ℝ => (x : ℂ)) *ᵥ star y := by

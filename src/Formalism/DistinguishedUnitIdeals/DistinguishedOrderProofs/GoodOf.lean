@@ -130,8 +130,6 @@ open GoodPlacesAlt IdempotentNormalFormsRhoFacts
 
 theorem iterated_third_estimate_holds : E3itOf := fun _ _ B h j => e3it B h j
 
-theorem second_estimate_holds : LevelFactorMemSpanOf := fun _ _ B hl h s => e2 B hl h s
-
 theorem base_ring_good_holds : BaseGoodOf := by
   intro O _ B j M g h3 h4 hM
   refine ⟨?_, ?_, ?_⟩
@@ -1443,24 +1441,5 @@ theorem good_lattice_holds : LatGoodOf := by
     fun c _ => second_rule_first_form O B n j M g sig V L c htr (height_bound_holds O B u₁ n M V L c hp h4u hP9),
     fun c _ => gamma_injective_holds O B u₁ n M V L c h4u hP9,
     fun c hc => saturation_holds_alt O B n j _ V L c hsat (hfree c hc), hlt⟩
-
-theorem good_lattice_primitive : LatGoodPrim := by
-  intro O _ _ _ ϖ B n _ Cu j M g G sig Mi V _ _ L hϖ hd h0 hp hl hj hO h3 h4 hG hs hP9 hP5 hMi
-    hthin hfree hF hlt
-  obtain ⟨u₁, h4u⟩ := one_add_unit_pow_formula O ϖ B hϖ hd hp hl h4
-  exact good_lattice_holds O ϖ B u₁ n Cu j M g G sig Mi V L hϖ hd h0 hp hl hj h3 h4u hG hs hP9 hP5
-    hMi hthin hfree (completion_holds O B n V L hO hF) (X_regular_on_lattice O B n V L hF) hlt
-
-theorem extension_good_holds : ExtGoodOf := by
-  intro O _ _ _ ϖ B n _ Cu j M g G rr Mi hi H V₂ V₀ _ _ _ _ L₂ L₀ e₀ Y hϖ hd h0 h3 hG hlift hP9
-    hP6 hX hM5 hh5 hthin hH hfree hfrob
-  have hsat := saturation_first_form_holds O ϖ B j M g hϖ hd h0 h3
-  exact ⟨hlift, hP9, extension_complete_holds O B n V₂ V₀ L₂ L₀ Y hP6 hX,
-    fun c hc => lattice_induction_lemma_holds O B n j M g G Y.VY Y.LY c (by omega)
-      (fun k h1 h2 => lattice_exponent_property_mono Y.LY (hM5 _) (hthin c hc k h1 h2)),
-    fun c hc => saturation_holds_alt O B n j _ Y.VY Y.LY c hsat (hfree c hc),
-    fun c hc => pullback_lemma_holds O B n Y.VY Y.LY c (Cu.ell c) (fun s => hi (c - (s : ZMod n))) (H c)
-      (fun s _ => hh5 _) (hH c hc),
-    fun c hc => extension_generated_holds O B n V₂ V₀ L₂ L₀ Y _ _ _ hP6 (hfrob c hc)⟩
 
 end Formalism.ExponentWindows.E

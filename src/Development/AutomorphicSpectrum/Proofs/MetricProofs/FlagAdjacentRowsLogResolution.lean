@@ -1,12 +1,27 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackPullback
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsFibreChartIff
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartSecondStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartThirdStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFourthStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartSixthStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartSeventhStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreTwistedResolutionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartSecond
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartThird
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseChartFlagAnalyticMap
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFourth
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularFunctionAnalyticOnChart
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ValueConstantOnOrbitStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.UnipotentValueNeZero
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormNonvanishingAnalyticHarmonic
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartSixth
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFifth
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFirstStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicLiftRealisation
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationBijectiveDegreeOne
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticOrbitOffBoundary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorPropertiesStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoByTwoMinorGramIdentity
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.StepFactorNeZeroStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartSeventh
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreTwistedResolution
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormProductFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogSineFormulaStatement
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
@@ -18,9 +33,9 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.fibre_potentials : ∀ (K : Type)
   have hC' := fun m => (isFibreChart_iff FA τ a ca cb q (U m) (G m) (ΦY m) (ΦW m)).1 (hC m)
   choose l H bp hD using hC'
   refine ⟨fun m => alphaOf BM (l m) (H m) (bp m), fun m => ?_, fun m => ?_, fun m => ?_, fun m => ?_, fun m => ?_, fun m => ?_⟩
-  · exact GlobalTheory.T.two_point_fibre_chart_second K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
-  · exact GlobalTheory.T.two_point_fibre_chart_third K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
-  · exact GlobalTheory.T.two_point_fibre_chart_fourth K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
-  · exact GlobalTheory.T.two_point_fibre_chart_sixth K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
-  · exact GlobalTheory.T.two_point_fibre_chart_seventh K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
-  · exact GlobalTheory.T.two_point_fibre_twisted_resolution K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb k₀ hblk RW q h0 h1 _ hnorm (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.gramPlane_posDef K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.contDiffOn_gram_plane K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.contDiffOn_alphaOf K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.fibre_xi_potential K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.fibre_base_member K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb _ q (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.NormFib.logNorm_add_weights_eq_logSin K ι Φ y Ψ N j M n d BM FA τ a b ca cb hb hcase hca hcb k₀ hblk RW q h0 h1 _ hnorm (U m) (G m) (ΦY m) (ΦW m) (l m) (H m) (bp m) (hU m) (hD m)

@@ -2,27 +2,28 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankWeightComponentEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ParahoricSchwartzVanishOffTranslates
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteClassesModUniformizerPowMatricesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CongruenceInvariantConstOnFrameTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameTranslateLatticeCosetSubsetStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CongruenceInvariantConstOnFrameTranslate
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameTranslateLatticeCosetSubset
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeCosetTranslateMemOfCoverStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceAdjointMatrixIsCoordinateEquivariant
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitIdempotentPrimeProjectionCorrespondence
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DegreeOnePrimeReductionSplitPlaceDictionary
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceWeilRepLatticeVacuumCharacter
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameAtOfUnrAt
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrameStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrame
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelCharactersRamificationLevelPlaces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaFunctionZeroOfInvariantFunctionals
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PostOnGaLMemGoodPart
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.GlintPrincRelIndexNeZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaFunctionLevelAndSchrodingerBoundedSupportStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSeparatingCharacterConjugateHalfSplitStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteFourierExpansionConjugateHalfSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSupportedAtSplitPlaceUnitaryMatrixEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSeparatingCharacterConjugateHalfSplit
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteFourierExpansionConjugateHalfSplitPlace
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSupportedAtSplitPlaceUnitaryMatrixEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceUnitaryIntegralMatrixKeepsLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SchrodingerFunctionInvariantTypePrimeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SchrodingerFunctionInvariantTypePrime
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SchrodingerHyperplaneAveragesVanishStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CmPlaceOperatorPreservesTypeAveragesShapeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CmPlaceOperatorPreservesTypeAveragesShape
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeisenbergRelationsExtendToPlaceCommonEigenStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TypePrimeFixedThetaVectorSchrodingerIndicatorStatement
 
@@ -60,8 +61,8 @@ theorem exists_finset_trSet (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteVa
   have huniq : ∀ g g' x, x ∈ trSet O K r t ϖ g → x ∈ trSet O K r t ϖ g' → trSet O K r t ϖ g = trSet O K r t ϖ g' := by
     rintro g g' x ⟨z, hz⟩ ⟨z', hz'⟩
     ext y; constructor
-    · rintro ⟨w, hw⟩; exact GlobalTheory.T.frame_translate_lattice_coset_subset O K r t ϖ hϖ x g g' z z' hz hz' y w hw
-    · rintro ⟨w, hw⟩; exact GlobalTheory.T.frame_translate_lattice_coset_subset O K r t ϖ hϖ x g' g z' z hz' hz y w hw
+    · rintro ⟨w, hw⟩; exact _root_.GlobalTheory.ParahoricTranslate.translate_lattice_coset_subset O K r t ϖ hϖ x g g' z z' hz hz' y w hw
+    · rintro ⟨w, hw⟩; exact _root_.GlobalTheory.ParahoricTranslate.translate_lattice_coset_subset O K r t ϖ hϖ x g' g z' z hz' hz y w hw
   let rep : Set (Matrix (Fin r ⊕ Fin t) (Fin r) K) → GL (Fin r) K := fun A =>
     if h : ∃ g, trSet O K r t ϖ g = A then h.choose else 1
   have hrep : ∀ g, trSet O K r t ϖ (rep (trSet O K r t ϖ g)) = trSet O K r t ϖ g := fun g => by
@@ -149,13 +150,13 @@ theorem mu_val_one (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) {PP : Pl D.host.E} (
     ((L.mu t ((j : ℕ) + 1) x : Circle) : ℂ) = (((L.chi ((j : ℕ) + 1) PP (u PP))⁻¹ : ℂˣ) : ℂ) ∧ L.eta x = 1 := by
   obtain ⟨-, -, h3, -⟩ := GlobalTheory.T.levelCharacters_ramification_levelPlaces D T0 L μ0 hL t j
   have hs : IsIdemSum e {PP} := ⟨⟨fun _ => e, fun P h => by rw [Finset.mem_singleton.1 h]; exact he, by simp⟩, he.1.2.1⟩
-  have e1 := GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D _ _ {PP} e (fun P => (L.chi ((j : ℕ) + 1) P)⁻¹) (hL.mu0 j) hs
+  have e1 := _root_.GlobalTheory.TameSplitChar.char_eq_prod_res D _ _ {PP} e (fun P => (L.chi ((j : ℕ) + 1) P)⁻¹) (hL.mu0 j) hs
     (fun P h => ⟨(L.C.isMu0 j).tame P, by rw [Finset.mem_singleton.1 h]; exact hL.chi j PP hP⟩) x a a' u hx ha
     fun P _ => hu P
-  have e2 := GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D _ _ {PP} e (fun _ => 1) (hL.xi t) hs
+  have e2 := _root_.GlobalTheory.TameSplitChar.char_eq_prod_res D _ _ {PP} e (fun _ => 1) (hL.xi t) hs
     (fun P h => ⟨hL.xi_tame t P, by rw [Finset.mem_singleton.1 h]; exact GlobalTheory.VecInv.isRes_one (h3 PP hP)⟩) x a a' u hx ha
     fun P _ => hu P
-  have e3 := GlobalTheory.T.tameHeckeChar_splitSupported_eq_prod_residue D _ _ {PP} e (fun _ => 1) hL.eta hs
+  have e3 := _root_.GlobalTheory.TameSplitChar.char_eq_prod_res D _ _ {PP} e (fun _ => 1) hL.eta hs
     (fun P _ => ⟨GlobalTheory.VecInv.tameAt_of_unrAt (L.C.isEta.unr P), GlobalTheory.VecInv.isRes_one (L.C.isEta.unr P)⟩) x a a' u hx ha
     fun P _ => hu P
   refine ⟨?_, Subtype.ext (e3.trans (Finset.prod_eq_one fun _ _ => rfl))⟩
@@ -186,7 +187,7 @@ theorem actAt (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
       ∃ h : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ a ∈ v.adicCompletionIntegers D.host.F,
         red ⟨GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ a, h⟩ = resS D.host.F PP ⟨a, ha⟩) : ActAt R i t PP φ e red := by
   intro h
-  obtain ⟨κ, hs, hκ⟩ := GlobalTheory.T.exists_supportedAtSplitPlace_unitary_matrix_eq D (Vc D i) v φ e he (frCo φ (R.βV i))
+  obtain ⟨κ, hs, hκ⟩ := _root_.GlobalTheory.DownLift.GenSplit.exists_suppAt_grpCo_eq D (Vc D i) v φ e he (frCo φ (R.βV i))
     (Matrix.GeneralLinearGroup.map (algebraMap (OI v) (Fv D.host.F v)) h)
   obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.splitPlaceUnitary_integralMatrix_keeps_lattice D (Vc D i) (R.βV i) (R.ΛV i) _ (hL.βV i).choose_spec PP v φ e hφ he red hred h κ hs hκ
   refine ⟨κ, hs, h1, h2, hκ, h3, fun PP' a b => h4 PP' b (not_conj hL t hP a), fun ℓ hℓ f hf => ?_⟩
@@ -198,7 +199,7 @@ theorem actAt (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
     rw [h0] at n1
     simp [nrm2] at n1
   have hAt := (((GlobalTheory.SplitIdemDict.idem_dictionary D).2 v φ PP hφ).2.2 e he).1
-  rw [scalar_eq (hω i t) (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βV i)) (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βW i)) hvac.2.theta hne hvac.2.lat
+  rw [scalar_eq (hω i t) (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i)) (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)) hvac.2.theta hne hvac.2.lat
     he.1 hs (suppAt_one' e _) (GlobalTheory.VecInv.mem_latO_iff (hL.βV i).choose_spec.1 (hL.βW i).choose_spec.1 h2
       (by rw [map_one]; exact Subgroup.one_mem _)) (GlobalTheory.VecInv.isDetAt_detAt e he.1.1 _ κ)
       (GlobalTheory.VecInv.isDetAt_detAt e he.1.1 _ 1) ℓ hℓ f hf]
@@ -354,7 +355,7 @@ theorem coord : GlobalTheory.PlaceTensor.IsCoord (cA D e) (latO (Vc D i) (Wc D i
       adjCo φ (Vc D i) (Wc D i) (frCo φ (R.βV i)) (frCo φ (R.βW i)) (actO (Vc D i) (Wc D i) g⁻¹ h⁻¹ x) =
         ((grpCo φ (Vc D i) (frCo φ (R.βV i)) g)⁻¹).val * adjCo φ (Vc D i) (Wc D i) (frCo φ (R.βV i)) (frCo φ (R.βW i)) x *
           (grpCo φ (Wc D i) (frCo φ (R.βW i)) h).val :=
-  GlobalTheory.PlaceTensor.adjCo_isCoord D _ _ _ _ (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βV i)) (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βW i)) v φ e he _ _
+  GlobalTheory.PlaceTensor.adjCo_isCoord D _ _ _ _ (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i)) (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)) v φ e he _ _
 
 theorem coR_add (x y : WO (Vc D i) (Wc D i)) : coR R i φ (x + y) = coR R i φ x + coR R i φ y := by
   unfold coR co
@@ -420,8 +421,8 @@ theorem piece (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
   have hW := hω i t
   have hψ := hW.std
   have he' := isSplitIdem_conj he.1
-  have sdV := GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βV i)
-  have sdW := GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βW i)
+  have sdV := _root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i)
+  have sdW := _root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)
   have frV := (hL.βV i).choose_spec.1
   have frW := (hL.βW i).choose_spec.1
   have hf := hT.1
@@ -429,7 +430,7 @@ theorem piece (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
       IsThetaFunO R.ψ (Vc D i) (Wc D i) (heisO R.ψ (Vc D i) (Wc D i) x q) := fun hx hq =>
     GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 (half_fin he' hx) hq
   obtain ⟨σ, hσ⟩ := exists_section R hL i he
-  obtain ⟨h, hh, hg⟩ := GlobalTheory.T.exists_supportedAtSplitPlace_unitary_matrix_eq D (Wc D i) v φ e he (frCo φ (R.βW i)) (reGL (rank_weight_component_eq i) g)
+  obtain ⟨h, hh, hg⟩ := _root_.GlobalTheory.DownLift.GenSplit.exists_suppAt_grpCo_eq D (Wc D i) v φ e he (frCo φ (R.βW i)) (reGL (rank_weight_component_eq i) g)
   have hh' : Formalism.L2.Theta.SuppAt e (Wc D i) h⁻¹ := fun a b => by
     have := congrFun (congrFun (off_smul_mt_inv hh) a) b
     simp only [Matrix.smul_apply, smul_eq_mul] at this
@@ -440,9 +441,9 @@ theorem piece (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
   set x₀ := σ (E.map (algebraMap (OI v) (Fv D.host.F v))) with hx₀
   set A₁ := halfPow φ (Vc D i) (Wc D i) (frCo φ (R.βV i)) (frCo φ (R.βW i)) e ϖ 1 with hA₁
   have hf' := hW.om_pres (1, h⁻¹) f hf
-  have hdual := GlobalTheory.T.exists_separating_character_conjugate_half_split D R.ψ hψ _ _ _ _ _ _ sdV sdW frV frW v φ e he ϖ hϖ 1
+  have hdual := _root_.GlobalTheory.DownLift.GenSplit.exists_sep_char D R.ψ hψ _ _ _ _ _ _ sdV sdW frV frW v φ e he ϖ hϖ 1
   obtain ⟨N, -, hN⟩ := GlobalTheory.T.thetaFunction_level_and_schrodinger_bounded_support D R.ψ hψ _ _ _ _ _ _ sdV sdW frV frW v φ e he ϖ hϖ _ hf'
-  obtain ⟨c, hc, hcv⟩ := GlobalTheory.T.finiteFourierExpansion_conjugateHalf_splitPlace D R.ψ hψ _ _ _ _ sdV sdW v φ e he (frCo φ (R.βV i)) (frCo φ (R.βW i)) ϖ hϖ 1 N hdual
+  obtain ⟨c, hc, hcv⟩ := _root_.GlobalTheory.DownLift.GenSplit.finite_fourier_half D R.ψ hψ _ _ _ _ sdV sdW v φ e he (frCo φ (R.βV i)) (frCo φ (R.βW i)) ϖ hϖ 1 N hdual
     (fun X => if InPow ϖ 1 (X - adjCo φ (Vc D i) (Wc D i) (frCo φ (R.βV i)) (frCo φ (R.βW i)) x₀) then 1 else 0)
     (fun X Z hZ => if_congr ⟨fun h => by
         have := inPow_add h (inPow_neg hZ)
@@ -515,7 +516,7 @@ theorem piece (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
     · simp [hE, rowIx, Matrix.one_apply, Fin.ext_iff]
     · have : D.R.r + a.val ≠ b.val := by have := b.2; omega
       simp [hE, rowIx, this]
-  obtain ⟨b1, b2, b3⟩ := GlobalTheory.T.cmPlaceOperator_preserves_type_averages_shape D G Pl0 T A Ks R hω i t Sb v hvS h⁻¹ (fun a b => by rw [← he.2.1]; exact hh' a b) c
+  obtain ⟨b1, b2, b3⟩ := _root_.GlobalTheory.DownLift.GenSplit.placeOp_keep D G Pl0 T A Ks R hω i t Sb v hvS h⁻¹ (fun a b => by rw [← he.2.1]; exact hh' a b) c
     (fun y hy => half_idem he.1 he.2.1 (hc y hy)) f hT hC hO
   have b4 : LikeOff R i t (dropPl Sb v) F :=
     ⟨hFt, relOff_drop he.1 he.2.1 (fun z hz => hz.1) (fun x hx hn => hdual x hx fun h => hn ⟨hx, h⟩) hvp hsh hvS b3.2⟩
@@ -550,12 +551,12 @@ theorem gen_at_type_prime : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T
   have hact := actAt R hL hω hv i t hP hφ he red hred
   obtain ⟨σ, hσ⟩ := exists_section R hL i he
   have hσx : ∀ x, IsHalf (cA D e) x → σ (coR R i φ x) = x := fun x hx => coR_inj R hL i he (hσ _).1 hx (hσ _).2
-  obtain ⟨N, hN1, hN2⟩ := GlobalTheory.T.thetaFunction_level_and_schrodinger_bounded_support D R.ψ hψ _ _ _ _ _ _ (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βV i))
-    (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βW i)) (hL.βV i).choose_spec.1 (hL.βW i).choose_spec.1 v' φ e he ϖ hϖ f hf
+  obtain ⟨N, hN1, hN2⟩ := GlobalTheory.T.thetaFunction_level_and_schrodinger_bounded_support D R.ψ hψ _ _ _ _ _ _ (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i))
+    (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)) (hL.βV i).choose_spec.1 (hL.βW i).choose_spec.1 v' φ e he ϖ hϖ f hf
   let Φ : {ℓ // InvForm R.ψ (Vc D i) (Wc D i) e ℓ} → Matrix (Fin D.R.r ⊕ Fin D.R.t) (Fin D.R.r) (Fv D.host.F v') → ℂ :=
     fun ℓ X => ℓ.1 (heisO R.ψ (Vc D i) (Wc D i) (σ X) f)
   have h2 := fun ℓ : {ℓ // InvForm R.ψ (Vc D i) (Wc D i) e ℓ} =>
-    GlobalTheory.T.schrodingerFunction_invariant_typePrime D G Pl0 T A Ks R hL hω i t PP hP v' φ e hφ he red hsurj hker hact Sb hvS σ hσ ℓ.1 ℓ.2 f hT ϖ hϖ
+    _root_.GlobalTheory.DownLift.GenSplit.schrodinger_type_inv D G Pl0 T A Ks R hL hω i t PP hP v' φ e hφ he red hsurj hker hact Sb hvS σ hσ ℓ.1 ℓ.2 f hT ϖ hϖ
   have h3 := fun ℓ : {ℓ // InvForm R.ψ (Vc D i) (Wc D i) e ℓ} =>
     GlobalTheory.T.schrodinger_hyperplane_averages_vanish D G Pl0 T A Ks R hL hω i t PP hP v' φ e hφ he red hsurj hker hact Sb hvS σ hσ ℓ.1 ℓ.2 f hf hC
   have hsupp : ∀ k X, Φ k X ≠ 0 → ∃ z : Matrix (Fin D.R.r ⊕ Fin D.R.t) (Fin D.R.r) (OI v'),
@@ -574,8 +575,8 @@ theorem gen_at_type_prime : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T
     fun k => GlobalTheory.parahoric_schwartz_vanish_off_translates (OI v') (Fv D.host.F v') D.R.r D.R.t ϖ hϖ (Φ k) N (hsupp k)
       (h2 k) (h3 k)
   choose P hP1 hP2 hP3 using fun g => piece R hL hω hv i t hP hφ he hϖ hvS hT hC hLk g fun ℓ hℓ x x' hx hx' ⟨z, hz⟩ ⟨z', hz'⟩ => by
-    have a1 := GlobalTheory.T.congruenceInvariant_const_on_frame_translate (OI v') (Fv D.host.F v') D.R.r D.R.t ϖ hϖ (Φ ⟨ℓ, hℓ⟩) (h2 ⟨ℓ, hℓ⟩) _ g z hz
-    have a2 := GlobalTheory.T.congruenceInvariant_const_on_frame_translate (OI v') (Fv D.host.F v') D.R.r D.R.t ϖ hϖ (Φ ⟨ℓ, hℓ⟩) (h2 ⟨ℓ, hℓ⟩) _ g z' hz'
+    have a1 := _root_.GlobalTheory.invariant_const_on_translate (OI v') (Fv D.host.F v') D.R.r D.R.t ϖ hϖ (Φ ⟨ℓ, hℓ⟩) (h2 ⟨ℓ, hℓ⟩) _ g z hz
+    have a2 := _root_.GlobalTheory.invariant_const_on_translate (OI v') (Fv D.host.F v') D.R.r D.R.t ϖ hϖ (Φ ⟨ℓ, hℓ⟩) (h2 ⟨ℓ, hℓ⟩) _ g z' hz'
     have a3 := a1.trans a2.symm
     simp only [Φ] at a3
     rwa [hσx x hx, hσx x' hx'] at a3

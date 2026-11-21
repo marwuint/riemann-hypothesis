@@ -1,6 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentMonodromyImageValuationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowDivisibilityOfDescentDatumStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinDescentMonodromyImageValuation
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomialAction
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimePowDivisibilityOfDescentDatum
 
 noncomputable section
 
@@ -45,7 +46,7 @@ theorem exists_mul_intCast_eq {O K : Type} [CommRing O] [NormedField K] [Algebra
 
 theorem exists_mem_Y'_Lc_cls_eq : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H) (U : Finset ℤ) (N : ℕ), D.jumps ⊆ U → U ⊆ Finset.Icc (-(η : ℤ)) H → U.card ≤ N + 1 → η < H → H + η < l → 10 * H + 2 ≤ l → ∀ c : ℕ, ∀ w ∈ D.Zl, (l : K) ^ c • D.Lc w ∈ D.Z → ∃ y ∈ D.Y', D.Lc (D.cls y) = (l : K) ^ (c + η + (N + 1) * η) • D.Lc w := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D U N hJ hU hN hηH hl h10 c w hw hc
-  obtain ⟨-, hVal, hInt⟩ := GlobalTheory.T.breuilKisinDescent_monodromy_image_valuation O K l e a ι η H D U N hJ hU hN hηH
+  obtain ⟨-, hVal, hInt⟩ := _root_.GlobalTheory.LcImage.image_valuation_integralImage O K l e a ι η H D U N hJ hU hN hηH
   obtain ⟨-, hR0, hv, hcard, hcard'⟩ := hVal hl
 
   obtain ⟨z, hz, hRz⟩ := hInt h10 (c : ℤ) (D.LcZ ⟨w, hw⟩) ⟨_, rfl⟩ (by
@@ -62,7 +63,7 @@ theorem exists_mem_Y'_Lc_cls_eq : ∀ (O K : Type) [CommRing O] [NormedField K] 
     congr 1
     rw [← ht]; ring
 
-  obtain ⟨z'', hz'', hv''⟩ := (GlobalTheory.T.prime_pow_divisibility_of_descentDatum O K l e a ι η H D).1 _ hx1
+  obtain ⟨z'', hz'', hv''⟩ := (_root_.GlobalTheory.divisible_of_BKDat O K l e a ι η H D).1 _ hx1
 
   have hz3 : z'' ∈ (D.desc.Y η).map (D.cls.restrictScalars O) := by
     rw [Descent.map_Y]; exact hz''

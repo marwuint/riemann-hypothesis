@@ -68,26 +68,6 @@ def localLattice (L : Submodule (𝓞 K) V) :
     Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V) :=
   Submodule.span _ (toLocal v '' (L : Set V))
 
-def IsLocalLattice (N : Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V)) :
-    Prop :=
-  N.FG ∧ Submodule.span (v.adicCompletion K) (N : Set (v.adicCompletion K ⊗[K] V)) = ⊤
-
-theorem toLocal_smul (a : 𝓞 K) (x : V) :
-    toLocal v (a • x) = algebraMap (𝓞 K) (v.adicCompletionIntegers K) a • toLocal v x := by
-  rw [← algebraMap_smul K a x, map_smul, ← algebraMap_smul (v.adicCompletion K)
-    (algebraMap (𝓞 K) (v.adicCompletionIntegers K) a) (toLocal v x),
-    ← algebraMap_smul (v.adicCompletion K) (algebraMap (𝓞 K) K a) (toLocal v x)]
-  congr 1
-
-def latticeOfLocal
-    (N : ∀ v : HeightOneSpectrum (𝓞 K),
-      Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V)) :
-    Submodule (𝓞 K) V where
-  carrier := {x | ∀ v, toLocal v x ∈ N v}
-  add_mem' hx hy v := by rw [map_add]; exact (N v).add_mem (hx v) (hy v)
-  zero_mem' v := by rw [map_zero]; exact (N v).zero_mem
-  smul_mem' a x hx v := by rw [toLocal_smul]; exact (N v).smul_mem _ (hx v)
-
 end Local
 
 end

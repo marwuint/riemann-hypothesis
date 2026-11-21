@@ -9,27 +9,6 @@ namespace PI.WBL.Cv
 
 open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions PI.BesselLine PI.WBL
 
-def HaarWAll : Prop :=
-  ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μW : Measure (Mt k r)), inWb k r z → 0 < Tz k r z →
-    IsHaarOn (UWset k r z) μW → μW Set.univ = 1 →
-    (∀ h ∈ UWset k r z, MeasurePreserving (fun x : Mt k r => fun i j => (Matrix.of x * h) i j) μW μW) ∧
-    MeasurePreserving (fun x : Mt k r => fun i j => (Matrix.of x)⁻¹ i j) μW μW
-
-def HaarNAll : Prop :=
-  ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (κ : ENNReal), inWb k r z → 0 < Tz k r z →
-    haarLie (Nset k r) κ {x | Matrix.of x ∉ Nset k r} = 0 ∧
-    (∀ h ∈ UWset k r z, ∀ m ∈ Nset k r,
-      MeasurePreserving (fun x : Mt k r => fun i j => (h⁻¹ * Matrix.of x * h * m) i j)
-        (haarLie (Nset k r) κ) (haarLie (Nset k r) κ)) ∧
-    ∀ h ∈ UWset k r z,
-      MeasurePreserving (fun x : Mt k r => fun i j => (h * (Matrix.of x)⁻¹ * h⁻¹) i j)
-        (haarLie (Nset k r) κ) (haarLie (Nset k r) κ)
-
-def PiContAll : Prop :=
-  ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ)
-    (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (π : Mx k r → (Wp →L[ℂ] Wp)),
-    inWb k r z → 0 < Tz k r z → IsHCTypeW k r z u π → ∀ x : Wp, ContinuousOn (fun g => π g x) (UWset k r z)
-
 section Meas
 
 variable {k r : ℕ}

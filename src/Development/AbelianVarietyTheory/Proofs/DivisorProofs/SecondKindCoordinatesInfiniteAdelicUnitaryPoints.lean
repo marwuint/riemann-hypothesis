@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableIffMemL2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSecondKindCoordinatesUnitaryArchimedeanPlaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSecondKindCoordinatesUnitaryArchimedeanPla
 open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut Filter Topology
 open scoped TensorProduct ContDiff
 
@@ -76,7 +76,7 @@ theorem GlobalTheory.infPts_secondKind_chart : ∀ (F E : Type) [Field F] [Numbe
     ∀ᶠ x in 𝓝[(infPts σ J : Set (GAd σ J))] 1, x = (List.ofFn fun i => η i (s x i)).prod := by
   intro F E _ _ _ _ _ σ hCM n J hJ
   classical
-  have hp := fun w => GlobalTheory.T.exists_secondKindCoordinates_unitaryArchimedeanPlace F E σ hCM n J hJ w
+  have hp := fun w => _root_.GlobalTheory.UAut.exists_coordSecondKind_arch F E σ hCM n J hJ w
   choose d η s hη hs he using hp
   have hproj : ∀ w, Tendsto (projArch σ J w) (𝓝[(infPts σ J : Set (GAd σ J))] 1) (𝓝 1) := fun w => by
     have := (continuous_projArch σ J w).tendsto 1

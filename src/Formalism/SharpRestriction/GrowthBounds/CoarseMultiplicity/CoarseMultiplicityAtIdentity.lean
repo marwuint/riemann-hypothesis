@@ -90,8 +90,6 @@ def CoarseMultiplicityAtIdentity (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :
         ∀ g' : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n'), IsGLW g' →
           ratPlane X.p X.n' 1 g' ≠ ratPlane X.p X.n' 1 1 → InWjRg X.p X.n' O S.w 1 (hhLetters X.TT) g' F X.c
 
-def RestRawTail : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => RawTailAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
-
 def KeptBLAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
   ∀ (X : Loc), D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X →
     ∀ (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m),

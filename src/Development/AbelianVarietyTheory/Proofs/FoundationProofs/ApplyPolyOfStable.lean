@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRestrict
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommGaloisActionModularTower
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerBAdmissibleHeckeCommute
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFunctionalValueModPrimePowUniqueOddWeight
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeDiamondActionStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeDiamondAction
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsInertiaFixedNearAlmostFixedCoefficientsStatement
 
 noncomputable section
@@ -195,7 +195,7 @@ theorem exists_pr_isLamFR : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgCl
   have hhol : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero) := hhol'.imp fun _ h => h.symm
   have hNl : Nat.Coprime N l := ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hlN).symm
   have hth : ∀ n, ∀ b ∈ X.B N l w, IsThB X A N l n b (thN X A N l n 1 b) := fun n b hb => by
-    have h := (GlobalTheory.T.theta_lattice_diamond_action Ω ε X A N l hhol' hl2 hlN hN hlA n w 1 hw (Nat.coprime_one_left N) b hb).1
+    have h := (_root_.GlobalTheory.CyclotomicQExpansion.thN_isThB Ω ε X A N l hhol' hl2 hlN hN hlA n w 1 hw (Nat.coprime_one_left N) b hb).1
     rwa [act_sgD_one X (by omega) hb] at h
   have hstB := GlobalTheory.KZ.B_stable_op ε X ε.injective hhol N l w hl2 hN hNl hw
   have hst : ∀ T, GlobalTheory.KZ.admitted N l T → ∀ b ∈ chiPart X N w χ, X.op N l T b ∈ chiPart X N w χ := fun T hT b hb =>

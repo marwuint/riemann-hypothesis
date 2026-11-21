@@ -26,27 +26,6 @@ theorem phi_apply_eq (k : ℕ) (F : Big n k M) : phi E k F = ∑ κ, word E κ (
   simp only [phi, LinearMap.sum_apply, LinearMap.comp_apply]
   rfl
 
-theorem permute_mem_ncV {k : ℕ} (σ : Equiv.Perm (Fin k)) {F : Big n k M} (hF : F ∈ ncV ε V k) :
-    permute σ F ∈ ncV ε V k := by
-  rw [mem_ncV_iff_apply] at hF ⊢
-  intro κ
-  rw [permute_apply]
-  have hκ := hF (κ ∘ σ)
-  by_cases hc : ∀ i, ε (κ i).1 ≠ ε (κ i).2
-  · have hc' : ∀ i, ε ((κ ∘ σ) i).1 ≠ ε ((κ ∘ σ) i).2 := fun i => hc (σ i)
-    rw [if_pos hc'] at hκ
-    rw [if_pos hc]
-    exact hκ
-  · have hc' : ¬ ∀ i, ε ((κ ∘ σ) i).1 ≠ ε ((κ ∘ σ) i).2 := fun h => hc (fun i => by
-      have := h (σ.symm i)
-      simpa using this)
-    rw [if_neg hc'] at hκ
-    rw [if_neg hc]
-    exact hκ
-
-theorem bool_eq_of_ne_ne {x y z : Bool} (h1 : x ≠ y) (h2 : y ≠ z) : x = z := by
-  cases x <;> cases y <;> cases z <;> simp_all
-
 theorem listProd_mem_layer (hE : IsGlRep E) (hV : IsKStableSub ε E V)
     (l : List (Fin n × Fin n)) {j : ℕ} {v : M} (hv : v ∈ layer ε E V j) :
     (l.map fun p => E p.1 p.2).prod v ∈ layer ε E V (j + l.length) := by

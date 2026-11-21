@@ -167,17 +167,7 @@ variable {r : ℕ}
 def glChar (μ : Fin r → ℤ) (a : Fin r → ℂ) : ℂ :=
   (Matrix.of fun i j => a i ^ (μ j + (j.rev : ℕ))).det / (Matrix.of fun i j : Fin r => a i ^ (j.rev : ℕ)).det
 
-theorem glChar_perm (μ : Fin r → ℤ) (a : Fin r → ℂ) (s : Equiv.Perm (Fin r)) : glChar μ (a ∘ s) = glChar μ a := by
-  have h1 := Matrix.det_permute s (Matrix.of fun i j => a i ^ (μ j + (j.rev : ℕ)))
-  have h2 := Matrix.det_permute s (Matrix.of fun i j : Fin r => a i ^ (j.rev : ℕ))
-  have hs : ((Equiv.Perm.sign s : ℤ) : ℂ) ≠ 0 := by exact_mod_cast (Equiv.Perm.sign s).ne_zero
-  exact (congrArg₂ (· / ·) h1 h2).trans (mul_div_mul_left _ _ hs)
-
 def hiWt (lam : Fin r → ℤ) : Fin r → ℤ := fun j => lam j - ((((r - 1) / 2 : ℕ) : ℤ) - (j : ℕ))
-
-example (l : ℤ) (a : ℂ) : glChar (hiWt ![l]) ![a] = a ^ l := by simp [glChar, hiWt]
-
-example : hiWt ![1, 0, -1] = 0 := by decide
 
 theorem exists_roots {Q : ℂ[X]} (hm : Q.Monic) (hd : Q.natDegree = r) : ∃ a : Fin r → ℂ, Q = ∏ i, (X - C (a i)) := by
   have hc : Q.roots.card = Q.natDegree := IsAlgClosed.card_roots_eq_natDegree
@@ -236,16 +226,6 @@ def IsLatticeConj {r' : ℕ} {J : Matrix (Fin r) (Fin r) E} {J' : Matrix (Fin r'
     (∀ y y', hLin σ J' (Fv F v) (a y) (a y') = hLin σ J (Fv F v) y y') ∧
     (∀ y, a y ∈ latLoc F L' v ↔ y ∈ latLoc F L v) ∧
     ∀ g y, (matHom _ σ J' (j g)).1 *ᵥ a y = a ((matHom _ σ J g).1 *ᵥ y)
-
-example {J : Matrix (Fin r) (Fin r) E} (L : Submodule (𝓞 E) (Fin r → E)) (v : HeightOneSpectrum (𝓞 F)) :
-    IsLatticeConj (σ := σ) (J := J) (v := v) L L (ContinuousMulEquiv.refl _) :=
-  ⟨LinearEquiv.refl _ _, fun _ _ => rfl, fun _ => Iff.rfl, fun _ _ => rfl⟩
-
-example : Nonempty (PPol σ 1) :=
-  ⟨⟨X - C 1, monic_X_sub_C 1, irreducible_X_sub_C 1, natDegree_X_sub_C 1, by simp, by
-    have : reflect 1 (X - 1 : E[X]) = 1 - X := by
-      rw [reflect_sub, ← pow_one (X : E[X]), reflect_monomial, reflect_one]; simp
-    simp [sharp, this]⟩⟩
 
 end Global
 
@@ -336,8 +316,6 @@ def TraceEq : Prop :=
           IsTestArchG M' μa' fa' →
           ∃ c : ℂ, HasTrace (RopG V μ (tensor D.sp.cm.sig V.gram fa ff)) c ∧
             HasTrace (RopG V' μ' (tensor D.sp.cm.sig V'.gram fa' (transfer j ff))) c
-
-def TraceComparison : Prop := GeomExpansion ∧ EllipticPart ∧ TraceEq
 
 end Record
 

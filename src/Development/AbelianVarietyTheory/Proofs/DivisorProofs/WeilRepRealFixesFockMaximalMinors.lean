@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfAeFun
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorBasisChangeEqSubstitution
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TotalDegreeSubstFLe
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmPureTensorOOfFinite
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPairRealPointsSmulAdelicVacuumDetPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstitutionInverseTransposeMaximalMinorProductStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPairRealPointsSmulAdelicVacuumDetPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstitutionInverseTransposeMaximalMinorProduct
 
 open NumberField MeasureTheory
 open scoped Classical
@@ -40,7 +40,7 @@ theorem om_real_fock_eq : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ
   change X.om (g, 1) (pureTensorO X.ψ X.θ X.A X.B (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) X.vac
     (MvPolynomial.rename X.var (minorPol D T))) = pureTensorO X.ψ X.θ X.A X.B (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) X.vac
     (MvPolynomial.rename X.var (minorPol D T))
-  rw [hmove, GlobalTheory.T.norm_pair_real_points_smul_adelic_vacuum_det_pow P X hX hB g hg, GlobalTheory.FiniteFock.pureTensorO_smul, hsub, GlobalTheory.T.substitution_inverse_transpose_maximalMinorProduct P X T G, map_smul, smul_smul,
+  rw [hmove, _root_.GlobalTheory.NormDict.vacuum_smul_realA P X hX hB g hg, GlobalTheory.FiniteFock.pureTensorO_smul, hsub, _root_.GlobalTheory.NormDict.substF_invT_minorPol P X T G, map_smul, smul_smul,
     ← Finset.prod_mul_distrib]
   simp only [← mul_pow, hdet, one_pow, Finset.prod_const_one, one_smul]
 

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompactOpenTypeIdempotentUnipotentEqZero
-import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.StandardMaximalParabolic
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumRepSubgroupEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOfValILeOne

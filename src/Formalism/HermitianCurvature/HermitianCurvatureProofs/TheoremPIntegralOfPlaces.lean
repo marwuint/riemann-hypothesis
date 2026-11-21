@@ -1,5 +1,5 @@
 import Formalism.HermitianCurvature.StatementJC
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.FrameIntegralJacobian
+import Formalism.HermitianCurvature.LowerBlockNormalisedBoundFromComponents
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BlockEstimatesSumForm
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellZetaMinors
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
@@ -8,29 +8,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelSizesJointMean
 open Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem concrete_data_instance : Formalism.FourierDecayAlt.JC.MkDataInst := by
-  intro E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th e
-  unfold J.Inst J.PlacesOf
-  exact ⟨rfl, rfl, fun _ _ => rfl, S.hv, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, fun _ _ => rfl,
-    fun _ _ _ => rfl, fun _ _ => rfl⟩
-
-theorem concrete_sizes_of_parts : Formalism.FourierDecayAlt.JC.SizesConcreteOfParts := by
-  intro hLSJ hIS hBox hLG hIM hNI hDF hFP hX hILS hMk
-  obtain ⟨C₁, hC₁, h⟩ := hILS hLSJ hIS hBox hLG hIM hNI hDF hFP hX
-  refine ⟨C₁, hC₁, ?_⟩
-  intro E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th e Θ hU hg1 hg2 hCA hlen hΘ hgr
-  have hI := hMk E Wp Wq S Kr hK0 Th e
-  obtain ⟨h1, h2⟩ := h E _ (S.mkData Kr hK0 Th e) S.pl S.G S.CA S.de S.de' S.T S.T' S.l Θ hU hI hg1 hg2
-    hCA hlen hΘ hgr
-  refine ⟨h1, ?_⟩
-  have hK : (S.mkData Kr hK0 Th e).K = 5 := hI.2.1
-  rw [hK] at h2
-  exact h2
-
-theorem concrete_axioms : Formalism.FourierDecayAlt.JC.AxiomsConcrete := by
-  intro hAx hLC hA13 E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th hLM
-  exact hAx hLC hA13 E _ (S.mkData Kr hK0 Th fun _ => 0) hLM
 
 end Formalism.FourierDecayAlt.P
 
@@ -50,43 +27,6 @@ end Formalism.FourierDecayAlt.P.JCx1
 open Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P
-
-private theorem setOf_threshold_values_finite (N : ℕ) (a : ℝ) (b d : ℕ → ℝ) (c : ℕ → ℕ → ℝ) :
-    {x : ℝ | ∃ i : ℕ, 1 ≤ i ∧ i ≤ N ∧ ((i = 1 ∧ x = a) ∨ (2 ≤ i ∧ x = b i) ∨
-      (∃ s : ℕ, 2 ≤ s ∧ s + i ≤ N + 1 ∧ x = c i s) ∨ x = d i)}.Finite := by
-  apply Set.Finite.subset (((Set.finite_Iic N).image b).union
-    ((((Set.finite_Iic N).prod (Set.finite_Iic (N + 1))).image (fun q : ℕ × ℕ => c q.1 q.2)).union
-      ((Set.finite_Iic N).image d)) |>.insert a)
-  rintro x ⟨i, hi1, hiN, h | h | ⟨s, hs2, hsi, h⟩ | h⟩
-  · rw [h.2]
-    exact Set.mem_insert _ _
-  · rw [h.2]
-    exact Set.mem_insert_of_mem _ (Set.mem_union_left _ (Set.mem_image_of_mem b (Set.mem_Iic.2 hiN)))
-  · rw [h]
-    exact Set.mem_insert_of_mem _ (Set.mem_union_right _ (Set.mem_union_left _
-      (Set.mem_image_of_mem (fun q : ℕ × ℕ => c q.1 q.2)
-        (Set.mk_mem_prod (Set.mem_Iic.2 hiN) (Set.mem_Iic.2 (by omega))))))
-  · rw [h]
-    exact Set.mem_insert_of_mem _ (Set.mem_union_right _ (Set.mem_union_right _
-      (Set.mem_image_of_mem d (Set.mem_Iic.2 hiN))))
-
-theorem jc_theta_exists_variant : Formalism.FourierDecayAlt.JC.ThetaExistence₂ := by
-  intro ι _ G C de de' T T' l hf hpos
-  have hfin : (G.thrSet C de de' T T' l).Finite := setOf_threshold_values_finite _ _ _ _ _
-  have hne : (G.thrSet C de de' T T' l).Nonempty := by
-    unfold Set.Nonempty Sz.Glob.thrSet
-    simp only [Set.mem_setOf_eq]
-    exact ⟨_, 1, le_rfl, by omega, Or.inl ⟨rfl, rfl⟩⟩
-  have hmem := hne.csSup_mem hfin
-  have hgr : IsGreatest (G.thrSet C de de' T T' l) (sSup (G.thrSet C de de' T T' l)) :=
-    ⟨hmem, fun x hx => le_csSup hfin.bddAbove hx⟩
-  have hm0 : 0 < sSup (G.thrSet C de de' T T' l) := hpos _ hmem
-  have hf0 : (G.f : ℝ) ≠ 0 := by exact_mod_cast (by omega : G.f ≠ 0)
-  refine ⟨sSup (G.thrSet C de de' T T' l) ^ (-(1 / (G.f : ℝ))), Real.rpow_pos_of_pos hm0 _, ?_⟩
-  have e : ((sSup (G.thrSet C de de' T T' l) ^ (-(1 / (G.f : ℝ)))) ^ G.f)⁻¹ = sSup (G.thrSet C de de' T T' l) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul hm0.le, neg_mul, one_div_mul_cancel hf0, Real.rpow_neg_one, inv_inv]
-  rw [e]
-  exact hgr
 
 end Formalism.FourierDecayAlt.P
 

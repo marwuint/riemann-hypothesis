@@ -20,8 +20,8 @@ theorem smul_indicator_mass {α : Type} [MeasurableSpace α] {β : Type} (k : �
 theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCAll) : StepC := by
   intro F E _ _ _ _ _ σ hCM M J hJ hM1 t ht hA T hT hdet hT' hSW d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm
   classical
-  have hLi : IsLocR (Ainf F) := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1
-  have hLv : ∀ v, IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F
+  have hLi : IsLocR (Ainf F) := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1
+  have hLv : ∀ v, IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩
   haveI hBv : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩
   have hta : algebraMap F E t ≠ 0 := by simpa using ht
@@ -31,7 +31,7 @@ theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCA
   have hdet' : (blockOne (algebraMap F E t) T).det ≠ 0 := by
     rw [(GlobalTheory.T.block_one_det_hermitian_gram F E σ hCM M T t).1]; exact mul_ne_zero hta hdet
 
-  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ
+  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := _root_.GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ
   obtain ⟨⟨𝓕₁, h𝓕₁⟩, -⟩ := hFV μ₁ hμ₁
   obtain ⟨m'inf, hm'inf⟩ := GlobalTheory.CompanionTheory.SW.Step.loc_families σ hCM J hJ (Ainf F) hLi b laminf hinf.1 M
   choose m' hm' using fun v => GlobalTheory.CompanionTheory.SW.Step.loc_families σ hCM J hJ (Fv F v) (hLv v) b (lam v) (hlam v).1 M
@@ -41,15 +41,15 @@ theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCA
   obtain ⟨m₁inf, hm₁inf⟩ := GlobalTheory.CompanionTheory.SW.Step.loc_families σ hCM _ hJ' (Ainf F) hLi b laminf hinf.1 1
   choose m₁ hm₁ using fun v => GlobalTheory.CompanionTheory.SW.Step.loc_families σ hCM _ hJ' (Fv F v) (hLv v) b (lam v) (hlam v).1 1
 
-  obtain ⟨cinf, c, hc, hcinf, hcv⟩ := GlobalTheory.T.scalar_multiplication_euler_product F E σ hCM (algebraMap F E t) hta
+  obtain ⟨cinf, c, hc, hcinf, hcv⟩ := _root_.GlobalTheory.CompanionTheory.SW.map_inclR_prodFormula F E σ hCM (algebraMap F E t) hta
   have hKi : (coordK (Ainf F) b laminf).map (fun y => inclR (Ainf F) (algebraMap F E t) * y) =
       cinf • coordK (Ainf F) b laminf := by
     obtain ⟨h1, h2, h3, h4, -⟩ := hLi
-    exact hcinf _ (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hinf.1).1
+    exact hcinf _ (_root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Ainf F) d b laminf hinf.1).1
   have hKv : ∀ v, (coordK (Fv F v) b (lam v)).map (fun y => inclR (Fv F v) (algebraMap F E t) * y) =
       c v • coordK (Fv F v) b (lam v) := fun v => by
     obtain ⟨h1, h2, h3, h4, -⟩ := hLv v
-    exact hcv v _ (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1).1
+    exact hcv v _ (_root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b (lam v) (hlam v).1).1
   obtain ⟨-, -, -, -, -, -, -, S₃, hS₃⟩ := GlobalTheory.T.unit_product_closure_properties F cinf 1 c (fun _ => 1) hc ⟨by simp, by simp⟩
 
   let T1 : Matrix (Fin 1) (Fin 1) E := fun _ _ => algebraMap F E t
@@ -57,7 +57,7 @@ theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCA
   have hdet1 : T1.det ≠ 0 := by rw [Matrix.det_fin_one]; exact hta
   have hE₁ := PositivityTheory.PfSWUS.HMass.one_vec_sw hE1 F E σ hCM (M + 1) _ hJ' (by omega) (Or.inr hA) T1 hT1 hdet1
     d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 m₁inf m₁ hm₁inf hm₁
-  obtain ⟨β, hβ1, -, hβ2⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hCM T1 hT1
+  obtain ⟨β, hβ1, -, hβ2⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hCM T1 hT1
   have hβ : β = t := (algebraMap F E).injective (congrFun (congrFun hβ1 0) 0).symm
   rw [hβ] at hβ2
   simp only [hβ2] at hE₁
@@ -66,8 +66,8 @@ theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCA
   have hgood := hM F E σ hCM (M + 1) (by omega) _ hJ' _ hT' hdet' d b lam hlam m hm
   refine ⟨hgood.1, hgood.2, ?_⟩
   obtain ⟨S₂, hS₂⟩ := GlobalTheory.CompanionTheory.SW.StepC.theta_hypothesis_c F E σ hCM M J hJ t ht M d b _ _ _ _ hE'
-  have hG := GlobalTheory.T.local_density_block_one_eventually F E σ hCM M J hJ t ht M T hT hdet hT' d b
-  have hSG := GlobalTheory.T.local_measures_orthogonal_sum_almost_all_places F E σ hCM M J hJ t ht M T hT hdet d b
+  have hG := _root_.GlobalTheory.CompanionTheory.SW.GoodMass.good_mass F E σ hCM M J hJ t ht M T hT hdet hT' d b
+  have hSG := _root_.GlobalTheory.CompanionTheory.SW.StageGood.stage_good F E σ hCM M J hJ t ht M T hT hdet d b
   refine ⟨S₁ ∪ S₂ ∪ S₃ ∪ (Filter.eventually_cofinite.1 hG).toFinset ∪ (Filter.eventually_cofinite.1 hSG).toFinset,
     fun S hS φinf φ hφinf hφ => ?_⟩
   have hS1 : S₁ ⊆ S := fun x hx => hS (by simp [hx])
@@ -78,9 +78,9 @@ theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCA
   have hS5 : (Filter.eventually_cofinite.1 hSG).toFinset ⊆ S := fun x hx => hS (by
     simp only [Finset.mem_union]; exact Or.inr hx)
   obtain ⟨hc1, hc2⟩ := hS₃ S hS3
-  obtain ⟨Ψinf, hΨinfm, hΨinf1, hΨinf2⟩ := GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht M T hT hdet hT' (Ainf F) hLi d b
+  obtain ⟨Ψinf, hΨinfm, hΨinf1, hΨinf2⟩ := _root_.GlobalTheory.CompanionTheory.SW.fibre_block_stages F E σ hCM M J hJ t ht M T hT hdet hT' (Ainf F) hLi d b
     laminf hinf.1 minf m₁inf m'inf hminf hm₁inf hm'inf cinf hKi φinf hφinf
-  choose Ψ₀ hΨm₀ hΨ1₀ hΨ2₀ using fun v => GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht M T hT hdet hT' (Fv F v) (hLv v) d b
+  choose Ψ₀ hΨm₀ hΨ1₀ hΨ2₀ using fun v => _root_.GlobalTheory.CompanionTheory.SW.fibre_block_stages F E σ hCM M J hJ t ht M T hT hdet hT' (Fv F v) (hLv v) d b
     (lam v) (hlam v).1 (m v) (m₁ v) (m' v) (hm v) (hm₁ v) (hm' v) (c v) (hKv v) (fun y => (cfac E v : ℝ≥0∞) * φ v y)
     ((hφ v).const_mul _)
 
@@ -97,14 +97,14 @@ theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCA
     exact ENNReal.coe_ne_top
   have hHv : ∀ v, (coordW (Fv F v) b (lam v) M M).IsAddHaarMeasure ∧ (coordHerm (Fv F v) σ b (lam v) M).IsAddHaarMeasure := fun v => by
     obtain ⟨h1, h2, h3, h4, -⟩ := hLv v
-    have hh := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1
+    have hh := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b (lam v) (hlam v).1
     exact ⟨hh.2.1 M M, hh.2.2 M⟩
   have hHyp := hS₂ S hS2 φinf φ Ψinf Ψ₀ hφinf hφ hΨinf1 hΨ1 (fun v hv g =>
     smul_indicator_mass _ _ _ _ _ _ (GlobalTheory.CompanionTheory.SW.Step.of_cofinite hSG hS5 hv _ _ (m' v) (hHv v).1 (hHv v).2 (hm' v) g))
   set τ' := ENNReal.ofReal (∏' v : {v // v ∉ S}, ((cfac E v.1 • m' v.1 (hermOf (Fv F v.1) σ T hT)) (latV b v.1)).toReal) with hτ'
-  have hPm : Measurable (pureL b S Ψinf Ψ₀) := GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b 1 (M + 1) S Ψinf Ψ₀ hΨinfm hΨm₀
-  have hth := GlobalTheory.T.lintegral_thetaMeas_block_one_eq_rank_one F E σ hCM M J hJ t ht M T μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ (pureL b S φinf φ)
-    (fun y => ((c₀ : ℝ≥0∞) * τ') * pureL b S Ψinf Ψ₀ y) (GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b (M + 1) (M + 1) S φinf φ hφinf hφ)
+  have hPm : Measurable (pureL b S Ψinf Ψ₀) := _root_.GlobalTheory.CompanionTheory.SW.PureMeas.measurable_pureL F E σ hCM d b 1 (M + 1) S Ψinf Ψ₀ hΨinfm hΨm₀
+  have hth := _root_.GlobalTheory.CompanionTheory.SW.ThetaStage.theta_stage F E σ hCM M J hJ t ht M T μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ (pureL b S φinf φ)
+    (fun y => ((c₀ : ℝ≥0∞) * τ') * pureL b S Ψinf Ψ₀ y) (_root_.GlobalTheory.CompanionTheory.SW.PureMeas.measurable_pureL F E σ hCM d b (M + 1) (M + 1) S φinf φ hφinf hφ)
     (hPm.const_mul _) hHyp
   have hone := hS₁ S hS1 Ψinf Ψ₀ hΨinfm hΨm₀
   rw [hth, lintegral_const_mul _ hPm]
@@ -121,9 +121,9 @@ theorem stepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : MassCA
       _ = _ := by rw [hone2, one_pow, one_mul]
   have htail : ENNReal.ofReal (∏' v : {v // v ∉ S}, ((cfac E v.1 • m v.1 (hermOf (Fv F v.1) σ _ hT')) (latV b v.1)).toReal) =
       τ' * ENNReal.ofReal (∏' v : {v // v ∉ S}, (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal) := by
-    have hA := GlobalTheory.T.infinite_product_multipliable {v // v ∉ S} (fun v => ((cfac E v.1 • m' v.1 (hermOf (Fv F v.1) σ T hT)) (latV b v.1)).toReal)
+    have hA := _root_.GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod {v // v ∉ S} (fun v => ((cfac E v.1 • m' v.1 (hermOf (Fv F v.1) σ T hT)) (latV b v.1)).toReal)
       (hsum'.subtype _)
-    have hB := GlobalTheory.T.infinite_product_multipliable {v // v ∉ S} (fun v => (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal)
+    have hB := _root_.GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod {v // v ∉ S} (fun v => (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal)
       (hsum₁.subtype _)
     have hcong : ∀ v : {v // v ∉ S}, ((cfac E v.1 • m v.1 (hermOf (Fv F v.1) σ _ hT')) (latV b v.1)).toReal =
         ((cfac E v.1 • m' v.1 (hermOf (Fv F v.1) σ T hT)) (latV b v.1)).toReal *

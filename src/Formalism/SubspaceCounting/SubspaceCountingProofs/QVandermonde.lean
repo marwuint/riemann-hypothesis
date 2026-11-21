@@ -64,25 +64,6 @@ theorem form2 (q m : ℕ) : ∀ g n : ℕ, gaussBinom q (m + g) n =
       simp only [Nat.sub_zero, gb_zero_right]
       ring
 
-theorem form1 (q m g n : ℕ) : gaussBinom q (m + g) n =
-    ∑ l ∈ Finset.range (n + 1),
-      q ^ (l * (m + l - n)) * gaussBinom q m (n - l) * gaussBinom q g l := by
-  rw [Nat.add_comm m g, form2 q g m n]
-  refine (Finset.sum_range_reflect _ _).symm.trans ?_
-  apply Finset.sum_congr rfl
-  intro l hl
-  have hl' : l ≤ n := by
-    have := Finset.mem_range.mp hl
-    omega
-  have e1 : n + 1 - 1 - l = n - l := by omega
-  have e2 : n - (n - l) = l := by omega
-  have e3 : m - (n - l) = m + l - n := by omega
-  simp only [e1, e2, e3]
-  ring
-
 end QVandermondeP
-
-theorem qVandermondeIdentity : QVandermonde := fun q m g n =>
-  ⟨QVandermondeP.form1 q m g n, QVandermondeP.form2 q m g n⟩
 
 end Formalism.G0

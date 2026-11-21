@@ -50,7 +50,4 @@ theorem infPart_sigR (D : D7) (x : AE D) :
     infPart D (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) :=
   GlobalTheory.DetRootCong.map_sigR _ _ x
 
-theorem finPart_det {D : D7} (V : HSp D) (k : GA D V) : finPart D (matHom V k).1.det = (finHom V k).1.det :=
-  (finPart D).map_det _
-
 end GlobalTheory.DetOnto

@@ -80,13 +80,6 @@ theorem inFr_congr {a : ZMod n} {num num' den den' : LetA O n} {f : W.EE} (hn : 
     (hd : den = den') (h : InFr W a num den f) : InFr W a num' den' f := by
   subst hn hd; exact h
 
-theorem prod_ps_split (hπ : W.π₀ ∈ W.AΔ) (e : ℕ) (b a d : ℕ → ℕ)
-    (h : ∀ s ∈ Finset.range e, b s = a s + d s) :
-    (∏ s ∈ Finset.range e, ps W s ^ b s) =
-      (∏ s ∈ Finset.range e, ps W s ^ a s) * ∏ s ∈ Finset.range e, ps W s ^ d s := by
-  rw [← Finset.prod_mul_distrib]
-  exact Finset.prod_congr rfl fun s hs => by rw [h s hs, pow_add]
-
 theorem prod_ps_mem (hπ : W.π₀ ∈ W.AΔ) (e : ℕ) (d : ℕ → ℕ) :
     (∏ s ∈ Finset.range e, ps W s ^ d s) ∈ W.AΔ := by
   exact prod_mem fun s _ => pow_mem (Formalism.MainNotions.UnusedSlot80.KL.ps_mem (W := W) hπ s) _
@@ -273,9 +266,6 @@ theorem inFr_of_inId {a : ZMod n} (e : ℕ) (α δ : ℕ → ℕ) (h : ∀ s ∈
   refine inFr_congr W ?_ ?_ hf
   · exact Finset.prod_congr rfl fun s hs => by rw [(toNat_sub_of (α s) (δ s) (h s hs)).1]
   · exact Finset.prod_congr rfl fun s hs => by rw [(toNat_sub_of (α s) (δ s) (h s hs)).2]
-
-theorem prod_zero_pow (e : ℕ) : (∏ s ∈ Finset.range e, ps W s ^ (fun _ => (0 : ℕ)) s) = 1 := by
-  simp
 
 section Pi0
 

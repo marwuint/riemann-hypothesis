@@ -8,9 +8,6 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 universe u v
 
-theorem lengthFormulaDimOne : LengthFormulaDimOne.Statement.{u, v} :=
-  ReciprocityTheory.ChartRestriction.G.AI.dimOneFormula
-
 theorem lengthFormulaDimTwo : LengthFormulaDimTwo.Statement.{u} :=
   ReciprocityTheory.ChartRestriction.G.AI.length_two_generator_quotient
 

@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorThroughIsogenyOfDieudonneRangeLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedExtensionPullbackDualHomEqZeroOfIsEtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorThroughIsogenyOfDieudonneRangeLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedExtensionPullbackDualHomEqZeroOfIsEt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupIsogenyBasicPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsConnIsEtSplitting
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomEqZeroOfIsConnOfIsEt
@@ -18,22 +18,22 @@ namespace GlobalTheory.Dieu.Integrality
 variable {p : ℕ} [Fact p.Prime] (T : Theory p) {k : Type} [Field k] [CharP k p] [PerfectRing k p]
 
 theorem map_id' (G : PDivGroup p k) : T.map (𝟙 G) = LinearMap.id :=
-  (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).1
+  (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G G G trivial trivial trivial).1
 
 theorem map_comp' {G H K : PDivGroup p k} (f : G ⟶ H) (g : H ⟶ K) :
     T.map (f ≫ g) = T.map f ∘ₗ T.map g :=
-  (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H K trivial trivial trivial).2.1 f g
+  (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G H K trivial trivial trivial).2.1 f g
 
 theorem map_pow_smul' {G H : PDivGroup p k} (n : ℕ) (f : G ⟶ H) (m : T.M H) :
     T.map ((p : ℤ_[p]) ^ n • f) m = p ^ n • T.map f m :=
-  (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H H trivial trivial trivial).2.2.2.2.1 n f m
+  (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G H H trivial trivial trivial).2.2.2.2.1 n f m
 
 theorem red_map' {G H : PDivGroup p k} (f : G ⟶ H) (m : T.M H) :
     T.red G (T.map f m) = rigExtMap f (T.red H m) :=
-  (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H H trivial trivial trivial).2.2.2.2.2.1 f m
+  (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G H H trivial trivial trivial).2.2.2.2.2.1 f m
 
 theorem eq_zero_of_pow_smul' {G : PDivGroup p k} (n : ℕ) (m : T.M G) (h : p ^ n • m = 0) : m = 0 :=
-  (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).2.2.2.2.2.2.2.2 n m h
+  (_root_.GlobalTheory.Dieu.base_functor_props p _ T.base k G G G trivial trivial trivial).2.2.2.2.2.2.2.2 n m h
 
 def DivP {G H : PDivGroup p k} (f : G ⟶ H) : Prop := ∀ m, ∃ m', T.map f m = p • m'
 
@@ -60,7 +60,7 @@ theorem divP_iff_red {G H : PDivGroup p k} (f : G ⟶ H) : DivP T f ↔ rigExtMa
 theorem exists_of_isConn {G H : PDivGroup p k} (hG : G.IsConn) (f : G ⟶ H) (hf : DivP T f) :
     ∃ g : G ⟶ H, f = (p : ℤ_[p]) • g := by
   have hq : IsIsog ((p : ℤ_[p]) ^ 1 • 𝟙 G) := ((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).1 1).1
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_factor_through_isogeny_of_dieudonne_range_le p T k G G H _ f hG hq (by
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.Dieu.exists_comp_eq_of_range_map_le p T k G G H _ f hG hq (by
     rintro x ⟨m, rfl⟩
     obtain ⟨m', hm'⟩ := hf m
     refine ⟨m', ?_⟩
@@ -71,7 +71,7 @@ theorem exists_of_isConn {G H : PDivGroup p k} (hG : G.IsConn) (f : G ⟶ H) (hf
 theorem exists_of_isEt {G H : PDivGroup p k} (hG : G.IsEt) (hH : H.IsEt) (f : G ⟶ H)
     (hf : DivP T f) : ∃ g : G ⟶ H, f = (p : ℤ_[p]) • g := by
   have h1 : rigExtMap (dualHom G H f) = 0 :=
-    GlobalTheory.T.rigidifiedExtensionPullback_dualHom_eq_zero_of_isEt p k G H f hG hH ((divP_iff_red T f).1 hf)
+    _root_.GlobalTheory.PDivGroup.rigExtMap_dualHom_eq_zero_of_isEt p k G H f hG hH ((divP_iff_red T f).1 hf)
   obtain ⟨g', hg'⟩ := exists_of_isConn T (PDivGroup.dual_isConn_of_isEt p k H hH) _
     ((divP_iff_red T _).2 h1)
   obtain ⟨g, rfl⟩ := (dualHom_bijective (G := G) (H := H)).2 g'

@@ -46,27 +46,6 @@ def PFire : BdP Part := fun _ _ _ b =>
   b.B.Q.Rl.toRealDat.ExAt ∧ JEvBar b.B.T b.B.Q.Rl.toRealDat b.B.κ ∧ GeoAct b.B.T b.B.Q.Rl.toRealDat b.B.κ b.B.v₀ ∧
     EvInj b.B.T b.B.Q.Rl.toRealDat b.B.v₀
 
-def PRB : BdP Part := fun _ _ _ b => RowsB b.B
-
-def PThR : BdP Part := fun _ _ _ b =>
-  RecTie.ThetaFireRow (RecTie.toLiftReal b.B.Q.Rl.toRealDat b.B.Q.F.lv2 b.Rr.tupT b.Rr.hm b.Rr.hTop b.Rr.hinj) b.Rr.IL
-
-def PFrames : BdP Part := fun _ _ _ b => RealT.FramesEx b.B.Q
-
-def PSeeEx : BdP Part := fun _ _ _ b => SeeEx b.B.Q
-
-def PPA : BdP Part := fun _ _ _ b => PrimRows3 b.B.Q.Rl b.B.Q.F ∧ b.P.A3.fam3.TypesSep3
-
-def PDiv : BdP Part := fun D O _ b =>
-  DivRows3 D b.P.A3 b.P.P0 b.P.ψ0 b.P.Ps b.P.ψs b.P.Zs b.P.S0 b.P.S1 O.ex.p0 b.P.C b.P.NuC b.P.I
-
-def BaseRankDimension : BdP Part := fun D _ _ b =>
-  D.what₂.D0 = (b.P.A3.A.fam.R b.P.A3.A.fam.μ0).dZ (b.P.A3.A.fam.lvl b.P.P0 b.P.ψ0) (b.P.Zs.Z b.P.A3.A.fam.μ0)
-
-def PNmj : BdP Part := fun _ O _ b => NX.NMjT b.B.Q b.B.Q.cG b.B.Q.Sx b.B.Q.nexp O.ex.nch
-
-def PIota : BdP Part := fun _ _ _ b => ∀ x : b.S.X.B.I.E, HEq (b.S.X.ιE x) x
-
 def L3 (C CH : ℝ) : BdP Part := fun _ _ _ b => ((b.B.Q.Rl.toCx3 b.B.Q.F).data b.B.Q.F.cr false).L3 (b.B.Q.Rl.num b.B.Q.F C CH)
 
 def ON (C CH : ℝ) : BdP Part := fun _ _ _ b => ((b.B.Q.Rl.toCx3 b.B.Q.F).data b.B.Q.F.cr false).ON (b.B.Q.Rl.num b.B.Q.F C CH)
@@ -74,10 +53,6 @@ def ON (C CH : ℝ) : BdP Part := fun _ _ _ b => ((b.B.Q.Rl.toCx3 b.B.Q.F).data 
 def L6 (C CH : ℝ) : BdP Part := fun _ _ _ b => ((b.B.Q.Rl.toCx3 b.B.Q.F).data b.B.Q.F.cr true).L6 (b.B.Q.Rl.num b.B.Q.F C CH)
 
 def FUN (C CH : ℝ) : BdP Part := fun _ _ _ b => ((b.B.Q.Rl.toCx3 b.B.Q.F).data b.B.Q.F.cr false).FUN (b.B.Q.Rl.num b.B.Q.F C CH)
-
-def Small (C CH : ℝ) : BdP Part := fun _ _ _ b =>
-  (∀ w, (b.B.Q.Rl.toCx3 b.B.Q.F).W1 b.B.Q.F.cr (b.B.Q.Rl.num b.B.Q.F C CH) w → w ∈ b.B.Q.Rl.twPl) ∧
-    (b.B.Q.Rl.toCx3 b.B.Q.F).SEEIso b.B.Q.sEE ∧ PassIn3 b.B.Q.Rl b.B.Q.F C CH
 
 variable {Bd : BdT}
 
@@ -93,19 +68,6 @@ def EvWC (prem : ∀ {eps : ℝ}, FamP eps → Prop) (q : ℝ → ℝ → BdP Bd
 theorem ev_of_atAll {𝒜 : FamClass} {σ : RawSel Bd 𝒜} {q : BdP Bd} (h : AtAll q 𝒜 σ) {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) :
     Ev σ Fm hc q := ⟨0, fun x hx _ i => h Fm hc x hx i⟩
 
-example {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) (Rr : RealRec b.B.Q)
-    (psi : PsiPPTie D b.P.P0 b.P.ψ0 b.P.Ps b.P.ψs b.P.I.eG) (pins : RealPins b.B.Q)
-    (muDef : ∀ C CH : ℝ, (b.B.Q.Rl.toCx3 b.B.Q.F).MuDef b.B.Q.F.cr (b.B.Q.Rl.num b.B.Q.F C CH) b.B.Q.Rl.mu)
-    (recPins : RealRecPins pins Rr) : ∃ p : Part D O c, HEq p.B b.B ∧ (PRB D O c p ↔ RowsB b.B) :=
-  ⟨⟨b.R, b.S, b.P, b.pin, b.DH, b.C.c.face, b.C.Sp, b.C.ok1, b.B, Rr, psi, pins, muDef, recPins⟩, HEq.rfl, Iff.rfl⟩
-
-example {D : D7} {O : Obj D} (P : RowSideFamily O.ex) (Del h0 : ℕ) (c c' : ℝ) (Zs : DefSub P.A3.fam3.amb3) :
-    (zsc P Del h0 c Zs).F0 = (zsc P Del h0 c' Zs).F0 ∧ (zsc P Del h0 c Zs).l6u = 0 := ⟨rfl, rfl⟩
-
 end GlobalTheory.Fc.Ind
-
-open GlobalTheory.Fc GlobalTheory.Fc.Ind in
-
-example {D : D7} {O : Obj D} (P : RowSideFamily O.ex) (Del h0 : ℕ) (c : ℝ) : zsc P Del h0 c = Ind.zsc P Del h0 c := rfl
 
 end

@@ -1,13 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLieEigenbasisGenericFibreCmTripleStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLieEigenbasisGenericFibreCmTriple
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsFibreOfIffIsPolFibre
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.BarEqOfLamEqMultiplier
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsInverseIsogenySumOfCmHomsStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsInverseIsogenySumOfCmHoms
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCommonDenominatorOfValuationLeOne
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmHostRootNegDiscriminantNeNegSelf
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilPairingIffOfCubeLBPairingIsoStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsRosatiActionWeilPairingBalancedTripleStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsMetrisedLineOfLieVectorStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilPairingIffOfCubeLBPairingIso
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsRosatiActionWeilPairingBalancedTriple
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsMetrisedLineOfLieVector
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieAlgebraEigenDecompositionCMSignatureStatement
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CubeLBPairingIsoIffWeilPairingCompatibleOverRingStatement
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MapRtEqNegIff
@@ -54,15 +54,15 @@ theorem exists_lamObjGood_of_cmObj : Out.SecTwistSt → ThetaUnifAV → Out.Laws
     obtain ⟨τ, hτ⟩ := this
     exact Subtype.ext (((h₁ τ).1 hτ).symm.trans ((hρ τ).1 hτ))
   subst hρρ
-  obtain ⟨oa, hoa, hR⟩ := GlobalTheory.T.exists_rosatiAction_weilPairing_balanced_triple hL E H hstar K X.B
-  obtain ⟨oaΨ, hoaΨ, hRΨ⟩ := GlobalTheory.T.exists_rosatiAction_weilPairing_balanced_triple hL E H hstar K (X.A true)
-  obtain ⟨oa', hoa', hR'⟩ := GlobalTheory.T.exists_rosatiAction_weilPairing_balanced_triple hL E H hstar K (X.A false)
-  obtain ⟨xΨ, φΨ, τΨ, hFΨ, hgΨ, hTΨ⟩ := GlobalTheory.T.exists_lie_eigenbasis_genericFibre_cmTriple hS hL E H K (X.A true) oaΨ (psiSet H) (labK c K) ρ' hoaΨ hbij
+  obtain ⟨oa, hoa, hR⟩ := _root_.GlobalTheory.LamF.exists_oAct_rosatiConj hL E H hstar K X.B
+  obtain ⟨oaΨ, hoaΨ, hRΨ⟩ := _root_.GlobalTheory.LamF.exists_oAct_rosatiConj hL E H hstar K (X.A true)
+  obtain ⟨oa', hoa', hR'⟩ := _root_.GlobalTheory.LamF.exists_oAct_rosatiConj hL E H hstar K (X.A false)
+  obtain ⟨xΨ, φΨ, τΨ, hFΨ, hgΨ, hTΨ⟩ := _root_.GlobalTheory.LamF.exists_eigenbasis_fibre hS hL E H K (X.A true) oaΨ (psiSet H) (labK c K) ρ' hoaΨ hbij
     X.ρ_sq hρ X.typeP
-  obtain ⟨x', φ', τ', hF', hg', hT'⟩ := GlobalTheory.T.exists_lie_eigenbasis_genericFibre_cmTriple hS hL E H K (X.A false) oa' (psiSet H)ᶜ (labK c K) (-ρ') hoa' hbij
+  obtain ⟨x', φ', τ', hF', hg', hT'⟩ := _root_.GlobalTheory.LamF.exists_eigenbasis_fibre hS hL E H K (X.A false) oa' (psiSet H)ᶜ (labK c K) (-ρ') hoa' hbij
     (by rw [neg_sq, X.ρ_sq]) h₂ ((hasType_neg_iff E H _ _ _ ρ' 0 1 X.ρ_sq).1 X.typeM)
-  choose ℓΨ hℓΨ using GlobalTheory.T.exists_metrised_line_of_lieVector hS hU hL K _ xΨ φΨ hFΨ
-  choose ℓ' hℓ' using GlobalTheory.T.exists_metrised_line_of_lieVector hS hU hL K _ x' φ' hF'
+  choose ℓΨ hℓΨ using _root_.GlobalTheory.LamF.exists_isVecLine hS hU hL K _ xΨ φΨ hFΨ
+  choose ℓ' hℓ' using _root_.GlobalTheory.LamF.exists_isVecLine hS hU hL K _ x' φ' hF'
   obtain ⟨Tl, LamL, k₁, k₂, k₃, k₄, k₅⟩ := GlobalTheory.LamF.exists_keyLines hS hU hL hX K _ xB φB hB
   have pB := (isFibreOf_iff_isPolFibre _ _ (algebraMap (𝓞 K) K) _ xB φB).1 hB
   have pΨ := (isFibreOf_iff_isPolFibre _ _ (algebraMap (𝓞 K) K) _ xΨ φΨ).1 hFΨ
@@ -82,7 +82,7 @@ theorem exists_lamObjGood_of_cmObj : Out.SecTwistSt → ThetaUnifAV → Out.Laws
   have hsym : ∀ j, star (X.hh j) = X.hh j := fun j => (hstar _).trans
     (GlobalTheory.LamF.bar_eq_of_lamEq_multiplier hL E H K (X.A j.isLeft).pol X.B.pol (X.A j.isLeft).t.act (X.φ j) (X.hh j)
       (by change 1 ≤ (X.A j.isLeft).g; rw [gA]; exact hfpos) (lamEq_adj _) (hlam j))
-  have hpol := fun j : Fin p ⊕ Fin q => GlobalTheory.T.weilPairing_iff_of_cubeLBPairingIso hL K (X.A j.isLeft).pol X.B.pol (X.φ j) ((X.A j.isLeft).t.act.act (X.hh j))
+  have hpol := fun j : Fin p ⊕ Fin q => _root_.GlobalTheory.LamF.weilIs_iff_of_lamEq_id hL K (X.A j.isLeft).pol X.B.pol (X.φ j) ((X.A j.isLeft).t.act.act (X.hh j))
     (X.lin j).isMonHom ((X.A j.isLeft).t.act.hom (X.hh j)) (hlam j)
   refine ⟨oa, oaΨ, oa', xΨ, x', φΨ, φ', τΨ, τ', ℓΨ, ℓ', Tl, LamL, hoa, hoaΨ, hoa', ?_⟩
   refine ⟨hR, hRΨ, hR', hB, hFΨ, hF', hgΨ, hg', pB.1.trans gB, hTΨ, hT', fun i a => ?_, fun i a => ?_,
@@ -95,7 +95,7 @@ theorem exists_lamObjGood_of_cmObj : Out.SecTwistSt → ThetaUnifAV → Out.Laws
   · dsimp only
     rw [hoa, hoa']
     exact (X.lin (Sum.inr i)).comm a
-  · refine GlobalTheory.T.exists_inverse_isogeny_sum_of_cm_homs hU hL hX K σ₁ (X.A true).pol (X.A false).pol X.B.pol p q _ _
+  · refine _root_.GlobalTheory.LamF.exists_inverse_isogeny_of_sum hU hL hX K σ₁ (X.A true).pol (X.A false).pol X.B.pol p q _ _
       (fun i => (X.lin (Sum.inl i)).isMonHom) (fun i => (X.lin (Sum.inr i)).isMonHom) ?_ fun y => ?_
     · change X.B.g = p * (X.A true).g + q * (X.A false).g
       rw [gB, gA, gA]

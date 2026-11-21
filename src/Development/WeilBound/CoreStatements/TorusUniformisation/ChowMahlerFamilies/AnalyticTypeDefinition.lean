@@ -283,11 +283,11 @@ theorem solve (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ
     show σ (tauIn c (ComplexEmbedding.conjugate τ) a) = _
     rw [h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]
     rfl
-  obtain ⟨V₁, hVd, -, -⟩ := GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) (σ.comp (tauIn c τ)) τ' D.p v hP hy hτ hv
+  obtain ⟨V₁, hVd, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_directions_of_isEigFrame E H D l Xo _ g ty FU i P (under y) (σ.comp (tauIn c τ)) τ' D.p v hP hy hτ hv
   obtain ⟨W₁, hWd, hWl, -⟩ :=
-    GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy hc hw
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_directions_of_isEigFrame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy hc hw
   obtain ⟨Hm, hHh, -, hHi⟩ := id hP.2.2.2.2
-  obtain ⟨-, -, hd⟩ := GlobalTheory.T.period_hermitian_type_compatibility E H (FU.Di i) g ty P Hm hP hHh hHi
+  obtain ⟨-, -, hd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.riemann_tau_component E H (FU.Di i) g ty P Hm hP hHh hHi
   have hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q := by
     rw [(FU.sig i).1, (FU.sig i).2]; simp
   have hS : (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))).det ≠ 0 := by

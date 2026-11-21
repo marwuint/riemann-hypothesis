@@ -1,6 +1,10 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalIdeles.WeakStable
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueCardEqAbsNormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueCardEqAbsNorm
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsComplementaryProductOfIsCuspidal
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsNormalisedOfIsDiscrete
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericIffIsGenericFor
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqOfHasValueAtInfinite
 
 namespace UpperTheory.ConvolutionTheory.Sph
@@ -17,7 +21,7 @@ theorem unrNorm : UnrNorm := by
   intro F E _ _ _ _ _ v w σw l N hN hq a
   refine MonoidHom.ext fun x => ?_
   have h := hN.abs x
-  rw [GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.T.residue_card_eq_abs_norm F v, GlobalTheory.T.residue_card_eq_abs_norm E w.1, hq] at h
+  rw [GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LGrp.nabs_eq_zpow, _root_.GlobalTheory.CompanionTheory.ResCardAbsNorm.resCard_completion_eq_absNorm F v, _root_.GlobalTheory.CompanionTheory.ResCardAbsNorm.resCard_completion_eq_absNorm E w.1, hq] at h
   have h' := zpow_inj_of_absNorm v h
   have h'' := neg_injective h'
   simp only [MonoidHom.comp_apply, GlobalTheory.SmGL.unrChar_apply, h'']

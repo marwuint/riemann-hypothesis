@@ -119,14 +119,6 @@ lemma primeLogSum_f_nonneg (n : ℕ) : 0 ≤ Real.log n / ((n : ℝ) * ((n : ℝ
     apply div_nonneg (Real.log_nonneg h1)
     exact mul_nonneg (by linarith) (by linarith)
 
-lemma primeLogSum_g_nonneg (n : ℕ) : 0 ≤ Real.log n / ((n : ℝ) - 1) := by
-  rcases Nat.eq_zero_or_pos n with h | h
-  · subst h
-    simp
-  · have h1 : (1:ℝ) ≤ n := by exact_mod_cast (show 1 ≤ n by omega)
-    apply div_nonneg (Real.log_nonneg h1)
-    linarith
-
 lemma primeLogSum_log_le (p k : ℕ) (hp : 0 < p) (hk : p ≤ 2 ^ k) :
     Real.log (p : ℝ) ≤ (k : ℝ) * Real.log 2 := by
   have h1 : (0:ℝ) < p := by exact_mod_cast hp

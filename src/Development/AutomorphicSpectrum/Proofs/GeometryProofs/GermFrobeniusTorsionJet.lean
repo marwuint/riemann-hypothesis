@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslDiffEq
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.RegTieAsm
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FormalGroupLinearSecond
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -146,7 +148,7 @@ theorem actp_at_point {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Ho
   have a1 : ∀ z, (jetAug : Jet k Unit p →ₐ[k] k) (σ (ψ z)) = (jetAug : Jet k (Fin 1 × Fin d) p →ₐ[k] k) z := by
     intro z
     rw [hσ, hψ, Actp.aug_subst]
-  obtain ⟨χ, -, huniq⟩ := (GlobalTheory.T.formal_germ_dimension_unique E H hst X0 t k x d g).2 Unit p 1 (MonObj.comp_one _)
+  obtain ⟨χ, -, huniq⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.GermUniv.germ_chart_universal E H hst X0 t k x d g).2 Unit p 1 (MonObj.comp_one _)
   have c1 := huniq (σ.comp ψ) ⟨fun q => by rw [AlgHom.comp_apply, a1, Actp.aug_X], h1.symm⟩
   have c0 := huniq χ₀ ⟨fun q => by
     simp only [hχ₀, AlgHom.comp_apply, Actp.aug_X, map_zero], h0.symm⟩

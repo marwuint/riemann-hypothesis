@@ -1,4 +1,4 @@
-import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.P2PowMemSpanCUniformizerPowP1PowMulXPow
+import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.FormalSeriesValueAtTwoPointsGenericPoints
 import Mathlib.RingTheory.PowerSeries.Substitution
 import Mathlib.Analysis.SpecialFunctions.Log.Base
 
@@ -93,26 +93,6 @@ theorem PhiData.isDist_p (s : ℕ) : IsDist (P.p s) := by
   show (P.p s).map (IsLocalRing.residue O) ≠ 0
   rw [h]
   exact mul_ne_zero hw.ne_zero (pow_ne_zero _ X_ne_zero)
-theorem PhiData.wdeg_p (s : ℕ) : wdeg (P.p s) = l ^ s := by
-  obtain ⟨w, hw, hs⟩ := P.map_p s
-  exact (ContPA.dist_of_map_eq hw _ hs).2
-
-theorem PhiData.p_one_mem_span_l_X_pow_l : P.p 1 ∈ Ideal.span {C (l : O), (X : O⟦X⟧) ^ l} := by
-  rw [P.first_partial_unit_eq_exp]
-  exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp)))
-    (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))
-theorem PhiData.p2_mem_span_C_natCast_p1_pow_natCast : P.p 2 ∈ Ideal.span {C (l : O), P.p 1 ^ l} := by
-  rw [P.p_two_eq_l_mul_phi_eps_add_phi_u_mul]
-  exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp)))
-    (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))
-theorem PhiData.p_two_mem_span_l_X_pow_l_sq : P.p 2 ∈ Ideal.span {C (l : O), (X : O⟦X⟧) ^ (l ^ 2)} := by
-  have h := ContPA.p2_sub_mul_X_pow_mem_span_C_natCast P.first_partial_unit_eq_exp P.p_two_eq_l_mul_phi_eps_add_phi_u_mul
-  obtain ⟨z, hz⟩ := Ideal.mem_span_singleton'.mp h
-  have : P.p 2 = z * C (l : O) + (P.φ P.u * P.u ^ l) * X ^ (l ^ 2) := by rw [hz, sq]; ring
-  rw [this]
-  exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))
-    (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))
-
 variable {ϖ : O} (hϖ : Irreducible ϖ)
 include hϖ
 
@@ -209,24 +189,6 @@ theorem PhiData.E1 (a y : ℕ) (hy : 1 ≤ y) :
 theorem PhiData.cont_pow_X_pow_eq_zero_of_lt (y b : ℕ) (hy : 1 ≤ y) (hb : 1 ≤ b) (hlt : b < l * y) :
     cont ϖ (P.p 1 ^ y) ((X : O⟦X⟧) ^ b) = 0 :=
   ContPA.content_p1_pow_X_pow_eq_zero hϖ P.hl P.hu P.first_partial_unit_eq_exp y b hlt
-
-theorem PhiData.content_p1_pow_X_pow_le (y b : ℕ) (hy : 1 ≤ y) (hb : 1 ≤ b) :
-    cont ϖ (P.p 1 ^ y) ((X : O⟦X⟧) ^ b) ≠ ⊤ ∧
-    ((cont ϖ (P.p 1 ^ y) ((X : O⟦X⟧) ^ b)).toNat : ℝ) ≤
-      eO (O := O) l * max 0 ((b : ℝ) / l - y + 2 + Real.logb l b) := by
-  unfold eO
-  exact ContPA.content_p1_pow_X_pow_le_general hϖ P.hl P.hl0 P.isUnit_eps P.hu P.first_partial_unit_eq_exp y b hy hb
-
-theorem PhiData.E2 (y be : ℕ) (hbe : 1 ≤ be) :
-    cont ϖ ((X : O⟦X⟧) ^ (l * be)) (P.p 1 ^ y) =
-      ⨅ i ∈ Finset.range (min y (be - 1) + 1),
-        ((eO (O := O) l * (y - i + padicValNat l (y.choose i)) : ℕ) : ℕ∞) := by
-  unfold eO
-  exact ContPA.formalSeriesValueAtTwoPoints_genericPoints hϖ P.hl P.hl0 P.isUnit_eps P.hu P.first_partial_unit_eq_exp y be hbe
-
-theorem PhiData.lineCoeffQuadratic_mem (B y : ℕ) (hB : 1 ≤ B) (hy : 1 ≤ y) :
-    P.p 1 ^ y ∈ Ideal.span {C (l : O) ^ (y + 1 - (B + l - 1) / l), (X : O⟦X⟧) ^ B} :=
-  ContPA.p1_pow_mem_span_C_pow_X_pow P.first_partial_unit_eq_exp y B
 
 theorem PhiData.cont_X_pow_pow_eq_zero_of_gt (B y : ℕ) (hB : 1 ≤ B) (hy : 1 ≤ y) (hlt : l * y < B) :
     cont ϖ ((X : O⟦X⟧) ^ B) (P.p 1 ^ y) = 0 :=

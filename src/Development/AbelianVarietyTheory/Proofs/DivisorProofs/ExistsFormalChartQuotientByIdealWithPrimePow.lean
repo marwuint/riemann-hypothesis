@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgHomEvalCompEqEvAMapStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgHomEvalCompEqEvAMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalChartPresentsLevelsModIdealStatement
 
 set_option autoImplicit false
@@ -46,7 +46,7 @@ theorem ev₂_map {p m d : ℕ} {O k : Type} [CommRing O] [CommRing k] {r : O �
     | inr i =>
       change (s.app n) 1 ⊗ₜ[k] (s.app n) (c.x n i) = 1 ⊗ₜ[k] c'.x n i
       rw [map_one, hc]
-  have h := T.map_eval_eq_evA_map_of_isEval_of_pow_eq_zero p m O _ k (G'.A n ⊗[k] G'.A n) _ _ _ (c.isEval₂ n) r (twoRing (s.app n))
+  have h := _root_.GlobalTheory.algHom_eval_comp_eq_evA_map p m O _ k (G'.A n ⊗[k] G'.A n) _ _ _ (c.isEval₂ n) r (twoRing (s.app n))
     (fun a => by
       rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one,
         ← map_one (twoRing (s.app n))]

@@ -2,7 +2,7 @@ import Formalism.ThetaLogCoordinates.PartnerMeanCoordinates.TheoremMCB
 
 namespace Formalism.InvariantFactorPaths.MC
 
-open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.GM.DimensionMonotonicity Formalism.CountingSumsFrames Formalism.CountingSumsFrames.TO Formalism.InvariantFactorPaths.OddLevelGainBounds.TB MvPolynomial Finset
+open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.GM.DimensionMonotonicity Formalism.CountingSumsFrames Formalism.CountingSumsFrames.TO MvPolynomial Finset
 
 theorem partner_condition_holds : YPartnerC := by
   intro p _ N r _ _ LL q J M ρ e1 hr hHP z hz hprim

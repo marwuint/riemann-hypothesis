@@ -393,6 +393,4 @@ theorem proof : HodgeFlagMinorTrdeg.Statement := by
 
 end HodgeFlagMinorTrdeg
 
-theorem HodgeFlagMinorTrdeg.full : HodgeFlagMinorTrdeg.Statement := HodgeFlagMinorTrdeg.proof
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

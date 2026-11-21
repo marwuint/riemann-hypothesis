@@ -12,8 +12,4 @@ def ConstantsDescend.Statement : Prop :=
           w'.comp (Subalgebra.inclusion (le_sup_right : T ≤ R ⊔ T)).toRingHom) →
     ∃ m : ℕ, 1 ≤ m ∧ ∀ t ∈ T, (m : Ω) * t ∈ R
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.HilbertSamuel

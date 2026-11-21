@@ -126,9 +126,6 @@ theorem inclAd_injective : Function.Injective (inclAd F E) :=
 theorem diagGL_val (γ : GL (Fin N) E) :
     (diagGL F γ : Matrix (Fin N) (Fin N) (Adf F E)) = (γ : Matrix (Fin N) (Fin N) E).map (inclAd F E) := rfl
 
-theorem diagGL_injective : Function.Injective (diagGL F : GL (Fin N) E → GL (Fin N) (Adf F E)) := fun a b h =>
-  Units.ext (Matrix.map_injective inclAd_injective (congrArg Units.val h))
-
 theorem diagGL_mem_u (c : E ≃ₐ[F] E) (J : Matrix (Fin N) (Fin N) E) (γ : GL (Fin N) E) :
     diagGL F γ ∈ UA c J ↔ γ ∈ uGrp c.toRingHom J := by
   show (diagGL F γ : Matrix (Fin N) (Fin N) (Adf F E))ᵀ * _ * _ = _ ↔ _ * _ * _ = _

@@ -1,5 +1,9 @@
 import Development.AutomorphicArithmetic.MeanSquareBounds.PrimeSetTwoBounds
-import Formalism.GL3MeanSquares.ZeroFreeRegionGl2PrimeChoiceResults
+import Mathlib
+import Formalism.GL3MeanSquares.SecondEstimateOfIntervalHypothesis
+import Formalism.GL3MeanSquares.HookFormulaTorsion.WeightedVonMangoldtSumIdentity
+import Formalism.GL3MeanSquares.HookFormulaTorsion.CharacterEstimateOfHypothesis
+import Formalism.GL3MeanSquares.HookFormulaTorsion.TwistIsPrimitiveCharacter
 
 open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 

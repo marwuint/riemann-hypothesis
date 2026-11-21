@@ -45,10 +45,6 @@ theorem hcProjLin_mem_polyLE {d : ℕ} {u : U n} (hu : u ∈ filt d) : hcProjLin
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul r x _ hx => rw [map_smul]; exact Submodule.smul_mem _ r hx
 
-theorem totalDegree_hcProjLin_le {d : ℕ} {u : U n} (hu : u ∈ filt d) :
-    (hcProjLin u).totalDegree ≤ d :=
-  mem_polyLE.1 (hcProjLin_mem_polyLE hu)
-
 noncomputable def diagMain (w : List (Fin n × Fin n)) : MvPolynomial (Fin n) ℂ := by
   classical
   exact if ∀ a ∈ w, a.1 = a.2 then (w.map fun a => X a.1).prod else 0
@@ -161,10 +157,6 @@ theorem hcProjLin_capelli_sub_mem (k : ℕ) :
   refine Submodule.sum_mem _ fun i _ => ?_
   have := hcProjLin_word_sub_mem (List.ofFn fun t : Fin (k + 1) => (i t, i (finRotate (k + 1) t)))
   rwa [List.length_ofFn, Nat.add_sub_cancel] at this
-
-theorem totalDegree_hcProjLin_capelli_sub (k : ℕ) :
-    (hcProjLin (capelli (n := n) (k + 1)) - psum (Fin n) ℂ (k + 1)).totalDegree < k + 1 :=
-  Nat.lt_succ_of_le (mem_polyLE.1 (hcProjLin_capelli_sub_mem k))
 
 theorem translate_X (c : Fin n → ℂ) (i : Fin n) : translate c (X i) = X i + C (c i) := by
   simp [translate]

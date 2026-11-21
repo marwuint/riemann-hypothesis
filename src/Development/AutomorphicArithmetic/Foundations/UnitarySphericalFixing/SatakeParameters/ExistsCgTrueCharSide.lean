@@ -13,37 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.One.M
 
-section Twist
-
-variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-  {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} [IsTotallyComplex E]
-  (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
-
-include hF in
-theorem locPar_twist (π : CG E a) (χ : HChar E) (h : IsPlaceOver A w)
-    (hg : Good (⟨a, ParLaws.toCl (π.loc w)⟩ : IrrGL (w.adicCompletion E))) :
-    ParLaws.locPar hL (π.twist χ) h = (ParLaws.locPar hL π h).lpChar (ParLaws.locPar hL (CG.ofChar χ) h) := by
-  obtain ⟨_, _, _, -, H⟩ := ParLaws.isRec_locRec hL h
-  rw [ParLaws.locPar_ofChar, ParLaws.locPar, ParLaws.locPar, cls_loc_twist]
-  have _ := hF
-  exact Old.twist H _ _ _ hg
-
-include hF in
-theorem locPar_tw (π : CG E a) (χ : CG E 1) (h : IsPlaceOver A w)
-    (hg : Good (⟨a, ParLaws.toCl (π.loc w)⟩ : IrrGL (w.adicCompletion E))) :
-    ParLaws.locPar hL (π.tw χ) h = (ParLaws.locPar hL π h).lpChar (ParLaws.locPar hL χ h) := by
-  rw [CG.tw, locPar_twist hL hF _ _ _ hg, CG.ofChar_toChar]
-
-end Twist
-
 namespace Old
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut}
-
-theorem cgGood (s : Sw) (C : CGTrue hL D T) : ∀ a (π : D.naut.CG a), GoodAll (C.e a π) := s.elim
-
-theorem cgSurj (C : CGTrue hL D T) : ∀ a, 0 < a → ∀ ρ : HostCGu D.host a, GoodAll ρ → ∃ π, C.e a π = ρ :=
-  fun a h ρ _ => C.surj a h ρ
 
 def cgMk (s : Sw) (e : ∀ a, D.naut.CG a ↪ HostCGu D.host a) (_good : ∀ a (π : D.naut.CG a), GoodAll (e a π))
     (_surj : ∀ a, 0 < a → ∀ ρ : HostCGu D.host a, GoodAll ρ → ∃ π, e a π = ρ) (_zero : IsEmpty (D.naut.CG 0))

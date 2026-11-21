@@ -85,12 +85,6 @@ theorem svR_conj {m N : ℕ} (e : Fin N → Fin m → E) (H : (E →+* ℂ) → 
   simp only [svP, Matrix.of_apply, Matrix.map_apply, ComplexEmbedding.conjugate_coe_eq, map_sum,
     map_mul, starRingEnd_apply, star_star]
 
-theorem svR_normsq (z X : ℂ) : star z * X * z = ((‖z‖ ^ 2 : ℝ) : ℂ) * X := by
-  have h : z * star z = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
-    rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
-  calc star z * X * z = (z * star z) * X := by ring
-    _ = _ := by rw [h]
-
 end Coord
 
 theorem successive_vector_real : SvReal := by

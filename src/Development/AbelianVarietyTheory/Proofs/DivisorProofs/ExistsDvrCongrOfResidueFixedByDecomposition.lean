@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralQuotientOfValuationSubringAboveDvrStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralQuotientOfValuationSubringAboveDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueNormalOfProfiniteInvariantsStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
@@ -108,7 +108,7 @@ theorem residue_fixed_mem : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDis
 
   have hsub : ∀ g ∈ MulAction.stabilizer G Q, ∀ y ∈ V, g y ∈ V := by
     intro g hg y hy
-    obtain ⟨a, s, ha, hs, hsv, hys⟩ := GlobalTheory.T.exists_integral_quotient_of_valuationSubring_above_dvr R K Ω V hV y hy
+    obtain ⟨a, s, ha, hs, hsv, hys⟩ := _root_.GlobalTheory.ValAbove.exists_integral_mul_eq_of_isAbove R K Ω V hV y hy
     let a' : B := ⟨a, ha⟩
     let s' : B := ⟨s, hs⟩
     have hs'Q : s' ∉ Q := by rw [hQ]; exact fun h => (ne_of_lt h) hsv
@@ -138,7 +138,7 @@ theorem residue_fixed_mem : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDis
     · intro hz
       exact hsub g⁻¹ (inv_mem hg) z hz
 
-  obtain ⟨a, s, ha, hs, hsv, hxs⟩ := GlobalTheory.T.exists_integral_quotient_of_valuationSubring_above_dvr R K Ω V hV x hx
+  obtain ⟨a, s, ha, hs, hsv, hxs⟩ := _root_.GlobalTheory.ValAbove.exists_integral_mul_eq_of_isAbove R K Ω V hV x hx
   let a' : B := ⟨a, ha⟩
   let s' : B := ⟨s, hs⟩
   have hs'Q : s' ∉ Q := by rw [hQ]; exact fun h => (ne_of_lt h) hsv

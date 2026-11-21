@@ -305,36 +305,4 @@ theorem Datum.algO_simple (D : Datum p) : IsSimpleRing D.algO := by
   · left; apply Subtype.ext; rw [hc, h0, map_zero]; rfl
   · right; apply Subtype.ext; rw [hc, h1, map_one]; rfl
 
-theorem endO_centralSimple : ∀ {p : ℕ} [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p),
-    Algebra.IsCentral D.F D.endO ∧ IsSimpleRing D.endO ∧ Module.finrank D.F D.endO = D.n ^ 2 := by
-  intro p _ D
-  haveI : IsSimpleRing D.algO := D.algO_simple
-  haveI : IsSimpleRing (Module.End ℚ D.VQ) := GroundTheory.Brauer.isSimpleRing_end ℚ ℚ D.VQ
-  have hs := GroundTheory.Brauer.isSimpleRing_centralizer D.algO
-  have hdim := GroundTheory.Brauer.finrank_mul_finrank_centralizer D.algO
-  have hcc := GroundTheory.Brauer.centralizer_centralizer D.algO
-  rw [D.centralizer_algO] at hs hdim hcc
-  haveI := D.freeLa; haveI := D.finLa
-  have hV : Module.finrank ℚ D.VQ = D.m * D.n * Module.finrank ℚ D.F := by
-    rw [Module.finrank_baseChange, D.rankLa]
-  rw [Module.finrank_linearMap, hV, D.finrank_algO] at hdim
-  have hd : 0 < Module.finrank ℚ D.F := Module.finrank_pos
-  have hm := D.m_pos
-  have hC : Module.finrank ℚ D.endO = D.n ^ 2 * Module.finrank ℚ D.F := by
-    have h2 : D.m ^ 2 * Module.finrank ℚ D.F * Module.finrank ℚ D.endO =
-        D.m ^ 2 * Module.finrank ℚ D.F * (D.n ^ 2 * Module.finrank ℚ D.F) := by rw [hdim]; ring
-    exact Nat.eq_of_mul_eq_mul_left (by positivity) h2
-  have htow := Module.finrank_mul_finrank ℚ D.F D.endO
-  refine ⟨⟨fun z hz => ?_⟩, hs, ?_⟩
-  · have hz' : (z : Module.End ℚ D.VQ) ∈ D.algO := by
-      rw [← hcc, Subalgebra.mem_centralizer_iff]
-      intro y hy
-      exact congrArg Subtype.val (Subalgebra.mem_center_iff.1 hz ⟨y, hy⟩)
-    have hz2 : (z : Module.End ℚ D.VQ) ∈ Subalgebra.centralizer ℚ (D.algO : Set (Module.End ℚ D.VQ)) := by
-      rw [D.centralizer_algO]; exact z.2
-    obtain ⟨c, hc⟩ := D.center_algO z hz' fun h hh => (Subalgebra.mem_centralizer_iff ℚ).1 hz2 h hh
-    exact ⟨c, Subtype.ext hc.symm⟩
-  · rw [hC] at htow
-    exact Nat.eq_of_mul_eq_mul_left hd (by rw [htow, mul_comm])
-
 end GlobalTheory.UPel.HT

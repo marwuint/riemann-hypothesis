@@ -66,15 +66,6 @@ noncomputable def order (G : FiniteFlatGroupScheme.{u, v} R) : PrimeSpectrum R �
 theorem order_apply (G : FiniteFlatGroupScheme.{u, v} R) (p : PrimeSpectrum R) :
     G.order p = Module.rankAtStalk G.H p := rfl
 
-theorem isLocallyConstant_order (G : FiniteFlatGroupScheme.{u, v} R) :
-    IsLocallyConstant G.order :=
-  haveI := Module.finitePresentation_of_projective R G.H
-  Module.isLocallyConstant_rankAtStalk
-
-theorem order_eq_finrank (G : FiniteFlatGroupScheme.{u, v} R) [Module.Free R G.H]
-    (p : PrimeSpectrum R) : G.order p = Module.finrank R G.H := by
-  simp [order]
-
 @[ext]
 structure Hom (G G' : FiniteFlatGroupScheme.{u, v} R) where
 
@@ -94,26 +85,14 @@ instance category : Category (FiniteFlatGroupScheme.{u, v} R) where
 @[simp] theorem comp_comap {G G' G'' : FiniteFlatGroupScheme.{u, v} R} (f : G ⟶ G')
     (g : G' ⟶ G'') : (f ≫ g).comap = f.comap.comp g.comap := rfl
 
-@[ext] theorem hom_ext {G G' : FiniteFlatGroupScheme.{u, v} R} {f g : G ⟶ G'}
-    (h : f.comap = g.comap) : f = g := Hom.ext h
-
 def homOfBialgHom {G G' : FiniteFlatGroupScheme.{u, v} R} (φ : G'.H →ₐc[R] G.H) : G ⟶ G' := ⟨φ⟩
 
 @[simp] theorem homOfBialgHom_comap {G G' : FiniteFlatGroupScheme.{u, v} R}
     (φ : G'.H →ₐc[R] G.H) : (homOfBialgHom φ).comap = φ := rfl
 
-def isoOfBialgEquiv {G G' : FiniteFlatGroupScheme.{u, v} R} (e : G'.H ≃ₐc[R] G.H) : G ≅ G' where
-  hom := ⟨e.toBialgHom⟩
-  inv := ⟨e.symm.toBialgHom⟩
-  hom_inv_id := Hom.ext (BialgHom.ext fun x => e.apply_symm_apply x)
-  inv_hom_id := Hom.ext (BialgHom.ext fun x => e.symm_apply_apply x)
-
 abbrev Points (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Algebra R A] :
     Type (max v w) :=
   WithConv (G.H →ₐ[R] A)
-
-example (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Algebra R A] :
-    CommGroup (G.Points A) := inferInstance
 
 variable (G : FiniteFlatGroupScheme.{u, v} R)
 variable {A : Type w} {B : Type w'} {C : Type*} [CommRing A] [Algebra R A] [CommRing B]

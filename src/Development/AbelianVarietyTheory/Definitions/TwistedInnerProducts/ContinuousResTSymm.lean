@@ -100,8 +100,6 @@ theorem gram_BB : adj d.jB ⬝ (gA S ⬝ d.jB) = gA B := gram_rat S d.isoB
 
 theorem gram_BA : adj d.jB ⬝ (gA S ⬝ d.jA) = 0 := (gram_rat S d.orth).trans rat_zero
 
-theorem gram_AB : adj d.jA ⬝ (gA S ⬝ d.jB) = 0 := d.symm.gram_BA
-
 @[simp] theorem pA_jA : d.pA ⬝ d.jA = 1 := by rw [pA, jA, ← rat_mul, qA_iA, rat_one]
 
 @[simp] theorem pA_jB : d.pA ⬝ d.jB = 0 := by rw [pA, jB, ← rat_mul, qA_iB, rat_zero]
@@ -158,9 +156,6 @@ theorem pB_emb (a : GA D A) (b : GA D B) : d.pB ⬝ mt S (d.emb (a, b)) = mt B b
   simp only [mt_emb, Matrix.mul_add, Matrix.mul_assoc, cancel₂ d.pB_jA, cancel₂ d.pB_jB, Matrix.one_mul,
     Matrix.zero_mul, zero_add]
 
-theorem emb_symm (a : GA D A) (b : GA D B) : d.symm.emb (b, a) = d.emb (a, b) :=
-  mt_injective S (add_comm _ _)
-
 theorem emb_injective : Function.Injective d.emb := by
   rintro ⟨a, b⟩ ⟨a', b'⟩ h
   have h1 : d.pA ⬝ (mt S (d.emb (a, b)) ⬝ d.jA) = d.pA ⬝ (mt S (d.emb (a', b')) ⬝ d.jA) := by rw [h]
@@ -195,10 +190,6 @@ theorem embRel_left (ι : A.V →ₗ[D.host.E] S.V) (hι : frameMat S A ι = d.i
   simp only [Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero, Matrix.one_mulVec] at h3
   rw [mt_emb, mt_one, Matrix.mul_one, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_zero,
     ← Matrix.mulVec_mulVec, h3]
-
-theorem embRel_right (ι : B.V →ₗ[D.host.E] S.V) (hι : frameMat S B ι = d.iB) (b : GA D B) :
-    EmbRel S B ι (d.emb (1, b)) b := by
-  rw [← emb_symm]; exact d.symm.embRel_left ι hι b
 
 def resS (T : HSp D) : WO S T ≃+ WO A T × WO B T where
   toFun x := (x ⬝ d.jA, x ⬝ d.jB)

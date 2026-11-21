@@ -53,26 +53,6 @@ theorem block3_mul
   ext (((a | a) | a)) (((b | b) | b)) <;>
     simp [Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
-theorem block3_one : (1 : B.Mat k (j + ρ)) = blk3 (k := k) (j := j) (ρ := ρ) 1 0 0 0 1 0 0 0 1 := by
-  apply ext_eB
-  rintro (((a | a) | a)) (((b | b) | b)) <;> simp [block3_apply, Matrix.one_apply]
-
-theorem block_three_zero_size_eq : blk3 (k := k) (j := j) (ρ := ρ) 0 0 0 0 0 0 0 0 0 = 0 := by
-  apply ext_eB
-  rintro (((a | a) | a)) (((b | b) | b)) <;> simp [block3_apply]
-
-theorem block3_add
-    (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
-    (A21 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) (A22 : B.Mat k ρ) (A23 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ)
-    (A31 : Matrix (Fin j) (Fin j) ℂ) (A32 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A33 : Matrix (Fin j) (Fin j) ℂ)
-    (ToralGalois : Matrix (Fin j) (Fin j) ℂ) (cocyclesToWachVectorsExponent : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (B13 : Matrix (Fin j) (Fin j) ℂ)
-    (B21 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) (B22 : B.Mat k ρ) (B23 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ)
-    (B31 : Matrix (Fin j) (Fin j) ℂ) (B32 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (B33 : Matrix (Fin j) (Fin j) ℂ) :
-    blk3 A11 A12 A13 A21 A22 A23 A31 A32 A33 + blk3 ToralGalois cocyclesToWachVectorsExponent B13 B21 B22 B23 B31 B32 B33 =
-      blk3 (A11 + ToralGalois) (A12 + cocyclesToWachVectorsExponent) (A13 + B13) (A21 + B21) (A22 + B22) (A23 + B23) (A31 + B31) (A32 + B32) (A33 + B33) := by
-  apply ext_eB
-  rintro (((a | a) | a)) (((b | b) | b)) <;> simp [block3_apply]
-
 theorem block3_conjTranspose
     (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
     (A21 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ) (A22 : B.Mat k ρ) (A23 : Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ)

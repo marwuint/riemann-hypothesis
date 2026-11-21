@@ -6,21 +6,28 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinRepApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitDetOfSplitDetermines
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemNotMem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffDerivSnoc
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteGroupLiftsToParahoricLevelStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesModelOfDualParameterStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleAdmissibleDecomposableCompEquivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdemOfCoeffRealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamilyPolynomialDegreeLeRankStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualPolynomialCoefficientsEqStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteGroupLiftsToParahoricLevel
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
+import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesModelOfDualParameter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleAdmissibleDecomposableCompEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdemOfCoeffReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodFormsEqKilledByGroupAlgebraStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelTypeHeckeKilledCorrespondMatchingIsoStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsometryMatchesParahoricLevelsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypePlacesNotPairwiseConjugateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateModelsMultiplicityEqualStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypePlacesNotPairwiseConjugate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateModelsMultiplicityEqual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankKilledEqOfEqualMultiplicitiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeEigenvalueAtBaseFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCompatFiniteIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicIsometryMatchingFramesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainIntegralMulRight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralHeckeElementExists
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMulRightInvariantHaarAdelicUnitaryGroupHermiti
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocallyCompactSecondCountableT2
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiscreteCountableGQ
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCompatFiniteIsometry
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicIsometryMatchingFrames
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyMulRight
 
 noncomputable section
@@ -34,18 +41,6 @@ open GlobalTheory.CuspMult
 namespace GlobalTheory.PartDims
 
 section Lin
-
-theorem finrank_twSub (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (V : Submodule ℂ E) :
-    Module.finrank ℂ (Tw.sub s V) = Module.finrank ℂ V := by
-  unfold Module.finrank
-  congr 1
-  refine rank_eq_of_equiv_equiv (cj s)
-    { toFun := fun x => ⟨Tw.out x.1, x.2⟩
-      invFun := fun x => ⟨Tw.mk s x.1, x.2⟩
-      left_inv := fun _ => rfl
-      right_inv := fun _ => rfl
-      map_add' := fun _ _ => rfl } ?_ (fun _ _ => rfl)
-  exact Function.Involutive.bijective (cj_cj s)
 
 theorem finrank_comap {X : Type} [AddCommGroup X] [Module ℂ X] {M : HMod X} {V U : Submodule ℂ X} {ip : X → X → ℂ}
     (h : M.Is V ip) (hU : U ≤ V) : Module.finrank ℂ (U.comap M.e) = Module.finrank ℂ U ∧ FiniteDimensional ℂ U := by
@@ -178,7 +173,7 @@ theorem exists_conjModel {S' : D.what₂.Tau → SPar} (h : ∀ τ, S' τ = dual
     ∃ (M' : DSModel V S') (c : ∀ τ, M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ),
       ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, c τ (M'.rep τ g w) = M.rep τ g (c τ w) := by
   obtain rfl : S' = fun τ => dualPar (S τ) := funext h
-  exact GlobalTheory.T.discrete_series_model_of_dual_parameter M
+  exact _root_.GlobalTheory.ConjDS.exists_conjModel M
 
 end Hecke
 
@@ -192,134 +187,6 @@ theorem rank_zeroth_component_eq : (Yc D 0).rank = D.R.r := by
 theorem rank_weight_component_eq (i : Fin D.R.m) : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
 
 theorem sign_at_base_place_eq_embedding (R : RealDat D A Ks) : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0
-
-theorem places (h : R.Char F) {P : Pl0} (hP : P ∈ A.ok A.μ0) :
-    (∀ c : ℕ, (((D.host.g 0 * D.host.g 1) ^ c : ℕ) : 𝓞 D.host.E) ∉ (R.pl P).asIdeal) ∧
-      (∀ c : ℕ, ((1 ^ c : ℕ) : 𝓞 D.host.E) ∉ (R.pl P).asIdeal) ∧
-      (∀ PP ∈ R.Pg, PP ≠ R.pl P ∧ ¬ IsConjPl PP (R.pl P)) ∧ Bridge.SplitOff (R.pl P) ∅ := by
-  have h1 := (GlobalTheory.PartsCompare.mem_ok_iff h P).1 hP
-  have h2 : Bridge.SplitOff (R.pl P) (R.Pg : Set (Pl D.host.E)) :=
-    ⟨h1.1, fun hh => h1.2.1 (h.fam.Sb hh), fun Q hQ => h1.2.2 Q (h.fam.Sb hQ)⟩
-  obtain ⟨h3, h4, -⟩ := GlobalTheory.splitOff_places R.C.P R.Pg ∅ (R.pl P) h.lev.Pg (by simp) h2
-  refine ⟨fun c hc => h3 ?_, fun c hc => ?_, h4, h1.1, by simp, by simp⟩
-  · rw [Nat.cast_pow] at hc
-    exact (R.pl P).isPrime.mem_of_pow_mem c hc
-  · rw [one_pow, Nat.cast_one] at hc
-    exact (R.pl P).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hc)
-
-theorem unitary_rel (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) {Sg : Pl0 → ℂ[X]} {x : MMap (R.MW i σ)}
-    (hx : x ∈ R.Wall i σ) (h0 : x ≠ 0)
-    (hh : x ∈ hPart (R.MW i σ) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q Sg) {P : Pl0} (hP : P ∈ A.ok A.μ0)
-    (a : ℕ → ℂ) (ha : ∀ k, a k = (Sg P).coeff k / ((-1) ^ k * (A.q P : ℂ) ^ (k * (k - 1) / 2))) :
-    a D.R.r ≠ 0 ∧ ∀ k ≤ D.R.r, star (a k) * a D.R.r = a (D.R.r - k) := by
-  obtain ⟨c, hc⟩ := h.lev.βW i
-  obtain ⟨-, p2, p3, p4⟩ := places h hP
-  obtain ⟨hinj, hr, hip⟩ := h.models.HW i σ
-  obtain ⟨y, rfl⟩ : x ∈ LinearMap.range (R.HW i σ).e := hr.symm ▸ hx
-  have hy : y ≠ 0 := fun e => h0 (by rw [e, map_zero])
-  have hne : ipM (R.MW i σ) (R.νW i) (R.fdW i) ((R.HW i σ).e y) ((R.HW i σ).e y) ≠ 0 := by
-    intro e
-    have := hip y y
-    unfold ipAt at this
-    rw [e, mul_zero, inner_self_eq_zero] at this
-    exact hy this
-  have hm : (R.HW i σ).e y ∈ Mult R.θ (R.MW i σ) (levG _ (R.βW i) (R.datWp i R.triv) : Set (GA D (Wc D i))) (fun _ => 1) :=
-    mult_le R.θ _ (fun k hk => ⟨hk, (mem_levi_flag_of_mem_parabolic (L := R.datWp i R.triv) rfl rfl R.triv hk).2.2⟩) hx
-  have := GlobalTheory.T.hecke_eigenvalue_at_base_frame R.θ (R.MW i σ) (R.βW i) (R.ΛW i) _ (R.datWp i R.triv) (R.pl P) (R.νW i) (R.fdW i) a _
-    (h.models.νW i).1.1 (h.models.νW i).2 hc (p2 c)
-    (fun P' hP' => p3 P' (hP'.resolve_right (Finset.notMem_empty _))) p4 hm hne
-    (fun k hk α Rs h1 h2 => by rw [ha]; exact mem_hPart.1 hh P hP k hk α Rs h1 h2)
-  rwa [rank_weight_component_eq] at this
-
-theorem part_conj_eq {s : ℕ} (hs : A.fam.Ok s) (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (p : A.fam.base.Ix)
-    {U : Submodule ℂ (MMap (R.MW i σ))} (hU : U ≤ R.Wall i σ) :
-    U ⊓ hPart (R.MW i σ) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q
-        (fun P => (RealDat.polE (A := A) p.1 P).map (starRingEnd ℂ)) =
-      U ⊓ hPart (R.MW i σ) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q (RealDat.polW (A := A) p.1) := by
-  ext x
-  refine and_congr_right fun hx => ?_
-  by_cases h0 : x = 0
-  · subst h0
-    exact ⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩
-  have key : ∀ P ∈ A.ok A.μ0,
-      (x ∈ hPart (R.MW i σ) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q
-        (fun P => (RealDat.polE (A := A) p.1 P).map (starRingEnd ℂ)) ∨
-      x ∈ hPart (R.MW i σ) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q (RealDat.polW (A := A) p.1)) →
-      ∀ k ≤ (Wc D i).rank,
-        ((RealDat.polE (A := A) p.1 P).map (starRingEnd ℂ)).coeff k / ((-1) ^ k * (A.q P : ℂ) ^ (k * (k - 1) / 2)) =
-        (RealDat.polW (A := A) p.1 P).coeff k / ((-1) ^ k * (A.q P : ℂ) ^ (k * (k - 1) / 2)) := by
-    intro P hP hor k hk
-    have hq := GlobalTheory.PartsCompare.q_ne_zero hs hP
-    rw [rank_weight_component_eq] at hk
-    refine GlobalTheory.T.dual_polynomial_coefficients_eq (A.q P) D.R.r (RealDat.polE (A := A) p.1 P) _ _ hq (GlobalTheory.PartsCompare.polE_coeff_zero h p P)
-      (GlobalTheory.T.family_polynomial_degree_le_rank R F hs h p P hP) (fun _ => rfl) (fun _ => by rw [← GlobalTheory.PartsCompare.polW_eq _ hq]) ?_ k hk
-    exact hor.imp (fun e => unitary_rel h i σ (hU hx) h0 e hP _ fun _ => rfl)
-      (fun e => unitary_rel h i σ (hU hx) h0 e hP _ fun _ => rfl)
-  constructor
-  · intro e
-    refine mem_hPart.2 fun P hP k hk α Rs h1 h2 => ?_
-    rw [← key P hP (Or.inl e) k hk]
-    exact mem_hPart.1 e P hP k hk α Rs h1 h2
-  · intro e
-    refine mem_hPart.2 fun P hP k hk α Rs h1 h2 => ?_
-    rw [key P hP (Or.inr e) k hk]
-    exact mem_hPart.1 e P hP k hk α Rs h1 h2
-
-theorem liftsY (h : R.Char F) : LiftsExist (Yc D 0) (R.βY 0) (R.dat0 R.triv) := by
-  obtain ⟨c, hc⟩ := h.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)
-  exact GlobalTheory.T.finite_group_lifts_to_parahoric_level _ _ _ _ _ hc rfl (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)
-
-theorem liftsW (h : R.Char F) (i : Fin D.R.m) : LiftsExist (Wc D i) (R.βW i) (R.datWp i R.triv) := by
-  obtain ⟨c, hc⟩ := h.lev.βW i
-  exact GlobalTheory.T.finite_group_lifts_to_parahoric_level _ _ _ _ _ hc rfl (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)
-
-theorem finrank_eq_of_multEq (h : R.Char F) (hD : CuspDecomp D) (hM : MultEq R) (i : Fin D.R.m)
-    (M₀ : DSModel (Yc D 0) (parA (Ptw D) 0)) (P : LevelP R.Pg D.R.r ℂ) (Sg : Pl0 → ℂ[X])
-    (f1 : FiniteDimensional ℂ (goodPart R.θ M₀ (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) R.e0 ⊓
-      hPart M₀ (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q Sg : Submodule ℂ (MMap M₀)))
-    (f2 : FiniteDimensional ℂ (R.Wat i (sg0 D A) P ⊓
-      hPart (R.MW i (sg0 D A)) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q Sg :
-        Submodule ℂ (MMap (R.MW i (sg0 D A))))) :
-    Module.finrank ℂ (goodPart R.θ M₀ (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) R.e0 ⊓
-      hPart M₀ (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q Sg : Submodule ℂ (MMap M₀)) =
-    Module.finrank ℂ (R.Wat i (sg0 D A) P ⊓
-      hPart (R.MW i (sg0 D A)) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q Sg :
-        Submodule ℂ (MMap (R.MW i (sg0 D A)))) := by
-  obtain ⟨c, hc⟩ := h.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)
-  obtain ⟨c', hc'⟩ := h.lev.βW i
-  have hrk : (Yc D 0).rank = (Wc D i).rank := rank_zeroth_component_eq.trans (rank_weight_component_eq i).symm
-  obtain ⟨j, Φ, hΦ⟩ := GlobalTheory.T.exists_finiteAdelic_isometry_matching_frames (Yc D 0) (Wc D i) (R.βY 0) (R.ΛY 0) _ (R.βW i) (R.ΛW i) _ R.Pg hrk hc hc'
-    (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)
-  have e1 : (goodPart R.θ M₀ (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) R.e0 ⊓
-      hPart M₀ (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q Sg : Submodule ℂ (MMap M₀)) =
-      allMaps R.θ M₀ ⊓ killed (finRep M₀) (eqSet (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG
-        (RealDat.eC (A := A) D.what₂.embLL) P (A.ok A.μ0) R.pl A.q Sg) :=
-    GlobalTheory.T.goodForms_eq_killed_by_groupAlgebra R.θ M₀ (R.βY 0) (R.dat0 R.triv) R.eG _ P (A.ok A.μ0) R.pl A.q Sg rfl rfl (liftsY h)
-  have e2 : (R.Wat i (sg0 D A) P ⊓
-      hPart (R.MW i (sg0 D A)) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q Sg :
-        Submodule ℂ (MMap (R.MW i (sg0 D A)))) =
-      allMaps R.θ (R.MW i (sg0 D A)) ⊓ killed (finRep (R.MW i (sg0 D A))) (eqSet (Wc D i) (R.βW i) (R.datWp i R.triv) R.eG
-        (RealDat.eC (A := A) (sg0 D A)) P (A.ok A.μ0) R.pl A.q Sg) :=
-    GlobalTheory.T.goodForms_eq_killed_by_groupAlgebra R.θ (R.MW i (sg0 D A)) (R.βW i) (R.datWp i R.triv) R.eG _ P (A.ok A.μ0) R.pl A.q Sg rfl rfl (liftsW h i)
-  have e3 : RealDat.eC (A := A) (sg0 D A) = RealDat.eC (A := A) D.what₂.embLL := by rw [sign_at_base_place_eq_embedding R]
-  have hl := GlobalTheory.T.isometry_matches_parahoric_levels (Yc D 0) (Wc D i) (R.βY 0) (R.βW i) D.R.r D.R.t (r_le_Y 0) (r_le_rank_Wc i) R.Pg R.chi
-    (fun _ _ => 1) j Φ hΦ
-  have e4 : killed ((finRep (R.MW i (sg0 D A))).comp Φ.toMulEquiv.toMonoidHom : Representation ℂ (GfC (Yc D 0)) _)
-        (eqSet (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG (RealDat.eC (A := A) D.what₂.embLL) P (A.ok A.μ0) R.pl A.q Sg) =
-      killed (finRep (R.MW i (sg0 D A))) (eqSet (Wc D i) (R.βW i) (R.datWp i R.triv) R.eG
-        (RealDat.eC (A := A) D.what₂.embLL) P (A.ok A.μ0) R.pl A.q Sg) :=
-    GlobalTheory.T.levelTypeHecke_killed_correspond_matching_iso (Yc D 0) (Wc D i) (R.βY 0) (R.βW i) D.R.r D.R.t (r_le_Y 0) (r_le_rank_Wc i) R.Pg R.chi (fun _ _ => 1) Φ R.eG _ P
-      (A.ok A.μ0) R.pl A.q Sg _ _ hrk (fun κ => (hl κ).1) (fun κ => (hl κ).2)
-      (fun P0 hP0 => GlobalTheory.T.hecke_compat_finite_isometry (Yc D 0) (Wc D i) (R.βY 0) (R.ΛY 0) _ (R.βW i) (R.ΛW i) _ R.Pg j Φ (R.pl P0) hΦ hc hc'
-        ((places h hP0).1 c) ((places h hP0).2.1 c'))
-  rw [e1] at f1 ⊢
-  rw [e2, e3, ← e4] at f2 ⊢
-  refine GlobalTheory.T.finrank_killed_eq_of_equal_multiplicities _ _ _ (finRep M₀) _ _ _ _ (hD R.θ h.models.inf _ _ M₀)
-    (GlobalTheory.T.irreducibleAdmissibleDecomposable_comp_equiv _ _ _ _ _ Φ (hD R.θ h.models.inf _ _ (R.MW i (sg0 D A)))) ?_
-    (fun x hx => isOpen_stab rfl rfl hx) (fun x hx => isOpen_stab rfl rfl hx) f1 f2
-  intro W _ _ σ h1 h2 h3
-  rw [homInto_comp]
-  exact hM i M₀ j Φ hΦ W σ h1 h2 (isGoodRep_of_killed rfl rfl (liftsY h) h3)
 
 theorem star_levChi (b : Bool) {κ : GA D (Yc D 0)} (hκ : κ ∈ levS _ (R.βY 0) (R.dat0 (R.levR F b))) :
     levChi _ (R.βY 0) (R.dat0 (R.levL F b D.what₂.embLL)) κ = star (levChi _ (R.βY 0) (R.dat0 (R.levR F b)) κ) := by
@@ -337,92 +204,6 @@ theorem star_levChi (b : Bool) {κ : GA D (Yc D 0)} (hκ : κ ∈ levS _ (R.βY 
   have h5 : ‖(((R.levR F b).chi ⟨_, hm⟩ : ℂˣ) : ℂ)‖ = 1 := ((Units.coeHom ℂ).isOfFinOrder h4).norm_eq_one
   rw [h3, Units.val_inv_eq_inv_val, Complex.inv_eq_conj h5]
   rfl
-
-theorem finrank_parts {s : ℕ} (hs : A.fam.Ok s) (h : R.Char F) (hX : GoodStable A.X) (hD : CuspDecomp D) (hM : MultEq R)
-    (b : Bool) (i : Fin D.R.m) (p : A.fam.base.Ix) :
-    Module.finrank ℂ (R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ⊓
-      hPart (R.MW i (sg0 D A)) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q (RealDat.polW (A := A) p.1) :
-        Submodule ℂ (MMap (R.MW i (sg0 D A)))) =
-    Module.finrank ℂ (R.EEat (R.levR F b) ⊓
-      hPart (R.MY 0) (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q (RealDat.polE (A := A) p.1) :
-        Submodule ℂ (MMap (R.MY 0))) := by
-  obtain ⟨M₀, c, hc⟩ := exists_conjModel (S' := parA (Ptw D) 0)
-    (fun τ => by rw [Nat.zero_min]; exact (dualPar_dualPar _).symm) (R.MY 0)
-  have hW : R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ≤ R.Wall i (sg0 D A) :=
-    (goodPart_le_flag (L := R.datWp i R.triv) R.θ _ rfl rfl _ _).trans inf_le_left
-  have hE : R.EEat (R.levR F b) ≤ R.EEat R.triv := goodPart_le_flag (L := R.dat0 R.triv) R.θ _ rfl rfl _ _
-  have hr := GlobalTheory.T.conjugate_models_multiplicity_equal R.θ (R.MY 0) M₀ c hc (levS _ (R.βY 0) (R.dat0 (R.levR F b))) (levChi _ (R.βY 0) (R.dat0 (R.levR F b)))
-    (levChi _ (R.βY 0) (R.dat0 (R.levL F b D.what₂.embLL))) R.e0 R.e0 (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q
-    (RealDat.polE (A := A) p.1) (fun k hk => star_levChi b hk)
-    (gaL_star (L := R.dat0 R.triv) R.eG _ rfl rfl (GlobalTheory.T.star_idemOf_coeff_eq_self D.what₂.embLL A.X hs.irr hX))
-  have fE := (finrank_comap h.models.HE (U := R.EEat (R.levR F b) ⊓
-      hPart (R.MY 0) (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q (RealDat.polE (A := A) p.1))
-      (inf_le_left.trans hE)).2
-  have hl : R.levL F b (sg0 D A) = R.levL F b D.what₂.embLL := by rw [sign_at_base_place_eq_embedding R]
-  rw [← part_conj_eq hs h i _ p hW]
-  rw [hl] at hW ⊢
-  have f1 : FiniteDimensional ℂ (goodPart R.θ M₀ (levS _ (R.βY 0) (R.dat0 (R.levL F b D.what₂.embLL)))
-      (levChi _ (R.βY 0) (R.dat0 (R.levL F b D.what₂.embLL))) R.e0 ⊓
-      hPart M₀ (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q
-        (fun P => (RealDat.polE (A := A) p.1 P).map (starRingEnd ℂ)) : Submodule ℂ (MMap M₀)) :=
-    Module.rank_lt_aleph0_iff.1 (lt_of_eq_of_lt hr.symm (Module.rank_lt_aleph0_iff.2 fE))
-  rw [← finrank_eq_of_multEq h hD hM i M₀ _ _ f1 (finrank_comap (h.models.HW i _) (inf_le_left.trans hW)).2]
-  exact congrArg Cardinal.toNat hr.symm
-
-theorem range_w0C (b : Bool) (i : Fin D.R.m) :
-    LinearMap.range ((R.toCx F).w0C b i) = Tw.sub (twAt D.what₂.embLL A.v0) (R.WS F b i (sg0 D A)) := by
-  have hpos : ((Real.sqrt (RealDat.nP F b) : ℝ) : ℂ) ≠ 0 := by
-    exact_mod_cast (Real.sqrt_pos.2 (RealDat.nP_pos (F := F) b)).ne'
-  have h3 : Submodule.span ℂ (Set.range fun k => (⟨R.bC F b i (sg0 D A) k, Submodule.subset_span ⟨k, rfl⟩⟩ :
-      R.WS F b i (sg0 D A))) = ⊤ := Submodule.span_range_subtype_eq_top_iff _ _ |>.2 rfl
-  have h4 : LinearMap.range ((R.toCx F).wC b i A.v0) = ⊤ := by
-    have := Tw.span_top (E := R.WS F b i (sg0 D A)) (twAt D.what₂.embLL A.v0) h3
-    rw [eq_top_iff]
-    intro x _
-    obtain ⟨a, ha⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 (this.ge (Submodule.mem_top (x := x)))
-    exact ⟨a, by rw [← ha]; exact Fintype.linearCombination_apply _ _ _⟩
-  unfold CxData.w0C
-  refine (LinearMap.range_comp_of_range_eq_top _ h4).trans ?_
-  ext x
-  constructor
-  · rintro ⟨y, rfl⟩
-    exact (R.WS F b i (sg0 D A)).smul_mem _ (Tw.out (E := R.WS F b i (sg0 D A)) y).2
-  · intro hx
-    have hx' : Tw.out (s := twAt D.what₂.embLL A.v0) (E := (R.HW i (sg0 D A)).H) x ∈ R.WS F b i (sg0 D A) := hx
-    refine ⟨Tw.mk (E := R.WS F b i (sg0 D A)) (twAt D.what₂.embLL A.v0)
-      (((Real.sqrt (RealDat.nP F b) : ℝ) : ℂ)⁻¹ • ⟨_, hx'⟩), ?_⟩
-    show ((Real.sqrt (RealDat.nP F b) : ℝ) : ℂ) • (((Real.sqrt (RealDat.nP F b) : ℝ) : ℂ)⁻¹ •
-      Tw.out (s := twAt D.what₂.embLL A.v0) (E := (R.HW i (sg0 D A)).H) x) =
-      Tw.out (s := twAt D.what₂.embLL A.v0) (E := (R.HW i (sg0 D A)).H) x
-    rw [smul_smul, mul_inv_cancel₀ hpos, one_smul]
-
-theorem dimParts_level (R : RealDat D A Ks) (F : Face D A) {s : ℕ} (hs : A.fam.Ok s) (h : R.Char F) (hX : GoodStable A.X)
-    (hL : R.LLevelW F) (hD : CuspDecomp D) (hM : MultEq R) (b : Bool) : (R.toCx F).DimParts b := by
-  intro i p
-  have hW : R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ≤ R.Wat i (sg0 D A) R.triv :=
-    goodPart_le_flag (L := R.datWp i R.triv) R.θ _ rfl rfl _ _
-  have hE : R.EEat (R.levR F b) ≤ R.EEat R.triv := goodPart_le_flag (L := R.dat0 R.triv) R.θ _ rfl rfl _ _
-  have e1 : (R.toCx F).Wp i p ⊓ LinearMap.range ((R.toCx F).w0C b i) = Tw.sub (twAt D.what₂.embLL A.v0)
-      ((R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ⊓
-        hPart (R.MW i (sg0 D A)) (levG _ (R.βW i) (R.datWp i R.triv)) (A.ok A.μ0) R.pl A.q
-          (RealDat.polW (A := A) p.1)).comap (R.HW i (sg0 D A)).e) := by
-    rw [range_w0C, hL b i (sg0 D A)]
-    ext x
-    exact ⟨fun hx => ⟨hx.2, hx.1.2⟩, fun hx => ⟨⟨hW hx.1, hx.2⟩, hx.1⟩⟩
-  have e2 : (R.toCx F).EEp p ⊓ (R.toCx F).EEl b = Tw.sub (twAt D.what₂.embLL A.v0)
-      ((R.EEat (R.levR F b) ⊓
-        hPart (R.MY 0) (levG _ (R.βY 0) (R.dat0 R.triv)) (A.ok A.μ0) R.pl A.q (RealDat.polE (A := A) p.1)).comap R.HE.e) := by
-    ext x
-    exact ⟨fun hx => ⟨hx.2, hx.1⟩, fun hx => ⟨hx.2, hx.1⟩⟩
-  rw [e1, e2]
-  exact (finrank_twSub (E := (R.HW i (sg0 D A)).H) _ _).trans
-    ((finrank_comap (h.models.HW i (sg0 D A)) (inf_le_left.trans (hW.trans inf_le_left))).1.trans
-      ((finrank_parts hs h hX hD hM b i p).trans
-        ((finrank_comap h.models.HE (inf_le_left.trans hE)).1.symm.trans (finrank_twSub (E := R.HE.H) _ _).symm)))
-
-theorem dimParts (R : RealDat D A Ks) (F : Face D A) {s : ℕ} (hs : A.fam.Ok s) (h : R.Char F) (hX : GoodStable A.X)
-    (hL : R.LLevelW F) (hD : CuspDecomp D) (hM : MultEq R) : (R.toCx F).DimParts false :=
-  dimParts_level R F hs h hX hL hD hM false
 
 end GlobalTheory.PartDims
 

@@ -540,20 +540,6 @@ theorem sl_monomial (m m' : σ →₀ ℕ) (a : K) :
   rw [Module.Basis.constr_basis]
   split_ifs <;> simp [MvPolynomial.smul_monomial]
 
-theorem ext_add (φ ψ : MvPolynomial σ K →ₗ[K] MvPolynomial σ K) : ext fs (φ + ψ) = ext fs φ + ext fs ψ := by
-  refine (basisMonomials σ K).ext fun m => ?_
-  simp only [Formalism.CountingSumsFrames.ext, LinearMap.add_apply, Module.Basis.constr_basis, add_mul]
-
-theorem ext_sum {ι : Type*} (s : Finset ι) (φ : ι → MvPolynomial σ K →ₗ[K] MvPolynomial σ K) :
-    ext fs (∑ i ∈ s, φ i) = ∑ i ∈ s, ext fs (φ i) := by
-  classical
-  refine Finset.induction_on s ?_ ?_
-  · simp only [Finset.sum_empty]
-    refine (basisMonomials σ K).ext fun m => ?_
-    simp only [Formalism.CountingSumsFrames.ext, Module.Basis.constr_basis, LinearMap.zero_apply, zero_mul]
-  · intro a s ha ih
-    rw [Finset.sum_insert ha, Finset.sum_insert ha, ext_add, ih]
-
 theorem ext_mul (φ : MvPolynomial σ K →ₗ[K] MvPolynomial σ K) {g q : MvPolynomial σ K} (hg : IsF fs g)
     (hq : IsL fs q) : ext fs φ (g * q) = φ g * q := by
   rw [g.as_sum, q.as_sum]

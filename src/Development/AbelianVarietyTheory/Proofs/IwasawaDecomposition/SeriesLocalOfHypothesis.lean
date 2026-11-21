@@ -11,11 +11,30 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSplitP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlacesUnder
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLatticeCongruenceInLevelCharacterOne
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsXdAllIff
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EventuallyConjunctionMono
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PinOfNTrue
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BuiltEx
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfInjective
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStd
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideMultiplicityFamily
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideMultiplicityCharacter
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChebSplitNd
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CentralOfTameCoupled
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenLocOfCenReal
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroInertia
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasLabelOfIsCuspOf
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroSupercuspidalCuspidalModule
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyTypePlaceCompletionIdent
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsClassMapCorrespondence
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameParameterCoupled
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameSupportCompatible
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertiaInvariantUnderUnramifiedTwistOfWeilDelign
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalCompatibilityOfClassMaps
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProvisionalRowsFurtherCompatibilitiesAtState
+
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice IsDedekindDomain NumberField Formalism.L2 Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.HeightCounting
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -431,73 +450,12 @@ theorem cenRead_state {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : C
     (congrFun x.r.tup t) (x.m.t.hL i t) (fun y => (by with_unfolding_all exact ((x.r.Y.eMt i t ((y))) : _))) ((by with_unfolding_all exact ((x.r.eMt i t) :))) z' ((by with_unfolding_all exact (a :))) ((by with_unfolding_all exact (ha' :))) ((by with_unfolding_all exact (v :)))
   exact (by with_unfolding_all exact ((h1.trans h2) :))
 
-set_option maxHeartbeats 4000000 in
-
-theorem cenLoc_third {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
-    {P : Pre2 K w} (x : St P) (l : LC hL x) (Lc : LocAll (lay0 (Dof x))) : CenLoc (withLoc Lc) (mtL Lc l.mt.M) := by
-  intro i
-  have h := cen_twisted x.r.Y x.m.z.cG x.m.z.pins.char.base x.m.z.pins.keep x.m.intersectionNumber_baseChange.ok.ok2 (cenRead_state x) l.mt.M l.mt.ad l.mt.mt
-    ((withLoc Lc).nd.w i) ((withLoc Lc).nd.w_tw i) ((withLoc Lc).nd.mu i) ((withLoc Lc).nd.mu_w i) ((withLoc Lc).nd.j i)
-    ((withLoc Lc).nd.j_range i).1 ((withLoc Lc).nd.j_range i).2
-  exact (by with_unfolding_all exact (h :))
-
-set_option maxHeartbeats 4000000 in
-
-theorem pin_withLoc (hL : GlobalTheory.Published.LocalLanglandsGL) (hP : PrN) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
-    {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ)
-    (L : LocAll (lay0 (Dof x))) (hB : GlobalTheory.CoefDuty.Built l.a.A l.mt.M l.c.ch l.c.tp.tup big L) :
-    ∃ Q : GlobalTheory.NPin.Pin hL (withLoc L), Q.M = mtL L l.mt.M := by
-  obtain ⟨Sp, ⟨Au⟩, ss⟩ := hB
-  have hmt : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q := by
-    have key : ∀ (xi : (Dof x).what₂.Tup → HChar (Dof x).host.E) (Q : (Dof x).what₂.places.Pl → Finset (PlE (Dof x).host)),
-        MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * xi μ) Q → l.c.tp.xi = xi → l.c.ch.Q = Q →
-          MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q := by
-      intro xi Q h hx hQ
-      subst hx hQ
-      exact h
-    exact key _ _ l.mt.mt l.c.xi_eq l.c.Q_eq
-  let nt : NTrue hL (withLoc L) (cfL L (cfOf x)) (chL L l.c.ch) (tpL L l.c.tp) :=
-    { D := Dof x, cf := cfOf x, jE := l.a.jE, A := l.a.A, cg := l.a.cg, au := l.a.au, rep := repOf x.r.Y, row := l.a.row,
-      low := lowAll (Dof x), Pq := l.Pq, S := l.rat.S, hL := l.rat.In.hL, eig := l.rat.In.eig, θ := l.rat.In.θ, Bs := l.b.Bs,
-      M := l.mt.M, C := l.c.ch, tp := l.c.tp, ch := l.c.side, mt := hmt, big := big, L := L, Sp := Sp, Au := Au, ss := ss,
-      eq := rfl, pack := rfl }
-  have hval : ValLL0 (withLoc L) (cfL L (cfOf x)) :=
-    ⟨l.a.val.mu0, l.a.val.eta, l.a.val.chiPsi, l.a.val.del, l.a.val.del'⟩
-  obtain ⟨Q, -, -, -, -, h5⟩ := GlobalTheory.NPin.pin_of_nTrue hL _ _ _ _ nt hval
-    (fun σ σ' h => x.r.Y.eFT.injective (Formalism.IndefR.principalLevelFrame.rowRepR_inj _ _ _ h)) l.a.elem.star l.a.elem.int l.a.elem.split
-    (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _)
-  exact ⟨Q, eq_of_heq h5⟩
-
 set_option maxHeartbeats 2000000 in
 
 theorem labTie_withLoc {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
     (x : St P) (Lc : LocAll (lay0 (Dof x))) :
     GlobalTheory.SerSys.LabTie (withLoc Lc) fun k => GlobalTheory.Mem.TypePl.labDat ((withLoc Lc).host.g k) :=
   fun k => ⟨(x.fits.grp.teich k).symm, x.fits.grp.ser k⟩
-
-set_option maxHeartbeats 2000000 in
-
-theorem tame_withLoc {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
-    {P : Pre2 K w} (x : St P) (l : LC hL x) (Lc : LocAll (lay0 (Dof x))) :
-    ∀ k v, ∃ κ : IsLocalRing.ResidueField ((withLoc Lc).nd.plOm.1 ((withLoc Lc).naut.plGw k v)) ≃+* Formalism.CyclotomicNorms.Fbar ((withLoc Lc).host.g k),
-      Formalism.L2.NT.TameCoupled ((withLoc Lc).nd.plOm.1 ((withLoc Lc).naut.plGw k v)) κ ((withLoc Lc).ntypes.tg k v)
-        (GlobalTheory.Mem.TypePl.labDat ((withLoc Lc).host.g k)).gen :=
-  fun k v => ⟨l.a.A.grp.kv k v, by
-    have h := l.a.A.grp.tg_tame k v
-    rw [l.a.zeta k] at h
-    exact h⟩
-
-set_option maxHeartbeats 4000000 in
-
-theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → AllSt fun _ _ _ _ _ _ x =>
-    ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalTheory.TypeLeaf.SerLoc D' := by
-  intro hL hP
-  refine StepW.of_all ?_
-  intro K B f T w _ _ _ P x l
-  refine ⟨fun _ => ∅, fun Lc hB _ => ?_⟩
-  obtain ⟨Pn, hM⟩ := pin_withLoc hL hP x l _ Lc hB
-  exact GlobalTheory.SerSys.Assembly.serLoc_concrete hP.what₂ hP.green hP.zel hP.dz hL (withLoc Lc) Pn _ (labTie_withLoc x Lc) (tame_withLoc x l Lc)
-    (hM ▸ cenLoc_third x l Lc)
 
 end GlobalTheory.SerThird
 

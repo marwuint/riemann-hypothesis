@@ -24,10 +24,6 @@ def zetaUnit (p : ℕ) {M : ℕ} (hM : M ≠ 0) : (cycloLocal p M)ˣ :=
 abbrev intRing (C : Type) [NormedField C] [IsUltrametricDist C] : ValuationSubring C :=
   (NormedField.valuation (K := C)).valuationSubring
 
-theorem mem_intRing {C : Type} [NormedField C] [IsUltrametricDist C] (x : C) : x ∈ intRing C ↔ ‖x‖ ≤ 1 := by
-  simp [intRing, Valuation.mem_valuationSubring_iff]
-  exact ge_iff_le
-
 section Triple
 
 variable {S : Scheme.{0}}
@@ -41,8 +37,6 @@ def IsSymmetricPair (h : ℕ) (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) : 
     IsTrivial (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left) ∧
     IsTrivial (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left) ∧
     LBIso P (P.pull (lift (snd A A) (fst A A)).left)
-
-example (A : Over S) [GrpObj A] : (1 : A ⟶ A) = toUnit A ≫ η[A] := rfl
 
 def slice (A : Over S) (P : LB (A ⊗ A).left) {T : Over S} (x : T ⟶ A) : LB (T ⊗ A).left :=
   P.pull (lift (fst T A ≫ x) (snd T A)).left
@@ -104,11 +98,5 @@ def IsSiegelFamily (h p : ℕ) {M : ℕ} (hM : M ≠ 0) (X : Scheme.{0}) (s : X 
       (B : Over (Sp (DualNumber k))) [GrpObj B] (P' : LB (B ⊗ B).left)
       (lv' : Std h M → (𝟙_ (Over (Sp (DualNumber k))) ⟶ B)),
       P'.IsLB → IsPullbackTriple B P' lv' A P lv x → IsPullbackTriple B P' lv' A P lv (constPt x) → x = constPt x)
-
-def SiegelFamilyExists : Prop :=
-  ∀ (h p n : ℕ), 1 ≤ h → p.Prime → n.Prime → Odd n → n ≠ p →
-    ∃ (M : ℕ) (hM : 3 ≤ M), (∃ j : ℕ, M = n ^ j) ∧
-      ∃ (X : Scheme.{0}) (s : X ⟶ Sp (cycloLocal p M)) (A : Over X) (_ : GrpObj A) (P : LB (A ⊗ A).left)
-        (lv : Std h M → (𝟙_ (Over X) ⟶ A)), IsSiegelFamily h p (M := M) (by omega) X s A P lv
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit

@@ -1,6 +1,13 @@
 import ReciprocityTheory.L2DbarEstimates.JacobianInterpolationStatement
 import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.MinimalSolutionStatement
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.Imports
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ChartSymmEventuallyEq
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.TsupportDbSubset
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.CommFderivApply
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.MeasurableSetImageOfIsLocalHomeomorph
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ExistsChartPartition
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.IntegralFderivApplyEqZero
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.IsLocalHomeomorphCompFst
 
 namespace ReciprocityTheory.L2DbarEstimates.H
 
@@ -14,29 +21,14 @@ def vsq {p : ℕ} (w : Fin p → ℂ) : ℝ := ∑ i, ‖w i‖ ^ 2
 def perp {p : ℕ} (g w : Fin p → ℂ) : Fin p → ℂ :=
   fun i => w i - g i * ((∑ j, (starRingEnd ℂ) (g j) * w j) / ((vsq g : ℝ) : ℂ))
 
-def PerpEntryStatement : Prop :=
-  ∀ (p : ℕ) (g w : Fin p → ℂ) (i : Fin p), g ≠ 0 →
-    ‖perp g w i‖ ^ 2 ≤ (1 - ‖g i‖ ^ 2 / vsq g) * vsq (perp g w)
-
 def PerpTraceStatement : Prop :=
   ∀ (p : ℕ) (g : Fin p → ℂ), g ≠ 0 →
     (∀ i, 0 ≤ 1 - ‖g i‖ ^ 2 / vsq g) ∧ ∑ i, (1 - ‖g i‖ ^ 2 / vsq g) = (p : ℝ) - 1
-
-def PerpNormStatement : Prop :=
-  ∀ (p : ℕ) (g w : Fin p → ℂ), g ≠ 0 →
-    vsq (perp g w) = vsq w - ‖∑ j, (starRingEnd ℂ) (g j) * w j‖ ^ 2 / vsq g
 
 def gv {X : Type*} {p : ℕ} (g : Fin p → X → ℂ) (y : X) : Fin p → ℂ := fun l => g l y
 
 def jacV (n : ℕ) {p : ℕ} (g : Fin p → V n → ℂ) (y : V n) (ξ : Fin n → ℂ) : Fin p → ℂ :=
   fun l => ∑ k, wd n k (g l) y * ξ k
-
-def DbarQuotVStatement : Prop :=
-  ∀ (n p : ℕ) (g : Fin p → V n → ℂ) (u : V n → ℂ) (U : Set (V n)), IsOpen U →
-    (∀ l, DifferentiableOn ℂ (g l) U) → DifferentiableOn ℂ u U → (∀ y ∈ U, gv g y ≠ 0) →
-    ∀ y ∈ U, ∀ (i : Fin p) (k : Fin n),
-      wdb n k (fun y => u y * (starRingEnd ℂ) (g i y) / ((vsq (gv g y) : ℝ) : ℂ)) y =
-        u y * (starRingEnd ℂ) (perp (gv g y) (fun l => wd n k (g l) y) i) / ((vsq (gv g y) : ℝ) : ℂ)
 
 def LeviLogVStatement : Prop :=
   ∀ (n p : ℕ) (g : Fin p → V n → ℂ) (U : Set (V n)), IsOpen U →

@@ -6,9 +6,21 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiThetaOfV
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationDisjointPlacesCommuteVacua
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OmPureTensorOComb
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RootOfUnityThetaTwist
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsNonzeroLocalScalarsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsDescentDataChainStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsNonzeroLocalScalars
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualFrameVacuumStep
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FrameTopAlt
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotBadPrimeBase
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationEqZeroOfRootOfSUnitRatio
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GEqBase
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SeeSaw GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.LocMod GlobalTheory.MiS ValuativeRel
 open scoped TensorProduct Classical
@@ -111,58 +123,6 @@ theorem under_ne {D : D7} {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (
     Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime i) hq).2 fun h => hqg i h.symm)
   exact PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hg) (PP.asIdeal.mul_mem_left _ hqP)))
-
-theorem main : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg), GPin G → GRead f G pl → ∃ s : ℕ → ℂ, (∀ j, s j ≠ 0) ∧ ∀ t, ∃ ζ : ℕ → ℂ, (∀ j, ∃ n : ℕ, 0 < n ∧ ζ j ^ n = 1) ∧ ∀ w : VTup (f.t t), (∀ p, p ∈ w.Q ↔ ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 D.host.F)) → (∀ j, GlobalTheory.FinPl.CombAt (· ∈ w.Q) (w.eQ j) ∧ ∀ h, GlobalTheory.FinPl.CombAt (· ∈ w.Q) (w.eQT j h)) → QVec f w → VfAt f v w fun j => s j * ζ j := by
-  intro D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR
-  obtain ⟨s, hs, hGm, hGt⟩ := GlobalTheory.T.exists_nonzero_local_scalars D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR
-  obtain ⟨hSm, hSt⟩ := GlobalTheory.T.exists_descent_data_chain D L hT Gi Gl Kc Yd cX ex W u f hP hR
-  refine ⟨s, hs, fun t => ?_⟩
-  obtain ⟨ζ, hζ, hZm, hZt, -⟩ := GlobalTheory.TupRoot.weil_tuple_root D L hT Gi Gl Kc Yd cX ex W u f hP hR t
-  refine ⟨ζ, hζ, fun w hwQ heQ hQ => ?_⟩
-  have hc := W.Q.charW.base
-  have eP : (fun p => ∃ PP ∈ (pk W).Pg, p = PP.under (𝓞 D.host.F)) = (· ∈ v.gP) :=
-    funext fun p => propext (hVT.gP p).symm
-  have eQ : (fun p => ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 D.host.F)) = (· ∈ w.Q) :=
-    funext fun p => propext (hwQ p).symm
-  have hd : ∀ p, p ∈ v.gP → ¬ p ∈ w.Q := fun p h h' => by
-    obtain ⟨PP, h1, e1⟩ := (hVT.gP p).1 h
-    obtain ⟨PP', h2, e2⟩ := (hwQ p).1 h'
-    exact under_ne _ hc.lev t h1 h2 (e1.symm.trans e2)
-  have hb : ∀ j, f.g.b j ∈ GfC _ := fun j => hVT.b j ▸ hv.b j
-  have hbT : f.g.bT ∈ GfC _ := hVT.bT.1 ▸ hv.bT
-  refine ⟨fun j hj P a ha a' ha' => ?_, fun j h P => ?_⟩
-  · obtain ⟨dG, hdG, hall⟩ := hSm j hj
-    obtain ⟨dQ, hdQ, hvP⟩ := hall t
-    have hvac := hdG.2.1.2
-    rw [hVT.b, hVT.b]
-    have key := step (c := s j * ζ j) (Ψ := v.Ψ j P a a') hvac.inf (hc.chain.ωY t j hj) (cart ((pk W).MY j)) (cart ((pk W).MY (j + 1)))
-      (onb ((pk W).MY j)) (onb ((pk W).MY (j + 1))) hd ⟨hvac.theta, hvac.lat⟩ (by have h1 := hdG.1; rw [eP] at h1; exact h1)
-      (by have h1 := hdQ.1; rw [eQ] at h1; exact h1) (hv.atG j).1 (heQ j).1
-      (hb j) (hb (j + 1)) ha ha' (hQ.1 j hj dQ hdQ) P fun hth => by
-        have e1 := hZm j hj (hb j) (hb (j + 1)) a ha a' ha' _ hth
-        have e2 := hGm j hj dG hdG P a ha a' ha'
-        refine e1.trans ?_
-        rw [mul_comm, mul_smul]
-        exact congrArg _ e2
-    rw [← hvP] at key
-    exact key
-  · obtain ⟨dG, hdG, hall⟩ := hSt j h
-    obtain ⟨dQ, hdQ, hvT⟩ := hall t
-    have hvac := hdG.2.1.2
-    rw [hVT.b, hVT.bT.1]
-    have hWt := GlobalTheory.TupRoot.isWeil_rec (idx_top h) _ (hc.chain.ωX t)
-    have key := step (c := s (j + 1) * ζ (j + 1)) (Ψ := v.ΨT j h P) hvac.inf hWt (cart ((pk W).MY (j + 1))) (cart (pk W).MX)
-      (onb ((pk W).MY (j + 1))) (onb (pk W).MX) hd ⟨hvac.theta, hvac.lat⟩ (by have h1 := hdG.1; rw [eP] at h1; exact h1)
-      (by have h1 := hdQ.1; rw [eQ] at h1; exact h1) ((hv.atG j).2.2 h) ((heQ j).2 h)
-      (hb (j + 1)) hbT (one_mem _) (one_mem _) (hQ.2 j h dQ hdQ) P fun hth => by
-        have e1 := hZt j h _ hth
-        have e2 := hGt j h dG hdG P
-        rw [one_mul, one_mul]
-        refine e1.trans ?_
-        rw [mul_comm, mul_smul]
-        exact congrArg _ e2
-    rw [← hvT, one_mul, one_mul] at key
-    exact key
 
 end GlobalTheory.StepVacForm
 

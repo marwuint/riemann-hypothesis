@@ -9,16 +9,6 @@ noncomputable section
 
 namespace PI.UG.W
 
-example (E : Type) [Field E] [NumberField E] [StarRing E] : PI.UG.IsCMUnram E ↔ Formalism.HermitianLatticesTheory.IsCMUnram E := Iff.rfl
-
-example (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (p : Ideal (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n)) :
-    IsUnimodularAt (hStd E n) p N ↔ Formalism.HermitianLatticesTheory.IsUnimodularAt (hStd E n) p N := Iff.rfl
-
-example (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (p : Ideal (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n)) :
-    (∃ g ∈ isom (hStd E n), gmap g (loc (K := E) p (stdLat E n)) = loc (K := E) p N) ↔
-    (∃ g ∈ Formalism.HermitianLatticesTheory.isom (hStd E n), Formalism.HermitianLatticesTheory.gmap g (Formalism.HermitianLatticesTheory.loc (K := E) p (stdLat E n)) = Formalism.HermitianLatticesTheory.loc (K := E) p N) :=
-  Iff.rfl
-
 theorem stdLat_isOrtho (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) :
     Formalism.HermitianLatticesTheory.IsOrthoLattice (hStd E n) (stdLat E n) n := by
   refine ⟨fun i => Pi.single i 1, ?_, ?_, ?_, ?_⟩

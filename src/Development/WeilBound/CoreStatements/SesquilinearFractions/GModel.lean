@@ -1,7 +1,11 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelBaseChange
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -95,7 +99,7 @@ theorem lie_model_action_base_change : ∀ (E : Type) [Field E] [NumberField E] 
   haveI := t.comm
   haveI : Smooth t.G.hom := t.semi.smooth
   obtain ⟨L, _, _, ⟨M0⟩⟩ := lieModel_exists S t.G R x
-  obtain ⟨hfin, hproj⟩ := T.lie_model_finite_projective S t.G R x L M0
+  obtain ⟨hfin, hproj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_finite_projective S t.G R x L M0
   haveI := hfin
   haveI := hproj
   haveI : Module.Free R L := Module.free_of_flat_of_isLocalRing

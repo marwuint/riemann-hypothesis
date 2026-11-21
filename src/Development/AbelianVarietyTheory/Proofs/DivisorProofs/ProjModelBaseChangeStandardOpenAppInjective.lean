@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionAppOfPreservesGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsPreimageAffineBaseChangeEqSumProductsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTmulEqZeroOfFlatLinearlyDisjointSubringStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionAppOfPreservesGenericPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsPreimageAffineBaseChangeEqSumProducts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTmulEqZeroOfFlatLinearlyDisjointSubring
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -55,7 +55,7 @@ theorem app_injective : ∀ (R F : Type) [CommRing R] [IsDomain R] [Field F] (c�
   clear hf hm hloc
   subst hf1 hf2
   refine (injective_iff_map_eq_zero (f.app _).hom).2 fun x hx => ?_
-  obtain ⟨n, a, r, rfl⟩ := GlobalTheory.T.sections_preimage_affine_baseChange_eq_sum_products R R₁ ρ P p (Dp k b) (hM.affine k hk b hb) x
+  obtain ⟨n, a, r, rfl⟩ := _root_.GlobalTheory.BaseChangeSpan.sections_preimage_affine_eq_sum R R₁ ρ P p (Dp k b) (hM.affine k hk b hb) x
   letI : Algebra R R₁ := ρ.toAlgebra
   letI : Algebra R Γ(P, Dp k b) :=
     ((p.appLE ⊤ (Dp k b) le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).toAlgebra
@@ -66,9 +66,9 @@ theorem app_injective : ∀ (R F : Type) [CommRing R] [IsDomain R] [Field F] (c�
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [map_mul, map_mul]
     congr 1
-    · exact (GlobalTheory.T.rationalFunction_app_of_preservesGenericPoint P Y _ _ hff (Dp k b) hV hY (a i)).symm
+    · exact (_root_.GlobalTheory.Desc.fnOf_app_of_pff P Y _ _ hff (Dp k b) hV hY (a i)).symm
     · exact (fnOf_app_appLE_top f _ ((pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b) hY _).symm
-  have hz := GlobalTheory.T.sum_tmul_eq_zero_of_flat_linearlyDisjoint_subring R R₁ Γ(P, Dp k b) F Y.functionField hρ c₀ (ψ.comp (fnOf (Dp k b) hV)) _ θ hc
+  have hz := _root_.GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj R R₁ Γ(P, Dp k b) F Y.functionField hρ c₀ (ψ.comp (fnOf (Dp k b) hV)) _ θ hc
     (ψ.injective.comp (fnOf_injective _ hV))
     (by
       rw [← hM.const]

@@ -28,17 +28,6 @@ def CechTop.Statement : Prop :=
     [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M]
     (𝓜 : GradedPMod S N M) (i : ℕ) (c : ℤ), N < i → Subsingleton (cohom 𝓜 i c)
 
-def CechFlat.Statement : Prop :=
-  ∀ (S : Type u) [CommRing S] [IsNoetherianRing S] (N : ℕ) (S' : Type u) [CommRing S']
-    [Algebra S S'] [Module.Flat S S'] (M M' : Type v)
-    [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M]
-    [AddCommGroup M'] [Module (Poly S' N) M'] [Module S' M'] [IsScalarTower S' (Poly S' N) M']
-    [Module S M'] [IsScalarTower S S' M']
-    (𝓜 : GradedPMod S N M) (𝓜' : GradedPMod S' N M') (f : M →ₗ[S] M'),
-    IsBaseChange S' f → (∀ (i : Fin (N + 1)) (m : M), f ((X i : Poly S N) • m) = (X i : Poly S' N) • f m) →
-    (∀ (c : ℤ) (m : M), m ∈ 𝓜.piece c → f m ∈ 𝓜'.piece c) →
-    ∀ (i : ℕ) (c : ℤ), Nonempty (cohom 𝓜' i c ≃ₗ[S'] S' ⊗[S] cohom 𝓜 i c)
-
 def Extension.Statement : Prop :=
   ∀ (S : Type u) [CommRing S] [IsNoetherianRing S] (Ω : Type w) [Field Ω] [Algebra S Ω] (N : ℕ)
     (x : Fin (N + 1) → Ω) (E : Type v) [AddCommGroup E] [Module Ω E] [Module S E]

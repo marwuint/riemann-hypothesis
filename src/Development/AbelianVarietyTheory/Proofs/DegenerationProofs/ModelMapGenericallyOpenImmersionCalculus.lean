@@ -94,15 +94,6 @@ theorem via_twist {M : Model R A} {N : Model R B} (e : A ≅ A') {f : A' ⟶ B}
   refine ⟨fun h => h1.comp h, fun h => ?_⟩
   simpa using h1.inv.comp h
 
-theorem via_twist_right {M : Model R B} {N : Model R A} (e : A ≅ A') {f : B ⟶ A}
-    {W : Scheme.{0}} {u : W ⟶ M.Y.left} {g : W ⟶ N.Y.left} :
-    Via M (N.twist e) (f ≫ e.hom) u g ↔ Via M N f u g := by
-  have h1 : Via N (N.twist e) e.hom g g := by
-    simpa using (via_of_hom (M := N) (N := N.twist e) (f := e.hom) (𝟙 N.Y)
-      (by simp [twist_j, ← Over.comp_left_assoc])).precomp g
-  refine ⟨fun h => ?_, fun h => h.comp h1⟩
-  simpa using h.comp h1.inv
-
 theorem via_fst (M : Model R A) (N : Model R A') {W : Scheme.{0}} (u : W ⟶ (M.prod N).Y.left) :
     Via (M.prod N) M (fst A A') u (u ≫ (fst M.Y N.Y).left) := by
   simpa using (via_of_hom (M := M.prod N) (N := M) (fst M.Y N.Y) (prod_j_fst M N)).precomp u
@@ -120,16 +111,6 @@ theorem via_prod {M : Model R A} {P : Model R B} {Q : Model R B'} {f : A ⟶ B �
   · rw [Category.assoc, h₁.2 T w a hw, Category.assoc, Category.assoc, prod_j_fst]; simp
   · rw [Category.assoc, h₂.2 T w a hw, Category.assoc, Category.assoc, prod_j_snd]; simp
 
-theorem defAt_iff {M : Model R A} {N : Model R A'} {f : A ⟶ A'} {y : M.Y.left} :
-    DefAt M N f y ↔ ∃ (W : Scheme.{0}) (u : W ⟶ M.Y.left) (g : W ⟶ N.Y.left) (w : W),
-      IsOpenImmersion u ∧ u w = y ∧ Via M N f u g := by
-  constructor
-  · rintro ⟨U, g, hy, h⟩
-    exact ⟨_, U.ι, g, ⟨y, hy⟩, inferInstance, rfl, extends_iff_via.1 h⟩
-  · rintro ⟨W, u, g, w, _, rfl, h⟩
-    refine ⟨u.opensRange, u.isoOpensRange.inv ≫ g, ⟨w, rfl⟩, extends_iff_via.2 ?_⟩
-    simpa using h.precomp u.isoOpensRange.inv
-
 theorem isoAt_iff {M : Model R A} {N : Model R A'} {f : A ⟶ A'} {y : M.Y.left} :
     IsoAt M N f y ↔ ∃ (W : Scheme.{0}) (u : W ⟶ M.Y.left) (g : W ⟶ N.Y.left) (w : W),
       IsOpenImmersion u ∧ IsOpenImmersion g ∧ u w = y ∧ Via M N f u g := by
@@ -139,14 +120,6 @@ theorem isoAt_iff {M : Model R A} {N : Model R A'} {f : A ⟶ A'} {y : M.Y.left}
   · rintro ⟨W, u, g, w, _, _, rfl, h⟩
     refine ⟨u.opensRange, u.isoOpensRange.inv ≫ g, ⟨w, rfl⟩, extends_iff_via.2 ?_, inferInstance⟩
     simpa using h.precomp u.isoOpensRange.inv
-
-theorem extends_mono {M : Model R A} {N : Model R A'} {f : A ⟶ A'} {U V : M.Y.left.Opens}
-    {g : U.toScheme ⟶ N.Y.left} (h : Extends M N f U g) (hV : V ≤ U) :
-    Extends M N f V (M.Y.left.homOfLE hV ≫ g) :=
-  extends_iff_via.2 (by simpa using (extends_iff_via.1 h).precomp (M.Y.left.homOfLE hV))
-
-theorem isOpen_defAt (M : Model R A) (N : Model R A') (f : A ⟶ A') : IsOpen {y | DefAt M N f y} :=
-  isOpen_iff_forall_mem_open.2 fun _ ⟨U, g, hy, h⟩ => ⟨U, fun _ hz => ⟨U, g, hz, h⟩, U.isOpen, hy⟩
 
 theorem isOpen_isoAt (M : Model R A) (N : Model R A') (f : A ⟶ A') : IsOpen {y | IsoAt M N f y} :=
   isOpen_iff_forall_mem_open.2 fun _ ⟨U, g, hy, h⟩ => ⟨U, fun _ hz => ⟨U, g, hz, h⟩, U.isOpen, hy⟩
@@ -167,21 +140,6 @@ theorem Via.unique [IsDomain R] [IsFractionRing R K] {M : Model R A} {N : Model 
     ((h.2 _ _ _ pullback.condition).trans (h'.2 _ _ _ pullback.condition).symm)
   exact congr(($e).left)
 
-theorem extends_unique [IsDomain R] [IsFractionRing R K] {M : Model R A} {N : Model R A'} {f : A ⟶ A'}
-    {U : M.Y.left.Opens} {g g' : U.toScheme ⟶ N.Y.left}
-    (h : Extends M N f U g) (h' : Extends M N f U g') : g = g' :=
-  (extends_iff_via.1 h).unique (extends_iff_via.1 h')
-
-theorem Via.apply_eq [IsDomain R] [IsFractionRing R K] {M : Model R A} {N : Model R A'} {f : A ⟶ A'}
-    {W W' : Scheme.{0}} {u : W ⟶ M.Y.left} {u' : W' ⟶ M.Y.left} [Flat u] [Flat u']
-    {g : W ⟶ N.Y.left} {g' : W' ⟶ N.Y.left} (h : Via M N f u g) (h' : Via M N f u' g')
-    {w : W} {w' : W'} (e : u w = u' w') : g w = g' w' := by
-  obtain ⟨z, rfl, rfl⟩ := Scheme.Pullback.exists_preimage_pullback (f := u) (g := u') w w' e
-  have h2 := h'.precomp (pullback.snd u u')
-  rw [← pullback.condition] at h2
-  have := (h.precomp (pullback.fst u u')).unique h2
-  rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, this]
-
 theorem Via.hom_apply {M : Model R A} {N : Model R A'} {f : A ⟶ A'}
     {W : Scheme.{0}} {u : W ⟶ M.Y.left} {g : W ⟶ N.Y.left} (h : Via M N f u g) (w : W) :
     N.Y.hom (g w) = M.Y.hom (u w) := by
@@ -201,14 +159,6 @@ theorem Via.comp_pullback {M : Model R A} {N : Model R A'} {P : Model R A''} {f 
   rw [← pullback.condition] at h2
   exact (h.precomp _).comp h2
 
-theorem defAt_comp {M : Model R A} {N : Model R A'} {P : Model R A''} {f : A ⟶ A'} {f' : A' ⟶ A''}
-    {W : Scheme.{0}} {u : W ⟶ M.Y.left} [IsOpenImmersion u] {g : W ⟶ N.Y.left} (h : Via M N f u g) (w : W)
-    (h' : DefAt N P f' (g w)) : DefAt M P (f ≫ f') (u w) := by
-  replace h' := defAt_iff.1 h'
-  obtain ⟨W', u', g', w', _, e, h'⟩ := h'
-  obtain ⟨z, rfl, rfl⟩ := Scheme.Pullback.exists_preimage_pullback (f := g) (g := u') w w' e.symm
-  exact defAt_iff.2 ⟨_, _, _, z, inferInstance, Scheme.Hom.comp_apply _ _ _, h.comp_pullback h'⟩
-
 theorem isoAt_comp {M : Model R A} {N : Model R A'} {P : Model R A''} {f : A ⟶ A'} {f' : A' ⟶ A''}
     {W : Scheme.{0}} {u : W ⟶ M.Y.left} [IsOpenImmersion u] {g : W ⟶ N.Y.left} [IsOpenImmersion g]
     (h : Via M N f u g) (w : W) (h' : IsoAt N P f' (g w)) : IsoAt M P (f ≫ f') (u w) := by
@@ -222,33 +172,11 @@ theorem isoAt_inv {M : Model R A} {N : Model R A'} {f : A ≅ A'}
     (h : Via M N f.hom u g) (w : W) : IsoAt N M f.inv (g w) :=
   isoAt_iff.2 ⟨W, g, u, w, inferInstance, inferInstance, rfl, h.inv⟩
 
-theorem defAt_twist {M : Model R A} {N : Model R B} (e : A ≅ A') {f : A' ⟶ B} {y : M.Y.left} :
-    DefAt (M.twist e) N f y ↔ DefAt M N (e.hom ≫ f) y := by
-  rw [defAt_iff, defAt_iff]
-  constructor <;> rintro ⟨W, u, g, w, h1, h2, h⟩
-  exacts [⟨W, u, g, w, h1, h2, (via_twist e).1 h⟩, ⟨W, u, g, w, h1, h2, (via_twist e).2 h⟩]
-
 theorem isoAt_twist {M : Model R A} {N : Model R B} (e : A ≅ A') {f : A' ⟶ B} {y : M.Y.left} :
     IsoAt (M.twist e) N f y ↔ IsoAt M N (e.hom ≫ f) y := by
   rw [isoAt_iff, isoAt_iff]
   constructor <;> rintro ⟨W, u, g, w, h0, h1, h2, h⟩
   exacts [⟨W, u, g, w, h0, h1, h2, (via_twist e).1 h⟩, ⟨W, u, g, w, h0, h1, h2, (via_twist e).2 h⟩]
-
-theorem defAt_twist_right {M : Model R B} {N : Model R A} (e : A ≅ A') {f : B ⟶ A} {y : M.Y.left} :
-    DefAt M (N.twist e) (f ≫ e.hom) y ↔ DefAt M N f y := by
-  rw [defAt_iff, defAt_iff]
-  constructor <;> rintro ⟨W, u, g, w, h1, h2, h⟩
-  exacts [⟨W, u, g, w, h1, h2, (via_twist_right e).1 h⟩, ⟨W, u, g, w, h1, h2, (via_twist_right e).2 h⟩]
-
-theorem isoAt_twist_right {M : Model R B} {N : Model R A} (e : A ≅ A') {f : B ⟶ A} {y : M.Y.left} :
-    IsoAt M (N.twist e) (f ≫ e.hom) y ↔ IsoAt M N f y := by
-  rw [isoAt_iff, isoAt_iff]
-  constructor <;> rintro ⟨W, u, g, w, h0, h1, h2, h⟩
-  exacts [⟨W, u, g, w, h0, h1, h2, (via_twist_right e).1 h⟩, ⟨W, u, g, w, h0, h1, h2, (via_twist_right e).2 h⟩]
-
-theorem defAt_of_hom {M : Model R A} {N : Model R A'} {f : A ⟶ A'} (g : M.Y ⟶ N.Y)
-    (h : M.j ≫ g.left = f.left ≫ N.j) (y : M.Y.left) : DefAt M N f y :=
-  defAt_iff.2 ⟨_, _, _, y, inferInstance, rfl, via_of_hom g h⟩
 
 theorem isoAt_of_hom {M : Model R A} {N : Model R A'} {f : A ⟶ A'} (g : M.Y ⟶ N.Y) [IsOpenImmersion g.left]
     (h : M.j ≫ g.left = f.left ≫ N.j) (y : M.Y.left) : IsoAt M N f y :=
@@ -294,14 +222,6 @@ theorem exists_prodMap_apply {M : Model R A} {N : Model R A'} {W W' : Scheme.{0}
     ∃ t, prodMap M N _ _ u u' rfl rfl t = z := by
   have := Scheme.Pullback.range_map (u ≫ M.Y.hom) (u' ≫ N.Y.hom) M.Y.hom N.Y.hom u u' (𝟙 _) (by simp) (by simp)
   exact (Set.ext_iff.1 this z).2 ⟨⟨w, e⟩, ⟨w', e'⟩⟩
-
-theorem defAt_prod {M : Model R A} {N : Model R A'} {P : Model R B} {Q : Model R B'} {f : A ⟶ B} {f' : A' ⟶ B'}
-    {z : (M.prod N).Y.left} (h : DefAt M P f ((fst M.Y N.Y).left z)) (h' : DefAt N Q f' ((snd M.Y N.Y).left z)) :
-    DefAt (M.prod N) (P.prod Q) (f ⊗ₘ f') z := by
-  obtain ⟨W, u, g, w, _, e, h⟩ := defAt_iff.1 h
-  obtain ⟨W', u', g', w', _, e', h'⟩ := defAt_iff.1 h'
-  obtain ⟨t, ht⟩ := exists_prodMap_apply u u' z w w' e e'
-  exact defAt_iff.2 ⟨_, _, _, t, inferInstance, ht, h.prod h'⟩
 
 theorem isoAt_prod {M : Model R A} {N : Model R A'} {P : Model R B} {Q : Model R B'} {f : A ⟶ B} {f' : A' ⟶ B'}
     {z : (M.prod N).Y.left} (h : IsoAt M P f ((fst M.Y N.Y).left z)) (h' : IsoAt N Q f' ((snd M.Y N.Y).left z)) :
@@ -385,10 +305,6 @@ theorem genIso_inv {M : Model R A} {N : Model R A'} {f : A ≅ A'} (h : GenIso M
 theorem genIso_twist {M : Model R A} {N : Model R B} (e : A ≅ A') {f : A' ⟶ B} :
     GenIso (M.twist e) N f ↔ GenIso M N (e.hom ≫ f) :=
   exists_congr fun _ => and_congr Iff.rfl (isoAt_twist e)
-
-theorem genIso_twist_right {M : Model R B} {N : Model R A} (e : A ≅ A') {f : B ⟶ A} :
-    GenIso M (N.twist e) (f ≫ e.hom) ↔ GenIso M N f :=
-  exists_congr fun _ => and_congr Iff.rfl (isoAt_twist_right e)
 
 theorem genIso_prod {M : Model R A} {N : Model R A'} {P : Model R B} {Q : Model R B'} {f : A ⟶ B} {f' : A' ⟶ B'}
     (h : GenIso M P f) (h' : GenIso N Q f') : GenIso (M.prod N) (P.prod Q) (f ⊗ₘ f') := by

@@ -139,14 +139,6 @@ theorem isLocalHom_of_injective_integralClosure {B : Type*} [CommRing B] [Algebr
   rw [g.comp_algebraMap]
   exact fun x => (Algebra.IsIntegral.isIntegral x : IsIntegral ℤ_[p] x)
 
-theorem natCast_mem_maximalIdeal_integralClosure :
-    (p : integralClosure ℤ_[p] K) ∈ maximalIdeal (integralClosure ℤ_[p] K) := by
-  haveI := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful ℤ_[p] ℚ_[p] K
-  haveI := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalHom ℤ_[p] K
-  have : (p : ℤ_[p]) ∈ maximalIdeal ℤ_[p] := by
-    rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.mem_span_singleton_self _
-  simpa using map_nonunit (algebraMap ℤ_[p] (integralClosure ℤ_[p] K)) _ this
-
 variable {L : Type*} [Field L] [Algebra ℚ_[p] L] [Algebra ℤ_[p] L]
   [IsScalarTower ℤ_[p] ℚ_[p] L] [FiniteDimensional ℚ_[p] L]
 
@@ -491,14 +483,5 @@ theorem exists_padic_point_scheme {Z : Scheme.{0}} [IsIntegral Z]
   exact ⟨K, hK, H K le_rfl⟩
 
 end Scheme
-
-example (p : ℕ) [Fact p.Prime] : ∃ m : Ideal (Polynomial ℤ), m.IsMaximal ∧
-    (p : Polynomial ℤ) ∈ m ∧ Polynomial.X ∈ m := by
-  let φ : Polynomial ℤ →+* ZMod p := Polynomial.eval₂RingHom (Int.castRingHom _) 0
-  refine ⟨RingHom.ker φ, RingHom.ker_isMaximal_of_surjective φ fun x => ?_, ?_, ?_⟩
-  · obtain ⟨n, rfl⟩ := ZMod.intCast_surjective x
-    exact ⟨n, map_intCast φ n⟩
-  · simp [RingHom.mem_ker]
-  · simp [RingHom.mem_ker, φ]
 
 end GlobalTheory

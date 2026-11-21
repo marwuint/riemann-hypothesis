@@ -14,8 +14,6 @@ abbrev GP (a b : ℕ) (R : Type) [CommRing R] : Type := GL (Fin a) R × GL (Fin 
 section Alg
 variable {a b : ℕ} {R : Type} [CommRing R] [StarRing R]
 
-def PhiG (a b : ℕ) (R : Type) [CommRing R] : GP a b R := (PhiGL a R, PhiGL b R)
-
 def th0 : MulAut (GP a b R) where
   toFun g := star g⁻¹
   invFun g := star g⁻¹
@@ -37,35 +35,6 @@ theorem cartan_involution_apply (g : GP a b R) : th0 g = star g⁻¹ := rfl
 
 @[simp] theorem thetaG_thetaG (g : GP a b R) : thetaG (thetaG g) = g := by
   exact Prod.ext (thetaGL_thetaGL g.1) (thetaGL_thetaGL g.2)
-
-theorem cartan_involution_frobenius : th0 (PhiG a b R) = PhiG a b R := by
-  rw [cartan_involution_apply]
-  refine Prod.ext ?_ ?_ <;> simp [PhiG, star_inv, star_PhiGL]
-
-def twAct (x δ y : GP a b R) : GP a b R := x * δ * thetaG y
-
-def toTh0 (g : GP a b R) : GP a b R := g * PhiG a b R
-
-def nrmG (δ : GP a b R) : GP a b R := δ * thetaG δ
-
-def twConjG (x δ : GP a b R) : GP a b R := x⁻¹ * δ * thetaG x
-
-def RegG (δ : GP a b R) : Prop := Reg δ.1.val ∧ Reg δ.2.val
-
-def AdG (δ : GP a b R) : MulAut (GP a b R) := MulAut.conj δ * thetaG
-
-def centG (δ : GP a b R) : Subgroup (GP a b R) where
-  carrier := {g | g * δ = δ * thetaG g}
-  mul_mem' {g h} hg hh := by
-    simp only [Set.mem_ofPred_eq] at hg hh ⊢
-    rw [map_mul, mul_assoc, hh, ← mul_assoc, hg, mul_assoc]
-  one_mem' := by simp
-  inv_mem' {g} hg := by
-    simp only [Set.mem_ofPred_eq] at hg ⊢
-    rw [map_inv, eq_mul_inv_iff_mul_eq, mul_assoc, ← hg, inv_mul_cancel_left]
-
-def IsTwRep {M : Type} [Monoid M] (H : Subgroup (GP a b R)) (Ht : Set (GP a b R)) (π : H →* M) (πt : GP a b R → M) : Prop :=
-  ∀ δ ∈ Ht, IsUnit (πt δ) ∧ ∀ h₁ h₂ : H, πt (twAct h₁ δ h₂) = π h₁ * πt δ * π h₂
 
 end Alg
 
@@ -105,8 +74,6 @@ theorem mat_injective : Function.Injective (mat : GR a b → LieG a b) := by
 @[simp] theorem mat_inv_mul (g : GR a b) : mat g⁻¹ * mat g = 1 := by
   rw [← map_mul, inv_mul_cancel, map_one]
 
-def expG (X : LieG a b) : GR a b := ((Matrix.isUnit_exp X.1).unit, (Matrix.isUnit_exp X.2).unit)
-
 def KR (a b : ℕ) : Subgroup (GR a b) := (th0 : MulAut (GR a b)).toMonoidHom.eqLocus (MonoidHom.id _)
 
 theorem mem_KR {k : GR a b} : k ∈ KR a b ↔ th0 k = k := by
@@ -122,9 +89,6 @@ theorem mem_KR_iff_unitary {k : GR a b} :
     k ∈ KR a b ↔ k.1.val ∈ unitaryGroup (Fin a) ℂ ∧ k.2.val ∈ unitaryGroup (Fin b) ℂ := by
   rw [mem_KR_iff_mat, mat_apply, Matrix.mem_unitaryGroup_iff, Matrix.mem_unitaryGroup_iff]
   simp only [Prod.ext_iff, Prod.fst_mul, Prod.snd_mul, Prod.fst_star, Prod.snd_star, Prod.fst_one, Prod.snd_one]
-
-theorem PhiG_mem_KR : PhiG a b ℂ ∈ KR a b := by
-  exact mem_KR.2 cartan_involution_frobenius
 
 theorem isCompact_unitary_GL (n : ℕ) : IsCompact {k : GL (Fin n) ℂ | k.val ∈ unitaryGroup (Fin n) ℂ} := by
   have hU : IsCompact (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) := by
@@ -178,18 +142,6 @@ instance : (haarK a b).IsHaarMeasure := Measure.isHaarMeasure_haarMeasure _
 
 instance : IsProbabilityMeasure (haarK a b) := ⟨Measure.haarMeasure_self (K₀ := ⊤)⟩
 
-def pSp (a b : ℕ) : Submodule ℝ (LieG a b) := selfAdjoint.submodule ℝ (LieG a b)
-
-def kSp (a b : ℕ) : Submodule ℝ (LieG a b) := skewAdjoint.submodule ℝ (LieG a b)
-
-theorem mem_pSp {X : LieG a b} : X ∈ pSp a b ↔ star X = X := by
-  exact selfAdjoint.mem_iff
-
-def BForm (a b : ℕ) : LinearMap.BilinForm ℝ (LieG a b) :=
-  LinearMap.mk₂ ℝ (fun X Y => ((X.1 * Y.1).trace + (X.2 * Y.2).trace).re)
-    (fun X X' Y => by simp [add_mul]; ring) (fun c X Y => by simp; ring)
-    (fun X Y Y' => by simp [mul_add]; ring) (fun c X Y => by simp; ring)
-
 def AdLie (g : GR a b) : LieG a b →ₗ[ℝ] LieG a b := LinearMap.mulLeftRight ℝ (mat g, mat g⁻¹)
 
 theorem AdLie_apply (g : GR a b) (X : LieG a b) : AdLie g X = mat g * X * mat g⁻¹ := rfl
@@ -201,38 +153,8 @@ def dth0 : LieG a b →ₗ[ℝ] LieG a b where
 
 theorem diff_cartan_involution_apply (X : LieG a b) : dth0 X = -star X := rfl
 
-def dtheta : LieG a b →ₗ[ℝ] LieG a b := AdLie (PhiG a b ℂ) ∘ₗ dth0
-
-def AdT (δ : GR a b) : LieG a b →ₗ[ℝ] LieG a b := AdLie δ ∘ₗ dtheta
-
-theorem AdLie_mul (g h : GR a b) : AdLie (g * h) = AdLie g ∘ₗ AdLie h := by
-  refine LinearMap.ext fun X => ?_
-  simp only [LinearMap.comp_apply, AdLie_apply, map_mul, _root_.mul_inv_rev, mul_assoc]
-
 @[simp] theorem AdLie_one : AdLie (1 : GR a b) = LinearMap.id := by
   refine LinearMap.ext fun X => ?_
   simp [AdLie_apply]
-
-theorem AdT_eq (δ : GR a b) : AdT δ = AdLie (toTh0 δ) ∘ₗ dth0 := by
-  simp only [AdT, dtheta, toTh0, AdLie_mul, LinearMap.comp_assoc]
-
-theorem AdLie_mem_pSp {k : GR a b} (hk : k ∈ KR a b) {X : LieG a b} (hX : X ∈ pSp a b) : AdLie k X ∈ pSp a b := by
-  rw [mem_pSp] at hX ⊢
-  have hk' := mem_KR_iff_star.1 hk
-  have e1 : star (mat k) = mat k⁻¹ := by rw [← mat_star, hk']
-  have e2 : star (mat k⁻¹) = mat k := by rw [← mat_star, star_inv, hk', inv_inv]
-  rw [AdLie_apply, star_mul, star_mul, e1, e2, hX, mul_assoc]
-
-theorem AdT_mem_pSp {k : GR a b} (hk : k ∈ KR a b) {X : LieG a b} (hX : X ∈ pSp a b) : AdT k X ∈ pSp a b := by
-  rw [AdT_eq, LinearMap.comp_apply]
-  apply AdLie_mem_pSp (mul_mem hk PhiG_mem_KR)
-  rw [diff_cartan_involution_apply, mem_pSp.1 hX]
-  exact neg_mem hX
-
-def AdLiep (k : KR a b) : pSp a b →ₗ[ℝ] pSp a b := (AdLie k.1).restrict fun _ hX => AdLie_mem_pSp k.2 hX
-
-def AdTp (k : KR a b) : pSp a b →ₗ[ℝ] pSp a b := (AdT k.1).restrict fun _ hX => AdT_mem_pSp k.2 hX
-
-def distinguishedElementKR (a b : ℕ) : KR a b := ⟨(PhiG a b ℂ)⁻¹, inv_mem PhiG_mem_KR⟩
 
 end GlobalTheory.Tw

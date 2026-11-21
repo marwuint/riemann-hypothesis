@@ -26,22 +26,9 @@ theorem valAt_algebraMap (a : Z.presheaf.stalk (below y)) :
 
 variable {y}
 
-theorem valAt_add (hf : RegAt (below y) f) (hg : RegAt (below y) g) : valAt y (f + g) = valAt y f + valAt y g := by
-  obtain ⟨a, rfl⟩ := hf
-  obtain ⟨b, rfl⟩ := hg
-  rw [← map_add, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_add]
-
-theorem valAt_mul (hf : RegAt (below y) f) (hg : RegAt (below y) g) : valAt y (f * g) = valAt y f * valAt y g := by
-  obtain ⟨a, rfl⟩ := hf
-  obtain ⟨b, rfl⟩ := hg
-  rw [← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]
-
 theorem valAt_pow (hf : RegAt (below y) f) (m : ℕ) : valAt y (f ^ m) = valAt y f ^ m := by
   obtain ⟨a, rfl⟩ := hf
   rw [← map_pow, valAt_algebraMap, valAt_algebraMap, map_pow]
-
-theorem regAt_pow {x : Z} (hf : RegAt x f) (m : ℕ) : RegAt x (f ^ m) :=
-  have ⟨a, ha⟩ := hf; ⟨a ^ m, by rw [map_pow, ha]⟩
 
 theorem valAt_ne_zero (hf : UnitAt (below y) f) : valAt y f ≠ 0 := by
   obtain ⟨a, ha, rfl⟩ := hf
@@ -49,12 +36,6 @@ theorem valAt_ne_zero (hf : UnitAt (below y) f) : valAt y f ≠ 0 := by
   exact (ha.map _).ne_zero
 
 variable (y)
-
-theorem valAt_zero : valAt y 0 = 0 := by
-  rw [← map_zero (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), valAt_algebraMap, map_zero]
-
-theorem valAt_one : valAt y 1 = 1 := by
-  rw [← map_one (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), valAt_algebraMap, map_one]
 
 omit [IsIntegral Z] in
 
@@ -92,18 +73,6 @@ theorem ratVal_eq_valAt {k : Type} [CommRing k] {q : Z ⟶ Sp k} {σ : k →+* �
   obtain ⟨U, hU, a, rfl⟩ := hf.exists_fnOf
   rw [ratVal_fnOf (CxPts.mem_ptsIn.2 hU), valAt_fnOf hU, CxPts.ev_eq (CxPts.mem_ptsIn.2 hU)]
   rfl
-
-theorem valAt_const {k : Type} [Field k] {Y : Var k} {y : Sp K ⟶ Y.X} {φ : k →+* K} (h : y ≫ Y.str = spMap φ) (a : k) :
-    valAt y (algebraMap k Y.Fn a) = φ a := by
-  rw [IsScalarTower.algebraMap_apply k Γ(Y.X, ⊤) Y.Fn]
-  refine (valAt_fnOf (U := ⊤) trivial trivial _).trans ?_
-  have e := congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))
-  have e' : (y.appTop).hom (algebraMap k Γ(Y.X, ⊤) a) = (Scheme.ΓSpecIso (.of K)).inv.hom (φ a) := by
-    refine Eq.trans ?_ e.symm
-    change ((y ≫ Y.str).appTop).hom _ = ((spMap φ).appTop).hom _
-    rw [h]
-  refine Eq.trans (congrArg (Scheme.ΓSpecIso (.of K)).hom.hom (Eq.trans ?_ e')) (Iso.inv_hom_id_apply _ _)
-  exact congrArg (fun q => q.hom (algebraMap k Γ(Y.X, ⊤) a)) (Scheme.Hom.appLE_eq_app y (U := ⊤))
 
 end Val
 
@@ -185,46 +154,6 @@ section Indep
 
 variable {Y E w c} {x : Y.X} {y : GeomPt Y E} {k k' : Fin n} {g g' e : Y.Fnˣ} {Δ : Y.Dv} {f f' : Y.Fn}
 
-omit [NumberField F] in
-
-theorem GenAt.unitAt (h : GenAt Y w x k) (h' : GenAt Y w x k') : UnitAt x (w k / w k') :=
-  (unitAt_iff (div_ne_zero h.1 h'.1)).2 ⟨h'.2 k, by rw [inv_div]; exact h.2 k'⟩
-
-omit [NumberField F] in
-
-theorem isEqn_eqn (Δ : Y.Dv) (x : Y.X) : Δ.IsEqn x (eqn Δ x) := (Δ.exists_isEqn x).choose_spec
-
-omit [NumberField F] in
-
-theorem ResReg.regAt (h : ResReg Y w Δ f x) (hk : GenAt Y w x k) (hg : Y.KY.IsEqn x g) (he : Δ.IsEqn x e) :
-    RegAt x (f * e * g / w k ^ Y.dim) := by
-  obtain ⟨k', hk', h⟩ := h
-  have := ((he.add hg).regularAt_iff.1 h).mul (regAt_pow (hk.2 k') Y.dim)
-  convert this using 1
-  have := hk'.1
-  rw [Units.val_mul, div_pow]
-  field_simp
-
-omit [NumberField F] [NumberField E] in
-
-theorem dsVal_pick {l : Fin Y.dim → Fin n} (hc : ∀ i j, c i j = if j = l i then 1 else 0) (g : Y.Fn) :
-    dsVal Y E w c y k g = valAt y.1 (jacRat Y (fun i => w (l i) / w k) * g) := by
-  rw [dsVal, Finset.sum_eq_single l _ (by simp)]
-  · simp [coef, hc]
-  · intro l' _ hl
-    obtain ⟨i, hi⟩ := Function.ne_iff.1 hl
-    rw [Finset.prod_eq_zero (Finset.mem_univ i) (by simp [coef, hc, hi]), zero_mul]
-
-omit [NumberField F] [NumberField E] in
-
-example {l : Fin Y.dim → Fin n} (hc : ∀ i j, c i j = if j = l i then 1 else 0) (hk : GenAt Y w (below y.1) k)
-    (hd : dsVal Y E w c y k g ≠ 0) :
-    resAt Y E w c (w k ^ Y.dim * jacRat Y (fun i => w (l i) / w k) / e) y k g e = 1 := by
-  have h0 := hk.1
-  rw [resAt, div_eq_one_iff_eq hd, dsVal_pick hc]
-  congr 1
-  field_simp
-
 omit [NumberField F] [NumberField E] in
 
 theorem resVal_smul (σ : AlgebraicClosure E ≃ₐ[E] AlgebraicClosure E) (Δ : Y.Dv) (f : Y.Fn) (y : GeomPt Y E) :
@@ -262,15 +191,6 @@ def cutForm (τ : E →+* ℂ) (g g' : cutSec Y E w c) : ℂ :=
 
 def IsCutHerm (H : ReciprocityTheory.GeometryOfNumbersTheory.HermFam E (cutSec Y E w c)) : Prop := ∀ τ g g', H.form τ g g' = cutForm w c A τ g' g
 
-variable {w c A} in
-
-theorem IsCutHerm.unique {H H' : ReciprocityTheory.GeometryOfNumbersTheory.HermFam E (cutSec Y E w c)} (h : IsCutHerm w c A H)
-    (h' : IsCutHerm w c A H') : H = H' := by
-  have e : H.form = H'.form := funext fun τ => funext fun g => funext fun g' => (h τ g g').trans (h' τ g g').symm
-  cases H
-  cases H'
-  congr
-
 open Classical in
 
 def cutDeg (Λ : Submodule (𝓞 E) (cutSec Y E w c)) : ℝ :=
@@ -294,11 +214,5 @@ def resDeg : ℝ := cutDeg w c A (resLat Y E w c M0 ι₀ A.D)
 def resSt (C : CxSt F) : ResSt C where
   resFull := fun Y E _ _ _ _ w c M0 ι₀ A => resFull Y E w c M0 ι₀ A
   resDeg := fun Y E _ _ _ _ w c M0 ι₀ A => resDeg Y E w c M0 ι₀ A
-
-section OnePoint
-
-variable {Y E w c} [Unique (cutSet Y E w c)]
-
-end OnePoint
 
 end GlobalTheory.TrueGeo

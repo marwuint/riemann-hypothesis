@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHomogeneousOfRowDeg
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.EmbeddingXiZeroNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftEqClassSumThetaKernelsLowestKTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelOneClassEqClassicalShortSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockCoefficientMapExtremalEqPhaseSmulLettersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftEqClassSumThetaKernelsLowestKType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelOneClassEqClassicalShortSeries
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockCoefficientMapExtremalEqPhaseSmulLetters
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilTwistBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassScalarValueCore
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LettersEqFockVarsCore
@@ -62,7 +62,7 @@ theorem ad_value_core (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ v₀) 
       clsSum (inC O.c') X Dc.hr Dc.bas Dc.idx Dc.eL (O.w t) (O.La t) (O.Nc t) (O.gam t) (O.vol t) (O.ep t)
         (fun j => O.io (xs j)) X.Λ v Y (frMove R.θ (Wc D i) (rank_Wc i) X (γ * g') x₀) := by
   let u : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ := fun ρ => ⟨v₀ i (sg0 D A) ρ, (hP.lift.v0.1 ρ).2.1⟩
-  have hun := GlobalTheory.T.thetaLift_eq_classSum_thetaKernels_lowestKType D G Pl0 T0 A _ R F hC i (tup t) _ (inC O.c') O.c0' _ h _ J' _ _ _ hP.lift.std hR y xs hpl u g'
+  have hun := _root_.GlobalTheory.LiftUnfoldCore.thF_eq_classSum_core D G Pl0 T0 A _ R F hC i (tup t) _ (inC O.c') O.c0' _ h _ J' _ _ _ hP.lift.std hR y xs hpl u g'
   refine hun.trans ?_
   rw [clsSum, Finset.mul_sum]
   refine Finset.sum_congr rfl fun j _ => ?_
@@ -181,8 +181,8 @@ theorem exists_serOf_core : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartI
   intro _ D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT hI i Tp tup O hP cc hcc
   have hs : O.s0 = T.toCore.σ₀ := sOv_eq _ _ _
   obtain ⟨h1, h2, -⟩ := GlobalTheory.PtId.dict_cast T hT.laws _ (inR i) O.s0 (hs ▸ T.toCore.good_σ₀) (Wc D i) O.hV (rank_Wc i)
-  obtain ⟨δ, hδ⟩ := GlobalTheory.T.thetaKernel_oneClass_eq_classicalShortSeries D G Pl0 T0 A _ R F hR i hP.lift.std _ _ (iotaW T i) h1 h2
-  obtain ⟨ka, hka, hio⟩ := GlobalTheory.T.fockCoefficientMap_extremal_eq_phase_smul_letters D G Pl0 T0 A T R F κ v₀ hR hT hI i Tp tup O hP
+  obtain ⟨δ, hδ⟩ := _root_.GlobalTheory.AdTh.ShortSeriesCore.thetaKO_eq_short_series_core D G Pl0 T0 A _ R F hR i hP.lift.std _ _ (iotaW T i) h1 h2
+  obtain ⟨ka, hka, hio⟩ := _root_.GlobalTheory.AdTh.PhaseMapCore.io_eq_phase_smul_core D G Pl0 T0 A T R F κ v₀ hR hT hI i Tp tup O hP
   obtain ⟨c0, hc0, hcov⟩ := GlobalTheory.AdTh.CoverVal.cover_value_core D G Pl0 T0 A T R F κ v₀ hR hT i Tp tup O hP
   have hd : ‖((δ : ℤ) : ℂ)‖ = 1 := by
     rcases Int.units_eq_one_or δ with rfl | rfl <;> simp

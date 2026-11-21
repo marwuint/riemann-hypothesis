@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZ
 import Formalism.PairingDivisors.StatementH
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPointStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairModulusOneStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairModulusOne
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
@@ -416,13 +416,13 @@ theorem om_expand : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ
   · exact ⟨0, 0, Fin.elim0, Fin.elim0, fun h => absurd h (by omega)⟩
   have hSD : ∀ (N : ℕ) (g : GA D N) L, Moves D (g : GL (Fin N) (AE D)) L → SD D L := by
     intro N g L hL
-    obtain ⟨Lt, h1, -⟩ := GlobalTheory.T.Lt_eq_iff_inv_mul_mem_intG_and_transport D N
+    obtain ⟨Lt, h1, -⟩ := _root_.GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
     have : L = Lt g := by
       ext x; rw [hL x, (h1 g).1 x]
     rw [this]; exact (h1 g).2
   have hSD0 : ∀ N : ℕ, SD D (stdL D N) := by
     intro N
-    obtain ⟨Lt, h1, h2, -⟩ := GlobalTheory.T.Lt_eq_iff_inv_mul_mem_intG_and_transport D N
+    obtain ⟨Lt, h1, h2, -⟩ := _root_.GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
     rw [← h2]; exact (h1 1).2
   obtain ⟨-, hW, hint, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hI.g1 cc δ hC P.a P.d (La0 D (tor0 D cc δ) P.a P.d)
     (Or.inr ⟨_, _, hSD0 _, hSD0 _, rfl⟩)
@@ -434,7 +434,7 @@ theorem om_expand : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ
     rw [hW x hx]; funext z; exact he0.2 x hx z
   have heT : P.e0 ∈ TT D (tor0 D cc δ) P.a P.d :=
     ⟨he0.1, 1, one_pos, fun x hx => by rw [one_nsmul]; exact hfix x hx⟩
-  obtain ⟨c, hc1, hc2, hc3⟩ := GlobalTheory.T.vacuum_under_adelic_pair_modulus_one D hI cc δ hC P.a P.d (P.d_even.mul_left _) P.e0 he0 P.W g g'
+  obtain ⟨c, hc1, hc2, hc3⟩ := _root_.GlobalTheory.NormSum.vacuum_under_adelic_pair D hI cc δ hC P.a P.d (P.d_even.mul_left _) P.e0 he0 P.W g g'
     L₁ L₁' hL hL'
   obtain ⟨k, r, z, hz, hr1, hr2, hF⟩ := P.pres
   have hT : ∀ i, Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) P.e0 ∈ TT D (tor0 D cc δ) P.a P.d := by

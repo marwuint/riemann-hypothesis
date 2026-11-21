@@ -7,18 +7,6 @@ open IsLocalRing RingTheory.Sequence Pointwise
 
 variable {R : Type*} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
 
-def killedBy (M : Type*) [AddCommGroup M] [Module R M] (p : Ideal R) : Submodule R M where
-  carrier := {z | ∀ a ∈ p, a • z = 0}
-  add_mem' := by
-    intro z w hz hw a ha
-    rw [smul_add, hz a ha, hw a ha, add_zero]
-  zero_mem' := by
-    intro a _
-    exact smul_zero a
-  smul_mem' := by
-    intro c z hz a ha
-    rw [smul_comm, hz a ha, smul_zero]
-
 theorem exists_assoc_step {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M]
     {p : Ideal R} (hp : p ∈ associatedPrimes R M) {x : R} (hx : x ∈ maximalIdeal R)
     (reg : IsSMulRegular M x) :

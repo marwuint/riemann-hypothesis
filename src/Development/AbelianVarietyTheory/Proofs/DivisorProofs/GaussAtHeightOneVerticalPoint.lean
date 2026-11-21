@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescentDataChartsCommonStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussPropertySemiAbelianFlatBaseChangeDvrStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescentDataChartsCommon
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussPropertySemiAbelianFlatBaseChangeDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVertOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfEmbeddings
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
@@ -301,7 +301,7 @@ theorem gaussAt_chart_of_height_one : ∀ (σ : Setup) (p : Sp σ.R) (z : (σ.C 
     fun z' h => eq_closedPoint _ hf h.2
   have hW : σ.W p = σ.θ p ⁻¹' regSet z := by
     have hreg : ∀ z', Vert (σ.C p).G.hom (σ.ρ p σ.f) z' → regSet z' = regSet z := fun z' h =>
-      (GlobalTheory.T.gaussProperty_semiAbelian_flat_baseChange_dvr _ _ (RingHom.id _) (RingHom.Flat.id _) (Ideal.map_id _) (σ.C p).G (σ.C p).G (𝟙 _) (RingHom.id _)
+      (_root_.GlobalTheory.Desc.GaussBC.gauss_baseChange _ _ (RingHom.id _) (RingHom.Flat.id _) (Ideal.map_id _) (σ.C p).G (σ.C p).G (𝟙 _) (RingHom.id _)
         (σ.C p).semi (by
           rw [show spMap (RingHom.id (σ.C p).R) = 𝟙 _ from Spec.map_id _]
           exact IsPullback.id_horiz _) (pff_refl _) z z' (hcl z hz) (hcl z' h) hz.1 h.1).2.1
@@ -335,7 +335,7 @@ theorem gaussAt_chart_of_height_one : ∀ (σ : Setup) (p : Sp σ.R) (z : (σ.C 
       RingHom.ker (g.comp (residue _)) = maximalIdeal _ := fun g => by
     rw [RingHom.ker_comp_of_injective _ g.injective, ker_residue]
   obtain ⟨E, _, _, _, a, b, v, H, _, _, πa, πb, θa, θb, ha, hb, hab, hv, hva, hvb, hma, hH, ⟨pa, -⟩, ⟨pb, -⟩, fa, fb, hθ⟩ :=
-    GlobalTheory.T.abelianSchemeDescentData_charts_common σ p p _ (s.toRingHom.comp (residue _)) ((algebraMap (ResidueField (σ.C p).R) _).comp (residue _))
+    _root_.GlobalTheory.Desc.setup_common σ p p _ (s.toRingHom.comp (residue _)) ((algebraMap (ResidueField (σ.C p).R) _).comp (residue _))
       (hker _) (by
         ext t
         rw [RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, ← hφ']
@@ -349,8 +349,8 @@ theorem gaussAt_chart_of_height_one : ∀ (σ : Setup) (p : Sp σ.R) (z : (σ.C 
   have ha0 : a (φ π) ≠ 0 := flat_ne_zero a ha hπ0
   haveI : IsDiscreteValuationRing E := dvr_of_span ha0 hE
   obtain ⟨y', hy', hd⟩ := exists_closed_codim_one H hH
-  obtain ⟨-, hra, -⟩ := GlobalTheory.T.gaussProperty_semiAbelian_flat_baseChange_dvr _ _ a ha hma _ H πa θa (σ.C p).semi pa fa z y' (hcl z hz) hy' hz.1 hd
-  obtain ⟨hG, -, hld⟩ := GlobalTheory.T.gaussProperty_semiAbelian_flat_baseChange_dvr _ _ b hb hmb _ H πb θb (σ.C p).semi pb fb z y' (hcl z hz) hy' hz.1 hd
+  obtain ⟨-, hra, -⟩ := _root_.GlobalTheory.Desc.GaussBC.gauss_baseChange _ _ a ha hma _ H πa θa (σ.C p).semi pa fa z y' (hcl z hz) hy' hz.1 hd
+  obtain ⟨hG, -, hld⟩ := _root_.GlobalTheory.Desc.GaussBC.gauss_baseChange _ _ b hb hmb _ H πb θb (σ.C p).semi pb fb z y' (hcl z hz) hy' hz.1 hd
   have := key_of_gauss hc (σ.θ p) a b (GlobalTheory.Desc.cst H.hom) θa θb
     (cst_comm fa _ _ _ (by rw [Category.id_comp]; exact pa.w)) (cst_comm fb _ _ _ (by rw [Category.id_comp]; exact pb.w))
     hθ hld v hvb hv (regAlg (σ.C p).G.hom z).toSubmodule (regSet y')

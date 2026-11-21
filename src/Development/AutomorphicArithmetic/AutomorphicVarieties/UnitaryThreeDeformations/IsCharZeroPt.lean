@@ -51,9 +51,6 @@ def ptMat {K : Type} [CommRing K] [Algebra O K] (ξ : Sring O u →ₐ[O] K) (g 
 def IsPtHom {K : Type} [CommRing K] [Algebra O K] (ξ : Sring O u →ₐ[O] K) (r : Γ →* GG 3 K) : Prop :=
   ∀ g, (r g).right = (u g).right ∧ (r g).mat = ptMat u ξ g
 
-def IsPush {K : Type} [CommRing K] [Algebra O K] {S : Subalgebra O R} (ξ : S →ₐ[O] K) (r : Γ →* GG 3 K) : Prop :=
-  ∀ g, (r g).right = (u g).right ∧ ∀ a b, ∃ h : (u g).mat a b ∈ S, (r g).mat a b = ξ ⟨_, h⟩
-
 end Weights
 
 section Quot

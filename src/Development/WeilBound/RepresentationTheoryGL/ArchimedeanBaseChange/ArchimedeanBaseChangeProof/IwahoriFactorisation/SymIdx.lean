@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruenceSubgroupIndicatorWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceTwistedConstantTermMatchesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruenceSubgroupIndicatorWeight
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
+import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarizedCuspidal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceTwistedConstantTermMatches
 
 noncomputable section
 
@@ -17,9 +19,9 @@ def M1 : Prop :=
       Match n a b w 1 ((KL n w : Set (UL n w)).indicator 1)
         ((((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b) : Subgroup _) : Set _).indicator 1)
 
-def M2 : Prop := type_of% GlobalTheory.T.congruence_subgroup_indicator_weight
+def M2 : Prop := type_of% _root_.GlobalTheory.CongMatch.match_principal_congruence_inert
 
-def M3 : Prop := type_of% GlobalTheory.T.splitPlace_twistedConstantTerm_matches
+def M3 : Prop := type_of% _root_.GlobalTheory.BCT.SplitCtMatch.match_ctMu_of_isSplitAt
 
 def lOf {n : ℕ} (x : Fin n → ℤ) (i : Fin (n / 2)) : ℤ :=
   x ⟨i.val, by omega⟩ - x ⟨n - 1 - i.val, by omega⟩

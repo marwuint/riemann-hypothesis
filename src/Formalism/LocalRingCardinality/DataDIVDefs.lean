@@ -75,27 +75,15 @@ def kerPlace (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) (j : ℕ) (τ : D
   (∑ i ∈ Finset.range (D.R.N (j - 1)), phF (nuRow D u j τ i)) -
     (∑ i ∈ Finset.range (D.R.N (j - 1)), nuRow D u j τ i) * L.logOm
 
-def SZbK (D : D7) (L : SizeData₂ D) (C : ℝ) (u : D.what₂.Word) (j : ℕ) : ℝ :=
-  (∑ ρ : D.what₂.Tau, kerPlace D L u j ρ) +
-    C * (D.R.f : ℝ) * (D.R.N D.R.m : ℝ) ^ 2 * (L.La + (D.host.d : ℝ) ^ C) +
-    C * (D.R.f : ℝ) * (D.R.m : ℝ) ^ 3 * (D.R.N D.R.m : ℝ) ^ 2 * L.sc.L
-
 def SZbP (D : D7) (L : SizeData₂ D) (C : ℝ) (u : D.what₂.Word) : ℝ :=
   -(∑ t : D.host.TT, (L.aT t : ℝ) * Real.log ((D.mem u).A.T : ℝ)) +
     C * ((D.host.TT.card : ℝ) * L.sc.b' * (D.R.N D.R.m : ℝ) +
       (D.R.f : ℝ) * ((D.R.m : ℝ) * L.etaSz + L.Sc) * (D.R.N D.R.m : ℝ) +
       (D.R.f : ℝ) * (D.R.N D.R.m : ℝ) ^ 2) * L.La
 
-def hExpl (D : D7) (L : SizeData₂ D) (X : DivX D) (C : ℝ) (u : D.what₂.Word) : ℝ :=
-  SZbP D L C u + (∑ j ∈ SizeData₂.lifts D, SZbK D L C u j) -
-    meanE D (fun e => ⨅ σ : Fin D.what₂.Drows, ∑ j ∈ SizeData₂.lifts D, X.logLam j (D.what₂.ft σ) e) -
-    meanE D (fun e => Real.log (X.kapR e))
-
 end Formalism.BasicNotions.DV
 
 namespace Formalism.BasicNotions
-
-open Formalism.MainNotions.G
 
 end Formalism.BasicNotions
 

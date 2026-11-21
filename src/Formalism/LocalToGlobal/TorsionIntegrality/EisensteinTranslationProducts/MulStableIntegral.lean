@@ -21,10 +21,5 @@ theorem translateProduct : TranslateProduct := translateProduct_of sgStarAdd
 theorem halfShift : HalfShift := halfShift_of sigmaAdd sigmaQuasi sigmaZero pInjective
 theorem cmThetaEq : CmThetaEq := cm_theta_eq
 theorem cmStable : CmStable := cm_stable
-theorem cmOrder : CmOrder := cm_order
-theorem cmArea : CmArea := cm_area
 theorem cmNorm : CmNorm := cm_norm
-theorem cmAltE : CmAltE := cm_alternating_form
-theorem cmHalfLatticeIff : CMHalfLatticeIff := cm_half_lattice_iff
-
 end Formalism.L2.Th1.F

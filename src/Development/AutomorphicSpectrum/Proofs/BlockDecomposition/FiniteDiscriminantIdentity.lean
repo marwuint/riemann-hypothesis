@@ -2,11 +2,11 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.InfinitesimalCharacterGlue
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFundamentalDomainGLStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AutomorphicNormFiniteNonzeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrthogonalOfNonIsomorphicStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFundamentalDomainGL
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AutomorphicNormFiniteNonzero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrthogonalOfNonIsomorphic
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TypedSpaceApproximationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelSumBoundUniformStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelSumBoundUniform
 
 open scoped Classical
 open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology
@@ -34,10 +34,10 @@ theorem main : FinDisc := by
   swap
   · exact ⟨∅, fun V h1 h2 h3 h4 => (hne ⟨V, h1, h2, h3, h4⟩).elim⟩
   obtain ⟨V₁, h₁⟩ := hne
-  obtain ⟨F, hF⟩ := GlobalTheory.T.exists_fundamental_domain_GL E N μ _ (h₁.1.sqInt 0 (zero_mem _))
+  obtain ⟨F, hF⟩ := _root_.GlobalTheory.CompanionTheory.FinDisc.exists_isFundamentalDomain_of_isSqInt E N μ _ (h₁.1.sqInt 0 (zero_mem _))
   obtain ⟨α, δ, hαc, hαs, hδ, hα⟩ := hRep
   obtain ⟨Ω, hΩ, hconc⟩ := GlobalTheory.T.typed_space_approximation E N μ K W R ε δ α F hK hW hε hαc hαs hδ hF
-  obtain ⟨B, hB, hbes⟩ := GlobalTheory.T.kernel_sum_bound_uniform E N μ δ α F Ω hαc hαs hδ hF hΩ
+  obtain ⟨B, hB, hbes⟩ := _root_.GlobalTheory.CompanionTheory.FinDisc.bessel_lintegral_le E N μ δ α F Ω hαc hαs hδ hF hΩ
 
   have key : ∀ (n : ℕ) (Vs : Fin n → Submodule ℂ (Sm E N)), (∀ i, D (Vs i)) →
       (∀ i j, i ≠ j → ¬ IsoV (Vs i) (Vs j)) → (n : ENNReal) ≤ 2 * B := by
@@ -45,7 +45,7 @@ theorem main : FinDisc := by
     have hsel : ∀ i, ∃ ψ : Sm E N, ψ ∈ Vs i ∧ TypeB K W ψ ∧ (∫⁻ x in F, ‖ψ.1 x‖ₑ ^ 2 ∂μ) = 1 := by
       intro i
       obtain ⟨hd, ⟨φ, hφ, h0, hty⟩, -, -⟩ := hVs i
-      obtain ⟨hT, hZ⟩ := GlobalTheory.T.automorphic_norm_finite_nonzero E N μ F hF φ (hd.aut φ hφ) (hd.sqInt φ hφ) h0
+      obtain ⟨hT, hZ⟩ := _root_.GlobalTheory.CompanionTheory.FinDisc.sqMass_ne_top_and_ne_zero E N μ F hF φ (hd.aut φ hφ) (hd.sqInt φ hφ) h0
       set L := ∫⁻ x in F, ‖φ.1 x‖ₑ ^ 2 ∂μ with hL
       have hLr : 0 < L.toReal := ENNReal.toReal_pos hZ hT
       set c : ℝ := (Real.sqrt L.toReal)⁻¹ with hc
@@ -83,7 +83,7 @@ theorem main : FinDisc := by
       obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ
       rw [map_smul, hm.2 u _ (hψV i), smul_comm]
     have hcB := hbes n (fun i => (ψ i).1) hcont hleft hs hψ1 (fun i j hij =>
-      GlobalTheory.T.orthogonal_of_non_isomorphic E N μ F hF (Vs i) (Vs j) (hVs i).1 (hVs j).1 (hne i j hij) _ (hψV i) _ (hψV j))
+      _root_.GlobalTheory.CompanionTheory.FinDisc.integral_eq_zero_of_not_isoV E N μ F hF (Vs i) (Vs j) (hVs i).1 (hVs j).1 (hne i j hij) _ (hψV i) _ (hψV j))
     have h1 : ∀ i, 1 ≤ 2 * ∫⁻ x in Ω, ‖(ψ i).1 x‖ₑ ^ 2 ∂μ := fun i =>
       hconc (Vs i) (ψ i) (hVs i).1 (hψV i) (hψT i) (hVs i).2.2.1 (hVs i).2.2.2 (hs i) (hψ1 i)
     calc (n : ENNReal) = ∑ _i : Fin n, (1 : ENNReal) := by simp

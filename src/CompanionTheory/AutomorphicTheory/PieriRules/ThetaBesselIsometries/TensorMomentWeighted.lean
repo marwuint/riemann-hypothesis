@@ -1,10 +1,15 @@
 import Mathlib
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.Imports
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.NormSqIntegralInnerWeightLeImports
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentTransferStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuotientMeasureAeMemAndMeasurableBesselModelStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.SumNormSqHermTranslatesOrthonormalImports
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormSqIntegralInnerWeightLeStatement
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentTransfer
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuotientMeasureAeMemAndMeasurableBesselModel
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumNormSqHermTranslatesOrthonormal
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FrepDiscreteSeriesSum
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
 
@@ -57,8 +62,8 @@ theorem moment_lemma_pieri : HypsG → ∀ (k r : ℕ) (ι κ : Type) [Fintype �
   have hK : PI.KFinSmooth := hy.1.2.2.1
   obtain ⟨hadj, -, hev, hnorm, -⟩ :=
     GlobalTheory.TensAdj.tens_adj hK k r ι κ ρ Γ d R RI io pr ep ε mu muI hR hRI hρ hT
-  obtain ⟨hae, hcont, -, hmB⟩ := GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hK k r ε mu R Wp z π u μW μN μG νq hR hS
-  obtain ⟨-, -, -, hmI⟩ := GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hK k r ε (muI I) (RI I) Wp z π u μW μN μG νq (hRI I) hS
+  obtain ⟨hae, hcont, -, hmB⟩ := _root_.Gp91.GlobalTheory.quotMeas_ae_mem_and_measurable hK k r ε mu R Wp z π u μW μN μG νq hR hS
+  obtain ⟨-, -, -, hmI⟩ := _root_.Gp91.GlobalTheory.quotMeas_ae_mem_and_measurable hK k r ε (muI I) (RI I) Wp z π u μW μN μG νq (hRI I) hS
   have hf := hmI (BI I) hI.1 y hy'
   have hH := hρ.1
   have h2 := hρ.2.1
@@ -76,7 +81,7 @@ theorem moment_lemma_pieri : HypsG → ∀ (k r : ℕ) (ι κ : Type) [Fintype �
         ‖BI I ((RI I).σ (Matrix.of x) y)‖ ^ 2) ∂νq := by
     intro e
     have hw : io I e y ∈ R.sm := (hT.raw.io_sm I e).mem y hy'
-    have hpair := GlobalTheory.T.tensor_moment_transfer hy k r ι κ ρ Γ d R RI io pr ε mu muI Wp z π u μW μN μG νq om Bm BI β hR hRI hinj
+    have hpair := _root_.Gp91.GlobalTheory.BesselPairing.pairing hy k r ι κ ρ Γ d R RI io pr ε mu muI Wp z π u μW μN μG νq om Bm BI β hR hRI hinj
       hT.raw hS hB.1 hBI hβ I hI y hy' (fun c => Γ c e) (io I e y) hw
     have hcs := GlobalTheory.T.norm_sq_integral_inner_weight_le (Formalism.QuantumDeterminants.Mt k r) Wp νq _ _ _ hf (hmB Bm hB.1 _ hw) (hph e)
     rw [hpair] at hcs
@@ -111,7 +116,7 @@ theorem moment_lemma_pieri : HypsG → ∀ (k r : ℕ) (ι κ : Type) [Fintype �
   · refine lintegral_congr_ae ?_
     filter_upwards [hae] with x hx
     rw [← ENNReal.ofReal_sum_of_nonneg (fun e _ => by positivity), ← Finset.sum_mul]
-    have := GlobalTheory.T.sum_norm_sq_herm_translates_orthonormal k r ι ρ Γ Γᵀ d om hρ (transpose_unitary Γ hH h2) _ hx
+    have := _root_.GlobalTheory.MomentParseval.sum_herm_sq k r ι ρ Γ Γᵀ d om hρ (transpose_unitary Γ hH h2) _ hx
     rw [← this]
     rfl
   · intro e _

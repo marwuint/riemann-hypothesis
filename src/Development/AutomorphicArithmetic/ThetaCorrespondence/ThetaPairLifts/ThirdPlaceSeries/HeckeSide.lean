@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SphericalVectorFixedLocal
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EventuallyUnr
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExistsHasSatakeOfUnr
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -35,8 +35,8 @@ theorem heckeSide_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {L : Type} [
     ∃ α, GlobalTheory.SmGL.HasSatake σ.ρ α ∧ ∀ k, 1 ≤ k → k ≤ n →
       ((normV (conjSplit s).w : ℕ) : ℂ) ^ (k * (k - 1) / 2) * c k = (twEig (conjSplit s).w α).esymm k := by
   obtain ⟨i, T, hic, hcomp, hinj, hmem, heq⟩ := hσ
-  have hf' := GlobalTheory.T.autRep_isotypic_splitPlace_localComponent L n π (conjSplit s) σ i T hinj hmem heq f hf
-  obtain ⟨m, Tj, ej, hTj, hej, hsum⟩ := GlobalTheory.T.splitPlace_fixed_vector_sum_spherical_images L n π (conjSplit s) σ i hic hcomp f hf' hfix
+  have hf' := _root_.GlobalTheory.HeckeFrob.mem_iSup_range_locMap L n π (conjSplit s) σ i T hinj hmem heq f hf
+  obtain ⟨m, Tj, ej, hTj, hej, hsum⟩ := _root_.GlobalTheory.SphAvg.exists_sum_fixed L n π (conjSplit s) σ i hic hcomp f hf' hfix
   have hne : ∃ j, ej j ≠ 0 := by
     by_contra h
     push_neg at h
@@ -49,13 +49,13 @@ theorem heckeSide_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {L : Type} [
   have hR := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL hp
   obtain ⟨α, hα⟩ := _root_.UpperTheory.One.M.exists_hasSatake_of_unr_alt hR ((_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_unramified_iff_spherical hR σ).2 hsph)
   refine ⟨α, hα, fun k hk1 hk2 => ?_⟩
-  have hfin := GlobalTheory.T.finite_heckeDoubleCoset_cosets_at_splitPlace L n s ϖ hu J hJ k
+  have hfin := _root_.GlobalTheory.TSetFinLoc.finite_image_tSet_loc L n s ϖ hu J hJ k
   have key : ((normV (conjSplit s).w : ℕ) : ℂ) ^ (k * (k - 1) / 2) • NG.tN J s ϖ k f =
       (twEig (conjSplit s).w α).esymm k • f := by
     conv_lhs => rw [hsum]
     rw [tN_sum J s ϖ k hfin, Finset.smul_sum, hsum, Finset.smul_sum]
     exact Finset.sum_congr rfl fun j _ =>
-      GlobalTheory.T.split_place_hecke_operator_eigenvalue_conj_spherical L n s ϖ hu J hJ σ α hα i hic hcomp (Tj j) (hTj j) (ej j) (hej j) k hk1 hk2
+      _root_.GlobalTheory.HeckeEigConj.tN_eig L n s ϖ hu J hJ σ α hα i hic hcomp (Tj j) (hTj j) (ej j) (hej j) k hk1 hk2
   rw [hc k hk1 hk2, smul_smul] at key
   exact smul_left_injective ℂ hf0 key
 theorem locPol_eq_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)

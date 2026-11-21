@@ -233,15 +233,6 @@ def Mon : Vec K a ι →ₗ[K] P.Pol := P.cls ∘ₗ (P.EN - mulV K a ι (E K l 
 
 theorem Mon_apply (y : Vec K a ι) : P.Mon y = P.cls (P.EN y - E K l e • P.zeta y) := rfl
 
-theorem eisenstein_x_eq_neg {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K))) :
-    (P.plus hy).EN xVec = -(P.plusInl hy).app (P.EN y - E K l e • P.zeta y) := by
-  rw [EN_apply, plus_conn_xVec_eq, EN_apply, ← smul_sub, ← map_smul, ← map_neg, ← smul_neg, neg_sub]
-
-theorem Mon_eq_zero_iff {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K))) :
-    P.Mon y = 0 ↔ (P.plus hy).EN xVec ∈ (P.plus hy).Man := by
-  rw [eisenstein_x_eq_neg, neg_mem_iff, plusInl_app, mem_Man, P.join_mem_Mext hy, Mon_apply, cls_eq_zero_iff]
-  exact ⟨fun h => ⟨h, fun _ => zero_mem _⟩, fun h => h.1⟩
-
 theorem Mon_phi_sub (m : Vec K a ι) : P.Mon (P.phi m - m) = -P.cls (P.EN m) := by
   rw [Mon_apply, zeta_phi_sub, map_sub P.EN, ← EN_apply, sub_sub_cancel_left, map_neg]
 
@@ -366,12 +357,6 @@ theorem app_mem_EM {η : ℕ} {y : Vec K a ι} (hy : y ∈ P.EM η) : F.app y �
   rw [mem_divE, ← map_smul]
   exact F.app_mem_M hy
 
-theorem onPol_mem_PolEta {η : ℕ} {w : P.Pol} (hw : w ∈ P.PolEta η) : F.onPol w ∈ Q.PolEta η := by
-  obtain ⟨y, hy, rfl⟩ := hw
-  refine ⟨F.app y, ?_, rfl⟩
-  rw [SetLike.mem_coe, mem_divE, ← map_smul]
-  exact F.app_mem_Mext (A_le_Rpi l e) hy
-
 omit [NormedAlgebra ℚ_[l] K] [NeZero e]
 
 def imM : Submodule (A O K) (Vec K a κ) := P.M.map (F.app.restrictScalars (A O K))
@@ -379,8 +364,6 @@ def imM : Submodule (A O K) (Vec K a κ) := P.M.map (F.app.restrictScalars (A O 
 def imL : Submodule (A O K) (Vec K a κ) := P.L.map (F.app.restrictScalars (A O K))
 
 abbrev coker : Type := Q.M ⧸ F.imM.submoduleOf Q.M
-
-abbrev cokerL : Type := Q.L ⧸ F.imL.submoduleOf Q.L
 
 end Hom
 

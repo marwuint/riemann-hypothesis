@@ -4,7 +4,7 @@ import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RoundedSizeBoundWindow
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FloorSizeBoundsAtThickEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MaxSizeAtNonThickPlaceLeAndBoundStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MaxSizeAtNonThickPlaceLeAndBound
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW
@@ -13,7 +13,7 @@ theorem pageWord_thick_iff : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin
     Roomy L C → ∀ i, (pageWord L j ε τ φ).thick i ↔ Thick D.host (letter τ φ i) := by
   intro D L C j ε τ φ hR i
   obtain ⟨hlo, -⟩ := bHat_window L C hR
-  obtain ⟨hwM, hwle⟩ := GlobalTheory.T.maxSizeAtNonThickPlace_le_and_bound L C hR
+  obtain ⟨hwM, hwle⟩ := _root_.GlobalTheory.HTW.wMax_le_and_ge L C hR
   have hR' := hR
   obtain ⟨hC, hw, ht, hwb, -, hb⟩ := hR'
   obtain ⟨c, hc⟩ := D.R.t_odd

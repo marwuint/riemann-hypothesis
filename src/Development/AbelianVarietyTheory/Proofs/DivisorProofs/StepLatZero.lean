@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.KernelSt
+import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorusExt
 
 set_option autoImplicit false
 
@@ -26,13 +27,6 @@ def stepLat {K : Type} [Field K] [NumberField K] (F : SemiFib K) (τ : D.host.E 
     Submodule (𝓞 K) (Fin F.P₀.g → K) :=
   F.lieLat ⊓ (Submodule.span K {v | ∃ (i : Fin F.P₀.g) (x : Letter O.S.Dw), x.1 = τ ∧ (x.2 : ℕ) < k ∧
     (letters O.S.Dw)[(i : ℕ)]? = some x ∧ v = Pi.single i 1}).restrictScalars (𝓞 K)
-
-theorem stepLat_zero {K : Type} [Field K] [NumberField K] (F : SemiFib K) (τ : D.host.E →+* ℂ) :
-    stepLat O F τ 0 = ⊥ := by
-  have : {v : Fin F.P₀.g → K | ∃ (i : Fin F.P₀.g) (x : Letter O.S.Dw), x.1 = τ ∧ (x.2 : ℕ) < 0 ∧
-      (letters O.S.Dw)[(i : ℕ)]? = some x ∧ v = Pi.single i 1} = ∅ := by
-    ext v; simp
-  rw [stepLat, this, Submodule.span_empty, Submodule.restrictScalars_bot, inf_bot_eq]
 
 end GlobalTheory.LieRead
 

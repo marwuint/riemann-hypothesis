@@ -1,10 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ToUnitsCompToCircle
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelLiftIsLiftPrincipalLevelDatumRealisation
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateThetaSeriesFlatDatumRootOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateThetaSeriesFlatDatumRootOfUnity
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ConjTupRefl
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
+import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChangeOfSplittingPair
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateThetaLiftsIsConjugateCuspExpansion
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaOneMapBaseTupleOfCharacterisationExtremalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaOneMapBaseTupleOfCharacterisationExtremal
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PureTensorLIntertwine
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PureTensorOTransSumLin
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlatVecExistsUnique
@@ -74,11 +80,6 @@ theorem cf_sum {ζ : ℂ} (hζ : ζ ≠ 0) {Ψ Ψ' : X → ℂ} (h0 : CF φ τ �
     rw [mul_left_comm, ← mul_assoc ζ, mul_inv_cancel₀ hζ, one_mul]
   rw [e1, e2] at hc
   exact hc
-
-theorem cf_smul {ζ : ℂ} (hζ : ζ ≠ 0) {Φ Φ' : X → ℂ} (h : CF φ τ ζ Φ Φ') (d : ℂ) :
-    CF φ τ ζ (fun g => d * Φ g) (fun g => τ d * Φ' g) := by
-  have := cf_sum hζ h (β := fun _ : Unit => d) (fun _ => Φ) (fun _ => Φ') (fun _ => h)
-  simpa using this
 
 end CFAux
 
@@ -219,8 +220,8 @@ theorem conj_gen : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 �
   obtain ⟨fw⟩ := hFW
   have hTie : TieIn T R κ v₀ := ⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩
   have hE : (O i).EquivAt (κ i) (T.cE ((i : ℕ) + 1) (O i).s0) :=
-    (hPT (GlobalTheory.T.thetaOneMap_baseTuple_of_characterisation_extremal hCI D G Pl0 T0 A T R F κ v₀ hC hTie hio O i hOP)).1
-  obtain ⟨ζ0, hζ0, hgb⟩ := GlobalTheory.T.conjugate_thetaSeries_flatDatum_rootOfUnity hCI D G Pl0 T0 A T R F κ v₀ O ph hnV hC hT0 ⟨fw⟩ hio hQG i hOP hPT c hc u hu τ hτ
+    (hPT (_root_.GlobalTheory.OneMapTies.oneMapRow0_of_ties_core hCI D G Pl0 T0 A T R F κ v₀ hC hTie hio O i hOP)).1
+  obtain ⟨ζ0, hζ0, hgb⟩ := _root_.GlobalTheory.ConjTwist.FlatSeries.conj_flat_series hCI D G Pl0 T0 A T R F κ v₀ O ph hnV hC hT0 ⟨fw⟩ hio hQG i hOP hPT c hc u hu τ hτ
   refine ⟨ζ0, hζ0, fun ψ ψ' t t' hψ hψ' hQ hQ' ht ht' hcc => ?_⟩
   obtain ⟨f, hf⟩ := (GlobalTheory.FlatVecExist.flatVec_existsUnique D G Pl0 T0 A _ R F hC hQG i t).1
   obtain ⟨f', hf'⟩ := (GlobalTheory.FlatVecExist.flatVec_existsUnique D G Pl0 T0 A _ R F hC hQG i t').1

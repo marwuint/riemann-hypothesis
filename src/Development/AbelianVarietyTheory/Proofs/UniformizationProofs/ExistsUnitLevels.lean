@@ -146,23 +146,6 @@ theorem formEq_mult {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ �
 variable {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   [IsCommMonObj G] (U : PreU I D A G) {S : Type} [CommRing S] {φ : R →+* S}
 
-open FormalPoint in
-
-theorem red_of_reduction (x : Over.mk (spMap φ) ⟶ G) (g : GtPt D (Over.mk (spMap φ)))
-    (h₁ : ∀ e, reduction I x e ≫ (U.gt e).pG.left = adicLevelι (I.map φ) (e + 1) ≫ g.b.left)
-    (h₂ : ∀ e χ (Z : Scheme.{0}) (k : Z ⟶ _) z C, Good D.P.L z C →
-      val ((U.gt e).t χ) (k ≫ reduction I x e) z C = val (g.s χ) (k ≫ adicLevelι (I.map φ) (e + 1)) z C) :
-    U.Red x g := by
-  intro e Z r y hy
-  have w : r ≫ (Over.mk (spMap φ)).hom = (y ≫ (thickObj R I e G).hom) ≫ thick R I e := by
-    rw [← Over.w x, ← Category.assoc, ← hy, Category.assoc, Over.w (fstG I e G), Category.assoc]; rfl
-  obtain ⟨l, rfl⟩ := exists_factor_level I φ r _ w
-  obtain rfl : y = l ≫ reduction I x e := by
-    rw [← cancel_mono (fstG I e G).left, Category.assoc, reduction_fstG]
-    exact hy.trans (Category.assoc _ _ _)
-  exact ⟨(Category.assoc _ _ _).trans ((congrArg (l ≫ ·) (h₁ e)).trans (Category.assoc _ _ _).symm),
-    fun χ z C hC => h₂ e χ Z l z C hC⟩
-
 omit [IsDomain R] [GrpObj G] [IsCommMonObj G] in
 open FormalPoint in
 
@@ -175,73 +158,6 @@ theorem reduction_succ (x : Over.mk (spMap φ) ⟶ G) (e : ℕ) :
 
 variable [IsLocalRing S]
 
-open FormalPoint in
-
-theorem red_unique [IsHausdorff (I.map φ) S] {x : Over.mk (spMap φ) ⟶ G} {g g' : GtPt D (Over.mk (spMap φ))}
-    (h : U.Red x g) (h' : U.Red x g') : g = g' := by
-  have H := fun e => h e _ _ _ (reduction_fstG I x e)
-  have H' := fun e => h' e _ _ _ (reduction_fstG I x e)
-  obtain ⟨b, s, hs, _, _⟩ := g
-  obtain ⟨b', s', hs', _, _⟩ := g'
-  obtain rfl : b = b' := Over.OverMorphism.ext
-    (hom_ext_of_isHausdorff (I.map φ) fun e => (H e).1.symm.trans (H' e).1)
-  obtain rfl : s = s' := funext fun χ => TorusCoord.gen_eq_of_corr D.P.isLB (hs χ) (hs' χ)
-    (corr_of_levels (I.map φ) D.P.isLB (fun _ _ _ => rfl) (hs χ) (hs' χ) fun e z C hC =>
-      ((H e).2 χ z C hC).symm.trans ((H' e).2 χ z C hC))
-  rfl
-
-open FormalPoint in
-
-theorem exists_red [IsAdicComplete (I.map φ) S] (x : Over.mk (spMap φ) ⟶ G) :
-    ∃ g : GtPt D (Over.mk (spMap φ)), U.Red x g := by
-  have hf : IsAdicFamily (I.map φ) fun e => reduction I x e ≫ (U.gt e).pG.left := fun e => by
-    refine (Category.assoc _ _ _).symm.trans ?_
-    rw [reduction_succ, Category.assoc, U.gt_q]
-  obtain ⟨b₀, ⟨hb₁, hb₂⟩, -⟩ := existsUnique_over_of_isAdicFamily (spMap φ) D.P.A.hom hf fun e => by
-    have h₁ : (U.gt e).pG.left ≫ D.P.A.hom = (thickObj R I e G).hom ≫ thick R I e := Over.w (U.gt e).pG
-    rw [Category.assoc, h₁, ← Category.assoc, reduction_hom, levelMap_thick]
-  let T : Over (Spec (CommRingCat.of R)) := Over.mk (spMap φ)
-  let b : T ⟶ D.P.A := Over.homMk b₀ hb₁
-  have hb : ∀ e, adicLevelι (I.map φ) (e + 1) ≫ b.left = reduction I x e ≫ (U.gt e).pG.left := hb₂
-  choose s hs vs using fun χ => exists_gen_levels (I.map φ) D.P.isLB (DegPre.gtφT D T b χ) DegPre.gtε
-    (fun e => (U.gt e).t χ) (fun e => (U.gt e).t_gen χ) (reduction I x)
-    (fun e => TorusCoord.formEq_of_left b (U.gt e).pG _ _ (hb e) χ) fun e z C hC => by
-      rw [reduction_succ]
-      exact (val_pull hC _ _ _).symm.trans (val_corr hC (U.gt_t e χ) _)
-  have hm : ∀ χ χ' : D.X, LB.Gen.Corr D.P.L _ _ _ _
-      (LB.mulGen D.P.L _ _ _ _ (s (χ + χ')) (DegPre.cubAtT D T (DegPre.cT D T χ) (DegPre.cT D T χ') b))
-      (LB.mulGen D.P.L _ _ _ _ (s χ) (s χ')) := fun χ χ' => by
-    refine corr_of_levels (I.map φ) D.P.isLB (formEq_mult b χ χ')
-      (DVR.mulGen_isGen _ _ _ _ _ _ _ (hs _) (DVR.pullGen_isGen _ _ _ _ D.cub.isGen _))
-      (DVR.mulGen_isGen _ _ _ _ _ _ _ (hs _) (hs _)) fun e z C hC => ?_
-    have v : ∀ α, val ((U.gt e).t α) (reduction I x e) z C = val (s α) (adicLevelι (I.map φ) (e + 1)) z C :=
-      fun α => by simpa only [Category.id_comp] using vs α e _ (𝟙 _) z C hC
-    have m := TorusCoord.val_t_mul (U.gt e) (reduction I x e) χ χ' z C hC
-    rw [v, v, v, ← (TorusCoord.comp_eq_of_left b (U.gt e).pG _ _ (hb e)).2 χ χ'] at m
-    exact (val_mul hC _ _ _).trans ((congrArg₂ (· * ·) rfl (val_pull hC _ _ _)).trans
-      (m.trans (val_mul hC _ _ _).symm))
-  refine ⟨⟨b, s, hs, corr_of_val D.P.isLB fun y C hC => ?_, hm⟩,
-    red_of_reduction U x _ (fun e => (hb e).symm) fun e χ => vs χ e⟩
-  have h := ((val_mul hC _ _ _).trans (congrArg₂ (· * ·) rfl (val_pull hC _ _ _))).symm.trans
-    ((val_corr hC (hm 0 0) (𝟙 _)).trans (val_mul hC _ _ _))
-  have c0 : DegPre.cT D T 0 = 1 := cPoint_zero T
-  have c1 : TorusCoord.cubVal (𝟙 _ ≫ (lift (DegPre.cT D T 0) (lift (DegPre.cT D T 0) b)).left) y C = 1 := by
-    rw [c0, Category.id_comp]
-    exact (isCub_cubV D.cub hC).face 1 b
-  have h' := (congrArg (_ * ·) c1).symm.trans h
-  rw [add_zero, _root_.mul_one] at h'
-  exact (mul_eq_left.1 h'.symm).trans (val_one _).symm
-
-theorem existsUnique_red [IsAdicComplete (I.map φ) S] (x : Over.mk (spMap φ) ⟶ G) :
-    ∃! g : GtPt D (Over.mk (spMap φ)), U.Red x g :=
-  existsUnique_of_exists_of_unique (exists_red U x) fun _ _ h h' => red_unique U h h'
-
 end Main
-
-theorem main : AllPre fun {V} _ _ _ {D} {_} {G} _ _ U => ∀ (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W],
-    FinExt V W → ∀ x : TA V W ⟶ G, ∃! g : GtPt D (TA V W), U.Red x g := by
-  intro V _ _ _ _ D A G _ _ U W _ _ _ hW x
-  have := hW.2.2.2.2
-  exact existsUnique_red U (φ := algebraMap V W) x
 
 end GlobalTheory.RedTotal

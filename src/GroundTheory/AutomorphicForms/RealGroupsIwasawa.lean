@@ -460,15 +460,6 @@ noncomputable def iwasawaHomeomorph :
     ((iwasawaHomeomorph x : GL n 𝕜) : Matrix n n 𝕜) =
       (x.1 : Matrix n n 𝕜) * diagonal (fun i => (x.2.1.1 i : 𝕜)) * x.2.2.1 := rfl
 
-theorem iwasawa_decomposition (g : GL n 𝕜) :
-    ∃! x : unitaryGroup n 𝕜 × PosDiag n × UpperUnitriangular n 𝕜,
-      (x.1 : Matrix n n 𝕜) * diagonal (fun i => (x.2.1.1 i : 𝕜)) * x.2.2.1 = g := by
-  refine ⟨iwasawaHomeomorph.symm g, congrArg Units.val (iwasawaHomeomorph.apply_symm_apply g), ?_⟩
-  intro x hx
-  apply iwasawaHomeomorph.injective
-  rw [Homeomorph.apply_symm_apply]
-  exact Units.ext hx
-
 end Homeomorph3
 
 end GroundTheory.Automorphic

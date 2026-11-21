@@ -69,12 +69,6 @@ lemma fhSig_isURepOn (τ : KG ε →* unitary (V →L[ℂ] V)) (hτ : Continuous
 
 end Sig
 
-section InK
-
-variable {n : ℕ} {ε : Fin n → Bool}
-
-end InK
-
 section Coef
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra

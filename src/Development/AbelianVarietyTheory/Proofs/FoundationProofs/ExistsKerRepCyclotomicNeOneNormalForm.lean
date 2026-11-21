@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HomPadicIntTrivialOfIrreducibleCompactRepStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HomPadicIntTrivialOfIrreducibleCompactRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormUnitPowSubOne
 
 noncomputable section
@@ -152,7 +152,7 @@ theorem exists_ker_eps_ne_one : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field 
     rw [MonoidHom.mem_ker]
     show logHom (cycZ ℚ Ω l z) = 1
     rw [cycZ_eq_one_of_eps (hne z hz), map_one]
-  have hlam := GlobalTheory.T.hom_padicInt_trivial_of_irreducible_compact_rep l c (G ℚ Ω) W lam h.cont hc hdet (isIrr_of_comp W _ h.irr) hlamc hker
+  have hlam := _root_.GlobalTheory.Ord2.hom_padicInt_trivial l c (G ℚ Ω) W lam h.cont hc hdet (isIrr_of_comp W _ h.irr) hlamc hker
   obtain ⟨σ, hσ⟩ := logHom_ne_one (l := l) Ω h.l_odd
   exact hσ (DFunLike.congr_fun hlam σ)
 

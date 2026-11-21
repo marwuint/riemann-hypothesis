@@ -114,27 +114,9 @@ theorem qt_aff (L : (ι → E) ≃ₗ[E] (ι → E)) (τ : ι → E) :
 
 end Lin
 
-def ChangeVariablesDeterminantOne : Prop :=
-  ∀ (E K : Type) [Field E] [NumberField E] [Field K] (P : HeightOneSpectrum (𝓞 E)),
-    (Ideal.absNorm P.asIdeal).Prime → ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2 →
-    ((qOf P : ℕ) : K) ≠ 0 →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (L : (ι → E) ≃ₗ[E] (ι → E)) (τ : ι → E),
-      LinearMap.det (L : (ι → E) →ₗ[E] (ι → E)) = 1 →
-      ∀ a b : ℕ, ∃ a' b' : ℕ, ∀ H : (ι → E) → K, Good P a b H →
-        Good P a' b' (fun t => H (L t + τ)) ∧ RS P a' b' (fun t => H (L t + τ)) = RS P a b H
-
 theorem cov_of (hN : NTAll) : CoVP := by
   intro E K _ _ _ P hp hq hK ι _ _ L τ
   exact ⟨(qOf P : K) ^ vq P (LinearMap.det (L : (ι → E) →ₗ[E] (ι → E))), zpow_ne_zero _ hK,
     qt_aff hN hp hq hK L τ⟩
-
-theorem change_variables_determinant_one (hN : NTAll) : ChangeVariablesDeterminantOne := by
-  intro E K _ _ _ P hp hq hK ι _ _ L τ h1 a b
-  obtain ⟨a', b', h⟩ := qt_aff hN hp hq hK L τ a b
-  refine ⟨a', b', fun H hH => ?_⟩
-  obtain ⟨g, e⟩ := h H hH
-  refine ⟨g, ?_⟩
-  rw [e, h1, vq_one, zpow_zero, one_mul]
-  all_goals assumption
 
 end PI.TwistedEisensteinNonvanishing.W

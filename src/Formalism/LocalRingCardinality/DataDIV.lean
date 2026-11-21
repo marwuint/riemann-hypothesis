@@ -263,10 +263,6 @@ def phiPow (D : D7) {p : ℕ} [Fact p.Prime] (n : ℕ) (τ : Emb D p) : Emb D p 
 def cEmb (D : D7) {p : ℕ} [Fact p.Prime] (τ : Emb D p) : Emb D p :=
   τ.comp (D.host.conj : D.host.E →+* D.host.E)
 
-def Unram (D : D7) (p : ℕ) : Prop :=
-  ∀ w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E),
-    ((p : 𝓞 D.host.E) ∈ w.asIdeal) → eWL D.host.E w = 1
-
 structure ITh where
 
   LB : Type
@@ -308,12 +304,6 @@ def Gk (Z : ITh) (k : ℕ) (y y' : Z.Ch) : Z.Ch :=
 
 def ck {Z : ITh} {r : ℕ} (P : FPair Z r) (k : ℕ) (Q : Z.Ch) : ℚ :=
   ∑ i, Z.capDeg (P.Dv i) (Gk Z k (Z.c1 (P.x i)) (Z.c1 (P.x' i)) * Q)
-
-def chk {Z : ITh} {r : ℕ} (P : FPair Z r) (k : ℕ) (Q : Z.Ch) : ℝ :=
-  (ck P k Q : ℝ) / (Nat.factorial k : ℝ)
-
-def chDiv {Z : ITh} {r : ℕ} (x : Fin r → Z.LB) (i : ℕ) (Q : Z.Ch) : ℝ :=
-  (Z.capDeg Z.divP ((∑ l, Z.c1 (x l) ^ i) * Q) : ℝ) / (Nat.factorial i : ℝ)
 
 def evQ (Z : ITh) (Q : MvPolynomial Z.LB ℚ) : Z.Ch := MvPolynomial.aeval Z.c1 Q
 
@@ -376,28 +366,9 @@ def frobEmb (p n : ℕ) (σ : EmbC D) : EmbC D := ofGG D (toGG D σ * frobG D p 
 
 variable (N : ℕ)
 
-def pk (τ : D.what₂.Tau) (k : ℕ) : MvPolynomial (Rt D.what₂.Tau N) ℝ := ∑ i : Fin N, X (τ, i) ^ k
-
-def chTot (k : ℕ) : MvPolynomial (Rt D.what₂.Tau N) ℝ :=
-  C ((Nat.factorial k : ℝ)⁻¹) * ∑ τ : D.what₂.Tau, ∑ i : Fin N, (X (τ, i) ^ k + (-X (τ, i)) ^ k)
-
-def collapse : MvPolynomial (Vm D.what₂.Tau N) ℝ →ₐ[ℝ] MvPolynomial (Rt D.what₂.Tau N) ℝ :=
-  aeval (fun v => match v with
-    | Sum.inl (_, x) => X x
-    | Sum.inr (_, k) => chTot D N k)
-
 variable {D N}
 
-def chLie (j : ℕ) (k : ℕ) : EmbC D → MvPolynomial (Rt D.what₂.Tau N) ℝ
-  | Sum.inl τ => C ((Nat.factorial k : ℝ)⁻¹) *
-      ∑ i ∈ univ.filter (fun i : Fin N => (i : ℕ) < j), X (τ, i) ^ k
-  | Sum.inr τ => C ((Nat.factorial k : ℝ)⁻¹) *
-      ∑ i ∈ univ.filter (fun i : Fin N => j ≤ (i : ℕ)), (-X (τ, i)) ^ k
-
 variable (D N)
-
-def chLieA (j k : ℕ) : MvPolynomial (Rt D.what₂.Tau N) ℝ :=
-  ∑ τ : D.what₂.Tau, (chLie j k (Sum.inl τ) + chLie j k (Sum.inr τ))
 
 end Glob
 
@@ -543,12 +514,6 @@ structure DivX (D : D7) : Type 1 where
   surfFpCh2 : SurfFp → ℝ
 
 attribute [instance] DivX.finQ DivX.compFin DivX.plpFin
-
-def DV.LogLamConj (D : D7) (X : DivX D) : Prop :=
-  ∀ j π e, X.logLam j π (NumberField.ComplexEmbedding.conjugate e) = X.logLam j π e
-
-def DV.MjRank (D : D7) (X : DivX D) : Prop :=
-  ∀ j, 1 ≤ j → j ≤ D.R.m → (X.MjH j).rank = D.what₂.D0
 
 def DV.HidaSetting (D : D7) (XD : DivX D) (S : letI := D.host.cmStar; HSpace D.host.E) (κ : XD.Lev) : Prop :=
   letI := D.host.cmStar

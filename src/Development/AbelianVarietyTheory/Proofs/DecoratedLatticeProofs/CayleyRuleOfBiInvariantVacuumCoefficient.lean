@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TransferOn
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrderDetOneAddOfIntegralInverseUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralHeisenbergInvariantFormsProportionalStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrderDetOneAddOfIntegralInverseUnitary
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralHeisenbergInvariantFormsProportional
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSymmetricElementaryDivisorsUnitary
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetOfGLintDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAntiJFrame
@@ -51,7 +51,7 @@ theorem cayley_of_coeff {L : Type} [Field L] [Valued L (WithZero (Multiplicative
   rw [h2]
   congr 1
   obtain ⟨d, t, ht, k₁, hk₁, k₂, hk₂, hg⟩ := exists_cartanU hU g⁻¹
-  have hord := GlobalTheory.T.order_det_one_add_of_integral_inverse_unitary L ϖ σ q hU r g t d ht k₁ hk₁ k₂ hk₂ hg hdet hint
+  have hord := _root_.GlobalTheory.ChainOnto.ordL_det_one_add_of_inv_int L ϖ σ q hU r g t d ht k₁ hk₁ k₂ hk₂ hg hdet hint
   rw [hg, hφ d t ht k₁ hk₁ k₂ hk₂, hord, _root_.zpow_neg, ← _root_.inv_zpow]
   congr 1
   push_cast
@@ -65,7 +65,7 @@ theorem GlobalTheory.ChainOnto.cayleyRule_of_vacCoeff : ∀ (L : Type) [Field L]
   intro L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hs l hls hl
   have hU : IsUnramInv ϖ σ q := hs.1.unr
   have hco : ∀ e : M →ₗ[ℂ] ℂ, (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, e (ρ u m) = e m) → ∀ m, e m * l s = l m * e s :=
-    fun e he => GlobalTheory.T.integral_heisenberg_invariant_forms_proportional L ϖ σ q δ ψ n n' M ρ ω s hs l e hl he
+    fun e he => _root_.GlobalTheory.ChainOnto.heisInv_forms_proportional L ϖ σ q δ ψ n n' M ρ ω s hs l e hl he
   refine ⟨fun φ hφ hc => cayley_of_coeff hU ρ _ s l hls hco φ hφ ?_, fun φ hφ hc => cayley_of_coeff hU ρ _ s l hls hco φ hφ ?_⟩
   · intro g; simpa using hc g
   · intro g; simpa using hc g

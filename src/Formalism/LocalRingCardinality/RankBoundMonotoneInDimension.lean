@@ -1,5 +1,9 @@
 import Formalism.LocalRingCardinality.DataParams₂
-import Formalism.ThetaLiftIndependence.FinalThetaLiftAMFKIndep
+import Formalism.ThetaLiftIndependence.Statement
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Ipindep
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.LatLiftIndep
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.ClassRepsDefinite
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.DetSwap
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.LocalRingCardinality.HostCls
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameCyclicGenerator
@@ -19,8 +23,6 @@ open NumberField IsDedekindDomain
 section ranks
 
 variable (R : Ranks)
-
-theorem Ranks.two_le_m' : 2 ≤ R.m := R.two_le_m
 
 theorem Ranks.k_ge : 5 ≤ R.k := by
   have h1 := R.two_le_m
@@ -47,134 +49,16 @@ theorem rank_base_space : RankBaseSpaceEq := by
   simp only [Ranks.N, Ranks.r]
   omega
 
-theorem signature_base_space : SignatureBaseSpaceSum := by
-  intro R
-  have h1 := R.rS_two
-  have h2 := R.two_le_m
-  simp only [Ranks.sigY0, Ranks.r]
-  omega
-
-theorem factSigW : FactSigW := by
-  intro R j h1 h2
-  simp only [Ranks.sigW, Ranks.r]
-  omega
-
-theorem signature_base_space_graded : SignatureBaseMiddleEq := by
-  intro R
-  have h2 := R.two_le_m
-  obtain ⟨a, ha⟩ := R.m_even
-  refine Prod.ext ?_ ?_ <;> simp only [Ranks.sigY0, Ranks.sigW, Ranks.rS] <;> omega
-
-theorem factWmDef : FactWmDef := by
-  intro R
-  refine ⟨?_, ?_⟩ <;> simp only [Ranks.sigW, Ranks.r] <;> omega
-
 theorem factXm : FactXm := by
   intro R
   have h2 := R.two_le_m
   simp only [Ranks.N, Ranks.rankX', Ranks.r, mul_add, mul_one]
   omega
 
-theorem factYm : FactYm := fun _ => rfl
-
-theorem factNStep : FactNStep := by
-  intro R j
-  simp only [Ranks.N]
-  ring
-
 theorem factNEven : FactNEven := by
   intro R j
   simp only [Ranks.N]
   exact R.k_even.add (Even.mul_left R.t_odd.add_one _)
-
-theorem factROdd : FactROdd := by
-  intro R
-  obtain ⟨a, ha⟩ := R.k_even
-  obtain ⟨b, hb⟩ := R.m_even
-  have h2 := R.two_le_m
-  simp only [Ranks.r]
-  exact ⟨a + b - 1, by omega⟩
-
-theorem factSigmaCount : FactSigmaCount := by
-  intro R
-  have h1 := R.k_ge
-  simp only [Ranks.r]
-  omega
-
-theorem factSShift : FactSShift := by
-  intro R ej j hj
-  obtain ⟨i, rfl⟩ : ∃ i, j = i + 1 := ⟨j - 1, by omega⟩
-  simp only [sExp, sExp', Ranks.N, Nat.add_sub_cancel]
-  push_cast
-  ring
-
-theorem factWG : FactWG := by
-  intro R ej j hj
-  obtain ⟨i, rfl⟩ : ∃ i, j = i + 1 := ⟨j - 1, by omega⟩
-  simp only [wG, sExp, Ranks.N, Nat.add_sub_cancel]
-  push_cast
-  ring
-
-theorem factSInt : FactSInt := by
-  intro R z j _
-  obtain ⟨b, hb⟩ := factNEven R (j - 1)
-  obtain ⟨c, hc⟩ := factNEven R j
-  refine ⟨⟨z - b, ?_⟩, ⟨z - c, ?_⟩⟩
-  · simp only [sExp]
-    rw [hb]
-    push_cast
-    ring
-  · simp only [sExp']
-    rw [hc]
-    push_cast
-    ring
-
-theorem factNV : FactNV := by
-  intro R
-  simp only [Ranks.nV]
-  omega
-
-theorem factWtPos : FactWtPos := by
-  intro R ι _ hc C i c
-  haveI := C.stabGrp i c
-  haveI := C.stabFin i c
-  haveI : Nonempty (C.stab i c) := ⟨1⟩
-  exact Nat.card_pos
-
-def ranksEx : Ranks where
-  toFrame := Formalism.HC.cyclicFrame 0
-  k := 6
-  m := 2
-  t := 13
-  k_even := ⟨3, rfl⟩
-  m_even := ⟨1, rfl⟩
-  t_odd := ⟨6, rfl⟩
-  two_le_m := le_rfl
-  m_add_three_le_k := by norm_num
-  rank_add_five_le := by norm_num
-  three_m_lt_t := by norm_num
-  m_le_f := by show 2 ≤ 2 * 2 ^ 0; norm_num
-  f_le_k := by show 2 * 2 ^ 0 ≤ 6; norm_num
-  m_sq_le_N := by norm_num
-
-def chainEx : ColumnChain ranksEx Empty (fun τ => τ.elim) where
-  cls := fun _ => Unit
-  stab := fun _ _ => Multiplicative (ZMod 2)
-  DGam := 2
-  DGam_pos := by norm_num
-  dvd_DGam := by intro i _ c; simp [Nat.card_eq_fintype_card]
-  Y := fun _ => Unit
-  de := fun _ _ τ => τ.elim
-  de_ne := fun _ _ τ => τ.elim
-  rhoDet := fun _ _ => 1
-  rhoDet' := fun _ _ => 1
-  rho_norm := fun _ _ _ => by simp
-  rho'_norm := fun _ _ _ => by simp
-  unf := fun _ _ _ => 0
-  sSharp := fun _ _ => 0
-  sSharp_eq := fun _ _ τ => τ.elim
-  sDiv := fun _ _ => 0
-  sDiv_eq := fun _ _ τ => τ.elim
 
 theorem factWtZero : FactWtZero := by
   intro R ι _ hc C hZ c
@@ -182,181 +66,9 @@ theorem factWtZero : FactWtZero := by
   have h1 : Nat.card (C.stab 0 c) = 1 := Nat.card_eq_one_iff_unique.mpr ⟨hZ c, ⟨1⟩⟩
   simp only [ColumnChain.wt, h1, Nat.cast_one, inv_one]
 
-theorem factWtInt : FactWtInt := by
-  intro R ι _ hc C i hi c
-  obtain ⟨q, hq⟩ := C.dvd_DGam i hi c
-  have hpos : 0 < Nat.card (C.stab i c) := factWtPos R ι hc C i c
-  have hne : ((Nat.card (C.stab i c) : ℕ) : ℂ) ≠ 0 := by exact_mod_cast hpos.ne'
-  refine ⟨q, ?_⟩
-  simp only [ColumnChain.wt]
-  rw [hq]
-  push_cast
-  field_simp
-
-theorem bridge_KD_succ_holds : bridge_KD_succ := by
-  intro R ι _ hc C j φ
-  rfl
-
-theorem bridge_thl_index_holds : bridge_thl_index := by
-  intro R ι _ hc C φ i
-  rfl
-
-theorem factSDivSharp : FactSDivSharp := by
-  intro R ι _ hc C i hi τ
-  push_cast
-  rw [C.sDiv_eq i hi τ, C.sSharp_eq i hi τ]
-  exact factSShift R _ (i + 1) (by omega)
-
-theorem factEInt : FactEInt := by
-  intro R ι _ hc _ j τ
-  obtain ⟨z, hz⟩ := (hc τ).e_int j
-  simp [hz]
-
-theorem factDuLe : FactDuLe := by
-  intro R ι _ hc C A
-  haveI := A.Mu0_fd
-  show Module.finrank ℂ A.Mram ≤ Module.finrank ℂ A.Mu0
-  exact LinearMap.finrank_le_finrank_of_injective (Submodule.inclusion_injective (inf_le_left : A.Mram ≤ A.Mu0))
-
-theorem factGaussRam : FactGaussRam := by
-  intro R ι _ hc C A v x hx
-  refine (Formalism.ThetaLiftIndependence.final_gaussOp (A.Fv v) (C.cls 0 → C.Y 0 → ℂ) (A.psiT v) (A.rhoT v)
-    (A.psiT_ne v) x ?_).1
-  simpa [ColumnsAtT.Nm, LinearMap.sum_apply] using hx
-
-theorem bridge_autL_not_column_holds : bridge_autL_not_column := by
-  intro K V _ _ _ _ _ _ _ h L
-  show _ ∈ Formalism.HermitianLatticesTheory.isom h ∧ Formalism.HermitianLatticesTheory.gmap (LinearEquiv.neg K) L = L
-  refine ⟨?_, ?_⟩
-  · show ∀ x y, h (LinearEquiv.neg K x) (LinearEquiv.neg K y) = h x y
-    intro x y
-    simp
-  · ext x
-    simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      simpa using L.neg_mem hy
-    · intro hx
-      exact ⟨-x, L.neg_mem hx, by simp⟩
-
 namespace Rows
 
-theorem factKaBlocks : FactKaBlocks := by
-  intro R j h1 h2
-  have h3 := R.k_ge
-  refine ⟨?_, ?_⟩ <;> simp only [Ranks.sigW] <;> omega
-
-theorem factShimRange : FactShimRange := by
-  intro R j h1 h2
-  have h3 := R.k_ge
-  have h4 := R.two_le_m
-  refine ⟨?_, ?_⟩ <;> simp only [Ranks.sigW, Ranks.r] <;> omega
-
-theorem factBuDetermined : FactBuDetermined := by
-  intro R D hBu hsurj B' hB'
-  funext u φ x
-  obtain ⟨F, hF, rfl⟩ := hsurj x
-  exact (hB' u φ F hF).symm.trans (hBu u φ F hF)
-
-theorem factLamPNonneg : FactLamPNonneg := by
-  intro R D hL μ j hj1 hj2 σ hσ
-  obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hσ
-  have h := hL μ j hj1 hj2 σ x hx
-  open scoped InnerProductSpace in
-  have key : ⟪x, D.thetaP μ j (D.thetaT μ j x)⟫_ℂ = (‖D.thetaT μ j x‖ : ℂ) ^ 2 := by
-    simp only [Formalism.BasicNotions.Rows.Data.thetaT]
-    rw [← LinearMap.adjoint_inner_left, inner_self_eq_norm_sq_to_K]
-    rfl
-  rw [h, inner_smul_right, inner_self_eq_norm_sq_to_K] at key
-  have hxn : 0 < ‖x‖ := norm_pos_iff.mpr hx0
-  have key2 : ((D.lamP μ j σ * ‖x‖ ^ 2 : ℝ) : ℂ) = ((‖D.thetaT μ j x‖ ^ 2 : ℝ) : ℂ) := by
-    push_cast
-    exact key
-  have key' := Complex.ofReal_injective key2
-  nlinarith [sq_nonneg ‖D.thetaT μ j x‖, pow_pos hxn 2]
-
-theorem factDleDall : FactDleDall := by
-  intro R D hd
-  have hd' : 0 ≤ D.delp := hd
-  have h1 := D.D_eq
-  have h0 : (0 : ℝ) ≤ D.Dall := Nat.cast_nonneg _
-  have h2 : (D.Drows : ℝ) ≤ D.Dall := by
-    rw [h1]
-    nlinarith
-  exact_mod_cast h2
-
-theorem factZeMu0 : FactZeMu0 := by
-  intro R D u
-  simp only [Formalism.BasicNotions.Rows.Data.zeC, D.rowsRest_wordColumnUnit_baseTuple, Units.val_one, map_one]
-
-theorem factAjConj : FactAjConj := by
-  intro R D j w
-  simp only [Formalism.BasicNotions.Rows.Data.Aj, D.muAt_conj, D.places.conj_conj]
-  ring
-
 end Rows
-
-theorem rankBound_monotone_in_dimension : RankBoundMonotoneInDimension := by
-  intro a q η D Dall hD hDD hη ha
-  refine ha.trans ?_
-  have hD' : (0 : ℝ) < D := by exact_mod_cast hD
-  have hDD' : (D : ℝ) ≤ Dall := by exact_mod_cast hDD
-  have hnum : 0 ≤ (1 + η) * q ^ 2 := mul_nonneg (by linarith) (sq_nonneg q)
-  exact div_le_div_of_nonneg_left hnum hD' hDD'
-
-theorem factNc : FactNc := by
-  intro R x ε T2card hx
-  have hy : 0 < x ^ ε := Real.rpow_pos_of_pos hx ε
-  have hy' : x ^ ε ≠ 0 := hy.ne'
-  simp only [budgetNc, rankBudget]
-  rw [Real.rpow_neg hx.le, show (2 : ℝ) * ε = ε + ε by ring, Real.rpow_add hx]
-  rcases eq_or_ne (R.n : ℝ) 0 with hn | hn
-  · simp [hn]
-  · first
-    | (field_simp; done)
-    | (field_simp; ring)
-
-theorem bridge_ccb_unit_holds : bridge_ccb_unit := by
-  intro R L _ _ _ _ _ w x hx
-  have hv : w.valuation L x ≠ 0 := (Valuation.ne_zero_iff _).mpr hx
-  simp only [vAdd, neg_eq_zero]
-  constructor
-  · intro h
-    rw [h]
-    exact WithZero.log_one
-  · intro h
-    rw [← WithZero.exp_log hv, h, WithZero.exp_zero]
-
-theorem bridge_ccb_integral_holds : bridge_ccb_integral := by
-  intro R L _ _ _ _ _ w x
-  simp only [vAdd, neg_nonneg]
-  by_cases hv : w.valuation L x = 0
-  · rw [hv, WithZero.log_zero]
-    simp
-  · conv_lhs => rw [← WithZero.exp_log hv]
-    rw [← WithZero.exp_zero, WithZero.exp_le_exp]
-
-theorem bridge_ccb_dual_holds : bridge_ccb_dual := by
-  intro K _ _ V W _ _ _ _ _ _ _ _ A N B
-  have inj : Function.Injective (algebraMap (𝓞 K) K) := RingOfIntegers.coe_injective
-  constructor
-  · rintro ⟨β, hβ⟩ f ⟨φ, hφ, rfl⟩ x hx
-    exact ⟨β ⟨φ, hφ⟩ ⟨x, hx⟩, hβ ⟨φ, hφ⟩ ⟨x, hx⟩⟩
-  · intro h
-    have hmem : ∀ (φ : N) (F : A), ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = B (φ : W) (F : V) :=
-      fun φ F => h (Submodule.mem_map_of_mem φ.2) F F.2
-    choose c hc using hmem
-    refine ⟨LinearMap.mk₂ (𝓞 K) c (fun φ ψ F => ?_) (fun r φ F => ?_) (fun φ F G => ?_)
-      (fun r φ F => ?_), fun φ F => ?_⟩
-    · apply inj; simp [hc]
-    · apply inj
-      simp only [hc, Submodule.coe_smul, smul_eq_mul, map_mul]
-      rw [← IsScalarTower.algebraMap_smul K r (φ : W), map_smul, LinearMap.smul_apply, smul_eq_mul]
-    · apply inj; simp [hc]
-    · apply inj
-      simp only [hc, Submodule.coe_smul, smul_eq_mul, map_mul]
-      rw [← IsScalarTower.algebraMap_smul K r (F : V), map_smul, smul_eq_mul]
-    · simp [hc]
 
 theorem factNatW : FactNatW := by
   intro N lam
@@ -378,44 +90,12 @@ theorem factNatW : FactNatW := by
     simp only [DomWeight.natW, DomWeight.detShift, dif_pos h]
     simp
 
-theorem bridge_hc_rho_holds : bridge_hc_rho := by
-  intro N hc hanti hint
-  have hint' : ∀ i, ∃ z : ℤ, hcToWeightQ hc i = z := hint
-  choose z hz using hint'
-  refine ⟨⟨z, ?_⟩, fun i => (hz i).symm⟩
-  cases N with
-  | zero => intro i; exact i.elim0
-  | succ n =>
-    rw [Fin.antitone_iff_succ_le]
-    intro i
-    have h1 := hz i.succ
-    have h2 := hz (Fin.castSucc i)
-    have h3 := hanti (Fin.castSucc_lt_succ : Fin.castSucc i < i.succ)
-    simp only [hcToWeightQ, rhoVec, Fin.val_succ, Fin.coe_castSucc] at h1 h2
-    push_cast at h1 h2
-    have h4 : ((z (Fin.castSucc i) - z i.succ : ℤ) : ℚ) > -1 := by
-      push_cast
-      linarith
-    have h5 : z (Fin.castSucc i) - z i.succ > -1 := by exact_mod_cast h4
-    omega
-
-theorem bridge_hD_holds : Spaces.bridge_hD := by
-  intro E _ _ _ S x y
-  simp only [HSpace.hD]
-  rw [← S.herm.eq x y]
-  rfl
-
 theorem bridge_sigRank_holds : Spaces.bridge_sigRank := by
   intro E _ _ _ S hS τ
   obtain ⟨e, -, -⟩ := hS τ
   have h := Fintype.card_congr e
   simp only [Fintype.card_fin, Fintype.card_sum] at h
   omega
-
-theorem factSigYD (R : Ranks) : FactSigYD R := by
-  have h2 := R.two_le_m
-  obtain ⟨a, ha⟩ := R.m_even
-  refine ⟨Prod.ext ?_ ?_, Prod.ext ?_ ?_⟩ <;> simp only [sigYD, Ranks.sigY0, Ranks.rankY, Ranks.rS, Ranks.r] <;> omega
 
 theorem factWmPosDef (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [StarRing E] [Algebra F E] : FactWmPosDef R F E := by
@@ -425,36 +105,6 @@ theorem factWmPosDef (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E
     omega
   rw [S.W_sigval R.m h1 le_rfl τ, S.W_rank R.m h1 le_rfl]
   simp only [Ranks.sigW, Ranks.r, Nat.sub_self]
-
-theorem bridge_cols_conj_holds : bridge_cols_conj :=
-  fun D u => ⟨(D.mem u).A.Mu0, (D.mem u).A.Mu0_fd, rfl, rfl⟩
-
-theorem factSigYDceil : FactSigYDceil := by
-  intro R j hj
-  have hk := R.k_ge
-  have hle : (R.m - j) / 2 ≤ R.rankY j := by
-    unfold Ranks.rankY Ranks.r
-    have := Nat.zero_le (j * R.t)
-    omega
-  simp only [sigYD]
-  constructor <;> omega
-
-theorem factBuUnique : FactBuUnique := by
-  intro D hBu hsurj B' hB'
-  exact Rows.factBuDetermined D.R D.what₂ hBu hsurj B' hB'
-
-theorem factPsiCardViaTau : FactPsiCardViaTau := by
-  intro D
-  rw [← Nat.card_congr D.eTau, Nat.card_eq_fintype_card, D.what₂.card_Tau]
-
-theorem anisotropicLine_indep_of_member : AnisotropicLineIndepOfMember :=
-  fun D u => ⟨D.cOf u, D.cOf_ne u, D.cOf_eq u⟩
-
-theorem factUnitRuleAgree : FactUnitRuleAgree := by
-  intro D w x
-  simp only [Rows.unitRule, unitRule, D.ram_eq w]
-  push_cast
-  ring
 
 section host
 
@@ -476,13 +126,6 @@ theorem iotaH_add (e : ℕ) (i j : ZMod (2 ^ e)) : iotaH e (i + j) = iotaH e i *
 theorem iotaH_zero (e : ℕ) : iotaH e 0 = 1 := by
   simp only [iotaH, ZMod.val_zero, pow_zero]
 
-theorem iotaH_one (e : ℕ) : iotaH e 1 = hcl e (u5 (e + 2)) := by
-  simp only [iotaH]
-  rw [ZMod.val_one_eq_one_mod]
-  have h := pow_mod_orderOf (hcl e (u5 (e + 2))) 1
-  rw [orderOf_unit_class_eq_two_pow e, pow_one] at h
-  exact h
-
 theorem iotaH_bijective (e : ℕ) : Function.Bijective (iotaH e) := by
   have inj : Function.Injective (iotaH e) := by
     intro i j hij
@@ -490,17 +133,6 @@ theorem iotaH_bijective (e : ℕ) : Function.Bijective (iotaH e) := by
     rw [pow_inj_mod, orderOf_unit_class_eq_two_pow e, Nat.mod_eq_of_lt (ZMod.val_lt i), Nat.mod_eq_of_lt (ZMod.val_lt j)] at hij
     exact ZMod.val_injective _ hij
   exact inj.bijective_of_nat_card_le (by rw [card_HGrp, Nat.card_zmod])
-
-theorem factIota : FactIota := fun e => ⟨iotaH_bijective e, iotaH_add e, iotaH_one e⟩
-
-theorem bridge_iota_holds : bridge_iota := by
-  intro e ι h1 i
-  have h2 : Multiplicative.ofAdd i = (Multiplicative.ofAdd (1 : ZMod (2 ^ e))) ^ i.val := by
-    rw [← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val]
-  rw [h2, map_pow, h1]
-  rfl
-
-theorem iotaHInv_iotaH (e : ℕ) (i : ZMod (2 ^ e)) : iotaHInv e (iotaH e i) = i := Function.leftInverse_invFun (iotaH_bijective e).injective i
 
 theorem iotaH_iotaHInv (e : ℕ) (h : HGrp e) : iotaH e (iotaHInv e h) = h := Function.rightInverse_invFun (iotaH_bijective e).surjective h
 
@@ -579,15 +211,6 @@ theorem factClassFrob : FactClassFrob := by
   have hJq := H.psAt_eq_one_or (hpr.coprime_iff_not_dvd.2 hp)
   simp only [Host.cls, primeClass, if_neg hps, if_neg hpq, if_neg hpd]
   rcases hJd with h1 | h1 <;> rcases hJq with h2 | h2 <;> simp [h1, h2] at hc ⊢ <;> tauto
-
-theorem factFrobGeom : FactFrobGeom := by
-  intro R H σ
-  have h : H.galE σ⁻¹ = (H.galE σ)⁻¹ := map_inv _ σ
-  refine ⟨h, ?_⟩
-  rw [h, Prod.snd_inv]
-  first
-  | rfl
-  | simp [Formalism.HC.Frame.iotaInv]
 
 end host
 
@@ -782,36 +405,6 @@ end sig
 
 namespace Rows
 
-theorem factQZ : FactQZ := by
-  intro R D μ hle
-  have hperp : (LinearMap.range (D.thetaUp μ))ᗮ = LinearMap.ker (D.iota μ) := by
-    ext y
-    simp only [Submodule.mem_orthogonal, LinearMap.mem_range, forall_exists_index,
-      forall_apply_eq_imp_iff, LinearMap.mem_ker, Data.thetaUp, LinearMap.adjoint_inner_left]
-    constructor
-    · intro h
-      exact inner_self_eq_zero.mp (h _)
-    · intro h z
-      rw [h, inner_zero_right]
-  have hR : LinearMap.range (D.thetaUp μ) = (LinearMap.ker (D.iota μ))ᗮ := by
-    rw [← hperp, Submodule.orthogonal_orthogonal]
-  rw [hR] at hle ⊢
-  unfold Data.Qsp Data.Usp
-  apply le_antisymm
-  · rintro x ⟨hx0, hx1⟩
-    obtain ⟨y, hy, z, hz, rfl⟩ := (LinearMap.ker (D.iota μ)).exists_add_mem_mem_orthogonal x
-    have hyV : y ∈ D.V0 μ := by
-      have e : y = (y + z) - z := by abel
-      rw [e]
-      exact Submodule.sub_mem _ hx0 (hle hz)
-    have hy0 : inner ℂ y (y + z) = 0 := (Submodule.mem_orthogonal _ _).mp hx1 y ⟨hyV, hy⟩
-    have hyz : inner ℂ y z = 0 := (Submodule.mem_orthogonal _ _).mp hz y hy
-    rw [inner_add_right, hyz, add_zero] at hy0
-    rw [inner_self_eq_zero.mp hy0, zero_add]
-    exact hz
-  · intro x hx
-    exact ⟨hle hx, Submodule.orthogonal_le inf_le_right hx⟩
-
 end Rows
 
 theorem factLpF : FactLpF := by
@@ -917,36 +510,6 @@ theorem bridge_normFock_extremal_holds : bridge_normFock_extremal := by
     intro h; rw [h] at hpos; simp at hpos
   exact div_self h0
 
-theorem fockF_smul {σ : Type} (a b : ℂ) (ha : a ≠ 0) (f g : MvPolynomial σ ℂ) :
-    Formalism.REAL.fockF (a • f) (b • g) = a * star b * Formalism.REAL.fockF f g := by
-  unfold Formalism.REAL.fockF
-  rw [MvPolynomial.support_smul_eq ha, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun m _ => ?_
-  simp only [MvPolynomial.coeff_smul, smul_eq_mul, star_mul']
-  ring
-
-theorem factNormFockUnitary : FactNormFockUnitary := by
-  intro N lam g hg f h
-  unfold normFock roundAct
-  congr 1
-  have ha : detPow ℂ N g (-lam.detShift) ≠ 0 := Units.ne_zero _
-  have hdd : (Matrix.GeneralLinearGroup.det g : ℂ) * star (Matrix.GeneralLinearGroup.det g : ℂ) = 1 := by
-    rw [Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.det_conjTranspose, ← Matrix.det_mul,
-      ← Matrix.star_eq_conjTranspose, Unitary.mul_star_self_of_mem hg, Matrix.det_one]
-  have haa : detPow ℂ N g (-lam.detShift) * star (detPow ℂ N g (-lam.detShift)) = 1 := by
-    rw [detPow, Units.val_zpow_eq_zpow_val, star_zpow₀, ← mul_zpow, hdd, one_zpow]
-  rw [fockF_smul _ _ ha, haa, one_mul]
-  have hinv : Matrix.conjTranspose ((g⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) =
-      (g : Matrix (Fin N) (Fin N) ℂ) := by
-    rw [Matrix.coe_units_inv, Matrix.inv_eq_left_inv (Unitary.star_mul_self_of_mem hg),
-      Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]
-  unfold Formalism.UG.dwAct
-  rw [Formalism.GradedWeylDivisibility.fockRowAdj, hinv]
-  have h1 := Formalism.UG.Final.DwActMul ℂ N N g⁻¹ g
-  have key : Formalism.UG.dwAct ℂ N N g⁻¹ (Formalism.UG.dwAct ℂ N N g h) = h := by
-    rw [← AlgHom.comp_apply, ← h1.1, inv_mul_cancel, h1.2, AlgHom.id_apply]
-  simpa [Formalism.UG.dwAct] using congrArg (Formalism.REAL.fockF f) key
-
 theorem nPl_two_mul (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] :
     (Formalism.HN.nPl K : ℝ) * 2 = Module.finrank ℚ K := by
   simp only [Formalism.HN.nPl]
@@ -1020,13 +583,6 @@ theorem bridge_dual_mu_holds : bridge_dual_mu := by
   rw [hc] at e2
   linarith
 
-theorem factHHcc : FactHHcc := by
-  intro K _ _ _ _ Words _ D hG hr
-  rw [bridge_dual_mu_holds K D.RR hG hr]
-  have := D.HH_ge
-  simp only [DivData.s]
-  linarith
-
 section places
 
 variable {K : Type} [Field K] [NumberField K]
@@ -1052,24 +608,6 @@ theorem mem_of_liesOver (p : ℕ) (q : Ideal (𝓞 K)) [q.LiesOver (Ideal.span {
     exact Ideal.subset_span (Set.mem_singleton _)
   have hm2 : algebraMap ℤ (𝓞 K) (p : ℤ) ∈ q := hm
   simpa using hm2
-
-theorem vAdd_prime (p : ℕ) (hp : p.Prime) (w : HeightOneSpectrum (𝓞 K))
-    (hmem : (p : 𝓞 K) ∈ w.asIdeal) : vAdd w ((p : ℕ) : K) = (eWL K w : ℤ) := by
-  have hl0 : (p : 𝓞 K) ≠ 0 := by exact_mod_cast hp.ne_zero
-  have := liesOver_of_mem p hp w hmem
-  have hmap : (Ideal.span {(p : ℤ)}).map (algebraMap ℤ (𝓞 K)) = Ideal.span {(p : 𝓞 K)} := by
-    simp [Ideal.map_span]
-  have hne : (Ideal.span {(p : ℤ)}).map (algebraMap ℤ (𝓞 K)) ≠ ⊥ := by
-    rw [hmap]; simpa using hl0
-  unfold vAdd eWL
-  rw [Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity (Ideal.span {(p : ℤ)}) w.asIdeal hne, hmap]
-  have : ((p : ℕ) : K) = algebraMap (𝓞 K) K (p : 𝓞 K) := by simp
-  rw [this, w.valuation_of_algebraMap, w.intValuation_eq_exp_neg_multiplicity hl0, WithZero.log_exp]
-  simp
-
-theorem bridge_unit_rule_holds : bridge_unit_rule := by
-  intro K _ _ l w hl hmem
-  exact vAdd_prime l hl w hmem
 
 theorem sum_e_f (p : ℕ) (hp : p.Prime) (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ w, w ∈ S ↔ (p : 𝓞 K) ∈ w.asIdeal) :
@@ -1116,20 +654,6 @@ theorem finite_places_over (p : ℕ) (hp : p.Prime) :
   rw [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_span_singleton]
 
 end places
-
-open Classical in
-theorem factUnitNormalisation : FactUnitNormalisation := by
-  intro K _ _ p hp
-  obtain ⟨S, hS⟩ := finite_places_over (K := K) p hp
-  rw [finsum_eq_sum_of_support_subset _ (s := S) ?h]
-  · calc _ = ∑ w ∈ S, 2 * (lw K w * (eWL K w : ℝ)) :=
-          Finset.sum_congr rfl fun w hw => by rw [if_pos ((hS w).mp hw), mul_assoc]
-      _ = 2 * Real.log p := by rw [← Finset.mul_sum, sum_lw_e p hp S hS]
-  · intro w hw
-    rw [Function.mem_support] at hw
-    rw [Finset.mem_coe, hS]
-    by_contra h
-    exact hw (if_neg h)
 
 theorem resChar_mem (D : D7) (w : D.what₂.places.Pl) :
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by

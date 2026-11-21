@@ -108,31 +108,4 @@ theorem mk_fockFirstAction_eq_trace_smul (x : ℚ) (X : Mat P Q) (f : Pol P Q R 
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]
   exact Submodule.subset_span ⟨X, f, rfl⟩
 
-theorem nontrivial_of_form (x : ℚ) (l : Pol P Q R S →ₗ[ℂ] ℂ) (hl : l ≠ 0)
-    (hlX : ∀ X f, l (fockAct1 P Q R S X f) = (x : ℂ) * X.trace * l f) : Nontrivial (Pol P Q R S ⧸ rel P Q R S x) := by
-  have hK : rel P Q R S x ≤ LinearMap.ker l := by
-    refine Submodule.span_le.2 ?_
-    rintro g ⟨X, f, rfl⟩
-    simp [hlX]
-  obtain ⟨f, hf⟩ : ∃ f, l f ≠ 0 := by
-    by_contra h
-    push_neg at h
-    exact hl (LinearMap.ext fun f => by simpa using h f)
-  refine ⟨⟨Submodule.Quotient.mk f, 0, ?_⟩⟩
-  rw [Ne, Submodule.Quotient.mk_eq_zero]
-  exact fun hm => hf (hK hm)
-
-theorem exists_lift : ∀ (P Q R S : ℕ) (x t : ℚ), GlobalTheory.RealLift.HasForm P Q R S x →
-    ∃ (M : Formalism.BasicNotions.TH.GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V),
-      GlobalTheory.RealLift.IsLift x t M pr ∧ Nontrivial M.V := by
-  intro P Q R S x t ⟨l, hl, hlX⟩
-  refine ⟨gkQ P Q R S x t, (rel P Q R S x).mkQ, ⟨Submodule.mkQ_surjective _, ?_, ?_⟩, ?_⟩
-  · intro X f
-    exact mk_fockFirstAction_eq_trace_smul P Q R S x X f
-  · intro Y f
-    show actQ P Q R S x t Y (Submodule.Quotient.mk f) = _
-    rw [actQ_mk, fockSecondActionTraceShift_apply]
-    rfl
-  · exact nontrivial_of_form P Q R S x l hl hlX
-
 end GlobalTheory.FockQuot

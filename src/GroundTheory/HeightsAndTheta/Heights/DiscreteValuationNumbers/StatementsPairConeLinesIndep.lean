@@ -17,10 +17,6 @@ def PairConeLinesIndep.Statement : Prop :=
         (Sum.elim (fun i : Fin N => C (∑ j, t j * algebraMap Ω Φ (ψ i (e j))) * X (some none))
           (fun _ : Unit => (C g * X none : MvPolynomial (Option (Option K)) Φ)))
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

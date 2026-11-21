@@ -6,14 +6,21 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeCompar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCompactificationInteriorPointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptMultihomogFormStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptIsoCompareStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwistedHodgeCptFlagStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptMultihomogForm
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptIsoCompare
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwistedHodgeCptFlag
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TwTan
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkSpecializesBijective
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.HodgeCompactPullback
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFiniteExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmTypeHostAutPermutationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwistedHodgeCptCompareStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFiniteExtension
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmTypeHostAutPermutation
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.AdelicGroupAlgebraActionInjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwistedHodgeCptCompare
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.JNormal
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.LGenflag
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TIdeal
@@ -206,7 +213,7 @@ theorem pull_both {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
     GlobalTheory.CompanionTheory.Ar.FlagPull.flag_pull E H D l Xo c O β Y S Ω Ω' i K K' J J' y y' A A' (e.hom ≫ h) j m κ v Fl hb hy hdom hf h3
       h4 h6 h7 h9 hfd
   refine ⟨A', e, Fl', ψ', θ', j, h1, h2, h4, h5, h6, hb', q1, q3, q4, q5, fun r e₀ L L' hL hP => ?_⟩
-  exact GlobalTheory.T.hodge_cpt_finite_extension E H D l Xo c O β Y S Ω Ω' i K K' J J' y y' A A' (e.hom ≫ h) j m κ v Fl hb hy hdom hf h3 h4 h6 h7 h9
+  exact _root_.GlobalTheory.CompanionTheory.Ar.HodgePull.hodgeLine_pull E H D l Xo c O β Y S Ω Ω' i K K' J J' y y' A A' (e.hom ≫ h) j m κ v Fl hb hy hdom hf h3 h4 h6 h7 h9
     Fl' hb' r e₀ L L' hL hP
 
 theorem spMap_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
@@ -232,10 +239,10 @@ theorem twTan_pre {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
 theorem pair_iso : HodgeComparisonCompatibility → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (g : HostAut H) (Φ : Xo.X ≅ Xo.X) (_ : SABMap (twistSAB Xo.univ.t g) Xo.univ.t Φ.hom) (π : CMType H ≃ CMType H) (S : Finset ℕ) (n : ℕ) (M M' : Top.RootModel (CMType H) (D.p + D.q)) (T : HodgeTie Y S n M) (T' : HodgeTie Y S n M'), Mono (spMap β) → Φ.hom ≫ Xo.s = Xo.s → (∀ τ, (π τ).1 = τ.1.comp g.σ.toRingHom) → IsImageCpt Φ T.A T'.A → (∀ p ∈ S, T'.A.R p = T.A.R p) → ∃ (K : Type) (_ : Fintype K) (ι : K → Type) (_ : ∀ k, Fintype (ι k)) (κ : M.K → K) (v : (Σ k, M.ι k) → Σ k, ι k) (κ' : M'.K → K) (v' : (Σ k, M'.ι k) → Σ k, ι k) (Ω : Type) (_ : Field Ω) (_ : CharZero Ω) (y : (Σ k, ι k) → Ω) (b : MRing ι) (d : K → ℕ), IsBlockMap κ v ∧ IsBlockMap κ' v' ∧ mCoordIdeal (y ∘ v) = M.P ∧ mCoordIdeal (y ∘ v') = M'.P ∧ IsArithVar (mCoordIdeal y) (Top.dimFl (CMType H) (D.p + D.q) + 1) ∧ IsMultiHomog b d ∧ b ∉ mCoordIdeal y ∧ IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) ≠ 0 ∧ IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) * T.Fl.deg = IntermediateField.relfinrank (blockFnField (y ∘ v')) (blockFnField y) * T'.Fl.deg ∧ ∀ (r : CMType H × Fin (D.p + D.q)) (L L' : HermLine ι), IsPullHerm κ v (T.sing r) L → IsPullHerm κ' v' (T'.sing (π r.1, r.2)) L' → IsoLineOn (mCoordIdeal y) {z | z ∈ mcPts (mCoordIdeal y) ∧ evC z b ≠ 0} L L' := by
   intro hCmp hTh E _ _ _ H D l Xo c O _ β Y g Φ n π S nn M M' T T' hβ hs hπ himg hR
   obtain ⟨x₀, x₀', ψ, hξ, hξ', hfst, hsnd, hcst, hcst'⟩ := himg
-  obtain ⟨π₀, hπ₀, hlab⟩ := GlobalTheory.T.cm_type_host_aut_permutation E H l c g
+  obtain ⟨π₀, hπ₀, hlab⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Label.automorphism_permutes_labels E H l c g
   have hππ : π₀ = π := Equiv.ext fun τ => Subtype.ext ((hπ₀ τ).trans (hπ τ).symm)
   subst hππ
-  obtain ⟨θ, hθs, hθt, hθV⟩ := GlobalTheory.T.twisted_hodge_cpt_compare E H D l Xo c O O β β Y Y g Φ n S M.Ω M'.Ω M.K M'.K M.ι M'.ι M.y M'.y T.A T'.A
+  obtain ⟨θ, hθs, hθt, hθV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieTw.main E H D l Xo c O O β β Y Y g Φ n S M.Ω M'.Ω M.K M'.K M.ι M'.ι M.y M'.y T.A T'.A
     T.Fl T'.Fl ψ x₀ x₀' hβ hβ hξ hξ' hfst hsnd
 
   letI a₁ : Algebra T.A.Ω₀ M.Ω := T.A.fn.toAlgebra
@@ -339,7 +346,7 @@ theorem pair_iso : HodgeComparisonCompatibility → ThetaUnifAV → ∀ (E : Typ
     obtain ⟨e₀, rfl⟩ := θ₁.surjective e
     rw [hθ₃, q8, p8, ← Category.assoc, spMap_spMap, hψc, ← spMap_spMap, Category.assoc]
     exact twTan_pre _ (hθt e₀)
-  obtain ⟨-, hsteps⟩ := GlobalTheory.T.twisted_hodge_cpt_flag E H D l Xo c O O β β Y Y g Φ n S Ω₃ K ι y A₁ A₂ Fl₁ Fl₂ ψ₃ θ₃ φ hβ hβ hfn hφt htw
+  obtain ⟨-, hsteps⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagMatch.matched_generic_flags_carried E H D l Xo c O O β β Y Y g Φ n S Ω₃ K ι y A₁ A₂ Fl₁ Fl₂ ψ₃ θ₃ φ hβ hβ hfn hφt htw
   have hst : ∀ s k, (flagStep Ω₃ (Fl₁.b s) k).map (φ : A₁.Li →ₗ[Ω₃] A₂.Li) =
       flagStep Ω₃ (Fl₂.b (Equiv.sumCongr π₀ π₀ s)) k := by
     intro s
@@ -372,7 +379,7 @@ theorem pair_iso : HodgeComparisonCompatibility → ThetaUnifAV → ∀ (E : Typ
     rw [hlab s, hAc]
     rfl
   have hgram := GlobalTheory.T.hodge_compactification_interior_point hTh E H D l Xo c O β Y S Ω₃ K ι y A₁ Fl₁ hβ
-  obtain ⟨b, d, hbm, hbn, hbz⟩ := GlobalTheory.T.hodge_cpt_multihomog_form E H D l Xo c O β Y S Ω₃ K ι y A₁ _ hX₁ hβ
+  obtain ⟨b, d, hbm, hbn, hbz⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.HInterior.exists_form_interior E H D l Xo c O β Y S Ω₃ K ι y A₁ _ hX₁ hβ
   refine ⟨K, hK, ι, hι, κ₁, v₁, κ₂, v₂, Ω₃, fΩ, inferInstance, y, b, d, hb₁, hb₂, ?_, ?_, harith, hbm, hbn, ?_, ?_, ?_⟩
   · rw [hy₁]
     exact (PositivityTheory.UnitarySelfGeneration.t_ideal M.K M.ι M.Ω Ω₃ i₁ M.y).1
@@ -393,7 +400,7 @@ theorem pair_iso : HodgeComparisonCompatibility → ThetaUnifAV → ∀ (E : Typ
       exact this
     have hH := p11 r (T.e r) (T.sing r) L (T.hodge r) hL
     have hH' := q11 (π₀ r.1, r.2) (T'.e (π₀ r.1, r.2)) (T'.sing (π₀ r.1, r.2)) L' (T'.hodge _) hL'
-    obtain ⟨f, f', hiso, hdef⟩ := GlobalTheory.T.hodge_cpt_iso_compare E H D l Xo c O O β β Y Y S Ω₃ K ι y A₁ A₂ (e₂ ≪≫ e₁.symm) φ Fl₁ Fl₂ r.1 (π₀ r.1) r.2
+    obtain ⟨f, f', hiso, hdef⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.RootIso.rootLine_iso E H D l Xo c O O β β Y Y S Ω₃ K ι y A₁ A₂ (e₂ ≪≫ e₁.symm) φ Fl₁ Fl₂ r.1 (π₀ r.1) r.2
       (i₁ (T.e r)) (i₂ (T'.e (π₀ r.1, r.2))) L L' hbir hξe
       (fun q h v => ⟨hφV (.inl r.1) (.inl (π₀ r.1)) (hemb (.inl r.1)) q h v, hφV (.inr r.1) (.inr (π₀ r.1)) (hemb (.inr r.1)) q h v⟩)
       (fun k => ⟨hst (.inl r.1) k, hst (.inr r.1) k⟩) hφz hdeg hdeg' hH hH' hgram

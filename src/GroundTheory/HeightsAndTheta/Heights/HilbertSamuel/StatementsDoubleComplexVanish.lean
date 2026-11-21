@@ -17,8 +17,4 @@ def DoubleComplexVanish.Statement : Prop :=
     (∀ p, 1 ≤ p → p ≤ R → ∀ n, ∀ x ∈ P p (n + 1), δ p (n + 1) x = 0 → ∃ y ∈ P p n, δ p n y = x) →
     ∀ n, ∀ x ∈ P 0 (n + 1), δ 0 (n + 1) x = 0 → ∃ y ∈ P 0 n, δ 0 n y = x
 
-def DoubleComplexVanish.exP (p n : ℕ) : AddSubgroup ℤ := if p ≤ 1 ∧ n = 0 then ⊤ else ⊥
-
-def DoubleComplexVanish.exκ (p : ℕ) : ℤ →+ ℤ := if p = 0 then AddMonoidHom.id ℤ else 0
-
 end GroundTheory.Heights₂.Heights.HilbertSamuel

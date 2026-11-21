@@ -256,15 +256,6 @@ theorem nuQR_eq_prod (μ : Measure (UNgrp N)) [μ.IsHaarMeasure] [IsProbabilityM
   · intro s hs t ht
     exact nuQR_rect μ s hs t ht.1 ht.2
 
-theorem measurable_gmDens : Measurable (gmDens N) := by
-  unfold gmDens
-  exact (by fun_prop : Measurable fun x : ℂ => ENNReal.ofReal (‖x‖ ^ (-(2 * (N:ℤ))))).comp
-    continuous_det_of.measurable
-
-theorem measurable_triDens : Measurable (triDens (N := N)) := by
-  unfold triDens
-  fun_prop
-
 theorem norm_det_toM (k : UNgrp N) : ‖(toM k).det‖ = 1 := by
   have hk : inUJ (fun _ : Fin N => true) (toM k) := k.2
   have hJ : Jm (fun _ : Fin N => true) = 1 := by

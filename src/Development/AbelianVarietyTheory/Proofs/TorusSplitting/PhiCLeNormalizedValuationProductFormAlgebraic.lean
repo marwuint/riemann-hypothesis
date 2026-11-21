@@ -8,13 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformiz
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHom
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenOfRangeGenericSubset
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.EtaProductRuleValueEqProductFormOfTestRing
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.DegenerationDataAtModelPointOfUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.FiniteExtensionRamificationEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.DegenerationDataAtModelPointOfUniformisation
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.FiniteExtensionRamificationEmbedding
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ValuationFormPsiBalancedSymmetricPeriodFormStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.IntegralThetaSectionExistsAndBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PhiCSmulPullStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CardMulPhiLeValuationProductFormStatement
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.LogbNormUniformizerNormalisationStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PhiCSmulPull
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CardMulPhiLeValuationProductForm
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.LogbNormUniformizerNormalisation
 
 set_option autoImplicit false
 
@@ -46,9 +46,9 @@ theorem phiC_le_normalized_valuation_local_model_base_change (E : Type) [Field E
   obtain ⟨G, ⟨I⟩⟩ := (GlobalTheory.T.integralThetaSection_exists_and_baseChange E H Dw l Xo c).1 T io y
   obtain ⟨T', φ, G', m, hφi, hφf, -, -, U, hU, hUt⟩ :=
     GlobalTheory.UnifAfterExt.exists_finite_ext_uniformised E H Dw l Xo T G I.t' I.m2 y.1.x I.m1 hAlg
-  obtain ⟨i, ρ, hρ, hi, hiv, hf⟩ := GlobalTheory.T.exists_injective_intO_embedding_of_norm_lt_one T T' φ hφi hφf
+  obtain ⟨i, ρ, hρ, hi, hiv, hf⟩ := _root_.GlobalTheory.EtaVal.finite_extension_ramification_embedding T T' φ hφi hφf
   obtain ⟨f, hfi, hfφ, hfm⟩ := hf _ C eF hle hlt
-  obtain ⟨A, e', hA⟩ := GlobalTheory.T.degeneration_data_at_model_point_of_uniformisation E H Dw l Xo c O β₀ Y la hB
+  obtain ⟨A, e', hA⟩ := _root_.GlobalTheory.EtaVal.datAt_of_uniformisation E H Dw l Xo c O β₀ Y la hB
     T io e hO y.1.x y.1.s G I y.1.x_over T' φ G' m U hU hUt _ C Pc eF f heF hy hfφ hfm
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible T'.V
   obtain ⟨Q, β, hQ, hQ0, -, hβQ, hβ⟩ := GlobalTheory.T.valuationForm_psi_balanced_symmetric_periodForm E H T'.V G' U ϖ hϖ cj hcj
@@ -56,7 +56,7 @@ theorem phiC_le_normalized_valuation_local_model_base_change (E : Type) [Field E
   have hfi' : Function.Injective ((intO ↥C.S).subtype.comp f) :=
     (intO ↥C.S).subtype_injective.comp hfi
   have hO' := hO.bc i hρ hiv
-  obtain ⟨hun, hew⟩ := GlobalTheory.T.logb_norm_uniformizer_normalisation c.F la T' (i.comp io) (ρ * e) hO' ϖ hϖ C _ hf1
+  obtain ⟨hun, hew⟩ := _root_.GlobalTheory.EtaVal.UnitNorm.logb_norm_uniformiser c.F la T' (i.comp io) (ρ * e) hO' ϖ hϖ C _ hf1
   set t : ℝ := -Real.logb (Formalism.MainNotions.WeightAlgebra.resCh la) ‖((intO ↥C.S).subtype.comp f) ϖ‖ with ht
   have hρe : (0 : ℝ) < ((ρ * e : ℕ) : ℝ) := by exact_mod_cast hO'.1
   have hew' : (0 : ℝ) < (Formalism.BasicNotions.eWL c.F la : ℝ) := by exact_mod_cast hew
@@ -64,7 +64,7 @@ theorem phiC_le_normalized_valuation_local_model_base_change (E : Type) [Field E
     by_contra hneg
     have := mul_neg_of_neg_of_pos (not_le.1 hneg) (mul_pos hρe hew')
     linarith
-  obtain ⟨bA, hbA, hφ⟩ := GlobalTheory.T.exists_symB_phiC_eq_mul_of_pullback E cj A.Ylat U.D.toPre.X e' β t ht0
+  obtain ⟨bA, hbA, hφ⟩ := _root_.GlobalTheory.EtaVal.phiC_smul_pull E cj A.Ylat U.D.toPre.X e' β t ht0
   refine ⟨A, bA, fun a b => ?_, ?_⟩
   · rw [hbA, hA, hβ _ _ _ hfi' hf1]
   intro R hR hR1 J _ n cf xs g hsp hg
@@ -77,7 +77,7 @@ theorem phiC_le_normalized_valuation_local_model_base_change (E : Type) [Field E
   by_cases h0 : evI y g = 0
   · rw [h0, nval_zero]; exact le_top
   have h0' : i (evI y g) ≠ 0 := (map_ne_zero i).2 h0
-  have hpt := GlobalTheory.T.card_mul_phi_le_valuation_productForm E H Dw l Xo c T'.V y' G' I' U ϖ hϖ Q hQ hQ0 cj hcj β hβQ R hR hR1 J n cf xs
+  have hpt := _root_.GlobalTheory.EtaVal.card_mul_phiC_le_valuation E H Dw l Xo c T'.V y' G' I' U ϖ hϖ Q hQ hQ0 cj hcj β hβQ R hR hR1 J n cf xs
     (i (evI y g)) hsp hval h0'
   rw [← nval_bc (V' := T'.V) i hρ hiv e, nval_of_ne h0', EReal.coe_le_coe_iff, le_div_iff₀ hρe, hφ]
   refine le_trans (le_of_eq ?_) hpt

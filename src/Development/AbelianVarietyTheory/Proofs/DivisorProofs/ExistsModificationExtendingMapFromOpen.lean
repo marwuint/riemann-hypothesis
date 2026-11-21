@@ -3,7 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLiftClos
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.WChartsC
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpecializes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDenominatorIdealSheafPrincipalisingFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalCoordinatesExtendProjectiveSpaceStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalCoordinatesExtendProjectiveSpace
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsModelRefinementGenerating
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsClosedImmersionIffPullRatio
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -21,7 +24,7 @@ theorem GlobalTheory.CompHS.exists_modif_map_of_open : GlobalTheory.Published.Pr
   intro hPr F _ _ Y T _ p d t U r₀ hs hpY hpT hU hr
   obtain ⟨N, i, hi, hit⟩ := hpT
   have hφ : (r₀ ≫ i) ≫ PSpace.str F N = U.ι ≫ p := by rw [Category.assoc, hit, hr]
-  obtain ⟨w, i₀, hw₀, hwU, hext⟩ := GlobalTheory.T.exists_rationalCoordinates_extend_projectiveSpace F Y p N U (r₀ ≫ i) hφ hU
+  obtain ⟨w, i₀, hw₀, hwU, hext⟩ := _root_.GlobalTheory.ProjSpace.exists_ratCoords_extend F Y p N U (r₀ ≫ i) hφ hU
   obtain ⟨I, hI0, hIU, hC⟩ := GlobalTheory.T.exists_denominatorIdealSheaf_principalising_family Y N w i₀ U hw₀ hwU
   obtain ⟨Y', s, hY', hs', hp', -, hiso, hEC, -⟩ := hPr F d Y p inferInstance hs hpY I hI0
   have hUle : U ≤ I.support.compl := fun y hy => hIU y hy

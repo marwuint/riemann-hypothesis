@@ -41,25 +41,4 @@ theorem bwL_descent (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
 
 variable (D : D7) (u : D.what₂.Word)
 
-set_option maxHeartbeats 1000000 in
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem bwL_lcInt (Tt : FormsTied D u) : BwLcInt D u := by
-  intro i hi c x hx
-  apply Submodule.subset_span
-  intro x' hx'
-  have hglob : ∀ z ∈ clsCrd D u i hi c, z ∈ Formalism.UG.CS.globLat ((Tt.cls i hi).y c).1 (Tt.cls i hi).lev.Lb := by
-    intro z hz
-    exact ((Tt.cls i hi).y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)
-  have hm : ∀ a ∈ (Tt.cls i hi).lev.Lb, ∀ b ∈ (Tt.cls i hi).lev.Lb,
-      IsIntegral ℤ (((1 : ℤ) : D.host.E) * Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramN D i hi) a b) := by
-    intro a ha b hb
-    obtain ⟨r, hr⟩ := (Tt.cls i hi).lev.Lb_int b hb a ha
-    rw [Int.cast_one, one_mul, ← hr]
-    exact RingOfIntegers.isIntegral_coe r
-  have h := Formalism.UG.P.csScale_glob (sigD D) (gramN D i hi) (Tt.cls i hi).lev.Lb 1 hm ((Tt.cls i hi).y c).1
-    ((Tt.cls i hi).y c).2 (hglob x' hx') (hglob x hx)
-  rw [Int.cast_one, one_mul] at h
-  exact bwL_descent _ _ _ h
-
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases

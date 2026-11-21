@@ -4,11 +4,11 @@ import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalizedFockFormPureTensorProperties
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntertwinerOfSameHarishChandraParamUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntertwinerOfSameHarishChandraParamUnitary
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHarishChandraTypeDualWeylModuleFockNormStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConjCoefficientsWeylModuleRowActNormFockStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvariantPosDefFormEqSmulInnerOfIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DelSqIrreducibleUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConjCoefficientsWeylModuleRowActNormFock
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvariantPosDefFormEqSmulInnerOfIrreducible
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DelSqIrreducibleUnitary
 
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.Forms Formalism.UG Matrix NumberField IsDedekindDomain
 open scoped InnerProductSpace TensorProduct
@@ -214,9 +214,9 @@ theorem exists_conj_weyl : ∀ (k n : ℕ) (h : k = n) (lam : DomWeight n) (u : 
     rw [hufun]
     exact hπ0
   have hπ' : IsHCTypeU k u π := ⟨hnt, hfd, hrep, hK⟩
-  obtain ⟨A, hA⟩ := GlobalTheory.T.exists_intertwiner_of_same_harishChandraParam_unitary k u W H π π0 hπ' hπ0'
-  obtain ⟨hfin, hdn, hstab, hirr⟩ := GlobalTheory.T.delSq_unitary_stable_and_irreducible k lam
-  obtain ⟨hcmem, hcrow, hcnf⟩ := GlobalTheory.T.conj_coefficients_weylModule_rowAct_normFock k lam
+  obtain ⟨A, hA⟩ := _root_.GlobalTheory.UnitaryHighestWeightUnique.exists_equiv_of_isHCTypeU k u W H π π0 hπ' hπ0'
+  obtain ⟨hfin, hdn, hstab, hirr⟩ := _root_.GlobalTheory.WeylUnitary.delSq_irreducible_unitary k lam
+  obtain ⟨hcmem, hcrow, hcnf⟩ := _root_.GlobalTheory.ConjCoeff.conj_coefficients k lam
 
   obtain ⟨j0, hj0⟩ : ∃ j0 : W →ₗ[ℂ] MvPolynomial (Fin k × Fin k) ℂ, ∀ ξ, j0 ξ = e (A ξ) :=
     ⟨e.comp A.toLinearMap, fun _ => rfl⟩
@@ -276,7 +276,7 @@ theorem exists_conj_weyl : ∀ (k n : ℕ) (h : k = n) (lam : DomWeight n) (u : 
   have hE := fockF_ext_real lam
   have hEim : (Formalism.REAL.fockF (extremal ℂ k lam) (extremal ℂ k lam)).im = 0 :=
     (Formalism.GradedWeylDivisibility.fockPos _ _ (extremal_ne_zero' lam)).2
-  obtain ⟨c, hc, hcB⟩ := GlobalTheory.T.invariant_posDef_form_eq_smul_inner_of_irreducible' W (unitaryGroup (Fin k) ℂ) (fun i => π i.1) B
+  obtain ⟨c, hc, hcB⟩ := _root_.GlobalTheory.invariant_posDef_form_eq_smul_inner_of_irreducible W (unitaryGroup (Fin k) ℂ) (fun i => π i.1) B
     (fun i v => hrep.2.1 i.1 (mem_UJset_of_unitary i.2) v)
     (fun S hS => hK.2.2.1 S le_top (fun g hg v hv => hS ⟨g, hg.1⟩ v hv))
     (fun i x y => by

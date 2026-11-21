@@ -14,5 +14,3 @@ theorem liesOver_comp_complexConj_of_not_liesOver : ∀ (p : ℕ) [Fact p.Prime]
 
 end GlobalTheory.StabFinOver
 
-example : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (ψ : G.F →+* PadicAlgCl p), ¬ LiesOver G.Kq G.u ψ → LiesOver G.Kq G.u (ψ.comp (IsCMField.complexConj G.F : G.F →+* G.F)) :=
-  GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver

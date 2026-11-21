@@ -113,28 +113,6 @@ theorem fracBCris_fixed [FiniteDimensional ℚ_[p] K] {x : 𝔹dR} (hx : x ∈ f
   refine ⟨k, ⟨k.2, ?_⟩, e⟩
   exact mem_unramifiedClosure_of_mem_fracBCris hε hζ (e ▸ hx)
 
-set_option maxHeartbeats 1600000 in
-
-theorem mem_fracBCris_of_mem_maxUnramified {k : PadicAlgCl p} (hk : k ∈ maxUnramified p K) :
-    algClToBdRField p k ∈ fracBCris hε hζ ∧
-      ∀ σ : Gal(PadicAlgCl p/K), σ • algClToBdRField p k = algClToBdRField p k := by
-  obtain ⟨x, -, hx⟩ := exists_bCris_fixed hε hζ hk
-  refine ⟨?_, fun σ => gal_smul_algebraMap_intermediateField_bDeRham σ (⟨k, hk.1⟩ : K)⟩
-  have e : algClToBdRField p k = iotaB hε hζ x := hx.symm
-  rw [e]
-  exact iotaB_mem_fracBCris hε hζ x
-
-theorem fixed_fracBCris_eq [FiniteDimensional ℚ_[p] K] :
-    {x : 𝔹dR | x ∈ fracBCris hε hζ ∧ ∀ σ : Gal(PadicAlgCl p/K), σ • x = x} =
-      algClToBdRField p '' (maxUnramified p K : Set (PadicAlgCl p)) := by
-  ext x
-  constructor
-  · rintro ⟨hx, hfix⟩
-    obtain ⟨k, hk, rfl⟩ := fracBCris_fixed hε hζ hx hfix
-    exact ⟨k, hk, rfl⟩
-  · rintro ⟨k, hk, rfl⟩
-    exact mem_fracBCris_of_mem_maxUnramified hε hζ hk
-
 end ACris
 
 end GroundTheory.PAdicHodge

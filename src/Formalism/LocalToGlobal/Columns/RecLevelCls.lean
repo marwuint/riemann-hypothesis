@@ -124,14 +124,6 @@ theorem adToCls_adClsOf (hS : DecoPtSurj hc n ST SG) (d : DecoSet E n ST SG) :
   unfold adClsOf
   rw [adToCls_mk, decoOf_ptOf hc n ST SG hS]
 
-theorem adToCls_surjective (hS : DecoPtSurj hc n ST SG) : Function.Surjective (adToCls hc n ST SG H) := by
-  intro c
-  induction c using Quotient.inductionOn' with
-  | h d => exact ⟨adClsOf hc n ST SG H d, adToCls_adClsOf hc n ST SG H hS d⟩
-
-theorem adToCls_bijective (hS : DecoPtSurj hc n ST SG) : Function.Bijective (adToCls hc n ST SG H) :=
-  ⟨adToCls_injective hc n ST SG H, adToCls_surjective hc n ST SG H hS⟩
-
 theorem levU_y_bij (hS : DecoPtSurj hc n ST SG) (s : DecoCl n ST SG H → DecoSet E n ST SG)
     (hs : ∀ c, decoCls n ST SG H (s c) = c) :
     Function.Bijective (fun c : DecoCl n ST SG H =>
@@ -237,8 +229,6 @@ theorem rlc_span_dualSet (L : Submodule (𝓞 E) (Fin n → E)) :
     Submodule.span (𝓞 E) (Formalism.BasicNotions.dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L) =
       Formalism.HermitianLatticesTheory.dual (hStd E n) L := by
   rw [rlc_dualSet, Submodule.span_eq]
-
-theorem baseDual_eq : baseDual hc n ST = baseSh E n ST := rlc_span_dualSet hc n _
 
 theorem baseLb_lattice : Submodule.IsLattice E (baseLb E n ST) :=
   (Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).L_lattice
@@ -475,44 +465,9 @@ theorem levU_y_lat (hS : DecoPtSurj hc n ST SG) (d : DecoSet E n ST SG) (x : Fin
 
 end Hat
 
-section Fin
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
-
-theorem decoCl_finite (hE : PosStar E) : Finite (DecoCl n ST SG H) := by
-  have h := DecoSet.finite_orbits (ST := ST) (SG := SG) (n := n) hE ((⊤ : Subgroup (UF E n)).prod H)
-    (fun g => ⟨Subgroup.mem_top _, Subgroup.one_mem _⟩)
-  have hrel : ∀ d d' : DecoSet E n ST SG,
-      (MulAction.orbitRel ((⊤ : Subgroup (UF E n)).prod H) (DecoSet E n ST SG)) d d' →
-      (MulAction.orbitRel (UF E n × H) (DecoSet E n ST SG)) d d' := by
-    intro d d' hdd
-    obtain ⟨a, ha⟩ := MulAction.orbitRel_apply.1 hdd
-    exact MulAction.orbitRel_apply.2 ⟨(a.1.1, ⟨a.1.2, a.2.2⟩), ha⟩
-  refine Finite.of_surjective (Quotient.map' (s₁ := MulAction.orbitRel ((⊤ : Subgroup (UF E n)).prod H) (DecoSet E n ST SG))
-    (s₂ := MulAction.orbitRel (UF E n × H) (DecoSet E n ST SG)) id hrel) ?_
-  intro c
-  induction c using Quotient.inductionOn' with
-  | h d => exact ⟨Quotient.mk'' d, rfl⟩
-
-theorem adCl_finite (hE : PosStar E) : Finite (AdCl hc n ST SG H) :=
-  have := decoCl_finite n ST SG H hE
-  Finite.of_injective _ (adToCls_injective hc n ST SG H)
-
-theorem adToCls_one : adToCls hc n ST SG H (Quotient.mk'' (1 : UAd hc n)) = decoCls n ST SG H (DecoSet.base E n ST SG) := by
-  rw [adToCls_mk]
-  exact congrArg _ (decoOf_one ST SG)
-
-end Fin
-
 section AtPrimes
 
 variable {X : Fields} {Pr : Primes X} (hc : Formalism.BasicNotions.CMData X.F X.E) (n : ℕ) [NeZero n]
-
-theorem colBase_dual (hPr : Pr.Ok) (u : Pr.Word) :
-    ∀ y ∈ Formalism.BasicNotions.dualSet (hc.sig : X.E →+* X.E) (1 : Matrix (Fin n) (Fin n) X.E) (baseLb X.E n (Pr.vT u)),
-      (Pr.T u : X.E) • y ∈ baseLb X.E n (Pr.vT u) :=
-  baseLb_dual hc n (Pr.vT u) (fun _ hP => decoFin_mem_of_mem_divs hP) (hPr.piT_norm u)
 
 theorem colBase_index (hPr : Pr.Ok) (u : Pr.Word) :
     (baseLb X.E n (Pr.vT u)).toAddSubgroup.relIndex

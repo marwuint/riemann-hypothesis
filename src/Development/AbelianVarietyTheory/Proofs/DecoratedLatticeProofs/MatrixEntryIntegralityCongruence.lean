@@ -3,7 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsMatrixIn
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevTrue
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.OnFramesRdApply
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RatioOKOfRootOfUnity
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotBadPrimeBase
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationEqZeroOfRootOfSUnitRatio
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
@@ -80,23 +83,6 @@ theorem exists_mat {D : D7} (q : GlobalTheory.FinPl.SplitPt D k) (V : HSp D) {Y 
   simpa [Matrix.mul_apply, Matrix.one_apply] using h2.symm
 
 end Loc
-
-set_option maxHeartbeats 1000000 in
-
-theorem pattern_of_traceAtG : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ κ : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X 0), GlobalTheory.FamTrace.TraceAtG a κ → ∀ i : Fin a.n, ∀ r c : Fin ((I.rec7 l Z).sp.X 0).rank, ((mt ((I.rec7 l Z).sp.X 0) κ).map (a.G i).q.pr) r c ∈ 𝒪[(a.G i).k] ∧ (c ≤ r → valuation (a.G i).k (((mt ((I.rec7 l Z).sp.X 0) κ).map (a.G i).q.pr) r c - (1 : Matrix (Fin ((I.rec7 l Z).sp.X 0).rank) (Fin ((I.rec7 l Z).sp.X 0).rank) (a.G i).k) r c) < 1) := by
-  intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _ κ hκ i r c
-  obtain ⟨e, he, hβ⟩ := (ha.stdG i).1 0 (Nat.zero_le _)
-  obtain ⟨g, hg, hgM⟩ := exists_mat (a.G i).q ((I.rec7 l Z).sp.X 0) _ e hβ κ
-  obtain ⟨r, rfl⟩ := e.surjective r
-  obtain ⟨c, rfl⟩ := e.surjective c
-  have h := entries_of_colGroup e he g (colGroup_of_embX (a.G i).S g (hκ i g hg)) r c
-  rw [hgM] at h
-  refine ⟨h.1, fun hcr => ?_⟩
-  have h1 : (1 : Matrix (Fin ((I.rec7 l Z).sp.X 0).rank) (Fin ((I.rec7 l Z).sp.X 0).rank) (a.G i).k) (e r) (e c) =
-      (1 : Matrix _ _ (a.G i).k) r c := by
-    simp only [Matrix.one_apply, e.injective.eq_iff]
-  rw [h1]
-  exact h.2 hcr
 
 end GlobalTheory.FamTrace.TraceBwd
 

@@ -15,8 +15,6 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 theorem orbital_function_eq_weighted (m : ℕ) (e : ℤ) (y : GR n) : F0 m 0 e y = holomorphicScalarSection m e (mR y) := by
   simp [F0, f0, holomorphicScalarSection]
 
-def Jsw (n : ℕ) : M2 n := fromBlocks 0 1 1 0
-
 def Nm (x : M2 n) : Matrix (Fin n) (Fin n) ℂ := Complex.I • x.toBlocks₁₁ + x.toBlocks₁₂
 
 def Nm' (x : M2 n) : Matrix (Fin n) (Fin n) ℂ := -(Complex.I • x.toBlocks₁₁) + x.toBlocks₁₂

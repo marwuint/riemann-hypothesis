@@ -99,11 +99,6 @@ theorem map_ten {n : ℕ} (f : D.what₂.Tau → MvPolynomial (Fin n × Fin n) �
       MvPolynomial.map (Int.castRingHom D.what₂.LL) (Formalism.MainNotions.flipTwoThree.ten f) := by
   simp only [Formalism.MainNotions.flipTwoThree.ten, map_prod, MvPolynomial.map_rename]
 
-theorem intCast_mem_intW (w : D.what₂.places.Pl) (z : ℤ) : (z : D.what₂.LL) ∈ intW D.what₂.places w := by
-  first
-    | exact Subring.intCast_mem _ z
-    | exact intCast_mem _ z
-
 theorem mem_intSpanAt_iff {n : ℕ} (w : D.what₂.places.Pl) (lam : D.what₂.Tau → DomWeight n) (Z : ZBasis lam)
     (y : MvPolynomial (D.what₂.Tau × Fin n × Fin n) D.what₂.LL) :
     y ∈ IntSpanAt D w lam ↔ y ∈ Submodule.span (intW D.what₂.places w)

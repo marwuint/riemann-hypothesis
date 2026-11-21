@@ -1,20 +1,21 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusHomOfIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationRingActionAdjointCubeBundle
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FunctorialOfUnif
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianPartHomUniformisedGroupsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupHomCharacterMapConstantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCoordinatesCompareNormalisedGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupHomInducedMapsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubeBundleIsoUniformisedGroupGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoAlongHomsDescendsAbelianPartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorPeriodsProjectionPeriodPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianPartHomUniformisedGroups
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TwistBaseChangeAndValuationStatements
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupHomCharacterMapConstant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCoordinatesCompareNormalisedGenerators
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupHomInducedMapsUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubeBundleIsoUniformisedGroupGenericFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoAlongHomsDescendsAbelianPart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorPeriodsProjectionPeriodPoints
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SamePolarisedOfTwoIdempotentFactorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianHomTorsionCompatiblePeriodsLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgClosedFieldTorsionMapsCommuteHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianHomTorsionCompatiblePeriodsLattices
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgClosedFieldTorsionMapsCommuteHom
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -179,12 +180,12 @@ theorem samePol_of_unif_factor : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   have hA := hR.1
   have := U.gen_hom
   have := U'.gen_hom
-  obtain ⟨prB, hprB, qpr⟩ := GlobalTheory.T.exists_abelianPart_hom_uniformisedGroups R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr hpr
-  obtain ⟨incB, hincB, qinc⟩ := GlobalTheory.T.exists_abelianPart_hom_uniformisedGroups R _ hA D₀ D' A A' G G' U.toUnifPre U'.toUnifPre inc hinc
-  obtain ⟨h, th⟩ := GlobalTheory.T.uniformisedGroupHom_characterMap_constant R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr hpr
-  obtain ⟨k, tk⟩ := GlobalTheory.T.uniformisedGroupHom_characterMap_constant R _ hA D₀ D' A A' G G' U.toUnifPre U'.toUnifPre inc hinc
-  have un := GlobalTheory.T.uniformisedGroupHom_induced_maps_unique R _ hA D₀ D₀ A A G G U.toUnifPre U.toUnifPre
-  have un' := GlobalTheory.T.uniformisedGroupHom_induced_maps_unique R _ hA D' D' A' A' G' G' U'.toUnifPre U'.toUnifPre
+  obtain ⟨prB, hprB, qpr⟩ := _root_.GlobalTheory.Mum.Two.exists_abelian_hom R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr hpr
+  obtain ⟨incB, hincB, qinc⟩ := _root_.GlobalTheory.Mum.Two.exists_abelian_hom R _ hA D₀ D' A A' G G' U.toUnifPre U'.toUnifPre inc hinc
+  obtain ⟨h, th⟩ := _root_.GlobalTheory.Mum.Two.unifPre_hom_character_const R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr hpr
+  obtain ⟨k, tk⟩ := _root_.GlobalTheory.Mum.Two.unifPre_hom_character_const R _ hA D₀ D' A A' G G' U.toUnifPre U'.toUnifPre inc hinc
+  have un := _root_.GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D₀ D₀ A A G G U.toUnifPre U.toUnifPre
+  have un' := _root_.GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D' D' A' A' G' G' U'.toUnifPre U'.toUnifPre
   have ql : ∀ x, Over₀ U'.toUnifPre U'.toUnifPre (oG.act x) (F.o.onB.act x) := fun x e => lin.q_lin e x
   have il : ∀ x, OnTorus U'.toUnifPre U'.toUnifPre (oG.act x) (fun χ => star x • χ) := fun x e => lin.i_lin e x
   have ipB : incB ≫ prB = 𝟙 _ := (un _).1 _ _ (ip ▸ over_comp qinc qpr) over_id
@@ -193,7 +194,7 @@ theorem samePol_of_unif_factor : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   have hk : ∀ χ, h (k χ) = star F.e • χ := congrFun ((un' _).2 _ _ (pi ▸ onTorus_comp th tk) (il _))
   have hinj : Function.Injective h := Function.LeftInverse.injective kh
   have L : Lin U'.toUnifPre U.toUnifPre pr prB h := ⟨hpr, hprB, qpr, th⟩
-  have C := GlobalTheory.T.torusCoordinates_compare_normalisedGenerators R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr prB h L
+  have C := _root_.GlobalTheory.Mum.Two.coord_of_lin R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr prB h L
   obtain ⟨c, hc, gc⟩ : ∃ c : A'.A ⟶ A.A, IsMonHom c ∧ Gen₀ U'.toUnifPre U.toUnifPre pr c :=
     ⟨U'.gen.inv ≫ (Over.pullback (jK R)).map pr ≫ U.gen.hom, inferInstance, by simp [Gen₀]⟩
   have adj := lbIso_star R hA D' A' G' hG' U' F.O F.o oA oG lin
@@ -206,17 +207,17 @@ theorem samePol_of_unif_factor : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   have H₁ := lbIso_proj U.LG.isLB U'.LG.isLB inc pr (oG.act F.f) (oG.act (star (star (F.f * F.e))))
     (oG.act (star (F.f * F.e))) (by rw [star_star, oG.map_mul, ← pi, Category.assoc]) H (adj _)
   rw [pi, ← oG.map_mul, ← eG] at H₁
-  have H₂ := GlobalTheory.T.cubeBundleIso_uniformisedGroup_genericFibre R _ D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr pr E.aG (𝟙 _) c c E.aA (𝟙 _) gc gc E.ext
+  have H₂ := _root_.GlobalTheory.Mum.Two.lbIso_cubeLB_generic R _ D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr pr E.aG (𝟙 _) c c E.aA (𝟙 _) gc gc E.ext
     (by simp [Gen₀]) H₁
-  obtain ⟨Ω, _, _, _, K⟩ := GlobalTheory.T.exists_algClosedField_torsionMaps_commute_hom R _ hA D' D₀ A' A G' G hG' hG U' U pr c prB h hc gc L C hinj
-  obtain ⟨φ, hφ, hhφ⟩ := GlobalTheory.T.semiAbelianHom_torsionCompatible_periods_lattices R _ hA D' D₀ A' A G' G hG' hG U' U pr c prB h hc gc L C E E'
+  obtain ⟨Ω, _, _, _, K⟩ := _root_.GlobalTheory.Mum.Two.exists_key R _ hA D' D₀ A' A G' G hG' hG U' U pr c prB h hc gc L C hinj
+  obtain ⟨φ, hφ, hhφ⟩ := _root_.GlobalTheory.Mum.Two.periods_of_key R _ hA D' D₀ A' A G' G hG' hG U' U pr c prB h hc gc L C E E'
     (by rw [eG, eG']; exact adj _) H₂ Ω K
   have := oG.hom F.f
   have := F.o.onB.hom F.f
-  have H₃ := GlobalTheory.T.mumfordBundle_iso_along_homs_descends_abelianPart R hA D₀ D' A A' G G' hG hG' U U' inc (inc ≫ oG.act F.f) incB (incB ≫ F.o.onB.act F.f) hinc
+  have H₃ := _root_.GlobalTheory.HomMum.lbIso_descends R hA D₀ D' A A' G G' hG hG' U U' inc (inc ≫ oG.act F.f) incB (incB ≫ F.o.onB.act F.f) hinc
     inferInstance hincB inferInstance qinc (over_comp qinc (ql _)) H
   have hφ' : ∀ y, h (φ y) = star F.e • F.f • F.e • y := fun y => (hhφ y).trans (eh y)
-  obtain ⟨cφ, w, hw, ht⟩ := GlobalTheory.T.factor_periods_projection_period_points R D₀.toPre D'.toPre D'.tau_bimult F.O F.o F.e F.f incB prB h φ hincB hprB piB
+  obtain ⟨cφ, w, hw, ht⟩ := _root_.GlobalTheory.Mum.Two.Fac.periods_of_factor R D₀.toPre D'.toPre D'.tau_bimult F.O F.o F.e F.f incB prB h φ hincB hprB piB
     (fun χ => (C χ).imp fun _ => And.left) H₃ Ω hφ hφ'
   have ex : ∀ y, F.e • F.xi y = F.xi y := fun y => by rw [← F.xi_xp, F.xp_xi]
   let ε : D.toPre.X ≃+ D₀.toPre.X := AddEquiv.ofBijective (φ.comp F.xi) ⟨fun y y' e => F.inj (by

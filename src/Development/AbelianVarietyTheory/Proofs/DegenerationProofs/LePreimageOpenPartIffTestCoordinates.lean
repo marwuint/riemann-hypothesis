@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitCharts
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeZeroOfLe
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsMaximalComapMaximalIdealOO
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SpanRowsClassZeroEqInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SpanRowsClassZeroEqInvariant
 import Development.AbelianVarietyTheory.Definitions.Degenerations.BaseFacts
 import Development.AbelianVarietyTheory.Definitions.Degenerations.IsAffineSplitTorusLeft
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheory
@@ -101,7 +101,7 @@ theorem le_preimage_G_iff_test : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Alge
     exact ((spMap (algebraMap (FractionRing t.u.V) (PadicAlgCl p)) ≫ c.yK) a).2
   have hcen : M.Cen U₀ (y (cPt p)) y := ⟨rfl, hU⟩
   have hcl := GlobalTheory.ZH.isClosed_centre o Ω M U₀ _ p y hcen
-  obtain ⟨hker, -, hspan⟩ := GlobalTheory.T.span_rows_classZero_eq_invariant o Ω S ρ p y₀ t fun a => by
+  obtain ⟨hker, -, hspan⟩ := _root_.GlobalTheory.ZH.span_rows_class_zero o Ω S ρ p y₀ t fun a => by
     rw [hy₀]
     exact (mem_OO_iff _).1 (ψ a).2
   have hT : S.TT M (y (cPt p)) = S.perp t.l.yy.ker := by

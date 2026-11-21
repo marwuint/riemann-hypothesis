@@ -71,46 +71,6 @@ theorem measurableSet_coneBall (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n)
   ext y
   simp [coneBall, Metric.mem_ball]
 
-theorem ConeLogBound.proof (hMass : ConeIntegralMass.Statement) (hFin : ConeBallFinite.Statement)
-    (hInt : ConeFsLogIntegrable.Statement) (hNull : ConeHyperplaneNull.Statement) :
-    ConeLogBound.Statement := by
-  intro n e δ h W f u hW hf hδ hu
-  set μ := Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) (X := EuclideanSpace ℂ (Fin n))
-  set c := (μ {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ ∀ j : Fin n, e + 1 ≤ (j : ℕ) → y j = 0}).toReal
-  have hmass := hMass n e δ h W f hW hf hδ
-  have hfin := hFin n e h W f hW hf
-  have hS := measurableSet_coneBall h W
-  have hconst : IntegrableOn (fun _ : EuclideanSpace ℂ (Fin n) => Real.log (h.norm u)) (coneBall h W) μ :=
-    integrableOn_const hfin.ne
-  have hae : (fun y => fsLog h u (h.pointOf y)) ≤ᵐ[μ.restrict (coneBall h W)]
-      fun _ => Real.log (h.norm u) := by
-    rw [Filter.EventuallyLE, ae_restrict_iff' hS]
-    have hnull := hNull n e h W f u hW hf hu
-    refine measure_mono_null (fun y hy => ?_) hnull
-    have hy' : ¬(y ∈ coneBall h W → fsLog h u (h.pointOf y) ≤ Real.log (h.norm u)) := hy
-    refine ⟨?_, ?_⟩
-    · by_contra hc
-      exact hy' fun h' => absurd h' hc
-    · show ∑ j, u j * h.pointOf y j = 0
-      by_contra hne
-      exact hy' fun _ => fsLog_le h hne
-  have hle := setIntegral_mono_ae_restrict (hInt n e h W f u hW hf hu) hconst hae
-  rw [setIntegral_const, smul_eq_mul] at hle
-  unfold coneIntegral at hmass ⊢
-  change (∫ y in coneBall h W, fsLog h u (h.pointOf y) ∂μ) / c ≤ δ * Real.log (h.norm u)
-  change (∫ y in coneBall h W, (1 : ℝ) ∂μ) / c = δ at hmass
-  rw [setIntegral_const, smul_eq_mul, mul_one] at hmass
-  rcases (le_or_gt c 0) with hc | hc
-  · have hc0 : c = 0 := le_antisymm hc ENNReal.toReal_nonneg
-    rw [hc0, div_zero] at hmass ⊢
-    rw [← hmass]
-    simp
-  · rw [div_le_iff₀ hc]
-    calc _ ≤ μ.real (coneBall h W) * Real.log (h.norm u) := hle
-      _ = δ * Real.log (h.norm u) * c := by
-        rw [← hmass]
-        field_simp
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -36,8 +36,4 @@ theorem LeafTw0GenFree_of (h : LeafTw0TwFree) : LateralTheory.E.LeafTw0LocSplitP
       map_smul ((resι (ZMod q) (tw q 0)).hom.app (op V)).hom c _, hc]
     simp [Sec.map]
 
-theorem LeafTw0LocSplit_of (h1 : LateralTheory.E.LeafTw0LocSplitPf.LeafTw0LocGen) (h2 : LeafTw0TwFree) :
-    LateralTheory.E.LeafTensMonoPf.LeafTw0LocSplit :=
-  LateralTheory.E.LeafTw0LocSplitPf.LeafTw0LocSplit_of h1 (LeafTw0GenFree_of h2)
-
 end LateralTheory.E.LeafTw0LocSplitPfM

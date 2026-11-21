@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ActAtApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymNegTSwap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockDiagonalFibreCasimirCommuteSameBlockUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockDiagonalFibreCasimirCommuteSameBlockUnit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockDiagonalFibreCasimirEigenNonnegRealUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockUnitaryDiagonalLeOfEigenvalueBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockDiagonalEigenvalueLeOfCasimirNearMinStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBlockUnitaryFiniteSubspaceOfLeStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockUnitaryDiagonalLeOfEigenvalueBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockDiagonalEigenvalueLeOfCasimirNearMin
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBlockUnitaryFiniteSubspaceOfLeStable
 
 open scoped TensorProduct
 open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift GlobalTheory.HoweR
@@ -23,17 +23,17 @@ theorem diag_re_le_of_near_min {ι M : Type} [Fintype ι] [DecidableEq ι] [AddC
     (hω : ∀ (ω' : ℝ) (v : M), v ≠ 0 → cas s G v = (ω' : ℂ) • v → ω < ω' + 1)
     (hUe : ∀ u ∈ U, cas s G u = (ω : ℂ) • u) :
     ∀ a, s a = true → ∀ u ∈ U, u ≠ 0 → ∀ m : ℂ, G a a u = m • u → m.re ≤ R :=
-  GlobalTheory.T.blockUnitary_diagonal_le_of_eigenvalue_bound ι M s G U R hU (fun x y hy hyU hf hs => hR M G hG hq hL ω hω x y hy hf hs (fun a => hUe _ (hyU a)))
+  _root_.GlobalTheory.HoweR.re_diag_le_of_eigen_bound ι M s G U R hU (fun x y hy hyU hf hs => hR M G hG hq hL ω hω x y hy hf hs (fun a => hUe _ (hyU a)))
 
 theorem exists_unitOn_diag_bounded : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (s : ι → Bool) (α β α' β' : ℂ), ∃ R : ℝ,
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (F : ι → ι → Module.End ℂ M), Nontrivial M → IsGl F →
     (∀ a b, qop F α β a b = 0) → (∀ a b, qop (negT F) α' β' a b = 0) → LocU s F →
     ∃ U : Submodule ℂ M, U ≠ ⊥ ∧ UnitOn s F U ∧ ∀ a, ∀ u ∈ U, u ≠ 0 → ∀ m : ℂ, F a a u = m • u → |m.re| ≤ R := by
   intro ι _ _ s α β α' β'
-  obtain ⟨R1, h1⟩ := GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι s α β
-  obtain ⟨R2, h2⟩ := GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι (fun a => !s a) α β
-  obtain ⟨R3, h3⟩ := GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι s α' β'
-  obtain ⟨R4, h4⟩ := GlobalTheory.T.blockDiagonal_eigenvalue_le_of_casimir_nearMin ι (fun a => !s a) α' β'
+  obtain ⟨R1, h1⟩ := _root_.GlobalTheory.HoweR.diag_eig_le_of_cas_min ι s α β
+  obtain ⟨R2, h2⟩ := _root_.GlobalTheory.HoweR.diag_eig_le_of_cas_min ι (fun a => !s a) α β
+  obtain ⟨R3, h3⟩ := _root_.GlobalTheory.HoweR.diag_eig_le_of_cas_min ι s α' β'
+  obtain ⟨R4, h4⟩ := _root_.GlobalTheory.HoweR.diag_eig_le_of_cas_min ι (fun a => !s a) α' β'
   refine ⟨max (max R1 R2) (max R3 R4), ?_⟩
   intro M _ _ F hnt hG hq hq' hL
   obtain ⟨hGn, hcn, hcs, hUs, hLs⟩ := sym_negT_swap ι M s F
@@ -71,11 +71,11 @@ theorem exists_unitOn_diag_bounded : ∀ (ι : Type) [Fintype ι] [DecidableEq �
     intro a b hab u hu
     refine ⟨hU0.2.1 a b hab u hu.1, ?_⟩
     rw [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]
-    have hc := congrArg (fun T : Module.End ℂ M => T u) (GlobalTheory.T.blockDiagonalFibreCasimir_commute_sameBlock_unit ι M s F hG a b hab)
+    have hc := congrArg (fun T : Module.End ℂ M => T u) (_root_.GlobalTheory.HoweR.cas_mul_comm_of_block ι M s F hG a b hab)
     simp only [Module.End.mul_apply] at hc
     rw [hc, hUe u hu]
     simp
-  have hU : UnitOn s F U := GlobalTheory.T.isBlockUnitaryFiniteSubspace_of_le_stable ι M s F U0 U hU0 inf_le_left hUst
+  have hU : UnitOn s F U := _root_.GlobalTheory.HoweR.unitOn_of_le ι M s F U0 U hU0 inf_le_left hUst
   refine ⟨U, fun h => hv (by rw [h, Submodule.mem_bot] at hvU; exact hvU), hU, ?_⟩
   intro a u hu hu0 m hm
   have b1 := diag_re_le_of_near_min s F α β R1 h1 hG hq hL U hU ω hω hUe

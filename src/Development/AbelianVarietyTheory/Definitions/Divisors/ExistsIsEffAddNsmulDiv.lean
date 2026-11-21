@@ -447,11 +447,6 @@ def vLift {A : Type*} [AddCommGroup A] (f : Z.effVert → A) (h : ∀ I J, f (I 
   DFunLike.congr_fun (Algebra.GrothendieckAddGroup.lift.symm_apply_apply
     (AddMonoidHom.mk' (fun I : Additive Z.effVert => f I.toMul) h)) (Additive.ofMul I)
 
-theorem vDivZ_hom_ext {A : Type*} [AddCommGroup A] {f g : Z.VDivZ →+ A}
-    (h : ∀ I, f (ofEff I) = g (ofEff I)) : f = g := AddMonoidHom.ext fun D => by
-  obtain ⟨I, J, rfl⟩ := exists_eq_ofEff_sub D
-  rw [map_sub, map_sub, h, h]
-
 variable (Z)
 
 def vCls : Z.VDivZ →+ Pic Z.X := vLift effCls effCls_mul
@@ -486,10 +481,6 @@ def effConst (g : O) (hg : g ≠ 0) : Z.effVert :=
   effMk (.principal (Z.const g) (Z.isRegularFn_const hg))
     fun _ => inf_le_left.trans (Z.gen_le_basicOpen hg)
 
-theorem coe_effConst (g : O) (hg : g ≠ 0) : (Z.effConst g hg).1 =
-    Scheme.IdealSheafData.ofIdealTop (Ideal.span {Z.const g}) :=
-  EffCartierData.idealSheaf_principal _ _
-
 def div (g : O) (hg : g ≠ 0) : Z.VDivZ := ofEff (Z.effConst g hg)
 
 theorem div_mul {g g' : O} (hg : g ≠ 0) (hg' : g' ≠ 0) (h : g * g' ≠ 0) :
@@ -511,12 +502,6 @@ theorem div_pow {g : O} (hg : g ≠ 0) (n : ℕ) (h : g ^ n ≠ 0) :
   induction n with
   | zero => simpa using Z.div_of_isUnit isUnit_one _
   | succ n ih => simp only [pow_succ, succ_nsmul, Z.div_mul (pow_ne_zero n hg) hg, ih]
-
-theorem div_eq_addVal_smul {ϖ g : O} (hϖ : Irreducible ϖ) (hg : g ≠ 0) :
-    Z.div g hg = (IsDiscreteValuationRing.addVal O g).toNat • Z.div ϖ hϖ.ne_zero := by
-  obtain ⟨n, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hg hϖ
-  rw [IsDiscreteValuationRing.addVal_def _ u hϖ n rfl, ENat.toNat_natCast,
-    Z.div_mul u.ne_zero (pow_ne_zero n hϖ.ne_zero), Z.div_of_isUnit u.isUnit, zero_add, div_pow]
 
 @[simp] theorem vCls_div (g : O) (hg : g ≠ 0) : Z.vCls (Z.div g hg) = 0 := by
   rw [div, vCls_ofEff, effCls_eq (D := .principal (Z.const g) (Z.isRegularFn_const hg)) rfl]
@@ -553,16 +538,6 @@ def vPull : Z.VDivZ →+ Z₁.VDivZ :=
 
 @[simp] theorem vPull_ofEff (I : Z.effVert) : vPull hf (ofEff I) = ofEff (effPull hf I) :=
   vLift_ofEff _ _ I
-
-theorem vCls_vPull (D : Z.VDivZ) : Z₁.vCls (vPull hf D) = pull f (Z.vCls D) := by
-  refine DFunLike.congr_fun (vDivZ_hom_ext (f := Z₁.vCls.comp (vPull hf))
-    (g := (pull f).comp Z.vCls) fun I => ?_) D
-  have hI := keepsRegular hf (idealSheaf_effData I)
-  simp only [AddMonoidHom.comp_apply, vPull_ofEff, vCls_ofEff]
-  rw [effCls_eq (D := (effData I).pull f hI) (by
-    rw [EffCartierData.idealSheaf_pull, idealSheaf_effData]; rfl), effCls,
-    ← cls_pull _ f (Semi.LB.isLB_pull (effData I).isLB_lb f), cls_eq_iff]
-  exact (effData I).lbIso_pull f hI
 
 @[simp] theorem vPull_div (g : O) (hg : g ≠ 0) : vPull hf (Z.div g hg) = Z₁.div g hg := by
   rw [div, vPull_ofEff]
@@ -830,10 +805,6 @@ variable (P) in
   rw [cls, map_sub, vCls_div, sub_zero, vCls_ofEff, effCls_eq rfl, cls_eq_iff]
   exact EffCartierData.lbIso_ofSec _ _ _
 
-theorem cls_surjective : Function.Surjective (cls (Z := Z)) := fun D =>
-  have ⟨I, J, e⟩ := exists_eq_ofEff_sub D
-  ⟨(ofEff I).add (ofEff J).neg, by simp [e, sub_eq_add_neg]⟩
-
 theorem cls_eq_iff : P.cls = P'.cls ↔ IsIsom P P' := by
   refine ⟨fun e => ?_, IsIsom.cls_eq⟩
   obtain ⟨⟨⟨g, hg⟩, s⟩, h⟩ := P.exists_extends'
@@ -886,22 +857,6 @@ end Pull
 end VertDiv
 
 namespace Model
-
-variable {O} {Z : Model O}
-
-theorem exists_isEff_add_nsmul_div (D : Z.VDivZ) {a : O} (ha : a ≠ 0) (hm : a ∈ maximalIdeal O) :
-    ∃ m : ℕ, IsEff (D + m • Z.div a ha) := by
-  obtain ⟨P, rfl⟩ := VertDiv.cls_surjective D
-  obtain ⟨m, s, h⟩ := P.exists_extends ha hm
-  exact ⟨m, h.eff (pow_ne_zero m ha), by rw [h.cls_eq (pow_ne_zero m ha), Z.div_pow ha, sub_add_cancel]⟩
-
-theorem vDeg_prod_of_add_nsmul_div {D : Z.VDivZ} {a : O} (ha : a ≠ 0) {m : ℕ} {E : Z.effVert}
-    (h : ofEff E = D + m • Z.div a ha) {L : Fin Z.relDim → LB Z.X} (hL : ∀ i, (L i).IsLB) :
-    Z.vDeg D (∏ i, c1 (L i) (hL i)) =
-      interLen O (divMod E.1) L - m * interLen O (divMod (Z.effConst a ha).1) L := by
-  rw [← sub_eq_iff_eq_add.2 h, map_sub, map_nsmul, LinearMap.sub_apply, LinearMap.smul_apply, div,
-    vDeg_ofEff_prod, vDeg_ofEff_prod]
-  simp
 
 end Model
 

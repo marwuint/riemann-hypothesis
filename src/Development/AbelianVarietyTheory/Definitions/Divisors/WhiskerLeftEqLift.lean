@@ -36,11 +36,6 @@ def Norm (e : Y ⟶ X) (W : X.Opens) (L M : LB X) (w : Cmp W L M) (r : RigD e L)
 
 def FnBij (p : X ⟶ Y) : Prop := ∀ V : Y.Opens, Function.Bijective (p.app V).hom
 
-theorem isOn_top {L : LB X} (hL : L.IsLB) : IsOn ⊤ L :=
-  ⟨fun _ ↦ le_top, fun x _ ↦ exists_chart hL x, fun x _ _ _ ha hb hc ↦ gm_cocycle hL (𝟙 X) x ha hb hc⟩
-
-theorem fnBij_id : FnBij (𝟙 X) := fun _ ↦ Function.bijective_id
-
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
 def AddCls {T : Over S} (c : Pic (A ⊗ T).left) : Prop :=

@@ -25,8 +25,6 @@ theorem Hf_conj (x y : VC D N N') : (starRingEnd ℂ) (Hf D T x y) = Hf D T y x 
 theorem Hf_smul_right (c : ℂ) (x y : VC D N N') : Hf D T x (c • y) = (starRingEnd ℂ) c * Hf D T x y := by
   rw [← Hf_conj D T (c • y) x, Hf_smul_left, map_mul, Hf_conj]
 
-theorem Hf_zero_left (y : VC D N N') : Hf D T 0 y = 0 := by simp [Hf]
-
 theorem Hf_zero_right (y : VC D N N') : Hf D T y 0 = 0 := by simp [Hf]
 
 theorem Hf_nsmul_left (n : ℕ) (x y : VC D N N') : Hf D T (n • x) y = n * Hf D T x y := by

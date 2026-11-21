@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietySepClosedPointDivisibleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateModuleLevelSurjectiveOfDivisibleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietySepClosedPointDivisible
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateModuleLevelSurjectiveOfDivisible
 
 set_option autoImplicit false
 
@@ -26,7 +26,7 @@ theorem torsionUnramified_pow_of_tateUnramified {K Ω : Type} [Field K] [Field �
     {l : ℕ} [Fact l.Prime] (hl : (l : K) ≠ 0) (h : TateUnramified A V l) (n : ℕ) :
     TorsionUnramified A V (l ^ n) := by
   intro σ hσ x hx
-  obtain ⟨t, rfl⟩ := GlobalTheory.T.tateModule_level_surjective_of_divisible l (ptOver K Ω ⟶ A) (GlobalTheory.T.abelianVariety_sepClosed_point_divisible K Ω A hA l hl) n x hx
+  obtain ⟨t, rfl⟩ := _root_.GlobalTheory.Published.tate_lev_surj l (ptOver K Ω ⟶ A) (_root_.GlobalTheory.SepClosedDiv.exists_pow_eq K Ω A hA l hl) n x hx
   rw [← lev_galTate, h σ hσ]
   rfl
 

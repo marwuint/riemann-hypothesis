@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Cint
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IndexMeasureIntegralEqOfFineSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IndexMeasureIntegralEqOfFineSubgroup
 
 open GlobalTheory.IdxInt
 open scoped Pointwise Classical
@@ -8,20 +8,6 @@ open scoped Pointwise Classical
 namespace GlobalTheory.IdxInt.Lin
 
 variable {W : Type} [AddCommGroup W]
-
-theorem fine_mul {A B : AddSubgroup W} {φ : W → ℂ} (c : ℂ) (hφ : Fine A φ B) :
-    Fine A (fun w => c * φ w) B := by
-  refine ⟨hφ.1, hφ.2.1, fun w b hb => by simp [hφ.2.2.1 w b hb], ?_⟩
-  refine hφ.2.2.2.subset (Set.image_mono ?_)
-  intro w hw h0
-  exact hw (by simp [h0])
-
-theorem fine_zero (A : AddSubgroup W) : Fine A (fun _ => 0) A := by
-  refine ⟨le_rfl, by simp, fun _ _ _ => rfl, ?_⟩
-  simp
-
-theorem cint_zero (A : AddSubgroup W) : cint A (fun _ => 0) = 0 := by
-  rw [GlobalTheory.T.indexMeasureIntegral_eq_of_fineSubgroup A A _ (fine_zero A)]; simp
 
 open scoped Pointwise Classical in
 open Function in

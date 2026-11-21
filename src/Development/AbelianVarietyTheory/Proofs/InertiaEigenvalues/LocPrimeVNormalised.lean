@@ -7,22 +7,6 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 
 namespace GlobalTheory.HWL.NormVal
 
-section General
-
-variable {K : Type*} [Field K]
-
-theorem exists_coe (v : AddValuation K (WithTop ℚ)) {x : K} (hx : x ≠ 0) :
-    ∃ r : ℚ, v x = (r : WithTop ℚ) := by
-  have h : v x + v x⁻¹ = 0 := by rw [← v.map_mul, mul_inv_cancel₀ hx, v.map_one]
-  have h' : v x ≠ ⊤ := by
-    intro e
-    rw [e, top_add] at h
-    exact WithTop.top_ne_zero h
-  obtain ⟨r, hr⟩ := WithTop.ne_top_iff_exists.mp h'
-  exact ⟨r, hr.symm⟩
-
-end General
-
 open GlobalTheory.Per.Val
 
 open TensorProduct in

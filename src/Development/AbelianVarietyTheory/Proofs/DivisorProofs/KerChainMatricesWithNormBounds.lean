@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeightedNormSqua
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OrthogonalNormSquareSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCbData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OpNormAtPairingSqLeOfValueBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OpNormAtPairingSqLeOfValueBound
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColRows
 
 noncomputable section
@@ -258,7 +258,7 @@ theorem rowsBody_of_framed : ∀ (K : Type) [Field K] [NumberField K] [StarRing 
   obtain ⟨cb, hcb⟩ := GlobalTheory.DefRowsCB.exists_cbData K (Q.n + 1) ch.c ch.X ch.Kj
     (tOf hn Q.n no) ch.X_unit hb
   refine ⟨ch, T, fun _ => rfl, X0, h6, hn, fun v => ?_, cb, hcb⟩
-  refine GlobalTheory.T.opNormAt_pairing_sq_le_of_value_bound K _ _ (ch.X (Fin.last ch.mm)) X0 ch.PtL v hn.hPn (ch.X_unit _ v) (h6 v).1 fun y F => ?_
+  refine _root_.GlobalTheory.PairingOpNorm.opNormAt_pairing_sq_le K _ _ (ch.X (Fin.last ch.mm)) X0 ch.PtL v hn.hPn (ch.X_unit _ v) (h6 v).1 fun y F => ?_
   have hm := T.metL v y
   have e : Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c (Fin.last ch.mm)))) (ch.X (Fin.last ch.mm)) v y ^ 2 =
       (Q.S₁.ipAt Q.hS₁ v (T.coL y) (T.coL y)).re := by

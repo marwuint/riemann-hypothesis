@@ -18,14 +18,6 @@ theorem hermitian_approximation : HermApprox :=
 theorem unitary_class_mass : PI.UJClassMass2.UJClassMass :=
   uJClassMass_of_herm hermitian_approximation
 
-set_option pp.fullNames true in
-#check @PI.UnitaryGroupMassFormula.UJClassMass.hermitian_approximation
-set_option pp.fullNames true in
-#check @PI.UnitaryGroupMassFormula.UJClassMass.unitary_class_mass
-#print axioms PI.UnitaryGroupMassFormula.UJClassMass.tensor_localization
-#print axioms PI.UnitaryGroupMassFormula.UJClassMass.hermitian_approximation
-#print axioms PI.UnitaryGroupMassFormula.UJClassMass.unitary_class_mass
-
 end PI.UnitaryGroupMassFormula.UJClassMass
 
 end

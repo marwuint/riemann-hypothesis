@@ -10,16 +10,6 @@ namespace GlobalTheory.BesselMapCompare
 
 open PI.UpqRep GlobalTheory.IndefiniteRowSideFullHecke
 
-def scaleEquiv (r : ℕ) : (Fin r → ℂ) ≃ (Fin r → ℂ) where
-  toFun κ := fun a => -2 * Complex.I * κ a
-  invFun c := fun a => Complex.I / 2 * c a
-  left_inv κ := by
-    funext a
-    linear_combination (-κ a) * Complex.I_mul_I
-  right_inv c := by
-    funext a
-    linear_combination (-c a) * Complex.I_mul_I
-
 section Maps
 
 variable {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]

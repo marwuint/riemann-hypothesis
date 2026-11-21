@@ -1,5 +1,10 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SeparatingAlgebras.StGlob
-import Development.AbelianVarietyTheory.Definitions.Divisors.GenTyL
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsIntegralOpW
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotHasParamOfSubsingleton
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLocalComponentEigenvectorSplitPlace
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParameterSphericalProductSpehQuotients
 
 noncomputable section
 
@@ -19,11 +24,6 @@ def FramedX {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (W : Wt E a) {J : T
     ∀ (F : W.Sp →ₗ[ℂ] (UA E a → ℂ)) (R : ℝ), (∀ g i, ‖ι.symm (F (b g i) g)‖ ≤ R) →
       ∀ j g i, ‖ι.symm (opOf (RU E a) (t j) (F (b g i)) g)‖ ≤ R
 
-theorem Framed.framedX {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {W : Wt E a} {J : Type} {t : J → (UA E a →₀ ℂ)}
-    (h : Framed ι W t) : FramedX ι W t := by
-  obtain ⟨d, b, h⟩ := h
-  exact ⟨Fin d, b, h⟩
-
 def DenomLe (l d : ℕ) (g : UA E a) : Prop :=
   ∀ u : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ u.asIdeal →
     IntMat u (((l : u.adicCompletion E) ^ d) • ((cLoc u g : GL (Fin a) (u.adicCompletion E)) :
@@ -33,10 +33,6 @@ def DenomLe (l d : ℕ) (g : UA E a) : Prop :=
 
 def IntW {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (lam : (E →+* ℂ) → DomWeight a) (f : UA E a →₀ ℂ) : Prop :=
   ∀ g ∈ f.support, g ∈ finU E a ∧ ∃ d : ℕ, DenomLe l d g ∧ ‖ι.symm (f g)‖ ≤ ((l : ℝ)⁻¹) ^ (a * d * wtSize lam)
-
-theorem intW_of {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {lam : (E →+* ℂ) → DomWeight a} {w₀ : HeightOneSpectrum (𝓞 E)}
-    {f : UA E a →₀ ℂ} (h : IsIntegralOpW ι lam w₀ f) : IntW ι lam f :=
-  fun g hg => ⟨(h g hg).1, (h g hg).2.2⟩
 
 def CoefLe {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {σ : Type} (R : ℝ) (x : MvPolynomial σ ℂ) : Prop :=
   ∀ m, ‖ι.symm (MvPolynomial.coeff m x)‖ ≤ R
@@ -98,14 +94,6 @@ def FrameW : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (W : Wt E a) (J : Type)
     (t : J → (UA E a →₀ ℂ)), (∀ j, IntW ι W.at (t j)) → FramedX ι W t
 
-def ScaleW : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ)
-    (lam : (E →+* ℂ) → DomWeight a) (f : UA E a →₀ ℂ), (∀ g ∈ f.support, g ∈ finU E a) → ∃ c : ℂ, c ≠ 0 ∧ IntW ι lam (c • f)
-
-def HypOf : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (K : Subgroup (UA E a)), IsCompact (K : Set (UA E a)) →
-    ∀ w : HeightOneSpectrum (𝓞 E), IsSplitAt w → (∀ x ∈ locU a w, cLoc w x ∈ GlobalTheory.LFun.KGL w a → x ∈ K) → HypAt K w
-
 def MaxCpt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) (H : Subgroup (GL (Fin a) (w.adicCompletion E)))
     (Z : Set (GL (Fin a) (w.adicCompletion E))), IsCompact Z → (H : Set (GL (Fin a) (w.adicCompletion E))) ⊆ Z →
@@ -139,27 +127,6 @@ def TwistPart : Prop :=
 def CharSum : Prop :=
   ∀ (N : ℕ) [NeZero N], ∃ (s : Finset (Multiplicative (ZMod N) →* ℂˣ)), (∀ χ ∈ s, χ ≠ 1) ∧
     ∀ x : Multiplicative (ZMod N), 1 + ∑ χ ∈ s, ((χ x : ℂˣ) : ℂ) = 0 ∨ 1 + ∑ χ ∈ s, ((χ x : ℂˣ) : ℂ) = N
-
-def GenW : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a →
-    ∀ (w₀ : HeightOneSpectrum (𝓞 E)), ((l : ℕ) : 𝓞 E) ∈ w₀.asIdeal → IsSplitAt w₀ →
-    ∀ (K : Subgroup (UA E a)), IsLevelAway w₀ K → ∀ (lam : (E →+* ℂ) → DomWeight a) (S : Finset (HeightOneSpectrum (𝓞 E)))
-      (Φ : HeightOneSpectrum (𝓞 E) → MvPolynomial (Fin a) ℂ), GenData w₀ K S Φ →
-    ∀ P : Submodule ℂ (UA E a → ℂ) → Prop, Dense ι (Wt.ofFam lam) K P →
-    ∀ (J : Type) (t : J → (UA E a →₀ ℂ)) (η : Submodule ℂ (UA E a → ℂ) → J → ℂ), (∀ j, IntW ι lam (t j)) →
-      ActsBy K t η → ∀ U, OfType lam K U →
-        PolyApprox (fun j => ι.symm (η U j))
-          {θ | ∃ U', OfType lam K U' ∧ P U' ∧ (∀ w ∈ S, GenAt w (Φ w) U') ∧ θ = fun j => ι.symm (η U' j)}
-
-def DiscEx : Prop :=
-  ∀ a : ℕ, ∃ D : MvPolynomial (Fin a) ℤ, D.IsSymmetric ∧ D.IsHomogeneous D.totalDegree ∧ D ≠ 0 ∧
-    ∀ (k : Type) [Field k] (z : Fin a → k), MvPolynomial.aeval z D ≠ 0 → Function.Injective z ∧
-      ∀ m : Fin a → ℕ, ∑ i, m i = a → ∏ i, z i ^ m i = ∏ i, z i → m = fun _ => 1
-
-def DiscEx2 : Prop :=
-  ∀ a n : ℕ, ∃ D : MvPolynomial (Fin a) ℤ, D.IsSymmetric ∧ D.IsHomogeneous D.totalDegree ∧ D ≠ 0 ∧
-    ∀ (k : Type) [Field k] (z : Fin a → k), MvPolynomial.aeval z D ≠ 0 →
-      (∀ i j, i ≠ j → ∀ c, 1 ≤ c → c ≤ n → z i ^ c ≠ z j ^ c) ∧ (∀ i j k', ¬ (i = j ∧ k' = j) → z i * z k' ≠ z j ^ 2)
 
 end UpperTheory.Gal.Gen
 

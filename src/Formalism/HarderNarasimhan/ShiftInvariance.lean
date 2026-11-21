@@ -13,7 +13,8 @@ import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ShiftInvariance
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Duality
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.HNExtreme
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PiSumForallInsertOnly
-import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Example
+import Formalism.HarderNarasimhan.DegSupermodZ
+import Formalism.LatticeSlopes.ExistsSaturatedSlopeEqMuMax
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SizeMu
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PlaceSplit
@@ -40,15 +41,11 @@ theorem ratioMax : RatioMax := maximal_slope_ratio
 theorem degSupermod : DegSupermod := degree_supermodular
 theorem muChar : MuChar := slope_characterization
 theorem hnStep_spec : HNStep := hnStep_of degSupermod muChar ratioMax finSup satR satBasic
-theorem slopeIneq : SlopeIneq := slope_inequality_general
 theorem hnSum : HNSum := polygon_slope_sum
 theorem hnSlopes : HNSlopes := polygon_slopes_characterization
 theorem shiftInvariance : ShiftInvariance := shiftInvariance_of muChar muChar hnSlopes
-theorem duality : Duality := slope_duality_formula
-theorem piSum : PiSum := product_slope_sum
 theorem plLat : PlLat := place_lattice_structure
 theorem sizeMu : SizeMu := size_maximal_slope
-theorem gramBlock : GramBlock := gram_block_determinant
 theorem rescaleCovol : RescaleCovol := rescale_covolume_formula
 theorem twist : Twist := twist_of rescaleCovol plLat shiftInvariance
 theorem slopeIneqMean : SlopeIneqMean := slope_inequality_mean

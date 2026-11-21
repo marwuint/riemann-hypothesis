@@ -83,12 +83,6 @@ def C (d : LocData E n) (a : ℕ) {S : Set (Pl E)} : ∀ i : Slot S, Set (GLw a 
   | .inl w => (d.lev a w.1 : Set (GLw a w.1 × GLw (n - a) w.1))
   | .inr w => (d.lev₂ a w.1 : Set (GLw a w.1 × GLw (n - a) w.1))
 
-theorem C_open_le (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) {S : Set (Pl E)} (i : Slot S) :
-    IsOpen (C d a i) ∧ C d a i ⊆ (K2 a (n - a) i.pl : Set (GLw a i.pl × GLw (n - a) i.pl)) := by
-  rcases i with w | w
-  · exact ⟨(locLev_oc d hd a ha w.1).1, (locLev_oc d hd a ha w.1).2.2⟩
-  · exact ⟨(locLev₂_oc d hd a ha w.1).1, (locLev₂_oc d hd a ha w.1).2.2⟩
-
 theorem position_cof {S : Set (Pl E)} {P : Pl E → Prop} (h : ∀ᶠ w in cofinite, P w) :
     ∀ᶠ i : Slot S in cofinite, P i.pl := by
   rw [Filter.eventually_cofinite] at h ⊢
@@ -144,42 +138,6 @@ def levSub (S : Set (Pl E)) (d : LocData E n) (a : ℕ) : Subgroup (Hf E a (n - 
     simp only [map_inv, e]
     exact ⟨inv_mem (hx w hw).1, fun hs => inv_mem ((hx w hw).2 hs)⟩
 
-theorem gSet_sub (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
-    (ha : a ≤ n) : gSet Sec d a ⊆ (((Kf E a).prod (Kf E (n - a)) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a))) := by
-  intro x hx
-  rw [gSet_eq] at hx
-  exact ((hSl E a (n - a) Sec hS).2.2.2.2.2.1 x).2 fun i => (C_open_le d hd a ha i).2 (hx i)
-
-theorem gSet_open (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
-    (ha : a ≤ n) : IsOpen (gSet Sec d a) := by
-  have hSl' := hSl E a (n - a) Sec hS
-  obtain ⟨hKo1, -⟩ := GlobalTheory.T.finite_kernel_compact_open E a
-  obtain ⟨hKo2, -⟩ := GlobalTheory.T.finite_kernel_compact_open E (n - a)
-  set U : Set (Hf E a (n - a)) := (((Kf E a).prod (Kf E (n - a)) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a)))
-    with hU
-  have hUo : IsOpen U := by
-    rw [hU, Subgroup.coe_prod]
-    exact hKo1.prod hKo2
-  have hF := (Filter.eventually_cofinite.1 (C_cof d a (S := Sec)))
-  set V : Set (Hf E a (n - a)) := U ∩ ⋂ i ∈ {i : Slot Sec | ¬ C d a i = (K2 a (n - a) i.pl : Set _)},
-    (i.cp a (n - a)) ⁻¹' C d a i with hV
-  have hVo : IsOpen V :=
-    hUo.inter (hF.isOpen_biInter fun i _ => (C_open_le d hd a ha i).1.preimage (hSl'.2.1 i))
-  have h1V : (1 : Hf E a (n - a)) ∈ V := by
-    refine ⟨one_mem _, Set.mem_iInter₂.2 fun i _ => ?_⟩
-    have h1 : (1 : Hf E a (n - a)) ∈ gSet Sec d a := (levSub Sec d a).one_mem
-    rw [gSet_eq] at h1
-    exact h1 i
-  have hVsub : V ⊆ gSet Sec d a := by
-    intro x hx
-    rw [gSet_eq]
-    intro i
-    by_cases hi : C d a i = (K2 a (n - a) i.pl : Set _)
-    · rw [hi]
-      exact (hSl'.2.2.2.2.2.1 x).1 hx.1 i
-    · exact Set.mem_iInter₂.1 hx.2 i hi
-  exact Subgroup.isOpen_of_mem_nhds (levSub Sec d a) (g := 1) (Filter.mem_of_superset (hVo.mem_nhds h1V) hVsub)
-
 theorem g₁_coe (Sec : Set (Pl E)) (d : LocData E n) (a : ℕ) :
     (g₁ Sec d a : Set (GL (Fin a) (Af E))) = (fun g => ((g, 1) : Hf E a (n - a))) ⁻¹' gSet Sec d a := by
   rw [g₁, show {g | ((g, 1) : Hf E a (n - a)) ∈ gSet Sec d a} =
@@ -191,36 +149,6 @@ theorem g₂_coe (Sec : Set (Pl E)) (d : LocData E n) (a : ℕ) :
   rw [g₂, show {g | ((1, g) : Hf E a (n - a)) ∈ gSet Sec d a} =
     (((levSub Sec d a).comap (MonoidHom.inr _ _) : Subgroup _) : Set _) from rfl, Subgroup.closure_eq]
   rfl
-
-theorem g₁_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
-    (ha : a ≤ n) : IsOpen (g₁ Sec d a : Set (GL (Fin a) (Af E))) ∧ IsCompact (g₁ Sec d a : Set (GL (Fin a) (Af E))) := by
-  have ho : IsOpen (g₁ Sec d a : Set (GL (Fin a) (Af E))) := by
-    rw [g₁_coe]
-    exact (gSet_open hSl hS d hd a ha).preimage (continuous_id.prodMk continuous_const)
-  refine ⟨ho, (GlobalTheory.T.finite_kernel_compact_open E a).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) ?_⟩
-  intro g hg
-  rw [g₁_coe] at hg
-  exact (Subgroup.mem_prod.1 (gSet_sub hSl hS d hd a ha hg)).1
-
-theorem g₂_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
-    (ha : a ≤ n) : IsOpen (g₂ Sec d a : Set (GL (Fin (n - a)) (Af E))) ∧
-      IsCompact (g₂ Sec d a : Set (GL (Fin (n - a)) (Af E))) := by
-  have ho : IsOpen (g₂ Sec d a : Set (GL (Fin (n - a)) (Af E))) := by
-    rw [g₂_coe]
-    exact (gSet_open hSl hS d hd a ha).preimage (continuous_const.prodMk continuous_id)
-  refine ⟨ho, (GlobalTheory.T.finite_kernel_compact_open E (n - a)).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) ?_⟩
-  intro g hg
-  rw [g₂_coe] at hg
-  exact (Subgroup.mem_prod.1 (gSet_sub hSl hS d hd a ha hg)).2
-
-theorem gSet_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
-    (ha : a ≤ n) : IsOpen (gSet Sec d a) ∧ IsCompact (gSet Sec d a) := by
-  have ho := gSet_open hSl hS d hd a ha
-  refine ⟨ho, ?_⟩
-  have hc : IsCompact (((Kf E a).prod (Kf E (n - a)) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a))) := by
-    rw [Subgroup.coe_prod]
-    exact (GlobalTheory.T.finite_kernel_compact_open E a).2.prod (GlobalTheory.T.finite_kernel_compact_open E (n - a)).2
-  exact hc.of_isClosed_subset (Subgroup.isClosed_of_isOpen (levSub Sec d a) ho) (gSet_sub hSl hS d hd a ha)
 
 end PositivityTheory.Rg.BcB.F.Rd.LevOC
 

@@ -29,7 +29,4 @@ def PeriodRingFacts : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateFiel
 def BcrisRegularPeriodRing : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
   (per l K).Reg (Bcr l)
 
-def BstRegularPeriodRing : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
-  (per l K).Reg (Bst l)
-
 end CrystallineSemistableComparison

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStruct
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjPullbackAxesCohomologyProjectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeOneFormFrameAndSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWedgeGlobalOneFormsEqZeroIffStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeOneFormFrameAndSquare
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWedgeGlobalOneFormsEqZeroIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeGlobalOneFormsPrimitiveStatement
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
@@ -24,8 +24,8 @@ private lemma add_add_eq_add_imp {M : Type} [AddCommGroup M] (a b c d : M) (h : 
 theorem wsum_eq_zero_of_mul : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (n : ℕ) (u v : Fin n → GlobForm A.hom), wsum (OAff (A ⊗ A).hom) (fun k ↦ pF μ[A] (u k)) (fun k ↦ pF μ[A] (v k)) = wsum (OAff (A ⊗ A).hom) (fun k ↦ pF (fst A A) (u k)) (fun k ↦ pF (fst A A) (v k)) + wsum (OAff (A ⊗ A).hom) (fun k ↦ pF (snd A A) (u k)) (fun k ↦ pF (snd A A) (v k)) → wsum (OAff A.hom) u v = 0 := by
   intro R _ A _ g hA hs n u v hw
   have hP : ∀ x : GlobForm A.hom, pF μ[A] x = pF (fst A A) x + pF (snd A A) x := GlobalTheory.T.abelianScheme_globalOneForms_primitive R A g hA hs
-  obtain ⟨hF, hC, hA2, hs2⟩ := GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs
-  obtain ⟨hF2, hC2, -, -⟩ := GlobalTheory.T.abelianScheme_oneFormFrame_and_square R (A ⊗ A) (g + g) hA2 hs2
+  obtain ⟨hF, hC, hA2, hs2⟩ := _root_.GlobalTheory.AbCoh.basic_of_isAbelianScheme R A g hA hs
+  obtain ⟨hF2, hC2, -, -⟩ := _root_.GlobalTheory.AbCoh.basic_of_isAbelianScheme R (A ⊗ A) (g + g) hA2 hs2
   obtain ⟨-, hax, -⟩ := GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A
   let U : Fin (n + n) → GlobForm (A ⊗ A).hom :=
     Fin.append (fun k ↦ pF (fst A A) (u k)) (fun k ↦ pF (snd A A) (u k))
@@ -38,8 +38,8 @@ theorem wsum_eq_zero_of_mul : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [Grp
       Finset.sum_add_distrib] at h1
     simp only [wsum, Fin.sum_univ_add, U, V, Fin.append_left, Fin.append_right]
     exact add_add_eq_add_imp _ _ _ _ h1
-  have key := (GlobalTheory.T.sumWedgeGlobalOneForms_eq_zero_iff R _ (OAff (A ⊗ A).hom) hF2 hC2 (n + n) U V).mp hUV
-  refine (GlobalTheory.T.sumWedgeGlobalOneForms_eq_zero_iff R _ (OAff A.hom) hF hC n u v).mpr ?_
+  have key := (_root_.GlobalTheory.AbCoh.wsum_eq_zero_iff R _ (OAff (A ⊗ A).hom) hF2 hC2 (n + n) U V).mp hUV
+  refine (_root_.GlobalTheory.AbCoh.wsum_eq_zero_iff R _ (OAff A.hom) hF hC n u v).mpr ?_
   intro l l'
   have h2 := key (l ∘ₗ pF (lift (𝟙 A) (toUnit A ≫ η[A]))) (l' ∘ₗ pF (lift (toUnit A ≫ η[A]) (𝟙 A)))
   simp only [Fin.sum_univ_add, U, V, Fin.append_left, Fin.append_right, LinearMap.comp_apply,

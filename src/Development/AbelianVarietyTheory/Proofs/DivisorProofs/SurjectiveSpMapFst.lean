@@ -129,28 +129,4 @@ theorem res_app {Y Z : Scheme.{0}} (f : Z ⟶ Y) {V W : Y.Opens} (h : W ≤ V) (
 
 end Geo
 
-section Group
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X)
-  (U : X.affineOpens) (u : Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)
-
-def tanPt (hu : IsTanAtG t (chart U) u) : tEpsG (chart U) ⟶ t.G := Over.homMk u hu.1
-
-def transl (hu : IsTanAtG t (chart U) u) : tEpsG (chart U) ⊗ t.G ⟶ t.G :=
-  snd _ t.G * (fst _ t.G ≫ tanPt t U u hu)
-
-def redPt : Over.mk (chart U) ⟶ tEpsG (chart U) :=
-  Over.homMk (spMap (TrivSqZeroExt.fstHom Γ(X, U.1) Γ(X, U.1) Γ(X, U.1)).toRingHom) (by
-    change _ ≫ spMap _ ≫ chart U = chart U
-    rw [← Category.assoc, spMap_fst_comp, Category.id_comp])
-
-end Group
-
-section Group2
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X)
-  (U : X.affineOpens) (u : Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)
-
-end Group2
-
 end GlobalTheory.InvFieldRing

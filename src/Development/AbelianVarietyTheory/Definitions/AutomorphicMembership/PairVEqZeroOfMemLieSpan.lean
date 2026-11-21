@@ -113,21 +113,6 @@ def htpTrue (ct : At S κ p) : HTpSt ct :=
 
 namespace HTp
 
-variable (ct : At S κ p) {Z : ct.Mdl} (y : ct.Pt Z)
-
-example (τ : PsiT D) : At.psiEmb D τ (A.H.rt : D.host.E) = A.H.rt0 := A.cm _
-
-example (τ : PsiT D) (a : 𝓞 D.host.E) (x : (htpTrue ct).TC y) : letI : Fact p.Prime := ⟨ct.hp⟩; letI := A.H.starRing
-    (ct.htPt y).actV a ((htpTrue ct).eT y τ x) =
-      y.P.emb (At.psiEmb D τ) a • (show (ct.htPt y).V from (htpTrue ct).eT y τ x) := by
-  classical
-  letI : Fact p.Prime := ⟨ct.hp⟩
-  letI := A.H.starRing
-  rw [← coe_embInt]
-  exact mem_eigenSub.1 (proj_mem (isSplitting_embInt y.P) (ct.htPt y).actV _ x) a
-
-example : letI : Fact p.Prime := ⟨ct.hp⟩; letI := A.H.starRing; (ct.htPt y).Ext.X = ct.Ylat y := rfl
-
 end HTp
 
 end GlobalTheory.LocM

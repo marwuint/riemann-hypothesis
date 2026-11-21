@@ -7,18 +7,18 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerIntertwinerSchwartzBruhatIsThetaStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepThetaDatumHalfEqSmulStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EigenOfLocalComponentsFiniteAdelicPairStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHomLatticeIffFrameStabilizerActMemStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentComponentMemFrameStabilizerStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralUnitDeterminantAtIdempotentResidueStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EigenOfLocalComponentsFiniteAdelicPair
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHomLatticeIffFrameStabilizerActMem
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentComponentMemFrameStabilizer
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralUnitDeterminantAtIdempotentResidue
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorFixesLatticeVacuumNonsplitUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PlaceIdempotentUnderEqOfLiesOverStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypePlaceDatumBlockTriangularMoveStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistPlaceDatumParabolicMoveStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrameMatrixMovedHomIntegralReductionsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PlaceIdempotentUnderEqOfLiesOver
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypePlaceDatumBlockTriangularMove
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistPlaceDatumParabolicMove
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrameMatrixMovedHomIntegralReductions
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdeleCharRestrictLocalUnitsResidueCharStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsUnramifiedAtPlaceIdempotentOfHeckeCharUnramifiStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelCharactersUnramifiedOffLevelPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelCharactersUnramifiedOffLevelPlaces
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCharFamIsVacVec
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrame
 
@@ -109,10 +109,10 @@ theorem om_vac (hW : IsWeilDatumO ψ S T χS χT om) (kS : S.SigOK) (kT : T.SigO
   have hsum : ∀ PP ∈ P, ∀ ε, IsPlaceIdem D (PP.under (𝓞 D.host.F)) ε →
       es PP + cA D (es PP) = algebraMap (AF D.host.F) (AE D) ε := fun PP hP ε hε => by
     obtain ⟨v', ε', h1, h2⟩ := (hes PP hP).1.2.2
-    have := GlobalTheory.T.placeIdempotent_under_eq_of_lies_over D _ PP v' ε' (hes PP hP) h1 h2
+    have := _root_.GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP v' ε' (hes PP hP) h1 h2
     subst this
     rw [h2, GlobalTheory.PlaceDatum.placeIdem_eq h1 hε]
-  have key := GlobalTheory.T.eigen_of_local_components_finiteAdelic_pair D S T om f₀ (hW.om_cont f₀ hf.2.theta) g hg h hh (P.image fun PP => PP.under (𝓞 D.host.F))
+  have key := _root_.GlobalTheory.PlaceProduct.eigen_of_local_components D S T om f₀ (hW.om_cont f₀ hf.2.theta) g hg h hh (P.image fun PP => PP.under (𝓞 D.host.F))
     (fun v => ∏ PP ∈ P with PP.under (𝓞 D.host.F) = v, (φ PP : ℂ)) (fun v hv => ?_) (fun v ε hε g' h' hg' hh' => ?_)
   · exact key.trans (congrArg (· • f₀) (prod_fiber P (fun PP => PP.under (𝓞 D.host.F)) φ))
   · refine Finset.prod_eq_one fun PP hP => absurd ?_ hv
@@ -120,8 +120,8 @@ theorem om_vac (hW : IsWeilDatumO ψ S T χS χT om) (kS : S.SigOK) (kT : T.SigO
     exact Finset.mem_image.2 ⟨PP, hP.1, hP.2⟩
   have hεε : algebraMap (AF D.host.F) (AE D) ε * algebraMap (AF D.host.F) (AE D) ε = algebraMap (AF D.host.F) (AE D) ε := by
     rw [← RingHom.map_mul, placeIdem_mul_self hε]
-  have hl := GlobalTheory.T.mem_homLattice_iff_frameStabilizer_act_mem D S T ΛS ΛT βS βT dS dT fS fT g' h' (GlobalTheory.T.idempotentComponent_mem_frameStabilizer D S βS g g' _ hεε sg hg')
-    (GlobalTheory.T.idempotentComponent_mem_frameStabilizer D T βT h h' _ hεε sh hh')
+  have hl := _root_.GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D S T ΛS ΛT βS βT dS dT fS fT g' h' (_root_.GlobalTheory.CompStab.component_mem_St D S βS g g' _ hεε sg hg')
+    (_root_.GlobalTheory.CompStab.component_mem_St D T βT h h' _ hεε sh hh')
   have pg : SuppPl ε S g' := supp_of_comp hεε hg'
   have ph : SuppPl ε T h' := supp_of_comp hεε hh'
   have split : ∀ a : AE D, IsSplitIdem D a → a + cA D a = algebraMap (AF D.host.F) (AE D) ε → ∀ x y : (AE D)ˣ,
@@ -155,8 +155,8 @@ theorem om_vac (hW : IsWeilDatumO ψ S T χS χT om) (kS : S.SigOK) (kT : T.SigO
       refine ((hes PP hP).2 z hz0).1 hz ?_
       rw [h2, zero_mul, RingHom.map_zero]
       exact zero_mem _
-    obtain ⟨x, hx, -, -, hxi, hxr⟩ := GlobalTheory.T.exists_integralUnit_determinantAtIdempotent_residue D S βS g sg (es PP) ha.1
-    obtain ⟨y, hy, -, -, hyi, hyr⟩ := GlobalTheory.T.exists_integralUnit_determinantAtIdempotent_residue D T βT h sh (es PP) ha.1
+    obtain ⟨x, hx, -, -, hxi, hxr⟩ := _root_.GlobalTheory.StabDet.exists_detAt_int D S βS g sg (es PP) ha.1
+    obtain ⟨y, hy, -, -, hyi, hyr⟩ := _root_.GlobalTheory.StabDet.exists_detAt_int D T βT h sh (es PP) ha.1
     rw [split _ ha (hsum PP hP ε hε) x y hx hy, hfil, Finset.prod_singleton,
       hT PP hP _ (hes PP hP) x (sup ha.1 hx) hxi _ (hxr PP (hes PP hP)),
       hS PP hP _ (hes PP hP) y (sup ha.1 hy) hyi _ (hyr PP (hes PP hP)), hφ]
@@ -166,8 +166,8 @@ theorem om_vac (hW : IsWeilDatumO ψ S T χS χT om) (kS : S.SigOK) (kT : T.SigO
     by_cases hs : ∃ a : AE D, IsSplitIdem D a ∧ a + cA D a = algebraMap (AF D.host.F) (AE D) ε
     · obtain ⟨a, ha, hae⟩ := hs
       have h1 : algebraMap (AF D.host.F) (AE D) ε * a = a := by rw [← hae, mul_comm, mul_add, ha.1, ha.2.1, add_zero]
-      obtain ⟨x, hx, x1, x2, -⟩ := GlobalTheory.T.exists_integralUnit_determinantAtIdempotent_residue D S βS g sg a ha.1
-      obtain ⟨y, hy, y1, y2, -⟩ := GlobalTheory.T.exists_integralUnit_determinantAtIdempotent_residue D T βT h sh a ha.1
+      obtain ⟨x, hx, x1, x2, -⟩ := _root_.GlobalTheory.StabDet.exists_detAt_int D S βS g sg a ha.1
+      obtain ⟨y, hy, y1, y2, -⟩ := _root_.GlobalTheory.StabDet.exists_detAt_int D T βT h sh a ha.1
       rw [split _ ha hae x y hx hy, uT v ε hε hv' x (by rw [← sup ha.1 hx, ← mul_assoc, h1]) x1 x2,
         uS v ε hε hv' y (by rw [← sup ha.1 hy, ← mul_assoc, h1]) y1 y2]
       simp
@@ -237,14 +237,14 @@ theorem step_law (hW : IsWeilDatumO ψ S T χS χT om) (kS : S.SigOK) (kT : T.Si
     · rw [a2 PP hP]; exact hQ PP hP
   have h1 := om_vac hW kS kT cS cT dS dT fS fT hf he' (fun PP hP => (hres PP hP).1) (fun PP hP => (hres PP hP).2) uS uT
     hg.1 hh.1 sg sh
-  have hoG := GlobalTheory.T.typePlaceDatum_blockTriangular_move D _ _ r t k ha hb eS eT Pg Q χ ξ (fun PP => redFn βS PP (finE S g)) (fun PP => redFn βT PP (finE T h))
+  have hoG := _root_.GlobalTheory.StepLaw.omegaG_blockTri_move D _ _ r t k ha hb eS eT Pg Q χ ξ (fun PP => redFn βS PP (finE S g)) (fun PP => redFn βT PP (finE T h))
     fun PP hP => ⟨parLev_g hg.2.1 hP, parLev_g hh.2.1 hP, (congrFun hg.2.2 ⟨PP, hP⟩).trans (congrFun hh.2.2 ⟨PP, hP⟩).symm⟩
-  have hoQ := GlobalTheory.T.twistPlaceDatum_parabolic_move D _ _ r ha hb Q ξ 1 (fun PP => redFn βS PP (finE S g)) (fun PP => redFn βT PP (finE T h))
+  have hoQ := _root_.GlobalTheory.ParabolicDatum.omegaQ_parabolic D _ _ r ha hb Q ξ 1 (fun PP => redFn βS PP (finE S g)) (fun PP => redFn βT PP (finE T h))
     fun PP hP => ⟨parLev_q hg.2.1 hP, parLev_q hh.2.1 hP⟩
   have h2 := GlobalTheory.T.weilRep_theta_datum_half_eq_smul D ψ S T χS χT om hW e _ f₀ _ f
     (GlobalTheory.T.schrodingerIntertwiner_schwartzBruhat_isTheta D ψ hW.std S T ΛS ΛT dS dT e (GlobalTheory.PlaceDatum.idemSum_mul_self he) (GlobalTheory.PlaceDatum.infPart_idemSum he) f₀
-      hf.2.theta) hΘ g h (GlobalTheory.T.mem_homLattice_iff_frameStabilizer_act_mem D S T ΛS ΛT βS βT dS dT fS fT g h sg sh) _ (_ * _) (Units.ne_zero _) h1 (fun x => by
-      obtain ⟨i1, i2⟩ := GlobalTheory.T.frameMatrix_movedHom_integral_reductions D S T βS βT g h sg sh x
+      hf.2.theta) hΘ g h (_root_.GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D S T ΛS ΛT βS βT dS dT fS fT g h sg sh) _ (_ * _) (Units.ne_zero _) h1 (fun x => by
+      obtain ⟨i1, i2⟩ := _root_.GlobalTheory.FrameRed.frMapO_actO_int_red D S T βS βT g h sg sh x
       have i0 : IsHalf e (actO S T g⁻¹ h⁻¹ x) ↔ IsHalf e x :=
         ⟨fun H => GlobalTheory.AdelicLatMove.actO_actO_inv S T g h x ▸ GlobalTheory.SplitHecke.isHalf_actO g h H,
           fun H => GlobalTheory.SplitHecke.isHalf_actO _ _ H⟩
@@ -275,7 +275,7 @@ def LevRes (L : LevCh D T0) (t : T0) (j : ℕ) (c : (AE D)ˣ →* Circle) : Prop
   (∀ PP ∈ L.Pg, ResAt c PP (L.chi j PP)⁻¹) ∧ (∀ PP ∈ L.Q t, ResAt c PP (L.xiR t PP)) ∧ UnrOff c (L.Pg ∪ L.Q t)
 
 theorem levRes_mu (hL : L.Is μ0) (t : T0) (j : Fin D.R.m) : LevRes L t ((j : ℕ) + 1) (L.mu t ((j : ℕ) + 1)) := by
-  obtain ⟨-, p1, p2, p3⟩ := GlobalTheory.T.levelCharacters_unramified_off_levelPlaces D T0 L μ0 hL t
+  obtain ⟨-, p1, p2, p3⟩ := _root_.GlobalTheory.levCh_unramified_places D T0 L μ0 hL t
   refine ⟨fun PP hP => ?_, fun PP hP => ?_, UnrOff.mul (fun v ε hε hv => ?_) fun v ε hε hv => ?_⟩
   · have := ((GlobalTheory.T.ideleChar_restrict_localUnits_residueChar D _ _ (hL.mu0 j) PP).1 _ ((L.C.isMu0 j).tame PP) (hL.chi j PP hP)).mul
       ((GlobalTheory.T.ideleChar_restrict_localUnits_residueChar D _ _ (hL.xi t) PP).2 (p1 PP hP))
@@ -323,7 +323,7 @@ theorem stepVec_lifts : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : 
     (GlobalTheory.Chain.VacVec.cart_isCartanInv (R.MY (k + 1)))
     (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βY k hk'))
     (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βY (k + 1) hk)) hc.1 hc'.1 (r_le_Y k) (r_le_Y (k + 1)) ?_ ?_
-    (GlobalTheory.T.levelCharacters_unramified_off_levelPlaces D T0 _ _ hL t).1 (hv t k hk) (fun PP hP => ⟨a1 PP hP, b1 PP hP⟩) (fun PP hP => ⟨a2 PP hP, b2 PP hP⟩) a3 b3 hκ hκ'
+    (_root_.GlobalTheory.levCh_unramified_places D T0 _ _ hL t).1 (hv t k hk) (fun PP hP => ⟨a1 PP hP, b1 PP hP⟩) (fun PP hP => ⟨a2 PP hP, b2 PP hP⟩) a3 b3 hκ hκ'
   · rw [D.sp.Y_rank _ (min_le_right _ _), min_eq_left hk'.le]; rfl
   · rw [D.sp.Y_rank _ (min_le_right _ _), min_eq_left hk.le]; rfl
 

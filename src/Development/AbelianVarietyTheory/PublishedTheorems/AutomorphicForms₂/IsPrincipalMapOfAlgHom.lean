@@ -51,21 +51,6 @@ theorem isRayField_top_iff (L : Type) [Field L] [NumberField L] [Algebra K L] : 
   refine and_congr_right' (and_congr_right' (and_congr_right' (forall₂_congr fun I hI => ?_)))
   rw [exists_rayPair_top_iff hI]
 
-theorem isRayField_self_top_iff : IsRayField K K ⊤ ↔ IsPrincipalIdealRing (𝓞 K) := by
-  have h1 : ∀ (I : Ideal (𝓞 K)) (χ : (K ≃ₐ[K] K) →* ℂˣ), heckeIdeal K χ I = 1 := fun I χ => by
-    rw [Subsingleton.elim χ 1]
-    simp [heckeIdeal, heckeVal_one]
-  rw [isRayField_top_iff]
-  refine ⟨fun h => ⟨fun I => ?_⟩, fun h => ⟨inferInstance, fun _ σ _ => Subsingleton.elim _ _, Subsingleton.elim _ _,
-    fun I _ => iff_of_true (h1 I) (h.principal I)⟩⟩
-  by_cases hI : I = ⊥
-  · rw [hI]; infer_instance
-  · exact (h.2.2.2 I hI).1 (h1 I)
-
-example : IsTotallyComplex (CyclotomicField 3 ℚ) ∧ IsRayField (CyclotomicField 3 ℚ) (CyclotomicField 3 ℚ) ⊤ :=
-  have := IsCyclotomicExtension.Rat.isTotallyComplex (n := 3) (CyclotomicField 3 ℚ) (by norm_num)
-  ⟨this, isRayField_self_top_iff.2 (IsCyclotomicExtension.Rat.three_pid _)⟩
-
 omit [NumberField K] [IsTotallyComplex K] in
 
 theorem isPrincipal_map_of_algHom {L M : Type} [Field L] [Algebra K L] [Field M] [Algebra K M] (f : L →ₐ[K] M)

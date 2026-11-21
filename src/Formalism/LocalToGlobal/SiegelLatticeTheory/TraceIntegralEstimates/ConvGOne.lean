@@ -20,10 +20,6 @@ def Kv {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w : D.what₂.W
   ‖X.Wloc w v a‖ₑ * ∫⁻ b, ‖⟪X.B.σ v (uMat a) (X.B.w v), X.B.σ v (uMat b) (X.B.w v)⟫_ℂ‖ₑ * ‖X.Wloc w v b‖ₑ
     ∂(Formalism.REAL.muG (X.B.I.ε v))
 
-def LocQuad1 : Prop :=
-  ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w : D.what₂.Word) (μS νl : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v)))
-    (C : ℝ≥0∞), Formalism.L2.SG.Pf.WuDec.QuotWit X w μS νl C → ∀ v, ∫⁻ a, Kv X w v a ∂(νl v) < ⊤
-
 section Pf
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)

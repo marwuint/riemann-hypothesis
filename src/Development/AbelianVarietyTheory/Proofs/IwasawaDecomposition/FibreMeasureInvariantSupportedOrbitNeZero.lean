@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreFamilyHermitianQuadraticFormAtUnitPropsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasuresTransportUnitarySimilitudeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarModulusTensorEqModulusNormStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreFamilyHermitianQuadraticFormAtUnitProps
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibreMeasuresTransportUnitarySimilitude
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarModulusTensorEqModulusNorm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousDistribHaarCharUnits
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmExtensionLocalFieldProductRingExistsSmulEqStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmExtensionLocalFieldProductRingExistsSmulEq
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
@@ -96,7 +96,7 @@ theorem fibre_invariant_orbit_ne_zero : ∀ (F E : Type) [Field F] [NumberField 
   intro F E _ _ _ _ _ σ hCM R _ _ _ _ _ _ _ _ _ hN M J x β lam ν m hJ hβ hx hlam hν hm
   have hu : IsUnit (algebraMap F R β) := (IsUnit.mk0 β hβ).map _
   have hq : qR R σ J (ratTup (F := F) R x 0) = algebraMap F R β := q_rat R σ J hCM.2.2.1 (x 0) β hx
-  obtain ⟨hsupp, -, huniq⟩ := GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ R hN M J _ ν _ m hν hu hm
+  obtain ⟨hsupp, -, huniq⟩ := _root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ R hN M J _ ν _ m hν hu hm
   have h1 : modu R 1 = 1 := (GlobalTheory.GaugeEx.modu_basic R).2.2.1
   refine ⟨fun g => ?_, ?_, ?_⟩
   · set G : Matrix (Fin M) (Fin M) (R ⊗[F] E) := (HA.mat R σ J g).val with hG
@@ -107,8 +107,8 @@ theorem fibre_invariant_orbit_ne_zero : ∀ (F E : Type) [Field F] [NumberField 
       rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
       exact (IsUnit.mk0 _ hJ.2).map _
     have hm1 : modu (R ⊗[F] E) G.det = 1 := by
-      rw [(GlobalTheory.T.haarModulus_tensor_eq_modulus_norm F E σ hCM R G.det 1 hd (by rw [map_one, det_norm _ _ hJu hg])).2, h1]
-    have := GlobalTheory.T.fibreMeasures_transport_unitary_similitude F E σ R hN M J J lam ν _ 1 m G hlam hν hd isUnit_one
+      rw [(_root_.GlobalTheory.GaugeEx.modu_eq_modu_norm F E σ hCM R G.det 1 hd (by rw [map_one, det_norm _ _ hJu hg])).2, h1]
+    have := _root_.GlobalTheory.GaugeEx.fibAt_similitude F E σ R hN M J J lam ν _ 1 m G hlam hν hd isUnit_one
       (fun z => by rw [one_mul]; unfold qR hR; rw [form_mulVec _ _ hg]) hm
     rw [one_mul, hm1, h1, inv_one, mul_one, one_smul] at this
     have e : lrAct G 1 = fun X : Fin 1 → Fin M → R ⊗[F] E => g • X := by
@@ -116,7 +116,7 @@ theorem fibre_invariant_orbit_ne_zero : ∀ (F E : Type) [Field F] [NumberField 
     rw [e] at this
     exact huniq _ this
   · refine measure_mono_null (fun y hy => ?_) hsupp
-    exact fun h => hy (GlobalTheory.T.cmExtension_localFieldProductRing_exists_smul_eq F E σ hCM R hN M J hJ _ _ y hu hq h)
+    exact fun h => hy (_root_.GlobalTheory.GaugeWittLoc.exists_smul_eq F E σ hCM R hN M J hJ _ _ y hu hq h)
   · rintro rfl
     obtain ⟨-, -, hO, U, hU, h1U, s, -, -, hs⟩ := id hN
     obtain ⟨fib, hfib, -⟩ := id hm
@@ -131,12 +131,12 @@ theorem fibre_invariant_orbit_ne_zero : ∀ (F E : Type) [Field F] [NumberField 
       have hr : r * r = b * (↑w⁻¹ : R) := hs _ hbU
       have hrr : IsUnit (r * r) := hr ▸ IsUnit.mul hb (Units.isUnit _)
       have hru : IsUnit r := isUnit_of_mul_isUnit_left hrr
-      have := GlobalTheory.T.fibreMeasures_transport_unitary_similitude F E σ R hN M J J lam ν _ (r * r) 0
+      have := _root_.GlobalTheory.GaugeEx.fibAt_similitude F E σ R hN M J J lam ν _ (r * r) 0
         (algebraMap R (R ⊗[F] E) r • (1 : Matrix (Fin M) (Fin M) (R ⊗[F] E))) hlam hν
         (by rw [Matrix.det_smul, Matrix.det_one, mul_one]; exact (hru.map _).pow _) hrr
         (fun z => by rw [Matrix.smul_mulVec, Matrix.one_mulVec, q_scale]) hm
       rw [Measure.map_zero, smul_zero, hr, ← hw, Units.inv_mul_cancel_right] at this
-      exact (GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ R hN M J _ ν _ 0 hν hb this).2.2 _ ⟨fib, hfib, rfl⟩
+      exact (_root_.GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ R hN M J _ ν _ 0 hν hb this).2.2 _ ⟨fib, hfib, rfl⟩
     let O : Set (Fin 1 → Fin M → R ⊗[F] E) := (fun X => qR R σ J (X 0)) ⁻¹' T
     have hOo : IsOpen O := hT.preimage ((q_cont R σ J).comp (continuous_apply 0))
     have hne : O.Nonempty := ⟨ratTup (F := F) R x, by

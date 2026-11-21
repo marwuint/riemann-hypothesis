@@ -1,9 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartz
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilTripleNormStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilTripleNorm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTransformDarbouxModelLinearInjective
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartzStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilFactorization
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLineOperatorPolynomialStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelStandardCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelStandardCharacter
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodSplitPlaceTranslationActsThroughWeil
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -77,7 +84,7 @@ theorem read_lieDer : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fu
   intro hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hwA hwB e Bs Γ Xc om om' h htA htB R Rf hM τ Y hY γ hγ hγt Φ hΦ Φ' hΦ' hD
   have hψe := h.ψ
   subst hψe
-  obtain ⟨Ψ, hΨ, hΦeq⟩ := (GlobalTheory.T.seesaw_weil_triple_norm hH hP D Bs.ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hwA hwB e Bs Γ Xc om om' h
+  obtain ⟨Ψ, hΨ, hΦeq⟩ := (_root_.GlobalTheory.TripleInv.theta_surj hH hP D Bs.ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hwA hwB e Bs Γ Xc om om' h
     htA htB R Rf hM).2 Φ hΦ
   obtain ⟨m, f, φ, hfφ, hΨeq⟩ := exists_sum_pure Γ.M' Bs.ψ Bs.emb hΨ
   obtain ⟨δ, hδ⟩ := GlobalTheory.T.exists_line_operator_polynomial hP Bs Γ Xc om om' hM.triple γ hγ
@@ -96,7 +103,7 @@ theorem read_lieDer : GlobalTheory.Published.HoweDualityReal → GlobalTheory.Fu
       intro t
       rw [← hΦeq, ← htB Ψ hΨs 1 (oneP θ X τ Y t), GlobalTheory.LocWeilAct.conjU_one', ← hγt t, hΨeq]
       rfl
-    have hd := GlobalTheory.T.weil_model_standard_character hP Γ.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hM.triple.base.cm hM.triple.base.std
+    have hd := _root_.GlobalTheory.ThetaLineDer.hasDerivAt_thetaSum_line hP Γ.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hM.triple.base.cm hM.triple.base.std
       hM.triple.geo.hM' hM.triple.weil' γ hγ m f (fun i => δ (f i)) φ (fun i => ⟨(hfφ i).2.1, (hfφ i).2.2⟩)
       (fun i => (hδ (f i) (hfφ i).1).2) (GlobalTheory.TripleRead.ptO (sgn false W₁).gram e x)
     have hDx : HasDerivAt (fun t : ℝ => ωB (1, oneP θ X τ Y t) Φ x) (Φ' x) 0 := hD x

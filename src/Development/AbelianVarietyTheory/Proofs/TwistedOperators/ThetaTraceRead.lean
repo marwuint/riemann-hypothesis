@@ -4,9 +4,12 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SplitL
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnramifiedCharacter
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckePrimeDetection
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SqrtDivMulEqSqrtMul
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeThetaValueIdentityUnitFramesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeThetaValueIdentityUnitFrames
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsCan
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsGeneratorRatioEqOneOfUnitFrameMove
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingForms
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeKernelComplexPointMatchesCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslateVacuumReadRationalPointsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslateVacuumReadRationalPoints
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalApproxFinitePointVacuumLevelStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckePointThetaTraceEqPhasedTranslateSumStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Datum ReciprocityTheory.ChartRestriction.G.PullbackSections ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -68,7 +71,7 @@ theorem theta_trace_read : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke
   rw [GlobalTheory.T.heckePointThetaTrace_eq_phasedTranslateSum D hHk hSL hVF G Pl0 T0 A T R F κ v₀ hLev hGrp hFam hMod hThP hTie i σ hσ hV P p k α Rc hS h hx
     a ha C z hz hx' t ht hb ph b hph hbON hpin γ' hγ' hfr' Wt' Y' e he Δ hΔ ℓ u (fun x hx => hℓu x (hfin x hx)) X z' hz']
   refine Finset.sum_congr rfl fun x hx => ?_
-  rw [GlobalTheory.T.heisenbergTranslate_vacuum_read_rationalPoints D G Pl0 T0 A T R hLev hFam hThP i (γ' * h) x (hfin x hx) (ℓ x) (u x)
+  rw [_root_.GlobalTheory.HeisRatRead.heis_translate_read D G Pl0 T0 A T R hLev hFam hThP i (γ' * h) x (hfin x hx) (ℓ x) (u x)
     (hℓu x (hfin x hx)).1 (hℓu x (hfin x hx)).2.1 (hℓu x (hfin x hx)).2.2 X]
 
 end GlobalTheory.HeckeGeoRead

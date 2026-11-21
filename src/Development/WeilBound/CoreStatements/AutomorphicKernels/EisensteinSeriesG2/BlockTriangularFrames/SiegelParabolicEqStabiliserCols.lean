@@ -11,58 +11,6 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
 open GlobalTheory.Doubling (absE)
 
-section Matrix
-
-variable {m R : Type*} [Fintype m] [DecidableEq m] [CommRing R] {b : m → ℕ}
-
-def blkDiag (b : m → ℕ) (M : Matrix m m R) : Matrix m m R := fun i j => if b i = b j then M i j else 0
-
-theorem blkDiag_one : blkDiag b (1 : Matrix m m R) = 1 := by
-  ext i j
-  by_cases h : i = j
-  · subst h; simp [blkDiag]
-  · simp [blkDiag, Matrix.one_apply_ne h]
-
-theorem blkDiag_mul {M N : Matrix m m R} (hM : M.BlockTriangular b) (hN : N.BlockTriangular b) :
-    blkDiag b (M * N) = blkDiag b M * blkDiag b N := by
-  ext i j
-  simp only [blkDiag, Matrix.mul_apply]
-  by_cases h : b i = b j
-  · rw [if_pos h]
-    refine Finset.sum_congr rfl fun k _ => ?_
-    by_cases hik : b i = b k
-    · rw [if_pos hik, if_pos (hik ▸ h)]
-    · rw [if_neg hik, zero_mul]
-      rcases lt_or_gt_of_ne hik with hlt | hgt
-      · rw [hN (show b j < b k from h ▸ hlt), mul_zero]
-      · rw [hM hgt, zero_mul]
-  · rw [if_neg h]
-    symm
-    refine Finset.sum_eq_zero fun k _ => ?_
-    by_cases hik : b i = b k
-    · rw [if_pos hik, if_neg (fun hkj => h (hik.trans hkj)), mul_zero]
-    · rw [if_neg hik, zero_mul]
-
-theorem uniCond_iff (M : Matrix m m R) :
-    (∀ i j, b j ≤ b i → M i j = (1 : Matrix m m R) i j) ↔ M.BlockTriangular b ∧ blkDiag b M = 1 := by
-  constructor
-  · intro h
-    refine ⟨fun i j hij => ?_, ?_⟩
-    · rw [h i j hij.le, Matrix.one_apply_ne (fun e => (e ▸ hij).false)]
-    · ext i j
-      simp only [blkDiag]
-      split_ifs with hij
-      · exact h i j hij.ge
-      · rw [Matrix.one_apply_ne (fun e => hij (by rw [e]))]
-  · rintro ⟨hM, hD⟩ i j hij
-    rcases hij.lt_or_eq with hlt | heq
-    · rw [hM hlt, Matrix.one_apply_ne (fun e => (e ▸ hlt).false)]
-    · have := congrFun (congrFun hD i) j
-      simp only [blkDiag, if_pos heq.symm] at this
-      exact this
-
-end Matrix
-
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {Y : Spc F E n}
 
@@ -121,23 +69,6 @@ def parS (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) : Subgroup (G2 σ Y) 
 
 theorem mem_parS {b : GL (Fin n ⊕ Fin n) E} {S : Finset (Fin n)} {g : G2 σ Y} :
     g ∈ parS σ Y b S ↔ (inFrame b g).BlockTriangular (lev S) := Iff.rfl
-
-variable (σ Y) in
-
-def uniS (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) : Subgroup (G2 σ Y) where
-  carrier := {g | ∀ i j, lev S j ≤ lev S i → inFrame b g i j = (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) i j}
-  mul_mem' := fun {x y} hx hy => by
-    simp only [Set.mem_ofPred_eq, uniCond_iff, inFrame_mul] at *
-    exact ⟨hx.1.mul hy.1, by rw [blkDiag_mul hx.1 hy.1, hx.2, hy.2, Matrix.one_mul]⟩
-  one_mem' := by
-    simp [inFrame_one]
-  inv_mem' := fun {x} hx => by
-    simp only [Set.mem_ofPred_eq, uniCond_iff] at *
-    have h1 := blockTriangular_inFrame_inv b hx.1
-    refine ⟨h1, ?_⟩
-    have := blkDiag_mul h1 hx.1
-    rw [inFrame_inv_mul, blkDiag_one, hx.2, Matrix.mul_one] at this
-    exact this.symm
 
 section Siegel
 
@@ -243,74 +174,10 @@ theorem isPar_of_mem_siegelS {b : GL (Fin n ⊕ Fin n) E} {t0 : GL (Fin n) E}
   · rw [map_mul, map_mul, mul_comm (Matrix.GeneralLinearGroup.det (glA (F := F) t0)), mul_assoc, map_inv, mul_inv_cancel, mul_one,
       Matrix.GeneralLinearGroup.val_det_apply]
 
-structure IsHS (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) (K : Subgroup (G2 σ Y)) (H : G2 σ Y → Fin S.card → ℝ) :
-    Prop where
-  iwa : ∀ x : G2 σ Y, ∃ p ∈ parS σ Y b S, ∃ k ∈ K, x = p * k
-  val : ∀ p ∈ parS σ Y b S, ∀ k ∈ K, ∀ (ℓ : Fin S.card) (u : (AE F E)ˣ),
-    (u : AE F E) = ((inFrame b p).toSquareBlock (lev S) (ℓ : ℕ)).det → H (p * k) ℓ = Real.log (absE F E u)
-
-def siegelLevelZeroEquiv (hn : 0 < n) : Fin n ≃ {a : Fin n ⊕ Fin n // lev (siegelS hn) a = 0} where
-  toFun i := ⟨Sum.inl i, lev_siegelS_inl hn i⟩
-  invFun a := Sum.elim id (fun _ => ⟨0, hn⟩) a.1
-  left_inv _ := rfl
-  right_inv := by
-    rintro ⟨a | a, h⟩
-    · rfl
-    · rw [lev_siegelS_inr] at h
-      exact absurd h (by norm_num)
-
-open scoped Classical in
-variable (F) in
-
-def archInf : ℝ →+* InfiniteAdeleRing F :=
-  RingHom.pi fun v => if h : v.IsReal then (InfinitePlace.Completion.ringEquivRealOfIsReal h).symm.toRingHom
-    else (InfinitePlace.Completion.ringEquivComplexOfIsComplex
-      (InfinitePlace.not_isReal_iff_isComplex.1 h)).symm.toRingHom.comp Complex.ofRealHom
-
-variable (F) in
-
-def archA (r : ℝ) : AF F := ((archInf F r, 1) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
-
-theorem archA_mul (r s : ℝ) : archA F (r * s) = archA F r * archA F s :=
-  Prod.ext (map_mul (archInf F) r s) (mul_one 1).symm
-
-theorem archA_one : archA F 1 = 1 :=
-  Prod.ext (map_one (archInf F)) rfl
-
-def scl (S : Finset (Fin n)) (t : Fin S.card → ℝ) : Fin n ⊕ Fin n → ℝ
-  | Sum.inl i => if h : below S i < S.card then Real.exp (t ⟨below S i, h⟩) else 1
-  | Sum.inr i => if h : below S i < S.card then Real.exp (-t ⟨below S i, h⟩) else 1
-
-theorem scl_mul_neg (S : Finset (Fin n)) (t : Fin S.card → ℝ) (i : Fin n ⊕ Fin n) : scl S t i * scl S (-t) i = 1 := by
-  rcases i with i | i <;> simp only [scl, Pi.neg_apply, neg_neg] <;> split_ifs <;> simp [← Real.exp_add]
-
-variable (F E) in
-
-def aDiag (S : Finset (Fin n)) (t : Fin S.card → ℝ) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) :=
-  Matrix.diagonal fun i => algebraMap (AF F) (AE F E) (archA F (scl S t i))
-
-theorem aDiag_mul_neg (S : Finset (Fin n)) (t : Fin S.card → ℝ) : aDiag F E S t * aDiag F E S (-t) = 1 := by
-  simp only [aDiag, Matrix.diagonal_mul_diagonal, ← map_mul, ← archA_mul, scl_mul_neg, archA_one, map_one,
-    Matrix.diagonal_one]
-
-theorem aDiag_neg_mul (S : Finset (Fin n)) (t : Fin S.card → ℝ) : aDiag F E S (-t) * aDiag F E S t = 1 := by
-  simpa using aDiag_mul_neg (F := F) (E := E) S (-t)
-
 theorem conj_mul_conj (b : GL (Fin n ⊕ Fin n) E) (X Z : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) :
     incM F b.1 * X * incM F (b⁻¹).1 * (incM F b.1 * Z * incM F (b⁻¹).1) = incM F b.1 * (X * Z) * incM F (b⁻¹).1 := by
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (incM F (b⁻¹).1) (incM F b.1), incM_inv_mul, Matrix.one_mul]
-
-def IsAS (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) (t : Fin S.card → ℝ) (g : G2 σ Y) : Prop :=
-  inFrame b g = aDiag F E S t
-
-variable (F) in
-
-def aU (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) (t : Fin S.card → ℝ) : GL (Fin n ⊕ Fin n) (AE F E) where
-  val := incM F b.1 * aDiag F E S t * incM F (b⁻¹).1
-  inv := incM F b.1 * aDiag F E S (-t) * incM F (b⁻¹).1
-  val_inv := (conj_mul_conj b _ _).trans (by rw [aDiag_mul_neg, Matrix.mul_one, incM_mul_inv])
-  inv_val := (conj_mul_conj b _ _).trans (by rw [aDiag_neg_mul, Matrix.mul_one, incM_mul_inv])
 
 theorem incM_alt_alt (e : E) :
     incM F (Matrix.fromBlocks 0 1 (e • 1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) =
@@ -340,23 +207,5 @@ theorem frame_adelic {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ}
   simp only [Matrix.map_mul, incM_dbl, map_sigma_incM] at this
   rw [← incM_alt_alt]
   exact this
-
-variable (σ Y) in
-
-def aS (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) (t : Fin S.card → ℝ) : G2 σ Y := by
-  classical
-  exact if h : aU F b S t ∈ UG (cA σ) (dbl (incM F Y.J)) then ⟨aU F b S t, h⟩ else 1
-
-structure IsCTData (b : GL (Fin n ⊕ Fin n) E) (S : Finset (Fin n)) (μ : Measure (uniS σ Y b S))
-    (D : Set (uniS σ Y b S)) : Prop where
-  inv : ∀ (u : uniS σ Y b S) (A : Set (uniS σ Y b S)), MeasurableSet A → μ ((u * ·) ⁻¹' A) = μ A
-  fund : IsFundamentalDomain ((rat2 σ Y).subgroupOf (uniS σ Y b S)) D μ
-  vol : μ D = 1
-
-def constTerm {b : GL (Fin n ⊕ Fin n) E} {S : Finset (Fin n)} (μ : Measure (uniS σ Y b S)) (D : Set (uniS σ Y b S))
-    (φ : G2 σ Y → ℂ) (g : G2 σ Y) : ℂ :=
-  ∫ u in D, φ ((u : G2 σ Y) * g) ∂μ
-
-def conv (μ : Measure (G2 σ Y)) (h φ : G2 σ Y → ℂ) (x : G2 σ Y) : ℂ := ∫ y, h y * φ (x * y) ∂μ
 
 end SiegelEisensteinSeries.Grp

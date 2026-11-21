@@ -67,25 +67,7 @@ theorem nonempty_adelicDecomposition {V : Type u} [AddCommGroup V] [Module ℂ V
   obtain ⟨T⟩ := AdelicGLn.nonempty_tensorDecomposition D.isAdmissible₂ D.isIrreducible₂
   exact ⟨⟨D, T⟩⟩
 
-def _root_.GroundTheory.Automorphic.AdelicGLn.TensorDecomposition.transport {V V' : Type u}
-    [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
-    {ρ : Representation ℂ (AdelicGLn.FiniteAdelicGL K n) V}
-    {ρ' : Representation ℂ (AdelicGLn.FiniteAdelicGL K n) V'} (E : ρ.Equiv ρ')
-    (T : AdelicGLn.TensorDecomposition K n ρ') : AdelicGLn.TensorDecomposition K n ρ :=
-  { T with equiv := E.trans T.equiv }
-
 namespace AdelicDecomposition
-
-variable {V : Type u} [AddCommGroup V] [Module ℂ V] {Mx : AdelicGKModule K n V}
-
-theorem nonempty_equiv_arch (D D' : AdelicDecomposition Mx) :
-    Nonempty (D.toDecomposition.π₁.rep.Equiv D'.toDecomposition.π₁.rep) :=
-  GKLModule.Decomposition.nonempty_equiv_arch _ _
-
-theorem nonempty_equiv_local (D D' : AdelicDecomposition Mx) (v : HeightOneSpectrum (𝓞 K)) :
-    Nonempty ((D.finite.π v).Equiv (D'.finite.π v)) := by
-  obtain ⟨E⟩ := GKLModule.Decomposition.nonempty_equiv_fin D.toDecomposition D'.toDecomposition
-  exact AdelicGLn.TensorDecomposition.nonempty_equiv D.finite (D'.finite.transport E) v
 
 end AdelicDecomposition
 
@@ -102,27 +84,7 @@ def cuspSubmodule (U : Submodule ℂ (cuspForms K n))
   comm_σ k g := LinearMap.ext fun φ => Subtype.ext
     (gkModuleCusp_σ_finRepCusp k g φ)
 
-variable (K n) in
-
-structure CuspidalAutomorphicRep where
-
-  carrier : Submodule ℂ (cuspForms K n)
-  stable_ρ : ∀ X, ∀ φ ∈ carrier, (gkModuleCusp K n).ρ X φ ∈ carrier
-  stable_σ : ∀ k, ∀ φ ∈ carrier, (gkModuleCusp K n).σ k φ ∈ carrier
-  stable_τ : ∀ g, ∀ φ ∈ carrier, finRepCusp K n g φ ∈ carrier
-  isIrreducible : (cuspSubmodule K n carrier stable_ρ stable_σ stable_τ).IsIrreducible
-  exists_compl : ∃ C : Submodule ℂ (cuspForms K n), IsCompl carrier C ∧
-    (∀ X, ∀ φ ∈ C, (gkModuleCusp K n).ρ X φ ∈ C) ∧ (∀ k, ∀ φ ∈ C, (gkModuleCusp K n).σ k φ ∈ C) ∧
-    ∀ g, ∀ φ ∈ C, finRepCusp K n g φ ∈ C
-
 namespace CuspidalAutomorphicRep
-
-abbrev toModule (π : CuspidalAutomorphicRep K n) : AdelicGKModule K n π.carrier :=
-  cuspSubmodule K n π.carrier π.stable_ρ π.stable_σ π.stable_τ
-
-theorem nonempty_adelicDecomposition (π : CuspidalAutomorphicRep K n)
-    (hadm : π.toModule.IsAdmissible) : Nonempty (AdelicDecomposition π.toModule) :=
-  AutomorphicForm.nonempty_adelicDecomposition π.toModule π.isIrreducible hadm
 
 end CuspidalAutomorphicRep
 

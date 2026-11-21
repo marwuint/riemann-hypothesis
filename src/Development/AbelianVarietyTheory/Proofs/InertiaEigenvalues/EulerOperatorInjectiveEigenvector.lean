@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SummableFinprodOfFiniteSupportEulerSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProdOneSubBoundedBelowOfSummableStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SummableFinprodOfFiniteSupportEulerSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProdOneSubBoundedBelowOfSummable
 open MeasureTheory Filter Topology
 open scoped InnerProductSpace BigOperators
 
@@ -116,7 +116,7 @@ theorem eulerOp_rec : ∀ (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : �
 
 theorem eulerOp_normSummable (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : ∀ v, X v) (H : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] (a : ∀ v, X v → ℂ) (s : ι → ℝ) (B : (∀ v, X v) → (H →L[ℂ] H)) (ha0 : ∀ v, a v (x0 v) = 1) (hs : Summable s) (hC : ∀ v (C : Finset (X v)), x0 v ∉ C → ∑ x ∈ C, ‖a v x‖ ≤ s v) (hB : ∀ f, ‖B f‖ ≤ 1) :
     Summable (fun f : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} => ‖(∏ᶠ v, a v (f.1 v)) • B f.1‖) := by
-  have h1 := GlobalTheory.T.summable_finprod_of_finite_support_euler_sum ι X x0 (fun v x => ‖a v x‖) s (fun v x => norm_nonneg _) (by intro v; simp [ha0]) hs hC
+  have h1 := _root_.GlobalTheory.summable_finprod_of_finite_support_euler ι X x0 (fun v x => ‖a v x‖) s (fun v x => norm_nonneg _) (by intro v; simp [ha0]) hs hC
   refine Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun f => ?_) h1
   rw [norm_smul]
   have hfin := f.2
@@ -168,7 +168,7 @@ theorem eulerOp_injective_eigen : ∀ (ι : Type) [DecidableEq ι] (X : ι → T
       by_contra h
       exact hw (hS (by simpa using h))
     exact (Set.indicator_of_mem hm t).symm
-  obtain ⟨δ, hδ, hδS⟩ := GlobalTheory.T.prod_one_sub_bounded_below_of_summable ι s hs0 hs1 hs
+  obtain ⟨δ, hδ, hδS⟩ := _root_.GlobalTheory.prod_one_sub_bounded_below ι s hs0 hs1 hs
   have hlow : ∀ S : Finset ι, ∀ y, (∏ v ∈ S, (1 - s v)) * ‖y‖ ≤ ‖WS S y‖ := by
     intro S
     induction S using Finset.induction_on with

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeAtHolds
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SettingAtPoint
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
@@ -12,9 +12,6 @@ open Formalism.L2 Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links
 open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim
 namespace GlobalTheory.BigTop.Fun.SizeProof
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
-section Sizes
-variable {D : D7} {L : SizeData₂ D}
-end Sizes
 section Main
 variable {D : D7} {L : SizeData₂ D}
 theorem sizeAt_alt : _root_.GlobalTheory.BigTop.Fun.SizeAtAlt :=

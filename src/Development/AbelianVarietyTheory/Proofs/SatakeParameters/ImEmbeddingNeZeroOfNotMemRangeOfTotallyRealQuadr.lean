@@ -52,7 +52,4 @@ theorem im_embedding_ne_zero_of_not_mem_range_of_totallyReal_quadratic
   exact InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)
     (InfinitePlace.isReal_iff.2 hreal)
 
-example : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] [Algebra.IsQuadraticExtension F E] (w : InfinitePlace E) (θ : E), θ ∉ Set.range (algebraMap F E) → (w.embedding θ).im ≠ 0 :=
-  im_embedding_ne_zero_of_not_mem_range_of_totallyReal_quadratic
-
 end GlobalTheory

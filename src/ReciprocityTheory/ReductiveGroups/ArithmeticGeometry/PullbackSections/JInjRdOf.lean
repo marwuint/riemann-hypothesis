@@ -69,9 +69,4 @@ theorem jInjRd_of_wt {D : D7} (T : Top D) (hM : LawsM T.toCore) {j : ℕ} (hj : 
   intro i
   exact congrFun hc i
 
-theorem jInjRd_of_bcex {D : D7} (T : Top D) (hM : LawsM T.toCore) {j : ℕ} (hj : InR D j)
-    (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
-    (hA : BCEx (T.Q.Xo j) T.Q.c T.σ₀) (hD : BorDesc (T.Q.Xo j) T.Q.c) : JInjRd T j a n :=
-  jInjRd_of_wt T hM hj a n hA (wtField_of hD)
-
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

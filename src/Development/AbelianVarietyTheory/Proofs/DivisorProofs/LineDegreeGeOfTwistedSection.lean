@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistAtOfNe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleAdelicMatrixFamilyOrdersFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleAdelicMatrixFamilyOrdersFinite
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef Polynomial
@@ -27,7 +27,7 @@ end GlobalTheory.Nef.LineBound
 theorem GlobalTheory.Nef.degLine_ge_of_twist : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F → ∀ (n : ℕ) (h : Place k F → Matrix (Fin n) (Fin n) F), admitted h → ∀ (v₀ : Place k F) (π : F), π ≠ 0 → ord v₀ π = 1 → ∀ (e : ℤ) (p : Fin n → F), p ≠ 0 → (∀ (v : Place k F) (i : Fin n), v.1 ((twistAt v₀ (π ^ (-e)) h v).mulVec p i) ≤ 1) → e ≤ degLine h p := by
   intro k F _ _ _ _ _ hF n h hA v₀ π hπ hord e p hp hle
   classical
-  obtain ⟨-, hw⟩ := GlobalTheory.T.admissibleAdelicMatrixFamily_orders_finite k F hF n h hA
+  obtain ⟨-, hw⟩ := _root_.GlobalTheory.Nef.lineFin k F hF n h hA
   obtain ⟨hfin, hne⟩ := hw p hp
   set d : Place k F → ℤ := fun v => ordVec v ((h v).mulVec p) with hd
   have hsupp : Function.support d ⊆ {v : Place k F | nrm v ((h v).mulVec p) ≠ 1} := fun v hv => by

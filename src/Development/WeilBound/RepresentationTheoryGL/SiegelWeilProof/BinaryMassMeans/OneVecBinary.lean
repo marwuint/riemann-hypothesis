@@ -2,24 +2,25 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMe
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.LowRankSiegelDensities.SiegelDensitiesLowAOf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EquidistributionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormThetaMulStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeanValueFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocompactnessStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalMassFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VectorLengthFormulaOfPartsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimilitudeInvarianceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HassePrincipleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftSideFormulaStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeanValueFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Cocompactness
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalMassFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VectorLengthFormulaOfParts
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimilitudeInvariance
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HassePrinciple
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionExists
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftSideFormula
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.SingleRowSide.Srside
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CountingFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneVectorFormulaOfPartsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CountingFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneVectorFormulaOfParts
 
 namespace PositivityTheory.Rg.Mass
 
 theorem e1 : E1 :=
-  GlobalTheory.T.one_vector_formula_of_parts (GlobalTheory.T.vector_length_formula_of_parts GlobalTheory.T.cocompactness GlobalTheory.T.local_mass_formula) GlobalTheory.T.similitude_invariance GlobalTheory.T.hasse_principle
-    (GlobalTheory.T.counting_formula GlobalTheory.T.test_function_exists (GlobalTheory.T.left_side_formula GlobalTheory.T.equidistribution GlobalTheory.T.cocompactness)
-      (PositivityTheory.Rg.Mass.LiteralAutomorphy.srside (GlobalTheory.T.mean_value_formula GlobalTheory.T.equidistribution GlobalTheory.T.counting_bound_alt) GlobalTheory.T.local_mass_formula))
+  _root_.GlobalTheory.CompanionTheory.Mass.anisotropic_binary_one_vector_formula (_root_.GlobalTheory.CompanionTheory.Mass.One.vector_length_formula_up_to_constant _root_.GlobalTheory.CompanionTheory.MassCocompact.coCpt _root_.GlobalTheory.CompanionTheory.SW.LocBin.locMass) _root_.GlobalTheory.CompanionTheory.SW.MassSimil.simil _root_.GlobalTheory.CompanionTheory.SW.MassHasse.hasse
+    (_root_.GlobalTheory.CompanionTheory.RgMass.cnt _root_.GlobalTheory.CompanionTheory.SW.MassTest.testEx (_root_.GlobalTheory.CompanionTheory.SW.LS.lside GlobalTheory.T.equidistribution _root_.GlobalTheory.CompanionTheory.MassCocompact.coCpt)
+      (PositivityTheory.Rg.Mass.LiteralAutomorphy.srside (_root_.GlobalTheory.CompanionTheory.Mass.MeanV.meanVal_of_equi_countBd GlobalTheory.T.equidistribution GlobalTheory.T.counting_bound_alt) _root_.GlobalTheory.CompanionTheory.SW.LocBin.locMass))
 
 theorem oneVecBinary : PositivityTheory.PfSWUS.HMass.OneVecBinary := by
   intro F E _ _ _ _ _ σ hc M J hJ hM hA T hT hd

@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalHolomorphicMorseInequalityUniformStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasIntegralEqChartDensityIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVolumeDensityFiniteIsOpenPosStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalarStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalHolomorphicMorseInequalityUniform
+import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasIntegralEqChartDensityIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBounded
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVolumeDensityFiniteIsOpenPos
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionLocalFunctionContinuousOnHolomorphicChartStatement
 
 set_option autoImplicit false
@@ -25,7 +26,7 @@ theorem cmb_eq_frame (P : Pair p) (m : ℕ) {ι : Type} [Fintype ι] (f : ι →
     (hi : y ∈ ptsIn p σ (P.L.B.U i)) (hj : y ∈ ptsIn p σ (P.A.B.U j)) :
     cmb (vals P m 1 f) c σ y = ‖∑ l, c l * ratVal (P.loc m 1 (f l) i j) y‖ ^ 2 *
       Real.exp (-((m : ℝ) * (P.L.φ σ).φ i y)) * Real.exp (-(P.A.φ σ).φ j y) := by
-  obtain ⟨θ, hθ, h⟩ := GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P m 1 σ y i j hi hj
+  obtain ⟨θ, hθ, h⟩ := _root_.GlobalTheory.HSAmp.val_frame k X p P m 1 σ y i j hi hj
   have e : ∑ l, c l * vals P m 1 f σ y l = θ * ((∑ l, c l * ratVal (P.loc m 1 (f l) i j) y) *
       (Real.exp (-(((m : ℤ) : ℝ) * (P.L.φ σ).φ i y + ((1 : ℤ) : ℝ) * (P.A.φ σ).φ j y) / 2) : ℝ)) := by
     simp only [vals, Finset.mul_sum, Finset.sum_mul]
@@ -41,7 +42,7 @@ theorem cmb_eq_frame (P : Pair p) (m : ℕ) {ι : Type} [Fintype ι] (f : ι →
 theorem continuous_cmb {D : ℕ} (hX : IsArithVar p D) (P : Pair p) (m : ℕ) {ι : Type} [Fintype ι]
     (f : ι → X.functionField) (hf : ∀ l, f l ∈ P.H m 1) (c : ι → ℂ) (σ : k →+* ℂ) :
     Continuous fun y => cmb (vals P m 1 f) c σ y := by
-  have hp := (GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hX P m 1).1 σ
+  have hp := (_root_.GlobalTheory.HSAmp.continuous_val_and_bounded k X p D hX P m 1).1 σ
   have e : (fun y => cmb (vals P m 1 f) c σ y) = fun y =>
       (∑ a, ∑ b, c a * (starRingEnd ℂ) (c b) *
         (val P m 1 σ y (f a) * (starRingEnd ℂ) (val P m 1 σ y (f b)))).re := by
@@ -64,7 +65,7 @@ theorem integral_over_chart_le_l2 {D : ℕ} (hX : IsArithVar p D) (hs : GenSmoot
   haveI : Finite (k →+* ℂ) := hX.finite_emb
   haveI := hX.compactSpace σ
   haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ hX.isProjOver
-  obtain ⟨hfin, -⟩ := GlobalTheory.T.smoothVolumeDensity_finite_isOpenPos k X p D hX hs σ (ω σ)
+  obtain ⟨hfin, -⟩ := _root_.GlobalTheory.HSAmp.volDens_meas_finite_openPos k X p D hX hs σ (ω σ)
   have hcont := continuous_cmb hX P m f hf c σ
   set S := C.e.source ∩ C.e ⁻¹' T with hSdef
   have hSo : IsOpen S := C.e.isOpen_inter_preimage hT
@@ -78,7 +79,7 @@ theorem integral_over_chart_le_l2 {D : ℕ} (hX : IsArithVar p D) (hs : GenSmoot
       exact h
     · simp only [Set.mem_preimage, C.e.right_inv (hTt hv)]
       exact hv
-  have h1 := (GlobalTheory.T.meas_integral_eq_chartDensity_integral k X p D hX σ (ω σ) C S _ hSo.measurableSet hSs hcont).2
+  have h1 := (_root_.GlobalTheory.HSAmp.VolDens.meas_integral_in_chart k X p D hX σ (ω σ) C S _ hSo.measurableSet hSs hcont).2
   rw [hST] at h1
   rw [← h1]
   have hnn : ∀ σ' (y : CxPts p σ'), 0 ≤ cmb (vals P m 1 f) c σ' y := fun _ _ => by unfold cmb; positivity
@@ -133,7 +134,7 @@ theorem local_bound {D : ℕ} (hX : IsArithVar p D) (hs : GenSmooth p D) (P : Pa
   obtain ⟨v₀, hv₀, hmin⟩ := (isCompact_closedBall (C.e y₀) r).exists_isMinOn
     ⟨C.e y₀, Metric.mem_closedBall_self hr.le⟩ (hdc.mono hrU)
   have hd₀ : 0 < (ω σ).dens C (C.e.symm v₀) := (ω σ).pos C _ (hUO v₀ (hrU hv₀)).1.1.1
-  obtain ⟨δ, hδ, hball, hev⟩ := GlobalTheory.T.local_holomorphic_morse_inequality_uniform D U K (fun v => (P.L.φ σ).φ i (C.e.symm v))
+  obtain ⟨δ, hδ, hball, hev⟩ := _root_.GlobalTheory.morse_local D U K (fun v => (P.L.φ σ).φ i (C.e.symm v))
     (fun v => Real.exp (-(P.A.φ σ).φ j (C.e.symm v)) * (ω σ).dens C (C.e.symm v))
     (ε * (ω σ).dens C (C.e.symm v₀)) hU (isCompact_closedBall _ _) hrU hφ' hlevi hgc hgp (mul_pos hε hd₀)
   refine ⟨C.e.source ∩ C.e ⁻¹' K, inter_mem (C.e.open_source.mem_nhds ha)

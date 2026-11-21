@@ -15,7 +15,8 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNu
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNumJoinRight
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNumRelabel
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PVerticalComponentFibre
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullbackStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullback
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 
 namespace PositivityTheory.Xgn.A_s_joinright
 

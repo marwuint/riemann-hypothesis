@@ -3,12 +3,16 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVectorStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVector
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardInversePrimeRepsIntegralRightMulHecke
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAnti
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ElementaryDivisorsInvHeckeElementSplitPlace
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivisorsAtInvDualLabelAndStabilizerMulStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivisorsAtInvDualLabelAndStabilizerMul
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+import Formalism.LocalToGlobal.Columns.HeckeSp
 
 noncomputable section
 
@@ -104,7 +108,7 @@ theorem exists_data {P : Pl D.host.E} {e : AE D} (he : IsIdemAt e P) {ϖ : 𝓞 
   refine ⟨α, fun j => ρ (α j), fun j => ρ (α j)⁻¹, fun j hj => ⟨hα j hj, hρ _ (s j hj)⟩,
     fun j hj => ⟨hα j hj, hρ _ (s' j hj)⟩, fun j hj => ?_, fun j hj => ?_⟩
   · refine sphOp_of he h1 h2 (dual_splitLab_pairwise _ _) (s j hj) ?_ (hρ _ (s j hj)).1 (hρ _ (s j hj)).2
-    have := (GlobalTheory.T.divisorsAt_inv_dualLabel_and_stabilizer_mul V e _ _ _ he.1.1 h0 (hD j hj)).1
+    have := (_root_.GlobalTheory.DivDual.divAt_inv_and_mul V e _ _ _ he.1.1 h0 (hD j hj)).1
     rwa [inv_inv] at this
   · exact sphOp_of he h1 h2 (splitLab_pairwise _ _) (s' j hj) (hD j hj) (hρ _ (s' j hj)).1 (hρ _ (s' j hj)).2
 
@@ -170,11 +174,11 @@ theorem match_split : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
   obtain ⟨αT, -, RT, -, b, -, b'⟩ := exists_data he h1 h2 T
   have eS : ∀ f, IsVacAt ψ S T P f → ∀ j, j ≤ S.rank → ∑ γ ∈ RS j, om (γ, 1) f =
       opOf (om.comp (MonoidHom.inl _ _)) P (Finsupp.single (dualLab (splitLab S.rank j)) 1) f := fun f hf j hj =>
-    ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors S P).1 _ _ (a' j hj)).2 _ (om.comp (MonoidHom.inl _ _)) f
+    ((_root_.GlobalTheory.SphLabelOps.label_operators S P).1 _ _ (a' j hj)).2 _ (om.comp (MonoidHom.inl _ _)) f
       fun k hk => fix f hf k hk 1 (one_mem_hyp he T)
   have eT : ∀ f, IsVacAt ψ S T P f → ∀ j, j ≤ T.rank → ∑ γ ∈ RT j, om (1, γ) f =
       opOf (om.comp (MonoidHom.inr _ _)) P (Finsupp.single (splitLab T.rank j) 1) f := fun f hf j hj =>
-    ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors T P).1 _ _ (b' j hj)).2 _ (om.comp (MonoidHom.inr _ _)) f
+    ((_root_.GlobalTheory.SphLabelOps.label_operators T P).1 _ _ (b' j hj)).2 _ (om.comp (MonoidHom.inr _ _)) f
       fun k hk => fix f hf 1 (one_mem_hyp he S) k hk
   refine ⟨fun hr k hk f hf => ?_, fun hr k hk f hf => ?_⟩
   · rw [dualC_splitC, opOf_trunc, ← eT f hf k hk, (main e ϖ x t he h1 h2 hx f hf αS αT RS RT a b).2.1 hr k hk]

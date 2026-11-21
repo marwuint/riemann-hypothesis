@@ -7,8 +7,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.SectionDivision
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientTriple
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsRigidifiedTwist
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPolarisationFormOfLineBundleStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteAndSurjectiveOfFormIsStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPolarisationFormOfLineBundle
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteAndSurjectiveOfFormIs
 
 noncomputable section
 
@@ -84,8 +84,8 @@ theorem iso_of_formIs (P : Out.PolAV (Sp K)) (M : LB P.A.left) (hM : M.IsLB) (s 
 
 theorem twist_iso_translate : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left) (y : 𝟙_ (Over (Sp K)) ⟶ P.A), M.IsLB → Out.RelAmple P.A M → ∃ x : 𝟙_ (Over (Sp K)) ⟶ P.A, LBIso (LB.div M (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, ((toUnit P.A ≫ y) * 𝟙 P.A).left] ![1, -1])) (M.pull ((toUnit P.A ≫ x) * 𝟙 P.A).left) := by
   intro hA hB K _ _ P M y hM hAmp
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_polarisationForm_of_lineBundle hA hB K P M hM
-  obtain ⟨hfin, hsurj⟩ := GlobalTheory.T.isFinite_and_surjective_of_formIs' hA hB K P M s hM hAmp hs
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.BundleForm.exists_formIs hA hB K P M hM
+  obtain ⟨hfin, hsurj⟩ := _root_.GlobalTheory.FormFinite.isFinite_and_surjective_of_formIs hA hB K P M s hM hAmp hs
   obtain ⟨x, hx⟩ := exists_comp_eq s y
   refine ⟨x, ?_⟩
   have h := iso_of_formIs P M hM s hs x

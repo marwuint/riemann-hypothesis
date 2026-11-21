@@ -155,10 +155,4 @@ theorem isZero_cohomology_discreteCoind (n : ℕ) :
   rw [cochainsComplex_d]
   exact this
 
-variable (k G X) in
-
-noncomputable def cohomologyZeroDiscreteCoindIso :
-    cohomology (discreteCoind k G X) 0 ≅ ModuleCat.of k X :=
-  H0Iso (discreteCoind k G X) ≪≫ (invariantsDiscreteCoindEquiv k G X).toModuleIso
-
 end GroundTheory.ProfCoh

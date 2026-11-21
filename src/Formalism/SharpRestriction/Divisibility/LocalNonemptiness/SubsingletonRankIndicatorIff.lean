@@ -7,32 +7,6 @@ namespace Formalism.MainNotions.DIV.Inh
 
 open Formalism.BasicNotions Formalism.MainNotions.ModuliIntegralCharts NumberField
 
-theorem nonempty_local_provision_degenerate (D : D7) : Nonempty (ModuliIntegralCharts.Prov D) := by
-  exact ⟨{
-    Dat := Empty
-    rk := fun w => w.elim
-    jj := fun w => w.elim
-    jj_range := fun w => w.elim
-    loc := fun w => w.elim
-    ex := fun w => w.elim
-    NgC := fun _ => Unit
-    NgC_ne := fun _ => ⟨()⟩
-    KF := fun _ _ => Unit
-    kfNorm := fun _ _ => 1
-    pbKF := fun w => w.elim
-    levIn := fun _ _ => True
-    Xg := fun _ => Unit
-    bc := fun {w} => w.elim
-    DivX := fun _ => Unit
-    effD := fun _ => True
-    noVertD := fun _ => True
-    posBdD := fun _ => True
-    ampleOnAbelianBase := fun _ _ _ => True
-    Met := fun _ => Unit
-    nefFib := fun _ => True
-    ampleGen := fun _ => True
-    limRA := fun _ => True }⟩
-
 namespace LocalProvisionModel
 
 section Form
@@ -46,12 +20,6 @@ theorem cjO_coe (c : 𝓞 D.host.E) : ((cjO D c : 𝓞 D.host.E) : D.host.E) = D
 theorem emb_conj (σ : D.host.E →ₐ[ℚ] ℂ) (x : D.host.E) : σ (D.host.conj x) = starRingEnd ℂ (σ x) := by
   exact (D.host.der.conj_iff (σ : D.host.E →+* ℂ) D.host.conj).mpr
     (D.host.gal.apply_symm_apply _) x
-
-theorem conj_conj' (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
-  have h : ∀ y, D.host.φ₀ (D.host.conj y) = starRingEnd ℂ (D.host.φ₀ y) :=
-    (D.host.der.conj_iff D.host.φ₀ D.host.conj).mpr (D.host.gal.apply_symm_apply _)
-  apply D.host.φ₀.injective
-  rw [h, h, Complex.conj_conj]
 
 def beO : 𝓞 D.host.E →ₗ[ℤ] 𝓞 D.host.E →ₗ[ℤ] ℝ :=
   LinearMap.mk₂ ℤ (fun a b => ((Algebra.trace ℤ (𝓞 D.host.E) (a * cjO D b) : ℤ) : ℝ))
@@ -545,32 +513,6 @@ variable (D : D7) (r j p : ℕ) (M : MP D p)
   Pm_tail := fun c τ i _ _ => le_trans (neg_le_abs _)
     (abs_le_pmM D (M.dg c) (r + j) τ _ (Finset.Icc_subset_Icc (by omega) (by omega)))
 
-@[reducible] def provDegenerate (Dat : Type) (rk jj : Dat → ℕ) (h : ∀ w, 1 ≤ jj w ∧ jj w + 1 ≤ rk w)
-    (M : ∀ (_ : Dat) (p : ℕ), MP D p) : ModuliIntegralCharts.Prov D where
-  Dat := Dat
-  rk := rk
-  jj := jj
-  jj_range := h
-  loc := fun w p => locM D (rk w) (jj w) p (M w p)
-  ex := fun w p => extM D (rk w) (jj w) p (M w p)
-  NgC := fun _ => Unit
-  NgC_ne := fun _ => ⟨()⟩
-  KF := fun _ _ => Unit
-  kfNorm := fun _ _ => 1
-  pbKF := fun _ _ _ _ => 0
-  levIn := fun _ _ => True
-  Xg := fun _ => Unit
-  bc := fun _ _ => ()
-  DivX := fun _ => Unit
-  effD := fun _ => True
-  noVertD := fun _ => True
-  posBdD := fun _ => True
-  ampleOnAbelianBase := fun _ _ _ => True
-  Met := fun _ => Unit
-  nefFib := fun _ => True
-  ampleGen := fun _ => True
-  limRA := fun _ => True
-
 def mpTrivialAb (K : CF p) : MP D p where
   K := K
   Gn := Unit
@@ -585,13 +527,6 @@ end LocalProvisionModel
 open LocalProvisionModel
 
 variable (D : D7)
-
-theorem exists_full_local_provision :
-    ∃ P : ModuliIntegralCharts.Prov D, ∀ r j, 1 ≤ j → j + 1 ≤ r → ∃ w : P.Dat, P.rk w = r ∧ P.jj w = j := by
-  refine ⟨provDegenerate D {rj : ℕ × ℕ // 1 ≤ rj.2 ∧ rj.2 + 1 ≤ rj.1} (fun w => w.1.1) (fun w => w.1.2)
-    (fun w => w.2) (fun _ p => mpTrivialAb D p (Classical.choice (nonempty_coefficient_field p))), ?_⟩
-  intro r j hj hr
-  exact ⟨⟨(r, j), hj, hr⟩, rfl, rfl⟩
 
 end Formalism.MainNotions.DIV.Inh
 

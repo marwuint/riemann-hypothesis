@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTrans
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulEqOneOfCovolumeIdentity
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeoLevelActionIffGeoAct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelGroupLiftExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeBasisHermitianSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedLatticeStabilizerIffBasisIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeBasisHermitianSpace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorResIEqResS
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedLatticeStabilizerIffBasisIntegral
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParahoricLevelLiftsExist
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalLevelEqHalfMarkingStabilizer
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLevelSubgroup
@@ -214,11 +215,11 @@ variable {Dw : Datum H}
 
 theorem exists_isLevLift (l : Level H) (V : HSp D) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (hι : LatEmb V ι)
     (γ : GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.LevGrp Dw l) : ∃ κ, GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.IsLevLift l V ι γ κ := by
-  obtain ⟨β, hβ⟩ := GlobalTheory.T.exists_lattice_basis_hermitian_space D V _ rfl
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.LatAdelicBasis.exists_isLatBasis D V _ rfl
   obtain ⟨φ, hφ⟩ := exists_coord l V rfl β hβ ι hι
   obtain ⟨Y, hY, hf⟩ := exists_matrix l.Mb (φ.symm.trans (LinearEquiv.trans γ φ))
   obtain ⟨κ, h1, h2, h3⟩ := exists_stab_lift l hβ Y hY
-  refine ⟨κ, h1, (GlobalTheory.T.completedLattice_stabilizer_iff_basis_integral D V _ rfl β hβ κ).2 h2, (graph_iff φ _ _ (hφ κ h2) γ).1 fun q => ?_⟩
+  refine ⟨κ, h1, (_root_.GlobalTheory.LatStab.gLat_eq_latHat_iff D V _ rfl β hβ κ).2 h2, (graph_iff φ _ _ (hφ κ h2) γ).1 fun q => ?_⟩
   rw [h3, ← hf, LinearEquiv.trans_apply, φ.symm_apply_apply]
   rfl
 
@@ -233,7 +234,7 @@ theorem exists_isReduction : ∀ (D : D7) (H : ReciprocityTheory.ChartRestrictio
       have := GlobalTheory.RecDict.finHom_inv_mulVec_mem V k (mem_levSet_one.1 h).2 _ hz
       rwa [← finHom_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec] at this,
       (mem_levSet_one.1 h).2 z⟩⟩
-  choose r hr using fun k : GlobalTheory.IndefiniteRowSideFullHecke.LiftedCharacterResidue.stabLat V => GlobalTheory.T.exists_lattice_automorphism_mod_halfLevel D V H Dw l ι hι k (hs k)
+  choose r hr using fun k : GlobalTheory.IndefiniteRowSideFullHecke.LiftedCharacterResidue.stabLat V => _root_.GlobalTheory.StabInduce.exists_levGrp_induced D V H Dw l ι hι k (hs k)
   have hi : ∀ k, Ind V l ι (r k) k := fun k => ⟨hs k, hr k⟩
   obtain ⟨Kf, hK, -⟩ := GlobalTheory.RecDict.exists_isLevelK D V l.M
   have hone := ind_one_iff hι hK ((GlobalTheory.Member.finCong_iff_half_and_kfHalf D H l V).2 Kf hK)

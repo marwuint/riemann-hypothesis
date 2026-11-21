@@ -48,7 +48,3 @@ theorem wordLiftOfParts : WordLiftOfParts := by
 
 end Formalism.FourierDecayAlt.TL
 
-example {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S] (st : Formalism.FourierDecayAlt.Fr.Start A)
-    (X φ τ α β γ : Formalism.FourierDecayAlt.Wd.SlopeTestRemainingChoices S A) (h1 : Formalism.FourierDecayAlt.TL.kMat st α) (h2 : Formalism.FourierDecayAlt.TL.kMat st β) (h3 : Formalism.FourierDecayAlt.TL.kMat st γ) :
-    Matrix.of (fun i j => ∑ k, α i k * ((X * β - β * X) * γ) k j) ∈ Formalism.FourierDecayAlt.TL.dSpan st X φ τ :=
-  Submodule.subset_span (Or.inl ⟨α, β, γ, h1, h2, h3, by rw [Matrix.mul_assoc]; rfl⟩)

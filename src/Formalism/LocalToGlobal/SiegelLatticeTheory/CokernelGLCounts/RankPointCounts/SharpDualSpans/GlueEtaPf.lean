@@ -81,12 +81,6 @@ theorem hermitian_W0_orthogonal_span (H : HermSp M V) {r : ℕ} (t : Term V M r)
     exact hn
   exact hn' m hm
 
-theorem ddMk_eq_iff (H : HermSp M V) {r : ℕ} (t : Term V M r) (a b : ↥(MMsharp H t)) :
-    ddMk H t a = ddMk H t b ↔ (a : V) - b ∈ MMo H t := by
-  unfold ddMk
-  rw [Submodule.Quotient.eq, Submodule.mem_comap, map_sub]
-  rfl
-
 theorem dwMk_eq_iff (H : HermSp M V) {r : ℕ} (t : Term V M r) (N : Submodule M.L.O V)
     (a b : ↥(ThSharp H t N)) : dwMk H t N a = dwMk H t N b ↔ (a : V) - b ∈ N := by
   unfold dwMk

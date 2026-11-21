@@ -63,7 +63,7 @@ theorem rsIntegral_entire_good {m n : ℕ} (hm0 : 0 < m) (hmn : m < n) {φ : GA 
           mul_le_mul hP (hC₂ h) (norm_nonneg _) ((norm_nonneg _).trans hP)
       _ = _ := by ring
   obtain ⟨hI, hD⟩ := GlobalTheory.T.mellinType_integral_entire_of_rapid_decay (μ.restrict 𝓕) A GlobalTheory.RSnm.detAbs hAc.aestronglyMeasurable
-    GlobalTheory.RSnm.continuous_detAbs.measurable GlobalTheory.RSnm.detAbs_pos (GlobalTheory.T.integrableOn_min_absDet_inv_fundamentalDomain E m hm0 μ 𝓕 h𝓕) hbd
+    GlobalTheory.RSnm.continuous_detAbs.measurable GlobalTheory.RSnm.detAbs_pos (_root_.GlobalTheory.FinVolGL.integrableOn_min_absDet E m hm0 μ 𝓕 h𝓕) hbd
   have e : ∀ s, GlobalTheory.RSnm.rsIntegrand m hmn.le F φ φ' s =
       fun h => A h * ((GlobalTheory.RSnm.detAbs h : ℝ) : ℂ) ^ (s - ((n : ℂ) - m) / 2) := fun s => rfl
   refine ⟨fun s => by rw [e]; exact hI _, fun s => ?_⟩

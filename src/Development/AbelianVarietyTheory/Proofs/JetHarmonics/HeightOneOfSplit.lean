@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorS
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsSmallInPrimePow
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UwEllipticFlow
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupPadicMulIntegralVanishingOrderStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupPadicMulIntegralVanishingOrder
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsUnitCoeffMulSeriesLeNormStatement
 
 open PowerSeries GlobalTheory.MomOne
@@ -30,7 +30,7 @@ theorem height_one_of_split : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (F : Fo
   obtain ⟨ℓ, hchart, hℓX⟩ := Basic.exists_chart M hM
   have hℓ0 : constantCoeff ℓ = 0 := hchart.2.1
   have hUℓ : U.subst ℓ = X := hℓX
-  obtain ⟨P1, P2, P3⟩ := GlobalTheory.T.formalGroup_padicMul_integral_vanishingOrder q F U ℓ hU0 hℓ0 hUℓ hF
+  obtain ⟨P1, P2, P3⟩ := _root_.GlobalTheory.MomOne.FormalMul.padic_multiplications q F U ℓ hU0 hℓ0 hUℓ hF
   refine ⟨ℓ, hℓ0, hUℓ, ?_, ?_⟩
   ·
 

@@ -14,15 +14,6 @@ theorem Pj_rank {p : ℕ} {G : GAtP p} (Fl : Fills G) (j : ℕ) : (Fl.Pj j).m + 
   | zero => simp [Fills.Pj, NN]
   | succ j => simp only [Fills.Pj, Places.withWt, NN]; omega
 
-theorem GIdx.ne_two {R : Ranks} {H : Host R} {T p : ℕ} (h : GIdx H T p) : p ≠ 2 := by
-  have := h.2.1; omega
-
-theorem GIdx.ne_d {R : Ranks} {H : Host R} {T p : ℕ} (h : GIdx H T p) : p ≠ H.d := by
-  intro hd
-  have hc : H.cls p = .inertClass := h.2.2.1
-  unfold Host.cls primeClass at hc
-  split_ifs at hc
-
 def Pend.xForm {p : ℕ} [Fact p.Prime] {X : Sys p} (Y : Pend X) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1))
     (φ : Y.Frm j La La') (e : X.EA j ⊕ X.EA j) (z : X.ZA j) : Y.Kc :=
   ∑ z' : X.ZA j, MvPowerSeries.coeff (Finsupp.single z' 1) (X.coordZA Y.Kc j e) * Y.bc j La La' φ z' z
@@ -185,20 +176,5 @@ structure KerTies.Lift {D : D7} {Gt : GatTies D} {Tw : TwForms D} {u : D.what₂
   dt : ℕ → D.what₂.Tau → ℕ
   evC_frm : ∀ j, j ≤ D.R.m → ∀ P (y : (D.chTw u (D.what₂.muAt w)).Y j),
     K.evC j P y * ∏ τ, (Matrix.det (O.frm j y τ)) ^ (dt j τ) = Formalism.MainNotions.GL3Theta.evFr D (toFr j P) (O.frm j y)
-
-structure KerTies.Agrees {D : D7} {Gt : GatTies D} {Tw : TwForms D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
-    [Fact (D.what₂.places.resChar w).Prime] {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)}
-    {T : Formalism.MainNotions.TaylorLogMetric.Tor D} {e : Formalism.MainNotions.TaylorLogMetric.FamE D} {X : Sys (D.what₂.places.resChar w)} {Y : Pend X}
-    (K : KerTies D Gt Tw u w h T e X Y) {Fl : Fills (D.gat u w h)} {Lv : Levels Fl} {Ch : Chain Lv}
-    {c : LatCmp D} (Kp : LocalToGlobal₂ D Gt c Tw u w h Ch) : Prop where
-  fl : HEq X.Fl Fl
-  lv : HEq X.Lv Lv
-  ch : HEq X.Ch Ch
-  lam : K.lam = Kp.lam
-  iLL : HEq K.iLL (c.embW u w h)
-  glob : HEq K.glob (fun j (La : Lv.comp j × (Fl.Pj j).Tup) => Kp.glob j La.1 La.2)
-  F : HEq K.F Kp.Th
-  cmp : HEq K.cmp Kp.cmp
-  cls : HEq K.cls (fun j (La : Lv.comp j × (Fl.Pj j).Tup) => Kp.cls j La.1 La.2)
 
 end Formalism.MainNotions.FormalGroupSystem

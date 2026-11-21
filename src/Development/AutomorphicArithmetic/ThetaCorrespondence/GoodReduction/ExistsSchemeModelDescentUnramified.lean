@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisDescentIntegralStructureStatement
 import Development.AutomorphicArithmetic.ThetaCorrespondence.GoodReduction.ExistsCompatibleProjectiveEmbeddings
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyExtendsUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyExtendsUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
@@ -20,6 +20,6 @@ theorem exists_scheme_model_descent_unramified : ∀ (R K W K' : Type) [CommRing
   have := hA.proper
   have := hG.proper
   have := hG.smooth
-  exact GlobalTheory.T.abelian_variety_extends_unramified R K W K' hm P hPs A inferInstance G inferInstance inferInstance e iA hA' hiA iG hG' hiG hc
+  exact _root_.GlobalTheory.UnramifiedClosure.closure_baseChange R K W K' hm P hPs A inferInstance G inferInstance inferInstance e iA hA' hiA iG hG' hiG hc
 
 end UpperTheory.Lit.Nos.C4

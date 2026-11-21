@@ -6,17 +6,20 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteWeilRepEqLatt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergTranslateFixesThetaDeepLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFinitePointReadsClassicalTranslation
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaIntertwinerEqNormalisedAdelicSum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdelicWeilVacuumFixedAndTranslatesSpanStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdelicWeilVacuumFixedAndTranslatesSpan
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+import Formalism.PairingDivisors.StatementH
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAdelicWeilRepresentationModelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualImageOrthonormalFrameLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVacuumMovedThetaVacuum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDifferentLatticeProductHermitianIsSelfDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDifferentLatticeProductHermitianIsSelfDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartQuadraticPhaseEqCmThetaExpStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumSplitSupportedEqIntertwinerMulHalfDetChStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartRationalTensorZeroAtPrimeIffPlaceIdemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPrimeIffNonSplitPlaceIdempotentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumSplitSupportedEqIntertwinerMulHalfDetCh
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartRationalTensorZeroAtPrimeIffPlaceIdem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPrimeIffNonSplitPlaceIdempotent
 
 open NumberField MeasureTheory IsDedekindDomain
 open scoped Classical
@@ -44,14 +47,14 @@ theorem exists_isLatRep_of {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.ho
     ∃ Om, IsLatRep hψ.1 ΛS ΛT w lam Om := by
   have H := isHeis_opF hψ.1 S T hw
   have hA := selfDual_latF (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT).1
-  obtain ⟨hlev, hmov⟩ := GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hS hT (GlobalTheory.T.completedHomLattice_finitelyGenerated D S T ΛS ΛT hS hT)
-  have hspan := GlobalTheory.T.span_heisenberg_translates_of_lattice_vacua_eq_top H _ hA (smooth_theta hψ.1 hS hT hw hA hlev)
+  obtain ⟨hlev, hmov⟩ := GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hS hT (_root_.GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hS hT)
+  have hspan := _root_.GlobalTheory.FinWeil.span_translates_vacua H _ hA (smooth_theta hψ.1 hS hT hw hA hlev)
   have hidx : ∀ p, idx (latF S T ΛS ΛT) ((latF S T ΛS ΛT).map (rhoF S T p)) ≠ 0 := fun p => by
     obtain ⟨N, hN, h⟩ := hmov p.1 p.2
     refine idx_latF_ne_zero hS hT _ hN ?_
     rintro _ ⟨a, ha, rfl⟩
     exact h a ha
-  obtain ⟨Om, h1, h2⟩ := GlobalTheory.T.exists_weil_representation_of_lattice_vacua H lam hlam _ hA hspan (rhoF S T) gamF_rhoF hidx
+  obtain ⟨Om, h1, h2⟩ := _root_.GlobalTheory.FinWeil.exists_weil_rep_of_vacua H lam hlam _ hA hspan (rhoF S T) gamF_rhoF hidx
   exact ⟨Om, hw, hA, hspan, hidx, h1, fun p => (h2 p).1, fun p => (h2 p).2⟩
 
 theorem ext_finQ {a b : AE D} (h1 : infPart D a = infPart D b) (h2 : finQ D a = finQ D b) : a = b :=
@@ -123,7 +126,7 @@ theorem back_rhoF (gS : S.gram = 1) (gT : T.gram = 1) (r : D.host.E) {x : Formal
 theorem back_mem_iff (gS : S.gram = 1) {cc : Ideal (𝓞 D.host.K)} {r : D.host.E} (hc : cc ≠ ⊥) (hr : IsScale D cc r)
     (u : XF S T) : back S T r u ∈ latA D cc S.rank T.rank ↔
       u ∈ latF S T (GlobalTheory.VacRead.lsB D cc r S.rank) (stdL D T.rank) := by
-  rw [mem_latF, GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T gS cc r hc hr _ u.fin, mem_latA]
+  rw [mem_latF, _root_.GlobalTheory.SplitLatDict.mem_latO_iff_ihE D S T gS cc r hc hr _ u.fin, mem_latA]
   simp only [back_apply, neg_mem_iff]
 
 theorem exists_deep {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
@@ -132,7 +135,7 @@ theorem exists_deep {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     (x : XF S T) (f : thetaSub ψ S T) :
     ∃ m : ℕ, 0 < m ∧ ∀ l ∈ latF S T ΛS ΛT, opF hψ S T w (x + m • l) f = opF hψ S T w x f := by
   have H := isHeis_opF hψ S T hw
-  obtain ⟨hlev, -⟩ := GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hS hT (GlobalTheory.T.completedHomLattice_finitelyGenerated D S T ΛS ΛT hS hT)
+  obtain ⟨hlev, -⟩ := GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hS hT (_root_.GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hS hT)
   obtain ⟨V, hV, hf⟩ := f.2.level
   obtain ⟨N, hN, hNU⟩ := hlev V hV
   obtain ⟨M, hM, hMU⟩ := hlev _ (GlobalTheory.FinTranslate.isOpen_annSub hψ (XF.fin (w • x)))
@@ -169,7 +172,7 @@ theorem reads_opF (hset : Setup ψ θ S T cc δ r) {w w' : 𝓞 D.host.E} (hw : 
     (h : Reads ψ θ (S := S) (T := T) rfl rfl cc δ r F f) (x : XF S T) :
     Reads ψ θ (S := S) (T := T) rfl rfl cc δ r (WA (back S T r x) F) (opF hset.std.1 S T w x f) := by
   have hr : r ≠ 0 := IsScale.ne_zero hset.crv.1.1 hset.scale
-  obtain ⟨-, -, h3, -⟩ := GlobalTheory.T.completedStandardAdelicLattice_properties D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hset.crv S.rank T.rank
+  obtain ⟨-, -, h3, -⟩ := GlobalTheory.T.completedStandardAdelicLattice_properties D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hset.crv S.rank T.rank
   obtain ⟨m, hm, hmx⟩ := exists_deep hset.std.1 hS hT hw hA x f
   obtain ⟨n, hn, hnx⟩ := hM.2.2.2.2 (back S T r x) F
   obtain ⟨z, a, ha, hz⟩ := h3 (back S T r x) (m * n) (Nat.mul_pos hm hn)
@@ -197,11 +200,11 @@ theorem reads_latRep (hset : Setup ψ θ S T cc δ r) {w : 𝓞 D.host.E}
     (h1' : Formalism.MainNotions.StandardLatticesGL3.Moves D (y : GL (Fin T.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) L₁') :
     Reads ψ θ (S := S) (T := T) rfl rfl cc δ r (Formalism.MainNotions.TaylorLogMetric.Iop D (tor0 D cc δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (tor0 D cc δ) S.rank T.rank)
       (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) L₁ L₁') e0) (Om (g, h) f) := by
-  have hG := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1
+  have hG := (_root_.GlobalTheory.InducedType.induced_type D).1
   have hr : r ≠ 0 := IsScale.ne_zero hset.crv.1.1 hset.scale
   have hmem := back_mem_iff (T := T) hset.gS hset.crv.1.1 hset.scale
   obtain ⟨w', γ, WA, hM⟩ := GlobalTheory.T.exists_adelicWeilRepresentationModel D hG cc δ hset.crv S.rank T.rank
-  obtain ⟨hTT, hfix, -⟩ := GlobalTheory.T.adelicWeil_vacuum_fixed_and_translates_span D hG cc δ hset.crv S.rank T.rank w' γ WA hM e0 he h0
+  obtain ⟨hTT, hfix, -⟩ := _root_.GlobalTheory.FinWeil.Vacuum.vacuum_fixed_span D hG cc δ hset.crv S.rank T.rank w' γ WA hM e0 he h0
   have hread := reads_opF hset hL.hw hph hS hT hL.sd hM ⟨e0, hTT⟩ f hf
   have hfixF : Fixes (opF hset.std.1 S T w) (latF S T (GlobalTheory.VacRead.lsB D cc r S.rank) (stdL D T.rank)) f := fun a ha => by
     have := hread a
@@ -231,7 +234,7 @@ theorem reads_latRep (hset : Setup ψ θ S T cc δ r) {w : 𝓞 D.host.E}
       obtain ⟨l, rfl⟩ := back_surjective (S := S) (T := T) hr b
       simp only [← map_sub, hmem]
       exact hu l ((hmem' l).1 hb))
-  have hidx := GlobalTheory.T.heisenbergRelativeIndex_translate_completed_lattice D hG cc δ hset.crv S.rank T.rank x y
+  have hidx := _root_.GlobalTheory.FinWeil.idx_map_actA D hG cc δ hset.crv S.rank T.rank x y
   have hl := hsq _ hidx.1 fun q hq hi => hidx.2.1 q hq (sx q hq hi) (sy q hq hi)
   have hI := iop_eq_sumOp D hG cc δ hset.crv S.rank T.rank w' γ WA hM x y L₁ L₁' h1 h1' hSD ⟨e0, hTT⟩ hfix
   rw [show Formalism.MainNotions.TaylorLogMetric.Iop D (tor0 D cc δ) _ _ e0 = _ from hI, hL.vac _ f hfixF, normOp, s1, s2, i1, ← i2, hl,
@@ -259,8 +262,8 @@ theorem cA_cA' (a : AE D) : cA D (cA D a) = a := by
 
 theorem zeroAt_half {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) {q : ℕ} (hq : q.Prime) (hi : Formalism.MainNotions.StandardLatticesGL3.InertQ D q)
     (b : AE D) : Formalism.MainNotions.StandardLatticesGL3.ZeroAt D q (finQ D (ε * b)) :=
-  (GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq _).2 fun v η hv hqv => by
-    rw [← mul_assoc, hε.2.2.2.2 v η ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq v η hv hqv).1 hi), zero_mul]
+  (_root_.GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff D q hq _).2 fun v η hv hqv => by
+    rw [← mul_assoc, hε.2.2.2.2 v η ((_root_.GlobalTheory.InertPlace.inertQ_iff_nonSplitAt D q hq v η hv hqv).1 hi), zero_mul]
 
 theorem half_supp {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) {a : AE D} (h0 : infPart D a = 0)
     (ha : ∀ q : ℕ, q.Prime → Formalism.MainNotions.StandardLatticesGL3.InertQ D q → Formalism.MainNotions.StandardLatticesGL3.ZeroAt D q (finQ D a)) : (ε + cA D ε) * a = a := by
@@ -271,7 +274,7 @@ theorem half_supp {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) {a : A
     by_cases hn : GlobalTheory.WeilParts.NonSplitAt D (Q.under (𝓞 D.host.F)) η
     · obtain ⟨q, hq, hqv⟩ := exists_prime_mem (Q.under (𝓞 D.host.F)).isPrime _
         (Ideal.absNorm_eq_zero_iff.not.2 (Q.under (𝓞 D.host.F)).ne_bot) (Ideal.absNorm_mem _)
-      have := (GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq a).1 (ha q hq ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq _ η hη hqv).2 hn)) _ η hη hqv
+      have := (_root_.GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff D q hq a).1 (ha q hq ((_root_.GlobalTheory.InertPlace.inertQ_iff_nonSplitAt D q hq _ η hη hqv).2 hn)) _ η hη hqv
       rw [mul_left_comm, this, mul_zero]
     · obtain ⟨e, he, hs⟩ : ∃ e : AE D, IsSplitIdem D e ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) η := by
         by_contra h
@@ -372,7 +375,7 @@ theorem reads_om_split : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   obtain ⟨w, hw, hph⟩ := GlobalTheory.T.finitePartQuadraticPhase_eq_cmTheta_exp D
   obtain ⟨lam, hlam, hsq⟩ := exists_goodNorm D
   obtain ⟨ε, hε⟩ := GlobalTheory.RatAut.exists_isHalfIdem D
-  have dS := isSelfDualC_of_sd S hset.gS (GlobalTheory.T.invDifferentLatticeProductHermitian_isSelfDual D cc r S.rank hset.crv.1.1 hset.scale)
+  have dS := isSelfDualC_of_sd S hset.gS (_root_.GlobalTheory.VacRead.lsB_selfDual D cc r S.rank hset.crv.1.1 hset.scale)
   have dT := isSelfDualC_of_sd T hset.gT (GlobalTheory.MovedVacuum.sd_stdL D T.rank)
   obtain ⟨Om, hL⟩ := exists_isLatRep_of hset.std dS dT hlam hw
   obtain ⟨sg, u, x₀, hu, iu, zx, dx⟩ := exists_half_det hε S hset.gS hg sx
@@ -381,7 +384,7 @@ theorem reads_om_split : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   obtain ⟨Lt', hLt', -⟩ := GlobalTheory.NormSum.exists_lattice_of_adelic_point D T.rank
   have h1 := reads_latRep hset (hph ψ θ S T cc δ r hset) dS dT hsq hL hodd.1 W.nz ⟨f₀, hf.1⟩ hf hg hh sx sy
     (hLt x).1 (hLt' y).1
-  have h2 := GlobalTheory.T.weilDatum_splitSupported_eq_intertwiner_mul_halfDetChar D ψ hset.std S T χS χT om hom _ _ dS dT lam hlam hsq w Om hL ε hε g h sg sh u v hu hv ⟨f₀, hf.1⟩
+  have h2 := _root_.GlobalTheory.SplitWeilDict.splitWeil_eq D ψ hset.std S T χS χT om hom _ _ dS dT lam hlam hsq w Om hL ε hε g h sg sh u v hu hv ⟨f₀, hf.1⟩
   have h3 := W.split x y x₀ y₀ _ _ sx sy (fun q hq hi => ⟨zx q hq hi, zy q hq hi⟩) dx dy (hLt x).1 (hLt' y).1
   have h4 : ((splitFacO χS χT u v : Circle) : ℂ) = ((W.chV.f y₀ ^ W.ep * W.chV'.f x₀ ^ W.ep' : ℂˣ) : ℂ) := by
     rw [splitFacO, Circle.coe_mul, Circle.coe_inv, cS v y₀ iv, cT u x₀ iu, zpow_neg, Units.val_inv_eq_inv_val, inv_inv,

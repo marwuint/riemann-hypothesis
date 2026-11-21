@@ -43,12 +43,6 @@ theorem FSIndex.proof (h : FSCoord.Statement.{u}) : FSIndex.Statement.{u} := by
   rw [hfs]
   conv_rhs => rw [hs, LinearEquiv.map_smul, smul_eq_mul, norm_mul, mul_assoc, hnj]
 
-example (h : FSCoord.Statement.{0}) (s : (self (𝓞 ℚ) 1).Fibre (twistN (𝓞 ℚ) 1 1) pointQ) :
-    fsFibreNorm 1 _ pointQ s =
-      ‖fibreEquivComplex ((self (𝓞 ℚ) 1).evalAtPoint pointQ) (point_mem_stdOpen pointQ pointQ_rep_ne_zero)
-          (isBasisOn_frame (A := 𝓞 ℚ) 0 1) s‖ * ‖pointQ.1.rep 0‖ ^ 1 / norm2 pointQ.1.rep ^ 1 :=
-  FSIndex.proof h _ _ _ _ _ _ pointQ_rep_ne_zero _
-
 end SectionsLatticeFS
 
 end

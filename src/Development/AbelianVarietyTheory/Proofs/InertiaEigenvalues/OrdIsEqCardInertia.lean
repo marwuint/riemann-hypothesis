@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedValuationOfPrimeOfGaloisExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedValuationOfPrimeOfGaloisExtension
 import GroundTheory.LocalFields.KroneckerWeber
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
 
@@ -28,7 +28,7 @@ theorem ordIs_eq_card_inertia : ∀ (l : ℕ) [Fact l.Prime] (L : Type) [Field L
     rwa [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]
   obtain ⟨E, hE⟩ := WithTop.ne_top_iff_exists.1 htop
   have hL : OrdIs L l E := by unfold OrdIs; rw [← hE]; rfl
-  obtain ⟨e, he, hEe, hram⟩ := GlobalTheory.T.normalizedValuationOfPrime_of_galoisExtension ℚ_[l] L l E hL
+  obtain ⟨e, he, hEe, hram⟩ := _root_.GlobalTheory.PMon.Ram.ordIs_of_ordIs_ext ℚ_[l] L l E hL
   have h1 := ordIs_padic_self l
   unfold OrdIs at he h1
   have he1 : e = 1 := by

@@ -176,23 +176,6 @@ theorem _root_.GlobalTheory.HermTuple.exists_matrix_split {K E n m : Type*} [Fie
       ← Matrix.transpose_mul, hTT', Matrix.transpose_one, Matrix.one_mul, ← Matrix.mul_assoc,
       hGG', Matrix.one_mul]
 
-theorem exists_matrix {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CharZero F]
-    {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {n m : ℕ}
-    (G : Matrix (Fin n) (Fin n) E) (hG : ∀ a b, L.cj (G a b) = G b a) (hdet : IsUnit G.det)
-    (X Y : Matrix (Fin n) (Fin m) E)
-    (hu : IsUnit (Xᵀ * G * X.map L.cj).det) (h : Yᵀ * G * Y.map L.cj = Xᵀ * G * X.map L.cj) :
-    ∃ γ : Matrix (Fin n) (Fin n) E, γᵀ * G * γ.map L.cj = G ∧ γ * X = Y := by
-  rcases GlobalTheory.SgLoc.LocE_isField_or_split L with hE | ⟨e, he⟩
-  · letI := hE.toField
-    have h2 : (2 : E) ≠ 0 := by
-      have : (algebraMap F E 2) ≠ 0 := by
-        rw [map_ne_zero]; exact two_ne_zero
-      rwa [map_ofNat] at this
-    obtain ⟨γ, h1, h3⟩ := GlobalTheory.HermWitt.exists_gl_isometry_mul_eq_of_det_ne_zero
-      (c := (L.cj : E →+* E)) h2 L.cj_cj hG (X := X) (Y := Y) hu.ne_zero h
-    exact ⟨γ, h1, h3⟩
-  · exact exists_matrix_split (L.cj : E →+* E) e.toRingEquiv he G hG hdet X Y hu h
-
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 open Matrix Module in

@@ -5,10 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCharts
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteIsAlgClosedCExt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaCoordinatesExistUniqueSeparatePointsStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModuliModelUltrametricPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPointStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDiscreteValuationRingOfMemClosureCBis
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFieldOfIsIntegralImageStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ConeClosureArcOfIntegralImageReductionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPoint
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDiscreteValuationRingOfMemClosureCones
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDiscreteValuationRingOfMemClosureC
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFieldOfIsIntegralImage
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ConeClosureArcOfIntegralImageReduction
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -111,7 +112,7 @@ theorem exists_trait : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.
     refine hvan G ⟨hm, ⟨d, hG⟩, fun o hρ hz u hu => ?_⟩
     obtain ⟨I', hI'⟩ := GlobalTheory.TateRoot.exists_tateIso_zeta_eq E H D l ℂ _ _ _ o.I l.A (zeta l.A) l.A_pos
       (Complex.isPrimitiveRoot_exp _ l.A_pos.ne')
-    obtain ⟨y, ⟨hy, φ, h1, h2, h3, -⟩, -⟩ := (GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint hV h6 hU hX hT hE hA E H D l Xo c W₀ Y ℂ c.F.val.toRingHom).1
+    obtain ⟨y, ⟨hy, φ, h1, h2, h3, -⟩, -⟩ := (_root_.GlobalTheory.FullPoint.fullAt_existsUnique_exists_ext hV h6 hU hX hT hE hA E H D l Xo c W₀ Y ℂ c.F.val.toRingHom).1
       { o with I := I' } (fun r hr => hρ.trans hr.symm) (fun r hr => hI'.trans hr.symm)
     obtain ⟨i, f, hf, hth⟩ := hcov ℂ y o φ L.val.toRingHom ⟨h1, h2, h3⟩ hy hz
     obtain ⟨s, rfl⟩ := (theta_iff hL o hm hth).1 hu
@@ -127,7 +128,7 @@ theorem exists_trait : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.
     simpa [sub_eq_zero] using this
   letI : ∀ i, Algebra ℚ (A i) := fun i => (((gam i).comp (algebraMap c.F L)).comp (algebraMap ℚ c.F)).toAlgebra
   haveI := Fintype.ofFinite J
-  obtain ⟨i, W, _, _, _, _, f, s, w', hW, hs0, hf, hw⟩ := GlobalTheory.T.cone_closure_arc_of_integral_image_reduction_alt GlobalTheory.T.exists_complete_discreteValuationRing_of_mem_closure_cones_alt GlobalTheory.T.exists_field_of_isIntegral_image' _
+  obtain ⟨i, W, _, _, _, _, f, s, w', hW, hs0, hf, hw⟩ := _root_.GlobalTheory.cone_closure_arc_of_integral_image_reduction _root_.GlobalTheory.exists_complete_discreteValuationRing_of_mem_closure_cones _root_.GlobalTheory.exists_field_of_isIntegral_image _
     (cf (zeta (m ^ 2)) H.rt0) (fun p => by
       have h1 : IsIntegral ℤ H.rt0 := IsIntegral.of_pow two_pos (by
         rw [H.sqrt_neg_disc_sq]; exact (isIntegral_natCast H.d).neg)
@@ -160,7 +161,7 @@ theorem exists_trait : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.
   letI : Algebra ℚ W := ((algebraMap K W).comp (algebraMap ℚ K)).toAlgebra
   obtain ⟨b, hb⟩ := exists_lift_of_finite (f.comp ((gam i).comp (algebraMap c.F L)))
   let bF : c.F →+* C := (g.comp f).comp ((gam i).comp (algebraMap c.F L))
-  obtain ⟨o₁, ho₁⟩ := (GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint hV h6 hU hX hT hE hA E H D l Xo c W₀ Y C bF).2.1 (spMap g ≫ spMap f ≫ x i)
+  obtain ⟨o₁, ho₁⟩ := (_root_.GlobalTheory.FullPoint.fullAt_existsUnique_exists_ext hV h6 hU hX hT hE hA E H D l Xo c W₀ Y C bF).2.1 (spMap g ≫ spMap f ≫ x i)
   obtain ⟨M, -⟩ := GlobalTheory.T.moduli_model_ultrametric_points hV h6 hU hX hT hE hA E H D l Xo c W₀ Y C W hcdv hext (FractionRing W) g hg
     (spMap f ≫ x i) (b.comp (c.V W₀).subtype) (by
       rw [Model.j, Category.assoc Y.jQ, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, Category.assoc,

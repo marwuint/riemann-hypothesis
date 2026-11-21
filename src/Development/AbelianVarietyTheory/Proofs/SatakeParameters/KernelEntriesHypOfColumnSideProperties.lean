@@ -6,7 +6,9 @@ import Formalism.LocalToGlobal.InertKernelTheory.DefsRepDict
 import Formalism.LocalToGlobal.InertKernelTheory.GenusOneModelExistsLattice
 import Formalism.LocalToGlobal.InertKernelTheory.StatementJets
 import Formalism.LocalToGlobal.InertKernelTheory.StatementAlgT
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelEntriesHypOfHeckeCharacterConditionsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelEntriesHypOfHeckeCharacterConditions
+import Formalism.LocalToGlobal.KernelLattices.TopPin
+import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Col Formalism.L2.DIV
 
 namespace GlobalTheory.KerJ.ColSideHyp
@@ -56,7 +58,7 @@ theorem colSide_hyp : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.
   intro D L hT Gi Gl K Y cX ex t hC hTop
   obtain ⟨eta, hTied⟩ := hC.chars
   rw [t.glob_σ] at hTied
-  refine GlobalTheory.T.kernelEntries_hyp_of_heckeCharacterConditions D L hT Gi Gl K Y cX ex t (fun j => ⟨_, hTied.mu0 j⟩) (fun j v hv => hTied.muVal j v hv) ?_ hTop
+  refine _root_.GlobalTheory.kerEntTied_hyp D L hT Gi Gl K Y cX ex t (fun j => ⟨_, hTied.mu0 j⟩) (fun j v hv => hTied.muVal j v hv) ?_ hTop
   intro μ k
   exact GlobalTheory.KerJ.ColSideHyp.g_not_mem_Qp t hC μ k
 

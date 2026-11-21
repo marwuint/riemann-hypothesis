@@ -7,7 +7,9 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzTwChar
 import Development.DiscreteGroups.GlobalIrreducibility.DzKSchur
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroSupercuspidalCuspidalModule
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RegularLocalOfDepthZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreduciblesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreducibles
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsCuspSpaceBot
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
 
 open NumberField IsDedekindDomain ValuativeRel Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.L2.Host
@@ -107,7 +109,7 @@ private theorem ringEquiv_eq {F : Type} [Field F] (r r' : F ≃+* ZMod g) : r = 
 
 omit hi in
 private theorem central (y : IrrGL (w.adicCompletion E)) : ∃ ω : (w.adicCompletion E)ˣ →* ℂˣ, HasCentralChar y.rep ω :=
-  (GlobalTheory.T.centralCharacter_subquotient_productIrreducibles (w.adicCompletion E)).1 y
+  (_root_.GlobalTheory.GamMul.centralChar_subquotient_prodIrr (w.adicCompletion E)).1 y
 
 private theorem trace_eq {n : ℕ} (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp τ.character)
     (σ : IrrRep (GL (Fin n) (w.adicCompletion E))) (ω : (w.adicCompletion E)ˣ →* ℂˣ) (hω : HasCentralChar σ.ρ ω)

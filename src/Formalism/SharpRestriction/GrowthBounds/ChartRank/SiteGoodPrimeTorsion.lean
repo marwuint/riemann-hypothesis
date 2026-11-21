@@ -171,31 +171,6 @@ theorem HypTies.atHyp {Z : AtIn X0 Tw u μ w h Lv} (A : HypTies Z Gt c) (K : Cmp
   fin := A.toI.fin K
   card := (A.hyp K).card
 
-section Fam
-
-variable {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC}
-
-structure FamTies (E : Extra D L hT Gi Gl Kc Dx cX) (X0 : Formalism.L2.Herm.Herm0 D)
-    (Lv : ∀ (_ : D.what₂.Tup) u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)), Levels (Gl.Fl u w hg))
-    (I : ∀ (μ : D.what₂.Tup), DV.Used D μ → ∀ u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
-      D.what₂.places.resChar w ∉ Dx.Qp μ → CmpJIn E.tw u μ w hg (Lv μ u w hg)) : Prop where
-  fill : ∀ u w hg, FillTie hT u w hg (Gl.Fl u w hg)
-  step : ∀ μ hU u w hg hq j hj, ∃ (Fo : FormsIn ((I μ hU u w hg hq).at' j hj).M (j + 1) hj) (Lc : LocIn X0 u w hg (Lv μ u w hg) j Fo.Ch),
-    ((I μ hU u w hg hq).at' j hj).st = stepInOf hj Fo Lc (hT.gat_pos u w hg) ∧ StepTies hj Fo Lc hT E.cmp
-
-theorem FamTies.H {E : Extra D L hT Gi Gl Kc Dx cX} {X0 : Formalism.L2.Herm.Herm0 D} {Lv} {I} (A : FamTies E X0 Lv I)
-    (K : CmpTied D X0 T hT E.cmp) : ∀ μ hU u w hg hq, CmpJHyp E.cmp (I μ hU u w hg hq) := fun μ hU u w hg hq =>
-  haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩
-  HypTiesI.hyp (X0 := X0) ⟨(E.ker u w hg).fl_t, A.fill u w hg, A.step μ hU u w hg hq⟩ K
-
-theorem FamTies.chX {E : Extra D L hT Gi Gl Kc Dx cX} {X0 : Formalism.L2.Herm.Herm0 D} {Lv} {I} (A : FamTies E X0 Lv I) :
-    ∀ μ hU u w hg hq j hj, ChX ((I μ hU u w hg hq).at' j hj).st := fun μ hU u w hg hq j hj => by
-  obtain ⟨Fo, Lc, e, S⟩ := A.step μ hU u w hg hq j hj
-  rw [e]
-  exact S.chX
-
-end Fam
-
 end Formalism.MainNotions.G.ChF
 
 end

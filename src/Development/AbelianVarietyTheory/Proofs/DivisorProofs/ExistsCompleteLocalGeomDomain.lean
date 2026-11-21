@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRegularLoc
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherian
 import ReciprocityTheory.CommutativeAlgebra.MaximalIdealSquares.RingKrullDimQuotientSpanSingletonAddOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentTensorEqZeroOrOneOfIsPurelyInseparableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularLocalRingAtPrimeLocalizationTensorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularLocalRingAtPrimeLocalizationTensor
 
 open IsLocalRing
 open scoped TensorProduct
@@ -96,6 +96,6 @@ theorem exists_complete_local_geomDomain : ∀ (k k' : Type) [Field k] [CommRing
     exact ⟨(Ideal.Quotient.liftₐ 𝔪 g hg).comp
       (Ideal.quotientKerAlgEquivOfSurjective hφ).symm.toAlgHom⟩
   · intro K _ _ hK hpi
-    exact isDomain_tensor_of_reg k K S (fun 𝔫 _ => GlobalTheory.T.isRegularLocalRing_localization_atPrime_tensor_field k K r 𝔪 𝔫)
+    exact isDomain_tensor_of_reg k K S (fun 𝔫 _ => _root_.GlobalTheory.isRegularLocalRing_atPrime_localization_tensor k K r 𝔪 𝔫)
 
 end GlobalTheory.SepRing

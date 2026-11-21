@@ -1,7 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BcPartsTempered
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CMTypeEmbeddings
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HeckeSplitOne
+import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SplitLiftOfLiftParam
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitPlaceGoodSignature
-open Formalism.BasicNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings GlobalTheory.RowCuspPar Polynomial
+
+open Formalism.BasicNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings Polynomial
 
 noncomputable section
 

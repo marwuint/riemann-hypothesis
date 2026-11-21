@@ -89,14 +89,6 @@ def PChar : Prop :=
     (inP ε X ↔ (Xᴴ = X ∧ X * Jm ε = -(Jm ε * X))) ∧
     (inP ε X → Jm ε * X * Jm ε = -X)
 
-def Brackets : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (X Y : Matrix (Fin n) (Fin n) ℂ),
-    (inK ε X → inK ε Y → inK ε (X * Y - Y * X)) ∧
-    (inK ε X → inP ε Y → inP ε (X * Y - Y * X)) ∧
-    (inP ε X → inP ε Y → inK ε (X * Y - Y * X)) ∧
-    (inG ε X → ∃ A B, inK ε A ∧ inP ε B ∧ X = A + B) ∧
-    (inK ε X → inP ε X → X = 0)
-
 def Polar : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool),
     (∀ g, inUJ ε g → ∃ k X, k ∈ Kset ε ∧ inP ε X ∧ g = k * NormedSpace.exp X) ∧
@@ -105,11 +97,6 @@ def Polar : Prop :=
     (∃ L : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
       ContinuousOn L {g | inUJ ε g} ∧
       ∀ g, inUJ ε g → inP ε (L g) ∧ g * NormedSpace.exp (-L g) ∈ Kset ε)
-
-def Complexify : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ),
-    ∃! p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ,
-      inG ε p.1 ∧ inG ε p.2 ∧ Z = p.1 + Complex.I • p.2
 
 def HSBall : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool),

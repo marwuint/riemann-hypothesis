@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourTermComplexQuasiIsoAtFormalProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothSectionsMonoReductionAffineInf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomSpecPointsLevelsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoproductThickeningQuotientFreeThickeningStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoproductThickeningQuotientFreeThickening
 
 set_option autoImplicit false
 
@@ -40,7 +40,7 @@ theorem isNilpotent_of_isNilDP {B : Type} [CommRing B] {J : Ideal B} {δ : Divid
 
 theorem exists_cop_qAt : ∀ (D : Data) (Λ : Lift D) (n : ℕ) (U : AffOp D.X) (T : Thick D.κ D.t), IsLev T.δ (n + 1) → ⊤ ≤ (T.x ≫ D.i) ⁻¹ᵁ U.unop.1 → ∃ (G : Thick D.κ D.t) (l : T ⟶ G) (r : Λ.L.obj U ⟶ G), IsCop (n + 1) l r ∧ (KK D.κ D.t).QAt l := by
   intro D Λ n U T hT hU
-  obtain ⟨F, G, u, q, r, hu, hF, hq, hJ, hc⟩ := GlobalTheory.T.exists_coproductThickening_quotient_freeThickening D Λ n U T hT hU
+  obtain ⟨F, G, u, q, r, hu, hF, hq, hJ, hc⟩ := _root_.GlobalTheory.CopEx.exists_cop D Λ n U T hT hU
   obtain ⟨h1, -, -, -⟩ := GlobalTheory.T.hom_spec_points_levels D Λ
   refine ⟨G, u ≫ q, r, hc, ?_⟩
   haveI := D.sec_smooth U.unop

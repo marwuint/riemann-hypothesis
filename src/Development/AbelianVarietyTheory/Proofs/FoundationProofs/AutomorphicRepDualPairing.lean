@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSystemOf
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIrreducibleEquivariantProjection
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DefiniteUnitaryFinitePointsExistsOpenCompactStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalVectorValuedDefiniteUnitaryFormStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DefiniteUnitaryFinitePointsExistsOpenCompact
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalVectorValuedDefiniteUnitaryForm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsAutRepUSpanValues
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DefU Formalism.BasicNotions Formalism.CohomologicalDescent.DepthNonnegative GlobalTheory.ExpFrame GlobalTheory.FrameAut
 open scoped Topology
@@ -118,7 +118,7 @@ theorem rep_smooth (ρ : Representation ℂ (infU E n) S) (f : forms ρ) :
 
 theorem rep_fd (ρ : Representation ℂ (infU E n) S) (K : Subgroup (finU E n)) (hK : IsOpen (K : Set (finU E n))) :
     FiniteDimensional ℂ (GlobalTheory.PRep.fixed (rep ρ) K) := by
-  have hM := GlobalTheory.T.finiteDimensional_vectorValued_definiteUnitaryForms E n S ρ K hK ((GlobalTheory.PRep.fixed (rep ρ) K).map (forms ρ).subtype) (by
+  have hM := _root_.GlobalTheory.DefU.finiteDimensional_vecForms E n S ρ K hK ((GlobalTheory.PRep.fixed (rep ρ) K).map (forms ρ).subtype) (by
     rintro _ ⟨g, hg, rfl⟩
     refine ⟨fun v γ hγ x => (g.2.1 v).left γ hγ x, g.2.2, fun k hk v => ?_⟩
     have h1 : rep ρ k g = g := by
@@ -132,62 +132,6 @@ theorem rep_fd (ρ : Representation ℂ (infU E n) S) (K : Subgroup (finU E n)) 
 end GlobalTheory.FrameAut.VecProj
 
 namespace GlobalTheory.FrameAut.VecProj
-
-theorem exists_autRep_projection : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (B : autU E n →ₗ⋆[ℂ] autU E n →ₗ[ℂ] ℂ), (∀ u v, star (B u v) = B v u) → (∀ v, 0 ≤ (B v v).re) → (∀ v, B v v = 0 → v = 0) → (∀ g u v, B (autRep E n g u) (autRep E n g v) = B u v) → ∀ (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S), Submodule.span ℂ (Set.range ρ) = ⊤ → ∀ f : S →ₗ[ℂ] (UA E n → ℂ), f ≠ 0 → (∀ v, IsAutFormU (f v)) → (∀ (x : infU E n) v, f (ρ x v) = RU E n x (f v)) → ∃ π, IsAutRepU π ∧ ∃ f' : S →ₗ[ℂ] (UA E n → ℂ), f' ≠ 0 ∧ (∀ v, f' v ∈ π) ∧ (∀ (x : infU E n) v, f' (ρ x v) = RU E n x (f' v)) ∧ ∀ (κ : Type) (R : Finset κ) (s : κ → UA E n) (c : ℂ), (∀ i ∈ R, s i ∈ finU E n) → (∀ v, ∑ i ∈ R, RU E n (s i) (f v) = c • f v) → ∀ v, ∑ i ∈ R, RU E n (s i) (f' v) = c • f' v := by
-  intro E _ _ _ n B hh hp hd hi S _ _ _ ρ hsp f hf0 hfa hfe
-  classical
-  have hfA : f ∈ forms ρ := ⟨fun v => hfa v, hfe⟩
-  have hx : (⟨f, hfA⟩ : forms ρ) ≠ 0 := fun h => hf0 (congrArg Subtype.val h)
-  obtain ⟨U, P, hU0, hUst, hUirr, hPU, hPeq, hPx⟩ :=
-    GlobalTheory.AdmissibleProjection.exists_irreducible_equivariant_projection (finU E n) (forms ρ) (rep ρ)
-      (form B ρ) (form_herm B hh ρ) (form_nonneg B hp ρ) (form_def B hh hp hd ρ) (form_inv B hi ρ)
-      (GlobalTheory.T.definiteUnitaryFinitePoints_exists_openCompact E n) (rep_smooth ρ) (rep_fd ρ) ⟨f, hfA⟩ hx
-  let M : Submodule ℂ (S →ₗ[ℂ] (UA E n → ℂ)) := U.map (forms ρ).subtype
-  have hM0 : M ≠ ⊥ := by
-    intro h
-    apply hU0
-    rw [Submodule.eq_bot_iff]
-    intro u hu
-    have : u.1 ∈ M := ⟨u, hu, rfl⟩
-    rw [h, Submodule.mem_bot] at this
-    exact Subtype.ext this
-  have hMf : ∀ g ∈ M, (∀ v, IsAutFormU (g v)) ∧ ∀ (x : infU E n) v, g (ρ x v) = RU E n x (g v) := by
-    rintro _ ⟨u, -, rfl⟩
-    exact ⟨fun v => u.2.1 v, u.2.2⟩
-  have hMk : ∀ k ∈ finU E n, ∀ g ∈ M, (RU E n k) ∘ₗ g ∈ M := by
-    rintro k hk _ ⟨u, hu, rfl⟩
-    exact ⟨rep ρ ⟨k, hk⟩ u, hUst _ u hu, rfl⟩
-  have hMirr : ∀ N ≤ M, (∀ k ∈ finU E n, ∀ g ∈ N, (RU E n k) ∘ₗ g ∈ N) → N = ⊥ ∨ N = M := by
-    intro N hNM hN
-    let N' : Submodule ℂ (forms ρ) := N.comap (forms ρ).subtype
-    have hN'U : N' ≤ U := by
-      intro u hu
-      obtain ⟨w, hw, hwu⟩ := hNM hu
-      rw [← Subtype.ext hwu]
-      exact hw
-    have hN'st : ∀ g, ∀ u ∈ N', rep ρ g u ∈ N' := fun g u hu => hN g.1 g.2 u.1 hu
-    have hNe : N'.map (forms ρ).subtype = N := by
-      rw [Submodule.map_comap_subtype]
-      exact inf_eq_right.2 (hNM.trans (Submodule.map_subtype_le _ _))
-    rcases hUirr N' hN'U hN'st with h | h
-    · left; rw [← hNe, h, Submodule.map_bot]
-    · right; rw [← hNe, h]
-  have hπ := GlobalTheory.FrameAut.VecForms.isAutRepU_span_values E n S ρ hsp M hM0 hMf hMk hMirr
-  refine ⟨_, hπ, (P ⟨f, hfA⟩).1, fun h => hPx (Subtype.ext h), fun v => Submodule.subset_span
-    ⟨(P ⟨f, hfA⟩).1, ⟨_, hPU _, rfl⟩, v, rfl⟩, (P ⟨f, hfA⟩).2.2, ?_⟩
-  intro κ R s c hs hsum v
-  have hA : ∑ i ∈ R.attach, rep ρ ⟨s i.1, hs i.1 i.2⟩ ⟨f, hfA⟩ = c • (⟨f, hfA⟩ : forms ρ) := by
-    apply Subtype.ext
-    refine LinearMap.ext fun w => ?_
-    rw [Submodule.coe_sum, LinearMap.sum_apply, Submodule.coe_smul, LinearMap.smul_apply, ← hsum w]
-    exact Finset.sum_attach R (fun i => RU E n (s i) (f w))
-  have hB := congrArg P hA
-  rw [map_sum, map_smul] at hB
-  simp only [hPeq] at hB
-  have := LinearMap.congr_fun (congrArg Subtype.val hB) v
-  rw [Submodule.coe_sum, LinearMap.sum_apply, Submodule.coe_smul, LinearMap.smul_apply] at this
-  rw [← this]
-  exact (Finset.sum_attach R (fun i => RU E n (s i) ((P ⟨f, hfA⟩).1 v))).symm
 
 end GlobalTheory.FrameAut.VecProj
 

@@ -128,17 +128,6 @@ def HostWW (la : ℝ) (P : HostReq) : Prop :=
           RankVal s R ∧ H.CT2 = CT2 ∧ HostGood s C8 C5 c6 Cb H q0 ∧ q0 = q0H H ∧
           (∀ t, t ∉ H.TT → a t = 0 ∧ b t = 0) ∧ WinOK s C.GK H a b ∧ WOK s cD ch C.GK H a b ∧ P C5 s R H q0
 
-def HostW : Prop := ∃ la : ℝ, 1 < la ∧ HostWW la fun _ _ _ _ _ => True
-
-def KitCW (la : ℝ) (Q : PtProp) : Prop :=
-  ∃ ε0 : ℝ, 0 < ε0 ∧ ∀ eps : ℝ, 0 < eps → eps ≤ ε0 → eps < 1 / 52 → ∃ (CT2 C8 : ℝ) (K0 : TransportedAlt), 1 ≤ C8 ∧
-    ∀ C : FC, Std C → C.CT2 = CT2 → C.P.Cpde = C8 → C.Large K0 C.P.CF → ∃ c1 : ℝ, ∀ cD ≥ c1, ∃ c2 : ℝ, ∀ ch ≥ c2,
-      ∃ C5 Cb x0 : ℝ, 0 < C5 ∧ 0 < Cb ∧ ∃ S : Scales la, ∀ s : Scale, s.eps = eps → x0 ≤ s.x → S.Mem s →
-        ∃ k : Kit C cD ch s, ∀ i, (k.pt i).Has Q ∧ ThickSetLowerBound (k.pt i).L ∧ ChBad_at (k.pt i).ta.Gx Cb ∧
-          ChQD_at (k.pt i).D (k.pt i).L.sc.x (k.pt i).L.sc.eps C5
-
-def KitC (Q : PtProp) : Prop := ∃ la : ℝ, 1 < la ∧ KitCW la Q
-
 def WClosed : Prop :=
   Closed (fun _ => True) fun Fm _ => ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, AuxBlock8.WeightVectorExists (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK
 
@@ -158,39 +147,6 @@ theorem duty_of_cls (Q : PtProp) {eps : ℝ} (Fm : FamP eps) (h : cls Q Fm) : Du
 
 theorem classOf_of_cls (Q : PtProp) {eps : ℝ} (Fm : FamP eps) (h : cls Q Fm) : classOf Q Fm :=
   fun x hx i => (h.1 x hx i).1.1.1.1
-
-theorem ObjC.imp {Q Q' : PtProp} (h : ObjC Q) (hQ : ∀ (C : FC) (p : Pt C), p.Has Q → p.Has Q') : ObjC Q' := by
-  obtain ⟨ε0, h0, h⟩ := h
-  refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
-  obtain ⟨K0, h⟩ := h eps C8 C5 c6 Cb a1 a2 a3 a4
-  refine ⟨K0, fun C b1 b2 b3 => ?_⟩
-  obtain ⟨c1, h⟩ := h C b1 b2 b3
-  refine ⟨c1, fun cD hcD => ?_⟩
-  obtain ⟨c2, h⟩ := h cD hcD
-  refine ⟨c2, fun ch hch => ?_⟩
-  obtain ⟨x0, h⟩ := h ch hch
-  refine ⟨x0, fun s R H q0 a b M c u0 d1 d2 d3 d4 d5 d0 d6 d7 d8 d9 => ?_⟩
-  obtain ⟨p, e1, e2, e3, e4, e5, e6⟩ := h s R H q0 a b M c u0 d1 d2 d3 d4 d5 d0 d6 d7 d8 d9
-  exact ⟨p, e1, e2, e3, e4, e5, hQ C p e6⟩
-
-theorem HostExQW.imp {la : ℝ} {P P' : HostReq} (h : HostExQW la P)
-    (hP : ∀ C5 s R H q0, P C5 s R H q0 → P' C5 s R H q0) : HostExQW la P' :=
-  HostExW.imp h fun _ _ _ _ _ c => ⟨c.1, hP _ _ _ _ _ c.2⟩
-
-theorem HostWW.imp {la : ℝ} {P P' : HostReq} (h : HostWW la P)
-    (hP : ∀ C5 s R H q0, P C5 s R H q0 → P' C5 s R H q0) : HostWW la P' := by
-  obtain ⟨ε0, h0, h⟩ := h
-  refine ⟨ε0, h0, fun eps h1 h2 h3 => ?_⟩
-  obtain ⟨CT2, C8, C5, c6, Cb, K0, a1, a2, a3, a4, h⟩ := h eps h1 h2 h3
-  refine ⟨CT2, C8, C5, c6, Cb, K0, a1, a2, a3, a4, fun C a b c d => ?_⟩
-  obtain ⟨c1, h⟩ := h C a b c d
-  refine ⟨c1, fun cD hcD => ?_⟩
-  obtain ⟨c2, h⟩ := h cD hcD
-  refine ⟨c2, fun ch hch => ?_⟩
-  obtain ⟨x0, S, h⟩ := h ch hch
-  refine ⟨x0, S, fun s b1 b2 b3 => ?_⟩
-  obtain ⟨R, H, q0, u, v, e1, e2, e3, e4, e5, e6, e7, e8⟩ := h s b1 b2 b3
-  exact ⟨R, H, q0, u, v, e1, e2, e3, e4, e5, e6, e7, hP _ _ _ _ _ e8⟩
 
 section Primes
 
@@ -263,71 +219,7 @@ theorem eq_of_from {C : FC} (p : Pt C) {R : Ranks} {H : Host R} {a b : R.A → �
   subst eR
   exact globalTwisting_congr_fact p.D.host eS eq ed ep ep' (by rw [h1, h2, Ideal.absNorm_top, Ideal.absNorm_top])
 
-theorem auxiliaryPrime_mem_avoidedPrimes (D : D7) : q0Av D ∈ avPrimes D := by
-  have h : q0Av D ≠ 0 := (globalTwisting_spec_fact D.host).1.ne_zero
-  simp [avPrimes, h]
-
-theorem not_tameDistinct_of_eq_inv {r g m : ℕ} [Fact g.Prime] (χ : Fin m → (ZMod g)ˣ) (j : Fin m) (h : χ j = (χ j)⁻¹) :
-    ¬ TameDistinct r g χ := fun hd => by
-  have := hd.1 (a₁ := some (j, true)) (a₂ := some (j, false)) h
-  simp at this
-
-theorem primeToPart_of_cube {M : Type} [Monoid M] (l : ℕ) (hl : l.Prime) (h3 : l ≠ 3) (x : M) (hx : x ^ 3 = 1) :
-    Formalism.CyclotomicNorms.primeToPart l x = x := by
-  have hd : orderOf x ∣ 3 := orderOf_dvd_of_pow_eq_one hx
-  have hf : (orderOf x).factorization l = 0 := by
-    apply Nat.factorization_eq_zero_of_not_dvd
-    intro h
-    exact h3 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_three).1 (h.trans hd))
-  unfold Formalism.CyclotomicNorms.primeToPart
-  rw [hf]
-  rcases (Nat.dvd_prime Nat.prime_three).1 hd with h | h
-  · rw [orderOf_eq_one_iff.1 h]; simp
-  · have e : ∀ n, n = 3 → (((l ^ 0 : ℕ) : ZMod (n / l ^ 0))⁻¹).val = 1 := by
-      rintro n rfl
-      have e2 : ∀ m, m = 3 → (((1 : ℕ) : ZMod m)⁻¹).val = 1 := by
-        rintro m rfl
-        decide +kernel
-      rw [show ((l ^ 0 : ℕ) : ZMod (3 / l ^ 0)) = ((1 : ℕ) : ZMod (3 / l ^ 0)) by rw [pow_zero l]]
-      exact e2 _ (by simp)
-    rw [e _ h]; simp
-
 local instance factPrimeSeven : Fact (Nat.Prime 7) := ⟨by norm_num⟩
-
-example : TameDistinct 1 7 (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ)) := by
-  have hinj : Function.Injective (tameList (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ))) := by decide
-  refine ⟨hinj, fun l hl hB => ?_, fun _ => ⟨⟨3, 5, by decide, by decide⟩, Units.ext (by show (2 : ZMod 7) = 3 * 3; decide)⟩⟩
-  have h3 : l ≠ 3 := by
-    rintro rfl
-    apply hB
-    right
-    refine ⟨1, le_rfl, le_rfl, Nat.prime_three, ?_⟩
-    have : padicValNat 3 (7 ^ 1 - 1) = 1 := by
-      have : (7 ^ 1 - 1 : ℕ) = 3 * 2 := by norm_num
-      rw [this, padicValNat.mul (by norm_num) (by norm_num), padicValNat_self, padicValNat.eq_zero_of_not_dvd (by norm_num)]
-    rw [this]; norm_num
-  have hc : ∀ o, tameList (fun _ : Fin 1 => (⟨2, 4, by decide, by decide⟩ : (ZMod 7)ˣ)) o ^ 3 = 1 := by decide
-  intro a b hab
-  simp only at hab
-  rw [primeToPart_of_cube l hl h3, primeToPart_of_cube l hl h3] at hab
-  · exact hinj (Units.ext ((algebraMap (ZMod 7) (Formalism.CyclotomicNorms.Fbar 7)).injective hab))
-  · rw [← map_pow, ← Units.val_pow_eq_pow_val, hc]; simp
-  · rw [← map_pow, ← Units.val_pow_eq_pow_val, hc]; simp
-
-example {r g : ℕ} [Fact g.Prime] : ¬ TameDistinct r g (fun _ : Fin 1 => 1) :=
-  not_tameDistinct_of_eq_inv _ 0 inv_one.symm
-
-example : minkM 1 = 2 ∧ minkM 2 = 24 ∧ minkM 4 = 5760 := by
-  refine ⟨?_, ?_, ?_⟩ <;> decide +kernel
-
-example {eps : ℝ} (Fm : FamP eps) : ¬ cls (fun _ _ _ _ _ _ _ _ _ => False) Fm := fun h =>
-  let ⟨x, _, hx, _, ⟨i⟩⟩ := Fm.exists_pt 0
-  classOf_of_cls _ Fm h x hx i
-
-example (C0 : ℝ) (cT : ℝ → ℝ → ℝ) : ¬ DesignChoices (fun _ => False) C0 cT := by
-  rintro ⟨e, he, h⟩
-  obtain ⟨_, _, _, _, h, _⟩ := h e he le_rfl ⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩
-  exact h
 
 end GlobalTheory.EX.DC
 

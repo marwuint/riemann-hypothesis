@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittExtensionTotallyDefiniteHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormalStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormal
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDetStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemHcompl
 import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsOrthogonalBasisDotProductApplyEq
@@ -285,7 +285,7 @@ theorem exists_unimodular [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarT
     ∃ L : Submodule (𝓞 K) (V × K), Submodule.IsLattice K L ∧ IsUnimodular (ext h β) L := by
   have nd := nondeg_of_PD _ hp
   obtain ⟨M, hM⟩ := exists_intLat (ext h β)
-  obtain ⟨L, hL, -⟩ := (GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K (V × K) (ext h β) hK hs nd).1 M hM
+  obtain ⟨L, hL, -⟩ := (_root_.GlobalTheory.Mass.MaxExists.main K (V × K) (ext h β) hK hs nd).1 M hM
   obtain ⟨j, c, hc⟩ := exists_basis_ext h β b
   refine ⟨L, hL.1.1, (locDual (𝓞 K) K (V × K) (ext h β) hs
     (fun r => LocWitt.star_int r) L hL.1.1.fg).2.2 fun P hm => ?_⟩

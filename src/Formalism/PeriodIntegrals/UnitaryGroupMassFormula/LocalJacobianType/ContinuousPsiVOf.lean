@@ -19,9 +19,6 @@ theorem piu_ne : piu v ≠ 0 := (PI.VolStabSW.exists_unif_Fv v).choose_spec.1
 theorem piu_tendsto : Tendsto (fun k : ℕ => piu v ^ k) atTop (𝓝 0) :=
   (PI.VolStabSW.exists_unif_Fv v).choose_spec.2.1
 
-theorem piu_mem : piu v ∈ v.adicCompletionIntegers F :=
-  (PI.VolStabSW.exists_unif_Fv v).choose_spec.2.2
-
 theorem tube {X : Type} [AddCommGroup X] [Module (Fv F v) X] [TopologicalSpace X]
     [ContinuousSMul (Fv F v) X] {C : Set X} (hC : IsCompact C) {U : Set X}
     (hU : U ∈ 𝓝 (0 : X)) : ∀ᶠ k : ℕ in atTop, ∀ c ∈ C, piu v ^ k • c ∈ U := by

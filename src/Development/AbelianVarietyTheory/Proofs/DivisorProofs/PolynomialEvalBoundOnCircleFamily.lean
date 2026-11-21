@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRootMapMinpolyIffExistsRingHomExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRootMapMinpolyIffExistsRingHomExtension
 
 namespace GlobalTheory
 
@@ -234,7 +234,7 @@ theorem _root_.GlobalTheory.maxPrinciple_line_eval₂ : ∀ (d : ℕ) (B : Type)
     have hdeg : ((minpoly _ G).map (φ 1)).degree ≠ 0 := by
       rw [(minpoly.monic hg).degree_map]; exact (minpoly.degree_pos hg).ne'
     obtain ⟨a, ha⟩ := IsAlgClosed.exists_root _ hdeg
-    obtain ⟨X', hX', -⟩ := (_root_.GlobalTheory.T.isRoot_map_minpoly_iff_exists_ringHom_extension _ _ hinj' G (φ 1) a).1 ha
+    obtain ⟨X', hX', -⟩ := (_root_.GlobalTheory.isRoot_map_minpoly_iff_exists_ringHom _ _ hinj' G (φ 1) a).1 ha
     obtain ⟨hgen, -⟩ := lift 1 X' hX'
     exact (norm_nonneg _).trans (hR _ 1 norm_one hgen)
   set n := (minpoly (MvPolynomial (Fin r) (MvPolynomial (Fin d) ℚ)) G).natDegree with hn_def
@@ -245,7 +245,7 @@ theorem _root_.GlobalTheory.maxPrinciple_line_eval₂ : ∀ (d : ℕ) (B : Type)
         ((minpoly (MvPolynomial (Fin r) (MvPolynomial (Fin d) ℚ)) (G ^ N)).map (φ w)).IsRoot a →
         ‖a‖ ≤ R ^ N := by
       intro w hw a ha
-      obtain ⟨X', hX', rfl⟩ := (_root_.GlobalTheory.T.isRoot_map_minpoly_iff_exists_ringHom_extension _ _ hinj' (G ^ N) (φ w) a).1 ha
+      obtain ⟨X', hX', rfl⟩ := (_root_.GlobalTheory.isRoot_map_minpoly_iff_exists_ringHom _ _ hinj' (G ^ N) (φ w) a).1 ha
       obtain ⟨hgen, hval⟩ := lift w X' hX'
       rw [map_pow, norm_pow, hval]
       exact pow_le_pow_left₀ (norm_nonneg _) (hR _ w hw hgen) N
@@ -264,7 +264,7 @@ theorem _root_.GlobalTheory.maxPrinciple_line_eval₂ : ∀ (d : ℕ) (B : Type)
         rwa [Polynomial.coeff_map] at this
     have hroot0 : ((minpoly (MvPolynomial (Fin r) (MvPolynomial (Fin d) ℚ)) (G ^ N)).map
         (φ 0)).IsRoot (MvPolynomial.eval₂ x c G ^ N) :=
-      (_root_.GlobalTheory.T.isRoot_map_minpoly_iff_exists_ringHom_extension _ _ hinj' (G ^ N) (φ 0) _).2 ⟨_, h0, by simp⟩
+      (_root_.GlobalTheory.isRoot_map_minpoly_iff_exists_ringHom _ _ hinj' (G ^ N) (φ 0) _).2 ⟨_, h0, by simp⟩
     have hb := norm_root_le_two_pow_mul_of_coeff_le (hmon.map (φ 0)) (hmon.natDegree_map (φ 0))
       (pow_nonneg hR0 N) (fun k hk => by rw [Polynomial.coeff_map]; exact hcoef k hk.le) hroot0
     rw [norm_pow] at hb

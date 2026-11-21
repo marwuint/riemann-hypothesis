@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspDiscreteDecompositionGL
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.NotIsFinitePartOfBot
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsTestZero
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalKTypeFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalKTypeFinite
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsOpenIsCompact
 
 noncomputable section
@@ -92,7 +92,7 @@ theorem exists_typeSpace : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyCo
     (∀ k w, T (ρ k w) = R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (T w)) ∧
       ∀ w, T w ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) (T w) = T w
   let X : Submodule ℂ (L2 (latticeGL E a) μ) := ⨆ (T : Y →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : C T), LinearMap.range T
-  have hXf : FiniteDimensional ℂ X := GlobalTheory.T.cuspidal_K_type_finite E a μ H hH hI U hUo Y ρ
+  have hXf : FiniteDimensional ℂ X := _root_.GlobalTheory.CompanionTheory.IsoTypes.finiteDimensional_isotypic E a μ H hH hI U hUo Y ρ
   have hmem : ∀ T, C T → ∀ w, T w ∈ X := fun T hT w =>
     (le_iSup₂_of_le (f := fun (T : Y →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : C T) => LinearMap.range T) T hT le_rfl)
       ⟨w, rfl⟩

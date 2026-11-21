@@ -113,23 +113,4 @@ theorem EigenFrameE_of (hF : EigenFrame) (hS : SepPairs) (hN : IntNorm) : EigenF
     have hint : IsIntegral ℤ (cE (e : E)) := map_isIntegral_int cE (RingOfIntegers.isIntegral_coe e)
     exact ⟨⟨(e, ⟨cE (e : E), hint⟩), rfl⟩, he⟩
 
-theorem HomGram_proof : HomGram := by
-  intro O L L' _ _ _ _ _ hL' N0 N1 e es e' es' h0l h0r hdual Eab Es hE1 hE2 hS1 hS2 x y
-  obtain ⟨a, b⟩ := x
-  obtain ⟨a', b'⟩ := y
-  simp only [hE1, hE2, hS1, hS2, h0l, Finset.sum_const_zero, add_zero]
-  rw [Finset.sum_eq_single a]
-  · rw [if_pos rfl]
-    by_cases h : a' = a
-    · subst h
-      rw [if_pos rfl, hdual]
-      simp
-    · rw [if_neg h, h0r, if_neg]
-      intro h2
-      exact h (Prod.ext_iff.1 h2).1.symm
-  · intro c _ hc
-    rw [if_neg (Ne.symm hc), h0l]
-  · intro h
-    exact absurd (Finset.mem_univ a) h
-
 end Formalism.L2.Th1.GD

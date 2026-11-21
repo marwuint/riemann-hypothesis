@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarMeasureUniqueSigmaCompactNormalisedCompactOpStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellShellIsOpenCompactSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarMeasureUniqueSigmaCompactNormalisedCompactOp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellShellIsOpenCompactSubgroup
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG GlobalTheory.WeylCell.WeylUnipotentShell
 
 namespace GlobalTheory.WeylCell.WeylUnipotentShell
@@ -18,7 +18,7 @@ theorem cellU_haar_rightInv : ∀ (L : Type) [Field L] [Valued L (WithZero (Mult
       (∀ F : GU σ n → ENNReal,
         ∫⁻ u : cellU y, F ((u * p : cellU y) : GU σ n) ∂μ = ∫⁻ u : cellU y, F (u : GU σ n) ∂μ) := by
   intro L _ _ _ ϖ σ q hU n k hk hn y hy hw _ _ μ _ _ p
-  have hS := GlobalTheory.T.unitaryWeylCellShell_isOpenCompactSubgroup L ϖ σ q hU n k hk hn y hy hw
+  have hS := _root_.GlobalTheory.WeylCell.WeylUnipotentShell.shellU_open_compact_subgroup L ϖ σ q hU n k hk hn y hy hw
   haveI : LocallyCompactSpace (cellU y) :=
     (hS.1 0).2.1.locallyCompactSpace_of_mem_nhds_of_group ((hS.1 0).1.mem_nhds (hS.1 0).2.2.1)
   let e : cellU y ≃ᵐ cellU y := (Homeomorph.mulRight p).toMeasurableEquiv
@@ -49,7 +49,7 @@ theorem cellU_haar_rightInv : ∀ (L : Type) [Field L] [Valued L (WithZero (Mult
       simpa using hmul _ _ h (hinv p hp)
     · intro h; exact hmul _ _ h hp
   have hνμ : ν = μ := by
-    have := GlobalTheory.T.haarMeasure_unique_sigmaCompact_normalised_compactOpen (cellU y) μ ν (fun i : ℕ => shellU k y (i : ℤ))
+    have := _root_.GlobalTheory.haar_unique_of_sigmaCompact_normalised (cellU y) μ ν (fun i : ℕ => shellU k y (i : ℤ))
       (fun i => ⟨(hS.1 i).2.1, (hS.1 i).1.measurableSet⟩)
       (Set.eq_univ_of_forall fun u => Set.mem_iUnion.2 ⟨_, mem_shellU_depth k y u⟩)
       _ 1 ho hc ⟨1, h1⟩ hνS

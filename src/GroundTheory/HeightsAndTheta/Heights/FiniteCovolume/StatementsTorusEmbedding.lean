@@ -22,12 +22,6 @@ def TorusEmbedding.Statement (h : HermitianForm F E W) (v : Basis ι E W) : Prop
           star (vecAt v w₀ w) ⬝ᵥ (gramAt h v w *ᵥ z) = 0 →
           ((τ a : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ z = z
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

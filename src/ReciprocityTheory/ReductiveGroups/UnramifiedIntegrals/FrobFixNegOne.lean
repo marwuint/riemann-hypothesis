@@ -102,14 +102,6 @@ theorem frobFix_root (hp : p.Prime) {x : R} {n : ℕ} (hn : 0 < n) (hpn : ¬ p �
   rw [hx', sub_self]
   exact dvd_zero _
 
-def frobFixSubring (R : Type*) [CommRing R] (hp : p.Prime) : Subring R where
-  carrier := {x | FrobFix p x}
-  mul_mem' := frobFix_mul
-  one_mem' := frobFix_one
-  add_mem' := frobFix_add hp
-  zero_mem' := frobFix_zero hp
-  neg_mem' := frobFix_neg hp
-
 end General
 
 variable (l : ℕ) [Fact l.Prime]

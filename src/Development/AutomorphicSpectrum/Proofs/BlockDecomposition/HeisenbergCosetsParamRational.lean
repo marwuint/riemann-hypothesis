@@ -7,14 +7,14 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetCellInvari
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NondegenerateCharacterCellFactorization
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinConvergent
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowD
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelParabolicQuotientIffRowsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryCellBlockNormalFormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelParabolicQuotientIffRows
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryCellBlockNormalForm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryBlockInvertibleCriterionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicFactorizationRowsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowsProportionalOfTransformStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowsProportionalOfTransform
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RowsOfWeylHeisenbergProductStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeylHeisenbergLeviRationalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeisenbergCentreRationalFormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeisenbergCentreRationalForm
 noncomputable section
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory
@@ -117,7 +117,7 @@ theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
           f (M.w * M.nzx l.1 0 * M.sh (u.2.map (incA D)) * M.emb (u.1.out : GF D p) * y) := by
   intro D n ρ p hn M
   have hσ : ∀ x, sg D (sg D x) = x := sg_sg D
-  obtain ⟨hadd, hsh, hemb, hc⟩ := GlobalTheory.T.heisenberg_centre_rational_form M
+  obtain ⟨hadd, hsh, hemb, hc⟩ := _root_.GlobalTheory.CompanionTheory.ZUnf.centre_nzx M
   choose hnm ζ hζ hζm using hc
   choose a b hab using fun q : Cosets (P D p) (GF D p) =>
     GlobalTheory.CompanionTheory.SwUnf.BigCell.exists_blockMatrixTwoByTwoFin_eq (ratOf (Quotient.out q))
@@ -148,16 +148,16 @@ theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
   · rintro ⟨l₁, q₁, η₁⟩ ⟨l₂, q₂, η₂⟩ h
     have hS := (mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (c l₁ (q₁, η₁)) (c l₂ (q₂, η₂)) (hRs l₁ _).1
       (hcm l₁ _) (hcm l₂ _)).1 h
-    obtain ⟨T, hT1, hT2⟩ := (GlobalTheory.T.siegel_parabolic_quotient_iff_rows (sg D) hσ (R l₂ (q₂, η₂)) (R l₁ (q₁, η₁)) (hRs l₁ _).1 (hRs l₂ _).2
+    obtain ⟨T, hT1, hT2⟩ := (_root_.GlobalTheory.CompanionTheory.ZUnf.siegel_mul_inv_iff_rows (sg D) hσ (R l₂ (q₂, η₂)) (R l₁ (q₁, η₁)) (hRs l₁ _).1 (hRs l₂ _).2
       (hRs l₁ _).2).1 hS
     rw [hRC, hRC] at hT1
     rw [hRD, hRD] at hT2
-    obtain ⟨⟨T', h1, h2⟩, h3⟩ := GlobalTheory.T.rows_proportional_of_transform (sg D) hσ hn (a q₁) (b q₁) (cc q₁) (dd q₁) (a q₂) (b q₂) (cc q₂) (dd q₂)
+    obtain ⟨⟨T', h1, h2⟩, h3⟩ := _root_.GlobalTheory.CompanionTheory.ZUnf.lowerRows_determine (sg D) hσ hn (a q₁) (b q₁) (cc q₁) (dd q₁) (a q₂) (b q₂) (cc q₂) (dd q₂)
       (ζ l₁) (ζ l₂) η₁ η₂ T hT1 hT2
     have hq : q₁ = q₂ := by
       have hs1 := GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec (Quotient.out q₁)
       have hs2 := GlobalTheory.CompanionTheory.SwUnf.BigCell.ratOf_spec (Quotient.out q₂)
-      have hSp := (GlobalTheory.T.siegel_parabolic_quotient_iff_rows (sg D) hσ (ratOf (Quotient.out q₂)) (ratOf (Quotient.out q₁)) hs1.1 hs2.2 hs1.2).2
+      have hSp := (_root_.GlobalTheory.CompanionTheory.ZUnf.siegel_mul_inv_iff_rows (sg D) hσ (ratOf (Quotient.out q₂)) (ratOf (Quotient.out q₁)) hs1.1 hs2.2 hs1.2).2
         ⟨T', h1, h2⟩
       have := (mk_eq_iff_siegel GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn (Quotient.out q₁) (Quotient.out q₂) hs1.1
         (mat_ratOf _) (mat_ratOf _)).2 hSp
@@ -177,7 +177,7 @@ theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
         rw [LinearMap.ker_comp]
         exact hz
       obtain ⟨T₀, a₁, b₁, Z, a₂, b₂, X, Y, a₃, b₃, W, a₄, b₄, c', d', hU, hD, hL1, hL2⟩ :=
-        GlobalTheory.T.unitary_cell_block_normal_form (sg D) hσ hn _ hspec.1 hspec.2 hker
+        _root_.GlobalTheory.CompanionTheory.ZUnf.rowReduce_lowerC (sg D) hσ hn _ hspec.1 hspec.2 hker
       obtain ⟨ζ₀, η₀, T, hyD, hyU, hζ₀, hr1, hr2⟩ :=
         GlobalTheory.T.unitary_block_invertible_criterion (sg D) hσ hn a₁ b₁ Z a₂ b₂ X Y a₃ b₃ W a₄ b₄ c' d' hU hD
       generalize a₄ + a₃ * X = a' at hyD hyU hr1
@@ -202,7 +202,7 @@ theorem cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn),
       have hl : ζ l₂ = ζ₂ := Matrix.map_injective incA_injective (hζ l₂)
       refine ⟨(l₂, (q', η₂)), ?_⟩
       have hsp : IsSiegelP (ratOf (Quotient.out q) * (R l₂ (q', η₂))⁻¹) :=
-        (GlobalTheory.T.siegel_parabolic_quotient_iff_rows (sg D) hσ _ _ (hRs l₂ _).1 hspec.2 (hRs l₂ _).2).2 ⟨T₀ * T * T₂, by
+        (_root_.GlobalTheory.CompanionTheory.ZUnf.siegel_mul_inv_iff_rows (sg D) hσ _ _ (hRs l₂ _).1 hspec.2 (hRs l₂ _).2).2 ⟨T₀ * T * T₂, by
           rw [hRC, hL1, hr1, hC]
           simp only [mul_assoc], by
           rw [hRD, hL2, hr2, hDd, hl]

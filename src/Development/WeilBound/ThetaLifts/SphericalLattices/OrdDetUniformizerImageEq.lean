@@ -1,5 +1,10 @@
 import Development.WeilBound.ThetaLifts.SphericalLattices.LocCommSt
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarInvVolumeConjModularCharacterStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarInvVolumeConjModularCharacter
+import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 
 noncomputable section
 
@@ -114,7 +119,7 @@ theorem locMod_of (h1 : LocCommSt) (h2 : ZCountSt) (h3 : GenSt) : LocModSt := by
   have hq : (0 : ℝ) < q := by
     have := hU.2.2.2.2.2.1
     exact_mod_cast (by omega : 0 < q)
-  obtain ⟨hmul, hpos, -, -⟩ := GlobalTheory.T.haarInvVolume_conj_modular_character (PW L c m) (KPW L c m) inf_le_left
+  obtain ⟨hmul, hpos, -, -⟩ := _root_.GlobalTheory.HL.invVol_conj_modular (PW L c m) (KPW L c m) inf_le_left
     (fun h hh => ⟨(h1 L ϖ c q hU m h hh).2, (h1 L ϖ c q hU m h hh).1⟩)
   have key := h3 L ϖ c q hU m
     (fun a => GlobalTheory.HL.invVol (KPW L c m) (MulAut.conj a • KPW L c m) *

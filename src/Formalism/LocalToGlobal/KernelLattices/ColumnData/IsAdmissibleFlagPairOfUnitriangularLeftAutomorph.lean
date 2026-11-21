@@ -55,19 +55,6 @@ theorem mem_ThSp_of (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La' : Ad
     G ∈ TaylorLogMetric.ThSp D T La' :=
   ⟨fun z => (h.1 z (Set.mem_univ z)).differentiableAt, fun x hx z => h.2 x hx z⟩
 
-theorem Iop_smul (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La₁ La₂ : AddSubgroup (TaylorLogMetric.VC D N N'))
-    (c : ℂ) (G : TaylorLogMetric.VC D N N' → ℂ) (z : TaylorLogMetric.VC D N N') :
-    TaylorLogMetric.Iop D T La₁ La₂ (fun v => c * G v) z = c * TaylorLogMetric.Iop D T La₁ La₂ G z := by
-  unfold TaylorLogMetric.Iop
-  have : ∀ q : La₂ ⧸ La₁.addSubgroupOf La₂,
-      TaylorLogMetric.al D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') *
-        TaylorLogMetric.U D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') (fun v => c * G v) z
-      = c • (TaylorLogMetric.al D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') *
-        TaylorLogMetric.U D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') G z) := by
-    intro q; simp only [TaylorLogMetric.U, smul_eq_mul]; ring
-  simp only [this]
-  rw [← smul_finsum, smul_eq_mul]; ring
-
 section Gen
 
 variable (L : PeriodPair) (ω₀ : ℂ) (c : ℝ) {n : Type} [Fintype n] [DecidableEq n]
@@ -221,16 +208,6 @@ theorem thMM_spec (h : B.StdOK) : B.IsThMM B.thMM := thM_spec _ _ _ _ _ _ h B.ka
 theorem thMM_ne_zero (h : B.StdOK) : B.thMM ≠ 0 := isThM_ne_zero _ _ _ _ _ _ h B.kappa_ne_zero (B.thMM_spec h)
 
 theorem thZero_ne_zero (h : B.StdOK) (N N' : ℕ) : B.thZero N N' ≠ 0 := tensPow_ne_zero (B.thMM_ne_zero h) N N'
-
-theorem eNat_base (χ : TaylorLogMetric.IdE D → ℂ) (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
-    (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) :
-    B.eNat χ N N' L L' = fun z => χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N') L') ^ (-((N / 2 : ℕ) : ℤ)) *
-      TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor L (StandardLatticesGL3.stdL D N')) (TaylorLogMetric.La D B.tor L L')
-        (fun v => χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) L) ^ (((N' / 2 : ℕ) : ℤ)) * B.thHalf N N' L v) z := by
-  funext z
-  rw [Iop_smul]
-  simp only [eNat, chiFac, thMoved]
-  ring
 
 theorem isAdmissible_flagPair_of_unitriangular_left_automorphism {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (h : TaylorLogMetric.admitted D N N' L L') :
@@ -509,45 +486,6 @@ theorem vec_parts (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D →
 
 end Base
 
-theorem inter_self {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (hH : IsHerm H) (Λ : AddSubgroup V)
-    (α : V → ℂ) (hα : IsSemiChar H Λ α) {F : V → ℂ} (hF : F ∈ fixedBy H α Λ) : inter H α Λ Λ F = F := by
-  funext z
-  have hS : IsReps Λ Λ ({0} : Finset V) :=
-    ⟨fun x hx => by rw [Finset.mem_singleton.1 hx]; exact Λ.zero_mem,
-      fun x hx y hy _ => by rw [Finset.mem_singleton.1 hx, Finset.mem_singleton.1 hy],
-      fun y hy => ⟨0, Finset.mem_singleton_self 0, by simpa using hy⟩⟩
-  rw [InterReps_of semicharacterHom V H hH Λ Λ α hα F hF {0} hS z]
-  have h1 : relIdx Λ Λ = 1 := AddSubgroup.relIndex_self Λ
-  rw [h1]
-  simp only [sumU, Finset.sum_singleton, Nat.cast_one, Real.sqrt_one, Complex.ofReal_one, inv_one, one_mul]
-  exact hF 0 Λ.zero_mem z
-
-theorem detId_std (D : Car) (N : ℕ) : TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N) = 1 := by
-  apply le_antisymm
-  · unfold TaylorLogMetric.detId
-    rw [Submodule.span_le]
-    rintro x ⟨A, hA, rfl⟩
-    have hent : ∀ i j, A i j ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
-      intro i j
-      have := (mem_stdL D _).1 (hA _ (single_mem_stdL D j)) i
-      simpa using this
-    choose A' hA' using hent
-    have e : A = (algebraMap (𝓞 D.host.E) D.host.E).mapMatrix (Matrix.of A') := by
-      ext i j; simp [hA']
-    show A.det ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)
-    rw [e, ← RingHom.map_det]
-    exact Submodule.mem_one.2 ⟨_, rfl⟩
-  · rw [Submodule.one_le]
-    exact Submodule.subset_span ⟨1, fun v hv => by simpa using hv, by simp⟩
-
-theorem chi_one (D : Car) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) : χ 1 = 1 := by
-  let _ := D.host.cmStar
-  have h := hχ.2 (1 : unitary D.host.E)
-  have e : Submodule.span (𝓞 D.host.E) {((1 : unitary D.host.E) : D.host.E)} = 1 := by
-    rw [Submodule.one_eq_span]; rfl
-  rw [e] at h
-  rw [h]; simp
-
 namespace Base
 
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
@@ -558,44 +496,6 @@ theorem thHalf_mem (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} {L : Submodule (�
       (TaylorLogMetric.La D B.tor L (StandardLatticesGL3.stdL D N')) :=
   kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
     (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).1 _ (B.thZeroMem hS N N')
-
-theorem eNat_left (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
-    {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
-    (hA : TaylorLogMetric.admitted D N N' L L') :
-    B.eNat χ N N' L (StandardLatticesGL3.stdL D N') =
-      fun z => χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) L) ^ (((N' / 2 : ℕ) : ℤ)) * B.thHalf N N' L z := by
-  have h1 : B.thMoved N N' L (StandardLatticesGL3.stdL D N') = B.thHalf N N' L :=
-    inter_self _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _
-      (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (B.thHalf_mem hS hL hA).2
-  funext z
-  simp only [eNat, chiFac, h1, detId_std, chi_one D χ hχ, one_zpow, mul_one]
-
-theorem eNat_zero (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
-    (hN : Even N) (hN' : Even N') :
-    B.eNat χ N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = B.thZero N N' := by
-  have hA := Formalism.L2.Ker.Cd.Inhab.Adm_std D N N' hN hN'
-  rw [B.eNat_left hS hL χ hχ hA]
-  have h1 : B.thHalf N N' (StandardLatticesGL3.stdL D N) = B.thZero N N' :=
-    inter_self _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _
-      (hL.1 N N' _ _ hA).2 (B.thZeroMem hS N N').2
-  funext z
-  simp only [h1, detId_std, chi_one D χ hχ, one_zpow, one_mul]
-
-theorem eq_change_right (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
-    {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L'' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
-    (hA : TaylorLogMetric.admitted D N N' L L'') :
-    B.eNat χ N N' L L'' = fun z => χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N') L'') ^ (-((N / 2 : ℕ) : ℤ)) *
-      TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor L (StandardLatticesGL3.stdL D N')) (TaylorLogMetric.La D B.tor L L'')
-        (B.eNat χ N N' L (StandardLatticesGL3.stdL D N')) z := by
-  rw [B.eNat_left hS hL χ hχ hA]; exact B.eNat_base χ N N' L L''
-
-theorem eq_change_left (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
-    {L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
-    (hA : TaylorLogMetric.admitted D N N' L₁ L') :
-    B.eNat χ N N' L₁ (StandardLatticesGL3.stdL D N') = fun z => χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) L₁) ^ (((N' / 2 : ℕ) : ℤ)) *
-      TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (TaylorLogMetric.La D B.tor L₁ (StandardLatticesGL3.stdL D N'))
-        (B.eNat χ N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) z := by
-  rw [B.eNat_left hS hL χ hχ hA, B.eNat_zero hS hL χ hχ hA.1 hA.2.1]; rfl
 
 end Base
 
@@ -659,40 +559,6 @@ theorem vec_mem_ne (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMet
     ∀ N N' L L', TaylorLogMetric.admitted D N N' L L' →
       B.eNat χ N N' L L' ∈ TaylorLogMetric.Th D B.tor L L' ∧ B.eNat χ N N' L L' ≠ 0 :=
   B.vec_parts hS (B.latAll hcc hδ h0) χ fun _ _ _ _ hA => chiFac_ne_zero χ hχ hA
-
-theorem chiFac_norm (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
-    {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
-    (hA : TaylorLogMetric.admitted D N N' L L') : ‖chiFac χ N N' L L'‖ = 1 := by
-  have h := character_unit_on_determinant D χ hχ
-  have h1 := h N _ L hA.1 (Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N) hA.2.2.1
-  have h2 := h N' _ L' hA.2.1 (Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N') hA.2.2.2
-  unfold chiFac
-  rw [norm_mul, norm_zpow, norm_zpow, h1, h2, one_zpow, one_zpow, mul_one]
-
-theorem eNat_normSq (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (hS : B.StdOK)
-    (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
-    {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hA : TaylorLogMetric.admitted D N N' L L') :
-    TaylorLogMetric.normSq D B.tor (TaylorLogMetric.La D B.tor L L') (B.eNat χ N N' L L')
-      = TaylorLogMetric.normSq D B.tor (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (B.thZero N N') := by
-  have hL := B.latAll hcc hδ h0
-  have hI := theta_operator_isometry D cc hcc δ hδ
-  have e : B.eNat χ N N' L L' = fun z => chiFac χ N N' L L' * B.thMoved N N' L L' z := rfl
-  rw [e, normSq_const_mul, chiFac_norm χ hχ hA, one_pow, one_mul]
-  have m0 : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') :=
-    mem_ThSp_of D B.tor _ _ (B.thZeroMem hS N N')
-  have m1 : B.thHalf N N' L ∈ TaylorLogMetric.Th D B.tor L (StandardLatticesGL3.stdL D N') :=
-    mem_ThSp_of D B.tor _ _ (B.thHalf_mem hS hL hA)
-  have s2 := hI N N' _ _ _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) hA _ m1
-  have s1 := hI N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) _ m0
-  exact s2.trans s1
-
-theorem th_indep (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (hS : B.StdOK)
-    (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) : ThetaNormIndependent D B.tor (B.eNat χ) :=
-  fun _ _ _ _ _ _ h₁ h₂ => (B.eNat_normSq hcc hδ h0 hS χ hχ h₁).trans (B.eNat_normSq hcc hδ h0 hS χ hχ h₂).symm
-
-theorem th_U (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (hS : B.StdOK)
-    (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) : th22U D B.tor (B.eNat χ) :=
-  fun N N' L L' hA x => theta_unitary_linkage D cc hcc δ hδ N N' L L' hA _ (B.vec_mem_ne hcc hδ h0 hS χ hχ N N' L L' hA).1 x
 
 end Base
 
@@ -815,109 +681,11 @@ theorem Base.stdOK_of' {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ
 
 end Isom
 
-section KapInh
-
-variable {D : Car}
-
-theorem exists_prime_over (D : Car) (p : ℕ) (hp : p.Prime) :
-    ∃ 𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K), ((p : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal := by
-  have : Fact p.Prime := ⟨hp⟩
-  have : (Ideal.span {(p : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime p
-  obtain ⟨P, hP, hO⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (Ideal.span {(p : ℤ)}) (S := 𝓞 D.host.K)
-  have hmem : ((p : ℕ) : 𝓞 D.host.K) ∈ P := by
-    have h1 : (p : ℤ) ∈ P.under ℤ := by rw [← hO.over]; exact Ideal.mem_span_singleton_self _
-    have h2 := Ideal.mem_comap.1 h1
-    simpa using h2
-  have hne : P ≠ ⊥ := by
-    intro h
-    rw [h, Ideal.mem_bot] at hmem
-    exact hp.ne_zero (by exact_mod_cast hmem)
-  exact ⟨⟨P, hP.isPrime, hne⟩, hmem⟩
-
-theorem exists_gen (D : Car) (𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K)) :
-    ∃ π : 𝓞 D.host.K, 𝔭.asIdeal ^ classNumber D.host.K = Ideal.span {π} := by
-  have hmem : 𝔭.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 D.host.K)) := mem_nonZeroDivisors_of_ne_zero 𝔭.ne_bot
-  have h1 : ClassGroup.mk0 (⟨𝔭.asIdeal, hmem⟩ ^ classNumber D.host.K : nonZeroDivisors (Ideal (𝓞 D.host.K))) = 1 := by
-    rw [map_pow]; exact pow_card_eq_one
-  have h2 := (ClassGroup.mk0_eq_one_iff (Submonoid.pow_mem _ hmem _)).1 (by simpa using h1)
-  obtain ⟨π, hπ⟩ := h2.principal
-  exact ⟨π, hπ⟩
-
-theorem KapChoice.nonempty_of (γ₀ : IsoK D)
-    (h : ∀ p : ℕ, p.Prime → SplitK D p → ∃ γ : IsoK D, γ.AtP p) : Nonempty (KapChoice γ₀) := by
-  obtain ⟨𝔮, -⟩ := exists_prime_over D 2 Nat.prime_two
-  have a1 : ∀ p : ℕ, ∃ 𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K),
-      p.Prime → SplitK D p → ((p : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal := by
-    intro p
-    by_cases hp : p.Prime
-    · obtain ⟨𝔭, h𝔭⟩ := exists_prime_over D p hp; exact ⟨𝔭, fun _ _ => h𝔭⟩
-    · exact ⟨𝔮, fun h' => absurd h' hp⟩
-  choose pp hpp using a1
-  choose pi hpi using fun p : ℕ => exists_gen D (pp p)
-  have a3 : ∀ p : ℕ, ∃ γ : IsoK D, p.Prime → SplitK D p → γ.AtP p := by
-    intro p
-    by_cases hp : p.Prime ∧ SplitK D p
-    · obtain ⟨γ, hγ⟩ := h p hp.1 hp.2; exact ⟨γ, fun _ _ => hγ⟩
-    · exact ⟨γ₀, fun h1 h2 => absurd ⟨h1, h2⟩ hp⟩
-  choose gaP hgaP using a3
-  choose rt hrt using fun p : ℕ => IsAlgClosed.exists_pow_nat_eq
-    (D.host.φ₀ (((pi p : 𝓞 D.host.K) : D.host.K) : D.host.E)
-      / D.host.φ₀ (D.host.conj (((pi p : 𝓞 D.host.K) : D.host.K) : D.host.E)))
-    (Nat.pos_of_ne_zero (mul_ne_zero two_ne_zero (classNumber_ne D)))
-  exact ⟨⟨pp, hpp, pi, fun p _ _ => hpi p, gaP, hgaP, rt, fun p _ _ => hrt p⟩⟩
-
-theorem Base.nonempty_of (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
-    (hL : ∃ L : PeriodPair, L.lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ)
-    (ht : ∃ t : ℂ, GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) t)
-    (hγ : ∃ (γ₀ : IsoK D) (gC : (Fin 4 × D.what₂.Tau → ℂ) ≃ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)),
-      ∀ x : Fin 4 → D.host.E, gC (fun w => TaylorLogMetric.embT D w.2 (x w.1))
-        = fun w => D.host.φ₀ ((γ₀.g x w : D.host.K) : D.host.E))
-    (hp : ∀ p : ℕ, p.Prime → SplitK D p → ∃ γ : IsoK D, γ.AtP p) : Nonempty (Base D cc δ) := by
-  obtain ⟨L, hL⟩ := hL
-  obtain ⟨t, ht⟩ := ht
-  obtain ⟨γ₀, gC, hg⟩ := hγ
-  obtain ⟨k⟩ := KapChoice.nonempty_of γ₀ hp
-  exact ⟨⟨L, hL, 2 * t, by rw [mul_div_cancel_left₀ t two_ne_zero]; exact ht, γ₀, gC, hg, k⟩⟩
-
-end KapInh
-
-theorem conclusion_of_hecke_commutation (D : Car) (C : ℝ)
-    (hper : ∀ cc : Ideal (𝓞 D.host.K), TaylorLogMetric.IsCurveIdeal D cc → ∀ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-      TaylorLogMetric.per22 D (TaylorLogMetric.tor0 D cc δ))
-    (hχ : ∃ χ, TaylorLogMetric.IsChi D χ)
-    (h : ∀ cc : Ideal (𝓞 D.host.K), TaylorLogMetric.IsCurveIdeal D cc → ∀ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-      ∃ B : Base D cc δ, ∀ χ, TaylorLogMetric.IsChi D χ → B.LateralTheory C χ) : TaylorLogMetric.aux₃ D C := by
-  intro cc hcc δ hδ
-  obtain ⟨B, hB⟩ := h cc hcc δ hδ
-  refine ⟨hper cc hcc δ hδ, hχ, fun χ hc => ⟨B.eNat χ, ?_⟩⟩
-  obtain ⟨a1, a2, a3, a4, a5, a6⟩ := hB χ hc
-  exact ⟨a1, a2, a3, a4, a5.1, a5.2, a6⟩
-
 namespace Test
-
-open Formalism.L2.Th1.H.Inh (L7 gU stdData_seven seven_nontrivial)
-
-variable (n : Type) [Fintype n] [DecidableEq n]
-
-theorem seven_moves [Nonempty n] :
-    imgLat (gU n : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 (stdLat L7 n)) ≠ stdLat L7 (Fin 4 × n) :=
-  seven_nontrivial n
 
 end Test
 
 namespace Test
-
-def isoToy : IsoKG ℂ ℂ (starRingEnd ℂ) Unit where
-  g := (LinearEquiv.smulOfNeZero ℂ (Fin 4 → ℂ) Complex.I Complex.I_ne_zero).trans
-    (LinearEquiv.funCongrLeft ℂ ℂ (Equiv.prodPUnit (Fin 4)))
-  isom := by
-    intro x y
-    simp only [Algebra.trace_self_apply, Algebra.algebraMap_self, RingHom.id_apply, Fintype.sum_prod_type,
-      Finset.univ_unique, Finset.sum_singleton]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    show (Complex.I * x a) * conj (Complex.I * y a) = x a * conj (y a)
-    rw [map_mul, Complex.conj_I]
-    linear_combination (-(x a * conj (y a))) * Complex.I_mul_I
 
 end Test
 

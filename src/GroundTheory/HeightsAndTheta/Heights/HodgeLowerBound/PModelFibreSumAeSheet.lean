@@ -13,56 +13,6 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.ChartRestricti
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ}
   (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
 
-theorem density_indep {L : HermLine ι} (hL : IsSmoothHerm L) (r : ℝ)
-    {γ γ' : (Fin e → ℂ) → (Σ k, ι k) → ℂ} {y : Fin e → ℂ}
-    (hγ : AnalyticAt ℂ γ y) (hγ' : AnalyticAt ℂ γ' y) (hy : ∀ k, ∃ i, γ y ⟨k, i⟩ ≠ 0)
-    (hseg : (fun y' => segre (γ y')) =ᶠ[𝓝 y] fun y' => segre (γ' y')) :
-    maDensity (fun (_ : Fin e) y' => r * Real.log (L.h (γ y'))) y =
-      maDensity (fun (_ : Fin e) y' => r * Real.log (L.h (γ' y'))) y := by
-  choose i0 hi0 using hy
-  set c : K → (Fin e → ℂ) → ℂ := fun k y' => γ' y' ⟨k, i0 k⟩ / γ y' ⟨k, i0 k⟩ with hc_def
-  have hcont : ∀ᶠ y' in 𝓝 y, ∀ k, γ y' ⟨k, i0 k⟩ ≠ 0 :=
-    eventually_all.mpr fun k => (analyticAt_coord hγ ⟨k, i0 k⟩).continuousAt.eventually_ne (hi0 k)
-  have hrel : ∀ᶠ y' in 𝓝 y, (∀ k, c k y' ≠ 0) ∧ γ' y' = bsmul (fun k => c k y') (γ y') := by
-    filter_upwards [hcont, hseg] with y' h1 h2
-    obtain ⟨h3, h4⟩ := eq_bsmul_of_segre_eq i0 h1 h2
-    exact ⟨fun k => div_ne_zero (h3 k) (h1 k), h4⟩
-  obtain ⟨hc0, -⟩ := hrel.self_of_nhds
-  have hcan : ∀ k, AnalyticAt ℂ (c k) y := fun k =>
-    (analyticAt_coord hγ' ⟨k, i0 k⟩).div (analyticAt_coord hγ ⟨k, i0 k⟩) (hi0 k)
-  have hH : cxHessian (fun y' => r * Real.log (L.h (γ' y'))) y =
-      cxHessian (fun y' => r * Real.log (L.h (γ y'))) y := by
-    set G : (Fin e → ℂ) → ℂ := fun y' => ∑ k, ((r * (L.a k : ℝ) : ℝ) : ℂ) * Complex.log (c k y' / c k y)
-    set C : ℝ := ∑ k, r * (L.a k : ℝ) * Real.log ‖c k y‖
-    have hGan : AnalyticAt ℂ G y := by
-      refine Finset.analyticAt_fun_sum _ fun k _ => analyticAt_const.mul ?_
-      refine ((hcan k).div analyticAt_const (hc0 k)).clog ?_
-      show c k y / c k y ∈ Complex.slitPlane
-      rw [div_self (hc0 k)]
-      exact Complex.one_mem_slitPlane
-    have heq : (fun y' => r * Real.log (L.h (γ' y'))) =ᶠ[𝓝 y]
-        fun y' => r * Real.log (L.h (γ y')) + (G y').re + C := by
-      filter_upwards [hrel, hcont] with y' ⟨hc, hr⟩ hγ0
-      have hpos : 0 < L.h (γ y') := L.pos _ fun k => ⟨i0 k, hγ0 k⟩
-      have hsm : L.h (bsmul (fun k => c k y') (γ y')) = (∏ k, ‖c k y'‖ ^ L.a k) * L.h (γ y') :=
-        L.smul _ _ hc
-      have hne : ∀ k, ‖c k y'‖ ^ L.a k ≠ 0 := fun k => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))
-      have hterm : ∀ k, ((((r * (L.a k : ℝ)) : ℝ) : ℂ) * Complex.log (c k y' / c k y)).re =
-          r * (L.a k : ℝ) * Real.log ‖c k y'‖ - r * (L.a k : ℝ) * Real.log ‖c k y‖ := by
-        intro k
-        rw [Complex.re_ofReal_mul, Complex.log_re, norm_div,
-          Real.log_div (norm_ne_zero_iff.mpr (hc k)) (norm_ne_zero_iff.mpr (hc0 k)), mul_sub]
-      simp only [G, C]
-      rw [hr, hsm, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => hne k) hpos.ne',
-        Real.log_prod (fun k _ => hne k), Complex.re_sum]
-      simp only [Real.log_zpow, hterm, Finset.sum_sub_distrib]
-      rw [mul_add, Finset.mul_sum]
-      simp only [← mul_assoc]
-      ring
-    rw [cxHessian_congr heq, cxHessian_add_re (φ := fun y' => r * Real.log (L.h (γ y'))) C
-      (contDiffAt_const.mul (pot_contDiffAt hL hγ fun k => ⟨i0 k, hi0 k⟩)) hGan]
-  simp only [maDensity, hH]
-
 theorem exists_sheet (L : HermLine ι) (r : ℝ) (E : Set M.Xc) (hP : IsArithVar P (e + 1))
     (hL : IsSmoothHerm L) (x : M.Xc) (hx : x ∉ modelBad M Ψ E) :
     ∃ γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ, IsSheet P Ψ (modelQ M Ψ x) (modelW M Ψ x) γ ∧

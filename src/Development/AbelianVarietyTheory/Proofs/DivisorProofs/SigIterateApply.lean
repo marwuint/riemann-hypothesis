@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MaxWeightGL1EqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedExtFrobeniusIterateDegreeEqSelfStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedExtFrobeniusIterateDegreeEqSelf
 open ReciprocityTheory.DiscreteGroups.LocalClassField Matrix GlobalTheory.LKLoc
 
 namespace GlobalTheory.LKLoc
@@ -21,6 +21,6 @@ theorem sig_iterate_r : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_
   intro p _ K hK n r hr g
   ext i j
   rw [sig_iterate_apply]
-  rw [GlobalTheory.T.unramifiedExtFrobenius_iterate_degree_eq_self p K hK r hr]
+  rw [_root_.GlobalTheory.LKLoc.frobR_iterate_self p K hK r hr]
 
 end GlobalTheory.LKLoc

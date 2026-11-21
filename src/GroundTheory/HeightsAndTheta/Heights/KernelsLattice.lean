@@ -37,14 +37,6 @@ def subDegree {n : ℕ} (L : Submodule (𝓞 K) (Fin n → K)) (h : (K →+* ℂ
       (Submodule.span (𝓞 K) (Set.range u)).toAddSubgroup) -
     1 / 2 * ∑ σ : K →+* ℂ, log (gramAt (h σ) σ u).det.re
 
-def quotDegree {n : ℕ} (L : Submodule (𝓞 K) (Fin n → K)) (h : (K →+* ℂ) → Matrix (Fin n) (Fin n) ℂ)
-    {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ] (b : ι → Fin n → K) (c : κ → Fin n → K) : ℝ :=
-  log (genIndex (L ⊔ (Submodule.span K (Set.range b)).restrictScalars (𝓞 K)).toAddSubgroup
-      (Submodule.span (𝓞 K) (Set.range c) ⊔
-        (Submodule.span K (Set.range b)).restrictScalars (𝓞 K)).toAddSubgroup) -
-    1 / 2 * ∑ σ : K →+* ℂ,
-      (log (gramAt (h σ) σ (Sum.elim b c)).det.re - log (gramAt (h σ) σ b).det.re)
-
 variable (K) in
 
 def normalise (x : ℝ) : ℝ := x / Module.finrank ℚ K
@@ -69,19 +61,6 @@ end HermLattice
 def idealLattice {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) (Fin n → K) :=
   Submodule.pi Set.univ fun x => (a x : Submodule (𝓞 K) K)
 
-def diagMetric {n : ℕ} (d : (K →+* ℂ) → Fin n → ℝ) : (K →+* ℂ) → Matrix (Fin n) (Fin n) ℂ :=
-  fun σ => Matrix.diagonal fun x => (d σ x : ℂ)
-
-def OrthogonalLines.Statement : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (a : Fin n → FractionalIdeal (𝓞 K)⁰ K)
-    (d : (K →+* ℂ) → Fin n → ℝ),
-    (∀ x, a x ≠ 0) → (∀ σ x, 0 < d σ x) → (∀ σ x, d (conjugate σ) x = d σ x) → ∀ μ : ℝ,
-    (∀ x, μ ≤ normalise K (subDegree (idealLattice a) (diagMetric d)
-      (fun _ : Fin 1 => (Pi.single x 1 : Fin n → K)))) →
-    ∀ (m k : ℕ) (b : Fin m → Fin n → K) (c : Fin k → Fin n → K),
-      LinearIndependent K (Sum.elim b c) → m + k = n →
-      k * μ ≤ normalise K (quotDegree (idealLattice a) (diagMetric d) b c)
-
 def LineOfLargeDegree.Statement : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (i : ℕ), 1 ≤ i → ∀ (F : HermLattice K i) (ε : ℝ), 0 < ε →
     ∃ (K' : Type) (_ : Field K') (_ : NumberField K') (_ : Algebra K K') (v : Fin i → K'),
@@ -100,23 +79,6 @@ def HermLattice.standard (K : Type*) [Field K] [NumberField K] (n : ℕ) : HermL
   metric := fun _ => 1
   posDef := fun _ => Matrix.PosDef.one
   conj := fun _ => by simp
-
-example : 1 ≤ 2 ∧ (0 : ℝ) < 1 ∧ (HermLattice.standard ℚ 2).metric = fun _ => 1 :=
-  ⟨by norm_num, one_pos, rfl⟩
-
-example :
-    let a : Fin 2 → FractionalIdeal (𝓞 ℚ)⁰ ℚ := fun _ => 1
-    let d : (ℚ →+* ℂ) → Fin 2 → ℝ := fun _ _ => 1
-    let deg : Fin 2 → ℝ := fun x => normalise ℚ (subDegree (idealLattice a) (diagMetric d)
-      (fun _ : Fin 1 => (Pi.single x 1 : Fin 2 → ℚ)))
-    (∀ x, a x ≠ 0) ∧ (∀ σ x, 0 < d σ x) ∧ (∀ σ x, d (conjugate σ) x = d σ x) ∧
-      ∀ x, min (deg 0) (deg 1) ≤ deg x := by
-  intro a d deg
-  refine ⟨fun _ => one_ne_zero, fun _ _ => one_pos, fun _ _ => rfl, ?_⟩
-  intro x
-  fin_cases x
-  · exact min_le_left _ _
-  · exact min_le_right _ _
 
 end
 

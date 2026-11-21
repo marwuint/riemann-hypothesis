@@ -10,8 +10,6 @@ namespace UpperTheory.V.Z.Kato.Nb.TrConj
 section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
-abbrev rd (M : ℕ) : SL(2, ℤ) →* SL(2, ZMod M) := Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))
-
 theorem cast_down {M K : ℕ} (h : K ∣ M) {a b : ℤ} (e : (a : ZMod M) = b) : (a : ZMod K) = b := by
   have e' := congrArg (ZMod.castHom h (ZMod K)) e
   rwa [map_intCast, map_intCast] at e'

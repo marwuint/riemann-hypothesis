@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumLogEmbeddingsEqNorm
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.RatProductFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.RatProductFormula
 open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl
@@ -15,7 +15,7 @@ theorem product_formula_embeddings (k : Type) [Field k] [NumberField k] (x : k) 
       Real.log ‖((Algebra.norm ℚ x : ℚ) : ℂ_[p])‖ := fun p =>
     sum_log_norm_embeddings_eq_log_norm k ℂ_[p] x hx
   have hinf := sum_log_norm_embeddings_eq_log_norm k ℂ x hx
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.rat_product_formula (Algebra.norm ℚ x) hN
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.rat_product_formula_complex (Algebra.norm ℚ x) hN
   simp only [hfin]
   exact ⟨h1, by rw [hinf]; exact h2⟩
 

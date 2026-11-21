@@ -28,20 +28,6 @@ def smSub (ρ : V → H →L[ℂ] H) : Submodule ℂ H where
 
 end Abstract
 
-theorem detPlus_eq_det_toBlocks₁₁ {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (g : Matrix (m ⊕ n) (m ⊕ n) ℂ) :
-    dP (fromBlocks 1 0 0 (-1)) g = g.toBlocks₁₁.det := by
-  have : (1 / 2 : ℂ) • ((1 + (fromBlocks 1 0 0 (-1) : Matrix (m ⊕ n) (m ⊕ n) ℂ)) * g) +
-      (1 / 2 : ℂ) • (1 - (fromBlocks 1 0 0 (-1) : Matrix (m ⊕ n) (m ⊕ n) ℂ)) =
-      fromBlocks g.toBlocks₁₁ g.toBlocks₁₂ 0 1 := by
-    conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_one, sub_eq_add_neg, fromBlocks_neg, fromBlocks_add,
-      fromBlocks_add, fromBlocks_multiply, fromBlocks_smul, fromBlocks_smul, fromBlocks_add]
-    congr 1
-    · rw [add_zero, Matrix.zero_mul, add_zero, add_mul, one_mul]; module
-    · rw [add_zero, Matrix.zero_mul, add_zero, Matrix.add_mul, Matrix.one_mul]; module
-    · simp
-    · simp only [add_zero, Matrix.zero_mul, add_neg_cancel, neg_neg, smul_zero, zero_add]; module
-  rw [dP, this, det_fromBlocks_zero₂₁, det_one, mul_one]
-
 open Matrix MeasureTheory Complex in
 open scoped InnerProductSpace in
 private theorem exists_unitary_hom_extending_of_dense_isometric {G : Type} [Group G] {H : Type}

@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LevelMatchIff
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FrLink
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicColumnLatticeEqSpanPartTransportedFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsCoprimeProjectionAdelicLatticeIntoColumnsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ColumnsGroupFixesAdelicLatticeIffColumnsLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsCoprimeProjectionAdelicLatticeIntoColumns
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ColumnsGroupFixesAdelicLatticeIffColumnsLattice
 
 noncomputable section
 
@@ -379,8 +379,8 @@ theorem level_link : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt :
   intro D X u wt ιA hW hι hK Fr hL h y hR
   obtain ⟨hΛ, -, hinj, -, -, hrepA⟩ := GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hι
   have hrep := hrepA h y hR
-  obtain ⟨c, p, hc, himg, hfix, hpL, hpe, -, -⟩ := GlobalTheory.T.exists_coprime_projection_adelic_lattice_into_columns D X u wt ιA hW hι
-  have hst := GlobalTheory.T.columns_group_fixes_adelic_lattice_iff_columns_lattice D X u wt ιA hW hι h y hR
+  obtain ⟨c, p, hc, himg, hfix, hpL, hpe, -, -⟩ := _root_.GlobalTheory.St.G.g_proj D X u wt ιA hW hι
+  have hst := _root_.GlobalTheory.St.G.stabK_iff D X u wt ιA hW hι h y hR
   have hcop : Nat.Coprime c X.B.g := by
     have := hc.gcd_eq
     simpa [Nat.Coprime] using this

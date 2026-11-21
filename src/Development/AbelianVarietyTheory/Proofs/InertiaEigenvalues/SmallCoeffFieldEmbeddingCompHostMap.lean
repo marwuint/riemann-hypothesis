@@ -7,9 +7,12 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsApplyE
 import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RayClassFieldInfModulusEqSupStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnramifiedAtOfIsUnramifiedInGaloisExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveRootInRayClassFieldNatModulusStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaloisRatComplexImageRayClassFieldStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveRootInRayClassFieldNatModulus
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SmulCommClassGalIntegers
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaloisRatComplexImageRayClassField
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOne
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
@@ -26,12 +29,12 @@ theorem isUnramifiedAt_of_unramIn {K L : Type} [Field K] [NumberField K] [Field 
 
 theorem exists_isPrimitiveRoot_of_isRay {K H : Type} [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H]
     [IsAbelianGalois K H] {n : ℕ} (hn : n ≠ 0) (h : IsRay H (Ideal.span {(n : 𝓞 K)})) : ∃ ζ : H, IsPrimitiveRoot ζ n :=
-  GlobalTheory.T.exists_primitiveRoot_in_rayClassField_natModulus hn h
+  _root_.GlobalTheory.RayRootOfUnity.exists_isPrimitiveRoot_of_isRay hn h
 
 theorem isGalois_fieldRange_of_isRay {K H : Type} [Field K] [NumberField K] [IsGalois ℚ K] [Field H] [NumberField H]
     [Algebra K H] [IsAbelianGalois K H] {n : ℕ} (hn : n ≠ 0) (h : IsRay H (Ideal.span {(n : 𝓞 K)})) (j : H →+* ℂ) :
     IsGalois ℚ j.toRatAlgHom.fieldRange :=
-  GlobalTheory.T.isGalois_rat_complexImage_rayClassField hn h j
+  _root_.GlobalTheory.RayNatGalois.isGalois_fieldRange hn h j
 
 theorem sup_fieldRange_eq_top {K H H₁ H₂ : Type} [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H]
     [IsAbelianGalois K H] [Field H₁] [NumberField H₁] [Algebra K H₁] [IsAbelianGalois K H₁] [Field H₂] [NumberField H₂]
@@ -42,7 +45,7 @@ theorem sup_fieldRange_eq_top {K H H₁ H₂ : Type} [Field K] [NumberField K] [
   GlobalTheory.T.rayClassField_inf_modulus_eq_sup hU ha hb hq hq2 hqa hqb h h₁ h₂ f₁ f₂
 
 theorem hostK_facts (D : D7) : IsGalois ℚ D.host.K ∧ ∀ u : (𝓞 D.host.K)ˣ, u = 1 ∨ u = -1 :=
-  GlobalTheory.T.host_imagQuadratic_isGalois_units_pm_one D
+  _root_.GlobalTheory.HostQuadUnits.main D
 
 abbrev phiK (D : D7) : ↥D.host.K →+* ℂ := D.host.φ₀.comp (algebraMap D.host.K D.host.E)
 

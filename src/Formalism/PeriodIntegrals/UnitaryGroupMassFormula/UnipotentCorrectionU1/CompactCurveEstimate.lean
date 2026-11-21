@@ -41,10 +41,6 @@ lemma cw_perm (cost : B.Mat k r → ℕ) {w₁ w₂ w : List (Bool × B.Mat k r)
   rw [← List.sum_append, ← List.map_append]
   exact (hp.map _).sum_eq
 
-lemma cw_snoc (cost : B.Mat k r → ℕ) (w : List (Bool × B.Mat k r)) (x : Bool × B.Mat k r) :
-    cw cost (w ++ [x]) = cw cost w + cost x.2 := by
-  simp [cw, List.map_append, List.sum_append]
-
 lemma cw_LR (cost : B.Mat k r → ℕ) (u v : List (B.Mat k r)) :
     cw cost (wL u ++ wR v) = ((u ++ v).map cost).sum := by
   simp [cw, wL, wR, List.map_append, List.map_map, Function.comp_def]

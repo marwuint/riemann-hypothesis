@@ -1,4 +1,4 @@
-import Development.EtaleCohomology.EtaleSheaves.EtaleChapterETwo
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
@@ -230,20 +230,6 @@ theorem tower (H : Hyp) (hD : Desc) (hC : Cover) (h0 : HZero) (hA : AICAcyc) (l0
     rw [e']
     exact (hF H q i A hq c' (k' ≫ k) hZ hT fun B _ _ hB hqB t =>
       line H hD hC h0 hA l0 l1 l2 q i B hB hqB _ (hl.bc (IsPullback.of_hasPullback c' t))).2 (ih k' hk')
-
-theorem goal_of (hD : Desc) (hC : Cover) (h0 : HZero) (hA : AICAcyc) (l0 : LineZero) (l1 : LineOne) (l2 : LineHigh)
-    (hI : IntPB) (hSt : Stein) (hF : Fib) (hCh : Chow) : LateralTheory.E.EtaleChapterETwo := by
-  intro a1 a2 a3 a4 a5 a7 a8 a9 a10 _ b1 b2 b3 b4 b5 _ _ _ _ _ _ _ _ _ e1 q A _ _ hS hq X p _ i
-  have H : Hyp := ⟨a1, a2, a3, a4, a5, a7, a8, a9, a10, b1, b2, b3, b4, b5, e1⟩
-  have tw' : ∀ (B : Type) [CommRing B] [IsLocalRing B], SH B → IsUnit (q : B) → ∀ {Y : Scheme.{0}}
-      (r : Y ⟶ Spec (CommRingCat.of B)), IT r → PB q i r := fun B _ _ hB hqB Y r hr => by
-    have := tower H hD hC h0 hA l0 l1 l2 hI hSt hF q i B hB hqB r hr (𝟙 _) inferInstance
-    rwa [Category.id_comp] at this
-  refine reduce H hD hC q i A hq p fun Z h hh hZ => ?_
-  obtain ⟨Z', c, hZ', hd, hc, hc'⟩ := hCh A h p hh hZ
-  obtain ⟨_, _⟩ := hc.qc
-  exact (hF H q i A hq c (h ≫ p) hZ' hZ fun B _ _ hB hqB t =>
-    tw' B hB hqB _ (hc.bc t (IsPullback.of_hasPullback c t))).1 (tw' A hS hq _ hc')
 
 end LateralTheory.E.t_E2Cut
 

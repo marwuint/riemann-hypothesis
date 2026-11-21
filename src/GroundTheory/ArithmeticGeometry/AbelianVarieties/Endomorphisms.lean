@@ -10,12 +10,6 @@ universe u
 variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F] {E : WeierstrassCurve F}
   [E.IsElliptic]
 
-noncomputable def endDual : isogEnd E →+ isogEnd E := homDual
-
-noncomputable def endDeg (a : isogEnd E) : ℤ := homDeg a
-
-noncomputable def endTrace (a : isogEnd E) : ℤ := degBilin a 1
-
 theorem zsmul_homId_eq_intCast (n : ℤ) : n • (homId : isogEnd E) = (n : isogEnd E) :=
   zsmul_one n
 
@@ -36,28 +30,5 @@ instance : CharZero (isogEnd E) where
 theorem isogEnd_one_eq_mulIsogeny :
     (1 : isogEnd E) = (mulIsogeny E 1 one_ne_zero).toHom := by
   rw [mulIsogeny_toHom, one_smul]; rfl
-
-theorem homPt_one : homPt (1 : isogEnd E) = AddMonoidHom.id E.toAffine.Point := by
-  rw [isogEnd_one_eq_mulIsogeny, homPt_toHom]
-  ext R
-  rw [Isogeny.pointHom_apply, Isogeny.pointMap_mulIsogeny, one_smul]
-  rfl
-
-theorem homPt_mul (a b : isogEnd E) : homPt (a * b) = (homPt a).comp (homPt b) := by
-  by_cases ha : a = 0
-  · rw [ha, zero_mul, homPt_zero, AddMonoidHom.zero_comp]
-  by_cases hb : b = 0
-  · rw [hb, mul_zero, homPt_zero, AddMonoidHom.comp_zero]
-  rw [← isogOfHom_toHom a ha, ← isogOfHom_toHom b hb, isogEnd_mul_def, Isogeny.homComp_toHom,
-    homPt_toHom, homPt_toHom, homPt_toHom]
-  ext R
-  exact Isogeny.pointMap_comp _ _ R
-
-noncomputable def endPointRingHom : isogEnd E →+* AddMonoid.End E.toAffine.Point where
-  toFun := homPt
-  map_one' := homPt_one
-  map_mul' := homPt_mul
-  map_zero' := homPt_zero
-  map_add' := homPt_add
 
 end GroundTheory.Arith.Abelian

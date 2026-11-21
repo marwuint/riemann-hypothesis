@@ -1,5 +1,5 @@
 import Mathlib
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FlatDescentOfUnitsStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FlatDescentOfUnits
 import CompanionTheory.AutomorphicTheory.TemperedLocalSpectra.ObstructionLifting.H1StructureDimLe
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
@@ -19,7 +19,7 @@ theorem triv_of_invariant_gen : ∀ {P Q : Scheme.{0}} (f : P ⟶ Q), Flat f →
   have hle : ∀ i : D.ι, f ⁻¹ᵁ D.U i ≤ (D.pull f).U (fun _ => i) := fun i x hx => mem_pull.2 hx
   have hex : ∀ i : D.ι, ∃ s : Γ(Q, D.U i)ˣ, pullU f (D.U i) s = res (hle i) (t.s fun _ => i) := by
     intro i
-    refine (GlobalTheory.T.flat_descent_of_units f hfl hlf hsu (D.U i)).2 _ ?_
+    refine (_root_.GlobalTheory.CompanionTheory.FnDesc.units_descend f hfl hlf hsu (D.U i)).2 _ ?_
     intro W b c hbc w hw
     have hw' : f (c w) ∈ D.U i := by
       have : f (b w) = f (c w) := by
@@ -35,7 +35,7 @@ theorem triv_of_invariant_gen : ∀ {P Q : Scheme.{0}} (f : P ⟶ Q), Flat f →
     rw [← gm_pull (𝟙 P) f x (D.U i) hx, hs i]
     exact gm_res (𝟙 P) x (hle i) hx _
   refine ⟨⟨s⟩, fun i j => ?_⟩
-  apply (GlobalTheory.T.flat_descent_of_units f hfl hlf hsu (D.U i ⊓ D.U j)).1
+  apply (_root_.GlobalTheory.CompanionTheory.FnDesc.units_descend f hfl hlf hsu (D.U i ⊓ D.U j)).1
   apply unit_ext
   intro x hx
   have hi : f x ∈ D.U i := hx.1

@@ -130,48 +130,4 @@ theorem hasymp_base {p : ℕ} (hp : p.Prime) {L : ℝ} (hL : L = Real.log p) {W 
   rw [h0]
   simp
 
-theorem hilbert_multidegree_piece_divisor_sum
-    (hR4 : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin (n + 1) → K → ℤ) (k : K) (i : ι k),
-      IsMultiProjPrime V → charOf V ≠ 0 →
-      ringKrullDim (MRing ι ⧸ V) = ((n + 1 + Fintype.card K : ℕ) : WithBot ℕ∞) →
-      (X ⟨k, i⟩ : MRing ι) ∉ V →
-      (a (Fin.last n) = fun k' => if k' = k then 1 else 0) →
-      geoNum (n + 1) V a = ∑ᶠ W' ∈ divSupp V (X ⟨k, i⟩),
-        (multAt (V ⊔ Ideal.span {(X ⟨k, i⟩ : MRing ι)}) W' : ℤ) * geoNum n W' (Fin.init a))
-    (hSymm : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin n → K → ℤ) (σ : Equiv.Perm (Fin n)),
-      IsMultiProjPrime V → charOf V ≠ 0 →
-      ringKrullDim (MRing ι ⧸ V) = ((n + Fintype.card K : ℕ) : WithBot ℕ∞) →
-      geoNum n V (a ∘ σ) = geoNum n V a)
-    (W : Ideal (MRing ι)) (hW : IsMultiProjPrime W) (hp : (charOf W).Prime) (d : ℕ)
-    (hd : ringKrullDim (MRing ι ⧸ W) = ((d + Fintype.card K : ℕ) : WithBot ℕ∞)) :
-    ∃ (a₀ : ℕ) (C : ℝ), ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) →
-      |Real.log (Nat.card (mPiece W a)) / Real.log (charOf W) -
-          (geoNum d W (fun _ k => (a k : ℤ)) : ℝ) / (d.factorial : ℝ)| ≤
-        C * ((∑ k, a k : ℕ) + 1 : ℝ) ^ d / ((∑ k, a k : ℕ) + 1 : ℝ) := by
-  have hmem : ((charOf W : ℕ) : MRing ι) ∈ W := natCast_mem_of_charOf W
-  obtain ⟨⟨a₀, C, hC, hA⟩, -⟩ := hasymp_all (L := Real.log (charOf W)) hp hR4 hSymm
-    (fun W' hW' hpW' hd' => hasymp_base hp rfl hW' hpW' hd') d W hW hmem hd
-  have hL : 0 < Real.log (charOf W) := Real.log_pos (by exact_mod_cast hp.one_lt)
-  refine ⟨a₀, C * d / Real.log (charOf W), fun a ha => ?_⟩
-  have h := hA a ha
-  simp only [lg, appr, tdeg] at h
-  generalize hT : ((∑ k, a k : ℕ) : ℝ) = T at h ⊢
-  generalize Real.log (Nat.card (mPiece W a)) = x at h ⊢
-  generalize (geoNum d W (fun _ k => (a k : ℤ)) : ℝ) = g at h ⊢
-  generalize Real.log (charOf W) = L at h hL ⊢
-  have hT0 : 0 ≤ T := by rw [← hT]; exact Nat.cast_nonneg _
-  have hT1 : 0 < T + 1 := by linarith
-  have hT1' : T + 1 ≠ 0 := hT1.ne'
-  have hL0 : L ≠ 0 := hL.ne'
-  have hf : (d.factorial : ℝ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero d
-  have e1 : x / L - g / d.factorial = (x - L * g / d.factorial) / L := by
-    field_simp
-  have e2 : C * d / L * (T + 1) ^ d / (T + 1) = C * d * (T + 1) ^ (d - 1) / L := by
-    rcases d with _ | n
-    · simp
-    · rw [Nat.add_sub_cancel, pow_succ]
-      field_simp
-  rw [e1, abs_div, abs_of_pos hL, e2]
-  exact div_le_div_of_nonneg_right h hL.le
-
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry

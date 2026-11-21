@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianVectorValuesCardStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianVectorValuesCard
 
 open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens
 
@@ -64,7 +64,7 @@ theorem card_orthonormal_tuples : ∀ (E : Type) [CommRing E] (τ : E →+* E) (
     haveI : Finite V := Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hq0)
     haveI : Finite E := Nat.finite_of_card_ne_zero (by rw [hR.card]; exact pow_ne_zero _ hq0)
     haveI : Nontrivial E := Finite.one_lt_card_iff_nontrivial.1 (by rw [hR.card]; nlinarith)
-    have hsph := (GlobalTheory.T.hermitian_vector_values_card E τ q ε hR (m' + 1) V B hc).1 1 (map_one τ) one_ne_zero
+    have hsph := (_root_.GlobalTheory.CompanionTheory.UnrDens.Sphere.count E τ q ε hR (m' + 1) V B hc).1 1 (map_one τ) one_ne_zero
     have hperp : ∀ w : {w : V // B.h w w = 1}, Nat.card (B.perp w.1) = q ^ (2 * m') := by
       intro w
       have h1 := Nat.card_congr (B.perpEquiv (isUnit_norm B w))

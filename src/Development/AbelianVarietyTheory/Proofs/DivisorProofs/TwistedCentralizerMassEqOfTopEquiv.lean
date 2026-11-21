@@ -98,10 +98,6 @@ theorem card_doubleCoset_congr {A B : Type} [Group A] [Group B] (e : A ≃* B) (
     simp only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv] at h
     simp [map_mul, h]
 
-theorem isClosed_twCent {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (θ : G →* G)
-    (hθ : Continuous θ) (δ : G) : IsClosed (twCent θ δ : Set G) :=
-  isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul hθ)
-
 theorem mass_eq_of_equiv (G G' : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group G']
     [TopologicalSpace G'] [IsTopologicalGroup G'] (θ : G →* G) (θ' : G' →* G') (Γ : Subgroup G) (Γ' : Subgroup G')
     (δ : G) (δ' : G') (hT : IsClosed (twCent θ δ : Set G)) (hT' : IsClosed (twCent θ' δ' : Set G'))

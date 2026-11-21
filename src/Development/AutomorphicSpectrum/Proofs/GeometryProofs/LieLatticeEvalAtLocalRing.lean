@@ -2,8 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFreeOverLocalRingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFreeOverLocalRing
 
 set_option backward.isDefEq.respectTransparency false
 
@@ -23,7 +24,7 @@ theorem exists_base {S : Scheme.{0}} {G : Over S} [GrpObj G] {A R : Type} [CommR
         Submodule.span R (Set.range fun k => j (b k)) = ⊤) := by
   subst hz
   letI := φ.toAlgebra
-  obtain ⟨j, h1, h2, h3⟩ := GlobalTheory.T.lie_model_base_change_map S G A R x E F M N
+  obtain ⟨j, h1, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange S G A R x E F M N
   exact ⟨j, h1, h2, fun hs n b => (h3 hs n b).2⟩
 
 end GlobalTheory.CompanionTheory.Ar.LieVal
@@ -89,7 +90,7 @@ theorem lieLat_val (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (Ω
     change j (q.symm (a • q b)) = _ • j (q.symm (q b))
     rw [this, q.symm_apply_apply, q.symm_apply_apply]
     exact hjs s b
-  · obtain ⟨n, ⟨b⟩⟩ := GlobalTheory.T.lie_model_free_over_local_ring X G hs (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) EA MA
+  · obtain ⟨n, ⟨b⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieFreeSmooth.lieModel_free_of_smooth X G hs (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) EA MA
     refine top_le_iff.1 ((hjb hs n b).symm.le.trans (Submodule.span_mono ?_))
     rintro _ ⟨k, rfl⟩
     refine ⟨q (b k), ?_⟩

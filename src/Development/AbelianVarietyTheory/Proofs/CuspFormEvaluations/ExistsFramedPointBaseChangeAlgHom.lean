@@ -4,8 +4,8 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDVal
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FrameBaseChangeEigenBasisStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointGeneratorRingBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FrameBaseChangeEigenBasis
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointGeneratorRingBaseChange
 
 noncomputable section
 
@@ -79,9 +79,9 @@ theorem exists_frMap : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       u := fun τ i => spMap (dualMap ψ.toRingHom) ≫ y.u τ i
       tan := fun τ i => isTanAt_pull ψ.toRingHom (y.tan τ i)
       eig := fun τ i => isEigAt_pull ψ τ (y.eig τ i)
-      basis := fun τ w hw he => GlobalTheory.T.existsUnique_isCombAt_baseChange_of_isEigAt E H Dw l Xo c S T ψ y τ w hw he
+      basis := fun τ w hw he => _root_.GlobalTheory.frame_baseChange_eigen_basis E H Dw l Xo c S T ψ y τ w hw he
       s := s'
-      gen := GlobalTheory.T.framedPoint_generator_ringBaseChange hLaws E H Dw l Xo c S T ψ.toRingHom y h rfl s' hs' },
+      gen := _root_.GlobalTheory.framedPoint_generator_baseChange hLaws E H Dw l Xo c S T ψ.toRingHom y h rfl s' hs' },
     rfl, fun _ _ => rfl, (h ▷ Xo.univ.t.G).left, ?_, ?_, fun i hi => ?_⟩
   · rw [← Over.comp_left, whiskerRight_snd]
   · rw [← Over.comp_left, whiskerRight_fst, Over.comp_left]

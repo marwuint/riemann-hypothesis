@@ -45,44 +45,10 @@ end Fl
 
 variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
-def ne_CX : ℝ := Real.exp (Real.exp (34 / 3))
-
 theorem ne_k_pos : (1 : ℝ) ≤ D.R.k := by
   have h2 := D.R.m_add_three_le_k
   have : 1 ≤ D.R.k := by omega
   exact_mod_cast this
-
-theorem ne_X' (hS : Formalism.MainNotions.SizesAt L) (hk : D.R.k ≤ Formalism.MainNotions.G.rG L.sc) : L.sc.X' ≤ ne_CX := by
-  have hx := L.sc.one_lt_alt
-  have he := L.sc.eps_pos
-  have he2 := L.sc.eps_lt
-  have hK := hS.2.2.1.1
-  have h1 : L.sc.x ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps - Formalism.MainNotions.szTh L) :=
-    Real.self_le_rpow_of_one_le hx.le (by unfold Formalism.MainNotions.szTh; linarith)
-  have h2 : (D.R.k : ℝ) ≤ (Formalism.MainNotions.G.rG L.sc : ℝ) := by exact_mod_cast hk
-  have h3 : (Formalism.MainNotions.G.rG L.sc : ℝ) ≤ 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps + 2 := by
-    unfold Formalism.MainNotions.G.rG Formalism.MainNotions.G.KG
-    have := Nat.ceil_lt_add_one (a := 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps)
-      (div_nonneg (by unfold Formalism.MainNotions.G.hG; linarith) he.le)
-    push_cast
-    linarith
-  have h4 : L.sc.x * L.sc.eps ≤ 34 := by
-    have h5 : L.sc.x ≤ 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps + 2 := by linarith
-    have h6 := mul_le_mul_of_nonneg_right h5 he.le
-    have h7 : (8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps + 2) * L.sc.eps = 8 * (Formalism.MainNotions.G.hG L.sc + 2) + 2 * L.sc.eps := by
-      field_simp
-    rw [h7] at h6
-    unfold Formalism.MainNotions.G.hG at h6
-    linarith
-  unfold Scale.X' ne_CX
-  apply Real.exp_le_exp.2
-  rw [Real.rpow_def_of_pos L.sc.x_pos]
-  apply Real.exp_le_exp.2
-  have h8 : Real.log L.sc.x ≤ L.sc.x := by
-    have := Real.log_le_sub_one_of_pos L.sc.x_pos
-    linarith
-  have h9 := mul_le_mul_of_nonneg_right h8 (by linarith : (0 : ℝ) ≤ L.sc.eps / 3)
-  linarith
 
 theorem ne_bT_le (hS : Formalism.MainNotions.SizesAt L) (t) : (L.bT t : ℝ) ≤ 5 / 4 * L.sc.b' := by
   have hx := L.sc.one_lt_alt
@@ -103,19 +69,5 @@ theorem ne_bT_le (hS : Formalism.MainNotions.SizesAt L) (t) : (L.bT t : ℝ) ≤
       (Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k) * L.sc.b' := by ring
   have h5 := mul_le_mul_of_nonneg_right h3 L.sc.b'_pos.le
   linarith
-
-theorem ne_aT_le (t) : (L.aT t : ℝ) ≤ 2 * L.sc.a := by
-  have h1 := (L.aT_win t).2
-  have hk := ne_k_pos (D := D)
-  have hx : (1 : ℝ) ≤ L.sc.x ^ (Scale.A / 2) :=
-    Real.one_le_rpow L.sc.one_lt_alt.le (by unfold Scale.A; norm_num)
-  have h2 : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a :=
-    div_le_self L.sc.a_pos.le (by nlinarith)
-  linarith
-
-theorem ne_a_eq : L.sc.a = L.sc.X' * L.sc.b' := by
-  unfold Scale.b'
-  have : L.sc.X' ≠ 0 := (lt_of_lt_of_le one_pos L.sc.one_le_X').ne'
-  field_simp
 
 end Formalism.MainNotions.FormalGroupSystem.Pf

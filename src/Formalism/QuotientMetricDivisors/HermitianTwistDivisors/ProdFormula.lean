@@ -7,18 +7,6 @@ noncomputable section
 
 namespace Formalism.DivisionValues
 
-theorem sum_log_embeddings_eq (K : Type) [Field K] [NumberField K] (a : K) (ha : a ≠ 0) :
-    ∑ σ : K →+* ℂ, Real.log ‖σ a‖ = Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)| := by
-  have h := Algebra.norm_eq_prod_embeddings ℚ ℂ a
-  have hq : (algebraMap ℚ ℂ) (Algebra.norm ℚ a) = ((Algebra.norm ℚ a : ℚ) : ℂ) := eq_ratCast _ _
-  have hprod : ((Algebra.norm ℚ a : ℚ) : ℂ) = ∏ σ : K →+* ℂ, σ a := by
-    rw [← hq, h]
-    exact Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ).symm _ _ (fun _ => rfl)
-  have hn : |((Algebra.norm ℚ a : ℚ) : ℝ)| = ∏ σ : K →+* ℂ, ‖σ a‖ := by
-    rw [← norm_prod, ← hprod]
-    simp
-  rw [hn, Real.log_prod (fun σ _ => by simpa using ha)]
-
 theorem log_abs_norm_eq_two_sum (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     (a : K) (ha : a ≠ 0) :
     Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)| =

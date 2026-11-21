@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmoothOfRelDimOfIsUnitProperFlatStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmoothOfRelDimOfIsUnitProperFlat
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GeometricallyConnectedOpenConditionSmoothProjectStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -40,7 +40,7 @@ theorem smooth_and_geomConnected_of_veryDense : ∀ (R : Type) [CommRing R] [IsN
     refine of_local_near_veryDense (@SmoothOfRelativeDimension.{0} g) R Z s P hP ?_
     intro q hq
     obtain ⟨K, _, x, hx, h1, -⟩ := h q hq
-    obtain ⟨f, hf, H⟩ := GlobalTheory.T.exists_smoothOfRelDim_of_isUnit_proper_flat R Z s g K x (projProper R Z s hproj) hflat h1
+    obtain ⟨f, hf, H⟩ := _root_.GlobalTheory.SmoothNearFibre.exists_smoothOfRelativeDimension_of_isUnit R Z s g K x (projProper R Z s hproj) hflat h1
     exact ⟨f, by rw [← hx]; exact hf, H⟩
   refine ⟨hsm, ?_⟩
   have : IsZariskiLocalAtTarget (@GeometricallyConnected.{0}) := by

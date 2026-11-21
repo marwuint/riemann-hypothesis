@@ -1,5 +1,10 @@
 import Mathlib
-import Formalism.PeriodIntegrals.XgCTieBr
+import Formalism.LocalToGlobal.Columns.AbelianHostFieldConditions
+import Formalism.LocalToGlobal.Columns.RowForms
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
+import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
+import Formalism.LocalToGlobal.Columns.GoodXgFin
+import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 
 open scoped ComplexOrder Matrix
 
@@ -142,31 +147,5 @@ theorem absIrr_isIrr [Fintype G] {K : Type} [Field K] [CharZero K] (σ : K →+*
   have := congrArg τ horth
   simp only [map_sum, map_mul, map_natCast, hch, hτ] at this
   rw [← this, Nat.card_eq_fintype_card]
-
-theorem isIrr_absIrr [Fintype G] {K : Type} [Field K] (σ : K →+* ℂ) (hB : PI.XgNamed.BrauerSplit) (z : K)
-    (hz : IsPrimitiveRoot z (Fintype.card G)) {χc : G → ℂ} (hc : Formalism.L2.NT.IsIrrChar χc) :
-    ∃ χ : G → K, Formalism.L2.DIV.IsAbsIrrChar χ ∧ (fun x => σ (χ x)) = χc := by
-  classical
-  obtain ⟨⟨n, ρc, htr⟩, hip⟩ := hc
-  have hchar : ∀ x, (ofGL ρc).character x = χc x := fun x => by rw [char_ofGL, htr]
-  haveI : NeZero (Nat.card G : ℂ) := ⟨by exact_mod_cast Nat.card_pos.ne'⟩
-  haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (NeZero.ne _)
-  have hfr := Representation.card_inv_mul_sum_char_mul_char_eq_finrank (ofGL ρc) (ofGL ρc)
-  have hsum : ∑ g : G, (ofGL ρc).character g * (ofGL ρc).character g⁻¹ = (Nat.card G : ℂ) := by
-    simp_rw [hchar]
-    rw [Nat.card_eq_fintype_card, ← hip]
-    unfold Formalism.L2.NT.ipG
-    refine Finset.sum_congr rfl fun x _ => ?_
-    rw [htr x, htr x⁻¹, star_trace_inv]
-  rw [hsum, inv_mul_cancel₀ (NeZero.ne _)] at hfr
-  have h1 : Module.finrank ℂ (Representation.IntertwiningMap (ofGL ρc) (ofGL ρc)) = 1 := by
-    exact_mod_cast hfr.symm
-  have hirr := irr_of_finrank_one (ofGL ρc) h1
-  obtain ⟨m, τ, τb, hτb, hmat, hσ⟩ := hB G K σ z hz n (ofGL ρc) hirr
-  refine ⟨fun t => τ.character t, ⟨m, τb, hτb, fun t => ?_⟩, funext fun t => ?_⟩
-  · show _ = algebraMap K _ (τ.character t)
-    rw [char_eq_trace, hmat t, trace_map, char_eq_trace]
-  · show σ (τ.character t) = χc t
-    rw [hσ t, hchar]
 
 end PI.XgCTieBrWork.Chars

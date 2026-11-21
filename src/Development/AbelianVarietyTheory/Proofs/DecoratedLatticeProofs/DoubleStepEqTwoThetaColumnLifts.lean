@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaA
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumProductCompatibilityStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselFourierJacobiContractedIsThetaFunEachVariaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumThetaJointlyContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepresentationRationalTranslateSubstitutionStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselFourierJacobiContractedIsThetaFunctionEachVariable
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumThetaJointlyContinuous
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepresentationRationalTranslateSubstitution
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousMovPair
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasureFundamentalDomainLtTop
@@ -44,7 +44,7 @@ theorem bdd_om_core {ψ : AddChar (AF D.host.F) ℂ} {ρ : ℕ} {B : BesLev D ρ
   refine ⟨c, fun h₀ x => ?_⟩
   obtain ⟨γ, hγ, hk⟩ := hc h₀
   have hγ' : B.o.emb (γ, 1) ∈ GQ B.V₀ := B.o.emb_mem_GQ hγ (one_mem _)
-  have key := GlobalTheory.T.weilRepresentation_rational_translate_substitution D ψ B.V₀ J.W₀ s.χV s.χW s.om₀ s.weil₀ Ξ hΞ (B.o.emb (γ, 1)) hγ' 1 (one_mem _)
+  have key := _root_.GlobalTheory.Unf.om_rat_mul D ψ B.V₀ J.W₀ s.χV s.χW s.om₀ s.weil₀ Ξ hΞ (B.o.emb (γ, 1)) hγ' 1 (one_mem _)
     (B.o.emb (h₀, 1)) h₁ (x ⬝ mt B.V₀ ((B.o.emb (γ, 1))⁻¹))
   rw [← map_mul, Prod.mk_mul_mk, one_mul, one_mul, inv_one, mt_one, Matrix.one_mul, Matrix.mul_assoc, mt_inv_mul,
     Matrix.mul_one] at key
@@ -68,7 +68,7 @@ theorem continuous_core {ψ : AddChar (AF D.host.F) ℂ} {ρ : ℕ} {B : BesLev 
     (hΞ : IsThetaFunO ψ B.V₀ J.W₀ Ξ) (h₁ : GA D J.W₀) :
     Continuous fun p : WO J.W₀ L' × GA D B.A =>
       s.om₀ (B.o.emb (p.2, 1), h₁) Ξ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ p.1)) := by
-  have hj := GlobalTheory.T.weilDatum_theta_jointlyContinuous D ψ B.V₀ J.W₀ s.χV s.χW s.om₀ s.weil₀ Ξ hΞ
+  have hj := _root_.GlobalTheory.Unf.jointCont_all D ψ B.V₀ J.W₀ s.χV s.χW s.om₀ s.weil₀ Ξ hΞ
   exact hj.comp (((B.o.continuous_emb.comp (continuous_snd.prodMk continuous_const)).prodMk continuous_const).prodMk
     ((B.o.continuous_resS_symm J.W₀).comp (continuous_const.prodMk ((continuous_kappa l J.W₀).comp continuous_fst))))
 
@@ -133,7 +133,7 @@ theorem exchange {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {B : BesLev D (σ +
 
 theorem contrLaw (D : D7) : ContrLaw D := by
   intro ψ σ B J B' s₁ s₂ l vL χA χA' χz oma omz omb omz' hV hW hoa hoz hob hoz' φ Ξ₁ Ξ₂ hφ hΞ₁ hΞ₂
-  have hth := GlobalTheory.T.besselFourierJacobi_contracted_isThetaFun_each_variable D ψ σ B J B' s₁ s₂ l vL χA χA' χz oma omz omb omz' hV hW hoa hoz hob hoz' Ξ₁ Ξ₂ hΞ₁ hΞ₂
+  have hth := _root_.GlobalTheory.ContrTheta.contr_isTheta D ψ σ B J B' s₁ s₂ l vL χA χA' χz oma omz omb omz' hV hW hoa hoz hob hoz' Ξ₁ Ξ₂ hΞ₁ hΞ₂
   refine ⟨hth.1, fun p => (hth.2 p).1, fun h₂ => ?_⟩
   unfold handFB pairKer contractT thPair handBF
   simp only [star_star]

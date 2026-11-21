@@ -240,12 +240,6 @@ def sgm (D : Car) : D.R.GG := ((-1, 1), 1)
 def tauSg (D : Car) (τ : D.what₂.Tau) : D.what₂.Tau :=
   if h : (D.eTau τ : D.R.GG) * sgm D ∈ D.R.Psi then D.eTau.symm ⟨_, h⟩ else τ
 
-def Qd (D : Car) {N N' : ℕ} {p : ℕ} [Fact p.Prime] (u : D.what₂.Tau → ℂ_[p]) :
-    MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p] :=
-  ∑ τ : D.what₂.Tau, ∑ a : Fin N', ∑ b : Fin N,
-    algebraMap ℂ_[p] (MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) (u τ) *
-      MvPowerSeries.X (τ, a, b) * MvPowerSeries.X (tauSg D τ, a, b)
-
 abbrev IdE (D : Car) : Type := Submodule (𝓞 D.host.E) D.host.E
 
 def N1 (D : Car) (𝔞 : IdE D) : Prop :=
@@ -359,27 +353,8 @@ def chg (D : Car) {p d : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Po : Po
 def AllSplit (D : Car) (p : ℕ) : Prop :=
   ∀ P : Ideal (𝓞 D.host.E), P.IsPrime → P ≠ ⊥ → (p : 𝓞 D.host.E) ∈ P → (D.host.conj : _) • P ≠ P
 
-def IsFrobC (D : Car) (p : ℕ) : Prop :=
-  ∀ (P : Ideal (𝓞 D.host.E)) [P.IsPrime] [P.LiesOver (Ideal.span {(p : ℤ)})],
-    IsArithFrobAt ℤ D.host.conj P
-
-abbrev TVarB (D : Car) (N N' : ℕ) : Type := ZMod 1 × (D.what₂.Tau × Fin N × Fin N')
-
 def tauEmb (D : Car) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) : D.host.E → ℂ_[p] :=
   fun x => lamC lam (embT D τ x)
-
-def chgB (D : Car) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {N N' : ℕ}
-    (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E)
-    (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E)
-    (k : D.what₂.Tau × Fin N' × Fin N) (j : TVarB D N N') : ℂ_[p] :=
-  if j.2.1 = k.1 then
-    ((P' j.2.1).map (tauEmb D lam j.2.1)) k.2.1 j.2.2.2 *
-      (((P j.2.1).map (tauEmb D lam j.2.1))⁻¹) j.2.2.1 k.2.2
-  else 0
-
-def OrthoBasisW (D : Car) {p : ℕ} [Fact p.Prime] (ρ : D.host.E → ℂ_[p]) {N : ℕ}
-    (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (P : Matrix (Fin N) (Fin N) D.host.E) : Prop :=
-  LocBasisW D ρ L P ∧ (P.map D.host.conj).transpose * P = 1
 
 def vec22 (D : Car) (T : Tor D) (e : FamE D) : Prop :=
   ∀ N N' L L', admitted D N N' L L' →
@@ -558,15 +533,6 @@ def adm1 (D : Car) : Prop :=
 
 def AdmittedStatements (D : Car) : Prop := adm1 D
 
-def aux₃ (D : Car) (C : ℝ) : Prop :=
-  ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-    per22 D (tor0 D cc δ) ∧ (∃ χ, IsChi D χ) ∧
-    ∀ χ, IsChi D χ →
-    ∃ e : FamE D, vec22 D (tor0 D cc δ) e ∧ th22 D (tor0 D cc δ) C e ∧ eq22 D (tor0 D cc δ) χ e ∧
-      int22 D (tor0 D cc δ) e ∧ mom22 D cc δ e ∧ LargerSupportMomentCondition D cc δ e ∧ str22 D (tor0 D cc δ) e
-
-def Stmt (D : Car) (C : ℝ) : Prop := AdmittedStatements D → aux₃ D C
-
 end Formalism.L2.Ker.Cd.TaylorLogMetric
 
 namespace Formalism.L2.Ker.Cd
@@ -585,12 +551,6 @@ open Formalism.L2.Ker.Base (Comm)
 
 open Formalism.L2.Th1.H (Sesq matH stdH stdLat alphaQ kernel4 tens4 StdData pow4 imgLat inter opU)
 open Formalism.MainNotions
-
-section Gen
-
-variable (L : PeriodPair) (ω₀ : ℂ) (c : ℝ) {n : Type} [Fintype n] [DecidableEq n]
-
-end Gen
 
 section Arith
 
@@ -634,10 +594,6 @@ def KapChoice.kappa {γ₀ : IsoK D} (k : KapChoice γ₀) : ℂ :=
 
 def KapChoice.YFinite {γ₀ : IsoK D} (k : KapChoice γ₀) : Prop :=
   {p : ℕ | p.Prime ∧ SplitK D p ∧ k.yP p ≠ 0}.Finite
-
-def YIndep (γ₀ : IsoK D) : Prop :=
-  ∀ (p : ℕ) (𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K)) (γ γ' : IsoK D), p.Prime → SplitK D p →
-    ((p : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal → γ.AtP p → γ'.AtP p → ordK 𝔭 (γ.detRel γ₀) = ordK 𝔭 (γ'.detRel γ₀)
 
 def lamMM (D : Car) (Λ : AddSubgroup ℂ) : AddSubgroup (D.what₂.Tau → ℂ) :=
   AddSubgroup.closure {z | ∃ w ∈ Λ, ∃ a ∈ D.host.AA0, z = fun τ => w * TaylorLogMetric.embT D τ a}
@@ -744,28 +700,7 @@ def MomP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.mom22 D 
 
 def StrP (χ : TaylorLogMetric.IdE D → ℂ) : Prop := TaylorLogMetric.str22 D B.tor (B.eNat χ)
 
-def LateralTheory (C : ℝ) (χ : TaylorLogMetric.IdE D → ℂ) : Prop :=
-  B.VecP χ ∧ B.ThP C χ ∧ B.EqP χ ∧ B.IntP χ ∧ B.MomP χ ∧ B.StrP χ
-
-def SignP : Prop :=
-  ∀ N N' L L', TaylorLogMetric.admitted D N N' L L' → B.thMoved N N' L L' = B.eY N N' L L' ∨ B.thMoved N N' L L' = -B.eY N N' L L'
-
-def OrderP : Prop :=
-  ∀ N N' L L', TaylorLogMetric.admitted D N N' L L' → B.thMoved N N' L L' =
-    TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) L') (TaylorLogMetric.La D B.tor L L')
-      (TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) L')
-        (B.thZero N N'))
-
 end Base
-
-def BaseExists (D : Car) : Prop :=
-  ∀ cc : Ideal (𝓞 D.host.K), TaylorLogMetric.IsCurveIdeal D cc → ∀ δ : ℂ, δ ≠ 0 → Nonempty (Base D cc δ)
-
-def GCUnique (D : Car) : Prop :=
-  ∀ (γ₀ : IsoK D) (g g' : (Fin 4 × D.what₂.Tau → ℂ) ≃ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)),
-    (∀ x : Fin 4 → D.host.E, g (fun w => TaylorLogMetric.embT D w.2 (x w.1)) = fun w => D.host.φ₀ ((γ₀.g x w : D.host.K) : D.host.E)) →
-    (∀ x : Fin 4 → D.host.E, g' (fun w => TaylorLogMetric.embT D w.2 (x w.1)) = fun w => D.host.φ₀ ((γ₀.g x w : D.host.K) : D.host.E)) →
-    g = g'
 
 end Fam
 
@@ -775,15 +710,7 @@ section HostFacts
 
 variable (D : Car)
 
-def thetaC : ℂ := (1 + Complex.I * (Real.sqrt D.host.d : ℂ)) / 2
-
 def KQuad : Prop := Module.finrank ℚ D.host.K = 2
-
-def ConjOnK : Prop := PI.KerIso.IsConj D.host.K D.host.conj
-
-def TrPos : Prop := ∀ x : D.host.E, x ≠ 0 → 0 < Algebra.trace ℚ D.host.E (x * D.host.conj x)
-
-def CardTau : Prop := Fintype.card D.what₂.Tau = Module.finrank D.host.K D.host.E
 
 def EmbInj : Prop := Function.Injective (TaylorLogMetric.embT D)
 
@@ -792,36 +719,10 @@ def EmbOnK : Prop :=
 
 def PhiNonReal : Prop := ∃ k : D.host.K, (D.host.φ₀ (k : D.host.E)).im ≠ 0
 
-def DMod8 : Prop := D.host.d % 8 = 7
-
-def SqrtInK : Prop :=
-  ∃ s : D.host.K, s * s = -(D.host.d : D.host.K) ∧
-    D.host.conj (algebraMap D.host.K D.host.E s) = -algebraMap D.host.K D.host.E s
-
-def LatStable : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), ∀ w ∈ TaylorLogMetric.lamOf D cc δ, thetaC D * w ∈ TaylorLogMetric.lamOf D cc δ
-
-def ConjIdeal : Prop :=
-  ∀ x : 𝓞 D.host.E, x ∈ D.host.conj • D.host.𝔟 ↔ ∃ y ∈ D.host.𝔟, D.host.conj (y : D.host.E) = (x : D.host.E)
-
-def HostFacts : Prop :=
-  KQuad D ∧ ConjOnK D ∧ TrPos D ∧ CardTau D ∧ EmbInj D ∧ EmbOnK D ∧ PhiNonReal D ∧ DMod8 D ∧ SqrtInK D ∧ LatStable D ∧ ConjIdeal D
-
 def MMSelfDual : Prop := PI.KerIso.SelfDualI D.host.K D.host.conj D.host.AA0
-
-def SplitKSplits : Prop := ∀ p : ℕ, p.Prime → SplitK D p → PI.KerIso.SplitsAt D.host.K D.host.conj p
-
-def GammaZeroExists : Prop :=
-  ∃ (γ₀ : IsoK D) (gC : (Fin 4 × D.what₂.Tau → ℂ) ≃ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)),
-    ∀ x : Fin 4 → D.host.E, gC (fun w => TaylorLogMetric.embT D w.2 (x w.1)) = fun w => D.host.φ₀ ((γ₀.g x w : D.host.K) : D.host.E)
-
-def GammaPExists : Prop := ∀ p : ℕ, p.Prime → SplitK D p → ∃ γ : IsoK D, γ.AtP p
 
 def PeriodExists : Prop :=
   ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → δ ≠ 0 → ∃ L : PeriodPair, L.lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ
-
-def TZeroExists : Prop :=
-  ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → δ ≠ 0 → ∃ t : ℂ, GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) t
 
 end HostFacts
 

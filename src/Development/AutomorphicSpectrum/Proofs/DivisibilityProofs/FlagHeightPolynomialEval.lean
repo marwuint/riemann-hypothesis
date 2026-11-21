@@ -1,8 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MonomialLinesPermutationStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FunctionalProductLinearFormsStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MonomialLinesPermutation
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FunctionalProductLinearForms
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LowerBoundOfBaseSetting
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FormPolyIsHomogeneousAndEval
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHFlProdLinear
@@ -47,7 +51,7 @@ theorem hhFl_linRoot_pow : ∀ II : IntersectionSystem, IsFullIntersectionSystem
           (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1)
           (fun k => GroundTheory.Heights₂.Heights.LowerBoundFree.xLine Ψ N (w k)) := by
     intro w
-    obtain ⟨hdeg, σ, -, hI⟩ := GlobalTheory.T.monomial_lines_permutation II hII.1 _ _ (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1)
+    obtain ⟨hdeg, σ, -, hI⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.monoLines_monomial_word II hII.1 _ _ (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1)
       _ (GroundTheory.Heights₂.Heights.LowerBoundFree.xLine Ψ N) w hP
       (fun j => GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.isSmoothHerm_fsHerm _)
     have hdeg' : (∑ k, Finsupp.single (w k) 1 : Ψ × Fin N →₀ ℕ).degree =
@@ -67,7 +71,7 @@ theorem hhFl_linRoot_pow : ∀ II : IntersectionSystem, IsFullIntersectionSystem
         (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1)
         (fun k => GroundTheory.Heights₂.Heights.LowerBoundFree.xLine Ψ N (w k)) := by
     rw [PB.hFlPoly, antisymDegree_eq_dimFl']
-  rw [linRoot_pow_eq, map_smul, GlobalTheory.T.functional_product_linear_forms _ _ (hhFl Ψ N II) (fun _ x => lam x.1 x.2), hpoly,
+  rw [linRoot_pow_eq, map_smul, _root_.GlobalTheory.CompanionTheory.Ar.Top.linearFunctional_prod_linearForms _ _ (hhFl Ψ N II) (fun _ x => lam x.1 x.2), hpoly,
     (PB.formPoly_isHomogeneous_and_eval (Ψ × Fin N) (dimFl Ψ N + 1) _).2]
   simp only [hword, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun w _ => ?_

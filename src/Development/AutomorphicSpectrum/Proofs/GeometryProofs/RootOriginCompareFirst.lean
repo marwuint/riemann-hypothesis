@@ -4,18 +4,25 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProjectStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootModelFlagCompareStatement
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplierLine
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorFlag
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFiniteExtension
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCompCompareFlagStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeSpanProjectionBoundStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuationCoordsComplexPointStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SubringCoordsComplexValueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentBaseChangeCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentLatticeMapCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentBaseChangeCompat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentLatticeMapCompat
 open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -24,8 +31,8 @@ namespace GlobalTheory.CompanionTheory.Ar.SingCmp
 
 theorem val_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S S₀ : Finset ℕ) (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (K K₀ : Type) [Fintype K] [Fintype K₀] (J : K → Type) (J₀ : K₀ → Type) (y : (Σ k, J k) → Ω) (y₀ : (Σ k, J₀ k) → Ω₀) (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (i : Ω₀ →+* Ω) (ι : 𝔐₀.Li →+ 𝔐.Li) (W : Subring Ω) (φ : W →+* ℂ) (z₁ : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (z₂ : Spec (CommRingCat.of ℂ) ⟶ 𝔐₀.X), 𝔐.ξ ≫ 𝔐.f = spMap i ≫ 𝔐₀.ξ ≫ 𝔐₀.f → (∀ (e : 𝔐₀.Li) (e' : 𝔐.Li), (𝔐.M.pt e').left ≫ 𝔐.m.φ = spMap (dualMap i) ≫ (𝔐₀.M.pt e).left ≫ 𝔐₀.m.φ ↔ e' = ι e) → (∀ a : W, φ a ≠ 0 → IsUnit a) → (∀ (a : Ω) (r : ℂ), ValAt 𝔐.ξ z₁ a r → ∃ h : a ∈ W, φ ⟨a, h⟩ = r) → (∀ (a : Ω₀) (r : ℂ), ValAt 𝔐₀.ξ z₂ a r → ∃ h : i a ∈ W, φ ⟨_, h⟩ = r) → z₁ ≫ 𝔐.f = z₂ ≫ 𝔐₀.f ∧ ∀ (Vz : Type) [AddCommGroup Vz] [Module ℂ Vz] (MR : LieModel 𝔐.t.G z₁ Vz), ∃ (Lm : Submodule W 𝔐.Li) (val : 𝔐.Li → Vz), val 0 = 0 ∧ (∀ e ∈ Lm, ∀ e' ∈ Lm, val (e + e') = val e + val e') ∧ (∀ a : W, ∀ e ∈ Lm, val ((a : Ω) • e) = φ a • val e) ∧ (∀ (e : 𝔐.Li) (v : epsAt z₁ ⟶ 𝔐.t.G), 𝔐.M.ValAt z₁ e v → e ∈ Lm ∧ v = MR.pt (val e)) ∧ ∀ (e₀ : 𝔐₀.Li) (v₀ : epsAt z₂ ⟶ 𝔐₀.t.G), 𝔐₀.M.ValAt z₂ e₀ v₀ → ι e₀ ∈ Lm ∧ (MR.pt (val (ι e₀))).left ≫ 𝔐.m.φ = v₀.left ≫ 𝔐₀.m.φ := by
   intro E _ _ _ H D l Xo c Y S S₀ Ω Ω₀ _ _ K K₀ _ _ J J₀ y y₀ 𝔐 𝔐₀ i ι W φ z₁ z₂ hξ hpt hW h₁ h₂
-  obtain ⟨σ₁, σ₂, g₁, g₂, v₁, v₂, hx⟩ := GlobalTheory.T.hodge_component_base_change_compat E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i W φ z₁ z₂ hξ hW h₁ h₂
-  refine ⟨?_, GlobalTheory.T.hodge_component_lattice_map_compat E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i ι W φ z₁ z₂ σ₁ σ₂ hξ hpt g₁ g₂ v₁ v₂ hx⟩
+  obtain ⟨σ₁, σ₂, g₁, g₂, v₁, v₂, hx⟩ := _root_.GlobalTheory.CompanionTheory.Ar.OrArch.exists_common_point E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i W φ z₁ z₂ hξ hW h₁ h₂
+  refine ⟨?_, _root_.GlobalTheory.CompanionTheory.Ar.SingVal.value_map E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i ι W φ z₁ z₂ σ₁ σ₂ hξ hpt g₁ g₂ v₁ v₂ hx⟩
   have e₁ : spMap φ ≫ spMap σ₁ ≫ 𝔐.X.fromSpecStalk (centre z₁) = z₁ := by
     have : φ.comp σ₁ = (Scheme.stalkClosedPointTo z₁).hom := RingHom.ext v₁
     rw [← Category.assoc, ← FlagPull.spMap_comp, this]
@@ -64,8 +71,8 @@ theorem hodge_move {S₁ S₂ S : Scheme.{0}} {t₁ : SAB H S₁} {t₂ : SAB H 
     (hz : z₁ ≫ f₁ = z₂ ≫ f₂) {v₁ w₁ : epsAt z₁ ⟶ t₁.G} {v₂ w₂ : epsAt z₂ ⟶ t₂.G}
     (hv : v₁.left ≫ m₁.φ = v₂.left ≫ m₂.φ) (hw : w₁.left ≫ m₁.φ = w₂.left ≫ m₂.φ) (c : ℂ) :
     HodgeIP t₁.G t₁.PP.L z₁ v₁ w₁ c ↔ HodgeIP t₂.G t₂.PP.L z₂ v₂ w₂ c := by
-  have a₁ := (GlobalTheory.T.hodge_inner_product_pullback_unique E H S₁ S t₁ t f₁ m₁ z₁ v₁ w₁ (HodgePull.push m₁ v₁) (HodgePull.push m₁ w₁) rfl rfl).1 c
-  have a₂ := (GlobalTheory.T.hodge_inner_product_pullback_unique E H S₂ S t₂ t f₂ m₂ z₂ v₂ w₂ (HodgePull.push m₂ v₂) (HodgePull.push m₂ w₂) rfl rfl).1 c
+  have a₁ := (_root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H S₁ S t₁ t f₁ m₁ z₁ v₁ w₁ (HodgePull.push m₁ v₁) (HodgePull.push m₁ w₁) rfl rfl).1 c
+  have a₂ := (_root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H S₂ S t₂ t f₂ m₂ z₂ v₂ w₂ (HodgePull.push m₂ v₂) (HodgePull.push m₂ w₂) rfl rfl).1 c
   exact a₁.trans ((hodgeInnerProduct_congr hz hv hw c).trans a₂.symm)
 
 end Move
@@ -108,14 +115,14 @@ theorem norm_cmp (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (Fl : 
     exact (Scheme.Hom.comp_apply z₁ 𝔐.f _).symm.trans (this.trans (Scheme.Hom.comp_apply z₂ 𝔐₀.f _))
   obtain ⟨Vz, _, _, ⟨MR⟩⟩ := lieModel_exists 𝔐.X 𝔐.t.G ℂ z₁
   obtain ⟨Lm, val, h0, hadd, hsm, hv₁, hv₂⟩ := hval Vz MR
-  obtain ⟨h, hHI, -, -⟩ := GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z₁ Vz MR (GrNorm.interior_pol 𝔐 hβ z₁ hI₁)
+  obtain ⟨h, hHI, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_hodgeInnerProduct_form E H 𝔐.X 𝔐.t z₁ Vz MR (GrNorm.interior_pol 𝔐 hβ z₁ hI₁)
   obtain ⟨_, b, Γ, hflag, hfr, ht, ⟨v, hv, hI⟩, -, rfl⟩ := hn
   obtain ⟨_, b₀, Γ₀, hflag₀, hfr₀, ht₀, ⟨v₀, hv₀, hI₀⟩, -, rfl⟩ := hn₀
-  obtain ⟨-, -, -, -, -, -, hind, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
-  obtain ⟨-, -, -, -, -, -, hind₀, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S₀ Ω₀ K₀ J₀ y₀ 𝔐₀ hβ
-  obtain ⟨hV, -, hL⟩ := GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ q
+  obtain ⟨-, -, -, -, -, -, hind, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
+  obtain ⟨-, -, -, -, -, -, hind₀, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c _ _ Y S₀ Ω₀ K₀ J₀ y₀ 𝔐₀ hβ
+  obtain ⟨hV, -, hL⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeChar0.lattices_of_char_zero E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ q
     fun r hr => GrNorm.not_inFibre 𝔐.tie.gen hq hr
-  obtain ⟨hV₀, -, hL₀⟩ := GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c _ _ Y S₀ Ω₀ K₀ J₀ y₀ 𝔐₀ hβ q₀
+  obtain ⟨hV₀, -, hL₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeChar0.lattices_of_char_zero E H D l Xo c _ _ Y S₀ Ω₀ K₀ J₀ y₀ 𝔐₀ hβ q₀
     fun r hr => GrNorm.not_inFibre 𝔐₀.tie.gen hq₀ hr
   obtain ⟨π, hπ, hreg⟩ := GrNorm.exists_dual 𝔐 hind q hL s b hfr.1 ((hV s).symm.trans hfr.2)
   obtain ⟨π₀, hπ₀, hreg₀⟩ := GrNorm.exists_dual 𝔐₀ hind₀ q₀ hL₀ s b₀ hfr₀.1 ((hV₀ s).symm.trans hfr₀.2)

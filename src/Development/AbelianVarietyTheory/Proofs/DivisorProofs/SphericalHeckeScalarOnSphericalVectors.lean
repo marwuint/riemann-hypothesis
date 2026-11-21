@@ -9,11 +9,13 @@ import Formalism.LocalToGlobal.IndefiniteReal.PartsRow
 import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
 import Formalism.LocalToGlobal.Divisibility.TrivialExtensionSideWellFormed
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVector
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeCombinationsCommuteFixedVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeCombinationsCommuteFixedVectors
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraMapIntertwiningMapBijectiveOfIsSmooth
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTranslatesEqDoubleCosetAverageStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankLeAleph0SmoothIrreducibleUnitaryAdelicStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTranslatesEqDoubleCosetAverage
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankLeAleph0SmoothIrreducibleUnitaryAdelic
+import Formalism.LocalToGlobal.GaloisLevelStructure.DefsFinTyp
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
@@ -41,7 +43,7 @@ theorem avg (ρ : G →* Module.End ℂ M) (K : Subgroup G) {ι : Type} (s : Fin
     (hw : ∀ i ∈ s, ∀ k ∈ K, ρ k (w i) = w i)
     (hm : ∀ k ∈ K, ρ k (∑ i ∈ s, ρ (a i) (w i)) = ∑ i ∈ s, ρ (a i) (w i)) :
     ∑ i ∈ s, ρ (a i) (w i) = ∑ i ∈ s, ((R i).card : ℂ)⁻¹ • ∑ γ ∈ R i, ρ γ (w i) :=
-  GlobalTheory.T.sum_translates_eq_doubleCoset_average ρ K s a R w hR hw hm
+  _root_.GlobalTheory.CosetAvg.sum_translates_eq_avg ρ K s a R w hR hw hm
 
 def fixS (ρ : G →* Module.End ℂ M) (S : Submodule ℂ M) (K : Subgroup G) : Submodule ℂ M where
   carrier := {x | x ∈ S ∧ ∀ k ∈ K, ρ k x = x}
@@ -201,7 +203,7 @@ variable {D : D7} {V : HSp D} {n : ℕ}
 
 theorem countRank {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (π : Formalism.L2.NG.FinTyp L n) :
     Module.rank ℂ π.S ≤ Cardinal.aleph0 :=
-  GlobalTheory.T.rank_le_aleph0_smooth_irreducible_unitaryAdelic π
+  _root_.GlobalTheory.FinTyp.rank_le_aleph0 π
 
 def rtHom (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) :
     Formalism.AUTREP.GAf L n →* Module.End ℂ (Formalism.AUTREP.GAf L n → ℂ) where
@@ -461,7 +463,7 @@ theorem spherical_scalar : ∀ {D : D7} {V : HSp D} {n : ℕ} (hF : D.host.F = m
         rw [hBop x hx.2]
         exact hopfix _ x hx.2
       rw [hBop _ hx', hRop a ha, hRop a ha, hBop x hx.2]
-      exact GlobalTheory.T.sphericalHeckeCombinations_commute_fixedVectors V Pr _ _ _ (rtA V) _ (hfixA x hx.2)
+      exact _root_.GlobalTheory.SphLabelComm.label_ops_comm V Pr _ _ _ (rtA V) _ (hfixA x hx.2)
 
   exact ⟨c, fun x hx hfx => hc x ⟨hx, fun k hk => hfx k (by rw [hKv]; exact hk)⟩⟩
 

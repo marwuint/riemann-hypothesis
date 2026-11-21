@@ -1,14 +1,27 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfParts
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergLawApplyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityUnitaryGroupVStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalWeilOperatorIsometrySchwartzBruhatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodingerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartzStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergLawApply
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodinger
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacFn
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityUnitaryGroupV
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalWeilOperatorIsometrySchwartzBruhat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.UnifModGrowthOfIsUnifModerate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftPRouteSmall
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatesEqPrimFrameLat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartz
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinPartIdemMulMemIff
+
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open scoped Matrix GlobalTheory.VacAny
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -58,10 +71,6 @@ theorem ext_zero_map_conj (σ : E →ₐ[F] E) (M : Matrix (Fin n) (Fin n) (Fv F
   ext i j
   exact sigR_tensAt v σ _
 
-theorem ext_zero_comp_finite (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : (ext0 v M).map (compFin F E v) = M := by
-  ext i j
-  exact compFin_tensAt v _
-
 def lift (Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (AE F E) := 1 + ext0 v (Y - 1)
 
 theorem lift_mul (Y Z : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : lift v Y * lift v Z = lift v (Y * Z) := by
@@ -71,25 +80,6 @@ theorem lift_mul (Y Z : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : lift v Y * l
 
 theorem lift_one : lift v (1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = 1 := by
   rw [lift, sub_self, matrixExtendByZero_zero, add_zero]
-
-theorem compFin_lift (Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : (lift v Y).map (compFin F E v) = Y := by
-  have h2 : (1 : Matrix (Fin n) (Fin n) (AE F E)).map (compFin F E v) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
-  have h1 : (lift v Y).map (compFin F E v) = (1 : Matrix (Fin n) (Fin n) (AE F E)).map (compFin F E v) +
-      (ext0 v (Y - 1)).map (compFin F E v) := by
-    ext i j; simp only [lift, Matrix.map_apply, Matrix.add_apply, map_add]
-  rw [h1, ext_zero_comp_finite, h2]
-  abel
-
-theorem lift_sub_one_at (Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : At (evFin F v) (lift v Y - 1) := by
-  intro u hu
-  rw [lift, add_sub_cancel_left]
-  ext i j
-  simp only [ext0, Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply]
-  rw [Algebra.smul_def, mul_comm, tensAt_mul_right]
-  have : compFin F E v (algebraMap (AF F) (AE F E) u) = 0 := by
-    change (evFin F v u) ⊗ₜ[F] (1 : E) = 0
-    rw [hu, TensorProduct.zero_tmul]
-  rw [this, mul_zero, map_zero]
 
 theorem lift_unitary (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (Y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (hY : Yᵀ * J.map (inclR (Fv F v)) * Y.map (sigR (Fv F v) σ) = J.map (inclR (Fv F v))) :
@@ -247,45 +237,6 @@ theorem mat_leviHom (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (J : Matrix (F
     (hJ : IsUnit (J.map t).det) (herm : ∀ i j, σ (J j i) = J i j) (g : GL (Fin n) (Fv F v)) :
     mat (leviHom h t J hJ herm g) = lift v (locMat h t J g) := rfl
 
-theorem leviHom_map_piW (h : IsCMExt F E σ) (t τ : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E)
-    (hJ : IsUnit (J.map t).det) (herm : ∀ i j, σ (J j i) = J i j) (g : GL (Fin n) (Fv F v)) :
-    (mat (leviHom h t J hJ herm g)).map (piW τ) = (locMat h t J g).map (splitProj τ) := by
-  rw [mat_leviHom]
-  conv_rhs => rw [← compFin_lift v (locMat h t J g), Matrix.map_map]
-  rfl
-
 end Hom
-
-theorem det_ne_zero_of_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
-  obtain ⟨hn, A, hA⟩ := h
-  let e : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr hn)
-  have key : (A.submatrix id e.symm)ᵀ * M * (A.submatrix id e.symm).map star =
-      (Aᵀ * M * A.map star).submatrix e.symm e.symm := by
-    ext i j; rfl
-  have hd := congrArg Matrix.det key
-  rw [Matrix.det_submatrix_equiv_self, hA, Matrix.det_mul, Matrix.det_mul] at hd
-  intro h0
-  rw [h0] at hd
-  simp [Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg] at hd
-  exact pow_ne_zero _ (by norm_num) hd.symm
-
-theorem levi_at_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
-    (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
-    ∀ v, X.Good v → ∀ t : E →ₐ[F] Fv F v,
-    ∃ K : GL (Fin a') (Fv F v) →* UA σ G.V'.J, ∀ g, K g ∈ UAt σ G.V' (evFin F v) ∧
-      (mat (K g)).map (piW t) = g.val ∧
-      (mat (K g)).map (piW (t.comp σ)) = (G.V'.J.map t)⁻¹ * ((g⁻¹ : GL _ _).val)ᵀ * G.V'.J.map t := by
-  intro F E _ _ _ _ _ σ B a a' G X om om' hTr v _ t
-  have h := hTr.base.cm
-  have hJ : IsUnit (G.V'.J.map t).det := by
-    obtain ⟨φ⟩ : Nonempty (F →+* ℂ) := inferInstance
-    have h0 := det_ne_zero_of_sig (hTr.geo.hV'.sig (InfinitePlace.mk φ))
-    have h1 : G.V'.J.det ≠ 0 := fun e => h0 (by
-      rw [show G.V'.J.map _ = RingHom.mapMatrix _ G.V'.J from rfl, ← RingHom.map_det, e, map_zero])
-    rw [show G.V'.J.map t = (t : E →+* Fv F v).mapMatrix G.V'.J from rfl, ← RingHom.map_det]
-    exact isUnit_iff_ne_zero.2 ((map_ne_zero _).2 h1)
-  refine ⟨leviHom h t G.V'.J hJ hTr.geo.hV'.herm, fun g => ⟨lift_sub_one_at v _, ?_, ?_⟩⟩
-  · rw [leviHom_map_piW, locMat, pairMat_fst]
-  · rw [leviHom_map_piW, locMat, pairMat_snd, conjComp]
 
 end GlobalTheory.LeviAtPlace

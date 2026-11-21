@@ -28,8 +28,6 @@ theorem invT_invT (g : GA E k) : invT (invT g) = g := by
   ext i j
   rfl
 
-theorem dt_pos_of (hD : D0) (g : GA E k) : 0 < Dt g := (hD E k).1 g
-
 end height_param_nonneg
 
 namespace height_param_nonneg

@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientTriple
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SeesawTrivialityOnDenseFibresProductAbelianStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SeesawTrivialityOnDenseFibresProductAbelian
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubePolAbelianScheme
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LbPowDescendsOfIsotropicOfLaws
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubeDescendsAlongEtaleIsogeny
@@ -34,7 +34,7 @@ theorem exists_heckeQuotient_triple_of_laws : Out.Laws → ∀ (E : Type) [Field
   have princ := GlobalTheory.kTriv_of_descent laws
   have amp := GlobalTheory.relAmple_finite_pow_iso
   have prim := GlobalTheory.PrimNorm.exists_primitive_normalisation glob
-  have seesaw := GlobalTheory.T.seesaw_triviality_on_dense_fibres_product_abelian glob
+  have seesaw := _root_.GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian glob
   have hA : IsAbelianScheme t.G := AbelianSchemeGerms.isAbelianScheme_of_proper t.G t.semi
   have hL := t.PP.isLB
   let P : Out.PolAV (Sp k) :=

@@ -16,25 +16,6 @@ def blkDeg (m : (Σ k, ι k) →₀ ℕ) (k : K) : ℕ := ∑ i, m ⟨k, i⟩
 def padExp (p : (k : K) → ι k) (T : ℕ) (m : (Σ k, ι k) →₀ ℕ) : (Σ k, ι k) →₀ ℕ :=
   ∑ k, Finsupp.single ⟨k, p k⟩ (T - blkDeg m k)
 
-theorem sum_single_blk (q : Σ k, ι k) (a : ℕ) (k : K) :
-    ∑ i, (Finsupp.single q a : (Σ k, ι k) →₀ ℕ) ⟨k, i⟩ = if q.1 = k then a else 0 := by
-  classical
-  obtain ⟨k', i'⟩ := q
-  by_cases h : k' = k
-  · subst h
-    rw [if_pos rfl, Finset.sum_eq_single i']
-    · simp
-    · intro b _ hb
-      rw [Finsupp.single_apply, if_neg]
-      intro e
-      exact hb (eq_of_heq (Sigma.mk.inj_iff.1 e).2).symm
-    · simp
-  · rw [if_neg h]
-    refine Finset.sum_eq_zero fun i _ => ?_
-    rw [Finsupp.single_apply, if_neg]
-    intro e
-    exact h (Sigma.mk.inj_iff.1 e).1
-
 theorem padExp_apply (p : (k : K) → ι k) (T : ℕ) (m : (Σ k, ι k) →₀ ℕ) (k : K) (i : ι k) :
     padExp p T m ⟨k, i⟩ = if i = p k then T - blkDeg m k else 0 := by
   classical

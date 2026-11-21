@@ -138,15 +138,6 @@ private lemma exists_differentiable_Gammaℝ_inv_eq_mul : ∃ g : ℂ → ℂ, D
       rw [key]
       ring
 
-lemma order_Gammaℝ_inv_zero : analyticOrderAt (fun s : ℂ => (Gammaℝ s)⁻¹) 0 = 1 := by
-  obtain ⟨g, hgd, hg0, hgz⟩ := exists_differentiable_Gammaℝ_inv_eq_mul
-  show analyticOrderAt _ _ = ((1 : ℕ) : ℕ∞)
-  rw [(Complex.differentiable_Gammaℝ_inv.analyticAt 0).analyticOrderAt_eq_natCast]
-  refine ⟨g, hgd.analyticAt 0, hg0, ?_⟩
-  filter_upwards with z
-  rw [hgz z]
-  simp
-
 theorem mult_zero_of_even {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) (he : χ.Even)
     (h1 : χ ≠ 1) : LFunction χ 0 = 0 ∧ analyticOrderNatAt (LFunction χ) 0 = 1 := by
   obtain ⟨g, hgd, hg0, hgz⟩ := exists_differentiable_Gammaℝ_inv_eq_mul

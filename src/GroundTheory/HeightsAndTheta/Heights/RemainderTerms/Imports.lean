@@ -5,9 +5,9 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.CoinvReduction
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Elementary
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Expand
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.FlagBasic
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.InhabitantsComb
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.InhabitantsElem
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Inhabitants
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsComb
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsElem
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Statements
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.JacobiTrudi
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Lattice
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCharacterAtIdentity
@@ -15,7 +15,7 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCharacterBound
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvAboveTopGeneral
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvAboveTop
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvariantTopDegree
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvAtTopGeneral
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsCoinv
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvAtTop
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvIdealComponent
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCoinvIdealRepresentation
@@ -35,9 +35,6 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombCfUpdateZero
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombCfVandermondePsumOne
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombDetDescFactorial
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombExtendWord
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombHookBranch
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombHookCount
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombHookShapeFacts
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombPcntAppend
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombSortLe
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombSortShiftDistinct
@@ -48,7 +45,6 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombTableauRowCount
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombTableauRowLattice
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombTableauRowPrefix
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.ImportsAlt
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombVandermondeSucc
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombWordOfTableau
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PCombYoungRowCard
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagAltCoeffInjective
@@ -62,7 +58,7 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagDividedDifferenc
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagHomogeneousComponentMul
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagInjSumBound
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagIntegralAntisymmetrize
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagIntegralKillsPowerSums
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsFlag
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagIntegralPermute
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagIntegralTopComponent
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagIntegralTopDegree
@@ -86,19 +82,16 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFlagVandermondeHomog
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFrobeniusCharacterFormula
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PFrobeniusDimensionFormula
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHomogeneousComponentMul
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookCharacterSumIdentity
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookDimensionSum
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsTop
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PowerSums
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookSumBound
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookTableauCount
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PIntegralIsDividedDifference
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PLemmaA
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PLemmaB
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PLemmaC
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PLinearTermValue
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Pluecker
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSameFactorFormula
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.POtherFactorBound
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.POtherFactorFormula
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PowerSums
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTablePos
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PRestBound
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PRestBoundOfPrimeBound
@@ -109,9 +102,7 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PRestPolynomialHomoge
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PRestPolynomialHomogeneous
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PRestPrimeBound
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PRestPrimeBoundOfFactor
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PRestTermWellDefined
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSameFactorBound
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSameFactorFormula
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSchAevalSignedRename
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSchAlternantHomogeneous
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSchAlternantRenamePlace
@@ -144,35 +135,20 @@ import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSchStrictAntiSplit
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSchurPowerSumCoefficient
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSchurSignCoefficient
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PSchWeightedPreimage
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PShiftSumRule
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PTotalIdentity
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PVandermondeOfHomogeneous
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsCoinv
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsComb
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsElem
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsFlag
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Statements
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsSchur
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsTop
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PrimeWeightEqZeroOfLt
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableTranspose
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.SameFactorDegreeClauseOfValue
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.AntisymmetrizeBlockVandermondeOf
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StaircaseIsHomogeneous
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.TenNinthsLe
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.CoeffRenameProdCongrRight
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.FlagIntegralRealEqMulDdConst
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.IsFlagIntegralOne
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.IsPowerSumDecompositionHomogeneousComponent
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.VandermondeEqVandermondeOf
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StaircaseIsHomogeneous
+import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.CoeffRenameProdCongrRight
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.RestAt
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.DegPolynomialIsHomogeneous
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.FlagIntegralRealTransferOfSyzygy
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.OfHookCharacterSumIdentity
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.IsFlagIntegralOne
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.FlagIntegralHomogeneousComponent
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.FlagIntegralRealRootRingToRealAlt
-import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.SumPderivRealApply
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -202,12 +178,6 @@ theorem CoinvStaircaseDegree.full : CoinvStaircaseDegree.Statement :=
 
 theorem CoinvStaircaseComponent.full : CoinvStaircaseComponent.Statement :=
   CoinvStaircaseComponent.proof CoinvStaircaseDegree.full
-
-theorem CoinvAtTop.full : CoinvAtTop.Statement :=
-  CoinvAtTop.proof CoinvPolynomialReduction.full CoinvIdealComponent.full CoinvStaircaseComponent.full
-
-theorem CoinvariantTopDegree.full : CoinvariantTopDegree.Statement :=
-  CoinvariantTopDegree.proof CoinvAtTop.full
 
 theorem FlagCoeffBlockPermute.full : FlagCoeffBlockPermute.Statement :=
   FlagCoeffBlockPermute.proof
@@ -253,9 +223,6 @@ theorem FlagIntegralTopDegree.full : FlagIntegralTopDegree.Statement :=
 
 theorem FlagIntegralVandermondePos.full : FlagIntegralVandermondePos.Statement :=
   FlagIntegralVandermondePos.proof
-
-theorem IntegralIsDividedDifference.full : IntegralIsDividedDifference.Statement :=
-  IntegralIsDividedDifference.proof FlagIntegralTopDegree.full FlagIntegralVandermondePos.full
 
 theorem FlagSwapDivisible.full : FlagSwapDivisible.Statement :=
   FlagSwapDivisible.proof
@@ -307,9 +274,6 @@ theorem FlagRestrictConstantCoeff.full : FlagRestrictConstantCoeff.Statement :=
 
 theorem LemmaA.full : LemmaA.Statement :=
   LemmaA.proof FlagIntegralTopDegree.full FlagIntegralVandermondePos.full FlagDividedDifferencePoly.full FlagAntisymDecomposition.full FlagVandermondeHomogeneous.full FlagAntisymHomogeneous.full FlagQuotientHomogeneous.full FlagRestrictHomogeneous.full FlagRestrictSymmetric.full FlagRestrictDecomposition.full FlagPowerSumPreimage.full FlagRestrictConstantCoeff.full FlagIntegralViaQuotient.full
-
-theorem RestTermWellDefined.full : RestTermWellDefined.Statement :=
-  RestTermWellDefined.proof LemmaA.full
 
 theorem SchAevalSignedRename.full : SchAevalSignedRename.Statement :=
   SchAevalSignedRename.proof
@@ -455,18 +419,6 @@ theorem SchSchurAtRootsOfUnity.full : SchSchurAtRootsOfUnity.Statement :=
 theorem SchurPowerSumCoefficient.full : SchurPowerSumCoefficient.Statement :=
   SchurPowerSumCoefficient.proof SchWeightedPreimage.full SchEvalPowerSumHom.full SchSchurHomogeneous.full SchSchurAtRootsOfUnity.full
 
-theorem CombHookShapeFacts.full : CombHookShapeFacts.Statement :=
-  CombHookShapeFacts.proof
-
-theorem CombHookBranch.full : CombHookBranch.Statement :=
-  CombHookBranch.proof CombHookShapeFacts.full
-
-theorem CombHookCount.full : CombHookCount.Statement :=
-  CombHookCount.proof CombHookShapeFacts.full CombHookBranch.full
-
-theorem HookDimensionSum.full : HookDimensionSum.Statement :=
-  HookDimensionSum.proof CombTableEqWords.full CombHookShapeFacts.full CombHookCount.full
-
 theorem SchStrictAntiSplit.full : SchStrictAntiSplit.Statement :=
   SchStrictAntiSplit.proof
 
@@ -539,21 +491,6 @@ theorem OtherFactorFormula.full : OtherFactorFormula.Statement :=
 theorem OtherFactorBound.full : OtherFactorBound.Statement :=
   OtherFactorBound.proof OtherFactorFormula.full SameFactorFormula.full SchurSignCoefficient.full CharacterBound.full HookSumBound.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full
 
-theorem ShiftSumRule.full : ShiftSumRule.Statement :=
-  ShiftSumRule.proof ShiftTotalValues.intersectionNumber_baseChange FlagIntegralKillsPowerSums.intersectionNumber_baseChange
-
-theorem LinearTermValue.full : LinearTermValue.Statement :=
-  LinearTermValue.proof LemmaA.full LemmaB.full FrobeniusCharacterFormula.full CharacterAtIdentity.full VandermondeOfHomogeneous.full
-
-theorem HookCharacterSumIdentity.full : HookCharacterSumIdentity.Statement :=
-  HookCharacterSumIdentity.proof ShiftSumRule.full LinearTermValue.full SameFactorFormula.full SchurSignCoefficient.full RectangleTablePos.intersectionNumber_baseChange RestPolynomialDecomposes.full
-
-theorem CombVandermondeSucc.full : CombVandermondeSucc.Statement :=
-  CombVandermondeSucc.proof
-
-theorem TotalIdentity.full : TotalIdentity.Statement :=
-  TotalIdentity.proof FrobeniusDimensionFormula.full CombVandermondeSucc.full
-
 theorem RestInnerTsumBound.full : RestInnerTsumBound.Statement :=
   RestInnerTsumBound.proof
 
@@ -571,54 +508,6 @@ theorem RestBoundOfPrimeBound.full : RestBoundOfPrimeBound.Statement :=
 
 theorem RestBound.full : RestBound.Statement :=
   RestBound.proof RestPrimeBound.full RestBoundOfPrimeBound.full
-
-theorem FlagIntegralKillsPowerSums.full : FlagIntegralKillsPowerSums.Statement :=
-  FlagIntegralKillsPowerSums.intersectionNumber_baseChange
-
-theorem DividedDifferenceOfVandermonde.full : DividedDifferenceOfVandermonde.Statement :=
-  DividedDifferenceOfVandermonde.intersectionNumber_baseChange
-
-theorem XBound.full : XBound.Statement :=
-  XBound.intersectionNumber_baseChange
-
-theorem XOverPrime.full : XOverPrime.Statement :=
-  XOverPrime.intersectionNumber_baseChange
-
-theorem GeometricTail.full : GeometricTail.Statement :=
-  GeometricTail.intersectionNumber_baseChange
-
-theorem ExponentialTail.full : ExponentialTail.Statement :=
-  ExponentialTail.intersectionNumber_baseChange
-
-theorem ChebyshevThetaBound.full : ChebyshevThetaBound.Statement :=
-  ChebyshevThetaBound.intersectionNumber_baseChange
-
-theorem PrimeLogSquareTail.full : PrimeLogSquareTail.Statement :=
-  PrimeLogSquareTail.intersectionNumber_baseChange
-
-theorem RestConstants.full : RestConstants.Statement :=
-  RestConstants.intersectionNumber_baseChange
-
-theorem IntegerLogSquareTail.full : IntegerLogSquareTail.Statement :=
-  IntegerLogSquareTail.intersectionNumber_baseChange
-
-theorem ShiftTotalValues.full : ShiftTotalValues.Statement :=
-  ShiftTotalValues.intersectionNumber_baseChange
-
-theorem FibreTranslationInvariance.full : FibreTranslationInvariance.Statement :=
-  FibreTranslationInvariance.intersectionNumber_baseChange
-
-theorem PlueckerCauchyBinet.full : PlueckerCauchyBinet.Statement :=
-  PlueckerCauchyBinet.intersectionNumber_baseChange
-
-theorem PlueckerHadamard.full : PlueckerHadamard.Statement :=
-  PlueckerHadamard.intersectionNumber_baseChange
-
-theorem SmallRankBound.full : SmallRankBound.Statement :=
-  SmallRankBound.intersectionNumber_baseChange
-
-theorem SmallRankWeakHypothesis.full : SmallRankWeakHypothesis.Statement :=
-  SmallRankWeakHypothesis.intersectionNumber_baseChange
 
 end RestTerms
 

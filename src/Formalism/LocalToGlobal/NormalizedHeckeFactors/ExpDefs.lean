@@ -127,9 +127,6 @@ def psiStd {K : Type} [Field K] (θ : ∀ x, Multiplicative (ZMod (p x)) →* K�
 def IsStdGeneric {K : Type} [Field K] {S : Subgroup (GProd p r)} (ψ : S →* Kˣ) : Prop :=
   ∃ θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ, (2 ≤ r → ∀ x, θ x ≠ 1) ∧ ∀ u : S, ψ u = stdVal p r θ u
 
-theorem psiStd_isStdGeneric {K : Type} [Field K] (θ : ∀ x, Multiplicative (ZMod (p x)) →* Kˣ) (hθ : ∀ x, θ x ≠ 1) :
-    IsStdGeneric p r (psiStd p r θ) := ⟨θ, fun _ => hθ, fun _ => rfl⟩
-
 theorem char_one_ne {K : Type} [Field K] {q : ℕ} [NeZero q] (θ : Multiplicative (ZMod q) →* Kˣ) (hθ : θ ≠ 1) :
     θ (Multiplicative.ofAdd 1) ≠ 1 := by
   intro h
@@ -138,15 +135,6 @@ theorem char_one_ne {K : Type} [Field K] {q : ℕ} [NeZero q] (θ : Multiplicati
   have key : x = Multiplicative.ofAdd (1 : ZMod q) ^ (Multiplicative.toAdd x).val := by
     rw [← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]
   rw [MonoidHom.one_apply, key, map_pow, h, one_pow]
-
-theorem char_one_prim {K : Type} [Field K] {q : ℕ} (hq : q.Prime) (θ : Multiplicative (ZMod q) →* Kˣ) (hθ : θ ≠ 1) :
-    IsPrimitiveRoot (((θ (Multiplicative.ofAdd 1) : Kˣ)) : K) q := by
-  haveI := Fact.mk hq
-  haveI : NeZero q := ⟨hq.ne_zero⟩
-  have h1 : θ (Multiplicative.ofAdd 1) ^ q = 1 := by
-    rw [← map_pow, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_self, ofAdd_zero, map_one]
-  rw [IsPrimitiveRoot.coe_units_iff, IsPrimitiveRoot.iff_orderOf]
-  exact orderOf_eq_prime h1 (char_one_ne θ hθ)
 
 end Unip
 
@@ -230,29 +218,6 @@ theorem stdVal_tvAt [DecidableEq ι] {K : Type} [Field K] (θ : ∀ x, Multiplic
     rw [tvAt_apply, if_neg hy, supSum_one, ofAdd_zero, map_one]
   · intro h
     exact absurd (Finset.mem_univ x) h
-
-def charOf {K : Type} [Field K] {q : ℕ} (ζ : Kˣ) (hζ : ζ ^ q = 1) : Multiplicative (ZMod q) →* Kˣ :=
-  AddMonoidHom.toMultiplicativeLeft (ZMod.lift q ⟨MonoidHom.toAdditiveRight (zpowersHom Kˣ ζ), by
-    change Additive.ofMul (ζ ^ ((q : ℕ) : ℤ)) = 0
-    rw [zpow_natCast, hζ]; rfl⟩)
-
-theorem charOf_one {K : Type} [Field K] {q : ℕ} (ζ : Kˣ) (hζ : ζ ^ q = 1) :
-    charOf ζ hζ (Multiplicative.ofAdd 1) = ζ := by
-  have h1 : (1 : ZMod q) = ((1 : ℤ) : ZMod q) := Int.cast_one.symm
-  simp only [charOf, AddMonoidHom.toMultiplicativeLeft_apply_apply, toAdd_ofAdd]
-  rw [h1, ZMod.lift_coe]
-  simp
-
-theorem exists_isStdGeneric {K : Type} [Field K] (hp : ∀ x, (p x).Prime)
-    (hζ : ∀ x, ∃ ζ : K, IsPrimitiveRoot ζ (p x)) : ∃ ψ : Uup p r →* Kˣ, IsStdGeneric p r ψ := by
-  choose ζ hζ using hζ
-  have hne : ∀ x, ζ x ≠ 0 := fun x => (hζ x).ne_zero (hp x).ne_zero
-  let u : ∀ x, Kˣ := fun x => Units.mk0 (ζ x) (hne x)
-  have hu : ∀ x, u x ^ (p x) = 1 := fun x => Units.ext (by simp [u, (hζ x).pow_eq_one])
-  refine ⟨psiStd p r (fun x => charOf (u x) (hu x)), fun x => charOf (u x) (hu x), fun _ x h1 => ?_, fun _ => rfl⟩
-  have h2 := congrArg (fun f => f (Multiplicative.ofAdd (1 : ZMod (p x)))) h1
-  simp only [charOf_one, MonoidHom.one_apply] at h2
-  exact (hζ x).ne_one (hp x).one_lt (by simpa [u] using congrArg Units.val h2)
 
 end Test
 

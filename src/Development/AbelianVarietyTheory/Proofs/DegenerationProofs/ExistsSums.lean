@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPowerSeriesRingHomExtendingFiniteFreeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRingHomPowerSeriesRootStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxEvEqMapArcRootStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRingHomPowerSeriesRoot
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxEvEqMapArcRoot
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.Ex
 open scoped BigOperators
@@ -77,7 +77,7 @@ theorem exists_map {O O₁ K : Type} [CommRing O] [CommRing O₁] [Field K] [Alg
     ∃ (R₁ : Subalgebra (PowerSeries O) K) (Φ : PowerSeries O₁ →+* K), Module.Finite (PowerSeries O) R₁ ∧
       (∀ a, Φ (PowerSeries.C a) = io a) ∧ Φ PowerSeries.X = t ∧ ∀ f, Φ f ∈ R₁ := by
   obtain ⟨Φ₁, h1, h2, h3⟩ := GlobalTheory.T.exists_powerSeries_ringHom_extending_finite_free O O₁ K (algebraMap _ K) io hio
-  obtain ⟨Φ, h4, h5, h6⟩ := GlobalTheory.T.exists_ringHom_powerSeries_root' O₁ K Φ₁ k t hk (ht.trans h2.symm)
+  obtain ⟨Φ, h4, h5, h6⟩ := _root_.GlobalTheory.exists_ringHom_powerSeries_root O₁ K Φ₁ k t hk (ht.trans h2.symm)
   obtain ⟨s, hs⟩ := Module.Finite.fg_top (R := O) (M := O₁)
   refine ⟨Algebra.adjoin _ (io '' s ∪ {t}), Φ, Algebra.finite_adjoin_of_finite_of_isIntegral
     ((s.finite_toSet.image _).union (Set.finite_singleton _)) ?_, fun a => (h4 a).trans (h1 a), h5, fun f => ?_⟩
@@ -143,7 +143,7 @@ theorem exists_sums {O O₁ K F : Type} [CommRing O] [CommRing O₁] [Field K] [
     change I.lam * Units.map _ I₀.lam = 1
     rw [hI, hl, map_one, mul_one]
   have e1 : t' ^ j = rm := Units.ext (by rw [hrm, ← map_pow]; rfl)
-  have key := fun x => GlobalTheory.T.twist_tx_ev_eq_map_arc_root_alt O₁ C (gam.comp Φ) n1 n2 t' u rm rj m j hm hj (congrArg gam h2.symm) e1
+  have key := fun x => _root_.GlobalTheory.Ex.RootSum.twist_tx_ev_eq_map_arc_root O₁ C (gam.comp Φ) n1 n2 t' u rm rj m j hm hj (congrArg gam h2.symm) e1
     (Units.ext (by rw [hrj, ← map_pow]; rfl))
     (Units.ext (by rw [hu, ← e1, ← pow_mul, mul_comm j, ← ht, ← map_pow, map_pow gam]; simp [t']))
     N₀ N' J k be₀ β (fun y z => hβ _ _) (p₀ x) (q' x) (p x) ((hq' x).1.trans (congrArg I.e (hp x)))

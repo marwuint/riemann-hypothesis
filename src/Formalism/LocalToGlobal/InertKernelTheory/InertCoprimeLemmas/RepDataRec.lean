@@ -34,19 +34,4 @@ theorem dataRec_movD {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalG
   obtain ⟨S, hS, hpS, hΞ⟩ := h
   exact ⟨S, hS, hpS, fun j La La' x => Formalism.L2.KerInert.RepComb.intOff_movD _ _ _ (hΞ j La La') x⟩
 
-theorem combAt_of_dataRec {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.Sys p) [IsFractionRing X.G.O X.G.Kf]
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
-    (χ : TaylorLogMetric.IdE D → ℂ) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
-    (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hAlg : B.AlgT χ)
-    (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
-    (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
-    (Ξ : ∀ j, X.Lt j → X.Lt (j + 1) → Formalism.L2.Col.HomE D.host.E ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ) (hD : DataRec X D cl Ξ)
-    (hA : ∀ j (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1), (X.Pj (j + 1)).IsLatTup La'.2 →
-      TaylorLogMetric.admitted D _ _ (large₂ j L0 La') (Lg' j L0 La')) :
-    Rep.CombAt X hfin D large₂ Lg'
-      (fun j La La' => Formalism.L2.PairingIndexBounds.F.serP lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl (large₂ j La La') (Lg' j La La') (Ξ j La La')))
-      B.tor (B.eNat χ) lam := by
-  obtain ⟨S, hS, hpS, hΞ⟩ := hD
-  exact Formalism.L2.KerInert.RepComb.combine_at_final_level X hfin D B χ SS cl lam S hcc hδ hAlg hS.1 hS hpS large₂ Lg' Ξ hΞ hA
-
 end Formalism.L2.KerInert.RepRec

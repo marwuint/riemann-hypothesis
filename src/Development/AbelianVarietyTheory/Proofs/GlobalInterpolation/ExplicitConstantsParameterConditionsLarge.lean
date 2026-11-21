@@ -2,27 +2,27 @@ import Mathlib
 import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowAndImp
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowPrimesConductorStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowPrimesConductor
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceRankKLowerUpperBounds
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RankRowsOfCrudeBounds
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LogfSqLeRS
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowEtaBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowEtaLeWStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTopsBandBottomsStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowEtaBounds
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowEtaLeW
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTopsBandBottoms
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowCloudLe
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowWindowLength
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowExact
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HalfLeAbsNodeSubMid
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceRowWeightRatioAndLastCloudLeTwiceFStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceRowWeightRatioAndLastCloudLeTwiceF
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowThinSizeGe
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowCloudUnitLowerStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowNodeGapStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowGapFunFNStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowCloudUnitLower
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowNodeGap
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowGapFunFN
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSigGaps
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RbSNumeric
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowLStarStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowCardWordsLe
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTypePrimesStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTypePrimes
 import Development.AutomorphicArithmetic.WeightCongruences.IffNum
 
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
@@ -43,27 +43,27 @@ theorem Std.parConsts_pos {C : FC} (hC : Std C) : ∀ c ∈ C.P.list, 0 < c := b
 theorem explicitConstants_parameterConditions_large :
     SzRow (fun C D L => HostArith D.host → ∃ P : ParameterChoice' D L, parConsts P = C.PK ∧ P.CnW = C.P.CnW) := by
   refine SzRow.imp (
-    SzRow.and GlobalTheory.T.sizes_host_degree_and_log_q_and_conductor_bounds <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_primes_conductor <|
     SzRow.and GlobalTheory.EX.explicitChoice_rankK_lower_upper_bounds <|
     SzRow.and GlobalTheory.EX.szRow_rank_lower_bounds <|
     SzRow.and GlobalTheory.EX.szRow_logf <|
-    SzRow.and GlobalTheory.T.sizes_etaSz_le_b_div_and_log_etaSz_le_and_t_le <|
-    SzRow.and GlobalTheory.T.sizes_m_mul_Sc_add_etaSz_le_w_mul_L_and_bounds <|
-    SzRow.and GlobalTheory.T.sizes_card_TT_le_Nstar_and_rhoP_le_and_bT_le <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_eta_bounds <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_eta_le_w <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_tops_band_bottoms <|
     SzRow.and GlobalTheory.EX.szRow_cloud_le <|
     SzRow.and GlobalTheory.EX.szRow_windowLength <|
     SzRow.and GlobalTheory.EX.szRow_exact <|
     SzRow.and GlobalTheory.EX.szRow_lowsFar <|
-    SzRow.and GlobalTheory.T.explicitChoice_rowWeight_ratio_and_lastCloud_le_twice_first <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_size_ratio <|
     SzRow.and GlobalTheory.EX.szRow_thinSize_ge <|
-    SzRow.and GlobalTheory.T.sizes_del_ge_cloudUnit_and_count_bounds <|
-    SzRow.and GlobalTheory.T.sizes_node_bounds_le_h0 <|
-    SzRow.and GlobalTheory.T.sizes_t_add_cube_le_h0_and_f_mul_N_pow_le_h0 <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_cloudUnit_lower <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_nodeGap <|
+    SzRow.and _root_.GlobalTheory.EX.szRow_gap_fun_fN <|
     SzRow.and GlobalTheory.EX.szRow_sig_gaps <|
     SzRow.and GlobalTheory.EX.szRow_rbS <|
     SzRow.and GlobalTheory.T.sizes_b_add_Sc_add_etaSz_add_div_lt_lStar <|
     SzRow.and GlobalTheory.EX.szRow_card_words_le <|
-    GlobalTheory.T.sizes_exists_Y_bounds_host_g_mem_Icc_Y_two_mul_Y) ?_
+    _root_.GlobalTheory.EX.szRow_typePrimes) ?_
   intro C cD ch D L hC _ h hA
   obtain ⟨⟨h_qd_pow, h_logq_ge, h_dlogL1_le, h_condE_le, h_pde_log⟩,
     ⟨h_k_low, h_k_up, h_R0_ge⟩,

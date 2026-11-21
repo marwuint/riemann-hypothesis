@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianFor
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CevInjective
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtMMulVecFix
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TuplePrimedSpaceClassesLevelAndComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FormsXTupleChainOfLevelReadingStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FormsXTupleChainOfLevelReading
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
@@ -25,7 +25,7 @@ theorem GlobalTheory.Mem.Col2.TC.tupleLayer_compatibility : ∀ {B : Base} {X : 
   have hQ' : ∀ a v, v ∈ T.Q a ↔ I.UnderQ a v := fun a v => (T.Q_iff a v).trans (hQ a v)
   have hC := fun u a => GlobalTheory.T.tuplePrimedSpaceClasses_level_and_comparison I hI hP l Z u a (T.Q a) (F u).clsP (hQ' a) (J.Q_off u a) (hF u).1.what₂
   choose K hLb hfin hrd hU hchi using hC
-  have hV := fun u a => GlobalTheory.T.formsX_tupleChain_of_levelReading I hI hP l Z u a (T.Q a) (K u a) (hQ' a) (J.Q_off u a) (hrd u a)
+  have hV := fun u a => _root_.GlobalTheory.Mem.Col2.TwP.forms_tw I hI hP l Z u a (T.Q a) (K u a) (hQ' a) (J.Q_off u a) (hrd u a)
   choose V hN hE using hV
   choose k hk hkT using hTop
   have hTil := fun u a ha h1 => GlobalTheory.Mem.Col2.TwP.til_tw I hI hP l Z hF hW hLv u a ha h1 (K u a) (hrd u a) (hk u a ha h1) (hkT u a ha h1)

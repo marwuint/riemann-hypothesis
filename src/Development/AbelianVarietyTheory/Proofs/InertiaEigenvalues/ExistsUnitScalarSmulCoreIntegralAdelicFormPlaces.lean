@@ -4,7 +4,9 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalSectionBoundedNonzeroMultiple
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BddGoodOfBddAll
 import Formalism.LocalToGlobal.ProjectiveLattices.ModelAt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemCuspFormsAllEmbeddingsOfInclusionReadingStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemCuspFormsAllEmbeddingsOfInclusionReading
+import Development.AbelianVarietyTheory.Definitions.ThetaValues.LeCovCoeff
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BddGood
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.L2.Pj GlobalTheory.CoverRead
@@ -68,7 +70,7 @@ theorem smul_mem_baseInt : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ (i : Fin 
   intro D T hT i κ hκ q hq P hP ψ hψ
   obtain ⟨f, ⟨hfs, hfh, hfv⟩, rfl⟩ := hψ
   have hj : InR D ((i : ℕ) + 1) := inR i
-  have hcusp : f ∈ cusp (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (T.U ((i : ℕ) + 1)) (wtA κ) κ.n := GlobalTheory.T.mem_cuspForms_allEmbeddings_of_inclusion_reading D T hT _ hj κ hκ f hfs hfh
+  have hcusp : f ∈ cusp (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (T.U ((i : ℕ) + 1)) (wtA κ) κ.n := _root_.GlobalTheory.CuspAllEmb.mem_cuspA_of_rdU_mem_holSub0 D T hT _ hj κ hκ f hfs hfh
   have hbd : ∀ p : HeightOneSpectrum (𝓞 T.Q.c.F), ∃ κ' : T.Q.c.F, κ' ≠ 0 ∧
       GlobalTheory.GoodPts.BddAll (T.Q.Xo ((i : ℕ) + 1)) T.Q.c p κ' f := by
     intro p

@@ -29,41 +29,4 @@ omit [Fintype S] [NeZero N] in
 instance isDiscreteRep_dualRep_gsRoots : IsDiscreteRep (dualRep (gsRoots S N) M) :=
   isDiscreteRep_dualRep (gsRoots S N) M
 
-include H hM in
-
-theorem gsPoitouTate_duality {r s : ℕ} (h : r + s = 3) :
-    Function.Bijective (compactDualityMap (gsFinFamily S ιs) (gsRoots S N) h (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M) :=
-  (gsPoitouTateDualityHypotheses S ιs hS hK H).bijective_compactDualityMap M hM h
-
-include H hM in
-
-theorem gsPoitouTate_sha :
-    Finite (ptSha (gsFinFamily S ιs) M 1) ∧ Finite (ptSha (gsFinFamily S ιs) (dualRep (gsRoots S N) M) 2) ∧
-      Function.Bijective (ptShaPairing (gsFinFamily S ιs) (gsRoots S N) M (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK))) ∧
-      Function.Bijective (ptShaPairing (gsFinFamily S ιs) (gsRoots S N) M (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK))).flip :=
-  (gsPoitouTateDualityHypotheses S ιs hS hK H).sha M hM
-
-include H hM in
-
-theorem gsPoitouTate_nineTerm :
-    Function.Injective (ptGlobalToLocal (gsFinFamily S ιs) M 0).hom ∧
-    Function.Exact (ptGlobalToLocal (gsFinFamily S ιs) M 0).hom
-      (ptLocalDualMap (gsFinFamily S ιs) (gsRoots S N) M (gsLocalInvRootsQZ S ιs N) (show 0 + 2 = 2 from rfl)) ∧
-    Function.Exact (ptLocalDualMap (gsFinFamily S ιs) (gsRoots S N) M (gsLocalInvRootsQZ S ιs N) (show 0 + 2 = 2 from rfl))
-      (ptDualToGlobal (gsFinFamily S ιs) (gsRoots S N) (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M (show 1 + 2 = 3 from rfl)
-        ((gsPoitouTateDualityHypotheses S ιs hS hK H).bijective_ptCompactDualMap M hM _)) ∧
-    Function.Exact (ptDualToGlobal (gsFinFamily S ιs) (gsRoots S N) (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M (show 1 + 2 = 3 from rfl)
-        ((gsPoitouTateDualityHypotheses S ιs hS hK H).bijective_ptCompactDualMap M hM _)) (ptGlobalToLocal (gsFinFamily S ιs) M 1).hom ∧
-    Function.Exact (ptGlobalToLocal (gsFinFamily S ιs) M 1).hom
-      (ptLocalDualMap (gsFinFamily S ιs) (gsRoots S N) M (gsLocalInvRootsQZ S ιs N) (show 1 + 1 = 2 from rfl)) ∧
-    Function.Exact (ptLocalDualMap (gsFinFamily S ιs) (gsRoots S N) M (gsLocalInvRootsQZ S ιs N) (show 1 + 1 = 2 from rfl))
-      (ptDualToGlobal (gsFinFamily S ιs) (gsRoots S N) (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M (show 2 + 1 = 3 from rfl)
-        ((gsPoitouTateDualityHypotheses S ιs hS hK H).bijective_ptCompactDualMap M hM _)) ∧
-    Function.Exact (ptDualToGlobal (gsFinFamily S ιs) (gsRoots S N) (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M (show 2 + 1 = 3 from rfl)
-        ((gsPoitouTateDualityHypotheses S ιs hS hK H).bijective_ptCompactDualMap M hM _)) (ptGlobalToLocal (gsFinFamily S ιs) M 2).hom ∧
-    Function.Exact (ptGlobalToLocal (gsFinFamily S ιs) M 2).hom
-      (ptLocalDualMap (gsFinFamily S ιs) (gsRoots S N) M (gsLocalInvRootsQZ S ιs N) (show 2 + 0 = 2 from rfl)) ∧
-    Function.Surjective (ptLocalDualMap (gsFinFamily S ιs) (gsRoots S N) M (gsLocalInvRootsQZ S ιs N) (show 2 + 0 = 2 from rfl)) :=
-  (gsPoitouTateDualityHypotheses S ιs hS hK H).nineTerm M hM
-
 end GroundTheory.ProfCoh

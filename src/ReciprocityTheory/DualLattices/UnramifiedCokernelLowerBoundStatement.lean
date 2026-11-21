@@ -33,6 +33,4 @@ def UnramifiedCokernelLowerBoundStatement : Prop :=
     (v (algebraMap R C (p : R)) : ℝ) ^
       (((U.r i : ℝ) + U.r (U.cj i)) / (p - 1) - frobSum U i) ≤ V1
 
-def CokernelLowerBoundStatement : Prop := PermutedCokernelLowerBoundStatement ∧ UnramifiedCokernelLowerBoundStatement
-
 end ReciprocityTheory.PGsh.Up

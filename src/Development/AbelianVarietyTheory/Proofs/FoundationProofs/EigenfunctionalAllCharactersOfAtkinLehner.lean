@@ -3,16 +3,17 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ChapterMu
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.CuspidalUnitaryTwistsClaim
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeTOfPrimeNotDvdStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AtkinLehnerIntertwinesHeckeOperatorsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AtkinLehnerSlashIsModularFormCoeffSeqStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LamExtendByZeroStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeTOfPrimeNotDvd
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletion
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AtkinLehnerIntertwinesHeckeOperators
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AtkinLehnerSlashIsModularFormCoeffSeq
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LamExtendByZero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LinearFunctionalEqCoeffLinearCombinationFinite
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionFunctionInjectiveOfPolynomialGrowth
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructure
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSturmBoundIsModularFormCoeffSeq
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -54,7 +55,7 @@ theorem eigAll_of_atkinLehner : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N
     simp only [φ, dif_pos h]
     rw [uniq _ _ h.choose_spec.1 h1 (h.choose_spec.2.trans h2.symm)]
   have hex : ∀ a, MF k (N * l) (ch χ) a → ∃ a', MF k (N * l) (ch χ⁻¹) a' ∧ qs a' = slz k δ (qs a) :=
-    fun a ha => GlobalTheory.T.atkinLehner_slash_isModularFormCoeffSeq k N l χ a a₀ b₀ c₀ d₀ hdet hk hN ha
+    fun a ha => _root_.GlobalTheory.EisM.atkinLehner_MF k N l χ a a₀ b₀ c₀ d₀ hdet hk hN ha
   obtain ⟨B₀, hB₀⟩ := sturm_coef_zero k (N * l) N χ hL (dvd_mul_right N l)
   obtain ⟨c₁, hc₁⟩ := GlobalTheory.func_eq_lam S B₀ φ hz1
     (by
@@ -74,7 +75,7 @@ theorem eigAll_of_atkinLehner : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N
       refine ⟨hza, ?_⟩
       rw [hφ a a' ha' ea, hφ (z • a) (z • a') hza' (by rw [hqza', hqza, slz_smul', ea]), lam_smul'])
     (fun a ha h => hB₀ a ha h)
-  obtain ⟨B', c', hagree, hkill⟩ := GlobalTheory.T.exists_lam_eq_and_vanishes_off_character k (N * l) N χ B₀ c₁ hL (dvd_mul_right N l)
+  obtain ⟨B', c', hagree, hkill⟩ := _root_.GlobalTheory.lam_extend_by_zero k (N * l) N χ B₀ c₁ hL (dvd_mul_right N l)
   have key : ∀ a a', MF k (N * l) (ch χ) a → MF k (N * l) (ch χ⁻¹) a' → qs a' = slz k δ (qs a) →
       lam B' c' a = lam B c a' := by
     intro a a' ha ha' e
@@ -83,11 +84,11 @@ theorem eigAll_of_atkinLehner : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N
   · intro a ha q hq hqNl
     obtain ⟨a', ha', ea⟩ := hex a ha
     have hqN : ¬ q ∣ N := fun h => hqNl (dvd_mul_of_dvd_left h l)
-    obtain ⟨hT, -⟩ := GlobalTheory.T.atkinLehner_intertwines_hecke_operators k N l χ a a' a₀ b₀ c₀ d₀ hdet hk hN hl hlN ha ha' ea
+    obtain ⟨hT, -⟩ := _root_.GlobalTheory.EisM.AtkinLehner.alHecke k N l χ a a' a₀ b₀ c₀ d₀ hdet hk hN hl hlN ha ha' ea
     have hTa : MF k (N * l) (ch χ) (To k (ch χ q) q a) :=
-      GlobalTheory.T.isModularFormCoeffSeq_heckeT_of_prime_not_dvd k (N * l) N q χ a hk (dvd_mul_right N l) hq hqNl ha
+      _root_.GlobalTheory.EisM.To_MF k (N * l) N q χ a hk (dvd_mul_right N l) hq hqNl ha
     have hTa' : MF k (N * l) (ch χ⁻¹) (To k (ch χ⁻¹ q) q a') :=
-      GlobalTheory.T.isModularFormCoeffSeq_heckeT_of_prime_not_dvd k (N * l) N q χ⁻¹ a' hk (dvd_mul_right N l) hq hqNl ha'
+      _root_.GlobalTheory.EisM.To_MF k (N * l) N q χ⁻¹ a' hk (dvd_mul_right N l) hq hqNl ha'
     obtain ⟨hs, hqs⟩ := hsm2 (ch χ q) _ hTa'
     rw [key _ _ hTa hs (by rw [hqs, hT q hq hqNl]), lam_smul', hE.T a' ha' q hq hqNl, key a a' ha ha' ea]
     have hunit : IsUnit ((q : ℕ) : ZMod N) := by
@@ -100,12 +101,12 @@ theorem eigAll_of_atkinLehner : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N
     linear_combination (g q * lam B c a') * h1
   · intro a ha
     obtain ⟨a', ha', ea⟩ := hex a ha
-    obtain ⟨-, hU⟩ := GlobalTheory.T.atkinLehner_intertwines_hecke_operators k N l χ a a' a₀ b₀ c₀ d₀ hdet hk hN hl hlN ha ha' ea
+    obtain ⟨-, hU⟩ := _root_.GlobalTheory.EisM.AtkinLehner.alHecke k N l χ a a' a₀ b₀ c₀ d₀ hdet hk hN hl hlN ha ha' ea
     have hper : ∀ (ε : DirichletCharacter ℂ N) (d : ℤ), ch ε (d + (N * l : ℕ)) = ch ε d := by
       intro ε d
       simp [ch]
-    have hUa := (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion k (N * l) l (ch χ) a hk hl (dvd_mul_left l N) (hper χ) ha).1
-    have hUa' := (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion k (N * l) l (ch χ⁻¹) a' hk hl (dvd_mul_left l N) (hper χ⁻¹) ha').1
+    have hUa := (_root_.GlobalTheory.depletion_mf k (N * l) l (ch χ) a hk hl (dvd_mul_left l N) (hper χ) ha).1
+    have hUa' := (_root_.GlobalTheory.depletion_mf k (N * l) l (ch χ⁻¹) a' hk hl (dvd_mul_left l N) (hper χ⁻¹) ha').1
     obtain ⟨hs, hqs⟩ := hsm2 (ch χ l) _ hUa'
     rw [key _ _ hUa hs (by rw [hqs, hU]), lam_smul', hE.U a' ha', key a a' ha ha' ea]
     simp only [ch, Int.cast_natCast]

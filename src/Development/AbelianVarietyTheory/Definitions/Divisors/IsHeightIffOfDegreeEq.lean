@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
-import Development.AbelianVarietyTheory.Definitions.Divisors.BlockSphereMeanLinForm
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsIsHomogeneousOfEquivariant
+import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemSubPtsCutBaseChangeIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmoothOfRelativeDimensionPspace
 import Development.AbelianVarietyTheory.Definitions.Divisors.IrreducibleOfIrreducibleMap
@@ -85,19 +86,6 @@ theorem norm_pairing_le {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) (u y
   simp only [norm_mul]
   exact Real.sum_mul_le_sqrt_mul_sqrt _ _ _
 
-theorem pairing_mulVec_le (w : Matrix (Fin N) (Fin n) F) (φ : F →+* K) {v : AbsoluteValue K ℝ}
-    (hv : IsNonarchimedean v) {x : Fin n → K} (hx : ∀ k, v (x k) ≤ 1) (y : Fin N → K) :
-    v (∑ j, (w.map φ).mulVec x j * y j) ≤ finSize w φ v y := by
-  have e : ∑ j, (w.map φ).mulVec x j * y j = ∑ k, x k * ∑ j, φ (w j k) * y j := by
-    simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]
-    rw [Finset.sum_comm]
-    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
-  rw [e]
-  refine Finset.sum_induction _ (fun a => v a ≤ finSize w φ v y) (fun a b ha hb => (hv a b).trans (max_le ha hb))
-    (by rw [map_zero]; exact finSize_nonneg w φ v y) fun k _ => ?_
-  rw [map_mul]
-  exact (mul_le_of_le_one_left (v.nonneg _) (hx k)).trans (le_finSize w φ v y k)
-
 variable {Ω : Type} [Field Ω] [Algebra F Ω]
 
 abbrev coordField (F : Type) [Field F] [Algebra F Ω] (y : Fin N → Ω) : IntermediateField F Ω :=
@@ -129,22 +117,13 @@ namespace HermSys
 
 variable {F : Type} [Field F] [NumberField F] (T : HermSys F)
 
-def gen (k : Fin T.n) : T.L.Sec := T.comb (T.w.col k)
-
 def lattice : Submodule (𝓞 F) (Fin T.N → F) := Submodule.span (𝓞 F) (Set.range T.w.col)
 
 def latticeOver (E : Type) [Field E] [Algebra F E] : Submodule (𝓞 E) (Fin T.N → E) :=
   Submodule.span (𝓞 E) (Set.range (T.w.map (algebraMap F E)).col)
 
-def wVec {E : Type} [Field E] [Algebra F E] (x : Fin T.n → E) : Fin T.N → E := (T.w.map (algebraMap F E)).mulVec x
-
 def normAt {E : Type} [Field E] [Algebra F E] (τ : E →+* ℂ) (u : Fin T.N → E) : ℝ :=
   frameNorm (T.A (τ.comp (algebraMap F E))) fun j => τ (u j)
-
-def meanLogNorm {E : Type} [Field E] [NumberField E] [Algebra F E] (u : Fin T.N → E) : ℝ :=
-  (∑ τ : E →+* ℂ, Real.log (T.normAt τ u)) / (Module.finrank ℚ E : ℝ)
-
-def meanLogMaxNorm : ℝ := (∑ σ : F →+* ℂ, Real.log (⨆ k, T.normAt σ (T.w.col k))) / (Module.finrank ℚ F : ℝ)
 
 def Spans : Prop := Submodule.span F (Set.range T.w.col) = ⊤
 
@@ -174,18 +153,6 @@ structure ShortGenerators : Prop where
 
   one_le : 1 ≤ T.abelian₂
 
-structure IsMetrized : Prop where
-
-  alg : T.IsAlgebraicData
-
-  herm : T.Hermitian
-
-  conj : T.ConjInvariant
-
-  le : T.NormsLe
-
-  del_pos : 0 < T.del
-
 def IsHeight (h : ℝ) : Prop :=
   ∃ (d : ℕ) (f : MvPolynomial (Fin (T.D + 1) × Fin T.N) F), 0 < d ∧ IsChowForm T.imageIdeal T.D d f ∧
     ((T.D : ℝ) + 1) * d * h = formHeight d T.w T.A f
@@ -199,15 +166,6 @@ theorem isHeight_of_isChowForm {d : ℕ} {f : MvPolynomial (Fin (T.D + 1) × Fin
   T.isHeight_iff.2 ⟨d, f, hf, mul_div_cancel₀ _
     (mul_ne_zero (by positivity) (Nat.cast_ne_zero.2 hf.isChowFormInt.pos.ne'))⟩
 
-theorem isHeight_iff_of_degree_eq {d : ℕ} {g : MvPolynomial (Fin (T.D + 1) × Fin T.N) F}
-    (hg : IsChowForm T.imageIdeal T.D d g) (hd : (d : ℤ) = T.del) {h : ℝ} :
-    T.IsHeight h ↔ ∃ f : MvPolynomial (Fin (T.D + 1) × Fin T.N) F, IsChowForm T.imageIdeal T.D d f ∧
-      ((T.D : ℝ) + 1) * T.del * h = formHeight d T.w T.A f := by
-  rw [isHeight_iff, ← hd, Int.cast_natCast]
-  refine ⟨fun ⟨d', f, hf, e⟩ => ?_, fun ⟨f, hf⟩ => ⟨d, f, hf⟩⟩
-  obtain rfl := (hf.isChowFormInt.unique hg.isChowFormInt).1
-  exact ⟨f, hf, e⟩
-
 def baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : HermSys E where
   toLinSys := T.toLinSys.baseChange E
   n := T.n
@@ -217,62 +175,6 @@ def baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : HermSys E wh
 
 theorem lattice_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] :
     (T.baseChange E).lattice = T.latticeOver E := rfl
-
-theorem wVec_mem {E : Type} [Field E] [Algebra F E] (x : Fin T.n → 𝓞 E) :
-    T.wVec (fun k => (x k : E)) ∈ T.latticeOver E := by
-  have e : T.wVec (fun k => (x k : E)) = ∑ k, x k • (T.w.map (algebraMap F E)).col k := by
-    funext j
-    simp [wVec, Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]
-  rw [e]
-  exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
-
-section Norms
-
-variable {K : Type} [Field K] {φ : F →+* K} {σ : F →+* ℂ}
-
-def finNorm (v : AbsoluteValue K ℝ) (x : T.PtOver φ) (u : Fin T.N → K) : ℝ :=
-  v (∑ j, u j * T.coords x.1 j) / finSize T.w φ v (T.coords x.1)
-
-def finNormPow (v : AbsoluteValue K ℝ) (x : T.PtOver φ) {m : ℤ} (f : (lbZPow T.L m).Sec) : ℝ :=
-  v (T.powVal x.1 f) / finSize T.w φ v (T.coords x.1) ^ m
-
-def archNorm (x : T.PtOver σ) (u : Fin T.N → ℂ) : ℝ :=
-  ‖∑ j, u j * T.coords x.1 j‖ / archSize (T.A σ) (T.coords x.1)
-
-def archNormPow (x : T.PtOver σ) {m : ℤ} (f : (lbZPow T.L m).Sec) : ℝ :=
-  ‖T.powVal x.1 f‖ / archSize (T.A σ) (T.coords x.1) ^ m
-
-theorem finNormPow_eq_chart (v : AbsoluteValue K ℝ) (x : T.PtOver φ) {m : ℤ} (f : (lbZPow T.L m).Sec) (i : T.L.ι)
-    (hi : ptOf x.1 ∈ T.L.U i) : T.finNormPow v x f =
-      v (valR x.1 _ (Twist.zfun f i)) / finSize T.w φ v (fun j => valR x.1 _ ((T.b j).f i)) ^ m := by
-  obtain ⟨c, hc, h₁, h₂⟩ := T.exists_frame_change x.1 i hi
-  rw [h₂, show (fun j => valR x.1 _ ((T.b j).f i)) = c • T.coords x.1 from funext fun j => h₁ _, finSize_smul,
-    map_mul, map_zpow₀, mul_zpow, mul_div_mul_left _ _ (zpow_ne_zero _ (v.ne_zero hc)), finNormPow]
-
-theorem archNormPow_eq_chart (x : T.PtOver σ) {m : ℤ} (f : (lbZPow T.L m).Sec) (i : T.L.ι)
-    (hi : ptOf x.1 ∈ T.L.U i) : T.archNormPow x f =
-      ‖valR x.1 _ (Twist.zfun f i)‖ / archSize (T.A σ) (fun j => valR x.1 _ ((T.b j).f i)) ^ m := by
-  obtain ⟨c, hc, h₁, h₂⟩ := T.exists_frame_change x.1 i hi
-  rw [h₂, show (fun j => valR x.1 _ ((T.b j).f i)) = c • T.coords x.1 from funext fun j => h₁ _, archSize_smul,
-    norm_mul, norm_zpow, mul_zpow, mul_div_mul_left _ _ (zpow_ne_zero _ (norm_ne_zero_iff.2 hc)), archNormPow]
-
-variable {T}
-
-theorem IsAlgebraicData.finSize_coords_pos (h : T.IsAlgebraicData) (v : AbsoluteValue K ℝ) (x : T.PtOver φ) :
-    0 < finSize T.w φ v (T.coords x.1) := finSize_pos h.spans φ v (h.bpf.coords_ne_zero _)
-
-theorem Hermitian.archSize_coords_pos (h : T.Hermitian) (hb : T.BasePointFree) (x : T.PtOver σ) :
-    0 < archSize (T.A σ) (T.coords x.1) := archSize_pos (h σ) (hb.coords_ne_zero _)
-
-theorem Hermitian.archNorm_le (h : T.Hermitian) (hb : T.BasePointFree) (x : T.PtOver σ) (u : Fin T.N → ℂ) :
-    T.archNorm x u ≤ frameNorm (T.A σ) u :=
-  (div_le_iff₀ (h.archSize_coords_pos hb x)).2 (norm_pairing_le (h σ) _ _)
-
-theorem finNorm_mulVec_le_one {v : AbsoluteValue K ℝ} (hv : IsNonarchimedean v) (x : T.PtOver φ) {a : Fin T.n → K}
-    (ha : ∀ k, v (a k) ≤ 1) : T.finNorm v x ((T.w.map φ).mulVec a) ≤ 1 :=
-  div_le_one_of_le₀ (pairing_mulVec_le T.w φ hv ha _) (finSize_nonneg _ _ _ _)
-
-end Norms
 
 def ptHeight {Ω : Type} [Field Ω] [Algebra F Ω] [Algebra.IsAlgebraic F Ω] (x : T.Pt Ω) : ℝ :=
   vecHeight T.w T.A (T.coords x.1)
@@ -336,9 +238,6 @@ structure IsAdelic : Prop where
 
   short : T.ShortGenerators
 
-theorem IsAdelic.isMetrized {T : Tuple F} (h : T.IsAdelic) (hd : 0 < T.del) : T.IsMetrized :=
-  ⟨h.geom.alg, h.herm, h.conj, h.short.le, hd⟩
-
 def theta (h : ℝ) : ℝ := T.n * T.D * T.j₀ * T.del * (2 + |h| + Real.log T.abelian₂)
 
 def InOpen (E : Type) [Field E] [Algebra F E] (I : (T.toLinSys.baseChange E).Y.IdealSheafData) : Prop :=
@@ -368,55 +267,6 @@ abbrev projTuple (M : ℕ) : Tuple ℚ where
 
 namespace projTuple
 
-variable (M : ℕ)
-
-theorem spans : (projTuple M).Spans := top_le_iff.1 fun u _ => by
-  rw [pi_eq_sum_univ' u]
-  refine Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, ?_⟩)
-  funext j
-  simp [Matrix.one_apply, Pi.single_apply]
-
-theorem shortGenerators : (projTuple M).ShortGenerators := by
-  refine ⟨fun u hu => ?_, fun k σ => ?_, le_rfl⟩
-  · induction hu using Submodule.span_induction with
-    | mem _ h => exact Submodule.subset_span h
-    | zero => exact zero_mem _
-    | add a b _ _ ha hb => exact add_mem ha hb
-    | smul c a _ ha =>
-      obtain ⟨z, rfl⟩ := Rat.ringOfIntegersEquiv.symm.surjective c
-      rw [eq_intCast Rat.ringOfIntegersEquiv.symm z, Int.cast_smul_eq_zsmul]
-      exact Submodule.smul_mem _ _ ha
-  · simp [HermSys.normAt, frameNorm, Matrix.one_apply, apply_ite]
-
-theorem isAdelic (hM : 1 ≤ M) : (projTuple M).IsAdelic := by
-  have hl : nonzeroLocus (projTuple M).th = ProjSpace.chart ℚ M (Fin.last M) :=
-    (nonzeroLocus_secToPow _ le_rfl).trans (ProjSpace.nonzeroLocus_coord ℚ M (Fin.last M))
-  refine ⟨⟨⟨projSys.isVariety ℚ M hM, projSys.indep ℚ M, spans M, projSys.basePointFree ℚ M⟩, fun h => ?_⟩,
-    ⟨projSys.birational ℚ M, projSys.noContract ℚ M _, le_rfl, fun h => ?_, fun y hy => hl ▸ hy⟩,
-    fun σ => by simp, fun σ x => by simp [frameNorm], shortGenerators M⟩
-  · exact (h.ge (Set.mem_univ (projSys.gen ℚ M))) (projSys.gen_mem ℚ M _)
-  · have := hl.ge (projSys.gen_mem ℚ M _)
-    rw [h] at this
-    exact nonzeroLocus_secZero.le this
-
-theorem isMetrized (hM : 1 ≤ M) : (projTuple M).IsMetrized :=
-  (isAdelic M hM).isMetrized ((projSys.del_eq_one ℚ M).symm ▸ one_pos)
-
-theorem exists_isHeight_line : ∃ h, (projTuple 1).IsHeight h :=
-  ⟨_ / 2, 1, _, one_pos, (projSys.imageIdeal_eq_bot ℚ 1).symm ▸ Model.isChowForm_line ℚ, by
-    rw [Nat.cast_one, mul_one, one_add_one_eq_two, mul_div_cancel₀ _ two_ne_zero]⟩
-
 end projTuple
-
-example : (projTuple 1).U ≠ ⊤ := fun h =>
-  AmpleModel.coord_ne_top ℚ ((ProjSpace.nonzeroLocus_coord ℚ 1 1).trans
-    ((Opens.compl_compl (ProjSpace.chart ℚ 1 1)).symm.trans h))
-
-example : archSize ((2 : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ)) ![1, 1] = Real.sqrt 8 := by
-  simp [archSize, Fin.sum_univ_two, Matrix.one_apply]; norm_num
-
-example : (projTuple 2).theta 1 = 18 := by
-  have h : (projTuple 2).del = 1 := projSys.del_eq_one ℚ 2
-  rw [Tuple.theta, h]; norm_num
 
 end GlobalTheory.Adelic

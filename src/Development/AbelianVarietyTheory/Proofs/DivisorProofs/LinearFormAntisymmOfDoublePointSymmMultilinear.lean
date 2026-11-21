@@ -8,8 +8,6 @@ open Classical
 
 namespace GlobalTheory.FlagPush.MultiLevel
 
-noncomputable def lin {κ : Type} (l : κ →₀ ℤ) : MvPolynomial κ ℝ := l.sum fun x z => C (z : ℝ) * X x
-
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial in
 open Classical in
 private theorem exists_fin_sum_single_eq_of_degree_eq {κ : Type} :

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsSmoothAtOfSmoothQuotientPow
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.GeometricallyConnectedOfClosedFibre
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.HomEqOfThickeningPoints
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsAlgebraizationGroupOperationsCdvrStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsAlgebraizationGroupOperationsCdvr
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProperOfIsProjBy
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
@@ -31,7 +31,7 @@ theorem isAbelianScheme_of_thickenings : ∀ (V : Type) [CommRing V] [IsDomain V
   have hconn : GeometricallyConnected B.hom :=
     GlobalTheory.ConnFibre.geometricallyConnected_of_closedFibre V B hsm hP (Y 0) (b 0) (hb 0)
       (hA 0).geomConnected
-  obtain ⟨mu, io, un, H⟩ := GlobalTheory.T.exists_algebraization_group_operations_cdvr V Y β hβ B b hP inferInstance hb hβb
+  obtain ⟨mu, io, un, H⟩ := _root_.GlobalTheory.GrpAlg.exists_group_operations V Y β hβ B b hP inferInstance hb hβb
   obtain ⟨G, hG, hcomm⟩ := GlobalTheory.grpObj_of_thickenings V Y β hβ B b hb hβb mu io un H
   exact ⟨G, hcomm hc, ⟨hcomm hc, hsm, hprop, hconn⟩, hG⟩
 

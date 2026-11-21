@@ -1,7 +1,12 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.CentreIdent
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodDecompositionNearBoundaryStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryChartLieModelExistsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodDecompositionNearBoundary
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryChartLieModelExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbBound
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -18,8 +23,8 @@ theorem abPart_principal (C : Flat.BdryChart Xo σ₀ n a) {z : Fin n → ℂ} (
   obtain ⟨V, _, _, _, f, r, tV, mV, hV, hr, hker, hrf, hpol⟩ := GlobalTheory.T.exists_dvr_through_disc_point E H D l Xo σ₀ n a C z hz
   have key : ∀ (z₀ : Sp ℂ ⟶ Sp C.R), z₀ = spMap r ≫ spMap f → ∀ P : AbPart C.t z₀, IsPrincipal P.tB := by
     rintro _ rfl P
-    obtain ⟨m', -⟩ := GlobalTheory.T.abelian_part_factors_through E H _ _ tV C.t _ mV ℂ (spMap r) P
-    exact GlobalTheory.T.polarized_abelian_part_principal E H V r tV hV hr hker hpol ⟨P.tK, m', P.τ, P.tB, P.e, P.e_hom, P.act, P.pp⟩
+    obtain ⟨m', -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.AbPartPull.exists_sabMap_tK E H _ _ tV C.t _ mV ℂ (spMap r) P
+    exact _root_.PositivityTheory.HtPt.Ppic.dvr E H V r tV hV hr hker hpol ⟨P.tK, m', P.τ, P.tB, P.e, P.e_hom, P.act, P.pp⟩
   refine key _ ?_ P
   rw [← hrf]
   show Spec.map (CommRingCat.ofHom (r.comp f)) = _
@@ -83,7 +88,7 @@ theorem centre_phi (C : Flat.BdryChart Xo σ₀ n a) {X : Scheme.{0}} {tt : SAB 
       ∀ w (hw : w ∈ logCover L.a_le), ‖expCover a w‖ < δ →
         Real.log ν - ε ≤ (Fintype.card A : ℝ) * ((k : ℝ) * Real.log Real.pi) +
           (L.riem w hw).logDet (fun τ i => b τ i (expCover a w)) - Real.log ((L.riem w hw).nz σ I) := by
-  obtain ⟨W, I, per, s, Hb, hI, hsat, -, hs, hlim, -, hH, hIm, hrad, hlimν⟩ := GlobalTheory.T.period_decomposition_near_boundary E n a C.g Λ A L σ k b hσ hb
+  obtain ⟨W, I, per, s, Hb, hI, hsat, -, hs, hlim, -, hH, hIm, hrad, hlimν⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit.limit_at_centre E n a C.g Λ A L σ k b hσ hb
   have h00 : (ρ : ℂ) • (0 : Fin n → ℂ) = 0 := smul_zero _
   have hbρ : (ρ : ℂ) • (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ρ := by
     rw [h00]; exact Metric.mem_ball_self hρ0
@@ -108,14 +113,14 @@ theorem centre_phi (C : Flat.BdryChart Xo σ₀ n a) {X : Scheme.{0}} {tt : SAB 
     filter_upwards [h1.eventually (per_small e hbρ (Metric.isOpen_ball.mem_nhds hbρ))] with j hj
     have h2 := hj (((hlink _ (hws j)).1 _).2 ⟨_, rfl⟩)
     exact sub_eq_zero.1 (periods_inj L.toLogPeriods (hws j) (h2.trans (map_zero _).symm))
-  obtain ⟨hA, hBp, hC⟩ := GlobalTheory.T.family_exp_log_cover_bound E H C.R C.t C.g n a C.M C.ψ ρ e Λ L.toLogPeriods hρ0 hρ1 hol hlink 0
+  obtain ⟨hA, hBp, hC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.QuotLoc.limit_lattice E H C.R C.t C.g n a C.M C.ψ ρ e Λ L.toLogPeriods hρ0 hρ1 hol hlink 0
     (Metric.mem_ball_self one_pos) ws (W.restrictScalars ℤ) per hws hw0 hper hfour
   replace hA : ∀ x : W, per x ∈ e.per ((ρ : ℂ) • 0) := hA
   replace hBp : ∀ p ∈ e.per ((ρ : ℂ) • 0), ∃ x : W, per x = p := hBp
-  obtain ⟨m', hm'⟩ := GlobalTheory.T.abelian_part_factors_through E H _ _ C.t tt jj m ℂ _ P
+  obtain ⟨m', hm'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.AbPartPull.exists_sabMap_tK E H _ _ C.t tt jj m ℂ _ P
   let P' : AbPart C.t (spMap (C.ψ ((ρ : ℂ) • 0))) := ⟨P.tK, m', P.τ, P.tB, P.e, P.e_hom, P.act, P.pp⟩
   have hP := abPart_principal C (Metric.ball_subset_ball hρ1 hbρ) P'
-  obtain ⟨Mz, hMz⟩ := GlobalTheory.T.boundary_chart_lie_model_exists E H D l Xo σ₀ n a C ((ρ : ℂ) • 0)
+  obtain ⟨Mz, hMz⟩ := _root_.GlobalTheory.CompanionTheory.Ar.QuotUnif.frame_lieModel_fibre E H D l Xo σ₀ n a C ((ρ : ℂ) • 0)
   have hL : ∀ i, C.M.Lifts (C.ψ ((ρ : ℂ) • 0)) (𝟙 _) (Pi.single i 1) (Mz.pt (Pi.single i 1)) := fun i => by
     have h1 := hMz (Pi.single i 1)
     have h2 : (fun j => C.ψ ((ρ : ℂ) • 0) ((Pi.single i 1 : Fin C.g → C.R) j)) = (Pi.single i 1 : Fin C.g → ℂ) := by

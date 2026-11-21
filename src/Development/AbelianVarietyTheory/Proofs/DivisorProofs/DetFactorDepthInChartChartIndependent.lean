@@ -193,10 +193,10 @@ theorem detDepth_le_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E]
     (hI' : ∀ a, MvIsInt v (MvPowerSeries.subst (twoVars C d') (L'.F a))) (k : ℕ) :
     detDepth (logFGLOf v L' hI') (fun a e => j (u' a e)) k ≤ detDepth (logFGLOf v L hI) (fun a e => j (u a e)) k := by
   have hd : d = d' := by
-    obtain ⟨x'', -, h2, -⟩ := GlobalTheory.T.pushChartAlt E H V t t' n d x
-    exact GlobalTheory.T.universalJetCoordinates_dim_unique V t'.G d d' x'' x' (h2 hu) hu'
+    obtain ⟨x'', -, h2, -⟩ := _root_.GlobalTheory.PushChart.pushChart E H V t t' n d x
+    exact _root_.GlobalTheory.ChartCmp.univJ_dim_unique V t'.G d d' x'' x' (h2 hu) hu'
   subst hd
-  obtain ⟨φ, φi, hJ, hdir⟩ := GlobalTheory.T.formal_biextensions_related_of_triple_map_over_id E H hs V t t' n hsurj d B B' (Fin d) (Fin d) tg tg' uv uv' x x' e e'
+  obtain ⟨φ, φi, hJ, hdir⟩ := _root_.GlobalTheory.ChartCmp.jrel_of_sabMap E H hs V t t' n hsurj d B B' (Fin d) (Fin d) tg tg' uv uv' x x' e e'
     hc hc' hu hu' hf hf'
   obtain ⟨ε, hε⟩ := hJ 0
   exact detDepth_le_of_transF v j hj _ _ B.G.const φ φi hε.inv hε.law L L' hL hL' hI hI' u u'

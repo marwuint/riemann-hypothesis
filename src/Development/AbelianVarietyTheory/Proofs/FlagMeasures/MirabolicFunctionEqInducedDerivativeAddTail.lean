@@ -209,11 +209,6 @@ theorem exists_psi_ne {ψ : AddChar (ZMod g) ℂ} (hψ : ψ ≠ 1) {u : Fin m �
   refine ⟨Pi.single i (a / u i), ?_⟩
   rwa [dotProduct_single, mul_div_cancel₀ _ hi]
 
-theorem psi_ne_zero (ψ : AddChar (ZMod g) ℂ) (a : ZMod g) : ψ a ≠ 0 := by
-  intro h
-  have := ψ.map_add_eq_mul a (-a)
-  simp [h] at this
-
 theorem q_ne_zero : ((g : ℂ) ^ m) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero)
 
 theorem orth {ψ : AddChar (ZMod g) ℂ} (hψ : ψ ≠ 1) (u : Fin m → ZMod g) :

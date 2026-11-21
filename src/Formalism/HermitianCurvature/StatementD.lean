@@ -53,8 +53,6 @@ def ptDiag (p : C.LPt) : Fin (ptSize p) → ℂ := fun a => ptScal p a
 
 def IsLocPt (p : C.LPt) (i : ℕ) : Prop := (∀ b ∈ p, 1 ≤ b.1 ∧ b.2 ≠ 0) ∧ ptSize p = i
 
-def ptHead (p : C.LPt) : C.LPt := p.dropLast
-
 def ptLast (p : C.LPt) : ℕ × ℂ := p.getLast?.getD (0, 0)
 
 def ptG (TT : ℝ) (r : ℕ) (p : C.LPt) : ℝ :=
@@ -293,13 +291,6 @@ def PtGSpec : Prop :=
   ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (p : C.LPt) (γ : B.Mat k r), IsLocPt p (r + 1) →
     Zhat k r z z' γ = ptMatN p (r + 1) → ptG (Tz k r z * Tz k r z') r p = Gf k r z z' γ
 
-def OrbJOfData : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r)
-    (O : C6.OrbData D γ) (F : B.Mat k r → (Wq →L[ℂ] Wp)),
-    (∃ θ, IsNormCut D γ O.μR θ ∧ Integrable (fun p => θ p • orbIntegrand D γ F p) D.μSS) →
-      O.J F = orbJ D γ O.μR F
-
 def OrbJIndep : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r) (μR : Measure (Mt k r)),
@@ -314,16 +305,6 @@ def MuRHaar : Prop :=
     [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r) (w : Equiv.Perm (Fin (r + 1)))
     (d : Fin (r + 1) → ℂ), γ ∈ B.GV k r → (∀ a, d a ≠ 0) → Zhat k r D.z D.z' γ = C2.monoP w d →
       B.IsHaarOn (C6.Rset γ) (muR D γ w)
-
-def OrbDataOfParts : Prop :=
-  MuRHaar → OrbJIndep →
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r)
-    (w : Equiv.Perm (Fin (r + 1))) (d : Fin (r + 1) → ℂ), C6.IsRelevant D γ → (∀ a, d a ≠ 0) →
-    Zhat k r D.z D.z' γ = C2.monoP w d →
-    ∃ O : C6.OrbData D γ, O.μR = muR D γ w ∧
-      ∀ F, (∃ θ, IsNormCut D γ O.μR θ ∧ Integrable (fun p => θ p • orbIntegrand D γ F p) D.μSS) →
-        O.J F = orbJ D γ (muR D γ w) F
 
 def PtRelevant : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -373,13 +354,6 @@ def SliceOm : Prop :=
             List.sum_cons, List.sum_nil] at hle ⊢; omega) F) Z γ) t
 
 def MuNHaar : Prop := ∀ k r : ℕ, B.IsHaarOn (Nset k r) (muN k r)
-
-def MuNSplit : Prop :=
-  ∀ (k r j : ℕ) (hj : j ≤ r),
-    muN k r =
-      ((U.muRC k j (r - j)).prod ((volume : Measure (G.UT j → ℂ)).prod (muN k (r - j)))).map fun x =>
-        Matrix.of.symm (castM (by omega : j + (r - j) = r)
-          (U.Rn k j (r - j) x.1 * U.muP k j (r - j) (G.upper x.2.1) * U.embG k j (r - j) (Matrix.of x.2.2)))
 
 def NhatCovol : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], S6.Unram E →
@@ -455,12 +429,6 @@ def LemmaEOfRR0 : Prop :=
       (fun ε => C7.principalHermitianLattice (T v).base (M.sgn (parOf S v) (S.l + 1)) (w.1 v) (cutF (T v).base χ (f v) ε))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds ((S.sizeAt v (w.1 v) * jv v : ℝ) : ℂ))) →
     C.LemmaE S fun v => jv v / GamLev S.G.k S.G.r (kapG S.g (S6.rd E)) (deG S.g (S6.rd E)) 0
-
-def ThmPPosOfForms : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type) [∀ x, NormedAddCommGroup (Wp x)]
-    [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq),
-    (∀ v, ∀ ε, 0 < ε → ∀ i, i ≤ S.G.r + 1 → ∀ w : S.W, ∀ Y : Finset C.LPt,
-      TB.PSDOn Y ((S.pd v).RR ε i (w.1 v))) → C.ThmPPos S
 
 section module
 

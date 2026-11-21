@@ -120,12 +120,6 @@ end Coordinates
 
 section Composition
 
-theorem pointCongr₃_eq {F : Type*} [Field F] [DecidableEq F]
-    {V₁ V₂ V₃ V₄ : WeierstrassCurve F} (h₁ : V₁ = V₂) (h₂ : V₂ = V₃) (h₃ : V₃ = V₄)
-    (h₄ : V₁ = V₄) (P : V₁.toAffine.Point) :
-    pointCongr h₃ (pointCongr h₂ (pointCongr h₁ P)) = pointCongr h₄ P := by
-  subst h₁; subst h₂; subst h₃; rfl
-
 omit [IsFractionRing 𝒪 K] in
 theorem fieldEvalRed_congr {Λ : Type*} [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ]
     (j : 𝒪 →+* Λ) [IsLocalHom j] {x₁ y₁ x₂ y₂ : Λ} (hxy₁ : (W.map j).toAffine.Equation x₁ y₁)

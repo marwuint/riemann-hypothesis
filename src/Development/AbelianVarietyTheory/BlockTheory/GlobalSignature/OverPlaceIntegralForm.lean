@@ -28,21 +28,6 @@ def stabRow {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (φ :
     conv_lhs => rw [← hg']
     rw [Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]
 
-example {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] :
-    stabRow (0 : n → A) = ⊤ := by
-  ext g
-  simp only [Subgroup.mem_top, iff_true]
-  show (0 : n → A) ᵥ* (g : Matrix n n A) = 0
-  simp
-
-example : (-1 : GL (Fin 1) ℚ) ∉ stabRow (fun _ : Fin 1 => (1 : ℚ)) := by
-  intro h
-  have h' : (fun _ : Fin 1 => (1 : ℚ)) ᵥ* ((-1 : GL (Fin 1) ℚ) : Matrix (Fin 1) (Fin 1) ℚ) =
-      fun _ => 1 := h
-  have := congrFun h' 0
-  simp [Matrix.vecMul, dotProduct] at this
-  norm_num at this
-
 section Local
 
 variable {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [NumberField E] [Algebra F E]

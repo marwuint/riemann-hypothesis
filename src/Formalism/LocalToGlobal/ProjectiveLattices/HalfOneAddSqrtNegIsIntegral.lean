@@ -158,10 +158,6 @@ theorem MbOf_fromK (D : D7) (ps : List ℕ) :
 
 abbrev bH (D : D7) : 𝓞 D.host.E →+* 𝓞 D.host.E := ((barE D : 𝓞 D.host.E ≃+* 𝓞 D.host.E) : 𝓞 D.host.E →+* 𝓞 D.host.E)
 
-def SplitPrimes (D : D7) : Prop :=
-  (∀ i, D.host.g i ≠ 2) ∧
-    ∀ p ∈ [D.host.g 0, D.host.g 1, D.host.pde, D.host.pde'], jacobiSym (-(D.host.d : ℤ)) p = 1
-
 def MbProdLaw (D : D7) (ps : List ℕ) : Prop :=
   MbOf D ps * (MbOf D ps).map (bH D) = Ideal.span {((ps.prod : ℕ) : 𝓞 D.host.E)}
 
@@ -340,37 +336,6 @@ def levelOfPs (D : D7) {hU} (ps : List ℕ) (hp : ∀ p ∈ ps, p.Prime ∧ p �
   coprime := hC
   A := 1
   A_pos := Nat.one_pos
-
-theorem splitOK_of (D : D7) (hS : SplitPrimes D) :
-    ∀ p ∈ [D.host.g 0, D.host.g 1, D.host.pde, D.host.pde'], SplitOK D p := by
-  intro p hp
-  have hj := hS.2 p hp
-  simp at hp
-  rcases hp with rfl | rfl | rfl | rfl
-  · exact ⟨D.host.g_prime 0, hS.1 0, hj⟩
-  · exact ⟨D.host.g_prime 1, hS.1 1, hj⟩
-  · exact ⟨D.host.pde_prime, by have := D.host.pde_mod.1; omega, hj⟩
-  · exact ⟨D.host.pde'_prime, by have := D.host.pde_mod.2; omega, hj⟩
-
-def levelOf (D : D7) {hU} (hS : SplitPrimes D) : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level (hostOf D hU) :=
-  have h : ∀ p ∈ [D.host.g 0, D.host.g 1], SplitOK D p := fun p hp =>
-    splitOK_of D hS p (by simp at hp ⊢; tauto)
-  levelOfPs D _ (fun p hp => ⟨(h p hp).1, (h p hp).2.1⟩) (by simp) (MbProd_of D _ h) (MbCop_of D _ h)
-
-def levelDeep (D : D7) {hU} (hS : SplitPrimes D) : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level (hostOf D hU) :=
-  have h := splitOK_of D hS
-  levelOfPs D _ (fun p hp => ⟨(h p hp).1, (h p hp).2.1⟩) (by simp) (MbProd_of D _ h) (MbCop_of D _ h)
-
-theorem levelOf_M (D : D7) (hU) (hS : SplitPrimes D) :
-    (levelOf D (hU := hU) hS).M = D.host.g 0 * D.host.g 1 ∧ (levelOf D (hU := hU) hS).A = 1 := by
-  simp [levelOf, levelOfPs]
-
-theorem levelDeep_M (D : D7) (hU) (hS : SplitPrimes D) :
-    (levelDeep D (hU := hU) hS).M = D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' := by
-  simp [levelDeep, levelOfPs, mul_assoc]
-
-theorem hostOf_bar (D : D7) (hU) (a : 𝓞 D.host.E) :
-    (((hostOf D hU).bar a : 𝓞 D.host.E) : D.host.E) = D.host.conj (a : D.host.E) := barE_eq_conj D a
 
 section Dat
 

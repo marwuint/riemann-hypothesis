@@ -25,12 +25,6 @@ def TwistSplit.Statement : Prop :=
         ∃ (ι : ((G.twist (B.pow b)).twist (twistSys S x c)).H i →+ cohom 𝓜 i c)
           (π : cohom 𝓜 i c →+ ((G.twist (B.pow b)).twist (twistSys S x c)).H i), ∀ z, π (ι z) = z
 
-section Hypotheses
-
-variable (k : Type u) [Field k] (N : ℕ)
-
-end Hypotheses
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

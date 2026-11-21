@@ -8,33 +8,14 @@ section
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
-noncomputable section
 namespace GlobalTheory.ThetaTransformF
-open Formalism.IndefR.DatumF GlobalTheory.ThetaTransform GlobalTheory.SWQ
-open scoped ContDiff
-section Phase
-variable {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)] {ψ : AddChar (AF F) ℂ}
-end Phase
 end GlobalTheory.ThetaTransformF
-end
-noncomputable section
 namespace GlobalTheory.ThetaTransformF
-open Formalism.IndefR.DatumF GlobalTheory.ThetaTransform GlobalTheory.SWQ
-open scoped ContDiff
-section Crit
-variable {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)] {ψ : AddChar (AF F) ℂ}
-end Crit
 end GlobalTheory.ThetaTransformF
-end
 noncomputable section
 namespace GlobalTheory.ThetaTransformF
 open Formalism.IndefR.DatumF GlobalTheory.ThetaTransform GlobalTheory.SWQ
 open scoped ContDiff
-section Main
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Invertible (2 : AF F)]
-  {σ : E →ₐ[F] E} {nS nT N : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {ξ₀ : E}
-  {ψ : AddChar (AF F) ℂ} {e : WOF F E nS nT ≃ₗ[AF F] VA F N}
-end Main
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 theorem isThetaFunOF_thV_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
@@ -51,12 +32,12 @@ theorem isThetaFunOF_thV_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   have hψ : IsCharAF F B.ψ := hstd.1
   obtain ⟨hc, -, hfin, hinf⟩ := coordF nT nS N e
   have hcont : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), Continuous (thV B.ψ Φ) := fun Φ hΦ =>
-    GlobalTheory.T.continuous_adelicThetaTransformSymplectic_of_decay F N B.ψ hR hψ Φ (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ hΦ)
+    _root_.GlobalTheory.ThetaTransform.continuous_thV F N B.ψ hR hψ Φ (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ hΦ)
   refine ⟨fun γ w => ?_, ?_, (hcont Φ hΦ).comp hc, ?_⟩
   · obtain ⟨y, z, h⟩ := hrat γ
     simp only [Function.comp_apply, map_add, symplOHF_eq he, h]
     exact quasiV_thV B.ψ hψ.2.2.1 Φ y z (e w)
-  · obtain ⟨U, hUo, hU⟩ := GlobalTheory.T.adelicSchwartz_fixed_by_schroedinger_open_finite_subgroup F N B.ψ hR hψ Φ hΦ
+  · obtain ⟨U, hUo, hU⟩ := _root_.GlobalTheory.WeilLevel.schA_level F N B.ψ hR hψ Φ hΦ
     refine ⟨U.comap e.toLinearMap.toAddMonoidHom, hUo.preimage hc, fun u hu h0 => ?_⟩
     rw [heisOF_comp he, ← thV_schr, hU (e u) hu ((hinf u).1 h0).1 ((hinf u).1 h0).2]
   · intro k L hL hL0 w
@@ -64,7 +45,7 @@ theorem isThetaFunOF_thV_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E
       (by rintro _ ⟨Φ, hΦ, rfl⟩; exact hcont Φ hΦ)
       (by
         rintro _ ⟨Φ, hΦ, rfl⟩ M hM
-        obtain ⟨Φ', hΦ', hd⟩ := GlobalTheory.T.hasDerivAt_heisenbergOperator_thetaTransform_realLine F N B.ψ hR hψ Φ hΦ M hM
+        obtain ⟨Φ', hΦ', hd⟩ := _root_.GlobalTheory.ThetaTransform.hasDerivAt_heisV_line F N B.ψ hR hψ Φ hΦ M hM
         exact ⟨_, ⟨Φ', hΦ', rfl⟩, hd⟩)
       _ ⟨Φ, hΦ, rfl⟩ k (e.toLinearMap.toAddMonoidHom.comp L) (hc.comp hL) (fun t => (hfin _).1 (hL0 t)) (e w)
     simpa [Function.comp_def] using h

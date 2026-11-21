@@ -30,8 +30,6 @@ theorem norm_eq_of_cont (χ : InfiniteAdeleRing K →+* ℂ) (hχ : Continuous �
 
 end GlobalTheory.InfTraceNondeg
 
-example (D : D7) (ρ : D.what₂.Tau) : Formalism.MainNotions.StandardLattice.embOf D ρ = tauE D ρ := rfl
-
 namespace GlobalTheory.InfTraceNondeg
 
 set_option synthInstance.maxHeartbeats 400000 in

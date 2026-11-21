@@ -1,7 +1,8 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.NormBound
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.AevalCyclotomic
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionFieldStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -118,7 +119,7 @@ theorem loc {V : Type} [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScal
       exact ⟨t, t.2, by rwa [e2]⟩
     · rintro ⟨t, ht, h⟩
       exact ⟨_, h, ⟨t, ht⟩, by rw [smul_comm]; exact (e2 ⟨t, ht⟩ x).symm⟩
-  have hlat := GlobalTheory.T.lie_lattice_eval_fraction_field 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M A zA L V MC hξ 𝔐.t.semi.smooth (𝔐.all _) (𝔐.all _)
+  have hlat := _root_.GlobalTheory.CompanionTheory.Ar.lieLat_fibAt_iff 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M A zA L V MC hξ 𝔐.t.semi.smooth (𝔐.all _) (𝔐.all _)
   have hval : ∀ {a : Ω} {r : A} {n : 𝓞 L}, ValAt 𝔐.ξ zA a r →
       ValAt 𝔐.ξ (spMap (algebraMap (𝓞 L) L) ≫ z) a (algebraMap (𝓞 L) L n) →
       ValAt 𝔐.ξ zA a (algebraMap (𝓞 L) A n) := fun {a r n} h1 h2 => by

@@ -20,7 +20,7 @@ theorem fontCore_of_tied {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf
   refine ⟨?_, hd, fun hc => ?_⟩
   · have := isDomain_cris (P.PD K) (isField_of_tied T)
     have := (P.PD K).finK₀
-    refine finite_finrank_le (P.PD K).actB (fun b b' hb h => GlobalTheory.T.ratio_invariant_in_K0 l P AI T K b' b hb fun g hg => ?_) A.ρ
+    refine finite_finrank_le (P.PD K).actB (fun b b' hb h => _root_.GlobalTheory.Per.FracInv.tied_frac_invariant l P AI T K b' b hb fun g hg => ?_) A.ρ
     have h1 := h ⟨g, hg⟩
     rw [P.PD_actB, P.PD_actB] at h1
     rw [mul_comm, h1, mul_comm]

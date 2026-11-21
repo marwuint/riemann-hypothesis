@@ -3,7 +3,14 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.PairCalc
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFrobGBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackTer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackBis
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianLocalRingOfIsAdicComplete
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Definitions.Degenerations.ExistsGenPullTriv
+import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
+import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES
@@ -52,7 +59,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.frobIsog_of :
   intro hHom hFin hPic hQI p _ D R _ b N f κ _ _ _ s φ hφ hs o
   have hp : Nat.Prime p := Fact.out
   have hκ := GlobalTheory.SS.FrobField.cast_zero_sp κ (p := p) (CharP.cast_eq_zero κ p)
-  obtain ⟨o₁, ⟨m₁⟩⟩ := GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N (Sp κ) (Sp κ) s (spMap φ) o
+  obtain ⟨o₁, ⟨m₁⟩⟩ := _root_.GlobalTheory.HTPull.exists_objMap_pull p D R b N (Sp κ) (Sp κ) s (spMap φ) o
   revert o₁ m₁
   rw [hs]
   intro o₁ m₁

@@ -127,9 +127,6 @@ variable (B : Pre)
 
 def uI : ℂˣ := Units.mk0 Complex.I Complex.I_ne_zero
 
-theorem norm_uI_zpow (a b : ℤ) : ‖((uI ^ a * uI ^ b : ℂˣ) : ℂ)‖ = 1 := by
-  simp [uI]
-
 open Classical in
 
 @[reducible] def ch (u : B.Word) : ColumnChain B.R (Tau B.R) (B.hcW u) :=
@@ -194,29 +191,6 @@ theorem two_lt_alt (u : B.Word) : 2 < B.T u := by
   have h := B.level_mod_four _ (B.T_level u)
   have h2 := (B.T_prime u).two_le
   omega
-
-open Classical in
-
-theorem exists_cols (B : Base) : ∃ C : Cols B, (∀ u i, Nonempty ((C.mem u).C.cls i)) ∧
-    (∀ u, (C.mem u).A.Mram ≠ ⊥) ∧ (∀ u i, (C.fm u).Fi i ≠ ⊥) ∧ C.mu0 ≠ C.muStar ∧ C.mu0 ≠ C.muStar' ∧
-    C.muStar ≠ C.muStar' ∧ Function.Injective C.chiD ∧ ∀ u i c, C.chiD (C.detCls u i c) ≠ 1 := by
-  refine ⟨cols B, fun u i => ⟨(1 : Tau B.R → (ZMod (B.T u))ˣ)⟩, fun u => ?_, fun u i => ?_,
-    (by decide : (0 : Fin 3) ≠ 1), (by decide : (0 : Fin 3) ≠ 2), (by decide : (1 : Fin 3) ≠ 2),
-    fun _ _ h => h, fun u i c h => ?_⟩
-  · haveI : Fact (B.T u).Prime := ⟨B.T_prime u⟩
-    exact mram_ne_bot B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) (two_lt_alt B.toPre u)
-  · exact (top_ne_bot : (⊤ : Submodule ℂ ((Tau B.R → (ZMod (B.T u))ˣ) → Unit → ℂ)) ≠ ⊥)
-  · have h' : uI = 1 := h
-    have := congrArg (fun x : ℂˣ => (x : ℂ).re) h'
-    simp [uI] at this
-
-theorem nonempty_cols0 (B : Pre) : Nonempty (Cols0 B) := ⟨cols0 B⟩
-
-theorem T_win (C : Cols0 B) (u : B.Word) : (C.mem u).A.Tstar ≤ ((C.mem u).A.T : ℝ) ∧
-    ((C.mem u).A.T : ℝ) ≤ (1 + 1 / ((B.R.f : ℝ) * B.R.k)) * (C.mem u).A.Tstar := by
-  unfold ColumnsAtT.Tstar ColumnsAtT.Xu
-  rw [C.A_T, C.A_duStar, C.A_Dstar, C.A_GamP]
-  exact B.T_win u
 
 end Chain
 

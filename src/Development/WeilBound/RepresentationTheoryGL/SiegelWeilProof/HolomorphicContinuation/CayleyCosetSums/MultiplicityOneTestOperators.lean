@@ -49,10 +49,6 @@ variable {Kg : Type} [Group Kg] [TopologicalSpace Kg] [IsTopologicalGroup Kg] [C
 include hK in
 theorem ιK (k : Kg) : InK (ι k) := (hK _).mpr ⟨k, rfl⟩
 
-theorem ι_inv (k : Kg) : ι k⁻¹ = (ι k)⁻¹ := by
-  refine (Matrix.inv_eq_left_inv ?_).symm
-  rw [← map_mul, inv_mul_cancel, map_one]
-
 include hK in
 theorem first_cayley_block_inv (k : Kg) : u1 (ι k⁻¹) = (u1 (ι k))⁻¹ := by
   have h : u1 (ι k⁻¹) * u1 (ι k) = 1 := by

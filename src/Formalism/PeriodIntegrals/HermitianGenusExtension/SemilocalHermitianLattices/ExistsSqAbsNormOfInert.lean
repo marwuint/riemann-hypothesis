@@ -50,10 +50,4 @@ theorem exists_sub_conjO_notMem (hK : Formalism.HermitianLatticesTheory.IsCMUnra
 
 end NoF
 
-section WithF
-
-variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
-
-end WithF
-
 end ReciprocityTheory.ChartRestriction.L3

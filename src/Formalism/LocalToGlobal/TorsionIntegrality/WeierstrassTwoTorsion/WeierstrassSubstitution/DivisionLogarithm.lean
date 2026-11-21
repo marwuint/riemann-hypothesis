@@ -25,10 +25,4 @@ theorem division_spec : DivSpec.{u, v} := by
     subst h2
     rfl
 
-section Double
-
-variable {A : Type u} [CommRing A]
-
-end Double
-
 end Formalism.L2.Th1.A

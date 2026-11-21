@@ -1,9 +1,19 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermFamGramPosSemidef
+import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorusExt
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LinearIndependentFlagVec
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DemaillyRegularisation
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.MatrixLemma
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSiegel
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ScholzeWeinsteinB
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialOfFun
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExtFormAdjEqNegSecondForm
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.PsJetEqToJetOfNonempty
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLatBasisZero
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgePeriodGram
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 
 set_option autoImplicit false
 
@@ -25,38 +35,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
 def FibAt {k : Type} [Field k] (x : Sp k ⟶ X) (φ : Fib k) (m : CubeMap φ.G t.G) : Prop :=
   IsGrpPullback φ.G t.G x m.F ∧ m.e = x ∧ m.IsPullCubical φ.cub t.cub
 
-def IsCochFrame {R : Type} [CommRing R] (x : Sp R ⟶ X) {r : ℕ} (ε : Fin r → TanM x t.G) : Prop :=
-  ∃ u : torus R r ⟶ (Over.pullback x).obj t.G, IsMonHom u ∧ IsClosedImmersion u.left ∧
-    ∀ i, ∃ e : LieG (torus R r), lieCoord e = Pi.single i 1 ∧
-      (tv (ε i)).left = e.1.left ≫ u.left ≫ pullback.fst t.G.hom x
-
-def TorRk {k : Type} [Field k] (x : Sp k ⟶ X) (r : ℕ) : Prop :=
-  ∀ T : TorusExtension ((Over.pullback x).obj t.G), @Module.finrank ℤ T.X _ T.addCommGroup.toAddCommMonoid _ = r
-
 variable {t}
 
-def IsAbMap {k : Type} [Field k] {x : Sp k ⟶ X} (φ : Fib k) (m : CubeMap φ.G t.G) {n : ℕ} (v : Fin n → (epsR k ⟶ φ.P.A))
-    (q : TanM x t.G →ₗ[k] (Fin n → k)) : Prop :=
-  ∀ w : TanM x t.G, ∃ w' : epsR k ⟶ φ.G, w'.left ≫ m.F = (tv w).left ∧ IsLieComb (q w) v (w' ≫ φ.q)
-
-def AbLe {z : Sp ℂ ⟶ X} (g : TanM z t.G →ₗ[ℂ] TanM z t.G →ₗ⋆[ℂ] ℂ) (C : ℝ) : Prop :=
-  ∀ (φ : Fib ℂ) (m : CubeMap φ.G t.G), FibAt t z φ m → ∀ (n : ℕ), φ.P.g = n → ∀ (u : HolUnif φ.P.A φ.P.L n)
-    (Hm : Matrix (Fin n) (Fin n) ℂ) (χ : u.Λ → ℂ), u.IsAH Hm χ →
-    ∀ (v : TanM z t.G) (v' : epsR ℂ ⟶ φ.G) (W : Fin n → ℂ), v'.left ≫ m.F = (tv v).left → u.IsDiff W (v' ≫ φ.q) →
-      Real.pi * (hermForm Hm W W).re ≤ C * (g v v).re
-
-theorem AbLe.mono {z : Sp ℂ ⟶ X} {g : TanM z t.G →ₗ[ℂ] TanM z t.G →ₗ⋆[ℂ] ℂ} (hg : IsBlockMetric g) {C C' : ℝ}
-    (h : AbLe g C) (hC : C ≤ C') : AbLe g C' := fun φ m hφ n e u Hm χ hA v v' W h₁ h₂ => by
-  refine (h φ m hφ n e u Hm χ hA v v' W h₁ h₂).trans (mul_le_mul_of_nonneg_right hC ?_)
-  by_cases hv : v = 0
-  · simp [hv]
-  · exact (hg.2.1 v hv).le
-
 end Fibre
-
-def HasModel {K : Type} [Field K] [NumberField K] (A : Over (Sp K)) [GrpObj A] : Prop :=
-  ∃ (G : Over (Sp (𝓞 K))) (_ : GrpObj G) (θ : A.left ⟶ G.left), IsSemiAbelian G ∧
-    IsGrpPullback A G (spMap (algebraMap (𝓞 K) K)) θ
 
 section Large
 
@@ -90,25 +71,6 @@ theorem Large.and (h : Large y Q) (h' : Large y Q') : Large y fun K _ _ yK => Q 
   refine ⟨K₀, _, inferInstance, i, fun K _ _ io j hj yK hy => ⟨h₁ K io (j.comp j₁) ?_ yK hy, h₂ K io (j.comp j₂) ?_ yK hy⟩⟩
   · rw [← RingHom.comp_assoc, hj, e₁]
   · rw [← RingHom.comp_assoc, hj, e₂]
-
-theorem epi_spMap {K L : Type} [Field K] [Field L] (f : K →+* L) : Epi (spMap f) := by
-  letI := f.toAlgebra
-  have h₁ : Flat (spMap f) := by
-    rw [HasRingHomProperty.Spec_iff (P := @Flat)]
-    exact inferInstanceAs (Module.Flat K L)
-  have h₂ : Surjective (spMap f) := ⟨fun x => ⟨default, Subsingleton.elim _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
-
-theorem Large.of_point {K₀ : Type} [Field K₀] [NumberField K₀] (io₀ : K₀ →+* Qb) (y₀ : Sp K₀ ⟶ Y)
-    (hy : spMap io₀ ≫ y₀ = y)
-    (h : ∀ (K : Type) [Field K] [NumberField K] (io : K →+* Qb) (j : K₀ →+* K), io.comp j = io₀ → Q K (spMap j ≫ y₀)) :
-    Large y Q := by
-  refine ⟨K₀, _, inferInstance, io₀, fun K _ _ io j hj yK hK => ?_⟩
-  have := epi_spMap io
-  have e : yK = spMap j ≫ y₀ := by
-    rw [← cancel_epi (spMap io), hK, ← hy, ← hj, ← Category.assoc, ← Spec.map_comp]
-    rfl
-  exact e ▸ h K io j hj
 
 end Large
 

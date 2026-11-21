@@ -5,9 +5,11 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.QatOf
 import Formalism.LocalToGlobal.ProjectiveLattices.RecConj
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NumericalConsequencesOfPins
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NormCmArcCoefficientFunctionalLeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmValueLineLengthConjEqStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmValueLineLengthConjEq
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NdegLineOptionLe
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmArcDatumFunctionalFiniteIntegralityBoundStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmArcDatumFunctionalFiniteIntegralityBound
+import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.FinitePlaceArcs.BeSumStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcDatumCoefficientFunctionalLinearDegree
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LamDegreeParameters
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ModelsAtOfGoodLevel
@@ -140,7 +142,7 @@ theorem arch_all (hK : Known) {D : D7} {T : Core D} (h : LawsCore T) (j : ℕ) (
   · have hg := goodEmb_goodOf T.Q.c (em.comp (algebraMap T.Q.c.F K₁))
     rw [goodOf, if_neg hem] at hg
     have h1 := arch_good hK h j ka CR Tt cc hG hj K₁ d hd s ((starRingEnd ℂ).comp em) hg F
-    rw [GlobalTheory.T.cmValueLine_length_conj_eq hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s d.μ ka.n em, RingHom.comp_assoc, recB_supN_conj] at h1
+    rw [_root_.GlobalTheory.ArcCM.valLine_conj hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s d.μ ka.n em, RingHom.comp_assoc, recB_supN_conj] at h1
     simpa using h1
 
 end GlobalTheory.ArcCM.RunNum
@@ -167,7 +169,7 @@ theorem numGood_of_famQ : Known → ∀ (D : D7) (T : Core D) (h : LawsCore T) (
   by_cases hμ : ∑ v, d.μ v = absA (T.Q.Dw j) (wtA ka)
   · obtain ⟨hN, hNd⟩ := valLine_ndeg_le hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s large₂.logOm d.μ ka.n hLa
       (lamDegSt_logOm₂ hK D T large₂ h.pins)
-    refine ⟨s.valLine d.μ ka.n, hN, hNd.trans ?_, GlobalTheory.T.cmValueLine_length_conj_eq hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s _ _, ?_, ?_⟩
+    refine ⟨s.valLine d.μ ka.n, hN, hNd.trans ?_, _root_.GlobalTheory.ArcCM.valLine_conj hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s _ _, ?_, ?_⟩
     · unfold BdegAt
       refine mul_le_mul_of_nonneg_left ?_ hc
       rw [hμ, hf, hpq, Nat.mul_div_cancel_left _ two_pos]
@@ -175,7 +177,7 @@ theorem numGood_of_famQ : Known → ∀ (D : D7) (T : Core D) (h : LawsCore T) (
       exact absA_add_le_size T h.pins j hj ka
     · intro la w hw F hF hne
       rw [hφ] at hne ⊢
-      exact GlobalTheory.T.cmArcDatum_functional_finite_integrality_bound hK _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d _ _ _ s
+      exact _root_.GlobalTheory.ArcCM.cfOf_fin_bound hK _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d _ _ _ s
         (modelsAt_of_good_level hK _ _ _ _ _ _ (hpq ▸ hr) hgood) hd hLa la w hw (wtA ka) ka.n F.1
         ⟨hle F.2, fun v hv => hF la v hv⟩ hne
     · intro em F _ hne

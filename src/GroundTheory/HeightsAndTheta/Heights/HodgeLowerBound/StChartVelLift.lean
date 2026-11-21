@@ -18,8 +18,4 @@ def ChartVelLift.Statement : Prop :=
         IsChartVel X.M (X.S.R.chart k) z w v ∧ IsConeTangent (Int.castRingHom ℂ) (mCoordIdeal D.y) z w ∧
           ∀ c : K → ℂ, w ≠ torusSmul c z
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

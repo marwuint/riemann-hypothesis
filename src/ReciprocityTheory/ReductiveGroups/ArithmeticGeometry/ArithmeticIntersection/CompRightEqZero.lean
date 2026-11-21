@@ -49,21 +49,4 @@ structure FibreSquare (D : ℕ) where
 
 attribute [instance] FibreSquare.acgV FibreSquare.modV FibreSquare.acgW FibreSquare.modW
 
-def FibreSquare.F {D : ℕ} (S : FibreSquare D) (c : ℝ) : ℝ :=
-  S.I (fun _ => S.A - c • S.ξ)
-
-def APrimeStatement : Prop :=
-  ∀ (D : ℕ) (S : FibreSquare.{u} D) (k : ℕ), 1 ≤ k → 2 * k ≤ D + 1 →
-    S.I (mix (2 * k) S.ξ S.A) =
-      -∑ i ∈ Finset.range k, S.Φ (word D k i (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A))
-
-def ThmAIffStatement : Prop :=
-  ∀ (D : ℕ) (S : FibreSquare.{u} D) (J κ : ℕ → ℝ),
-    (∀ c : ℝ, S.F c + S.F (-c) = (tsgPoly D κ (volPoly D J)).eval c) ↔
-      ∀ k : ℕ, 1 ≤ k → 2 * k ≤ D + 1 →
-        ∑ i ∈ Finset.range k, S.Φ (word D k i (S.p₁ S.ξ) (S.p₂ S.ξ) (S.p₁ S.A)) = κ k * J (2 * k - 1)
-
-def InhabitStatement : Prop :=
-  ∃ S : FibreSquare.{0} 1, S.I (fun _ => S.ξ) ≠ 0
-
 end ReciprocityTheory.ChartRestriction.G.AI

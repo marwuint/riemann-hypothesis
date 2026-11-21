@@ -61,15 +61,6 @@ def XiTop {u : Pr.Word} (i : ℕ) (p : ChPt (R := R) sel mu u i) (Y : Set (Sp X.
 
 variable {u : Pr.Word} {m2 : ℕ} (T : ChTh W sel mu u m2)
 
-open Classical in
-
-def cpTopK (i : ℕ) (p : ChPt (R := R) sel mu u i) (Y : Set (Sp X.E (R.N i))) (p' : ChPt (R := R) sel mu u (i + 1)) :
-    (colValF W sel mu u i).V →ₗ[X.K] (colValF W sel mu u (i + 1)).V :=
-  if Y ∈ ybSet sel mu cst p.deco.1.N then
-    kerOf (T.th i) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.deco.1.N (frsF sel mu p)
-      p'.deco.1.N (frsF sel mu p') (XiTop Ch sel mu cst i p Y p')
-  else 0
-
 end Top
 
 section LiftEx
@@ -289,27 +280,6 @@ theorem PhiTopG_eq (sharp : Bool) (m2 : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) 
 
 theorem frsG_eq {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) : frsG sel mu p = frsF sel mu p := rfl
 
-open Classical in
-
-def cpTopM {u : Pr.Word} {m2 : ℕ} (T : ChTh W sel mu u m2) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1))))
-    (p' : DecoF X.E (R.N R.m) (Pr.vT u) Pr.vGs (QE sel (mu : Chr X.F X.E X.K))) :
-    (colValF W sel mu u (m2 + 1)).V →ₗ[X.K] (colVal W u R.m (Pr.vT u) (rowSG Pr sel mu)).V :=
-  if Y ∈ ybSet sel mu cst p.deco.1.N then
-    kerOf T.top (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.deco.1.N (frsF sel mu p)
-      p'.deco.1.N (frsG sel mu p') (XiTopG Ch sel mu cst (m2 + 1) R.m (R.N R.m) p Y p')
-  else 0
-
-def XiTopTil (m2 : ℕ) (u : Pr.Word) : Prop :=
-  ∀ (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (d : RowPt Pr R sel mu)
-    (p' : DecoF X.E (R.N R.m) (Pr.vT u) Pr.vGs (QE sel (mu : Chr X.F X.E X.K))), p'.deco = tilC sel mu u d →
-    Y ∈ ybSet sel mu cst p.deco.1.N →
-      XiTopG Ch sel mu cst (m2 + 1) R.m (R.N R.m) p Y p' = XiCpl2 Ch sel mu cst m2 p Y d
-
 end Cmp
-
-def XiTopTilRef : Prop :=
-  ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
-    (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (m2 : ℕ) (u : Pr.Word), X.Ok → Pr.Ok → cst.Ok →
-    R.m = m2 + 2 → (∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs) → (∀ w : Pr.vGs, Pr.piT u ∉ w.1.asIdeal) → XiTopTil Ch sel mu cst m2 u
 
 end Formalism.L2.Col

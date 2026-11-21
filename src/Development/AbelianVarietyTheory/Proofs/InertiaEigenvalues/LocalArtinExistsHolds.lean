@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalArtinExists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlobalArtinReciprocityHolds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinReciprocityMapUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInverseLocalArtinWeilGroupHomStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinReciprocityMapUnique
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInverseLocalArtinWeilGroupHom
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InverseLocalArtinContinuousOnInertiaStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmoothWeilCharEqOneOfToAbsGaloisAbEqOneStatement
 
@@ -56,7 +56,7 @@ theorem LocLanglands.isSmoothChar_of_comp {E Ω : Type} [Field E] [NumberField E
 theorem localArtinExists_holds : LocalArtinExists := by
   intro E Ω _ _ _ _ _ A w h
   obtain ⟨art, hart⟩ := globalArtinReciprocity_holds E Ω
-  obtain ⟨a, hs, ho, hg⟩ := T.exists_inverse_localArtin_weilGroup_hom E Ω A w h art hart
+  obtain ⟨a, hs, ho, hg⟩ := _root_.GlobalTheory.InvLocalArtin.exists_invLocalArtin E Ω A w h art hart
   have hc := T.inverseLocalArtin_continuousOn_inertia E Ω A w h art a hart ho hg
   refine ⟨a, hs, hc, ho, fun ξ hξ => ?_, fun art' hart' => ?_⟩
   · have hker : a.ker ≤ ξ.ker := fun σ hσ => by
@@ -65,7 +65,7 @@ theorem localArtinExists_holds : LocalArtinExists := by
     have e : ξ = (a.liftOfSurjective hs ⟨ξ, hker⟩).comp a :=
       (MonoidHom.liftOfRightInverse_comp a _ (Function.rightInverse_surjInv hs) ⟨ξ, hker⟩).symm
     exact ⟨_, isSmoothChar_of_comp hs hc ho (e ▸ hξ), e⟩
-  · rw [T.globalArtinReciprocityMap_unique E Ω art' art hart' hart]
+  · rw [_root_.GlobalTheory.ArtinUniq.globalArtin_unique E Ω art' art hart' hart]
     exact hg
 
 end GlobalTheory

@@ -115,10 +115,4 @@ theorem trace_pow_eq_sum (f : Module.End K V) (j : ℕ) :
 
 end TracePow
 
-section Lattice
-
-variable {R K : Type*} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
-
-end Lattice
-
 end Formalism.SA.P

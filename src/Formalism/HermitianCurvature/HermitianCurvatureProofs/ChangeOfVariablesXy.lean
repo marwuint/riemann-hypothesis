@@ -36,7 +36,4 @@ theorem germ_rate : Formalism.FourierDecayAlt.G.GermRate :=
     root_set_characterization orbit_tail_estimate change_of_variables_xy nonstationary_estimate stationary_estimate amplitude_limit
     limit_integral stationary_leading_constant germ_large_parameter
 
-theorem germExpansion_true : Formalism.FourierDecayAlt.G.Germ :=
-  germ_of_rate germ_rate
-
 end Formalism.FourierDecayAlt.P

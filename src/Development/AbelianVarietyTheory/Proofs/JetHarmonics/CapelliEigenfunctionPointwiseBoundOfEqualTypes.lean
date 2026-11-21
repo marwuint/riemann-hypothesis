@@ -4,9 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.Cut_BPEq
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLimENF
 import Formalism.HermitianCurvature.HerGenC
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WignerShiftedPlacesExistProofStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GridsAtPlaceLongCutNormaliserPositiveStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliEigenfunctionBoundThreePlacesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WignerShiftedPlacesExistProof
+import Development.AbelianVarietyTheory.Statements.DiscreteSeriesShifts.ShiftExists
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GridsAtPlaceLongCutNormaliserPositive
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliEigenfunctionBoundThreePlaces
 
 open BpJoin Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.CutBP Formalism.FourierDecayAlt.P.CutBP2 Formalism.FourierDecayAlt.P.CutBPEq Formalism.QuantumDeterminants
 
@@ -40,8 +41,8 @@ theorem decay_le (r k N : ℝ) (hr : 0 ≤ r) (hk : 0 ≤ k) (hN : 0 ≤ N) :
 
 theorem thmBp_eig_eq : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → NFTopDomAll → ∀ C C₃ C₀ : ℝ, 0 ≤ C → 0 ≤ C₃ → 0 ≤ C₀ → ∃ C₄ Cc : ℝ, ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b c A₀ : ℝ) (n₀ p₀ : ℕ) (lam lam' : Fin (2 * P.r + P.k + 1) → ℝ), StdNum C b c P lam → (n₀ = 30 * (P.r + 1) ^ 2 + 6 ∧ (∀ i ∈ Finset.Icc 1 P.k, P.u i = P.u' i) ∧ ∃ l, 1 ≤ l ∧ l < P.k ∧ 2 * (n₀ : ℝ) + 1 ≤ P.u' l - P.u' (l + 1)) → 3 * (P.r + 1) ≤ 2 * p₀ → (p₀ : ℝ) ≤ C₀ * ((P.r : ℝ) + 1) ^ 2 → EigDec f A₀ lam' → Cc * ((P.r : ℝ) + 1) ^ 4 * (((3 * (P.r + 1) : ℕ) : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀ - (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) → (∀ s, |lam' s - lam s| + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) ≤ c - 1) → TBB.RegularityBoundBigCell p f b C₃ (2 * p₀ + n₀) → TBB.ThmBpAt p f b C₄ n₀ p₀ := by
   intro hX hP hNF C C₃ C₀ hC hC₃ hC₀
-  obtain ⟨c₃, Cb, -, hS⟩ := GlobalTheory.T.wignerShiftedPlacesExist_proof
-  obtain ⟨C₄, Cc, hT⟩ := GlobalTheory.T.capelli_eigenfunction_bound_three_places hX hP hNF Cb C₃ (7 + C) C₀ hC₃ (by linarith) hC₀
+  obtain ⟨c₃, Cb, -, hS⟩ := _root_.GlobalTheory.wignerShiftedPlacesExist_proof.shiftExists
+  obtain ⟨C₄, Cc, hT⟩ := _root_.GlobalTheory.EigenThreePlaces.main hX hP hNF Cb C₃ (7 + C) C₀ hC₃ (by linarith) hC₀
   refine ⟨C₄, max (max Cc c₃) 0, ?_⟩
   intro P Wp Wq _ _ _ _ _ _ p f b c A₀ n₀ p₀ lam lam' hstd hcase hp₀ hp₀' heig hA hlam hreg
   obtain ⟨hn₀, he, l, hl1, hl2, hg⟩ := hcase
@@ -87,13 +88,13 @@ theorem thmBp_eig_eq : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt
     linarith
   have Gp := gridNum_update Gl' (P.u' (l + 1) + (n₀ : ℝ)) (abs_le.2 ⟨by linarith [hul'.1], by linarith [hul.2]⟩)
   have Gm := gridNum_update Gl (P.u' l - (n₀ : ℝ)) (abs_le.2 ⟨by linarith [hul'.1], by linarith [hul.2]⟩)
-  obtain ⟨hpos, hΛ, Yp, hWp, hLp⟩ := GlobalTheory.T.grids_at_place_longCut_normaliserPositive C b c _ Wp Wqp pp lam hC (by rw [a1]; exact Gp) (by
+  obtain ⟨hpos, hΛ, Yp, hWp, hLp⟩ := _root_.GlobalTheory.GridAtPlace.main C b c _ Wp Wqp pp lam hC (by rw [a1]; exact Gp) (by
     rw [a1]
     change ((30 * (P.r + 1) ^ 2 + 6 : ℕ) : ℝ) ≤
       |P.u (l + 1) - Function.update P.u' (l + 1) (P.u' (l + 1) + (n₀ : ℝ)) (l + 1)|
     rw [Function.update_self, he _ hml', ← hn₀]
     exact le_abs.2 (Or.inr (by linarith)))
-  obtain ⟨-, -, Ym, hWm, hLm⟩ := GlobalTheory.T.grids_at_place_longCut_normaliserPositive C b c _ Wp Wqm pm lam hC (by rw [b1]; exact Gm) (by
+  obtain ⟨-, -, Ym, hWm, hLm⟩ := _root_.GlobalTheory.GridAtPlace.main C b c _ Wp Wqm pm lam hC (by rw [b1]; exact Gm) (by
     rw [b1]
     change ((30 * (P.r + 1) ^ 2 + 6 : ℕ) : ℝ) ≤ |P.u l - Function.update P.u' l (P.u' l - (n₀ : ℝ)) l|
     rw [Function.update_self, he _ hml, ← hn₀]

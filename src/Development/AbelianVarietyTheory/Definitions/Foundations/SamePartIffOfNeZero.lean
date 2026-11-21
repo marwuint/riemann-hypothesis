@@ -58,18 +58,6 @@ theorem _root_.GlobalTheory.BadShare.bb_iff {g N l : ℕ} :
   · rintro ⟨hp, d, h1, h2, hq⟩
     exact ⟨d, h1, h2, hp, hq⟩
 
-theorem bb_of_dvd {g N l d : ℕ} (hl : l.Prime) (h1 : 1 ≤ d) (h2 : d ≤ N) (h0 : g ^ d - 1 ≠ 0) (h3 : l ∣ g ^ d - 1)
-    (h4 : g ^ d < l ^ 4) : BB g N l := by
-  haveI := Fact.mk hl
-  refine bb_iff.2 (Or.inr ⟨hl, d, h1, h2, h4.trans_le (Nat.pow_le_pow_right hl.pos ?_)⟩)
-  have := one_le_padicValNat_of_dvd h0 h3
-  omega
-
-example : BB 7 1 3 := bb_of_dvd (d := 1) (by norm_num) le_rfl le_rfl (by norm_num) (by norm_num) (by norm_num)
-
-example : ¬ BB 7 1 6 := by
-  rw [bb_iff]; norm_num
-
 section part
 variable {k : Type} [Field k] {l : ℕ}
 
@@ -320,40 +308,6 @@ theorem _root_.GlobalTheory.BadShare.mass_mono {N : ℕ} {A B : (ZMod g)[X] → 
   · intro f _ _
     exact inv_nonneg.mpr (Nat.cast_nonneg _)
 
-example : torusCard g X = g - 1 := by rw [torusCard_irreducible irreducible_X]; simp
-
-theorem exists_primitive (d : ℕ) (hd : d ≠ 0) : ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P.natDegree = d ∧
-    ∀ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∀ n : ℕ, x ^ n = 1 ↔ g ^ d - 1 ∣ n := by
-  haveI : Fintype (GaloisField g d) := Fintype.ofFinite _
-  obtain ⟨α, hα⟩ := IsCyclic.exists_monoid_generator (α := (GaloisField g d)ˣ)
-  have hi : IsIntegral (ZMod g) (α : GaloisField g d) := Algebra.IsIntegral.isIntegral _
-  have hord : orderOf α = g ^ d - 1 := by
-    rw [orderOf_eq_card_of_forall_mem_powers hα, Nat.card_units, GaloisField.card g d hd]
-  have htop : IntermediateField.adjoin (ZMod g) {(α : GaloisField g d)} = ⊤ := by
-    rw [eq_top_iff]
-    intro x _
-    by_cases hx : x = 0
-    · rw [hx]; exact zero_mem _
-    · obtain ⟨n, hn⟩ := hα (Units.mk0 x hx)
-      have : x = (α : GaloisField g d) ^ n := by simpa using (congrArg Units.val hn).symm
-      rw [this]
-      exact pow_mem (IntermediateField.mem_adjoin_simple_self _ _) n
-  refine ⟨minpoly (ZMod g) (α : GaloisField g d), minpoly.monic hi, minpoly.irreducible hi, ?_, ?_⟩
-  · rw [(Field.primitive_element_iff_minpoly_natDegree_eq _ _).1 htop, GaloisField.finrank g hd]
-  · intro x hx n
-    have h1 := minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hi) (mem_aroots.1 hx).2 (minpoly.monic hi)
-    have h2 : x ^ n = 1 ↔ minpoly (ZMod g) x ∣ X ^ n - 1 := by
-      rw [minpoly.dvd_iff]; simp [sub_eq_zero]
-    rw [h2, ← h1, minpoly.dvd_iff, ← hord, orderOf_dvd_iff_pow_eq_one]
-    simp only [map_sub, map_pow, aeval_X, map_one, sub_eq_zero]
-    rw [← Units.val_pow_eq_pow_val, Units.val_eq_one]
-
 local instance factPrimeThree : Fact (Nat.Prime 3) := ⟨by norm_num⟩
-
-theorem not_two_primes {l a n p : ℕ} (hl : l.Prime) (hp : p.Prime) (hp2 : p ≠ 2) (h2 : 2 ∣ n) (h3 : p ∣ n) : ¬ n ∣ l ^ a := by
-  intro h
-  have e1 := (Nat.prime_dvd_prime_iff_eq Nat.prime_two hl).1 (Nat.prime_two.dvd_of_dvd_pow (h2.trans h))
-  have e2 := (Nat.prime_dvd_prime_iff_eq hp hl).1 (hp.dvd_of_dvd_pow (h3.trans h))
-  exact hp2 (e2.trans e1.symm)
 
 end GlobalTheory.BadShare

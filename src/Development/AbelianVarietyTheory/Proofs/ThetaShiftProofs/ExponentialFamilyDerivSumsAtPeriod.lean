@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsSumsAtHalf
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.EqSpMapOfInjective
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TangentConstantDirectionSpecialisesDerivStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsTangentConstantCoordsGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcLevelPointTangentVectorTransportIffStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcLevelPointTangentVectorTransportIff
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -185,7 +185,7 @@ theorem isTanPt_iff {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' �
     {Φ : GenPts A t y} (hw : w.IsGen) (h : GenPts.Rel m w Φ' Φ) (z₀ : A.V)
     {n : Sp (DualNumber ℂ⸨X⸩) ⟶ t'.G.left} (hn : n ≫ t'.G.hom = spMap (algebraMap ℂ⸨X⸩ _) ≫ y') :
     IsTanPt Φ' z₀ n ↔ IsTanPt Φ z₀ (n ≫ m.φ) := by
-  have key := (T.arcLevelPoint_tangentVector_transport_iff E H S S' A t t' f m w y' y Φ' Φ hw h).2 z₀
+  have key := (_root_.GlobalTheory.LevelTransport.levelPt_isTan_iff E H S S' A t t' f m w y' y Φ' Φ hw h).2 z₀
   have hn' : (n ≫ m.φ) ≫ t.G.hom = spMap (algebraMap ℂ⸨X⸩ _) ≫ y := by
     rw [Category.assoc, m.cart.1.w, reassoc_of% hn, h.1]
   constructor

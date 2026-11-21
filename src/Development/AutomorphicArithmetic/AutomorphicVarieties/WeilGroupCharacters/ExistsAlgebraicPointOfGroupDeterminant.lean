@@ -9,29 +9,6 @@ section SlopeTestRemainingChoices
 
 open Polynomial
 
-private theorem algpt_fac {O : Type} [CommRing O] [IsLocalRing O] [IsAdicComplete (maximalIdeal O) O]
-    (p : O[X]) (hp : p.map (residue O) ≠ 0) :
-    ∃ g q : O[X], g.Monic ∧ IsUnit (q.coeff 0) ∧ p = g * q := by
-  have hp' : (p : PowerSeries O).map (residue O) ≠ 0 := by
-    rw [← Polynomial.polynomial_map_coe]
-    exact_mod_cast hp
-  obtain ⟨g, h, H⟩ := PowerSeries.exists_isWeierstrassFactorization hp'
-  have hd := H.isDistinguishedAt
-  have hord : g.natDegree = _ := congr(ENat.toNat $(hd.coe_natDegree_eq_order_map g 1
-    (by rw [PowerSeries.constantCoeff_one, ← Ideal.ne_top_iff_one]; exact (maximalIdeal.isMaximal O).ne_top)
-    (by simp)))
-  have hdiv : g * (p /ₘ g) + p %ₘ g = p := by rw [add_comm]; exact modByMonic_add_div p g
-  have hlt : (p %ₘ g).degree < (g.natDegree : ℕ) := by
-    rw [← degree_eq_natDegree hd.monic.ne_zero]
-    exact degree_modByMonic_lt p hd.monic
-  have key := hd.isWeierstrassDivisorAt'.eq_of_mul_add_eq_mul_add (q := (p /ₘ g : O[X])) (q' := h)
-    (r := p %ₘ g) (r' := 0) (hord ▸ hlt) (by rw [degree_zero]; exact WithBot.bot_lt_coe _)
-    (by rw [← Polynomial.coe_mul, ← Polynomial.coe_add, hdiv, Polynomial.coe_zero, add_zero]; exact H.eq_mul)
-  refine ⟨g, p /ₘ g, hd.monic, ?_, by rw [← hdiv, key.2, add_zero, mul_divByMonic_cancel_left _ hd.monic]⟩
-  have hu := PowerSeries.isUnit_iff_constantCoeff.1 H.isUnit
-  rw [← key.1] at hu
-  simpa using hu
-
 private theorem algpt_int {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] {R : Type} [CommRing R] [Algebra O R] [IsLocalRing R]
     {K : Type} [Field K] [Algebra O K] [FaithfulSMul O K] [Algebra.IsAlgebraic O K] (f : R →ₐ[O] K)

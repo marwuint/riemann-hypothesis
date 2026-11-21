@@ -446,15 +446,6 @@ lemma prod_ratio_le (s : Finset ℕ) (f g : ℕ → ℝ) (ε : ℝ) (hg : ∀ i 
         rw [add_comm]; exact Real.add_one_le_exp ε
     _ = Real.exp ((s.card : ℝ) * ε) := by rw [Finset.prod_const, Real.exp_nat_mul]
 
-lemma prod_ratio_ge (s : Finset ℕ) (f g : ℕ → ℝ) (B : ℝ) (hg : ∀ i ∈ s, 0 < g i)
-    (hf : ∀ i ∈ s, 0 < f i) (h : ∏ i ∈ s, g i / f i ≤ Real.exp B) :
-    Real.exp (-B) ≤ ∏ i ∈ s, f i / g i := by
-  have e : ∏ i ∈ s, f i / g i = (∏ i ∈ s, g i / f i)⁻¹ := by
-    rw [← Finset.prod_inv_distrib]
-    exact Finset.prod_congr rfl fun i _ => (inv_div _ _).symm
-  rw [e, Real.exp_neg]
-  exact inv_anti₀ (Finset.prod_pos fun i hi => div_pos (hg i hi) (hf i hi)) h
-
 lemma u_mid (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i : ℕ) (hi : i ∈ Icc 2 (c.k - 1)) :
     c.u de i = c.v (i - 1) - 1 / 2 - de (i - 1) * c.Del := by
   rw [mem_Icc] at hi
@@ -572,20 +563,6 @@ theorem edgeFactors : Formalism.FourierDecayAlt.Sz.EdgeFactors := by
           · rw [mem_Icc] at hi
             exact (edge_factor c de hc hw i hi.1 hi.2 (Or.inr ht)).2
       _ = _ := by rw [Finset.prod_const, hcard]
-
-theorem edgeRatios : Formalism.FourierDecayAlt.Sz.EdgeRatios := by
-  intro c de de' hc _ hw hw'
-  have hkD := kDel_pos c hc
-  refine ⟨⟨?_, edge_ratio_le c de de' hc hw hw'⟩, fun ht => ⟨?_, top_ratio_le c de de' hc ht hw hw'⟩⟩
-  · refine prod_ratio_ge _ (fun i => c.a - c.u de i) (fun i => c.a - c.u de' i) _
-      (fun i hi => ?_) (fun i hi => ?_) (edge_ratio_le c de' de hc hw' hw)
-    · have := a_sub_u_pos c de' hc hw' i hi; linarith
-    · have := a_sub_u_pos c de hc hw i hi; linarith
-  · have hb := bp_pos c hc ht
-    refine prod_ratio_ge _ (fun i => c.u de i + c.bp) (fun i => c.u de' i + c.bp) _
-      (fun i hi => ?_) (fun i hi => ?_) (top_ratio_le c de' de hc ht hw' hw)
-    · have := u_mid_nonneg c de' hc hw' i hi; linarith
-    · have := u_mid_nonneg c de hc hw i hi; linarith
 
 end Formalism.FourierDecayAlt.P
 

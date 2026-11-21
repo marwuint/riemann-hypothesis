@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelCharacterApplyEqLevelFunctionSwap
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.TwistedCharacterValue
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameKeepsMatricesSplitPlaceReductionLocalStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceResidueMapEqReductionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameKeepsMatricesSplitPlaceReductionLocal
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceResidueMapEqReduction
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SubsetTwistExceptionalPlaces
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameEquivApply
@@ -100,7 +100,7 @@ theorem detRed {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host
   set K := s.v.adicCompletion (maximalRealSubfield D.host.E)
   set O := s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)
   set R := redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ)) with hR
-  have hred := (GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V n hF P hP hn κ).2 s hκ
+  have hred := (_root_.GlobalTheory.MtRead.Red.red_eq_local D V n hF P hP hn κ).2 s hκ
   let m : Ideal O :=
     { carrier := {x | Valued.v (x : K) < 1}
       add_mem' := fun {a b} ha hb => by
@@ -196,7 +196,7 @@ theorem typePlace {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.h
     ∃ x : (ZMod q)ˣ, red (NX.intLift s.v (NX.detT r (NX.locM s κ))) = x ∧
       iso x = ((dBlk (blk2 r') 1 (redFn (1 : GL (Fin V.rank) (Lev.EAf D)) w (Lev.finE V (P.ψ κ))) : (kP w)ˣ) : kP w) := by
   subst hw hrr
-  have hred := (GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V n hF P hP hn κ).2 s hκ
+  have hred := (_root_.GlobalTheory.MtRead.Red.red_eq_local D V n hF P hP hn κ).2 s hκ
   refine ⟨fun a c => ?_, ?_⟩
   · rw [upper_block_val_submatrix hrV hb]
     obtain ⟨hint, hiff⟩ := hred (Fin.castLE hrV a) (Fin.castLE hrV c)
@@ -206,12 +206,12 @@ theorem typePlace {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.h
     have hv := (hiff u).2 hu.symm
     show iso (red (NX.intLift s.v (NX.locM s κ (Fin.cast hn (Fin.castLE hrV a)) (Fin.cast hn (Fin.castLE hrV c))))) = _
     rw [Formalism.IndefR.NX.intLift_of_mem _ _ hint]
-    exact ((GlobalTheory.T.split_place_residue_map_eq_reduction D.host.E s q hq red iso ⟨_, hint⟩ u).1 hv).trans hu
+    exact ((_root_.GlobalTheory.splitPlace_red_eq_reduction D.host.E s q hq red iso ⟨_, hint⟩ u).1 hv).trans hu
   · obtain ⟨hint, u, hu, hd⟩ := detRed hP hn r' hκ s hb
     have h1 : iso (red (NX.intLift s.v (NX.detT r' (NX.locM s κ)))) =
         ((dBlk (blk2 r') 1 (redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ))) : (kP s.w)ˣ) : kP s.w) := by
       rw [Formalism.IndefR.NX.intLift_of_mem _ _ hint, hd]
-      exact (GlobalTheory.T.split_place_residue_map_eq_reduction D.host.E s q hq red iso ⟨_, hint⟩ u).1 hu
+      exact (_root_.GlobalTheory.splitPlace_red_eq_reduction D.host.E s q hq red iso ⟨_, hint⟩ u).1 hu
     refine ⟨Units.map iso.symm.toRingHom.toMonoidHom
       (dBlk (blk2 r') 1 (redFn (1 : GL (Fin V.rank) (Lev.EAf D)) s.w (Lev.finE V (P.ψ κ)))), ?_, ?_⟩
     · rw [Units.coe_map, ← h1]

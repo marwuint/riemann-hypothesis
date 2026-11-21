@@ -2,13 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LinearIndependentOfIsLieBasis
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOfCmTriplePullback
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IntegralTangentVectorCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalBasisDescriptionStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalizationModelLieAlgebraStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeFgAndSpanEqTopRingOfIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IntegralTangentVectorCoordinates
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalBasisDescription
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalizationModelLieAlgebra
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeFgAndSpanEqTopRingOfIntegers
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLieRepresentationEigenLatticesStatement
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.DegLatticeNumberFieldExtensionEqStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EigenLatticeNumberFieldBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EigenLatticeNumberFieldBaseChange
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.DegreeLieLatticeHermitianInvariantStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LiePush
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
@@ -60,7 +60,7 @@ theorem isCoord_over (hξ : IsGrpPullback P'.A P.A (spMap (RingOfIntegers.mapRin
 theorem image_subset_lieLat (hξ : IsGrpPullback P'.A P.A (spMap (RingOfIntegers.mapRingHom j)) ξ)
     (hψ : IsGrpPullback Q.A F.P₀.A (spMap j) ψ) (w : ψ ≫ F.φ = φ' ≫ ξ) (hv : ∀ i, IsVecOver j ψ (F.v i) (v' i))
     {c : Fin F.P₀.g → K} (hc : c ∈ F.lieLat) : (fun i => j (c i)) ∈ (F₁).lieLat := by
-  obtain ⟨u, hu⟩ := ((GlobalTheory.T.integral_tangent_vector_coordinates K P F).2.2.2.2.1 c).1 hc
+  obtain ⟨u, hu⟩ := ((_root_.GlobalTheory.CM.integral_tangent_coordinates K P F).2.2.2.2.1 c).1 hc
   obtain ⟨u', hu', -⟩ := existsUnique_isVecOver hξ.1 u
   exact Submodule.subset_span ⟨u', isCoord_over hξ hψ w hv hu hu'⟩
 
@@ -96,7 +96,7 @@ theorem lieLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfInteg
   swap
   · rintro _ ⟨c, hc, rfl⟩
     exact image_subset_lieLat hξ.2.1 hψ w hv hc
-  obtain ⟨n, r, M, hr, hM, -, hloc⟩ := GlobalTheory.T.lie_lattice_local_basis_description K P F
+  obtain ⟨n, r, M, hr, hM, -, hloc⟩ := _root_.GlobalTheory.CM.LieGlue.exists_cover_lieLat K P F
   have hr' : Ideal.span (Set.range fun i => RingOfIntegers.mapRingHom j (r i)) = ⊤ := by
     have := congrArg (Ideal.map (RingOfIntegers.mapRingHom j)) hr
     rwa [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at this
@@ -142,9 +142,9 @@ theorem lieLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfInteg
     refine (PolFibre.vec_iff hζ.2.1.1 hψ.1.w (hx k)).2 ?_
     rw [hsq, ← hθ']
     exact vec_comp (hee' k) (hx' k)
-  obtain ⟨a, ha⟩ := (GlobalTheory.T.lieLattice_localization_modelLieAlgebra K' P' F₁ R' (Submonoid.powers (RingOfIntegers.mapRingHom j (r i))) G'.A κ' ζ' e' x'
+  obtain ⟨a, ha⟩ := (_root_.GlobalTheory.CM.LieLoc.lieLat_localization K' P' F₁ R' (Submonoid.powers (RingOfIntegers.mapRingHom j (r i))) G'.A κ' ζ' e' x'
     ((M i).map j) hκ'.2.1 hζ'.2.1 hζκ' he' fun k => ⟨hx' k, hxM' k⟩).2 c' hc'
-  have hin := (GlobalTheory.T.lieLattice_localization_modelLieAlgebra K P F R (Submonoid.powers (r i)) G.A κ ζ e x (M i) hκ.2.1 hζ.2.1 hζκ he
+  have hin := (_root_.GlobalTheory.CM.LieLoc.lieLat_localization K P F R (Submonoid.powers (r i)) G.A κ ζ e x (M i) hκ.2.1 hζ.2.1 hζκ he
     fun k => ⟨hx k, hxM k⟩).1
   rw [ha]
   refine exists_pow_smul_mem (RingOfIntegers.mapRingHom j (r i)) _ _ (fun k => ?_) a
@@ -167,13 +167,13 @@ theorem eigLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfInteg
     induction hc' using Submodule.span_induction with
     | mem x hx =>
       obtain ⟨c, hc, rfl⟩ := hx
-      obtain ⟨u, hu⟩ := ((GlobalTheory.T.integral_tangent_vector_coordinates K P F).2.2.2.2.1 c).1 hc
+      obtain ⟨u, hu⟩ := ((_root_.GlobalTheory.CM.integral_tangent_coordinates K P F).2.2.2.2.1 c).1 hc
       obtain ⟨u', hu', -⟩ := existsUnique_isVecOver hξ.2.1.1 u
       have h₁ := hr' a _ _ (isCoord_over (fib := fib) (basis := basis) hξ.2.1 hψ w hv hu hu')
       have h₂ := isCoord_over (fib := fib) (basis := basis) hξ.2.1 hψ w hv (hr a _ _ hu) (u' := u' ≫ act'.act a) (by
         unfold IsVecOver at hu' ⊢
         rw [Over.comp_left, Over.comp_left, Category.assoc, hact, ← Category.assoc, hu', Category.assoc])
-      refine (((GlobalTheory.T.integral_tangent_vector_coordinates K' P' F₁).1 _ h₁.1).unique h₁ h₂).trans (funext fun t => ?_)
+      refine (((_root_.GlobalTheory.CM.integral_tangent_coordinates K' P' F₁).1 _ h₁.1).unique h₁ h₂).trans (funext fun t => ?_)
       rw [← LinearMap.toMatrix'_mulVec (r a) c]
       exact RingHom.map_mulVec j _ c t
     | zero => simp
@@ -184,7 +184,7 @@ theorem eigLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfInteg
     ext c
     simp only [SetLike.mem_coe, Set.mem_setOf_eq, (he τ c).1, LinearMap.toMatrix'_mulVec, algebraMap_smul]
   ext c'
-  rw [hs, GlobalTheory.T.eigenLattice_numberField_baseChange K K' O j F.P₀.g F.lieLat _ _ c' (GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1, ← hL, (he' _ c').1]
+  rw [hs, _root_.GlobalTheory.CM.eigenLattice_baseChange K K' O j F.P₀.g F.lieLat _ _ c' (_root_.GlobalTheory.CM.LieLattice.lieLat_fg_and_span_eq_top K P F).1, ← hL, (he' _ c').1]
   refine and_congr_right fun hc' => forall_congr' fun a => ?_
   rw [key a c' hc', ← algebraMap_smul K']
   rfl
@@ -217,7 +217,7 @@ theorem deg_eq_of_isPolFibre (hU : ThetaUnifAV) (hL : Out.Laws) (hξ : IsPolFibr
   obtain ⟨h₂, H₂⟩ := (LieMetric.exists_unique_isHerm hU hL K' P' F₂).1
   obtain ⟨d₁, d₂⟩ := GlobalTheory.T.degree_lie_lattice_hermitian_invariant hU hL K' P' F' F₂ h' h₂ H' H₂
   have hf := form_single_eq hU hψ hv H H₂
-  have hfg := (GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1
+  have hfg := (_root_.GlobalTheory.CM.LieLattice.lieLat_fg_and_span_eq_top K P F).1
   refine ⟨?_, fun O _ act act' hact τ => ?_⟩
   · rw [d₁, lieLat_eq_span hL.polBaseChange hξ hψ.2.1 w hv]
     exact GlobalTheory.T.deg_lattice_numberField_extension_eq K K' j _ h h₂ _ hfg hf

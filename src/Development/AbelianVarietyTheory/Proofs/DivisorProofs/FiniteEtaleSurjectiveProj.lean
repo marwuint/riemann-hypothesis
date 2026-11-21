@@ -48,14 +48,4 @@ theorem isFinite_sigmaDesc_fin (V : Scheme.{0}) : ∀ k : ℕ, IsFinite (Sigma.d
     rw [← sigmaFinSuccIso_hom_desc]
     infer_instance
 
-theorem proj_finite_etale_surjective :
-    ∀ (n : ℕ), n ≠ 0 → ∀ (V : Scheme.{0}), IsFinite (proj n V) ∧ Etale (proj n V) ∧ Surjective (proj n V) := by
-  intro n hn V
-  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
-  refine ⟨isFinite_sigmaDesc_fin V (m + 1), ?_, ?_⟩
-  · have := HasRingHomProperty.instIsZariskiLocalAtSource (P := @Etale)
-    exact IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun _ => inferInstance
-  · refine Surjective.sigmaDesc_of_union_range_eq_univ (Set.eq_univ_of_forall fun v => ?_)
-    exact Set.mem_iUnion.2 ⟨0, v, rfl⟩
-
 end GlobalTheory.Et.TrivTors

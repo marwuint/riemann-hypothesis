@@ -494,14 +494,6 @@ theorem ofPairs_φ {hA : A.IsLB} {hB : B.IsLB} {ψ : A.ι → B.ι → CxPts p �
   rw [gv_self hA ha, norm_one, one_pow, Real.log_one, sub_zero] at e
   exact e.symm
 
-def cancel (hA : A.IsLB) (χ : Weight p σ (CechPic.tens A B)) (φ : Weight p σ B) : Weight p σ A :=
-  ofPairs hA φ.isLB (fun a b y => χ.φ (a, b) y - φ.φ b y) fun a a' b b' y ha ha' hb hb' => by
-    have e : y ∈ ptsIn p σ ((CechPic.tens A B).U (a, b)) := mem_ptsIn_inf.2 ⟨ha, hb⟩
-    have e' : y ∈ ptsIn p σ ((CechPic.tens A B).U (a', b')) := mem_ptsIn_inf.2 ⟨ha', hb'⟩
-    rw [χ.trans _ _ y e e', φ.trans b b' y hb hb', gv_tens e e',
-      log_normSq_mul (gv_ne_zero ha ha') (gv_ne_zero hb hb')]
-    ring
-
 def ofIso (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) : Weight p σ A :=
   ofPairs hA φ.isLB (fun a b y => φ.φ b y + Real.log (‖ev p σ _ (w.s (a, b)).val y‖ ^ 2))
     fun a a' b b' y ha ha' hb hb' => by
@@ -537,25 +529,6 @@ def fs (hB : B.IsLB) (e : α → B.ι → CxPts p σ → ℂ) (he : ∀ a, e a �
     simp only [fun a => (he a).1 i j y hi hj, norm_mul, mul_pow, ← Finset.mul_sum]
     rw [Real.log_mul (by positivity) (h.sum_pos hj).ne']
     ring
-
-theorem nsq_fs {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommonZero e}
-    (hs : s ∈ fibSec p σ B) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) :
-    (fs hB e he h).nsq s y = ‖s i y‖ ^ 2 / ∑ a, ‖e a i y‖ ^ 2 := by
-  rw [nsq_eq _ hs hi]
-  simp only [fs]
-  rw [Real.exp_neg, Real.exp_log (h.sum_pos hi), div_eq_mul_inv]
-
-theorem nsq_fs_le {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommonZero e} (c : α → ℂ)
-    (y : CxPts p σ) : (fs hB e he h).nsq (∑ a, c a • e a) y ≤ ∑ a, ‖c a‖ ^ 2 := by
-  have hi := mem_pick hB y
-  have hpos := h.sum_pos hi
-  simp only [nsq, fs]
-  rw [Real.exp_neg, Real.exp_log hpos, ← div_eq_mul_inv, div_le_iff₀ hpos]
-  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
-  calc ‖∑ a, c a * e a (pick hB y) y‖ ^ 2 ≤ (∑ a, ‖c a‖ * ‖e a (pick hB y) y‖) ^ 2 := by
-        gcongr
-        exact (norm_sum_le _ _).trans_eq (by simp [norm_mul])
-    _ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _
 
 theorem sum_nsq_fs {hB : B.IsLB} {he : ∀ a, e a ∈ fibSec p σ B} {h : NoCommonZero e}
     (y : CxPts p σ) : ∑ a, (fs hB e he h).nsq (e a) y = 1 := by

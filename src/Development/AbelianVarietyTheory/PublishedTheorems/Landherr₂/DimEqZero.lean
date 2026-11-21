@@ -22,32 +22,6 @@ theorem finite (h : AbMulNSt) (hB : IsAbelianScheme B) (hg : SmoothOfRelativeDim
   rintro rfl
   exact hn Nat.cast_zero
 
-theorem dim_eq_zero (h : AbMulNSt) (hB : IsAbelianScheme B) (hg : SmoothOfRelativeDimension g B.hom)
-    (hn : (n : k) ≠ 0) (h2 : 2 ≤ n) (ht : ∀ x : 𝟙_ (Over (Sp k)) ⟶ B, x ^ n = 1 → x = 1) :
-    g = 0 := by
-  have : Unique {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} :=
-    ⟨⟨⟨1, one_pow n⟩⟩, fun x => Subtype.ext (ht x.1 x.2)⟩
-  have h1 := h k B g n hB hg hn
-  rw [Nat.card_unique] at h1
-  rcases Nat.pow_eq_one.1 h1.symm with h3 | h3 <;> omega
-
-omit [IsAlgClosed k] in
-
-theorem unit_case (n : ℕ) : IsAbelianScheme (𝟙_ (Over (Sp k))) ∧
-    SmoothOfRelativeDimension 0 (𝟙_ (Over (Sp k))).hom ∧
-    Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ 𝟙_ (Over (Sp k))) // x ^ n = 1} = n ^ (2 * 0) := by
-  refine ⟨⟨inferInstance, ?_, ?_, ?_⟩, ?_, ?_⟩
-  · exact inferInstanceAs (Smooth (𝟙 (Sp k)))
-  · exact inferInstanceAs (IsProper (𝟙 (Sp k)))
-  · change GeometricallyConnected (𝟙 (Sp k))
-    refine ⟨fun K _ y Z fst snd H => ?_⟩
-    have : IsIso snd := H.isIso_snd_of_isIso
-    exact snd.homeomorph.symm.surjective.connectedSpace snd.homeomorph.symm.continuous
-  · exact inferInstanceAs (SmoothOfRelativeDimension 0 (𝟙 (Sp k)))
-  · have : Unique {x : (𝟙_ (Over (Sp k)) ⟶ 𝟙_ (Over (Sp k))) // x ^ n = 1} :=
-      ⟨⟨⟨1, one_pow n⟩⟩, fun x => Subtype.ext (toUnit_unique _ _)⟩
-    rw [Nat.card_unique, mul_zero, pow_zero]
-
 end AbMulNSt
 
 end GlobalTheory.Published

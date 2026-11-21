@@ -11,13 +11,6 @@ def SpTri {ι A C : Type} [CommRing A] [CommRing C] (M : ι → M4 A) (P : ι �
 
 def Dist {A : Type} [CommRing A] (I : Ideal A) (p : A[X]) : Prop := p.Monic ∧ ∀ n < p.natDegree, p.coeff n ∈ I
 
-example {A : Type} [CommRing A] : SpTri (fun _ : Unit => (0 : M4 A)) (fun _ _ => X) (RingHom.id A) 1 := by
-  refine ⟨?_, fun _ => ⟨fun i j _ => by simp, fun i => by simp⟩⟩
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]
-
-example {A : Type} [CommRing A] (I : Ideal A) : Dist I 1 := ⟨monic_one, by simp⟩
-
 theorem SpTri.map {ι A C C' : Type} [CommRing A] [CommRing C] [CommRing C'] {M : ι → M4 A} {P : ι → Fin 4 → A[X]}
     {φ : A →+* C} {u : M4 C} (h : SpTri M P φ u) (ψ : C →+* C') : SpTri M P (ψ.comp φ) (u.map ψ) := by
   have a : ∀ Y : M4 C, adj (Y.map ψ) = (adj Y).map ψ := fun Y => by

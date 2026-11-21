@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIndependentPrimeRelIndexSubgroups
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsPlacePowAndNotPowStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsEqPowMulPthPowAdicCompletionUnitStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsPlacePowAndNotPow
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsEqPowMulPthPowAdicCompletionUnit
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowsSubgroupOfSelfSPow
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
@@ -77,7 +77,7 @@ theorem exists_auxiliary_places_prime : ∀ (p : ℕ) (F : Type) [Field F] [Numb
     (fun v _ x _ => hpw v x)
     (by
       rintro v ⟨hv, -⟩ x hx hx' y hy
-      obtain ⟨k, r, hr⟩ := GlobalTheory.T.exists_eq_pow_mul_pth_pow_adicCompletion_unit p F v (algebraMap F (v.adicCompletion F) x)
+      obtain ⟨k, r, hr⟩ := _root_.GlobalTheory.CNorm.exists_eq_pow_mul_pow_of_unit p F v (algebraMap F (v.adicCompletion F) x)
         (algebraMap F (v.adicCompletion F) y) hp (hS.2 v hv)
         (by rw [hval]; exact (mem_sUnits F S x).1 hx v hv)
         (by rw [hval]; exact (mem_sUnits F S y).1 hy v hv)
@@ -88,7 +88,7 @@ theorem exists_auxiliary_places_prime : ∀ (p : ℕ) (F : Type) [Field F] [Numb
       field_simp)
     (by
       intro x hx hxH
-      obtain ⟨v, h1, h2, h3⟩ := GlobalTheory.T.exists_place_pow_and_not_pow' p F ζ δ x S hp hζ δ.ne_zero x.ne_zero hns
+      obtain ⟨v, h1, h2, h3⟩ := _root_.GlobalTheory.CNorm.exists_place_pow_and_not_pow p F ζ δ x S hp hζ δ.ne_zero x.ne_zero hns
         (fun k r h => hxH (by
           have h4 : x / δ ^ k ∈ pows p (sUnits F S) := by
             refine mem_pows_sUnits_chooseT p hp.ne_zero F S _

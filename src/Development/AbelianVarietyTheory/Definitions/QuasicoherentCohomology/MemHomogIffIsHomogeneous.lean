@@ -65,64 +65,6 @@ instance gradedAlgebra : GradedAlgebra (homog R M) :=
       rw [map_mul, ih, SymmetricAlgebra.lift_ι_apply, gradedι_apply, DirectSum.of_mul_of]
       exact DirectSum.of_eq_of_gradedMonoid_eq (Sigma.subtype_ext (add_comm _ _) rfl)
 
-theorem algHom_mem_pow {A : Type*} [CommRing A] [Algebra R A]
-    (φ : SymmetricAlgebra R M →ₐ[R] A) (P : Submodule R A)
-    (h : ∀ m, φ (SymmetricAlgebra.ι R M m) ∈ P) {d : ℕ} {x : SymmetricAlgebra R M}
-    (hx : x ∈ homog R M d) : φ x ∈ P ^ d := by
-  have h1 : (LinearMap.range (SymmetricAlgebra.ι R M)).map φ.toLinearMap ≤ P := by
-    rintro _ ⟨_, ⟨m, rfl⟩, rfl⟩
-    exact h m
-  have h2 := Submodule.map_pow (LinearMap.range (SymmetricAlgebra.ι R M)) φ d
-  have h3 : φ x ∈ ((LinearMap.range (SymmetricAlgebra.ι R M)) ^ d).map φ.toLinearMap :=
-    ⟨x, hx, rfl⟩
-  rw [h2] at h3
-  exact pow_le_pow_left' h1 d h3
-
-theorem map_mem_homog (f : M →ₗ[R] M') {d : ℕ} {x : SymmetricAlgebra R M}
-    (hx : x ∈ homog R M d) : map f x ∈ homog R M' d :=
-  algHom_mem_pow (map f) _ (fun m => by simp) hx
-
-theorem algHom_eq_pow_mul {A : Type*} [CommRing A] [Algebra R A]
-    (φ ψ : SymmetricAlgebra R M →ₐ[R] A) (s : A)
-    (h : ∀ m, φ (SymmetricAlgebra.ι R M m) = s * ψ (SymmetricAlgebra.ι R M m)) {d : ℕ}
-    {x : SymmetricAlgebra R M} (hx : x ∈ homog R M d) : φ x = s ^ d * ψ x := by
-  induction hx using Submodule.pow_induction_on_left' with
-  | algebraMap r => simp
-  | add x y i hx hy ihx ihy => rw [map_add, map_add, ihx, ihy, mul_add]
-  | mem_mul m hm i x hx ih =>
-    obtain ⟨_, rfl⟩ := hm
-    rw [map_mul, map_mul, ih, h, pow_succ]; ring
-
-theorem mem_homog_iff_isHomogeneous {ι : Type*} (b : Basis ι R M) (d : ℕ)
-    (x : SymmetricAlgebra R M) :
-    x ∈ homog R M d ↔ (SymmetricAlgebra.equivMvPolynomial b x).IsHomogeneous d := by
-  rw [← MvPolynomial.mem_homogeneousSubmodule, ← MvPolynomial.homogeneousSubmodule_one_pow]
-  constructor
-  · intro hx
-    refine algHom_mem_pow (SymmetricAlgebra.equivMvPolynomial b).toAlgHom _ (fun m => ?_) hx
-    have hm : m ∈ Submodule.span R (Set.range b) := by rw [b.span_eq]; trivial
-    induction hm using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨i, rfl⟩ := hx
-      simpa using MvPolynomial.isHomogeneous_X R i
-    | zero => simp
-    | add x y _ _ hx hy => simpa only [map_add] using Submodule.add_mem _ hx hy
-    | smul r x _ hx => simpa only [map_smul] using Submodule.smul_mem _ r hx
-  · intro hx
-    have h1 : (MvPolynomial.homogeneousSubmodule ι R 1).map
-        (SymmetricAlgebra.equivMvPolynomial b).symm.toAlgHom.toLinearMap ≤
-        LinearMap.range (SymmetricAlgebra.ι R M) := by
-      rw [MvPolynomial.homogeneousSubmodule_one_eq_span_X, Submodule.map_span, Submodule.span_le]
-      rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩
-      exact ⟨b i, by simp⟩
-    have h2 := Submodule.map_pow (MvPolynomial.homogeneousSubmodule ι R 1)
-      (SymmetricAlgebra.equivMvPolynomial b).symm.toAlgHom d
-    have h3 : x ∈ ((MvPolynomial.homogeneousSubmodule ι R 1) ^ d).map
-        (SymmetricAlgebra.equivMvPolynomial b).symm.toAlgHom.toLinearMap :=
-      ⟨_, hx, by simp⟩
-    rw [h2] at h3
-    exact pow_le_pow_left' h1 d h3
-
 instance projective [Module.Projective R M] : Module.Projective R (SymmetricAlgebra R M) := by
   obtain ⟨s, hs⟩ := Module.projective_def'.1 ‹Module.Projective R M›
   refine Module.Projective.of_split (map s).toLinearMap
@@ -195,28 +137,6 @@ theorem isBaseChange_dual [Module.Finite R M] [Module.Projective R M] {j : M →
     refine h.algHom_ext _ _ fun m => ?_
     rw [key]
     simp
-
-theorem mapOver_mem_homog (j : M →ₗ[R] W) {d : ℕ} {x : SymmetricAlgebra R M}
-    (hx : x ∈ homog R M d) : mapOver S j x ∈ homog S W d := by
-  induction hx using Submodule.pow_induction_on_left' with
-  | algebraMap r =>
-    rw [AlgHom.commutes, IsScalarTower.algebraMap_apply R S (SymmetricAlgebra S W)]
-    exact SetLike.algebraMap_mem_graded (homog S W) _
-  | add x y i hx hy ihx ihy => rw [map_add]; exact Submodule.add_mem _ ihx ihy
-  | mem_mul m hm i x hx ih =>
-    obtain ⟨m, rfl⟩ := hm
-    rw [map_mul, mapOver_ι, Nat.succ_eq_one_add]
-    exact SetLike.mul_mem_graded (ι_mem_homog _) ih
-
-theorem mapOver_injective [Module.Projective R M] {j : M →ₗ[R] W} (h : IsBaseChange S j)
-    (hS : Function.Injective (algebraMap R S)) : Function.Injective (mapOver S j) := by
-  have h1 : Function.Injective (Algebra.TensorProduct.includeRight :
-      SymmetricAlgebra R M →ₐ[R] S ⊗[R] SymmetricAlgebra R M) :=
-    Algebra.TensorProduct.includeRight_injective hS
-  intro x y hxy
-  apply h1
-  apply (baseChangeEquiv h).injective
-  simpa using hxy
 
 end BaseChange
 

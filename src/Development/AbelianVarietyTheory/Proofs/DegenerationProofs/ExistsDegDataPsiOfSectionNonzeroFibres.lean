@@ -17,16 +17,16 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPsiThe
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitValEqMul
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiInIffScalarMem
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorsionEqOneOfTranslationKeepsRatios
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.RigidificationComparisonUniformisationStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.RigidificationComparisonUniformisation
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiRelOfExpTStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ForallTermNeZeroOfPsiRelationStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsExpansionTermUnitClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FibrewiseNonzeroSectionProdAndBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiCmpOfSecCmpStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ForallTermNeZeroOfPsiRelation
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsExpansionTermUnitClosedFibre
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FibrewiseNonzeroSectionProdAndBaseChange
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiCmpOfSecCmp
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiEvenDescendBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TauBimultOfBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsPullDegOfComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSectionNonzeroFibresLocalRingStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TauBimultOfBaseChange
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsPullDegOfComparison
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSectionNonzeroFibresLocalRing
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTwistedSectionThetaTranslateCoefStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarMemOfPsiMemIdealStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarEqExpansionCoefRatioStatement
@@ -77,15 +77,15 @@ theorem exists_degData_of_thetaNZ : Laws → Laws2 → Ega → ∀ (R : Type) [C
   have hV' : AdmBase V (IsLocalRing.maximalIdeal V) := ⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩
   have hm : IsLocalRing.maximalIdeal V ≠ ⊤ := (IsLocalRing.maximalIdeal.isMaximal V).ne_top
   have hIm : I.map φ ≤ IsLocalRing.maximalIdeal V := Ideal.map_le_iff_le_comap.2 hI.ge
-  obtain ⟨hσ₁, hσ₂⟩ := GlobalTheory.T.fibrewiseNonzeroSection_prod_and_baseChange R V I _ φ D D'.toPre A G A' G' U U' F C
+  obtain ⟨hσ₁, hσ₂⟩ := _root_.GlobalTheory.fibNZ_prod_and_baseChange R V I _ φ D D'.toPre A G A' G' U U' F C
   obtain ⟨σ, hσ⟩ := hσ₁ hθ
   obtain ⟨f, hf, -⟩ := CompleteBaseExpansion.main h₁ h₂ hE R I hR hP.ne_top D A G U 1 σ
   obtain ⟨σ', f', hf', hσσ, hff⟩ := ExpCmp.expT_cmp R V I _ φ hIm D D'.toPre A A' G G' U U' F C 1 σ f hf
   have hcmp : SecCmp D D'.toPre C.β C.v C.xe f f' := hff
   have hrel' := GlobalTheory.T.psiRel_of_expT' h₁ h₂ V _ hV' D' A' G' U' U₀ hU σ' f' hf'
   have hne' : ∀ α, ∃ j, (f' α).f j ≠ 0 := by
-    refine GlobalTheory.T.forall_term_ne_zero_of_psiRelation V D'.toPre f' hrel' ?_
-    obtain ⟨T, y, z, J, α, hJ, -, -, hu⟩ := GlobalTheory.T.exists_expansionTerm_unit_closedFibre V _ hm D'.toPre A' G' U' 1 σ' f' hf' (hσ₂ 1 σ σ' hσσ hσ)
+    refine _root_.GlobalTheory.forall_ne_zero_of_psiRel V D'.toPre f' hrel' ?_
+    obtain ⟨T, y, z, J, α, hJ, -, -, hu⟩ := _root_.GlobalTheory.PsiRing.exists_unit_term V _ hm D'.toPre A' G' U' 1 σ' f' hf' (hσ₂ 1 σ σ' hσσ hσ)
     refine ⟨α, ?_⟩
     by_contra h0
     push Not at h0
@@ -94,18 +94,18 @@ theorem exists_degData_of_thetaNZ : Laws → Laws2 → Ega → ∀ (R : Type) [C
   obtain ⟨psi, h, hrel⟩ := exists_psi_psiRel h₁ h₂ R D f (ne_zero_of_secCmp C.pbB.1.w hcmp hne')
   let E : DegPre R := withPsi D psi h
   have hrelE : PsiRel E (𝟙_ _) f := hrel
-  have hrig : RigCmp φ E D'.toPre C.β C.v := GlobalTheory.T.rigidification_comparison_uniformisation R V I _ φ hm hIm D D'.toPre A G A' G' U U' F C
+  have hrig : RigCmp φ E D'.toPre C.β C.v := _root_.GlobalTheory.rigCmp_of_cmp R V I _ φ hm hIm D D'.toPre A G A' G' U U' F C
   obtain ⟨gam, hgam⟩ := exists_generic_map hφ
   have hpsi : PsiCmp E D'.toPre C.β C.v C.xe gam :=
-    GlobalTheory.T.psiCmp_of_secCmp' R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig f f' hcmp hrelE hrel' (hne' 0) gam hgam
+    _root_.GlobalTheory.psiCmp_of_secCmp R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig f f' hcmp hrelE hrel' (hne' 0) gam hgam
   have hev : E.PsiEven :=
     GlobalTheory.T.psiEven_descend_baseChange h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr gam hgam hpsi D'.psi_even
   have hbi : E.TauBimult :=
-    GlobalTheory.T.tauBimult_of_baseChange' h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi D'.tau_bimult
+    _root_.GlobalTheory.tauBimult_of_baseChange h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi D'.tau_bimult
   obtain ⟨hD, hD₁, hD₂, hD₃⟩ :=
-    GlobalTheory.T.exists_isPullDeg_of_comparison R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi hbi
+    _root_.GlobalTheory.PsiRing.exists_isPullDeg_of_cmp R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi hbi
   obtain ⟨ga, a, hS⟩ := exists_psiScal R E
-  obtain ⟨th, hth, hmul⟩ := GlobalTheory.T.exists_thetaSection_nonzeroFibres_localRing h₂.secTwist R D
+  obtain ⟨th, hth, hmul⟩ := _root_.GlobalTheory.PsiRing.exists_basis_fibNZ h₂.secTwist R D
   obtain ⟨q, hq⟩ := hmul (f 0)
   choose b hb using fun χ : D.X => GlobalTheory.T.exists_twistedSection_thetaTranslate_coef R D th hmul χ (ga χ) (hS χ).1 (f χ)
   have hab : ∀ χ, algebraMap R (FractionRing R) q * (a χ).val = algebraMap R (FractionRing R) (b χ) := fun χ =>
@@ -117,7 +117,7 @@ theorem exists_degData_of_thetaNZ : Laws → Laws2 → Ega → ∀ (R : Type) [C
     refine hI.le (Ideal.mem_comap.2 ?_)
     exact (congrArg (· ∈ IsLocalRing.maximalIdeal V) hm₂).mpr (Ideal.mul_mem_left _ _ hm₁)
   have hqu : IsUnit q := by
-    obtain ⟨T, y, z, J, α, hJ, hz, h0, hu⟩ := GlobalTheory.T.exists_expansionTerm_unit_closedFibre R I hP.ne_top D A G U 1 σ f hf hσ
+    obtain ⟨T, y, z, J, α, hJ, hz, h0, hu⟩ := _root_.GlobalTheory.PsiRing.exists_unit_term R I hP.ne_top D A G U 1 σ f hf hσ
     by_cases hα : α = 0
     · subst hα
       rw [hq _ _ z J hJ, show (lift (toUnit T) y).left ≫ (𝟙_ _ ⊗ D.P.A).hom = T.hom from Over.w _] at hu

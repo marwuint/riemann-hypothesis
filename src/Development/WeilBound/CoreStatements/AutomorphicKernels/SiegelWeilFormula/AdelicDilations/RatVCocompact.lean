@@ -12,9 +12,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 namespace COneB
 
-example (k : ℕ) : BorelSpace (Fin k → AE F E) := inferInstance
-example (k : ℕ) : OpensMeasurableSpace (Fin k → AE F E) := inferInstance
-
 variable {d : SD σ} (L : LD d)
 
 def Nu (u : Fin L.n → AE F E) : Matrix (Fin d.n) (Fin d.n) (AE F E) := ∑ j, Matrix.single L.i₀ (L.em j) (u j)

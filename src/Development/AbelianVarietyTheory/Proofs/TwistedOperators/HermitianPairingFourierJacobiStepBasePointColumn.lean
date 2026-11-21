@@ -80,6 +80,4 @@ theorem hA_xFB_col : OnStd fun {D} _ _ {sc} {G} _ F => ∀ σ (h : 2 * (σ + 1) 
   intro D _ T L _ _ sc G _ _ _ F hF σ h h' a' p
   rw [xFB_col F hF σ h' p, extY_col F hF σ h a' p, hA_smul_left, hA_smul_right, GlobalTheory.DualPairCheck.cA_incA, star_star]
 
-example (T : HSp D) (c : AE D) : hA T (c • 0) 0 = c * hA T 0 0 := hA_smul_left T c 0 0
-
 end GlobalTheory.CharXFB

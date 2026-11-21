@@ -34,30 +34,6 @@ theorem conjO_mem_extP (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {z : 
 theorem ne_bot_of_isMaximal {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : 𝔭 ≠ ⊥ :=
   Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (RingOfIntegers.not_isField F)
 
-theorem mem_pow_sub {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {s n : 𝓞 F} {k v : ℕ}
-    (hn : n ∈ 𝔭 ^ v) (hn' : n ∉ 𝔭 ^ (v + 1)) (h : s * n ∈ 𝔭 ^ k) : s ∈ 𝔭 ^ (k - v) := by
-  have hne := ne_bot_of_isMaximal h𝔭
-  have hpr : Prime 𝔭 := Ideal.prime_of_isPrime hne h𝔭.isPrime
-  by_cases hkv : k ≤ v
-  · rw [Nat.sub_eq_zero_of_le hkv, pow_zero, Ideal.one_eq_top]
-    exact Submodule.mem_top
-  obtain ⟨J, hJ⟩ : 𝔭 ^ v ∣ Ideal.span {n} := by
-    rw [Ideal.dvd_span_singleton]
-    exact hn
-  have hJ' : ¬ 𝔭 ∣ J := by
-    rintro ⟨C, rfl⟩
-    apply hn'
-    rw [← Ideal.dvd_span_singleton, hJ, pow_succ, ← mul_assoc]
-    exact Dvd.intro _ rfl
-  have h2 : 𝔭 ^ k ∣ Ideal.span {s} * Ideal.span {n} := by
-    rw [Ideal.span_singleton_mul_span_singleton, Ideal.dvd_span_singleton]
-    exact h
-  have ek : k = v + (k - v) := by omega
-  rw [hJ, ek, pow_add, mul_left_comm] at h2
-  have h3 := (mul_dvd_mul_iff_left (pow_ne_zero v hne)).1 h2
-  rw [← Ideal.dvd_span_singleton]
-  exact hpr.pow_dvd_of_dvd_mul_right _ hJ' h3
-
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 

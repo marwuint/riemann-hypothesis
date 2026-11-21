@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReadPk
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeRepresentativesPartsOtherLaterStagesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeRepresentativesPartsOtherLaterStages
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FinTypRepCast
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
@@ -16,7 +17,7 @@ set_option maxHeartbeats 4000000 in
 
 theorem chT_tr : ∀ (B : Base) (C : Cols B) (a b : Late B C) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (Ks : Type) [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL] (A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m) (R : RealDat a.D A Ks) (F : Face a.D A) (y : Hd R) (y' : HdB b R), Same b y y' → ∀ (bb : Bool) (Φ : Type) (rep : Φ → _) (Top : C.Tup → Hs) (c : ChD C.Tup Φ B.R.m Top) jA (t : ChT y F bb rep (Top := Top) jA c) jA', HEq jA' jA → ∃ t' : @ChT b.D G _ _ Pl0 T (famM b A) Ks _ _ (alg b iK) (real b R) y' (face b F) bb Φ ((rep)) Top jA' c, letI := alg b iK; HEq t'.jE t.jE ∧ HEq t'.jM t.jM ∧ HEq t'.jX t.jX := by
   intro B C a b G _ _ Pl0 T Ks _ _ iK A R F y y' hS bb Φ rep Top c jA t jA' hjA
-  have hP := (GlobalTheory.T.typeRepresentativesParts_otherLaterStages B C a b G Pl0 T Ks A R F y y' hS).2.1
+  have hP := (_root_.GlobalTheory.Mem.R3.Tr.reps_parts_tr B C a b G Pl0 T Ks A R F y y' hS).2.1
   obtain ⟨htup, htupT, hPY, hPW⟩ := hS
   rcases y' with ⟨tup', tupT', tupT_tup', tup0', hm', hTop', hinj', PY', PW', ιW', isomFin', frameMatch', hF', stdPsi'⟩
   have e1 : tup' = (y.tup) := eq_of_heq ((htup))

@@ -276,7 +276,3 @@ private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Q
 
 end SlopeTestRemainingChoices
 
-theorem UpperTheory.V.Pr.seedPtOf :
-    GlobalTheory.Published.GlobalArtinReciprocity → UpperTheory.V.Pr.SeedPtOf := by
-  intro H Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ k c₁ _ f n ka R hka χ' j hχ hc m hm r hr J hJ
-  exact main H ι ((Dvd.intro _ rfl).trans hL.dvd) R hka χ' j hχ hc m hm r hr J hJ

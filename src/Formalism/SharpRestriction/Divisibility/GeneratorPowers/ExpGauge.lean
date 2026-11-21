@@ -30,6 +30,4 @@ theorem expGaugeOf_of (hA : ExpActOfSt) : ExpGaugeOfSt := by
   exact ⟨β, hβ, hβ0, fun m => ExpGL.coc_chart ExpGJPh1.phOneVal_holds ExpGJ.phTwoVal_holds ExpGJ.adVal
     ExpGU.unitId ExpGO.bqOrigin hs C φ hφ hx hact τ u hτc hu a wLa hra wLb hrb β hβv m⟩
 
-theorem expGaugeOf_holds (hE : LinEigSt) : ExpGaugeOfSt := expGaugeOf_of (expActOf_of hE)
-
 end Formalism.MainNotions.ModuliIntegralCharts.H1.ExpGauge

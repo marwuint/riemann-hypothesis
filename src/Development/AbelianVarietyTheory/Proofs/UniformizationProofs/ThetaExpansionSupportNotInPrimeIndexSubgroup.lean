@@ -18,7 +18,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsLinear
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianSectionsIrreducibleThetaGroup
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpFOneDimStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LineZeroConst
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaPowersExpansionSupportSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaPowersExpansionSupportSubgroup
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -106,7 +106,7 @@ theorem hom_zmod_eq_zero_of_support : Laws → Laws2 → (AllPre fun {V} _ _ _ {
   suffices H : m P = 1 by
     have e : p = o := congrArg Subtype.val (minj (H.trans mO.symm))
     exact pz.1 (e ▸ oz.2 rfl)
-  obtain ⟨σ, fl, hσ, hfl, hpow⟩ := GlobalTheory.T.thetaPowers_expansion_support_subgroup L₁ L₂ V hV D A G U g.ker θ f hθ.1 (fun α hα j => by
+  obtain ⟨σ, fl, hσ, hfl, hpow⟩ := _root_.GlobalTheory.UU.exists_pow_exp_supp L₁ L₂ V hV D A G U g.ker θ f hθ.1 (fun α hα j => by
     by_contra hj
     exact hα (hg α ⟨j, hj⟩)) l hl1
   obtain ⟨th, hth, -⟩ := PullSec.existsUnique_pullG U (Kbar V) (toUnit _) 1 θ

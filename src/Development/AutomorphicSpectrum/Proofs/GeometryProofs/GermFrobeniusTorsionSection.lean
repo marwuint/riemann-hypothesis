@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JetLeftMem
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermFrobeniusTorsionJetStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermFrobeniusTorsionJet
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslDiffEq
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Coc
 open scoped CategoryTheory.Obj
@@ -62,7 +63,7 @@ theorem peG_act_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     refine Eq.trans (congrArg (jq w p m) (jetSubstP_mk_X _ _ _)) ?_
     refine Eq.trans ?_ (congrArg (fun u => jq w p m (jetCopy d (p + m + 1) (1 : Fin 2) u)) (jetSubstP_mk_X _ _ _)).symm
     fin_cases a
-    · have h0 := GlobalTheory.T.germ_frobenius_torsion_jet E H hstar X0 t k p x d g w m hp j
+    · have h0 := _root_.GlobalTheory.CompanionTheory.Ar.Coc.actp_vanish E H hstar X0 t k p x d g w m hp j
       have hc := constantCoeff_psIn (p + m + 1) (![0] : Fin 1 → Fin 2) (g.B.A.act (p : 𝓞 E) j) (g.B.A.const _ _)
       simp [hc, h0]
     · simp [jetCopy_mkX]

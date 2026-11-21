@@ -12,9 +12,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.Biextensions.CubicalExtendsSt
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsOpenChartFramedPointTestRingStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniversalFrameTestRingStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UniversalFrameClassifiesFramedPointsStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsOpenChartFramedPointTestRing
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniversalFrameTestRing
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UniversalFrameClassifiesFramedPoints
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFactorOpenImmersion
 
 namespace GlobalTheory.Frames
@@ -33,7 +33,7 @@ theorem framedPoint_field_fromTest :
   have h1 : xF ≫ pullback.fst _ _ = y.x := pullback.lift_fst _ _ _
   have h2 : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := pullback.lift_snd _ _ _
   let q : Sp S := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S)
-  obtain ⟨p, j, y₀, hj, hq⟩ := GlobalTheory.T.exists_openChart_framedPoint_testRing hB E H Dw l Xo c (xF q)
+  obtain ⟨p, j, y₀, hj, hq⟩ := _root_.GlobalTheory.Frames.exists_openChart_testRing hB E H Dw l Xo c (xF q)
   obtain ⟨g, hg, hfac⟩ := openChart_factor_near_prime E H Dw l Xo c p.R j y₀ hj S xF h2 q hq
   have hg0 : g ≠ 0 := fun h => hg (h ▸ Ideal.zero_mem _)
   obtain ⟨ψ, hψ⟩ := hfac S (AlgHom.id c.F S) (Ne.isUnit hg0)
@@ -41,8 +41,8 @@ theorem framedPoint_field_fromTest :
   rw [hid, Category.id_comp] at hψ
   have hx : y.x = spMap ψ.toRingHom ≫ y₀.x := by
     rw [← h1, hψ, Category.assoc, hj.2.1]
-  obtain ⟨A, π, X, s, u, hu⟩ := GlobalTheory.T.exists_universalFrame_testRing hB E H Dw l Xo c p y₀
-  obtain ⟨a, ⟨-, ha⟩, -⟩ := GlobalTheory.T.universalFrame_classifies_framedPoints hB E H Dw l Xo c p.R A.R y₀ π X s u hu S y ψ hx
+  obtain ⟨A, π, X, s, u, hu⟩ := _root_.GlobalTheory.Frames.exists_univFrame_testRing hB E H Dw l Xo c p y₀
+  obtain ⟨a, ⟨-, ha⟩, -⟩ := _root_.GlobalTheory.Frames.univFrame_classifies hB E H Dw l Xo c p.R A.R y₀ π X s u hu S y ψ hx
   exact ⟨A, a, u, ha⟩
 
 end GlobalTheory.Frames

@@ -1,11 +1,12 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StRefChartDisc
-import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StConeTangentDisc
+import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StNbarLeviChartReg
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PNbarSmooth
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
 import GroundTheory.HeightsAndTheta.Heights.Intersections.RegularizedCurvature
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCEqZeroOfEventuallyEqZero
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -120,122 +121,5 @@ theorem regNbarQ_smooth_eq [DecidableEq Ψ] (hE : HermExtend.Statement) (hP : Pr
   exact smoothRep_smooth_of (Z := Z) hZa hZs fun z hz => (hZh z hz).trans (hon z hz).symm
 
 end NbarLeviChartReg
-
-open NbarLeviChartReg in
-
-theorem NbarLeviChartReg.proof (hDisc : ConeTangentDisc.Statement) (hProj : ProjChartHolo.Statement)
-    (hRef : RefChartDisc.Statement) (hE : HermExtend.Statement) (hP : ProjSmoothAlong.Statement) :
-    NbarLeviChartReg.Statement := by
-  intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D H M S _ B p q t hsm z hz w hw k hk
-  obtain ⟨γ, hγ0, hγd, hγa, hγm⟩ := hDisc II Ψ K ι Ω E D z hz w hw
-  subst hγ0
-  have hsrc : M.proj (γ 0) ∈ (S.R.chart k).source := S.R.mid_subset_source k hk
-  have hχ := hProj II Ψ K ι Ω E D M (S.R.chart k) (S.R.compat k) γ hγa hγm hsrc
-  obtain ⟨G, hGa, hGe⟩ := hRef II Ψ K ι Ω E D H M S k γ hγa hγm hsrc
-  refine ⟨deriv (fun s => S.R.chart k (M.proj (γ s))) 0,
-    ⟨γ, rfl, hγd, ?_, hχ.differentiableAt.hasDerivAt⟩, ?_⟩
-  · filter_upwards [hγa.eventually_analyticAt, hγm] with s hs1 hs2
-    exact ⟨hs1.differentiableAt, hs2⟩
-  obtain ⟨hNs, hNe⟩ := regNbarQ_smooth_eq hE hP D H M S B p q t hsm
-  have hSB : ∀ p' ∈ D.SB B, p' ∈ D.S := fun p' hp' => (Finset.mem_filter.1 hp').1
-  have hex : ∀ p' ∈ D.SB B, ∃ T : ((Σ k, ι k) → ℂ) → ℂ, AnalyticAt ℂ T (γ 0) ∧ T (γ 0) ≠ 0 ∧
-      ∀ᶠ y in 𝓝 (γ 0), y ∈ mcPts (mCoordIdeal D.y) → D.vertFactor p' y = ‖T y‖ :=
-    fun p' hp' => vertFactor_local D (hSB p' hp') hz
-  choose! T hTa hT0 hTe using hex
-  have hTta : AnalyticAt ℂ (fun y => ∏ p' ∈ D.SB B, T p' y) (γ 0) := (D.SB B).analyticAt_fun_prod hTa
-  have hTt0 : (∏ p' ∈ D.SB B, T p' (γ 0)) ≠ 0 := Finset.prod_ne_zero_iff.2 hT0
-  have hΓa : AnalyticAt ℂ (fun u : Fin 1 → ℂ => γ (u 0)) 0 := analyticAt_disc hγa
-  have hΓd : fderiv ℂ (fun u : Fin 1 → ℂ => γ (u 0)) 0 (fun _ => 1) = w := fderiv_disc hγd
-  have hχ1 : AnalyticAt ℂ (fun u : Fin 1 → ℂ => S.R.chart k (M.proj (γ (u 0)))) 0 := analyticAt_disc hχ
-  have hχd : fderiv ℂ (fun u : Fin 1 → ℂ => S.R.chart k (M.proj (γ (u 0)))) 0 (fun _ => 1) =
-      deriv (fun s => S.R.chart k (M.proj (γ s))) 0 := fderiv_disc hχ.differentiableAt.hasDerivAt
-  have hG1 : AnalyticAt ℂ (fun u : Fin 1 → ℂ => G (u 0)) 0 := analyticAt_disc hGa
-  have hO : {y : (Σ k, ι k) → ℂ | ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0} ∈ 𝓝 (γ 0) := MuRegSmooth.isOpen_blocks.mem_nhds hz.1
-  have hlogN : ContDiffAt ℝ 2 (fun y => Real.log ((regNbarQ H M S B p q t).h y)) (γ 0) :=
-    ((hNs.contDiffAt hO).of_le (WithTop.coe_le_coe.2 le_top)).log ((regNbarQ H M S B p q t).pos _ hz.1).ne'
-  have hlogA : ContDiffAt ℝ 2 (fun y => Real.log (D.A'.h y)) (γ 0) :=
-    ((D.A'_pos.1.contDiffAt hO).of_le (WithTop.coe_le_coe.2 le_top)).log (D.A'.pos _ hz.1).ne'
-  have hx0 : S.R.chart k (M.proj (γ 0)) ∈ (S.R.chart k).target := (S.R.chart k).map_source hsrc
-  have hcf : ContDiffAt ℝ 2 (S.R.chartFun (S.regWeight t) k) (S.R.chart k (M.proj (γ 0))) := by
-    have hq : ContDiffAt ℝ 2 (S.R.q k) (S.R.chart k (M.proj (γ 0))) :=
-      ((S.R.q_smooth k).contDiffAt ((S.R.chart k).open_target.mem_nhds hx0)).of_le (WithTop.coe_le_coe.2 le_top)
-    have hφ : ContDiffAt ℝ 2 (S.regWeight t ∘ (S.R.chart k).symm) (S.R.chart k (M.proj (γ 0))) :=
-      ((ReciprocityTheory.AnForm.M.PLAux.contDiffOn_compat (S.R.compat k) isOpen_univ hsm).contDiffAt
-        (by simpa using (S.R.chart k).open_target.mem_nhds hx0)).of_le (WithTop.coe_le_coe.2 le_top)
-    exact hq.add hφ
-
-  have hγz : Tendsto γ (𝓝 0) (𝓝 (γ 0)) := hγa.continuousAt.tendsto
-  have hcont : Tendsto (fun s => M.proj (γ s)) (𝓝 0) (𝓝 (M.proj (γ 0))) :=
-    (M.cont (γ 0) hz).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hγz, hγm⟩)
-  have hsrcE : ∀ᶠ s in 𝓝 (0 : ℂ), M.proj (γ s) ∈ (S.R.chart k).source :=
-    hcont ((S.R.chart k).open_source.mem_nhds hsrc)
-  have hTE : ∀ᶠ s in 𝓝 (0 : ℂ), ∀ p' ∈ D.SB B, γ s ∈ mcPts (mCoordIdeal D.y) →
-      D.vertFactor p' (γ s) = ‖T p' (γ s)‖ :=
-    hγz.eventually ((Filter.eventually_all_finset _).2 hTe)
-  have hE0 : ∀ᶠ s in 𝓝 (0 : ℂ), Real.log ((regNbarQ H M S B p q t).h (γ s)) =
-      (q : ℝ) * (S.R.chartFun (S.regWeight t) k (S.R.chart k (M.proj (γ s))) + (-1) * (G s).re) +
-        (q : ℝ) * Real.log ‖∏ p' ∈ D.SB B, T p' (γ s)‖ + (p : ℝ) * Real.log (D.A'.h (γ s)) := by
-    filter_upwards [hγm, hGe, hsrcE, hTE] with s hsm' hsG hss hsT
-    have hvf : ∏ p' ∈ D.SB B, D.vertFactor p' (γ s) = ‖∏ p' ∈ D.SB B, T p' (γ s)‖ := by
-      rw [norm_prod]
-      exact Finset.prod_congr rfl fun p' hp' => hsT p' hp' hsm'
-    have hv0 : 0 < ∏ p' ∈ D.SB B, D.vertFactor p' (γ s) := Finset.prod_pos fun p' hp' =>
-      VertFactorPos.proof II Ψ K ι Ω E D p' (hSB p' hp') _ hsm'
-    have href := S.ref.pos _ hsm'.1
-    have hA := D.A'.pos _ hsm'.1
-    have hX : (S.ref.h (γ s) * Real.exp (S.regWeight t (M.proj (γ s)))) ^ q ≠ 0 :=
-      (pow_pos (mul_pos href (Real.exp_pos _)) q).ne'
-    have hY : (∏ p' ∈ D.SB B, D.vertFactor p' (γ s)) ^ q ≠ 0 := (pow_pos hv0 q).ne'
-    have hZ : D.A'.h (γ s) ^ p ≠ 0 := (pow_pos hA p).ne'
-    rw [hNe _ hsm', Real.log_mul (mul_ne_zero hX hY) hZ, Real.log_mul hX hY, Real.log_pow, Real.log_pow,
-      Real.log_pow, Real.log_mul href.ne' (Real.exp_pos _).ne', Real.log_exp, hvf, hsG]
-    simp only [Regular.PotentialCharts.chartFun, (S.R.chart k).left_inv hss]
-    ring
-
-  set A1 : (Fin 1 → ℂ) → ℝ := fun u => S.R.chartFun (S.regWeight t) k (S.R.chart k (M.proj (γ (u 0))))
-    with hA1def
-  set R1 : (Fin 1 → ℂ) → ℝ := fun u => (G (u 0)).re with hR1def
-  set L2 : (Fin 1 → ℂ) → ℝ := fun u => Real.log ‖∏ p' ∈ D.SB B, T p' (γ (u 0))‖ with hL2def
-  set L3 : (Fin 1 → ℂ) → ℝ := fun u => Real.log (D.A'.h (γ (u 0))) with hL3def
-  have hEv : (fun y => Real.log ((regNbarQ H M S B p q t).h y)) ∘ (fun u : Fin 1 → ℂ => γ (u 0)) =ᶠ[𝓝 0]
-      fun u => (q : ℝ) * (A1 u + (-1) * R1 u) + (q : ℝ) * L2 u + (p : ℝ) * L3 u := by
-    have ht : Tendsto (fun u : Fin 1 → ℂ => u 0) (𝓝 0) (𝓝 0) := by
-      simpa using (continuous_apply (0 : Fin 1)).tendsto (0 : Fin 1 → ℂ)
-    exact ht.eventually hE0
-  have hlevL : levi (fun y => Real.log ((regNbarQ H M S B p q t).h y)) (γ 0) w =
-      levi ((fun y => Real.log ((regNbarQ H M S B p q t).h y)) ∘ (fun u : Fin 1 → ℂ => γ (u 0))) 0
-        (fun _ => 1) := by
-    have h := levi_comp (fun _ => (1 : ℂ)) hΓa hlogN
-    rw [hΓd] at h
-    exact h.symm
-  have hA1c : ContDiffAt ℝ 2 A1 0 := hcf.comp (0 : Fin 1 → ℂ) (hχ1.restrictScalars.contDiffAt (n := 2))
-  have hA1l : levi A1 0 (fun _ => 1) = levi (S.R.chartFun (S.regWeight t) k) (S.R.chart k (M.proj (γ 0)))
-      (deriv (fun s => S.R.chart k (M.proj (γ s))) 0) := by
-    have h := levi_comp (φ := S.R.chartFun (S.regWeight t) k) (fun _ => (1 : ℂ)) hχ1 hcf
-    rw [hχd] at h
-    exact h
-  have hR1c : ContDiffAt ℝ 2 R1 0 := by
-    have h := (Complex.reCLM.contDiff (n := 2)).contDiffAt.comp (0 : Fin 1 → ℂ)
-      (hG1.restrictScalars.contDiffAt (n := 2))
-    convert h using 1
-    funext u
-    simp [hR1def]
-  have hR1l : levi R1 0 (fun _ => 1) = 0 := levi_re_analytic hG1 _
-  have hL2 := Inter.RegularizedCurvature.log_norm_pluriharmonic (T := fun u : Fin 1 → ℂ => ∏ p' ∈ D.SB B, T p' (γ (u 0)))
-    (hTta.comp_of_eq hΓa rfl) hTt0 (fun _ => 1)
-  have hL2c : ContDiffAt ℝ 2 L2 0 := hL2.1
-  have hL2l : levi L2 0 (fun _ => 1) = 0 := hL2.2
-  have hL3c : ContDiffAt ℝ 2 L3 0 := hlogA.comp (0 : Fin 1 → ℂ) (hΓa.restrictScalars.contDiffAt (n := 2))
-  have hL3l : levi L3 0 (fun _ => 1) = levi (fun y => Real.log (D.A'.h y)) (γ 0) w := by
-    have h := levi_comp (fun _ => (1 : ℂ)) hΓa hlogA
-    rw [hΓd] at h
-    exact h
-  have hf1 : ContDiffAt ℝ 2 (fun u => A1 u + (-1) * R1 u) 0 := hA1c.add (contDiffAt_const.mul hR1c)
-  have hq1 : ContDiffAt ℝ 2 (fun u => (q : ℝ) * (A1 u + (-1) * R1 u)) 0 := contDiffAt_const.mul hf1
-  have hq12 : ContDiffAt ℝ 2 (fun u => (q : ℝ) * (A1 u + (-1) * R1 u) + (q : ℝ) * L2 u) 0 :=
-    hq1.add (contDiffAt_const.mul hL2c)
-  rw [hlevL, levi_congr hEv, levi_add_smul (p : ℝ) hq12 hL3c, levi_add_smul (q : ℝ) hq1 hL2c,
-    levi_const_mul (q : ℝ) hf1, levi_add_smul (-1) hA1c hR1c, hA1l, hR1l, hL2l, hL3l]
-  ring
 
 end GroundTheory.Heights₂.Heights.NineStatements

@@ -6,10 +6,31 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JumpDictCrysAtOf
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryRationalInfTypeSubgroupAndInfTypeUnique
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntSubMem
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeneralAdmissibleOfIrreducibilityStmt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisHypothesesOfAttached
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TripleAtt
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.InjPrimeTo
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.OffRange
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FirstAdmissibilityAtOfParts
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Adm8AtOfUnramifiedHecke
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobDualOfAttached
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HkFrobOfAttached
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HodgeOfAttached
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpsGoodOfAttached
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedOfAttached
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjDualCharpolyOfSplitFrobeniusDense
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateNegativeJumpCountOfGoodHodgeJumps
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoInvAtTypePrimes
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoDecompositionInvariantsAboveLOfNoHodgeJump
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoInvTateDual
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoDecompositionInvariantsAuxiliaryPrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoHodgeJumpOfGoodJumpMultiset
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoInvAwayOfPure
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualLatticeOfConjDualCharpoly
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousNormFin
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCSDOfIsEtaT
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonodromyTrivialEverywhereStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonodromyTrivialEverywhere
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAttachedHodge
 
 noncomputable section
 
@@ -185,78 +206,6 @@ theorem cpow_add_real (P : PlE D.host) (a b : ℝ) : ((normV P : ℕ) : ℂ) ^ (
 theorem cpow_ne_zero' (P : PlE D.host) (a : ℂ) : ((normV P : ℕ) : ℂ) ^ a ≠ 0 := by
   simp [normV_ne_zero P]
 
-theorem frobMatch_rho (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) (h : IsTripleWith C art ρ s σ π r ν w red) :
-    FrobMatch D (twBy S π C.isEta.unitary.inv) (rd i (ρ.ι.toRingHom.comp ρ.κ)) (D.ntw.rhoS i s)
-      (-((D.R.t : ℝ) / 2) + (1 - (D.R.r : ℝ)) / 2) := by
-  filter_upwards [(D.ntw.S0 i).finite_toSet.compl_mem_cofinite] with P hP B g hB hg
-  obtain ⟨h1, h2⟩ := twBy_unr S C.isEta.unitary.inv (h.unr_of_notMem hP) (C.isEta.unr P).inv
-  refine (h.charpoly_frob ha (fun hl => hP (D.ntw.twistExcludedPlaces_contains_residueChar i hl)) (fun k hk => hP (D.ntw.placesOver_subset_exceptional i k hk)) hB hg).trans ?_
-  rw [D.naut.frobEig_tw _ _ h1, h2, Multiset.map_map, Multiset.map_map]
-  refine congrArg _ (Multiset.map_congr rfl fun a _ => ?_)
-  simp only [Function.comp_apply]
-  rw [shiftChar_val, cpow_add_real, Complex.ofReal_neg, Complex.cpow_neg, HChar.val_inv, Units.val_inv_eq_inv_val]
-  congr 2
-  rw [mul_inv]
-  ring
-
-theorem frobMatch_T (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) (hχ : IsChars C art ρ) (h : IsTripleWith C art ρ s σ π r ν w red) :
-    FrobMatch D (twBy S π (mu_unitary C (D.ntw.l i) (jIdx s))) (rd i (ρ.ι.toRingHom.comp ρ.κ)) (Tgl i s)
-      (((D.R.r : ℝ) / 2 + -((D.R.t : ℝ) / 2)) + (1 - (D.R.r : ℝ)) / 2) := by
-  filter_upwards [(D.ntw.S0 i).finite_toSet.compl_mem_cofinite] with P hP B g hB hg
-  have hl : P ∉ placesOver D.host.E (D.ntw.l i) := fun hl => hP (D.ntw.twistExcludedPlaces_contains_residueChar i hl)
-  have hk : ∀ k, P ∉ placesOver D.host.E (D.host.g k) := fun k hk => hP (D.ntw.placesOver_subset_exceptional i k hk)
-  have hμ := mu_unr C (jIdx s) hk fun hp => hP (D.ntw.primes_subset_exceptional i hp)
-  obtain ⟨h1, h2⟩ := twBy_unr S (mu_unitary C (D.ntw.l i) (jIdx s)) (h.unr_of_notMem hP) hμ.inv
-  obtain ⟨n, hn⟩ := hχ.chiS
-  have h3 := hn.frob ha (Or.inl hl) (fun x hx => by
-    rw [blockChar, GlobalTheory.GalChar.block_loc (C.isEta.unr P) hx]; exact hμ x hx) hB hg
-  have h4 := h.charpoly_frob ha hl hk hB hg
-  rw [← Matrix.charpoly_map] at h4
-  have h5 : (Tmat i s g).map ρ.toC = (((blockChar C (D.ntw.l i) (jIdx s)).val P : ℂˣ) : ℂ) •
-      ((D.ntw.rhoS i s g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)).map ρ.toC := by
-    ext x y
-    simp only [Tmat, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_units_inv]
-    rw [ρ.toC_apply ((chiS i s g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i), h3, inv_inv]
-  have h6 := charpoly_smul_of_prod _ (((D.naut.frobEig (D.naut.locG π P)).map fun a =>
-    a * ((normV P : ℕ) : ℂ) ^ (((1 - (D.R.r : ℝ)) / 2 : ℝ) : ℂ) * (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹))
-    (((blockChar C (D.ntw.l i) (jIdx s)).val P : ℂˣ) : ℂ) (by rw [h4, Multiset.map_map]; rfl)
-  rw [← h5, Matrix.charpoly_map] at h6
-  rw [Tgl_coe]
-  refine h6.trans ?_
-  rw [D.naut.frobEig_tw _ _ h1, h2, Multiset.map_map, Multiset.map_map, Multiset.map_map]
-  refine congrArg _ (Multiset.map_congr rfl fun a _ => ?_)
-  simp only [Function.comp_apply]
-  rw [shiftChar_val, blockChar_val, cpow_add_real, cpow_add_real, Complex.ofReal_neg, Complex.cpow_neg, HChar.val_inv,
-    Units.val_inv_eq_inv_val]
-  congr 2
-  have := (C.eta.val P).ne_zero
-  have := cpow_ne_zero' P (((D.R.t : ℝ) / 2 : ℝ) : ℂ)
-  field_simp
-
-theorem hkSat (h : IsTripleWith C art ρ s σ π r ν w red) :
-    HkSat D.naut i s (ρ.ι.toRingHom.comp ρ.κ) (twBy S π (mu_unitary C (D.ntw.l i) (jIdx s))) := by
-  intro P hP hs k hk
-  obtain ⟨x, h1, h2⟩ := h.hecke k P hk hs hP
-  refine ⟨x, h1.symm, h2.trans ?_⟩
-  have hμ := mu_unr C (jIdx s) (fun k hk => hP (D.ntw.placesOver_subset_exceptional i k hk)) fun hp => hP (D.ntw.primes_subset_exceptional i hp)
-  rw [(twBy_unr S (mu_unitary C (D.ntw.l i) (jIdx s)) (h.unr_of_notMem hP) hμ.inv).2, heckeVal, satake, Multiset.map_map]
-  have e1 : ((k : ℂ) * ((D.R.r : ℂ) - k)) / 2 = ((k * (D.R.r - k) / 2 : ℕ) : ℂ) := by
-    have := congrArg (Nat.cast : ℕ → ℂ) (two_mul_half D.R hk)
-    rw [Nat.cast_mul, Nat.cast_mul, Nat.cast_sub hk] at this
-    rw [← this]
-    push_cast
-    ring
-  have e2 : -((D.R.r : ℂ) + D.R.t) / 2 = -((D.R.nV / 2 : ℕ) : ℂ) := by
-    have := congrArg (Nat.cast : ℕ → ℂ) (two_mul_nV_half D.R)
-    rw [Nat.cast_mul, Nat.cast_add] at this
-    rw [← this]
-    push_cast
-    ring
-  rw [e1, e2, Complex.cpow_neg, Complex.cpow_natCast, Complex.cpow_natCast]
-  congr 2
-  refine Multiset.map_congr rfl fun a _ => ?_
-  simp [mul_comm]
-
 theorem rowFacts (h : IsParam σ π) (hm : ∀ v, D.naut.mono0 (D.naut.locG π v)) (j : Fin D.R.m) :
     RowFacts D.naut i (twBy S π C.isEta.unitary.inv) (twBy S π (mu_unitary C (D.ntw.l i) j)) := by
   have hinf : ∀ τ, D.naut.infG (twBy S π (mu_unitary C (D.ntw.l i) j)) (embOver D τ false) =
@@ -301,60 +250,7 @@ theorem rowFacts (h : IsParam σ π) (hm : ∀ v, D.naut.mono0 (D.naut.locG π v
     · exact_mod_cast (show (a : ℚ) < -1 by linarith)
     · exact_mod_cast (show (D.R.t : ℚ) < a by linarith)
 
-theorem tripleAtt_of_isTripleWith (hF : FrobDense D) (hG : GalHodge D T) (ha : GlobalTheory.HeckeGal.IsGlobalArtin art)
-    (hχ : IsChars C art ρ) (h : IsTripleWith C art ρ s σ π r ν w red) (S : CharSide D C₀) :
-    TripleAtt D.naut (bk0 D) i s := by
-  have hR := rowFacts (C := C) (i := i) S h.param
-    (GlobalTheory.T.monodromy_trivial_everywhere D T hF hG σ π h.good h.param.csd h.param.ralg h.param.unr h.param.lab) (jIdx s)
-  have hφ := (GlobalTheory.GalChar.isEmbedding_toQ (D.ntw.twistBaseCoefficientRing_isAdic i) ρ.κ_alg).continuous
-  have hne : ∀ u : (D.ntw.O0 i)ˣ, GlobalTheory.GalChar.toQ ρ.κ u ≠ 0 := fun u => (u.isUnit.map _).ne_zero
-  have s1 : IsSSRep (mapRep (GlobalTheory.GalChar.toQ ρ.κ) (D.ntw.rhoS i s)) := isSSRep_of_smul _ (fun g => hne (ν g)) h.rho h.gal.2.1
-  have s2 : IsSSRep (mapRep (GlobalTheory.GalChar.toQ ρ.κ) (Tgl i s)) :=
-    isSSRep_of_smul _ (fun g => hne (chiS i s g)⁻¹) (fun g => by
-      change ((Tgl i s g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)).map _ = _
-      rw [Tgl_coe]
-      ext x y
-      exact map_mul (GlobalTheory.GalChar.toQ ρ.κ) _ _) s1
-  have c2 : Continuous fun g => (Tgl i s g : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)) := by
-    simp only [Tgl_coe, Tmat]
-    exact (Units.continuous_coe_inv.comp (GlobalTheory.GalChar.continuous_units _ (D.ntw.twistCharacterFamily_continuous i _ _))).smul (D.ntw.rhoS_cont i s)
-  obtain ⟨c, hc⟩ := GlobalTheory.GalChar.odd_r D.R
-  obtain ⟨d, hd⟩ := D.R.t_odd
-  have a1 := att_of_frobMatch hF hG (twBy_csd S _ h.param.csd (isCSD_inv (GlobalTheory.EtaSelfDual.isCSD_of_isEtaT _ _ _ C.isEta)))
-    (twBy_regAlg S _ h.param.ralg (eta_inf C) fun g =>
-      ⟨⟨-d - 1, by rw [hd]; push_cast; ring⟩, -d, by rw [hd]; push_cast; ring⟩)
-    (D.ntw.rhoS_cont i s) (frobMatch_rho S ha h) hφ ρ.κ_alg (fun _ => rfl) s1
-  have a2 := att_of_frobMatch hF hG hR.csd
-    (twBy_regAlg S _ h.param.ralg (mu_inf C _ (jIdx s)) fun g => by
-      obtain ⟨z, hz⟩ := eExp_int (jIdx s) g
-      exact ⟨⟨z + c - d, by rw [hz, hc, hd]; push_cast; ring⟩, -z + c - d, by rw [hz, hc, hd]; push_cast; ring⟩)
-    c2 (frobMatch_T S ha hχ h) hφ ρ.κ_alg (fun _ => rfl) s2
-  refine ⟨_, _, _, ?_, ?_, hR, hkSat S h⟩
-  · convert a1 using 1
-    ring
-  · convert a2 using 1
-    ring
-
 end Triple
-
-theorem tripleAtt_of_isTriple {D : D7} {T : WDTie D.nd D.naut} {C₀ : CharFrame D} (S : CharSide D C₀) (hF : FrobDense D)
-    (hG : GalHodge D T) (h : IsTriple D) (i : D.ntw.Tw) (hi : D.ntw.NonzeroIndexPlace i) (s : D.ntw.Sig i) :
-    TripleAtt D.naut (bk0 D) i s := by
-  obtain ⟨C, art, h⟩ := h
-  obtain ⟨ρ, h1, σ, π, r, ν, w, red, h2⟩ := h.triple hi s
-  exact tripleAtt_of_isTripleWith hF hG h.artin h1 h2 S
-
-theorem galois_hypotheses_of_isTriple {D : D7} {T : WDTie D.nd D.naut} {C₀ : CharFrame D} (S : CharSide D C₀)
-    (hF : FrobDense D) (hG : GalHodge D T) (h2 : BlochKatoReduction.adm2 D) (h : IsTriple D) :
-    BlochKatoReduction.adm1 (bk0 D) ∧ BlochKatoReduction.adm8 D ∧
-      ∀ i, D.ntw.NonzeroIndexPlace i → True ∧ ∀ s : D.ntw.Sig i, SelfDual i s ∧ NoJump (bk0 D) i s :=
-  galois_hypotheses_of_attached D (bk0 D) hF (fun _ _ => ⟨_, ⟨D.locT _⟩⟩) h2 (tripleAtt_of_isTriple S hF hG h)
-
-theorem adm1_of_isTriple (hC : GlobalTheory.Published.ChebotarevDegreeOne) (hB : GlobalTheory.Published.DeRhamPotSemistable) (D : D7)
-    (T : WDTie D.nd D.naut) (C₀ : CharFrame D) (S : CharSide D C₀) (hG : GalAll D T) (h2 : BlochKatoReduction.adm2 D) (h : IsTriple D) :
-    BlochKatoReduction.Gen.adm1 (BlochKatoReduction.bk0 D) :=
-  (galois_hypotheses_of_isTriple S (GlobalTheory.SplitFrobDense.frobDense D (GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 hC))
-    (hG.hodge hB) h2 h).1
 
 end GlobalTheory.TripleLocal
 

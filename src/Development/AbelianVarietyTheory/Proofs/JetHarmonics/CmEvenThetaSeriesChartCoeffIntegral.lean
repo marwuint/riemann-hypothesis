@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorS
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesMultiplicativeChart
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpBinomialPowerSubOneSeriesIntegralityCompositio
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaNormQuotientEllipticUnitSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaNormQuotientEllipticUnitSeries
 
 open PowerSeries GlobalTheory.MomOne
 open scoped ComplexConjugate BigOperators Topology
@@ -46,7 +46,7 @@ theorem theta_series_integral : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω :
       · exact hα0 (by simpa using h)
     · simp at hmn
     · omega
-  obtain ⟨ε, -, hεa, -, hεb, hfe, -⟩ := GlobalTheory.T.thetaNormQuotient_elliptic_unitSeries d q M ω θ hd h16 hs hL hM hθ α m hα hα0 hm
+  obtain ⟨ε, -, hεa, -, hεb, hfe, -⟩ := _root_.GlobalTheory.MomOne.ThetaQuot.theta_quot d q M ω θ hd h16 hs hL hM hθ α m hα hα0 hm
   obtain ⟨hmul, -⟩ := GlobalTheory.MomOne.MulSeries.mulS_laws q
   obtain ⟨hb, hc0, hc1, -⟩ := hmul a
   have hℓ : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := by

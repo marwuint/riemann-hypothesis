@@ -23,7 +23,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 theorem liftsExist_top (R : RealDat D A Ks) (hl : R.toLevCh.Is A.μ0) (t : T) (g0 : G0 R.Pg D.R.r) :
     ∃ κ, IsLevelLift D.sp.X' R.βX (R.datXt t) g0 κ := by
   obtain ⟨c, hc⟩ := hl.βX
-  exact GlobalTheory.T.parahoricLevel_liftsExist D.sp.X' R.βX (R.datXt t) _ _ hc (GlobalTheory.ChainEquiv.places_sep R.toLevCh _ hl t).1
+  exact _root_.GlobalTheory.ParahoricLift.liftsExist D.sp.X' R.βX (R.datXt t) _ _ hc (GlobalTheory.ChainEquiv.places_sep R.toLevCh _ hl t).1
     (GlobalTheory.ChainEquiv.places_sep R.toLevCh _ hl t).2 g0
 
 set_option maxHeartbeats 2000000 in

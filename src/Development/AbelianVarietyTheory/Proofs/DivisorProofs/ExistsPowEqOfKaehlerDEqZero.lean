@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalSubfieldMissingElemExpOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationEqOneOfPowMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalSubfieldMissingElemExpOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationEqOneOfPowMem
 open TensorProduct
 
 namespace GlobalTheory
@@ -17,8 +17,8 @@ theorem exists_pow_eq_of_kaehler_D_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (k : T
   have hfF : f ∉ F := by
     rintro ⟨h, hh⟩
     exact hne ⟨h, by simpa [frobenius_def] using hh⟩
-  obtain ⟨L, hFL, hfL, htop⟩ := GlobalTheory.T.exists_maximal_subfield_missing_elem_expOne p K F hF f hfF
-  obtain ⟨D, hD⟩ := GlobalTheory.T.exists_derivation_eq_one_of_pow_mem' p K L f hfL (hFL (hF f)) htop
+  obtain ⟨L, hFL, hfL, htop⟩ := _root_.GlobalTheory.cfmax_main p K F hF f hfF
+  obtain ⟨D, hD⟩ := _root_.GlobalTheory.exists_derivation_eq_one_of_pow_mem p K L f hfL (hFL (hF f)) htop
   have hkL : ∀ a : k, algebraMap k K a ∈ L := by
     intro a
     obtain ⟨b, hb⟩ := IsAlgClosed.exists_pow_nat_eq a hp.out.pos

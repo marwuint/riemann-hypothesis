@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCharacterAverageEigenvectorCompactSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterEigenspaceIsComplPrincipalSeriesTwistedStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCharacterAverageEigenvectorCompactSubgroup
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterEigenspaceIsComplPrincipalSeriesTwisted
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 
@@ -31,7 +31,7 @@ theorem isEig_translate_of_sub_mem_aug : ∀ (G V : Type) [Group G] [Topological
     exact this hx
   have hww : π z u - π z u' ∈ aug π N₀ (fun _ => 1) := by
     rw [← map_sub]; exact hmap _ hd
-  obtain ⟨R, hR1, hRJ, hS⟩ := GlobalTheory.T.exists_character_average_eigenvector_compact_subgroup G V π hπ J θ hJ (π z u)
+  obtain ⟨R, hR1, hRJ, hS⟩ := _root_.GlobalTheory.PsType.avg_eig G V π hπ J θ hJ (π z u)
   have hterm : ∀ j ∈ R, (θ j)⁻¹ • π j (π z u) - π z u ∈ aug π N₀ (fun _ => 1) := by
     intro j hj
     have hjJ := hRJ j hj
@@ -60,7 +60,7 @@ theorem isEig_translate_of_sub_mem_aug : ∀ (G V : Type) [Group G] [Topological
     intro y hy
     rw [map_sub, map_smul, hS y (hsub y hy).1, (hsub y hy).2, hw' y hy]
     simp
-  have h0 := (GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan G V π hπ N₀ _ hN).1 _ hB hC
+  have h0 := (_root_.GlobalTheory.PsType.eig_compl_aug G V π hπ N₀ _ hN).1 _ hB hC
   have hE : π z u' = (R.card : ℂ)⁻¹ • S := by
     rw [sub_eq_zero.1 h0, smul_smul, inv_mul_cancel₀ hc, one_smul]
   intro j hj

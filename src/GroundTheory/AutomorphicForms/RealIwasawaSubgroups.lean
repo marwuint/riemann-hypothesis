@@ -70,15 +70,6 @@ theorem strictUpperCoords_smul (c : 𝕜) (X : Matrix n n 𝕜) :
 theorem IsStrictUpper.isUpperTriangular {X : Matrix n n 𝕜} (hX : IsStrictUpper X) :
     X.IsUpperTriangular := fun _ _ h => hX _ _ h.le
 
-theorem IsStrictUpper.mul_left {X Y : Matrix n n 𝕜} (hX : X.IsUpperTriangular)
-    (hY : IsStrictUpper Y) : IsStrictUpper (X * Y) := by
-  intro i j hji
-  rw [mul_apply]
-  refine Finset.sum_eq_zero fun k _ => ?_
-  rcases lt_or_ge k i with hki | hik
-  · rw [hX hki, zero_mul]
-  · rw [hY k j (hji.trans hik), mul_zero]
-
 theorem IsStrictUpper.mul_right {X Y : Matrix n n 𝕜} (hX : IsStrictUpper X)
     (hY : Y.IsUpperTriangular) : IsStrictUpper (X * Y) := by
   intro i j hji
@@ -106,9 +97,6 @@ theorem IsStrictUpper.pow_card_eq_zero {X : Matrix n n 𝕜} (hX : IsStrictUpper
   have h1 := rank_add_le_of_pow_ne_zero hX _ i j h
   have h2 := rankBelow_lt_card j
   omega
-
-theorem IsStrictUpper.isNilpotent {X : Matrix n n 𝕜} (hX : IsStrictUpper X) : IsNilpotent X :=
-  ⟨_, hX.pow_card_eq_zero⟩
 
 theorem continuous_strictUpperMatrix :
     Continuous (strictUpperMatrix : (StrictUpperIndex n → 𝕜) → Matrix n n 𝕜) := by
@@ -430,14 +418,6 @@ noncomputable def iwasawaDelta (g : GL n 𝕜) : ℝ≥0 :=
   ∏ p : StrictUpperIndex n,
     (‖(g : Matrix n n 𝕜) p.1.1 p.1.1‖₊ / ‖(g : Matrix n n 𝕜) p.1.2 p.1.2‖₊) ^ Module.finrank ℝ 𝕜
 
-theorem iwasawaDelta_mul {g h : GL n 𝕜} (hg : (g : Matrix n n 𝕜).IsUpperTriangular)
-    (hh : (h : Matrix n n 𝕜).IsUpperTriangular) :
-    iwasawaDelta (g * h) = iwasawaDelta g * iwasawaDelta h := by
-  simp only [iwasawaDelta, ← Finset.prod_mul_distrib, ← mul_pow]
-  refine Finset.prod_congr rfl fun p _ => ?_
-  rw [Units.val_mul, mul_apply_self_of_isUpperTriangular hg hh,
-    mul_apply_self_of_isUpperTriangular hg hh, nnnorm_mul, nnnorm_mul, mul_div_mul_comm]
-
 @[simp] theorem iwasawaDelta_one : iwasawaDelta (1 : GL n 𝕜) = 1 := by
   simp [iwasawaDelta]
 
@@ -446,16 +426,6 @@ theorem iwasawaDelta_ne_zero {g : GL n 𝕜} (hg : g ∈ upperPosSubgroup n 𝕜
   refine Finset.prod_ne_zero_iff.2 fun p _ => pow_ne_zero _ (div_ne_zero ?_ ?_)
   · exact nnnorm_ne_zero_iff.2 (hg.2 _).ne'
   · exact nnnorm_ne_zero_iff.2 (hg.2 _).ne'
-
-theorem iwasawaDelta_diagUnipotentMul [WellFoundedLT n] [LocallyFiniteOrderBot n]
-    (p : diagPosSubgroup n 𝕜 × upperUnipotentSubgroup n 𝕜) :
-    iwasawaDelta ((diagUnipotentMul p : upperPosSubgroup n 𝕜) : GL n 𝕜) =
-      iwasawaDelta (p.1 : GL n 𝕜) := by
-  rw [coe_diagUnipotentMul, iwasawaDelta_mul (diagPosSubgroup_le_upperPosSubgroup p.1.2).1
-    p.2.2.1]
-  have : iwasawaDelta (p.2 : GL n 𝕜) = 1 := by
-    simp [iwasawaDelta, p.2.2.2]
-  rw [this, mul_one]
 
 theorem iwasawaDelta_diagPosOf (a : PosDiag n) :
     (iwasawaDelta (diagPosOf a : GL n 𝕜) : ℝ) =

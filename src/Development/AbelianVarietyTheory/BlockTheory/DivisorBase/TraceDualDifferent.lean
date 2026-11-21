@@ -46,10 +46,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.mem_tr
   refine forall₂_congr fun a _ => ?_
   simp [Algebra.traceForm_apply, eq_comm]
 
-theorem mem_traceDual_iff_different {M : FractionalIdeal (𝓞 F)⁰ F} (hM : M ≠ 0) (y : F) :
-    y ∈ traceDual M ↔ y ∈ ((differentIdeal ℤ (𝓞 F) : FractionalIdeal (𝓞 F)⁰ F))⁻¹ * M⁻¹ := by
-  rw [mem_traceDual_iff hM, FractionalIdeal.dual_eq_mul_inv, coeIdeal_differentIdeal ℤ ℚ F (𝓞 F), inv_inv]
-
 open NumberField nonZeroDivisors in
 variable {F : Type} [Field F] [NumberField F] in
 
@@ -87,13 +83,5 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.card_r
   · intro φ; ext x
     simpa using ComplexEmbedding.IsReal.coe_embedding_apply (φ := Complex.ofRealHom.comp φ) _ x
   · intro φ; ext x; simp [ComplexEmbedding.IsReal.coe_embedding_apply]
-
-theorem norm_add_ne_zero {z : (F →+* ℝ) → ℂ} (hz : ∀ τ, (z τ).im ≠ 0) (a : F) :
-    ∏ τ : F →+* ℝ, (z τ + ((τ a : ℝ) : ℂ)) ≠ 0 :=
-  Finset.prod_ne_zero_iff.2 fun τ _ h => hz τ (by simpa using congrArg Complex.im h)
-
-example (M : FractionalIdeal (𝓞 F)⁰ F) (z : (F →+* ℝ) → ℂ) (hz : ∀ τ, 0 < (z τ).im) (ν : F) :
-    ν ∈ dualCone M z ↔ ν ∈ traceDual M ∧ ∀ τ : F →+* ℝ, 0 < τ ν := by
-  simp [dualCone, hz]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent

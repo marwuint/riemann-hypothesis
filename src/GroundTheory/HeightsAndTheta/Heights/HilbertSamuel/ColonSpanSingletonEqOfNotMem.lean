@@ -73,11 +73,6 @@ theorem HilbertIncrement.closed : HilbertIncrement.Statement.{u} := by
     rw [hn] at hstep
     exact le_of_add_one_le_natCast_add_one hstep
 
-theorem HilbertIncrement.hilbertIncrement_alt_of_statement :
-    _root_.GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertIncrement.Statement.{u} →
-      HilbertIncrement.Statement.{u} :=
-  fun _ => HilbertIncrement.closed
-
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HilbertSamuel

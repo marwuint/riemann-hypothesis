@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLocC
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BarKHomSurjective
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompactSpaceMaximalCompactUnitaryInfiniteStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSemisimpleOfLocallyFiniteCompactGroupStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsComplementWithoutCommonIrreducibleTypesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsComplOrthogonalOfNoCommonIrreducibleTypesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalTypeClosurePreservedByArchCompactIntertwStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsComplementWithoutCommonIrreducibleTypes
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsComplOrthogonalOfNoCommonIrreducibleTypes
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalTypeClosurePreservedByArchCompactIntertw
 
 noncomputable section
 
@@ -169,12 +169,12 @@ theorem exists_idem_adj : AutomorphicFormsFiniteGL → ∀ (L : Type) [Field L] 
       rw [hFv _ (e ⟨x, hx⟩).2]
       simp
     rw [hx']
-    refine GlobalTheory.T.cuspidal_typeClosure_preserved_by_archCompact_intertwiner L a π O ρ₀ S₂.toSubmodule inferInstance (fun k u hu => S₂.apply_mem_toSubmodule k hu) F
+    refine _root_.GlobalTheory.IdemAdj.typeClosure_of_intertwine L a π O ρ₀ S₂.toSubmodule inferInstance (fun k u hu => S₂.apply_mem_toSubmodule k hu) F
       (fun k u hu => ?_) _ (e ⟨x, hx⟩).2 (hS₂ (e ⟨x, hx⟩).2)
     rw [hFv _ (S₂.apply_mem_toSubmodule k hu), hFv _ hu]
     have := e.symm.toIntertwiningMap.isIntertwining' k
     exact congrArg Subtype.val (LinearMap.congr_fun this ⟨u, hu⟩)
-  obtain ⟨Y, hXY, hnoiso, hT⟩ := GlobalTheory.T.exists_complement_without_common_irreducible_types (Kinf L a) π.V (cptOn π) hss hsum X hclos
+  obtain ⟨Y, hXY, hnoiso, hT⟩ := _root_.GlobalTheory.TypeComplement.exists_typeComplement (Kinf L a) π.V (cptOn π) hss hsum X hclos
 
   set e := LocGL.idem π.isSmooth_finPart hKc with he
   have hcomm : ∀ g k (v : π.V), π.finPart g (cptOn π k v) = cptOn π k (π.finPart g v) := fun g k v => by
@@ -257,7 +257,7 @@ theorem exists_idem_adj : AutomorphicFormsFiniteGL → ∀ (L : Type) [Field L] 
       exact this
     have hKc' : IsCompact ((K'.map σ : Subgroup _) : Set (GL (Fin a) (Af L))) := by
       rw [Subgroup.coe_map]; exact hKc.image hσc
-    have hC := GlobalTheory.T.isCompl_orthogonal_of_no_common_irreducible_types (Kinf L a) π.V (cptOn π) (barKHom L a) barKHom_surjective hfin hsum B hl hr hBc X Y hXY hnoiso
+    have hC := _root_.GlobalTheory.IsotypicOrth.orth_isCompl (Kinf L a) π.V (cptOn π) (barKHom L a) barKHom_surjective hfin hsum B hl hr hBc X Y hXY hnoiso
     refine ⟨(Submodule.projection _ _ hC) ∘ₗ LocGL.idem π.isSmooth_finPart hKc', fun φ ψ => ?_⟩
     change B (e (PT φ)) ψ = B φ (Submodule.projection _ _ hC (LocGL.idem π.isSmooth_finPart hKc' ψ))
     rw [idem_adj π.isSmooth_finPart σ hKc hKc' B hBf]

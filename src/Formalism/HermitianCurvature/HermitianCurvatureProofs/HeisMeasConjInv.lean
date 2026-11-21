@@ -98,13 +98,6 @@ theorem psi_conjLev (ρ : ℕ) {z0 : Fin (2 * ρ + k + 1) → ℂ} (hz0 : inWb k
     rw [Dx2.Tower.lev_mul, Matrix.mul_inv_rev]; simp only [Matrix.mul_assoc]
   rw [e, Qx4.psi_conjW' hz1 hhW hu, Qx4.psi_conjN' hz1 hyN ha]
 
-theorem heis_conj_inv (ρ : ℕ) {g : B.Mat k ρ} (hg : g ∈ B.GV k ρ) (x : B2.HPar k ρ) :
-    (ιLev k 1 ρ g)⁻¹ * B2.heis0 k ρ x * ιLev k 1 ρ g = B2.heis0 k ρ (g⁻¹ *ᵥ x.1, x.2) := by
-  have hu : IsUnit g.det := HermitianFormFactor.UH_unit (Ux3.hpk_det k ρ) hg
-  have hgi : g⁻¹ ∈ B.GV k ρ := HermitianFormFactor.UH_inv (Ux3.hpk_det k ρ) hg
-  have h := Formalism.FourierDecayAlt.P.heisenberg_conjugation_by_levi k ρ g⁻¹ hgi x
-  rwa [LongWeylElement.lev_inv _ hu, Matrix.nonsing_inv_nonsing_inv _ (LongWeylElement.lev_unit _ hu)] at h
-
 theorem heis_meas_conj_inv (ρ : ℕ) {g : B.Mat k ρ} (hg : g ∈ B.GV k ρ) :
     (B2.μHeis k ρ).map (conjM ((ιLev k 1 ρ g)⁻¹)) = B2.μHeis k ρ := by
   have hu : IsUnit g.det := HermitianFormFactor.UH_unit (Ux3.hpk_det k ρ) hg

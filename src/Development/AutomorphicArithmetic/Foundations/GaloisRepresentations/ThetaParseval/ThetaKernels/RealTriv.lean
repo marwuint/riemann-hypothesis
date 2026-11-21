@@ -12,10 +12,6 @@ open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil
 noncomputable section
 namespace GlobalTheory.FinLatF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-section Abstract
-variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R}
-  {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}
-end Abstract
 variable {nS nT : ℕ}
 theorem _root_.UpperTheory.TP.W.IsLatRepL.real_triv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),

@@ -113,12 +113,4 @@ theorem waveZExists : WaveZExists := by
       show fsv s (zeta k r z z' (h * x.2 * h')) = fsv s (zeta k r z z' x.2)
       rw [zeta_inv _ _ _ hh hh']), mulOp_isMulOp _ _ _⟩
 
-section Zero
-
-variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
-  [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-  {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
-
-end Zero
-
 end Formalism.FourierDecayAlt.P5

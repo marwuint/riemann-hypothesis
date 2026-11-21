@@ -134,29 +134,6 @@ theorem da_JP (x y : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A) :
   unfold daP daT
   simp only [Matrix.mul_assoc]
 
-theorem da_TRI (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y x' y' : Fin k → Fin n → A) (c : A)
-    (hm : Formalism.UG.cT σ (daB x) * J * daB x' = c • 1) (hy : c • daB y = daB y) (M N : Matrix (Fin k) (Fin k) A) :
-    Formalism.UG.cT σ (daP σ J x y M) * J * daP σ J x' y' N = daT σ J y y' (Formalism.UG.cT σ M * N) := by
-  rw [da_cTP J hσ hJ]
-  unfold daT daP
-  calc J * daB y * Formalism.UG.cT σ M * (Formalism.UG.cT σ (daB x) * J) * (daB x' * N * (Formalism.UG.cT σ (daB y') * J))
-        = J * daB y * Formalism.UG.cT σ M * (Formalism.UG.cT σ (daB x) * J * daB x') * N * (Formalism.UG.cT σ (daB y') * J) := by
-          simp only [Matrix.mul_assoc]
-    _ = J * (c • daB y) * (Formalism.UG.cT σ M * N) * (Formalism.UG.cT σ (daB y') * J) := by
-          rw [hm]
-          simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.mul_assoc]
-    _ = J * daB y * (Formalism.UG.cT σ M * N) * (Formalism.UG.cT σ (daB y') * J) := by rw [hy]
-
-theorem transfer_triple_zero (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y x' y' : Fin k → Fin n → A)
-    (hm : Formalism.UG.cT σ (daB x) * J * daB x' = 0) (M N : Matrix (Fin k) (Fin k) A) :
-    Formalism.UG.cT σ (daP σ J x y M) * J * daP σ J x' y' N = 0 := by
-  rw [da_cTP J hσ hJ]
-  unfold daT daP
-  calc J * daB y * Formalism.UG.cT σ M * (Formalism.UG.cT σ (daB x) * J) * (daB x' * N * (Formalism.UG.cT σ (daB y') * J))
-        = J * daB y * Formalism.UG.cT σ M * (Formalism.UG.cT σ (daB x) * J * daB x') * N * (Formalism.UG.cT σ (daB y') * J) := by
-          simp only [Matrix.mul_assoc]
-    _ = 0 := by rw [hm]; simp
-
 theorem da_TP (x y x' y' : Fin k → Fin n → A) (c : A)
     (hm : Formalism.UG.cT σ (daB x) * J * daB x' = c • 1) (hy : c • daB y = daB y) (M N : Matrix (Fin k) (Fin k) A) :
     daT σ J y x M * daP σ J x' y' N = daT σ J y y' (M * N) := by

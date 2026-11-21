@@ -5,7 +5,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexHessianL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexHessianLogDehomogeniseStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableZeroCountStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChangeVariablesZeroCountStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralSplitColumnStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralSplitColumn
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAreaMultiplicityWeight
 open MeasureTheory ReciprocityTheory.L2DbarEstimates GlobalTheory.CompanionTheory.FSCrofton
 open scoped ENNReal ComplexConjugate
 
@@ -170,7 +171,7 @@ theorem crofton_local : ∀ (d : ℕ) (α : Type) [Fintype α] [DecidableEq α] 
       fderiv ℂ (fun v => b j.1 v / b j₀ v) z (EuclideanSpace.single a 1) :=
     fun j a => measurable_fderiv_apply_const ℂ _ _
   have hK := measurable_kernel d {j : α // j ≠ j₀} g _ hg hF
-  rw [GlobalTheory.T.lintegral_split_column d α j₀ _ hΦ]
+  rw [_root_.GlobalTheory.CompanionTheory.FSCrofton.lintegral_joinCol d α j₀ _ hΦ]
   simp_rw [inner_integral d α j₀ U A b hU hb hne hAU hAm g hgA]
   rw [lintegral_lintegral_swap (ν := volume.restrict A) hK.aemeasurable,
     ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]

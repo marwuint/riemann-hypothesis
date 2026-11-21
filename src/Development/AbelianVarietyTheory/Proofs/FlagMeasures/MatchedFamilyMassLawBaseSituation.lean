@@ -5,14 +5,18 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.DataInst
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InVolumesAtOfSWS
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GlobSet
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassGenusLocalDataProductLocalWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowWeightsLocalOrbitsSumEqGenusMassStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonGenericGenericTermsClosedUnderLocalUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassGenusLocalDataProductLocalWeights
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowWeightsLocalOrbitsSumEqGenusMass
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonGenericGenericTermsClosedUnderLocalUnitary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalisedBaseFramesRelevantPairStatement
 import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SplittingAdmissibleOfTermData
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.LocalDiscriminantIsUnit
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelativeWeightTermDatumPosStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelativeWeightTermDatumPos
+import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
 
 noncomputable section
 
@@ -141,9 +145,9 @@ theorem tied_mass_law : ∀ (Cg cb Cw cT CT C0 C' Cl : ℝ) (D : D7) (large₂ :
     Fm.P.finite_toSet.subset fun p hp => by
       by_contra h
       exact hp ⟨_, hΛ₀loc p h, rfl⟩
-  obtain ⟨V1, hV1, hmass⟩ := GlobalTheory.T.mass_genus_local_data_product_local_weights D X Y u u' F F' w hZF hG (zOf Y) Fm.FP hBased hRel Fm.d0 hd0
+  obtain ⟨V1, hV1, hmass⟩ := _root_.GlobalTheory.Unfold.mass_genus_local_weights D X Y u u' F F' w hZF hG (zOf Y) Fm.FP hBased hRel Fm.d0 hd0
     ⟨Λ₀, hΛ₀, hΛfin⟩
-  obtain ⟨hcNG, hcGen, -, -⟩ := GlobalTheory.T.nonGeneric_generic_terms_closed_under_localUnitary D X Y u u' F F' w hZF hG (zOf Y) Fm.FP hBased hRel
+  obtain ⟨hcNG, hcGen, -, -⟩ := _root_.GlobalTheory.LocOrbit.closed_ng_gen D X Y u u' F F' w hZF hG (zOf Y) Fm.FP hBased hRel
   have hLC : LocClosed F F' (zOf Y) Fm.FP TS := by
     rw [hFQ.1]
     intro t t' Λ Λ' h1 h2 h3 ht
@@ -177,7 +181,7 @@ theorem tied_mass_law : ∀ (Cg cb Cw cT CT C0 C' Cl : ℝ) (D : D7) (large₂ :
       set dd : Dat (zOf Y) Fm.FP := fun p => if hp : p ∈ Fm.P then (d ⟨p, hp⟩).1 else Fm.d0 p with hdd
       have hdd1 : ∀ p (hp : p ∈ Fm.P), dd p = (d ⟨p, hp⟩).1 := fun p hp => by simp [hdd, hp]
       have hdd2 : ∀ p, p ∉ Fm.P → dd p = Fm.d0 p := fun p hp => by simp [hdd, hp]
-      obtain ⟨hddT, hsum⟩ := GlobalTheory.T.rowWeights_localOrbits_sum_eq_genusMass D X Y u u' F F' w hZF hG TS cls Fm hBased hFQ.2.1 hLC hDs hstd
+      obtain ⟨hddT, hsum⟩ := _root_.GlobalTheory.Unfold.GenusRows.rows_mass_genus D X Y u u' F F' w hZF hG TS cls Fm hBased hFQ.2.1 hLC hDs hstd
         hΛrows hdat' d ⟨(cls t₀, nmlOf Y u u' t₀), hd⟩ dd hdd1 hdd2
       have hfin : {p | dd p ≠ Fm.d0 p}.Finite :=
         Fm.P.finite_toSet.subset fun p hp => by
@@ -194,7 +198,7 @@ theorem tied_mass_law : ∀ (Cg cb Cw cT CT C0 C' Cl : ℝ) (D : D7) (large₂ :
         rfl
       rw [hprod] at h5
       have hpos : 0 < ∏ p ∈ Fm.P, LocNG.Datum.wt (Fm.d0 p) (dd p) :=
-        Finset.prod_pos fun p _ => GlobalTheory.T.relative_weight_term_datum_pos D (zOf Y) p (Fm.FP p) (hRel p) _ _ (hd0 p) (hddT p)
+        Finset.prod_pos fun p _ => _root_.GlobalTheory.WtPos.wt_pos D (zOf Y) p (Fm.FP p) (hRel p) _ _ (hd0 p) (hddT p)
       rw [ENNReal.ofReal_eq_ofReal_iff (mul_pos hV1 hpos).le (mul_pos hG5.1 hpos).le] at h5
       exact (mul_right_cancel₀ hpos.ne' h5).symm
   refine ⟨w, F, F', fun p => (locH (zOf Y) p).Zhat (locF Y p (lf D (X.Fu u))) (locF' Y p F'1), rfl, hn0, hZF, hTot,

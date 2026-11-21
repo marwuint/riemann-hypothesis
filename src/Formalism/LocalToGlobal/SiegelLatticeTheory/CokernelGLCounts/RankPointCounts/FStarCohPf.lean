@@ -45,13 +45,6 @@ def CohGen : Prop :=
     CohHyp Zd γ Z F'₂ φ' →
     {p | ¬ (locH Zd p).IsGeneric (t2 Zd p γ F'₂ (lattice₂ D Zd.M p γ.lam))}.Finite
 
-def CohResp : Prop :=
-  CtxP u u' F0 what₂ →
-  ∀ (γ : TermDef.Term D u u' F0 what₂) (Z : PairVal.MatR D) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
-    (φ' : ∀ p, (locH Zd p).Wb (tLoc Zd p γ).f' ≃ₗ[(D.s.atP p).Ep] (locH Zd p).Wb (locF' Zd p F'₂)),
-    CohHyp Zd γ Z F'₂ φ' →
-    {p | ¬ (locH Zd p).Respects (tLoc Zd p γ) (t2 Zd p γ F'₂ (lattice₂ D Zd.M p γ.lam)) (LinearEquiv.refl _ _) (φ' p)}.Finite
-
 def CohGood : Prop :=
   CtxP u u' F0 what₂ →
   ∀ (γ : TermDef.Term D u u' F0 what₂) (Z : PairVal.MatR D) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
@@ -79,21 +72,5 @@ theorem locSet_eq_single {p : PlF D} {γ : TermDef.Term D u u' F0 what₂}
   · intro h
     rw [h]
     exact hmem
-
-theorem starCoh_of (hP : CtxP u u' F0 what₂) (hGen : CohGen Zd u u' F0 what₂) (hResp : CohResp Zd u u' F0 what₂)
-    (hGood : CohGood Zd u u' F0 what₂) : StarCoh Zd u u' F0 what₂ := by
-  intro γ Z hC F'₂ hZ hc φ' hφ'
-  have hH : CohHyp Zd γ Z F'₂ φ' := ⟨hC, hZ, hc, hφ'⟩
-  refine ⟨γ.lam, (hP.2.1.1 γ.lam γ.mem).1.1, ?_⟩
-  refine (((hGen hP γ Z F'₂ φ' hH).union (hResp hP γ Z F'₂ φ' hH)).union (hGood hP γ Z F'₂ φ' hH)).subset ?_
-  intro p hp
-  by_contra hn
-  simp only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hn
-  obtain ⟨⟨hg, hr⟩, hN⟩ := hn
-  exact hp (locSet_eq_single Zd ⟨hg, hr⟩ hN)
-
-theorem starCoh_of_P (hGen : CohGen Zd u u' F0 what₂) (hResp : CohResp Zd u u' F0 what₂)
-    (hGood : CohGood Zd u u' F0 what₂) : CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
-  fun hP => starCoh_of Zd hP hGen hResp hGood
 
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

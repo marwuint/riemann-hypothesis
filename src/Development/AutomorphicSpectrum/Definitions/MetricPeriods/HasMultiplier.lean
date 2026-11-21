@@ -48,15 +48,6 @@ def shiftH (A : HermLine ι) (t : ℝ) : HermLine ι where
 def normHt (II : IntersectionSystem) (P : Ideal (MRing ι)) (A : HermLine ι) (D : ℕ) : ℝ :=
   II K ι P (D + 1) (fun _ => A) / (((D : ℝ) + 1) * geomDeg P A D)
 
-def embMean {F : Type} [Field F] [NumberField F] (t : (F →+* ℂ) → ℝ) : ℝ :=
-  (∑ sg, t sg) / Fintype.card (F →+* ℂ)
-
-structure IsModelOver (y : (Σ k, ι k) → Ω) (F : Type) [Field F] [Algebra F Ω] (D : ℕ) : Prop where
-  one_le : 1 ≤ D
-  arith : IsArithVar (mCoordIdeal y) (D + 1)
-  bir : Birational y
-  uniq : ∀ z ∈ mcPts (mCoordIdeal y), ∃! sg : F →+* ℂ, LiesOver y sg z
-
 structure IsNefH (P : Ideal (MRing ι)) (M : HermLine ι) : Prop where
   semipos : ∃ P0, P0 ≤ P ∧ IsSemipositiveRel P0 P M
   conj : IsConjInvariantH M
@@ -68,19 +59,5 @@ structure IsGenH (P : Ideal (MRing ι)) (L : HermLine ι) (Λ : ℝ) : Prop wher
   conj : IsConjInvariantH L
   mono : ∃ a : K → ℕ, (L.a = fun k => (a k : ℤ)) ∧ ∀ z ∈ mcPts P, ∀ μ : (Σ k, ι k) →₀ ℕ,
     (∀ k, ∑ i, μ ⟨k, i⟩ = a k) → ‖∏ p, z p ^ μ p‖ ≤ Λ * L.h z
-
-structure MultBound (y : (Σ k, ι k) → Ω) {F : Type} [Field F] [Algebra F Ω] (M L : HermLine ι) (θ : Ω)
-    (u : MRing ι) (c : ℕ → ℝ) (t : (F →+* ℂ) → ℝ) : Prop where
-  fin : ∀ (p : ℕ) [Fact p.Prime], ∀ z ∈ algPts p (mCoordIdeal y), aeval z u ≠ 0 →
-    ∀ w, HasVal y (L.a - M.a) θ z w → ‖w‖ * supMet M.a z ≤ Real.exp (c p) * supMet L.a z
-  arch : ∀ (sg : F →+* ℂ), ∀ z ∈ mcPts (mCoordIdeal y), LiesOver y sg z → aeval z u ≠ 0 →
-    ∀ w, HasVal y (L.a - M.a) θ z w → ‖w‖ * M.h z ≤ Real.exp (t sg) * L.h z
-
-def HasMultiplier (y : (Σ k, ι k) → Ω) (F : Type) [Field F] [NumberField F] [Algebra F Ω] (M L : HermLine ι)
-    (B : ℝ) : Prop :=
-  ∃ (θ : Ω) (u : MRing ι) (S : Finset ℕ) (c : ℕ → ℝ) (t : (F →+* ℂ) → ℝ),
-    θ ≠ 0 ∧ IsFormOff (mCoordIdeal y) u ∧ (∀ p ∈ S, p.Prime) ∧ (∀ p, 0 ≤ c p) ∧ (∀ p, p ∉ S → c p = 0) ∧
-    (∀ sg, t (NumberField.ComplexEmbedding.conjugate sg) = t sg) ∧ MultBound y M L θ u c t ∧
-    ∑ p ∈ S, c p + embMean t ≤ B
 
 end GlobalTheory.CompanionTheory.Ar.Small

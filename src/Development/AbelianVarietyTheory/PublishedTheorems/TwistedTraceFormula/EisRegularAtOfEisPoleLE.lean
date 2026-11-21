@@ -144,30 +144,6 @@ theorem EisRegularAt.of_eisValueAt {ψ : GA D (dblSp V) → ℂ} (h : EisRegular
   exact ⟨r, hr, fun g => (hd g).congr fun s hs => e' s hs g, hc.congr fun x hx => e' _ hx.1 _, C, N,
     fun s hs g => e' s hs g ▸ hb s hs g⟩
 
-theorem EisRegularAt.eisPoleLE (h : EisRegularAt V Φ s₀ k) (hE : EisContinues V Φ) : EisPoleLE V Φ s₀ k := by
-  obtain ⟨r, H, hr, e, hd, -⟩ := h
-  refine ⟨hE.1, fun g => ?_⟩
-  obtain ⟨E, hE⟩ := hE.2 g
-  refine (hE.isExtAt trivial).poleLE_iff.2 ⟨H s₀ g, (((hd g).continuousOn.continuousAt
-    (ball_mem_nhds _ hr)).tendsto.mono_left nhdsWithin_le_nhds).congr' ?_⟩
-  filter_upwards [(hE.isExtAt (s₀ := s₀) trivial).cont_eventuallyEq, self_mem_nhdsWithin,
-    mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with s h2 h3 h4
-  rw [e s h4 h3, ← h2]; rfl
-
-section Consequences
-
-variable (hP : Published.DoublingMethod) (h0 : 0 < V.rank) {a : GL (Fin V.rank) (AE D)} (ha : IsMaj V a)
-  (hI : HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a)) {μ : (AE D)ˣ →* Circle} {b : ℕ} (hμ : IsHeckeChar D μ)
-  (hb : ResEta D μ b) {s₁ : ℂ} {φ : GA D (dblSp V) → ℂ} (hφ : φ ∈ degPS V a μ s₁)
-include hP h0 ha hI hμ hb hφ
-
-theorem basicIdentity_of_mem (hs : (V.rank : ℝ) / 2 < s₁.re) {θ : InfF D} (hθ : IsInfFam θ) (hV : V.SigOK) {A : CptF V}
-    (hA : Cusp.IsCartanFrame V A) (m : Measure (GA D V)) [hm : m.IsHaarMeasure] {f₁ f₂ : GA D V → ℂ}
-    (h₁ : f₁ ∈ Cusp.A0 θ V A) (h₂ : f₂ ∈ Cusp.A0 θ V A) : BasicIdentity V μ m φ f₁ f₂ := by
-  simpa only [flatH_self] using ((hP D V h0 a ha hI μ b hμ hb s₁ φ hφ).2.2 θ hθ hV A hA m hm f₁ h₁ f₂ h₂).1 s₁ hs
-
-end Consequences
-
 end GlobalTheory.Eis
 
 end

@@ -115,15 +115,6 @@ theorem isVacF_of_isVacVec {V W : HSp D} {S S' : D.what₂.Tau → SPar} {ψ : A
     {M : DSModel V S} {M' : DSModel W S'} {f : WO V W → ℂ} (h : IsVacVec ψ θ M M' f) :
     IsVacF ψ θ (Fr.ofModel M) (Fr.ofModel M') f := ⟨h.theta, h.vac⟩
 
-def posFr (D : D7) (n : ℕ) : Fr (posSp D n) where
-  ε _ _ := true
-  fr _ := 1
-  fr_unit _ := isUnit_one
-  fr_gram τ := by
-    rw [gramAt_posSp]
-    ext a b
-    simp [Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply]
-
 end GlobalTheory.ChainFr
 
 end

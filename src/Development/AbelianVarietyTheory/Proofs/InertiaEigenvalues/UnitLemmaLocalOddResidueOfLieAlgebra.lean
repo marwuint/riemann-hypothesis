@@ -2,15 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverExtAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalRingOfIdem
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnramifiedOddDegreeQuadraticLocalExtStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnramifiedOddDegreeQuadraticLocalExt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitLemmaResiduallyUnipotentViaCayleyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedBaseChangeLatticeCountEqStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaGramDetInvAlgBaseChangeUnramifiedOddStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparableCharpolyInvAlgBaseChangeUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValResultantEqDegreeMulUnramifiedExtStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedBaseChangeLatticeCountEq
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaGramDetInvAlgBaseChangeUnramifiedOdd
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparableCharpolyInvAlgBaseChangeUnramified
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValResultantEqDegreeMulUnramifiedExt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardResidueFieldAdjoinUnitaryProdStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnramifiedInvolutionFieldEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyOverExtIntegralReductionPowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnramifiedInvolutionFieldEmbedding
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyOverExtIntegralReductionPow
 
 noncomputable section
 
@@ -61,10 +61,10 @@ theorem unitLemma_local_of_lie : UnitLemmaLie → ∀ (K : UQ), K.Odd → ∀ B�
   have huP := prod_unitary B₁ B₂ hu₁ hu₂
   have hiP := prod_integral B₁ B₂ hi₁ hi₂
   obtain ⟨d, hd, hcard⟩ := GlobalTheory.T.card_residueField_adjoin_unitary_prod K hK B₁ B₂ hu₁ hu₂ hsep hi₁ hi₂ hl
-  obtain ⟨K', φ, hq, hc, hv, hodd, hfin, hz⟩ := GlobalTheory.T.exists_unramified_odd_degree_quadratic_local_ext K d hd
+  obtain ⟨K', φ, hq, hc, hv, hodd, hfin, hz⟩ := _root_.GlobalTheory.UnitLemma.UnrExt.exists_unramified_ext K d hd
   have hU : IsUnrExt K K' d φ := ⟨hq, hc, hv, hodd, hfin⟩
-  obtain ⟨ψ, hψ, hσ, hO, s, hs, hres⟩ := GlobalTheory.T.exists_unramified_involution_field_embedding K hK (B₁.prod B₂) huP hsepP hiP hl d hcard K' φ hU hz
-  obtain ⟨Q, hQ1, hQ2⟩ := GlobalTheory.T.charpoly_overExt_integral_reduction_pow K K' d φ hU (B₁.prod B₂) ψ hψ hσ hO hl hsepP hiP s hres
+  obtain ⟨ψ, hψ, hσ, hO, s, hs, hres⟩ := _root_.GlobalTheory.UnitLemma.Unr.exists_unr_embedding K hK (B₁.prod B₂) huP hsepP hiP hl d hcard K' φ hU hz
+  obtain ⟨Q, hQ1, hQ2⟩ := _root_.GlobalTheory.UnitLemma.Unr.charpoly_overExt_integral_reduction K K' d φ hU (B₁.prod B₂) ψ hψ hσ hO hl hsepP hiP s hres
   have hiso := prodEquiv_isIso φ B₁ B₂ ψ hψ hσ
   set ψ₁ := (RingHom.fst B₁.A B₂.A).comp ψ with hψ₁
   set ψ₂ := (RingHom.snd B₁.A B₂.A).comp ψ with hψ₂
@@ -106,7 +106,7 @@ theorem unitLemma_local_of_lie : UnitLemmaLie → ∀ (K : UQ), K.Odd → ∀ B�
 
   have hsep' : (C₁.P * C₂.P).Separable := by
     rw [hPP]
-    exact GlobalTheory.T.separable_charpoly_invAlgBaseChangeUnramified K K' d φ hU (B₁.prod B₂) ψ hψ hσ hsepP
+    exact _root_.GlobalTheory.UnitLemma.Unr.charpoly_overExt_separable K K' d φ hU (B₁.prod B₂) ψ hψ hσ hsepP
   have hId := GlobalTheory.T.unitLemma_residually_unipotent_via_cayley hL K' (hodd hK) C₁ C₂ hu₁ hu₂ hsep' s hs hQ
 
   have hst : ∀ (B : InvAlg K) (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e)
@@ -115,21 +115,21 @@ theorem unitLemma_local_of_lie : UnitLemmaLie → ∀ (K : UQ), K.Odd → ∀ B�
       (overExt φ B ψ hψ hσ).stSum = B.stSum := by
     intro B ψ hψ hσ hO'
     unfold InvAlg.stSum
-    exact finsum_congr fun k => GlobalTheory.T.unramifiedBaseChange_latticeCount_eq K K' d φ hU B ψ hψ hσ hO' _
+    exact finsum_congr fun k => _root_.GlobalTheory.UnitLemma.Unr.N_overExt K K' d φ hU B ψ hψ hσ hO' _
   have hkap : InvAlg.kapSum C₁ C₂ = InvAlg.kapSum B₁ B₂ := by
     unfold InvAlg.kapSum
     refine finsum_congr fun k => ?_
     have hN : (C₁.prod C₂).N k.rep = (B₁.prod B₂).N k.rep := by
       rw [← hiso.N_eq]
-      exact GlobalTheory.T.unramifiedBaseChange_latticeCount_eq K K' d φ hU (B₁.prod B₂) ψ hψ hσ hO _
+      exact _root_.GlobalTheory.UnitLemma.Unr.N_overExt K K' d φ hU (B₁.prod B₂) ψ hψ hσ hO _
     rw [hN]
     congr 1
     set x := (Quot.out k).1 with hx
     have hfix : B₁.σ ((x : (C₁.prod C₂).A).1) = (x : (C₁.prod C₂).A).1 := congrArg Prod.fst (Quot.out k).2
     let x₁ : B₁.Aˣ := Units.map (MonoidHom.fst B₁.A B₂.A) x
-    have := GlobalTheory.T.eta_gramDet_invAlgBaseChangeUnramified_odd K K' d φ hU hd B₁ ψ₁ h₁ h₁' x₁ hfix
+    have := _root_.GlobalTheory.UnitLemma.Unr.eta_overExt K K' d φ hU hd B₁ ψ₁ h₁ h₁' x₁ hfix
     exact this
-  have hres' := GlobalTheory.T.val_resultant_eq_degree_mul_unramifiedExt K K' d φ hU hd B₁ B₂ ψ₁ ψ₂ h₁ h₁' h₂ h₂' hO' hsep s hQ
+  have hres' := _root_.GlobalTheory.UnitLemma.Unr.ResVal.val_resultant_unr K K' d φ hU hd B₁ B₂ ψ₁ ψ₂ h₁ h₁' h₂ h₂' hO' hsep s hQ
   unfold InvAlg.Identity at hId ⊢
   rw [hkap, hst B₁ ψ₁ h₁ h₁' hO₁, hst B₂ ψ₂ h₂ h₂' hO₂] at hId
   rw [← hId, hres', hq]

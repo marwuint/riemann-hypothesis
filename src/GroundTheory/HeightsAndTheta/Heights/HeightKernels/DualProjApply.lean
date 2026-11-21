@@ -50,21 +50,6 @@ def DualStdMassAt.Statement : Prop :=
     ptsIntegralAt (e := D) (dualIdeal b) (dualProj b hb)
       (fun _ z => Real.log ((dualLine F b hb).h z)) (fun _ => 1) = Fintype.card (K →+* ℂ)
 
-example : (((k : Unit) → dualBlocks Unit k) → ℂ) →ₗ[ℂ] (Fin 1 → ℂ) :=
-  dualProj dualBasisStandard dualEmbMatrix_standard_bijective
-
-example : (Σ _ : Unit, Unit) → ℂ := dualPlanePt dualBasisStandard (Rat.castHom ℂ) fun _ => 1
-
-example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
-    (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (_ : ℚ →+* ℂ) (v : Fin 1 → ℂ), v ≠ 0 :=
-  ⟨dualBasisStandard, dualEmbMatrix_standard_bijective, Rat.castHom ℂ, fun _ => 1,
-    fun h => one_ne_zero (congrFun h 0)⟩
-
-example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ (0 + 1))))
-    (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))),
-    ∀ σ, (HermLattice.standard ℚ (0 + 1)).metric σ = 1 :=
-  ⟨dualBasisStandard, dualEmbMatrix_standard_bijective, fun _ => rfl⟩
-
 end
 
 end GroundTheory.Heights₂.Heights

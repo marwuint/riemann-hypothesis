@@ -1,9 +1,9 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRestrictEqTopOfAbsIrrSubStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SemisimpleMatrixRepIsInternalIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsoSubSpanExtensionOfScalarsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanExtendScalarsInfEqBotOfInfEqBotStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRestrictEqTopOfAbsIrrSub
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SemisimpleMatrixRepIsInternalIrreducible
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsoSubSpanExtensionOfScalars
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanExtendScalarsInfEqBotOfInfEqBot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IrreducibleSpanAfterMap
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 
@@ -16,12 +16,12 @@ theorem absIrrDistinct_of_ss_of_absIrr_of_mapRep_distinct :
         ¬ IsoSub (mapRep f ρ) W₁ W₂) →
       AbsIrrDistinct (matRep ((Units.coeHom _).comp ρ)) := by
   intro k Γ _ _ L _ f a ρ hss habs hdist
-  obtain ⟨n, Vs, hint, hirr⟩ := GlobalTheory.T.semisimple_matrixRep_isInternal_irreducible ρ hss
+  obtain ⟨n, Vs, hint, hirr⟩ := _root_.GlobalTheory.semisimple_matrix_rep_decomp ρ hss
   have hs : ∀ j, Stable (matRep ((Units.coeHom _).comp ρ)) (Vs j) :=
     fun j g v hv => (hirr j).2.1 g v hv
   have hsp : ∀ j, Submodule.span k (Set.range fun g =>
       (matRep ((Units.coeHom _).comp ρ) g).restrict (hs j g)) = ⊤ :=
-    fun j => GlobalTheory.T.span_restrict_eq_top_of_absIrrSub_alt ρ (Vs j) (hs j) (habs _ (hirr j))
+    fun j => _root_.GlobalTheory.BurnsideSub.span_restrict_eq_top_of_absIrrSub ρ (Vs j) (hs j) (habs _ (hirr j))
   refine ⟨Fin n, inferInstance, inferInstance, Vs, hs, hint, fun j => (hirr j).1, hsp, ?_⟩
   intro j j' hjj' e he
   have hiso : IsoSub ρ (Vs j) (Vs j') := by
@@ -33,7 +33,7 @@ theorem absIrrDistinct_of_ss_of_absIrr_of_mapRep_distinct :
   exact hdist _ _
     (GlobalTheory.isIrrSub_mapRep_of_span_restrict_eq_top f ρ (Vs j) (hs j) (hirr j).1 (hsp j))
     (GlobalTheory.isIrrSub_mapRep_of_span_restrict_eq_top f ρ (Vs j') (hs j') (hirr j').1 (hsp j'))
-    (GlobalTheory.T.span_extendScalars_inf_eq_bot_of_inf_eq_bot f (Vs j) (Vs j') hdisj)
-    (GlobalTheory.T.isoSub_span_extension_of_scalars f ρ (Vs j) (Vs j') (hirr j).2.1 (hirr j').2.1 hiso)
+    (_root_.GlobalTheory.span_map_inf_eq_bot_of_inf_eq_bot f (Vs j) (Vs j') hdisj)
+    (_root_.GlobalTheory.isoSub_span_map f ρ (Vs j) (Vs j') (hirr j).2.1 (hirr j').2.1 hiso)
 
 end GlobalTheory

@@ -5,8 +5,15 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PlaceM
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DofOTw
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GridStaircaseLatticeFirstColumnTransportStages
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanRangeEquiv
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedStateTransportHeqLevelsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNewTwistLamFullStatement
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RealIoX
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.OmPinsTr
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideTw
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMovedDataLaterStagesWithNewTwistStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNormalisedReadingTransportedNewTwist
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReadPackageTwistHeq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNewTwistLamFull
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleTwistOfTwistingCharacter
+
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -38,15 +45,5 @@ theorem listSt_oTw (cDep : ℝ) (x : St P) (N : TwNew (Dof x))
   intro Lc' hR
   rw [eq_of_heq hR]
   exact listPin_oTw x N hN _ _ _ h
-
-theorem sb1l : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ∀ cDep : ℝ, SeriesExistList hL cDep := by
-  intro hPr hSer hL cDep
-  refine (StepW.and (GlobalTheory.MtId.inMt_idFrame hPr) (StepW.of_all fun _ _ _ _ _ _ _ h => h)).trans
-    (StepW.of_all fun K B f T w hK hF H P x l => ?_)
-  obtain ⟨N, hN, hser⟩ := GlobalTheory.T.exists_new_twist_lam_full hPr hSer hL hK hF H.2 x l
-  obtain ⟨x', l', ho, hLc, hrow, hPq, hS, hSb, hhL, heig, hθ, hR, hcG, hgeo⟩ := GlobalTheory.T.twisted_state_transport_heq_levels hL x l.toLI N
-  obtain ⟨m, hm⟩ := H.1 P x'
-  obtain ⟨b⟩ := hser x' l' ho hrow hPq hS hSb hhL heig hθ hR hcG hgeo m hm
-  exact ⟨x', ⟨{ toLI := { l' with mt := m }, b := b }⟩, listSt_oTw cDep x N hN x' ho hLc⟩
 
 end GlobalTheory.HeightCounting.Up.SeriesStep

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexSqsTopOfFgStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsNumberFieldFgStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinrankSUnitsNumberFieldAddOneStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexSqsTopOfFg
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsNumberFieldFg
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinrankSUnitsNumberFieldAddOne
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 
@@ -42,8 +42,8 @@ theorem card_sq_eq_one_sUnits (F : Type) [Field F] [NumberField F]
 
 theorem relIndex_sqs_sUnits : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))), (sqs (sUnits F S)).relIndex (sUnits F S) = 2 ^ (S.card + Fintype.card (InfinitePlace F)) := by
   intro F _ _ S
-  haveI := GlobalTheory.T.sUnitsNumberField_fg F S
-  rw [Subgroup.relIndex, sqs_subgroupOf_self, GlobalTheory.T.index_sqs_of_fg, card_sq_eq_one_sUnits,
-    ← GlobalTheory.T.finrank_sUnitsNumberField_add_one F S, pow_succ]
+  haveI := _root_.GlobalTheory.QNorm.sUnits_fg F S
+  rw [Subgroup.relIndex, sqs_subgroupOf_self, _root_.GlobalTheory.QNorm.index_sqs_top_of_fg, card_sq_eq_one_sUnits,
+    ← _root_.GlobalTheory.QNorm.sUnits_rank F S, pow_succ]
 
 end GlobalTheory.QNorm

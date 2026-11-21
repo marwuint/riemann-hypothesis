@@ -38,12 +38,6 @@ theorem mem_iff {a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)} :
   Iff.rfl
 
 omit [IsTopologicalGroup G] in
-theorem apply_eq (a : openCompletion G) {H H' : openFiniteIndex G} (h : (H : Subgroup G) ≤ H') :
-    quotientMapOfLE h ((a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)) H) =
-      (a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)) H' :=
-  a.2 H H' h
-
-omit [IsTopologicalGroup G] in
 
 theorem ext {a b : openCompletion G}
     (h : ∀ H : openFiniteIndex G, (a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)) H =
@@ -93,30 +87,6 @@ instance : T2Space (openCompletion G) := by
     have := discreteTopology_quotient H
     infer_instance
   infer_instance
-
-theorem denseRange_of : DenseRange (of G) := by
-  rw [denseRange_iff_closure_range, Set.eq_univ_iff_forall]
-  intro a
-  rw [mem_closure_iff]
-  intro U hU haU
-  obtain ⟨V, hV, rfl⟩ := isOpen_induced_iff.1 hU
-  obtain ⟨I, u, hu, hIV⟩ := isOpen_pi_iff.1 hV _ haU
-  let H₀ : Subgroup G := ⨅ H ∈ I, (H : Subgroup G)
-  have hH₀ : H₀ ∈ openFiniteIndex G := by
-    refine ⟨?_, Subgroup.finiteIndex_iInf' _ fun H _ => H.2.2⟩
-    have : (H₀ : Set G) = ⋂ H ∈ I, ((H : Subgroup G) : Set G) := by
-      simp [H₀, Subgroup.coe_iInf]
-    rw [this]
-    exact isOpen_biInter_finset fun H _ => H.2.1
-  obtain ⟨x, hx⟩ := QuotientGroup.mk_surjective
-    ((a : ∀ H : openFiniteIndex G, G ⧸ (H : Subgroup G)) ⟨H₀, hH₀⟩)
-  refine ⟨of G x, hIV fun H hH => ?_, x, rfl⟩
-  have hle : H₀ ≤ (H : Subgroup G) := iInf₂_le H hH
-  have := apply_eq a (H := ⟨H₀, hH₀⟩) (H' := H) hle
-  rw [← hx, quotientMapOfLE_mk] at this
-  change (x : G ⧸ (H : Subgroup G)) ∈ u H
-  rw [this]
-  exact (hu H hH).2
 
 end openCompletion
 

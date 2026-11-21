@@ -16,16 +16,36 @@ import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie
 import Formalism.LocalToGlobal.ProjectiveLattices.FullExists
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHLAM
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ShortThetaSeriesSpanCuspFormsWeightStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicGermValueChartIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ShortThetaSeriesSpanCuspFormsWeight
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsBaseClassLevelAdapted
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SpanInst
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.JInjRdOf
+import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicGermValueChartIndependent
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaLatticeWeightScalarNeZeroAndLogBounds
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.WeightsBelow
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GamAtOfLawsCore
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SizePageRowsOfSizePageAt
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaIndexBoundHypothesesAtInstanceStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaIndexBoundHypothesesAtInstance
+import Development.AbelianVarietyTheory.Definitions.ThetaValues.SWEqSOf
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.AdmissibleModuleIffLatticeQuotients
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.TheoremZeroOfReducedInputs
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LiftIndexPowFourLeDegree
+import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LatOfLamSt
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ScaledThetaLatticeLeSupLatticeEveryWeightStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ScaledRunLatticesInSupLatticesProofStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeightModuleIsLatticeOfShortSeriesSpanStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ScaledRunLatticesInSupLatticesProof
+import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLatticesInSupLattices
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeightModuleIsLatticeOfShortSeriesSpan
+import Development.AbelianVarietyTheory.Definitions.CMLattices.IntegralOf
+import Formalism.LocalToGlobal.ProjectiveLattices.RosatiLatticeNorms.CmFrameOfEq
+import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcDatumIsArcPointBasis
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ModelLat
+import Formalism.LocalToGlobal.ProjectiveLattices.ExtendedPointBaseChange
+import Formalism.LocalToGlobal.ProjectiveLattices.HostInt
+import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FactPrincipalDatum
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LatOfLam
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DepthSumRecord
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.WeightFloorInequalities
 
@@ -52,7 +72,7 @@ theorem hypC_record : ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.In
   have hjm : j ≤ D.R.m := hj.2
   obtain ⟨hParA, hSetC, -, -, -⟩ := hpage.hyp
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hnW, -, hIsL, hIsF, -⟩ := hSetC
-  have hchart := GlobalTheory.T.harmonic_germ_value_chart_independent
+  have hchart := _root_.GlobalTheory.harmonicValue_chart_independent
   have hgam : GlobalTheory.RunIn.GamAt T.toCore := GlobalTheory.RunIn.gamAt_of_lawsCore D T.toCore h.toLawsCore
   have hrows := (GlobalTheory.pageRows_of_pageAt D _ _ j (recPJ h j hj) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0
     hpage.hyp hpage.page hpage.ck).1
@@ -72,18 +92,18 @@ theorem hypC_record : ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.In
     have e : p = q := (hpar.own 0).symm.trans (hall j hj 0)
     subst e
     exact hq
-  have hH2 := (GlobalTheory.T.scaledRunLattices_in_supLattices D T h hpar.sh j hj hinj EX hpar.orient p hpar.own ka wL wF Tn nP hIsF).1
+  have hH2 := (_root_.GlobalTheory.PlaceTop.scaledRunLatticesInSupLattices_proof D T h hpar.sh j hj hinj EX hpar.orient p hpar.own ka wL wF Tn nP hIsF).1
   have hth : ∀ w : WeightFamilies.Wt D j, GlobalTheory.RunIn.ThInt (recPJ h j hj) hinj EX w :=
     fun w => GlobalTheory.T.scaledThetaLattice_le_supLattice_every_weight D T h j hj hinj EX hpar.orient w
-  have main := GlobalTheory.T.thetaIndexBound_hypotheses_at_instance hchart D T h hgam hpar.sh hpar.bad hpar.lvA hpar.same hinj EX p j hj large₂ H C2 A2 7 CT
+  have main := _root_.GlobalTheory.RunIn.thetaInputs_rec hchart D T h hgam hpar.sh hpar.bad hpar.lvA hpar.same hinj EX p j hj large₂ H C2 A2 7 CT
     ka wL wF Tn nP nW h0 (gcR large₂ (recB h.toLawsCore)) (38 * large₂.sc.L + PO D large₂) hown hpage.hyp hpage.page hpage.ck
     (fun w2 _ => hth w2) (fun _ w1 _ => hth w1) hH2 (growthConstantBound_gcR large₂ _) le_rfl
   have hC := main.1 _ hH1
   obtain ⟨-, Sh, hspan, -, -, hTied⟩ := main.2
   have hsK := hC.2.2.1.2.2.2.1
-  have hspanka := GlobalTheory.T.shortThetaSeries_span_cuspForms_weight hchart D T h hpar.sh hgam hpar.bad hpar.same j hj1 hjm ka
+  have hspanka := _root_.GlobalTheory.Dict.spanAt_record hchart D T h hpar.sh hgam hpar.bad hpar.same j hj1 hjm ka
     (ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj ka (hwb.1 ka (by simp)).2.2.2) (hwb.2.1 ka (by simp))
-  have hlat := GlobalTheory.T.weightModule_isLattice_of_shortSeries_span D T.toCore h.toLawsCore hgam large₂ H.CA hParA j ka _ (recPJ h j hj) _ wL wF hsK hspanka
+  have hlat := _root_.GlobalTheory.latAt_record D T.toCore h.toLawsCore hgam large₂ H.CA hParA j ka _ (recPJ h j hj) _ wL wF hsK hspanka
     hC.2.2.2.2.1
   refine ⟨hC, hlat, hth, ⟨hpage.p13, fun σ => ?_, hpage.frd, hpage.r8, hpage.df⟩, Sh, hspan, hTied⟩
   rw [GlobalTheory.RunIn.sW_eq_sOf]

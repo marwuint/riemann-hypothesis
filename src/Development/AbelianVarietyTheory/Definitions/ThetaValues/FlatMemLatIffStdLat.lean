@@ -124,17 +124,8 @@ theorem actE_sum_right {κ : Type*} (s : Finset κ) (α : E) (v : κ → Vsp dim
     actE α (∑ j ∈ s, v j) = ∑ j ∈ s, actE α (v j) := by
   simp only [← actL_apply, map_sum]
 
-theorem actE_neg_left (α : E) (v : Vsp dim) : actE (-α) v = -actE α v := by
-  ext i; simp
-
-theorem actE_neg_right (α : E) (v : Vsp dim) : actE α (-v) = -actE α v := by
-  ext i; simp
-
 theorem actE_comm (α β : E) (v : Vsp dim) : actE α (actE β v) = actE β (actE α v) := by
   rw [← actE_mul, ← actE_mul, mul_comm]
-
-theorem actE_intCast (m : ℤ) (v : Vsp dim) : actE (m : E) v = m • v := by
-  ext i; simp
 
 theorem actE_natCast (m : ℕ) (v : Vsp dim) : actE (m : E) v = m • v := by
   ext i; simp
@@ -151,25 +142,15 @@ def tens (x : Vsp dim) (v : Fin n → E) : Fin n → Vsp dim := fun k => actE (v
 theorem tens_add_left (x y : Vsp dim) (v : Fin n → E) : tens (x + y) v = tens x v + tens y v :=
   funext fun k => actE_add_right (v k) x y
 
-theorem tens_add_right (x : Vsp dim) (v w : Fin n → E) : tens x (v + w) = tens x v + tens x w :=
-  funext fun k => actE_add_left (v k) (w k) x
-
 @[simp] theorem tens_zero_left (v : Fin n → E) : tens (0 : Vsp dim) v = 0 :=
   funext fun k => actE_zero_right (v k)
 
 @[simp] theorem tens_zero_right (x : Vsp dim) : tens x (0 : Fin n → E) = 0 :=
   funext fun _ => actE_zero_left x
 
-theorem tens_smul_left (c : ℂ) (x : Vsp dim) (v : Fin n → E) : tens (c • x) v = c • tens x v :=
-  funext fun k => actE_smul_right (v k) c x
-
 theorem tens_smul_right (α : E) (x : Vsp dim) (v : Fin n → E) :
     tens x (α • v) = tens (actE α x) v :=
   funext fun k => by simp only [tens_apply, Pi.smul_apply, smul_eq_mul, ← actE_mul, mul_comm]
-
-theorem actE_tens (α : E) (x : Vsp dim) (v : Fin n → E) :
-    (fun k => actE α (tens x v k)) = tens (actE α x) v :=
-  funext fun k => actE_comm α (v k) x
 
 theorem tens_sum_left {κ : Type*} (s : Finset κ) (x : κ → Vsp dim) (v : Fin n → E) :
     tens (∑ j ∈ s, x j) v = ∑ j ∈ s, tens (x j) v :=
@@ -254,10 +235,6 @@ theorem contr_add_right (γ : Fin n → Vsp dim) (w w' : Fin n → E) :
 @[simp] theorem contr_zero_right (γ : Fin n → Vsp dim) : contr γ (0 : Fin n → E) = 0 := by
   simp [contr, cc, actE_zero_left]
 
-theorem contr_smul_left (c : ℂ) (γ : Fin n → Vsp dim) (w : Fin n → E) :
-    contr (c • γ) w = c • contr γ w := by
-  simp only [contr, Pi.smul_apply, actE_smul_right, Finset.smul_sum]
-
 theorem contr_zsmul_left (m : ℤ) (γ : Fin n → Vsp dim) (w : Fin n → E) :
     contr (m • γ) w = m • contr γ w := by
   simp only [contr, Pi.smul_apply, ← actL_apply, map_zsmul, Finset.smul_sum]
@@ -269,16 +246,6 @@ theorem contr_actE_left (α : E) (γ : Fin n → Vsp dim) (w : Fin n → E) :
 theorem contr_smul_right (α : E) (γ : Fin n → Vsp dim) (w : Fin n → E) :
     contr γ (α • w) = actE (cc α) (contr γ w) := by
   simp only [contr, cc, Pi.smul_apply, smul_eq_mul, map_mul, actE_mul, actE_sum_right]
-
-theorem contr_sum_left {κ : Type*} (s : Finset κ) (γ : κ → Fin n → Vsp dim) (w : Fin n → E) :
-    contr (∑ j ∈ s, γ j) w = ∑ j ∈ s, contr (γ j) w := by
-  simp only [contr, Finset.sum_apply, actE_sum_right]
-  exact Finset.sum_comm
-
-theorem contr_sum_right {κ : Type*} (s : Finset κ) (γ : Fin n → Vsp dim) (w : κ → Fin n → E) :
-    contr γ (∑ j ∈ s, w j) = ∑ j ∈ s, contr γ (w j) := by
-  simp only [contr, cc, Finset.sum_apply, map_sum, actE_sum_left]
-  exact Finset.sum_comm
 
 theorem contr_single' (γ : Fin n → Vsp dim) (k : Fin n) (α : E) :
     contr γ (Pi.single k α) = actE (cc α) (γ k) := by
@@ -305,10 +272,6 @@ theorem HC_tens_left (γ : Fin n → Vsp dim) (x : Vsp dim) (w : Fin n → E) :
     HC (tens x w) γ = Hf x (contr γ w) := by
   rw [HC_conj, HC_tens_right, ← Hf_conj]
 
-theorem HC_tens_tens (x y : Vsp dim) (v w : Fin n → E) :
-    HC (tens x v) (tens y w) = Hf (actE (herm 1 v w) x) y := by
-  rw [HC_tens_right, contr_tens]
-
 theorem eq_zero_of_contr_span {S : Set (Fin n → E)} (hS : Submodule.span E S = ⊤)
     {γ : Fin n → Vsp dim} (h : ∀ w ∈ S, contr γ w = 0) : γ = 0 := by
   have key : ∀ w ∈ Submodule.span E S, contr γ w = 0 := by
@@ -334,9 +297,6 @@ variable {X : PT E} {Λ' : Submodule (𝓞 E) (Fin n → E)}
 
 theorem mem_tensorLat {γ : Fin n → Vsp X.dim} :
     γ ∈ tensorLat X Λ' ↔ ∀ w ∈ Λ', contr γ w ∈ X.L := Iff.rfl
-
-theorem tensorLat_anti {Λ₁ Λ₂ : Submodule (𝓞 E) (Fin n → E)} (h : Λ₁ ≤ Λ₂) :
-    tensorLat X Λ₂ ≤ tensorLat X Λ₁ := fun _ hγ w hw => hγ w (h hw)
 
 theorem act_mem_tensorLat (α : 𝓞 E) {γ : Fin n → Vsp X.dim} (hγ : γ ∈ tensorLat X Λ') :
     (fun k => act α (γ k)) ∈ tensorLat X Λ' := fun w hw => by
@@ -407,47 +367,6 @@ theorem mem_stdLat_iff_herm {v : Fin n → E} :
 theorem mem_tensorLat_stdLat {γ : Fin n → Vsp X.dim} :
     γ ∈ tensorLat X (stdLat E n) ↔ ∀ k, γ k ∈ X.L := by
   simp [stdLat, mem_tensorLat_span]
-
-omit [IsCMField E] in
-
-theorem stdLat_eq_pi : stdLat E n = Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E) := by
-  ext v
-  simp only [mem_stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]
-  exact forall_congr' fun k =>
-    ⟨fun h => ⟨⟨v k, h⟩, rfl⟩, fun ⟨c, hc⟩ => hc ▸ c.isIntegral_coe⟩
-
-theorem mem_tensorLat_pi {γ : Fin n → Vsp X.dim} :
-    γ ∈ tensorLat X (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)) ↔
-      ∀ k, γ k ∈ X.L := by
-  rw [← stdLat_eq_pi, mem_tensorLat_stdLat]
-
-theorem flat_mem_lat_iff_stdLat {γ : Fin n → Vsp X.dim} :
-    flat γ ∈ lat (TiledBoundaries.bT X n) ↔ γ ∈ tensorLat X (stdLat E n) := by
-  rw [mem_tensorLat_stdLat, flat_eq_eT, TiledBoundaries.mem_latT, LinearEquiv.symm_apply_apply]
-
-example (α : E) (γ : Fin 1 → Vsp X.dim) :
-    γ ∈ tensorLat X (Submodule.span (𝓞 E) {Pi.single 0 α}) ↔ actE (cc α) (γ 0) ∈ X.L := by
-  simp [mem_tensorLat_span, contr_single']
-
-example (α : E) (hα : cc α * α = 1) (x : Vsp X.dim) :
-    tens x (Pi.single (0 : Fin 1) α) ∈ tensorLat X (Submodule.span (𝓞 E) {Pi.single 0 α}) ↔
-      x ∈ X.L := by
-  simp [mem_tensorLat_span, contr_single', ← actE_mul, hα, actE_one]
-
-example (κ : E) (hκ : cc κ = -κ) (x : Vsp dim) :
-    contr (tens x (Pi.single (0 : Fin 2) 1)) (Pi.single 0 κ) = -actE κ x := by
-  simp [contr_single', hκ, actE_neg_left, actE_one]
-
-omit [IsCMField E] in
-
-example (w₀ : 𝓞 E) (l : Letter n dim) :
-    tensorEps w₀ (dir l) = cexp (-(Real.pi * I * ((l.2.1 (w₀ : E)).im : ℂ))) := by
-  classical
-  rw [tensorEps, ← Hf_flat, flat_dir, Hf, Finset.sum_eq_single l]
-  · simp [act, dir]
-  · intro p _ hp
-    simp [hp]
-  · simp
 
 end
 

@@ -1,7 +1,7 @@
 import Mathlib
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensorStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensor
 
 noncomputable section
 
@@ -246,6 +246,6 @@ theorem cayleyHam_of (H : QdetTens) : CayleyHam := by
   exact ⟨k, (smul_eq_zero.1 hz).resolve_left
     (pow_ne_zero _ (neg_ne_zero.2 (pow_ne_zero _ (by norm_num))))⟩
 
-theorem cayleyHam : CayleyHam := cayleyHam_of GlobalTheory.T.QuantumDeterminantTensor
+theorem cayleyHam : CayleyHam := cayleyHam_of _root_.GlobalTheory.CompanionTheory.RgExh.qdetTens
 
 end GlobalTheory.CompanionTheory.RgExhHecke.CayleyOm

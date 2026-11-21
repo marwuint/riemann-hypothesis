@@ -2,7 +2,8 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SelM
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LinearIndependentMulSelM
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetGramSubharmonicStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetGramSubharmonic
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.InFlagDomainOne
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.StepW GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 
@@ -42,7 +43,7 @@ theorem gram_cmp {k : ℕ} (hk : k ≤ N) {G : Matrix (Fin N) (Fin N) ℂ} (V : 
     (hm : 1 ≤ m) (hG : G.PosDef) (h1 : ((m : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ) - G).PosSemidef)
     (h2 : ((m : ℂ) • G - 1).PosSemidef) (hV : LinearIndependent ℂ Vᵀ) :
     |Real.log (Vᴴ * G * V).det.re - Real.log (Vᴴ * (1 : Matrix (Fin N) (Fin N) ℂ) * V).det.re| ≤ N * Real.log m := by
-  refine (GlobalTheory.T.log_det_comparable_gram_bound N k G 1 V m hm Matrix.PosDef.one hG h1 h2 hV).trans ?_
+  refine (_root_.GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size N k G 1 V m hm Matrix.PosDef.one hG h1 h2 hV).trans ?_
   have : (k : ℝ) ≤ N := by exact_mod_cast hk
   exact mul_le_mul_of_nonneg_right this (Real.log_nonneg hm)
 

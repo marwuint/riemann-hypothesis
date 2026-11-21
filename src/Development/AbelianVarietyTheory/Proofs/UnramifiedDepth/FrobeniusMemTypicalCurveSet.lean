@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.CharacterGerms.BlockAdmissibleChart
 import Formalism.LocalToGlobal.CharacterGerms.NegMem
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugedFormalGroupCurveLogarithmsAddSubgroupRescaStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugedFormalGroupCurveLogarithmsAddSubgroupResca
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MemCvOfSubstXPow
 
 open scoped BigOperators
@@ -71,7 +71,7 @@ theorem frob_mem_tySet : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d
   haveI : NeZero (V.l : C) := ⟨VF.l_ne_zero⟩
   haveI : NeZero V.l := ⟨hl.ne_zero⟩
   obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot C V.l
-  obtain ⟨h0, hadd, -, hres⟩ := GlobalTheory.T.gaugedFormalGroupCurveLogarithms_addSubgroup_rescale C V d I κ X hX g
+  obtain ⟨h0, hadd, -, hres⟩ := _root_.GlobalTheory.RowLaw.cv_group C V d I κ X hX g
   let lo : (I g ⊕ JJ I g → PowerSeries C) → (κ → PowerSeries C) × (JJ I g → PowerSeries C) := fun A =>
     (fun i => ∑ c : I g, X.u g c i • A (Sum.inl c),
      fun q => A (Sum.inr q) - ∑ c : I g, if X.ty g c = X.ty (1 - g) q then

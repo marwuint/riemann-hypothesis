@@ -4,8 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MxAtOfMemDepLat
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PsiUnipotentTrivialOnLevel
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastSeeSawCombinationsOperatorDatum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianPairingFourierJacobiStepBasePointColumnStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PsiEOffS0ColumnPairStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PsiEAtS0ColumnPairStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PsiEOffS0ColumnPair
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PsiEAtS0ColumnPair
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SepRows GlobalTheory.Asc
 open scoped TensorProduct
@@ -41,7 +42,7 @@ theorem charx_fb : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 
     simp only [Matrix.mulVec, dotProduct]
     exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hu k l)
   · by_cases hv : v ∈ G.pl.S0
-    · exact GlobalTheory.T.psiE_at_S0_column_pair D hD T L μ0 hL sc G W M hM σ h h' _ ha' p v hv
-    · exact GlobalTheory.T.psiE_off_S0_column_pair D hD T L μ0 hL sc G W M hM σ h h' _ ha' p v hv
+    · exact _root_.GlobalTheory.CharXFB.HeisenbergPairBadPlaces.traceCharacter_trivial_heisenbergPair_at_badPlaces D hD T L μ0 hL sc G W M hM σ h h' _ ha' p v hv
+    · exact _root_.GlobalTheory.CharXFB.OffPl.psi_pair_trivial_off D hD T L μ0 hL sc G W M hM σ h h' _ ha' p v hv
 
 end GlobalTheory.CharXFB

@@ -61,53 +61,6 @@ def raise (M : HermLB p) (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hu : �
   conj σ σ' c y y' h hy := congrArg₂ (· + ·) (M.conj σ σ' c y y' h hy)
     (hc σ σ' PUnit.unit y y' h mem_ptsIn_top)
 
-theorem isometric_raise_triv (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hu : ∀ σ y, CInfAt (u σ) y)
-    (hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))) :
-    (fnB u hu hc).Isometric ((triv p).raise u hu hc) :=
-  isometric_of_eqOn fun σ _ y _ => zero_add (u σ y)
-private theorem inv_eq_self_units_sections_spec_int_top (U : (Sp ℤ).Opens) (hU : U = ⊤) (u : Γ(Sp ℤ, U)ˣ) : u⁻¹ = u := by
-  subst hU
-  haveI := ArithBase.isArithVar_int.charZero
-  obtain ⟨n, hn⟩ := ArithBase.surjective_intCast (𝟙 (Sp ℤ)) (u : Γ(Sp ℤ, ⊤))
-  obtain ⟨m, hm⟩ := ArithBase.surjective_intCast (𝟙 (Sp ℤ)) ((u⁻¹ : Γ(Sp ℤ, ⊤)ˣ) : Γ(Sp ℤ, ⊤))
-  simp only [Int.coe_castRingHom] at hn hm
-  have h1 : n * m = 1 := by
-    have e := u.mul_inv
-    rw [← hn, ← hm] at e
-    exact_mod_cast e
-  ext
-  rw [← hn, ← hm]
-  rcases Int.eq_one_or_neg_one_of_mul_eq_one' h1 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rfl
-
-theorem eq_of_isometric_trivShift {s t : ℝ} (h : (ArithBase.trivShift s).Isometric (ArithBase.trivShift t)) : s = t := by
-  obtain ⟨w, -, hw⟩ := h
-  obtain ⟨y⟩ : Nonempty (CxPts (𝟙 (Sp ℤ)) (Int.castRingHom ℂ)) := ⟨⟨spMap (Int.castRingHom ℂ), by simp⟩⟩
-  have hy : y ∈ ptsIn (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) ⊤ := mem_ptsIn_top
-  have e : (0 : ℝ) + 2 * t = 0 + 2 * s +
-      Real.log (‖ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y‖ ^ 2) :=
-    hw (Int.castRingHom ℂ) PUnit.unit PUnit.unit y hy hy
-  have hne : ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y ≠ 0 :=
-    ev_iso_ne_zero w hy hy
-  have hinv := ev_inv (mem_ptsIn_inf.2 ⟨hy, hy⟩ : y ∈ ptsIn (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤))
-    (w.s (PUnit.unit, PUnit.unit))
-  have hu := inv_eq_self_units_sections_spec_int_top _ (inf_idem _) (w.s (PUnit.unit, PUnit.unit))
-  have hc := congrArg (fun v : Γ(Sp ℤ, ⊤ ⊓ ⊤)ˣ => ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) v.val y) hu
-  have key : ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y =
-      (ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y)⁻¹ :=
-    hc.symm.trans hinv
-  set x := ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y
-  have hxx : x * x = 1 := by
-    have h2 : x * x⁻¹ = 1 := mul_inv_cancel₀ hne
-    rwa [← key] at h2
-  have hn : ‖x‖ * ‖x‖ = 1 := by rw [← norm_mul, hxx, norm_one]
-  have hx : ‖x‖ = 1 := by
-    rcases mul_self_eq_one_iff.mp hn with h | h
-    · exact h
-    · linarith [norm_nonneg x]
-  rw [hx] at e
-  simp at e
-  linarith
-
 end GlobalTheory.HermLB
 
 namespace GlobalTheory.Published
@@ -175,39 +128,6 @@ theorem ArCalc.arIso (h : ArCalc) : ArIso := h.2.2.2.2.2.1
 section Consequences
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ} {ι : Type} [Fintype ι]
-
-theorem ArMix.vertical (H : ArMix) (HE : ArExists) [IsLocallyNoetherian X] (hX : IsArithVar p D) {M : HermLB p}
-    {L : ι → HermLB p} {Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun (fun o : Option ι => o.elim M L) D Φ)
-    (n : ι → ℤ) {r : M.B.ι → X.functionFieldˣ} (hr : IsRatSec M.B r)
-    (h1 : ∀ σ, ∀ y ∈ offSupp p σ (M.div hr), logNorm (M.φ σ) r y = 0) (l : ℕ) [Fact l.Prime] (d : X → ℤ)
-    (hd : ∀ z, (M.div hr).mult z ≠ 0 → ∃ (Z : Scheme.{0}) (i : Z ⟶ X) (_ : IsClosedImmersion i) (_ : IsIntegral Z)
-      (_ : Algebra (ZMod l) Γ(Z, ⊤)), i (genericPoint Z) = z ∧ topologicalKrullDim Z = D ∧
-        d z = topSelfIntersection (ZMod l) ((comb L n).B.pull i) D) :
-    Φ (MvPolynomial.X none * rename some (lin fun i => (n i : ℝ)) ^ D) =
-      (∑ᶠ z, ((M.div hr).mult z * d z : ℝ)) * Real.log l := by
-  haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩
-  obtain ⟨h, hh⟩ := (HE k X p D hX).1 (comb L n)
-  obtain ⟨-, he⟩ := H k X p D hX ι M L Φ hΦ n h hh r hr
-  have hA : (comb L n).archInt M D hr = 0 := by
-    unfold HermLB.archInt
-    refine finsum_eq_zero_of_forall_eq_zero fun σ => ?_
-    simp only [Weight.chernInt]
-    rw [MeasureTheory.setIntegral_eq_zero_of_forall_eq_zero (h1 σ),
-      MeasureTheory.setIntegral_eq_zero_of_forall_eq_zero (h1 σ),
-      sub_zero]
-  rw [he, hA, sub_zero, finsum_mul]
-  refine finsum_congr fun z => ?_
-  by_cases hz : (M.div hr).mult z = 0
-  · simp [hz]
-  obtain ⟨Z, i, hi, hZ, alg, rfl, hdim, hdz⟩ := hd z hz
-  haveI := hi
-  haveI := hZ
-  letI := alg
-  rw [hh.vertical Z i (ZMod l) D hdim, hdz, Nat.card_zmod]
-  first
-    | (push_cast; ring)
-    | push_cast
-    | ring
 
 theorem ArMix.fnB (H : ArMix) (HE : ArExists) (hX : IsArithVar p D) {L : ι → HermLB p}
     {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} {hu : ∀ σ y, CInfAt (u σ) y}

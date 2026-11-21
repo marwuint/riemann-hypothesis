@@ -30,55 +30,7 @@ theorem ne_b_top (hS : Formalism.MainNotions.SizesAt L) (s : Fin ((D.gat u w hg)
   rw [dif_pos (h2.1 hs)]
   exact ⟨L.bT_ge _, ne_bT_le hS _⟩
 
-include hL ht0 in
-theorem ne_a_top (s : Fin ((D.gat u w hg).P.n' (Y.vOf u w hg t0)))
-    (hs : s ∈ (Y.Fl u w hg).TT (Y.vOf u w hg t0)) :
-    ((Y.Fl u w hg).a (Y.vOf u w hg t0) s : ℝ) ≤ 2 * L.sc.a := by
-  obtain ⟨_, h2, h3, _⟩ := ((hL u w hg).2.2.2.2.2.2 t0 ht0).2 s
-  rw [(h3 hs).1]
-  unfold Formalism.MainNotions.G.aL
-  rw [dif_pos (h2.1 hs)]
-  exact ne_aT_le _
-
 end Orbit
-
-theorem ne_rG_lt (hS : Formalism.MainNotions.SizesAt L) (h : 34 < L.sc.x * L.sc.eps) : Formalism.MainNotions.G.rG L.sc < D.R.k := by
-  have he := L.sc.eps_pos
-  have he2 := L.sc.eps_lt
-  have hx1 := L.sc.one_lt_alt
-  have hK : Formalism.MainNotions.SizeK L := hS.2.2.1
-  obtain ⟨hk, -⟩ := hK
-  have hexp : (2 : ℝ) ≤ 9 / 2 + 10 * L.sc.eps - Formalism.MainNotions.szTh L := by
-    simp only [Formalism.MainNotions.szTh]; linarith
-  have hx2 : L.sc.x ^ (2 : ℝ) ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps - Formalism.MainNotions.szTh L) :=
-    Real.rpow_le_rpow_of_exponent_le hx1.le hexp
-  have hsq : L.sc.x ^ (2 : ℝ) = L.sc.x * L.sc.x := by rw [Real.rpow_two, sq]
-  set E := 1 / L.sc.eps with hE
-  have hEpos : 0 < E := by positivity
-  have hxe : 34 * E < L.sc.x := by
-    rw [hE, mul_one_div, div_lt_iff₀ he]; linarith
-  have hinv : 52 < E := by
-    rw [hE, lt_div_iff₀ he]; linarith
-  have hsq2 : 34 * E * (34 * E) ≤ L.sc.x * L.sc.x :=
-    mul_self_le_mul_self (by positivity) hxe.le
-  have hv : 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps = 32 * E + 64 := by
-    rw [hE]; simp only [Formalism.MainNotions.G.hG]; field_simp; ring
-  have hv0 : 0 ≤ 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps := by rw [hv]; positivity
-  have hc := Nat.ceil_lt_add_one hv0
-  have hq : 32 * E + 66 ≤ 34 * E * (34 * E) := by nlinarith
-  have h1 : (⌈8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps⌉₊ : ℝ) + 1 < 32 * E + 66 := by
-    linarith [hc, hv]
-  have h2 : 32 * E + 66 ≤ (D.R.k : ℝ) := by
-    calc 32 * E + 66 ≤ 34 * E * (34 * E) := hq
-      _ ≤ L.sc.x * L.sc.x := hsq2
-      _ = L.sc.x ^ (2 : ℝ) := hsq.symm
-      _ ≤ _ := hx2
-      _ ≤ _ := hk
-  unfold Formalism.MainNotions.G.rG Formalism.MainNotions.G.KG
-  have hfin : ((⌈8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps⌉₊ + 1 : ℕ) : ℝ) < (D.R.k : ℝ) := by
-    push_cast
-    exact lt_of_lt_of_le h1 h2
-  exact_mod_cast hfin
 
 def priceThreshold : ℝ := 9
 
@@ -145,9 +97,6 @@ theorem priceBoundLargePrimes_priceThreshold : PriceBoundLargePrimes priceThresh
 
 theorem ne_priceThreshold : PriceBound priceThreshold :=
   priceBound_of_largePrimes_of_smallPrimes priceThreshold priceBoundLargePrimes_priceThreshold price_bound_small_primes
-
-theorem exists_priceBound : ∃ C₀ : ℝ, 9 ≤ C₀ ∧ PriceBound C₀ :=
-  ⟨priceThreshold, price_threshold_ge_nine, ne_priceThreshold⟩
 
 theorem numericalComparisonUniform_of_size (hS : nd_NeedSize) : Formalism.MainNotions.FormalGroupSystem.NumericalComparisonUniform :=
   numerical_closed_of_threshold priceThreshold price_threshold_ge_nine (nc_need3_of priceThreshold hS ne_priceThreshold)

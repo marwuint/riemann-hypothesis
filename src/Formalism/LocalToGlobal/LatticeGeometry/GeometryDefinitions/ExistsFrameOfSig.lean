@@ -1,4 +1,9 @@
-import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.GlobLatUnimod
+import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.DualFrame
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsScale
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsDual
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
 import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.SingleFacts
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
 
@@ -71,12 +76,5 @@ theorem crdLat_lattice (S : HSpace E) (L : Submodule (𝓞 E) S.V) (hL : Submodu
   exact LinearMap.range_eq_top.2 (crd S).surjective
 
 end Space
-
-section Twist
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K]
-variable {E : Type} [Field E] [NumberField E] [StarRing E]
-
-end Twist
 
 end Formalism.L2.Geo.Def.G1

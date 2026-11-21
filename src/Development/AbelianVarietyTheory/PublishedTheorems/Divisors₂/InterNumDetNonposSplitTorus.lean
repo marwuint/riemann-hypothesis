@@ -2,7 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoQuotToImOmegaLieOfSplit
 import Development.AbelianVarietyTheory.Definitions.Divisors.LineBundleGlobalSectionsDimCongrPicardClass
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmoothOfRelativeDimensionPspace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankOneSubbundleSplitAtPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemChart
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGloballyGeneratedIffGeneratingSections
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.RingKrullDimOfEtaleMvPolynomial
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrullDimQuotientEqOfMemMinimalPrimes
@@ -61,27 +63,6 @@ theorem interNum_det_dual (hp : IsProjOver (strHom k C)) (hd : topologicalKrullD
 
 end Curve
 
-theorem mono_of_ne_zero {X : Scheme.{0}} [IsIntegral X] {L F : X.Modules} {g : ℕ} (hL : IsVB L 1) (hF : IsVB F g)
-    (φ : L ⟶ F) (hφ : φ ≠ 0) : Mono φ := by
-  refine IsTorsionFree.mono_of_injective_generic hL.isTorsionFree φ ?_
-  obtain ⟨b⟩ := hL.nonempty_basis_stalk (genericPoint X)
-  obtain ⟨c⟩ := hF.nonempty_basis_stalk (genericPoint X)
-  have h0 : stalkLinear φ (genericPoint X) (b 0) ≠ 0 := fun h0 => hφ <| by
-    have h1 : stalkLinear φ (genericPoint X) = 0 := b.ext fun j => by rwa [Subsingleton.elim j 0]
-    ext V s
-    by_cases hV : genericPoint X ∈ V
-    · refine hF.isTorsionFree V hV _ ?_
-      rw [← stalkLinear_germ, h1]
-      rfl
-    · exact Twist.sec_ext_of_cover (ι := Empty) (fun _ => V) (fun _ => le_rfl)
-        (fun x hx => (hV (genericPoint_mem hx)).elim) fun x => x.elim
-  rw [injective_iff_map_eq_zero]
-  intro t ht
-  rw [← b.sum_repr t, Fin.sum_univ_one] at ht ⊢
-  rw [map_smul] at ht
-  have := hF.free_stalk (genericPoint X)
-  rw [(smul_eq_zero.1 ht).resolve_right h0, zero_smul]
-
 theorem exists_det_ne_zero_field {K ι : Type} [Field K] [Fintype ι] {r : ℕ} (N : Matrix (Fin r) ι K)
     (hN : LinearIndependent K N.row) : ∃ σ : Fin r → ι, (N.submatrix id σ).det ≠ 0 := by
   by_contra! H
@@ -102,57 +83,6 @@ theorem exists_det_ne_zero {A ι : Type} [CommRing A] [IsDomain A] [Fintype ι] 
   refine ⟨σ, fun h₀ => hσ ?_⟩
   rw [Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h₀, map_zero]
 
-theorem hasNonzeroSec_det_dual {X : Scheme.{0}} [IsIntegral X] {W F : X.Modules} {r : ℕ} (hW : IsVB W r)
-    {ι : Type} [Fintype ι] {f : ι → Γ(F, ⊤)} (hf : IsFrame f) (i : W ⟶ F) [Mono i] :
-    HasNonzeroSec (det (VB.dual W) r) := by
-  obtain ⟨U, e, hU, he⟩ := hW (genericPoint X)
-  have hV : (⊤ ⊓ U : X.Opens) ≤ U := inf_le_right
-  have : Nonempty (⊤ ⊓ U : X.Opens) := ⟨⟨_, trivial, hU⟩⟩
-  let M : Matrix (Fin r) ι Γ(X, ⊤ ⊓ U) := fun b j =>
-    (hf.basis le_top).repr (i.app _ (resM W hV (e b))) j
-  have hM : LinearIndependent Γ(X, ⊤ ⊓ U) M.row := by
-    have h₁ := ((he.basis hV).linearIndependent.map' ((hf.basis le_top).equivFun.toLinearMap ∘ₗ appLinear i _)
-      (LinearMap.ker_eq_bot.2 ((hf.basis le_top).equivFun.injective.comp (injective_app_of_mono i _))))
-    rw [he.coe_basis] at h₁
-    exact h₁
-  obtain ⟨σ, hσ⟩ := exists_det_ne_zero M hM
-  refine ⟨LB.globalEquiv _ (wedge (VB.dual W) ⊤ r fun a => (dualMap i).app ⊤ (hf.coord (σ a))), fun h => hσ ?_⟩
-  have h₀ := congrArg (detCoord · ⟨U, he.coord, he.dual⟩) ((LinearEquiv.map_eq_zero_iff _).1 h)
-  simp only [detCoord_wedge, detCoord_zero, Module.Basis.det_apply] at h₀
-  refine Eq.trans (congrArg Matrix.det ?_) h₀
-  ext b a
-  rw [Module.Basis.toMatrix_apply, he.dual_basis_repr]
-  simp
-  rfl
-
-theorem interNum_det_nonpos_of_frame {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsIntegral C]
-    (hp : IsProjOver (strHom k C)) (hd : topologicalKrullDim C = 1) {W F : C.Modules} {r : ℕ} (hW : IsVB W r)
-    {ι : Type} [Fintype ι] {f : ι → Γ(F, ⊤)} (hf : IsFrame f) (i : W ⟶ F) [Mono i] :
-    interNum k (structureModule C) ![det W r] ≤ 0 := by
-  obtain ⟨_, H, hH⟩ := isProper_and_exists_isAmpleLB_of_isProjOver hp
-  obtain ⟨s, hs⟩ := hasNonzeroSec_iff.1 (hasNonzeroSec_det_dual hW hf i)
-  have := (interNum_one_nonneg_of_sec (k := k) hH hd hW.dual.isLB_det s hs).1
-  rw [interNum_det_dual hp hd hW] at this
-  omega
-
-theorem interNum_det_nonpos_splitTorus {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)]
-    (hs : SmoothOfRelativeDimension 1 (strHom k C)) (hp : IsProjOver (strHom k C))
-    (hc : GeometricallyConnected (strHom k C)) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
-    (W : C.Modules) (r : ℕ) (hW : IsVB W r) (i : W ⟶ Lie (splitTorus C X)) [Mono i] :
-    IsSemiAbelian (splitTorus C X) ∧ interNum k (structureModule C) ![det W r] ≤ 0 :=
-  have := isIntegral_curve hs hc
-  ⟨inferInstance, interNum_det_nonpos_of_frame hp (dim_curve hs) hW
-    (isFrame_dlogChar C (Module.Free.chooseBasis ℤ X)).dual i⟩
-
-theorem projectiveLine_hyps (k : Type) [Field k] :
-    letI := algebraΓOfHom (PSpace.str k 1)
-    SmoothOfRelativeDimension 1 (strHom k (PSpace k 1)) ∧ IsProjOver (strHom k (PSpace k 1)) ∧
-      GeometricallyConnected (strHom k (PSpace k 1)) := by
-  letI := algebraΓOfHom (PSpace.str k 1)
-  rw [strHom_eq (f := PSpace.str k 1) fun _ => rfl]
-  exact ⟨Adelic.smoothOfRelativeDimension_pspace k 1, ProjSpace.isProjOver_pspace_str k 1,
-    Adelic.geometricallyConnected_pspace k 1⟩
-
 end GlobalTheory.LieSemineg
 
 namespace GlobalTheory.Published.SemiAbelianLieSeminegative
@@ -164,22 +94,6 @@ variable (h : SemiAbelianLieSeminegative) {k : Type} [Field k] [CharZero k] {C :
   (hc : GeometricallyConnected (strHom k C)) (G : Over C) [GrpObj G] [IsSemiAbelian G]
 
 include h hs hp hc
-
-theorem line {S : LB C} (hS : S.IsLB) (φ : toMod S ⟶ Lie G) (hφ : φ ≠ 0) :
-    interNum k (structureModule C) ![S] ≤ 0 := by
-  have := isIntegral_curve hs hc
-  obtain ⟨g, -, hg⟩ := exists_isVB_of_isSemiAbelian G
-  have e := h k C hs hp hc G _ 1 (isVB_toMod hS) φ (mono_of_ne_zero (isVB_toMod hS) hg φ hφ)
-  refine (interNum_congr_lbIso k _ (isLB_vecOne hS) (isLB_vecOne (isVB_toMod hS).isLB_det) fun j => ?_).trans_le e
-  fin_cases j
-  exact lbIso_det_toMod hS
-
-theorem quotient_omega {Q : C.Modules} {r : ℕ} (hQ : IsVB Q r) (π : omega G ⟶ Q) [Epi π] :
-    0 ≤ interNum k (structureModule C) ![det Q r] := by
-  have := isIntegral_curve hs hc
-  have e := h k C hs hp hc G _ r hQ.dual (dualMap π) inferInstance
-  rw [interNum_det_dual hp (dim_curve hs) hQ] at e
-  omega
 
 theorem dual_det_nonneg {W : C.Modules} {r : ℕ} (hW : IsVB W r) (i : W ⟶ Lie G) [Mono i] :
     0 ≤ interNum k (structureModule C) ![CechPic.dual (det W r)] := by

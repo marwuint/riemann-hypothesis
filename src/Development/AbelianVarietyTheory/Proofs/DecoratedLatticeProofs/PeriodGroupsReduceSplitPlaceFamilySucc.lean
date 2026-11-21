@@ -2,9 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValQOfValQr
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLocalGroupClosedEmbeddingIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodLocalGroupsNormalFramesSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalInvariantIntegralsSymmetricHaarSubgroupsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodLocalGroupsNormalFramesSplitPlace
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalInvariantIntegralsSymmetricHaarSubgroups
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralQuotientEqIntegralFactorQuotient
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCompactOpenLatticeStabilizerAtPlaces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
@@ -177,7 +179,7 @@ theorem grpAt_of_off {V : HSp D} {P P' : Pl D → Prop} {w : Pl D} (h : ∀ v, P
   · exact h1.2 ⟨u.1, hp⟩
 
 theorem grpAt_eq_one {V : HSp D} {P : Pl D → Prop} (hP : ∀ v, ¬ P v) {g : GA D V} (hg : g ∈ grpAt V P) : g = 1 := by
-  have h := ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 V).2.2.1
+  have h := ((_root_.GlobalTheory.FinPl.localComponents D P).2 V).2.2.1
   have : g ∈ grpAt V P ⊓ grpOff V P := ⟨hg, grpAt_off (fun p hp _ => hP p hp) hg⟩
   rwa [h, Subgroup.mem_bot] at this
 
@@ -342,17 +344,17 @@ theorem loc₁ (Q : QStep S) : IsLocGrp S.J.W Q.q.v Q.gl₁ := isLocGrp Q.q _ Q.
 theorem loc₂ (Q : QStep S) : IsLocGrp S.B'.V Q.q.v Q.gl₂ := isLocGrp Q.q _ Q.F.G₂ _ Q.loc₂
 
 theorem sub₁ (Q : QStep S) : IsLocSub Q.q.v Q.gl₁ (jacGrp S.J.d) (RFJ Q.k Q.n₁ (Q.c + 1 + 1) (σ + 1)) := by
-  obtain ⟨h1, h2⟩ := (GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D Q.k Q.q Q.n₁ (Q.c + 1 + 1) (σ + 1)).1 S.J _ _ Q.F.F₁ Q.F.G₁ Q.gl₁ (by omega) Q.F.s_ne
+  obtain ⟨h1, h2⟩ := (_root_.GlobalTheory.LocGrpIff.local_groups_iff D Q.k Q.q Q.n₁ (Q.c + 1 + 1) (σ + 1)).1 S.J _ _ Q.F.F₁ Q.F.G₁ Q.gl₁ (by omega) Q.F.s_ne
     (div_ne_zero_iff.1 (hz_div_xi_ne Q)).1 Q.F.jac Q.loc₁
   refine ⟨GlobalTheory.jacGrp_isClosed D _ _ _ S.J.d, h1, h2, fun s hs hs1 => ?_⟩
-  exact ((GlobalTheory.T.localInvariantIntegrals_symmetric_haarSubgroups Q.k Q.ν Q.unitVol Q.n₁ (Q.c + 1 + 1) (σ + 1) Q.m₁ (GlobalTheory.SplitFlip.haarVol (KO _ _)) Q.haar₁
+  exact ((_root_.GlobalTheory.HaarR.quot_int_haar Q.k Q.ν Q.unitVol Q.n₁ (Q.c + 1 + 1) (σ + 1) Q.m₁ (GlobalTheory.SplitFlip.haarVol (KO _ _)) Q.haar₁
     GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO Q.vol₁).2 (by omega) Q.F.jac.1 s hs hs1).1
 
 theorem sub₂ (Q : QStep S) : IsLocSub Q.q.v Q.gl₂ (besGrp S.B'.d S.B'.o) (R Q.k Q.n₂ (Q.c + 1) (σ + 1)) := by
-  obtain ⟨h1, h2⟩ := (GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D Q.k Q.q Q.n₂ (Q.c + 1) σ).2 S.B' _ Q.F.F₂ Q.F.G₂ Q.gl₂
+  obtain ⟨h1, h2⟩ := (_root_.GlobalTheory.LocGrpIff.local_groups_iff D Q.k Q.q Q.n₂ (Q.c + 1) σ).2 S.B' _ Q.F.F₂ Q.F.G₂ Q.gl₂
     (mul_ne_zero Q.F.s_ne (div_ne_zero_iff.1 (hz_div_xi_ne Q)).2) Q.F.bes' Q.loc₂
   refine ⟨GlobalTheory.BesClosed.besGrp_isClosed _ _ _ _ _ _ S.B'.d S.B'.o, h1, h2, fun s hs hs1 => ?_⟩
-  exact ((GlobalTheory.T.localInvariantIntegrals_symmetric_haarSubgroups Q.k Q.ν Q.unitVol Q.n₂ (Q.c + 1) (σ + 1) Q.m₂ (GlobalTheory.SplitFlip.haarVol (KO _ _)) Q.haar₂
+  exact ((_root_.GlobalTheory.HaarR.quot_int_haar Q.k Q.ν Q.unitVol Q.n₂ (Q.c + 1) (σ + 1) Q.m₂ (GlobalTheory.SplitFlip.haarVol (KO _ _)) Q.haar₂
     GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO Q.vol₂).1 Q.F.jac.1 s hs hs1).1
 
 theorem places_succ {r : ℕ} (Q : Fin (r + 1) → QStep S) (v : Pl D) :

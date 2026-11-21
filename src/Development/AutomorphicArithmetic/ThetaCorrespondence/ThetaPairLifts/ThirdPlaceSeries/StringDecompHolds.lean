@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.EtaPiece
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.AutomorphicGaloisAdmissible
 
@@ -9,22 +9,10 @@ section
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Formalism.MainNotions.N Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.StringRepresentationDecomposition
 noncomputable section
 namespace GlobalTheory.StringDecomp
-open Formalism.MainNotions.SumRepresentations.At Topology
-section Alg
-variable {Γ : Type} [Group Γ] {K : Type} [Field K]
-end Alg
 end GlobalTheory.StringDecomp
 namespace GlobalTheory.StringDecomp
-open Formalism.MainNotions.SumRepresentations.At Topology
-section Frob
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
-end Frob
 end GlobalTheory.StringDecomp
 namespace GlobalTheory.StringDecomp
-open Formalism.MainNotions.SumRepresentations.At Topology
-section Eps
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc)
-end Eps
 end GlobalTheory.StringDecomp
 namespace GlobalTheory.StringDecomp
 open Formalism.MainNotions.SumRepresentations.At Topology

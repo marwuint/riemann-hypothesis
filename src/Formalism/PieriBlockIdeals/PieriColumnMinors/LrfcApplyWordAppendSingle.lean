@@ -40,11 +40,6 @@ theorem lrfc_coeffT_add (d : Fin r × Fin n →₀ ℕ)
   ext m
   simp [lrfc_coeff_coeffT]
 
-theorem lrfc_coeffT_zero (d : Fin r × Fin n →₀ ℕ) :
-    lrfc_coeffT (R := R) d 0 = 0 := by
-  ext m
-  simp [lrfc_coeff_coeffT]
-
 theorem lrfc_coeffT_sum {ι : Type*} (s : Finset ι) (d : Fin r × Fin n →₀ ℕ)
     (G : ι → MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     lrfc_coeffT d (∑ i ∈ s, G i) = ∑ i ∈ s, lrfc_coeffT d (G i) := by

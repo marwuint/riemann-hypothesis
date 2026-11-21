@@ -5,13 +5,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsSecGeneric
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsFibreOfIffIsPolFibre
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsModelAtIntegralIffMemLieLat
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeFgAndSpanEqTopRingOfIntegersStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeOfIsLocalModelAtPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsDvrModelLieBasisAtPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsFractionalIdealLocalGenOfValuationStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsDetIdealLocalGenFullLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KeyLocAtOfIsLocalModelStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPosKeyArchAtStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeFgAndSpanEqTopRingOfIntegers
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeOfIsLocalModelAtPrime
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsDvrModelLieBasisAtPrime
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsFractionalIdealLocalGenOfValuation
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsDetIdealLocalGenFullLattice
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.KeyLocAtOfIsLocalModel
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPosKeyArchAt
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.LamCM
@@ -66,18 +66,18 @@ theorem exists_keyLines : Out.SecTwistSt → ThetaUnifAV → Out.Laws → HomExt
   have hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ :=
     (isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) A x φ).mp hfib
   let F : GenFib A := GenFib.mk x.P φ hf x.v x.basis
-  obtain ⟨hFG, hspan⟩ := GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K A F
-  obtain ⟨IL, hIL0, hIL⟩ := GlobalTheory.T.exists_detIdeal_localGen_full_lattice K x.P.g F.lieLat hFG hspan
+  obtain ⟨hFG, hspan⟩ := _root_.GlobalTheory.CM.LieLattice.lieLat_fg_and_span_eq_top K A F
+  obtain ⟨IL, hIL0, hIL⟩ := _root_.GlobalTheory.LamF.exists_detIdeal_isLocGen K x.P.g F.lieLat hFG hspan
   obtain ⟨δ, oa, nth, hloc, -, hsupp, -⟩ :=
     GlobalTheory.ThetaDegree.exists_isThetaDeg hT hU K A F x.g_pos x.rig x.rig_gen x.th x.6
-  obtain ⟨IT, hIT0, hIT⟩ := GlobalTheory.T.exists_fractionalIdeal_localGen_of_valuation K oa hsupp
-  choose t n ht hn hArch using fun σ => GlobalTheory.T.exists_pos_keyArchAt' hU K x σ
+  obtain ⟨IT, hIT0, hIT⟩ := _root_.GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation K oa hsupp
+  choose t n ht hn hArch using fun σ => _root_.GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt hU K x σ
   refine ⟨⟨IT, t⟩, ⟨IL, n⟩, And.intro hIT0 ht, And.intro hIL0 hn, fun p => ?_,
     fun σ => hArch σ _ _ rfl rfl, fun p => ?_⟩
   · obtain ⟨a, M, hM, hva⟩ := hloc p
-    have hrows := GlobalTheory.T.lieLattice_of_isLocalModel_at_prime hH K A F x.g_pos x.rig x.rig_gen x.th x.6 p a M hM
-    exact GlobalTheory.T.keyLocAt_of_isLocalModel' K x ⟨IT, t⟩ ⟨IL, n⟩ p a M hM (hIT p a hva) (hIL p M hrows.1 hrows.2)
-  · obtain ⟨M, hM⟩ := GlobalTheory.T.exists_dvrModel_lieBasis_at_prime hT K A x φ hfib p
+    have hrows := _root_.GlobalTheory.CM.lieLat_of_isLocalModel hH K A F x.g_pos x.rig x.rig_gen x.th x.6 p a M hM
+    exact _root_.GlobalTheory.LamF.keyLocAt_of_isLocalModel K x ⟨IT, t⟩ ⟨IL, n⟩ p a M hM (hIT p a hva) (hIL p M hrows.1 hrows.2)
+  · obtain ⟨M, hM⟩ := _root_.GlobalTheory.LamF.exists_isModelAt hT K A x φ hfib p
     have hrows := hM.rows_span_lieLat hf
     exact ⟨M, hM, hIL p M hrows.1 hrows.2⟩
 

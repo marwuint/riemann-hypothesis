@@ -57,10 +57,6 @@ lemma jetPair_sum_left {α : Type*} (s : Finset α) (P : α → MvPolynomial ι 
   intro a s ha ih
   rw [Finset.sum_insert ha, Finset.sum_insert ha, jetPair_add_left, ih]
 
-lemma jetPair_add_right (P : MvPolynomial ι K) (F G : MvPowerSeries ι K) :
-    jetPair P (F + G) = jetPair P F + jetPair P G := by
-  simp only [jetPair, map_add, mul_add, Finset.sum_add_distrib]
-
 lemma jetPair_C_mul_right (c : K) (P : MvPolynomial ι K) (F : MvPowerSeries ι K) :
     jetPair P (MvPowerSeries.C c * F) = c * jetPair P F := by
   simp only [jetPair, MvPowerSeries.coeff_C_mul, Finset.mul_sum]

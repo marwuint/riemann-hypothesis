@@ -45,18 +45,6 @@ theorem conj_mem_Ine_of_smul {A : ValuationSubring Ω} {g σ : Formalism.Conjuga
 
 end Galois
 
-theorem unrRho_of_tripleAtt : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
-    TripleAtt D.naut bkP i s → UnrRho i s := by
-  intro D bkP i s h v hvl hvg A hA σ hσ
-  obtain ⟨ι, π₁, π, h1, -, hrow, -⟩ := h
-
-  have hunr := h1.unr v hvl (hrow.unr₁ v hvg)
-
-  obtain ⟨g, rfl⟩ := exists_smul_eq_of_isPlaceOver (D.nd.plOm.2 v) hA
-  have h0 := hunr _ (conj_mem_Ine_of_smul hσ)
-  have hs : σ = g * (g⁻¹ * σ * g) * g⁻¹ := by group
-  rw [hs, map_mul, map_mul, h0, mul_one, ← map_mul, mul_inv_cancel, map_one]
-
 end GlobalTheory.TripleUnramified
 
 end

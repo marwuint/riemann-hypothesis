@@ -4,11 +4,12 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LocallyOfFinitePresentationDiagMap
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomDescendsToSubfieldContainingFinsetStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetModelOfIsAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GlueModelsOverSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GroupSchemeMorphismDescendsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SplitTorusExtensionDescendsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomDescendsToSubfieldContainingFinset
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetModelOfIsAffine
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GlueModelsOverSubfield
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GroupSchemeMorphismDescends
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SplitTorusExtensionDescends
 
 noncomputable section
 
@@ -59,8 +60,8 @@ theorem HasModel.glue {X U V W : Over (Sp K)} (u : U ⟶ X) (v : V ⟶ X) (p : W
   obtain ⟨U₀, φU, HU⟩ := hU k₀ k₀.subtype (sub _ (by intro x; simp; tauto))
   obtain ⟨V₀, φV, HV⟩ := hV k₀ k₀.subtype (sub _ (by intro x; simp; tauto))
   obtain ⟨W₀, φW, HW⟩ := hW k₀ k₀.subtype (sub _ (by intro x; simp; tauto))
-  obtain ⟨s₁, hs₁⟩ := GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K k₀.subtype W U W₀ U₀ φW φU HW HU h₁ h₂ h₃ p
-  obtain ⟨s₂, hs₂⟩ := GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K k₀.subtype W V W₀ V₀ φW φV HW HV h₁ h₂ h₄ q
+  obtain ⟨s₁, hs₁⟩ := _root_.GlobalTheory.hom_descends_to_subfield_containing_finset k₀ K k₀.subtype W U W₀ U₀ φW φU HW HU h₁ h₂ h₃ p
+  obtain ⟨s₂, hs₂⟩ := _root_.GlobalTheory.hom_descends_to_subfield_containing_finset k₀ K k₀.subtype W V W₀ V₀ φW φV HW HV h₁ h₂ h₄ q
   refine ⟨sU ∪ sV ∪ sW ∪ (s₁ ∪ s₂), fun k _ β hβ => ?_⟩
   rw [Finset.coe_union, Finset.coe_union s₁, Set.union_subset_iff, Set.union_subset_iff] at hβ
   obtain ⟨α, hα⟩ := exists_factor β _ hβ.1
@@ -69,7 +70,7 @@ theorem HasModel.glue {X U V W : Over (Sp K)} (u : U ⟶ X) (v : V ⟶ X) (p : W
   obtain ⟨ψW, eW, PW⟩ := exists_baseChange (spMap_comp hα) HW
   obtain ⟨p₁, hp⟩ := hs₁ k α β hα hβ.2.1 _ _ ψW _ ψU _ (.of_hasPullback _ _) (.of_hasPullback _ _) eW eU PW.w PU.w
   obtain ⟨q₁, hq⟩ := hs₂ k α β hα hβ.2.2 _ _ ψW _ ψV _ (.of_hasPullback _ _) (.of_hasPullback _ _) eW eV PW.w PV.w
-  exact GlobalTheory.T.glue_models_over_subfield k K β X U V W u v p q hu hv h hc _ _ _ ψU ψV ψW PU PV PW p₁ q₁ hp hq
+  exact _root_.GlobalTheory.GlueModels.glue_models k K β X U V W u v p q hu hv h hc _ _ _ ψU ψV ψW PU PV PW p₁ q₁ hp hq
 
 abbrev part (X : Over (Sp K)) (U : X.left.Opens) : Over (Sp K) := Over.mk (U.ι ≫ X.hom)
 
@@ -99,7 +100,7 @@ theorem hasModel (X : Over (Sp K)) [LocallyOfFiniteType X.hom] [QuasiCompact X.h
   have : X.left.IsSeparated := ⟨sep⟩
   have : CompactSpace X.left := QuasiCompact.compactSpace_of_compactSpace X.hom
   have aff : ∀ V : X.left.Opens, IsAffineOpen V → HasModel (part X V) := fun V hV =>
-    GlobalTheory.T.exists_finset_model_of_isAffine' K (part X V) hV (inferInstanceAs (LocallyOfFiniteType (V.ι ≫ X.hom)))
+    _root_.GlobalTheory.exists_finset_model_of_isAffine K (part X V) hV (inferInstanceAs (LocallyOfFiniteType (V.ι ≫ X.hom)))
   have cpt : ∀ S V : X.left.Opens, IsCompact S.carrier → IsAffineOpen V →
       IsCompact ((S ⊓ V : X.left.Opens) : Set X.left) := fun S V hS hV =>
     QuasiSeparatedSpace.inter_isCompact _ _ S.isOpen hS V.isOpen hV.isCompact
@@ -200,12 +201,12 @@ theorem exists_finite_torusExtension_of_model {k k₀ K : Type} [Field k] [Field
   have lG : LocallyOfFiniteType ((Over.pullback (spMap σ)).obj G).hom :=
     inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom _))
   have pBB : IsProper (T.B ⊗ T.B).hom := inferInstanceAs (IsProper (pullback.fst T.B.hom T.B.hom ≫ T.B.hom))
-  obtain ⟨sm, hm⟩ := GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ (isPullback_sq H₀) H₀ inferInstance inferInstance lB μ[T.B]
-  obtain ⟨si, hi⟩ := GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ H₀ H₀ inferInstance inferInstance lB ι[T.B]
-  obtain ⟨se, he⟩ := GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ (isPullback_unit _) H₀
+  obtain ⟨sm, hm⟩ := _root_.GlobalTheory.hom_descends_to_subfield_containing_finset k₀ K σ₀ _ _ _ _ _ _ (isPullback_sq H₀) H₀ inferInstance inferInstance lB μ[T.B]
+  obtain ⟨si, hi⟩ := _root_.GlobalTheory.hom_descends_to_subfield_containing_finset k₀ K σ₀ _ _ _ _ _ _ H₀ H₀ inferInstance inferInstance lB ι[T.B]
+  obtain ⟨se, he⟩ := _root_.GlobalTheory.hom_descends_to_subfield_containing_finset k₀ K σ₀ _ _ _ _ _ _ (isPullback_unit _) H₀
     (inferInstanceAs (QuasiCompact (𝟙 (Sp K)))) (inferInstanceAs (QuasiSeparated (𝟙 (Sp K)))) lB η[T.B]
-  obtain ⟨sq', hq⟩ := GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ Hg₀ H₀ cG sG lB T.q
-  obtain ⟨st, ht⟩ := GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k K σ _ _ _ _ _ _ (SplitTorus.isPullback_bcMap (spMap σ) T.X) HG.1
+  obtain ⟨sq', hq⟩ := _root_.GlobalTheory.hom_descends_to_subfield_containing_finset k₀ K σ₀ _ _ _ _ _ _ Hg₀ H₀ cG sG lB T.q
+  obtain ⟨st, ht⟩ := _root_.GlobalTheory.hom_descends_to_subfield_containing_finset k K σ _ _ _ _ _ _ (SplitTorus.isPullback_bcMap (spMap σ) T.X) HG.1
     inferInstance inferInstance lG T.i
   refine ⟨sm ∪ (si ∪ (se ∪ (sq' ∪ st))), by simp, fun k₁ _ α ρ β hαβ hρ hρα hs => ?_⟩
   simp only [Set.union_subset_iff] at hs
@@ -235,8 +236,8 @@ theorem exists_finite_torusExtension_of_model {k k₀ K : Type} [Field k] [Field
   obtain ⟨t₁, ht₁⟩ := ht k₁ α β hαβ bt _ _ (SplitTorus.bcMap (spMap β) T.X) _ g₁ _
     (SplitTorus.isPullback_bcMap (spMap α) T.X) HG₁.1 (bcMap_comp (spMap_comp hαβ) _) eg₁
     (SplitTorus.bcMap_hom _ _) Hg₁.w
-  obtain ⟨gB, ab, gpB⟩ := GlobalTheory.T.group_structure_descends_along_pullback k₁ K β T.B _ φ₁ T.isAbelian H₁ m₁ i₁ e₁ _ (sq_fst _) (sq_snd _) hm₁ hi₁ he₁
-  obtain ⟨c₁, c₂, c₃, c₄, c₅, c₆⟩ := GlobalTheory.T.splitTorus_extension_descends_alt k₁ K β _ T.B _ _ T.X g₁ φ₁ gp gpB T.q T.i q₁ t₁ hq₁ ht₁ T.q_hom
+  obtain ⟨gB, ab, gpB⟩ := _root_.GlobalTheory.isAbelianScheme_descends_subfield k₁ K β T.B _ φ₁ T.isAbelian H₁ m₁ i₁ e₁ _ (sq_fst _) (sq_snd _) hm₁ hi₁ he₁
+  obtain ⟨c₁, c₂, c₃, c₄, c₅, c₆⟩ := _root_.GlobalTheory.splitTorus_extension_descends k₁ K β _ T.B _ _ T.X g₁ φ₁ gp gpB T.q T.i q₁ t₁ hq₁ ht₁ T.q_hom
     T.q_flat T.q_surjective T.q_quasiCompact T.i_hom T.isKernel
   exact ⟨
     { X := T.X

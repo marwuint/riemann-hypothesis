@@ -78,18 +78,6 @@ theorem dcOp_comm_of_commute {A B : Finset G} (h : ∀ a ∈ A, ∀ b ∈ B, Com
 
 end Grp
 
-section Normal
-
-variable {E I : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
-
-theorem exists_lift {X : Type} [AddCommGroup X] [Module ℂ X] {e : E →ₗ[ℂ] X} (he : Function.Injective e)
-    (T : X →ₗ[ℂ] X) (hT : ∀ x, T (e x) ∈ LinearMap.range e) : ∃ t : Module.End ℂ E, ∀ x, e (t x) = T (e x) := by
-  choose f hf using hT
-  exact ⟨⟨⟨f, fun x y => he (by rw [map_add, hf, hf, hf, map_add, map_add])⟩,
-    fun a x => he (by rw [RingHom.id_apply, map_smul, hf, hf, map_smul, map_smul])⟩, hf⟩
-
-end Normal
-
 end GlobalTheory.HeckeParts
 
 end

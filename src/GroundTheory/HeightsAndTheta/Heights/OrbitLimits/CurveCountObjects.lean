@@ -98,21 +98,6 @@ theorem exists_chart {y : (Σ k, ι k) → Ω} {n : ℕ} (hP : IsArithVar (mCoor
 
 end Lemmas
 
-section Examples
-
-example (a : Unit → ℤ) (τ : ℕ) :
-    chartUnit (fun _ : (Σ _ : Unit, Fin 1) => (1 : ℚ)) (fun _ => 0) a τ = 1 := by
-  simp [chartUnit]
-
-example : chartRadius (ReciprocityTheory.ChartRestriction.G.AI.I2.constLine (ι := fun _ : Unit => Fin 1) (-1)) (fun _ => 0)
-    (fun _ => 1) = Real.exp 1 := by
-  simp [chartRadius, ReciprocityTheory.ChartRestriction.G.AI.I2.constLine, HermLine.ofWeight]
-
-example : curveChartMono (ι := fun _ : Unit => Fin 1) (fun _ => 0) (fun _ => 2) ≠ 0 := by
-  simp [curveChartMono, X_ne_zero]
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.Targets

@@ -302,48 +302,6 @@ theorem arcIn_be_apply (y z : 𝓞 E) : (arcIn c k bF).be y z = 2 * l.M' * trFor
 theorem arcIn_be_even (y : 𝓞 E) : (2 : ℤ) ∣ (arcIn c k bF).be y y :=
   (dvd_mul_right 2 _).trans ((arcIn c k bF).be_dvd y y)
 
-theorem arcIn_eta_equiv_iff (a b : HypLattice H) :
-    QkPt.Equiv _ _ ((arcIn c k bF).eta a) ((arcIn c k bF).eta b) ↔ ∃ e, a = b + l.M • e :=
-  equiv_qkPt k (isPrimitiveRoot_arcRoot c k bF _).pow_eq_one (lt_of_lt_of_le three_pos l.three_le)
-    (isPrimitiveRoot_arcRoot c k bF _) a b
-
 instance instNonemptyArcIn : Nonempty (ArcIn (hypDatum H) l (RingHom.id c.F) k bF) := ⟨arcIn c k bF⟩
-
-example : (arcIn c k bF).be (1 : 𝓞 E) (1 : 𝓞 E) = 2 * l.M' * Module.finrank ℚ E := by
-  rw [arcIn_be_apply, trForm_one_one]
-
-example : letI := H.starRing
-    Nonempty (TateIsoQ (hypDatum H) (arcIn c k bF).D₀ (arcIn c k bF).oa (AlgebraicClosure (FractionRing k))) := by
-  obtain ⟨-, I, -⟩ := (arcIn c k bF).geom (AlgebraicClosure (FractionRing k)) ⟨_, sqrtNegDisc_mem_coeffField c⟩
-    ⟨_, zeta_A_mem_coeff c⟩ rfl rfl _ rfl
-  exact ⟨I⟩
-
-example : ¬ QkPt.Equiv _ _ ((arcIn c k bF).eta ((1, 0) : HypLattice H)) ((arcIn c k bF).eta (0 : HypLattice H)) := by
-  rw [arcIn_eta_equiv_iff]
-  rintro ⟨e, he⟩
-  have h1 : (1 : 𝓞 E) = l.M • e.1 := by simpa using congrArg Prod.fst he
-  obtain ⟨g, hg⟩ : ∃ g : Module.Dual ℤ (𝓞 E), ∃ x, g x = 1 := by
-    let v := RingOfIntegers.basis E
-    obtain ⟨i⟩ := v.index_nonempty
-    exact ⟨v.coord i, v i, by simp⟩
-  obtain ⟨x, hx⟩ := hg
-  have h2 : (l.M : ℤ) * g (e.1 * x) = 1 := by
-    rw [← nsmul_eq_mul, ← map_nsmul, ← smul_mul_assoc, ← h1, one_mul, hx]
-  have h3 := Int.eq_one_of_mul_eq_one_right (Int.natCast_nonneg _) h2
-  have := l.three_le
-  omega
-
-example (f : ConjDual H) (y : 𝓞 E) :
-    WeilQkIs _ _ l.M ((arcIn c k bF).eta ((0, f) : HypLattice H)) ((arcIn c k bF).eta ((y, 0) : HypLattice H))
-      ((arcRoot c k bF (Nat.dvd_lcm_left l.M l.A) ^ toDual H f y : (FractionRing k)ˣ) : FractionRing k) := by
-  have h := weilQkIs_qkPt k (arcRoot c k bF (Nat.dvd_lcm_left l.M l.A))
-    (isPrimitiveRoot_arcRoot c k bF _).pow_eq_one ((0, f) : HypLattice H) (y, 0)
-  rwa [hypForm_apply, map_zero, sub_zero] at h
-
-example :
-    Nonempty (ArcIn (hypDatum host) (level host 5 (by norm_num)) (RingHom.id (coeff _).F) (coeff _).F (RingHom.id _)) ∧
-      Nonempty (ArcIn (hypDatum host) (level host 5 (by norm_num)) (RingHom.id (coeff _).F)
-        (PowerSeries (coeff _).F) PowerSeries.C) :=
-  ⟨inferInstance, inferInstance⟩
 
 end GlobalTheory.HostModel

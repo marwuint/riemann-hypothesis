@@ -3,7 +3,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.GaloisTwistIdentitySection
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LiftIdempotentAdicComplete
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SharpSurjectiveKerSpan
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UntiltAdicCompleteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UntiltAdicComplete
 
 set_option backward.isDefEq.respectTransparency false
 
@@ -17,7 +17,7 @@ theorem existsUnique_idempotent_sharp {l : ℕ} [Fact l.Prime] (A : PAlg l) (e :
   haveI hcA : IsAdicComplete (Ideal.span {A.pi ^ 1}) A.A := by
     rw [pow_one]; exact A.compl
   haveI hcA' : IsAdicComplete (Ideal.span {A.pi}) A.A := A.compl
-  haveI hcU : IsAdicComplete (Ideal.span {(l : A.U)}) A.U := GlobalTheory.T.untilt_adic_complete A
+  haveI hcU : IsAdicComplete (Ideal.span {(l : A.U)}) A.U := _root_.GlobalTheory.CompanionTheory.Untilt.isAdicComplete_U A
   have hmemker : ∀ x y : A.A, A.aToU1 x = A.aToU1 y →
       Ideal.Quotient.mk (Ideal.span {A.pi ^ 1}) x = Ideal.Quotient.mk _ y := by
     intro x y h

@@ -41,11 +41,6 @@ theorem toL_monomial (f : Fin (N + 1) →₀ ℕ) (r : S) :
     toL S N (monomial f r) = AddMonoidAlgebra.single (expToInt N f) r :=
   AddMonoidAlgebra.mapDomain_single
 
-theorem single_neg_mul (b : Fin (N + 1) → ℤ) (x : LRing S N) :
-    AddMonoidAlgebra.single (-b) (1 : S) * (AddMonoidAlgebra.single b 1 * x) = x := by
-  rw [← mul_assoc, AddMonoidAlgebra.single_mul_single, neg_add_cancel, mul_one]
-  exact one_mul x
-
 theorem mem_monos_iff {I : Finset (Fin (N + 1))} {s : Poly S N} :
     s ∈ monos I → ∃ f : Fin (N + 1) →₀ ℕ, (∀ j ∉ I, f j = 0) ∧ s = monomial f 1 := by
   intro hs

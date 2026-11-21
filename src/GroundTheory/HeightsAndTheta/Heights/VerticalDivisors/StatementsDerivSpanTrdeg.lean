@@ -13,10 +13,6 @@ def DerivSpanTrdeg.Statement : Prop :=
     ∃ r ≤ e, ∃ b : Fin r → ι → IntermediateField.adjoin k (Set.range z),
       ∀ D : Derivation k L L, ∃ c : Fin r → L, ∀ j, D (z j) = ∑ m, c m * (b m j : L)
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.Vertical

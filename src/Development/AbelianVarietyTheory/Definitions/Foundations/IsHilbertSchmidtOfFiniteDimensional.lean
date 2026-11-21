@@ -326,12 +326,6 @@ theorem trace_eq_linearMap_trace [FiniteDimensional ℂ H] (T : H →L[ℂ] H) :
     ← ((isTraceClass_of_finiteDimensional T).hasSum_trace b.toHilbertBasis).tsum_eq, tsum_fintype]
   simp
 
-example (n : ℕ) : HasTrace (ContinuousLinearMap.id ℂ (EuclideanSpace ℂ (Fin n))) n :=
-  ⟨isTraceClass_of_finiteDimensional _, by simp [trace_eq_linearMap_trace]⟩
-
-example : trace (Complex.I • ContinuousLinearMap.id ℂ ℂ) = Complex.I := by
-  simp [trace_smul, trace_eq_linearMap_trace]
-
 end Hilbert
 
 section Unitary
@@ -346,15 +340,6 @@ structure IsUnitaryRep (π : G →* (H →L[ℂ] H)) : Prop where
   norm_apply : ∀ g v, ‖π g v‖ = ‖v‖
 
   continuous_apply : ∀ v, Continuous fun g => π g v
-
-def charRep (χ : G →* Circle) : G →* (ℂ →L[ℂ] ℂ) where
-  toFun g := (χ g : ℂ) • ContinuousLinearMap.id ℂ ℂ
-  map_one' := by ext; simp
-  map_mul' g h := by ext; simp [mul_comm]
-
-theorem isUnitaryRep_charRep {χ : G →* Circle} (hχ : Continuous χ) : IsUnitaryRep (charRep χ) :=
-  ⟨fun g v => by simp [charRep, Circle.norm_coe], fun v =>
-    ((continuous_subtype_val.comp hχ).mul continuous_const : Continuous fun g => (χ g : ℂ) * v)⟩
 
 theorem IsUnitaryRep.inner_apply_left {π : G →* (H →L[ℂ] H)} (hπ : IsUnitaryRep π) (g : G)
     (v w : H) : ⟪π g v, w⟫_ℂ = ⟪v, π g⁻¹ w⟫_ℂ := by
@@ -511,17 +496,6 @@ theorem IsUnitaryRep.repOp_convolution [IsTopologicalGroup G] [BorelSpace G] [μ
   rw [← (π x).integral_comp_comm (hπ.isRepOp hf' hc' v).1,
     ← integral_mul_left_eq_self (fun y => f' (x⁻¹ * y) • π y v) x]
   simp
-
-theorem repTrace_charRep {χ : G →* Circle} (hχ : Continuous χ) (hf : Continuous f)
-    (hc : HasCompactSupport f) :
-    HasTrace (repOp (charRep χ) μ f) (∫ g, f g * (χ g : ℂ) ∂μ) := by
-  have h : repOp (charRep χ) μ f = (∫ g, f g * (χ g : ℂ) ∂μ) • ContinuousLinearMap.id ℂ ℂ := by
-    ext
-    rw [(isUnitaryRep_charRep hχ).repOp_apply hf hc]
-    simp [charRep]
-  refine ⟨isTraceClass_of_finiteDimensional _, ?_⟩
-  rw [h]
-  simp [trace_smul, trace_eq_linearMap_trace]
 
 end Unitary
 

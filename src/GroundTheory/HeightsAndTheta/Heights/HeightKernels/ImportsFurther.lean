@@ -34,28 +34,6 @@ def DualStdFibreRatios.Statement : Prop :=
           G.x' (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k)))
         (G.x' (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k))
 
-example : ∃ (w : (Σ _ : Unit, Unit) → RatFunc ℚ) (c : ∀ _ : Unit, Unit), w ⟨(), c ()⟩ ≠ 0 ∧
-    Module.Finite ℚ (Algebra.adjoin ℚ (Set.range fun p => w p / w ⟨(), c ()⟩)) ∧
-    Transcendental (Algebra.adjoin ℚ (Set.range fun p => w p / w ⟨(), c ()⟩)) (w ⟨(), c ()⟩) := by
-  have hX : (RatFunc.X : RatFunc ℚ) ≠ 0 := RatFunc.X_ne_zero
-  have hb : Algebra.adjoin ℚ (Set.range fun _ : (Σ _ : Unit, Unit) => (RatFunc.X : RatFunc ℚ) / RatFunc.X) = ⊥ := by
-    have hr : (Set.range fun _ : (Σ _ : Unit, Unit) => (RatFunc.X : RatFunc ℚ) / RatFunc.X) = {1} := by
-      ext y
-      simp [div_self hX]
-    rw [hr, Algebra.adjoin_singleton_one]
-  refine ⟨fun _ => RatFunc.X, fun _ => (), hX, ?_, ?_⟩
-  · beta_reduce
-    rw [hb]
-    exact Subalgebra.finite_bot
-  · beta_reduce
-    rw [hb]
-    intro H
-    have : Algebra.IsAlgebraic ℚ (⊥ : Subalgebra ℚ (RatFunc ℚ)) := Algebra.IsAlgebraic.of_finite ℚ _
-    exact RatFunc.transcendental_X (K := ℚ) (by convert H.restrictScalars (R := ℚ); exact Subsingleton.elim _ _)
-
-example : ∃ _ : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)), 1 ≤ 1 :=
-  ⟨dualBasisStandard, le_rfl⟩
-
 end
 
 end GroundTheory.Heights₂.Heights

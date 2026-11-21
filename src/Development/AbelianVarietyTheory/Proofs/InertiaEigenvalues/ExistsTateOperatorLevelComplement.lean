@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormPrimitiveRootPrimePowSubOnePadicComplex
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersEqSumZetaPowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersEqSumZetaPow
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomicTowerLevelGeneratorPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateDecompositionCompletedCyclotomicIntegersStatement
 open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Cyc
@@ -130,7 +130,7 @@ theorem int_decomp (K : FinExt l) {j : ℕ} (hj : 1 ≤ j) (c : ℕ) : ∀ x : O
     have hp : l.Prime := Fact.out
     haveI : NeZero l := ⟨hp.ne_zero⟩
     obtain ⟨z, hz⟩ := exists_prim (l := l) (l ^ (j + (c + 1))) (pow_ne_zero _ hp.ne_zero)
-    obtain ⟨y, hy, rfl⟩ := (GlobalTheory.T.integers_eq_sum_zeta_pow_unique l K (j + (c + 1)) (by omega) z hz).1 x hx hx1
+    obtain ⟨y, hy, rfl⟩ := (_root_.GlobalTheory.Cyc.integers_eq_sum_zeta_pow l K (j + (c + 1)) (by omega) z hz).1 x hx hx1
     obtain ⟨o, ho, d, hd, hod⟩ := ih (y 0) (hy 0).1 (hy 0).2
     refine ⟨o, ho, d + ∑ a ∈ Finset.univ.erase (0 : Fin l),
       algebraMap (Om l) (PadicComplex l) (z ^ (a : ℕ) * y a), add_mem hd (sum_mem fun a ha => ?_), ?_⟩

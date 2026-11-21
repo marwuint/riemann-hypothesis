@@ -501,110 +501,14 @@ open PowerSeries IdempotentNormalFormsRhoFacts GoodPlacesAlt
 section p4
 variable {O : Type} [CommRing O] {B : Base O}
 
-theorem γ_sub_X (h4 : B.E4) (a : PowerSeries O) : ∃ c : PowerSeries O, B.γ a - a = X * c := by
-  obtain ⟨e, he⟩ := h4
-  obtain ⟨a', ha'⟩ : (X : PowerSeries O) ∣ a - C (PowerSeries.constantCoeff a) := by
-    rw [PowerSeries.X_dvd_iff]
-    simp
-  have ha : a = C (PowerSeries.constantCoeff a) + X * a' := by
-    rw [← ha']
-    ring
-  have hC : B.γ (C (PowerSeries.constantCoeff a)) = C (PowerSeries.constantCoeff a) := by
-    first
-      | exact B.γ.commutes _
-      | simpa [PowerSeries.algebraMap_eq] using B.γ.commutes (PowerSeries.constantCoeff a)
-  refine ⟨(1 + (e : PowerSeries O) * B.q) * B.γ a' - a', ?_⟩
-  have key : B.γ a - a = B.γ (C (PowerSeries.constantCoeff a) + X * a') -
-      (C (PowerSeries.constantCoeff a) + X * a') := by
-    rw [← ha]
-  rw [key, map_add, map_mul, hC, he]
-  ring
-
 def GU (B : Base O) (x : PowerSeries O) : Prop := ∃ t : PowerSeries O, B.γ x = x * (1 + X * t)
-
-theorem GU.one : GU B 1 := by
-  exact ⟨0, by simp⟩
 
 theorem GU.mul {x y : PowerSeries O} (hx : GU B x) (hy : GU B y) : GU B (x * y) := by
   obtain ⟨t, ht⟩ := hx
   obtain ⟨t', ht'⟩ := hy
   exact ⟨t + t' + X * t * t', by rw [map_mul, ht, ht']; ring⟩
 
-theorem GU.pow {x : PowerSeries O} (hx : GU B x) (m : ℕ) : GU B (x ^ m) := by
-  induction m with
-  | zero =>
-    rw [pow_zero]
-    exact GU.one
-  | succ m ih =>
-    rw [pow_succ]
-    exact ih.mul hx
-
 variable {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module (PowerSeries O) V]
-
-theorem γ_pull_sub (L : Lat B n V) (h3 : B.E3) (h4 : B.E4) (h9 : L.P9) (i : ZMod n) (k : ℕ)
-    {p : V} (hp : p ∈ L.pull i k) : L.γ (i + (k : ZMod n)) p - p ∈ sm X (L.pull i k) := by
-  have hcommK : ∀ (k : ℕ) (v : V), L.γ (i + (k : ZMod n)) (L.phiIt i k v) = L.phiIt i k (L.γ i v) := by
-    intro k v
-    induction k with
-    | zero => simp [Lat.phiIt]
-    | succ k ih =>
-      show L.γ (i + ((k + 1 : ℕ) : ZMod n)) (L.φ (i + ((k + 1 : ℕ) : ZMod n)) (L.phiIt i k v)) =
-        L.φ (i + ((k + 1 : ℕ) : ZMod n)) (L.phiIt i k (L.γ i v))
-      rw [← L.comm]
-      have e : i + ((k + 1 : ℕ) : ZMod n) - 1 = i + (k : ZMod n) := by
-        push_cast
-        ring
-      rw [e, ih]
-  have hsub : ∀ (k : ℕ) (v w : V), L.phiIt i k (v - w) = L.phiIt i k v - L.phiIt i k w := by
-    intro k v w
-    induction k with
-    | zero => rfl
-    | succ k ih =>
-      show L.φ _ (L.phiIt i k (v - w)) = L.φ _ (L.phiIt i k v) - L.φ _ (L.phiIt i k w)
-      rw [ih, map_sub]
-  have hsmul : ∀ (k : ℕ) (a : PowerSeries O) (v : V), L.phiIt i k (a • v) = (⇑B.φ)^[k] a • L.phiIt i k v := by
-    intro k a v
-    induction k with
-    | zero => rfl
-    | succ k ih =>
-      show L.φ _ (L.phiIt i k (a • v)) = _ • L.φ _ (L.phiIt i k v)
-      rw [ih, L.φ_semi, Function.iterate_succ_apply']
-  have hXdiv : ∀ k : ℕ, ∃ d : PowerSeries O, (⇑B.φ)^[k] X = X * d := by
-    obtain ⟨u, hu⟩ := h3
-    intro k
-    induction k with
-    | zero => exact ⟨1, by simp⟩
-    | succ k ih =>
-      obtain ⟨d, hd⟩ := ih
-      refine ⟨(u : PowerSeries O) * B.q ^ (B.ℓ - 1) * B.φ d, ?_⟩
-      rw [Function.iterate_succ_apply', hd, map_mul, hu]
-      ring
-  have hsmX : ∀ z ∈ L.pull i k, X • z ∈ sm X (L.pull i k) := fun z hz => by
-    unfold sm
-    exact Submodule.mem_map.2 ⟨z, hz, LinearMap.lsmul_apply _ _⟩
-  induction hp using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨v, hv, rfl⟩ := hx
-    obtain ⟨w, hw, hwe⟩ := Submodule.mem_map.1 (h9 i v hv)
-    rw [hcommK, ← hsub, ← hwe, LinearMap.lsmul_apply, hsmul]
-    obtain ⟨d, hd⟩ := hXdiv k
-    rw [hd, mul_smul]
-    exact hsmX _ ((L.pull i k).smul_mem d (Submodule.subset_span ⟨w, hw, rfl⟩))
-  | zero => simp
-  | add x y _ _ hx hy =>
-    rw [map_add, show L.γ (i + (k : ZMod n)) x + L.γ (i + (k : ZMod n)) y - (x + y) =
-      (L.γ (i + (k : ZMod n)) x - x) + (L.γ (i + (k : ZMod n)) y - y) by abel]
-    exact (sm X (L.pull i k)).add_mem hx hy
-  | smul a x hxs hx =>
-    rw [L.γ_semi]
-    obtain ⟨c, hc⟩ := γ_sub_X h4 a
-    have e : B.γ a • L.γ (i + (k : ZMod n)) x - a • x =
-        B.γ a • (L.γ (i + (k : ZMod n)) x - x) + (X : PowerSeries O) • (c • x) := by
-      rw [smul_sub, smul_smul, ← hc, sub_smul]
-      abel
-    rw [e]
-    exact (sm X (L.pull i k)).add_mem ((sm X (L.pull i k)).smul_mem (B.γ a) hx)
-      (hsmX _ ((L.pull i k).smul_mem c hxs))
 
 end p4
 

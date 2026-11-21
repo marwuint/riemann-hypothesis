@@ -237,10 +237,6 @@ theorem smallGen_zcomb (y : (Σ k, ι k) → Ω) (L : HermLine ι) (hL : SmallGe
     · simp only [HermLine.zcomb, zpow_natCast, pow_succ]
       ring
 
-theorem proof : SmallGenTwist.Statement := by
-  intro K _ ι _ Ω _ y L p q hL
-  exact smallGen_zcomb y L hL q p
-
 end SmallGenTwist
 
 end

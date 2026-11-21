@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveKernelCompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveKernelComposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ActEqSumOfKernel
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralConvApplyEq
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KRegConv
@@ -77,7 +77,7 @@ theorem conv_eq_of_isKer : LgFacts → Unimod → RCalc → WaveSpeed → WaveEx
       exact (sub_mul _ _ _).symm)
     (fun f hf hc _ => by
       obtain ⟨u, hu, hu0⟩ := hWE n E f hf
-      obtain ⟨v, hv, hv0, hvc⟩ := GlobalTheory.T.wave_kernel_composition hRC hWS n E u w w' g g' T T' hu hg hg'
+      obtain ⟨v, hv, hv0, hvc⟩ := _root_.GlobalTheory.CompanionTheory.WaveMult.wave_compose hRC hWS n E u w w' g g' T T' hu hg hg'
       have h1 := one_mem_GLs_kerconv n
       have hfc : ContinuousOn f (GLs n) := hf.1.continuousOn
       have hlin := act_eq_sum_of_kernel hLg n μ E (ι := Bool) (fun b => if b then 1 else -1)

@@ -413,12 +413,6 @@ variable [Fact p.Prime]
     obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x
     exact congrArg G.rigMk (Prod.ext rfl (LinearMap.congr_fun (ofHom_omega f) w))
 
-theorem rig_naturality (s' : SemiHom σ H' H) (f : G ⟶ H) (f' : G' ⟶ H')
-    (h : ∀ n a, s.app n (f.app n a) = f'.app n (s'.app n a)) (x : H.RigExt) :
-    s.rig (rigExtMap f x) = rigExtMap f' (s'.rig x) := by
-  rw [← ofHom_rig, ← ofHom_rig, ← comp_rig]
-  exact (s'.rig_rig (ofHom f') _ h x).symm
-
 theorem omega_naturality (s' : SemiHom σ H' H) (f : G ⟶ H) (f' : G' ⟶ H')
     (h : ∀ n a, s.app n (f.app n a) = f'.app n (s'.app n a)) (w : H.omega) :
     s.omega (omegaMap G H f w) = omegaMap G' H' f' (s'.omega w) := by
@@ -520,17 +514,6 @@ def semiHomEquiv (G' : PDivGroup p O') :
   right_inv f := baseChange_hom_ext fun n a => (SemiHom.lift_app _ n 1 a).trans (one_smul _ _)
 
 end BaseChange
-
-section Examples
-
-variable [Fact p.Prime]
-
-example [Algebra O O'] (n : ℕ) : (((mu p O).toBase O').omega (dlogT p O)).1 n =
-    dUnit O' ((1 : O') ⊗ₜ[O] muT O (p ^ n)) := SemiBialgHom.cot_d _ _
-
-example [Algebra O O'] : ((mu p O).baseChange O').height = 1 := rfl
-
-end Examples
 
 end PDivGroup
 

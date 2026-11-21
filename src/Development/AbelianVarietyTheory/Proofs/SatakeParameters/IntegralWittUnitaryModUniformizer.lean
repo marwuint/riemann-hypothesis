@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MulSelfEqOneIffO
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvMemDoubleCosetAndComm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqZeroOfForallDvdPow
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLimitDvdUniformizerPowCauchyStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryGroupNewtonLiftStepStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianIntegralVectorsPairingStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryGroupNewtonLiftStep
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianIntegralVectorsPairing
 
 open Matrix
 
@@ -28,8 +28,8 @@ theorem witt_mod_base : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplica
       ∀ i r, GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 ((((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i) r - z' i r) := by
   intro L _ _ _ ϖ σ q hU hq n' JT hJ hJh ι _ z z' hz hz' hi hi' hgr
   classical
-  obtain ⟨g₀, hg₀i, hg₀u, hg₀z⟩ := GlobalTheory.T.hermitian_integral_vectors_pairing L ϖ σ q hU hq n' JT hJ hJh ι z z' hz hz' hi hi' hgr
-  have hstep := GlobalTheory.T.unitaryGroup_newton_lift_step L ϖ σ q hU hq n' JT hJ hJh
+  obtain ⟨g₀, hg₀i, hg₀u, hg₀z⟩ := _root_.GlobalTheory.Hk3.ResWitt.exists_int_unitary_mod_of_gram_mod L ϖ σ q hU hq n' JT hJ hJh ι z z' hz hz' hi hi' hgr
+  have hstep := _root_.GlobalTheory.Hk3.UnitaryNewton.newton_step L ϖ σ q hU hq n' JT hJ hJh
   obtain ⟨hσσ, hσv, hσϖ, hϖv, -, -, -⟩ := hU
   set J : Matrix (Fin n') (Fin n') L := (JT : Matrix (Fin n') (Fin n') L) with hJdef
   have hJi : ∀ i j, J i j ∈ intL L := by

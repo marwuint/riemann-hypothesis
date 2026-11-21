@@ -71,18 +71,4 @@ theorem okp_mul (α β : ℂ_[p] × ℂ_[p]) (hα : α ∈ OKp D lam) (hβ : β 
       = ((a : D.host.K) : D.host.E) * ((b : D.host.K) : D.host.E) := by simp
   simp only [tauK, tauKc, hab, map_mul D.host.conj, lamPhi_mul, Prod.mk_mul_mk]
 
-theorem okp_zero : (0 : ℂ_[p] × ℂ_[p]) ∈ OKp D lam := by
-  have h0 : lamC lam (0 : ℂ) = 0 := by
-    simpa using lamPhi_add D lam (0 : D.host.E) 0
-  unfold OKp
-  apply subset_closure
-  refine ⟨0, ?_⟩
-  simp [tauK, tauKc, h0]
-
-theorem okp_hP {ι : Type} [Fintype ι] (x y : ι → ℂ_[p] × ℂ_[p]) (hx : InOKp D lam x) (hy : InOKp D lam y) :
-    hP x y ∈ OKp D lam := by
-  show (∑ k, x k * (y k).swap) ∈ OKp D lam
-  exact Finset.sum_induction _ (· ∈ OKp D lam) (fun a b ha hb => okp_add D lam a b ha hb)
-    (okp_zero D lam) (fun k _ => okp_mul D lam _ _ (hx k) (okp_swap D lam _ (hy k)))
-
 end Formalism.MainNotions.Ext

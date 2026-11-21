@@ -90,45 +90,9 @@ abbrev GG : Type := H.E ≃ₐ[ℚ] H.E
 
 noncomputable def conj : H.E ≃ₐ[ℚ] H.E := cmConj H.E
 
-@[instance_reducible] noncomputable def cmStar : StarRing H.E := NumberField.IsCMField.starRing H.E
-
 def Psi : Subgroup H.GG := MulAction.stabilizer H.GG H.bE
 
-def cmType : Set (H.E →+* ℂ) := {φ | φ H.bE = Complex.I * (Real.sqrt H.d : ℂ)}
-
 noncomputable def emb (σ : H.GG) : H.E →+* ℂ := H.φ₀.comp (σ : H.E →+* H.E)
-
-noncomputable def f : ℕ := Module.finrank ℚ H.F
-
-def n (_H : GHost e) : ℕ := 2 ^ e
-
-def Ex : Subgroup H.GG := MulAction.stabilizer H.GG H.aE ⊓ MulAction.stabilizer H.GG H.bE ⊓ H.hp.ker
-
-noncomputable def w : ℕ := NumberField.Units.torsionOrder H.E
-
-noncomputable def rdE : ℝ := |(discr H.E : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ H.E : ℝ))
-
-noncomputable def v : ℝ := H.rdE / 2
-
-noncomputable def ka : ℝ := Real.pi / H.v
-
-def sqrtMinusD : H.E := H.bE
-
-noncomputable def xi0 : H.E := -1 / ((Ideal.absNorm H.ccK : H.E) * H.sqrtMinusD)
-
-noncomputable def ccE : Ideal (𝓞 H.E) := Ideal.map (algebraMap (𝓞 H.K) (𝓞 H.E)) H.ccK
-
-noncomputable def AA0 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E :=
-  ((H.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E))⁻¹
-
-noncomputable def AA : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E :=
-  (H.ccE : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) * H.AA0
-
-noncomputable def AAbar : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E :=
-  ((H.conj • H.ccE : Ideal (𝓞 H.E)) : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) *
-    ((H.conj • H.𝔟 : Ideal (𝓞 H.E)) : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E)⁻¹
-
-noncomputable def ddE : Ideal (𝓞 H.E) := differentIdeal ℤ (𝓞 H.E)
 
 end GHost
 

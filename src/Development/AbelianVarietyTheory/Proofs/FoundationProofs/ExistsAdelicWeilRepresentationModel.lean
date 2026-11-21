@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZ
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsExtensionOfDense
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdelicHermitianCharacterPairingPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdelicHermitianCharacterPairingProperties
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedStandardAdelicLatticeSelfDualStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedStandardAdelicLatticePropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFiniteAdeleExtendedCharacterOfCurveStatement
@@ -68,7 +68,7 @@ theorem exists_isModel (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ 
     ∃ w γ WA, GlobalTheory.FinWeil.IsModel D cc δ N N' w γ WA := by
   obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_finiteAdeleExtendedCharacter_of_curve D hD cc δ hc
   obtain ⟨w, hw, hwd⟩ := GlobalTheory.T.theta_point_additive_form D hD cc δ hc
-  obtain ⟨hinv, halt, hadj, hl, hr⟩ := GlobalTheory.T.adelicHermitianCharacterPairing_properties D hD cc δ hc ψ hψ N N'
+  obtain ⟨hinv, halt, hadj, hl, hr⟩ := _root_.GlobalTheory.FinWeil.gamA_alg D hD cc δ hc ψ hψ N N'
   have hsd := GlobalTheory.T.completedStandardAdelicLattice_selfDual D hD cc δ hc ψ hψ N N'
   obtain ⟨hrat, -, hdense, hden, -, -⟩ := GlobalTheory.T.completedStandardAdelicLattice_properties D hD cc δ hc N N'
   have htt := GlobalTheory.T.weilOperator_rationalTranslate_mem_thetaFunctions D hD cc δ hc N N'

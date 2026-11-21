@@ -26,10 +26,6 @@ variable (D) in
 def sideEmb (σ : PsiT D × Bool) : D.host.E →+* ℂ :=
   if σ.2 then conjEmb (DV.tauEmb D (D.eTau.symm σ.1)) else DV.tauEmb D (D.eTau.symm σ.1)
 
-example (t : D.what₂.Tau) : sideEmb D (D.eTau t, false) = DV.tauEmb D t ∧
-    sideEmb D (D.eTau t, true) = conjEmb (DV.tauEmb D t) := by
-  simp [sideEmb]
-
 open Classical in
 
 def evlTrue (ct : At S κ p) : EvlSt ct :=
@@ -64,27 +60,6 @@ theorem evlTrue_incT (u : RayEv.LieT (ct.dat y) (sideEmb D σ)) :
 theorem evlTrue_kapGt : (evlTrue ct).kapGt y σ = RayEv.kapGt (ct.dat y) (sideEmb D σ) := rfl
 
 theorem evlTrue_kapB : (evlTrue ct).kapB y σ = RayEv.kapB (ct.dat y) (sideEmb D σ) := rfl
-
-theorem evlTrue_incT_injective : Function.Injective ((evlTrue ct).incT y σ) := fun a b h =>
-  (RayEv.incT_exact (ct.dat y) (sideEmb D σ)).1
-    ((evlTrue_incT ct y σ a).symm.trans (h.trans (evlTrue_incT ct y σ b)))
-
-theorem evlTrue_range_incT : ((evlTrue ct).incT y σ).range = ((evlTrue ct).resB y σ).ker := by
-  ext v
-  rw [AddMonoidHom.mem_range, AddMonoidHom.mem_ker]
-  have h := (RayEv.incT_exact (ct.dat y) (sideEmb D σ)).2 v
-  constructor
-  · rintro ⟨w, hw⟩
-    exact (evlTrue_resB ct y σ v).trans (h.2 ⟨w, (evlTrue_incT ct y σ w).symm.trans hw⟩)
-  · intro e
-    obtain ⟨w, hw⟩ := h.1 ((evlTrue_resB ct y σ v).symm.trans e)
-    exact ⟨w, (evlTrue_incT ct y σ w).trans hw⟩
-
-theorem evlTrue_kap (u u' : (evlTrue ct).LieGt y σ) : (evlTrue ct).kapGt y σ u u' =
-    (evlTrue ct).kapB y σ ((evlTrue ct).resB y σ u) ((evlTrue ct).resB y σ u') :=
-  (congrFun₂ (evlTrue_kapGt ct y σ) u u').trans ((RayEv.kapGt_eq (ct.dat y) (sideEmb D σ) u u').trans
-    ((congrFun₂ (evlTrue_kapB ct y σ) _ _).trans
-      (congrArg₂ _ (evlTrue_resB ct y σ u) (evlTrue_resB ct y σ u'))).symm)
 
 end Fields
 

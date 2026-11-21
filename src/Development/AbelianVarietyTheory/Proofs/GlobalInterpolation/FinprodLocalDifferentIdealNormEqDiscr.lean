@@ -275,13 +275,6 @@ theorem _root_.GlobalTheory.LocalDifferentProduct.finprod_card_quot_map {K : Typ
   simp only [MonoidWithZeroHom.toMonoidHom_coe, Ideal.finprod_heightOneSpectrum_factorization hI] at h
   exact h.symm
 
-section Relative
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-  {σ : E →ₐ[F] E}
-
-end Relative
-
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum WithZero Polynomial in
 
 theorem _root_.GlobalTheory.LocalDifferentProduct.prod_normDifferentV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMemberP
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLatticeQuadraticSumGeDiagonal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierMonomialMemRadicalExtendedMaximalIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierMonomialMemRadicalExtendedMaximalIdeal
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
@@ -130,7 +130,7 @@ theorem coeffZero_approx : ∀ (O : Type) [CommRing O] (bar : O → O) (q s : �
     · obtain ⟨y₁, hy₁⟩ := h
       obtain ⟨n, hn⟩ := UnitZero.pow_mem_of_radical ((maximalIdeal A).map (Φ.ev y₁)) (Φ.t y₁)
         (fun ν k => (qW W (Φ.δ y₁ k) ν).toNat) {ν | ν ≠ 0}
-        (fun ν hν => GlobalTheory.T.fourierMonomial_mem_radical_extended_maximalIdeal O bar q s W A Φ N₁ h3 hEx y₁ ν hν) e
+        (fun ν hν => _root_.GlobalTheory.Poinc.RadQ.mono_mem_radical O bar q s W A Φ N₁ h3 hEx y₁ ν hν) e
       refine ⟨n, fun y hy => ?_⟩
       obtain rfl := huniq y y₁ hy hy₁
       intro ν hν M hM

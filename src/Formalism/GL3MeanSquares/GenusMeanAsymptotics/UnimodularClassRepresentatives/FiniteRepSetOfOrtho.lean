@@ -86,20 +86,4 @@ def autSub (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) : Subgr
     conv_lhs => rw [← ha.2]
     rw [← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]
 
-theorem finite_autL_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
-    (hs : h.IsSymm) {I : Submodule (𝓞 K) V} {n : ℕ} (hI : Formalism.HermitianLatticesTheory.IsOrthoLattice h I n)
-    {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) : (Formalism.ThetaLiftIndependence.autL h L).Finite := by
-  have := finiteDimensional_of_ortho hI
-  exact Formalism.HermitianLatticesTheory.autFinite K V h hs (trace_pos_of_ortho hK hs hI) L hL
-
-theorem finite_repSet_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
-    (hs : h.IsSymm) {I : Submodule (𝓞 K) V} {n : ℕ} (hI : Formalism.HermitianLatticesTheory.IsOrthoLattice h I n)
-    {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) (t : K) :
-    {x : V | x ∈ L ∧ h x x = t}.Finite := by
-  have := hL
-  refine (Formalism.HermitianLatticesTheory.autFinite_short h (trace_pos_of_ortho hK hs hI) L
-    (Algebra.trace ℚ K t)).subset ?_
-  rintro x ⟨hx, rfl⟩
-  exact ⟨hx, le_rfl⟩
-
 end Formalism.HermitianLattices.Ext.L3

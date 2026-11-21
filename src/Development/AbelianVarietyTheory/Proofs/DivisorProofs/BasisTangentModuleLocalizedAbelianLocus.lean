@@ -8,7 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTranslateLif
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReductionEqBasePoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartPullbackLineBundleTransitionEqAppLE
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedTripleAbelianLocusProperRelAmple
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleEqCoboundaryAddLogDerivativesAffineStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCocycleEqCoboundaryAddLogDerivativesAffine
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechGluingOfKodairaSpencerRelation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfForallField
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
@@ -249,7 +252,7 @@ theorem exists_dlog_add_coboundary_affine : ∀ (E : Type) [Field E] [NumberFiel
       rw [hg, ← Category.assoc, GlobalTheory.TransLift.spMap_comp'']
     rw [hwb, GlobalTheory.LogKSBal.valR_chart]
     simp [valR, TrivSqZeroExt.algebraMap_eq_inl]
-  obtain ⟨θ, h, hid⟩ := GlobalTheory.T.cechCocycle_eq_coboundary_add_logDerivatives_affine E H _ t' hP hA hK U' n v hvt hvb δ (fun a => ⟨fun O _ => (hδF a).1 O le_top,
+  obtain ⟨θ, h, hid⟩ := _root_.GlobalTheory.CechH1Span.exists_dlog_add_coboundary E H _ t' hP hA hK U' n v hvt hvb δ (fun a => ⟨fun O _ => (hδF a).1 O le_top,
     fun O _ => (hδF a).2.1 O le_top, fun O O' hO _ => (hδF a).2.2 O O' hO le_top⟩) hF2 hF3 J W' (fun i => k (j i))
     hW'aff hW'cov hW'U hj' z' hz'
   have hWim : ∀ i, mm.φ ''ᵁ W' i = W i := fun i => by

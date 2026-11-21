@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentXStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMapStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentX
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMap
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
 namespace GlobalTheory.TensPres
@@ -69,17 +69,17 @@ theorem GlobalTheory.evA_tensor_presents : ∀ (k : Type) [CommRing k] (σ τ : 
       evA k _ hz (subst (fun i => (X (Sum.inl i) : MvPowerSeries (σ ⊕ τ) k)) f) =
         evA k x hx f ⊗ₜ[k] (1 : B) := by
     intro f
-    rw [(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k σ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
+    rw [(_root_.GlobalTheory.evA_subst_and_map k σ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
       (fun i => constantCoeff_X _) _ hxl (fun i => by rw [hX]; rfl) f]
-    exact ((GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k σ A).2 (A ⊗[k] B) (Algebra.TensorProduct.includeLeft (S := k))
+    exact ((_root_.GlobalTheory.evA_subst_and_map k σ A).2 (A ⊗[k] B) (Algebra.TensorProduct.includeLeft (S := k))
       x hx _ hxl (fun i => rfl) f).symm
   have hR : ∀ g : MvPowerSeries τ k,
       evA k _ hz (subst (fun j => (X (Sum.inr j) : MvPowerSeries (σ ⊕ τ) k)) g) =
         (1 : A) ⊗ₜ[k] evA k y hy g := by
     intro g
-    rw [(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k τ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
+    rw [(_root_.GlobalTheory.evA_subst_and_map k τ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
       (fun j => constantCoeff_X _) _ hyr (fun j => by rw [hX]; rfl) g]
-    exact ((GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k τ B).2 (A ⊗[k] B) Algebra.TensorProduct.includeRight
+    exact ((_root_.GlobalTheory.evA_subst_and_map k τ B).2 (A ⊗[k] B) Algebra.TensorProduct.includeRight
       y hy _ hyr (fun j => rfl) g).symm
   refine ⟨?_, ?_⟩
   · intro w
@@ -146,7 +146,7 @@ theorem GlobalTheory.evA_tensor_presents : ∀ (k : Type) [CommRing k] (σ τ : 
       calc (N : ℕ∞) = N • (1 : ℕ∞) := by simp
         _ ≤ N • (X t : MvPowerSeries (σ ⊕ τ) k).order := by gcongr; exact one_le_order_X t
         _ ≤ _ := MvPowerSeries.le_order_pow _
-    have huniq := GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (σ ⊕ τ) _ mk (Ψ.comp (evA k _ hz)) hnil (by
+    have huniq := _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k (σ ⊕ τ) _ mk (Ψ.comp (evA k _ hz)) hnil (by
       intro t
       rw [AlgHom.comp_apply, hX]
       cases t with

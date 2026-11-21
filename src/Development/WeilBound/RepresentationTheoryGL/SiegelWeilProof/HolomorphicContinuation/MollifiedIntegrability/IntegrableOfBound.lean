@@ -87,13 +87,6 @@ theorem sum_vkl (β : E n) (k l : Fin n) : ∑ a, ∑ b, (β a b : ℂ) * vkl k 
   push_cast
   ring
 
-theorem dkl_chr (t : ℝ) (β : E n) (k l : Fin n) (y : E n) :
-    Dkl k l (chr t β) y = (-(Complex.I * t) * herm β k l) * chr t β y := by
-  have h := lf_re_im t β (vkl k l)
-  rw [sum_vkl] at h
-  simp only [Dkl, dirC, fderiv_chr]
-  linear_combination (chr t β y) * h
-
 theorem conj_half_add : starRingEnd ℂ ((1 + Complex.I) / 2) = (1 - Complex.I) / 2 := by
   rw [map_div₀, map_add, map_one, Complex.conj_I, map_ofNat]; ring
 

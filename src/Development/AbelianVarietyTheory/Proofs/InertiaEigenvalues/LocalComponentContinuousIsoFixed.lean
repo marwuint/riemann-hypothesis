@@ -59,7 +59,7 @@ theorem exists_eigen_local_sum : ∀ (L : Type) [Field L] [NumberField L] [IsCMF
     rcases smul_eq_zero.1 h4 with h5 | h5
     · rw [sub_eq_zero.1 h5, mul_comm]
     · exact absurd h5 hf0
-  have hmem := GlobalTheory.T.isotypicPart_spanned_by_splitPlace_localComponent L n a S hS s σ hloc c hc hci hf
+  have hmem := _root_.GlobalTheory.SpanLoc.main L n a S hS s σ hloc c hc hci hf
   rw [iSup_subtype'] at hmem
   obtain ⟨F, hF, hFsum⟩ := (Submodule.mem_iSup_iff_exists_finsupp _ _).1 hmem
   choose y hy using fun i => LinearMap.mem_range.1 (hF i)

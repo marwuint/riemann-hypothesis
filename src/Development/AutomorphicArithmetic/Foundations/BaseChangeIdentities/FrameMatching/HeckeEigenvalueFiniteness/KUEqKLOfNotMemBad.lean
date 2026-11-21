@@ -1,7 +1,12 @@
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.FrameMatching.HeckeEigenvalueFiniteness.PowEigAlt
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.StrictJoinCandidates.CompFixSAlt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryLevelSubgroupProperties
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedVectorGivesLocalComponentSphericalVectStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedVectorGivesLocalComponentSphericalVect
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueAdmissibleLocalComponentDefiniteUnit
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactor
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPoints
 
 noncomputable section
 
@@ -143,7 +148,7 @@ theorem frameEx_of (hUS : USide) (hSph : SphOne) (hSpec : SpecTrace) (hA : LocAl
     obtain ⟨q', hq'⟩ := hUnif E hE w hs _ (F₀.unif w).1
     have hadm : IsAdmissible (fam.σ i₀ w).ρ :=
       ⟨(fam.σ i₀ w).smooth, fun K hK _ => ((fam.comp i₀).2.2.2 w hsec).2.2 K hK⟩
-    obtain ⟨α', hα'⟩ := hSat E n w hs (b w) _ q' hb (F₀.unif w).1 hq' _ hadm (GlobalTheory.T.unramifiedVector_gives_localComponent_sphericalVector E hE n π hπ w _ (hi₀ w hsec) hu)
+    obtain ⟨α', hα'⟩ := hSat E n w hs (b w) _ q' hb (F₀.unif w).1 hq' _ hadm (_root_.GlobalTheory.BCT.LocUnr.fixed_KL_ne_bot E hE n π hπ w _ (hi₀ w hsec) hu)
     obtain ⟨ξ, hξm, hξ, y, hy0, hy⟩ := hCE E n w hs (b w) _ q' _ α' hb (F₀.unif w).1 hq' hadm hα'
     obtain ⟨cw, h1, h2, h3⟩ := hC E n w F₀.C.ι F₀.C.a (fun i => Z i w) ξ F₀.C.le (fun i => hZf i w) hξm
     refine ⟨cw, fun _ => ⟨h1, ⟨y, hy0, by rw [hy cw h1, h2, one_smul]⟩, fun i s h ξa ξb hz h0 => ?_⟩⟩

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivializationStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivialization
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ContinuousAtOfHolo
 
 namespace LevelTowerAlt.Charts
@@ -133,7 +133,7 @@ noncomputable def famCharts {N : ℕ} (γ : Fin N → (Fin D.n → ℂ) → (Σ 
 
 theorem good_chart (D : ComponentData II Ψ K J Ω W) (a : Fin D.nCharts) :
     Good (n := D.n) (mCoordIdeal D.y) (D.chart a).γ :=
-  ⟨(D.chart a).analytic, (D.chart a).mem, (D.chart a).injective, GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a⟩
+  ⟨(D.chart a).analytic, (D.chart a).mem, (D.chart a).injective, _root_.GlobalTheory.CompanionTheory.Ar.Cusp.chart_torus_open K J II Ψ Ω W D a⟩
 
 theorem exists_eps {n : ℕ} (t₀ : Fin n → ℂ) {r : ℝ} (hr : 0 < r) :
     ∃ ε : ℝ, 0 < ε ∧ 2 * ε ≤ r ∧ ε ≤ 1 / 4 ∧ ∀ i, t₀ i ≠ 0 → 2 * ε ≤ ‖t₀ i‖ := by

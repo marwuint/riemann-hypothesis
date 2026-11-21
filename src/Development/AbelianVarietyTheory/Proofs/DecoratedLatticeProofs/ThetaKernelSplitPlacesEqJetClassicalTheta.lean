@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteComm
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GaussianTwistedRealReadingEntireAndInjective
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntSubIsLattice
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MovedWeilVacuumEqVacuumOfMovedLattices
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DatumReadingSplitPlacesEqClassicalThetaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DatumReadingSplitPlacesEqClassicalTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetCConstMul
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Forms Formalism.UG
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.MixPer GlobalTheory.Core.Rk GlobalTheory.AdForm
@@ -50,7 +50,7 @@ theorem thetaKernel_eq_jet_thC : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (
   obtain ⟨hVm, -, -⟩ := GlobalTheory.MovedVac.vac_moved D ψ θ S T a b hS hT δ sc hP μ om hW vac hV g hg h hh N N' hN hN'
   have hD : IsHol θ S T ψ (om (g, h) w) ∧ xiN θ S T hS hT δ sc (om (g, h) w) =
       thC (tauE D) δ D.host.d sc (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c Ξ (xiN θ S T hS hT δ sc (om (g, h) vac)) := by
-    exact GlobalTheory.T.datumReading_splitPlaces_eq_classicalTheta D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa (selfDual_latFr S hP.gS hS g N hN)
+    exact _root_.GlobalTheory.AdForm.DatumRead.reads_datum_eq_thC D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa (selfDual_latFr S hP.gS hS g N hN)
         (selfDual_latFr T hP.gT hT h N' hN') _ _ _ Ξ hVm hSBm hThm hΦ hΞ1 hΞ2
   obtain ⟨hHolm, hxi⟩ := hD
   have hHolw : IsHol θ S T ψ w := by

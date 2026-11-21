@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionAppOfPreservesGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalFunctionAppOfPreservesGenericPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMulPowMemCartierMultipleOfRegularLocusStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
@@ -59,7 +59,7 @@ theorem app_surjective_of_factor {R F : Type} [CommRing R] [Field F] {c₀ : R �
       cst (f ≫ c) (r i) * t i / θ b ^ n := by
     intro i
     rw [map_mul, map_mul, fnOf_app_const f c _ hW (r i)]
-    have e := GlobalTheory.T.rationalFunction_app_of_preservesGenericPoint P Y (f ≫ a) (θ.comp ψ) hff (Dp k b) hPg hW (A i)
+    have e := _root_.GlobalTheory.Desc.fnOf_app_of_pff P Y (f ≫ a) (θ.comp ψ) hff (Dp k b) hPg hW (A i)
     rw [hA i, RingHom.comp_apply, hvψ i, map_div₀, map_pow, hut i] at e
     rw [mul_div_assoc, ← e]
     rfl

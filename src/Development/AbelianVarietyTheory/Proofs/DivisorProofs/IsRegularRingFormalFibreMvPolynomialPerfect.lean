@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsRegularLocalRingAdicCompletion
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsRegularLocalRingOfFlatOfMapEqMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationExtendAdicCompletionLocalizationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularFibreOfLiftedPartialDerivationsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularFibreOfLiftedPartialDerivations
 open IsLocalRing TensorProduct
 
 namespace GlobalTheory
@@ -40,7 +40,7 @@ theorem isRegularRing_adicCompletion_tensor_of_mvPolynomial :
     obtain ⟨D, hD⟩ := hD s
     exact ⟨@Derivation.mk ℤ B B _ _ _ (Ring.toIntAlgebra B) _ _ D.toLinearMap
       D.map_one_eq_zero' D.leibniz', hD⟩
-  have h := GlobalTheory.T.regular_fibre_of_lifted_partialDerivations Λ (Fin n) B K hC hD'
+  have h := _root_.GlobalTheory.regularFibre_of_liftedPartialDerivations Λ (Fin n) B K hC hD'
   let e : B ⊗[R] K ≃ₐ[R] B ⊗[S₀] K := IsLocalization.algebraTensorEquiv P.primeCompl R B K
   exact IsRegularRing.of_ringEquiv e.symm.toRingEquiv
 

@@ -45,31 +45,6 @@ lemma pd_eq_deriv (i : Fin N) {f : (Fin N → ℝ) → H} (p : Fin N → ℝ) (h
     pd i f p = deriv (fun t : ℝ => f (p + t • Pi.single i 1)) 0 := by
   exact (pd_hasDerivAt i p hf).deriv.symm
 
-private lemma fderiv_apply_lemma (g : (Fin N → ℝ) → ((Fin N → ℝ) →L[ℝ] H)) (v w p : Fin N → ℝ)
-    (hg : DifferentiableAt ℝ g p) : fderiv ℝ (fun q => g q v) p w = fderiv ℝ g p w v := by
-  rw [fderiv_clm_apply hg (differentiableAt_const v)]
-  simp
-
-lemma pd_comm (i j : Fin N) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
-    pd i (pd j f) = pd j (pd i f) := by
-  have hd : ContDiff ℝ ∞ (fderiv ℝ f) := hf.fderiv_right (m := ∞) (by simp)
-  funext p
-  have hs := (hf.contDiffAt (x := p)).isSymmSndFDerivAt
-    (by simp <;> first | exact WithTop.coe_le_coe.2 le_top | norm_cast | decide | exact le_top)
-  show fderiv ℝ (fun q => fderiv ℝ f q (Pi.single j 1)) p (Pi.single i 1) =
-    fderiv ℝ (fun q => fderiv ℝ f q (Pi.single i 1)) p (Pi.single j 1)
-  rw [fderiv_apply_lemma _ _ _ _ (hd.differentiable (by simp) p),
-    fderiv_apply_lemma _ _ _ _ (hd.differentiable (by simp) p)]
-  exact hs _ _
-
-lemma pd_pds (k : Fin N) (L : List (Fin N)) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
-    pd k (pds L f) = pds L (pd k f) := by
-  induction L with
-  | nil => rfl
-  | cons i L ih =>
-    simp only [pds_cons]
-    rw [pd_comm k i (contDiff_pds L hf), ih]
-
 lemma pd_clm (i : Fin N) (A : H →L[ℝ] H) {f : (Fin N → ℝ) → H} (hf : Differentiable ℝ f) :
     pd i (fun p => A (f p)) = fun p => A (pd i f p) := by
   funext p
@@ -85,36 +60,6 @@ lemma pds_clm (L : List (Fin N)) (A : H →L[ℝ] H) {f : (Fin N → ℝ) → H}
   | cons i L ih =>
     simp only [pds_cons]
     rw [ih, pd_clm i A (differentiable_pds L hf)]
-
-lemma pd_add (i : Fin N) {f g : (Fin N → ℝ) → H} (hf : Differentiable ℝ f) (hg : Differentiable ℝ g) :
-    pd i (fun p => f p + g p) = fun p => pd i f p + pd i g p := by
-  funext p
-  simp only [pd]
-  have h := ((hf p).hasFDerivAt.add (hg p).hasFDerivAt).fderiv
-  exact congrArg (fun L : (Fin N → ℝ) →L[ℝ] H => L (Pi.single i 1)) h
-
-lemma pd_smul (i : Fin N) (c : ℝ) {f : (Fin N → ℝ) → H} (hf : Differentiable ℝ f) :
-    pd i (fun p => c • f p) = fun p => c • pd i f p := by
-  funext p
-  simp only [pd]
-  have h := ((hf p).hasFDerivAt.const_smul c).fderiv
-  exact congrArg (fun L : (Fin N → ℝ) →L[ℝ] H => L (Pi.single i 1)) h
-
-lemma pds_add (L : List (Fin N)) {f g : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) :
-    pds L (fun p => f p + g p) = fun p => pds L f p + pds L g p := by
-  induction L with
-  | nil => rfl
-  | cons i L ih =>
-    simp only [pds_cons]
-    rw [ih, pd_add i (differentiable_pds L hf) (differentiable_pds L hg)]
-
-lemma pds_smul (L : List (Fin N)) (c : ℝ) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
-    pds L (fun p => c • f p) = fun p => c • pds L f p := by
-  induction L with
-  | nil => rfl
-  | cons i L ih =>
-    simp only [pds_cons]
-    rw [ih, pd_smul i c (differentiable_pds L hf)]
 
 lemma update_add_single {i j : Fin N} (hij : i ≠ j) (r : Fin N → ℝ) (s t : ℝ) :
     Function.update (r + t • Pi.single i 1) j s = Function.update r j s + t • Pi.single i 1 := by

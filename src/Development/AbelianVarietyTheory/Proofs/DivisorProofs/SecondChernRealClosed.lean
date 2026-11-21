@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LineSCShortExact
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernPolyIsHomogeneous
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormsFrameIndependentClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormsFrameIndependentClosed
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 
 set_option autoImplicit false
 
@@ -206,7 +207,7 @@ end Point
 
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
+open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.LineForm
 open scoped Classical ComplexOrder
 
 theorem c2F_isRealForm_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),
@@ -224,7 +225,7 @@ theorem c2F_isRealForm_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [Is
   have htr (a b : VBExt.AdaptedChart (lineSC fl) 1 1) (y) (hy : y ∈ ptsIn p σ a.U ∩ ptsIn p σ b.U) :=
     Met.gram_frame_trans (S := lineSC fl) (r := 1) (s := 1) (h.met σ) hS a b hy.1 hy.2
   have hcov (y : CxPts p σ) : ∃ a : VBExt.AdaptedChart (lineSC fl) 1 1, y ∈ ptsIn p σ a.U := ⟨_, mem_frameAt fl y⟩
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.chernForms_frame_independent_closed (hX.atlas σ) (fun a : VBExt.AdaptedChart (lineSC fl) 1 1 => ptsIn p σ a.U)
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.ChernFrame.chern_frame_closed (hX.atlas σ) (fun a : VBExt.AdaptedChart (lineSC fl) 1 1 => ptsIn p σ a.U)
     (fun _ => isOpen_ptsIn _) hcov (fun a b => a.tr p σ hS b) hhol
     (fun a => (h.met σ).gram a.frame) hsm hpos htr 2
   obtain ⟨h3, h4, h5⟩ := h2 (fld _ (c2F hX σ h fl)) fun a x hx =>

@@ -1,10 +1,12 @@
 import Mathlib
 import Development.AutomorphicArithmetic.CyclotomicBounds.ZmodTwoQuadraticNeZero
-import Development.AutomorphicArithmetic.PrimeDiscriminants.InertGen
+import Formalism.LocalRingCardinality.DataHost
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.InertiaGaloisSymmetry.CycBasic
 
 namespace UpperTheory.Small
 
-open Formalism.BasicNotions NumberField IsDedekindDomain Ideal UpperTheory.InertGen
+open Formalism.BasicNotions NumberField IsDedekindDomain Ideal
 open scoped Pointwise
 
 variable {R : Ranks} (H : Host R)

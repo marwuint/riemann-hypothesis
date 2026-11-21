@@ -2,7 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.FundamentalDomains.ExistsIsAddFundamentalDomain
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.ExistsUniqueEqConstMulOriginSec
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsStandardSmoothOfRelativeDimensionAwayJacobian
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCommGrpObjWeierstrassSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCommGrpObjWeierstrassScheme
+import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.OpensRangeChartYSupOpensRangeChartZ
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddXYZOrChordXYZOrOriginXYZNeZero
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.EigLatBasis
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeSchemeOver
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SurjectiveFst
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.OriginLineBundlePolarisation
@@ -37,33 +41,5 @@ theorem exists_mem_coordOpen_two {R : Type} [CommRing R] (W : WeierstrassCurve R
   have e : (Polynomial.evalRingHom (0 : R)).comp (algebraMap R (Polynomial R)) = RingHom.id R := by
     ext; simp
   exact congrArg (fun f => PrimeSpectrum.comap f s) e
-
-theorem exists_keyIn_iso_elliptic (R : Type) [CommRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
-    ∃ (x : KeyIn R) (e : x.P.A ≅ schemeOver W), x.P.g = 1 ∧ eSec x.P.A ≫ e.hom.left = zero W ∧
-      Out.nonzeroLocus x.th = e.hom.left ⁻¹ᵁ coordOpen W 2 := by
-  obtain ⟨G, hc, h0, -⟩ := GlobalTheory.T.exists_commGrpObj_weierstrassScheme R W W.isUnit_Δ
-  obtain ⟨hr, hs, ha, hk⟩ := originLB_polarisation R W hc h0
-  let P : Out.PolAV (Sp R) :=
-    { A := schemeOver W
-      isAb := isAbelianScheme_schemeOver R W W.isUnit_Δ hc
-      g := 1
-      smoothDim := smoothOfRelativeDimension_toSpec W
-      L := originLB W
-      isLB := originLB_isLB W
-      rigid := hr
-      sym := hs
-      ample := ha
-      ktriv := hk }
-  obtain ⟨rig, hrig⟩ := P.rigid
-  obtain ⟨v, -, hv⟩ := WeierstrassLie.isLieBasis_eps R W h0
-  refine ⟨⟨P, le_rfl, rig, hrig, originSec W, fun s => ?_, ![v], hv⟩, Iso.refl _, rfl,
-    (Category.comp_id _).trans h0, nonzeroLocus_originSec W⟩
-  obtain ⟨x, hx, hx'⟩ := exists_mem_coordOpen_two W s
-  exact ⟨x, hx, (nonzeroLocus_originSec W).ge hx'⟩
-
-theorem exists_keyIn_elliptic (R : Type) [CommRing R] [IsLocalRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
-    ∃ x : KeyIn R, x.P.g = 1 :=
-  let ⟨x, _, h, _⟩ := exists_keyIn_iso_elliptic R W
-  ⟨x, h⟩
 
 end GlobalTheory.KeyPow

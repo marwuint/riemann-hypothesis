@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MembershipCriteria.GoodChar
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.SchrodingerModelSelfDualLatticeStatement
+import Development.AutomorphicSpectrum.Proofs.MembershipProofs.SchrodingerModelSelfDualLattice
 
 noncomputable section
 
@@ -155,7 +155,7 @@ theorem mem_span_schr [LocallyCompactSpace R] [T2Space R] {ψ : AddChar R ℂ} {
   have hmem := mem_span_cosets hsb.2 (box O v κ) hbox_open (fun y hy w hw => hboxU w hw y hy)
   refine Submodule.span_le.2 ?_ hmem
   rintro _ ⟨a, rfl⟩
-  exact htr _ (GlobalTheory.T.indicator_in_schrodinger_span ψ O u v h hvO) a
+  exact htr _ (_root_.GlobalTheory.CompanionTheory.CosetMod.indicator_mem_span ψ O u v h hvO) a
 
 theorem exists_std : ∀ {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [T2Space R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (O : Subring R) (u : Rˣ) {W : Type} [AddCommGroup W] [Module R W] {B : W → W → R} {κ : Type} [Fintype κ] (d : Darboux B κ) (μ : @Measure (κ → R) (borel _)) (S : Sys W (SB (κ → R))), GoodChar ψ O u → IsModel ψ d μ S → ∃ (Γ : AddSubgroup W) (al : W → ℂ) (φ : SB (κ → R)), SelfDual S Γ ∧ IsSemi S al Γ ∧ Law S al Γ φ ∧ Cyclic S φ ∧ φ ≠ 0 := by
   intro R _ _ _ _ _ _ ψ O u W _ _ B κ _ d μ S h hM

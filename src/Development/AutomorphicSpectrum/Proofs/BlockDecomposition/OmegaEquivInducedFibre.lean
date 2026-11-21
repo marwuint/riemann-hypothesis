@@ -107,7 +107,7 @@ theorem lAct_topEmbR (e : c ⊕ d ≃ b) {κ : ℕ} (y : RankIn k a c {κ}) (p :
 
 theorem eq_zero_of_vecMul (e : c ⊕ d ≃ b) {κ : ℕ} (hκ : κ = Fintype.card c) (y : RankIn k a c {κ})
     (v : c → k) (h : v ᵥ* y.1 = 0) : v = 0 := by
-  refine GlobalTheory.T.leftColumns_mulVec_injective_of_rank_eq_card k a c d b e (topR e y.1)ᵀ
+  refine _root_.GlobalTheory.mulVec_firstCols_eq_zero_of_rank_eq_card k a c d b e (topR e y.1)ᵀ
     ((rank_transpose _).trans (((rank_topR e y.1).trans y.2).trans hκ)) (fun i j => topR_inr e _ j i) v ?_
   have hs : (topR e y.1)ᵀ.submatrix id (fun i => e (.inl i)) = y.1ᵀ := by
     ext i l; simp

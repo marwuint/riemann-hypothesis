@@ -49,28 +49,6 @@ theorem hs_zero_l (C : Wq →L[ℂ] Wp) : B.hsInner 0 C = 0 := by
 theorem hs_zero_r (A : Wq →L[ℂ] Wp) : B.hsInner A 0 = 0 := by
   rw [← zero_smul ℂ (0 : Wq →L[ℂ] Wp), hs_smul_r]; simp
 
-theorem plus_pt (t Y : ℂ) (ht : t ≠ 0) (hY : conj Y = Y) (A0 A1 B0 B1 SubquotientNontrivial ProjectiveBundleFormulaTorsion : Wq →L[ℂ] Wp) :
-    B.hsInner (-((conj t)⁻¹ • A1)) (Y • B0 + ProjectiveBundleFormulaTorsion - t • B1) +
-      B.hsInner (conj t • A0 + (Y + 1) • A1 - SubquotientNontrivial) (t⁻¹ • B0) =
-    (B.hsInner A0 B0 + B.hsInner A1 B1) + (conj t)⁻¹ * B.hsInner A1 B0 -
-      B.hsInner ((conj t)⁻¹ • SubquotientNontrivial) B0 - B.hsInner A1 (t⁻¹ • ProjectiveBundleFormulaTorsion) := by
-  have hct : conj t ≠ 0 := (map_ne_zero _).mpr ht
-  simp only [sub_eq_add_neg, hs_add_l, hs_add_r, hs_smul_l, hs_smul_r, hs_neg_l, hs_neg_r, map_inv₀, hY,
-    Complex.conj_conj]
-  field_simp
-  ring
-
-theorem minus_pt (t Y : ℂ) (ht : t ≠ 0) (hY : conj Y = Y) (A0 A1 B0 B1 SubquotientNontrivial ProjectiveBundleFormulaTorsion : Wq →L[ℂ] Wp) :
-    B.hsInner (-(t⁻¹ • A1)) (Y • B0 - ProjectiveBundleFormulaTorsion - conj t • B1) +
-      B.hsInner (t • A0 + (Y - 1) • A1 + SubquotientNontrivial) ((conj t)⁻¹ • B0) =
-    (B.hsInner A0 B0 + B.hsInner A1 B1) - t⁻¹ * B.hsInner A1 B0 +
-      B.hsInner (t⁻¹ • SubquotientNontrivial) B0 + B.hsInner A1 ((conj t)⁻¹ • ProjectiveBundleFormulaTorsion) := by
-  have hct : conj t ≠ 0 := (map_ne_zero _).mpr ht
-  simp only [sub_eq_add_neg, hs_add_l, hs_add_r, hs_smul_l, hs_smul_r, hs_neg_l, hs_neg_r, map_inv₀, hY,
-    Complex.conj_conj]
-  field_simp
-  ring
-
 end HS
 
 section Act
@@ -233,17 +211,6 @@ theorem clsE_op (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.
     (D : B.RealPlaceData P.k P.r Wp Wq) (l : Fin P.r) (j : Fin 6) {Φ : RadSp P.k P.r z z' π π'}
     (h : Φ ∈ ClsE S P z z' π π' X L st l0 D l) : X.op l j Φ ∈ ClsE S P z z' π π' X L st l0 D l :=
   opClos_op X l _ j h
-
-theorem clsE_eU (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
-    (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π')
-    (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)
-    (D : B.RealPlaceData P.k P.r Wp Wq) (l : Fin P.r) (a : S) (i j : Fin 2) (v : Ix S → RadSp P.k P.r z z' π π')
-    (hv : ∀ b, v b ∈ ClsE S P z z' π π' X L st l0 D l) (y : Ix S) :
-    act (eU a i j : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) v y ∈ ClsE S P z z' π π' X L st l0 D l := by
-  rw [action_elementary_unit_apply]
-  split_ifs
-  · exact hv _
-  · exact zero_mem _
 
 end ClsP
 

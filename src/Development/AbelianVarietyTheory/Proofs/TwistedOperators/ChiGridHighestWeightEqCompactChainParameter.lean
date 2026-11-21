@@ -108,6 +108,4 @@ end GlobalTheory.RowReal.WeightsX
 
 namespace GlobalTheory.RowReal
 
-open GlobalTheory.SignedHC GlobalTheory.RowReal.WeightsX
-
 end GlobalTheory.RowReal

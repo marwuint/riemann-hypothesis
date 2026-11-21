@@ -105,19 +105,4 @@ private theorem totPar_spec {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRe
 
 end UpperTheory.V.Z.Win.Gu
 
-theorem UpperTheory.V.Z.Win.Gu.frobTotT :
-    HypothesesH → ExtraV → GdLaws → FrobTotT := by
-  intro _ hX hG F Ω _ _ _ _ _ l _ ι n c a d r _ w hl ρ S hS H A h
-  obtain ⟨rc, hrc⟩ := UpperTheory.Zero.LLC.recTExists F Ω A w h
-  have hsp := totPar_spec (hX F Ω A w h rc hrc) n c a d ρ S hS
-  have hu := (hsp (frob h)⁻¹ (by rw [deg_inv, deg_frob])).1
-  have hx := ((H A h rc hrc).1 hl).isWDOf ((hG F Ω A w h).2.2.2 _ hu)
-  have hw := hx.wdOf_eq hl
-  obtain ⟨t, ht, φ, hφ, N, b, hN, -⟩ := hx
-  refine ⟨(hN.unr_wdOf_iff hl ht ι).1 (by rw [hw]; exact hu), fun s hs => ?_⟩
-  have hd : deg (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h) = 1 := deg_eq_one_iff.2 hs
-  have := hN.charPol_wdOf hl ht ι (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h)⁻¹
-  rw [hw, (hsp _ (by rw [deg_inv, hd])).2] at this
-  exact this.symm
-
 end

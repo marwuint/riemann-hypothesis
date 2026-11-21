@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemKilled
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealLieSmoothingMemSmoothAdelicFunctionsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieDerivativeRealLieSmoothingEqDensityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealLieSmoothingMemSlowlyIncreasingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealLieSmoothingMemSlowlyIncreasing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreEnvelopingAlgebraCommuteRealLieSmoothingStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothingRightTranslateMaxCompactStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainMeasureFinite
@@ -74,6 +75,6 @@ theorem smoothing_mem_space : ∀ (E : Type) [Field E] [NumberField E] [IsTotall
         rw [List.map_cons, List.prod_cons, Module.End.mul_apply, lie_apply, e]
         exact GlobalTheory.T.lieDerivative_realLieSmoothing_eq_density E b ν β hβ ψ.1 ψ.2 X g
     rw [e]
-    exact GlobalTheory.T.realLieSmoothing_mem_slowlyIncreasing E b ν β hβ ψ.1 hg
+    exact _root_.GlobalTheory.AutGrowth.smoothing_mem_growth E b ν β hβ ψ.1 hg
 
 end GlobalTheory.CapKilledSmooth

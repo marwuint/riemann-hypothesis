@@ -15,10 +15,17 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.TendstoEpsT
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.TendstoArFun
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerConvI2Statement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootModelOriginCompatibilityStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HodgeComponentFactorPointStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedHodgeMetricSmoothStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerConvI2
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootModelOriginCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitComps
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HodgeComponentFactorPoint
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedHodgeMetricSmooth
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PositionPot
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginComparisonSubset
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBoundsStatement
 
@@ -83,8 +90,8 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
     hC hG E H D Xo l c Y (o.S B) (T.M B a) (o.Sys a) (o.Fx a) (o.Or B a) II K J Ω W Dc X.H T.bad Or B hSeq
       (fun p hp hd => (o.bad_iff p).2 ⟨hp, (hd.mul_left 2).mul_right _⟩) (o.omVB B a) (hEx.2 B a) hp hbg hsm hGood hgen
   have hmono := OrLinked.mono_int' c
-  obtain ⟨x₀, hx₀⟩ := GlobalTheory.T.hodge_component_factor_point E H D l _ c _ _ Y _ _ _ _ _ (o.Or B a).𝔐 hmono
-  have alg := GlobalTheory.T.root_model_origin_compatibility E H D l _ c _ _ Y _ _ _ _ (o.Or B a) (spMap (o.Or B a).𝔐.fn ≫ x₀) (by
+  obtain ⟨x₀, hx₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GenOpen.gen_open E H D l _ c _ _ Y _ _ _ _ _ (o.Or B a).𝔐 hmono
+  have alg := _root_.GlobalTheory.CompanionTheory.Ar.RootAlg.algOver_of_immersion E H D l _ c _ _ Y _ _ _ _ (o.Or B a) (spMap (o.Or B a).𝔐.fn ≫ x₀) (by
     rw [Category.assoc, ← hx₀]; exact (o.Or B a).𝔐.fn_over) hmono (hEx.1 a)
   have : Nonempty (RootIx D) := ⟨(Classical.choice (GlobalTheory.T.cm_host_rank_bounds E H).2.1, ⟨0, by omega⟩)⟩
   obtain ⟨K', _, ρ', _, κ, v, y', hb, hy, hfield, har', hcore⟩ := anCore hR hB hI hK hII ((o.Or B a).Re.comap some) alg
@@ -97,7 +104,7 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
       simp only [← zsmul_eq_mul]
       refine (sum_gapc _ fun r => Real.log (((o.Or B a).sing r).h _)).symm.trans (Finset.sum_congr rfl fun r _ => ?_)
       exact congrArg _ ((o.Or B a).fund_sing r.1 r.2 x hx).symm) X.H X.S B X.S_tied hb₁ hb₂ he₁ he₂ har hβ hβn hbd hiso
-  have hjb := GlobalTheory.T.block_join_inclusions_compat
+  have hjb := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.join_block_maps
   have hc₁ := (hjb.2.2 _ _ K₃ ρ K' ρ' κ₁ v₁ κ v hb₁ hb).1
   have hc₂ := (hjb.2.2 K J K₃ ρ K' ρ' κ₂ v₂ κ v hb₂ hb).1
   have hy₁ : y' ∘ v ∘ v₁ = y ∘ v₁ := by rw [← hy]; rfl
@@ -105,18 +112,18 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
   have e₂ : imageZ (v ∘ v₂) (mCoordIdeal y') = mCoordIdeal Dc.y := by
     rw [hjb.2.1 K J K' ρ' _ _ Ω₃ y' hc₂, ← he₂, ← hy]
     rfl
-  have hp₁ := GlobalTheory.T.block_pullback_herm_line _ _ K' ρ' _ _ hc₁
-  have hp₂ := GlobalTheory.T.block_pullback_herm_line K J K' ρ' _ _ hc₂
+  have hp₁ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap _ _ K' ρ' _ _ hc₁
+  have hp₂ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.hermLine_pull_blockMap K J K' ρ' _ _ hc₂
   choose pl hpl using fun A => (hp₁.1 A).exists
   choose Mt hMt using fun t => (hp₂.1 (muReg X.H X.S B t)).exists
   have hcore' := hcore Mt (fun t r => pl ((o.Or B a).Re.line (some r) t)) hMt fun t r => hpl _
   let RT := (Top.realOf o.toTowerOrigin).tie B a
   have ht₀ : 0 < (o.Sys a).t₀ := ((o.Sys a).reg none).1
   let x' : ℝ → Option (RootIx D) → HermLine (T.M B a).ι := fun t o' => o'.elim (PF.cst _) ((T.M B a).x t)
-  have hx' : ∀ t cc, IsSmoothHerm (Top.combLine (x' t) cc) := fun t cc => (GlobalTheory.T.hermitian_combination_smooth_conj _ _ _ _ cc).1 fun o' => by
+  have hx' : ∀ t cc, IsSmoothHerm (Top.combLine (x' t) cc) := fun t cc => (_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj _ _ _ _ cc).1 fun o' => by
     cases o'
     exacts [PF.cst_smooth, (T.M B a).x_smooth _ _]
-  have hreg := GlobalTheory.T.regularized_hodge_metric_smooth K J II _ Ω W Dc X.H X.M X.S B X.S_tied
+  have hreg := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.muReg_smooth_log K J II _ Ω W Dc X.H X.M X.S B X.S_tied
   set e := IntermediateField.relfinrank (blockFnField (y ∘ v₁)) (blockFnField y) with he
   have key : ∀ (a' b' : ℕ) (cc : Fin b' → Option (RootIx D) → ℤ), a' + b' = Top.dimFl (CMType H) (D.p + D.q) + 1 →
       Tendsto (fun t => II K' ρ' (mCoordIdeal y') (a' + b') (Fin.append (fun _ : Fin a' => Mt t)
@@ -127,7 +134,7 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
     filter_upwards [hreg, Ioc_mem_nhdsGT ht₀] with t h1 h2
     have hA : IsArithVar (mCoordIdeal y') (a' + b') := hab ▸ har'
     have hls : ∀ cc, IsSmoothHerm (Top.combLine (fun o' : Option (RootIx D) => o'.elim (PF.cst ρ')
-        fun r => pl ((o.Or B a).Re.line (some r) t)) cc) := fun cc => (GlobalTheory.T.hermitian_combination_smooth_conj _ _ _ _ cc).1 fun o' => by
+        fun r => pl ((o.Or B a).Re.line (some r) t)) cc) := fun cc => (_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj _ _ _ _ cc).1 fun o' => by
       cases o'
       exacts [PF.cst_smooth, hp₁.2.1 _ _ (hpl _) ((o.Or B a).Re.line_smooth _ t h2.1 h2.2)]
     have hq : ∀ cc : Option (RootIx D) → ℤ, (Top.combLine (fun o' : Option (RootIx D) => o'.elim (PF.cst ρ')
@@ -137,7 +144,7 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
         fun r => pl ((o.Or B a).Re.line (some r) t)) fun o' => o'.elim (cc none) (gapc (cc ∘ some))).h z =
           (pl (Top.combLine (x' t) cc)).h z := by
       intro cc
-      have h3 := (GlobalTheory.T.iso_line_on_equivalence K' ρ' _ ∅ har'.2.1 (Set.empty_subset _)).2.2.2 _ _ _ _ _
+      have h3 := (_root_.GlobalTheory.CompanionTheory.Ar.Cmp.IsoLines.isoLineOn_comb_trans_symm_pull K' ρ' _ ∅ har'.2.1 (Set.empty_subset _)).2.2.2 _ _ _ _ _
         (fun o' : Option (RootIx D) => o'.elim (PF.cst _) fun r => (o.Or B a).Re.line (some r) t)
         (fun o' : Option (RootIx D) => o'.elim (PF.cst ρ') fun r => pl ((o.Or B a).Re.line (some r) t))
         (fun o' => o'.elim (cc none) (gapc (cc ∘ some))) hc₁ fun o' => by
@@ -149,7 +156,7 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
     have hm := hq fun o' => o'.elim 0 (muExp D.p)
     rw [comb_some] at hm
     have hMs := hp₂.2.1 _ _ (hMt t) h1.1
-    have hxs := (GlobalTheory.T.hermitian_combination_smooth_conj _ _ _ _ (muExp D.p)).1 ((T.M B a).x_smooth t)
+    have hxs := (_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj _ _ _ _ (muExp D.p)).1 ((T.M B a).x_smooth t)
     congr 1
     · refine hI.metricLocal K' ρ' _ (hII.1 K' ρ') _ _ _ _ hA ?_ ?_ ?_ ?_ <;> refine Fin.addCases (fun j => ?_) fun j => ?_ <;>
         simp only [Fin.append_left, Fin.append_right]
@@ -186,7 +193,7 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
     fun t _ i => pl (Top.combLine (x' t) (cF i)), e * (T.M B a).δ, hc₂, by rw [Nat.add_right_comm, hdim]; exact har', e₂, hδ,
     fun t _ i => hNa t i, fun t _ i => hNs t i, Eventually.of_forall hMt, ?_, ?_⟩
   · have h1 := key (Dc.n + 1) _ cF (by rw [Nat.add_right_comm, hdim])
-    have h2 := (tendsto_arFun (T.M B a) ((GlobalTheory.T.real_tower_conv_I2 hAg hI II hII _ _ T (Top.realOf o.toTowerOrigin)).1 B a)
+    have h2 := (tendsto_arFun (T.M B a) ((_root_.GlobalTheory.CompanionTheory.Ar.Top.real_tower_convergence_I2 hAg hI II hII _ _ T (Top.realOf o.toTowerOrigin)).1 B a)
       (Top.toA (Top.testPoly T.j))).const_mul (e * (T.M B a).δ : ℝ)
     have h3 := h1.add h2
     rw [zero_add] at h3
@@ -227,7 +234,7 @@ theorem tie_of (hC : Common) (hR : Replace) (hB : BaseSide) : PB.AgreementPos �
     have a4 := LevelTowerAlt.ii_cst_int hII.1 (show IsArithVar (T.M B a).P _ from hdim ▸ (T.M B a).arith)
       (fun j => Top.combLine ((T.M B a).x t)
         (Fin.append (fun _ : Fin Dc.n => muCoef (CMType H) D.p D.q) (fun j => fibCoef (ee j)) j))
-      fun j => (GlobalTheory.T.hermitian_combination_smooth_conj _ _ _ _ _).1 ((T.M B a).x_smooth t)
+      fun j => (_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj _ _ _ _ _).1 ((T.M B a).x_smooth t)
     rw [← geoFun_pts (T.M B a) hI t hdim, ← test_factor ee hqp Or.n_eq] at a4
     rw [hcst t t u 1 ht.1 hu.1] at a3
     refine (congrArg₂ (fun r s : ℝ => r - e * s) a3 a4).trans ?_

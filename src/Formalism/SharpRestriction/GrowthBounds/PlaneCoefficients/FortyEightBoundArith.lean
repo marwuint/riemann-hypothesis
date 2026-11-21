@@ -213,6 +213,4 @@ theorem arithCondition_of_one_le (C CLa : ℝ) (hC : 1 ≤ C) : RestArithStep C 
   exact Ar.arith1 _ a Bv _ ((p : ℝ) ^ g) ((p : ℝ) ^ (L₁ + 1)) ((p : ℝ) ^ Dd) _ (by positivity) (by positivity) hden hBo0
     ha0 hsum hBoa hpow h48 (by linarith)
 
-theorem restArith_all : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ, RestArithStep C CLa := ⟨1, one_pos, fun C hC CLa => arithCondition_of_one_le C CLa hC⟩
-
 end Formalism.MainNotions.PairMembershipBlocks

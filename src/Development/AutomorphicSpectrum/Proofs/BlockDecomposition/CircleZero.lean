@@ -13,13 +13,6 @@ structure Fam {X : Type*} [TopologicalSpace X] (U : Set ℂ) (f : ℂ → X → 
 
 variable {X Y Z : Type*} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {U : Set ℂ}
 
-theorem fam_id : Fam (X := X) univ (fun w _ => w) where
-  cont := continuous_fst.continuousOn
-  hol _ := differentiableOn_id
-  bd K _ hc := by
-    obtain ⟨B, hB⟩ := hc.exists_bound_of_continuousOn continuousOn_id
-    exact ⟨B, fun w hw _ => hB w hw⟩
-
 theorem Fam.comp {f : ℂ → X → ℂ} (h : Fam U f) {φ : Z → X} (hφ : Continuous φ) : Fam U (fun w z => f w (φ z)) where
   cont := h.cont.comp (continuous_fst.prodMk (hφ.comp continuous_snd)).continuousOn (fun q hq => ⟨hq.1, mem_univ _⟩)
   hol z := h.hol (φ z)

@@ -134,10 +134,6 @@ def valS (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i 
   E.ev u μ i c '' {v | ∀ J : KM.ColChoice (D.R.N i) (nuD D u i),
     ‖E.prS u μ w i c v (MvPolynomial.map (Int.castRingHom _) (KM.nablaX (D.R.N i) (nuD D u i) J))‖ ≤ 1}
 
-def valT (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (c' : (D.chTw u μ).cls (i + 1)) :
-    Set ((D.chTw u μ).Y (i + 1) → ℂ) :=
-  E.ev u μ (i + 1) c' '' {v' | ∀ I, ‖E.prT u μ w i c' v' I‖ ≤ 1}
-
 end KerEnt
 
 def linAt {σ κ : Type*} [Fintype κ] {p : ℕ} [Fact p.Prime] (c : σ → κ → ℂ_[p]) (F : MvPowerSeries σ ℂ_[p]) :

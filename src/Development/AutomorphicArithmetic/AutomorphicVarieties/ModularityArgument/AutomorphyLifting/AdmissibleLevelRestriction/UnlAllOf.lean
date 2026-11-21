@@ -20,9 +20,6 @@ def SafeRA (l : ℕ) [Fact l.Prime] (M : ℕ) (m : Fin n → ℤ) (r : G F Ω �
 def SafePA (l : ℕ) [Fact l.Prime] (M : ℕ) (m : Fin n → ℤ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop :=
   (l ∣ M ∧ PotAll r) ∨ ∀ i j, m i ≠ m j + 1
 
-example : type_of% @Keep.SafeU := @SafeRA
-example : type_of% @Keep.SafeP := @SafePA
-
 variable [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {M : ℕ} {m : Fin n → ℤ} {r : G F Ω →* GL (Fin n) (Qbar l)}
 
 theorem safeUGap' (_ : Level l M m r) (h : ∀ i j, m i ≠ m j + 1) : SafeRA l M m r := Or.inr h

@@ -201,23 +201,10 @@ theorem statements_of_remaining_bound (W : TwLoc D Y) (hV : CmpV c Dx T W) (hA :
 def RestComp : Prop :=
   ∀ (D : D7) (Dx : DivX D) (T : TwForms D) (sp : ℝ), IsotypicPartsInternalDirectSum D Dx T sp → DGamDef D → RestElse D Dx T sp
 
-def RestSz (C : ℝ) : Prop := ∀ (D : D7) (L : SizeData₂ D), ErrorFirstTermSize D L C
-
 theorem stmt_of_rest (hR : RestComp) (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) (c : LatCmp D)
     (Dx : DivX D) : Stmt D L X Y K c Dx := by
   intro T W lev Xe ce hV sp _ hA
   exact statements_of_remaining_bound W hV hA (fun hG => hR D Dx T sp hA.2.2.1 hG)
-
-theorem stmtE_of_rest (hR : RestComp) {C : ℝ} (hC : 0 ≤ C) (hS : RestSz C) (D : D7) (L : SizeData₂ D) (X : Inst D L)
-    (Y : LatInst D) (K : Consts) (c : LatCmp D) (Dx : DivX D) : ClosedFormOfAdmitted D L X Y K c Dx :=
-  ⟨stmt_of_rest hR D L X Y K c Dx, C, hC, hS D L⟩
-
-theorem stmtF_of_rest (hR : RestComp) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : KudlaFamilyStatement Fm :=
-  ⟨0, fun _ _ _ _ => stmt_of_rest hR _ _ _ _ _ _ _⟩
-
-theorem stmtEF_of_rest (hR : RestComp) {C : ℝ} (hC : 0 ≤ C) (hS : RestSz C) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
-    FamilyClosedForm Fm :=
-  ⟨stmtF_of_rest hR Fm, C, hC, 0, fun _ _ _ _ => hS _ _⟩
 
 end Formalism.MainNotions.WeilJacquetShalikaLaw.Proof
 

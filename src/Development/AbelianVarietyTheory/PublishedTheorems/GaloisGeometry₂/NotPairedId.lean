@@ -11,10 +11,6 @@ namespace GlobalTheory.Published.InvTransposeModel
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
-theorem rank_one (π : CuspSub E 1) : Paired π π invTOp := by
-  obtain ⟨χ, rfl⟩ := RankOne.exists_eq_twist π
-  exact paired_invTOp le_rfl χ
-
 theorem eq_triv (π : CuspSub E 0) : π = CuspSub.triv E (Nat.zero_le 1) := by
   refine CuspSub.ext (((CuspSub.triv E (Nat.zero_le 1)).irred π.V (fun φ _ => ?_) π.stable).resolve_left π.ne_bot)
   refine Submodule.mem_span_singleton.2 ⟨φ.1 1, Subtype.ext (funext fun g => ?_)⟩
@@ -57,25 +53,6 @@ theorem twist {π : CuspSub E a} (h : Paired π π invTOp) (χ : HChar E) : Pair
     rw [e2, e3, e4]
     simp only [Units.val_one, one_smul, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]
     linear_combination e
-
-theorem not_paired_id {s : ℂ} (hs : s ≠ 0) :
-    ¬ Paired (line le_rfl (CuspRep.Model.absC E s)) (line le_rfl (CuspRep.Model.absC E s)) id := fun h => by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have h3 := ((paired_line_iff _ _ _ _).1 h).2.2
-  have h4 : ∀ z, dchi (CuspRep.Model.absC E s) z = 0 := fun z => by
-    have := h3 fun _ _ => z
-    simp only [id, sc, opTriv, opAdd, mul_zero, zero_add, Matrix.trace, Fin.sum_univ_one, Matrix.diag,
-      Matrix.of_apply] at this
-    linear_combination this / 2
-  have := CuspRep.Model.expo_absC s τ
-  rw [expo, h4, h4] at this
-  exact hs (by simpa using this.symm)
-
-omit [IsTotallyComplex E] in
-
-theorem bracket (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
-    -(X * Y - Y * X)ᵀ = (-Xᵀ) * (-Yᵀ) - (-Yᵀ) * (-Xᵀ) := by
-  simp only [Matrix.transpose_sub, Matrix.transpose_mul, neg_mul_neg, neg_sub]
 
 end GlobalTheory.Published.InvTransposeModel
 

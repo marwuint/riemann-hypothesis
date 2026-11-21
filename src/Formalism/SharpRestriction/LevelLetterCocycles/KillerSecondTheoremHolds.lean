@@ -20,7 +20,4 @@ theorem killer_second_theorem_holds (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc 
   intro hP
   exact Formalism.MainNotions.WachCoordinates.killer_conditions_of_stable D HW F hP
 
-theorem root_multiplicity_two (D : D7) : RootMultiplicityTwo D :=
-  Formalism.MainNotions.ArcLiftingSetup.content_divisibility_clause D
-
 end Formalism.MainNotions.UnusedSlot80

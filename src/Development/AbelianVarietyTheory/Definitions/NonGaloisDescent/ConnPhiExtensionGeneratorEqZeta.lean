@@ -291,14 +291,6 @@ theorem map_xi {Q : PhiMod O K l e a κ} {g : Vec K a ι → Vec K a κ}
   · rw [mem_uPow_one, map_sub, red_xi, sub_self]
   · simp only [← phi_xi, hg, red_phi, map_sub]
 
-theorem xi_unique {s : P.D → Vec K a ι} (h0 : ∀ d, red (s d) = d)
-    (h : ∀ d, P.phi (s d) = s (P.phiD d)) (d : P.D) : s d = P.xi d := by
-  rw [← sub_eq_zero]
-  refine P.raises_phi.eq_zero (σ := P.phiD) P.phiD.surjective
-    (δ := fun d => s d - P.xi d) (fun d => ?_) (fun d => ?_) d
-  · rw [mem_uPow_one, map_sub, red_xi, h0, sub_self]
-  · simp only [← phi_xi, ← h, map_sub]
-
 def nabla : Module.End K (Vec K a ι) := P.xiExt.conj derV
 
 def conn : Module.End K (Vec K a ι) where
@@ -477,11 +469,6 @@ theorem app_xi (d : P.D) : F.app (P.xi d) = Q.xi (F.onD d) := by
 theorem app_conn (v : Vec K a ι) : F.app (P.conn v) = Q.conn (F.app v) :=
   PhiMod.map_conn F.app.toAddMonoidHom id (fun _ => rfl) F.app_smul_tot F.app_phi v
 
-theorem app_nabla (v : Vec K a ι) : F.app (P.nabla v) = Q.nabla (F.app v) := by
-  have h := F.app_conn v
-  rw [PhiMod.conn_apply, PhiMod.conn_apply, map_smul] at h
-  exact smul_right_injective _ X_ne_zero h
-
 theorem app_zeta (y : Vec K a ι) : F.app (P.zeta y) = Q.zeta (F.app y) :=
   PhiMod.map_zeta (F.app.restrictScalars K) (fun _ => F.app_mem_uPow) F.app_phi F.app_conn y
 
@@ -550,9 +537,6 @@ theorem phi_extension_generator_eq_add : (P.plus hy).phi xVec = xVec + (P.plusIn
 
 theorem conn_phi_extension_generator_eq_zeta : (P.plus hy).conn ((P.plus hy).phi xVec) = (P.plusInl hy).app (P.zeta y) := by
   rw [Hom.app_zeta, ← zeta_phi_sub, phi_extension_generator_eq_add, add_sub_cancel_left]
-
-theorem plus_conn_xVec_eq : (P.plus hy).conn xVec = (P.plusInl hy).app (P.zeta y - P.conn y) := by
-  rw [map_sub, ← conn_phi_extension_generator_eq_zeta, phi_extension_generator_eq_add, map_add, Hom.app_conn, add_sub_cancel_right]
 
 variable [NormedAlgebra ℚ_[l] K] [NeZero e]
 

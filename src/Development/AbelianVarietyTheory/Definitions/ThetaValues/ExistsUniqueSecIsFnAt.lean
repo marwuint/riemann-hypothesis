@@ -35,10 +35,6 @@ theorem valAt'_add {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f f' : Γ(X, U)) :
     valAt' x U (f + f') = valAt' x U f + valAt' x U f' := by
   simp only [valAt'_eq_valHom x h, map_add]
 
-theorem valAt'_sum {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) {I : Type*} (t : Finset I) (f : I → Γ(X, U)) :
-    valAt' x U (∑ i ∈ t, f i) = ∑ i ∈ t, valAt' x U (f i) := by
-  simp only [valAt'_eq_valHom x h, map_sum]
-
 theorem valAt'_unit_zpow {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)ˣ) (k : ℤ) :
     valAt' x U (f ^ k).val = valAt' x U f.val ^ k := by
   simp only [valAt'_eq_valHom x h]
@@ -151,32 +147,6 @@ def pullPow {φ : Y ⟶ X} {ψ : Z ⟶ X} (h : Z ⟶ Y) (e : h ≫ φ = ψ) (a :
     · exact res_appLE h _ _ _ hij _
     · exact (res_appLE h _ _ _ hij _).symm
 
-theorem valAt'_pullPow {φ : Y ⟶ X} {ψ : Z ⟶ X} (h : Z ⟶ Y) (e : h ≫ φ = ψ) (a : ℤ)
-    (s : LB.Sec (LB.LinComb L (fun _ : K => φ) (fun _ => a))) (x : Sp ℂ ⟶ Z) (j : K' → L.ι)
-    (hj : ⊤ ≤ x ⁻¹ᵁ LB.wchart L (fun _ : K' => ψ) j) :
-    valAt' x (LB.wchart L (fun _ : K' => ψ) j) ((pullPow L (K' := K') h e a s).f j) =
-      valAt' (x ≫ h) (LB.wchart L (fun _ : K => φ) (fun _ => j default))
-        (s.f (fun _ => j default)) :=
-  valAt'_appLE' x h _ hj _
-
-theorem pullPow_pullPow {φ : Y ⟶ X} {ψ : Z ⟶ X} (h : Z ⟶ Y) (e : h ≫ φ = ψ) (h' : Y ⟶ Z)
-    (e' : h' ≫ ψ = φ) (hh : h' ≫ h = 𝟙 Y) (a : ℤ)
-    (s : LB.Sec (LB.LinComb L (fun _ : K => φ) (fun _ => a))) :
-    pullPow L (K' := K) h' e' a (pullPow L (K' := K') h e a s) = s := by
-  have key : ∀ (t : Y ⟶ Y) (_ : t = 𝟙 Y) (U : Y.Opens) (l : U ≤ t ⁻¹ᵁ U),
-      t.appLE U U l = 𝟙 _ := by
-    rintro _ rfl U l
-    rw [← Scheme.Hom.id_app]
-    exact (Scheme.Hom.app_eq_appLE (𝟙 Y) (U := U)).symm
-  have hf : (pullPow L (K' := K) h' e' a (pullPow L (K' := K') h e a s)).f = s.f := by
-    funext j
-    obtain ⟨i, rfl⟩ : ∃ i, j = fun _ => i :=
-      ⟨j default, funext fun k => congrArg j (Subsingleton.elim _ _)⟩
-    exact congrArg (fun t => t.hom (s.f fun _ => i))
-      ((Scheme.Hom.appLE_comp_appLE h' h _ _ _ _ _).trans (key _ hh _ _))
-  cases s
-  exact (LB.Sec.mk.injEq _ _ _ _).mpr hf
-
 end Transport
 
 section Fibre
@@ -187,26 +157,6 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A
 variable (A) in
 
 def fibreIncl : A ⟶ T ⊗ A := lift (toUnit A ≫ p) (𝟙 A)
-
-omit [GrpObj A] in
-
-theorem fibreIncl_snd : (fibreIncl A p).left ≫ (snd T A).left = 𝟙 A.left := by
-  rw [← Over.comp_left, fibreIncl, lift_snd, Over.id_left]
-
-omit [GrpObj A] in
-
-theorem snd_fibreIncl [IsIso p] : (snd T A).left ≫ (fibreIncl A p).left = 𝟙 (T ⊗ A).left := by
-  rw [← Over.comp_left, ← Over.id_left]
-  congr 1
-  refine CartesianMonoidalCategory.hom_ext _ _ ?_ ?_
-  · rw [← cancel_mono (inv p)]
-    exact toUnit_unique _ _
-  · rw [Category.assoc, fibreIncl, lift_snd, Category.comp_id, Category.id_comp]
-
-omit [GrpObj A] in
-
-theorem isIso_snd_left [IsIso p] : IsIso (snd T A).left :=
-  ⟨⟨(fibreIncl A p).left, snd_fibreIncl p, fibreIncl_snd p⟩⟩
 
 def exAt (z : Fin g → ℂ) : Sp ℂ ⟶ (T ⊗ A).left := (lift p (u.ex z)).left
 
@@ -347,11 +297,6 @@ theorem IsFnAt.add_period (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : 
   rw [← mul_right_cancel₀ (fr_zpow_ne_zero u p hj' k) h2, _root_.mul_comm]
   rfl
 
-theorem IsFnAt.isThetaFn (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
-    (hAH : u.IsAH Hm χ) {n : ℕ} {s : LB.Sec (LPow A L n T)} {θ : (Fin g → ℂ) → ℂ}
-    (h : IsFnAt u p n s θ) : u.IsThetaFn Hm χ n θ :=
-  ⟨h.differentiable hL, fun l z => by rw [h.add_period hL hAH l z, zpow_natCast]⟩
-
 theorem IsFnAt.add {k : ℤ} {s s' t : LB.Sec (LPow A L k T)} {θ θ' : (Fin g → ℂ) → ℂ}
     (h : IsFnAt u p k s θ) (h' : IsFnAt u p k s' θ') (ht : ∀ j, t.f j = s.f j + s'.f j) :
     IsFnAt u p k t (θ + θ') := fun j z hj => by
@@ -363,20 +308,7 @@ theorem IsFnAt.liftFun_mul {k : ℤ} {s t : LB.Sec (LPow A L k T)} {θ : (Fin g 
   rw [ht j, valAt'_mul _ hj, valAt'_liftFun u p hj, h j z hj, Pi.smul_apply, smul_eq_mul,
     _root_.mul_assoc]
 
-theorem IsFnAt.sum_liftFun_mul {k : ℤ} {I : Type*} (F : Finset I) {s : I → LB.Sec (LPow A L k T)}
-    {t : LB.Sec (LPow A L k T)} {θ : I → (Fin g → ℂ) → ℂ} (h : ∀ i ∈ F, IsFnAt u p k (s i) (θ i))
-    (r : I → Γ(T.left, ⊤)) (ht : ∀ j, t.f j = ∑ i ∈ F, liftFun A _ (r i) * (s i).f j) :
-    IsFnAt u p k t (∑ i ∈ F, valAt' p.left ⊤ (r i) • θ i) := fun j z hj => by
-  rw [ht j, valAt'_sum _ hj, Finset.sum_apply, Finset.sum_mul]
-  refine Finset.sum_congr rfl fun i hi => ?_
-  rw [valAt'_mul _ hj, valAt'_liftFun u p hj, h i hi j z hj, Pi.smul_apply, smul_eq_mul,
-    _root_.mul_assoc]
-
 variable (u p)
-
-theorem isFnAt_zero (k : ℤ) : IsFnAt u p k (H1.SectionArithmetic.secZero (LPow A L k T)) 0 := fun j z hj => by
-  rw [Pi.zero_apply, zero_mul, valAt'_eq_valHom _ hj]
-  exact map_zero _
 
 def fnAtHom (hL : L.IsLB) (k : ℤ) :
     SecM A L k T →ₛₗ[valHom p.left ⊤ (fun _ _ => trivial)] ((Fin g → ℂ) → ℂ) where
@@ -392,83 +324,6 @@ def fnAtHom (hL : L.IsLB) (k : ℤ) :
 
 theorem fnAtHom_apply (hL : L.IsLB) (k : ℤ) (s : SecM A L k T) :
     fnAtHom u p hL k s = fnAt u p hL k (SecM.toSec A s) := rfl
-
-variable (A L) in
-
-def secOfFun (r : Γ(T.left, ⊤)) : LB.Sec (LPow A L 0 T) where
-  f j := liftFun A _ r
-  compat j j' := by
-    have : (LPow A L 0 T).g j j' = 1 := by
-      unfold LPow LB.LinComb
-      dsimp only
-      exact Finset.prod_eq_one fun _ _ => zpow_zero _
-    rw [this, Units.val_one, _root_.one_mul]
-    exact (res_liftHom A _ r).trans (res_liftHom A _ r).symm
-
-theorem isFnAt_secOfFun (r : Γ(T.left, ⊤)) :
-    IsFnAt u p 0 (secOfFun A L r) (fun _ => valAt' p.left ⊤ r) := fun j z hj => by
-  rw [zpow_zero, _root_.mul_one]
-  exact valAt'_liftFun u p hj r
-
-variable (L) in
-
-def toFibre (n : ℕ) (s : LB.Sec (LPow A L n T)) : (lbPow L n).Sec :=
-  pullPow L (K := Fin 1) (K' := PUnit) (fibreIncl A p).left (fibreIncl_snd p) n s
-
-variable (A L T) in
-
-def ofFibre (n : ℕ) (s : (lbPow L n).Sec) : LB.Sec (LPow A L n T) :=
-  pullPow L (K := PUnit) (K' := Fin 1) (snd T A).left (Category.comp_id _) n s
-
-omit [GrpObj A] in
-
-theorem toFibre_ofFibre (n : ℕ) (s : (lbPow L n).Sec) : toFibre L p n (ofFibre A L T n s) = s :=
-  pullPow_pullPow L _ _ _ _ (fibreIncl_snd p) _ s
-
-omit [GrpObj A] in
-
-theorem ofFibre_toFibre [IsIso p] (n : ℕ) (s : LB.Sec (LPow A L n T)) :
-    ofFibre A L T n (toFibre L p n s) = s :=
-  pullPow_pullPow L _ _ _ _ (snd_fibreIncl p) _ s
-
-variable (L) in
-
-def fibreEquiv [IsIso p] (n : ℕ) : LB.Sec (LPow A L n T) ≃ (lbPow L n).Sec where
-  toFun := toFibre L p n
-  invFun := ofFibre A L T n
-  left_inv := ofFibre_toFibre p n
-  right_inv := toFibre_ofFibre p n
-
-theorem isFnAt_iff_isFnPow (n : ℕ) (s : LB.Sec (LPow A L n T)) (θ : (Fin g → ℂ) → ℂ) :
-    IsFnAt u p n s θ ↔ u.IsFnPow n (toFibre L p n s) θ := by
-  have hm : ∀ (i : L.ι) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L n).U (fun _ => i) ↔
-      ⊤ ≤ exAt u p z ⁻¹ᵁ (LPow A L n T).U (fun _ => i) := fun i z =>
-    (le_wchart_unique L (K := PUnit) (u.ex z).left (𝟙 _) (fun _ => i)).trans
-      (exAt_mem_chart_iff u p n (fun _ => i) z).symm
-  have hv : ∀ (i : L.ι) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L n).U (fun _ => i) →
-      valAt' (u.ex z).left ((lbPow L n).U fun _ => i) ((toFibre L p n s).f fun _ => i) =
-        valAt' (exAt u p z) ((LPow A L n T).U fun _ => i) (s.f fun _ => i) := fun i z hz => by
-    rw [← ex_fibreIncl]
-    exact valAt'_pullPow L _ _ _ s _ (fun _ : PUnit => i) hz
-  constructor
-  · intro h j z hj
-    exact (hv (j PUnit.unit) z hj).trans
-      ((h (fun _ => j PUnit.unit) z ((hm _ z).1 hj)).trans (by rw [zpow_natCast]))
-  · intro h j z hj
-    obtain ⟨i, rfl⟩ : ∃ i, j = fun _ => i :=
-      ⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩
-    have hj' := (hm i z).2 hj
-    exact (hv i z hj').symm.trans ((h _ z hj').trans (by rw [zpow_natCast]))
-
-theorem isFnAt_ofFibre_iff (n : ℕ) (s : (lbPow L n).Sec) (θ : (Fin g → ℂ) → ℂ) :
-    IsFnAt u p n (ofFibre A L T n s) θ ↔ u.IsFnPow n s θ := by
-  rw [isFnAt_iff_isFnPow, toFibre_ofFibre]
-
-theorem existsUnique_sec_isFnAt [IsIso p] {n : ℕ} {θ : (Fin g → ℂ) → ℂ}
-    (h : ∃! s, u.IsFnPow n s θ) : ∃! s : LB.Sec (LPow A L n T), IsFnAt u p n s θ := by
-  obtain ⟨s, hs, huniq⟩ := h
-  refine ⟨ofFibre A L T n s, (isFnAt_ofFibre_iff u p n s θ).2 hs, fun s' hs' => ?_⟩
-  rw [← huniq _ ((isFnAt_iff_isFnPow u p n s' θ).1 hs'), ofFibre_toFibre]
 
 variable {u p}
 
@@ -542,13 +397,6 @@ theorem IsFnAt.value_origin (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec A))} (hrig
   rw [valAt'_rigT p hrig k (fun _ => i) hi] at h1
   exact mul_right_cancel₀ (zpow_ne_zero k (u.fr_ne i 0 hi)) h1
 
-theorem IsFnAt.isValueAt_origin_iff [IsIso p] (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec A))}
-    (hrig : u.IsRig rig) {k : ℤ} {s : LB.Sec (LPow A L k T)} {θ : (Fin g → ℂ) → ℂ}
-    (h : IsFnAt u p k s θ) (v : Γ(T.left, ⊤)) :
-    IsValueAt A L k s 1 (rigT A L rig T k) v ↔ valAt' p.left ⊤ v = θ 0 :=
-  ⟨h.value_origin hL hrig, fun hv => h.isValueAt_of_isIso (comp_one_eq_ex_zero u p) fun j hj => by
-    rw [valAt'_rigT p hrig k j hj, hv]⟩
-
 theorem IsFnAt.twistPull {ψ : T ⊗ A ⟶ T ⊗ A} {m : T ⊗ A ⟶ A} {hm : ψ ≫ snd T A = m} {a b : ℤ}
     {α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])}
     {s : LB.Sec (LPow A L b T)} {s' : LB.Sec (LPow A L a T)} {θ θ' : (Fin g → ℂ) → ℂ}
@@ -568,17 +416,6 @@ theorem IsFnAt.twistPull {ψ : T ⊗ A ⟶ T ⊗ A} {m : T ⊗ A ⟶ A} {hm : ψ
   refine (valAt'_appLE' _ ψ.left (chart_le_pull A L ψ m hm j) hj _).trans ?_
   rw [hw]
   exact h _ w h1
-
-theorem isFnAt_iff_of_isPullSec {T' : Over (Sp ℂ)} {p' : 𝟙_ (Over (Sp ℂ)) ⟶ T'}
-    {h : T' ⊗ A ⟶ T ⊗ A} {hh : h ≫ snd T A = snd T' A} {k : ℤ} {s : LB.Sec (LPow A L k T)}
-    {s' : LB.Sec (LPow A L k T')} (hs : IsPullSec A L k h hh s s')
-    (hp : ∀ z, exAt u p' z ≫ h.left = exAt u p z) (θ : (Fin g → ℂ) → ℂ) :
-    IsFnAt u p' k s' θ ↔ IsFnAt u p k s θ := by
-  refine forall_congr' fun j => forall_congr' fun z => ?_
-  rw [exAt_mem_chart_iff u p k j z, ← exAt_mem_chart_iff u p' k j z]
-  refine imp_congr_right fun hj => ?_
-  rw [hs j, ← hp z]
-  exact Eq.congr_left (valAt'_appLE' _ h.left (chart_le_res A L h hh k j) hj _)
 
 end Fibre
 
@@ -612,31 +449,11 @@ theorem exUnit_eq_exT (z : Fin g → ℂ) : exUnit u z = exT u z := rfl
 theorem isFnUnit_iff_isFnT (k : ℤ) (s : LB.Sec (LPow A L k (𝟙_ (Over (Sp ℂ)))))
     (θ : (Fin g → ℂ) → ℂ) : IsFnUnit u k s θ ↔ IsFnT u k s θ := Iff.rfl
 
-theorem exT_snd (z : Fin g → ℂ) : exT u z ≫ (snd (baseOver (Sp ℂ)) A).left = (u.ex z).left :=
-  exAt_snd u basePt z
-
-theorem eq_exT_of_snd {z : Fin g → ℂ} {y : Sp ℂ ⟶ (baseOver (Sp ℂ) ⊗ A).left}
-    (hy : y ≫ (snd (baseOver (Sp ℂ)) A).left = (u.ex z).left) : y = exT u z := by
-  have := isIso_snd_left (A := A) basePt
-  rw [← cancel_mono (snd (baseOver (Sp ℂ)) A).left, hy, exT_snd]
-
-abbrev constT (a : ℂ) : Γ((baseOver (Sp ℂ)).left, ⊤) :=
-  (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a
-
 abbrev numT (r : Γ((baseOver (Sp ℂ)).left, ⊤)) : ℂ :=
   (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom r
 
-theorem numT_constT (a : ℂ) : numT (constT a) = a :=
-  (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv_hom_id_apply a
-
-theorem constT_numT (r : Γ((baseOver (Sp ℂ)).left, ⊤)) : constT (numT r) = r :=
-  (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom_inv_id_apply r
-
 theorem valAt'_basePt (r : Γ((baseOver (Sp ℂ)).left, ⊤)) : valAt' basePt.left ⊤ r = numT r :=
   valAt'_id_top r
-
-theorem existsUnique_isFnT (hL : L.IsLB) (k : ℤ) (s : LB.Sec (LPow A L k (baseOver (Sp ℂ)))) :
-    ∃! θ, IsFnT u k s θ := existsUnique_isFnAt u basePt hL k s
 
 variable {u}
 
@@ -651,11 +468,6 @@ theorem IsFnT.add_period (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u
       (χ l * Complex.exp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l)) ^ k * θ z :=
   IsFnAt.add_period hL hAH h l z
 
-theorem IsFnT.isThetaFn (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
-    (hAH : u.IsAH Hm χ) {n : ℕ} {s : LB.Sec (LPow A L n (baseOver (Sp ℂ)))}
-    {θ : (Fin g → ℂ) → ℂ} (h : IsFnT u n s θ) : u.IsThetaFn Hm χ n θ :=
-  IsFnAt.isThetaFn hL hAH h
-
 theorem IsFnT.add {k : ℤ} {s s' t : LB.Sec (LPow A L k (baseOver (Sp ℂ)))}
     {θ θ' : (Fin g → ℂ) → ℂ} (h : IsFnT u k s θ) (h' : IsFnT u k s' θ')
     (ht : ∀ j, t.f j = s.f j + s'.f j) : IsFnT u k t (θ + θ') :=
@@ -666,98 +478,8 @@ theorem IsFnT.liftFun_mul {k : ℤ} {s t : LB.Sec (LPow A L k (baseOver (Sp ℂ)
     (ht : ∀ j, t.f j = liftFun A _ r * s.f j) : IsFnT u k t (numT r • θ) :=
   valAt'_basePt r ▸ IsFnAt.liftFun_mul h r ht
 
-theorem IsFnT.sum_liftFun_mul {k : ℤ} {I : Type*} (F : Finset I)
-    {s : I → LB.Sec (LPow A L k (baseOver (Sp ℂ)))} {t : LB.Sec (LPow A L k (baseOver (Sp ℂ)))}
-    {θ : I → (Fin g → ℂ) → ℂ} (h : ∀ i ∈ F, IsFnT u k (s i) (θ i))
-    (r : I → Γ((baseOver (Sp ℂ)).left, ⊤))
-    (ht : ∀ j, t.f j = ∑ i ∈ F, liftFun A _ (r i) * (s i).f j) :
-    IsFnT u k t (∑ i ∈ F, numT (r i) • θ i) := by
-  simpa only [valAt'_basePt] using IsFnAt.sum_liftFun_mul F h r ht
-
-theorem IsFnT.isValueAt_origin_iff (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec A))}
-    (hrig : u.IsRig rig) {k : ℤ} {s : LB.Sec (LPow A L k (baseOver (Sp ℂ)))}
-    {θ : (Fin g → ℂ) → ℂ} (h : IsFnT u k s θ) (v : Γ((baseOver (Sp ℂ)).left, ⊤)) :
-    IsValueAt A L k s 1 (rigT A L rig (baseOver (Sp ℂ)) k) v ↔ numT v = θ 0 :=
-  valAt'_basePt v ▸ IsFnAt.isValueAt_origin_iff hL hrig h v
-
-theorem IsFnT.isValueAt_origin (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec A))}
-    (hrig : u.IsRig rig) {k : ℤ} {s : LB.Sec (LPow A L k (baseOver (Sp ℂ)))}
-    {θ : (Fin g → ℂ) → ℂ} (h : IsFnT u k s θ) :
-    IsValueAt A L k s 1 (rigT A L rig (baseOver (Sp ℂ)) k) (constT (θ 0)) :=
-  (h.isValueAt_origin_iff hL hrig _).2 (numT_constT _)
-
 variable (u)
 
-theorem isFnT_iff_isFnPow (n : ℕ) (s : LB.Sec (LPow A L n (baseOver (Sp ℂ))))
-    (θ : (Fin g → ℂ) → ℂ) : IsFnT u n s θ ↔ u.IsFnPow n (fibreEquiv L basePt n s) θ :=
-  isFnAt_iff_isFnPow u basePt n s θ
-
-theorem existsUnique_sec_isFnT {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} {n : ℕ}
-    (hsec : ∀ θ, u.IsThetaFn Hm χ n θ → ∃! s, u.IsFnPow n s θ) {θ : (Fin g → ℂ) → ℂ}
-    (hθ : u.IsThetaFn Hm χ n θ) :
-    ∃! s : LB.Sec (LPow A L n (baseOver (Sp ℂ))), IsFnT u n s θ :=
-  existsUnique_sec_isFnAt u basePt (hsec θ hθ)
-
-theorem IsFnT.sec_eq (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
-    (hAH : u.IsAH Hm χ) {n : ℕ} (hsec : ∀ θ, u.IsThetaFn Hm χ n θ → ∃! s, u.IsFnPow n s θ)
-    {s s' : LB.Sec (LPow A L n (baseOver (Sp ℂ)))} {θ : (Fin g → ℂ) → ℂ} (h : IsFnT u n s θ)
-    (h' : IsFnT u n s' θ) : s = s' :=
-  (existsUnique_sec_isFnT u hsec (h.isThetaFn hL hAH)).unique h h'
-
-theorem isFnT_zero (k : ℤ) :
-    IsFnT u k (H1.SectionArithmetic.secZero (LPow A L k (baseOver (Sp ℂ)))) 0 := isFnAt_zero u basePt k
-
-theorem isFnT_const (a : ℂ) : IsFnT u 0 (secOfFun A L (constT a)) (fun _ => a) := by
-  have h := isFnAt_secOfFun u basePt (constT a)
-  rwa [valAt'_basePt, numT_constT] at h
-
 end Base
-
-def zeroUnif : HolUnif (Inh.zeroPolAV (Sp ℂ)).A (Inh.zeroPolAV (Sp ℂ)).L 0 where
-  ex _ := 1
-  ex_add _ _ := (_root_.mul_one _).symm
-  ex_onto x := ⟨0, toUnit_unique _ _⟩
-  Λ := ⊤
-  ker _ := ⟨fun _ => trivial, fun _ => rfl⟩
-  discrete := inferInstance
-  full := by simp
-  hol _ _ := ⟨isOpen_discrete _, differentiableOn_const _⟩
-  fr _ _ := 1
-  fr_hol _ := differentiableOn_const _
-  fr_ne _ _ _ := one_ne_zero
-  fr_compat _ _ _ h := by
-    rw [valAt'_eq_valHom _ h, _root_.mul_one]
-    exact (map_one _).symm
-
-theorem zeroUnif_isAH : zeroUnif.IsAH 0 (fun _ => 1) :=
-  ⟨Matrix.isHermitian_zero, fun z hz => (hz (Subsingleton.elim _ _)).elim, fun _ => norm_one,
-    fun l i z _ => by simp [zeroUnif]⟩
-
-example (P : PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (a b : ℂ) :
-    IsFnT u 0 (secOfFun P.A P.L (constT a)) (fun _ => b) ↔ a = b :=
-  ⟨fun h => congrFun ((isFnT_const u a).unique P.isLB h) 0, fun h => h ▸ isFnT_const u a⟩
-
-example (P : PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (k : ℤ) (θ : (Fin P.g → ℂ) → ℂ) :
-    IsFnT u k (H1.SectionArithmetic.secZero (LPow P.A P.L k (baseOver (Sp ℂ)))) θ ↔ θ = 0 :=
-  ⟨fun h => h.unique P.isLB (isFnT_zero u k), fun h => h ▸ isFnT_zero u k⟩
-
-example : IsFnT zeroUnif 0 (secOfFun _ _ (constT 2)) (fun _ => 2) ∧
-    ¬ IsFnT zeroUnif 0 (secOfFun _ _ (constT 2)) (fun _ => 3) :=
-  ⟨isFnT_const _ 2, fun h => by
-    have := congrFun ((isFnT_const zeroUnif 2).unique (Inh.zeroPolAV (Sp ℂ)).isLB h) 0
-    norm_num at this⟩
-
-theorem exists_unif_isFnT (h : ThetaUnifAV) (P : PolAV (Sp ℂ))
-    (rig : LB.Gen (P.L.pull (eSec P.A))) (hrig : rig.IsGen) :
-    ∃ (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ),
-      u.IsAH Hm χ ∧ u.IsRig rig ∧ ∀ n : ℕ,
-        (∀ s : LB.Sec (LPow P.A P.L n (baseOver (Sp ℂ))),
-          ∃! θ, u.IsThetaFn Hm χ n θ ∧ IsFnT u n s θ) ∧
-        ∀ θ, u.IsThetaFn Hm χ n θ →
-          ∃! s : LB.Sec (LPow P.A P.L n (baseOver (Sp ℂ))), IsFnT u n s θ := by
-  obtain ⟨u, Hm, χ, -, hAH, hr, -, -, -, hsec, -⟩ := h P rig hrig
-  refine ⟨u, Hm, χ, hAH, hr, fun n => ⟨fun s => ?_, fun θ hθ =>
-    existsUnique_sec_isFnT u (hsec n).2 hθ⟩⟩
-  simpa only [isFnT_iff_isFnPow] using (hsec n).1 (fibreEquiv P.L basePt n s)
 
 end GlobalTheory.ThetaFn

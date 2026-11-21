@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FloorSizeBoundsNotThickEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FloorSizeBoundsNotThickEmbedding
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW
@@ -15,7 +15,7 @@ theorem wMax_le_and_ge : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ), Roomy L C �
   have hmem : ∀ s ∈ {s : ℕ | ∃ (g : D.R.GG) (j : Fin D.R.m), ¬ Thick D.host g ∧ s = ⌊(hcAt D g).e j⌋.toNat},
       (s : ℝ) ≤ 8 / 5 * L.sc.b' := by
     rintro s ⟨g, j, hg, rfl⟩
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.floor_size_bounds_not_thick_embedding L C g j hR hg
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.HTW.size_not_thick L C g j hR hg
     have h100 : (100 : ℝ) ≤ L.sc.w'' D.R.n := hR.2.1
     have hpos : (0 : ℤ) ≤ ⌊(hcAt D g).e j⌋ := by
       have : (0 : ℝ) ≤ (⌊(hcAt D g).e j⌋ : ℝ) := by linarith

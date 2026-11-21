@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeISupInfPreimage
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantVectorFieldConstFnEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantVectorFieldPreservesRaynaudTorusWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusWeightScalarZeroCharacterEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantVectorFieldPreservesRaynaudTorusWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusWeightScalarZeroCharacterEqOne
 
 set_option autoImplicit false
 
@@ -44,21 +44,6 @@ theorem IsDer.map_natCast {d : Ω → Ω} (h : IsDer d) (k : ℕ) : d k = 0 := b
   induction k with
   | zero => simpa using h.map_zero
   | succ k ih => rw [Nat.cast_succ, h.1, ih, h.map_one, add_zero]
-
-theorem IsDer.map_neg {d : Ω → Ω} (h : IsDer d) (a : Ω) : d (-a) = -d a := by
-  have := h.1 a (-a)
-  rw [add_neg_cancel, h.map_zero] at this
-  linear_combination -this
-
-theorem IsDer.map_sub {d : Ω → Ω} (h : IsDer d) (a b : Ω) : d (a - b) = d a - d b := by
-  rw [sub_eq_add_neg, h.1, h.map_neg, ← sub_eq_add_neg]
-
-theorem IsDer.map_sum {d : Ω → Ω} (h : IsDer d) {β : Type} (s : Finset β) (f : β → Ω) :
-    d (∑ i ∈ s, f i) = ∑ i ∈ s, d (f i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using h.map_zero
-  | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.1, ih]
 
 theorem IsDer.pow_mul {d : Ω → Ω} (h : IsDer d) {g gi : Ω} (hg : g * gi = 1) (k : ℕ) (f : Ω) :
     d (g ^ k * f) = g ^ k * (d f + k * (d g * gi) * f) := by
@@ -240,7 +225,7 @@ theorem isWt_constFn_mul {α : Q.X} {W : Y.H.left.Opens} {f : Γ(Y.H.left, W)} (
 theorem isWt_zero_mul {W : Y.H.left.Opens} {f g : Γ(Y.H.left, W)} (hf : IsWt Y 0 W f) (hg : IsWt Y 0 W g) :
     IsWt Y 0 W (f * g) := by
   intro S _ φ x x' c a a' ha ha' h1 h2 hq hc
-  have h0 : c 0 = 1 := GlobalTheory.T.torusWeightScalar_zeroCharacter_eq_one Y S φ x x' c hq hc
+  have h0 : c 0 = 1 := _root_.GlobalTheory.Heat.weight_scalar_zero_eq_one Y S φ x x' c hq hc
   rw [valR_mul a' h2, valR_mul a h1, hf S φ x x' c a a' ha ha' h1 h2 hq hc, hg S φ x x' c a a' ha ha' h1 h2 hq hc, h0]
   simp
 
@@ -248,13 +233,13 @@ theorem isWt_zero_constFn (W : Y.H.left.Opens) (r : R) : IsWt Y 0 W (constFn Y.H
   have := isWt_constFn_mul (Y := Y) (α := 0) (W := W) (f := 1) ?_ r
   · rwa [_root_.mul_one] at this
   intro S _ φ x x' c a a' ha ha' h1 h2 hq hc
-  have h0 : c 0 = 1 := GlobalTheory.T.torusWeightScalar_zeroCharacter_eq_one Y S φ x x' c hq hc
+  have h0 : c 0 = 1 := _root_.GlobalTheory.Heat.weight_scalar_zero_eq_one Y S φ x x' c hq hc
   rw [h0, valR_one a' h2, valR_one a h1]; simp
 
 theorem isWt_zero_pbT {V : Q.P.A.left.Opens} (s : Γ(Q.P.A.left, V)) {W : Y.H.left.Opens}
     (hW : W ≤ Y.q.left ⁻¹ᵁ V) : IsWt Y 0 W (pbT Y.q.left s W) := by
   intro S _ φ x x' c a a' ha ha' h1 h2 hq hc
-  have h0 : c 0 = 1 := GlobalTheory.T.torusWeightScalar_zeroCharacter_eq_one Y S φ x x' c hq hc
+  have h0 : c 0 = 1 := _root_.GlobalTheory.Heat.weight_scalar_zero_eq_one Y S φ x x' c hq hc
   have e : a' ≫ Y.q.left = a ≫ Y.q.left := by
     subst ha ha'
     have := congrArg CommaMorphism.left hq
@@ -264,7 +249,7 @@ theorem isWt_zero_pbT {V : Q.P.A.left.Opens} (s : Γ(Q.P.A.left, V)) {W : Y.H.le
 
 theorem isWt_inv {v : TanM (𝟙 (Sp R)) Y.H} {dd : Fld Y.H.left} (h : IsInv Y.H v dd) {α : Q.X} {W : Y.H.left.Opens}
     {f : Γ(Y.H.left, W)} (hf : IsWt Y α W f) : IsWt Y α W (dd W f) :=
-  GlobalTheory.T.invariantVectorField_preserves_raynaudTorusWeight Y v dd h α W f hf
+  _root_.GlobalTheory.Heat.GlueWt.isWt_of_isInv Y v dd h α W f hf
 
 end Wt
 

@@ -76,11 +76,6 @@ theorem cq_rep_unique (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ)
       exact ciIntAt_neg h
     rw [key i' i hi' hi hle h']
 
-theorem cq_vals_int {A B : ℕ} {v : E} (hv : v ∈ LocE.valsQ E q A B) (hq0 : (q : E) ≠ 0) : IntAt P ((q : E) ^ A * v) := by
-  obtain ⟨i, -, rfl⟩ := Finset.mem_image.1 hv
-  rw [mul_div_cancel₀ _ (pow_ne_zero _ hq0)]
-  exact ocbS_intAt_natCast i
-
 end Reps
 
 section Perm
@@ -239,10 +234,6 @@ theorem arithmetic_index_inequality {a c e i : ℕ} (hi : i < c) : a + (c - (i +
   have h1 : (c - (i + 1)) * e + e = (c - i) * e := by
     rw [show c - i = (c - (i + 1)) + 1 by omega, Nat.succ_mul]
   have h2 : (c - i) * e ≤ c * e := Nat.mul_le_mul_right e (by omega)
-  omega
-
-theorem arithmetic_exponent_inequality {a c e v : ℕ} (hv : v + 1 < c) : e ≤ a + (c - (v + 1)) * e := by
-  have : 1 * e ≤ (c - (v + 1)) * e := Nat.mul_le_mul_right e (by omega)
   omega
 
 end TgtMain

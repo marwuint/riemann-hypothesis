@@ -5,13 +5,19 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorPos
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PMuRegSmooth
 import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasureA
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralTendstoOffDivisorStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsMeasurableDominatingFunctionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionOfPotentialOnModelStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralTendstoOffDivisor
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsMeasurableDominatingFunction
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionOfPotentialOnModel
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularChartDataPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotentialStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBoundsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotential
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormula
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StLemmaETailMass
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBounds
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightTendstoC2Statement
 set_option maxSynthPendingDepth 1
 
@@ -383,16 +389,16 @@ theorem core (X : ComponentSetting D O Lt) (B : ℕ) (Q : (((k : K) → ι k) �
     (∀ j, volume ((X.M.atlas.chart j).target ∩ (X.M.atlas.chart j).symm ⁻¹' X.S.R.Yoᶜ) = 0) ∧
     (∀ j, ∀ y ∈ (X.M.atlas.chart j).target, (X.M.atlas.chart j).symm y ∈ X.S.R.Yo →
       0 ≤ locDens X.M.atlas (fun _ : Fin D.n => X.S.R.th + LocPot.ofFun X.S.R.ph) j y) := by
-  obtain ⟨Θ, hΘp, hΘr⟩ := GlobalTheory.T.local_holomorphic_section_of_potential K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1
-  have hΘpos := GlobalTheory.T.local_section_of_potential_on_model II Ψ K ι Ω E D X.M Θ hΘp hΘr
-  obtain ⟨hPshOn, ⟨C1, hC1⟩, hPsh⟩ := GlobalTheory.T.regularized_weight_psh_and_bounds K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S Θ
+  obtain ⟨Θ, hΘp, hΘr⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.exists_potential_of_smoothHerm K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1
+  have hΘpos := _root_.GlobalTheory.CompanionTheory.Ar.Giv.potential_pos_of_section II Ψ K ι Ω E D X.M Θ hΘp hΘr
+  obtain ⟨hPshOn, ⟨C1, hC1⟩, hPsh⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.tied_regularisation_weak K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S Θ
     X.S_tied hΘp hΘpos
   obtain ⟨hop, hnull, -, -⟩ := GlobalTheory.T.regular_chart_data_properties D.n X.M.Xc X.M.atlas X.S.R
   have hc2 := GlobalTheory.T.regularized_weight_tendsto_C2 K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S X.S_tied
   set C : ℝ := |C1| + |X.S.R.Clog| + |Cg| with hC
   have hC0 : 0 ≤ C := by positivity
   have hlog : ∀ x ∈ X.S.R.Yo, 0 ≤ Real.log (X.S.R.r x) := fun x hx => Real.log_nonneg (X.S.R.one_le_r x hx)
-  have hconv := GlobalTheory.T.mixed_integral_tendsto_off_divisor D.n X.M.Xc X.M.atlas X.S.R Θ hΘp hΘpos (fun _ => X.S.R.th)
+  have hconv := _root_.GlobalTheory.CompanionTheory.Ar.Giv.mixed_integral_tendsto_of_C2_off_divisor D.n X.M.Xc X.M.atlas X.S.R Θ hΘp hΘpos (fun _ => X.S.R.th)
     (fun _ => X.S.R.ph) (fun _ t => X.S.regWeight t) G₀ (fun _ => G₀) C (fun _ => X.S.R.th_pot)
     (fun _ => X.S.R.ph_smooth) ?_ ?_ ?_ ?_
   · obtain ⟨hI, hIt, hT⟩ := hconv
@@ -414,7 +420,7 @@ theorem core (X : ComponentSetting D O Lt) (B : ℕ) (Q : (((k : K) → ι k) �
       have h2 := (X.S.R.ph_smooth j).mono (t := (X.M.atlas.chart j).target ∩ (X.M.atlas.chart j).symm ⁻¹'
         ((X.S.R.th + LocPot.ofFun X.S.R.ph).U x ∩ X.S.R.Yo)) fun y hy => ⟨hy.1, hy.2.2⟩
       exact h1.add h2
-    have pushL := GlobalTheory.T.mixed_integral_model_formula K ι (mCoordIdeal D.y) D.n X.M Q X.S.R.Yo ∅ ∅ (fun _ => 1) (fun _ => muLine X.H)
+    have pushL := _root_.GlobalTheory.CompanionTheory.Ar.Giv.push_chart_integrals K ι (mCoordIdeal D.y) D.n X.M Q X.S.R.Yo ∅ ∅ (fun _ => 1) (fun _ => muLine X.H)
       (fun _ => X.S.R.th + LocPot.ofFun X.S.R.ph) g G₀ D.arith hQ hop hnull' hN hsmL
       (fun _ x y₀ hy => rel_line X x y₀ hop hy) hgz hae
     refine ⟨hI, ?_, ?_, hnull, fun j y hy hY => dens_nonneg _ _ hop hPshOn j hy hY⟩
@@ -429,7 +435,7 @@ theorem core (X : ComponentSetting D O Lt) (B : ℕ) (Q : (((k : K) → ι k) �
         have h2 := (htC.1 j).mono (t := (X.M.atlas.chart j).target ∩ (X.M.atlas.chart j).symm ⁻¹'
           ((X.S.R.th + LocPot.ofFun (X.S.regWeight t)).U x ∩ X.S.R.Yo)) fun y hy => ⟨hy.1, Set.mem_univ _⟩
         exact h1.add h2
-      have pushR := GlobalTheory.T.mixed_integral_model_formula K ι (mCoordIdeal D.y) D.n X.M Q X.S.R.Yo ∅ ∅ (fun _ => 1)
+      have pushR := _root_.GlobalTheory.CompanionTheory.Ar.Giv.push_chart_integrals K ι (mCoordIdeal D.y) D.n X.M Q X.S.R.Yo ∅ ∅ (fun _ => 1)
         (fun _ => muReg X.H X.S B t) (fun _ => X.S.R.th + LocPot.ofFun (X.S.regWeight t)) g G₀ D.arith hQ hop
         hnull' hN hsmR (fun _ x y₀ hy => rel_reg X B t x y₀ hop hy) hgz hae
       have := (pushR.2.2 ht).2
@@ -506,7 +512,7 @@ theorem muMeasureLimit : GroundTheory.Heights₂.Heights.LowerBoundFree.MuMeasur
           ptsIntegralAt (mCoordIdeal D.y) hΨ.choose φ g := fun φ g => by
       unfold ptsIntegral
       rw [dif_pos hΨ]
-    obtain ⟨G, Cg, hm, hb, hG⟩ := GlobalTheory.T.cuspWeight_factors_through_measurable_log_bounded II Ψ K ι Ω E D O Lt X
+    obtain ⟨G, Cg, hm, hb, hG⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.cuspWeight_descends II Ψ K ι Ω E D O Lt X
     have hCg : ∀ x ∈ X.S.R.Yo, |G x / 2| ≤ |Cg| + |Cg| * Real.log (X.S.R.r x) := by
       intro x hx
       have hL : 0 ≤ Real.log (X.S.R.r x) := Real.log_nonneg (X.S.R.one_le_r x hx)

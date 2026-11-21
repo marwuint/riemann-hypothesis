@@ -153,37 +153,8 @@ open GlobalTheory.Fc GlobalTheory.Cp
 def P_hRB : BdP Bundle := fun D O _ b =>
   Formalism.IndefR.RowsB b.B
 
-def RankBoundAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (AtAll P_hRB)
-
-def P_hTw : BdP Bundle := fun D O _ b =>
-  Formalism.L2.DIV.TieTwRec O.L b.P.S0.Tw
-
-def TwistConditionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (AtAll P_hTw)
-
 def P_hPA : BdP Bundle := fun D O _ b =>
   Formalism.IndefR.Links.PrimRows3 b.B.Q.Rl b.B.Q.F ∧ b.P.A3.fam3.TypesSep3
-
-def PeriodAdmissibilityAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (AtAll P_hPA)
-
-def P_hLamP : BdP Bundle := fun D O _ b =>
-  Formalism.L2.Rows.RowsHoldLam3 b.P
-
-def LambdaPositivityAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (AtAll P_hLamP)
-
-def P_hDivG : BdP Bundle := fun D O _ b =>
-  DivRows3G b.P
-
-def DivisorConditionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (AtAll P_hDivG)
-
-def P_hDcPtG : BdP Bundle := fun D O _ b =>
-  DcPtG b.P
-
-def DecompositionConditionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (AtAll P_hDcPtG)
-
-def P_selJ : BdP Bundle := fun D O _ b =>
-  Nonempty (Formalism.L2.SG.JoinSI.JoinSI (R := b.R) (S := b.S) (Q := b.B.Q))
-
-def JSelectionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (AtAll P_selJ)
 
 def OneMap {D : D7} {O : Obj D} {c : ℝ} (b : Bundle D O c) : Prop :=
   ∀ j, Formalism.IndefR.FWT.OneMapRowR b.B.T b.B.Q.Rl.toRealDat b.B.κ b.B.v₀ b.B.O (Formalism.IndefR.phEff b.B.Q.Rl) j
@@ -194,50 +165,11 @@ def H_rRows (DR : DefT) (𝒜 : FamClass) (σ : RawSel Bundle 𝒜) : Prop :=
   Closed (D3 3 𝒜) fun Fm CH => ∀ hc : D3 3 𝒜 Fm, ∃ C : ℝ, 0 ≤ C ∧ EvSel (sel σ) Fm (d3_a hc) fun x hx _ i =>
     RowsAt4 (σ Fm (d3_a hc) x hx i).B.Q C CH (DIVinN Fm) (OneMap (σ Fm (d3_a hc) x hx i)) ∧ DR _ _ _ (σ Fm (d3_a hc) x hx i) C CH
 
-def RestRowsConditionAtBundlePoints (DR : DefT) (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (H_rRows DR)
-
-def H_sLp (𝒜 : FamClass) (σ : RawSel Bundle 𝒜) : Prop :=
-  Formalism.L2.SG.ThmSOwn.LoopRowS 3 (D3 3 𝒜) (fun Fm hc => ⟨((sel σ) Fm (d3_a hc)).1, fun x hx h i => ((selS σ) Fm (d3_a hc) x hx h i).toSTies⟩)
-
-def LpSelectionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (H_sLp)
-
-def H_sO (𝒜 : FamClass) (σ : RawSel Bundle 𝒜) : Prop :=
-  Closed (D3 3 𝒜) fun Fm _ => ∀ hc : D3 3 𝒜 Fm, Formalism.L2.SG.ThmSOwn.TheoremSSelected Fm 3
-      ⟨((sel σ) Fm (d3_a hc)).1, fun x hx h i => ((selS σ) Fm (d3_a hc) x hx h i).toSTies⟩
-
-def IntegralSelectionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (H_sO)
-
-def H_hServ (𝒜 : FamClass) (σ : RawSel Bundle 𝒜) : Prop :=
-  ServT (D3 3 𝒜) fun Fm hc => (sel σ) Fm (d3_a hc)
-
-def SerreConditionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (H_hServ)
-
-def H_zL (𝒜 : FamClass) (σ : RawSel Bundle 𝒜) : Prop :=
-  Closed (D3 3 𝒜) fun Fm _ => ∀ hc : D3 3 𝒜 Fm, ∃ xr : ℝ, ∀ x (hx : Fm.x1 < x) (h : ((sel σ) Fm (d3_a hc)).1 ≤ x), xr ≤ x →
-      ∀ (i : Fm.Ix x) (k : Fin (Fm.D x i).R.m),
-        Function.Surjective (Formalism.L2.DIV.lPrj (Fm.D x i) ((selP σ) Fm (d3_a hc) x hx h i).1.A3.A ((selP σ) Fm (d3_a hc) x hx h i).1.P0
-          ((selP σ) Fm (d3_a hc) x hx h i).1.ψ0 (((selP σ) Fm (d3_a hc) x hx h i).1.A3.fam3.toSub2 ((selP σ) Fm (d3_a hc) x hx h i).1.Zs) k
-          ((selP σ) Fm (d3_a hc) x hx h i).1.A3.A.μ0).mulVec
-
-def LZeroConditionAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk (H_zL)
-
 def H_hTF (𝒜 : FamClass) : Prop :=
   Closed (D3 3 𝒜) fun Fm _ => Formalism.MainNotions.PX.TFrame Fm (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3
 
-def TorsionFreenessAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) : Prop := Row Q Lk fun 𝒜 _ => H_hTF 𝒜
-
 def H_hTu (cT : ℝ → ℝ → ℝ) (𝒜 : FamClass) : Prop :=
   Closed (WithTw (WithSm (WithChN 𝒜))) fun {eps} Fm _ => cT eps Fm.CYL ≤ Fm.CTu → TuSize Fm
-
-def CountsIrreducibilityConstants (Q : V4.Slot) (Lk : LkT Bundle) : Prop := ∃ (c30 : List ℝ → Formalism.MainNotions.S.CountingConstants) (cIc : ℝ),
-  (∀ {eps : ℝ} (Fm : FamP eps), 0 ≤ (c30 Fm.cOut).C ∧ 2 * (Fm.CYL + 1) ≤ (c30 Fm.cOut).A) ∧ 0 < cIc ∧
-  Row Q Lk fun 𝒜 _ => (Closed (D3 3 𝒜) fun Fm _ => Formalism.MainNotions.S.CountE.CountAllPointsClass Formalism.L2.SG.ThmSOwn.PLevT' Fm (c30 Fm.cOut).n0 (c30 Fm.cOut).A
-      (c30 Fm.cOut).C (c30 Fm.cOut).c (c30 Fm.cOut).cb) ∧
-    (Closed (D3 3 𝒜) fun Fm _ => ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ A : Formalism.MainNotions.ArithmeticCylinders.AllRows (Fm.D x i),
-      Formalism.MainNotions.ArithmeticCylinders.LabelCountGoodInjective A ∧ Formalism.L2.GlobalTheoryTheory.AllJoin.AllJoinA A ∧
-        Formalism.L2.GlobalTheoryTheory.ConcN.CountAllRows A (Formalism.L2.GlobalTheoryTheory.ConcN.epsC cIc (Fm.D x i).R.r (Fm.D x i).R.f))
-
-def PredicateAtBundlePoints (Q : V4.Slot) (Lk : LkT Bundle) (N : FamClass → Prop) : Prop := Row Q Lk fun 𝒜 _ => N (D3 3 𝒜)
 
 end GlobalTheory.Fc.R1
 

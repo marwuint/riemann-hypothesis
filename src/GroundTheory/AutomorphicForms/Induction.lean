@@ -72,8 +72,6 @@ theorem mem_cindSpace {f : G → W} :
       ∃ C : Set G, IsCompact C ∧ ∀ g, f g ≠ 0 → g ∈ (H : Set G) * C :=
   Iff.rfl
 
-theorem cindSpace_le : cindSpace H σ ≤ indSpace H σ := inf_le_left
-
 variable [IsTopologicalGroup G]
 
 variable {H σ} in
@@ -130,10 +128,6 @@ theorem isSmooth_indRep : IsSmooth (indRep H σ) := by
   refine Subgroup.isOpen_mono (fun k hk => ?_) hK
   rw [mem_stabilizerOf]
   exact Subtype.ext (funext fun x => hfK k hk x)
-
-def cindToInd : Representation.IntertwiningMap (cindRep H σ) (indRep H σ) :=
-  (Submodule.inclusion (cindSpace_le H σ)).intertwiningMap_of_isIntertwiningMap _ _
-    fun _ _ => rfl
 
 section Frobenius
 

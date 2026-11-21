@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ResBound
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HomToCharacterLineEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HomToCharacterLineEqZero
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistedModelAdmissibleCocycles
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.OnePlusPowerAssembly
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousFixingSubgroupEquiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenOfFgOfSpanEqTop
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientPow
@@ -240,7 +242,7 @@ theorem vanish_of_real : Formalism.GaloisCohomology.LocalTateDualityK → ∀ {l
   obtain ⟨k, _, _, _, _, hres⟩ := exists_residue hlam l hl (hf 1)
   obtain ⟨R, -, -, F, M, hω, ⟨q, hq, hk, hqρ⟩, -⟩ := hS k hres
   refine vanish_of_lattice hT S.K hO S.Γ hlam.ne_zero hχ.1 M.T q hq hk hqρ M.ω (fun g => ?_)
-    fun e he he' => GlobalTheory.T.hom_to_characterLine_eq_zero F M h1 h2 h3 e he (he'.trans_le (by exact_mod_cast S.D.one_le_letterBlockLength))
+    fun e he he' => _root_.GlobalTheory.Models.ModTh.hom_chr_eq_zero F M h1 h2 h3 e he (he'.trans_le (by exact_mod_cast S.D.one_le_letterBlockLength))
   have hc : GlobalTheory.Cyc.IsCyc P.χQ := P.χQ_cyc
   let u : ℤ_[l] := (cyclotomicCharacter (PadicAlgCl l) l
       (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l S.K.1) (PadicAlgCl l) (S.K.1.fixingSubgroupEquiv g)) : ℤ_[l]ˣ)

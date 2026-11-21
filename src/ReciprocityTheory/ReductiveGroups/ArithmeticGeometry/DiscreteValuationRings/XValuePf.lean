@@ -198,24 +198,4 @@ theorem X_value' (hGF : GlobalFnsSt) (hB : D.TauBimult) (oa : D.OAct O) (w0 : O)
     linear_combination (norm := module) w₁ - w₂ - b - t
   rw [Rg, mul_comm k N, pow_mul, ← mul_pow, S', mul_pow, ← pow_mul, mul_comm (N + 1) k]
 
-section Closed
-
-variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-  (D : DegData V (IsLocalRing.maximalIdeal V)) {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
-
-theorem X_value (hGF : GlobalFnsSt) (oa : D.toPre.OAct O) (w0 : O) (hΨ : Geo.Tor.TraceFormTwistIso D.toPre oa w0)
-    (a : O) (N : ℕ) (hN : a * star a = (N : O)) (hN1 : 1 ≤ N) (k : ℕ)
-    (X : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 2) ![𝟙 D.toPre.P.A.left, (oa.onB.act a).left]
-        ![((k * N : ℕ) : ℤ), -(k : ℤ)])) (hX : X.IsGen)
-    (hXn : LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ X (eSec D.toPre.P.A))
-        (GeneratorPullback.powGen D.toPre.P.L _ _ D.toPre.rig (k * (N - 1))))
-    (mu : D.toPre.X) :
-    LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ X (ptK (D.toPre.c mu)))
-      (LB.mulGen D.toPre.P.L _ _ _ _
-        (GeneratorPullback.powGen D.toPre.P.L _ _ (LB.invGen D.toPre.P.L _ _ (D.toPre.psi mu)) (k * N))
-        (GeneratorPullback.powGen D.toPre.P.L _ _ (D.toPre.psi (a • mu)) k)) := by
-  exact X_value' hGF D.tau_bimult oa w0 hΨ a N hN hN1 k X hX hXn mu
-
-end Closed
-
 end ReciprocityTheory.ChartRestriction.G.DVR

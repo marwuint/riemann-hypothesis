@@ -3,7 +3,7 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.SquareI
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.PropsCos
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.BernsteinUnitaryProductIrreducible
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterExistsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterExists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealExponentAbsSmoothCharacterLocalField
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL Filter Topology
 
@@ -33,7 +33,7 @@ theorem norm_scalarBy_eq_nabs_rpow : ∀ (k : Type) [Field k] [ValuativeRel k] [
   have huniq : ∀ (t : kˣ) (c c' : ℂ), Zl.ScalarBy x t c → Zl.ScalarBy x t c' → c = c' := by
     intro t c c' h h'
     exact smul_left_injective ℂ hv ((h v).symm.trans (h' v))
-  choose f hf using GlobalTheory.T.central_character_exists k x
+  choose f hf using _root_.GlobalTheory.CompanionTheory.ScalarEx.exists_scalarBy k x
   have hmul : ∀ a b : kˣ, f (a * b) = f a * f b := by
     intro a b
     refine huniq (a * b) _ _ (hf _) fun w => ?_

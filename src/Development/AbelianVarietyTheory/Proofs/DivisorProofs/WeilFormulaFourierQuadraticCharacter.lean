@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BicharacterFourierTransformMemSchwartzBruhatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BicharacterFourierTransformMemSchwartzBruhat
 open MeasureTheory Matrix GlobalTheory.KSp GlobalTheory.SplitUnitary
 open GlobalTheory.WeilM (UG IsQuad IsHerm ResEtaPow)
 open GlobalTheory.SplitWeil (SB nabs)
@@ -32,7 +32,7 @@ theorem weil_formula : ∀ (X : Type) [AddCommGroup X] [TopologicalSpace X] [Mea
     four μ e (fun y => f y * four μ e φ y) x = γ * ∫ z, g (x + z) * φ z ∂μ := by
   intro X _ _ _ _ hG μ _ e he f g s γ hf hs hfg hga φ hφ x
   haveI := hG.grp; haveI := hG.t2; haveI := hG.lc; haveI := hG.sc
-  have hφ4 : four μ e φ ∈ SB X := GlobalTheory.T.bicharacterFourierTransform_mem_schwartzBruhat X hG μ e he φ hφ
+  have hφ4 : four μ e φ ∈ SB X := _root_.GlobalTheory.KSp.FourMem.four_mem_SB X hG μ e he φ hφ
   have hK1 : IsCompact (tsupport (four μ e φ)) := hφ4.2
   have hφc : IsCompact (tsupport φ) := hφ.2
   have hK2 : IsCompact (s '' ((fun z => x + z) '' tsupport φ)) :=

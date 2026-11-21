@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellRayInCon
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullAddInjective
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.EvalPullbackSemilinearSurjectiveStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.EvalPullbackSemilinearSurjective
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalPullSemilinearOfIsTwInv
 
 noncomputable section
 
@@ -63,7 +64,7 @@ theorem exists_coord_pullAdd_of_pos : ∀ (O : Type) [CommRing O] [IsDedekindDom
   have hεn : ∀ i y, 0 ≤ ε i y y := fun i y => by
     obtain ⟨y, rfl⟩ := hf y
     rw [hε]; exact hδ.nonneg _ _
-  have hsemi := GlobalTheory.T.eval_pullback_semilinear_surjective O bar w0 hb φ htw τ hτ f hf hsm
+  have hsemi := _root_.GlobalTheory.CompanionTheory.Ar.Fan.SemilinearPullbackEval.eval_pull_semilinear_of_isTwG O bar w0 hb φ htw τ hτ f hf hsm
   have hεl : φ.LinearOn ε := by
     intro d hd
     have h1 := linearOn_comp hδ.linear s d hd

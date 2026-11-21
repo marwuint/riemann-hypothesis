@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsClosedEmbeddingOfLocallyCompact
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DixmierMalliavinLie
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
 
 open GlobalTheory.Orb
 open scoped Topology ContDiff Manifold
@@ -28,11 +28,5 @@ variable (φ : OpenPartialHomeomorph G (EuclideanSpace ℝ (Fin d)))
 
 @[simp] theorem transChart_target (a : G) : (transChart φ a).target = φ.target := by
   ext y; simp [transChart]
-
-def chartedSpace (h1 : (1 : G) ∈ φ.source) : ChartedSpace (EuclideanSpace ℝ (Fin d)) G where
-  atlas := Set.range (transChart φ)
-  chartAt := transChart φ
-  mem_chart_source a := by simp [h1]
-  chart_mem_atlas a := ⟨a, rfl⟩
 
 end GlobalTheory.MatLie

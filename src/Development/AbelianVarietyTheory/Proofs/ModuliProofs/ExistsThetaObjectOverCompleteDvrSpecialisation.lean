@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.BoundedOnFramesIffIntegralOnFrames
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescentStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSpreadThetaLevelAbelianSchemeAwayStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullbackStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescent
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSpreadThetaLevelAbelianSchemeAway
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullback
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
@@ -36,7 +36,7 @@ theorem exists_obj_over_complete_dvr : Out.Laws → Out.Laws2 → ∀ (o : Type)
   intro L1 L2 o _ g N' J b Mat κ w w' _ R K _ _ _ _ _ _ _ β v t 𝔪 h𝔪 hth hsh hpr
   haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R
   obtain ⟨f, hf, t', ψ, -, -, hth', hsh', hpr'⟩ :=
-    GlobalTheory.T.exists_spread_theta_level_abelian_scheme_away L1 L2 o g N' J b Mat κ w w' R K β v t hth hsh hpr
+    _root_.GlobalTheory.SpreadGeneric.exists_spread L1 L2 o g N' J b Mat κ w w' R K β v t hth hsh hpr
   obtain ⟨V, F, i1, i2, i3, i4, i5, i6, i7, i8, i9, y, hy, hyf⟩ :=
     exists_complete_dvr_point R 𝔪 h𝔪 f hf
   have hu : IsUnit (((algebraMap V F).comp y) f) :=
@@ -48,11 +48,11 @@ theorem exists_obj_over_complete_dvr : Out.Laws → Out.Laws2 → ∀ (o : Type)
       spMap (algebraMap V F) ≫ spMap (y.comp β) := by
     simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
     rw [← RingHom.comp_assoc, hφ, RingHom.comp_assoc]
-  obtain ⟨tF, hm⟩ := GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b _ _ _ _ (spMap φ) t' hsq
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g (N' ^ 2) J b Mat κ w w' _ _ _ _ _ t' tF hm
+  obtain ⟨tF, hm⟩ := _root_.GlobalTheory.tObj_pull o g (N' ^ 2) J b _ _ _ _ (spMap φ) t' hsq
+  obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.shape_prim_pull_and_descend o g (N' ^ 2) J b Mat κ w w' _ _ _ _ _ t' tF hm
   refine ⟨V, F, i1, i2, i3, i4, i5, i6, i7, i8, i9, y, tF, hy, h1 hsh', h2 hpr', ?_⟩
-  have h3 := GlobalTheory.T.hasThetaConstants_ring_baseChange L2 o g N' J b _ _ t' _ _ φ _ _ hth'
-  refine (GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ t' _ _ tF _ F _ _ hm).mpr ?_
+  have h3 := _root_.GlobalTheory.hasTh_baseChange L2 o g N' J b _ _ t' _ _ φ _ _ hth'
+  refine (_root_.GlobalTheory.hasTh_iff_of_tmap o g N' J b _ _ t' _ _ tF _ F _ _ hm).mpr ?_
   rw [Category.id_comp]
   rw [Category.comp_id] at h3
   have e : (fun a => algebraMap V F (y (v a))) =

@@ -13,8 +13,6 @@ namespace Formalism.L2.SG.Pf.LTL
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-def pt0 (D : D7) : Point ℂ (D.R.rS + 1) := ⟨[(1, D.R.rS + 1)], by simp, by simp⟩
-
 section Lemmas
 
 open scoped ComplexConjugate

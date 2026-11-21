@@ -2,8 +2,20 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormOneAtOne
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IncAdjYZeroMemLatOIff
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLatticeRationalLineTraceFractionalIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FractionalIdealCompletionPropertiesAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualIsotropicLineMemCompletionIffStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FractionalIdealCompletionPropertiesAtPlace
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LineLatAt
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.BaseMatrixGlApply
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualIsotropicLineMemCompletionIff
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeSelfDualTraceForm
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsLatticeDualZIdealMul
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsHermitianAuxiliaryVectorSystemBesselVectors
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SingleMemIdAt
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorDisjointSupportSmulAdd
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LineVectorPairingMemInverseIdealCompletionStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HermitianPairingOntoInverseIdealAtPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMaps
@@ -25,7 +37,7 @@ def SameAt (v : GlobalTheory.FinPl.Pl D) (𝔞 𝔟 : FI D) : Prop := ∀ s ∈ 
 
 theorem mem_idAt_of_idV {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {v : GlobalTheory.FinPl.Pl D} {𝔞 : FI D}
     {s : AE D} (hs : s ∈ idV 𝔞 v) : s ∈ idAt D (· = v) := by
-  have h3 := (GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v).2.2.1 𝔞 1 one_ne_zero s
+  have h3 := (_root_.GlobalTheory.SeeSaw.idV_props D ψ hψ v).2.2.1 𝔞 1 one_ne_zero s
   rw [FractionalIdeal.spanSingleton_one, one_mul] at h3
   exact (h3.1 hs).2
 
@@ -33,7 +45,7 @@ theorem sameAt_div {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
     (ha : 𝔞 ≠ 0) (ha' : 𝔞' ≠ 0) (hb : 𝔟 ≠ 0) (hb' : 𝔟' ≠ 0) (h𝔞 : SameAt v 𝔞 𝔞') (h𝔟 : SameAt v 𝔟 𝔟') :
     SameAt v (𝔟 * 𝔞⁻¹) (𝔟' * 𝔞'⁻¹) := by
   intro s hs
-  have h2 := (GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v).2.1
+  have h2 := (_root_.GlobalTheory.SeeSaw.idV_props D ψ hψ v).2.1
   rw [← h2 _ _ ha hb s hs, ← h2 _ _ ha' hb' s hs]
   constructor
   · intro h a haV
@@ -93,7 +105,7 @@ theorem cols_sameAt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (h𝔟 : ∀ a ∈ idAt D (· = v), a • ratV (col J.d i) ∈ latV J.W LW (· = v) ↔ a ∈ idV 𝔟 v) :
     SameAt v 𝔢 (𝔟 * (D.host.AA : FI D)) := by
   intro a ha
-  obtain ⟨-, h2, -, -, -, -, h7⟩ := GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v
+  obtain ⟨-, h2, -, -, -, -, h7⟩ := _root_.GlobalTheory.SeeSaw.idV_props D ψ hψ v
   have hAA : (D.host.AA : FI D) ≠ 0 := GlobalTheory.CuspCharLattice.host_AA_ne_zero _
   rw [← h𝔢 a ha, ← colMul_jX, hG.cols i a ha, h7]
   have e : 𝔟 * (D.host.AA : FI D) = 𝔟 * ((D.host.AA : FI D)⁻¹)⁻¹ := by rw [inv_inv]
@@ -124,7 +136,7 @@ theorem last_sameAt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (hG : GoodBF ψ B J LV LV₀ LW LW₀ v) (i : Fin ρ) (hi : i.1 + 1 = ρ) {𝔷 : FI D} {𝔟 : ℕ → FI D}
     (h𝔷0 : 𝔷 ≠ 0) (h𝔷 : GlobalTheory.SeeSaw.LineId B.o B.ζ LV₀ 𝔷 v) (h𝔟0 : 𝔟 i ≠ 0) (hmono : GlobalTheory.SeeSaw.MonoId J.d LW LW₀ 𝔟 v) :
     SameAt v 1 (FractionalIdeal.spanSingleton _ D.host.xi0 * ((D.host.AAbar : FI D) * (𝔟 i)⁻¹) * 𝔷) := by
-  obtain ⟨h1, h2, h3, -, -, -, -⟩ := GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v
+  obtain ⟨h1, h2, h3, -, -, -, -⟩ := _root_.GlobalTheory.SeeSaw.idV_props D ψ hψ v
   obtain ⟨n, hn⟩ := i
   simp only at hi
   obtain rfl : n = ρ - 1 := by omega
@@ -133,7 +145,7 @@ theorem last_sameAt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
   have hξ : D.host.xi0 ≠ 0 := GlobalTheory.LocFrame.cmHost_imaginaryGenerator_ne_zero
   have hAAb : (D.host.AAbar : FI D) ≠ 0 := GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D
   have hL := colMul_jY_mem_latA_iff D ψ hψ J.W J.W₀ ρ J.d LW (𝔟 i) v i h𝔟0
-    (GlobalTheory.T.dualIsotropicLine_mem_completion_iff D ψ hψ J.W J.W₀ ρ J.d LW LW₀ 𝔟 v hG.sdW hmono i h𝔟0)
+    (_root_.GlobalTheory.DualLine.dualLine_mem_iff D ψ hψ J.W J.W₀ ρ J.d LW LW₀ 𝔟 v hG.sdW hmono i h𝔟0)
   set 𝔑 : FI D := FractionalIdeal.spanSingleton _ D.host.xi0 * ((D.host.AAbar : FI D) * (𝔟 i)⁻¹) with h𝔑
   have h𝔑0 : 𝔑 ≠ 0 := mul_ne_zero (by simpa [FractionalIdeal.spanSingleton_eq_zero_iff] using hξ)
     (mul_ne_zero hAAb (inv_ne_zero h𝔟0))
@@ -195,7 +207,7 @@ open GlobalTheory.Core.Mi.ChainLast in
 
 theorem GlobalTheory.Core.Mi.LatMatch.lastAt_of_goodBF : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (LV : Lat B.V) (LV₀ : Lat B.V₀) (LW : Lat J.W) (LW₀ : Lat J.W₀) (v : GlobalTheory.FinPl.Pl D), GoodBF ψ B J LV LV₀ LW LW₀ v → LastAt ψ B.d (vecB B.o B.ζ) LV LV₀ v := by
   intro D ψ hψ ρ B J LV LV₀ LW LW₀ v hG i hi s hs
-  obtain ⟨-, h2, -, -, h5, -, -⟩ := GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v
+  obtain ⟨-, h2, -, -, h5, -, -⟩ := _root_.GlobalTheory.SeeSaw.idV_props D ψ hψ v
   obtain ⟨𝔢, h𝔢0, -, h𝔢⟩ := GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal D B.V LV (col B.d i) hG.sdV (col_ne_zero _ _)
   obtain ⟨𝔷, h𝔷0, -, h𝔷⟩ := GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal D B.V₀ LV₀ (vecB B.o B.ζ) hG.sdV₀ (vecB_ne_zero B.o B.line)
   let 𝔟 : ℕ → FI D := fun n => if h : n < ρ then

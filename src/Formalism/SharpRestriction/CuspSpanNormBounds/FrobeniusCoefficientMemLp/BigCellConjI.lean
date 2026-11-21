@@ -112,13 +112,6 @@ theorem UW_dT {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 
 theorem UW_conjI {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : tTi k r * h * tT k r = h := conjI_eq_self (UW_dT hh)
 
-theorem UW_conj {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
-    (hh : h ∈ UWset k r z) : tT k r * h * tTi k r = h := conj_eq_self (UW_dT hh)
-
-theorem conj_inv {k r : ℕ} (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
-    tT k r * M⁻¹ * tTi k r = (tT k r * M * tTi k r)⁻¹ := by
-  rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, tTi_inv, tT_inv, Matrix.mul_assoc]
-
 theorem conjI_inv {k r : ℕ} (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     tTi k r * M⁻¹ * tT k r = (tTi k r * M * tT k r)⁻¹ := by
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, tTi_inv, tT_inv, Matrix.mul_assoc]
@@ -135,9 +128,6 @@ theorem bigCell_dT {k r : ℕ} (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (F
   · have hi : i.val < r := by omega
     exact (dT_pair i j hi (by omega)).symm
   · exact absurd rfl hne
-
-theorem bigCell_conjI {k r : ℕ} (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
-    tTi k r * bigCell k r c μ * tT k r = bigCell k r c μ := conjI_eq_self (bigCell_dT c μ)
 
 end Formalism.MainNotions.S.Pv.Frames
 

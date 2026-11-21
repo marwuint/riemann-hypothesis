@@ -1,7 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ParameterTransferTypes
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaOntoOfFullEigenspaces
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelOperatorsAtPrimeOffLevelDatum
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RealizationFamilyNormalOperators
@@ -39,8 +38,6 @@ end Abstract
 section General
 
 variable {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank} (c : CoefA V)
-
-def cmp (ℓ : c.W →ₗ[ℂ] ℂ) : (Bridge.Gf V → c.W) →ₗ[ℂ] (GA D V → ℂ) := ℓ.compLeft (GA D V) ∘ₗ c.ext
 
 variable {c}
 
@@ -103,29 +100,6 @@ theorem exists_opsV (hL : R.toLevCh.Is A.μ0) (hM : R.IsModels) (i : Fin D.R.m) 
       fun s hs _ x => (hs x).trans (GlobalTheory.DefiniteOps.hkF_eq _ _ _ _).symm
   choose h hh using key
   exact ⟨h, fun w hw c x => hh w c hw x⟩
-
-section Levels
-
-variable (i : Fin D.R.m) (t : T) (P : LevelP R.Pg D.R.r ℂ)
-
-end Levels
-
-section Compare
-
-variable (R) (F : Face D A)
-
-def ZeroOrInjAt (i : Fin D.R.m) (t : T) : Prop :=
-  ∀ s : Sys D, XVc R i t R.triv s ≤ LinearMap.ker (R.thG i t) ∨ Disjoint (projectedFormsSystemPart R i t R.triv s) (LinearMap.ker (R.thG i t))
-
-def IntertwinesAt (i : Fin D.R.m) (t : T) (P : LevelP R.Pg D.R.r ℂ) : Prop :=
-  (∀ c ∈ IxW R i t P, ∃ c', Transfer R i t P c c') ∧ PartsMatchAt R i t P ∧
-    ∀ s, (¬ ∃ c ∈ IxW R i t P, Transfer R i t P c s) → XVc R i t P s ≤ LinearMap.ker (R.thG i t)
-
-variable {R}
-
-variable (R)
-
-end Compare
 
 end GlobalTheory.LiftOntoCompare
 

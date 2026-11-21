@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TameParahoricRep
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalRepGLExistsSatakeParameters
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTorusEigenformOfCompactTorusEigenvectorStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JordanHolderMultiplicityNormalizedBorelJacquetUn
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EqZeroOfMemTwistedJacquetKernelUpperUnitriangulaStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EqZeroOfMemTwistedJacquetKernelUpperUnitriangula
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrincipalSeriesTypeCharacterTriangularStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTrivialOnUnitsModConductorUnitCharacterValuePrStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTrivialOnUnitsModConductorUnitCharacterValuePr
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 
@@ -24,14 +24,14 @@ theorem subquotient_prinSeries_of_hasVec : GlobalTheory.Published.BernsteinZelev
       ((hBZ k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))
   have hx0 : (Submodule.Quotient.mk v : Jacquet π (unipB k (Fin n))) ≠ 0 := by
     intro h
-    exact hv0 (GlobalTheory.T.eq_zero_of_mem_twistedJacquetKernel_upperUnitriangular k n ψ V π hπ hψ hord v ((Submodule.Quotient.mk_eq_zero _).1 h) hv)
+    exact hv0 (_root_.GlobalTheory.PsType.eq_zero_of_mem_twKer_unipB k n ψ V π hπ hψ hord v ((Submodule.Quotient.mk_eq_zero _).1 h) hv)
   have hact : ∀ t ∈ torusO k (Fin n), jacB π t (Submodule.Quotient.mk v) =
       (torusChar ψ t : ℂ) • (Submodule.Quotient.mk v : Jacquet π (unipB k (Fin n))) := by
     intro t ht
     have hgrp : diagT k (Fin n) t ∈ grp ψ := by
       refine ⟨iwahori_le_KO k _ (diagT_mem_iwahori ht), fun i j hij => ?_⟩
       rw [val_diagT, Matrix.diagonal_apply_ne _ hij.ne]
-      exact (GlobalTheory.T.isTrivialOnUnitsModConductor_unitCharacterValue_props k).2.2.1 _
+      exact (_root_.GlobalTheory.PsType.triv_ev_props k).2.2.1 _
     have hth : theta ψ (diagT k (Fin n) t) = (torusChar ψ t : ℂ) := by
       rw [GlobalTheory.T.principalSeriesTypeCharacter_triangular k n ψ (diagT k (Fin n) t) t ht (fun i => by rw [val_diagT, Matrix.diagonal_apply_eq])
         (Or.inr fun i j hij => by rw [val_diagT, Matrix.diagonal_apply_ne _ hij.ne'])]

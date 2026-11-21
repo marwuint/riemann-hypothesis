@@ -10,69 +10,6 @@ universe u
 
 namespace QZ
 
-theorem mem_of_nsmul_eq_zero (P : Set Nat.Primes) (H : AddSubgroup QZ)
-    (hH : ∀ p ∈ P, ∀ x ∈ AddCommMonoid.primaryComponent QZ (p : ℕ), x ∈ H) :
-    ∀ (n : ℕ), n ≠ 0 → (∀ p : Nat.Primes, (p : ℕ) ∣ n → p ∈ P) →
-      ∀ x : QZ, n • x = 0 → x ∈ H := by
-  intro n
-  induction n using Nat.strong_induction_on with
-  | _ n ih =>
-    intro hn hP x hx
-    rcases eq_or_ne n 1 with rfl | h1
-    · rw [one_smul] at hx
-      rw [hx]
-      exact H.zero_mem
-    · set p := n.minFac with hp_def
-      have hp : p.Prime := Nat.minFac_prime h1
-      obtain ⟨a, m, hpm, hnm⟩ := Nat.exists_eq_pow_mul_and_not_dvd hn p hp.ne_one
-      have hm0 : m ≠ 0 := by
-        rintro rfl
-        simp at hnm
-        exact hn hnm
-      have ha : 0 < a := by
-        rcases Nat.eq_zero_or_pos a with rfl | ha
-        · simp only [pow_zero, one_mul] at hnm
-          exact absurd (hnm ▸ Nat.minFac_dvd n) hpm
-        · exact ha
-      have hcop : Nat.Coprime (p ^ a) m :=
-        Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hp).2 hpm)
-
-      have hbez := Nat.gcd_eq_gcd_ab (p ^ a) m
-      rw [hcop.gcd_eq_one] at hbez
-      have hx' : x = ((p ^ a : ℕ) * Nat.gcdA (p ^ a) m : ℤ) • x +
-          ((m : ℕ) * Nat.gcdB (p ^ a) m : ℤ) • x := by
-        rw [← add_smul, ← hbez]
-        simp
-      rw [hx']
-      refine H.add_mem ?_ ?_
-      ·
-        have hmn : m < n := by
-          rw [hnm]
-          calc m = 1 * m := (one_mul m).symm
-            _ < p ^ a * m := by
-              apply Nat.mul_lt_mul_of_pos_right _ (Nat.pos_of_ne_zero hm0)
-              exact Nat.one_lt_pow ha.ne' hp.one_lt
-        refine ih m hmn hm0 (fun q hq => hP q (hnm ▸ Dvd.dvd.mul_left hq _)) _ ?_
-        rw [← natCast_zsmul, smul_smul]
-        have : ((m : ℤ) * ((p ^ a : ℕ) * Nat.gcdA (p ^ a) m : ℤ)) =
-            (Nat.gcdA (p ^ a) m) * (n : ℤ) := by
-          rw [hnm]
-          push_cast
-          ring
-        rw [this, ← smul_smul, natCast_zsmul, hx, smul_zero]
-      ·
-        have hpP : (⟨p, hp⟩ : Nat.Primes) ∈ P := hP ⟨p, hp⟩ (Nat.minFac_dvd n)
-        refine hH _ hpP _ ⟨a, ?_⟩
-        change (p : ℕ) ^ a • _ = 0
-        rw [← natCast_zsmul, smul_smul]
-        have : ((p ^ a : ℕ) : ℤ) * ((m : ℕ) * Nat.gcdB (p ^ a) m : ℤ) =
-            (Nat.gcdB (p ^ a) m) * (n : ℤ) := by
-          rw [hnm]
-          push_cast
-          ring
-        rw [Nat.cast_pow] at this ⊢
-        rw [this, ← smul_smul, natCast_zsmul, hx, smul_zero]
-
 end QZ
 
 variable {k G : Type u} [CommRing k] [Group G]

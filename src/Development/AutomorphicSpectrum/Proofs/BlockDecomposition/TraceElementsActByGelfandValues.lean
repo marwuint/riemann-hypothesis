@@ -3,8 +3,8 @@ import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Formalism.PeriodIntegrals.DSInfCharCap
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapelliOperatorOnUnitaryCoefficientEqDerived
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementCapelliRecursionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementGelfandPolynomialFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementCapelliRecursion
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementGelfandPolynomialFormula
 open scoped InnerProductSpace
 
 namespace GlobalTheory.CompanionTheory.CapelliGelfand
@@ -34,7 +34,7 @@ theorem etr_eq_gelfVal_of_capelli :
   intro k
   induction k using Nat.strong_induction_on with
   | _ N ih =>
-    rw [GlobalTheory.T.trace_element_capelli_recursion V m E hE _ v hP N (fun k => GlobalTheory.Dec.gelfVal χ k) (fun k hk => ih k hk)]
-    rw [GlobalTheory.T.trace_element_gelfand_polynomial_formula m χ N]
+    rw [_root_.GlobalTheory.CompanionTheory.CapelliEigen.etr_apply_of_eigen V m E hE _ v hP N (fun k => GlobalTheory.Dec.gelfVal χ k) (fun k hk => ih k hk)]
+    rw [_root_.GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton m χ N]
 
 end GlobalTheory.CompanionTheory.CapelliGelfand

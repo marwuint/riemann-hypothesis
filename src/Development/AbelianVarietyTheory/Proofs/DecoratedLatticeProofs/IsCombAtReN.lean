@@ -50,17 +50,6 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : D.what₂.Word} {f : FamCh W u}
   {v : VCom f.c}
 
-theorem s_eq (G : GLoc v) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) : G.s = j := by
-  have := G.hs; omega
-
-def frS (G : GLoc v) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) :
-    Frame G.k (Yc D (j + 1)).rank (XIx (Fin D.R.k) (Fin D.R.t) (G.s + 1) ⊕ Fin 0) :=
-  reN (congrArg (fun s => (Yc D (s + 1)).rank) (s_eq G h)) (G.FY (G.s + 1) 0 rfl)
-
-def phiT (G : GLoc v) : SB (Matrix (Ix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.t) (G.s + 2))
-    (XIx (Fin D.R.k) (Fin D.R.t) (G.s + 1) ⊕ Fin 0) G.k) :=
-  ⟨(G.S.T (Fin D.R.t)).PhiTop, (GModel.phi_sb G).2⟩
-
 theorem isCombAt_reN {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (q : GlobalTheory.FinPl.SplitPt D k)
     (ψ : AddChar (AF D.host.F) ℂ) (FT : Frame k D.sp.X'.rank Y) (Ξ : Matrix Y Y' k → ℂ) :
@@ -77,25 +66,6 @@ theorem intIn_reN {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
       IntIn q (Yc D (j + 1)) (reN (congrArg (fun s => (Yc D (s + 1)).rank) hs) F) (N (j + 1)) := by
   rintro s j rfl F h
   exact h
-
-def eT {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) (i : Fin n) :
-    WO (Yc D (j + 1)) D.sp.X' →₀ ℂ :=
-  Classical.choose (hGP.eGT j h) i
-
-theorem eT_spec {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) :
-    (∀ i, HEq (eT hGP h i) (G i).egT) ∧ ∀ F, IsThetaFunO f.c.ψ _ _ F →
-      comb f.c.ψ _ _ (v.eGT j h) F = (List.finRange n).foldr (fun i g => comb f.c.ψ _ _ (eT hGP h i) g) F :=
-  Classical.choose_spec (hGP.eGT j h)
-
-theorem eT_is {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m) (i : Fin n) :
-    (ofSplit (G i).q).IsCombAt f.c.ψ (frS (G i) h) (G i).FT (eT hGP h i) (phiT (G i)).1 :=
-  isCombAt_reN (G i).q f.c.ψ (G i).FT _ (s_eq (G i) h) ((G i).FY ((G i).s + 1) 0 rfl) (G i).egT _
-    ((eT_spec hGP h).1 i) (G i).egT_is
-
-def lp (hψ : IsStdChar D f.c.ψ (-1)) {n : ℕ} {G : Fin n → GLoc v} (hGP : GPin G) {j : ℕ} (h : j + 2 * 0 + 2 = D.R.m)
-    {M : GlobalTheory.FinPl.Lat (Yc D (j + 1))} (hM : IsSelfDualC (Yc D (j + 1)) M) (hLT : IsSelfDualC D.sp.X' f.g.LT) (i : Fin n) :
-    LocPl f.c.ψ (Yc D (j + 1)) D.sp.X' M f.g.LT :=
-  mkPl hψ (G i).q (G i).unit (frS (G i) h) (G i).FT (phiT (G i)) (eT hGP h i) (eT_is hGP h i) hM hLT
 
 end GlobalTheory.TopLocData
 

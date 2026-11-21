@@ -43,13 +43,6 @@ theorem nsq_chart_of_isSec (la : La) (s : ι → Y → ℂ) (hs : A.IsSec la s) 
     (hy : y ∈ (A.chart i).source) : A.nsq la s y = ‖s i y‖ ^ 2 * Real.exp (-A.ph la i y) :=
   A.nsq_chart la s i hy (hs.2 _ i y (Set.mem_univ _) (A.mem_pick y) hy)
 
-theorem sqn_chart {N : ℕ} (la : La) (w : Fin N → ι → Y → ℂ) (hw : ∀ k, A.IsSec la (w k)) (i : ι)
-    {y : Y} (hy : y ∈ (A.chart i).source) :
-    A.sqn la w y = (∑ k, ‖w k i y‖ ^ 2) * Real.exp (-A.ph la i y) := by
-  unfold sqn
-  rw [Finset.sum_mul]
-  exact Finset.sum_congr rfl fun k _ => A.nsq_chart_of_isSec la (w k) (hw k) i hy
-
 theorem aap_ph_zero (i : ι) {y : Y} (hy : y ∈ (A.chart i).source) : A.ph 0 i y = 0 := by
   have h := A.ph_add 0 0 i y hy
   rw [add_zero] at h
@@ -60,25 +53,6 @@ theorem aap_ph_nsmul (L : La) (k : ℕ) (i : ι) {y : Y} (hy : y ∈ (A.chart i)
   induction k with
   | zero => simp [A.aap_ph_zero i hy]
   | succ k ih => rw [succ_nsmul, A.ph_add _ _ i y hy, ih]; push_cast; ring
-
-theorem ph_eq_sub_nsmul (la L : La) (k : ℕ) (i : ι) {y : Y} (hy : y ∈ (A.chart i).source) :
-    A.ph la i y = A.ph (la - k • L) i y + k * A.ph L i y := by
-  rw [← A.aap_ph_nsmul L k i hy, ← A.ph_add _ _ i y hy, sub_add_cancel]
-
-theorem continuous_of_chart {E : Type*} [TopologicalSpace E] (f : Y → E)
-    (hf : ∀ i, ContinuousOn (f ∘ (A.chart i).symm) (A.chart i).target) : Continuous f := by
-  refine continuous_iff_continuousAt.2 fun y => ?_
-  have hy := A.mem_pick y
-  set φ := A.chart (A.pick y)
-  have h1 : ContinuousAt (f ∘ φ.symm) (φ y) :=
-    (hf _).continuousAt (φ.open_target.mem_nhds (φ.map_source hy))
-  have h2 : ContinuousAt (fun x => (f ∘ φ.symm) (φ x)) y := h1.comp (φ.continuousAt hy)
-  refine h2.congr ?_
-  filter_upwards [φ.open_source.mem_nhds hy] with x hx
-  simp [φ.left_inv hx]
-
-theorem SmoothFn.continuous {f : Y → ℝ} (hf : A.SmoothFn f) : Continuous f :=
-  A.continuous_of_chart f fun i => (hf i).continuousOn
 
 theorem aap_lintegral_chart_le (i : ι) (f : Y → ℝ≥0∞) (hf : Measurable f) (s : Set (V n))
     (hs : s ⊆ (A.chart i).target) :

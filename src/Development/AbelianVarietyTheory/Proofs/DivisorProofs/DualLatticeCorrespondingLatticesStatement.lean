@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLatticeCorrespondingLattices
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousComplEquivSymm
 
 open MeasureTheory ValuativeRel Matrix

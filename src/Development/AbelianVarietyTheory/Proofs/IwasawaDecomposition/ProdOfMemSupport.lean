@@ -103,67 +103,6 @@ theorem rescale_atLin {σ κ : Type} [Finite σ] [Fintype κ] {p : ℕ} [Fact p.
 variable {D : D7} (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)) (B : PlaceMatrixFamily D) {Dx : DivX D} {Tw : TwForms D}
   (a : ∀ w : D.what₂.places.Pl, D.what₂.Word → D.what₂.Tup → D.what₂.Tau → Cw D w)
 
-def kerEntR (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (h : KerEntHyp P O B Dx Tw) : KerEnt D Dx Tw where
-  lam := P.lam
-  iL := P.iL
-  iL_lam := P.iL_lam
-  iL_int := P.iL_int
-  Th := fun u μ w i c c' => MvPowerSeries.rescale (fun z => a w u μ (tauPl D z.1)) (thAtW P O B u μ w i c c')
-  VQ := fun u μ i _ => ValQ O u μ i
-  ev := fun u μ i _ => evC O u μ i
-  ev_inj := fun u μ i _ => evC_inj O u μ i
-  prS := prSC P O B
-  prT := prTC P O B
-  prT_val := h.val
-  lat_S := h.latS
-  levelFree_lattice_condition := h.latT
-  un := fun u μ w i c c' => (∏ z : Bool × HH D, a w u μ (tauPl D z) ^ (nuD D u i z).card)⁻¹ * unC P O B u μ w i c c'
-  un_ne := fun u μ w i c c' => mul_ne_zero
-    (inv_ne_zero (Finset.prod_ne_zero_iff.2 fun z _ => pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [ha]; exact one_ne_zero))))
-    (unC_ne P O B u μ w i c c')
-  kform := fun u μ w hw i hi c c' v v' hv I => by
-    have h0 : (∏ z : Bool × HH D, a w u μ (tauPl D z) ^ (nuD D u i z).card) ≠ 0 :=
-      Finset.prod_ne_zero_iff.2 fun z _ => pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [ha]; exact one_ne_zero))
-    rw [h.kform u μ w hw i hi c c' v v' hv I, applyAt0_rescale _ _ _ (fun z => a w u μ (tauPl D z)), map_smul, smul_eq_mul]
-    field_simp
-
-theorem kerEntR_Th (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl)
-    (i : ℕ) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) :
-    (kerEntR P O B a ha h).Th u μ w i c c' =
-      atLin (fun (k : D.what₂.Tau × Fin (D.R.N (i + 1)) × Fin (D.R.N i)) (j : (Bool × HH D) × Fin (D.R.N i) × Fin (D.R.N (i + 1))) =>
-        if tauPl D j.1 = k.1 then
-          a w u μ k.1 * lamC (P.lam w) ((O u μ).dgen k.1) * B u μ w (i + 1) c' k.1 k.2.1 j.2.2 * (B u μ w i c k.1)⁻¹ j.2.1 k.2.2
-        else 0)
-      (fun j => MvPowerSeries.X j) (pSer D (P.lam w) ((O u μ).Th i c c')) := by
-  show MvPowerSeries.rescale _ (thAtW P O B u μ w i c c') = _
-  unfold thAtW
-  rw [rescale_atLin]
-  congr 1
-  funext k j
-  split_ifs with hk
-  · rw [hk]; ring
-  · exact mul_zero _
-
-def tieR (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) (hC : CanOnto P) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word) (μ : D.what₂.Tup)
-    (w : D.what₂.places.Pl) : GL3Columns.KFTie (kerEntR P O B a ha h) (O u μ) w where
-  B := fun i c τ => B u μ w i c τ
-  B_bas := fun i hi c τ => hB u μ w i hi c τ
-  c0 := fun _ _ _ τ => a w u μ τ
-  unitAbs_eq_one := fun _ _ _ τ => ha w u μ τ
-  th := fun i _ c c' => kerEntR_Th P O B a ha h u μ w i c c'
-  prS_can := (kfTieOf P O B hB hC h u μ w).prS_can
-  prT_can := (kfTieOf P O B hB hC h u μ w).prT_can
-
-theorem tieR_un (ha : ∀ w u μ τ, ‖a w u μ τ‖ = 1) (hB : BasOk P O B) (hC : CanOnto P) (h : KerEntHyp P O B Dx Tw) (u : D.what₂.Word)
-    (μ : D.what₂.Tup) (hR : GL3Columns.RhoAlg (O u μ)) (w : D.what₂.places.Pl) : (tieR P O B a ha hB hC h u μ w).UnIs := by
-  intro i hi c c'
-  show _ * unC P O B u μ w i c c' = _
-  unfold unC
-  rw [if_neg (unF_ne P O B hB u μ hR w i hi c c')]
-  unfold GL3Columns.KFTie.un
-  rw [mul_assoc]
-  rfl
-
 theorem tauEmb_mem (w : D.what₂.places.Pl) (τ : D.what₂.Tau) (x : D.host.E) : ∃ y : D.what₂.LL, tauEmb D (P.lam w) τ x = P.iL w y := by
   have e : D.what₂.embLL (D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x)) = embT D τ x := RingHom.congr_fun D.embE_φ₀ _
   refine ⟨D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x), ?_⟩
@@ -179,22 +118,6 @@ theorem norm_adUnit (hU : DgenUnitAd P O) (w : D.what₂.places.Pl) (u : D.what�
   split_ifs with hw
   · rw [norm_inv, hU w hw u μ τ, inv_one]
   · exact norm_one
-
-theorem adaptedTh_kerEntR (hU : DgenUnitAd P O) (Pm : ∀ (_ : D.what₂.places.Pl) u μ, SysFam D u μ)
-    (h1 : ∀ w u μ i, i ≤ D.R.m → ∀ c τ, GL3Columns.BasR D (P.lam w) τ ((O u μ).lat i c).1 ((Pm w u μ i c τ).map (tauEmb D (P.lam w) τ)))
-    (h2 : ∀ w u μ i, i ≤ D.R.m → ∀ c τ τ', SamePr (P.lam w) τ τ' → Pm w u μ i c τ' = Pm w u μ i c τ)
-    (h3 : ∀ w u μ i, i ≤ D.R.m → ∀ c τ τ', ConjPr (P.lam w) τ τ' → Pm w u μ i c τ' = dualM (Pm w u μ i c τ))
-    (h : KerEntHyp P O (fun u μ w i c τ => (Pm w u μ i c τ).map (tauEmb D (P.lam w) τ)) Dx Tw) :
-    AdaptedTh (kerEntR P O _ (adUnit P O) (norm_adUnit P O hU) h) O := by
-  intro w hw u μ _
-  refine ⟨Pm w u μ, h1 w u μ, h2 w u μ, h3 w u μ, fun i _ c c' => ?_⟩
-  rw [kerEntR_Th]
-  congr 1
-  funext k j
-  unfold adCoef adUnit
-  have hs : lamC (P.lam w) ((O u μ).dgen k.1) ≠ 0 := norm_ne_zero_iff.1 (by rw [hU w hw u μ k.1]; exact one_ne_zero)
-  rw [if_pos hw, inv_mul_cancel₀ hs, one_mul]
-  rfl
 
 end GlobalTheory.KerRescale
 

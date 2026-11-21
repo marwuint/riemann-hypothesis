@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomialAction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EulerEAddSmulMemEisensteinShiftGradedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemAnalyticFiltrationIffLatticeFiltrationAddStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemAnalyticFiltrationIffLatticeFiltrationAdd
 
 open PowerSeries GlobalTheory.BK
 
@@ -153,8 +153,8 @@ theorem lc_semisimple : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrame
         y ∈ (Lan ⊓ shiftE l e i (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan →
         y ∈ (Lan ⊓ shiftE l e (i + 1) (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan := by
       intro i h y hy
-      rw [GlobalTheory.T.mem_analytic_filtration_iff_lattice_filtration_add O K l e a ι D.toPhiMod i y] at hy
-      rw [GlobalTheory.T.mem_analytic_filtration_iff_lattice_filtration_add O K l e a ι D.toPhiMod (i + 1) y, h]
+      rw [_root_.GlobalTheory.BK.PhiMod.mem_analytic_filtration_iff O K l e a ι D.toPhiMod i y] at hy
+      rw [_root_.GlobalTheory.BK.PhiMod.mem_analytic_filtration_iff O K l e a ι D.toPhiMod (i + 1) y, h]
       exact hy
     have hchain : ∀ k : ℕ, k ≤ η → ∀ y,
         y ∈ (Lan ⊓ shiftE l e (-j - η) (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan →

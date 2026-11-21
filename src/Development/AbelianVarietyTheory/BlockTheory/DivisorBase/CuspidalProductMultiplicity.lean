@@ -56,9 +56,6 @@ def MultSharp : Prop :=
       MultNear (PsharpSym Pg r ρ k ψ) χ (nbar Pg k) (8 * f * r / g) ∧
         MultNear (Psharp Pg r k ψ) χ (nbar Pg k) (8 * f * r / g)
 
-example {κ : Type} [Field κ] [Finite κ] {r d : ℕ} (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := κ) b) (Fin d → ℂ)) :
-    Module.Finite ℂ (Representation.coindV (blockTri (κ := κ) b).subtype σ) := inferInstance
-
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] in
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.nbar_pos (Pg : Finset (_root_.Formalism.L2.DIV.Pl E)) (k : ℕ) :

@@ -57,20 +57,4 @@ theorem _root_.GlobalTheory.StepFacNe.chrW_ram {F E : Type} [Field F]
     rw [MonoidHom.comp_apply, hy] at h1
     exact h1
 
-theorem charL_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (χ : Chr F E) (S : Set (Pl F)) (k : ℕ) (hk : 2 ≤ k) : charL χ S (k : ℂ) ≠ 0 := by
-  have hB : Bounded (above E S) (charFam χ) 1 0 := by
-    intro w _
-    unfold charFam
-    split_ifs
-    · refine ⟨by simp, fun b hb => ?_⟩
-      rw [Multiset.mem_singleton] at hb
-      subst hb
-      simp [norm_val]
-    · simp
-  have hc := hB.converges (s := (k : ℂ)) (by
-    simp only [Complex.natCast_re, zero_add]
-    exact_mod_cast (by omega : 1 < k))
-  exact hc.ne_zero
-
 end GlobalTheory.StepFacNe

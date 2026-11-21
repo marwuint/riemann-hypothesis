@@ -5,10 +5,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Glo
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCptGenResidueFieldGenericStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsReferenceGeometrySameGenericStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsHolomorphicSectionOfAnalytic
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsEffectiveWeightSectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EffectiveScaledWeightOfRetractionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsReferenceGeometrySameGeneric
+import Development.WeilBound.CoreStatements.CentralCharts.ReferenceGeometryHolomorphicInverse
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsEffectiveWeightSection
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EffectiveScaledWeightOfRetraction
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginGoodPrimesFiniteStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCoordsOverFieldStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsFiniteNonemptyStatement
@@ -39,16 +39,16 @@ theorem comp_data (hG : Top.Given) (hA0 : Flat.FlatLineGenerator) (hA1 : Flat.Fl
             (Sys.A.chart j x)).ker = ⊥) := by
   have hdom : ∀ x, IsDomain (Y.X.presheaf.stalk x) := fun x => (Y.normal x).1
   have hcg := GlobalTheory.T.isCptGen_residue_field_generic Y.X hdom x hx
-  obtain ⟨G, hG0⟩ := GlobalTheory.T.exists_reference_geometry_same_generic hG.2.2.2.2.1 E H D l (Xo l) c Y _ (Y.X.fromSpecResidueField x) hcg
-  obtain ⟨A, hinv⟩ := GlobalTheory.T.exists_holomorphic_section_of_analytic hG hA0 hA1 E H D Xo l c Y hgl hsp hp hq G
+  obtain ⟨G, hG0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_refGeo hG.2.2.2.2.1 E H D l (Xo l) c Y _ (Y.X.fromSpecResidueField x) hcg
+  obtain ⟨A, hinv⟩ := _root_.AnalyticReference.reference_geometry_holomorphic_inverse hG hA0 hA1 E H D Xo l c Y hgl hsp hp hq G
   let ν : RootIx D → ℤ := fun r => -((r.2 : ℕ) : ℤ)
   have hν : ∀ τ (i k : Fin (D.p + D.q)), i < k → ν (τ, k) < ν (τ, i) := by
     intro τ i k hik
     simp only [ν, neg_lt_neg_iff]
     exact_mod_cast hik
-  obtain ⟨k, q', s, hk, hq', hs, heff⟩ := GlobalTheory.T.exists_effective_weight_section hG E H D Xo l c Y hgl hp hq G ⟨A⟩ ν hν
+  obtain ⟨k, q', s, hk, hq', hs, heff⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ExRefEff.exists_eff hG E H D Xo l c Y hgl hp hq G ⟨A⟩ ν hν
   obtain ⟨Fx, R, o, hgen, hkA, hq'', hn, hdeg, hJ, hamp, hemb, hbij, hlam⟩ :=
-    GlobalTheory.T.effective_scaled_weight_of_retraction E H D l (Xo l) c Y G A ν k q' s hinv hsp hk hq' hs heff
+    _root_.GlobalTheory.CompanionTheory.Ar.RefRoot.refRoot E H D l (Xo l) c Y G A ν k q' s hinv hsp hk hq' hs heff
   refine ⟨A.Sys, Fx, R, o, ?_, ?_, hdeg, hJ, hamp, hemb, hbij, A.flat, hlam⟩
   · rw [hgen, hG0]
     exact Scheme.fromSpecResidueField_apply x _

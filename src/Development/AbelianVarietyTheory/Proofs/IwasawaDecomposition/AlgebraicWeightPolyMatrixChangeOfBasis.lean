@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateNeSelf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalUnitaryCoordinateZeroOfRationalPointsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalUnitaryCoordinateZeroOfRationalPoints
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
 open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField GlobalTheory.AlgWtHW
 
 namespace GlobalTheory.AlgWtHW
@@ -32,7 +33,7 @@ theorem evM_change_of_basis : ∀ (L : Type) [Field L] [NumberField L] [IsCMFiel
         MvPolynomial.C (b'.toMatrix b i k) * P k l * MvPolynomial.C (b.toMatrix b' l j)) = 0 := by
     intro i j
     rw [evPt_eq_upt]
-    refine GlobalTheory.T.eval_unitaryCoordinate_zero_of_rational_points L n _ ?_ (tauPt τ B) (isUPt_tauPt τ B)
+    refine _root_.GlobalTheory.UDense.eval_eq_zero_of_rat L n _ ?_ (tauPt τ B) (isUPt_tauPt τ B)
     intro γ₀ h
     have := congrArg (fun M => M i j) (key (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))))
     simp only [hrat γ₀ h, sub_self] at this

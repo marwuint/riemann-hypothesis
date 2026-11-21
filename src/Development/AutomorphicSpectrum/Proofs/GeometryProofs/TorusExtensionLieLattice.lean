@@ -7,10 +7,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFunctorialMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEquivalence
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianHomLieExtendsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianTorusLieSubStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianHomLieExtends
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianTorusLieSub
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionTangentExactStatement
 
 set_option backward.isDefEq.respectTransparency false
@@ -111,7 +111,7 @@ theorem exists_fibre_model {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R
   obtain ⟨M'', h''⟩ := exists_model_of_eq (y := 𝟙 (Sp R') ≫ spMap (algebraMap R R'))
     (by rw [Category.comp_id, Category.id_comp]) M'
   obtain ⟨M₁, h₁⟩ := (LiePull.lieModel_pullback _ _ G G₁ _ φ h R' (𝟙 _) T).1 M''
-  refine ⟨T, iT, mT, mR, tower, M₁, j, fun e => ?_, GlobalTheory.T.lie_model_isBaseChange _ G R R' _ V T M M' j hl⟩
+  refine ⟨T, iT, mT, mR, tower, M₁, j, fun e => ?_, _root_.GlobalTheory.CompanionTheory.Ar.lieModel_isBaseChange _ G R R' _ V T M M' j hl⟩
   have := hl e
   unfold LieModel.Lifts at this ⊢
   rw [h₁, h'', ← this]
@@ -139,9 +139,9 @@ theorem lie_quot_full : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Fiel
   have := hG'.comm
   have := hG'.smooth
   have : Mono τ.i := ⟨fun a b hab => τ.isKernel.hom_ext hab (toUnit_unique _ _)⟩
-  obtain ⟨io, hio, hinj, hsat⟩ := GlobalTheory.T.semiabelian_torus_lie_sub O K G GK φ hG hφ τ.X τ.i MT hMT E M
-  obtain ⟨f, hf⟩ := GlobalTheory.T.semiabelian_hom_lie_extends O K G G' GK τ.B φ φ' hG hG' hφ hφ' τ.q E E' M M'
-  have := (GlobalTheory.T.lie_model_finite_projective _ G' O _ E' M').2
+  obtain ⟨io, hio, hinj, hsat⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TsOk.saturated O K G GK φ hG hφ τ.X τ.i MT hMT E M
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieHomOk.hom_maps_lie O K G G' GK τ.B φ φ' hG hG' hφ hφ' τ.q E E' M M'
+  have := (_root_.GlobalTheory.CompanionTheory.Ar.lieModel_finite_projective _ G' O _ E' M').2
   obtain ⟨T, _, _, _, _, MK, j, hj, hbc⟩ := exists_fibre_model G GK φ hφ M
   obtain ⟨T', _, _, _, _, MK', j', hj', hbc'⟩ := exists_fibre_model G' τ.B φ' hφ' M'
   obtain ⟨I, hI, -⟩ := lieModel_exists_unique_diff _ _ GK K _ _ T MT MK τ.i

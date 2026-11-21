@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalSeriesJacobianChainRuleLinearPartStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFormalTorusCharacterLiftToLawStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalSeriesJacobianChainRuleLinearPart
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFormalTorusCharacterLiftToLaw
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartFH
 import ReciprocityTheory.DualLattices.TowerZeroSurjective
 import ReciprocityTheory.DualLattices.LinPairStatement
@@ -28,8 +28,8 @@ theorem exists_linDat_of_extSer : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field
   have hS1 : S⁻¹ * S = 1 := Matrix.nonsing_inv_mul S hdet
   have hS2 : S * S⁻¹ = 1 := Matrix.mul_nonsing_inv S hdet
   choose u1 hu1 hu1' using hu
-  choose u2 hu2 hu2' using GlobalTheory.T.exists_formalTorus_character_lift_to_law p C v O hv d r F hFH J A' hE.homI hA'
-  obtain ⟨hc1, -, hc3⟩ := GlobalTheory.T.formalSeriesJacobian_chain_rule_linearPart O d g Q hE.homQ.1
+  choose u2 hu2 hu2' using _root_.GlobalTheory.ChF.Lift.exists_char_lift p C v O hv d r F hFH J A' hE.homI hA'
+  obtain ⟨hc1, -, hc3⟩ := _root_.GlobalTheory.ChF.chain_rule_lin O d g Q hE.homQ.1
   let w : (Fin g ⊕ Fin g) ⊕ Fin r → PS O 1 d := Sum.elim (fun i => sub ![Q] (u1 i)) u2
   let e := Fintype.equivFin ((Fin g ⊕ Fin g) ⊕ Fin r)
   refine ⟨cp, hU, H, S⁻¹ * lin Q, _, fun k => w (e.symm k), ?_, ⟨hP, hPL⟩, ⟨?_, A', B' * S, hA', ?_, ?_⟩,

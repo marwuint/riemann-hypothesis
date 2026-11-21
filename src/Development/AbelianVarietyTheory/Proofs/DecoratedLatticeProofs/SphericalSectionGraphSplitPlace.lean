@@ -5,10 +5,14 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.GLintEqKOAndPrin
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasIwasawaDecompositionDoubledSplitPlace
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IdeleCharacterFinitePlaceComponentEqMulOfSplitStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormCmExtensionSplitPlaceEqZpowStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IdeleCharacterFinitePlaceComponentEqMulOfSplit
+import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TrivialParameterBound
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NormCmExtensionSplitPlaceEqZpow
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsDoubledUnitaryChartSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegralKeepsDoublingDiagonalAdicCompletioStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegralKeepsDoublingDiagonalAdicCompletio
 
 noncomputable section
 
@@ -58,8 +62,8 @@ theorem char_value {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     (o1 : ordL (toCompl h x.1) = ∑ i, max (d i) 0) (o2 : ordL (toCompl h' x.1) = -∑ i, min (d i) 0) (z : ℂ) :
     ((charAt χ⁻¹ v x : Circle) : ℂ) * GlobalTheory.Doubling.npow (absEv F E v x) z =
       (((val χ w)⁻¹ : ℂˣ) : ℂ) ^ (∑ i, d i) * (qV E w : ℂ) ^ (-z * ((∑ i, |d i| : ℤ) : ℂ)) := by
-  have habs := GlobalTheory.T.norm_cmExtension_splitPlace_eq_zpow _ _ _ hc v w h w' h' hne x
-  have hch := GlobalTheory.T.ideleCharacterFinitePlaceComponent_eq_mul_of_split _ _ χ⁻¹ v w h w' h' hne hall x
+  have habs := _root_.GlobalTheory.Doubling.AbsSplit.absEv_split _ _ _ hc v w h w' h' hne x
+  have hch := _root_.GlobalTheory.LFun.charAt_eq_locChar_mul_locChar _ _ χ⁻¹ v w h w' h' hne hall x
   have s1 : ∑ i, max (d i) 0 + -∑ i, min (d i) 0 = ∑ i, |d i| := by
     rw [← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]
     exact Finset.sum_congr rfl fun i _ => by rw [abs_eq_max_neg]; omega
@@ -98,7 +102,7 @@ theorem sphSec_split : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L →
     GlobalTheory.LFun.ResEta.val_mul_val hc.2.2.1 ((GlobalTheory.LFun.resEta_iff χ _).1 hχ) hne h h' (hU w h) (hU w' h')
   obtain ⟨f, hfK, hfi, hfP, hfa⟩ := GlobalTheory.T.exists_doubled_unitary_chart_split_place _ _ _ hc A.rank A.gram (GlobalTheory.Doubling.isHermND_gram A) (dblSp A).gram
     (gram_hdbl A) L v w h hv (IwSplit.isSelfDualAt_of_isSelfDualC hL v) e he
-  obtain ⟨κ, hκ, hP, hl, hq⟩ := GlobalTheory.T.exists_integral_keepsDoublingDiagonal_adicCompletion _ w A.rank ϖ hϖ d t k₁ k₂ ht hk₁ hk₂
+  obtain ⟨κ, hκ, hP, hl, hq⟩ := _root_.GlobalTheory.GraphShear.graph_shear _ w A.rank ϖ hϖ d t k₁ k₂ ht hk₁ hk₂
   have hp : f (ioAt A v (e.symm (k₁ * t * k₂)) * f.symm κ) = blkGL finSumFinEquiv (k₁ * t * k₂, 1) * κ := by
     rw [map_mul, f.apply_symm_apply, ioAt, hfi, e.apply_symm_apply, map_one]
   rw [← hp] at hP hl hq

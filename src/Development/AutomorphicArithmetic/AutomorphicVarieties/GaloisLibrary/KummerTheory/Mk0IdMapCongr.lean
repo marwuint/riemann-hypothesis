@@ -198,8 +198,6 @@ abbrev Xinf (N : ℕ) (U : Subgroup (G F Ω)) : Type := Dinf l N U →ₗ[ℤ_[l
 
 end Tower
 
-def errTwo (l : ℕ) : ℕ∞ := if l = 2 then 1 else 0
-
 section Res
 
 def resTriv {R Γ M U : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module R M]
@@ -218,17 +216,6 @@ def resInf (D : LData F Ω l) (e : ℤ) : H1 (qzTw D e) →ₗ[ℤ_[l]] (Uinf F 
 
 theorem resInf_mk (D : LData F Ω l) (e : ℤ) (z : Z1 (qzTw D e)) (u : Uinf F Ω l) :
     resInf D e (Submodule.Quotient.mk z) u = z.1 (toGS Ω _ u.1) := rfl
-
-def zmTw (D : LData F Ω l) (r : ℕ) (e : ℤ) :
-    Representation (ZMod (l ^ r)) (GS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))) (ZMod (l ^ r)) :=
-  scalRep (ZMod (l ^ r))
-    (((Units.map (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)).toMonoidHom).comp D.chi) ^ (-e))
-
-def ShaZm (D : LData F Ω l) (r : ℕ) (e : ℤ) : Submodule (ZMod (l ^ r)) (H1 (zmTw D r e)) :=
-  Sha1 (zmTw D r e) (locFam D.S D.A) (continuous_locFam D.S D.A)
-
-def resZm (D : LData F Ω l) (r : ℕ) : H1 (zmTw D r 0) →ₗ[ZMod (l ^ r)] (G F Ω → ZMod (l ^ r)) :=
-  resTriv (zmTw D r 0) (toGS Ω _) fun u m => by simp [zmTw]
 
 end Res
 

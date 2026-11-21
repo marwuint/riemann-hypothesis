@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InstMeasurableSpaceRealSU
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLatticeRationalVectorsInAdelicTranslate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HatKMConjImp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryWithDeterminantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsInvertibleUnitaryAdelicMatrixOfRationalUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryWithDeterminant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsInvertibleUnitaryAdelicMatrixOfRationalUnitary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeCongruenceIffCompletionStatement
 
 open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.AdLat GlobalTheory.UCls GlobalTheory.SUVol ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.UCls.KGrp
@@ -20,7 +20,7 @@ theorem GlobalTheory.UCls.exists_special_reduction : ∀ (E : Type) [Field E] [N
   have hRA : ∀ γ : GL (Fin r) E, (∀ x y, herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ x)
       ((γ : Matrix (Fin r) (Fin r) E) *ᵥ y) = herm G x y) →
       IsUA (IsCMField.complexConj E) G (ratM (maximalRealSubfield E) (γ : Matrix (Fin r) (Fin r) E)) :=
-    fun γ hγ => GlobalTheory.T.isInvertibleUnitaryAdelicMatrix_of_rational_unitary E r G _ (Matrix.isUnits_det_units γ).ne_zero hγ
+    fun γ hγ => _root_.GlobalTheory.RatUnit.isUA_ratM E r G _ (Matrix.isUnits_det_units γ).ne_zero hγ
   have hR1 : ∀ γ : GL (Fin r) E, ratM (maximalRealSubfield E) (γ : Matrix (Fin r) (Fin r) E) *
       ratM (maximalRealSubfield E) ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = 1 := fun γ => by
     rw [← ratM_mul, Units.mul_inv, ratM_one]
@@ -44,7 +44,7 @@ theorem GlobalTheory.UCls.exists_special_reduction : ∀ (E : Type) [Field E] [N
         ((γ : Matrix (Fin r) (Fin r) E) *ᵥ y) = herm G x y) ∧ (0 < r → (γ : Matrix (Fin r) (Fin r) E).det = u) := by
       rcases Nat.eq_zero_or_pos r with hr | hr
       · exact ⟨1, fun x y => by simp, fun h => absurd h (by omega)⟩
-      · obtain ⟨γ, h1, h2⟩ := GlobalTheory.T.exists_unitary_with_determinant E r G u hr hΛ.1 hΛ.2.1 hu
+      · obtain ⟨γ, h1, h2⟩ := _root_.GlobalTheory.UnitDet.main E r G u hr hΛ.1 hΛ.2.1 hu
         exact ⟨γ, h1, fun _ => h2⟩
     refine ⟨γ, k, fun _ => ⟨hγ, hk, ?_, ?_⟩⟩
     · exact isUA_mul _ G (isUA_mul _ G (isUA_mul _ G (hRA _ (hU hγ)) (hg i)) (isUA_inv _ G hk.1))

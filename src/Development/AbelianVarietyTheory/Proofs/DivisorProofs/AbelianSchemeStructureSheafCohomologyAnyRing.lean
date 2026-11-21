@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeStructureSheafCohomologyNoetherianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupIdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeStructureSheafCohomologyNoetherian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupId
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescendsToFinitelyGeneratedSubring
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsAlgHomOfIsBaseChange
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
@@ -117,13 +117,13 @@ theorem oStr_of_noetherian : OStr := by
   obtain ⟨S, B, _, φ, -, hfg, hB, hBg, hpb⟩ :=
     GlobalTheory.AbelianLimit.abelianScheme_descends_to_fg_subring R g A ∅ hA hg
   have : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing ℤ S
-  obtain ⟨hFP, hW, hBC1, hBC2⟩ := GlobalTheory.T.abelianScheme_structureSheafCohomology_noetherian S B g hB hBg
+  obtain ⟨hFP, hW, hBC1, hBC2⟩ := _root_.GlobalTheory.AbCohRing.oStr_noetherian S B g hB hBg
   have hAB : IsPullback φ A.hom B.hom (spMap (algebraMap S R)) := hpb.1
   obtain ⟨e1, he1⟩ := hBC1 R A.left A.hom φ hAB
   obtain ⟨e2, he2⟩ := hBC2 R A.left A.hom φ hAB
   have hp1 : IsBaseChange R (semiToLin (pullHO1 hAB.w)) := IsBaseChange.of_equiv e1 he1
   have hp2 : IsBaseChange R (semiToLin (pullHO2 hAB.w)) := IsBaseChange.of_equiv e2 he2
-  have hcomp := GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id
+  have hcomp := _root_.GlobalTheory.AbCoh.pull_comp_cup_id
   refine ⟨fp_of_tensor_equiv e1 hFP, ?_, ?_, ?_⟩
   · obtain ⟨eM, heM⟩ := hW
     exact wedge_of_isBaseChange hp1 hp2 (cup _) (cup _)

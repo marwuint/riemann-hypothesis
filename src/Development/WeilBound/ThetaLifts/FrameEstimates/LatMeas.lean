@@ -128,9 +128,6 @@ theorem latMeas : LatMeas := by
   refine Measurable.ennreal_tsum fun x => ENNReal.measurable_ofReal.comp ?_
   exact measurable_maj τ hC N ((continuous_mat_inv.matrix_mul continuous_const).matrix_mul continuous_const)
 
-theorem latMeas_of : GrpTop → LatMeas := by
-  exact fun _ => latMeas
-
 end PositivityTheory.ThKEst
 
 end

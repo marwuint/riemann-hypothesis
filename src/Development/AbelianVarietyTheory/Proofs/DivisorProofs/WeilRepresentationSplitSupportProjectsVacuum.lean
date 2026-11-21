@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PerCEmb
 import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumSplitPlaceReadsThetaClassicallyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicVacuumReadsMultipleClassicalVacuumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumSplitPlaceReadsThetaClassically
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicVacuumReadsMultipleClassicalVacuum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjAGphiEqSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaReadingLinearInjectiveAtOrthonormalFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenMapTranspose
@@ -383,7 +383,7 @@ theorem om_reads_projA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
     rfl
   have hSv := (hlat 1 S hS1).2
   obtain ⟨v, hv, -⟩ := (hgood S hSv).vac hs
-  obtain ⟨κ, -, hκ⟩ := GlobalTheory.T.adelicVacuum_reads_multiple_classicalVacuum D ψ θ V W r g hr X bas idx hP.weil.std hP.inf hP.std hP.even hX hs H hH ΛV ΛW S L
+  obtain ⟨κ, -, hκ⟩ := _root_.GlobalTheory.AdTh.VacLine.vac_reads D ψ θ V W r g hr X bas idx hP.weil.std hP.inf hP.std hP.even hX hs H hH ΛV ΛW S L
     hP.sigV hP.sigW hV hW (hV1 ▸ hS1) hL x s hx hinv f hf v hv
   obtain rfl : φ = κ • v := (reads_linear_injective D ψ θ V W r g hr X bas idx hP.weil.std hP.inf hP.std hP.even hX hs
     x hx f f _ _ hφ hκ).2.1 rfl
@@ -459,7 +459,7 @@ theorem om_reads_projA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
           rw [AdelicLatMove.mt_one]
           exact Matrix.map_one _ (RingHom.map_zero ((θ τ).comp (infPart D))) (RingHom.map_one ((θ τ).comp (infPart D)))
         rw [this, Matrix.one_mul, Matrix.mul_one]) hmv f hf
-    have hc := GlobalTheory.T.weilDatum_split_place_reads_theta_classically D ψ θ V W χV χW om hP r g hr X bas idx hX hs H hH _ ΛW _ Λ' Λ₁ L
+    have hc := _root_.GlobalTheory.AdTh.SplitClass.reads_om_split D ψ θ V W χV χW om hP r g hr X bas idx hX hs H hH _ ΛW _ Λ' Λ₁ L
       (MovedLat.isSelfDualC_hLat V _) (MovedLat.isSelfDualC_hLat V _) hW hΛ' hΛ₁ hL x s hx hinv _ hvac _ ih' a h₀ y₀ hsp
       ((suppAt_iff _ _ _).2 b2) hy₀ (latO_move V W ΛW h₀ h')
     have hle : tens Λ' L ≤ (tens Λ' L ⊓ tens S L) ⊔ (tens Λ' L ⊓ tens Λ₁ L) := tens_le L fun u hu => by

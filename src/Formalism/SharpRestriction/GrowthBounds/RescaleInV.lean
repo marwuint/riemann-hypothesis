@@ -20,8 +20,6 @@ def pairSubst {τ : Type} (a b : κ → MvPowerSeries τ C) : Fin 2 × κ → Mv
 def hAt (X : RawChart C d I κ) {τ : Type} (a b : κ → MvPowerSeries τ C) : MvPowerSeries τ C :=
   MvPowerSeries.subst (pairSubst a b) X.h
 
-def ee (i j : ℕ) : Fin 2 →₀ ℕ := Finsupp.single 0 i + Finsupp.single 1 j
-
 def inV (j : Fin 2) (f : PowerSeries C) : MvPowerSeries (Fin 2) C :=
   PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 2) C) f
 

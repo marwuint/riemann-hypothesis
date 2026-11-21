@@ -61,7 +61,4 @@ theorem conj_of_charpoly_eq_of_separable : ∀ (R : Type) [CommRing R], Set.Fini
     _ = γ * ↑a * ↑b⁻¹ := by rw [h1]
     _ = γ * (↑a * ↑b⁻¹) := by rw [mul_assoc]
 
-example : ∀ (R : Type) [CommRing R], Set.Finite {I : Ideal R | I.IsMaximal} → ∀ (n : ℕ) (γ δ : Matrix (Fin n) (Fin n) R), γ.charpoly = δ.charpoly → γ.charpoly.Separable → ∃ u : GL (Fin n) R, (u : Matrix (Fin n) (Fin n) R) * δ = γ * u :=
-  conj_of_charpoly_eq_of_separable
-
 end GlobalTheory.SemilocalConj

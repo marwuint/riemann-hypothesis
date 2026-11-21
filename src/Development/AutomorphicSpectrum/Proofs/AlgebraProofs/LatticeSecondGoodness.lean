@@ -3,14 +3,14 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLattice
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocFreeMapMkQIff
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MemSpanOverOfMem
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SmulMemSpanOver
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeSummandStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KernelGraphBaseChangeHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeImageBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeSummand
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChange
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KernelGraphBaseChangeHolds
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeImageBaseChange
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacterLatticeFibreIdealLocallyFreeStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacterLatticeGraphComapLocallyFreeStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacterLatticeKernelLocallyFreeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacterLatticeBaseChangeFreeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacterLatticeBaseChangeFree
 
 open GlobalTheory.CompanionTheory.Ar.Num
 
@@ -133,18 +133,18 @@ theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Typ
   obtain ⟨hdL, hdB⟩ := GlobalTheory.T.character_lattice_fibre_ideal_locally_free D R p w χ hc hB hG1 hG2
   obtain ⟨hsL, hsB⟩ := GlobalTheory.T.character_lattice_graph_comap_locally_free D R p w χ hc hB hG1 hG2
   have hkL := GlobalTheory.T.character_lattice_kernel_locally_free D R p w χ hc hB hG1 hG2 haf
-  have h68 := GlobalTheory.T.lattice_good_base_change D R p w χ hc hB hG1
+  have h68 := _root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main D R p w χ hc hB hG1
   refine ⟨fun τ => ⟨hkL τ, fun i => ⟨hdL τ i, hsL τ i⟩⟩, ?_⟩
   intro C _ _ _ _ RC hRC
   have hbc := h68.2 C RC hRC
-  have h69 := GlobalTheory.T.kernel_graph_base_change_holds D R p w χ hc hB hG1 C RC hRC
-  have h70 := GlobalTheory.T.lattice_image_base_change D R p w χ hc hB hG1 haf C RC hRC
+  have h69 := _root_.GlobalTheory.CompanionTheory.Ar.Num.kernel_graph_base_change D R p w χ hc hB hG1 C RC hRC
+  have h70 := _root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeImageBaseChange.imH_bc D R p w χ hc hB hG1 haf C RC hRC
   refine ⟨⟨fun τ i => ?_, fun τ i => ?_, fun τ i => ?_, fun τ => ?_⟩,
-    fun τ => ⟨GlobalTheory.T.character_lattice_base_change_free D R p w χ hc hB hG1 hG2 haf C RC hRC τ,
+    fun τ => ⟨_root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodness.KerBC.main D R p w χ hc hB hG1 hG2 haf C RC hRC τ,
       fun i => ⟨hdB C RC hRC τ i, hsB C RC hRC τ i⟩⟩⟩
   · beta_reduce
     rw [(hbc.2 τ).1, ← span_bcMap_annSub Ω C n i]
-    exact (GlobalTheory.T.locally_free_base_change_summand R RC hRC (bcMap Ω C (Fin n)) (isBaseChange_bcMap Ω C (Fin n))
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.Num.summand_baseChange R RC hRC (bcMap Ω C (Fin n)) (isBaseChange_bcMap Ω C (Fin n))
       (D.af R p (χ τ)) (annSub Ω n i) (h68.1 τ).1.1 (hG2.ann τ i)).1
   · rw [(h69 τ).1 i]
     exact loc_free_base_change R RC hRC (hG2.kk τ i)

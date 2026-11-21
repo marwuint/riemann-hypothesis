@@ -1,17 +1,24 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDerivAtDOmT
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PrinInf
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameOfHeisDer
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsThetaFam
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SkewGramHalfModule
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HeckeLPartialContinuationHolds
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeilSectionIntegrableAndContinuous
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchrodingerFunctionLinearThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemSmoothFunctionsOfClosedRightDerivatives
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.MeanPair
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.RegularisingElement
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.EisensteinResidue
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.FirstTermIdentitySchrodinger
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.EisensteinMaximalParabolic
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SphericalEisensteinSeriesOnGroup
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EisensteinIsotropicLine
+import Development.AbelianVarietyTheory.Definitions.Foundations.AnalyticOnNhdTsumNpow
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinPolesStd
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinSimplePoleOfDoublingMethod
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.WeilThetaConvergence
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOneP
+
 open scoped Matrix NNReal TensorProduct Classical
 open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
@@ -48,35 +55,6 @@ theorem Induced.comp {R R' : (GA D S → ℂ) → (GA D S → ℂ)} (h : Induced
   obtain ⟨f₁, h₁, e₁⟩ := h' f hf
   obtain ⟨f₂, h₂, e₂⟩ := h f₁ h₁
   exact ⟨f₂, h₂, fun L hL => by beta_reduce; rw [e₁ L hL, e₂ L hL]⟩
-
-theorem Induced.smul (hω : IsWeilDatumO ψ S T χS χT om) (c : ℂ) {R : (GA D S → ℂ) → (GA D S → ℂ)}
-    (h : Induced ψ om θ R) : Induced ψ om θ fun F => c • R F := fun f hf => by
-  obtain ⟨f₁, h₁, e₁⟩ := h f hf
-  refine ⟨c • f₁, GlobalTheory.OrientedHeis.theta_smul c h₁, fun L hL => ?_⟩
-  beta_reduce
-  rw [e₁ L hL]
-  funext g
-  rw [map_smul, hL.2.1 c _ (hω.om_pres _ _ h₁)]
-  rfl
-
-theorem Induced.add (hω : IsWeilDatumO ψ S T χS χT om) {R R' : (GA D S → ℂ) → (GA D S → ℂ)}
-    (h : Induced ψ om θ R) (h' : Induced ψ om θ R') : Induced ψ om θ fun F => R F + R' F := fun f hf => by
-  obtain ⟨f₁, h₁, e₁⟩ := h f hf
-  obtain ⟨f₂, h₂, e₂⟩ := h' f hf
-  refine ⟨f₁ + f₂, GlobalTheory.OrientedHeis.theta_add h₁ h₂, fun L hL => ?_⟩
-  beta_reduce
-  rw [e₁ L hL, e₂ L hL]
-  funext g
-  rw [map_add, hL.1 _ _ (hω.om_pres _ _ h₁) (hω.om_pres _ _ h₂)]
-  rfl
-
-section Mix
-
-variable {S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
-
-variable {μ : Measure (Mx D T.rank ρ)} {𝓕 : Set (Mx D T.rank ρ)}
-
-end Mix
 
 end GlobalTheory.Core.Rk.SchCen
 

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RealAt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ScalInvFrame
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChangedFrameRationalUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChangedFrameRationalUnitary
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PosTieAt
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SourceScalarLatticeTupleConstantStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepDeterminantConstantUnitIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SourceScalarLatticeTupleConstant
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepDeterminantConstantUnitIndependent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SiteSystemRanksEqDatumRanks
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RkLe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EquivFrameBTheta
@@ -18,9 +18,9 @@ theorem GlobalTheory.TwV.DelA.unit_mul_scal_eq_scT : AllSites (fun {D L hT Gi Gl
   have hps := GlobalTheory.TwV.DelA.posTie_at S hpos ι hι
   intro d j hj La La'
   have hr := GlobalTheory.TwV.DelB.sysS_ranks S
-  have hfr := GlobalTheory.T.changedFrame_rational_unitary S d j (Nat.le_of_succ_le hj) (hr.2.2.1 j) La
-  have hsc := GlobalTheory.T.sourceScalar_latticeTuple_constant S d j hj ⟨La'.1⟩ La
-  have hun := (GlobalTheory.T.stepDeterminantConstant_unit_independent S hpos ι hι j hj La.1 La'.1).2.1
+  have hfr := _root_.GlobalTheory.TwV.DelA.changed_frame_unitary S d j (Nat.le_of_succ_le hj) (hr.2.2.1 j) La
+  have hsc := _root_.GlobalTheory.TwV.DelA.source_scalar_const S d j hj ⟨La'.1⟩ La
+  have hun := (_root_.GlobalTheory.TwV.DelA.cKs_unit_indep S hpos ι hι j hj La.1 La'.1).2.1
   have hcA := GlobalTheory.TwV.DelA.scal_inv_frame (sysS H X std) D (hT.gat_pos u w hg) ℂ_[D.what₂.places.resChar w] ι (J.rho std) hps.1 d.fd2 j La (hr.2.2.1 j) (mM d j (Nat.le_of_succ_le hj) La) hfr.1 hfr.2.1
   have key : cA (sysS H X std) ℂ_[D.what₂.places.resChar w] j (BOf d.fd2 j La) * sO d ι j La * ι (d.uS S j La) =
       ι (kS J j (Nat.le_of_succ_le hj) La.1 * cOp (sysS H X std) D (hT.gat_pos u w hg) j (t.O u μ).dgen) := by

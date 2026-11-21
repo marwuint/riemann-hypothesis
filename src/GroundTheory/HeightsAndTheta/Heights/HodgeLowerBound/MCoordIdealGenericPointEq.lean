@@ -1,9 +1,10 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.PermFinTwoUniv
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.DetLineSmooth
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagComplexPointsOverX
 import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.PCurveComplexPoint
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualCurvePoint
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -15,8 +16,6 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 section Boundary
-
-def bdPts (Bd : Finset (Ideal (MRing ι))) : Set ((Σ k, ι k) → ℂ) := ⋃ B ∈ Bd, mcPts B
 
 theorem mcPts_torus {B : Ideal (MRing ι)} (hB : IsMultiHomogIdeal B) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts B)
     {c : K → ℂ} (hc : ∀ k, c k ≠ 0) : torusSmul c z ∈ mcPts B := by
@@ -36,9 +35,5 @@ theorem mcPts_torus {B : Ideal (MRing ι)} (hB : IsMultiHomogIdeal B) {z : (Σ k
   | smul r x _ hx => rw [smul_eq_mul, map_mul, eval_mul, hx, mul_zero]
 
 end Boundary
-
-section Ample
-
-end Ample
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree.ComponentDataEquivalence

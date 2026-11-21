@@ -38,18 +38,6 @@ instance : Group (Heisenberg B) :=
 instance [TopologicalSpace F] [TopologicalSpace W] : TopologicalSpace (Heisenberg B) :=
   TopologicalSpace.induced (fun g => (g.vec, g.cen)) inferInstance
 
-theorem mul_eq_central_mul (h2 : (2 : F) ≠ 0) (hB : B.IsAlt) (g h : Heisenberg B) :
-    g * h = (⟨0, B g.vec h.vec⟩ : Heisenberg B) * (h * g) := by
-  ext
-  · simp [add_comm]
-  · simp [← hB.neg_eq g.vec h.vec]; field_simp; ring
-
-theorem mul_ne_mul (h2 : (2 : F) ≠ 0) (hB : B.IsAlt) {x y : W} (hxy : B x y ≠ 0) :
-    (⟨x, 0⟩ : Heisenberg B) * ⟨y, 0⟩ ≠ ⟨y, 0⟩ * ⟨x, 0⟩ := by
-  intro h
-  rw [mul_eq_central_mul h2 hB, mul_eq_right] at h
-  exact hxy (congrArg Heisenberg.cen h)
-
 def IsIrrSmoothOf [TopologicalSpace F] [TopologicalSpace W] (ψ : AddChar F ℂ) {S : Type} [AddCommGroup S] [Module ℂ S]
     (ρ : Representation ℂ (Heisenberg B) S) : Prop :=
   PRep.IsSmooth ρ ∧ ρ.IsIrreducible ∧ ∀ (t : F) (v : S), ρ ⟨0, t⟩ v = ψ t • v
@@ -383,9 +371,6 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 theorem isCompact_int : IsCompact (𝒪[F] : Set F) := IsNonarchimedeanLocalField.isCompact_closedBall F 1
 
-theorem int_mem_nhds : (𝒪[F] : Set F) ∈ 𝓝 (0 : F) :=
-  (IsValuativeTopology.hasBasis_nhds_zero' F).mem_iff.2 ⟨1, one_ne_zero, fun _ hx => le_of_lt (α := ValueGroupWithZero F) hx⟩
-
 theorem exists_ne_zero {p : F → Prop} (hp : ∀ᶠ r in 𝓝 (0 : F), p r) : ∃ r, r ≠ 0 ∧ p r := by
   obtain ⟨γ, hγ, hs⟩ := (IsValuativeTopology.hasBasis_nhds_zero' F).mem_iff.1 hp
   obtain ⟨y, rfl⟩ := ValuativeRel.valuation_surjective γ
@@ -678,59 +663,6 @@ theorem StoneVonNeumann_holds : StoneVonNeumann := by
     exact ⟨(f.ofBijective hf).symm.trans (f'.ofBijective hf')⟩
 
 namespace SvN
-
-open ValuativeRel
-
-theorem exists_char (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] :
-    ∃ ψ : AddChar F ℂ, Continuous ψ ∧ ψ ≠ 1 := by
-  obtain ⟨r, hr, hr1⟩ := Valuation.IsNontrivial.exists_lt_one (v := valuation F)
-  let O : AddSubgroup F := (𝒪[F]).toAddSubgroup
-  have hx : r⁻¹ ∉ O := fun h => by
-    have h' : valuation F r⁻¹ ≤ 1 := h
-    rw [map_inv₀, inv_le_one₀ (zero_lt_iff.2 (by simpa using hr))] at h'
-    exact absurd hr1 (not_lt.2 h')
-  have hx' : ((r⁻¹ : F) : F ⧸ O) ≠ 0 := fun h => hx ((QuotientAddGroup.eq_zero_iff _).1 h)
-  obtain ⟨g, hg⟩ : ∃ g : F ⧸ O →+ Additive ℂˣ, g (r⁻¹ : F) ≠ 0 := by
-    obtain ⟨χ, hχ⟩ := CharacterModule.exists_character_apply_ne_zero_of_ne_zero hx'
-    let j : AddCircle (1 : ℚ) →+ AddCircle (1 : ℝ) := QuotientAddGroup.map _ _ (Rat.castHom ℝ).toAddMonoidHom (by
-      rintro _ ⟨k, rfl⟩
-      exact ⟨k, by simp⟩)
-    have hj : ∀ x, j x = 0 → x = 0 := by
-      intro x
-      induction x using QuotientAddGroup.induction_on with
-      | H q =>
-        intro h
-        obtain ⟨k, hk⟩ := (QuotientAddGroup.eq_zero_iff _).1 (show ((q : ℝ) : AddCircle (1 : ℝ)) = 0 from h)
-        refine (QuotientAddGroup.eq_zero_iff _).2 ⟨k, ?_⟩
-        have : ((k : ℚ) : ℝ) = q := by simpa using hk
-        simpa using (by exact_mod_cast this : (k : ℚ) = q)
-    refine ⟨AddMonoidHom.mk' (fun x => Additive.ofMul (Circle.toUnits (AddCircle.toCircle (j (χ x))))) fun a b => by
-      rw [map_add, map_add, AddCircle.toCircle_add, map_mul, ofMul_mul], fun h => hχ (hj _ ?_)⟩
-    refine AddCircle.injective_toCircle one_ne_zero (Subtype.ext ?_)
-    rw [AddCircle.toCircle_zero]
-    exact congrArg (fun t : Additive ℂˣ => (t.toMul : ℂ)) h
-  have := QuotientAddGroup.discreteTopology (O.isOpen_of_mem_nhds int_mem_nhds)
-  refine ⟨{ toFun := fun t => ((g t).toMul : ℂ), map_zero_eq_one' := by simp, map_add_eq_mul' := fun a b => by simp }, ?_, fun h => hg ?_⟩
-  · exact (continuous_of_discreteTopology (f := fun q : F ⧸ O => ((g q).toMul : ℂ))).comp QuotientAddGroup.continuous_mk
-  · exact Additive.toMul.injective (Units.ext (DFunLike.congr_fun h r⁻¹))
-
-def planeForm (F : Type) [Field F] : LinearMap.BilinForm F (F × F) :=
-  LinearMap.mk₂ F (fun x y => x.1 * y.2 - x.2 * y.1) (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
-    (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
-
-theorem planeForm_isAlt (F : Type) [Field F] : (planeForm F).IsAlt := fun x => by simp [planeForm, mul_comm]
-
-theorem planeForm_nondegenerate (F : Type) [Field F] : (planeForm F).Nondegenerate := by
-  constructor <;> intro x hx <;> have h1 := hx (1, 0) <;> have h2 := hx (0, 1) <;> simp [planeForm] at h1 h2 <;>
-    exact Prod.ext (by assumption) (by assumption)
-
-theorem plane_model (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (h2 : (2 : F) ≠ 0) :
-    (∃ g k : Heisenberg (planeForm F), g * k ≠ k * g) ∧
-    ∃ ψ : AddChar F ℂ, Continuous ψ ∧ ψ ≠ 1 ∧ ∃ (S : Type) (_ : AddCommGroup S) (_ : Module ℂ S)
-      (ρ : Representation ℂ (Heisenberg (planeForm F)) S), Heisenberg.IsIrrSmoothOf ψ ρ := by
-  refine ⟨⟨_, _, Heisenberg.mul_ne_mul h2 (planeForm_isAlt F) (x := (1, 0)) (y := (0, 1)) (by simp [planeForm])⟩, ?_⟩
-  obtain ⟨ψ, h, h'⟩ := exists_char F
-  exact ⟨ψ, h, h', (StoneVonNeumann_holds F h2 (F × F) _ (planeForm_isAlt F) (planeForm_nondegenerate F) ψ h h').1⟩
 
 end SvN
 

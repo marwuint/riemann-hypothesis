@@ -3,7 +3,7 @@ import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Formalism.SatakeDualWeyl.StatementG
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvMemDoubleCosetAndComm
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNormEqXModMonicOfAdicCompleteInvolutionStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNormEqXModMonicOfAdicCompleteInvolution
 
 open IsDedekindDomain NumberField Formalism.UG GlobalTheory.SelfDualGenus
 open scoped TensorProduct Matrix
@@ -15,43 +15,6 @@ namespace GlobalTheory.UnitaryDoubleCoset
 section Abstract
 
 variable {O L : Type} [CommRing O] [CommRing L] {n : Type} [Fintype n] [DecidableEq n]
-
-theorem cT_pow (c : O →+* O) {B : Matrix n n O} (hB : cT c B = B) (m : ℕ) : cT c (B ^ m) = B ^ m := by
-  induction m with
-  | zero => simp [cT_one]
-  | succ m ih => rw [pow_succ, cT_mul, ih, hB, ← pow_succ', pow_succ]
-
-theorem cT_aeval (c : O →+* O) {B : Matrix n n O} (hB : cT c B = B) (p : Polynomial O) :
-    cT c (Polynomial.aeval B p) = Polynomial.aeval B (p.map c) := by
-  induction p using Polynomial.induction_on' with
-  | add p q hp hq =>
-    rw [Polynomial.map_add, map_add, map_add, ← hp, ← hq]
-    ext i j; simp [cT]
-  | monomial m a =>
-    rw [Polynomial.map_monomial, Polynomial.aeval_monomial, Polynomial.aeval_monomial,
-      ← Algebra.smul_def, ← Algebra.smul_def]
-    conv_rhs => rw [← cT_pow c hB m]
-    ext i j; simp [cT]
-
-theorem aeval_intertwine (ι : O →+* L) {B B' : Matrix n n O} {g : Matrix n n L}
-    (h : B.map ι * g = g * B'.map ι) (p : Polynomial O) :
-    (Polynomial.aeval B p).map ι * g = g * (Polynomial.aeval B' p).map ι := by
-  have hp : ∀ m : ℕ, (B ^ m).map ι * g = g * (B' ^ m).map ι := by
-    intro m
-    induction m with
-    | zero => simp
-    | succ m ih =>
-      rw [pow_succ, pow_succ, Matrix.map_mul, Matrix.map_mul, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih,
-        Matrix.mul_assoc]
-  induction p using Polynomial.induction_on' with
-  | add p q hp hq =>
-    rw [map_add, map_add, Matrix.map_add _ (map_add ι), Matrix.map_add _ (map_add ι), Matrix.add_mul,
-      Matrix.mul_add, hp, hq]
-  | monomial m a =>
-    have e : ∀ M : Matrix n n O, (a • M).map ι = ι a • M.map ι := fun M => by
-      ext i j; simp
-    rw [Polynomial.aeval_monomial, Polynomial.aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def, e, e,
-      Matrix.smul_mul, Matrix.mul_smul, hp]
 
 open IsDedekindDomain NumberField in
 open scoped TensorProduct Matrix in
@@ -271,7 +234,7 @@ theorem doubleCoset_unitary_of_GL (K : Type) [Field K] [NumberField K] (v : Heig
     rw [Valuation.map_sub_swap, hx2]
   obtain ⟨k₁, hk₁, k₂, hk₂, ⟨M, hM⟩, e'⟩ :=
     exists_unitary_factors (O := Ov K v) (Ov K v).subtype (c := c) (σ := σ) (fun _ => rfl) hc
-      (GlobalTheory.T.exists_norm_eq_X_mod_monic_of_adicComplete_involution (v.adicCompletionIntegers K) _ c hc hI hω) hg hg' h k e
+      (_root_.GlobalTheory.InertNorm.exists_dvd_mul_map_sub_X (v.adicCompletionIntegers K) _ c hc hI hω) hg hg' h k e
   refine ⟨k₁, hk₁, k₂, ⟨hk₂, ?_⟩, e'⟩
   refine GlobalTheory.UnitarySwap.mem_GLint_of_unitary (J := 1) hσ (one_mem _) hk₂ fun i j => ?_
   rw [hM]

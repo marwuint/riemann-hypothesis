@@ -13,15 +13,6 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 variable {k r : ℕ}
 
-theorem measurable_rmul_mt (a : Mat k r) :
-    @Measurable (Mt k r) (Mt k r) _ _ (fun x => (Matrix.of x * a : Mat k r)) := by
-  apply measurable_pi_lambda
-  intro i
-  apply measurable_pi_lambda
-  intro j
-  simp only [Matrix.mul_apply, Matrix.of_apply]
-  fun_prop
-
 theorem measurable_lmul_mt (a : Mat k r) :
     @Measurable (Mt k r) (Mt k r) _ _ (fun x => (a * Matrix.of x : Mat k r)) := by
   apply measurable_pi_lambda

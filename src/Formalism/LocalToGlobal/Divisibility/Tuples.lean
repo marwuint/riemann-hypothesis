@@ -107,8 +107,6 @@ def openChr : Subgroup (Chr F E L) where
 def finChar : Subgroup (Chr F E L) :=
   kills Lˣ (ratId F E).range ⊓ openChr F E L ⊓ CommGroup.torsion (Chr F E L)
 
-abbrev FinChar : Type := ↥(finChar F E L)
-
 def tupGrp (S : Set ℕ) : Subgroup (Chr F E L) :=
   finChar F E L ⊓ kills Lˣ (idF F E).range ⊓ (⨅ v : HeightOneSpectrum (𝓞 F), kills Lˣ (wildAt E v)) ⊓
     ⨅ (v : HeightOneSpectrum (𝓞 F)) (_ : ¬ GoodPl E S v), kills Lˣ (inertAt E v)
@@ -137,9 +135,6 @@ def TrivAt (ξ : Chr F E L) (v : HeightOneSpectrum (𝓞 F)) : Prop := suppAt E 
 def IsBaseChar (p : ℕ) (δ : Chr F E L) : Prop :=
   p.Prime ∧ ∀ v : HeightOneSpectrum (𝓞 F), (plc v = p → InertOrd δ v 15) ∧ (plc v ≠ p → v ∉ Qprime δ)
 
-def IsTwistChar (l : ℕ) (ψ : Chr F E L) : Prop :=
-  (∃ k : ℕ, ψ ^ l ^ k = 1) ∧ ∀ v : HeightOneSpectrum (𝓞 F), plc v = l → TrivAt ψ v
-
 variable (F E) in
 
 def toRInt : 𝓞 E →+* RInt F E :=
@@ -158,9 +153,6 @@ open Classical in
 
 def resChar (ξ : Chr F E L) (P : HeightOneSpectrum (𝓞 E)) : (𝓞 E ⧸ P.asIdeal)ˣ →* Lˣ :=
   if h : ∃ χ, IsResChar ξ P χ then h.choose else 1
-
-def resDet (ξ : Chr F E L) (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) : GL (Fin n) (𝓞 E ⧸ P.asIdeal) →* Lˣ :=
-  (resChar ξ P).comp Matrix.GeneralLinearGroup.det
 
 end Ram
 
@@ -195,33 +187,11 @@ section Maps
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {K : Type} [Field K] [NumberField K] [StarRing K] {S : Set ℕ}
 
-def IsTupleMap (muAt : HeightOneSpectrum (𝓞 K) → Tup F E K S) : Prop :=
-  (∀ w, muAt (conjPl w) = muAt w) ∧ {w | muAt w ≠ mu0 F E K S}.Finite ∧
-    ∀ w, plc w ∉ QprimeN (muAt w : Chr F E K)
-
 def deAt (p : ℕ) (δ0 δ0' : Tup F E K S) (w : HeightOneSpectrum (𝓞 K)) : Tup F E K S :=
   if plc w = p then δ0' else δ0
 
 def muTw (p : ℕ) (δ0 δ0' : Tup F E K S) (ψ : HeightOneSpectrum (𝓞 K) → Tup F E K S)
     (w : HeightOneSpectrum (𝓞 K)) : Tup F E K S := deAt p δ0 δ0' w * ψ w
-
-structure IsTupleMapTW (p p' : ℕ) (δ0 δ0' : Tup F E K S) (ψ : HeightOneSpectrum (𝓞 K) → Tup F E K S)
-    (avoid : HeightOneSpectrum (𝓞 K) → Set (HeightOneSpectrum (𝓞 F)))
-    (muAt : HeightOneSpectrum (𝓞 K) → Tup F E K S) : Prop where
-  ne : p ≠ p'
-  base : IsBaseChar p (δ0 : Chr F E K)
-  base' : IsBaseChar p' (δ0' : Chr F E K)
-  psi_conj : ∀ w, ψ (conjPl w) = ψ w
-  psi_tw : ∀ w, IsTwistChar (plc w) (ψ w : Chr F E K)
-  psi_Q : ∀ w, ∀ v ∈ Qprime (ψ w : Chr F E K), plc v ≠ plc w ∧ plc v ≠ p ∧ plc v ≠ p' ∧ v ∉ avoid w
-  conj : ∀ w, muAt (conjPl w) = muAt w
-  fin : {w | muAt w ≠ mu0 F E K S}.Finite
-  ref_or_tw : ∀ w, (muAt w = mu0 F E K S ∧ ψ w = 1) ∨ muAt w = muTw p δ0 δ0' ψ w
-
-def PsiFromBelow {K0 : Type} [Field K0] [NumberField K0] [Algebra K0 K]
-    (ψ0 : HeightOneSpectrum (𝓞 K0) → Tup F E K S) (ψ : HeightOneSpectrum (𝓞 K) → Tup F E K S) : Prop :=
-  ∀ (w' : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 K0)), w'.asIdeal.under (𝓞 K0) = w.asIdeal →
-    ∃ a : ℕ, a.Coprime (plc w') ∧ ψ w' = ψ0 w ^ a
 
 end Maps
 
@@ -235,18 +205,6 @@ structure IsMu0 (σ : E →ₐ[F] E) (Ψ : Finset (E →+* L)) (e : (E →+* L) 
   trivF : (idF F E).range ≤ μ.ker
   tame : ∀ v : HeightOneSpectrum (𝓞 F), wildAt E v ≤ μ.ker
   ram : ∀ v : HeightOneSpectrum (𝓞 F), v ∈ Qprime μ ↔ plc v ∈ G
-
-def chiOf (μ : Chr F E L) (P : HeightOneSpectrum (𝓞 E)) : (𝓞 E ⧸ P.asIdeal)ˣ →* Lˣ := (resChar μ P)⁻¹
-
-def TameAtG {m : ℕ} (g : ℕ) (om : (ZMod g)ˣ →* Lˣ) (rd : Set (HeightOneSpectrum (𝓞 E)))
-    (μ : Fin m → Chr F E L) : Prop :=
-  Function.Injective om ∧ ∀ P ∈ rd, plc P = g →
-    ∀ (j : Fin m) (a : (𝓞 E ⧸ P.asIdeal)ˣ) (u : (ZMod g)ˣ) (n : ℤ),
-      (a : 𝓞 E ⧸ P.asIdeal) = (n : 𝓞 E ⧸ P.asIdeal) → (u : ZMod g) = (n : ZMod g) →
-      chiOf (μ j) P a = om u ^ (2 * (j.val + 1))
-
-def tupleOf {m : ℕ} {S : Set ℕ} (μ : Fin m → Chr F E L) (ξ : Tup F E L S) : Fin m → Chr F E L :=
-  fun j => μ j * (ξ : Chr F E L)
 
 end Ref
 

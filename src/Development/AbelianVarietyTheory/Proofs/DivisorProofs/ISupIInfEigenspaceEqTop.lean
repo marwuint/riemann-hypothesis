@@ -1,5 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.GoodReductionModelReading
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.LevelCuspCharacters
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RePosOfIsMultIP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocallyCompactSecondCountableT2
@@ -68,13 +70,6 @@ structure IsPosOn (Y : Submodule ℂ X) (B : X → X → ℂ) : Prop where
   symm : ∀ x ∈ Y, ∀ y ∈ Y, B y x = star (B x y)
   pos : ∀ x ∈ Y, x ≠ 0 → 0 < (B x x).re
 
-example : IsPosOn (⊤ : Submodule ℂ ℂ) (fun x y => star x * y) where
-  lin x _ y _ z _ c := by simp only [smul_eq_mul]; ring
-  symm x _ y _ := by simp [mul_comm]
-  pos x _ hx := by
-    have : star x * x = (Complex.normSq x : ℂ) := by rw [Complex.normSq_eq_conj_mul_self]; rfl
-    rw [this]; exact Complex.normSq_pos.2 hx
-
 variable {Y : Submodule ℂ X} {B : X → X → ℂ}
 
 theorem IsPosOn.zero_right (h : IsPosOn Y B) {x : X} (hx : x ∈ Y) : B x 0 = 0 := by
@@ -128,122 +123,6 @@ theorem IsPosOn.le_iSup_eigen [FiniteDimensional ℂ Y] (h : IsPosOn Y B) (T : I
     exact congrArg Subtype.val (hx i)
   exact fun x hx => this (x := ⟨x, hx⟩) Submodule.mem_top
 
-theorem IsPosOn.iSupIndep (h : IsPosOn Y B) (part : I → Submodule ℂ X) (hle : ∀ i, part i ≤ Y)
-    (horth : ∀ i k, i ≠ k → ∀ x ∈ part i, ∀ y ∈ part k, B x y = 0) : iSupIndep part := by
-  intro i
-  rw [Submodule.disjoint_def]
-  intro x hx hx'
-  by_contra h0
-  have h1 := h.pos x (hle i hx) h0
-  have h2 : ∀ y ∈ ⨆ k, ⨆ (_ : k ≠ i), part k, y ∈ Y ∧ B x y = 0 := by
-    intro y hy
-    refine Submodule.iSup_induction (motive := fun y => y ∈ Y ∧ B x y = 0) _ hy ?_ ⟨Y.zero_mem, h.zero_right (hle i hx)⟩ ?_
-    · intro k y hy
-      by_cases hk : k = i
-      · simp only [hk, ne_eq, not_true_eq_false, iSup_neg, not_false_eq_true, Submodule.mem_bot] at hy
-        rw [hy]; exact ⟨Y.zero_mem, h.zero_right (hle i hx)⟩
-      · rw [iSup_pos hk] at hy
-        exact ⟨hle k hy, horth i k (Ne.symm hk) x hx y hy⟩
-    · intro y z hy hz
-      exact ⟨Y.add_mem hy.1 hz.1, by rw [h.add_right (hle i hx) hy.1 hz.1, hy.2, hz.2, add_zero]⟩
-  rw [(h2 x hx').2] at h1
-  simp at h1
-
 end Form
-
-section Local
-
-variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (S : D.what₂.Tau → SPar)
-  (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)))
-  (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ))
-
-def KeepsAt : Prop :=
-  ∀ P d R, Hecke₂ V J χ Sb P d R → ∀ T ∈ goodPart θ M J χ e, heckeOn M R T ∈ goodPart θ M J χ e
-
-def CommuteAt : Prop :=
-  ∀ P d R P' d' R', Hecke₂ V J χ Sb P d R → Hecke₂ V J χ Sb P' d' R' →
-    ∀ T ∈ goodPart θ M J χ e, heckeOn M R (heckeOn M R' T) = heckeOn M R' (heckeOn M R T)
-
-def AdjointAt : Prop :=
-  ∀ P d R, Hecke₂ V J χ Sb P d R → (∃ R', Hecke₂ V J χ Sb P (dualLab d) R') ∧
-    ∀ R', Hecke₂ V J χ Sb P (dualLab d) R' →
-      ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ →
-        ∀ T ∈ goodPart θ M J χ e, ∀ T' ∈ goodPart θ M J χ e,
-          ipM M μ 𝓕 (heckeOn M R T) T' = ipM M μ 𝓕 T (heckeOn M R' T')
-
-def SchurAt : Prop := ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), SchurMult θ M J χ μ 𝓕
-
-def FiniteAt : Prop := FiniteDimensional ℂ (goodPart θ M J χ e)
-
-variable {θ V S M J χ Sb e}
-
-theorem exists_haar (V : HSp D) : ∃ μ : Measure (GA D V), μ.IsHaarMeasure := by
-  have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1
-  have : BorelSpace (GA D V) := ⟨rfl⟩
-  have : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
-  have : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _
-  have : IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E) :=
-    IsModuleTopology.isTopologicalRing (AF D.host.F) _
-  have : IsTopologicalGroup (GA D V) :=
-    inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))
-  exact ⟨Measure.haar, inferInstance⟩
-
-end Local
-
-open GlobalTheory.IndefiniteRowSideFullHecke.GoodReductionModelReading
-
-def AtLifts (D : D7)
-    (Φ : (D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) → ∀ (V : HSp D) (S : D.what₂.Tau → SPar), DSModel V S →
-      Set (GA D V) → (GA D V → ℂ) → Finset (HeightOneSpectrum (𝓞 D.host.F)) → ((GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) → Prop) : Prop :=
-  ∀ (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ →
-  ∀ (pb : Fin 2 → 𝓞 D.host.E) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)), Lev.IsTypePlaces D.host.g pb Pg →
-  ∀ (pl : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq D.host ≃ ↥Pg), IsPlaceMatch pl →
-  ∀ (red : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq D.host, Formalism.L2.DIV.kP (pl v).1 ≃+* ZMod (D.host.g v.1))
-    (ψ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, AddChar (Formalism.L2.DIV.kP PP) ℂ), Formalism.L2.DIV.IsGenericPsi Pg ψ →
-  ∀ (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ), GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.IsGeneratorFamily (H := D.host) om →
-  ∀ (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), IsBadSet D Sb →
-  ∀ (j : ℕ), 1 ≤ j → j ≤ D.R.m →
-  ∀ (hj : (D.sp.W j).rank = D.R.r) (M : ModelW D j) (β : GL (Fin (D.sp.W j).rank) (Lev.EAf D)),
-    IsFrameAtG (D.sp.W j) β →
-    Φ θ (D.sp.W j) _ M (Lev.levG (D.sp.W j) β (levelDatumAtBasePrime (D.sp.W j) Pg ψ) : Set (GA D (D.sp.W j)))
-      (Lev.levChi (D.sp.W j) β (levelDatumAtBasePrime (D.sp.W j) Pg ψ)) Sb (eGoodOp (D.sp.W j) hj β ψ pl red om)
-
-def HeckeKeeps (D : D7) : Prop := AtLifts D KeepsAt
-
-def HeckeCommute (D : D7) : Prop := AtLifts D CommuteAt
-
-def HeckeAdjoint (D : D7) : Prop := AtLifts D AdjointAt
-
-def PeterssonExists (D : D7) : Prop := AtLifts D fun θ V S M J χ _ _ => SchurAt θ V S M J χ
-
-def GoodFinite (D : D7) : Prop := AtLifts D fun θ V S M J χ _ e => FiniteAt θ V S M J χ e
-
-def LabelsAgree (D : D7) : Prop :=
-  ∀ (pb : Fin 2 → 𝓞 D.host.E) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)), Lev.IsTypePlaces D.host.g pb Pg →
-  ∀ (ψ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, AddChar (Formalism.L2.DIV.kP PP) ℂ), Formalism.L2.DIV.IsGenericPsi Pg ψ →
-  ∀ (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), IsBadSet D Sb →
-  ∀ (βm : GL (Fin (D.sp.W D.R.m).rank) (Lev.EAf D)), IsFrameAtG (D.sp.W D.R.m) βm →
-  ∀ (j : ℕ), 1 ≤ j → j ≤ D.R.m →
-  ∀ (β : GL (Fin (D.sp.W j).rank) (Lev.EAf D)), IsFrameAtG (D.sp.W j) β →
-  ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ),
-    (∃ R, Hecke₂ (D.sp.W j) (Lev.levG (D.sp.W j) β (levelDatumAtBasePrime (D.sp.W j) Pg ψ) : Set (GA D (D.sp.W j)))
-      (Lev.levChi (D.sp.W j) β (levelDatumAtBasePrime (D.sp.W j) Pg ψ)) Sb P d R) ↔
-    (∃ R, Hecke₂ (D.sp.W D.R.m) (Lev.levG (D.sp.W D.R.m) βm (levelDatumAtBasePrime (D.sp.W D.R.m) Pg ψ) : Set (GA D (D.sp.W D.R.m)))
-      (Lev.levChi (D.sp.W D.R.m) βm (levelDatumAtBasePrime (D.sp.W D.R.m) Pg ψ)) Sb P d R)
-
-def PartsOccur (D : D7) : Prop :=
-  ∀ (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ →
-  ∀ (pb : Fin 2 → 𝓞 D.host.E) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)), Lev.IsTypePlaces D.host.g pb Pg →
-  ∀ (pl : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq D.host ≃ ↥Pg), IsPlaceMatch pl →
-  ∀ (red : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq D.host, Formalism.L2.DIV.kP (pl v).1 ≃+* ZMod (D.host.g v.1))
-    (ψ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, AddChar (Formalism.L2.DIV.kP PP) ℂ), Formalism.L2.DIV.IsGenericPsi Pg ψ →
-  ∀ (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ), GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.IsGeneratorFamily (H := D.host) om →
-  ∀ (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), IsBadSet D Sb →
-  ∀ (hm : (D.sp.W D.R.m).rank = D.R.r) (Mm : ModelW D D.R.m) (βm : GL (Fin (D.sp.W D.R.m).rank) (Lev.EAf D)),
-    IsFrameAtG (D.sp.W D.R.m) βm →
-  ∀ (j : ℕ), 1 ≤ j → j ≤ D.R.m →
-  ∀ (hj : (D.sp.W j).rank = D.R.r) (M : ModelW D j) (β : GL (Fin (D.sp.W j).rank) (Lev.EAf D)),
-    IsFrameAtG (D.sp.W j) β →
-  ∀ c : EigSys D, partW θ j hj M β ψ pl red om Sb c ≠ ⊥ → partW θ D.R.m hm Mm βm ψ pl red om Sb c ≠ ⊥
 
 end GlobalTheory.HeckeOrthSum

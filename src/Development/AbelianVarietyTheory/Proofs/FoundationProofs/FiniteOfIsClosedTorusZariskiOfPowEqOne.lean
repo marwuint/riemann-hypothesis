@@ -141,19 +141,6 @@ def torusChar (x : X) : (Multiplicative X →* Rˣ) →* R where
 @[simp] theorem torusChar_apply (x : X) (t : Multiplicative X →* Rˣ) :
     torusChar x t = t (Multiplicative.ofAdd x) := rfl
 
-noncomputable def torusTranslate (s : Multiplicative X →* Rˣ) :
-    AddMonoidAlgebra R X →ₐ[R] AddMonoidAlgebra R X :=
-  AddMonoidAlgebra.lift R _ X
-    { toFun x := single x.toAdd (s x : R)
-      map_one' := by simp [one_def]
-      map_mul' x y := by simp [single_mul_single] }
-
-noncomputable def torusInvert : AddMonoidAlgebra R X →ₐ[R] AddMonoidAlgebra R X :=
-  AddMonoidAlgebra.lift R _ X
-    { toFun x := single (-x.toAdd) (1 : R)
-      map_one' := by simp [one_def]
-      map_mul' x y := by simp [single_mul_single, add_comm] }
-
 variable [IsDomain R]
 
 noncomputable def torusPrime (t : Multiplicative X →* Rˣ) : PrimeSpectrum (AddMonoidAlgebra R X) :=
@@ -284,19 +271,6 @@ theorem finite_of_isClosed_torusZariski_of_pow_eq_one [Module.Finite ℤ X] {n :
   have h3 : s = 1 := Subtype.ext (hn s s.2 (congrArg Subtype.val h1))
   rw [h3, orderOf_one] at hs
   exact hp.one_lt.ne hs
-
-variable (R X) in
-
-def torusPowTorsion (n : ℕ) : Subgroup (Multiplicative X →* Rˣ) where
-  carrier := {t | ∃ j, t ^ n ^ j = 1}
-  one_mem' := ⟨0, one_pow _⟩
-  mul_mem' := by
-    rintro s t ⟨i, hi⟩ ⟨j, hj⟩
-    refine ⟨i + j, ?_⟩
-    rw [mul_pow, pow_add, pow_mul, hi, mul_comm (n ^ i), pow_mul, hj, one_pow, one_pow, one_mul]
-  inv_mem' := by
-    rintro s ⟨i, hi⟩
-    exact ⟨i, by rw [inv_pow, hi, inv_one]⟩
 
 end Torus
 

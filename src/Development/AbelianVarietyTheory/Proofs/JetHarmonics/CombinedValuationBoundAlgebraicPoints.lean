@@ -2,16 +2,19 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.H1algDefStatement
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
+import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
+import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.RPfVal
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ConjugateMinimaInstance
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GramSpace
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.QBound
+import Formalism.SharpRestriction.Divisibility.WeightAlgebra
 import Formalism.LocalToGlobal.ProjectiveLattices.DepRun
 import Formalism.LocalToGlobal.ProjectiveLattices.RegXInst
 import Formalism.LocalToGlobal.ProjectiveLattices.Adm3OfExtension
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.TheoremZeroSplitOfLocalAndSum
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaLatticeDepthLeUnscaledAddBoundaryStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaLatticeDepthLeUnscaledAddBoundary
+
 open AlgebraicGeometry CategoryTheory NumberField IsLocalRing IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.QForm Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps.EtaleWeightGaps
@@ -55,6 +58,6 @@ theorem combBound_alg : (∀ (p : ℕ) [Fact p.Prime], Pdiv.ChartF.HTFSt p) → 
   intro hH D T h j hj hinj EX w c hO hR ka wF S G hS hEt
   refine combBound_of_depth_le G c hR.2.2.2.1 (fun la y => ?_) hEt
   rw [hS]
-  exact GlobalTheory.T.thetaLattice_depth_le_unscaled_add_boundary hH D T h j hj hinj EX w c hO hR la y
+  exact _root_.GlobalTheory.RecDepth.depth_le hH D T h j hj hinj EX w c hO hR la y
 
 end GlobalTheory.PtTie

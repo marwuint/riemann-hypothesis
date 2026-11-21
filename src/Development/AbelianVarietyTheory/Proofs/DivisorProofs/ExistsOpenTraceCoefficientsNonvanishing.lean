@@ -17,8 +17,6 @@ noncomputable section
 
 namespace GlobalTheory.ProperDenom
 
-variable {M W : Scheme.{0}}
-
 end GlobalTheory.ProperDenom
 
 namespace GlobalTheory.ProperDenom

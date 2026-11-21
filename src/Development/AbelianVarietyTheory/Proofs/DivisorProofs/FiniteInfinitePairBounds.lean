@@ -8,11 +8,16 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightsTopGrid
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPairingExtendScalarsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemVertexLatticeOrthonormalCoordsTopNodeIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLatticeVertexLatticeGridCorner
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPairingIntegralUpToExponentsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceValuationLocalDegreeArithmeticStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPairingIntegralUpToExponents
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsFunForm
+import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
+import Formalism.PieriBlockIdeals.StatementLA
+import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceValuationLocalDegreeArithmetic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTotalExponentTopWeightBound
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPairingArchimedeanBoundFockNormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanBranchingConstantBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPairingArchimedeanBoundFockNorm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanBranchingConstantBound
 
 noncomputable section
 
@@ -37,7 +42,7 @@ theorem finPair : FinPairK := by
   obtain ⟨x₀, hx⟩ := h6' ε
   refine ⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt _ => ?_⟩
   obtain ⟨hb1, Dn, hDn, hdiv, hlog⟩ := hx D large₂ he hx0 Γ Pl0 T A Ks R F hS ch hIs hAt
-  obtain ⟨h5mul, h5div, h5fin, h5sum⟩ := GlobalTheory.T.placeValuation_localDegree_arithmetic (K := D.what₂.LL)
+  obtain ⟨h5mul, h5div, h5fin, h5sum⟩ := _root_.GlobalTheory.vw_lw_arith (K := D.what₂.LL)
   have hm : (1 : ℝ) ≤ D.R.m := by exact_mod_cast (le_trans (by norm_num) hS.size.2.2.2.1 : 1 ≤ D.R.m)
   have hsig : 0 ≤ sig ch.G := Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)
   have hlb : 0 ≤ Real.log large₂.sc.b := Real.log_nonneg hb1
@@ -70,7 +75,7 @@ theorem finPair : FinPairK := by
     refine ⟨GlobalTheory.BrPairF.brPairF _ ch.G.sp.topDec.rank.symm _ u0 v0, ?_, ?_⟩
     · rw [← hu0, ← hv0]
       exact (GlobalTheory.T.branchingPairing_extendScalars D.what₂.embLL _ _ _ u0 v0).symm
-    · have h4 := GlobalTheory.T.branchingPairing_integral_upToExponents (labLL D) ch.G.sp.topDec.rank.symm (wt ch.G (.top D.R.m)) (listedWt ch.G (.grid D.R.m D.R.m))
+    · have h4 := _root_.GlobalTheory.BrPairLocal.finLocal (labLL D) ch.G.sp.topDec.rank.symm (wt ch.G (.top D.R.m)) (listedWt ch.G (.grid D.R.m D.R.m))
         (fun τ => (hIS τ).1) (fun τ => (hIS τ).2) _ _ (GlobalTheory.T.isLattice_vertexLattice_gridCorner ch.S.toGridChoice y) (GlobalTheory.T.mem_vertexLatticeOrthonormalCoords_topNode_iff ch.S.toGridChoice y) w
         (s • u0) (s' • v0) hsu hsv
       erw [bil] at h4
@@ -91,7 +96,7 @@ theorem finPair : FinPairK := by
       linarith
 
 theorem infPair : InfPairK := by
-  obtain ⟨CF0, h8⟩ := GlobalTheory.T.archimedean_branching_constant_bound
+  obtain ⟨CF0, h8⟩ := _root_.GlobalTheory.InfSize.main
   refine ⟨CF0, fun CF hCF => ?_⟩
   obtain ⟨K0, h8'⟩ := h8 CF hCF
   refine ⟨max K0 0, fun ε C hC => ?_⟩
@@ -123,7 +128,7 @@ theorem infPair : InfPairK := by
   refine ⟨GlobalTheory.BrPairF.brPairF _ ch.G.sp.topDec.rank.symm _ u0 v0, ?_, ?_⟩
   · rw [← hu0, ← hv0]
     exact (GlobalTheory.T.branchingPairing_extendScalars D.what₂.embLL _ _ _ u0 v0).symm
-  · obtain ⟨hn1, hn2, h7⟩ := GlobalTheory.T.branchingPairing_archimedean_bound_fockNorm σ ch.G.sp.topDec.rank.symm (wt ch.G (.top D.R.m)) (listedWt ch.G (.grid D.R.m D.R.m))
+  · obtain ⟨hn1, hn2, h7⟩ := _root_.GlobalTheory.BrPairBound.inf_bound σ ch.G.sp.topDec.rank.symm (wt ch.G (.top D.R.m)) (listedWt ch.G (.grid D.R.m D.R.m))
       (fun τ => (hIS τ).1) (fun τ => (hIS τ).2) u0 v0
     refine h7.trans ?_
     have hB1 : (pairK (wt ch.G (.top D.R.m)) (fun _ => (1 : Matrix _ _ ℂ)) (GlobalTheory.CoefModel.mapVV σ _ u0)
@@ -140,8 +145,6 @@ theorem infPair : InfPairK := by
       _ ≤ Real.exp (aOne ch.G C large₂.sc.b) * B * B' := by
           apply mul_le_mul (mul_le_mul_of_nonneg_left hB1 (Real.exp_pos _).le) hB2 hn2
           exact mul_nonneg (Real.exp_pos _).le hBn
-
-theorem main : GlobalTheory.FunPr.Hypotheses₂ → FinPairK ∧ InfPairK := fun _ => ⟨finPair, infPair⟩
 
 end GlobalTheory.FPair
 

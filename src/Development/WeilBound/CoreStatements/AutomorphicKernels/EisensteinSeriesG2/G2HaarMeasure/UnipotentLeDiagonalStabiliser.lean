@@ -1,12 +1,13 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.G2HaarMeasure.IsHaarMeasureDoubledGroup
-import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.G2HaarMeasure.PhiEqZeroIff
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import GroundTheory.GlobalFields.Adele.Compact
 
 noncomputable section
 
 open scoped TensorProduct Matrix Topology
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.EisBL.NilAlg
+open GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
 
 namespace GlobalTheory.EisBL.DoubledUnipotentRadical
 
@@ -17,46 +18,6 @@ theorem matrixRep_mul {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (a b : G2 �
 
 omit [NumberField E] in
 theorem matrixRep_one {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} : mat2 (1 : G2 σ Y) = 1 := rfl
-
-omit [NumberField E] in
-theorem matrix_inv_mul_doubled {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (a : G2 σ Y) : mat2 a⁻¹ * mat2 a = 1 :=
-  Units.inv_mul a.1
-
-omit [NumberField E] in
-theorem diagCols_eq {n : ℕ} : diagCols (E := AE F E) (Fin n) =
-    Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (1 : Matrix (Fin n) (Fin n) (AE F E)) := by
-  unfold diagCols; rfl
-
-omit [NumberField E] in
-theorem unip_iff {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (g : G2 σ Y) :
-    ((mat2 g - 1) * diagCols (E := AE F E) (Fin n) = 0 ∧
-      Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * (mat2 g - 1) = 0) ↔
-      ∃ X, mat2 g = blk X := by
-  rw [diagCols_eq]; exact unip_iff_blk (mat2 g)
-
-variable (σ) in
-
-def nil2 {n : ℕ} (Y : Spc F E n) : Subgroup (G2 σ Y) where
-  carrier := {g | (mat2 g - 1) * diagCols (Fin n) = 0 ∧
-    Matrix.fromCols (1 : Matrix (Fin n) (Fin n) (AE F E)) (-1 : Matrix (Fin n) (Fin n) (AE F E)) * (mat2 g - 1) = 0}
-  one_mem' := (unip_iff (1 : G2 σ Y)).2 ⟨0, by rw [matrixRep_one, blk_zero]⟩
-  mul_mem' := by
-    intro a b ha hb
-    obtain ⟨X, hX⟩ := (unip_iff a).1 ha
-    obtain ⟨Z, hZ⟩ := (unip_iff b).1 hb
-    exact (unip_iff (a * b)).2 ⟨X + Z, by rw [matrixRep_mul, hX, hZ, blk_mul]⟩
-  inv_mem' := by
-    intro a ha
-    obtain ⟨X, hX⟩ := (unip_iff a).1 ha
-    refine (unip_iff a⁻¹).2 ⟨-X, ?_⟩
-    calc mat2 a⁻¹ = mat2 a⁻¹ * (blk X * blk (-X)) := by rw [blk_mul, add_neg_cancel, blk_zero, Matrix.mul_one]
-      _ = (mat2 a⁻¹ * mat2 a) * blk (-X) := by rw [hX, Matrix.mul_assoc]
-      _ = blk (-X) := by rw [matrix_inv_mul_doubled, Matrix.one_mul]
-
-def eltA (σ : E →ₐ[F] E) {n : ℕ} (Y : Spc F E n) (Z : Matrix (Fin n) (Fin n) (AE F E))
-    (hZ : phi (cA σ).toRingHom (incM F Y.J) Z = 0) : G2 σ Y :=
-  ⟨⟨blk Z, blk (-Z), by rw [blk_mul, add_neg_cancel, blk_zero], by rw [blk_mul, neg_add_cancel, blk_zero]⟩,
-    (blk_form_iff _ _ _).2 hZ⟩
 
 omit [NumberField E] in
 theorem cA_inclR (σ : E →ₐ[F] E) (x : E) :

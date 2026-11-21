@@ -133,8 +133,4 @@ theorem continuous_of_dense {G H : Type*} [TopologicalSpace G] [NormedAddCommGro
         dist_triangle4 _ _ _ _
     _ < ε := by rw [h₁, h₂]; linarith
 
-example : ‖emb σ 1‖ = 1 := by
-  rw [← C_1, C_apply, emb_monomial, lp.norm_single (by simp)]
-  simp [wt, mfact]
-
 end GlobalTheory.FockSeq

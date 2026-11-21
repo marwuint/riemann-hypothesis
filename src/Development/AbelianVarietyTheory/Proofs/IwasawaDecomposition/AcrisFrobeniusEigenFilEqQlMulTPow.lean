@@ -2,19 +2,19 @@ import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TeichmullerTiltMinusOneDvdOfThetaFrobeniusZeroStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveTiltedRootOfUnityLocalPeriodRingsDataStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusFixedEqPadicIntStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnitStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TeichmullerTiltMinusOneDvdOfThetaFrobeniusZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveTiltedRootOfUnityLocalPeriodRingsData
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusFixedEqPadicInt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdRStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerTiltMinusOnePowDivEnvelopeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FrobeniusAcrisDecompositionMuPowerStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineTIsUnitBcrisAndUniformizerBdRPlusStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusFontaineTEqMulStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariantStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerTiltMinusOnePowDivEnvelope
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FrobeniusAcrisDecompositionMuPower
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineTIsUnitBcrisAndUniformizerBdRPlus
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusFontaineTEqMul
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMaps
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMapsLoc
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
@@ -110,7 +110,7 @@ theorem theta_phi_mu (e : Per.Fl l) (he : e.untilt = 1) (n : ℕ) :
 
 theorem exists_w (e : Per.Fl l) (he : e.untilt = 1) : ∃ w : Per.Acris l,
     (l : Per.Acris l) * w = algebraMap (Per.Ainf l) (Per.Acris l) (mu e) ^ (l - 1) := by
-  obtain ⟨w, hw, -⟩ := GlobalTheory.T.exists_teichmullerTiltMinusOne_pow_div_envelope l e he
+  obtain ⟨w, hw, -⟩ := _root_.GlobalTheory.MemLoc.exists_mu_pow_div l e he
   have h : (l : Per.Acris0 l) * w = algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e) ^ (l - 1) :=
     Subtype.ext (by simpa using hw)
   refine ⟨algebraMap (Per.Acris0 l) (Per.Acris l) w, ?_⟩
@@ -118,9 +118,9 @@ theorem exists_w (e : Per.Fl l) (he : e.untilt = 1) : ∃ w : Per.Acris l,
 
 theorem fil_div (C : Core l) (r : ℕ) (y : Per.BdRp l) (h : C.j C.t * y ∈ Per.FilP l (r + 1)) :
     y ∈ Per.FilP l r := by
-  obtain ⟨hF, hreg, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l C.ε (GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C)
-  obtain ⟨-, h1, h2, -⟩ := GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C
-  obtain ⟨-, hk, hun, -⟩ := GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l
+  obtain ⟨hF, hreg, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l C.ε (_root_.GlobalTheory.MemLoc.core_isEps l C)
+  obtain ⟨-, h1, h2, -⟩ := _root_.GlobalTheory.MemLoc.core_t_unit_fil l C
+  obtain ⟨-, hk, hun, -⟩ := _root_.GlobalTheory.MemLoc.thetaD_props l
   rw [hF] at h h1 h2 ⊢
   obtain ⟨v, hv⟩ := h1
   have hvu : IsUnit v := by
@@ -148,16 +148,16 @@ theorem fix_pow (l : ℕ) [Fact l.Prime] (C : Core l) (r : ℕ) (x : Per.Acris l
       algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l z) * C.t ^ r := by
   induction r generalizing x with
   | zero =>
-    obtain ⟨z, hz⟩ := GlobalTheory.T.acris_frobenius_fixed_eq_padicInt l x (by simpa using hx)
+    obtain ⟨z, hz⟩ := _root_.GlobalTheory.MemLoc.phi_fixed_eq_padicInt l x (by simpa using hx)
     exact ⟨z, 0, by simpa using hz⟩
   | succ r ih =>
-    have he := GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C
-    haveI := (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).1
-    haveI : IsDomain (Per.Acris l) := (GlobalTheory.T.acrisToBdRPlus_injective l C.j C.j_cris).isDomain C.j
-    obtain ⟨hFil, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l C.ε he
-    obtain ⟨-, hk, -, hth, -⟩ := GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l
+    have he := _root_.GlobalTheory.MemLoc.core_isEps l C
+    haveI := (_root_.GlobalTheory.MemLoc.BdRField.bdR_isField l).1
+    haveI : IsDomain (Per.Acris l) := (_root_.GlobalTheory.MemLoc.crisP_injective l C.j C.j_cris).isDomain C.j
+    obtain ⟨hFil, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l C.ε he
+    obtain ⟨-, hk, -, hth, -⟩ := _root_.GlobalTheory.MemLoc.thetaD_props l
     obtain ⟨w, hw⟩ := exists_w C.ε he.1
-    obtain ⟨t, u, htl, hu, htu⟩ := GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l C.ε he.1
+    obtain ⟨t, u, htl, hu, htu⟩ := _root_.GlobalTheory.MemLoc.exists_isLogA l C.ε he.1
     have htt : C.t = t := (GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l C.ε t he.1 htl).1 _ C.t_log
     have hΘ : ∀ a, ((Per.θD l).comp C.j) (algebraMap (Per.Ainf l) (Per.Acris l) a) =
         (Per.θ l a : ℂ_[l]) := fun a => by
@@ -169,10 +169,10 @@ theorem fix_pow (l : ℕ) [Fact l.Prime] (C : Core l) (r : ℕ) (x : Per.Acris l
       ((Per.θD l).comp C.j) (l : Per.Acris l) (by rw [map_natCast]; exact GlobalTheory.RingBasics.p_ne_zero)
       (phi_nat l) (phi_alg (l := l)) (mu C.ε)
       (fun n => by rw [hΘ, theta_phi_mu _ he.1]; rfl)
-      (fun a ha => GlobalTheory.T.teichmullerTiltMinusOne_dvd_of_theta_frobenius_zero l C.ε he a fun n => Subtype.ext ((hΘ _).symm.trans (ha n)))
-      w (l - 2) (hl2 ▸ hw) (GlobalTheory.T.frobenius_acris_decomposition_mu_power l C.ε he w hw) C.t u hu (htt.trans htu)
-      (fun h => (GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C).2.2.1 (by rw [h, map_zero]; exact zero_mem _))
-      (GlobalTheory.T.acrisFrobenius_fontaine_t_eq_mul l C) r x hx
+      (fun a ha => _root_.GlobalTheory.MemLoc.mu_dvd_of_theta_frob l C.ε he a fun n => Subtype.ext ((hΘ _).symm.trans (ha n)))
+      w (l - 2) (hl2 ▸ hw) (_root_.GlobalTheory.MemLoc.phiA_mem_ainf_add l C.ε he w hw) C.t u hu (htt.trans htu)
+      (fun h => (_root_.GlobalTheory.MemLoc.core_t_unit_fil l C).2.2.1 (by rw [h, map_zero]; exact zero_mem _))
+      (_root_.GlobalTheory.MemLoc.TPhi.t_phi l C) r x hx
       ((hk _).2 ((hFil _ _).2 ((pow_dvd_pow _ (by omega)).trans ((hFil _ _).1 hF))))
     have h3 : C.j x' ∈ Per.FilP l r := by
       apply fil_div C

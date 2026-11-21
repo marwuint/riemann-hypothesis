@@ -4,14 +4,17 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetModuleFiniteLength
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPos
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbeddingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbedding
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PrincipalSeriesSupport.PrinSeriesWord
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParabolicInductionPreservesSubquotient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusReciprocityNonzeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSocleSegmentProductStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSegmentRepresentationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSocleSegmentProduct
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSegmentRepresentation
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetLengthOneStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentLengthTwoStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentInductionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityConcatStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityConcat
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviIrreducibleTensorDecompositionStatement
 
 noncomputable section
@@ -87,14 +90,14 @@ theorem eq_dec_of_one_le_jm (hA : GlobalTheory.Published.IrreducibleAdmissibleGL
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hL : IsLSeg Δ π)
     (hs : IsSmooth π) (hi : π.IsIrreducible) (y : Fin Δ.len → IrrGL k) (hy : ∑ a, (y a).1 = N)
     (hpos : ∀ a, 0 < (y a).1) (h1 : 1 ≤ jm y hy π) : y = dec Δ := by
-  have hemb := fun a => GlobalTheory.T.support_subscheme_embedding k (y a).1 _ (y a).rep (y a).2.rep.smooth (y a).2.rep.irr
+  have hemb := fun a => _root_.GlobalTheory.CompanionTheory.SubEmb.subEmbedding k (y a).1 _ (y a).rep (y a).2.rep.smooth (y a).2.rep.irr
   choose c x hx hcusp φ hφ using hemb
   have hne : ∀ a, ∃ v, φ a v ≠ 0 := fun a =>
     exists_ne_zero_of_injective (y a).2.rep.irr (φ a) (hφ a)
   have hjm : ∀ a, 1 ≤ jm (x a) (hx a) (y a).rep := fun a =>
     GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA (x a) (hx a) (y a).rep (y a).2.rep.smooth (φ a) (hne a)
   have hcat := sum_concat_fst y hy c x hx
-  have hle := GlobalTheory.T.jacquet_multiplicity_concat hA y hy c x hx hcat hjm π hs (hasFiniteLength_of_isIrreducible hi)
+  have hle := _root_.GlobalTheory.CompanionTheory.JmTrans.jm_le_jm_concat hA y hy c x hx hcat hjm π hs (hasFiniteLength_of_isIrreducible hi)
   have hcc : ∀ i, (concat c x i).IsCusp := fun i => hcusp _ _
   obtain ⟨hlen, -⟩ := (fine π hL).2 _ (concat c x) hcat hcc (h1.trans hle)
   have hc1 : ∀ a, 1 ≤ c a := fun a => by
@@ -121,7 +124,7 @@ theorem isLSeg_of_dec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
     (f : τ.IntertwiningMap (prodIrr (dec Δ) hd)) (hf : Function.Injective f), IsLSeg Δ τ := by
   intro k _ _ _ _ hA hZ Δ N hd V _ _ τ hs hi f hf
   have fine : FineJac Δ := @fineJac_all k _ _ _ _ hA hZ Δ
-  obtain ⟨L, hL⟩ := GlobalTheory.T.exists_segment_representation hA Δ
+  obtain ⟨L, hL⟩ := _root_.GlobalTheory.CompanionTheory.SegExists.exists_isLSeg hA Δ
   have hN : Δ.deg = N := by
     rw [← hd]
     show Δ.deg = ∑ _ : Fin Δ.len, Δ.d
@@ -166,7 +169,7 @@ theorem isLSeg_of_dec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   obtain ⟨g', v, hv⟩ := htr _ hyeq hd hfrob
   have hemb : Embeds L.ρ (prodIrr (dec Δ) hd) :=
     (isotypic_ne_bot_iff_embeds L.irr).1 (isotypic_ne_bot_iff.2 ⟨g', fun e' => hv (by rw [e']; rfl)⟩)
-  obtain ⟨S, hS⟩ := GlobalTheory.T.exists_socle_segment_product hA Δ hd
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.CompanionTheory.SegSocle.exists_isSocle_prodIrr_dec hA Δ hd
   obtain ⟨a⟩ := hS.equiv_of_embeds hi ⟨f, hf⟩
   obtain ⟨b⟩ := hS.equiv_of_embeds L.irr hemb
   exact hL.of_equiv (b.trans a.symm)

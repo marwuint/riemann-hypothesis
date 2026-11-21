@@ -14,20 +14,4 @@ theorem mtInput_of {D : D7} {cf : CharFrame D} {M : MtFam D} {ch : NChoice D} (t
   subst hx hQ
   exact h
 
-set_option maxHeartbeats 2000000 in
-
-theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.HeightCounting.HtCard → AllSt fun _ _ _ _ _ _ x =>
-    ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → JumpsCard D'.nd D'.naut := by
-  intro hL _ hH
-  refine StepW.of_all fun K B f T w _ _ _ => ?_
-  intro P x l
-  refine ⟨fun _ => ∅, fun L hB _ => ?_⟩
-  obtain ⟨Sp, ⟨Au⟩, hs⟩ := hB
-  let b : NBuilt hL (withLoc L) :=
-    { D := Dof x, cf := cfOf x, jE := l.a.jE, A := l.a.A, cg := l.a.cg, au := l.a.au, rep := repOf x.r.Y, row := l.a.row,
-      low := lowAll (Dof x), Pq := l.Pq, S := l.rat.S, hL := l.rat.In.hL, eig := l.rat.In.eig, θ := l.rat.In.θ, Bs := l.b.Bs,
-      M := l.mt.M, C := l.c.ch, tp := l.c.tp, ch := l.c.side, mt := mtInput_of l.c.tp l.mt.mt l.c.xi_eq l.c.Q_eq, big := fun _ => ∅, L := L, Sp := Sp, Au := Au, ss := hs,
-      eq := rfl }
-  exact JumpsAt.jumpsCard_of_built hH b l.a.fr l.a.pht
-
 end GlobalTheory.HeightCounting.JumpsSt

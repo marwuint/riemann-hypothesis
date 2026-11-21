@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsRealCoord
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuantitativeMahlerCriterionUnitaryGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalConjUnipotentRadicalIsotropicStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsPosNoShortIntegralVectorFromPointStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ShortVectorCuspUnipotentCoverAllInstancesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuantitativeMahlerCriterionUnitaryGroup
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalConjUnipotentRadicalIsotropic
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsPosNoShortIntegralVectorFromPoint
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ShortVectorCuspUnipotentCoverAllInstances
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationUnitaryUnipotentRadical
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AdelClassFin
@@ -48,7 +48,7 @@ theorem exists_root_scale (n : ℕ) (s₀ m : ℝ) (hs : 0 < s₀) (hm : 0 < m) 
 theorem exists_scale_real (I : AutInst) (y : I.Ginf) (s₀ η₀ : ℝ) (hs : 0 < s₀) (hη : 0 < η₀) :
     ∃ η : ℝ, 0 < η ∧ η ≤ η₀ ∧ NoShort I y (s₀ / 2 * η ^ (I.n + 1)) ∧
       (η₀ ≤ η ∨ ∃ u, IntVec I u ∧ u ≠ 0 ∧ ‖vec I y u‖ ≤ s₀ * η ^ (I.n + 1)) := by
-  obtain ⟨t, ht, hNS⟩ := GlobalTheory.T.exists_pos_noShortIntegralVectorFromPoint I y
+  obtain ⟨t, ht, hNS⟩ := _root_.GlobalTheory.CuspGeo.firstMin_pos I y
   obtain ⟨m, hm0, hma, hmN, hmc⟩ := exists_scale_of_bdd (ι := {u // IntVec I u ∧ u ≠ 0})
     (fun u => ‖vec I y u.1‖) t (s₀ * η₀ ^ (I.n + 1)) ht (fun u => hNS u.1 u.2.1 u.2.2) (by positivity)
   obtain ⟨η, hη0, hηm⟩ := exists_root_scale I.n s₀ m hs hm0
@@ -93,8 +93,8 @@ theorem nearInst : ∀ I : AutInst, NearInst I := by
     have : ∀ s ∈ S, ∀ᶠ g in 𝓝 (1 : I.Gf), s⁻¹ * g * s ∈ Kq := fun s _ =>
       (hKqO.preimage (by fun_prop : Continuous fun g : I.Gf => s⁻¹ * g * s)).mem_nhds (by simp)
     exact (Filter.eventually_all_finset S).2 this
-  obtain ⟨s₀, η₀, Cs, hs₀, hη₀, hSC⟩ := GlobalTheory.T.shortVectorCuspUnipotentCover_all_instances I U hU
-  obtain ⟨b, CH, KH, hKH, hHt⟩ := GlobalTheory.T.quantitativeMahlerCriterion_unitaryGroup I
+  obtain ⟨s₀, η₀, Cs, hs₀, hη₀, hSC⟩ := _root_.GlobalTheory.CuspGeo.shortCusp_all I U hU
+  obtain ⟨b, CH, KH, hKH, hHt⟩ := _root_.GlobalTheory.htMin_of_reduced I
   set s₁ := min s₀ 1 with hs₁
   set η₁ := min η₀ 1 with hη₁
   have hs₁0 : 0 < s₁ := lt_min hs₀ one_pos
@@ -138,7 +138,7 @@ theorem nearInst : ∀ I : AutInst, NearInst I := by
   have hul' : ‖vec I y u‖ ≤ s₀ * η ^ (I.n + 1) :=
     hul.trans (mul_le_mul_of_nonneg_right (min_le_left _ _) (by positivity))
   obtain ⟨W, hW, hcov⟩ := hSC y η hη0 (hηle.trans (min_le_left _ _)) ⟨u, hu, hu0, hul'⟩
-  obtain ⟨W', hW', hconj⟩ := GlobalTheory.T.rational_conj_unipotentRadical_isotropic I γ₀ hγ₀ W hW
+  obtain ⟨W', hW', hconj⟩ := _root_.GlobalTheory.CuspGeo.naconj I γ₀ hγ₀ W hW
   obtain ⟨⟨N, hN⟩, -, hpart, hdense, -⟩ := GlobalTheory.UnipApprox.strong_approximation I W hW
   refine ⟨W', hW', fun m hm => ?_⟩
   have hm' : γ₀⁻¹ * m * γ₀ ∈ I.NA W := hconj m hm

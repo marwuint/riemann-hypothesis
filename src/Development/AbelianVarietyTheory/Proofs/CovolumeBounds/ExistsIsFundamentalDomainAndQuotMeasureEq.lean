@@ -18,38 +18,6 @@ structure IsAEOrbitSection (G : Type*) {X : Type*} [SMul G X] [MeasurableSpace X
   protected ae_covers : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D
   protected ae_unique : ∀ᵐ x ∂μ, x ∈ D → ∀ g : G, g • x ∈ D → g • x = x
 
-theorem isAEOrbitSection_sign_Ici : IsAEOrbitSection ℤˣ (Ici (0 : ℝ)) volume where
-  nullMeasurableSet := measurableSet_Ici.nullMeasurableSet
-  ae_covers := Eventually.of_forall fun x => by
-    rcases le_total 0 x with h | h
-    · exact ⟨1, by simpa using h⟩
-    · exact ⟨-1, by simpa using h⟩
-  ae_unique := Eventually.of_forall fun x hx g hg => by
-    rcases Int.units_eq_one_or g with rfl | rfl
-    · simp
-    · have h1 : x ≤ 0 := by simpa using hg
-      have : x = 0 := le_antisymm h1 hx
-      simp [this]
-
-theorem isAEAddOrbitSection_zmultiples_Ico :
-    IsAEAddOrbitSection (AddSubgroup.zmultiples (1 : ℝ)) (Ico (0 : ℝ) 1) volume where
-  nullMeasurableSet := measurableSet_Ico.nullMeasurableSet
-  ae_covers := Eventually.of_forall fun x =>
-    ⟨⟨(-⌊x⌋) • (1 : ℝ), AddSubgroup.zsmul_mem_zmultiples _ _⟩, by
-      have h1 := Int.floor_le x
-      have h2 := Int.lt_floor_add_one x
-      simp only [AddSubgroup.mk_vadd, vadd_eq_add, mem_Ico, zsmul_eq_mul, Int.cast_neg]
-      constructor <;> linarith⟩
-  ae_unique := Eventually.of_forall fun x hx g hg => by
-    obtain ⟨g, n, rfl⟩ := g
-    simp only [AddSubgroup.mk_vadd, vadd_eq_add, mem_Ico, zsmul_eq_mul, mul_one] at hg hx ⊢
-    have h1 : (n : ℝ) < 1 := by linarith [hg.2, hx.1]
-    have h2 : (-1 : ℝ) < n := by linarith [hg.1, hx.2]
-    have h1' : n < 1 := by exact_mod_cast h1
-    have h2' : -1 < n := by exact_mod_cast h2
-    have : n = 0 := by omega
-    simp [this]
-
 section Existence
 
 variable {G X : Type*} [Group G] [MulAction G X]
@@ -176,26 +144,6 @@ theorem map_restrict_le_quotMeasure {D : Set X} (hD : NullMeasurableSet D μ)
     (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X)) ≤ quotMeasure G μ :=
   le_iSup_of_le D (le_iSup_of_le hD (le_iSup_of_le hu le_rfl))
 
-@[to_additive isAEAddOrbitSection_of_forall  ]
-theorem isAEOrbitSection_of_forall {D : Set X} (hD : MeasurableSet D) (hc : ∀ x, ∃ g : G, g • x ∈ D)
-    (hu : ∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x) (μ : Measure X) : IsAEOrbitSection G D μ :=
-  ⟨hD.nullMeasurableSet, Eventually.of_forall hc, Eventually.of_forall hu⟩
-
-@[to_additive IsAEAddOrbitSection.of_sameOrbits  ]
-theorem IsAEOrbitSection.of_sameOrbits {H : Type*} [SMul H X] {D : Set X}
-    (hD : IsAEOrbitSection H D μ) (h₁ : ∀ (h : H) (x : X), ∃ g : G, g • x = h • x)
-    (h₂ : ∀ (g : G) (x : X), ∃ h : H, h • x = g • x) : IsAEOrbitSection G D μ where
-  nullMeasurableSet := hD.nullMeasurableSet
-  ae_covers := by
-    filter_upwards [hD.ae_covers] with x ⟨h, hh⟩
-    obtain ⟨g, hg⟩ := h₁ h x
-    exact ⟨g, hg ▸ hh⟩
-  ae_unique := by
-    filter_upwards [hD.ae_unique] with x hx hxD g hg
-    obtain ⟨h, hh⟩ := h₂ g x
-    rw [← hh] at hg ⊢
-    exact hx hxD h hg
-
 @[to_additive isAEAddOrbitSection_of_isAddFundamentalDomain
 ]
 theorem isAEOrbitSection_of_isFundamentalDomain [Countable G] {D : Set X}
@@ -215,61 +163,7 @@ theorem isAEOrbitSection_of_isFundamentalDomain [Countable G] {D : Set X}
         · simpa using hx.1
     filter_upwards [this] with x hx hxD g hg using hx g hxD hg
 
-@[to_additive isAEAddOrbitSection_of_isAddFundamentalDomain_of_surjective
-]
-theorem isAEOrbitSection_of_isFundamentalDomain_of_surjective [Countable G] {Q : Type*} [Group Q]
-    [MulAction Q X] (φ : G →* Q) (hφ : Function.Surjective φ) (hact : ∀ g (x : X), φ g • x = g • x)
-    {D : Set X} (hD : IsFundamentalDomain Q D μ) : IsAEOrbitSection G D μ := by
-  have : Countable Q := hφ.countable
-  refine (isAEOrbitSection_of_isFundamentalDomain hD).of_sameOrbits (fun q x => ?_)
-    fun g x => ⟨φ g, hact g x⟩
-  obtain ⟨g, rfl⟩ := hφ q
-  exact ⟨g, (hact g x).symm⟩
-
-@[to_additive isAddFundamentalDomain_of_addOrbitSection
-]
-theorem isFundamentalDomain_of_orbitSection {D : Set X} (hD : NullMeasurableSet D μ)
-    (hc : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D) (hu : ∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x)
-    (hfree : ∀ g : G, g ≠ 1 → μ {x | g • x = x} = 0) : IsFundamentalDomain G D μ where
-  nullMeasurableSet := hD
-  ae_covers := hc
-  aedisjoint g h hgh := by
-    refine measure_mono_null (fun y hy => ?_) (hfree (g * h⁻¹) fun e => hgh (mul_inv_eq_one.1 e))
-    obtain ⟨hg, hh⟩ := hy
-    rw [mem_smul_set_iff_inv_smul_mem] at hg hh
-    have := hu _ hg (h⁻¹ * g) (by simpa [mul_smul] using hh)
-    rw [mul_smul, smul_inv_smul] at this
-    rw [mem_setOf_eq, mul_smul, this, smul_inv_smul]
-
 variable [Countable G] [MeasurableConstSMul G X] [SMulInvariantMeasure G X μ]
-
-@[to_additive IsAEAddOrbitSection.isAddFundamentalDomain
-]
-theorem IsAEOrbitSection.isFundamentalDomain {D : Set X} (hD : IsAEOrbitSection G D μ)
-    (hfree : ∀ g : G, g ≠ 1 → μ {x | g • x = x} = 0) : IsFundamentalDomain G D μ := by
-  refine IsFundamentalDomain.mk'' hD.nullMeasurableSet hD.ae_covers (fun g hg => ?_)
-    fun g => (measurePreserving_smul g μ).quasiMeasurePreserving
-  have h1 : ∀ᵐ x ∂μ, ¬ g⁻¹ • x = x := by
-    rw [ae_iff]; simpa using hfree g⁻¹ (inv_ne_one.2 hg)
-  refine measure_mono_null (fun y hy => ?_) (h1.and hD.ae_unique)
-  rintro ⟨h2, h3⟩
-  exact h2 (h3 hy.2 g⁻¹ (mem_smul_set_iff_inv_smul_mem.1 hy.1))
-
-@[to_additive measure_fixed_eq_zero_of_isAddFundamentalDomain
-]
-theorem measure_fixed_eq_zero_of_isFundamentalDomain {D : Set X} (hD : IsFundamentalDomain G D μ)
-    {g : G} (hg : g ≠ 1) : μ {x | g • x = x} = 0 := by
-  have h1 : ∀ᵐ x ∂μ, ∀ k : G, k • x ∈ D → ¬ g • x = x := by
-    refine ae_all_iff.2 fun k => ?_
-    have hne : k⁻¹ ≠ (k * g)⁻¹ := fun e => hg (by simpa using inv_injective e)
-    refine measure_mono_null (fun x hx => ?_) (hD.aedisjoint hne)
-    simp only [mem_compl_iff, mem_setOf_eq, Classical.not_imp, not_not] at hx
-    refine ⟨?_, ?_⟩
-    · rw [mem_smul_set_iff_inv_smul_mem, inv_inv]; exact hx.1
-    · rw [mem_smul_set_iff_inv_smul_mem, inv_inv, mul_smul, hx.2]; exact hx.1
-  refine measure_mono_null (fun x hx => ?_) (h1.and hD.ae_covers)
-  rintro ⟨h2, k, hk⟩
-  exact h2 k hk hx
 
 @[to_additive map_restrict_le_map_restrict_of_ae_unique_of_ae_covers_add]
 theorem map_restrict_le_map_restrict_of_ae_unique_of_ae_covers {S B : Set X}
@@ -316,13 +210,6 @@ theorem quotMeasure_eq (hD : IsAEOrbitSection G D μ) :
   le_antisymm (quotMeasure_le_map_restrict hD.nullMeasurableSet hD.ae_covers)
     (map_restrict_le_quotMeasure hD.nullMeasurableSet hD.ae_unique)
 
-@[to_additive IsAEAddOrbitSection.map_restrict_eq
-]
-theorem map_restrict_eq (hD : IsAEOrbitSection G D μ) (hD' : IsAEOrbitSection G D' μ) :
-    (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X)) =
-      (μ.restrict D').map (Quotient.mk (MulAction.orbitRel G X)) :=
-  hD.quotMeasure_eq.symm.trans hD'.quotMeasure_eq
-
 @[to_additive IsAEAddOrbitSection.measurePreserving_mk]
 theorem measurePreserving_mk (hD : IsAEOrbitSection G D μ) :
     MeasurePreserving (Quotient.mk (MulAction.orbitRel G X)) (μ.restrict D) (quotMeasure G μ) :=
@@ -338,30 +225,12 @@ theorem quotMeasure_apply (hD : IsAEOrbitSection G D μ)
 theorem quotMeasure_univ (hD : IsAEOrbitSection G D μ) : quotMeasure G μ univ = μ D := by
   rw [hD.quotMeasure_apply MeasurableSet.univ, preimage_univ, univ_inter]
 
-@[to_additive IsAEAddOrbitSection.measure_eq]
-theorem measure_eq (hD : IsAEOrbitSection G D μ) (hD' : IsAEOrbitSection G D' μ) : μ D = μ D' :=
-  hD.quotMeasure_univ.symm.trans hD'.quotMeasure_univ
-
 @[to_additive IsAEAddOrbitSection.lintegral_addQuotMeasure]
 theorem lintegral_quotMeasure (hD : IsAEOrbitSection G D μ)
     {f : Quotient (MulAction.orbitRel G X) → ℝ≥0∞} (hf : AEMeasurable f (quotMeasure G μ)) :
     ∫⁻ q, f q ∂quotMeasure G μ = ∫⁻ x in D, f (Quotient.mk _ x) ∂μ := by
   rw [hD.quotMeasure_eq] at hf ⊢
   exact lintegral_map' hf hD.measurePreserving_mk.measurable.aemeasurable
-
-@[to_additive IsAEAddOrbitSection.integral_addQuotMeasure]
-theorem integral_quotMeasure (hD : IsAEOrbitSection G D μ) {E : Type*} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] {f : Quotient (MulAction.orbitRel G X) → E}
-    (hf : AEStronglyMeasurable f (quotMeasure G μ)) :
-    ∫ q, f q ∂quotMeasure G μ = ∫ x in D, f (Quotient.mk _ x) ∂μ := by
-  rw [hD.quotMeasure_eq] at hf ⊢
-  exact integral_map hD.measurePreserving_mk.measurable.aemeasurable hf
-
-@[to_additive IsAEAddOrbitSection.integrable_addQuotMeasure_iff]
-theorem integrable_quotMeasure_iff (hD : IsAEOrbitSection G D μ) {E : Type*} [NormedAddCommGroup E]
-    {f : Quotient (MulAction.orbitRel G X) → E} (hf : AEStronglyMeasurable f (quotMeasure G μ)) :
-    Integrable f (quotMeasure G μ) ↔ IntegrableOn (fun x => f (Quotient.mk _ x)) D μ :=
-  (hD.measurePreserving_mk.integrable_comp hf).symm
 
 @[to_additive IsAEAddOrbitSection.addQuotMeasure_apply_eq_zero_iff
 ]
@@ -407,16 +276,6 @@ theorem quotMeasure_image_le (hD : IsAEOrbitSection G D μ) {A : Set X} (hA : Me
     obtain ⟨g, hg⟩ := Quotient.exact hax
     exact ⟨g, (show g • x = a from hg) ▸ ha⟩
 
-@[to_additive IsAEAddOrbitSection.sigmaFinite_addQuotMeasure]
-theorem sigmaFinite_quotMeasure (hD : IsAEOrbitSection G D μ) [SigmaFinite μ] :
-    SigmaFinite (quotMeasure G μ) := by
-  refine ⟨⟨⟨fun n => Quotient.mk (MulAction.orbitRel G X) '' spanningSets μ n, fun _ => trivial,
-    fun n => ?_, ?_⟩⟩⟩
-  · exact (hD.quotMeasure_image_le (measurableSet_spanningSets μ n)).2.trans_lt
-      (measure_spanningSets_lt_top μ n)
-  · rw [← image_iUnion, iUnion_spanningSets]
-    exact image_univ_of_surjective Quotient.mk_surjective
-
 end IsAEOrbitSection
 
 @[to_additive addQuotMeasure_eq_of_isAddFundamentalDomain
@@ -437,125 +296,7 @@ theorem quotMeasure_univ_eq_covolume [h : HasFundamentalDomain G X μ] :
   obtain ⟨D, hD⟩ := h.ExistsIsFundamentalDomain
   rw [(isAEOrbitSection_of_isFundamentalDomain hD).quotMeasure_univ, hD.covolume_eq_volume]
 
-@[to_additive lintegral_eq_lintegral_addQuotMeasure_tsum
-]
-theorem lintegral_eq_lintegral_quotMeasure_tsum [h : HasFundamentalDomain G X μ] {f : X → ℝ≥0∞}
-    (hf : Measurable f) {F : Quotient (MulAction.orbitRel G X) → ℝ≥0∞}
-    (hF : ∀ x, F (Quotient.mk _ x) = ∑' g : G, f (g • x)) :
-    ∫⁻ x, f x ∂μ = ∫⁻ q, F q ∂quotMeasure G μ := by
-  obtain ⟨D, hD⟩ := h.ExistsIsFundamentalDomain
-  have hm : ∀ g : G, Measurable fun x => f (g • x) := fun g => hf.comp (measurable_const_smul g)
-  have hFm : Measurable F := by
-    refine measurable_from_quotient.2 ?_
-    have : F ∘ Quotient.mk'' = fun x => ∑' g : G, f (g • x) := funext hF
-    rw [this]
-    exact Measurable.tsum hm
-  rw [(isAEOrbitSection_of_isFundamentalDomain hD).lintegral_quotMeasure hFm.aemeasurable,
-    hD.lintegral_eq_tsum'' f, ← lintegral_tsum fun g => (hm g).aemeasurable]
-  simp only [hF]
-
 end Quot
-
-section ProperlyDiscontinuous
-
-variable (G X : Type*) [Group G] [Countable G] [MulAction G X] [TopologicalSpace X] [T2Space X]
-  [SecondCountableTopology X] [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X]
-  [ContinuousConstSMul G X]
-
-@[to_additive exists_measurableSet_addOrbitSection
-]
-theorem exists_measurableSet_orbitSection [ProperlyDiscontinuousSMul G X] :
-    ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃ g : G, g • x ∈ D) ∧
-      ∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x := by
-  refine exists_measurableSet_orbitSection_of_discreteOrbits
-    (fun g => (isClosed_eq (continuous_const_smul g) continuous_id).measurableSet) fun x => ?_
-  obtain ⟨U, hU, h⟩ := ProperlyDiscontinuousSMul.exists_nhds_image_smul_eq_self G x
-  exact ⟨U, hU, fun g hg => h g ⟨g • x, ⟨x, mem_of_mem_nhds hU, rfl⟩, hg⟩⟩
-
-@[to_additive exists_isAddFundamentalDomain_of_free
-]
-theorem exists_isFundamentalDomain_of_free [ProperlyDiscontinuousSMul G X]
-    (hfree : ∀ (g : G) (x : X), g • x = x → g = 1) :
-    ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃! g : G, g • x ∈ D) ∧
-      ∀ μ : Measure X, IsFundamentalDomain G D μ := by
-  obtain ⟨D, hD, hc, hu⟩ := exists_measurableSet_orbitSection G X
-  have h : ∀ x, ∃! g : G, g • x ∈ D := fun x => by
-    obtain ⟨g, hg⟩ := hc x
-    refine ⟨g, hg, fun k hk => ?_⟩
-    have := hu _ hg (k * g⁻¹) (by simpa [mul_smul] using hk)
-    exact mul_inv_eq_one.1 (hfree _ _ this)
-  exact ⟨D, hD, h, fun μ => IsFundamentalDomain.mk' hD.nullMeasurableSet h⟩
-
-variable {X}
-
-@[to_additive exists_isAEAddOrbitSection]
-theorem exists_isAEOrbitSection [ProperlyDiscontinuousSMul G X] (μ : Measure X) :
-    ∃ D : Set X, MeasurableSet D ∧ IsAEOrbitSection G D μ := by
-  obtain ⟨D, hD, hc, hu⟩ := exists_measurableSet_orbitSection G X
-  exact ⟨D, hD, isAEOrbitSection_of_forall hD hc hu μ⟩
-
-@[to_additive exists_isAddFundamentalDomain_of_ae_free
-]
-theorem exists_isFundamentalDomain_of_ae_free [ProperlyDiscontinuousSMul G X] (μ : Measure X)
-    (hfree : μ {x | MulAction.stabilizer G x ≠ ⊥} = 0) :
-    ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃ g : G, g • x ∈ D) ∧
-      (∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x) ∧ IsFundamentalDomain G D μ := by
-  obtain ⟨D, hD, hc, hu⟩ := exists_measurableSet_orbitSection G X
-  refine ⟨D, hD, hc, hu, isFundamentalDomain_of_orbitSection hD.nullMeasurableSet
-    (Eventually.of_forall hc) hu fun g hg => measure_mono_null (fun x hx => ?_) hfree⟩
-  refine fun h : MulAction.stabilizer G x = ⊥ => hg ?_
-  have : g ∈ MulAction.stabilizer G x := hx
-  simpa [h] using this
-
-@[to_additive exists_isAddFundamentalDomain_of_surjective
-]
-theorem exists_isFundamentalDomain_of_surjective [ProperlyDiscontinuousSMul G X] {Q : Type*}
-    [Group Q] [MulAction Q X] (φ : G →* Q) (hφ : Function.Surjective φ)
-    (hact : ∀ g (x : X), φ g • x = g • x) (μ : Measure X)
-    (hfree : ∀ g : G, φ g ≠ 1 → μ {x | g • x = x} = 0) :
-    ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃ g : G, g • x ∈ D) ∧
-      (∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x) ∧ IsFundamentalDomain Q D μ := by
-  obtain ⟨D, hD, hc, hu⟩ := exists_measurableSet_orbitSection G X
-  refine ⟨D, hD, hc, hu, isFundamentalDomain_of_orbitSection hD.nullMeasurableSet
-    (Eventually.of_forall fun x => ?_) (fun x hx q hq => ?_) fun q hq => ?_⟩
-  · obtain ⟨g, hg⟩ := hc x
-    exact ⟨φ g, by rwa [hact]⟩
-  · obtain ⟨g, rfl⟩ := hφ q
-    rw [hact] at hq ⊢
-    exact hu x hx g hq
-  · obtain ⟨g, rfl⟩ := hφ q
-    simpa only [hact] using hfree g hq
-
-theorem exists_isFundamentalDomain_range_toPermHom [ProperlyDiscontinuousSMul G X] (μ : Measure X)
-    (hfree : ∀ g : G, (∃ x : X, g • x ≠ x) → μ {x | g • x = x} = 0) :
-    ∃ D : Set X, MeasurableSet D ∧ (∀ x, ∃ g : G, g • x ∈ D) ∧
-      (∀ x ∈ D, ∀ g : G, g • x ∈ D → g • x = x) ∧
-      IsFundamentalDomain (MulAction.toPermHom G X).range D μ := by
-  refine exists_isFundamentalDomain_of_surjective G (MulAction.toPermHom G X).rangeRestrict
-    (MonoidHom.rangeRestrict_surjective _) (fun _ _ => rfl) μ fun g hg => hfree g ?_
-  by_contra h
-  push Not at h
-  exact hg (Subtype.ext (Equiv.ext h))
-
-@[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq
-]
-theorem exists_isFundamentalDomain_and_quotMeasure_eq [ProperlyDiscontinuousSMul G X]
-    (μ : Measure X) [SMulInvariantMeasure G X μ]
-    (hfree : μ {x | MulAction.stabilizer G x ≠ ⊥} = 0) :
-    (∃ D : Set X, MeasurableSet D ∧ IsFundamentalDomain G D μ) ∧
-      ∀ D : Set X, IsFundamentalDomain G D μ →
-        (μ.restrict D).map (Quotient.mk (MulAction.orbitRel G X)) = quotMeasure G μ := by
-  obtain ⟨D, hD, -, -, h⟩ := exists_isFundamentalDomain_of_ae_free G μ hfree
-  exact ⟨⟨D, hD, h⟩, fun D h => (quotMeasure_eq_of_isFundamentalDomain h).symm⟩
-
-@[to_additive addQuotMeasure_eq_zero_iff
-]
-theorem quotMeasure_eq_zero_iff [ProperlyDiscontinuousSMul G X] (μ : Measure X)
-    [SMulInvariantMeasure G X μ] : quotMeasure G μ = 0 ↔ μ = 0 := by
-  obtain ⟨D, -, hD⟩ := exists_isAEOrbitSection G μ
-  exact hD.quotMeasure_eq_zero_iff
-
-end ProperlyDiscontinuous
 
 section DiscreteSubgroup
 
@@ -607,72 +348,6 @@ theorem exists_isFundamentalDomain_subgroup :
     exact mul_inv_eq_one.1 (hfree _ _ this)
   exact ⟨D, hD, h, fun μ => IsFundamentalDomain.mk' hD.nullMeasurableSet h⟩
 
-@[to_additive exists_isAddFundamentalDomain_addSubgroup_op
-]
-theorem exists_isFundamentalDomain_subgroup_op :
-    ∃ D : Set G, MeasurableSet D ∧ (∀ x, ∃! g : Γ.op, g • x ∈ D) ∧
-      ∀ μ : Measure G, IsFundamentalDomain Γ.op D μ := by
-  obtain ⟨D, hD, h, -⟩ := exists_isFundamentalDomain_subgroup Γ
-  have h' : ∀ x, ∃! g : Γ.op, g • x ∈ D⁻¹ := fun x => by
-    obtain ⟨g, hg, hu⟩ := h x⁻¹
-    refine ⟨⟨MulOpposite.op (g : G)⁻¹, inv_mem g.2⟩, ?_, fun k hk => ?_⟩
-    · have : (g : G) * x⁻¹ ∈ D := hg
-      change (x * (g : G)⁻¹)⁻¹ ∈ D
-      rwa [mul_inv_rev, inv_inv]
-    · have hk' : (x * MulOpposite.unop (k : Gᵐᵒᵖ))⁻¹ ∈ D := hk
-      rw [mul_inv_rev] at hk'
-      have := hu ⟨(MulOpposite.unop (k : Gᵐᵒᵖ))⁻¹, inv_mem k.2⟩ hk'
-      subst this
-      ext
-      simp
-  exact ⟨D⁻¹, hD.inv, h', fun μ => IsFundamentalDomain.mk' hD.inv.nullMeasurableSet h'⟩
-
-@[to_additive hasAddFundamentalDomain_addSubgroup]
-theorem hasFundamentalDomain_subgroup (μ : Measure G) : HasFundamentalDomain Γ G μ := by
-  obtain ⟨D, -, -, h⟩ := exists_isFundamentalDomain_subgroup Γ
-  exact ⟨D, h μ⟩
-
-@[to_additive hasAddFundamentalDomain_addSubgroup_op]
-theorem hasFundamentalDomain_subgroup_op (μ : Measure G) : HasFundamentalDomain Γ.op G μ := by
-  obtain ⟨D, -, -, h⟩ := exists_isFundamentalDomain_subgroup_op Γ
-  exact ⟨D, h μ⟩
-
-@[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq_addSubgroup
-]
-theorem exists_isFundamentalDomain_and_quotMeasure_eq_subgroup (μ : Measure G)
-    [μ.IsMulLeftInvariant] :
-    (∃ D : Set G, MeasurableSet D ∧ IsFundamentalDomain Γ D μ) ∧
-      ∀ D : Set G, IsFundamentalDomain Γ D μ →
-        (μ.restrict D).map (Quotient.mk (MulAction.orbitRel Γ G)) = quotMeasure Γ μ := by
-  have := countable_of_discrete_subgroup Γ
-  obtain ⟨D, hD, -, h⟩ := exists_isFundamentalDomain_subgroup Γ
-  exact ⟨⟨D, hD, h μ⟩, fun D h => (quotMeasure_eq_of_isFundamentalDomain h).symm⟩
-
-@[to_additive exists_isAddFundamentalDomain_and_addQuotMeasure_eq_addSubgroup_op
-]
-theorem exists_isFundamentalDomain_and_quotMeasure_eq_subgroup_op (μ : Measure G)
-    [μ.IsMulRightInvariant] :
-    (∃ D : Set G, MeasurableSet D ∧ IsFundamentalDomain Γ.op D μ) ∧
-      ∀ D : Set G, IsFundamentalDomain Γ.op D μ →
-        (μ.restrict D).map (Quotient.mk (MulAction.orbitRel Γ.op G)) = quotMeasure Γ.op μ := by
-  have := countable_of_discrete_subgroup Γ
-  obtain ⟨D, hD, -, h⟩ := exists_isFundamentalDomain_subgroup_op Γ
-  exact ⟨⟨D, hD, h μ⟩, fun D h => (quotMeasure_eq_of_isFundamentalDomain h).symm⟩
-
 end DiscreteSubgroup
-
-theorem properlyDiscontinuousSMul_of_discrete_of_properSMul {G X : Type*} [Group G]
-    [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MulAction G X] [TopologicalSpace X]
-    [T2Space X] [LocallyCompactSpace X] [ProperSMul G X] (Γ : Subgroup G) [DiscreteTopology Γ] :
-    ProperlyDiscontinuousSMul Γ X := by
-  have : IsClosed (Γ : Set G) := Subgroup.isClosed_of_discrete
-  have : ContinuousSMul G X := ProperSMul.toContinuousSMul
-  rw [properlyDiscontinuousSMul_iff_properSMul]
-  infer_instance
-
-theorem addQuotMeasure_zmultiples_one_univ :
-    addQuotMeasure (AddSubgroup.zmultiples (1 : ℝ)) (volume : Measure ℝ) univ = 1 := by
-  rw [isAEAddOrbitSection_zmultiples_Ico.addQuotMeasure_univ]
-  simp
 
 end GlobalTheory

@@ -9,13 +9,6 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 
 namespace GlobalTheory.CompanionTheory.BZSeg
 
-section Quot
-
-variable {G V W Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup Y]
-  [Module ℂ Y]
-
-end Quot
-
 section Main
 
 variable {k : Type} [Field k] [TopologicalSpace k] {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V]

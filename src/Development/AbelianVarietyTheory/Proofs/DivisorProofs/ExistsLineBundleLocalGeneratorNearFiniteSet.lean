@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitsPatch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionFamilyZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLocalSectionFamilyUnitAtPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLocalSectionFamilyUnitAtFinitePointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalUnitGeneratorOfLineBundleLocalSectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLocalSectionFamilyUnitAtPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLocalSectionFamilyUnitAtFinitePoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalUnitGeneratorOfLineBundleLocalSection
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -76,13 +76,13 @@ theorem exists_locGen_near_finite : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → 
         ∀ j (h : x ∈ X.basicOpen (f j)), IsUnit ((X.presheaf.germ (X.basicOpen (f j)) x h).hom (e j)) := by
     intro x
     by_cases hx : x ∈ W
-    · obtain ⟨e, he⟩ := GlobalTheory.T.exists_lineBundleLocalSectionFamily_unit_at_point X L hL W hW J f k hk x hx
+    · obtain ⟨e, he⟩ := _root_.GlobalTheory.Pinch.SemiLoc.exists_secFam_isUnit_germ X L hL W hW J f k hk x hx
       exact ⟨e, fun _ => he⟩
     · exact ⟨fun _ => 0, fun h => absurd h hx⟩
   choose E hE using hE
-  obtain ⟨e, he, heu⟩ := GlobalTheory.T.lineBundleLocalSectionFamily_unit_at_finite_points X L W J (fun j => X.basicOpen (f j)) (fun j => X.basicOpen_le (f j)) k hk F'
+  obtain ⟨e, he, heu⟩ := _root_.GlobalTheory.Pinch.secFam_unit_at_finite X L W J (fun j => X.basicOpen (f j)) (fun j => X.basicOpen_le (f j)) k hk F'
     hF'fin a ha ha' E (fun x hx => (hE x (hFW (hF'F hx))).1) (fun x hx => (hE x (hFW (hF'F hx))).2)
-  obtain ⟨V, u, hV, hgen⟩ := GlobalTheory.T.exists_localUnitGenerator_of_lineBundleLocalSectionFamily X L hL J (fun j => X.basicOpen (f j)) k hk e he
+  obtain ⟨V, u, hV, hgen⟩ := _root_.GlobalTheory.Pinch.exists_locGen_of_secFam X L hL J (fun j => X.basicOpen (f j)) k hk e he
   refine ⟨V, u, fun x hx => ?_, hgen⟩
   obtain ⟨x', hx', hxx'⟩ := hup x hx
   obtain ⟨j, hj⟩ := hcov x' (hFW (hF'F hx'))

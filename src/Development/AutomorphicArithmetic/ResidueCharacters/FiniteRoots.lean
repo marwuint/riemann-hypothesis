@@ -82,14 +82,6 @@ theorem Ks_lcm {N : ℕ} (hN : 0 < N) :
   refine Ks_eq (M' := ordCompl[l] (Nat.lcm l N)) _ ?_ (Nat.not_dvd_ordCompl hp (lcm_pos hN).ne')
   rw [← hf, Nat.ordProj_mul_ordCompl_eq_self]
 
-theorem good_lcm {N : ℕ} (hN : 0 < N) (h2 : l ≠ 2) (LL : FinExt l)
-    (hLL : ∀ x : Om l, x ^ Nat.lcm l N = 1 → x ∈ LL.1) :
-    Good (Kc l (Nat.lcm l N) (lcm_pos hN)) (max 1 (N.factorization l)) LL := by
-  refine ⟨le_max_left _ _, fun e => absurd e h2, (Ks_lcm hN).ge, fun τ x => ?_⟩
-  have e2 : τ.liftNormal (Om l) (x : Om l) = τ x := AlgHom.liftNormal_commutes τ (Om l) x
-  rw [← e2]
-  exact map_mem _ _ hLL _ _ ((Ks_lcm hN).le x.2)
-
 theorem good_lcm' {N : ℕ} (hN : 0 < N) (h2 : l = 2 → 4 ∣ N) (LL : FinExt l)
     (hLL : ∀ x : Om l, x ^ Nat.lcm l N = 1 → x ∈ LL.1) :
     Good (Kc l (Nat.lcm l N) (lcm_pos hN)) (max 1 (N.factorization l)) LL := by
@@ -108,11 +100,6 @@ theorem GK_normal {M : ℕ} (hM : 0 < M) : (GK (Kc l M hM)).Normal := by
   show g (n (g⁻¹ x)) = x
   rw [hn _ h1]
   exact g.apply_symm_apply x
-
-theorem range_normal {M : ℕ} (hM : 0 < M) (K : FinExt l) (hle : GK (Kc l M hM) ≤ GK K) :
-    (Subgroup.inclusion hle).range.Normal := by
-  rw [Subgroup.inclusion_range]
-  exact (GK_normal hM).subgroupOf _
 
 theorem val_index_le {N : ℕ} (hN : 0 < N) (d : ℕ) :
     padicValNat l (Module.finrank ℚ_[l] ↥(Kc l (Nat.lcm l N) (lcm_pos hN)).1 / d) ≤ Nat.log l N + 1 := by

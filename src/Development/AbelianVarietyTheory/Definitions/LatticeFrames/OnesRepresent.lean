@@ -76,18 +76,6 @@ def OneIndex : Prop :=
   ∀ j c (h : j + 1 + c = s), ∀ β ∈ (S.T t).idx S.ψ ν j c h 1,
     β = DoubleCoset.mk (R k (XIx (Fin κ) t (j + 1)) (c + 1) 1) ((S.T t).lev (j + 1) (c + 1) (by omega)).J 1
 
-def NonZero : Prop :=
-  (∀ j c (h : j + 1 + c = s), (S.T t).entry S.ψ ν j c h 1 1 ≠ 0) ∧ ∃ x₀, (S.T t).Psi 1 x₀ (S.y0 t) ≠ 0
-
-def OnesRepresent : Prop := (S.T t).IsRepSystem (fun _ _ _ => {1}) S.ψ ν
-
-open Classical in
-
-def PureTransform : Prop :=
-  ∀ ε : k, valuation k ε = 1 → ∀ x₀ η,
-    hatCol S.ψ ν ε ((S.T t).Phi s 0 rfl) x₀ η =
-      (S.T t).Psi 1 x₀ (S.y0 t) * (if ∀ i, η i ∈ 𝒪[k] then (S.ψ (ε * (η ⬝ᵥ S.y0 t)) : ℂ) else 0)
-
 end SymData
 
 def AtMostOne : Prop :=
@@ -95,53 +83,5 @@ def AtMostOne : Prop :=
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν →
     ∀ (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t],
       S.OneIndex t ν ∧ S.PrLevel t ∧ S.OneCoupling t
-
-def Collapse : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), HasConductor ψ 1 → IsUnitVol ν →
-  ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c : ℕ), 1 ≤ c →
-  ∀ (μ : kˣ →* ℂˣ) (P : Level (GL (n ⊕ Fin c) k)) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), Φ ∈ SB _ → IsCO P.J →
-    (∀ h : P.J, om μ 1 (h : GL (n ⊕ Fin c) k) Φ = (((P.lam h)⁻¹ : ℂˣ) : ℂ) • Φ) →
-    (∀ β ∈ idxAt ψ ν μ Φ P.J 1, β = DoubleCoset.mk (R k n c 1) P.J 1) →
-  ∀ (bas : GL (n ⊕ Fin c) k) (m : Measure (GL n k)), m.IsHaarMeasure →
-  ∀ (μG : Measure (GL (n ⊕ Fin c) k)), μG.IsHaarMeasure →
-  ∃ C : ℝ, 0 < C ∧
-    ∀ (V' V A : Type) [AddCommGroup V'] [Module ℂ V'] [AddCommGroup V] [Module ℂ V] [AddCommGroup A] [Module ℂ A]
-      (π : Representation ℂ (GL n k) V) (σ : Representation ℂ (GL (n ⊕ Fin c) k) A)
-      (θ : V' →ₗ[ℂ] SB (Matrix n n' k) →ₗ[ℂ] V) (b : V →ₗ[ℂ] A →ₗ[ℂ] ℂ),
-      (∀ γ φ (Ψ Ψ' : SB (Matrix n n' k)), Ψ'.1 = om μ 1 γ Ψ.1 → θ φ Ψ' = π γ (θ φ Ψ)) → IsPos ψ 1 π σ b →
-      ∀ (φ : V') (v : A), (∀ h : P.J, σ (h : GL (n ⊕ Fin c) k) v = (P.lam h : ℂ) • v) →
-      ∀ f : GL (n ⊕ Fin c) k → ℂ, (∀ h (Ψ : SB (Matrix n n' k)), Ψ.1 = flat ψ ν μ Φ 1 h → f h = b (θ φ Ψ) (σ h v)) →
-      ∀ Ξ : SB (Matrix n n' k), Ξ.1 = xi ψ ν μ Φ P.J bas 1 1 →
-      ∀ z : ℂ, IsQuotInt ν m μG 1 f z ↔ z = (C : ℂ) * b (θ φ Ξ) v
-
-def CollapseExact : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), HasConductor ψ 1 → IsUnitVol ν →
-  ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c : ℕ), 1 ≤ c →
-  ∀ (μ : kˣ →* ℂˣ) (P : Level (GL (n ⊕ Fin c) k)) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), Φ ∈ SB _ → IsCO P.J →
-    (∀ h : P.J, om μ 1 (h : GL (n ⊕ Fin c) k) Φ = (((P.lam h)⁻¹ : ℂˣ) : ℂ) • Φ) →
-    (∀ β ∈ idxAt ψ ν μ Φ P.J 1, β = DoubleCoset.mk (R k n c 1) P.J 1) →
-  ∀ (bas : GL (n ⊕ Fin c) k) (m : Measure (GL n k)), m.IsHaarMeasure →
-  ∀ (μG : Measure (GL (n ⊕ Fin c) k)), μG.IsHaarMeasure →
-    0 < (μG P.J).toReal ∧ 0 < (m (prX (Cgrp P.J 1))).toReal ∧
-    ∀ (V' V A : Type) [AddCommGroup V'] [Module ℂ V'] [AddCommGroup V] [Module ℂ V] [AddCommGroup A] [Module ℂ A]
-      (π : Representation ℂ (GL n k) V) (σ : Representation ℂ (GL (n ⊕ Fin c) k) A)
-      (θ : V' →ₗ[ℂ] SB (Matrix n n' k) →ₗ[ℂ] V) (b : V →ₗ[ℂ] A →ₗ[ℂ] ℂ),
-      (∀ γ φ (Ψ Ψ' : SB (Matrix n n' k)), Ψ'.1 = om μ 1 γ Ψ.1 → θ φ Ψ' = π γ (θ φ Ψ)) → IsPos ψ 1 π σ b →
-      ∀ (φ : V') (v : A), (∀ h : P.J, σ (h : GL (n ⊕ Fin c) k) v = (P.lam h : ℂ) • v) →
-      ∀ f : GL (n ⊕ Fin c) k → ℂ, (∀ h (Ψ : SB (Matrix n n' k)), Ψ.1 = flat ψ ν μ Φ 1 h → f h = b (θ φ Ψ) (σ h v)) →
-      ∀ Ξ : SB (Matrix n n' k), Ξ.1 = xi ψ ν μ Φ P.J bas 1 1 →
-      ∀ z : ℂ, IsQuotInt ν (rescale ν bas m) μG 1 f z ↔
-        z = (((μG P.J).toReal / (m (prX (Cgrp P.J 1))).toReal : ℝ) : ℂ) * b (θ φ Ξ) v
-
-example : FreeTop 1 (κ := 1) (l := 3) (.inr 0) (.inl 0) ∧ ¬ FreeTop 1 (κ := 1) (l := 3) (.inr 1) (.inl 0) := by
-  simp [FreeTop]
-
-example : FreeTop 1 (κ := 1) (l := 3) (.inl 0) (.inr 2) ∧ ¬ FreeTop 1 (κ := 1) (l := 3) (.inl 0) (.inr 1) := by
-  simp [FreeTop]
-
-example (ρ : ℕ) {κ l : ℕ} (a : Fin κ ⊕ Fin (l + 1)) : ¬ FreeTop ρ a (.inr 0) := by
-  rcases a with a | a <;> simp [FreeTop]
 
 end GlobalTheory.SymChain

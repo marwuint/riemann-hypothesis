@@ -30,14 +30,6 @@ theorem WData.pr_mul (g : P) (hg : g ∈ Set.range W.ι) (z : P) : W.pr (g * z) 
   obtain ⟨g', rfl⟩ := hg
   simp [WData.pr, W.ρι]
 
-theorem WData.ps_mul (g : P) (hg : g ∈ Set.range W.ι) (z : P) : W.ps (g * z) = g * W.ps z := by
-  obtain ⟨g', rfl⟩ := hg
-  have h1 : W.t⁻¹ * W.ι g' = W.ι g' * W.t⁻¹ := by
-    have := W.tc (W.ι g')
-    rw [inv_mul_eq_iff_eq_mul, ← mul_assoc, this, mul_inv_cancel_right]
-  simp only [WData.ps, map_mul, W.ρι]
-  rw [← mul_assoc, h1, mul_assoc]
-
 theorem WData.inv_univ {n : ℕ} (F : (Fin n → P) → ℝ) (hS : InvS (Set.range W.ι) F)
     (ht : ∀ y, F (fun i => W.t * y i) = F y) : InvS Set.univ F := by
   have hk : ∀ k : ℤ, ∀ y, F (fun i => W.t ^ k * y i) = F y := by

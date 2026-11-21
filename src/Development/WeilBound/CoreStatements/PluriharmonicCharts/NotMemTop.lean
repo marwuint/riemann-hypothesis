@@ -5,20 +5,20 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFromOrbitCharts
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HoloMapOfLocalProductCharts
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwapStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwap
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntryStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsLowerUniBlockDiagFactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionRegularStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionOpenStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionRegularStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestriction
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionRegular
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionOpen
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionRegular
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.CardPIdxEqChooseStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalDegreeEstimateStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalDegreeEstimate
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalDegreeBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalNormComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PRhoContinuousStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalNormComparison
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PRhoContinuous
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVSmul
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalIntegrabilityStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalIntegrability
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorMulSelf
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartImmersion
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
@@ -73,12 +73,12 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
         C.O = pO M Rb keep v F kb V r h := by
     intro F kb V bl r h hc
     have hV : IsOpen V := hc.2.2.2.1.1
-    have hh := GlobalTheory.T.frameData_local_resolution_regular K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
-    have hr := GlobalTheory.T.frameData_local_integrability K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
+    have hh := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Holo.pPhi_holo K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
+    have hr := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.ChartRead.chart_reads K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
     have ho := GlobalTheory.CompanionTheory.Ar.PB.PFl.Onto.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
     have hO := GlobalTheory.T.frameData_local_degree_bound K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
-    have hb' := GlobalTheory.T.frameData_local_norm_comparison K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
-    have ht := GlobalTheory.T.frameData_local_norm_bound K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
+    have hb' := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Orb.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
+    have ht := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.PCont.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
     have hi := GlobalTheory.CompanionTheory.Ar.PB.PFl.Imm.chart_immersion K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
     exact ⟨{ D := pD ε V
              isOpen_D := hV.preimage (continuous_pi fun i => continuous_apply _)
@@ -111,14 +111,14 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     obtain ⟨C, hD, hφ, hO⟩ := mk F kb V bl r h hc
     obtain ⟨ψ, h1, h2, h3, h4⟩ := hR C ⟨_, R.mem x x (R.mem_U x)⟩
     exact ⟨F, kb, V, bl, r, h, ψ, hc, h1, h2.trans hD, (h3 x).2 (hO ▸ hzO), fun x' hx' => hφ ▸ h4 x' hx'⟩
-  have hob := (GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hb hrng).2
+  have hob := (_root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main K ι Φ y Ψ N j M keep Kk ιk κ v hb hrng).2
 
   have hbase : ∀ x : R.X, ∃ x' : Rb.X, SameOrbit (Rb.lift x' x') (pBase M v (R.lift x x)) := by
     intro x
     obtain ⟨F, kb, V, bl, r, h, ψ, hc, -, hT, hx, hs⟩ := key x
     have hB : IsBaseChart M Rb F kb V bl := hc.2.2.2.1
     have hw : ψ x ∈ pD ε V := hT ▸ ψ.map_source hx
-    have hE := GlobalTheory.T.frameData_local_resolution_open K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw
+    have hE := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Exact.chart_points K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw
     refine ⟨(Rb.A.chart kb).symm (pB ε (ψ x)), orbit_trans (hB.2.2.2.2 _ hw).2.2.2 ?_⟩
     have := hob _ _ (hs x hx)
     rwa [hE.2.1] at this
@@ -133,7 +133,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     intro x F kb V bl r h ψ hc hT hx hs
     have hB : IsBaseChart M Rb F kb V bl := hc.2.2.2.1
     have hw : ψ x ∈ pD ε V := hT ▸ ψ.map_source hx
-    have hE := GlobalTheory.T.frameData_local_resolution_open K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw
+    have hE := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Exact.chart_points K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw
     have h1 : SameOrbit (bl (pB ε (ψ x))) (pBase M v (R.lift x x)) := by
       have := hob _ _ hs
       rwa [hE.2.1] at this
@@ -162,7 +162,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     obtain ⟨F, kb, V, bl, r, h, ψ, hc, -, hT, hx, hs⟩ := key x
     have hB : IsBaseChart M Rb F kb V bl := hc.2.2.2.1
     have hw : ψ x ∈ pD ε V := hT ▸ ψ.map_source hx
-    obtain ⟨z₀, hz₀, hzv, hzb⟩ := GlobalTheory.T.frameData_local_degree_estimate K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw
+    obtain ⟨z₀, hz₀, hzv, hzb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Ext.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw
     obtain ⟨hpe, -, -⟩ := hcoord x F kb V bl r h ψ hc hT hx (hs x hx)
     obtain ⟨c, hc0, hce⟩ := orbit_symm (hs x hx)
     let c' : K → ℂ := fun k => if hk : ∃ k', κ k' = k then c hk.choose else 1

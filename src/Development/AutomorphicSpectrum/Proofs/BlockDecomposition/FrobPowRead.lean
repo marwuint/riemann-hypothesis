@@ -5,15 +5,15 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalEmbeddingR
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUniformizerGaloisAction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormSubLeOfNear
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerPropertiesResidue
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerResidueFieldFinitePowerStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateSequenceNormBoundsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerResidueFieldFinitePower
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateSequenceNormBounds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerCompatibleSequenceApproximationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerFixedPointApproximationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerDividesFrobeniusDifferenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerCharacterEqResidueLiftStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerFixedPointApproximation
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerDividesFrobeniusDifference
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerCharacterEqResidueLift
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerResidueCongruenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteFieldEmbeddingsDifferFrobeniusStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGaloisExtensionOfEmbeddingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteFieldEmbeddingsDifferFrobenius
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGaloisExtensionOfEmbedding
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateTeichmullerSequenceCompatibilityStatement
 noncomputable section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
@@ -48,7 +48,7 @@ theorem fix_ringHom {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f 
     (hfer : ∀ c : ↥(OL K), ‖oc K c ^ l ^ f - oc K c‖ ≤ ‖oc K π‖) :
     ∃ r₀ : ↥(OL K) →+* Tl l, (∀ c, r₀ c ^ l ^ f = r₀ c) ∧ ∀ c, ‖sh (r₀ c) - oc K c‖ ≤ ‖oc K π‖ := by
   have hex : ∀ c : ↥(OL K), ∃ y : Tl l, y ^ l ^ f = y ∧ ‖sh y - oc K c‖ ≤ ‖oc K π‖ := fun c =>
-    GlobalTheory.T.teichmuller_fixed_point_approximation f _ hf hl h1 (oc K c) (norm_oc_le_one K c) (hfer c)
+    _root_.GlobalTheory.CompanionTheory.LTPer.Tilt.exists_fixed_near f _ hf hl h1 (oc K c) (norm_oc_le_one K c) (hfer c)
   choose F hF1 hF2 using hex
   have huniq : ∀ (x : Tl l) (A : ↥(OL K)), x ^ l ^ f = x → ‖sh x - oc K A‖ ≤ ‖oc K π‖ → F A = x := by
     intro x A hx hA
@@ -81,7 +81,7 @@ theorem tch_eq {l : ℕ} [Fact l.Prime] (f : ℕ) (hf : 0 < f) (x : Tl l) (hx : 
   have hyf : y ^ l ^ f = y := by
     apply omC.injective
     rw [map_pow, ← hy, ← sh_pow, hx]
-  exact GlobalTheory.T.teichmuller_character_eq_residue_lift (l ^ f) hq2 (dvd_pow_self l hf.ne') x y hx hyf hy
+  exact _root_.GlobalTheory.CompanionTheory.LTPer.Tilt.tch_eq_rB_of_sh_eq (l ^ f) hq2 (dvd_pow_self l hf.ne') x y hx hyf hy
 
 theorem exp_twist {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : ℕ) (hf : 0 < f) (hqf : qOf π = l ^ f)
     (hl : ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖) (h1 : ‖oc K π‖ < 1) (hπ0 : π ≠ 0)
@@ -89,7 +89,7 @@ theorem exp_twist {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : 
     (r₀ : ↥(OL K) →+* Tl l) (hr1 : ∀ c, r₀ c ^ l ^ f = r₀ c) (hr2 : ∀ c, ‖sh (r₀ c) - oc K c‖ ≤ ‖oc K π‖)
     (hrπ : r₀ π = 0) (μ : ↥K.1 →ₐ[ℚ_[l]] Om l) :
     ∃ i : ℕ, ∀ c, ∃ c' : ↥(OL K), sh (r₀ c ^ l ^ i) = omC (μ ((c + π * c' : ↥(OL K)) : ↥K.1)) := by
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_galois_extension_of_embedding K μ
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.Tilt.exists_gal_extending_embedding K μ
   haveI := hmax
   haveI := hfin
   letI : Field (↥(OL K) ⧸ Ideal.span {π}) := Ideal.Quotient.field _
@@ -98,7 +98,7 @@ theorem exp_twist {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : 
     obtain ⟨b, rfl⟩ := Ideal.mem_span_singleton'.1 ha
     rw [map_mul, hrπ, mul_zero]
   let α : (↥(OL K) ⧸ Ideal.span {π}) →+* Tl l := Ideal.Quotient.lift _ r₀ hker
-  obtain ⟨i, hi⟩ := GlobalTheory.T.finite_field_embeddings_differ_frobenius (l := l) (k := ↥(OL K) ⧸ Ideal.span {π}) (D := Tl l) α ((actT g).comp α)
+  obtain ⟨i, hi⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.Tilt.exists_frobenius_pow_of_ringHoms (l := l) (k := ↥(OL K) ⧸ Ideal.span {π}) (D := Tl l) α ((actT g).comp α)
   refine ⟨i, fun c => ?_⟩
   obtain ⟨c', hc'⟩ := GlobalTheory.T.teichmuller_residue_congruence K π f hf hqf hl h1 hπ0 (r₀ c) c (hr1 c) (hr2 c)
   refine ⟨c', ?_⟩
@@ -149,7 +149,7 @@ theorem GlobalTheory.CompanionTheory.LTPer.Tilt.tilt_period : ∀ {l : ℕ} [Fac
   intro l _ K χ π z hLT μ
   obtain ⟨hirr, hz0, hz1, hrec, hgal⟩ := hLT
   obtain ⟨hq2, hlq, hπl, hπ1, -⟩ := GlobalTheory.CompanionTheory.LTPer.uniformiser_facts K π hirr
-  obtain ⟨hmax, hfin, f, hf, hqf⟩ := GlobalTheory.T.uniformizer_residue_field_finite_power K π hirr
+  obtain ⟨hmax, hfin, f, hf, hqf⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.Tilt.resfield_of_irreducible K π hirr
   have hπ1' : ‖oc K π‖ < 1 := by rw [oc_apply]; exact hπ1
   have hl : ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖ := by
     obtain ⟨a, ha⟩ := hπl
@@ -157,7 +157,7 @@ theorem GlobalTheory.CompanionTheory.LTPer.Tilt.tilt_period : ∀ {l : ℕ} [Fac
     rw [e, norm_mul]
     exact mul_le_of_le_one_right (norm_nonneg _) (norm_oc_le_one K a)
   have hπ0 : π ≠ 0 := hirr.ne_zero
-  obtain ⟨hzlt, hzgt⟩ := GlobalTheory.T.lubin_tate_sequence_norm_bounds K χ π z ⟨hirr, hz0, hz1, hrec, hgal⟩ hq2 hπ1'
+  obtain ⟨hzlt, hzgt⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.Tilt.Normz.norm_z_bounds K χ π z ⟨hirr, hz0, hz1, hrec, hgal⟩ hq2 hπ1'
   have hrec' : ∀ n, z (n + 1) ^ l ^ f + ((π : ↥K.1) : Om l) * z (n + 1) = z n := by
     intro n
     have h := hrec n
@@ -181,7 +181,7 @@ theorem GlobalTheory.CompanionTheory.LTPer.Tilt.tilt_period : ∀ {l : ℕ} [Fac
     exact pow_ne_zero _ (h2 _ (by omega))
   have hfer : ∀ c : ↥(OL K), ‖oc K c ^ l ^ f - oc K c‖ ≤ ‖oc K π‖ := by
     intro c
-    obtain ⟨a, ha⟩ := GlobalTheory.T.uniformizer_divides_frobenius_difference K π hmax hfin c
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.Tilt.dvd_pow_qOf_sub_self K π hmax hfin c
     rw [hqf] at ha
     rw [← map_pow, ← map_sub, ha, map_mul, norm_mul]
     exact mul_le_of_le_one_right (norm_nonneg _) (norm_oc_le_one K a)

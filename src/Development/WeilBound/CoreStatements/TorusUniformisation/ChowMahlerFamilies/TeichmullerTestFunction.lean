@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FromNAdd
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedFlagStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHolds
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.NonemptyEquivOfCardHom
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.IsDerAtOneCompOfIsDiffOf
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.FunctionFamilyIdempotent
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.FunctionFamilyChartFacts
@@ -523,7 +524,7 @@ theorem der_act [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] 
     obtain ⟨x, rfl⟩ := qmk_surj _ p t
     rw [← cancel_epi (spMap (fracToField (CR O y c'))), ← P.pts₁, mulT_qmk, G.t₁.lin, Over.comp_left, P.pts₁]
     simp only [Category.assoc]
-  have h4 := (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
+  have h4 := (_root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
     𝔐.t.semi.smooth).2.2.2.1 (𝔐.t.act.act a) (mulT _ p a) hα f.1.1 f.1.2
   have hI : (⟨_, h4⟩ : P.Γ₁.btOrder ⊤) ∈ augIdeal (P.Γ₁.btOrder ⊤) := by
     change f.1.1 (mulT _ p a 1) = 0
@@ -548,7 +549,7 @@ theorem PositivityTheory.Xgn.teichmuller_test_function : ∀ (E : Type) [Field E
   haveI := finite_tors (E := E) (D.p + D.q) (Fact.out : p.Prime).ne_zero
   haveI := P.fin
   haveI := P.proj
-  obtain ⟨θ, ⟨-, hθ⟩, hθp, -⟩ := (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
+  obtain ⟨θ, ⟨-, hθ⟩, hθp, -⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
     𝔐.t.semi.smooth).2.2.2.2.2 P.L P.M
   have hid := PositivityTheory.Xgn.function_family_idempotent E H D l Xo c O₀ β Y S Ω K J y 𝔐 p G O c' P F pq sc hsurj hSec
   have hπs : ∀ x : Fin (D.p + D.q) → F, fromN pq (toN sc x) = x := fun x => funext fun k => hSec.1 (x k)

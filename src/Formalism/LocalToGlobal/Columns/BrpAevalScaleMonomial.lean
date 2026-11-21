@@ -68,42 +68,6 @@ theorem brp_wsum (lam : DomWeight n) :
     nsmul_eq_mul]
   ring
 
-theorem brp_blockAct_scalar (t : K) :
-    Formalism.GradedWeylDivisibility.blockAct K (S := Unit) (k := n) (n := n) (fun _ => ((t • 1 : Matrix (Fin n) (Fin n) K))ᵀ) =
-      aeval fun v => C t * X v := by
-  unfold Formalism.GradedWeylDivisibility.blockAct
-  congr 1
-  funext v
-  rw [Finset.sum_eq_single v.2.1]
-  · simp
-  · intro b _ hb
-    simp [Matrix.one_apply_ne hb]
-  · simp
-
-theorem brp_aeval_scale_rename {σ τ : Type} (f : σ → τ) (t : K) (Q : MvPolynomial σ K) :
-    aeval (fun v => C t * X v) (rename f Q) = rename f (aeval (fun v => C t * X v) Q) := by
-  induction Q using MvPolynomial.induction_on with
-  | C a => simp
-  | add p q hp hq => simp only [map_add, hp, hq]
-  | mul_X p v hp => simp only [map_mul, rename_X, aeval_X, rename_C, hp]
-
-theorem brp_trAct_scalar (lam : DomWeight n) (t : Kˣ) (F : Pol K Unit n) (hF : F ∈ VV K (oneW lam)) :
-    trAct (fun _ : Unit => brpSc K t) F = (t : K) ^ (∑ i, lam.natW i) • F := by
-  unfold trAct
-  simp only [brpSc_coe]
-  rw [brp_blockAct_scalar]
-  induction hF using Submodule.span_induction with
-  | mem P hP =>
-    obtain ⟨G, hG, rfl⟩ := hP
-    rw [Fintype.prod_unique]
-    unfold Formalism.GradedWeylDivisibility.blockEmb
-    have hW : G default ∈ weightedHomogeneousSubmodule K (Formalism.GradedWeylDivisibility.colW n n) lam.natW :=
-      (Submodule.mem_inf.1 (hG default)).1
-    rw [brp_aeval_scale_rename, brp_aeval_scale_whom _ _ hW, map_smul]
-  | zero => simp
-  | add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]
-  | smul a x _ hx => rw [map_smul, hx, smul_comm]
-
 end Scalar
 
 section Chi
@@ -118,33 +82,7 @@ def chiW (lam : DomWeight n) : GL (Fin n) K →* K :=
 theorem chiW_apply (lam : DomWeight n) (g : GL (Fin n) K) :
     chiW K lam g = LinearMap.det (rhoK (oneW lam) (fun _ => g)) := rfl
 
-theorem chiW_ne_zero (lam : DomWeight n) (g : GL (Fin n) K) : chiW K lam g ≠ 0 := ((Group.isUnit g).map (chiW K lam)).ne_zero
-
 def wsum (lam : DomWeight n) : ℤ := ∑ i, lam.w i
-
-theorem brp_detTwK_scalar (lam : DomWeight n) (t : Kˣ) :
-    detTwK (oneW lam) (fun _ : Unit => brpSc K t) = (t : K) ^ ((n : ℤ) * lam.detShift) := by
-  have hdet : Matrix.GeneralLinearGroup.det (brpSc K t : GL (Fin n) K) = t ^ n := by
-    apply Units.ext
-    simp [Matrix.GeneralLinearGroup.val_det_apply, brpSc_coe, Matrix.det_smul]
-  simp only [detTwK, detPow, Finset.univ_unique, Finset.prod_singleton, hdet]
-  rw [← zpow_natCast, ← zpow_mul, Units.val_zpow_eq_zpow_val]
-
-theorem rhoK_scalar (lam : DomWeight n) (t : Kˣ) :
-    rhoK (oneW lam) (fun _ => brpSc K t) = ((t : K) ^ wsum lam) • (1 : Module.End K (VV K (oneW lam))) := by
-  apply LinearMap.ext
-  intro F
-  apply Subtype.ext
-  show actP (oneW lam) (fun _ => brpSc K t) F.1 = _
-  rw [LinearMap.smul_apply, Module.End.one_apply, Submodule.coe_smul, actP, LinearMap.smul_apply,
-    AlgHom.toLinearMap_apply, brp_trAct_scalar K lam t F.1 F.2, brp_detTwK_scalar, smul_smul]
-  congr 1
-  rw [wsum, brp_wsum, zpow_add₀ (Units.ne_zero t), zpow_natCast]
-  ring
-
-theorem chiW_scalar (lam : DomWeight n) (t : Kˣ) :
-    chiW K lam (brpSc K t) = (t : K) ^ (wsum lam * (Module.finrank K (VV K (oneW lam)) : ℤ)) := by
-  rw [chiW_apply, rhoK_scalar, LinearMap.det_smul, map_one, mul_one, zpow_mul, zpow_natCast]
 
 end Chi
 
@@ -181,29 +119,6 @@ theorem brp_diag_transvection (i j : Fin n) (hij : i ≠ j) (c : K) :
     · simp [Matrix.single_apply, Ne.symm hb]
   rw [Matrix.transvection, Matrix.transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, h1, h2]
 
-theorem chiW_transvection (lam : DomWeight n) (i j : Fin n) (hij : i ≠ j) (c : K) :
-    chiW K lam (brpGL K (Matrix.transvection i j c) (brp_isUnit_transvection K i j hij c)) = 1 := by
-  have hD : IsUnit (Matrix.diagonal (Function.update (1 : Fin n → K) i 2)).det := by
-    rw [Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]
-    simp
-  set T : K → GL (Fin n) K := fun c => brpGL K (Matrix.transvection i j c) (brp_isUnit_transvection K i j hij c)
-    with hT
-  have hconj : brpGL K _ hD * T c = T (2 * c) * brpGL K _ hD := by
-    apply Units.ext
-    simp only [Units.val_mul, hT, brpGL_coe]
-    exact brp_diag_transvection K i j hij c
-  have hsq : T c * T c = T (2 * c) := by
-    apply Units.ext
-    simp only [Units.val_mul, hT, brpGL_coe]
-    simp [Matrix.transvection_mul_transvection_same, hij, two_mul]
-  have e1 : chiW K lam (T c) = chiW K lam (T (2 * c)) := by
-    have h := congrArg (chiW K lam) hconj
-    rw [map_mul, map_mul, mul_comm (chiW K lam (T (2 * c)))] at h
-    exact mul_left_cancel₀ (chiW_ne_zero K lam _) h
-  have e2 : chiW K lam (T c) * chiW K lam (T c) = chiW K lam (T c) := by
-    rw [← map_mul, hsq, ← e1]
-  exact mul_left_cancel₀ (chiW_ne_zero K lam (T c)) (by rw [e2, mul_one])
-
 def brpDiag : (Fin n → Kˣ) →* GL (Fin n) K :=
   (Units.map (Matrix.diagonalRingHom (Fin n) K).toMonoidHom).comp (MulEquiv.piUnits.symm.toMonoidHom)
 
@@ -229,20 +144,6 @@ theorem brp_perm_diag (σ : Equiv.Perm (Fin n)) (f : Fin n → K) :
     exact mul_comm _ _
   · simp [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, h]
 
-theorem chiW_single_eq (lam : DomWeight n) (a b : Fin n) (t : Kˣ) :
-    chiW K lam (brpDiag K (Pi.mulSingle a t)) = chiW K lam (brpDiag K (Pi.mulSingle b t)) := by
-  set P := brpGL K (Equiv.Perm.permMatrix K (Equiv.swap a b)) (brp_isUnit_perm K _) with hP
-  have hc : P * brpDiag K (Pi.mulSingle a t) = brpDiag K (Pi.mulSingle b t) * P := by
-    apply Units.ext
-    simp only [Units.val_mul, hP, brpGL_coe, brpDiag_coe]
-    rw [brp_perm_diag]
-    congr 2
-    funext x
-    simp only [Function.comp_apply, Pi.mulSingle_apply, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]
-  have h := congrArg (chiW K lam) hc
-  rw [map_mul, map_mul, mul_comm (chiW K lam (brpDiag K (Pi.mulSingle b t)))] at h
-  exact mul_left_cancel₀ (chiW_ne_zero K lam P) h
-
 end ChiPow2
 
 section ChiPow3
@@ -252,37 +153,6 @@ variable (K : Type) [Field K] [CharZero K] {n : ℕ}
 theorem brpDiag_const (t : Kˣ) : brpDiag K (n := n) (fun _ => t) = brpSc K t := by
   apply Units.ext
   rw [brpDiag_coe, brpSc_coe, Matrix.smul_one_eq_diagonal]
-
-abbrev dimW (lam : DomWeight n) : ℕ := Module.finrank K (VV K (oneW lam))
-
-theorem chiW_diag_pow (lam : DomWeight n) (d : Fin n → Kˣ) :
-    chiW K lam (brpDiag K d) ^ n = (∏ a, (d a : K)) ^ (wsum lam * (dimW K lam : ℤ)) := by
-  rcases Nat.eq_zero_or_pos n with hn | hn
-  · subst hn
-    simp
-  · let g : Kˣ →* K :=
-      ((chiW K lam).comp (brpDiag K)).comp (MonoidHom.mulSingle (fun _ : Fin n => Kˣ) ⟨0, hn⟩)
-    have hg : ∀ a (u : Kˣ), chiW K lam (brpDiag K (Pi.mulSingle a u)) = g u := fun a u =>
-      chiW_single_eq K lam a ⟨0, hn⟩ u
-    have hprod : ∀ e : Fin n → Kˣ, chiW K lam (brpDiag K e) = ∏ a, g (e a) := by
-      intro e
-      conv_lhs => rw [← Finset.univ_prod_mulSingle e]
-      rw [← MonoidHom.comp_apply (chiW K lam) (brpDiag K), map_prod]
-      simp only [MonoidHom.comp_apply, hg]
-    have hpow : ∀ u : Kˣ, g u ^ n = (u : K) ^ (wsum lam * (dimW K lam : ℤ)) := by
-      intro u
-      have h := hprod (fun _ => u)
-      rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, brpDiag_const, chiW_scalar] at h
-      exact h.symm
-    rw [hprod, ← map_prod g d, hpow, Units.coe_prod]
-
-theorem chiW_list_transvec (lam : DomWeight n) (L : List (Matrix.TransvectionStruct (Fin n) K)) :
-    chiW K lam (L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod = 1 := by
-  induction L with
-  | nil => simp
-  | cons t L ih =>
-    rw [List.map_cons, List.prod_cons, map_mul, ih, mul_one]
-    exact chiW_transvection K lam t.i t.j t.hij t.c
 
 theorem brp_coe_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
     (((L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod : GL (Fin n) K) :
@@ -296,27 +166,6 @@ theorem brp_det_list_transvec (L : List (Matrix.TransvectionStruct (Fin n) K)) :
   induction L with
   | nil => simp
   | cons t L ih => rw [List.map_cons, List.prod_cons, Matrix.det_mul, ih, t.det, one_mul]
-
-theorem chiW_pow (lam : DomWeight n) (g : GL (Fin n) K) :
-    chiW K lam g ^ n = ((g : Matrix (Fin n) (Fin n) K).det) ^ (wsum lam * (dimW K lam : ℤ)) := by
-  obtain ⟨L, L', D, hM⟩ :=
-    Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec (g : Matrix (Fin n) (Fin n) K)
-  have hdetD : (Matrix.diagonal D).det = (g : Matrix (Fin n) (Fin n) K).det := by
-    rw [hM, Matrix.det_mul, Matrix.det_mul, brp_det_list_transvec, brp_det_list_transvec, one_mul, mul_one]
-  have hunit : ∀ a, IsUnit (D a) := by
-    intro a
-    have hg : IsUnit (g : Matrix (Fin n) (Fin n) K).det := Matrix.isUnits_det_units g
-    rw [← hdetD, Matrix.det_diagonal] at hg
-    exact isUnit_of_dvd_unit (Finset.dvd_prod_of_mem D (Finset.mem_univ a)) hg
-  let d : Fin n → Kˣ := fun a => (hunit a).unit
-  have hDd : Matrix.diagonal D = Matrix.diagonal fun a => (d a : K) := by
-    simp [d]
-  have hg : g = (L.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod * brpDiag K d *
-      (L'.map fun t => brpGL K t.toMatrix (by rw [t.det]; exact isUnit_one)).prod := by
-    apply Units.ext
-    rw [Units.val_mul, Units.val_mul, brp_coe_list_transvec, brp_coe_list_transvec, brpDiag_coe, ← hDd, hM]
-  rw [← hdetD, hDd, Matrix.det_diagonal, hg, map_mul, map_mul, chiW_list_transvec, chiW_list_transvec, one_mul,
-    mul_one, chiW_diag_pow]
 
 end ChiPow3
 

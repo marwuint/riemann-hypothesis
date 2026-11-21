@@ -33,9 +33,9 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CoarseThresholdRati
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SymInt
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.WittPNe
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FinalTheorems
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.DualFlatOf
+import Formalism.LocalToGlobal.GroupLattices.FockModels.TestSideEdge
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.DualLat
-import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.PosCoreLetter
+import Formalism.LocalToGlobal.GroupLattices.FockModels.TestSidePos
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SettingCharZeroAt
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.SettingCZ
 
@@ -54,21 +54,6 @@ theorem closed_extendedAllConclusions {D : Formalism.BasicNotions.D7} (h3 : adm3
 theorem dimYAt_of_adm {D : Formalism.BasicNotions.D7} (hA : admitted D) : DimYAt :=
   dimY_of (D := D) hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.1 (stWeylAt D)
 
-theorem extended_fourth_of_upper_bound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (h : UpAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
-    ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
-  intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc j rz ry hd
-  exact h X W Qq O Kf ι σ jO w hS hH hc j 0 le_rfl rz ry hd
-
-theorem restUp_of_adm {D : Formalism.BasicNotions.D7} (hA : admitted D) : RestUp :=
-  have hY := dimYAt_of_adm hA
-  restUp_of blockRankAt hY charZeroAt
-    (upper_count_of_top_rows (chainDim_of hY) (numBranch_of hA.2.1 hA.2.2.1) top_rows_bound_holds)
-
-theorem fourth_bound_of_admitted {D : Formalism.BasicNotions.D7} (hA : admitted D) :
-    TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc =>
-      ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc ∧ Conclusion4 D C0 CYb Cde Ck CD Cb CE1 CE2 Cc :=
-  TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨extended_fourth_of_upper_bound h, (extended_fourth_of_upper_bound h).toDigitRankBound⟩) (restUp_of_adm hA)
-
 def Open : Prop := RestPairLift
 
 theorem stmtEExt_of {D : Formalism.BasicNotions.D7} (h : admitted D → Open) : ExtendedClosedForm D := fun hA =>
@@ -85,7 +70,5 @@ theorem stmtEExt_of {D : Formalism.BasicNotions.D7} (h : admitted D → Open) : 
   have hMU : RestMatchUp := restMatchUp_of (restFirstRows_of (restSTopRows_of hK2))
   have hCL : RestCountLow := restCountLow_of'' hCD hT hMU hK4
   closed_extendedAllConclusions hA.2.2.1 (restUp_of hB hY charZeroAt hCU) (restLow_of hB hY charZeroAt hCL) hL1 (restLift_of (restLiftVec_of hPL))
-
-theorem stmtE_of {D : Formalism.BasicNotions.D7} (h : admitted D → Open) : ClosedFormOfAdmitted D := (stmtEExt_of h).closed_of_extended_closed
 
 end Formalism.MainNotions.ColumnSystems.Pf

@@ -10,12 +10,12 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlockFrameConjug
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreClausesOfWeakCharacterisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankKilledEqOfEqualMultiplicitiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateModelsMultiplicityEqual
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotypicSumInfGroupAlgebraKilledEqBotStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyIsoOfEquivariantHomIntoIsotypicSumStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotypicSumInfGroupAlgebraKilledEqBot
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyIsoOfEquivariantHomIntoIsotypicSum
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RankEquivariantHomsIntoIsotypicSumOfIsoStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteTypeIsotypicPartEqISupEquivariantHomsFrameStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotypicSumEqOfFramesInnerConjStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAdmissibleFiniteTypeFrameOfCuspMapStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteTypeIsotypicPartEqISupEquivariantHomsFrame
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotypicSumEqOfFramesInnerConj
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAdmissibleFiniteTypeFrameOfCuspMap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RankIsotypicConjTypeEqConjModelStatement
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
@@ -37,7 +37,7 @@ theorem finrank_isot_killed_eq : ∀ (H : Type) [Group H] [TopologicalSpace H] (
     rw [h, Submodule.mem_bot] at hg
     rw [hg, LinearMap.range_zero]
   by_cases hk : killed σ0 I = ⊥
-  · rw [GlobalTheory.T.isotypicSum_inf_groupAlgebraKilled_eq_bot _ _ _ σ0 ρ C I hirr hk, GlobalTheory.T.isotypicSum_inf_groupAlgebraKilled_eq_bot _ _ _ σ0 ρ' C' I hirr hk,
+  · rw [_root_.GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot _ _ _ σ0 ρ C I hirr hk, _root_.GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot _ _ _ σ0 ρ' C' I hirr hk,
       finrank_bot, finrank_bot]
   by_cases h0 : homInto σ0 ρ C = ⊥ ∧ homInto σ0 ρ' C' = ⊥
   · rw [hbot ρ C h0.1, hbot ρ' C' h0.2, bot_inf_eq, bot_inf_eq, finrank_bot, finrank_bot]
@@ -58,9 +58,9 @@ theorem finrank_isot_killed_eq : ∀ (H : Type) [Group H] [TopologicalSpace H] (
   have he : Nonempty (σ.asModule ≃ₗ[MonoidAlgebra ℂ H] σ0.asModule) := by
     rcases not_and_or.1 hz with h | h
     · obtain ⟨g, hg, hg0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h
-      exact GlobalTheory.T.nonempty_iso_of_equivariantHom_into_isotypicSum _ _ _ _ σ0 σ ρ C hirr hσ g hg hg0
+      exact _root_.GlobalTheory.IsoRankMult.iso_of_hom_into_sum _ _ _ _ σ0 σ ρ C hirr hσ g hg hg0
     · obtain ⟨g, hg, hg0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h
-      exact GlobalTheory.T.nonempty_iso_of_equivariantHom_into_isotypicSum _ _ _ _ σ0 σ ρ' C' hirr hσ g hg hg0
+      exact _root_.GlobalTheory.IsoRankMult.iso_of_hom_into_sum _ _ _ _ σ0 σ ρ' C' hirr hσ g hg hg0
   rw [GlobalTheory.T.rank_equivariantHomsInto_isotypicSum_of_iso _ _ _ _ σ0 σ ρ C he, GlobalTheory.T.rank_equivariantHomsInto_isotypicSum_of_iso _ _ _ _ σ0 σ ρ' C' he]
   exact hr
 
@@ -83,7 +83,7 @@ theorem isotL_eq {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what�
     iSup₂_le fun f hf => by rintro _ ⟨s, rfl⟩; exact hf.1 s
   show goodPart θ M (levS V β (withP L P')) (levChi V β (withP L P')) (gaL V β L eG c) ⊓
     principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π = _
-  rw [e1, GlobalTheory.T.finiteTypeIsotypicPart_eq_iSup_equivariantHoms_frame]
+  rw [e1, _root_.GlobalTheory.IsotHom.isotIn_eq_iSup_homInto]
   exact le_antisymm (le_inf inf_le_right (inf_le_left.trans inf_le_right))
     (le_inf (le_inf (inf_le_left.trans hle) inf_le_right) inf_le_left)
 
@@ -109,7 +109,7 @@ theorem finrank_isotL_transfer (hHC : GlobalTheory.Published.HarishChandraFinite
   obtain ⟨c', hc'⟩ := hC.lev.βW i
   have hrk : (Yc D 0).rank = (Wc D i).rank := GlobalTheory.PartDims.rank_zeroth_component_eq.trans (GlobalTheory.PartDims.rank_weight_component_eq i).symm
   obtain ⟨j, Φ, hΦ⟩ := GlobalTheory.FinIsoExists.exists_isFinIso (Yc D 0) (Wc D i) (R.βY 0) (R.ΛY 0) _ (R.βW i) (R.ΛW i) _ R.Pg hrk
-    hc hc' (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg hC.lev.Pg)
+    hc hc' (_root_.GlobalTheory.TypePlaces.not_isConjPl R.C.P R.Pg hC.lev.Pg)
   obtain ⟨h, hh⟩ := GlobalTheory.KapIsot.frames_inner (Yc D 0) (Wc D i) hF PY PW hPY hPW
     (by rw [GlobalTheory.PartDims.rank_zeroth_component_eq]; exact GlobalTheory.KapIsot.odd_r D.R) _ _ _ j Φ hΦ
   have eY := isotL_eq R.θ M₀ (R.βY 0) (R.dat0 R.triv) R.eG (RealDat.eC (A := A) D.what₂.embLL) P PY π rfl rfl
@@ -126,7 +126,7 @@ theorem finrank_isotL_transfer (hHC : GlobalTheory.Published.HarishChandraFinite
         (RealDat.eC (A := A) D.what₂.embLL) P (∅ : Set Empty) Empty.elim Empty.elim Empty.elim) :=
     GlobalTheory.T.levelTypeHecke_killed_correspond_matching_iso (Yc D 0) (Wc D i) (R.βY 0) (R.βW i) D.R.r D.R.t (r_le_Y 0) (r_le_rank_Wc i) R.Pg R.chi (fun _ _ => 1) Φ R.eG _ P
       (∅ : Set Empty) Empty.elim Empty.elim Empty.elim _ _ hrk (fun κ => (hl κ).1) (fun κ => (hl κ).2) (fun P0 => P0.elim)
-  have eF := GlobalTheory.T.isotypicSum_eq_of_frames_innerConj (Yc D 0) (Wc D i) PY PW Φ h hh _ (finRep (R.MW i (sg0 D A)))
+  have eF := _root_.GlobalTheory.FrameIsot.iSup_homInto_frame_conj (Yc D 0) (Wc D i) PY PW Φ h hh _ (finRep (R.MW i (sg0 D A)))
     (allMaps R.θ (R.MW i (sg0 D A))) π
   have eY' : principalLevelFrame.isotL R.θ PY M₀ (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) R.e0 π = _ := eY
   have eW' : principalLevelFrame.isotL R.θ PW (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i P)) (levChi _ (R.βW i) (R.datWp i P))
@@ -146,7 +146,7 @@ theorem finrank_isotL_transfer (hHC : GlobalTheory.Published.HarishChandraFinite
     simpa using this
   refine finrank_isot_killed_eq _ _ _ _ ((GlobalTheory.OccRowVec.finRep π).comp (GlobalTheory.KapIsot.eqv PY).symm.toMonoidHom) (finRep M₀)
     ((finRep (R.MW i (sg0 D A))).comp Φ.toMulEquiv.toMonoidHom) (allMaps R.θ M₀) (allMaps R.θ (R.MW i (sg0 D A))) _ hirr
-    (fun hk hor => GlobalTheory.T.isAdmissible_finiteType_frame_of_cuspMap hHC R.θ hC.models.inf (Yc D 0) (Wc D i) M₀ (R.MW i (sg0 D A)) Φ (R.βY 0)
+    (fun hk hor => _root_.GlobalTheory.AdmOfHom.isAdmissible_finRep hHC R.θ hC.models.inf (Yc D 0) (Wc D i) M₀ (R.MW i (sg0 D A)) Φ (R.βY 0)
       (R.dat0 R.triv) R.eG _ P PY π rfl rfl hk hor)
     (fun hk hadm => ?_) (fun x hx => GlobalTheory.PartDims.isOpen_stab rfl rfl hx) (fun x hx => GlobalTheory.PartDims.isOpen_stab rfl rfl hx)
     hfin fW
@@ -172,7 +172,7 @@ theorem finrank_isotE_eq_isotL : GlobalTheory.Published.WeilRepresentationUnitar
     R.toRealDat.e0 R.toRealDat.e0 Y.PY (principalLevelFrame.rowRepR R.toRealDat.θ (Y.eFT π))
     (fun k hk => GlobalTheory.PartDims.star_levChi false hk)
     (GlobalTheory.PartDims.gaL_star (L := R.toRealDat.dat0 R.toRealDat.triv) R.toRealDat.eG _ rfl rfl
-      (GlobalTheory.T.star_idemOf_coeff_eq_self D.what₂.embLL A3.A.X hH.ok.ok2.irr hX))
+      (_root_.GlobalTheory.CuspMult.idemOf_coeff_real D.what₂.embLL A3.A.X hH.ok.ok2.irr hX))
   have hE : R.toRealDat.EEat (R.toRealDat.levR F.lv2 false) ≤ R.toRealDat.EEat R.toRealDat.triv :=
     GlobalTheory.PartDims.goodPart_le_flag (L := R.toRealDat.dat0 R.toRealDat.triv) R.toRealDat.θ _ rfl rfl _ _
   have fE : FiniteDimensional ℂ (principalLevelFrame.isotL R.toRealDat.θ Y.PY (R.toRealDat.MY 0)

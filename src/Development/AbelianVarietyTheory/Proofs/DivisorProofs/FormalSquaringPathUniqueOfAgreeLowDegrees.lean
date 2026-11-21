@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomPowerSeriesEqOfRescale
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalkStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeSquaringCotangentEqTwoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGroupSchemeUnitStalkDataStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalk
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeSquaringCotangentEqTwo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGroupSchemeUnitStalkData
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -49,8 +49,8 @@ theorem path_unique : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [C
     change q0 (spMap PowerSeries.constantCoeff (IsLocalRing.closedPoint (CommRingCat.of R))) = unitSec G s at e
     rw [spMap_constantCoeff_closedPoint] at e
     exact e
-  obtain ⟨π, ε, m, hSD, h1, h2, h3⟩ := GlobalTheory.T.exists_groupSchemeUnitStalkData S G s
-  have hm := GlobalTheory.T.groupSchemeSquaring_cotangent_eq_two S G hqs s π ε m hSD
+  obtain ⟨π, ε, m, hSD, h1, h2, h3⟩ := _root_.GlobalTheory.Nef.stalkData_exists S G s
+  have hm := _root_.GlobalTheory.Nef.sqr_sub_two_mem S G hqs s π ε m hSD
   obtain ⟨β, hβ⟩ := exists_spMap_fromSpecStalk b s rfl
   obtain ⟨g, hg⟩ := exists_spMap_fromSpecStalk ξ x (hpt ξ hξ)
   obtain ⟨g', hg'⟩ := exists_spMap_fromSpecStalk ξ' x (hpt ξ' hξ')
@@ -78,8 +78,8 @@ theorem path_unique : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [C
       simp only [RingHom.comp_apply] at a a'
       rw [PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_zero_eq_constantCoeff_apply, a, a']
     · obtain ⟨U, hxU, f0, rfl⟩ := TopCat.Presheaf.germ_exist _ f
-      obtain ⟨hh, hev⟩ := (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.2.2.2.2 (PowerSeries R) G.left x g U hxU
-      obtain ⟨hh', hev'⟩ := (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.2.2.2.2 (PowerSeries R) G.left x g' U hxU
+      obtain ⟨hh, hev⟩ := (_root_.GlobalTheory.Nef.evAt_calculus).2.2.2.2.2.2 (PowerSeries R) G.left x g U hxU
+      obtain ⟨hh', hev'⟩ := (_root_.GlobalTheory.Nef.evAt_calculus).2.2.2.2.2.2 (PowerSeries R) G.left x g' U hxU
       have := hlow U hh hh' f0 j hj0 hj
       rw [hev, hev'] at this
       exact this

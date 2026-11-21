@@ -80,24 +80,6 @@ lemma trace_pow_two_diag_conj (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY :
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
-lemma dm_hs (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) :
-    hs Y = ∑ k, y k ^ 2 := by
-  apply Complex.ofReal_injective
-  have h3 := trace_pow_two_diag_conj hU hY n
-  have hchi : ∀ a : Fin n, dmChi n a = 1 := by intro a; simp [dmChi, a.isLt]
-  have hKn : ∀ k, dmK U n k k = 1 := by
-    intro k
-    have h := congrFun (congrFun (dm_UhU hU) k) k
-    rw [Matrix.mul_apply, Matrix.one_apply_eq] at h
-    simp only [dmK, hchi, one_mul]
-    rw [← h]
-    rfl
-  simp only [hchi, hKn, one_mul, mul_one] at h3
-  rw [hs, Complex.ofReal_sum, Complex.ofReal_sum]
-  simp only [Complex.ofReal_sum, Complex.ofReal_pow, h3]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  rw [← Complex.ofReal_pow, dm_normsq, ← dm_herm hY a b]
-
 lemma dm_S (J : Finset (Fin n)) : ((∑ j ∈ J, y j : ℝ) : ℂ) = ∑ k, dmInd J k * (y k : ℂ) := by
   push_cast
   unfold dmInd

@@ -1332,24 +1332,6 @@ theorem sixth_relation_of_action_and_mu_laws (ha : ActLaws) (hm : MuFacts) (hq :
 
 end PartB2
 
-section PartC
-
-section CapelliProof
-
-variable {𝒰 : Type} [Ring 𝒰]
-
-def orderedProd {N : ℕ} (a : Fin N → 𝒰) : 𝒰 := (List.ofFn a).prod
-
-def columnDet {N : ℕ} (c : Fin N → Fin N → 𝒰) : 𝒰 :=
-  ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) • orderedProd (fun p => c p (σ p))
-
-def columnDetAt {N : ℕ} (E : Fin N → Fin N → 𝒰) (u : 𝒰) (J : Fin N → Fin N) : 𝒰 :=
-  columnDet (fun p s => capA E (u - ((p : ℕ) : 𝒰)) s (J p))
-
-end CapelliProof
-
-end PartC
-
 section PartD
 
 theorem sq_dvd_one_add_pow_sub_linear (R : Type) [CommRing R] (x v : R) (n : ℕ) :
@@ -1483,63 +1465,6 @@ theorem dvd_det_submatrix_of_minorsDvd {m p t : ℕ} (x : R) (P : Matrix (Fin m)
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Tuple.sort g)) with e2 | e2 <;>
   simpa [e1, e2] using h1
 
-theorem exists_submatrix_det_not_dvd_of_mul_eq {ι τ : Type} [Fintype ι] [DecidableEq ι] [Fintype τ] [DecidableEq τ]
-    (x : R) (h : ℕ) (M M' : Matrix ι ι R) (e : τ → ι) (he : Function.Injective e)
-    (hM : M * M' = (x ^ h) • (1 : Matrix ι ι R))
-    (hx : ¬ x ^ (Fintype.card τ * h + 1) ∣ x ^ (Fintype.card τ * h)) :
-    ∃ f g : τ → ι, ¬ x ^ (Fintype.card τ * h + 1) ∣ (M.submatrix f g).det := by
-  by_contra hcon
-  push Not at hcon
-  apply hx
-  have h1 := dvd_det_submatrix_mul_right _ M M' hcon e e
-  have h2 : ((x ^ h) • (1 : Matrix ι ι R)).submatrix e e = (x ^ h) • (1 : Matrix τ τ R) := by
-    rw [← Matrix.submatrix_one e he]; rfl
-  rw [hM, h2, Matrix.det_smul, Matrix.det_one, mul_one, ← pow_mul, mul_comm h] at h1
-  exact h1
-
-theorem not_pow_dvd_mul_of_not_pow_dvd [IsDomain R] {π x y : R} {a b : ℕ} (hπ : Prime π)
-    (hx : ¬ π ^ (a + 1) ∣ x) (hy : ¬ π ^ (b + 1) ∣ y) : ¬ π ^ (a + b + 1) ∣ x * y := by
-  rw [pow_dvd_iff_le_emultiplicity, not_le] at hx hy ⊢
-  rw [emultiplicity_mul hπ]
-  obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.1 (ne_top_of_lt hx)
-  obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 (ne_top_of_lt hy)
-  rw [← hm] at hx ⊢
-  rw [← hk] at hy ⊢
-  norm_cast at hx hy ⊢
-  omega
-
-theorem not_pow_sum_dvd_prod [IsDomain R] {π : R} (hπ : Prime π) {κ : Type} (s : Finset κ)
-    (v : κ → ℕ) (y : κ → R) (h : ∀ r ∈ s, ¬ π ^ (v r + 1) ∣ y r) :
-    ¬ π ^ (∑ r ∈ s, v r + 1) ∣ ∏ r ∈ s, y r := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-    intro hd
-    exact hπ.not_isUnit (isUnit_of_dvd_one (by simpa using hd))
-  | insert a s ha ih =>
-    rw [Finset.sum_insert ha, Finset.prod_insert ha]
-    exact not_pow_dvd_mul_of_not_pow_dvd hπ (h a (Finset.mem_insert_self _ _))
-      (ih fun r hr => h r (Finset.mem_insert_of_mem hr))
-
-theorem det_sigma_reindexed_square_block {n : ℕ} (Φ : Matrix (Fin n) (Fin n) R) (b : Fin n → ℕ) (I : Finset ℕ)
-    (tt : ↥I → ℕ) (F G : ∀ r : ↥I, Fin (tt r) → {j // b j = r.1}) (r : ↥I) :
-    ((Φ.submatrix (fun x : (Σ r : ↥I, Fin (tt r)) => (F x.1 x.2).1)
-        (fun x : (Σ r : ↥I, Fin (tt r)) => (G x.1 x.2).1)).toSquareBlock
-          (fun x : (Σ r : ↥I, Fin (tt r)) => x.1.1) r.1).det =
-      ((Φ.toSquareBlock b r.1).submatrix (F r) (G r)).det := by
-  let e0 : Fin (tt r) → {y : (Σ r : ↥I, Fin (tt r)) // y.1.1 = r.1} := fun i => ⟨⟨r, i⟩, rfl⟩
-  have he0 : Function.Bijective e0 := by
-    constructor
-    · intro i j hij
-      have h1 : (⟨r, i⟩ : Σ r : ↥I, Fin (tt r)) = ⟨r, j⟩ := congrArg Subtype.val hij
-      simpa using h1
-    · rintro ⟨⟨r', i⟩, hy⟩
-      have hr : r' = r := Subtype.ext hy
-      subst hr
-      exact ⟨i, rfl⟩
-  rw [← Matrix.det_submatrix_equiv_self (Equiv.ofBijective e0 he0)]
-  rfl
-
 end PartE
 
 theorem minors_divide_all_holds : MinorsDvdAll := by
@@ -1562,92 +1487,6 @@ theorem diagonal_minors_holds : DiagMinors := by
   refine Dvd.dvd.mul_right (pow_dvd_pow x ?_) _
   have h2 := hS (Finset.univ.image f) (by rw [Finset.card_image_of_injective _ hf.injective]; simp)
   rwa [Finset.sum_image (fun i _ j _ h => hf.injective h)] at h2
-
-theorem minor_bound_extra_holds : MinorBoundExtra := by
-  intro R _ _ π n h c Φ b ch al ν hπ hΦ hsub hch hoth hdvd
-  generalize hI : Finset.univ.image b = I at hsub hoth hdvd ⊢
-  have hloc : ∀ r : ↥I, ∃ (t v : ℕ) (F G : Fin t → {j // b j = r.1}),
-      t = (if r.1 ∈ ch then 1 else ν r.1) ∧ v = (if r.1 ∈ ch then al r.1 else ν r.1 * h) ∧
-      ¬ π ^ (v + 1) ∣ ((Φ.toSquareBlock b r.1).submatrix F G).det := by
-    intro r
-    by_cases hr : r.1 ∈ ch
-    · obtain ⟨s, hs, u, hu⟩ := hch r.1 hr
-      refine ⟨1, al r.1, fun _ => ⟨s, (hs s).2 rfl⟩, fun _ => ⟨s, (hs s).2 rfl⟩,
-        (if_pos hr).symm, (if_pos hr).symm, ?_⟩
-      rw [Matrix.det_fin_one]
-      show ¬ π ^ (al r.1 + 1) ∣ Φ s s
-      rw [hu, pow_succ, mul_comm (π ^ al r.1) π,
-        mul_dvd_mul_iff_right (pow_ne_zero _ hπ.ne_zero)]
-      exact fun hd => hπ.not_isUnit (isUnit_of_dvd_unit hd u.isUnit)
-    · obtain ⟨⟨M', hM'⟩, hν⟩ := hoth r.1 (Finset.mem_sdiff.2 ⟨r.2, hr⟩)
-      have hcard : Fintype.card (Fin (ν r.1)) ≤ Fintype.card {j // b j = r.1} := by
-        rw [Fintype.card_fin, Fintype.card_subtype]; exact hν
-      obtain ⟨e⟩ := Function.Embedding.nonempty_of_card_le hcard
-      have hx : ¬ π ^ (Fintype.card (Fin (ν r.1)) * h + 1) ∣
-          π ^ (Fintype.card (Fin (ν r.1)) * h) := by
-        rw [pow_dvd_pow_iff hπ.ne_zero hπ.not_isUnit]; omega
-      obtain ⟨F, G, hFG⟩ := exists_submatrix_det_not_dvd_of_mul_eq π h _ M' e e.injective hM' hx
-      rw [Fintype.card_fin] at hFG
-      exact ⟨ν r.1, ν r.1 * h, F, G, (if_neg hr).symm, (if_neg hr).symm, hFG⟩
-  choose tt vv F G htt hvv hnd using hloc
-  have hBT : (Φ.submatrix (fun x : (Σ r : ↥I, Fin (tt r)) => (F x.1 x.2).1)
-      (fun x : (Σ r : ↥I, Fin (tt r)) => (G x.1 x.2).1)).BlockTriangular
-        (fun x : (Σ r : ↥I, Fin (tt r)) => x.1.1) := by
-    intro x y hxy
-    refine hΦ ?_
-    show b (G y.1 y.2).1 < b (F x.1 x.2).1
-    rw [(F x.1 x.2).2, (G y.1 y.2).2]
-    exact hxy
-  have hnd' : ¬ π ^ (∑ a ∈ Finset.univ.image (fun x : (Σ r : ↥I, Fin (tt r)) => x.1.1),
-      (if a ∈ ch then al a else ν a * h) + 1) ∣
-      (Φ.submatrix (fun x : (Σ r : ↥I, Fin (tt r)) => (F x.1 x.2).1)
-        (fun x : (Σ r : ↥I, Fin (tt r)) => (G x.1 x.2).1)).det := by
-    rw [hBT.det]
-    refine not_pow_sum_dvd_prod hπ _ _ _ ?_
-    intro a ha
-    obtain ⟨x, -, rfl⟩ := Finset.mem_image.1 ha
-    rw [det_sigma_reindexed_square_block Φ b I tt F G x.1]
-    have h3 := hnd x.1
-    rwa [hvv x.1] at h3
-  have hle : ∑ a ∈ Finset.univ.image (fun x : (Σ r : ↥I, Fin (tt r)) => x.1.1),
-      (if a ∈ ch then al a else ν a * h) ≤ ∑ a ∈ I, (if a ∈ ch then al a else ν a * h) := by
-    refine Finset.sum_le_sum_of_subset ?_
-    intro a ha
-    obtain ⟨x, -, rfl⟩ := Finset.mem_image.1 ha
-    exact x.1.2
-  have hsumv : ∑ a ∈ I, (if a ∈ ch then al a else ν a * h) =
-      ∑ r ∈ ch, al r + (∑ r ∈ I \ ch, ν r) * h := by
-    rw [← Finset.sum_sdiff hsub, add_comm, Finset.sum_mul]
-    congr 1
-    · exact Finset.sum_congr rfl fun r hr => if_pos hr
-    · exact Finset.sum_congr rfl fun r hr => if_neg (Finset.mem_sdiff.1 hr).2
-  have hcardT : Fintype.card (Σ r : ↥I, Fin (tt r)) = ch.card + ∑ r ∈ I \ ch, ν r := by
-    rw [Fintype.card_sigma]
-    simp only [Fintype.card_fin, htt]
-    rw [Finset.sum_coe_sort I (fun r => if r ∈ ch then 1 else ν r), ← Finset.sum_sdiff hsub,
-      add_comm]
-    congr 1
-    · rw [Finset.card_eq_sum_ones]
-      exact Finset.sum_congr rfl fun r hr => if_pos hr
-    · exact Finset.sum_congr rfl fun r hr => if_neg (Finset.mem_sdiff.1 hr).2
-  have hall := dvd_det_submatrix_of_minorsDvd (π ^ c) Φ hdvd
-  have h1 := hall
-    (fun i => (F ((Fintype.equivFinOfCardEq hcardT).symm i).1
-      ((Fintype.equivFinOfCardEq hcardT).symm i).2).1)
-    (fun i => (G ((Fintype.equivFinOfCardEq hcardT).symm i).1
-      ((Fintype.equivFinOfCardEq hcardT).symm i).2).1)
-  have h2 : Φ.submatrix
-      (fun i => (F ((Fintype.equivFinOfCardEq hcardT).symm i).1
-        ((Fintype.equivFinOfCardEq hcardT).symm i).2).1)
-      (fun i => (G ((Fintype.equivFinOfCardEq hcardT).symm i).1
-        ((Fintype.equivFinOfCardEq hcardT).symm i).2).1) =
-      (Φ.submatrix (fun x : (Σ r : ↥I, Fin (tt r)) => (F x.1 x.2).1)
-        (fun x : (Σ r : ↥I, Fin (tt r)) => (G x.1 x.2).1)).submatrix
-          (Fintype.equivFinOfCardEq hcardT).symm (Fintype.equivFinOfCardEq hcardT).symm := rfl
-  rw [h2, Matrix.det_submatrix_equiv_self] at h1
-  by_contra hc
-  rw [not_le, ← hsumv] at hc
-  exact hnd' (dvd_trans (pow_dvd_pow π (Nat.succ_le_of_lt (lt_of_le_of_lt hle hc))) h1)
 
 end PartE
 

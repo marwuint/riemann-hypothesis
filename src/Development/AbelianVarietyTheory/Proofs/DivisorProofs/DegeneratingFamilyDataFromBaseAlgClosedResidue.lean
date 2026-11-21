@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsTailExtra
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeModuleActionHomomorphismStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowerDatumObjectComesFromBaseOfLinearPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeModuleActionHomomorphism
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowerDatumObjectComesFromBaseOfLinearPoints
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPeriodsMonomialFamilyCoordsOverBaseStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -35,7 +35,7 @@ theorem exists_divFrom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] 
   have hM : IsUnit ((l.M' : ℕ) : V) := by
     have h1 : IsUnit ((l.M' : ℕ) : c.F) := IsUnit.mk0 _ (Nat.cast_ne_zero.2 (level_pos l).ne')
     simpa using h1.map C.b
-  obtain ⟨x', hx₁, hx₂, hx₃⟩ := GlobalTheory.T.abelian_scheme_module_action_homomorphism V hV.1.2.2.2 hk o'.t.G
+  obtain ⟨x', hx₁, hx₂, hx₃⟩ := _root_.GlobalTheory.AbDivLocal.exists_divided_linear V hV.1.2.2.2 hk o'.t.G
     ⟨o'.t.semi.comm, o'.t.semi.smooth, o'.proper, o'.t.semi.geomConnected⟩ (𝓞 E) o'.t.act
     C.P.D.toPre.X (fun y => C.P.D.toPre.c y ≫ i.hom)
     (fun y z => by
@@ -43,7 +43,7 @@ theorem exists_divFrom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] 
     (fun a y => by
       letI := H.starRing
       rw [C.P.oD.c_lin, Category.assoc, hia, Category.assoc]) l.M' hM
-  obtain ⟨L, θ₀, e, m, hθ, hb, hc⟩ := GlobalTheory.T.lowerDatumObject_comes_from_base_of_linearPoints D' c V C.b o' C.P.D.toPre.X x' hx₁ hx₂
+  obtain ⟨L, θ₀, e, m, hθ, hb, hc⟩ := _root_.GlobalTheory.UCanon.lowBase_of_linearPoints D' c V C.b o' C.P.D.toPre.X x' hx₁ hx₂
   obtain ⟨N, b, hbas⟩ := C.cone.basis
   let ε := b.map (pullBalEquiv H.bar e).symm
   have hε : ∀ i, C.δ i = pull e.toLinearMap (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X) := fun j => by

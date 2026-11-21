@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Si
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelObjectPullbackLevelPowerCalculusStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPrePullbackPrincipalRingChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecLocalRingHomExtOfInjectiveLocalHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftLocalPointAlongAffineFlatSurjectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftLocalPointAlongAffineFlatSurjection
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
@@ -14,8 +14,8 @@ open scoped CategoryTheory.Obj
 theorem GlobalTheory.SiegLev.SQuot.eq_of_siegPB : ∀ (h n N : ℕ) (o o' : Type) [CommRing o] [CommRing o'] (ζ : o) (ζ' : o') (F : SFam h N ζ') (j : o →+* o') (Q : SQuot F n ζ j) (R : Type) [CommRing R] [IsLocalRing R] (x y : Sp R ⟶ Q.X) (s' : Sp R ⟶ Sp o) (c : SiegPre h n ζ s'), x ≫ Q.s = y ≫ Q.s → SiegPB c Q.univ x → SiegPB c Q.univ y → x = y := by
   intro h n N o o' _ _ ζ ζ' F j Q R _ _ x y s' c hxy hx hy
   haveI := Q.fin; haveI := Q.etale; haveI := Q.onto
-  obtain ⟨R1, _, _, φ1, hl1, hφ1, x1, hx1⟩ := GlobalTheory.T.exists_lift_localPoint_along_affine_flat_surjection R Q.X F.X Q.π x
-  obtain ⟨R2, _, _, φ2, hl2, hφ2, y2, hy2⟩ := GlobalTheory.T.exists_lift_localPoint_along_affine_flat_surjection R1 Q.X F.X Q.π (spMap φ1 ≫ y)
+  obtain ⟨R1, _, _, φ1, hl1, hφ1, x1, hx1⟩ := _root_.GlobalTheory.LiftLocal.lift R Q.X F.X Q.π x
+  obtain ⟨R2, _, _, φ2, hl2, hφ2, y2, hy2⟩ := _root_.GlobalTheory.LiftLocal.lift R1 Q.X F.X Q.π (spMap φ1 ≫ y)
   set g : Sp R2 ⟶ Sp R := spMap φ2 ≫ spMap φ1 with hg
   set x2 : Sp R2 ⟶ F.X := spMap φ2 ≫ x1 with hx2d
   have hx2 : x2 ≫ Q.π = g ≫ x := by simp only [x2, g, Category.assoc, hx1]

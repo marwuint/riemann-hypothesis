@@ -441,44 +441,6 @@ theorem twist_val (d : GL (Fin n) ℂ) (h1 : perpD cj d W₁ = W₂) (h2 : perpD
   rw [this, h3, h4, h5]
   simp
 
-theorem nilChange (d : GL (Fin n) ℂ) (hreg : (d * thetaR cj n d).val.charpoly.Separable) (hle : W₁ ≤ W₂)
-    (h1 : perpD cj d W₁ = W₂) (h2 : perpD cj d W₂ = W₁) (u : nilrad W₁ W₂ → GL (Fin n) ℂ)
-    (hu : ∀ X, (u X).val = 1 + X.1) [MeasurableSpace (nilrad W₁ W₂)] [BorelSpace (nilrad W₁ W₂)]
-    (ν : Measure (nilrad W₁ W₂)) [ν.IsAddHaarMeasure] :
-    ∃ (Φ : nilrad W₁ W₂ ≃ₜ nilrad W₁ W₂) (c : NNReal), c ≠ 0 ∧
-      (∀ X, u (Φ X) = (u X)⁻¹ * d * thetaR cj n (u X) * d⁻¹) ∧ Measure.map Φ ν = c • ν := by
-  let L : nilrad W₁ W₂ ≃ₗ[ℝ] nilrad W₁ W₂ :=
-    LinearEquiv.ofInjectiveEndo (slinN d h1 h2 - LinearMap.id) (slinN_injective d h1 h2 hreg)
-  have hLval : ∀ X, (L X).1 = slin d X.1 - X.1 := fun X => by
-    simp [L, slinN]
-  let Q : nilrad W₁ W₂ → nilrad W₁ W₂ := fun X =>
-    ⟨quad d X.1, two_mem hle (quadratic_term_nilradical_mem d h1 h2 X.2).1 (quadratic_term_nilradical_mem d h1 h2 X.2).2⟩
-  have hQc : Continuous Q :=
-    Continuous.subtype_mk ((continuous_quad d).comp continuous_subtype_val) _
-  obtain ⟨Φ, c, hc, hΦ, hmap⟩ := exists_homeo_map_eq_smul ν (nilrad2 W₁ W₂) L
-    (fun y hy => by
-      obtain ⟨hT, hT'⟩ := semilinear_term_nilradical_mem d h1 h2 hy.1 hy.2
-      refine ⟨fun z => ?_, fun z hz => ?_⟩
-      · rw [hLval, Matrix.sub_mulVec]; exact W₁.sub_mem (hT z) (hy.1 z)
-      · rw [hLval, Matrix.sub_mulVec, hT' z hz, hy.2 z hz, sub_zero])
-    Q hQc (fun X => quadratic_term_nilradical_mem d h1 h2 X.2)
-    (fun X Y hY => Subtype.ext (quad_add d h1 h2 X.2 hle hY.1 hY.2))
-  refine ⟨Φ, c, hc, fun X => ?_, hmap⟩
-  rw [mul_assoc, mul_assoc, eq_inv_mul_iff_mul_eq, ← mul_assoc]
-  refine Units.ext ?_
-  have e : (u (Φ X)).val = 1 + (slin d X.1 - X.1 + quad d X.1) := by
-    rw [hu, hΦ, Submodule.coe_add, hLval]
-  rw [Units.val_mul, e]
-  exact twist_val d h1 h2 (u X) X.1 X.2 (hu X)
-
-theorem nilChange_holds : NilChange := by
-  intro n W₁ W₂ hW e hreg h1 h2 _ _ ν _
-  obtain ⟨Φ, c, hc, hu, hmap⟩ := nilChange e hreg hW h1 h2 (uOf hW) (fun _ => rfl) ν
-  refine ⟨Φ.toMeasurableEquiv, c, pos_iff_ne_zero.2 hc, hmap, fun X => ?_⟩
-  change uOf hW (Φ X) * e = twConj (thetaR (starRingEnd ℂ) n) (uOf hW X) e
-  rw [hu, twConj]
-  group
-
 end Main
 
 end GlobalTheory.CompanionTheory.NilChangeVar

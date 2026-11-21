@@ -31,8 +31,6 @@ def SiegelWeilUnitaryConvergent : Prop :=
     (∀ g, Integrable (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO ω g h f) (autMeasure B ν)) ∧
     Eis.EisValueAt A (flat A a (swSec A B ω μ 𝓨 f) (sZero A B)) (sZero A B) (thetaMean ω ν f)
 
-theorem one_le_of_range {n m : ℕ} (h : n < m) (h' : m ≤ 2 * n) : 1 ≤ n := by omega
-
 end GlobalTheory.Published
 
 end

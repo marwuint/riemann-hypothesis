@@ -33,11 +33,6 @@ variable {ρ} in
 theorem mem_fixedVectors_iff_le {H : Subgroup G} {v : V} :
     v ∈ fixedVectors ρ H ↔ H ≤ stabilizerOf ρ v := Iff.rfl
 
-theorem fixedVectors_eq_invariants (H : Subgroup G) :
-    fixedVectors ρ H = Representation.invariants (ρ.comp H.subtype) := by
-  ext v
-  simp [mem_fixedVectors, Representation.mem_invariants]
-
 theorem fixedVectors_antitone {H₁ H₂ : Subgroup G} (h : H₁ ≤ H₂) :
     fixedVectors ρ H₂ ≤ fixedVectors ρ H₁ :=
   fun _ hv g hg => hv g (h hg)
@@ -82,10 +77,6 @@ def fixedMap {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Representation �
 theorem coe_fixedMap_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} (f : Representation.IntertwiningMap ρ σ) (H : Subgroup G)
     (v : fixedVectors ρ H) : (fixedMap ρ f H v : W) = f v := rfl
-
-theorem fixedVectors_sup_le_inf (K L : Subgroup G) :
-    fixedVectors ρ K ⊔ fixedVectors ρ L ≤ fixedVectors ρ (K ⊓ L) :=
-  sup_le (fixedVectors_antitone ρ inf_le_left) (fixedVectors_antitone ρ inf_le_right)
 
 section CosetSum
 
@@ -175,10 +166,6 @@ variable {ρ} in
 theorem mem_smoothVectors {v : V} : v ∈ smoothVectors ρ ↔ IsOpen (stabilizerOf ρ v : Set G) :=
   Iff.rfl
 
-theorem isSmooth_iff_smoothVectors_eq_top : IsSmooth ρ ↔ smoothVectors ρ = ⊤ := by
-  rw [eq_top_iff]
-  exact ⟨fun h v _ => h v, fun h v => h Submodule.mem_top⟩
-
 theorem smooth_apply_mem {v : V} (hv : v ∈ smoothVectors ρ) (g : G) :
     ρ g v ∈ smoothVectors ρ := by
   rw [mem_smoothVectors] at hv ⊢
@@ -235,12 +222,6 @@ theorem isSmooth_iff_forall_exists :
     IsSmooth ρ ↔ ∀ v : V, ∃ K : Subgroup G, IsCompact (K : Set G) ∧ IsOpen (K : Set G) ∧
       v ∈ fixedVectors ρ K :=
   forall_congr' fun _ => mem_smoothVectors_iff ρ
-
-theorem isSmooth_iff_iUnion_fixedVectors :
-    IsSmooth ρ ↔ ⋃ (K : Subgroup G) (_ : IsCompact (K : Set G)) (_ : IsOpen (K : Set G)),
-      (fixedVectors ρ K : Set V) = univ := by
-  rw [isSmooth_iff_forall_exists, eq_univ_iff_forall]
-  simp only [mem_iUnion, SetLike.mem_coe, exists_prop]
 
 section Average
 
@@ -343,9 +324,6 @@ theorem fixedProj_apply_of_mem_coinvariantsKer {v : V} (hv : v ∈ coinvariantsK
     fixedProj ρ hρ hKc hKo v = 0 :=
   (Submodule.projectionOnto_apply_eq_zero_iff _).2 hv
 
-theorem ker_fixedProj : LinearMap.ker (fixedProj ρ hρ hKc hKo) = coinvariantsKer ρ K :=
-  Submodule.ker_projectionOnto _
-
 theorem sub_fixedProj_mem (v : V) : v - fixedProj ρ hρ hKc hKo v ∈ coinvariantsKer ρ K := by
   have := Submodule.sub_projection_mem (isCompl_fixedVectors_coinvariantsKer hρ hKc hKo) v
   rwa [Submodule.projection_apply] at this
@@ -391,23 +369,6 @@ section Exactness
 
 variable {W X : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGroup X] [Module ℂ X]
   {ρ} {σ : Representation ℂ G W} {τ : Representation ℂ G X} {K : Subgroup G}
-
-theorem exact_fixedMap (hρ : IsSmooth ρ) (hσ : IsSmooth σ) (hKc : IsCompact (K : Set G))
-    (hKo : IsOpen (K : Set G)) {f : Representation.IntertwiningMap ρ σ}
-    {g : Representation.IntertwiningMap σ τ} (hfg : Function.Exact f g) :
-    Function.Exact (fixedMap ρ f K) (fixedMap σ g K) := by
-  intro y
-  constructor
-  · intro hy
-    have hy' : g (y : W) = 0 := by simpa [Subtype.ext_iff, coe_fixedMap_apply] using hy
-    obtain ⟨v, hv⟩ := (hfg (y : W)).1 hy'
-    refine ⟨fixedProj ρ hρ hKc hKo v, ?_⟩
-    rw [← fixedProj_map hKc hKo hρ hσ f, hv]
-    exact Subtype.ext (fixedProj_apply_of_mem hσ hKc hKo y.2)
-  · rintro ⟨x, rfl⟩
-    apply Subtype.ext
-    simp only [coe_fixedMap_apply, ZeroMemClass.coe_zero]
-    exact (hfg _).2 ⟨x, rfl⟩
 
 theorem fixedMap_surjective (hρ : IsSmooth ρ) (hσ : IsSmooth σ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) {f : Representation.IntertwiningMap ρ σ}

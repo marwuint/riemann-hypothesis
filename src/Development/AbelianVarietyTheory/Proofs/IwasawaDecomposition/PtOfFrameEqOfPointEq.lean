@@ -301,10 +301,3 @@ open Matrix NumberField MeasureTheory Formalism.DegreeFormula Formalism.MJ Forma
 open ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.HodgeDomain GlobalTheory.TrueCx
 open scoped ComplexOrder ENNReal
 
-theorem GlobalTheory.PointOfFrames.ptOfFrame_eq_of_point_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (σ : c.F →+* ℂ) (r j : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) (hU : Formalism.L2.PjFree.IsUnf U) (e : Dw.p = j) (Tau : Type) [Fintype Tau] (hr : 0 < r) (T : Tau ≃ {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}) (B : ∀ k, BdData Tau j (r - j) (gammaU (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k))) (s : U.Comp → Tau → ℂˣ), Formalism.L2.PjFree.GoodEmb c σ → ∀ (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom), (U.un k x).x = (U.un k' x').x → ptOfFrame (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s k x = ptOfFrame (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s k' x' := by
-  intro E _ _ _ H Dw l Xo c σ r j U hU e Tau _ hr T B s hσ k k' x x' h
-  obtain ⟨b, hb, hb0, hm, ht⟩ := GlobalTheory.PointOfFrames.exists_frBor U hU hσ k x _ h
-  rw [← ptOfFrame_eq_of_frBor U hU e hr T B s ⟨_, hm⟩ x' ht]
-  rw [first_index_eq_of_unfolded U hU e] at hb0
-  refine congrArg (Sigma.mk k) (congrArg (Quot.mk _) (Subtype.ext ?_))
-  exact (GlobalTheory.PointOfFrames.domPt_rmul_block _ _ _ _ b hb hb0).symm

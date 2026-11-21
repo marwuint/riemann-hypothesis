@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.IsAffineSplitT
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfTorusBased
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsScalMulEqZero
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PullPullAndSplitPull
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusCutByInvariantRatiosFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusCutByInvariantRatiosField
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -300,7 +300,7 @@ theorem isMonHom_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetheria
     have : QuasiCompact ((Over.pullback t).obj G).hom := inferInstanceAs (QuasiCompact (pullback.snd G.hom t))
     have hb' := based_pull t hb
     rw [Functor.map_mul]
-    exact mul_eq_of_rel (GlobalTheory.T.torus_cut_by_invariantRatios_field K ((Over.pullback t).obj G) _ d c i' a j hc hT hb') hb' (rel_map t hk)
+    exact mul_eq_of_rel (_root_.GlobalTheory.ZJ.Charts.kerIs_of_torus K ((Over.pullback t).obj G) _ d c i' a j hc hT hb') hb' (rel_map t hk)
   exact isMonHom_of_mul i fun Y t₁ t₂ => mul_eq_of_univ (Out.jK R) hu hgen (rel_of_kerIs hi t₁ t₂)
 
 end GlobalTheory.ZJ.KerSubgroup

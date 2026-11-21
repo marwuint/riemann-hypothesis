@@ -1,16 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GCauchyStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaEisensteinConvergeBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DecayOfVanishingAtCuspsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaEisensteinConvergeBounded
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DecayOfVanishingAtCusps
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdmissibleLatticeFamilyHermitianWeilActionStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsHeatSwdStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdmissibleLatticeFamilyHermitianWeilAction
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLattice
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsHeatSwd
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteClsAndStab
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SwdTendstoZeroAtCuspsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsUnitaryMoveHermitianHalfSpaceHighStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceAutomorphyLinearityStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SwdTendstoZeroAtCusps
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsUnitaryMoveHermitianHalfSpaceHigh
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceAutomorphyLinearity
 
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
@@ -119,10 +119,10 @@ theorem bound_high (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * (N + 1) < n) (hS : 
   haveI : Finite (Cls E n M) := (finite_cls_and_stab E n M hM).1
   haveI := Fintype.ofFinite (Cls E n M)
   obtain ⟨R₀, hR₀, hL⟩ := exists_common_level (E := E) (n := n) (N := N + 1) hM hR
-  obtain ⟨C₁, hC₁⟩ := GlobalTheory.T.hermitianTheta_eisenstein_converge_bounded E Ψ hΨ n (N + 1) hn hN R₀ (δ / 4) hR₀ (by positivity)
-  obtain ⟨C₂, hC₂⟩ := GlobalTheory.T.decay_of_vanishing_at_cusps' E Ψ hΨ (N + 1) (2 * R₀ ^ 2) δ ((n : ℝ) / 2) (Nat.succ_pos N)
+  obtain ⟨C₁, hC₁⟩ := _root_.GlobalTheory.SW.theta_eis_bounded E Ψ hΨ n (N + 1) hn hN R₀ (δ / 4) hR₀ (by positivity)
+  obtain ⟨C₂, hC₂⟩ := _root_.GlobalTheory.SW.decay_of_vanishing_at_cusps E Ψ hΨ (N + 1) (2 * R₀ ^ 2) δ ((n : ℝ) / 2) (Nat.succ_pos N)
     (by positivity) hδ (by positivity)
-  obtain ⟨R', C', -, hsb⟩ := GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n (N + 1) hn 1 R one_pos hR
+  obtain ⟨R', C', -, hsb⟩ := _root_.GlobalTheory.SW.weil_level_and_sup E Ψ hΨ n (N + 1) hn 1 R one_pos hR
   refine ⟨C₂ * ((∑ c : Cls E n M, ‖(wt M (Quot.out c).1 : ℂ)‖) * (2 * C₁)),
     fun φ hφ B hB Z hZ => ?_⟩
   have hSB : ∀ Λ ∈ Vset E n M, IsSB (φ Λ) := fun Λ hΛ =>
@@ -131,9 +131,9 @@ theorem bound_high (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * (N + 1) < n) (hS : 
       (φ Λ) ⟨hφ.supp Λ hΛ, hφ.per Λ hΛ⟩).1
   rw [mul_assoc]
   refine hC₂ (fun Z => swd Ψ M φ Z 0 0) _ ?_ ?_ ?_ ?_ Z hZ
-  · exact differentiableOn_of_isHeat (GlobalTheory.T.isHeat_swd_of_adm E Ψ hΨ n (N + 1) hn hN M R φ hφ)
+  · exact differentiableOn_of_isHeat (_root_.GlobalTheory.SW.isHeat_swd E Ψ hΨ n (N + 1) hn hN M R φ hφ)
   · intro y hy hc W hW
-    have h := (GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n (N + 1) hn hN M φ hM hSB W hW).2.1
+    have h := (_root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n (N + 1) hn hN M φ hM hSB W hW).2.1
       (((2 * R₀ ^ 2 : ℕ) : E) • y) (by
         conv_rhs => rw [← hc]
         ext i j; simp [ccT, cc])
@@ -157,7 +157,7 @@ theorem bound_high (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * (N + 1) < n) (hS : 
     obtain ⟨-, h1, h2⟩ := hC₁ _ (hL φ hφ c) B (hB _ (Quot.out c).2) W hW
     refine (norm_sub_le _ _).trans ?_
     linarith
-  · exact GlobalTheory.T.tendsto_swd_pushZ_atTop_zero E Ψ hΨ n N hn hN hS M R φ hφ
+  · exact _root_.GlobalTheory.SW.swd_tendsto_zero_at_cusps E Ψ hΨ n N hn hN hS M R φ hφ
 
 theorem detIm_nonneg {Z : CM Ψ N N} (hZ : Z ∈ Hn Ψ N) : 0 ≤ detIm Z :=
   Finset.prod_nonneg fun τ _ => (Complex.le_def.1 (hZ τ).det_pos.le).1
@@ -174,15 +174,15 @@ theorem swd_invariant_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   swap
   · exact ⟨0, fun φ hφ => (hMR hφ.pos).elim⟩
   obtain ⟨hM, hR⟩ := hMR
-  obtain ⟨c, δ, hc, hδ, hred⟩ := GlobalTheory.T.exists_unitary_move_hermitianHalfSpace_high E Ψ hΨ (N + 1)
-  obtain ⟨R', hadm⟩ := GlobalTheory.T.admissibleLatticeFamily_hermitianWeilAction E Ψ hΨ n (N + 1) hn c R hc
-  obtain ⟨R'', C₁, -, hlev⟩ := GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n (N + 1) hn c R hc hR
+  obtain ⟨c, δ, hc, hδ, hred⟩ := _root_.GlobalTheory.SW.exists_move_high E Ψ hΨ (N + 1)
+  obtain ⟨R', hadm⟩ := _root_.GlobalTheory.SW.weil_admissible E Ψ hΨ n (N + 1) hn c R hc
+  obtain ⟨R'', C₁, -, hlev⟩ := _root_.GlobalTheory.SW.weil_level_and_sup E Ψ hΨ n (N + 1) hn c R hc hR
   obtain ⟨C₂, hC₂⟩ := InvBound.bound_high hΨ hn hN hS M R' hδ
   refine ⟨C₂ * C₁, fun φ hφ B hB Z hZ => ?_⟩
   obtain ⟨γ, hγ, hd, hW⟩ := hred Z hZ
   have hl := fun Λ hΛ => hlev M Λ hΛ γ hγ hd (φ Λ) ⟨hφ.supp Λ hΛ, hφ.per Λ hΛ⟩
   have h := hC₂ _ (hadm M φ hφ γ hγ hd) (C₁ * B) (fun Λ hΛ => (hl Λ hΛ).2.2 B (hB Λ hΛ)) _ hW
-  rw [(GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n (N + 1) hn hN M φ hM (fun Λ hΛ => (hl Λ hΛ).1) Z hZ).1 γ hγ] at h
+  rw [(_root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n (N + 1) hn hN M φ hM (fun Λ hΛ => (hl Λ hΛ).1) Z hZ).1 γ hγ] at h
   obtain ⟨-, hH, hdet, -⟩ := (unitary_act_halfSpace E Ψ (N + 1) γ hγ).2 Z hZ
   have hf : ‖hFac Ψ γ Z (0 : CM Ψ n (N + 1)) 0‖ =
       (∏ τ, ‖(hDen Ψ γ Z τ).det‖ ^ 2) ^ ((n : ℝ) / 2) := by

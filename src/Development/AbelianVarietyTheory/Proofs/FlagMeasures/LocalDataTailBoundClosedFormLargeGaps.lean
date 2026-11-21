@@ -9,9 +9,9 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalForm
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MomAllP
 import Formalism.LocalRingCardinality.DataTies
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthTailBoundOfMomentsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthTwoSidedMomentsLargeGapStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthTailBoundPrimedOfUnprimedStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthTailBoundOfMoments
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthTwoSidedMomentsLargeGap
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantLengthTailBoundPrimedOfUnprimed
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeOneSideOfGoodLocalDataStatement
 
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp GlobalTheory.TypeAsm Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
@@ -21,7 +21,7 @@ namespace GlobalTheory.TypeAsm.TailTopGap
 
 theorem tailP_of_gap : GlobalTheory.GapIn.Hyp → TailP := by
   intro hH Cg cb Cw cT CT C0 _ _
-  obtain ⟨CH, hCH, hmom⟩ := GlobalTheory.T.majorantLength_twoSidedMoments_largeGap hH Cg cb Cw cT CT C0
+  obtain ⟨CH, hCH, hmom⟩ := _root_.GlobalTheory.TwoSidedMomentsGap.two_sided_moments_gap hH Cg cb Cw cT CT C0
   refine ⟨CH, hCH, fun C₁ => ⟨0, max 1000 (C₁ : ℝ), fun C' Cl _ hCl D large₂ _ hK hTr => ?_⟩⟩
   have hZ : HypZ D large₂ C' Cl Cg cb Cw cT CT C0 := hK.1
   have h1000 : (1000 : ℝ) ≤ Cl := le_trans (le_max_left _ _) hCl
@@ -64,8 +64,8 @@ theorem tailP_of_gap : GlobalTheory.GapIn.Hyp → TailP := by
     have hnull : W'.νS {x | Matrix.of x ∉ GG D.R.k D.R.rS} = 0 := by
       have hf := Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hWH hN
       exact ae_iff.mp (Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 hf.1 hf.2 hQ)
-    exact GlobalTheory.T.majorantLengthTailBound_of_moments D.R.k D.R.rS W'.z W'.νS A'.Φ _ _ hzW hH1 hnull hcont hM hI
+    exact _root_.GlobalTheory.Amp.TailTwo.tailBd_of_moments D.R.k D.R.rS W'.z W'.νS A'.Φ _ _ hzW hH1 hnull hcont hM hI
 
-  exact ⟨side W hW A hA, GlobalTheory.T.majorantLengthTailBound_primed_of_unprimed D τ u 1 (lamD D τ) _ _ side W hW A hA⟩
+  exact ⟨side W hW A hA, _root_.GlobalTheory.TypeAsm.tailBd_primed_of_unprimed D τ u 1 (lamD D τ) _ _ side W hW A hA⟩
 
 end GlobalTheory.TypeAsm.TailTopGap

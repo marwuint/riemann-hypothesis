@@ -15,12 +15,6 @@ def nuOf (L : SizeData₂ D) (u : D.what₂.Word) {d : ℕ} (e : (Fin d → D.wh
     Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL) :=
   (L.NuLat u).comap ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL))
 
-theorem map_nuOf (L : SizeData₂ D) (u : D.what₂.Word) {d : ℕ} (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) :
-    (nuOf L u e).map ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)) =
-      L.NuLat u := by
-  unfold nuOf
-  exact Submodule.map_comap_eq_of_surjective (fun y => ⟨e.symm y, by simp⟩) _
-
 private theorem sg_eq_zero_of_not_mem_supp (L : SizeData₂ D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hw : w ∉ L.supp) :
     L.sg u w = 0 := by
   unfold Formalism.BasicNotions.SizeData₂.sg
@@ -77,15 +71,6 @@ theorem shift_nuOf (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word)
     · simpa using ha
     · show e (a • x) = a • e x
       exact map_smul e a x
-
-theorem shift_of_colTie (L : SizeData₂ D) (hN : NprimeDef D L) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
-    {A : FamIn D.what₂.LL G Pl0 T m} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ} {Zs : DefSub A.fam.amb}
-    {S1 : IndefData (A.side Ps ψs Zs)} {Dc : DefCols (A.side Ps ψs Zs)} {Sp : SPer Dc} {C : ColData Dc Sp S1}
-    {NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL)} {wU : D.what₂.Word → Dc.Mem}
-    {eNu : ∀ u, (Fin (Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V}
-    {eRR : (Fin S1.D → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V} (h : ColTie D A C NuC wU eNu eRR) (u : D.what₂.Word) :
-    NuC (wU u) = shiftLat (nuOf L u (eNu u)) (sgRec L u) :=
-  shift_nuOf L hN u (eNu u) (NuC (wU u)) (h.Nu u).lat
 
 theorem sgRec_fin (L : SizeData₂ D) (u : D.what₂.Word) : (Function.support (shiftZ (sgRec L u))).Finite := by
   refine (L.supp.finite_toSet.image D.plEq).subset ?_

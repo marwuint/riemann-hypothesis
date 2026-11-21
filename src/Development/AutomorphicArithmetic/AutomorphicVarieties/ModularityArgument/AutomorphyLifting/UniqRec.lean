@@ -17,8 +17,4 @@ theorem uniqRec (N : GlobalTheory.Mem.LiteralAutomorphy.LitN) {h : IsPlaceOver A
   congrFun ((((GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein N.loc.llc N.loc.conv N.loc.dzc N.loc.dzi N.loc.brauer N.loc.chev
     N.aut.art N.loc.exh N.loc.multi N.loc.cos N.loc.zel N.loc.geo N.loc.bz).1 E Ω A w h).unique) H H') x
 
-theorem uniqRec' (_N : GlobalTheory.Mem.LiteralAutomorphy.LitN) {h : IsPlaceOver A w} {rc rc' : IrrGL (w.adicCompletion E) → WD h}
-    (H : IsRecT h rc) (H' : IsRecT h rc') (x : IrrGL (w.adicCompletion E)) (g : Good x) : rc x = rc' x :=
-  recTUnique E Ω A w h rc rc' H H' x g
-
 end UpperTheory.V.Z.Win

@@ -1,11 +1,14 @@
 import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PairingMulFirstChern
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlteration
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchIntegrableRegularVariety
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRegularAlterationArithmeticStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernIntegrableOnDescendGenericallyFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRegularCoverOfAlteration
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SecondChernDegreeVanishesTrueSurfaces
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernIntegrableOnDescendGenericallyFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalSectionDivisorPullbackGeneric
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModpFramesPullback
+
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points
@@ -82,27 +85,5 @@ theorem logNorm_pull {y : CxPts (ρ ≫ q) σ}
 end GlobalTheory.ArchIntAlter
 
 namespace GlobalTheory.ArchIntAlter
-
-open Set
-
-theorem archIntegrable : Published.RegularAlteration → ∀ (k : Type) [CommRing k] (Y : Scheme.{0})
-    [IsIntegral Y] (q : Y ⟶ Sp k) (e : ℕ), IsArithVar q e → ∀ (M N : HermLB q)
-    (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r), N.ArchIntegrable M e hr := by
-  intro hRA k _ Y _ q e hY M N r hr σ
-  obtain ⟨Y', _, ρ, hreg, hgen, hdeg⟩ := GlobalTheory.T.exists_regular_alteration_arithmetic hRA k Y q e hY
-  have hη : ρ (genericPoint Y') ⤳ genericPoint Y := hgen ▸ specializes_rfl
-  have hr' := MultPull.isRatSec_pull_map ρ hη hr
-  have hup := LogNormInt.archIntegrable hreg (N.restr ρ) (M.restr ρ) hr' σ
-  have hsub : ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl) ⊆
-      offSupp (ρ ≫ q) σ ((M.restr ρ).div hr') := fun y hy => mem_offSupp_pull M ρ hη hr hy
-  have hm : MeasurableSet (ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl)) :=
-    (isOpen_ptsIn _).measurableSet
-  have heq : EqOn (logNorm ((M.restr ρ).φ σ) fun c => Units.map
-      (TrueGeo.SmallSec.fnMap ρ hη).toMonoidHom (r (c PUnit.unit)))
-      (fun y => logNorm (M.φ σ) r (PtsOver.map ρ rfl _ y))
-      (ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl)) := fun y hy => logNorm_pull M ρ hη hr hy
-  exact GlobalTheory.T.chernIntegrableOn_descend_genericallyFinite k Y q e hY Y' ρ hreg.toIsArithVar hgen hdeg N σ _ _
-    (continuousOn_logNorm (M.φ σ) hr (M.cInf σ))
-    ⟨(hup.1.mono_set hsub).congr_fun heq hm, (hup.2.mono_set hsub).congr_fun heq hm⟩
 
 end GlobalTheory.ArchIntAlter

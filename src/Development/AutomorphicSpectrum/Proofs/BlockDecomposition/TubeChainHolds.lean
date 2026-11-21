@@ -1,14 +1,14 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussTubeOfTubeGood
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TubeTransformIndependentOfBaseStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianTubeTransformBoundStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TubeTransformIndependentOfBase
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianTubeTransformBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianTubeTransformContinuousStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentialDecayByMidpointsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformLocallyBoundedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformContinuousStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformHolomorphicLinesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformRecoversFunctionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentialDecayByMidpoints
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformLocallyBounded
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformContinuous
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformHolomorphicLines
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseTransformRecoversFunction
 
 open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.CompanionTheory.TubeFourier
 
@@ -34,7 +34,7 @@ theorem tubeChain : TubeChain := by
   set G : Fin (m + 1) → T → ℂ × ℂ → X := fun i g => gauss (F i · g) with hGdef
   have hGT : ∀ i g, GaussTube (G i g) (Ω i) := fun i g => gaussTube_of_tubeGood (hΩ i).2.2 g
   have hind : ∀ i g, ∀ x ∈ Ω i, ∀ x' ∈ Ω i, ∀ t, phi (G i g) x t = phi (G i g) x' t :=
-    fun i g => GlobalTheory.T.tube_transform_independent_of_base X (Ω i) (G i g) (hΩ i).1 (hΩ i).2.1 (hGT i g)
+    fun i g => _root_.GlobalTheory.CompanionTheory.TubeFourier.phi_eq_of_convex X (Ω i) (G i g) (hΩ i).1 (hΩ i).2.1 (hGT i g)
   have hstep : ∀ i : Fin m, ∀ g, ∀ x ∈ Ω i.castSucc, ∀ x' ∈ Ω i.succ, ∀ t,
       phi (G i.castSucc g) x t = phi (G i.succ g) x' t := by
     intro i g x hx x' hx' t
@@ -95,7 +95,7 @@ theorem tubeChain : TubeChain := by
   have hφt : ∀ g : T, Continuous fun t => φ t g := fun g =>
     hφcont.comp (show Continuous (fun t : ℝ × ℝ => (t, g)) by fun_prop)
   have hdecay : ExpDecay φ := by
-    refine GlobalTheory.T.exponential_decay_by_midpoints X T φ {a | ∃ i, a ∈ Ω i} ?_ ?_
+    refine _root_.GlobalTheory.CompanionTheory.TubeFourier.expDecay_of_midpoint X T φ {a | ∃ i, a ∈ Ω i} ?_ ?_
     · rintro a ⟨i, ha⟩ g
       obtain ⟨r, hr, hsub⟩ := Metric.nhds_basis_closedBall.mem_iff.1 ((hΩ i).1.mem_nhds ha)
       obtain ⟨U, hU, M, hM⟩ := gauss_bound (hΩ i).2.2 hsub (isCompact_closedBall a r) g
@@ -104,7 +104,7 @@ theorem tubeChain : TubeChain := by
         rw [Metric.mem_closedBall, Prod.dist_eq, Real.dist_eq, Real.dist_eq, max_le_iff]
         exact ⟨hx1, hx2⟩
       rw [← hall i g' x (hsub hxC) t]
-      refine GlobalTheory.T.gaussian_tube_transform_bound X (G i g') x M (fun y => ?_) t
+      refine _root_.GlobalTheory.CompanionTheory.TubeFourier.norm_phi_le X (G i g') x M (fun y => ?_) t
       have := hM g' hg' (pt x y) (pt_mem_tube_iff.2 hxC)
       simpa [pt] using this
     · intro x
@@ -112,10 +112,10 @@ theorem tubeChain : TubeChain := by
       exact ⟨a, ⟨i, ha⟩, b, ⟨j, hb⟩, hx⟩
   refine ⟨fun l g => inv (fun t => φ t g) l, ⟨?_, ?_, ?_⟩, ?_⟩
   · intro g p v
-    exact (GlobalTheory.T.inverse_transform_holomorphic_lines X T φ hdecay hφt g p v).differentiableOn
-  · exact (GlobalTheory.T.inverse_transform_continuous X T φ hdecay hφcont).continuousOn
+    exact (_root_.GlobalTheory.CompanionTheory.TubeFourier.InvLine.inv_differentiable_line X T φ hdecay hφt g p v).differentiableOn
+  · exact (_root_.GlobalTheory.CompanionTheory.TubeFourier.inv_continuous_joint X T φ hdecay hφcont).continuousOn
   · intro C _ hC g
-    obtain ⟨U, hU, M, hM⟩ := GlobalTheory.T.inverse_transform_locally_bounded X T φ hdecay hφt C hC g
+    obtain ⟨U, hU, M, hM⟩ := _root_.GlobalTheory.CompanionTheory.TubeFourier.inv_bounded_on_tube X T φ hdecay hφt C hC g
     exact ⟨U, hU, M, fun l hl g' hg' => hM l hl g' hg'⟩
   · intro i l hl g
     obtain ⟨x, hxdef⟩ : ∃ x : ℝ × ℝ, x = (l.1.re, l.2.re) := ⟨_, rfl⟩
@@ -127,7 +127,7 @@ theorem tubeChain : TubeChain := by
       simpa only [Function.comp_def] using h
     obtain ⟨U, hU, M, hM⟩ := hGbd i x hx g
     obtain ⟨ε, hε, U', hU', M', hM'⟩ := hdecay x g
-    have key := GlobalTheory.T.inverse_transform_recovers_function X (G i g) x hc1 ⟨M, fun y' => hM g (mem_of_mem_nhds hU) y'⟩
+    have key := _root_.GlobalTheory.CompanionTheory.TubeFourier.PhiInv.inv_phi_eq X (G i g) x hc1 ⟨M, fun y' => hM g (mem_of_mem_nhds hU) y'⟩
       (by rw [hphi]; exact hφt g)
       ⟨ε, hε, M', fun t => by
         rw [hall i g x hx t]

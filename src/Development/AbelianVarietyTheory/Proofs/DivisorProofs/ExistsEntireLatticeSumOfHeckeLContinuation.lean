@@ -3,8 +3,8 @@ import Formalism.PairingDivisors.StatementA
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlacesCoprimeConductor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentiableZterm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformiserIdeleMultiplicativeOnIdealsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralResidueSystemFiniteAdelesModStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralUnitCongruenceSubgroupRelIndexNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralResidueSystemFiniteAdelesMod
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralUnitCongruenceSubgroupRelIndexNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelicRingClassLatticeOneEqOrderStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmRingClassOrderUnitsEqMaxRealSubfieldUnitsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteRingClassGroupOfConductorNeZero
@@ -251,7 +251,7 @@ theorem class_entire (hu : IsUnitary χ) {Λ : ℂ → ℂ} (hΛ : IsHeckeL χ �
       (fun z => if ∀ w, Valued.v ((z : Af E) w - a w) ≤ radN E N w then zterm χ s z else 0) (Z s) := by
   obtain ⟨t, r, hr, hr', hfin, ht⟩ := exists_box hN ha
   obtain ⟨Z, hZ, h⟩ := box_entire hu hΛ hr hfin (congr_mono hr')
-    (mt (Subgroup.relIndex_eq_zero_of_le_right (congr_mono hr)) (GlobalTheory.T.integralUnitCongruenceSubgroup_relIndex_ne_zero E N hN)) hχ
+    (mt (Subgroup.relIndex_eq_zero_of_le_right (congr_mono hr)) (_root_.GlobalTheory.CMVal.LatEnt.relIndex_congr_radN_ne_zero E N hN)) hχ
   refine ⟨fun s => zterm χ s t * Z s, (differentiable_zterm χ t).mul hZ, fun s hs => ?_⟩
   refine (((h s hs).translate (indicator_box_mul (congr_mono hr') hχ s) t⁻¹).mul_left (zterm χ s t)).congr_fun fun q => ?_
   simp only [Set.indicator_apply, ht]
@@ -280,9 +280,9 @@ theorem order_entire (hu : IsUnitary χ) {Λ : ℂ → ℂ} (hΛ : IsHeckeL χ �
   generalize Ideal.absNorm c = N at hN hNc
   have hle := congr_le_hatOUnits hN hNc
   have hn : (congr (radN E N)).relIndex (hatOUnits c) ≠ 0 :=
-    mt (Subgroup.relIndex_eq_zero_of_le_right (hatOUnits_le_congr c)) (GlobalTheory.T.integralUnitCongruenceSubgroup_relIndex_ne_zero E N hN)
+    mt (Subgroup.relIndex_eq_zero_of_le_right (hatOUnits_le_congr c)) (_root_.GlobalTheory.CMVal.LatEnt.relIndex_congr_radN_ne_zero E N hN)
   have hn' : (((congr (radN E N)).relIndex (hatOUnits c) : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn
-  obtain ⟨R, hR, hR'⟩ := GlobalTheory.T.exists_integral_residue_system_finiteAdeles_mod E N hN
+  obtain ⟨R, hR, hR'⟩ := _root_.GlobalTheory.CMVal.LatEnt.Res.exists_residues E N hN
   choose! Z hZ h using fun (a : Af E) (ha : ∀ w, Valued.v (a w) ≤ 1) =>
     class_entire hu hΛ hN (fun u hu => hχ u (hle hu)) ha
   refine ⟨fun s => (((congr (radN E N)).relIndex (hatOUnits c) : ℕ) : ℂ)⁻¹ * ∑ a ∈ R.filter (· ∈ hatO c), Z a s,

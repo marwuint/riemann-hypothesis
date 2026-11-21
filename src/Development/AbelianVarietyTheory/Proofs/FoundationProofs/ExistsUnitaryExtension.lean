@@ -129,39 +129,3 @@ theorem infChar_eq_one (c : ℤ) (a : D.host.Eˣ) (h : ratio D (incU D a) ∈ in
 
 end GlobalTheory.NormSum.UnramHecke
 
-open GlobalTheory.NormSum.UnramHecke in
-
-theorem GlobalTheory.NormSum.exists_unramified_heckeU : ∀ (D : D7) (N : ℕ) (c : ℤ), Even N → ∃ χ : HeckeU D N, (∀ τ, χ.n τ = 2 * c) ∧ ∀ u, IntU D u → χ.f u = 1 := by
-  intro D N c hN
-  obtain ⟨κ, hκ, hnorm⟩ := exists_unitary_extension
-    (((ratio D).comp (incU D)).coprod (intUnits D).subtype)
-    ((infChar D c)⁻¹.comp (MonoidHom.fst _ _))
-    (by
-      rintro ⟨a, u⟩ h
-      have h' : ratio D (incU D a) * (u : (AE D)ˣ) = 1 := h
-      have hm : ratio D (incU D a) ∈ intUnits D := by
-        rw [eq_inv_of_mul_eq_one_left h']; exact inv_mem u.2
-      show (infChar D c a)⁻¹ = 1
-      rw [infChar_eq_one D c a hm, inv_one])
-    (by
-      rintro ⟨a, u⟩
-      show ‖(((infChar D c a)⁻¹ : ℂˣ) : ℂ)‖ = 1
-      rw [Units.val_inv_eq_inv_val, norm_inv, norm_infChar, inv_one])
-  have hint : ∀ u, IntU D u → (κ.comp (ratio D)) u = 1 := by
-    intro u hu
-    have hm : ratio D u ∈ intUnits D := div_mem hu (sgU_mem D hu)
-    have := hκ (1, ⟨_, hm⟩)
-    simpa using this
-  refine ⟨{ f := κ.comp (ratio D)
-            n := fun _ => 2 * c
-            unitary := fun x => hnorm _
-            cont := ⟨1, one_pos, fun u hu _ => hint u hu⟩
-            aut := fun a => ?_
-            norm := fun x => ?_
-            par := fun _ => (even_two_mul c).sub ((Int.even_coe_nat N).2 hN)
-            unr := fun u hu _ => hint u hu }, fun _ => rfl, hint⟩
-  · have h1 : κ (ratio D (incU D a)) = (infChar D c a)⁻¹ := by
-      have := hκ (a, 1)
-      simpa using this
-    rw [← infChar_val, MonoidHom.comp_apply, h1, Units.inv_mul]
-  · rw [MonoidHom.comp_apply, ratio_apply, map_mul (sgU D), sgU_sgU, mul_comm (sgU D x), div_self', map_one]

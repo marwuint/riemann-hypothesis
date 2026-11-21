@@ -15,8 +15,4 @@ def RankAdjoinFrac.Statement : Prop :=
     Module.finrank (Algebra.adjoin F S) (Algebra.adjoin F T) =
       IntermediateField.relfinrank (IntermediateField.adjoin F S) (IntermediateField.adjoin F T)
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

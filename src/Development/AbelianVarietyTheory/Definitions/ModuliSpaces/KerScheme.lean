@@ -95,19 +95,5 @@ def KerScheme.Carries {Xo : Moduli D l} {𝔓 : Ideal (𝓞 E)} {p i : ℕ} (Z :
   z ≫ Z.π₁ = y ∧ ∀ (u : Over.mk z ⟶ Z.o₁.t.G) (v : Over.mk y ⟶ Xo.univ.t.G), v.left = u.left ≫ Z.m₁.toSABMap.φ →
     (Set.range u.left ⊆ Z.K ↔ v ∈ C)
 
-example : ToroidalHeckeCompatibility (H := H) (D := D) ↔ ∀ (l : Level H) (Xo : Moduli D l) (P : Ideal (𝓞 E)) (p i : ℕ),
-    admitted l P p → ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Xo.X) (C : Subgroup (Over.mk y ⟶ Xo.univ.t.G)),
-      Xo.univ.t.HeckeKer (Over.mk y) D P p i C → ∃! y'', PointQuot Xo p y y'' C :=
-  ⟨fun h l Xo P p i ⟨a, b, c, d, e⟩ => h l Xo P p i a b c d e,
-    fun h l Xo P p i a b c d e => h l Xo P p i ⟨a, b, c, d, e⟩⟩
-
-example (G : Over S) [GrpObj G] [IsSeparated G.hom] : EtSet G (Set.range (η[G] : 𝟙_ (Over S) ⟶ G).left) := by
-  have hw : (η[G] : 𝟙_ (Over S) ⟶ G).left ≫ G.hom = 𝟙 _ := Over.w _
-  have : IsClosedImmersion ((η[G] : 𝟙_ (Over S) ⟶ G).left ≫ G.hom) := by rw [hw]; infer_instance
-  exact ⟨𝟙_ (Over S), η[G], inferInstanceAs (IsFinite (𝟙 S)), inferInstanceAs (Etale (𝟙 S)),
-    IsClosedImmersion.of_comp _ G.hom, rfl⟩
-
-example (P : Ideal (𝓞 E)) (h : 2 ∣ l.A) : ¬ admitted l P 2 := fun hA => hA.2.2.2.2 (h.trans (Nat.dvd_lcm_right _ _))
-
 end GlobalTheory.HkFam
 end

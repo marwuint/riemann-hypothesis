@@ -28,15 +28,6 @@ def CarriesLattice (W₁ W₂ : HSpace E) (e : W₁.V ≃ₗ[E] W₂.V) : Prop :
 def frameMatrix (W₁ W₂ : HSpace E) (e : W₁.V ≃ₗ[E] W₂.V) : Matrix (Fin W₂.rank) (Fin W₁.rank) E :=
   LinearMap.toMatrix W₁.frame W₂.frame e.toLinearMap
 
-example (W : HSpace E) : withLattice W W.L0 W.standardTuple_isLattice W.baseLattice_isUnimodular = W := rfl
-
-example (W : HSpace E) (L : Submodule (𝓞 E) W.V) (hL : Submodule.IsLattice E L)
-    (hU : Formalism.HermitianLatticesTheory.IsUnimodular W.hT L) : (withLattice W L hL hU).gram = W.gram := rfl
-
-example (W : HSpace E) : IsIsometry W W (LinearEquiv.refl E W.V) ∧ CarriesLattice W W (LinearEquiv.refl E W.V) ∧
-    frameMatrix W W (LinearEquiv.refl E W.V) = 1 :=
-  ⟨fun _ _ => rfl, fun _ => Iff.rfl, by simp [frameMatrix]⟩
-
 end Spaces
 
 def Intertwines {A : Type} [CommRing A] {M₁ M₂ : ℕ} (C : Matrix (Fin M₂) (Fin M₁) A)
@@ -56,12 +47,6 @@ def IsConjugationBy {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [C
     (σ : E →ₐ[F] E) {M₁ M₂ : ℕ} (J₁ : Matrix (Fin M₁) (Fin M₁) E) (J₂ : Matrix (Fin M₂) (Fin M₂) E)
     (C : Matrix (Fin M₂) (Fin M₁) E) (Φ : HA R σ J₁ → HA R σ J₂) : Prop :=
   ∀ h : HA R σ J₁, Intertwines (baseChange R C) (pointMatrix R σ J₁ h) (pointMatrix R σ J₂ (Φ h))
-
-example {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
-    (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : IsConjugationBy R σ J J 1 id := by
-  intro h
-  rw [Intertwines, baseChange, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.one_mul]
-  rfl
 
 def LatticeIndependence (D : D7) : Prop :=
   letI := D.host.cmStar

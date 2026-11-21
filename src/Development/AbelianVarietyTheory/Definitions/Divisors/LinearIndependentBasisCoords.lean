@@ -13,16 +13,6 @@ open scoped ComplexOrder ComplexConjugate
 
 variable {K E : Type*} [Field K] [Field E] {V V' : Type*} [AddCommGroup V] [Module K V]
 
-def biadd (h : HermFam K V) (σ : K →+* ℂ) : V →+ V →+ ℂ :=
-  AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (h.form σ x) (h.add_right σ x))
-    fun x x' => AddMonoidHom.ext fun y => h.form_add_left σ x x' y
-
-theorem ext_form {h h' : HermFam K V} (e : ∀ σ x y, h.form σ x y = h'.form σ x y) : h = h' := by
-  obtain ⟨f, _⟩ := h
-  obtain ⟨f', _⟩ := h'
-  obtain rfl : f = f' := funext fun σ => funext₂ (e σ)
-  rfl
-
 section Complex
 
 variable (h : HermFam K V) (σ : K →+* ℂ) {ι : Type*} [Fintype ι]
@@ -40,9 +30,6 @@ theorem csq_map (a : ι → K) (v : ι → V) :
 
 theorem cnrm_map (a : ι → K) (v : ι → V) : cnrm h σ (fun i => σ (a i)) v = h.nrm σ (∑ i, a i • v i) :=
   congrArg Real.sqrt (csq_map h σ a v)
-
-theorem cnrm_one (x : V) : cnrm h σ (fun _ : Unit => 1) (fun _ => x) = h.nrm σ x := by
-  simp [cnrm, csq, HermFam.nrm]
 
 theorem csq_comb {κ : Type*} [Fintype κ] (c : ι → ℂ) (a : ι → κ → K) (b : κ → V) :
     csq h σ c (fun i => ∑ k, a i k • b k) = csq h σ (fun k => ∑ i, c i * σ (a i k)) b := by
@@ -64,12 +51,6 @@ theorem csq_nonneg (c : ι → ℂ) (v : ι → V) : 0 ≤ csq h σ c v := by
   have := (h.posDef σ _ _ (b.linearIndependent.map' S.subtype S.ker_subtype)).posSemidef.dotProduct_mulVec_nonneg x
   refine (Complex.nonneg_iff.1 this).1.trans_eq (congrArg _ ?_)
   simp [dotProduct, mulVec, Finset.mul_sum, mul_assoc, mul_comm, mul_left_comm]
-
-theorem cnrm_sq (c : ι → ℂ) (v : ι → V) : cnrm h σ c v ^ 2 = csq h σ c v := Real.sq_sqrt (csq_nonneg h σ c v)
-
-theorem nrm_pos {x : V} (hx : x ≠ 0) : 0 < h.nrm σ x := by
-  have := (h.posDef σ 1 ![x] (by simpa using hx)).diag_pos (i := 0)
-  exact Real.sqrt_pos.2 (Complex.pos_iff.1 this).1
 
 end Complex
 
@@ -131,11 +112,6 @@ def ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) (G : (K →+* ℂ) �
     (hG : ∀ σ, (G σ).PosDef) : HermFam K V :=
   ofCoords (P := fun _ => n) (basisCoords b) G hG fun σ _ _ => linearIndependent_basisCoords b σ
 
-theorem form_ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) (G : (K →+* ℂ) → Matrix n n ℂ)
-    (hG : ∀ σ, (G σ).PosDef) (σ : K →+* ℂ) (i j : n) : (ofGram b G hG).form σ (b i) (b j) = G σ i j := by
-  classical
-  simp [ofGram, ofCoords, basisCoords, dotProduct, mulVec, Finsupp.single_apply, apply_ite]
-
 theorem isConjInv_ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) {G : (K →+* ℂ) → Matrix n n ℂ}
     (hG : ∀ σ, (G σ).PosDef) (hc : ∀ σ i j, G (ComplexEmbedding.conjugate σ) i j = conj (G σ i j)) :
     (ofGram b G hG).IsConjInv := fun σ x y => by
@@ -143,10 +119,6 @@ theorem isConjInv_ofGram {n : Type*} [Fintype n] (b : Module.Basis n K V) {G : (
 
 def ofBasis {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n K V) : HermFam K V :=
   ofGram b (fun _ => 1) fun _ => PosDef.one
-
-theorem nrm_ofBasis {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n K V) (σ : K →+* ℂ) (i : n) :
-    (ofBasis b).nrm σ (b i) = 1 := by
-  simp [HermFam.nrm, ofBasis, form_ofGram]
 
 theorem isConjInv_ofBasis {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n K V) :
     (ofBasis b).IsConjInv := isConjInv_ofGram b _ fun _ i j => by simp [Matrix.one_apply, apply_ite]
@@ -175,36 +147,13 @@ def IsExtension.basis {n : ℕ} (b : Module.Basis (Fin n) K V) : Module.Basis (F
 
 variable [FiniteDimensional K V]
 
-include hι in
-
-theorem IsExtension.finrank_eq : Module.finrank E V' = Module.finrank K V :=
-  (Module.finrank_eq_card_basis (hι.basis (Module.finBasis K V))).trans (Fintype.card_fin _)
-
 def extend (h : HermFam K V) : HermFam E V' :=
   ofGram (hι.basis (Module.finBasis K V)) (fun τ => h.gram (τ.comp j) (Module.finBasis K V))
     fun _ => h.posDef _ _ _ (Module.finBasis K V).linearIndependent
-
-theorem form_extend (h : HermFam K V) (τ : E →+* ℂ) (x y : V) :
-    (extend hι h).form τ (ι x) (ι y) = h.form (τ.comp j) x y := by
-  let b := Module.finBasis K V
-  have e (i k) : (extend hι h).form τ (ι (b i)) (ι (b k)) = h.form (τ.comp j) (b i) (b k) := by
-    rw [← hι.basis_apply, ← hι.basis_apply]
-    exact form_ofGram _ _ _ τ i k
-  rw [← b.sum_repr x, ← b.sum_repr y]
-  simp only [map_sum, map_smulₛₗ, HermFam.form_sum_left, HermFam.form_sum_right, HermFam.form_smul_left,
-    HermFam.smul_right, e, RingHom.comp_apply]
-
-theorem nrm_extend (h : HermFam K V) (τ : E →+* ℂ) (x : V) : (extend hι h).nrm τ (ι x) = h.nrm (τ.comp j) x :=
-  congrArg (fun z : ℂ => Real.sqrt z.re) (form_extend hι h τ x x)
 
 theorem isConjInv_extend {h : HermFam K V} (hh : h.IsConjInv) : (extend hι h).IsConjInv :=
   isConjInv_ofGram _ _ fun τ _ _ => hh (τ.comp j) _ _
 
 end Extend
-
-example (σ : ℚ →+* ℂ) : csq (ofBasis (Pi.basisFun ℚ (Fin 2))) σ ![Complex.I, 2] (Pi.basisFun ℚ (Fin 2)) = 5 := by
-  simp only [csq, ofBasis, form_ofGram, Fin.sum_univ_two]
-  simp
-  norm_num
 
 end GlobalTheory.HermTools

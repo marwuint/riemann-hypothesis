@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IdempotentAdelesAndSmallAdelicMatricesStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IdempotentAdelesAndSmallAdelicMatrices
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRationalUnitarySplitDenominatorStatement
 
 open NumberField IsDedekindDomain GlobalTheory.AdLat GlobalTheory.UnRep
@@ -71,10 +71,6 @@ theorem _root_.GlobalTheory.UnRep.SplitRep.isUnA_mix (c : E ≃ₐ[F] E) (G : Ma
 
 def inc (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] : E →+* RA F E :=
   (Algebra.TensorProduct.includeRight (R := F) (A := FiniteAdeleRing (𝓞 F) F) (B := E)).toRingHom
-
-theorem hermA_eq (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (x y : Fin n → RA F E) :
-    hermA c G x y = x ⬝ᵥ (fm F G *ᵥ fun b => sg (FiniteAdeleRing (𝓞 F) F) c (y b)) := by
-  simp only [hermA, dotProduct, Matrix.mulVec, fm, Matrix.map_apply, Finset.mul_sum, mul_assoc]
 
 variable [NumberField E]
 

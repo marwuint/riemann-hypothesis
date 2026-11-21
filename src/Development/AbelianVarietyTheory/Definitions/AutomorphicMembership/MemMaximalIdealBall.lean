@@ -218,11 +218,6 @@ def GenEx (ct : At S κ p) : Prop := ∀ (Z : ct.Mdl) (η : ct.Gen Z), ∃ y : D
 def GoodIff (ct : At S κ p) : Prop :=
   ∀ (Z : ct.Mdl) (x : ct.Pt Z), Subsingleton (ct.Ylat x) ↔ Z.abP (x.z (closedPoint ↥(intO ↥x.C.S)))
 
-theorem nonempty_ext (y : DVP ct) : Nonempty (Ext y) := by
-  haveI := y.dvr
-  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible ↥(intO ↥y.K)
-  exact ⟨⟨y.K, le_rfl, RingHom.Finite.of_surjective _ fun x => ⟨x, rfl⟩, π, hπ⟩⟩
-
 theorem vpi_pos (e : Ext y) : 0 < vpi e := by
   have h1 : ‖((e.π : ↥e.L) : ↥y.C.S)‖ < 1 :=
     (mem_maximalIdeal_ball e.π).1 ((mem_maximalIdeal _).2 e.irr.not_isUnit)

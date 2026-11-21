@@ -62,23 +62,10 @@ def CentralElt (D : D7) : Prop :=
       mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)) =
         (D.what₂.restRowsFiniteGroupCard : ℂ) • (L.map fun kv => ArithmeticCylinders.atPlace D kv.1 kv.2 (D.ntypes.eSer kv.1 (s kv))).prod
 
-def StepCut : Prop :=
-  ∀ (D : D7) (P : Pend D), DeligneLusztigSeriesSupport (D := D) → admBC (D := D) → LocalGlobalCompatibilityAlt (D := D) → SumRepresentations.tie0 D → tiePar (D := D) →
-    SumRepresentations.adm5 D → EigSpan P → CentralElt D →
-    ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → ∀ π ∈ D.nd.Zgood i,
-      ∃ (Xs : Set (D.nd.X i)) (β : Module.End (D.nd.O i) (D.nd.Mt i)) (b : D.nd.O i),
-        CutAt i k π Xs β b ∧ TypeLocus P i k Xs
-
 def StepDeg : Prop :=
   ∀ D : D7, tieBr (D := D) → ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k →
     (placesOver D.host.E (D.nd.l i)).ncard = 2 * D.R.f ∧
     ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)), finrank ℚ_[D.nd.l i] (Br.Kw D.nbr i w hw) = 1
-
-def StepLGC : Prop :=
-  ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → IneLGC D
-
-def StepType : Prop :=
-  ∀ (D : D7) (P : Pend D), admDZ P → SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → TypeLGC P
 
 def StepPotDirect : Prop :=
   ∀ (D : D7) (P : Pend D), TypeLGC P → FontaineAtPlacesOverL (D := D) → SumRepresentations.tie0 D → tieBr (D := D) → tiePH (D := D) →
@@ -149,49 +136,7 @@ def StepHfChar : Prop :=
     ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)), finrank ℚ_[D.nd.l i] (Br.Kw D.nbr i w hw) = 1 →
       HfChar i w hw
 
-def StepGlobal : Prop :=
-  ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (Xs : Set (D.nd.X i)) (eρ eχ : ℕ),
-    GoodR D.nd i r → TruncatedSeriesCountingIdentities.admG1 i r → ResSpan i ρ π → TruncatedSeriesCountingIdentities.admG4 i r → TruncatedSeriesCountingIdentities.admG5 i r →
-    TruncatedSeriesCountingIdentities.TameGeneratorConditions i → TruncatedSeriesCountingIdentities.admG6 i r → TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → TruncatedSeriesCountingIdentities.LocalCoefficientCompatibility i → SetSQ i r →
-    (∃ S : IdempotentChoiceData D.nd i, GoodCongruenceObjects D.nd r ρ π S) → π ∈ D.nd.Z i → π ∈ Xs →
-    (∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)), HfChar i w hw ∧
-      LocBoundP i w hw r Xs (WpO D.nd i ρ π) eρ ∧
-      ∀ c ∈ Finset.Icc 1 D.R.t, LocBoundP i w hw r Xs (chiRatO D.nd i c) eχ) →
-    Br.sFin D.loc D.nbr i ρ π →
-    (∀ e ∈ Finset.Ioo 0 D.R.t, Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) < ⊤) →
-    vccCut i Xs π ≤
-      (((placesOver D.host.E (D.nd.l i)).ncard * (eρ + D.R.t * eχ) : ℕ) : ℚ) +
-      Br.sPi D.loc D.nbr i ρ π + (∑ e ∈ Finset.Ioo 0 D.R.t, (D.what₂.shaLen (D.nd.l i) e : ℚ)) +
-      (padicValNat (D.nd.l i) (hE D.host) : ℚ) + 4 * (D.R.nV : ℚ) * D.nd.vdel i +
-      (D.R.t : ℚ) * ∑ q ∈ D.nd.Q i, vZeta i q
-
 def StepCentral : Prop := CentralIdemCoeff → ∀ (D : D7) (_ : Pend D), CentralElt D
-
-def StepRes : Prop :=
-  ∀ D : D7, ResidualAbsIrreducible (D := D) → GaloisFamilyConditions (D := D) →
-    ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-      (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GoodR D.nd i r →
-      ∀ π ∈ D.nd.Zgood i, TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → ResSpan i ρ π
-
-def WDAbove (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r →
-    ∀ (x : D.nd.X i) (PI : D.naut.AV i), D.naut.ptV i PI = some x →
-    ∀ w ∈ placesOver D.host.E (D.nd.l i), IsSplitPl D.host w →
-      D.naut.IsdRW i (mapRep (iotaOQ D.nd D.naut i) (r x)) w ∧
-      D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (r x)) w =
-        D.naut.lpTw (D.naut.locV i PI w) ((1 - (D.R.nV : ℝ)) / 2)
-
-def StepsNoCut : Prop :=
-  CentralIdemCoeff ∧ StepCentral ∧ StepDeg ∧ StepType ∧ StepPotDirect ∧ StepPotDual ∧ StepJumpDirect ∧
-    StepJumpDual ∧ StepLift ∧ StepSub ∧ StepCont ∧ StepLocDirect ∧ StepLocDual ∧ StepHfChar ∧ StepRes ∧ StepGlobal
-
-def Steps : Prop :=
-  CentralIdemCoeff ∧ StepCentral ∧ StepCut ∧ StepDeg ∧ StepType ∧ StepPotDirect ∧ StepPotDual ∧ StepJumpDirect ∧
-    StepJumpDual ∧ StepLift ∧ StepSub ∧ StepCont ∧ StepLocDirect ∧ StepLocDual ∧ StepHfChar ∧ StepRes ∧ StepGlobal
-
-theorem steps_iff : Steps ↔ StepCut ∧ StepsNoCut :=
-  ⟨fun ⟨a, b, c, d⟩ => ⟨c, a, b, d⟩, fun ⟨c, a, b, d⟩ => ⟨a, b, c, d⟩⟩
 
 end GlobalTheory.Pass
 

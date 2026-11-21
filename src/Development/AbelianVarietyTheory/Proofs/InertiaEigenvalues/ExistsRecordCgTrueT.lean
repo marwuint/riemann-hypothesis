@@ -183,10 +183,6 @@ theorem etaLawsT (hT : UpperTheory.Zero.LLC.RecTExists) (D : D7) {χ : HChar D.h
     rw [Multiset.singleton_inj] at ha' hb'
     rw [← ha', ← hb', ← Units.val_mul, ← mul_inv, CGTrueModel.val_split hχ hw hc, inv_one, Units.val_one]
 
-theorem CGTrueT.ralg {hT D T} (C : CGTrueT hT D T) a (π : D.naut.CG a) :
-    haveI := host_isCMField D.host; D.naut.ralg π ↔ (C.e a π).IsRegAlg := by
-  rw [D.naut.ralg_def]; simp only [C.inf]; exact (GlobalTheory.CuspRep.CG.isRegAlg_iff _).symm
-
 end GlobalTheory.HeightCounting
 
 end

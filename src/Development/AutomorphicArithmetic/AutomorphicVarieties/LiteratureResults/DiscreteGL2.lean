@@ -35,9 +35,6 @@ structure DiscG where
     φ.1 (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = ((ω.1 z : ℂˣ) : ℂ) * φ.1 g
   sq : ∀ φ ∈ V, SqInt (latG F) φ.1
 
-def ModIso (V V' : Submodule ℂ (TR.Sm F 2)) : Prop :=
-  ∃ T : V ≃ₗ[ℂ] V', ∀ (o : TR.Op F 2) (φ ψ : V), ψ.1 = TR.act o φ.1 → (T ψ).1 = TR.act o (T φ).1
-
 def LocG (V : Submodule ℂ (TR.Sm F 2)) (w : HeightOneSpectrum (𝓞 F)) (τ : SmIrr (GL (Fin 2) (w.adicCompletion F))) : Prop :=
   ∃ f : τ.V →ₗ[ℂ] TR.Sm F 2, f ≠ 0 ∧ (∀ x, f x ∈ V) ∧ ∀ g x, f (τ.ρ g x) = TR.finRep F 2 (locGL F 2 w g) (f x)
 
@@ -49,8 +46,6 @@ def IsChr (V : Submodule ℂ (TR.Sm F 2)) (v : InfinitePlace F) (c : ℂ) : Prop
 def IsDS (V : Submodule ℂ (TR.Sm F 2)) (v : InfinitePlace F) (m : ℕ) (c : ℂ) : Prop :=
   HasCen V v c ∧ ∃ φ ∈ V, φ ≠ 0 ∧ TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = (Complex.I * (m + 2)) • φ ∧
     TR.Eop v 0 0 φ - TR.Eop v 1 1 φ = Complex.I • (TR.Eop v 0 1 φ + TR.Eop v 1 0 φ)
-
-def Compatible (V : Submodule ℂ (TR.Sm F 2)) : Prop := ∀ v, ∃ c, IsChr V v c ∨ ∃ m, IsDS V v m c
 
 variable (Q : DefQuat F)
 
@@ -107,16 +102,5 @@ structure Match (π' : DiscD Q) (π : DiscG F) : Prop where
 end UpperTheory.V.Lit.JL
 
 namespace UpperTheory.V.Lit
-
-open JL
-
-def GlobalJL : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (Q : DefQuat F),
-    (∀ π' : DiscD Q, ∃ π : DiscG F, Match π' π) ∧ ∀ π : DiscG F, Compatible π.V → ∃ π' : DiscD Q, Match π' π
-
-def DiscreteGL2 : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (π : DiscG F),
-    (∃ ρ : TR.CuspSub F 2, ModIso π.V ρ.V) ∨
-      ∃ (χ : HChar F) (φ : TR.Sm F 2), (∀ g, φ.1 g = ((chiDet 2 χ g : ℂˣ) : ℂ)) ∧ ModIso π.V (Submodule.span ℂ {φ})
 
 end UpperTheory.V.Lit

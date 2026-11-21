@@ -4,15 +4,18 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.ResChar
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.ResidueFieldCard
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.OrbitFiniteOf
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.OFRepFinal
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.GoodRGa
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.GoodREp
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.GzNeOfTotPos
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.GoodRDeltaC
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.GlueExistsHolds
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.GluingMassHolds
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.TotallyPositiveAll
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.IsometryFixFlagAnisotropicVectorOfFixFrame
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.JordanDecompositionExists
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.DensCut
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.AssembleM
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.Assemble
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.Development
+import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AutLzFinite
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.PairVal
 
 open NumberField Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.CntLocal
 open Classical
@@ -58,27 +61,5 @@ theorem cExpl_pos' (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (F0 : Fl
   have hm := Formalism.L2.SG.PairVal.massRows_pos D F0 what₂ hA hne
   unfold cExpl
   positivity
-
-variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
-theorem formulaC_of (h1 : LocSelfDual) (h2 : GaPlusDiag) (h3 : NotIntDens) (h5 : DensProdVal)
-    (h6 : DensMultInt) (hOF : OrbitFiniteR) (hEx : RowLatExists) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FormulaC := by
-  intro D T u u' Lsp _ _ hT
-  have hR := T.Y.rowsOK u
-  obtain ⟨Λ0, hΛ0⟩ := hEx D T u
-  have hne : (T.Y.what₂ u).Nonempty := by
-    obtain ⟨Λ', ⟨hΛ', -⟩, -⟩ := hR.2 Λ0 hΛ0
-    exact ⟨Λ', hΛ'⟩
-  have hDA : DensAll := densAll_of h1 h2 h3 h5 h6
-  have hFE : FormulaExplicit := Formalism.L2.SG.Pf.formulaExplicit_of field_dictionary_holds rational_pair_holds perpendicular_definition_holds
-    (mmChar_of local_unimodular_holds) lattice_groupoid_holds hDA PI.UnitaryGroupMassFormula.CntFormula.R6.norm_mass_of_jordan glueExists_holds
-    gluing_mass_holds
-  refine ⟨cExpl_pos' D u (T.X.Fu u) (T.Y.what₂ u) hR hne, fun ϖ hϖ Z =>
-    ⟨hOF D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z, fun hP => ⟨?_, ?_⟩⟩⟩
-  · obtain ⟨F', hz, hZ⟩ := rational_pair_holds D u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z hP
-    by_cases hI : Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (MMof D (T.X.Fu u) F')
-    · exact h6 D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z F' hz hZ hP hI
-    · obtain ⟨p, hp⟩ := h3 D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z F' hz hZ hP hI
-      exact (hasProd_zero_of_exists_eq_zero ⟨p, hp⟩).multipliable
-  · exact hFE D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z hP
 
 end Formalism.L2.SG.Pf.Cnt

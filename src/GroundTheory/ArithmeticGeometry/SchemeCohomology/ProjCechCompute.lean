@@ -265,27 +265,6 @@ def cechHTopEquiv (k : ℤ) (m : ℕ) :
     cechH (twistAb A (m + 1) k) (cover A (m + 1)) (m + 1) ≃+ (NegMon (m + 1) k →₀ A) :=
   AddEquiv.ofBijective topMap topMap_bijective
 
-lemma allowed_empty_of_forall {k : ℤ} (hk : 0 ≤ k) {m : Fin (n + 1) → ℤ}
-    (h : ∀ j, Allowed {j} k m) : Allowed ∅ k m := by
-  refine ⟨(h 0).1, fun j' _ => ?_⟩
-  by_cases hn : ∃ j, j ≠ j'
-  · obtain ⟨j, hj⟩ := hn
-    exact (h j).2 j' fun h' => hj (Set.mem_singleton_iff.mp h').symm
-  · push Not at hn
-    have hsum := (h 0).1
-    rw [Finset.sum_eq_single j' (fun b _ hb => absurd (hn b) hb) (by simp)] at hsum
-    omega
-
-lemma allowed_empty_of_forall' (hn : 0 < n) {k : ℤ} {m : Fin (n + 1) → ℤ}
-    (h : ∀ j, Allowed {j} k m) : Allowed ∅ k m := by
-  refine ⟨(h 0).1, fun j' _ => ?_⟩
-  obtain ⟨j, hj⟩ : ∃ j : Fin (n + 1), j ≠ j' := by
-    by_cases h0 : j' = 0
-    · exact ⟨1, by rw [h0]; exact Fin.ne_of_gt (Fin.pos_iff_ne_zero.mpr (by
-        simp [Fin.ext_iff]; omega))⟩
-    · exact ⟨0, fun h' => h0 h'.symm⟩
-  exact (h j).2 j' fun h' => hj (Set.mem_singleton_iff.mp h').symm
-
 lemma lval_eq_of_cocycle {k : ℤ} (σ : Cochain (twistAb A n k) (cover A n) 0)
     (hσ : d _ _ 0 σ = 0) (j j' : Fin 1 → Fin (n + 1)) : lval σ j = lval σ j' := by
   have h := congrArg (fun τ => lval τ (Fin.cons (j 0) j' : Fin 2 → Fin (n + 1))) hσ
@@ -303,90 +282,6 @@ lemma range_const_fin_one (j : Fin 1 → Fin (n + 1)) : Set.range j = {j 0} := b
   ext x
   simp only [Set.mem_range, Set.mem_singleton_iff]
   exact ⟨fun ⟨a, ha⟩ => by rw [← ha, Fin.fin_one_eq_zero a], fun h => ⟨0, h.symm⟩⟩
-
-def zeroVal {k : ℤ} (hk : 0 ≤ k ∨ 0 < n) :
-    cocycles (twistAb A n k) (cover A n) 0 →+ LDeg A (∅ : Set (Fin (n + 1))) k where
-  toFun σ := ⟨lval σ.1 (fun _ => 0), fun m hm => by
-    have hall : ∀ j : Fin (n + 1), Allowed {j} k m := fun j => by
-      have := lval_mem σ.1 (fun _ => j) m (by
-        rwa [lval_eq_of_cocycle σ.1 ((mem_cocycles _).1 σ.2) (fun _ => j) (fun _ => 0)])
-      rwa [range_const_fin_one] at this
-    rcases hk with hk | hn
-    · exact allowed_empty_of_forall hk hall
-    · exact allowed_empty_of_forall' hn hall⟩
-  map_zero' := Subtype.ext (lval_zero _)
-  map_add' σ τ := Subtype.ext (lval_add σ.1 τ.1 _)
-
-lemma zeroVal_bijective {k : ℤ} (hk : 0 ≤ k ∨ 0 < n) :
-    Function.Bijective (zeroVal (A := A) hk) := by
-  constructor
-  · rw [injective_iff_map_eq_zero]
-    intro σ hσ
-    have h0 : lval σ.1 (fun _ => 0) = 0 := congrArg Subtype.val hσ
-    apply Subtype.ext
-    refine cochain_ext fun j => ?_
-    rw [lval_eq_of_cocycle σ.1 ((mem_cocycles _).1 σ.2) j (fun _ => 0), h0]
-    exact (lval_zero j).symm
-  · intro ℓ
-    let σ : Cochain (twistAb A n k) (cover A n) 0 :=
-      ofL fun i => ⟨ℓ.1, LDeg_mono (Set.empty_subset _) k ℓ.2⟩
-    have hσ : d _ _ 0 σ = 0 := by
-      refine cochain_ext fun i => ?_
-      rw [lval_d, lval_zero, Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_zero]
-      simp [σ]
-    exact ⟨⟨σ, (mem_cocycles _).2 hσ⟩, Subtype.ext (by simp [zeroVal, σ])⟩
-
-def cechHZeroLEquiv {k : ℤ} (hk : 0 ≤ k ∨ 0 < n) :
-    cechH (twistAb A n k) (cover A n) 0 ≃+ LDeg A (∅ : Set (Fin (n + 1))) k :=
-  (QuotientAddGroup.quotientBot.symm.trans (QuotientAddGroup.quotientAddEquivOfEq (by
-    rw [coboundaries_zero, AddSubgroup.bot_addSubgroupOf]))).symm.trans
-    (AddEquiv.ofBijective _ (zeroVal_bijective hk))
-
-lemma toLaurent_mem_LDeg_empty {k : ℕ} {p : MvPolynomial (Fin (n + 1)) A}
-    (hp : p ∈ homogeneousSubmodule (Fin (n + 1)) A k) :
-    toLaurent A n p ∈ LDeg A (∅ : Set (Fin (n + 1))) k := by
-  intro m hm
-  by_cases hr : m ∈ Set.range (expHom n)
-  · obtain ⟨e, rfl⟩ := hr
-    rw [coeff_toLaurent_expHom] at hm
-    have h := hp hm
-    refine ⟨?_, fun j _ => by simp [expHom]⟩
-    rw [sum_expHom, Finsupp.degree_eq_weight_one]
-    exact_mod_cast h
-  · exact absurd (coeff_toLaurent_eq_zero hr) hm
-
-def homogEquiv (k : ℕ) :
-    homogeneousSubmodule (Fin (n + 1)) A k ≃+ LDeg A (∅ : Set (Fin (n + 1))) k :=
-  AddEquiv.ofBijective
-    ({ toFun p := ⟨toLaurent A n p.1, toLaurent_mem_LDeg_empty p.2⟩
-       map_zero' := Subtype.ext (map_zero _)
-       map_add' _ _ := Subtype.ext (map_add _ _ _) } :
-      homogeneousSubmodule (Fin (n + 1)) A k →+ LDeg A (∅ : Set (Fin (n + 1))) k)
-    ⟨fun p q h => Subtype.ext (toLaurent_injective (congrArg Subtype.val h)), fun ℓ => by
-      have hsupp : (ℓ.1.coeff.support : Set (Fin (n + 1) → ℤ)) ⊆ Set.range (expHom n) := by
-        intro m hm
-        have hA := ℓ.2 m (Finsupp.mem_support_iff.mp hm)
-        refine ⟨Finsupp.equivFunOnFinite.symm fun j => (m j).toNat, funext fun j => ?_⟩
-        change ((m j).toNat : ℤ) = m j
-        exact Int.toNat_of_nonneg (hA.2 j (Set.notMem_empty j))
-      let p : MvPolynomial (Fin (n + 1)) A :=
-        AddMonoidAlgebra.ofCoeff (Finsupp.comapDomain (expHom n) ℓ.1.coeff
-          expHom_injective.injOn)
-      have hp : toLaurent A n p = ℓ.1 := by
-        apply AddMonoidAlgebra.coeff_injective
-        exact Finsupp.mapDomain_comapDomain _ expHom_injective _ hsupp
-      have hpk : p ∈ homogeneousSubmodule (Fin (n + 1)) A k := by
-        intro e he
-        have he' : ℓ.1.coeff (expHom n e) ≠ 0 := he
-        have hA := ℓ.2 _ he'
-        have := hA.1
-        rw [sum_expHom, Finsupp.degree_eq_weight_one] at this
-        exact_mod_cast this
-      exact ⟨⟨p, hpk⟩, Subtype.ext hp⟩⟩
-
-def cechHZeroEquiv' (k : ℕ) :
-    cechH (twistAb A n k) (cover A n) 0 ≃+ homogeneousSubmodule (Fin (n + 1)) A k :=
-  (cechHZeroLEquiv (Or.inl (Int.natCast_nonneg k))).trans (homogEquiv k).symm
 
 end ProjSpace
 

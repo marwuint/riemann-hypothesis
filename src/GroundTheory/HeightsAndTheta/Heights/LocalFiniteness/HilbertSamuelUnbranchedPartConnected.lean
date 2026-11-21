@@ -8,9 +8,11 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Assembly
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeLocalFlat
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalFinite
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IrreducibleConnected.PClopenPieceSheetCount
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.IrreducibleConnected.PUnbranchedPartConnected
-import GroundTheory.HeightsAndTheta.Heights.IntegralModels.PSpreadIsoLoc
+import Mathlib
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Statements
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Assembly
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PManifoldZerosComplementConnected
+import GroundTheory.HeightsAndTheta.Heights.IntegralModels.Statements
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ImportsFurther
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ImportsRest
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PDivCycleHomLoc
@@ -20,6 +22,7 @@ import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.Assembly
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PParAlgIndep
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecBGeneric
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSecBLinInj
+
 set_option maxSynthPendingDepth 1
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.FieldNumbers_SemilocalFinite.{u} : GroundTheory.Heights₂.Heights.FieldNumbers.SemilocalFinite.Statement.{u} :=
@@ -33,9 +36,6 @@ theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_DivCycleHomLoc.{u} 
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_C3ResidualCompare.{u} : GroundTheory.Heights₂.Heights.NumbersDVR.ResidualComparison.Statement.{u} :=
   @GroundTheory.Heights₂.Heights.NumbersDVR.ResidualComparison.proof.{u} GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_C3BlowUpPieces GroundTheory.Heights₂.Heights.NumbersDVR.ResidualDisjoint.proof GroundTheory.Heights₂.Heights.AutoClose.NumbersDVR_C3ResidualContraction
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.Model_SpreadIsoLoc : GroundTheory.Heights₂.Heights.Model.SpreadIsoLoc.Statement :=
-  @GroundTheory.Heights₂.Heights.Model.SpreadIsoLoc.proof GroundTheory.Heights₂.Heights.AutoClose.Model_SpreadHomLoc GroundTheory.Heights₂.Heights.AutoClose.Model_SpreadHomInjLoc
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.TubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement :=
   @GroundTheory.Heights₂.Heights.TubeEuclMass.proof GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.TubeCollarMass GroundTheory.Heights₂.Heights.AutoClose.TubeDeepMass

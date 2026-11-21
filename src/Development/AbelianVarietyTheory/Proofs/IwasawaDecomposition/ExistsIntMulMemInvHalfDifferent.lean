@@ -1,14 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIntegralHalf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyIsoKGStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsComplexLinearExtensionOfTraceIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMatrixBasisLatticeUpToDenominatorNotMemStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryMulIntegralAtSplitPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SelfDualLatticeStandardAtRationalPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyIsoKG
+import Formalism.LocalToGlobal.KernelLattices.LateralTheory
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsComplexLinearExtensionOfTraceIsometry
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMatrixBasisLatticeUpToDenominatorNotMem
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryMulIntegralAtSplitPrime
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SelfDualLatticeStandardAtRationalPrime
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimeOverSplitNotMemConjStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComapSingleSpanAlgebraMapNumberFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteExtensionCapitulationComplexStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCurveLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteExtensionCapitulationComplex
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCurveLattice
 
 noncomputable section
 
@@ -28,8 +29,8 @@ theorem form_mulVec {K n : Type} [Field K] [Fintype n] [DecidableEq n] (σ : K �
 
 theorem exists_move : ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* K) (n : Type) [Fintype n] [DecidableEq n] (p : ℕ) (𝔭 : HeightOneSpectrum (𝓞 K)) (α β : 𝓞 K) (L : Submodule (𝓞 K) (n → K)), (∀ x, σ (σ x) = x) → (∀ x : 𝓞 K, ∃ m : ℤ, (x : K) * σ x = m) → p.Prime → (p : 𝓞 K) ∈ 𝔭.asIdeal → α ∈ 𝔭.asIdeal → β ∉ 𝔭.asIdeal → (β : K) = σ α → L.FG → Submodule.span K (L : Set (n → K)) = ⊤ → (∀ x, x ∈ L ↔ ∀ y ∈ L, ∑ i, x i * σ (y i) ∈ (algebraMap (𝓞 K) K).range) → ∃ u : (n → K) ≃ₗ[K] (n → K), (∀ x y, ∑ i, u x i * σ (u y i) = ∑ i, x i * σ (y i)) ∧ ∃ s : ℕ, Nat.Coprime s p ∧ (∀ x ∈ L, ∀ i, (s : K) * u x i ∈ (algebraMap (𝓞 K) K).range) ∧ ∀ v : n → K, (∀ i, v i ∈ (algebraMap (𝓞 K) K).range) → (s : K) • u.symm v ∈ L := by
   intro K _ _ σ n _ _ p 𝔭 α β L hσ hN hp hp𝔭 hα hβ hαβ hfg hsp hsd
-  obtain ⟨g, hg, t, ht, hL, hc⟩ := GlobalTheory.T.exists_matrix_basis_lattice_up_to_denominator_notMem K n L 𝔭 hfg hsp
-  obtain ⟨u, hu, t', ht', h1, h2⟩ := GlobalTheory.T.exists_unitary_mul_integral_at_split_prime K σ n 𝔭 α β hσ hα hβ hαβ g hg
+  obtain ⟨g, hg, t, ht, hL, hc⟩ := _root_.GlobalTheory.LatticeLocBasis.exists_matrix_up_to_notMem K n L 𝔭 hfg hsp
+  obtain ⟨u, hu, t', ht', h1, h2⟩ := _root_.GlobalTheory.UnIntApprox.exists_unitary_mul_integral K σ n 𝔭 α β hσ hα hβ hαβ g hg
   have hud : IsUnit u.det := Matrix.isUnit_det_of_left_inverse hu
   let e : (n → K) ≃ₗ[K] (n → K) := (Matrix.toLinearEquiv' u (Matrix.invertibleOfIsUnitDet u hud)).symm
   have hes : ∀ v, e.symm v = u *ᵥ v := fun v => rfl
@@ -41,7 +42,7 @@ theorem exists_move : ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* K) 
   let L' : Submodule (𝓞 K) (n → K) := L.comap (e.symm.toLinearMap.restrictScalars (𝓞 K))
   have hm : ∀ v, v ∈ L' ↔ e.symm v ∈ L := fun v => Iff.rfl
   have htt : t * t' ∉ 𝔭.asIdeal := fun h => (𝔭.isPrime.mem_or_mem h).elim ht ht'
-  obtain ⟨s, hs, ha, hb⟩ := GlobalTheory.T.selfDual_lattice_standard_at_rational_prime K σ n p 𝔭 α β L' (t * t') hσ hN hp hp𝔭 hα hβ hαβ
+  obtain ⟨s, hs, ha, hb⟩ := _root_.GlobalTheory.selfDual_standard_at_rational_prime K σ n p 𝔭 α β L' (t * t') hσ hN hp hp𝔭 hα hβ hαβ
     (fun x => by
       rw [hm, hsd]
       constructor
@@ -96,7 +97,7 @@ theorem exists_gen_pow {K : Type} [Field K] [NumberField K] (𝔭 : HeightOneSpe
 variable {R : Ranks} (H : Host R)
 
 theorem nonempty_isoK : Nonempty (Th.IsoK H (Tau R)) :=
-  GlobalTheory.T.nonempty_isoKG_of_trace_positive H.K H.E (H.conj : H.E →+* H.E) (HostK.conjK H) (Tau R) (HostK.card_tau H) (fun _ => rfl)
+  _root_.GlobalTheory.FourCopiesIso.nonempty_isoKG H.K H.E (H.conj : H.E →+* H.E) (HostK.conjK H) (Tau R) (HostK.card_tau H) (fun _ => rfl)
     (UnusedSlot33.HK.conj_conj H) (HostK.trace_conj H) (HostK.trace_pos H)
 
 theorem exists_int_mul_mem_invHalfDifferent (x : H.E) : ∃ N : ℤ, N ≠ 0 ∧ (N : H.E) * x ∈ H.AA0 := by
@@ -217,7 +218,7 @@ theorem ellE_fg (τ : Tau R) : (ellE H τ).FG := by
   exact Submodule.FG.of_le (Submodule.fg_span_singleton _) hle
 
 theorem exists_dgen : ∃ cD, Th.IsDgen H (embT H) cD := by
-  obtain ⟨M, hM, hφ, hs⟩ := GlobalTheory.T.exists_finite_extension_capitulation_complex H.E H.φ₀ (Tau R) (ellE H) (ellE_fg H)
+  obtain ⟨M, hM, hφ, hs⟩ := _root_.GlobalTheory.exists_finite_extension_capitulation H.E H.φ₀ (Tau R) (ellE H) (ellE_fg H)
   choose s hs using hs
   haveI : NumberField M := ⟨⟩
   letI : Algebra H.E M := (H.φ₀.codRestrict M hφ).toAlgebra
@@ -272,9 +273,9 @@ theorem nonempty_kapIn (γ₀ : Th.IsoK H (Tau R)) : Nonempty (Th.KapIn γ₀) :
 end AmbEx
 
 theorem exists_ambIn_ok {R : Ranks} (H : Host R) : ∃ J : AmbIn H, J.Ok := by
-  obtain ⟨δ, L, ω₀, hδ, hL, ht⟩ := GlobalTheory.T.exists_periodPair_lattice_eq_lamOf R H
+  obtain ⟨δ, L, ω₀, hδ, hL, ht⟩ := _root_.GlobalTheory.Mem.Col2.exists_curve_lattice R H
   obtain ⟨γ₀⟩ := AmbEx.nonempty_isoK H
-  obtain ⟨gC, hgC⟩ := GlobalTheory.T.exists_complexLinear_extension_of_traceIsometry' H.K H.E H.conj (Tau R) H.φ₀ (embT H) (HostK.emb_conj H _) (fun _ => HostK.emb_conj H _)
+  obtain ⟨gC, hgC⟩ := _root_.GlobalTheory.exists_complexLinear_extension_of_traceIsometry H.K H.E H.conj (Tau R) H.φ₀ (embT H) (HostK.emb_conj H _) (fun _ => HostK.emb_conj H _)
     (HostK.embT_K H) (HostK.sum_embT H) γ₀
   obtain ⟨kc⟩ := AmbEx.nonempty_kapIn H γ₀
   obtain ⟨cD, hc⟩ := AmbEx.exists_dgen H

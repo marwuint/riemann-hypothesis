@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTwInv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankCocyclesAddTwistedInvariantLeExtensionStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankCocycleExtensionLeOrderThreeRelationAddStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankOrderThreeRelationAddTwistedInvariantLeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankOrderThreeRelationAddTwistedInvariantLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinrankTwistedLeftInvariantMulOfFreeActionStatement
 
 section
@@ -202,7 +202,7 @@ theorem finrank_eichlerShimuraCocycles_le_Gamma1 (N : ℕ) (Γ : Subgroup SL(2, 
       obtain rfl : k = 1 := by omega
       rw [pow_one] at h
       exact (torsion_not_mem N hN x 3 (by norm_num)).2 (by norm_num) (hΓ h))
-  obtain ⟨fC, hC⟩ := GlobalTheory.T.finrank_orderThreeRelation_add_twistedInvariant_le Γ (rho w) (S * T) (rho_mul w) (rho_one w) hU6 f2
+  obtain ⟨fC, hC⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.CocBound.finrank_relThree_add_finrank_twInv_le Γ (rho w) (S * T) (rho_mul w) (rho_one w) hU6 f2
   obtain ⟨fB, hB⟩ := GlobalTheory.T.finrank_cocycleExtension_le_orderThreeRelation_add Γ (rho w) S (S * T) (rho_mul w) (rho_one w) hSU closure_S_ST hE fC
   obtain ⟨fA, hA⟩ := GlobalTheory.T.finrank_cocycles_add_twistedInvariant_le_extension Γ (rho w) S (rho_mul w) (rho_one w) hS4 fB
   have hZ := LinearMap.finrank_le_finrank_of_injective (zMap_injective Γ w)

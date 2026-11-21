@@ -70,10 +70,6 @@ theorem galFF_algebraMap_base (σ : L ≃ₐ[K] L) (k : K) :
       algebraMap K (W₀.baseChange L).toAffine.FunctionField k := by
   rw [IsScalarTower.algebraMap_apply K L, galFF_algebraMap, AlgEquiv.commutes]
 
-noncomputable def galFFAlg (σ : L ≃ₐ[K] L) :
-    (W₀.baseChange L).toAffine.FunctionField ≃ₐ[K] (W₀.baseChange L).toAffine.FunctionField :=
-  AlgEquiv.ofRingEquiv (f := galFF W₀ σ) (galFF_algebraMap_base W₀ σ)
-
 theorem galFF_symm_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
     (galFF W₀ σ).symm (algebraMap L (W₀.baseChange L).toAffine.FunctionField c) =
       algebraMap L (W₀.baseChange L).toAffine.FunctionField (σ.symm c) := by

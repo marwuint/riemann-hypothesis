@@ -1,7 +1,9 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaActionExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaActionExistsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
+import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
@@ -23,7 +25,7 @@ theorem theta_kernel_local_operators_act (_hP : _root_.GlobalTheory.FunPr.ThetaL
       x.2 ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ W (evFin F v) → ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v),
         ∃ φ₁ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (evFin F v) (om x) φ φ₁ :=
     fun x hx1 hx2 φ hφ => acts_exists hP v x hx1 hx2 φ hφ
-  refine ⟨fun g hg h hh φ hφ => ?_, fun u hu φ hφ => ?_, GlobalTheory.T.weilRep_smooth_at_finitePlace B X W M χX χW om r s r' s' hP v hex⟩
+  refine ⟨fun g hg h hh φ hφ => ?_, fun u hu φ hφ => ?_, _root_.GlobalTheory.SmoothAtPlace.weil_smooth_at B X W M χX χW om r s r' s' hP v hex⟩
   · obtain ⟨φ₁, h1, h2⟩ := hex (g, h) hg hh φ hφ
     exact ⟨φ₁, ⟨h1, h2⟩, fun φ₂ hφ₂ => acts_unique v _ hφ hφ₂.2 h2⟩
   · refine ⟨GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v u) φ,
@@ -31,10 +33,8 @@ theorem theta_kernel_local_operators_act (_hP : _root_.GlobalTheory.FunPr.ThetaL
       fun φ₂ hφ₂ => acts_unique v _ hφ hφ₂.2 (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v u hu φ)⟩
 end GlobalTheory.ThK.LocalOps
 namespace GlobalTheory.ThK.LocalOps
-variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 end GlobalTheory.ThK.LocalOps
 namespace GlobalTheory.ThK.LocalOps
-variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 end GlobalTheory.ThK.LocalOps
 end
 end

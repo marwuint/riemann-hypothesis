@@ -16,9 +16,9 @@ namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 theorem invQ_holds : InvQ := by
   intro l _ K bk τ hτ N k d ρ F hcr Q Q' hsec g
   obtain ⟨hQQ, hQu₀, hQ'u₀, hQφ₀⟩ := hsec
-  obtain ⟨Y, Y', hY, hYY⟩ := GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N d (fun g => (ρ g).val) F.toPre
+  obtain ⟨Y, Y', hY, hYY⟩ := _root_.GlobalTheory.BKLim.pre_bounded_poles l K bk τ hτ N d (fun g => (ρ g).val) F.toPre
   obtain ⟨-, -, hE2⟩ := GlobalTheory.T.frame_ainf_matrix_frobenius_galois_eqs l K bk τ hτ N d (fun g => (ρ g).val) F Y Y' hY hYY
-  obtain ⟨htf, -, ⟨v, hv⟩, hφι, hσι⟩ := GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk
+  obtain ⟨htf, -, ⟨v, hv⟩, hφι, hσι⟩ := _root_.GlobalTheory.AcrisFrobE.main l K bk
   set ι := algebraMap (Ainf l) (Per.Acris l) with hι
   have hQu : ∀ i j, ι (bk.ev X) ∣ (Q - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) i j := hQu₀
   have hQ'u : ∀ i j, ι (bk.ev X) ∣ (Q' - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) i j := hQ'u₀
@@ -112,7 +112,7 @@ theorem invQ_holds : InvQ := by
     rw [hD, Matrix.map_sub _ (map_sub π), Matrix.map_mul, Matrix.map_mul, hQ'1, hε1, hQσ]
     simp only [map_smul_ring, Matrix.map_one _ (map_zero _) (map_one _), mul_one, smul_mul_smul_comm, map_pow]
     rw [← pow_add, ← two_mul, sub_self]
-  have hD0 := GlobalTheory.T.acris_frobenius_matrix_eq_zero_of_dvd l K bk d (2 * N) D (F.A.map f0) _ hdiv hDeq
+  have hD0 := _root_.GlobalTheory.BKLim.acris_frob_eq_zero l K bk d (2 * N) D (F.A.map f0) _ hdiv hDeq
   have hM : Q' * ε' * Q.map σ = (l : Per.Acris l) ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) :=
     sub_eq_zero.1 hD0
   refine smul_cancel (pow_cancel htf (2 * k)) ?_

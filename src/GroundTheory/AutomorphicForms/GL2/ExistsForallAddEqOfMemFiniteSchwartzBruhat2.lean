@@ -70,11 +70,6 @@ theorem isOpen_idealFiniteAdeles2 (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
   rw [coe_idealFiniteAdeles2]
   exact isOpen_set_pi Set.finite_univ fun _ _ ↦ isOpen_idealFiniteAdeles I
 
-theorem isCompact_idealFiniteAdeles2 (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
-    IsCompact (idealFiniteAdeles2 I : Set (Fin 2 → 𝔸ᶠ[K])) := by
-  rw [coe_idealFiniteAdeles2]
-  exact isCompact_univ_pi fun _ ↦ isCompact_idealFiniteAdeles I
-
 theorem exists_idealFiniteAdeles2_subset {W : Set (Fin 2 → 𝔸ᶠ[K])} (hW : W ∈ 𝓝 0) :
     ∃ I : (FractionalIdeal (𝓞 K)⁰ K)ˣ, (idealFiniteAdeles2 I : Set (Fin 2 → 𝔸ᶠ[K])) ⊆ W := by
   rw [nhds_pi, Filter.mem_pi] at hW
@@ -189,35 +184,6 @@ theorem integrable_of_mem_finiteSchwartzBruhat2 {f : (Fin 2 → 𝔸ᶠ[K]) → 
     (hf : f ∈ finiteSchwartzBruhat2 K) : Integrable f (finiteMeasure2 K) :=
   hf.1.continuous.integrable_of_hasCompactSupport hf.2
 
-theorem continuous_finiteAdelicChar_sum_mul (y : Fin 2 → 𝔸ᶠ[K]) :
-    Continuous fun x : Fin 2 → 𝔸ᶠ[K] ↦ (finiteAdelicChar K (∑ i, x i * y i) : ℂ) :=
-  continuous_subtype_val.comp (continuous_finiteAdelicChar.comp
-    (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))
-
-theorem integrable_mul_finiteAdelicChar_sum {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
-    (hf : Integrable f (finiteMeasure2 K)) (y : Fin 2 → 𝔸ᶠ[K]) :
-    Integrable (fun x ↦ f x * (finiteAdelicChar K (∑ i, x i * y i) : ℂ)) (finiteMeasure2 K) :=
-  hf.mono (hf.1.mul (continuous_finiteAdelicChar_sum_mul y).aestronglyMeasurable)
-    (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])
-
-theorem finiteFourier2_add {f g : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hf : Integrable f (finiteMeasure2 K))
-    (hg : Integrable g (finiteMeasure2 K)) :
-    finiteFourier2 K (f + g) = finiteFourier2 K f + finiteFourier2 K g := by
-  funext y
-  simp only [finiteFourier2, Pi.add_apply, add_mul]
-  exact integral_add (integrable_mul_finiteAdelicChar_sum hf y)
-    (integrable_mul_finiteAdelicChar_sum hg y)
-
-theorem finiteFourier2_smul (c : ℂ) (f : (Fin 2 → 𝔸ᶠ[K]) → ℂ) :
-    finiteFourier2 K (c • f) = c • finiteFourier2 K f := by
-  funext y
-  simp only [finiteFourier2, Pi.smul_apply, smul_eq_mul, mul_assoc]
-  exact integral_const_mul c _
-
-theorem finiteFourier2_zero : finiteFourier2 K (0 : (Fin 2 → 𝔸ᶠ[K]) → ℂ) = 0 := by
-  funext y
-  simp [finiteFourier2]
-
 theorem finiteFourier2_finiteTensor2 (g : Fin 2 → 𝔸ᶠ[K] → ℂ) :
     finiteFourier2 K (finiteTensor2 g) = finiteTensor2 fun i ↦ finiteFourier K (g i) := by
   funext y
@@ -230,54 +196,6 @@ theorem finiteFourier2_finiteTensor2 (g : Fin 2 → 𝔸ᶠ[K] → ℂ) :
   simp only [finiteTensor2, Fin.prod_univ_two, Fin.sum_univ_two, AddChar.map_add_eq_mul,
     Circle.coe_mul]
   ring
-
-theorem finiteFourier2_finiteTensor2_mem {g : Fin 2 → 𝔸ᶠ[K] → ℂ}
-    (hg : ∀ i, g i ∈ finiteSchwartzBruhat K) :
-    finiteFourier2 K (finiteTensor2 g) ∈ finiteSchwartzBruhat2 K := by
-  rw [finiteFourier2_finiteTensor2]
-  exact finiteTensor2_mem fun i ↦ finiteFourier_mem_finiteSchwartzBruhat (hg i)
-
-theorem finiteFourier2_mem {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hf : f ∈ finiteSchwartzBruhat2 K) :
-    finiteFourier2 K f ∈ finiteSchwartzBruhat2 K := by
-  rw [finiteSchwartzBruhat2_eq_span] at hf
-  induction hf using Submodule.span_induction with
-  | mem g hg =>
-    obtain ⟨⟨I, a⟩, rfl⟩ := hg
-    exact finiteFourier2_finiteTensor2_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat I (a i)
-  | zero => rw [finiteFourier2_zero]; exact zero_mem _
-  | add g h hg hh ihg ihh =>
-    rw [← finiteSchwartzBruhat2_eq_span] at hg hh
-    rw [finiteFourier2_add (integrable_of_mem_finiteSchwartzBruhat2 hg)
-      (integrable_of_mem_finiteSchwartzBruhat2 hh)]
-    exact add_mem ihg ihh
-  | smul c g _ ih =>
-    rw [finiteFourier2_smul]
-    exact Submodule.smul_mem _ c ih
-
-theorem finiteFourier2_finiteFourier2 {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
-    (hf : f ∈ finiteSchwartzBruhat2 K) :
-    finiteFourier2 K (finiteFourier2 K f) = fun x ↦ f (-x) := by
-  rw [finiteSchwartzBruhat2_eq_span] at hf
-  induction hf using Submodule.span_induction with
-  | mem g hg =>
-    obtain ⟨⟨I, a⟩, rfl⟩ := hg
-    rw [finiteFourier2_finiteTensor2, finiteFourier2_finiteTensor2]
-    funext x
-    simp only [finiteTensor2, Pi.neg_apply]
-    refine Finset.prod_congr rfl fun i _ ↦ ?_
-    rw [finiteFourier_finiteFourier (cosetIndicator_mem_finiteSchwartzBruhat I (a i))]
-  | zero => funext x; simp [finiteFourier2_zero]
-  | add g h hg hh ihg ihh =>
-    rw [← finiteSchwartzBruhat2_eq_span] at hg hh
-    rw [finiteFourier2_add (integrable_of_mem_finiteSchwartzBruhat2 hg)
-        (integrable_of_mem_finiteSchwartzBruhat2 hh),
-      finiteFourier2_add
-        (integrable_of_mem_finiteSchwartzBruhat2 (finiteFourier2_mem hg))
-        (integrable_of_mem_finiteSchwartzBruhat2 (finiteFourier2_mem hh)), ihg, ihh]
-    rfl
-  | smul c g _ ih =>
-    rw [finiteFourier2_smul, finiteFourier2_smul, ih]
-    rfl
 
 def finiteVecMulHomeomorph (g : GL (Fin 2) 𝔸ᶠ[K]) : (Fin 2 → 𝔸ᶠ[K]) ≃ₜ (Fin 2 → 𝔸ᶠ[K]) where
   toFun x := x ᵥ* (g : Matrix (Fin 2) (Fin 2) 𝔸ᶠ[K])

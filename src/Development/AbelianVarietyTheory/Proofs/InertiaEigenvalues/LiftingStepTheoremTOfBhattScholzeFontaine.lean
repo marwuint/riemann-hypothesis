@@ -3,11 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTameFieldGoodLatticePotentiallyCrystallineStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TheoremTDescendSmallerCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftSurjectionGoodCrystallineLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxFrobeniusOrbitLengthDiffBoundsZmodStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCoeffFieldContainsUnramifiedWittTameDescenStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTameFieldGoodLatticePotentiallyCrystalline
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TheoremTDescendSmallerCoefficients
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftSurjectionGoodCrystallineLattices
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxFrobeniusOrbitLengthDiffBoundsZmod
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCoeffFieldContainsUnramifiedWittTameDescen
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 open Formalism.MainNotions Formalism.MainNotions.N
@@ -50,10 +51,10 @@ theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → Global
   have hnd : ¬ l ∣ a := by
     rw [ha, hlp.dvd_factorial]
     omega
-  obtain ⟨⟨LL', hle, hUnr⟩, -⟩ := GlobalTheory.T.exists_coeffField_containsUnramifiedWitt_tameDescent l a e he hnd LL
+  obtain ⟨⟨LL', hle, hUnr⟩, -⟩ := _root_.GlobalTheory.TameCoeff.main l a e he hnd LL
   haveI := hUnr
-  haveI : TameDescentExponentData ↥LL'.1 l e a := (GlobalTheory.T.exists_coeffField_containsUnramifiedWitt_tameDescent l a e he hnd LL').2 hUnr
-  refine GlobalTheory.T.theoremT_descend_smaller_coefficients l (D.loc l) K' h hN hF hS LL LL' hle C ?_
+  haveI : TameDescentExponentData ↥LL'.1 l e a := (_root_.GlobalTheory.TameCoeff.main l a e he hnd LL').2 hUnr
+  refine _root_.GlobalTheory.BaseCoef.thmT_descend l (D.loc l) K' h hN hF hS LL LL' hle C ?_
   have ϖ : PiSys l e := Classical.arbitrary _
   have hStd : IsStd (D.loc l) (D.locA l) := IsStd.of_tied (D.locT l)
   intro T₁ T₂ g N η H U Sig Fr hP1 hP2 hOnto hFr hFS h1 hcard h2N hIT1 hIT2 hUr hU0 hUc hη hηH hJ1 hJ2 hl
@@ -65,15 +66,15 @@ theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → Global
   have hcop : ∀ χ ∈ Sig, Nat.Coprime (orderOf χ) l := fun χ hχ => by
     have := hIT1.2.1 χ hχ
     rwa [hp] at this
-  obtain ⟨Sig', hS1, hS2, hS3, hS4, hS5⟩ := GlobalTheory.T.exists_tameField_goodLattice_potentiallyCrystalline hFB l a e ϖ LL' (D.loc l) (D.locA l) hStd ha
+  obtain ⟨Sig', hS1, hS2, hS3, hS4, hS5⟩ := _root_.GlobalTheory.GoodLatt.main hFB l a e ϖ LL' (D.loc l) (D.locA l) hStd ha
     K' h hN hF hS Sig Fr N hFr hFS h1 hcard hNl hIT1.1 hcop
   obtain ⟨c1, t1⟩ := hS5 T₁ hP1 hIT1
   obtain ⟨c2, t2⟩ := hS5 T₂ hP2 hIT2
   have hnum : GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents.Numerics l e N η H Sig' U :=
     ⟨hS1, hS2, hS3, h2N, hUr, hU0, hUc, hη, hηH, hlarge⟩
-  have hcore := GlobalTheory.T.lift_surjection_good_crystalline_lattices hBS hFB l a e ϖ LL' (D.loc l) (D.locA l) hStd N η H Sig' U hnum T₁ T₂ g hOnto
+  have hcore := _root_.GlobalTheory.TheoremT.liftF_of_isGood hBS hFB l a e ϖ LL' (D.loc l) (D.locA l) hStd N η H Sig' U hnum T₁ T₂ g hOnto
     ⟨c1, t1, hJ1⟩ ⟨c2, t2, hJ2⟩
-  have horb := GlobalTheory.T.maxFrobeniusOrbitLengthDiff_bounds_zmod l e a hlp (Nat.one_le_iff_ne_zero.2 (NeZero.ne a)) he Sig' N hS1 hS2 hS3 h2N
+  have horb := _root_.GlobalTheory.BK.maxPeriod_bounds l e a hlp (Nat.one_le_iff_ne_zero.2 (NeZero.ne a)) he Sig' N hS1 hS2 hS3 h2N
   rw [hS4] at hcore horb
   refine ⟨horb.2.1, ?_⟩
   exact liftF_of_le _ g hcore (Nat.mul_le_mul_right _ (by omega))

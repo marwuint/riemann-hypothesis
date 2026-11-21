@@ -23,41 +23,6 @@ theorem jE_mem (x : E) : jE j x ∈ KwF (E := E) j := by
   rw [Algebra.smul_def, map_mul, eq_ratCast (algebraMap ℚ E), map_ratCast]
   exact mul_mem (SubfieldClass.ratCast_mem _ _) (IntermediateField.subset_adjoin ℚ_[l] _ ⟨i, rfl⟩)
 
-def clE : Subfield (PadicAlgCl l) := (jE (E := E) j).fieldRange.topologicalClosure
-
-theorem algebraMap_mem_clE (x : ℚ_[l]) : algebraMap ℚ_[l] (PadicAlgCl l) x ∈ clE (E := E) j := by
-  have hcont : Continuous (algebraMap ℚ_[l] (PadicAlgCl l)) :=
-    (AddMonoidHomClass.isometry_of_norm (algebraMap ℚ_[l] (PadicAlgCl l))
-      (PadicAlgCl.norm_extends l)).continuous
-  have hclosed : IsClosed {y : ℚ_[l] | algebraMap ℚ_[l] (PadicAlgCl l) y ∈ clE (E := E) j} := by
-    have hc : IsClosed ((clE (E := E) j : Subfield (PadicAlgCl l)) : Set (PadicAlgCl l)) := by
-      first
-      | exact Subfield.isClosed_topologicalClosure _
-      | exact isClosed_closure
-    exact hc.preimage hcont
-  have hQ : ∀ q : ℚ, algebraMap ℚ_[l] (PadicAlgCl l) (q : ℚ_[l]) ∈ clE (E := E) j := by
-    intro q
-    rw [map_ratCast]
-    exact Subfield.le_topologicalClosure _ (SubfieldClass.ratCast_mem _ q)
-  exact (Padic.denseRange_ratCast l).induction_on x hclosed hQ
-
-theorem KwF_le_clE : (KwF (E := E) j : Set (PadicAlgCl l)) ⊆
-    closure (Set.range fun x : E => j (algebraMap E Ω x)) := by
-  let F : IntermediateField ℚ_[l] (PadicAlgCl l) :=
-    Subfield.toIntermediateField (clE (E := E) j) (algebraMap_mem_clE j)
-  have hle : KwF (E := E) j ≤ F := by
-    rw [KwF, IntermediateField.adjoin_le_iff]
-    rintro _ ⟨i, rfl⟩
-    exact Subfield.le_topologicalClosure _ (RingHom.mem_fieldRange.mpr ⟨_, rfl⟩)
-  intro x hx
-  have h1 : x ∈ ((clE (E := E) j : Subfield (PadicAlgCl l)) : Set (PadicAlgCl l)) := hle hx
-  have h2 : ((clE (E := E) j : Subfield (PadicAlgCl l)) : Set (PadicAlgCl l)) =
-      closure (Set.range fun x : E => j (algebraMap E Ω x)) := by
-    show closure ((jE (E := E) j).fieldRange : Set (PadicAlgCl l)) = _
-    rw [RingHom.coe_fieldRange]
-    rfl
-  rwa [h2] at h1
-
 theorem mem_GK_of_fix (σ : GQ l) (h : ∀ x : E, σ (jE j x) = jE j x) :
     σ ∈ (KwF (E := E) j).fixingSubgroup := by
   rw [IntermediateField.mem_fixingSubgroup_iff]

@@ -11,23 +11,6 @@ namespace GlobalTheory.CuspBack
 
 variable {G W V : Type} [Group G] [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V]
 
-def lineStab (π : Representation ℂ G W) (x : W) (hx : x ≠ 0) : Subgroup G where
-  carrier := {h | ∃ c : ℂ, π h x = c • x}
-  one_mem' := ⟨1, by simp⟩
-  mul_mem' := by
-    rintro a b ⟨c, hc⟩ ⟨d, hd⟩
-    exact ⟨d * c, by rw [map_mul, Module.End.mul_apply, hd, map_smul, hc, smul_smul]⟩
-  inv_mem' := by
-    rintro a ⟨c, hc⟩
-    have h1 : x = c • π a⁻¹ x := by
-      rw [← map_smul, ← hc, ← Module.End.mul_apply, ← map_mul]; simp
-    have hc0 : c ≠ 0 := by
-      rintro rfl
-      exact hx (by simpa using h1)
-    refine ⟨c⁻¹, ?_⟩
-    conv_rhs => rw [h1]
-    rw [smul_smul, inv_mul_cancel₀ hc0, one_smul]
-
 theorem form_inv (ρ : Representation ℂ G V) (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
     (hi : ∀ g v w, B (ρ g v) (ρ g w) = B v w) (g : G) (v w : V) : B (ρ g⁻¹ v) w = B v (ρ g w) := by
   have h : ρ g (ρ g⁻¹ v) = v := by

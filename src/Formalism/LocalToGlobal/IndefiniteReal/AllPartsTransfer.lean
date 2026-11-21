@@ -93,15 +93,6 @@ def Metric : Prop :=
     ∀ (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) (g : G) (v : InfinitePlace K),
       opNormAt b X b X v (epP H χ ρ ∘ₗ ρ g) ≤ 1
 
-def UnitOfNorm : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] [StarRing K]
-    (G : Type) [Group G] [Fintype G]
-    (V : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
-    (ι : Type) [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
-    (X : InfinitePlace K → Matrix ι ι ℂ) (ρ : Representation K G V),
-    (∀ (g : G) (v : InfinitePlace K) (x : V),
-      Formalism.HermitianLatticesTheory.normAt b X v (ρ g x) = Formalism.HermitianLatticesTheory.normAt b X v x) → IsUnitaryRep b X ρ
-
 def LiftChar : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (H : Type) [Group H] [Finite H] (χ : H →* Kˣ),
     ∃ χ' : H →* (𝓞 K)ˣ, ∀ h, (((χ' h : (𝓞 K)ˣ) : 𝓞 K) : K) = ((χ h : Kˣ) : K)
@@ -117,56 +108,5 @@ def AllPartsTransfer : Prop :=
         (X : InfinitePlace K → Matrix ι ι ℂ) (ρ : Representation K G V),
         (∀ v, IsUnit (X v).det) → IsUnitaryRep b X ρ →
         ∀ A : Submodule (𝓞 K) V, IsGLat ρ A → TransferLatticeConditions τ H₀ χ₀ H χ b X ρ A
-
-def matAct {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V] {n : ℕ}
-    (Γ : Matrix (Fin n) (Fin n) K) : (Fin n → V) →ₗ[K] (Fin n → V) :=
-  LinearMap.pi fun i => ∑ j, Γ i j • LinearMap.proj j
-
-def IdxBasic : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
-    (V : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V],
-    (∀ M N P : Submodule (𝓞 K) V, M.FG → N.FG → P.FG →
-      Submodule.span K (M : Set V) = Submodule.span K (N : Set V) →
-      Submodule.span K (N : Set V) = Submodule.span K (P : Set V) →
-      idxW w M N + idxW w N P = idxW w M P) ∧
-    (∀ M N : Submodule (𝓞 K) V, N ≤ M → 0 ≤ idxW w M N) ∧
-    (∀ (W : Type) [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
-      (φ : V →ₗ[K] W) (M N : Submodule (𝓞 K) V),
-      Submodule.span K (M : Set V) = Submodule.span K (N : Set V) →
-      Set.InjOn φ (Submodule.span K (M : Set V) : Set V) →
-      idxW w (M.map (φ.restrictScalars (𝓞 K))) (N.map (φ.restrictScalars (𝓞 K))) = idxW w M N) ∧
-    (∀ (S : Type) [Fintype S] (M N : S → Submodule (𝓞 K) V), (∀ s, (M s).FG) → (∀ s, (N s).FG) →
-      (∀ s, Submodule.span K (M s : Set V) = Submodule.span K (N s : Set V)) →
-      iSupIndep (fun s => Submodule.span K (M s : Set V)) →
-      idxW w (⨆ s, M s) (⨆ s, N s) = ∑ s, idxW w (M s) (N s)) ∧
-    (∀ (n : ℕ) (M N : Submodule (𝓞 K) V), M.FG → N.FG →
-      Submodule.span K (M : Set V) = Submodule.span K (N : Set V) →
-      idxW w (Submodule.pi Set.univ fun _ : Fin n => M) (Submodule.pi Set.univ fun _ : Fin n => N) =
-        n * idxW w M N)
-
-def IdxDet : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
-    (V : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
-    (M : Submodule (𝓞 K) V), M.FG →
-    (∀ d : 𝓞 K, d ≠ 0 →
-      idxW w M (M.map ((((d : K) • LinearMap.id : V →ₗ[K] V)).restrictScalars (𝓞 K))) =
-        (rkK M : ℤ) * vW w d) ∧
-    ∀ (n : ℕ) (Γ : Matrix (Fin n) (Fin n) (𝓞 K)), Γ.det ≠ 0 →
-      idxW w (Submodule.pi Set.univ fun _ : Fin n => M)
-        ((Submodule.pi Set.univ fun _ : Fin n => M).map
-          ((matAct (V := V) (Γ.map (algebraMap (𝓞 K) K))).restrictScalars (𝓞 K))) =
-        (rkK M : ℤ) * vW w Γ.det
-
-def ProdFormula : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K],
-    (∀ w : HeightOneSpectrum (𝓞 K), 0 ≤ lW w) ∧
-    (∀ d : 𝓞 K, d ≠ 0 → {w : HeightOneSpectrum (𝓞 K) | vW w d ≠ 0}.Finite ∧
-      meanLog d = ∑ᶠ w : HeightOneSpectrum (𝓞 K), lW w * (vW w d : ℝ)) ∧
-    ∀ N : ℕ, 0 < N → meanLog (N : 𝓞 K) = Real.log N
-
-def GammaBound : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (n N : ℕ) (Γ : Matrix (Fin n) (Fin n) (𝓞 K)),
-    0 < N → n ^ 2 ≤ N → Γ.det ≠ 0 →
-    (∀ i j (σ : K →+* ℂ), ‖σ ((Γ i j : 𝓞 K) : K)‖ ≤ (N : ℝ) ^ 3) → GammaOK Γ (Real.log N)
 
 end Formalism.IndefR.LatticeTransfer

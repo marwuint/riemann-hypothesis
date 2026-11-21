@@ -76,9 +76,6 @@ theorem toZModPow_natPow_mul (r : ℕ) (u : ℤ_[l]) :
     PadicInt.toZModPow r ((l : ℤ_[l]) ^ r * u) = 0 := by
   rw [map_mul, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_mul]
 
-abbrev lr (r : ℕ) {V : Type} [AddCommGroup V] [Module O V] (T : Submodule O V) : Submodule O ↥T :=
-  Ideal.span {((l : ℕ) : O) ^ r} • ⊤
-
 theorem mem_lr {r : ℕ} {V : Type} [AddCommGroup V] [Module O V] {T : Submodule O V} {x : ↥T}
     (hx : x ∈ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥T)) :
     ∃ x' : ↥T, (((l : ℕ) : O) ^ r) • x' = x := by

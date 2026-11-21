@@ -9,67 +9,6 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LKRes
 
-section Generic
-
-variable {G : Type} [Group G]
-
-theorem avg_const_fun {H : Type} [Group H] (c : ℂ) : GlobalTheory.BCT.avg (fun _ : H => c) = c := by
-  have key : ∀ S : Subgroup H, S = ⊤ → ((S.index : ℂ))⁻¹ * ∑ᶠ _q : H ⧸ S, c = c := by
-    rintro S rfl
-    have hone : ∀ x : H ⧸ (⊤ : Subgroup H), x = 1 := fun x =>
-      QuotientGroup.induction_on x fun a => (QuotientGroup.eq_one_iff a).2 (Subgroup.mem_top a)
-    rw [Subgroup.index_top, finsum_eq_single (fun _ => c) (1 : H ⧸ (⊤ : Subgroup H))
-      (fun x hx => absurd (hone x) hx)]
-    simp
-  have htop : GlobalTheory.BCT.rStab (fun _ : H => c) = ⊤ :=
-    (Subgroup.eq_top_iff' _).2 fun k => by
-      exact fun x => rfl
-  exact key _ htop
-
-theorem orbSum_of_twCent_eq_top (θ : G →* G) (K : Subgroup G) (δ : G) (h : GlobalTheory.BCT.twCent θ δ = ⊤) :
-    ∃ x : G, ∀ (w : G → ℝ) (f : G → ℂ), GlobalTheory.LKLoc.orbSum θ K δ w f = (w x : ℂ) * f δ := by
-  have hmem : ∀ g : G, g ∈ GlobalTheory.BCT.twCent θ δ := fun g => h ▸ Subgroup.mem_top g
-  let q0 := DoubleCoset.mk (GlobalTheory.BCT.twCent θ δ) K 1
-  have hall : ∀ q : DoubleCoset.Quotient (GlobalTheory.BCT.twCent θ δ : Set G) (K : Set G), q = q0 := by
-    intro q
-    rw [← DoubleCoset.out_eq' _ _ q]
-    exact (DoubleCoset.eq _ _ _ _).2 ⟨(Quotient.out q)⁻¹, hmem _, 1, K.one_mem, by group⟩
-  refine ⟨Quotient.out q0, fun w f => ?_⟩
-  unfold GlobalTheory.LKLoc.orbSum
-  rw [finsum_eq_single _ q0 (fun q hq => absurd (hall q) hq)]
-  have hfix : ∀ g : G, g⁻¹ * δ * θ g = δ := by
-    intro g
-    have hg' : g * δ = δ * θ g := hmem g
-    rw [mul_assoc, ← hg', inv_mul_cancel_left]
-  simp only [hfix, avg_const_fun]
-
-theorem locPart_of_normal (T K : Subgroup G) [hK : K.Normal] (x : G) : GlobalTheory.LKLoc.locPart T K x = T ⊓ K := by
-  show T ⊓ K.map (MulAut.conj x).toMonoidHom = T ⊓ K
-  congr 1
-  ext y
-  simp only [Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
-  constructor
-  · rintro ⟨k, hk, rfl⟩
-    exact hK.conj_mem k hk x
-  · intro hy
-    exact ⟨x⁻¹ * y * x, by simpa using hK.conj_mem y hy x⁻¹, by group⟩
-
-private lemma volRat_self' (V : Subgroup G) : GlobalTheory.LKLoc.volRat V V = 1 := by
-  unfold GlobalTheory.LKLoc.volRat
-  rw [Subgroup.relIndex_self]
-  simp
-
-theorem twOrbM_eq_twOrbU_of_normal (θ : G →* G) (K : Subgroup G) [K.Normal] (δ : G) (f : G → ℂ) :
-    GlobalTheory.LKLoc.twOrbM θ K δ f = GlobalTheory.LKLoc.twOrbU θ K δ (GlobalTheory.BCT.twCent θ δ ⊓ K) f := by
-  unfold GlobalTheory.LKLoc.twOrbM GlobalTheory.LKLoc.twOrbU
-  congr 1
-  funext x
-  rw [locPart_of_normal]
-  unfold GlobalTheory.LKLoc.maxWt
-  simp only [locPart_of_normal, volRat_self', ciSup_const]
-
-end Generic
-
 variable (p : ℕ) [Fact p.Prime]
 
 abbrev Q0 : IntermediateField ℚ_[p] (PadicAlgCl p) := ⊥
@@ -107,19 +46,6 @@ def sigRes (n r : ℕ) : GL (Fin n) (KQ p K r) →* GL (Fin n) (KQ p K r) :=
 def Kres (n r : ℕ) : Subgroup (GL (Fin n) (KQ p K r)) :=
   (GeneralLinearGroup.map (intKQ p K r).subtype).range
 
-def nrmRes (n r : ℕ) (δ : GL (Fin n) (KQ p K r)) : GL (Fin n) (KQ p K r) :=
-  (List.map (fun i => (⇑(sigRes p K n r))^[i] δ) (List.range r)).prod
-
-def twCentRes (n r : ℕ) (δ : GL (Fin n) (KQ p K r)) : Subgroup (GL (Fin n) (KQ p K r)) :=
-  GlobalTheory.BCT.twCent (sigRes p K n r) δ
-
-def TORes (n r : ℕ) (δ : GL (Fin n) (KQ p K r)) (φ : GL (Fin n) (KQ p K r) → ℂ) : ℂ :=
-  GlobalTheory.LKLoc.twOrbM (sigRes p K n r) (Kres p K n r) δ φ
-
-def TOResU (n r : ℕ) (δ : GL (Fin n) (KQ p K r)) (U : Subgroup (GL (Fin n) (KQ p K r)))
-    (φ : GL (Fin n) (KQ p K r) → ℂ) : ℂ :=
-  GlobalTheory.LKLoc.twOrbU (sigRes p K n r) (Kres p K n r) δ U φ
-
 abbrev GHT (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) : Type :=
   GL (Fin 1) (Qr p r) × ((i : Fin m) → GL (Fin n) (KQ p (Kw i) r))
 
@@ -128,18 +54,6 @@ def sigHT (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)
 
 def KHT (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) : Subgroup (GHT p m n r Kw) :=
   (GlobalTheory.LKLoc.Kint p (Q0 p) 1 r).prod (Subgroup.pi Set.univ fun i => Kres p (Kw i) n r)
-
-def twCentHT (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) (δ : GHT p m n r Kw) :
-    Subgroup (GHT p m n r Kw) :=
-  GlobalTheory.BCT.twCent (sigHT p m n r Kw) δ
-
-def TOHT (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) (δ : GHT p m n r Kw)
-    (φ : GHT p m n r Kw → ℂ) : ℂ :=
-  GlobalTheory.LKLoc.twOrbM (sigHT p m n r Kw) (KHT p m n r Kw) δ φ
-
-def TOHTU (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) (δ : GHT p m n r Kw)
-    (U : Subgroup (GHT p m n r Kw)) (φ : GHT p m n r Kw → ℂ) : ℂ :=
-  GlobalTheory.LKLoc.twOrbU (sigHT p m n r Kw) (KHT p m n r Kw) δ U φ
 
 theorem sigKQ_apply_inclK (r : ℕ) (a : K) : sigKQ p K r (inclK p K r a) = inclK p K r a := by
   show Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) =
@@ -188,23 +102,5 @@ theorem normal_of_gl_one {R : Type} [CommRing R] (H : Subgroup (GL (Fin 1) R)) :
   ⟨fun n hn g => by
     rw [gl_fin_one_mul_comm g n, mul_inv_cancel_right]
     exact hn⟩
-
-theorem TOHT_gl_one (m r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) (δ : GHT p m 1 r Kw)
-    (φ : GHT p m 1 r Kw → ℂ) :
-    TOHT p m 1 r Kw δ φ = TOHTU p m 1 r Kw δ (twCentHT p m 1 r Kw δ ⊓ KHT p m 1 r Kw) φ := by
-  have hc : ∀ a b : GHT p m 1 r Kw, a * b = b * a := fun a b =>
-    Prod.ext (gl_fin_one_mul_comm _ _) (funext fun i => gl_fin_one_mul_comm _ _)
-  have : (KHT p m 1 r Kw).Normal :=
-    ⟨fun n hn g => by
-      rw [hc g n, mul_inv_cancel_right]
-      exact hn⟩
-  exact twOrbM_eq_twOrbU_of_normal (sigHT p m 1 r Kw) (KHT p m 1 r Kw) δ φ
-
-example (δ : GL (Fin 2) (KQ p K 1)) : nrmRes p K 2 1 δ = δ := by simp [nrmRes]
-
-example (δ : GL (Fin 2) (KQ p K 2)) : nrmRes p K 2 2 δ = δ * sigRes p K 2 2 δ := by
-  simp [nrmRes, List.range_succ]
-
-example (r : ℕ) : Nontrivial (KQ p K r) := by unfold KQ; infer_instance
 
 end GlobalTheory.LKRes

@@ -2,7 +2,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtLAlgebraMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogVectorFieldBasisToroidalModelSncStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogVectorFieldBasisToroidalModelSnc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteOfLocallyFiniteFreeLocalizations
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowSmulEqLogDerivationExtendLocalizationAwStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowSmulEqOfLogDerivationExtendEqStatement
@@ -76,7 +77,7 @@ theorem GlobalTheory.LogDerProj.main : ∀ (E : Type) [Field E] [NumberField E] 
       change _ ∈ (U.1 : Set Y.X)
       rw [← hU.range_fromSpec]
       exact ⟨q, rfl⟩
-    have key := GlobalTheory.T.exists_logVectorField_basis_toroidalModel_snc E H Dw l Xo c Y h1 hsm hsnc U (hU.fromSpec q) hxU
+    have key := _root_.GlobalTheory.LogBasis.exists_logDer_basis E H Dw l Xo c Y h1 hsm hsnc U (hU.fromSpec q) hxU
     obtain ⟨f, W, hW, m, t, b, hxW, hWf, -⟩ := key
     have hq : f ∉ q.asIdeal := by
       have : q ∈ hU.fromSpec ⁻¹ᵁ Y.X.basicOpen f := by rw [← hWf]; exact hxW

@@ -3,8 +3,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaPartD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermInf
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IntegralSelfDualEqAdelicFourier
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdeleHaarProductDecompositionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdeleHaarProductDecomposition
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsCovolOne
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.SiegelND
@@ -96,9 +99,9 @@ theorem map_tuple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   have h2 := hCM.2.2.1
   haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)
   let b := Module.finBasis F E
-  obtain ⟨tA, -, sA, -, -, -, -, hBA, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)
-  obtain ⟨tI, -, sI, -, -, -, -, hBI, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)
-  obtain ⟨tF, -, sF, -, -, -, -, hBF, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)
+  obtain ⟨tA, -, sA, -, -, -, -, hBA, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)
+  obtain ⟨tI, -, sI, -, -, -, -, hBI, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Ainf F)
+  obtain ⟨tF, -, sF, -, -, -, -, hBF, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Af F)
   haveI := hBA n M
   haveI := hBI n M
   haveI := hBF n M
@@ -118,7 +121,7 @@ theorem map_tuple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   haveI : m₂.IsAddHaarMeasure := by dsimp only [m₂]; infer_instance
   haveI : SFinite m₁ := by dsimp only [m₁]; infer_instance
   haveI : SFinite m₂ := by dsimp only [m₂]; infer_instance
-  obtain ⟨c, -, hcT, hc⟩ := GlobalTheory.T.adele_haar_product_decomposition F ι (dx.map e) m₁ m₂ hm inferInstance inferInstance
+  obtain ⟨c, -, hcT, hc⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.ProdM.map_split_eq_smul_prod F ι (dx.map e) m₁ m₂ hm inferInstance inferInstance
   let S := splitHomeo F ι
   let H : (Fin n → Fin M → AF F ⊗[F] E) ≃ₜ
       (Fin n → Fin M → Ainf F ⊗[F] E) × (Fin n → Fin M → Af F ⊗[F] E) :=

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZeroMemSolSet
 import Formalism.UnipotentAdelicQuotients.EllRegCheck
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DwSmoothLocalLinearStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralMulIterPartialDerivEqNegPowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DwSmoothLocalLinear
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralMulIterPartialDerivEqNegPow
 
 noncomputable section
 
@@ -63,7 +63,7 @@ theorem weakSol_of_smooth :
     intro n w
     have hdc := dw_hasCompactSupport_tsupport (List.ofFn w) (hψc n w)
     have hcont : Continuous (dw (List.ofFn w) (fun y => a n w y * φ y)) := by
-      have := (GlobalTheory.T.dw_contDiffOn_local_linear d Set.univ isOpen_univ (List.ofFn w)).1 _ (hψ n w).contDiffOn
+      have := (_root_.GlobalTheory.HCA.dw_smooth_local_linear d Set.univ isOpen_univ (List.ofFn w)).1 _ (hψ n w).contDiffOn
       exact (contDiffOn_univ.1 this).continuous
     have := integrable_mul_of_continuousOn_of_tsupport hU hu.continuousOn
       (g := fun x => (-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => a n w y * φ y) x)
@@ -74,12 +74,12 @@ theorem weakSol_of_smooth :
       Integrable (fun x => dw (List.ofFn w) u x * (a n w x * φ x)) := by
     intro n w
     exact integrable_mul_of_continuousOn_of_tsupport hU
-      ((GlobalTheory.T.dw_contDiffOn_local_linear d U hU (List.ofFn w)).1 u hu).continuousOn (hψ n w).continuous (hψc n w) (hψs n w)
+      ((_root_.GlobalTheory.HCA.dw_smooth_local_linear d U hU (List.ofFn w)).1 u hu).continuousOn (hψ n w).continuous (hψc n w) (hψs n w)
   have hterm : ∀ n (w : Fin n → Fin d),
       ∫ x, u x * ((-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => a n w y * φ y) x) =
         ∫ x, dw (List.ofFn w) u x * (a n w x * φ x) := by
     intro n w
-    have hibp := GlobalTheory.T.integral_mul_iterPartialDeriv_eq_neg_pow d U hU (List.ofFn w) u (fun y => a n w y * φ y) hu (hψ n w) (hψc n w)
+    have hibp := _root_.GlobalTheory.HCA.integral_mul_dw_eq_neg_pow d U hU (List.ofFn w) u (fun y => a n w y * φ y) hu (hψ n w) (hψc n w)
       (hψs n w)
     rw [List.length_ofFn] at hibp
     have e1 : (fun x => u x * ((-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => a n w y * φ y) x)) =

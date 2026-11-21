@@ -25,14 +25,6 @@ def coindTensorRightFun (f : Rep.coind U.subtype (Rep.res U.subtype A)) (b : B) 
     rw [f.2 u x, map_mul, Module.End.mul_apply]
     rfl⟩
 
-def coindTensorLeftFun (a : A) (f : Rep.coind U.subtype (Rep.res U.subtype B)) :
-    Rep.coind U.subtype (Rep.res U.subtype (A ⊗ B)) :=
-  ⟨fun x => (A.ρ x a ⊗ₜ[k] f.1 x : (A ⊗ B : Rep k G)), fun u x => by
-    change A.ρ (U.subtype u * x) a ⊗ₜ[k] f.1 (U.subtype u * x) =
-      A.ρ (u : G) (A.ρ x a) ⊗ₜ[k] B.ρ (u : G) (f.1 x)
-    rw [f.2 u x, map_mul, Module.End.mul_apply]
-    rfl⟩
-
 def coindTensorRight :
     Rep.coind U.subtype (Rep.res U.subtype A) ⊗ B ⟶
       Rep.coind U.subtype (Rep.res U.subtype (A ⊗ B)) :=
@@ -47,22 +39,6 @@ def coindTensorRight :
         rw [map_smul, TensorProduct.tmul_smul]))),
     fun g => TensorProduct.ext' fun f b => Subtype.ext (funext fun x => by
       change f.1 (x * g) ⊗ₜ[k] B.ρ x (B.ρ g b) = f.1 (x * g) ⊗ₜ[k] B.ρ (x * g) b
-      rw [map_mul, Module.End.mul_apply])⟩
-
-def coindTensorLeft :
-    A ⊗ Rep.coind U.subtype (Rep.res U.subtype B) ⟶
-      Rep.coind U.subtype (Rep.res U.subtype (A ⊗ B)) :=
-  Rep.ofHom ⟨TensorProduct.lift (LinearMap.mk₂ k (coindTensorLeftFun U A B)
-      (fun a a' f => Subtype.ext (funext fun x => by
-        change A.ρ x (a + a') ⊗ₜ[k] f.1 x = A.ρ x a ⊗ₜ[k] f.1 x + A.ρ x a' ⊗ₜ[k] f.1 x
-        rw [map_add, TensorProduct.add_tmul]))
-      (fun c a f => Subtype.ext (funext fun x => by
-        change A.ρ x (c • a) ⊗ₜ[k] f.1 x = c • (A.ρ x a ⊗ₜ[k] f.1 x)
-        rw [map_smul, TensorProduct.smul_tmul']))
-      (fun a f f' => Subtype.ext (funext fun x => TensorProduct.tmul_add _ _ _))
-      (fun c a f => Subtype.ext (funext fun x => TensorProduct.tmul_smul _ _ _))),
-    fun g => TensorProduct.ext' fun a f => Subtype.ext (funext fun x => by
-      change A.ρ x (A.ρ g a) ⊗ₜ[k] f.1 (x * g) = A.ρ (x * g) a ⊗ₜ[k] f.1 (x * g)
       rw [map_mul, Module.End.mul_apply])⟩
 
 theorem coindTensorRight_comp_coindEvalOne :

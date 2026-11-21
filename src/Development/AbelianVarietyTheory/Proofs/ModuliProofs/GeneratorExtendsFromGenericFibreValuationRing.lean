@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.AlWellDefSt
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmulSecNonzeroOnSpecialFibreStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmulSecNonzeroOnSpecialFibre
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Pdiv GlobalTheory.AbLaw
@@ -93,9 +93,9 @@ theorem triv_of_triv_generic : ∀ (O K : Type) [CommRing O] [IsDomain O] [Valua
     have : Nonempty (j ⁻¹ᵁ M.U i₀) := ⟨⟨z, hi₀⟩⟩
     rw [h, map_zero, mul_zero] at h1
     exact zero_ne_one h1
-  obtain ⟨c, s, hc, hs, x, hx, hfx⟩ := GlobalTheory.T.exists_sec_nonzero_on_special_fibre_extending_smul O K X XK f j fK hp hsm hqc hgi M hM
+  obtain ⟨c, s, hc, hs, x, hx, hfx⟩ := _root_.GlobalTheory.exists_smul_sec_nonzero_on_special_fibre O K X XK f j fK hp hsm hqc hgi M hM
     (genSec t ht) ⟨fun _ => i₀, (t.s fun _ => i₀).ne_zero⟩
-  obtain ⟨c', s', hc', hs', x', hx', hfx'⟩ := GlobalTheory.T.exists_sec_nonzero_on_special_fibre_extending_smul O K X XK f j fK hp hsm hqc hgi _
+  obtain ⟨c', s', hc', hs', x', hx', hfx'⟩ := _root_.GlobalTheory.exists_smul_sec_nonzero_on_special_fibre O K X XK f j fK hp hsm hqc hgi _
     (isLB_pw hM (-1)) (genSec t' ht') ⟨fun _ => i₀, hne⟩
   have hprod : ∀ i : M.ι, (j.app (M.U i)).hom (s.f i * (show Γ(X, M.U i) from s'.f i)) =
       GlobalTheory.AbLaw.cst fK (j ⁻¹ᵁ M.U i) (c * c') := fun i => by

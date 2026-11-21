@@ -21,24 +21,6 @@ def LanglandsSumMultiplicityOne : Prop :=
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
   {𝔪 𝔫 : Multiset (Segment k)} {r t : ℕ} {π₁ : IrrRep (GL (Fin r) k)} {π₂ : IrrRep (GL (Fin t) k)}
 
-theorem LanglandsSumMultiplicityOne.isSubquotient (H : LanglandsSumMultiplicityOne) (h₁ : IsL 𝔪 π₁.ρ) (h₂ : IsL 𝔫 π₂.ρ)
-    {π : IrrRep (GL (Fin (r + t)) k)} (h : IsL (𝔪 + 𝔫) π.ρ) : IsSubquotient π.ρ (prod₂ π₁.ρ π₂.ρ) :=
-  JHMult.jhMult_ne_zero_iff.1 (by rw [(H k 𝔪 𝔫 r t π₁ π₂ h₁ h₂).2 π h]; exact one_ne_zero)
-
-theorem LanglandsSumMultiplicityOne.isL_prod₂ (H : LanglandsSumMultiplicityOne) (h₁ : IsL 𝔪 π₁.ρ) (h₂ : IsL 𝔫 π₂.ρ)
-    (hi : (prod₂ π₁.ρ π₂.ρ).IsIrreducible) : IsL (𝔪 + 𝔫) (prod₂ π₁.ρ π₂.ρ) := by
-  obtain ⟨π, h⟩ := (H k 𝔪 𝔫 r t π₁ π₂ h₁ h₂).1
-  obtain ⟨φ⟩ := (H.isSubquotient h₁ h₂ h).nonempty_equiv π.irr hi
-  exact h.of_equiv φ.symm
-
-omit [CharZero k] in
-
-example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
-    ∃ (𝔪 𝔫 : Multiset (Segment k)) (π₁ π₂ : IrrRep (GL (Fin 1) k)) (π : IrrRep (GL (Fin (1 + 1)) k)),
-      IsL 𝔪 π₁.ρ ∧ IsL 𝔫 π₂.ρ ∧ IsL (𝔪 + 𝔫) π.ρ ∧ π = IrrRep.det (Fin 2) _ (hχ.mul (isSmoothChar_absPow (1 / 2))) :=
-  ⟨_, _, _, _, _, (single_spec (IrrGL.isCusp_ofChar χ hχ)).2.2.2,
-    (single_spec ((IrrGL.isCusp_ofChar χ hχ).nu 1)).2.2.2, isL_detRep_two hχ, rfl⟩
-
 end GlobalTheory.Published
 
 namespace GlobalTheory.LocLanglands
@@ -69,9 +51,6 @@ theorem IsRec.prod (H : IsRec h rc) {r t : ℕ} (σ : IrrRep (GL (Fin r) (w.adic
     (τ : IrrRep (GL (Fin t) (w.adicCompletion E))) (π : IrrRep (GL (Fin (r + t)) (w.adicCompletion E)))
     (φ : π.ρ.Equiv (prod₂ σ.ρ τ.ρ)) : rc (cls π) = (rc (cls σ)).lpSum (rc (cls τ)) :=
   let ⟨_, _, _, _, H⟩ := H; H.prod r t σ τ π ⟨φ⟩
-
-theorem IsRec.isSpherical_iff (H : IsRec h rc) (x : IrrGL (w.adicCompletion E)) : IsSpherical x.rep ↔ (rc x).unr :=
-  let ⟨_, _, _, _, H⟩ := H; H.sph x
 
 end GlobalTheory.LocLanglands
 

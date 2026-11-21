@@ -32,19 +32,6 @@ theorem npDescF_of_tied {eps : ℝ} (Fm : FamP eps) (h : GroupCompatibilityFamil
     obtain ⟨G⟩ := h0 x hx i hx1
     exact Cmp.CmpTied.valRat G.cmp⟩
 
-theorem linkG_concrete (𝒞 : FamClass) (h : Loc)
-    (hT : Closed 𝒞 fun Fm _ => GroupCompatibilityFamily Fm)
-    (hsys : Closed 𝒞 fun Fm _ => Ev Fm fun x i => LocalDataSystem (Fm.Gx x i) (Fm.Gy x i) (Formalism.MainNotions.AuxBlock8.lowU (Fm.D x i)))
-    (hsysS : Closed 𝒞 fun Fm _ => Ev Fm fun x i => LocalDataSystem (Fm.Gx x i) (Fm.Gy x i) (Formalism.MainNotions.G.lowFE (Fm.L x i)))
-    (h2 : Closed 𝒞 fun Fm _ => Adm2F Fm) :
-    Closed 𝒞 fun Fm _ => LinkG Fm := by
-  refine link_of_numbers_proved 𝒞 h ?_ h2 (hT.imp fun Fm _ _ ht => npDescF_of_tied Fm ht)
-  exact ((hT.and hsys).and hsysS).imp fun Fm _ _ hh =>
-    { gatE := gatEF_of_tied Fm hh.1.1
-      stdSub := stdSubF_of_tied Fm hh.1.1
-      localSystemLowTerm := hh.1.2
-      localSystemSizeLowTerm := hh.2 }
-
 theorem linkG_concrete_noKer (𝒞 : FamClass) (h : Loc)
     (hT : Closed 𝒞 fun Fm _ => GroupCompatibilityFamily Fm) (h2 : Closed 𝒞 fun Fm _ => Adm2F Fm) :
     Closed 𝒞 fun Fm _ => LinkG Fm :=

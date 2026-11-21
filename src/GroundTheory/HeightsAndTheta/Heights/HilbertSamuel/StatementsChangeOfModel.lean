@@ -37,8 +37,4 @@ def GraphIsometric.Statement : Prop :=
     IsPullHerm Sum.inl inlV B₁ B₁' → IsPullHerm Sum.inr inrV B B' →
     IsIsometricOn (graphIdeal P (linForm A)) B₁' B'
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.HilbertSamuel

@@ -1,7 +1,11 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BlockCharacterApproximation.OfVecFixedIff
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantZmodLift
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsOfFinOrderOfCompactConjMemUnitaryRationalPointStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsOfFinOrderOfCompactConjMemUnitaryRationalPoint
+import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.ClosedAtLConclusionOfMem
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSatakeParameterDefiniteUnitaryInertPlace
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp
@@ -26,7 +30,7 @@ theorem UpperTheory.Gal.CharacterCongruences.neatOfPlace_holds :
   have hd : c * x ∈ C ⊔ infU E a :=
     Subgroup.mul_mem _ (le_sup_left (a := C) hc) (le_sup_right (a := C) hx)
   have e : γ = g * (c * x) * g⁻¹ := by rw [← mul_assoc, ← h, mul_inv_cancel_right]
-  have hfo : IsOfFinOrder (c * x) := GlobalTheory.T.isOfFinOrder_of_compact_conj_mem_unitaryRationalPoints E a _ hDc g (c * x) hd (e ▸ hγ)
+  have hfo : IsOfFinOrder (c * x) := _root_.GlobalTheory.isOfFinOrder_of_conj_mem_ratU E a _ hDc g (c * x) hd (e ▸ hγ)
   have hcx : cLoc u (c * x) = cLoc u c := by rw [map_mul, hxl, mul_one]
   have h1 : cLoc u c = 1 := hT c hc (hcx ▸ (cLoc u).isOfFinOrder hfo)
   have hγ1 : cLoc u γ = 1 := by

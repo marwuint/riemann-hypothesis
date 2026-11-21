@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CmFieldSplitPlaceEqOfPlaceEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PropEOfAdmissible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitPlOfIsConjPl
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicRowLocalSplitExistsStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicRowLocalSplitExists
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MRecLawsH
@@ -37,7 +37,7 @@ theorem readAt_exists_m_alt (hAF : GlobalTheory.Published.AutomorphicFormsFinite
       D.what₂.isot (D.nd.j i) σ ≠ ⊥ → IsLocS (P.rep σ).S s τ.toIrrRep := by
     intro σ
     by_cases hσ : D.what₂.isot (D.nd.j i) σ ≠ ⊥
-    · obtain ⟨τ, hτ⟩ := GlobalTheory.T.isotypic_row_local_split_exists D P.rep (D.nd.j i) (hR i).some σ hσ s
+    · obtain ⟨τ, hτ⟩ := _root_.GlobalTheory.RowLocal.finTyp_exists_isLocS D P.rep (D.nd.j i) (hR i).some σ hσ s
       exact ⟨Irr.ofIrrRep τ, fun _ => hτ⟩
     · exact ⟨default, fun h => absurd h hσ⟩
   choose row hrow using hrow
@@ -51,11 +51,11 @@ theorem readAt_exists_m_alt (hAF : GlobalTheory.Published.AutomorphicFormsFinite
   let j0 : Fin D.R.m := ⟨D.nd.j i - 1, by omega⟩
   have hj0 : j0.1 + 1 = D.nd.j i := by simp only [j0]; omega
   have hmuC := P.chr.muC i j0 hj0
-  obtain ⟨μ, hμ, -, hμu⟩ := GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E (P.tp.tup (D.nd.mu i) j0) s.w
+  obtain ⟨μ, hμ, -, hμu⟩ := _root_.GlobalTheory.HeckeComp.main D.host.E (P.tp.tup (D.nd.mu i) j0) s.w
   have hμU : GlobalTheory.SmGL.IsUnitaryChar μ := hμu (hmuC ▸ (P.chr.e1 (D.naut.muC i)).2)
   have hμP : IsComp (P.chr.e1 (D.naut.muC i)).1 s.w μ := hmuC ▸ hμ
   have eμ := _root_.GlobalTheory.T.T_e_locG_eq_rcAt_ofDet hAF hL D P (D.naut.muC i) s.w μ hμP
-  obtain ⟨η, hη, -, -⟩ := GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E P.cf.eta⁻¹ s.w
+  obtain ⟨η, hη, -, -⟩ := _root_.GlobalTheory.HeckeComp.main D.host.E P.cf.eta⁻¹ s.w
   have hηP : IsComp (P.chr.e1 D.naut.etaTinv).1 s.w η := P.chr.etaTinv ▸ hη
   have eη := _root_.GlobalTheory.T.T_e_locG_eq_rcAt_ofDet hAF hL D P D.naut.etaTinv s.w η hηP
   have hun : GlobalTheory.SplitWeil.IsUnram η := by

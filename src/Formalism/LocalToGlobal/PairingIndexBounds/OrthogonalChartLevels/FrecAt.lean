@@ -1,6 +1,9 @@
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.BasesAt
 import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.GramLevelZeroEqReindex
-import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.CmpJInPosEqGat
+import Formalism.LocalToGlobal.PairingIndexBounds.OrthogonalChartLevels.FdOfCharts
+import Formalism.LocalToGlobal.InertKernelTheory.SecondKernelEntrywiseLastLevel
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison
+import Formalism.LocalToGlobal.GlobalTheory.GL3.PHfTrace
 
 noncomputable section
 
@@ -25,15 +28,5 @@ variable {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl} {h : GIdx D.hos
 
 def fdAtL (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (bad : Finset (HeightOneSpectrum (𝓞 D.host.F))) : FData (sysAt Ch std vp unif eO eO_spec dG dG_spec om) D :=
   fdAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc a bad
-
-def FrecAt (Gt : GatTies D) (E : CEmbC (D.gat u w h)) (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E)
-    (bad : Finset (HeightOneSpectrum (𝓞 D.host.F))) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ)
-    (lam : TaylorLogMetric.Qbar →+* ℂ_[D.what₂.places.resChar w]) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ)
-    (Ξ₀ : ∀ j, (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j → (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (j + 1) → Formalism.L2.Col.HomE D.host.E (((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj j).m + 1) (((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj (j + 1)).m + 1) → ℂ)
-    (muT : ℕ → (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)ˣ → ℂ) (c : ℂ_[D.what₂.places.resChar w]) :
-    ∀ j, (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt j → (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (j + 1) →
-      MvPowerSeries (D.what₂.Tau × Fin (((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj (j + 1)).m + 1) × Fin (((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj j).m + 1)) ℂ_[D.what₂.places.resChar w] :=
-  FrecG (cembAt Ch std vp unif eO eO_spec dG dG_spec om E) (posAt Ch std vp unif eO eO_spec dG dG_spec om Gt)
-    (fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad) B χ lam SS cl Ξ₀ muT c
 
 end Formalism.L2.PairingIndexBounds.F

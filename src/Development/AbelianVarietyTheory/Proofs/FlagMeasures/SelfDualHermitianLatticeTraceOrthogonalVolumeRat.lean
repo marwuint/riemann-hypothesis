@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualInterSelfDualHermitianLatticeSubspace
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexSpanLatticeMatrixDetNormStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexSpanLatticeMatrixDetNorm
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -120,12 +120,12 @@ theorem key (h : IsHermND L Hm) {Λ Λ' : Submodule L.O (Fin n → E)} (hΛ : Is
     have := congrArg (fun v => hf L Hm v (c k)) hg
     simp only [sum_l, smul_l, hbc] at this
     simpa [hf] using this
-  obtain ⟨-, p2, p3⟩ := GlobalTheory.T.relIndex_span_lattice_matrix_det_norm L ϖ hϖ b hli A d hd0 hd.symm (Λ ⊓ Y) (Λ' ⊓ Y) hQ
+  obtain ⟨-, p2, p3⟩ := _root_.GlobalTheory.HL.FrameIndex.relIndex_span_matrix L ϖ hϖ b hli A d hd0 hd.symm (Λ ⊓ Y) (Λ' ⊓ Y) hQ
     (by rw [hQ']; congr 2; exact funext hA)
   have hdet : (cT L A).det = L.cj A.det := by
     have : cT L A = ((L.cj : E →+* E).mapMatrix A).transpose := rfl
     rw [this, Matrix.det_transpose, ← RingHom.map_det]; rfl
-  obtain ⟨-, -, r3⟩ := GlobalTheory.T.relIndex_span_lattice_matrix_det_norm L ϖ hϖ (Pi.basisFun E (Fin m))
+  obtain ⟨-, -, r3⟩ := _root_.GlobalTheory.HL.FrameIndex.relIndex_span_matrix L ϖ hϖ (Pi.basisFun E (Fin m))
     (Pi.basisFun E (Fin m)).linearIndependent (cT L A) d hd0
     (by rw [hdet, L.cj_cj, mul_comm, hd]) _ _ rfl rfl
   let φ : (Fin n → E) →ₗ[E] (Fin m → E) := LinearMap.pi fun j => hfL L Hm (b' j)

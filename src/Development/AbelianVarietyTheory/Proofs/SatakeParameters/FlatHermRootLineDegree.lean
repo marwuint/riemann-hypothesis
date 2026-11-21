@@ -130,66 +130,8 @@ open Classical in
 theorem pullC_apply (τ : κ → ι) (φ : E →ₗ[k] E') (c : Finset ι → E) (s : Finset κ) :
     pullC τ φ c s = if Set.InjOn τ s then sortSign τ s • φ (c (s.image τ)) else 0 := rfl
 
-theorem pullC_delta (τ : κ → ι) (φ : E →ₗ[k] E') (c : Finset ι → E) :
-    pullC τ φ (GlobalTheory.DI.delta c) = GlobalTheory.DI.delta (pullC τ φ c) := by
-  funext t
-  rw [pullC_apply]
-  simp only [GlobalTheory.DI.delta]
-  by_cases h : Set.InjOn τ t
-  · rw [if_pos h, Finset.sum_image (by intro x hx y hy hxy; exact h hx hy hxy), map_sum, Finset.smul_sum]
-    refine Finset.sum_congr rfl fun i hi => ?_
-    rw [pullC_apply, if_pos (h.mono (Finset.coe_subset.2 (Finset.erase_subset i t))), map_zsmul,
-      ← image_erase_of_injOn h hi, smul_smul, smul_smul, sign_inj h hi]
-  · rw [if_neg h]
-    have h' : ∃ a ∈ t, ∃ b ∈ t, τ a = τ b ∧ a ≠ b := by
-      by_contra hc
-      push_neg at hc
-      exact h (by intro x hx y hy hxy; exact hc x hx y hy hxy)
-    obtain ⟨a, ha, b, hb, he, hab⟩ := h'
-    have zero_of : ∀ s : Finset κ, a ∈ s → b ∈ s → pullC τ φ c s = 0 := fun s has hbs => by
-      rw [pullC_apply, if_neg]
-      intro hs
-      exact hab (hs has hbs he)
-    rw [Finset.sum_eq_add_of_mem a b ha hb hab (fun x _ hne => by
-      rw [zero_of _ (Finset.mem_erase.2 ⟨hne.1.symm, ha⟩) (Finset.mem_erase.2 ⟨hne.2.symm, hb⟩), smul_zero])]
-    by_cases hia : Set.InjOn τ (t.erase a)
-    · have hib := injOn_erase_swap hb hab he hia
-      rw [pullC_apply, pullC_apply, if_pos hia, if_pos hib, image_erase_eq hb hab he,
-        image_erase_eq ha hab.symm he.symm, smul_smul, smul_smul, ← add_smul, sign_pair ha hb hab he hia,
-        neg_add_cancel, zero_smul]
-    · have hib : ¬ Set.InjOn τ (t.erase b) := fun hib => hia (injOn_erase_swap ha hab.symm he.symm hib)
-      rw [pullC_apply, pullC_apply, if_neg hia, if_neg hib, smul_zero, smul_zero, add_zero]
-
-theorem pullC_mem (A : Finset ι → Submodule k E) (B : Finset κ → Submodule k E') (τ : κ → ι) (φ : E →ₗ[k] E')
-    (hφ : ∀ s : Finset κ, s.Nonempty → ∀ y ∈ A (s.image τ), φ y ∈ B s) (n : ℤ) (c : Finset ι → E)
-    (hc : c ∈ cechC A n) : pullC τ φ c ∈ cechC B n := by
-  simp only [cechC, Submodule.mem_pi, Set.mem_univ, true_implies, forall_const] at hc ⊢
-  intro s
-  rw [pullC_apply]
-  split_ifs with hs hinj
-  · have hcard := Finset.card_image_of_injOn hinj
-    have hc' := hc (s.image τ)
-    rw [if_pos ⟨hs.1.image τ, by rw [hcard]; exact hs.2⟩] at hc'
-    exact zsmul_mem (hφ s hs.1 _ hc') _
-  · exact Submodule.zero_mem _
-  · rename_i hinj
-    have hc' := hc (s.image τ)
-    rw [if_neg (fun h' => hs ⟨Finset.image_nonempty.1 h'.1, by
-      rw [← Finset.card_image_of_injOn hinj]; exact h'.2⟩), Submodule.mem_bot] at hc'
-    rw [hc', map_zero, smul_zero]
-    exact Submodule.zero_mem _
-  · exact Submodule.zero_mem _
-
 end GlobalTheory.PD.PullMap
 
 namespace GlobalTheory.PD
-
-theorem pullC_isMap : ∀ (k : Type) [Field k] (ι κ : Type) [LinearOrder ι] [LinearOrder κ] (E E' : Type)
-    [AddCommGroup E] [Module k E] [AddCommGroup E'] [Module k E'] (A : Finset ι → Submodule k E)
-    (B : Finset κ → Submodule k E') (τ : κ → ι) (φ : E →ₗ[k] E'),
-    (∀ s t, s.Nonempty → s ⊆ t → A s ≤ A t) → (∀ s t, s.Nonempty → s ⊆ t → B s ≤ B t) →
-    (∀ s : Finset κ, s.Nonempty → ∀ y ∈ A (s.image τ), φ y ∈ B s) → IsMap (cech A) (cech B) (pullC τ φ) := by
-  intro k _ ι κ _ _ E E' _ _ _ _ A B τ φ _ _ hφ n c hc
-  exact ⟨PullMap.pullC_mem A B τ φ hφ n c hc, PullMap.pullC_delta τ φ c⟩
 
 end GlobalTheory.PD

@@ -13,19 +13,19 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GtB
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.TopAmpExists
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasFramesOfAmpFrames
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSectionPowerTransportCartesianSquareStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TransitionFramesPushOpenImmersionImageStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasFramesDisjointUnionCechDataStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSectionPowerTransportCartesianSquare
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TransitionFramesPushOpenImmersionImage
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasFramesDisjointUnionCechData
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAmpleCechLineBundleDisjointUnionPushforwardStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasTransitionCompatibleFramesOfNoCompleteDVRPoinStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PulledSectionsFormBasisIdOfPulledSectionsFormBasStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardPulledSectionsFormBasisEqPowDimStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardBasisPolarisationPowerZeroEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianLocusIsOpenOfOpenImmersionCoverStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FibresSplitOfOpenImmersionCoverStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PulledSectionsFormBasisIdOfPulledSectionsFormBas
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardPulledSectionsFormBasisEqPowDim
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardBasisPolarisationPowerZeroEqOne
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianLocusIsOpenOfOpenImmersionCover
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FibresSplitOfOpenImmersionCover
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasFibrewiseThetaOfOpenImmersionCoverStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsQProjOverOfIsComplOpenImmersionsStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsCompleteDVRPointGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsQProjOverOfIsComplOpenImmersions
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsCompleteDVRPointGenericPoint
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAbelianTripleGlueTwoOpenImmersionsStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -227,7 +227,7 @@ theorem good_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ 
   have ho : ∀ b, IsOpenImmersion (f b) := by rintro (_ | _) <;> assumption
   have hc : ∀ z, ∃ b, z ∈ Set.range (f b) := fun z => (h z).elim (fun h => ⟨true, h⟩) fun h => ⟨false, h⟩
   have hg : ∀ b, Models.Good (u b) := by rintro (_ | _) <;> assumption
-  exact ⟨GlobalTheory.T.abelianLocus_isOpen_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).1, GlobalTheory.T.fibresSplit_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).2.1,
+  exact ⟨_root_.GlobalTheory.AbLocusLocal.abOpen_of_cover E H Z t _ Y f u k ho hc fun b => (hg b).1, _root_.GlobalTheory.splitFib_of_openCover E H Z t _ Y f u k ho hc fun b => (hg b).2.1,
     GlobalTheory.T.hasFibrewiseTheta_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).2.2⟩
 
 theorem qproj_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ ⟶ Z} [IsOpenImmersion f₁] [IsOpenImmersion f₂]
@@ -238,7 +238,7 @@ theorem qproj_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂
       Set.range k.φ = t.G.hom ⁻¹' Set.range f := fun {Y f u} k => by
     rw [← Scheme.Pullback.range_fst, SABMap.φ, ← k.cart.1.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp,
       Set.range_comp, k.cart.1.isoPullback.hom.surjective.range_eq, Set.image_univ]
-  refine GlobalTheory.T.isQProjOver_of_isCompl_openImmersions O _ _ _ n₁.φ n₂.φ _ (MorphismProperty.of_isPullback (P := @IsOpenImmersion) n₁.cart.1.flip ‹_›)
+  refine _root_.GlobalTheory.ProjSpace.isQProjOver_of_isCompl O _ _ _ n₁.φ n₂.φ _ (MorphismProperty.of_isPullback (P := @IsOpenImmersion) n₁.cart.1.flip ‹_›)
     (MorphismProperty.of_isPullback (P := @IsOpenImmersion) n₂.cart.1.flip ‹_›) ?_ ?_ ?_
   · rw [key, key]
     exact h.map (CompleteLatticeHom.setPreimage t.G.hom)
@@ -252,12 +252,12 @@ theorem amp_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ �
     ∃ A : LN.AmpFrames t.G t.PP.L N, A.n = A₁.n ∧ A.r = A₁.r ∧ A.s = A₁.s := by
   have key : ∀ {Y : Scheme.{0}} {f : Y ⟶ Z} [IsOpenImmersion f] {u : SAB H Y} (k : SABMap u t f)
       (A : LN.AmpFrames u.G u.PP.L N), HasFrames t.G t.PP.L N (pushLB f A.A) A.n A.r A.s := fun {Y f _ u} k A =>
-    GlobalTheory.T.transitionFrames_push_openImmersion_image _ _ _ _ f k.φ _ _ t.PP.isLB u.PP.isLB k.cart.1 (lbIso_of_map k)
+    _root_.GlobalTheory.ModelSum.hasFrames_pushLB _ _ _ _ f k.φ _ _ t.PP.isLB u.PP.isLB k.cart.1 (lbIso_of_map k)
       (fun x hx => (abLocus_pullback abLocusOne t.semi k.cart.1 x).1 hx) N _ _ _ _ (hasFrames_of_ampFrames A)
   have h₂ := key n₂ A₂
   rw [hn, hr, hs] at h₂
   obtain ⟨a, b⟩ := GlobalTheory.T.isAmpleCechLineBundle_disjointUnion_pushforward Z Z₁ Z₂ f₁ f₂ A₁.A A₂.A h A₁.isLB A₂.isLB A₁.ample A₂.ample
-  obtain ⟨A, -, e⟩ := exists_ampFrames a b (GlobalTheory.T.hasFrames_disjointUnionCechData Z _ _ N _ _ _ _ _ (fun i j => le_bot_iff.1 (by
+  obtain ⟨A, -, e⟩ := exists_ampFrames a b (_root_.GlobalTheory.ModelSum.hasFrames_sumLB Z _ _ N _ _ _ _ _ (fun i j => le_bot_iff.1 (by
     rintro _ ⟨⟨x, -, rfl⟩, y, -, e⟩
     exact (Set.disjoint_left.1 h.disjoint ⟨x, rfl⟩ ⟨y, e⟩).elim)) (key n₁ A₁) h₂)
   exact ⟨A, e⟩
@@ -372,8 +372,8 @@ theorem rank_eq (hL : Out.Laws) (hL' : Out.Laws2) (hp : IsProper tM.G.hom) (hA :
     [IsLocalRing R] {y : Sp R ⟶ M} {t' : SAB H (Sp R)} (k : SABMap t' tM y) {Z : Scheme.{0}} {t : SAB H Z}
     {χ : Sp R ⟶ Z} (k' : SABMap t' t χ) {N : ℕ} {T : Over Z} (h : Over.mk χ ⟶ T)
     (b : Fin n → LB.Sec (Out.LPow t.G t.PP.L (N : ℤ) T)) (hb : LN.BasisAlong t.G t.PP.L N h b) : n = max 1 (N ^ g) := by
-  obtain ⟨b', hb'⟩ := GlobalTheory.T.pulledSectionsFormBasis_id_of_pulledSectionsFormBasis Z _ _ N n _ _ h b t.PP.isLB hb
-  obtain ⟨e, he⟩ := GlobalTheory.T.exists_sectionPower_transport_cartesian_square Z _ t.G t'.G χ k'.φ _ _ t.PP.isLB t'.PP.isLB k'.cart.1 (lbIso_of_map k') N
+  obtain ⟨b', hb'⟩ := _root_.GlobalTheory.ModelSum.basisAlong_id_of_basisAlong Z _ _ N n _ _ h b t.PP.isLB hb
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.SecMove.transport Z _ t.G t'.G χ k'.φ _ _ t.PP.isLB t'.PP.isLB k'.cart.1 (lbIso_of_map k') N
   let e₀ := e (Over.mk (𝟙 (Sp R))) (Over.mk χ) (Iso.refl _) rfl
   have hb₀ : LN.BasisAlong t'.G t'.PP.L N (𝟙 (Over.mk (𝟙 (Sp R)))) (fun i => e₀.symm (b' i)) := fun σ => by
     have key : ∀ c, LN.Lin t'.G t'.PP.L N (𝟙 (Over.mk (𝟙 (Sp R)))) (fun i => e₀.symm (b' i)) c σ ↔
@@ -401,8 +401,8 @@ theorem rank_eq (hL : Out.Laws) (hL' : Out.Laws2) (hp : IsProper tM.G.hom) (hA :
       rigid := ⟨t'.PP.rig, t'.PP.rigGen⟩
       sym := fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff ws).1 gs') _⟩ }
   obtain rfl | hN := Nat.eq_zero_or_pos N
-  · rw [GlobalTheory.T.card_basis_polarisation_power_zero_eq_one hL.globalFns R P n _ hb₀, max_eq_left (pow_le_one₀ le_rfl zero_le_one)]
-  · rw [GlobalTheory.T.card_pulledSectionsFormBasis_eq_pow_dim hL hL' R P N n _ hN hb₀, max_eq_right (Nat.one_le_pow _ _ hN)]
+  · rw [_root_.GlobalTheory.basisAlong_zero_card hL.globalFns R P n _ hb₀, max_eq_left (pow_le_one₀ le_rfl zero_le_one)]
+  · rw [_root_.GlobalTheory.LN.SecRank.card_basis_eq_pow hL hL' R P N n _ hN hb₀, max_eq_right (Nat.one_le_pow _ _ hN)]
 
 theorem hasModel_rank (hL : Out.Laws) (hL' : Out.Laws2) (hp : IsProper tM.G.hom) (hA : Out.RelAmple tM.G tM.PP.L)
     (hK : Out.KTriv tM.G tM.PP.L) {g : ℕ} (hg : SmoothOfRelativeDimension g tM.G.hom) {V : Scheme.{0}} {i : V ⟶ M}
@@ -416,7 +416,7 @@ theorem hasModel_rank (hL : Out.Laws) (hL' : Out.Laws2) (hp : IsProper tM.G.hom)
   push Not at hT
   obtain ⟨W, _, _, _, hW, ⟨χ₀⟩⟩ := hT
   have := hW.2.2
-  obtain ⟨R, _, _, _, hR, χ, hχ⟩ := GlobalTheory.T.exists_completeDVR_point_genericPoint C.Z W χ₀
+  obtain ⟨R, _, _, _, hR, χ, hχ⟩ := _root_.GlobalTheory.GenTrait.exists_trait_genericPoint C.Z W χ₀
   have := C.j_open
   have := C.j_dom
   have hj : Set.range χ ⊆ Set.range C.j := by

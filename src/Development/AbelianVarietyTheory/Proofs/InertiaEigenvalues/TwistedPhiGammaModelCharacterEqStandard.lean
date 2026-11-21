@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistedModelAdmissibleCocycles
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.OnePlusPowerAssembly
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EquivariantOfLinear
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsJordanHolderThroughLineStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenWeightSubquotientModelMemResiduesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HomToCharacterLineEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterModelExponentsSignsSenWeightStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsJordanHolderThroughLine
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenWeightSubquotientModelMemResidues
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HomToCharacterLineEqZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterModelExponentsSignsSenWeight
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleLetterDataWindowArithmetic
 
 open GlobalTheory.PhiGam GlobalTheory.AdmLoc GlobalTheory.Models
@@ -107,11 +107,11 @@ theorem model_of_base {k G : Type} [Field k] [Group G] {l n : ℕ} {R : RingPG k
 theorem model_chr_eq : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T2 l → Dt.T3 l → ∀ (e : ℤ), 0 ≤ e → e < Dt.t → ∀ N : Lats k n 1, M.Model (chr (M.ω ^ (-e))) N → N = M.Nχ e := by
   intro k G _ _ l n _ _ _ R F r Dt M h1 h2 h3 e he0 het N hN
   classical
-  obtain ⟨κ₀, hκ₀⟩ := GlobalTheory.T.character_model_exponents_signs_senWeight F M h1 h2 h3 e he0 het N hN
+  obtain ⟨κ₀, hκ₀⟩ := _root_.GlobalTheory.Models.CharSign.model_char_sign F M h1 h2 h3 e he0 het N hN
   obtain ⟨B, Nb, A₁, j, p, hB, hj, hji, hp, hps, hNe⟩ := hN
   obtain ⟨μ, hss, hsen⟩ := M.base_sen B Nb hB
   obtain ⟨s, C, L, a₀, hmod, hsimple, hss', hsum, ha₀⟩ :=
-    GlobalTheory.T.exists_jordanHolder_through_line_alt F M B A₁ (M.ω ^ (-e)) j p Nb (model_of_base M B Nb hB) hj hji hp hps
+    _root_.GlobalTheory.Models.ModTh.exists_jordanHolder_through_line F M B A₁ (M.ω ^ (-e)) j p Nb (model_of_base M B Nb hB) hj hji hp hps
   rw [← hNe] at ha₀
   obtain ⟨c, hsome, hnone, hcard⟩ := GlobalTheory.JHMatch.jh_match M.T M.ω Dt.t μ s C hsimple
     (SameFactors.trans (SameFactors.symm hss') hss)
@@ -130,7 +130,7 @@ theorem model_chr_eq : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.
         (Dt.ty i = LType.G → 0 ≤ κ (i - 1)) ∧ (Dt.ty i = LType.Bd → κ (i - 1) ≤ 0) ∧
         ∀ x, sen ((F.D A).γ i) (Λ i) x = resCount {(e'.val : ℤ) - κ i} 0 x := by
     rintro A Λ e' hm rfl
-    obtain ⟨κ, hκ⟩ := GlobalTheory.T.character_model_exponents_signs_senWeight F M h1 h2 h3 e' (by omega) (by omega) Λ hm
+    obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.Models.CharSign.model_char_sign F M h1 h2 h3 e' (by omega) (by omega) Λ hm
     exact ⟨κ, fun i => (hκ i).2⟩
   have hex : ∀ a, ∃ κ : ZMod n → ℤ, ∀ e', c a = some e' → ∀ i, |κ i| ≤ Dt.sg l i ∧
         (Dt.ty i = LType.G → 0 ≤ κ (i - 1)) ∧ (Dt.ty i = LType.Bd → κ (i - 1) ≤ 0) ∧
@@ -178,7 +178,7 @@ theorem model_chr_eq : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.
             simp only [ne_eq, not_true_eq_false, if_false]
             by_contra hne
             obtain ⟨A', j', p', q1, q2, q3, q4⟩ := hnone a hc
-            obtain ⟨u, hu, hux⟩ := GlobalTheory.T.senWeight_subquotient_model_mem_residues F M h1 h2 h3 A' (C a) j' p' (L a) q1 q2 q3 q4 (hmod a) i y
+            obtain ⟨u, hu, hux⟩ := _root_.GlobalTheory.Models.ModTh.sen_model_subquot_mem_U F M h1 h2 h3 A' (C a) j' p' (L a) q1 q2 q3 q4 (hmod a) i y
               (Ne.symm hne)
             exact hU u hu hux
           | some e' =>
@@ -216,7 +216,7 @@ theorem model_chr_eq : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.
     have := hnone a₀ hc
     rw [hCa] at this
     obtain ⟨A', j', p', q1, q2, q3, q4⟩ := this
-    have hp0 := GlobalTheory.T.hom_to_characterLine_eq_zero F M h1 h2 h3 e (by omega) het A' j' p' q1 q2 q3
+    have hp0 := _root_.GlobalTheory.Models.ModTh.hom_chr_eq_zero F M h1 h2 h3 e (by omega) het A' j' p' q1 q2 q3
     obtain ⟨x, hx⟩ := q4 (fun _ => 1)
     rw [hp0] at hx
     simpa using congrFun hx 0

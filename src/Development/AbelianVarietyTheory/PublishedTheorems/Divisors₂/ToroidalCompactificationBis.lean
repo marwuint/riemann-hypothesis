@@ -101,22 +101,6 @@ theorem exists_model_charts (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS)
   obtain ⟨φ, Y, BD, d, k, -, -, -, -, -, a₁, a₂, a₃, -, -, a₄, -⟩ := h.exists_model hS hr Xo c
   exact ⟨Y, a₁, a₂, a₃, fun x hx => (a₄ x hx).hasChart⟩
 
-theorem exists_torModel (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) (hr : 1 ≤ Dw.p + Dw.q)
-    {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) :
-    ∃ (Y : Model Xo c (RingHom.id c.F)) (T : TorModel Y), T.Z = Y ∧
-      SmoothOfRelativeDimension Dw.dim T.Z.s ∧ FinalTheorems.Snc (boundary T.Z) ∧ HasLogKS T.Z.t T.Z.s (interior T.Z) ∧
-      (GlobalTheory.FlagMod.detOm T.Z).IsLB ∧ GlobalTheory.IsAmpleLB (GlobalTheory.TorRef.polOf T.Z T.m0 T.BD) := by
-  obtain ⟨φ, Y, BD, d, k, -, -, -, -, hk, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈⟩ := h.exists_model hS hr Xo c
-  exact ⟨Y, GlobalTheory.TorRef.selfTor Y (smooth_gen_iff.2 a₁) (snc_gen_iff.2 a₂)
-    (fun x hx => (hasChart_iff Y x).1 (a₆ x hx).hasChart) BD a₄ a₅ k hk, rfl, a₁, a₂, a₃, a₇, a₈⟩
-
-theorem toroidalCompactification (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) : ToroidalCompactification :=
-  fun _ _ _ _ _ _ hr _ Xo c => (h.exists_model_charts hS hr Xo c).imp fun _ a => ⟨a.1, a.2.1, a.2.2.1⟩
-
-theorem toroidalCharts (hS : SiegelToroidalIntegral) (h : ToroidalForFanKS) : ToroidalCharts :=
-  fun _ _ _ _ _ _ hr _ Xo c =>
-    (h.exists_model_charts hS hr Xo c).imp fun _ a => ⟨smooth_gen_iff.2 a.1, snc_gen_iff.2 a.2.1, a.2.2.2⟩
-
 end ToroidalForFanKS
 
 end GlobalTheory.Published

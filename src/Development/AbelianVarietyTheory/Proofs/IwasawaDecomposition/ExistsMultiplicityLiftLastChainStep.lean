@@ -8,13 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnHighes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsColStableDisjointStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBilinearFischerPairingMatrixEntryPolynomiaStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDegreeBoundOfRowUnitaryInvariantPairingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteSmoothIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensorProductDefiniteUnitaryLocalModelsIrreducibStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralIntegrableContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralInvariantRealTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteSmoothIrreducible
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensorProductDefiniteUnitaryLocalModelsIrreducib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralIntegrableContinuous
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralInvariantRealTranslate
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryRealPointsActFockSubstitutionStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMultTOfEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultiplicitySpaceDefiniteContinuousInvariantEquiStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultiplicitySpaceDefiniteContinuousInvariantEqui
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainStepsLevelCharacterConditionsHold
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDimensionalModel
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastStepVectorLiftPairFlagLevelCharactersStatement
@@ -256,15 +256,15 @@ theorem ioExists_definite {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSM
   have hf : IsThetaFunO ψ V W f := by
     have := hpt 1
     rwa [ptOf, GlobalTheory.FiniteFock.pureTensorO_one] at this
-  have m1 := GlobalTheory.T.finiteDimensional_smooth_irreducible_of_allPlus D V S M hM
-  have m2 := GlobalTheory.T.finiteDimensional_smooth_irreducible_of_allPlus D W S' M' hM'
-  obtain ⟨fd, inj, π, hπ, irr⟩ := GlobalTheory.T.tensorProduct_definiteUnitary_localModels_irreducible D V S M m1 hM
-  obtain ⟨fd', inj', π', hπ', irr'⟩ := GlobalTheory.T.tensorProduct_definiteUnitary_localModels_irreducible D W S' M' m2 hM'
+  have m1 := _root_.GlobalTheory.DefLift.AllPlus.finite_smooth_irreducible D V S M hM
+  have m2 := _root_.GlobalTheory.DefLift.AllPlus.finite_smooth_irreducible D W S' M' hM'
+  obtain ⟨fd, inj, π, hπ, irr⟩ := _root_.GlobalTheory.DefLift.tensor_irreducible D V S M m1 hM
+  obtain ⟨fd', inj', π', hπ', irr'⟩ := _root_.GlobalTheory.DefLift.tensor_irreducible D W S' M' m2 hM'
   have hfock := GlobalTheory.T.definiteUnitary_realPoints_act_fock_substitution D ψ V W χS χT ω θ S S' M M' f hω hθ hV hW hM hM' hf hvac
   choose cV hcV0 hcV using fun τ => (hfock τ).1
   choose cW hcW0 hcW using fun τ => (hfock τ).2
-  have hF := fun F : C => GlobalTheory.T.multiplicitySpace_definite_continuous_invariant_equivariant D θ W S' M' π' J' χ' hM' (fun τ => (m2 τ).2.1) inj' hπ' F (hC F.2)
-  have hL := fun (F : C) φ v => GlobalTheory.T.definiteThetaIntegral_integrable_continuous D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt φ) (hF F v).1 (hF F v).2.1
+  have hF := fun F : C => _root_.GlobalTheory.multT_cont_left_equiv D θ W S' M' π' J' χ' hM' (fun τ => (m2 τ).2.1) inj' hπ' F (hC F.2)
+  have hL := fun (F : C) φ v => _root_.GlobalTheory.DefLiftCont.theta_integral_integrable_continuous D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt φ) (hF F v).1 (hF F v).2.1
   let pt : PolF D W.rank V.rank →ₗ[ℂ] (WO V W → ℂ) := pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f
   have hpe : ∀ P, ptOf ψ θ M M' f P = pt P := fun _ => rfl
   obtain ⟨B, hB⟩ := exists_trilinear ν 𝓕 (fun g h => LinearMap.proj 0 ∘ₗ ω (g, h)) pt C fun F φ v => (hL F φ v).1
@@ -279,7 +279,7 @@ theorem ioExists_definite {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSM
   have hBrow : ∀ τ u P x, B (cW τ u • rowSub V.rank τ u P) (π' τ u x) = B P x := fun τ u P x =>
     LinearMap.ext fun F => by
       rw [hB, hB, (hF F x).2.2, hpe, map_smul, ← hpe, ← hcW]
-      exact GlobalTheory.T.definiteThetaIntegral_invariant_real_translate D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt P) (hF F x).1 (hF F x).2.1 _
+      exact _root_.GlobalTheory.LiftShift.liftInt_shift D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt P) (hF F x).1 (hF F x).2.1 _
         (GlobalTheory.PointAtPlaceHom.atTau_spec hθ W τ (hM'.unfr_mem τ u)).1
   have irr'' : IrrFam fun τ u => cW τ u • π' τ u := fun U h => irr' U fun τ u x hx =>
     (U.smul_mem_iff (hcW0 τ u)).1 (h τ u x hx)

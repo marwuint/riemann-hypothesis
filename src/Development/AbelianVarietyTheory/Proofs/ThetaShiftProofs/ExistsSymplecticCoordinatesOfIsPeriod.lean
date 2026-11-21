@@ -306,14 +306,4 @@ theorem fibre_hom_eq_exponential (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) {P : 
       map_smul' := fun x a => (hO x _ (hρ x)).2 a _ (hP' x a) }
   exact ⟨LinearEquiv.ofBijective gam₁ hb, fun _ => rfl⟩
 
-example (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (Fu.Di i) ty P) :
-    ∃ (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (gam : (Fu.Di i).La ≃ₗ[ℤ] (Fu.Di i).La),
-      (∀ v, Fu.ex i P v = Fu.ex i P (h v)) ∧ ∀ a, h (P a) = P (gam a) := by
-  obtain ⟨fr, lin, c, hd, h0, hg, hlaw, halt⟩ := FibreExp.exists_frame_ex Fu i hP
-  obtain ⟨_, _, h3⟩ := FibreExp.free_finite_finrank_of_isPeriod hP
-  obtain ⟨h, gam, h1, h2, -⟩ := fibre_hom_eq_exponential Fu i hP (Module.finrank_fin_fun ℂ) h3 _ (Fu.Di i).unimod P
-    (Fu.ex i P) (Fu.ex_add i P hP) (HolHom.isHolTo_ex Fu i hP) (fun a => (Fu.ex_ker i P hP _).2 ⟨a, rfl⟩) fr hd h0 hg
-    lin c hlaw halt
-  exact ⟨h, gam, h1, h2⟩
-
 end GlobalTheory

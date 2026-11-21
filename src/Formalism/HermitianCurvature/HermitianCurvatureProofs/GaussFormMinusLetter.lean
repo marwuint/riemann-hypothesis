@@ -398,8 +398,6 @@ end Formalism.FourierDecayAlt.P.Fr8
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem gauss_form_minus_letter : Formalism.FourierDecayAlt.Fr.GaussFormMinus := Formalism.FourierDecayAlt.P.Fr8.gaussFormMinus
-
 theorem minus_letter_form : Formalism.FourierDecayAlt.Fr.MinusForm := Formalism.FourierDecayAlt.P.Fr8.minusForm
 
 end Formalism.FourierDecayAlt.P

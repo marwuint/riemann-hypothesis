@@ -18,8 +18,6 @@ theorem I_comp {h k a a' a'' : A} (h1 : a * h = h * a') (h2 : a' * k = k * a'') 
     a * (h * k) = (h * k) * a'' := by
   rw [← mul_assoc, h1, mul_assoc, h2, mul_assoc]
 
-theorem I_of_comm {h a : A} (hc : Commute a h) : a * h = h * a := hc.eq
-
 theorem rev_prod_inter {M : Type} [Monoid M] (d : M) :
     ∀ (n : ℕ) (f g : Fin n → M), (∀ i, f i * d = d * g i) →
       (List.ofFn f).reverse.prod * d = d * (List.ofFn g).reverse.prod

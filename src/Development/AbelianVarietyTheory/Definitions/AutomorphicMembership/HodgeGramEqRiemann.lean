@@ -251,28 +251,6 @@ theorem IsHodgeFrame.gram_eq (hf : IsHodgeFrame U y f) (g : EigFrame Z σ (y.1 �
   rw [← h.choose.co_mul f g, conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ _ (f.co g τ),
     h.choose_spec.unitary hU ha0 ha hf, Matrix.one_mul]
 
-theorem hodge_gram_eq_riemann (hσ : Formalism.L2.PjFree.GoodEmb c σ) (W : UnfWit (U σ)) {i : Fin W.F.n}
-    {P : (W.F.Di i).La →+ (Fin W.g → ℂ)} (hP : IsPeriod (W.F.Di i) (fun j => Formalism.L2.PjFree.relab c σ (W.e j).1) P)
-    {Hm : Matrix (Fin W.g) (Fin W.g) ℂ} (hH : IsRiem W.F i P Hm) {q : FrPt Xo c (CAt σ)}
-    {z : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin W.g → ℂ)} (hq : AnLie W.F i P q z) (τ : E →+* ℂ)
-    (hb : 0 < 2 * Real.pi * a) : (EigMet.hodge U _ hb G₀).gram (cxPt Z q) (cxFrame Z q) τ =
-      (Real.pi : ℂ) • of fun b b' => hermForm Hm (z τ b') (z τ b) := by
-  have key : ∀ (y : CxPts (genStr Z) σ) (g : EigFrame Z σ (y.1 ≫ genι Z)), y = cxPt Z q →
-      (∀ τ i, g.v τ i = (cxFrame Z q).v τ i) → (EigMet.hodge U _ hb G₀).gram y g τ =
-        (Real.pi : ℂ) • of fun b b' => hermForm Hm (z τ b') (z τ b) := fun y g e hg => by
-    obtain ⟨f, ψ, σ', k, x, rfl | rfl, h2, h3, h4, h5, -⟩ := exists_isHodgeFrame hU (y := y) (e ▸ not_liesIn_cxPt q)
-    · obtain rfl : σ' = σ := h2
-      obtain rfl : cxPt Z ((U σ').un k x) = y :=
-        Subtype.ext (h5.trans ((congrArg (· ≫ y.1) (Spec.map_id _)).trans (Category.id_comp _)))
-      have e' := (x_eq_of_cxPt (congrArg Subtype.val e)).symm
-      rw [(isHodgeFrame_cxFrame hσ h4).gram_eq hU ha0 ha,
-        hermForm_eq_of_orth hσ (hU _ hσ) W (ha σ') h4 hP hH.2.2 hq e' (isCombAt_co e' hg τ), smul_smul]
-      congr 1
-      push_cast
-      ring
-    · exact (not_good_conj c (σ := σ) hσ (h2 ▸ h3)).elim
-  exact key _ _ rfl fun _ _ => rfl
-
 end Free
 
 end GlobalTheory.ShFam

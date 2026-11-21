@@ -77,11 +77,4 @@ theorem rowsDatumP_of_deep {D : Formalism.BasicNotions.D7} (h : CutLeavesDeep D)
   exact rowsDatum_at (cutAt_of_deep (L := L) hsig hA hc hP hrows hst hSA hFS)
     (eligFinite_of (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') hsig hrows) hrows ϖ hϖ nc hnc
 
-theorem rowsInputP_of_deep {D : Formalism.BasicNotions.D7} (hN : Formalism.L2.SG.SupportG.NormProd D) (h : CutLeavesDeep D) :
-    RowsInputP D :=
-  rowsInputP_of_normProd hN (rowsDatumP_of_deep h)
-
-theorem lattice_input_of_open_leaves {D : Formalism.BasicNotions.D7} (h : CutLeavesDeep D) : RowsInputP D :=
-  rowsInputP_of_deep (Formalism.L2.SG.Closed.NormProd_holds D) h
-
 end Formalism.L2.SG.Pf.Coef

@@ -54,10 +54,6 @@ theorem inv : IsScalarForm O fun y x => (t y x)⁻¹ := ht.map invMonoidHom
 
 theorem pow (n : ℕ) : IsScalarForm O fun y x => t y x ^ n := ht.map (powMonoidHom n)
 
-theorem mul (hs : IsScalarForm O s) : IsScalarForm O fun y x => t y x * s y x :=
-  ⟨fun y x x' => by rw [ht.add_right, hs.add_right, _root_.mul_mul_mul_comm], fun y x => by rw [ht.symm, hs.symm],
-    fun a y x => by rw [ht.bal, hs.bal]⟩
-
 theorem mem_balForms : Forms.bilOfMul t ht.add_left ht.add_right ∈ Forms.balForms ℤ O X (Additive U) :=
   ⟨ht.symm, ht.bal⟩
 

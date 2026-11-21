@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CardFilterFinBounds
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CardFilterLeSuccAndSqSumLePow
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormEigenLePowMulNormSum
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitCasEigenvalueSummand
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGlModuleProjComponentsLevelAddTwoStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitCasimirResolventCircleBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGlModuleProjComponentsLevelAddTwo
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitCasimirResolventCircleBounds
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevSubspaceMono
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormSumEigenprojectorLeOfResolventBound
 
@@ -95,7 +95,7 @@ theorem cloud_node_projection_norm : ∀ (M : Type) [NormedAddCommGroup M] [Inne
   intro M _ _ n ε E N _ _ F io pr μ kk j bv w hM hF hA hS hj hw c
   obtain ⟨hb, -, hpos⟩ := GlobalTheory.shape_position n kk j ε μ bv hS (by omega)
   obtain ⟨L0, Ladd, Lsmul, -⟩ := GlobalTheory.lev_subspace_mono M n ε E μ hM.1 hM.2.1
-  have hcomp := GlobalTheory.T.unitary_glModule_proj_components_level_add_two M n ε E N F io pr μ j w hM.2.1 (fun s => (hF s).2.1) hA hw
+  have hcomp := _root_.GlobalTheory.lev_io_pr_single M n ε E N F io pr μ j w hM.2.1 (fun s => (hF s).2.1) hA hw
   have heig := GlobalTheory.splitCas_eigenvalue_summand M n ε E N F io pr μ hM hF hA
   have hnb : (n : ℝ) ≤ bv := by
     have h1 : (1 : ℝ) ≤ n := by exact_mod_cast (by have := hS.2.1; omega : 1 ≤ n)
@@ -170,7 +170,7 @@ theorem cloud_node_projection_norm : ∀ (M : Type) [NormedAddCommGroup M] [Inne
     | add x y _ _ hx hy => intro d; rw [map_add]; exact Ladd _ _ _ (hx d) (hy d)
     | smul a x _ hx => intro d; rw [map_smul]; exact Lsmul _ _ _ (hx d)
   have hres := fun x (hx : x ∈ VV) =>
-    GlobalTheory.T.splitCasimir_resolvent_circle_bounds M n ε E μ kk (j + 2) bv (e x) hM hS (by omega) (hlev x hx)
+    _root_.GlobalTheory.splitCas_resolvent_bounds M n ε E μ kk (j + 2) bv (e x) hM hS (by omega) (hlev x hx)
   have key := cloud_node_projector_bound (PiLp 2 (fun _ : Fin n => M)) n kk bv VV T p
     (fun s => -μ s + (1 - (n : ℝ)) / 2) hfd hb hsum ?_ hpos ?_ hcard ?_ ?_ x₀ hx₀V
   · refine ⟨?_, fun s hs => ?_⟩

@@ -2,14 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitStabilizerMassEqWeightedSumFibres
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianGenusMassEqOrbitStabilizerMassStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PrimitiveSublatticesMoveWithIsometriesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianGenusMassEqOrbitStabilizerMass
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PrimitiveSublatticesMoveWithIsometries
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitStabilizerMassSubspaceCyclicDiscriminantLeStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FewOrbitsSubspacesHermitianLatticeDiscriminantStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittExtensionTotallyDefiniteHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitWeightedStabilizerSumTransportEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitWeightedStabilizerSumMonoSubadditiveStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitWeightedStabilizerSumRestrictSliceStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitWeightedStabilizerSumTransportEquivariant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitWeightedStabilizerSumMonoSubadditive
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitWeightedStabilizerSumRestrictSlice
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassIntegralLatticesDiscriminantOrderLeStatement
 
 open NumberField Matrix GlobalTheory.Mass Formalism.HermitianLatticesTheory
@@ -29,13 +29,13 @@ theorem orbSum_encard_le (G A B : Type) [Group G] [MulAction G A] [MulAction G B
     (fun p hp => hp.1) hfin
   have h2 : orbSum G Y (fun a => (((P a).encard : ℕ∞) : ℝ≥0∞)) ≤ orbMass G X := by
     rw [h1]
-    refine (GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive G A).1 Y Y _ _ subset_rfl fun a ha => ?_
+    refine (_root_.GlobalTheory.Mass.OrbMono.main G A).1 Y Y _ _ subset_rfl fun a ha => ?_
     have : (P a).encard ≤ (X ∩ Prod.fst ⁻¹' {a}).encard :=
       Set.encard_le_encard_of_injOn (f := fun b => (a, b)) (fun b hb => ⟨⟨ha, hb⟩, rfl⟩)
         (fun b _ b' _ e => (Prod.ext_iff.1 e).2)
     exact_mod_cast this
   refine h2.trans ?_
-  have h3 := (GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive G (A × B)).2.2.1 B s X (fun b₀ => {p | p ∈ X ∧ ∃ g : G, g • b₀ = p.2})
+  have h3 := (_root_.GlobalTheory.Mass.OrbMono.main G (A × B)).2.2.1 B s X (fun b₀ => {p | p ∈ X ∧ ∃ g : G, g • b₀ = p.2})
     (fun _ => 1) (by
       intro p hp
       obtain ⟨b₀, hb₀, g, hg⟩ := hs _ hp.1 _ hp.2
@@ -48,7 +48,7 @@ theorem orbSum_encard_le (G A B : Type) [Group G] [MulAction G A] [MulAction G B
     change (g : G) • p.2 = b₀
     rw [e]
     exact g.2
-  have h4 := GlobalTheory.T.orbitWeightedStabilizerSum_restrict_slice G (A × B) (MulAction.stabilizer G b₀)
+  have h4 := _root_.GlobalTheory.Mass.Slice.orbSum_restrict G (A × B) (MulAction.stabilizer G b₀)
     {p | p ∈ X ∧ ∃ g : G, g • b₀ = p.2} {p | p ∈ X ∧ p.2 = b₀} (fun _ => 1)
     (fun p hp => ⟨hp.1, 1, by rw [one_smul, hp.2]⟩)
     (by
@@ -68,7 +68,7 @@ theorem orbSum_encard_le (G A B : Type) [Group G] [MulAction G A] [MulAction G B
       rw [e] at e'
       exact e')
   rw [← h4]
-  exact GlobalTheory.T.orbitWeightedStabilizerSum_transport_equivariant (MulAction.stabilizer G b₀) (MulAction.stabilizer G b₀) (A × B) A (MulEquiv.refl _)
+  exact _root_.GlobalTheory.Mass.OrbTransport.main (MulAction.stabilizer G b₀) (MulAction.stabilizer G b₀) (A × B) A (MulEquiv.refl _)
     Prod.fst {p | p ∈ X ∧ p.2 = b₀} {a | a ∈ Y ∧ b₀ ∈ P a} (fun _ => 1) hS
     (by
       rintro g a ⟨ha, hb⟩
@@ -154,8 +154,8 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
   have m1 := mass_nonneg h₁ I₁
   have m2 := mass_nonneg h₂ I₂
   have h1 := orbSum_encard_le (isom h) (Submodule (𝓞 K) V) (Submodule K V) 𝒢 (fun L => primSp h L j n)
-    (fun g L U => (GlobalTheory.T.primitive_sublattices_move_with_isometries K V h hK hs hnd g L U j n).1) hst
-    (fun L hL => (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp L (h𝒢 L hL).1.1).2.2.2.1 L (h𝒢 L hL).1.1) S
+    (fun g L U => (_root_.GlobalTheory.Mass.PrimMove.main K V h hK hs hnd g L U j n).1) hst
+    (fun L hL => (_root_.GlobalTheory.Mass.GenusOrb.main K V h hK hs hp L (h𝒢 L hL).1.1).2.2.2.1 L (h𝒢 L hL).1.1) S
     (fun L hL U hU => hcov U hU.1 ⟨latIn U L, isIntLat_latIn h (h𝒢 L hL).1 U, hU.2⟩)
   refine h1.trans ?_
   set X : ℝ := (n : ℝ) * N₀ with hX
@@ -175,7 +175,7 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
     have dW : Module.finrank K (perp h U) = s := by
       have := Submodule.finrank_add_eq_of_isCompl hc
       omega
-    have a1 := (GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (MulAction.stabilizer (isom h) U) (Submodule (𝓞 K) V)).1
+    have a1 := (_root_.GlobalTheory.Mass.OrbMono.main (MulAction.stabilizer (isom h) U) (Submodule (𝓞 K) V)).1
       {L | L ∈ 𝒢 ∧ U ∈ primSp h L j n}
       {L : Submodule (𝓞 K) V | IsIntLat h L ∧ discN h L = N₀ ∧ (∃ t : Finset V, t.card ≤ 1 ∧
         dual h L = L ⊔ Submodule.span (𝓞 K) (t : Set _)) ∧ discN (hRes h U) (latIn U L) = n}

@@ -13,29 +13,6 @@ variable {O LL : Type} [CommRing O] [IsDomain O] [Field LL] [Algebra O LL]
   (u : PowerSeries LL) (hu : IsUnit u) (hψ : ψ (PowerSeries.X + PowerSeries.C l) = PowerSeries.X * u)
 include hinj hψC hu hψ
 
-theorem dvd_cancel_unit {k : ℕ} {f : PowerSeries LL} (h : PowerSeries.X ^ k ∣ u * f) :
-    PowerSeries.X ^ k ∣ f := by
-  have dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u)
-      (h : g ∣ u * f) : g ∣ f := by
-    obtain ⟨v, rfl⟩ := hu
-    have e : f = ↑v⁻¹ * (↑v * f) := by rw [← mul_assoc, Units.inv_mul, one_mul]
-    rw [e]
-    exact dvd_mul_of_dvd_right h _
-  exact
-       dvd_of_dvd_isUnit_mul_lemma hu h
-
-omit hinj hψC hψ in
-theorem dvd_cancel_unit' {k : ℕ} {f : PowerSeries LL} (h : PowerSeries.X ^ k ∣ u * f) :
-    PowerSeries.X ^ k ∣ f := by
-  have dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u)
-      (h : g ∣ u * f) : g ∣ f := by
-    obtain ⟨v, rfl⟩ := hu
-    have e : f = ↑v⁻¹ * (↑v * f) := by rw [← mul_assoc, Units.inv_mul, one_mul]
-    rw [e]
-    exact dvd_mul_of_dvd_right h _
-  exact
-       dvd_of_dvd_isUnit_mul_lemma hu h
-
 theorem poly_eq_zero : ∀ (k : ℕ) (r : Polynomial O), r.degree < k →
     PowerSeries.X ^ k ∣ ψ (r : PowerSeries O) → r = 0 := by
   have dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u)

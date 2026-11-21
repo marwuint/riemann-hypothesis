@@ -24,63 +24,8 @@ theorem inf_nonempty {Ω : Type} [Field Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω) (
   have := hI
   simpa using nonempty_preirreducible_inter U.isOpen V.isOpen hU hV
 
-def LeafAffCover : Prop := ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c →
-  ∃ U V : C.Opens, U ⊔ V = ⊤ ∧ IsAffineOpen U ∧ IsAffineOpen V ∧ (U : Set C).Nonempty ∧ (V : Set C).Nonempty
-
-def LeafDedOpen : Prop := ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c →
-  ∀ W : C.Opens, IsAffineOpen W → (W : Set C).Nonempty →
-    ∃ (B : Type) (_ : CommRing B) (_ : IsDedekindDomain B) (_ : Algebra Ω B) (_ : Algebra.FiniteType Ω B),
-      Nonempty (W.toScheme ≅ Sp B)
-
-theorem LeafCover_of (hA : LeafAffCover) (hD : LeafDedOpen) : LeafCover := by
-  intro Ω _ _ C c hc
-  obtain ⟨U, V, hUV, hU, hV, hUn, hVn⟩ := hA Ω c hc
-  refine ⟨U, V, hUV, ?_⟩
-  intro W hW
-  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hW
-  rcases hW with rfl | rfl | rfl
-  · exact hD Ω c hc _ hU hUn
-  · exact hD Ω c hc _ hV hVn
-  · exact hD Ω c hc _ (inf_affine c hc hU hV) (inf_nonempty c hc hUn hVn)
-
 def LeafDedRing : Prop := ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c →
   ∀ W : C.Opens, IsAffineOpen W → (W : Set C).Nonempty → IsDedekindDomain Γ(C, W)
-
-theorem LeafDedOpen_of (hR : LeafDedRing) : LeafDedOpen := by
-  intro Ω _ _ C c hc W hW hWn
-  have hD := hR Ω c hc W hW hWn
-  obtain ⟨_, _, hS⟩ := hc
-  have hL : LocallyOfFiniteType c := inferInstance
-  let φ : Ω →+* Γ(C, W) := (c.appLE ⊤ W le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom
-  letI : Algebra Ω Γ(C, W) := φ.toAlgebra
-  have hφ : φ.FiniteType := by
-    have h1 : (c.appLE ⊤ W le_top).hom.FiniteType :=
-      HasRingHomProperty.appLE @LocallyOfFiniteType c hL ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ (by simp)
-    exact h1.comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.symm.surjective)
-  exact ⟨Γ(C, W), inferInstance, hD, inferInstance, hφ, ⟨hW.isoSpec⟩⟩
-
-def LeafTwoPts : Prop := ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c →
-  ∃ p p' : C, p ≠ p' ∧ IsClosed ({p} : Set C) ∧ IsClosed ({p'} : Set C)
-
-def LeafComplAffine : Prop := ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c →
-  ∀ (p : C) (hp : IsClosed ({p} : Set C)), IsAffineOpen (⟨{p}ᶜ, hp.isOpen_compl⟩ : C.Opens)
-
-theorem LeafAffCover_of (h2 : LeafTwoPts) (hA : LeafComplAffine) : LeafAffCover := by
-  intro Ω _ _ C c hc
-  obtain ⟨p, p', hne, hp, hp'⟩ := h2 Ω c hc
-  refine ⟨⟨{p}ᶜ, hp.isOpen_compl⟩, ⟨{p'}ᶜ, hp'.isOpen_compl⟩, ?_, hA Ω c hc p hp, hA Ω c hc p' hp', ?_, ?_⟩
-  · ext x
-    simp only [TopologicalSpace.Opens.coe_sup, TopologicalSpace.Opens.coe_top, Set.mem_union, Set.mem_univ, iff_true]
-    by_cases h : x = p
-    · right
-      subst h
-      show x ∈ ({p'}ᶜ : Set C)
-      simpa using hne
-    · left
-      show x ∈ ({p}ᶜ : Set C)
-      simpa using h
-  · exact ⟨p', by simpa using hne.symm⟩
-  · exact ⟨p, by simpa using hne⟩
 
 def LeafDim1 : Prop := ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c →
   ∀ W : C.Opens, IsAffineOpen W → (W : Set C).Nonempty → Ring.DimensionLEOne Γ(C, W)
@@ -172,63 +117,5 @@ theorem LeafDedRing_of (hd : LeafDim1) (hn : LeafNormal) : LeafDedRing := by
   have : Algebra.FiniteType Ω Γ(C, W) := hφ
   have : IsNoetherianRing Γ(C, W) := Algebra.FiniteType.isNoetherianRing Ω _
   exact { }
-
-theorem LeafCover_of' (hA : LeafAffCover) (hR : LeafDedRing) : LeafCover :=
-  LeafCover_of hA (LeafDedOpen_of hR)
-
-theorem LeafCover_of_four (h2 : LeafTwoPts) (hA : LeafComplAffine) (hd : LeafDim1) (hn : LeafNormal) : LeafCover :=
-  LeafCover_of' (LeafAffCover_of h2 hA) (LeafDedRing_of hd hn)
-
-theorem LeafCover_of_three (h2 : LeafTwoPts) (hA : LeafComplAffine) (hd : LeafDim1) : LeafCover :=
-  LeafCover_of_four h2 hA hd leafNormal
-
-theorem leafTwoPts : LeafTwoPts := by
-  intro Ω _ _ C c hc
-  have hc' := hc
-  obtain ⟨hI, hP, hS⟩ := hc
-  have hL : LocallyOfFiniteType c := inferInstance
-  have : JacobsonSpace C := LocallyOfFiniteType.jacobsonSpace c
-  by_contra hne
-  have hsub' : (closedPoints C).Subsingleton := fun p hp p' hp' => by
-    by_contra h
-    exact hne ⟨p, p', h, hp, hp'⟩
-  have hcl : closure (closedPoints C) = Set.univ := closure_closedPoints
-  have hsub : Subsingleton C := by
-    rcases hsub'.eq_empty_or_singleton with h | ⟨p, h⟩
-    · rw [h, closure_empty] at hcl
-      exact ⟨fun x _ => by
-        have hx : x ∈ (∅ : Set C) := hcl ▸ Set.mem_univ x
-        exact absurd hx (Set.notMem_empty x)⟩
-    · have hp : IsClosed ({p} : Set C) := by
-        have : p ∈ closedPoints C := by rw [h]; rfl
-        exact this
-      rw [h, hp.closure_eq] at hcl
-      exact ⟨fun x y => by
-        have hx : x ∈ ({p} : Set C) := hcl ▸ Set.mem_univ x
-        have hy : y ∈ ({p} : Set C) := hcl ▸ Set.mem_univ y
-        rw [Set.mem_singleton_iff] at hx hy
-        rw [hx, hy]⟩
-  obtain ⟨x⟩ : Nonempty C := inferInstance
-  obtain ⟨_, ⟨W, hW, rfl⟩, hx, -⟩ := C.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
-  have h1 := krullDim_eq_one c hc' W hW ⟨x, hx⟩
-  have hsW : Subsingleton W := ⟨fun a b => Subtype.ext (hsub.elim _ _)⟩
-  have hsP : Subsingleton (PrimeSpectrum Γ(C, W)) := by
-    have := hsW
-    exact hW.isoSpec.inv.isOpenEmbedding.injective.subsingleton
-  have hK0 : Ring.KrullDimLE 0 Γ(C, W) := Ring.KrullDimLE.mk₀ fun I hI => by
-    obtain ⟨M, hM, hIM⟩ := I.exists_le_maximal hI.ne_top
-    have h' : (⟨I, hI⟩ : PrimeSpectrum Γ(C, W)) = ⟨M, hM.isPrime⟩ := Subsingleton.elim _ _
-    have hIM' : I = M := congrArg PrimeSpectrum.asIdeal h'
-    rw [hIM']
-    exact hM
-  have := (Ring.krullDimLE_iff (n := 0)).mp hK0
-  rw [h1] at this
-  norm_num at this
-
-theorem LeafCover_of_two (h2 : LeafTwoPts) (hA : LeafComplAffine) : LeafCover :=
-  LeafCover_of_three h2 hA leafDim1
-
-theorem LeafCover_of_one (hA : LeafComplAffine) : LeafCover :=
-  LeafCover_of_two leafTwoPts hA
 
 end LateralTheory.E.E4.CurveCut.CoverPf

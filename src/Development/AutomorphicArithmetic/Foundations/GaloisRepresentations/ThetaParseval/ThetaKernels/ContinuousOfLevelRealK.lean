@@ -9,12 +9,8 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped ContDiff
-noncomputable section
 namespace GlobalTheory.WeilContF
-open Formalism.IndefR.DatumF
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end GlobalTheory.WeilContF
-end
 noncomputable section
 namespace GlobalTheory.WeilContF
 open Formalism.IndefR.DatumF

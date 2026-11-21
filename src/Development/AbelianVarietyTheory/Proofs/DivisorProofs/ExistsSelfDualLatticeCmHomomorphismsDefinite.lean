@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLinearHomProd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmLinearHomCoordinateLatticeFgStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmHomGramFormIntegralCoordinateLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCmCoordinateLatticeOfIntegralGramPairingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumSmulDifferentialMemEigenLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieEigenLatticeLeSpanCmHomImagesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmLinearHomCoordinateLatticeFg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmHomGramFormIntegralCoordinateLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCmCoordinateLatticeOfIntegralGramPairing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumSmulDifferentialMemEigenLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieEigenLatticeLeSpanCmHomImages
 
 set_option autoImplicit false
 
@@ -26,15 +26,15 @@ theorem exists_selfDual_lieSpan : ∀ (E : Type) [Field E] [NumberField E] [IsCM
           FB.eigLat X.B.t.act τ = Submodule.span (𝓞 K)
             {w | ∃ c ∈ Λ, ∃ e ∈ FP.eigLat (X.A true).t.act τ, w = ∑ a, τE (c a) • MP a e} := by
   intro E _ _ _ H hH K _ _ ρ σ₁ p X gP gQ hG
-  refine ⟨GlobalTheory.FlatCM.HomLat.lat X, GlobalTheory.T.cmLinearHomCoordinateLattice_fg E H hH K ρ σ₁ p X, GlobalTheory.FlatCM.HomLat.intl_mem X,
-    fun barE hbar d => ⟨fun hd c hc => GlobalTheory.T.cmHomGramForm_integral_coordinateLattice E H hH K ρ σ₁ p X gP gQ hG barE hbar c hc d hd,
-      GlobalTheory.T.mem_cmCoordinateLattice_of_integral_gramPairing E H hH K ρ σ₁ p X gP gQ hG barE hbar d⟩, ?_⟩
+  refine ⟨GlobalTheory.FlatCM.HomLat.lat X, _root_.GlobalTheory.FlatCM.HomLat.lat_fg E H hH K ρ σ₁ p X, GlobalTheory.FlatCM.HomLat.intl_mem X,
+    fun barE hbar d => ⟨fun hd c hc => _root_.GlobalTheory.FlatCM.GramInt.gram_integral E H hH K ρ σ₁ p X gP gQ hG barE hbar c hc d hd,
+      _root_.GlobalTheory.FlatCM.HomLat.mem_lat_of_dual E H hH K ρ σ₁ p X gP gQ hG barE hbar d⟩, ?_⟩
   intro FP FB MP hMP τ hτ τE hτE
-  refine le_antisymm (GlobalTheory.T.lieEigenLattice_le_span_cmHom_images E H hH K ρ σ₁ p X FP FB MP hMP τ hτ τE hτE) ?_
+  refine le_antisymm (_root_.GlobalTheory.FlatCM.HomLat.LieSpan.eigLat_le_span E H hH K ρ σ₁ p X FP FB MP hMP τ hτ τE hτE) ?_
   refine Submodule.span_le.2 ?_
   rintro w ⟨c, hc, e, he, rfl⟩
   induction hc using Submodule.span_induction generalizing e with
-  | mem c hc => exact GlobalTheory.T.sum_smul_differential_mem_eigenLattice E H hH K ρ σ₁ p X FP FB MP hMP τ hτ τE hτE c hc e he
+  | mem c hc => exact _root_.GlobalTheory.FlatCM.HomLat.sum_smul_diff_mem_eigLat E H hH K ρ σ₁ p X FP FB MP hMP τ hτ τE hτE c hc e he
   | zero => simp
   | add c d _ _ hc hd =>
     simp only [Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]

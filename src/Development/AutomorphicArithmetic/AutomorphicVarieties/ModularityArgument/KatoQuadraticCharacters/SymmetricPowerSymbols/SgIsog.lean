@@ -1,6 +1,10 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.SymmetricPowerSymbols.SymExOf
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedThetaQProductDistributionRelationStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplexStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedThetaQProductDistributionRelation
+import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
+import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
 
 open scoped MatrixGroups Matrix UpperHalfPlane
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
@@ -132,8 +136,8 @@ private theorem prod_siegel {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosur
     field_simp
     ring
   apply X.an.injective
-  rw [map_prod, Finset.prod_congr rfl (fun j hj => GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε X c _ (hAj j hj)),
-    X.an_sl (dg k) _ (sgC c x) (GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε X c x hA)]
+  rw [map_prod, Finset.prod_congr rfl (fun j hj => _root_.GlobalTheory.KZ.SiegelMem.an_siegel_eq Ω ε X c _ (hAj j hj)),
+    X.an_sl (dg k) _ (sgC c x) (_root_.GlobalTheory.KZ.SiegelMem.an_siegel_eq Ω ε X c x hA)]
   have hprod : ∏ j ∈ Finset.range k, (↑(sgC c ![x 0, (x 1 + j) / k]) : Mero) =
       ↑(∏ j ∈ Finset.range k, sgC c ![x 0, (x 1 + j) / k]) :=
     (map_prod (Filter.Germ.coeRingHom _) _ _).symm

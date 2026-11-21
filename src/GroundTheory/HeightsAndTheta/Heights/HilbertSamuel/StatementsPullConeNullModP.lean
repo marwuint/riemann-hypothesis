@@ -21,12 +21,6 @@ def PullConeNullModP.Statement : Prop :=
       ∃ N M : ℕ, ¬ p ∣ M ∧ ∀ c : ∀ k, ι k,
         (M : MRing ι) * (∏ k, (X ⟨k, c k⟩ : MRing ι)) ^ N ∈ coneNullIdealZ y L
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

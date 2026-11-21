@@ -2,7 +2,22 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OverExtOfPoints
 import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.FlatImageOfOverFractionFieldOfValuationRing
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
-import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsPointGaussian
+import Development.AbelianVarietyTheory.Definitions.Divisors.HodgeTateLatticePointFinrankTateModule
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsPowPolAVPowPolOf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifPowOf3
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigIsoCongr
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBCPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FamMod
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsMatrixRingAct
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RosatiAdjMul
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsBoxSecPowExt
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.RosatiAdjPow
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLimDeg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdicCompleteDualNumber
@@ -51,17 +66,6 @@ theorem IsLatBasis.sum_mem_iff {La : Submodule O U} {w : Fin n → U} (h : IsLat
 theorem isLatBasis_span {w : Fin n → U} (hw : LinearIndependent C w) :
     IsLatBasis C (Submodule.span O (Set.range w)) w :=
   ⟨hw, (inf_eq_left.2 (Submodule.span_le_restrictScalars O C _)).symm⟩
-
-example (hi : Function.Injective (algebraMap O C)) {x : U} (hx : x ≠ 0) {a : O} (ha : ¬ IsUnit a) :
-    ¬ IsLatBasis C (Submodule.span O {x}) ![a • x] := fun h => by
-  have h0 : algebraMap O C a ≠ 0 := fun h0 => h.1.ne_zero 0 (by
-    show a • x = 0
-    rw [← algebraMap_smul C a, h0, zero_smul])
-  obtain ⟨b, hb⟩ := (h.sum_mem_iff ![(algebraMap O C a)⁻¹]).1 (by
-    have : (algebraMap O C a)⁻¹ • a • x = x := by
-      rw [← algebraMap_smul C a, smul_smul, inv_mul_cancel₀ h0, one_smul]
-    simpa [this] using Submodule.mem_span_singleton_self x) 0
-  exact ha (IsUnit.of_mul_eq_one b (hi (by rw [map_mul, hb, map_one]; exact mul_inv_cancel₀ h0)))
 
 end LatBasis
 
@@ -241,24 +245,6 @@ theorem LieTie.unique {Y S : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {s : Y ⟶ S} {
 
 variable (P) in
 
-theorem exists_lieTie {Y : Scheme.{0}} (ψ : P.A.A.left ⟶ Y) (x : LieG P.Gt) : ∃ u, LieTie P ψ x u := by
-  haveI := P.isLocalRing
-  haveI := HodgeTateCompare.isLocalRing_dualNumber (O := O)
-  have hp₀ : ¬ IsUnit (p : O) := Fact.out
-  have hp : ¬ IsUnit (p : DualNumber O) := fun h => hp₀ (by simpa using h.map (TrivSqZeroExt.fstHom O O O))
-  obtain ⟨y, hy, -⟩ := existsUnique_right (P := P) hp (isAdicComplete_dualNumber p) x.1
-  have h1 := hy.comp (TrivSqZeroExt.fstHom O O O)
-  rw [x.2] at h1
-  have w : (spMap (dualMap (algebraMap O C)) ≫ y.left) ≫ P.G.hom =
-      spMap (algebraMap C (DualNumber C)) ≫ spMap (algebraMap O C) := by
-    rw [Category.assoc, Over.w y, spMap_spMap]
-    refine (spMap_spMap _ _).trans (congrArg _ ?_)
-    ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
-  exact ⟨_, ⟨y, (existsUnique_right (P := P) hp₀ inferInstance 1).unique h1 Corr.one⟩,
-    Over.homMk (P.gen_pull.1.lift _ _ w) (P.gen_pull.1.lift_snd _ _ w), hy, rfl, P.gen_pull.1.lift_fst _ _ w⟩
-
-variable (P) in
-
 def evLie (x : LieG P.Gt) : P.OmC →ₗ[C] C :=
   (Algebra.linearMap O C ∘ₗ LinearMap.proj x ∘ₗ (omega P.Gt).subtype).liftBaseChange C
 
@@ -299,14 +285,6 @@ omit [StarRing (𝓞 E)] in
 
 theorem algebraMap_embInt (hv : v.Integers O) (τ : E →+* ℂ) (a : 𝓞 E) :
     algebraMap O C (embInt c hv τ a) = algebraMap c.F C (embK c τ a) := algebraMap_embO hv _ a
-
-theorem embInt_conj (hs : ∀ a : 𝓞 E, star a = H.bar a) (hv : v.Integers O) (τ : E →+* ℂ) :
-    embInt c hv (conjEmb τ) = (embInt c hv τ).comp (starRingEnd (𝓞 E)) :=
-  RingHom.ext fun a => hv.hom_inj (by
-    rw [RingHom.comp_apply, algebraMap_embInt, algebraMap_embInt, starRingEnd_apply, hs]
-    refine congrArg _ (Subtype.ext ?_)
-    rw [embK_coe, embK_coe, H.bar_eq]
-    exact (IsCMField.complexEmbedding_complexConj E τ a).symm)
 
 variable (P : Point p v O (𝓞 E))
 
@@ -352,17 +330,6 @@ def htLat (τ : E →+* ℂ) : Submodule O P.V :=
     P.latTQuot (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) (embAt c C τ)
   else P.latTSub (embInt c P.integers τ)
 
-open Classical in
-
-theorem htLat_psi (τ : Psi H) : htLat c P τ.1 =
-    P.latTQuot (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) (embAt c C τ.1) :=
-  if_pos τ.2
-
-theorem htLat_conj (τ : Psi H) : htLat c P (conjEmb τ.1) = P.latTSub (embInt c P.integers (conjEmb τ.1)) :=
-  if_neg (conj_not_mem τ)
-
-example (τ : Psi H) : Dw.mult τ.1 = Dw.p ∧ Dw.mult (conjEmb τ.1) = Dw.q := ⟨if_pos τ.2, if_neg (conj_not_mem τ)⟩
-
 theorem latTSub_le_htLat (τ : E →+* ℂ) : P.latTSub (embInt c P.integers τ) ≤ htLat c P τ := by
   classical
   unfold htLat
@@ -391,24 +358,6 @@ def IsHTChange (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (z y : FrPt Xo c C) : Prop
     FrChg g a z y ∧ (∀ τ i j, i < j → g τ i j = 0) ∧ v a = 1 ∧ (∀ τ j, LieTie P ψ (x τ j) (z.u τ j)) ∧
       ∀ τ, IsLatBasis C (htLat c P τ) fun i => ∑ j, g τ i j • P.bLie (x τ j)
 
-variable {P} in
-
-theorem IsHTChange.exists_frBor {ψ : P.A.A.left ⟶ Xo.univ.t.G.left} {z y : FrPt Xo c C} (h : IsHTChange P ψ z y) :
-    ∃ t : Ix Dw → Cˣ, FrBor t z y ∧ v (t none) = 1 := by
-  classical
-  obtain ⟨g, a, x, ⟨h1, h2, pm, h3, h4, h5⟩, hg, ha, -, hb⟩ := h
-  have hd : ∀ τ i, g τ i i ≠ 0 := fun τ i => by
-    have hl : LinearIndependent C (g τ).row :=
-      LinearIndependent.of_comp (Fintype.linearCombination C fun j => P.bLie (x τ j)) (hb τ).1
-    have hu := (Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hl)
-    rw [Matrix.det_of_lowerTriangular _ fun i j hij => hg τ i j hij] at hu
-    exact Finset.prod_ne_zero_iff.1 hu.ne_zero i (Finset.mem_univ i)
-  have ha0 : a ≠ 0 := by rintro rfl; simp at ha
-  refine ⟨fun i => Option.rec (Units.mk0 a ha0) (fun s => Units.mk0 _ (hd s.1 s.2)) i,
-    ⟨h1, fun τ i => ⟨g τ i, rfl, hg τ i, h2 τ i⟩, pm, h3, ?_, h5⟩, ha⟩
-  rw [h4, show spMap (RingHom.id C) = 𝟙 _ from Spec.map_id _]
-  exact Category.comp_id _
-
 variable (p v O) in
 
 def IsHTFrame {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io)
@@ -420,11 +369,6 @@ def IsHTFrame {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io)
 
 variable {T : CDVR} {io : c.F →+* T.Fr} {y₀ : IntFr Xo c T io} {k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C}
   {y : FrPt Xo c C}
-
-theorem IsHTFrame.x_eq (h : IsHTFrame p v O y₀ k y) :
-    letI := io.toAlgebra; y.x = spMap k.toRingHom ≫ y₀.1.x := by
-  obtain ⟨-, _, _, _, z, -, h1, _, _, _, h2, -⟩ := h
-  exact h2.1.trans h1.1
 
 theorem IsHTFrame.val_vw_map (h : IsHTFrame p v O y₀ k y) {la : HeightOneSpectrum (𝓞 c.F)} {e : ℕ}
     (ho : OverLa la T.V io e) (x : T.Fr) : val_vw la p v (k x) = nval T.V e x := by
@@ -526,8 +470,6 @@ theorem htPrimes_eq (B : ℝ) : htPrimes l B = ↑(((Finset.range (⌊B⌋₊ + 
   · simp only [hp, false_and, and_false, or_self]
 
 theorem htPrimes_finite (B : ℝ) : (htPrimes l B).Finite := htPrimes_eq (l := l) B ▸ Finset.finite_toSet _
-
-example (B : ℝ) : 2 ∈ htPrimes l B := ⟨Nat.prime_two, Or.inr (Dvd.dvd.mul_right (dvd_mul_right _ _) _)⟩
 
 variable (Xo c) in
 

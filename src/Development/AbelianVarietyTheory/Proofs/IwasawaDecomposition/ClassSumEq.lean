@@ -129,8 +129,6 @@ variable {B : GlobalTheory.Mem.Base} {C : Cols B} {W : RowsRest B C}
 
 def Oth.L (o : Oth W) : Late B C := ⟨W, o.V, o.S, o.N, o.G⟩
 
-def Oth.of (a : Late B C) : Oth a.W := ⟨a.V, a.S, a.N, a.G⟩
-
 variable {o : Oth W} (o' : Oth W) {N : NData o.L.D.R o.L.D.host o.L.D.what₂} {X : NTw o.L.D.R o.L.D.host o.L.D.what₂ o.L.D.LL0 N}
 
 def seT (ρ : Setup X) : @Setup o'.L.D ((N)) ((X)) :=

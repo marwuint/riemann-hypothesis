@@ -219,10 +219,6 @@ theorem cupCoh_isCup {M N P : TRep R G} (b : Pairing M N P) : IsCup b (cupCoh b)
 
 end S4
 
-section S5
-
-end S5
-
 end
 
 end ReciprocityTheory.Coh

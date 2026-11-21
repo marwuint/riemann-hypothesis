@@ -91,14 +91,4 @@ theorem eq_zero_of_app_fst_open {V : Type} [CommRing V] [IsDomain V] [IsDiscrete
     rw [hpow] at e
     exact ((cst_regular p x hϖ.ne_zero).pow n) (e.trans (mul_zero _).symm)
 
-theorem eq_zero_of_app_fst_jK {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-    {X : AlgebraicGeometry.Scheme.{0}} (p : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp V) [AlgebraicGeometry.Flat p]
-    (W : X.Opens) (d : Γ(X, W))
-    (h : ((CategoryTheory.Limits.pullback.fst p (ReciprocityTheory.ChartRestriction.G.Out.jK V)).app W).hom d = 0) : d = 0 := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible V
-  have := away_fractionRing hϖ
-  have : IsOpenImmersion (ReciprocityTheory.ChartRestriction.G.Out.jK V) := IsOpenImmersion.of_isLocalization ϖ
-  have : Nonempty (Spec (CommRingCat.of (FractionRing V))) := ⟨IsLocalRing.closedPoint _⟩
-  exact eq_zero_of_app_fst_open p (ReciprocityTheory.ChartRestriction.G.Out.jK V) W d h
-
 end ReciprocityTheory.ChartRestriction.G.DVR

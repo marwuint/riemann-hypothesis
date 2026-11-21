@@ -44,6 +44,4 @@ theorem baseChange_square {S S' T : Scheme.{0}} (G : Over S) [GrpObj G] (G' : Ov
   · rw [← Over.comp_left, lift_fst]; rfl
   · rw [← Over.comp_left, lift_snd]; rfl
 
-example : ∀ {S S' T : Scheme.{0}} (G : Over S) [GrpObj G] (G' : Over S') [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ t : T ⟶ S', IsGrpPullback ((Over.pullback t).obj G') G (t ≫ f) (pullback.fst G'.hom t ≫ φ) ∧ ∃ φ₂ : (G2 ((Over.pullback t).obj G')).left ⟶ (G2 G).left, IsSquare (pullback.fst G'.hom t ≫ φ) φ₂ := @baseChange_square
-
 end GlobalTheory.GrpPB

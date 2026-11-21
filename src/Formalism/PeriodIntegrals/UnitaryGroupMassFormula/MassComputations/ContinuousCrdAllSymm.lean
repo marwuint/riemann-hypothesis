@@ -204,7 +204,4 @@ end MassDataMassesW.KCptW
 
 namespace MassDataMassesW
 
-theorem kCompactOpen_holds : KCompactOpen :=
-  kCompactOpen_of_std @KCptW.stdHatOpen_holds @KCptW.stdHatCompact_holds
-
 end MassDataMassesW

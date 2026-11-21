@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGau
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundlesStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeInvariantLinearEquivStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeAdditiveSubQuotientStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeAdditiveSubQuotient
 
 open GlobalTheory.CompanionTheory.Ar.Crv
 
@@ -47,7 +47,7 @@ theorem deg_shortExact : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [Add
   obtain ⟨hL''b, hdL''⟩ := GlobalTheory.T.degree_invariant_linear_equiv K C (V' ⧸ LinearMap.range f) V''
     (GlobalTheory.CompanionTheory.Ar.Crv.quot C L' (LinearMap.range f)) L'' e2 hsub.2 hc2
   refine ⟨hLb, hL''b, ?_⟩
-  rw [GlobalTheory.T.degree_additive_sub_quotient K C V' L' (LinearMap.range f) hL']
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.Crv.SubQuotDeg.deg_eq_subDeg_add_deg_quot K C V' L' (LinearMap.range f) hL']
   unfold GlobalTheory.CompanionTheory.Ar.Crv.subDeg
   rw [hdL, hdL'']
 

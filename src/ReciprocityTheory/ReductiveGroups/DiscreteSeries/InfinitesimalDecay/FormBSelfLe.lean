@@ -58,11 +58,6 @@ theorem NE_zero_eq (E : Fin n → Fin n → Module.End ℂ D) (x : D) : NE E 0 x
 theorem NT_nonneg (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (f : Fin n → D) : 0 ≤ NT E j f :=
   sum_nonneg fun _ _ => NE_nonneg E j _
 
-theorem NT_add (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (f g : Fin n → D) :
-    NT E j (f + g) ≤ NT E j f + NT E j g := by
-  simp only [NT, ← sum_add_distrib]
-  exact sum_le_sum fun c _ => NE_add E j _ _
-
 theorem NT_smul (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (c : ℂ) (f : Fin n → D) :
     NT E j (c • f) = ‖c‖ * NT E j f := by
   simp only [NT, mul_sum, Pi.smul_apply, NE_smul]

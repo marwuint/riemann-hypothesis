@@ -3,7 +3,12 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineGoodModelStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineGoodModel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpDiv
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsPairReading
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTransformDarbouxModelLinearInjective
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieActionFockOperatorsScalarsTrace
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelStandardCharacter
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -53,7 +58,7 @@ theorem hasDerivAt_thetaSum_lineFirst : GlobalTheory.FunPr.Hypotheses₂ → ∀
           (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (f i) (fun x => ∏ᶠ v, φ i v fun j => evFin F v (x j))))))
       (GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u
                    (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (f₁ i) (fun x => ∏ᶠ v, φ i v fun j => evFin F v (x j))))) 0 :=
-    fun i => GlobalTheory.T.weil_line_good_model hP M ψ χX χW om hψ hG hW γ hγ (f i) (f₁ i) _
+    fun i => _root_.GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_lineY hP M ψ χX χW om hψ hG hW γ hγ (f i) (f₁ i) _
       (GlobalTheory.ThK.EvUniqInf.rest_pure (f i) (φ i) (hφ i).1 (hstd i)) (hD i) u
   rw [hcurve, hend]
   have := HasDerivAt.sum (u := Finset.univ) fun i _ => hi i

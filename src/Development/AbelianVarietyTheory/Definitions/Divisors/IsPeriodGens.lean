@@ -67,18 +67,8 @@ theorem divFrom_iff : DivFrom L Q oQ iw s ε e ↔ ∃ g hD, DivBy L Q oQ iw s �
 
 variable {Q} {g : Q.X → (FractionRing V)ˣ} (hD : IsPullDeg iw (mulDeg L.D l.M') (GlobalTheory.PolDeg.rescale Q g))
 
-def IsDivPt (τ₁ : Gens L.D) (p : QkPt Q (FractionRing V) l.M') : Prop :=
-  ∀ χ : Q.X, GenRel (F := FractionRing V) (B := Q.P.A.left) (B₀ := L.D.P.A.left) (M := Q.P.L) (M₀ := L.D.P.L)
-    (φ := hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw)) hD.w (p.g.s χ)
-    (LB.pullGen _ _ _ (τ₁ (l.M' • e χ) (e p.y)) (jK V ≫ spMap iw))
-    (∏ k, algebraMap V (FractionRing V) (s k) ^ ε k (e χ) (e p.y))
-
 def IsLevPt (a : D'.La) (p : QkPt Q (FractionRing V) l.M') : Prop :=
   p.y = 0 ∧ p.g.b.left ≫ (hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw) : Q.P.A.left ⟶ L.D.P.A.left) =
     jK V ≫ spMap iw ≫ (L.o.etaA a).left ≫ L.φB
-
-def IsPeriodGens {W : Type} [CommRing W] [IsDomain W] (D : DegPre W) (τ₁ : Gens D) : Prop :=
-  ∀ a b, (τ₁ a b).IsGen ∧ ∀ (z : (TK W).left) (J : ((TK W).left ⟶ D.P.A.left) → D.P.L.ι),
-    Good D.P.L z J → val (D.tau a b) (𝟙 _) z J = val (τ₁ a b) (toUnit (TK W)).left z J
 
 end GlobalTheory.UCanon

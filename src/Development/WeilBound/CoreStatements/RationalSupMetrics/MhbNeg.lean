@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.SectionInputs
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
 import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PConeTrdeg
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
 
@@ -101,48 +101,5 @@ theorem V.rat [CharZero Ω] [CharZero 𝕜] (q : ℚ) : V y z (q : Ω) (q : 𝕜
   · simp
   · have : ((q.den : ℕ) : 𝕜) ≠ 0 := by exact_mod_cast q.den_nz
     simp [Rat.cast_def, this]
-
-theorem exists_hom [CharZero 𝕜] {F : Type} [Field F] [NumberField F] [Algebra F Ω]
-    (hz : ∀ f ∈ mCoordIdeal y, aeval z f = 0) {ω : F} (hω : Algebra.adjoin ℚ {ω} = ⊤) {x : 𝕜}
-    (hx : V y z (algebraMap F Ω ω) x) : ∃ φ : F →+* 𝕜, ∀ θ : F, V y z (algebraMap F Ω θ) (φ θ) := by
-  have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
-  have hall : ∀ θ : F, ∃ w, V y z (algebraMap F Ω θ) w := by
-    intro θ
-    have hθ : θ ∈ Algebra.adjoin ℚ {ω} := hω ▸ Algebra.mem_top
-    induction hθ using Algebra.adjoin_induction with
-    | mem a ha => exact ⟨x, by rw [Set.mem_singleton_iff.1 ha]; exact hx⟩
-    | algebraMap q => exact ⟨q, by simpa using V.rat q⟩
-    | add a b _ _ ha hb =>
-      obtain ⟨u, hu⟩ := ha
-      obtain ⟨v, hv⟩ := hb
-      exact ⟨_, by rw [map_add]; exact hu.add hv⟩
-    | mul a b _ _ ha hb =>
-      obtain ⟨u, hu⟩ := ha
-      obtain ⟨v, hv⟩ := hb
-      exact ⟨_, by rw [map_mul]; exact hu.mul hv⟩
-  choose φ hφ using hall
-  refine ⟨⟨⟨⟨φ, ?_⟩, ?_⟩, ?_, ?_⟩, hφ⟩
-  · exact (hφ 1).uniq hz (by simpa using V.int (y := y) (z := z) 1)
-  · intro a b
-    exact (hφ _).uniq hz (by rw [map_mul]; exact (hφ a).mul (hφ b))
-  · exact (hφ 0).uniq hz (by simpa using V.int (y := y) (z := z) 0)
-  · intro a b
-    exact (hφ _).uniq hz (by rw [map_add]; exact (hφ a).add (hφ b))
-
-theorem exists_prim (F : Type) [Field F] [NumberField F] :
-    ∃ ω : F, IsIntegral ℤ ω ∧ Algebra.adjoin ℚ {ω} = ⊤ := by
-  obtain ⟨α, hα⟩ := Field.exists_primitive_element ℚ F
-  have ha : IsAlgebraic ℚ α := Algebra.IsAlgebraic.isAlgebraic α
-  have h1 : Algebra.adjoin ℚ {α} = ⊤ := by
-    rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic ha, hα]
-    rfl
-  obtain ⟨n, hn, hi⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 ha).exists_integral_multiple
-  refine ⟨n • α, hi, ?_⟩
-  rw [eq_top_iff, ← h1, Algebra.adjoin_le_iff, Set.singleton_subset_iff]
-  have e : α = ((n : ℚ)⁻¹) • (n • α) := by
-    rw [← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn), one_smul]
-  have := Subalgebra.smul_mem (Algebra.adjoin ℚ {n • α}) (Algebra.subset_adjoin (Set.mem_singleton _)) ((n : ℚ)⁻¹)
-  rw [← e] at this
-  exact this
 
 end MultiProjectiveCoordinates.Val

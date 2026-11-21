@@ -30,41 +30,8 @@ def basePt {d : ℕ} (v : V (d + 1)) : V d := WithLp.toLp 2 fun a => v a.castSuc
   ext a
   induction a using Fin.lastCases <;> simp
 
-theorem differentiable_basePt {d : ℕ} : Differentiable ℂ (basePt (d := d)) :=
-  differentiable_euclidean.2 fun a => by simp only [basePt_apply]; fun_prop
-
-theorem differentiable_prodPt {d : ℕ} : Differentiable ℂ fun z : V d × ℂ => prodPt z.1 z.2 :=
-  differentiable_euclidean.2 fun a => by
-    induction a using Fin.lastCases
-    · simp only [prodPt_last]; fun_prop
-    · simp only [prodPt_castSucc]; fun_prop
-
 variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {σ : k →+* ℂ}
   (π : Y ⟶ B) (w : π ≫ q = p) {E : B.Modules} (hE : IsVB E 2) (cE : Chart E 2)
   (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2)
-
-def lineVec (y : CxPts p σ) : Fin 2 → ℂ := (cE.pull hE π).crd p σ ((frameAt fl y).frame (.inl 0)) y
-
-def slope (y : CxPts p σ) : ℂ := lineVec π hE cE fl y 1 / lineVec π hE cE fl y 0
-
-def finPart (σ : k →+* ℂ) : Set (CxPts p σ) :=
-  {y | PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U ∧ lineVec π hE cE fl y 0 ≠ 0}
-
-def infPart (σ : k →+* ℂ) : Set (CxPts p σ) :=
-  {y | PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U ∧ lineVec π hE cE fl y 0 = 0}
-
-include w in
-
-theorem lineVec_ne_zero {y : CxPts p σ} (hy : PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U) :
-    lineVec π hE cE fl y ≠ 0 := fun h => by
-  have hu := (cE.pull hE π).isUnit_tr ((frameAt fl y).mid (lineSC_shortExact fl)) (y := y) hy (mem_frameAt fl y)
-  refine ((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero (Matrix.det_eq_zero_of_column_eq_zero 0 fun i => ?_)
-  exact congrFun h i
-
-theorem infPart_eq : infPart π w hE cE fl σ =
-    PtsOver.map π w (spMap σ) ⁻¹' ptsIn q σ cE.U \ finPart π w hE cE fl σ := by
-  ext y
-  simp only [infPart, finPart, Set.mem_diff, Set.mem_preimage, Set.mem_setOf_eq]
-  tauto
 
 end GlobalTheory.FibTriv

@@ -124,9 +124,6 @@ theorem tanRel_scale (c : R) (y : epsR R ⟶ G) (gm gm' : GtPt D.toPre (epsR R))
     simp only [Category.id_comp]
     exact s.trans ((congrArg (fun q => val (gm.s χ) q z J) hc).trans t.symm)
 
-theorem main : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => (∀ (y y' : epsR V ⟶ G) (gm gm' gm'' : GtPt D.toPre (epsR V)), TanRel U.toUnifPre y gm → TanRel U.toUnifPre y' gm' → GtPt.IsAdd gm gm' gm'' → TanRel U.toUnifPre (y * y') gm'') ∧ ∀ (c : V) (y : epsR V ⟶ G) (gm gm' : GtPt D.toPre (epsR V)), TanRel U.toUnifPre y gm → GtPt.IsPull (epsScale V c).left gm gm' → TanRel U.toUnifPre (epsScale V c ≫ y) gm' :=
-  fun _ _ _ _ _ _ _ _ _ _ _ _ U => ⟨tanRel_mul U.toUnifPre, tanRel_scale U.toUnifPre⟩
-
 end GlobalTheory.MBLow.TanAdd
 
 end

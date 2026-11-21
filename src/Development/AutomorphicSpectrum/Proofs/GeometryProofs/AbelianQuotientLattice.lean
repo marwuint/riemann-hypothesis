@@ -3,7 +3,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QQuasiCompact
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermLieBasisStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermLieBasis
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFunctorialMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
@@ -466,8 +467,8 @@ theorem lie_seq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
     apply Mk.inj
     rw [hdi, hMk, hdi, show MT.pt (δ.comp (h a : Q.Ch →+ Q.Ch)) = _ from pt_comp_diagMap MT hMT δ (h a),
       Category.assoc, Category.assoc, hh]
-  obtain ⟨eG, hcG, hrhoG⟩ := GlobalTheory.T.formal_germ_lie_basis E H hstar X t k x d g LG M
-  obtain ⟨eB, hcB, hrhoB⟩ := GlobalTheory.T.formal_germ_lie_basis E H hstar (Sp k) Q.tB k (𝟙 _) d' gB LB MB
+  obtain ⟨eG, hcG, hrhoG⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GermLie.germ_lie E H hstar X t k x d g LG M
+  obtain ⟨eB, hcB, hrhoB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GermLie.germ_lie E H hstar (Sp k) Q.tB k (𝟙 _) d' gB LB MB
   let f : (Fin d → k) →ₗ[k] (Fin d' → k) := eB.toLinearMap ∘ₗ dq ∘ₗ eG.symm.toLinearMap
   let P : Matrix (Fin d') (Fin d) k := LinearMap.toMatrix' f
   have hP : ∀ u, P.mulVec u = f u := fun u => LinearMap.toMatrix'_mulVec f u

@@ -19,11 +19,6 @@ variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [Complete
 
 namespace Robba
 
-variable (K) in
-
-def amiceSet : Set (ℤ → K) :=
-  {a | BddAbove (Set.range fun n => ‖a n‖) ∧ Tendsto (fun n : ℕ => a (-(n : ℤ))) atTop (𝓝 0)}
-
 def norm1 (f : Robba K) : ℝ := ⨆ n, ‖f.coeff n‖
 
 theorem gaussNorm_nonneg_alt (f : Robba K) : 0 ≤ norm1 f := Real.iSup_nonneg fun _ => norm_nonneg _

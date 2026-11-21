@@ -272,19 +272,6 @@ def LamAnti : Prop :=
 noncomputable def Rde (J : ℕ) (de : ℕ → ℝ) : ℝ :=
   ∏ i ∈ Icc 1 J, ∏ i' ∈ Ioc i J, (1 + (de i' - de i) / (4 * ((i' : ℝ) - (i : ℝ))))
 
-def HarmonicVand : Prop :=
-  ∀ (J : ℕ) (de : ℕ → ℝ), 1 ≤ J → (∀ i, de i = 0 ∨ de i = 1) →
-    0 < Rde J de ∧
-    |Real.log (Rde J de) -
-        (1 / 4) * ∑ i ∈ Icc 1 J, de i * (((harmonic (i - 1) : ℚ) : ℝ) - ((harmonic (J - i) : ℚ) : ℝ))|
-      ≤ Real.pi ^ 2 / 144 * J ∧
-    |Real.log (Rde J de)| ≤ ((J : ℝ) + 1) / 4
-
-def PositionDiff : Prop :=
-  ∀ (c : Cfg) (de : ℕ → ℝ), c.Ok → IsWord c.k de → ∀ i i' : ℕ, 1 ≤ i → i < i' → i' + 1 ≤ c.k →
-    (i' + 2 ≤ c.k ∨ c.top = false) →
-    c.u de (i + 1) - c.u de (i' + 1) = c.Del * (4 * ((i' : ℝ) - (i : ℝ)) + de i' - de i)
-
 def VandNonTop : Prop :=
   ∀ (c : Cfg) (de : ℕ → ℝ), c.Ok → IsWord c.k de → c.top = false →
     0 < Vand (c.k - 1) c.v ∧
@@ -409,12 +396,6 @@ def BetaOnCut : Prop :=
       AZero c bb * tv c de de' ka rd g VV T T' * Real.sqrt c.k *
         Real.sqrt ((c.v l + Y) / c.Del)
 
-def DualLattice : Prop :=
-  ∀ (E A : Type) [Field E] [One A] (ψ : E → A) (O La : Set E) (g : E), g ≠ 0 →
-    {y : E | ∀ x ∈ O, ψ (g ^ 2 * x * y / g) = 1} = {y : E | ∀ x ∈ O, ψ (x * (g * y)) = 1} ∧
-    ((∀ x ∈ O, g ^ 2 * x ∈ La) →
-      {y : E | ∀ x ∈ La, ψ (x * y / g) = 1} ⊆ {y : E | ∀ x ∈ O, ψ (x * (g * y)) = 1})
-
 noncomputable def xThreshold (m i : ℕ) (C ka N I A : ℝ) : ℝ :=
   C * ((ka ^ (m - 1))⁻¹ * A) * (C * ka * N / I) ^ (2 * i - 2)
 
@@ -424,14 +405,6 @@ noncomputable def lamThreshold (m i s : ℕ) (C ka N I A : ℝ) : ℝ :=
 noncomputable def lamPrimeSq (m i : ℕ) (C ka N I A TT : ℝ) : ℝ :=
   C * ((ka ^ (m - 1))⁻¹ * A) * ka ^ (2 * i - 1) * (Real.sqrt TT)⁻¹ * (C * N / I) ^ (2 * (i - 1))
 
-def GPowers : Prop :=
-  ∀ (m i s : ℕ) (C ka N I A TT g : ℝ), 1 ≤ m → 1 ≤ i → 1 ≤ s → 0 < ka → 0 < g →
-    ((ka / g) ^ (m - 1))⁻¹ * A = g ^ (m - 1) * ((ka ^ (m - 1))⁻¹ * A) ∧
-    g * xThreshold m i C (ka / g) N I A = g ^ m * xThreshold m i C ka N I A / g ^ (2 * (i - 1)) ∧
-    g * lamThreshold m i s C (ka / g) N I A = g ^ m * lamThreshold m i s C ka N I A / g ^ (2 * (i - 1) + s - 1) ∧
-    g ^ 2 * lamPrimeSq m i C (ka / g) N I A TT =
-      g ^ m * lamPrimeSq m i C ka N I A TT / g ^ (2 * (i - 1))
-
 noncomputable def xHat (i : ℕ) (C ka N I g B : ℝ) : ℝ := C * B * (C * ka * N / (g * I)) ^ (2 * i - 2)
 
 noncomputable def lamHat (i s : ℕ) (C ka N I g B : ℝ) : ℝ :=
@@ -439,23 +412,6 @@ noncomputable def lamHat (i s : ℕ) (C ka N I g B : ℝ) : ℝ :=
 
 noncomputable def lamPrimeHat (i : ℕ) (C ka N I g B TT : ℝ) : ℝ :=
   Real.sqrt (C * B * (g ^ (2 * i - 2))⁻¹ * ka * (C * ka * N / I) ^ (2 * (i - 1)) * (Real.sqrt TT)⁻¹)
-
-def NormalisedForms : Prop :=
-  ∀ (m i s : ℕ) (C ka N I A TT g : ℝ), 1 ≤ m → 1 ≤ i → 1 ≤ s → 0 < ka → 0 < g → 0 ≤ C → 0 ≤ A →
-    0 < I → 0 ≤ N → 0 < TT →
-    g * xThreshold m i C (ka / g) N I A = xHat i C ka N I g (g ^ m * ((ka ^ (m - 1))⁻¹ * A)) ∧
-    g * lamThreshold m i s C (ka / g) N I A = lamHat i s C ka N I g (g ^ m * ((ka ^ (m - 1))⁻¹ * A)) ∧
-    g * Real.sqrt (lamPrimeSq m i C (ka / g) N I A TT) =
-      lamPrimeHat i C ka N I g (g ^ m * ((ka ^ (m - 1))⁻¹ * A)) TT
-
-def Placement : Prop :=
-  ∀ (k r m : ℕ) (N Del : ℝ), m = 2 * r + 2 → N = 10 * (m : ℝ) → m ≤ k → 4 ≤ k →
-    2000 * (k : ℝ) ^ 4 ≤ Del →
-    N ^ 3 ≤ Del / 2 ∧
-    (∀ j : ℕ, (j : ℝ) ≤ N - 1 → 5 / 2 + (j : ℝ) * N ^ 2 + 1 ≤ N ^ 3) ∧
-    N ^ 3 / 2 ≤ N ^ 3 - 5 / 2 ∧
-    Del / 4 ≤ Del / 2 - 5 / 2 ∧
-    (k : ℝ) * N * ((r : ℝ) + 1) ^ 2 + N ^ 2 * ((r : ℝ) + 1) ^ 2 + N ^ 3 ≤ 1200 * (k : ℝ) ^ 4
 
 def ThresholdProducts : Prop :=
   ∀ (ι : Type) [Fintype ι] (t B1 B : ι → ℝ) (k : ℕ) (C A0 Ct ka N I g Del TT : ℝ) (i s : ℕ),
@@ -576,18 +532,6 @@ structure Hyp (bb CDel Cb : ℝ) : Prop where
   hvol : 0 < G.vol G.k
 
 end Glob
-
-def TWords : Prop :=
-  ∀ (ι : Type) [Fintype ι] (G : Glob ι) (bb CDel Cb C0 Gam : ℝ) (de de' : ℕ → ℝ) (T T' : ℕ)
-    (du du' : ℝ),
-    G.Hyp bb CDel Cb → IsWord G.k de → IsWord G.k de' → 2 ≤ T → 2 ≤ T' →
-    (G.size de T du).MassRatios → (G.size de T du).LBound →
-    (G.size de T du).ColumnCount → (G.size de' T' du').ColumnCount →
-    (∀ w, 0 < G.dsig w) → 1 ≤ C0 → 0 < Gam →
-    (G.size de T du).ChoiceOfT C0 Gam → (G.size de' T' du').ChoiceOfT C0 Gam →
-    (G.f : ℝ) * (8 / 2 ^ G.k) ≤ Real.log 2 →
-    (2 * C0) ^ (4 / ((G.k : ℝ) * G.f)) ≤ Real.exp (1 / 4) →
-    Real.exp (-1) ≤ (T : ℝ) / T' ∧ (T : ℝ) / T' ≤ Real.exp 1
 
 def SizesMain : Prop :=
   ∀ (CA C0 CG CDel cT Cb : ℝ), 1 ≤ CA → 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb →

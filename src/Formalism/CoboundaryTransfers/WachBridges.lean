@@ -2,23 +2,16 @@ import Formalism.CoboundaryTransfers.GammaStableTransfers.MemCoboundariesOfIsOne
 import Formalism.CoboundaryTransfers.GammaStableTransfers.GammaStableOfGammaQUnitHolds
 import Formalism.CoboundaryTransfers.GammaStableTransfers.DiffOneSmulOfTower
 import Formalism.CoboundaryTransfers.GammaStableTransfers.TorsionKilledCriterionHolds
-import Formalism.CoboundaryTransfers.GammaStableTransfers.BridgeCL
-import Formalism.CoboundaryTransfers.GammaStableTransfers.BridgeLIFT
+import Formalism.CoboundaryTransfers.StatementBridge
+import Formalism.WachModuleLifts.WachModuleProofs.WachModuleStatementHolds
+import Formalism.LagrangeIdealLifts.Statement
 import Formalism.CoboundaryTransfers.GammaStableTransfers.DepthPageFirstZetaFactorEqPrimePower
 import Formalism.CoboundaryTransfers.GammaStableTransfers.Transfer
-import Formalism.CoboundaryTransfers.GammaStableTransfers.WachLatticeNonemptyGamma
-import Formalism.CoboundaryTransfers.GammaStableTransfers.IntegralWachDefinitions
+import Formalism.CoboundaryTransfers.StatementAPI
 
 noncomputable section
 
 namespace Formalism.CoboundaryTransfers
-
-theorem wach_api : Complex ∧ Submods ∧ CocZf ∧ HomMaps ∧ GammaQNOf ∧ DiagramChase₂ ∧ CoboundaryTransfer ∧
-    GradedStep ∧ GammaOnto ∧ ColBound ∧ LiftHf ∧ Mono ∧ IntDefs ∧ NonemptyQ ∧ NonemptyU ∧
-    NonemptyG :=
-  ⟨differentialsComplex_holds, cochainsSubmodules_holds, cocyclesFinite_holds, homPreservesCochains_holds, gammaStableOfGammaQUnit_holds, cocycleLiftOfExact_holds,
-    torsionKilledCriterion_holds, gammaGradedStep_holds, gammaImageProduct_holds, cokernelLengthBound_holds, finiteClassesLift_holds, liftsAt_mono,
-    integral_wach_definitions, wach_lattice_nonempty_Q, wach_lattice_nonempty_unramified, wach_lattice_nonempty_gamma⟩
 
 theorem lift_wach (O A : Type) [CommRing O] [CommRing A] [Algebra O A] (B : Base O A) (M : ℕ)
     (D₀ D₁ D₂ : Type)

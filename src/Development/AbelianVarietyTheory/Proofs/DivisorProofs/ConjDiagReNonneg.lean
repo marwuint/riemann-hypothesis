@@ -22,11 +22,6 @@ theorem sum_mode (ε : Fin n → Bool) (g : Fin n × Fin n → ℂ) :
   rw [← Finset.sum_subtype (Finset.univ.filter fun p : Fin n × Fin n => ε p.1 = true ∧ ε p.2 = false)
     (by simp) g, Finset.sum_filter, ← Finset.univ_product_univ, Finset.sum_product]
 
-theorem sum_mode_re (ε : Fin n → Bool) (g : Fin n × Fin n → ℝ) :
-    ∑ x : Mode ε, g x.1 = ∑ i, ∑ j, if ε i = true ∧ ε j = false then g (i, j) else 0 := by
-  rw [← Finset.sum_subtype (Finset.univ.filter fun p : Fin n × Fin n => ε p.1 = true ∧ ε p.2 = false)
-    (by simp) g, Finset.sum_filter, ← Finset.univ_product_univ, Finset.sum_product]
-
 theorem prP_mul_pB_apply (ε : Fin n → Bool) (B : Mode ε → ℂ) (i j : Fin n) :
     (prP ε * pB ε B) i j = if ε i = true ∧ ε j = false then bExt ε B (i, j) else 0 := by
   simp only [prP, diagonal_mul, pB, bExt]

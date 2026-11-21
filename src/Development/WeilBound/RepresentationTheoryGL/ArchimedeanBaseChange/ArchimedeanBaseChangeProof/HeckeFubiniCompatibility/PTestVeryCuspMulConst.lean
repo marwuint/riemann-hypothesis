@@ -300,7 +300,4 @@ theorem pTest_main {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ
     simp only [hFin, map_mul, pTest_gFin_finGL, Prod.mk_mul_mk, one_mul, mul_one] at k₁ k₂ ⊢
     exact ⟨by rw [k₁], by rw [k₂]⟩
 
-theorem test2 : Test2 := fun E _ _ _ a b fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂ =>
-  (pTest_main fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂).1
-
 end PositivityTheory.Rg.BcB.CG

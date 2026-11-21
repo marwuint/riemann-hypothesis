@@ -707,43 +707,7 @@ theorem pRam'_ne_zero (H : HidaSetting a a' ϖ α β ν) : ∃ Ψ ∈ SB _, pRam
   refine ⟨Ψ, hΨ, fun h => h1 ?_⟩
   exact (mul_eq_zero.1 (congrFun h 1)).resolve_left (mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _))
 
-omit [MeasurableSpace k] [BorelSpace k] in
-theorem onto_of_irred (hI : IndIrred) (H : HidaSetting a a' ϖ α β ν) {X : Type} [TopologicalSpace X]
-    (p : (X → ℂ) → GL (Fin (a + a')) k → ℂ)
-    (hadd : ∀ Φ ∈ SB X, ∀ Φ₁ ∈ SB X, ∀ c : ℂ, p (Φ + c • Φ₁) = p Φ + c • p Φ₁) (hmem : ∀ Φ ∈ SB X, p Φ ∈ indSp a a' α β)
-    (heq : ∀ Φ ∈ SB X, ∀ h₁, ∃ Φ' ∈ SB X, p Φ' = rtr h₁ (p Φ)) (hne : ∃ Φ ∈ SB X, p Φ ≠ 0) :
-    ∀ F ∈ indSp a a' α β, ∃ Φ ∈ SB X, p Φ = F := by
-  have h0 : p 0 = 0 := by
-    have := hadd 0 (zero_mem _) 0 (zero_mem _) 1
-    simpa using this
-  let N : Submodule ℂ (GL (Fin (a + a')) k → ℂ) :=
-    { carrier := {F | ∃ Φ ∈ SB X, p Φ = F}
-      add_mem' := by
-        rintro _ _ ⟨Φ, hΦ, rfl⟩ ⟨Φ₁, hΦ₁, rfl⟩
-        exact ⟨Φ + Φ₁, add_mem hΦ hΦ₁, by simpa using hadd Φ hΦ Φ₁ hΦ₁ 1⟩
-      zero_mem' := ⟨0, zero_mem _, h0⟩
-      smul_mem' := by
-        rintro c _ ⟨Φ, hΦ, rfl⟩
-        exact ⟨c • Φ, (SB X).smul_mem c hΦ, by simpa [h0] using hadd 0 (zero_mem _) Φ hΦ c⟩ }
-  rcases hI k a a' α β H.unitα H.unitβ N (by rintro _ ⟨Φ, hΦ, rfl⟩; exact hmem Φ hΦ)
-    (by rintro h₁ _ ⟨Φ, hΦ, rfl⟩; exact heq Φ hΦ h₁) with h | h
-  · obtain ⟨Φ, hΦ, hne⟩ := hne
-    exact absurd ((Submodule.eq_bot_iff N).1 h _ ⟨Φ, hΦ, rfl⟩) hne
-  · intro F hF
-    rw [← h] at hF
-    exact hF
-
 end Maps
-
-theorem ramMaps_of (hI : IndIrred) : RamMaps := by
-  intro k _ _ _ _ _ _ a a' ϖ α β ν H hν
-  exact ⟨fun _ h _ h₁ c => pRam_add H hν h h₁ c, fun _ h _ h₁ c => pRam'_add H h h₁ c, fun _ h => pRam_mem H hν h,
-    fun _ h => pRam'_mem H h, fun _ h g => pRam_inv H hν h g, fun Ψ _ g => pRam'_inv Ψ g, fun Φ _ h => pRam_equiv Φ h,
-    fun Ψ _ h => pRam'_equiv Ψ h,
-    onto_of_irred hI H _ (fun _ h _ h₁ c => pRam_add H hν h h₁ c) (fun _ h => pRam_mem H hν h)
-      (fun Φ h h₁ => ⟨_, omA_mem_SB ν β 1 h₁ h, pRam_equiv Φ h₁⟩) (pRam_ne_zero H),
-    onto_of_irred hI H _ (fun _ h _ h₁ c => pRam'_add H h h₁ c) (fun _ h => pRam'_mem H h)
-      (fun Ψ h h₁ => ⟨_, omB_mem_SB ν α 1 h₁ h, pRam'_equiv Ψ h₁⟩) (pRam'_ne_zero H)⟩
 
 end PositivityTheory.ThK.SplitLoc
 

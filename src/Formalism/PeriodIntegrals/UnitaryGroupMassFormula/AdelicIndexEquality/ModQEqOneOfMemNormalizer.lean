@@ -102,14 +102,6 @@ theorem modQ_one (K : Subgroup G) : modQ K 1 = 1 := by
   unfold modQ
   simp [dIdx_one]
 
-theorem modQ_inv (K : Subgroup G) (x : G) : modQ K x⁻¹ = (modQ K x)⁻¹ := by
-  unfold modQ
-  rw [inv_inv, inv_div]
-
-theorem modQ_pos (K : Subgroup G) (hK : Commensurated K) (x : G) : 0 < modQ K x := by
-  unfold modQ
-  exact div_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero (hK x))) (Nat.cast_pos.mpr (Nat.pos_of_ne_zero (hK x⁻¹)))
-
 theorem modQ_mul (K : Subgroup G) (hK : Commensurated K) (x y : G) :
     modQ K (x * y) = modQ K x * modQ K y := by
   rw [modQ_eq_idxRatio, modQ_eq_idxRatio, modQ_eq_idxRatio,
@@ -119,88 +111,6 @@ theorem modQ_mul (K : Subgroup G) (hK : Commensurated K) (x y : G) :
     (hK x) (hK (x * y)) (relIndex_conj_right_ne_zero K hK x)
     (relIndex_conj_conj_ne_zero K hK (x * y) x)).symm
 
-theorem modQ_pow (K : Subgroup G) (hK : Commensurated K) (x : G) (m : ℕ) :
-    modQ K (x ^ m) = (modQ K x) ^ m := by
-  induction m with
-  | zero => rw [pow_zero, pow_zero, modQ_one]
-  | succ m ih => rw [pow_succ, modQ_mul K hK, ih, pow_succ]
-
-theorem modQ_conj (K : Subgroup G) (hK : Commensurated K) (x y : G) :
-    modQ K (y * x * y⁻¹) = modQ K x := by
-  rw [modQ_mul K hK, modQ_mul K hK, modQ_inv]
-  have hy := (modQ_pos K hK y).ne'
-  rw [mul_comm (modQ K y) (modQ K x), mul_assoc, mul_inv_cancel₀ hy, mul_one]
-
-theorem modQ_eq_one_of_map_eq (K : Subgroup G) (x : G)
-    (h : K.map (MulAut.conj x).toMonoidHom = K) : modQ K x = 1 := by
-  rw [modQ_eq_idxRatio, h]
-  unfold idxRatio
-  simp [Subgroup.relIndex_self]
-
-theorem map_conj_of_mem_normalizer (K : Subgroup G) {x : G} (hx : x ∈ Subgroup.normalizer (K : Set G)) :
-    K.map (MulAut.conj x).toMonoidHom = K := by
-  have hx' : ∀ h, h ∈ K ↔ x * h * x⁻¹ ∈ K := by
-    intro h
-    have h2 := Subgroup.mem_normalizer_iff.mp hx h
-    simpa using h2
-  ext y
-  simp only [Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
-  constructor
-  · rintro ⟨k, hk, rfl⟩
-    exact (hx' k).mp hk
-  · intro hy
-    refine ⟨x⁻¹ * y * x, (hx' _).mpr ?_, by group⟩
-    convert hy using 1
-    group
-
-theorem modQ_eq_one_of_mem_normalizer (K : Subgroup G) {x : G} (hx : x ∈ Subgroup.normalizer (K : Set G)) :
-    modQ K x = 1 := by
-  exact modQ_eq_one_of_map_eq K x (map_conj_of_mem_normalizer K hx)
-
-theorem modQ_eq_one_of_mem (K : Subgroup G) {k : G} (hk : k ∈ K) : modQ K k = 1 := by
-  apply modQ_eq_one_of_mem_normalizer
-  rw [Subgroup.mem_normalizer_iff]
-  intro h
-  try simp only [SetLike.mem_coe]
-  constructor
-  · intro hh
-    exact K.mul_mem (K.mul_mem hk hh) (K.inv_mem hk)
-  · intro hh
-    have h2 := K.mul_mem (K.mul_mem (K.inv_mem hk) hh) hk
-    simpa [mul_assoc] using h2
-
-theorem modQ_eq_one_of_pow (K : Subgroup G) (hK : Commensurated K) (x : G) {m : ℕ} (hm : m ≠ 0)
-    (h : modQ K (x ^ m) = 1) : modQ K x = 1 := by
-  rw [modQ_pow K hK] at h
-  exact (pow_eq_one_iff_of_nonneg (modQ_pos K hK x).le hm).mp h
-
-theorem modQ_eq_one_of_pow_normalizer (K : Subgroup G) (hK : Commensurated K) (x : G) {m : ℕ}
-    (hm : m ≠ 0) (h : x ^ m ∈ Subgroup.normalizer (K : Set G)) : modQ K x = 1 := by
-  exact modQ_eq_one_of_pow K hK x hm (modQ_eq_one_of_mem_normalizer K h)
-
-theorem modQ_eq_one_closure (K : Subgroup G) (hK : Commensurated K) (S : Set G)
-    (hS : ∀ s ∈ S, modQ K s = 1) : ∀ x ∈ Subgroup.closure S, modQ K x = 1 := by
-  intro x hx
-  induction hx using Subgroup.closure_induction with
-  | mem s hs => exact hS s hs
-  | one => exact modQ_one K
-  | mul a b _ _ ha hb => rw [modQ_mul K hK, ha, hb, one_mul]
-  | inv a _ ha => rw [modQ_inv, ha, inv_one]
-
-theorem dIdx_eq_of_modQ (K : Subgroup G) (hK : Commensurated K) (x : G) (h : modQ K x = 1) :
-    dIdx K x = dIdx K x⁻¹ := by
-  unfold modQ at h
-  have h2 : ((dIdx K x⁻¹ : ℕ) : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (hK x⁻¹)
-  rw [div_eq_one_iff_eq h2] at h
-  exact_mod_cast h
-
 end Delta
-
-theorem indexEq_of_modQ_eq_one (hK : KComm)
-    (h : ∀ (I : Formalism.MainNotions.S.AutInst) (x : I.Gf), modQ (PI.AdIndexEq.Ksub I) x = 1) :
-    PI.AdIndexEq.IndexEq := by
-  unfold PI.AdIndexEq.IndexEq
-  intro I x
-  exact dIdx_eq_of_modQ (PI.AdIndexEq.Ksub I) (hK I) x (h I x)
 
 end PI.UnitaryGroupMassFormula.AdIndexEq

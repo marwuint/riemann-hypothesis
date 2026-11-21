@@ -10,10 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsInvertib
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsHomSpecOfLeRingOnStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsHomSpecOfLeRingOn
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFunctionFieldOfIsDominantStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DivIffMemNonzeroLocusStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClosedImmersionBaseChangeProjChartStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClosedImmersionBaseChangeProjChart
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsLBGenTrivOfRatiosStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GenericTrivialisationSectionAndPullbackStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsClosedImmersionOfCoordinateDivisibilityStatement
@@ -156,7 +156,7 @@ theorem nonempty_clos : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [F
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB
   have := ArithBase.ded (o := o) (Ω := Ω)
   have hne := hB.ov.ne
-  obtain ⟨u₀, hu₀⟩ := GlobalTheory.T.exists_hom_spec_of_le_ringOn' o Ω M U₀ S.R hne hB.ov.le
+  obtain ⟨u₀, hu₀⟩ := _root_.GlobalTheory.ZH.RatModel.exists_hom_spec_of_le_ringOn o Ω M U₀ S.R hne hB.ov.le
   have himm := ThetaSys.Real.immBy_basis hL o Ω S ρ
   have hH : (LPow ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))).IsLB := LB.isLB_linComb ρ.P.isLB _ _
 
@@ -206,7 +206,7 @@ theorem nonempty_clos : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [F
     exact IsPullback.of_hasPullback _ _
   obtain ⟨t, ht⟩ := CrdCalc.crd_exists hH ρ.s (N.pt ≫ a)
   obtain ⟨hdiv, hval⟩ := GlobalTheory.T.div_iff_mem_nonzeroLocus_and_crd_ratio o Ω' N _ a _ _ ρ.s t hH (by simpa using himm.1) ht
-  have hchN := GlobalTheory.T.closedImmersionBaseChange_projChart o Ω M Ω' φ N U₀ _ _ _ u₀ a _ _ _ ρ.s t hpb hN himm ht hdiv
+  have hchN := _root_.GlobalTheory.ZH.RatModel.projChart_of_isPullback o Ω M Ω' φ N U₀ _ _ _ u₀ a _ _ _ ρ.s t hpb hN himm ht hdiv
   obtain ⟨W₀, hW₀, hz₀, hle₀⟩ := exists_isAffineOpen_mem_and_subset (U := U₀) hne.some_mem
   obtain ⟨ht0, htop⟩ := (hchN W₀ hle₀ hW₀ ⟨_, hz₀⟩).closure_eq_top hN ⟨_, hz₀⟩
 

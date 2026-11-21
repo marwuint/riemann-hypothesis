@@ -138,8 +138,6 @@ theorem GlobalTheory.RightDerivSmooth.right_derivative_smooth_on_unitary_group :
 
 end
 
-example : ((⊤ : ℕ∞) : WithTop ℕ∞) + 1 ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := le_of_eq rfl
-
 theorem GlobalTheory.rdM_smoothOnH : ∀ (n : ℕ) (H X : Matrix (Fin n) (Fin n) ℂ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
     (f : Matrix (Fin n) (Fin n) ℂ → E), Xᴴ * H + H * X = 0 → SmoothOnH H f →
     ContinuousOn f {g | inUH H g} ∧ SmoothOnH H (rdM X f) ∧

@@ -7,10 +7,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
 import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CramerMemAdelicCompletionOfElementSet
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePartPreservesFormDetNormOneStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePartPreservesFormDetNormOne
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RationalPointsAdelicUnitaryEqUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceLatticeFractionalMultipleAgreeStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceLatticeFractionalMultipleAgree
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
 open scoped TensorProduct Matrix Topology
@@ -23,15 +23,15 @@ variable {D : D7} (V : HSp D)
 
 theorem mem_hat_iff (g : GA D V) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     w ∈ latGHat V g ↔ ∃ z ∈ latGHat V 1, (finHom V g).1 *ᵥ z = w := by
-  have h1 := (GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.1
-  have h2 := (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.1
+  have h1 := (_root_.GlobalTheory.Member.latG_lattice_and_completion D V g).2.2.2.1
+  have h2 := (_root_.GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1
   rw [h2, ← SetLike.mem_coe, h1]
   rfl
 
 theorem mem_lat_iff (g : GA D V) (v : Fin V.rank → D.host.E) :
     v ∈ latG V g ↔ finVec V v ∈ latGHat V g := by
-  have h0 := (GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.1
-  have h1 := (GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.1
+  have h0 := (_root_.GlobalTheory.Member.latG_lattice_and_completion D V g).2.2.1
+  have h1 := (_root_.GlobalTheory.Member.latG_lattice_and_completion D V g).2.2.2.1
   rw [← SetLike.mem_coe, h0, ← SetLike.mem_coe, h1]
   rfl
 
@@ -64,13 +64,13 @@ theorem finCong_one {N : ℕ} {k : GA D V} (hk : FinCong V N k) : FinCong V 1 k 
   exact ⟨N • y, AddSubgroup.nsmul_mem _ hy N, by rw [one_nsmul, e]⟩
 
 theorem hat_eq_of_finCong {N : ℕ} {k : GA D V} (hk : FinCong V N k) : latGHat V k = latGHat V 1 := by
-  have h1 := (GlobalTheory.T.congruence_lattice_fractionalMultiple_agree D V k).1.2 (finCong_one V hk)
+  have h1 := (_root_.GlobalTheory.Member.AALev.congruences_agree D V k).1.2 (finCong_one V hk)
   have h2 : ∀ z ∈ latGHat V 1, (finHom V k⁻¹).1 *ᵥ z ∈ latGHat V 1 := by
-    have hh := (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.1
+    have hh := (_root_.GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1
     rw [hh] at h1 ⊢
     rw [map_inv]
     exact GlobalTheory.AdLat.inv_mulVec_mem_hat D.host.F D.host.E V.rank (latG V 1) (finHom V k) (cF D)
-      (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).1 (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.1 h1 (GlobalTheory.T.finitePart_preserves_form_det_norm_one D V k).2.1
+      (_root_.GlobalTheory.Member.latG_lattice_and_completion D V 1).1 (_root_.GlobalTheory.Member.latG_lattice_and_completion D V 1).2.1 h1 (_root_.GlobalTheory.Member.finHom_herm_det D V k).2.1
   ext w
   rw [mem_hat_iff]
   constructor
@@ -98,8 +98,8 @@ theorem GlobalTheory.Member.latG_move : ∀ (D : D7) (V : HSp D), (∀ γ γ' h,
         hat_eq_of_finCong V hk]
     exact ⟨lat_eq_of_hat_eq V this, this⟩
   · have e' : latGHat V h = latGHat V h' := by
-      rw [(GlobalTheory.T.adelicElementLattice_full_and_completion D V h).2.2.2.2.1, (GlobalTheory.T.adelicElementLattice_full_and_completion D V h').2.2.2.2.1, e]
-    refine (GlobalTheory.T.congruence_lattice_fractionalMultiple_agree D V (h⁻¹ * h')).1.1 fun z hz => ?_
+      rw [(_root_.GlobalTheory.Member.latG_lattice_and_completion D V h).2.2.2.2.1, (_root_.GlobalTheory.Member.latG_lattice_and_completion D V h').2.2.2.2.1, e]
+    refine (_root_.GlobalTheory.Member.AALev.congruences_agree D V (h⁻¹ * h')).1.1 fun z hz => ?_
     have h1 := move_mem V h' 1 z hz
     rw [mul_one, ← e'] at h1
     have h2 := move_mem V h⁻¹ h _ h1

@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.SiegelNeZeroIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionHolomorphic
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionTransformationStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVectorStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVector
+import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegralStatement
 
 noncomputable section
@@ -100,7 +101,7 @@ theorem exp_int {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : �
     · rw [hyx]; push_cast; rw [hm0]; ring
     · rw [hyx]; push_cast; rw [hm1]; ring
   have hper : ∀ τ : ℍ, sg c y τ = sg c x' τ := fun τ => by
-    rw [hyx]; exact GlobalTheory.T.smoothedSiegelUnit_index_add_intVector c x' n τ hadm
+    rw [hyx]; exact _root_.GlobalTheory.Sieg.Per.sg_add_int c x' n τ hadm
   obtain ⟨k, hk⟩ := GlobalTheory.T.smoothedSiegelUnit_qExpansion_coeffs_integral c M a0 hM hlt
   obtain ⟨A, hQ, -, hA, -, -⟩ := hk a1 hadm
   have hε : ∀ j, ε (Function.invFun ε (A j)) = A j := fun j =>
@@ -180,7 +181,7 @@ theorem an_siegel_eq : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure
       · simpa using r0
       · simpa using r1
     rw [e]
-    exact GlobalTheory.T.smoothedSiegelUnit_index_add_intVector c x _ τ hx
+    exact _root_.GlobalTheory.Sieg.Per.sg_add_int c x _ τ hx
   refine SiegelModel.an_siegel T M hM hd (fun γ τ => GlobalTheory.T.siegel_function_transformation c x γ τ hx) hlev (fun γ => ?_)
   refine exp_int ε hM (fun i => Px 0 * γ 0 i + Px 1 * γ 1 i) (fun i => ?_) (admissible_act_SL2 hx γ)
   simp only [act, Fin.sum_univ_two]

@@ -11,8 +11,8 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsBasisOfEq
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FamEqOnClassOfEq
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueSecPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsTwistBasisOffPrime
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFamOfIsPullDegStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IntegralFamilyPrescribedTermUnitAtPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFamOfIsPullDeg
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IntegralFamilyPrescribedTermUnitAtPrime
 
 set_option autoImplicit false
 
@@ -312,11 +312,11 @@ theorem exists_span : PolBaseChangeSt → GlobalFnsSt → DVR.TwistBaseChangeSta
   obtain ⟨-, e, he⟩ := exists_representatives_mod_nsmul D'.X k hk
   choose b hb using fun α => GlobalTheory.TwistLoc.exists_basis_off_prime hP hG hT R D.toPre ⟨hD.W, hgen, ⟨hD.psiW⟩⟩ P.asIdeal k hk α
   choose r hr F f hF hfρ hf0 using fun q : Fin (k ^ Module.finrank ℤ D'.X) × Fin (k ^ D.toPre.P.g) =>
-    GlobalTheory.T.integralFamily_prescribedTerm_unit_at_prime hG R I hA D hD.W ⟨hD.psiW⟩ P hPW k hk (hD.xe (e q.1)) (b (hD.xe (e q.1)) q.2)
+    _root_.GlobalTheory.integralFamily_at_prime hG R I hA D hD.W ⟨hD.psiW⟩ P hPW k hk (hD.xe (e q.1)) (b (hD.xe (e q.1)) q.2)
   choose f' hf' using fun q x => (SecPull.existsUnique_secPull _ _ _ _ D.toPre.P.L D'.P.L _ D.toPre.P.isLB D'.P.isLB
     hD.w hD.w_gen (Fin 4) (D'.famφB x) (D.toPre.famφB (hD.xe x)) (DegPre.famε k) _ (famφB_comm hD x)
     (f q (hD.xe x))).exists
-  choose F' hF' using fun q => GlobalTheory.T.exists_fam_of_isPullDeg_alt hG R R' φ D.toPre D' hD k (F q) (f q) (f' q) (hF q) (hf' q)
+  choose F' hF' using fun q => _root_.GlobalTheory.exists_fam_of_isPullDeg hG R R' φ D.toPre D' hD k (F q) (f q) (f' q) (hF q) (hf' q)
   let en := (finProdFinEquiv (m := k ^ Module.finrank ℤ D'.X) (n := k ^ D.toPre.P.g)).symm
   refine ⟨_, fun i => F (en i), fun i => f (en i), fun i => F' (en i), fun i => f' (en i),
     fun i => ⟨hF _, hF' _, hf' _⟩, ?_⟩

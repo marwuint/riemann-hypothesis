@@ -1,10 +1,13 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.SuppBCOfMix
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldZeroAndAddStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIrrCharAddStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldInductionIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingAddNatPosSymmStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIsCharEqAddOfPairNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.StarVirtualCharacterEqApplyInvStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldZeroAndAdd
+import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIrrCharAdd
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldInductionIrreducible
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingAddNatPosSymm
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIsCharEqAddOfPairNeZero
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.StarVirtualCharacterEqApplyInv
+import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 
 noncomputable section
 
@@ -18,7 +21,7 @@ variable {G : Type} [Group G] [Finite G]
 
 private theorem sum_eq_pair {χ : G → ℂ} (ψ : G → ℂ) (hχ : IsChar ℂ ℂ χ) :
     (∑ᶠ g, star (χ g) * ψ g) = (Nat.card G : ℂ) * pair ψ χ := by
-  have h := GlobalTheory.T.star_virtualCharacter_eq_apply_inv G χ (AddSubgroup.subset_closure hχ)
+  have h := _root_.GlobalTheory.CuspGL.star_virt_eq_inv G χ (AddSubgroup.subset_closure hχ)
   have hG : (Nat.card G : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Nat.card_pos.ne'
   unfold pair
   rw [← mul_assoc, mul_inv_cancel₀ hG, one_mul]
@@ -32,7 +35,7 @@ private theorem pairs_iff {χ : G → ℂ} (ψ : G → ℂ) (hχ : IsChar ℂ �
 
 private theorem pair_add_ne {a u b v : G → ℂ} (ha : IsChar ℂ ℂ a) (hu : IsChar ℂ ℂ u) (hb : IsChar ℂ ℂ b)
     (hv : IsChar ℂ ℂ v) (h : pair a b ≠ 0) : pair (a + u) (b + v) ≠ 0 := by
-  obtain ⟨hadd, hnat, -, hsymm⟩ := GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G
+  obtain ⟨hadd, hnat, -, hsymm⟩ := _root_.GlobalTheory.BI.pair_add_nat_pos_symm ℂ ℂ G
   obtain ⟨n1, h1⟩ := hnat b a hb ha
   obtain ⟨n2, h2⟩ := hnat v a hv ha
   obtain ⟨n3, h3⟩ := hnat b u hb hu
@@ -51,15 +54,15 @@ private theorem isChar_of_irr {φ : G → ℂ} (h : IsIrrChar ℂ ℂ φ) : IsCh
 
 private theorem common {A : G → ℂ} (hA : IsChar ℂ ℂ A) {α : G → ℂ} (hα : IsChar ℂ ℂ α) (h : pair A α ≠ 0) :
     ∃ φ R R' : G → ℂ, IsIrrChar ℂ ℂ φ ∧ IsChar ℂ ℂ R ∧ IsChar ℂ ℂ R' ∧ A = φ + R ∧ α = φ + R' := by
-  obtain ⟨hadd, -, -, hsymm⟩ := GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G
-  obtain ⟨-, hcadd⟩ := GlobalTheory.T.isCharacterOverSubfield_zero_and_add ℂ ℂ G
+  obtain ⟨hadd, -, -, hsymm⟩ := _root_.GlobalTheory.BI.pair_add_nat_pos_symm ℂ ℂ G
+  obtain ⟨-, hcadd⟩ := _root_.GlobalTheory.BI.isChar_zero_and_add ℂ ℂ G
   have hzero : ∀ c : G → ℂ, pair 0 c = 0 := by
     intro c
     have := hadd 0 0 c
     rw [add_zero] at this
     linear_combination -this
   revert h
-  refine GlobalTheory.T.isCharacterOverSubfield_induction_irreducible ℂ ℂ G (fun α => pair A α ≠ 0 → ∃ φ R R' : G → ℂ, IsIrrChar ℂ ℂ φ ∧ IsChar ℂ ℂ R ∧
+  refine _root_.GlobalTheory.BI.isChar_induction ℂ ℂ G (fun α => pair A α ≠ 0 → ∃ φ R R' : G → ℂ, IsIrrChar ℂ ℂ φ ∧ IsChar ℂ ℂ R ∧
     IsChar ℂ ℂ R' ∧ A = φ + R ∧ α = φ + R') ?_ ?_ α hα
   · intro h0
     exact absurd (by rw [hsymm, hzero] : pair A 0 = 0) h0
@@ -72,7 +75,7 @@ private theorem common {A : G → ℂ} (hA : IsChar ℂ ℂ A) {α : G → ℂ} 
       refine ⟨ψ, R, φ + R', hψ, hR, hcadd _ _ (isChar_of_irr hφ) hR', hA', ?_⟩
       rw [hc']
       abel
-    · obtain ⟨R, hR, hAR⟩ := GlobalTheory.T.exists_isChar_eq_add_of_pair_ne_zero' ℂ ℂ G φ A hφ hA h1
+    · obtain ⟨R, hR, hAR⟩ := _root_.GlobalTheory.BI.exists_isChar_eq_add_of_pair_ne_zero ℂ ℂ G φ A hφ hA h1
       exact ⟨φ, R, c, hφ, hR, hc, hAR, rfl⟩
 
 private theorem irr_one_ne {φ : G → ℂ} (h : IsIrrChar ℂ ℂ φ) : φ 1 ≠ 0 := by
@@ -86,9 +89,9 @@ private theorem irr_one_ne {φ : G → ℂ} (h : IsIrrChar ℂ ℂ φ) : φ 1 �
   exact ⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩
 
 private theorem pair_self_ne {x : G → ℂ} (hx : IsChar ℂ ℂ x) (h : x 1 ≠ 0) : pair x x ≠ 0 := by
-  obtain ⟨-, -, hirr, -⟩ := GlobalTheory.T.finiteGroupFunctionPairing_add_nat_pos_symm ℂ ℂ G
+  obtain ⟨-, -, hirr, -⟩ := _root_.GlobalTheory.BI.pair_add_nat_pos_symm ℂ ℂ G
   have hx0 : x ≠ 0 := fun e => h (by simp [e])
-  obtain ⟨φ, c, hφ, hc, rfl⟩ := GlobalTheory.T.exists_isIrrChar_add_isChar_of_ne_zero ℂ ℂ G x hx hx0
+  obtain ⟨φ, c, hφ, hc, rfl⟩ := _root_.GlobalTheory.BI.exists_irrChar_add ℂ ℂ G x hx hx0
   obtain ⟨n, hn, hpn⟩ := hirr φ hφ
   refine pair_add_ne (isChar_of_irr hφ) hc (isChar_of_irr hφ) hc ?_
   rw [hpn]
@@ -125,7 +128,7 @@ theorem hcPair : HcChar → HcOne → HcPair := by
   have hcC : ∀ (x : GL (Fin a) F → ℂ) (y : GL (Fin b) F → ℂ), IsChar ℂ ℂ x → IsChar ℂ ℂ y →
       IsChar ℂ ℂ (hc a b x y n) :=
     fun x y hx hy => hC F a b n hn x y hx hy
-  obtain ⟨-, hcadd⟩ := GlobalTheory.T.isCharacterOverSubfield_zero_and_add ℂ ℂ (GL (Fin n) F)
+  obtain ⟨-, hcadd⟩ := _root_.GlobalTheory.BI.isChar_zero_and_add ℂ ℂ (GL (Fin n) F)
   rw [pairs_iff _ (hcC A B hA hB)]
   rw [pairs_iff _ hA] at hAα
   rw [pairs_iff _ hB] at hBβ

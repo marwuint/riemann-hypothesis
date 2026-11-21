@@ -53,33 +53,6 @@ def SatU (U : Submodule ℂ (UA E a → ℂ)) (w : HeightOneSpectrum (𝓞 E)) (
   ∃ σ : SmIrr (GL (Fin a) (w.adicCompletion E)),
     IsCompAlong U (locU a w) ((cLoc w).comp (locU a w).subtype) σ.ρ ∧ GlobalTheory.LFun.HasSatGL w σ.ρ B
 
-omit [IsAlgClosure E Ω] in
-
-def WeakU (ι : Qbar l ≃+* ℂ) (U : Submodule ℂ (UA E a → ℂ)) (r : G E Ω →* GL (Fin a) (Qbar l)) : Prop :=
-  Continuous r ∧ IsSSRep r ∧ ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite,
-    IsSplitAt w → ∀ B, SatU U w B → FrobEig ι r w (algSat a (normV w) B)
-
-variable (E Ω) in
-
-def RowAt (ι : Qbar l ≃+* ℂ) (a : ℕ) : Prop :=
-  ∀ (U : Submodule ℂ (UA E a → ℂ)), IsAutRepU U → ∀ lam : (E →+* ℂ) → DomWeight a, (∀ τ, HasWeightAt U τ (lam τ)) →
-    (∃ r : G E Ω →* GL (Fin a) (Qbar l), WeakU ι U r) ∧
-    ∀ r : G E Ω →* GL (Fin a) (Qbar l), WeakU ι U r → ∀ w, IsSplitAt w → ∀ B, SatU U w B →
-      Cl ι r w (algSat a (normV w) B) (GlobalTheory.GalDef.jumpsOf ι lam)
-
-variable (E) in
-
-structure Scope (l : ℕ) : Prop where
-  unram : ∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal
-  quad : ∃ x : E, ∃ d : ℕ, 0 < d ∧ x ^ 2 = -(d : E)
-  even : Even (Module.finrank ℚ (maximalRealSubfield E))
-  split : ∀ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → IsSplitAt w
-  three : 3 ≤ {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) | ((l : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal}.ncard
-
-def RowDef (a : ℕ) : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
-    (ι : Qbar l ≃+* ℂ), Scope E l → RowAt E Ω ι a
-
 def wtJumps {n : ℕ} (lam : DomWeight n) : Multiset ℤ := Finset.univ.val.map fun k : Fin n => (k : ℤ) - lam.w k
 
 structure IsUp {n t : ℕ} (U : Submodule ℂ (UA E n → ℂ)) (lam : (E →+* ℂ) → DomWeight n) (κ : HChar E) (m : (E →+* ℂ) → ℤ)
@@ -102,21 +75,6 @@ def TwoUp (n : ℕ) : Prop :=
       (lam₁ lam₂ : (E →+* ℂ) → DomWeight (n + t)) (ψ₁ ψ₂ : Fin t → HChar E) (p₁ p₂ : Fin t → (E →+* ℂ) → ℤ),
       Odd (n + t) ∧ IsAlgPos κ m ∧ IsUp U lam κ m U₁ lam₁ ψ₁ p₁ ∧ IsUp U lam κ m U₂ lam₂ ψ₂ p₂ ∧
         (∀ i j, ψ₁ i ≠ ψ₂ j) ∧ κ.UnrAt w₀ ∧ ∀ i, (ψ₁ i).UnrAt w₀
-
-def TwoUpAll : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
-    (∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) →
-    Even (Module.finrank ℚ (maximalRealSubfield E)) → ∀ n : ℕ, 1 ≤ n → Even n → TwoUp E n
-
-def Subtract : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
-    (ι : Qbar l ≃+* ℂ) (n : ℕ), (∀ d, Odd d → RowAt E Ω ι d) → TwoUp E n → RowAt E Ω ι n
-
-theorem rowDef_of_odd (hS : Subtract) (hT : TwoUpAll) (hO : ∀ d, Odd d → RowDef d) (a : ℕ) (ha : 1 ≤ a) : RowDef a := by
-  rcases Nat.even_or_odd a with he | ho
-  · intro E Ω _ _ _ _ _ _ l _ ι hs
-    exact hS E Ω l ι a (fun d hd => hO d hd E Ω l ι hs) (hT E hs.unram hs.even a ha he)
-  · exact hO a ho
 
 omit [IsAlgClosure E Ω] in
 theorem jumpsOf_eq (ι : Qbar l ≃+* ℂ) (lam : (E →+* ℂ) → DomWeight a) (τ : E →+* Qbar l) :

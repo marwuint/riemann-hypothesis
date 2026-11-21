@@ -72,39 +72,6 @@ def Data.self {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : Sm
     ((RingHom.injective_iff_ker_eq_bot _).1 fun _ _ h ↦ h) s s (𝟙 X) hs hs' hs''
     (by rw [Cris.spMap_id]; exact IsPullback.id_horiz s) s (by rw [Cris.spMap_id, Category.comp_id])
 
-def Data.sqLine {R : Type} [CommRing R] {I : Ideal R} (h : I ^ 2 = 0) : Data :=
-  Data.ofQuot (divided₂ h) (isDPNilpotent_squareZero h) (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective Ideal.mk_ker
-    (lineStr R) _ _ (by
-      rw [HasRingHomProperty.Spec_iff (P := @Smooth)]
-      have : Algebra.Smooth R (Polynomial R) := ⟨inferInstance, inferInstance⟩
-      exact RingHom.smooth_algebraMap.2 this) inferInstance inferInstance
-    (IsPullback.of_hasPullback _ _) _ rfl
-
-def Data.lineModFour : Data :=
-  Data.sqLine (R := ZMod 4) (I := Ideal.span {2}) (by
-    rw [Ideal.span_singleton_pow, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; decide)
-
-theorem Data.lineModFour_ideal : Data.lineModFour.I ≠ ⊥ ∧ Data.lineModFour.I ≠ ⊤ := by
-  change Ideal.span {(2 : ZMod 4)} ≠ ⊥ ∧ Ideal.span {(2 : ZMod 4)} ≠ ⊤
-  rw [Ne, Ne, Ideal.span_singleton_eq_bot, Ideal.span_singleton_eq_top]
-  decide
-
-theorem Data.lineModFour_nontrivial : Nontrivial (HH1 Data.lineModFour.s) := by
-  change Nontrivial (HH1 (lineStr (ZMod 4)))
-  refine ⟨⟨lineEquiv _ (Submodule.Quotient.mk ((Polynomial.X : Polynomial (ZMod 4)) •
-    KaehlerDifferential.D (ZMod 4) (Polynomial (ZMod 4)) Polynomial.X)), 0, ?_⟩⟩
-  rw [Ne, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]
-  rintro ⟨p, hp⟩
-  have f3 := congrArg (KaehlerDifferential.polynomialEquiv (ZMod 4)) hp
-  simp only [Derivation.coeFn_coe, map_smul, KaehlerDifferential.polynomialEquiv_D, Polynomial.derivative_X,
-    smul_eq_mul, mul_one] at f3
-  have := congrArg (Polynomial.coeff · 1) f3
-  simp only [Polynomial.coeff_derivative, Polynomial.coeff_X_one] at this
-  revert this
-  generalize p.coeff (1 + 1) = a
-  revert a
-  decide
-
 def affDiag (X : Scheme.{0}) : AffOp X ⥤ (Pair (𝟙 X))ᵒᵖ :=
   (Monotone.functor (f := fun U : X.affineOpens ↦ (⟨(U, U), le_rfl⟩ : Pair (𝟙 X))) fun _ _ h ↦
     Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨h, h⟩)).op

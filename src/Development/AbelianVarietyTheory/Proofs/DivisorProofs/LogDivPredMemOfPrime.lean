@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
-import Formalism.MeanHeightDescent.CovolumeFullAssemblyWeighted
+import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
+import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLogDivPredLeReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPadicValNatMulLogLeLog
 import Development.AutomorphicArithmetic.PrimeDiscriminants.BadCount

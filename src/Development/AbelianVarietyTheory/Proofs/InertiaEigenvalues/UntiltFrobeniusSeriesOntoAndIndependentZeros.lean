@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltAddEstimateLeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIndependentModPrimeOfPowLeCardStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparatedRootsAdditivePolyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OntoOCAdditivePolyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusLaurentSeriesEqPolynomialModPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltAddEstimateLe
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIndependentModPrimeOfPowLeCard
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparatedRootsAdditivePoly
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OntoOCAdditivePoly
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusLaurentSeriesEqPolynomialModPrime
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltToComplexPAdicBasicLawsStatement
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism.Per GlobalTheory.PSer
@@ -18,7 +18,7 @@ theorem GlobalTheory.oneVarCount_onto_independentZeros : ∀ (l : ℕ) [Fact l.P
   have hlD : ∀ D : ℕ, l ^ D ≠ 0 := fun D => (pow_pos (Fact.out : l.Prime).pos D).ne'
   obtain ⟨σ, hσ⟩ := shsurj (l : ℂ_[l]) hl1.le
   obtain ⟨t, D, E, M, a, ρ, ht, hME, ha, haN, hρl, hρ1, hρD, haM, hak, hpoly⟩ :=
-    GlobalTheory.T.untiltFrobeniusLaurentSeries_eq_polynomial_mod_prime l h μ σ hh hμ hσ
+    _root_.GlobalTheory.PolyRoot.poly_root_mod_l l h μ σ hh hμ hσ
   have hshv : ∀ u : Fl l, ‖sh (σ * u ^ l ^ D)‖ ≤ ‖(l : ℂ_[l])‖ := by
     intro u
     rw [shmul, shpow, hσ, norm_mul, norm_pow]
@@ -29,7 +29,7 @@ theorem GlobalTheory.oneVarCount_onto_independentZeros : ∀ (l : ℕ) [Fact l.P
   · intro t' ht'
     have hb : ‖t' / t‖ ≤ 1 := by
       rw [norm_div]; exact div_le_one_of_le₀ ht' (norm_nonneg _)
-    obtain ⟨W, hW, hPW⟩ := GlobalTheory.T.exists_root_additive_poly_eq_of_unit_coeff l E (M + h) a hME ha haN (t' / t) hb
+    obtain ⟨W, hW, hPW⟩ := _root_.GlobalTheory.onto_OC_additive_poly l E (M + h) a hME ha haN (t' / t) hb
     obtain ⟨u, hu⟩ := shsurj W hW
     refine ⟨σ * u ^ l ^ D, hshv u, ?_⟩
     have key := hpoly u
@@ -37,7 +37,7 @@ theorem GlobalTheory.oneVarCount_onto_independentZeros : ∀ (l : ℕ) [Fact l.P
     rw [hu, hPW, e] at key
     exact key
   · have hρ0 : 0 < ρ := lt_of_lt_of_le hl0 hρl
-    obtain ⟨Z, hZc, hZ, hsep⟩ := GlobalTheory.T.exists_separated_roots_additive_poly l E M h a ρ hME ha haN hρ0 hρ1 haM hak
+    obtain ⟨Z, hZc, hZ, hsep⟩ := _root_.GlobalTheory.separated_roots_additive_poly l E M h a ρ hME ha haN hρ0 hρ1 haM hak
     choose! u hu using fun (W : ℂ_[l]) (hW : ‖W‖ ≤ 1) => shsurj W hW
     let v : ℂ_[l] → Fl l := fun W => σ * u W ^ l ^ D
     let K' : AddSubgroup (Fl l) :=
@@ -47,7 +47,7 @@ theorem GlobalTheory.oneVarCount_onto_independentZeros : ∀ (l : ℕ) [Fact l.P
           rw [sh0, norm_zero]; positivity
         add_mem' := by
           intro x y hx hy
-          exact (GlobalTheory.T.tiltUntilt_add_estimate_le l _ x y hx hy).2
+          exact (_root_.GlobalTheory.PSer.sh_add_le l _ x y hx hy).2
         neg_mem' := by
           intro x hx
           show ‖sh (-x)‖ ≤ _
@@ -74,7 +74,7 @@ theorem GlobalTheory.oneVarCount_onto_independentZeros : ∀ (l : ℕ) [Fact l.P
         rw [e3]; exact IsUltrametricDist.norm_add_le_max _ _
       have h4 : ‖W - W'‖ ≤ ρ := h3.trans (max_le (h2.trans hρl) hd)
       linarith
-    obtain ⟨x, hxZ, hx⟩ := GlobalTheory.T.exists_independent_mod_prime_of_pow_le_card l (Fl l) ℂ_[l] K' h Z v hchar hZc hsepv
+    obtain ⟨x, hxZ, hx⟩ := _root_.GlobalTheory.ph_a_basis l (Fl l) ℂ_[l] K' h Z v hchar hZc hsepv
     refine ⟨fun b => v (x b), fun b => hshv (u (x b)), ?_, fun n hn => hx n hn⟩
     intro b
     have key := hpoly (u (x b))

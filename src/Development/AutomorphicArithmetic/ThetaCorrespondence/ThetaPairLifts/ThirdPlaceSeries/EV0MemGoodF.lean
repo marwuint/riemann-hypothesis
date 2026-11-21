@@ -1,5 +1,8 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EV0MemGoodFRows
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
+import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
+import Formalism.LocalToGlobal.IndefiniteReal.CxPassRep
+import Formalism.LocalToGlobal.Divisibility.RowLatLemmas
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
 set_option synthInstance.maxHeartbeats 200000

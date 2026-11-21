@@ -23,8 +23,8 @@ theorem nearCusp : NearCusp := by
     (hU.preimage (continuous_ofFin σ J)).mem_nhds (by simp only [Set.mem_preimage, map_one]; exact U.one_mem)
   let Wn : Set (GFin σ J) := {x | ∀ h ∈ Cf, h⁻¹ * x * h ∈ Uf}
   have hWn : Wn ∈ 𝓝 (1 : GFin σ J) := conj_mem_nhds hCf hUf
-  obtain ⟨Q, hQ, hQm⟩ := GlobalTheory.T.unipotent_radical_compact_fundamental_domain F E σ hCM n J hJ _ (pre X s) hC Wn hWn
-  obtain ⟨M₁, hM₁, hM₁b⟩ := GlobalTheory.T.torus_conjugate_unipotent_bounded F E σ hCM n J hJ r X Y hW Q c hQ hc s
+  obtain ⟨Q, hQ, hQm⟩ := _root_.GlobalTheory.CompanionTheory.StrongUnip.strong_approx_unipRad F E σ hCM n J hJ _ (pre X s) hC Wn hWn
+  obtain ⟨M₁, hM₁, hM₁b⟩ := _root_.GlobalTheory.CompanionTheory.RapidDecay.torus_contracts_unipRad F E σ hCM n J hJ r X Y hW Q c hQ hc s
   obtain ⟨C₀, hC₀, hC₀b⟩ := exists_bound_archMat (σ := σ) (J := J) hCm
   refine ⟨C₀ * M₁, mul_nonneg hC₀ hM₁, ?_⟩
   intro t ht a ha k hk m hm

@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Formalism.LocalRingCardinality.PosOfIsomEmb
-import Development.AbelianVarietyTheory.Definitions.Divisors.OfChar
 
 noncomputable section
 
@@ -74,20 +73,9 @@ def RallisConv (D : D7) : Prop :=
         ∫ h in 𝓗, star (upLift om νW 𝓖 f₁ φ₁ h) * upLift om νW 𝓖 f₂ φ₂ h ∂νV =
           ((νV 𝓗).toReal : ℂ) * ∫ g, thetaIP μ 𝓕 (om (1, g) f₂) f₁ * (∫ x in 𝓖, star (φ₁ x) * φ₂ (x * g) ∂νW) ∂νW
 
-theorem Laws.of_char {R : RealDat D A Ks} {F : Face D A} (h : R.Char F) : Laws R F :=
-  ⟨h.lev, h.grp, h.fam, h.models, h.thP⟩
-
-theorem Laws.of_charTh {R : RealDat D A Ks} {F : Face D A} (h : GlobalTheory.ThetaClauses.CharTh R F) : Laws R F :=
-  ⟨h.lev, h.grp, h.fam, h.models, h.thP⟩
-
 theorem Laws.posDef {R : RealDat D A Ks} {F : Face D A} (h : Laws R F) (i : Fin D.R.m) :
     (Vc D i).SigOK ∧ (Vc D i).IsPosDef :=
   ⟨D.sp.V_sig _, h.models.vpos i⟩
-
-theorem length_pos_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) (τ : D.host.E →+* ℂ)
-    (hτ : ∀ a, τ (star a) = (starRingEnd ℂ) (τ a)) (x : V.V) (hx : x ≠ 0) :
-    ∃ c : ℝ, 0 < c ∧ τ (V.hT x x) = (c : ℂ) :=
-  V.form_pos hs τ hτ (hp τ) x hx
 
 theorem exists_lift_model {X Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Z] [Module ℂ Z]
     (M : HMod Z) {U : Submodule ℂ Z} {ip : Z → Z → ℂ} (H : M.Is U ip) (f : X →ₗ[ℂ] Z) (hm : ∀ x, f x ∈ U) :
@@ -102,16 +90,6 @@ theorem Laws.exists_isRaw {R : RealDat D A Ks} {F : Face D A} (h : Laws R F) (i 
     ∃ th, IsRaw R i t th :=
   exists_lift_model (R.HW i (sg0 D A)) (h.models.HW i (sg0 D A)) (R.thF i t) (h.thP.thF_mem i t)
 
-set_option maxHeartbeats 1000000 in
-
-theorem Laws.isRaw_unique {R : RealDat D A Ks} {F : Face D A} (h : Laws R F) {i : Fin D.R.m} {t : T}
-    {th th' : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H} (h₁ : IsRaw R i t th) (h₂ : IsRaw R i t th') : th = th' :=
-  LinearMap.ext fun x => (h.models.HW i (sg0 D A)).1 ((h₁ x).trans (h₂ x).symm)
-
-theorem InnerPos.innerNe {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} {S : Finset (HeightOneSpectrum (𝓞 D.host.F))}
-    (h : InnerPos R i t S) : InnerNe R i t S :=
-  fun th hth c => (h th hth c).elim fun l H => ⟨l, Complex.ofReal_ne_zero.2 H.1.ne', H.2⟩
-
 theorem thetaInner_smul_left {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (a : ℂ) (f f' : WO S T' → ℂ) :
     thetaIP μ 𝓕 (a • f) f' = star a * thetaIP μ 𝓕 f f' := by
   unfold thetaIP
@@ -121,13 +99,6 @@ theorem thetaInner_smul_left {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set
 theorem thetaInner_smul_right {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (a : ℂ) (f f' : WO S T' → ℂ) :
     thetaIP μ 𝓕 f (a • f') = a * thetaIP μ 𝓕 f f' := by
   unfold thetaIP
-  rw [← integral_const_mul]
-  simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm]
-
-theorem upLift_smul {V W : HSp D} (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ν : Measure (GA D W))
-    (𝓖 : Set (GA D W)) (f : WO V W → ℂ) (a : ℂ) (φ : GA D W → ℂ) (h : GA D V) :
-    upLift om ν 𝓖 f (a • φ) h = a * upLift om ν 𝓖 f φ h := by
-  unfold upLift
   rw [← integral_const_mul]
   simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm]
 

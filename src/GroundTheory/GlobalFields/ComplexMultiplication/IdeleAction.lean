@@ -121,18 +121,6 @@ theorem mem_iff_forall_mem_localIdeal {I : FractionalIdeal (𝓞 K)⁰ K} (hI : 
   refine forall_congr' fun v ↦ ?_
   rw [mem_localIdeal_iff hI, valuedAdicCompletion_eq_valuation']
 
-theorem mem_localIdeal_one_iff (v : HeightOneSpectrum (𝓞 K)) {y : v.adicCompletion K} :
-    y ∈ localIdeal (1 : FractionalIdeal (𝓞 K)⁰ K) v ↔ y ∈ v.adicCompletionIntegers K := by
-  have h1 : (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0 := by
-    simpa only [Units.val_one] using (1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ).ne_zero
-  rw [mem_localIdeal_iff h1, count_one, neg_zero, exp_zero, mem_adicCompletionIntegers]
-
-theorem eq_of_localIdeal_eq {I J : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
-    (h : ∀ v : HeightOneSpectrum (𝓞 K), localIdeal I v = localIdeal J v) : I = J := by
-  ext x
-  rw [mem_iff_forall_mem_localIdeal hI, mem_iff_forall_mem_localIdeal hJ]
-  simp only [h]
-
 theorem eventually_coe_mem_localIdeal {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) (x : K) :
     ∀ᶠ v in Filter.cofinite, (x : v.adicCompletion K) ∈ localIdeal I v := by
   have h1 : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, count K v I = 0 :=
@@ -168,20 +156,11 @@ instance : MulAction (IdeleGroup K) 𝓘 where
 theorem smul_def (s : IdeleGroup K) (I : 𝓘) : s • I = toFractionalIdeal s * I :=
   rfl
 
-theorem smul_one_eq_toFractionalIdeal (s : IdeleGroup K) : s • (1 : 𝓘) = toFractionalIdeal s :=
-  mul_one _
-
 instance : IsScalarTower (IdeleGroup K) 𝓘 𝓘 :=
   ⟨fun s I J ↦ by simp only [smul_def, smul_eq_mul, mul_assoc]⟩
 
 instance : SMulCommClass (IdeleGroup K) 𝓘 𝓘 :=
   ⟨fun s I J ↦ by simp only [smul_def, smul_eq_mul, mul_left_comm]⟩
-
-theorem smul_mul_eq (s : IdeleGroup K) (I J : 𝓘) : s • (I * J) = s • I * J :=
-  (mul_assoc _ _ _).symm
-
-theorem smul_inv_eq (s : IdeleGroup K) (I : 𝓘) : (s • I)⁻¹ = s⁻¹ • I⁻¹ := by
-  rw [smul_def, smul_def, mul_inv, map_inv]
 
 theorem count_smul (v : HeightOneSpectrum (𝓞 K)) (s : IdeleGroup K) (I : 𝓘) :
     count K v ((s • I : 𝓘) : FractionalIdeal (𝓞 K)⁰ K) =
@@ -189,30 +168,14 @@ theorem count_smul (v : HeightOneSpectrum (𝓞 K)) (s : IdeleGroup K) (I : 𝓘
   rw [smul_def, Units.val_mul, count_mul K v (Units.ne_zero _) (Units.ne_zero _),
     count_toFractionalIdeal]
 
-theorem smul_le_smul_iff {s : IdeleGroup K} {I J : 𝓘} :
-    ((s • I : 𝓘) : FractionalIdeal (𝓞 K)⁰ K) ≤ (s • J : 𝓘) ↔
-      (I : FractionalIdeal (𝓞 K)⁰ K) ≤ J := by
-  rw [le_iff_forall_count_le (Units.ne_zero _) (Units.ne_zero _),
-    le_iff_forall_count_le (Units.ne_zero _) (Units.ne_zero _)]
-  simp only [count_smul, add_le_add_iff_left]
-
 instance : MulAction.IsPretransitive (IdeleGroup K) 𝓘 :=
   ⟨fun I J ↦ by
     obtain ⟨s, hs⟩ := toFractionalIdeal_surjective (J * I⁻¹)
     exact ⟨s, by rw [smul_def, hs, inv_mul_cancel_right]⟩⟩
 
-theorem smul_eq_smul_iff {s t : IdeleGroup K} {I : 𝓘} :
-    s • I = t • I ↔ toFractionalIdeal s = toFractionalIdeal t := by
-  rw [smul_def, smul_def, mul_left_inj]
-
 theorem smul_eq_self_iff {s : IdeleGroup K} {I : 𝓘} :
     s • I = I ↔ s ∈ standardOpenSubgroup K := by
   rw [← ker_toFractionalIdeal, MonoidHom.mem_ker, smul_def, mul_eq_right]
-
-theorem stabilizer_eq (I : 𝓘) :
-    MulAction.stabilizer (IdeleGroup K) I = standardOpenSubgroup K := by
-  ext s
-  exact smul_eq_self_iff
 
 theorem diagonal_smul (a : Kˣ) (I : 𝓘) :
     diagonal K a • I = toPrincipalIdeal (𝓞 K) K a * I := by
@@ -246,30 +209,6 @@ theorem localIdeal_smul (s : IdeleGroup K) (I : 𝓘) (v : HeightOneSpectrum (�
     rw [mem_localIdeal_iff (Units.ne_zero _)] at hz
     rw [LinearMap.mulLeft_apply, map_mul, valued_eq_exp_neg_ord, neg_add, exp_add]
     exact mul_le_mul_right hz _
-
-theorem mem_smul_iff (s : IdeleGroup K) (I : 𝓘) {x : K} :
-    x ∈ ((s • I : 𝓘) : FractionalIdeal (𝓞 K)⁰ K) ↔ ∀ v : HeightOneSpectrum (𝓞 K),
-      (x : v.adicCompletion K) ∈ (localIdeal (I : FractionalIdeal (𝓞 K)⁰ K) v).map
-        (LinearMap.mulLeft (v.adicCompletionIntegers K) ((s : 𝔸[K]).2 v)) := by
-  rw [mem_iff_forall_mem_localIdeal (Units.ne_zero _)]
-  simp only [localIdeal_smul]
-
-theorem smul_eq_iff_localIdeal (s : IdeleGroup K) (I J : 𝓘) :
-    s • I = J ↔ ∀ v : HeightOneSpectrum (𝓞 K), localIdeal (J : FractionalIdeal (𝓞 K)⁰ K) v =
-      (localIdeal (I : FractionalIdeal (𝓞 K)⁰ K) v).map
-        (LinearMap.mulLeft (v.adicCompletionIntegers K) ((s : 𝔸[K]).2 v)) := by
-  constructor
-  · rintro rfl v
-    exact localIdeal_smul s I v
-  · intro h
-    refine Units.ext (eq_of_localIdeal_eq (Units.ne_zero _) (Units.ne_zero _) fun v ↦ ?_)
-    rw [localIdeal_smul, h]
-
-theorem localIdeal_toFractionalIdeal (s : IdeleGroup K) (v : HeightOneSpectrum (𝓞 K)) :
-    localIdeal ((toFractionalIdeal s : 𝓘) : FractionalIdeal (𝓞 K)⁰ K) v =
-      (localIdeal (1 : FractionalIdeal (𝓞 K)⁰ K) v).map
-        (LinearMap.mulLeft (v.adicCompletionIntegers K) ((s : 𝔸[K]).2 v)) := by
-  rw [← smul_one_eq_toFractionalIdeal, localIdeal_smul, Units.val_one]
 
 end IdeleGroup
 

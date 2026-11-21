@@ -42,16 +42,4 @@ def supLattice (T : Core D) (j : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) 
 def SupLatticeFullAt (T : Core D) (j : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Prop :=
   (supLattice T j a n).FG ∧ Submodule.span T.Q.c.F (supLattice T j a n : Set (T.R j)) = T.cuspA j a n
 
-def kappaExp (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) : (D.host.E →+* ℂ) × ℕ → ℕ :=
-  wtA (DIV.Cons.kaWt D hK hn j)
-
-def IntegralCuspFormsFullLattice : Prop :=
-  ∀ (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (T : Core D), LawsM T → ∀ j, InR D j →
-    SupLatticeFullAt T j (kappaExp D hK hn j) D.R.nV
-
-example (T : Core D) (h : LawsM T) (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) :
-    Nonempty (T.PtM j la) := by
-  obtain ⟨V, io, e, ho, y, hy⟩ := h.ptNe j hj la
-  exact ⟨⟨_, PtV.mk la ho y hy () trivial, rfl⟩⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SupremumLattice

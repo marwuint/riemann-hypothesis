@@ -10,11 +10,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseRangeUn
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinLocalIdeleInjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChevalleyUnits
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalArtinMapUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGlobalArtinCompatibleStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGlobalArtinCompatible
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateUnramifiedDegreeOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationLeIffNormEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalEmbeddingRangeEqFieldStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSepClosureOfRangeEqStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationLeIffNormEmbedding
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalEmbeddingRangeEqField
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSepClosureOfRangeEq
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalBridgeLubinTateFieldStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUniformizerGaloisActionStatement
 noncomputable section
@@ -41,11 +41,11 @@ theorem link : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E
   letI algF : Algebra (w.adicCompletion E) (Om l) := φ.toAlgebra
   have hmap : ∀ y, algebraMap (w.adicCompletion E) (Om l) y = φ y := fun _ => rfl
   have hr : Set.range (algebraMap (w.adicCompletion E) (Om l)) = (Bw.Kw.1 : Set (Om l)) :=
-    GlobalTheory.T.local_embedding_range_eq_field Bw w φ hφ hφj
-  haveI hsep : IsSepClosure (w.adicCompletion E) (Om l) := GlobalTheory.T.is_sep_closure_of_range_eq Bw.Kw hr
+    _root_.GlobalTheory.CompanionTheory.LTHodge.CompletionRange.range_eq_Kw Bw w φ hφ hφj
+  haveI hsep : IsSepClosure (w.adicCompletion E) (Om l) := _root_.GlobalTheory.CompanionTheory.LTHodge.isSepClosure_Om_of_range Bw.Kw hr
   haveI hext : ValuativeExtension (w.adicCompletion E) (Om l) := ⟨fun a b => by
     rw [GroundTheory.PAdicHodge.CyclNorms.vle_iff_norm_le]
-    exact (GlobalTheory.T.valuation_le_iff_norm_embedding φ hφ a b).symm⟩
+    exact (_root_.GlobalTheory.CompanionTheory.LocalNorm.vle_iff_norm_le φ hφ a b).symm⟩
   haveI hclosed : IsSepClosed (Om l) := IsSepClosure.sep_closed (w.adicCompletion E)
   haveI halg : Algebra.IsAlgebraic (w.adicCompletion E) (Om l) := hsep.separable.isAlgebraic
   obtain ⟨π, hπ, H⟩ := GlobalTheory.T.exists_uniformizer_galois_action hχ hr
@@ -62,7 +62,7 @@ theorem link : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E
   have hdeg : unramifiedDegree (w.adicCompletion E) (Om l) g = 1 := GlobalTheory.T.local_bridge_lubin_tate_field Bw hI σ hσ g hg
   have hloc := GlobalTheory.T.lubin_tate_unramified_degree_one hπ (isLubinTateSeries_ltPoly π) u g hdeg hact
   have hres := fun (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelianGalois E L] =>
-    GlobalTheory.T.local_global_artin_compatible w Bw.j (fun y => (hφj y).symm) (unitsIncl _ u⁻¹) (σ : G E Ω) g
+    _root_.GlobalTheory.CompanionTheory.LTLink.local_restriction_abelianization_artin w Bw.j (fun y => (hφj y).symm) (unitsIncl _ u⁻¹) (σ : G E Ω) g
       (fun z => by rw [hg]; exact Bw.e_comm σ z) hloc L
   have h1 : art (localIdele E w (unitsIncl _ u)) = toAb E Ω σ := by
     rw [GlobalTheory.T.global_artin_map_unique art hart]

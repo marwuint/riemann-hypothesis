@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsEigenvectorAtOfModelStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsFramedPointOfLieEigenbasisStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.PrincipalTriplePullbackStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsEigenvectorAtOfModel
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsFramedPointOfLieEigenbasis
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.PrincipalTriplePullback
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLamObjGoodOfCmObj
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLamLettersIsGood
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsFibreOfIffIsPolFibre
@@ -31,7 +31,7 @@ theorem exists_cmPt_good_of_cmObj : ∀ (E : Type) [Field E] [NumberField E] [Is
   intro E _ _ _ H Dw l Xo c _ hstar K _ _ _ ρ σ X La x Φ m' hρ hLa hx S _ _ σ₁
   have hfib : LamF.IsFibreOf X.B.pol Φ.key (LamF.gmap K) m'.φ :=
     (LamF.isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) X.B.pol Φ.key m'.φ).2
-      ((GlobalTheory.T.principalTriple_pullback E H (𝓞 K) K (algebraMap (𝓞 K) K) X.B).2 Φ.T m' inferInstance).2.1
+      ((_root_.GlobalTheory.LamT.pat_pullback E H (𝓞 K) K (algebraMap (𝓞 K) K) X.B).2 Φ.T m' inferInstance).2.1
   obtain ⟨oa, oaΨ, oa', xΨ, x', φΨ, φ', τΨ, τ', ℓΨ, ℓ', Tl, LamL, hoa, -, -, hgood⟩ :=
     LamF.exists_lamObjGood_of_cmObj GlobalTheory.firstFiveLaws.2.1.secTwist GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1
       GlobalTheory.homExtension_semiAbelian_dvr_unconditional E H l c hstar K ρ σ Dw.p Dw.q X La hρ hLa Φ.key m'.φ hfib
@@ -47,8 +47,8 @@ theorem exists_cmPt_good_of_cmObj : ∀ (E : Type) [Field E] [NumberField E] [Is
     · exact (hm b).2 h
   subst hmm
   choose w hw hU using hL.2.2.1
-  obtain ⟨y, hy, htie, hu⟩ := GlobalTheory.T.exists_framedPoint_of_lie_eigenbasis E H Dw l Xo c K x Φ e U w hx hdet hU (fun τ i =>
-    GlobalTheory.T.isEigenvectorAt_of_model E H Dw l Xo c K x Φ.T.t X.B.t Φ.m m' τ (w (e ⟨τ, i⟩)) (fun a => by
+  obtain ⟨y, hy, htie, hu⟩ := _root_.GlobalTheory.LamT.exists_frPt_of_eigenbasis E H Dw l Xo c K x Φ e U w hx hdet hU (fun τ i =>
+    _root_.GlobalTheory.LamT.isEigAt_of_model E H Dw l Xo c K x Φ.T.t X.B.t Φ.m m' τ (w (e ⟨τ, i⟩)) (fun a => by
       have h := heig τ i (w (e ⟨τ, i⟩)) (hw _) a
       rw [← hoa]
       exact h))

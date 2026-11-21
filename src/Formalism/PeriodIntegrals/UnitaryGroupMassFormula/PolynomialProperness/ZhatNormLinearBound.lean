@@ -149,28 +149,6 @@ theorem entry_le_gN {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1)) : �
   rw [gN_eq, Complex.norm_def]
   exact Real.sqrt_le_sqrt (normSq_le_hs g i j)
 
-theorem hs_le_of_entry {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) {c : ℝ}
-    (h : ∀ i j, ‖M i j‖ ≤ c) : hs M ≤ (Fintype.card ι : ℝ) ^ 2 * c ^ 2 := by
-  unfold hs
-  have h1 : ∀ i j, Complex.normSq (M i j) ≤ c ^ 2 := by
-    intro i j
-    rw [Complex.normSq_eq_norm_sq]
-    exact pow_le_pow_left₀ (norm_nonneg _) (h i j) 2
-  calc ∑ i, ∑ j, Complex.normSq (M i j) ≤ ∑ _i : ι, ∑ _j : ι, c ^ 2 :=
-        Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => h1 i j
-    _ = (Fintype.card ι : ℝ) ^ 2 * c ^ 2 := by
-        simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; ring
-
-theorem gN_le_of_entry {k r : ℕ} (g : B.Mat k r) {c : ℝ} (hc : 0 ≤ c) (h : ∀ i j, ‖g i j‖ ≤ c) :
-    B.gN g ≤ (2 * r + k + 1 : ℕ) * c := by
-  rw [gN_eq]
-  have h1 := hs_le_of_entry g h
-  rw [Fintype.card_fin] at h1
-  have h2 : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) * c := by positivity
-  calc Real.sqrt (hs g) ≤ Real.sqrt ((((2 * r + k + 1 : ℕ) : ℝ) * c) ^ 2) :=
-        Real.sqrt_le_sqrt (by rw [mul_pow]; exact h1)
-    _ = ((2 * r + k + 1 : ℕ) : ℝ) * c := Real.sqrt_sq h2
-
 theorem mx_nonneg {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ C2.mx M := norm_nonneg _
 
 theorem entry_le_mx {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : ‖M i j‖ ≤ C2.mx M := by

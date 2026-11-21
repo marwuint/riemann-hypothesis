@@ -8,10 +8,6 @@ open scoped Matrix
 
 namespace UpperTheory.V.Sd
 
-def ToNewform : Prop :=
-  ∀ (k N : ℕ) [NeZero N], 2 ≤ k → ∀ χ : DirichletCharacter ℂ N, χ.IsPrimitive → ∀ g : Eigenform k N χ,
-    ∃ f : Newform k, f.M = N ∧ (∀ n, f.a n = g.a n) ∧ ∀ n : ℕ, f.χ (n : ZMod f.M) = χ (n : ZMod N)
-
 def EigAut : Prop :=
   ∀ (k N : ℕ) [NeZero N], 2 ≤ k → ∀ χ : DirichletCharacter ℂ N, χ.IsPrimitive → ∀ (g : Eigenform k N χ) (l : ℕ) [Fact l.Prime]
     (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (ρ : G ℚ Ω →* GL (Fin 2) (Qbar l)), Continuous ρ → IsIrr ρ →
@@ -53,11 +49,6 @@ def Ad0Irr : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (ρ : Γ →* GL (Fin 2) (Qbar l)),
     Continuous ρ → IrrOpen ρ → IrrOpen (ad0 ρ)
 
-def Sym3Irr : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (ρ : Γ →* GL (Fin 2) (Qbar l)),
-    Continuous ρ → IrrOpen ρ → (∀ H : Subgroup Γ, IsOpen (H : Set Γ) → ∃ s ∈ H, ∃ a b : (Qbar l)ˣ, ¬ IsOfFinOrder (a / b) ∧
-      (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = (X - C (a : Qbar l)) * (X - C (b : Qbar l))) → IrrOpen (sym3 ρ)
-
 def IrrAb : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (n : ℕ) (r : Γ →* GL (Fin n) (Qbar l)),
     Continuous r → IrrOpen r → ∀ H H' : Subgroup Γ, IsOpen (H : Set Γ) → H' ≤ H → (∀ a ∈ H, ∀ b ∈ H, a * b * a⁻¹ * b⁻¹ ∈ H') →
@@ -74,21 +65,6 @@ def Ad0Facts : Prop :=
       (ad0 ρ s : Matrix (Fin 3) (Fin 3) (Qbar l)).charpoly =
         (X - C ((a / b : (Qbar l)ˣ) : Qbar l)) * (X - C 1) * (X - C ((b / a : (Qbar l)ˣ) : Qbar l))) ∧
     ∀ a b : Γ →* (Qbar l)ˣ, (∀ s, ‖(a s : Qbar l)‖ = 1 ∧ ‖(b s : Qbar l)‖ = 1) → ResSum ρ ![a, b] → ResSum (ad0 ρ) ![b / a, 1, a / b]
-
-def Sym3Facts : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (ρ : Γ →* GL (Fin 2) (Qbar l)),
-    (Continuous ρ → Continuous (sym3 ρ)) ∧
-    (∀ s, (sym3 ρ s : Matrix (Fin 4) (Fin 4) (Qbar l))ᵀ * !![0, 0, 0, 3; 0, 0, -1, 0; 0, 1, 0, 0; -3, 0, 0, 0] *
-      (sym3 ρ s : Matrix (Fin 4) (Fin 4) (Qbar l)) =
-        (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det ^ 3 • !![0, 0, 0, 3; 0, 0, -1, 0; 0, 1, 0, 0; -3, 0, 0, 0]) ∧
-    (∀ (H : Subgroup Γ) (a b : Γ →* (Qbar l)ˣ), IsDiagOn ρ H ![a, b] → IsDiagOn (sym3 ρ) H ![a ^ 3, a ^ 2 * b, a * b ^ 2, b ^ 3]) ∧
-    (∀ (H : Subgroup Γ) (κ : Fin 2 → ↥H →* (Qbar l)ˣ), IsFlagOn ρ H κ →
-      IsFlagOn (sym3 ρ) H ![κ 0 ^ 3, κ 0 ^ 2 * κ 1, κ 0 * κ 1 ^ 2, κ 1 ^ 3]) ∧
-    (∀ s (a b : Qbar l), (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = (X - C a) * (X - C b) →
-      (sym3 ρ s : Matrix (Fin 4) (Fin 4) (Qbar l)).charpoly =
-        (X - C (a ^ 3)) * (X - C (a ^ 2 * b)) * (X - C (a * b ^ 2)) * (X - C (b ^ 3))) ∧
-    ∀ a b : Γ →* (Qbar l)ˣ, (∀ s, ‖(a s : Qbar l)‖ = 1 ∧ ‖(b s : Qbar l)‖ = 1) → ResSum ρ ![a, b] →
-      ResSum (sym3 ρ) ![a ^ 3, a ^ 2 * b, a * b ^ 2, b ^ 3]
 
 def ShapeFacts : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (n : ℕ) (r : Γ →* GL (Fin n) (Qbar l)) (δ : Γ →* (Qbar l)ˣ),
@@ -117,15 +93,6 @@ def SelfTwGal : Prop :=
     ∃ δ : G F Ω →* (Qbar l)ˣ, δ ≠ 1 ∧ IsOpen (δ.ker : Set (G F Ω)) ∧ RepIso r (tw r δ) ∧
       ∀ (E : Type) [Field E] [NumberField E] [Algebra F E] [Algebra E Ω] [IsScalarTower F E Ω], IsNormChar E η →
         δ.comp (galEmb F E Ω) = 1
-
-def AdAut : Prop :=
-  ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
-    (ι : Qbar l ≃+* ℂ) (ρ : G F Ω →* GL (Fin 2) (Qbar l)), Continuous ρ → IsAutR ι ρ → IrrOpen ρ →
-    IsAutR ι (tw (ad0 ρ) (cycBar F Ω l)⁻¹)
-
-def Sym3Aut : Prop :=
-  ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
-    (ι : Qbar l ≃+* ℂ) (ρ : G F Ω →* GL (Fin 2) (Qbar l)), Continuous ρ → IsAutR ι ρ → IrrOpen ρ → IsIrr (sym3 ρ) → IsAutR ι (sym3 ρ)
 
 def UpQuad : Prop :=
   ∀ (F E Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [IsTotallyComplex E] [Field Ω] [Algebra F E]
@@ -164,37 +131,10 @@ def AlgRes : Prop :=
     [IsScalarTower F E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (κ : G F Ω →* (Qbar l)ˣ),
     IsAlgChar ι κ → IsAlgChar ι (κ.comp (galEmb F E Ω))
 
-def ToCsd : Prop :=
-  ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω] (l : ℕ) [Fact l.Prime]
-    (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (r : G L Ω →* GL (Fin n) (Qbar l)) (c : G ℚ Ω), IsCC c →
-    (∃ P, IsPair c r (cycBar L Ω l ^ (1 - (n : ℤ))) P) → IsAutC ι r → IsAutCsd ι r
-
 def Twist : Prop :=
   ∀ (K Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω],
     Module.finrank ℚ K = 2 → ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ¬ (l : ℤ) ∣ discr K → ∀ (ι : Qbar l ≃+* ℂ) (c : G ℚ Ω), IsCC c →
     ∃ κ : G K Ω →* (Qbar l)ˣ, IsTwist ι c κ
-
-def Seed3 : Prop :=
-  ∀ (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L] [IsCMField L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
-    [Algebra K Ω] [Algebra L Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (c : G ℚ Ω) (N w : ℕ) (χ' η θ : G ℚ Ω →* (Qbar l)ˣ) (j : ℕ),
-    FieldPairCharacterTripleConditions K L c N w χ' η θ j → χ' ≠ η → ∀ B : ℕ, ∃ m ≥ B, m ≡ j [MOD l - 1] ∧ ∃ r : G L Ω →* GL (Fin 3) (Qbar l), IrrOpen r ∧
-      IsSeed ι c (fun i => (![cycBar ℚ Ω l ^ j * χ', 1, (cycBar ℚ Ω l ^ j * χ')⁻¹] i).comp (galEmb ℚ L Ω))
-        (fun i => (![χ', 1, χ'⁻¹] i).comp (galEmb ℚ L Ω)) ![(m : ℤ), 0, -(m : ℤ)] (cycBar L Ω l)⁻¹ r
-
-def Seed2 : Prop :=
-  ∀ (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L] [IsCMField L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
-    [Algebra K Ω] [Algebra L Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (c : G ℚ Ω) (N w : ℕ) (χ' η θ : G ℚ Ω →* (Qbar l)ˣ) (j : ℕ),
-    FieldPairCharacterTripleConditions K L c N w χ' η θ j → ∀ (κ : G K Ω →* (Qbar l)ˣ) (ka : G L Ω →* (Qbar l)ˣ), IsTwist ι c κ →
-    (∀ (s : G L Ω) (s' : G K Ω), galEmb ℚ L Ω s = galEmb ℚ K Ω s' → ka s = κ s') →
-    ∀ B : ℕ, ∃ m ≥ B, m ≡ j [MOD l - 1] ∧ ∃ σ : G ℚ Ω →* GL (Fin 2) (Qbar l), Continuous σ ∧
-      Matrix.GeneralLinearGroup.det.comp σ = η * θ ∧ ResSum σ ![cycBar ℚ Ω l ^ j * χ' * η, (cycBar ℚ Ω l ^ j * χ')⁻¹] ∧
-      IsSeed ι c (fun i => (![cycBar ℚ Ω l ^ j * χ', (cycBar ℚ Ω l ^ j * χ')⁻¹] i).comp (galEmb ℚ L Ω))
-        (fun i => (![χ', χ'⁻¹] i).comp (galEmb ℚ L Ω)) ![(m : ℤ), -(m : ℤ)] ka (σ.comp (galEmb ℚ L Ω))
-
-def SeedSym : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (c : G ℚ Ω), IsCC c →
-    ∀ (N w : ℕ) (ξ θ : G ℚ Ω →* (Qbar l)ˣ), SlopeTestRemainingChoices N w θ → SplitAt N w ξ → ξ c = -1 → (∃ s, ¬ Cong (ξ s ^ 2) 1) →
-    ∀ B : ℕ, ∃ k ≥ B, k ≡ 1 [MOD l - 1] ∧ ∃ ρ, EisRep ι ξ θ k ρ ∧ IrrOpen ρ ∧ IrrOpen (sym3 ρ) ∧ IsAutR ι (sym3 ρ)
 
 def RibetLat : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ]

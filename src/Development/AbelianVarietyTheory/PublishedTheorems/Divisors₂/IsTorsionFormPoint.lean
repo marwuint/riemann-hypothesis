@@ -113,29 +113,4 @@ def IsAcyclicAt (b : E) : Prop :=
 def IsTorsionForm (b : E) (T : Ext (n + n)) : Prop :=
   ∃ F, IsHeatTrace τ M j h β b F ∧ ∀ S, IsMellinDeriv (fun u => F u S) (T S)
 
-theorem sgn_mul_self {m : ℕ} (i : Fin m) (S : Finset (Fin m)) : sgn i S * sgn i S = 1 := by
-  rw [sgn, ← mul_pow]; simp
-
-theorem sgn_erase {m : ℕ} (i : Fin m) (S : Finset (Fin m)) : sgn i (S.erase i) = sgn i S := by
-  unfold sgn; congr 2; ext x; simp only [Finset.mem_filter, Finset.mem_erase]
-  exact ⟨fun h => ⟨h.1.2, h.2⟩, fun h => ⟨⟨h.2.ne, h.1⟩, h.2⟩⟩
-
-theorem sgn_insert {m : ℕ} (i : Fin m) (S : Finset (Fin m)) : sgn i (insert i S) = sgn i S := by
-  rw [← sgn_erase, Finset.erase_insert_eq_erase, sgn_erase]
-
-theorem wedge_contr_add {m : ℕ} (i : Fin m) (w : Ext m) :
-    wedge i (contr i w) + contr i (wedge i w) = w := by
-  funext S
-  by_cases hS : i ∈ S
-  · simp [wedge, contr, hS, sgn_erase, ← mul_assoc, sgn_mul_self, Finset.insert_erase hS]
-  · simp [wedge, contr, hS, sgn_insert, ← mul_assoc, sgn_mul_self, Finset.erase_insert hS]
-
-example : wedge (0 : Fin 2) (wedge 1 (Pi.single ∅ 1)) Finset.univ = 1 ∧
-    wedge (1 : Fin 2) (wedge 0 (Pi.single ∅ 1)) Finset.univ = -1 := by
-  have e₁ : (Finset.univ : Finset (Fin 2)).erase 0 = {1} := by decide
-  have e₂ : (Finset.univ : Finset (Fin 2)).erase 1 = {0} := by decide
-  have e₃ : ((Finset.univ : Finset (Fin 2)).filter (· = 0)).card = 1 := by decide
-  have e₄ : (({1} : Finset (Fin 2)).filter (· = 0)).card = 0 := by decide
-  simp [wedge, sgn, e₁, e₂, e₃, e₄]
-
 end GlobalTheory.TorsionForm

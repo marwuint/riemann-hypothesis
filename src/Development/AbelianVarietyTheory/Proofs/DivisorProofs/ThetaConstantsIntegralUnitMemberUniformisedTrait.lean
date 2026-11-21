@@ -14,7 +14,10 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbel
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeronNeutralComponentFiniteLevel
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThValAtAndNotIsThValue
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValExt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralElemOfValNonnegOverCompleteDVRStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralElemOfValNonnegOverCompleteDVR
+import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Ex.OneGen
@@ -147,7 +150,7 @@ theorem main : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing
   obtain ⟨ptF', hptF', hLF'⟩ := GlobalTheory.UMin.ThPull.thList_pull (Sp W) G U.LG.L U.LG.rig U.LG.isLB U.LG.rigGen m (m ^ (4 * g))
     F Kb j x' θF ptF cF hLF
   have hint : ∀ b, φF.IsIntegralElem (cF b) := fun b =>
-    GlobalTheory.T.isIntegralElem_of_val_nonneg_over_completeDVR W hV ϖ hϖ F v hv (cF b) (hA (ptF b) (cF b) (hLF.2.1 b))
+    _root_.GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg W hV ϖ hϖ F v hv (cF b) (hA (ptF b) (cF b) (hLF.2.1 b))
   refine ⟨fun a => ?_, ?_⟩
   · obtain ⟨b, hb⟩ := hLF.2.2 Kb j (ptK a) (hLK.2.1 a).1
     have heq : ptK a = ptF' b := Over.OverMorphism.ext (hb.trans (hptF' b).symm)
@@ -178,7 +181,7 @@ theorem main : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing
       rw [h, map_zero] at hab
       exact hc0 (j.injective (hab.trans (map_zero j).symm))
     refine ⟨a0, hca, isIntegralElem_of_sq φF i i' j hsq (z := c0⁻¹) (by rw [map_inv₀, map_inv₀, hab]) ?_⟩
-    refine GlobalTheory.T.isIntegralElem_of_val_nonneg_over_completeDVR W hV ϖ hϖ F v hv _ ?_
+    refine _root_.GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg W hV ϖ hϖ F v hv _ ?_
     have h01 : v c0 + v c0⁻¹ = 0 := by
       rw [← AddValuation.map_mul, mul_inv_cancel₀ hc0, AddValuation.map_one]
     rw [hv0, zero_add] at h01

@@ -32,18 +32,11 @@ def RowProps (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin n) (Qbar l)) (π :
 
 end Defs
 
-def RowAt : Prop :=
-  Hypotheses₂ → RowT → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
-    (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (r : G E Ω →* GL (Fin n) (Qbar l)) (π : CuspSub E n), Continuous r → (CG.mk π).IsRegAlg →
-    GlobalTheory.ContraPair.DualIsConj π → AttC ι r π → ∃ HT, RowProps ι r π HT
-
 def GalAE : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a → ∀ P : CuspSub E a, P.IsCsd → ∀ s : ℝ, (CG.mk (P.twist (GlobalTheory.HeckeGal.Model.absPow E s))).IsRegAlg →
     ∃ r : G E Ω →* GL (Fin a) (Qbar l), Continuous r ∧ ∀ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∉ w.asIdeal →
       ∀ B, (CG.mk (P.twist (GlobalTheory.HeckeGal.Model.absPow E s))).HasSat w B → FrobPol ι r w (algSat a (normV w) B)
-
-def GalAEOf : Prop := Hypotheses₂ → RowT → GalAE
 
 def SatTw : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (P : CuspSub E a) (s : ℝ) (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ),
@@ -82,8 +75,6 @@ def Same : Prop :=
         IsCompAlong U (locU n w) ((cLoc w).comp (locU n w).subtype) τ.ρ ∧ GlobalTheory.LFun.HasSatGL w τ.ρ B ∧ (CG.mk π).HasSat w B) →
     (∀ w, IsSplitAt w → ∀ τ, π.IsLocComp w τ → IsCompAlong U (locU n w) ((cLoc w).comp (locU n w).subtype) τ.ρ) ∧
       ∀ φ : E →+* ℂ, ∃ lam, HasWeightAt U φ lam ∧ π.HasInfChar φ (infOfWeight lam)
-
-def SameOf : Prop := Hypotheses₂ → GlobalTheory.BcSpeh.BcSpeh → SatTw → SumAE → SplitSat → OnePart → Same
 
 def SphT : Prop :=
   GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]

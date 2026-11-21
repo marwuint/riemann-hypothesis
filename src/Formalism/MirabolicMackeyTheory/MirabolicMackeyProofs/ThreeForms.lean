@@ -97,10 +97,6 @@ theorem qlen_add {N M P : Submodule R W} (hNM : N ≤ M) (hMP : M ≤ P) :
     qlen P N = qlen M N + qlen P M :=
   indexBasic_len_add N M P hNM hMP
 
-theorem qlen_map (f : W ≃ₗ[R] W) (X Y : Submodule R W) :
-    qlen (X.map (f : W →ₗ[R] W)) (Y.map (f : W →ₗ[R] W)) = qlen X Y :=
-  imageLcv_len_map f X Y
-
 theorem lidx_of_le (p : Ideal R) [p.IsPrime] {X Y : Submodule R W} (h : Y ≤ X) :
     lidx p X Y = ((qlen (localization₂ p X) (localization₂ p Y)).toNat : ℤ) := by
   unfold lidx
@@ -130,12 +126,6 @@ theorem mem_sc_inv {a : K} (ha : a ≠ 0) (X : Submodule (𝓞 K) Z) (x : Z) :
   · intro h
     exact ⟨a • x, h, by simp [smul_smul, ha]⟩
 
-theorem sc_sc_inv {a : K} (ha : a ≠ 0) (X : Submodule (𝓞 K) Z) : sc a (sc a⁻¹ X) = X := by
-  ext x
-  have := mem_sc_inv (inv_ne_zero ha) (sc a⁻¹ X) x
-  rw [inv_inv] at this
-  rw [this, mem_sc_inv ha, smul_smul, mul_inv_cancel₀ ha, one_smul]
-
 theorem localization_sc (p : Ideal (𝓞 K)) [p.IsPrime] {a : K} (ha : a ≠ 0) (X : Submodule (𝓞 K) Z) :
     localization₂ p (sc a X) = sc a (localization₂ p X) := by
   rw [sc_eq_map a ha, sc_eq_map a ha, localization_map']
@@ -149,10 +139,6 @@ theorem algebraMap_ne_zero_of_notMem (p : Ideal (𝓞 K)) {s : 𝓞 K} (hs : s �
   intro h
   have : s = 0 := (FaithfulSMul.algebraMap_injective (𝓞 K) K) (by rw [h, map_zero])
   exact hs (this ▸ p.zero_mem)
-
-theorem localization_sup_eq_localization_dnN (p : Ideal (𝓞 K)) [p.IsPrime] (X Y : Submodule (𝓞 K) Z) :
-    localization₂ p (X ⊔ Y) = localization₂ p X ⊔ localization₂ p Y :=
-  locBasic_locS_sup (K := K) _ (fun _ hs => algebraMap_ne_zero_of_notMem p hs) X Y
 
 theorem cut_mono (W : Submodule K Z) {X Y : Submodule (𝓞 K) Z} (h : X ≤ Y) : cut W X ≤ cut W Y :=
   inf_le_inf_right _ h
@@ -479,17 +465,6 @@ section Ram
 
 open IsLocalRing
 
-theorem isLocalHom_of_map_eq_pow (O O' : Type) [CommRing O] [IsLocalRing O] [CommRing O']
-    [IsLocalRing O'] [Algebra O O'] (e : ℕ) (he : e ≠ 0)
-    (h : Ideal.map (algebraMap O O') (maximalIdeal O) = maximalIdeal O' ^ e) :
-    IsLocalHom (algebraMap O O') := by
-  constructor
-  intro a ha
-  by_contra hna
-  have hm : a ∈ maximalIdeal O := hna
-  have h1 : algebraMap O O' a ∈ maximalIdeal O' ^ e := h ▸ Ideal.mem_map_of_mem _ hm
-  exact (mem_maximalIdeal _).mp (Ideal.pow_le_self he h1) ha
-
 theorem exists_pow_smul_eq_zero (O : Type) [CommRing O] [IsLocalRing O] (ϖ : O)
     (hϖ : ϖ ∈ maximalIdeal O) (M : Type) [AddCommGroup M] [Module O M] (h : IsFiniteLength O M) :
     ∃ n : ℕ, ∀ x : M, ϖ ^ n • x = 0 := by
@@ -517,25 +492,6 @@ theorem exists_pow_smul_eq_zero (O : Type) [CommRing O] [IsLocalRing O] (ϖ : O)
 end Ram
 
 end ThreeFormsAlt
-
-open ThreeFormsAlt in
-theorem three_forms_sum : ThreeFormsSum := by
-  intro K _ _ _ Z _ _ _ _ _ w A B _ _ _ a ha _
-  unfold lix
-  rw [lidx_of_le _ (le_sup_right : B ≤ sc a A ⊔ B),
-    lidx_of_le _ (inf_le_left : A ⊓ sc a⁻¹ B ≤ A), localization_sup_eq_localization_dnN, localization_sc _ ha, localization_inf,
-    localization_sc _ (inv_ne_zero ha)]
-  set A' := localization₂ w.asIdeal A
-  set B' := localization₂ w.asIdeal B
-  have h1 : qlen (sc a A' ⊔ B') B' = qlen (sc a A') B' :=
-    le_antisymm (qlen_le_of_sup le_sup_left (sup_le_sup_left (le_inf le_sup_right le_rfl) _))
-      (qlen_mono_left le_sup_left _)
-  have h2 : qlen (sc a A') B' = qlen A' (sc a⁻¹ B') := by
-    conv_lhs => rw [← sc_sc_inv ha B']
-    rw [sc_eq_map a ha, sc_eq_map a ha, qlen_map]
-  have h3 : qlen A' (A' ⊓ sc a⁻¹ B') = qlen A' (sc a⁻¹ B') :=
-    qlen_congr A' (fun x hx => ⟨fun h => h.2, fun h => ⟨hx, h⟩⟩)
-  rw [h1, h2, h3]
 
 open ThreeFormsAlt in
 theorem threeForms_of (hS : IdxScaleIn) : ThreeForms := by
@@ -621,38 +577,5 @@ theorem threeForms_of (hS : IdxScaleIn) : ThreeForms := by
     linarith
 
 theorem three_forms : ThreeForms := threeForms_of index_scale_inclusion
-
-open IsLocalRing in
-theorem length_ramified : LengthRamified := by
-  intro O O' _ _ _ _ _ _ _ _ e hmap M _ _ hM
-  by_cases he : e = 0
-  · subst he
-    rw [pow_zero, Ideal.one_eq_top] at hmap
-    obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-    have hu : IsUnit (algebraMap O O' ϖ) := by
-      rw [hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton,
-        Ideal.span_singleton_eq_top] at hmap
-      exact hmap
-    obtain ⟨n, hn⟩ := ThreeFormsAlt.exists_pow_smul_eq_zero O ϖ
-      (by rw [hϖ.maximalIdeal_eq]; exact Ideal.mem_span_singleton_self ϖ) M
-      (Module.length_ne_top_iff.mp hM)
-    have hsub : Subsingleton (TensorProduct O O' M) := by
-      refine ⟨fun x y => ?_⟩
-      have h0 : ∀ z : TensorProduct O O' M, z = 0 := by
-        intro z
-        induction z using TensorProduct.induction_on with
-        | zero => rfl
-        | tmul a m =>
-          obtain ⟨u, hu'⟩ := hu.pow n
-          have : a = ϖ ^ n • (a * (u⁻¹ : O'ˣ)) := by
-            rw [Algebra.smul_def, map_pow, ← hu', mul_comm a, Units.mul_inv_cancel_left]
-          rw [this, TensorProduct.smul_tmul, hn, TensorProduct.tmul_zero]
-        | add a b ha hb => rw [ha, hb, add_zero]
-      rw [h0 x, h0 y]
-    rw [Module.length_eq_zero]
-    simp
-  · have := ThreeFormsAlt.isLocalHom_of_map_eq_pow O O' e he hmap
-    rw [IsLocalRing.length_baseChange O O' M, hmap,
-      IsDiscreteValuationRing.length_quotient_pow_maximalIdeal, mul_comm]
 
 end Formalism.EigenvalueLevelCeiling

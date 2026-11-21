@@ -192,11 +192,6 @@ theorem norm_pderiv_le (f : 𝔼 → ℂ) (α : Fin n → ℕ) (x : 𝔼) :
         norm_dT_le f (mdir α) x
     _ = ‖iteratedFDeriv ℝ (mabs α) f x‖ := by simp [norm_mdir]
 
-theorem calc_sqrt_sum_sq_eq_norm {ι : Type*} [Fintype ι] (a : ι → ℝ) :
-    Real.sqrt (∑ i, a i ^ 2) = ‖(WithLp.toLp 2 a : EuclideanSpace ℝ ι)‖ := by
-  rw [EuclideanSpace.norm_eq]
-  simp
-
 theorem norm_le_sqrt_sum_basis {k : ℕ}
     (T : ContinuousMultilinearMap ℝ (fun _ : Fin k ↦ 𝔼) ℂ) :
     ‖T‖ ≤ Real.sqrt (∑ J : Fin k → Fin n, ‖T (fun l ↦ ev (J l))‖ ^ 2) := by
@@ -279,13 +274,6 @@ theorem hsD_add_sq {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (m k : ℕ) (x :
     refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun J _ ↦ ?_
     simp [Fin.snocEquiv, pdT_snoc hf]
 
-theorem hsD_pdT_le {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (m : ℕ) {k : ℕ} (I : Fin k → Fin n)
-    (x : 𝔼) : hsD m (pdT I f) x ≤ hsD (m + k) f x := by
-  refine (pow_le_pow_iff_left₀ (hsD_nonneg _ _ _) (hsD_nonneg _ _ _) two_ne_zero).1 ?_
-  rw [hsD_add_sq hf]
-  exact Finset.single_le_sum (f := fun I ↦ hsD m (pdT I f) x ^ 2)
-    (fun _ _ ↦ sq_nonneg _) (Finset.mem_univ I)
-
 def hsVec (k : ℕ) (f : 𝔼 → ℂ) (x : 𝔼) : EuclideanSpace ℂ (Fin k → Fin n) :=
   WithLp.toLp 2 (fun J ↦ pdT J f x)
 
@@ -308,12 +296,6 @@ theorem hsVec_const_mul {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (c : ℂ) (
   ext J
   simp [hsVec, pdT, dT_const_mul hf]
 
-theorem hsVec_sum {ι : Type*} (s : Finset ι) (F : ι → 𝔼 → ℂ)
-    (hF : ∀ i ∈ s, ContDiff ℝ ∞ (F i)) (k : ℕ) (x : 𝔼) :
-    hsVec k (fun y ↦ ∑ i ∈ s, F i y) x = ∑ i ∈ s, hsVec k (F i) x := by
-  ext J
-  simp [hsVec, pdT, dT_sum s F hF]
-
 theorem hsD_add_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (k : ℕ) (x : 𝔼) :
     hsD k (fun y ↦ f y + g y) x ≤ hsD k f x + hsD k g x := by
   simp_rw [hsD_eq_norm, hsVec_add hf hg]
@@ -327,12 +309,6 @@ theorem hsD_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff
 theorem hsD_const_mul {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (c : ℂ) (k : ℕ) (x : 𝔼) :
     hsD k (fun y ↦ c * f y) x = ‖c‖ * hsD k f x := by
   simp_rw [hsD_eq_norm, hsVec_const_mul hf, norm_smul]
-
-theorem hsD_sum_le {ι : Type*} (s : Finset ι) (F : ι → 𝔼 → ℂ)
-    (hF : ∀ i ∈ s, ContDiff ℝ ∞ (F i)) (k : ℕ) (x : 𝔼) :
-    hsD k (fun y ↦ ∑ i ∈ s, F i y) x ≤ ∑ i ∈ s, hsD k (F i) x := by
-  simp_rw [hsD_eq_norm, hsVec_sum s F hF]
-  exact norm_sum_le _ _
 
 end
 

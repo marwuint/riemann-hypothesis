@@ -7,11 +7,6 @@ open ReciprocityTheory.ChartRestriction.G.FD
 
 namespace GlobalTheory.SqDet
 
-section
-variable {K : Type} [Field K] [NumberField K] {d : ℕ} {θ : K}
-
-end
-
 open NumberField in
 open scoped Matrix ComplexConjugate in
 private theorem exists_rat_sum_norm_forms_eq_one {a b d : ℚ} (ha : 0 < a) (hb : 0 < b) (hd : 0 < d) :

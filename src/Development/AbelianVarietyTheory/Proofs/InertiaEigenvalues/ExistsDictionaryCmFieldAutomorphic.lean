@@ -9,8 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanRepMatrixEqTopOfAbsIrreducible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAdelicExtensionOfAlgebraicWeightDefiniteUnStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinitePartMulDefiniteUnitaryInfinitePointStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitaryRationalMatrixOfFirstPresentationPoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenNhdOneInUnitaryPrincipalCongruenceStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitaryRationalMatrixOfFirstPresentationPo
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenNhdOneInUnitaryPrincipalCongruence
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -134,7 +134,7 @@ theorem isAutFormU_phi (hfin : ∀ k ∈ finU L n, R k = 1)
     [FiniteDimensional ℂ W] {f : GAf L n → W} (hf : f ∈ NG.AFall L n ρ) (lam : Module.Dual ℂ W) :
     IsAutFormU (phi F R f lam) := by
   obtain ⟨hleft, N, hN, hinv⟩ := hf
-  obtain ⟨O, hO, h1O, hOc⟩ := GlobalTheory.T.exists_open_nhd_one_in_unitary_principal_congruence L n F N hN
+  obtain ⟨O, hO, h1O, hOc⟩ := _root_.GlobalTheory.CongOpen.exists_open_cong L n F N hN
   have hOf : ∀ k ∈ O, ∀ g, f (g * fy F (k : UA L n)) = f g := fun k hk g =>
     hinv _ (hOc k hk _ (by rw [j_fy, fpt_of_mem_fin k.2])) g
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -272,7 +272,7 @@ theorem dict_span [FiniteDimensional ℂ W] (hρ : ρ.IsIrreducible) (S : Submod
       have htop : Submodule.span ℂ (Set.range ρ) ≤ W'.comap T := by
         rw [Submodule.span_le]
         rintro _ ⟨γQ, rfl⟩
-        obtain ⟨γ, γ₀, h1, h2⟩ := GlobalTheory.T.exists_unitary_rational_matrix_of_first_presentation_point L n γQ
+        obtain ⟨γ, γ₀, h1, h2⟩ := _root_.GlobalTheory.RatPtsBridge.exists_ratGL L n γQ
         have hx : γ * (fpt γ)⁻¹ ∈ infU L n := by
           change GeneralLinearGroup.map (pFin L) (γ * (fpt γ)⁻¹).1 = 1
           rw [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]

@@ -1,7 +1,8 @@
 import ReciprocityTheory.Hypotheses.GalCoh
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsideIffLeMaxUnramifiedOutside
 import GroundTheory.ProfiniteCohomology.ContinuousCochains
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DifferentDvdRamifiedPrimePowerStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DifferentDvdRamifiedPrimePower
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RamifiedPrimeContainsDiscriminantStatement
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal Formalism.ConjugateSelfDual
@@ -23,7 +24,7 @@ theorem natAbs_discr_dvd {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     [Algebra F E] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (hE : ∀ v ∉ S, Algebra.IsUnramifiedIn (𝓞 E) v.asIdeal) :
     (discr E).natAbs ∣ bound S ^ (Module.finrank ℚ E * Module.finrank ℚ E) := by
-  have hdvd := GlobalTheory.T.different_dvd_ramified_prime_power E (bound S) (bound_ne_zero S) fun P hP hP0 hPd => by
+  have hdvd := _root_.GlobalTheory.CompanionTheory.Glob.differentIdeal_dvd_span_pow E (bound S) (bound_ne_zero S) fun P hP hP0 hPd => by
     haveI := hP
     exact GlobalTheory.T.ramified_prime_contains_discriminant F E S hE P hP0 hPd
   have h := map_dvd Ideal.absNorm hdvd

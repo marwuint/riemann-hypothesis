@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniversalAnt
 import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConvention
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjPlNeOfSplit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AnticyclotomicTwistRamifiedPlacesSplitStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AnticyclotomicTwistRamifiedPlacesSplit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitSetInertiaPowerTrivialStatement
 
 noncomputable section
@@ -68,8 +68,8 @@ theorem twistOf_delta_good : ∀ (D : D7) (a : Recip D D.nd.Om), a.Good → ∀ 
     exact (hc _ _ (by simp)).1 hP
   set Q := half ch (D.ntw.pD i) with hQ
   have hsplit : SplitSet Q := by
-    refine GlobalTheory.UnivGood.splitSet_of_split (fun P hP => GlobalTheory.T.anticyclotomicTwist_ramified_places_split D i P (mem_half.1 hP).1) fun P hP P' hP' hc => ?_
-    have hne : P ≠ P' := ne_of_split (GlobalTheory.T.anticyclotomicTwist_ramified_places_split D i P (mem_half.1 hP).1) hc
+    refine GlobalTheory.UnivGood.splitSet_of_split (fun P hP => _root_.GlobalTheory.SplitDelta.places_split D i P (mem_half.1 hP).1) fun P hP P' hP' hc => ?_
+    have hne : P ≠ P' := ne_of_split (_root_.GlobalTheory.SplitDelta.places_split D i P (mem_half.1 hP).1) hc
     exact (hch.pair P P' hc hne).1 (mem_half.1 hP).2 (mem_half.1 hP').2
   let g : (D.ntw.O0 i)ˣ →* Circle := unitPart.comp (Units.map f.toMonoidHom)
   have hkey : charOf a f ψ = a.pull (g.comp ψ) := by
@@ -103,7 +103,7 @@ theorem twistOf_delta_good : ∀ (D : D7) (a : Recip D D.nd.Om), a.Good → ∀ 
       · exact hv (mem_half.2 ⟨hvD, hc⟩)
       · obtain ⟨v', hv'⟩ := GlobalTheory.TwistDet.exists_isConjPl v
         have hv'D := hconj v hvD v' hv'
-        have hne := ne_of_split (GlobalTheory.T.anticyclotomicTwist_ramified_places_split D i v hvD) hv'
+        have hne := ne_of_split (_root_.GlobalTheory.SplitDelta.places_split D i v hvD) hv'
         have hv'c : v' ∈ ch := by
           by_contra h
           exact hc (((hch.pair v v' hv' hne).2 h))

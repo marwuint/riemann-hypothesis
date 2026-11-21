@@ -12,11 +12,6 @@ open scoped ComplexConjugate Matrix
 namespace Formalism.FourierDecayAlt.P.Dx1.SN
 noncomputable section
 
-theorem castM_castM {k a b c : ℕ} (h : a = b) (h' : b = c) (g : B.Mat k a) :
-    castM h' (castM h g) = castM (h.trans h') g := by
-  subst h h'
-  simp [castM]
-
 theorem Rn_zero (k j ρ : ℕ) (hj : j = 0) (x : U.RC k j ρ) : U.Rn k j ρ x = 1 := by
   subst hj
   ext i i'
@@ -752,35 +747,6 @@ open scoped ComplexConjugate Matrix ComplexOrder
 namespace Formalism.FourierDecayAlt.P.Dx1
 noncomputable section
 open Classical
-
-theorem orbJOfData : OrbJOfData := by
-  intro k r Wp Wq _ _ _ _ _ D γ O F h
-  unfold orbJ
-  rw [dif_pos h]
-  obtain ⟨⟨h1, h2, h3⟩, h4⟩ := h.choose_spec
-  exact (O.weil F _ h1 h2 h3 h4).symm
-
-theorem orbDataOfParts : OrbDataOfParts := by
-  intro hH hI k r Wp Wq _ _ _ _ _ D γ w d hrel hd hZ
-  have haar := hH k r Wp Wq D γ w d hrel.1 hd hZ
-  refine ⟨⟨muR D γ w, haar, orbJ D γ (muR D γ w), ?_⟩, rfl, fun F _ => rfl⟩
-  intro F θ h1 h2 h3 h4
-  have h : ∃ θ, IsNormCut D γ (muR D γ w) θ ∧ Integrable (fun p => θ p • orbIntegrand D γ F p) D.μSS :=
-    ⟨θ, ⟨h1, h2, h3⟩, h4⟩
-  unfold orbJ
-  rw [dif_pos h]
-  exact hI k r Wp Wq D γ _ hrel haar F θ _ ⟨h1, h2, h3⟩ h.choose_spec.1 h4 h.choose_spec.2
-
-theorem thmPPosOfForms : ThmPPosOfForms := by
-  intro E _ _ _ Wp Wq _ _ _ _ S h v ε hε i hi w Y
-  have h1 := h v ε hε i hi w Y
-  unfold TB.PSDOn at *
-  let d : Y → ℂ := fun x => ((√(C.nLoc S.G.k S.G.r S.fr (S.pd v).G x) : ℝ) : ℂ)
-  have h2 := h1.conjTranspose_mul_mul_same (Matrix.diagonal d)
-  convert h2 using 1
-  ext x y
-  simp [Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, d, C.HidaSetting.gramLoc]
-  ring
 
 theorem ptGSpec : PtGSpec := by
   intro k r z z' p γ _ hZ
@@ -1761,12 +1727,6 @@ theorem ptPerm_spec : Formalism.FourierDecayAlt.D.PtPermSpec := by
   exact Dx1.d_ptPermSpec
 theorem ptG_spec : Formalism.FourierDecayAlt.D.PtGSpec := by
   exact Dx1.ptGSpec
-theorem orbital_transfer_of_data : Formalism.FourierDecayAlt.D.OrbJOfData := by
-  exact Dx1.orbJOfData
-theorem orbital_data_of_parts : Formalism.FourierDecayAlt.D.OrbDataOfParts := by
-  exact Dx1.orbDataOfParts
-theorem positivity_of_forms : Formalism.FourierDecayAlt.D.ThmPPosOfForms := by
-  exact Dx1.thmPPosOfForms
 theorem relevant_points_holds : Formalism.FourierDecayAlt.D.PtRelevant := by
   exact Dx1.Rel.ptRelevant
 theorem good_of_admissible : Formalism.FourierDecayAlt.D.GoodOfAdm := by

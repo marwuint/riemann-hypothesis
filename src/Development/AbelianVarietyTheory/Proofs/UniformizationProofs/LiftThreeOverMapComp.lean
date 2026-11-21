@@ -95,14 +95,6 @@ theorem exists_rigidified (hL : L.IsLB) (hL' : L'.IsLB) (π : X' ⟶ T) (σ : T 
 
 end Rigid
 
-section Cube
-
-open GlobalTheory.IndefiniteRowSideFullHecke.SeparatedSymmetricModel
-
-variable {S S' : Scheme.{0}} (p : S' ⟶ S) {G : Over S} {H T : Over S'}
-
-end Cube
-
 section Clauses
 
 open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.IndefiniteRowSideFullHecke.SeparatedSymmetricModel
@@ -114,13 +106,6 @@ structure GtMatch (g : GtCoord I D e G) (j : CanonicalRigidImages.GtIso D I e G)
   q : g.q = j.q
   i : g.i = j.i
   t : ∀ χ, HEq (g.t χ) (j.x χ)
-
-theorem Oφ_eq {g : GtCoord I D e G} {j : CanonicalRigidImages.GtIso D I e G} (h : g.q = j.q) (χ : D.X) :
-    D.Oφ g.pG χ = CanonicalRigidImages.oφ D I e j.q χ := by
-  rw [← h]
-  exact congrArg (fun y => ![y.left, _, _, _]) (_root_.mul_comm g.pG (toUnit _ ≫ D.c χ))
-
-theorem Oinvε_eq : Oinvε = CanonicalRigidImages.oεinv := by decide
 
 variable {LG : RigLB G} {g : GtCoord I D e G} {j : CanonicalRigidImages.GtIso D I e G}
   {w : LB.Iso (LG.L.pull (fstG I e G).left) (D.P.L.pull g.pG.left)}

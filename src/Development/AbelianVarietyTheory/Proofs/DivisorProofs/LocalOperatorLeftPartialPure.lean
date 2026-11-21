@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjLinApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictedProductMemSchwartz
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchwartzNe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzOperatorParametricExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzFunctionFactorizableSumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzFunctionFactorizableSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatSumSplitTensorStatement
 
 open scoped TensorProduct NNReal Matrix
@@ -59,7 +59,7 @@ theorem exists_partL_pureA : ∀ {F : Type} [Field F] [NumberField F] {κ κ₁ 
   refine ⟨P, fun g hg => ?_⟩
   have hE : ∀ (z : AF F) (v : Pl F), evFin F v z = evalV F v z.2 := fun _ _ => rfl
   obtain ⟨m, a, b, ha, hb, hab⟩ := GlobalTheory.T.schwartz_bruhat_sum_split_tensor g hg
-  choose n φ hφSB hφstd hφ using fun k => GlobalTheory.T.adelic_schwartz_function_factorizable_sum (a k) (ha k)
+  choose n φ hφSB hφstd hφ using fun k => _root_.GlobalTheory.SBRestrProd.sb_eq_sum_restrProd (a k) (ha k)
   let g₁ : (κ₁ ⊕ κ' → Af F) → ℂ := ∑ k, ∑ j : Fin (n k), fun z =>
     (∏ᶠ v, ev v (φ k j v) fun i => evalV F v (z (Sum.inl i))) * b k (z ∘ Sum.inr)
   have hev : ∀ k j, ∀ᶠ v in cofinite, ev v (φ k j v) = stdInd F κ₁ v := fun k j => by

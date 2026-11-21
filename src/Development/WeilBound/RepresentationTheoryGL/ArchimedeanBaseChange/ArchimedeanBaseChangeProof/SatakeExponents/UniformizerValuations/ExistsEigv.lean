@@ -103,27 +103,11 @@ variable {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n} {K' : ∀ w : 
 
 def op (x : UGen E n) : EuclideanSpace ℂ (Fin R.d) →L[ℂ] EuclideanSpace ℂ (Fin R.d) := diagOp R.blk (x.p F)
 
-theorem op_comm (h : DiagAlg) (x y : UGen E n) : Commute (R.op x) (R.op y) ∧ Commute (R.op x) (star (R.op y)) := by
-  refine ⟨?_, ?_⟩
-  · exact ((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1
-  · unfold op
-    rw [(h _ _ R.blk (y.p F) 0 0).2.2.2]
-    exact ((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1
-
 theorem u_comm (h : DiagAlg) (x : UGen E n) : Commute R.u (R.op x) ∧ Commute R.u (star (R.op x)) := by
   refine ⟨R.comm _, ?_⟩
   unfold op
   rw [(h _ _ R.blk (x.p F) 0 0).2.2.2]
   exact R.comm _
-
-theorem exists_eigv (h : DiagAlg) (i₀ : F.ι) (hi : ∀ w ∈ B, ∃ y, y ≠ 0 ∧ locOp (F.σ i₀ w) (K' w) (g w) y = y) :
-    ∃ v : EuclideanSpace ℂ (Fin R.d), v ≠ 0 ∧ R.u v = v ∧
-      ∀ x : UGen E n, R.op x v = x.p F i₀ • v ∧ star (R.op x) v = starRingEnd ℂ (x.p F i₀) • v := by
-  obtain ⟨v, h1, h2, h3⟩ := R.eig i₀ hi
-  refine ⟨v, h1, h2, fun x => ⟨h3 _, ?_⟩⟩
-  unfold op
-  rw [(h _ _ R.blk (x.p F) 0 0).2.2.2, h3]
-  rfl
 
 end UMod
 
@@ -139,10 +123,6 @@ def UWord : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Glob
     ((∃ w ∈ S, ∀ y, fam B K' g k l w y ≠ 0 → y.1.val.charpoly.Separable) →
       LinearMap.trace ℂ _ ((R.u ^ k * (l.map R.op).prod : EuclideanSpace ℂ (Fin R.d) →L[ℂ] EuclideanSpace ℂ (Fin R.d)) : EuclideanSpace ℂ (Fin R.d) →ₗ[ℂ] EuclideanSpace ℂ (Fin R.d)) =
         UGen.sc l * geomU S lam (fam B K' g k l))
-
-def UAdjOf : Prop := DiagAlg → LocAlg → SphOne → CompUnit → SphStar → UAdj
-
-def UWordOf : Prop := DiagAlg → LocAlg → SphOne → CompUnit → SphStar → UWord
 
 end PositivityTheory.Rg.BcB.F.U
 

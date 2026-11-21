@@ -1,7 +1,13 @@
 import Formalism.LocalToGlobal.Columns.ChainLawXi
 import Formalism.LocalToGlobal.Columns.ChainTw
 import Formalism.LocalToGlobal.Columns.ChainTwZero
-import Formalism.LocalToGlobal.KernelLattices.KerHypAll
+import Mathlib
+import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
+import Formalism.LocalToGlobal.KernelLattices.TopLawQ
+import Formalism.LocalToGlobal.KernelLattices.ColInst
+import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ColInst
+import Formalism.LocalToGlobal.Columns.ChainInstY
+import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.MemGoodPrimesOfNoExceptional
 
 open NumberField IsDedekindDomain Module
 
@@ -24,85 +30,10 @@ def TargetEquivarianceAtPrime (i : ℕ) (w : rowSG Pr sel mu) (hal : AutY X R i)
       rhoT Ch sel mu i w ((LinearEquiv.det c'⁻¹ : X.Eˣ) : X.E) * E1at Ch sel mu cst i w hal hbe (c'.toLinearMap ∘ₗ y) =
         chiInv Ch sel mu cst (i + 1) w hbe r' * E1at Ch sel mu cst i w hal hbe y
 
-def SourceEquivarianceAtPrime (i : ℕ) (w : rowSG Pr sel mu) (hal : AutY X R i) (hbe : AutY X R (i + 1)) : Prop :=
-  ∀ r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp i w.1) hal, ∀ c ∈ GLint X.E (R.N i) w.1,
-    (∀ x, r (Loc.inX X.E (R.N i) (cOf R i) x) = Loc.inX X.E (R.N i) (cOf R i) (c x)) →
-    ∀ y : HomE X.E (R.N i) (R.N (i + 1)),
-      rhoS Ch sel mu i w ((LinearEquiv.det c⁻¹ : X.Eˣ) : X.E) * chiInv Ch sel mu cst i w hal r *
-          E1at Ch sel mu cst i w hal hbe (y ∘ₗ (c⁻¹).toLinearMap) =
-        E1at Ch sel mu cst i w hal hbe y
-
 def TargetEquivarianceLargeDepths (i : ℕ) (w : rowSG Pr sel mu) (hal : AutY X R i) (hbe : AutY X R (i + 1)) : Prop :=
   ∃ A₀ B₀ : ℕ, ∀ A' B', A₀ ≤ A' → B₀ ≤ B' → TargetEquivarianceAtPrime Ch sel mu { cst with A := A', B := B' } i w hal hbe
 
-def SourceEquivarianceLargeDepths (i : ℕ) (w : rowSG Pr sel mu) (hal : AutY X R i) (hbe : AutY X R (i + 1)) : Prop :=
-  ∃ A₀ B₀ : ℕ, ∀ A' B', A₀ ≤ A' → B₀ ≤ B' → SourceEquivarianceAtPrime Ch sel mu { cst with A := A', B := B' } i w hal hbe
-
 end Stmt
-
-section Assembly
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
-  {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
-  {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
-
-theorem clXQ_xiLawQ (hok : L.Ok Ch sel mu cst G m2) {i : ℕ} (al : L.β i) (be : L.β (i + 1))
-    (hT : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → TargetEquivarianceAtPrime Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w))
-    (hS : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → SourceEquivarianceAtPrime Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w)) :
-    XiLawQ Ch sel mu cst L i al be := by
-  classical
-  intro w hw c c' y
-  have hwQ : w.1 ∈ QE sel (mu : Chr X.F X.E X.K) := (Finset.mem_union.mp w.2).resolve_left hw
-
-  have hc : c.1.1 ∈ prCat (Pr := Pr) cst.sharp i w.1 (L.h i al w) := by
-    exact Subgroup.mem_subgroupOf.1 ((SetLike.ext_iff.1 (hok.grpQ i al ⟨w.1, hwQ⟩) c.1).1 c.2)
-  have hc' : c'.1.1 ∈ prCat (Pr := Pr) cst.sharp (i + 1) w.1 (L.h (i + 1) be w) := by
-    exact Subgroup.mem_subgroupOf.1 ((SetLike.ext_iff.1 (hok.grpQ (i + 1) be ⟨w.1, hwQ⟩) c'.1).1 c'.2)
-  obtain ⟨r, hr, hrx⟩ := hc
-  obtain ⟨r', hr', hrx'⟩ := hc'
-  have hlam := hok.chrQ i al ⟨w.1, hwQ⟩ c r hr hrx
-  have hlam' := hok.chrQ (i + 1) be ⟨w.1, hwQ⟩ c' r' hr' hrx'
-  have e1 := hT w hw r' hr' c'.1.1 c'.1.2 hrx' (y ∘ₗ (c.1.1⁻¹).toLinearMap)
-  have e2 := hS w hw r hr c.1.1 c.1.2 hrx y
-  have hl0 : (((L.levQ i al ⟨w.1, hwQ⟩).lam c : X.Kˣ) : X.K) ≠ 0 := Units.ne_zero _
-  unfold XiAt
-  rw [Units.val_inv_eq_inv_val]
-  change rhoS Ch sel mu i w ((LinearEquiv.det c.1.1⁻¹ : X.Eˣ) : X.E) * rhoT Ch sel mu i w ((LinearEquiv.det c'.1.1⁻¹ : X.Eˣ) : X.E) *
-      (_ * E1at Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w) (c'.1.1.toLinearMap ∘ₗ y ∘ₗ (c.1.1⁻¹).toLinearMap)) =
-    (((L.levQ (i + 1) be ⟨w.1, hwQ⟩).lam c' : X.Kˣ) : X.K) * (((L.levQ i al ⟨w.1, hwQ⟩).lam c : X.Kˣ) : X.K)⁻¹ *
-      (_ * E1at Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w) y)
-  rw [← e2, hlam', ← hlam]
-  have e3 : ∀ a b v E : X.K, a * b * (v * E) = a * v * (b * E) := fun a b v E => by ring
-  rw [e3, e1]
-  field_simp
-
-theorem clXQ_tgt_of_ev {i : ℕ} {w : rowSG Pr sel mu} {hal : AutY X R i} {hbe : AutY X R (i + 1)}
-    (hd : ∀ A' B', cst.A ≤ A' → cst.B ≤ B' → E1at Ch sel mu { cst with A := A', B := B' } i w hal hbe = E1at Ch sel mu cst i w hal hbe)
-    (h : TargetEquivarianceLargeDepths Ch sel mu cst i w hal hbe) : TargetEquivarianceAtPrime Ch sel mu cst i w hal hbe := by
-  obtain ⟨A₀, B₀, h⟩ := h
-  intro r' hr' c' hc' hx y
-  have e := h (max A₀ cst.A) (max B₀ cst.B) (le_max_left _ _) (le_max_left _ _) r' hr' c' hc' hx y
-  rw [hd _ _ (le_max_right _ _) (le_max_right _ _)] at e
-  exact e
-
-theorem clXQ_src_of_ev {i : ℕ} {w : rowSG Pr sel mu} {hal : AutY X R i} {hbe : AutY X R (i + 1)}
-    (hd : ∀ A' B', cst.A ≤ A' → cst.B ≤ B' → E1at Ch sel mu { cst with A := A', B := B' } i w hal hbe = E1at Ch sel mu cst i w hal hbe)
-    (h : SourceEquivarianceLargeDepths Ch sel mu cst i w hal hbe) : SourceEquivarianceAtPrime Ch sel mu cst i w hal hbe := by
-  obtain ⟨A₀, B₀, h⟩ := h
-  intro r hr c hc hx y
-  have e := h (max A₀ cst.A) (max B₀ cst.B) (le_max_left _ _) (le_max_left _ _) r hr c hc hx y
-  rw [hd _ _ (le_max_right _ _) (le_max_right _ _)] at e
-  exact e
-
-theorem clXQ_xiLawQ_ev (hok : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : L.β i) (be : L.β (i + 1))
-    (hT : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → TargetEquivarianceLargeDepths Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w))
-    (hS : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → SourceEquivarianceLargeDepths Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w)) :
-    XiLawQ Ch sel mu cst L i al be :=
-  clXQ_xiLawQ hok al be
-    (fun w hw => clXQ_tgt_of_ev (fun A' B' hA hB => hok.deep A' B' hA hB i hi al be w) (hT w hw))
-    (fun w hw => clXQ_src_of_ev (fun A' B' hA hB => hok.deep A' B' hA hB i hi al be w) (hS w hw))
-
-end Assembly
 
 section Res
 

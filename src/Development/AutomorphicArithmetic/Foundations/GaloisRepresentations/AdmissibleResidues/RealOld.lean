@@ -1,7 +1,21 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.RealDefs
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RootsCharpolySmulMatrix
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceOverTransportRingIsoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceOverTransportRingIsoSymmStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceOverTransportRingIso
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalLanglandsExists
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroCuspidalLL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalConverseGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroInduction
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BrauerDegreeZero
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsMultisegments
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceOverTransportRingIsoSymm
 
 noncomputable section
 
@@ -15,17 +29,6 @@ namespace UpperTheory.GalN.V
 section Local
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
-
-theorem RatioW.of_pol {x y : WD h} (hp : ∀ g : ↥(Weil h), x.charPol g = y.charPol g) (hy : RatioW y) : RatioW x := by
-  intro φ hφ α hα β hβ
-  rw [WD.eig, hp] at hα hβ
-  exact hy φ hφ α hα β hβ
-
-theorem RatioW.noRatio {x : WD h} (hx : RatioW x) {g : ↥(Weil h)} (hg : deg g = 1) : NoRatio x g := by
-  intro α hα hβ
-  have k := hx g hg _ hβ α hα
-  rw [hg, zpow_one, norm_mul, Complex.norm_natCast] at k
-  exact lt_irrefl _ k
 
 theorem eig_lpTw (x : WD h) (s : ℝ) {φ : ↥(Weil h)} (hφ : deg φ = 1) {α : ℂ} (hα : α ∈ x.eig φ) :
     α * ((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ) ∈ (x.lpTw s).eig φ := by
@@ -68,42 +71,14 @@ theorem pol_of_rel {y : WD h} {y' : WD h'} (hy : WDRel φ y y') {σ : ↥(Weil h
   obtain ⟨n, b, b', rfl, rfl, -, hb⟩ := hy
   rw [WD.charPol_mk, WD.charPol_mk, hb σ σ' hs]
 
-theorem monodromyFree_iff_related {y : WD h} {y' : WD h'} (hy : WDRel φ y y') : y.mono0 ↔ y'.mono0 := by
-  obtain ⟨n, b, b', rfl, rfl, hN, -⟩ := hy
-  rw [WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff]
-  exact hN ▸ Iff.rfl
-
-theorem pol_descend (P : PlaceIso A w A' w' φ j i) {x y : WD h} {x' y' : WD h'} (hx : WDRel φ x x') (hy : WDRel φ y y')
-    (k : ∀ g, x'.charPol g = y'.charPol g) (g : ↥(Weil h)) : x.charPol g = y.charPol g := by
-  obtain ⟨c, hc, -⟩ := GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω' A' w' h' φ j i P
-  rw [pol_of_rel hx ((hc g (c g)).2 rfl), pol_of_rel hy ((hc g (c g)).2 rfl), k]
-
-theorem AwR.descend (P : PlaceIso A w A' w' φ j i) {x y : WD h} {x' y' : WD h'} (hx : WDRel φ x x') (hy : WDRel φ y y')
-    (k : AwR x' y') : AwR x y := by
-  obtain ⟨S, hS, -⟩ := GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h E' Ω' A' w' h' φ j i P
-  exact ⟨pol_descend P hx hy k.pol, fun m => S.injective (by
-    rw [(hS _ _).1 hx, (hS _ _).1 hy]; exact k.n0 ((monodromyFree_iff_related hy).1 m))⟩
-
 theorem RatioW.descend (P : PlaceIso A w A' w' φ j i) {x : WD h} {x' : WD h'} (hx : WDRel φ x x') (k : RatioW x') :
     RatioW x := by
-  obtain ⟨c, hc, hdeg, hq, -⟩ := GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω' A' w' h' φ j i P
+  obtain ⟨c, hc, hdeg, hq, -⟩ := _root_.GlobalTheory.WeilTransport.weil_equiv E Ω A w h E' Ω' A' w' h' φ j i P
   intro g hg α hα β hβ
   rw [WD.eig, pol_of_rel hx ((hc g (c g)).2 rfl)] at hα hβ
   rw [← hq]
   exact k (c g) (by rw [hdeg, hg]) α hα β hβ
 
-theorem RatioW.ascend (P : PlaceIso A w A' w' φ j i) {x : WD h} {x' : WD h'} (hx : WDRel φ x x') (k : RatioW x) :
-    RatioW x' := by
-  obtain ⟨c, hc, hdeg, hq, -⟩ := GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω' A' w' h' φ j i P
-  intro g hg α hα β hβ
-  obtain ⟨g, rfl⟩ := c.surjective g
-  rw [WD.eig, ← pol_of_rel hx ((hc g (c g)).2 rfl)] at hα hβ
-  rw [hq]
-  exact k g (by rw [← hdeg, hg]) α hα β hβ
-
-theorem exists_rel (P : PlaceIso A w A' w' φ j i) (y' : WD h') : ∃ y : WD h, WDRel φ y y' := by
-  obtain ⟨S, hS, -⟩ := GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h E' Ω' A' w' h' φ j i P
-  exact ⟨S.symm y', (hS _ _).2 (S.apply_symm_apply _)⟩
 end Local
 
 section Real
@@ -125,33 +100,9 @@ theorem IsGalRU.of_old (H : IsGalRepOfR π ι r wt HT) : IsGalRU π ι r wt HT w
     have k := H.above P AI T w A h O Bw hj
     ⟨k.1, k.2.1, fun σ hσ hi _ rc hrc => by rw [(k.2.2.1 σ hσ hi).2 rc hrc]; exact ⟨fun _ => rfl, id⟩, k.2.2.2⟩
 
-theorem IsGalRU.sat (H : IsGalRU π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)} (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal)
-    {A : ValuationSubring Ω} {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion F) → WD h} (hrc : IsRec h rc)
-    {σ : SmIrr (GL (Fin a) (w.adicCompletion F))} (hσ : π.IsLocComp w σ) {S : Multiset ℂˣ}
-    (hS : GlobalTheory.LFun.HasSatGL w σ.ρ S) : IsWDOf ι r (rc (algNorm σ)) := by
-  rw [← (H.away w hl A h rc hrc σ hσ).eq_unr (unr_algNorm hrc σ S hS)]
-  exact isWDOf_wdOf (h := h) hl ι (Units.continuous_val.comp H.cont)
-
-theorem IsGalRU.ratio_sat (H : IsGalRU π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)} (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal)
-    {A : ValuationSubring Ω} {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion F) → WD h} (hrc : IsRec h rc)
-    {σ : SmIrr (GL (Fin a) (w.adicCompletion F))} (hσ : π.IsLocComp w σ) {S : Multiset ℂˣ}
-    (hS : GlobalTheory.LFun.HasSatGL w σ.ρ S) : RatioW (wdOf h hl ι r) :=
-  H.ratio w hl A h rc hrc σ hσ (WD.unr_mono0 _ (unr_algNorm hrc σ S hS))
 end Real
-
-theorem galRN (h : GaloisRepReal) : GaloisRepRealN := fun F Ω _ _ _ _ _ _ l _ ι a ha π χ h1 h2 =>
-  let ⟨r, wt, HT, H⟩ := h F Ω l ι a ha π χ h1 h2
-  ⟨r, wt, HT, .of_old H⟩
-theorem galRN' (h : GaloisRepRealN) : GaloisRepRealN := h
-
-theorem gr2N (h : UpperTheory.V.Z.Bc.GaloisRepRankTwoReal) : GaloisRepRankTwo := fun F Ω _ _ _ _ _ _ l _ ι a _ ha π χ h1 h2 =>
-  let ⟨r, wt, HT, H⟩ := h F Ω l ι a ha π χ h1 h2
-  ⟨r, wt, HT, .of_old H⟩
-theorem gr2N' (h : GaloisRepRankTwo) : GaloisRepRankTwo := h
 
 theorem exRN (h : ExR) : ExRN := fun F Ω _ _ _ _ _ _ l _ ι n _ hn π χ h1 h2 =>
   let ⟨r, wt, HT, H, a, b⟩ := h F Ω l ι n hn π χ h1 h2
   ⟨r, wt, HT, .of_old H, a, fun r' x y => .of_old (b r' x y)⟩
-theorem exRN' (h : ExRN) : ExRN := h
-
 end UpperTheory.GalN.V

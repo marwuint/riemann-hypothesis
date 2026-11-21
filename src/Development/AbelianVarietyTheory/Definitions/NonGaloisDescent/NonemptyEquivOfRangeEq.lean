@@ -95,9 +95,6 @@ def IsCosocle (σ : Representation ℂ G W) (π : Representation ℂ G V) : Prop
   σ.IsIrreducible ∧ ∃ f : π.IntertwiningMap σ, Function.Surjective f ∧
     ∀ S : Subrepresentation π, IsCoatom S → S = f.ker
 
-theorem IsSocle.embeds {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsSocle σ π) : Embeds σ π :=
-  let ⟨_, f, hf, _⟩ := h; ⟨f, hf⟩
-
 theorem IsSocle.isSubquotient {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsSocle σ π) :
     IsSubquotient σ π :=
   let ⟨_, f, hf, _⟩ := h; .of_injective f hf
@@ -235,9 +232,6 @@ theorem IsCosocle.equiv_of_surjective {σ : Representation ℂ G W} {τ : Repres
     Nonempty (τ.Equiv σ) := by
   obtain ⟨-, f, hf, hS⟩ := h
   exact nonempty_equiv_of_ker_eq g hg f hf (hS _ (isCoatom_ker hτ g hg))
-
-theorem IsSocle.unique {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
-    (h : IsSocle σ π) (h' : IsSocle τ π) : Nonempty (τ.Equiv σ) := h.equiv_of_embeds h'.1 h'.embeds
 
 theorem IsCosocle.unique {σ : Representation ℂ G W} {τ : Representation ℂ G X} {π : Representation ℂ G V}
     (h : IsCosocle σ π) (h' : IsCosocle τ π) : Nonempty (τ.Equiv σ) :=
@@ -505,15 +499,5 @@ theorem clTwist_ofChar (χ ψ : G →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsS
   exact .refl _
 
 end Classes
-
-example {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] {χ ψ : G →* ℂˣ} (h : χ ≠ ψ) (σ : Representation ℂ G W) :
-    ¬ IsSocle σ ((ofChar χ).prod (ofChar ψ)) := fun hs => by
-  obtain ⟨a⟩ := hs.equiv_of_embeds (isIrreducible_ofChar χ)
-    ⟨.inl ℂ (ofChar χ) (ofChar ψ), fun _ _ e => congrArg Prod.fst e⟩
-  obtain ⟨b⟩ := hs.equiv_of_embeds (isIrreducible_ofChar ψ)
-    ⟨.inr ℂ (ofChar χ) (ofChar ψ), fun _ _ e => congrArg Prod.snd e⟩
-  have h1 := Model.jhMult_ofChar_ne h
-  rw [jhMult_congr_left (a.trans b.symm), jhMult_self (isIrreducible_ofChar ψ)] at h1
-  exact one_ne_zero h1
 
 end GlobalTheory.LocGL

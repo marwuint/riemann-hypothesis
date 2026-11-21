@@ -85,49 +85,6 @@ theorem freeOf2_rmatrix_transpose {a c : S} (hc : c ≠ a) (D : ℂ) : FreeOf2 c
 theorem freeOf2_lift (c : S) (M : M2 A) : FreeOf2 c (lift0 M : M2 (SlopeTestRemainingChoices S A)) :=
   fun i j => free_io c (M i j)
 
-theorem blk_plus (M : M2 (SlopeTestRemainingChoices S A)) (D : ℂ) (i j k l : Fin 2) :
-    Formalism.YangianSpanCharacter.F.blk (E1 M *
-      ((D - 1)⁻¹ • (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)))) i j k l =
-      (D - 1)⁻¹ • (D • (if k = l then M i j else 0) - (if k = j then M i l else 0)) := by
-  unfold Formalism.YangianSpanCharacter.F.blk E1 Pf
-  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases l <;>
-    simp [Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.one_apply, mul_sub]
-
-theorem blk_minus (M : M2 (SlopeTestRemainingChoices S A)) (d : ℂ) (i j k l : Fin 2) :
-    Formalism.YangianSpanCharacter.F.blk (((d - 1)⁻¹ • pt1 (d • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A))) *
-      E1 M) i j k l =
-      (d - 1)⁻¹ • (d • (if k = l then M i j else 0) - (if i = k then M l j else 0)) := by
-  unfold Formalism.YangianSpanCharacter.F.blk E1 Pf pt1
-  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases l <;>
-    simp [Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.one_apply, sub_mul]
-
-theorem mul_rmatrix_apply (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (D : ℂ) (i j : Fin 2) :
-    (M * Rh0 a D : M2 (SlopeTestRemainingChoices S A)) i j =
-      (D - 1)⁻¹ • (D • M i j - (M i 0 * eU a j 0 + M i 1 * eU a j 1)) := by
-  unfold Rh0 P0
-  rw [Matrix.mul_smul, Matrix.smul_apply, Matrix.mul_sub, Matrix.sub_apply, Matrix.mul_smul, Matrix.smul_apply,
-    Matrix.mul_one, Matrix.mul_apply, Fin.sum_univ_two]
-  rfl
-
-theorem Rht0_mul_apply (b : S) (M : M2 (SlopeTestRemainingChoices S A)) (d : ℂ) (i j : Fin 2) :
-    (Rht0 b d * M : M2 (SlopeTestRemainingChoices S A)) i j =
-      (d - 1)⁻¹ • (d • M i j - (eU b i 0 * M 0 j + eU b i 1 * M 1 j)) := by
-  unfold Rht0 Q0
-  rw [Matrix.smul_mul, Matrix.smul_apply, Matrix.sub_mul, Matrix.sub_apply, Matrix.smul_mul, Matrix.smul_apply,
-    Matrix.one_mul, Matrix.mul_apply, Fin.sum_univ_two]
-  rfl
-
-theorem ins_block (a : S) (c D : ℂ) (x : SlopeTestRemainingChoices S A) (y : Fin 2 → SlopeTestRemainingChoices S A) (m : Fin 2) :
-    ins a (Matrix.of fun k l => c • (D • (if k = l then x else 0) - (if k = m then y l else 0))) =
-      c • (D • x - (eU a m 0 * y 0 + eU a m 1 * y 1)) := by
-  have h1 := Wd1.sum_eU_diag (A := A) a
-  rw [Fin.sum_univ_two] at h1
-  have h2 : x = eU a 0 0 * x + eU a 1 1 * x := by rw [← add_mul, h1, one_mul]
-  unfold ins
-  conv_rhs => rw [h2]
-  fin_cases m <;>
-    simp [Fin.sum_univ_two, mul_sub, smul_sub, smul_add]
-
 end
 
 section
@@ -198,26 +155,6 @@ end
 end Formalism.FourierDecayAlt.P.Fr4
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem position_block_plus_alt : Formalism.FourierDecayAlt.Fr.CoordinateBlockCondition := by
-  intro A S _ _ _ _ _ a M D hM i j
-  have e : Formalism.YangianSpanCharacter.F.blk (E1 M *
-      ((D - 1)⁻¹ • (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)))) i j =
-      Matrix.of fun k l => (D - 1)⁻¹ • (D • (if k = l then M i j else 0) - (if k = j then M i l else 0)) := by
-    ext k l
-    exact congrFun (congrFun (Fr4.blk_plus M D i j k l) _) _
-  rw [e, Fr4.ins_block a _ D (M i j) (fun l => M i l) j, Fr4.mul_rmatrix_apply, (hM i 0 j 0).eq, (hM i 1 j 1).eq]
-
-theorem position_block_minus : Formalism.FourierDecayAlt.Fr.TransposedCoordinateBlockCondition := by
-  intro A S _ _ _ _ _ b M d i j
-  have e : Formalism.YangianSpanCharacter.F.blk (((d - 1)⁻¹ • pt1 (d • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) -
-      Pf (SlopeTestRemainingChoices S A))) * E1 M) i j =
-      Matrix.of fun k l => (d - 1)⁻¹ • (d • (if k = l then M i j else 0) - (if k = i then M l j else 0)) := by
-    ext k l
-    have := Fr4.blk_minus M d i j k l
-    simp only [eq_comm (a := i) (b := k)] at this
-    exact congrFun (congrFun this _) _
-  rw [e, Fr4.ins_block b _ d (M i j) (fun l => M l j) i, Fr4.Rht0_mul_apply]
 
 theorem frame_free_of_new_position : Formalism.FourierDecayAlt.Fr.FrameFree := by
   intro A S _ _ _ _ _ _ r L st w c

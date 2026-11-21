@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Formalism.FormalDegreeBessel.FinalG
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRepStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWNStatement
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
 open scoped InnerProductSpace
@@ -109,7 +109,7 @@ theorem pis_inv {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [
   have heq : (h * n)⁻¹ = h⁻¹ * (h * n⁻¹ * h⁻¹) := by
     rw [Matrix.mul_inv_rev, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd,
       Matrix.one_mul]
-  rw [heq, psi_eq_psiGen, ((GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z (fun _ => c) π hz hT hπ).1 h⁻¹ (uw_inv hh) _ hm.1).2,
+  rw [heq, psi_eq_psiGen, ((_root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z (fun _ => c) π hz hT hπ).1 h⁻¹ (uw_inv hh) _ hm.1).2,
     ← psi_eq_psiGen, psi_congr hm.2]
 
 theorem adj_inv {Wq : Type*} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
@@ -193,7 +193,7 @@ theorem splitS_mul {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp
     (p : Mt k r × Mt k r) (hh : Matrix.of p.1 ∈ UWset k r z) (hn : Matrix.of p.2 ∈ Nset k r) :
     splitS (lmulM (Matrix.of p.1) p.2) = p := by
   have hP : hPart k r (Matrix.of p.1 * Matrix.of p.2) = Matrix.of p.1 :=
-    ((GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z (fun _ => 0) π hz hT hπ).1 _ hh _ hn).1
+    ((_root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z (fun _ => 0) π hz hT hπ).1 _ hh _ hn).1
   have hd := unit_of_mem hh.1
   unfold splitS
   refine Prod.ext ?_ ?_

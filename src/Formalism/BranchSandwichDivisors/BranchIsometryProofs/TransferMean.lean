@@ -63,25 +63,4 @@ theorem meanTransferBound : TransferMean := by
     mul_le_mul_of_nonneg_left (by linarith) (by linarith)
   linarith
 
-theorem meanShiftAssembly : PassageAssembly := by
-  unfold PassageAssembly
-  intro S _ rk nS dg nbar lam0 HH0 muP0 muPs mu0 muC f r g Q C0 hnbar hlam0 hrk hR hf hr hg hn
-    h0 hC hdg hPs hP0 hZQ hQ hfrQ hC0
-  have hde0 : 0 ≤ 8 * f * r / g :=
-    div_nonneg (mul_nonneg (mul_nonneg (by norm_num) hf) hr) hg.le
-  have hdeQ : 8 * f * r / g * (3 * Q) ≤ 1 := by
-    rw [div_mul_eq_mul_div, div_le_one hg]
-    linarith
-  have hMT := meanTransferBound
-  unfold TransferMean at hMT
-  set de := 8 * f * r / g with hde
-  have hde13 : de ≤ 1 / 3 := by nlinarith [mul_nonneg hde0 (sub_nonneg.2 hQ)]
-  obtain ⟨_, hB⟩ := hMT S rk nS dg nbar de lam0 1 HH0 muP0 muPs (-mu0) (-muC) hnbar hde0 hde13
-    hlam0 zero_le_one hrk hR hn (by rw [one_mul]; exact h0) (by rw [one_mul]; exact hC)
-    (fun s => by rw [one_mul]; exact hdg s) hPs hP0
-  have hZ : 3 * de * (mu0 + HH0 + 4 * lam0) ≤ 3 * de * Q :=
-    mul_le_mul_of_nonneg_left hZQ (by linarith)
-  have hC' : 0 ≤ (C0 - 25 / 2) * lam0 := mul_nonneg (by linarith) hlam0
-  constructor <;> linarith
-
 end Formalism.BranchingDeterminantCap

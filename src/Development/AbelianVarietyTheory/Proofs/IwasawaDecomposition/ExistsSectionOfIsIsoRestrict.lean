@@ -11,13 +11,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsDiscreteValuationRingAndFiniteResidueFieldValu
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsBlockMetricDiagForm
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameBaseChangeRingHomStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPullbackOfNormalFlatProjStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameBaseChangeRingHom
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsNatDiagIffIsDiag
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSectionsGenerateIdealProjectiveStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SectionsGenerateIdealAlongComapOfTwistedStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSchemeTheoreticallyDominantComplEffCartierStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsProjMapProportionalSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfProportionalToGeneratingSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfProportionalToGeneratingSections
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EffCartierOfProportionalSectionsStatement
 
 noncomputable section
@@ -75,7 +75,7 @@ theorem exists_blowup {R : Type} [CommRing R] [IsNoetherianRing R] {X : Scheme.{
       rintro _ ⟨t, rfl⟩
       exact ⟨⟨_, hdU t⟩, rfl⟩)
     have hw : w ≫ U.ι = d ≫ g := IsOpenImmersion.lift_fac ..
-    have hw' : d ≫ ψ = w ≫ φ := GlobalTheory.T.eq_of_proportional_to_generating_sections R X _ L m σ (d ≫ g) _ _ (htop _ hdU ▸ GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ (d ≫ g) hσ)
+    have hw' : d ≫ ψ = w ≫ φ := _root_.GlobalTheory.ProjBlowup.eq_of_proportional R X _ L m σ (d ≫ g) _ _ (htop _ hdU ▸ GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ (d ≫ g) hσ)
       (by rw [Category.assoc, hψ, Category.assoc, hφ, reassoc_of% hw]) (hψσ.comp d) (hw ▸ hφσ.comp w)
     have key : ∀ h : W ⟶ _, h ≫ b = g → d ≫ h = w ≫ j := fun h hh => by
       have H := graphClosure.isPullback_incl s (PSpace.str R m) U.ι φ hφ.symm
@@ -90,41 +90,6 @@ theorem exists_blowup {R : Type} [CommRing R] [IsNoetherianRing R] {X : Scheme.{
       (ProjSpace.isProjOver_pspace_str R m)
     exact ⟨n, graphClosure.ι s (PSpace.str R m) U.ι φ hφ.symm ≫ i, inferInstance, by
       rw [Category.assoc, e, graphClosure.ι_fst_assoc]⟩
-
-theorem exists_section_of_isIso_restrict {N X : Scheme.{0}} (f : N ⟶ X) (U : X.Opens) [IsIso (f ∣_ U)] :
-    ∃ j : U.toScheme ⟶ N, IsPullback j (𝟙 _) f U.ι ∧ ((f ⁻¹ᵁ U : N.Opens) : Set N) ⊆ Set.range j := by
-  have h₁ : IsPullback (inv (f ∣_ U)) (𝟙 _) (f ∣_ U) (𝟙 _) := .of_horiz_isIso ⟨by simp⟩
-  have hj : IsPullback (inv (f ∣_ U) ≫ (f ⁻¹ᵁ U).ι) (𝟙 _) f U.ι := by
-    simpa using h₁.paste_horiz (isPullback_morphismRestrict f U).flip
-  refine ⟨_, hj, fun x hx => ?_⟩
-  obtain ⟨y, hy, -⟩ := Scheme.exists_preimage_of_isPullback hj x ⟨f x, hx⟩ rfl
-  exact ⟨y, hy⟩
-
-theorem exists_normal_model {O : Type} [CommRing O] [IsDedekindDomain O] {X : Scheme.{0}} (s : X ⟶ Sp O) (V : X.Opens)
-    (hs : IsProjOver s) (hV : Geo.Tor.IsNormalScheme V.toScheme) [Flat (V.ι ≫ s)]
-    (hc : ∀ x : V.toScheme, CharZero (V.toScheme.residueField x)) :
-    ∃ (N : Scheme.{0}) (ν : N ⟶ X), IsFinite ν ∧ Geo.Tor.IsNormalScheme N ∧ IsProjOver (ν ≫ s) ∧ Flat (ν ≫ s) ∧
-      IsIso (ν ∣_ V) ∧ Dense ((ν ⁻¹ᵁ V : N.Opens) : Set N) := by
-  have : LocallyOfFiniteType s := by
-    obtain ⟨n, i, hi, rfl⟩ := hs
-    have := isProper_str O n
-    infer_instance
-  have : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s
-  have hN : GlobalTheory.IsNormalScheme V.toScheme := .of_pred hV
-  have hfin : IsFinite V.ι.fromNormalization :=
-    isFinite_fromNormalization_of_locallyOfFiniteType (o := .of O) V.ι s fun x _ => hc x
-  have H := isPullback_toNormalization_of_mono (𝟙 _) V.ι V.ι (Category.id_comp _).symm
-  have : Flat (V.ι.toNormalization ≫ V.ι.fromNormalization ≫ s) := by simpa
-  refine ⟨_, V.ι.fromNormalization, hfin, IsNormalScheme.pred _, isProjOver_comp_of_isFinite _ hs,
-    flat_normalization V.ι _, ?_, ?_⟩
-  · have e := IsPullback.isoIsPullback_hom_fst _ _ (isPullback_morphismRestrict V.ι.fromNormalization V) H.flip
-    rw [← e]
-    infer_instance
-  · refine V.ι.toNormalization.denseRange.mono ?_
-    rintro _ ⟨x, rfl⟩
-    change V.ι.fromNormalization (V.ι.toNormalization x) ∈ V
-    rw [← Scheme.Hom.comp_apply, Scheme.Hom.toNormalization_fromNormalization]
-    exact x.2
 
 end GlobalTheory.ProjBlowup
 
@@ -151,77 +116,6 @@ theorem isDiscreteValuationRing_coeff {l : Level H} (c : Coeff l) (hp : p ≠ 0)
   rcases hW with h | h
   · exact absurd (by exact_mod_cast h) hp
   · exact Or.inr fun h' => h (by simpa [Coeff.V] using h')
-
-theorem sameFlag_refl (ty : (E →+* ℂ) → Finset ℕ) {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (x : Sp R ⟶ X)
-    (u : Vecs Dw t R) (hu : ∀ τ i, IsTanAtG t x (u τ i)) : SameFlag ty t x u u := by
-  intro τ k _ i hi
-  refine ⟨Pi.single i 1, fun j hj => Pi.single_eq_of_ne (fun e => by subst e; omega) _, ?_⟩
-  refine (LieMet.isComb_iff (fun j => LieMet.tanOf (hu τ j)) (Pi.single i 1) (LieMet.tanOf (hu τ i))).2 ?_
-  rw [Finset.sum_eq_single i (fun b _ hb => by rw [Pi.single_eq_of_ne hb, zero_smul]) (by simp),
-    Pi.single_eq_same, one_smul]
-
-theorem isTrans_id (i : Idx H p) (mu : SABMap (Y i).t (Y i).t (𝟙 _)) (h : mu.φ = 𝟙 _) :
-    LocM.IsTrans (Y := Y) i i (𝟙 _) mu := by
-  have e : spMap (RingHom.id (i.c.V W)) = 𝟙 _ := Spec.map_id _
-  have H₀ : IsPullback (𝟙 _) (Y i).s (Y i).s (spMap (RingHom.id (i.c.V W))) := by
-    rw [e]; exact IsPullback.of_horiz_isIso ⟨by simp⟩
-  refine ⟨RingHom.id _, H₀.isoPullback.hom, 𝟙 _, fun _ => rfl, by simp, by simp, inferInstance, by simp,
-    fun a => ?_, fun a => ?_⟩
-  · rw [Nat.div_self (by have := i.l.three_le; omega), pow_one, h]; simp
-  · rw [Nat.div_self i.l.A_pos, pow_one, h]; simp
-
-theorem natImg_refl (Z : Mdl Y i₀) {k : Type} [Field k] (w : Sp k ⟶ Z.X) (hw : Set.range w ⊆ Z.opn) :
-    NatImg Z Z w w := by
-  obtain ⟨mu, hmu⟩ := ObjMaps.exists_sab_id (Y Z.i).t
-  obtain ⟨a, ha⟩ := Set.mem_iUnion.1 (Z.cover.ge (hw ⟨default, rfl⟩))
-  have hA : IsAffineOpen (Z.U a).1 := (Z.U a).2
-  have hr : Set.range w ⊆ Set.range hA.fromSpec := by
-    rintro _ ⟨x, rfl⟩
-    rw [IsAffineOpen.range_fromSpec, Subsingleton.elim x default]
-    exact ha
-  obtain ⟨φ, hφ⟩ := Spec.map_surjective (IsOpenImmersion.lift hA.fromSpec w hr)
-  have hφ' : spMap φ.hom ≫ Z.chart a = w := by
-    have := IsOpenImmersion.lift_fac hA.fromSpec w hr
-    rw [← hφ] at this
-    exact this
-  have hf := GlobalTheory.T.isFrame_baseChange_ringHom E H Dw _ _ _ _ _ _ _ φ.hom _ _ (Z.frame a)
-  rw [← Category.assoc, hφ'] at hf
-  have hfl : Z.FlagAt w ((Z.fr a).bc φ.hom) :=
-    ⟨a, φ.hom, hφ', hf, sameFlag_refl _ _ _ _ fun τ i => (hf.1 τ i).1⟩
-  refine ⟨𝟙 _, mu, (Z.fr a).bc φ.hom, isTrans_id _ mu hmu, by simp, hfl, ?_⟩
-  simpa only [hmu, Category.comp_id] using hfl
-
-theorem exists_isNBlow (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) (J : Z.Idl) :
-    ∃ Z', IsNBlow Z J Z' := by
-  have := isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW
-  have hs : IsProjOver Z.s := ⟨Z.n, Z.I.subschemeι, inferInstance, rfl⟩
-  obtain ⟨X', b, hb, hbs, hiso⟩ := exists_blowup Z.s hs J.1
-  let U : Z.X.Opens := ⨆ a, (Z.U a).1
-  have hU : (U : Set Z.X) = Z.opn := by rw [← Z.cover]; exact TopologicalSpace.Opens.coe_iSup _
-  have hbU := hiso U fun x hx hJ => J.2 x hJ (hU.le hx)
-  have := Z.flat
-  have hN : GlobalTheory.IsNormalScheme Z.X := Z.normal
-  have e₀ : (b ⁻¹ᵁ U).ι ≫ b = b ∣_ U ≫ U.ι := (morphismRestrict_ι b U).symm
-  have : IsOpenImmersion ((b ⁻¹ᵁ U).ι ≫ b) := by rw [e₀]; infer_instance
-  have : Flat ((b ⁻¹ᵁ U).ι ≫ b ≫ Z.s) := by rw [← Category.assoc]; infer_instance
-  have hV : GlobalTheory.IsNormalScheme (b ⁻¹ᵁ U).toScheme := .of_isOpenImmersion ((b ⁻¹ᵁ U).ι ≫ b)
-  obtain ⟨N, ν, hfin, hn, hpr, hfl, hν, hd⟩ := exists_normal_model (b ≫ Z.s) (b ⁻¹ᵁ U) hbs hV.pred fun x => by
-    obtain ⟨a, ha⟩ := TopologicalSpace.Opens.mem_iSup.1 (show ((b ⁻¹ᵁ U).ι ≫ b) x ∈ U from x.2)
-    exact charZero_of_injective_ringHom ((((b ⁻¹ᵁ U).ι ≫ b).residueFieldMap x).hom.comp
-      ((Z.X.evaluation (Z.U a).1 _ ha).hom.comp (Z.alg a))).injective
-  have hνb : IsIso ((ν ≫ b) ∣_ U) := by
-    rw [morphismRestrict_comp]; exact IsIso.comp_isIso' hν hbU
-  obtain ⟨j, hj, hjr⟩ := exists_section_of_isIso_restrict (ν ≫ b) U
-  have hjd : Dense (Set.range j) := hd.mono hjr
-  obtain ⟨Z', e, hi, hty, hmap⟩ := GlobalTheory.T.isPullback_of_normal_flat_proj E H Dw Xo p W Y i₀ Z N (ν ≫ b) U j hU
-    (by rwa [Category.assoc]) hn (by rwa [Category.assoc]) hj hjd
-  refine ⟨Z', hi, hty, X', b, e.hom ≫ ν, hb, inferInstance, ?_⟩
-  rw [Category.assoc]
-  refine hmap Z (ν ≫ b) ⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl, fun _ => subset_rfl⟩ fun k _ w => ?_
-  rw [hj.w, Category.id_comp]
-  refine natImg_refl Z _ ?_
-  rintro _ ⟨x, rfl⟩
-  exact hU.le (w x).2
 
 end
 

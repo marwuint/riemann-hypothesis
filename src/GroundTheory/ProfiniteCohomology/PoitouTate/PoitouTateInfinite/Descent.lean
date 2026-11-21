@@ -44,18 +44,6 @@ noncomputable abbrev descendRep (π : G →ₜ* Q) (hπ : Function.Surjective π
 
 variable (π : G →ₜ* Q) (hπ : Function.Surjective π) (A : Rep.{u} k G) (hA : ∀ g, π g = 1 → A.ρ g = 1)
 
-noncomputable def resDescendRepIso : Rep.res π.toMonoidHom (descendRep π hπ A hA) ≅ A where
-  hom := Rep.ofHom ⟨LinearMap.id, fun g => by
-    ext a
-    change descendRepρ π hπ A hA (π g) a = A.ρ g a
-    rw [descendRepρ_apply]⟩
-  inv := Rep.ofHom ⟨LinearMap.id, fun g => by
-    ext a
-    change A.ρ g a = descendRepρ π hπ A hA (π g) a
-    rw [descendRepρ_apply]⟩
-  hom_inv_id := rfl
-  inv_hom_id := rfl
-
 theorem isDiscreteRep_descendRep (hq : Topology.IsQuotientMap π) [IsDiscreteRep A] :
     IsDiscreteRep (descendRep π hπ A hA) where
   isOpen_stabilizer a := by
@@ -77,31 +65,5 @@ instance [CompactSpace G] [T2Space Q] [IsDiscreteRep A] : IsDiscreteRep (descend
   isDiscreteRep_descendRep π hπ A hA (isQuotientMap_of_compactSpace π hπ)
 
 end Descend
-
-section Cohomology
-
-variable {k G Q : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-  [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
-
-variable (π : G →ₜ* Q) (hπ : Function.Surjective π) {B : Rep.{u} k Q} {A : Rep.{u} k G}
-  [IsDiscreteRep A] [IsDiscreteRep B] (f : Rep.res π.toMonoidHom B ⟶ A)
-
-omit [IsTopologicalGroup G] [IsTopologicalGroup Q] [IsDiscreteRep A] [IsDiscreteRep B] in
-
-theorem ρ_eq_of_map_eq_one (hf : Function.Surjective f.hom) {g : G} (hg : π g = 1) (a : A) :
-    A.ρ g a = a := by
-  obtain ⟨b, rfl⟩ := hf a
-  rw [← Rep.hom_comm_apply]
-  change f.hom (B.ρ (π g) b) = f.hom b
-  rw [hg, map_one, Module.End.one_apply]
-
-end Cohomology
-
-section Profinite
-
-variable {k G Q : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-  [CompactSpace G] [TotallyDisconnectedSpace G] [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
-
-end Profinite
 
 end GroundTheory.ProfCoh

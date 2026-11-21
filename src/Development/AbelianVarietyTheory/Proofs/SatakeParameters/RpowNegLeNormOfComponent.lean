@@ -3,7 +3,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HeckeSplitOne
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SatakeBoundOfIsometricSphericalGLStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SatakeBoundOfIsometricSphericalGL
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.SmallRowEigenvalues
 
 noncomputable section
@@ -28,28 +28,12 @@ def IsUnitarySatake (r : ℕ) (β : Multiset ℂ) : Prop :=
       ∑ g ∈ s, ρ g v =
         ((((qRes O : ℝ) ^ ((k : ℝ) * ((r : ℝ) - k) / 2) : ℝ) : ℂ) * β.esymm k) • v
 
-theorem isUnitarySatake_one : IsUnitarySatake O K 1 {1} := by
-  refine ⟨rfl, ℂ, inferInstance, inferInstance, Representation.trivial ℂ _ ℂ, 1,
-    fun g x => by simp, one_ne_zero, fun g _ => by simp, fun k hk s hs => ?_⟩
-  have hcard : s.card = 1 := by
-    have h1 := hs.ncard_eq
-    rw [Set.ncard_coe_finset] at h1
-    rw [h1]
-    interval_cases k
-    · rw [subElem_zero]
-      exact (Set.ncard_image_of_injective _ Subtype.val_injective).trans (Set.ncard_singleton _)
-    · rw [subElem_top]
-      exact (Set.ncard_image_of_injective _ Subtype.val_injective).trans (Set.ncard_singleton _)
-  interval_cases k
-  · simp [hcard, Multiset.esymm]
-  · simp [hcard, Multiset.esymm, Multiset.powersetCard_one]
-
 variable {O K}
 
 theorem IsUnitarySatake.norm_le {r : ℕ} {β : Multiset ℂ} (h : IsUnitarySatake O K r β) :
     ∀ b ∈ β, ‖b‖ ≤ (qRes O : ℝ) ^ (((r : ℝ) - 1) / 2) := by
   obtain ⟨hc, V, _, _, ρ, v, hρ, hv, hfix, hT⟩ := h
-  exact GlobalTheory.T.satake_bound_of_isometric_sphericalGL O K r V ρ v β hc hρ hv hfix hT
+  exact _root_.GlobalTheory.LatHecke.satake_bound_of_isometric_spherical O K r V ρ v β hc hρ hv hfix hT
 
 end Local
 
@@ -90,16 +74,6 @@ def UnitarySphericalComponent : Prop :=
 theorem rowSizeLe_of_component (h : UnitarySphericalComponent N A) :
     GlobalTheory.ThetaExh.RowSizeLe N A :=
   fun i σ hσ w hw hu => (h i σ hσ w hw hu).2.norm_le
-
-theorem rpow_neg_le_norm_of_component (h : UnitarySphericalComponent N A)
-    (i : N.Loc) (σ : what₂.FT) (hσ : what₂.isot (N.j i) σ ≠ ⊥) (w : PlE H) (hw : IsSplitPl H w)
-    (hu : A.unr (A.locW i σ w)) (α : ℂ) (hα : α ∈ A.frobEig (A.locW i σ w)) :
-    ((normV w : ℕ) : ℝ) ^ (-(((R.r : ℝ) - 1) / 2)) ≤ ‖α‖ := by
-  have h1 := (h i σ hσ w hw hu).1.norm_le α⁻¹ (Multiset.mem_map_of_mem _ hα)
-  have h0 : α ≠ 0 := fun e => A.frobEig_ne_zero _ hu (e ▸ hα)
-  rw [norm_inv] at h1
-  rw [Real.rpow_neg (Nat.cast_nonneg _)]
-  exact inv_le_of_inv_le₀ (norm_pos_iff.2 h0) h1
 
 theorem rowEigSmall_of_component : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R)
     (N : NData R H what₂) (A : NAut N),

@@ -86,25 +86,4 @@ theorem abs_log_grNorm_sub_le (x : Sp C ⟶ X) {Λ Λ' : Set (Sp (DualNumber C) 
 
 end Lat
 
-section Ext
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-  {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
-
-theorem existsUnique_ext (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {C : Type} [NontriviallyNormedField C]
-    [IsUltrametricDist C] (x : Sp C ⟶ Z.X) : ∃! xO : Sp ↥(intO C) ⟶ Z.X, spMap (intO C).subtype ≫ xO = x := by
-  obtain ⟨-, xO, hx, -⟩ := GlobalTheory.ShFam.Pad.Test.latDR_nonempty Z x
-  refine ⟨xO, hx, fun xO' hx' => ?_⟩
-  have := isProper_toroidalModel_structureMap Z
-  have hs : IsSeparated (terminal.from Z.X) := by
-    rw [← terminal.comp_from Z.s]
-    infer_instance
-  let S : ValuativeCommSq (terminal.from Z.X) :=
-    { R := intO C, K := C, i₁ := x, i₂ := terminal.from _, commSq := ⟨terminal.hom_ext _ _⟩ }
-  have hu := IsSeparated.valuativeCriterion (terminal.from Z.X) S
-  exact congrArg CommSq.LiftStruct.l
-    (hu.elim ⟨xO', hx', terminal.hom_ext _ _⟩ ⟨xO, hx, terminal.hom_ext _ _⟩)
-
-end Ext
-
 end GlobalTheory.HTFrame

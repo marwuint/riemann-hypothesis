@@ -1,10 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemiAbelianExponentialAlongDiscStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemiAbelianExponentialAlongDisc
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousLatticeVectorsAlongArc
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameChangeEigenframeExponentialsHolArcStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousPeriodLatticeBasisArcStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialGrowthOfPeriodicIntegralSpansStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameChangeEigenframeExponentialsHolArc
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousPeriodLatticeBasisArc
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExponentialChartAtPoint
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFramedChartExponentialToroidalModel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicLatticeBasisPunctPolydiscCoverP
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLatBasisZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanPeriodLatticeComplexSemiAbelianEqTop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialGrowthOfPeriodicIntegralSpans
 
 noncomputable section
 
@@ -17,11 +22,11 @@ namespace GlobalTheory.ShFam.BdArc
 theorem exists_period_basis_halfPlane
 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : ℂ → (A →+* ℂ)) (r : ℝ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)), GoodEmb c σ → 1 ≤ Dw.p + Dw.q → IsArc Z σ φ x ψ r → (∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → ∀ s, (spMap (ψ u) ≫ x) s ∉ genBd Z) → ∃ (T₀ : ℝ) (m : ℕ) (lam : ℂ → Fin m → Fin g → ℂ), (∀ w : ℂ, T₀ < w.im → eTwoPi w ∈ Metric.ball (0 : ℂ) r) ∧ ContinuousOn lam {w : ℂ | T₀ < w.im} ∧ (∀ w : ℂ, T₀ < w.im → LinearIndependent ℝ (lam w) ∧ Submodule.span ℝ (Set.range (lam w)) = ⊤) ∧ (∀ w : ℂ, T₀ < w.im → ∀ ex : (Fin g → ℂ) → (Over.mk (spMap (ψ (eTwoPi w)) ≫ x ≫ genι Z) ⟶ Z.t.G), (∀ z z', ex (z + z') = ex z * ex z') → IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ Z.t.G.left from (ex z).left)) → (∀ j, IsDerivAt0 (fun z => (ex z).left) (Pi.single j 1) (spMap (dualMap (ψ (eTwoPi w))) ≫ fr.v (e j).1 (e j).2)) → ∀ z, ex z = 1 ↔ ∃ n : Fin m → ℤ, z = ∑ j, n j • lam w j) ∧ ∀ R : ℝ, ∃ (C : ℝ) (B : ℕ), ∀ w : ℂ, T₀ < w.im → |w.re| ≤ R → ‖lam w‖ ≤ C * w.im ^ B := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ r g e hσ hpq harc hin
-  obtain ⟨g', ρ, e', hρ, hρr, hol, hexp, -⟩ := GlobalTheory.T.exists_semi_abelian_exponential_along_disc Z.X Z.t.G (fun u => spMap (ψ u) ≫ x ≫ genι Z) r
+  obtain ⟨g', ρ, e', hρ, hρr, hol, hexp, -⟩ := _root_.GlobalTheory.RelExp.exists_exp_along_disc Z.X Z.t.G (fun u => spMap (ψ u) ≫ x ≫ genι Z) r
     Z.t.semi harc.1.1 (GlobalTheory.ShFam.BdArc.LatSec.isHolTo_spMap harc.1 _)
-  obtain ⟨h, hh⟩ := GlobalTheory.T.exists_frameChange_eigenframe_exponentials_holArc E H Dw l Xo c O β Z σ A φ x fr ψ r g e g' ρ e' harc hρ hρr hol hexp
+  obtain ⟨h, hh⟩ := _root_.GlobalTheory.ShFam.BdArc.exists_frame_change E H Dw l Xo c O β Z σ A φ x fr ψ r g e g' ρ e' harc hρ hρr hol hexp
   obtain ⟨ρ₀, m, lamE, hρ₀, hρ₀ρ, hcont, hlat, C, k, hC⟩ :=
-    GlobalTheory.T.exists_continuous_period_lattice_basis_arc E H Dw l Xo c O β Z σ A φ x ψ r g' ρ e' hσ hpq harc hin hρ hρr hol hexp
+    _root_.GlobalTheory.ShFam.BdArc.ArcLat.exists_continuous_latBasis_of_arc E H Dw l Xo c O β Z σ A φ x ψ r g' ρ e' hσ hpq harc hin hρ hρr hol hexp
   have hper : ∀ s : ℂ, s.re < 0 → ∀ z, (∃ n : Fin m → ℤ, z = ∑ j, n j • lamE (s + 2 * Real.pi * Complex.I) j) ↔
       ∃ n : Fin m → ℤ, z = ∑ j, n j • lamE s j := by
     intro s hs z
@@ -98,7 +103,7 @@ theorem exists_period_basis_halfPlane
     rw [show ∑ j, n j • L.symm (lamE (sOf w) j) = L.symm (∑ j, n j • lamE (sOf w) j) by
         rw [map_sum]; exact Finset.sum_congr rfl fun j _ => (map_zsmul L.symm _ _).symm,
       ContinuousLinearEquiv.eq_symm_apply]
-  · obtain ⟨C', hC'⟩ := GlobalTheory.T.polynomial_growth_of_periodic_integral_spans g' m lamE C k hcont (fun s hs => (hlat s hs).1) hper hC (2 * Real.pi * |R|)
+  · obtain ⟨C', hC'⟩ := _root_.GlobalTheory.StripGrowth.strip_growth g' m lamE C k hcont (fun s hs => (hlat s hs).1) hper hC (2 * Real.pi * |R|)
     set D : ℝ := 1 + 2 * Real.pi + |Real.log ρ₀| + 2 * Real.pi * |R|
     refine ⟨Ch * max C' 0 * D ^ k, k, fun w hw hR => ?_⟩
     have hw1 : 1 ≤ w.im := (le_max_left _ _).trans hw.le

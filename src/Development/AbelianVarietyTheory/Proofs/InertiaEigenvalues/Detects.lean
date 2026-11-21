@@ -2,10 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SmulMemRatForms
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckeValueIntegrality
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EvLawsGenFrNonemptyComp
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgebraicIntegerPointOfFiniteExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightSectionEqZeroOfVanishingFiniteExtensionsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgebraicIntegerPointOfFiniteExtension
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NatCastMemPlaceAt
+import Formalism.LocalToGlobal.ProjectiveLattices.LocFld
+import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCdvrReadingInCpOfFiniteResidue
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckePrimeDetection
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightSectionEqZeroOfVanishingFiniteExtensions
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.SectionEqZeroOfGenericFramedPointValues
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfSumMulEmbeddingsEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLinearRelationDescendBaseFieldStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLinearRelationDescendBaseField
 
 set_option autoImplicit false
 
@@ -25,7 +31,7 @@ theorem core {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw
   have hrel : ∀ (L : Type) [Field L] [Algebra c.F L] [FiniteDimensional c.F L] (σ : L →ₐ[c.F] PAt φ)
       (y : FrPt Xo c L), ∑ s, wP s * σ (evR Xo c (g s) y) = 0 := by
     intro L _ _ _ σ y
-    obtain ⟨z, u, hu, hz⟩ := GlobalTheory.T.exists_algebraicInteger_point_of_finiteExtension E H Dw l Xo c p φ hI L ((toCp φ).comp σ.toRingHom)
+    obtain ⟨z, u, hu, hz⟩ := _root_.GlobalTheory.GeoTie.NumPt.exists_ptC_of_finExt E H Dw l Xo c p φ hI L ((toCp φ).comp σ.toRingHom)
       (fun a => by simp [toCp_algebraMap]) y a n
     have h1 := hw z
     simp only [hz _ (hg _)] at h1
@@ -38,7 +44,7 @@ theorem core {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw
   let K := algebraicClosure c.F (PAt φ)
   let V : Set (ι → K) := {v | ∃ (L : Type) (_ : Field L) (_ : Algebra c.F L) (_ : FiniteDimensional c.F L)
     (σ : L →ₐ[c.F] PAt φ) (y : FrPt Xo c L), ∀ s, (v s : PAt φ) = σ (evR Xo c (g s) y)}
-  obtain ⟨d, hd0, hd⟩ := GlobalTheory.T.exists_linear_relation_descend_base_field K (PAt φ) ι V wP hw0 (by
+  obtain ⟨d, hd0, hd⟩ := _root_.GlobalTheory.linRelation_descend K (PAt φ) ι V wP hw0 (by
     rintro v ⟨L, _, _, _, σ, y, hv⟩
     simpa only [IntermediateField.algebraMap_apply, hv] using hrel L σ y)
 
@@ -79,7 +85,7 @@ theorem core {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw
     exact this
   have hzero : ∀ t, hh t = 0 := by
     intro t
-    refine GlobalTheory.T.weightSection_eq_zero_of_vanishing_finite_extensions E H Dw l Xo c a n (hh t) (hhsec t) fun L _ _ _ y => ?_
+    refine _root_.GlobalTheory.Reg.sec_eq_zero_of_finite_values E H Dw l Xo c a n (hh t) (hhsec t) fun L _ _ _ y => ?_
     have := GlobalTheory.T.eq_zero_of_sum_mul_embeddings_eq_zero' c.F (PAt φ) L m e he hea (fun t => evR Xo c (hh t) y) (fun σ => by
       rw [← hdrel L σ y]
       simp only [hev, map_sum, map_mul, AlgHom.commutes, hq, Finset.mul_sum, Finset.sum_mul]

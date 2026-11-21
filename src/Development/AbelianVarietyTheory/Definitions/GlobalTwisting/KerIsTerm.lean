@@ -187,7 +187,4 @@ def KerIsTerm : Prop :=
 
 end Conc
 
-example {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (ST : Finset (HeightOneSpectrum (𝓞 E)))
-    (N : Submodule (𝓞 E) (Sp E n)) : SameOff ST N N := fun _ _ => rfl
-
 end GlobalTheory.LvT.Built

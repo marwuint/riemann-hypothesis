@@ -289,11 +289,6 @@ theorem IsChosenExtremalVector.norm {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ
 theorem IsChosenExtremalVector.io {i : Fin D.R.m} {v : (R.MW i (sg0 D A)).Vec} (h : IsChosenExtremalVector R i (sg0 D A) v) (hio : IoExt R) : ExtremalVectorPairsToDelta R i v :=
   h.2 rfl (hio i)
 
-def JConj : Prop :=
-  ∀ i (σ : D.what₂.LL →+* ℂ) (x y : Fin (R.nW i) → D.what₂.LL),
-    ⟪(R.FW i).j ((starRingEnd ℂ).comp σ) x, (R.FW i).j ((starRingEnd ℂ).comp σ) y⟫_ℂ =
-      starRingEnd ℂ ⟪(R.FW i).j σ x, (R.FW i).j σ y⟫_ℂ
-
 end Collected
 
 def BaseFrT {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}

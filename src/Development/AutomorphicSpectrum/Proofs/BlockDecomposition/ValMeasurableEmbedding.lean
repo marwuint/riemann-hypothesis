@@ -1,5 +1,5 @@
 import Mathlib
-import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.RealLocalIntegrals.RealGammaLimits.FunctionalEquationGL2GL1Complex
+import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.RealLocalIntegrals.RealGammaLimits.Z2
 
 noncomputable section
 open MeasureTheory Complex Ad3 Ad3.LR Ad3.LR.C
@@ -37,13 +37,6 @@ theorem map_val_mulR : Measure.map (Units.val : ℝˣ → ℝ) mulR = nuR := by
       simpa using h0)
   rw [hr, this] at h
   exact h
-
-theorem integral_mulR (F : ℝ → ℂ) : ∫ a : ℝˣ, F a ∂mulR = ∫ x : ℝ, ((|x|⁻¹ : ℝ) : ℂ) * F x := by
-  have h1 : ∫ a : ℝˣ, F a ∂mulR = ∫ x, F x ∂nuR := by
-    rw [← map_val_mulR, val_measurableEmbedding.integral_map]
-  rw [h1, nuR, integral_withDensity_eq_integral_toReal_smul₀ (by fun_prop) (by simp)]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
-  simp [ENNReal.toReal_ofReal, Complex.real_smul]
 
 instance : SigmaFinite mulR := by
   refine SigmaFinite.of_map _ val_measurableEmbedding.measurable.aemeasurable ?_

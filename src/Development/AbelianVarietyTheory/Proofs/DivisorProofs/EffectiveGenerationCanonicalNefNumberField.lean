@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeSmoothProjectiveVarietyPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClosedPointSpecializesInOpenOfFiniteTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmpleModuloEffectiveAwayFromPointPullAffineStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeSmoothProjectiveVarietyProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClosedPointSpecializesInOpenOfFiniteType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmpleModuloEffectiveAwayFromPointPullAffine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefLineBundleBaseChangeFieldExtensionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBigLineBundleOfSmulClassEqAmpleAtAddNefStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneLeIntersectionNumberSubvarietyThroughPositiveStatement
@@ -10,8 +10,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMulIntersectionL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberCurveOfClassEqSmulAddStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsolatedNonKltDivisorSmoothProjectiveStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionNonvanishingPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorSectionNonvanishingOfBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionNonvanishingPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorSectionNonvanishingOfBaseChange
 import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NefIsPsEffAndBigTensNef
@@ -78,7 +78,7 @@ theorem core_gen (hK : GlobalTheory.Published.NadelVanishingAndNonKltDivisor) (h
         rw [Nat.cast_sub (by omega)]; push_cast; ring
       push_cast [this]
       ring)
-  exact GlobalTheory.T.exists_section_nonvanishing_point ℂ X q hq (tens K.bundle B) (isLB_tens K.isLB hB) J x U hx hxU
+  exact _root_.GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated ℂ X q hq (tens K.bundle B) (isLB_tens K.isLB hB) J x U hx hxU
     (fun y hy => by
       rw [hJ]
       constructor
@@ -99,15 +99,15 @@ theorem effective_generation : GlobalTheory.Published.NadelVanishingAndNonKltDiv
   let π := pullback.fst p (spMap (algebraMap F ℂ))
   let q := pullback.snd p (spMap (algebraMap F ℂ))
   have H : IsPullback π q p (spMap (algebraMap F ℂ)) := IsPullback.of_hasPullback _ _
-  obtain ⟨hXi, hXn, hsm, hqp, hsurj⟩ := GlobalTheory.T.baseChange_smooth_projective_variety_properties F ℂ Y _ p q π D H hproj hgc
+  obtain ⟨hXi, hXn, hsm, hqp, hsurj⟩ := _root_.GlobalTheory.BaseChangeVariety.baseChange_props F ℂ Y _ p q π D H hproj hgc
   haveI := hXi; haveI := hXn; haveI := hsm
   letI := algebraΓOfHom q
   haveI : IsAffineHom π := MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance
   obtain ⟨y', rfl⟩ := hsurj y
   haveI : Smooth q := SmoothOfRelativeDimension.smooth D q
   obtain ⟨m₁, A, s₁, hm₁, hA, hAa, hy⟩ := hamp
-  obtain ⟨x, hxc, hyx, hxU⟩ := GlobalTheory.T.exists_closedPoint_specializes_in_open_of_finiteType ℂ _ q (π ⁻¹ᵁ nonzeroLocus s₁) y' hy
-  have hAx : AmpleAt (N₁.pull π) x := GlobalTheory.T.ampleModuloEffectiveAwayFromPoint_pull_affine Y _ π N₁ h₁ x ⟨m₁, A, s₁, hm₁, hA, hAa, hxU⟩
+  obtain ⟨x, hxc, hyx, hxU⟩ := _root_.GlobalTheory.closedPoint_specializing_in_open ℂ _ q (π ⁻¹ᵁ nonzeroLocus s₁) y' hy
+  have hAx : AmpleAt (N₁.pull π) x := _root_.GlobalTheory.AmplePull.ampleAt_pull Y _ π N₁ h₁ x ⟨m₁, A, s₁, hm₁, hA, hAa, hxU⟩
   have hNnC := GlobalTheory.T.isNefLineBundle_baseChange_field_extension hNN F ℂ Y _ p q π H hproj N hNn
   have hN'nC := GlobalTheory.T.isNefLineBundle_baseChange_field_extension hNN F ℂ Y _ p q π H hproj N' hN'n
   have hN₂C := GlobalTheory.T.isNefLineBundle_baseChange_field_extension hNN F ℂ Y _ p q π H hproj N₂ hN₂
@@ -119,6 +119,6 @@ theorem effective_generation : GlobalTheory.Published.NadelVanishingAndNonKltDiv
     rw [cls_pull hB, cls_pull hN, cls_pull hN', hBc, map_add, map_nsmul]
   obtain ⟨s, hs⟩ := core_gen hK hNN _ q D hqp hD1 (CanonLB.baseChange H K) (N.pull π) (N'.pull π) (B.pull π)
     _ _ _ m x hxc hNnC hbig hN'nC hm hpos hcB
-  exact GlobalTheory.T.exists_tensor_section_nonvanishing_of_baseChange F ℂ Y _ p q π H hproj K.bundle B K.isLB hB y' ⟨s, hyx.mem_open (nonzeroLocus s).isOpen hs⟩
+  exact _root_.GlobalTheory.FieldDescent.exists_sec_tens_of_baseChange F ℂ Y _ p q π H hproj K.bundle B K.isLB hB y' ⟨s, hyx.mem_open (nonzeroLocus s).isOpen hs⟩
 
 end GlobalTheory.EffGen

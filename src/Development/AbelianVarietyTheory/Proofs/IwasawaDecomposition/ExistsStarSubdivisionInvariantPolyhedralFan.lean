@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToFunNonneg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionDepthHostFixingAutInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionFunctionIntegralStrictlyConStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionFunctionLinearOnCellsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionCellMemStarConeOrCentrelessStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyFanOfStarSubdivisionCellsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionSubordinateToFanStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionFunctionIntegralStrictlyCon
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionFunctionLinearOnCells
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionCellMemStarConeOrCentreless
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyFanOfStarSubdivisionCells
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionSubordinateToFan
 
 noncomputable section
 
@@ -15,8 +15,8 @@ namespace GlobalTheory.PolFan
 
 theorem exists_starSubdivision : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ w : InvFun (𝓞 E)), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsTwInv H ψ → IsTwInv H w → IsCentreSet H.bar q ψ w → ∃ ψ' : InvFun (𝓞 E), IsPolyFan H.bar q ψ' ∧ IsTwInv H ψ' ∧ Subordinate H.bar q ψ' ψ ∧ IsStarOf H.bar q ψ w ψ' := by
   intro E _ _ _ H q ψ w hDom hψ htψ htw hW
-  obtain ⟨K, D, hK, hD, hint, hs1, hs2⟩ := GlobalTheory.T.exists_starSubdivision_function_integral_strictly_concave E H q ψ w hDom hψ hW
-  obtain ⟨hl1, hl2⟩ := GlobalTheory.T.starSubdivision_function_linearOn_cells E H q ψ w K D hW
+  obtain ⟨K, D, hK, hD, hint, hs1, hs2⟩ := _root_.GlobalTheory.PolFan.StarKey.exists_starFun_strict E H q ψ w hDom hψ hW
+  obtain ⟨hl1, hl2⟩ := _root_.GlobalTheory.PolFan.starFun_linearOn E H q ψ w K D hW
   have c1 : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X],
       Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ →
         (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0) →
@@ -36,7 +36,7 @@ theorem exists_starSubdivision : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     · refine Fin.cases ?_ (fun j => ?_) i
       · simpa using hp y
       · simpa using hγ.nonneg (s j) y
-  have hstar : IsStarOf H.bar q ψ w (starFun H.bar ψ w K D) := GlobalTheory.T.isStarOf_of_cells_starCone_or_centreless E H q ψ w _ hψ hW c1 c2
+  have hstar : IsStarOf H.bar q ψ w (starFun H.bar ψ w K D) := _root_.GlobalTheory.PolFan.StarCells.isStarOf_of_clauses E H q ψ w _ hψ hW c1 c2
   have hpos : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X],
       Module.finrank (𝓞 E) X ≤ q → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → β ≠ 0 →
         0 < (starFun H.bar ψ w K D).evalZ β := by
@@ -47,7 +47,7 @@ theorem exists_starSubdivision : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     have hK' : (0 : ℝ) < K := by exact_mod_cast hK
     have hD' : (0 : ℝ) < D := by exact_mod_cast hD
     positivity
-  exact ⟨starFun H.bar ψ w K D, GlobalTheory.T.isPolyFan_of_starSubdivision_cells E H q ψ w _ hψ hW hstar hint hpos,
-    isTwInv_starFun H htψ (GlobalTheory.T.starSubdivisionDepth_hostFixingAut_invariant E H ψ w htψ htw) K D, GlobalTheory.T.starSubdivision_subordinate_to_fan _ H.bar q ψ w _ hstar, hstar⟩
+  exact ⟨starFun H.bar ψ w K D, _root_.GlobalTheory.PolFan.StarFan.isPolyFan_star E H q ψ w _ hψ hW hstar hint hpos,
+    isTwInv_starFun H htψ (GlobalTheory.T.starSubdivisionDepth_hostFixingAut_invariant E H ψ w htψ htw) K D, _root_.GlobalTheory.PolFan.subordinate_of_isStarOf _ H.bar q ψ w _ hstar, hstar⟩
 
 end GlobalTheory.PolFan

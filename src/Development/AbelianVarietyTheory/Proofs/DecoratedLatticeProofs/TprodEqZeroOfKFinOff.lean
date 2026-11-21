@@ -48,6 +48,4 @@ theorem eq_zero_of_sepCont : GlobalTheory.Published.HarishChandraModules → ∀
   simp only [LinearMap.compMultilinearMap_apply, LinearMap.zero_apply]
   exact tprod_eq_zero_of_kFin_off hHC M Λ hΛ h0 Finset.univ v fun τ hτ => absurd (Finset.mem_univ τ) hτ
 
-example : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : SmT M →ₗ[ℂ] ℂ), SepCont M Λ → (∀ v : M.Vec, KVecP M v → Λ (PiTensorProduct.tprod ℂ v) = 0) → Λ = 0 := eq_zero_of_sepCont
-
 end GlobalTheory.Core.Mi

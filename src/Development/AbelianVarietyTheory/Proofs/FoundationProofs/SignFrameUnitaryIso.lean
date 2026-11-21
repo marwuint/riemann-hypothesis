@@ -151,29 +151,6 @@ def frameEquiv (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMem
       exact (congrArg (Formalism.REAL.coeMatrixAlt ε)
         ((MulEquiv.ofBijective _ (frameHom_bijective σ J h τ b hb)).apply_symm_apply x).symm).trans this) }
 
-theorem frameEquiv_val (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b) (g : GArch σ J w) :
-    Formalism.REAL.coeMatrixAlt ε (frameEquiv σ J h τ b hb g) = GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g := frameHom_val σ J h τ b hb g
-
 end Frame
-
-def blockEquiv (ε : Fin n → Bool) :
-    Formalism.BasicNotions.UpqT (Formalism.BasicNotions.Examples₂.CD.nT ε) (Formalism.BasicNotions.Examples₂.CD.nF ε) ≃ₜ* Formalism.REAL.UJ ε :=
-  { Formalism.BasicNotions.Examples₂.CD.phi ε (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr ε) with
-    continuous_toFun := Formalism.BasicNotions.Examples₂.CD.phi_cont ε (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl ε)
-      (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr ε)
-    continuous_invFun := Formalism.BasicNotions.Examples₂.CD.phi_symm_cont ε (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl ε)
-      (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr ε) }
-
-theorem exists_frameIso : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F)
-    (τ : EmbOver E w) (ε : Fin n → Bool) (b : GL (Fin n) (w.Completion ⊗[F] E)),
-    GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b → ∃ Θ : GArch σ J w ≃ₜ* Formalism.BasicNotions.UpqT (Formalism.BasicNotions.Examples₂.CD.nT ε)
-      (Formalism.BasicNotions.Examples₂.CD.nF ε), ∀ g, GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g =
-        Matrix.reindex (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.UpqT.mat (Θ g)) := by
-  intro F E _ _ _ _ _ σ h n J w τ ε b hb
-  refine ⟨(frameEquiv σ J h τ b hb).trans (blockEquiv ε).symm, fun g => ?_⟩
-  rw [← frameEquiv_val σ J h τ b hb g, ← Formalism.BasicNotions.Examples₂.CD.coe_phi ε (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl ε)
-    (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr ε)]
-  exact congrArg (Formalism.REAL.coeMatrixAlt ε) ((blockEquiv ε).apply_symm_apply (frameEquiv σ J h τ b hb g)).symm
 
 end GlobalTheory.FrameIsoReal

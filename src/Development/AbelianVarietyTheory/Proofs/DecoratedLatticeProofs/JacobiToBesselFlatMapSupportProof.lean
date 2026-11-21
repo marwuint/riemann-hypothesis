@@ -8,7 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittCoreEm
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EventuallyIncAMulMemIntAt
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOneTmulMem
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaDecompositionSelfDualWittSplitAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLatticeStabilizersFixWeilVacuumOnPlaceSeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualLatticeStabilizersFixWeilVacuumOnPlaceSe
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 
 noncomputable section
 
@@ -596,7 +597,7 @@ theorem supportShift : ∀ D : D7, GlobalTheory.FinPl.SupportShift D := by
         simp only [Prod.mk_mul_mk, mul_one, mul_assoc]
       rw [this, map_mul, map_mul]; rfl
     have hκf : s.om (1, κ) f = f := by
-      refine GlobalTheory.T.selfDualLatticeStabilizers_fix_weilVacuum_on_placeSet D ψ J.W B.V s.χV s.χW s.om s.weil LV LW hA.sdV hA.sdW (· = v) ?_ f hf 1 κ ?_ hκ
+      refine _root_.GlobalTheory.StabSetFix.stab_fix_vac D ψ J.W B.V s.χV s.χW s.om s.weil LV LW hA.sdV hA.sdW (· = v) ?_ f hf 1 κ ?_ hκ
       · rintro w rfl; exact ⟨hA.tame, hU.1, hU.2⟩
       · exact ⟨one_mem _, fun y _ => by rw [mt_one, Matrix.one_mulVec]⟩
     have h1 := h𝔉.equiv _ (s.weil.om_pres (1, B.d.levi t * B.d.emb0 γ) _ hf.1) n hnN hnG 1 (one_mem _)

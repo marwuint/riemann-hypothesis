@@ -157,30 +157,4 @@ theorem redFn_int {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.h
   rw [upper_block_val_submatrix _ (blockTri_blkOf_le _ _ (parLev_g hk.2.1 hP))] at e'
   exact eq_int_of_submatrix hr L.hr e'
 
-set_option maxHeartbeats 1000000 in
-
-theorem central_lev : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → FWTie T R κ v₀ → ∀ (i : Fin D.R.m) (O : OM T R i), Pinned κ v₀ O → ∀ m : ℤ, IsCoprime m (T.Q.l.M : ℤ) → ∃ z ∈ Subgroup.center G, ∀ a ∈ Mfr T.Q.l • (⊤ : Submodule (𝓞 D.host.E) (T.Q.Dw ((i : ℕ) + 1)).La), ∃ b : (T.Q.Dw ((i : ℕ) + 1)).La, O.lev z a = m • a + T.Q.l.M • b := by
-  intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hO m hm
-  have hT := tie.laws
-  have hL := hR.lev
-  have hβ := hL.βW i
-  have hι := GlobalTheory.LevelAction.latEmb_iotaW T hT i
-  have hMb : T.Q.l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal := (hO.tuple ()).half.1
-  have hp : T.Q.l.Mb * Mfr T.Q.l = Ideal.span {((T.Q.l.M : ℕ) : 𝓞 D.host.E)} := T.Q.l.prod
-  have hp' : (∏ PP ∈ R.Pg, PP.asIdeal) * Mfr T.Q.l = Ideal.span {((T.Q.l.M : ℕ) : 𝓞 D.host.E)} := by rw [← hMb]; exact hp
-  have hM0 : 0 < T.Q.l.M := lt_of_lt_of_le (by norm_num) T.Q.l.three_le
-  have hu : ∀ P : R.Pg, IsUnit ((m : ℤ) : kP P.1) := fun P => isUnit_of_coprime hm (cast_res R.Pg hp' P.2)
-  obtain ⟨z, hz⟩ := R.eG.surjective fun P => scalGL D.R.r (hu P)
-  refine ⟨z, Subgroup.mem_center_iff.2 fun g => R.eG.injective ?_, fun a ha => ?_⟩
-  · rw [R.eG.map_mul, R.eG.map_mul, hz]
-    funext P
-    exact scalGL_comm (hu P) (R.eG g P)
-  · obtain ⟨k, hk, hf⟩ := hO.lift.lev z
-    have hr := redFn_int (L := R.datWp i R.triv) (rank_Wc i) hk m
-      (fun P => (congrArg Units.val (congrFun hz P)).trans (scalGL_val _ (hu P)))
-    obtain ⟨w₃, hw₃, e₃⟩ := GlobalTheory.OneMapRef.Lift.cong_on_half hι (fun b hb => exists_cong_int (b := b) hβ R.Pg hp'
-      (parLev_St hk.2.1) m hr hb) a ha
-    obtain ⟨w₂, hw₂, e₂⟩ := hf a ha
-    exact GlobalTheory.OneMapRef.Lift.sign_div hι hM0 (add_mem hw₂ hw₃) (int_calc e₂ e₃)
-
 end GlobalTheory.GalCentral

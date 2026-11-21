@@ -41,9 +41,6 @@ variable (EA : Type) [CommRing EA] [Algebra A[X] EA]
 
 abbrev Ext : Type := PolyOver f ⊗[A[X]] EA
 
-example : Algebra A₁[X] (Ext f EA) := inferInstance
-example : Algebra A₁ (Ext f EA) := inferInstance
-example : IsScalarTower A₁ A₁[X] (Ext f EA) := inferInstance
 instance [Algebra.Etale A[X] EA] : Algebra.Etale A₁[X] (Ext f EA) :=
   inferInstanceAs (Algebra.Etale (PolyOver f) (PolyOver f ⊗[A[X]] EA))
 

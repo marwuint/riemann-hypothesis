@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CayleyTransformUnitarySkewInvolutiveStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IdempotentAdelesAndSmallAdelicMatricesStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AdelicUnitaryScalingUnitStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IdempotentAdelesAndSmallAdelicMatrices
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.AdelicUnitaryScalingUnit
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseOneAddPreservingAdelicCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRationalMatrixApproxAdeleLinearMapStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRationalMatrixApproxAdeleLinearMap
 
 open NumberField IsDedekindDomain GlobalTheory.AdLat GlobalTheory.UnRep
 open scoped TensorProduct Matrix
@@ -253,7 +253,7 @@ theorem weak_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   intro F E _ _ _ _ _ c n G hG hr L hfg hsp g N D hg hN hD
   classical
   obtain ⟨hcc, hc1, hGc, hdet⟩ := hG
-  obtain ⟨i1, i2, -, i4, i5⟩ := GlobalTheory.T.idempotent_adeles_and_small_adelic_matrices F E n L hfg hsp
+  obtain ⟨i1, i2, -, i4, i5⟩ := _root_.GlobalTheory.UnRep.idempotent_adeles_small_matrices F E n L hfg hsp
   have hfin : {v : HeightOneSpectrum (𝓞 F) | (N : 𝓞 F) ∈ v.asIdeal}.Finite := by
     have hne : Ideal.span {(N : 𝓞 F)} ≠ 0 := by
       rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
@@ -317,7 +317,7 @@ theorem weak_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E
     have := (Nat.cast_ne_zero.2 hd.ne' : (d : E) ≠ 0).isUnit.map ι
     rwa [map_natCast] at this
   have hgu : g.1ᵀ * G.map ι * g.1.map σ = G.map ι := (preserves_iff σ (G.map ι) g.1).1 hg
-  obtain ⟨lam, hlam, hu⟩ := GlobalTheory.T.adelic_unitary_scaling_unit F E c hr hcc hc1 n (g⁻¹).1 e hee hsupp
+  obtain ⟨lam, hlam, hu⟩ := _root_.GlobalTheory.UnRep.exists_norm_one_isUnit_det F E c hr hcc hc1 n (g⁻¹).1 e hee hsupp
   rw [hsub] at hu
   obtain ⟨γ, hγ, hcong⟩ := core ι c' σ (fun x => hσt 1 x) hcc hσσ G
     (by ext a b; exact hGc b a) hdet two_ne_zero (stab (hat F (L : Set (Fin n → E))))
@@ -330,7 +330,7 @@ theorem weak_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E
       obtain ⟨W, hW, hW'⟩ := GlobalTheory.T.exists_inverse_one_add_preserving_adelicCompletion F E n L hfg hsp N e heI he0' X hX
       exact ⟨W, hW', hW⟩)
     (fun M D' hD' => by
-      obtain ⟨M₀, H⟩ := GlobalTheory.T.exists_rational_matrix_approx_adele_linear_map F E n L hfg hsp (skewPart σ (G.map ι))
+      obtain ⟨M₀, H⟩ := _root_.GlobalTheory.UnRep.exists_rational_approx_after_adele_linear F E n L hfg hsp (skewPart σ (G.map ι))
         (fun a M => skewPart_smul σ _ _ (hσ1 a) M) M D' hD'
       obtain ⟨X, hX, hX'⟩ := exists_stab _ _ D' (hunit D' hD') H
       rw [map_sub] at hX'

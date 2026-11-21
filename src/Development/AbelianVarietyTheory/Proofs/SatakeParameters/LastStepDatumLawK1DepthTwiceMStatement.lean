@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastStepDatumLawK1DepthTwiceM
-import Mathlib
 import Formalism.LocalToGlobal.Columns.KOneCharacterTrivialNearOne
 import Formalism.LocalToGlobal.Columns.ChainInstY
 import Formalism.LocalToGlobal.Columns.XtSumSingle

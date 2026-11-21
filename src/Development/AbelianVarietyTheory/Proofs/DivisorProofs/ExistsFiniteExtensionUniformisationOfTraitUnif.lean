@@ -1,22 +1,22 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationCompleteLocalEvenOnTorusStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationCompleteLocalEvenOnTorus
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinExtTqClosedFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullDegUniqueAndComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSemiAbelianUniformisationOfFiniteExtTrans
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationTransferIsPullDegIdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationTransferIsPullDegId
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonPullFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDegenerationDataPullbackInjectiveLocalHom
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamilyFibreEqUniformisedPullbackGenericFibre
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCpPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsSemiAbelianOfGenericAbelianOfClosedIsGt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnifTrait
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitUniformisationPullbackFiniteExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenCubicalTrivialisationOfTraitUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarisedAbelianGenericFibreTraitUniformisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonPullDegTraitAndBaseUniformisationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitUniformisationPullbackFiniteExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenCubicalTrivialisationOfTraitUniformisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarisedAbelianGenericFibreTraitUniformis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonPullDegTraitAndBaseUniformisation
 
 noncomputable section
 
@@ -57,7 +57,7 @@ theorem unif_along_finExt : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocal
   have h3' : Nonempty (IsPullDeg (RingHom.id R') D₃.toPre D'.toPre) :=
     GlobalTheory.Mum.isPullDeg_unique_and_comp.1 R R' ρ hf.2.1 D₂.toPre D₃.toPre D'.toPre h23 ⟨hD⟩
   have hG' : IsSemiAbelian ((Over.pullback (specOf ρ)).obj G) := IsSemiAbelian.pullback _ G hG
-  obtain ⟨U₃, hU₃, -⟩ := (GlobalTheory.T.uniformisation_transfer_isPullDeg_id R' (maximalIdeal R') hf.1 D₃ D' h3' A' _ hG').1 U'
+  obtain ⟨U₃, hU₃, -⟩ := (_root_.GlobalTheory.Mum.UnifMove.unif_move R' (maximalIdeal R') hf.1 D₃ D' h3' A' _ hG').1 U'
   have hb : (Iso.refl ((Over.pullback (specOf ρ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf ρ) =
       pullback.fst G.hom (specOf ρ) := Category.id_comp _
   refine ⟨(Over.pullback (specOf ρ)).obj G, inferInstance, inferInstance,
@@ -79,11 +79,11 @@ theorem exists_finExt_unif : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRi
   obtain ⟨P₁, w₁, hP₁L, hP₁⟩ := GlobalTheory.UU.exists_cp_pull _ _ (spMap ρ₁) G G₁ β₁ hβ₁.1.w
     (fun T x y => Over.OverMorphism.ext (hβ₁.2 T x y _ _ rfl rfl).symm) P
   have hT₁ : UnifTrait D₁ G₁ P₁.L.L := by
-    rw [hP₁L]; exact GlobalTheory.T.traitUniformisation_pullback_finiteExtension R R₁ ρ₁ hR hf₁ D D₁ hD₁ G G₁ β₁ hG hβ₁ P.L.L P.L.isLB hT
-  have hE : EvenOn P₁ := GlobalTheory.T.evenCubicalTrivialisation_of_trait_uniformisation R₁ hR₁ D₁ G₁ P₁ hG₁ hT₁ X hQ
-  obtain ⟨A, gen, hgen, hA⟩ := GlobalTheory.T.exists_polarisedAbelian_generic_fibre_trait_uniformised R₁ hR₁ D₁ G₁ P₁ hG₁ hT₁
-  obtain ⟨D₂, U₂, hU₂, -⟩ := GlobalTheory.T.exists_uniformisation_completeLocal_evenOnTorus R₁ hR₁ G₁ P₁ hG₁ hE A gen hgen hA
-  obtain ⟨V, _, _, ψ, D', hψ, h1, h2⟩ := GlobalTheory.T.exists_common_pullDeg_trait_and_base_uniformisation R₁ hR₁ D₁ G₁ P₁.L.L P₁.L.isLB hG₁ hT₁ D₂ A U₂ (by rw [hU₂])
+    rw [hP₁L]; exact _root_.GlobalTheory.Mum.TraitExt.unifTrait_pull R R₁ ρ₁ hR hf₁ D D₁ hD₁ G G₁ β₁ hG hβ₁ P.L.L P.L.isLB hT
+  have hE : EvenOn P₁ := _root_.GlobalTheory.Mum.evenOn_of_unifTrait R₁ hR₁ D₁ G₁ P₁ hG₁ hT₁ X hQ
+  obtain ⟨A, gen, hgen, hA⟩ := _root_.GlobalTheory.Mum.TraitGeneric.exists_polAV_generic R₁ hR₁ D₁ G₁ P₁ hG₁ hT₁
+  obtain ⟨D₂, U₂, hU₂, -⟩ := _root_.GlobalTheory.Mum.exists_unif_even R₁ hR₁ G₁ P₁ hG₁ hE A gen hgen hA
+  obtain ⟨V, _, _, ψ, D', hψ, h1, h2⟩ := _root_.GlobalTheory.Mum.CommonPull.exists_common_pull R₁ hR₁ D₁ G₁ P₁.L.L P₁.L.isLB hG₁ hT₁ D₂ A U₂ (by rw [hU₂])
   obtain ⟨R', _, _, _, ρ₂, D₃, hf₂, h13, h23⟩ :=
     GlobalTheory.MumRig.exists_common_pull_finite R₁ hR₁ D₁ D₂ V ψ hψ D' h1 h2
   obtain ⟨G₃, _, _, β₃, A₃, U₃, -, hβ₃, hL₃⟩ := unif_along_finExt R₁ R' ρ₂ hR₁ hf₂ D₂ A G₁ hG₁ U₂ D₃ h23

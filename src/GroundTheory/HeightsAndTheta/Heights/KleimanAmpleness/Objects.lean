@@ -301,9 +301,6 @@ def toH0 (𝓜 : GradedPMod S N M) (c : ℤ) : 𝓜.piece c →ₗ[S] cohom 𝓜
   (Submodule.mkQ _).comp
     ((constCochain.comp (𝓜.piece c).subtype).codRestrict _ fun m => constCochain_mem 𝓜 c m m.2)
 
-def dP : Cech.Cochain (locSys S N M) 0 →ₗ[Poly S N] Cech.Cochain (locSys S N M) 1 :=
-  Cech.d (locSys S N M) (fun _ _ h => locRes h) 0
-
 variable {M' : Type w} [AddCommGroup M'] [Module (Poly S N) M'] [Module S M']
   [IsScalarTower S (Poly S N) M']
 
@@ -644,20 +641,6 @@ structure LineBundle extends SubFamily S x Ω where
   fg : ∀ I, (sub I).FG
   invertible : ∀ I, ∃ Q' : Submodule (chartRing S x I) Ω, sub I * Q' = 1
 
-def SubFamily.toFamily (F : SubFamily S x E) : Family.{u, v, w} S x where
-  F I := F.sub I
-  res := F.res
-  res_smul _ _ _ _ _ := rfl
-  res_self _ _ := rfl
-  res_comp _ _ _ _ _ _ := rfl
-  exists_smul_eq_res I J h y := by
-    obtain ⟨a, ha, hay⟩ := (F.mem_iff I J h y).mp y.2
-    exact ⟨a, ⟨(a : Ω) • (y : E), hay⟩, ha, rfl⟩
-  exists_smul_eq_zero I J h m hm := by
-    refine ⟨1, by simp, ?_⟩
-    have : (m : E) = 0 := congrArg Subtype.val hm
-    rw [one_smul]; exact Subtype.ext this
-
 structure FinGradedSub where
 
   piece : ℤ → Submodule S E
@@ -917,90 +900,7 @@ variable (k : Type u) [Field k]
 
 def lineX : Fin (1 + 1) → RatFunc k := ![1, RatFunc.X]
 
-theorem lineX_ne_zero (i : Fin (1 + 1)) : lineX k i ≠ 0 := by
-  fin_cases i
-  · simp [lineX]
-  · simp [lineX, RatFunc.X_ne_zero]
-
-theorem support_lineX : support (lineX k) = Finset.univ := by
-  ext i
-  simp [mem_support, lineX_ne_zero]
-
-theorem isMultiProjPrime_line :
-    NumbersDVR.IsMultiProjPrime (primeOfOne (S := k) (lineX k)) :=
-  isMultiProjPrime_primeOfOne _ fun h => lineX_ne_zero k 0 (congrFun h 0)
-
-def tautologicalLineBundle : LineBundle k (lineX k) := twistBundle k (lineX k) 1
-
-def lineChart0 : Chart (lineX k) := singleChart (lineX_ne_zero k 0)
-
-theorem lineO1_chart_nontrivial : Nontrivial ((tautologicalLineBundle k).toSubFamily.toFamily.F (lineChart0 k)) := by
-  have h1 : (1 : RatFunc k) ∈ (tautologicalLineBundle k).sub (lineChart0 k) := by
-    have := mem_twistMod_one (S := k) (lineChart0 k) 0
-    change (1 : RatFunc k) ∈ twistMod k (lineX k) 1 (lineChart0 k)
-    simpa [lineX] using this
-  exact ⟨⟨⟨1, h1⟩, 0, fun e => one_ne_zero (congrArg Subtype.val e)⟩⟩
-
 end Line
-
-section Generic
-
-variable (k : Type u) [Field k] (N : ℕ)
-
-def genericPt : Fin (N + 1) → FractionRing (Poly k N) :=
-  fun i => algebraMap (Poly k N) (FractionRing (Poly k N)) (X i)
-
-theorem aeval_genericPt (f : Poly k N) :
-    aeval (genericPt k N) f = algebraMap (Poly k N) (FractionRing (Poly k N)) f := by
-  induction f using MvPolynomial.induction_on with
-  | C a =>
-    rw [aeval_C, IsScalarTower.algebraMap_apply k (Poly k N) (FractionRing (Poly k N))]
-    rfl
-  | add p q hp hq => rw [map_add, map_add, hp, hq]
-  | mul_X p i hp => rw [map_mul, map_mul, hp, aeval_X, genericPt]
-
-theorem primeOf_genericPt : primeOf (S := k) (genericPt k N) = ⊥ := by
-  rw [eq_bot_iff]
-  intro f hf
-  rw [Submodule.mem_bot]
-  have hc : ∀ d, homogeneousComponent d f = 0 := by
-    intro d
-    have h1 := homogeneousComponent_mem_primeOf _ hf d
-    rw [mem_primeOf_of_isHomogeneous _ (homogeneousComponent_isHomogeneous d f),
-      aeval_genericPt] at h1
-    exact (map_eq_zero_iff _ (IsFractionRing.injective (Poly k N) (FractionRing (Poly k N)))).mp h1
-  rw [← sum_homogeneousComponent f]
-  exact Finset.sum_eq_zero fun d _ => hc d
-
-def polyPrimeFilt : PrimeFilt (polyGraded k N) where
-  n := 1
-  step := fun i => if i = 0 then ⊥ else ⊤
-  gen := fun _ => 1
-  deg := fun _ => 0
-  prime := fun _ => ⊥
-  step_zero := by simp
-  step_last := by simp [Fin.last]
-  step_succ i := by
-    fin_cases i
-    simp [Ideal.span_singleton_one]
-  gen_mem _ := by
-    change (1 : Poly k N) ∈ weightedHomogeneousSubmodule k _ _
-    rw [mem_weightedHomogeneousSubmodule]
-    exact isWeightedHomogeneous_one _ _
-  mem_prime i p := by
-    fin_cases i
-    simp
-  isPrime _ := Ideal.isPrime_bot
-  isHomogeneous _ p hp d := by
-    rw [Submodule.mem_bot] at hp ⊢
-    rw [hp, map_zero]
-  ann_le _ p hp := by
-    rw [Module.mem_annihilator] at hp
-    have := hp 1
-    rw [smul_eq_mul, mul_one] at this
-    rw [this]; exact Submodule.zero_mem _
-
-end Generic
 
 section AmpleExample
 
@@ -1125,29 +1025,6 @@ end AmpleExample
 section MoreInhabitants
 
 variable {S : Type u} [CommRing S] {N : ℕ}
-
-variable (S N) in
-
-def zeroGraded : GradedPMod S N PUnit where
-  piece _ := ⊥
-  isInternal := by
-    rw [DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
-    exact ⟨fun _ => by simp, Subsingleton.elim _ _⟩
-  smul_mem _ _ _ _ _ _ := (Submodule.mem_bot S).mpr (Subsingleton.elim _ _)
-
-variable (S N) in
-
-def polyGradedId : GradedHom (polyGraded S N) (polyGraded S N) where
-  toLin := LinearMap.id
-  map_piece _ _ h := h
-
-variable (S N) in
-
-def polyGradedToZero : GradedHom (polyGraded S N) (zeroGraded S N) where
-  toLin := 0
-  map_piece _ _ _ := by
-    change _ ∈ (⊥ : Submodule S PUnit)
-    exact (Submodule.mem_bot S).mpr (Subsingleton.elim _ _)
 
 variable {Ω : Type w} [Field Ω] [Algebra S Ω] (x : Fin (N + 1) → Ω)
 

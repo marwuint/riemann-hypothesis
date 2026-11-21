@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolEqMultiDiff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalSectionCycleFormulaProjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalSectionCycleFormulaProjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeNatCastOfAddOneLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LtNatCastOfAddOneLtSucc
 open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.FibreProj
@@ -135,7 +135,7 @@ theorem interNum_pull_eq_zero : ∀ (κ : Type) [Field κ] (e r : ℕ) (Z W : Sc
         interNum κ (structureModule Z) (Fin.cons M Q : Fin (e + r + 1) → LB Z) := by
       rw [← interNum_comp_equiv κ _ (isLB_cons hM hQ) (frontEquiv e r)]
       exact congrArg _ (cons_comp_frontEquiv P (fun a => (A a).pull g)).symm
-    rw [key, GlobalTheory.T.rational_section_cycle_formula_projective κ Z hp (e + r) hd M hM Q hQ _ hs]
+    rw [key, _root_.GlobalTheory.ratSec_cycle_formula κ Z hp (e + r) hd M hM Q hQ _ hs]
     refine finsum_eq_zero_of_forall_eq_zero fun w => ?_
     by_cases hw : (divOfRatSec hM hs).mult w = 0
     · rw [hw, zero_mul]

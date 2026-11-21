@@ -1,5 +1,6 @@
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.BaseSt
-import Formalism.LocalToGlobal.IndefiniteReal.HaarTransfer.MinfUnique
+import Mathlib
+import Formalism.LocalRingCardinality.DataCD
 
 noncomputable section
 
@@ -14,9 +15,6 @@ theorem minfDensity_ne_zero (N : ℕ) : Formalism.L2.Theta.minfDensity N ≠ 0 :
 theorem minfDensity_ne_top (N : ℕ) : Formalism.L2.Theta.minfDensity N ≠ ⊤ := by
   unfold Formalism.L2.Theta.minfDensity
   exact ENNReal.inv_ne_top.mpr (pow_ne_zero _ two_ne_zero)
-
-theorem minfExUnique_of (h : Formalism.IndefR.Leaf.MinfExistsUnique) : MinfExUnique :=
-  fun p q => h p q _ (minfDensity_ne_zero (p + q)) (minfDensity_ne_top (p + q))
 
 end Formalism.IndefR.Eqv
 

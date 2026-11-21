@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppTopBijectiveAndSurjectiveNormalDomain
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothModelNearClosedFibreEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulDescendsNearClosedFibreOfEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianDescendsOfDescendsNearClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenThetaNonvanishingDescendedGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicalBundleModificationDescendsToGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCpDescentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothModelNearClosedFibreEmbedding
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulDescendsNearClosedFibreOfEmbedding
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianDescendsOfDescendsNearClosedFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenThetaNonvanishingDescendedGroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicalBundleModificationDescendsToGroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCpDescent
 
 noncomputable section
 
@@ -26,12 +26,12 @@ theorem descend_of_emb : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R
   have : IsNoetherianRing R := hR.1
   have : IsIntegrallyClosed R := hR.2.2.1
   have hs : Surjective M.π := (Modif.appTop_bijective_surjective R M).2
-  obtain ⟨N, fU, l, hl, hf⟩ := GlobalTheory.T.exists_smooth_model_near_closedFibre_embedding R hR M G' hG' E
-  have hN : N.Law := GlobalTheory.T.mul_descends_near_closed_fibre_of_embedding R hR M G' hG' E N fU l hl hf
-  obtain ⟨G, i1, i2, β, i, hG, hβ, hi, hu⟩ := GlobalTheory.T.semiAbelian_descends_of_descends_near_closedFibre R hR M.S M.π M.proper hs M.integral G' hG' N hN
-  obtain ⟨θ, O, hO, hθO⟩ := GlobalTheory.T.exists_open_thetaNonvanishing_descendedGroup R M.S M.π hs G' E N fU l hl hf P'.L.L hθ G β i hβ.1.w hi hu
-  obtain ⟨L, hL, hLi⟩ := GlobalTheory.T.cubicalBundle_modification_descends_to_group R hR M G' hG' P' G β hG hβ θ O hO hθO
-  obtain ⟨P, rfl⟩ := GlobalTheory.T.exists_cp_descent' R hR M G' hG' P' G β hG hβ L hL hLi
+  obtain ⟨N, fU, l, hl, hf⟩ := _root_.GlobalTheory.Mum.exists_near R hR M G' hG' E
+  have hN : N.Law := _root_.GlobalTheory.Mum.Near.law_of_emb R hR M G' hG' E N fU l hl hf
+  obtain ⟨G, i1, i2, β, i, hG, hβ, hi, hu⟩ := _root_.GlobalTheory.Mum.descend_of_near R hR M.S M.π M.proper hs M.integral G' hG' N hN
+  obtain ⟨θ, O, hO, hθO⟩ := _root_.GlobalTheory.Mum.exists_open_theta_descent R M.S M.π hs G' E N fU l hl hf P'.L.L hθ G β i hβ.1.w hi hu
+  obtain ⟨L, hL, hLi⟩ := _root_.GlobalTheory.Mum.CubeDesc.cubicalBundle_descends R hR M G' hG' P' G β hG hβ θ O hO hθO
+  obtain ⟨P, rfl⟩ := _root_.GlobalTheory.Mum.exists_cp_descent R hR M G' hG' P' G β hG hβ L hL hLi
   exact ⟨G, i1, i2, P, β, hG, hβ, hLi⟩
 
 end GlobalTheory.Mum

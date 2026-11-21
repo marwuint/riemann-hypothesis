@@ -84,7 +84,4 @@ def Cuts (ψ : AddChar F ℂ) {n : ℕ} (U X A : Set (GL (Fin n) F)) : Prop :=
   ∃ T : GL (Fin n) F →₀ ℂ, ∀ f : GL (Fin n) F → ℂ, Eqv ψ f → (∀ u ∈ U, ∀ g, f (g * u) = f g) →
     ∀ g ∈ A, act T f g = X.indicator f g
 
-example (ψ : AddChar F ℂ) {n : ℕ} (U A : Set (GL (Fin n) F)) : Cuts ψ U Set.univ A :=
-  ⟨Finsupp.single 1 1, fun f _ _ g _ => by simp⟩
-
 end GlobalTheory.JSW.Cut

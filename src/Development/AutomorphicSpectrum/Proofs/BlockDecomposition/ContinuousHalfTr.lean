@@ -131,7 +131,7 @@ theorem ann_E {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (z :
     (h : ∀ e : D.host.E, ψ (Algebra.trace (AF D.host.F) (AE D) (incA D e * z)) = 1) :
     ∃ w : D.host.E, z = incA D w :=
   ann_gen (F := D.host.F) (E := D.host.E) (A := AF D.host.F) (fun x => ψ x = 1)
-    (fun x hx => GlobalTheory.T.adelic_character_orthogonal_is_rational D.host.F D.sp.cm.totReal ψ hψ x hx) z h
+    (fun x hx => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Ann.annihilator_eq D.host.F D.sp.cm.totReal ψ hψ x hx) z h
 
 def chi (ψ : AddChar (AF D.host.F) ℂ) (m : Mx D r r) (b : hermA D r) : ℂ :=
   ψ (halfTr (Matrix.trace (HMul.hMul m b.1 : Mx D r r)))

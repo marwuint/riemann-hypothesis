@@ -1,10 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorusWeightOfPolyRepGLComplexStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorusWeightMaximizingWeightedSumStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TransvectionWeightVecExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitriangularInductionTransvectionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GLUpperTriangularEqDiagonalMulUnitriangularStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorusWeightOfPolyRepGLComplex
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoCharOfMulPolyDivPowStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LaurentPolyEvalOfLaurent
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LaurentMonomialOfMultiplicative
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DvdTraceOfBalancedTensor
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorusWeightMaximizingWeightedSum
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TransvectionWeightVecExpansion
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitriangularInductionTransvection
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GLUpperTriangularEqDiagonalMulUnitriangular
 
 open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField GlobalTheory.AlgWtHW
 
@@ -14,16 +18,16 @@ theorem exists_isBEig_of_isPolyRep :
     ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Nonempty ι] (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ),
       IsPolyRep Φ → ∃ (v : ι → ℂ) (lam : Fin n → ℤ), IsBEig Φ v lam := by
   intro n ι _ _ _ Φ hΦ
-  obtain ⟨μ₀, hμ₀⟩ := GlobalTheory.T.exists_torusWeight_of_polyRep_GL_complex n ι Φ hΦ
-  obtain ⟨μ, ⟨v, hv0, hvw⟩, hmax⟩ := GlobalTheory.T.exists_torusWeight_maximizing_weighted_sum n ι Φ μ₀ hμ₀
+  obtain ⟨μ₀, hμ₀⟩ := _root_.GlobalTheory.AlgWtHW.exists_isWt_of_isPolyRep n ι Φ hΦ
+  obtain ⟨μ, ⟨v, hv0, hvw⟩, hmax⟩ := _root_.GlobalTheory.AlgWtHW.MaxWeight.exists_max_weight n ι Φ μ₀ hμ₀
   refine ⟨v, μ, hv0, fun B hB => ?_⟩
   have hU : ∀ U : GL (Fin n) ℂ, U.val.BlockTriangular id → (∀ i, U.val i i = 1) → Φ U *ᵥ v = v := by
-    refine GlobalTheory.T.unitriangular_induction_on_transvections n (fun U => Φ U *ᵥ v = v) (by simp [hΦ.one]) (fun A C hA hC => ?_) ?_
+    refine _root_.GlobalTheory.unitriangular_induction_transvection n (fun U => Φ U *ᵥ v = v) (by simp [hΦ.one]) (fun A C hA hC => ?_) ?_
     · show Φ (A * C) *ᵥ v = v
       rw [hΦ.mul, ← mulVec_mulVec, hC, hA]
     · intro i j hij s C hC
       show Φ C *ᵥ v = v
-      obtain ⟨K, w, hw0, hww, hsum⟩ := GlobalTheory.T.exists_transvection_weightVec_expansion n ι Φ hΦ i j (ne_of_lt hij) μ v hvw
+      obtain ⟨K, w, hw0, hww, hsum⟩ := _root_.GlobalTheory.transvection_weightVec_expansion n ι Φ hΦ i j (ne_of_lt hij) μ v hvw
       have hz : ∀ k, k ≠ 0 → w k = 0 := by
         intro k hk
         by_contra hne
@@ -39,7 +43,7 @@ theorem exists_isBEig_of_isPolyRep :
         rw [key] at this
         nlinarith
       rw [hsum s C hC, Finset.sum_eq_single 0 (fun k _ hk => by rw [hz k hk, smul_zero]) (by simp), hw0, pow_zero, one_smul]
-  obtain ⟨D, U, rfl, hD, hDd, hUb, hU1⟩ := GlobalTheory.T.GL_upperTriangular_eq_diagonal_mul_unitriangular' n B hB
+  obtain ⟨D, U, rfl, hD, hDd, hUb, hU1⟩ := _root_.GlobalTheory.GL_upperTriangular_eq_diagonal_mul_unitriangular n B hB
   rw [hΦ.mul, ← mulVec_mulVec, hU U hUb hU1, hvw D hD]
   simp only [hDd]
 

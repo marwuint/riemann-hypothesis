@@ -209,8 +209,8 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 theorem fd_pair (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) :
     FiniteDimensional ℂ (GlobalTheory.PRep.fixed (pairAt Pa Pb w) (I2 a b w)) := by
-  have hIa := GlobalTheory.T.iwahori_double_coset_finite E w a
-  have hIb := GlobalTheory.T.iwahori_double_coset_finite E w b
+  have hIa := _root_.GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL E w a
+  have hIb := _root_.GlobalTheory.CompanionTheory.IwDcosFin.dcos_finite_support_iwGL E w b
   exact GlobalTheory.T.finiteDimensional_fixed_tensor _ _ _ _ (lp Pa w) (lp Pb w) (iwGL a w) (iwGL b w)
       ((GlobalTheory.T.admissible_parabolic_induction (w.adicCompletion E) _ Pa.h (fun i => Pa.σ i w)).2 _ (hIa 1).2.1 (hIa 1).2.2.1)
       ((GlobalTheory.T.admissible_parabolic_induction (w.adicCompletion E) _ Pb.h (fun i => Pb.σ i w)).2 _ (hIb 1).2.1 (hIb 1).2.2.1)

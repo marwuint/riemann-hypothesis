@@ -20,6 +20,4 @@ def TailP : Prop :=
     ∀ (D : D7) (large₂ : SizeData₂ D), Formalism.BasicNotions.Ties D → Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0 →
       (∀ w : D.what₂.Word, 1 ≤ Tr D w * Formalism.MainNotions.S.Bridge.kaS D ^ (2 * D.R.rS)) → TailAt D large₂ CH C₁
 
-def MomAllP : Prop :=
-  ∀ Ch : ℝ, 0 ≤ Ch → ∃ Cs Cq Cr C₂ : ℝ, 0 < Cq ∧ 0 < Cr ∧ 0 ≤ C₂ ∧ ∀ D : D7, Formalism.MainNotions.OnePlaceEstimates.SubmultiplicativeLocalNorm D Ch Cs Cq Cr C₂
 end GlobalTheory.TypeAsm

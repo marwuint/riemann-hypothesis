@@ -289,11 +289,6 @@ theorem isGloballyGenerated_iff_of_iso (e : F ≅ G) :
     IsGloballyGenerated F ↔ IsGloballyGenerated G :=
   ⟨fun h => h.of_epi e.hom, fun h => h.of_epi e.inv⟩
 
-theorem IsGloballyGenerated.isFiniteQC (h : IsGloballyGenerated F) [F.IsQuasicoherent] :
-    IsFiniteQC F :=
-  have ⟨_, _, φ, _⟩ := h
-  .of_epi φ
-
 theorem spanStalks_of_forall_exists_affine [F.IsQuasicoherent] (s : ι → Γ(F, ⊤))
     (h : ∀ x : X, ∃ V : X.Opens, IsAffineOpen V ∧ x ∈ V ∧
       Submodule.span Γ(X, V) (Set.range fun i => resM F (le_top : V ≤ ⊤) (s i)) = ⊤) : SpanStalks s := by
@@ -505,11 +500,5 @@ theorem QCoh.exists_idealModuleι_app_eq_one (I : X.IdealSheafData) {V : X.Opens
   exact Subsingleton.elim _ _
 
 end Converse
-
-example : IsGloballyGenerated (toMod (ProjSpace.O1 ℚ 2)) :=
-  (isGloballyGenerated_toMod_iff (ProjSpace.O1_isLB ℚ 2)).2 (isGenerated_O1 ℚ 2)
-
-example : ¬ IsGloballyGenerated (tilde (R := CommRingCat.of ℤ) (ModuleCat.of ℤ ℚ)) :=
-  fun h => not_isFiniteQC_tilde_rat h.isFiniteQC
 
 end GlobalTheory

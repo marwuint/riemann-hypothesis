@@ -109,25 +109,6 @@ theorem subfieldPlaceEquiv_mk [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
       subfieldPlace H w x :=
   rfl
 
-omit [NumberField K] [NumberField L] [IsGalois K L] in
-
-theorem stabilizer_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
-    MulAction.stabilizer H (x • P) =
-      (MulAut.conj x • MulAction.stabilizer Gal(L/K) P : Subgroup Gal(L/K)).subgroupOf H := by
-  ext h
-  rw [Subgroup.mem_subgroupOf, mem_conj_smul_iff, MulAction.mem_stabilizer_iff,
-    MulAction.mem_stabilizer_iff, mul_smul, mul_smul]
-  change (h : Gal(L/K)) • x • P = x • P ↔ x⁻¹ • (h : Gal(L/K)) • x • P = P
-  rw [inv_smul_eq_iff]
-
-omit [NumberField K] [NumberField L] [IsGalois K L] in
-
-theorem inertia_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
-    (x • P).inertia H =
-      (MulAut.conj x • P.inertia Gal(L/K) : Subgroup Gal(L/K)).subgroupOf H := by
-  ext h
-  rw [Subgroup.mem_subgroupOf, mem_conj_smul_iff, ← Ideal.coe_mem_inertia, mem_inertia_smul_iff]
-
 end Finite
 
 end GroundTheory.Global.Artin

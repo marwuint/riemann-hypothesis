@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBaseFrame
 import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLieCombIffIsCombAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalRingPointDualNumberSndLinearDerivation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualNumberTangentPointOfLogarithmicDerivatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentDerivativeLinearInKodairaSpencerMatrixOfIStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualNumberTangentPointOfLogarithmicDerivat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentDerivativeLinearInKodairaSpencerMatrixOfI
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BalancedSymmetricPairMatrixHorizontalSingleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetFlagTangentConjugateMatrixChangeEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetFlagTangentConjugateMatrixChangeEqOne
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.CompHS
@@ -31,8 +31,8 @@ theorem logDet_eq_hor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     exact mul_ne_zero (pow_ne_zero _ hs) this
   intro x K _ _ P₀ P hU g hg hP hB w hw hwk
   haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap c.F K).injective
-  obtain ⟨δ, hδ⟩ := GlobalTheory.T.tangentDerivative_linear_in_kodairaSpencerMatrix_of_iso TF K P₀ (hKS K P₀) U.1 hU
-  choose y' hy' hsnd hred hev using fun j => GlobalTheory.T.exists_dualNumberTangentPoint_of_logarithmicDerivation TF U (b j) K P₀ hU
+  obtain ⟨δ, hδ⟩ := _root_.GlobalTheory.LogPole.exists_snd_ev_eq_sum_of_ksIso TF K P₀ (hKS K P₀) U.1 hU
+  choose y' hy' hsnd hred hev using fun j => _root_.GlobalTheory.LogPole.exists_tanPt_of_logDer TF U (b j) K P₀ hU
   have hKSj : ∀ j, FlagTan.IsKS (psiSet H) P₀ (y' j ≫ pullback.fst _ _)
       (fun k => (s : K) * (Pi.single (κ j) (1 : K) : HIx Dw (psiSet H) → K) k) := by
     intro j
@@ -67,7 +67,7 @@ theorem logDet_eq_hor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     rw [Matrix.of_apply, hR, Matrix.mul_apply, ← Equiv.sum_comp o, hA]
     simp only [Matrix.of_apply]
     exact Finset.sum_congr rfl fun k _ => mul_comm _ _
-  rw [logDet, RingHom.map_det, eR, Matrix.det_mul, GlobalTheory.T.det_flagTangentConjugateMatrixChange_eq_one K g hg o, mul_one, eL, Matrix.det_smul,
+  rw [logDet, RingHom.map_det, eR, Matrix.det_mul, _root_.GlobalTheory.KSChgDet.det_ksChg_eq_one K g hg o, mul_one, eL, Matrix.det_smul,
     Matrix.det_permute', Fintype.card_fin]
   push_cast
   ring

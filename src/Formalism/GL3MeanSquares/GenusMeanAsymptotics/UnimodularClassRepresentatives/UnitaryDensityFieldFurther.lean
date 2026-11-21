@@ -173,56 +173,6 @@ private theorem stab_lemma (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
       rw [hgeo, ← hx2]
       ring
 
-theorem alphaN_step (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
-    {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
-    (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}
-    (h𝔭 : 𝔭.IsMaximal) (hv : vd h L 𝔭 = 0) (hm : 1 ≤ finrank K V) {n : 𝓞 F} (hn : n ≠ 0) (hn𝔭 : n ∈ 𝔭) :
-    alphaN h L 𝔭 n =
-      (1 - etaF K F 𝔭 ^ finrank K V * (Ideal.absNorm 𝔭 : ℝ) ^ (-(finrank K V : ℤ))) *
-        (1 + etaF K F 𝔭 ^ finrank K V * ((Ideal.absNorm 𝔭 : ℝ) ^ (finrank K V - 1))⁻¹) +
-      (cntI hF 𝔭 (2 * vF 𝔭 n + 2) (finrank K V) (ι n) : ℝ) /
-        (Ideal.absNorm 𝔭 : ℝ) ^ ((2 * vF 𝔭 n + 2) * (2 * finrank K V - 1)) := by
-  obtain ⟨m, hm'⟩ : ∃ m, finrank K V = m + 1 := ⟨finrank K V - 1, by omega⟩
-  have hc1 : ∀ n : 𝓞 F, n ∈ 𝔭 → (cnt hF 𝔭 1 (m + 1) (ι n) : ℝ) = (Ideal.absNorm 𝔭 : ℝ) ^ (2 * (m + 1)) -
-      ((Ideal.absNorm 𝔭 : ℝ) - 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (2 * (m + 1) - 1) * (1 - etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (m + 1))⁻¹)) := by
-    intro n' hn'
-    have h := cnt_one_of_mem hK hF hs hd hL hLi h𝔭 hv hm hn'
-    rw [hm'] at h
-    rw [h, zpow_neg, zpow_natCast]
-  have hA : alphaN h L 𝔭 n = (1 - etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ (m + 1))⁻¹) * ∑ l ∈ Finset.range (vF 𝔭 n + 1), (etaF K F 𝔭 ^ (m + 1) * ((Ideal.absNorm 𝔭 : ℝ) ^ m)⁻¹) ^ l := by
-    rw [alphaN]
-    apply Filter.Tendsto.limUnder_eq
-    apply tendsto_const_nhds.congr'
-    filter_upwards [Filter.eventually_ge_atTop (2 * vF 𝔭 n + 1)] with k hk
-    rw [nkCount_eq_cnt hK hF hs hd hL hLi h𝔭 hv (by omega) n, hm',
-      stab_lemma hK hF h𝔭 hc1 (vF 𝔭 n) n hn rfl k hk]
-  rw [hA, ← stab_lemma hK hF h𝔭 hc1 (vF 𝔭 n) n hn rfl (2 * vF 𝔭 n + 2) (by omega), hm',
-    sub_single_one_add_single_one_of_ne_zero hK hF h𝔭 hn𝔭 (hc1 n hn𝔭) (2 * vF 𝔭 n)]
-  simp only [zpow_neg, zpow_natCast, Nat.add_sub_cancel]
-
-theorem real_imp (q ε c' : ℝ) (j t : ℕ) (hq : 0 < q) (hε : ε ^ 2 = 1) :
-    (q ^ (2 * (t + 1)) * c') / q ^ ((j + 2) * (2 * (t + 1) - 1)) =
-      (ε * (q ^ t)⁻¹) ^ 2 * (c' / q ^ (j * (2 * (t + 1) - 1))) := by
-  have hq0 : q ≠ 0 := hq.ne'
-  have h1 : 2 * (t + 1) - 1 = 2 * t + 1 := by omega
-  have h2 : (j + 2) * (2 * t + 1) = j * (2 * t + 1) + (2 * t + 2) + 2 * t := by ring
-  rw [h1, h2, pow_add, pow_add, mul_pow, hε, inv_pow]
-  field_simp
-  ring
-
-theorem geom_step (x : ℝ) (w : ℕ) :
-    ∑ l ∈ Finset.range (w + 2 + 1), x ^ l = 1 + x + x ^ 2 * ∑ l ∈ Finset.range (w + 1), x ^ l := by
-  have e : ∀ i : ℕ, x ^ (i + 1 + 1) = x ^ 2 * x ^ i := fun i => by ring
-  rw [Finset.sum_range_succ', Finset.sum_range_succ']
-  rw [Finset.sum_congr rfl (fun i _ => e i), ← Finset.mul_sum]
-  ring
-
-theorem exists_div_sq {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞 F} (hn : n ≠ 0) {w : ℕ}
-    (hvn : vF 𝔭 n = w + 2) {N : ℕ} (hN : w + 3 ≤ N) :
-    ∃ ϖ ∈ 𝔭, ϖ ∉ 𝔭 ^ 2 ∧ ∃ n' : 𝓞 F, n' ≠ 0 ∧ vF 𝔭 n' = w ∧ n - ϖ ^ 2 * n' ∈ 𝔭 ^ N := by
-  obtain ⟨ϖ, h1, h2, n', hn', hv', hd⟩ := exists_uniformizer_sq_mul_congr_of_two_le_vF h𝔭 hn (by omega) (N := N) (by omega)
-  exact ⟨ϖ, h1, h2, n', hn', by omega, hd⟩
-
 theorem alphaN_closed (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}

@@ -1,6 +1,6 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEmbeddingWeight
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsTwistIntersection
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
@@ -22,12 +22,6 @@ def TwistIntersectionInt.Statement : Prop :=
       II K ι (mCoordIdeal y) (D + 1) (fun _ => A) +
         ((D + 1 : ℕ) : ℝ) * genDeg (mCoordIdeal y) D A.a *
           ((∑ sg, Real.log (Λ sg)) / Fintype.card (F →+* ℂ))
-
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
 
 end
 

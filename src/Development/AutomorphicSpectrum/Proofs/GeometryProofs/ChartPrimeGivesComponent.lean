@@ -3,8 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSncPatchRat
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnitAtOfMulRight
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 
 noncomputable section
 
@@ -150,11 +151,11 @@ theorem chart_prime_component_point (ξ : Spec (CommRingCat.of Ω) ⟶ X) (x : �
     ∃ p : Cpt ξ, Char0 ξ p ∧ InChart ξ x c p ∧ (∀ s : chartQ x c, s ∉ I ↔ unitAt ξ p (s : Ω)) ∧
       IsLocAt (chartQ x c) I (regAt ξ p) := by
   have hJ : (I.comap (chartIncl x c)).IsPrime := Ideal.comap_isPrime _ _
-  obtain ⟨p, ⟨hc, hp⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x hT c hc0 _ hJ
+  obtain ⟨p, ⟨hc, hp⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ κ x hT c hc0 _ hJ
   have hp' := notMem_comap_iff (chartIncl x c) I (fun t => unitAt ξ p (t : Ω)) hp
   have hchar : Char0 ξ p := char_zero_of_chart_inclusion hI hp'
   have hunit := notMem_iff_unitAt hI hchar hc hp'
-  exact ⟨p, hchar, hc, hunit, isLocAt_of_unit hchar hc (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x hT c p hc) hunit⟩
+  exact ⟨p, hchar, hc, hunit, isLocAt_of_unit hchar hc (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x hT c p hc) hunit⟩
 
 end Pts
 

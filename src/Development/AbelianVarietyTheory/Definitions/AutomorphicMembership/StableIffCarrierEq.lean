@@ -90,15 +90,6 @@ structure Holds (R : RealDat3 D A3 Ks) (F : Face3 D A3) : Prop where
   ok : A3.fam3.Ok3 1
   sep : A3.fam3.TypesSep3
 
-def GeoEx (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (C : Formalism.L2.Pj.CoreJ D) [Algebra C.Q.c.F D.what₂.LL]
-    (F : Face D A3.A) : Prop :=
-  ∀ (R : RealDat D A3.A C.Q.c.F) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), GlobalTheory.RealGeo.PreChar R → R.grp_levels F → C.pb = R.C.P.pb →
-    Keep (A3 := A3) R F cG → ∃ dict mu chiW x₀ cE nW FW,
-      (R.upd5 nW FW R.mu R.twPl R.err0).grp_chiW ∧
-      Nonempty (@GlobalTheory.RealGeo.GeoHalf D G _ _ Pl0 T A3.A (GlobalTheory.RealGeo.reCore C dict mu chiW x₀ cE)
-        (inferInstanceAs (Algebra C.Q.c.F D.what₂.LL)) (R.upd5 nW FW R.mu R.twPl R.err0) fun _ => 1) ∧
-      ∀ i x, ∃ y, (FW i).j (sg0 D A3.A) y = R.thG i A3.A.μ0 (R.jV i A3.A.μ0 x)
-
 def rowForm (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (t : T)
     (x : Fin (rDim D A P ψ t) → D.what₂.LL) : A.fam.amb.FR t :=
   (A.fam.R t).S.basis.equivFun.symm
@@ -277,12 +268,6 @@ namespace DatApi
 
 theorem sepWith_trI : SepWith A3 A3.trI ↔ A3.fam3.TrISep := Iff.rfl
 
-section Err
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs}
-
-end Err
-
 theorem swapCast_one_tmul {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2) (x : E) :
     swapCast h (1 ⊗ₜ[F1] x) = x ⊗ₜ[F2] 1 := by
   subst h; rfl
@@ -308,19 +293,6 @@ theorem liftForm_smul (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (�
     (c : D.what₂.LL) (x) : liftForm A P ψ i t (c • x) = c • liftForm A P ψ i t x := by
   unfold liftForm
   exact (congrArg _ (Matrix.mulVec_smul _ c x)).trans (map_smul _ _ _)
-
-section Lat
-
-variable {K : Type} [Field K] [NumberField K] {O : Type} [CommRing O] {φ : O →+* ℂ} {σ : K →+* ℂ}
-  {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ}
-
-theorem sum_mem (M : Rows.OLat O φ W) {ι : Type} (s : Finset ι) (f : ι → W) (h : ∀ i ∈ s, f i ∈ M.carrier) :
-    ∑ i ∈ s, f i ∈ M.carrier := by
-  refine Finset.sum_induction f (· ∈ M.carrier) ?_ ⟨0, by simp⟩ h
-  rintro x y ⟨c, rfl⟩ ⟨c', rfl⟩
-  exact ⟨c + c', by rw [← Finset.sum_add_distrib]; simp [add_smul]⟩
-
-end Lat
 
 end DatApi
 

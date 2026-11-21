@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LamXEquivari
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NearTrivialPointwise
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FgOfHtNeZero
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PackingGeometricMeanSeparated
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPointStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPoint
 
 open GlobalTheory.Count Formalism.MainNotions.S Formalism.HN Formalism.REAL Matrix NumberField MeasureTheory Finset
 
@@ -149,7 +149,7 @@ theorem separated (hn : 1 ≤ I.n) (x y a b : I.GA) (ha : a ∈ I.GFset) (hb : b
       rw [map_zero]
       refine LinearMap.ext_on hy.span_eq_top fun z hz => ?_
       exact (Submodule.eq_bot_iff _).1 h0 _ ⟨z, hz, rfl⟩)
-  rw [(GlobalTheory.T.orthogonal_canonicalFiltration_steps_autPoint I y).2.1 hn, div_inv_eq_mul] at h
+  rw [(_root_.GlobalTheory.Count.PerpStep.main I y).2.1 hn, div_inv_eq_mul] at h
   have e1 : (nPl I.E : ℝ) = Fintype.card (InfinitePlace I.F) := by
     rw [nPl, Fintype.card_of_bijective (comap_bijective I)]
   have e2 : ∏ w, opNormAt (bas I) (frm I y) (bas I) (frm I x) w

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueLinearLiftOfAbelianEndomorphismStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueLinearLiftOfAbelianEndomorphism
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUnique
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
@@ -48,7 +48,7 @@ theorem unifAt_cmp : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O �
   obtain ⟨-, hper1, hexp1, hker1, hact1, hweil1, heta1⟩ := U1
   obtain ⟨-, hper2, hexp2, hker2, hact2, hweil2, heta2⟩ := U2
   have lift := fun (e₁ e₂ : (Fin g → ℂ) → (Over.mk y ⟶ F.A)) (α : F.A ⟶ F.A) (h1 : IsExp y e₁) (h2 : IsExp y e₂)
-    (hα : IsMonHom α) => GlobalTheory.T.existsUnique_linear_lift_of_abelianEndomorphism F.X F.A g F.ab F.dim y e₁ e₂ α h1 h2 hα
+    (hα : IsMonHom α) => _root_.GlobalTheory.ExpLin.existsUnique_linear_lift F.X F.A g F.ab F.dim y e₁ e₂ α h1 h2 hα
   obtain ⟨M, hM, -⟩ := lift e e' (𝟙 _) hexp1 hexp2 inferInstance
   obtain ⟨M', hM', -⟩ := lift e' e (𝟙 _) hexp2 hexp1 inferInstance
   simp only [Category.comp_id] at hM hM'
@@ -88,7 +88,7 @@ theorem unifAt_cmp : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O �
     have H1 := hweil1 k x x' (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl
     have H2 := hweil2 k (w x) (w x') (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl
     rw [hw, hw, ← LinearEquiv.map_smul, ← LinearEquiv.map_smul, hh, hh] at H2
-    have := GlobalTheory.T.weilPairing_complex_value_unique F.X F.A g F.ab F.dim F.L F.isLB y k _ _ _ _ H2 H1
+    have := _root_.GlobalTheory.WeilComplexUnique.weilIs_unitOn_unique_complex F.X F.A g F.ab F.dim F.L F.isLB y k _ _ _ _ H2 H1
     simpa using congrArg Units.val this
   · intro a
     have e0 : e' 0 = 1 := (hker2 0).mpr (zero_mem _)

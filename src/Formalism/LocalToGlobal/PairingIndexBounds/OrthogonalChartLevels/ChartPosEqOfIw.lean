@@ -23,29 +23,7 @@ theorem sigD_conj (x : D.host.E) : sigD D (D.host.conj x) = x := by
 
 end Gen
 
-section At
-
-variable {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl} {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)}
-  [Fact (D.what₂.places.resChar w).Prime] {Fl : Fills (D.gat u w h)} {Lv : Levels Fl} (Ch : Chain Lv)
-  (std : ∀ v, Std (D.what₂.places.resChar w) ((D.gat u w h).P.n' v) (D.gat u w h).P.m Fl.t Fl.mm Fl.c (D.gat u w h).P.r
-    (Fl.TT v) (Fl.a v) (Fl.b v) ((D.gat u w h).P.lam0 v) (Fl.w v))
-  (vp : (D.gat u w h).O) (unif : Irreducible vp) (eO : ℕ)
-  (eO_spec : Associated ((D.what₂.places.resChar w : ℕ) : (D.gat u w h).O) (vp ^ eO)) (dG : ℕ → ℕ)
-  (dG_spec : ∀ j ≤ Fl.mm, ∀ (c : Lv.comp j) (L : (Fl.Pj j).Tup), (Fl.Pj j).IsLatTup L →
-    padicValNat (D.what₂.places.resChar w) (Nat.card {γ : (Lv.lev j c).Γ // (Lv.lev j c).smul γ L = L}) ≤ dG j)
-  (om : ∀ v, OmBasis (D.what₂.places.resChar w) ((D.gat u w h).P.n' v))
-
-def rhoAt (L0 : Lev0Data D u w h) :
-    ∀ v : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pl,
-      D.host.E →+* (sysAt Ch std vp unif eO eO_spec dG dG_spec om).G.P.Qq v :=
-  fun v => L0.A.iw v
-
-end At
-
 end Formalism.L2.PairingIndexBounds.F
 
 end
 
-section
-set_option pp.fullNames true
-end

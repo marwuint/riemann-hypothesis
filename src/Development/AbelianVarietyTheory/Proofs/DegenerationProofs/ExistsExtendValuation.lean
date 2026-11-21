@@ -6,11 +6,11 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcTorsionValu
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SummableVtQT
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaCoordinatesExistUniqueSeparatePointsStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsArcSeriesIntegralAlgebraicOverPowerSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsObjectWithThetaPointOfDegenerationSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaPointsAllPrimePowerLevelsOfSingleObjectStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PowerSeriesAlgebraicClosureCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionPolarizedCMObjectExtendsAlgClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPointStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsObjectWithThetaPointOfDegenerationSeries
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaPointsAllPrimePowerLevelsOfSingleObject
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PowerSeriesAlgebraicClosureCompatible
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionPolarizedCMObjectExtendsAlgClosed
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPoint
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj BigOperators
@@ -155,7 +155,7 @@ theorem realises_of_has : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheo
   obtain ⟨A, r, hint, ⟨-, hAρ, hAζ, -⟩, hr', hser⟩ := S.val C gam u h₁ h₂ h₃ h₄
   have hr : Roots u r := ⟨Units.ext ((hr' 1).trans ((congrArg gam S.r_one).trans h₃.symm)), fun n m hn hm => Units.ext (by
     rw [Units.val_pow_eq_pow_val, hr', hr', ← map_pow, ← Units.val_pow_eq_pow_val, S.roots.2 n m hn hm])⟩
-  obtain ⟨o', hext, hθ, hco⟩ := GlobalTheory.T.fullTorsionPolarizedCMObject_extends_algClosed hV h6 hU hH hT hE hA E H D K C gam o
+  obtain ⟨o', hext, hθ, hco⟩ := _root_.GlobalTheory.FullExtend.main hV h6 hU hH hT hE hA E H D K C gam o
   have hO : CExt O' ⊥ C := ⟨fun x => by rw [h₁]; exact h₂ _, fun x hx => by
     rw [Ideal.mem_bot.1 hx, map_zero, map_zero, norm_zero]; exact one_pos⟩
   obtain ⟨q, hq, -⟩ := (UnitNorm.norms_of_arc_input E H D l Xo c W₀ Y O' b ϖ a hb C hO A hint).2.2 u h₄
@@ -201,15 +201,15 @@ theorem exists_point : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.
     fun x => IsFractionRing.lift_algebraMap hC x
   obtain ⟨S⟩ := GlobalTheory.T.exists_arcSeries_integral_algebraic_over_powerSeries hV h6 hU hH hT hE hA E H D l Xo c W₀ Y O' b ϖ a hb K hK
   obtain ⟨n, hn, hodd, hu, hd⟩ := exists_prime_unit O' H.d_prime.ne_zero
-  obtain ⟨o₀, hρ₀, h₀⟩ := GlobalTheory.T.thetaPoints_allPrimePowerLevels_of_single_object hV h6 hU hH hT hE hA E H D l Xo c W₀ Y O' b ϖ a hb K hK S n hn hodd fun j hj =>
-    GlobalTheory.T.exists_object_with_thetaPoint_of_degenerationSeries hV h6 hU hH hT hE hA E H D l Xo c W₀ Y O' b ϖ a hb K hK S n j hn hodd hu hd hj
-  obtain ⟨o, ho⟩ := GlobalTheory.T.power_series_algebraic_closure_compatible hV h6 hU hH hT hE hA E H D l Xo c W₀ Y O' b ϖ a hb K hK S n hn hodd hu o₀ hρ₀ h₀
+  obtain ⟨o₀, hρ₀, h₀⟩ := _root_.GlobalTheory.Ex.AllLevels.one_object hV h6 hU hH hT hE hA E H D l Xo c W₀ Y O' b ϖ a hb K hK S n hn hodd fun j hj =>
+    _root_.GlobalTheory.Ex.OneLevel.exists_full_theta hV h6 hU hH hT hE hA E H D l Xo c W₀ Y O' b ϖ a hb K hK S n j hn hodd hu hd hj
+  obtain ⟨o, ho⟩ := _root_.GlobalTheory.Relabel.exists_has hV h6 hU hH hT hE hA E H D l Xo c W₀ Y O' b ϖ a hb K hK S n hn hodd hu o₀ hρ₀ h₀
   haveI := c.fin
   obtain ⟨bF, hbF⟩ := exists_extend_valuation (c.V W₀)
     ((algebraMap (PowerSeries O') K₀).comp ((PowerSeries.C (R := O')).comp b))
   have hbK : ∀ x : c.V W₀, (algebraMap K₀ K).comp bF x = algebraMap (FractionRing O') K (algebraMap O' _ (b x)) :=
     fun x => by rw [hK, RingHom.comp_apply, hbF]; rfl
-  obtain ⟨hpt, -, hext⟩ := GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint hV h6 hU hH hT hE hA E H D l Xo c W₀ Y K ((algebraMap K₀ K).comp bF)
+  obtain ⟨hpt, -, hext⟩ := _root_.GlobalTheory.FullPoint.fullAt_existsUnique_exists_ext hV h6 hU hH hT hE hA E H D l Xo c W₀ Y K ((algebraMap K₀ K).comp bF)
   obtain ⟨y, ⟨hy, hfull⟩, -⟩ := hpt o (fun r hr => by
       have hm : r ∈ c.V W₀ := mem_of_pow_mem _ two_ne_zero (by
         have : r ^ 2 = -(H.d : c.F) := Subtype.ext (by simpa [hr] using H.sqrt_neg_disc_sq)
@@ -252,7 +252,7 @@ theorem exists_point : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.
       (fun x => (h₁ x).trans (hf' _).symm) (fun x => by rw [hf']; exact h₂ _) (h₃.trans (hf' _).symm) h₄
     exact ⟨A, r, o', p₁, p₂, hf ▸ hext C f y o o' hfull p₃, p₄⟩
   · obtain ⟨f, hf, hf'⟩ := hx (AlgebraicClosure (FractionRing R₁)) (algebraMap _ _)
-    obtain ⟨o', p₁, p₂, -⟩ := GlobalTheory.T.fullTorsionPolarizedCMObject_extends_algClosed hV h6 hU hH hT hE hA E H D K _ f o
+    obtain ⟨o', p₁, p₂, -⟩ := _root_.GlobalTheory.FullExtend.main hV h6 hU hH hT hE hA E H D K _ f o
     exact ⟨o', hf ▸ hext _ f y o o' hfull p₁, fun n j hn ho' hu hj =>
       ⟨_, p₂ _ _ (ho.2.2 _ ho'.pow).1, intFam_map (S.int n j hn ho' hu hj) g _ f hf'⟩⟩
 

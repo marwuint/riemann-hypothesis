@@ -10,18 +10,6 @@ namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 open Formalism.GaloisIrreducibility (IsSubSum IsOrbit)
 
-def NormCongrOne : Prop :=
-  ∀ (S : Type) [CommRing S] [Algebra ℤ S] [Module.Free ℤ S] [Module.Finite ℤ S] (c : ℤ)
-    (π y : S), π = 1 + c • y → c ∣ Algebra.norm ℤ π - 1
-
-def SplitsCompletelyOfCongr : Prop :=
-  ∀ (c g : ℕ) (E Kc : Type) [Field E] [NumberField E] [Field Kc] [NumberField Kc]
-    [IsCyclotomicExtension {c} ℚ Kc] (_ : E →+* Kc), 0 < c → g.Prime → c ∣ g - 1 →
-    ∀ P : Ideal (NumberField.RingOfIntegers E), P.IsPrime →
-      (g : NumberField.RingOfIntegers E) ∈ P →
-      Nat.card (NumberField.RingOfIntegers E ⧸ P) = g ∧
-        (g : NumberField.RingOfIntegers E) ∉ P ^ 2
-
 def PrimeToPartEndo : Prop :=
   ∀ (M M' : Type) [CommMonoid M] [Monoid M'] (l : ℕ) (x y : M) (φ : M →* M'), l.Prime →
     IsOfFinOrder x → IsOfFinOrder y →
@@ -33,53 +21,16 @@ def PowPolyExists : Prop :=
     (a : ℕ), f.Monic →
     ∃ f' : K[X], f'.Monic ∧ f'.aroots L = (f.aroots L).map (fun x => x ^ a)
 
-def GoodPowStable : Prop :=
-  ∀ (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] [IsAlgClosed L] (ι J : Type)
-    (N a : ℕ) (f f' : ι → K[X]) (χ : ι → J → Kˣ),
-    (∀ d ∈ Finset.Icc 1 N, Nat.Coprime a (Fintype.card K ^ d - 1)) →
-    (∀ v, (f' v).Monic ∧ (f' v).aroots L = ((f v).aroots L).map (fun x => x ^ a)) →
-    GoodAt K L N f χ → GoodAt K L N f' (fun v j => χ v j ^ a)
-
-def NotMemBBIff : Prop :=
-  ∀ g N l : ℕ, 2 ≤ g → l.Prime → l ≠ g →
-    (l ∉ BB g N ↔ ∀ d ∈ Finset.Icc 1 N, l ^ (4 * padicValNat l (g ^ d - 1)) ≤ g ^ d)
-
 def ExcludedSimplify : Prop :=
   ∀ (N : ℕ) (Y : ℝ), 1 ≤ N → 1 ≤ Y →
     (3 * N + 1 : ℝ) * (1 + 2 * (N : ℝ) ^ 2 * (Y ^ ((3 : ℝ) / 4) + 1)) ≤
       20 * (N : ℝ) ^ 3 * Y ^ ((3 : ℝ) / 4)
-
-def QPThreshold : Prop :=
-  ∀ (c d Q m X : ℝ) (N : ℕ), 4 ≤ c → 1 ≤ d → d ≤ c → 0 ≤ Q → Q ≤ c ^ 2 → 0 ≤ m → m ≤ c ^ 2 →
-    1 ≤ N → 0 < X → (N : ℝ) ^ 4 * c ^ 500 ≤ (X * c ^ (-20 : ℤ)) ^ ((1 : ℝ) / 4) →
-    d ^ 694 * Q ^ 521 + d ^ 232 * Q ^ 367 * (2 : ℝ) ^ (290 * 2) +
-      (d * Q * (2 : ℝ) ^ 2) ^ ((1 : ℝ) / 1000) * m ≤ X
 
 def AdmissibleCount : Prop :=
   ∀ (c₀ c X B h P A : ℝ), 0 < c₀ → (2 : ℝ) ^ 14 / c₀ ≤ c → 1 < X → Real.log X ≤ c →
     0 < B → B ≤ 4 * c ^ 3 → 0 < h → h ≤ c ^ 3 →
     c₀ * B ^ (-5 : ℤ) * X / (h * Real.log X) ≤ P → P ≤ 2 * A →
     8 * c ^ (-20 : ℤ) * X ≤ A
-
-open Classical in
-
-def DyadicWindow : Prop :=
-  ∀ (P : Finset ℕ) (X κ : ℝ), 0 < X → 0 < κ → (∀ p ∈ P, 1 ≤ p ∧ (p : ℝ) ≤ X) →
-    8 * κ * X ≤ (P.card : ℝ) →
-    ∃ j : ℕ, 1 ≤ j ∧ 2 * κ * X < X / 2 ^ j ∧
-      κ * (X / 2 ^ j) ≤
-        ((P.filter (fun p : ℕ => X / 2 ^ j ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * (X / 2 ^ j))).card : ℝ)
-
-open Classical in
-
-def Prop1FromCount : Prop :=
-  ∀ (N : ℕ) (c X : ℝ) (P : Finset ℕ), 21 ≤ N → 1 ≤ c → 0 < X →
-    (N : ℝ) ^ 4 * c ^ 500 ≤ (X * c ^ (-20 : ℤ)) ^ ((1 : ℝ) / 4) →
-    (∀ p ∈ P, p.Prime ∧ (p : ℝ) ≤ X) → 8 * c ^ (-20 : ℤ) * X ≤ (P.card : ℝ) →
-    ∃ Y : ℝ, X * c ^ (-20 : ℤ) ≤ Y ∧ 2 * Y ≤ X ∧
-      Y * c ^ (-20 : ℤ) ≤ ((P.filter (fun p : ℕ => Y ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * Y)).card : ℝ) ∧
-      ∃ g₁ ∈ P, ∃ g₂ ∈ P, g₁ ≠ g₂ ∧ (Y ≤ (g₁ : ℝ) ∧ (g₁ : ℝ) ≤ 2 * Y) ∧
-        (Y ≤ (g₂ : ℝ) ∧ (g₂ : ℝ) ≤ 2 * Y) ∧ Disjoint (BB g₁ N) (BB g₂ N)
 
 open Classical in
 
@@ -111,35 +62,6 @@ def IsIrr {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (ρ : Represen
     Prop :=
   Nontrivial V ∧ ∀ W : Submodule ℂ V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → W = ⊥ ∨ W = ⊤
 
-def TraceRegular : Prop :=
-  ∀ (K G : Type) [Field K] [Group G] [Fintype G] (e : MonoidAlgebra K G),
-    LinearMap.trace K (MonoidAlgebra K G) (LinearMap.mulLeft K e) =
-      (Fintype.card G : K) * e.coeff 1
-
-def TwistedIdempotent : Prop :=
-  ∀ (G : Type) [Group G] [Fintype G] (J : Subgroup G) (χ : J →* ℂˣ),
-    twistedIdem J χ * twistedIdem J χ = twistedIdem J χ ∧
-    (∀ g : G, (twistedIdem J χ).coeff g⁻¹ = (starRingEnd ℂ) ((twistedIdem J χ).coeff g)) ∧
-    (twistedIdem J χ).coeff 1 = (Nat.card J : ℂ)⁻¹ ∧
-    ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V),
-      LinearMap.range (ρ.asAlgebraHom (twistedIdem J χ)) =
-        eqvSpace ρ (fun u : J => (u : G)) (fun u => ((χ u : ℂˣ) : ℂ))
-
-def WeightFormula : Prop :=
-  ∀ (G V : Type) [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (ρ : Representation ℂ G V) (e : MonoidAlgebra ℂ G), e * e = e →
-    (e * centralIdem ρ).coeff 1 =
-      (Module.finrank ℂ V : ℂ) * (Module.finrank ℂ (LinearMap.range (ρ.asAlgebraHom e)) : ℂ) /
-        (Fintype.card G : ℂ)
-
-def WeightOfTwistedIdempotent : Prop :=
-  ∀ (G V : Type) [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (ρ : Representation ℂ G V) (J : Subgroup G) (χ : J →* ℂˣ),
-    (twistedIdem J χ * centralIdem ρ).coeff 1 / (twistedIdem J χ).coeff 1 =
-      (Nat.card J : ℂ) *
-        (Module.finrank ℂ (eqvSpace ρ (fun u : J => (u : G)) (fun u => ((χ u : ℂˣ) : ℂ))) : ℂ) *
-        (Module.finrank ℂ V : ℂ) / (Fintype.card G : ℂ)
-
 def CentralIdemSumOne : Prop :=
   ∀ (G I : Type) [Group G] [Fintype G] [Fintype I] (V : I → Type) [∀ i, AddCommGroup (V i)]
     [∀ i, Module ℂ (V i)] [∀ i, FiniteDimensional ℂ (V i)]
@@ -150,71 +72,6 @@ def CentralIdemSumOne : Prop :=
       (σ : Representation ℂ G W), IsIrr σ →
       ∃ i, ∃ φ : W ≃ₗ[ℂ] V i, ∀ g x, φ (σ g x) = ρ i g (φ x)) →
     ∑ i, centralIdem (ρ i) = 1
-
-def CentralIdemProduct : Prop :=
-  ∀ (G H V W : Type) [Group G] [Fintype G] [Group H] [Fintype H] [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
-    (ρ : Representation ℂ G V) (σ : Representation ℂ H W) (g : G) (h : H),
-    (centralIdem (Representation.tprod (ρ.comp (MonoidHom.fst G H))
-      (σ.comp (MonoidHom.snd G H)))).coeff (g, h) =
-      (centralIdem ρ).coeff g * (centralIdem σ).coeff h
-
-def GLCardSplit : Prop :=
-  ∀ (K : Type) [Field K] [Fintype K] (N : ℕ),
-    Nat.card (GL (Fin N) K) =
-      Fintype.card K ^ (N * (N - 1) / 2) * ∏ i ∈ Finset.Icc 1 N, (Fintype.card K ^ i - 1)
-
-def LemmaLWeightU : Prop :=
-  ∀ (d : Multiset ℕ) (g : ℕ), (∀ x ∈ d, 1 ≤ x) → 2 ≤ g →
-    1 / (g : ℝ) ^ d.sum ≤ 1 / (d.map (fun x => (g : ℝ) ^ x - 1)).prod ∧
-      (2 * d.sum ≤ g →
-        1 / (d.map (fun x => (g : ℝ) ^ x - 1)).prod ≤ (1 + 2 * (d.sum : ℝ) / g) / (g : ℝ) ^ d.sum)
-
-def rootSet' {n K : Type} [Field K] (Φ : Finset (n × n)) : Set (Matrix n n K) :=
-  {u | (∀ a, u a a = 1) ∧ ∀ a b, a ≠ b → (a, b) ∉ Φ → u a b = 0}
-
-def RootSetGroup : Prop :=
-  ∀ (n K : Type) [Fintype n] [LinearOrder n] [Field K] [Fintype K] (Φ EE : Finset (n × n)),
-    (∀ x ∈ Φ, x.1 < x.2) → (∀ a b c, (a, b) ∈ Φ → (b, c) ∈ Φ → (a, c) ∈ Φ) → EE ⊆ Φ →
-    (∀ a b c, (a, b) ∈ Φ → (b, c) ∈ Φ → (a, c) ∉ EE) →
-    (1 : Matrix n n K) ∈ rootSet' Φ ∧
-    (∀ u ∈ rootSet' (K := K) Φ, ∀ u' ∈ rootSet' (K := K) Φ, u * u' ∈ rootSet' Φ ∧
-      ∀ x ∈ EE, (u * u') x.1 x.2 = u x.1 x.2 + u' x.1 x.2) ∧
-    (∀ u ∈ rootSet' (K := K) Φ, ∃ u' ∈ rootSet' (K := K) Φ, u * u' = 1 ∧ u' * u = 1) ∧
-    Nat.card (rootSet' (K := K) Φ) = Fintype.card K ^ Φ.card
-
-def charRep {H : Type} [Group H] (la : H →* ℂˣ) : Representation ℂ H ℂ :=
-  (Module.toModuleEnd ℂ ℂ).toMonoidHom.comp ((Units.coeHom ℂ).comp la)
-
-def RXHyp {HH : Type} [Group HH] (A C X Y : Subgroup HH) (laX : ↥(A ⊔ C ⊔ X) →* ℂˣ)
-    (laY : ↥(A ⊔ C ⊔ Y) →* ℂˣ) : Prop :=
-  ((∀ x ∈ X, ∀ c ∈ C, x * c * x⁻¹ ∈ C) ∧ (∀ y ∈ Y, ∀ c ∈ C, y * c * y⁻¹ ∈ C) ∧
-    (∀ a ∈ A, ∀ c ∈ C, a * c * a⁻¹ ∈ C) ∧ (∀ a ∈ A, ∀ x ∈ X, a * x * a⁻¹ ∈ X) ∧
-    (∀ a ∈ A, ∀ y ∈ Y, a * y * a⁻¹ ∈ Y)) ∧
-  (∀ x ∈ X, ∀ y ∈ Y, x⁻¹ * y⁻¹ * x * y ∈ C) ∧
-  Function.Bijective (fun q : A × C × X × Y => (q.1 : HH) * q.2.1 * q.2.2.1 * q.2.2.2) ∧
-  ((∀ u : ↥(A ⊔ C ⊔ X), (u : HH) ∈ X → laX u = 1) ∧
-    (∀ u : ↥(A ⊔ C ⊔ Y), (u : HH) ∈ Y → laY u = 1) ∧
-    (∀ (u : ↥(A ⊔ C ⊔ X)) (u' : ↥(A ⊔ C ⊔ Y)), (u : HH) = u' → (u : HH) ∈ A ⊔ C →
-      laX u = laY u')) ∧
-  ((∀ y ∈ Y, y ≠ 1 → ∃ x ∈ X, ∃ u : ↥(A ⊔ C ⊔ X), (u : HH) = x⁻¹ * y⁻¹ * x * y ∧ laX u ≠ 1) ∧
-    (∀ x ∈ X, x ≠ 1 → ∃ y ∈ Y, ∃ u : ↥(A ⊔ C ⊔ X), (u : HH) = x⁻¹ * y⁻¹ * x * y ∧ laX u ≠ 1))
-
-def RootExchange : Prop :=
-  ∀ (HH : Type) [Group HH] [Finite HH] (A C X Y : Subgroup HH) (laX : ↥(A ⊔ C ⊔ X) →* ℂˣ)
-    (laY : ↥(A ⊔ C ⊔ Y) →* ℂˣ), RXHyp A C X Y laX laY →
-    (Representation.ind (A ⊔ C ⊔ X).subtype (charRep laX)).IsIrreducible ∧
-    (Representation.ind (A ⊔ C ⊔ Y).subtype (charRep laY)).IsIrreducible ∧
-    Nonempty ((Representation.ind (A ⊔ C ⊔ X).subtype (charRep laX)).Equiv
-      (Representation.ind (A ⊔ C ⊔ Y).subtype (charRep laY)))
-
-def RootExchangeDim : Prop :=
-  ∀ (HH G V : Type) [Group HH] [Finite HH] [Group G] [AddCommGroup V] [Module ℂ V]
-    [FiniteDimensional ℂ V] (A C X Y : Subgroup HH) (laX : ↥(A ⊔ C ⊔ X) →* ℂˣ)
-    (laY : ↥(A ⊔ C ⊔ Y) →* ℂˣ) (j : HH →* G) (ρ : Representation ℂ G V),
-    RXHyp A C X Y laX laY →
-    Module.finrank ℂ (eqvSpace ρ (fun u : ↥(A ⊔ C ⊔ X) => j u) (fun u => ((laX u : ℂˣ) : ℂ))) =
-      Module.finrank ℂ (eqvSpace ρ (fun u : ↥(A ⊔ C ⊔ Y) => j u) (fun u => ((laY u : ℂˣ) : ℂ)))
 
 def besselEdge (s k i j : ℕ) : Prop :=
   (j = i + 1 ∧ (j < s ∨ (s ≤ i ∧ j < s + k) ∨ s + k ≤ i)) ∨ (i + 1 = s ∧ j = s + k)
@@ -236,34 +93,10 @@ def besselSpace {K V : Type} [Field K] [AddCommGroup V] [Module ℂ V] {N : ℕ}
   eqvSpace ρ (fun u : besselSet K s k N => (u : GL (Fin N) K))
     (fun u => besselChar ψ₀ s k N (u : GL (Fin N) K))
 
-def BesselCard : Prop :=
-  ∀ (K : Type) [Field K] [Fintype K] (s k N : ℕ), s + k < N →
-    Nat.card (besselSet K s k N) = Fintype.card K ^ (N * (N - 1) / 2 - k)
-
-def RootExchangeDatum : Prop :=
-  ∀ (K V : Type) [Field K] [Fintype K] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (s k i : ℕ) (ψ₀ : AddChar K ℂ) (ρ : Representation ℂ (GL (Fin (k + 2 * s + 1)) K) V),
-    ψ₀ ≠ 1 → 1 ≤ k → i ≤ s →
-    Module.finrank ℂ (besselSpace ρ ψ₀ i k) = Module.finrank ℂ (besselSpace ρ ψ₀ 0 k)
-
 def GelfandGraevMultOne : Prop :=
   ∀ (K V : Type) [Field K] [Fintype K] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (N : ℕ) (ψ₀ : AddChar K ℂ) (ρ : Representation ℂ (GL (Fin N) K) V), ψ₀ ≠ 1 → IsIrr ρ →
     Module.finrank ℂ (besselSpace ρ ψ₀ 0 0) ≤ 1
-
-def GelfandGraevEndDim : Prop :=
-  ∀ (K : Type) [Field K] [Fintype K] (n : ℕ) (ψ₀ : AddChar K ℂ)
-    (E : Submodule ℂ (GL (Fin n) K → ℂ)), ψ₀ ≠ 1 → 1 ≤ n →
-    (∀ φ, φ ∈ E ↔ ∀ u ∈ besselSet K 0 0 n, ∀ u' ∈ besselSet K 0 0 n, ∀ x,
-      φ (u * x * u') = besselChar ψ₀ 0 0 n u * besselChar ψ₀ 0 0 n u' * φ x) →
-    Module.finrank ℂ E = Fintype.card K ^ n - Fintype.card K ^ (n - 1)
-
-def MirabolicComparison : Prop :=
-  ∀ (K V : Type) [Field K] [Fintype K] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (N k : ℕ) (ψ₀ : AddChar K ℂ) (ρ : Representation ℂ (GL (Fin N) K) V), ψ₀ ≠ 1 → 1 ≤ k →
-    k + 1 ≤ N →
-    (Fintype.card K ^ k - Fintype.card K ^ (k - 1)) * Module.finrank ℂ (besselSpace ρ ψ₀ 0 0) ≤
-      Module.finrank ℂ (besselSpace ρ ψ₀ 0 k)
 
 open Classical in
 
@@ -311,13 +144,6 @@ def SqMassLower : Prop :=
 
 open Classical in
 
-def DivisorBound : Prop :=
-  ∀ (K : Type) [Field K] [Fintype K] (N : ℕ) (h : K[X]), h.Monic → Squarefree h →
-    h.coeff 0 ≠ 0 → h.natDegree ≤ N →
-    ∑ c ∈ (sqSet K N).filter (fun c => h ∣ monicOf c), sqWeight (monicOf c) ≤ sqWeight h
-
-open Classical in
-
 def TypeWeightExact : Prop :=
   ∀ (K : Type) [Field K] [Fintype K] (N : ℕ) (n : ℕ → ℕ), ∑ d ∈ Finset.Icc 1 N, d * n d = N →
     ∑ c ∈ (sqSet K N).filter (fun c => ∀ d ∈ Finset.Icc 1 N, (degType (monicOf c)).count d = n d),
@@ -334,10 +160,6 @@ def TypeSetWeight : Prop :=
     ∑ c ∈ (sqSet K N).filter (fun c => A (degType (monicOf c))), sqWeight (monicOf c) ≤
       (((Finset.univ : Finset (Equiv.Perm (Fin N))).filter
         (fun σ => A σ.partition.parts)).card : ℝ) / (N.factorial : ℝ)
-
-def PrimeFactorsLogTwo : Prop :=
-  ∀ g δ : ℕ, 2 ≤ g → 1 ≤ δ →
-    (((g ^ δ - 1).primeFactors.card : ℕ) : ℝ) ≤ (δ : ℝ) * Real.logb 2 g
 
 open Classical in
 
@@ -359,11 +181,6 @@ def CrossFactorCount : Prop :=
       (monicOf c).coeff 0 ≠ 0 ∧ ∃ x ∈ (monicOf c).rootSet L, ∃ y ∈ P'.rootSet L,
         primeToPart l x = primeToPart l y)).card : ℝ) ≤
       (Fintype.card K : ℝ) ^ ((δ : ℝ) / 4)
-
-def SeriesBounds : Prop :=
-  ∀ (u : ℝ) (N : ℕ), 0 ≤ u → u ≤ 1 / 8 →
-    ∑ δ ∈ Finset.Icc 2 N, (δ : ℝ) * u ^ δ ≤ 6 * u ^ 2 ∧
-      ∑ δ ∈ Finset.Icc 1 N, (δ : ℝ) ^ 2 * u ^ δ ≤ 17 / 10 * u
 
 open Classical in
 
@@ -434,70 +251,5 @@ def ShareFromCount : Prop :=
     0 ≤ PP₁ → PP₁ ≤ W₁ → 0 ≤ PP₂ → PP₂ ≤ W₂ → |Dall - Dstar| ≤ ε * Dstar →
     |D₁ - PP₁ * Dstar| ≤ ε * (PP₁ * Dstar) → |D₂ - PP₂ * Dstar| ≤ ε * (PP₂ * Dstar) →
     bad ≤ D₁ + D₂ → bad / Dall ≤ (1 + ε) / (1 - ε) * (W₁ + W₂)
-
-def BadRankUnion : Prop :=
-  ∀ (k V : Type) [Field k] [AddCommGroup V] [Module k V] [FiniteDimensional k V]
-    (p₁ p₂ : V →ₗ[k] V), p₁ ∘ₗ p₁ = p₁ → p₂ ∘ₗ p₂ = p₂ → p₁ ∘ₗ p₂ = p₂ ∘ₗ p₁ →
-    Module.finrank k (LinearMap.range (p₁ + p₂ - p₁ ∘ₗ p₂)) ≤
-      Module.finrank k (LinearMap.range p₁) + Module.finrank k (LinearMap.range p₂)
-
-def NumbersDominant : Prop :=
-  ∀ C ε : ℝ, 0 < ε → ∀ᶠ x : ℝ in Filter.atTop,
-    x ^ C * Real.exp (-x ^ (ε / 6)) ≤ 1 / 8 * Real.exp (-x ^ (ε / 7))
-
-def IdempotentPositiveType : Prop :=
-  ∀ (G : Type) [Group G] [Fintype G] [DecidableEq G] (e : MonoidAlgebra ℂ G), e * e = e →
-    (∀ x : G, e.coeff x⁻¹ = (starRingEnd ℂ) (e.coeff x)) →
-    (Matrix.of fun x y : G => e.coeff (x⁻¹ * y)).PosSemidef
-
-def CyclotomicIrredUnramified : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] (p : ℕ), p.Prime →
-    (∀ P : Ideal (NumberField.RingOfIntegers E), P.IsPrime →
-      (p : NumberField.RingOfIntegers E) ∈ P → (p : NumberField.RingOfIntegers E) ∉ P ^ 2) →
-    Irreducible (Polynomial.cyclotomic p E)
-
-def FiniteOrderTraceFull : Prop :=
-  ∀ (K : Type) [Field K] (_ : K →+* ℂ) (n m : ℕ) (γ : Matrix (Fin n) (Fin n) K), 0 < m →
-    γ ^ m = 1 → γ.trace = (n : K) → γ = 1
-
-def EigenbasisOfDistinctRoots : Prop :=
-  ∀ (k V ι : Type) [Field k] [AddCommGroup V] [Module k V] [FiniteDimensional k V] [Fintype ι]
-    (t : Module.End k V) (c : ι → k), Function.Injective c →
-    LinearMap.charpoly t = ∏ i, (X - C (c i)) →
-    ∃ b : Module.Basis ι k V, ∀ i, t (b i) = c i • b i
-
-def FrobPermutesLines : Prop :=
-  ∀ (k V ι : Type) [Field k] [AddCommGroup V] [Module k V] [Fintype ι] [DecidableEq ι]
-    (t : Module.End k V) (Φ : V ≃ₗ[k] V) (g : ℕ) (b : Module.Basis ι k V) (c : ι → k)
-    (π : Equiv.Perm ι), Function.Injective c → (∀ i, t (b i) = c i • b i) →
-    (∀ x, Φ (t x) = (t ^ g) (Φ x)) → (∀ i, c (π i) ^ g = c i) →
-    ∀ i, ∃ a : k, a ≠ 0 ∧ Φ (b i) = a • b (π i)
-
-def SolvableRestrictIrred : Prop :=
-  ∀ (K V G ι : Type) [Field K] [AddCommGroup V] [Module K V] [Group G] [Fintype ι]
-    [DecidableEq ι] (ρ : Representation K G V) (H : Subgroup G) [H.Normal] (t Φ : G)
-    (b : Module.Basis ι K V) (c : ι → K) (π : Equiv.Perm ι) (p : ℕ),
-    t ∈ H → Function.Injective c → (∀ i, ρ t (b i) = c i • b i) →
-    (∀ i, ∃ a : K, ρ Φ (b i) = a • b (π i)) →
-    (∀ W : Submodule K V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → W = ⊥ ∨ W = ⊤) →
-    Group.IsSolvable (G ⧸ H) → p.Prime → p ∈ π.cycleType → Fintype.card ι < 2 * p →
-    p + 3 ≤ Fintype.card ι →
-    ∀ W : Submodule K V, (∀ h ∈ H, ∀ x ∈ W, ρ h x ∈ W) → W = ⊥ ∨ W = ⊤
-
-def FixedByAutInField : Prop :=
-  ∀ (F : IntermediateField ℚ ℂ) (z : ℂ), IsAlgebraic ℚ z → (∀ σ : ℂ ≃ₐ[F] ℂ, σ z = z) → z ∈ F
-
-def CommutesWithIdempotents : Prop :=
-  ∀ (R V : Type) [CommRing R] [AddCommGroup V] [Module R V] (MM : Submodule R V)
-    (a eps pr : V →ₗ[R] V), (∀ x ∈ MM, a x ∈ MM) → a ∘ₗ eps = eps ∘ₗ a → a ∘ₗ pr = pr ∘ₗ a →
-    (∀ x ∈ MM ⊓ LinearMap.range eps, a x ∈ MM ⊓ LinearMap.range eps) ∧
-    (∀ x ∈ MM ⊓ LinearMap.range eps ⊓ LinearMap.range pr,
-      a x ∈ MM ⊓ LinearMap.range eps ⊓ LinearMap.range pr) ∧
-    (∀ x ∈ (MM ⊓ LinearMap.range eps).map pr, a x ∈ (MM ⊓ LinearMap.range eps).map pr)
-
-def DropLatticeIncl : Prop :=
-  ∀ (R V : Type) [CommRing R] [AddCommGroup V] [Module R V] (Mt : Submodule R V)
-    (e pr : V →ₗ[R] V), e ∘ₗ e = e → pr ∘ₗ pr = pr →
-    Mt ⊓ LinearMap.range pr ⊓ LinearMap.range e ≤ (Mt.map pr).map e
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility

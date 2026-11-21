@@ -439,12 +439,6 @@ def IsDiffZ (L : Lev) (O : L.POp) : Prop :=
     ∀ φ : L.PF, ∀ p ∈ L.Dom, O φ p =
       ∑ i : Fin N, ∑ j : Fin N, a i j p ((wirt (Fin.last L.r))^[i] ((wirtBar (Fin.last L.r))^[j] φ) p)
 
-def IsTriDiff (L : Lev) {n : ℕ} (F : Matrix (AuxiliarySlotStates n) (AuxiliarySlotStates n) L.POp) : Prop :=
-  (∀ α β, L.IsDiffZ (F α β)) ∧
-    (∃ e : AuxiliarySlotStates n ≃ Fin (Fintype.card (AuxiliarySlotStates n)), ∀ α β, e α < e β → ∀ φ : L.PF, ∀ p ∈ L.Dom, F α β φ p = 0) ∧
-    ∀ α, ∃ a : (Fin (L.r + 1) → ℂ) → (L.Hom →L[ℂ] L.Hom),
-      (∀ p ∈ L.Dom, IsUnit (a p)) ∧ ∀ φ : L.PF, ∀ p ∈ L.Dom, F α α φ p = a p (φ p)
-
 def dw (L : Lev) {n : ℕ} (N : ℕ) (c : AuxiliarySlotStates n → (Fin L.k0 → ℝ) → ℝ) (α : AuxiliarySlotStates n)
     (p : Fin (L.r + 1) → ℂ) (A : L.Hom) : L.Hom :=
   ((Complex.normSq (zOf p) / L.GGx p) ^ N : ℝ) • ∑ᶠ ρ : Fin L.k0 → ℝ, ((c α ρ : ℝ) : ℂ) • L.lineP (L.pt p) ρ A

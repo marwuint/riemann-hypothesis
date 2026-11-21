@@ -97,7 +97,7 @@ theorem exists_step_split_off (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) 
   have hpos : 0 < badN D * p * (T.dδ j V.rank).l₂.M := Nat.mul_pos (Nat.mul_pos hb hp) hM0
   have hT' : Λ.TrivAt (badN D * p * (T.dδ j V.rank).l₂.M) := by
     rwa [show badN D * p * (T.dδ j V.rank).l₂.M = badN D * (T.dδ j V.rank).l₂.M * p by ring]
-  obtain ⟨gm, h, hgm, hc, hh, hs, e⟩ := GlobalTheory.T.exists_rationalUnitary_move_selfDual_to_split D V hg hL T.Q.H _ hpos Λ hU hT'
+  obtain ⟨gm, h, hgm, hc, hh, hs, e⟩ := _root_.GlobalTheory.SplitMove.exists_move_to_split D V hg hL T.Q.H _ hpos Λ hU hT'
   have h2 : 2 ∣ badN D * p := by
     unfold badN
     exact dvd_mul_of_dvd_left (((D.host.two_dvd_QS.mul_right _).mul_right _).mul_right _) p

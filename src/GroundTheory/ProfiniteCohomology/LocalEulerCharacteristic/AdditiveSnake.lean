@@ -361,10 +361,6 @@ theorem finite_torsN_of_injective (hf : Function.Injective f) [Finite (TorsN B n
     Finite (TorsN A n) :=
   Finite.of_injective _ (torsNMap_injective hf)
 
-theorem finite_modN_of_surjective (hh : Function.Surjective h) [Finite (ModN B n)] :
-    Finite (ModN C n) :=
-  Finite.of_surjective _ (modNMap_surjective hh)
-
 end Finiteness
 
 section Actions

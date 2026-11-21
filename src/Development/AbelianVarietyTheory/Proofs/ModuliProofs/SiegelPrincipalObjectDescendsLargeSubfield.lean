@@ -5,12 +5,12 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphismRestrictOfRelAmple
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFinsetIsProjOverDescendsStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MorphismsDescendToLargeSubfieldStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFinsetIsProjOverDescends
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MorphismsDescendToLargeSubfield
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GrpObjDescendsToLargeSubfield
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLineBundleDescentToSubfieldStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLineBundleDescentToSubfield
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalOfFieldExtension
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegelObjectOfDescendedDataStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegelObjectOfDescendedData
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -92,7 +92,7 @@ theorem spMap_subtype_inclusion {K : Type} [Field K] {K₀ K₁ : Subfield K} (h
 theorem siegPre_descends : ∀ (h M : ℕ) (o : Type) [CommRing o] (ζ : o) (K : Type) [Field K] (K₀ : Subfield K) (s₀ : Sp K₀ ⟶ Sp o) (s : Sp K ⟶ Sp o) (c : SiegPre h M ζ s), s = spMap K₀.subtype ≫ s₀ → c.Principal → ∃ F : Finset K, ∀ (K₁ : Subfield K) (hK : K₀ ≤ K₁), (F : Set K) ⊆ K₁ → ∃ c₁ : SiegPre h M ζ (spMap (Subfield.inclusion hK) ≫ s₀), c₁.Principal ∧ SiegPB c c₁ (spMap K₁.subtype) := by
   intro h M o _ ζ K _ K₀ s₀ s c hs hc
   classical
-  obtain ⟨sA, hA⟩ := GlobalTheory.T.exists_finset_isProjOver_descends_to_subfield K K₀ c.A.left c.A.hom (GlobalTheory.ProjSpace.isProjOver_of_relAmple hc.1)
+  obtain ⟨sA, hA⟩ := _root_.GlobalTheory.exists_finset_isProjOver_descends K K₀ c.A.left c.A.hom (GlobalTheory.ProjSpace.isProjOver_of_relAmple hc.1)
   let K' : Subfield K := K₀ ⊔ Subfield.closure (sA : Set K)
   obtain ⟨X', p', φ', hproj, hpb⟩ := hA K' le_sup_left
     (Subfield.subset_closure.trans (SetLike.coe_subset_coe.2 le_sup_right))
@@ -111,13 +111,13 @@ theorem siegPre_descends : ∀ (h M : ℕ) (o : Type) [CommRing o] (ζ : o) (K :
   have : IsProper (A' ⊗ A').hom := by
     change IsProper (pullback.fst A'.hom A'.hom ≫ A'.hom)
     infer_instance
-  obtain ⟨sL, hL⟩ := GlobalTheory.T.exists_lineBundle_descent_to_subfield K K' (A' ⊗ A').left (c.A ⊗ c.A).left (A' ⊗ A').hom (c.A ⊗ c.A).hom φ₂'
+  obtain ⟨sL, hL⟩ := _root_.GlobalTheory.LBDescent.exists_lb_subfield K K' (A' ⊗ A').left (c.A ⊗ c.A).left (A' ⊗ A').hom (c.A ⊗ c.A).hom φ₂'
     c.P c.isLB (isPullback_of_isSquare hpb' hsq')
   obtain ⟨lv, hlv⟩ : ∃ lv : Fin h ⊕ Fin h → (Sp K ⟶ c.A.left), ∀ u, lv u = (c.lev (Pi.single u 1)).left :=
     ⟨_, fun _ => rfl⟩
   have hlev : ∀ u, lv u ≫ c.A.hom = 𝟙 (Sp K) := fun u =>
     (congrArg (· ≫ c.A.hom) (hlv u)).trans (Over.w (c.lev (Pi.single u 1)))
-  obtain ⟨sP, hP⟩ := GlobalTheory.T.exists_descent_of_morphisms_to_subfield K K' (Sp K') (Sp K) (𝟙 _) (𝟙 _) (spMap K'.subtype) X' p' (Fin h ⊕ Fin h)
+  obtain ⟨sP, hP⟩ := _root_.GlobalTheory.morphisms_descend_to_large_subfield K K' (Sp K') (Sp K) (𝟙 _) (𝟙 _) (spMap K'.subtype) X' p' (Fin h ⊕ Fin h)
     (fun u => lv u ≫ φ') IsPullback.of_id_snd
     (fun u => by
       have e := hlev u
@@ -146,7 +146,7 @@ theorem siegPre_descends : ∀ (h M : ℕ) (o : Type) [CommRing o] (ζ : o) (K :
   have hl₁ : ∀ u, l u ≫ φ₁ = f₁ u := fun u => hpb₁.lift_fst _ _ _
   have hl₂ : ∀ u, l u ≫ A₁.hom = 𝟙 _ := fun u => hpb₁.lift_snd _ _ _
   let lev₁ : Fin h ⊕ Fin h → (𝟙_ (Over (Sp K₁)) ⟶ A₁) := fun u => Over.homMk (l u) (hl₂ u)
-  obtain ⟨c₁, hc₁⟩ := GlobalTheory.T.exists_siegelObject_of_descended_data h M o ζ K₁ K K₁.subtype (spMap (Subfield.inclusion hK) ≫ s₀) s c A₁ ψ ψ₂ P₁
+  obtain ⟨c₁, hc₁⟩ := _root_.GlobalTheory.exists_siegPre_of_descended_data h M o ζ K₁ K K₁.subtype (spMap (Subfield.inclusion hK) ≫ s₀) s c A₁ ψ ψ₂ P₁
     lev₁ (by rw [hs, ← Category.assoc, spMap_subtype_inclusion]) hgrp hsqψ hP₁ hiso (fun u => by
       have e := hlev u
       have key : lv u ≫ ψ = spMap K₁.subtype ≫ l u := by

@@ -405,26 +405,4 @@ end GlobalTheory.SpreadScheme
 
 namespace GlobalTheory
 
-theorem scheme_descends_to_subalgebra :
-    ∀ (V R : Type) [CommRing V] [CommRing R] [Algebra V R] (X : Over (Sp R)), LocallyOfFinitePresentation X.hom → QuasiCompact X.hom → IsSeparated X.hom → ∃ s : Finset R, ∀ W : Subalgebra V R, (↑s : Set R) ⊆ W → ∃ X₀ : Over (Sp W), LocallyOfFinitePresentation X₀.hom ∧ QuasiCompact X₀.hom ∧ QuasiSeparated X₀.hom ∧ Nonempty ((Over.pullback (spMap W.val.toRingHom)).obj X₀ ≅ X) := by
-  classical
-  intro V R _ _ _ X h₁ h₂ h₃
-  obtain ⟨k, _, f, X₀, p₀, φ, hk, g₁, g₂, g₃, hφ⟩ := SpreadScheme.hasModel X.hom
-  obtain ⟨s, hs⟩ := hk.out
-  refine ⟨s.image f, fun W hW ↦ ?_⟩
-  have hf (x : k) : f x ∈ W := by
-    have hx : x ∈ Algebra.adjoin ℤ (s : Set k) := hs ▸ Algebra.mem_top
-    induction hx using Algebra.adjoin_induction with
-    | mem x hx => exact hW (by simpa using ⟨x, hx, rfl⟩)
-    | algebraMap r => simp
-    | add x y _ _ hx hy => rw [map_add]; exact W.add_mem hx hy
-    | mul x y _ _ hx hy => rw [map_mul]; exact W.mul_mem hx hy
-  have e : spMap W.val.toRingHom ≫ spMap (f.codRestrict W hf) = spMap f := by
-    rw [← Spec.map_comp]
-    rfl
-  have h := SpreadScheme.isPullback_lift hφ _ _ e
-  refine ⟨Over.mk (pullback.snd p₀ (spMap (f.codRestrict W hf))), inferInstanceAs (LocallyOfFinitePresentation (pullback.snd _ _)),
-    inferInstanceAs (QuasiCompact (pullback.snd _ _)), inferInstanceAs (QuasiSeparated (pullback.snd _ _)),
-    ⟨Over.isoMk h.isoPullback.symm h.isoPullback_inv_snd⟩⟩
-
 end GlobalTheory

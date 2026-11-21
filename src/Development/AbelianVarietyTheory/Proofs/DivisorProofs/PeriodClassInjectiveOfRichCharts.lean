@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EllFamNontrivial
 import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHolomorphicParamOfDegZeroCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterFunctionEqZeroOfComposableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterFunctionEqZeroOfComposable
 
 set_option autoImplicit false
 
@@ -38,7 +38,7 @@ theorem perCl_injective (K : Charts F) (hK : K.Rich) (per per' : Λ →+ Hol F.V
     rw [map_sub, ← this]
   ext l : 1
   rw [← sub_eq_zero]
-  refine GlobalTheory.T.parameter_function_eq_zero_of_composable K hK l 0 (per l - per' l) fun k k' k'' e e' ↦ ?_
+  refine _root_.GlobalTheory.AnPer.Charts.eq_zero_of_cst_composable K hK l 0 (per l - per' l) fun k k' k'' e e' ↦ ?_
   have h1 : K.cst k' (per l - per' l) = 0 := hv _ _ (ptHom (K.triv k') e)
   rw [← sh_cst e' (per l - per' l), h1, map_zero]
 

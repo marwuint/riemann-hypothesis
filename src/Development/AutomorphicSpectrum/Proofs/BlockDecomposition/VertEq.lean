@@ -6,10 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedSubschemeModL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DimOfIsArithVar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimClosureOfCoheightField
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointIdealMultiprojectivePrime
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermRepClassDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermRepClassDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.O1ClassPullbackNaturalityStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericPointNonvanishingCoordinateSectionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinateDivisorMultiplicitySumStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GenericPointNonvanishingCoordinateSection
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinateDivisorMultiplicitySum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerCharacteristicDimensionZeroStatement
 
 set_option autoImplicit false
@@ -85,10 +85,10 @@ theorem key (p : ℕ) [Fact p.Prime] {m : ℕ} {n : Fin (m + 1) → ℕ} (a : Fi
     refine Finset.sum_congr rfl fun k _ => ?_
     refine congrArg (a k * ·) ?_
     have hl := (hrel k).choose_spec
-    have hs := GlobalTheory.T.generic_point_nonvanishing_coordinate_section m n Z f k _ hl
+    have hs := _root_.GlobalTheory.CompanionTheory.MixZ.VertGen.genericPoint_mem_nonzeroLocus m n Z f k _ hl
     rw [GlobalTheory.CompanionTheory.Ar.IntersectionMultiplicitySection.interNum_cons_eq_finsum_mult (ZMod p) Z hp d (by rw [hd]) _ (isLB_pullO _ 1)
       (fun _ => L) (fun _ => hL) _ hs]
-    refine Eq.trans (finsum_congr fun w => ?_) (GlobalTheory.T.coordinate_divisor_multiplicity_sum m n Z f k _ hs (fun W => geoNum d W (fun _ => a)))
+    refine Eq.trans (finsum_congr fun w => ?_) (_root_.GlobalTheory.CompanionTheory.MixZ.DivCyc.divOfSec_cycle m n Z f k _ hs (fun W => geoNum d W (fun _ => a)))
     by_cases hw : (divOfSec (isLB_pullO _ 1) _ hs).mult w = 0
     · rw [hw, zero_mul, zero_mul]
     · rw [red w (CartierDiv.coheight_eq_one_of_mult_ne_zero hw)]
@@ -96,7 +96,7 @@ theorem key (p : ℕ) [Fact p.Prime] {m : ℕ} {n : Fin (m + 1) → ℕ} (a : Fi
 theorem vertEq : VertEq := by
   intro m n M A hA X i _ Z _ j _ p _ _ d hd
   refine key p A.a d Z (j ≫ i) hd _ (pull_isLB (pull_isLB M.isLB _) _) ?_
-  rw [cls_pull (pull_isLB M.isLB _), cls_pull M.isLB, GlobalTheory.T.hermRep_class_decomposition m n M A hA, map_sum, map_sum]
+  rw [cls_pull (pull_isLB M.isLB _), cls_pull M.isLB, _root_.GlobalTheory.CompanionTheory.MPDict.ClsRep.cls_eq_of_isHermRep m n M A hA, map_sum, map_sum]
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_zsmul, map_zsmul, Category.assoc, GlobalTheory.T.cls_pullO_one_comp_eq_pull, GlobalTheory.T.cls_pullO_one_comp_eq_pull]
 

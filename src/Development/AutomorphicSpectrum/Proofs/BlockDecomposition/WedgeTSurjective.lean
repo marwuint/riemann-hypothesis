@@ -1,12 +1,12 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.HodgeWedgeFields.H1CommutesBaseChange
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IotaQInjective
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupVanishingAntisymmetricCrossStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupVanishingAntisymmetricCross
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomologyInclusionTensorInjectiveStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrossProductKernelQuotientVanishingStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WedgeOfSymmetricTensorZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExteriorSquareVectorBundleRankStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BijectiveOfSurjectiveSameRankStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExteriorSquareVectorBundleRank
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BijectiveOfSurjectiveSameRank
 
 set_option autoImplicit false
 
@@ -45,7 +45,7 @@ theorem wedgeOf_of_low : LowSt → WedgeOfSt := by
       (Module.Flat.rTensor_preserves_injective_linearMap _ (iotaQ_injective F))
   have hker : LinearMap.ker (TensorProduct.lift (cup F)) ≤ LinearMap.ker (wedgeT (R := R) (H1 F)) := by
     intro t ht
-    have h1 := GlobalTheory.T.cup_vanishing_antisymmetric_cross hL R _ F hH t ht
+    have h1 := _root_.GlobalTheory.CompanionTheory.WedgeOf.hopf_cross_antisymm hL R _ F hH t ht
     have h2 := GlobalTheory.T.cross_product_kernel_quotient_vanishing R _ F _ h1
     have h3 := hinj (h2.trans (map_zero _).symm)
     exact GlobalTheory.T.wedge_of_symmetric_tensor_zero R _ t h3
@@ -62,7 +62,7 @@ theorem wedgeOf_of_low : LowSt → WedgeOfSt := by
   have hsurj : Function.Surjective s := fun y ↦ by
     obtain ⟨t, rfl⟩ := wedgeT_surjective R (H1 F) y
     exact ⟨_, hs t⟩
-  have hb := GlobalTheory.T.bijective_of_surjective_same_rank R _ _ _ hV2 (GlobalTheory.T.exterior_square_vector_bundle_rank R _ g hV) s hsurj
+  have hb := _root_.GlobalTheory.CompanionTheory.WedgeOf.bijective_of_surjective_of_VB R _ _ _ hV2 (_root_.GlobalTheory.CompanionTheory.WedgeOf.vb_exteriorPower_two R _ g hV) s hsurj
   refine ⟨(LinearEquiv.ofBijective s hb).symm, fun a b ↦ ?_⟩
   rw [LinearEquiv.symm_apply_eq, LinearEquiv.ofBijective_apply]
   have := hs (a ⊗ₜ b)

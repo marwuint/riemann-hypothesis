@@ -130,7 +130,4 @@ theorem cent_sim_pos : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G)
   have hnn' : (0 : ℚ) ≤ ((y.2 : ℚˣ) : ℚ) := by exact_mod_cast hnn
   exact lt_of_le_of_ne hnn' (Ne.symm (y.2.ne_zero))
 
-example : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ : ℂ), G.a = 1 → P.Mark μ →
-    ∀ y ∈ P.cent, 0 < ((y.2 : ℚˣ) : ℚ) := cent_sim_pos
-
 end GlobalTheory.LKMid

@@ -112,50 +112,13 @@ theorem exists_det_ne {m : ℕ} (M : Submodule (𝓞 K) (Fin m → K))
     Matrix.linearIndependent_rows_iff_isUnit.1 hli'
   exact ((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero
 
-theorem detIdeal_ne_zero {m : ℕ} (L : MLat K m) (hL : L.Good) : L.detIdeal ≠ 0 := by
-  have hf := detSub_isFractional L hL.1
-  obtain ⟨x, hx, hd⟩ := exists_det_ne L.M hL.2.1
-  intro h0
-  have hmem : (Matrix.of x).det ∈ (L.detIdeal : Submodule (𝓞 K) K) := by
-    rw [detIdeal_coe L hf]; exact det_mem L x hx
-  rw [h0] at hmem
-  exact hd ((FractionalIdeal.mem_zero_iff _).1 hmem)
-
 theorem deg_detLine {m : ℕ} (L : MLat K m) : L.detLine.deg =
     -Real.log ((FractionalIdeal.absNorm L.detIdeal : ℚ) : ℝ) - ∑ σ, Real.log (Real.sqrt (L.H σ).det.re) := rfl
 
 end A2
 
-open A2 in
-theorem detLineAdmissible : DetGood := by
-  intro K _ _ m L hL
-  refine ⟨detSub_isFractional L hL.1, ?_⟩
-  show L.detIdeal ≠ 0 ∧ ∀ σ, 0 < Real.sqrt (L.H σ).det.re
-  exact ⟨detIdeal_ne_zero L hL, fun σ => Real.sqrt_pos.2 (det_re_pos (hL.2.2 σ))⟩
-
 namespace A2
-variable {K : Type} [Field K] [NumberField K]
-
-theorem detSub_mono {m : ℕ} {L L' : MLat K m} (h : L'.M ≤ L.M) : L'.detSub ≤ L.detSub :=
-  Submodule.span_mono fun _ ⟨x, hx, hd⟩ => ⟨x, fun i => h (hx i), hd⟩
-
 end A2
-
-open A2 in
-theorem detLineMono : DetMono := by
-  intro K _ _ m L L' hL hL' hH hM
-  have hf := detSub_isFractional L hL.1
-  have hf' := detSub_isFractional L' hL'.1
-  have hle : L'.detIdeal ≤ L.detIdeal := by
-    rw [← FractionalIdeal.coe_le_coe, detIdeal_coe L hf, detIdeal_coe L' hf']
-    exact detSub_mono hM
-  have hN := absNorm_anti' hle (detIdeal_ne_zero L' hL')
-  have hpos := absNorm_pos' (detIdeal_ne_zero L hL)
-  rw [deg_detLine, deg_detLine, hH]
-  have : Real.log ((FractionalIdeal.absNorm L.detIdeal : ℚ) : ℝ) ≤
-      Real.log ((FractionalIdeal.absNorm L'.detIdeal : ℚ) : ℝ) :=
-    Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hN)
-  linarith
 
 namespace A2
 variable {K : Type} [Field K] [NumberField K]
@@ -185,13 +148,6 @@ theorem detSub_free {m : ℕ} (L : MLat K m) (b : Fin m → Fin m → K)
     rw [hb]
     exact Submodule.subset_span ⟨i, rfl⟩
 
-theorem detIdeal_free {m : ℕ} (L : MLat K m) (b : Fin m → Fin m → K) (hL : L.Good)
-    (hb : L.M = Submodule.span (𝓞 K) (Set.range b)) :
-    L.detIdeal = FractionalIdeal.spanSingleton (𝓞 K)⁰ (Matrix.of b).det := by
-  apply FractionalIdeal.coeToSubmodule_injective
-  show (L.detIdeal : Submodule (𝓞 K) K) = (FractionalIdeal.spanSingleton (𝓞 K)⁰ (Matrix.of b).det : Submodule (𝓞 K) K)
-  rw [detIdeal_coe L (detSub_isFractional L hL.1), FractionalIdeal.coe_spanSingleton, detSub_free L b hb]
-
 theorem gramC_eq {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) (b : Fin n → Fin n → K) :
     ReciprocityTheory.MultiplicativeHeights.gramC H σ b = ((Matrix.of b).map σ).transpose.conjTranspose * H * ((Matrix.of b).map σ).transpose := by
   ext i j
@@ -208,28 +164,6 @@ theorem gramC_det {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) 
   ring
 
 end A2
-
-open A2 in
-theorem detLineFree : DetFree := by
-  intro K _ _ m L b hL hb
-  have hI := detIdeal_free L b hL hb
-  have hne : (Matrix.of b).det ≠ 0 := by
-    intro h
-    apply detIdeal_ne_zero L hL
-    rw [hI, h, FractionalIdeal.spanSingleton_zero]
-  have hσ : ∀ σ : K →+* ℂ, Real.log (ReciprocityTheory.MultiplicativeHeights.gramC (L.H σ) σ b).det.re =
-      2 * Real.log ‖σ (Matrix.of b).det‖ + 2 * Real.log (Real.sqrt (L.H σ).det.re) := by
-    intro σ
-    have hD := det_re_pos (hL.2.2 σ)
-    have hn : 0 < ‖σ (Matrix.of b).det‖ := norm_pos_iff.2 ((map_ne_zero σ).2 hne)
-    rw [gramC_det, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq, Real.log_mul (by positivity) hD.ne',
-      Real.log_pow, Real.log_sqrt hD.le]
-    push_cast
-    ring
-  rw [deg_detLine, hI, absNorm_span_real,
-    Real.log_prod (fun σ _ => (norm_pos_iff.2 ((map_ne_zero σ).2 hne)).ne')]
-  simp_rw [hσ, Finset.sum_add_distrib, ← Finset.mul_sum]
-  ring
 
 theorem hadamardInequality : HadamardPD := by
   intro m A hA
@@ -303,119 +237,6 @@ theorem hadamardInequality : HadamardPD := by
     _ = _ := one_mul _
 
 namespace A2
-variable {K : Type} [Field K] [NumberField K]
-open scoped Pointwise
-
-theorem coe_prod_fi {ι : Type} (s : Finset ι) (I : ι → FractionalIdeal (𝓞 K)⁰ K) :
-    ((∏ j ∈ s, I j : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) = ∏ j ∈ s, (I j : Submodule (𝓞 K) K) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp [FractionalIdeal.coe_one]
-  | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, FractionalIdeal.coe_mul, ih]
-
-theorem prod_mul_le_detIdeal {m : ℕ} (L : MLat K m) (hL : L.Good) (ℓ : Fin m → MLine K)
-    (u : Fin m → Fin m → K) (hu : ∀ j, ∀ a ∈ (ℓ j).I, a • u j ∈ L.M) :
-    (∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ (Matrix.of u).det ≤ L.detIdeal := by
-  rw [← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_mul, FractionalIdeal.coe_spanSingleton,
-    detIdeal_coe L (detSub_isFractional L hL.1), coe_prod_fi, Submodule.mul_le]
-  intro p hp q hq
-  obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hq
-  rw [mul_smul_comm]
-  apply Submodule.smul_mem
-  have hspan : ∏ j, ((ℓ j).I : Submodule (𝓞 K) K) =
-      Submodule.span (𝓞 K) (∏ j, (((ℓ j).I : Submodule (𝓞 K) K) : Set K)) := by
-    rw [← Submodule.prod_span]
-    simp only [Submodule.span_eq]
-  rw [hspan] at hp
-  induction hp using Submodule.span_induction with
-  | mem p hp =>
-    obtain ⟨g, hg, rfl⟩ := (Set.mem_finsetProd _ _ _).1 hp
-    have : (∏ j, g j) * (Matrix.of u).det = (Matrix.of fun j k => g j * u j k).det := by
-      exact (Matrix.det_mul_column g (Matrix.of u)).symm
-    rw [this]
-    exact det_mem L _ fun j => by
-      have := hu j (g j) (hg (Finset.mem_univ j))
-      simpa [Pi.smul_def, smul_eq_mul] using this
-  | zero => simp
-  | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
-  | smul r x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r hx
-
 end A2
-
-open A2 in
-theorem hadamardIdeals : HadamardIdeals := by
-  intro K _ _ m L ℓ u La hL hℓ hli hu hLa hsq
-  set d := (Matrix.of u).det with hd
-  have hdne : d ≠ 0 := by
-    have : IsUnit (Matrix.of u) := Matrix.linearIndependent_rows_iff_isUnit.1 hli
-    exact ((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero
-  have hX0 : (∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ d ≠ 0 :=
-    mul_ne_zero (Finset.prod_ne_zero_iff.2 fun j _ => (hℓ j).1)
-      (by rwa [Ne, FractionalIdeal.spanSingleton_eq_zero_iff])
-  have hN := absNorm_anti' (prod_mul_le_detIdeal L hL ℓ u hu) hX0
-  have hposI : ∀ j, (0 : ℝ) < ((FractionalIdeal.absNorm (ℓ j).I : ℚ) : ℝ) := fun j => by
-    exact_mod_cast absNorm_pos' (hℓ j).1
-  have hposd : ∀ σ : K →+* ℂ, 0 < ‖σ d‖ := fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 hdne)
-  have hposD := absNorm_pos' (detIdeal_ne_zero L hL)
-  have hNX : ((FractionalIdeal.absNorm ((∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ d) : ℚ) : ℝ) =
-      (∏ j, ((FractionalIdeal.absNorm (ℓ j).I : ℚ) : ℝ)) * ∏ σ : K →+* ℂ, ‖σ d‖ := by
-    rw [map_mul, map_prod, Rat.cast_mul, Rat.cast_prod, absNorm_span_real]
-  have hlogN : Real.log ((FractionalIdeal.absNorm L.detIdeal : ℚ) : ℝ) ≤
-      ∑ j, Real.log ((FractionalIdeal.absNorm (ℓ j).I : ℚ) : ℝ) + ∑ σ : K →+* ℂ, Real.log ‖σ d‖ := by
-    rw [← Real.log_prod (fun j _ => (hposI j).ne'), ← Real.log_prod (fun σ _ => (hposd σ).ne'),
-      ← Real.log_mul (Finset.prod_pos fun j _ => hposI j).ne' (Finset.prod_pos fun σ _ => hposd σ).ne', ← hNX]
-    exact Real.log_le_log (by exact_mod_cast hposD) (by exact_mod_cast hN)
-  have hσ : ∀ σ : K →+* ℂ, Real.log ‖σ d‖ + Real.log (Real.sqrt (L.H σ).det.re) ≤
-      ∑ j, (Real.log La + Real.log ((ℓ j).n σ)) := by
-    intro σ
-    have hD := det_re_pos (hL.2.2 σ)
-    have hGpd : (ReciprocityTheory.MultiplicativeHeights.gramC (L.H σ) σ u).PosDef := by
-      rw [gramC_eq]
-      apply (hL.2.2 σ).conjTranspose_mul_mul_same
-      apply Matrix.mulVec_injective_iff_isUnit.2
-      rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
-      exact IsUnit.mk0 _ ((map_ne_zero σ).2 hdne)
-    have hdiagpos : ∀ j, 0 < (ReciprocityTheory.MultiplicativeHeights.gramC (L.H σ) σ u j j).re := fun j => by
-      simpa using (Complex.lt_def.1 (hGpd.diag_pos (i := j))).1
-    have hH := hadamardInequality m _ hGpd
-    rw [gramC_det, Complex.re_ofReal_mul] at hH
-    have hbound : ∏ j, (ReciprocityTheory.MultiplicativeHeights.gramC (L.H σ) σ u j j).re ≤ ∏ j, (La * (ℓ j).n σ) ^ 2 := by
-      apply Finset.prod_le_prod
-      · intro j _
-        exact (hdiagpos j).le
-      · intro j _
-        exact hsq σ j
-    have key : ‖σ d‖ ^ 2 * (L.H σ).det.re ≤ ∏ j, (La * (ℓ j).n σ) ^ 2 := by
-      rw [← Complex.normSq_eq_norm_sq]
-      exact hH.trans hbound
-    have hpos' : 0 < ‖σ d‖ ^ 2 * (L.H σ).det.re := by
-      have := hposd σ
-      positivity
-    have hlog := Real.log_le_log hpos' key
-    have hnpos : ∀ j, 0 < (ℓ j).n σ := fun j => (hℓ j).2 σ
-    rw [Real.log_mul (by have := hposd σ; positivity) hD.ne', Real.log_pow,
-      Real.log_prod (fun j _ => by have := hnpos j; positivity)] at hlog
-    have hs : ∑ j, Real.log ((La * (ℓ j).n σ) ^ 2) = 2 * ∑ j, (Real.log La + Real.log ((ℓ j).n σ)) := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [Real.log_pow, Real.log_mul hLa.ne' (hnpos j).ne']
-      push_cast
-      ring
-    rw [hs] at hlog
-    rw [Real.log_sqrt hD.le]
-    push_cast at hlog
-    linarith
-  have hsumσ := Finset.sum_le_sum fun σ (_ : σ ∈ (Finset.univ : Finset (K →+* ℂ))) => hσ σ
-  simp only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul] at hsumσ
-  have hc : ∑ σ : K →+* ℂ, ∑ j, Real.log ((ℓ j).n σ) = ∑ j, ∑ σ : K →+* ℂ, Real.log ((ℓ j).n σ) :=
-    Finset.sum_comm
-  have hcard : (Fintype.card (K →+* ℂ) : ℝ) = Module.finrank ℚ K := by
-    exact_mod_cast NumberField.Embeddings.card K ℂ
-  rw [hc, hcard] at hsumσ
-  rw [deg_detLine]
-  simp only [MLine.deg, Finset.sum_sub_distrib, Finset.sum_neg_distrib]
-  linarith
 
 end Formalism.L2.LamCM

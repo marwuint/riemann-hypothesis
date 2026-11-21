@@ -20,10 +20,4 @@ def ChartConstantsDetermined.Statement : Prop :=
         w.comp (Subalgebra.inclusion (le_sup_right : intsIn F Ω ≤ chartRingZ y c ⊔ intsIn F Ω)).toRingHom =
           w'.comp (Subalgebra.inclusion (le_sup_right : intsIn F Ω ≤ chartRingZ y c ⊔ intsIn F Ω)).toRingHom
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.HilbertSamuel

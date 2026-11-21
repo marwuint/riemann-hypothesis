@@ -36,13 +36,6 @@ noncomputable def WeylLat (p : ℕ) [Fact p.Prime] (LL : Letters N) (j : ℕ)
   sInf {L | h ∈ L ∧ ∀ c d : Fin r, c ≠ d → ∀ k : ℕ, ∀ x ∈ L,
     (((k.factorial : ℚ_[p]))⁻¹) • ((glAct p LL j c d) ^ k) x ∈ L}
 
-def Primitive' (p : ℕ) [Fact p.Prime] {σ : Type} (h : MvPolynomial σ ℚ_[p]) : Prop :=
-  h ∈ IntPol p σ ∧ ∃ m, ‖h.coeff m‖ = 1
-
-def Letters.take (LL : Letters N) (k : ℕ) (hk : k ≤ N) : Letters k where
-  vec := fun i => LL.vec (Fin.castLE hk i)
-  deg := fun i => LL.deg (Fin.castLE hk i)
-
 noncomputable def MMw (p : ℕ) [Fact p.Prime] {K : ℕ} [NeZero r] (LLw : Letters K) {q : ℕ} (J : Fin q → ℕ)
     (M : Fin q → WithTop ℤ) (ρ : Fin r) (w : Fin r → ℤ) : Submodule ℚ_[p] (MvPolynomial (Fin K × Fin r) ℚ_[p]) :=
   Y p LLw J M ⊓ HWC p LLw K (univ.erase ρ) w ⊓ WtSpC p LLw K univ w

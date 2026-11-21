@@ -77,8 +77,6 @@ def SpanQuotientLemma : Prop := π ∈ D.nd.Z i → ∀ S : IdempotentChoiceData
 
 def HomRelationsLemmaAllChoices : Prop := π ∈ D.nd.Z i → ∀ S : IdempotentChoiceData D.nd i, GoodCongruenceObjects D.nd r ρ π S → QuotientHomNonvanishingBound D.nd r π S
 
-def admG5 : Prop := π ∈ D.nd.Z i → ∀ S : IdempotentChoiceData D.nd i, GoodCongruenceObjects D.nd r ρ π S → TameInertiaCondition D.nd r ρ π S
-
 def BlochKatoAnnihilators : Prop :=
   ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw), C.IsGood →
@@ -88,17 +86,6 @@ def tateH1FinitenessAtPlacesOver : Prop :=
   ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw),
     TateH1FinitenessAt ↥C.LL.1 ↥(OL C.LL) (Br.PD D.loc D.nbr i w hw)
-
-def CyclotomicInertiaHypothesis : Prop := Formalism.MainNotions.TruncatedSeriesCountingIdentities.CyclotomicInertiaImage i
-
-def admitted : Prop :=
-  adm51 i r ρ π ∧ CharpolyCoeffsLemmaFamily i r ∧ SpanQuotientLemma i r ρ π ∧ HomRelationsLemmaAllChoices i r ρ π ∧
-    Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG1 i r ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG2 i r ρ π ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG3 i r ρ π ∧
-    Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG4 i r ∧ admG5 i r ρ π ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG5 i r ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.TameGeneratorConditions i ∧
-    Formalism.MainNotions.TruncatedSeriesCountingIdentities.admG6 i r ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.admBK i ∧ BlochKatoAnnihilators i ∧
-    Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous i r ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.admSS i r ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π ∧ CyclotomicInertiaHypothesis i ∧
-    Formalism.MainNotions.TruncatedSeriesCountingIdentities.LocalCoefficientCompatibility i ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.CyclotomicCompletionAdmissible i ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.admH2 i ∧
-    tateH1FinitenessAtPlacesOver i ∧ Formalism.MainNotions.TruncatedSeriesCountingIdentities.UnramifiedClassFieldBound i
 
 end Pt
 
@@ -147,40 +134,10 @@ def Conclusion2 (i : D.nd.Loc) : Prop :=
           (MtLow D.nd i (D.nd.Zgood i)).comap (MtUp D.nd i (D.nd.Zgood i)).subtype) ≤
       ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℚ) * (D.nd.vcc i π + padicValInt (D.nd.l i) A)
 
-def IntegralityFromMetric (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
-    (dc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Decl D i)
-    (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ) (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ),
-    GoodR D.nd i r → admitted i r ρ π → Conclusion1 i r ρ π dc lenRow e' cB
-
-def HodgeTateFromSandwich (D : D7) : Prop := ∀ i : D.nd.Loc, Conclusion2 i
-
-def Stmt (D : D7) : Prop := IntegralityFromMetric D ∧ HodgeTateFromSandwich D
-
-theorem hypotheses_of_local_inputs {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))}
-    {ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))} {π : D.nd.X i}
-    {dc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Decl D i} {lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ}
-    {e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ} {cB : ℕ} (h : admitted i r ρ π)
-    (hR : Formalism.MainNotions.TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ π dc lenRow) (hL : Formalism.MainNotions.TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc e')
-    (hT : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admTB i r π cB) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admitted i r ρ π dc lenRow e' cB := by
-  obtain ⟨-, -, -, -, g1, g2, g3, g4, -, g5, g5x, g6, bk, -, ct, ss, dcm, ep, tie, sh, fo, h2, -, cft⟩ := h
-  exact ⟨g1, g2, g3, g4, g5, g5x, g6, bk, hT, hR, hL, ct, ss, dcm, ep, tie, sh, fo, h2, cft⟩
-
-theorem positive_case_of_general (h : Formalism.MainNotions.TruncatedSeriesCountingIdentities.IntegralityFromMetric D) : IntegralityFromMetric D :=
-  fun i r ρ π dc lenRow e' cB hG hA _ hR hL hT =>
-    h i r ρ π dc lenRow e' cB hG (hypotheses_of_local_inputs hA hR hL hT)
-
 theorem zgoodSubsetZ (i : D.nd.Loc) : D.nd.Zgood i ⊆ D.nd.Z i := by
   intro x hx
   rw [D.Z_tie]
   rw [D.Zgood_tie] at hx
   exact hx.1
-
-theorem endomorphism_bound_at_good_points (h : Formalism.MainNotions.TruncatedSeriesCountingIdentities.HodgeTateFromSandwich D) : HodgeTateFromSandwich D :=
-  fun i α A hA hc h1 h0 => h i (D.nd.Zgood i) (zgoodSubsetZ i) α A hA hc h1 h0
-
-theorem global_theorems_of_general (h : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Stmt D) : Stmt D :=
-  ⟨positive_case_of_general h.1, endomorphism_bound_at_good_points h.2⟩
 
 end Formalism.MainNotions.LargeLevelLemmas

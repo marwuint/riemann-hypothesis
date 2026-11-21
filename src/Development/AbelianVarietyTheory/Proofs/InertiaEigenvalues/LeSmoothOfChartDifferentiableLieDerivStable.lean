@@ -9,10 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieDerivativeRealLi
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemL2OfSmoothVector
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
 import GroundTheory.AutomorphicForms.ReductionFinite
-import Development.AbelianVarietyTheory.Definitions.Divisors.MemMspan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecaysOfMemSmoothSpan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WordAppendSingle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsDirac
+
 open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.UnitaryBC GroundTheory.Global GroundTheory.Global.IdeleGroup
 open scoped Pointwise
 

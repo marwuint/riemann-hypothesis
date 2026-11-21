@@ -44,27 +44,6 @@ def conj : P.RiemannData (spMap (starRingEnd ℂ) ≫ y) :=
 
 theorem conj_H : d.conj.H = d.H.map star := rfl
 
-theorem conj_fn (W : P.A.left.Opens) (f : Γ(P.A.left, W)) (z : Fin P.g → ℂ) :
-    d.conj.fn W f z = star (d.fn W f (star z)) := by
-  have e : (d.conj.u.ex z).left ≫ d.conj.φ = cj ≫ (show Sp ℂ ⟶ _ from (d.u.ex (star z)).left) ≫ d.φ :=
-    ArchMetricCompare.cjPt_comp' (isGrpPullback_pullback d.B cj) _
-  unfold fn
-  rw [← Points.valAt'_eq_valR, ← Points.valAt'_eq_valR]
-  exact (congrArg (valAt' · W f) e).trans (val_cj _ _ _)
-
-theorem conj_cov (W : P.A.left.Opens) (f : Γ(P.A.left, W)) (h : ⊤ ≤ (y ≫ LieVB.unitSec P.A) ⁻¹ᵁ W) :
-    d.conj.cov W f = star (d.cov W f) := by
-  have D := (d.differentiableAt_fn f h).hasFDerivAt.star_star
-  rw [star_zero] at D
-  have e : d.conj.fn W f = star ∘ d.fn W f ∘ star := funext (d.conj_fn W f)
-  funext a
-  unfold cov
-  rw [e, D.fderiv]
-  simp
-
 end PPAS.RiemannData
-
-theorem PPAS.exists_conj_riemannData : ∀ (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d : P.RiemannData y), ∃ d' : P.RiemannData (spMap (starRingEnd ℂ) ≫ y), d'.H = d.H.map star ∧ ∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), ⊤ ≤ (y ≫ LieVB.unitSec P.A) ⁻¹ᵁ W → d'.cov W f = star (d.cov W f) :=
-  fun _ _ _ d => ⟨d.conj, d.conj_H, d.conj_cov⟩
 
 end GlobalTheory

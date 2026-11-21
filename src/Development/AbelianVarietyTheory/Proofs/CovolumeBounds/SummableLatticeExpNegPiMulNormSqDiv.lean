@@ -264,14 +264,6 @@ theorem poisson_gaussian_lattice {t : ℝ} (ht : 0 < t) (u : E) :
     push_cast
     exact h3
 
-omit [MeasurableSpace E] [BorelSpace E] [IsZLattice ℝ L] in
-
-theorem summable_lattice_exp_neg_pi_mul_norm_sq_div {t : ℝ} (ht : 0 < t) :
-    Summable fun y : L ↦ Real.exp (-π * ‖(y : E)‖ ^ 2 / t) := by
-  refine (summable_lattice_exp_neg_mul_norm_sq L (div_pos Real.pi_pos ht)).congr fun y ↦ ?_
-  congr 1
-  ring
-
 theorem poisson_gaussian_lattice_cos {t : ℝ} (ht : 0 < t) (u : E) :
     (Summable fun y : dualLattice L ↦
       Real.exp (-π * ‖(y : E)‖ ^ 2 / t) * Real.cos (2 * π * ⟪(y : E), u⟫)) ∧
@@ -298,15 +290,5 @@ theorem tsum_gaussian_lattice_eq_dualLattice {t : ℝ} (ht : 0 < t) :
         ∑' y : dualLattice L, Real.exp (-π * ‖(y : E)‖ ^ 2 / t) := by
   simpa only [add_zero, inner_zero_right, mul_zero, Real.cos_zero, mul_one] using
     (poisson_gaussian_lattice_cos L ht 0).2
-
-theorem tsum_gaussian_lattice_add_le {t : ℝ} (ht : 0 < t) (u : E) :
-    ∑' x : L, Real.exp (-π * t * ‖(x : E) + u‖ ^ 2) ≤
-      ∑' x : L, Real.exp (-π * t * ‖(x : E)‖ ^ 2) := by
-  obtain ⟨h1, h2⟩ := poisson_gaussian_lattice_cos L ht u
-  have hpos := ZLattice.covolume_pos L volume
-  rw [h2, tsum_gaussian_lattice_eq_dualLattice L ht]
-  refine mul_le_mul_of_nonneg_left (h1.tsum_le_tsum (fun y ↦ ?_)
-    (summable_lattice_exp_neg_pi_mul_norm_sq_div _ ht)) (by positivity)
-  exact mul_le_of_le_one_right (Real.exp_pos _).le (Real.cos_le_one _)
 
 end GlobalTheory

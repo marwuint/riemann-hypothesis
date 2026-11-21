@@ -1,12 +1,13 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsLocSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedMeasureStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartHolomorphicStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartHolomorphicAltBis
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartCoordinatesRegularStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartContinuousProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartLocalCoordinatesStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartLocalCoordinatesAltBis
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartHolomorphic
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsSectionDiagSec
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartCoordinatesRegular
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartContinuousProjection
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistedChartLocalCoordinates
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsNormFnLogNormSecDiagSec
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
@@ -19,14 +20,14 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM τ a b k₀ ca cb hb hj hblk hca hcb _ RW pr hc hW
   choose ψ kb σ i₀ V u hL using
     GlobalTheory.T.flag_adjacent_twisted_measure K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a b k₀ ca cb hb hj hblk hca hcb RW pr hW
-  obtain ⟨c, hc0⟩ := GlobalTheory.T.twisted_chart_local_coordinates K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL hblk hW
+  obtain ⟨c, hc0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.logNormSec_secPot_le K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL hblk hW
   refine ⟨GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.secPot RW (GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.potA M τ a k₀) V
       (fun x => (hL x).2.1) (fun x => (hL x).2.2.1) c,
     GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.diagSec ψ i₀ u, GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.diagSet k₀ RW, c, ?_, ?_, ?_, ?_, hc0, ?_⟩
-  · exact GlobalTheory.T.secPot_isPotential K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c
-  · exact GlobalTheory.T.twisted_chart_holomorphic_alt K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL hblk hW c
-  · exact GlobalTheory.T.twisted_chart_coordinates_regular K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c
-  · exact GlobalTheory.T.twisted_chart_continuous_projection K ι Φ y Ψ N j M n (d + 2) BM τ a k₀ ca cb RW pr hc ψ kb σ i₀ V u hL hW.1 c
-  · exact GlobalTheory.T.twisted_chart_local_coordinates_alt K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL b hb hj hblk hca hcb hW c
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.isPotential_secPot K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.isSection_diagSec K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL hblk hW c
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.diagSec_isSNC_diagSet K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.SncProd.main K ι Φ y Ψ N j M n (d + 2) BM τ a k₀ ca cb RW pr hc ψ kb σ i₀ V u hL hW.1 c
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.isNormFn_logNormSec_diagSec K ι Φ y Ψ N j M n (d + 2) BM.Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL b hb hj hblk hca hcb hW c
 
 end GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec

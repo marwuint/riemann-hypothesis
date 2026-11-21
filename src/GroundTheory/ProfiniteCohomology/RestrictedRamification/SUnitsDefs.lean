@@ -145,8 +145,6 @@ noncomputable abbrev sUnitsMax : Subgroup (maxUnramifiedOutside F Ω S)ˣ :=
 noncomputable abbrev galSUnitsMax : Rep.{u} (ULift.{u} ℤ) (galUnramifiedOutside F Ω S) :=
   galSUnits S (maxUnramifiedOutside F Ω S)
 
-example [Algebra.IsIntegral F Ω] : IsDiscreteRep (galSUnitsMax F Ω S) := inferInstance
-
 end Max
 
 end GroundTheory.ProfCoh

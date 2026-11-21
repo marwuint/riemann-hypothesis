@@ -60,26 +60,6 @@ theorem not_isIso_of_definite (X : Data E r) (h : X.p0 = 0 ∨ X.p0 = r) (ξ : F
   have : τ.1 (ξ a) = 0 := congrFun hy0 a
   exact (map_eq_zero τ.1).mp this
 
-def CuspAllGapsStatement : Prop :=
-  ∀ (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (τ0 : X.Ψ), 0 < X.p0 → X.p0 < r →
-    (∀ τ : X.Ψ, ∀ i j : Fin r, (j : ℕ) = i + 1 → (j : ℕ) ≠ X.p0 → la τ j ≤ la τ i) →
-    (∀ i0 i1 : Fin r, (i0 : ℕ) = 0 → (i1 : ℕ) = r - 1 → la τ0 i0 < la τ0 i1) →
-    ∀ P, X.IsBddSec la P → P ∈ X.SS la
-
-def Matches (X : Data E r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (u : Frame X.Ψ r → EReal) : Prop :=
-  ∀ x ∈ X.dom, W x = EReal.exp (-((phla X la x : EReal) + u x))
-
-def PoincarePointwiseStatement : Prop :=
-  ∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 →
-  ∀ bb : ℝ, 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb → ∀ la : Wt X.Ψ r,
-    ∀ u, IsInvWeight X u → ∀ F ∈ ATilde X x0 bb la u, ∀ P, IsExt X x0 la F P →
-      (∀ x ∈ X.dom, Summable fun γ : X.Γ => ‖term X la P γ x‖) ∧ X.IsBddSec la (poin X la P) ∧
-      (∀ FF, GlobalTheory.IndefiniteRowSideFullHecke.FundamentalSetFrames.IsFundSet X x0 FF → fundSq X x0 la u FF (poin X la P) < ⊤) ∧
-      (∀ ε : ℝ, 0 < ε → ∃ C : ℝ≥0, ∀ y ∈ X.dom,
-        ENNReal.ofReal (X.pnorm la (poin X la P) y) ≤ C * ballSup X ε u y) ∧
-      ∀ (la' : Wt X.Ψ r) (g : Frame X.Ψ r → ℂ), X.IsSec la' g →
-        ∀ x ∈ X.dom, poin X (la' + la) (g * P) x = g x * poin X la P x
-
 end
 
 end GlobalTheory.PoincareSeriesCompare

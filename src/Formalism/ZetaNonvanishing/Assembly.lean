@@ -70,14 +70,6 @@ lemma cint_of_abs (f : ℝ → ℝ) (hf : Measurable f) (s : ℂ)
     rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.norm_cpow_eq_rpow_re_of_pos hx0]
     simp
 
-lemma rint_of_abs (f : ℝ → ℝ) (hf : Measurable f) (σ : ℝ)
-    (hI : IntegrableOn (fun x : ℝ => |f x| * x ^ (-σ - 1)) (Ioi 1)) :
-    IntegrableOn (fun x : ℝ => f x * x ^ (-σ - 1)) (Ioi 1) := by
-  refine Integrable.mono' hI ((hf.mul (measurable_id.pow_const _)).aestronglyMeasurable) ?_
-  refine (ae_restrict_iff' measurableSet_Ioi).mpr (Eventually.of_forall fun x hx => ?_)
-  have hx0 : 0 < x := by linarith [mem_Ioi.mp hx]
-  rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (Real.rpow_nonneg hx0.le _)]
-
 lemma int_abs_rpow (h5 : MellinElem) {a σ : ℝ} (h : a < σ) :
     IntegrableOn (fun x : ℝ => |x ^ a| * x ^ (-σ - 1)) (Ioi 1) := by
   refine (h5.1 a σ h).congr_fun (fun x hx => ?_) measurableSet_Ioi
@@ -142,8 +134,6 @@ def Afun (σ₀ C : ℝ) (s : ℂ) : ℂ :=
     + C * s * (s - 1) * Pfun χ s / (s - σ₀)
 
 def Phi (σ₀ C : ℝ) (s : ℂ) : ℂ := dslope (Afun χ σ₀ C) 1 s / (s * Pfun χ s)
-
-def qfun (σ₀ C : ℝ) (s : ℂ) : ℂ := q0 χ σ₀ C s - s * (s - 1) * Imel χ σ₀ C s
 
 lemma ne_one_of_one_lt_re {s : ℂ} (hs : 1 < s.re) : s ≠ 1 := by
   rintro rfl

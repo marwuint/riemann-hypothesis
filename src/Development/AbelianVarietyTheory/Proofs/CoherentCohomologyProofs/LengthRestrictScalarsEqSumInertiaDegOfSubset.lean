@@ -4,32 +4,6 @@ open IsLocalRing
 
 namespace GlobalTheory
 
-section Local
-
-variable (R S X : Type*) [CommRing R] [CommRing S] [IsLocalRing R] [IsLocalRing S] [Algebra R S]
-  [IsLocalHom (algebraMap R S)] [AddCommGroup X] [Module R X] [Module S X] [IsScalarTower R S X]
-
-theorem length_restrictScalars_of_isLocalHom
-    [Module.Finite (ResidueField R) (ResidueField S)] :
-    Module.length R X =
-      Module.length S X * (Module.finrank (ResidueField R) (ResidueField S) : ℕ∞) := by
-  rw [IsLocalRing.length_restrictScalars R S X, Module.length_eq_finrank]
-
-theorem isFiniteLength_restrictScalars_iff_of_isLocalHom
-    [Module.Finite (ResidueField R) (ResidueField S)] :
-    IsFiniteLength R X ↔ IsFiniteLength S X := by
-  rw [← Module.length_ne_top_iff, ← Module.length_ne_top_iff,
-    length_restrictScalars_of_isLocalHom R S X]
-  have h : (Module.finrank (ResidueField R) (ResidueField S) : ℕ∞) ≠ 0 := by
-    exact_mod_cast (Module.finrank_pos (R := ResidueField R) (M := ResidueField S)).ne'
-  constructor
-  · intro h1 h2
-    exact h1 (by rw [h2, ENat.top_mul h])
-  · intro h1
-    exact WithTop.mul_ne_top h1 (ENat.coe_ne_top _)
-
-end Local
-
 section Localized
 
 variable {S : Type*} [CommRing S]
@@ -122,24 +96,6 @@ theorem length_localizedModule_atPrime_le (n : Ideal S) [n.IsPrime] {X : Type*} 
     · rw [length_localizedModule_quotient_of_ne m n hnm]
       exact zero_le_one
 
-theorem finite_support_length_localizedModule {X : Type*} [AddCommGroup X] [Module S X]
-    (h : IsFiniteLength S X) :
-    {n : MaximalSpectrum S | Module.length (Localization.AtPrime n.asIdeal)
-      (LocalizedModule n.asIdeal.primeCompl X) ≠ 0}.Finite := by
-  induction h with
-  | of_subsingleton => simp
-  | @of_simple_quotient M _ _ N hs _ ih =>
-    obtain ⟨m, hm, ⟨e⟩⟩ := isSimpleModule_iff_quot_maximal.mp hs
-    refine (ih.insert ⟨m, hm⟩).subset fun n hn => ?_
-    by_cases hnm : n.asIdeal = m
-    · exact Or.inl (MaximalSpectrum.ext hnm)
-    · right
-      rw [Set.mem_setOf_eq, length_localizedModule_eq_add_of_exact _ N.subtype N.mkQ
-        N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N),
-        length_localizedModule_congr _ e, length_localizedModule_quotient_of_ne m _ hnm,
-        add_zero] at hn
-      exact hn
-
 end Localized
 
 section General
@@ -182,28 +138,6 @@ theorem length_restrictScalars_eq_sum_of_subset {X : Type*} [AddCommGroup X] [Mo
     · intro n _ hn
       rw [length_localizedModule_quotient_of_ne m n.asIdeal
         (fun hc => hn (MaximalSpectrum.ext hc)), zero_mul]
-
-theorem length_restrictScalars_eq_finsum {X : Type*} [AddCommGroup X] [Module S X]
-    (h : IsFiniteLength S X) [Module R X] [IsScalarTower R S X] :
-    Module.length R X = ∑ᶠ n : MaximalSpectrum S, Module.length (Localization.AtPrime n.asIdeal)
-      (LocalizedModule n.asIdeal.primeCompl X) * Module.length R (S ⧸ n.asIdeal) := by
-  have hf := finite_support_length_localizedModule h
-  rw [length_restrictScalars_eq_sum_of_subset R h hf.toFinset (fun n hn => by simpa using hn),
-    finsum_eq_sum_of_support_subset]
-  intro n hn
-  simpa using left_ne_zero_of_mul hn
-
-theorem length_eq_sum_length_localizedModule {X : Type*} [AddCommGroup X] [Module S X]
-    (h : IsFiniteLength S X) (T : Finset (MaximalSpectrum S))
-    (hT : ∀ n ∉ T, Module.length (Localization.AtPrime n.asIdeal)
-      (LocalizedModule n.asIdeal.primeCompl X) = 0) :
-    Module.length S X = ∑ n ∈ T, Module.length (Localization.AtPrime n.asIdeal)
-      (LocalizedModule n.asIdeal.primeCompl X) := by
-  rw [length_restrictScalars_eq_sum_of_subset S h T hT]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  haveI : IsSimpleModule S (S ⧸ n.asIdeal) :=
-    isSimpleModule_iff_quot_maximal.mpr ⟨_, n.isMaximal, ⟨LinearEquiv.refl _ _⟩⟩
-  rw [Module.length_eq_one S (S ⧸ n.asIdeal), mul_one]
 
 theorem length_quotient_eq_finrank (p : Ideal R) (n : Ideal S) [p.IsMaximal] [n.LiesOver p]
     [Module.Finite (R ⧸ p) (S ⧸ n)] :
@@ -251,13 +185,6 @@ theorem finite_maximalSpectrum_of_finite [Module.Finite R S] : Finite (MaximalSp
       (maximalIdeal R).primesOver S)) fun a b hab => ?_
   exact MaximalSpectrum.ext (congrArg Subtype.val hab)
 
-theorem inertiaDeg_eq_finrank_quotient_maximalIdeal [Module.Finite R S] (n : Ideal S)
-    [n.IsMaximal] :
-    haveI := liesOver_maximalIdeal_of_isIntegral R S n
-    n.inertiaDeg R = Module.finrank (R ⧸ maximalIdeal R) (S ⧸ n) :=
-  haveI := liesOver_maximalIdeal_of_isIntegral R S n
-  Ideal.inertiaDeg_eq_of_isMaximal _ _
-
 theorem length_restrictScalars_eq_sum_inertiaDeg [Module.Finite R S]
     [Fintype (MaximalSpectrum S)] {X : Type*} [AddCommGroup X] [Module S X]
     (h : IsFiniteLength S X) [Module R X] [IsScalarTower R S X] :
@@ -280,29 +207,6 @@ theorem length_restrictScalars_eq_sum_inertiaDeg_of_isLocalizedModule [Module.Fi
   exact Finset.sum_congr rfl fun n _ => by
     rw [length_eq_length_localizedModule n.asIdeal.primeCompl (A n) (f n)]
 
-theorem isFiniteLength_restrictScalars_of_finite [Module.Finite R S] {X : Type*} [AddCommGroup X]
-    [Module S X] (h : IsFiniteLength S X) [Module R X] [IsScalarTower R S X] :
-    IsFiniteLength R X := by
-  haveI := finite_maximalSpectrum_of_finite R S
-  letI := Fintype.ofFinite (MaximalSpectrum S)
-  rw [← Module.length_ne_top_iff, length_restrictScalars_eq_sum_inertiaDeg R S h]
-  refine WithTop.sum_ne_top.mpr fun n _ => WithTop.mul_ne_top ?_ (ENat.coe_ne_top _)
-  exact ne_top_of_le_ne_top (Module.length_ne_top_iff.mpr h)
-    (length_localizedModule_atPrime_le n.asIdeal h)
-
 end Semilocal
-
-theorem length_restrictScalars_local_and_semilocal (R S X : Type*) [CommRing R] [CommRing S]
-    [Algebra R S] [IsLocalRing R] [AddCommGroup X] [Module R X] [Module S X]
-    [IsScalarTower R S X] (h : IsFiniteLength S X) :
-    (∀ [IsLocalRing S] [IsLocalHom (algebraMap R S)]
-      [Module.Finite (ResidueField R) (ResidueField S)],
-      Module.length R X =
-        Module.length S X * (Module.finrank (ResidueField R) (ResidueField S) : ℕ∞)) ∧
-    (∀ [Module.Finite R S], Finite (MaximalSpectrum S) ∧ ∀ [Fintype (MaximalSpectrum S)],
-      Module.length R X = ∑ n : MaximalSpectrum S, Module.length (Localization.AtPrime n.asIdeal)
-        (LocalizedModule n.asIdeal.primeCompl X) * (n.asIdeal.inertiaDeg R : ℕ∞)) :=
-  ⟨length_restrictScalars_of_isLocalHom R S X,
-    ⟨finite_maximalSpectrum_of_finite R S, length_restrictScalars_eq_sum_inertiaDeg R S h⟩⟩
 
 end GlobalTheory

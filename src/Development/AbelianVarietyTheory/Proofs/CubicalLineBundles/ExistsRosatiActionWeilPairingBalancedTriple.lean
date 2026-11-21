@@ -5,7 +5,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RingActIffOAct
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.PointsSumsEqProducts
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RosatiAdjIffLamEq
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CommutatorPairingsEqOfCubeLBPairingIsoStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CommutatorPairingsEqOfCubeLBPairingIso
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.LamCM
@@ -28,7 +28,7 @@ theorem exists_oAct_rosatiConj : Out.Laws → ∀ (E : Type) [Field E] [NumberFi
   intro a Tb k x z c hk hx hz
   have hp := points_sums_eq_products.1 (Sp (𝓞 K)) T.pol.A Tb
   rw [hp.2.2.1, hp.1] at hx hz
-  have := GlobalTheory.T.commutatorPairings_eq_of_cubeLBPairingIso hL (𝓞 K) T.pol T.pol T.pol T.pol (ra.act a) (𝟙 _) (𝟙 _) (ra.act (star a)) (ra.hom a)
+  have := _root_.GlobalTheory.PairingScheme.weilIs_iff_of_lamEq hL (𝓞 K) T.pol T.pol T.pol T.pol (ra.act a) (𝟙 _) (𝟙 _) (ra.act (star a)) (ra.hom a)
     inferInstance inferInstance (ra.hom _) (hlam a) Tb k x z c hk hx hz
   simpa using this
 

@@ -17,15 +17,6 @@ namespace GlobalTheory.CoeffRings
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-theorem isIntegral_half (H : Host E) : IsIntegral ℤ ((1 + H.rt0) / 2) := by
-  obtain ⟨k, hk⟩ : ∃ k : ℕ, H.d + 1 = 4 * k := ⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩
-  have hk' : (H.d : ℂ) + 1 = 4 * k := by exact_mod_cast hk
-  refine ⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (k : ℤ), by monicity!, ?_⟩
-  simp only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X,
-    Polynomial.eval₂_C]
-  simp only [eq_intCast, Int.cast_natCast]
-  linear_combination (1 / 4 : ℂ) * H.sqrt_neg_disc_sq - (1 / 4 : ℂ) * hk'
-
 theorem isIntegral_int_zeta {n : ℕ} (hn : 0 < n) : IsIntegral ℤ (zeta n) :=
   (GlobalTheory.HostModel.isPrimitiveRoot_zeta hn).isIntegral hn
 

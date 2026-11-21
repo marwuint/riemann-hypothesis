@@ -48,49 +48,6 @@ theorem injective_of_scalars {ι V W : Type*} [DecidableEq ι] [AddCommGroup V] 
     exact (smul_eq_zero.mp this.symm).resolve_left (hc0 k)
   exact (DirectSum.decompose S).injective (by rw [hz, DirectSum.decompose_zero])
 
-theorem thetaT_injective_of_onto {R : Ranks} (D : Rows.Data R) (μ : D.Tup) (j : ℕ)
-    (h : Function.Surjective (D.thetaP μ j)) : Function.Injective (D.thetaT μ j) := by
-  rw [injective_iff_map_eq_zero]
-  intro y hy
-  obtain ⟨x, rfl⟩ := h y
-  have h1 : inner ℂ x (D.thetaT μ j (D.thetaP μ j x)) = inner ℂ (D.thetaP μ j x) (D.thetaP μ j x) := by
-    unfold Rows.Data.thetaT
-    exact LinearMap.adjoint_inner_right _ _ _
-  rw [hy, inner_zero_right] at h1
-  exact inner_self_eq_zero.mp h1.symm
-
-theorem finrank_Zj_of_injective {R : Ranks} (D : Rows.Data R) (μ : D.Tup) (j : ℕ)
-    (h : Function.Injective (D.thetaT μ j)) :
-    Module.finrank ℂ (D.Zj μ j) = Module.finrank ℂ (D.Mj j) :=
-  LinearMap.finrank_range_of_inj h
-
-theorem finrank_Mj {D : D7} (X : DivX D) (j : ℕ) (hr : (X.MjH j).rank = D.what₂.D0) :
-    Module.finrank ℂ (D.what₂.Mj j) = D.what₂.D0 := by
-  have hb := X.jM_basis j
-  have h1 : Module.finrank ℂ (D.what₂.Mj j) = Fintype.card (X.MjH j).ι :=
-    Module.finrank_eq_card_basis (Module.Basis.mk hb.1 (by rw [hb.2]))
-  have h2 : (X.MjH j).rank = Fintype.card (X.MjH j).ι := by
-    unfold HLat.rank Formalism.HN.rkK
-    rw [(X.MjH_good j).2.2, finrank_top]
-    exact Module.finrank_eq_card_basis (X.MjH j).b
-  rw [h1, ← h2, hr]
-
-theorem finrank_of_lines {ι V : Type*} [Fintype ι] [DecidableEq ι] [AddCommGroup V] [Module ℂ V]
-    (S : ι → Submodule ℂ V) (hS : DirectSum.IsInternal S) (h1 : ∀ σ, Module.finrank ℂ (S σ) = 1) :
-    Module.finrank ℂ V = Fintype.card ι := by
-  have : ∀ σ, Module.Finite ℂ (S σ) := fun σ => Module.finite_of_finrank_pos (by rw [h1 σ]; exact one_pos)
-  have e : (DirectSum ι fun σ => S σ) ≃ₗ[ℂ] V := LinearEquiv.ofBijective (DirectSum.coeLinearMap S) hS
-  rw [← e.finrank_eq, Module.finrank_directSum]
-  simp [h1]
-
-theorem finrank_Mj_of_isot {R : Ranks} (D : Rows.Data R) (hI : Rows.IsotInternal D) (hR : Rows.IsotRank D)
-    (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ R.m) : Module.finrank ℂ (D.Mj j) = D.D0 := by
-  have e : (DirectSum D.FT fun π => D.isot j π) ≃ₗ[ℂ] D.Mj j :=
-    LinearEquiv.ofBijective (DirectSum.coeLinearMap (D.isot j)) (hI j h1 h2)
-  rw [← e.finrank_eq, Module.finrank_directSum]
-  simp only [hR j h1 h2, Rows.Data.nRows0]
-  rw [← Fintype.card_sigma, Fintype.card_congr (Equiv.sigmaFiberEquiv D.ft0), Fintype.card_fin]
-
 end Formalism.MainNotions.J
 
 end

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnimodularHermitianMatrixCongruentOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnimodularHermitianMatrixCongruentOne
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.UnitaryTransitive
@@ -72,7 +72,7 @@ theorem uO_transitive_of_last_unit (F E : Type) [NontriviallyNormedField F] [Non
     have : 1 + -(star w ⬝ᵥ w) = star (v (Fin.last r)) * v (Fin.last r) := by
       linear_combination h1.symm + hsplit
     rw [this, norm_mul, hst, hn]; norm_num
-  obtain ⟨g, hgi, -, hg⟩ := GlobalTheory.T.unimodular_hermitian_matrix_congruent_one F E r G hGh hGi hGd
+  obtain ⟨g, hgi, -, hg⟩ := _root_.GlobalTheory.HermUnimod.unimodular_hermitian_eq_conj F E r G hGh hGi hGd
   set c : Fin r → E := fun m => star w ⬝ᵥ (fun j => g j m) with hc
   have hg' : ∀ m m', star (fun j => g j m) ⬝ᵥ (fun j => g j m') - star (c m) * c m' = (1 : Matrix (Fin r) (Fin r) E) m m' := by
     intro m m'

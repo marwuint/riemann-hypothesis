@@ -2,7 +2,8 @@ import Formalism.SharpRestriction.GrowthBounds.ChartComparison.KerLabelsMu
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.CmpJMemSpan
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.IntAtJIffN
 import Formalism.SharpRestriction.GrowthBounds.ChartComparison.HtupWLeHtupJ
-import Formalism.SharpRestriction.GrowthBounds.ChartComparison.TwPinned
+import Formalism.SharpRestriction.GrowthBounds.ChartComparison.StepIn
+import Formalism.LocalToGlobal.HermitianColumns.HermCols
 
 noncomputable section
 
@@ -76,8 +77,6 @@ structure CmpJIn where
   at' : ∀ j (hj : j + 1 ≤ D.R.m), StepAt Tw u μ w h Lv j hj
 
 variable {Tw u μ w h Lv}
-
-def CmpJIn.Pinned (Hh : Formalism.L2.Herm.HermTied D) (I : CmpJIn Tw u μ w h Lv) : Prop := ∀ j hj, (I.at' j hj).st.TwPinned Hh
 
 structure CmpJHyp (I : CmpJIn Tw u μ w h Lv) : Prop where
 
@@ -185,17 +184,6 @@ structure TieAt (c : LatCmp D) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.wha
   ch : ∀ j, j < D.R.m → ∀ (x : ((Tw.fm u μ).lat j).V) (y : ((Tw.fm u μ).lat (j + 1)).V),
       (Tw.fm u μ).emb (j + 1) y = (D.chTw u μ).K j ((Tw.fm u μ).emb j x) →
       (stepsMu hyp hS Gt).up.cmp (j + 1) y = Ch.Kz j ((stepsMu hyp hS Gt).up.cmp j x)
-
-def twistCompatibleAt_of_localCompatibility {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Dx : DivX D} {cX : ExtraC}
-    (E : Extra D L hT Gi Gl K Dx cX)
-    (LC : D.what₂.Tup → ∀ u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
-      Σ Lv : Levels (Gl.Fl u w hg), Chain Lv) (hS : BlockRationalityField)
-    (t : ∀ (μ : D.what₂.Tup), DV.Used D μ → ∀ u (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
-      D.what₂.places.resChar w ∉ Dx.Qp μ → TieAt E.cmp E.tw u μ w h (((Pk.reW Gl LC).Yt μ).Ch u w h) hS hT)
-    (e0 : ∀ u, E.tw.e0 u D.what₂.mu0 = E.tw.eMu0 u 0 (Nat.zero_le _)) : TwTie.TwistedUnitaryExtraData E where
-  LC := LC
-  ker := fun μ hU u w h hq => kerAtMu_any (t μ hU u w h hq).lab (t μ hU u w h hq).hyp hS hT _ (t μ hU u w h hq).ch
-  twisted_e0_at_mu0_eq_eMu0 := e0
 
 end Formalism.MainNotions.G.CmpJ
 

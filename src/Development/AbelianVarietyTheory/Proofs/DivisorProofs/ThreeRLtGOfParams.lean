@@ -38,9 +38,4 @@ theorem three_r_lt_g_of_params (D : D7) (L : SizeData₂ D) (P : ParameterChoice
     linarith [(hY4 k).1]
   exact_mod_cast hg
 
-theorem typePrimes_gt_three_r :
-    AtPts fun Fm x _ i _ => ∀ k : Fin 2, 3 * (Fm.D x i).R.r < (Fm.D x i).host.g k := by
-  refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ?_⟩⟩
-  exact EvPt.of_forall fun x hx i _ _ _ k => three_r_lt_g_of_params _ _ (Fm.params x hx i) k
-
 end GlobalTheory.BigOn

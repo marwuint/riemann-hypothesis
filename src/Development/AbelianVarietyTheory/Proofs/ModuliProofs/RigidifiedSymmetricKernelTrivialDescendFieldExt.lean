@@ -5,7 +5,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsMonHomIffOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleTrivialIsoDescendFieldStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleTrivialIsoDescendField
 
 noncomputable section
 
@@ -128,7 +128,7 @@ theorem rigidified_sym_kTriv_descend : ∀ (K₀ K : Type) [Field K₀] [Field K
     exact exists_gen_of_unique (default : PrimeSpectrum K₀) (pull_isLB hL₀ _)
   · have : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))
     exact sym_of_pullback (default : PrimeSpectrum K) h hL₀ hL hw
-      (GlobalTheory.T.lineBundle_trivial_iso_descend_field K₀ K i _ _ A₀.hom A.hom φ hA.smooth hA.proper hA.geomConnected h.1).1 hS
+      (_root_.GlobalTheory.lb_gen_iso_descend_field K₀ K i _ _ A₀.hom A.hom φ hA.smooth hA.proper hA.geomConnected h.1).1 hS
   · have := GlobalTheory.FieldBaseChange.flat_spMap i
     have := GlobalTheory.FieldBaseChange.surjective_spMap i
     exact kTriv_of_pullback h hL₀ hL hw hK

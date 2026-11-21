@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.WeightDegreeSizes
 import Formalism.SharpRestriction.SmoothDesignExistence.DGamSmooth
 import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleComplementTwoAlongFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleComplementTwoAlongFamily
 open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions NumberField Classical
 
 namespace GlobalTheory
@@ -15,6 +15,6 @@ theorem admissibleConstants_closed_under_sizeBounds : ∀ (𝒞 : FamClass), (�
   obtain ⟨K⟩ := hK
   refine ⟨K, fun Fm _ hc _ => ?_⟩
   have hlt : eps < 1 / 52 := lt_of_le_of_lt hle (by norm_num)
-  exact GlobalTheory.T.admissibleComplementTwo_along_family Fm he hlt (h𝒞 Fm hc).1 (h𝒞 Fm hc).2
+  exact _root_.GlobalTheory.familySecondComplementInputs_of_tuSize_of_dGamSize Fm he hlt (h𝒞 Fm hc).1 (h𝒞 Fm hc).2
 
 end GlobalTheory

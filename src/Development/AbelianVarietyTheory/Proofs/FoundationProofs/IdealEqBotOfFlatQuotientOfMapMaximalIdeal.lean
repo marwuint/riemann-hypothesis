@@ -176,29 +176,6 @@ open IsLocalRing
 
 section LocalCriterion
 
-theorem flat_of_flat_quotient_pow {A : Type u} (B : Type v) {M : Type w} [CommRing A] [CommRing B]
-    [Algebra A B] [IsNoetherianRing A] [IsNoetherianRing B] [AddCommGroup M] [Module A M]
-    [Module B M] [IsScalarTower A B M] [Module.Finite B M] {I : Ideal A}
-    (hI : I.map (algebraMap A B) ≤ Ideal.jacobson ⊥)
-    (h : ∀ n : ℕ, Module.Flat (A ⧸ I ^ n) (M ⧸ (I ^ n • ⊤ : Submodule A M))) :
-    Module.Flat A M :=
-  LocalFlat.flat_of_relationsLift B hI fun n =>
-    haveI := h n
-    LocalFlat.relationsLift_of_flat (C := A ⧸ I ^ n) Ideal.Quotient.mk_surjective
-      Ideal.mk_ker (Submodule.mkQ _) (Submodule.mkQ_surjective _) (Submodule.ker_mkQ _)
-
-theorem flat_of_isSMulRegular_of_flat_quotient {A : Type u} (B : Type v) {M : Type w} [CommRing A]
-    [CommRing B] [Algebra A B] [IsNoetherianRing A] [IsNoetherianRing B] [AddCommGroup M]
-    [Module A M] [Module B M] [IsScalarTower A B M] [Module.Finite B M] {π : A}
-    (hπ : algebraMap A B π ∈ Ideal.jacobson (⊥ : Ideal B)) (hreg : IsSMulRegular M π)
-    [Module.Flat (A ⧸ Ideal.span {π}) (M ⧸ (Ideal.span {π} • ⊤ : Submodule A M))] :
-    Module.Flat A M :=
-  LocalFlat.flat_of_relationsLift B (I := Ideal.span {π})
-    (by rwa [Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem])
-    (LocalFlat.relationsLift_pow
-      (LocalFlat.relationsLift_of_flat (C := A ⧸ Ideal.span {π}) Ideal.Quotient.mk_surjective
-        Ideal.mk_ker (Submodule.mkQ _) (Submodule.mkQ_surjective _) (Submodule.ker_mkQ _)) hreg)
-
 variable {A B : Type*} [CommRing A] [CommRing B] [IsNoetherianRing A] [IsNoetherianRing B]
 
 theorem ringHom_flat_of_flat_quotientMap_pow (φ : A →+* B) {I : Ideal A} {J : Ideal B}
@@ -250,14 +227,6 @@ theorem flat_of_flat_reduction_dvr {C D : Type*} [CommRing C] [CommRing D] (φ :
     simpa [Algebra.smul_def] using hxy
   · rw [hp𝔪, h𝔪, Ideal.map_span, Set.image_singleton]
   · rw [hq𝔪, h𝔪, Ideal.map_span, Set.image_singleton, hφ]
-
-theorem flat_of_flat_quotientMap_dvr (φ : A →ₐ[T] B)
-    (hle : (maximalIdeal T).map (algebraMap T A) ≤
-      ((maximalIdeal T).map (algebraMap T B)).comap (φ : A →+* B))
-    (h : (Ideal.quotientMap _ (φ : A →+* B) hle).Flat) : (φ : A →+* B).Flat :=
-  flat_of_flat_reduction_dvr φ (Ideal.Quotient.mk _) (Ideal.Quotient.mk _) _
-    Ideal.Quotient.mk_surjective Ideal.Quotient.mk_surjective Ideal.mk_ker Ideal.mk_ker
-    (Ideal.quotientMap_comp_mk hle) h
 
 theorem ker_includeRight_quotient {T : Type*} (A : Type*) [CommRing T] [CommRing A] [Algebra T A]
     (I : Ideal T) :
@@ -339,50 +308,6 @@ theorem quotientMap_pow_surjective (hle : I ≤ J.comap φ) (h₀ : ∀ b, ∃ a
   obtain ⟨a, ha⟩ := key b
   exact ⟨Ideal.Quotient.mk _ a, by rw [Ideal.quotientMap_mk, Ideal.Quotient.eq]; exact ha⟩
 
-theorem exists_adicCompletion_ringHom (f : ∀ n : ℕ, A ⧸ I ^ n →+* B ⧸ J ^ n)
-    (hf : ∀ {m n : ℕ} (h : m ≤ n), (Ideal.Quotient.factorPow J h).comp (f n) =
-      (f m).comp (Ideal.Quotient.factorPow I h)) :
-    ∃ ψ : AdicCompletion I A →+* AdicCompletion J B,
-      ∀ n x, AdicCompletion.evalₐ J n (ψ x) = f n (AdicCompletion.evalₐ I n x) := by
-  let g : ∀ n : ℕ, AdicCompletion I A →+* B ⧸ J ^ n := fun n =>
-    (f n).comp (AdicCompletion.evalₐ I n : AdicCompletion I A →+* A ⧸ I ^ n)
-  have hg : ∀ {m n : ℕ} (h : m ≤ n), (Ideal.Quotient.factorPow J h).comp (g n) = g m := by
-    intro m n h
-    ext x
-    have := RingHom.congr_fun (hf h) (AdicCompletion.evalₐ I n x)
-    simp only [RingHom.comp_apply, factorPow_evalₐ] at this
-    exact this
-  exact ⟨AdicCompletion.liftRingHom J g hg,
-    fun n x => AdicCompletion.evalₐ_liftRingHom J g hg n x⟩
-
-theorem exists_adicCompletion_ringEquiv (hle : ∀ n : ℕ, I ^ n ≤ (J ^ n).comap φ)
-    (h : ∀ n, Function.Bijective (Ideal.quotientMap (J ^ n) φ (hle n))) :
-    ∃ ψ : AdicCompletion I A ≃+* AdicCompletion J B,
-      (∀ n x, AdicCompletion.evalₐ J n (ψ x) =
-        Ideal.quotientMap (J ^ n) φ (hle n) (AdicCompletion.evalₐ I n x)) ∧
-      ∀ a, ψ (algebraMap A _ a) = algebraMap B _ (φ a) := by
-  let e : ∀ n : ℕ, A ⧸ I ^ n ≃+* B ⧸ J ^ n := fun n => RingEquiv.ofBijective _ (h n)
-  have he : ∀ {m n : ℕ} (hmn : m ≤ n) (x : A ⧸ I ^ n),
-      Ideal.Quotient.factorPow J hmn (e n x) = e m (Ideal.Quotient.factorPow I hmn x) := by
-    intro m n hmn x
-    obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
-    rfl
-  obtain ⟨ψ, hψ⟩ := exists_adicCompletion_ringHom (I := I) (J := J)
-    (fun n => (e n : A ⧸ I ^ n →+* B ⧸ J ^ n)) (fun hmn => RingHom.ext fun x => he hmn x)
-  obtain ⟨χ, hχ⟩ := exists_adicCompletion_ringHom (I := J) (J := I)
-    (fun n => ((e n).symm : B ⧸ J ^ n →+* A ⧸ I ^ n))
-    (fun {m n} hmn => RingHom.ext fun y => (e m).injective (by
-      simp only [RingHom.comp_apply, RingHom.coe_coe, ← he, RingEquiv.apply_symm_apply]))
-  refine ⟨RingEquiv.ofRingHom ψ χ ?_ ?_, hψ, fun a => ?_⟩
-  · refine RingHom.ext fun y => AdicCompletion.ext_evalₐ fun n => ?_
-    simp [hψ, hχ]
-  · refine RingHom.ext fun y => AdicCompletion.ext_evalₐ fun n => ?_
-    simp [hψ, hχ]
-  · refine AdicCompletion.ext_evalₐ fun n => (hψ n _).trans ?_
-    rw [AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply,
-      AdicCompletion.evalₐ_of, AdicCompletion.evalₐ_of]
-    rfl
-
 variable [IsNoetherianRing A] {φ : A →+* A}
 
 theorem quotientMap_pow_bijective (hle : I ≤ I.comap φ) (h₀ : ∀ b, ∃ a, φ a - b ∈ I)
@@ -401,48 +326,6 @@ theorem flat_of_surjective_quotient_sq (hI : I ≤ Ideal.jacobson ⊥) (hle : I 
   rw [show y = φ x - (φ x - y) by ring]
   refine sub_mem (Submodule.mem_sup_left (Ideal.mem_map_of_mem _ hx)) (Submodule.mem_sup_right ?_)
   rwa [smul_eq_mul, ← pow_two]
-
-theorem flat_of_surjective_cotangent {k : Type*} [CommRing k] [Algebra k A] [IsLocalRing A]
-    (φ : A →ₐ[k] A) [IsLocalHom (φ : A →+* A)]
-    (hle : maximalIdeal A ≤ (maximalIdeal A).comap φ)
-    (h₀ : Function.Surjective (ResidueField.map (φ : A →+* A)))
-    (h₁ : Function.Surjective (Ideal.mapCotangent _ _ φ hle)) :
-    (∃ ψ : AdicCompletion (maximalIdeal A) A ≃+* AdicCompletion (maximalIdeal A) A,
-      (∀ n x, AdicCompletion.evalₐ _ n (ψ x) =
-        Ideal.quotientMap (maximalIdeal A ^ n) (φ : A →+* A) (pow_le_comap_pow_of_le hle n)
-          (AdicCompletion.evalₐ _ n x)) ∧
-      ∀ a, ψ (algebraMap A _ a) = algebraMap A _ (φ a)) ∧ (φ : A →+* A).Flat := by
-  have h₀' : ∀ b, ∃ a, (φ : A →+* A) a - b ∈ maximalIdeal A := fun b => by
-    obtain ⟨a, ha⟩ := h₀ (residue A b)
-    obtain ⟨a, rfl⟩ := residue_surjective a
-    exact ⟨a, Ideal.Quotient.eq.mp ha⟩
-  have h₁' : ∀ y ∈ maximalIdeal A, ∃ x ∈ maximalIdeal A,
-      (φ : A →+* A) x - y ∈ maximalIdeal A ^ 2 := fun y hy => by
-    obtain ⟨x, hx⟩ := h₁ ((maximalIdeal A).toCotangent ⟨y, hy⟩)
-    obtain ⟨x, rfl⟩ := (maximalIdeal A).toCotangent_surjective x
-    rw [Ideal.mapCotangent_toCotangent, Ideal.toCotangent_eq] at hx
-    exact ⟨x, x.2, hx⟩
-  exact ⟨exists_adicCompletion_ringEquiv _ (quotientMap_pow_bijective hle h₀' h₁'),
-    flat_of_surjective_quotient_sq (maximalIdeal_le_jacobson _) hle h₀' h₁'⟩
-
-theorem flat_of_surjective_cotangent_of_residue {k : Type*} [CommRing k] [Algebra k A]
-    [IsLocalRing A] (hk : Function.Surjective (algebraMap k (ResidueField A))) (φ : A →ₐ[k] A)
-    (hle : maximalIdeal A ≤ (maximalIdeal A).comap φ)
-    (h₁ : Function.Surjective (Ideal.mapCotangent _ _ φ hle)) : (φ : A →+* A).Flat := by
-  haveI : IsLocalHom (φ : A →+* A) := ((local_hom_TFAE (φ : A →+* A)).out 0 3).mpr hle
-  refine (flat_of_surjective_cotangent φ hle (fun x => ?_) h₁).2
-  obtain ⟨c, rfl⟩ := hk x
-  refine ⟨algebraMap k _ c, ?_⟩
-  change residue A (φ (algebraMap k A c)) = residue A (algebraMap k A c)
-  rw [φ.commutes]
-
-theorem flat_of_sub_mul_mem_sq [IsLocalRing A] (hle : maximalIdeal A ≤ (maximalIdeal A).comap φ)
-    (h₀ : ∀ b, ∃ a, φ a - b ∈ maximalIdeal A) {c : A} (hc : IsUnit c)
-    (h₁ : ∀ x ∈ maximalIdeal A, φ x - c * x ∈ maximalIdeal A ^ 2) : φ.Flat := by
-  refine flat_of_surjective_quotient_sq (maximalIdeal_le_jacobson _) hle h₀ fun y hy => ?_
-  obtain ⟨u, rfl⟩ := hc
-  have hx : (↑u⁻¹ : A) * y ∈ maximalIdeal A := Ideal.mul_mem_left _ _ hy
-  exact ⟨_, hx, by simpa using h₁ _ hx⟩
 
 end Endomorphism
 
@@ -485,93 +368,6 @@ theorem ringHom_faithfullyFlat_comp {f : A →+* B} {g : B →+* B'} (hf : f.Fai
   algebraize [f, g, g.comp f]
   exact Module.FaithfullyFlat.trans A B B'
 
-theorem includeRight_faithfullyFlat (k K B : Type*) [CommRing k] [CommRing K] [CommRing B]
-    [Algebra k K] [Algebra k B] [Module.FaithfullyFlat k K] :
-    ((Algebra.TensorProduct.includeRight : B →ₐ[k] K ⊗[k] B) : B →+* K ⊗[k] B).FaithfullyFlat := by
-  have h := ringHom_faithfullyFlat_comp (f := algebraMap B (B ⊗[k] K))
-    (g := (Algebra.TensorProduct.comm k B K : B ⊗[k] K →+* K ⊗[k] B))
-    (RingHom.faithfullyFlat_algebraMap_iff.mpr inferInstance)
-    (.of_bijective (Algebra.TensorProduct.comm k B K).bijective)
-  exact h
-
-theorem flat_of_flat_baseChange {k : Type*} (K : Type*) [CommRing k] [CommRing K] [Algebra k K]
-    [Module.FaithfullyFlat k K] [Algebra k A] [Algebra k B] (φ : A →ₐ[k] B)
-    (h : (Algebra.TensorProduct.map (AlgHom.id k K) φ : K ⊗[k] A →+* K ⊗[k] B).Flat) :
-    (φ : A →+* B).Flat :=
-  ringHom_flat_of_square (by ext a; simp) (includeRight_faithfullyFlat k K A).flat
-    (includeRight_faithfullyFlat k K B) h
-
 end Descent
-
-theorem ideal_eq_bot_of_flat_quotient (T : Type*) {R : Type*} [CommRing T] [IsDomain T]
-    [IsDiscreteValuationRing T] [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
-    [Algebra T R] [IsLocalHom (algebraMap T R)] {J : Ideal R} (hJ : J ≠ ⊤)
-    [Module.Flat T (R ⧸ J)] : J = ⊥ := by
-  by_contra hJ0
-  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible T
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible R
-  obtain ⟨n, hn⟩ := IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hJ0 hϖ
-  have h1 : algebraMap T R π ∈ Ideal.span {ϖ} :=
-    hϖ.maximalIdeal_eq ▸ map_nonunit _ _ hπ.not_isUnit
-  have h2 : algebraMap T R (π ^ n) ∈ J := by
-    rw [hn, map_pow, ← Ideal.span_singleton_pow]
-    exact Ideal.pow_mem_pow h1 n
-  have hreg := Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R ⧸ J)
-    (mem_nonZeroDivisors_of_ne_zero (pow_ne_zero n hπ.ne_zero))
-  have h3 : (1 : R ⧸ J) = 0 := hreg (by
-    change π ^ n • (1 : R ⧸ J) = π ^ n • 0
-    rw [smul_zero, ← Algebra.algebraMap_eq_smul_one, IsScalarTower.algebraMap_apply T R (R ⧸ J)]
-    exact Ideal.Quotient.eq_zero_iff_mem.mpr h2)
-  exact hJ ((Ideal.eq_top_iff_one J).mpr (Ideal.Quotient.eq_zero_iff_mem.mp h3))
-
-theorem bijective_of_surjective_of_flat_dvr {T R S : Type*} [CommRing T] [IsDomain T]
-    [IsDiscreteValuationRing T] [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
-    [Algebra T R] [IsLocalHom (algebraMap T R)] [CommRing S] [Nontrivial S] [Algebra T S]
-    [Module.Flat T S] (q : R →ₐ[T] S) (hq : Function.Surjective q) : Function.Bijective q := by
-  haveI : Module.Flat T (R ⧸ RingHom.ker q) :=
-    Module.Flat.of_linearEquiv (Ideal.quotientKerAlgEquivOfSurjective hq).toLinearEquiv
-  exact ⟨(RingHom.injective_iff_ker_eq_bot q).mpr
-    (ideal_eq_bot_of_flat_quotient T (RingHom.ker_ne_top q)), hq⟩
-
-theorem ideal_eq_bot_of_flat_quotient_of_map_maximalIdeal (T : Type*) {R : Type*} [CommRing T]
-    [IsDomain T] [IsDiscreteValuationRing T] [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
-    [Algebra T R] (h : (maximalIdeal T).map (algebraMap T R) = maximalIdeal R) {J : Ideal R}
-    (hJ : J ≠ ⊤) [Module.Flat T (R ⧸ J)] : J = ⊥ :=
-  haveI : IsLocalHom (algebraMap T R) := ((local_hom_TFAE (algebraMap T R)).out 0 2).mpr h.le
-  ideal_eq_bot_of_flat_quotient T hJ
-
-theorem flat_endomorphism_and_local_criterion :
-    (∀ (A : Type u) [CommRing A] [IsNoetherianRing A] [IsLocalRing A] (φ : A →+* A) [IsLocalHom φ],
-      Function.Surjective (ResidueField.map φ) →
-      (∀ y ∈ maximalIdeal A, ∃ x ∈ maximalIdeal A, φ x - y ∈ maximalIdeal A ^ 2) →
-      (∃ ψ : AdicCompletion (maximalIdeal A) A ≃+* AdicCompletion (maximalIdeal A) A,
-        (∀ (n : ℕ) (x : AdicCompletion (maximalIdeal A) A) (a : A),
-          AdicCompletion.evalₐ _ n x = Ideal.Quotient.mk _ a →
-            AdicCompletion.evalₐ _ n (ψ x) = Ideal.Quotient.mk _ (φ a)) ∧
-        ∀ a, ψ (algebraMap A _ a) = algebraMap A _ (φ a)) ∧ φ.Flat) ∧
-    (∀ (T A B : Type u) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [CommRing A]
-      [CommRing B] [IsNoetherianRing A] [IsNoetherianRing B] [Algebra T A] [Algebra T B]
-      [IsLocalRing B] [IsLocalHom (algebraMap T B)] [Module.Flat T B] (φ : A →ₐ[T] B),
-      (Algebra.TensorProduct.map (AlgHom.id T (ResidueField T)) φ :
-        ResidueField T ⊗[T] A →+* ResidueField T ⊗[T] B).Flat → (φ : A →+* B).Flat) ∧
-    (∀ (k K A B : Type u) [CommRing k] [CommRing K] [Algebra k K] [Module.FaithfullyFlat k K]
-      [CommRing A] [CommRing B] [Algebra k A] [Algebra k B] (φ : A →ₐ[k] B),
-      (Algebra.TensorProduct.map (AlgHom.id k K) φ : K ⊗[k] A →+* K ⊗[k] B).Flat →
-        (φ : A →+* B).Flat) ∧
-    (∀ (T R : Type u) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [CommRing R]
-      [IsDomain R] [IsDiscreteValuationRing R] [Algebra T R] [IsLocalHom (algebraMap T R)]
-      (J : Ideal R), J ≠ ⊤ → Module.Flat T (R ⧸ J) → J = ⊥) := by
-  refine ⟨fun A _ _ _ φ _ h₀ h₁ => ?_,
-    fun T A B _ _ _ _ _ _ _ _ _ _ _ _ φ h => flat_of_flat_residueField_baseChange_dvr φ h,
-    fun k K A B _ _ _ _ _ _ _ _ φ h => flat_of_flat_baseChange K φ h,
-    fun T R _ _ _ _ _ _ _ _ J hJ _ => ideal_eq_bot_of_flat_quotient T hJ⟩
-  have hle : maximalIdeal A ≤ (maximalIdeal A).comap φ := ((local_hom_TFAE φ).out 0 3).mp ‹_›
-  have h₀' : ∀ b, ∃ a, φ a - b ∈ maximalIdeal A := fun b => by
-    obtain ⟨a, ha⟩ := h₀ (residue A b)
-    obtain ⟨a, rfl⟩ := residue_surjective a
-    exact ⟨a, Ideal.Quotient.eq.mp ha⟩
-  obtain ⟨ψ, hψ, hψ'⟩ := exists_adicCompletion_ringEquiv _ (quotientMap_pow_bijective hle h₀' h₁)
-  exact ⟨⟨ψ, fun n x a h => by rw [hψ, h, Ideal.quotientMap_mk], hψ'⟩,
-    flat_of_surjective_quotient_sq (maximalIdeal_le_jacobson _) hle h₀' h₁⟩
 
 end GlobalTheory

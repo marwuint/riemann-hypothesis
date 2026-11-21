@@ -64,39 +64,6 @@ def Tower.Ext {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.�
     (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') : Prop :=
   IsLocalHom ev₂ ∧ ∀ x x₂, 𝔗.X₂.M.stalkHom z₂ x₂ = algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁ (X₁.M.stalkHom z₁ x) → ev₂ x₂ = io (ev x)
 
-def Tower.self (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (h : IsAct X₁ act) : Tower X₁ act where
-  X₂ := X₁
-  act₂ := act
-  isAct := h
-  alg := Algebra.id _
-  fd := inferInstance
-  gal := inferInstance
-  deg := ⟨0, by simp⟩
-  d := 1
-  lev := by simp
-  om := RingHom.id _
-  om_eq _ := rfl
-  om_fin := RingHom.Finite.id _
-  sR _ := RingHom.id _
-  sR_eq σ a := (σ.commutes a).symm
-  p := 𝟙 _
-  p_fin := inferInstance
-  p_pt := by
-    rw [show spMap (algebraMap X₁.Ω₁ X₁.Ω₁) = 𝟙 _ from Spec.map_id _]; simp
-  p_π := Category.id_comp _
-  φ := 𝟙 _
-  cart := by rw [show spMap (RingHom.id X₁.S.R) = 𝟙 _ from Spec.map_id _]; exact Wit.grpPullback_id _
-  lb := ⟨Wit.idPull _, Wit.idPull_isGen X₁.ρ.P.isLB⟩
-  act_eq _ := by simp
-  lam := AddMonoidHom.id _
-  lam_pt a := by
-    rw [show spMap (RingHom.id X₁.S.R) = 𝟙 _ from Spec.map_id _]; exact (Category.comp_id _).trans (Category.id_comp _).symm
-  lam_range a := ⟨a, by simp⟩
-  gl _ := AddMonoidHom.id _
-  gl_pt σ a := by
-    rw [show spMap (RingHom.id X₁.S.R) = 𝟙 _ from Spec.map_id _]; exact (Category.id_comp _).symm
-  gl_lam _ _ := rfl
-
 end Sep
 
 end GlobalTheory.Poinc

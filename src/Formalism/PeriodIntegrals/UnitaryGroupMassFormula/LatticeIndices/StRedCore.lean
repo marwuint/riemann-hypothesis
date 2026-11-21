@@ -28,24 +28,6 @@ theorem secondSplit_conj (t : T) : t2 θ (s t) = t1 θ t := by
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
-theorem unit_1 (J : Matrix n n T) (g : GL n T) (hg : g ∈ Formalism.UG.UJ s J) :
-    ((g : Matrix n n T).map (t2 θ))ᵀ * J.map (t1 θ) * (g : Matrix n n T).map (t1 θ) = J.map (t1 θ) := by
-  have hg' : Formalism.UG.cT s (g : Matrix n n T) * J * (g : Matrix n n T) = J := hg
-  have e : ((g : Matrix n n T).map (t2 θ))ᵀ = (Formalism.UG.cT s (g : Matrix n n T)).map (t1 θ) := by
-    ext i j
-    simp [Formalism.UG.cT, firstSplit_conj hs]
-  rw [e, ← Matrix.map_mul, ← Matrix.map_mul]
-  exact congrArg (fun M : Matrix n n T => M.map (t1 θ)) hg'
-
-theorem unit_2 (J : Matrix n n T) (g : GL n T) (hg : g ∈ Formalism.UG.UJ s J) :
-    ((g : Matrix n n T).map (t1 θ))ᵀ * J.map (t2 θ) * (g : Matrix n n T).map (t2 θ) = J.map (t2 θ) := by
-  have hg' : Formalism.UG.cT s (g : Matrix n n T) * J * (g : Matrix n n T) = J := hg
-  have e : ((g : Matrix n n T).map (t1 θ))ᵀ = (Formalism.UG.cT s (g : Matrix n n T)).map (t2 θ) := by
-    ext i j
-    simp [Formalism.UG.cT, secondSplit_conj hs]
-  rw [e, ← Matrix.map_mul, ← Matrix.map_mul]
-  exact congrArg (fun M : Matrix n n T => M.map (t2 θ)) hg'
-
 theorem group_law_jacobian_eq (J : Matrix n n T) (hJ : Formalism.UG.cT s J = J) : J.map (t2 θ) = (J.map (t1 θ))ᵀ := by
   ext i j
   have hij := congrFun (congrFun hJ i) j

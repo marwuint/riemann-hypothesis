@@ -49,19 +49,6 @@ theorem LargeBaseCondition.and (h : LargeBaseCondition KP Q R) (h' : LargeBaseCo
   eventuallyAllScaleContexts_mono_of_imp (fun _ H => (H.1.inter H.2).imp fun _ _ _ _ t k C W V S N G c q => ⟨t.1 k C W V S N G c q, t.2 k C W V S N G c q⟩)
     (eventuallyAllScaleContexts_and_of_both h h')
 
-theorem LargeBaseCondition.passes (h : LargeBaseCondition KP Q R) (h1 : V4.ExTrue KP Q) (h2 : V4.Export Q) (h3 : V4.Retwist Q Q') :
-    V4.ExTrue KP (sAnd Q R) ∧ V4.Export (sAnd Q R) ∧ V4.Retwist (sAnd Q R) (sAnd Q' R) := by
-  refine ⟨eventuallyAllScaleContexts_mono_of_imp ?_ (eventuallyAllScaleContexts_and_of_both h h1), eventuallyAllScaleContexts_mono_of_imp (fun _ H X f T c q => H X f T c q.1) h2, eventuallyAllScaleContexts_mono_of_imp ?_ h3⟩
-  · intro K H
-    refine (H.1.inter H.2).imp ?_
-    intro B f T _ t k
-    obtain ⟨C, W, V, S, N, G, c, q⟩ := t.2 k
-    exact ⟨C, W, V, S, N, G, c, q, t.1 k C W V S N G c q⟩
-  · intro K H X f T c q e A S₂ a
-    obtain ⟨B', f', T', a1, a2, a3, a4, a5, a6⟩ := H X f T c q.1 e A S₂ a
-    exact ⟨B', f', T', a1, a2, a3, a4, a5, fun C W V S N G c' q' =>
-      ⟨(a6 C W V S N G c' q'.1).1, (a6 C W V S N G c' q'.1).2, q'.2⟩⟩
-
 variable (KP Q Q' Lk) in
 
 def RowL (H : ∀ 𝒜 : FamClass, RawSel Bd 𝒜 → Prop) : Prop := ∃ R : V4.Slot, LargeBaseCondition KP Q R ∧ Row (sAnd Q' R) Lk H

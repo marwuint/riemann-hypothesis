@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.IsNormalSchemeSp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsClassicalLiftOfSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsClassicalLiftOfSmooth
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -16,7 +16,7 @@ theorem Core.indep_of_special_fibres : ∀ C : Core, C.HasTests → (∀ (p : �
   obtain ⟨c', hc', hcf⟩ := hτ (rPt p ≫ c) (by rw [Category.assoc, hc])
   have := τ'.smooth
   have : Smooth τ'.H.hom := SmoothOfRelativeDimension.smooth C.g τ'.H.hom
-  obtain ⟨d, hd, hdr⟩ := GlobalTheory.T.exists_classical_lift_of_smooth' p _ _ τ'.H.hom (spMap τ'.j) c' hc'
+  obtain ⟨d, hd, hdr⟩ := _root_.GlobalTheory.ZJ.exists_classical_lift_of_smooth p _ _ τ'.H.hom (spMap τ'.j) c' hc'
   refine ⟨d ≫ τ'.f, ?_, ?_⟩
   · rw [Category.assoc, τ'.f_over, ← Category.assoc, hd, τ'.fac]
   · rw [← Category.assoc, hdr, hcf, Category.assoc, hcb]

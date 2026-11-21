@@ -55,30 +55,10 @@ theorem exists_units_neg_iff_mem (S : Set {v : InfinitePlace K // v.IsReal}) :
   · rw [if_neg hv, map_one, abs_lt] at h
     exact ⟨⟨fun h' => by linarith [h.1], fun h' => absurd h' hv⟩, ⟨fun _ => hv, fun _ => by linarith [h.1]⟩⟩
 
-theorem exists_units_sign (ε : {v : InfinitePlace K // v.IsReal} → ℤˣ) :
-    ∃ a : Kˣ, ∀ v : {v : InfinitePlace K // v.IsReal},
-      (SignType.sign (embedding_of_isReal v.2 (a : K)) : ℤ) = (ε v : ℤ) := by
-  obtain ⟨a, ha⟩ := exists_units_neg_iff_mem {v | ε v = -1}
-  refine ⟨a, fun v => ?_⟩
-  rcases Int.units_eq_one_or (ε v) with hε | hε
-  · have hpos : 0 < embedding_of_isReal v.2 (a : K) := (ha v).2.2 (by simp [hε])
-    rw [sign_pos hpos, hε]
-    rfl
-  · have hneg : embedding_of_isReal v.2 (a : K) < 0 := (ha v).1.2 hε
-    rw [sign_neg hneg, hε]
-    rfl
-
 omit [NumberField K] in
 
 theorem extensionEmbeddingOfIsReal_algebraMap {v : InfinitePlace K} (hv : v.IsReal) (x : K) :
     Completion.extensionEmbeddingOfIsReal hv (algebraMap K v.Completion x) = embedding_of_isReal hv x :=
   Completion.extensionEmbeddingOfIsReal_coe hv (WithAbs.toAbs v.1 x)
-
-theorem exists_units_neg_iff_mem_completion (S : Set {v : InfinitePlace K // v.IsReal}) :
-    ∃ a : Kˣ, ∀ v : {v : InfinitePlace K // v.IsReal},
-      (Completion.extensionEmbeddingOfIsReal v.2 (algebraMap K v.1.Completion (a : K)) < 0 ↔ v ∈ S) ∧
-      (0 < Completion.extensionEmbeddingOfIsReal v.2 (algebraMap K v.1.Completion (a : K)) ↔ v ∉ S) := by
-  obtain ⟨a, ha⟩ := exists_units_neg_iff_mem S
-  exact ⟨a, fun v => by simpa only [extensionEmbeddingOfIsReal_algebraMap] using ha v⟩
 
 end GroundTheory.ProfCoh

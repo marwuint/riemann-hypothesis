@@ -1,15 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.MinSt2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversalTripleFibrePrincipallyPolarisedDimensioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelSemiAbelianRelDimCotangentVectorBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalizationModelFiniteExtensionStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversalTripleFibrePrincipallyPolarisedDimensio
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelSemiAbelianRelDimCotangentVectorBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalizationModelFiniteExtension
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoPowMultipleDegreeDescendsNormalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyFormulaNormalCoverRationalThetaConstantsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsListedFiniteGaloisExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreExistsGeneratorStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyFormulaNormalCoverRationalThetaConstants
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsListedFiniteGaloisExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreExistsGeneratorStable
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.UPoinc GlobalTheory.Ex.OneGen
@@ -84,20 +85,20 @@ theorem GlobalTheory.UMin.KeyOne.lbIso_pull_O1_hodge : ∀ (E : Type) [Field E] 
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap c.F Ω).injective
   have hMn : Geo.Tor.IsNormalScheme M.Z := GlobalTheory.UMin.KeyOne.isNormalScheme_of_isOpenImmersion io Y.normal
   obtain ⟨y, hy⟩ := GlobalTheory.UMin.KeyOne.exists_pt_eq Y M io
-  have hpol := GlobalTheory.T.universalTriple_fibre_principallyPolarised_dimension E H Dw l Xo c Ω (y ≫ pullback.fst _ _)
-  obtain ⟨⟨θ, hθ⟩, hθup⟩ := GlobalTheory.T.principallyPolarisedFibre_exists_generator_stable Xo.X Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.isLB _ Ω _ hpol
-  obtain ⟨Ω', _, _, pt, cc, hfd, -, hdeg, hlist, -⟩ := GlobalTheory.T.theta_constants_listed_finite_galois_extension Xo.X Xo.univ.t.G Xo.univ.t.PP.L
+  have hpol := _root_.GlobalTheory.UMin.polFib_univ E H Dw l Xo c Ω (y ≫ pullback.fst _ _)
+  obtain ⟨⟨θ, hθ⟩, hθup⟩ := _root_.GlobalTheory.UMin.gen_of_polFib Xo.X Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.isLB _ Ω _ hpol
+  obtain ⟨Ω', _, _, pt, cc, hfd, -, hdeg, hlist, -⟩ := _root_.GlobalTheory.UMin.GalTh.thList_galois Xo.X Xo.univ.t.G Xo.univ.t.PP.L
     Xo.univ.t.PP.rig Xo.univ.t.PP.isLB Xo.univ.t.PP.rigGen _ m (n + 1) Ω _ θ hm hn hpol
   letI : Algebra c.F Ω' := ((algebraMap Ω Ω').comp (algebraMap c.F Ω)).toAlgebra
   haveI : IsScalarTower c.F Ω Ω' := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI : CharZero Ω' := charZero_of_injective_algebraMap (algebraMap Ω Ω').injective
-  obtain ⟨M', π, hM'n, hπf, hπ⟩ := GlobalTheory.T.exists_normalization_model_finiteExtension c.F Ω M Ω' hMn
-  have hup := GlobalTheory.T.thetaKeyFormula_normalCover_rational_thetaConstants E H Dw l Xo c o m n f hm hm3 hmu hn hf Y g hg Ω' M' (π ≫ io)
+  obtain ⟨M', π, hM'n, hπf, hπ⟩ := _root_.GlobalTheory.NormCover.exists_normalization_model c.F Ω M Ω' hMn
+  have hup := _root_.GlobalTheory.UMin.key_on_cover E H Dw l Xo c o m n f hm hm3 hmu hn hf Y g hg Ω' M' (π ≫ io)
     (spMap (algebraMap Ω Ω') ≫ y) cc hM'n
     (by rw [← Category.assoc, hπ, Category.assoc, hy, Category.assoc])
     (by rw [Category.assoc]; exact ⟨_, pt, hθup _ hθ Ω' (algebraMap Ω Ω'), hlist⟩)
   have hO : ((ProjSpace.O1 o n).pull g).IsLB := pull_isLB (ProjSpace.O1_isLB o n) g
-  have hH := (GlobalTheory.T.modelSemiAbelian_relDim_cotangent_vectorBundle E H Dw l Xo c Y).2.isLB_det
+  have hH := (_root_.GlobalTheory.ModelRelDim.relDim_and_isVB_omega E H Dw l Xo c Y).2.isLB_det
   have hA := pull_isLB (isLB_lbPow hO 8) io
   have hB := pull_isLB (isLB_lbPow hH (4 * (n + 1).factorial)) io
   have key := GlobalTheory.T.lineBundleIso_pow_multiple_degree_descends_normal c.F Ω M Ω' M' π _ _ (n + 1).factorial hMn hπf hπ hA hB hdeg

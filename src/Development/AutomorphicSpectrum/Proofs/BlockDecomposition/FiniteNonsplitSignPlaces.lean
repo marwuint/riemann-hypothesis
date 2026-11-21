@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CTUnitsLeft
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonsplitCentraliserNormElement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DetGramRatOneNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormSignatureRealisation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramKernelSignNonsplitBaseChangeEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramKernelSignNonsplitBaseChangeEq
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSupersetMemSUnits
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.UnitaryClasses
 open scoped Classical TensorProduct
@@ -34,7 +34,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
       (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H₀
         (LinearMap.ker (Matrix.toLin' (aeval γ₀.val P₁)))).det) = 1 :=
     (w.valuedAdicCompletion_eq_valuation' _).trans h1
-  rw [aeval_map_mat, GlobalTheory.T.gramKernelSign_nonsplit_baseChange_eq E hU w hw n H₀ (aeval γ₀.val P₁), ordL_eq_zero_of_v_eq_one hv]
+  rw [aeval_map_mat, _root_.GlobalTheory.UnitaryClasses.BaseChangeSign.main E hU w hw n H₀ (aeval γ₀.val P₁), ordL_eq_zero_of_v_eq_one hv]
   simp
 
 end GlobalTheory.CompanionTheory.FinSign

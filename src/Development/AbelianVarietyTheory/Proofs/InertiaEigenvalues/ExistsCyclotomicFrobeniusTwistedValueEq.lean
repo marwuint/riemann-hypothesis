@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMulMemLatIff
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrKIsometricAndOneSubSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntWeightsCompatibleRootsOfUnityLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntWeightsCompatibleRootsOfUnityLevels
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.ExpImage
 
@@ -100,7 +100,7 @@ theorem exists_minus_one {s : ℕ} (hs : 1 ≤ s) : ∃ ν : ℕ → ℤ,
     intro r
     by_cases hr : r ∈ Finset.Ico 1 l
     · have hr' := Finset.mem_Ico.mp hr
-      obtain ⟨μ, h1, h2⟩ := GlobalTheory.T.exists_int_weights_compatibleRootsOfUnity_levels l P.ζQ P.ζQ_zero P.ζQ_one P.ζQ_succ s 1 r le_rfl hs
+      obtain ⟨μ, h1, h2⟩ := _root_.GlobalTheory.LevelSums.exists_weights l P.ζQ P.ζQ_zero P.ζQ_one P.ζQ_succ s 1 r le_rfl hs
         (Nat.not_dvd_of_pos_of_lt hr'.1 hr'.2)
       exact ⟨μ, fun _ => ⟨by simpa using h1, by simpa using h2⟩⟩
     · exact ⟨0, fun h => absurd h hr⟩
@@ -122,7 +122,7 @@ theorem exists_cycVal_eq (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l
       d - (l : ↥(K0 K)) ^ e * frK P K d = (frK P K ^ s) (∑ a ∈ primeTo l s, lam a) ∧
       cycVal P K s e lam d = (l : Om l) ^ ((e + 1) * (s - 1)) * (c * P.ζQ j ^ n) := by
   obtain ⟨c, rfl⟩ : ∃ c' : ↥(K0 K), (c' : Om l) = c := ⟨⟨c, hc⟩, rfl⟩
-  obtain ⟨μ, h1, h2⟩ := GlobalTheory.T.exists_int_weights_compatibleRootsOfUnity_levels l P.ζQ P.ζQ_zero P.ζQ_one P.ζQ_succ s j n hj hjs hn
+  obtain ⟨μ, h1, h2⟩ := _root_.GlobalTheory.LevelSums.exists_weights l P.ζQ P.ζQ_zero P.ζQ_one P.ζQ_succ s j n hj hjs hn
   by_cases hj1 : j = 1
   · subst hj1
     simp only [if_true] at h1 h2

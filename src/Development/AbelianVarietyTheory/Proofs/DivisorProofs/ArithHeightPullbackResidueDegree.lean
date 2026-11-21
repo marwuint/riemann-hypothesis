@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointClosureDimLeAndResidueDegreeNeZeroIffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantRestrictionPointClosuresStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointClosureDimLeAndResidueDegreeNeZeroIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantRestrictionPointClosures
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ResidueDegreeOfIsClosedImmersion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyPullbackStructureModuleIso
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberZeroSmallImage
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedSubschemeProjOverModL
@@ -111,7 +112,7 @@ theorem height_pull_vertical : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p
     L.IsArithHeight h → (L.pull π hπ).IsArithHeight h' → ∀ (y : Y) (l : ℕ) [Fact l.Prime],
     Nonempty (Algebra (ZMod l) Γ(clo y, ⊤)) → h' y = (π.residueDegree y : ℝ) * h (π y) := by
   intro k _ X Y p q D E hX hY π hπ L h h' hh hh' y l _ ⟨instW⟩
-  obtain ⟨g, hgc, hgen, hgdeg⟩ := GlobalTheory.T.exists_dominant_restriction_pointClosures X Y π y
+  obtain ⟨g, hgc, hgen, hgdeg⟩ := _root_.GlobalTheory.MixHt.clo_restrict_dominant X Y π y
   have hδ : g.residueDegree (genericPoint (clo y)) = π.residueDegree y := by
     rw [hgdeg, cloι_genericPoint]
 
@@ -134,15 +135,15 @@ theorem height_pull_vertical : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p
     comp_strHom fun r => congrFun (congrArg DFunLike.coe
       (RingHom.ext_zmod (g.appTop.hom.comp (algebraMap (ZMod l) _)) (algebraMap (ZMod l) _))) r
 
-  obtain ⟨⟨m, hm⟩, -, -, -, hcl, hgd⟩ := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q (isAmb_of_isArithVar hY)
-  obtain ⟨⟨m', hm'⟩, -, -, -, hcl', hgd'⟩ := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p (isAmb_of_isArithVar hX)
+  obtain ⟨⟨m, hm⟩, -, -, -, hcl, hgd⟩ := _root_.GlobalTheory.MixHt.hasDim_basic k Y q (isAmb_of_isArithVar hY)
+  obtain ⟨⟨m', hm'⟩, -, -, -, hcl', hgd'⟩ := _root_.GlobalTheory.MixHt.hasDim_basic k X p (isAmb_of_isArithVar hX)
   obtain ⟨d, -, hd⟩ := hm y
   obtain ⟨d', -, hd'⟩ := hm' (π y)
   have hWd : topologicalKrullDim (clo y) = d :=
     (hgd (clo y) d).1 ((hcl (clo y) (cloι y) _ d).1 (by rw [cloι_genericPoint]; exact hd))
   have hZd : topologicalKrullDim (clo (π y)) = d' :=
     (hgd' (clo (π y)) d').1 ((hcl' (clo (π y)) (cloι (π y)) _ d').1 (by rw [cloι_genericPoint]; exact hd'))
-  obtain ⟨hle, hiff⟩ := GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q (isAmb_of_isArithVar hX) (isAmb_of_isArithVar hY) π hπ y d d' hd hd'
+  obtain ⟨hle, hiff⟩ := _root_.GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff k X Y p q (isAmb_of_isArithVar hX) (isAmb_of_isArithVar hY) π hπ y d d' hd hd'
 
   have e1 := hh'.vertical (clo y) (cloι y) (ZMod l) d hWd
   have e2 := hh.vertical (clo (π y)) (cloι (π y)) (ZMod l) d' hZd

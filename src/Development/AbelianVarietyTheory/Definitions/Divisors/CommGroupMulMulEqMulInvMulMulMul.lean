@@ -517,18 +517,6 @@ abbrev powChart (hM : M.IsLB) (hL : L.IsLB) (h : n + m = l) :
     rw [tr_tw y e.2.2 e'.2.2, tr_tw y e.2.1 e'.2.1, tr_zpow L m y e.1 e'.1, ← h, zpow_add,
       ← mul_assoc, mul_comm]
 
-abbrev baseChart (hM : M.IsLB) (hL : L.IsLB) (m : ℤ) : ProdChart (lbZPow L m) M (tw M L m) where
-  isLB₁ := Twist.isLB_lbZPow hL m
-  isLB₂ := hM
-  isLB₃ := isLB_tw hM hL m
-  τ := M.ι × L.ι
-  a t _ := t.2
-  b t := t.1
-  c t := twIdx m t.1 t.2
-  cover y := let ⟨i, hi⟩ := exists_chart hM y; let ⟨j, hj⟩ := exists_chart hL y
-    ⟨(i, j), mem_zpow_U.2 hj, hi, mem_tw_U.2 ⟨hi, hj⟩⟩
-  rule y _ _ e e' := by rw [tr_tw y e.2.2 e'.2.2, tr_zpow L m y e.1 e'.1, mul_comm]
-
 abbrev adjChart (hM : M.IsLB) (hB : B.IsLB) (hL : L.IsLB) (h : n + d = l) :
     ProdChart (tw M L d) (tw B L n) (tw (tens M B) L l) where
   isLB₁ := isLB_tw hM hL d

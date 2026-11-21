@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.SmoothDecompositionForms
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ContinuousRepSmoothOnUH
+import Formalism.PeriodIntegrals.UpqRep
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CasimirEigenvalueCoefficients
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CapelliEigenvalues.HeckeMultiplication
@@ -17,16 +18,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SmoothDecompositionForms (HRep IsSm
   tensSmooth tensAct tensForm pureT contr LieWord Mx Ix)
 
 variable {k r : ℕ}
-
-def toRep (R : HRep k r) : BranchingSupport.Rep k r where
-  H := R.H
-  σ := R.σ
-
-def repEquiv (k r : ℕ) : HRep k r ≃ {R : BranchingSupport.Rep k r // IsURepOn (BranchingSupport.GG k r) R.σ} where
-  toFun R := ⟨toRep R, R.isURep⟩
-  invFun R := { H := R.1.H, σ := R.1.σ, isURep := R.2 }
-  left_inv _ := rfl
-  right_inv _ := rfl
 
 theorem isURepOn_of_isDS {R : BranchingSupport.Rep k r} {ε : Ix k r → Bool} {μ : Ix k r → ℝ} (h : R.IsDS ε μ) :
     IsURepOn (BranchingSupport.GG k r) R.σ := by
@@ -48,22 +39,6 @@ theorem isURepOn_of_isDS {R : BranchingSupport.Rep k r} {ε : Ix k r → Bool} {
     have := (hc v).comp h3.continuousOn hmaps
     simpa only [Function.comp_def, e] using this
 
-def dsEquiv (ε : Ix k r → Bool) (μ : Ix k r → ℝ) :
-    {R : HRep k r // R.IsDiscrete ε μ} ≃ {R : BranchingSupport.Rep k r // R.IsDS ε μ} where
-  toFun R := ⟨toRep R.1, R.2⟩
-  invFun R := ⟨{ H := R.1.H, σ := R.1.σ, isURep := isURepOn_of_isDS R.2 }, R.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-section Smooth
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-theorem smul_mem (R : HRep k r) (a : ℂ) {v : R.H} (hv : v ∈ R.smooth) : a • v ∈ R.smooth :=
-  Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul a hv
-
-end Smooth
-
 section Tensor
 
 variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
@@ -73,10 +48,6 @@ theorem single_mem (R : HRep k r) (c : ι) {v : R.H} (hv : v ∈ R.smooth) : Pi.
   by_cases h : d = c
   · subst h; simpa using hv
   · simpa [Pi.single_eq_of_ne h] using GlobalTheory.IndefiniteRowSideFullHecke.SmoothDecompositionForms.zero_mem_smooth R
-
-def sumOf {E E' : Type} [AddCommMonoid E'] (P : ι → E → E') (x : ι → E) : E' := ∑ c, P c (x c)
-
-def compOf {E E' : Type} [Zero E] (A : (ι → E) → E') (c : ι) (v : E) : E' := A (Pi.single c v)
 
 def Linked (R R' : HRep k r) (P : ι → R.H → R'.H) (A : (ι → R.H) → R'.H) : Prop :=
   (∀ c, P c 0 = 0) ∧ ∀ x ∈ tensSmooth ι R, A x = ∑ c, P c (x c)
@@ -89,16 +60,6 @@ theorem Linked.comp {R R' : HRep k r} {P : ι → R.H → R'.H} {A : (ι → R.H
 
 variable {ρ : Mx k r → Matrix ι ι ℂ} {Γ : Matrix ι ι ℂ} {R : HRep k r} {Rs : κ → HRep k r}
   {io : ∀ I, (Rs I).H → ι → R.H} {pr : ∀ I, ι → R.H → (Rs I).H} {p : ∀ I, (ι → R.H) → (Rs I).H} {ep : κ → ℝ}
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
-theorem continuousOn_of_smoothOnH {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
-    (hf : SmoothOnH H f) : ContinuousOn f (UH H) := by
-  intro g₀ hg₀
-  obtain ⟨U, F, hU, hg, hF, hag⟩ := hf g₀ hg₀
-  have h1 : ContinuousAt F g₀ := hF.continuousOn.continuousAt (hU.mem_nhds hg)
-  refine h1.continuousWithinAt.congr_of_eventuallyEq ?_ (hag g₀ hg hg₀)
-  filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hg), self_mem_nhdsWithin] with g h1 h2
-  exact hag g h1 h2
 
 end Tensor
 

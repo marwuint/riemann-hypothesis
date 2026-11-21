@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.Ideal
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyConstPts
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.GenericPointsConstantPointsFormalSumValuesStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsSecThroughUp
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsRigidifiedIsoAgreeAbelianFibresStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsRigidifiedIsoAgreeAbelianFibres
 
 noncomputable section
 namespace GlobalTheory.ArcPts
@@ -55,9 +55,9 @@ theorem nonempty_chain : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [Nu
   obtain ⟨Ξ⟩ := GlobalTheory.ConstPoint.nonempty_constPts L₁ L₂ E H D l Xo c O β Y _ a χ W Λ
   obtain ⟨ΦW, hW⟩ := GlobalTheory.T.genericPoints_constantPoints_formalSum_values L₁ L₂ E H D l Xo c O β Y _ a χ W Λ Ξ
   obtain ⟨yF, hj, ho⟩ := exists_generic_point Y bF χ hχ hab
-  obtain ⟨w₂, r₂⟩ := (GlobalTheory.T.exists_rigidifiedIso_agree_abelianFibres L₁ L₂ E H _ _ Y.t W.t χ W.m).1
-  obtain ⟨w₁, r₁⟩ := (GlobalTheory.T.exists_rigidifiedIso_agree_abelianFibres L₁ L₂ E H _ _ Y.t Y.oF.t _ Y.m).1
-  obtain ⟨w₀, r₀⟩ := (GlobalTheory.T.exists_rigidifiedIso_agree_abelianFibres L₁ L₂ E H _ _ Xo.univ.t Y.oF.t _ Y.m0.toSABMap).1
+  obtain ⟨w₂, r₂⟩ := (_root_.GlobalTheory.RigIso.main L₁ L₂ E H _ _ Y.t W.t χ W.m).1
+  obtain ⟨w₁, r₁⟩ := (_root_.GlobalTheory.RigIso.main L₁ L₂ E H _ _ Y.t Y.oF.t _ Y.m).1
+  obtain ⟨w₀, r₀⟩ := (_root_.GlobalTheory.RigIso.main L₁ L₂ E H _ _ Xo.univ.t Y.oF.t _ Y.m0.toSABMap).1
   obtain ⟨ΦY, e₂⟩ := (GlobalTheory.ArcPts.genPts_transfer E H _ _ Λ.A Y.t W.t χ W.m w₂ gen (gen ≫ χ) r₂ rfl).1 ΦW
   obtain ⟨ΦF, e₁⟩ := (GlobalTheory.ArcPts.genPts_transfer E H _ _ Λ.A Y.t Y.oF.t _ Y.m w₁ yF (gen ≫ χ) r₁ hj).2 ΦY
   obtain ⟨Φ, e₀⟩ := (GlobalTheory.ArcPts.genPts_transfer E H _ _ Λ.A Xo.univ.t Y.oF.t _ Y.m0.toSABMap w₀ yF

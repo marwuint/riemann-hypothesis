@@ -60,10 +60,6 @@ theorem rkB_le_one (ρ : ℕ) (y : Bool) : rkB ρ y ≤ 1 := by
 theorem rkB_le (ρ : ℕ) (y : Bool) : rkB ρ y ≤ ρ := by
   cases y <;> simp [rkB]
 
-theorem rkB_true_pos {ρ : ℕ} (h : 0 < ρ) : 0 < rkB ρ true := by
-  show 0 < min ρ 1
-  omega
-
 theorem le_choose_two (r : ℕ) : r - 1 ≤ r * (r - 1) / 2 := by
   rcases r with _ | _ | k
   · simp
@@ -650,88 +646,6 @@ def junkLocBAll (D : D7) (r j p : ℕ) : BoundaryLocalData.LocB D (junkLocalData
   locBT D r j p (cfJunk p) (rhoJ r p) (rhoJ_p r p) (rhoJ_dim D.R.f r p)
 
 def junkLocB (D : D7) (r j p : ℕ) (_hp : p.Prime) : BoundaryLocalData.LocB D (junkLocalData D r j p) := junkLocBAll D r j p
-
-section Facts
-
-variable (D : D7) (r j p : ℕ) (c : CF p) (ρ : ℕ)
-
-theorem locT_not_good (h : 0 < ρ) : ¬ (locT D r j p c ρ).good (Z := ()) true :=
-  fun hs => (Nat.pos_iff_ne_zero.1 (rkB_true_pos h)) ((subsingleton_pow D (rkB ρ true)).1 hs)
-
-theorem locT_isChart (h : 0 < ρ) : IsChart (locT D r j p c ρ) (Z := ()) (y := true) (e := ()) () :=
-  ⟨trivial, trivial, rkB_true_pos h, trivial, trivial⟩
-
-theorem rhoJ_pos {r p : ℕ} (hr : 2 ≤ r) (hp : 2 ≤ p) : 0 < rhoJ r p := by
-  simp [rhoJ, hr, hp]
-
-theorem junkLocalData_bad {r p : ℕ} (hr : 2 ≤ r) (hp : 2 ≤ p) :
-    ∃ y : (junkLocalData D r j p).Pt (junkLocalData D r j p).Xm, ¬ (junkLocalData D r j p).good y :=
-  ⟨true, locT_not_good D r j p (cfJunk p) (rhoJ r p) (rhoJ_pos hr hp)⟩
-
-theorem junkLocalData_chart {r p : ℕ} (hr : 2 ≤ r) (hp : 2 ≤ p) :
-    ∃ (y : (junkLocalData D r j p).DVP) (e : (junkLocalData D r j p).Ext y)
-      (χ : (junkLocalData D r j p).Chart (junkLocalData D r j p).Xm y e),
-      0 < (junkLocalData D r j p).dvRho y ∧ IsChart (junkLocalData D r j p) χ :=
-  ⟨true, (), (), rkB_true_pos (rhoJ_pos hr hp), locT_isChart D r j p (cfJunk p) (rhoJ r p) (rhoJ_pos hr hp)⟩
-
-theorem junkLocalData_be_pd {Z : (junkLocalData D r j p).Mdl} (y : (junkLocalData D r j p).Pt Z) (n : ℕ)
-    (b : Module.Basis (Fin n) ℤ ((junkLocalData D r j p).Ylat y)) (x : Fin n → ℝ) :
-    x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * (junkLocalData D r j p).be y (b i) (b k) :=
-  fun hx => pd_of_int ((junkLocalData D r j p).be y) ((junkLocalData D r j p).be_symm y)
-    (fun a a' => beK_int D (rkB (rhoJ r p) y) a a') ((junkLocalData D r j p).be_pos y) b x hx
-
-variable {D r j p}
-
-theorem good_of_le_one {L : Loc D r j p} (B : BoundaryLocalData.LocB D L) (hp : p ≤ 1) {Z : L.Mdl} (y : L.Pt Z) : L.good y := by
-  have key : ∀ a : L.Ylat y, a = 0 := fun a => by
-    by_contra h
-    have h1 := L.be_pos y a h
-    rw [B.be_tau] at h1
-    have h2 : Real.log (p : ℝ) = 0 := by
-      interval_cases p <;> simp
-    simp [BoundaryLocalData.vU, Real.logb, h2] at h1
-  exact ⟨fun a b => by rw [key a, key b]⟩
-
-theorem good_of_rank_le_one {L : Loc D r j p} (B : BoundaryLocalData.LocB D L) (hr : r ≤ 1) (y : L.Pt L.Xm) : L.good y := by
-  by_contra hns
-  rw [Loc.good, not_subsingleton_iff_nontrivial] at hns
-  obtain ⟨a, ha⟩ := exists_ne (0 : L.Ylat y)
-  have htf : ∀ n : ℤ, n • a = 0 → n = 0 := by
-    intro n hn
-    by_contra h0
-    have h1 := L.be_pos y a ha
-    have h2 : L.be y (n • a) a = 0 := by
-      rw [hn]
-      simp
-    rw [map_smul, LinearMap.smul_apply, zsmul_eq_mul] at h2
-    have h3 : (n : ℝ) ≠ 0 := by exact_mod_cast h0
-    rcases mul_eq_zero.1 h2 with h | h
-    · exact h3 h
-    · exact h1.ne' h
-  let φ : 𝓞 D.host.E →ₗ[ℤ] L.Ylat y :=
-    (LinearMap.toSpanSingleton (𝓞 D.host.E) (L.Ylat y) a).restrictScalars ℤ
-  have hinj : Function.Injective φ := by
-    rw [injective_iff_map_eq_zero]
-    intro e he
-    by_contra h0
-    obtain ⟨d, hd⟩ := Algebra.dvd_algebraMap_intNorm_self ℤ (𝓞 D.host.E) e
-    have h3 : Algebra.intNorm ℤ (𝓞 D.host.E) e • a = 0 := by
-      have h4 : e • a = 0 := he
-      rw [← algebraMap_smul (𝓞 D.host.E), hd, mul_comm, mul_smul, h4, smul_zero]
-    exact (Algebra.intNorm_ne_zero.2 h0) (htf _ h3)
-  have h4 := LinearMap.finrank_le_finrank_of_injective hinj
-  have h5 := B.dimB_add y
-  have h6 : L.dP y = Module.finrank ℤ (L.Ylat y) := rfl
-  have h7 : 0 < D.R.f := by
-    have := D.R.ord_pos
-    simp only [Ranks.f, Ranks.n]
-    omega
-  rw [finrank_OE] at h4
-  have h8 : D.R.f * r ≤ D.R.f := by
-    interval_cases r <;> simp
-  omega
-
-end Facts
 
 end Formalism.L2.Geo
 

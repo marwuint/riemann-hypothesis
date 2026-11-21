@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlge
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoherentSubobjectCoherentStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictedSystemKilledByIdealStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormalExistenceTopIdealStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NoetherianIdealIntegralOrSplitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealSheafWellFoundedGtStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NoetherianIdealIntegralOrSplit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealSheafWellFoundedGt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArtinReesClosedSystemStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormalExistenceProductIdealStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsChowCoverIntegralStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormalExistenceProjectiveOpenStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormalExistenceProperPushforwardStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormalExistenceProperPushforward
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GrothendieckExistenceClosedAltBis
 
 set_option autoImplicit false
@@ -40,7 +40,7 @@ theorem step_integral {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     change (ψ ≫ J.subschemeι) ≫ (X ↘ Spec (.of A)) = O.ι ≫ i ≫ ProjSpace.toSpecBase A N
     rw [hcomm, Category.assoc]
     rfl
-  obtain ⟨D, c, J', hDq, hDP, hc, hJ, hkill⟩ := GlobalTheory.T.formal_existence_proper_pushforward I hI J hZ ψ hψ hover W hW hiso hE hS hK hP
+  obtain ⟨D, c, J', hDq, hDP, hc, hJ, hkill⟩ := _root_.GlobalTheory.CompanionTheory.GE.core_integral_step I hI J hZ ψ hψ hover W hW hiso hE hS hK hP
   obtain ⟨c', hS', hP', halg⟩ := GlobalTheory.T.artin_rees_closed_system I hE hS hP D hDq c hc
   exact halg (IH J' hJ _ (GlobalTheory.T.coherent_subobject_coherent hE D hDq) _ hS' (GlobalTheory.T.restricted_system_killed_by_ideal I J' D S c' hkill) hP') hDP
 
@@ -51,13 +51,13 @@ theorem statement_bot {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
   have hln : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))
   have hcs : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))
   have hno : IsNoetherian X := ⟨⟩
-  have hwf : WellFoundedGT X.IdealSheafData := GlobalTheory.T.ideal_sheaf_well_founded_gt
+  have hwf : WellFoundedGT X.IdealSheafData := _root_.GlobalTheory.CompanionTheory.GE.idealSheafData_wellFoundedGT
   refine WellFoundedGT.induction (motive := fun J : X.IdealSheafData => Statement I J) ⊥ ?_
   intro J IH
   by_cases hJ : J = ⊤
   · subst hJ
     exact GlobalTheory.T.formal_existence_top_ideal I
-  rcases GlobalTheory.T.noetherian_ideal_integral_or_split J hJ with h | ⟨J₁, J₂, h₁, h₂, hm⟩
+  rcases _root_.GlobalTheory.CompanionTheory.GE.Dich.isIntegral_or_exists_mul_mem J hJ with h | ⟨J₁, J₂, h₁, h₂, hm⟩
   · exact step_integral I hI J IH
   · exact GlobalTheory.T.formal_existence_product_ideal I J J₁ J₂ hm (IH _ h₁) (IH _ h₂)
 

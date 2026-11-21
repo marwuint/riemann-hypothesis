@@ -29,13 +29,13 @@ theorem tr_eSerC_eq (L : LabelDatum g) {n : ℕ} {χ : Gn g n → ℂ} {f : (ZMo
   have hfin := (GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)).1
   have hz : eSerC L n f * zOf χ = 1 * zOf χ := by
     rw [eSerC_eq_sum L n hfin, Finset.sum_mul, Finset.sum_eq_single_of_mem χ (by simp [hχ, hf]), one_mul]
-    · simpa using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).1
+    · simpa using (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).1
     · intro b hb hne
       have hb' : IsIrr b := by simpa using (Finset.mem_filter.1 hb).1
-      rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ b χ hb' hχ).1, if_neg hne]
+      rw [(_root_.GlobalTheory.GLq.ZOrth.zorth _ b χ hb' hχ).1, if_neg hne]
   have h := congrArg (fun a : MonoidAlgebra ℂ (Gn g n) => a.coeff 1) hz
-  simp only [(GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ _ χ).2.2] at h
-  obtain ⟨d, hd, e⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ 1 χ).2.1 hχ
+  simp only [(_root_.GlobalTheory.GLq.trIdem _ _ χ).2.2] at h
+  obtain ⟨d, hd, e⟩ := (_root_.GlobalTheory.GLq.trIdem _ 1 χ).2.1 hχ
   have h1 : χ 1 ≠ 0 := e ▸ Nat.cast_ne_zero.2 hd.ne'
   rw [MonoidAlgebra.one_def, Opp.tr_single, one_mul] at h
   exact ⟨mul_left_cancel₀ (div_ne_zero h1 (Nat.cast_ne_zero.2 Fintype.card_ne_zero)) h, h1⟩
@@ -48,7 +48,7 @@ theorem hasLabel_of_isCuspOf (L : LabelDatum g) {d : ℕ} {P : (ZMod g)[X]} {χ 
     obtain ⟨V, -, hV⟩ := hχ
     rw [← hV, ← hV, FDRep.char_conj]
   have e : hcL ([(P, (⟨d, χ⟩ : Pc g))].map Prod.snd) d = χ := GLq.Model.hc_full χ hc
-  rw [e, (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).2.2, if_pos rfl]
+  rw [e, (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).2.2, if_pos rfl]
   exact one_ne_zero
 
 theorem labelsCusp (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) :
@@ -67,29 +67,5 @@ theorem five_le (D : D7) (k : Fin 2) : 5 ≤ D.host.g k := by
         ((((show (4 : ℕ) ∣ 2 ^ (D.R.e + 2) from ⟨2 ^ D.R.e, by ring⟩).trans D.host.tower_dvd).mul_right _).mul_right _)), hc]
   have := (D.host.g_prime k).two_le
   omega
-
-theorem labParam_of (D : D7) (L : ∀ k, LabelDatum (D.host.g k)) (rc : Corr D) (hG : Green)
-    (h1 : ∀ k v, TameGen.SupportCompat (fun a => D.naut.inePol a (D.ntypes.tg k v))
-      (fun π : GLRep _ => rc k v π.1 π.2))
-    (h2 : ∀ k, TameGen.DepthZeroCuspidal (D.host.g k))
-    (h3 : ∀ k v, TameGen.TameParam (L k) (fun a => D.naut.inePol a (D.ntypes.tg k v))
-      (fun π : GLRep _ => rc k v π.1 π.2)) :
-    LabParam D L rc := fun k v n π hπ f hf =>
-  TameGen.ine_eq_of_has_green (OfLabel.ofLabel (L k) (five_le D k) hG) (L k) _ _ _ (h1 k v) (h2 k) hG (h3 k v)
-    (labelsCusp _ _ _) ⟨n, π⟩ hπ.1 hπ.2 f hf
-
-theorem serLoc_of (D : D7) (L : ∀ k, LabelDatum (D.host.g k)) (rc : Corr D) (hG : Green)
-    (hL : LabTie D L) (hU : IneUnr D) (hC : LocComp D rc) (hP : LabParam D L rc) : SerLoc D :=
-  have hS : ∀ k, (OfLabel.ofLabel (L k) (five_le D k) hG).IsOf (L k) := fun _ _ _ => rfl
-  GlobalTheory.SerLocal.serLoc D _ (hL.sysTie hS) hU (locType_of_ties hL hS hC hP)
-
-theorem serLoc_of_ties (D : D7) (L : ∀ k, LabelDatum (D.host.g k)) (rc : Corr D) (hG : Green)
-    (hL : LabTie D L) (hU : IneUnr D) (hC : LocComp D rc)
-    (h1 : ∀ k v, TameGen.SupportCompat (fun a => D.naut.inePol a (D.ntypes.tg k v))
-      (fun π : GLRep _ => rc k v π.1 π.2))
-    (h2 : ∀ k, TameGen.DepthZeroCuspidal (D.host.g k))
-    (h3 : ∀ k v, TameGen.TameParam (L k) (fun a => D.naut.inePol a (D.ntypes.tg k v))
-      (fun π : GLRep _ => rc k v π.1 π.2)) : SerLoc D :=
-  serLoc_of D L rc hG hL hU hC (labParam_of D L rc hG h1 h2 h3)
 
 end GlobalTheory.SerSys.Bridge

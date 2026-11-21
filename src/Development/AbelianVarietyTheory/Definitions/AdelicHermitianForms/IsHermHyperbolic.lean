@@ -24,13 +24,4 @@ structure IsHerm {E : Type} [Field E] (σ : E →+* E) (G : Matrix (Fin n) (Fin 
   herm : ∀ a b, σ (G a b) = G b a
   det_ne : G.det ≠ 0
 
-theorem isHerm_hyperbolic : IsHerm (starRingEnd ℂ) !![0, 1; 1, 0] ∧
-    ∃ z : Fin 2 → ℂ, z ≠ 0 ∧ hf (starRingEnd ℂ) !![0, 1; 1, 0] z z = 0 := by
-  refine ⟨⟨by simp, ⟨Complex.I, ?_⟩, ?_, by simp [Matrix.det_fin_two]⟩, ![1, 0], ?_, by simp [hf, Fin.sum_univ_two]⟩
-  · intro h
-    have := congrArg Complex.im h
-    norm_num at this
-  · intro a b; fin_cases a <;> fin_cases b <;> simp
-  · intro h; simpa using congrFun h 0
-
 end GlobalTheory.UTrans

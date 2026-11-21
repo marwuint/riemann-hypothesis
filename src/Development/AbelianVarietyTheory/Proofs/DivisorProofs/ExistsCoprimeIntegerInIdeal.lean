@@ -28,19 +28,4 @@ theorem coprime_absNorm_of_sup {K : Type} [Field K] [NumberField K] (p : ℕ) (h
   rw [hx0, addOrderOf_zero] at hx
   exact hp.one_lt.ne hx
 
-theorem exists_coprime_mem : ∀ (K : Type) [Field K] [NumberField K] (c : Ideal (𝓞 K)) (l : ℕ), l.Prime → c ≠ ⊥ →
-    (∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ c → (l : 𝓞 K) ∉ v.asIdeal) → ∃ m : ℕ, m.Coprime l ∧ (m : 𝓞 K) ∈ c := by
-  intro K _ _ c l hl hc hv
-  refine ⟨Ideal.absNorm c, ?_, Ideal.absNorm_mem c⟩
-  refine coprime_absNorm_of_sup l hl hc ?_
-  by_contra hne
-  obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal _ hne
-  have hlM : ((l : ℕ) : 𝓞 K) ∈ M := hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))
-  have hcM : c ≤ M := le_trans le_sup_left hle
-  have hM0 : M ≠ ⊥ := by
-    intro h0
-    rw [h0, Ideal.mem_bot] at hlM
-    exact hl.ne_zero (by exact_mod_cast hlM)
-  exact hv ⟨M, hM.isPrime, hM0⟩ (Ideal.dvd_iff_le.mpr hcM) hlM
-
 end GlobalTheory.NormCoprime

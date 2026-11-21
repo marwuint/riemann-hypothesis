@@ -156,16 +156,6 @@ theorem vp_le {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0
         rw [hme] at h2
         exact le_trans h2 (ih (by omega) (by omega) _)
 
-theorem vp_mono {s s' : ℕ} (hss : s' ≤ s) {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ) :
-    VP LL n0 B s' μ :=
-  ⟨h.1, fun t ht => h.2.1 t (by omega), fun i hi => h.2.2 i (by omega)⟩
-
-theorem vp_congr {s : ℕ} {μ μ' : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ)
-    (he : ∀ t : Fin (N + 1), t.val ≤ s → μ' t = μ t) : VP LL n0 B s μ' := by
-  refine ⟨by rw [he 0 (by simp)]; exact h.1, fun t ht => by rw [he t ht]; exact h.2.1 t ht, fun i hi => ?_⟩
-  rw [he i.castSucc (by simp; omega), he i.succ (by simp; omega)]
-  exact h.2.2 i hi
-
 open Classical in
 
 theorem vp_update {s : ℕ} (hs : s < N) {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ)

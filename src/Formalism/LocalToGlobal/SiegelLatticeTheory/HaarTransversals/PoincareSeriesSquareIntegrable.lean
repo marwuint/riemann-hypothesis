@@ -80,9 +80,4 @@ def PoincareSeriesInner (G : Type*) [Group G] [TopologicalSpace G] [IsTopologica
     (∫ x in FΓ, poinc D Ph x * conj (poinc D' Ph' x) ∂μ)
       = ∑' r : R, ∫ x in Fs r, Ph x * conj (Ph' ((r : G)⁻¹ * x)) ∂μ
 
-def PoincareSeriesSquareIntegrable (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-    [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G]
-    [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] : Prop :=
-  PoincareSeriesFinite G μ ∧ PoincareSeriesMemLp G μ ∧ PoincareSeriesInner G μ
-
 end Formalism.L2.SG.PoincareSeriesSquareIntegrable

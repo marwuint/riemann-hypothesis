@@ -4,13 +4,18 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalAffineChartExistsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilOpenChartStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPointsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsHodgeTateFunctionalStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
+import Development.WeilBound.CoreStatements.HodgeTatePoints.MkChart
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilOpenChart
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilUnique
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPoints
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.HtExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -130,7 +135,7 @@ theorem exists_tors [CharZero Ω] [IsNoetherianRing R] (G : Over X) [GrpObj G] [
       rw [← this, hy]
     rw [h4, e5, Category.assoc]
     rfl
-  obtain ⟨Γ, i, h1, h2⟩ := GlobalTheory.T.torsion_embedding_geometric_points R (Tors G ξ n) X G hS x n hn τ hinj hpow hgeo
+  obtain ⟨Γ, i, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.exists_qfGroup_torsion R (Tors G ξ n) X G hS x n hn τ hinj hpow hgeo
   refine ⟨Γ, i, h1, fun t g h => Over.OverMorphism.ext ?_⟩
   rw [← h, h2 t]
   show spMap κ.toRingHom ≫ spMap κ.symm.toRingHom ≫ t.1.left = _
@@ -147,18 +152,18 @@ theorem exists_form [IsIntegrallyClosed R] [IsNoetherianRing R] (G : Over X) [Gr
       (∀ v, (M.pt (j v)).left = spMap (dualMap (κ.toRingHom.comp (algebraMap R _))) ≫ (M₀.pt v).left) ∧
         Γ.IsHT i M₀ n χ w₀ ∧ ∀ v, w (j v) = κ (algebraMap R _ (w₀ v)) := by
   obtain ⟨L₀, _, _, ⟨M₀⟩⟩ := lieModel_exists X G R x
-  obtain ⟨w₀, hw₀⟩ := GlobalTheory.T.exists_hodge_tate_functional R T Γ X G x n i hi hsm L₀ M₀ χ
+  obtain ⟨w₀, hw₀⟩ := _root_.PositivityTheory.UnitarySelfGeneration.ht_exists R T Γ X G x n i hi hsm L₀ M₀ χ
   letI : Algebra R Ω := (κ.toRingHom.comp (algebraMap R (FractionRing R))).toAlgebra
   letI : Module R E := Module.compHom E (algebraMap R Ω)
   have : IsScalarTower R Ω E := ⟨fun a b c => by
     rw [Algebra.smul_def, mul_smul]
     rfl⟩
-  obtain ⟨j, hj, hjs, -⟩ := GlobalTheory.T.lie_model_base_change_map X G R Ω x L₀ E M₀ M
+  obtain ⟨j, hj, hjs, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange X G R Ω x L₀ E M₀ M
   let β : L₀ →ₗ[R] E :=
     { toFun := j
       map_add' := map_add j
       map_smul' := fun a v => hjs a v }
-  obtain ⟨-, -, hbc⟩ := GlobalTheory.T.lie_model_finite_base_change X G R x L₀ M₀
+  obtain ⟨-, -, hbc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X G R x L₀ M₀
   have hb : IsBaseChange Ω β := hbc Ω E M β hj
   refine ⟨L₀, _, _, M₀, j, w₀, hb.lift ((Algebra.linearMap R Ω) ∘ₗ w₀), hj, hw₀, fun v => ?_⟩
   exact hb.lift_eq ((Algebra.linearMap R Ω) ∘ₗ w₀) v
@@ -171,8 +176,8 @@ open GlobalTheory.CompanionTheory.Ar.HTLift in
 
 theorem htLat_exists_lifts : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → Flat.NormalCpt ξ → ∀ (G : Over X) [GrpObj G], IsSemiAbelian G → ∀ (L : LB G.left) (n : ℕ), 1 ≤ n → FullTorsion G ξ n → ∀ e, GenWeil G L ξ n e → ∀ (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (q : Cpt ξ), (∃ U : X.Opens, q.1 ∈ U ∧ ∃ w : (Over.mk ξ ⟶ G) → Module.Dual Ω E, ∀ y, y ^ n = 1 → ∀ q' : Cpt ξ, q'.1 ∈ U → M.IsHTAt L n y q' (w y)) ∧ ∀ (y : Over.mk ξ ⟶ G) (w w' : Module.Dual Ω E), y ^ n = 1 → M.IsHTAt L n y q w → (M.IsHTAt L n y q w' ↔ ∃ u ∈ M.omLat q, w' = w + n • u) := by
   intro X _ Ω _ _ ξ hg hN G _ hS L n hn hF e hW E _ _ M q
-  refine ⟨?_, fun y w w' hy hw => GlobalTheory.T.hodge_tate_weil_unique X Ω ξ hg hN G hS L n hn hF e hW E M y q w w' hy hw⟩
-  obtain ⟨R, _, _, x, κ, hR, hI, hO, hq, -, hx⟩ := GlobalTheory.T.normal_affine_chart_exists X Ω ξ hg hN q
+  refine ⟨?_, fun y w w' hy hw => _root_.GlobalTheory.CompanionTheory.Ar.HtUniq.isHTAt_iff X Ω ξ hg hN G hS L n hn hF e hW E M y q w w' hy hw⟩
+  obtain ⟨R, _, _, x, κ, hR, hI, hO, hq, -, hx⟩ := _root_.PositivityTheory.HtPt.Mk.ht_lat_chart X Ω ξ hg hN q
   have hc : IsCommMonObj G := hS.comm
   subst hx
   have key : ∀ y : Over.mk (spMap (κ.toRingHom.comp (algebraMap R _)) ≫ x) ⟶ G, y ^ n = 1 →
@@ -194,7 +199,7 @@ theorem htLat_exists_lifts : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : 
       rw [this, map_one]
     obtain ⟨χ, hχ⟩ := exists_char_units κ hn c hc1
     obtain ⟨L₀, _, _, M₀, j, w₀, w, hj, hH, hw⟩ := exists_form G hS.smooth κ x M Γ i hi χ
-    refine ⟨w, fun q' hq' => GlobalTheory.T.hodge_tate_weil_open_chart X Ω _ hg hN G hS L n hn hF e hW E M R x κ rfl _ Γ i hi L₀ M₀ j hj y χ
+    refine ⟨w, fun q' hq' => _root_.GlobalTheory.CompanionTheory.Ar.HTChart.isHTAt_of_isHT X Ω _ hg hN G hS L n hn hF e hW E M R x κ rfl _ Γ i hi L₀ M₀ j hj y χ
       w₀ w hy ?_ hH hw q' hq'⟩
     intro t g h
     rw [ht t g h]

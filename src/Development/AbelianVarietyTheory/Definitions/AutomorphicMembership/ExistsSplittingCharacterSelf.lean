@@ -32,27 +32,9 @@ variable {D : D7}
 def AdmE (V W : HSp D) (χ χ' : IdC D) : Prop :=
   V.rank = W.rank ∧ IsHC D χ ∧ IsHC D χ' ∧ ResEta D χ V.rank ∧ ResEta D χ' W.rank
 
-theorem admissibleEven_trivial {V W : HSp D} (h : V.rank = W.rank) (hV : Even V.rank) : AdmE V W 1 1 := by
-  have h0 : ResEta D 1 0 := ⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩
-  have h1 := resEta_parity (m := V.rank) h0 (by rw [Nat.even_iff] at hV; omega)
-  exact ⟨h, isHC_one D, isHC_one D, h1, h ▸ h1⟩
-
-theorem exists_splittingCharacter_self {V W : HSp D} (e : V.rank = W.rank) : ∃ χ : IdC D, AdmE V W χ χ := by
-  obtain ⟨η, h1, h2, h3, -⟩ := GlobalTheory.Mem.EtaTilde.exists_etaTilde D
-  rcases Nat.even_or_odd V.rank with h | h
-  · exact ⟨1, admissibleEven_trivial e h⟩
-  · have := resEta_parity (m := V.rank) h3 (by rw [Nat.odd_iff] at h; omega)
-    exact ⟨η, e, ⟨h1, fun τ => ⟨_, h2 τ⟩⟩, ⟨h1, fun τ => ⟨_, h2 τ⟩⟩, this, e ▸ this⟩
-
 theorem IsHC.mul {χ ν : IdC D} (h : IsHC D χ) (k : IsHC D ν) : IsHC D (χ * ν) :=
   ⟨⟨h.1.1.mul k.1.1, fun x => by rw [MonoidHom.mul_apply, h.1.2, k.1.2, mul_one]⟩, fun τ =>
     (h.2 τ).elim fun _ ha => (k.2 τ).elim fun _ hb => ⟨_, GlobalTheory.Chain.StepVac.hasInfExp_mul ha hb⟩⟩
-
-theorem AdmE.mul_right {V W : HSp D} {χ χ' ν : IdC D} (h : AdmE V W χ χ') (h1 : IsHC D ν) (h2 : ResEta D ν 0) :
-    AdmE V W χ (χ' * ν) := ⟨h.1, h.2.1, h.2.2.1.mul h1, h.2.2.2.1, resEta_mul h.2.2.2.2 h2⟩
-
-theorem AdmE.mul_left {V W : HSp D} {χ χ' ν : IdC D} (h : AdmE V W χ χ') (h1 : IsHC D ν) (h2 : ResEta D ν 0) :
-    AdmE V W (χ * ν) χ' := ⟨h.1, h.2.1.mul h1, h.2.2.1, resEta_mul h.2.2.2.1 h2, h.2.2.2.2⟩
 
 structure WeilFun.EqRank {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) : Prop where
   weil : ∀ (V W : HSp D) χ χ', AdmE V W χ χ' → IsWeilOn ψ V W χ χ' (Wf.om V W χ χ')
@@ -67,63 +49,6 @@ def WeilTwEq (D : D7) : Prop := ∀ ψ, IsStdChar D ψ (-1) → ∀ (V W : HSp D
   ∀ om, IsWeilOn ψ V W χ χ' om →
     (∀ om', IsWeilOn ψ V W χ (χ' * ν) om' → ∀ g h x, IsDetRoot V g x → om' (g, h) = (((ν x)⁻¹ : Circle) : ℂ) • om (g, h)) ∧
     ∀ om', IsWeilOn ψ V W (χ * ν) χ' om' → ∀ g h x, IsDetRoot W h x → om' (g, h) = ((ν x : Circle) : ℂ) • om (g, h)
-
-open Classical in
-
-def WeilFun.patch {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ)
-    (o : ∀ V W : HSp D, IdC D → IdC D → (GA D V × GA D W →* Module.End ℂ (ThS ψ V W))) : WeilFun D ψ :=
-  let om := fun (V W : HSp D) χ χ' => if V.rank = W.rank then o V W χ χ' else Wf.om V W χ χ'
-  have e : ∀ {V W : HSp D}, V.rank ≠ W.rank → ∀ χ χ', om V W χ χ' = Wf.om V W χ χ' := fun h _ _ => if_neg h
-  { om := om
-    om_heis := fun V W χ χ' ha => by rw [e ha.1]; exact Wf.om_heis V W χ χ' ha
-    om_aut := fun V W χ χ' ha => by rw [e ha.1]; exact Wf.om_aut V W χ χ' ha
-    om_cont := fun V W χ χ' ha => by rw [e ha.1]; exact Wf.om_cont V W χ χ' ha
-    om_unit := fun V W χ χ' ha => by rw [e ha.1]; exact Wf.om_unit V W χ χ' ha
-    om_split := fun V W χ χ' ha => by rw [e ha.1]; exact Wf.om_split V W χ χ' ha
-    twW := fun V W χ χ' ν ha => by rw [e ha.1, e ha.1]; exact Wf.twW V W χ χ' ν ha
-    twV := fun V W χ χ' ν ha => by rw [e ha.1, e ha.1]; exact Wf.twV V W χ χ' ν ha
-    om_swap := fun V W χ χ' ha => by rw [e ha.1, e ha.1.symm]; exact Wf.om_swap V W χ χ' ha
-    om_unr := fun V W χ χ' ha => by rw [e ha.1]; exact Wf.om_unr V W χ χ' ha }
-
-theorem WeilFun.patch_om_eq {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) (o) {V W : HSp D} (h : V.rank = W.rank) (χ χ') :
-    (Wf.patch o).om V W χ χ' = o V W χ χ' := if_pos h
-
-theorem WeilFun.patch_om_ne {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) (o) {V W : HSp D} (h : V.rank ≠ W.rank) (χ χ') :
-    (Wf.patch o).om V W χ χ' = Wf.om V W χ χ' := if_neg h
-
-theorem WeilFun.exists_eqRank (he : WeilOnEqEx D) (ht : WeilTwEq D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
-    (Wf : WeilFun D ψ) : ∃ Wf' : WeilFun D ψ, Wf'.EqRank ∧
-      ∀ V W χ χ', V.rank ≠ W.rank → Wf'.om V W χ χ' = Wf.om V W χ χ' := by
-  classical
-  choose o ho using he ψ hψ
-  refine ⟨Wf.patch fun V W χ χ' => if k : AdmE V W χ χ' then o V W χ χ' k else 1, ⟨fun V W χ χ' k => ?_,
-    fun V W χ χ' ν k h1 h2 g x y hy => ?_, fun V W χ χ' ν k h1 h2 g x y hy => ?_⟩,
-    fun V W χ χ' h => WeilFun.patch_om_ne _ _ h _ _⟩
-  · rw [WeilFun.patch_om_eq _ _ k.1, dif_pos k]; exact ho _ _ _ _ k
-  · rw [WeilFun.patch_om_eq _ _ k.1, WeilFun.patch_om_eq _ _ k.1, dif_pos k, dif_pos (k.mul_right h1 h2)]
-    exact (ht ψ hψ V W χ χ' ν k h1 h2 _ (ho _ _ _ _ k)).1 _ (ho _ _ _ _ _) g x y hy
-  · rw [WeilFun.patch_om_eq _ _ k.1, WeilFun.patch_om_eq _ _ k.1, dif_pos k, dif_pos (k.mul_left h1 h2)]
-    exact (ht ψ hψ V W χ χ' ν k h1 h2 _ (ho _ _ _ _ k)).2 _ (ho _ _ _ _ _) g x y hy
-
-theorem isWeilOn_both_zero (ψ : AddChar (AF D.host.F) ℂ) {V W : HSp D} (hV : V.rank = 0) (hW : W.rank = 0) (χ χ' : IdC D) :
-    IsWeilOn ψ V W χ χ' 1 := by
-  haveI : IsEmpty (Fin W.rank) := by rw [hW]; infer_instance
-  haveI : IsEmpty (Fin V.rank) := by rw [hV]; infer_instance
-  have hs : ∀ x y : WA V W, x = y := fun x y => Matrix.ext fun _ j => isEmptyElim j
-  refine ⟨fun g h w₀ Φ Φ' e => ?_, fun _ _ _ _ _ => rfl,
-    fun Φ w => (continuous_const : Continuous fun _ : GA D V × GA D W => Φ.1 w), fun _ _ _ _ _ _ => rfl,
-    fun e _ g h _ _ x y hx hy => ⟨1, one_pos, fun ℓ _ Φ => ?_⟩⟩
-  · rw [hs (actHom V W g h w₀) w₀]; exact e
-  · have hy1 : y = 1 := Units.ext (by rw [hy, Matrix.det_isEmpty]; simp)
-    have hx1 : x = 1 := Units.ext (by rw [hx, Matrix.det_isEmpty]; simp)
-    simp [splitFac, hy1, hx1]
-
-theorem splitFac_twist_eq {V W : HSp D} (h : V.rank = W.rank) (χ χ' ν : IdC D) (x y : (AE D)ˣ) :
-    splitFac V W χ (χ' * ν) x y = (ν x)⁻¹ * splitFac V W χ χ' x y ∧
-      splitFac V W (χ * ν) χ' x y = ν y * splitFac V W χ χ' x y := by
-  unfold splitFac
-  simp only [if_pos h.le, MonoidHom.mul_apply]
-  exact ⟨by rw [_root_.mul_inv_rev, mul_assoc], by rw [mul_comm (χ y), mul_left_comm]⟩
 
 def LiftAutEq (D : D7) : Prop := ∀ θ : InfF D, IsInfFam θ → ∀ ψ, IsStdChar D ψ (-1) → ∀ (V W : HSp D) χ χ', AdmE V W χ χ' →
   ∀ om, IsWeilOn ψ V W χ χ' om → ∀ μ 𝓕, IsQuot V μ 𝓕 → ∀ (Φ : ThS ψ V W) F, IsCuspForm θ V F →
@@ -186,103 +111,6 @@ def RealisedExE (D : D7) : Prop := ∀ θ : InfF D, IsInfFam θ → ∀ ψ, IsSt
   ∀ Wf : WeilFun D ψ, Wf.EqRank → ∀ (Tw : Tow D) (Rc : RecFun D θ ψ),
     ∃ (X : ThetaX D) (T : ThetaTied D X) (W : WeilTied D X T) (B : BesselTied D X T W) (h : W.ψ = ψ),
       RealisesE (θ := θ) B (h ▸ Wf) Tw (h ▸ Rc)
-
-section Lift
-
-variable {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : WeilTied D X T} {B : BesselTied D X T W}
-  {Wf : WeilFun D W.ψ} {Tw : Tow D} {Rc : RecFun D θ W.ψ}
-
-set_option maxHeartbeats 1000000 in
-
-theorem Realises.exists_liftEq (h : Realises B Wf Tw Rc) (hE : Wf.EqRank) (hL : LiftAutEq D) (V V' : HSp D) (χ χ' : X.Chr) :
-    ∃ t : X.Sch V V' →ₗ[ℂ] X.cusp V →ₗ[ℂ] X.AF V',
-      (¬ (AdmE V V' (T.eChr χ) (T.eChr χ') ∧ V.SigOK) → t = X.th V V' χ χ') ∧
-      (AdmE V V' (T.eChr χ) (T.eChr χ') → V.SigOK → ∀ μ 𝓕, IsVolPair D V μ 𝓕 → ∀ Φ F x, T.ev V' (t Φ F) x =
-        (T.petC V : ℂ) * ∫ g in 𝓕, W.evS V V' (W.om V V' χ χ' (g, x) Φ) 0 * T.ev V (F : X.AF V) g ∂μ) := by
-  by_cases ha : AdmE V V' (T.eChr χ) (T.eChr χ') ∧ V.SigOK
-  swap
-  · exact ⟨_, fun _ => rfl, fun h1 h2 => absurd ⟨h1, h2⟩ ha⟩
-  obtain ⟨i1, i2, i3, i4, i5, -, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
-  obtain ⟨μ, hμ, hu⟩ := GlobalTheory.Mem.VolMeasure.existsUnique_isVolMeasG D V ha.2
-  obtain ⟨-, 𝓕, h𝓕⟩ := GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V μ hμ.1
-  have hw := hE.weil _ _ _ _ ha.1
-  have hth : ∀ Φ : X.Sch V V', W.evS V V' Φ ∈ ThS W.ψ V V' := fun Φ => by
-    have hf : W.evS V V' Φ ∈ Set.range (W.evS V V') := ⟨Φ, rfl⟩
-    rw [h.sch] at hf
-    exact mem_ThS.2 hf
-  have hom := fun p Φ => h.om V V' χ χ' p Φ ⟨_, hth Φ⟩ rfl
-  have hc : ∀ F : X.cusp V, IsCuspForm θ V (T.ev V F) := fun F => by
-    have hf : T.ev V F ∈ Set.range (T.ev V) := ⟨F, rfl⟩
-    rw [h.forms] at hf
-    exact ⟨hf, (T.cusp V F).1 F.2⟩
-  have k := fun Φ (F : X.cusp V) => hL θ h.inf W.ψ W.ψ_std V V' _ _ ha.1 _ hw μ 𝓕 ⟨hμ.1, h𝓕⟩ ⟨_, hth Φ⟩ _ (hc F)
-  simp only [← hom] at k
-  have k2 : ∀ Φ (F : X.cusp V), ∃ G : X.AF V', T.ev V' G =
-      fun x => ∫ g in 𝓕, W.evS V V' (W.om V V' χ χ' (g, x) Φ) 0 * T.ev V (F : X.AF V) g ∂μ := fun Φ F => by
-    have := (k Φ F).2
-    rw [← Set.mem_setOf_eq (p := fun φ => IsAutFunSm θ V' φ), ← h.forms] at this
-    exact this
-  choose G hG using k2
-  refine ⟨(T.petC V : ℂ) • LinearMap.mk₂ ℂ G ?_ ?_ ?_ ?_, fun h' => absurd ha h', fun _ _ μ' 𝓕' hμ' Φ F x => ?_⟩
-  · intro Φ Φ' F
-    refine T.ev_inj V' (funext fun x => ?_)
-    rw [map_add, Pi.add_apply, hG, hG, hG, ← integral_add ((k Φ F).1 x) ((k Φ' F).1 x)]
-    simp [add_mul]
-  · intro c Φ F
-    refine T.ev_inj V' (funext fun x => ?_)
-    rw [map_smul, Pi.smul_apply, hG, hG, ← integral_smul]
-    simp [mul_assoc]
-  · intro Φ F F'
-    refine T.ev_inj V' (funext fun x => ?_)
-    rw [map_add, Pi.add_apply, hG, hG, hG, ← integral_add ((k Φ F).1 x) ((k Φ F').1 x)]
-    simp [mul_add]
-  · intro c Φ F
-    refine T.ev_inj V' (funext fun x => ?_)
-    rw [map_smul, Pi.smul_apply, hG, hG, ← integral_smul]
-    simp only [Submodule.coe_smul, map_smul, Pi.smul_apply, smul_eq_mul]
-    exact integral_congr_ae (Filter.Eventually.of_forall fun g => mul_left_comm _ _ _)
-  · obtain rfl : μ' = μ := hu _ hμ'.1
-    haveI := hμ.1
-    rw [LinearMap.smul_apply, LinearMap.smul_apply, map_smul, Pi.smul_apply, LinearMap.mk₂_apply, hG, smul_eq_mul]
-    congr 1
-    refine h𝓕.setIntegral_eq hμ'.2 fun γ g => ?_
-    have e : Wf.om V V' (T.eChr χ) (T.eChr χ') ((γ : GA D V) * g, x) =
-        Wf.om V V' (T.eChr χ) (T.eChr χ') (γ, 1) * Wf.om V V' (T.eChr χ) (T.eChr χ') (g, x) := by
-      rw [← map_mul, Prod.mk_mul_mk, one_mul]
-    show W.evS V V' (W.om V V' χ χ' ((γ : GA D V) * g, x) Φ) 0 * T.ev V F ((γ : GA D V) * g) = _
-    rw [hom, hom, e, Module.End.mul_apply, hw.aut γ γ.2 1 (one_mem _), (hc F).1.left γ γ.2]
-
-abbrev withLifts (X : ThetaX D) (t : ∀ V V', X.Chr → X.Chr → X.Sch V V' →ₗ[ℂ] X.cusp V →ₗ[ℂ] X.AF V') : ThetaX D :=
-  { X with th := t }
-
-theorem Realises.exists_realisesE (h : Realises B Wf Tw Rc) (hE : Wf.EqRank) (hL : LiftAutEq D) :
-    ∃ (X' : ThetaX D) (T' : ThetaTied D X') (W' : WeilTied D X' T') (B' : BesselTied D X' T' W') (e : W'.ψ = W.ψ),
-      RealisesE (θ := θ) B' (e ▸ Wf) Tw (e ▸ Rc) := by
-  choose t t1 t2 using h.exists_liftEq hE hL
-  let T' : ThetaTied D (withLifts X t) := { T with }
-  let W' : WeilTied D (withLifts X t) T' :=
-    { W with
-      om_tw := ⟨W.om_tw.1, W.om_tw.2, W.om_tw.3, W.om_tw.4⟩
-      th := fun V V' χ χ' hr h1 h2 hV μ 𝓕 hμ Φ F x => by
-        show T.ev V' (t V V' χ χ' Φ F) x = _
-        rw [t1 V V' χ χ' fun k => hr k.1.1]
-        exact W.th V V' χ χ' hr h1 h2 hV μ 𝓕 hμ Φ F x }
-  let B' : BesselTied D (withLifts X t) T' W' := { B with }
-  obtain ⟨K, k1, k2⟩ := h.kfin
-  refine ⟨withLifts X t, T', W', B', rfl,
-    { h with
-      eqRank := hE
-      thOff := fun V V' χ χ' k => ?_
-      thEq := t2
-      kfin := ⟨{ K with }, k1, k2⟩
-      besOnly := h.besOnly }⟩
-  exact (t1 V V' χ χ' fun k' => k ⟨Or.inr k'.1, k'.2⟩).trans (h.thOff V V' χ χ' fun k' => k ⟨Or.inl k'.1, k'.2⟩)
-
-end Lift
-
-theorem realisedExE_of (h : RealisedEx D) (hL : LiftAutEq D) : RealisedExE D := fun θ hθ ψ hψ Wf hE Tw Rc => by
-  obtain ⟨X, T, W, B, rfl, k⟩ := h θ hθ ψ hψ Wf Tw Rc
-  exact Realises.exists_realisesE k hE hL
 
 structure WeilThetaCompatibility {X : ThetaX D} {T : ThetaTied D X} (W : WeilTied D X T) : Prop where
   range : ∀ V V' : HSp D, V.rank = V'.rank → Set.range (W.evS V V') = {f | IsThetaFun W.ψ V V' f}
@@ -393,30 +221,8 @@ theorem eqTied : WeilThetaCompatibility W := by
     rw [LinearMap.smul_apply, map_smul, h.schEquiv_om, h.schEquiv_om, map_mul,
       h.eqRank.twV _ _ _ _ _ (ha hr h1 h2) (hc ν) h3 g x a k, LinearMap.smul_apply]
 
-theorem allTied (ht : TypAdd D) {A : ProvA} (hr : RealTied D) (hp : ProvisionCompatibility D A) : Nonempty (AllTied D X A) := by
-  obtain ⟨K, -⟩ := h.kfin
-  exact ⟨⟨T, h.afTiedSm, h.typTied ht, W, h.weilUnrTied, K, h.phiUp, B, hr, hp⟩⟩
-
 theorem petC_eq (V : HSp D) : T.petC V = Rc.petC V := by
   unfold ThetaTied.petC RecFun.petC; rw [h.petF, h.petR]
-
-theorem tieRowIsom (hi : Rc.RowIsom) : X.TieRowIsom := fun μ j hj x y => by
-  obtain ⟨⟨m, hm⟩, h2⟩ := hi μ j hj x y
-  have e := T.pet _ (D.sp.Y_sig j) m.1 m.2 hm (X.rowAF μ j x) (X.rowAF μ j y)
-  unfold ThetaX.petY
-  rw [e, (h2 m hm).2, h.row, h.row, h.mY, ← h.petC_eq]
-  simp only [ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
-
-theorem tieBm (hi : Rc.TopTie) : X.TieBm := fun u μ φ F => by
-  have hι : HSpace.IsIsomEmb (D.sp.Y D.R.m) (D.sp.X D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) := fun x y => by
-    have h1 := D.sp.iX'_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)
-    have h2 := D.sp.eYm_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)
-    simp only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h2
-    exact h1.trans h2.symm
-  have hs := fun g => (GlobalTheory.AutFunCompare.embRel_iff _ _ _ hι _ g).2 rfl
-  obtain ⟨⟨m, hm⟩, h2⟩ := hi u μ φ F _ hs
-  rw [T.btop _ _ _ (D.sp.Y_sig _) hι m.1 m.2 hm _ hs, (h2 m hm).2]
-  simp only [T.conj, star_star, h.col, h.row, h.mY, ← h.petC_eq, ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
 
 theorem carY_eq (μ s i) : T.eChr (X.carY μ s i) = Rc.carY μ s i := by
   unfold ThetaX.carY RecFun.carY
@@ -495,49 +301,10 @@ theorem RecFun.exists_chrIs (C : Formalism.L2.Host.CharFrame D) (xi : D.what₂.
   show ChrEq (m _ * x μ) _
   rw [e]; exact heq μ j
 
-def RowsAreForms (D : D7) (C : Formalism.L2.Host.CharFrame D) (xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E) : Prop :=
-  ∀ θ : InfF D, IsInfFam θ → ∀ ψ, IsStdChar D ψ (-1) → ∀ Wf : WeilFun D ψ,
-    ∃ Rc : RecFun D θ ψ, Rc.ChrIs C xi ∧ Rc.RowIsom ∧ Rc.IoTie Wf
-
-def RecordIsForms (D : D7) (C : Formalism.L2.Host.CharFrame D) (xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E) : Prop :=
-  ∀ θ : InfF D, IsInfFam θ → ∀ ψ, IsStdChar D ψ (-1) → ∀ Wf : WeilFun D ψ,
-    ∃ Rc : RecFun D θ ψ, Rc.ChrIs C xi ∧ Rc.OfRecord Wf
-
-theorem RecordIsForms.what₂ {C : Formalism.L2.Host.CharFrame D} {xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E}
-    (h : RecordIsForms D C xi) : RowsAreForms D C xi := fun θ hθ ψ hψ Wf =>
-  (h θ hθ ψ hψ Wf).imp fun _ k => ⟨k.1, k.2.rowIsom, k.2.io⟩
-
 theorem RealisesE.chrRead {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : WeilTied D X T} {B : BesselTied D X T W}
     {Wf : WeilFun D W.ψ} {Tw : Tow D} {Rc : RecFun D θ W.ψ} (h : RealisesE B Wf Tw Rc) {C : Formalism.L2.Host.CharFrame D}
     {xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E} (k : Rc.ChrIs C xi) : ChrRead T C xi :=
   ⟨fun μ j => by rw [h.chr]; exact k.chr μ j, by rw [h.eta]; exact k.eta⟩
-
-theorem exists_chrRead (hX : RealisedExE D) (hW : WeilEx D) (he : WeilOnEqEx D) (htw : WeilTwEq D) (Tw : Tow D)
-    {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (C : Formalism.L2.Host.CharFrame D)
-    (xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E) (hf : ∀ μ, ∃ n : ℕ, 0 < n ∧ (xi μ).OrderDvd n)
-    (ht : ∀ μ, (xi μ).TrivOn D.host.F) :
-    ∃ (X : ThetaX D) (T : ThetaTied D X) (W : WeilTied D X T), WeilThetaCompatibility W ∧ ChrRead T C xi := by
-  obtain ⟨θ, hθ⟩ := GlobalTheory.Member.exists_isInfFam_family D
-  obtain ⟨Wf₀⟩ := hW ψ hψ
-  obtain ⟨Wf, hE, -⟩ := Wf₀.exists_eqRank he htw hψ
-  obtain ⟨Rc, hR⟩ := RecFun.exists_chrIs C xi hf ht θ ψ
-  obtain ⟨X, T, W, B, rfl, k⟩ := hX θ hθ ψ hψ Wf hE Tw Rc
-  exact ⟨X, T, W, k.eqTied, k.chrRead hR⟩
-
-example (C : Formalism.L2.Host.CharFrame D) (θ : InfF D) (ψ : AddChar (AF D.host.F) ℂ) :
-    ∃ Rc : RecFun D θ ψ, Rc.ChrIs C fun _ => 1 :=
-  RecFun.exists_chrIs C _ (fun _ => ⟨1, one_pos, one_pow _⟩) (fun _ => ⟨fun _ _ => by
-    rw [Formalism.L2.Host.HChar.resFin, MonoidHom.finset_prod_apply]; exact Finset.prod_eq_one fun _ _ => rfl, fun _ _ => by
-    rw [Formalism.L2.Host.HChar.resInf, MonoidHom.finset_prod_apply]; exact Finset.prod_eq_one fun _ _ => rfl⟩) θ ψ
-
-example {C : Formalism.L2.Host.CharFrame D} {nch} (Tp : Formalism.L2.Host.TupTied D C nch) (θ : InfF D) (ψ : AddChar (AF D.host.F) ℂ) :
-    ∃ Rc : RecFun D θ ψ, Rc.ChrIs C Tp.xi := RecFun.exists_chrIs C _ Tp.xi_fin Tp.xi_triv θ ψ
-
-example {V W : HSp D} (hV : V.rank = 0) (hW : W.rank = 0) : AdmE V W 1 1 := by
-  have h0 : ResEta D 1 0 := ⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩
-  exact ⟨hV.trans hW.symm, isHC_one D, isHC_one D, hV ▸ h0, hW ▸ h0⟩
-
-example {V W : HSp D} {χ χ' : IdC D} (h : admitted V W χ χ') : ¬ AdmE V W χ χ' := fun k => h.1 k.1
 
 end GlobalTheory.Mem.Th
 

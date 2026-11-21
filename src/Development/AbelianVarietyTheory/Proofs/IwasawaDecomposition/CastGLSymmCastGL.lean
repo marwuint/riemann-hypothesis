@@ -37,51 +37,6 @@ def conjBack (J : Subgroup G) (k : G) : J.map (MulAut.conj k).toMonoidHom ≃* J
 theorem conjBack_spec (J : Subgroup G) (k : G) (x : J.map (MulAut.conj k).toMonoidHom) :
     ((conjBack J k x : J) : G) = k⁻¹ * x * k := rfl
 
-def shiftR (A : AdPts S ι J) (k : G) : AdPts S ι (J.map (MulAut.conj k).toMonoidHom) where
-  K1 := A.K1.map (MulAut.conj k).toMonoidHom
-  principal_congruence_le := Subgroup.map_mono A.principal_congruence_le
-  q x := A.q (x * k)
-  gl := A.gl.comp (MonoidHom.prodMap (MonoidHom.id Γ) (conjBack J k).toMonoidHom)
-  gl_surj := by
-    intro g
-    obtain ⟨⟨γ, j⟩, rfl⟩ := A.gl_surj g
-    refine ⟨(γ, (conjBack J k).symm j), ?_⟩
-    show A.gl (γ, conjBack J k ((conjBack J k).symm j)) = _
-    rw [MulEquiv.apply_symm_apply]
-  gl_ker := by
-    intro γ x
-    show A.gl (γ, conjBack J k x) = 1 ↔ _
-    rw [A.gl_ker, conjBack_spec]
-    refine and_congr Iff.rfl ⟨fun h => ⟨_, h, by show k * (k⁻¹ * (x : G) * k) * k⁻¹ = x; group⟩, ?_⟩
-    rintro ⟨y, hy, e⟩
-    rw [← e]
-    have e2 : k⁻¹ * ((MulAut.conj k).toMonoidHom y) * k = y := by
-      show k⁻¹ * (k * y * k⁻¹) * k = y; group
-    rw [e2]; exact hy
-  q_surj := by
-    intro d
-    obtain ⟨x, rfl⟩ := A.q_surj d
-    exact ⟨x * k⁻¹, by simp⟩
-  q_eqv := by
-    intro γ x y
-    show A.q (ι γ * y * (x : G)⁻¹ * k) = A.gl (γ, conjBack J k x) • A.q (y * k)
-    rw [← A.q_eqv]
-    congr 1
-    rw [conjBack_spec]; group
-  q_fib := by
-    intro x x'
-    show A.q (x * k) = A.q (x' * k) ↔ _
-    rw [A.q_fib]
-    constructor
-    · rintro ⟨k1, hk1, e⟩
-      refine ⟨k * k1 * k⁻¹, ⟨k1, hk1, rfl⟩, ?_⟩
-      calc x' = x' * k * k⁻¹ := by group
-        _ = x * k * k1 * k⁻¹ := by rw [e]
-        _ = _ := by group
-    · rintro ⟨_, ⟨k1, hk1, rfl⟩, e⟩
-      refine ⟨k1, hk1, ?_⟩
-      rw [e]; show x * (k * k1 * k⁻¹) * k = x * k * k1; group
-
 end Shift
 
 section Read
@@ -157,49 +112,6 @@ def levE (eG : G ≃* G') (k : G) (J' : Subgroup G') (hJ : J' = (J.map (MulAut.c
 theorem levE_coe (eG : G ≃* G') (k : G) (J' : Subgroup G') (hJ : J' = (J.map (MulAut.conj k).toMonoidHom).map eG.toMonoidHom)
     (x : J.map (MulAut.conj k).toMonoidHom) : ((levE eG k J' hJ x : J') : G') = eG x := rfl
 
-def presST (A : AdPts S ι J) (h : S.Ok) (σ : K →+* ℂ) (ρ' : Γ' →* Module.End ℂ W) (k : G) (eG : G ≃* G') (eΓ : Γ ≃* Γ')
-    (hι : ∀ γ, ι' (eΓ γ) = eG (ι γ)) (J' : Subgroup G') (χ' : J' →* ℂˣ)
-    (hJ : J' = (J.map (MulAut.conj k).toMonoidHom).map eG.toMonoidHom)
-    (coef : S.V →ₛₗ[σ] W) (hli : LinearIndependent ℂ fun i => coef (S.bV i))
-    (hspan : Submodule.span ℂ (Set.range fun i => coef (S.bV i)) = ⊤)
-    (hpair : ∀ x x', inner ℂ (coef x) (coef x') = σ (S.pair x x'))
-    (hK1 : ∀ κ : J, (κ : G) ∈ A.K1 → ∀ hx : eG (k * κ * k⁻¹) ∈ J', χ' ⟨_, hx⟩ = 1)
-    (hgl : ∀ (γ : Γ) (κ : J) (v : S.V) (hx : eG (k * κ * k⁻¹) ∈ J'),
-      coef (S.ρ (A.gl (γ, κ)) v) = ((χ' ⟨_, hx⟩)⁻¹ : ℂˣ) • ρ' (eΓ γ) (coef v)) :
-    ClassPres ι' (S.toCSD h) σ ρ' J' χ' :=
-  ClassPres.transport
-    (classPresOf (shiftR A k) h σ (ρ'.comp eΓ.toMonoidHom) (χ'.comp (levE eG k J' hJ).toMonoidHom) coef hli hspan hpair
-      (fun x hx => by
-        obtain ⟨y, hy, e⟩ := hx
-        have hκ : k⁻¹ * (x : G) * k ∈ A.K1 := by
-          rw [← e]; show k⁻¹ * (k * y * k⁻¹) * k ∈ A.K1
-          have e2 : k⁻¹ * (k * y * k⁻¹) * k = y := by group
-          rw [e2]; exact hy
-        have hx' : eG (k * ((conjBack J k x : J) : G) * k⁻¹) ∈ J' := by
-          rw [conjBack_spec]
-          have e3 : k * (k⁻¹ * (x : G) * k) * k⁻¹ = x := by group
-          rw [e3]; exact (levE eG k J' hJ x).2
-        have := hK1 (conjBack J k x) hκ hx'
-        rw [← this]
-        show χ' (levE eG k J' hJ x) = _
-        congr 1
-        apply Subtype.ext
-        show eG (x : G) = eG (k * (k⁻¹ * (x : G) * k) * k⁻¹)
-        congr 1; group)
-      (fun γ x v => by
-        have hx' : eG (k * ((conjBack J k x : J) : G) * k⁻¹) ∈ J' := by
-          rw [conjBack_spec]
-          have e3 : k * (k⁻¹ * (x : G) * k) * k⁻¹ = x := by group
-          rw [e3]; exact (levE eG k J' hJ x).2
-        have := hgl γ (conjBack J k x) v hx'
-        show coef (S.ρ (A.gl (γ, conjBack J k x)) v) = ((χ' (levE eG k J' hJ x))⁻¹ : ℂˣ) • ρ' (eΓ γ) (coef v)
-        rw [this]
-        congr 3
-        apply Subtype.ext
-        show eG (k * (k⁻¹ * (x : G) * k) * k⁻¹) = eG (x : G)
-        congr 1; group))
-    eG eΓ hι (fun _ => rfl) hJ (fun x hx => rfl)
-
 variable (A : AdPts S ι J) (h : S.Ok) (σ : K →+* ℂ) (ρ' : Γ' →* Module.End ℂ W) (k : G) (eG : G ≃* G') (eΓ : Γ ≃* Γ')
     (hι : ∀ γ, ι' (eΓ γ) = eG (ι γ)) (J' : Subgroup G') (χ' : J' →* ℂˣ)
     (hJ : J' = (J.map (MulAut.conj k).toMonoidHom).map eG.toMonoidHom)
@@ -216,12 +128,6 @@ end GlobalTheory.Mem.R3.LiftPres
 
 namespace GlobalTheory.Mem.R3.LiftPres
 
-theorem castGL_symm_castGL {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (x : GL (Fin m) R) :
-    GlobalTheory.Mem.R3.LiftBrg.castGL h.symm (GlobalTheory.Mem.R3.LiftBrg.castGL h x) = x := by
-  subst h
-  ext i j
-  simp [GlobalTheory.Mem.R3.LiftBrg.castGL]
-
 end GlobalTheory.Mem.R3.LiftPres
 
 namespace GlobalTheory.Mem.R3.LiftPres
@@ -235,10 +141,5 @@ theorem ufGL_ratHom {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     Formalism.L2.Col.ufGL E n (Formalism.L2.Col.ratHom hc n γ) = (γ : GL (Fin n) E) := by
   show Formalism.L2.Col.toGLm E n (Formalism.UG.glEquiv (γ : GL (Fin n) E)) = _
   simp only [Formalism.L2.Col.toGLm, Formalism.UG.glEquiv, MulEquiv.trans_apply, MulEquiv.symm_apply_apply]
-
-def latImg {E : Type} [Field E] [NumberField E] {m n : ℕ} (h : m = n) (B : GL (Fin m) E)
-    (N : Submodule (𝓞 E) (Fin m → E)) : Submodule (𝓞 E) (Fin n → E) :=
-  N.map (((Matrix.toLin' ((LiftBrg.castGL h B : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)).restrictScalars (𝓞 E)) ∘ₗ
-    (LinearEquiv.funCongrLeft (𝓞 E) E (finCongr h).symm).toLinearMap)
 
 end GlobalTheory.Mem.R3.LiftPres

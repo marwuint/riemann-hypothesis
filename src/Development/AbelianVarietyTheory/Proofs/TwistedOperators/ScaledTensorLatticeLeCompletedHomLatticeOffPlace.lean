@@ -8,10 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PlaceIdempotentU
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemLatOIffExistsActO
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentSumAddConjIdempotentConjFixed
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteAdeleOfSplitPlacesIdempotentSumStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedMatrixGroupOfLocalMultiplierStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMultiplierStandardLatticeOfMoverTrivialStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMultiplierShiftedLatticeAwayFromPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteAdeleOfSplitPlacesIdempotentSum
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedMatrixGroupOfLocalMultiplier
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMultiplierStandardLatticeOfMoverTrivial
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMultiplierShiftedLatticeAwayFromPlaces
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.FWT Formalism.L2.Pj
 open MeasureTheory IsDedekindDomain NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Ker GlobalTheory.AdSpan
@@ -137,7 +137,7 @@ theorem partAt_off_mem_latO : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.r
   · have h0 : GlobalTheory.LiftLevel.partAt (1 - e - cA D e) u = 0 := Matrix.ext fun i _ => absurd i.2 (by omega)
     rw [h0]; exact zero_mem _
   have hTpos : 0 < T.rank := Nat.pos_of_ne_zero hT
-  obtain ⟨σ, hσ, hσ0, hσ1⟩ := GlobalTheory.T.exists_finiteAdele_of_splitPlaces_idempotentSum D _ e he
+  obtain ⟨σ, hσ, hσ0, hσ1⟩ := _root_.GlobalTheory.IdemSumFinAdele.exists_finAdele_of_idemSum D _ e he
   have hf : 1 - e - cA D e = 1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ) := by rw [hσ]; ring
   have hgg : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ) * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ)
       = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ) := by
@@ -165,18 +165,18 @@ theorem partAt_off_mem_latO : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.r
     induction hy using AddSubgroup.closure_induction with
     | mem y hy =>
       obtain ⟨v, hv, u', hu', rfl⟩ := hy
-      refine GlobalTheory.T.mem_completedMatrixGroup_of_local_multiplier D S T _ hO _ hγ _ fun w => ?_
+      refine _root_.GlobalTheory.HatPoint.mem_hatA_of_div D S T _ hO _ hγ _ fun w => ?_
       by_cases hw : ∃ PP ∈ Pg ∪ Q, HeightOneSpectrum.under (𝓞 D.host.F) PP = w
       · left
         obtain ⟨PP, hPP, rfl⟩ := hw
         rw [map_mul, map_sub, map_one, hσ1 PP hPP, sub_self, zero_mul]
       · right
         push_neg at hw
-        obtain ⟨t₁, ht₁, h1⟩ := GlobalTheory.T.exists_multiplier_standard_lattice_of_mover_trivial D S k₀ Λ' σ w (hσ0 w hw) hrow hIsMov v hv
+        obtain ⟨t₁, ht₁, h1⟩ := _root_.GlobalTheory.Ker.MoverStd.exists_mul_std D S k₀ Λ' σ w (hσ0 w hw) hrow hIsMov v hv
         have hu'' : u' ∈ idq (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q)) C.X.Λ := by
           have : Lv.sh C.X.Λ = idq Lv.𝔪 (conjI Lv.𝔪) C.X.Λ := rfl
           rw [this, hLv] at hu'; exact hu'
-        obtain ⟨t₂, ht₂, h2'⟩ := GlobalTheory.T.exists_multiplier_shifted_lattice_away_from_places D T.rank Pg Q C.X.Λ w hw u' hu''
+        obtain ⟨t₂, ht₂, h2'⟩ := _root_.GlobalTheory.TrOffShift.shift_mult D T.rank Pg Q C.X.Λ w hw u' hu''
         refine ⟨t₁ * t₂, fun hm => (w.isPrime.mem_or_mem hm).elim ht₁ ht₂, ?_⟩
         refine AddSubgroup.subset_closure ⟨_, h1, _, h2', ?_⟩
         refine Matrix.ext fun i j => ?_

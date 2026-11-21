@@ -14,8 +14,4 @@ def LocAwaySpec.Statement : Prop :=
         RingHom.ker (IsLocalization.Away.lift E hE : Localization.Away E →+* Φ) ≤
           RingHom.ker (IsLocalization.Away.lift E hψ : Localization.Away E →+* B)
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

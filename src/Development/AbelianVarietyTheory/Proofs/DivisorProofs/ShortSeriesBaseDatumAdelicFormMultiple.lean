@@ -63,8 +63,8 @@ theorem consts_core {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A
   obtain ⟨cc, hcc⟩ := GlobalTheory.AdTh.CcExCore.exists_ccIs_core GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T.J R F κ v₀ hC hTi i Unit (fun _ => A.μ0) (O i) hP
   have hs : (O i).s0 = T.J.toCore.σ₀ := sOv_eq _ _ _
   obtain ⟨h1, h2, -⟩ := GlobalTheory.PtId.dict_cast T.J hTi.laws _ (inR i) (O i).s0 (hs ▸ T.J.toCore.good_σ₀) (Wc D i) (O i).hV (rank_Wc i)
-  obtain ⟨δ, hδ⟩ := GlobalTheory.T.thetaKernel_oneClass_eq_classicalShortSeries D G Pl0 T0 A _ R F hC i hP.lift.std _ _ (iotaW T.J i) h1 h2
-  obtain ⟨ka, hka, hio⟩ := GlobalTheory.T.fockCoefficientMap_extremal_eq_phase_smul_letters D G Pl0 T0 A T.J R F κ v₀ hC hTi hI i Unit (fun _ => A.μ0) (O i) hP
+  obtain ⟨δ, hδ⟩ := _root_.GlobalTheory.AdTh.ShortSeriesCore.thetaKO_eq_short_series_core D G Pl0 T0 A _ R F hC i hP.lift.std _ _ (iotaW T.J i) h1 h2
+  obtain ⟨ka, hka, hio⟩ := _root_.GlobalTheory.AdTh.PhaseMapCore.io_eq_phase_smul_core D G Pl0 T0 A T.J R F κ v₀ hC hTi hI i Unit (fun _ => A.μ0) (O i) hP
   obtain ⟨c0, hc0, hcov⟩ := GlobalTheory.AdTh.CoverVal.cover_value_core D G Pl0 T0 A T.J R F κ v₀ hC hTi i Unit (fun _ => A.μ0) (O i) hP
   have hd : ‖((δ : ℤ) : ℂ)‖ = 1 := by
     rcases Int.units_eq_one_or δ with rfl | rfl <;> simp

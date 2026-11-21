@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.FactorApply
 import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.PartStable
 import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.NakAll
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorEqTopOrLeKerFiniteLengthModulesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorEqTopOrLeKerFiniteLengthModules
 open scoped TensorProduct
 open UpperTheory.Lit.HoweDuality
 
@@ -21,7 +21,7 @@ theorem UpperTheory.Lit.HoweDuality.tens :
         (iSup_le fun l t ht => Submodule.mem_sup_right
           ((le_iSup (fun l => part M₀ l (LinearMap.ker (p l))) l) (h2 l t ht)))
     exact fun t ht => hle ht
-  have key := GlobalTheory.T.tensor_eq_top_or_le_ker_finiteLength_modules Op₀ Op Rel₀ (fun i => LinearMap.ker (p i)) p₀ p hr₀ hr hL₀ hmax₀ hRel₀ hker₀
+  have key := _root_.GlobalTheory.TensHead.tensor_eq_top_or_le_ker_map Op₀ Op Rel₀ (fun i => LinearMap.ker (p i)) p₀ p hr₀ hr hL₀ hmax₀ hRel₀ hker₀
     (fun i => ⟨2, fun m C hC h => ?_⟩) hmax (fun i => le_rfl) hK
     (N ⊔ (⨆ l, part M₀ l (LinearMap.ker (p l))))
     (fun x hx y => Submodule.mem_sup_left (hN₀ x hx y))

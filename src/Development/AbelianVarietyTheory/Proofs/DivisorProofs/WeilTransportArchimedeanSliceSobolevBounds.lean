@@ -4,15 +4,15 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryPartnerDiagStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsContOnOfLocal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdeleJoinZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalFiniteDimFinitePartsWeilOperatorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchDerivativeKeepsSumsFixedFinitePartsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepDerivativeLawOfL2IsometricStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalFiniteDimFinitePartsWeilOperators
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchDerivativeKeepsSumsFixedFiniteParts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepDerivativeLawOfL2Isometric
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAdelicDualBasisIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzL2WordBoundExistsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteL2ABoundWordsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.L2ATransportGramTransposeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedArchHeisenbergDirectionsContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStandardArchimedeanAddCharOfStandardCharStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzL2WordBoundExists
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteL2ABoundWords
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.L2ATransportGramTranspose
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedArchHeisenbergDirectionsContinuous
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStandardArchimedeanAddCharOfStandardChar
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta
 open IsDedekindDomain NumberField
@@ -55,7 +55,7 @@ variable [Invertible (2 : AdeleRing (𝓞 F) F)] {ψ : AddChar (AdeleRing (𝓞 
 theorem dS_mem (hψ : IsStdInf F ψ) (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ}
     (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) : dS F ψ h Φ ∈ GlobalTheory.WeilM.schA F κ := by
   obtain ⟨n, f, g, hg, rfl⟩ := schA_decomp hΦ
-  obtain ⟨f', hf'⟩ := GlobalTheory.T.archDerivative_keeps_sums_fixed_finite_parts F κ ψ hψ n g f h
+  obtain ⟨f', hf'⟩ := _root_.GlobalTheory.WeilL2Words.dS_sum_pureA F κ ψ hψ n g f h
   rw [hf']
   exact Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f' i, g i, hg i, rfl⟩
 
@@ -72,7 +72,7 @@ theorem word_sum (hψ : IsStdInf F ψ) {m : ℕ} (g : Fin m → (κ → FiniteAd
   | [], f => ⟨f, rfl⟩
   | h :: w, f => by
     obtain ⟨f1, e1⟩ := word_sum hψ g w f
-    obtain ⟨f2, e2⟩ := GlobalTheory.T.archDerivative_keeps_sums_fixed_finite_parts F κ ψ hψ m g f1 h
+    obtain ⟨f2, e2⟩ := _root_.GlobalTheory.WeilL2Words.dS_sum_pureA F κ ψ hψ m g f1 h
     exact ⟨f2, by rw [word_cons, e1, e2]⟩
 
 theorem word_law (hψ : IsStdInf F ψ) {G : Type} [Group G] (om : G →* Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ))
@@ -87,7 +87,7 @@ theorem word_law (hψ : IsStdInf F ψ) {G : Type} [Group G] (om : G →* Module.
   | [], _, _ => rfl
   | h :: w, φ, hφ => by
     rw [List.map_cons, word_cons, word_cons, word_law hψ om pres M himpl μ hμ hiso p w hφ]
-    exact GlobalTheory.T.weilRep_derivative_law_of_L2Isometric F κ ψ hψ om pres M himpl μ hμ hiso p h _ (word_mem hψ _ hφ)
+    exact _root_.GlobalTheory.WeilL2Words.dS_om_eq F κ ψ hψ om pres M himpl μ hμ hiso p h _ (word_mem hψ _ hφ)
 
 theorem slice_l2_of (hψ : IsStdInf F ψ) {G : Type} [Group G] [TopologicalSpace G]
     (om : G →* Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ))
@@ -105,7 +105,7 @@ theorem slice_l2_of (hψ : IsStdInf F ψ) {G : Type} [Group G] [TopologicalSpace
     (y : (κ → FiniteAdeleRing (𝓞 F) F)) (i j : ℕ) :
     ∃ B : ℝ, ∀ᶠ p in nhds p0,
       ∫ x, (‖x‖ ^ i * ‖iteratedFDeriv ℝ j (fun x => om p Φ (GlobalTheory.WeilCont.adeleJoin F x y)) x‖) ^ 2 ≤ B := by
-  obtain ⟨L, C, hL⟩ := GlobalTheory.T.adelic_schwartz_l2_word_bound_exists F κ ψ hψ i j
+  obtain ⟨L, C, hL⟩ := _root_.GlobalTheory.WeilL2Words.adelic_schwartz_slice_l2_word_bound F κ ψ hψ i j
   obtain ⟨N, hN, m, g, yy, hg, hdual, hf⟩ := hfin
   obtain ⟨CG, hCG, hG⟩ := GlobalTheory.T.finite_adelic_dual_basis_integral F κ m g yy hg hdual μ hμ y
   set R : ℝ := ∑ h ∈ L.flatten.toFinset, (‖M p0 h‖ + 1) with hR
@@ -116,7 +116,7 @@ theorem slice_l2_of (hψ : IsStdInf F ψ) {G : Type} [Group G] [TopologicalSpace
     exact hp.le.trans (Finset.single_le_sum (f := fun h => ‖M p0 h‖ + 1) (fun _ _ => by positivity) hh)
   have hB : ∀ w ∈ L, ∃ B : ENNReal, B ≠ ⊤ ∧ ∀ ws : List ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)), ws.length = w.length →
       (∀ h ∈ ws, ‖h‖ ≤ R) → l2A F μ (word F ψ ws Φ) ≤ B :=
-    fun w _ => GlobalTheory.T.exists_finite_l2A_bound_words F κ ψ hψ Φ hΦ μ hμ w.length R
+    fun w _ => _root_.GlobalTheory.WeilL2Words.l2A_word_le F κ ψ hψ Φ hΦ μ hμ w.length R
   choose! B hBtop hBle using hB
   have htop : ENNReal.ofReal C * (L.map fun w => CG * B w).sum ≠ ⊤ := by
     refine ENNReal.mul_ne_top ENNReal.ofReal_ne_top (list_sum_ne_top fun a ha => ?_)
@@ -165,7 +165,7 @@ theorem GlobalTheory.WeilL2Words.weilTransport_archimedeanSlice_sobolev_bounds_a
       ∀ᶠ p in nhds p0, ∫ x, (‖x‖ ^ i * ‖iteratedFDeriv ℝ j (fun x => om p Φ (GlobalTheory.WeilCont.adeleJoin D.host.F x y)) x‖) ^ 2 ≤ B := by
   intro D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ _ co hco ω hω om hom Φ hΦ y p0 i j
   have hI := GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom
-  obtain ⟨M, himpl, hM⟩ := GlobalTheory.T.transported_archHeisenbergDirections_continuous D ψ _ _ JA JB ξ κ co om hI.2
-  obtain ⟨μ, hμ, hiso⟩ := GlobalTheory.T.l2A_transport_gram_transpose D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom
-  exact GlobalTheory.WeilL2Words.slice_l2_of (GlobalTheory.T.isStandardArchimedeanAddChar_of_standardChar D ψ hψ) om hI.1 M himpl hM μ hμ hiso hΦ p0
-    (GlobalTheory.T.exists_local_finiteDim_finiteParts_weilOperators D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom Φ hΦ p0) y i j
+  obtain ⟨M, himpl, hM⟩ := _root_.GlobalTheory.ArchTransportHost.archDir_transport_host D ψ _ _ JA JB ξ κ co om hI.2
+  obtain ⟨μ, hμ, hiso⟩ := _root_.GlobalTheory.WeilL2Transport.l2A_transport D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom
+  exact GlobalTheory.WeilL2Words.slice_l2_of (_root_.GlobalTheory.WeilL2Words.StdTheta.isStdInf_of_isStdChar D ψ hψ) om hI.1 M himpl hM μ hμ hiso hΦ p0
+    (_root_.GlobalTheory.WeilCont.exists_local_finite_parts D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom Φ hΦ p0) y i j

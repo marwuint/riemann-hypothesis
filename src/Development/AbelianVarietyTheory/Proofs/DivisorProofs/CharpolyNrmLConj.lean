@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTwistedClassesCharpoly
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup
+import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarizedCuspidal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularTwistedOrbitLocalFinitenessStatement
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
@@ -125,7 +126,7 @@ theorem clSum_prod {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
     by_cases h1 : p.1.rep ∈ S <;> by_cases h2 : p.2.rep ∈ S'
     · simp only [hmem, h1, h2, and_self, if_true]
       rw [hind]
-      exact GlobalTheory.T.twistedOrbitalIntegral_productGroup G G' θ θ' K K' _ _ _ _ (fun x => index_ne θ K hK _ x) (fun x => index_ne θ' K' hK' _ x)
+      exact _root_.GlobalTheory.BCT.OrbProd.twOrb_prod G G' θ θ' K K' _ _ _ _ (fun x => index_ne θ K hK _ x) (fun x => index_ne θ' K' hK' _ x)
         (hfin θ K hK S hd _ h1) (hfin θ' K' hK' S' hd' _ h2)
     · rw [if_neg fun h => h2 (hmem.mp h).2, if_neg h2, mul_zero]
     · rw [if_neg fun h => h1 (hmem.mp h).1, if_neg h1, zero_mul]

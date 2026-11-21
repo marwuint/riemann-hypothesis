@@ -77,20 +77,6 @@ end GlobalTheory.CompanionTheory.IwJac.DCoset
 
 namespace GlobalTheory.CompanionTheory.IwJac
 
-theorem iwahori_mul_tor_mul_iwahori : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
-    [IsNonarchimedeanLocalField k] (n : ℕ) (ϖ : kˣ), ord k ϖ = 1 → ∀ x : Fin n → ℤ, StrictAnti x →
-    ∀ a ∈ iwahori k (Fin n), ∀ b ∈ iwahori k (Fin n), ∃ m ∈ nO k n, ∃ c ∈ iwahori k (Fin n),
-      a * tor ϖ x * b = m * tor ϖ x * c := by
-  intro k _ _ _ _ n ϖ hϖ x hx a ha b hb
-  obtain ⟨c, hc, τ, hτ, l, hl, rfl⟩ := GlobalTheory.CompanionTheory.IwahoriDatumGL.fact_up' k n ha
-  refine ⟨c, hc, τ * ((tor ϖ x)⁻¹ * l * tor ϖ x) * b,
-    mul_mem (mul_mem hτ.1 (DCoset.conj_mem_iwahori hϖ hx hl)) hb, ?_⟩
-  obtain ⟨s, rfl⟩ := hτ.2
-  calc c * diagT k (Fin n) s * l * tor ϖ x * b
-      = c * (tor ϖ x * diagT k (Fin n) s * (tor ϖ x)⁻¹) * l * tor ϖ x * b := by
-        rw [DCoset.diagT_conj_tor]
-    _ = c * tor ϖ x * (diagT k (Fin n) s * ((tor ϖ x)⁻¹ * l * tor ϖ x) * b) := by group
-
 end GlobalTheory.CompanionTheory.IwJac
 
 end

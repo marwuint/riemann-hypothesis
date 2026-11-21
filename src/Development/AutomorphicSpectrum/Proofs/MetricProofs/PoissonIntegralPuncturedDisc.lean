@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HarmonicAnnulusMaximumPrincipleStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HarmonicAnnulusMaximumPrinciple
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegralAngMeas
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshPoisson
 
@@ -73,7 +73,7 @@ theorem le_zero_of_bddAbove_punctured (g : ℂ → ℝ) (ρ C : ℝ) (hρ : 0 < 
       · show g z - ε * (Real.log ρ - Real.log ‖z‖) ≤ 0
         rw [hz, sub_self, mul_zero, sub_zero]
         exact h0 z hz
-    have hmax := GlobalTheory.T.harmonic_annulus_maximum_principle h r ρ hr0 hrρ hcont hharm hbdry w hrw.le hwρ.le
+    have hmax := _root_.GlobalTheory.CompanionTheory.Ar.PB.Flat.harmonic_annulus_le_zero h r ρ hr0 hrρ hcont hharm hbdry w hrw.le hwρ.le
     simp only [h] at hmax
     linarith
   by_contra hneg

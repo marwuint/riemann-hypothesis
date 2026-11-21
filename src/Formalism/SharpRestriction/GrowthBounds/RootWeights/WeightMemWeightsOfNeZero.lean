@@ -1,4 +1,4 @@
-import Formalism.SharpRestriction.GrowthBounds.RootWeights.LatticeTheoremOfAdmitted
+import Formalism.SharpRestriction.GrowthBounds.RootWeights.IsotypicProjectorTraceFormula
 import Formalism.SharpRestriction.GrowthBounds.RootWeights.WeightEntriesBetweenExtremeHighest
 import Formalism.SharpRestriction.GrowthBounds.RootWeights.InvariantDenominatorLinftyBound
 

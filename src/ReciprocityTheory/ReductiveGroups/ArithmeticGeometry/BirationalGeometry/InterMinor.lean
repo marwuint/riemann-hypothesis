@@ -1,12 +1,12 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPC
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.MemConePtsIffChartIdeal
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterMinorA
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.IsIntersectionFamily
 
 noncomputable section
 
 namespace ReciprocityTheory.ChartRestriction.G.Geo
 
-open MvPolynomial MultiHomogZ
+open MvPolynomial
 open scoped Pointwise
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]

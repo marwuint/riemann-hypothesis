@@ -60,14 +60,4 @@ theorem isNef_pull_of_nefOver {k : Type} [CommRing k] {X : Scheme.{0}} {p : X �
   fin_cases j
   exact lbIso_pull_comp L.isLB i c
 
-theorem interNum_nonneg_of_nefOver : Hypotheses2 → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
-    (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (l : ℕ) [Fact l.Prime] (Z : Scheme.{0}) (i : Z ⟶ X)
-    [IsClosedImmersion i] [IsIntegral Z] [Algebra (ZMod l) Γ(Z, ⊤)], topologicalKrullDim Z = D →
-    ∀ N : Fin D → HermLB p, (∀ j, NefOver (N j) l) →
-      0 ≤ interNum (ZMod l) (structureModule Z) (fun j => (N j).B.pull i) := by
-  intro hP k _ X _ p D hX l _ Z i _ _ _ hZ N hN
-  haveI := hX.finite
-  exact hP.q7.1.interNum_nonneg (isProjOver_fibre hX.isProjOver l i) hZ
-    fun j => isNef_pull_of_nefOver l i (N j) (hN j)
-
 end GlobalTheory.FibreNef

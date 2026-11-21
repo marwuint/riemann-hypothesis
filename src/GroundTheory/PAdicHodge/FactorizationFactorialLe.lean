@@ -256,10 +256,6 @@ theorem theta_algebraMap (x : AInf K p) :
     theta K p (algebraMap (AInf K p) (ACris K p) x) = θ x := by
   rw [AdicCompletion.algebraMap_apply, theta_of, thetaZero_algebraMap]
 
-theorem theta_surjective : Function.Surjective (theta K p) := fun y => by
-  obtain ⟨x, rfl⟩ := IsPerfectoidField.surjective_fontaineTheta (K := K) p y
-  exact ⟨_, theta_algebraMap x⟩
-
 end Theta
 
 section Frobenius

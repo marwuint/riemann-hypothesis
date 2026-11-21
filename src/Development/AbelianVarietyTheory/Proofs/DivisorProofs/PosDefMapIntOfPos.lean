@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulEqSumVecMulVecSpanningFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulEqSumVecMulVecSpanningFamily
 
 open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.Poinc Matrix
 
@@ -124,7 +124,7 @@ theorem exists_supports_int : ∀ (φ : InvFun ℤ) (X : Type) [AddCommGroup X] 
       exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
     rw [e, h5]
     omega
-  obtain ⟨D, m, a, hD, hspan, hsum⟩ := GlobalTheory.T.exists_smul_eq_sum_vecMulVec_spanning_family _ L (posDef_map_int_of_pos L hsym hpos)
+  obtain ⟨D, m, a, hD, hspan, hsum⟩ := _root_.GlobalTheory.Poinc.SumSq.exists_smul_eq_sum_vecMulVec_span _ L (posDef_map_int_of_pos L hsym hpos)
   let x : Fin m → X := fun k => b.equivFun.symm (a k)
   have hx : ∀ k i, b.repr (x k) i = a k i := fun k i => by
     show b.equivFun (b.equivFun.symm (a k)) i = a k i

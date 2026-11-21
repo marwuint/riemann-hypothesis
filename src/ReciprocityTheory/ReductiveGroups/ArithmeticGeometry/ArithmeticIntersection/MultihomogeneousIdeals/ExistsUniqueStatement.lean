@@ -60,19 +60,6 @@ def GeoNumStatement : Prop :=
 
 end Fibre
 
-section BaseField
-
-variable {K : Type*} [Fintype K] (F F' : Type*) [Field F] [Field F'] [Algebra F F'] (ι : K → Type*)
-  [∀ k, Fintype (ι k)]
-
-def BaseChangeStatement : Prop :=
-  ∀ (I : IFamily F ι) (I' : IFamily F' ι), IsFieldIntersection I → IsFieldIntersection I' →
-    ∀ (V : Ideal (MRingOver F ι)) (n : ℕ) (L : Fin n → K → ℤ), IsProjVarF V n →
-      I V n L = ∑ᶠ W ∈ (V.map (MvPolynomial.map (algebraMap F F'))).minimalPrimes,
-        (multAt (V.map (MvPolynomial.map (algebraMap F F'))) W : ℤ) * I' W n L
-
-end BaseField
-
 section Positivity
 
 variable {K : Type*} [Fintype K] (F : Type*) [Field F] (ι : K → Type*) [∀ k, Fintype (ι k)]
@@ -83,34 +70,5 @@ def PositivityStatement : Prop :=
       (∀ L : Fin n → K → ℤ, (∀ j k, 0 ≤ L j k) → 0 ≤ I V n L) ∧ 0 < I V n (fun _ _ => 1)
 
 end Positivity
-
-section Inhabit
-
-variable (F : Type*) [Field F]
-
-def PointIsVarStatement : Prop :=
-  IsProjVarF (⊥ : Ideal (MRingOver F fun _ : Unit => Fin 1)) 0
-
-def LineIsVarStatement : Prop :=
-  IsProjVarF (⊥ : Ideal (MRingOver F fun _ : Unit => Fin 2)) 1
-
-def LineSectionStatement : Prop :=
-  IsRatSection (⊥ : Ideal (MRingOver F fun _ : Unit => Fin 2)) (fun _ => 1) (X ⟨(), 0⟩) 1 ∧
-    ratDiv (⊥ : Ideal (MRingOver F fun _ : Unit => Fin 2)) (X ⟨(), 0⟩) 1 =
-      Finsupp.single (Ideal.span {X ⟨(), 0⟩}) 1
-
-def PointDegStatement : Prop :=
-  ∀ I : IFamily F (fun _ : Unit => Fin 1), IsFieldIntersection I →
-    I ⊥ 0 Fin.elim0 = 1
-
-def LineDegStatement : Prop :=
-  ∀ I : IFamily F (fun _ : Unit => Fin 2), IsFieldIntersection I →
-    ∀ d : ℤ, I ⊥ 1 ![fun _ => d] = d
-
-def QuadricStatement : Prop :=
-  ∀ I : IFamily F (fun _ : Fin 2 => Fin 2), IsFieldIntersection I →
-    I ⊥ 2 ![Pi.single 0 1, Pi.single 1 1] = 1 ∧ I ⊥ 2 ![Pi.single 0 1, Pi.single 0 1] = 0
-
-end Inhabit
 
 end ReciprocityTheory.ChartRestriction.G.AI.I1

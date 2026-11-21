@@ -8,13 +8,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NotIsLineFnZero
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFramesAnalyticStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGeneratorStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionsFlatAgreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicChartNearPointStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFramesAnalytic
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGenerator
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionsFlatAgree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicChartNearPoint
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentOpenStalksDomainStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValueLocallyRegularFunctionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValueLocallyRegularFunction
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentPointValueHolomorphicStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
@@ -208,7 +208,7 @@ theorem ext_frames {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {τ
     rw [← hχ₀]
     exact ⟨_, (val χ₀ (by rw [hχ₀]; exact hf.1) (by rw [hχ₀]; exact hf.2.1)).2⟩
   obtain ⟨r₀, hr₀⟩ := hval₀
-  obtain ⟨W₁, hW₁, hsec⟩ := GlobalTheory.T.value_locally_regular_function _ _ Y.j Z.Ω (Z.ξ₀ ≫ Y.j) Z.gen y₀ _ r₀ hr₀
+  obtain ⟨W₁, hW₁, hsec⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SectionNear.section_near _ _ Y.j Z.Ω (Z.ξ₀ ≫ Y.j) Z.gen y₀ _ r₀ hr₀
   have hcU : centre y₀ ∈ U := hf.2.1 ⟨_, rfl⟩
   have hy₀' : ⊤ ≤ y₀ ⁻¹ᵁ (V₀ ⊓ U' ⊓ W₁) := by
     intro t ht
@@ -217,7 +217,7 @@ theorem ext_frames {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {τ
   have hsm : SmoothOfRelativeDimension D.dim
       (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) := by
     exact (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth
-  obtain ⟨V, hV, ψ, hle, hhol, hψ0, hover, hinj⟩ := GlobalTheory.T.holomorphic_chart_near_point c.F σ (Xo.XF c) (pullback.snd _ _) D.dim hsm y₀ _ hf.1 hy₀'
+  obtain ⟨V, hV, ψ, hle, hhol, hψ0, hover, hinj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.SmoothChart.exists_polydisc_chart c.F σ (Xo.XF c) (pullback.snd _ _) D.dim hsm y₀ _ hf.1 hy₀'
     (hdom _ hcU)
   obtain ⟨g, hg⟩ := hsec V hV (hle.trans inf_le_right)
   have hVV₀ : V ≤ V₀ := hle.trans (inf_le_left.trans inf_le_left)
@@ -278,16 +278,16 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 theorem flat_eq_const_mul_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (Φ : CFn Xo c) (φ : FrameFn Xo c), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → 1 ≤ D.p + D.q → τ (H.rt : E) = H.rt0 → σ (tauIn c τ H.rt) = H.rt0 → Z.IsGeom → IsUnitAn τ σ Φ → IsLineFn U τ φ → FlatOnModel Z τ φ → ∃ κ : ℂ, κ ≠ 0 ∧ ∀ y v w, IsFramed U τ σ y v w → φ ℂ y v w = κ * Φ y v w := by
   intro hR hG E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ φ hO hpq hτ hσ hgeo hΦ hL hF
-  obtain ⟨h1, h2, -, ⟨p₀, hp₀⟩⟩ := GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hO hτ
+  obtain ⟨h1, h2, -, ⟨p₀, hp₀⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c O β Y U Z τ hO hτ
   obtain ⟨N₁, hN₁, b₁, sb₁, fb₁⟩ := h1 p₀ hp₀
   obtain ⟨N₂, hN₂, b₂, sb₂, fb₂⟩ := h2 p₀ hp₀
   have l₁ := (fb₁ p₀ hp₀ hN₁).1
   have l₂ := (fb₂ p₀ hp₀ hN₂).1
   obtain ⟨f, κ₀, W, hκ₀, hgW, hgen, hpts⟩ :=
-    GlobalTheory.T.eigen_frames_analytic hR hG E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ hO hpq hτ hσ hgeo hΦ l₁ sb₁ l₂ sb₂
-  obtain ⟨φ₀, hL₀, hrep⟩ := GlobalTheory.T.wedge_eigen_line_generator E H D l Xo c O β Y U Z τ _ _ hO hτ hgen
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_gen_of_unitAn hR hG E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ hO hpq hτ hσ hgeo hΦ l₁ sb₁ l₂ sb₂
+  obtain ⟨φ₀, hL₀, hrep⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_frameFn_of_gen E H D l Xo c O β Y U Z τ _ _ hO hτ hgen
   have hF₀ := FlatOnModel.of_gen hL₀ hgen hrep
-  obtain ⟨x, hx, hsc⟩ := GlobalTheory.T.frame_functions_flat_agree E H D l Xo c O β Y U Z τ φ₀ φ hO hτ hgeo hL₀ hF₀ hL hF
+  obtain ⟨x, hx, hsc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_const_of_flatOnModel E H D l Xo c O β Y U Z τ φ₀ φ hO hτ hgeo hL₀ hF₀ hL hF
   have hext := Cmp.ext_frames Z hO hτ hΦ hL₀ hrep
     (fun c₁ lc sc => by
       obtain ⟨d, hd⟩ := Cmp.iMulti_eq_smul lc (sb₁.trans sc.symm)

@@ -4,7 +4,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonempty
 import Development.WeilBound.CoreStatements.VolumeEquality.RegularFunctionChartAdjoin
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueDominatingMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsNormalisationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsNormalisation
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 
 noncomputable section
@@ -284,7 +287,7 @@ theorem exists_normal_model {κ₁ κ₂ : Type} [Finite κ₁] [Finite κ₂] (
       Subring.closure_eq (chRing ℤ s c₀).toSubring
     rw [hcl] at hy hz
     exact ⟨y, hy, z, hz, e.symm⟩
-  obtain ⟨κ', hκ', y', M', f, hf, hnorm, -, -⟩ := GlobalTheory.T.exists_normal_dominating_model ℤ Ω _ s M₀ Ω
+  obtain ⟨κ', hκ', y', M', f, hf, hnorm, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.NormEx.exists_normalisation ℤ Ω _ s M₀ Ω
   have hf' : Dominates M'.ξ M₀.ξ f (RingHom.id Ω) := hf
   refine ⟨κ', hκ', y', M', hnorm, fun p => ?_, fun p => ?_⟩
   · obtain ⟨h, hctr⟩ := exists_isCtrOf hf' M'.tie.gen p

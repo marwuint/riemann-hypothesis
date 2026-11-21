@@ -53,12 +53,6 @@ theorem modF_iota (hI : IndexFormula) (hC : CardStep) (hd : DenseRange ι)
 
 end Local
 
-section Global
-
-variable {F : Type} [Field F] [NumberField F]
-
-end Global
-
 section LocAt
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

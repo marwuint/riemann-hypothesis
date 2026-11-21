@@ -18,10 +18,4 @@ def ConstDist : Prop :=
         PowerSeries.C (ϖ ^ N) * (PowerSeries.C c - PowerSeries.C (ϖ ^ y) * a) ∈ Ideal.span {p} →
         ϖ ^ y ∣ c
 
-def CoprimeProd : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ →
-    ∀ (d d' : ℕ) (p p' : PowerSeries O), UnitDist ϖ d p → UnitDist ϖ d' p' → CoprimeRat ϖ p p' →
-      ∀ (a b : ℕ) (z : PowerSeries O), z ∈ Ideal.span {p ^ a} → z ∈ Ideal.span {p' ^ b} →
-        z ∈ Ideal.span {p ^ a * p' ^ b}
-
 end Formalism.ExponentWindows

@@ -67,7 +67,7 @@ private theorem artin_step (hG : GlobalArtinReciprocity) (c : Weil h' →* Weil 
   obtain ⟨art, hart⟩ := hG M Ω
   obtain ⟨b, hs, ho, hg⟩ := GlobalTheory.InvLocalArtin.exists_invLocalArtin M Ω A w h' art hart
   have hb : (Units.map i.toRingHom.toMonoidHom).comp (a.comp c) = b := MonoidHom.ext fun σ =>
-    GlobalTheory.T.globalArtin_localIdele_injective GlobalTheory.Published.chevalleyUnits' M Ω art hart w ((hglob art hart σ).trans (hg σ).symm)
+    _root_.GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' M Ω art hart w ((hglob art hart σ).trans (hg σ).symm)
   refine ⟨hb ▸ hs, hb ▸ GlobalTheory.ArtinInvCont.continuous_inv_on_ine M Ω A w h' art b hart ho hg, hb ▸ ho, fun ξ hξ => ?_, hglob⟩
   obtain ⟨χ, hχ, e⟩ := ha.factor _ (hsm ξ hξ)
   refine ⟨χ.comp (Units.map i.symm.toRingHom.toMonoidHom), IsOpen.preimage (Continuous.units_map _ hi') hχ, ?_⟩
@@ -91,7 +91,7 @@ theorem UpperTheory.isLocallyAlgebraic_transfer_of_placeIso :
       (AddMonoidHom.isOpenMap_of_sigmaCompact i.toAddEquiv.toAddMonoidHom i.surjective hP.cont)
   have hr : ∀ σ, WeilRel (RingEquiv.refl Ω) σ (c σ) := fun σ => (hc σ _).2 rfl
   have hr' : ∀ σ', WeilRel (RingEquiv.refl Ω) (c.symm σ') σ' := fun σ => (hc _ σ).2 (c.apply_symm_apply σ)
-  have inj := GlobalTheory.T.globalArtin_localIdele_injective GlobalTheory.Published.chevalleyUnits'
+  have inj := _root_.GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits'
   constructor
   · refine locAlg_step c.symm.toMonoidHom (fun σ z => (hr' σ z).symm)
       (fun σ => by rw [← hdeg]; simp) i.symm hi' hP.cont (fun a' ha' => ⟨_, artin_step hG c.toMonoidHom c.surjective
@@ -100,7 +100,7 @@ theorem UpperTheory.isLocallyAlgebraic_transfer_of_placeIso :
     · convert hξ using 1
       ext; simp
     · obtain ⟨art', hart'⟩ := hG M Ω
-      refine GlobalTheory.T.globalArtin_compat_localDegreeOne F Ω A v h M Ω A w h' _ j i hP art art' hart hart' σ (c σ) _ (hr σ) ?_
+      refine _root_.GlobalTheory.LocDegOne.artin_of_placeIso F Ω A v h M Ω A w h' _ j i hP art art' hart hart' σ (c σ) _ (hr σ) ?_
       rw [← ha'.glob art' hart' (c σ)]
       congr 2
       ext; simp
@@ -115,7 +115,7 @@ theorem UpperTheory.isLocallyAlgebraic_transfer_of_placeIso :
     obtain ⟨b, -, -, hg⟩ := GlobalTheory.InvLocalArtin.exists_invLocalArtin M Ω A w h' art' hart'
     have hx : Units.map i.toRingHom.toMonoidHom (Units.map i.symm.toRingHom.toMonoidHom (b σ)) = b σ := by
       ext; simp
-    have h1 := GlobalTheory.T.globalArtin_compat_localDegreeOne F Ω A v h M Ω A w h' _ j i hP art art' hart hart' (c.symm σ) σ _ (hr' σ)
+    have h1 := _root_.GlobalTheory.LocDegOne.artin_of_placeIso F Ω A v h M Ω A w h' _ j i hP art art' hart hart' (c.symm σ) σ _ (hr' σ)
       (by rw [hx]; exact hg σ)
     have h2 := inj F Ω art hart v (h1.trans (ha.glob art hart (c.symm σ)).symm)
     rw [← hg σ, ← hx, h2]

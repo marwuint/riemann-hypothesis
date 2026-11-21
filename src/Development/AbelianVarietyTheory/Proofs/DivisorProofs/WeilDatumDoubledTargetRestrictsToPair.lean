@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeltaTApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionHeisenbergInvariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaFunctionDoublingThetaTensorCMStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergOpDoubledGramDoublingThetaTensorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumDoubleSpaceActsUnitScalarSeesawCM
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryCharEqOneOfTrivialRationalSplitPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantFormDoubledSpaceSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousUnitaryDiagonalEmbeddingDoubledStatement
+import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilDatumDoubleSpaceActsUnitScalarSeesawCM
+import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.UnitaryCharEqOneOfTrivialRationalSplitPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantFormDoubledSpaceSplitPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousUnitaryDiagonalEmbeddingDoubled
 open scoped TensorProduct Matrix ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
@@ -34,12 +34,12 @@ theorem restrict_core : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₁ → Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₂ →
         ωd (1, hd) (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) = GlobalTheory.DblTargetDelta.deltaT (ω (1, h) f₁) f₂ := by
   intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h hd hhd f₁ f₂ hf₁ hf₂
-  obtain ⟨ι, hιc, hιm, hιq, hιs, hιd⟩ := GlobalTheory.T.exists_continuous_unitaryDiagonalEmbedding_doubled F E σ nT JT
+  obtain ⟨ι, hιc, hιm, hιq, hιs, hιd⟩ := _root_.GlobalTheory.DiagEmbU.exists_diagEmb F E σ nT JT
   have ext : ∀ a b : GAF σ (dblG JT), mtF σ (dblG JT) a = mtF σ (dblG JT) b → a = b := fun a b hab =>
     (HR (AF F) σ (dblG JT)).subtype_injective (Units.ext hab)
   have hdι : hd = ι h := ext _ _ (by rw [hhd, hιm])
   subst hdι
-  have hsc := fun h' => GlobalTheory.T.weilDatum_doubleSpace_acts_unitScalar_seesaw_CM F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h' (ι h') (hιm h')
+  have hsc := fun h' => _root_.PositivityTheory.ThKW.weil_rep_unitary_pair_equivariant F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h' (ι h') (hιm h')
   choose c hc1 hc using hsc
   have hth := GlobalTheory.T.isThetaFunction_doublingThetaTensor_CM F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ
   by_cases h0 : ∃ f₀, IsThetaFunOF σ JS JT ξ₀ B.ψ f₀ ∧ f₀ ≠ 0
@@ -141,7 +141,7 @@ theorem restrict_core : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     have hS1 : SuppAtF σ e JS 1 := fun i j => by rw [m1, sub_self]; simp
     obtain ⟨rd, hrd, hrd'⟩ := hωd.om_split e he 1 (ι g) hS1 (hιs e g hg) 1 y hx1 (hιd e g y hy)
     obtain ⟨r, hr, hr'⟩ := hω.om_split e he 1 g hS1 hg 1 y hx1 hy
-    obtain ⟨ℓ, hℓ, a, b, ha, hb, hℓab⟩ := GlobalTheory.T.exists_invariant_form_doubled_space_split_place F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he
+    obtain ⟨ℓ, hℓ, a, b, ha, hb, hℓab⟩ := _root_.GlobalTheory.DblSplitForm.exists_invForm_dbl F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he
     have hheis := GlobalTheory.T.heisenbergOp_doubledGram_doublingThetaTensor F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ
     have dadd : ∀ f f' : WOF F E nS nT → ℂ, deltaT (f + f') b = deltaT f b + deltaT f' b := fun f f' => by
       funext x; simp only [deltaT_apply, Pi.add_apply, add_mul]
@@ -191,7 +191,7 @@ theorem restrict_core : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     rw [hcg, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (div_pos hrd hr)] at hn
     apply Circle.ext
     rw [hcc, Circle.coe_one, hcg, hn, Complex.ofReal_one]
-  have hall := GlobalTheory.T.unitaryChar_eq_one_of_trivial_rational_splitPlace F E σ B hB nT JT hT cc hcont hrat hsplit h
+  have hall := _root_.PositivityTheory.ThKW.character_trivial_of_rational_split F E σ B hB nT JT hT cc hcont hrat hsplit h
   rw [hc h f₁ f₂ hf₁ hf₂, ← hcc, hall, Circle.coe_one, one_smul]
 
 end GlobalTheory.DblTargetRestrictCore

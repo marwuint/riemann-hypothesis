@@ -57,49 +57,6 @@ theorem id_coprime_notMem {R : Type} [CommRing R] (P : Ideal R) (hP : P ≠ ⊤)
   rw [h'']
   exact P.add_mem (P.mul_mem_right _ ha) (P.mul_mem_right _ hb)
 
-theorem cIdFlag_of_steps (h1 : EqualFlagsScalar) (h2 : ScalarRootOfUnity) (h3 : ScalarCongruentOne) (h4 : RootsOfUnityFormal) (h5 : ExistsPrimeAbove) {D : D7}
-    (X : TermTie D) (hL : UnitriangularFrameLift D)
-    (hTg : ∀ u : D.what₂.Word, (D.mem u).A.T ≠ D.host.g 0 ∧ (D.mem u).A.T ≠ D.host.g 1) : UnitaryVolumeMass.cIdFlag D X := by
-  rintro u t ⟨hXa, hXp⟩ hrel
-  have hT0 : ((Tu D u : ℕ) : D.host.E) ≠ 0 := Nat.cast_ne_zero.2 (tie_Tu_pos D u).ne'
-  obtain ⟨c, hcc, he, hz⟩ := h1 D.host.F D.host.E (hS D) D.R.rS _ (X.fl t).fl (X.fl' t).fl hT0 (tie_trace D.sp.cm)
-    hXa hXp ((X.rel_iff t).1 hrel)
-  have hX : (X.fl' t).fl.X = (X.fl t).fl.X := by rw [tie_X_eq_Xa, tie_X_eq_Xa]; exact hXa _
-  obtain ⟨o, ho, N, hN, hoN⟩ := h2 D.host.E (hS D) D.R.rS _ (X.abelian₂ t) (X.fl t) (X.fl' t) c (p_starConj D)
-    (X.lift' t).1 (X.fixed t).2.2.2.2 hcc hz hX
-  have hcong : ∀ i : Fin 2, ∀ P : HeightOneSpectrum (𝓞 D.host.E), ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal →
-      o - 1 ∈ P.asIdeal := by
-    intro i P hP
-    refine h3 D.host.E (hS D) D.R.rS (Tu D u) (X.abelian₂ t) (gS D) (X.fl t) (X.fl' t) o (X.fixed t).2.1
-      (X.fixed t).2.2.1.1 (X.adm t) (by rw [ho]; exact hz) P ?_ ?_
-    · unfold gS
-      rw [Nat.cast_mul]
-      fin_cases i
-      · exact P.asIdeal.mul_mem_right _ hP
-      · exact P.asIdeal.mul_mem_left _ hP
-    · refine id_coprime_notMem P.asIdeal P.isPrime.ne_top _ _ ?_ hP
-      refine (Nat.coprime_primes (D.host.g_prime i) (D.mem u).A.T_prime).2 ?_
-      fin_cases i
-      · exact (hTg u).1.symm
-      · exact (hTg u).2.symm
-  obtain ⟨P1, hP1⟩ := h5 D.host.E _ (D.host.g_prime 0)
-  obtain ⟨P2, hP2⟩ := h5 D.host.E _ (D.host.g_prime 1)
-  have ho1 : o = 1 := h4 (𝓞 D.host.E) o N _ _ P1.asIdeal P2.asIdeal hN hoN (D.host.g_prime 0) (D.host.g_prime 1)
-    D.host.g_ne P1.isPrime.ne_top P2.isPrime.ne_top hP1 hP2 (hcong 0 P1 hP1) (hcong 1 P2 hP2)
-  have hc1 : c = 1 := by rw [← ho, ho1]; rfl
-  subst hc1
-  simp only [one_smul] at he hz
-  obtain ⟨n, hn, hne⟩ := hL _ (X.abelian₂ t) (X.fl t) (X.fl' t) (X.fixed t) (X.lift' t) (X.conv' t) he hz
-  refine (X.isId_iff t).2 ⟨n, hn, hne, ?_⟩
-  have hzo : (X.fl t).fl.z ∈ orth (hS D) (Xsp (X.fl t)) := by
-    rw [p_mem_orth]
-    exact tie_X_le_ker _ _ (X.fl t).fl.z_orth
-  have h3' := hn.2.2 _ hzo
-  have : n (X.fl t).fl.z - (X.fl' t).fl.z =
-      (n (X.fl t).fl.z - (X.fl t).fl.z) - ((X.fl' t).fl.z - (X.fl t).fl.z) := by abel
-  rw [this]
-  exact Submodule.sub_mem _ h3' hz
-
 end Formalism.MainNotions.BridgeLemma
 
 end

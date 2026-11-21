@@ -7,7 +7,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsProjByOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ProjectiveRepresentationPullbackCoordinates
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SecCoordBcScaleUnique
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocallyStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocally
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSectionCoordinateVectorOfLocallyOnRingStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -164,8 +164,8 @@ variable {X Y P : Scheme.{0}} (p : P ⟶ X) (q : P ⟶ Y) {H : LB X} {K : LB Y} 
 theorem split_local (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] [IsLocalRing T] (x : Sp T ⟶ P)
     (w : σ₁ × σ₂ → T) (hw : SecCoord (box p q H K) (fun i : σ₁ × σ₂ => boxSec p q (s i.1) (t i.2)) x w) :
     ∃ a b, SecCoord H s (x ≫ p) a ∧ SecCoord K t (x ≫ q) b ∧ w = fun i => a i.1 * b i.2 := by
-  obtain ⟨a, ha⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally X H σ₁ s hH).1 T (x ≫ p)
-  obtain ⟨b, hb⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally Y K σ₂ t hK).1 T (x ≫ q)
+  obtain ⟨a, ha⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local X H σ₁ s hH).1 T (x ≫ p)
+  obtain ⟨b, hb⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local Y K σ₂ t hK).1 T (x ≫ q)
   obtain ⟨u, hu⟩ := uniq (isLB_box p q hH hK) (secCoord_box p q s t x a b ha hb) hw
   exact ⟨fun i => u * a i, b, scale hH ha u, hb, funext fun i => (hu i).trans (_root_.mul_assoc _ _ _).symm⟩
 
@@ -174,10 +174,10 @@ theorem split_near (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] (x : Sp T
     (z : Sp T) : ∃ (T' : Type) (_ : CommRing T') (φ : T →+* T'), IsOpenImmersion (spMap φ) ∧
       z ∈ Set.range (spMap φ) ∧ ∃ a b, SecCoord H s (spMap φ ≫ x ≫ p) a ∧ SecCoord K t (spMap φ ≫ x ≫ q) b ∧
         ∀ i, φ (w i) = a i.1 * b i.2 := by
-  obtain ⟨f, hf, a, ha⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally X H σ₁ s hH).2.1 T (x ≫ p) z
+  obtain ⟨f, hf, a, ha⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local X H σ₁ s hH).2.1 T (x ≫ p) z
   obtain ⟨z', hz'⟩ : z ∈ Set.range (spMap (algebraMap T (Localization.Away f))) :=
     (PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).ge hf
-  obtain ⟨g, hg, b, hb⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally Y K σ₂ t hK).2.1 _
+  obtain ⟨g, hg, b, hb⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local Y K σ₂ t hK).2.1 _
     (spMap (algebraMap T (Localization.Away f)) ≫ x ≫ q) z'
   obtain ⟨z'', hz''⟩ : z' ∈ Set.range (spMap (algebraMap _ (Localization.Away g))) :=
     (PrimeSpectrum.localization_away_comap_range (Localization.Away g) g).ge hg

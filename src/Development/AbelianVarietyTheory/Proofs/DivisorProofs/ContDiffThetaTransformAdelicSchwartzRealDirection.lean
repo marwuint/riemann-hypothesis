@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRatPairIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffTsumOfLocallySummableBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanStandardCharEqExpRealLinearStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIteratedFDerivCexpPhaseLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanStandardCharEqExpRealLinear
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIteratedFDerivCexpPhaseLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzShiftIteratedFDerivBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableRationalSchwartzBruhatMulPolynomialDecayStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordsRealFamilyArchimedeanLinearStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableRationalSchwartzBruhatMulPolynomialDecay
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordsRealFamilyArchimedeanLinear
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta
 open IsDedekindDomain NumberField MeasureTheory
@@ -27,7 +27,7 @@ theorem norm_iteratedFDeriv_exp_mul_schwartz_le {V E : Type} [NormedAddCommGroup
     (hre : ∀ y t, (B y t + h t).re = 0) (a : V) (p : E →L[ℝ] V) (n M : ℕ) (R : ℝ) :
     ∃ C : ℝ, ∀ y t, ‖t‖ ≤ R →
       ‖iteratedFDeriv ℝ n (fun t => Complex.exp (B y t + h t) * f (y + a + p t)) t‖ ≤ C * ((1 + ‖y‖) ^ M)⁻¹ := by
-  choose C1 hC1 using fun j => GlobalTheory.T.norm_iteratedFDeriv_cexp_phase_le' B h hh hre j R
+  choose C1 hC1 using fun j => _root_.GlobalTheory.norm_iteratedFDeriv_cexp_phase_le B h hh hre j R
   choose C2 hC2 using fun j => GlobalTheory.T.schwartz_iteratedFDeriv_shift_le_inv_pow_of_norm_le f a p j (M + n) R
   refine ⟨∑ j ∈ Finset.range (n + 1), (n.choose j : ℝ) * |C1 j| * |C2 (n - j)|, fun y t ht => ?_⟩
   have hy : 0 < 1 + ‖y‖ := by positivity
@@ -67,8 +67,8 @@ theorem contDiff_thetaTr_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), I
         ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ (k : ℕ) (L : (Fin k → ℝ) →+ Formalism.IndefR.Datum.WO S T), Continuous L →
           (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ (w + L t) := by
   intro D ψ hψ S T JA JB ξ0 hJA hJB κ _ co hrat Φ hΦ k L hLc hLf w0
-  obtain ⟨P, Q, hPQ⟩ := GlobalTheory.T.darbouxCoords_real_family_archimedean_linear D S T κ co.e k L hLc hLf
-  obtain ⟨Λ, hΛ⟩ := GlobalTheory.T.archimedeanStandardChar_eq_exp_realLinear D ψ hψ
+  obtain ⟨P, Q, hPQ⟩ := _root_.GlobalTheory.RealDirCoord.darboux_real_coords D S T κ co.e k L hLc hLf
+  obtain ⟨Λ, hΛ⟩ := _root_.GlobalTheory.PsiInfLinear.psiInf_eq_exp_linear D ψ hψ
   have hψ1 : ∀ x, ‖ψ x‖ = 1 := hψ.1.2.1
   have hΛre : ∀ m, (Λ m).re = 0 := by
     intro m
@@ -93,7 +93,7 @@ theorem contDiff_thetaTr_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), I
   | mem Φ h =>
     obtain ⟨f, g, hg, rfl⟩ := h
     intro w
-    obtain ⟨M, hM⟩ := GlobalTheory.T.summable_rational_schwartzBruhat_mul_polynomial_decay D.host.F κ g hg (fun i => ((co.e w).1 i).2)
+    obtain ⟨M, hM⟩ := _root_.GlobalTheory.LatSumSB.summable_sb_mul_decay D.host.F κ g hg (fun i => ((co.e w).1 i).2)
     let eM := InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F
     let yv : (κ → D.host.F) → (κ → mixedEmbedding.mixedSpace D.host.F) := fun x i => mixedEmbedding D.host.F (x i)
     let ah : κ → mixedEmbedding.mixedSpace D.host.F := fun i => eM ((co.e w).1 i).1

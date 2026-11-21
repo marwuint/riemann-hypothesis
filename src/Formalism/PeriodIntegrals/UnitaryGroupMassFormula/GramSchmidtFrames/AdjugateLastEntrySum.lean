@@ -70,17 +70,6 @@ lemma ginv_xcofL_esI (z z' : Fin (2 * r + k + 1) → ℂ) {y : B.Mat k r} (hy : 
   rw [show (∑ i, (Zhat k r z z' y).adjugate (Fin.last r) i *
       herm (Hpk k r) (y *ᵥ fvec k r z' ⟨a.val, by omega⟩) (fvec k r z i)) = 0 from this, star_zero]
 
-theorem satOm' : SatOm' := by
-  intro k r z z' hk hr hz hz' y hy hG n hn n' hn'
-  have Nc := Formalism.FourierDecayAlt.P.unipotent_radical_closed k r
-  unfold omW'
-  rw [xcofL_N hz hz' hn hn' y, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← mulVec_mulVec, ← mulVec_mulVec,
-    show n⁻¹ *ᵥ (n *ᵥ xcofL k r z z' y) = xcofL k r z z' y by
-      rw [mulVec_mulVec, Matrix.nonsing_inv_mul _ (Nc.unit n hn), one_mulVec],
-    prW_N (Nc.inv_mem n' hn') (ginv_xcofL_esI z z' hy)]
-
-theorem gfSat : GfSat := gfSat_of satOm satOm'
-
 end om2
 
 end PI.UnitaryGroupMassFormula.GsFr

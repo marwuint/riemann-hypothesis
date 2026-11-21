@@ -3,13 +3,6 @@ open IsLocalRing
 
 namespace GlobalTheory
 
-theorem ringKrullDim_le_of_isLocalization' {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
-    (M : Submonoid R) [IsLocalization M S] : ringKrullDim S ≤ ringKrullDim R := by
-  refine Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap R S)) ?_
-  refine Monotone.strictMono_of_injective ?_ (PrimeSpectrum.localization_comap_injective S M)
-  intro p q h
-  exact Ideal.comap_mono h
-
 open IsLocalRing in
 private theorem ringKrullDim_le_of_isLocalization (A D : Type) [CommRing A] [CommRing D]
     [Algebra A D] (M : Submonoid A) [IsLocalization M D] :

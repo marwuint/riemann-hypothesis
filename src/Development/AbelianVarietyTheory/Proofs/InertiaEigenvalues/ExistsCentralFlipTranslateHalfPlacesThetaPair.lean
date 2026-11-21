@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFlipDet
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipIdxNeZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdemSumMulOfSubset
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralConjugateFlipScalarFiniteAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIdemSumConjugatePlacesSubsetEqFlipStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipVacuumEqMultipleOfTranslateMeanStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MovedVacuumTranslateSumFlipScalarStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralConjugateFlipScalarFiniteAdelic
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIdemSumConjugatePlacesSubsetEqFlip
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipVacuumEqMultipleOfTranslateMean
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MovedVacuumTranslateSumFlipScalar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipMapsHalfTranslatesSpanStatement
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
@@ -26,7 +26,7 @@ theorem exists_central_flip_step : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m
   by_cases h : ∃ eT : AE D, IsIdemSum eT T ∧ m ≠ 0
   · obtain ⟨eT₀, h0, hm0⟩ := h
-    obtain ⟨z, hzG, hzOne, hzmt⟩ := GlobalTheory.T.exists_central_conjugateFlipScalar_finiteAdelic D V T m eT₀ h0 hm0
+    obtain ⟨z, hzG, hzOne, hzmt⟩ := _root_.GlobalTheory.LevelSeries.flip_central_exists D V T m eT₀ h0 hm0
     refine ⟨z, hzG, hzOne, ?_⟩
     intro eT heT hodd hcop hmT
     have h1 : eT₀ * eT = eT := GlobalTheory.Tow.idemSum_mul_of_subset heT h0 subset_rfl
@@ -43,8 +43,8 @@ theorem exists_central_flip_step : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
     let x : (AE D)ˣ := Units.mkOfMulEqOne _ _ hunit
     have hx : IsFlipDet V eT m x := hunit
     refine ⟨x, hx, ?_⟩
-    obtain ⟨lam, Y, hY, hYd, hYc, hom⟩ := GlobalTheory.T.centralFlip_vacuum_eq_multiple_of_translate_mean D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z heT hodd hcop hmT hzG hzmt
-    have hlam := GlobalTheory.T.movedVacuum_translateSum_flipScalar D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z x lam Y heT hodd hcop hmT hzG hzmt hx hY hYd hYc hom
+    obtain ⟨lam, Y, hY, hYd, hYc, hom⟩ := _root_.GlobalTheory.LevelSeries.moved_vacuum_eq_mean D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z heT hodd hcop hmT hzG hzmt
+    have hlam := _root_.GlobalTheory.FlipScal.moved_vacuum_factor D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z x lam Y heT hodd hcop hmT hzG hzmt hx hY hYd hYc hom
     subst hlam
     have hs : flipScal χW V W T m x ≠ 0 := by
       unfold flipScal
@@ -53,7 +53,7 @@ theorem exists_central_flip_step : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
       exact Nat.cast_pos.2 (Nat.pos_of_ne_zero (flipIdx_ne_zero V W T hm0))
     intro M u e e' P O hM hu he hTP he' hz
     exact GlobalTheory.T.centralFlip_maps_halfTranslates_span D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z _ Y heT hodd hcop hmT hzmt hs hY hom M u e e' P O hM hu he hTP
-      (GlobalTheory.T.isIdemSum_conjugatePlaces_subset_eq_flip D e eT e' P T he heT hTP he') hz
+      (_root_.GlobalTheory.FlipIdemSum.idemSum_flip_subset D e eT e' P T he heT hTP he') hz
   · refine ⟨1, (GfC V).one_mem, fun l _ => oneAt_one V l, ?_⟩
     intro eT heT hodd
     exact absurd ⟨eT, heT, (Nat.pos_of_ne_zero (by rintro rfl; exact (Nat.not_odd_zero hodd))).ne'⟩ h

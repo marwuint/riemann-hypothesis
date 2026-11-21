@@ -12,18 +12,7 @@ def jG : ℕ := 5
 
 def hExp (s : Scale) : ℝ := ((jG : ℝ) - 1) / 2 + 8 * s.eps
 
-def KG (s : Scale) : ℕ := ⌈8 * (hExp s + 2) / s.eps⌉₊
-
-def rG (s : Scale) : ℕ := KG s + 1
-
 def Av5 (s : Scale) : ℝ := max 26 (4 * hExp s + 9)
-
-theorem Av5_eq (s : Scale) : Av5 s = Scale.A := by
-  unfold Av5 hExp jG Scale.A
-  have h1 := s.eps_lt
-  rw [max_eq_left]
-  push_cast
-  linarith
 
 variable {D : D7} (L : SizeData₂ D)
 
@@ -50,8 +39,6 @@ def nW (C : ℝ) : ℝ :=
 
 def rhoP (C : ℝ) : ℝ :=
   4 * Nstar L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k + C * Real.log L.sc.x * L.LaG / D.R.k
-
-def sgS (D : D7) : ℝ := D.what₂.Dstar / (∑ u : D.what₂.Word, (D.duS u : ℝ))
 
 def gapS (D : D7) (C : ℝ) : ℝ := C * D.R.k * (D.R.m : ℝ) ^ 4 + (D.R.N D.R.m : ℝ) * (D.R.m : ℝ) ^ 10
 
@@ -294,9 +281,6 @@ namespace ParameterChoice'
 
 variable {D : D7} {L : SizeData₂ D}
 
-def SgWin (P : ParameterChoice' D L) (C0 : ℝ) : Prop :=
-  L.sc.x ^ (-P.CF) / C0 ^ 2 ≤ sgS D ∧ sgS D ≤ L.sc.x ^ (-P.CF)
-
 theorem bT_ge_half (P : ParameterChoice' D L) (τ : D.what₂.Tau) (t : D.host.TT) (hm : 0 < D.R.m)
     (ht : (D.eTau τ : D.R.GG) = D.R.tau1 t) :
     (((D.hc τ).b ⟨0, hm⟩ : ℚ) : ℝ) / 2 ≤ (L.bT t : ℝ) := by
@@ -312,20 +296,6 @@ theorem bT_ge_half (P : ParameterChoice' D L) (τ : D.what₂.Tau) (t : D.host.T
   linarith
 
 end ParameterChoice'
-
-theorem f_le_m_sq_n (R : Ranks) : R.f ≤ R.m ^ 2 * R.n := by
-  unfold Ranks.f
-  have h := R.two_le_m
-  have : 4 ≤ R.m ^ 2 := by nlinarith
-  nlinarith
-
-theorem f_le_r_sq (R : Ranks) : R.f ≤ R.r ^ 2 := by
-  have h1 := R.f_le_k
-  have h2 := R.two_le_m
-  have h3 : R.k ≤ R.r := by unfold Ranks.r; omega
-  have h4 : R.r ≤ R.r ^ 2 := Nat.le_self_pow (by norm_num) _
-  have h5 : R.f = 2 * R.ord := rfl
-  omega
 
 end Formalism.BasicNotions
 

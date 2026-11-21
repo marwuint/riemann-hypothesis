@@ -575,7 +575,4 @@ theorem levelMaps_iff (hpq : 1 ≤ D.p + D.q) :
 
 end Geometry
 
-theorem exists_iff : N1ab ↔ ModuliExists :=
-  ⟨fun k E _ _ _ H D h l => k E H D l h, fun k E _ _ _ H D l h => k E H D h l⟩
-
 end GlobalTheory.LevelCompare

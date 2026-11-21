@@ -1,5 +1,9 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StNbarLeviChartFam
+import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.CuspFamily
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsStokesGeo
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StNbarChartSemipos
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StNbarLeviChart
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -39,19 +43,6 @@ theorem NbarLeviChart.of_reg (h : NbarLeviChartReg.Statement) : LowerBoundFree.N
   exact h II Ψ K ι Ω E D X.H X.M X.S X.S_tied B p q t hs z hz w hw k hk
 
 namespace Line
-
-variable (II : IntersectionSystem)
-  (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
-
-theorem NbarLeviChartReg.hyps_inhabited :
-    (projLineFamilySetting II hII).S.IsTied ∧
-    ∃ t : ℝ, 0 < t ∧ (projLineFamilySetting II hII).M.atlas.Smooth ((projLineFamilySetting II hII).S.regWeight t) ∧
-    LowerBoundFree.Line.discL 0 ∈ mcPts (mCoordIdeal (LowerBoundFree.Line.lineData II hII).y) ∧
-    IsConeTangent (Int.castRingHom ℂ) (mCoordIdeal (LowerBoundFree.Line.lineData II hII).y)
-      (LowerBoundFree.Line.discL 0) LowerBoundFree.Line.velL ∧
-    ∃ k : Fin (projLineFamilySetting II hII).S.R.N,
-      (projLineFamilySetting II hII).M.proj (LowerBoundFree.Line.discL 0) ∈ (projLineFamilySetting II hII).S.R.mid k :=
-  ⟨(projLineFamilySetting II hII).S_tied, NbarLeviChartFam.hyps_inhabited II hII⟩
 
 end Line
 

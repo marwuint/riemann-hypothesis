@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTensorIdempotentOfAlgHomToBaseStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormEqMulNormIdempotentCornerStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormEqMulNormIdempotentCorner
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationLeOneOfSqSubSelfIntegralBasisStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGlobalElementNearIdempotentAdicCompletionStatement
 
@@ -42,7 +42,7 @@ theorem norm_div_close_to_one : ∀ (E E' : Type) [Field E] [NumberField E] [Fie
   have hβ : ∀ x : E', x ≠ 0 → algebraMap E K (Algebra.norm E x) / σ x =
       Algebra.norm K (e + (1 - e) * ((1 : K) ⊗ₜ x)) := by
     intro x hx
-    have h2 := GlobalTheory.T.norm_eq_mul_norm_idempotent_corner K (K ⊗[E] E') ψ e he1 he ((1 : K) ⊗ₜ x)
+    have h2 := _root_.GlobalTheory.norm_eq_mul_norm_idem_corner K (K ⊗[E] E') ψ e he1 he ((1 : K) ⊗ₜ x)
     rw [norm_one_tmul', hψ] at h2
     rw [h2, mul_div_cancel_left₀ _ ((map_ne_zero σ).2 hx)]
   let Z : K ⊗[E] E' := (1 : K) ⊗ₜ z

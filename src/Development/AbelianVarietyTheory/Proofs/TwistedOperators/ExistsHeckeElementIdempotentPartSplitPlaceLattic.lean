@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RealPo
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeSelfDualTraceForm
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAnti
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceHeckeDoubleCosetCardGaussBinom
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalMatrixChartSplitIdempotentCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentPartCompletedLatticeLocalChartStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalHeckeMatrixIntermediateLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalMatrixChartSplitIdempotentCompletion
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentPartCompletedLatticeLocalChart
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalHeckeMatrixIntermediateLattice
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
@@ -41,7 +41,7 @@ theorem exists_hecke_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D
   obtain ⟨v, π, s, h1, h2, h3, h4, h5⟩ := GlobalTheory.SplitCoord.exists_coord e he.1
   obtain ⟨B, hB⟩ := GlobalTheory.SplitLatBasis.exists_basis V e v π s he.1.1 h2 h3 h4
     (GlobalTheory.LatDual.lamHat_selfDual_and_module V).2
-  obtain ⟨t, ht, hch⟩ := GlobalTheory.T.idempotent_part_completed_lattice_local_chart D V e v π s B he.1.1 h2 h3 h4 hB
+  obtain ⟨t, ht, hch⟩ := _root_.GlobalTheory.EPartChart.latGHat_chart D V e v π s B he.1.1 h2 h3 h4 hB
   obtain ⟨hfg, hsp, -, -, hhat, -⟩ := GlobalTheory.Member.latG_lattice_and_completion D V g
   have hMfg : M.FG := by
     have hN : IsNoetherian (𝓞 D.host.E) (latG V g) := isNoetherian_of_fg_of_noetherian _ hfg
@@ -49,14 +49,14 @@ theorem exists_hecke_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D
     rwa [Submodule.map_comap_subtype, inf_eq_right.2 hMΛ] at hc
   have hMsp : Submodule.span D.host.E (M : Set (Fin V.rank → D.host.E)) = ⊤ :=
     eq_top_iff.2 ((span_smul_top P _ hsp).symm.le.trans (Submodule.span_mono hPM))
-  obtain ⟨C, hC⟩ := GlobalTheory.T.exists_local_matrix_chart_split_idempotent_completion D e v π s V.rank M he.1.1 h2 h3 h4 hMfg hMsp
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.HatLocalChart.exists_chart D e v π s V.rank M he.1.1 h2 h3 h4 hMfg hMsp
   have hT : ∀ y : Fin V.rank → GlobalTheory.SplitPlace.RF D,
       finPart D e • y ∈ GlobalTheory.AdLat.hat D.host.F (latG V g : Set (Fin V.rank → D.host.E)) ↔
       ∀ i, ((t • (GlobalTheory.SplitPlace.comp V π B g⁻¹ * B⁻¹).1) *ᵥ fun j => π (y j)) i ∈ Formalism.UG.Ov D.host.F v := by
     intro y
     rw [← hhat, Units.val_mul]
     exact hch g y
-  obtain ⟨Z, hZ1, hZ2, hZ3, hZM⟩ := GlobalTheory.T.exists_localHeckeMatrix_intermediateLattice D P e ϖ k V.rank v π s (latG V g) M t _ C he hϖ1 hϖ2
+  obtain ⟨Z, hZ1, hZ2, hZ3, hZM⟩ := _root_.GlobalTheory.HeckeLocMatrix.exists_local_matrix D P e ϖ k V.rank v π s (latG V g) M t _ C he hϖ1 hϖ2
     h1 h2 h3 h4 h5 hfg hsp hPM hMΛ hidx ht hT hC
   obtain ⟨a₀, hsupp, hcomp⟩ := (GlobalTheory.SplitPlace.comp_bij (V := V) (B := B) he.1 h1 h2).1 Z
   have hu := GlobalTheory.SplitPlace.isUnif he h4 h5 ϖ hϖ1 hϖ2

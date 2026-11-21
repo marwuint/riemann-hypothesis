@@ -5,7 +5,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentRadica
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellUnipotentUniquenessClosed
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothIntegralLinear
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentConjugationMeasureInvariant
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellFunctionCompactSupportUnipotentStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellFunctionCompactSupportUnipotent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorCompactUnipotentFixerStatement
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericIffIsGenericFor
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactSubgroupOfFinset
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir.Leib GlobalTheory.CompanionTheory.Rodier
@@ -75,7 +76,7 @@ theorem isClosed_unipU : IsClosed (unipU k d hd : Set (GL (Fin N) k)) := (Global
 
 theorem hasCompactSupport_phi (ψ : AddChar k Circle) (hρ : IsSmooth ρ) (f : IndSp (stdBlocks d hd) ρ)
     (hf : f ∈ openFns d hd ρ) : HasCompactSupport (phi ψ f) := by
-  obtain ⟨L, hLU, hLc, -, hL⟩ := GlobalTheory.T.open_cell_function_compact_support_unipotent k h N d hd ρ hρ f hf
+  obtain ⟨L, hLU, hLc, -, hL⟩ := _root_.GlobalTheory.CompanionTheory.Rodier.exists_compact_open_support k h N d hd ρ hρ f hf
   refine HasCompactSupport.of_support_subset_isCompact (K := Subtype.val ⁻¹' (L : Set (GL (Fin N) k)))
     ((isClosed_unipU (k := k) (d := d) (hd := hd)).isClosedEmbedding_subtypeVal.isCompact_preimage hLc) ?_
   intro u hu

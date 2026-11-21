@@ -73,19 +73,6 @@ def DualStdMetricPull.Statement : Prop :=
       (dualLine (HermLattice.standard K i) b hb).h z =
         (fsMulti (PBlk i)).h (linApply (ι₂ := PBlk i) (dualStdCoordMat b) z)
 
-example : ∀ _ : Unit, Fin 1 → Unit → ℤ := dualStdCoordMat dualBasisStandard
-
-example (hP : DualPtsOfPlane.Statement) :
-    ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
-      (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (z : (Σ _ : Unit, Unit) → ℂ),
-      z ∈ mcPts (dualIdeal b) :=
-  ⟨dualBasisStandard, dualEmbMatrix_standard_bijective, _,
-    hP ℚ 1 _ Unit dualBasisStandard dualEmbMatrix_standard_bijective (Rat.castHom ℂ) (fun _ => 1)
-      fun h => one_ne_zero (congrFun h 0)⟩
-
-example : ∃ _ : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)), 1 ≤ 1 :=
-  ⟨dualBasisStandard, le_rfl⟩
-
 end
 
 end GroundTheory.Heights₂.Heights

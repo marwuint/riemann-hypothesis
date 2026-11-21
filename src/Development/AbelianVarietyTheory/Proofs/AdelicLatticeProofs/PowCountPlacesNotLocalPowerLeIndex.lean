@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowCardLeIndexIInfOfPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsMappingToPowersLeUnitsLocalKummerNormsStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsApproxModPowersStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitNotLocalKummerNormOfNotPowStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsLocalPowersAtPlacesIndexLeStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowCardLeIndexIInfOfPrime
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsMappingToPowersLeUnitsLocalKummerNorms
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsApproxModPowers
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitNotLocalKummerNormOfNotPow
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsLocalPowersAtPlacesIndexLe
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
 
@@ -22,12 +22,12 @@ theorem pow_tNon_le_index_finNorm :
       (finNorm p F δ S).index ≠ 0 ∧ p ^ tNon p F δ S ≤ (finNorm p F δ S).index := by
   intro p F _ _ _ ζ δ S hp hζ
   classical
-  have hpow := (GlobalTheory.T.unitsMappingToPowers_le_unitsLocalKummerNorms p hp.pos).1
+  have hpow := (_root_.GlobalTheory.CNorm.powSub_le_kNorm_and_kNorm_map p hp.pos).1
   have hPN : finPow p F S ≤ finNorm p F δ S := by
     unfold finPow finNorm
     exact iInf_mono fun v => iInf_mono fun _ => hpow _ _ _ _
   have h0 : (finNorm p F δ S).index ≠ 0 :=
-    ne_zero_of_dvd_ne_zero (GlobalTheory.T.unitsLocalPowersAtPlaces_index_le p F S hp.pos).1 (Subgroup.index_dvd_of_le hPN)
+    ne_zero_of_dvd_ne_zero (_root_.GlobalTheory.CNorm.index_finPow_le p F S hp.pos).1 (Subgroup.index_dvd_of_le hPN)
   refine ⟨h0, ?_⟩
   set A : Set (HeightOneSpectrum (𝓞 F)) :=
     {v | v ∈ S ∧ ∀ r : v.adicCompletion F, r ^ p ≠ algebraMap F (v.adicCompletion F) δ} with hA
@@ -40,13 +40,13 @@ theorem pow_tNon_le_index_finNorm :
     rw [← Nat.card_eq_fintype_card]
     rfl
   rw [← hcard]
-  refine le_trans (GlobalTheory.T.pow_card_le_index_iInf_of_prime' p Fˣ A K hp ?_ ?_ (ne_zero_of_dvd_ne_zero h0 hdvd))
+  refine le_trans (_root_.GlobalTheory.CNorm.pow_card_le_index_iInf_of_prime p Fˣ A K hp ?_ ?_ (ne_zero_of_dvd_ne_zero h0 hdvd))
     (Nat.le_of_dvd (Nat.pos_of_ne_zero h0) hdvd)
   · intro v x
     exact hpow _ _ _ _ ⟨algebraMap F _ (x : F), by simp⟩
   · intro v
-    obtain ⟨c, hc⟩ := GlobalTheory.T.exists_unit_not_localKummerNorm_of_not_pow p F ζ δ v.1 hp hζ v.2.2
-    obtain ⟨x, hx0, hxv⟩ := GlobalTheory.T.exists_approx_mod_powers' p F S
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CNorm.exists_local_nonnorm p F ζ δ v.1 hp hζ v.2.2
+    obtain ⟨x, hx0, hxv⟩ := _root_.GlobalTheory.CNorm.exists_approx_mod_powers p F S
       (Function.update (fun w : HeightOneSpectrum (𝓞 F) => (1 : w.adicCompletion F)) v.1
         (c : v.1.adicCompletion F)) hp.pos (by
         intro w

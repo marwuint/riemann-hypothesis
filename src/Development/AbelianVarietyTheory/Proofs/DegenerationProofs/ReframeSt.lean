@@ -49,25 +49,6 @@ def Dict.IsPt (d : Dict N B) (v : B.V) (g : N.Gt) : Prop :=
 def Dict.Rep (d : Dict N B) (k : ℕ) (la : B.La) (p : N.QT k) : Prop :=
   p.1.1.toAdd = d.eX la.y ∧ d.IsPt ((k : ℂ)⁻¹ • B.P0 la) p.1.2
 
-def tateDict (τ₀ : ℂ) : Dict (tate (Units.mk0 (eTwoPi (τ₀ / 2)) (AnArc.e_ne_zero _))) (AnArc.tate τ₀) where
-  eX := AddEquiv.refl ℤ
-  ex _ := 1
-  fr _ := 1
-  th := 1
-  ab := ⟨fun _ _ => rfl, fun _ => ⟨0, rfl⟩, fun z => ⟨fun _ => Subsingleton.elim (α := Fin 0 → ℂ) _ _, fun _ => rfl⟩, rfl,
-    fun l z => by
-      have hl : l = 0 := Subsingleton.elim (α := (⊥ : Submodule ℤ (Fin 0 → ℂ))) _ _
-      simp [hl, AnArc.ah],
-    fun _ _ _ => rfl, fun _ => _root_.mul_one (1 : ℂˣ), AnArc.tate_one_mem_Theta τ₀ 1 0, fun _ => (_root_.mul_one (1 : ℂ)).symm⟩
-  c_eq _ := rfl
-  ψ_eq (x : ℤ) := by
-    refine (_root_.mul_one _).trans (Units.ext ?_)
-    change ((Units.mk0 (eTwoPi (τ₀ / 2)) (AnArc.e_ne_zero _) ^ x ^ 2 : ℂˣ) : ℂ) = eTwoPi (τ₀ * x ^ 2 / 2)
-    rw [Units.val_zpow_eq_zpow_val, Units.val_mk0, ← AnArc.e_mul_intCast]
-    congr 1
-    push_cast
-    ring
-
 def AllDict (P : ∀ {O : Type} [CommRing O] [StarRing O] {N : NumD ℂ} {B : AnArc O}, Dict N B → Prop) : Prop :=
   ∀ (O : Type) [CommRing O] [StarRing O] (N : NumD ℂ) (B : AnArc O) (d : Dict N B), P d
 

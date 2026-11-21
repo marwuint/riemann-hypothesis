@@ -1,8 +1,9 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModGDefs
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIdeleClassGroupHomOpenKernelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertiaElementEqOneOrLiesAboveFinitePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIdeleClassGroupHomOpenKernel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteIndexUnitIdlSup
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertiaElementEqOneOrLiesAboveFinitePlace
 open NumberField IsDedekindDomain Neutral.HilbertClassField
 
 open Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host GlobalTheory.HeckeGal
@@ -17,7 +18,7 @@ theorem exists_artinSymbol : GlobalTheory.Published.GlobalArtinReciprocity → �
         IsArithFrobenius A v φ → art φ = ClassGroup.mk0 ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩ := by
   intro H E Ω _ _ _ _ _
   obtain ⟨art, ha⟩ := H E Ω
-  obtain ⟨cl, hclo, hclk, hunit, hunif⟩ := GlobalTheory.T.exists_ideleClassGroupHom_open_kernel E
+  obtain ⟨cl, hclo, hclk, hunit, hunif⟩ := _root_.GlobalTheory.exists_ideleClassHom E
   have hker : art.ker ≤ cl.ker := by
     rw [ha.ker]
     exact Subgroup.topologicalClosure_minimal _ hclk (Subgroup.isClosed_of_isOpen _ hclo)
@@ -38,7 +39,7 @@ theorem exists_artinSymbol : GlobalTheory.Published.GlobalArtinReciprocity → �
     rw [e]
     exact hρo.preimage QuotientGroup.continuous_mk
   · intro A g hg
-    rcases GlobalTheory.T.inertiaElement_eq_one_or_liesAbove_finitePlace E Ω A g hg with rfl | ⟨v, hv⟩
+    rcases _root_.GlobalTheory.inertiaEl_eq_one_or_liesAbove E Ω A g hg with rfl | ⟨v, hv⟩
     · exact map_one _
     have hI : g ∈ Ine (F := E) A := ⟨hg.1, fun x hx => by
       rw [← A.mem_nonunits_iff]

@@ -265,26 +265,6 @@ theorem mulVec_one_sub_idempotent_of_split_sum_identity : PartsStatement := by
     rw [g1, g2] at hs
     linear_combination c * r2 - c * r1 + hs
 
-private theorem mdisc_eq_zero_of_eq_zero' {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (i : Fin D)
-    (hA : A i = 0) : mdisc A = 0 := by
-  unfold mdisc
-  refine mul_eq_zero_of_right _ ?_
-  have hu : (Finset.univ : Finset (Finset (Fin D))) = (insert i (Finset.univ.erase i)).powerset := by
-    rw [Finset.insert_erase (Finset.mem_univ i), Finset.powerset_univ]
-  rw [hu, Finset.sum_powerset_insert (by simp : i ∉ Finset.univ.erase i), ← Finset.sum_add_distrib]
-  refine Finset.sum_eq_zero fun t ht => ?_
-  have hit : i ∉ t := fun h => by
-    have h' := Finset.mem_powerset.1 ht h
-    simp at h'
-  have hs : ∑ k ∈ insert i t, A k = ∑ k ∈ t, A k := by
-    rw [Finset.sum_insert hit, hA, zero_add]
-  have hc : (insert i t).card = t.card + 1 := by simp [hit]
-  have hle : (insert i t).card ≤ D := by simpa using Finset.card_le_univ (insert i t)
-  have hd : D - t.card = (D - (t.card + 1)) + 1 := by omega
-  try dsimp only
-  rw [hs, hc, hd, pow_succ]
-  ring
-
 end
 
 end ReciprocityTheory.AnForm.A

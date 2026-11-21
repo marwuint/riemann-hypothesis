@@ -7,11 +7,12 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantPairin
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviIntegralFacts
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParabolicProductTwoRepsEquivTwoBlockInduction
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GpProjContinuousStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HGPClosedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GpProjContinuous
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSubgroup
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HGPClosed
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemHGPIffParabolicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GpProjLeviFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GpProjUnipotentStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GpProjLeviFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GpProjUnipotent
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GpProjUnipotentSurjectiveStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactInductionTwistedKernelStatement
 
@@ -209,7 +210,7 @@ theorem hcomp (p : parab k (eMJ m j)) (w : Vt (j := j) ρ ⊗[ℂ] Zt τ m) :
   | tmul a b =>
     set g₁ : GL (Fin m) k := leviProj k (eMJ m j) p false with hg₁
     set g₂ : GL (Fin j) k := leviProj k (eMJ m j) p true with hg₂
-    have hgp := GlobalTheory.T.gpProj_levi_formula k m j (p : GL (Fin (m + j)) k) p.2 (levi_mem_HGP _ p.2)
+    have hgp := _root_.GlobalTheory.CompanionTheory.LeibGP.gpProj_levi k m j (p : GL (Fin (m + j)) k) p.2 (levi_mem_HGP _ p.2)
     have h1 : sig ρ τ ⟨levi k (m + j) p, levi_mem_HGP _ p.2⟩ (a ⊗ₜ[ℂ] b) =
         (((dpow m (((j + 1 : ℕ) : ℝ) / 2) g₁ : ℂˣ) : ℂ) • ρ.ρ g₁ a : Vt (j := j) ρ) ⊗ₜ[ℂ]
           (((dpow j (-((m : ℕ) : ℝ) / 2) g₂ : ℂˣ) : ℂ) • τ.ρ (levi k j g₂) b : Zt τ m) := by
@@ -315,7 +316,7 @@ theorem hck (w : Vt (j := j) ρ ⊗[ℂ] Zt τ m) :
       refine Submodule.span_le.2 ?_
       rintro _ ⟨u, w, rfl⟩
       have hu : ((u : MirabolicParabolic k m j) : Mir k (m + j)) ∈ MirUin k (m + j) := u.2
-      obtain ⟨h1, h2⟩ := GlobalTheory.T.gpProj_unipotent k m j u hu
+      obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.GpUnip.gpProj_unip k m j u hu
       have key : ∀ w, cc ρ τ (sig ρ τ (u : MirabolicParabolic k m j) w) = cc ρ τ w := by
         intro w
         induction w using TensorProduct.induction_on with
@@ -334,7 +335,7 @@ theorem isOpen_dpow_ker (n : ℕ) (s : ℝ) : IsOpen ((dpow (k := k) n s).ker : 
   (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar
 
 theorem isSmooth_sig (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) : IsSmooth (sig ρ τ) := by
-  refine isSmooth_comp (isSmooth_extTensor (isSmooth_twist hρ (isOpen_dpow_ker _ _)) ?_) _ (GlobalTheory.T.gpProj_continuous k m j)
+  refine isSmooth_comp (isSmooth_extTensor (isSmooth_twist hρ (isOpen_dpow_ker _ _)) ?_) _ (_root_.GlobalTheory.CompanionTheory.BZMir.continuous_gpProj k m j)
   exact isSmooth_twist hτ (IsSmoothChar.comp (χ := dpow (j + 1) (-((m : ℕ) : ℝ) / 2)) (isOpen_dpow_ker _ _) (Mir k j).subtype
     continuous_subtype_val)
 
@@ -357,7 +358,7 @@ theorem exE (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) :
     rw [this]
     infer_instance
   exact GlobalTheory.CompanionTheory.CIndCoinv.coinv_equiv (MirabolicParabolic k m j) (MirUin k (m + j)) (parab k (eMJ m j)) (levi k (m + j))
-    (mirabolicProjection k (m + j)) (GlobalTheory.T.isClosed_mirabolicParabolic k m j) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k (m + j))
+    (mirabolicProjection k (m + j)) (_root_.GlobalTheory.CompanionTheory.MirGP.isClosed_HGP k m j) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k (m + j))
     (GlobalTheory.CompanionTheory.BZMirFun.continuous_levi k (m + j)) (GlobalTheory.CompanionTheory.BZMirFun.continuous_mirProj k (m + j))
     (GlobalTheory.CompanionTheory.BZMirAdj.mirProj_levi k (m + j)) hker hUH (fun g hg => (GlobalTheory.T.mem_mirabolicParabolic_iff_parabolic k m j g).1 hg)
     (fun p hp => levi_mem_HGP p hp) (GlobalTheory.SplitWeil.KO k (Fin (m + j))) GlobalTheory.SplitFlip.isCompact_KO hPK

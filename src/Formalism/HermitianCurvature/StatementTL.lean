@@ -321,8 +321,6 @@ def WordLiftOfParts : Prop := WordStep → LetterLift → WordLift
 def LiftXOfParts : Prop := LiftZero → LiftClosed → XFibFacts → LiftX
 def XFibOfParts : Prop := CellVals → OmFacts → CapVFrame → CapVEquiv → XFibFacts
 
-def TopLiftOfParts : Prop := WordLift → LiftClosed → IdOp → LiftFns → LiftCap → ActualAlg → LiftX → TopLiftExists3
-
 end
 
 end Formalism.FourierDecayAlt.TL

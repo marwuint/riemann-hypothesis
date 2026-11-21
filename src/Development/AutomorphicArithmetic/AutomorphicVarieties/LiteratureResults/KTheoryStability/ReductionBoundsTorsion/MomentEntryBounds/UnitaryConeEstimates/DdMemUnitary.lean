@@ -34,21 +34,6 @@ theorem det_dd {R : Type*} [CommRing R] {N : ℕ} (hN : 1 ≤ N) (u : R) : (dd N
   rw [det_diagonal, Fin.prod_univ_succ]
   simp [Fin.val_succ]
 
-theorem star_dd (N : ℕ) (c : ℂ) : star (dd N c) = dd N (star c) := by
-  unfold dd
-  rw [star_eq_conjTranspose, diagonal_conjTranspose]
-  congr 1
-  funext i
-  simp only [Pi.star_apply]
-  split_ifs <;> simp
-
-theorem dd_mem_unitary (N : ℕ) {c : ℂ} (hc : c ∈ unitary ℂ) : dd N c ∈ unitaryGroup (Fin N) ℂ := by
-  rw [mem_unitaryGroup_iff, star_dd, dd_mul, Unitary.mul_star_self_of_mem hc, dd_one]
-
-theorem norm_dd_apply {N : ℕ} {c : ℂ} (hc : ‖c‖ = 1) (j : Fin N) :
-    ‖(if (j : ℕ) = 0 then c else 1 : ℂ)‖ = 1 := by
-  split_ifs <;> simp [hc]
-
 def ddGL {R : Type*} [CommRing R] (N : ℕ) (u : Rˣ) : GL (Fin N) R :=
   ⟨dd N (u : R), dd N ((u⁻¹ : Rˣ) : R), by rw [dd_mul, Units.mul_inv, dd_one],
     by rw [dd_mul, Units.inv_mul, dd_one]⟩

@@ -12,29 +12,6 @@ noncomputable section
 namespace GlobalTheory.OppLagr
 open scoped TensorProduct
 
-theorem omA_invT {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
-    (ν α : kˣ →* ℂˣ) (g : GL A k) (h : GL D k) (Ψ : Matrix A D k → ℂ) :
-    GlobalTheory.SplitFlip.omA ν α⁻¹ (GlobalTheory.SplitFlip.invT g) (GlobalTheory.SplitFlip.invT h) Ψ = GlobalTheory.SplitFlip.omB ν α g h Ψ := by
-  funext Y
-  simp only [GlobalTheory.SplitFlip.omA, GlobalTheory.SplitFlip.omB, GlobalTheory.SplitFlip.gdet_invT, map_inv, inv_inv,
-    MonoidHom.inv_apply, GlobalTheory.SplitFlip.apow_inv, neg_div, neg_neg, GlobalTheory.SplitFlip.invT_invT, GlobalTheory.SplitFlip.invT_inv_val]
-
-theorem conj_eq_invT {k : Type} [Field k] {n : ℕ} (b P G G' : GL (Fin n) k) (J : Matrix (Fin n) (Fin n) k) (s : k)
-    (hU : G.1ᵀ * J * G'.1 = J) (hP : P.1 = s • (b.1ᵀ * J)) :
-    P * G' * P⁻¹ = GlobalTheory.SplitFlip.invT (b⁻¹ * G * b) := by
-  symm
-  apply inv_mul_eq_one.mp
-  apply Units.ext
-  rw [Units.val_mul, GlobalTheory.SplitFlip.invT_inv_val, Units.val_one]
-  have h1 : (b⁻¹).1ᵀ * P.1 = s • J := by
-    rw [hP, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]
-  calc (b⁻¹ * G * b).1ᵀ * (P * G' * P⁻¹).1 = b.1ᵀ * (G.1ᵀ * ((b⁻¹).1ᵀ * P.1) * G'.1) * (P⁻¹).1 := by
-        simp only [Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]
-    _ = P.1 * (P⁻¹).1 := by
-        rw [h1, Matrix.mul_smul, Matrix.smul_mul, hU, Matrix.mul_smul, Matrix.smul_mul, hP, Matrix.smul_mul]
-    _ = 1 := Units.mul_inv P
-
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   have hNN : Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) *

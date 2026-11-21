@@ -3,10 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionBallFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmpleArithHilbertSamuelLargeRadiusPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeminormBallFamilyPowLeEncardOfLinearIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankLeOfGrowthInRadiusStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionBallFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmpleArithHilbertSamuelLargeRadiusPair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeminormBallFamilyPowLeEncardOfLinearIndependent
+import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankLeOfGrowthInRadius
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSeminormBallFamilySectionBalls
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBallFamMonoNegAdd
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
@@ -18,8 +19,8 @@ theorem GlobalTheory.HSNef.factorial_mul_le_gdeg_of_indep : GlobalTheory.Publish
   obtain ⟨Φ, hΦ⟩ := ((hA.arExists k X p D hX).2 PUnit fun _ => M).1
   have hα : M.IsSelfInter (Φ (MvPolynomial.X PUnit.unit ^ (D + 1))) :=
     ((hA.arIso k X p D hX).2 PUnit _ Φ hΦ).1 PUnit.unit
-  obtain ⟨t₀, hlim⟩ := GlobalTheory.T.ampleArithHilbertSamuel_largeRadius_pair hHS k X p D hX P a b 0 0 M _ hRep hAmp hSemi hα
-  have key := GlobalTheory.T.le_slope_of_tendsto_div_pow_of_log_lower_bound D (fun t m => P.lc (m * a) (m * b) (Real.exp (t * m)))
+  obtain ⟨t₀, hlim⟩ := _root_.GlobalTheory.HSNef.ampleHS_pair hHS k X p D hX P a b 0 0 M _ hRep hAmp hSemi hα
+  have key := _root_.GlobalTheory.rank_le_of_growth_in_radius D (fun t m => P.lc (m * a) (m * b) (Real.exp (t * m)))
     (Φ (MvPolynomial.X PUnit.unit ^ (D + 1)) / ((D + 1).factorial : ℝ))
     (((D : ℝ) + 1) * gdeg M D / ((D + 1).factorial : ℝ)) ρ t₀ t₁ (Nat.cast_nonneg _) ?_ ?_
   · have hf : ((D + 1).factorial : ℝ) = ((D : ℝ) + 1) * (D.factorial : ℝ) := by
@@ -33,11 +34,11 @@ theorem GlobalTheory.HSNef.factorial_mul_le_gdeg_of_indep : GlobalTheory.Publish
   · intro t m Q hm hQ hle
     obtain ⟨v, hli, hvB⟩ := hv m hm
     have hB := GlobalTheory.VolBr.Pair.isBallFam k X p P (m * a) (m * b)
-    have hcard := GlobalTheory.T.seminormBallFamily_pow_le_encard_of_linearIndependent _ _ _ hB (ρ * m ^ D) Q (Real.exp (t₁ * m)) v (Real.exp_pos _).le hli hvB
+    have hcard := _root_.GlobalTheory.VolBr.isBallFam_pow_le_encard _ _ _ hB (ρ * m ^ D) Q (Real.exp (t₁ * m)) v (Real.exp_pos _).le hli hvB
     have hsub : P.Bl (m * a) (m * b) (((ρ * m ^ D : ℕ) : ℝ) * Q * Real.exp (t₁ * m)) ⊆
         P.Bl (m * a) (m * b) (Real.exp (t * m)) :=
       (GlobalTheory.VolBr.isBallFam_mono_neg_add _ _ _ hB).1 _ _ (by push_cast; linarith)
-    have hfin := GlobalTheory.T.hermLineBundlePair_sectionBall_finite k X p D hX P (m * a) (m * b) (Real.exp (t * m))
+    have hfin := _root_.GlobalTheory.HSNef.bl_finite k X p D hX P (m * a) (m * b) (Real.exp (t * m))
     have h1 : ((Q ^ (ρ * m ^ D) : ℕ) : ℕ∞) ≤ (P.Bl (m * a) (m * b) (Real.exp (t * m))).encard :=
       hcard.trans (Set.encard_le_encard hsub)
     rw [← hfin.cast_ncard_eq] at h1

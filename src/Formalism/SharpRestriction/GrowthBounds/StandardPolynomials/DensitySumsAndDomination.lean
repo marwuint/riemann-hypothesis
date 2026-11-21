@@ -189,34 +189,6 @@ def uTot (r : ℕ) (S : SegData s) (ju : Fin S.t → ℕ) (jp : ℕ) (G : MvPoly
 
 variable {O p S aTop aPlus mu b'}
 
-private theorem jE_apply_sigma_add (S : SegData s) (f : Fin S.t → ℕ) (i : Fin S.t) (x : ℕ) (hx : x = S.sigma + i.val) :
-    jE S f x = f i := by
-  subst hx
-  have hi := i.2
-  unfold SegData.t at hi
-  unfold jE
-  rw [dif_pos (show S.sigma ≤ S.sigma + i.val ∧ S.sigma + i.val < s from ⟨by omega, by omega⟩)]
-  congr 1
-  ext
-  simp
-
-private theorem jE_add' (S : SegData s) (f g : Fin S.t → ℕ) (x : ℕ) :
-    jE S (fun l => f l + g l) x = jE S f x + jE S g x := by
-  unfold jE
-  split_ifs <;> simp
-
-private theorem jE_sub_eq_sub_jE (S : SegData s) (f g : Fin S.t → ℕ) (x : ℕ) :
-    jE S (fun l => f l - g l) x = jE S f x - jE S g x := by
-  unfold jE
-  split_ifs <;> simp
-
-private theorem jE_mono' (S : SegData s) (f g : Fin S.t → ℕ) (h : ∀ l, g l ≤ f l) (x : ℕ) :
-    jE S g x ≤ jE S f x := by
-  unfold jE
-  split_ifs
-  · exact h _
-  · exact le_refl 0
-
 theorem uTot_mem {ju : Fin S.t → ℕ} {jp : ℕ} {G : MvPolynomial (Fin (2 * s + 1) × Fin r) (KK O)} {zU sU : Fin S.t → ℕ}
     {xf : ℕ} {γ : Fin r → ℕ} (hs : ∀ l, sU l ≤ zU l)
     (hz : ∀ l, coarseA p S b' (uTop S l) - b'.o (uTop S l) = zU l - sU l) (hx : aPlus - b'.oPlus = xf)

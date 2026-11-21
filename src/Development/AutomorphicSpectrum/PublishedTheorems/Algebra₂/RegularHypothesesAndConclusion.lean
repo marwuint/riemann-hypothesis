@@ -166,12 +166,6 @@ theorem IsFppfTorsor.isFppfQuotient (h : IsFppfTorsor G q) : IsFppfQuotient G q 
     · rw [← Over.w q, ← Category.assoc, e', Category.assoc, Over.w y]; rfl
     · exact Over.OverMorphism.ext e'
 
-section Regular
-
-attribute [local instance] ModObj.regular
-
-end Regular
-
 end FreeQuot
 
 end GlobalTheory.CompanionTheory.Hypotheses₂

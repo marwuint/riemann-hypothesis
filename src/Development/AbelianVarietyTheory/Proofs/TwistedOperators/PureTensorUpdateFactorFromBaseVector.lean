@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalFactorFinitePlaceHeisenbergSumBaseVectorStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalFactorFinitePlaceHeisenbergSumBaseVector
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalFactorRealPlaceEqHeisenbergIntegralBaseStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CmAdeleIdempotentOfPlacePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CmAdeleIdempotentOfPlaceProperties
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorPureTensorPlaceByPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisThetaLaws
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
@@ -17,14 +17,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlaceTensorStep
 
 theorem wAt_wAt_ne {D : D7} {m n : ℕ} {p q : Place D} (h : p ≠ q) (w : Mx D m n) : wAt p (wAt q w) = 0 := by
-  have h0 : idem D p * idem D q = 0 := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q h
+  have h0 : idem D p * idem D q = 0 := (_root_.GlobalTheory.PlaceTensor.idem_spec D).2.1 p q h
   funext i j
   show idem D p * (idem D q * w i j) = (0 : Mx D m n) i j
   rw [← mul_assoc, h0, zero_mul]
   rfl
 
 theorem wAt_wAt_self {D : D7} {m n : ℕ} (p : Place D) (w : Mx D m n) : wAt p (wAt p w) = wAt p w := by
-  have h1 : idem D p * idem D p = idem D p := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 p
+  have h1 : idem D p * idem D p = idem D p := (_root_.GlobalTheory.PlaceTensor.idem_spec D).1 p
   funext i j
   show idem D p * (idem D p * w i j) = idem D p * w i j
   rw [← mul_assoc, h1]
@@ -34,7 +34,7 @@ theorem change_factor : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
 
   have hop : IsLocOp ψ S T μ 𝓕 f₀ q (x' q) := by
     rcases q with v | τ
-    · exact GlobalTheory.T.local_factor_finite_place_heisenberg_sum_base_vector D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ v _ hloc
+    · exact _root_.GlobalTheory.PlaceTensorFin.isLocOp_of_isLocal_fin D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ v _ hloc
     · exact GlobalTheory.T.localFactorRealPlace_eq_heisenbergIntegral_base D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ τ _ hloc
   obtain ⟨L, hL, himg, hx'L⟩ := hop
   have hfpure := hf

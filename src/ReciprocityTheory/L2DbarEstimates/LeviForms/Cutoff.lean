@@ -122,6 +122,4 @@ theorem isCutoff_chi : IsCutoff chi := by
 
 end SmoothCutoff
 
-theorem cutoff : CutoffStatement := ⟨SmoothCutoff.chi, SmoothCutoff.isCutoff_chi⟩
-
 end ReciprocityTheory.L2DbarEstimates.I

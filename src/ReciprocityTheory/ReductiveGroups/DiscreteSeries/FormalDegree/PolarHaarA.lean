@@ -117,26 +117,4 @@ lemma fdph_apply (ε : Fin n → Bool) {S : Set (UJ ε)} (hS : MeasurableSet S) 
   unfold muPolar muPolarMat
   rw [hE.comap_apply, Measure.map_apply hP (hE.measurableSet_image' hS), fdph_preimage]
 
-theorem fdph_isHaar_of (ε : Fin n → Bool)
-    (hR : ∀ g : UJ ε, Measure.map (fun x => x * g) (muPolar ε) = muPolar ε)
-    (hI : Measure.map (fun x : UJ ε => x⁻¹) (muPolar ε) = muPolar ε) : (muPolar ε).IsHaarMeasure := by
-  have hL : (muPolar ε).IsMulLeftInvariant := by
-    refine ⟨fun g => ?_⟩
-    have e : (fun x : UJ ε => g * x) = (fun x => x⁻¹) ∘ ((fun x => x * g⁻¹) ∘ (fun x => x⁻¹)) := by
-      funext x; simp [_root_.mul_inv_rev]
-    rw [e, ← Measure.map_map measurable_inv ((measurable_mul_const _).comp measurable_inv),
-      ← Measure.map_map (measurable_mul_const _) measurable_inv, hI, hR g⁻¹, hI]
-  have hF : IsFiniteMeasureOnCompacts (muPolar ε) := by
-    refine ⟨fun K hK => ?_⟩
-    rw [fdph_apply ε hK.isClosed.measurableSet, ← fdph_preimage]
-    exact ((polarM_isClosedEmbedding ε).isCompact_preimage (hK.image (continuous_toM ε))).measure_lt_top
-  have hO : Measure.IsOpenPosMeasure (muPolar ε) := by
-    refine ⟨fun U hU hne => ?_⟩
-    rw [fdph_apply ε hU.measurableSet]
-    obtain ⟨g, hg⟩ := hne
-    obtain ⟨kz, hkz⟩ := polarM_surj (toM g) g.2
-    have : fdphPhi ε kz = g := (isClosedEmbedding_toM ε).injective (by rw [fdph_toM_phi]; exact hkz)
-    exact (hU.preimage (fdph_phi_continuous ε)).measure_ne_zero _ ⟨kz, by rw [Set.mem_preimage, this]; exact hg⟩
-  exact { toIsFiniteMeasureOnCompacts := hF, toIsMulLeftInvariant := hL, toIsOpenPosMeasure := hO }
-
 end ReciprocityTheory.ChartRestriction.DS

@@ -4,13 +4,13 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Expone
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralMulRightOfCompact
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelFamOfNotMem
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PureTensorOperatorEqOffPlaceMulAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FixedOfForallLocalSubgroupFixedFiniteAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegratedOperatorNormalizedIndicatorProdFixedStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypeIdempotentOperatorFixSpanImagesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FixedOfForallLocalSubgroupFixedFiniteAdelic
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegratedOperatorNormalizedIndicatorProdFixed
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypeIdempotentOperatorFixSpanImages
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRestrictedFiniteTensorFamilyTypeIdempotentsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GroupConvolutionNormalizedIndicatorSelfStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmoothRepIntegratedOperatorNormalizedIndicatorFiStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTypeLevelFamilyIsOpenLeLatticeStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmoothRepIntegratedOperatorNormalizedIndicatorFi
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTypeLevelFamilyIsOpenLeLatticeStabilizer
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult
@@ -56,7 +56,7 @@ theorem exists_idemFam : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : Auxilia
         exact (isOpen_stabLocOne V.gram s.emb (frameLat V) s.cm).preimage continuous_subtype_val
       exact conv_typeIdem (μf v) (isOpen_stabLoc _ _ _ v) (isCompact_stabLoc _ _ _ v) s.red_surjective hk _ (T.irred _)
     · rw [fam_of_not T U μf T.S (fun h => hv h.1)]
-      obtain ⟨ho, hle⟩ := GlobalTheory.T.unitaryTypeLevelFamily_isOpen_le_latticeStabilizer D V T U hu v
+      obtain ⟨ho, hle⟩ := _root_.GlobalTheory.TrIdem.levelFam_open_le D V T U hu v
       exact GlobalTheory.T.groupConvolution_normalizedIndicator_self _ (μf v) _ ho ((isCompact_stabLoc _ _ _ v).of_isClosed_subset
         (Subgroup.isClosed_of_isOpen _ ho) hle)
   · intro k hk g
@@ -103,7 +103,7 @@ theorem exists_idemFam : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : Auxilia
           exact hxker ⟨v, hv⟩ k hk
         · rw [levelFam_of_notMem T U hv hvu] at hk
           exact hxK v hv k hk
-    have hlev := GlobalTheory.T.unitaryTypeLevelFamily_isOpen_le_latticeStabilizer D V T U hu
+    have hlev := _root_.GlobalTheory.TrIdem.levelFam_open_le D V T U hu
     have key : ∀ A : Finset (HeightOneSpectrum (𝓞 D.host.F)), A ⊆ T.S → ∀ P,
         GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V (fam T U μf A)) P → P x = x := by
       intro A
@@ -113,8 +113,8 @@ theorem exists_idemFam : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : Auxilia
         have e : fam T U μf ∅ = fun v => normInd (μf v) (levelFam T U v : Set _) :=
           funext fun v => fam_of_not T U μf ∅ (fun h => Finset.notMem_empty v h.2)
         rw [e] at hP
-        refine GlobalTheory.T.integratedOperator_normalizedIndicatorProd_fixed D V μf hH h1 ν hν (levelFam T U) (fun v => (hlev v).1) (fun v => (hlev v).2) ?_ W σ x
-          (GlobalTheory.T.fixed_of_forall_localSubgroup_fixed_finiteAdelic D V W σ hσ (levelFam T U) (fun v => (hlev v).2) x hxlev) P hP
+        refine _root_.GlobalTheory.TrIdem.integralOp_normInd_fix D V μf hH h1 ν hν (levelFam T U) (fun v => (hlev v).1) (fun v => (hlev v).2) ?_ W σ x
+          (_root_.GlobalTheory.TrIdem.fixed_of_forall_finLoc_mem D V W σ hσ (levelFam T U) (fun v => (hlev v).2) x hxlev) P hP
         filter_upwards [T.S.eventually_cofinite_notMem, eventually_cofinite_ne U.u] with v hv hvu
         exact levelFam_of_notMem T U hv hvu
       | insert a A ha ih =>
@@ -146,11 +146,11 @@ theorem exists_idemFam : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : Auxilia
           rwa [Function.update_eq_self] at this
         have hB' := ih (fun v hv => hsub (Finset.mem_insert_of_mem hv)) _ h3
         have hBx : smoothOp (σ.comp (locFin V a)) (μf a) (fam T U μf (insert a A) a) x = x :=
-          hg ▸ GlobalTheory.T.typeIdempotentOperator_fix_span_images D V T μf hH W σ hσ ⟨a, haS⟩ x (hxS ⟨a, haS⟩)
+          hg ▸ _root_.GlobalTheory.idemOp_fix_span D V T μf hH W σ hσ ⟨a, haS⟩ x (hxS ⟨a, haS⟩)
         have hB'x : smoothOp (σ.comp (locFin V a)) (μf a) (fam T U μf A a) x = x := by
           rw [fam_of_not T U μf A (fun h => ha h.2)]
           obtain ⟨ho, hle⟩ := hlev a
-          exact GlobalTheory.T.smoothRepIntegratedOperator_normalizedIndicator_fixed _ (μf a) _ ho ((isCompact_stabLoc _ _ _ a).of_isClosed_subset
+          exact _root_.GlobalTheory.TrIdem.smoothOp_normInd_of_fixed _ (μf a) _ ho ((isCompact_stabLoc _ _ _ a).of_isClosed_subset
             (Subgroup.isClosed_of_isOpen _ ho) hle) W _ hloc x (hxlev a)
         rw [hPB, LinearMap.comp_apply, hBx]
         rw [LinearMap.comp_apply, hB'x] at hB'

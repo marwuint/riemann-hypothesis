@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapsAtExpLeB
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UnifPreCharacterGroupIso
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTrivialisationsCorrespond
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatedExpansionCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPullbackTwoTorsionTranslationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationTranslateLiftTorusImageEqAddStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPullbackTwoTorsionTranslation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationTranslateLiftTorusImageEqAdd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelComparisonGeneratorOfUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCoordinateUniformisationTranslateEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCoordinateUniformisationTranslateEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExpansionTransportTranslationTwistStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -20,7 +20,7 @@ theorem GlobalTheory.MumCmp.translate_expansion_twist : ∀ (R : Type) [CommRing
   intro R _ _ _ hB D A G _ _ hsa U g hz a ha hlev A₂ D₂ U₂ hL β hβm hβq xe hxe hc w hw σ f hE
   obtain ⟨wL, hwL⟩ := hL
   obtain ⟨ν, hν, hW⟩ := GlobalTheory.T.exists_levelComparison_generator_of_uniformisation R hB D A G hsa U g hz a ha hlev A₂ D₂ U₂ wL hwL β hβm hβq w hw
-  obtain ⟨σ₂, hσ₂, h0⟩ := GlobalTheory.T.exists_section_pullback_twoTorsion_translation R G U.LG.L U₂.LG.L U.LG.isLB U₂.LG.isLB a ha wL hwL σ
+  obtain ⟨σ₂, hσ₂, h0⟩ := _root_.GlobalTheory.twoTors_secPull R G U.LG.L U₂.LG.L U.LG.isLB U₂.LG.isLB a ha wL hwL σ
   obtain ⟨f₂, hf₂⟩ := GlobalTheory.T.exists_translated_expansion_coefficients R D.toPre D₂.toPre β.hom hβm g xe hc w hw ν hν f
   refine ⟨σ₂, f₂, ν, hν, fun e => ?_, h0, hf₂⟩
   obtain ⟨h, hh₁, hh₂⟩ : ∃ h : (thickObj R (maximalIdeal R) e G).left ⟶ (thickObj R (maximalIdeal R) e G).left,
@@ -30,7 +30,7 @@ theorem GlobalTheory.MumCmp.translate_expansion_twist : ∀ (R : Type) [CommRing
       (by rw [Category.assoc, Over.w ((toUnit G ≫ a) * 𝟙 G)]; exact pullback.condition),
       pullback.lift_snd _ _ _, pullback.lift_fst _ _ _⟩
   exact GlobalTheory.T.expansion_transport_translation_twist R (maximalIdeal R) D D₂ A A₂ G U.toUnifPre U₂.toUnifPre a g β.hom xe w wL ν e h hh₂
-    (GlobalTheory.T.uniformisation_translate_lift_torus_image_eq_add R (maximalIdeal R) D D₂ A A₂ G U.toUnifPre U₂.toUnifPre g a β hβm e (hβq e)
+    (_root_.GlobalTheory.MumCmp.Transl.pG_comp_lift_translate R (maximalIdeal R) D D₂ A A₂ G U.toUnifPre U₂.toUnifPre g a β hβm e (hβq e)
       (fun ae h1 h2 => (hlev e ae h1 h2).1) h hh₁ hh₂)
-    (hW e h hh₁ hh₂) (GlobalTheory.T.torusCoordinate_uniformisation_translate_eq R hB D A G hsa U g hz a ha hlev A₂ D₂ U₂ wL hwL β hβm hβq w hw xe hxe hc e h hh₁ hh₂)
+    (hW e h hh₁ hh₂) (_root_.GlobalTheory.MumCmp.TranslCoord.coord_translate R hB D A G hsa U g hz a ha hlev A₂ D₂ U₂ wL hwL β hβm hβq w hw xe hxe hc e h hh₁ hh₂)
     σ σ₂ f f₂ hσ₂ hf₂ (hE e)

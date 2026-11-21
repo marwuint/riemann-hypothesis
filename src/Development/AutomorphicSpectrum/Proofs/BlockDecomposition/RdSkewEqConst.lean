@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Rr
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOneParamDifferentiableStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SkewHermitianUnitaryFlowStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SkewHermitianUnitaryFlow
 open MeasureTheory Matrix Finset
 open scoped ContDiff ComplexConjugate InnerProductSpace
 open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.WaveSpd
@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.WaveSpd
 
 theorem rd_skew_eq_const {n : ℕ} (E : KMod n) (Y : Mat n) (hY : Yᴴ = -Y) :
     ∃ B : E.V →L[ℂ] E.V, ∀ f ∈ CE E, ∀ g ∈ GLs n, Rd Y f g = B (f g) := by
-  obtain ⟨c, hc, c0, cadd, cd⟩ := GlobalTheory.T.skew_hermitian_unitary_flow Y hY
+  obtain ⟨c, hc, c0, cadd, cd⟩ := _root_.GlobalTheory.CompanionTheory.WaveSpd.UnitaryCurve.exists_unitary_curve Y hY
   haveI : CompleteSpace E.V := FiniteDimensional.complete ℂ E.V
   have hinv : ∀ t, (c t)⁻¹ = c (-t) := fun t =>
     inv_eq_of_mul_eq_one_right (by rw [← cadd, add_neg_cancel, c0])

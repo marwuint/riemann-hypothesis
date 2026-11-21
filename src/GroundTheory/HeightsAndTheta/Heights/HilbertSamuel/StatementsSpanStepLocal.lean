@@ -16,12 +16,6 @@ def SpanStepLocal.Statement : Prop :=
       ∀ (g : Ω) (n : ℕ), g * w j ^ n ∈ chartLat y a n →
         ∃ c : Fin r → Ω, (∀ l, c l ∈ Algebra.adjoin ℤ (Set.range fun i => w i / w j)) ∧ g = ∑ l, c l * b l
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

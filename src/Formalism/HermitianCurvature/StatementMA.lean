@@ -179,11 +179,6 @@ def FrameConcl (l : ℕ) (L : LevelData (A P D) P.r) {S : Type} [Fintype S] [Dec
 
 end Model
 
-def hahn (r : ℕ) : DAlg r where
-  R := M.Fn r
-  x := M.coord
-  ev := M.euler
-
 abbrev E (r : ℕ) : Type := (Fin r → ℂ) × ℂ
 
 def Qset (r : ℕ) (TT : ℝ) : Set (E r) := {x | (∀ l, x.1 l ≠ 0) ∧ TT < Complex.normSq x.2}
@@ -309,9 +304,6 @@ def Mdim (k r : ℕ) (l : Fin r) : ℕ := 2 * (r - (l : ℕ)) + k + 1
 
 def wq (k : ℕ) (x : E r) (TT : ℝ) : ℝ :=
   (∏ l, Complex.normSq (x.1 l) ^ (Mdim k r l - 1)) * (Complex.normSq x.2 - TT) ^ (k - 1)
-
-def muq (k r : ℕ) (TT : ℝ) : Measure (Qp r TT) :=
-  Measure.comap Subtype.val ((volume : Measure (E r)).withDensity fun x => dens0 x * ENNReal.ofReal (wq k x TT))
 
 def Test (r : ℕ) (TT : ℝ) : Set (SmQ r TT) :=
   {f | HasCompactSupport (ext (f : Qp r TT → ℂ)) ∧ tsupport (ext (f : Qp r TT → ℂ)) ⊆ Qset r TT}
@@ -502,17 +494,6 @@ end Sys
 
 end
 
-def HahnLaws : Prop := ∀ (r : ℕ) (TT : ℝ), (hahn r).Laws TT
-
-def HahnJoint : Prop :=
-  ∀ P : M.Par, (∀ l, pA P (hahn P.r) l = M.pA P l) ∧ (∀ l, pbA P (hahn P.r) l = M.pbA P l) ∧
-    (∀ l, cA P (hahn P.r) l = M.cA P l) ∧ (∀ l, ciA P (hahn P.r) l = M.ciA P l) ∧
-    (∀ l, cbA P (hahn P.r) l = M.cbA P l) ∧ (∀ l, cbiA P (hahn P.r) l = M.cbiA P l) ∧
-    zA P (hahn P.r) = M.zA P ∧ ziA P (hahn P.r) = M.ziA P ∧ zbA P (hahn P.r) = M.zbA P ∧
-    zbiA P (hahn P.r) = M.zbiA P ∧ ggA P (hahn P.r) = M.ggA P ∧ ggiA P (hahn P.r) = M.ggiA P ∧
-    nabA P (hahn P.r) = M.nabA P ∧ nabsA P (hahn P.r) = M.nabsA P ∧ (∀ l, SS P (hahn P.r) l = M.SS P l) ∧
-    ∀ l, startM P (hahn P.r) l = M.startM P l
-
 def LevelExistsD : Prop :=
   ∀ (P : M.Par) (D : DAlg P.r), D.Laws P.TT → ∃ L : LevelData (A P D) P.r, IsModelLevel P D L
 
@@ -579,19 +560,6 @@ def AdjClosed : Prop :=
   ∀ (r : ℕ) (TT : ℝ), IsAdj (1 : (anQ r TT).Pr) ∧
     (∀ a b : (anQ r TT).Pr, IsAdj a → IsAdj b → IsAdj (a + b) ∧ IsAdj (a * b)) ∧
     (∀ (z : ℂ) (a : (anQ r TT).Pr), IsAdj a → IsAdj (z • a)) ∧ ∀ a : (anQ r TT).Pr, IsAdj a → IsAdj (star a)
-
-def AdjAlg : Prop := ∀ (r : ℕ) (TT : ℝ), 0 ≤ TT → ∀ a ∈ Algebra.adjoin ℂ ((anQ r TT).gens TT), IsAdj a
-
-def AdjAlgOfParts : Prop := AdjGens → AdjClosed → AdjAlg
-
-def AdjMatrix : Prop :=
-  ∀ (P : M.Par) (a : A P (DQ P)), IsAdjA P a → ∀ f g : M.Ty P → SmQ P.r P.TT, (∀ π, f π ∈ Test P.r P.TT) →
-    (∀ π, g π ∈ Test P.r P.TT) → ipA P (actA P a f) g = ipA P f (actA P (star a) g)
-
-def MeasureJoint : Prop :=
-  ∀ (k r : ℕ) (TT : ℝ) (f : Qp r TT → ℂ), Measurable f →
-    ∫⁻ q, ENNReal.ofReal (‖f q‖ ^ 2) ∂muq k r TT =
-      ∫⁻ q, ENNReal.ofReal (‖((Real.sqrt (wq k q.1 TT) : ℝ) : ℂ) * f q‖ ^ 2) ∂mu0 r TT
 
 section EnergyProps
 
@@ -709,21 +677,10 @@ def EnergyPolynomialInPoints : Prop := ∀ P : M.Par, ForSys P fun S => S.I1
 
 def SourceSquareIntegrable : Prop := ∀ P : M.Par, ForSys P fun S => S.BaseDensityIntegrable
 
-def EmptyWordEnergyDensity : Prop := ∀ P : M.Par, ForSys P fun S => S.J0
-
 def JnNorm : Prop :=
   ∀ P : M.Par, ∀ (l : ℕ) (L : LevelData (A P (DQ P)) P.r) (j : M.Ty P → SmQ P.r P.TT)
     (lam : Fin (P.k + 2 * P.r + 1) → ℝ) (α β Lb : ℝ) (c : LE.Cut) (Ntot : ℕ),
     (sysQ P l L j lam α β Lb c Ntot).jn = ∫ q, ∑ π, ‖(j π : Qp P.r P.TT → ℂ) q‖ ^ 2 ∂mu0 P.r P.TT
-
-def JAdjZero : Prop :=
-  ∀ (P : M.Par) (L : LevelData (A P (DQ P)) P.r) (j : M.Ty P → SmQ P.r P.TT) (m : ℕ), P.r = 0 → 0 ≤ P.TT →
-    IsModelLevel P (DQ P) L → JDecay P L j m → JAdj P L j m
-
-def HypsNonvacuous : Prop :=
-  ∀ (Ntot : ℕ) (Lb B : ℝ), 1 ≤ Ntot → (Ntot : ℝ) ≤ Lb → 2 < Lb →
-    ∃ (P : M.Par) (l : ℕ) (L : LevelData (A P (DQ P)) P.r) (j : M.Ty P → SmQ P.r P.TT)
-      (lam : Fin (P.k + 2 * P.r + 1) → ℝ) (α β : ℝ), Hyps P l L j lam α β Lb Ntot ∧ j ≠ 0 ∧ B ≤ β - α
 
 noncomputable section ThmPForms
 

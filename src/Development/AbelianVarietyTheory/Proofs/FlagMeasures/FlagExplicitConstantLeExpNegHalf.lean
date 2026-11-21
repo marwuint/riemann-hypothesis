@@ -2,12 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SqSumEqSumSqAddTwoMulSumLt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ZetaProdSphereVolumeBounds
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NegLogProdLValEtaLeAndPosStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RootDiscrGeThreeHalvesOfIsTotallyComplexStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DedekindZetaResidueLeSixteenLogRootDiscrPowStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LogUnitarySphereVolumeProductRatioLeLargeRankStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitarySphereVolumeProductRatioAndInvBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneLeDedekindZetaRealValueAndLeZetaPowStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NegLogProdLValEtaLeAndPos
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RootDiscrGeThreeHalvesOfIsTotallyComplex
+import Formalism.HermitianLattices.StatementMass
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DedekindZetaResidueLeSixteenLogRootDiscrPow
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LogUnitarySphereVolumeProductRatioLeLargeRank
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitarySphereVolumeProductRatioAndInvBounds
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneLeDedekindZetaRealValueAndLeZetaPow
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 
@@ -56,9 +58,9 @@ theorem zeta_prod (E : Type) [Field E] [NumberField E] (J : ℕ) :
     0 ≤ ∏ l ∈ Finset.Icc 2 J, zetaE E l ∧
       ∏ l ∈ Finset.Icc 2 J, zetaE E l ≤ Real.exp (Module.finrank ℚ E) := by
   have h0 : ∀ l ∈ Finset.Icc 2 J, 0 ≤ zetaE E l := fun l hl =>
-    zero_le_one.trans (GlobalTheory.T.one_le_dedekindZetaRealValue_and_le_zeta_pow E l (Finset.mem_Icc.1 hl).1).1
+    zero_le_one.trans (_root_.GlobalTheory.DedekindZetaBound.one_le_zetaE_and_le E l (Finset.mem_Icc.1 hl).1).1
   refine ⟨Finset.prod_nonneg h0, ?_⟩
-  refine (Finset.prod_le_prod h0 fun l hl => (GlobalTheory.T.one_le_dedekindZetaRealValue_and_le_zeta_pow E l (Finset.mem_Icc.1 hl).1).2).trans ?_
+  refine (Finset.prod_le_prod h0 fun l hl => (_root_.GlobalTheory.DedekindZetaBound.one_le_zetaE_and_le E l (Finset.mem_Icc.1 hl).1).2).trans ?_
   rw [Finset.prod_pow, ← Real.exp_one_pow]
   apply pow_le_pow_left₀ (Finset.prod_nonneg fun l _ => GlobalTheory.ZetaProd.zeta_nonneg l)
   have := GlobalTheory.zetaProd_sphereVolume_bounds.1 J
@@ -81,8 +83,8 @@ open ConstBd in
 
 theorem constantBound : ConstantBound := by
   intro E _ _ _ hE p q a j hj1 hjq hL hq hrd _
-  obtain ⟨hdeg, hf1, hv, -⟩ := GlobalTheory.T.rootDiscr_ge_three_halves_of_isTotallyComplex E hE.1
-  obtain ⟨hres0, hres⟩ := GlobalTheory.T.dedekindZeta_residue_le_sixteen_log_rootDiscr_pow E hE.1
+  obtain ⟨hdeg, hf1, hv, -⟩ := _root_.GlobalTheory.rootDiscr_ge_three_halves_of_totallyComplex E hE.1
+  obtain ⟨hres0, hres⟩ := _root_.GlobalTheory.dedekindZeta_residue_le_log_rootDiscr_pow E hE.1
   unfold kapBd
   have haJ : a ≤ ∑ i, j i := by
     simpa using Finset.sum_le_sum (s := Finset.univ) (fun i _ => hj1 i)
@@ -142,7 +144,7 @@ theorem constantBound : ConstantBound := by
     have := mul_nonneg hf0 this
     linarith
 
-  have hA := GlobalTheory.T.log_unitarySphereVolumeProduct_ratio_le_large_rank n p J (by exact_mod_cast (by linarith : (18 : ℝ) ≤ n)) hJp (by omega)
+  have hA := _root_.GlobalTheory.SphRatio.log_sphV_ratio_le n p J (by exact_mod_cast (by linarith : (18 : ℝ) ≤ n)) hJp (by omega)
     (by linarith) (by linarith)
   rw [Real.log_div hn0.ne' (by positivity), Real.log_mul (x := 2 * Real.pi) (by positivity) (by positivity),
     Real.log_exp,
@@ -204,7 +206,7 @@ theorem constantBound : ConstantBound := by
   have T5' : 0 ≤ ∏ i, ∏ l ∈ Finset.Icc 2 (j i), zetaE E l :=
     Finset.prod_nonneg fun i _ => (zeta_prod E (j i)).1
 
-  obtain ⟨hL1, hL0⟩ := GlobalTheory.T.neg_log_prod_lValEta_le_and_pos E hE (n - 2 * J) n (by omega)
+  obtain ⟨hL1, hL0⟩ := _root_.GlobalTheory.FlagMeas.LProd.neg_log_prod_le E hE (n - 2 * J) n (by omega)
   rw [hf] at hL1
   have FreeQuotientRank : (∏ M ∈ Finset.Ioc (n - 2 * J) n, Formalism.HermitianLatticesTheory.lValEta E M)⁻¹ ≤ Real.exp (f * J * 1) := by
     rcases Nat.eq_zero_or_pos J with h | h

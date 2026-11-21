@@ -30,8 +30,6 @@ theorem mem_indF {B : Subgroup G} {χ : B →* ℂˣ} {f : G → ℂ} :
     f ∈ indF B χ ↔ (∀ (b : B) (g : G), f (b * g) = (χ b : ℂ) * f g) ∧
       ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ k ∈ K, ∀ g : G, f (g * k) = f g := Iff.rfl
 
-example : (fun _ => 1 : G → ℂ) ∈ indF ⊤ 1 := ⟨fun _ _ => by simp, ⊤, by simp, fun _ _ _ => rfl⟩
-
 def pr {G : Type} [Group G] (B : Subgroup G) [MeasurableSpace B] (μ : Measure B) (χ : B →* ℂˣ) (f : G → ℂ) : G → ℂ :=
   fun g => ∫ b : B, (χ b : ℂ) * f ((b : G)⁻¹ * g) ∂μ
 
@@ -55,8 +53,6 @@ theorem sg_mem_unipB (σ : E ≃+* E) {g : GL (Fin n) E} (hg : g ∈ unipB E (Fi
 def Semi (σ : E ≃+* E) (π : Representation ℂ (GL (Fin n) E) V) (A : V →ₗ[ℂ] V) : Prop :=
   ∀ g v, A (π g v) = π (sg σ g) (A v)
 
-example (π : Representation ℂ (GL (Fin n) E) V) : Semi (RingEquiv.refl E) π LinearMap.id := fun _ _ => rfl
-
 def jacA {σ : E ≃+* E} {π : Representation ℂ (GL (Fin n) E) V} {A : V →ₗ[ℂ] V} (hA : Semi σ π A) :
     Jacquet π (unipB E (Fin n)) →ₗ[ℂ] Jacquet π (unipB E (Fin n)) :=
   (twKer π (unipB E (Fin n)) 1).mapQ (twKer π (unipB E (Fin n)) 1) A (by
@@ -69,8 +65,6 @@ theorem jacA_mk {σ : E ≃+* E} {π : Representation ℂ (GL (Fin n) E) V} {A :
     jacA hA (Submodule.Quotient.mk v) = Submodule.Quotient.mk (A v) := rfl
 
 def Inv (σ : E ≃+* E) (ω : Eˣ →* ℂˣ) : Prop := ∀ x : Eˣ, ω (Units.map (σ : E →* E) x) = ω x
-
-example (σ : E ≃+* E) : Inv σ 1 := fun _ => rfl
 
 end GeneralLinearIntegers
 
@@ -104,16 +98,6 @@ def OfSupport : Prop :=
     (ω : Fin n → Eˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i)),
     HasSupport π (Finset.univ.val.map fun i => IrrGL.ofChar (ω i) (hω i)) ↔
       π.IsIrreducible ∧ IsSubquotient π (prinSeries ω)
-
-def InvOfNorm : Prop :=
-  ∀ (F E : Type) [Field F] [Field E] [Algebra F E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
-    (σ : E ≃ₐ[F] E), Isom (σ : E ≃+* E) → ∀ (ω : Eˣ →* ℂˣ) (χ : Fˣ →* ℂˣ),
-    (∀ u : Eˣ, valuation E (u : E) = 1 → ω u = χ (Units.map (Algebra.norm F : E →* F) u)) → Inv (σ : E ≃+* E) ω
-
-def InvOfProd : Prop :=
-  ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
-    (σ : E ≃+* E) (q : ℕ), Cyc σ q → ∀ ω : Eˣ →* ℂˣ,
-    (∀ u : Eˣ, valuation E (u : E) = 1 → ∏ i ∈ Finset.range q, σ^[i] (u : E) = 1 → ω u = 1) → Inv σ ω
 
 end UpperTheory.Gal.LocD
 

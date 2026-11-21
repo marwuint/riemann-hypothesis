@@ -35,6 +35,4 @@ theorem rowNG_of_cut2P (hc : NGCut2P) : RowNGP := by
   rw [hdd] at r
   exact r
 
-example : NGCut2P → RowNGP := rowNG_of_cut2P
-
 end GlobalTheory.NGRow

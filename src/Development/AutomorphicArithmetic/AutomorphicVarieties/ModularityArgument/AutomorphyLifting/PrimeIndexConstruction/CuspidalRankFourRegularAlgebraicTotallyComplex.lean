@@ -13,11 +13,6 @@ namespace UpperTheory.V.Z.Win.Birth
 
 def CuspidalRankFourRegularAlgebraicTotallyComplex {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] (π : CuspSub L 4) : Prop := (CG.mk π).IsRegAlg ∧ ImaginaryQuadraticEtaCharacter.AllWin π
 
-example : type_of% @CuspidalRankFourRegularAlgebraic := @CuspidalRankFourRegularAlgebraicTotallyComplex
-
-theorem mkReg {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {π : CuspSub L 4} (h : (CG.mk π).IsRegAlg) (_ : ImaginaryQuadraticEtaCharacter.AllWin π) :
-    CuspidalRankFourRegularAlgebraic π := h
-
 theorem mkReg' {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {π : CuspSub L 4} (h : (CG.mk π).IsRegAlg) (u : ImaginaryQuadraticEtaCharacter.AllWin π) :
     CuspidalRankFourRegularAlgebraicTotallyComplex π := ⟨h, u⟩
 

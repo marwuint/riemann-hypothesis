@@ -3,7 +3,9 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.DilationDecomposition.Bridge
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.DilationDecomposition.ContinuousMhUInv
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaSplitting.SplitW
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SiegelSetUnitaryStatement
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SiegelSetUnitary
 
 noncomputable section
 
@@ -22,7 +24,7 @@ theorem gIdil (hT : TAll) (hAux : AuxiliaryPrimeFunction) (hLE : LocOpEx) (hAw :
     (thetaBdd_of hS) hLF hBD holMean derCont stripOK
 
 theorem gIdil' (hT : TAll) (hAux : AuxiliaryPrimeFunction) (hLE : LocOpEx) (hAw : AwayAct) (hLF : LocFamG) : GIdil :=
-  gIdil hT hAux hLE hAw GlobalTheory.T.siegel_set_unitary hLF bigDense
+  gIdil hT hAux hLE hAw _root_.GlobalTheory.CompanionTheory.SiegelRed.siegelSetUnitary hLF bigDense
 
 end PositivityTheory.SiegelWeilFormula.Kdil
 

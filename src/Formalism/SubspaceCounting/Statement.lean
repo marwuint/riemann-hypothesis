@@ -11,11 +11,6 @@ def AllButLE {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] (π : R)
   ∃ C : Finset X, (↑C : Set X) ⊆ M ∧ C.card ≤ g ∧
     ∀ x ∈ M, π ^ E • x ∈ P ⊔ Submodule.span R (↑C : Set X)
 
-def GoodRank {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A] [AddCommGroup B]
-    [Module R B] (π : R) (f : A →ₗ[R] B) (n D : ℕ) : Prop :=
-  ∃ (u : (Fin n → R) →ₗ[R] A) (v : B →ₗ[R] (Fin n → R)),
-    v ∘ₗ f ∘ₗ u = (π ^ D) • LinearMap.id
-
 inductive Slot
   | base
   | ball
@@ -63,25 +58,5 @@ def WalkSharp : Prop :=
         (∑ v, (a v + b v + (m - 1) * c v + m * c₀) + β * S) ∧
       AllButLE π (L fun _ => Slot.base) (prodIdealMap π y m Sv (L fun _ => Slot.base)) 0
         (∑ v, Sv v)
-
-def LengthLayers : Prop :=
-  ∀ {O M : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [AddCommGroup M] [Module O M] [Module.Free O M] [Module.Finite O M]
-    (π : O), Irreducible π →
-    ∀ (P : Submodule O M) (τ S Stop β₀ : ℕ) (g : ℕ → ℕ),
-    (∀ β ≤ β₀, AllButLE π ⊤ P (g β) (τ + β * S)) →
-    AllButLE π ⊤ P 0 (τ + Stop) →
-    Module.length O (M ⧸ (P ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule O M))) ≤
-      ((Module.finrank O M * τ + S * ∑ β ∈ Finset.range β₀, g β + Stop * g β₀ : ℕ) : ℕ∞)
-
-def SaturatedMember : Prop :=
-  ∀ {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
-    (π : O), π ≠ 0 →
-    ∀ (M' P : Submodule O M) (τ : ℕ),
-    (∀ (r : O) (x : M), r ≠ 0 → r • x ∈ M' → x ∈ M') →
-    P ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule O M) ⊓ M' ≤ (Ideal.span {π ^ τ}) • M' ∧
-    Module.length O (M' ⧸ (Submodule.comap M'.subtype
-        (P ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule O M)))) ≤
-      Module.length O (M ⧸ (P ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule O M)))
 
 end Formalism.G0

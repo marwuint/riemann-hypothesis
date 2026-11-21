@@ -390,45 +390,6 @@ section Split
 variable {X' : Type} [Group X'] [TopologicalSpace X'] [MeasurableSpace X'] [BorelSpace X'] [IsTopologicalGroup X']
   [LocallyCompactSpace X'] [SecondCountableTopology X']
 
-omit [LocallyCompactSpace X] [SecondCountableTopology X] [∀ w, IsTopologicalGroup (Ya w)] [∀ w, BorelSpace (Ya w)]
-  [∀ w, LocallyCompactSpace (Ya w)] [∀ w, T2Space (Ya w)] [∀ w, SecondCountableTopology (Ya w)] in
-
-theorem IsHaarProd.prod_away {S : Finset V} {pa' : ∀ w, X' →* Ya w} {pf' : ∀ v : {v // v ∉ S}, X' →* Yf v}
-    {ν : Measure X'} (h : IsHaarProd pa' pf' (fun v => K v) μa (fun v => μf v) ν) [hf : ∀ v, (μf v).IsHaarMeasure]
-    (hK : ∀ v, IsOpen (K v : Set (Yf v))) (e : ((∀ v : S, Yf v) × X') ≃ₜ* X)
-    (ea : ∀ w p, pa w (e p) = pa' w p.2) (eS : ∀ (v : S) p, pf v (e p) = p.1 v)
-    (ef : ∀ (v : {v // v ∉ S}) p, pf v (e p) = pf' v p.2) :
-    IsHaarProd pa pf K μa μf (((Measure.pi fun v : S => μf v).prod ν).map e) := by
-  classical
-  obtain ⟨h1, -, h3, h4⟩ := h
-  obtain ⟨S₀, hS⟩ := exists_finset_of_eventually h4.1
-  have hS' : ∀ T : Finset V, S ∪ S₀.map (Function.Embedding.subtype _) ⊆ T →
-      ∀ v : {v // v ∉ S}, v.1 ∉ T → μf v (K v) = 1 := fun T hT v hv =>
-    hS v fun h' => hv (hT (Finset.mem_union_right _ (Finset.mem_map_of_mem _ h')))
-  refine ⟨h1, hf, e.isHaarMeasure_map _, isCylProd_of_large (fun v => (hK v).measurableSet)
-    (S ∪ S₀.map (Function.Embedding.subtype _))
-    (fun v hv => hS' _ le_rfl ⟨v, fun h' => hv (Finset.mem_union_left _ h')⟩ hv) (fun _ _ => rfl)
-    fun T hT A B hA hB => ?_⟩
-  have hST : S ⊆ T := Finset.subset_union_left.trans hT
-  have e1 := h4.2 (T.subtype _) (fun v hv => hS' T hT v (by simpa using hv)) A (fun v => B v) hA
-    fun v hv => hB v (by simpa using hv)
-  have e2 : e ⁻¹' cyl (fun w => pa w) (fun v => pf v) (fun v => (K v : Set (Yf v))) T A B =
-      (univ.pi fun v : S => B v) ×ˢ cyl (fun w => pa' w) (fun v => pf' v) (fun v => (K v : Set (Yf v)))
-        (T.subtype _) A fun v => B v := by
-    ext p
-    simp only [mem_preimage, mem_cyl, mem_prod, mem_univ_pi, Finset.mem_subtype, ea, ← eS, ← ef]
-    refine ⟨fun ⟨a, b, c⟩ => ⟨fun v => b v (hST v.2), a, fun v hv => b v hv, fun v hv => c v hv⟩,
-      fun ⟨a, b, c, d⟩ => ⟨b, fun v hv => ?_, fun v hv => d ⟨v, fun h' => hv (hST h')⟩ hv⟩⟩
-    by_cases h' : v ∈ S
-    exacts [a ⟨v, h'⟩, c ⟨v, h'⟩ hv]
-  rw [show ((Measure.pi fun v : S => μf v).prod ν).map e =
-      ((Measure.pi fun v : S => μf v).prod ν).map e.toHomeomorph.toMeasurableEquiv from rfl,
-    MeasurableEquiv.map_apply]
-  erw [e2]
-  rw [Measure.prod_prod, e1, Measure.pi_pi, mul_left_comm, Finset.prod_coe_sort S fun v => μf v (B v),
-    Finset.prod_subtype_eq_prod_filter fun v => μf v (B v), ← Finset.prod_filter_mul_prod_filter_not T (· ∈ S),
-    Finset.filter_mem_eq_inter, Finset.inter_eq_right.2 hST]
-
 omit [LocallyCompactSpace X] [SecondCountableTopology X] [∀ w, T2Space (Ya w)] [∀ v, IsTopologicalGroup (Yf v)]
   [∀ v, LocallyCompactSpace (Yf v)] [∀ v, SecondCountableTopology (Yf v)] [∀ v, BorelSpace (Yf v)] in
 
@@ -475,15 +436,6 @@ instance {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
 @[simp] theorem normHaar_self {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (K : Subgroup G) (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) :
     normHaar K ho hc K = 1 := haarMeasure_self
-
-example {Y : Type} [MeasurableSpace Y] (ν μ : Measure Y) :
-    IsCylProd (W := Unit) (V := Empty) (Ya := fun _ => Y) (Yf := fun _ => Y) (fun _ => id) (fun _ => id)
-      (fun _ => univ) (fun _ => ν) (fun _ => ν) μ ↔ μ = ν := by
-  refine ⟨fun h => Measure.ext fun s hs => ?_, ?_⟩
-  · simpa [cyl] using h.2 ∅ (fun v => v.elim) (fun _ => s) (fun _ => s) (fun _ => hs) fun v => v.elim
-  · rintro rfl
-    refine ⟨Eventually.of_forall fun v => v.elim, fun S _ A B _ _ => ?_⟩
-    simp [cyl, Finset.eq_empty_of_isEmpty S, Unique.forall_iff]
 
 end GlobalTheory.RestrMeas
 

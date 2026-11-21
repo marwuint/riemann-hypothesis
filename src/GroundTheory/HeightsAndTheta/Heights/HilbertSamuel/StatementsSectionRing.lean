@@ -40,24 +40,6 @@ theorem isBoundedH_one_of_isSmallH {K : Type} [Fintype K] {ι : K → Type} [∀
   rw [one_mul]
   exact h dg dh g h' z hg hh hdeg he hz
 
-theorem SectionRingFinite.hyps_inhabited :
-    (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) ∧ (∀ j : Fin 2, y ⟨(), j⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1) ∧
-      KH.GeneratesOn (ι := GlobalTheory (Fin 2)) y fsLine1.a (fun j : Fin 2 => y ⟨(), j⟩) :=
-  ⟨IntegralClosureFinite.hyps_inhabited.2.1, coord_mem_chartLat, generatesOn_coords⟩
-
-theorem SectionBounded.hyps_inhabited :
-    (∀ j : Fin 2, y ⟨(), j⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1) ∧
-      KH.GeneratesOn (ι := GlobalTheory (Fin 2)) y fsLine1.a (fun j : Fin 2 => y ⟨(), j⟩) ∧
-      ∀ j : Fin 2, IsSmallH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) y fsLine1 1 (y ⟨(), j⟩) :=
-  ⟨coord_mem_chartLat, generatesOn_coords, isSmallH_coord⟩
-
-theorem SectionBoundedMul.hyps_inhabited :
-    y ⟨(), 0⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1 ∧ y ⟨(), 1⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1 ∧
-      IsBoundedH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) y fsLine1 1 1 (y ⟨(), 0⟩) ∧
-      IsBoundedH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) y fsLine1 1 1 (y ⟨(), 1⟩) :=
-  ⟨coord_mem_chartLat 0, coord_mem_chartLat 1, isBoundedH_one_of_isSmallH (isSmallH_coord 0),
-    isBoundedH_one_of_isSmallH (isSmallH_coord 1)⟩
-
 end Inhabitants
 
 end

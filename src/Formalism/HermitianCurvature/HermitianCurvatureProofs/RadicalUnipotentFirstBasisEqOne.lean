@@ -153,14 +153,6 @@ theorem star_uu' (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a : Fin j) : star (u
   rw [Matrix.conjTranspose_apply] at this
   rw [← this]; simp; ring
 
-theorem star_nn (y : U.RC k 1 ρ) : star (nn y) = nn y := by
-  simp only [nn, Matrix.vecMul, dotProduct, star_sum, star_mul', star_star, Pi.star_apply, Finset.sum_mul]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro i _; apply Finset.sum_congr rfl; intro l _
-  have := congrFun (congrFun (hH k ρ) l) i
-  rw [Matrix.conjTranspose_apply] at this
-  rw [← this]; simp; ring
-
 theorem CX_zero (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) : CX x y v 0 = cy y v := rfl
 theorem CX_succ (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) (b : Fin j) :
     CX x y v b.succ = cm x v b + cy y v * cb x b := rfl

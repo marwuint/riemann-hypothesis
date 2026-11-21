@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralModularTowerJCompGlTwoPosRatStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralModularTowerJCompGlTwoPosRat
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
 
@@ -59,7 +59,7 @@ theorem Tower.overY_comap_sl_gal : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [
     rw [AlgEquiv.commutes]; exact hW.1 c
   · rw [ValuationSubring.mem_comap]
     change X.sl g X.jK ∈ W
-    have hint := GlobalTheory.T.isIntegral_modularTower_j_comp_glTwoPosRat ε X hε hj g
+    have hint := _root_.GlobalTheory.KZ.JInt.jK_sl_isIntegral ε X hε hj g
     let A := Algebra.adjoin Ω {X.jK}
     have hle : A.toSubring ≤ W.toSubring := fun x hx => X.adjoin_le_of_overY W hW x hx
     let ι : A →+* W := Subring.inclusion hle

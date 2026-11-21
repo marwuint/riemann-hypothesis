@@ -103,9 +103,6 @@ theorem Z_of_sym {u w : VA X.B.I} {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
   rw [e]
   exact Z_sig X.B.I X.B.g h
 
-theorem Z0 {x : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (h : ZMod' X.B.I X.B.g x) : ZMod' X.B.I X.B.g (x - 0) := by
-  simpa using h
-
 theorem hA_bw_bw (l m : Fin D.R.k) : hA X.B.I (X.bw l) (X.bw m) = 0 := by
   rw [X.bw_w l, X.bw_w m, hA_smul_left, hA_smul_right, ← mul_assoc, mul_comm (sigA X.B.I X.ew) X.ew,
     X.ew_orth, zero_mul]

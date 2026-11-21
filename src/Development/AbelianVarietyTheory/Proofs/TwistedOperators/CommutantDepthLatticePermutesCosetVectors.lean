@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmulMemLatOIdem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepresentationVacuumCosetVectorsGrid
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedGridArrowLatticeIffIntegralFrameMatr
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DependenceFixed
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CommutantPartChosenPlacesMemCompletedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalHomApproxHalfModIdealStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CommutantPartChosenPlacesMemCompletedLattice
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalHomApproxHalfModIdeal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SepRows GlobalTheory.Asc
 open scoped TensorProduct
@@ -114,8 +114,8 @@ theorem GlobalTheory.CosShift.epart : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.
   obtain ⟨x₁, hx₁⟩ : ∃ x₁ : homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0)),
       e • w - e • (x₁ : Matrix _ _ D.host.E).map (incA D) ∈
         hatMx (G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0))) :=
-    GlobalTheory.T.exists_rational_hom_approx_half_mod_ideal (G.pl.modul_ne_bot sc) hSD.1.1 hSD.2.1 he (e • w) hz
-      (mem_hatMx_of_latO hq hL G hi he hz (GlobalTheory.T.commutantPart_chosenPlaces_mem_completedLattice hL G W.ψ W.ψ_std i hi e he w hw hwinf))
+    _root_.GlobalTheory.CosRatApprox.exists_rat_approx (G.pl.modul_ne_bot sc) hSD.1.1 hSD.2.1 he (e • w) hz
+      (mem_hatMx_of_latO hq hL G hi he hz (_root_.GlobalTheory.AnnPart.part_mem_latO hL G W.ψ W.ψ_std i hi e he w hw hwinf))
   obtain ⟨κ', hκ'⟩ := cosInd_add hz x₁ hx₁ κ
   refine ⟨κ', ?_⟩
   rw [hv κ, hv κ', ← hκ']

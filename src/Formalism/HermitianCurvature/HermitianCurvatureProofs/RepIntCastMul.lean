@@ -37,9 +37,6 @@ theorem Rep.mono {d d' : ℕ} (h : d ≤ d') {a : AA k r E} (ha : Rep d a) : Rep
   obtain ⟨L, hL, h'⟩ := ha
   exact ⟨L, fun p hp => (hL p hp).trans h, h'⟩
 
-theorem rep_zero (d : ℕ) : Rep d (0 : AA k r E) := by
-  exact ⟨[], by simp, fun Φ w => by simp⟩
-
 theorem rep_ell (x : Ix k r) : Rep 1 (ell x : AA k r E) := by
   exact ⟨[(1, [x])], by simp, fun Φ w => by simp [ell_apply]⟩
 
@@ -273,17 +270,6 @@ theorem ev_ck (hC : HC Eop) {d : ℕ} {a : AA k r E} (ha : Rep d a) (m : ℕ) (f
   simp only [List.mem_map] at hq
   obtain ⟨p, hp, rfl⟩ := hq
   exact Fw_ck Eop hC p.2 m f (ck_mono' (by have := hL p hp; omega) hf)
-
-theorem ev_zero (hC : HC Eop) (hL : HL Eop) (hS : HS Eop) {d : ℕ} {a : AA k r E} (ha : Rep d a) :
-    ∀ g ∈ GV k r, ev Eop a (fun _ => (0 : E)) g = 0 := by
-  obtain ⟨L, _, hrep⟩ := ev_rep_ex Eop ha
-  intro g hg
-  rw [hrep]
-  apply List.sum_eq_zero
-  intro y hy
-  simp only [List.mem_map] at hy
-  obtain ⟨p, _, rfl⟩ := hy
-  rw [Fw_zero Eop hC hL hS p.2 g hg, smul_zero]
 
 theorem ev_add (a b : AA k r E) (f : Mat k r → E) (x : Mat k r) : ev Eop (a + b) f x = ev Eop a f x + ev Eop b f x :=
   rfl

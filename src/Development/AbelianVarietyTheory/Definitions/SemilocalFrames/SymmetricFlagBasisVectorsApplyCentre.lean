@@ -17,26 +17,12 @@ def ofHSpace {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.Ba
 @[simp] theorem ofHSpace_B {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E)
     (x y : S.V) : (ofHSpace S).B x y = S.hT y x := rfl
 
-theorem isUnimod_ofHSpace {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E)
-    (Λ : Submodule (NumberField.RingOfIntegers E) S.V) :
-    IsUnimod (ofHSpace S) Λ ↔ Submodule.IsLattice E Λ ∧ Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ :=
-  isUnimod_iff _ _
-
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] {H : HermSpace K V} {r : ℕ}
 
 def xPlus (F : FlagD H r) : Submodule K V := F.X ⊔ Submodule.span K {F.z}
 
 abbrev latX (F : FlagD H r) (Λ : Submodule R V) : Submodule R V := Λ ⊓ rs R F.X
-
-def latU (F : FlagD H r) (Λ : Submodule R V) : Submodule R V := latX F Λ ⊔ Submodule.span R {F.z}
-
-def latUU (F F' : FlagD H r) (Λ : Submodule R V) : Submodule R V := latU F Λ ⊔ latU F' Λ
-
-def latSat (F F' : FlagD H r) (Λ : Submodule R V) : Submodule R V := Λ ⊓ rs R (V0 F F')
-
-abbrev satQuot (F F' : FlagD H r) (Λ : Submodule R V) : Type :=
-  ↥(latSat F F' Λ) ⧸ (latUU F F' Λ).submoduleOf (latSat F F' Λ)
 
 def IsTransv (F F' : FlagD H r) : Prop :=
   Module.finrank K (V0 F F') = 2 * r + 2 ∧ Disjoint (V0 F F') (wSp F F')
@@ -52,8 +38,6 @@ def IsCong (F F' : FlagD H r) (Λ : Submodule R V) (g : R) : Prop :=
   latX F' Λ ⊔ smulLat g Λ = latX F Λ ⊔ smulLat g Λ ∧ F'.z - F.z ∈ latX F Λ ⊔ smulLat g Λ
 
 def redLat (F : FlagD H r) (Λ : Submodule R V) : Submodule R V := (Λ ⊓ rs R (perp H F.X)) ⊔ rs R F.X
-
-def redLat0 (F : FlagD H r) (Λ : Submodule R V) : Submodule R V := redLat F Λ ⊓ rs R (perp H (xPlus F))
 
 def IsPairMap (F F' F'' : FlagD H r) (Λ : Submodule R V) (g : R) (β : V ≃ₗ[K] V) : Prop :=
   F'.X.map (β : V →ₗ[K] V) = F''.X ∧ (perp H F'.X).map (β : V →ₗ[K] V) = perp H F''.X ∧
@@ -143,28 +127,6 @@ theorem eq_zero_of_smul_z_mem (F : FlagD H r) {a : K} (h : a • F.z ∈ F.X) : 
   rw [map_smul, LinearMap.smul_apply, form_flag_vector_self, smul_eq_mul] at h1
   exact (mul_eq_zero.1 h1).resolve_right (neg_ne_zero.2 F.hT)
 
-theorem B_congr (F : FlagD H r) {x x₁ y y₁ : V} (hx : x ∈ perp H F.X) (hy : y ∈ perp H F.X)
-    (h1 : x₁ - x ∈ F.X) (h2 : y₁ - y ∈ F.X) : H.B x₁ y₁ = H.B x y := by
-  have e1 : H.B x (y₁ - y) = 0 := (mem_perp_iff H _ _).1 hx _ h2
-  have e2 : H.B (x₁ - x) y = 0 := B_eq_zero_comm.1 ((mem_perp_iff H _ _).1 hy _ h1)
-  have e3 : H.B (x₁ - x) (y₁ - y) = 0 := (mem_perp_iff H _ _).1 (X_le_perp F h1) _ h2
-  simp only [map_sub, LinearMap.sub_apply] at e1 e2 e3
-  linear_combination e1 + e2 + e3
-
-omit [IsScalarTower R K V] [Algebra R K] [StarRing K] [Field K] [Module K V] in
-
-theorem mem_smulLat (g : R) (Λ : Submodule R V) (x : V) : x ∈ smulLat g Λ ↔ ∃ y ∈ Λ, g • y = x := by
-  simp [smulLat]
-
-theorem gL_eq_smulLat {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E}
-    (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (g : ℕ) :
-    gL Λ g = smulLat (g : NumberField.RingOfIntegers E) Λ := by
-  ext x
-  rw [mem_gL, mem_smulLat]
-  refine exists_congr fun y => and_congr_right fun _ => ?_
-  rw [int_smul_eq]
-  rfl
-
 omit [StarRing K] in
 
 theorem mem_imLat (s : V ≃ₗ[K] V) (M : Submodule R V) (x : V) : x ∈ imLat s M ↔ ∃ y ∈ M, s y = x := Iff.rfl
@@ -194,9 +156,6 @@ theorem wSp_eq (F F' : FlagD H r) : wSp F F' = perp H (xPlus F) ⊓ perp H (xPlu
 theorem mem_norLift (F F' : FlagD H r) (y : V) :
     y ∈ norLift F F' ↔ y ∈ V0 F F' ∧ y ∈ perp H (xPlus F) := Iff.rfl
 
-theorem X_le_norLift (F F' : FlagD H r) : F.X ≤ norLift F F' :=
-  le_inf (le_sup_of_le_left le_sup_left) (X_le_perp_xPlus F)
-
 theorem norLift_inf (F F' : FlagD H r) : norLift F F' ⊓ norLift F' F = V0 F F' ⊓ wSp F F' := by
   rw [norLift, norLift, wSp_eq, jointSpan_comm F F', inf_inf_inf_comm, inf_idem]
 
@@ -222,35 +181,6 @@ theorem IsTransv.disjoint_xPlus {F F' : FlagD H r} (h : IsTransv F F') : Disjoin
   rw [disjoint_iff, ← Submodule.finrank_eq_zero]
   omega
 
-theorem isTransv_iff_gram (F F' : FlagD H r) : IsTransv F F' ↔ (Gram F F').det ≠ 0 := by
-  classical
-  have hV : V0 F F' = Submodule.span K (Set.range (Sum.elim F.e F'.e)) := by
-    rw [Set.Sum.elim_range, Submodule.span_union, ← xPlus_eq_span, ← xPlus_eq_span, xPlus_sup]
-  have hW : ∀ c : Fin (r + 1) ⊕ Fin (r + 1) → K,
-      ∑ p, c p • Sum.elim F.e F'.e p ∈ wSp F F' ↔ Matrix.vecMul c (Gram F F') = 0 := fun c => by
-    rw [wSp, hV, mem_perp_span, Set.forall_mem_range, funext_iff]
-    refine forall_congr' fun q => ?_
-    rw [map_sum, LinearMap.sum_apply]
-    simp only [map_smul, LinearMap.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, Gram, Matrix.of_apply,
-      Pi.zero_apply]
-  have hcard : Fintype.card (Fin (r + 1) ⊕ Fin (r + 1)) = 2 * r + 2 := by simp; omega
-  have hli : LinearIndependent K (Sum.elim F.e F'.e) ↔ Module.finrank K (V0 F F') = 2 * r + 2 := by
-    rw [linearIndependent_iff_card_eq_finrank_span, hV, hcard, eq_comm]; rfl
-  rw [IsTransv, ← hli, Fintype.linearIndependent_iff, Ne, ← Matrix.exists_vecMul_eq_zero_iff,
-    Submodule.disjoint_def]
-  constructor
-  · rintro ⟨h1, h2⟩ ⟨c, hc, h0⟩
-    refine hc (funext (h1 c (h2 _ ?_ ((hW c).2 h0))))
-    rw [hV]
-    exact Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, rfl⟩)
-  · intro h
-    have k : ∀ c : Fin (r + 1) ⊕ Fin (r + 1) → K, ∑ p, c p • Sum.elim F.e F'.e p ∈ wSp F F' → c = 0 :=
-      fun c hc => by_contra fun hne => h ⟨c, hne, (hW c).1 hc⟩
-    refine ⟨fun c hc => congrFun (k c (hc ▸ zero_mem _)), fun x hx hw => ?_⟩
-    rw [hV] at hx
-    obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hx
-    simp [k c hw]
-
 theorem exists_isComp_iff (F F' : FlagD H r) (u : V) : (∃ a a', IsComp F F' u a a') ↔ u ∈ V0 F F' := by
   constructor
   · rintro ⟨a, a', h⟩
@@ -275,9 +205,6 @@ theorem isComp_iff (F F' : FlagD H r) (u : V) (a a' : K) :
 theorem IsComp.swap {F F' : FlagD H r} {u : V} {a a' : K} (h : IsComp F F' u a a') : IsComp F' F u a' a := by
   rw [IsComp, sub_right_comm, sup_comm]; exact h
 
-theorem isComp_zero_iff (F F' : FlagD H r) (u : V) : IsComp F F' u 0 0 ↔ u ∈ F.X ⊔ F'.X := by
-  simp [IsComp]
-
 theorem IsComp.add {F F' : FlagD H r} {u v : V} {a a' b b' : K} (h : IsComp F F' u a a')
     (k : IsComp F F' v b b') : IsComp F F' (u + v) (a + b) (a' + b') := by
   unfold IsComp at *
@@ -293,10 +220,6 @@ theorem IsComp.smul {F F' : FlagD H r} {u : V} {a a' : K} (h : IsComp F F' u a a
 theorem IsComp.sub {F F' : FlagD H r} {u v : V} {a a' b b' : K} (h : IsComp F F' u a a')
     (k : IsComp F F' v b b') : IsComp F F' (u - v) (a - b) (a' - b') := by
   simpa [sub_eq_add_neg] using h.add (k.smul (-1))
-
-theorem IsComp.congr {F F' : FlagD H r} {u v : V} {a a' : K} (h : IsComp F F' u a a')
-    (k : v - u ∈ F.X ⊔ F'.X) : IsComp F F' v a a' := by
-  simpa using h.add ((isComp_zero_iff F F' _).2 k)
 
 theorem IsComp.unique {F F' : FlagD H r} (hd : Disjoint (xPlus F) (xPlus F')) {u : V} {a a' b b' : K}
     (h : IsComp F F' u a a') (k : IsComp F F' u b b') : a = b ∧ a' = b' := by
@@ -321,27 +244,12 @@ theorem exists_isSig {F F' : FlagD H r} {y y' : V} (hy : y ∈ norLift F F') (hy
   obtain ⟨a, a', h⟩ := (exists_isComp_iff F F' (y - y')).2 (sub_mem hy.1 (jointSpan_comm F F' ▸ hy'.1))
   exact ⟨a, a', hy, hy', h⟩
 
-theorem IsSig.congr {F F' : FlagD H r} {y y' y₁ y₁' : V} {a a' : K} (h : IsSig F F' y y' a a')
-    (h1 : y₁ - y ∈ F.X) (h2 : y₁' - y' ∈ F'.X) : IsSig F F' y₁ y₁' a a' := by
-  refine ⟨by simpa using add_mem (X_le_norLift F F' h1) h.1,
-    by simpa using add_mem (X_le_norLift F' F h2) h.2.1, h.2.2.congr ?_⟩
-  convert Submodule.add_mem_sup h1 (neg_mem h2) using 1
-  abel
-
 theorem IsSig.unique {F F' : FlagD H r} (hd : Disjoint (xPlus F) (xPlus F')) {y y' : V} {a a' b b' : K}
     (h : IsSig F F' y y' a a') (k : IsSig F F' y y' b b') : a = b ∧ a' = b' := h.2.2.unique hd k.2.2
-
-theorem IsSig.add {F F' : FlagD H r} {y y' w w' : V} {a a' b b' : K} (h : IsSig F F' y y' a a')
-    (k : IsSig F F' w w' b b') : IsSig F F' (y + w) (y' + w') (a + b) (a' + b') :=
-  ⟨add_mem h.1 k.1, add_mem h.2.1 k.2.1, by rw [add_sub_add_comm]; exact h.2.2.add k.2.2⟩
 
 theorem IsSig.smul {F F' : FlagD H r} {y y' : V} {a a' : K} (h : IsSig F F' y y' a a') (c : K) :
     IsSig F F' (c • y) (c • y') (c * a) (c * a') :=
   ⟨Submodule.smul_mem _ c h.1, Submodule.smul_mem _ c h.2.1, by rw [← smul_sub]; exact h.2.2.smul c⟩
-
-theorem IsSig.swap {F F' : FlagD H r} {y y' : V} {a a' : K} (h : IsSig F F' y y' a a') :
-    IsSig F' F y' y (-a') (-a) :=
-  ⟨h.2.1, h.1, by simpa using (h.2.2.smul (-1)).swap⟩
 
 theorem IsCong.refl (F : FlagD H r) (Λ : Submodule R V) (g : R) : IsCong F F Λ g := ⟨rfl, by simp⟩
 
@@ -396,21 +304,6 @@ theorem IsPairMap.symm (h : IsPairMap F F' F'' Λ g β) : IsPairMap F F'' F' Λ 
     rw [← neg_sub]
     exact neg_mem (h.2.2.2.2.2 l' hl' l hl e)
 
-theorem IsPairMap.congr (h : IsPairMap F F' F'' Λ g β) {β₁ : V ≃ₗ[K] V}
-    (h1 : F'.X.map (β₁ : V →ₗ[K] V) = F''.X) (h2 : (perp H F'.X).map (β₁ : V →ₗ[K] V) = perp H F''.X)
-    (he : ∀ x ∈ perp H F'.X, β₁ x - β x ∈ F''.X) : IsPairMap F F' F'' Λ g β₁ := by
-  have k2 : ∀ x, β₁ x ∈ perp H F''.X ↔ x ∈ perp H F'.X := fun x => by rw [← h2]; simp
-  refine isPairMap_of_mem_iff (fun x => by rw [← h1]; simp) k2 (fun x hx y hy => ?_) (fun x => ?_) ?_
-    fun l hl l' hl' e => h.2.2.2.2.2 l hl l' hl' ?_
-  · rw [B_congr F'' ((h.mem_perp_iff x).2 hx) ((h.mem_perp_iff y).2 hy) (he x hx) (he y hy), h.2.2.1 x hx y hy]
-  · have k : x ∈ perp H F'.X → (β₁ x ∈ redLat F'' Λ ↔ x ∈ redLat F' Λ) := fun hx => by
-      have hm : β₁ x - β x ∈ redLat F'' Λ := Submodule.mem_sup_right (he x hx)
-      rw [← h.mem_redLat_iff, ← Submodule.add_mem_iff_right _ hm (y := β x), sub_add_cancel]
-    exact ⟨fun hx => (k ((k2 x).1 ((mem_redLat _ _ _).1 hx).1)).1 hx,
-      fun hx => (k ((mem_redLat _ _ _).1 hx).1).2 hx⟩
-  · simpa using add_mem (he _ (z_mem_perp F')) h.2.2.2.2.1
-  · simpa using sub_mem e (he l hl.2)
-
 theorem isPairMap_of_aut (hc : IsCong F F'' Λ g) (hβ : β ∈ isomGrp H) (hΛ : imLat β Λ = Λ)
     (hX : F'.X.map (β : V →ₗ[K] V) = F''.X) (hz : β F'.z - F''.z ∈ F''.X)
     (hι : ∀ l' ∈ Λ ⊓ rs R (perp H F'.X), β l' - l' ∈ latX F Λ ⊔ smulLat g Λ) :
@@ -435,13 +328,6 @@ theorem isPairMap_refl (hc : IsCong F F' Λ g) : IsPairMap F F' F' Λ g (LinearE
     (by simp)
 
 theorem fixSp_le (F F' F'' : FlagD H r) (β : V ≃ₗ[K] V) : fixSp F F' F'' β ≤ wSp F F' := fun _ h => h.1
-
-theorem fixSp_congr {β₁ : V ≃ₗ[K] V} (he : ∀ x ∈ perp H F'.X, β₁ x - β x ∈ F''.X) :
-    fixSp F F' F'' β₁ = fixSp F F' F'' β := by
-  ext x
-  refine and_congr_right fun hx => exists_congr fun y => and_congr_right fun _ => and_congr_right fun _ => ?_
-  have h1 := he x (perp_anti (S := F'.X) (S' := V0 F F') (le_sup_of_le_left le_sup_right) hx)
-  rw [← Submodule.add_mem_iff_right _ h1 (y := β x - y), sub_add_sub_cancel]
 
 theorem IsPairMap.fixSp_sup_X (h : IsPairMap F F' F'' Λ g β) :
     fixSp F F'' F' β.symm ⊔ F.X = fixSp F F' F'' β ⊔ F.X := by
@@ -486,13 +372,6 @@ theorem sp_B_vec (v w : Fin 5 → ℤ) : (sp E).B (vec E v) (vec E w) =
     ((-(w 0 * v 0) - w 1 * v 1 + w 2 * v 2 + w 3 * v 3 + w 4 * v 4 : ℤ) : E) := by
   rw [sp_B]; simp [co, vec]
 
-theorem mem_lat (x : (wittSpace E 2 1).V) :
-    x ∈ (wittSpace E 2 1).L0 ↔ ∀ i, co E x i ∈ Set.range (algebraMap (𝓞 E) E) :=
-  (Pi.basisFun E (Fin 5)).mem_span_iff_repr_mem (𝓞 E) (co E x)
-
-theorem vec_mem (v : Fin 5 → ℤ) : vec E v ∈ (wittSpace E 2 1).L0 :=
-  (mem_lat E _).2 fun i => ⟨v i, by simp [co, vec]⟩
-
 def fl (m s : ℤ) (h1 : m * m = m) (h2 : s * s = m) : FlagD (sp E) 1 where
   e := ![vec E ![1 + 2 * m, 0, 1, 2 * s, 2 * m], vec E ![0, 1 + 2 * m, 0, 2 * s, -2 * m]]
   T := 1
@@ -517,166 +396,9 @@ def fl (m s : ℤ) (h1 : m * m = m) (h2 : s * s = m) : FlagD (sp E) 1 where
     simp; linarith
   hT := one_ne_zero
 
-abbrev flZero : FlagD (sp E) 1 := fl E 0 0 rfl rfl
-
-abbrev flPos : FlagD (sp E) 1 := fl E 1 1 rfl rfl
-
-abbrev flNeg : FlagD (sp E) 1 := fl E 1 (-1) rfl rfl
-
 variable {m s : ℤ} (h1 : m * m = m) (h2 : s * s = m)
 
-theorem fl_X : (fl E m s h1 h2).X = Submodule.span E {vec E ![1 + 2 * m, 0, 1, 2 * s, 2 * m]} := by
-  rw [X_eq_span, Set.range_unique]; rfl
-
 theorem symmetricFlagBasisVectors_apply_centre : (fl E m s h1 h2).z = vec E ![0, 1 + 2 * m, 0, 2 * s, -2 * m] := rfl
-
-theorem fl_z_mem : (fl E m s h1 h2).z ∈ (wittSpace E 2 1).L0 := vec_mem E _
-
-theorem fl_latX : latX (fl E m s h1 h2) (wittSpace E 2 1).L0 =
-    Submodule.span (𝓞 E) {vec E ![1 + 2 * m, 0, 1, 2 * s, 2 * m]} := by
-  ext x
-  rw [mem_latX, fl_X, Submodule.mem_span_singleton, Submodule.mem_span_singleton]
-  constructor
-  · rintro ⟨hx, a, rfl⟩
-    obtain ⟨c, hc⟩ := (mem_lat E _).1 hx 2
-    have e : co E (a • vec E ![1 + 2 * m, 0, 1, 2 * s, 2 * m]) 2 = a * ((1 : ℤ) : E) := rfl
-    rw [e, Int.cast_one, mul_one] at hc
-    exact ⟨c, by rw [← hc, algebraMap_smul]⟩
-  · rintro ⟨c, rfl⟩
-    exact ⟨Submodule.smul_mem _ c (vec_mem E _), algebraMap _ E c, by rw [algebraMap_smul]⟩
-
-theorem vec_sub_mem (v w u : Fin 5 → ℤ) (h : ∀ i, v i - w i = 2 * u i) :
-    vec E v - vec E w ∈ smulLat ((2 : ℕ) : 𝓞 E) (wittSpace E 2 1).L0 := by
-  rw [← gL_eq_smulLat, mem_gL]
-  refine ⟨vec E u, vec_mem E u, funext fun i : Fin 5 => ?_⟩
-  show ((2 : ℕ) : E) * (u i : E) = (v i : E) - (w i : E)
-  exact_mod_cast (h i).symm
-
-theorem isCong_fl : IsCong (flZero E) (fl E m s h1 h2) (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E) := by
-  have he := vec_sub_mem E ![1 + 2 * m, 0, 1, 2 * s, 2 * m] ![1 + 2 * 0, 0, 1, 2 * 0, 2 * 0] ![m, 0, 0, s, m]
-    (fun i => by fin_cases i <;> simp)
-  refine ⟨?_, Submodule.mem_sup_right (vec_sub_mem E _ _ ![0, m, 0, s, -m] fun i => by fin_cases i <;> simp)⟩
-  rw [fl_latX, fl_latX]
-  refine le_antisymm (sup_le ?_ le_sup_right) (sup_le ?_ le_sup_right) <;>
-    rw [Submodule.span_singleton_le_iff_mem]
-  · exact Submodule.mem_sup.2 ⟨_, Submodule.mem_span_singleton_self _, _, he, add_sub_cancel _ _⟩
-  · exact Submodule.mem_sup.2 ⟨_, Submodule.mem_span_singleton_self _, _, neg_mem he, by abel⟩
-
-theorem gval_fl {s : ℤ} (h2 : s * s = 1) : Gval (flZero E) (fl E 1 s rfl h2) = 32 := by
-  have hZ : Zhat (flZero E) (fl E 1 s rfl h2) = !![-2, 0; 0, -3] := by
-    ext a b
-    fin_cases a <;> fin_cases b <;> refine (sp_B_vec E _ _).trans ?_ <;> simp
-  have d2 : Dl (flZero E) (fl E 1 s rfl h2) (1 + 1) le_rfl = 6 := by
-    rw [Dl, hZ, Matrix.det_fin_two]; simp; norm_num
-  have d1 : Dl (flZero E) (fl E 1 s rfl h2) 1 (Nat.le_succ 1) = -2 := by
-    rw [Dl, hZ, Matrix.det_unique]; simp
-  rw [Gval, d1, d2]
-  show (6 : E) * star 6 - 1 * 1 * (-2 * star (-2)) = 32
-  simp; norm_num
-
-theorem isTransv_fl {s : ℤ} (h2 : s * s = 1) : IsTransv (flZero E) (fl E 1 s rfl h2) := by
-  have h3 : (s : E) * s = 1 := by exact_mod_cast h2
-  have hG : Gram (flZero E) (fl E 1 s rfl h2) =
-      Matrix.fromBlocks !![0, 0; 0, -1] !![-2, 0; 0, -3] !![-2, 0; 0, -3] !![0, 0; 0, -1] := by
-    ext (a | a) (b | b) <;> fin_cases a <;> fin_cases b <;> refine (sp_B_vec E _ _).trans ?_ <;>
-      simp <;> linear_combination 4 * h3
-  rw [isTransv_iff_gram, hG, Ne, ← Matrix.exists_vecMul_eq_zero_iff]
-  rintro ⟨c, hc, h⟩
-  have a0 := congrFun h (Sum.inl 0)
-  have a1 := congrFun h (Sum.inl 1)
-  have b0 := congrFun h (Sum.inr 0)
-  have b1 := congrFun h (Sum.inr 1)
-  simp [Matrix.vecMul, dotProduct] at a0 a1 b0 b1
-  have c1 : c (Sum.inr 1) = 0 := by linear_combination (1 / 8 : E) * b1 - (3 / 8 : E) * a1
-  have c0 : c (Sum.inl 1) = 0 := by linear_combination (1 / 8 : E) * a1 - (3 / 8 : E) * b1
-  refine hc (funext fun p => ?_)
-  rcases p with p | p <;> fin_cases p <;> assumption
-
-def flip : (wittSpace E 2 1).V ≃ₗ[E] (wittSpace E 2 1).V :=
-  LinearEquiv.piCongrRight (R := E) (φ := fun _ : Fin 5 => E) (ψ := fun _ : Fin 5 => E)
-    fun i => if i = 3 then LinearEquiv.neg E else LinearEquiv.refl E E
-
-theorem co_flip (x : (wittSpace E 2 1).V) (i : Fin 5) :
-    co E (flip E x) i = if i = 3 then -co E x i else co E x i := by
-  show (if i = 3 then LinearEquiv.neg E else LinearEquiv.refl E E : E ≃ₗ[E] E) (co E x i) = _
-  split_ifs <;> rfl
-
-theorem flip_vec (a b c d e : ℤ) : flip E (vec E ![a, b, c, d, e]) = vec E ![a, b, c, -d, e] := by
-  refine funext fun i : Fin 5 => (co_flip E _ i).trans ?_
-  fin_cases i <;> simp [co, vec]
-
-theorem isPairMap_flip :
-    IsPairMap (flZero E) (flPos E) (flNeg E) (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E) (flip E) := by
-  have hL : ∀ x, flip E x ∈ (wittSpace E 2 1).L0 ↔ x ∈ (wittSpace E 2 1).L0 := fun x => by
-    rw [mem_lat, mem_lat]
-    refine forall_congr' fun i => ?_
-    rw [co_flip]
-    split_ifs
-    · exact neg_mem_iff (H := (algebraMap (𝓞 E) E).range)
-    · rfl
-  refine isPairMap_of_aut (isCong_fl E _ _) ((mem_isomGrp _ _).2 fun x y => ?_) ?_ ?_ ?_ fun l hl => ?_
-  · rw [sp_B, sp_B]; simp [co_flip]
-  · ext y
-    obtain ⟨x, rfl⟩ := (flip E).surjective y
-    rw [mem_imLat]
-    exact ⟨fun ⟨y, hy, e⟩ => e ▸ (hL y).2 hy, fun hx => ⟨x, (hL x).1 hx, rfl⟩⟩
-  · rw [fl_X, fl_X, Submodule.map_span, Set.image_singleton, LinearEquiv.coe_coe, flip_vec]; rfl
-  · have e : flip E (flPos E).z = (flNeg E).z := flip_vec E _ _ _ _ _
-    rw [e, sub_self]
-    exact zero_mem _
-  · refine Submodule.mem_sup_right ?_
-    rw [← gL_eq_smulLat, mem_gL]
-    refine ⟨(fun i => if i = 3 then -co E l i else 0 : Fin 5 → E), (mem_lat E _).2 fun i => ?_,
-      funext fun i : Fin 5 => ?_⟩
-    · show (if i = 3 then -co E l i else 0) ∈ (algebraMap (𝓞 E) E).range
-      split_ifs
-      · exact neg_mem ((mem_lat E l).1 hl.1 i)
-      · exact zero_mem _
-    · show ((2 : ℕ) : E) * (if i = 3 then -co E l i else 0) = co E (flip E l) i - co E l i
-      rw [co_flip]
-      split_ifs <;> push_cast <;> ring
-
-theorem X_ne : (flPos E).X ≠ (flNeg E).X := by
-  intro h
-  have hm : vec E ![1 + 2 * 1, 0, 1, 2 * 1, 2 * 1] ∈ (flNeg E).X := by
-    rw [← h, fl_X]; exact Submodule.mem_span_singleton_self _
-  have h0 := (mem_perp_X (flNeg E) _).1 (X_le_perp _ hm) 0
-  have h1 := (sp_B_vec E _ _).symm.trans h0
-  simp at h1
-
-theorem exists_pair : ∃ (F F' F'' : FlagD (ofHSpace (wittSpace E 2 1)) 1)
-    (β : (wittSpace E 2 1).V ≃ₗ[E] (wittSpace E 2 1).V),
-    IsUnimod (ofHSpace (wittSpace E 2 1)) (wittSpace E 2 1).L0 ∧
-    F.z ∈ (wittSpace E 2 1).L0 ∧ F'.z ∈ (wittSpace E 2 1).L0 ∧ F''.z ∈ (wittSpace E 2 1).L0 ∧
-    F.T = 1 ∧ F'.T = 1 ∧ F''.T = 1 ∧
-    IsCong F F' (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E) ∧ IsCong F F'' (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E) ∧
-    Gval F F' ≠ 0 ∧ Gval F F'' ≠ 0 ∧ IsTransv F F' ∧ IsTransv F F'' ∧ F'.X ≠ F''.X ∧
-    IsPairMap F F' F'' (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E) β :=
-  ⟨flZero E, flPos E, flNeg E, flip E,
-    (isUnimod_ofHSpace _ _).2 ⟨(wittSpace E 2 1).standardTuple_isLattice, (wittSpace E 2 1).baseLattice_isUnimodular⟩,
-    fl_z_mem E _ _, fl_z_mem E _ _, fl_z_mem E _ _, rfl, rfl, rfl, isCong_fl E _ _, isCong_fl E _ _,
-    by rw [gval_fl]; norm_num, by rw [gval_fl]; norm_num, isTransv_fl E _, isTransv_fl E _, X_ne E,
-    isPairMap_flip E⟩
-
-example : ¬ IsPairMap (flZero E) (flPos E) (flNeg E) (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E)
-    (LinearEquiv.refl E _) := fun h => X_ne E (by simpa using h.1)
-
-example : vec E ![2, 0, 2, 1, 1] ∈ wSp (flZero E) (flPos E) ∧
-    vec E ![2, 0, 2, 1, 1] ∉ fixSp (flZero E) (flPos E) (flNeg E) (flip E) := by
-  constructor
-  · rw [wSp_eq, Submodule.mem_inf, xPlus_eq_span, xPlus_eq_span, mem_perp_span, mem_perp_span,
-      Set.forall_mem_range, Set.forall_mem_range]
-    constructor <;> intro a <;> fin_cases a <;> refine (sp_B_vec E _ _).trans ?_ <;> simp
-  · rintro ⟨-, y, hy, h, -⟩
-    rw [fl_X, Submodule.mem_span_singleton] at h
-    obtain ⟨t, ht⟩ := h
-    rw [wSp_eq] at hy
-    have h1 := ((mem_perp_xPlus _ _).1 hy.2).2
-    rw [← sub_sub_cancel (vec E ![2, 0, 2, 1, 1]) y, ← ht, map_sub, map_smul, LinearMap.sub_apply,
-      LinearMap.smul_apply, symmetricFlagBasisVectors_apply_centre, sp_B_vec, sp_B_vec] at h1
-    simp at h1
-
-example : IsComp (flZero E) (flPos E) ((flPos E).z - (flZero E).z) (-1) 1 := by simp [IsComp]
 
 end FlagExample
 

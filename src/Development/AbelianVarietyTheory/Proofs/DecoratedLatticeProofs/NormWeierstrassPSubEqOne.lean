@@ -7,65 +7,6 @@ open scoped ComplexConjugate BigOperators
 
 namespace GlobalTheory.Klein.DiffUnit
 
-variable {p : ℕ} [Fact p.Prime]
-
-def ball (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] where
-  carrier := {x | ‖x‖ ≤ 1}
-  mul_mem' := fun {a b} ha hb => by
-    simp only [Set.mem_setOf_eq, norm_mul] at *
-    exact mul_le_one₀ ha (norm_nonneg _) hb
-  one_mem' := by simp
-  add_mem' := fun {a b} ha hb =>
-    (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
-  zero_mem' := by simp
-  neg_mem' := fun {a} ha => by simpa using ha
-
-theorem norm_two (hp : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
-  have h1 : ‖((2 : ℕ) : ℚ_[p])‖ = 1 := by
-    rw [Padic.norm_natCast_eq_one_iff]
-    exact (Nat.coprime_primes Fact.out Nat.prime_two).2 hp
-  have h2 : (2 : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((2 : ℕ) : ℚ_[p]) := by
-    rw [map_natCast]; norm_num
-  rw [h2, norm_algebraMap', h1]
-
-theorem le_one_of_sq {s : ℂ_[p]} (h : s ^ 2 ∈ ball p) : s ∈ ball p := by
-  have h' : ‖s ^ 2‖ ≤ 1 := h
-  rw [norm_pow] at h'
-  exact (sq_le_one_iff₀ (norm_nonneg s)).1 h'
-
-theorem disc_eq {K : Type*} [Field K] (h r g₂ g₃ P Q y z s t : K) (hh : 2 * h = 1) (hD : P - Q ≠ 0)
-    (hy : y ^ 2 = 4 * P ^ 3 - g₂ * P - g₃) (hz : z ^ 2 = 4 * Q ^ 3 - g₂ * Q - g₃)
-    (hs : s * (P - Q) = y - z) (ht : t * (P - Q) = y + z) :
-    ∃ A B C : K, A = 12 * (P - r) + 12 * r ∧
-      B = s * t + (4 * ((Q - r) + 2 * (P - r)) + 12 * r) ∧
-      C = h ^ 2 * (s + t) ^ 2 * ((P - r) - (Q - r)) ∧
-      g₂ ^ 3 - 27 * g₃ ^ 2 = (P - Q) * (h ^ 4 * (B * (A ^ 2 * (B * ((P - r) - (Q - r)))
-        - 16 * (B * ((P - r) - (Q - r))) ^ 2 + 72 * A * (C * ((P - r) - (Q - r))))
-        - C * (4 * A ^ 3 + 432 * (C * ((P - r) - (Q - r)))))) := by
-  refine ⟨_, _, _, rfl, rfl, rfl, ?_⟩
-  set B := s * t + (4 * ((Q - r) + 2 * (P - r)) + 12 * r) with hB
-  set C := h ^ 2 * (s + t) ^ 2 * ((P - r) - (Q - r)) with hC
-  have e1 : B * (P - Q) = 12 * P ^ 2 - g₂ := by
-    apply mul_right_cancel₀ hD
-    have : (s * (P - Q)) * (t * (P - Q)) = (y - z) * (y + z) := by rw [hs, ht]
-    rw [hB]
-    linear_combination this + hy - hz
-  have e2 : C * (P - Q) = 4 * P ^ 3 - g₂ * P - g₃ := by
-    have : (s + t) * (P - Q) = 2 * y := by linear_combination hs + ht
-    have h3 : C * (P - Q) = h ^ 2 * ((s + t) * (P - Q)) ^ 2 := by rw [hC]; ring
-    rw [h3, this, ← hy]
-    linear_combination y ^ 2 * (2 * h + 1) * hh
-  have e3 : (P - r) - (Q - r) = P - Q := by ring
-  clear_value B C
-  rw [e3, e1, e2]
-  have e4 : 16 * h ^ 4 = 1 := by
-    have : 16 * h ^ 4 = (2 * h) ^ 4 := by ring
-    rw [this, hh, one_pow]
-  linear_combination -(g₂ ^ 3 - 27 * g₃ ^ 2) * e4
-    - h ^ 4 * ((12 * P) ^ 2 * (12 * P ^ 2 - g₂) - 16 * (12 * P ^ 2 - g₂) ^ 2
-        + 72 * (12 * P) * (4 * P ^ 3 - g₂ * P - g₃)) * e1
-    + h ^ 4 * (4 * (12 * P) ^ 3 + 432 * (4 * P ^ 3 - g₂ * P - g₃)) * e2
-
 end GlobalTheory.Klein.DiffUnit
 
 namespace GlobalTheory.Klein

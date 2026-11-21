@@ -6,7 +6,6 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevQFiniteIn
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingNonvanishingIffEventuallyNonzero
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingIntegrandBoundedSchwartz
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastTwoStepsGuarded
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralGlReductionModPrime
 
 noncomputable section
 

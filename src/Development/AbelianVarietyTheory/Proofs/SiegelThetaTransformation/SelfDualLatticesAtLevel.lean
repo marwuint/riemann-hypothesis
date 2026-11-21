@@ -362,7 +362,7 @@ theorem mem_Vset (C : Ctx S T) {M : ℕ} {h : GA D S} {Λ : Lt D.host.E S.rank}
     rw [FractionalIdeal.mem_one_iff]
     exact ⟨fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe, fun hz => ⟨⟨z, hz⟩, rfl⟩⟩
   refine ⟨hΛ, fun x => ?_, ?_⟩
-  · have hu := (GlobalTheory.T.finitePart_preserves_form_det_norm_one D S h).1
+  · have hu := (_root_.GlobalTheory.Member.finHom_herm_det D S h).1
     rw [show S.gramᵀ = 1 by rw [C.m.gS, Matrix.transpose_one]] at hu
     have key := GlobalTheory.AdLat.latOf_selfDual D.host.F D.host.E S.rank (stdL D.host.E S.rank) (cF D) 1 1 g hfg hs
       (fun x => star_star x) (fun a b => by
@@ -394,7 +394,7 @@ theorem mem_Vset (C : Ctx S T) {M : ℕ} {h : GA D S} {Λ : Lt D.host.E S.rank}
 
 theorem selfD_of_mov (C : Ctx S T) {g : GA D T} {L : Lt D.host.E T.rank} (hL : L.FG)
     (hm : IsMov (fmt T g) C.X.Λ L) : SelfD C.X L := by
-  obtain ⟨-, -, -, -, hcc, -, -, hG, hdet, -, -⟩ := GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D T
+  obtain ⟨-, -, -, -, hcc, -, -, hG, hdet, -, -⟩ := _root_.GlobalTheory.Member.latHat_eq_hat_and_gram D T
   have hE (x y : Fin T.rank → D.host.E) : EF C.X x y =
       -Algebra.trace ℚ D.host.E (D.host.xi0 * ∑ a, ∑ b, x a * T.gramᵀ a b * cF D (y b)) := by
     rw [EF_def, C.m.ka, C.m.gT, mul_div_cancel_left₀ _ two_ne_zero, neg_mul, map_neg]
@@ -418,7 +418,7 @@ theorem selfD_of_mov (C : Ctx S T) {g : GA D T} {L : Lt D.host.E T.rank} (hL : L
   have key := GlobalTheory.AdLat.latOf_selfDual D.host.F D.host.E T.rank C.X.Λ (cF D) T.gramᵀ
     (D.host.AA * D.host.AAbar) (finHom T g) C.X.Λ_fg C.X.Λ_span hcc hG hdet
     (mul_ne_zero (AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D) (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D))
-    (fun v => (hJ _ v).trans ((Lev.selfD_of_sympl C.sympl).2 v).symm) (GlobalTheory.T.finitePart_preserves_form_det_norm_one D T g).1 x
+    (fun v => (hJ _ v).trans ((Lev.selfD_of_sympl C.sympl).2 v).symm) (_root_.GlobalTheory.Member.finHom_herm_det D T g).1 x
   simp only [eq_latOf (g := finHom T g) C.X.Λ_fg C.X.Λ_span hL hm] at key
   exact key.symm.trans (hJ L x)
 

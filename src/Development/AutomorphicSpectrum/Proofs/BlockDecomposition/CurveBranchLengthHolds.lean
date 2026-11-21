@@ -1,7 +1,16 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCurveBranchLength
 import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.BranchInverseOffHypersurfaceHolds
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BranchNormalisationHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BranchNormalisationHolds
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchProperAtPoint
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchIntDecompose
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranchInt
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranches
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCurveBranchLength
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchNormalisation
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegBallMass
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegLelongMono
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSmallSetBallCover
 set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.Heights.CurveBranch
@@ -12,6 +21,6 @@ theorem curveBranchLength_of_branchNormalisation
   GroundTheory.Heights₂.Heights.CurveBranchLength.proof GroundTheory.Heights₂.Heights.AutoClose.CurveNormalisationLength hB
 
 theorem curveBranchLength : GroundTheory.Heights₂.Heights.CurveBranchLength.Statement :=
-  curveBranchLength_of_branchNormalisation GlobalTheory.T.branch_normalisation_holds
+  curveBranchLength_of_branchNormalisation _root_.GlobalTheory.CompanionTheory.BranchNorm.branchNormalisation
 
 end GlobalTheory.CompanionTheory.Heights.CurveBranch

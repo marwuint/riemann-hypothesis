@@ -1,6 +1,9 @@
 import Mathlib
 import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicNormDetLatticeBasisEqDetIdealNormStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicNormDetLatticeBasisEqDetIdealNorm
+import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
+import Formalism.LocalToGlobal.UnitaryNorms.CharTied
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.MtType
 open Formalism.BasicNotions Formalism.MainNotions
 
 namespace GlobalTheory.SatakeUnitDeterminantBasis
@@ -10,6 +13,6 @@ theorem detB : ∀ (D : D7) (Dx : DivX D) (Tw : TwForms D) (E : KerEnt D Dx Tw) 
   intro D Dx Tw E u μ O w T idl hp i hi c τ
   have hb := T.B_bas i hi c τ
   rw [O.dt_lat, hp.2.2.2.2]
-  exact GlobalTheory.T.padic_norm_det_lattice_basis_eq_det_ideal_norm D _ (E.lam w) τ _ _ _ _ (O.lattice_integral_coordinates i) hb.1 hb.2.1 hb.2.2
+  exact _root_.GlobalTheory.DetBasisNorm.norm_det_eq_nrmId D _ (E.lam w) τ _ _ _ _ (O.lattice_integral_coordinates i) hb.1 hb.2.1 hb.2.2
 
 end GlobalTheory.SatakeUnitDeterminantBasis

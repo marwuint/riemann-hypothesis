@@ -1,6 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.PtfsDefs
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDualInjectiveEquivStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDualInjectiveEquiv
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNormalised
 
 noncomputable section
 
@@ -14,7 +15,7 @@ theorem shaHalf_of_perfectPair {n : ℕ} [NeZero n] {X Y : Type} [AddCommGroup X
     Finite Y ∧ Finite X ∧ Nonempty (X ≃ₗ[ZMod n] Module.Dual (ZMod n) Y) ∧
       Nat.card Y = Nat.card X := by
   obtain ⟨hX, hY, P, hP, hP'⟩ := h
-  have key := GlobalTheory.T.finite_dual_injective_equiv n Y X ⟨P, hP.1⟩ ⟨P.flip, hP'.1⟩
+  have key := _root_.GlobalTheory.CompanionTheory.ZModDual.equiv_dual_of_injective_pair n Y X ⟨P, hP.1⟩ ⟨P.flip, hP'.1⟩
   exact ⟨hY, hX, key.1, key.2⟩
 
 section Published

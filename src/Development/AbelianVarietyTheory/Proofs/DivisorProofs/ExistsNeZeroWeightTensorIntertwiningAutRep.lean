@@ -34,9 +34,9 @@ theorem exists_ne_zero_wsp_intertwining : ∀ (E : Type) [Field E] [NumberField 
     GlobalTheory.T.commute_unitaryArchimedeanPoints_distinct_places E n u.embedding v.embedding (by rwa [InfinitePlace.mk_embedding, InfinitePlace.mk_embedding])
       _ a.2 _ b.2
   have hspan : ∀ v, (⨆ f : (σ v).IntertwiningMap (π'.rep.comp (s v)), LinearMap.range f.toLinearMap) = ⊤ :=
-    fun v => GlobalTheory.T.iSup_range_weightMaps_eq_top_definiteUnitary E n π' v.embedding (lam v) (hW v)
+    fun v => _root_.GlobalTheory.DefU.iSup_range_weight_eq_top E n π' v.embedding (lam v) (hW v)
   haveI : Nontrivial π'.V := Submodule.nontrivial_iff_ne_bot.2 π'.isAut.ne_bot
-  obtain ⟨F, hF0, hF⟩ := GlobalTheory.T.exists_multilinearMap_of_isotypic_commuting_subgroups (InfinitePlace E) (UA E n) π'.V (fun v => embU n v.embedding)
+  obtain ⟨F, hF0, hF⟩ := _root_.GlobalTheory.exists_multilinearMap_of_isotypic_commuting (InfinitePlace E) (UA E n) π'.V (fun v => embU n v.embedding)
     (fun v => nablaSq ℂ n (lam v)) π'.rep s σ inferInstance hirr hcomm hspan
   let T : Wsp lam →ₗ[ℂ] (UA E n → ℂ) := π.subtype ∘ₗ PiTensorProduct.lift F
   have hT : ∀ u, T (PiTensorProduct.tprod ℂ u) = (F u).1 := fun u => by
@@ -50,7 +50,7 @@ theorem exists_ne_zero_wsp_intertwining : ∀ (E : Type) [Field E] [NumberField 
   · apply Subtype.ext
     rw [← hT, h]
     rfl
-  · obtain ⟨y, hy, hyc, hprod⟩ := GlobalTheory.T.definiteUnitaryInfinitePoint_eq_list_prod_placeParts E n x hx
+  · obtain ⟨y, hy, hyc, hprod⟩ := _root_.GlobalTheory.DefU.infU_eq_list_prod_embU E n x hx
     let y' : ∀ v : InfinitePlace E, embU n v.embedding := fun v => ⟨y v, hy v⟩
     have key : ∀ u, T (wInf lam x (PiTensorProduct.tprod ℂ u)) = RU E n x (T (PiTensorProduct.tprod ℂ u)) := by
       intro u

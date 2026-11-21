@@ -4,13 +4,15 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.LemmaS
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.DimStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExtAllInputs
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.GreedySplittingPrincipalTorusExistsStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.GreedySplittingPrincipalTorusExists
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.SplitSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GaussianTailBound
 
 open ReciprocityTheory.ChartRestriction.G.I2
 
 namespace GlobalTheory
 
 theorem theta_bound_tStatement : TStatement :=
-  tOf ext_all_inputs GlobalTheory.T.greedy_splitting_principal_torus_exists (gSup ext_all_inputs.1) dim
+  tOf ext_all_inputs _root_.GlobalTheory.greedy_splitting_exists (gSup ext_all_inputs.1) dim
 
 end GlobalTheory

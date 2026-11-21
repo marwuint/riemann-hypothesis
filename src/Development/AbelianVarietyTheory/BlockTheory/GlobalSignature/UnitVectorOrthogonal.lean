@@ -35,22 +35,11 @@ def UnitVectorPerpOver (E : Type) [Field E] [NumberField E] [StarRing E] : Prop 
     (1 ≤ P → ∃ x : W.V, W.hD x x = 1 ∧ HasComplement W x (M - 1) (P - 1) Q) ∧
     (1 ≤ Q → ∃ x : W.V, W.hD x x = -1 ∧ HasComplement W x (M - 1) P (Q - 1))
 
-def UnitVectorPerpEveryOver (E : Type) [Field E] [NumberField E] [StarRing E] : Prop :=
-  ∀ (W : HSpace E) (M P Q : ℕ), OfKind W M P Q → 3 ≤ M →
-    (1 ≤ P → (∃ x : W.V, W.hD x x = 1) ∧
-      ∀ x : W.V, W.hD x x = 1 → HasComplement W x (M - 1) (P - 1) Q) ∧
-    (1 ≤ Q → (∃ x : W.V, W.hD x x = -1) ∧
-      ∀ x : W.V, W.hD x x = -1 → HasComplement W x (M - 1) P (Q - 1))
-
 end Generic
 
 def UnitVectorPerp (D : D7) : Prop :=
   letI := D.host.cmStar
   UnitVectorPerpOver D.host.E
-
-def UnitVectorPerpEvery (D : D7) : Prop :=
-  letI := D.host.cmStar
-  UnitVectorPerpEveryOver D.host.E
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitVectorOrthogonal
 

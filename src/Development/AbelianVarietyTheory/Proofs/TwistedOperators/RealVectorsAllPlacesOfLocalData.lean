@@ -28,7 +28,7 @@ theorem haar_prod {Y : HSp D} {S' : D.what₂.Tau → SPar} (M₀ : DSModel Y S'
       ∫ h : GinfC Y, ∏ τ, F τ (GlobalTheory.SepPer.cmp θ τ (h : GA D Y)) ∂m =
         κ • ∏ τ, ∫ u, F τ (ptY M₀ τ u) ∂(Formalism.REAL.muG (M₀.ε τ)) := by
   classical
-  have hth : θ = Formalism.IndefR.Eqv.thetaC D := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).1 θ _ hθ (Formalism.IndefR.Eqv.isInfFam_thetaC D)
+  have hth : θ = Formalism.IndefR.Eqv.thetaC D := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).1 θ _ hθ (Formalism.IndefR.Eqv.isInfFam_thetaC D)
   let e := GlobalTheory.HaarReal.eqv M₀
   let eM : GinfC Y ≃ᵐ (∀ τ, Formalism.REAL.UJ (M₀.ε τ)) := e.toHomeomorph.toMeasurableEquiv
   have hc : ∀ (g : GinfC Y) τ, GlobalTheory.SepPer.cmp θ τ (g : GA D Y) = ptY M₀ τ (eM g τ) := by
@@ -75,7 +75,7 @@ private theorem cmp_eq_map (θ : InfFam D) {V : HSp D} (τ : D.what₂.Tau) (x :
 
 theorem component_of_auxiliary_embedding {θ : InfFam D} (hθ : IsInfFam θ) {Y V : HSp D} (d : HermitianOrthogonalExtensionData Y V 1 1) (τ : D.what₂.Tau) (h : GA D Y) :
     GlobalTheory.SepPer.cmp θ τ (stabilizerEmbedding d h) = embAt θ d τ (GlobalTheory.SepPer.cmp θ τ h) := by
-  have hRP := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ Y
+  have hRP := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ Y
   have hU : GlobalTheory.SepPer.cmp θ τ h ∈ Formalism.QuantumDeterminants.UH (gramAt D Y τ) :=
     GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ Y h τ
   have hex : ∃ x, IsAtTau θ Y τ (GlobalTheory.SepPer.cmp θ τ h) x :=
@@ -113,7 +113,7 @@ theorem cmp_oneP_eq_one_of_ne (θ : InfFam D) {Y : HSp D} {τ τ' : D.what₂.Ta
 
 theorem exists_real {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (g : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hg : ∀ τ, g τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : ∃ x ∈ GinfC V, ∀ τ, GlobalTheory.SepPer.cmp θ τ x = g τ := by
-  obtain ⟨x, hx, hxc⟩ := ((GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V).2.1 g hg
+  obtain ⟨x, hx, hxc⟩ := ((_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V).2.1 g hg
   exact ⟨x, hx, hxc⟩
 
 theorem eu_nonneg {n : ℕ} (y : Fin n → ℂ) : 0 ≤ eu y := by

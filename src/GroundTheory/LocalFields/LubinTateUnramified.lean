@@ -30,22 +30,6 @@ theorem algEquiv_ext_sup {F₁ F₂ : IntermediateField K Ω} [Normal K F₁] [N
       exact this
   exact AlgEquiv.ext fun x => Subtype.ext (congrArg (fun φ => φ x) key)
 
-theorem continuous_restrictAut {E F : IntermediateField K Ω} (h : F ≤ E) [Normal K F] :
-    Continuous (restrictAut h) := by
-  refine continuous_of_continuousAt_one _ ?_
-  rw [ContinuousAt, map_one]
-  intro s hs
-  obtain ⟨E', hE', hE's⟩ := (krullTopology_mem_nhds_one_iff K F s).mp hs
-  let E'' : IntermediateField K E := E'.map (IntermediateField.inclusion h)
-  have : FiniteDimensional K E'' := (E'.equivMap (IntermediateField.inclusion h)).toLinearEquiv.finiteDimensional
-  refine Filter.mem_map.mpr (mem_of_superset (E''.fixingSubgroup_isOpen.mem_nhds (one_mem _))
-    fun σ hσ => hE's ?_)
-  rw [SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff] at hσ ⊢
-  intro y hy
-  apply Subtype.ext
-  rw [restrictAut_apply]
-  exact congrArg Subtype.val (hσ ⟨y, h y.2⟩ (by rw [IntermediateField.mem_map]; exact ⟨y, hy, rfl⟩))
-
 end Sup
 
 section Tower

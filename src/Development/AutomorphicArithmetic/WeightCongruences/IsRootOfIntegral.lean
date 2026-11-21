@@ -20,12 +20,6 @@ theorem prod_emb_zpow {z : H.E} (hz : ∃ m : ℕ, 0 < m ∧ z ^ m = 1) (c : ℤ
 theorem prod_emb {z : H.E} (hz : ∃ m : ℕ, 0 < m ∧ z ^ m = 1) : ∏ τ, H.emb ((eT τ : R.Psi) : R.GG) z = 1 := by
   simpa using prod_emb_zpow H eT hz 1
 
-theorem prod_emb_inv {z : H.E} (hz : ∃ m : ℕ, 0 < m ∧ z ^ m = 1) : ∏ τ, (H.emb ((eT τ : R.Psi) : R.GG) z)⁻¹ = 1 := by
-  rw [Finset.prod_inv_distrib, prod_emb H eT hz, inv_one]
-
-theorem muq_of_const {e : ι → ℚ} (c : ℤ) (he : ∀ τ, e τ = c) : MUQ (fun τ => H.emb ((eT τ : R.Psi) : R.GG)) e :=
-  ⟨fun _ => c, he, mu_const H eT c⟩
-
 theorem muq_of_parallel {a : ι → ℤ} (ha : MU (fun τ => H.emb ((eT τ : R.Psi) : R.GG)) a) {e : ι → ℚ} (c : ℤ)
     (he : ∀ τ, e τ = a τ + c) : MUQ (fun τ => H.emb ((eT τ : R.Psi) : R.GG)) e :=
   ⟨fun τ => a τ + c, fun τ => by rw [he]; push_cast; rfl, ha.add_const (mu_one H eT) c⟩

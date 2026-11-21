@@ -47,9 +47,6 @@ theorem push_le (X : Submodule K V) (L : Submodule (𝓞 K) ↥X) : ∀ v ∈ pu
   rintro v ⟨x, -, rfl⟩
   exact x.2
 
-theorem pull_push (X : Submodule K V) (L : Submodule (𝓞 K) ↥X) : pull X (push X L) = L :=
-  Submodule.comap_map_eq_of_injective (incl_injective X) L
-
 theorem push_pull {X : Submodule K V} {L : Submodule (𝓞 K) V} (hL : ∀ v ∈ L, v ∈ X) :
     push X (pull X L) = L := by
   ext v

@@ -29,18 +29,4 @@ def WB : WordData 2 where
 
 instance decThickWB : DecidablePred WB.thick := fun i => by unfold WordData.thick; infer_instance
 
-def WC : WordData 2 where
-  up i := i = 1
-  sz _ := 500
-  b := 500
-  w := 1
-  S := 1
-  η := 1
-  m := 1
-  J1 i := if i = 1 then {501, 0} else {-500, 1}
-  J2 i := if i = 1 then {501, 0} else {-500, 1}
-
-theorem WC_isGreatest : IsGreatest (Set.range WC.sz) 500 :=
-  ⟨⟨0, rfl⟩, by rintro _ ⟨i, rfl⟩; exact le_rfl⟩
-
 end GlobalTheory.HTW.Model

@@ -58,9 +58,6 @@ def ZeroFreeAbove (j : ℕ) (θ : ℝ) : Prop :=
   ∀ s : ℂ, θ < s.re → riemannZeta s ≠ 0 ∧
     ∀ ξ : DirichletCharacter ℂ (2 ^ (j + 2)), ξ.Even → ξ ≠ 1 → DirichletCharacter.LFunction ξ s ≠ 0
 
-def LandauZeroFreeCriterion (j : ℕ) : Prop :=
-  ∀ θ : ℝ, 0 < θ → θ < 1 → ∀ y0 : ℝ, (∀ y ≥ y0, GmLevel j y ≤ y ^ θ) → ZeroFreeAbove j θ
-
 end Deduction
 
 end

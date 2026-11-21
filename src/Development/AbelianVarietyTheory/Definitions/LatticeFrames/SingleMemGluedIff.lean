@@ -239,30 +239,6 @@ theorem topPrim_iff {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [Topologi
     (v : VCom c) (o : TDat c k ι) : TopPrim v o ↔ PrimTop (c := c) v.tP o.ζ₀ :=
   ⟨fun h => h _ rfl, fun h _ e => by subst e; exact h⟩
 
-theorem placedPrim_iff : PlacedPrim f B ↔ PlacedP f B := by
-  unfold PlacedPrim PlacedP
-  simp only [topPrim_iff]
-
-theorem two_rS (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
-  have := D.R.two_le_m
-  obtain ⟨c, hc⟩ := D.R.m_even
-  unfold Ranks.rS
-  omega
-
-theorem rank_pos (f : FamCh W u) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : 0 < (f.c.X (j + 1)).rank := by
-  refine lt_of_lt_of_eq ?_ (Formalism.L2.Forms.rankN D (j + 1) (by omega)).symm
-  unfold Ranks.N
-  positivity
-
-theorem mem_moved {v : VCom f.c} (ht : VTie f v) {x : GlobalTheory.FinPl.Pl D} (hg : ∀ PP ∈ (pk W).Pg, x ≠ PP.under (𝓞 D.host.F))
-    {y : Fin (Yc D 0).rank → AE D} (hy : ∀ i, y i ∈ idAt D (· = x)) :
-    mt (Yc D 0) (f.g.b 0)⁻¹ *ᵥ y ∈ latV (Yc D 0) ((pk W).ΛY 0) (· = x) ↔ y ∈ latV (Yc D 0) (v.N 0) (· = x) := by
-  have h0 := two_rS D
-  refine (ht.moves 0 (by omega) (· = x) (fun p hp h => ?_) _ (mulVec_mem_idAt _ hy)).trans ?_
-  · obtain ⟨PP, h1, h2⟩ := (ht.gP p).1 h
-    exact hg PP h1 (hp.symm.trans h2)
-  · rw [mulVec_mulVec, ← GlobalTheory.MixModel.mt_mul, mul_inv_cancel, GlobalTheory.MixModel.mt_one, one_mulVec]
-
 end GlobalTheory.MiTop
 
 end

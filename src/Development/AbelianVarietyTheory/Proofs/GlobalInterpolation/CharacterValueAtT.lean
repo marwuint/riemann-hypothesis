@@ -168,16 +168,6 @@ theorem exists_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p.Prime
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField K)⟩,
     hle (Ideal.mem_span_singleton_self _)⟩
 
-theorem natCast_notMem_of_ne {a p : ℕ} (ha : a.Prime) (hp : p.Prime) (h : a ≠ p)
-    (w : HeightOneSpectrum (𝓞 E)) (hw : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) : ((a : ℕ) : 𝓞 E) ∉ w.asIdeal := by
-  intro hT
-  obtain ⟨x, y, e⟩ := Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes ha hp).2 h)
-  apply one_notMem w
-  have e' : (x : 𝓞 E) * (a : 𝓞 E) + (y : 𝓞 E) * (p : 𝓞 E) = 1 := by
-    exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 E) e
-  rw [← e']
-  exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hT) (Ideal.mul_mem_left _ _ hw)
-
 end Val
 
 section See

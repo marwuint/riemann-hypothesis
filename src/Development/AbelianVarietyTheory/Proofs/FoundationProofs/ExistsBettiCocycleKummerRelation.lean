@@ -1,10 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HsCodiscreteNeBot
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryMonomialDegreeSubstExpansion
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryFormCoeffOfGamma1CapGamma0InvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCharactersInvariantCompatibleFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPadicCocycleOfCompatiblePolyFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelAddZeroCongrStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryFormCoeffOfGamma1CapGamma0Invariant
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
+import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCharactersInvariantCompatibleFamily
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPadicCocycleOfCompatiblePolyFamily
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelAddZeroCongr
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelPadicIntSmulStatement
 
 noncomputable section
@@ -19,7 +22,7 @@ theorem kum_sum {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X :
     (h : ∀ i, H3.Kum X l n (x i) (χ i)) :
     H3.Kum X l n (∑ i ∈ s, r i • x i) (fun δ => ∑ i ∈ s, PadicInt.toZModPow n (r i) * χ i δ) := by
   classical
-  obtain ⟨hadd, hzero, -⟩ := GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n
+  obtain ⟨hadd, hzero, -⟩ := _root_.GlobalTheory.KZ.H3.KumAdd.kum_add_zero_near Ω ε X l n
   induction s using Finset.induction_on with
   | empty =>
     simp only [Finset.sum_empty]
@@ -38,9 +41,9 @@ theorem exists_betti_cocycle {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosu
     obtain ⟨φ, h1, h2⟩ := hj
     exact ⟨φ, h2, h1⟩
   have hlN : ¬ l ∣ N := (Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)).1 hc.symm
-  obtain ⟨Φ, hΦ, hK⟩ := GlobalTheory.T.kummerCharacters_invariant_compatible_family Ω ε X l hJ N w c hcA
-    (fun γ hγ => GlobalTheory.T.binaryForm_coeff_of_gamma1CapGamma0_invariant Ω ε X l N w b c hb γ hγ (hinv γ hγ))
-  obtain ⟨z, hz, hnear⟩ := GlobalTheory.T.exists_padic_cocycle_of_compatible_poly_family N l w (by omega) hl hlN hw Φ hΦ
+  obtain ⟨Φ, hΦ, hK⟩ := _root_.GlobalTheory.KZ.H3.kum_family Ω ε X l hJ N w c hcA
+    (fun γ hγ => _root_.GlobalTheory.KZ.H3.coef_of_inv Ω ε X l N w b c hb γ hγ (hinv γ hγ))
+  obtain ⟨z, hz, hnear⟩ := _root_.GlobalTheory.KZ.H3.cocycle_lift_of_fam N l w (by omega) hl hlN hw Φ hΦ
   refine ⟨fun δ => z δ, ⟨fun γ => hz.1 γ γ.2, fun γ δ => hz.2 γ γ.2 δ δ.2⟩, fun n u => ?_⟩
   obtain ⟨M, hM, hMn⟩ := hnear n
   have hk := kum_sum X l n Finset.univ (fun i : Fin (w + 1) => u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) c _ (hK n)

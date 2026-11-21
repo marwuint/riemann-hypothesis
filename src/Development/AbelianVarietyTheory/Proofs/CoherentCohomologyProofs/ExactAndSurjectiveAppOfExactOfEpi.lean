@@ -238,15 +238,6 @@ theorem isQuasicoherent_of_exact_app {K : X.Modules} (ι : K ⟶ M) (φ : M ⟶ 
       rw [← app_res, ht, map_zero])
     exact ⟨n, hι U hU (by rw [Scheme.Modules.Hom.app_smul, hn, map_zero])⟩
 
-theorem isQuasicoherent_X₁_of_exact {S : ShortComplex X.Modules} (hS : S.Exact) [Mono S.f]
-    [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] : S.X₁.IsQuasicoherent :=
-  isQuasicoherent_of_exact_app S.f S.g (fun U _ ↦ injective_app_of_mono S.f U)
-    fun U _ ↦ exact_app_of_exact_of_mono hS U
-
-theorem isQuasicoherent_X₃_of_exact {S : ShortComplex X.Modules} (hS : S.Exact) [Epi S.g]
-    [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] : S.X₃.IsQuasicoherent :=
-  isQuasicoherent_of_isColimit hS.gIsCokernel
-
 theorem injective_kernel_ι_app (φ : M ⟶ N) (U : X.Opens) :
     Function.Injective ((kernel.ι φ).app U) :=
   injective_app_of_mono _ U
@@ -272,11 +263,6 @@ instance isQuasicoherent_abelianCoimage (φ : M ⟶ N) [M.IsQuasicoherent] [N.Is
 instance isQuasicoherent_image (φ : M ⟶ N) [M.IsQuasicoherent] [N.IsQuasicoherent] :
     (image φ).IsQuasicoherent :=
   isQuasicoherent_of_iso (Abelian.imageIsoImage φ)
-
-theorem isQuasicoherent_of_epi_of_mono {I : X.Modules} (e : M ⟶ I) (m : I ⟶ N) [Epi e] [Mono m]
-    [M.IsQuasicoherent] [N.IsQuasicoherent] : I.IsQuasicoherent :=
-  haveI := strongEpi_of_epi e
-  isQuasicoherent_of_iso (image.isoStrongEpiMono e m rfl).symm
 
 instance isQuasicoherent_cycles (S : ShortComplex X.Modules) [S.X₂.IsQuasicoherent]
     [S.X₃.IsQuasicoherent] : S.cycles.IsQuasicoherent :=
@@ -408,13 +394,6 @@ theorem exact_iff_affineCover :
     S.Exact ↔ ∀ i, Function.Exact (S.f.app (𝒰 i)) (S.g.app (𝒰 i)) := by
   simp only [S.exact_iff_epi_kernel_lift, epi_iff_affineCover 𝒰 hcov haff,
     exact_app_iff_surjective_lift]
-
-theorem shortExact_iff_affineCover :
-    S.ShortExact ↔ ∀ i, Function.Injective (S.f.app (𝒰 i)) ∧
-      Function.Exact (S.f.app (𝒰 i)) (S.g.app (𝒰 i)) ∧ Function.Surjective (S.g.app (𝒰 i)) := by
-  simp only [forall_and, ← exact_iff_affineCover 𝒰 hcov haff, ← mono_iff_affineCover 𝒰 hcov haff,
-    ← epi_iff_affineCover 𝒰 hcov haff]
-  exact ⟨fun h ↦ ⟨h.mono_f, h.exact, h.epi_g⟩, fun h ↦ .mk' h.2.1 h.1 h.2.2⟩
 
 end Cover
 

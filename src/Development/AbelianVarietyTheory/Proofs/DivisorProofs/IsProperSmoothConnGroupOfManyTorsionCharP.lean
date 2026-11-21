@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnrami
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GeometricallyConnectedOfSurjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusAbelianQuotientPDivisibleSmoothGroup
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelDimLeOfIsClosedImmersionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardTorsionTorusExtensionAbelianVarietyLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfIsQuotOfFinrankEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelDimLeOfIsClosedImmersion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardTorsionTorusExtensionAbelianVarietyLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfIsQuotOfFinrankEqZero
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
@@ -48,7 +48,7 @@ theorem main : ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime]
     intro x hx x' hx' h
     rw [← hf1 x hx, ← hf1 x' hx', h]
   have hcardN : (s.image f).card ≤ m ^ (Module.finrank ℤ X + 2 * a) := by
-    refine GlobalTheory.T.card_torsion_torusExtension_abelianVariety_le k N hN.1 X B i q hq hB a ha m hm (s.image f) ?_
+    refine _root_.GlobalTheory.TorusExtTorsion.card_le k N hN.1 X B i q hq hB a ha m hm (s.image f) ?_
     intro y hy
     obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
     exact hf2 x hx
@@ -60,7 +60,7 @@ theorem main : ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime]
     | infer_instance
     | exact ⟨IsLocalRing.closedPoint k⟩
   have hne : Nonempty N.left := ⟨(1 : 𝟙_ (Over (Sp k)) ⟶ N).left hpt.some⟩
-  have hgle : g' ≤ g := GlobalTheory.T.relDim_le_of_smooth_of_isClosedImmersion k N G ν hνci hne g g' hg hg'
+  have hgle : g' ≤ g := _root_.GlobalTheory.relDim_le_of_isClosedImmersion k N G ν hνci hne g g' hg hg'
 
   have hm1 : 1 < m := by
     rcases Nat.lt_or_ge 1 m with h | h
@@ -77,7 +77,7 @@ theorem main : ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime]
   have hexp := (Nat.pow_lt_pow_iff_right (by omega)).mp hlt
   have ht : Module.finrank ℤ X = 0 := by omega
   have hgg : g ≤ g' := by omega
-  haveI hP : IsProper N.hom := GlobalTheory.T.isProper_of_isQuot_abelian_of_finrank_eq_zero k N X B i q hq hB ht
+  haveI hP : IsProper N.hom := _root_.GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero k N X B i q hq hB ht
   haveI : IsIso ν.left := by
     haveI := hiso hgg
     exact Functor.map_isIso (Over.forget (Sp k)) ν

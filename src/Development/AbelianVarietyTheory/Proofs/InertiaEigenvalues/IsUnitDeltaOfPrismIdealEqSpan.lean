@@ -1,7 +1,8 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DeltaStructureOfWittLengthTwoSection
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeltaMemIdealPowOfMemPowSuccStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimeNotMemSqAndDeltaNotMemStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeltaMemIdealPowOfMemPowSucc
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimeNotMemSqAndDeltaNotMem
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -32,7 +33,7 @@ theorem isUnit_δ_of_I_eq_span : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRi
     · rw [pow_two]; exact Ideal.mul_mem_mul hlm hδd
   have hy2 : c * B.D.φ d ∈ m ^ (1 + 1) := Ideal.mul_mem_left _ _ hφ
   have hδy : B.D.δ (c * B.D.φ d) ∈ m := by
-    simpa using GlobalTheory.T.delta_mem_ideal_pow_of_mem_pow_succ l B.A B.D m hlm 1 _ hy2
+    simpa using _root_.GlobalTheory.BSP.delta_pow_succ_mem_pow l B.A B.D m hlm 1 _ hy2
   have hδad : B.D.δ (a * d) ∈ m := by
     rw [B.D.δ_mul]
     refine Ideal.add_mem _ (Ideal.add_mem _ ?_ ?_) ?_
@@ -46,6 +47,6 @@ theorem isUnit_δ_of_I_eq_span : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRi
   have hδl : B.D.δ (l : B.A) ∈ m := by
     rw [← hle, B.D.δ_add]
     exact Ideal.sub_mem _ (Ideal.add_mem _ hδad hδy) hsum
-  exact (GlobalTheory.T.prime_not_mem_sq_and_delta_not_mem l B.A B.D m hm.ne_top hlm).2 hδl
+  exact (_root_.GlobalTheory.BSP.LSq.l_not_mem_sq l B.A B.D m hm.ne_top hlm).2 hδl
 
 end GlobalTheory.BSP

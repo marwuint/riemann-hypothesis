@@ -15,11 +15,6 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F] {E E' E'' : Weie
 
 namespace Isogeny
 
-theorem divisorOf_comap (φ : Isogeny E E') {f : E'.toAffine.FunctionField} (hf : f ≠ 0)
-    (R : E.toAffine.Point) :
-    divisorOf E (φ.comap f) R = (φ.ramIdx : ℤ) * divisorOf E' f (φ.pointMap R) := by
-  rw [divisorOf_apply, divisorOf_apply, φ.ordPoint_comap R hf]
-
 end Isogeny
 
 section Poly

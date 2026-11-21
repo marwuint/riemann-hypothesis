@@ -25,6 +25,4 @@ def pullAddLin (f : X →+ Y) : LinearMap.BilinForm ℤ Y →ₗ[ℤ] LinearMap.
 
 @[simp] theorem pullAddLin_apply (f : X →+ Y) (u : LinearMap.BilinForm ℤ Y) : pullAddLin f u = pullAdd f u := rfl
 
-example : pullAdd (zmultiplesHom ℤ 2 : ℤ →+ ℤ) mulForm 1 1 = 4 := by simp
-
 end GlobalTheory.PolFan.OrbMark

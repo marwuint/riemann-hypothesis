@@ -1,12 +1,17 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasisStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralOfNormLeOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharacterPadicBasicProperties
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMore
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 noncomputable section
@@ -352,38 +357,5 @@ theorem cobL_of_all [CompactSpace G] [IsTopologicalRing LL] [IsDomain O] [IsDisc
   linear_combination ((algebraMap O LL ϖ)⁻¹ ^ s) * h1 + z (g, h') * h2
 
 end Cyc
-
-theorem cobLO_of_fin_inj : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), FinZQ ((D.loc l).PD K) → TopInj ((D.loc l).PD K) → CobLO ((D.loc l).PD K) := by
-  intro D l _ K hfin htop LL _ _ _ O _ _ hO L1 hL1 z hz
-  have hO' := hO
-  obtain ⟨⟨hdom, hdvr, hfr⟩, hfd, hmt, htr, hop⟩ := hO'
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  obtain ⟨hc, -, -, -, hb, -⟩ := GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ
-  haveI : CompactSpace ↥(GK K) := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK K
-  haveI : ContinuousSMul ℚ_[l] LL := IsModuleTopology.toContinuousSMul ℚ_[l] LL
-  have hAlg : Continuous (algebraMap ℚ_[l] LL) := continuous_algebraMap ℚ_[l] LL
-  have hχ : Continuous fun g : ↥(GK K) => ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL) := by
-    have h1 : (fun g : ↥(GK K) => ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL)) =
-        fun g : ↥(GK K) => algebraMap ℚ_[l] LL ((D.loc l).χQ (g : GQ l) : ℚ_[l]) := by
-      funext g
-      rw [← (D.loc l).PD_χ K g]
-      rfl
-    rw [h1]
-    exact hAlg.comp ((GlobalTheory.Cyc.IsCyc.continuous (D.loc l).χQ_cyc).comp continuous_subtype_val)
-  let A : GRep ↥(GK K) ℚ_[l] LL O :=
-    { V := LL
-      ρ := charRep (cycLL ((D.loc l).PD K) LL)
-      cont := fun x => by
-        simp only [charRep_apply]
-        exact hχ.mul continuous_const }
-  have hopT : IsOpen (L1.T : Set LL) := by
-    have h1 : (L1.T : Set LL) = Set.range (algebraMap O LL) := by
-      ext y
-      exact mem_T L1 hL1
-    rw [h1]
-    exact hop
-  exact ⟨fun h a => cobO_of_cobL L1 hopT h a, fun h =>
-    cobL_of_all L1 hL1 hϖ hop hc hb (fun n => hfin LL O hO A L1 ϖ hϖ n (stable_pw L1 ϖ n))
-      (fun r z hr hz' => htop LL O hO L1 hL1 ϖ hϖ r z hr hz') hz h⟩
 
 end GlobalTheory.CompanionTheory.LocDual.CobDetect

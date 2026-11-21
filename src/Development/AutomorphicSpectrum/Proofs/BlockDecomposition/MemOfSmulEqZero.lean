@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteTo
 import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.MulLeftCompOfPullbackPointEquivMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeAndRelDimOfIsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullbackSecondCohomologyOfEq
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PrimitiveTorsorClassAdditiveStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PrimitiveTorsorClassAdditive
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullOWOverComp
 
 set_option autoImplicit false
 
@@ -188,7 +189,7 @@ theorem lift_aux (hD : DescentSt) (hL : LowSt) (hAx : AxOSt) (hNP : NoPrimSt)
   have pm := isPullO_pullHO1 (wOver (fst A₀ A₀ * snd A₀ A₀)) c'
   have pp := isPullO_pullHO1 (wOver (fst A₀ A₀)) c'
   have pq := isPullO_pullHO1 (wOver (snd A₀ A₀)) c'
-  have prim := GlobalTheory.T.primitive_torsor_class_additive hD hL hAx _ A₀ g hA₀ hg₀ c' _ _ _ pm pp pq
+  have prim := _root_.GlobalTheory.CompanionTheory.SmallLift.primitive_HO1_abelian hD hL hAx _ A₀ g hA₀ hg₀ c' _ _ _ pm pp pq
   obtain ⟨yp, Bp⟩ := bd_exists haY hbY ((resSys (A₀ ⊗ A₀).hom (pullSys hY₀ (idSys (A ⊗ A).left))).pull1
     (pullHO1 (wOver (fst A₀ A₀)) c'))
   obtain ⟨yq, Bq⟩ := bd_exists haY hbY ((resSys (A₀ ⊗ A₀).hom (pullSys hY₀ (idSys (A ⊗ A).left))).pull1

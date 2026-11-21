@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealProperties
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximationStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionLatticeSeparatedCompleteStatement
 open NumberField IsDedekindDomain GlobalTheory.AdLat
 open scoped TensorProduct Matrix nonZeroDivisors
@@ -269,7 +268,7 @@ theorem exists_adelic_matrix_of_tower : ∀ (F E : Type) [Field F] [NumberField 
   have hunit : IsUnit g := by
     rw [← Matrix.mulVec_surjective_iff_isUnit]
     intro y
-    obtain ⟨d, hd, hy⟩ := (GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n Λ hΛ hΛsp).2.2.2 y
+    obtain ⟨d, hd, hy⟩ := (_root_.GlobalTheory.AdLat.hat_rational_points_and_approx F E n Λ hΛ hΛsp).2.2.2 y
     obtain ⟨z, -, e⟩ := hsurj _ hy
     refine ⟨(d : F)⁻¹ • z, ?_⟩
     rw [Matrix.mulVec_smul, e, ← Nat.cast_smul_eq_nsmul F, smul_smul,
@@ -326,8 +325,8 @@ theorem exists_adelic_matrix_of_tower : ∀ (F E : Type) [Field F] [NumberField 
     intro b hb y hy
     rw [map_smul, map_smul, LinearMap.smul_apply, hB0 ⟨x, hx⟩ ⟨y, hy⟩, smul_zero, smul_zero]
   intro x y
-  obtain ⟨d, hd, hx⟩ := (GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n L hL hLsp).2.2.2 x
-  obtain ⟨e, he, hy⟩ := (GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n L hL hLsp).2.2.2 y
+  obtain ⟨d, hd, hx⟩ := (_root_.GlobalTheory.AdLat.hat_rational_points_and_approx F E n L hL hLsp).2.2.2 x
+  obtain ⟨e, he, hy⟩ := (_root_.GlobalTheory.AdLat.hat_rational_points_and_approx F E n L hL hLsp).2.2.2 y
   have h1 := hB1 _ hx _ hy
   rw [map_nsmul, map_nsmul, LinearMap.smul_apply, smul_smul, ← smul_zero (e * d)] at h1
   have h2 := lim_nsmul_cancel F (Nat.mul_pos he hd) h1

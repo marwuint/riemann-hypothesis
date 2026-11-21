@@ -17,16 +17,16 @@ theorem antisymmetry_transposition_factor : AntisymmetryFibreSquares := by
   have hjN : T.j ≤ N := T.j_lt.le
   have hdim : Top.dimFl Ψ N = antisymDegree Ψ N := by
     simp [Top.dimFl, antisymDegree, Nat.choose_two_right]
-  have harith : IsArithVar (PFl Ψ N) (Top.dimFl Ψ N + 1) := hdim ▸ (GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1
+  have harith : IsArithVar (PFl Ψ N) (Top.dimFl Ψ N + 1) := hdim ▸ (_root_.GlobalTheory.CompanionTheory.Ar.PB.flag_isArithVar_and_image Ψ N hN).1
   obtain ⟨m, d, S', K, _, ι, _, P, Re', hm, ⟨F⟩, hPB, hdeg⟩ := hSq B c
-  obtain ⟨⟨c₀, hc₀, hfl⟩, hprop⟩ := GlobalTheory.T.proportional' hIn Ψ N T.j hN hjN
+  obtain ⟨⟨c₀, hc₀, hfl⟩, hprop⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.proportional hIn Ψ N T.j hN hjN
   obtain ⟨-, hv⟩ := hprop (d + 1) S' F.dim F.unif
   have hnpos : 0 < R.n c := (GlobalTheory.T.real_tower_arith_agreement hIn II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) lam 0).1
   have hn0 : (R.n c : ℝ) ≠ 0 := Nat.cast_ne_zero.2 hnpos.ne'
 
   have hvol : m * ((R.n c : ℝ) * T.vol c) = PB.volOf S' := by
-    have h1 := GlobalTheory.T.real_tower_geometric_agreement hIn II hII Ψ N (T.M 2 c) (R.Sys c) (R.n c) (R.tie 2 c) (rhoWt : Wt Ψ N) 0
-    have h2 := GlobalTheory.T.flag_degree_polynomial_eval hIn II hII Ψ N (rhoWt : Wt Ψ N) hN
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Top.geoFun_linA_pow_of_realTie hIn II hII Ψ N (T.M 2 c) (R.Sys c) (R.n c) (R.tie 2 c) (rhoWt : Wt Ψ N) 0
+    have h2 := _root_.GlobalTheory.CompanionTheory.Relay.flag_degree_polynomial_eval hIn II hII Ψ N (rhoWt : Wt Ψ N) hN
     have hρ : flagDeg (rhoWt : Wt Ψ N) ≠ 0 := by
       rw [← h2, hfl, eval_mul, eval_C]
       exact mul_ne_zero hc₀.ne' eval_rho_antisymDelta_ne
@@ -56,7 +56,7 @@ theorem antisymmetry_transposition_factor : AntisymmetryFibreSquares := by
     exact congrArg (m * ·) h1
   have hh : ∀ mu : Wt Ψ N, hhFl Ψ N II (linRoot mu ^ (Top.dimFl Ψ N + 1)) =
       eval (fun x : Ψ × Fin N => mu x.1 x.2) (PB.hFlPoly Ψ N II) :=
-    fun mu => GlobalTheory.T.flag_height_polynomial_eval II hII Ψ N mu hN harith
+    fun mu => _root_.GlobalTheory.CompanionTheory.Ar.Top.hhFl_linRoot_pow II hII Ψ N mu hN harith
 
   have hQ := (hA hIn II hII Ψ N T.j d hN S' K ι P Re' F).2 (Equiv.swap (τ, a) (τ, b))
     ⟨τ, a, b, hab, by omega, rfl⟩

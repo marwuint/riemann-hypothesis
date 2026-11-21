@@ -53,22 +53,6 @@ variable (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G)
 
 abbrev pendT : Pend X := pendR X E.toCEmb hfin hst (beLT hLT) (thFOf X pos F)
 
-theorem adm6_pendT (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.FormalGroupSystem.adm6 D X (pendT X E hfin hst hLT pos F) := up_down_adjoint D X _
-
-theorem invariance_of_stable_geometry (D : Formalism.BasicNotions.D7) :
-    letI := wittFractionAlgebraCp p
-    letI := algKfC E.toCEmb
-    StabGeo X ℂ_[p] hfin (thFOf X pos F) → KapStab X ℂ_[p] → Formalism.MainNotions.FormalGroupSystem.MinkowskiCounting D X (pendT X E hfin hst hLT pos F) := by
-  let _ := wittFractionAlgebraCp p
-  let _ := algKfC E.toCEmb
-  exact invariance_representatives X E.toCEmb hfin hst (beLT hLT) D (thFOf X pos F) (delEquivOn_GdC X ℂ_[p]) (vtIn_GdC X ℂ_[p])
-
-theorem invariance_of_trivial_stabilisers (D : Formalism.BasicNotions.D7) (hT : ∀ j c, (X.Lv.lev j c).TrivStab) :
-    Formalism.MainNotions.FormalGroupSystem.MinkowskiCounting D X (pendT X E hfin hst hLT pos F) := by
-  let _ := wittFractionAlgebraCp p
-  let _ := algKfC E.toCEmb
-  exact invariance_representatives_trivial X E.toCEmb hfin hst (beLT hLT) D (thFOf X pos F) hT (delEquivOn_GdC X ℂ_[p]) (vtIn_GdC X ℂ_[p])
-
 theorem invariance_iff_additive_maps_exist (D : Formalism.BasicNotions.D7) :
     Formalism.MainNotions.FormalGroupSystem.adm5 D X (pendT X E hfin hst hLT pos F) ↔
       ∀ v, ∀ j < X.mm, letI := algKfC E.toCEmb; XiEx X ℂ_[p] (pendT X E hfin hst hLT pos F).ThF v j :=

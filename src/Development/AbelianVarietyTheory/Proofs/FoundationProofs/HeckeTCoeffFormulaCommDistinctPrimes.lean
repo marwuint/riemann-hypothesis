@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMulPetProd
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGamma1InterGamma0ExtQExpansionCoeffStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommutesDiamondStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondOperatorOfMatrixCongrStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondOperatorOfMatrixModularFormGamma1InterGamStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondOperatorOfMatrixCompMulStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionCoeffHeckeTOperatorGamma1InterGamma0Statement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTOperatorExplicitModularFormStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGamma1InterGamma0ExtQExpansionCoeff
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommutesDiamond
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondOperatorOfMatrixCongr
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondOperatorOfMatrixModularFormGamma1InterGam
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondOperatorOfMatrixCompMul
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionCoeffHeckeTOperatorGamma1InterGamma0
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTOperatorExplicitModularForm
 open UpperHalfPlane ModularForm CongruenceSubgroup MeasureTheory
 open scoped MatrixGroups ModularForm Manifold
 
@@ -30,7 +30,7 @@ lemma isDia_mul_of_isDia {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : IsD
 lemma heckeT_congr_dia {N l q : ℕ} {k : ℤ} {σ τ : SL(2, ℤ)} (hN : 0 < N)
     (hσ : IsDia N l q σ) (hτ : IsDia N l q τ) (f : ModularForm (lev N l) k) :
     heckeT k q σ ⇑f = heckeT k q τ ⇑f := by
-  have := GlobalTheory.T.diamondOperatorOfMatrix_congr N l k q σ τ hN hσ hτ f
+  have := _root_.GlobalTheory.Hk.dia_congr N l k q σ τ hN hσ hτ f
   unfold dia at this
   unfold heckeT
   rw [this]
@@ -85,29 +85,29 @@ theorem heckeT_comm : ∀ (N l q r : ℕ) (k : ℤ) (σ τ : SL(2, ℤ)), 0 < N 
   intro N l q r k σ τ hN hq hr hqN hrN hσ hτ f
   by_cases hqr : q = r
   · subst hqr
-    obtain ⟨g, hg⟩ := GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k τ hN hq hqN hτ f
+    obtain ⟨g, hg⟩ := _root_.GlobalTheory.Hk.heckeT_modularForm N l q k τ hN hq hqN hτ f
     rw [heckeT_congr_dia hN hσ hτ f, ← hg, heckeT_congr_dia hN hσ hτ g]
-  · obtain ⟨gr, hgr⟩ := GlobalTheory.T.heckeTOperatorExplicit_modularForm N l r k τ hN hr hrN hτ f
-    obtain ⟨gq, hgq⟩ := GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k σ hN hq hqN hσ f
-    obtain ⟨h1, hh1⟩ := GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k σ hN hq hqN hσ gr
-    obtain ⟨h2, hh2⟩ := GlobalTheory.T.heckeTOperatorExplicit_modularForm N l r k τ hN hr hrN hτ gq
-    obtain ⟨fσ, hfσ⟩ := GlobalTheory.T.diamondOperatorOfMatrix_modularForm_gamma1InterGamma0 N l k q σ hN hσ f
-    obtain ⟨fτ, hfτ⟩ := GlobalTheory.T.diamondOperatorOfMatrix_modularForm_gamma1InterGamma0 N l k r τ hN hτ f
+  · obtain ⟨gr, hgr⟩ := _root_.GlobalTheory.Hk.heckeT_modularForm N l r k τ hN hr hrN hτ f
+    obtain ⟨gq, hgq⟩ := _root_.GlobalTheory.Hk.heckeT_modularForm N l q k σ hN hq hqN hσ f
+    obtain ⟨h1, hh1⟩ := _root_.GlobalTheory.Hk.heckeT_modularForm N l q k σ hN hq hqN hσ gr
+    obtain ⟨h2, hh2⟩ := _root_.GlobalTheory.Hk.heckeT_modularForm N l r k τ hN hr hrN hτ gq
+    obtain ⟨fσ, hfσ⟩ := _root_.GlobalTheory.Hk.dia_modularForm N l k q σ hN hσ f
+    obtain ⟨fτ, hfτ⟩ := _root_.GlobalTheory.Hk.dia_modularForm N l k r τ hN hτ f
     have dσ : dia k σ ⇑gr = heckeT k r τ ⇑fσ := by
-      rw [hgr, hfσ, GlobalTheory.T.hecke_operator_commutes_diamond N l r k q τ σ hN hr hrN hτ hσ f]
+      rw [hgr, hfσ, _root_.GlobalTheory.Hk.heckeT_dia_comm N l r k q τ σ hN hr hrN hτ hσ f]
     have dτ : dia k τ ⇑gq = heckeT k q σ ⇑fτ := by
-      rw [hgq, hfτ, GlobalTheory.T.hecke_operator_commutes_diamond N l q k r σ τ hN hq hqN hσ hτ f]
+      rw [hgq, hfτ, _root_.GlobalTheory.Hk.heckeT_dia_comm N l q k r σ τ hN hq hqN hσ hτ f]
     have dd : dia k τ ⇑fσ = dia k σ ⇑fτ := by
       have h' : IsDia N l ((r : ℤ) * q) (σ * τ) := by
         rw [mul_comm]; exact isDia_mul_of_isDia hσ hτ
-      rw [hfσ, hfτ, GlobalTheory.T.diamondOperatorOfMatrix_comp_mul N l k q r σ τ (σ * τ) hN hσ hτ (isDia_mul_of_isDia hσ hτ) f,
-        GlobalTheory.T.diamondOperatorOfMatrix_comp_mul N l k r q τ σ (σ * τ) hN hτ hσ h' f]
+      rw [hfσ, hfτ, _root_.GlobalTheory.Hk.dia_mul N l k q r σ τ (σ * τ) hN hσ hτ (isDia_mul_of_isDia hσ hτ) f,
+        _root_.GlobalTheory.Hk.dia_mul N l k r q τ σ (σ * τ) hN hτ hσ h' f]
     have key : h1 = h2 := by
-      apply GlobalTheory.T.modularForm_gamma1InterGamma0_ext_qExpansionCoeff N l k hN
+      apply _root_.GlobalTheory.Hk.eq_of_coef_eq N l k hN
       intro n
-      rw [hh1, hh2, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l q k σ hN hq hqN hσ gr, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l r k τ hN hr hrN hτ gq,
-        dσ, dτ, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l r k τ hN hr hrN hτ fσ, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l q k σ hN hq hqN hσ fτ,
-        hgr, hgq, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l r k τ hN hr hrN hτ f, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l q k σ hN hq hqN hσ f,
+      rw [hh1, hh2, _root_.GlobalTheory.Hk.coef_heckeT N l q k σ hN hq hqN hσ gr, _root_.GlobalTheory.Hk.coef_heckeT N l r k τ hN hr hrN hτ gq,
+        dσ, dτ, _root_.GlobalTheory.Hk.coef_heckeT N l r k τ hN hr hrN hτ fσ, _root_.GlobalTheory.Hk.coef_heckeT N l q k σ hN hq hqN hσ fτ,
+        hgr, hgq, _root_.GlobalTheory.Hk.coef_heckeT N l r k τ hN hr hrN hτ f, _root_.GlobalTheory.Hk.coef_heckeT N l q k σ hN hq hqN hσ f,
         dd, hfσ, hfτ]
       exact heckeT_coeff_formula_comm_distinct_primes hq hr hqr _ _ _ _ _ _ n
     rw [← hgr, ← hgq, ← hh1, ← hh2, key]

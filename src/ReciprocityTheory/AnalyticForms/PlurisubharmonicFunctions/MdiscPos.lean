@@ -145,17 +145,6 @@ theorem pm_exists_gram_of_posSemidef {A : Matrix (Fin D) (Fin D) ℂ} (hA : A.Po
   rw [hB, star_eq_conjTranspose, mul_apply]
   simp [conjTranspose_apply]
 
-open scoped MatrixOrder in
-theorem pm_exists_gram_add_of_posDef [Nonempty (Fin D)] {A : Matrix (Fin D) (Fin D) ℂ}
-    (hA : A.PosDef) : ∃ r : ℝ, 0 < r ∧ ∃ v : Fin D → Fin D → ℂ,
-      ∀ a b, A a b = ∑ s, v s a * star (v s b) + if a = b then (r : ℂ) else 0 := by
-  obtain ⟨r, hr, hle⟩ := (CFC.exists_pos_algebraMap_le_iff (A := Matrix (Fin D) (Fin D) ℂ)
-    hA.isStrictlyPositive.isSelfAdjoint).2 fun x hx => hA.isStrictlyPositive.spectrum_pos hx
-  obtain ⟨v, hv⟩ := pm_exists_gram_of_posSemidef (Matrix.le_iff.mp hle)
-  refine ⟨r, hr, v, fun a b => ?_⟩
-  rw [← hv]
-  simp [Matrix.algebraMap_matrix_apply]
-
 theorem pm_mdisc_of_gram (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (w : Fin D → ι → Fin D → ℂ)
     (h : ∀ k a b, A k a b = ∑ r, w k r a * star (w k r b)) :
     mdisc A = (((∑ g : Fin D → Fin D × ι, pmWt g * Complex.normSq (pmGmat w g).det) /
@@ -170,50 +159,6 @@ theorem mixedDiscriminant_nonneg_of_gram (A : Fin D → Matrix (Fin D) (Fin D) �
   refine ⟨Complex.ofReal_im _, ?_⟩
   rw [Complex.ofReal_re]
   exact div_nonneg (pm_mdisc_gram_sum_nonneg _) (by positivity)
-
-theorem mixedDiscriminant_pos_of_gram (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
-    (hA : ∀ k, (A k).PosDef) : (mdisc A).im = 0 ∧ 0 < (mdisc A).re := by
-  obtain _ | n := D
-  · rw [mdisc_zero]; simp
-  choose r hr v hv using fun k => pm_exists_gram_add_of_posDef (hA k)
-  let w : Fin (n + 1) → (Fin (n + 1) ⊕ Fin (n + 1)) → Fin (n + 1) → ℂ := fun k =>
-    Sum.elim (v k) (fun s x => if x = s then ((Real.sqrt (r k) : ℝ) : ℂ) else 0)
-  have hc : ∀ k, ((Real.sqrt (r k) : ℝ) : ℂ) * star ((Real.sqrt (r k) : ℝ) : ℂ) = (r k : ℂ) := by
-    intro k
-    rw [Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (hr k).le]
-  have hw : ∀ k a b, A k a b = ∑ s, w k s a * star (w k s b) := by
-    intro k a b
-    rw [hv, Fintype.sum_sum_type]
-    congr 1
-    by_cases hab : a = b
-    · subst hab
-      rw [if_pos rfl, Finset.sum_eq_single a (fun s _ hs => by simp [w, Ne.symm hs]) (by simp)]
-      simp only [w, Sum.elim_inr]
-      exact (hc k).symm
-    · rw [if_neg hab]
-      refine (Finset.sum_eq_zero fun s _ => ?_).symm
-      by_cases has : a = s
-      · subst has; simp [w, Ne.symm hab]
-      · simp [w, has]
-  rw [pm_mdisc_of_gram A w hw]
-  refine ⟨Complex.ofReal_im _, ?_⟩
-  rw [Complex.ofReal_re]
-  refine div_pos ?_ (by positivity)
-  let g₀ : Fin (n + 1) → Fin (n + 1) × (Fin (n + 1) ⊕ Fin (n + 1)) := fun a => (a, Sum.inr a)
-  refine Finset.sum_pos' (fun g _ => mul_nonneg (pmWt_nonneg g) (Complex.normSq_nonneg _))
-    ⟨g₀, Finset.mem_univ _, ?_⟩
-  have h1 : pmWt g₀ = 1 := by
-    unfold pmWt
-    rw [if_pos]
-    ext x; simp [g₀]
-  have h2 : pmGmat w g₀ = diagonal fun a => ((Real.sqrt (r a) : ℝ) : ℂ) := by
-    ext x a
-    by_cases h : x = a
-    · subst h; simp [pmGmat, w, g₀]
-    · simp [pmGmat, w, g₀, h]
-  rw [h1, one_mul, h2, det_diagonal, Complex.normSq_pos]
-  refine Finset.prod_ne_zero_iff.mpr fun a _ => ?_
-  exact_mod_cast (Real.sqrt_pos.mpr (hr a)).ne'
 
 theorem mixedDiscriminant_re_mono_of_gram (A B : Fin D → Matrix (Fin D) (Fin D) ℂ) (hA : ∀ k, (A k).PosSemidef)
     (hAB : ∀ k, (B k - A k).PosSemidef) : (mdisc A).re ≤ (mdisc B).re := by

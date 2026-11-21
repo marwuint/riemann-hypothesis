@@ -40,47 +40,8 @@ end GlobalTheory.Triple
 end
 end
 
-section
-section
 namespace GlobalTheory.Triple
-open NumberField IsDedekindDomain Polynomial Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N
-open Formalism.L2.Host (HChar CharFrame embLL0 eExp ValLL0)
-open GlobalTheory.HeckeGal (Gab IsGlobalArtin)
-open GlobalTheory.GalChar (IsGal toQ block)
-open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE toFb)
-open GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary (embOver)
-variable {D : D7}
-section API
-variable {C : CharFrame D} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om} {X : NTw D.R D.host D.what₂ D.LL0 D.nd}
-  {i : X.Tw} {b : Bool} {ρ : Reading X i b} {s : X.Sig i} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
-  {r : GalE D →* GL (Fin D.R.r) (Qbar (X.l i))} {ν : GalE D →* (X.O0 i)ˣ} {w : D.what₂.places.Pl}
-  {red : Zbar (X.l i) →+* FbAt D w}
-
-theorem IsTripleWith.charpoly_frob_of_isTriple (ha : IsGlobalArtin art) (h : IsTripleWith C art ρ s σ π r ν w red) {P : PlE D.host}
-    (hl : P ∉ placesOver D.host.E (X.l i)) (hg : ∀ k, P ∉ placesOver D.host.E (D.host.g k))
-    {B : ValuationSubring D.nd.Om} (hB : IsPlaceOver B P) {g : GalE D} (hF : IsFrob (F := D.host.E) B (normV P) g) :
-    ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).charpoly.map ρ.toC =
-      ((D.naut.frobEig (D.naut.locG π P)).map fun a => Polynomial.X - Polynomial.C
-        (a * ((normV P : ℕ) : ℂ) ^ (((1 - (D.R.r : ℝ)) / 2 : ℝ) : ℂ) * (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹)).prod := by
-  have hu := h.param.unr P hg
-  obtain ⟨n, hn⟩ := h.shift
-  have e1 := ((UpperTheory.GalS.galW h.gal).2.2 P hl).2.2 hu B g hB hF
-  have e2 := hn.frob ha (Or.inl hl) (shiftChar_unr C P) hB hF
-  rw [galPol, D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map] at e1
-  have e3 : ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map ρ.toC =
-      (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹ •
-        ((r g : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).map ρ.ι.toRingHom := by
-    ext x y
-    have := congrArg ρ.ι (congrFun (congrFun (h.rho g) x) y)
-    simpa [e2, Reading.toC_apply] using this
-  rw [← Matrix.charpoly_map, e3, charpoly_smul_of_prod _ _ _ e1, Multiset.map_map]
-  rfl
-
-end API
 end GlobalTheory.Triple
-end
-end
-
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.TwInputs GlobalTheory.SeriesTie NumberField IsDedekindDomain Polynomial
 open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0)
@@ -245,17 +206,8 @@ end GlobalTheory.ResLoc
 end
 end
 
-section
-section
 namespace GlobalTheory.ResLoc
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
-open GlobalTheory.EigTie (ResTied IsRowPar plRed resTied_of_plSide)
-open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
-
 end GlobalTheory.ResLoc
-end
-end
-
 section
 section
 namespace GlobalTheory.TripleResidual
@@ -321,19 +273,5 @@ end GlobalTheory.Triple
 end
 end
 
-section
 namespace GlobalTheory.TripleAdm
-open NumberField IsDedekindDomain Polynomial Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal
-open Formalism.CyclotomicNorms (Fbar rootsBar IsGood IrredOn BB primeToPart)
-open GlobalTheory.TameLabels GlobalTheory.TripleResidual
-open GlobalTheory.TypeLeaf (WildOne FrobDense)
-open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf IsReduction Zbar GalE toFb)
-open GlobalTheory.Triple (IsParam IsResidual Reading IsChars IsTripleWith IsTripleFor IsTripleOf IsTriple muBase hframe jIdx)
-open GlobalTheory.TwistDet GlobalTheory.GalChar Formalism.L2.Host
-variable {D : D7}
-section Row
-variable {σ : D.what₂.FT} {π : D.naut.CG D.R.r} {w : D.what₂.places.Pl}
-
-end Row
 end GlobalTheory.TripleAdm
-end

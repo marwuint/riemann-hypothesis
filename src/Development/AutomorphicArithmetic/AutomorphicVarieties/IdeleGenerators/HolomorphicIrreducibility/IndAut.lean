@@ -118,18 +118,6 @@ private theorem place_between {A : ValuationSubring Ω} {v : HeightOneSpectrum (
     exact Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)
   exact ⟨⟨P, inferInstance, hne⟩, hP, HeightOneSpectrum.ext hu.symm⟩
 
-private theorem ev_over {P : HeightOneSpectrum (𝓞 E) → Prop} (h : ∀ᶠ w in Filter.cofinite, P w) :
-    ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → P w := by
-  rw [Filter.eventually_cofinite] at h ⊢
-  refine (h.image fun w => w.under (𝓞 F)).subset fun v hv => ?_
-  by_contra h0
-  exact hv fun w hw => not_not.1 fun hP => h0 ⟨w, hP, hw⟩
-
-private theorem ev_notMem {a : 𝓞 E} (ha : a ≠ 0) :
-    ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, a ∉ v.asIdeal := by
-  have h0 : Ideal.span {a} ≠ 0 := by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-  exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)
-
 private theorem normV_sq (h2 : Module.finrank F E = 2) (w : HeightOneSpectrum (𝓞 E)) (h : normV w ≠ normV (w.under (𝓞 F))) :
     normV w = normV (w.under (𝓞 F)) ^ 2 := by
   have : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
@@ -158,22 +146,6 @@ private theorem res_surj (w : HeightOneSpectrum (𝓞 E)) (h : normV w = normV (
   obtain ⟨c, rfl⟩ := Ideal.Quotient.mk_surjective c
   exact ⟨c, Ideal.Quotient.eq.1 hc.symm⟩
 
-private theorem exists_moved (h2 : Module.finrank F E = 2) {t : G F Ω} (ht : t ∉ galOf F E Ω) :
-    ∃ x y : 𝓞 E, y - x ≠ 0 ∧ t (algebraMap E Ω x) = algebraMap E Ω y := by
-  haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩
-  by_contra h
-  push Not at h
-  have h1 : ∀ x : 𝓞 E, t (algebraMap E Ω x) = algebraMap E Ω x := fun x => by
-    have e : algebraMap E Ω ((AlgEquiv.restrictNormalHom E t • x : 𝓞 E) : E) = t (algebraMap E Ω (x : E)) :=
-      AlgEquiv.restrictNormal_commutes t E (x : E)
-    by_contra h0
-    refine h x _ (fun h3 => h0 ?_) e.symm
-    rw [← e, sub_eq_zero.1 h3]
-  refine ht fun x => ?_
-  obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 E) x
-  rw [map_div₀, map_div₀]
-  exact congrArg₂ _ (h1 a) (h1 b)
-
 private theorem place_ne {t : G F Ω} {x y : 𝓞 E} (hxy : t (algebraMap E Ω x) = algebraMap E Ω y) {A : ValuationSubring Ω}
     {w : HeightOneSpectrum (𝓞 E)} (h : normV w = normV (w.under (𝓞 F))) (hA : IsPlaceOver A w) (hA' : IsPlaceOver (t⁻¹ • A) w) :
     y - x ∈ w.asIdeal := by
@@ -190,16 +162,6 @@ end Places
 private theorem algSat_eq (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
-
-private theorem algSat_four (q : ℕ) (B : Multiset ℂˣ) : algSat 4 q B = (algSat 2 q B).map (· * (q : ℂ)) := by
-  have e : (q : ℝ) ^ ((((4 : ℕ) : ℝ) - 1) / 2) = (q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) * q := by
-    rw [← Real.rpow_add_one' (Nat.cast_nonneg q) (by norm_num)]
-    norm_num
-  simp only [algSat_eq, Multiset.map_map, e]
-  refine Multiset.map_congr rfl fun b _ => ?_
-  simp only [Function.comp_apply]
-  push_cast
-  ring
 
 private theorem prod_inert (q : ℕ) (B : Multiset ℂˣ) :
     ((algSat 2 (q ^ 2) (B.map (· ^ 2))).map fun b => X - C b).prod.comp (X ^ 2) =
@@ -283,67 +245,3 @@ private theorem loc {F E Ω : Type} [Field F] [NumberField F] [Field E] [NumberF
     rw [(H σ⁻¹ fun h => hs ((h1 _).2 h)).2 g⁻¹ (by rw [map_inv, hg, mul_inv_rev]), Polynomial.map_comp, e1, hq,
       Polynomial.map_pow, map_X, prod_inert]
 
-private theorem charEig_cyc_inv {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
-    [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : HeightOneSpectrum (𝓞 F)) (hw : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) :
-    CharEig ι (cycBar F Ω l)⁻¹ w (normV w : ℂ) := by
-  intro A hA
-  refine ⟨fun s hs => ?_, fun σ hσ => ?_⟩
-  · have h1 : cycZ F Ω l s = 1 := Units.ext (PadicInt.ext_of_toZModPow.mp fun n => by
-      rw [cycZ_toZModPow_eq hw hA (q := 1) (fun x hx => by simpa using hs.2 x hx) n]
-      simp)
-    rw [MonoidHom.inv_apply, cycBar, MonoidHom.comp_apply, h1, map_one, inv_one]
-  · have h2 : ((cycBar F Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ) := by
-      change algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ F Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _
-      rw [cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]
-    rw [MonoidHom.inv_apply, map_inv, inv_inv, h2, map_natCast]
-
-private theorem infOf_two (m : Fin 2 → ℤ) : infOf m = {1 / 2 + (m 0 : ℂ), 1 / 2 + (m 1 : ℂ)} := by
-  have e : (((2 : ℕ) : ℂ) - 1) / 2 = 1 / 2 := by norm_num
-  rw [infOf, e]
-  rfl
-
-private theorem infOf_add {m m' : Fin 2 → ℤ} (h : Function.Injective ![m 0, m 1, m' 0, m' 1]) :
-    (infOf m + infOf m').Nodup ∧ ∀ z ∈ infOf m + infOf m', ∃ n : ℤ, z = (n : ℂ) + (((4 : ℕ) : ℂ) - 1) / 2 := by
-  have e : infOf m + infOf m' = Finset.univ.val.map fun i => 1 / 2 + ((![m 0, m 1, m' 0, m' 1] i : ℤ) : ℂ) := by
-    rw [infOf_two, infOf_two]
-    rfl
-  rw [e]
-  refine ⟨Finset.univ.nodup.map fun i j hij => h (Int.cast_injective (add_left_cancel hij)), fun z hz => ?_⟩
-  obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hz
-  exact ⟨![m 0, m 1, m' 0, m' 1] i - 1, by push_cast; ring⟩
-
-theorem UpperTheory.V.Sd.indAut :
-    UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Published.QuadInduction → UpperTheory.V.Sd.IndAut := by
-  intro hP hQ E Ω _ _ _ _ _ _ _ h2 l _ ι π r m m' hatt ⟨v, v', hvv, hv, hv'⟩ hinj R hR H
-  haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩
-  obtain ⟨hnd, hint⟩ := infOf_add hinj
-  rcases hQ ℚ E h2 2 one_le_two π with ⟨h, -⟩ | ⟨P, hinf, hfin⟩
-  · have e := (h v v' _ (Subsingleton.elim _ _) hv).unique hv'
-    rw [← e, Multiset.nodup_add] at hnd
-    exact (Multiset.disjoint_left.1 hnd.2.2 (show 1 / 2 + (m 0 : ℂ) ∈ _ by simp [infOf_two]) (by simp [infOf_two])).elim
-  obtain ⟨δ, -, hδ1, hδ, hδu⟩ := UpperTheory.exists_quadratic_sign_character ℚ E Ω l h2
-  obtain ⟨t, ht⟩ : ∃ t, t ∉ (galEmb ℚ E Ω).range := by
-    by_contra h
-    exact hδ1 (MonoidHom.ext fun s => (hδ.1 s).2 (not_not.1 fun hs => h ⟨s, hs⟩))
-  obtain ⟨x, y, hne, hxy⟩ := exists_moved h2 (range_galEmb ℚ E Ω ▸ ht)
-  have H' : IndCh (galEmb ℚ E Ω) r R := fun u hu => H u (range_galEmb ℚ E Ω ▸ hu)
-  have key : IsAutR ι (tw R (cycBar ℚ Ω l)⁻¹) := by
-    refine ⟨P, fun u => ⟨_, ?_, hnd, hint⟩, (UpperTheory.galoisRep_irreducibility_criterion.1 _ (G ℚ Ω) _ 4 R).2.2 _ hR, ?_⟩
-    · rw [Subsingleton.elim u (v.comap (algebraMap ℚ E))]
-      exact hinf v v' _ _ hvv (Subsingleton.elim _ _) hv hv'
-    · filter_upwards [hδu, ev_over (F := ℚ) hatt.2, ev_over (F := ℚ) hfin, ev_over (F := ℚ) (ev_notMem hne),
-        ev_notMem (E := ℚ) (a := (l : 𝓞 ℚ)) (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)] with u ha hb hc hd hl
-      have h3 := loc ι h2 hδ ht hxy hR H' (sat := π.HasSat) (fun _ _ _ => TR.CuspSub.HasSat.unique) (satP := P.HasSat) ha hb hc hd
-      obtain ⟨A₀, hA₀⟩ := exists_isPlaceOver Ω u
-      obtain ⟨σ₀, hσ₀⟩ := ReciprocityTheory.Gal.exists_isFrob hA₀
-      obtain ⟨B, hB, -⟩ := (h3 A₀ hA₀).2 σ₀ hσ₀
-      refine ⟨B, hB, ?_⟩
-      rw [algSat_four]
-      refine UpperTheory.frobenius_eigenvalues_twist ℚ Ω l ι 4 _ _ u _ _ (fun A hA => ⟨(h3 A hA).1, fun σ hσ => ?_⟩) (charEig_cyc_inv ι u hl)
-      obtain ⟨B', hB', e⟩ := (h3 A hA).2 σ hσ
-      rw [hB.unique hB', e]
-  have h4 := UpperTheory.V.Sd.twR hP ℚ Ω l ι 4 _ _ ((UpperTheory.V.Sd.algCyc hP ℚ Ω l ι).1 1 1 (by simp)) key
-  convert h4 using 1
-  refine MonoidHom.ext fun s => Units.ext ?_
-  rw [tw_val, tw_val, smul_smul, ← Units.val_mul]
-  simp

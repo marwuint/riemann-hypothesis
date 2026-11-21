@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.InducedModelMorphismCompStructureMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgHomAlgebraicClosureApplyEqPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSetOfRingHomCompEqOfFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteFieldEmbeddingStalkOfFiniteStalkMapStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgHomAlgebraicClosureApplyEqPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSetOfRingHomCompEqOfFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteFieldEmbeddingStalkOfFiniteStalkMap
 
 open AlgebraicGeometry CategoryTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -61,18 +61,18 @@ theorem GlobalTheory.LevelFinite.finite_ratio_field : ∀ (o Ω : Type) [CommRin
   refine GlobalTheory.LevelFinite.finite_of_isAlgebraic o Ω R _ hfg hfrac
     (fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)) ⟨fun z => ?_⟩
   by_contra hz
-  obtain ⟨φ, hφ, hφeq⟩ := GlobalTheory.T.exists_finite_fieldEmbedding_stalk_of_finite_stalkMap Ω X (spMap R.val.toRingHom ≫ x) hfin
+  obtain ⟨φ, hφ, hφeq⟩ := _root_.GlobalTheory.StalkField.exists_stalk_field_hom Ω X (spMap R.val.toRingHom ≫ x) hfin
   have hτ : ∀ m : ℕ, ∃ τ : Ω →ₐ[Subfield.closure (Set.range (algebraMap o Ω) ∪
       {z | ∃ i i', z = (v i : Ω) / (v i' : Ω)})] AlgebraicClosure Ω,
       τ z = algebraMap Ω (AlgebraicClosure Ω) z ^ (m + 1) :=
-    fun m => GlobalTheory.T.exists_algHom_algebraicClosure_apply_eq_pow' Ω _ z hz (m + 1) m.succ_pos
+    fun m => _root_.GlobalTheory.exists_algHom_algebraicClosure_apply_eq_pow Ω _ z hz (m + 1) m.succ_pos
   choose τ hτ using hτ
   have hfib : ∀ y : Sp (AlgebraicClosure Ω) ⟶ X,
       Set.Finite {τ' : Ω →+* AlgebraicClosure Ω | spMap τ' ≫ spMap R.val.toRingHom ≫ x = y} := by
     intro y
     by_cases hne : ∃ τ0 : Ω →+* AlgebraicClosure Ω, spMap τ0 ≫ spMap R.val.toRingHom ≫ x = y
     · obtain ⟨τ0, hτ0⟩ := hne
-      refine (GlobalTheory.T.finite_setOf_ringHom_comp_eq_of_finite' _ Ω _ φ (τ0.comp φ) hφ).subset ?_
+      refine (_root_.GlobalTheory.finite_setOf_ringHom_comp_eq_of_finite _ Ω _ φ (τ0.comp φ) hφ).subset ?_
       intro τ' hτ'
       exact hφeq _ τ' τ0 (hτ'.trans hτ0.symm)
     · convert Set.finite_empty

@@ -101,8 +101,6 @@ def cyclotomicCompletion : Set ℂ_[p] := closureInCp (cyclotomicLimit K)
 
 def tateTraceHat (n : ℕ) : ℂ_[p] → ℂ_[p] := extendToClosure (cyclotomicLimit K) (tateTrace K n)
 
-def tateKernel (n : ℕ) : Set ℂ_[p] := kernelInCp (cyclotomicLimit K) (tateTrace K n)
-
 variable {K}
 
 theorem tateTrace_add_of_mem (n : ℕ) : ∀ y ∈ cyclotomicLimit K, ∀ z ∈ cyclotomicLimit K,
@@ -153,15 +151,6 @@ theorem tateTraceHat_smul (n : ℕ) (σ : Gal(PadicAlgCl p/K)) {x : ℂ_[p]}
     (fun _ hy => gal_mem_cyclotomicLimit σ hy) (fun y _ => tateTrace_gal K σ n y) hx
 
 end Completion
-
-section Gamma
-
-variable {K}
-
-def tateGammaBound (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K] : ℝ :=
-  (p : ℝ) ^ 3 * ∑ i, ‖towerVec K i‖ * ‖towerDualVec K i‖
-
-end Gamma
 
 end
 

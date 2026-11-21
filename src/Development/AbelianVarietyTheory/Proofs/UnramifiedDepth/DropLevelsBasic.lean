@@ -208,38 +208,4 @@ theorem dropLevelsBasic : DropLevelsBasic := by
   · have : flowVal d x ≤ flowVal d (fun a i => y (a, i)) := h3
     linarith
 
-theorem splitLarge : SplitLarge := by
-  intro l n l1 W ys hn hl1 hl hy hW
-  obtain ⟨q, rfl⟩ : ∃ q, l = q + 1 + n := ⟨l - 1 - n, by omega⟩
-  have hq : q + 1 + n - 1 - n = q := by omega
-  rw [hq]
-  have hq0 : 0 < q := by omega
-  refine ⟨(⌊ys⌋₊ % q) :: List.replicate (⌊ys⌋₊ / q) q, ?_, ?_, ?_⟩
-  · intro p hp
-    rcases List.mem_cons.1 hp with h | h
-    · exact h ▸ (Nat.mod_lt _ hq0).le
-    · exact (List.eq_of_mem_replicate h).le
-  · simp only [List.sum_cons, List.sum_replicate, smul_eq_mul]
-    exact Nat.mod_add_div' _ _
-  · simp only [List.length_cons, List.length_replicate]
-    push_cast at *
-    set k : ℕ := ⌊ys⌋₊ / q with hk
-    have h1 : (k : ℝ) * q ≤ ys := by
-      refine le_trans ?_ (Nat.floor_le hy)
-      exact_mod_cast Nat.div_mul_le_self _ _
-    have h2 : (n : ℝ) + 1 ≤ q := by exact_mod_cast (by omega : n + 1 ≤ q)
-    have hk0 : (0 : ℝ) ≤ k := Nat.cast_nonneg k
-    have hn0 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-    have h3 : (k : ℝ) ≤ 2 * W / l1 ^ 2 := by
-      rw [le_div_iff₀ (by positivity)]
-      have h4 : l1 ^ 2 ≤ ((q : ℝ) + 1 + n + 1) * (2 * q) := by nlinarith
-      calc (k : ℝ) * l1 ^ 2 ≤ k * (((q : ℝ) + 1 + n + 1) * (2 * q)) :=
-            mul_le_mul_of_nonneg_left h4 hk0
-        _ = 2 * (((q : ℝ) + 1 + n + 1) * (k * q)) := by ring
-        _ ≤ 2 * (((q : ℝ) + 1 + n + 1) * ys) := by gcongr
-        _ ≤ 2 * W := by linarith
-    linarith
-
-theorem main : DropLevelsBasic ∧ SplitLarge := ⟨dropLevelsBasic, splitLarge⟩
-
 end GlobalTheory.BasicFlow

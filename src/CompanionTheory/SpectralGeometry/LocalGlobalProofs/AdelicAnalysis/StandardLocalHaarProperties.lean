@@ -1,7 +1,7 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMeasureProdOfAddGroupsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsResidueEqZeroIff
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalDensityOfSelfDualLatticeLemmas
 import GroundTheory.GlobalFields.LocalAtPlace
@@ -79,7 +79,7 @@ theorem map_unit (lam : Measure (Fv F v)) (h : IsStdV v lam) (u : Fv F v) (hu : 
     lam.map (fun t => u * t) = lam := by
   haveI := h.1
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  obtain ⟨_, hl, hs, ht, _⟩ := GlobalTheory.T.completion_is_local_ring F v
+  obtain ⟨_, hl, hs, ht, _⟩ := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   have hu0 : u ≠ 0 := by
     rintro rfl
     simp at hu
@@ -103,7 +103,7 @@ theorem map_unif (lam : Measure (Fv F v)) (h : IsStdV v lam) (π : Fv F v)
     lam.map (fun t => π * t) = (Ideal.absNorm v.asIdeal : ℝ≥0∞) • lam := by
   haveI := h.1
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  obtain ⟨_, hl, hs, ht, _⟩ := GlobalTheory.T.completion_is_local_ring F v
+  obtain ⟨_, hl, hs, ht, _⟩ := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   have hq0 := absNorm_ne_zero v
   have hqt : (Ideal.absNorm v.asIdeal : ℝ≥0∞) ≠ ⊤ := ENNReal.natCast_ne_top _
   have hπ0 : π ≠ 0 := by

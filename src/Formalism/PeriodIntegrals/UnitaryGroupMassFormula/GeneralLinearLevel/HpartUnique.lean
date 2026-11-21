@@ -154,17 +154,6 @@ lemma mulVec_bvec (M : Mx k r) (q : Fin (2 * r + k + 1)) : M *ᵥ bvec q = fun p
   funext p
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
-lemma out_of_sig {i : Fin (r + 1)} {q v : Fin (2 * r + k + 1)} (hq : Out k r i q)
-    (hv : q = GBasic.sig k r v) : Out k r i v := by
-  subst hv
-  have := i.isLt
-  have := v.isLt
-  unfold Out at hq ⊢
-  unfold GBasic.sig at hq
-  split_ifs at hq with h
-  · rcases hq with hq | hq <;> (try simp only [Fin.val_mk] at hq) <;> omega
-  · exact hq
-
 lemma col_HZH {i : Fin (r + 1)} {Z : Mx k r} (hZ : InV k r i Z) {q : Fin (2 * r + k + 1)}
     (hq : Out k r i q) (p : Fin (2 * r + k + 1)) : (Hpk k r * Zᴴ * Hpk k r) p q = 0 := by
   rw [Matrix.mul_apply]

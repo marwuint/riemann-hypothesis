@@ -17,9 +17,6 @@ theorem val_eqBlocks {j t : ℕ} (a : Fin j) (s : Fin t) : (eqBlocks j t ⟨a, s
 theorem eqBlocks_div {j t : ℕ} (a : Fin j) (s : Fin t) : (eqBlocks j t ⟨a, s⟩ : ℕ) / t = a := by
   rw [val_eqBlocks, Nat.add_mul_div_left _ _ s.pos, Nat.div_eq_of_lt s.2, zero_add]
 
-theorem eqBlocks_mod {j t : ℕ} (a : Fin j) (s : Fin t) : (eqBlocks j t ⟨a, s⟩ : ℕ) % t = s := by
-  rw [val_eqBlocks, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt s.2]
-
 theorem modExp_eqBlocks {j t : ℕ} (a : Fin j) :
     modExp (fun _ : Fin j => Fin t) a = (j * t : ℤ) - t - 2 * (a : ℕ) * t := by
   have h1 : (Finset.univ.filter fun b => a < b) = Finset.Ioi a := by ext; simp

@@ -120,14 +120,6 @@ theorem class_zero_trichotomy {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : 
     · exact Or.inr (Or.inl h0)
     · exact Or.inr (Or.inr ⟨h, Nat.not_even_iff_odd.mp he, h0⟩)
 
-theorem IsCs.three_le {D : D7} {p : ℕ} (h : IsCs D p) : 3 ≤ addOrderOf (hP D p) := by
-  obtain ⟨-, hodd, hne⟩ := h
-  have h1 : addOrderOf (hP D p) ≠ 1 := fun h1 => hne (by
-    have h2 := addOrderOf_nsmul_eq_zero (hP D p)
-    rwa [h1, one_nsmul] at h2)
-  obtain ⟨k, hk⟩ := hodd
-  omega
-
 def partner (D : D7) (p : ℕ) (t : HH D) (e : ℕ) : Bool × HH D :=
   (decide (IsSg D p ∧ Odd e), t + e • hP D p)
 
@@ -312,10 +304,6 @@ open Classical in
 
 def box (D : D7) (W : Finset ℤ) : Finset (HH D → ℤ) :=
   Fintype.piFinset (fun t => if t ∈ D.host.TT then W else {0})
-
-def meanW (D : D7) (K : Consts) (s : Scale) (F : (HH D → ℤ) → (HH D → ℤ) → ℝ) : ℝ :=
-  (∑ a ∈ box D (winA D s), ∑ b ∈ box D (winB D K s), F a b) /
-    (((box D (winA D s)).card : ℝ) * ((box D (winB D K s)).card : ℝ))
 
 open Classical in
 

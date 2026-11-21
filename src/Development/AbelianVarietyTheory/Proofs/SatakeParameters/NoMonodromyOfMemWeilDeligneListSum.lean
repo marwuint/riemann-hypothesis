@@ -38,17 +38,4 @@ theorem noMonodromy_of_mem_weilDeligneListSum : ∀ (l : List (WD h)), (sumList 
 
 theorem lpTw_one_ne (x : WD h) (hx : 0 < x.lpDim) : x.lpTw 1 ≠ x := GlobalTheory.WeilDeligne.WD.lpTw_one_ne x hx
 
-def NoTwIne (χ : Ine (F := E) A → ℂ) (X Y : WD h) : Prop :=
-  ∀ (V V' : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V'] (a : WDRep h V) (b : WDRep h V'),
-    WD.mk a = X → WD.mk b = Y → ∀ f : V →ₗ[ℂ] V', NoTwHom.IsTw a b f → ∀ v ∈ a.ineEig χ, f v = 0
-
-section
-variable {V V' W W' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-  [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
-  [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
-  [AddCommGroup W'] [Module ℂ W'] [FiniteDimensional ℂ W']
-
-end
-
 end GlobalTheory.UnlinkedMono

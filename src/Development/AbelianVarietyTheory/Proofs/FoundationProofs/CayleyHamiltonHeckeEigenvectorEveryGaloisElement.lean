@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalBMemKummerInvariantSet
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommGaloisActionModularTowerStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommGaloisActionModularTower
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KmapSubMemOfASet
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraFrobeniusQuadraticModPrimePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraFrobeniusQuadraticModPrimePow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerBettiModuleFreeFinite
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixingMulFrobAt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisRelationOfFrobApprox
@@ -136,9 +136,9 @@ theorem cayleyHamilton_galV : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlg
   intro Ω _ _ _ ε X hε hj N l w _ hl2 hN hNl hw E _ _ _ hE lam t d S0 ht hd hfr x hx heig s
   have hstabG := fun s b hb => GlobalTheory.KZ.StabGal.galB_mem_B ε X hε hj N l w hl2 hN hNl hw s b hb
   have hstabH := fun T hT b hb => GlobalTheory.KZ.B_stable_op ε X hε hj N l w hl2 hN hNl hw T hT b hb
-  have hcomm := GlobalTheory.T.hecke_operator_comm_galois_action_modular_tower ε X hε hj N l w hl2 hN hNl hw
+  have hcomm := _root_.GlobalTheory.KZ.HeckeGal.op_galB_comm ε X hε hj N l w hl2 hN hNl hw
   have hcont := GlobalTheory.KZ.GalCont.galB_cont ε X hε hj N l w hl2 hN hNl hw
-  have hes := GlobalTheory.T.eichlerShimura_frobenius_quadratic_mod_prime_pow ε X hε hj N l w hl2 hN hNl hw
+  have hes := _root_.GlobalTheory.KZ.eichlerShimura_B_mod ε X hε hj N l w hl2 hN hNl hw
   obtain ⟨hfree, hfin⟩ := GlobalTheory.KZ.B_free_finite ε X hε hj N l w hl2 hN hNl hw
   classical
   set B := X.B N l w with hBdef

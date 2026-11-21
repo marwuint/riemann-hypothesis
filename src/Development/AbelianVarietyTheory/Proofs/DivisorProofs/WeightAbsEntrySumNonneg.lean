@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecZEqZeroOfGenVal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEltPrescribedValuationsBalancedArchimedeanStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEltPrescribedValuationsBalancedArchimedean
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000
@@ -41,7 +41,7 @@ theorem exists_scalar (e : HeightOneSpectrum (𝓞 K) →₀ ℝ) (t : (K →+* 
     (ha : ∀ p ∈ S, 0 ≤ a p) : ∃ C : ℝ, ∀ τ : ℕ, ∃ α : K, α ≠ 0 ∧ (∀ la, (τ : ℝ) * e la ≤ (vLa la α : ℝ)) ∧
       (∀ la, ∀ p ∈ S, (τ : ℝ) * (e la + vLa la (p : K) * a p) ≤ (vLa la α : ℝ)) ∧
       ∀ σ : K →+* ℂ, Real.log ‖σ α‖ ≤ τ * (cost e t - t σ + ∑ p ∈ S, a p * Real.log p) + C := by
-  obtain ⟨C, hC⟩ := GlobalTheory.T.exists_elt_prescribed_valuations_balanced_archimedean K e t ht
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CovHt.exists_elt_balanced K e t ht
   refine ⟨C + ∑ p ∈ S, Real.log p, fun τ => ?_⟩
   obtain ⟨α, h0, h1, h2⟩ := hC τ
   set N : ℕ := ∏ p ∈ S, p ^ ⌈τ * a p⌉₊ with hN

@@ -26,8 +26,6 @@ def ChainUp (D : D7) : Prop :=
       ∀ ipD₀ ip₀ ipD ip, IsMet c s₀ ipD₀ ip₀ → IsMet c s ipD ip → ∀ (u : s₀.CC c) B, IsPar u B →
         ∃ x : s.CC c, (∀ y, ip y x = ip₀ (Θ y) u) ∧ IsPar x (chainPar c B k)
 
-example {D : D7} (c : Com D) : c.eps 0 = 1 := by simp [Com.eps]
-
 end GlobalTheory.ChainOnto
 
 end

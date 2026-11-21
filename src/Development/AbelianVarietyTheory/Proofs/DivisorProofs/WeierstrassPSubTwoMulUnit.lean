@@ -4,8 +4,8 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassPAddSubWeierstrassPSubStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionWeierstrassPMemValuationSubringStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationDerivWeierstrassPOddTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionWeierstrassPMemValuationSubring
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationDerivWeierstrassPOddTorsion
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -57,10 +57,10 @@ theorem weierstrassP_sub_two_mul_unit : ∀ (L : PeriodPair) (β u : ℂ) (V : V
   have e2 : 2 * z + z = 3 * z := by ring
   have hd := GlobalTheory.T.weierstrassP_sub_sq_mul_add_sub_eq_neg_deriv_mul L (2 * z) z h2z hz (by rw [e1]; exact hz) (by rw [e2]; exact h3z)
   rw [e1, e2] at hd
-  have d1 := GlobalTheory.T.valuation_derivWeierstrassP_oddTorsion L β u V N hβ hβim hu hN hodd z hz hNz
-  have d2 := GlobalTheory.T.valuation_derivWeierstrassP_oddTorsion L β u V N hβ hβim hu hN hodd (2 * z) h2z hN2z
-  have m1 := (GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hβ hβim hu hN z (2 * z) hz h2z hNz hN2z).2
-  have m2 := (GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hβ hβim hu hN (3 * z) z h3z hz hN3z hNz).2
+  have d1 := _root_.GlobalTheory.valuation_derivWeierstrassP_torsion_odd L β u V N hβ hβim hu hN hodd z hz hNz
+  have d2 := _root_.GlobalTheory.valuation_derivWeierstrassP_torsion_odd L β u V N hβ hβim hu hN hodd (2 * z) h2z hN2z
+  have m1 := (_root_.GlobalTheory.CMModel.TorsMemVal.main L β u V N hβ hβim hu hN z (2 * z) hz h2z hNz hN2z).2
+  have m2 := (_root_.GlobalTheory.CMModel.TorsMemVal.main L β u V N hβ hβim hu hN (3 * z) z h3z hz hN3z hNz).2
   have hv : V.valuation u ≠ 0 := by
     intro h
     rw [h, zero_pow (by norm_num)] at hu

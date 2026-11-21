@@ -15,20 +15,12 @@ theorem hG_def (x y : Fin I.n → I.E) : hG I x y = ∑ i, ∑ j, star (x i) * I
 theorem hG_add_right (x y z : Fin I.n → I.E) : hG I x (y + z) = hG I x y + hG I x z := by
   simp only [hG_def, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
-theorem hG_smul_left (c : I.E) (x y : Fin I.n → I.E) : hG I (c • x) y = star c * hG I x y := by
-  simp only [hG_def, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  ring
-
 theorem hG_smul_right (c : I.E) (x y : Fin I.n → I.E) : hG I x (c • y) = c * hG I x y := by
   simp only [hG_def, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
 theorem hG_zero_right (x : Fin I.n → I.E) : hG I x 0 = 0 := by simp [hG_def]
-
-theorem hG_sub_right (x y z : Fin I.n → I.E) : hG I x (y - z) = hG I x y - hG I x z := by
-  simp only [hG_def, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 theorem hG_sum_right {ι : Type*} (s : Finset ι) (x : Fin I.n → I.E) (y : ι → Fin I.n → I.E) :
     hG I x (∑ t ∈ s, y t) = ∑ t ∈ s, hG I x (y t) := by
@@ -50,13 +42,5 @@ theorem hG_symm (x y : Fin I.n → I.E) : hG I y x = star (hG I x y) := by
   ring
 
 variable {I}
-
-theorem inv_mem_Ap {p s : ℕ} (hp : p.Prime) (hs : Nat.Coprime s p) : ((s : I.E))⁻¹ ∈ Ap I p := by
-  have hs0 : s ≠ 0 := by
-    rintro rfl
-    exact hp.one_lt.ne' (Nat.coprime_zero_left p |>.mp hs)
-  refine ⟨s, hs, 1, ?_⟩
-  rw [mul_inv_cancel₀ (by exact_mod_cast hs0)]
-  simp
 
 end PI.ScRefExists.WB

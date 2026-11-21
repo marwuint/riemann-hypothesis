@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.JoinCastSucc
 import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FramedLatticeZeroCycleHeight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralConeRingOfForallValuationSubringStatement
+import ReciprocityTheory.SemistableReduction.SphereLogIntegrableStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralConeRingOfForallValuationSubring
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousComponentsOfConeIntegralEquationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRatioMemValuationSubringAtGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRatioMemValuationSubringAtGenericPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearSystemRelationOfGenericPointStatement
 
 set_option autoImplicit false
@@ -22,9 +23,9 @@ theorem exists_integral_relation : ∀ (F : Type) [Field F] (S : LinSys F), S.Is
   have hI : AlgebraicGeometry.IsIntegral S.Y := hS.isIntegral
   have hη : IsGenericPoint (genericPoint S.Y) Set.univ := by
     simpa using genericPoint_spec S.Y
-  obtain ⟨m, b, hb⟩ := GlobalTheory.T.exists_integral_relation_C_mul_X_pow_of_valuationSubring F (S.Y.residueField (genericPoint S.Y)) (S.baseHom (resPt (genericPoint S.Y))) r e
+  obtain ⟨m, b, hb⟩ := _root_.GlobalTheory.isIntegral_coneRing_of_forall_valuationSubring F (S.Y.residueField (genericPoint S.Y)) (S.baseHom (resPt (genericPoint S.Y))) r e
     (fun i => S.val (resPt (genericPoint S.Y)) (S.comb (u i))) (S.powVal (resPt (genericPoint S.Y)) th)
-    (GlobalTheory.T.exists_ratio_mem_valuationSubring_at_generic_point F S hS r e u th hcov _ hη)
+    (_root_.GlobalTheory.Adelic.LinSys.exists_ratio_mem_valuationSubring F S hS r e u th hcov _ hη)
   obtain ⟨a, ha, h0⟩ := GlobalTheory.T.homogeneous_components_of_cone_integral_equation _ _ _ r e m _ _ b hb
   exact ⟨m, a, ha, GlobalTheory.T.linearSystem_relation_of_generic_point F S hI r e u th _ hη m a ha h0⟩
 

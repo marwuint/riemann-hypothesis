@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsUnifPow
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NotMemUnderSBOfGIdx
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChiRatAllOfAdTie
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsFractionRingGat
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvCoordsIsBasisAtBaseLatticeOfStdCompanionStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvCoordsIsBasisAtBaseLatticeOfStdCompanion
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.UG NumberField IsDedekindDomain Matrix Formalism.MainNotions.G.CmpJ Formalism.MainNotions.G.CmpJ.AgreeLv Formalism.MainNotions.G.KAat Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F GlobalTheory.Port
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -30,7 +30,7 @@ theorem siteD_exists : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G
       chFin := fun i hi => J.fin (i + 1) hi
       S := fun i hi =>
         { B := (Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E).symm (J.A.crd (i + 1) hi)⁻¹
-          B_lat := fun β => GlobalTheory.T.inv_coords_isBasisAt_baseLattice_of_std_companion J.Gd.herm u w hg hi ((J.St (i + 1) hi).K β).lev (J.A.crd (i + 1) hi) J.a
+          B_lat := fun β => _root_.GlobalTheory.BaseAtCompan.isBaseAt_inv_of_latCo J.Gd.herm u w hg hi ((J.St (i + 1) hi).K β).lev (J.A.crd (i + 1) hi) J.a
             (hpT (i + 1) hi) (J.base (i + 1) hi β)
           ψ := fun β => (hψ i hi β).choose
           fin := fun β => fin_of _ β _ } }

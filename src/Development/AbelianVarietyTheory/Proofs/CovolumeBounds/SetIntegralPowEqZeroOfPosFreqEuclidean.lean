@@ -53,31 +53,4 @@ theorem hasSum_multilinear_tuples [CompleteSpace W] (M : ContinuousMultilinearMa
 
 end Products
 
-section Banach
-
-variable {𝕜 : Type*} [NontriviallyNormedField 𝕜] {R : Type*} [NormedCommRing R] [NormedAlgebra 𝕜 R]
-  [CompleteSpace R] {J : Type*}
-
-end Banach
-
-section Characters
-
-variable {G : Type*} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G] {μ : Measure G}
-  [μ.IsAddLeftInvariant] {L : AddSubgroup G} [Countable L] {D : Set G}
-
-end Characters
-
-section Lattice
-
-variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-
-variable [MeasurableSpace E] [BorelSpace E] {μ : Measure E} [μ.IsAddHaarMeasure]
-  {L : Submodule ℤ E} [DiscreteTopology L] [IsZLattice ℝ L] {D : Set E}
-
-end Lattice
-
-section Orthant
-
-end Orthant
-
 end GlobalTheory

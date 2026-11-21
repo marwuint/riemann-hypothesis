@@ -94,9 +94,4 @@ theorem powXL_holds : PowXL := by
       ← gdelta_pow_succ_apply, succ_nsmul _ (n + 1)]
     abel
 
-section
-variable {K I J : Type} [CommRing K] [Algebra ℚ K] [Fintype I] [Fintype J]
-
-end
-
 end PI.WickFormula.Gen

@@ -1,28 +1,28 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankPosOfLeaves
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSlicesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairRestrictionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSlices
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairRestriction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairFiniteDimensionalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SliceTypeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SliceType
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairFirstStepStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSecondStepStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HullGenerationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapacityEquivalenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscreteInfimumStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TopologicalInfimumStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfimumOfEqualityStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSecondStep
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairEmbedding
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HullGeneration
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapacityEquivalence
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscreteInfimum
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TopologicalInfimum
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfimumOfEquality
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeafBoundStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceStripStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceShiftStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceCompositionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceInfimumStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorInductionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceShift
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceComposition
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceInfimum
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorInduction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SingleGluingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitListsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitLists
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitTreesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdCloseStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorLimitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdClose
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorLimit
 
 noncomputable section
 
@@ -110,20 +110,20 @@ theorem eFinalGlue_of (hCS : ConvStrip) (hCC : ConvComp) (hFS : FactorStep) (hLL
     hI₁, hI₂, hF0, hFm, hFt, hFe⟩
 
 theorem eFinalGlue : PositivityTheory.Rg.BcB.SpectralAccumulation.InfinitesimalCharacterGlue :=
-  have hPS := GlobalTheory.T.pair_slices
+  have hPS := _root_.GlobalTheory.CompanionTheory.EGlue.pairSlices
   have hP1 := GlobalTheory.T.pair_first_step hPS
-  have hP2 := GlobalTheory.T.pair_second_step hPS
-  have hCE := GlobalTheory.T.capacity_equivalence
-  have hDI := GlobalTheory.T.discrete_infimum
-  have hTI := GlobalTheory.T.topological_infimum
-  have hIE := GlobalTheory.T.infimum_of_equality
+  have hP2 := _root_.GlobalTheory.CompanionTheory.EGlue.pairStep₂ hPS
+  have hCE := _root_.GlobalTheory.CompanionTheory.EGlue.capEquiv
+  have hDI := _root_.GlobalTheory.CompanionTheory.EGlue.discInf
+  have hTI := _root_.GlobalTheory.CompanionTheory.EGlue.Gl0.topInf
+  have hIE := _root_.GlobalTheory.CompanionTheory.EGlue.infOfEq_holds
   have hCS := GlobalTheory.T.convergence_strip
-  have hCC := GlobalTheory.T.convergence_composition
-  have hMC := GlobalTheory.T.closure_facts_alt
-  eFinalGlue_of hCS hCC GlobalTheory.T.factor_induction (GlobalTheory.T.limit_lists hCS GlobalTheory.T.convergence_shift hCC)
-    (GlobalTheory.T.single_gluing hPS GlobalTheory.T.pair_restriction GlobalTheory.T.pair_finite_dimensional GlobalTheory.T.slice_type hP1 hP2 GlobalTheory.T.hull_generation hCE)
-    (GlobalTheory.T.factor_limit hCC (GlobalTheory.T.limit_trees hCC) (GlobalTheory.T.leaf_bound_alt hDI hTI hIE) (GlobalTheory.T.convergence_infimum hDI hTI) hIE hCE hMC)
-    hMC (GlobalTheory.T.pair_embedding hPS hP1 hP2) hPS GlobalTheory.T.slice_type
+  have hCC := _root_.GlobalTheory.CompanionTheory.EGlue.convComp_proved
+  have hMC := _root_.GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds
+  eFinalGlue_of hCS hCC _root_.GlobalTheory.CompanionTheory.EGlue.factorStep_holds (_root_.GlobalTheory.CompanionTheory.EGlue.limLists hCS _root_.GlobalTheory.CompanionTheory.EGlue.convShift_holds hCC)
+    (GlobalTheory.T.single_gluing hPS _root_.GlobalTheory.CompanionTheory.EGlue.pairRestrict_holds GlobalTheory.T.pair_finite_dimensional _root_.GlobalTheory.CompanionTheory.EGlue.SliceTypePf.main hP1 hP2 _root_.GlobalTheory.CompanionTheory.EGlue.hullGen hCE)
+    (_root_.GlobalTheory.CompanionTheory.EGlue.FactorLimProof.factorLim_of_parts hCC (GlobalTheory.T.limit_trees hCC) (GlobalTheory.T.leaf_bound_alt hDI hTI hIE) (_root_.GlobalTheory.CompanionTheory.EGlue.ConvInfProof.convInf_of_discInf_topInf hDI hTI) hIE hCE hMC)
+    hMC (_root_.GlobalTheory.CompanionTheory.EGlue.pairEmb_of_steps hPS hP1 hP2) hPS _root_.GlobalTheory.CompanionTheory.EGlue.SliceTypePf.main
 
 end GlobalTheory.CompanionTheory.EGlue
 

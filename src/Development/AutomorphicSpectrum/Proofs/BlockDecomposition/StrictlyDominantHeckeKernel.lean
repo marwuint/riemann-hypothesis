@@ -1,9 +1,9 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsDominantOneAndMul
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetFixedFirstConditionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetFixedFirstCondition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StrictlyDominantContractsUnipotentStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedVectorZeroOfDualStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedVectorZeroOfDual
 
 open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
@@ -30,7 +30,7 @@ theorem heckeOp_nilpotent_on_ker :
       simp
     | succ r ih =>
       rw [pow_succ, pow_succ T]
-      exact GlobalTheory.T.jacquet_fixed_first_condition k N h d hd J hJo hJc hJf hpos V π hπ _ _ (hdom r) ht.1 _ _ ih hT
+      exact _root_.GlobalTheory.CompanionTheory.Lbc.hecke_dominant_mul k N h d hd J hJo hJc hJf hpos V π hπ _ _ (hdom r) ht.1 _ _ ih hT
 
   have key : ∀ u ∈ twKer π (unipRad k (stdBlocks d hd)) 1, ∃ R : ℕ, ∀ r ≥ R,
       ∀ l : Module.Dual ℂ V, (∀ x ∈ J, l ∘ₗ π x = l) → l (π (e t ^ r) u) = 0 := by
@@ -72,7 +72,7 @@ theorem heckeOp_nilpotent_on_ker :
   obtain ⟨R, hR⟩ := key _ ((Submodule.Quotient.mk_eq_zero _).1 hv)
   refine ⟨R, ?_⟩
   have h0 : (((T ^ R) v : fixed π J) : V) = 0 := by
-    refine GlobalTheory.T.fixed_vector_zero_of_dual _ J hJc V π hπ _ ((T ^ R) v).2 fun l hl => ?_
+    refine _root_.GlobalTheory.CompanionTheory.CompactAvg.invariant_forms_separate_fixed _ J hJc V π hπ _ ((T ^ R) v).2 fun l hl => ?_
     rw [← hecke R v l hl, map_pow]
     exact hR R le_rfl l hl
   exact Subtype.ext h0

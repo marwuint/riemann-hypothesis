@@ -324,14 +324,6 @@ theorem isVB_toMod {L : LB X} (hL : L.IsLB) : IsVB (toMod L) 1 := fun x =>
   have ⟨i, hi⟩ := Semi.LB.mem_of_cover hL x
   ⟨_, _, hi, isFrame_chartSec hL i⟩
 
-theorem isVB_iff_restrict : IsVB F r ↔ ∀ x : X, ∃ U : X.Opens, x ∈ U ∧
-    Nonempty (freeModule U.toScheme (Fin r) ≅ F.restrict U.ι) := by
-  refine forall_congr' fun x => ⟨fun ⟨U, e, hx, he⟩ => ⟨U, hx, ⟨?_⟩⟩, fun ⟨U, hx, ⟨φ⟩⟩ => ?_⟩
-  · exact (isFrame_freeFrame _ _).iso
-      ((isFrame_restrict_iff U.ι _).2 (he.res (U.ι_image_le ⊤)))
-  · exact ⟨U.ι ''ᵁ ⊤, _, by simpa using hx,
-      (isFrame_restrict_iff U.ι _).1 ((isFrame_freeFrame _ _).map_iso φ.hom)⟩
-
 namespace IsVB
 
 theorem exists_affine (h : IsVB F r) {x : X} (hx : x ∈ V) :
@@ -356,45 +348,14 @@ theorem isFiniteQC (h : IsVB F r) : IsFiniteQC F :=
     have ⟨U, _, hU, hx, _, he⟩ := h.exists_affine (V := ⊤) (x := x) trivial
     ⟨U, hU, hx, Module.Finite.of_basis (he.basis le_rfl)⟩
 
-set_option backward.isDefEq.respectTransparency false in
-
-theorem isLocallyFree (h : IsVB F r) : F.IsLocallyFree := by
-  choose U hx he using isVB_iff_restrict.1 h
-  have φ (x : X) : SheafOfModules.free (R := X.ringCatSheaf.over (U x)) (Fin r) ≅ F.over (U x) :=
-    let e := Scheme.Modules.overEquiv (U x)
-    Sigma.mapIso (fun _ : Fin r =>
-      ((U x).sheafOfModulesEquivOverInverseUnit X.ringCatSheaf).symm) ≪≫
-    (PreservesCoproduct.iso e.inverse fun _ : Fin r => structureModule (U x).toScheme).symm ≪≫
-    e.inverse.mapIso (he x).some ≪≫
-    e.inverse.mapIso ((Scheme.Modules.overFunctorEquiv (U x)).app F).symm ≪≫
-      (e.unitIso.app (F.over (U x))).symm
-  let q : SheafOfModules.LocalGeneratorsData.{0} F :=
-    { I := X
-      X := U
-      coversTop := by
-        rw [Opens.coversTop_iff]
-        exact top_le_iff.1 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩
-      generators x := (SheafOfModules.free.generatingSections (Fin r)).ofEpi (φ x).hom }
-  haveI : q.IsLocallyFreeData := ⟨fun x => LB.isIso_ofEpi_π (φ x)⟩
-  exact q.isLocallyFree
-
 theorem nonempty_basis_stalk (h : IsVB F r) (x : X) :
     Nonempty (Module.Basis (Fin r) (X.presheaf.stalk x) (F.presheaf.stalk x :)) :=
   have ⟨_, _, hx, he⟩ := h x
   ⟨he.stalkBasis x hx⟩
 
-theorem free_stalk (h : IsVB F r) (x : X) :
-    Module.Free (X.presheaf.stalk x) (F.presheaf.stalk x :) :=
-  (h.nonempty_basis_stalk x).elim .of_basis
-
 theorem finrank_stalk (h : IsVB F r) (x : X) :
     Module.finrank (X.presheaf.stalk x) (F.presheaf.stalk x :) = r :=
   (h.nonempty_basis_stalk x).elim fun b => by simpa using Module.finrank_eq_card_basis b
-
-theorem finrank_fibre (h : IsVB F r) (x : X) :
-    Module.finrank (X.residueField x) (QCoh.fibre F x) = r :=
-  (h.nonempty_basis_stalk x).elim fun b => by
-    simpa using Module.finrank_eq_card_basis (Algebra.TensorProduct.basis (X.residueField x) b)
 
 theorem rank_unique [Nonempty X] (h : IsVB F r) (h' : IsVB F s) : r = s :=
   (h.finrank_stalk (Classical.arbitrary X)).symm.trans (h'.finrank_stalk _)
@@ -432,9 +393,6 @@ theorem biprod (hF : IsVB F r) (hG : IsVB G s) : IsVB (F ⊞ G) (r + s) := by
     simp
 
 end IsVB
-
-theorem isVB_congr (φ : F ≅ G) : IsVB F r ↔ IsVB G r :=
-  ⟨fun h => h.of_iso φ, fun h => h.of_iso φ.symm⟩
 
 theorem isVB_zero_iff : IsVB F 0 ↔ IsZero F := by
   refine ⟨fun h => QCoh.support_eq_empty_iff.1 (Set.eq_empty_of_forall_notMem fun x =>
@@ -573,9 +531,5 @@ def Sub.ofStalks (N : ∀ x : X, Submodule (X.presheaf.stalk x) (F.presheaf.stal
     obtain ⟨W, h, hxW, hs⟩ := H x hx
     have := hs x hxW
     rwa [germ_resM] at this
-
-example (s : Γ(F, V)) :
-    (s ∈ (Sub.ker (𝟙 F)).sec V ↔ s = 0) ∧ s ∈ (Sub.ker (0 : F ⟶ G)).sec V :=
-  ⟨Iff.rfl, rfl⟩
 
 end GlobalTheory.VB

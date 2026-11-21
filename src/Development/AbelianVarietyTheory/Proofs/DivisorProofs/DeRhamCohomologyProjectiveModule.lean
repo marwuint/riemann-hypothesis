@@ -1,7 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.InfUniv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeTensorModuleCompat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructure
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDeRhamDuality
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianLifting
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUnobstructed
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GrothendieckDeformation
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CanonicalOfAbelianDeRham
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.SpanSingletonEqTopIffIsUnitOfIsBaseChange
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
@@ -234,7 +242,7 @@ theorem projective_of_baseChange (k K : Type) [Field k] [Field K] [Algebra k K] 
     have := hA.geomConnected
     have : ConnectedSpace A₀.left := GeometricallyConnected.connectedSpace A₀.hom A₀.hom.isOpenMap
     exact exists_dim_of_preconnected A₀.hom (Classical.arbitrary _)
-  obtain ⟨hFree, -, hBC, -, -⟩ := GlobalTheory.T.abelianScheme_firstDeRham_structure
+  obtain ⟨hFree, -, hBC, -, -⟩ := _root_.GlobalTheory.abelianDeRham
   have hh := isGrpPullback_pullback A₀ (spMap (algebraMap k K))
   have hbc := (hBC k A₀ g hA hg K _ _ hh).1
   haveI : Module.Finite k (primDR A₀) := (hFree.prim hA hg).1

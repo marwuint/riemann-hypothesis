@@ -1,5 +1,10 @@
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FixedSpaceLeSupEigenspaces
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvRoots
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ISupEigenspaceEqTopOfAeval
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckePolyMulCentralIdempotentMulGenericProjector
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCentralGroupAlgebraIdempotentUniversal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeIdempotentProjectorVanishingBaseChangeTwist
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GenericCharacterProjectorOnTwistFormsFix
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 
 set_option synthInstance.maxHeartbeats 200000
@@ -25,12 +30,12 @@ theorem v0t_le_supr_eigenspace : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E 
       rw [Sp.ringSpec_excludedPlaces_eq i]
       exact Or.inr (hSb h)
     exact h1
-  have hZ := GlobalTheory.T.heckeIdempotentProjector_vanishing_baseChange_twistSide D T S In i j b k P hj1 hj2 (GlobalTheory.T.heckePoly_mul_centralIdempotent_mul_genericProjector D S In j k P hj1 hj2 hk1 hk2 hsp hPSb)
+  have hZ := _root_.GlobalTheory.HeightCounting.FormsStep.phiKop_eGT_piKop_eq_zero D T S In i j b k P hj1 hj2 (_root_.GlobalTheory.HeightCounting.FormsStep.phiLop_eLop_piLop D S In j k P hj1 hj2 hk1 hk2 hsp hPSb)
   have hker : V0T D T S In.rho In.chi In.θ i j b ≤ LinearMap.ker (phiKop D T S In i j b k P) := by
     rintro x ⟨y, hy, rfl⟩
     rw [LinearMap.mem_ker]
     have := LinearMap.congr_fun hZ y
-    rw [Module.End.mul_apply, Module.End.mul_apply, GlobalTheory.T.genericCharacterProjectorOnTwistForms_fix D T S In i j b y hy] at this
+    rw [Module.End.mul_apply, Module.End.mul_apply, _root_.GlobalTheory.HeightCounting.FormsStep.piKop_fix D T S In i j b y hy] at this
     exact this
   refine hker.trans ?_
   classical

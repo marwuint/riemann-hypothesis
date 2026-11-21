@@ -5,26 +5,6 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsC
 
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
-private theorem cols_zero {O : Type} [CommRing O] [IsDomain O] {n : ℕ} (A W : Matrix (Fin n) (Fin n) O) (al : Fin n → O)
-    (ha : Function.Injective al) (h : A * W = W * diagonal al) (h1 : W *ᵥ (fun _ => 1) = 0) : W = 0 := by
-  have hk : ∀ k : ℕ, W *ᵥ (fun j => al j ^ k) = 0 := by
-    intro k
-    induction k with
-    | zero => simpa using h1
-    | succ k ih =>
-      have e : (fun j => al j ^ (k + 1)) = diagonal al *ᵥ (fun j => al j ^ k) := by
-        funext j
-        rw [mulVec_diagonal, pow_succ']
-      rw [e, mulVec_mulVec, ← h, ← mulVec_mulVec, ih, mulVec_zero]
-  have hv : W * vandermonde al = 0 := by
-    ext i k
-    have := congrFun (hk k) i
-    simpa [mul_apply, vandermonde_apply, mulVec, dotProduct] using this
-  have hd : (vandermonde al).det ≠ 0 := det_vandermonde_ne_zero_iff.mpr ha
-  have h2 : W * vandermonde al * adjugate (vandermonde al) = 0 := by rw [hv, Matrix.zero_mul]
-  rw [Matrix.mul_assoc, mul_adjugate, Matrix.mul_smul, Matrix.mul_one] at h2
-  exact (smul_eq_zero.mp h2).resolve_left hd
-
 private theorem exists_cyc {O : Type} [CommRing O] [IsDomain O] {n : ℕ} (A : Matrix (Fin n) (Fin n) O) (al : Fin n → O)
     (ha : Function.Injective al) (hc : A.charpoly = ∏ i, (Polynomial.X - Polynomial.C (al i))) :
     ∃ v : Fin n → O, ∀ Y : Matrix (Fin n) (Fin n) O, A * Y = Y * A → Y *ᵥ v = 0 → Y = 0 :=

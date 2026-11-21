@@ -26,11 +26,6 @@ theorem mem_valRing_of_valAt (h : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (hv 
   obtain ⟨h', s, hs, hr⟩ := hv
   exact ⟨s, Prod.ext hs hr⟩
 
-theorem valAt_of_mem_valRing (h : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (hv : (a, r) ∈ valRing ξ z h) :
-    ValAt ξ z a r := by
-  obtain ⟨s, hs⟩ := hv
-  exact ⟨h, s, congrArg Prod.fst hs, congrArg Prod.snd hs⟩
-
 theorem aeval_mem_valRing (h : genPt ξ ⤳ centre z) {σ : Type} {a : σ → Ω} {r : σ → ℂ}
     (hv : ∀ i, (a i, r i) ∈ valRing ξ z h) (f : MvPolynomial σ ℤ) :
     (aeval a f, aeval r f) ∈ valRing ξ z h := by

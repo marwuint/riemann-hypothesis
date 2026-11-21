@@ -1,6 +1,53 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.MoriwakiBigness.HilbertSamuelApplications.HsLinksOfUse
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackInputsOfStatements
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.MetricsProjectionFormulaNef
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.MoriwakiSt
+import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHolds
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceRateStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SignedConvergenceStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeOfIsIntersectionSystem
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreDim
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimensionPushDownGrassmannianHeightBounds
+import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.Imports
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PtsIntegralCurveConst
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PCurvePointsFinite
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsBirationalModelExists
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PBirationalModelExists
+import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.ImportsBis
+import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.BigLineBundleMoriwaki
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PZhangLowerX
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.RingKrullDimLocalizationInt
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KleimanNefCriteriaHold
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.TargetSt
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsFieldSubalgebraSelf
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGeneric
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LineFibreHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MetricLocal
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProjectionFormulaOfArithSystem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RationalityOfResolutionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.GlobalRegularizationStatementHolds
+import ReciprocityTheory.AnalyticForms.LeviForms.RegGlue
+import ReciprocityTheory.AnalyticForms.LeviForms.RegChartC
+import ReciprocityTheory.AnalyticForms.LeviForms.TailCut
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SiuInequalityIntegralHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformIntegrabilityStatementHolds
+
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
@@ -9,10 +56,10 @@ theorem inputs_of_use :
     ArithIntersectionSystemStatement → PositivityTheory.MbHsUse.HSUse →
       ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ResK.ResKStatement → GlobalTheory.CompanionTheory.Ar.PB.Inputs := by
   intro hII hU hBig hRes
-  exact ⟨⟨GlobalTheory.T.convergence_statement_holds, GlobalTheory.T.signed_convergence_statement_holds, GlobalTheory.T.convergence_rate_statement_holds, GlobalTheory.T.uniform_integrability_statement_holds, GlobalTheory.T.pullback_statement_holds, GlobalTheory.T.global_regularization_statement_holds⟩,
-    ⟨GlobalTheory.T.resolution_exists_of_resolution_statement hRes, degree_of_system hII, (hsLinks_of_use hU hBig).1⟩,
-    ⟨GlobalTheory.T.rationality_of_resolution_statement hRes, metricLocal⟩,
-    ⟨GlobalTheory.T.projection_formula_of_arith_system hII, lineFibre_holds, fibreDim⟩,
-    ⟨GlobalTheory.T.kleiman_nef_criteria_hold.1, GlobalTheory.T.kleiman_nef_criteria_hold.2, GlobalTheory.T.siu_inequality_integral_holds⟩⟩
+  exact ⟨⟨_root_.GlobalTheory.CompanionTheory.Ar.Giv.convergence_holds, _root_.GlobalTheory.CompanionTheory.Ar.Giv.SignedConv.convergenceSigned, _root_.GlobalTheory.CompanionTheory.Ar.Giv.convergenceRate_holds, _root_.GlobalTheory.CompanionTheory.Ar.Giv.unifInt_holds, _root_.GlobalTheory.CompanionTheory.Ar.Giv.pullbackStatement, _root_.GlobalTheory.CompanionTheory.Ar.Giv.regGlobalStatement_holds⟩,
+    ⟨_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hRes, degree_of_system hII, (hsLinks_of_use hU hBig).1⟩,
+    ⟨_root_.GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK hRes, metricLocal⟩,
+    ⟨_root_.GlobalTheory.CompanionTheory.Ar.Giv.ProjF.projFormula hII, lineFibre_holds, fibreDim⟩,
+    ⟨GlobalTheory.T.kleiman_nef_criteria_hold.1, GlobalTheory.T.kleiman_nef_criteria_hold.2, _root_.GlobalTheory.CompanionTheory.Ar.Giv.siuZ⟩⟩
 
 end GlobalTheory.CompanionTheory.Ar.Giv

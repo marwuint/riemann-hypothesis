@@ -262,9 +262,6 @@ theorem IsComm.mul (hxy : cT s X * J * Y = 1) (hyx : cT s Y * J * X = 1) {d e : 
 theorem IsComm.comm_prj {d : Fin r → A} (hd : IsComm s J X Y G d) : G * prj s J X Y d = prj s J X Y d * G := by
   rw [prj, Matrix.mul_add, Matrix.add_mul, hd.1, hd.2]
 
-theorem IsComm.inv {H : Matrix (Fin n) (Fin n) A} (hGH : G * H = 1) (hHG : H * G = 1) {d : Fin r → A}
-    (hd : IsComm s J X Y G d) : IsComm s J X Y H d := ⟨comm_inv hd.1 hGH hHG, comm_inv hd.2 hGH hHG⟩
-
 variable (hxx : cT s X * J * X = 0) (hyy : cT s Y * J * Y = 0) (hxy : cT s X * J * Y = 1)
   (hyx : cT s Y * J * X = 1)
 include hxx hyy hxy hyx

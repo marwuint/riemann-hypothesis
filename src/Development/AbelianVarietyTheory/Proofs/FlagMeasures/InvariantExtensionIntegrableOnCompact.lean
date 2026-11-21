@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.ConvolutionSmoothL2
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopologyStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
+import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AestronglyMeasurableCompRep
 
 open MeasureTheory Filter Set Formalism.MainNotions.S GlobalTheory.RightRegFund
@@ -115,12 +117,12 @@ theorem ext_integrableOn : ∀ (B : RowsAut) (C : Set B.I.GA), IsCompact C → �
       ∫ y in C, ‖B.I.ext F y‖ ∂(B.I.muA B.μf) ≤ M * ‖F‖ := by
   intro B C hC
   obtain ⟨Γ, hΓ, hΓc, hfin, hfd⟩ := GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain B.I
-  obtain ⟨hT2, -, hsc, -⟩ := GlobalTheory.T.finiteAdelicUnitary_congruenceTopology B.I
+  obtain ⟨hT2, -, hsc, -⟩ := _root_.GlobalTheory.CongTop.adelic_topology B.I
   haveI := hΓc
   haveI := hT2
   haveI := hsc
   have hD := hfd B.μf B.fund B.fund_spec
-  haveI : (B.I.muA B.μf).IsMulLeftInvariant := ⟨(GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf).1⟩
+  haveI : (B.I.muA B.μf).IsMulLeftInvariant := ⟨(_root_.GlobalTheory.AdelicUnimod.adelic_unimodular B.I B.μf).1⟩
   haveI : IsFiniteMeasureOnCompacts (B.I.muA B.μf) := by
     unfold AutInst.muA
     infer_instance

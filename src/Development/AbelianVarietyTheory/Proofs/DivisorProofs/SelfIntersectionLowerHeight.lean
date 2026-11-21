@@ -145,12 +145,6 @@ theorem isAlgPt_genericPoint (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] 
   exact (IsHomeomorph.topologicalKrullDim_eq _
     i.isClosedEmbedding.isEmbedding.toHomeomorph.isHomeomorph).symm
 
-theorem arVol_nonneg (L : HermLB p) (D : ℕ) : 0 ≤ arVol L D := by
-  refine le_limsup_of_frequently_le (Frequently.of_forall fun m => mul_nonneg ?_ ?_)
-  · rw [ENNReal.zero_le_log_iff]
-    exact_mod_cast Set.one_le_encard_iff_nonempty.2 ⟨_, (L.pow m).zero_mem_smallSec⟩
-  · exact EReal.coe_nonneg.2 (by positivity)
-
 theorem isNef_shift (hX : IsArithVar p D) {L : HermLB p} {e : ℝ} (hs : L.SemiPos D) (hf : NefFib L)
     (hh : ∀ x, IsAlgPt x → ∃ b, IsPtHt L x b ∧ e ≤ b) :
     (L.shift (fun _ => -e) fun _ => rfl).IsNef D where
@@ -162,13 +156,5 @@ theorem isNef_shift (hX : IsArithVar p D) {L : HermLB p} {e : ℝ} (hs : L.SemiP
     refine ⟨r, hr, ?_⟩
     rw [curveDeg_shift hX L (-e) i hc hd hr, ← H.point Z i hc hd r hr, hb, ← add_mul]
     exact mul_nonneg (by linarith) (Nat.cast_nonneg _)
-
-theorem selfInter_ge_of_height_ge : GlobalTheory.Published.VolNef → GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0})
-    [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (a e : ℝ), L.SemiPos D → NefFib L →
-    L.IsSelfInter a → (∀ x, IsAlgPt x → ∃ b, IsPtHt L x b ∧ e ≤ b) → ((D : ℝ) + 1) * e * gdeg L D ≤ a := by
-  intro hV hA k _ X _ p D hX L a e hs hf ha hh
-  have h₁ := hV k X p D hX _ _ (isNef_shift hX hs hf hh) (hA.arShift k X p D hX L a (-e) ha)
-  have h₂ := EReal.coe_nonneg.1 ((arVol_nonneg _ D).trans_eq h₁)
-  linarith
 
 end GlobalTheory.HtSelfInter

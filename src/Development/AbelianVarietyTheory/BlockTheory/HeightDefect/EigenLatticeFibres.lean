@@ -70,18 +70,6 @@ structure CxFib (σ : K →+* ℂ) where
 
 attribute [instance] CxFib.grp
 
-variable {F} in
-
-def CxFib.vec {σ : K →+* ℂ} (C : F.CxFib σ) (c : Fin F.g → K) : Fin F.g → ℂ := ∑ i, σ (c i) • C.W i
-
-variable {F} in
-
-def CxFib.piH {σ : K →+* ℂ} (C : F.CxFib σ) (x y : Fin F.g → K) : ℂ :=
-  (Real.pi : ℂ) * hermForm C.Hm (C.vec x) (C.vec y)
-
-def IsPiH (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin F.g → K)) : Prop :=
-  ∀ σ : K →+* ℂ, ∃ C : F.CxFib σ, ∀ x y, h.form σ x y = C.piH y x
-
 end GenFib
 
 section Sum
@@ -138,37 +126,8 @@ variable {ρ : 𝓞 K} {p q : ℕ} (X : CMObj H K ρ p q)
 
 def line (F : GenFib X.A) (τ : E →+* K) : Submodule (𝓞 K) (Fin F.g → K) := F.eigenLat τ
 
-def line' (F : GenFib X.A') (τ : E →+* K) : Submodule (𝓞 K) (Fin F.g → K) := F.eigenLat τ
-
-def Bdd (La : ℝ) : Prop :=
-  ∀ τ : E →+* ℂ, (∀ i, ‖τ (X.h i : E)‖ ≤ La ^ 2) ∧ ∀ j, ‖τ (X.h' j : E)‖ ≤ La ^ 2
-
 end CMObj
 
 def SplitsE (E K : Type) [Field E] [NumberField E] [Field K] : Prop := Nat.card (E →+* K) = Module.finrank ℚ E
-
-theorem GenFib.exists_isVec {t : SAB H (Sp (𝓞 K))} (F : GenFib t) (c : Fin F.g → K) : ∃ x, F.IsVec c x := by
-  have hw : ∀ i, (spMap (epsScaleR (c i)) ≫ (F.v i).left) ≫ F.tK.G.hom = (epsR K).hom := fun i => by
-    rw [Category.assoc, Over.w (F.v i)]
-    change Spec.map _ ≫ Spec.map _ = Spec.map _
-    rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
-    congr 2
-    ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
-  exact ⟨_, _, ⟨fun i => Over.homMk _ (hw i), fun _ => rfl, rfl⟩, rfl⟩
-
-example {t : SAB H (Sp (𝓞 K))} (F : GenFib t) : F.IsDiff F (𝟙 t.G) LinearMap.id := by
-  intro c x hx
-  simpa using hx
-
-example {t t' t'' : SAB H (Sp (𝓞 K))} (F : GenFib t) (F' : GenFib t') (F'' : GenFib t'') (f : t.G ⟶ t'.G)
-    (f' : t'.G ⟶ t''.G) (D D') (h : F.IsDiff F' f D) (h' : F'.IsDiff F'' f' D') :
-    F.IsDiff F'' (f ≫ f') (D' ∘ₗ D) := by
-  intro c x hx
-  simpa using h' _ _ (h c x hx)
-
-example {S : Scheme.{0}} (t : SAB H S) : IsLinHom (𝟙 t.G) ∧ PolId (𝟙 t.G) 1 := by
-  refine ⟨⟨inferInstance, by simp⟩, ?_⟩
-  intro k _ T x y _ _ c
-  rw [t.act.one]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.EigenLatticeFibres

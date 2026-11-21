@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.HermitianLattices.StatementMass
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RegulatorLeSumSmallIdealsInClassStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumAbsNormRpowNegLeDedekindZetaBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RegulatorLeSumSmallIdealsInClass
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumAbsNormRpowNegLeDedekindZetaBound
 open MeasureTheory NumberField Finset
 
 namespace GlobalTheory
@@ -35,7 +35,7 @@ theorem classNumber_mul_regulator_le_sqrt_discr_rpow :
   have h1 : ∀ C : ClassGroup (𝓞 K),
       Units.regulator K ≤ ∑ I ∈ T.filter (fun I => cls I = C), g I := by
     intro C
-    refine GlobalTheory.T.regulator_le_sum_small_ideals_in_class K hK C _ fun I => ?_
+    refine _root_.GlobalTheory.RegulatorClassBound.regulator_le_sum_class K hK C _ fun I => ?_
     rw [Finset.mem_filter, hmem]
     constructor
     · rintro ⟨⟨h0, hle⟩, hc⟩
@@ -64,6 +64,6 @@ theorem classNumber_mul_regulator_le_sqrt_discr_rpow :
     _ = Y ^ s * ∑ I ∈ T, (Ideal.absNorm I : ℝ) ^ (-s) := (Finset.mul_sum _ _ _).symm
     _ ≤ Y ^ s * (s / (s - 1)) ^ Module.finrank ℚ K :=
         mul_le_mul_of_nonneg_left
-          (GlobalTheory.T.sum_absNorm_rpow_neg_le_dedekindZeta_bound K s hs T fun I hI => ((hmem I).1 hI).1) (Real.rpow_nonneg hY0 s)
+          (_root_.GlobalTheory.IdealZetaSum.sum_absNorm_rpow_neg_le K s hs T fun I hI => ((hmem I).1 hI).1) (Real.rpow_nonneg hY0 s)
 
 end GlobalTheory

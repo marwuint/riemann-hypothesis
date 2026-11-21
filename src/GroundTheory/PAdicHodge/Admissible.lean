@@ -219,25 +219,6 @@ theorem finite_and_finrank_le [FiniteDimensional F V] :
 theorem finite [FiniteDimensional F V] : Module.Finite (invariantRing G F B) (DB B ρ) :=
   (h.finite_and_finrank_le ρ).1
 
-theorem finrank_le [FiniteDimensional F V] :
-    finrank (invariantRing G F B) (DB B ρ) ≤ finrank F V :=
-  (h.finite_and_finrank_le ρ).2
-
-theorem comparison_injective [FiniteDimensional F V] : Function.Injective (comparison B ρ) := by
-  letI := h.field
-  haveI := h.free ρ
-  haveI := h.finite ρ
-  let b := Module.Free.chooseBasis (invariantRing G F B) (DB B ρ)
-  let bB := Algebra.TensorProduct.basis B b
-  have hli := h.linearIndependent ρ b.linearIndependent
-  have hcomp : comparison B ρ = (Finsupp.linearCombination B (fun i => (b i : B ⊗[F] V))) ∘ₗ
-      bB.repr.toLinearMap := by
-    refine bB.ext fun i => ?_
-    simp [bB, comparison_tmul]
-  intro x y hxy
-  rw [hcomp] at hxy
-  exact bB.repr.injective (hli hxy)
-
 theorem comparison_surjective [FiniteDimensional F V] (hadm : IsAdmissible B ρ) :
     Function.Surjective (comparison B ρ) := by
   classical
@@ -300,25 +281,6 @@ theorem comparison_surjective [FiniteDimensional F V] (hadm : IsAdmissible B ρ)
     rintro _ ⟨j, rfl⟩
     exact ⟨1 ⊗ₜ b j, by simp [comparison_tmul, x]⟩
   exact hle hy
-
-theorem isAdmissible_iff_bijective [FiniteDimensional F V] :
-    IsAdmissible B ρ ↔ Function.Bijective (comparison B ρ) := by
-  letI := h.field
-  haveI := h.free ρ
-  haveI := h.finite ρ
-  refine ⟨fun hadm => ⟨h.comparison_injective ρ, h.comparison_surjective ρ hadm⟩, fun hbij => ?_⟩
-  have := (LinearEquiv.ofBijective (comparison B ρ) hbij).finrank_eq
-  rwa [Module.finrank_baseChange, Module.finrank_baseChange] at this
-
-theorem isAdmissible_of_linearIndependent [FiniteDimensional F V] {ι : Type*} [Fintype ι]
-    {x : ι → DB B ρ} (hx : LinearIndependent B (fun i => (x i : B ⊗[F] V)))
-    (hcard : finrank F V ≤ Fintype.card ι) : IsAdmissible B ρ := by
-  letI := h.field
-  haveI := h.free ρ
-  haveI := h.finite ρ
-  have hE : LinearIndependent (invariantRing G F B) x :=
-    LinearIndependent.of_comp (DB B ρ).subtype (hx.restrict_scalars' (invariantRing G F B))
-  exact le_antisymm (h.finrank_le ρ) (hcard.trans hE.fintype_card_le_finrank)
 
 noncomputable def basisOfIsAdmissible [FiniteDimensional F V] (hadm : IsAdmissible B ρ)
     {ι : Type*} [Fintype ι] (b : Basis ι (invariantRing G F B) (DB B ρ)) :

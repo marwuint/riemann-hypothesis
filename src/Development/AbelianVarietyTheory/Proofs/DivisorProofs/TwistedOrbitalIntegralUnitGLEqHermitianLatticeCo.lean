@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulHomInjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGLLatticeSpannedByGLColumnsEqFullLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGLLatticeSpannedByGLColumnsEqFullLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSpannedByGLColumnsEqIffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerEqMapNormOneTorusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactClosureZpowersLeftMulGLIffIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjIntegralIffLatticeUnimodularStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerEqMapNormOneTorus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactClosureZpowersLeftMulGLIffIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjIntegralIffLatticeUnimodular
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -80,7 +80,7 @@ theorem GlobalTheory.TwOrbLat.twOrb_unit_eq_orbSum : ∀ (E : Type) [Field E] [N
   set Kg := GlobalTheory.LFun.KGL w a with hKg
   set ι := mulGL e b with hι
   set T' := twCent θ δ with hT'
-  have hCent : T' = B.T.map ι := GlobalTheory.T.twistedCentralizer_eq_map_normOneTorus E w hw K e he a B hP β ε hε hβ b δ hδ
+  have hCent : T' = B.T.map ι := _root_.GlobalTheory.TwOrbCent.twCent_eq_map E w hw K e he a B hP β ε hε hβ b δ hδ
   have hinj : Function.Injective ι := mulGL_injective e b
   have hθK : ∀ k ∈ Kg, θ k ∈ Kg := GlobalTheory.BCT.ThBasic.thL_mem_KGL hU a w
 
@@ -97,9 +97,9 @@ theorem GlobalTheory.TwOrbLat.twOrb_unit_eq_orbSum : ∀ (E : Type) [Field E] [N
       ext x
       constructor
       · rintro ⟨⟨t, ht, rfl⟩, hc⟩
-        exact ⟨t, ⟨(GlobalTheory.T.isCompact_closure_zpowers_leftMulGL_iff_integral E w K e hO a B b t).1 hc, ht⟩, rfl⟩
+        exact ⟨t, ⟨(_root_.GlobalTheory.TwOrbLat.isCompact_closure_zpowers_mulGL_iff E w K e hO a B b t).1 hc, ht⟩, rfl⟩
       · rintro ⟨t, ⟨hi, ht⟩, rfl⟩
-        exact ⟨⟨t, ht, rfl⟩, (GlobalTheory.T.isCompact_closure_zpowers_leftMulGL_iff_integral E w K e hO a B b t).2 hi⟩
+        exact ⟨⟨t, ht, rfl⟩, (_root_.GlobalTheory.TwOrbLat.isCompact_closure_zpowers_mulGL_iff E w K e hO a B b t).2 hi⟩
     rw [hS, ← MonoidHom.map_closure, Subgroup.closure_eq]
   have hRel : ∀ y : GLw a w, (T' ⊓ Kg.map (MulAut.conj y).toMonoidHom).relIndex (cptPart T') =
       (stabLat K.O (GlobalTheory.TwLat.lat e b y) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) := by
@@ -153,7 +153,7 @@ theorem GlobalTheory.TwOrbLat.twOrb_unit_eq_orbSum : ∀ (E : Type) [Field E] [N
   have hUni : ∀ y : GLw a w, P y ↔ GlobalTheory.TwLat.lat e b y ∈ X := by
     intro y
     simp only [hP_def, hX, Set.mem_setOf_eq]
-    rw [GlobalTheory.T.twistedConj_integral_iff_lattice_unimodular E w hw K e he hO a B β b δ hδ y]
+    rw [_root_.GlobalTheory.TwOrbUnimod.twist_integral_iff_unimodular E w hw K e he hO a B β b δ hδ y]
     exact ⟨fun h => ⟨latOf_isLat e b y, h⟩, fun h => h.2⟩
   let r : X → X → Prop := fun L M => ∃ t ∈ B.T, (M : Submodule K.O B.A) = mulLat K.O (t : B.A) (L : Submodule K.O B.A)
   have hr : Equivalence r := by
@@ -179,7 +179,7 @@ theorem GlobalTheory.TwOrbLat.twOrb_unit_eq_orbSum : ∀ (E : Type) [Field E] [N
     · intro o
       induction o using Quot.ind with
       | mk L =>
-        obtain ⟨q0, hq0⟩ := GlobalTheory.T.exists_GL_latticeSpannedByGLColumns_eq_fullLattice E w K e a B b L.1 L.2.1
+        obtain ⟨q0, hq0⟩ := _root_.GlobalTheory.TwOrbLat.exists_lat_eq E w K e a B b L.1 L.2.1
         obtain ⟨t', ht', k, hk, he'⟩ := (DoubleCoset.eq _ _ _ _).1
           (DoubleCoset.out_eq' T' Kg (DoubleCoset.mk T' Kg q0)).symm
         have hP0 : P q0 := (hUni q0).2 (hq0 ▸ L.2)

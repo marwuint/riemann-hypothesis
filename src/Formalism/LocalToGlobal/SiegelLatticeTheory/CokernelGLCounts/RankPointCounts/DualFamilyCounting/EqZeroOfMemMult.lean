@@ -7,16 +7,6 @@ namespace Formalism.L2.SG.Pf.Lem3Mass
 
 open Matrix Formalism.HermitianLatticeCounting.LatticeSumBounds Filter Topology
 
-section Alg
-
-variable {R : Type} [CommRing R] [StarRing R] {m : ℕ}
-
-def Mult (c : R) (N : ℕ) : Set (Matrix (Fin m) (Fin m) R) := {X | ∃ W, X = c ^ N • W}
-
-variable {c : R}
-
-end Alg
-
 section Top
 
 variable {R : Type} [CommRing R] [StarRing R] [TopologicalSpace R] [IsTopologicalRing R] [ContinuousStar R]

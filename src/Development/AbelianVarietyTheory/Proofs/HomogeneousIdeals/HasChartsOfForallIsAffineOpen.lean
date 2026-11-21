@@ -59,9 +59,6 @@ theorem value_spMap (φ : A →ₐ[k] B) (x : sp A ⟶ X) (s : Γ(X.left, ⊤)) 
     value (spMap φ ≫ x) s = φ (value x s) :=
   congr(($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ.toRingHom))).hom (x.left.appTop s))
 
-theorem spMap_id : spMap (AlgHom.id k A) = 𝟙 (sp (R₀ := k) A) :=
-  Over.OverMorphism.ext (Spec.map_id _)
-
 theorem spMap_injective : Function.Injective (spMap : (A →ₐ[k] B) → (sp B ⟶ sp A)) := by
   intro φ ψ h
   have h1 : (spMap φ).left = (spMap ψ).left := by rw [h]
@@ -75,9 +72,6 @@ theorem spMap_surjective : Function.Surjective (spMap : (A →ₐ[k] B) → (sp 
     rw [Spec.map_comp, hφ]
     exact Over.w m
   exact ⟨⟨φ.hom, fun c => congr(($h).hom c)⟩, Over.OverMorphism.ext hφ⟩
-
-def spEquiv : (A →ₐ[k] B) ≃ (sp (R₀ := k) B ⟶ sp A) :=
-  Equiv.ofBijective spMap ⟨spMap_injective, spMap_surjective⟩
 
 def spSections (A : Type) [CommRing A] [Algebra k A] : Γ((sp (R₀ := k) A).left, ⊤) ≃ₐ[k] A :=
   AlgEquiv.ofBijective (value (𝟙 (sp A)))
@@ -143,8 +137,6 @@ section Families
 abbrev AlgClass (k : Type) [CommRing k] : Type 1 :=
   ∀ (A : Type) [CommRing A] [Algebra k A], Prop
 
-abbrev AlgClass.noCondition (k : Type) [CommRing k] : AlgClass k := fun _ _ _ => True
-
 def AlgClass.StableAway (𝒯 : AlgClass k) : Prop :=
   ∀ (A : Type) [CommRing A] [Algebra k A] (a : A), 𝒯 A → 𝒯 (Localization.Away a)
 
@@ -159,11 +151,6 @@ theorem HasCharts.exists_bundled (h : HasCharts 𝒯 X) (p : X.left) :
       𝒯 A ∧ IsOpenImmersion u.left ∧ p ∈ Set.range u.left := by
   obtain ⟨A, _, _, u, hu⟩ := h p
   exact ⟨CommAlgCat.of k A, u, hu⟩
-
-theorem HasCharts.mono (h : HasCharts 𝒯 X)
-    (hle : ∀ (A : Type) [CommRing A] [Algebra k A], 𝒯 A → 𝒯' A) : HasCharts 𝒯' X := fun p => by
-  obtain ⟨A, _, _, u, hA, hu⟩ := h p
-  exact ⟨A, _, _, u, hle A hA, hu⟩
 
 theorem ext_of_charts (hX : HasCharts 𝒯 X) {s t : Γ(X.left, ⊤)}
     (h : ∀ (A : Type) [CommRing A] [Algebra k A], 𝒯 A → ∀ u : sp A ⟶ X, IsOpenImmersion u.left →

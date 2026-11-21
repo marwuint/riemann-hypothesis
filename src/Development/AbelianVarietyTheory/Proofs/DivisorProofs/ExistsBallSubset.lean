@@ -188,6 +188,4 @@ end GlobalTheory.PrincCong
 
 namespace GlobalTheory.PrincCong
 
-open Filter Topology
-
 end GlobalTheory.PrincCong

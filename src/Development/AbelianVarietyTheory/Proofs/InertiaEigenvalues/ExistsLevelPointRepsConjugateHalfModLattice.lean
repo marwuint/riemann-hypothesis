@@ -10,9 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompAtMtOfMemGfC
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceModelIndicatorEqMean
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOrEqOfPlaceIdem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartConjMem
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsModHalfLatticeFinsetSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsHalfSplitPlaceNormPowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsNormMaxPowDividingConjugatePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsModHalfLatticeFinsetSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsHalfSplitPlaceNormPow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsNormMaxPowDividingConjugatePlace
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host
@@ -35,12 +35,12 @@ theorem flip_reps : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D
   set Λ := latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) with hΛ
   have hcard : Nat.card (GlobalTheory.DivPtFourier.DQ Λ (cA D eT) m) = flipIdx V W T m := by
     have hc' : cA D eT = ∑ PP ∈ T, cA D (es PP) := by rw [hsum, map_sum]
-    rw [hc', GlobalTheory.T.card_divisionPointsModHalfLattice_finset_sum Λ (fun c hc u hu => GlobalTheory.PlaceModelSum.idem_smul_latO hc hu) T (fun PP => cA D (es PP)) ?_ ?_ m]
+    rw [hc', _root_.GlobalTheory.DivPtFourier.card_DQ_sum Λ (fun c hc u hu => GlobalTheory.PlaceModelSum.idem_smul_latO hc hu) T (fun PP => cA D (es PP)) ?_ ?_ m]
     · unfold flipIdx
       refine Finset.prod_congr rfl fun PP hPP => ?_
       have hi : Formalism.L2.NTheta.IsIdemAt (cA D (es PP)) (Formalism.L2.DIV.conjPl PP) :=
         GlobalTheory.MovedIdem.isIdemAt_conj (hes PP hPP) fun _ => Iff.rfl
-      rw [GlobalTheory.T.card_divisionPoints_half_split_place_norm_pow D V W ΛV ΛW hSV hSW _ _ hi m hm0, GlobalTheory.T.absNorm_maxPowDividing_conjugatePlace]
+      rw [_root_.GlobalTheory.DivPtLocal.natCard_DQ D V W ΛV ΛW hSV hSW _ _ hi m hm0, _root_.GlobalTheory.ConjNormPow.absNorm_maxPowDividing_conjPl]
     · intro i hi; rw [← map_mul, (hes i hi).1.1]
     · intro i hi j hj hij; rw [← map_mul, GlobalTheory.Tow.idemAt_orth (hes i hi) (hes j hj) hij, map_zero]
   have hfin : Finite (GlobalTheory.DivPtFourier.DQ Λ (cA D eT) m) :=

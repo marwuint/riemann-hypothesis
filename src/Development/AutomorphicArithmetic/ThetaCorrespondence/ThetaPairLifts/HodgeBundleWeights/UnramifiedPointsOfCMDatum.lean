@@ -1,8 +1,16 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedPointsGoodLevel
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.EightDvdNCol
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
+import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNormLe
+import Development.AbelianVarietyTheory.Definitions.Divisors.CongModRefl
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompositumIntermediateFieldExistsPlaceValuationE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFieldUnramifiedCurve
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFramedPointLiesOnComponentCmCurveFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralFramedPointCompletionIndexOne
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ExistsUnramifiedCurveOverField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedPointsGoodLevelStatement
 
 section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
@@ -37,10 +45,10 @@ theorem unramified_points_of_CMDatum : _root_.GlobalTheory.CovTop.PublishedHodge
   have hle : c.F ≤ K := le_sup_left
   have hK : GlobalTheory.CompRat.CurveOver H K l.M' := fun τ hτ =>
     hcurve τ fun x hx => hτ x (le_sup_right (a := c.F) hx)
-  obtain ⟨𝔭, h𝔭⟩ := GlobalTheory.T.compositum_intermediateField_exists_place_valuation_eq c.F F' K hle rfl q hq hdisc w hqw
+  obtain ⟨𝔭, h𝔭⟩ := _root_.GlobalTheory.UnramCompositum.exists_vLa_eq c.F F' K hle rfl q hq hdisc w hqw
   letI : Algebra c.F K := (IntermediateField.inclusion hle).toRingHom.toAlgebra
   obtain ⟨y, hy⟩ := GlobalTheory.T.exists_framedPoint_liesOn_component_cmCurve_field E H Dw l Xo c hpq hcase K hle hK Z
-  exact GlobalTheory.T.exists_integralFramedPoint_completion_index_one E H Dw l Xo c hpq hg Z K y hy w 𝔭 h𝔭
+  exact _root_.GlobalTheory.CompletionPoint.exists_intFr_index_one E H Dw l Xo c hpq hg Z K y hy w 𝔭 h𝔭
 end GlobalTheory.UnramCM
 end
 

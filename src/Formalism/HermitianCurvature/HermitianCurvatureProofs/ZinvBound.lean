@@ -45,11 +45,6 @@ lemma ubl_congr {f f₂ : Mat k r → E} {S V : Set (Mat k r)} (hV : IsOpen V) (
   obtain ⟨⟨C, hC, hub⟩, hl⟩ := h
   exact ⟨⟨C, hC, ub_congr hV hSV hSG he hub⟩, lss_congr hV hSV he hl⟩
 
-lemma ubl_sub {f : Mat k r → E} {S S' : Set (Mat k r)} (hS : S' ⊆ S) {n e γ : ℕ} (h : UBL f S n e γ) :
-    UBL f S' n e γ := by
-  obtain ⟨⟨C, hC, hub⟩, hl⟩ := h
-  exact ⟨⟨C, hC, fun w hw g hg => hub w hw g (hS hg)⟩, lss_mono hl hS⟩
-
 end ube
 
 lemma ubl_mul {S : Set (Mat k r)} (hSG : S ⊆ GV k r) {a b : Mat k r → ℂ} {n ea eb γ : ℕ}

@@ -3,9 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ParRowZ
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlacePointCommuteOfNePlace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTensorDecompositionCommutingFamiliesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DualIrreducibleCoefficientSpaceRealPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContragredientMatrixCoefficientContinuousOnUnitaStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTensorDecompositionCommutingFamilies
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DualIrreducibleCoefficientSpaceRealPlaces
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaLiftVanishesSingleCoefficientOfKernelKills
+import Formalism.LocalToGlobal.IndefiniteReal.TopMult
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContragredientMatrixCoefficientContinuousOnUnita
 
 noncomputable section
 
@@ -37,8 +39,8 @@ theorem coefTensor : CoefTensor := by
     rw [← Module.End.mul_apply (c.ρ _), ← map_mul, ← Module.End.mul_apply (c.ρ _), ← map_mul, ← mul_inv_rev,
       ← mul_inv_rev, hc']
   have hirrD : ∀ N : Submodule ℂ (Module.Dual ℂ c.W), (∀ τ g, ∀ x ∈ N, a τ g x ∈ N) → N = ⊥ ∨ N = ⊤ :=
-    fun N hN => GlobalTheory.T.dual_irreducible_coefficientSpace_realPlaces D V θ c hθ hc N fun τ g hg f hf => hN τ ⟨g, hg⟩ f hf
-  obtain ⟨X, i1, i2, i3, b, m, e, hinj, hint, hirr, heq⟩ := GlobalTheory.T.exists_tensorDecomposition_commutingFamilies D.what₂.Tau (Module.Dual ℂ c.W) _ a hcomm hirrD
+    fun N hN => _root_.GlobalTheory.DualIrr.dual_irr D V θ c hθ hc N fun τ g hg f hf => hN τ ⟨g, hg⟩ f hf
+  obtain ⟨X, i1, i2, i3, b, m, e, hinj, hint, hirr, heq⟩ := _root_.GlobalTheory.TensorDecomp.tensor_decomp D.what₂.Tau (Module.Dual ℂ c.W) _ a hcomm hirrD
   have hone : ∀ τ, atTau θ V τ 1 = 1 := fun τ => GlobalTheory.PointAtPlaceHom.atTau_one hθ V τ
   let π : ∀ τ, Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (X τ) := fun τ g =>
     if hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) then b τ ⟨g, hg⟩ else 1
@@ -66,7 +68,7 @@ theorem coefTensor : CoefTensor := by
       ⟨(Module.evalEquiv ℂ c.W).symm (l ∘ₗ r), fun φ => by
         conv_lhs => rw [← (Module.evalEquiv ℂ c.W).apply_symm_apply (l ∘ₗ r)]
         rfl⟩
-    refine (GlobalTheory.T.contragredient_matrix_coefficient_continuousOn_unitary D V θ c hθ hc τ (m τ w) v).congr fun g hg => ?_
+    refine (_root_.GlobalTheory.coefA_dual_coef_continuousOn D V θ c hθ hc τ (m τ w) v).congr fun g hg => ?_
     show l (π τ g w) = _
     rw [hπ τ g hg]
     have : l (b τ ⟨g, hg⟩ w) = (l ∘ₗ r) (m τ (b τ ⟨g, hg⟩ w)) := by

@@ -1,9 +1,9 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOpenChartDiagonalUnipotentStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalHermitianDiagonalizationUnitsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentitiesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOpenChartDiagonalUnipotent
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalHermitianDiagonalizationUnits
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentities
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -333,16 +333,16 @@ theorem tri_slice : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   haveI := i4
   haveI := i5
   haveI := i6
-  obtain ⟨k1, k2, k3, k4, -, htr, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R
+  obtain ⟨k1, k2, k3, k4, -, htr, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R
   haveI := k1
   haveI := k2
   haveI := k3
   haveI := k4
-  obtain ⟨o, ho, hof⟩ := GlobalTheory.T.hermitian_open_chart_diagonal_unipotent F E σ hCM R hR n
-  obtain ⟨g, d, hg, hSg⟩ := GlobalTheory.T.local_hermitian_diagonalization_units F E σ hCM R n S hS
+  obtain ⟨o, ho, hof⟩ := _root_.GlobalTheory.CompanionTheory.SW.LDL.ldl_isOpenEmbedding F E σ hCM R hR n
+  obtain ⟨g, d, hg, hSg⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermR_unit_diagonalisable F E σ hCM R n S hS
   have hH : ∀ S' ∈ HermR R σ n, ∀ g' : Matrix (Fin n) (Fin n) (R ⊗[F] E),
       cT (sigR R σ) g' * S' * g' ∈ HermR R σ n := fun S' hS' g' =>
-    (GlobalTheory.T.gram_right_action_identities F E σ hCM 0 0 ⟨fun i => i.elim0, by simp⟩ R n).2.2.2.1 ⟨S', hS'⟩ g'
+    (_root_.GlobalTheory.CompanionTheory.SW.GramAlg.gram_algebra F E σ hCM 0 0 ⟨fun i => i.elim0, by simp⟩ R n).2.2.2.1 ⟨S', hS'⟩ g'
   let ι : R →+* R ⊗[F] E := Algebra.TensorProduct.includeLeftRingHom
   have hιa : ∀ r, ι r = r ⊗ₜ[F] (1 : E) := fun r => rfl
   haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩

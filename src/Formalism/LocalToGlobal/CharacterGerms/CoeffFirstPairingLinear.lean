@@ -1,4 +1,7 @@
-import Formalism.LocalToGlobal.CharacterGerms.CanonicalGaugeFirstPartialLawEq
+import Formalism.LocalToGlobal.CharacterGerms.IndependenceBoundRaw
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePHStab
+import Formalism.LocalToGlobal.CharacterGerms.RowTiePGerm
+import Formalism.DropLevelBounds.ConstantCoeffVanishing.UbintConstantCoeffEqZero
 import Formalism.LocalToGlobal.CharacterGerms.CoeffPowCharFrobenius
 
 noncomputable section
@@ -117,19 +120,6 @@ theorem frobPowMv {σ : Type} (F : MvPowerSeries σ C) (hF : IntS V F) (α : σ 
   exact e2
 
 end Gen
-
-section Slice
-
-variable {C : Type} [Field C] [CharZero C] {dd : ℕ}
-
-end Slice
-
-section FBs
-
-variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
-  (Y : FBChart C V O dd)
-
-end FBs
 
 end PhPowP
 

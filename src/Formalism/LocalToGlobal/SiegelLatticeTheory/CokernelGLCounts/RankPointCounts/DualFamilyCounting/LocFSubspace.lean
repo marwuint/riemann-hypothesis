@@ -20,21 +20,6 @@ theorem mem_dual_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) 
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.restrictScalars_apply]
 
-def ldual (h : V →ₗ⋆[K] V →ₗ[K] K) (w : V) : Submodule (𝓞 K) V where
-  carrier := {z | h z w ∈ (1 : Submodule (𝓞 K) K)}
-  zero_mem' := by simp
-  add_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_setOf_eq, map_add, LinearMap.add_apply] at *
-    exact Submodule.add_mem _ ha hb
-  smul_mem' := by
-    intro c z hz
-    simp only [Set.mem_setOf_eq] at *
-    obtain ⟨r, hr⟩ := Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range c
-    rw [← algebraMap_smul K c z, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply,
-      ← hr, ← smul_eq_mul, algebraMap_smul]
-    exact Submodule.smul_mem _ r hz
-
 private lemma mem_locF_lemma {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (𝔭 : Ideal (𝓞 F))
     (L : Submodule (𝓞 K) W) (x : W) :
     x ∈ locF 𝔭 L ↔ ∃ s ∈ Submonoid.closure

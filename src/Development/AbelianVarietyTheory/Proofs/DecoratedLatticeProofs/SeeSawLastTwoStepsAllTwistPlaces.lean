@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeeSawTwistPlaceLastTwoStepsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSupportedSubgroupOfSuppAtSplitPlaceMemStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeeSawTwistPlaceLastTwoSteps
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSupportedSubgroupOfSuppAtSplitPlaceMem
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HzUnit
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemIdAtOfSupp
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisOFinsetSum
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastSeeSawCombinationsOperatorDatum
@@ -44,10 +45,10 @@ theorem half_one_sub_of_ne : ∀ (D : D7) (k k' : Type) [Field k] [ValuativeRel 
   intro D k k' _ _ _ _ _ _ _ _ q q' hne m n u hu i j
   obtain ⟨ε, hε, hs⟩ := q.above
   obtain ⟨ε', hε', hs'⟩ := q'.above
-  have h1 : u i j ∈ GlobalTheory.FinPl.idAt D (· = q'.v) := ((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q'.v ε' hε').1 _).2 (hs' ▸ hu i j)
+  have h1 : u i j ∈ GlobalTheory.FinPl.idAt D (· = q'.v) := ((_root_.GlobalTheory.FinPl.placeIdem_acts D q'.v ε' hε').1 _).2 (hs' ▸ hu i j)
   have h2 : u i j ∈ GlobalTheory.FinPl.idAt D (· ≠ q.v) :=
     PinEx.idAt_mono (fun x (hx : x = q'.v) => hx ▸ fun e => hne e.symm) h1
-  have h3 := (GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).2 _ h2
+  have h3 := (_root_.GlobalTheory.FinPl.placeIdem_acts D q.v ε hε).2 _ h2
   rw [sub_mul, one_mul, hs, h3, sub_zero]
 
 theorem comb_single_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ), comb ψ S T (Finsupp.single 0 1) f = f := by
@@ -195,7 +196,7 @@ theorem oneplace_at {D : D7} {c : Comm D} {v : VCom c} {χ : ℕ → (AE D)ˣ �
         (c.lst j h (v.τ j h) s₁ Ψ₁ Ψ₂)) := by
   subst hj hom
   have e : Q.eT Q.s h = Q.eLT := rfl
-  rw [e, GlobalTheory.T.seeSaw_twistPlace_last_two_steps D c v χ Q hc hv h hr hτ s₁ hs₁ oma omb ha hb c₁ c₂ h₁ h₂ Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ α u, Finset.smul_sum]
+  rw [e, _root_.GlobalTheory.QLastOne.lastOne D c v χ Q hc hv h hr hτ s₁ hs₁ oma omb ha hb c₁ c₂ h₁ h₂ Ψ₁ Ψ₂ hΨ₁ hΨ₂ φ hφ α u, Finset.smul_sum]
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [Q.wt_pen y, smul_smul]
 
@@ -245,7 +246,7 @@ theorem εL_grp (α : Q.Ch j) : ∀ g ∈ (Q.εL j α).support, ∀ P : GlobalTh
   rw [he] at hg
   classical
   obtain ⟨x, -, rfl⟩ := Finset.mem_image.1 (Finsupp.mapDomain_support hg)
-  exact GlobalTheory.T.mem_supportedSubgroup_of_suppAt_splitPlace_mem D Q.k Q.q _ _ (Q.gl_loc Q.s (0 + 1) _ x).1 P hP
+  exact _root_.GlobalTheory.SuppGrp.mem_grpAt_of_suppAt D Q.k Q.q _ _ (Q.gl_loc Q.s (0 + 1) _ x).1 P hP
 
 end Facts
 

@@ -140,22 +140,6 @@ theorem tensTau_cont (h : Continuous (fun k : KG ε => ((ρ k : unitary (Matrix 
     Continuous (tensTau T ρ) :=
   continuous_tensHom h T.cont
 
-example (τ : KG ε →* unitary (PiLp 2 (fun _ : ι => T.V) →L[ℂ] PiLp 2 (fun _ : ι => T.V)))
-    (hc : Continuous τ)
-    (D : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (PiLp 2 (fun _ : ι => T.V) →L[ℂ] PiLp 2 (fun _ : ι => T.V)))
-    (hd : ∀ X, inK ε X → ∀ γ : ℝ → KG ε, (∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) →
-      HasDerivAt (fun t : ℝ => ((τ (γ t) : unitary (PiLp 2 (fun _ : ι => T.V) →L[ℂ]
-        PiLp 2 (fun _ : ι => T.V))) : PiLp 2 (fun _ : ι => T.V) →L[ℂ] PiLp 2 (fun _ : ι => T.V)))
-        (D X) 0)
-    (dρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix ι ι ℂ)
-    (hu : ∀ a b, ((D (Matrix.single a b 1) : PiLp 2 (fun _ : ι => T.V) →L[ℂ] PiLp 2 (fun _ : ι => T.V)) :
-        Module.End ℂ (PiLp 2 (fun _ : ι => T.V))) =
-          tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1)) a b) :
-    (⟨PiLp 2 (fun _ : ι => T.V), τ, hc, D, hd⟩ : KRep ε).units =
-      tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1)) := by
-  funext a b
-  exact hu a b
-
 end KT
 
 end ReciprocityTheory.ChartRestriction.DS.HW

@@ -187,35 +187,12 @@ theorem finsum_toNat_torusOrder_sub_const {f : ℂ → ℂ} (hf : IsEllipticFunc
     exact hsum
   exact_mod_cast this
 
-theorem finsum_toNat_torusOrder_eq_degree {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
-    ∑ᶠ x : Torus L, (torusOrder L f x).toNat = degree L f := by
-  simpa using finsum_toNat_torusOrder_sub_const hf 0
-
 lemma eq_zero_of_finsum_eq_zero_nat {α : Type*} {u : α → ℕ} (hu : (Function.support u).Finite)
     (h : ∑ᶠ x, u x = 0) (x : α) : u x = 0 := by
   classical
   by_contra hx
   rw [finsum_eq_sum_of_support_subset u (s := hu.toFinset) (by simp)] at h
   exact hx ((Finset.sum_eq_zero_iff.1 h) x (by simpa using hx))
-
-theorem degree_eq_zero_iff {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
-    degree L f = 0 ↔ ∃ c : ℂ, f =ᶠ[codiscrete ℂ] fun _ ↦ c := by
-  constructor
-  · intro h0
-    have hall := eq_zero_of_finsum_eq_zero_nat (finite_support_toNat_neg_torusOrder hf) h0
-    apply exists_eventuallyEq_const_of_meromorphicOrderAt_nonneg L hf.1 hf.2
-    intro z
-    have := hall (Torus.mk L z)
-    rw [torusOrder_mk hf] at this
-    exact nonneg_of_toNat_neg_untopD_eq_zero this
-  · rintro ⟨c, hc⟩
-    rw [degree]
-    have : ∀ x : Torus L, (-torusOrder L f x).toNat = 0 := by
-      intro x
-      apply toNat_neg_untopD_eq_zero_of_nonneg
-      rw [meromorphicOrderAt_congr (eventually_nhdsNE_of_eventually_codiscrete hc x.out)]
-      exact analyticAt_const.meromorphicOrderAt_nonneg
-    simp [this]
 
 theorem degree_ne_one {f : ℂ → ℂ} (hf : IsEllipticFunction L f) : degree L f ≠ 1 := by
   classical

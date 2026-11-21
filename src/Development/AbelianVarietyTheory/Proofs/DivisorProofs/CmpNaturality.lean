@@ -3,7 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoGenResMapSmulH
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverCompOfIsClosedImmersion
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGloballyGeneratedIffGeneratingSections
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsFiniteLengthOfIsArtinianRingAnnihilator
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsoOfEqualSublinesShortExact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalEqOfNonneg
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RestrictPullbackIsoHomAppPullbackSections
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppInjectiveOfFrames
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagExtensionOfSubbundle
 
@@ -43,27 +46,7 @@ theorem cmp_hom_app (g' : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w : g' ≫ π =
   simp only [Category.assoc, reassoc_of% this, eqToHom_trans, eqToHom_refl]
   simp [← Functor.map_comp_assoc]
 
-def IsLineQuot (π : Y ⟶ B) (E : B.Modules) {Q : Y.Modules} (p : (Scheme.Modules.pullback π).obj E ⟶ Q) : Prop :=
-  IsVB Q 1 ∧ Epi p ∧ ∀ (T : Scheme.{0}) (g : T ⟶ B) (Q' : T.Modules) (p' : (Scheme.Modules.pullback g).obj E ⟶ Q'),
-    IsVB Q' 1 → Epi p' → ∃! g' : T ⟶ Y, ∃ (w : g' ≫ π = g) (e : (Scheme.Modules.pullback g').obj Q ⟶ Q'),
-      (Scheme.Modules.pullback g').map p ≫ e = (cmp g' π w).hom.app E ≫ p'
-
-theorem isLineQuot_id {E : B.Modules} (hE : IsVB E 1) : IsLineQuot (𝟙 B) E (𝟙 _) :=
-  ⟨hE.pullback _, inferInstance, fun _ g _ p' _ _ =>
-    ⟨g, ⟨Category.comp_id g, (cmp g (𝟙 B) (Category.comp_id g)).hom.app E ≫ p', by simp⟩,
-      fun _ ⟨w, _⟩ => (Category.comp_id _).symm.trans w⟩⟩
-
 variable {R : Type} [CommRing R] {N : ℕ} {L Q : T.Modules}
-
-def Rel (φ : T ⟶ PSpace R N) (s : Fin (N + 1) → (L ⟶ Q)) : Prop :=
-  ∀ (i j : Fin (N + 1)) (W : T.Opens) (h : W ≤ φ ⁻¹ᵁ ProjSpace.chart R N i) (t : Γ(L, W)),
-    (s j).app W t = ProjSpace.pullRatio φ W i h j • (s i).app W t
-
-def Gen {ι : Type} (s : ι → (L ⟶ Q)) : Prop :=
-  ∀ x : T, ∃ (j : ι) (W : T.Opens), x ∈ W ∧ ∀ V : T.Opens, V ≤ W → Function.Bijective ((s j).app V)
-
-def JointEpi {ι : Type} (s : ι → (L ⟶ Q)) : Prop :=
-  ∀ (Z : T.Modules) (a : Q ⟶ Z), (∀ j, s j ≫ a = 0) → a = 0
 
 end GlobalTheory.LineQuot
 

@@ -6,11 +6,12 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOn
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExteriorSquareOfSymmetricTensorRelationsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommAlgFunctorCohomologyCupAnticommStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyH1AxesPrimitiveRankStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCohomologyStructureSheafIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCohomologyTrivialBundleAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KunnethCupTensorInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupIdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyH1AxesPrimitiveRank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCohomologyStructureSheafIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechCohomologyTrivialBundleAbelian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KunnethCupTensorInjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupId
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 
 set_option autoImplicit false
 
@@ -52,7 +53,7 @@ variable {K : Type} [Field K]
 
 theorem overPullbackStructureSheaf_cohomology_cup {Y A : Over (Sp K)} (f : Y ⟶ A) (a b : HO1 A.hom) :
     structureSheafH2Pullback f (cup (OAff A.hom) a b) = cup (OAff Y.hom) (pO1 f a) (pO1 f b) :=
-  ((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).2.1 K K A.left Y.left A.hom Y.hom (RingHom.id K) f.left (ovw f)).1 a b
+  ((_root_.GlobalTheory.AbCoh.pull_comp_cup_id).2.1 K K A.left Y.left A.hom Y.hom (RingHom.id K) f.left (ovw f)).1 a b
 
 variable (A : Over (Sp K)) [GrpObj A]
 
@@ -81,7 +82,7 @@ theorem defect_eq (hp : StructureSheafH1Primitive A) (t : HO1 A.hom ⊗[K] HO1 A
 theorem mixed_injective [IsSeparated A.hom] [QuasiCompact A.hom] (u : HO1 A.hom ⊗[K] HO1 A.hom)
     (hu : TensorProduct.lift (mixed A) u = 0) : u = 0 := by
   obtain ⟨n, x, y, rfl⟩ := exists_fin_sum_tmul u
-  refine GlobalTheory.T.kunneth_cup_tensor_injective K A A inferInstance inferInstance inferInstance inferInstance n x y ?_
+  refine _root_.GlobalTheory.Kunneth.cup_tmul_injective K A A inferInstance inferInstance inferInstance inferInstance n x y ?_
   simpa [map_sum] using hu
 
 theorem symm_of_prim [IsSeparated A.hom] [QuasiCompact A.hom] (hp : StructureSheafH1Primitive A) (t : HO1 A.hom ⊗[K] HO1 A.hom)
@@ -104,10 +105,10 @@ theorem GlobalTheory.AbCoh.wedgeO_noPrimO2 : ∀ (K : Type) [Field K] [IsAlgClos
   haveI : IsProper A.hom := hab.proper
   haveI hsep : IsSeparated A.hom := inferInstance
   haveI hqc : QuasiCompact A.hom := inferInstance
-  obtain ⟨-, hprim, -⟩ := GlobalTheory.T.abelian_variety_h1_axes_primitive_rank K A g hab hsm
+  obtain ⟨-, hprim, -⟩ := _root_.GlobalTheory.AbCoh.Axes.main K A g hab hsm
   obtain ⟨n, D, hD, hcov⟩ := GlobalTheory.AbCoh.WedgeSq.exists_fin_affine_cover A.hom
-  obtain ⟨⟨e1⟩, ⟨e2⟩⟩ := GlobalTheory.T.cech_cohomology_structure_sheaf_iso K A.left A.hom (Fin n) D hsep hD hcov
-  obtain ⟨hfin, h1, h2⟩ := GlobalTheory.T.cech_cohomology_trivial_bundle_abelian K A g hab hsm (Fin n) D hD hcov
+  obtain ⟨⟨e1⟩, ⟨e2⟩⟩ := _root_.GlobalTheory.AbCoh.hO_equiv_cech K A.left A.hom (Fin n) D hsep hD hcov
+  obtain ⟨hfin, h1, h2⟩ := _root_.GlobalTheory.AbCoh.FDim.cechLB_triv_finrank_one_two K A g hab hsm (Fin n) D hD hcov
   haveI := hfin 1
   haveI := hfin 2
   haveI : Module.Finite K (HO1 A.hom) := Module.Finite.equiv e1.symm

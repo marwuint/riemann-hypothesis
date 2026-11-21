@@ -1,9 +1,10 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CoefMove
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfDualLatticeInFrameCoordinatesEq
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxIdealExactPowDvdSpanPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotPowMaximalCharPLocalCardStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxIdealExactPowDvdSpanPrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotPowMaximalCharPLocalCard
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntCastTraceEqTraceQuotientOfMemStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTraceNeZeroFiniteLocalZmodPrimePowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTraceNeZeroFiniteLocalZmodPrimePow
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj Formalism.IndefR.NX Formalism.IndefR.FWT Formalism.IndefR.Lev GlobalTheory.CoverRead GlobalTheory.TowerCov GlobalTheory.Member
 open scoped TensorProduct Matrix
 open Classical
@@ -14,11 +15,11 @@ theorem not_pow_dvd_differentIdeal_int : ∀ (L : Type) [Field L] [NumberField L
   intro L _ _ l e hl la _ hla h1 h2 hD
   haveI : Fact l.Prime := ⟨hl⟩
   haveI : la.IsMaximal := Ideal.IsPrime.isMaximal inferInstance hla
-  obtain ⟨e', J, he0, hee, hcop, hfac⟩ := GlobalTheory.T.exists_span_prime_eq_pow_mul_coprime L l e hl la h1 h2
-  obtain ⟨hchar, hfin, ϖ, hϖ, hlϖ, hcard⟩ := GlobalTheory.T.quotient_pow_finite_uniformizer_card_eq L la J l e' e' hl he0 he0 hcop hfac
+  obtain ⟨e', J, he0, hee, hcop, hfac⟩ := _root_.GlobalTheory.maxIdeal_exact_pow_dvd_span_prime L l e hl la h1 h2
+  obtain ⟨hchar, hfin, ϖ, hϖ, hlϖ, hcard⟩ := _root_.GlobalTheory.quot_pow_maximal_charP_local_card L la J l e' e' hl he0 he0 hcop hfac
   letI : Algebra (ZMod (l ^ e')) (𝓞 L ⧸ la ^ (e' * e')) := ZMod.algebra _ _
   have hnd : ¬ l ^ e' ∣ e' := fun h => (Nat.lt_pow_self hl.one_lt).not_ge (Nat.le_of_dvd he0 h)
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_trace_ne_zero_finite_local_zmod_prime_pow l e' e' (𝓞 L ⧸ la ^ (e' * e')) ϖ he0 hϖ hlϖ hcard hnd
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.LocalTraceNonzero.exists_trace_ne_zero l e' e' (𝓞 L ⧸ la ^ (e' * e')) ϖ he0 hϖ hlϖ hcard hnd
   obtain ⟨c0, rfl⟩ := Ideal.Quotient.mk_surjective c
   have hIQ : la ^ (e' * e') ⊔ J ^ e' = ⊤ := by
     have h' : IsCoprime la J := Ideal.isCoprime_iff_sup_eq.mpr hcop

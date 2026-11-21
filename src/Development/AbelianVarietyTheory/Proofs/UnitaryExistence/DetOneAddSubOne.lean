@@ -146,32 +146,6 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
 open scoped TensorProduct Matrix
 open GlobalTheory.CompRat
 
-theorem finCong_of_marks {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H) (V : HSp D)
-    (g g' : GA D V) (hL : latG V g = latG V g')
-    (hm : ∀ a ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • latG V 1, ∃ x, ∃ w ∈ latGHat V g,
-      ∃ w' ∈ latGHat V g', x - (finHom V g).1 *ᵥ finVec V a = (l.M : ℕ) • w ∧
-        x - (finHom V g').1 *ᵥ finVec V a = (l.M : ℕ) • w') : FinCong V l.M (g⁻¹ * g') := by
-  refine (finCong_iff_half D H l V _).2 (((GlobalTheory.Member.AALev.congruences_agree D V _).2 l.M _).2 fun a ha => ?_)
-  obtain ⟨x, w, hw, w', hw', e, e'⟩ := hm a ha
-  obtain ⟨-, -, -, h4, h5, -⟩ := latG_lattice_and_completion D V g
-  have h5' := (latG_lattice_and_completion D V g').2.2.2.2.1
-  have h51 := (latG_lattice_and_completion D V 1).2.2.2.2.1
-  rw [h5', ← hL, ← h5] at hw'
-  have hd := sub_mem hw hw'
-  rw [← SetLike.mem_coe, h4, ← h51] at hd
-  obtain ⟨y, hy, ey⟩ := hd
-  refine ⟨y, hy, ?_⟩
-  have hinv : ∀ z, (finHom V g⁻¹).1 *ᵥ ((finHom V g).1 *ᵥ z) = z := fun z => by
-    rw [Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one,
-      Matrix.one_mulVec]
-  have e3 : (finHom V g').1 *ᵥ finVec V a - (finHom V g).1 *ᵥ finVec V a = (l.M : ℕ) • ((finHom V g).1 *ᵥ y) := by
-    rw [ey, nsmul_sub, ← e, ← e']
-    abel
-  have e4 := congrArg (fun z => (finHom V g⁻¹).1 *ᵥ z) e3
-  simp only [Matrix.mulVec_sub, Matrix.mulVec_smul, hinv] at e4
-  rw [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]
-  exact e4
-
 theorem gLat_eq_of_finCong {D : D7} {V : HSp D} {N : ℕ} {u : GA D V} (hu : FinCong V N u) :
     gLat V u = latHat V := by
   ext z
@@ -182,27 +156,5 @@ theorem gLat_eq_of_finCong {D : D7} {V : HSp D} {N : ℕ} {u : GA D V} (hu : Fin
     refine ⟨_, PrincLevel.finCong_map (PrincLevel.finCong_inv hu) z hz, ?_⟩
     rw [Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one,
       Matrix.one_mulVec]
-
-set_option maxHeartbeats 800000 in
-
-theorem exists_finCong_det : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ h h' γ γ' k, C.Mark h k γ → C.Mark h' k γ' → ∃ u : GA D V, gLat V u = latHat V ∧ FinCong V l.M u ∧ finHom V (γ' * h') = finHom V (γ * h) * finHom V u ∧ ∃ w ∈ GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)), ((Matrix.GeneralLinearGroup.det (finHom V (u)) : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : (Af D.host.F ⊗[D.host.F] D.host.E)) - 1 = (l.M : ℕ) • w := by
-  intro D H Dw l Xo c σ V r C hC h h' γ γ' k hm hm'
-  obtain rfl : V.rank = r := C.hr
-  obtain ⟨-, hΛ, hk⟩ := hm
-  obtain ⟨-, hΛ', hk'⟩ := hm'
-  have hL : (C.M.X k).Λ = latG V (γ * h) := SetLike.ext' (hΛ.trans (Set.image_id _))
-  have hL' : (C.M.X k).Λ = latG V (γ' * h') := SetLike.ext' (hΛ'.trans (Set.image_id _))
-  have hu : FinCong V l.M ((γ * h)⁻¹ * (γ' * h')) := by
-    refine finCong_of_marks l V _ _ (hL.symm.trans hL') fun a ha => ?_
-    rw [← hC.iota.emb.2, ← Submodule.map_top, ← Submodule.map_smul''] at ha
-    obtain ⟨b, hb, rfl⟩ := ha
-    obtain ⟨w, hw, e⟩ := hk b hb
-    obtain ⟨w', hw', e'⟩ := hk' b hb
-    exact ⟨_, w, hw, w', hw', e, e'⟩
-  refine ⟨_, gLat_eq_of_finCong hu, hu, by rw [← map_mul, mul_inv_cancel_left], ?_⟩
-  obtain ⟨h1, -, h3, h4, -⟩ := latHat_eq_hat_and_gram D V
-  unfold FinCong at hu
-  rw [h1] at hu
-  exact det_sub_one_of_cong D.host.F (latC V) h3 h4 l.M (by have := l.three_le; omega) _ hu
 
 end GlobalTheory.MarkDet

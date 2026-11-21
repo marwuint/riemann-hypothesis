@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrvEqSelf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTransportEquivariantCartesianPreservesComStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTransportEquivariantCartesianPreservesCom
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -139,12 +139,12 @@ theorem trv_eigFrame : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     rw [Category.assoc, ← hact a, ← Category.assoc, h0, Category.assoc]
   obtain ⟨a, ha, huniq⟩ := e.basis τ (w₀ ≫ ψ) hwt hwe
   refine ⟨a, ?_, fun a' ha' => ?_⟩
-  · have h := GlobalTheory.T.tangentTransport_equivariant_cartesian_preserves_comb Y.t p G' ψ b.hom g hG hgb q (e.v τ) a (w₀ ≫ ψ) (e.tan τ) hwt ha
+  · have h := _root_.GlobalTheory.EqvTrans.trv_comb Y.t p G' ψ b.hom g hG hgb q (e.v τ) a (w₀ ≫ ψ) (e.tan τ) hwt ha
     rwa [htr] at h
   · obtain ⟨u, hut, huc⟩ : ∃ u : Sp (DualNumber R) ⟶ Y.t.G.left, IsTanAtG Y.t (q ≫ p) u ∧
         IsCombAtG Y.t (q ≫ p) (e.v τ) a' u :=
       ⟨(tv (∑ i, a' i • tanOf (e.tan τ i))).left, isTan_tv _, (isComb_iff (fun i => tanOf (e.tan τ i)) a' _).2 rfl⟩
-    have h1 := GlobalTheory.T.tangentTransport_equivariant_cartesian_preserves_comb Y.t p G' ψ b.hom g hG hgb q (e.v τ) a' u (e.tan τ) hut huc
+    have h1 := _root_.GlobalTheory.EqvTrans.trv_comb Y.t p G' ψ b.hom g hG hgb q (e.v τ) a' u (e.tan τ) hut huc
     have h2 : GlobalTheory.EqvTrans.trv hG.1 g q u = w' := GlobalTheory.EqvTrans.isCombAtG_unique h1 ha'
     have h3 : u = w₀ ≫ ψ := GlobalTheory.EqvTrans.trv_injective hG.1 hgb.1 q hut.1 hwt.1 (h2.trans htr.symm)
     exact huniq a' (h3 ▸ huc)

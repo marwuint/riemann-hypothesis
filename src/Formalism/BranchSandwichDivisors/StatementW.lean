@@ -44,41 +44,8 @@ def BranchMap : Prop :=
         io h = ((cCap (lamZ lam) (fun i => (sg i : ℤ)) : ℤ) : R) • xiB R lam sg) ∧
       (∀ f, ∀ m ∈ (io f).support, rowDeg m (Fin.last n) = ∑ i, (lam i - sg i))
 
-def BranchIsometry : Prop :=
-  ∀ (n : ℕ) (sg : Fin n → ℕ), Antitone sg →
-    ∀ io : ↥(dualWeyl ℂ n n sg) →ₗ[ℂ] MvPolynomial (Fin (n + 1) × Fin n) ℂ,
-      (∀ (g : Matrix (Fin n) (Fin n) ℂ) (f f' : ↥(dualWeyl ℂ n n sg)),
-        (f' : MvPolynomial (Fin n × Fin n) ℂ) = rowAct ℂ g (f : MvPolynomial (Fin n × Fin n) ℂ) →
-          io f' = rowAct ℂ (extM ℂ g) (io f)) →
-      ∀ f h : ↥(dualWeyl ℂ n n sg), (h : MvPolynomial (Fin n × Fin n) ℂ) = hw ℂ le_rfl sg →
-        fockF (io f) (io f) * fockF (h : MvPolynomial (Fin n × Fin n) ℂ) h =
-          fockF (io h) (io h) * fockF (f : MvPolynomial (Fin n × Fin n) ℂ) f
-
 def zScale (n : ℕ) (t : ℝ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ :=
   Matrix.diagonal fun a => if a = Fin.last n then (t : ℂ) else 1
-
-def BranchScale : Prop :=
-  ∀ (n k d : ℕ) (t : ℝ) (F : MvPolynomial (Fin (n + 1) × Fin k) ℂ),
-    (∀ m ∈ F.support, rowDeg m (Fin.last n) = d) →
-      rowAct ℂ (zScale n t) F = ((t : ℂ) ^ d) • F ∧
-      fockF (rowAct ℂ (zScale n t) F) (rowAct ℂ (zScale n t) F) = ((t : ℂ) ^ (2 * d)) * fockF F F
-
-def BranchNormT : Prop :=
-  ∀ (n : ℕ) (lam sg : Fin n → ℕ) (t : ℝ), Interlace (lamZ lam) (fun i => (sg i : ℤ)) →
-    ∀ io : ↥(dualWeyl ℂ n n sg) →ₗ[ℂ] MvPolynomial (Fin (n + 1) × Fin n) ℂ,
-      (∀ (g : Matrix (Fin n) (Fin n) ℂ) (f f' : ↥(dualWeyl ℂ n n sg)),
-        (f' : MvPolynomial (Fin n × Fin n) ℂ) = rowAct ℂ g (f : MvPolynomial (Fin n × Fin n) ℂ) →
-          io f' = rowAct ℂ (extM ℂ g) (io f)) →
-      (∀ h : ↥(dualWeyl ℂ n n sg), (h : MvPolynomial (Fin n × Fin n) ℂ) = hw ℂ le_rfl sg →
-        io h = ((cCap (lamZ lam) (fun i => (sg i : ℤ)) : ℤ) : ℂ) • xiB ℂ lam sg) →
-      (∀ f, ∀ m ∈ (io f).support, rowDeg m (Fin.last n) = ∑ i, (lam i - sg i)) →
-      rowAct ℂ (zScale n t) (hw ℂ (Nat.le_succ n) lam) = hw ℂ (Nat.le_succ n) lam ∧
-      ∀ f : ↥(dualWeyl ℂ n n sg),
-        fockF (rowAct ℂ (zScale n t) (io f)) (rowAct ℂ (zScale n t) (io f)) *
-            fockF (hw ℂ le_rfl sg) (hw ℂ le_rfl sg) =
-          ((t : ℂ) ^ (2 * ∑ i, (lam i - sg i))) *
-            (((cCap (lamZ lam) (fun i => (sg i : ℤ)) : ℤ) : ℂ) ^ 2) *
-            fockF (xiB ℂ lam sg) (xiB ℂ lam sg) * fockF (f : MvPolynomial (Fin n × Fin n) ℂ) f
 
 def XiNorm : Prop :=
   ∀ (n : ℕ) (lam sg : Fin n → ℕ), Interlace (lamZ lam) (fun i => (sg i : ℤ)) →

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcTorsionValuesNormsIntegralPositive
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EvalTwistTxEqZeroOfAevalArcTx
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaSeriesIdentityPrincipleComplexPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemThetaPointsOfClosureCosetConditionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemThetaPointsOfClosureCosetCondition
 
 namespace GlobalTheory.Ex.OneLevel
 section Arith
@@ -162,7 +162,7 @@ theorem exists_full_theta : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTh
   have hm2 : 0 < (n ^ j) ^ 2 := pow_pos hm.pos 2
   have hdN : ¬ H.d ∣ (n ^ j) ^ 2 := fun h => hd (by
     rw [(Nat.prime_dvd_prime_iff_eq H.d_prime hn).1 (H.d_prime.dvd_of_dvd_pow (H.d_prime.dvd_of_dvd_pow h))])
-  obtain ⟨o, e1, e2, e3⟩ := GlobalTheory.T.mem_thetaPoints_of_closure_coset_condition h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K n j S.A.ρ
+  obtain ⟨o, e1, e2, e3⟩ := _root_.GlobalTheory.Ex.ClosurePoint.exists_full_of_closure_of_cosets h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K n j S.A.ρ
     (S.A.I.ζ ((n ^ j) ^ 2)) (S.v (n ^ j)) hn ho hj
     (compat_of_not_dvd H hm2 hdN (IsPrimitiveRoot.coe_units_iff.2 (S.A.I.ζ_prim _ hm2)) S.A.ρ_sq)
     (fun G hG => by_contra fun hne => S.base.not_allC_false fun C _ _ _ _ _ gam u c1 c2 c3 c4 => hne (by

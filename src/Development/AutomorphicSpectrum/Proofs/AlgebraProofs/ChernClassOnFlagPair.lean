@@ -13,9 +13,12 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNu
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinFlagPairIff
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinJoinPointModel
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinJoinPointVertDiv
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommuteStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelValueIndependentStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelRootIndependentStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommute
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Statements
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelValueIndependent
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitBis
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelRootIndependent
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitAlt
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -68,7 +71,7 @@ theorem main : ChernClassOnFlagPair.Statement :=
       JoinPointVerticalDivisor.proof)
     (JoinPointNumbers.proof JoinPointIdeal.proof JoinDivCycle.proof JoinVariety.proof
       JoinIntNum.proof PairNumberJoinLeft.verticalComponentFibre)
-    GlobalTheory.T.flag_model_value_independent GlobalTheory.T.flag_model_root_independent plainPolynomialPairNumber.proof rootPolyNum
-    (PairNumberExpansionIndependence.proof GlobalTheory.T.vertical_divisors_commute) dividedDifferenceExpansion.proof
+    _root_.GlobalTheory.CompanionTheory.CommAlg.FlagModelValue.main _root_.GlobalTheory.CompanionTheory.Ar.RootIndep.main plainPolynomialPairNumber.proof rootPolyNum
+    (PairNumberExpansionIndependence.proof _root_.GlobalTheory.CompanionTheory.CommAlg.VerticalDivisors.verticalDivisorsCommute) dividedDifferenceExpansion.proof
 
 end GlobalTheory.CompanionTheory.ChernFlagPairRootPolynomial

@@ -15,8 +15,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DiscreteSeriesUpqExistsIffDsExists
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConjStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParametersBoundedEigenfunctionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConj
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParametersBoundedEigenfunction
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsParamFunVIffIsSysParamDOfLevel
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
@@ -45,7 +46,7 @@ theorem val_hecke_of_mem_partFull_one {D : D7} {c : Com D} {s : PiLocalization�
 
 theorem partPar : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ForStage D fun c _ s => ∀ (u : s.CC c) (e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ), PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ partFull c.θ s.M (s.J : Set (GA D s.V)) 1 c.S e → (u ≠ 0 → ∃ B, IsPar u B) ∧ ∀ w B, PiLocalization₂.val u w ≠ 0 → ParFun c s (PiLocalization₂.val u w) B → IsPar u B := by
   intro hP D c hc j hj s hs u e hu
-  obtain ⟨hval, hconj⟩ := GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hP D c hc j hj s hs
+  obtain ⟨hval, hconj⟩ := _root_.GlobalTheory.EvenOnto.ConjVal.values_conj_hecke hP D c hc j hj s hs
   have hsph : SphOff (s.J : Set (GA D s.V)) 1 c.S := hs.sph
   have hlev : ∀ v, ∀ k ∈ (s.J : Set (GA D s.V)), ∀ g, (fun g => conj (PiLocalization₂.val u v g)) (g * k) =
       (1 : GA D s.V → ℂ) k * (fun g => conj (PiLocalization₂.val u v g)) g := by
@@ -82,7 +83,7 @@ theorem partPar : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ForStage
     refine ⟨(Complex.continuous_conj.comp (hval u v).1), fun γ hγ g => ?_, C, fun g => ?_⟩
     · simp only [(hval u v).2.2.1 γ hγ g]
     · simpa using hC g
-  obtain ⟨B, hB, -⟩ := GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D s.V (s.J : Set (GA D s.V)) 1 c.S hsph
+  obtain ⟨B, hB, -⟩ := _root_.GlobalTheory.FinZeta.ParamBound.exists_param_bounded D s.V (s.J : Set (GA D s.V)) 1 c.S hsph
     _ hbdd (hne v hv) (hlev v) (fun P d => conj (e P d)) (hhk v)
   have hpf : ParFun c s (PiLocalization₂.val u v) B := hB
   exact ⟨B, second v B hv hpf⟩

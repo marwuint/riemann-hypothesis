@@ -19,10 +19,6 @@ theorem sMajFlag : SMajFlag E := by
   intro r X x x' hx hx' h
   exact (((orthonormalFlagTranslate_holds (E := E)) r X).2.2 x hx x' hx' h).2
 
-theorem majorant_chart_of_normControl (h : OrthonormalChartNormControl (E := E)) : SMajXZ E := by
-  intro r X x hx ho ρ hρ hρ1 Z hZ τ v
-  exact ((h r X x hx ho ρ hρ hρ1).1 Z hZ).2.2 τ v
-
 theorem sCmp_of (hm : SMajXZ E) : SCmp E := by
   intro r X x0 hx0 ho ρ' h1 h2 Z1 hZ1 z hz hsf τ v
   have hdom : X.xZ x0 Z1 ∈ X.dom := OrthonormalChartBounds.xZ_mem_dom X hx0 ho (by linarith)

@@ -126,9 +126,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {F F' : ∀ u, Forms0 D u}
 
-theorem SameCar_symm (h : SameCar F F') : SameCar F' F := fun u =>
-  ⟨(h u).1.symm, (h u).2.1.symm, (h u).2.2.1.symm, (h u).2.2.2.1.symm, (h u).2.2.2.2.symm⟩
-
 set_option maxHeartbeats 4000000 in
 
 def trCar (h : SameCar F F') {X : HidaSetting D} {u} (t : Transport X u (F u)) : Transport X u (F' u) :=
@@ -181,66 +178,6 @@ def satCar (h : SameCar F F') (p : RowPk D) (s : p.SAt F) : p.SAt F' :=
   { P := packCar h s.P, S := restCar h s.S, t := s.t, c := s.c, c_pos := s.c_pos, see := s.see, ev := s.ev, rowJ := s.rowJ }
 
 end Mv
-
-section Slot
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.L2.DIV Formalism.MainNotions Formalism.L2.Forms NumberField
-  IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.R3.Tr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-set_option maxHeartbeats 4000000 in
-
-def SatMv : Prop := ∀ (B : Base) (C : Cols B) (a : Late B C) (p : RowPk a.D) (F0 : ∀ u, Forms0 a.D u)
-  (N : ∀ u, Submodule (𝓞 a.D.what₂.LL) (a.D.div.Nu u).V) (hh : a.D.what₂.Word → ℝ) (F₁ : ∀ u, Forms0 (reL a (New.ofDiv a.D N hh)).D u),
-  SameL a (New.ofDiv a.D N hh) F0 F₁ → p.SAt F0 → Nonempty (SAtL a (New.ofDiv a.D N hh) p.R p.F p.eE F₁)
-
-set_option maxHeartbeats 8000000 in
-
-theorem sxMv_of (H : SatMv) : SxMv := by
-  intro K B f T w Z Wt p0 r col N h p0' t col' e ⟨s⟩
-  obtain ⟨F₁, hF⟩ := exists_sameF_ofDiv (D := Late.D Z) ((N)) ((h)) fun u => (col.C.forms u).to0
-  obtain ⟨s'⟩ := H B w.C Z (pkOf r) (fun u => (col.C.forms u).to0) ((N)) ((h)) ((F₁)) ((hF)) (cast (sx_eq r col) s)
-  have c := sameStd B f T w Z (New.ofDiv (Late.D Z) ((N)) ((h))) col ((col')) ((F₁)) ((hF))
-  have e' : pkOf t = (pkOf r).up Z Z.S N h := eq_of_heq e
-  rw [sx_eq t col', e']
-  exact ⟨satCar (D := Late.D (upL Z Z.S N h)) (F := (F₁)) ((c)) ((pkOf r).up Z Z.S N h) ((s'))⟩
-
-theorem satMv : SatMv := fun B C a p F0 N hh F₁ hS s =>
-  let ⟨s', _⟩ := sAtL_exists_ofDiv B C a p.G' p.Pl0 p.T p.A p.Ks p.R p.F F0 p.eE s N hh F₁ hS
-  ⟨s'⟩
-
-theorem sxMv : SxMv := sxMv_of satMv
-
-set_option maxHeartbeats 4000000 in
-
-theorem up_eE {B : Base} {C : Cols B} (a : Late B C) (S' : SStage B C a.W) (N : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V)
-    (h : B.Word → ℝ) (p : RowPk a.D) : (p.up a S' N h).G' = p.G' ∧ (p.up a S' N h).Ks = p.Ks ∧ HEq (p.up a S' N h).eE p.eE :=
-  ⟨rfl, rfl, (HEq.refl p.eE)⟩
-
-variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
-
-set_option maxHeartbeats 4000000 in
-
-theorem fam_up (Z : w.Lt) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (hX : B.fields.Ok)
-    (U Xg tr) : famM (a := Z) (upL Z S' N h) (R3.famR (w.st Z) w.I hX U Xg tr).A = (R3.famR (w.st (upL Z S' N h)) w.I hX U Xg tr).A :=
-  (Eq.refl (R3.famR (w.st (upL Z S' N h)) w.I hX U Xg tr).A)
-
-set_option maxHeartbeats 4000000 in
-
-theorem face_up (Z : w.Lt) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (hX : B.fields.Ok)
-    (U Xg tr) : face (a := Z) (upL Z S' N h) (R3.face0 (w.st Z) w.I hX U Xg tr).lv2 =
-      ((R3.face0 (w.st (upL Z S' N h)) w.I hX U Xg tr).lv2) := (Eq.refl (R3.face0 (w.st (upL Z S' N h)) w.I hX U Xg tr).lv2)
-
-def fixH (𝒮 : Slots) (c : ℝ) : Slots :=
-  { 𝒮 with Rx := fun K B f T w Z Wt p0 r => 𝒮.Rx K B f T w Z Wt p0 r × PLift (Z.V.div.h B.u₀ = c) }
-
-set_option maxHeartbeats 4000000 in
-
-theorem not_lv3Mv_fixH {𝒮 : Slots} {Z : w.Lt} (l : Lv3 𝒮 K w Z) : ¬ LevelThreeCondition (fixH 𝒮 (Z.V.div.h B.u₀)) := fun H => by
-  obtain ⟨l', -⟩ := H K B f T w Z { l with rx := (l.rx, ⟨rfl⟩) } Z.S (fun u => (Z.V.div.Nu u).L) fun _ => Z.V.div.h B.u₀ + 1
-  have : Z.V.div.h B.u₀ + 1 = Z.V.div.h B.u₀ := l'.rx.2.down
-  linarith
-
-end Slot
 
 end GlobalTheory.Mem.SRe.CarModel
 

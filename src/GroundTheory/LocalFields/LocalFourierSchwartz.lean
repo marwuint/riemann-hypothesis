@@ -132,12 +132,6 @@ theorem integrable_of_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwartzBru
 variable {ψ} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
 include hψ hψ1
 
-omit hψ1 in
-theorem integrable_mul_char_of_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwartzBruhat K)
-    (y : K) : Integrable (fun x => f x * (ψ (x * y) : ℂ)) μ :=
-  (hf.1.continuous.mul ((continuous_subtype_val.comp hψ).comp
-    (continuous_id.mul continuous_const))).integrable_of_hasCompactSupport hf.2.mul_right
-
 theorem localFourier_eq_zero_of_notMem {f : K → ℂ} {N : ℤ}
     (hfN : ∀ x, ∀ h ∈ valBall K N, f (x + h) = f x) {y : K}
     (hy : y ∉ valBall K (addCharConductor ψ - N)) : localFourier μ ψ f y = 0 := by

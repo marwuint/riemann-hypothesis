@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPermPeriodSpacesComplexAut
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RegularFunctionConstOfFiniteValuesAnyLevelStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCoeffFieldIdempotentsPeriodSpacesAnyLevelStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RegularFunctionConstOfFiniteValuesAnyLevel
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCoeffFieldIdempotentsPeriodSpacesAnyLevel
 
 noncomputable section
 
@@ -33,7 +33,7 @@ theorem exists_map (F : FamilyUnif Xo σ ty) (hD : 1 ≤ D.p + D.q) (hσ : σ (b
   refine ⟨π, fun i P hP => ?_⟩
   obtain ⟨i', P', hP', hu'⟩ := hon i P hP
   obtain ⟨c₀⟩ : Nonempty (Coeff l) := inferInstance
-  obtain ⟨c, -, hc⟩ := GlobalTheory.T.exists_coeffField_idempotents_periodSpaces_anyLevel E H D l Xo σ g ty F hD hσ hty hA c₀
+  obtain ⟨c, -, hc⟩ := _root_.GlobalTheory.CompRat.exists_coeff_idempotents_any_level E H D l Xo σ g ty F hD hσ hty hA c₀
   obtain ⟨e, he, hv⟩ := hc (π i)
   let j : c.F →+* ℂ := (τ.symm : ℂ →+* ℂ).comp c.F.val.toRingHom
   have hj : (τ : ℂ →+* ℂ).comp j = c.F.val.toRingHom := RingHom.ext fun a => τ.apply_symm_apply _
@@ -51,7 +51,7 @@ theorem exists_map (F : FamilyUnif Xo σ ty) (hD : 1 ≤ D.p + D.q) (hσ : σ (b
       (by rw [Category.assoc, pullback.lift_fst, h]) (by rw [Category.assoc, pullback.lift_snd, ConjPermutes.spMap_comp, hj]),
       valAt'_spMap_comp]
     rfl
-  have hconst := GlobalTheory.T.regularFunction_const_of_finite_values_any_level E H D l Xo σ g ty F hD hσ hty c j e {0, 1} (Set.toFinite _)
+  have hconst := _root_.GlobalTheory.CompRat.valAt_eq_of_finite_values_anyLevel E H D l Xo σ g ty F hD hσ hty c j e {0, 1} (Set.toFinite _)
     (fun x _ => valAt'_idem x he) i P (P₀ i) hP (hP₀ i) (pullback.lift _ _ (w P hP))
     (pullback.lift _ _ (w _ (hP₀ i))) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)
     (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)

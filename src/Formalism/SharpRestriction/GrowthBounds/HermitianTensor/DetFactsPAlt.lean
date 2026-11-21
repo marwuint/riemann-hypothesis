@@ -9,9 +9,6 @@ open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.Counti
 def genY (A : Type) [CommRing A] (r : ℕ) : Matrix (Fin r) (Fin r) (MvPolynomial (Fin r × Fin r) A) :=
   Matrix.of fun i j => X (i, j)
 
-def cofY (A : Type) [CommRing A] (r : ℕ) : MvPolynomial (Fin r × Fin r) A →ₐ[A] MvPolynomial (Fin r × Fin r) A :=
-  aeval fun v => (genY A r).adjugate v.2.rev v.1
-
 def TauP : Prop :=
   ∀ (O K : Type) [CommRing O] [IsDomain O] [CharZero O] [Field K] [Algebra O K], Function.Injective (algebraMap O K) →
     ∀ (r N e : ℕ) (α : Fin r → ℕ), 1 ≤ r → Antitone α → (∀ i, α i ≤ N) → (∀ i, e ≤ α i) → (∃ i, α i = e) →

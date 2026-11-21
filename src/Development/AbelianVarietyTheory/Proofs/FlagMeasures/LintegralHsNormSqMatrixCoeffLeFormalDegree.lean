@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IintEqEllStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralHsNormSqDoubleCosetLeFatouStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IintEqEll
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralHsNormSqDoubleCosetLeFatou
 
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
 open scoped InnerProductSpace
@@ -31,7 +31,7 @@ theorem lintegral_hsNormSq_ell_le : ∀ (k r : ℕ) {H : Type} [NormedAddCommGro
   have hbe' : (⟪ξ', be (psiGen k r z' c') π' μS' σ w₀' w₀' ξ'⟫_ℂ).re = 1 := by
     rw [hl'.2.2 w₀' hw₀' w₀' hw₀', rankOneInnerOperator_apply, inner_smul_right, hξ₁', hξ₂']
     simp
-  have hbound := GlobalTheory.T.lintegral_hsNormSq_doubleCoset_le_fatou k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' ν hν
+  have hbound := _root_.GlobalTheory.SgInf.lintegral_hsNormSq_Iint_le k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' ν hν
     w₀' hw₀' w₀ hw₀ ξ ξ'
   rw [hbe, hbe', mul_one, mul_one] at hbound
   refine le_trans (le_of_eq ?_) hbound
@@ -39,7 +39,7 @@ theorem lintegral_hsNormSq_ell_le : ∀ (k r : ℕ) {H : Type} [NormedAddCommGro
   have hreg : ∀ᵐ γ ∂ν, Matrix.of γ ∈ Greg k r z z' := ae_iff.mpr hν.2.1
   refine lintegral_congr_ae ?_
   filter_upwards [hreg] with γ hγ
-  rw [(GlobalTheory.T.iint_eq_ell_alt k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' l l' hl hl' _ hγ).2
+  rw [(_root_.GlobalTheory.SgInf.EllName.iint_eq_ell k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' l l' hl hl' _ hγ).2
     w₀ hw₀ w₀' hw₀' ξ ξ', hξ₁, hξ₂']
   simp
 

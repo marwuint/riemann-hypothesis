@@ -85,7 +85,7 @@ theorem adAt_mem (hh : IsRealPt θ h) {τ : D.what₂.Tau} {X : Matrix (Fin V.ra
 
 theorem oneP_mul (hθ : IsInfFam θ) (hh : IsRealPt θ h) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (t : ℝ) : oneP θ V τ X t * h = h * oneP θ V τ (adAt θ h τ X) t := by
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   have h1 := atTau_spec hθ V τ (GlobalTheory.SmoothAutCheck.exp_mem_UH (R.1 τ).2 hX t)
   have h2 := atTau_spec hθ V τ (GlobalTheory.SmoothAutCheck.exp_mem_UH (R.1 τ).2 (adAt_mem hh hX) t)
   refine R.2.2.1 _ (mul_mem h1.1 hh.1) _ (mul_mem hh.1 h2.1) fun τ' => ?_
@@ -134,7 +134,7 @@ theorem rTr_mem (hθ : IsInfFam θ) (hh : IsRealPt θ h) {φ : GA D V → ℂ} (
 theorem Rder_comb (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) {τ : D.what₂.Tau}
     {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (hY : Y ∈ lieAt V τ) (r s : ℝ) :
     Rder θ V τ (r • X + s • Y) φ = (r : ℂ) • Rder θ V τ X φ + (s : ℂ) • Rder θ V τ Y φ := by
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   let ψ : GlobalTheory.SmoothForms.SmF θ V := ⟨φ, (GlobalTheory.SmoothForms.smooth_iff R φ).1 hφ⟩
   let X' : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ := ⟨X, hX⟩
   let Y' : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ := ⟨Y, hY⟩
@@ -275,7 +275,7 @@ theorem isAutFunSm_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) {φ : GA D V →
     unfold rTr
     rw [mul_assoc x, mul_assoc |C|, ← mul_pow, mul_comm (normInf θ V h)]
     exact (hC _ (mul_mem hg hh.1)).trans (mul_le_mul (le_abs_self _)
-      (pow_le_pow_left₀ (normInf_nonneg _) ((GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V).1 g h) N) (pow_nonneg (normInf_nonneg _) N)
+      (pow_le_pow_left₀ (normInf_nonneg _) ((_root_.GlobalTheory.SmoothForms.normInf_mul_le_and_le_height D θ V).1 g h) N) (pow_nonneg (normInf_nonneg _) N)
       (abs_nonneg _))
 
 theorem isAutFunSm_rTr_atTau : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (φ : GA D V → ℂ), IsAutFunSm θ V φ →

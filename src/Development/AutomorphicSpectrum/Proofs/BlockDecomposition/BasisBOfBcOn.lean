@@ -1,12 +1,25 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.BasisB
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.Imports
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FilteredCohomologyRestrictionBijectiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalarMultiplicationShiftsFiltrationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedSplittingOverFieldStatement
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MemBoundariesZeroIff
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DoubleComplexMapMemTotal
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.FaceMapCompSuccAboveCastSucc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDesc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDifferentialOneInclusion
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TerminalRes
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousCochainFiltrationDecomposition
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FilteredCohomologyRestrictionBijective
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.Coords
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalarMultiplicationShiftsFiltration
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationProperty
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.InclStd
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedSplittingOverField
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZKApply
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothPullBasisFiltrationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientFiltrationBijectiveOfCoverStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothPullBasisFiltration
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientFiltrationBijectiveOfCover
+
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 
@@ -281,23 +294,23 @@ theorem main : BcOn False → KH.KIso → BasisB := by
     · exact (hW _).trans (hW _).symm
     · rw [Subsingleton.elim (∑ t, g t * algebraMap K B (φ (bs t))) 0]
       exact Ideal.zero_mem _
-  obtain ⟨S⟩ := GlobalTheory.T.graded_splitting_over_field (K := K) γ m hm
+  obtain ⟨S⟩ := _root_.GlobalTheory.CompanionTheory.GrSplitField.nonempty_grSplit (K := K) γ m hm
   have hs : 1 ≤ s := hm0.trans_le hms
   have hsB : pdP γ s = ⊥ := le_bot_iff.1 (hm ▸ Ideal.span_mono fun _ ⟨l, hl, hr, hz⟩ => ⟨l, hl, hms.trans hr, hz⟩)
   have hO : TFBase (dividedPowersBot K) 1 s := tfbase_K hs
   have hA : TFBase γ 1 s := tfbase_B (K := K) γ hsB
   have hd : ∀ α, U.d α < s := fun α => by have := hU α; omega
-  have LC := fun (i : Fin m) n r => GlobalTheory.T.scalar_multiplication_shifts_filtration (O := K) γ q 1 s 𝒱 i (S.ν i n) (S.mem i n) r
+  have LC := fun (i : Fin m) n r => _root_.GlobalTheory.CompanionTheory.LecShift.leC_shift (O := K) γ q 1 s 𝒱 i (S.ν i n) (S.mem i n) r
   have T := fun (r : ℕ) (hr : r ≤ s) => hB γ 1 s m hO hA S q 𝒱 (Or.inr ⟨not_false, ⟨U⟩, h𝒱⟩) 0 r (by positivity)
     (by exact_mod_cast hr) (fun i n => LC i n 0) (fun i n => LC i n r) j
   have hne : ∀ i : Fin m, (0 : ℤ) - (i : ℕ) ≤ 0 := fun i => by omega
   refine ⟨fun w => ?_, ?_⟩
   · refine core_basis S (fun i => zK q (TO q 1 s 𝒱) (0 - (i : ℕ)) (s - (i : ℕ)) (hne i) j) (muB γ q 1 s 𝒱 j)
-      (quoM (TS γ q 1 s 𝒱) s j).toAddMonoidHom (T s le_rfl) (fun i n x => GlobalTheory.T.smooth_pull_basis_filtration γ q 1 s 𝒱 _ _ _ _ _ _ _ j x) bs
+      (quoM (TS γ q 1 s 𝒱) s j).toAddMonoidHom (T s le_rfl) (fun i n x => _root_.GlobalTheory.CompanionTheory.BasisBase.sqC_zK γ q 1 s 𝒱 _ _ _ _ _ _ _ j x) bs
       (fun i => ?_) (quoM_bij _ s (fun T hT => hT.1.1) j) w
     obtain ⟨E, hE⟩ := zK_transport q (TO q 1 s 𝒱) (0 - (i : ℕ)) (s - (i : ℕ)) (hne i) j
     have hb : Function.Bijective (quoK q (KS q s 𝒱) ((s - (i : ℕ) : ℕ) : ℤ) j) :=
-      GlobalTheory.T.quotient_filtration_bijective_of_cover hK q U s (s - i) (fun α => by have := hU α; have := i.2; omega) (by omega) 𝒱 h𝒱 j
+      _root_.GlobalTheory.CompanionTheory.QuoK.quoK_bijective hK q U s (s - i) (fun α => by have := hU α; have := i.2; omega) (by omega) 𝒱 h𝒱 j
     have e1 : (((s - (i : ℕ) : ℕ) : ℤ)) = (s : ℤ) - (i : ℕ) := by have := i.2; omega
     rw [e1] at hb
     have : E ∘ (zK q (TO q 1 s 𝒱) (0 - (i : ℕ)) (s - (i : ℕ)) (hne i) j) = quoK q (KS q s 𝒱) ((s : ℤ) - (i : ℕ)) j :=
@@ -305,7 +318,7 @@ theorem main : BcOn False → KH.KIso → BasisB := by
     exact (Function.Bijective.of_comp_iff' E.bijective _).1 (this ▸ hb)
   · intro r hr g hg c φ hφ
     refine core_filt S (fun i => zK q (TO q 1 s 𝒱) (0 - (i : ℕ)) (r - (i : ℕ)) (hne i) j) (muB γ q 1 s 𝒱 j)
-      (quoM (TS γ q 1 s 𝒱) r j).toAddMonoidHom (T r hr) (fun i n x => GlobalTheory.T.smooth_pull_basis_filtration γ q 1 s 𝒱 _ _ _ _ _ _ _ j x) bs φ (r - c)
+      (quoM (TS γ q 1 s 𝒱) r j).toAddMonoidHom (T r hr) (fun i n x => _root_.GlobalTheory.CompanionTheory.BasisBase.sqC_zK γ q 1 s 𝒱 _ _ _ _ _ _ _ j x) bs φ (r - c)
       (fun i => ?_) g hg
     by_cases hi : r - c ≤ (i : ℕ)
     · exact Or.inl hi

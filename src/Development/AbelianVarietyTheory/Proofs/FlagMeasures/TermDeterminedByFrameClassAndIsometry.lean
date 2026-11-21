@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagFramesSameGradedDefinitePartLatticeEq
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EqCHolds
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EquivFramesSameSecondLatticeFiberProofStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EquivFramesSameSecondLatticeFiberProof
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.FibreCountOfPositions
 
 noncomputable section
@@ -207,7 +207,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 theorem injC : InjC := by
   intro D large₂ X Y u hStd W HW hEmb t₁ t₂ hN hlam hEqv h hH₁ hH₂
   obtain ⟨N, hd, hS, hS'⟩ := hN
-  obtain ⟨hEq', n, a, hnL, ha_isom, ha_gmap, ha_fix, n', hn'L, hlin⟩ := GlobalTheory.T.equivFramesSameSecondLatticeFiber_proof D large₂ X Y u hStd t₁ t₂ hlam hEqv
+  obtain ⟨hEq', n, a, hnL, ha_isom, ha_gmap, ha_fix, n', hn'L, hlin⟩ := _root_.GlobalTheory.TypeAsm.FibProof.fibC D large₂ X Y u hStd t₁ t₂ hlam hEqv
   have hXF := fixedFrameOfWord_isotropicSpan_eq (X := X) u
 
   have hI : ∀ x ∈ (F0 X u).X, (∀ v ∈ V0 (F0 X u) (Ft t₁), (HV D).B v x = 0) → x ∈ (Ft t₁).X := by

@@ -383,12 +383,6 @@ theorem frob_mem_R (l : ℕ) [Fact l.Prime] {k : ℝ} (hk : 0 ≤ k) {f : K⟦X�
       (fun _ _ h => pow_le_pow_of_le_one (rad_nonneg l k) (rad_le_one l hk) h) f)
     ((mem_R.1 hf).comp (Nat.tendsto_div_const_atTop (Fact.out : l.Prime).ne_zero))
 
-theorem R_mono (l : ℕ) [Fact l.Prime] {k k' : ℝ} (h : k ≤ k') : R O K l k ≤ R O K l k' := fun f hf =>
-  mem_R.2 <| squeeze_zero (fun n => mul_nonneg (norm_nonneg _) (pow_nonneg (rad_nonneg l k') n))
-    (fun n => mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (rad_nonneg l k')
-      (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (Fact.out : l.Prime).one_le)
-        (by linarith)) n) (norm_nonneg _)) (mem_R.1 hf)
-
 theorem A_le_R (l : ℕ) [Fact l.Prime] {k : ℝ} (hk : 0 < k) : A O K ≤ R O K l k := fun f hf =>
   mem_R.2 <| squeeze_zero (fun n => mul_nonneg (norm_nonneg _) (pow_nonneg (rad_nonneg l k) n))
     (fun n => mul_le_of_le_one_left (pow_nonneg (rad_nonneg l k) n) (hf n))
@@ -627,15 +621,6 @@ theorem FilPre_le_Fil (e j : ℕ) : FilPre O K l e j ≤ Fil O K l e j :=
 theorem Ediv_mem_Fil (e : ℕ) [NeZero e] {j i : ℕ} (h : j ≤ i) :
     (⟨Ediv K l e i, Ediv_mem_S l e i⟩ : S O K e) ∈ Fil O K l e j :=
   FilPre_le_Fil l e j (Ideal.subset_span ⟨i, h, rfl⟩)
-
-omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] in
-theorem Fil_anti (e : ℕ) {i j : ℕ} (h : i ≤ j) : Fil O K l e j ≤ Fil O K l e i :=
-  iInf_mono fun _ => sup_le_sup_right
-    (Ideal.span_mono (by rintro x ⟨k, hk, hx⟩; exact ⟨k, h.trans hk, hx⟩)) _
-
-omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] in
-theorem Fil_zero (e : ℕ) : Fil O K l e 0 = ⊤ :=
-  (Ideal.eq_top_iff_one _).2 (FilPre_le_Fil l e 0 (Ideal.subset_span ⟨0, le_rfl, by simp [Ediv]⟩))
 
 end Padic
 

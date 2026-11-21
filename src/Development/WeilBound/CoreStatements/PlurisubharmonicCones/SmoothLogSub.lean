@@ -1,8 +1,14 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LevelFree
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LeviShift
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.OneSlot
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionMultilinearAllStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConjStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionMultilinearAll
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HermitianCombinationSmoothConj
 
 open Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cmp
 
@@ -55,12 +61,12 @@ theorem position_zero {I : Ideal (MRing J) → (n : ℕ) → (Fin n → HermLine
       fun x y hy => log_sub_lift R ht.2.1 x hy, ht.2.2.1, ht.2.2.2⟩) ?_ hw0
   · refine h.congr' ?_
     filter_upwards [hsm, hw, eventually_all.2 hev] with t h1 h2 h3
-    have := one_coord₂ GlobalTheory.T.resolution_statement_holds Link.goodProjExistsStatement_holds hI R (fun j => l j t) (A₁ t) (A₂ t) f g (w t) hP
+    have := one_coord₂ _root_.GlobalTheory.CompanionTheory.Ar.Link.resBridgeStatement_holds Link.goodProjExistsStatement_holds hI R (fun j => l j t) (A₁ t) (A₂ t) f g (w t) hP
       (fun j => (h3 j).1) h1.1 h1.2 h2.1 h2.2.1
     linarith
   · filter_upwards [hsm, hw] with t h1 h2
     refine ⟨?_, h2.2.2⟩
-    obtain ⟨w', a1, -, a2⟩ := GlobalTheory.T.line_isomorphism_defect_function K J P B e R (A₁ t) (A₂ t) f g hP.2.1 h2.1 h1.1 h1.2
+    obtain ⟨w', a1, -, a2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.defect_exists_smooth K J P B e R (A₁ t) (A₂ t) f g hP.2.1 h2.1 h1.1 h1.2
     refine (OneModel.continuous_of_smooth R.A a2).congr fun x => ?_
     have hz := R.mem x x (R.mem_U x)
     obtain ⟨u, v, huv, hu, -⟩ := OneModel.exists_pair_ne h2.1.2 hz
@@ -82,7 +88,7 @@ theorem ii_comb_snoc {II : IntersectionSystem} (hII : IsFullIntersectionSystem I
     [Fintype τ] [DecidableEq τ] (l : τ → HermLine J) (hl : ∀ a, IsSmoothHerm (l a)) (ν : Fin e → τ → ℤ) (a : τ) :
     II K J P (e + 1) (Fin.snoc (fun k => Top.combLine l (ν k)) (l a)) =
       ∑ w : Fin e → τ, (∏ k, (ν k (w k) : ℝ)) * II K J P (e + 1) (Fin.snoc (fun k => l (w k)) (l a)) := by
-  have h := GlobalTheory.T.arith_intersection_multilinear_all II hII K J P (e + 1) τ l (Fin.snoc (α := fun _ => τ → ℤ) ν (Pi.single a 1)) hP hl
+  have h := _root_.GlobalTheory.CompanionTheory.Ar.Top.intersection_combLine_expansion II hII K J P (e + 1) τ l (Fin.snoc (α := fun _ => τ → ℤ) ν (Pi.single a 1)) hP hl
   have h1 : (fun k => Top.combLine l (Fin.snoc (α := fun _ => τ → ℤ) ν (Pi.single a 1) k)) =
       Fin.snoc (α := fun _ => HermLine J) (fun k => Top.combLine l (ν k)) (l a) := by
     funext k
@@ -124,7 +130,7 @@ theorem replace_gen {II : IntersectionSystem} (hII : IsFullIntersectionSystem II
     obtain ⟨_, _, -, h⟩ := hM
     exact h.mono fun t ht => ht.1
   have hc : ∀ t, (∀ i, IsSmoothHerm (A t i)) → ∀ r, IsSmoothHerm (Top.combLine (A t) r) := fun t h r =>
-    (GlobalTheory.T.hermitian_combination_smooth_conj K J σ (A t) r).1 h
+    (_root_.GlobalTheory.CompanionTheory.Ar.Top.combLine_smooth_conj K J σ (A t) r).1 h
   let l : ℝ → Option (Option σ) → HermLine J := fun t o => o.elim (Top.combLine (A t) m) fun o' => o'.elim (M t) (A t)
   let ν : (σ → ℤ) → Option (Option σ) → ℤ := fun r o => o.elim 0 fun o' => o'.elim 0 r
   have hν : ∀ t r, Top.combLine (l t) (ν r) = Top.combLine (A t) r := fun t r => by
@@ -183,11 +189,11 @@ theorem replace_gen {II : IntersectionSystem} (hII : IsFullIntersectionSystem II
     have hl : ∀ o, IsSmoothHerm (l t o) := by
       rintro (_ | _ | a)
       exacts [hc t h1 m, h2, h1 a]
-    have s₁ := GlobalTheory.T.intersection_family_symmetric K J (II K J) (hII.1 K J) P e (fun j => if j < i then Top.combLine (A t) (n j) else
+    have s₁ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.movePositionToLast K J (II K J) (hII.1 K J) P e (fun j => if j < i then Top.combLine (A t) (n j) else
       if q j then M t else Top.combLine (A t) (n j)) i hP fun j => by
         split_ifs
         exacts [hc t h1 _, h2, hc t h1 _]
-    have s₂ := GlobalTheory.T.intersection_family_symmetric K J (II K J) (hII.1 K J) P e (fun j => if j ≤ i then Top.combLine (A t) (n j) else
+    have s₂ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.movePositionToLast K J (II K J) (hII.1 K J) P e (fun j => if j ≤ i then Top.combLine (A t) (n j) else
       if q j then M t else Top.combLine (A t) (n j)) i hP fun j => by
         split_ifs
         exacts [hc t h1 _, h2, hc t h1 _]

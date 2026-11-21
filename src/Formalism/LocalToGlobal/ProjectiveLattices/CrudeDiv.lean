@@ -35,44 +35,6 @@ theorem Lin_linForm (b b' : Fin n) (v w : Fin d → k) :
   · simp [MvPowerSeries.pderiv_X, MvPowerSeries.pderiv_C, Derivation.leibniz, Pi.single_apply,
       Prod.ext_iff, h]
 
-theorem div_ordGe_mul {a b : ℕ} {f g : PS k n d} (hf : OrdGe a f) (hg : OrdGe b g) : OrdGe (a + b) (f * g) := by
-  intro m hm
-  rw [MvPowerSeries.coeff_mul]
-  refine Finset.sum_eq_zero fun pq hpq => ?_
-  have hpq' : pq.1 + pq.2 = m := Finset.HasAntidiagonal.mem_antidiagonal.mp hpq
-  have hdeg : pq.1.degree + pq.2.degree = m.degree := by
-    rw [← hpq']
-    first
-      | exact (map_add Finsupp.degree pq.1 pq.2).symm
-      | exact (Finsupp.degree_add pq.1 pq.2).symm
-  by_cases h1 : pq.1.degree < a
-  · rw [hf _ h1, zero_mul]
-  · rw [hg _ (by omega), mul_zero]
-
-theorem div_ordGe_one : OrdGe 0 (1 : PS k n d) := fun _ hm => absurd hm (Nat.not_lt_zero _)
-
-theorem div_ordGe_pow {a : ℕ} {f : PS k n d} (hf : OrdGe a f) (e : ℕ) : OrdGe (a * e) (f ^ e) := by
-  induction e with
-  | zero => simpa using div_ordGe_one
-  | succ e ih =>
-    rw [pow_succ, Nat.mul_succ]
-    exact div_ordGe_mul ih hf
-
-theorem ordGe_aeval_monomial {ι : Type} (φ : ι → PS k n d) (hφ : ∀ i, OrdGe 1 (φ i)) (α : ι →₀ ℕ) :
-    OrdGe α.degree (MvPolynomial.aeval φ (MvPolynomial.monomial α (1 : k))) := by
-  classical
-  have key : ∀ s : Finset ι, OrdGe (∑ i ∈ s, α i) (∏ i ∈ s, φ i ^ α i) := by
-    intro s
-    induction s using Finset.induction_on with
-    | empty => simpa using div_ordGe_one
-    | insert i s hi ih =>
-      rw [Finset.sum_insert hi, Finset.prod_insert hi]
-      have h := div_ordGe_pow (hφ i) (α i)
-      rw [one_mul] at h
-      exact div_ordGe_mul h ih
-  rw [MvPolynomial.aeval_monomial, map_one, one_mul]
-  exact key α.support
-
 theorem div_Lin_aeval {ι : Type} [DecidableEq ι] (cp : ι → Fin n) (u : ι → Fin d → k) (φ : ι → PS k n d)
     (l : ι) (hl : ∀ l', Lin (cp l) (u l) (φ l') = C (if l = l' then 1 else 0)) (Q : MvPolynomial ι k) :
     Lin (cp l) (u l) (MvPolynomial.aeval φ Q) = MvPolynomial.aeval φ (MvPolynomial.pderiv l Q) := by

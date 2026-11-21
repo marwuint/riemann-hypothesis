@@ -31,9 +31,6 @@ theorem mulR_mulR (b b' : F) (x : V ⊗[Qp] F) :
     mulR Qp F LL V b (mulR Qp F LL V b' x) = mulR Qp F LL V (b * b') x := by
   simp only [← sm_one_tmul, ← sm_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
-theorem mulR_one (x : V ⊗[Qp] F) : mulR Qp F LL V 1 x = x := by
-  rw [← sm_one_tmul, ← Algebra.TensorProduct.one_def, sm_one]
-
 theorem mulR_mem_FilV {a n : ℤ} {b : F} {x : V ⊗[Qp] F} (hb : b ∈ PD.Fil a)
     (hx : x ∈ FilV PD (LL := LL) (V := V) n) :
     mulR Qp F LL V b x ∈ FilV PD (LL := LL) (V := V) (a + n) := by

@@ -83,10 +83,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHec
     simp only [eq_intCast, Int.cast_natCast]
     exact P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hM)
 
-example (Xo : Moduli Dw l) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
-    DetectAt Xo c a n ↔ ∀ g ∈ sec Xo c a n,
-      (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω), evR Xo c g y = 0) → g = 0 := Iff.rfl
-
 end Basic₂
 
 end GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection

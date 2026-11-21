@@ -81,7 +81,7 @@ private theorem mono0_of_charPol_eq_prod_of_ne_normV_pow_mul {n : ℕ} (x : WD h
   have hc : ∀ σ, (a.ρ σ).charpoly = (b.ρ σ).charpoly := by
     intro σ
     rw [← WD.charPol_mk, hx, WDRep.ofChars_ρ, charpoly_diagEnd]
-  obtain ⟨e, he⟩ := GlobalTheory.T.weilRep_equiv_of_charpoly_eq F Ω A w h na n a b hc
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.AboveL.weil_rep_equiv_of_charpoly_eq F Ω A w h na n a b hc
   have hes : ∀ σ z, e.symm (b.ρ σ z) = a.ρ σ (e.symm z) := by
     intro σ z
     apply e.injective

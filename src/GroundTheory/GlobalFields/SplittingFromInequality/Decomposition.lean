@@ -142,15 +142,6 @@ theorem stabilizer_eq_zpowers_arithFrobAt (v : HeightOneSpectrum (𝓞 K))
 
 end Frobenius
 
-section FrobeniusGeneration
-
-universe u
-
-variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
-  [IsGalois K L]
-
-end FrobeniusGeneration
-
 end
 
 end GroundTheory.Global

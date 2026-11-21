@@ -4,8 +4,6 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 
 namespace UpperTheory.V.Pa.SelmerFractionFieldBaseChange
 
-variable {l : ℕ} [Fact l.Prime] {Fm : GFrame l} {n : ℕ} {x : NP Fm n} (k : Kap x) (F : Type) [CommRing F] [Algebra x.A F]
-
 end UpperTheory.V.Pa.SelmerFractionFieldBaseChange
 
 private theorem selMap2_lemma {R S Γ : Type} [CommRing R] [CommRing S] [TopologicalSpace Γ] (I : Ideal R) (J : Ideal S)

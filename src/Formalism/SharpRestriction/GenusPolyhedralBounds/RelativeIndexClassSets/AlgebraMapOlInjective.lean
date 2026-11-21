@@ -232,8 +232,6 @@ def Fil (u : WeightFamilies.Wt D j) (a : ℕ) : Submodule (Kp X la N) (Rp X la N
 theorem mem_Fil {u : WeightFamilies.Wt D j} {a : ℕ} {f : Rp X la N} : f ∈ Fil X la w u a ↔
     f ∈ Vw X la N u ∧ ∃ k, a ≤ k ∧ sec X la w 0 ^ k * f ∈ Mon X la w u a (k - a) := Iff.rfl
 
-theorem Fil_le_Vw (u : WeightFamilies.Wt D j) (a : ℕ) : Fil X la w u a ≤ Vw X la N u := fun _ h => h.1
-
 end
 
 end Formalism.MainNotions.Gaps.EtaleWeightGaps

@@ -99,23 +99,6 @@ theorem eq_bot_or_eq_img [FiniteDimensional ℂ S] {K : Type} {ρ : Representati
     rintro _ ⟨p, v, rfl⟩
     exact (hN p).1 (h ▸ Submodule.mem_top) v
 
-def part (Alg : Submodule ℂ (S →ₗ[ℂ] F)) (A : Submodule ℂ F) : Submodule ℂ Alg :=
-  ⨅ v : S, A.comap ((LinearMap.applyₗ v).comp Alg.subtype)
-
-theorem mem_part {Alg : Submodule ℂ (S →ₗ[ℂ] F)} {A : Submodule ℂ F} {f : Alg} : f ∈ part Alg A ↔ ∀ v, f.1 v ∈ A :=
-  Submodule.mem_iInf _
-
-def partVal (Alg : Submodule ℂ (S →ₗ[ℂ] F)) (A : Submodule ℂ F) : part Alg A →ₗ[ℂ] S →ₗ[ℂ] A where
-  toFun f := f.1.1.codRestrict A (mem_part.1 f.2)
-  map_add' _ _ := LinearMap.ext fun _ => Subtype.ext rfl
-  map_smul' _ _ := LinearMap.ext fun _ => Subtype.ext rfl
-
-def partMap {Alg : Submodule ℂ (S →ₗ[ℂ] F)} {A B : Submodule ℂ F} (t : A →ₗ[ℂ] B)
-    (ht : ∀ f : part Alg A, B.subtype ∘ₗ t ∘ₗ partVal Alg A f ∈ Alg) : part Alg A →ₗ[ℂ] part Alg B :=
-  LinearMap.codRestrict _ (LinearMap.codRestrict Alg
-    ((LinearMap.llcomp ℂ S A F (B.subtype ∘ₗ t)) ∘ₗ partVal Alg A) ht)
-    fun f => mem_part.2 fun v => (t (partVal Alg A f v)).2
-
 end Abstract
 
 section Concrete
@@ -223,16 +206,6 @@ theorem V_eq_img (π : AutSub E n) {W : Wt E n} {M : Submodule ℂ (algForms W)}
 
 theorem finPart_stable (π : AutSub E n) (W : Wt E n) : ∀ k, ∀ f ∈ π.finPart W, algRep W k f ∈ π.finPart W :=
   fun k _ h => AutSub.mem_finPart.2 fun v => π.isAut.stable k _ (AutSub.mem_finPart.1 h v)
-
-section Iso
-
-variable {π π' : AutSub E n} {W : Wt E n} (e : π.finPart W ≃ₗ[ℂ] π'.finPart W) (T : π.V ≃ₗ[ℂ] π'.V)
-  (hA : π.V = img (jOf W (π.finPart W)))
-  (hT : ∀ p v (h : jOf W (π.finPart W) p v ∈ π.V), (T ⟨jOf W (π.finPart W) p v, h⟩ : UA E n → ℂ) = jOf W (π'.finPart W) (e p) v)
-
-include hA hT
-
-end Iso
 
 end Concrete
 

@@ -94,19 +94,6 @@ lemma comp_cechH (Φ : CechFamily U P P') (Ψ : CechFamily U P' P'') (n : ℕ)
   obtain ⟨σ, hσ, rfl⟩ := exists_cls x
   rfl
 
-def add (Φ Ψ : CechFamily U P P') : CechFamily U P P' where
-  φ i := Φ.φ i + Ψ.φ i
-  res_comm i j h x := by
-    simp only [AddMonoidHom.add_apply, map_add]
-    rw [Φ.res_comm, Ψ.res_comm]
-
-lemma add_cechH (Φ Ψ : CechFamily U P P') (n : ℕ) (x : GroundTheory.Arith.SchemeCoh.cechH P U n) :
-    (Φ.add Ψ).cechH n x = Φ.cechH n x + Ψ.cechH n x := by
-  obtain ⟨σ, hσ, rfl⟩ := exists_cls x
-  rw [cechH_cls, cechH_cls, cechH_cls]
-  exact cls_congr U (by funext i; rfl) _ (by
-    rw [map_add, ← cochain_d, ← cochain_d, hσ, map_zero, map_zero, add_zero])
-
 lemma cechH_congr {Φ Ψ : CechFamily U P P'} (h : ∀ {n : ℕ} (i : Fin (n + 1) → ι) x, Φ.φ i x = Ψ.φ i x)
     (n : ℕ) (x : GroundTheory.Arith.SchemeCoh.cechH P U n) : Φ.cechH n x = Ψ.cechH n x := by
   obtain ⟨σ, hσ, rfl⟩ := exists_cls x

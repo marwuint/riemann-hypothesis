@@ -3,24 +3,30 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaPartD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermInf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermOf
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatTuple
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SchwartzBruhatEqSumPure
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumQuadraticCharacterBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumFiniteAverageBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelOpenCompactStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelsNeighbourhoodBasisStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicativeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitaryStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualDenominatorBoundedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScalingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalTupleInLatticeLevelStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisjointTranslatesVolumeBoundStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumQuadraticCharacterBound
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicCharacterArchimedeanForm
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsCovolOne
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacterStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolume
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumFiniteAverageBound
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelOpenCompact
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelsNeighbourhoodBasis
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicative
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitary
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditive
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualDenominatorBounded
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScaling
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalTupleInLatticeLevel
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisjointTranslatesVolumeBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaConjInvariantStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaPosIndexStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaPosIndex
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.SiegelND
@@ -47,7 +53,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   haveI : LocallyCompactSpace (Af F) := hA1
   haveI : SecondCountableTopology (Af F) := hA2
   haveI : T2Space (Af F) := hA3
-  obtain ⟨hT1, hT2, hT3, hT4, -, -, -, hT8, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)
+  obtain ⟨hT1, hT2, hT3, hT4, -, -, -, hT8, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Af F)
   haveI : IsTopologicalRing (Af F ⊗[F] E) := hT1
   haveI : SecondCountableTopology (Af F ⊗[F] E) := hT3
   haveI : T2Space (Af F ⊗[F] E) := hT4
@@ -55,19 +61,19 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
   obtain ⟨d, ⟨b⟩⟩ : ∃ d : ℕ, Nonempty (Module.Basis (Fin d) F E) :=
     ⟨_, ⟨Module.finBasis F E⟩⟩
-  obtain ⟨N, hN, hNU⟩ := GlobalTheory.T.lattice_levels_neighbourhood_basis F E σ hCM d b n M _ (invariant_mem_nhds hQ.1 hQ.2)
-  obtain ⟨hLo, hLc⟩ := GlobalTheory.T.lattice_level_open_compact F E σ hCM d b n M N hN
+  obtain ⟨N, hN, hNU⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.latN_small F E σ hCM d b n M _ (invariant_mem_nhds hQ.1 hQ.2)
+  obtain ⟨hLo, hLc⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.latN_isOpen_isCompact F E σ hCM d b n M N hN
   set L := latN b n M N with hL
   obtain ⟨s, hs⟩ := eq_sum_cosets hQ.2 L hLo (fun x l hl => hNU hl x)
-  obtain ⟨D, hD, hDc⟩ := GlobalTheory.T.trace_dual_denominator_bounded F
-  obtain ⟨t₁, ht₁, htest⟩ := GlobalTheory.T.rational_character_kernel_scaling F E σ hCM d b ψ hψ N hN D hD hDc
-  obtain ⟨s₂, hs₂, hrat⟩ := GlobalTheory.T.rational_tuple_in_lattice_level F E d b M J n N hN
+  obtain ⟨D, hD, hDc⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.traceDual_clear_by_integer F
+  obtain ⟨t₁, ht₁, htest⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.RatTest.rat_test F E σ hCM d b ψ hψ N hN D hD hDc
+  obtain ⟨s₂, hs₂, hrat⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.RatMem.ratTuple_mem_latN F E d b M J n N hN
   have hs₂F : ((s₂ : ℕ) : F) ≠ 0 := Nat.cast_ne_zero.2 hs₂.ne'
   refine ⟨(∑ a ∈ s, ‖Q a‖) * (μ (L : Set _)).toReal, t₁ * (s₂ : F), mul_ne_zero ht₁ hs₂F, fun c => ?_⟩
   set t : F := t₁ * (s₂ : F) with ht
   set bc := hermIn (Af F) σ n c with hbc
-  obtain ⟨hp1, hp2, hp3⟩ := GlobalTheory.T.phase_continuous_unitary F E σ hCM M J n ψ hψ bc
-  obtain ⟨hq1, hq2⟩ := GlobalTheory.T.pairing_biadditive F E σ M J n ψ bc
+  obtain ⟨hp1, hp2, hp3⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.phaseB_pairB_props F E σ hCM M J n ψ hψ bc
+  obtain ⟨hq1, hq2⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairAdd.pairB_add F E σ M J n ψ bc
   set q := phaseB σ J (psiFin F ψ) bc with hq
   set B := pairB σ J (psiFin F ψ) bc with hB
   set S : Set (Fin n → Fin M → Af F ⊗[F] E) := {y | y ∈ L ∧ ∀ l ∈ L, B l y = 1} with hS
@@ -77,8 +83,8 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
 
   have hbd : ‖starLoc (Af F) σ J (psiFin F ψ) μ Q bc‖ ≤
       (∑ a ∈ s, ‖Q a‖) * √((μ (L : Set _)).toReal * (μ S).toReal) := by
-    have hw := GlobalTheory.T.gauss_sum_quadratic_character_bound _ μ L hLc hLo q B hp1 hp2 (GlobalTheory.T.phase_cocycle_bimultiplicative F E σ hCM M J hJ n ψ hψ bc) hq1 hq2
-    exact GlobalTheory.T.gauss_sum_finite_average_bound _ μ L hLc hLo q hp1 hp2 _ hw Q s hs
+    have hw := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.weyl_sq_compact_open _ μ L hLc hLo q B hp1 hp2 (_root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PhaseAdd.phaseB_add F E σ hCM M J hJ n ψ hψ bc) hq1 hq2
+    exact _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.CosetBound.twisted_integral_finite_coset_combination_bound _ μ L hLc hLo q hp1 hp2 _ hw Q s hs
 
   have hSm : MeasurableSet S := by
     have e : S = (L : Set _) ∩ ⋂ l ∈ L, (B l) ⁻¹' {1} := by
@@ -97,12 +103,12 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     exact h.symm
   set c' : Matrix (Fin n) (Fin n) E := ((t • c).1).map σ with hc'
   have hδ : delta c' = delta (t • c).1 := GlobalTheory.T.delta_conj_invariant F E σ n _
-  have hδ0 : delta c' ≠ 0 := GlobalTheory.T.delta_ne_zero' E n c'
+  have hδ0 : delta c' ≠ 0 := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Fin.delta_pos_index E n c'
   haveI hfin : Finite ((Fin n → 𝓞 E) ⧸ Kc c') := Nat.finite_of_card_ne_zero hδ0
   haveI := Fintype.ofFinite ((Fin n → 𝓞 E) ⧸ Kc c')
 
   have hcount : ((delta c' ^ M : ℕ) : ℝ≥0∞) * μ S ≤ μ (L : Set _) := by
-    have h := GlobalTheory.T.disjoint_translates_volume_bound _ μ L S hSm hSL (Fin M → (Fin n → 𝓞 E) ⧸ Kc c')
+    have h := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Count.card_mul_measure_le_of_disjoint_translates _ μ L S hSm hSL (Fin M → (Fin n → 𝓞 E) ⧸ Kc c')
       (fun φ => ratTuple J s₂ fun i => (φ i).out) (fun φ => hrat _) ?_
     · have hc : Fintype.card (Fin M → (Fin n → 𝓞 E) ⧸ Kc c') = delta c' ^ M := by
         rw [Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card]
@@ -134,7 +140,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
               · simpa [h] using hx
               · simp only [h, if_false]
                 exact (latN b n M N).zero_mem a i)
-            rw [hB, hbc, GlobalTheory.T.pairing_on_rational_tuple_formula F E σ M J hJ n (psiFin F ψ) c c₀ i₀ x s₂ _] at h1
+            rw [hB, hbc, _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairSingle.pair_single F E σ M J hJ n (psiFin F ψ) c c₀ i₀ x s₂ _] at h1
             exact h1)
         obtain ⟨o, ho⟩ := hx
         refine ⟨o, ?_⟩

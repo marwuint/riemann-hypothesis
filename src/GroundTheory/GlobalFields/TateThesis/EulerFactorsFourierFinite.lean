@@ -81,11 +81,6 @@ theorem condExp_eq_zero {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 
     χ.condExp v = 0 := by
   rw [condExp_eq, multiplicity_eq_zero.2 hv, Nat.cast_zero]
 
-theorem one_le_condExp {v : HeightOneSpectrum (𝓞 K)} (hv : v.asIdeal ∣ χ.conductor) :
-    1 ≤ χ.condExp v := by
-  rw [condExp_eq]
-  exact_mod_cast multiplicity_pos_of_dvd hv
-
 theorem finiteTestFun_add (x : FiniteAdeleRing (𝓞 K) K) {h : FiniteAdeleRing (𝓞 K) K}
     (hh : ∀ v, Valued.v (h v) ≤ exp (-χ.condExp v)) :
     χ.finiteTestFun (x + h) = χ.finiteTestFun x :=

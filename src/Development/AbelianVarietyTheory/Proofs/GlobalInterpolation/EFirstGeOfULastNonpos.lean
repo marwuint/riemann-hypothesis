@@ -64,22 +64,6 @@ theorem eFirst_ge_of_uLast_nonpos {R : Ranks} (P : HCParam R) (h : uLast P ≤ 0
   unfold eFirst
   linarith
 
-theorem eFirst_ge_of_b_le {R : Ranks} (P : HCParam R)
-    (h : P.b ⟨R.m - 1, by have := m_pos R; omega⟩ ≤ 2 * P.b ⟨0, m_pos R⟩) : (R.k : ℚ) / 2 ≤ eFirst P := by
-  have hm := R.two_le_m
-  have h1 := e_ge P (R.m - 2) (by omega)
-  have h2 := P.gap_eb ⟨R.m - 2, by omega⟩ (by simp only; omega)
-  have e : (⟨R.m - 2 + 1, by omega⟩ : Fin R.m) = ⟨R.m - 1, by omega⟩ := Fin.ext (by simp only; omega)
-  simp only [e] at h2
-  have h3 := P.gap_be ⟨0, m_pos R⟩
-  have h4 : (0 : ℚ) ≤ ((R.m - 2 : ℕ) : ℚ) * ((R.t : ℚ) + 3) := by positivity
-  have h5 : (R.k : ℚ) ≤ R.t := by
-    have := R.rank_add_five_le
-    exact_mod_cast (by omega : R.k ≤ R.t)
-  have h6 : (0 : ℚ) ≤ R.t := by positivity
-  unfold eFirst at h1 ⊢
-  linarith
-
 variable {D : D7} {u : D.what₂.Word}
 
 theorem bTop_cast (X : Ch D u) (τ : D.what₂.Tau) :
@@ -132,17 +116,6 @@ theorem b'_pos (s : Scale) : 0 < s.b' := by
   unfold Scale.b' Scale.a Scale.b Scale.X'
   positivity
 
-theorem w''_le_b (s : Scale) (n : ℕ) (hn : 0 < n) : s.w'' n ≤ s.b := by
-  have hx : 0 < s.x := by linarith [s.one_lt_alt]
-  have hb : 0 < s.b := Real.exp_pos _
-  have hX : 1 ≤ s.X' := Real.one_le_exp (by positivity)
-  have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
-  unfold Scale.w'' Scale.b' Scale.a
-  rw [div_div, div_le_iff₀ (by positivity)]
-  have h1 : 1 ≤ s.X' * n := one_le_mul_of_one_le_of_one_le hX hn'
-  have h2 := mul_le_mul_of_nonneg_left h1 (mul_pos hx hb).le
-  nlinarith
-
 theorem uLast_le (L : SizeData₂ D) (τ : D.what₂.Tau) (hτ : τ ∈ tops D) :
     uLast (D.hc τ) ≤ -(((D.R.k : ℚ) - 1) / 2) := by
   have h1 := (mem_tops τ).1 hτ
@@ -158,90 +131,6 @@ theorem uLast_le (L : SizeData₂ D) (τ : D.what₂.Tau) (hτ : τ ∈ tops D) 
     linarith
   exact_mod_cast h5
 
-theorem w''_le_eFirst (L : SizeData₂ D) (τ : D.what₂.Tau) (hτ : τ ∉ tops D) :
-    L.sc.w'' D.R.n ≤ ((eFirst (D.hc τ) : ℚ) : ℝ) := by
-  have e : wj D 1 τ = ((eFirst (D.hc τ) : ℚ) : ℝ) := by
-    unfold wj eFirst
-    rw [dif_pos (show 1 - 1 < D.R.m from m_pos _)]
-  rw [← e]
-  by_cases h : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces
-  · exact (w''_le_b L.sc _ (by unfold Ranks.n; positivity)).trans (L.win_thick 1 le_rfl (m_pos _) τ h).1
-  · exact (L.win_thin 1 le_rfl (m_pos _) τ ⟨(D.eTau τ).2, fun h' => hτ ((mem_tops τ).2 h'), h⟩).1
-
-theorem signLaw_of_le (L : SizeData₂ D) (h : (D.R.k : ℝ) ≤ 2 * L.sc.w'' D.R.n) : SignLaw D.hc (· ∈ tops D) := by
-  refine ⟨uLast_le L, fun τ => ?_⟩
-  by_cases hτ : τ ∈ tops D
-  · exact eFirst_ge_of_uLast_le _ (uLast_le L τ hτ)
-  · have h1 := w''_le_eFirst L τ hτ
-    have h2 : (((D.R.k : ℚ) / 2 : ℚ) : ℝ) ≤ ((eFirst (D.hc τ) : ℚ) : ℝ) := by
-      push_cast
-      linarith
-    exact_mod_cast h2
-
-theorem wtSigns_of_le (L : SizeData₂ D) (h : (D.R.k : ℝ) ≤ 2 * L.sc.w'' D.R.n) (X : Ch D u) : TwColumn.WtSigns X :=
-  (wtSigns_iff X).2 (signLaw_of_le L h)
-
-theorem wtSigns_of_par : ∀ (D : D7) (L : SizeData₂ D), Formalism.MainNotions.GL3Columns.WTPar D L →
-    ∀ (u : D.what₂.Word) (X : Ch D u), TwColumn.WtSigns X := fun D L h _ X =>
-  wtSigns_of_le L (by
-    have h1 := h.k4
-    have h2 : (0 : ℝ) ≤ D.R.k := by positivity
-    linarith) X
-
-theorem wtSigns_of_sizeBm (L : SizeData₂ D) (h : Formalism.MainNotions.SizeBm L) (X : Ch D u) : TwColumn.WtSigns X :=
-  (wtSigns_iff X).2 ⟨uLast_le L, fun τ => eFirst_ge_of_b_le _ (by exact_mod_cast h τ (m_pos _))⟩
-
-theorem wtSigns_of_sizesAt (L : SizeData₂ D) (h : Formalism.MainNotions.SizesAt L) (X : Ch D u) : TwColumn.WtSigns X :=
-  wtSigns_of_sizeBm L h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 X
-
-theorem wtSigns_of_params (L : SizeData₂ D) (P : ParameterChoice' D L) (X : Ch D u) : TwColumn.WtSigns X :=
-  (wtSigns_iff X).2 ⟨uLast_le L, fun τ => eFirst_ge_of_b_le _ (P.bm_le τ (m_pos _))⟩
-
-section Chosen
-
-open GlobalTheory.Mem.Num
-
-theorem signLaw_of_inAt (C : Formalism.MainNotions.Inhab.FC) (s : Scale) {R : Ranks} (H : Host R) (a b : R.A → ℤ) (δ : ℕ → Bool)
-    (hb : ∀ t ∈ H.TT, 0 ≤ b t) {ι : Type} (g : ι → R.GG) (hc : ι → HCParam R)
-    (h : ∀ τ, ∃ h : (inAt C s H a b δ (g τ)).OK R, hc τ = (inAt C s H a b δ (g τ)).hc R h) :
-    SignLaw hc fun τ => g τ ∈ H.topPlaces := by
-  have hk := R.m_add_three_le_k
-  have hu : ∀ τ, uLast (hc τ) = ((inAt C s H a b δ (g τ)).Uk : ℚ) + 1 / 2 := fun τ => by
-    obtain ⟨h1, h2⟩ := h τ
-    rw [h2]
-    show (((inAt C s H a b δ (g τ)).uZ R (R.k - 1) : ℤ) : ℚ) + 1 / 2 = _
-    unfold HCIn.uZ
-    rw [if_neg (by omega), if_pos (by omega)]
-  refine ⟨fun τ hτ => ?_, fun τ => eFirst_ge_of_uLast_nonpos _ ?_⟩
-  · obtain ⟨t, ht, e⟩ := Chosen.top_ex H hτ
-    have h1 : (0 : ℚ) ≤ (b t : ℚ) := by exact_mod_cast hb t ht
-    obtain ⟨c, hc2⟩ := R.k_even
-    have h2 : R.k / 2 = c := by omega
-    have h3 : (R.k : ℚ) = c + c := by exact_mod_cast hc2
-    have h4 : (inAt C s H a b δ (g τ)).Uk = -b t - (c : ℤ) := by
-      simp only [inAt, if_pos hτ, h2]
-      rw [e, Chosen.iota_inv]
-    rw [hu, h4, h3]
-    push_cast
-    linarith
-  · have h1 : ((inAt C s H a b δ (g τ)).Uk : ℚ) ≤ -1 := by exact_mod_cast (h τ).1.2.2.2.1
-    rw [hu]
-    linarith
-
-theorem wtSigns_of_dChosen {C : Formalism.MainNotions.Inhab.FC} {s : Scale} {a b : D.R.A → ℤ} (h : DChosen C s D a b)
-    (X : Ch D u) : TwColumn.WtSigns X := by
-  have hb : ∀ t ∈ D.host.TT, 0 ≤ b t := fun t ht => by
-    have h1 := (b'_pos s).le.trans (h.wt t ht).2.1
-    exact_mod_cast h1
-  have h1 := signLaw_of_inAt C s D.host a b (Formalism.MainNotions.wordBits D D.u₀) hb (fun τ => (D.eTau τ : D.R.GG)) D.hc
-    fun τ => by rw [← D.hcW_base]; exact h.hc D.u₀ τ
-  exact (wtSigns_iff X).2 ⟨fun τ hτ => h1.1 τ ((mem_tops τ).1 hτ), h1.2⟩
-
-theorem wtSigns_of_lChosen {C : Formalism.MainNotions.Inhab.FC} {L : SizeData₂ D} (h : LChosen C L) (X : Ch D u) : TwColumn.WtSigns X :=
-  wtSigns_of_dChosen h.d X
-
-end Chosen
-
 open GlobalTheory.Mem
 
 def BaseSigns (B : Base) : Prop := SignLaw B.hc (· ∈ B.wts.tops)
@@ -253,41 +142,5 @@ theorem wtSigns_assemble_iff (B : Base) (C : Cols B) (W : RowsRest B C) (V : Div
     (mem_tops (D := assemble B C W V S N G) τ).trans (B.mem_wts_tops τ).symm
   exact (wtSigns_iff (D := assemble B C W V S N G) X).trans
     (and_congr (forall_congr' fun τ => imp_congr (e τ) Iff.rfl) Iff.rfl)
-
-open GlobalTheory.Mem.Num in
-
-theorem baseSigns_of_inAt (B : Base) (C : Formalism.MainNotions.Inhab.FC) (s : Scale) (a b : B.R.A → ℤ) (δ : ℕ → Bool)
-    (hb : ∀ t ∈ B.host.TT, 0 ≤ b t)
-    (h : ∀ τ : Tau B.R, ∃ h : (inAt C s B.host a b δ (τ : B.R.GG)).OK B.R,
-      B.hc τ = (inAt C s B.host a b δ (τ : B.R.GG)).hc B.R h) : BaseSigns B := by
-  have h1 := signLaw_of_inAt C s B.host a b δ hb (fun τ : Tau B.R => (τ : B.R.GG)) B.hc h
-  exact ⟨fun τ hτ => h1.1 τ ((B.mem_wts_tops τ).1 hτ), h1.2⟩
-
-def shift {R : Ranks} (P : HCParam R) (z : ℤ) : HCParam R where
-  u i := P.u i + z
-  v i := P.v i + z
-  b j := P.b j - z
-  e j := P.e j - z
-  u_gt_v i := by linarith [P.u_gt_v i]
-  v_gt_u i := by linarith [P.v_gt_u i]
-  u_last_gt h h' := by linarith [P.u_last_gt h h']
-  gap_be j := by linarith [P.gap_be j]
-  gap_eb j h := by linarith [P.gap_eb j h]
-  e_int j := (P.e_int j).elim fun y hy => ⟨y - z, by rw [hy]; push_cast; ring⟩
-  u_half i := (P.u_half i).elim fun y hy => ⟨y + z, by rw [hy]; push_cast; ring⟩
-  v_int i := (P.v_int i).elim fun y hy => ⟨y + z, by rw [hy]; push_cast; ring⟩
-  b_int j := (P.b_int j).elim fun y hy => ⟨y - z, by rw [hy]; push_cast; ring⟩
-
-theorem exists_shift_not {R : Ranks} (P : HCParam R) :
-    ∃ z : ℤ, -(((R.k : ℚ) - 1) / 2) < uLast (shift P z) ∧ eFirst (shift P z) < (R.k : ℚ) / 2 := by
-  obtain ⟨z, hz⟩ := exists_int_gt (max (eFirst P) (1 - uLast P))
-  have h1 := (le_max_left _ _).trans_lt hz
-  have h2 := (le_max_right _ _).trans_lt hz
-  have h3 : (0 : ℚ) ≤ R.k := by positivity
-  refine ⟨z, ?_, ?_⟩
-  · show _ < uLast P + z
-    linarith
-  · show eFirst P - z < _
-    linarith
 
 end GlobalTheory.LvT.WtSign

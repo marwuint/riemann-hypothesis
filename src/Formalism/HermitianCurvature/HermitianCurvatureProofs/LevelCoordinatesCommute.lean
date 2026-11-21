@@ -837,11 +837,3 @@ theorem Formalism.FourierDecayAlt.P.level_coordinates_commute : Formalism.Fourie
   exact ⟨fun Y a b => Formalism.FourierDecayAlt.P.NFx1.TC.t_op_comm X Y a b l i,
     fun j => (Formalism.FourierDecayAlt.P.NFx1.APL.op_fn X l i j).symm⟩
 
-theorem Formalism.FourierDecayAlt.P.relations_core_and_norms : Formalism.FourierDecayAlt.NF.RelIsCoreNorm := by
-  intro P A _ _ _ d
-  unfold Formalism.FourierDecayAlt.Q.NFData.Rel Formalism.FourierDecayAlt.NF.RelCore Formalism.FourierDecayAlt.NF.RelNorm
-  constructor
-  · rintro ⟨h1, h2, h3, h4, h5, h6⟩
-    exact ⟨⟨h1, h2, h3, h4, h5⟩, h6⟩
-  · rintro ⟨⟨h1, h2, h3, h4, h5⟩, h6⟩
-    exact ⟨h1, h2, h3, h4, h5, h6⟩

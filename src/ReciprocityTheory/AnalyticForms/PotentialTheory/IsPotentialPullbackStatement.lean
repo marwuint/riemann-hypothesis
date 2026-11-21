@@ -32,12 +32,6 @@ def PshShiftStatement : Prop :=
     (Ω : LocPot X), IsPotential A Ω → IsPosPot A Ω → ∀ w : X → ℝ, A.Smooth w →
       ∃ C : ℝ, IsPsh A (LocPot.ofFun w + Ω.rsmul C)
 
-def RegularAtlasStatement : Prop :=
-  ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X),
-    ∃ B : FinHolAtlas e X, A.Compatible B ∧
-      (∀ j, Metric.closedBall (0 : Fin e → ℂ) 2 ⊆ (B.chart j).target) ∧
-      ∀ x, ∃ j, x ∈ (B.chart j).source ∧ B.chart j x ∈ Metric.ball (0 : Fin e → ℂ) 1
-
 def SNCInducedAtlasStatement : Prop :=
   ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas (e + 1) X) (L : LocPot X) (s : X → X → ℂ) {r : ℕ} (m : Fin r → ℕ)
@@ -122,13 +116,6 @@ def MIntNonnegStatement : Prop :=
     (∀ i, IsPotential A (Φ i)) → (∀ i, IsPsh A (Φ i)) → ∀ g : X → ℝ, (∀ x, 0 ≤ g x) →
       0 ≤ mInt A Φ g
 
-def MIntMeasureStatement : Prop :=
-  ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X]
-    [BorelSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X), (∀ i, IsPotential A (Φ i)) →
-    ∃ μ ν : Measure X, IsFiniteMeasure μ ∧ IsFiniteMeasure ν ∧
-      ∀ g : X → ℝ, Measurable g → MIntegrable A Φ g →
-        Integrable g μ ∧ Integrable g ν ∧ mInt A Φ g = ∫ x, g x ∂μ - ∫ x, g x ∂ν
-
 def MaMeasureStatement : Prop :=
   ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X]
     [BorelSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X), (∀ i, IsPotential A (Φ i)) →
@@ -141,11 +128,6 @@ def MaMeasureMonoStatement : Prop :=
     (A : FinHolAtlas e X) (Φ Θ : Fin e → LocPot X), (∀ i, IsPotential A (Φ i)) →
     (∀ i, IsPsh A (Φ i)) → (∀ i, IsPotential A (Θ i)) → (∀ i, IsPsh A (Θ i)) →
       maMeasure A Φ ≤ maMeasure A (fun i => Φ i + Θ i)
-
-def LocDensPosStatement : Prop :=
-  ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X),
-    (∀ i, IsPotential A (Φ i)) → (∀ i, IsPosPot A (Φ i)) →
-      ∀ j, ∀ y ∈ (A.chart j).target, 0 < locDens A Φ j y
 
 def AnalyticNullStatement : Prop :=
   ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (S : Set X),
@@ -186,13 +168,6 @@ def LogNormIntegrableStatement : Prop :=
     IsPotential A L → IsSection A L s → IsSNC A L s m W → ∀ Φ : Fin e → LocPot X,
     (∀ i, IsPotential A (Φ i)) → MIntegrable A Φ (logNormSec L s)
 
-def PoincareLelongCurveStatement : Prop :=
-  ∀ {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas 1 X)
-    (L : LocPot X) (s : X → X → ℂ) {r : ℕ} (m : Fin r → ℕ) (p : Fin r → X),
-    Function.Injective p → IsPotential A L → IsSection A L s → IsSNC A L s m (fun k => {p k}) →
-    ∀ v : X → ℝ, A.Smooth v →
-      mInt A ![LocPot.ofFun v] (logNormSec L s) = ∑ k, (m k : ℝ) * v (p k) - mInt A ![L] v
-
 def PoincareLelongStatement : Prop :=
   ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas (e + 1) X) (L : LocPot X) (s : X → X → ℂ) {r : ℕ} (m : Fin r → ℕ)
@@ -202,19 +177,6 @@ def PoincareLelongStatement : Prop :=
       mInt A (Fin.cons (LocPot.ofFun v) Φ) (logNormSec L s) =
         ∑ k, (m k : ℝ) * mInt (B k) (fun i => (Φ i).pullback Subtype.val continuous_subtype_val)
             (v ∘ Subtype.val) - mInt A (Fin.cons L Φ) v
-
-def PushForwardStatement : Prop :=
-  ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
-    (Φ : Fin e → LocPot X), (∀ i, IsPotential A (Φ i)) → ∀ (q : X → Fin e → ℂ) (T S : Set X),
-    IsClosed T → T ⊆ S → A.IsAnalyticSubset S → interior S = ∅ →
-    (∀ i, A.HoloOn Tᶜ (fun x => q x i)) →
-    (∀ x ∉ S, ∀ j, x ∈ (A.chart j).source →
-      LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) (A.chart j x) :
-        (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) ≠ 0) →
-    (∀ y, (q ⁻¹' {y} \ S).Finite) →
-    ∀ g : X → ℝ, MIntegrable A Φ g →
-      Integrable (fun y => ∑ᶠ x ∈ q ⁻¹' {y} \ S, g x * pushDens A Φ q x) ∧
-        mInt A Φ g = ∫ y, ∑ᶠ x ∈ q ⁻¹' {y} \ S, g x * pushDens A Φ q x
 
 def LocDensPullbackStatement : Prop :=
   ∀ {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas e X)

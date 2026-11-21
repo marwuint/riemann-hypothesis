@@ -45,13 +45,6 @@ def Presents (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.La �
     (∀ x : D.La, φ ((1 : ℝ) ⊗ₜ[ℤ] x) = P x) ∧ (∀ v, φ (J v) = Complex.I • φ v) ∧
       ∀ (a : 𝓞 E) v, φ (actR D a v) = tyAct ty a (φ v)
 
-def IsPeriodMap (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) : Prop :=
-  IsTypeFn D ty ∧ ∃ J ∈ domain D, Presents D ty P J
-
-def IsHolFamily (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
-    (B : Set V) (Pf : V → (D.La →+ (Fin g → ℂ))) : Prop :=
-  (∀ b ∈ B, IsPeriodMap D ty (Pf b)) ∧ ∀ x : D.La, DifferentiableOn ℂ (fun b => Pf b x) B
-
 theorem domain_nonempty (D : Datum H) : (domain D).Nonempty := by
   obtain ⟨J, h1, h2, h3, h4⟩ := D.dom
   have key := fun a : 𝓞 E => h4 a (actR D a) (sigTrace D a) (fun x => rfl) rfl
@@ -60,28 +53,6 @@ theorem domain_nonempty (D : Datum H) : (domain D).Nonempty := by
   apply Complex.ext
   · simp
   · simp; ring
-
-theorem IsPeriodMap.map_smul {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
-    (h : IsPeriodMap D ty P) (a : 𝓞 E) (x : D.La) : P (a • x) = tyAct ty a (P x) := by
-  obtain ⟨-, J, -, φ, h1, -, h3⟩ := h
-  rw [← h1, ← h1, ← h3]
-  rfl
-
-theorem Presents.unique {D : Datum H} {g : ℕ} {ty ty' : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
-    {J J' : ℝ ⊗[ℤ] D.La →ₗ[ℝ] ℝ ⊗[ℤ] D.La} (h : Presents D ty P J) (h' : Presents D ty' P J') : J = J' := by
-  obtain ⟨φ, h1, h2, -⟩ := h
-  obtain ⟨φ', h1', h2', -⟩ := h'
-  have e : ∀ v, φ v = φ' v := by
-    intro v
-    induction v using TensorProduct.induction_on with
-    | zero => simp
-    | tmul r x =>
-      have : r ⊗ₜ[ℤ] x = r • ((1 : ℝ) ⊗ₜ[ℤ] x) := by simp [TensorProduct.smul_tmul']
-      rw [this, map_smul, map_smul, h1, h1']
-    | add u v hu hv => simp [hu, hv]
-  refine LinearMap.ext fun v => ?_
-  apply φ.injective
-  rw [h2, e (J' v), h2', e]
 
 end Period
 
@@ -93,18 +64,6 @@ def HolOn (B : Set V) (y : V → (Sp ℂ ⟶ X)) : Prop :=
   ∀ (U : X.Opens), ∀ b ∈ B, ⊤ ≤ y b ⁻¹ᵁ U →
     (∀ᶠ b' in 𝓝[B] b, ⊤ ≤ y b' ⁻¹ᵁ U) ∧
       ∀ f : Γ(X, U), DifferentiableWithinAt ℂ (fun b' => valAt' (y b') U f) B b
-
-def HolOnOver {R : Type} [CommRing R] (s : X ⟶ Sp R) (β : R →+* ℂ) (B : Set V) (y : V → (Sp ℂ ⟶ X)) : Prop :=
-  (∀ b ∈ B, y b ≫ s = spMap β) ∧ HolOn B y
-
-def valEps (v : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens) (h : ⊤ ≤ v ⁻¹ᵁ U) (f : Γ(X, U)) : DualNumber ℂ :=
-  (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((v.appLE U ⊤ h).hom f)
-
-def IsDerivAlong {g : ℕ} (F : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (w : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ X) : Prop :=
-  spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = F 0 ∧
-    ∀ (U : X.Opens) (h : ⊤ ≤ v ⁻¹ᵁ U),
-      (∀ᶠ t : ℂ in 𝓝 0, ⊤ ≤ F (t • w) ⁻¹ᵁ U) ∧
-        ∀ f : Γ(X, U), HasDerivAt (fun t : ℂ => valAt' (F (t • w)) U f) (valEps v U h f).snd 0
 
 end Hol
 
@@ -140,10 +99,6 @@ def IsThetaFrame (L : RigLB G) (B : Set V) (y : V → (Sp ℂ ⟶ S))
     (fr : L.L.ι → V → (Fin g → ℂ) → ℂ) : Prop :=
   IsRigFrame L B y ex fr ∧
     ∀ b ∈ B, ∃ s : (L.L.pull (pullback.fst G.hom (y b))).Sec, IsFibreFn L.L (y b) (ex b) (fun i => fr i b) s (θ b)
-
-def IsThetaFamily (L : RigLB G) (B : Set V) (y : V → (Sp ℂ ⟶ S))
-    (ex : ∀ b : V, (Fin g → ℂ) → (Over.mk (y b) ⟶ G)) (θ : V → (Fin g → ℂ) → ℂ) : Prop :=
-  ∃ fr, IsThetaFrame L B y ex θ fr
 
 end Theta
 

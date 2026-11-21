@@ -274,24 +274,24 @@ theorem val_img {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCo
     (hz : z ∈ mcPts (mCoordIdeal y')) {w : (Σ k, ι k) → ℂ} (himg : IsImg Cv z w) (k : K) :
     ∃ (e : Φ') (s : ι k → Φ') (t : ℂ), e ≠ 0 ∧ t ≠ 0 ∧ ∀ i,
       transPt Cv ⟨k, i⟩ = e * s i ∧ IsValueAt y' (s i) z (t * w ⟨k, i⟩) := by
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M'
-  obtain ⟨-, g2, -⟩ := GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CPts.main K' ι' Φ' y' Ψ N j M'
+  obtain ⟨-, g2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CPts.main K ι Φ y Ψ N j M
   obtain ⟨F', hF', hG'⟩ := h2 _ (h1 z hz)
   obtain ⟨z₁, ho₁, hnorm⟩ := FibreCount.exists_normal_base M'.blk F'.c z fun k => FibreCount.chart_ne (hG'.1 k)
   have hz₁ := mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal y') ho₁ hz
   have hG₁ : M'.GoodAt F' (mCoordIdeal (basePart M'.blk z₁)) := by
     rw [FibreCount.mCoordIdeal_eq_of_orbit (FibreCount.basePart_orbit M'.blk ho₁)]; exact hG'
   obtain ⟨h, hh⟩ := (h3 F' hF' z₁ (h1 z₁ hz₁) hG₁ hnorm).1 hz₁
-  have hv := GlobalTheory.T.flag_cover_base_point_maps_to_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ (h1 z₁ hz₁)
+  have hv := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.comp_v_mem_mcPts K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ (h1 z₁ hz₁)
   obtain ⟨F, hF, hG⟩ := g2 _ hv
   obtain ⟨z₀, ho, hb, hfl⟩ := himg z₁ ho₁ F' F hF' hF hG₁ hG h hh
   obtain ⟨c, hc, ec⟩ := blocks_of_orbit ho k
   have hblk : ∃ (e : Φ') (s : ι k → Φ') (t : ℂ), e ≠ 0 ∧ t ≠ 0 ∧ ∀ i,
       transPt Cv ⟨k, i⟩ = e * s i ∧ IsValueAt y' (s i) z₁ (t * z₀ ⟨k, i⟩) := by
     by_cases hk : ∀ p, M.blk p ≠ some k
-    · exact GlobalTheory.T.flag_cover_base_block_value K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv z₁ z₀ ⟨k, hk⟩ hz₁ hb
+    · exact _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.transPt_block_base K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv z₁ z₀ ⟨k, hk⟩ hz₁ hb
     · obtain ⟨p, hp⟩ : ∃ p, M.blk p = some k := by simpa using hk
-      exact GlobalTheory.T.flag_cover_frames_lift_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv z₁ z₀ F' F h p k hz₁ hF' hF hG₁ hG hh hfl hb hp
+      exact _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.BStep.main K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv z₁ z₀ F' F h p k hz₁ hF' hF hG₁ hG hh hfl hb hp
   obtain ⟨e, s, t, he, ht, hs⟩ := hblk
   refine ⟨e, s, t * c, he, mul_ne_zero ht hc, fun i => ⟨(hs i).1, ?_⟩⟩
   rw [mul_assoc, ← ec]
@@ -299,7 +299,7 @@ theorem val_img {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCo
 
 theorem ratio_mem {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M) [CharZero Φ']
     (h : ∀ k, ∃ i, y' ⟨k, i⟩ ≠ 0) (k : K) (m m' : ι k) : transPt Cv ⟨k, m⟩ / transPt Cv ⟨k, m'⟩ ∈ blockFnField y' := by
-  rw [GlobalTheory.T.flag_cover_block_field_eq K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv h]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.blockFnField_pair_transPt K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv h]
   exact IntermediateField.subset_adjoin _ _ ⟨⟨.inl k, m⟩, ⟨.inl k, m'⟩, rfl, rfl⟩
 
 theorem graph_alt {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M) {τ : Ψ} {a b : Fin N} {k₀ : K}
@@ -382,11 +382,11 @@ theorem graph_alt {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : Flag
         rw [← l₀] at this
         exact this
       · obtain ⟨c, hc⟩ := hz.1 k
-        obtain ⟨hy0, hval⟩ := GlobalTheory.T.coordinate_ratio_value_at_point _ _ _ w' z k c hzL hc
+        obtain ⟨hy0, hval⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio _ _ _ w' z k c hzL hc
         exact ⟨w' ⟨k, c⟩, fun i => w' ⟨k, i⟩ / w' ⟨k, c⟩, (z ⟨k, c⟩)⁻¹, hy0, inv_ne_zero hc,
           fun i => ⟨(mul_div_cancel₀ _ hy0).symm, hval i⟩⟩
     choose e s t he ht hs using hblk
-    refine GlobalTheory.T.scaled_coordinates_value_at_point _ _ _ _ _ (pairV wT w') w' z (pairV w z) e (fun q => s q.1 q.2) t hzL ?_ he ht
+    refine _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.Spec.mem_mcPts_of_specialise _ _ _ _ _ (pairV wT w') w' z (pairV w z) e (fun q => s q.1 q.2) t hzL ?_ he ht
       (fun q => (hs q.1 q.2).1) (fun q => (hs q.1 q.2).2)
     rintro (k | k)
     · exact hw.1 k

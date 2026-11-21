@@ -1,10 +1,10 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleLocalGlobalPropertiesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ContDiffOnChartGlobalWhittakerCoefficientStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PrimitiveVectorLatticeRescaleAlmostAllStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalPrimitiveVectorCompactRescaleStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArchimedeanPrimitiveVectorCompactRescaleStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleLocalGlobalProperties
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ContDiffOnChartGlobalWhittakerCoefficient
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PrimitiveVectorLatticeRescaleAlmostAll
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalPrimitiveVectorCompactRescale
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArchimedeanPrimitiveVectorCompactRescale
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -31,17 +31,17 @@ theorem unimodular_compact_mod_units : ∀ (F E : Type) [Field F] [NumberField F
   intro F E _ _ _ _ _ σ hCM M
   haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
   let b := Module.finBasis F E
-  obtain ⟨-, almM, glueM, cptM⟩ := GlobalTheory.T.adelic_tuple_local_global_properties F E σ hCM _ b 1 M
-  obtain ⟨ext1, alm1, glue1, -⟩ := GlobalTheory.T.adelic_tuple_local_global_properties F E σ hCM _ b 1 1
-  obtain ⟨Ωi, hΩi, hi⟩ := GlobalTheory.T.archimedean_primitive_vector_compact_rescale F E σ hCM M
-  choose Ωv hΩv hv using GlobalTheory.T.local_primitive_vector_compact_rescale F E σ hCM M
+  obtain ⟨-, almM, glueM, cptM⟩ := _root_.GlobalTheory.CompanionTheory.SW.Glue.glue_main F E σ hCM _ b 1 M
+  obtain ⟨ext1, alm1, glue1, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Glue.glue_main F E σ hCM _ b 1 1
+  obtain ⟨Ωi, hΩi, hi⟩ := _root_.GlobalTheory.CompanionTheory.SW.PrimInf.unimodular_mod_units_inf F E σ hCM M
+  choose Ωv hΩv hv using _root_.GlobalTheory.CompanionTheory.SW.PrimV.exists_compact_unimodular_vectors_mod_units F E σ hCM M
   obtain ⟨good, hgoodEv, hgood⟩ : ∃ good : HeightOneSpectrum (𝓞 F) → Prop,
       (∀ᶠ v in Filter.cofinite, good v) ∧ ∀ v, good v →
         ∀ y : Fin 1 → Fin M → Fv F v ⊗[F] E, (∃ z : Fin M → Fv F v ⊗[F] E, z ⬝ᵥ y 0 = 1) →
           ∃ (a : (Fv F v ⊗[F] E)ˣ) (z : Fin 1 → Fin M → Fv F v ⊗[F] E),
             (a : Fv F v ⊗[F] E) • y ∈ latV b v ∧ z ∈ latV b v ∧
               z 0 ⬝ᵥ ((a : Fv F v ⊗[F] E) • y) 0 = 1 :=
-    ⟨_, GlobalTheory.T.primitive_vector_lattice_rescale_almost_all F E σ hCM _ b M, fun _ h => h⟩
+    ⟨_, _root_.GlobalTheory.CompanionTheory.SW.PrimGood.exists_primitive F E σ hCM _ b M, fun _ h => h⟩
   classical
   obtain ⟨Cv, hCg, hCb⟩ : ∃ Cv : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin 1 → Fin M → Fv F v ⊗[F] E),
       (∀ v, good v → Cv v = latV b v) ∧ (∀ v, ¬ good v → Cv v = Ωv v) :=
@@ -49,7 +49,7 @@ theorem unimodular_compact_mod_units : ∀ (F E : Type) [Field F] [NumberField F
   have hCcpt : ∀ v, IsCompact (Cv v) := by
     intro v
     by_cases h : good v
-    · rw [hCg v h]; exact (GlobalTheory.T.contDiffOn_chart_globalWhittakerCoefficient F E σ hCM _ b 1 M v).1
+    · rw [hCg v h]; exact (_root_.GlobalTheory.CompanionTheory.SW.LatCpt.latV_compact_open F E σ hCM _ b 1 M v).1
     · rw [hCb v h]; exact hΩv v
   have hClat : ∀ᶠ v in Filter.cofinite, Cv v ⊆ latV b v :=
     hgoodEv.mono fun v h => (hCg v h).le

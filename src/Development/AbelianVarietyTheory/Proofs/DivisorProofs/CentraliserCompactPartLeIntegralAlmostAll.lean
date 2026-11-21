@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalPointsIntegralAlmostAll
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqSumPowOfCommuteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EntryMemSubringOfTraceGramUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqSumPowOfCommute
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EntryMemSubringOfTraceGramUnit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetTracePowGramNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceMemOfPowBddStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedEntriesOfIsCompactClosureZpowersUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceMemOfPowBdd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedEntriesOfIsCompactClosureZpowersUnitary
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -60,9 +60,9 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
       simpa [hloc] using this
     have hpow : ∀ k : ℕ, (s ^ (k : ℤ)).1.1 = x ^ k := by
       intro k; rw [zpow_natCast]; simp [hx]
-    obtain ⟨c, hcx⟩ := GlobalTheory.T.exists_eq_sum_smul_pow_of_commute_of_separable gw x hsep hxc
-    refine GlobalTheory.T.entry_mem_subring_of_trace_gram_unit (Ov E w) gw x c hcx hgwO (fun j => ?_) hdw hdwi
-    refine GlobalTheory.T.trace_mem_of_mul_pow_entries_mem E w n _ a ha fun k i l => ?_
+    obtain ⟨c, hcx⟩ := _root_.GlobalTheory.SepCommutant.exists_eq_sum_pow_of_commute gw x hsep hxc
+    refine _root_.GlobalTheory.TraceGram.entry_mem_of_trace_gram (Ov E w) gw x c hcx hgwO (fun j => ?_) hdw hdwi
+    refine _root_.GlobalTheory.trace_mem_of_pow_bdd E w n _ a ha fun k i l => ?_
     have hcm : Commute x (gw ^ (j : ℕ)) := (Commute.pow_right hxc (j : ℕ))
     rw [hcm.mul_pow, ← pow_mul, Matrix.mul_apply, Finset.mul_sum]
     refine (Ov E w).sum_mem fun m _ => ?_
@@ -71,7 +71,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
   rw [cptPart, Subgroup.closure_le]
   rintro t ⟨ht, hc⟩
   have ht' : t * locPt w γ = locPt w γ * t := ht
-  obtain ⟨a, ha, hb⟩ := GlobalTheory.T.bounded_entries_of_isCompact_closure_zpowers_unitary E n w t hc
+  obtain ⟨a, ha, hb⟩ := _root_.GlobalTheory.BddCpt.bdd_entries_of_isCompact_closure_zpowers E n w t hc
   have e1 := key t ht' ⟨a, ha, hb⟩
   have e2 := key t⁻¹ ((show Commute t (locPt w γ) from ht').inv_left).eq
     ⟨a, ha, fun k i j => by rw [_root_.inv_zpow']; exact hb (-k) i j⟩

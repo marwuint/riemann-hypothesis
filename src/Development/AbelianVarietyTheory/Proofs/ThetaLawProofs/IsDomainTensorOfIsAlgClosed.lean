@@ -7,9 +7,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.MapsAtLeA
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.SymplecticCharacters.OneEqSpTranslZero
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueIndependentNormalFormStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueEqUnitSmoothConnectedBaseStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsUnitThetaKeyRuleSmoothBaseStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueIndependentNormalForm
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueEqUnitSmoothConnectedBase
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsUnitThetaKeyRuleSmoothBase
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.StalkOfAppLEEq
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DualNumberRingHomExt
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyPBRing
@@ -178,12 +178,12 @@ theorem val_eq_root (hL : Out.Laws) (hU : ThetaUnifAV) (hI : Key.Chi.InversionSt
     exact κ.isUnit.map ψ
   obtain ⟨r, rfl⟩ := hru
   rw [← hTq q rfl]
-  refine GlobalTheory.T.thetaFrame_value_eq_unit_smooth_connected_base hL hU hI B yB n r T q₀ hn hT (fun p => ?_) ?_ q
+  refine _root_.GlobalTheory.RootConst.value_eq_unit_of_pow_eq hL hU hI B yB n r T q₀ hn hT (fun p => ?_) ?_ q
   · obtain ⟨z, hz, hu⟩ := hT p
     rw [hκ _ z _ (GlobalTheory.keyPB_trans _ _ _ y yB z ψ _ hyB hz) hu, ← map_pow, hr]
     rfl
   · obtain ⟨z, hz, hu⟩ := hT q₀
-    exact GlobalTheory.T.thetaFrame_value_independent_normalForm hU hI z _ _ hu (h₀ z (GlobalTheory.keyPB_trans _ _ _ y yB z ψ _ hyB hz))
+    exact _root_.GlobalTheory.NormalUnique.thetaFrame_value_unique hU hI z _ _ hu (h₀ z (GlobalTheory.keyPB_trans _ _ _ y yB z ψ _ hyB hz))
 
 theorem val_equivariant : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → (∃ N : ℕ → ℕ, (∀ g, 1 ≤ N g) ∧ KeyRule N 1 charHalf) → (∀ x : KeyIn ℂ, ∃ (k : Type) (_ : Field k) (_ : NumberField k) (S : Type) (_ : CommRing S) (_ : Algebra k S) (y : KeyIn S) (s : S →+* ℂ) (s₀ : S →ₐ[k] k) (t₀ : k), Algebra.Smooth k S ∧ (∀ (K : Type) [Field K] [Algebra k K], IsDomain (TensorProduct k K S)) ∧ KeyPB x y s ∧ ∀ (e : k →+* ℂ) (x₀ : KeyIn ℂ), KeyPB x₀ y (e.comp s₀.toRingHom) → (∃ (τ M : Matrix (Fin x₀.P.g) (Fin x₀.P.g) ℂ) (a b : Fin x₀.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x₀ τ M a b c ∧ e t₀ = M.det ^ 4 / c ^ 8)) → ∀ (f : ℂ →+* ℂ) (x x' : KeyIn ℂ) (t t' : ℂ), KeyPB x' x f → (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t = M.det ^ 4 / c ^ 8) → (∃ (τ M : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ) (a b : Fin x'.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x' τ M a b c ∧ t' = M.det ^ 4 / c ^ 8) → t' = f t := by
   rintro hL hU hI ⟨N, hN, hR⟩ hfam f x x' t t' hx' ht ht'
@@ -191,7 +191,7 @@ theorem val_equivariant : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatemen
   have : IsDomain S := by
     have := hdom k
     exact (Algebra.TensorProduct.lid k S).symm.toMulEquiv.isDomain _
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.exists_unit_thetaKeyRule_smooth_base hU hL.polBaseChange N hR k S y
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.KeySmoothBase.exists_unit_of_smooth hU hL.polBaseChange N hR k S y
   have hn := hN y.P.g
   let e : k →+* ℂ := s.comp (algebraMap k S)
   obtain ⟨R, _, _, _, _, ψ₁, hψ₁⟩ := exists_baseChange e S hdom

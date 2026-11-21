@@ -206,14 +206,6 @@ theorem mem_cuspCont_of_isCuspForm {φ : Sm E a} (h : IsCuspForm φ) (h' : ∀ t
     φ.1 ∈ cuspCont E a :=
   ⟨ContAut.continuous_of_isOpen_stab E a φ h.1.level, h.1.left, h', h.2⟩
 
-theorem mem_cuspCont_of_le_one (ha : a ≤ 1) : φ ∈ cuspCont E a ↔ Continuous φ ∧ (∀ γ g, φ (ratGL E a γ * g) = φ g) ∧
-    ∀ t g, φ (splitCentre E a t * g) = φ g :=
-  ⟨fun h => ⟨h.1, h.2.1, h.2.2.1⟩, fun h => ⟨h.1, h.2.1, h.2.2, fun r h0 h1 => by omega⟩⟩
-
-theorem one_mem_cuspCont_iff : (fun _ => (1 : ℂ)) ∈ cuspCont E a ↔ a ≤ 1 :=
-  ⟨fun h => not_lt.1 fun ha => GlobalTheory.ConstNotCusp.not_isCuspidal_oneFn E a ha h.2.2.2,
-    fun ha => (mem_cuspCont_of_le_one ha).2 ⟨continuous_const, fun _ _ => rfl, fun _ _ => rfl⟩⟩
-
 end Cusp
 
 section L2
@@ -273,10 +265,6 @@ theorem L2cusp_le {U : Submodule ℂ (L2 (latticeGL E a) μ)} (hU : IsClosed (U 
 theorem closure_classes_le_L2cusp (h : ∀ φ ∈ V, IsCuspForm φ)
     (h' : ∀ φ ∈ V, ∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) : (classes V μ).topologicalClosure ≤ L2cusp μ :=
   Submodule.topologicalClosure_mono fun _ ⟨φ, hφ, e⟩ => ⟨_, mem_cuspCont_of_isCuspForm (h φ hφ) (h' φ hφ), e⟩
-
-theorem classes_le_L2cusp (h : ∀ φ ∈ V, IsCuspForm φ)
-    (h' : ∀ φ ∈ V, ∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) : classes V μ ≤ L2cusp μ :=
-  (Submodule.le_topologicalClosure _).trans (closure_classes_le_L2cusp h h')
 
 variable (μ) in
 
@@ -373,46 +361,6 @@ theorem R_toL2ₗ (h : ∀ φ ∈ V, MemL2Quotient (latticeGL E a) μ φ.1) {g :
 end Haar
 
 end L2
-
-section RankOne
-
-omit [IsTotallyComplex E] in
-
-theorem mul_comm_one (g h : GA E 1) : g * h = h * g := by
-  rw [← toGL_det E (g * h), ← toGL_det E (h * g), map_mul GeneralLinearGroup.det, map_mul GeneralLinearGroup.det, mul_comm (GeneralLinearGroup.det g)]
-
-variable {μ : Measure (GA E 1)} [μ.IsHaarMeasure]
-
-theorem memL2_of_rank_one {φ : GA E 1 → ℂ} (hc : Continuous φ) (h : LeftInv (latticeGL E 1) φ) : MemL2Quotient (latticeGL E 1) μ φ := by
-  have hd := isFundamentalDomain_stdDom (latticeGL E 1) μ
-  obtain ⟨K, hK, hcov⟩ := exists_compact_latticeGL E
-  refine (memL2_iff_fundamental_domain hd).2 ⟨h, (memLp_two_iff_integrable_sq_norm hc.aestronglyMeasurable).2 ?_⟩
-  simpa only [← _root_.norm_pow] using (GlobalTheory.integrableOn_fundamentalDomain_of_cocompact _ _ K hK hcov μ inferInstance _ hd
-    (fun g => φ g ^ 2) (hc.pow 2) fun γ hγ g => by rw [h γ hγ]).norm
-
-variable (μ) in
-
-theorem exists_one_mem_L2cusp : ∃ F ∈ L2cusp μ, F ≠ 0 ∧ lift (latticeGL E 1) F =ᵐ[μ] fun _ => 1 :=
-  have h : MemL2Quotient (latticeGL E 1) μ fun _ => 1 := memL2_of_rank_one continuous_const fun _ _ _ => rfl
-  ⟨h.toL2, toL2_mem_cuspidal h (one_mem_cuspCont_iff.2 le_rfl),
-    toL2_ne_zero h continuous_const fun e => one_ne_zero (congrFun e 1), h.lift_toL2_ae_eq⟩
-
-end RankOne
-
-example (μ : Measure (GA E 1)) [μ.IsHaarMeasure] :
-    classes (CuspSub.triv E le_rfl).V μ ≠ ⊥ ∧ classes (CuspSub.triv E le_rfl).V μ ≤ L2cusp μ := by
-  obtain ⟨F, -, h0, e⟩ := exists_one_mem_L2cusp μ
-  refine ⟨(Submodule.ne_bot_iff _).2 ⟨F, ⟨oneFn E 1, Submodule.mem_span_singleton_self _, e⟩, h0⟩,
-    classes_le_L2cusp (CuspSub.triv E le_rfl).cusp fun φ hφ t g => ?_⟩
-  obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ
-  rfl
-
-example : (fun _ => (1 : ℂ)) ∉ cuspCont E 2 := fun h => absurd (one_mem_cuspCont_iff.1 h) (by norm_num)
-
-example (γ : GL (Fin 1) E) : ratGL E 1 γ ≠ splitCentre E 1 1 := fun e => by
-  have h := congrArg (fun g => ideleNorm (E := E) (GeneralLinearGroup.det g)) e
-  simp only [det_ratGL, det_splitCentre] at h
-  exact (one_lt_ideleNorm_eIdele E).ne ((ideleNorm_principalIdele _).symm.trans h)
 
 end GlobalTheory.CuspRep.CuspidalL2GL
 

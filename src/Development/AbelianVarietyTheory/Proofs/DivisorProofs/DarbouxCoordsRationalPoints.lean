@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvIInfScaleMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzThetaDistributionSumNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordsGoodModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenSchwartzSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenBijectiveSchwartz
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilEigenSchwartzSurjective
 open scoped TensorProduct NNReal Matrix ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
@@ -53,8 +53,8 @@ theorem change_to_coordinates : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
       obtain ⟨g, rfl⟩ := hei f
       intro h
       exact hf (by rw [h]; rfl)
-  obtain ⟨om₁, hW, hint⟩ := GlobalTheory.T.weil_eigen_bijective_schwartz F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij
-  obtain ⟨c₀, hc₀, hth⟩ := GlobalTheory.T.weil_eigen_schwartz_surjective F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij
+  obtain ⟨om₁, hW, hint⟩ := _root_.GlobalTheory.ModelTr.exists_isWeil_trans_of_bijOn F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij
+  obtain ⟨c₀, hc₀, hth⟩ := _root_.GlobalTheory.ThetaChange.main F E σ B n d X W M χX χW om r s r' s' hpair M₁ hM₁ e hev hbij
   exact ⟨M₁, om₁, e, c₀, rfl, ⟨hpair.base, hpair.herm, hpair.skew, hM₁, hpair.hX, hpair.hW, hpair.resX, hpair.resW, hW⟩,
     hc₀, fun Φ hΦ => ⟨hmaps Φ hΦ, hth Φ hΦ, fun x => hint x Φ hΦ⟩⟩
 

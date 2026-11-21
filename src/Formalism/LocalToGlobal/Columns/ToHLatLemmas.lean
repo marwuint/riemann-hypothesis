@@ -6,7 +6,8 @@ import Formalism.LocalToGlobal.GlobalTheory.HLatOpsP
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ClassSumDualGeOfFamily
 import Formalism.LocalToGlobal.Columns.AtTRank
 import Formalism.LocalToGlobal.Columns.RowFormsGood
-import Formalism.LocalToGlobal.Columns.ColFormsInst
+import Formalism.LocalToGlobal.Columns.ColFormsLemmas
+import Formalism.LocalToGlobal.Columns.BaseInst
 
 open NumberField IsDedekindDomain Module
 open scoped Matrix ComplexOrder
@@ -37,19 +38,6 @@ theorem thl_normAt_coord (b : Basis (Fin n) K V) (X : InfinitePlace K → Matrix
     normAt b X v x = normAt (Pi.basisFun K (Fin n)) X v (b.equivFun x) := by
   simp only [normAt, thl_fcoord_coord b X v]
 
-theorem unitary_of_metric_restriction {n d : ℕ} (Xv : Matrix (Fin n) (Fin n) ℂ) (E : Matrix (Fin n) (Fin d) ℂ)
-    (Y : Matrix (Fin d) (Fin d) ℂ) (hY : IsUnit Y.det) (h : metOf Y = restrMetC E (metOf Xv)) :
-    (Xv⁻¹ * E * Y)ᴴ * (Xv⁻¹ * E * Y) = 1 := by
-  have hYi : Y⁻¹ * Y = 1 := Matrix.nonsing_inv_mul Y hY
-  have hYi' : Yᴴ * (Y⁻¹)ᴴ = 1 := by
-    rw [← Matrix.conjTranspose_mul, hYi, Matrix.conjTranspose_one]
-  simp only [metOf, restrMetC] at h
-  calc (Xv⁻¹ * E * Y)ᴴ * (Xv⁻¹ * E * Y) = Yᴴ * (Eᴴ * ((Xv⁻¹)ᴴ * Xv⁻¹) * E) * Y := by
-        simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
-    _ = Yᴴ * ((Y⁻¹)ᴴ * Y⁻¹) * Y := by rw [h]
-    _ = (Yᴴ * (Y⁻¹)ᴴ) * (Y⁻¹ * Y) := by simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [hYi, hYi', Matrix.one_mul]
-
 end Coord
 
 namespace GSD
@@ -76,14 +64,6 @@ theorem subMat_injective (h : S.Ok) (U : Submodule K S.EqFun) : Function.Injecti
   intro x y hxy
   rw [subMat, subE_mulVec, subE_mulVec] at hxy
   exact (subBasis (S.subZ h U)).equivFun.symm.injective (Subtype.ext hxy)
-
-theorem card_toH (h : S.Ok) (L : Submodule (𝓞 K) S.EqFun) :
-    Fintype.card (S.toH h L).ι = finrank K S.EqFun := by
-  exact (Module.finrank_eq_card_basis (S.hB h)).symm
-
-theorem card_subH (h : S.Ok) (U : Submodule K S.EqFun) (L : Submodule (𝓞 K) U) :
-    Fintype.card (S.subH h U L).ι = finrank K U := by
-  exact (Module.finrank_eq_card_basis (S.subB h U)).symm
 
 variable {S}
 
@@ -119,26 +99,6 @@ theorem PosH.sub_norm {h : S.Ok} (hp : S.PosH h) (U : Submodule K S.EqFun) (v : 
     rw [Complex.star_def, Complex.conj_mul']
   exact Complex.ofReal_injective ((key (Formalism.HermitianLatticesTheory.fcoord (S.subB h U) (restrFrame (S.subMat h U) (S.hGram h)) v x)).trans
     (hm.trans (key (Formalism.HermitianLatticesTheory.fcoord (S.hB h) (stdFrame (S.hGram h)) v (x : S.EqFun))).symm))
-
-theorem PosH.isoMat_isometry {h : S.Ok} (hp : S.PosH h) (U : Submodule K S.EqFun) (v : InfinitePlace K) :
-    (S.isoMat h U v)ᴴ * S.isoMat h U v = 1 := by
-  have hs := Formalism.L2.DIV.restrFrameSpec K _ _ (S.hGram h) hp (S.subMat h U) (S.subMat_injective h U) v
-  unfold isoMat
-  refine unitary_of_metric_restriction (stdFrame (S.hGram h) v) ((S.subMat h U).map v.embedding) _ hs.1 ?_
-  rw [hp.met v]
-  exact hs.2.1
-
-theorem PosH.isoMat_fcoord {h : S.Ok} (hp : S.PosH h) (U : Submodule K S.EqFun) (v : InfinitePlace K) (x : U) :
-    fcoord (S.hB h) (stdFrame (S.hGram h)) v (x : S.EqFun) =
-      (S.isoMat h U v).mulVec (fcoord (S.subB h U) (restrFrame (S.subMat h U) (S.hGram h)) v x) := by
-  have hs := Formalism.L2.DIV.restrFrameSpec K _ _ (S.hGram h) hp (S.subMat h U) (S.subMat_injective h U) v
-  rw [thl_fcoord_coord (S.hB h), thl_fcoord_coord (S.subB h U), S.hB_equivFun h]
-  simp only [Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, Pi.basisFun_repr, isoMat, Matrix.mulVec_mulVec]
-  rw [Matrix.mul_assoc ((stdFrame (S.hGram h) v)⁻¹ * _), Matrix.mul_nonsing_inv _ hs.1, Matrix.mul_one,
-    ← Matrix.mulVec_mulVec, ← S.subB_equivFun h U x]
-  congr 1
-  funext i
-  exact RingHom.map_mulVec v.embedding (S.subMat h U) _ i
 
 variable (S)
 
@@ -184,19 +144,6 @@ variable {S}
 
 theorem PosH.good {h : S.Ok} (hp : S.PosH h) {L : Submodule (𝓞 K) S.EqFun} (hL : Submodule.IsLattice K L) :
     (S.toH h L).Good := ⟨hp.frameOK L, hL.fg, hL.span_eq_top⟩
-
-theorem PosH.good_sub {h : S.Ok} (hp : S.PosH h) {L : Submodule (𝓞 K) S.EqFun} (hL : Submodule.IsLattice K L)
-    (U : Submodule K S.EqFun) : (S.subH h U (L.comap (U.subtype.restrictScalars (𝓞 K)))).Good := by
-  have h1 := (pull_spec K (S.toH h L) U (Fin (S.subD h U)) (S.subB h U) U.subtype (hp.frameOK L)
-    (Submodule.injective_subtype U)).2.2.2.2 (hp.good hL)
-  exact ⟨hp.frameOK_sub U _, h1.2.1, h1.2.2⟩
-
-theorem PosH.iso_sub {h : S.Ok} (hp : S.PosH h) (L : Submodule (𝓞 K) S.EqFun) (U : Submodule K S.EqFun) :
-    ∃ I : Formalism.L2.GlobalTheoryTheory.HLatOps.Iso (S.subH h U (L.comap (U.subtype.restrictScalars (𝓞 K)))) (sub (S.toH h L) U),
-      ∀ x : U, (I.e x : U) = x := by
-  obtain ⟨I, hI⟩ := embIso' (S.subH h U (L.comap (U.subtype.restrictScalars (𝓞 K)))) (S.toH h L) U.subtype U
-    (hp.frameOK L) (Submodule.injective_subtype U) (Submodule.range_subtype U) (fun v x => hp.sub_norm U v x) rfl
-  exact ⟨I, fun x => Subtype.ext (hI x)⟩
 
 end GSD
 
@@ -431,40 +378,6 @@ end GSD
 
 namespace GSD
 
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K}
-
-theorem PosH.sub_numbers {h : S.Ok} (hp : S.PosH h) (L' : Submodule (𝓞 K) S.EqFun) (U : Submodule K S.EqFun)
-    (L : Submodule (𝓞 K) U) (hL : L.FG) :
-    (S.subH h U L).mu = (S.toH h (L.map (U.subtype.restrictScalars (𝓞 K)))).mu ∧
-    (S.subH h U L).muMax = (S.toH h (L.map (U.subtype.restrictScalars (𝓞 K)))).muMax ∧
-    (S.subH h U L).muMin = (S.toH h (L.map (U.subtype.restrictScalars (𝓞 K)))).muMin := by
-  have h1 := ((emb_numbers K (S.subH h U L) (S.toH h L') U.subtype (hp.frameOK L')
-    (Submodule.injective_subtype U) (fun v x => hp.sub_norm U v x)).2 L).2 hL
-  exact ⟨h1.1, h1.2.1, h1.2.2.1⟩
-
-theorem PosH.muMax_sub_le [IsTotallyComplex K] {h : S.Ok} (hp : S.PosH h) {L : Submodule (𝓞 K) S.EqFun}
-    (hL : Submodule.IsLattice K L) (U : Submodule K S.EqFun) (hU : U ≠ ⊥) :
-    (S.subH h U (L.comap (U.subtype.restrictScalars (𝓞 K)))).muMax ≤ (S.toH h L).muMax := by
-  have hg := hp.good_sub hL U
-  rw [(hp.sub_numbers L U _ hg.2.1).2.1]
-  refine (with_lattice_index K (S.toH h L) _ (hp.frameOK L) hL.fg (Submodule.map_comap_le _ _) ?_).1
-  intro h0
-  have hbot : L.comap (U.subtype.restrictScalars (𝓞 K)) = ⊥ := by
-    rw [eq_bot_iff]
-    intro x hx
-    have h1 : (U.subtype.restrictScalars (𝓞 K)) x ∈ (⊥ : Submodule (𝓞 K) S.EqFun) := h0 ▸ Submodule.mem_map_of_mem hx
-    exact (Submodule.mem_bot _).2 (Subtype.ext ((Submodule.mem_bot _).1 h1))
-  apply hU
-  have h2 := hg.2.2
-  rw [show ((S.subH h U (L.comap (U.subtype.restrictScalars (𝓞 K)))).L) = ⊥ from hbot] at h2
-  have h3 : (⊤ : Submodule K U) = ⊥ := by
-    rw [← h2]
-    simp
-  rw [eq_bot_iff]
-  intro x hx
-  have : (⟨x, hx⟩ : U) ∈ (⊥ : Submodule K U) := h3 ▸ Submodule.mem_top
-  simpa using congrArg Subtype.val ((Submodule.mem_bot K).1 this)
-
 end GSD
 
 section ColsRat
@@ -473,12 +386,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 
 theorem colRat (hX : X.Ok) (u : Pr.Word) (j : ℕ) : (colGSD W Ch u j).Rat :=
   formGSD_rat hX _ _ (roundPk_ratP _ _ hX)
-
-theorem thl_colDel_isLattice (u : Pr.Word) (j : ℕ) (d : (colGSD W Ch u j).D) :
-    Submodule.IsLattice X.K ((colGSD W Ch u j).Del d) :=
-  (nablaDeltaLattice_holds X.K X.Tau (R.N j) (W.lamTrue u j) _ fun τ =>
-    (dualFrameLattice_holds X.K (R.N j) 1 _ (by simp) (tauLatticeLattice_holds X.E X.K X.Tau (R.N j) X.emb τ _
-      (d : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs).2.Lsh_lattice)).1).2
 
 end ColsRat
 
@@ -489,25 +396,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 theorem colPosH (u : Pr.Word) (j : ℕ) : (colGSD W Ch u j).PosH (colOk W Ch hX u j) :=
   (colRat W Ch hX u j).posH (colOk W Ch hX u j)
 
-include hX in
-theorem thl_ColL_isLattice (u : Pr.Word) (j : ℕ) : Submodule.IsLattice X.K (ColL W Ch u j) :=
-  (colGSD W Ch u j).intDel_isLattice (colOk W Ch hX u j) (thl_colDel_isLattice W Ch u j)
-
 theorem latH_maj (u : Pr.Word) (j : ℕ) (v : InfinitePlace X.K) (φ ψ : ColV W Ch u j) :
     majAt (latH W Ch hX u j).b (latH W Ch hX u j).X v φ ψ = (colGSD W Ch u j).ipAt (colOk W Ch hX u j) v φ ψ :=
   (colRat W Ch hX u j).maj_eq (colOk W Ch hX u j) v φ ψ
-
-theorem latH_good (u : Pr.Word) (j : ℕ) : (latH W Ch hX u j).Good :=
-  (colPosH W Ch hX u j).good (thl_ColL_isLattice W Ch hX u j)
-
-theorem Mu0H_good (u : Pr.Word) : (Mu0H W Ch hX u).Good :=
-  latH_good W Ch hX u 0
-
-theorem MramH_good (u : Pr.Word) : (MramH W Ch hX u).Good :=
-  (colPosH W Ch hX u 0).good_sub (thl_ColL_isLattice W Ch hX u 0) (MramV W Ch u)
-
-theorem ramInclH_injective (u : Pr.Word) : Function.Injective (ramInclH W Ch hX u) :=
-  Submodule.injective_subtype _
 
 theorem ramInclH_norm (u : Pr.Word) (v : InfinitePlace X.K) (x : (MramH W Ch hX u).V) :
     normAt (MramH W Ch hX u).b (MramH W Ch hX u).X v x =
@@ -516,68 +407,6 @@ theorem ramInclH_norm (u : Pr.Word) (v : InfinitePlace X.K) (x : (MramH W Ch hX 
 
 theorem MramH_L (u : Pr.Word) :
     (MramH W Ch hX u).L = (Mu0H W Ch hX u).L.comap ((ramInclH W Ch hX u).restrictScalars (𝓞 X.K)) := rfl
-
-theorem VrC_isometry (u : Pr.Word) (v : InfinitePlace X.K) :
-    (VrC W Ch hX u v)ᴴ * VrC W Ch hX u v = 1 :=
-  (colPosH W Ch hX u 0).isoMat_isometry (MramV W Ch u) v
-
-theorem VrC_fcoord (u : Pr.Word) (v : InfinitePlace X.K) (x : (MramH W Ch hX u).V) :
-    fcoord (Mu0H W Ch hX u).b (Mu0H W Ch hX u).X v (ramInclH W Ch hX u x) =
-      (VrC W Ch hX u v).mulVec (fcoord (MramH W Ch hX u).b (MramH W Ch hX u).X v x) :=
-  (colPosH W Ch hX u 0).isoMat_fcoord (MramV W Ch u) v x
-
-theorem card_Mu0H (u : Pr.Word) : Fintype.card (Mu0H W Ch hX u).ι = finrank X.K (MfV W Ch u) :=
-  (colGSD W Ch u 0).card_toH _ _
-
-theorem card_MramH (u : Pr.Word) : Fintype.card (MramH W Ch hX u).ι = finrank X.K (MramV W Ch u) :=
-  (colGSD W Ch u 0).card_subH _ _ _
-
-theorem card_MramH_eq (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) (hT : 2 < Pr.T u) :
-    (Fintype.card (MramH W Ch hX u).ι : ℝ) =
-      (Fintype.card (Mu0H W Ch hX u).ι : ℝ) * (1 - 1 / ((Pr.T u : ℝ) - 1)) ^ X.f := by
-  rw [card_Mu0H, card_MramH]
-  have h1 := finrank_MramV_mul W Ch hX hPr hbig u
-  have h2 : ((finrank X.K (MramV W Ch u) : ℕ) : ℝ) * ((Pr.T u : ℝ) - 1) ^ X.f =
-      ((finrank X.K (MfV W Ch u) : ℕ) : ℝ) * ((Pr.T u : ℝ) - 2) ^ X.f := by
-    have := congrArg (Nat.cast : ℕ → ℝ) h1
-    push_cast [Nat.cast_sub (show 1 ≤ Pr.T u by omega), Nat.cast_sub (show 2 ≤ Pr.T u by omega)] at this
-    exact this
-  have hT1 : ((Pr.T u : ℝ) - 1) ≠ 0 := by
-    have : (2 : ℝ) < (Pr.T u : ℝ) := by exact_mod_cast hT
-    linarith
-  have h3 : (1 - 1 / ((Pr.T u : ℝ) - 1)) = ((Pr.T u : ℝ) - 2) / ((Pr.T u : ℝ) - 1) := by
-    field_simp
-    ring
-  rw [h3, div_pow, ← mul_div_assoc, ← h2, mul_div_assoc, div_self (pow_ne_zero _ hT1), mul_one]
-
-theorem card_MramH_pos (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) (hT : 2 < Pr.T u) :
-    0 < Fintype.card (MramH W Ch hX u).ι := by
-  rw [card_MramH]
-  exact finrank_MramV_pos W Ch hX hPr hbig u hT
-
-theorem MramH_muMax_le (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) (hT : 2 < Pr.T u) :
-    (MramH W Ch hX u).muMax ≤ (Mu0H W Ch hX u).muMax := by
-  have := hX.cplxK
-  refine (colPosH W Ch hX u 0).muMax_sub_le (thl_ColL_isLattice W Ch hX u 0) (MramV W Ch u) ?_
-  intro h0
-  have h1 := finrank_MramV_pos W Ch hX hPr hbig u hT
-  rw [h0, finrank_bot] at h1
-  exact lt_irrefl _ h1
-
-theorem MramH_numbers (u : Pr.Word) :
-    (MramH W Ch hX u).mu = (withL (Mu0H W Ch hX u) (ramifiedSublattice W Ch u)).mu ∧
-    (MramH W Ch hX u).muMax = (withL (Mu0H W Ch hX u) (ramifiedSublattice W Ch u)).muMax ∧
-    (MramH W Ch hX u).muMin = (withL (Mu0H W Ch hX u) (ramifiedSublattice W Ch u)).muMin := by
-  have h1 := (colPosH W Ch hX u 0).sub_numbers (MfL W Ch u) (MramV W Ch u) (MramL W Ch u) (MramH_good W Ch hX u).2.1
-  have h2 : (MramL W Ch u).map ((MramV W Ch u).subtype.restrictScalars (𝓞 X.K)) = ramifiedSublattice W Ch u := by
-    ext y
-    constructor
-    · rintro ⟨x, hx, rfl⟩
-      exact ⟨hx, x.2⟩
-    · rintro ⟨hy, hy'⟩
-      exact ⟨⟨y, hy'⟩, hy, rfl⟩
-  rw [h2] at h1
-  exact h1
 
 end Cols
 
@@ -589,10 +418,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 theorem MtildeH_good (P : LevFam X.E X.K R.r Pr.vGs) : (MtildeH W Ch hX sel mu P).Good :=
   ((mtilde_rat W Ch sel mu hX P).posH (mtildeOk W Ch sel mu hX P)).good
     ((mtildeGSD W Ch sel mu P).intNab_isLattice (mtildeOk W Ch sel mu hX P) (mtilde_good W Ch sel mu hX P).nab_lat)
-
-theorem MtH_good (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : (MtH W Ch hX sel mu P j).Good :=
-  ((mt_rat W Ch sel mu hX P j).posH (mtOk W Ch sel mu hX P j)).good
-    ((mtGSD W Ch sel mu P j).intNab_isLattice (mtOk W Ch sel mu hX P j) (mt_good W Ch sel mu hX P j).nab_lat)
 
 end Rows
 

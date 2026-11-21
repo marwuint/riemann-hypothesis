@@ -566,23 +566,9 @@ theorem hdim_twist_of_suppDim_le_zero {M : LB X} (hM : M.IsLB) (n : ℕ) :
     hdim k (twist F M) n = hdim k F n :=
   (nonempty_twist_iso_of_suppDim_le_zero h hM).elim (hdim_congr k n)
 
-theorem chi_twist_of_suppDim_le_zero {M : LB X} (hM : M.IsLB) : chi k (twist F M) = chi k F :=
-  (nonempty_twist_iso_of_suppDim_le_zero h hM).elim (chi_congr k)
-
 theorem chi_eq_hdim_zero_of_suppDim_le_zero : chi k F = hdim k F 0 :=
   chi_eq_hdim_zero k fun _ hn => subsingleton_coh_of_suppDim_le_zero h hn
 
 end Twists
-
-example (I : Ideal ℤ) [I.IsMaximal] (M : LB (Sp ℤ)) (hM : M.IsLB) :
-    Nonempty (twist (tildeIntQuotient I) M ≅ tildeIntQuotient I) := by
-  have : Module.Finite (CommRingCat.of ℤ) (ModuleCat.of ℤ (ℤ ⧸ I)) :=
-    inferInstanceAs (Module.Finite ℤ (ℤ ⧸ I))
-  have : IsFiniteQC (tildeIntQuotient I) := (isFiniteQC_tilde_iff _).2 this
-  refine nonempty_twist_iso_of_suppDim_le_zero (le_of_eq ?_) hM
-  rw [suppDim_tilde]
-  refine (Module.supportDim_quotient_eq_ringKrullDim I).trans ?_
-  letI := Ideal.Quotient.field I
-  exact ringKrullDim_eq_zero_of_field _
 
 end GlobalTheory

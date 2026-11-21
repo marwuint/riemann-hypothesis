@@ -84,10 +84,6 @@ open Formalism.L2.Th1
 
 variable {l : ℕ} [Fact l.Prime] {L : PeriodPair} {ι : ℂ ≃+* ℂ_[l]} {W : WeierstrassCurve ℂ_[l]}
 
-theorem phW_eq (hU : Unif l L ι W) : phW l L ι W = B.phW W (ι (F.s2 L)) := by
-  unfold phW B.phW
-  rw [weierstrass_series_eq_transported l L ι W hU]
-
 theorem series_even_theta_half_period (hU : Unif l L ι W) (ω₀ : ℂ) (hω : ω₀ ∈ L.lattice) (hω2 : ω₀ / 2 ∉ L.lattice) :
     inW l ι W (F.th0 L (ω₀ / 2)) =
       B.fExp (-(B.evenSigmaLogAtTwoTorsion W (ι (F.s2 L)) (px W (ptW l L ι W (ω₀ / 2))))) := by
@@ -116,9 +112,6 @@ theorem series_even_theta_half_period (hU : Unif l L ι W) (ω₀ : ℂ) (hω : 
     PowerSeries.subst_X hs, PowerSeries.subst_C, neg_add, neg_neg]
   rfl
 
-theorem back (h : AnalyticTransW) : AnalyticTrans := fun l _ L ι hW t N h1 h2 h3 h4 =>
-  h l L ι (curveL l L ι) ⟨(A.shortInv _ _ _).2.1, (A.shortInv _ _ _).2.2.1⟩ hW t N h1 h2 h3 h4
-
 end W
 
 end Formalism.L2.Th1.E.Joints
@@ -127,7 +120,6 @@ namespace Formalism.L2.Th1.E
 
 theorem joint_integrality : VJoint := fun l _ L ι hl2 hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs =>
   Joints.joint v_integral_nonsingular_jet_norms l L ι hl2 hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs
-theorem phi_model_eq : PhWEq := fun _ _ _ _ _ hU => Joints.phW_eq hU
 theorem even_theta_half_period_in_model : InWTh0 := fun _ _ _ _ _ hU ω₀ hω hω2 => Joints.series_even_theta_half_period hU ω₀ hω hω2
 
 end Formalism.L2.Th1.E

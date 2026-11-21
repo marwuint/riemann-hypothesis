@@ -135,20 +135,4 @@ def locT (T : Thick (nlFun γ p X q κ)) (f : T.B) : Thick (nlFun γ p X q κ) :
 
 def locH (T : Thick (nlFun γ p X q κ)) (f : T.B) : T ⟶ locT T f := homOf _ _ _ _ _ _ _
 
-def quoD (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal K) :
-    DividedPowers (T.J.map (Ideal.Quotient.mk K)) :=
-  Classical.choose (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot T.δ K hK)
-
-theorem quoD_spec (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal K) :
-    IsDPMorphism T.δ (quoD T hK) (Ideal.Quotient.mk K) ∧
-      ∀ (C : Type) [CommRing C] (J'' : Ideal C) (δ'' : DividedPowers J'') (g : T.B ⧸ K →+* C),
-        IsDPMorphism T.δ δ'' (g.comp (Ideal.Quotient.mk K)) → IsDPMorphism (quoD T hK) δ'' g :=
-  Classical.choose_spec (FubiniStudyChowHeightFormula₂.Adr.Fil.exists_quot T.δ K hK)
-
-def quoT (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal K) : Thick (nlFun γ p X q κ) :=
-  ofMap T (Ideal.Quotient.mk K) _ (quoD T hK) Ideal.le_comap_map (quoD_spec T hK).1 (admissible_map T _)
-
-def quoH (T : Thick (nlFun γ p X q κ)) {K : Ideal T.B} (hK : T.δ.IsSubDPIdeal K) : T ⟶ quoT T hK :=
-  homOf _ _ _ _ _ _ _
-
 end CrystallineSemistableComparison.Pb.Site

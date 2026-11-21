@@ -105,7 +105,4 @@ theorem maximalIdeal_eq_span_map_of_fractions (V W : Type) [CommRing V] [IsLocal
     obtain ⟨u, rfl⟩ := Ideal.mem_span_singleton'.mp hw
     exact Ideal.mul_mem_left _ _ hTm
 
-example : ∀ (V W : Type) [CommRing V] [IsLocalRing V] [IsNoetherianRing V] [CommRing W] [IsLocalRing W] (φ : V →+* W) (T : V), IsLocalRing.maximalIdeal V = Ideal.span {T} → φ T ∈ IsLocalRing.maximalIdeal W → φ T ∈ nonZeroDivisors W → (∀ w : W, ∃ x z : V, φ z ∈ nonZeroDivisors W ∧ φ z * w = φ x) → IsLocalRing.maximalIdeal W = Ideal.span {φ T} :=
-  maximalIdeal_eq_span_map_of_fractions
-
 end GlobalTheory

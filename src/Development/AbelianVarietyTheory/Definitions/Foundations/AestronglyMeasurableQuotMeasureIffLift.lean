@@ -54,14 +54,6 @@ theorem isSubrep_closure_sSup {S : Set (Submodule ℂ H)} (h : ∀ W ∈ S, IsSu
     (sSup_le fun W hW v hv => (le_sSup hW : W ≤ sSup S) ((h W hW).2 g v hv) :
       sSup S ≤ (sSup S).comap (π g : H →ₗ[ℂ] H)) hv
 
-theorem isSubrep_disc : IsSubrep π (disc π) := isSubrep_closure_sSup fun _ h => h.1
-
-theorem IsIrredSubrep.le_disc (hW : IsIrredSubrep π W) : W ≤ disc π :=
-  (le_sSup (s := {W | IsIrredSubrep π W}) hW).trans (Submodule.le_topologicalClosure _)
-
-theorem disc_le (hU : IsClosed (U : Set H)) (h : ∀ W, IsIrredSubrep π W → W ≤ U) : disc π ≤ U :=
-  Submodule.topologicalClosure_minimal _ (sSup_le h) hU
-
 theorem IsSubrep.isSubrep_rep_iff (hW : IsSubrep π W) {T : Submodule ℂ W} :
     IsSubrep hW.rep T ↔ IsSubrep π (T.map W.subtype) := by
   constructor
@@ -89,22 +81,6 @@ theorem IsSubrep.isIrredSubrep_iff (hW : IsSubrep π W) : IsIrredSubrep π W ↔
       rw [Submodule.map_comap_subtype, inf_eq_right.2 hU]
     exact (h2 _ (hW.isSubrep_rep_iff.2 (e.symm ▸ hU'))).imp
       (fun h => by rw [← e, h, Submodule.map_bot]) fun h => by rw [← e, h, Submodule.map_subtype_top]
-
-theorem isTopIrreducible_iff_top : IsTopIrreducible π ↔ IsIrredSubrep π ⊤ :=
-  ⟨fun h => ⟨isSubrep_top, by have := h.1; exact top_ne_bot, fun U _ hU => h.2 U hU⟩,
-    fun h => ⟨(Submodule.nontrivial_iff ℂ).1 ⟨_, _, h.2.1⟩, fun U hU => h.2.2 U le_top hU⟩⟩
-
-theorem IsTopIrreducible.disc_eq_top (h : IsTopIrreducible π) : disc π = ⊤ :=
-  top_le_iff.1 (isTopIrreducible_iff_top.1 h).le_disc
-
-theorem isIrredSubrep_span_singleton {v : H} (hv : v ≠ 0) (h : ∀ g, ∃ c : ℂ, π g v = c • v) :
-    IsIrredSubrep π (ℂ ∙ v) := by
-  refine ⟨⟨Submodule.closed_of_finiteDimensional _, fun g w hw => ?_⟩, by simpa using hv, fun U hU _ => ?_⟩
-  · obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hw
-    obtain ⟨c, hc⟩ := h g
-    rw [map_smul, hc]
-    exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self v))
-  · exact ((nonzero_span_atom v hv).le_iff).1 hU
 
 variable [CompleteSpace H] [TopologicalSpace G]
 
@@ -536,10 +512,6 @@ variable (Γ μ) in
 
 abbrev L2disc : Submodule ℂ (L2 Γ μ) := disc (R Γ μ)
 
-variable (Γ μ) in
-
-abbrev Rdisc : G →* (L2disc Γ μ →L[ℂ] L2disc Γ μ) := (isSubrep_disc (π := R Γ μ)).rep
-
 theorem coeFn_R (g : G) (F : L2 Γ μ) : R Γ μ g F =ᵐ[quotMeasure Γ μ] fun q => F (rmul Γ g q) :=
   Lp.coeFn_compMeasurePreserving F (measurePreserving_rmul g)
 
@@ -558,19 +530,6 @@ theorem MemL2Quotient.mul_right (h : MemL2Quotient Γ μ φ) (g : G) : MemL2Quot
 theorem right_translate_toL2 (h : MemL2Quotient Γ μ φ) (g : G) : R Γ μ g h.toL2 = (h.mul_right g).toL2 :=
   l2DiscreteQuotient_ext_iff_lift_ae_eq.2 <| (lift_R g _).trans <| EventuallyEq.trans
     ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae h.lift_toL2_ae_eq) (h.mul_right g).lift_toL2_ae_eq.symm
-
-omit [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] in
-
-theorem memL2_const [IsFiniteMeasure (quotMeasure Γ μ)] (c : ℂ) : MemL2Quotient Γ μ fun _ => c :=
-  ⟨fun _ _ _ => rfl, memLp_const c⟩
-
-theorem isIrredSubrep_const [IsFiniteMeasure (quotMeasure Γ μ)] [NeZero μ] :
-    IsIrredSubrep (R Γ μ) (ℂ ∙ (memL2_const (Γ := Γ) (μ := μ) 1).toL2) := by
-  refine isIrredSubrep_span_singleton (fun h => ?_) fun g => ⟨1, by rw [right_translate_toL2, one_smul]⟩
-  have h1 := (memL2_const (Γ := Γ) (μ := μ) 1).coeFn_toL2
-  rw [h] at h1
-  obtain ⟨q, hq⟩ := ((Lp.coeFn_zero ℂ 2 _).symm.trans h1).exists
-  exact zero_ne_one hq
 
 variable [LocallyCompactSpace G] [IsFiniteMeasureOnCompacts μ]
 
@@ -651,8 +610,6 @@ abbrev autMeasure : Measure (AutQ V) := quotMeasure (GQ V) μ
 
 abbrev DividedPowerChartLift : Type := L2 (GQ V) μ
 
-abbrev kernelG (f : GA D V → ℂ) (x y : GA D V) : ℂ := kernel (GQ V) f x y
-
 abbrev RG [μ.IsHaarMeasure] [μ.IsMulRightInvariant] : GA D V →* (DividedPowerChartLift V μ →L[ℂ] DividedPowerChartLift V μ) := R (GQ V) μ
 
 abbrev RopG [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (f : GA D V → ℂ) : DividedPowerChartLift V μ →L[ℂ] DividedPowerChartLift V μ := Rop (GQ V) μ f
@@ -675,37 +632,6 @@ theorem muQ_eq (h : ∃ p : Measure (GA D V) × Set (GA D V), IsVolPair D V p.1 
   (quotMeasure_eq (isVolPair_volPair h).2).symm
 
 end Adelic
-
-example {G : Type} [Group G] (f : G → ℂ) (x y : G) : kernel ⊥ f x y = f (x⁻¹ * y) := by
-  rw [kernel, tsum_eq_single 1 fun γ h => absurd (Subsingleton.elim _ _) h]
-  simp
-
-example {G : Type} [Group G] [Countable G] [TopologicalSpace G] [DiscreteTopology G] [MeasurableSpace G]
-    [BorelSpace G] : quotMeasure (⊤ : Subgroup G) Measure.count univ = 1 := by
-  rw [quotMeasure_univ (Γ := ⊤) (𝓕 := {1}) (.mk' (measurableSet_singleton 1).nullMeasurableSet fun x =>
-    ⟨⟨x⁻¹, Subgroup.mem_top _⟩, inv_mul_cancel x, fun γ h => Subtype.ext (eq_inv_of_mul_eq_one_left (show (γ : G) * x = 1 from h))⟩)]
-  simp
-
-example {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [CompactSpace G]
-    [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
-    (χ : G →* ℂ) (hχ : Continuous χ) :
-    ∃ F : L2 ⊥ μ, F ≠ 0 ∧ lift ⊥ F =ᵐ[μ] χ ∧ (∀ g, R ⊥ μ g F = χ g • F) ∧ F ∈ L2disc ⊥ μ := by
-  have hD : IsFundamentalDomain (⊥ : Subgroup G) (univ : Set G) μ :=
-    .mk' .univ fun _ => ⟨1, trivial, fun _ _ => Subsingleton.elim _ _⟩
-  have h : MemL2Quotient ⊥ μ χ := (memL2_iff_fundamental_domain hD).2 ⟨fun γ hγ g => by rw [Subgroup.mem_bot.1 hγ, one_mul],
-    hχ.memLp_of_hasCompactSupport (.of_compactSpace _)⟩
-  have h0 : h.toL2 ≠ 0 := fun e => by
-    have h1 := h.lift_toL2_ae_eq
-    rw [e] at h1
-    obtain ⟨x, hx⟩ := ((ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 (quotMeasure ⊥ μ))).and h1).exists
-    exact ((Group.isUnit x).map χ).ne_zero (hx.2.symm.trans hx.1)
-  have h2 : ∀ g, R ⊥ μ g h.toL2 = χ g • h.toL2 := fun g => l2DiscreteQuotient_ext_iff_lift_ae_eq.2 <| by
-    filter_upwards [lift_R g h.toL2, (measurePreserving_mul_right μ g).quasiMeasurePreserving.ae h.lift_toL2_ae_eq,
-      ae_quotMeasure_iff.1 (Lp.coeFn_smul (χ g) h.toL2), h.lift_toL2_ae_eq] with x e1 e2 e3 e4
-    rw [e1, e2, map_mul, mul_comm, ← e4]
-    exact e3.symm
-  exact ⟨_, h0, h.lift_toL2_ae_eq, h2,
-    (isIrredSubrep_span_singleton h0 fun g => ⟨_, h2 g⟩).le_disc (Submodule.mem_span_singleton_self _)⟩
 
 end GlobalTheory.AutomorphicL2Unitary
 

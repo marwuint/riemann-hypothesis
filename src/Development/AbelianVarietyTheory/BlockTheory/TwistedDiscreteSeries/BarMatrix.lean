@@ -89,10 +89,6 @@ theorem barMat_mem {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h
   simp only [Matrix.map_mul, hJ] at h1
   exact h1
 
-example : dualPar (GlobalTheory.Chain.signed [2] [-3] (1 / 2)) = {(-5 / 2, true), (5 / 2, false)} := by
-  simp [dualPar, GlobalTheory.Chain.signed]
-  norm_num
-
 end GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix
 
 end

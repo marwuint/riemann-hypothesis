@@ -173,33 +173,6 @@ def ActLev (c : Coeff l) {G : Type} [Group G]
   ActLaws (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y')
     (fun {S : Type} [CommRing S] [Algebra c.F S] (g' : G) (y y' : FrPt Xo c S) => levActR (Xo := Xo) (c := c) lev g' y y')
 
-def OneMapTieP (LL : IntermediateField ℚ ℂ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ0' : c'.F →+* ℂ)
-    (V : HSp D) (hr : V.rank = r) (dict : GA D V → Σ k, Frame ((unfBC hle U σ0').X k).Ψ r) (mu : GA D V → ℂ) (xr : ℝ)
-    (a : (D.host.E →+* ℂ) × ℕ → ℕ) {G : Type} [Group G]
-    (lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La))
-    {Tup : Type} (dδ : Tup → DeltaDat Xo c' n) (Cl' : Tup → Type) [∀ t, Fintype (Cl' t)]
-    (bad : Tup → ℕ) (Lh : ∀ t, Cl' t → Submodule (𝓞 D.host.E) (Fin n → D.host.E))
-    (La : ∀ t, Cl' t → GenLat D.host.E n) (Nc : ∀ t, Cl' t → ℕ) (gam : ∀ t, Cl' t → ℕ) (vol : Tup → c'.F)
-    (ep : ∀ t, Cl' t → c'.F) (B : Tup → Ideal (𝓞 D.host.E) → c'.F)
-    (epF : Tup → Submodule (𝓞 D.host.E) (Fin n → D.host.E) → c'.F) (q1 d cond : ℕ)
-    {Ix : Type} [Fintype Ix] (pl : Ix → (D.host.E →+* ℂ)) (lam : Ix → DomWeight n)
-    (io : VVc c' lam →ₗ[c'.F] MvPolynomial (LtN Dw n) c'.F) (hw : VVc c' lam)
-    (φ : ∀ t, (Fin n → LevQc Dw (dδ t).l₂) → c'.F) (w : ∀ t, Cl' t → (Fin n → LevQ Dw (dδ t).l₂) → c'.F)
-    (U₂ : ∀ t, Unf (dδ t).Xo₂ (dδ t).c₂ (σ0'.comp ((dδ t).eF.symm : (dδ t).c₂.F →+* c'.F)) r)
-    (dict₂ : ∀ t, GA D V → Σ k, Frame ((U₂ t).X k).Ψ r) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
-    (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (xi : Tup → (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ)
-    (thAd : ∀ t, (Cl' t → VVc c' lam) → (AutQ V → ℂ)) (Pl : ∀ t, (Cl' t → VVc c' lam) → Prop)
-    (cc : (unfBC hle U σ0').Comp → ℂ) (ph : ℂ) : Prop :=
-  Nonempty Tup ∧ (∀ t, Nonempty (Cl' t)) ∧
-    ActLev (Xo := Xo) c lev ∧ ActLev (Xo := Xo) c' lev ∧
-    (∀ t, BadPin (bad t) q1 d cond) ∧ RepsCov Xo c' Cl' dδ bad Lh La Nc gam ∧
-    (∀ t k, ep t k = epF t (Lh t k)) ∧ (∀ t, EpIs (Dw := Dw) c' (bad t) (B t) (epF t) ∧ BAbs c' (B t)) ∧
-    IoLFRec c' (fun τ => embF c' (pl τ)) lam a io hw ∧
-    WPin Xo c' Cl' dδ φ w ∧
-    CovPin Xo c' dδ ∧
-    CXiVal V hr σ0' dδ U₂ dict₂ ι x₀ xi ∧
-    OneMapTieC hle LL U σ0' V dict mu xr a (actLev c lev) (actLev c' lev) dδ Cl' w La Nc gam vol ep io thAd Pl cc ph
-
 end Dict
 
 end Formalism.L2.Pj

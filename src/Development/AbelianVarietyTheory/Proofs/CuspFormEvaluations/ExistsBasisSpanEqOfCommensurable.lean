@@ -385,11 +385,4 @@ theorem principal_torus_of_selfDual (X : PT E) (Λ' : Submodule (𝓞 E) (Fin n 
     exact ⟨fun F => comp_flat_symm_mem_sec_iff X Y hY' 1 hka1 F, fun F hF =>
       ⟨(comp_flat_symm_mem_sec_iff X Y hY' 1 hka1 F).2 hF, l2_comp_flat_symm_eq_l2 X Y hY' 1 hF⟩⟩
 
-example (X : PT E) (w₀ : 𝓞 E) :
-    ∃ Y : GT (Fin n × Idx X.dim), (∀ γ, flat γ ∈ lat Y.b ↔ ∀ k, γ k ∈ X.L) ∧
-      ∀ γ, Y.ka (flat γ) = tensorEps w₀ γ := by
-  obtain ⟨Y, h1, h2⟩ := exists_tensorTorus (X := X) (n := n) stdLat_fg
-    (fun _ hx => mem_stdLat_iff_herm.1 hx) (fun _ hx => mem_stdLat_iff_herm.2 hx) w₀
-  exact ⟨Y, fun γ => (h1 γ).trans mem_tensorLat_stdLat, h2⟩
-
 end GlobalTheory.TensorLat

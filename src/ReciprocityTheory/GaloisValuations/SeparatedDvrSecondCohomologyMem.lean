@@ -266,15 +266,6 @@ def compatiblePairH2 : H2 rho →ₗ[R] H2 rho' :=
 
 end Pair
 
-section MapPair
-
-variable {M' : Type*} [AddCommGroup M'] [Module R M'] [TopologicalSpace M']
-  [IsTopologicalAddGroup M'] [ContinuousConstSMul R M']
-  (rho' : Representation R G M') (u : M →ₗ[R] M') (hu : Continuous u)
-  (hequiv : ∀ g m, u (rho g m) = rho' g (u m))
-
-end MapPair
-
 theorem coboundaries_le_cocycles (h : ContAction rho) : B1 rho ≤ Z1 rho := by
   intro f hf
   obtain ⟨m, hm⟩ := (mem_coboundaries1 rho f).1 hf

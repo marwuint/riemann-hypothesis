@@ -3,34 +3,36 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CmTypeValuationEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OrderValuationCompareStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CmTypeValuationEmbedding
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LinearIndependentEigProj
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OrderValuationCompare
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeExtendScalarsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeStableUnderActionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeEigenDecompositionLocalStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ReduceLatticeActionToResidueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ReduceLatticeCoordsToResidueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FractionFieldEigenBasisDescendsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TiedActionComposeResidueMapStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeStableUnderAction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeEigenDecompositionLocal
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ReduceLatticeActionToResidue
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ReduceLatticeCoordsToResidue
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FractionFieldEigenBasisDescends
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TiedActionComposeResidueMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdaptedBasesChangeByBlockMatricesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdaptedBasisSpansEigenspaceStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ResidueHodgeLatticeAdaptedBasisStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializeHodgeLatticeEigenbasisStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializeHodgeLatticeEigenFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdaptedBasisSpansEigenspace
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ResidueHodgeLatticeAdaptedBasis
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializeHodgeLatticeEigenbasis
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializeHodgeLatticeEigenFrame
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiLinearCombinationDetStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BasisOfSubmoduleIffUniqueCoordsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BasisOfSubmoduleIffUniqueCoords
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpIntegersValuationRingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NumberFieldEmbeddingsIntoCpIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpEmbeddingFactorsThroughComplexStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NumberFieldEmbeddingsIntoCpIntegral
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpEmbeddingFactorsThroughComplex
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmConjugationCompatComplexConjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrPointEigenFrameReductionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrPointComponentEigenReductionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointComponentLocalRingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmIntegersRegularAtComponentStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationLatticeBasisStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSumStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrPointEigenFrameReduction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrPointComponentEigenReduction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointComponentLocalRing
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmIntegersRegularAtComponent
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationLatticeBasis
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSum
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasisStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrSpecializationEigenFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrSpecializationEigenFrame
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
@@ -75,22 +77,22 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   haveI : FiniteDimensional Z.Ω Z.V := 𝓗.finiteDimensional
   have hσE : σ = Z.inc.comp (inE c τ) := inc_eq E Z.Ω _ _ hσ
   obtain ⟨f, hf⟩ : ∃ f : (E →+* ℂ_[p]) → (E →+* ℂ), ∀ s, s = κ.comp (inE c (f s)) :=
-    ⟨fun s => (GlobalTheory.T.cp_embedding_factors_through_complex E H l c p κ s).choose, fun s => (GlobalTheory.T.cp_embedding_factors_through_complex E H l c p κ s).choose_spec⟩
+    ⟨fun s => (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.exists_emb_through_coeff E H l c p κ s).choose, fun s => (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.exists_emb_through_coeff E H l c p κ s).choose_spec⟩
   obtain ⟨hI, hℓ₀, hnorm⟩ := GlobalTheory.T.cp_integers_valuation_ring p
-  obtain ⟨hint, hcard⟩ := GlobalTheory.T.number_field_embeddings_into_cp_integral E p
+  obtain ⟨hint, hcard⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.embeddings_padicComplex E p
   have hinv : ∀ a, H.bar (H.bar a) = a := fun a => (GlobalTheory.T.cm_conjugation_compat_complex_conj E H τ a).2
   have hbarF : ∀ a : 𝓞 E, inE c (ComplexEmbedding.conjugate τ) (a : E) = inE c τ (H.bar a : 𝓞 E) := fun a =>
     Subtype.ext (GlobalTheory.T.cm_conjugation_compat_complex_conj E H τ a).1
-  obtain ⟨gm, hgm0, hgm⟩ := GlobalTheory.T.cm_type_valuation_embedding E (OCp p) ℂ_[p] H.bar (κ.comp (inE c τ))
+  obtain ⟨gm, hgm0, hgm⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.det_adapted_eq_unit_mul_const E (OCp p) ℂ_[p] H.bar (κ.comp (inE c τ))
     (κ.comp (inE c (ComplexEmbedding.conjugate τ)))
     (fun s => Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c (f s))))) D.p D.q
     (NormedField.valuation (K := ℂ_[p])) hI hℓ₀ hint hcard (fun a => by simp only [RingHom.comp_apply, hbarF]) hinv
   refine ⟨(a / M) * Real.log ‖κ (β ϖ)‖ + Real.log ‖gm‖, ?_⟩
   intro V K _ _ _ _ _ _ j βK y vv ww T tK m m' hj hκ hF hIv hIw
 
-  obtain ⟨z, hz⟩ := GlobalTheory.T.dvr_point_eigen_frame_reduction E H D l Xo c O β Y p κ V K j βK y hr hj hκ hF.1
+  obtain ⟨z, hz⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.exists_modelPoint_extension E H D l Xo c O β Y p κ V K j βK y hr hj hκ hF.1
   obtain ⟨h₁, h₂, ψ, hsp, hle, hval, hval', hVr, hinc⟩ :=
-    GlobalTheory.T.dvr_point_component_eigen_reduction E H D l Xo c O β Y U Z p κ V K j βK y z hinj hr hj hκ hF.1 hF.2.1 hz
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.point_val E H D l Xo c O β Y U Z p κ V K j βK y z hinj hr hj hκ hF.1 hF.2.1 hz
   haveI : CharZero K := charZero_of_injective_ringHom βK.injective
   obtain ⟨U₁, hU₁, t, ht⟩ := 𝓗.free ⟨_, h₂⟩
   obtain ⟨U₂, hU₂, ℓ, hℓs, hℓ⟩ := 𝓗.vb ⟨_, h₂⟩ trivial
@@ -108,7 +110,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   have hHx := hH ⟨_, h₂⟩ hU₁ hU₂
   have hHy := hH ⟨_, h₁⟩ hy₁ hy₂
   have hLI : LinearIndependent Z.Ω ℓ := (hℓ ⟨_, h₂⟩ trivial hU₂).1
-  obtain ⟨htmem, hstab, hρst⟩ := GlobalTheory.T.hodge_lattice_stable_under_action E Z.Ω Z.V Z.ρ 𝓗.ρH _ _ _ ℓ t (𝓗.HL ⟨_, h₁⟩) 𝓗.act_fst hHy
+  obtain ⟨htmem, hstab, hρst⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.hodgeAt_stable E Z.Ω Z.V Z.ρ 𝓗.ρH _ _ _ ℓ t (𝓗.HL ⟨_, h₁⟩) 𝓗.act_fst hHy
   have hmemC : ∀ r : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₂⟩, (j.comp ψ) ⟨r, hle r.2⟩ ∈ (algebraMap (OCp p) ℂ_[p]).range := by
     intro r
     obtain ⟨x, hx⟩ := hVr r (hle r.2) r.2
@@ -123,7 +125,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     (GlobalTheory.T.hodge_lattice_extend_scalars E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ hle _ _ ℓ t (𝓗.HL ⟨_, h₂⟩) (𝓗.HL ⟨_, h₁⟩) K V ψ
       𝓗.act_fst 𝓗.act_inr hLI hℓs hHx hHy hmemK)
 
-  haveI : IsLocalRing (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) := GlobalTheory.T.generic_point_component_local_ring _ _ _ Z.gen _
+  haveI : IsLocalRing (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.isLocalRing_regAt _ _ _ Z.gen _
   have hcarry : ∀ (τ₀ : E →+* ℂ) (e : E), ∃ h : Z.inc.comp (inE c τ₀) e ∈ regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩,
       ψ ⟨_, h⟩ = βK.comp (inE c τ₀) e := fun τ₀ e => hinc _
   have hcarryC : ∀ (τ₀ : E →+* ℂ) (e : E), ∃ h : Z.inc.comp (inE c τ₀) e ∈ regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩,
@@ -143,7 +145,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   have hrk' : Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ)))) = D.q := by
     rw [← hws', finrank_span_eq_card hw]; simp
   obtain ⟨b₁, b₂, u', A', hb₁, hs₁, hb₂, hs₂, had', hu'm, hA', hfA⟩ :=
-    GlobalTheory.T.hodge_lattice_eigen_decomposition_local E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ D.p D.q ℓ t (𝓗.HL ⟨_, h₁⟩) (Z.inc.comp (inE c τ))
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.Frames.adapted_frames E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ D.p D.q ℓ t (𝓗.HL ⟨_, h₁⟩) (Z.inc.comp (inE c τ))
       (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ))) 𝓗.act_fst 𝓗.act_inr
       (fun a => by simp only [RingHom.comp_apply, hbarF]) hinv (hregF τ) (hregF _) hLI hℓs hHy hrk hrk'
   have hcoord : ∀ {n : ℕ} (b : Fin n → Z.V) (W' : Submodule _ Z.V), W' ≤ Submodule.span (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) (Set.range ℓ) →
@@ -157,11 +159,11 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     fun i => hs₂ ▸ Submodule.subset_span ⟨i, rfl⟩
   obtain ⟨x₁, hx₁⟩ := hcoord b₁ _ inf_le_left hin₁
   obtain ⟨x₂, hx₂⟩ := hcoord b₂ _ inf_le_left hin₂
-  obtain ⟨hK₁, hK₁s⟩ := GlobalTheory.T.reduce_lattice_coords_to_residue E Z.Ω Z.V K Z.ρ _ _ _ ℓ ψ ρK _ (βK.comp (inE c τ)) b₁ x₁ hLI hℓs hρst hTK
+  obtain ⟨hK₁, hK₁s⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalFrame.values_basis E Z.Ω Z.V K Z.ρ _ _ _ ℓ ψ ρK _ (βK.comp (inE c τ)) b₁ x₁ hLI hℓs hρst hTK
     (hcarry τ) hx₁ hb₁ hs₁ hrk
-  obtain ⟨hK₂, hK₂s⟩ := GlobalTheory.T.reduce_lattice_coords_to_residue E Z.Ω Z.V K Z.ρ _ _ _ ℓ ψ ρK _ (βK.comp (inE c (ComplexEmbedding.conjugate τ))) b₂ x₂ hLI hℓs hρst hTK
+  obtain ⟨hK₂, hK₂s⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalFrame.values_basis E Z.Ω Z.V K Z.ρ _ _ _ ℓ ψ ρK _ (βK.comp (inE c (ComplexEmbedding.conjugate τ))) b₂ x₂ hLI hℓs hρst hTK
     (hcarry _) hx₂ hb₂ hs₂ hrk'
-  obtain ⟨MU, MY, hSV, hVal, hAU, hAY⟩ := GlobalTheory.T.component_specialization_lattice_basis E H D l Xo c O β Y U Z K y h₁ ψ _ ℓ ρK hval
+  obtain ⟨MU, MY, hSV, hVal, hAU, hAY⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.tangent_coords E H D l Xo c O β Y U Z K y h₁ ψ _ ℓ ρK hval
     (hℓ ⟨_, h₁⟩ trivial hy₂) hTK
 
   have hfrK : ∀ {n : ℕ} (σ₀ : E →+* K) (σi : 𝓞 E →+* K) (bK : Fin n → Fin _ → K), (∀ a : 𝓞 E, σi a = σ₀ (a : E)) →
@@ -169,7 +171,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       IsEigFrame Xo.univ.t.act (under y) σi (fun i => MU.pt (bK i)) := by
     intro n σ₀ σi bK hi h1 h2
     rw [GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ _ _ _ _ MU _ _ ρK σi n bK hAU, eig_eq E K _ ρK σi σ₀ hi]
-    exact (GlobalTheory.T.basis_of_submodule_iff_unique_coords K _ _ n bK).1 ⟨h1, h2⟩
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.basis_iff_unique_combinations K _ _ n bK).1 ⟨h1, h2⟩
   have hFy : IsFramed U τ βK y (fun i => MU.pt (fun k => ψ (x₁ i k))) (fun i => MU.pt (fun k => ψ (x₂ i k))) :=
     ⟨hF.1, hF.2.1, hfrK (βK.comp (inE c τ)) _ _ (fun a => rfl) hK₁ hK₁s,
       hfrK (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ _ (fun a => rfl) hK₂ hK₂s⟩
@@ -182,20 +184,20 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       LinearIndependent K bK ∧ Submodule.span K (Set.range bK) = HT.eigSp ρK σ₀ := by
     intro n σ₀ σi bK hi h
     rw [GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ _ _ _ _ MU _ _ ρK σi n bK hAU, eig_eq E K _ ρK σi σ₀ hi] at h
-    exact (GlobalTheory.T.basis_of_submodule_iff_unique_coords K _ _ n bK).2 h
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.basis_iff_unique_combinations K _ _ n bK).2 h
   obtain ⟨hvLI, hvsp⟩ := hbasK (βK.comp (inE c τ)) _ vK (fun a => rfl) hF.2.2.1
   obtain ⟨hwLI, hwsp⟩ := hbasK (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ wK (fun a => rfl) hF.2.2.2
   have hfr₁ := hℓ ⟨_, h₁⟩ trivial hy₂
   have hfr₂ := hℓ ⟨_, h₂⟩ trivial hU₂
-  have hvV := GlobalTheory.T.dvr_specialization_eigen_frame E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _ (βK.comp (inE c τ)) _ vK
+  have hvV := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.IntFrameSpan.span_eq_eigSub E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _ (βK.comp (inE c τ)) _ vK
     hz hle hVr hfr₂ hfr₁ hSV hVal hAU (fun a => rfl) hIv hvLI
-  have hwV := GlobalTheory.T.dvr_specialization_eigen_frame E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _
+  have hwV := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.IntFrameSpan.span_eq_eigSub E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _
     (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ wK hz hle hVr hfr₂ hfr₁ hSV hVal hAU (fun a => rfl) hIw hwLI
-  have hjmap := GlobalTheory.T.tied_action_compose_residue_map E Z.Ω Z.V K ℂ_[p] Z.ρ _ _ ℓ ψ j ρK ρC hρst hTK hTC
+  have hjmap := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.TiedMap.tied_map_comp E Z.Ω Z.V K ℂ_[p] Z.ρ _ _ ℓ ψ j ρK ρC hρst hTK hTC
   have hjV : ∀ a : K, a ∈ (algebraMap V K).range → j a ∈ (algebraMap (OCp p) ℂ_[p]).range := fun a ha =>
     (hnorm _).2 ((hj a).2 ha)
-  obtain ⟨hvC, hvCs, hvCA⟩ := GlobalTheory.T.fraction_field_eigen_basis_descends E K ℂ_[p] V (OCp p) j _ _ ρK ρC (βK.comp (inE c τ)) vK hjV hjmap hvLI hvV
-  obtain ⟨hwC, hwCs, hwCA⟩ := GlobalTheory.T.fraction_field_eigen_basis_descends E K ℂ_[p] V (OCp p) j _ _ ρK ρC (βK.comp (inE c (ComplexEmbedding.conjugate τ))) wK hjV hjmap hwLI hwV
+  obtain ⟨hvC, hvCs, hvCA⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.FlatEig.eigSub_baseChange E K ℂ_[p] V (OCp p) j _ _ ρK ρC (βK.comp (inE c τ)) vK hjV hjmap hvLI hvV
+  obtain ⟨hwC, hwCs, hwCA⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.FlatEig.eigSub_baseChange E K ℂ_[p] V (OCp p) j _ _ ρK ρC (βK.comp (inE c (ComplexEmbedding.conjugate τ))) wK hjV hjmap hwLI hwV
   have hjσ : ∀ τ₀ : E →+* ℂ, j.comp (βK.comp (inE c τ₀)) = κ.comp (inE c τ₀) := fun τ₀ => by
     rw [← RingHom.comp_assoc, hκ]
   rw [hjσ] at hvCs hvCA hwCs hwCA
@@ -206,8 +208,8 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     (show wK i ∈ Submodule.span K (Set.range fun i k => ψ (x₂ i k)) by
       rw [hK₂s, ← hwsp]; exact Submodule.subset_span ⟨i, rfl⟩)
   have hchg := hφ.chg K βK y _ _ _ _ (Matrix.of PK) (Matrix.of QK) hFy hF
-    (fun i => (GlobalTheory.T.is_comb_tangent_iff_linear_sum _ _ _ _ _ MU _ _ _ _).2 (hPK i).symm)
-    (fun i => (GlobalTheory.T.is_comb_tangent_iff_linear_sum _ _ _ _ _ MU _ _ _ _).2 (hQK i).symm)
+    (fun i => (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.isComb_lieModel_pt_iff _ _ _ _ _ MU _ _ _ _).2 (hPK i).symm)
+    (fun i => (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.isComb_lieModel_pt_iff _ _ _ _ _ MU _ _ _ _).2 (hQK i).symm)
 
   have hsp₁ : ∀ i, b₁ i ∈ Submodule.span Z.Ω (Set.range v) := fun i => hvs ▸ (hin₁ i).2
   have hsp₂ : ∀ i, b₂ i ∈ Submodule.span Z.Ω (Set.range w) := fun i => hws' ▸ (hin₂ i).2
@@ -220,7 +222,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain ⟨u₀, hu₀, hu₀s⟩ := 𝓗.exists_basis_eigSp (Z.inc.comp (inE c τ))
   have hdim : Module.finrank Z.Ω (HT.eigSp 𝓗.ρH (Z.inc.comp (inE c τ))) = D.p + D.q := by
     rw [← hu₀s, finrank_span_eq_card hu₀]; simp
-  obtain ⟨huLI, huS⟩ := GlobalTheory.T.adapted_basis_spans_eigenspace E Z.Ω Z.V 𝓗.ρH _ D.p D.q v w u had hv hdim inferInstance
+  obtain ⟨huLI, huS⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.adaptedFamily_isBasis E Z.Ω Z.V 𝓗.ρH _ D.p D.q v w u had hv hdim inferInstance
   obtain ⟨B, hB, hBdet⟩ := GlobalTheory.T.adapted_bases_change_by_block_matrices E Z.Ω Z.V 𝓗.ρH _ D.p D.q v b₁ w b₂ u u' (Matrix.of P) (Matrix.of Q) had had' hv huS
     (fun i => (hP i).symm) (fun i => (hQ i).symm)
   set A'Ω : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) Z.Ω := (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩).subtype.mapMatrix A' with hA'Ω
@@ -233,7 +235,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     rw [hB k]
     rfl
   have hσx : ∀ a : 𝓞 E, (Z.inc.comp (inE c τ)) (a : E) ∈ (algebraMap (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₂⟩) Z.Ω).range := fun a =>
-    ⟨⟨_, GlobalTheory.T.cm_integers_regular_at_component E H D l Xo c O β Y U Z τ _ hσ ⟨_, h₂⟩ a⟩, rfl⟩
+    ⟨⟨_, _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.integers_mem_regAt E H D l Xo c O β Y U Z τ _ hσ ⟨_, h₂⟩ a⟩, rfl⟩
   have hframe : (𝓗.quot (Z.inc.comp (inE c τ))).IsFrameAt (fun i => ∑ k, (A'Ω * B) i k • u k) ⟨_, h₂⟩ := by
     rw [hfu]
     exact ⟨HodgeDeterminantLattice.linearIndependent_eigProj _ (ht ⟨_, h₂⟩ hU₁), HodgeDeterminantLattice.eigQuot_eq_span _ (ht ⟨_, h₂⟩ hU₁) hσx⟩
@@ -266,12 +268,12 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   rw [hϖv] at hValϖ
   have hValϖ' := hval dR
   rw [← hdv] at hValϖ'
-  obtain ⟨uV, huV⟩ := GlobalTheory.T.order_valuation_compare Y.X Z.Ω (Z.ξ₀ ≫ Y.j) _ (α / κ') (Z.inc (β ϖ)) M a V K z h₂ (A'Ω * B).det (ψ dR) (βK (β ϖ))
+  obtain ⟨uV, huV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.z_value_of_order Y.X Z.Ω (Z.ξ₀ ≫ Y.j) _ (α / κ') (Z.inc (β ϖ)) M a V K z h₂ (A'Ω * B).det (ψ dR) (βK (β ϖ))
     Z.gen (hord _) hgen (by rw [hz]; exact hValϖ') (by rw [hz]; exact hValϖ) hβ0
 
   have hmemu : ∀ i, u' i ∈ 𝓗.HL ⟨_, h₁⟩ := hu'm
   have hσtieC := hcarryC τ
-  have hadC := GlobalTheory.T.specialize_hodge_lattice_eigenbasis E Z.Ω Z.V ℂ_[p] _ _ D.p D.q ℓ (j.comp ψ) 𝓗.ρH ρHC (𝓗.HL ⟨_, h₁⟩) ev _ (κ.comp (inE c τ)) b₁ b₂ u' x₁ x₂ hu'm
+  have hadC := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.isAdapted_eval E Z.Ω Z.V ℂ_[p] _ _ D.p D.q ℓ (j.comp ψ) 𝓗.ρH ρHC (𝓗.HL ⟨_, h₁⟩) ev _ (κ.comp (inE c τ)) b₁ b₂ u' x₁ x₂ hu'm
     hEC hσtieC hstab had' hx₁ hx₂
   have hep : ∀ i, HT.eigProj 𝓗.ρH (Z.inc.comp (inE c τ)) (t i) ∈ 𝓗.HL ⟨_, h₁⟩ := fun i => by
     rw [hfA i]
@@ -279,7 +281,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   have hfC : ∀ i, HT.eigProj ρHC (κ.comp (inE c τ)) (ev ⟨t i, htmem i⟩) =
       ∑ k, ((j.comp ψ).mapMatrix A') i k • ev ⟨u' k, hu'm k⟩ := by
     intro i
-    rw [← GlobalTheory.T.hodge_lattice_eval_eigProj_comm E Z.Ω Z.V ℂ_[p] _ _ ℓ (j.comp ψ) 𝓗.ρH ρHC (𝓗.HL ⟨_, h₁⟩) ev _ (κ.comp (inE c τ)) ⟨t i, htmem i⟩ (hep i) hEC hσtieC hstab]
+    rw [← _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalProj.ev_eigProj E Z.Ω Z.V ℂ_[p] _ _ ℓ (j.comp ψ) 𝓗.ρH ρHC (𝓗.HL ⟨_, h₁⟩) ev _ (κ.comp (inE c τ)) ⟨t i, htmem i⟩ (hep i) hEC hσtieC hstab]
     have : (⟨_, hep i⟩ : 𝓗.HL ⟨_, h₁⟩) = ∑ k, A' i k • (⟨u' k, hu'm k⟩ : 𝓗.HL ⟨_, h₁⟩) := by
       apply Subtype.ext
       rw [AddSubmonoidClass.coe_finset_sum]
@@ -288,11 +290,11 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     exact Finset.sum_congr rfl fun k _ => (ev.map_smulₛₗ _ _)
   have hrkC : ∀ s, Module.finrank ℂ_[p] (HT.eigSp ρC s) = Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c (f s)))) := by
     intro s
-    refine GlobalTheory.T.finrank_eigSp_eq_of_lattice_specialization E Z.Ω Z.V ℂ_[p] Z.ρ _ _ ℓ (j.comp ψ) ρC _ s hLI hℓs hρst hTC ?_
+    refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.finrank_eigSp_eval E Z.Ω Z.V ℂ_[p] Z.ρ _ _ ℓ (j.comp ψ) ρC _ s hLI hℓs hρst hTC ?_
     intro e
     obtain ⟨h, e'⟩ := hcarryC (f s) e
     exact ⟨h, e'.trans (by rw [← hf s])⟩
-  obtain ⟨ε, hε⟩ := GlobalTheory.T.residue_hodge_lattice_adapted_basis E ℂ_[p] (OCp p) H.bar (κ.comp (inE c τ)) (κ.comp (inE c (ComplexEmbedding.conjugate τ))) _ D.p D.q
+  obtain ⟨ε, hε⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.det_evaluated_frame E ℂ_[p] (OCp p) H.bar (κ.comp (inE c τ)) (κ.comp (inE c (ComplexEmbedding.conjugate τ))) _ D.p D.q
     ρC ρHC HV (fun i => ev ⟨t i, htmem i⟩) (fun i k => (j.comp ψ) (x₁ i k)) (fun i k => j (vK i k))
     (fun i k => (j.comp ψ) (x₂ i k)) (fun i k => j (wK i k)) (fun i => ev ⟨u' i, hu'm i⟩) ((j.comp ψ).mapMatrix A')
     (j.mapMatrix (Matrix.of PK)) (j.mapMatrix (Matrix.of QK)) gm hC1 hC2
@@ -307,7 +309,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       have := congrFun (hQK i) k
       rw [← this]
       simp [Finset.sum_apply, map_sum])
-    (GlobalTheory.T.reduce_lattice_coords_to_residue E Z.Ω Z.V ℂ_[p] Z.ρ _ _ _ ℓ (j.comp ψ) ρC _ (κ.comp (inE c τ)) b₁ x₁ hLI hℓs hρst hTC (hcarryC τ) hx₁ hb₁ hs₁ hrk).1 hfC
+    (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalFrame.values_basis E Z.Ω Z.V ℂ_[p] Z.ρ _ _ _ ℓ (j.comp ψ) ρC _ (κ.comp (inE c τ)) b₁ x₁ hLI hℓs hρst hTC (hcarryC τ) hx₁ hb₁ hs₁ hrk).1 hfC
     (fun v' w' u'' B' h1 h2 h3 h4 h5 h6 h7 => hgm (Fin _ → ℂ_[p]) ρC ρHC HV (stdLat (OCp p) ℂ_[p] _) (fun i => ev ⟨t i, htmem i⟩) v' w' u'' B'
       hC1 hC2 hHV1 hHV2 (hFC htmem) hrkC h1 h2 h3 h4 h5 h6 h7)
     hvC hvCs hvCA hwC hwCs hwCA

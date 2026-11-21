@@ -20,22 +20,11 @@ def twR : GA E a →* (L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ) wh
 def Repr (F : L2 (latticeGL E a) μ) (φ : GA E a → ℂ) : Prop :=
   lift (latticeGL E a) F =ᵐ[μ] fun g => φ g * ((chiDet a χ g : ℂˣ) : ℂ)
 
-def cls (V : Submodule ℂ (Sm E a)) : Submodule ℂ (L2 (latticeGL E a) μ) :=
-  classes (V.map (mulChi a χ).toLinearMap) μ
-
 variable {μ χ}
 
 namespace Repr
 
 variable {F F' : L2 (latticeGL E a) μ} {φ φ' : GA E a → ℂ}
-
-theorem twR (h : Repr μ χ F φ) (k : GA E a) : Repr μ χ (twR μ χ k F) fun g => φ (g * k) := by
-  filter_upwards [ae_quotMeasure_iff.1 (Lp.coeFn_smul (((chiDet a χ k)⁻¹ : ℂˣ) : ℂ) (R (latticeGL E a) μ k F)),
-    lift_R k F, (measurePreserving_mul_right μ k).quasiMeasurePreserving.ae h] with g e1 e2 e3
-  refine e1.trans ?_
-  change _ * lift _ (R (latticeGL E a) μ k F) g = _
-  rw [e2, e3, map_mul, Units.val_mul, Units.val_inv_eq_inv_val]
-  field_simp
 
 omit [μ.IsMulRightInvariant]
 
@@ -59,8 +48,6 @@ theorem sum {ι : Type*} (s : Finset ι) {F : ι → L2 (latticeGL E a) μ} {φ 
   | insert i s hi ih =>
     rw [Finset.sum_insert hi, Finset.sum_insert hi]
     exact (h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
-
-theorem unique (h : Repr μ χ F φ) (h' : Repr μ χ F' φ) : F = F' := l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (h.trans h'.symm)
 
 end Repr
 

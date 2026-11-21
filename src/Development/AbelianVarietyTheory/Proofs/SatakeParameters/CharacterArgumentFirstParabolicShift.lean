@@ -9,10 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VectorsLinear
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalFractionsRepresentPrimeNormQuotient
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TwistPrimeDatumIntegralSupportAndInvariant
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemZmuOfPowPred
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PrimeConditionsSelectedSet
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhiInvarianceUnramifiedPlace
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhiInvarianceRamifiedPlaceFlat
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhiInvarianceRamifiedPlaceSharp
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsOfStarEq
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AbsNormEqOfSplitFactor
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelNotMemRowSG
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhiMapsAndOmegaLaw
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col NumberField IsDedekindDomain Classical GlobalTheory.QNormal
 
@@ -173,101 +173,6 @@ open Proof.NormalFormAtPrime Proof.boxSum_ne_zero_invariant_affineChange
 
 variable {E : Type} [Field E] [NumberField E] {K : Type} [Field K] {P : HeightOneSpectrum (𝓞 E)} {n' c' n c : ℕ}
 
-theorem unfold_law [CharZero K] (hP : IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P) (hc : 1 ≤ c) (hc' : c' = c + 1) {psi : E → K} {D : ℕ}
-    (hD : 1 ≤ D) (hpsi : CharTo P D psi) (H : AddSubgroup ((Fin (n' + c') → E) →ₗ[E] (Fin (n + c) → E)))
-    (hq : ∀ z ∈ H, (qOf P : E) • z ∈ H) {m : ℕ} (hb : ∀ z ∈ H, IntHom P ((qOf P : E) ^ m • z))
-    (hb' : ∀ z, IntHom P z → (qOf P : E) ^ m • z ∈ H) (hch : ∀ z ∈ H, IntAt P ((qOf P : E) ^ D * Loc.chArg z))
-    {Psi : Loc.SF E K (n' + c') (n + c)} (hs : ∀ y, Psi y ≠ 0 → y ∈ H) (hi : ∀ y, ∀ z ∈ H, Psi (y + (qOf P : E) • z) = Psi y)
-    {r : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E)} {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} (hr : r ∈ Loc.R1 E n c)
-    (hg : ∀ x, r (Loc.inX E n c x) = Loc.inX E n c (g x)) (hH : ∀ z, r.toLinearMap ∘ₗ z ∈ H ↔ z ∈ H) {a b : K}
-    (law : ∀ y, Psi (r.toLinearMap ∘ₗ y) * a = b * Psi y) {A B : ℕ} (hA : m ≤ A) (hB : m + D ≤ B) (wt : K)
-    (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) :
-    Loc.E1 psi (LocE.valsQ E (qOf P) A B) wt Psi (g.toLinearMap ∘ₗ xj) * a =
-      (psi (Loc.n1Arg r))⁻¹ * b * Loc.E1 psi (LocE.valsQ E (qOf P) A B) wt Psi xj := by
-  have q0 := qOf_ne_zero P
-  have hqk : ∀ k : ℕ, ∀ z ∈ H, (qOf P : E) ^ k • z ∈ H := fun k z hz => by
-    induction k with
-    | zero => simpa using hz
-    | succ k ih => rw [pow_succ', mul_smul]; exact hq _ ih
-  obtain ⟨T, hT⟩ := exists_move hc hc' hr hg xj
-  have hneg : ∀ {u : E}, IntAt P ((qOf P : E) ^ D * u) → IntAt P ((qOf P : E) ^ D * -u) := fun h => by
-    simpa using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg h
-  have hpt : ∀ t, integrand psi Psi (g.toLinearMap ∘ₗ xj) (T t) * a = (psi (Loc.n1Arg r))⁻¹ * b * integrand psi Psi xj t := by
-    intro t
-    unfold integrand
-    rw [← hT, mul_right_comm, law]
-    by_cases h0 : Psi (Loc.xx1 xj t) = 0
-    · simp [h0]
-    have a1 := hch _ (hs _ h0)
-    have a2 := hch _ ((hH _).2 (hs _ h0))
-    rw [characterArgument_first_parabolic_shift hc hc' hr.1] at a2 ⊢
-    have a3 : IntAt P ((qOf P : E) ^ D * Loc.n1Arg r) := by
-      convert a2.add (hneg a1) using 1
-      ring
-    have a4 := hpsi.1 _ _ a3 (hneg a3)
-    rw [add_neg_cancel, hpsi.2 0 (IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P)] at a4
-    rw [neg_add, hpsi.1 _ _ (hneg a1) (hneg a3), ← eq_inv_of_mul_eq_one_right a4.symm]
-    ring
-  have hsupp : ∀ y t, integrand psi Psi y t ≠ 0 → t ∈ lat P (Loc.FC n' c' n c) ((qOf P : E) ^ A) := fun y t h p => by
-    have := (intHom_iff _).1 (hb _ (hs _ (left_ne_zero_of_mul h))) p.1.2 p.1.1
-    rw [LinearMap.smul_apply, Pi.smul_apply, Proof.unipotentRadicals_act_affine_unfoldingSpaces.unfoldingAffineLinearMap_apply_freeEntry] at this
-    exact intAt_pow_mono hA this
-  let M : AddSubgroup (Loc.FC n' c' n c → E) :=
-    H.comap (((qOf P : E) ^ D)⁻¹ • Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart (0 : (Fin n' → E) →ₗ[E] (Fin n → E))).toAddMonoidHom
-  have mM : ∀ u, u ∈ M ↔ ((qOf P : E) ^ D)⁻¹ • Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) u ∈ H :=
-    fun u => Iff.rfl
-  have key := sum_reps_equiv (M₀ := lat P (Loc.FC n' c' n c) ((qOf P : E) ^ B)⁻¹) (M := M)
-    (M₁ := lat P (Loc.FC n' c' n c) ((qOf P : E) ^ A)) (Fintype.piFinset fun _ => LocE.valsQ E (qOf P) A B)
-    (fun u hu => by
-      obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hB
-      have h1 : IntHom P (((qOf P : E) ^ (m + D + k))⁻¹ • Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) u) :=
-        (intHom_iff _).2 fun s l => by
-          rw [LinearMap.smul_apply, Pi.smul_apply, linPart_single, smul_eq_mul]
-          split_ifs
-          · exact hu _
-          · simpa using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P
-      rw [mM]
-      convert hqk k _ (hb' _ h1) using 1
-      rw [smul_smul, smul_smul]
-      congr 1
-      field_simp
-      ring)
-    (fun u hu p => by
-      have := (intHom_iff _).1 (hb _ (hqk D _ ((mM u).1 hu))) p.1.2 p.1.1
-      rw [smul_inv_smul₀ (pow_ne_zero _ q0), LinearMap.smul_apply, Pi.smul_apply, linPart_single, dif_pos p.2] at this
-      exact intAt_pow_mono hA this)
-    (fun s hs s' hs' h => funext fun i => (Proof.rationalFractions_represent_primeNormQuotient.valsQ_reps E P hP A B).1 _ (Fintype.mem_piFinset.1 hs i) _
-      (Fintype.mem_piFinset.1 hs' i) (h i))
-    (fun v hv => by
-      choose s hs hs' using fun i => (Proof.rationalFractions_represent_primeNormQuotient.valsQ_reps E P hP A B).2 (v i) (hv i)
-      exact ⟨s, Fintype.mem_piFinset.2 hs, hs'⟩)
-    T (fun s t => by
-      rw [mM, mM, ← affineFreeParam_first_sub_eq_linearPart (g.toLinearMap ∘ₗ xj), ← affineFreeParam_first_sub_eq_linearPart xj, ← hT, ← hT, ← LinearMap.comp_sub, ← LinearMap.comp_smul, hH])
-    (fun t => integrand psi Psi (g.toLinearMap ∘ₗ xj) t * a)
-    (fun t u hu => by
-      obtain ⟨z, hz, e⟩ : ∃ z ∈ H, Loc.xx1 (g.toLinearMap ∘ₗ xj) (t + u) =
-          Loc.xx1 (g.toLinearMap ∘ₗ xj) t + (qOf P : E) ^ D • z :=
-        ⟨_, (mM u).1 hu, by rw [smul_inv_smul₀ (pow_ne_zero _ q0), ← sub_eq_iff_eq_add', affineFreeParam_first_sub_eq_linearPart, add_sub_cancel_left]⟩
-      unfold integrand
-      rw [e]
-      generalize Loc.xx1 (g.toLinearMap ∘ₗ xj) t = y
-      have e1 : Psi (y + (qOf P : E) ^ D • z) = Psi y := by
-        obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hD
-        rw [pow_add, pow_one, mul_smul, hi _ _ (hqk d z hz)]
-      rw [e1]
-      by_cases h0 : Psi y = 0
-      · simp [h0]
-      have a1 := IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg (hch _ hz)
-      rw [chArg_add_smul, neg_add, hpsi.1 _ _ (hneg (hch _ (hs _ h0))) (intAt_pow_mul D a1), hpsi.2 _ a1, mul_one])
-    (fun t h => hsupp _ t (left_ne_zero_of_mul h))
-    (fun t h => hsupp xj t (right_ne_zero_of_mul (hpt t ▸ h)))
-  simp only [hpt] at key
-  rw [← Finset.mul_sum, ← Finset.sum_mul] at key
-  unfold Loc.E1
-  unfold integrand at key
-  rw [mul_assoc, ← key]
-  ring
-
 theorem sclLat_bdd [StarRing E] (N : ℕ) (e : ℕ → ℤ) : ∃ k : ℕ,
     (∀ v ∈ LocE.sclLat P (qOf P) N e, IntV P ((qOf P : E) ^ k • v)) ∧
       ∀ v, IntV P v → (qOf P : E) ^ k • v ∈ LocE.sclLat P (qOf P) N e := by
@@ -405,66 +310,5 @@ theorem chArg_depth (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al :
     exact Proof.NormalFormAtPrime.intAt_pow_mono (A := i + 1) (by omega) (this ⟨_, l1⟩)
 
 end Chain
-
-theorem xiAt_law : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ), X.Ok → Pr.Ok → IsSel X sel → (∀ i, Pr.g i ∈ S) → (∀ v, Pr.T v ∈ S) → L.Ok Ch sel mu cst G m2 → ∀ i, i < m2 → ∀ (al : L.β i) (be : L.β (i + 1)) (P : rowSG Pr sel mu) (r : AutY X R (i + 1)) (g : Sp X.E (R.N (i + 1)) ≃ₗ[X.E] Sp X.E (R.N (i + 1))), r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp (i + 1) P.1) (L.h (i + 1) be P) → (∀ x, r (Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) x) = Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) (g x)) → ∀ x, XiAt Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) (g.toLinearMap ∘ₗ x) * muAt Ch sel mu cst i P ((LinearEquiv.det g : X.Eˣ) : X.E) = chiInv Ch sel mu cst (i + 1) P (L.h (i + 1) be P) r * XiAt Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) x := by
-  intro X Pr R Ch sel S mu cst L G m2 hX hPr hsel hg hT hL i hi al be P r g hr hrg x
-  have hm := hL.hm
-  obtain ⟨hp, hu⟩ := (GlobalTheory.T.prime_conditions_selected_set Ch sel mu cst hX hPr hsel hg hT).1 P
-  set h' := L.h i al P with hh'
-  set h := L.h (i + 1) be P with hh
-  have hk : h⁻¹ * r * h ∈ Jat (Pr := Pr) (R := R) cst.sharp (i + 1) P.1 := by
-    have := hr.2
-    simpa [Subgroup.mem_comap] using this
-  have hdet : LinearEquiv.det (h⁻¹ * r * h) = LinearEquiv.det g := by
-    rw [map_mul, map_mul, map_inv, inv_mul_cancel_comm, det_first_parabolic_eq_det_block hr.1.1 hrg]
-  have hlaw : ∀ y, PhiAt Ch mu cst.sharp i P.1 ((h⁻¹ * r * h).toLinearMap ∘ₗ y) *
-      muAt Ch sel mu cst i P ((LinearEquiv.det g : X.Eˣ) : X.E) =
-        lamRow Ch mu cst.sharp (i + 1) P.1 (h⁻¹ * r * h).toLinearMap * PhiAt Ch mu cst.sharp i P.1 y := by
-    rw [← hdet]
-    by_cases hP : P.1 ∈ Pr.vGs
-    · rcases Bool.eq_false_or_eq_true cst.sharp with hs | hs
-      · exact GlobalTheory.T.phi_invariance_ramified_place_sharp Ch sel mu cst _ i P (by omega) hp hu hP hs _ hk
-      · exact GlobalTheory.T.phi_invariance_ramified_place_flat Ch sel mu cst _ i P (by omega) hp hu hP hs _ hk
-    · exact GlobalTheory.T.phi_invariance_unramified_place Ch sel mu cst _ i P (by omega) hp hu hP _ hk
-  obtain ⟨m, hb, hb'⟩ : ∃ m : ℕ,
-      (∀ z ∈ movedHom (lamYat (Pr := Pr) (R := R) i P.1) (lamYat (Pr := Pr) (R := R) (i + 1) P.1) h' h,
-        IntHom P.1 ((qOf P.1 : X.E) ^ m • z)) ∧ ∀ z, IntHom P.1 z → (qOf P.1 : X.E) ^ m • z ∈
-          movedHom (lamYat (Pr := Pr) (R := R) i P.1) (lamYat (Pr := Pr) (R := R) (i + 1) P.1) h' h :=
-    movedHom_bdd _ _ h' h
-  obtain ⟨hs, hinv⟩ := phiAt_mod Ch mu cst.sharp (i := i) (by omega) P.1
-  have hmove : ∀ y : HomE X.E (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1)),
-      h.symm.toLinearMap ∘ₗ (r.toLinearMap ∘ₗ y) ∘ₗ h'.toLinearMap =
-        (h⁻¹ * r * h).toLinearMap ∘ₗ (h.symm.toLinearMap ∘ₗ y ∘ₗ h'.toLinearMap) := fun y => LinearMap.ext fun v => by
-    change h.symm (r _) = h.symm (r (h (h.symm _)))
-    rw [LinearEquiv.apply_symm_apply]
-    rfl
-  have key := unfold_law (K := X.K) (P := P.1) ⟨hp, hu⟩ (n' := R.N i) (c' := cOf R i) (n := R.N (i + 1)) (c := cOf R (i + 1))
-    (by unfold cOf; omega) (by unfold cOf; omega) (hL.cst_ok.D_pos P) ⟨hL.cst_ok.psi_add P, hL.cst_ok.psi_int P⟩
-    (movedHom (lamYat (Pr := Pr) (R := R) i P.1) (lamYat (Pr := Pr) (R := R) (i + 1) P.1) h' h)
-    (fun z hz v hv => by
-      rw [LinearMap.smul_apply, map_smul, Nat.cast_smul_eq_nsmul]
-      exact nsmul_mem (hz v hv) _)
-    hb hb' (chArg_depth hL hi al be P) (Psi := omPhi Ch sel mu cst i P h' h)
-    (fun y hy => hs _ (right_ne_zero_of_mul hy))
-    (fun y z hz => by
-      unfold omPhi Loc.om
-      rw [← hinv (h.symm.toLinearMap ∘ₗ y ∘ₗ h'.toLinearMap) (h.symm.toLinearMap ∘ₗ z ∘ₗ h'.toLinearMap) hz,
-        LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp, LinearMap.comp_smul])
-    hr.1 hrg
-    (fun z => forall₂_congr fun v _ => by
-      have := jat_le _ _ _ hk (h.symm (z (h' v)))
-      rw [← this]
-      exact (LinearMap.congr_fun (hmove z) v) ▸ Iff.rfl)
-    (a := muAt Ch sel mu cst i P ((LinearEquiv.det g : X.Eˣ) : X.E))
-    (b := lamRow Ch mu cst.sharp (i + 1) P.1 (h⁻¹ * r * h).toLinearMap)
-    (fun y => by
-      unfold omPhi Loc.om
-      rw [hmove, mul_assoc, hlaw]
-      ring)
-    (A := cst.A + m) (B := cst.B + (m + cst.D P)) (by omega) (by omega) (((qOf P.1 : X.K) ^ (cst.B + (m + cst.D P)))⁻¹) x
-  have hd := hL.deep (cst.A + m) (cst.B + (m + cst.D P)) (by omega) (by omega) i hi al be P
-  unfold XiAt chiInv
-  rw [← hd, mul_assoc, mul_left_comm (_ * _)]
-  exact congrArg _ key
 
 end GlobalTheory.UnfoldLaw

@@ -161,9 +161,6 @@ theorem spanCovol_eq_covolume_comap_span [MeasurableSpace E] [BorelSpace E] (L :
     spanCovol L = ZLattice.covolume (ZLattice.comap ℝ L (span ℝ (L : Set E)).subtype) := by
   rw [← spanCovol_eq_covolume, spanCovol_comap_subtype L _ subset_span]
 
-noncomputable def projAlong (L N : Submodule ℤ E) : Submodule ℤ E :=
-  L.map ((span ℝ (N : Set E))ᗮ.starProjection.toLinearMap.restrictScalars ℤ)
-
 end Main
 
 end GlobalTheory

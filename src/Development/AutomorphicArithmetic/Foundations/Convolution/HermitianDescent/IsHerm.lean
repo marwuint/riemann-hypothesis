@@ -82,23 +82,12 @@ variable (F E : Type) [Field F] [Field E] [Algebra F E]
 
 def IsNm {A : Type} [CommRing A] [Algebra F A] (x : A) : Prop := ∃ z : A ⊗[F] E, Algebra.norm A z = x
 
-open Classical in
-
-def sgn {A : Type} [CommRing A] [Algebra F A] (x : A) : ℤˣ := if IsNm F E x then 1 else -1
-
 variable {F E}
 
 def ext (k : Type) [CommRing k] [Algebra F k] (σ : E ≃ₐ[F] E) : k ⊗[F] E ≃ₐ[k] k ⊗[F] E :=
   Algebra.TensorProduct.congr AlgEquiv.refl σ
 
 def inc (k : Type) [CommRing k] [Algebra F k] : E →+* k ⊗[F] E := Algebra.TensorProduct.includeRight.toRingHom
-
-def incL (k : Type) [CommRing k] [Algebra F k] (A : Type) [CommRing A] [Algebra F A] :
-    E ⊗[F] A →ₐ[F] (k ⊗[F] E) ⊗[k] (k ⊗[F] A) :=
-  Algebra.TensorProduct.lift
-    ((Algebra.TensorProduct.includeLeft (S := F)).comp Algebra.TensorProduct.includeRight)
-    (((Algebra.TensorProduct.includeRight : k ⊗[F] A →ₐ[k] (k ⊗[F] E) ⊗[k] (k ⊗[F] A)).restrictScalars F).comp
-      Algebra.TensorProduct.includeRight) fun _ _ => Commute.all _ _
 
 end Norms
 

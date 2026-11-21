@@ -14,9 +14,6 @@ def QuadBC0 : Prop :=
     Module.finrank F E = 2 → ∀ (a : ℕ) [Fact (a = 2)], 1 ≤ a → ∀ π : TR.CuspSub F a, π.IsRegAlg →
       (∃ η : HChar F, IsQuadCharOf E η ∧ IsoTwist π η) ∨ ∃ P : CuspSub E a, IsBC0 π P
 
-theorem quadBC0_of_quadBaseChange (h : QuadBaseChange) : QuadBC0 := fun F E _ _ _ _ _ _ _ h2 a _ ha π _ =>
-  (h F E h2 a ha π).imp_right fun ⟨P, hP⟩ => ⟨P, hP.inf, hP.unr⟩
-
 theorem quadBC0_of_two (h : Z.Bc.QuadBC2) : QuadBC0 := by
   intro F E _ _ _ _ _ _ _ h2 a ha _ π hr
   obtain rfl := ha.out

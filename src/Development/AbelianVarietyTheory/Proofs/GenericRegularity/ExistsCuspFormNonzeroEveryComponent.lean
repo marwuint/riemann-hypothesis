@@ -23,8 +23,9 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CompSplitRecord
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CuspEqZeroOfGenericValues
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsOpenSameModel
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.WeightsBelow
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsThetaGeneratorReadingNeZeroAllFramesStatement
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicGermValueChartIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsThetaGeneratorReadingNeZeroAllFrames
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SupGenTies
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicGermValueChartIndependent
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RunJoin
 
 noncomputable section
@@ -119,7 +120,7 @@ theorem exists_nonZeroComp_and_ne_zero : ∀ (D : D7) (T : Top D) (h : LawsP T) 
     omega
   obtain ⟨g0, hg0⟩ := exists_cusp_reading_ne_zero h wF T.σ₀ fun k => by
     obtain ⟨x, hx⟩ := (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected _ ((T.U j T.σ₀).X k)).nonempty
-    obtain ⟨f, hf, hf0⟩ := GlobalTheory.T.exists_thetaGenerator_reading_ne_zero_all_frames GlobalTheory.T.harmonic_germ_value_chart_independent D T h j hj wF hr hdeg T.σ₀ T.good_σ₀ k x hx
+    obtain ⟨f, hf, hf0⟩ := _root_.GlobalTheory.RunIn.exists_theta_ne_zero_record _root_.GlobalTheory.harmonicValue_chart_independent D T h j hj wF hr hdeg T.σ₀ T.good_σ₀ k x hx
     refine ⟨x, hx, f, ?_, hf0⟩
     rw [cutR_eq T.C hj]
     exact h.thCusp j hj _ _ (dom_wtA wF) hlp f hf

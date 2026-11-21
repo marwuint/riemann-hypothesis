@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartUnitBasicOpenStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartUnitBasicOpen
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominatesOfCoordsRegularStatement
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
@@ -61,7 +61,7 @@ theorem specializes_of_dominates (M : PModel o x) (M' : PModel o' y) {i : Ω →
     rw [this]
     exact mul_mem (hc' j) hu.2.2
   refine specializes_iff_forall_open.2 fun V hV hq => ?_
-  obtain ⟨a, ha, hau, hU⟩ := GlobalTheory.T.chart_unit_basic_open o Ω κ x M c ⟨f q, h1⟩ ⟨V, hV⟩ ⟨hc0, hc⟩ hq
+  obtain ⟨a, ha, hau, hU⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chRing_basicOpen_basis o Ω κ x M c ⟨f q, h1⟩ ⟨V, hV⟩ ⟨hc0, hc⟩ hq
   have hag : a ∈ regAt M.ξ ⟨g q, h2⟩ := (M.tie.ring c hc0 a).1 ha _ hin
   refine hU ⟨g q, h2⟩ hin (gb a hag ⟨(map_ne_zero i).2 hau.1, fa a hau.2.1, ?_⟩)
   rw [← map_inv₀]

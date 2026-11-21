@@ -1,5 +1,49 @@
-import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapLiftEveryThirdPlace
-import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.TopAll
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapSecondPlace
+import Formalism.WachLatticeTwists.SplitClassesAll.Statement
+import Formalism.WachLatticeTwists.SplitLocalLifts.Statement
+import Formalism.WachLatticeTwists.HerrComplexInjectivity.Statement
+import Formalism.WachLatticeTwists.CharacterSplitJumps.WachTwistTheoremFromTorsionBound
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
+import Formalism.WachLatticeTwists.Statement
+import Formalism.WachLatticeTwists.SandwichH1Classes.HypothesisWGivesUnitCongruence
+import Formalism.WachLatticeTwists.SandwichH1Classes.ComparisonMatrixIntertwinesEndomorphisms
+import Formalism.WachLatticeTwists.DenseTopActions.Statement
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.TheoremNFiveReal
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.InRowRealOf
+import Formalism.WachLatticeTwists.WachProductBases.Statement
+import Formalism.LagrangeIdealLifts.Statement
+import Formalism.CoboundaryTransfers.GammaStableTransfers.MemCoboundariesOfIsOneCoboundary
+import Formalism.CoboundaryTransfers.GammaStableTransfers.GammaStableOfGammaQUnitHolds
+import Formalism.CoboundaryTransfers.GammaStableTransfers.DiffOneSmulOfTower
+import Formalism.WindowSums.AnnihilatorPolynomials.ZpowVal
+import Formalism.WachLatticeTwists.LagrangeExtensionCocycles.DualWByLettersExtended
+import Formalism.WachLatticeTwists.SandwichH1Classes.SandwichH1Proofs.GmIApply
+import Formalism.WachLatticeTwists.CharacterSplitJumps.CharacterJumpProofs.MemAnnih
+import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.MinimalExponentAttained
+import Formalism.WachLatticeTwists.HodgeTateChains.XiAdicFiltrationData
+import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.Imports
+import Formalism.WachLatticeTwists.HodgeTateChains.Statement
+import Formalism.WachLatticeTwists.TorsionLengthCounts.SubmoduleLengthBoundStatement
+import Formalism.WachLatticeTwists.HodgeTateChains.H2KilledByTateDuality
+import Formalism.WachLatticeTwists.HodgeTateChains.GammaIterateMatrixCongruence
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.FirstSummandActionMem
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.TheoremNFiveDeltaClause
+import Formalism.WachLatticeTwists.CharacterSplitJumps.CharacterJumpProofs.PropLocBK
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.Bridge
+import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelsOfBlockChiCOfBlockChiOne
+import Formalism.WachLatticeTwists.TorsionLengthCounts.RowCol
+import Formalism.CharacterColumnKernels.CharacterColumnKernelEqualityForm
+import Formalism.WachLatticeTwists.TorsionLengthCounts.LengthHomCoker
+import Formalism.WachLatticeTwists.SplitLocalLifts.Cocycles1MapOfEquivariant
+import Formalism.WachLatticeTwists.SplitLocalLifts.SplitLocalLiftProofs.NatCastPowSmul
+import Formalism.WachLatticeTwists.SplitLocalLifts.SplitLocalLiftProofs.LocLift
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.LocDualOrth
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.QuotLen
+import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
+import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
+import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
+import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.ExistsBasisOfLattice
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
 
@@ -9,7 +53,7 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.FIN
 
-open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Formalism.RepresentationBoundsCohomology.JL Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.JS Formalism.RepresentationBoundsCohomology.SplitClassesAll Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology Formalism.RepresentationBoundsCohomology.T2
+open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Formalism.RepresentationBoundsCohomology.JL Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.SplitClassesAll Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology Formalism.RepresentationBoundsCohomology.T2
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC
 open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff FracTop IsFGTop cupFG IsCycOn)
 
@@ -92,167 +136,5 @@ theorem pi_ko_torsion (O : Type) [CommRing O] [IsDomain O] (d : Type) [Fintype d
   funext i
   rw [Pi.smul_apply, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i), mul_smul, hc i, smul_zero]
   rfl
-
-theorem finite_H1V'_dec (ℓ : ℕ) [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
-    {VT VT' : Type}
-    [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT]
-    [ContinuousSMul O VT] [Module (FractionRing O) VT] [IsScalarTower O (FractionRing O) VT]
-    [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT']
-    [ContinuousSMul O VT'] [Module (FractionRing O) VT'] [IsScalarTower O (FractionRing O) VT']
-    {Ek Ω : Type} [Field Ek] [NumberField Ek] [Field Ω] [Algebra Ek Ω] [IsAlgClosure Ek Ω]
-    (Aw : ValuationSubring Ω) (hp : Aw.valuation (ℓ : Ω) < 1)
-    (D : LatData O (Aw.decompositionSubgroup Ek) VT VT') (ε : (Ω ≃ₐ[Ek] Ω) →* Oˣ)
-    [Module (FractionRing O) (H1 D.ρT')] [IsScalarTower O (FractionRing O) (H1 D.ρT')]
-    (hO : PadicCoeff ℓ O) (hF : FracTop O) (hcyc : IsCycG ℓ ε) (hε : ∀ g, D.ε g = ε g) (hD : RealLat D) :
-    Module.Finite (FractionRing O) (H1 D.ρT') := by
-  obtain ⟨K, hK, i, h1, -, -⟩ := ReciprocityTheory.ChartRestriction.T2.exists_dec_equiv (F := Ek) Aw hp
-  have hεD : D.ε = ε.comp (Aw.decompositionSubgroup Ek).subtype := by
-    ext g; simp [hε g]
-  have hcw : IsCycOn ℓ (Aw.decompositionSubgroup Ek) (ε.comp (Aw.decompositionSubgroup Ek).subtype) :=
-    fun g n ζ h => hcyc g.1 n ζ h
-  have hcD : ReciprocityTheory.ChartRestriction.T2.IsCyc ℓ K (ReciprocityTheory.ChartRestriction.T2.carry i D.ε) := h1 O D.ε (hεD ▸ hcw)
-  have hD' : ReciprocityTheory.ChartRestriction.T2.RealLatG i D :=
-    ⟨hcD, hD.lat, hD.perf, hD.contT, hD.openT, hD.t2, hD.t2', hD.cs, hD.cs'⟩
-  have hfin : Module.Finite O (H1 D.ρTl') := ReciprocityTheory.ChartRestriction.T2.finite_H1_of_iso hK hO i hD'
-  have hspan : ∀ y : H1 D.ρT', ∃ c : O, c ≠ 0 ∧ c • y ∈ LinearMap.range D.j' :=
-    ReciprocityTheory.ChartRestriction.T2.j'_span_iso hO hF i hD'
-  obtain ⟨s, hs⟩ : (LinearMap.range D.j').FG := by
-    rw [LinearMap.range_eq_map]; exact Submodule.FG.map _ Module.Finite.fg_top
-  refine ⟨⟨s, eq_top_iff.2 fun y _ => ?_⟩⟩
-  obtain ⟨c, hc, hy⟩ := hspan y
-  rw [← hs] at hy
-  have hy' : c • y ∈ Submodule.span (FractionRing O) (s : Set (H1 D.ρT')) :=
-    Submodule.span_le_restrictScalars O (FractionRing O) _ hy
-  rw [← ReciprocityTheory.ChartRestriction.T2.inv_smul_smul_frac hc y]
-  exact Submodule.smul_mem _ _ hy'
-
-theorem finite_Hf_dec (ℓ : ℕ) [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)]
-    {VT VT' : Type}
-    [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT]
-    [ContinuousSMul O VT] [Module (FractionRing O) VT] [IsScalarTower O (FractionRing O) VT]
-    [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT']
-    [ContinuousSMul O VT'] [Module (FractionRing O) VT'] [IsScalarTower O (FractionRing O) VT']
-    {Ek Ω : Type} [Field Ek] [NumberField Ek] [Field Ω] [Algebra Ek Ω] [IsAlgClosure Ek Ω]
-    (Aw : ValuationSubring Ω) (hp : Aw.valuation (ℓ : Ω) < 1)
-    (D : LatData O (Aw.decompositionSubgroup Ek) VT VT') (ε : (Ω ≃ₐ[Ek] Ω) →* Oˣ)
-    [Module (FractionRing O) (H1 D.ρT')] [IsScalarTower O (FractionRing O) (H1 D.ρT')]
-    (hO : PadicCoeff ℓ O) (hF : FracTop O) (hcyc : IsCycG ℓ ε) (hε : ∀ g, D.ε g = ε g) (hD : RealLat D)
-    (Hf : Submodule (FractionRing O) (H1 D.ρT')) : Module.Finite (FractionRing O) Hf := by
-  haveI := finite_H1V'_dec ℓ Aw hp D ε hO hF hcyc hε hD
-  infer_instance
-
-set_option maxHeartbeats 8000000 in
-
-theorem theorem_n_five_real_third : RealClassMapThirdPlace := by
-  intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
-    r χ E e₁ δ ι _ _ colIdx hinj
-    Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0
-    Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1
-    L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS ε T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π
-    γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD _ _ _ _ Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y
-    _ _ _ _ HfW Hf₂ gR Im
-    Pe _ _ _ _ _ _ ince eve heve PE _ _ _ _ _ _ incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne hrest
-    conj nlam m cloudC lowsC cloudR lowsR h0C h0R V₂ _ _ _ _ ρV ρA iV qA wD
-    τH DatH bH wH mH hrows hnlam hseq hwD hliftR hH0 hJC hJR
-  have hfin : ∀ w ∈ cols, Module.Finite (FractionRing O) (Hf₂ (conj w)) := by
-    intro w hw
-    have hr := hRows (conj w) (hrows ▸ Finset.mem_image_of_mem conj hw)
-    exact finite_Hf_dec ℓ (Aw (conj w)) hr.1 (Dat (conj w)) ε hO hFr hcyc hr.2.2.1 hr.2.2.2.1 (Hf₂ (conj w))
-  exact theorem_n_five_real_second ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1
-    π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum
-    L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π
-    γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y HfW Hf₂
-    Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne
-    (fun Kc k0 hK hk => ⟨hrest Kc k0 hK hk, fun c φ =>
-      colPsi_lc ℓ (M := blockRestrictedRepresentationType bl ρk c) r χ E e₁ δ hO hA hur (fun m => pi_ko_torsion O _ m) _ _ Kc k0 φ⟩)
-    conj nlam m cloudC lowsC cloudR lowsR h0C h0R V₂ ρV ρA iV qA wD
-    τH DatH bH wH mH hrows hseq hwD hliftR hH0 hJC
-    (fun w hw => ⟨(hJR w hw).1, (hJR w hw).2.1, hfin w hw, (hJR w hw).2.2⟩)
-
-set_option maxHeartbeats 8000000 in
-
-theorem theorem_n_five_real_lift_third : RealClassMapLiftThirdPlace := by
-  intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
-    r χ E e₁ δ ι _ _ colIdx hinj
-    Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0
-    Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1
-    L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS ε T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π
-    γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD _ _ _ _ Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y
-    _ _ _ _ HfW Hf₂ gR Im
-    Pe _ _ _ _ _ _ ince eve heve PE _ _ _ _ _ _ incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne hrest
-    conj nlam m cloudC lowsC cloudR lowsR h0C h0R V₂ _ _ _ _ ρV ρA iV qA wD
-    τH DatH bH wH mH hrows hnlam hseq hwD hliftR hH0 hJC hJR
-  have hfin : ∀ w ∈ cols, Module.Finite (FractionRing O) (Hf₂ (conj w)) := by
-    intro w hw
-    have hr := hRows (conj w) (hrows ▸ Finset.mem_image_of_mem conj hw)
-    exact finite_Hf_dec ℓ (Aw (conj w)) hr.1 (Dat (conj w)) ε hO hFr hcyc hr.2.2.1 hr.2.2.2.1 (Hf₂ (conj w))
-  exact theorem_n_five_real_lift ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1
-    π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum
-    L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π
-    γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y HfW Hf₂
-    Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne
-    (fun Kc k0 hK hk => ⟨hrest Kc k0 hK hk, fun c φ =>
-      colPsi_lc ℓ (M := blockRestrictedRepresentationType bl ρk c) r χ E e₁ δ hO hA hur (fun m => pi_ko_torsion O _ m) _ _ Kc k0 φ⟩)
-    conj nlam m cloudC lowsC cloudR lowsR h0C h0R V₂ ρV ρA iV qA wD
-    τH DatH bH wH mH hrows hseq hwD hliftR hH0 hJC
-    (fun w hw => ⟨(hJR w hw).1, (hJR w hw).2.1, hfin w hw, (hJR w hw).2.2⟩)
-
-set_option maxHeartbeats 8000000 in
-
-theorem theorem_n_five_real_all_third : RealClassMapEveryThirdPlace := by
-  intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
-    r χ E e₁ δ ι _ _ colIdx hinj
-    Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0
-    Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1
-    L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS ε T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π
-    γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y
-    _ _ _ _ HfW Hf₂ gR Im
-    Pe _ _ _ _ _ _ ince eve heve PE _ _ _ _ _ _ incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne hrest
-  exact theorem_n_five_real_all_second ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1
-    π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum
-    L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π
-    γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y HfW Hf₂
-    Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne
-    (fun Kc k0 hK hk => ⟨hrest Kc k0 hK hk, fun c φ =>
-      colPsi_lc ℓ (M := blockRestrictedRepresentationType bl ρk c) r χ E e₁ δ hO hA hur (fun m => pi_ko_torsion O _ m) _ _ Kc k0 φ⟩)
-
-set_option maxHeartbeats 8000000 in
-
-theorem theorem_n_five_real_all_lift_third : RealClassMapLiftEveryThirdPlace := by
-  intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
-    r χ E e₁ δ ι _ _ colIdx hinj
-    Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0
-    Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1
-    L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz F Vo VS Io IS ε T₁ T₂ _ _ _ _ _ _ _ ρ₁ ρ₂ inc π
-    γ lam VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y
-    _ _ _ _ HfW Hf₂ gR Im
-    Pe _ _ _ _ _ _ ince eve heve PE _ _ _ _ _ _ incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne hrest
-  exact theorem_n_five_real_all_lift ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1
-    π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum
-    L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π
-    γ lam VT VT' Dat uD huD vD hpD heD Fs Hf₁ I γQ ζ ζO nQ u rr gI s₀ u₁ y HfW Hf₂
-    Pe ince eve heve PE incE evE hevE Hfe₁ HfE₁ HfE₂ uz
-    hinjO hO hFr hA hcyc hinc hur hAv hreal hs1 hs2 hε hδ hδO hrr hse hsE hincE hact huz hu hLe hLE hrat0 hb1 hb3 hb4
-    hFix hRows hC hOne
-    (fun Kc k0 hK hk => ⟨hrest Kc k0 hK hk, fun c φ =>
-      colPsi_lc ℓ (M := blockRestrictedRepresentationType bl ρk c) r χ E e₁ δ hO hA hur (fun m => pi_ko_torsion O _ m) _ _ Kc k0 φ⟩)
 
 end Formalism.RepresentationBoundsCohomology.FIN

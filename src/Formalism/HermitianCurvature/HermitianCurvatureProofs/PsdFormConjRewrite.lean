@@ -28,57 +28,6 @@ theorem conv {α : Type} (F : Finset α) (k : α → α → ℂ) (h : TB.PSDOn F
     simp only [Complex.star_def, Complex.conj_conj]
     ring
 
-theorem t_AxiomsAgree : AxiomsAgree := by
-  unfold AxiomsAgree
-  intro E W _ _ D hK hA2 hA13
-  unfold TB.Data.KernelPSD at hK
-  unfold TB.Data.KernelSupport at hA2
-  unfold TB.Data.ThetaDomination at hA13
-  have hlv : ∀ j (h : TB.Pt E), TA.IsPt j h → TB.level h = j := by
-    intro j h hh
-    first
-    | exact hh.1
-    | (have h0 := hh.1
-       simpa [TA.lvl, TB.level] using h0)
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · unfold TA.AxK
-    exact ⟨D.K0, fun i _ P _ => conv P (D.Kr i) (hK.1 i P)⟩
-  · unfold TA.KernelSupport
-    intro i s hs hsi hir h h' t t' hh hh' ht ht' hor
-    show D.Kr i (TA.ext h' s t') (TA.ext h s t) = 0
-    by_contra hne
-    by_cases htt : t' = t
-    · subst htt
-      rcases hor with h1 | h1
-      · exact h1 (by simp)
-      · exact h1.2.2 rfl
-    · obtain ⟨h1, h2⟩ := hA2 i s hs hsi hir h' h t' t (hlv _ _ hh') (hlv _ _ hh) ht' ht htt hne
-      rcases hor with h3 | h3
-      · apply h3
-        show 1 / t - 1 / t' ∈ D.Lap (i - s + 1) s
-        have h4 := neg_mem h2
-        simpa [one_div, neg_sub] using h4
-      · exact h1 ⟨h3.1, h3.2.1⟩
-  · unfold TA.ThetaDomination
-    intro i s hs hsi hir
-    obtain ⟨-, hC, hL, hS⟩ := hA13 i s hs hsi hir
-    refine ⟨fun t Hd _ => conv Hd _ (hK.2 i s t Hd), fun t l hl => ?_, fun t Hd ht hHd => ?_,
-      fun R Hd hR hHd => ?_⟩
-    · show (fun h h' => D.Th i s (t + l) h' h) = (fun h h' => D.Th i s t h' h)
-      have hl' : t + l - t ∈ D.La (i - s + 1) s := by
-        rw [add_sub_cancel_left]
-        exact hl
-      rw [hL (t + l) t hl']
-    · exact conv Hd _ (hC t ht Hd fun h hh => hlv _ _ (hHd h hh))
-    · have h5 := conv Hd _ (hS R hR Hd fun h hh => hlv _ _ (hHd h hh))
-      have e : ((1 + D.e i : ℝ) : ℂ) = 1 + (D.e i : ℂ) := by push_cast; ring
-      show TA.PSDOn Hd (fun h h' => ((1 + D.e i : ℝ) : ℂ) * D.Kr (i - s) h' h - ∑ t ∈ R, D.Th i s t h' h)
-      rw [e]
-      exact h5
-  · unfold TA.AxE
-    intro i hi hir
-    exact (hA13 i 1 le_rfl hi hir).1
-
 private theorem im_quadratic_form_eq_zero_of_hermitian {α : Type} (F : Finset α) (k : α → α → ℂ)
     (hh : ∀ x ∈ F, ∀ y ∈ F, k y x = conj (k x y)) (a : α → ℂ) :
     (∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y).im = 0 := by
@@ -118,135 +67,6 @@ theorem t_PSDTranspose : PSDTranspose := by
   unfold PSDTranspose
   intro α F k h
   exact tb_psdOn_of_ta_psdOn F _ (conv F k h)
-
-section Tower
-variable {E : Type} [Field E]
-
-def Cnd (Sg : ℕ → ℕ → Finset E) (p : TB.Pt E) : Prop :=
-  ∀ k (hk : k < p.length), 1 ≤ (p[k]'hk).1 ∧ (p[k]'hk).2 ∈ Sg (TB.blockStart p k) (p[k]'hk).1
-
-theorem bs_left (h : TB.Pt E) (s : ℕ) (t : E) (k : ℕ) (hk : k < h.length) :
-    TB.blockStart (h ++ [(s, t)]) k = TB.blockStart h k := by
-  first
-  | (simp only [TB.blockStart, List.take_append_of_le_length hk.le]; done)
-  | (simp [TB.blockStart, List.take_append, hk.le]; done)
-  | simp [TB.blockStart, List.take_append_eq_append_take, Nat.sub_eq_zero_of_le hk.le]
-
-theorem bs_last (h : TB.Pt E) (s : ℕ) (t : E) :
-    TB.blockStart (h ++ [(s, t)]) h.length = TB.level h + 1 := by
-  first
-  | (simp [TB.blockStart, TB.level]; done)
-  | (simp [TB.blockStart, TB.level, List.take_left']; done)
-  | simp [TB.blockStart, TB.level, List.take_append_eq_append_take]
-
-theorem cnd_append (Sg : ℕ → ℕ → Finset E) (h : TB.Pt E) (s : ℕ) (t : E) :
-    Cnd Sg (h ++ [(s, t)]) ↔ Cnd Sg h ∧ 1 ≤ s ∧ t ∈ Sg (TB.level h + 1) s := by
-  unfold Cnd
-  constructor
-  · intro H
-    refine ⟨fun k hk => ?_, ?_, ?_⟩
-    · have H1 := H k (by simp; omega)
-      simp only [List.getElem_append_left hk, bs_left h s t k hk] at H1
-      exact H1
-    · have H1 := H h.length (by simp)
-      simp only [List.getElem_append_right (le_refl _), Nat.sub_self] at H1
-      simpa using H1.1
-    · have H1 := H h.length (by simp)
-      simp only [List.getElem_append_right (le_refl _), Nat.sub_self, bs_last] at H1
-      simpa using H1.2
-  · rintro ⟨H, h1, h2⟩ k hk
-    have hk' : k < h.length + 1 := by simpa using hk
-    rcases Nat.lt_or_ge k h.length with hlt | hge
-    · simp only [List.getElem_append_left hlt, bs_left h s t k hlt]
-      exact H k hlt
-    · have hkl : k = h.length := by omega
-      subst hkl
-      simp only [List.getElem_append_right (le_refl _), Nat.sub_self, bs_last]
-      simpa using ⟨h1, h2⟩
-
-theorem level_append (h : TB.Pt E) (s : ℕ) (t : E) : TB.level (h ++ [(s, t)]) = TB.level h + s := by
-  simp [TB.level]
-
-theorem pt_iff [DecidableEq E] (Sg : ℕ → ℕ → Finset E) (p : TB.Pt E) :
-    ∀ n, p ∈ TA.PT (fun j s => Sg (j - s + 1) s) n ↔ TB.level p = n ∧ Cnd Sg p := by
-  suffices HH : ∀ n (p : TB.Pt E), p ∈ TA.PT (fun j s => Sg (j - s + 1) s) n ↔ TB.level p = n ∧ Cnd Sg p from
-    fun n => HH n p
-  intro n
-  refine Nat.strong_induction_on n (fun n ih => ?_)
-  intro p
-  cases n with
-  | zero =>
-    rw [TA.PT]
-    simp only [Finset.mem_singleton]
-    constructor
-    · rintro rfl
-      exact ⟨rfl, fun k hk => absurd hk (by simp)⟩
-    · rintro ⟨hl, hc⟩
-      obtain rfl | ⟨h, ⟨s, t⟩, hp⟩ := List.eq_nil_or_concat p
-      · rfl
-      · exfalso
-        try rw [List.concat_eq_append] at hp
-        subst hp
-        obtain ⟨-, hs, -⟩ := (cnd_append Sg h s t).mp hc
-        rw [level_append] at hl
-        omega
-  | succ n =>
-    rw [TA.PT]
-    simp only [Finset.mem_biUnion, Finset.mem_attach, true_and, Subtype.exists, Finset.mem_range,
-      Finset.mem_image, TA.ext]
-    constructor
-    · rintro ⟨m, hm, h, hh, t, ht, rfl⟩
-      obtain ⟨hl, hc⟩ := (ih m hm h).mp hh
-      have e : n + 1 - (n + 1 - m) + 1 = m + 1 := by omega
-      rw [e] at ht
-      refine ⟨?_, (cnd_append Sg h _ t).mpr ⟨hc, by omega, ?_⟩⟩
-      · rw [level_append, hl]
-        omega
-      · rw [hl]
-        exact ht
-    · rintro ⟨hl, hc⟩
-      obtain rfl | ⟨h, ⟨s, t⟩, hp⟩ := List.eq_nil_or_concat p
-      · simp [TB.level] at hl
-      · try rw [List.concat_eq_append] at hp
-        subst hp
-        obtain ⟨hc', hs, ht⟩ := (cnd_append Sg h s t).mp hc
-        rw [level_append] at hl
-        have hm : TB.level h < n + 1 := by omega
-        have e1 : n + 1 - TB.level h = s := by omega
-        have e2 : n + 1 - s + 1 = TB.level h + 1 := by omega
-        refine ⟨TB.level h, hm, h, (ih _ hm h).mpr ⟨rfl, hc'⟩, t, ?_, ?_⟩
-        · rw [e1, e2]
-          exact ht
-        · rw [e1]
-
-theorem t_TowersAgree : TowersAgree := by
-  unfold TowersAgree
-  intro E _ _ T i
-  ext p
-  rw [pt_iff T.Sg p i]
-  exact T.isTower i p
-
-end Tower
-
-theorem t_FormsAgree : FormsAgree := by
-  unfold FormsAgree
-  intro E W _ _ D H _ _ Φ T ε i w hw hg
-  unfold TB.Data.Q TB.Data.Sf TA.Slev TA.gram
-  rw [t_TowersAgree E T i]
-  set X := TA.PT (fun j s => T.Sg (j - s + 1) s) i with hX
-  have hS : (∑ p ∈ X, ∑ q ∈ X, D.Kr i p q * D.gram ε i w p q) =
-      (D.wt w : ℂ) * ∑ p ∈ X, ∑ p' ∈ X, (toTA D).K i p p' * inner ℂ (Φ w p) (Φ w p') := by
-    rw [Finset.mul_sum, Finset.sum_comm]
-    refine Finset.sum_congr rfl fun p _ => ?_
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl fun q _ => ?_
-    rw [hg]
-    simp only [toTA]
-    ring
-  rw [hS, Complex.re_ofReal_mul]
-  first
-  | exact mul_div_cancel_left₀ _ hw
-  | field_simp
 
 section Agree
 variable {α : Type}
@@ -323,13 +143,6 @@ theorem t_PSDAgree : PSDAgree := by
     exact ⟨q_im F k h.1 _, h.2 _⟩
 
 end Agree
-
-theorem t_MajIsProf : MajIsProf := by
-  unfold MajIsProf
-  intro E W _ _ D e hP ρ l
-  unfold TB.Data.maj prof
-  refine Fintype.prod_equiv e _ _ (fun v => ?_)
-  simp only [hP v l, Equiv.symm_apply_apply]
 
 theorem t_BoxSumLattice : BoxSumLattice := by
   classical
@@ -466,16 +279,6 @@ namespace Formalism.FourierDecayAlt.P
 
 theorem psd_agree : Formalism.FourierDecayAlt.J.PSDAgree := Jx1.t_PSDAgree
 
-theorem psd_transpose : Formalism.FourierDecayAlt.J.PSDTranspose := Jx1.t_PSDTranspose
-
-theorem axioms_agree : Formalism.FourierDecayAlt.J.AxiomsAgree := Jx1.t_AxiomsAgree
-
-theorem towers_agree : Formalism.FourierDecayAlt.J.TowersAgree := Jx1.t_TowersAgree
-
-theorem forms_agree : Formalism.FourierDecayAlt.J.FormsAgree := Jx1.t_FormsAgree
-
 theorem box_sum_lattice : Formalism.FourierDecayAlt.J.BoxSumLattice := Jx1.t_BoxSumLattice
-
-theorem majorant_is_profinite : Formalism.FourierDecayAlt.J.MajIsProf := Jx1.t_MajIsProf
 
 end Formalism.FourierDecayAlt.P

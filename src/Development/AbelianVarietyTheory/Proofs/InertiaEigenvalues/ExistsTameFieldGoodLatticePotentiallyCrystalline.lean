@@ -3,14 +3,14 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameInertiaCharactersPowersOfOmegaStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineOfInertiaTrivialOnCrystallinePeriodsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameInertiaCharactersPowersOfOmega
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineOfInertiaTrivialOnCrystallinePeriods
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PotentiallyCrystallineModuleEqCrystallineRestric
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InerDecomp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobStableInertiaThrough
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaQlLeInertiaOfFiniteExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaConjMemStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobInvMulMemInerStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaQlLeInertiaOfFiniteExtension
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaConjMem
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobInvMulMemIner
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 
@@ -337,12 +337,12 @@ set_option maxHeartbeats 1000000 in
 theorem GlobalTheory.GoodLatt.main : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → a = (l - 1).factorial → ∀ (K' : FinExt l) (h : (Formalism.MainNotions.ElementDenominator.qlExt l).1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : Gl l) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)).actB g (algebraMap ↥(K0 K') Pl.R.B c) = algebraMap ↥(K0 K') Pl.R.B c') (Sig : Finset ((pc Pl h hN hF hS).Iner →* (↥LL.1)ˣ)) (Fr : Gl l) (N : ℕ), (pc Pl h hN hF hS).IsFrob Fr → FrobStable (pc Pl h hN hF hS).Iner Fr Sig → 1 ∈ Sig → Sig.card ≤ N → N < l → (∀ χ ∈ Sig, ∀ g : (pc Pl h hN hF hS).Iner, (g : Gl l) ∈ (pc Pl h hN hF hS).H → χ g = 1) → (∀ χ ∈ Sig, Nat.Coprime (orderOf χ) l) → ∃ Sig' : Finset (ZMod e), (∀ c ∈ Sig', (l : ZMod e) * c ∈ Sig') ∧ (0 : ZMod e) ∈ Sig' ∧ Sig'.card ≤ N ∧ maxPeriod l Sig' = Formalism.MainNotions.ElementDenominator.rPrime (pc Pl h hN hF hS).Iner Fr Sig ∧ ∀ T : QLat LL, (pc Pl h hN hF hS).IsPotCrys T.ρ → (pc Pl h hN hF hS).InertiaThrough T.ρ Sig → IsCrys (Pl.PD (ϖ.field a)) (resF T (ϖ.field a)).ρ ∧ TameType a ϖ Pl T Sig' := by
   intro hB l _ a e _ _ ϖ LL _ _ Pl AI hStd ha K' h hN hF hS Sig Fr N hFr hFS h1 hcard hNl hH hcop
   classical
-  obtain ⟨hw1, ⟨g0, hg0, w0, hw0, hprim⟩, hchar⟩ := GlobalTheory.T.tame_inertia_characters_powers_of_omega l a e ϖ LL
-  have hIK : IK (Formalism.MainNotions.ElementDenominator.qlExt l) ≤ (pc Pl h hN hF hS).Iner := fun g hg => GlobalTheory.T.inertia_Ql_le_inertia_of_finite_extension l Pl K' h hN hF hS g hg
+  obtain ⟨hw1, ⟨g0, hg0, w0, hw0, hprim⟩, hchar⟩ := _root_.GlobalTheory.TameIner.main l a e ϖ LL
+  have hIK : IK (Formalism.MainNotions.ElementDenominator.qlExt l) ≤ (pc Pl h hN hF hS).Iner := fun g hg => _root_.GlobalTheory.InerQl.IK_mem_Iner l Pl K' h hN hF hS g hg
   let res : ((pc Pl h hN hF hS).Iner →* (↥LL.1)ˣ) → (↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)) →* (↥LL.1)ˣ) :=
     fun χ => χ.comp (Subgroup.inclusion hIK)
   have hres : ∀ χ (g : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))), res χ g = χ ⟨g, hIK g.2⟩ := fun _ _ => rfl
-  obtain ⟨Φ, hΦ, hj⟩ := GlobalTheory.T.exists_frob_inv_mul_mem_inertia l Pl AI hStd K' h hN hF hS Fr hFr
+  obtain ⟨Φ, hΦ, hj⟩ := _root_.GlobalTheory.FrobLiftUnr.exists_frob_inv_mul_mem_iner l Pl AI hStd K' h hN hF hS Fr hFr
   have hopen : ∀ χ ∈ Sig, IsOpen ((res χ).ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) := by
     intro χ hχ
     have hK'open : IsOpen ((GK K' : Subgroup (GQ l)) : Set (GQ l)) := by
@@ -366,7 +366,7 @@ theorem GlobalTheory.GoodLatt.main : GlobalTheory.Published.FontaineBcris → �
   have hR : ∀ χ ∈ Sig, ∀ g h' : (pc Pl h hN hF hS).Iner, (h' : Gl l) ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) →
       (g : Gl l) = Fr⁻¹ * h' * Fr → χ h' = χ g ^ l := by
     intro χ hχ g h' hh' hg
-    have hg' : Φ⁻¹ * (h' : Gl l) * Φ ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) := GlobalTheory.T.conj_mem_inertia_of_mem l _ Φ hh'
+    have hg' : Φ⁻¹ * (h' : Gl l) * Φ ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) := _root_.GlobalTheory.InertiaConj.inertia_conj_mem l _ Φ hh'
     have key : χ h' = χ ⟨Φ⁻¹ * (h' : Gl l) * Φ, hIK hg'⟩ ^ l :=
       (hchar (res χ) (hopen χ hχ) (hcop' χ hχ)).1 Φ hΦ ⟨_, hg'⟩ ⟨h', hh'⟩ rfl
     let j : (pc Pl h hN hF hS).Iner := ⟨Φ⁻¹ * Fr, hj⟩
@@ -396,7 +396,7 @@ theorem GlobalTheory.GoodLatt.main : GlobalTheory.Published.FontaineBcris → �
   obtain ⟨Sig', hl, h0, hc, hmax, hSig⟩ := chars_main (pc Pl h hN hF hS).Iner (IK (Formalism.MainNotions.ElementDenominator.qlExt l)) (pc Pl h hN hF hS).H
     (fun g (w : ↥LL.1) => (w : Om l) * ϖ.seq 0 = ((g : Gl l) : GQ l) (ϖ.seq 0)) l a e N Fr Sig
     (Nat.one_le_iff_ne_zero.2 (NeZero.ne a)) hka he1 hIK (pc Pl h hN hF hS).normal
-    (fun F g hg => GlobalTheory.conj_mem_Iner _ F g hg) (fun τ g hg => GlobalTheory.T.conj_mem_inertia_of_mem l g τ hg)
+    (fun F g hg => GlobalTheory.conj_mem_Iner _ F g hg) (fun τ g hg => _root_.GlobalTheory.InertiaConj.inertia_conj_mem l g τ hg)
     (fun g hg => GlobalTheory.InertiaDecomp.iner_decomp l Pl _ K' h hN hF hS g hg)
     hFS h1 hcard hH hR hw1 g0 hg0 w0 hw0 hprim hcx
   refine ⟨Sig', hl, h0, hc, hmax, ?_⟩
@@ -420,7 +420,7 @@ theorem GlobalTheory.GoodLatt.main : GlobalTheory.Published.FontaineBcris → �
     have := hN.conj_mem ⟨n, hmem n⟩ (by rw [GKin, Subgroup.mem_subgroupOf]; exact hn) ⟨g, hmem g⟩
     rw [GKin, Subgroup.mem_subgroupOf] at this
     exact this
-  obtain ⟨hI1, hI2⟩ := GlobalTheory.T.crystalline_of_inertia_trivial_on_crystallinePeriods hB l LL Pl AI hStd K' (ϖ.field a) hNK' T hcrys
+  obtain ⟨hI1, hI2⟩ := _root_.GlobalTheory.CrysInertDescent.main hB l LL Pl AI hStd K' (ϖ.field a) hNK' T hcrys
   refine ⟨hI1 ?_, ?_⟩
   · intro g hg hgF x hx
     have hA := dpcris_ann _ _ _ hthr ⟨g, hIK hg⟩ (Polynomial.X - Polynomial.C 1) ?_ x (hD x hx)

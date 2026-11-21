@@ -33,22 +33,9 @@ instance : Inhabited (MeasurablePartition X) where
 
 variable (p : MeasurablePartition X)
 
-theorem eq_empty_of_le {i : ℕ} (hi : p.n ≤ i) : p.E i = ∅ := by
-  refine eq_empty_of_forall_notMem fun x hx => ?_
-  obtain ⟨j, hj, hxj⟩ := p.exists_mem x
-  exact Set.disjoint_left.1 (p.disjoint (show j ≠ i by omega)) hxj hx
-
-theorem biUnion_eq : ⋃ i ∈ Finset.range p.n, p.E i = univ := by
-  refine eq_univ_of_forall fun x => ?_
-  obtain ⟨i, hi, hx⟩ := p.exists_mem x
-  exact mem_biUnion (Finset.mem_range.2 hi) hx
-
 open Classical in
 
 noncomputable def index (x : X) : ℕ := Nat.find (p.exists_mem x)
-
-theorem index_lt (x : X) : p.index x < p.n := by
-  classical exact (Nat.find_spec (p.exists_mem x)).1
 
 theorem mem_index (x : X) : x ∈ p.E (p.index x) := by
   classical exact (Nat.find_spec (p.exists_mem x)).2
@@ -65,10 +52,6 @@ theorem measurable_index : Measurable p.index := by
   exact p.measurableSet i
 
 def IsFine (V : SetRel X X) : Prop := ∀ i, ∀ x ∈ p.E i, ∀ y ∈ p.E i, (x, y) ∈ V
-
-variable {p} in
-theorem IsFine.mono {V W : SetRel X X} (h : p.IsFine V) (hVW : V ⊆ W) : p.IsFine W :=
-  fun i x hx y hy => hVW (h i x hx y hy)
 
 theorem exists_isFine [UniformSpace X] [CompactSpace X] [OpensMeasurableSpace X] {V : SetRel X X}
     (hV : V ∈ 𝓤 X) : ∃ p : MeasurablePartition X, p.IsFine V := by
@@ -130,28 +113,7 @@ instance : (fineFilter X).NeBot := by
 
 variable {X}
 
-theorem eventually_fineFilter {W : SetRel X X} (hW : W ∈ 𝓤 X) :
-    ∀ᶠ V in fineFilter X, V ⊆ W ∧ V ∈ 𝓤 X := by
-  have h1 : ∀ᶠ V in (𝓤 X).smallSets, V ⊆ W := eventually_smallSets_subset.2 hW
-  exact (h1.filter_mono inf_le_left).and (eventually_inf_principal.2 (Eventually.of_forall
-    fun _ hV => hV))
-
 variable [MeasurableSpace X] [CompactSpace X] [OpensMeasurableSpace X]
-
-open Classical in
-
-noncomputable def finePart (V : SetRel X X) : MeasurablePartition X :=
-  if h : V ∈ 𝓤 X then (exists_isFine h).choose else default
-
-theorem finePart_isFine {V : SetRel X X} (hV : V ∈ 𝓤 X) : (finePart V).IsFine V := by
-  classical
-  simp only [finePart, dif_pos hV]
-  exact (exists_isFine hV).choose_spec
-
-theorem eventually_finePart_isFine {W : SetRel X X} (hW : W ∈ 𝓤 X) :
-    ∀ᶠ V in fineFilter X, (finePart V).IsFine W := by
-  filter_upwards [eventually_fineFilter hW] with V hV
-  exact (finePart_isFine hV.2).mono hV.1
 
 end Filter
 

@@ -61,11 +61,6 @@ theorem mem_classes_iff (h : IsFinitePartOf μ π H) {F : L2 (latticeGL E a) μ}
     F ∈ classes π.V μ ↔ F ∈ H ∧ IsKFinL2 μ F :=
   ⟨fun hF => ⟨h.classes_le hF, isKFinL2_of_mem_classes h.finitePartMemL2 hF⟩, fun hF => h.kfin F hF.1 hF.2⟩
 
-theorem isDiscrete (h : IsFinitePartOf μ π H) : IsDiscrete π.V :=
-  ⟨fun φ hφ => (π.cusp φ hφ).1, fun φ hφ => (memL2_iff_isSqInt
-      (ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level) (π.cusp φ hφ).1.left (h.normalised φ hφ)).1
-      (h.finitePartMemL2 φ hφ), π.stable, π.ne_bot, π.irred⟩
-
 theorem unique {π' : CuspSub E a} (h : IsFinitePartOf μ π H) (h' : IsFinitePartOf μ π' H) : π = π' := by
   have key : ∀ {π π' : CuspSub E a}, IsFinitePartOf μ π H → IsFinitePartOf μ π' H → π.V ≤ π'.V := by
     intro π π' h h' φ hφ
@@ -88,15 +83,6 @@ theorem isIrredSubrep_map {W : Submodule ℂ (L2cusp μ)} (h : IsIrredSubrep (Rc
     (Submodule.comap_map_eq_of_injective (Submodule.injective_subtype _) W).le)
     (hW.isSubrep_rep_iff.2 (e.symm ▸ hs))).imp (fun h0 => by rw [← e, h0, Submodule.map_bot]) fun h0 => by rw [← e, h0]
 
-theorem bounded_one {φ : Sm E 1} (h : IsCuspForm φ) (h' : ∀ t g, ‖φ.1 (splitCentre E 1 t * g)‖ = ‖φ.1 g‖) :
-    ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C := by
-  obtain ⟨K, hK, hcov⟩ := GlobalTheory.IdeleCovolume.exists_compact_latticeGL E
-  obtain ⟨C, hC⟩ := hK.exists_bound_of_continuousOn (ContAut.continuous_of_isOpen_stab E 1 φ h.1.level).continuousOn
-  refine ⟨C, fun g => ?_⟩
-  obtain ⟨γ, hγ, hk⟩ := hcov g
-  exact (leftInv_latticeGL (φ := fun g => ‖φ.1 g‖) (fun γ g => congrArg norm (h.1.left γ g)) h' γ hγ g).symm.trans_le
-    (hC _ hk)
-
 end GlobalTheory.CuspRep.CuspidalL2GL
 
 namespace GlobalTheory.Published
@@ -117,11 +103,6 @@ def CuspFormsBoundedGL : Prop :=
 def CuspidalSpectrumGL : Prop := CuspDiscreteDecompositionGL ∧ CuspFiniteVectorsGL ∧ CuspFormsBoundedGL
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
-
-theorem CuspFiniteVectorsGL.of_Rcusp (h : CuspFiniteVectorsGL) {μ : Measure (GA E a)} [μ.IsHaarMeasure]
-    [μ.IsMulRightInvariant] {W : Submodule ℂ (L2cusp μ)} (hW : IsIrredSubrep (Rcusp μ) W) :
-    ∃ π : CuspSub E a, IsFinitePartOf μ π (W.map (L2cusp μ).subtype) :=
-  h E a μ _ (Submodule.map_subtype_le _ _) (isIrredSubrep_map hW)
 
 theorem CuspFormsBoundedGL.of_isUnitary (h : CuspFormsBoundedGL) {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a}
     (hφ : φ ∈ π.V) : ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C :=

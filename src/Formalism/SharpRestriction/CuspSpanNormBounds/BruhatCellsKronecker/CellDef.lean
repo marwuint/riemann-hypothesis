@@ -48,11 +48,6 @@ def MonomialMatrixIsPoint : Prop :=
     (∀ c b : Fin n, c < b → (σ c).val = (σ b).val + 1 → b.val = c.val + 1 ∧ τ b = τ c) →
     ∃ p : Point K n, ptMat p = mono σ τ
 
-def SchurComplementCellExtension : Prop :=
-  ∀ (K : Type) [Field K] (n : ℕ) (M : Matrix (Fin (n + 1)) (Fin (n + 1)) K) (p : Point K n),
-    IsInCell (M.submatrix Fin.castSucc Fin.castSucc) p → (M.submatrix Fin.castSucc Fin.castSucc).det ≠ 0 → M.det ≠ 0 →
-      ∃ p' : Point K (n + 1), IsInCell M p'
-
 def LeadingBlocksRelevant : Prop :=
   ∀ (K E : Type) [Field K] [Field E] [NumberField E] [StarRing E] [Algebra K E] (S : Formalism.BasicNotions.HSpace E) (r : ℕ)
     (T T' : E) (F : FlagG S r T) (F' : FlagG S r T'),

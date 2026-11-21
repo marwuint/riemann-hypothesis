@@ -1,11 +1,16 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasisStatement
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasisStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.LatticeOpenCompactNhdsBasis
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FgZ1T
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 noncomputable section
@@ -109,41 +114,5 @@ theorem isLocalized_toV [IsDomain O] [IsFractionRing O LL] (L : Lattice (O := O)
     rw [← smul_sub, ← hvg, ← algebraMap_smul LL (ϖ ^ n) v, map_smul, ← smul_sub, algebraMap_smul]
 
 end Gen
-
-theorem h1_lattice_finite_rank_eq : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), FinZQ ((D.loc l).PD K) → TateFiniteness ((D.loc l).PD K) ∧ ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ), Module.Finite LL (H1V A.ρ) ∧ finrank LL (H1V A.ρ) = finrank O (LatticeCohomology LA) := by
-  intro D l _ K hZ
-  have key : ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
-      [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O)
-      (LA : Lattice (O := O) A.ρ), Module.Finite O (LatticeCohomology LA) := by
-    intro LL _ _ _ O _ _ hO A LA
-    obtain ⟨⟨hD, hV, hF⟩, -, -, hTR, -⟩ := id hO
-    obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-    obtain ⟨-, -, hK, -⟩ := GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ
-    obtain ⟨-, hB, -⟩ := GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hO A LA ϖ hϖ
-    haveI : IsTopologicalAddGroup A.V := IsModuleTopology.topologicalAddGroup LL A.V
-    haveI : ContinuousSMul LL A.V := IsModuleTopology.toContinuousSMul LL A.V
-    haveI : T2Space A.V := t2Space_of_lattice_nhds_basis LA hϖ.not_isUnit hB
-    have h0 : algebraMap O LL ϖ ≠ 0 :=
-      IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero)
-    have hI : StableSub LA (Ideal.span {ϖ ^ 1} • ⊤ : Submodule O ↥LA.T) := by
-      intro g x hx
-      obtain ⟨y, rfl⟩ := (mem_smulTop LA ϖ x).1 hx
-      exact (mem_smulTop LA ϖ _).2 ⟨actT LA g y, (map_smul _ _ _).symm⟩
-    have hfg := fg_Z1T LA h0 hB hK hI (hZ LL O hO A LA ϖ hϖ 1 hI)
-    haveI : Module.Finite O ↥(latticeCocycles LA) := Module.Finite.iff_fg.2 hfg
-    infer_instance
-  refine ⟨key, ?_⟩
-  intro LL _ _ _ O _ _ hO A LA
-  haveI := key LL O hO A LA
-  obtain ⟨⟨hD, hV, hF⟩, -, -, hTR, -⟩ := id hO
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  obtain ⟨-, -, -, hInt, -⟩ := GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hO A LA ϖ hϖ
-  haveI := isLocalized_toV LA hϖ.ne_zero hInt
-  refine ⟨Module.Finite.of_isLocalizedModule (nonZeroDivisors O) (Rₚ := LL) (toV LA), ?_⟩
-  have h1 : Module.rank LL (H1V A.ρ) = Module.rank O (H1V A.ρ) :=
-    IsLocalization.rank_eq LL (nonZeroDivisors O) le_rfl
-  have h2 : Module.rank O (H1V A.ρ) = Module.rank O (LatticeCohomology LA) :=
-    IsLocalizedModule.rank_eq (nonZeroDivisors O) le_rfl (toV LA)
-  rw [finrank, finrank, h1, h2]
 
 end GlobalTheory.CompanionTheory.LocDual.FinT

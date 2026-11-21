@@ -7,12 +7,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary�
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiagGLConjApply
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairTable
 import Formalism.LocalToGlobal.Divisibility.TiedLemmas
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFrameLiftingPrescribedReductionsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StandardFrameIntegralityConditionsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingTableDiagonalModSmallStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingVectorsIntegralInFrameStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingTableIdempotentComponentOneStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingTableIdempotentComponentNeOneStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFrameLiftingPrescribedReductions
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StandardFrameIntegralityConditions
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingTableDiagonalModSmall
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingVectorsIntegralInFrame
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingTableIdempotentComponentOne
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagPairingTableIdempotentComponentNeOne
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.AutomorphicEvaluation Formalism.L2.SG.RowDict Formalism.L2.SG.RowsJoinPinned Formalism.L2.SG.RowLevelMatch Formalism.L2.SG.PoincareInHH.PoincareSetting MeasureTheory NumberField IsDedekindDomain
 open scoped InnerProductSpace
@@ -53,12 +53,12 @@ theorem exists_frame_redIs : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 
     omega
   obtain ⟨β₀, hβ₀⟩ := GlobalTheory.StdFrames.exists_base (Yc D 0)
   have hG := (GlobalTheory.StdFrames.unimod_of_isSD (GlobalTheory.StdFrames.isSD_one hβ₀)).1
-  have hint := fun PP i j => GlobalTheory.T.flagPairingVectors_integral_inFrame X h β₀ hβ₀ PP i j
+  have hint := fun PP i j => _root_.GlobalTheory.SeeConjRead.flag_pair_int X h β₀ hβ₀ PP i j
   have hdet : ∀ Q ∈ R.Pg,
       Valued.v (GlobalTheory.StdFrames.cpt Q ((β₀⁻¹).val * colMat (flagAt X h Q)).det) = 1 := by
     intro Q hQ
     have hg := over_g R hL hQ
-    refine GlobalTheory.T.standard_frame_integrality_conditions β₀ (GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.ratM (Yc D 0).gram) (colMat (pairAt X h Q))
+    refine _root_.GlobalTheory.SeeConjRead.DetUnit.det_unit β₀ (GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.ratM (Yc D 0).gram) (colMat (pairAt X h Q))
       (colMat (flagAt X h Q)) Q (fun a => sgnD D.R.rS D.R.k a) hG (fun i j => (hint Q i j).2)
       (fun i j => (hint Q i j).1) ?_ ?_
     · intro a
@@ -69,10 +69,10 @@ theorem exists_frame_redIs : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 
       change SmallAt Q (hY D (pairAt X h Q a) (flagAt X h Q b) - _)
       by_cases hc : GlobalTheory.StdFrames.cpt Q (ewT X h) = 1
       · rw [pairAt, flagAt, if_pos hc, if_pos hc]
-        exact GlobalTheory.T.flagPairingTable_diagonal_modSmall (hY D) (SmallAt Q) D.R.rS D.R.k _ hn _ _ _ _ _ (GlobalTheory.T.flagPairingTable_idempotentComponent_one X h Q hg hc) a b
+        exact _root_.GlobalTheory.SeeConjRead.flagV_pair_table (hY D) (SmallAt Q) D.R.rS D.R.k _ hn _ _ _ _ _ (_root_.GlobalTheory.SeeConjRead.pairTable_of_cpt_one X h Q hg hc) a b
       · rw [pairAt, flagAt, if_neg hc, if_neg hc]
-        exact GlobalTheory.T.flagPairingTable_diagonal_modSmall (hY D) (SmallAt Q) D.R.rS D.R.k _ hn _ _ _ _ _ (GlobalTheory.T.flagPairingTable_idempotentComponent_ne_one X h Q hg hc) a b
-  obtain ⟨β, hβ, hred⟩ := GlobalTheory.T.exists_frame_lifting_prescribed_reductions β₀ R.Pg (flagAt X h) (fun Q _ i j => (hint Q i j).1) hdet
+        exact _root_.GlobalTheory.SeeConjRead.flagV_pair_table (hY D) (SmallAt Q) D.R.rS D.R.k _ hn _ _ _ _ _ (_root_.GlobalTheory.SeeConjRead.pairTable_rev X h Q hg hc) a b
+  obtain ⟨β, hβ, hred⟩ := _root_.GlobalTheory.SeeConjRead.exists_lift_redIs β₀ R.Pg (flagAt X h) (fun Q _ i j => (hint Q i j).1) hdet
   refine ⟨β, ?_, hred⟩
   rw [hβ₀, ← hβ]
   exact GlobalTheory.StdFrames.isFrame_lat β

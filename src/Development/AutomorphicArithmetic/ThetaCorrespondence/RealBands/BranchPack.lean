@@ -114,7 +114,7 @@ theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ 
   obtain ⟨C, hC, hT1⟩ := realInputE_transport hRI
   refine ⟨C, hC.le, ?_⟩
   intro ε0 CF hCF
-  obtain ⟨x₀, hx₀⟩ := GlobalTheory.T.branchingHypotheses_gridParameters_largeScale ε0 CF hCF
+  obtain ⟨x₀, hx₀⟩ := _root_.GlobalTheory.SepPer.realInputPar ε0 CF hCF
   refine ⟨x₀, fun D large₂ h1 h2 h3 T L μ0 hL G W M hM => ?_⟩
   have hP := hx₀ D large₂ h1 h2 h3 T L μ0 hL G W M hM
   intro M₀ MP τ
@@ -136,8 +136,8 @@ theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ 
   obtain ⟨B, hBu, hBg, hBad, hBz, hBmem, hBemb⟩ := GlobalTheory.T.exists_signature_matrix_extension D W.θ W.θ_is (Yc D 0) (G.V (.core 0)) G.sp.dec0 τ
     ((GlobalTheory.ConjDS.conjModel M₀).ε τ) ((GlobalTheory.ConjDS.conjModel M₀).fr τ) (MP.ε τ) e'
     ((GlobalTheory.ConjDS.conjModel M₀).fr_unit τ) ((GlobalTheory.ConjDS.conjModel M₀).fr_gram τ) hs0 hs1
-  obtain ⟨lam, hlam, hH⟩ := GlobalTheory.T.unitary_haar_coordinate_reversal_positive_multiple _ (M₀.ε τ)
-  obtain ⟨hreal, hmco⟩ := GlobalTheory.T.translated_matrix_coefficient_in_adapted_frame D _ _ MP τ B g₀' v₀ hBu hBg hg₀'
+  obtain ⟨lam, hlam, hH⟩ := _root_.GlobalTheory.HaarRev.haar_rev _ (M₀.ε τ)
+  obtain ⟨hreal, hmco⟩ := _root_.GlobalTheory.PackLoc.mco_frame D _ _ MP τ B g₀' v₀ hBu hBg hg₀'
   obtain ⟨hpt, hlieX⟩ := GlobalTheory.T.conjugate_model_frame_matrix_facts_at_place D W.θ W.θ_is (Yc D 0) _ M₀ τ
   have hAu := (GlobalTheory.ConjDS.conjModel M₀).fr_unit τ
   have hbig : GlobalTheory.SepReal.big C D.R.r (large₂.sc.b ^ 2) ≤ Real.exp (6 * C * ((D.R.r : ℝ) + 1) ^ 4 * Real.log large₂.sc.b) := by
@@ -171,10 +171,10 @@ theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ 
       _ ≤ (lam * c₁) * Real.exp (6 * C * ((D.R.r : ℝ) + 1) ^ 4 * Real.log large₂.sc.b) :=
         mul_le_mul_of_nonneg_left hbig (mul_pos hlam hc₁).le
       _ = _ := by ring
-  have hL := GlobalTheory.T.smooth_vector_matrixCoeff_integrable (Yc D 0).rank (G.V (.core 0)).rank e' (MP.ε τ) ((GlobalTheory.ConjDS.conjModel M₀).ε τ)
+  have hL := _root_.GlobalTheory.PackLip.lip_core (Yc D 0).rank (G.V (.core 0)).rank e' (MP.ε τ) ((GlobalTheory.ConjDS.conjModel M₀).ε τ)
     (MP.H τ) (MP.σ τ) v (c₁ * GlobalTheory.SepReal.big C D.R.r (large₂.sc.b ^ 2)) (MP.ds τ).2.2.1 hs0 hs1 hsmv
     (fun g hg => (hb g hg).1) hc
-  obtain ⟨Cd, hCd⟩ := GlobalTheory.T.matrix_coefficient_decay_in_frame_of_translate_decay D.R.r (G.V (.core 0)).rank hN (MP.ε τ) (MP.H τ) (MP.σ τ) v₀ g₀' (MP.fr τ)
+  obtain ⟨Cd, hCd⟩ := _root_.GlobalTheory.FrameDecay.coef_frame_decay D.R.r (G.V (.core 0)).rank hN (MP.ε τ) (MP.H τ) (MP.σ τ) v₀ g₀' (MP.fr τ)
     (gramAt D (G.V (.core 0)) τ) A₀ (MP.ds τ).2.2.1 hg₀' (MP.fr_unit τ) (MP.fr_gram τ)
     (fun g hg => by rw [← hv]; exact hA₀ g hg)
   refine ⟨(GlobalTheory.ConjDS.conjModel M₀).ε τ, (GlobalTheory.ConjDS.conjModel M₀).fr τ, MP.ε τ, B, v₀, B⁻¹ * g₀' * MP.fr τ,
@@ -188,7 +188,7 @@ theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ 
       real := hreal
       kfin := GlobalTheory.isKFin_of_mem_lowKSub _ _ _ _ _ _ hlow.2
       dec := ⟨Cd, hCd⟩
-      sm := GlobalTheory.T.conj_smooth_vector_conjugate_model_mem_smooth D _ _ M₀ τ w' hsmw
+      sm := _root_.GlobalTheory.ConjSmooth.cj_mem_sm D _ _ M₀ τ w' hsmw
       ne := by
         intro h
         have h' : ‖GlobalTheory.ConjDS.cj (M₀.H τ) w'‖ = 1 := (GlobalTheory.ConjDS.cj (M₀.H τ)).norm_map w' ▸ hw1
@@ -197,9 +197,9 @@ theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ 
       cne := Complex.ofReal_ne_zero.2 (mul_pos hlam hc₁).ne'
       act := act_of_eigen D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ) w' c₁ lam
         hm0 (fun u => (hpt u).2.2) (fun F => (hH ℂ F).2) hw1 ha
-      far := GlobalTheory.T.transversal_coefficient_decay_at_real_place D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ) B c₁ lam
+      far := _root_.GlobalTheory.PackLoc.farClause D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ) B c₁ lam
         _ _ D.R.r hBu hBg hBz hN hmg (fun F => (hH ℂ F).1) (fun F => (hH ℝ F).2) hc₁ hlam hbig hb
-      lip := GlobalTheory.T.matrix_coefficient_lipschitz_at_real_place D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ)
+      lip := _root_.GlobalTheory.PackLoc.lipAt D W.θ _ _ G.sp.dec0 _ _ M₀ MP τ e' v₀ v (B⁻¹ * g₀' * MP.fr τ)
         ((GlobalTheory.ConjDS.conjModel M₀).fr τ) _ lam _ _ hm0 hm1 (fun X hX => (hlieX X hX).1) hL (fun F => hH ℝ F) hlam hK }
 
 theorem packEx_of_eigen : RealInputE → PackEx := by

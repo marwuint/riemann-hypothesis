@@ -163,24 +163,6 @@ theorem stir_log_thirty : log 30 = log 2 + log 3 + log 5 := by
   rw [show (30 : ℝ) = 2 * 3 * 5 by norm_num, Real.log_mul (by norm_num) (by norm_num),
     Real.log_mul (by norm_num) (by norm_num)]
 
-theorem dLower : DLower := by
-  intro x hx
-  simp only [chD]
-  have hx0 : (0 : ℝ) < x := by linarith
-  have l1 := lfLower x (by linarith)
-  have l30 := lfLower (x / 30) (by rw [le_div_iff₀ (by norm_num)]; linarith)
-  have u2 := lfUpper (x / 2) (by rw [le_div_iff₀ (by norm_num)]; linarith)
-  have u3 := lfUpper (x / 3) (by rw [le_div_iff₀ (by norm_num)]; linarith)
-  have u5 := lfUpper (x / 5) (by rw [le_div_iff₀ (by norm_num)]; linarith)
-  have hm := main_term hx0
-  have h2 : log (x / 2) = log x - log 2 := Real.log_div hx0.ne' (by norm_num)
-  have h3 : log (x / 3) = log x - log 3 := Real.log_div hx0.ne' (by norm_num)
-  have h5 : log (x / 5) = log x - log 5 := Real.log_div hx0.ne' (by norm_num)
-  have h30 : log (x / 30) = log x - log 30 := Real.log_div hx0.ne' (by norm_num)
-  have hl30 := log_thirty_ge
-  have hs := stir_log_thirty
-  linarith
-
 theorem dUpper : DUpper := by
   intro x hx
   simp only [chD]

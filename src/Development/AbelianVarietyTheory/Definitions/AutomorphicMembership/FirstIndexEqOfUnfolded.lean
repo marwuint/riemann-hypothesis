@@ -41,10 +41,6 @@ theorem flagConst_add (p q : ℕ) : flagConst (p + q) = grassConst p q * flagCon
     rw [e1, e2, e3, ih, pow_add]
     field_simp
 
-example : flagConst 2 = 1 / Real.pi := by simp [flagConst, Finset.prod_range_succ]
-
-example : grassConst 1 1 = 1 / Real.pi := by simp [grassConst]
-
 theorem isOrth_x0F (X : Data E r) : IsOrth X (x0F X) := fun τ => (X.signature τ).choose_spec.2
 
 theorem muF_fundSet_le (X : Data E r) {x0 x1 : Frame X.Ψ r} (ho : IsOrth X x0) (ho1 : IsOrth X x1)
@@ -305,13 +301,6 @@ def cxOfModels : CxPkg Tau r j Comp where
 def ptOfFrame (k : Comp) (x : (Y k).dom) : (cxOfModels hj Y hr hp κ B s).XC :=
   ⟨k, Quot.mk _ ⟨domPt (Y k) hj (κ k) x, domPt_mem (Y k) hj (κ k) (hp k) x.2⟩⟩
 
-theorem ptOfFrame_eq (k : Comp) (x x' : (Y k).dom) {γ : GL (Fin r) E} (hγ : γ ∈ (Y k).Γ) {b : Frame (Y k).Ψ r}
-    (hb : b ∈ Bor (Y k).Ψ r) (e : x'.1 = rmul (lact γ x.1) b) :
-    ptOfFrame hj Y hr hp κ B s k x = ptOfFrame hj Y hr hp κ B s k x' := by
-  refine congrArg (Sigma.mk k) (Quot.sound ⟨_, ⟨γ, hγ, rfl⟩, ?_⟩)
-  show moebI _ (domPt (Y k) hj (κ k) x) = domPt (Y k) hj (κ k) x'
-  rw [e, domPt_rmul _ _ _ hb, domPt_lact _ _ _ (hp k) _ x.2]
-
 def invariantB (k : Comp) : BdData Tau j (r - j) (gammaU (Y k) hj (κ k)) :=
   invariantData (gammaU_le (Y k) hj (κ k) (hp k)) (hodgeC (Y k) (κ k)) (hodgeC_pos _ _)
 
@@ -334,24 +323,11 @@ theorem first_index_eq_of_unfolded (k : U.Comp) : (U.X k).p0 = r - j := by
 def cmEquiv (T : Tau ≃ {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}) (k : U.Comp) : Tau ≃ (U.X k).Ψ :=
   T.trans (Equiv.subtypeEquivRight fun τ => ((hU.2.1 k).2 τ).symm)
 
-def letterAt (hσ : GoodEmb c σ) :
-    {τ : E →+* ℂ // τ (H.rt : E) = H.rt0} ≃ {τ : E →+* ℂ // τ (H.rt : E) = H.rt0} :=
-  (Equiv.ofBijective _ (GlobalTheory.Relab.relab_good E H l c σ hσ).1).subtypeEquiv
-    fun τ => ((GlobalTheory.Relab.relab_good E H l c σ hσ).2.1 τ).symm
-
 variable [Fintype Tau] (hr : 0 < r) (T : Tau ≃ {τ : E →+* ℂ // τ (H.rt : E) = H.rt0})
   (B : ∀ k, BdData Tau j (r - j) (gammaU (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k))) (s : U.Comp → Tau → ℂˣ)
 
 def cxTrue : CxPkg Tau r j U.Comp :=
   cxOfModels (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s
-
-theorem ptOfFrame_eq_of_frBor {k k' : U.Comp} (x : (U.X k).dom) (x' : (U.X k').dom)
-    (h : ∃ t : Ix Dw → (CAt σ)ˣ, FrBor t (U.un k x) (U.un k' x')) :
-    ptOfFrame (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s k x =
-      ptOfFrame (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s k' x' := by
-  obtain ⟨γ, hγ, b, hb, h1⟩ := (hU.2.2.2.1 k k' x x').1 h
-  obtain ⟨rfl, h2⟩ := Sigma.mk.inj h1
-  exact ptOfFrame_eq _ _ _ _ _ _ _ _ x x' hγ hb (eq_of_heq h2)
 
 end Moduli
 

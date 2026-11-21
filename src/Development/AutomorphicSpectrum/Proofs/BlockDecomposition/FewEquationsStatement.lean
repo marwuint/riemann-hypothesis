@@ -4,13 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsGenO
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CechHOneVanishesOnOpenOfIsAffineOpen
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMulTrInv
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleUnitsTrivializeModuloIdealStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialPullbackGivesUnitCocycleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsLocalIdealStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DependencyStatementStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomologyRankBoundAtClosedPointStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialPullbackGivesUnitCocycle
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsLocalIdeal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsBaseChange
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DependencyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomologyRankBoundAtClosedPoint
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftModuloMaximalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftMinimalGeneratorsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftMinimalGenerators
 
 set_option autoImplicit false
 
@@ -24,13 +24,13 @@ namespace GlobalTheory.CompanionTheory.FewEq
 
 theorem fewEq : FewEqSt := by
   have gen := GlobalTheory.T.cocycle_units_trivialize_modulo_ideal
-  have data := GlobalTheory.T.trivial_pullback_gives_unit_cocycle
-  have mingens := GlobalTheory.T.minimal_generators_local_ideal
-  have flat := GlobalTheory.T.minimal_generators_base_change
-  have dep := GlobalTheory.T.dependency_statement
-  have fibre := GlobalTheory.T.first_cohomology_rank_bound_at_closed_point
+  have data := _root_.GlobalTheory.CompanionTheory.FewEq.exists_local_of_triv
+  have mingens := _root_.GlobalTheory.CompanionTheory.FewEq.exists_minimal_generators
+  have flat := _root_.GlobalTheory.CompanionTheory.FewEq.minimal_generators_flat_independent
+  have dep := _root_.GlobalTheory.CompanionTheory.FewEq.depSt
+  have fibre := _root_.GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre
   have cocycle := GlobalTheory.T.unit_cocycle_lift_modulo_maximal
-  have finish := GlobalTheory.T.unit_cocycle_lift_minimal_generators
+  have finish := _root_.GlobalTheory.CompanionTheory.FewEq.exists_correction
   intro R _ _ _ X s n hsm hpr hF M hM I hI hJ
   have hIm : I ≤ IsLocalRing.maximalIdeal R := IsLocalRing.le_maximalIdeal hI
   obtain ⟨r, t, ht, hmin⟩ := mingens R I

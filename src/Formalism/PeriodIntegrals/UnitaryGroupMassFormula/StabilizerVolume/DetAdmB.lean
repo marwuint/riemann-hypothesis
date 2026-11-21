@@ -155,16 +155,6 @@ theorem boxes_seq : ∃ bs : ℕ → Set (ι → Af F), (∀ n, bs n ∈ boxes F
   refine ⟨bs, fun n => hTS (mem_range_self n), ?_⟩
   rw [← sUnion_range, hTU, hU]
 
-theorem isCountablySpanning_boxes : IsCountablySpanning (boxes F ι) := by
-  obtain ⟨bs, h1, h2⟩ := boxes_seq (F := F) (ι := ι)
-  exact ⟨bs, h1, h2⟩
-
-open Classical in
-
-def upd (D : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (c : ι)
-    (v : HeightOneSpectrum (𝓞 F)) (C : Set (Fv F v)) : ι → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v) :=
-  fun c' => if c' = c then Function.update (D c) v (D c v ∩ C) else D c'
-
 private theorem exists_restricted_box_subset_of_isOpen {x : Af F} {U : Set (Af F)} (hU : IsOpen U) (hx : x ∈ U) :
     ∃ E : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v),
       (∀ v, IsClopen (E v) ∧ IsCompact (E v)) ∧

@@ -30,12 +30,6 @@ def Coords (e : ℕ) (g : GtPt D T) {Z : Scheme.{0}} (r : Z ⟶ T.left)
   y ≫ (U.gt e).pG.left = r ≫ g.b.left ∧
     ∀ (χ : D.X) (z : Z) (J), Good D.P.L z J → val ((U.gt e).t χ) y z J = val (g.s χ) r z J
 
-theorem red_iff (x : T ⟶ G) (g : GtPt D T) :
-    U.Red x g ↔ ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ T.left) (y : Z ⟶ (thickObj R I e G).left),
-      y ≫ (fstG I e G).left = r ≫ x.left → Coords U e g r y := by
-  unfold PreU.Red Coords
-  exact ⟨fun h e Z r y hy => h e Z r y hy, fun h e Z r y hy => h e Z r y hy⟩
-
 variable {U}
 
 theorem Coords.comp {e : ℕ} {g : GtPt D T} {Z W : Scheme.{0}} {r : Z ⟶ T.left}

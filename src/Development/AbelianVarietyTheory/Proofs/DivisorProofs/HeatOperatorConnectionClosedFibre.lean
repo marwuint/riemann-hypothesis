@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConnK
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkDerField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescendedHeatConnectionOnAbelianFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoPullbackIdentificationDerivationCommutesTransStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinateLogDerivMinusPotentialsChartIndependenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivCoordinateSubPotentialsConstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudCoordinateConstantAdditiveInCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorFourierTermAlongFibreConnectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescendedHeatConnectionOnAbelianFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoPullbackIdentificationDerivationCommutesTrans
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinateLogDerivMinusPotentialsChartIndependen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivCoordinateSubPotentialsConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudCoordinateConstantAdditiveInCharacter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorFourierTermAlongFibreConnection
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
@@ -54,7 +54,7 @@ theorem heat_connection : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       inv := by
         rw [← map_natCast (algebraMap k (ChartRing k m d)) e, ← map_mul, inv_mul_cancel₀ he0, map_one]
       pull := hpull }
-  obtain ⟨V, ed, pb, hC, hDs⟩ := GlobalTheory.T.exists_descended_heat_connection_on_abelian_fibre Y h _ e _ A₀ m₀ hF
+  obtain ⟨V, ed, pb, hC, hDs⟩ := _root_.GlobalTheory.HeatConn.exists_connK_desc Y h _ e _ A₀ m₀ hF
   have hD' : (fun r => ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ) (D r)) = fun r => (ρ r).snd := by
     funext r
     show (ρ (D r)).fst = (ρ r).snd
@@ -62,15 +62,15 @@ theorem heat_connection : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   rw [hD'] at hC
   refine ⟨V, ed, pb, hC, hDs.1, ?_⟩
   intro B' _ π₁ π₂ c' h1 h2 h3 h4 pr hpr1 hpr2 hed
-  have hCom := GlobalTheory.T.two_pullback_identification_derivation_commutes_translations P.D.toPre ρ A₀ m₀ hpull ed B' π₁ π₂ c' h1 h2 h3 h4 pr hpr1 hpr2 hed
+  have hCom := _root_.GlobalTheory.HeatConn.Comm.commutes P.D.toPre ρ A₀ m₀ hpull ed B' π₁ π₂ c' h1 h2 h3 h4 pr hpr1 hpr2 hed
   rw [← hD'] at hC
-  have hCF := GlobalTheory.T.coordinate_logDeriv_minus_potentials_chart_independent Y h _ e _ A₀ m₀ hF V ed pb hC hDs hCom
-  choose cf hcf using fun α => GlobalTheory.T.logDeriv_coordinate_sub_potentials_const Y h _ e _ A₀ m₀ hF V ed pb hC hDs α (hCF α)
+  have hCF := _root_.GlobalTheory.HeatConn.chartFree Y h _ e _ A₀ m₀ hF V ed pb hC hDs hCom
+  choose cf hcf using fun α => _root_.GlobalTheory.HeatConn.exists_coordEq Y h _ e _ A₀ m₀ hF V ed pb hC hDs α (hCF α)
   have hadd : ∀ α β, cf (α + β) = cf α + cf β := fun α β =>
-    GlobalTheory.T.raynaud_coordinate_constant_additive_in_character Y h _ e _ A₀ m₀ hF V ed pb hC hDs hCom α β (cf α) (cf β) (cf (α + β))
+    _root_.GlobalTheory.HeatConn.coordEq_const_add Y h _ e _ A₀ m₀ hF V ed pb hC hDs hCom α β (cf α) (cf β) (cf (α + β))
       (hcf α) (hcf β) (hcf (α + β))
   refine ⟨AddMonoidHom.mk' cf hadd, ?_⟩
   intro α σ σ' hT i T hT1 hT2 O' hO1 hO2
-  exact GlobalTheory.T.heat_operator_fourier_term_along_fibre_connection Y h _ e _ A₀ m₀ hF V ed pb hC hDs α (cf α) (hcf α) σ σ' hT i T hT1 hT2 O' hO1 hO2
+  exact _root_.GlobalTheory.HeatConn.heat_term_fibre Y h _ e _ A₀ m₀ hF V ed pb hC hDs α (cf α) (hcf α) σ σ' hT i T hT1 hT2 O' hO1 hO2
 
 end GlobalTheory.HeatConn

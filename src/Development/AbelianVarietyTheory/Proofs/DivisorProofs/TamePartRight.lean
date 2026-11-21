@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjMapApply
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTemperateGrowthElim
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzTensorRightOperatorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzTensorRightOperator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzProductDecompositionStatement
 
 open scoped TensorProduct NNReal Matrix
@@ -65,7 +65,7 @@ theorem isTame_partR : ∀ (F : Type) [Field F] [NumberField F] (κ κ' κ₁' :
   haveI := totallyDisconnected_finiteAdele F
   obtain ⟨ι₀, _, g₁, g₂, hg₁, hg₂, rfl⟩ := GlobalTheory.T.schwartz_product_decomposition _ κ κ' g hg
   choose ι inst P g' hg' hP using fun i => hT (g₂ i) (hg₂ i)
-  choose Q hQ using fun (p : Σ i, ι i) => GlobalTheory.T.schwartz_tensor_right_operator (mixedEmbedding.mixedSpace F) κ κ' κ₁' (P p.1 p.2)
+  choose Q hQ using fun (p : Σ i, ι i) => _root_.GlobalTheory.SliceOp.exists_tensor_clm (mixedEmbedding.mixedSpace F) κ κ' κ₁' (P p.1 p.2)
   refine ⟨Σ i, ι i, inferInstance, Q, fun p z => g₁ p.1 (z ∘ Sum.inl) * g' p.1 p.2 (z ∘ Sum.inr),
     fun p => GlobalTheory.SchwartzBox.sb_box (hg₁ p.1) (hg' p.1 p.2), fun f => ?_⟩
   rw [pureA_sum, map_sum, Fintype.sum_sigma]

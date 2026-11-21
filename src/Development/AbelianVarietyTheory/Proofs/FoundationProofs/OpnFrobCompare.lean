@@ -61,44 +61,8 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
-lemma Dx_letter_add (b : Bool) {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y)
-    (hXY : inLie k r (X + Y)) {f : Mat k r → E} (hf : CkOn 1 (GV k r) f) :
-    ∀ g ∈ GV k r, Dx (b, X + Y) f g = Dx (b, X) f g + Dx (b, Y) f g := by
-  intro g hg
-  obtain ⟨U, f', hU, hgU, hc, hff⟩ := hf g hg
-  have hd : DifferentiableAt ℝ f' g :=
-    (hc.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)
-  rw [Dx_eq, Dx_eq, Dx_eq, (Dx_hasDerivAt (x := (b, X + Y)) hXY hU hgU hg hd hff).deriv,
-    (Dx_hasDerivAt (x := (b, X)) hX hU hgU hg hd hff).deriv,
-    (Dx_hasDerivAt (x := (b, Y)) hY hU hgU hg hd hff).deriv, ← map_add]
-  congr 1
-  cases b <;> simp [dirv, Matrix.mul_add, Matrix.add_mul, add_comm]
-
-def lieSub (k r : ℕ) : Submodule ℝ (Mat k r) where
-  carrier := {X | inLie k r X}
-  add_mem' := fun {X Y} hX hY => by
-    simp only [Set.mem_setOf_eq, inLie] at *
-    rw [Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, hX, hY, add_zero]
-  zero_mem' := by simp [inLie]
-  smul_mem' := fun c X hX => by
-    have := lie_rsmul (X := X) hX c
-    rwa [Complex.coe_smul] at this
-
-def letterLin (p : List (Bool × Mat k r)) (hp : ∀ x ∈ p, inLie k r x.2) (b : Bool) (h : Mat k r → E)
-    (hh : CkOn (p.length + 1) (GV k r) h) (g : Mat k r) (hg : g ∈ GV k r) : lieSub k r →ₗ[ℝ] E where
-  toFun X := Dw p (Dx (b, X.1) h) g
-  map_add' X Y := by
-    rw [← Dw_add hp (CkOn_Dx (x := (b, X.1)) X.2 hh) (CkOn_Dx (x := (b, Y.1)) Y.2 hh) g hg]
-    exact Dw_congr hp (Dx_letter_add b X.2 Y.2 (X + Y).2 (sCkOn_mono le_add_self hh)) g hg
-  map_smul' c X := by
-    have e : (c • X).1 = (c : ℂ) • X.1 := by rw [Complex.coe_smul]; rfl
-    rw [e, Dx_scale, Dw_smul]
-    simp
-
 end GlobalTheory.SOrb.CCBridge
 
 namespace GlobalTheory.SOrb
-
-open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.BetaSesquilinearity GlobalTheory.SOrb.CCBridge
 
 end GlobalTheory.SOrb

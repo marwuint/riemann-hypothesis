@@ -30,9 +30,6 @@ def GramContraction.Statement : Prop :=
     (∀ y, ‖Ψ y‖ ≤ ‖y‖) →
       (Matrix.gram ℝ (Sum.elim (Ψ ∘ u) w)).det ≤ (Matrix.gram ℝ u).det * ∏ j, ‖w j‖ ^ 2
 
-example : DiscreteTopology (imageLattice SublatticeDegree.φ1) := inferInstance
-example : IsZLattice ℝ (imageLattice SublatticeDegree.φ1) := inferInstance
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

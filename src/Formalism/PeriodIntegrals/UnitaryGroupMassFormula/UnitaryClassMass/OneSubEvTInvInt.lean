@@ -89,13 +89,6 @@ theorem evT_int (T : Set (HeightOneSpectrum (𝓞 F))) : evT T ∈ intAf F := by
   · exact one_mem _
   · exact zero_mem _
 
-theorem one_sub_evT_int (T : Set (HeightOneSpectrum (𝓞 F))) : 1 - evT T ∈ intAf F := by
-  intro w
-  show (1 - evT T) w ∈ w.adicCompletionIntegers F
-  rw [af_sub_apply, evT_apply, af_one_apply]; split_ifs
-  · rw [sub_self]; exact zero_mem _
-  · rw [sub_zero]; exact one_mem _
-
 theorem evT_eq_sum (T : Finset (HeightOneSpectrum (𝓞 F))) : evT (T : Set _) = ∑ w ∈ T, sgl w 1 := by
   apply af_ext
   intro w

@@ -489,10 +489,6 @@ def adm1 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.lo
 
 def adm2 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CR CA CB CK : ℝ) : Prop := Formalism.MainNotions.LiftingTheory.aux₃ D HW F CR CA CB CK
 
-def adm3 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop := Formalism.MainNotions.LocalTheoryWindows.Conclusion1 D HW F C
-
-def ArchimedeanSignatureMatching (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop := Formalism.MainNotions.LocalTheoryWindows.Conclusion2 D HW F C
-
 def adm5 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := SATL D.loc D.locA HW F
 
 def adm6 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := FirstFiltrationAtLevelOne D.loc D.locA HW F

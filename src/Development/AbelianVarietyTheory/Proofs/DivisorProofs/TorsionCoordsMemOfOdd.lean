@@ -4,8 +4,8 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassPTwoMulMulSqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionWeierstrassPMemValuationSubringStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOfDuplicationEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionWeierstrassPMemValuationSubring
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOfDuplicationEq
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -22,8 +22,8 @@ theorem torsion_coords_mem_of_odd : ∀ (L : PeriodPair) (β u : ℂ) (V : Valua
   have hNz2 : (N : ℂ) * (2 * z) ∈ L.lattice := by
     have e : (N : ℂ) * (2 * z) = N * z + N * z := by ring
     rw [e]; exact add_mem hNz hNz
-  obtain ⟨hP', -⟩ := GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hmul hβ hΔ hN z z hz hz hNz hNz
-  obtain ⟨-, hδ⟩ := GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hmul hβ hΔ hN (2 * z) z h2z hz hNz2 hNz
+  obtain ⟨hP', -⟩ := _root_.GlobalTheory.CMModel.TorsMemVal.main L β u V N hmul hβ hΔ hN z z hz hz hNz hNz
+  obtain ⟨-, hδ⟩ := _root_.GlobalTheory.CMModel.TorsMemVal.main L β u V N hmul hβ hΔ hN (2 * z) z h2z hz hNz2 hNz
   have dup := GlobalTheory.T.weierstrassP_two_mul_mul_deriv_sq L z hz h2z
   have sq := L.derivWeierstrassP_sq z hz
   set C : VariableChange ℂ := ⟨Units.mk0 u hu, r, s, t⟩ with hC
@@ -40,7 +40,7 @@ theorem torsion_coords_mem_of_odd : ∀ (L : PeriodPair) (β u : ℂ) (V : Valua
     simp only [latticeCurve]
     field_simp
     ring
-  apply GlobalTheory.T.mem_of_duplication_eq_weierstrass V (C • latticeCurve L) _ _ ((P2 - P) / u ^ 2) hint
+  apply _root_.GlobalTheory.CMModel.mem_of_duplication_eq V (C • latticeCurve L) _ _ ((P2 - P) / u ^ 2) hint
   · rw [Affine.equation_iff]
     simp only [WeierstrassCurve.toAffine]
     rw [variableChange_a₁, variableChange_a₂, variableChange_a₃, variableChange_a₄, variableChange_a₆, hCu, hCr, hCs, hCt]

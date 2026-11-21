@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SumMulFG
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueUniqueBaseChangeStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueLineBundleSectionStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TheoremOfCubeSectionValueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundlePullbackGeneratorStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundlePullbackGenerator
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteGroupSchemeSumExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuesIdentityPowerRelationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuesIdentityPowerRelation
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights TensorProduct
@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 
 alias torsVal_val := GlobalTheory.T.torsion_value_line_bundle_section
 alias exists_lin := GlobalTheory.T.theorem_of_cube_section_value
-alias exists_sec_of_gen := GlobalTheory.T.line_bundle_pullback_generator
+alias exists_sec_of_gen := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Transl.exists_sec_cleared
 alias exists_root_gen := GlobalTheory.T.finite_group_scheme_sum_extension
-alias transl_algebra := GlobalTheory.T.values_identity_power_relation
+alias transl_algebra := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Transl.values_identity_units
 
 end GlobalTheory.CompanionTheory.Ar.Sl.Transl
 

@@ -269,11 +269,6 @@ theorem holomorphicOn_finiteCoord : p1.HoloOn (Set.range ((↑) : ℂ → OnePoi
     rw [e]
     exact projLine_analyticAt_inv_apply_zero (projLineChart1_symm_mem_range.1 hw.2)
 
-theorem holoOn_mono {U V : Set (OnePoint ℂ)} {g : OnePoint ℂ → ℂ} (h : p1.HoloOn U g)
-    (hVU : V ⊆ U) : p1.HoloOn V g := by
-  intro j w hw
-  exact h j w ⟨hw.1, hVU hw.2⟩
-
 theorem holoOn_const (U : Set (OnePoint ℂ)) (c : ℂ) : p1.HoloOn U (fun _ => c) := by
   intro j w _
   exact analyticAt_const
@@ -669,41 +664,6 @@ def ptAtlas (Y : Type*) [TopologicalSpace Y] [Unique Y] : FinHolAtlas 0 Y where
       continuousOn_invFun := continuousOn_const }
   cover := fun _ => ⟨0, Set.mem_univ _⟩
   holo := fun _ _ _ _ => analyticAt_const
-
-def ptPart (Y : Type*) [TopologicalSpace Y] [Unique Y] : ChartPartition (ptAtlas Y) where
-  χ _ _ := 1
-  smooth _ _ := contDiffOn_const
-  nonneg _ _ := zero_le_one
-  tsupport_subset _ := Set.subset_univ _
-  sum_eq_one _ := by
-    show ∑ _j : Fin 1, (1 : ℝ) = 1
-    simp
-
-theorem ptAtlas_mInt (Y : Type*) [TopologicalSpace Y] [Unique Y] (g : Y → ℝ) :
-    mInt (ptAtlas Y) Fin.elim0 g = g default := by
-  have hne : Nonempty (ChartPartition (ptAtlas Y)) := ⟨ptPart Y⟩
-  have hχ : ∀ (Q : ChartPartition (ptAtlas Y)) (x : Y), Q.χ (0 : Fin 1) x = 1 := by
-    intro Q x
-    have h := Q.sum_eq_one x
-    change ∑ j : Fin 1, Q.χ j x = 1 at h
-    rwa [Fin.sum_univ_one] at h
-  have hd : ∀ y : Fin 0 → ℂ, locDens (ptAtlas Y) Fin.elim0 (0 : Fin 1) y = 1 := by
-    intro y
-    simp [locDens, maDens, mdisc]
-  have ht : ((ptAtlas Y).chart (0 : Fin 1)).target = Set.univ := rfl
-  unfold mInt
-  rw [dif_pos hne]
-  unfold integralWith
-  change ∑ j : Fin 1, _ = _
-  rw [Fin.sum_univ_one]
-  have e : ∀ y : Fin 0 → ℂ, hne.some.χ (0 : Fin 1) (((ptAtlas Y).chart (0 : Fin 1)).symm y) *
-      g (((ptAtlas Y).chart (0 : Fin 1)).symm y) * locDens (ptAtlas Y) Fin.elim0 (0 : Fin 1) y =
-      g default := by
-    intro y
-    rw [hχ, hd, Subsingleton.elim (((ptAtlas Y).chart (0 : Fin 1)).symm y) default]
-    ring
-  simp only [e, ht]
-  simp [MeasureTheory.volume_pi, MeasureTheory.Measure.pi_univ, MeasureTheory.measureReal_def]
 
 end
 

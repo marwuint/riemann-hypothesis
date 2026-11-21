@@ -144,17 +144,7 @@ def cutTr2 [MeasurableSpace (GA E a)] [MeasurableSpace (GA E b)] (μ₁ : Measur
 
 def ratCent (d : GL (Fin n) E) : Subgroup (GA E n) := (twCent (thetaE E n) d).map (ratGL E n)
 
-def orbTerm [MeasurableSpace (GA E n)] (μ : Measure (GA E n)) (φ : GA E n → ℂ) (d : GL (Fin n) E) : ℂ :=
-  quotIntegral μ (ratCent d) Measure.count fun x => φ (twConj (thetaA E n) x (ratGL E n d))
-
 def TwClass (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) : Type := Quot (TwConjugate (thetaE E n))
-
-def ellSum [MeasurableSpace (GA E n)] (μ : Measure (GA E n)) (φ : GA E n → ℂ) : ℂ :=
-  ∑ᶠ (c : TwClass E n) (_ : IsRegEll (Quot.out c)), orbTerm μ φ (Quot.out c)
-
-def toInf [MeasurableSpace (GL (Fin n) ℂ)] (μ : Measure (GL (Fin n) ℂ)) (d : GL (Fin n) ℂ)
-    (μd : Measure (twCent (thetaR (starRingEnd ℂ) n) d)) (f : GL (Fin n) ℂ → ℂ) : ℂ :=
-  twOrbIntegralC (thetaR (starRingEnd ℂ) n) μ d μd f
 
 def VeryCusp (f : GL (Fin n) ℂ → ℂ) : Prop :=
   (∀ k d, thetaR (starRingEnd ℂ) n k = k → f (twConj (thetaR (starRingEnd ℂ) n) k d) = f d) ∧

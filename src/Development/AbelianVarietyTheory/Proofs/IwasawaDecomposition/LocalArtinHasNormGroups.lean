@@ -6,7 +6,18 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Decompositio
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalEmbeddingOverPlace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingsTowerCompatibleStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLocalExtensionOfFiniteIndexWeilSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinLocalIdeleInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GlobalArtinLocalIdeleInjective
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalLanglandsExists
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroCuspidalLL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalConverseGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroInduction
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BrauerDegreeZero
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsMultisegments
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilGroupRestriction
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocUnitApply
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsoluteGaloisAbelianizationEqOneOfMemOpenSubgro
@@ -19,10 +30,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAbeliani
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTotallyPositiveApproxAtFinitePlaces
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProdIdeleCharacterEqOneOfTotallyPositive
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormTotallyPositiveOfTotallyPositiveNeZero
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ArtinTransportAlgClosureEquivStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ArtinTransportAlgClosureEquiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitsAdicCompletionHomExtOfIsOpenKer
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsWeilOfFixesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingWeilActionFiniteExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsWeilOfFixes
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingWeilActionFiniteExtension
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompletionEmbeddingCompatibleClosuresStatement
 
 noncomputable section
@@ -203,7 +214,7 @@ theorem res_art_eq_art_norm (E E' Ω : Type) [Field E] [NumberField E] [Field Ω
     MonoidHom.mem_ker.mp (hSu v' hv' z hz)
   have hchi := fun (v' : HeightOneSpectrum (𝓞 E)) (hv' : v' ∉ SE) (u : HeightOneSpectrum (𝓞 E'))
       (hu : u.asIdeal.comap (algebraMap (𝓞 E) (𝓞 E')) = v'.asIdeal) =>
-    GlobalTheory.T.artin_transport_algClosure_equiv E Ω E' Ω (RingEquiv.refl Ω) hφ art art' ha ha' ρ hρ (Gab E Ω ⧸ U) χ v' u hu (hunitE v' hv')
+    _root_.GlobalTheory.ArtinTransport.chi_artin_transport E Ω E' Ω (RingEquiv.refl Ω) hφ art art' ha ha' ρ hρ (Gab E Ω ⧸ U) χ v' u hu (hunitE v' hv')
   obtain ⟨TK, TE, hTK1, hTK2, hTE1, hTE2, hprod⟩ := GlobalTheory.T.prod_localValues_global_over_places_above E E' (Gab E Ω ⧸ U) ψ1 ψ2 SE hunitE
     (fun v' hv' u hu => (hchi v' hv' u hu).1) (fun v' hv' u hu => (hchi v' hv' u hu).2) au
 
@@ -342,7 +353,7 @@ theorem hasNormGroups_of_isLocalArtin : GlobalTheory.Published.GlobalArtinRecipr
   obtain ⟨ι', hι'⟩ := GlobalTheory.LocDict.exists_isLocEmb K Ω A W h'
   obtain ⟨f, b, hf, hb1, hb2, hfE, -, -, -, hNc, hNg⟩ := GlobalTheory.T.local_embeddings_tower_compatible E K Ω A w W h h' hloc ι ι' hι hι'
   letI := f.toAlgebra
-  have hLeq := GlobalTheory.T.local_embedding_weil_action_finite_extension E K Ω A w h ι hι L hL.finiteDimensional fun s g' hg' => (hH s g' hg').symm.trans (hHK s)
+  have hLeq := _root_.GlobalTheory.LocDec.eq_adjoin_of_fixing_iff_weil E K Ω A w h ι hι L hL.finiteDimensional fun s g' hg' => (hH s g' hg').symm.trans (hHK s)
   have hN := GlobalTheory.T.completion_embedding_compatible_closures E K w W (fun x : K => ι (algebraMap K Ω x)) f b hf hb1
     (fun x => by rw [hb2, ι'.commutes, IsScalarTower.algebraMap_apply K (W.adicCompletion K)]) hfE
   rw [← hLeq] at hN
@@ -353,12 +364,12 @@ theorem hasNormGroups_of_isLocalArtin : GlobalTheory.Published.GlobalArtinRecipr
     (Continuous.units_map _ hNc) fun z => Units.ext (hNg z)
   have key' : ∀ (y : (W.adicCompletion K)ˣ) (τ : Weil h') (s : Weil h), (∀ z, (s : G E Ω) z = (τ : G K Ω) z) →
       artK (Neutral.B1.localIdele K W y) = GlobalTheory.HeckeGal.toAb K Ω τ → N y = a s := fun y τ s hs hy =>
-    GlobalTheory.T.globalArtin_localIdele_injective hC E Ω art hart w ((key y τ s hs hy).trans (ha.glob art hart s).symm)
+    _root_.GlobalTheory.ArtinLocalInj.artin_localIdele_injective hC E Ω art hart w ((key y τ s hs hy).trans (ha.glob art hart s).symm)
   obtain ⟨h1, h2⟩ := art_range_weil K Ω A W h' artK hartK
   rw [← hH σ g hg, hN]
   constructor
   · intro hσ
-    obtain ⟨τ, hτ⟩ := GlobalTheory.T.exists_weil_of_fixes' E K Ω A w W h h' σ ((hHK σ).1 hσ)
+    obtain ⟨τ, hτ⟩ := _root_.GlobalTheory.WeilSurj.exists_weil_of_fixes E K Ω A w W h h' σ ((hHK σ).1 hσ)
     obtain ⟨y, hy⟩ := h1 τ
     exact ⟨y, key' y τ σ hτ hy⟩
   · rintro ⟨y, hy⟩

@@ -39,11 +39,6 @@ variable (D) in
 def hookPlus (i : Fin D.R.m) : ℝ :=
   ∑ ρ : D.what₂.Tau, Real.log (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.hookOf (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.pW D i ρ) (aPl D i (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.pW D i ρ) ρ) : ℝ)
 
-structure NumTie (F : Face D A) (b : ℝ) : Prop where
-  sizes : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.Sizes D i b
-  main : ∀ i, (F.Zsc (R.toCx F).zs).l6m i = hookPlus D i
-  unit : (F.Zsc (R.toCx F).zs).l6u = (D.R.f : ℝ) * (D.R.nV : ℝ) ^ 2 * GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.Lp D b
-
 variable {R}
 
 theorem Q_base (h : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicGermPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLawsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicGermProperties
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLaws
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 
@@ -25,8 +25,8 @@ theorem kum_of_isRoot : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →
     ∀ n : ℕ, ∀ (x : X.Khat l) (f : X.Kˣ) (a b : ℂ → ℂ), AdicCompletion.eval (idl l) (X.Kl l) n x = X.cls l n f →
     IsRoot X (l ^ n) f a b → ∃ χ : SL(2, ℤ) → ZMod (l ^ n), Kum X l n x χ := by
   intro Ω _ _ ε X l _ n x f a b hx hr
-  obtain ⟨G1, -, G3, -, G5⟩ := GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties
-  obtain ⟨M1, -, -, M4, -, -⟩ := GlobalTheory.T.glTwoPosRatMobius_basic_laws
+  obtain ⟨G1, -, G3, -, G5⟩ := _root_.GlobalTheory.KZ.Germ.main
+  obtain ⟨M1, -, -, M4, -, -⟩ := _root_.GlobalTheory.KZ.mob_laws
   obtain ⟨ha, hb, hb0, hab0⟩ := hr
   have hm : 0 < l ^ n := pow_pos (Fact.out : l.Prime).pos n
   obtain ⟨M, hM, hlev⟩ := X.level (f : X.K)

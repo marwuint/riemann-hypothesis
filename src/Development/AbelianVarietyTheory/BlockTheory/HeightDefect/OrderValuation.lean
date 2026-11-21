@@ -66,21 +66,6 @@ def TransferAt : Prop :=
 
 variable {Xo c U}
 
-theorem NoCommonZero.at {κ : Type} {w : κ → Rul Xo c} (h : NoCommonZero w) (la : HeightOneSpectrum (𝓞 c.F)) :
-    NoCommonZeroAt la w := by
-  rintro _ ⟨⟨q, T, ι, e, ho, y, hy, η, hη, rfl⟩, rfl⟩
-  letI := ι.toAlgebra
-  obtain ⟨k, hk⟩ := h T.Fr y.1 y.2.1
-  refine ⟨k, ?_⟩
-  show nval T.V e (evI y (w k)) ≠ ⊤
-  have hk' : evI y (w k) ≠ 0 := hk
-  rw [nval_of_ne hk']
-  exact EReal.coe_ne_top _
-
-theorem TransferAt.transfer (h : TransferAt Xo c U) : Transfer Xo c U :=
-  ⟨h.1, fun la aL nL aE nE hL hE m w hw hz => h.2.1 la aL nL aE nE hL hE m w hw (hz.at la),
-    fun la aL nL hL m w hw hz => h.2.2 la aL nL hL m w hw (hz.at la)⟩
-
 theorem ordVal_smul {o : Rul Xo c → EReal} (ho : o ∈ ordVal Xo c) {a : c.F} (ha : a ≠ 0) (f : Rul Xo c) :
     o (a • f) = o f := by
   obtain ⟨T, ι, ht, y, rfl⟩ := ho

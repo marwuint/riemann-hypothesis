@@ -1,11 +1,11 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowSubDvdChoosePrimePowOfLtStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffAevalOneAddXPowSubOneNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotDvdCoeffAevalOneAddXPowSubOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationPolynomialAtRootOfUnitySubOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLowCoeffNotDvdOfCongrMulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsExponentStrictlyLeastWeightStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowSubDvdChoosePrimePowOfLt
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffAevalOneAddXPowSubOneNeZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotDvdCoeffAevalOneAddXPowSubOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationPolynomialAtRootOfUnitySubOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLowCoeffNotDvdOfCongrMul
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsExponentStrictlyLeastWeight
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLimitFamilyOfFiniteCoefficientsStatement
 
 open scoped BigOperators
@@ -78,7 +78,7 @@ theorem exists_low_coeff_of_limit (O : Type) [CommRing O] [IsDomain O] [IsDiscre
       ¬ G x m (Nat.find (ex x) + 1) → m ≠ m₀ → ∑ q, m₀ q * c q < ∑ q, m q * c q := by
     intro x
     obtain ⟨m1, hm1⟩ := Nat.find_spec (ex x)
-    obtain ⟨m, ⟨m₀, hm₀, rfl⟩, h⟩ := GlobalTheory.T.exists_least_weight_exponent ρ
+    obtain ⟨m, ⟨m₀, hm₀, rfl⟩, h⟩ := _root_.GlobalTheory.exists_exponent_strictly_least_weight ρ
       {a | ∃ m : σ →₀ ℕ, ¬ G x m (Nat.find (ex x) + 1) ∧ (fun i => m (τ i)) = a}
       ⟨_, m1, hm1, rfl⟩
     refine ⟨m₀, hm₀, fun c hc m hm hne => ?_⟩
@@ -121,7 +121,7 @@ theorem exists_low_coeff_of_limit (O : Type) [CommRing O] [IsDomain O] [IsDiscre
       _ = _ := mul_comm _ _
   have hx := hK' x
   have hνx := hν x
-  have key := GlobalTheory.T.not_dvd_coeff_aeval_one_add_X_pow_sub_one O ϖ hϖ σ l (Nat.find (ex x)) hl hd (F M x) e (m₀ x) ?_ ?_ ?_
+  have key := _root_.GlobalTheory.not_dvd_coeff_aeval_oneAddX_pow_sub_one O ϖ hϖ σ l (Nat.find (ex x)) hl hd (F M x) e (m₀ x) ?_ ?_ ?_
   · exact fun h5 => key ((pow_dvd_pow ϖ (by omega)).trans h5)
   · intro m hm
     rcases Nat.eq_zero_or_pos (Nat.find (ex x)) with h0 | h0
@@ -157,7 +157,7 @@ theorem pow_sub_one_mem_lowIdeal {O : Type} [CommRing O] (ϖ : O) (l : ℕ) (hl 
   · simp
   · rw [if_neg h0.ne', sub_zero]
     have h1 : T + 1 < l ^ (T + 1) := Nat.lt_pow_self hl.one_lt
-    have h2 := GlobalTheory.T.prime_pow_sub_dvd_choose_prime_pow_of_lt l a T i hl h0 (by omega)
+    have h2 := _root_.GlobalTheory.pow_sub_dvd_choose_prime_pow_of_lt l a T i hl h0 (by omega)
     have h3 : l ^ n ∣ (l ^ a).choose i := (pow_dvd_pow l (by omega)).trans h2
     have h4 : ((l ^ n : ℕ) : O) ∣ (((l ^ a).choose i : ℕ) : O) := Nat.cast_dvd_cast h3
     rw [Nat.cast_pow] at h4
@@ -231,11 +231,11 @@ theorem exists_low_coeff_of_factor (O : Type) [CommRing O] [IsDomain O]
     have h1 : M < l ^ M := Nat.lt_pow_self hl.one_lt
     have h2 : m₀ ≤ (V + 1) * m₀ := Nat.le_mul_of_pos_left _ (by omega)
     omega
-  have h4 := GlobalTheory.T.coeff_aeval_one_add_X_pow_sub_one_ne_zero' (IsLocalRing.ResidueField O) (Fin R ⊕ Fin R) l M
+  have h4 := _root_.GlobalTheory.coeff_aeval_one_add_X_pow_sub_one_ne_zero (IsLocalRing.ResidueField O) (Fin R ⊕ Fin R) l M
     (Dd.map (IsLocalRing.residue O)) u (Sum.elim n (fun _ => 0)) e hu
     (by simpa [Fintype.prod_sum_type] using hD) (hw.trans_lt hlt)
   rw [← map_subst, Polynomial.coeff_map, IsLocalRing.residue_ne_zero_iff_isUnit] at h4
-  obtain ⟨i, hi, h5⟩ := GlobalTheory.T.exists_low_coeff_not_dvd_of_congr_mul' O ϖ hϖ (S Dd : Polynomial O) (S g : Polynomial O)
+  obtain ⟨i, hi, h5⟩ := _root_.GlobalTheory.exists_low_coeff_not_dvd_of_congr_mul O ϖ hϖ (S Dd : Polynomial O) (S g : Polynomial O)
     (S f : Polynomial O) m₀ v (V + 1) ((V + 1) * m₀)
     ⟨_, hw, by rw [Polynomial.coeff_coe]; exact h4⟩
     (by rw [Polynomial.coeff_coe, hS, coeff_zero_subst]; exact hg) (by omega) hvm
@@ -264,7 +264,7 @@ theorem exists_levels (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationR
   have hne : ∀ y, (h y).coeff (w y) ≠ 0 := fun y h1 => hd y (by rw [h1]; exact dvd_zero _)
   have hval : ∀ y, (IsDiscreteValuationRing.addVal O ((h y).coeff (w y))).toNat ≤ v y :=
     fun y => ENat.toNat_le_of_le_coe ((addVal_le_iff_not_dvd hϖ _ _).2 (hd y))
-  choose BB c hc hB using fun y => GlobalTheory.T.valuation_polynomial_at_root_of_unity_sub_one O l hl h0 hu (h y) (w y) (hne y)
+  choose BB c hc hB using fun y => _root_.GlobalTheory.PolyCycloValue.value_at_root_sub_one O l hl h0 hu (h y) (w y) (hne y)
   refine ⟨Finset.univ.biUnion BB, Finset.card_biUnion_le.trans (Finset.sum_le_sum fun y _ =>
     (hc y).trans (Nat.add_le_add (hw y) (hval y))), ?_⟩
   intro k hk hkB O' _ _ _ _ _ hinj ζ hζ y

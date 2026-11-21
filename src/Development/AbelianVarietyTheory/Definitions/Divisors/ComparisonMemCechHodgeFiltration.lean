@@ -341,26 +341,6 @@ theorem isPullForm_iff {ω : GlobForm s} {ω' : GlobForm s'} : IsPullForm h ω �
       ((congrArg (fun z : Glob1 (OPair φ s') ↦ z.1 (op p)) e).trans (k (op p)))
   · exact (k' p).trans ((e p.unop).trans (k p).symm)
 
-theorem IsPull1.zero : IsPull1 h 0 0 := (map_zero _).trans (map_zero _).symm
-
-theorem IsPull1.add {a b : HH1 s} {a' b' : HH1 s'} (ha : IsPull1 h a a') (hb : IsPull1 h b b') :
-    IsPull1 h (a + b) (a' + b') := by
-  unfold IsPull1 at *; rw [map_add, map_add, ha, hb]
-
-theorem IsPull1.smul {a : HH1 s} {a' : HH1 s'} (ha : IsPull1 h a a') (r : R) :
-    IsPull1 h (r • a) (σ r • a') := by
-  unfold IsPull1 at *; rw [map_smulₛₗ, map_smulₛₗ, ha]; rfl
-
-theorem IsPull2.zero : IsPull2 h 0 0 := (map_zero _).trans (map_zero _).symm
-
-theorem IsPull2.add {a b : HH2 s} {a' b' : HH2 s'} (ha : IsPull2 h a a') (hb : IsPull2 h b b') :
-    IsPull2 h (a + b) (a' + b') := by
-  unfold IsPull2 at *; rw [map_add, map_add, ha, hb]
-
-theorem IsPull2.smul {a : HH2 s} {a' : HH2 s'} (ha : IsPull2 h a a') (r : R) :
-    IsPull2 h (r • a) (σ r • a') := by
-  unfold IsPull2 at *; rw [map_smulₛₗ, map_smulₛₗ, ha]; rfl
-
 theorem IsPull1.cup {a b : HH1 s} {a' b' : HH1 s'} (ha : IsPull1 h a a') (hb : IsPull1 h b b') :
     IsPull2 h (cupHH s a b) (cupHH s' a' b') := by
   unfold IsPull1 IsPull2 at *; rw [pullHyp2_cup, pullHyp2_cup, ha, hb]
@@ -449,42 +429,6 @@ def lineEquiv : (Ω[R[X]⁄R] ⧸ LinearMap.range (D R R[X]).toLinearMap) ≃ₗ
 
 theorem lineEquiv_mk (ω : Ω[R[X]⁄R]) : lineEquiv R (Submodule.Quotient.mk ω) =
     affEquiv R R[X] (Submodule.Quotient.mk ⟨ω, dOne_line R ω⟩) := rfl
-
-attribute [local instance] opModule isCentralScalar_kaehler isScalarTower_kaehler in
-variable {R B} in
-
-theorem connForm_tdt (x : Sp B ⟶ Sp R[X]) (hx : x ≫ lineStr R = spMap (algebraMap R B)) :
-    connForm (tdt R).1 x hx =
-      (Spec.preimage x).hom Polynomial.X • D R B ((Spec.preimage x).hom Polynomial.X) := by
-  have c0 : coordLift (Thick.triv B x hx) = (Spec.preimage x).hom Polynomial.X :=
-    π_coordLift (Thick.triv B x hx)
-  have c1 : (coordLift ((diagExt R B).thick x hx)).fst = (Spec.preimage x).hom Polynomial.X :=
-    π_coordLift ((diagExt R B).thick x hx)
-  change TrivSqZeroExt.snd (R := B) ((TrivSqZeroExt.inl (coordLift (Thick.triv B x hx)) *
-    (_ - TrivSqZeroExt.inl (coordLift (Thick.triv B x hx))) + (divided₂ (diagExt R B).sq).dpow 2 _) -
-    (diagSec R B (coordLift (Thick.triv B x hx)) * (_ - diagSec R B (coordLift (Thick.triv B x hx))) +
-      (divided₂ (diagExt R B).sq).dpow 2 _)) = _
-  rw [squareZeroDividedPowers_dpow _ le_rfl, squareZeroDividedPowers_dpow _ le_rfl, c0]
-  have key : ∀ (c : TrivSqZeroExt B Ω[B⁄R]) (b : B), c.fst = b →
-      TrivSqZeroExt.snd ((TrivSqZeroExt.inl b * (c - TrivSqZeroExt.inl b) + 0) -
-        (diagSec R B b * (c - diagSec R B b) + 0)) = b • D R B b := by
-    intro c b h
-    simp [h, smul_sub]
-  exact key _ _ c1
-
-theorem comparison_tdt_line : cmp1 (lineStr R) (Form.cl _ (tdt R)) =
-    lineEquiv R (Submodule.Quotient.mk ((Polynomial.X : R[X]) • D R R[X] Polynomial.X)) := by
-  rw [comparison_formClass, lineEquiv_mk, affEquiv_mk]
-  refine congrArg _ (Subtype.ext (Subtype.ext (funext fun U ↦ ?_)))
-  rw [cmpForm_apply, connForm_tdt, coneForm_apply, SemiHom.oneFormMap_smul_semilinear, SemiHom.m1_D]
-  have : Spec.preimage (affPt (lineStr R) U.unop) = secMap (𝟙 (Sp R[X])) U.unop.1 := by
-    rw [affPt_eq]; exact Spec.preimage_map _
-  rw [this]; rfl
-
-example (r : R) (h : r * 2 = 1) : cmp1 (lineStr R) (Form.cl _ (tdt R)) = 0 := by
-  rw [comparison_tdt_line, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]
-  refine ⟨r • (Polynomial.X * Polynomial.X), ?_⟩
-  rw [map_smul, Derivation.coeFn_coe, Derivation.leibniz, ← two_smul R, smul_smul, h, one_smul]
 
 end Affine
 

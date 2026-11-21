@@ -334,8 +334,6 @@ def X : LetA O n := (W.φA ^ (W.s - 1)) letπ
 
 def Q : LetA O n := (W.φA ^ (W.s - 1)) W.q
 
-def lvl (j : ℕ) : LetA O n := (W.φA ^ j) W.q
-
 def Nl (T : LocLat G Qp LL O) (i : ZMod n) : Submodule (LetA O n) (W.DD T) :=
   (W.N T).map ((letE i : LetA O n) • LinearMap.id)
 
@@ -391,16 +389,6 @@ theorem φA_X : W.φA W.X = W.X * W.Q := by
   rw [X, this, φA_π, map_mul]
   rfl
 
-def base : Formalism.CoboundaryTransfers.Base O (LetA O n) where
-  p := PD.p
-  hp := PD.hp
-  φ := W.φA
-  γ := W.γA W.gam
-  X := W.X
-  Q := W.Q
-  comm := fun a => W.φA_γA W.gam a
-  φX := ⟨W.Q, W.φA_X⟩
-
 def divisibleCocycles (T : LocLat G Qp LL O) : Submodule O (W.DD T × W.DD T) :=
   herrCocycles (W.γ T) (W.φD T)
 
@@ -416,32 +404,6 @@ def ClKNat : Prop :=
   ∀ {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (pr : ↥(W.wachCocyclesDelta T)) (pr' : ↥(W.wachCocyclesDelta T')),
     (pr' : W.DD T' × W.DD T') = (W.map f (pr : W.DD T × W.DD T).1, W.map f (pr : W.DD T × W.DD T).2) →
       (LatHom.H1map f (W.clK T pr) : LatticeCohomology T'.L) = W.clK T' pr'
-
-def wachOf (T : LocLat G Qp LL O) (M : ℕ)
-    (hX : ∀ x : W.DD T, W.X • x = 0 → x = 0)
-    (hQ : Function.Bijective (fun x : W.DD T => W.Q • x))
-    (hφN : ∀ x ∈ W.N T, W.Q ^ M • W.φD T x ∈ W.N T)
-    (hγN : ∀ x ∈ W.N T, ∃ x' ∈ W.N T, W.γ T x - x = W.X • x')
-    (hγQN : ∀ y : W.DD T, W.Q ^ M • y ∈ W.N T →
-      ∃ y' : W.DD T, W.Q ^ M • y' ∈ W.N T ∧ W.γ T y - y = W.X • y') :
-    Formalism.CoboundaryTransfers.WachMod W.base M (W.DD T) where
-  N := W.N T
-  φ := W.φD T
-  γ := W.γ T
-  φ_smul := fun a x => by
-    have := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
-    rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
-    exact this
-  γ_smul := fun a x => by
-    have := W.γD_smul T W.gam (algebraMap (LetA O n) W.EE a) x
-    rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
-    exact this
-  comm := fun x => W.φγ_comm T W.gam x
-  X_inj := hX
-  Q_bij := hQ
-  φ_N := hφN
-  γ_N := hγN
-  γ_QN := hγQN
 
 end LocWach
 
@@ -862,8 +824,6 @@ def zlW (R : Type) [CommRing R] [CharP R l] : ℤ_[l] →+* WittVector l R :=
 instance algZlWCb : Algebra ℤ_[l] (WCb l) := (zlW l (Cb l)).toAlgebra
 
 instance algZlAinf : Algebra ℤ_[l] (Ainf l) := (zlW l (OCb l)).toAlgebra
-
-example : algebraMap ℤ_[l] (WCb l) ((l : ℕ) : ℤ_[l]) = ((l : ℕ) : WCb l) := map_natCast _ _
 
 theorem map_zlW {R S : Type} [CommRing R] [CommRing S] [CharP R l] [CharP S l] (f : R →+* S)
     (x : ℤ_[l]) : WittVector.map f (zlW l R x) = zlW l S x := by

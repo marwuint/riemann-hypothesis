@@ -2,7 +2,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.BridgeExpK
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.MeasurePreservingMulRight
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.CFCoreA
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.SpectralGap.VogDrop
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
 
 noncomputable section
 
@@ -177,54 +177,6 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
-private theorem casGen_inG_entry_of_lt (ε : Fin n → Bool) {a b : Fin n} (h : a < b) (i j : Fin n) :
-    star (casGen ε (a, b) j i) * (if ε j then (1:ℂ) else -1) +
-      (if ε i then (1:ℂ) else -1) * casGen ε (a, b) i j = 0 := by
-  have hI : star Complex.I = -Complex.I := Complex.conj_I
-  simp only [casGen, casSg, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.single,
-    Matrix.of_apply, smul_eq_mul]
-  split_ifs <;> simp_all
-  all_goals (split_ifs <;> simp_all)
-  all_goals ring
-
-private theorem casGen_inG_entry_of_eq (ε : Fin n → Bool) {a b : Fin n} (h : a = b) (i j : Fin n) :
-    star (casGen ε (a, b) j i) * (if ε j then (1:ℂ) else -1) +
-      (if ε i then (1:ℂ) else -1) * casGen ε (a, b) i j = 0 := by
-  subst h
-  have hI : star Complex.I = -Complex.I := Complex.conj_I
-  by_cases hij : a = j ∧ a = i
-  · obtain ⟨hj, hi⟩ := hij
-    rw [← hj, ← hi]
-    have e : casGen ε (a, a) a a = Complex.I := by simp [casGen, Matrix.single]
-    rw [e, hI]
-    ring
-  · have hji : ¬(a = i ∧ a = j) := fun h' => hij ⟨h'.2, h'.1⟩
-    have e1 : casGen ε (a, a) j i = 0 := by simp [casGen, Matrix.single, hij]
-    have e2 : casGen ε (a, a) i j = 0 := by simp [casGen, Matrix.single, hji]
-    rw [e1, e2]
-    simp
-
-private theorem casGen_inG_entry_of_gt (ε : Fin n → Bool) {a b : Fin n} (h : b < a) (i j : Fin n) :
-    star (casGen ε (a, b) j i) * (if ε j then (1:ℂ) else -1) +
-      (if ε i then (1:ℂ) else -1) * casGen ε (a, b) i j = 0 := by
-  have hI : star Complex.I = -Complex.I := Complex.conj_I
-  simp only [casGen, casSg, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.single,
-    Matrix.of_apply, smul_eq_mul]
-  split_ifs <;> simp_all
-  all_goals (split_ifs <;> simp_all)
-  all_goals ring
-
-theorem inG_casGen' (ε : Fin n → Bool) (p : Fin n × Fin n) : inG ε (casGen ε p) := by
-  obtain ⟨a, b⟩ := p
-  unfold inG Jm
-  ext i j
-  simp only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply,
-    Matrix.zero_apply]
-  rcases lt_trichotomy a b with h | h | h
-  · exact casGen_inG_entry_of_lt ε h i j
-  · exact casGen_inG_entry_of_eq ε h i j
-  · exact casGen_inG_entry_of_gt ε h i j
-
 section Equiv
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
@@ -292,14 +244,6 @@ theorem dS_map_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε,
   rw [hfun]
   exact deriv_linearIsometryEquiv_comp_zero U _
 
-theorem dS_casGen_map_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε, ∀ x : H₁, U (σ₁ g x) = σ₂ g (U x))
-    (p : Fin n × Fin n) (x : H₁) : dS σ₂ (casGen ε p) (U x) = U (dS σ₁ (casGen ε p) x) := dS_map_isometry U hU (inG_casGen' ε p) x
-
-theorem casU_map_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε, ∀ x : H₁, U (σ₁ g x) = σ₂ g (U x))
-    (x : H₁) : casU ε σ₂ (U x) = U (casU ε σ₁ x) := by
-  unfold casU
-  simp only [dS_casGen_map_isometry U hU, map_neg, map_sum, map_smul]
-
 theorem smooth_symm_of_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε, ∀ x : H₁, U (σ₁ g x) = σ₂ g (U x))
     {v : H₂} (hv : IsSmoothVecU ε σ₂ v) : IsSmoothVecU ε σ₁ (U.symm v) := by
   unfold IsSmoothVecU S7.SmoothOnGV at *
@@ -315,16 +259,5 @@ theorem smooth_symm_of_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ U
     rw [hU g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]
 
 end Equiv
-
-theorem casOnSmooth_of_equiv {ε : Fin n → Bool} {lam : Fin n → ℝ}
-    {H₁ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)}
-    {H₂ : Type*} [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
-    (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε, ∀ x : H₁, U (σ₁ g x) = σ₂ g (U x))
-    (h₁ : CasOnSmooth ε lam σ₁) : CasOnSmooth ε lam σ₂ := by
-  intro v hv
-  have h := h₁ (U.symm v) (smooth_symm_of_isometry U hU hv)
-  have h2 := casU_map_isometry U hU (U.symm v)
-  rw [LinearIsometryEquiv.apply_symm_apply] at h2
-  rw [h2, h, map_smul, LinearIsometryEquiv.apply_symm_apply]
 
 end ReciprocityTheory.ChartRestriction.DS

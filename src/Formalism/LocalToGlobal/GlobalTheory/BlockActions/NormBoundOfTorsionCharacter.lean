@@ -72,7 +72,4 @@ theorem normClsAt_of_tors (hT : ChiTors) : NormClsAt := by
         mul_le_mul hsa (mul_le_mul_of_nonneg_left hchain hKA) (mul_nonneg hKA (mul_nonneg hK2 hnW)) zero_le_one
     _ = _ := by ring
 
-theorem norm_bound_of_torsion_character (h1 : ClassMapInjective) (h2 : StabiliserMapBijective) (hT : ChiTors) : NormBoundAtInfinity :=
-  norm_bound_of_classes h1 h2 (normClsAt_of_tors hT)
-
 end Formalism.L2.GlobalTheoryTheory.Br

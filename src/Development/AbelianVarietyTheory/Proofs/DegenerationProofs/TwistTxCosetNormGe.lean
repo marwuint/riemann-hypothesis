@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TxCosetCriterion
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependenceStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependence
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.Ex
 open scoped BigOperators
 
@@ -11,7 +12,7 @@ theorem tx_eq_of_qEq {O : Type} [CommRing O] [TopologicalSpace O] (N : NumD O) {
     {p p' : N.QT (m ^ 2)} (h : N.QEq p p') : N.tx m p' = N.tx m p := by
   obtain ⟨z, h1, h2⟩ := h
   refine Eq.trans (tsum_congr fun χ => ?_) ((Equiv.addRight (m • z)).tsum_eq fun χ => N.txT m p χ)
-  exact (GlobalTheory.T.thetaConstantTerm_representative_dependence O N m hm p p' χ).1 z h1 h2
+  exact (_root_.GlobalTheory.Ex.txT_shift O N m hm p p' χ).1 z h1 h2
 
 variable {O : Type} [CommRing O] {N : NumD O} {k : ℕ} {β : N.Form k} {u r : Oˣ} {l : ℕ}
 

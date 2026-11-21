@@ -470,32 +470,10 @@ theorem RegC.exists_nhds (h : RegC y f) : ∃ N : Set (Y.pts σ), IsOpen N ∧ y
   intro z hz
   rw [(key z hz.1 hz.2.1 hz.2.2).val_eq, div_eq_mul_inv]
 
-theorem isOpen_regSet (f : Y.FnC σ) : IsOpen (regSet f) := by
-  refine isOpen_iff_forall_mem_open.mpr fun z hz => ?_
-  obtain ⟨N, hN, hzN, hNs, -⟩ := (show RegC z f from hz).exists_nhds
-  exact ⟨N, hNs, hN, hzN⟩
-
 theorem holoOn_val (f : Y.FnC σ) : (Y.an σ).HoloOn (regSet f) fun z => val z f := by
   choose N hN hyN hNs hNh using fun z : regSet f => (show RegC z.1 f from z.2).exists_nhds
   exact AnRead.holoOn_of_cover (R := Y.an σ) hN (fun z hz => ⟨⟨z, hz⟩, hyN ⟨z, hz⟩⟩)
     fun j => (hNh j).mono Set.inter_subset_right
-
-theorem continuousOn_val (f : Y.FnC σ) : ContinuousOn (fun z => val z f) (regSet f) :=
-  (holoOn_val f).continuousOn (isOpen_regSet f)
-
-theorem exists_open_regC (f : Y.FnC σ) :
-    ∃ U : Y.X.Opens, genericPoint Y.X ∈ U ∧ ptsIn Y.str σ U ⊆ regSet f := by
-  refine CxExt.induction f (fun c g => ?_) (fun f₁ f₂ h₁ h₂ => ?_)
-  · obtain ⟨U, hU, a, rfl⟩ := (regAt_genericPoint g).exists_fnOf
-    refine ⟨U, hU, fun z hz => ?_⟩
-    exact ⟨_, (hasVal_cx_fnOf (Var.mem_ptsIn_iff.mp hz) (gen_mem hU) a).smul c⟩
-  · obtain ⟨U₁, hU₁, s₁⟩ := h₁
-    obtain ⟨U₂, hU₂, s₂⟩ := h₂
-    refine ⟨U₁ ⊓ U₂, ⟨hU₁, hU₂⟩, fun z hz => ?_⟩
-    have hz' := Var.mem_ptsIn_iff.mp hz
-    obtain ⟨c₁, e₁⟩ := s₁ (Var.mem_ptsIn_iff.mpr hz'.1)
-    obtain ⟨c₂, e₂⟩ := s₂ (Var.mem_ptsIn_iff.mpr hz'.2)
-    exact ⟨_, e₁.add e₂⟩
 
 end Var
 

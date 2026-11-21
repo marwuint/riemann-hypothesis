@@ -1,5 +1,8 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlternatingSumThreeTerms
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafBasicPropertiStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafBasicProperti
+import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SimplicialCochainClassesBasicProperties
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct GlobalTheory.EtC GlobalTheory.CechOne
 
@@ -7,7 +10,7 @@ namespace GlobalTheory.CechOne
 
 theorem cobd_of_isCls_zero : ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc) (s : (free R).obj (E.obj (op ⦋1⦌)) ⟶ F), IsCls s (0 : H R E F ((1 : ℕ) : ℤ)) → ∃ t : (free R).obj (E.obj (op ⦋0⦌)) ⟶ F, s = cobd t := by
   intro R _ F E s hs
-  obtain ⟨-, hneg, hmono, ⟨w, hex⟩, -, hpos⟩ := GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F
+  obtain ⟨-, hneg, hmono, ⟨w, hex⟩, -, hpos⟩ := _root_.GlobalTheory.EtC.res_basic R F
   obtain ⟨z, hz0, hz⟩ := hs
   rw [CohomologyClass.mk_eq_zero_iff] at hz0
   obtain ⟨m, hm, β, hβ⟩ := hz0

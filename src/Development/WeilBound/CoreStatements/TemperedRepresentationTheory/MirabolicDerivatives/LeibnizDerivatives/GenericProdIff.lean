@@ -22,9 +22,6 @@ def GenericProdIff : Prop :=
     [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)), (∀ a, IsSmooth (π a)) →
     (IsGeneric (multiProd (stdBlocks d hd) π) ↔ ∀ a, IsGeneric (π a))
 
-def GenericProdIrr : Prop :=
-  ∀ (h N : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N), IsGeneric (prodIrr x hd) ↔ ∀ a, IsGeneric (x a).rep
-
 def WhitRankProd : Prop :=
   ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 →
     ∀ (h N : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N),

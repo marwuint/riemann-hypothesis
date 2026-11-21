@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAdaptedOfSurjective
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatioInvariantInK0Statement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatioInvariantInK0
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanDOfFixed
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct
@@ -17,7 +17,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
 
 theorem fracInv_of_tied (T : LocTied l P AI) (K : FinExt l) : FracInv (P.PD K) := by
   intro x y hx h
-  refine GlobalTheory.T.ratio_invariant_in_K0 l P AI T K y x hx fun g hg => ?_
+  refine _root_.GlobalTheory.Per.FracInv.tied_frac_invariant l P AI T K y x hx fun g hg => ?_
   have h1 := h ⟨g, hg⟩
   have e : ∀ z, (P.PD K).actB ⟨g, hg⟩ z = P.actQ g z := fun z => P.PD_actB K ⟨g, hg⟩ z
   rw [e, e] at h1

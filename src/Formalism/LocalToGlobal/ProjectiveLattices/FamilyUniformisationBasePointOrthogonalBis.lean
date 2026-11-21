@@ -37,11 +37,6 @@ theorem MuVal.norm {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ}
     | exact Circle.abs_coe _
     | exact mem_sphere_zero_iff_norm.mp (χ x).2
 
-def muRec {X : ThetaX D} (T : ThetaTied D X) (μ : D.what₂.Tup) (j : ℕ) : (AE D)ˣ →* Circle :=
-  T.eChr (X.chrOf μ j)
-
-def muRec0 {X : ThetaX D} (T : ThetaTied D X) (j : ℕ) : (AE D)ˣ →* Circle := muRec T D.what₂.mu0 j
-
 def FinUnit (x : (AE D)ˣ) : Prop :=
   infPart D (x : AE D) = 1 ∧ finPart D (x : AE D) ∈ intAE D ∧ finPart D ((x⁻¹ : (AE D)ˣ) : AE D) ∈ intAE D
 

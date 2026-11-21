@@ -6,7 +6,7 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CasComm
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.GeneratorPowUpperVanishHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.HWDiag
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.TrPowSumFilterZero
-import Formalism.RealPlaceAnalysis.StatementD
+import Formalism.RealPlaceAnalysis.StatementA
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.QuantumDetHighestWeightHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ShiftedGeneratorEqIteSmulAdd
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.GeneratorCommutatorQuantumDet
@@ -14,8 +14,6 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CharId
 
 namespace Formalism.REAL
 
-theorem casKHighest : CasKHighest := compactCasimirOnHighestWeight_holds
-theorem sumSq : SumSq := sumOfSquaresIdentity_holds
 theorem wdCas : WDCas := by
   intro V _ _ n ε E μ w hGl hU hKH
   have hK := compactCasimirOnHighestWeight_holds V n ε E μ w hGl hKH
@@ -75,7 +73,6 @@ theorem diagChar : DiagChar := diagChar_of generatorPowDiagRecursion_holds
 end Formalism.REAL
 
 namespace Formalism.REAL
-theorem charId : CharId := characteristicIdentity_holds
 end Formalism.REAL
 
 namespace Formalism.REAL

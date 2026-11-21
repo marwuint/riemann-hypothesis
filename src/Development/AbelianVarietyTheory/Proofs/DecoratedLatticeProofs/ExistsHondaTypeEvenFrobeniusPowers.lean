@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EndOmega
 import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.InverseEndoIntegralHolds
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HondaFrobeniusTwistLogAdditiveModPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HondaFrobeniusTwistLogEigenModPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LazardBinomialNormUltrametricStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HondaFrobeniusTwistLogAdditiveModPrime
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HondaFrobeniusTwistLogEigenModPrime
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LazardBinomialNormUltrametric
 
 open PowerSeries GlobalTheory.Honda
 
@@ -212,7 +212,7 @@ theorem cob_even_sum : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Cha
   refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun k hk => ?_
   rw [MvPowerSeries.coeff_C_mul, norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) (hc k hk)).trans
-    (GlobalTheory.T.hondaFrobeniusTwistLog_additive_mod_prime K l σ hU f e hf _ (by omega) m)
+    (_root_.GlobalTheory.Honda.twistLog_additive_mod K l σ hU f e hf _ (by omega) m)
 
 theorem eig_even_sum : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l : ℕ) (σ : K →+* K), Unr K l σ → ∀ (f e : K⟦X⟧), IntLog f e → ∀ w : K, CoefLe 1 (Formalism.L2.Th1.C.mulBy f e w) → σ (σ w) = w → ∀ (s : Finset ℕ) (c : ℕ → K), (∀ k ∈ s, ‖c k‖ ≤ 1) → CoefLe ‖(l : K)‖ ((C (l : K) * f - ∑ k ∈ s, C (c k) * frobOp σ l (2 * k + 2) f).subst (Formalism.L2.Th1.C.mulBy f e w) - C w * (C (l : K) * f - ∑ k ∈ s, C (c k) * frobOp σ l (2 * k + 2) f)) := by
   intro K _ _ _ l σ hU f e hf w hw hσw s c hc m
@@ -241,7 +241,7 @@ theorem eig_even_sum : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [Cha
   refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun k hk => ?_
   rw [coeff_C_mul, norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) (hc k hk)).trans
-    (GlobalTheory.T.hondaFrobeniusTwistLog_eigen_mod_prime K l σ hU f e hf w hw _ (by omega) m)
+    (_root_.GlobalTheory.Honda.frobLog_eigen K l σ hU f e hf w hw _ (by omega) m)
 
 theorem mulBy_low_coeff : ∀ (K : Type) [Field K] (f e : K⟦X⟧), Formalism.L2.Th1.C.IsLogPair f e → ∀ w : K, constantCoeff (Formalism.L2.Th1.C.mulBy f e w) = 0 ∧ coeff 1 (Formalism.L2.Th1.C.mulBy f e w) = w := fun _ _ _ _ h w => ⟨Pts.constantCoeff_mulBy h w, Formalism.L2.Th1.G.coeff_one_mulBy h w⟩
 
@@ -361,7 +361,7 @@ theorem exists_even_type : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] 
             · simp [hf0]
             · simp [hf1]
           exact ⟨h0.trans hl1.le, Or.inl h0⟩
-        · rcases GlobalTheory.T.lazard_binomial_norm_ultrametric K l hlp hl1 _ n hn2 (cob_degree K l f e hf (H n) hA n hlowH) with
+        · rcases _root_.GlobalTheory.Honda.Lazard.lazard_binomial K l hlp hl1 _ n hn2 (cob_degree K l f e hf (H n) hA n hlowH) with
             h1 | ⟨h1, i, hi0, hni⟩
           · exact ⟨h1.trans hl1.le, Or.inl h1⟩
           · refine ⟨h1, ?_⟩

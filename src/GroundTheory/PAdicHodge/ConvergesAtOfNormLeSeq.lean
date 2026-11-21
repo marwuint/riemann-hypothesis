@@ -236,11 +236,6 @@ section Iterate
 
 variable [IsAlgClosed L] {ρ0 : Set.Ioo (0 : ℝ) 1} {x : T.RobbaExt ρ0} {r : ℝ}
 
-omit [IsAlgClosed L] in
-theorem movePt_zero {ξ : T.int} (hξ : T.IsPrimOne ξ) (h0 : ‖(0 : L)‖ < T.ptRad ξ) :
-    (T.movePt hξ h0 : Γ) = ξ := by
-  rw [coe_movePt, T.teich_zero, sub_zero]
-
 structure GoodPt (x : T.RobbaExt ρ0) (r : ℝ) (h : 0 < r ∧ r < ρ0) where
 
   η : T.int

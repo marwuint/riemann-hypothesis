@@ -78,11 +78,4 @@ theorem ext_tmul (hg : ∀ (r : ℤ_[p]) (v : T) (f : Q), g (r • v) f = ρ (al
     (z : ℚ_[p]) (v : T) (f : Q) : ext ρ g hg (z ⊗ₜ v) f = ρ z * g v f := by
   simp [ext]
 
-theorem ext_smul (hg : ∀ (r : ℤ_[p]) (v : T) (f : Q), g (r • v) f = ρ (algebraMap ℤ_[p] ℚ_[p] r) * g v f)
-    (z : ℚ_[p]) (w : ℚ_[p] ⊗[ℤ_[p]] T) (f : Q) : ext ρ g hg (z • w) f = ρ z * ext ρ g hg w f := by
-  induction w using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a v => rw [TensorProduct.smul_tmul', ext_tmul, ext_tmul, smul_eq_mul, map_mul, mul_assoc]
-  | add u w hu hw => rw [smul_add, map_add, AddMonoidHom.add_apply, hu, hw, map_add, AddMonoidHom.add_apply, mul_add]
-
 end CrystallineSemistableComparison.ExtV

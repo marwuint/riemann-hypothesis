@@ -22,14 +22,4 @@ private theorem segmentV {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalA
 
 end UpperTheory.V.Z.Win.T2
 
-theorem UpperTheory.V.Z.Win.T2.lQuot :
-    type_of% @GlobalTheory.LocLanglands.IsRec.langlandsQuotient := by
-  intro E Ω i₁ i₂ i₃ i₄ i₅ A w h rc hrc 𝔪 s N δ hδ hd π hπ
-  have h1 : IsL 𝔪 (GlobalTheory.LocLanglands.cls π).rep := IsL.of_equiv ⟨s, δ, hd, hδ, hπ⟩ (equivRep π)
-  obtain ⟨Δ, ⟨hm, -⟩, hΔ⟩ := hδ
-  obtain ⟨a, ha, ε, H⟩ := UpperTheory.V.Z.Win.toV hrc
-  simp only [fun i => UpperTheory.V.Z.Win.T2.segmentV H (hΔ i)]
-  rw [H.langlands (List.ofFn Δ) (GlobalTheory.LocLanglands.cls π) (by rwa [← Fin.univ_val_map, hm]), List.map_ofFn]
-  rfl
-
 end

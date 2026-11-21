@@ -2,7 +2,8 @@ import Mathlib
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshBasic
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshMoll
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshExtB
-import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.StPshLocal
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.NineStatements
@@ -127,70 +128,6 @@ theorem PshLocal.core (hU : IsOpen U)
   obtain ⟨h1, -, h3⟩ := step ε h.1 h.2
   rw [circleAverage_def, smul_eq_mul] at h3
   exact (h1 z hzK).1.trans h3
-
-theorem PshLocal.proof : PshLocal.Statement := by
-  intro D U φ hU hloc
-  refine ⟨PshLocal.usc hloc, fun z w hD => ?_⟩
-  set f : ℝ → ℝ := fun θ => φ (z + circleMap 0 1 θ • w) with hf
-  set g : ℕ → ℝ → ℝ := fun n θ => max (f θ) (-(n : ℝ)) with hg
-  have hcore : ∀ n : ℕ, IntervalIntegrable (g n) volume 0 (2 * π) ∧
-      φ z ≤ (2 * π)⁻¹ * ∫ θ in (0 : ℝ)..2 * π, g n θ := fun n => by
-    have := PshLocal.core (φ := fun x => max (φ x) (-(n : ℝ))) hU
-      (fun p hp => let ⟨W, h1, h2, h3, h4⟩ := hloc p hp; ⟨W, h1, h2, h3, PshLocal.isPsh_max h4 _⟩)
-      z w hD (c := -(n : ℝ)) (fun θ => le_max_right _ _)
-    exact ⟨this.1, (le_max_left _ _).trans this.2⟩
-  have hγ : Continuous (fun θ : ℝ => z + circleMap 0 1 θ • w) :=
-    continuous_const.add ((continuous_circleMap 0 1).smul continuous_const)
-  set S := (fun ζ : ℂ => z + ζ • w) '' sphere (0 : ℂ) 1 with hSdef
-  have hSc : IsCompact S := (isCompact_sphere _ _).image (by fun_prop)
-  have hSU : S ⊆ U := by
-    rintro _ ⟨ζ, hζ, rfl⟩
-    exact hD ζ (mem_sphere_zero_iff_norm.1 hζ).le
-  have hcS : ∀ θ : ℝ, z + circleMap 0 1 θ • w ∈ S := fun θ =>
-    ⟨_, circleMap_mem_sphere 0 zero_le_one θ, rfl⟩
-  obtain ⟨M, hM⟩ := ((PshLocal.usc hloc).mono hSU).bddAbove_of_isCompact hSc
-  have hfM : ∀ θ, f θ ≤ M := fun θ => hM ⟨_, hcS θ, rfl⟩
-  set μ := volume.restrict (Ioc (0 : ℝ) (2 * π)) with hμ
-  have hgi : ∀ n, Integrable (g n) μ := fun n =>
-    (intervalIntegrable_iff_integrableOn_Ioc_of_le two_pi_pos.le).1 (hcore n).1
-  have hgl : ∀ θ, Tendsto (fun n => g n θ) atTop (𝓝 (f θ)) := by
-    intro θ
-    refine tendsto_const_nhds.congr' ?_
-    filter_upwards [eventually_ge_atTop ⌈-f θ⌉₊] with n hn
-    have h1 := Nat.le_ceil (-f θ)
-    have h2 : ((⌈-f θ⌉₊ : ℕ) : ℝ) ≤ n := by exact_mod_cast hn
-    exact (max_eq_left (by linarith)).symm
-  have hlow : ∀ n, 2 * π * φ z ≤ ∫ θ, g n θ ∂μ := fun n => by
-    rw [hμ, ← intervalIntegral.integral_of_le two_pi_pos.le]
-    exact (le_inv_mul_iff₀ two_pi_pos).1 (hcore n).2
-  set P := max M 0 with hP
-  have hnorm : ∀ n, ∫ θ, ‖g n θ‖ ∂μ ≤ 2 * P * (2 * π) - 2 * π * φ z := fun n => by
-    have hle : ∀ θ, ‖g n θ‖ ≤ 2 * P - g n θ := fun θ => by
-      have h1 : g n θ ≤ P := max_le ((hfM θ).trans (le_max_left _ _))
-        ((neg_nonpos.2 (Nat.cast_nonneg n)).trans (le_max_right _ _))
-      have h2 : 0 ≤ P := le_max_right _ _
-      rw [Real.norm_eq_abs, abs_le]
-      constructor <;> linarith
-    have hμu : μ.real univ = 2 * π := by
-      simp [hμ, Real.volume_real_Ioc, two_pi_pos.le]
-    calc ∫ θ, ‖g n θ‖ ∂μ ≤ ∫ θ, (2 * P - g n θ) ∂μ :=
-          integral_mono (hgi n).norm ((integrable_const _).sub (hgi n)) hle
-      _ = 2 * P * (2 * π) - ∫ θ, g n θ ∂μ := by
-          rw [integral_sub (integrable_const _) (hgi n), integral_const, hμu, smul_eq_mul, mul_comm]
-      _ ≤ _ := by linarith [hlow n]
-  have hfi : Integrable f μ := by
-    refine integrable_of_tendsto (G := g) (ae_of_all _ hgl)
-      (fun n => (hgi n).aestronglyMeasurable) ?_
-    refine ne_top_of_le_ne_top (ENNReal.ofReal_ne_top (r := 2 * P * (2 * π) - 2 * π * φ z))
-      (liminf_le_of_frequently_le' (Frequently.of_forall fun n => ?_))
-    rw [← ofReal_integral_norm_eq_lintegral_enorm (hgi n)]
-    exact ENNReal.ofReal_le_ofReal (hnorm n)
-  have hT := integral_tendsto_of_tendsto_of_antitone hgi hfi
-    (ae_of_all _ fun θ n m hnm => max_le_max le_rfl (neg_le_neg (Nat.cast_le.2 hnm)))
-    (ae_of_all _ hgl)
-  refine ⟨(intervalIntegrable_iff_integrableOn_Ioc_of_le two_pi_pos.le).2 hfi, ?_⟩
-  rw [circleAverage_def, smul_eq_mul, intervalIntegral.integral_of_le two_pi_pos.le]
-  exact (le_inv_mul_iff₀ two_pi_pos).2 (ge_of_tendsto' hT fun n => hlow n)
 
 end
 

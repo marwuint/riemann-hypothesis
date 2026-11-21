@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CardFilterLeSuccAndSqSumLePow
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitCasEigenvalueSummand
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InvariantHermitianFormNonnegOfCloudEigenStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGlModuleProjComponentsLevelAddTwoStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumNormHhJSelfLeStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CloudNodeProjectionNormLowLevelStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InvariantHermitianFormNonnegOfCloudEigen
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGlModuleProjComponentsLevelAddTwo
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumNormHhJSelfLe
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CloudNodeProjectionNormLowLevel
 
 open Finset BranchingSupport Formalism.REAL Formalism.QuantumDeterminants
 open scoped InnerProductSpace
@@ -20,12 +20,12 @@ theorem sum_normSq_proj_single_le : ∀ (M : Type) [NormedAddCommGroup M] [Inner
     obtain ⟨e, he, hs⟩ := hA.sign s
     rw [hs, norm_mul, inner_self_eq_norm_sq_to_K]
     rcases he with rfl | rfl <;> simp
-  have hcomp := GlobalTheory.T.unitary_glModule_proj_components_level_add_two M n ε E N F io pr μ j w hE.2.1 (fun s => (hF s).2.1) hA hw
-  have hproj := GlobalTheory.T.cloudNode_projection_norm_lowLevel M n ε E N F io pr μ kk j bv w hE hF hA hS hj hw c
-  have hq := GlobalTheory.T.sum_norm_hhJ_self_le_of_orthogonal M n ε (fun s => io s (pr s (Pi.single c w)))
+  have hcomp := _root_.GlobalTheory.lev_io_pr_single M n ε E N F io pr μ j w hE.2.1 (fun s => (hF s).2.1) hA hw
+  have hproj := _root_.GlobalTheory.cloud_node_projection_norm M n ε E N F io pr μ kk j bv w hE hF hA hS hj hw c
+  have hq := _root_.GlobalTheory.sum_norm_hhJ_self_le M n ε (fun s => io s (pr s (Pi.single c w)))
     (univ.filter (fun a : Fin n => a.val + 1 < kk)) (18 / 13) (3 * (6 * bv) ^ (n - kk)) (‖w‖ ^ 2)
     (fun s t hst => hA.orth s t hst _ _)
-    (fun s hs => GlobalTheory.T.invariantHermitianForm_nonneg_of_cloud_eigen M n ε E μ kk (j + 2) bv _ hE hS (by omega) (fun d => hcomp s c d) s
+    (fun s hs => _root_.GlobalTheory.hhJ_nonneg_of_cloud_eigen M n ε E μ kk (j + 2) bv _ hE hS (by omega) (fun d => hcomp s c d) s
       (Finset.mem_filter.1 hs).2 (GlobalTheory.splitCas_eigenvalue_summand M n ε E N F io pr μ hE hF hA s _))
     hproj.1
     (fun s hs => hproj.2 s (by simpa using hs))

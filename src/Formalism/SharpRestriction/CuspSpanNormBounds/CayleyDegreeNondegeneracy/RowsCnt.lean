@@ -12,57 +12,6 @@ open scoped ENNReal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem rows_skeleton {P κ : Type*} [DecidableEq κ] (S : Finset P) (w a₁ a₂ : P → ℝ) (c₁ c₂ : P → κ) (M : ℝ) (N : κ → κ → ℝ)
-    (α₁ α₂ : κ → ℝ) (hw : ∀ p ∈ S, 0 ≤ w p) (h1 : ∀ p ∈ S, 0 ≤ a₁ p) (h2 : ∀ p ∈ S, 0 ≤ a₂ p)
-    (hα₁ : ∀ p ∈ S, a₁ p ≤ α₁ (c₁ p)) (hα₂ : ∀ p ∈ S, a₂ p ≤ α₂ (c₂ p))
-    (hN : ∀ x y, ∑ p ∈ S.filter (fun p => c₁ p = x ∧ c₂ p = y), w p ≤ M * N x y) :
-    ∑ p ∈ S, w p * (a₁ p * a₂ p) ≤ M * ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, N x y * (α₁ x * α₂ y) := by
-  have hα₁0 : ∀ x ∈ S.image c₁, 0 ≤ α₁ x := by
-    intro x hx
-    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hx
-    exact (h1 p hp).trans (hα₁ p hp)
-  have hα₂0 : ∀ y ∈ S.image c₂, 0 ≤ α₂ y := by
-    intro y hy
-    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hy
-    exact (h2 p hp).trans (hα₂ p hp)
-  have hmaps : ∀ p ∈ S, (fun p => (c₁ p, c₂ p)) p ∈ S.image c₁ ×ˢ S.image c₂ := fun p hp =>
-    Finset.mem_product.mpr ⟨Finset.mem_image_of_mem _ hp, Finset.mem_image_of_mem _ hp⟩
-  calc ∑ p ∈ S, w p * (a₁ p * a₂ p)
-      ≤ ∑ p ∈ S, w p * (α₁ (c₁ p) * α₂ (c₂ p)) := by
-        apply Finset.sum_le_sum
-        intro p hp
-        apply mul_le_mul_of_nonneg_left _ (hw p hp)
-        exact mul_le_mul (hα₁ p hp) (hα₂ p hp) (h2 p hp) ((h1 p hp).trans (hα₁ p hp))
-    _ = ∑ q ∈ S.image c₁ ×ˢ S.image c₂,
-          ∑ p ∈ S.filter (fun p => (c₁ p, c₂ p) = q), w p * (α₁ (c₁ p) * α₂ (c₂ p)) :=
-        (Finset.sum_fiberwise_of_maps_to hmaps _).symm
-    _ = ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂,
-          ∑ p ∈ S.filter (fun p => c₁ p = x ∧ c₂ p = y), w p * (α₁ x * α₂ y) := by
-        rw [Finset.sum_product]
-        refine Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun y _ => ?_))
-        have hfe : S.filter (fun p => (c₁ p, c₂ p) = (x, y)) = S.filter (fun p => c₁ p = x ∧ c₂ p = y) := by
-          ext p
-          simp only [Finset.mem_filter, Prod.mk.injEq]
-        rw [hfe]
-        refine Finset.sum_congr rfl (fun p hp => ?_)
-        obtain ⟨-, hx, hy⟩ := Finset.mem_filter.mp hp
-        rw [hx, hy]
-    _ = ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂,
-          (∑ p ∈ S.filter (fun p => c₁ p = x ∧ c₂ p = y), w p) * (α₁ x * α₂ y) := by
-        simp only [Finset.sum_mul]
-    _ ≤ ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, (M * N x y) * (α₁ x * α₂ y) := by
-        apply Finset.sum_le_sum
-        intro x hx
-        apply Finset.sum_le_sum
-        intro y hy
-        exact mul_le_mul_of_nonneg_right (hN x y) (mul_nonneg (hα₁0 x hx) (hα₂0 y hy))
-    _ = M * ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, N x y * (α₁ x * α₂ y) := by
-        rw [Finset.mul_sum]
-        refine Finset.sum_congr rfl (fun x _ => ?_)
-        rw [Finset.mul_sum]
-        refine Finset.sum_congr rfl (fun y _ => ?_)
-        ring
-
 section Count
 
 variable {D : D7} {large₂ : SizeData₂ D} (X : TermTie D) {u u' : D.what₂.Word} {C1 : ℝ} (Y : LoopTie D large₂ X u u' C1)

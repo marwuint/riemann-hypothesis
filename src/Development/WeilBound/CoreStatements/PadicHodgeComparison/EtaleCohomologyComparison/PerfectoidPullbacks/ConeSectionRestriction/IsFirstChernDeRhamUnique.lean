@@ -33,10 +33,6 @@ theorem isFirstChernDeRham_exists {K : Type} [Field K] [CharZero K] {X : Scheme.
     (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) :
     ∃ c : HdR q 2, IsFirstChernDeRham q D c := isFirstChernDeRham_exists_of q d D hD
 
-theorem isFirstChernDeRham_unique {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
-    (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) (c c' : HdR q 2)
-    (hc : IsFirstChernDeRham q D c) (hc' : IsFirstChernDeRham q D c') : c = c' := isFirstChernDeRham_unique_of q d D hD c c' hc hc'
-
 theorem isO1_etale {R : Type} [CommRing R] {X : Scheme.{0}} {p : X ⟶ Sp R} {D : E.LineData X} (hD : IsTautologicalLine p D) :
     Etale D.f := by
   obtain ⟨N, i, -, -, h, -⟩ := hD

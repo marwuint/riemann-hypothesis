@@ -66,11 +66,6 @@ theorem keepsCusp_iff_exists (hE : HasTransform Xo c P p i cq a n) (hD : Detects
     rw [e]
     exact hg
 
-theorem IsSplitOff.absNorm_ne_zero (h : IsSplitOff l P p) : (Ideal.absNorm P : c.F) ≠ 0 := by
-  rw [Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]
-  rintro rfl
-  exact h.prime.ne_zero (by exact_mod_cast Ideal.mem_bot.1 h.under)
-
 end Local
 
 def SecTransform : Prop :=

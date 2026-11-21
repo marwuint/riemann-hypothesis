@@ -24,11 +24,6 @@ def infPart (x : Fin 2 → 𝔸[K]) : Fin 2 → mixedSpace K :=
 def finPart (x : Fin 2 → 𝔸[K]) : Fin 2 → 𝔸ᶠ[K] :=
   fun i ↦ (x i).2
 
-theorem infPart_neg (x : Fin 2 → 𝔸[K]) : infPart (-x) = -infPart x := by
-  funext i
-  simp only [infPart, Pi.neg_apply, homeomorphMixedSpace_apply]
-  exact map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace K) (x i).1
-
 theorem finPart_neg (x : Fin 2 → 𝔸[K]) : finPart (-x) = -finPart x := rfl
 
 theorem infPart_algebraMap (ξ : Fin 2 → K) :
@@ -150,43 +145,6 @@ theorem adelicFourier2_schwartzBruhatTensor2 (φ : 𝓢(Fin 2 → mixedSpace K, 
   simp only [schwartzBruhatTensor2, splitEquiv_apply, adelicChar_sum_mul_eq, Circle.smul_def,
     smul_eq_mul]
   ring
-
-theorem adelicFourier2_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ}
-    (hF : F ∈ schwartzBruhat2 K) : adelicFourier2 K F ∈ schwartzBruhat2 K := by
-  induction hF using Submodule.span_induction with
-  | mem G hG =>
-    obtain ⟨φ, g, hg, rfl⟩ := hG
-    rw [adelicFourier2_schwartzBruhatTensor2]
-    exact schwartzBruhatTensor2_mem _ (finiteFourier2_mem hg)
-  | zero => rw [adelicFourier2_zero]; exact zero_mem _
-  | add G H hG hH ihG ihH =>
-    rw [adelicFourier2_add (integrable_of_mem_schwartzBruhat2 hG)
-      (integrable_of_mem_schwartzBruhat2 hH)]
-    exact add_mem ihG ihH
-  | smul c G _ ih =>
-    rw [adelicFourier2_smul]
-    exact Submodule.smul_mem _ c ih
-
-theorem adelicFourier2_adelicFourier2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
-    adelicFourier2 K (adelicFourier2 K F) = fun x ↦ F (-x) := by
-  induction hF using Submodule.span_induction with
-  | mem G hG =>
-    obtain ⟨φ, g, hg, rfl⟩ := hG
-    rw [adelicFourier2_schwartzBruhatTensor2, adelicFourier2_schwartzBruhatTensor2,
-      finiteFourier2_finiteFourier2 hg]
-    funext x
-    simp only [schwartzBruhatTensor2, mixedFourier2Schwartz_apply]
-    rw [mixedFourier2_mixedFourier2, infPart_neg, finPart_neg]
-  | zero => funext x; simp [adelicFourier2_zero]
-  | add G H hG hH ihG ihH =>
-    rw [adelicFourier2_add (integrable_of_mem_schwartzBruhat2 hG)
-        (integrable_of_mem_schwartzBruhat2 hH),
-      adelicFourier2_add (integrable_of_mem_schwartzBruhat2 (adelicFourier2_mem_schwartzBruhat2 hG))
-        (integrable_of_mem_schwartzBruhat2 (adelicFourier2_mem_schwartzBruhat2 hH)), ihG, ihH]
-    rfl
-  | smul c G _ ih =>
-    rw [adelicFourier2_smul, adelicFourier2_smul, ih]
-    rfl
 
 theorem schwartzBruhatTensor2_algebraMap (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     (g : (Fin 2 → 𝔸ᶠ[K]) → ℂ) (ξ : Fin 2 → K) :
@@ -441,66 +399,6 @@ theorem poisson_rightTranslate {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ sch
       (IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det g)).2.ne')
   refine ⟨h1, (summable_mul_left_iff hc).mp h2, ?_⟩
   rw [h3, tsum_mul_left]
-
-theorem tsum_rightTranslate_eq {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K)
-    (g : GL (Fin 2) 𝔸[K]) :
-    ∑' ξ : Fin 2 → K, F ((fun i ↦ algebraMap K 𝔸[K] (ξ i)) ᵥ* (g : Matrix (Fin 2) (Fin 2) 𝔸[K])) =
-      (((IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det g) : ℝ))⁻¹ : ℂ) *
-        ∑' ξ : Fin 2 → K, adelicFourier2 K F ((fun i ↦ algebraMap K 𝔸[K] (ξ i)) ᵥ*
-          ((g⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K])ᵀ) :=
-  (poisson_rightTranslate hF g).2.2
-
-theorem continuous_infPart : Continuous (infPart (K := K)) :=
-  continuous_pi fun i ↦ (homeomorphMixedSpace K).continuous.comp
-    (continuous_fst.comp (continuous_apply i))
-
-theorem continuous_finPart : Continuous (finPart (K := K)) :=
-  continuous_pi fun i ↦ continuous_snd.comp (continuous_apply i)
-
-theorem continuous_of_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
-    Continuous F := by
-  induction hF using Submodule.span_induction with
-  | mem G hG =>
-    obtain ⟨φ, g, hg, rfl⟩ := hG
-    exact (φ.continuous.comp continuous_infPart).mul
-      (((mem_finiteSchwartzBruhat2 K).mp hg).1.continuous.comp continuous_finPart)
-  | zero => exact continuous_zero
-  | add G H _ _ hG hH => exact hG.add hH
-  | smul c G _ hG => exact hG.const_smul c
-
-theorem slice_mem_schwartzBruhat {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
-    (fun t : 𝔸[K] ↦ F ![0, t]) ∈ schwartzBruhat K := by
-  induction hF using Submodule.span_induction with
-  | mem G hG =>
-    obtain ⟨φ, g, hg, rfl⟩ := hG
-    set L : mixedSpace K →L[ℝ] (Fin 2 → mixedSpace K) :=
-      ContinuousLinearMap.single ℝ (fun _ : Fin 2 ↦ mixedSpace K) 1
-    have hL : ∀ u, L u = Pi.single 1 u := fun u ↦ rfl
-    set φ' : 𝓢(mixedSpace K, ℂ) := SchwartzMap.compCLM ℂ L.hasTemperateGrowth
-      ⟨1, 1, fun u ↦ by rw [hL, Pi.norm_single, one_mul, pow_one]; linarith⟩ φ
-    have hφ' : ∀ u, φ' u = φ (Pi.single 1 u) := fun u ↦ rfl
-    have hcl : Topology.IsClosedEmbedding (fun v : 𝔸ᶠ[K] ↦ ![0, v]) :=
-      Function.LeftInverse.isClosedEmbedding (f := fun x : Fin 2 → 𝔸ᶠ[K] ↦ x 1)
-        (fun v ↦ rfl) (continuous_apply 1)
-        (continuous_pi (Fin.forall_fin_two.mpr ⟨continuous_const, continuous_id⟩))
-    have hg' : (fun v : 𝔸ᶠ[K] ↦ g ![0, v]) ∈ finiteSchwartzBruhat K := by
-      obtain ⟨hlc, hcs⟩ := (mem_finiteSchwartzBruhat2 K).mp hg
-      exact ⟨hlc.comp_continuous hcl.continuous, hcs.comp_isClosedEmbedding hcl⟩
-    convert schwartzBruhatTensor_mem φ' hg' using 1
-    funext t
-    simp only [schwartzBruhatTensor2, schwartzBruhatTensor, hφ']
-    congr 2
-    · funext i
-      fin_cases i
-      · simp only [infPart, Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]
-        rw [Pi.single_eq_of_ne (by decide)]
-        exact map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace K)
-      · simp [infPart]
-    · funext i
-      fin_cases i <;> rfl
-  | zero => exact zero_mem _
-  | add G H _ _ hG hH => exact add_mem hG hH
-  | smul c G _ hG => exact Submodule.smul_mem _ c hG
 
 end
 

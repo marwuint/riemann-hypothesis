@@ -207,17 +207,6 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
-theorem qm_eq' (M : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Mat k r) {t : ℕ}
-    (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (Φ : Mat k r → E) (g : Mat k r) :
-    qminorOp (FourTermExpansion.LT M) a b u Φ g = ∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : ℂ) •
-      fold M (List.ofFn fun j : Fin t => (u - ((j : ℕ) : ℂ), a (σ j), b j)) Φ g := by
-  unfold qminorOp
-  rw [Finset.sum_apply]
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [Pi.smul_apply]
-  simp only [FourTermExpansion.fold, List.map_ofFn]
-  rfl
-
 theorem skewRow {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (Φ : Mat k r → E) (g : Mat k r)
     (τ : Equiv.Perm (Fin t)) :
     qminorOp (Q.EH k r) (a ∘ τ) b u Φ g = ((Equiv.Perm.sign τ : ℤ) : ℂ) • qminorOp (Q.EH k r) a b u Φ g := by
@@ -270,142 +259,13 @@ theorem col_zero {t : ℕ} (a d : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (Φ :
   rw [sub_neg_eq_add] at h2
   exact FourTermExpansion.half _ h2
 
-theorem sum_inj {t n : ℕ} {M : Type*} [AddCommMonoid M] (e : Fin t ≃ Fin n) (F : (Fin t → Fin n) → M)
-    (hF : ∀ c, ¬ Function.Injective c → F c = 0) :
-    ∑ c, F c = ∑ τ : Equiv.Perm (Fin t), F (e ∘ τ) := by
-  classical
-  rw [← Finset.sum_filter_of_ne (p := Function.Injective) (fun c _ hc => by
-    by_contra h
-    exact hc (hF c h))]
-  symm
-  refine Finset.sum_bij' (fun τ _ => e ∘ τ)
-    (fun (c : Fin t → Fin n) (hc : c ∈ Finset.univ.filter (fun c : Fin t → Fin n => Function.Injective c)) =>
-      Equiv.ofBijective (e.symm ∘ c)
-        ((Finite.injective_iff_bijective).mp (e.symm.injective.comp (Finset.mem_filter.mp hc).2)))
-    ?_ ?_ ?_ ?_ ?_
-  · intro τ _
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    exact e.injective.comp τ.injective
-  · intro c _
-    exact Finset.mem_univ _
-  · intro τ _
-    ext j
-    simp
-  · intro c _
-    funext j
-    simp
-  · intro τ _
-    rfl
+end Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion
+
+namespace Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion
 
 end Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion
 
 namespace Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion
 
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.B5 Formalism.FourierDecayAlt.P.CapelliWordSumExpansion Formalism.FourierDecayAlt.P.LieDecompositionLocal
-  Formalism.FourierDecayAlt.P.FourTermExpansion
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
-
-theorem det_sum {t n : ℕ} (e : Fin t ≃ Fin n) (A : Matrix (Fin n) (Fin n) ℂ) :
-    ∑ τ : Equiv.Perm (Fin t), ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ j, A (e (τ j)) (e j) = A.det := by
-  rw [Matrix.det_apply']
-  refine Fintype.sum_equiv (Equiv.permCongr e) _ _ (fun τ => ?_)
-  rw [Equiv.Perm.sign_permCongr]
-  congr 1
-  exact Fintype.prod_equiv e _ _ (fun j => by simp [Equiv.permCongr_apply])
-
-theorem det_sum' {t n : ℕ} (e : Fin t ≃ Fin n) (A : Matrix (Fin n) (Fin n) ℂ) :
-    ∑ τ : Equiv.Perm (Fin t), ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ j, A (e j) (e (τ j)) = A.det := by
-  rw [← Matrix.det_transpose]
-  exact det_sum e Aᵀ
-
-theorem capAdInv_loc (y : Mat k r) (hy : y ∈ GV k r) (u : ℂ) (f : Mat k r → E) (h : Mat k r) (hh : h ∈ GV k r)
-    (hloc : Loc ((Q.mdim k r 0 : ℕ) : ℕ∞) f h) :
-    qminorOp (Formalism.FourierDecayAlt.P.JFxB.EHc k r y) (Q.posL k r 0) (Q.posL k r 0) u f h =
-      qminorOp (Q.EH k r) (Q.posL k r 0) (Q.posL k r 0) u f h := by
-  have hn : Q.mdim k r 0 = 2 * r + k + 1 := by unfold Q.mdim; simp
-  let e : Fin (Q.mdim k r 0) ≃ Fin (2 * r + k + 1) := finCongr hn
-  have hP : Q.posL k r 0 = ⇑e := by funext j; ext; simp [Q.posL, e]
-  rw [hP, EHc_eq_LT y hy, qm_eq' (Mc y)]
-  have h1 : ∀ σ : Equiv.Perm (Fin (Q.mdim k r 0)),
-      fold (Mc y) (List.ofFn fun j : Fin (Q.mdim k r 0) => (u - ((j : ℕ) : ℂ), e (σ j), e j)) f h =
-        ∑ c : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1), ∑ d : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1),
-          (∏ j, ((y⁻¹) (c j) (e (σ j)) * y (e j) (d j))) •
-            fold (Msg k r) (List.ofFn fun j => (u - ((j : ℕ) : ℂ), c j, d j)) f h :=
-    fun σ => expandM y hy _ _ f h hh hloc
-  simp only [h1]
-  have hA : ∀ σ : Equiv.Perm (Fin (Q.mdim k r 0)),
-      (∑ c : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1), ∑ d : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1),
-        (∏ j, ((y⁻¹) (c j) (e (σ j)) * y (e j) (d j))) •
-          fold (Msg k r) (List.ofFn fun j => (u - ((j : ℕ) : ℂ), c j, d j)) f h) =
-      ∑ c : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1), ∑ d : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1),
-        ((∏ j, (y⁻¹) (c j) (e j)) * ∏ j, y (e j) (d j)) • FourTermExpansion.PP c d u σ f h := by
-    intro σ
-    rw [← Equiv.sum_comp (Equiv.arrowCongr σ.symm (Equiv.refl (Fin (2 * r + k + 1))))]
-    refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_
-    have hp : ∏ j, (y⁻¹) (c (σ j)) (e (σ j)) = ∏ j, (y⁻¹) (c j) (e j) :=
-      Equiv.prod_comp σ (fun i => (y⁻¹) (c i) (e i))
-    simp only [Equiv.arrowCongr_apply, Equiv.symm_symm, Equiv.coe_refl, Function.id_comp, Function.comp_apply,
-      id_eq, Finset.prod_mul_distrib, hp]
-    rfl
-  simp only [hA]
-  rw [show (∑ σ : Equiv.Perm (Fin (Q.mdim k r 0)), ((Equiv.Perm.sign σ : ℤ) : ℂ) •
-      ∑ c : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1), ∑ d : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1),
-        ((∏ j, (y⁻¹) (c j) (e j)) * ∏ j, y (e j) (d j)) • FourTermExpansion.PP c d u σ f h) =
-      ∑ c : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1), ∑ d : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1),
-        ((∏ j, (y⁻¹) (c j) (e j)) * ∏ j, y (e j) (d j)) • qminorOp (Q.EH k r) c d u f h by
-    simp only [FourTermExpansion.qm_eq, Finset.smul_sum, smul_smul]
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun c _ => ?_
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun σ _ => ?_
-    congr 1
-    ring]
-  have hC : ∀ c : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1),
-      ∑ d : Fin (Q.mdim k r 0) → Fin (2 * r + k + 1),
-        ((∏ j, (y⁻¹) (c j) (e j)) * ∏ j, y (e j) (d j)) • qminorOp (Q.EH k r) c d u f h =
-      ∑ τ : Equiv.Perm (Fin (Q.mdim k r 0)),
-        ((∏ j, (y⁻¹) (c j) (e j)) * ∏ j, y (e j) ((e ∘ τ) j)) • qminorOp (Q.EH k r) c (e ∘ τ) u f h :=
-    fun c => sum_inj e _ (fun d hd => by rw [col_zero c d u f h hh hloc hd, smul_zero])
-  simp only [hC]
-  rw [sum_inj e _ (fun c hc => Finset.sum_eq_zero fun τ _ => by rw [row_zero c _ u f h hc, smul_zero])]
-  simp only [skewRow, FourTermExpansion.skewCol (⇑e) u f h hh hloc]
-  have hdet : (∑ ρ : Equiv.Perm (Fin (Q.mdim k r 0)), ((Equiv.Perm.sign ρ : ℤ) : ℂ) * ∏ j, (y⁻¹) (e (ρ j)) (e j)) *
-      (∑ τ : Equiv.Perm (Fin (Q.mdim k r 0)), ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ j, y (e j) (e (τ j))) = 1 := by
-    rw [det_sum e, det_sum' e, ← Matrix.det_mul, (gv_inv hy).2, Matrix.det_one]
-  calc _ = ((∑ ρ : Equiv.Perm (Fin (Q.mdim k r 0)), ((Equiv.Perm.sign ρ : ℤ) : ℂ) * ∏ j, (y⁻¹) (e (ρ j)) (e j)) *
-      (∑ τ : Equiv.Perm (Fin (Q.mdim k r 0)), ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ j, y (e j) (e (τ j)))) •
-        qminorOp (Q.EH k r) (⇑e) (⇑e) u f h := by
-        rw [Finset.sum_mul_sum, Finset.sum_smul]
-        refine Finset.sum_congr rfl fun ρ _ => ?_
-        rw [Finset.sum_smul]
-        refine Finset.sum_congr rfl fun τ _ => ?_
-        simp only [Function.comp_apply, smul_smul]
-        congr 1
-        ring
-    _ = _ := by rw [hdet, one_smul]
-
 end Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion
 
-namespace Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion
-
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.CapelliWordSumExpansion
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-theorem capAdInv : Formalism.FourierDecayAlt.P.JFxB.CapAdInv := by
-  intro k r E _ _ y u f hy hf h hh
-  have hn : Q.mdim k r 0 = 2 * r + k + 1 := by unfold Q.mdim; simp
-  exact capAdInv_loc y hy u f h hh (by rw [hn]; exact hf h hh)
-
-end Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion
-
-theorem Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.jf_capAdInv_alt : Formalism.FourierDecayAlt.P.JFxB.CapAdInv := Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.capAdInv
-
-theorem Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.jf_cVRight_alt : Formalism.FourierDecayAlt.JF.CVRight := Formalism.FourierDecayAlt.P.jf_cVRight_of Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.capAdInv
-
-theorem Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.jf_cVRho_alt : Formalism.FourierDecayAlt.JF.CVRho := Formalism.FourierDecayAlt.P.jf_cVRho_of Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.capAdInv
-
-theorem Formalism.FourierDecayAlt.P.big_cell_orbit_of_domain : Formalism.FourierDecayAlt.JF.GqOmOfDom := fun _ => Formalism.FourierDecayAlt.P.big_cell_orbit_set

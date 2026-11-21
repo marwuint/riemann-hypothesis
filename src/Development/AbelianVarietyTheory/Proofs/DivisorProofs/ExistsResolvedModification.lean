@@ -1,12 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakResolutionOfPrincipalisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsModificationExtendingMapFromOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakResolutionOfPrincipalisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsModificationExtendingMapFromOpen
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemNonzeroLocusFormMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataViehwegVanishingNumberFieldTwist
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimEqOfOpenImmersionIntegralScheStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyConnectedSmoothProjModificationOffOStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimEqOfOpenImmersionIntegralSche
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyConnectedSmoothProjModificationOffO
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsoOverOfIsOpenImmersion
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -75,14 +77,14 @@ theorem exists_resolved_modification : GlobalTheory.Published.Principalisation �
 
   have hdW : topologicalKrullDim W = n := by
     have hdX : topologicalKrullDim X = n := GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth sX n inferInstance
-    have hdV := GlobalTheory.T.topologicalKrullDim_eq_of_openImmersion_integral_scheme F X V sX i
-    have hdV' := GlobalTheory.T.topologicalKrullDim_eq_of_openImmersion_integral_scheme F X' V (φ ≫ sX) ℓ
+    have hdV := _root_.GlobalTheory.OpenImmDim.topologicalKrullDim_eq_of_isOpenImmersion F X V sX i
+    have hdV' := _root_.GlobalTheory.OpenImmDim.topologicalKrullDim_eq_of_isOpenImmersion F X' V (φ ≫ sX) ℓ
     have h₁ := PosBaseChange.dim_le_of_isClosedMap q.isClosedMap q.surjective
     have h₂ := PosBaseChange.dim_le_of_isDiscrete q.continuous q.isDiscrete_preimage_singleton
     rw [← hdX, ← hdV, hdV']
     exact le_antisymm h₁ h₂
 
-  obtain ⟨W', s, UW, hW', hsm, hpj, hUW, hiso⟩ := GlobalTheory.T.weak_resolution_of_principalisation hP F W sW n hsW hdW
+  obtain ⟨W', s, UW, hW', hsm, hpj, hUW, hiso⟩ := _root_.GlobalTheory.WeakRes.weak_resolution hP F W sW n hsW hdW
   haveI := hW'
   haveI := hiso
   have hηUW : genericPoint W ∈ UW := genericPoint_mem UW hUW
@@ -118,7 +120,7 @@ theorem exists_resolved_modification : GlobalTheory.Published.Principalisation �
     simp only [r₀, pullback.lift_snd_assoc, Category.assoc]
     rw [reassoc_of% hb, reassoc_of% hcf, hw, reassoc_of% hℓi, reassoc_of% he]
   obtain ⟨M, r, hMi, hrt, hrM⟩ :=
-    GlobalTheory.T.exists_modification_extending_map_from_open hP F X (pullback q s) sX n (pullback.snd q s ≫ s ≫ sW) U r₀ inferInstance hsX ht hUne hr₀
+    _root_.GlobalTheory.CompHS.exists_modif_map_of_open hP F X (pullback q s) sX n (pullback.snd q s ≫ s ≫ sW) U r₀ inferInstance hsX ht hUne hr₀
   haveI := hMi
   have hsep : IsSeparated sX := inferInstance
   haveI : IsDominant M.opn.ι := ⟨show Dense (Set.range M.opn.ι) by rw [Scheme.Opens.range_ι]; exact M.dense⟩
@@ -170,7 +172,7 @@ theorem exists_resolved_modification : GlobalTheory.Published.Principalisation �
     exact genericPoint_eq_of_isOpenImmersion b
   have hfsurj : Surjective f :=
     surjective_of_isProjOver M.str (s ≫ sW) f hfp M.proj hpj (z j₀ o₀) (by rw [← Scheme.Hom.comp_apply]; exact hgen' j₀ o₀)
-  have hgcM : GeometricallyConnected M.str := GlobalTheory.T.geometricallyConnected_smoothProjModification_offOpen F X sX n U M hUne
+  have hgcM : GeometricallyConnected M.str := _root_.GlobalTheory.ModifGeomConn.geometricallyConnected_modif F X sX n U M hUne
   have hgcW : GeometricallyConnected (s ≫ sW) := by
     rw [← hfp] at hgcM
     exact geometricallyConnected_of_surjective f (s ≫ sW)

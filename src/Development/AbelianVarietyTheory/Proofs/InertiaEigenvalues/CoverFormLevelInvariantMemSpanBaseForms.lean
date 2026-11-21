@@ -80,7 +80,7 @@ theorem exists_carries (hU : IsUnf U) (hW : ∀ k, ModelW V hr (U.X k))
   obtain ⟨γ₂, hγ₂, hΛ₂, hm₂, hfr₂⟩ := hD.2 (δ * h * u)
   obtain ⟨a, hau, haf, haa⟩ := GlobalTheory.MarkCoset.rational_matrix V (γ₂ * δ * γ₁⁻¹) (mul_mem (mul_mem hγ₂ hδ) (inv_mem hγ₁))
   have hu1 : finHom V u = 1 := hu
-  have hκ' : latGHat V u = latGHat V 1 := ((GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.1 _ _ (by rw [hu1, map_one])).2
+  have hκ' : latGHat V u = latGHat V 1 := ((_root_.GlobalTheory.Member.latG_move D V).2.1 _ _ (by rw [hu1, map_one])).2
   have hprod : γ₂ * δ * γ₁⁻¹ * (γ₁ * h) * u = γ₂ * (δ * h * u) := by group
   obtain ⟨gam, e₁, t₁, hgam⟩ := GlobalTheory.TwistTie.marked_isometry_half V l io (U.X (dict h).1) (U.X (dict (δ * h * u)).1) _ _
     (φ _) (φ _) (F.t _) (F.t _) LinearMap.id (γ₁ * h) (γ₂ * δ * γ₁⁻¹) u (hW _) (hW _) (hD.1.1 _) (hD.1.1 _) a hau haf hκ'

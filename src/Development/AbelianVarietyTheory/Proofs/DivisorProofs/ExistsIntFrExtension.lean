@@ -1,8 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyValExtOfOverLa
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResidueFactor
+import Formalism.LocalToGlobal.ProjectiveLattices.KapTrdegPf
+import Formalism.LocalToGlobal.ProjectiveLattices.ExtPtUnique
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrullDimQuotientEqOfMemMinimalPrimes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapEqIInfDiscreteValuationSubring
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorsUniversalBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFrameExtensionExists
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinitePointMemClosed
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIntegralFramesModelInvertiblePushforward
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.DegenerationDataAtModelPointOfUniformisation
+import Formalism.LocalToGlobal.ProjectiveLattices.LocFld
+import Formalism.LocalToGlobal.ProjectiveLattices.RealPtGeo
+import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecUnitClosedFibre
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformisationTrivialTorusAbelianLocus
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
@@ -267,13 +276,5 @@ theorem thetaFrame_trait :
     Units.mk0 a a0, ha⟩
 
 end Frame
-
-section Points
-
-open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain IsLocalRing
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.FactorDepth GlobalTheory.GenericCentre
-attribute [local instance] Over.cartesianMonoidalCategory
-
-end Points
 
 end GlobalTheory.DepthSum

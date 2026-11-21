@@ -14,13 +14,6 @@ variable {V X Y : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddG
   [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X] [T2Space X]
   {μ : Measure V} {f : V → Y} {ι : X → Y} {ν : Measure X}
 
-def DensCos (μ : Measure V) (f : V → Y) (ι : X → Y) (ν : Measure X) (U : Set V) : Prop :=
-  ∀ x ∈ U, ∃ N ∈ 𝓝 (0 : V), ∀ y, y - x ∈ N → ∀ Λ : AddSubgroup V, IsOpen (Λ : Set V) →
-    IsCompact (Λ : Set V) → (Λ : Set V) ⊆ N → ∃ g : X → ℝ, Continuous g ∧
-      ∀ S : Set X, IsCompact S →
-        ∫ v in f ⁻¹' (ι '' S), {z | z - y ∈ Λ}.indicator (fun _ => (1 : ℝ)) v ∂μ =
-          ∫ b in S, g b ∂ν
-
 theorem hasDens_zero : HasDens μ f ι ν (fun _ => 0) (fun _ => 0) := by
   exact ⟨integrable_zero _ _ _, continuous_const, fun S _ => by simp⟩
 
@@ -193,21 +186,6 @@ theorem densLC_of_cosB [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts
       exact QuotientAddGroup.eq.2 (by rw [neg_add_eq_sub]; exact hxy)
   rw [heq] at hsum
   exact ⟨_, hsum.2.1, hsum.2.2⟩
-
-theorem densLC_of_cos [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts ν] (U : Set V)
-    (hNA : HasCOSub V) (h : DensCos μ f ι ν U) : DensOn (IsLCcOn U) μ f ι ν := by
-  refine densLC_of_cosB U (fun _ => True) ?_ ?_
-  · intro N hN
-    first
-      | (obtain ⟨Λ, h1, h2, h3⟩ := hNA N hN
-         exact ⟨Λ, trivial, h1, h2, h3⟩)
-      | (obtain ⟨Λ, h1, h2, h3⟩ := hNA hN
-         exact ⟨Λ, trivial, h1, h2, h3⟩)
-      | (obtain ⟨Λ, h2, h1, h3⟩ := hNA N hN
-         exact ⟨Λ, trivial, h1, h2, h3⟩)
-  · intro x hx
-    obtain ⟨N, hN, h'⟩ := h x hx
-    exact ⟨N, hN, fun y hy Λ _ => h' y hy Λ⟩
 
 end Cos
 

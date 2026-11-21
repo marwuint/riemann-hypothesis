@@ -12,7 +12,12 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeightCocharacte
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurConstantsExistOnChainOfCuspRapidDecay
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftIntegOfCuspRapidDecay
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpsTuple
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftAdjointPreservesHeckeEigenvectorsMatcheStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftAdjointPreservesHeckeEigenvectorsMatche
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeConjPlaceEqDualLabelStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EigenvectorAdjointIntertwinerNormalOperators
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SingleSplitLabMemSpan
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EigSpan
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqOfSplitVec
@@ -59,7 +64,7 @@ theorem transfer_good {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
   have hq0 : q ≠ 0 := by
     rw [hq]
     exact fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
-  obtain ⟨-, g2, -, -⟩ := GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev
+  obtain ⟨-, g2, -, -⟩ := _root_.GlobalTheory.GoodPrimes.good_primes R F hC.lev
   have hG' := (g2 t _ hG).2.1
   obtain ⟨u1, u2⟩ := GlobalTheory.T.splittingCharacters_unramified_offLevels R F hC.lev t _ hG
   obtain ⟨v1, v2⟩ := GlobalTheory.T.splittingCharacters_unramified_offLevels R F hC.lev t _ hG'
@@ -146,7 +151,7 @@ theorem kept : GlobalTheory.Published.CuspRapidDecay → HoweUnram → ∀ {D : 
   have hmatch : ∀ P, Good R t P → ∀ cX c0, MatchE R t P cX c0 →
       h P c0 (R.Th t (LinearMap.adjoint (R.Th t) x)) =
         evC (Yc D 0) P (fun d => c P (dualLab d)) c0 • R.Th t (LinearMap.adjoint (R.Th t) x) :=
-    fun P hP cX c0 hM => GlobalTheory.T.thetaLiftAdjoint_preserves_heckeEigenvectors_matchedPair R F hC t h hh hn P hP cX c0 hM x _ (hxe P hP c0)
+    fun P hP cX c0 hM => _root_.GlobalTheory.Hk3.SysE.matched_keeps_eigen R F hC t h hh hn P hP cX c0 hM x _ (hxe P hP c0)
   have evS : ∀ P d, IsLab (Yc D 0) P d →
       evC (Yc D 0) P (fun d => c P (dualLab d)) (Finsupp.single d 1) = c P (dualLab d) := by
     intro P d hd

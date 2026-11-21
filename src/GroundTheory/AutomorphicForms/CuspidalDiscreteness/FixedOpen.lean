@@ -123,28 +123,6 @@ end UnitaryRep
 
 namespace CuspidalSpectrum
 
-open AutomorphicForm
-
-variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
-variable (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure]
-
-theorem exists_isOpen_forall_cuspRep_finOne_eq (v : cuspidalL2 μ)
-    (hv : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k :
-      (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) =>
-        cuspRep μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ v))) :
-    ∃ U : Subgroup (AdelicGLn.integralFiniteGL K n),
-      IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)) ∧ ∀ u ∈ U, cuspRep μ (finOne K n u) v = v := by
-  have hle : Submodule.span ℂ (Set.range fun u : AdelicGLn.integralFiniteGL K n =>
-      (cuspRep μ).comapHom (finOne K n) continuous_finOne u v) ≤
-      Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) =>
-        cuspRep μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ v) := by
-    refine Submodule.span_le.2 ?_
-    rintro _ ⟨u, rfl⟩
-    exact Submodule.subset_span ⟨⟨finEmb K n u, finEmb_mem_maxCompact u.2⟩, rfl⟩
-  have _ := hv
-  exact UnitaryRep.exists_isOpen_forall_eq_of_finiteDimensional _ v
-    (Submodule.finiteDimensional_of_le hle)
-
 end CuspidalSpectrum
 
 end

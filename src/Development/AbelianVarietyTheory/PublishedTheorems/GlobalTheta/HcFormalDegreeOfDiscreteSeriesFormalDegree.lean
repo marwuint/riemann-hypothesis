@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DiscreteSeriesWithDegree
+import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SignatureFrame
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KTypesAboveOfDsClass
 
 open MeasureTheory Matrix Finset Formalism.BasicNotions Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Dec GlobalTheory.DSId GlobalTheory.IndefiniteRowSideFullHecke.SignatureFrame
 open scoped InnerProductSpace

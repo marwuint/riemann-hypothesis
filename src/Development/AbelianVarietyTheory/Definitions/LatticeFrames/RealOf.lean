@@ -53,18 +53,4 @@ def JOf (j : SmT R.MX →ₗ[ℂ] (FrP (I.rec7 l Z) → ℂ))
 variable (P : LevelP R.Pg (I.rec7 l Z).R.r ℂ) {t : T} (r : RowCh R P u g t) {a : I.ι} (k : ColCh (D := I.rec7 l Z) u ((I.rec7 l Z).chTw u a))
   (tl : ColT I l u a B.R.m → CXP R P t → ℂ)
 
-@[reducible] def clsKOf (s : ℕ → ℂ)
-    (J : SmT R.MX → GA (I.rec7 l Z) (I.rec7 l Z).sp.X' → FrN (I.rec7 l Z) (B.R.N B.R.m - 1) → ℂ) (A : TwDat I l Z u a k.Ch) :
-    ClsK (realOf u R g s J) (tupOf R P u g t r k tl) where
-  cl := fun j β => {c // A.chOf j c = β}
-  fin := fun j _ => letI := (I.chain l u a).clsFin j; Subtype.fintype _
-  U := A.U
-  chi := A.chi
-  h := A.h
-  val := fun _ _ ψ c z => ψ c.1 ⟨z.1, z.2⟩
-  abelian₂ := fun j _ _ c c' => A.abelian₂ j c.1 c'.1
-
-def PinCh (c₀ : ℕ → ℂ) (A : TwDat I l Z u a k.Ch) (w : ∀ j, k.Ch j → k.Ch (j + 1) → ℂ) : Prop :=
-  PinColT A R.ψ R.θ g.x g.vac c₀ k.kom k.dd w k.Ram k.rd k.cK
-
 end GlobalTheory.AdForm

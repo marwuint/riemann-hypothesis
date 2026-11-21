@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WhiskerLeftEqLift
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TheoremOfCubeTwoProjectiveFactors
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPreimageSectionsBijectiveAbelianSchemeSndStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPreimageSectionsBijectiveAbelianSchemeSnd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhiskerLeftIsOpenImmersionRange
 
 set_option autoImplicit false
@@ -18,7 +18,7 @@ theorem eq_zero_of_rigid_of_locally_zero : ∀ (S : Scheme.{0}) (A T : Over S) [
         GlobalTheory.CechPic.pull (A ◁ z).left c = 0) → c = 0 := by
   intro S A T _ hA c h₀ loc
   obtain ⟨L, hL, rfl⟩ := cls_surj c
-  have hf := GlobalTheory.T.isPreimageSectionsBijective_abelianScheme_snd S A T hA
+  have hf := _root_.GlobalTheory.PicGlue.fnBij_snd S A T hA
   refine (cls_eq_zero_iff hL).2 (GlobalTheory.CubeGlue.triv_of_locally_triv hL (snd A T).left
     (lift (1 : T ⟶ A) (𝟙 T)).left ?_ (GlobalTheory.CubeGlue.surjective_restrict _ fun V ↦ ?_)
     ((cls_eq_zero_iff (pull_isLB hL _)).1 h₀) fun p ↦ ?_)

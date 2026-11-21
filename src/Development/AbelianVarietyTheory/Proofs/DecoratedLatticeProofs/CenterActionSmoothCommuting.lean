@@ -1,10 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RderMemAutFormsCuspForms
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.MeanPair
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.RegularisingElement
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.EisensteinResidue
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.FirstTermIdentitySchrodinger
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.EisensteinMaximalParabolic
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SphericalEisensteinSeriesOnGroup
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EisensteinIsotropicLine
+import Development.AbelianVarietyTheory.Definitions.Foundations.AnalyticOnNhdTsumNpow
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinPolesStd
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinSimplePoleOfDoublingMethod
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.WeilThetaConvergence
@@ -31,9 +30,6 @@ variable (θ V) in
 
 def CommOnSm (A B : (GA D V → ℂ) → (GA D V → ℂ)) : Prop := ∀ f ∈ SmFun θ V, A (B f) = B (A f)
 
-theorem CommOnSm.symm {A B : (GA D V → ℂ) → (GA D V → ℂ)} (h : CommOnSm θ V A B) : CommOnSm θ V B A :=
-  fun f hf => (h f hf).symm
-
 theorem lin_sum {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V T) {α : Type} (s : Finset α)
     (g : α → GA D V → ℂ) (hg : ∀ a ∈ s, g a ∈ SmFun θ V) : T (∑ a ∈ s, g a) = ∑ a ∈ s, T (g a) := by
   induction s using Finset.induction_on with
@@ -52,31 +48,6 @@ theorem comm_foldr {T : (GA D V → ℂ) → (GA D V → ℂ)} {α : Type} (A : 
     have h2 := linOnSm_foldr A l fun b hb => hl b (by simp [hb])
     simp only [List.foldr_cons]
     rw [hc a (by simp) _ (h2.mem f hf), ih (fun b hb => hl b (by simp [hb])) (fun b hb => hc b (by simp [hb])) f hf]
-
-theorem lin_opPow {ι : Type} {A : ι → (GA D V → ℂ) → (GA D V → ℂ)} (hA : ∀ i, LinOnSm θ V (A i)) (k : ι →₀ ℕ) :
-    LinOnSm θ V (opPow A k) :=
-  linOnSm_foldr A _ fun i _ => hA i
-
-theorem lin_polyAct {ι : Type} {A : ι → (GA D V → ℂ) → (GA D V → ℂ)} (hA : ∀ i, LinOnSm θ V (A i))
-    (p : MvPolynomial ι ℂ) : LinOnSm θ V (polyAct A p) := by
-  refine ⟨fun f hf => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ((lin_opPow hA k).mem f hf),
-    fun f hf g hg => ?_, fun c f => ?_⟩
-  · simp only [polyAct]
-    rw [← Finset.sum_add_distrib]
-    exact Finset.sum_congr rfl fun k _ => by rw [(lin_opPow hA k).add f hf g hg, smul_add]
-  · simp only [polyAct]
-    rw [Finset.smul_sum]
-    exact Finset.sum_congr rfl fun k _ => by rw [(lin_opPow hA k).smul, smul_comm]
-
-theorem comm_polyAct {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V T) {ι : Type}
-    {A : ι → (GA D V → ℂ) → (GA D V → ℂ)} (hA : ∀ i, LinOnSm θ V (A i)) (hc : ∀ i, CommOnSm θ V T (A i))
-    (p : MvPolynomial ι ℂ) : CommOnSm θ V T (polyAct A p) := by
-  intro f hf
-  simp only [polyAct]
-  rw [lin_sum hT _ _ fun k _ => Submodule.smul_mem _ _ ((lin_opPow hA k).mem f hf)]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [hT.smul]
-  exact congrArg _ (comm_foldr A _ (fun i _ => hA i) (fun i _ => hc i) f hf)
 
 theorem comm_gelf {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V T) {τ : D.what₂.Tau}
     (hc : ∀ Z, CommOnSm θ V T (RderC θ V τ Z)) (k : ℕ) : CommOnSm θ V T (gelf θ V τ k) := by
@@ -97,19 +68,6 @@ theorem gelf_RderC (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (k : ℕ) (Z : M
   simp only [RderC]
   rw [(linOnSm_gelf τ k).add _ (Rder_mem hf h1) _ (Submodule.smul_mem _ _ (Rder_mem hf h2)), (linOnSm_gelf τ k).smul,
     GlobalTheory.CuspLie.gelf_Rder hθ h1 hf, GlobalTheory.CuspLie.gelf_Rder hθ h2 hf]
-
-theorem lin_centreAct (τ : D.what₂.Tau) (p : MvPolynomial ℕ ℂ) : LinOnSm θ V (centreAct θ τ V p) :=
-  lin_polyAct (linOnSm_gelf τ) p
-
-theorem centreAct_RderC (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (p : MvPolynomial ℕ ℂ)
-    (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) : CommOnSm θ V (centreAct θ τ V p) (RderC θ V τ' Z) :=
-  (comm_polyAct (linOnSm_RderC τ' Z) (linOnSm_gelf τ) (fun k => (gelf_RderC hθ τ τ' k Z).symm) p).symm
-
-theorem centreAct_mem_comm : ∀ (D : D7) (V : HSp D), ∀ θ : InfFam D, IsInfFam θ → ∀ (τ τ' : D.what₂.Tau) (p : MvPolynomial ℕ ℂ) (f : GA D V → ℂ), f ∈ SmFun θ V → centreAct θ τ V p f ∈ SmFun θ V ∧ (∀ Z, centreAct θ τ V p (RderC θ V τ' Z f) = RderC θ V τ' Z (centreAct θ τ V p f)) ∧ ∀ p', centreAct θ τ V p (centreAct θ τ' V p' f) = centreAct θ τ' V p' (centreAct θ τ V p f) := by
-  intro D V θ hθ τ τ' p f hf
-  exact ⟨(lin_centreAct τ p).mem f hf, fun Z => centreAct_RderC hθ τ τ' p Z f hf, fun p' =>
-    comm_polyAct (lin_centreAct τ p) (linOnSm_gelf τ')
-      (comm_gelf (lin_centreAct τ p) (centreAct_RderC hθ τ τ' p)) p' f hf⟩
 
 end GlobalTheory.CentreComm
 

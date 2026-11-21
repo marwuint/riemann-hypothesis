@@ -289,9 +289,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar factRes
 
 variable {D : D7} (p : PlF D)
 
-theorem alg_inj {a b : (D.s.atP p).Fp}
-    (h : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep b) : a = b := algebraMap_Fp_Ep_injective p h
-
 theorem c_eq (θ : D.host.E) (c tr nm : 𝓞 D.host.F) (hc : ((c : D.host.F) : D.host.E) = (θ - D.conjF θ) ^ 2)
     (htr : ((tr : D.host.F) : D.host.E) = θ + D.conjF θ) (hnm : ((nm : D.host.F) : D.host.E) = θ * D.conjF θ) :
     (D.s.atP p).ιF (c : D.host.F) =

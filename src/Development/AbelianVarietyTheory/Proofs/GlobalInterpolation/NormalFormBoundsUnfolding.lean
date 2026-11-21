@@ -41,10 +41,6 @@ theorem le_of_zpow_eq {P : HeightOneSpectrum (𝓞 E)} {a b : ℤ} {u : E} (hu :
   have := nonneg_of_intAt_zpow (this ▸ hu)
   omega
 
-theorem intAt_zpow {P : HeightOneSpectrum (𝓞 E)} {k : ℤ} (hk : 0 ≤ k) : IntAt P ((qOf P : E) ^ k) := by
-  obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le hk
-  simpa using intAt_pow_mul m (intAt_one P)
-
 variable [StarRing E] {n c : ℕ}
 
 omit [NumberField E] [StarRing E] in
@@ -113,52 +109,5 @@ theorem nfGen_mem_Ufl (q : ℕ) (e : Fin c → ℤ) (z : Fin n → E) (i : Fin c
   split_ifs
   · exact inX_mem_Ufl _ _
   · exact zero_mem _
-
-theorem read_normalForm : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (n' n c j : ℕ), 1 ≤ c → ∀ (e' : ℕ → ℤ) (z' : Fin n' → E) (abelian₂ : Submodule (𝓞 E) (Fin (n + c) → E)) (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) (r : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E)) (e : Fin c → ℤ) (z : Fin n → E), r ∈ Loc.R1 E n c → (∀ i, 1 ≤ i → i ≤ c + 1 → -(j : ℤ) ≤ e' i ∧ e' i ≤ 0) → GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.Bounds P e' z' abelian₂ xj → Loc.inX E n c (xj z') ∈ abelian₂ → r '' (abelian₂ : Set (Fin (n + c) → E)) = GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm.nfLat P n c e z → (∀ i, -((j + 1 : ℕ) : ℤ) ≤ e i ∧ e i ≤ 0) ∧ IntV P z := by
-  intro E _ _ _ P n' n c j hc e' z' abelian₂ xj r e z hr he' ⟨⟨f, hf⟩, hb⟩ hz hL
-  have hq := qOf_ne_zero P
-  have hmem : ∀ v ∈ abelian₂, r v ∈ nfLat P n c e z := fun v hv => hL ▸ Set.mem_image_of_mem r hv
-  constructor
-  · intro i
-    obtain ⟨hs, hlo, hhi⟩ := hf (i.1 + 1) (by omega) (by omega)
-    have h1 : f (i.1 + 1) ≤ e i := by
-      obtain ⟨v, hv, hrv⟩ : nfGen (qOf P) n c e z i ∈ r '' (abelian₂ : Set (Fin (n + c) → E)) := hL ▸ nfGen_mem P e z i
-      have hU : v ∈ Loc.Ufl E n c (i.1 + 1) := by
-        have := hr.2.1 _ _ (hrv ▸ nfGen_mem_Ufl (qOf P) e z i)
-        change r.symm (r v) ∈ _ at this
-        rwa [r.symm_apply_apply] at this
-      obtain ⟨u, hu, h⟩ := (hs _).1 ⟨v, hv, hU, rfl⟩
-      refine le_of_zpow_eq hu ?_
-      rw [← h]
-      change _ = Loc.atN v (n + i.1)
-      rw [← atN_of_R1cond hr.1 hU, hrv, atN_natAdd, nfGen_natAdd, if_pos rfl]
-    have h2 : e i ≤ f (i.1 + 1) := by
-      obtain ⟨v, hv, hU, h⟩ := (hs _).2 ⟨1, intAt_one P, rfl⟩
-      obtain ⟨u, hu, h'⟩ := (coords_of_mem hc (hmem v hv)).1 i
-      refine le_of_zpow_eq hu ?_
-      rw [← h', ← atN_natAdd (r v) i, atN_of_R1cond hr.1 hU, ← mul_one (_ ^ _), ← h]
-      rfl
-    have h3 := (he' (i.1 + 1 + 1) (by omega) (by omega)).1
-    have h4 := (he' (i.1 + 1) (by omega) (by omega)).2
-    push_cast
-    omega
-  · obtain ⟨γ, hγ⟩ := exists_res hr
-    intro a
-    have h1 := (coords_of_mem hc (hmem _ hz)).2 a
-    rw [hγ, inX_natAdd, inX_castAdd, zero_mul, sub_zero] at h1
-    have h2 := (coords_of_mem hc (hmem _ hb)).2 a
-    have h3 : r (adaptedVector E n c 1) = Loc.eN E (n + c) n := hr.1.2.1
-    have h4 : Loc.eN E (n + c) n (Fin.castAdd c a) = 0 := by
-      unfold Loc.eN
-      rw [if_neg (by have := a.2; simp; omega)]
-    have h5 : Loc.eN E (n + c) n (Fin.natAdd n ⟨0, hc⟩) = 1 := by simp [Loc.eN]
-    rw [map_smul, map_add, hγ, h3] at h2
-    simp only [Pi.smul_apply, Pi.add_apply, inX_natAdd, inX_castAdd, h4, h5, smul_eq_mul] at h2
-    have h6 := h1.add (intAt_neg ((intAt_zpow (P := P) (k := -e' 1) (by have := (he' 1 le_rfl (by omega)).2; omega)).mul h2))
-    convert h6 using 1
-    rw [zpow_neg]
-    have := zpow_ne_zero (e' 1) hq
-    field_simp
-    ring
 
 end GlobalTheory.Proof.normal_form_bounds_unfolding

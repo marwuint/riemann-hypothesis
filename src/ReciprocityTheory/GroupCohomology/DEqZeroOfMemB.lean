@@ -66,23 +66,9 @@ theorem cls_congr {n : ℕ} {x y : A.X n} (hx : A.d n x = 0) (hy : A.d n y = 0) 
   subst h
   rfl
 
-theorem d_eq_zero_of_mem_B {n : ℕ} {x : A.X n} (h : x ∈ A.B n) : A.d n x = 0 := by
-  cases n with
-  | zero =>
-    change x ∈ (⊥ : Submodule R (A.X 0)) at h
-    rw [(Submodule.mem_bot R).1 h, map_zero]
-  | succ n =>
-    change x ∈ LinearMap.range (A.d n) at h
-    obtain ⟨y, rfl⟩ := LinearMap.mem_range.1 h
-    exact A.dd n y
-
 theorem mem_B_succ {n : ℕ} {x : A.X (n + 1)} : x ∈ A.B (n + 1) ↔ ∃ y, A.d n y = x := by
   change x ∈ LinearMap.range (A.d n) ↔ _
   exact LinearMap.mem_range
-
-theorem mem_B_zero {x : A.X 0} : x ∈ A.B 0 ↔ x = 0 := by
-  change x ∈ (⊥ : Submodule R (A.X 0)) ↔ _
-  exact Submodule.mem_bot R
 
 @[simp] theorem cls_d {n : ℕ} (y : A.X n) (h : A.d (n + 1) (A.d n y) = 0) :
     A.cls (n + 1) (A.d n y) h = 0 := by
@@ -104,28 +90,6 @@ theorem mem_B_zero {x : A.X 0} : x ∈ A.B 0 ↔ x = 0 := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ c
   rfl
 
-theorem Hom.comp_H (ψ : Hom B C) (φ : Hom A B) (n : ℕ) : (ψ.comp φ).H n = (ψ.H n).comp (φ.H n) := by
-  refine LinearMap.ext fun c => ?_
-  obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ c
-  rfl
-
-theorem Hom.comp_H_apply (ψ : Hom B C) (φ : Hom A B) (n : ℕ) (c : A.H n) :
-    (ψ.comp φ).H n c = ψ.H n (φ.H n c) := by
-  rw [Hom.comp_H]
-  rfl
-
-theorem H_hom_ext {M : Type*} [AddCommGroup M] [Module R M] {n : ℕ} {f g : A.H n →ₗ[R] M}
-    (h : ∀ x hx, f (A.cls n x hx) = g (A.cls n x hx)) : f = g := by
-  refine LinearMap.ext fun c => ?_
-  obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ c
-  exact h z.1 z.2
-
 end Cx
-
-open Cx in
-theorem basic_holds : BasicStatement.{u} := by
-  intro R _ A B C φ ψ n
-  exact ⟨Hom.id_H n, Hom.comp_H ψ φ n, exists_cls, fun x hx => cls_eq_zero_iff hx,
-    fun x hx => ⟨_, Hom.H_cls φ x hx⟩⟩
 
 end ReciprocityTheory.Coh

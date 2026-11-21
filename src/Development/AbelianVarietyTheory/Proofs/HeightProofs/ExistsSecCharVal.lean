@@ -48,7 +48,7 @@ theorem exists_sec_char_val (D : D7) (H : ReciprocityTheory.ChartRestriction.G.G
       exact ⟨a, ⟨_, ha⟩, fun h γ hm hi => absurd ⟨h, γ, hm, hi⟩ hex⟩
   choose v hv1 hv2 using hv
   obtain ⟨f, hf, hf1, hf2⟩ := GlobalTheory.T.exists_weightZero_section_of_periodSpace_function D.host.E H Dw l Xo c σ g _ F hpos hgood
-    ((GlobalTheory.T.relabelEmbeddings_good_bijective_conj_compat _ H l c σ hgood).2.2.2 Dw g e) hA hcl v
+    ((_root_.GlobalTheory.Relab.relab_good _ H l c σ hgood).2.2.2 Dw g e) hA hcl v
   refine ⟨f, hf, fun m hm => hf1 m fun i => σ.injective ?_, fun y => ?_, fun h γ hm => ?_⟩
   · obtain ⟨u, hu⟩ := hv1 i
     rw [map_pow, map_one, hu, ← Units.val_pow_eq_pow_val, hm u, Units.val_one]
@@ -121,7 +121,7 @@ theorem iotaOK_of_latIsom (Q : Par D) (h : Q.Pins) (j : ℕ) (hj : InR D j) (V :
         s.toLinearMap '' (latG (D.sp.W j) 1 : Set _) := by
       rw [← h1.2, LinearMap.coe_range, ← Set.range_comp]
       rfl
-    rw [e1, ← Submodule.map_span, (GlobalTheory.T.adelicElementLattice_full_and_completion D _ 1).2.1, Submodule.map_top, LinearEquiv.range]
+    rw [e1, ← Submodule.map_span, (_root_.GlobalTheory.Member.latG_lattice_and_completion D _ 1).2.1, Submodule.map_top, LinearEquiv.range]
   subst hs
   exact ⟨h.1.2.1, h.1.2.2.1, h1, fun x y => by simpa using hε x y⟩
 

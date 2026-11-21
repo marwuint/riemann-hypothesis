@@ -35,9 +35,6 @@ theorem γ_φpow (T : LocLat G Qp LL O) (g : W.Gam) (k : ℕ) (x : W.DD T) :
   | zero => simp
   | succ k ih => rw [pow_apply_succ, ← W.φγ_comm, ih, ← pow_apply_succ]
 
-theorem γA_comm' (g h : W.Gam) (a : LetA O n) : W.γA g (W.γA h a) = W.γA h (W.γA g a) := by
-  rw [← Formalism.MainNotions.LiftingTheory.tr_γA_mul, mul_comm, Formalism.MainNotions.LiftingTheory.tr_γA_mul]
-
 theorem γD_comm (T : LocLat G Qp LL O) (g h : W.Gam) (x : W.DD T) :
     W.γD T g (W.γD T h x) = W.γD T h (W.γD T g x) := by
   rw [← W.γD_mul, mul_comm, W.γD_mul]
@@ -217,11 +214,6 @@ theorem inMultiple_sum (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) (f : LetA O
     rw [Finset.sum_insert ha]
     exact inMultiple_add W T c e f (hg a (Finset.mem_insert_self _ _))
       (ih fun i hi => hg i (Finset.mem_insert_of_mem hi))
-
-theorem inMultiple_mul_smul (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) (f g : LetA O n)
-    {x : W.DD T} (hx : Formalism.MainNotions.ArcLiftingSetup.InFP W T c e f x) : Formalism.MainNotions.ArcLiftingSetup.InFP W T c e (g * f) (g • x) := by
-  obtain ⟨y, hy, rfl⟩ := hx
-  exact ⟨y, hy, by rw [smul_smul]⟩
 
 theorem mem_Pp_of_inMultiple (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) {f : LetA O n} (hf : f ∈ W.AΔ)
     {x : W.DD T} (hx : Formalism.MainNotions.ArcLiftingSetup.InFP W T c e f x) : x ∈ Formalism.MainNotions.ArcLiftingSetup.Pp W T c e := by

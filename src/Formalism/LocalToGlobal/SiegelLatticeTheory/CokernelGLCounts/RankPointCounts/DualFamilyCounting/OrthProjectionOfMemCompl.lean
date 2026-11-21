@@ -105,16 +105,4 @@ def gam (hG : Good hc M T 𝔭 Λ) : DiscMod h U M 𝔭 ≃ₗ[𝓞 K] DiscMod h
     (Submodule.quotEquivOfEq _ _ hker)).trans
     (LinearMap.quotKerEquivOfSurjective _ (toDisc_surj h hc.symm T Λ 𝔭 hG.iW hG.oW))
 
-theorem gam_mk (hG : Good hc M T 𝔭 Λ) {x : V} (hx : x ∈ Λ) :
-    gam hG (Submodule.Quotient.mk ⟨prO hc x, hG.iU x hx⟩) =
-      Submodule.Quotient.mk ⟨prO hc.symm x, hG.iW x hx⟩ := by
-  have h1 : (Submodule.Quotient.mk ⟨prO hc x, hG.iU x hx⟩ : DiscMod h U M 𝔭) =
-      toDisc h hc M Λ 𝔭 hG.iU ⟨x, hx⟩ := rfl
-  have h2 : (Submodule.Quotient.mk ⟨prO hc.symm x, hG.iW x hx⟩ : DiscMod h (orthK h U) T 𝔭) =
-      toDisc h hc.symm T Λ 𝔭 hG.iW ⟨x, hx⟩ := rfl
-  rw [h1, h2, ← LinearMap.quotKerEquivOfSurjective_apply_mk (toDisc h hc M Λ 𝔭 hG.iU)
-    (toDisc_surj h hc M Λ 𝔭 hG.iU hG.oU)]
-  simp only [gam, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]
-  rfl
-
 end Formalism.L2.SG.Pf.OrthogonalProjections

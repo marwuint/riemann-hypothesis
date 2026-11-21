@@ -116,10 +116,6 @@ theorem canonicalCommutation_holds : CCR := by
     refine ⟨(mulX_negDeriv_commutator _ _).trans hI, mulX_mul_mulX_comm _ _, ?_⟩
     rw [neg_mul_neg, neg_mul_neg, deriv_mul_deriv_comm (i, a) (j, b)]
 
-lemma sum_sum_sub_sum_sum {A α β : Type*} [AddCommGroup A] [Fintype α] [Fintype β] (f g : α → β → A) :
-    ∑ x, ∑ y, f x y - ∑ x, ∑ y, g x y = ∑ x, ∑ y, (f x y - g x y) := by
-  simp only [Finset.sum_sub_distrib]
-
 lemma sum_sum_sub_sum_sum_swap {A α β : Type*} [AddCommGroup A] [Fintype α] [Fintype β] (f : α → β → A)
     (g : β → α → A) :
     ∑ x, ∑ y, f x y - ∑ y, ∑ x, g y x = ∑ x, ∑ y, (f x y - g y x) := by
@@ -134,10 +130,6 @@ def bilinearLeft (i j : Fin m) : A := ∑ a, P i a * B j a
 
 def bilinearRight (a b : Fin n) : A := ∑ i, P i b * B i a
 
-def bilinearNumber : A := ∑ i, ∑ a, P i a * B i a
-
-def bilinearQuartic : A := ∑ i, ∑ j, ∑ a, ∑ b, P i a * P j b * B j a * B i b
-
 variable {B P}
 variable (hBP : ∀ i j a b, B i a * P j b - P j b * B i a = if i = j ∧ a = b then 1 else 0)
   (hBB : ∀ i j a b, B i a * B j b = B j b * B i a)
@@ -150,12 +142,6 @@ lemma bilinear_product_commutator (i j k l : Fin m) (a b c d : Fin n) :
         (if l = i ∧ d = a then 1 else 0) * (P k c * B j b) :=
   bilinear_commutator_identity _ _ _ _ _ _ (hBP j k b c) (hBP l i d a) (hPP i k a c) (hBB j l b d)
     (by split_ifs <;> simp) (by split_ifs <;> simp)
-
-omit hBB hPP in
-lemma lower_mul_raise (i j : Fin m) (a b : Fin n) :
-    B i a * P j b = P j b * B i a + if i = j ∧ a = b then 1 else 0 := by
-  rw [← hBP i j a b]
-  abel
 
 lemma satisfiesGlRelations_bilinearLeft : GlRel (bilinearLeft B P) := by
   intro a b c d
@@ -188,59 +174,6 @@ lemma bilinearLeft_mul_bilinearRight (i j : Fin m) (a b : Fin n) :
   rw [sub_eq_zero]
   simp [ite_and, ite_mul]
 
-omit hBB hPP in
-lemma casimir_bilinearLeft : Cas (bilinearLeft B P) = bilinearQuartic B P + m • bilinearNumber B P := by
-  have e : ∀ i j a b, P i a * B j a * (P j b * B i b) =
-      P i a * P j b * B j a * B i b + (if a = b then P i a * B i b else 0) := by
-    intro i j a b
-    rw [show P i a * B j a * (P j b * B i b) = P i a * (B j a * P j b) * B i b by
-      simp only [mul_assoc], lower_mul_raise hBP j j a b]
-    by_cases h : a = b
-    · subst h
-      simp [mul_add, add_mul, mul_assoc]
-    · simp [h, mul_assoc]
-  simp only [Cas, bilinearLeft, bilinearQuartic, bilinearNumber, Finset.sum_mul_sum, e, Finset.sum_add_distrib]
-  congr 1
-  simp [Finset.smul_sum]
-
-omit hBP hBB hPP in
-lemma sum_sum_sum_sum_comm' {α β : Type*} [Fintype α] [Fintype β] (f : α → α → β → β → A) :
-    ∑ x, ∑ y, ∑ i, ∑ j, f i j x y = ∑ i, ∑ j, ∑ x, ∑ y, f i j x y := by
-  have h1 : ∀ x, ∑ y, ∑ i, ∑ j, f i j x y = ∑ i, ∑ j, ∑ y, f i j x y := by
-    intro x
-    calc ∑ y, ∑ i, ∑ j, f i j x y = ∑ i, ∑ y, ∑ j, f i j x y := Finset.sum_comm
-      _ = ∑ i, ∑ j, ∑ y, f i j x y := Finset.sum_congr rfl fun i _ => Finset.sum_comm
-  have h2 : ∀ i, ∑ x, ∑ j, ∑ y, f i j x y = ∑ j, ∑ x, ∑ y, f i j x y := fun i => Finset.sum_comm
-  calc ∑ x, ∑ y, ∑ i, ∑ j, f i j x y = ∑ x, ∑ i, ∑ j, ∑ y, f i j x y :=
-        Finset.sum_congr rfl fun x _ => h1 x
-    _ = ∑ i, ∑ x, ∑ j, ∑ y, f i j x y := Finset.sum_comm
-    _ = ∑ i, ∑ j, ∑ x, ∑ y, f i j x y := Finset.sum_congr rfl fun i _ => h2 i
-
-omit hPP in
-lemma casimir_bilinearRight_sum :
-    ∑ a, ∑ b, bilinearRight B P a b * bilinearRight B P b a = bilinearQuartic B P + n • bilinearNumber B P := by
-  have e : ∀ i j a b, P i b * B i a * (P j a * B j b) =
-      P i b * P j a * B j b * B i a + (if i = j then P i b * B j b else 0) := by
-    intro i j a b
-    rw [show P i b * B i a * (P j a * B j b) = P i b * (B i a * P j a) * B j b by
-      simp only [mul_assoc], lower_mul_raise hBP i j a a]
-    by_cases h : i = j
-    · subst h
-      simp [mul_add, add_mul, mul_assoc, hBB i i a b]
-    · simp [h, mul_assoc, hBB i j a b]
-  have h1 : ∑ a, ∑ b, ∑ i, ∑ j, P i b * P j a * B j b * B i a = bilinearQuartic B P := by
-    rw [sum_sum_sum_sum_comm']
-    unfold bilinearQuartic
-    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_comm
-  have h2 : ∑ a : Fin n, ∑ b, ∑ i, ∑ j, (if i = j then P i b * B j b else 0) = n • bilinearNumber B P := by
-    unfold bilinearNumber
-    simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ,
-      Fintype.card_fin]
-    congr 1
-    exact Finset.sum_comm
-  simp only [bilinearRight, Finset.sum_mul_sum, e, Finset.sum_add_distrib]
-  rw [h1, h2]
-
 end weyl
 
 theorem fockPairGl_of (h : CCR) : FockPairGl := by
@@ -270,29 +203,5 @@ theorem fockPairGl_of (h : CCR) : FockPairGl := by
     rw [hEg, hEg']
     simp only [mul_neg, neg_mul]
     rw [bilinearLeft_mul_bilinearRight hBP hBB hPP]
-
-theorem fockCas_of (h : CCR) : FockCas := by
-  intro M n' ε ε'
-  have hBP : ∀ i j a b, bop ε ε' i a * bpl ε ε' j b - bpl ε ε' j b * bop ε ε' i a =
-      if i = j ∧ a = b then 1 else 0 := fun i j a b => (h M n' ε ε' i j a b).1
-  have hBB : ∀ i j a b, bop ε ε' i a * bop ε ε' j b = bop ε ε' j b * bop ε ε' i a :=
-    fun i j a b => (h M n' ε ε' i j a b).2.1
-  have hEg : Eg ε ε' = bilinearLeft (bop ε ε') (bpl ε ε') := by
-    funext i j
-    rfl
-  have hEg' : Eg' ε ε' = fun a b => -bilinearRight (bop ε ε') (bpl ε ε') a b := by
-    funext a b
-    rfl
-  have hNN : NN ε ε' = bilinearNumber (bop ε ε') (bpl ε ε') := rfl
-  refine ⟨?_, ?_⟩
-  · simp only [NN, Eg, Eg', Finset.sum_neg_distrib, neg_neg]
-    exact Finset.sum_comm
-  · have hc : Cas (Eg' ε ε') = ∑ a, ∑ b,
-        bilinearRight (bop ε ε') (bpl ε ε') a b * bilinearRight (bop ε ε') (bpl ε ε') b a := by
-      rw [hEg']
-      simp only [Cas, neg_mul_neg]
-    rw [hc, casimir_bilinearRight_sum hBP hBB, hEg, casimir_bilinearLeft hBP, hNN, Nat.cast_smul_eq_nsmul,
-      Nat.cast_smul_eq_nsmul]
-    abel
 
 end Formalism.REAL

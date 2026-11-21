@@ -212,6 +212,4 @@ theorem pointwise_of_steps (hA : AddVec) (hD : Dual) (hS : SpanEq) (hH : Heis) :
     have := Nat.find_min' hRex hR
     omega
 
-example : AddVec → Dual → SpanEq → Heis → Pointwise := pointwise_of_steps
-
 end GlobalTheory.InertZeta

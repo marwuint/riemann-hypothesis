@@ -34,36 +34,6 @@ theorem large_of_sup {C : FC} {K K' : TransportedAlt} {CH : ℝ} (h : C.Large (K
     ⟨fun c hc => (le_max_right _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_right _ _).trans (h.2.2.1 c hc),
       fun c hc => (le_max_right _ _).trans (h.2.2.2 c hc)⟩⟩
 
-theorem ev_and {p q : Ctx → Prop} (hp : EvGd p) (hq : EvGd q) : EvGd fun K => p K ∧ q K := by
-  obtain ⟨a, ha, hp⟩ := hp
-  obtain ⟨b, hb, hq⟩ := hq
-  refine ⟨min a b, lt_min ha hb, fun e C8 C5 c6 Cb he hle h52 h8 => ?_⟩
-  obtain ⟨K, hK⟩ := hp e C8 C5 c6 Cb he (hle.trans (min_le_left _ _)) h52 h8
-  obtain ⟨K', hK'⟩ := hq e C8 C5 c6 Cb he (hle.trans (min_le_right _ _)) h52 h8
-  refine ⟨K.sup K', fun C hC hC8 hL => ?_⟩
-  obtain ⟨a1, ha1⟩ := hK C hC hC8 (large_of_sup hL).1
-  obtain ⟨b1, hb1⟩ := hK' C hC hC8 (large_of_sup hL).2
-  refine ⟨max a1 b1, fun cD hcD => ?_⟩
-  obtain ⟨a2, ha2⟩ := ha1 cD (le_trans (le_max_left _ _) hcD)
-  obtain ⟨b2, hb2⟩ := hb1 cD (le_trans (le_max_right _ _) hcD)
-  refine ⟨max a2 b2, fun ch hch => ?_⟩
-  obtain ⟨a3, ha3⟩ := ha2 ch (le_trans (le_max_left _ _) hch)
-  obtain ⟨b3, hb3⟩ := hb2 ch (le_trans (le_max_right _ _) hch)
-  exact ⟨max a3 b3, fun X h1 h2 h3 h4 hx hg =>
-    ⟨ha3 X h1 h2 h3 h4 (le_trans (le_max_left _ _) hx) hg, hb3 X h1 h2 h3 h4 (le_trans (le_max_right _ _) hx) hg⟩⟩
-
-theorem ev_mono {p q : Ctx → Prop} (h : ∀ K, p K → q K) (hp : EvGd p) : EvGd q := by
-  obtain ⟨a, ha, hp⟩ := hp
-  refine ⟨a, ha, fun e C8 C5 c6 Cb he hle h52 h8 => ?_⟩
-  obtain ⟨K, hK⟩ := hp e C8 C5 c6 Cb he hle h52 h8
-  refine ⟨K, fun C hC hC8 hL => ?_⟩
-  obtain ⟨a1, ha1⟩ := hK C hC hC8 hL
-  refine ⟨a1, fun cD hcD => ?_⟩
-  obtain ⟨a2, ha2⟩ := ha1 cD hcD
-  refine ⟨a2, fun ch hch => ?_⟩
-  obtain ⟨a3, ha3⟩ := ha2 ch hch
-  exact ⟨a3, fun X h1 h2 h3 h4 hx hg => h X (ha3 X h1 h2 h3 h4 hx hg)⟩
-
 structure BPt (K : Ctx) : Type 1 where
   X : Stages
   f : Fr X.B.toPre
@@ -87,14 +57,6 @@ abbrev BPt.D {K : Ctx} (β : BPt K) : D7 := β.p.pt.D
 abbrev BPt.O {K : Ctx} (β : BPt K) : Obj β.D := Obj.ofPt β.p.pt
 
 abbrev BPt.Is {K : Ctx} (β : BPt K) (Q : V4.Slot) : Prop := Q K β.X β.f β.T β.c
-
-def RecAtK (QL : Ctx → ∀ D : D7, Lay D → Prop) : Prop :=
-  Ev fun K => ∃ (D : D7) (Y : Lay D), Over D K.P K.Lv ∧ RecOK K.s K.C K.cD D ∧ LedOK K.s K.C K.cD K.ch Y K.a K.b ∧
-    LocalQuadraticParts.TWAt D Y.nch Y.xd ∧ QL K D Y
-
-def FromCoreK (Q : V4.Slot) (K : Ctx) (D : D7) (Y : Lay D) : Prop :=
-  ∃ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : V4.Core K X f T), Q K X f T c ∧
-    (⟨D, layObj Y⟩ : Σ D : D7, Obj2 D) = ⟨X.toD7, c.O⟩
 
 abbrev objAt {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : Obj (Fm.D x i) :=
   ⟨Fm.L x i, Fm.gatT x i, Fm.Gx x i, Fm.Gy x i, Fm.GK, Fm.X x i, Fm.cX, Fm.ex x hx i⟩
@@ -157,10 +119,6 @@ theorem ParEv.mono {p q : Par → Prop} (h : ∀ κ, p κ → q κ) (hp : ParEv 
 theorem ParEv.of_all {p : Par → Prop} (h : ∀ κ, p κ) : ParEv p :=
   ⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => h _⟩⟩⟩⟩
 
-theorem ParEv.choose {α : Type} [Nonempty α] {r : Par → α → Prop} (h : ParEv fun κ => ∃ a, r κ a) :
-    ∃ f : Par → α, ParEv fun κ => r κ (f κ) :=
-  ⟨fun κ => Classical.epsilon (r κ), h.mono fun _ H => Classical.epsilon_spec H⟩
-
 theorem EvP.and {p q : Par → Ctx → Prop} (hp : EvP p) (hq : EvP q) : EvP fun κ K => p κ K ∧ q κ K :=
   (ParEv.and hp hq).mono fun _ H h0 =>
     let ⟨a, ha⟩ := H.1 h0
@@ -217,8 +175,6 @@ def KitCPW (la : ℝ) (Q : Par → PtProp) : Prop :=
         ∃ k : Kit C cD ch s, ∀ i, (k.pt i).Has (Q ⟨eps, C, cD, ch, C5, c6, Cb⟩) ∧ ThickSetLowerBound (k.pt i).L ∧ ChBad_at (k.pt i).ta.Gx Cb ∧
           ChQD_at (k.pt i).D (k.pt i).L.sc.x (k.pt i).L.sc.eps C5
 
-def KitCP (Q : Par → PtProp) : Prop := ∃ la : ℝ, 1 < la ∧ KitCPW la Q
-
 structure Link (κ : Par) {eps : ℝ} (Fm : FamP eps) : Prop where
   eps_eq : κ.eps = eps
   pos : κ.Pos
@@ -227,10 +183,6 @@ structure Link (κ : Par) {eps : ℝ} (Fm : FamP eps) : Prop where
   out : (DC.setTu Fm κ.C.CTu).cOut = κ.C.cOut
   mid : Fm.cMid = κ.C.cMid
   last : Fm.cLast = κ.C.cLast
-
-theorem Link.csz {κ : Par} {eps : ℝ} {Fm : FamP eps} (h : Link κ Fm) : Fm.Csz = κ.C.Csz := by
-  have := congrArg (fun f : ℝ → List ℝ => (f 0).getD 2 0) h.mid
-  simpa [FamP.cMid, FC.cMid] using this
 
 theorem Link.host {κ : Par} {eps : ℝ} {Fm : FamP eps} (h : Link κ Fm) : max Fm.Co Fm.J = κ.C.P.Cpde :=
   congrArg (fun l : List ℝ => l.getD 15 0) h.out
@@ -376,21 +328,10 @@ theorem w3_a {𝒜 : FamClass} {eps : ℝ} {Fm : FamP eps} (h : W3 𝒜 Fm) : �
 def EvC (R : ∀ D : D7, Obj D → Prop) (𝒜 : FamClass) : Prop :=
   Closed (W3 𝒜) fun Fm _ => ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), R (Fm.D x i) (objAt Fm x hx i)
 
-def EvCC {α : Type} (R : α → ∀ D : D7, Obj D → Prop) (𝒜 : FamClass) : Prop :=
-  Closed (W3 𝒜) fun Fm _ => ∃ (a : α) (x0 : ℝ), ∀ x, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), R a (Fm.D x i) (objAt Fm x hx i)
-
-theorem evaluation_constantFamily {α : Type} {R : α → ∀ D : D7, Obj D → Prop} (a : Par → α)
-    (h : EvP fun κ K => ∀ β : BPt K, β.Is Q → R (a κ) β.D β.O) : Row0 Q (EvCC R) :=
-  ⟨fun κ D O _ _ => R (a κ) D O, EvP.mono (fun _ _ _ H β hq _ _ _ => H β hq) h, fun _ _ s =>
-    ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hc _ =>
-      let ⟨κ, _, _, t⟩ := s Fm (w3_a hc); ⟨a κ, 0, fun x _ hx i => (t x hx i).2⟩⟩⟩⟩
-
 theorem validForConstructedPointClasses_eventuallyWorkingClass {R : ∀ D : D7, Obj D → Prop} (h : EvP fun _ K => ∀ β : BPt K, β.Is Q → R β.D β.O) : Row0 Q (EvC R) :=
   ⟨fun _ D O _ _ => R D O, EvP.mono (fun _ _ _ H β hq _ _ _ => H β hq) h, fun _ _ s =>
     ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hc _ =>
       let ⟨_, _, _, t⟩ := s Fm (w3_a hc); ⟨0, fun x _ hx i => (t x hx i).2⟩⟩⟩⟩
-
-example : ExB (Bd := Bd0) Q fun _ _ _ _ => True := EvP.of_all fun _ _ _ _ _ _ => ⟨PUnit.unit, trivial⟩
 
 end GlobalTheory.Fc
 

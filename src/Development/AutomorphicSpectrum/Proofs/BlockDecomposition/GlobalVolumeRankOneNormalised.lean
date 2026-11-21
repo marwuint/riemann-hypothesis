@@ -1,33 +1,41 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypOneZeroZero
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalVolumeRankOneIsotropicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanVolumeRankOneIsotropicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianFourierSelfDualAdelicStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalVolumeRankOneIsotropic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanVolumeRankOneIsotropic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianFourierSelfDualAdelic
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GaussQ
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GlobalProductGramFiberRankOne
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TraceFormRationalThetaIdentity
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsTraceFormGramMatrixInBasisStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolumeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SymmetricInvertibleExistsPosdefCongruenceStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountableStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteComponentCoordinatesActionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdelicLatticeMembershipIffStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateBijectionTraceFormStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.MeasurableFiniteLevelLatticeSetStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsFiniteAdeleHaarNormalizedStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.QuotientProbabilityMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramCoordinatesMeasurableStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsTraceFormGramMatrixInBasis
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolume
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SymmetricInvertibleExistsPosdefCongruence
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteComponentCoordinatesAction
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdelicLatticeMembershipIff
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateBijectionTraceForm
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.MeasurableFiniteLevelLatticeSet
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsFiniteAdeleHaarNormalized
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.QuotientProbabilityMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteCovolumeUnimodular
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArithmeticUnitaryGroupDiscrete
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramCoordinatesMeasurable
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TraceFormInvarianceUnderUnitaryStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaIntegralOverCoordinatesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdelicTraceFormCoordinatesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GaussianContinuousRapidDecayStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilArchimedeanDensityStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArchimedeanLocalDensityFormulaStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaIntegralOverCoordinates
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueNonnegative
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdelicTraceFormCoordinates
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHomeomorphRankOneTuples
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GaussianContinuousRapidDecay
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilArchimedeanDensity
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaMeasureNonzeroVectorsBound
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArchimedeanLocalDensityFormula
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArchimedeanCoordinateMeasureTransport
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -65,7 +73,7 @@ theorem hasProd_free_mass_zero : ∀ (F E : Type) [Field F] [NumberField F] [Fie
     exact hv (hS (Finset.mem_union_right _ (hbad.mem_toFinset.2 hc)))
   obtain ⟨δ, hδ, hclose⟩ := prod_close S
     (fun v => (m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀) (sA b v a)).toReal) hε3
-  have hloc := fun v => (GlobalTheory.T.local_volume_rank_one_isotropic F E σ hcm M J hJ hM h₀ d b v (lam v) (hlam v) (m v) (hm v)
+  have hloc := fun v => (_root_.GlobalTheory.CompanionTheory.SW.AvgZero.avg_zero F E σ hcm M J hJ hM h₀ d b v (lam v) (hlam v) (m v) (hm v)
     (sA b v a) (sA_cpt_open σ hcm b v ha).1 (sA_cpt_open σ hcm b v ha).2).2 δ hδ
   choose Uv hUv hUv' using hloc
   have hVex := fun v => nice_nbhd (hlam v) (Filter.inter_mem (hUv v) (hN v))
@@ -133,7 +141,7 @@ theorem ofF_mem_framesE_zero {F E : Type} [Field F] [NumberField F] [Field E] [N
     (x : Fin M × Fin d → F) :
     ofF b x ∈ framesE σ J (0 : Matrix (Fin 1) (Fin 1) E) ↔
       x ≠ 0 ∧ (1 / 2 : F) * (x ⬝ᵥ (B *ᵥ x)) = 0 := by
-  obtain ⟨-, h2, h3⟩ := GlobalTheory.T.coordinate_bijection_trace_form F E σ hσ M J hJ d b
+  obtain ⟨-, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.SW.BB.RatCoord.ofF_gram_iff F E σ hσ M J hJ d b
   have hg : gramE σ J (ofF b x) = (0 : Matrix (Fin 1) (Fin 1) E) ↔
       (1 / 2 : F) * (x ⬝ᵥ (B *ᵥ x)) = 0 := by
     rw [← h3 B hB 0 x]
@@ -150,25 +158,25 @@ theorem ofF_mem_framesE_zero {F E : Type} [Field F] [NumberField F] [Field E] [N
 
 theorem lintegral_thetaMeas_gauss_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (B : Matrix (Fin M × Fin d) (Fin M × Fin d) F), (∀ x : Fin M → E, Algebra.trace F E (hE σ J x x) = (fun p : Fin M × Fin d => b.repr (x p.1) p.2) ⬝ᵥ (B *ᵥ fun p : Fin M × Fin d => b.repr (x p.1) p.2)) → ∀ (ρ : InfinitePlace F → (F →+* ℝ)) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → (∀ x w, e (algebraMap F (Ainf F) x) w = ρ w x) → ∀ (Pm : InfinitePlace F → Matrix (Fin M × Fin d) (Fin M × Fin d) ℝ) (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ (a : ℕ), 0 < a → ∫⁻ X in {X | ∀ v, projV v (projFin X) ∈ {X : (Fin 1 → Fin M → Fv F v ⊗[F] E) | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v}}, ENNReal.ofReal (gaussQ e b Pm (projInf X)) ∂(thetaMeas σ J μ 𝓕 (framesE σ J (0 : Matrix (Fin 1) (Fin 1) E))) = ∫⁻ ω, ∑' x : {x : Fin M × Fin d → F // x ≠ 0 ∧ (1 / 2 : F) * (x ⬝ᵥ (B *ᵥ x)) = 0}, Set.indicator {x : Fin M × Fin d → F | ∀ i v, ((a : Af F) * (gfin σ J b ω *ᵥ fun j => algebraMap F (Af F) (x j)) i) v ∈ v.adicCompletionIntegers F} (fun x => ENNReal.ofReal (Real.exp (-Real.pi * ∑ w, (ginf e σ J b ω w *ᵥ fun j => ρ w (x j)) ⬝ᵥ (Pm w *ᵥ (ginf e σ J b ω w *ᵥ fun j => ρ w (x j)))))) x.1 ∂(prH μ 𝓕) := by
   intro F E _ _ _ _ _ σ hσ M J hJ d b B hB ρ e hom hρ Pm μ 𝓕 hμ h𝓕 a ha
-  obtain ⟨⟨h1, h2, h3⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F
-  obtain ⟨hR, -, -, -, -, -, -, hBor, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (AF F)
+  obtain ⟨⟨h1, h2, h3⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F
+  obtain ⟨hR, -, -, -, -, -, -, hBor, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)
   haveI := hBor 1 M
-  have hA := GlobalTheory.T.measurable_finite_level_lattice_set F E σ hσ d M b a
+  have hA := _root_.GlobalTheory.CompanionTheory.SW.BB.measurableSet_natMul_int F E σ hσ d M b a
   have hproj : Continuous (projInf : (Fin 1 → Fin M → AF F ⊗[F] E) → _) :=
-    (GlobalTheory.T.adelic_tuple_projections F E σ hσ d b 1 M).1
+    (_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b 1 M).1
   have hG : Continuous fun X : Fin 1 → Fin M → AF F ⊗[F] E =>
       ENNReal.ofReal (gaussQ e b Pm (projInf X)) :=
     ENNReal.continuous_ofReal.comp
       ((GlobalTheory.CompanionTheory.SW.BB.ThetaGauss.continuous_gaussQ σ hσ b e hom Pm).comp hproj)
   rw [← lintegral_indicator hA]
-  rw [GlobalTheory.T.theta_integral_over_coordinates F E σ hσ M J hJ d b μ 𝓕 hμ h𝓕
+  rw [_root_.GlobalTheory.CompanionTheory.SW.BB.PullCoord.lintegral_thetaMeas_coord F E σ hσ M J hJ d b μ 𝓕 hμ h𝓕
     {x | x ≠ 0 ∧ (1 / 2 : F) * (x ⬝ᵥ (B *ᵥ x)) = 0}
     (framesE σ J (0 : Matrix (Fin 1) (Fin 1) E))
     (fun x => ofF_mem_framesE_zero σ hσ J hJ b B hB x) _
     (hG.measurable.indicator hA)]
   refine lintegral_congr fun ω => tsum_congr fun x => ?_
-  obtain ⟨hinf, hfin⟩ := GlobalTheory.T.infinite_component_coordinates_action F E σ hσ M J hJ d b ρ e hρ ω x.1
-  have hmem := GlobalTheory.T.finite_adelic_lattice_membership_iff F E d M b a (projFin (actW (AF F) σ J ω⁻¹ (ratTup (AF F) (ofF b x.1))))
+  obtain ⟨hinf, hfin⟩ := _root_.GlobalTheory.CompanionTheory.SW.BB.RatCoord.coords_ratTup F E σ hσ M J hJ d b ρ e hρ ω x.1
+  have hmem := _root_.GlobalTheory.CompanionTheory.SW.BB.Lat.natCast_mul_mem_latV_iff F E d M b a (projFin (actW (AF F) σ J ω⁻¹ (ratTup (AF F) (ofF b x.1))))
   rw [hfin] at hmem
   have hgauss : gaussQ e b Pm (projInf (actW (AF F) σ J ω⁻¹ (ratTup (AF F) (ofF b x.1)))) =
       Real.exp (-Real.pi * ∑ w, (ginf e σ J b ω w *ᵥ fun j => ρ w (x.1 j)) ⬝ᵥ
@@ -186,46 +194,46 @@ theorem estimate_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   have hd : d = 2 := by
     have h := Module.finrank_eq_card_basis b
     simpa [hfin] using h.symm
-  obtain ⟨B, hBs, hBd, hBE, hBR⟩ := GlobalTheory.T.exists_trace_form_gram_matrix_in_basis F E σ hCM M J hJ d b
-  obtain ⟨ρ, e, hρ, he, heρ, hen, hem⟩ := GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hF
+  obtain ⟨B, hBs, hBd, hBE, hBR⟩ := _root_.GlobalTheory.CompanionTheory.SW.TraceCoord.exists_trace_coord F E σ hCM M J hJ d b
+  obtain ⟨ρ, e, hρ, he, heρ, hen, hem⟩ := _root_.GlobalTheory.CompanionTheory.SW.real_iso F hF
   have hP : ∀ w, ∃ P : Matrix (Fin M × Fin d) (Fin M × Fin d) ℝ,
       P.PosDef ∧ P * (B.map (ρ w))⁻¹ * P = B.map (ρ w) := by
     intro w
-    refine GlobalTheory.T.symmetric_invertible_exists_posdef_congruence _ _ ?_ ?_
+    refine _root_.GlobalTheory.CompanionTheory.SW.exists_posDef_majorant_of_isSymm _ _ ?_ ?_
     · exact hBs.map _
     · have h := RingHom.map_det (ρ w) B
       rw [RingHom.mapMatrix_apply] at h
       rw [← h]
       exact (map_ne_zero _).2 hBd
   choose Pm hPd hPm using hP
-  obtain ⟨lf, hlf, hlf1⟩ := GlobalTheory.T.exists_finite_adele_haar_normalized F
+  obtain ⟨lf, hlf, hlf1⟩ := _root_.GlobalTheory.CompanionTheory.AdeleHaar.exists_haar_integral_one F
   haveI : BorelSpace (Af F) := ⟨rfl⟩
-  haveI := GlobalTheory.T.quotient_probability_measure F E σ hCM M J hJ μ 𝓕 hμ h𝓕
-  obtain ⟨hgi, hgf⟩ := GlobalTheory.T.gram_coordinates_measurable F E σ hCM M J hJ d b e he
+  haveI := _root_.GlobalTheory.CompanionTheory.SW.BB.isProbabilityMeasure_prH F E σ hCM M J hJ μ 𝓕 hμ h𝓕
+  obtain ⟨hgi, hgf⟩ := _root_.GlobalTheory.CompanionTheory.SW.BB.ginf_gfin_measurable F E σ hCM M J hJ d b e he
   obtain ⟨hii, hif⟩ := GlobalTheory.T.trace_form_invariance_under_unitary F E σ M J d b B ρ e heρ
     (fun h => ((hBR (AF F)).2 h _ (fun p q => rfl)).1)
   have hcard : Fintype.card (Fin M × Fin d) = 2 * M := by simp [hd, mul_comm]
   obtain ⟨C, Df, Dinf, hDf, ⟨hDc, hD0, hDd⟩, hmain⟩ :=
-    GlobalTheory.T.gaussian_fourier_self_dual_adelic F hF (Fin M × Fin d) M hcard hM B hBs hBd ρ hρ Pm hPd hPm lf hlf hlf1
+    _root_.GlobalTheory.CompanionTheory.SW.Core0.core_zero F hF (Fin M × Fin d) M hcard hM B hBs hBd ρ hρ Pm hPd hPm lf hlf hlf1
       (HA (AF F) σ J) (prH μ 𝓕) (ginf e σ J b) (gfin σ J b) hgi hgf hii hif
-      (fun N hN => GlobalTheory.T.average_rational_vector_count_ball_bound F E σ hCM M J hJ hM d b ρ e he heρ hen μ 𝓕 hμ h𝓕 N hN)
-  obtain ⟨hgc, hgr⟩ := GlobalTheory.T.gaussian_continuous_rapid_decay F E σ hCM M d b e he hen Pm
+      (fun N hN => _root_.GlobalTheory.CompanionTheory.SW.BB.CountHyp.main_bound F E σ hCM M J hJ hM d b ρ e he heρ hen μ 𝓕 hμ h𝓕 N hN)
+  obtain ⟨hgc, hgr⟩ := _root_.GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay F E σ hCM M d b e he hen Pm
   have hinfint : ∫⁻ X, ENNReal.ofReal (gaussQ e b Pm X)
       ∂(minf (hermOf (Ainf F) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀)) =
       ENNReal.ofReal ((Real.sqrt |(discr F : ℝ)|)⁻¹ ^ (2 * M - 1) * Dinf (fun _ => 0)) := by
-    obtain ⟨i1, i2, i3, i4, -⟩ := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hF
+    obtain ⟨i1, i2, i3, i4, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hF
     haveI : BorelSpace (Ainf F) := ⟨rfl⟩
-    obtain ⟨hK1, hK2, hK3⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hinf.1
-    obtain ⟨t1, t2, t3, t4, t5, t6, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)
+    obtain ⟨hK1, hK2, hK3⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Ainf F) d b laminf hinf.1
+    obtain ⟨t1, t2, t3, t4, t5, t6, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Ainf F)
     have hDcont : Continuous fun S : HermR (Ainf F) σ 1 =>
         (Real.sqrt |(discr F : ℝ)|)⁻¹ ^ (2 * M - 1) * Dinf (e (algebraMap F (Ainf F) (1 / 2) *
           Algebra.trace (Ainf F) (Ainf F ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) 0 0))) := by
       refine continuous_const.mul (hDc.comp (he.continuous.comp (continuous_const.mul (t6.comp ?_))))
       exact (continuous_apply_apply 0 0).comp continuous_subtype_val
-    have h := GlobalTheory.T.archimedean_volume_rank_one_isotropic F E σ hCM M J hJ hM h₀ d b (coordW (Ainf F) b laminf 1 M)
+    have h := _root_.GlobalTheory.CompanionTheory.WeilSiegel.Inf0.fibre_rapid_zero_eq_density F E σ hCM M J hJ hM h₀ d b (coordW (Ainf F) b laminf 1 M)
       (coordHerm (Ainf F) σ b laminf 1) minf (hK2 1 M) (hK3 1) hminf (gaussQ e b Pm) hgc
       (fun X => (Real.exp_pos _).le) (hgr hPd) _ hDcont
-      (GlobalTheory.T.archimedean_local_density_formula F E σ hCM M J hJ hM d b B (hBR (Ainf F)).1 ρ e he heρ Pm laminf hinf.1
+      (_root_.GlobalTheory.CompanionTheory.SW.BB.InfDens.infDens F E σ hCM M J hJ hM d b B (hBR (Ainf F)).1 ρ e he heρ Pm laminf hinf.1
         (hem laminf hinf) Dinf hDc hD0 hDd)
     have hz : ((hermOf (Ainf F) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀ : HermR (Ainf F) σ 1) :
         Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) 0 0 = 0 := by
@@ -241,7 +249,7 @@ theorem estimate_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     obtain ⟨c1, c2, c3⟩ := hDf a ha
     have hprod := hasProd_free_mass_zero F E σ hCM M J hJ hM h₀ d b lam hlam m hm lf hlf hlf1 a ha
       (Df a) c1 c2 (fun U hU => by
-        rw [GlobalTheory.T.finite_adelic_trace_form_coordinates F E σ hCM M J hJ d b B (hBR (Af F)).1 lf hlf a U]
+        rw [_root_.GlobalTheory.CompanionTheory.SW.BB.finDensity_coord F E σ hCM M J hJ d b B (hBR (Af F)).1 lf hlf a U]
         exact c3 U hU)
     refine ⟨I, ?_, ?_⟩
     · rw [lintegral_thetaMeas_gauss_frames F E σ hCM M J hJ d b B hBE ρ e he heρ Pm μ 𝓕 hμ h𝓕 a ha]

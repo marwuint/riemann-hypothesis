@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKSIffKsRel
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvRFrMapOfIsReduced
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeSpectrumDualNumberEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeDeRhamOnModificationOfFlagCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeDeRhamOnModificationOfFlagCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingMapsLiftVerticalDeformationsAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetDerivativesBorelFrameChangeCanonicalWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetDerivativesDivJacobianIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetDerivativesTangentLiftNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetDerivativesBorelFrameChangeCanonicalWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetDerivativesDivJacobianIndependent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetDerivativesTangentLiftNeZero
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000
@@ -54,7 +54,7 @@ theorem exists_local (hP : GlobalTheory.Published.AbelianDeRham)
   have hWi : ksOpen M i k ≤ M.K.bundle.U i := fun s hs => hs.2.1
   obtain ⟨V, f, hpV, hf⟩ := exists_isFrame_dOn M.str (dimFlag Dw) p
   obtain ⟨W₁, hW₁, hpW₁, hW₁V⟩ := Opens.isBasis_iff_nbhd.1 M.X.isBasis_affineOpens (show p ∈ W ⊓ V from ⟨hp, hpV⟩)
-  obtain ⟨W', hW', eH, hpW', hWW', eH1, eH2⟩ := GlobalTheory.T.hodge_de_rham_on_modification_of_flag_cover M hP hKS k W₁
+  obtain ⟨W', hW', eH, hpW', hWW', eH1, eH2⟩ := _root_.GlobalTheory.HorFrame.exists_horizontal_lift M hP hKS k W₁
     ((hW₁V.trans inf_le_left).trans (hW.trans hWk)) p hpW₁
   have hWV : W' ≤ W := hWW'.trans (hW₁V.trans inf_le_left)
   have hW'k : W' ≤ M.off ⊓ (toFlag M) ⁻¹ᵁ X.F.U k := hWV.trans (hW.trans hWk)
@@ -131,7 +131,7 @@ theorem exists_local (hP : GlobalTheory.Published.AbelianDeRham)
   have hne : ∀ {K : Type} [Field K] (ψ : Γ(M.X, W') →+* K), ψ A.det ≠ 0 := fun {K} _ ψ => by
     obtain ⟨_, Q, hQ⟩ := chart ψ
     obtain ⟨v, hv, hl⟩ := e2 K ψ _ Q hQ
-    have := GlobalTheory.T.det_derivatives_tangentLift_ne_zero M hKS (spMap ψ ≫ tau hW') (ho ψ) (FlagCover.eq_ptY hQ.lies) hv (hl' ψ hl) i W' hW'i g (hzW ψ)
+    have := _root_.GlobalTheory.CompHS.det_tanLift_ne_zero M hKS (spMap ψ ≫ tau hW') (ho ψ) (FlagCover.eq_ptY hQ.lies) hv (hl' ψ hl) i W' hW'i g (hzW ψ)
       (hzvW ψ) (by rw [hJ]; exact (hu.map ψ).ne_zero)
     rwa [hdet] at this
   have hAu : IsUnit A.det := by
@@ -149,8 +149,8 @@ theorem exists_local (hP : GlobalTheory.Published.AbelianDeRham)
     obtain ⟨v0, hv0, hl0⟩ := e2 K ψ hk Q hQ
     have hzO : ∀ b, ⊤ ≤ zv ψ b ⁻¹ᵁ O := fun b => le_preimage_of_dualNumber (TrivSqZeroExt.fstHom K K K).toRingHom _ O
       (by rw [hred]; exact hz)
-    have tc := GlobalTheory.T.det_derivatives_borelFrameChange_canonicalWeight M hKS (spMap ψ ≫ tau hW') (ho ψ) t (FlagCover.eq_ptY hQ.lies) ht hv hv0 hl (hl' ψ hl0) O g' hzv hzO
-    have jc := GlobalTheory.T.det_derivatives_div_jacobian_independent M (spMap ψ ≫ tau hW') i (fun b => zv ψ (tanOrd Dw b)) (fun b => hred ψ _) O W' hO hW'i g' g hz
+    have tc := _root_.GlobalTheory.CompHS.det_der_frBor M hKS (spMap ψ ≫ tau hW') (ho ψ) t (FlagCover.eq_ptY hQ.lies) ht hv hv0 hl (hl' ψ hl0) O g' hzv hzO
+    have jc := _root_.GlobalTheory.TanJac.det_mul_jacobian_comm M (spMap ψ ≫ tau hW') i (fun b => zv ψ (tanOrd Dw b)) (fun b => hred ψ _) O W' hO hW'i g' g hz
       (hzW ψ) (fun b => hzO _) (fun b => hzvW ψ _)
     rw [hJ, hdet] at jc
     rw [tc]

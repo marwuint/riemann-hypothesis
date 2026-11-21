@@ -30,9 +30,6 @@ theorem int_mul_of_ne {b : 𝓞 D.host.E} (hb : b ≠ 0) : ∃ k : ℕ, k ≠ 0 
   · obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {b}))
     exact ⟨c, by rw [← hc, mul_comm]⟩
 
-theorem coe_nat_O (k : ℕ) : (((k : 𝓞 D.host.E)) : D.host.E) = (k : D.host.E) := by
-  simp
-
 theorem fi_nat_mul {I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E} (hI : I ≠ 0) (x : D.host.E) :
     ∃ k : ℕ, k ≠ 0 ∧ (k : D.host.E) * x ∈ I := by
   obtain ⟨y, hyI, hy0⟩ : ∃ y ∈ I, y ≠ 0 := by

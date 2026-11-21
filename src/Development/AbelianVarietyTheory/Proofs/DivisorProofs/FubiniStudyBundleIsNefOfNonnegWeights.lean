@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiPosOfIsFubiniStudyOfRatFnFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefOfSemiPosGeneratedBySmallSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiPosOfIsFubiniStudyOfRatFnFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefOfSemiPosGeneratedBySmallSections
 
 set_option autoImplicit false
 
@@ -50,13 +50,13 @@ theorem isNef_of_isFS : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRi
     (D : ℕ), IsArithVar p D → ∀ (M : HermLB p) (J : Type) [Fintype J] (f : J → X.functionField) (w : J → ℝ),
     IsFS M f w → (∀ j, 0 ≤ w j) → M.IsNef D := by
   intro hA k _ X _ p D hX M J _ f w hFS hw
-  have hsemi := GlobalTheory.T.semiPos_of_isFubiniStudyOfRatFnFamily k X p D M J f w hFS
+  have hsemi := _root_.GlobalTheory.HSNef.semiPos_of_isFS k X p D M J f w hFS
   obtain ⟨ρ, hρ, hreg, hφ⟩ := hFS
   let s : J → M.B.Sec := fun j => secOfRat M.B ρ hρ (f j) fun c x hx => (hreg x c hx).1 j
   have hs : ∀ j c (h : genericPoint X ∈ M.B.U c), fnOf _ h ((s j).f c) = f j * ρ c :=
     fun j c h => fnOf_secOfRat hρ _ c h
   let e := Fintype.equivFin J
-  refine GlobalTheory.T.isNef_of_semiPos_generated_by_smallSections hA k X p D hX M (Fintype.card J) (fun i => s (e.symm i)) hsemi (fun i => ?_) (fun x => ?_)
+  refine _root_.GlobalTheory.GenNef.isNef_of_gen_small hA k X p D hX M (Fintype.card J) (fun i => s (e.symm i)) hsemi (fun i => ?_) (fun x => ?_)
   · intro σ y
     have hy : y ∈ ptsIn p σ (M.B.U (pick (M.φ σ).isLB y)) := mem_pick _ y
     have hg : genericPoint X ∈ M.B.U (pick (M.φ σ).isLB y) := gen_mem (mem_ptsIn.1 hy)

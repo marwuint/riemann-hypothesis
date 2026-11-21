@@ -3,7 +3,9 @@ import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.RamifiedCoefficientChains
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapDcrisEqDdRCrystallineUnramified
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DcrisStrictHodgeFiltrationUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DcrisStrictHodgeFiltrationUnramified
+import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OfShortExact
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N TensorProduct Module
@@ -97,7 +99,7 @@ theorem exactStrict (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
   have hexT := rTensor_exact P.R.B (f := ι.restrictScalars ℚ_[l]) (g := π.restrictScalars ℚ_[l]) hE hsurj
   have hinjT : Function.Injective ((ι.restrictScalars ℚ_[l]).rTensor P.R.B) :=
     Module.Flat.rTensor_preserves_injective_linearMap _ hinj
-  have hS := GlobalTheory.T.dcris_strict_hodgeFiltration_unramified l P AI hT K LL hb
+  have hS := _root_.GlobalTheory.Per.CrisStrict.dcris_strict l P AI hT K LL hb
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro x _ hx
     apply hinjT

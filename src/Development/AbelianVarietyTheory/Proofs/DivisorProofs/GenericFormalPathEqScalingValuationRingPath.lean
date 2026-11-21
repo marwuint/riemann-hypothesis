@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalkStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalSquaringPathWithTangentVectorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalSquaringPathUniqueOfAgreeLowDegreesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalSquaringPathsBaseChangeAndHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTangentOfSingleAffineChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalk
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormalSquaringPathWithTangentVector
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalSquaringPathUniqueOfAgreeLowDegrees
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalSquaringPathsBaseChangeAndHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTangentOfSingleAffineChart
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -75,7 +75,7 @@ theorem genPath_scaling : ∀ (k K E : Type) [Field k] [IsAlgClosed k] [CharZero
       _ ≤ (p.1 u)⁻¹ * p.1 u := by gcongr
       _ = 1 := inv_mul_cancel₀ hu0
   let e : Fin r → p.O := fun j => ⟨eE j, heO j⟩
-  obtain ⟨ζ, hζ, hζt⟩ := GlobalTheory.T.exists_formalSquaringPath_with_tangentVector C G p.O hsm hqs b r V (fun j => i.app V (t j)) e hbV
+  obtain ⟨ζ, hζ, hζt⟩ := _root_.GlobalTheory.Nef.exists_path_tan C G p.O hsm hqs b r V (fun j => i.app V (t j)) e hbV
   obtain ⟨U₀, hU₀a, hζU₀, -⟩ := Opens.isBasis_iff_nbhd.1 G.left.isBasis_affineOpens
     (Opens.mem_top (ζ (IsLocalRing.closedPoint (PowerSeries p.O))))
   have hζU : ⊤ ≤ ζ ⁻¹ᵁ U₀ := (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk.2.2.2.1 (PowerSeries p.O) G.left ζ U₀).2 hζU₀
@@ -139,7 +139,7 @@ theorem genPath_scaling : ∀ (k K E : Type) [Field k] [IsAlgClosed k] [CharZero
     refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_
     ring
   have htan' : HasTan G xE (spMap (sc p u) ≫ ζ) (fun j => i.app V₀ (s j)) w :=
-    GlobalTheory.T.hasTangent_of_single_affineChart C G E 2 xE _ hξ'path r V₀ _ w U₀ hU₀a hξ'U _ (inf_le_left.trans h₀) inf_le_right hxs key
+    _root_.GlobalTheory.Nef.hasTan_of_affine_chart C G E 2 xE _ hξ'path r V₀ _ w U₀ hU₀a hξ'U _ (inf_le_left.trans h₀) inf_le_right hxs key
   have hunit : ∀ j, 2 ≤ j → IsUnit ((2 : E) ^ j - 2) := by
     intro j hj
     refine isUnit_iff_ne_zero.2 fun h0 => ?_
@@ -151,7 +151,7 @@ theorem genPath_scaling : ∀ (k K E : Type) [Field k] [IsAlgClosed k] [CharZero
     rw [Nat.cast_eq_zero] at hc
     omega
   have heq : ξ = spMap (sc p u) ≫ ζ := by
-    refine GlobalTheory.T.formalSquaringPath_unique_of_agree_low_degrees C G E hqs 2 2 (by norm_num) hunit xE ξ _ hξ hξ'path ?_
+    refine _root_.GlobalTheory.Nef.path_unique C G E hqs 2 2 (by norm_num) hunit xE ξ _ hξ hξ'path ?_
     intro U h h' f j hj0 hj2
     obtain rfl : j = 1 := by omega
     have hb3 : ⊤ ≤ xE ⁻¹ᵁ (V₀ ⊓ unitSec G ⁻¹ᵁ U) := by

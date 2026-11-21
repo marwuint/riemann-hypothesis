@@ -1,5 +1,6 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ShortLatticeUnitarize.Unitarize
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.FinCompR
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.CqStmt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLocCompAndIsLocLoc
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep UpperTheory.V.Af
 
@@ -71,43 +72,5 @@ private theorem sep_of_sum {Γ X V : Type} [Group Γ] [AddCommGroup X] [Module �
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {n : ℕ}
 
-private theorem cpt_fin (π : TR.CuspSub F n) (k : TR.Kinf F n) (g : GL (Fin n) (Af F)) (y : π.V) :
-    π.op (.cpt k) (π.finPart g y) = π.finPart g (π.op (.cpt k) y) := by
-  refine Subtype.ext ?_
-  change (TR.rt F n (TR.infGL F n (Unitary.toUnits k)) * TR.rt F n (finGL F n g)) y.1 =
-    (TR.rt F n (finGL F n g) * TR.rt F n (TR.infGL F n (Unitary.toUnits k))) y.1
-  rw [← map_mul, ← map_mul, TR.infGL_comm]
-
-private theorem sum_top (π : TR.CuspSub F n) (σ : SmIrr (GL (Fin n) (Af F))) (h : π.IsFinComp σ) :
-    ⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.finPart g (f v)}, LinearMap.range f.1 = ⊤ := by
-  set W := ⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.finPart g (f v)}, LinearMap.range f.1 with hW
-  have h1 : ∀ g, ∀ x ∈ W, π.finPart g x ∈ W := fun g x hx => by
-    refine Submodule.mem_comap.1 ((iSup_le (a := Submodule.comap (π.finPart g) _) fun f => ?_) hx)
-    rintro _ ⟨v, rfl⟩
-    exact Submodule.mem_iSup_of_mem f ⟨σ.ρ g v, f.2 g v⟩
-  have h2 : ∀ T : Module.End ℂ π.V, (∀ g x, T (π.finPart g x) = π.finPart g (T x)) → ∀ x ∈ W, T x ∈ W := fun T hT x hx => by
-    refine Submodule.mem_comap.1 ((iSup_le (a := Submodule.comap T _) fun f => ?_) hx)
-    rintro _ ⟨v, rfl⟩
-    exact Submodule.mem_iSup_of_mem ⟨T ∘ₗ f.1, fun g v => by
-      rw [LinearMap.comp_apply, f.2]; exact hT g _⟩ ⟨v, rfl⟩
-  have hi := Submodule.map_injective_of_injective π.V.injective_subtype
-  have hop : ∀ o, ∀ x ∈ W, π.op o x ∈ W := fun o x hx => by
-    cases o with
-    | fin k => exact h1 k x hx
-    | cpt k => exact h2 _ (fun g y => cpt_fin π k _ y) x hx
-    | lie X => exact h2 _ (fun g y => Subtype.ext (LinearMap.congr_fun (TR.lie_rt_fin X g) y.1)) x hx
-  rcases π.irred (W.map π.V.subtype) (Submodule.map_subtype_le _ _) (by
-    rintro o _ ⟨x, hx, rfl⟩
-    exact ⟨_, hop o x hx, rfl⟩) with e | e
-  · have e' : W = ⊥ := hi (e.trans (Submodule.map_bot _).symm)
-    obtain ⟨f, h0, hf⟩ := h
-    exact absurd (LinearMap.range_eq_bot.1 ((iSup_eq_bot.1 e') ⟨f, hf⟩)) h0
-  · exact hi (e.trans (Submodule.map_subtype_top _).symm)
-
 end UpperTheory.V.Sd.Wc
 
-theorem UpperTheory.V.Sd.Wc.finProj :
-    UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Sd.Wc.FinProj := by
-  intro P F _ _ _ π hreg
-  obtain ⟨τ, h1⟩ := UpperTheory.V.Br.finCompR P.admR F 2 π
-  exact ⟨τ, h1, sep_of_sum τ.ρ τ.irred π.finPart (sum_top π τ h1)⟩

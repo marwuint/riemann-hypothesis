@@ -3,7 +3,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrAtEmb
 import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormIntegrality
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EtaCharacterUnramified
+import Formalism.LocalToGlobal.IndefiniteReal.FWTie
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPairCharactersAtLevel
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHeckeCharMulInv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstRelIffTwistFactorAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingHomEqOnAdjoinSimple
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolShapeOfOverK
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfConjOnFinite
@@ -50,53 +56,5 @@ theorem signs_of_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type}
   unfold Links.parAt at he
   rw [if_pos (((labels_overK σ).1 hσ).2 ρ)] at he
   exact (GlobalTheory.HolDict.isEnum_holPar_kapW _ (rank_Wc i) (by rw [hs]; exact sigW_add i) he a).2
-
-theorem unramAt_conj {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
-    {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (hR : R.Char F)
-    (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} {μ' η' : (AE D)ˣ →* Circle} (hμ : ChiAt R i σ μ') (hη : IsEtaConj σ R.eta η')
-    {v ε} (hv : NonSplitAt D v ε) : UnramAt ε μ' ∧ UnramAt ε (μ' * η'⁻¹) := by
-  have hc := chars_of_lift D G Pl0 T0 A Ks R F hR i
-  have u1 : UnramAt ε μ' := fun x a b c => by
-    have h0 : R.mu0 ((i : ℕ) + 1) x * R.xi A.μ0 x = 1 := (hc.2.2.2 A.μ0 v ε hv).1 x a b c
-    rw [hc.2.1, MonoidHom.one_apply, mul_one] at h0
-    exact (hμ.2.2.2.1 x (infPart_eq_one hv.1 a)).elim fun y hy =>
-      (circle_eq_one_iff_of_conj D.what₂.embLL σ _ _ y hy.1 hy.2).2 h0
-  refine ⟨u1, fun x a b c => ?_⟩
-  show μ' x * (η' x)⁻¹ = 1
-  rw [u1 x a b c, hη.2.1 x (infPart_eq_one hv.1 a) b c, inv_one, one_mul]
-
-theorem factsAt : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → FWTie T R κ v₀ → ∀ (i : Fin D.R.m) (O : OM T R i), Pinned κ v₀ O → ∀ (σ : D.what₂.LL →+* ℂ) (σ' : O.c'.F →+* ℂ), σ'.comp O.jL = σ → OverK σ → FactsAt O σ σ' := by
-  intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hP σ σ' hσ' hK
-  have hin : InR D ((i : ℕ) + 1) := inR i
-  have hf : (inC O.c').comp O.jL = D.what₂.embLL := hP.lift.field
-  have e0 : res T D.what₂.embLL = T.σ₀ := res_embLL T tie.alg_eq tie.laws.pins.2.2.1
-  have hj : ∀ x, O.jL (algebraMap T.Q.c.F D.what₂.LL x) = incF T.Q.c O.c' O.hle x := fun x =>
-    (inC O.c').injective ((RingHom.congr_fun hf _).trans (RingHom.congr_fun e0 x))
-  have hs : res T σ = sOf O σ' := RingHom.ext fun x =>
-    (RingHom.congr_fun hσ' _).symm.trans (congrArg σ' (hj x))
-  have hg : GoodEmb T.Q.c (res T σ) := (overK_iff_good T R F κ v₀ hR tie i σ).1 hK
-  have hg' : GoodEmb T.Q.c (sOf O σ') := hs ▸ hg
-  have hsig : ∀ ρ, (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1) := fun ρ => D.sp.W_sigval _ hin.1 hin.2 _
-  have hq := (tie.laws.pins.2.2.2 _ hin).2.1
-  have hpq : (D.R.sigW ((i : ℕ) + 1)).1 + (T.Q.Dw ((i : ℕ) + 1)).q = (Wc D i).rank := by
-    rw [hq]; exact sigW_add i
-  have hε : ∀ τ a, (R.MW i σ).ε τ a = decide ((a : ℕ) < (D.R.sigW ((i : ℕ) + 1)).1) := fun τ a => by
-    rw [signs_of_overK R i hK τ a, hsig]
-  have hl := (labels_overK σ).1 hK
-  refine ⟨hs, hg', hg', signs_of_overK R i hK, FactsLat.isONeg_x0Mat _ hpq hε, FactsLat.cart_eq_cartZ _ hpq hε, ?_,
-    fun ρ => ?_, fun μ' η' hμ hη => ⟨fun hV => ?_, fun v ε hv => unramAt_conj R F hR i hμ hη hv, ?_⟩⟩
-  · have h : IsModelBaseFrameFamily (R.MW i σ) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) (res T σ)) := tie.x0 i σ hg
-    rw [hs] at h
-    exact h
-  · refine Eq.trans ?_ (hl.2 ρ)
-    unfold relab labE
-    rw [← embV_eq_embF O.c' O.jL hf, ← hσ']
-    rfl
-  · have h : ChiAt R i σ (T.chiW ((i : ℕ) + 1) (res T σ)) := tie.chiR i σ hg
-    rw [hs] at h
-    rw [(GlobalTheory.ConjCharUnique.conjChar_unique R F hR i σ).1 _ _ hμ h]
-    exact FactsLat.muVal_cast hV (tie.laws.muVal _ hin _ hg')
-  · have h := GlobalTheory.EtaConjType.resEta_hasInfExp_of_isEtaConj R F hR i σ hK η' hη
-    exact (hypConj_of_chars R F hR i σ hl.1 hl.2).2 μ' η' hμ hη h.1 h.2
 
 end GlobalTheory.GalOne.Facts

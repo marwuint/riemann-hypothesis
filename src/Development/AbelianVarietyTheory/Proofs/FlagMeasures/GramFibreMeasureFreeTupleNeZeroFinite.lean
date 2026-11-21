@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Measures
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibUniq
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensFibV
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramMapPreimageVolumeLowerBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramMapPreimageVolumeLowerBound
 
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures
 open scoped TensorProduct ENNReal
@@ -174,6 +174,6 @@ theorem fibre_nonzero_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field
   have hσ : ∀ y, σ (σ y) = y := PI.VolStabS.sigma_invol σ hCM.2.2.2
   exact fib_tens σ hσ J hJ.1 a (Fv F v) (PI.VolStabS.isOpen_units_Fv F v)
     (PI.VolStabS.TensAllW.lip_field _) μ ν fib h x S hx
-    (GlobalTheory.T.gramMap_preimage_volume_lower_bound F E σ hCM n J hJ v a μ ν hμ hν x S hx hS)
+    (_root_.GlobalTheory.GramPreimageLB.lb_gram_preimage F E σ hCM n J hJ v a μ ν hμ hν x S hx hS)
 
 end GlobalTheory.LocalFibreNonzero

@@ -118,28 +118,6 @@ theorem isClosed_stabT [IsTopologicalRing (R ⊗[F] E)] [T2Space (R ⊗[F] E)] {
   rw [hset]
   exact isClosed_iInter fun b => isClosed_eq (continuous_lin R σ J _) continuous_const
 
-theorem isClosed_Nsub [IsTopologicalRing (R ⊗[F] E)] [T2Space (R ⊗[F] E)] {r : ℕ}
-    (P : Frame E n r) : IsClosed (Nsub R σ J P : Set (HA R σ J)) := by
-  have hset : (Nsub R σ J P : Set (HA R σ J)) =
-      (⋂ b, {g | lin R σ J g (ratV (F := F) R (P.e b)) - ratV (F := F) R (P.e b) ∈
-        spanR (F := F) R P.e {a | a < b}}) ∩
-      ⋂ v, ⋂ (_ : InXperp R σ J P v), {g | lin R σ J g v - v ∈ spanR (F := F) R P.e Set.univ} := by
-    ext g
-    simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]
-    exact Iff.rfl
-  rw [hset]
-  exact (isClosed_iInter fun b => (isClosed_spanR _ _).preimage ((continuous_lin R σ J _).sub continuous_const)).inter
-    (isClosed_iInter fun v => isClosed_iInter fun _ =>
-      (isClosed_spanR _ _).preimage ((continuous_lin R σ J v).sub continuous_const))
-
 end Gen
-
-theorem closedStep_of (hT : TensTop) : ClosedStep := by
-  intro F E _ _ _ _ _ σ _ M J _ r P T _ _
-  obtain ⟨h1, h2, _, _⟩ := hT F E
-  refine ⟨isClosed_stabT _ σ J _, ?_, isClosed_stabT _ σ J _⟩
-  show IsClosed ((Nsub (AF F) σ J P ⊓ S0 (AF F) σ J P : Subgroup (HA (AF F) σ J)) : Set (HA (AF F) σ J))
-  rw [Subgroup.coe_inf]
-  exact (isClosed_Nsub _ σ J P).inter (isClosed_stabT _ σ J _)
 
 end PI.VolSemiDirect.W

@@ -33,14 +33,6 @@ def zSeq (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) {n m : ℕ} (x : grpH (G
   | t + 1 => (grpHMap (psi R l (lev l n t)) m).hom (zSeq R hl x t) -
       l ^ (t + 2) • (grpHMap (stab R (lev l n t) (l * lev l n t) (Nat.le_mul_of_pos_left _ hl)) m).hom (zSeq R hl x t)
 
-def BStar : Prop :=
-  ∀ (L : Type) [Field L] [NumberField L], IsTotallyComplex L → ∀ k : ℕ, Odd k → ∀ (l : ℕ) (hl : 2 ≤ l),
-    ∃ d : ℕ, 0 < d ∧ ¬l ^ 2 ∣ d ∧ ∀ n : ℕ, 2 * (k + 1) + 4 ≤ n → ∀ x : grpH (Gm L n) (k + 1),
-      ∃ r : ℕ, r ≠ 0 ∧
-        r • (grpHMap (psi (𝓞 L) d (lev l n k)) (k + 1)).hom (zSeq (𝓞 L) (by omega : 0 < l) x k) = 0
-
-def SBStar : Prop := SChain → SSep → SBridge → SStab → SSurj → SWt → BStar
-
 end PositivityTheory.KB
 
 end

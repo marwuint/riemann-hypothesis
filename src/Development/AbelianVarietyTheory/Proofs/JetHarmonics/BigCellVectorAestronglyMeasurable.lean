@@ -3,8 +3,8 @@ import Formalism.HermitianCurvature.StatementTBB
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TheoremPIntegralOfPlaces
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsContinuousFrameSectionStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselBigCellPointVectorEqBesselStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AestronglyMeasurableBesselFunctionContinuousFamiStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselBigCellPointVectorEqBessel
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AestronglyMeasurableBesselFunctionContinuousFami
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filter Topology MeasureTheory
 
@@ -31,9 +31,9 @@ theorem bigCell_vector_aestronglyMeasurable :
   have key : ∀ c ∈ U, γ c ∈ B.GPos p.T.base ∧ p.V H (TBB.bigPt P.r c) = B.JF p.T.base H (γ c) := by
     intro c hc
     obtain ⟨g1, g2, g3⟩ := hγ c hc.1 hc.2
-    exact ((GlobalTheory.T.besselBigCellPoint_vector_eq_bessel Wp Wq P p H c).2 hc).2 (γ c) g1 g2 g3
+    exact ((_root_.GlobalTheory.vec_bigPt_eq_bessel Wp Wq P p H c).2 hc).2 (γ c) g1 g2 g3
   have hm : AEStronglyMeasurable (fun c => B.JF p.T.base H (γ c)) (volume.restrict U) := by
-    refine GlobalTheory.T.aestronglyMeasurable_besselFunction_continuousFamily P.k P.r Wp Wq p.T.base _ volume U γ (B.GPos p.T.base) H hUo hγc ?_ hH
+    refine _root_.GlobalTheory.besselJ_family_aestronglyMeasurable P.k P.r Wp Wq p.T.base _ volume U γ (B.GPos p.T.base) H hUo hγc ?_ hH
     intro c hc q hq
     have h := (key c hc).1
     exact ⟨Formalism.FourierDecayAlt.P.B7.sgs_mem _ hq h.1, by
@@ -43,7 +43,7 @@ theorem bigCell_vector_aestronglyMeasurable :
     funext c
     by_cases hc : c ∈ U
     · rw [Set.indicator_of_mem hc]; exact (key c hc).2
-    · rw [Set.indicator_of_notMem hc]; exact (GlobalTheory.T.besselBigCellPoint_vector_eq_bessel Wp Wq P p H c).1 hc
+    · rw [Set.indicator_of_notMem hc]; exact (_root_.GlobalTheory.vec_bigPt_eq_bessel Wp Wq P p H c).1 hc
   rw [he]
   exact (aestronglyMeasurable_indicator_iff hUo.measurableSet).2 hm
 

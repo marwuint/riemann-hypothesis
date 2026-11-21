@@ -40,10 +40,6 @@ def majAt (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (
     (x y : V) : ℂ :=
   ∑ i, star (fcoord b X v x i) * fcoord b X v y i
 
-def jAt (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
-    (v : InfinitePlace K) : Matrix ι ι ℂ :=
-  X v * ((X v).conjTranspose * gramAt h b v * X v) * (X v)⁻¹
-
 def sgnAt (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (i : ι) : ℝ :=
   (((X v).conjTranspose * gramAt h b v * X v) i i).re
@@ -85,120 +81,12 @@ def jW (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V) (X : Infinit
     EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2) :=
   (WithLp.equiv 2 _).symm fun p => sgnAt h b X p.1 p.2.1 * w p
 
-def tdual {R : Type*} [CommRing R] [Module R V] (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V) :
-    Set V :=
-  {y | ∀ x ∈ L, ∃ z : ℤ, Algebra.trace ℚ K (h x y) = z}
-
-def invDiff (K : Type*) [Field K] [NumberField K] : Set K :=
-  {a | ∀ r : RingOfIntegers K, ∃ z : ℤ, Algebra.trace ℚ K (a * r) = z}
-
-def dualI {R : Type*} [CommRing R] [Module R V] (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V)
-    (I : Set K) : Set V :=
-  {x | ∀ y ∈ L, h y x ∈ I}
-
 variable [Module (RingOfIntegers K) V] [IsScalarTower (RingOfIntegers K) K V]
 
 def idealSmul (I : Submodule (RingOfIntegers K) K) (L : Submodule (RingOfIntegers K) V) :
     Submodule (RingOfIntegers K) V :=
   Submodule.span (RingOfIntegers K) {z | ∃ a ∈ I, ∃ x ∈ L, z = a • x}
 
-def content (L : Submodule (RingOfIntegers K) V) (y : V) : Submodule (RingOfIntegers K) K :=
-  sInf {I | y ∈ idealSmul I L}
-
-def contentIdeal (L : Submodule (RingOfIntegers K) V) (y : V) : Ideal (RingOfIntegers K) :=
-  (content L y).comap (Algebra.linearMap (RingOfIntegers K) K)
-
-def heightMaj (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
-    (L : Submodule (RingOfIntegers K) V) (y : V) : ℝ :=
-  ((∏ v, normAt b X v y ^ 2) / (Ideal.absNorm (contentIdeal L y) : ℝ)) ^
-    ((1 : ℝ) / (2 * Fintype.card (InfinitePlace K)))
-
-def matAt (b : Module.Basis ι K V) (v : InfinitePlace K) (g : V →ₗ[K] V) : Matrix ι ι ℂ :=
-  (LinearMap.toMatrix b b g).map v.embedding
-
-def OpBoundAt (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
-    (g : V →ₗ[K] V) (δ : ℝ) : Prop :=
-  ∀ u : ι → ℂ, cnorm (Matrix.mulVec (X v)⁻¹ (Matrix.mulVec (matAt b v g - 1) u)) ≤
-    δ * cnorm (Matrix.mulVec (X v)⁻¹ u)
-
 end Maj
-
-def invDiffSub (K : Type*) [Field K] [NumberField K] : Submodule (RingOfIntegers K) K :=
-  Submodule.span (RingOfIntegers K) (invDiff K)
-
-def MajBasic : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
-    [Fintype ι] [DecidableEq ι] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
-    (X : InfinitePlace K → Matrix ι ι ℂ), h.IsSymm →
-    (∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a)) →
-    (∀ v, IsFrame h b v (X v)) →
-    (∀ v : InfinitePlace K,
-      jAt h b X v * jAt h b X v = 1 ∧
-      (jAt h b X v).conjTranspose * gramAt h b v * jAt h b X v = gramAt h b v ∧
-      (jAt h b X v).conjTranspose * gramAt h b v = gramAt h b v * jAt h b X v ∧
-      (∀ x y : V, majAt b X v x y = dotProduct (star (vecAt b v x))
-        (Matrix.mulVec ((jAt h b X v).conjTranspose * gramAt h b v) (vecAt b v y))) ∧
-      (∀ x : V, majAt b X v x x = ((normAt b X v x ^ 2 : ℝ) : ℂ)) ∧
-      (∀ x : V, normAt b X v x = 0 → x = 0) ∧
-      (∀ x : V, ‖v.embedding (h x x)‖ ≤ normAt b X v x ^ 2)) ∧
-    ∀ x : V, ‖realize b X x‖ ^ 2 = ∑ v, normAt b X v x ^ 2
-
-def MajDual : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [IsTotallyComplex K] [StarRing K] [AddCommGroup V]
-    [Module K V] [Fintype ι] [DecidableEq ι] [Module (RingOfIntegers K) V]
-    [IsScalarTower (RingOfIntegers K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V)
-    (X : InfinitePlace K → Matrix ι ι ℂ), h.IsSymm →
-    (∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a)) →
-    (∀ v, IsFrame h b v (X v)) →
-    (∀ x y : V, inner ℝ (realize b X x) (jW h b X (realize b X y)) =
-      ((Algebra.trace ℚ K (h x y) : ℚ) : ℝ) / 2) ∧
-    ∀ L : Submodule (RingOfIntegers K) V, Submodule.IsLattice K L →
-      (∃ _ : DiscreteTopology (zmap (realize b X) L), IsZLattice ℝ (zmap (realize b X) L)) ∧
-      (∀ w, w ∈ Formalism.HadamardInequality.zdual (zmap (realize b X) L) ↔
-        ∃ y : V, (∀ x ∈ L, ∃ z : ℤ, Algebra.trace ℚ K (h x y) = 2 * z) ∧
-          w = jW h b X (realize b X y)) ∧
-      (∀ y : V, y ∈ tdual h L ↔ y ∈ dualI h L (invDiff K)) ∧
-      (IsUnimodular h L → ∀ y : V, y ∈ dualI h L (invDiff K) ↔ y ∈ idealSmul (invDiffSub K) L)
-
-def HeightBasic : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [IsTotallyComplex K] [StarRing K] [AddCommGroup V]
-    [Module K V] [Fintype ι] [DecidableEq ι] [Module (RingOfIntegers K) V]
-    [IsScalarTower (RingOfIntegers K) K V] (b : Module.Basis ι K V)
-    (X : InfinitePlace K → Matrix ι ι ℂ) (L : Submodule (RingOfIntegers K) V),
-    Submodule.IsLattice K L → ∀ y ∈ L, y ≠ 0 →
-      y ∈ idealSmul (content L y) L ∧ content L y ≤ 1 ∧
-      1 ≤ Ideal.absNorm (contentIdeal L y) ∧
-      heightMaj b X L y ≤ (∏ v, normAt b X v y ^ 2) ^ ((1 : ℝ) / (2 * Fintype.card (InfinitePlace K))) ∧
-      ∀ a : RingOfIntegers K, a ≠ 0 → heightMaj b X L ((a : K) • y) = heightMaj b X L y
-
-def OpBound : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
-    [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
-    (g : V →ₗ[K] V) (δ : ℝ), 0 ≤ δ → (∀ v, OpBoundAt b X v g δ) →
-    ∀ y : V, ‖realize b X (g y - y)‖ ≤ δ * ‖realize b X y‖
-
-def FrameBasic : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
-    [Fintype ι] [DecidableEq ι] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Module.Basis ι K V), h.IsSymm →
-    (∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a)) →
-    ∀ v : InfinitePlace K,
-      (h.Nondegenerate → ∃ X : Matrix ι ι ℂ, IsFrame h b v X) ∧
-      ∀ X g : Matrix ι ι ℂ, IsFrame h b v X →
-        g.conjTranspose * gramAt h b v * g = gramAt h b v → IsFrame h b v (g * X)
-
-def RealizeBasic : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
-    [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ),
-    (∀ (v : InfinitePlace K) (a : K) (x : V), fcoord b X v (a • x) = v.embedding a • fcoord b X v x) ∧
-    ∀ (q : ℚ) (x : V), realize b X (algebraMap ℚ K q • x) = (q : ℝ) • realize b X x
-
-def MajLattice : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [IsTotallyComplex K] [StarRing K] [AddCommGroup V]
-    [Module K V] [Fintype ι] [DecidableEq ι] [Module (RingOfIntegers K) V]
-    [IsScalarTower (RingOfIntegers K) K V] (b : Module.Basis ι K V)
-    (X : InfinitePlace K → Matrix ι ι ℂ), (∀ v, IsUnit (X v).det) →
-    ∀ L : Submodule (RingOfIntegers K) V, Submodule.IsLattice K L →
-      DiscreteTopology (zmap (realize b X) L) ∧
-      Submodule.span ℝ ((zmap (realize b X) L : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)))) = ⊤
 
 end Formalism.HermitianLatticesTheory

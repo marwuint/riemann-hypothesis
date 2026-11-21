@@ -23,29 +23,6 @@ def PSDAgree : Prop :=
 def PSDTranspose : Prop :=
   ∀ (α : Type) (F : Finset α) (k : α → α → ℂ), TB.PSDOn F k → TB.PSDOn F (fun x y => k y x)
 
-def toTA {E W : Type} [Field E] (D : TB.Data E W) : TA.Data E where
-  r := D.r
-  K := fun i p q => D.Kr i q p
-  Th := fun i s t h h' => D.Th i s t h' h
-  e := D.e
-  La := fun i s => D.La (i - s + 1) s
-  Lf := fun i s => D.Lap (i - s + 1) s
-  Lv := fun i => D.Lad i
-
-def AxiomsAgree : Prop :=
-  ∀ (E W : Type) [Field E] [DecidableEq E] (D : TB.Data E W), D.KernelPSD → D.KernelSupport → D.ThetaDomination →
-    TA.AxK (toTA D) ∧ TA.KernelSupport (toTA D) ∧ TA.ThetaDomination (toTA D) ∧ TA.AxE (toTA D)
-
-def TowersAgree : Prop :=
-  ∀ (E : Type) [Field E] [DecidableEq E] (T : TB.Tower E) (i : ℕ),
-    T.X i = TA.PT (fun j s => T.Sg (j - s + 1) s) i
-
-def FormsAgree : Prop :=
-  ∀ (E W : Type) [Field E] [DecidableEq E] (D : TB.Data E W) (H : Type) [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] (Φ : W → TA.Pt E → H) (T : TB.Tower E) (ε : ℝ) (i : ℕ) (w : W),
-    D.wt w ≠ 0 → (∀ p q, D.gram ε i w p q = (D.wt w : ℂ) * inner ℂ (Φ w q) (Φ w p)) →
-    D.Q T ε i w = TA.Slev (toTA D) (fun j s => T.Sg (j - s + 1) s) Φ w i
-
 def prof {E : Type} [Field E] [NumberField E] (x : InfinitePlace E → ℝ) (K : ℕ) (l : E) : ℝ :=
   ∏ w, min 1 ((x w / w l) ^ K)
 
@@ -83,36 +60,6 @@ def LatticeSumsJoint : Prop :=
       PlacesOf D e → 3 ≤ D.K → 1 ≤ a → 2 * a < Θ → IdealSizes D aaD aaL Θ a →
       D.LatticeSums ((C * a ^ ((D.K : ℝ) - 5 / 2) * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f)
 
-def LevelSizesJoint : Prop :=
-  ∀ C₁ C₄ : ℝ, 1 ≤ C₁ → 1 ≤ C₄ →
-    ∀ (E W : Type) [Field E] (D : TB.Data E W) (Θ : ℝ), 4 ≤ D.K → 1 ≤ D.f → 3 * C₁ ≤ Θ →
-      (∀ v l, 0 ≤ D.av v l) → (∀ i v, 0 ≤ D.szD i v) → (∀ b s v, 0 ≤ D.szL b s v) →
-      (∀ i, 1 ≤ i → i ≤ D.r + 1 → 0 ≤ D.e i ∧ D.e i ≤ 1) → D.SizesBelow Θ →
-      D.LatticeSums ((C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f) →
-      ∀ i ∈ Icc 1 (D.r + 1),
-        TA.LevelSizes (toTA D) (Fin D.f → Fin 3) (D.maj (D.szD i))
-          (fun s => D.maj (D.szL (i - s + 1) s))
-          ((C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f)
-          (fun _ => (C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f)
-          (fun s => C₄ ^ (D.f * s) * ∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s')
-          ((max (3 * C₁) (2 * C₄) * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f)
-          ((max (3 * C₁) (2 * C₄) / Θ) ^ D.f) i
-
-def LevelSizesJointMean : Prop :=
-  ∀ C₁ C₄ : ℝ, 1 ≤ C₁ → 1 ≤ C₄ →
-    ∀ (E W : Type) [Field E] (D : TB.Data E W) (Θ : ℝ), 4 ≤ D.K → 1 ≤ D.f → 3 * C₁ ≤ Θ →
-      (∀ v l, 0 ≤ D.av v l) → (∀ i v, 0 ≤ D.szD i v) → (∀ b s v, 0 ≤ D.szL b s v) →
-      (∀ i, 1 ≤ i → i ≤ D.r + 1 → 0 ≤ D.e i ∧ D.e i ≤ 1) → D.SizesBelow Θ →
-      D.LatticeSums ((C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f) →
-      ∀ i ∈ Icc 1 (D.r + 1),
-        TA.LevelSizes (toTA D) (Fin D.f → Fin 3) (fun l => 2 ^ D.f * D.maj (D.szD i) l)
-          (fun s => D.maj (D.szL (i - s + 1) s))
-          (2 ^ D.f * (C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f)
-          (fun _ => (C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f)
-          (fun s => C₄ ^ (D.f * s) * ∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s')
-          ((max (3 * C₁) (2 * C₄) * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f)
-          ((max (3 * C₁) (2 * C₄) / Θ) ^ D.f) i
-
 section Blocks
 
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
@@ -125,11 +72,6 @@ def LadB (g r b : ℕ) : AddSubgroup E :=
   (S6.dualLat E g (S6.perLat E g (S6.nuBlock r b 1) 1)).toAddSubgroup
 
 end Blocks
-
-def NuIndex : Prop :=
-  ∀ r i s : ℕ, 1 ≤ s → s ≤ i →
-    S6.nuBlock r ((i - s + 1 : ℕ) : ℤ) s = 2 * r + 1 - 2 * i + s ∧
-      S6.nuBlock r ((i - s + 1 : ℕ) : ℤ) s = 2 * ((r : ℤ) + 1) - ((i - s + 1 : ℕ) : ℤ) - i
 
 def BlockLattices : Prop :=
   S6.LatticesGeneral → S6.IdealsMatch → S6.NormIdl →
@@ -203,39 +145,6 @@ def BlockFrame : Prop :=
         ZLattice.covolume (eLat E (S6.perLat E g ν s) (S6.rd E ^ (-ν))) =
           (S6.rd E / 2) ^ S6.deg E * (g : ℝ) ^ (3 * S6.deg E)
 
-open scoped Classical in
-
-def DualCovolume : Prop :=
-  S6.DegreeFacts → S6.PowConjStable → S6.UnramRelative → S6.Between → S6.IndexCore → S6.DualSubset →
-    S6.DualSupset → S6.NormIdl → S6.CovolumeIndex →
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], S6.Unram E →
-      ∀ (g : ℕ) (ν : ℤ) (s : ℕ), 0 < g →
-        ZLattice.covolume (E := mixedEmbedding.mixedSpace E)
-            (S6.frameLat E (S6.dualLat E g (S6.perLat E g ν s)) (S6.rd E ^ (ν + 1))) =
-          (S6.rd E / 2 / g) ^ S6.deg E
-
-open scoped Classical in
-
-def DualMeasureBound : Prop :=
-  S6.DegreeFacts → S6.PowConjStable → S6.UnramRelative → S6.Between → S6.IndexCore → S6.DualSubset →
-    S6.DualSupset → S6.NormIdl → S6.CovolumeIndex →
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], S6.Unram E →
-      ∀ (g : ℕ) (ν : ℤ) (s : ℕ), 0 < g →
-        ZLattice.covolume (E := mixedEmbedding.mixedSpace E)
-            (S6.frameLat E (S6.dualLat E g (S6.perLat E g ν s)) 1) =
-          ((g : ℝ) * (S6.rd E / 2)) ^ S6.deg E * (FractionalIdeal.absNorm (S6.dualIdl E g ν) : ℝ) ∧
-        (2 ≤ S6.rd E →
-          (ZLattice.covolume (E := mixedEmbedding.mixedSpace E)
-              (S6.frameLat E (S6.dualLat E g (S6.perLat E g ν s)) 1))⁻¹ ≤
-            ((FractionalIdeal.absNorm (S6.dualIdl E g ν) : ℝ))⁻¹)
-
-def DualCovolumeCV : Prop :=
-  S6.LatticesGeneral → EuclidFrame → BlockFrame →
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Formalism.H.DualIsLattice (CV E) →
-      Formalism.H.CovolumeDual (CV E) → S6.Unram E → ∀ (g : ℕ) (ν : ℤ) (s : ℕ), 0 < g →
-        ZLattice.covolume (Formalism.H.dual (eLat E (S6.perLat E g ν s) (S6.rd E ^ (-ν)))) =
-          ((S6.rd E / 2) ^ S6.deg E * (g : ℝ) ^ (3 * S6.deg E))⁻¹
-
 section Poisson
 
 open MeasureTheory Formalism.H
@@ -256,11 +165,6 @@ def PoissonJoint : Prop :=
       ∀ (t₀ : E) (B : ℝ),
         (∀ L : Finset E, (∀ l ∈ L, l ∈ Lad ∧ l ≠ 0) → ∑ l ∈ L, ‖nh l‖ ≤ B) →
         ∀ S : Finset E, (∀ t ∈ S, t - t₀ ∈ La) → ∑ t ∈ S, φ (emb t) ≤ ‖nh 0‖ + B
-
-def TransformAtZero : Prop :=
-  ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [MeasurableSpace V] [BorelSpace V]
-    [FiniteDimensional ℝ V] (φ : V → ℝ),
-    (𝓕 (fun v => (φ v : ℂ)) : V → ℂ) 0 = ∫ v, (φ v : ℂ)
 
 def Frames {E : Type} [Field E] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     (r : ℕ) (La Lad : ℕ → AddSubgroup E) (Λ : ℕ → Submodule ℤ V) (emb : ℕ → E →+ V)
@@ -287,48 +191,6 @@ def PoissonStepJoint : Prop :=
     ∀ (Λ : ℕ → Submodule ℤ V) [∀ i, DiscreteTopology (Λ i)] [∀ i, IsZLattice ℝ (Λ i)]
       (emb : ℕ → E →+ V) (dmap : ℕ → E → V),
       Frames D.r (fun i => D.La i 1) D.Lad Λ emb dmap → WaveFn D π Λ emb dmap → D.PoissonStep
-
-def WaveFnTA {E : Type} [Field E] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    {W : Type} (Φ : W → TA.Pt E → H)
-    (tr : W → Finset (TA.Pt E) → (TA.Pt E → TA.Pt E → ℂ) → E → ℂ) (i : ℕ) {V : Type}
-    [NormedAddCommGroup V] [InnerProductSpace ℝ V] [MeasurableSpace V] [BorelSpace V]
-    [FiniteDimensional ℝ V] {ι : Type} [Fintype ι] (π : ι → V →L[ℝ] ℂ) (Λ : Submodule ℤ V)
-    (emb : E →+ V) (dmap : E → V) : Prop :=
-  ∀ (w : W) (Hd : Finset (TA.Pt E)) (kap : TA.Pt E → TA.Pt E → ℂ), (∀ h ∈ Hd, TA.IsPt (i - 1) h) →
-    TA.PSDOn Hd kap →
-    ∃ (φ : V → ℝ) (Cφ : ℝ), Continuous φ ∧ (∀ c, |φ c| ≤ Cφ * ∏ v, ((1 + ‖π v c‖) ^ 3)⁻¹) ∧
-      (∀ c, 0 ≤ φ c) ∧ (∀ t : E, t ≠ 0 → (TA.Nst (Φ w) Hd kap 1 t t).re = φ (emb t)) ∧
-      ∀ l, tr w Hd kap l =
-        ((ZLattice.covolume Λ : ℝ) : ℂ)⁻¹ * (𝓕 (fun v => (φ v : ℂ)) : V → ℂ) (dmap l)
-
-def PoissonJointTA : Prop :=
-  F7.PoissonStepText → PoissonJoint →
-  ∀ (E : Type) [Field E] [DecidableEq E] (D : TA.Data E) (H : Type) [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] (W : Type) [Fintype W] (Φ : W → TA.Pt E → H)
-    (tr : W → Finset (TA.Pt E) → (TA.Pt E → TA.Pt E → ℂ) → E → ℂ) (i : ℕ) (V : Type)
-    [NormedAddCommGroup V] [InnerProductSpace ℝ V] [MeasurableSpace V] [BorelSpace V]
-    [FiniteDimensional ℝ V] (ι : Type) [Fintype ι] (π : ι → V →L[ℝ] ℂ),
-    (Function.Bijective fun (c : V) (v : ι) => π v c) →
-    ∀ (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (emb : E →+ V) (dmap : E → V),
-      Function.Injective emb → (∀ t ∈ D.La i 1, emb t ∈ Λ) → dmap 0 = 0 →
-      (∀ μ ∈ dual Λ, ∃ l ∈ D.Lv i, dmap l = μ) → WaveFnTA Φ tr i π Λ emb dmap →
-      TA.Poisson D Φ tr i
-
-def PoissonAgree : Prop :=
-  PSDAgree → PSDTranspose →
-  ∀ (E W : Type) [Field E] [DecidableEq E] [Fintype W] (D : TB.Data E W) (H : Type)
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Φ : W → TA.Pt E → H) (ε : ℝ) (i : ℕ),
-    0 < ε → 1 ≤ i → i ≤ D.r + 1 → (∀ w, D.wt w ≠ 0) →
-    (∀ w p q, D.gram ε i w p q = (D.wt w : ℂ) * inner ℂ (Φ w q) (Φ w p)) → D.PoissonStep →
-    TA.Poisson (toTA D) Φ (fun w Hd kap => D.Nhat ε i w Hd (fun h h' => kap h' h)) i
-
-def BlockPoissonFrame : Prop :=
-  EmbFacts → TraceDual → S6.TwIsFLattice → S6.PowConjStable →
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g r : ℕ), 0 < g →
-      Frames r (fun i => LaB E g r i 1) (fun i => LadB E g r i)
-        (fun i => eLat E (S6.perLat E g (S6.nuBlock r i 1) 1) (S6.rd E ^ (-(S6.nuBlock r i 1))))
-        (fun i => semb E (S6.rd E ^ (-(S6.nuBlock r i 1))))
-        (fun i => dm E g (S6.rd E ^ (-(S6.nuBlock r i 1))))
 
 end Poisson
 
@@ -363,20 +225,6 @@ def thrP (b : ℕ) (w : ι) : ℝ :=
   √(Sz.lamPrimeSq G.m b C (2 * Real.pi / G.g) G.N G.lenI (supA G de de' T T' l false w) (T * T'))
 
 end TransportedAlt
-
-def SupAIsCore : Prop :=
-  ∀ (ι : Type) [Fintype ι] (G : Sz.Glob ι) (de de' : ℕ → ℝ) (T T' : ℝ) (l : ℕ) (w : ι),
-    0 < G.g → 0 < G.ka →
-    supA G de de' T T' l false w =
-      sSup ((fun Y => (G.place w).core de de' T T' Y) '' (G.place w).cutI l) ∧
-    supA G de de' T T' l true w =
-      sSup ((fun Y => (G.place w).core de de' T T' Y) '' (G.place w).cutIntervalLong l G.N)
-
-def ThresholdsMonotone : Prop :=
-  ∀ (ι : Type) [Fintype ι] (G : Sz.Glob ι) (C C' : ℝ) (de de' : ℕ → ℝ) (T T' : ℝ) (l : ℕ),
-    0 ≤ C → C ≤ C' → 0 < G.g → 0 < G.v → 0 < G.lenI → ∀ (b s : ℕ) (w : ι),
-    0 ≤ thrS G C de de' T T' l b s w ∧ thrS G C de de' T T' l b s w ≤ thrS G C' de de' T T' l b s w ∧
-    0 ≤ thrP G C de de' T T' l b w ∧ thrP G C de de' T T' l b w ≤ thrP G C' de de' T T' l b w
 
 def Inst {E W : Type} [Field E] [NumberField E] [IsCMField E] (D : TB.Data E W)
     (e : Fin D.f ≃ InfinitePlace E) (G : Sz.Glob (InfinitePlace E)) (C : ℝ) (de de' : ℕ → ℝ)
@@ -442,63 +290,6 @@ def GlobPositive : Prop :=
   ∀ CDel Cb : ℝ, 4 < CDel → 0 < Cb → ∃ k0 : ℕ, ∀ (ι : Type) [Fintype ι] (G : Sz.Glob ι) (bb : ℝ),
     k0 ≤ G.k → G.Hyp bb CDel Cb → 0 < G.g1 ∧ 0 < G.g2 ∧ 0 < G.lenI
 
-def MajMono : Prop :=
-  ∀ (E W : Type) [Field E] (D : TB.Data E W) (ρ ρ' : Fin D.f → ℝ) (l : E),
-    (∀ v, 0 ≤ ρ v ∧ ρ v ≤ ρ' v) → (∀ v, 0 ≤ D.av v l) → D.maj ρ l ≤ D.maj ρ' l
-
-def withSizes {E W : Type} [Field E] (D : TB.Data E W) (szD' : ℕ → Fin D.f → ℝ)
-    (szL' : ℕ → ℕ → Fin D.f → ℝ) (vol' : ℕ → ℕ → ℝ) : TB.Data E W :=
-  { D with szD := szD', szL := szL', vol := vol' }
-
-def EstimatesMono : Prop :=
-  ∀ (E W : Type) [Field E] (D : TB.Data E W) (szD' : ℕ → Fin D.f → ℝ) (szL' : ℕ → ℕ → Fin D.f → ℝ)
-    (vol' : ℕ → ℕ → ℝ) (C₄ : ℝ), 0 ≤ C₄ → (∀ v l, 0 ≤ D.av v l) →
-    (∀ i v, 0 ≤ D.szD i v ∧ D.szD i v ≤ szD' i v) → (∀ b s v, 0 ≤ D.szL b s v ∧ D.szL b s v ≤ szL' b s v) →
-    (∀ b s, 0 ≤ D.vol b s ∧ D.vol b s ≤ vol' b s) → D.GramPSD → D.WordsPos →
-    (D.EstWave → (withSizes D szD' szL' vol').EstWave) ∧
-    (D.EstLift → (withSizes D szD' szL' vol').EstLift) ∧
-    (D.EstBlock C₄ → (withSizes D szD' szL' vol').EstBlock C₄)
-
-def RecHyp {E W : Type} [Field E] (D : TB.Data E W) (C₁ C₄ Θ jn : ℝ) {H : Type}
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ) : Prop :=
-  4 ≤ D.K ∧ 1 ≤ D.f ∧ 0 < Θ ∧ D.SizesBelow Θ ∧ D.GramPSD ∧ D.KernelPSD ∧ D.WordsPos ∧ D.KernelSupport ∧
-  D.ThetaDomination ∧ D.EstWave ∧ D.PoissonStep ∧ D.EstLift ∧ D.EstBlock C₄ ∧
-  D.LatticeSums ((C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f) ∧ D.EstE jn ∧ D.Cutoff Vt ∧ D.LeadingDomination Vt c
-
-def RecursionGivesBounds : Prop :=
-  TB.TheoremA → ∀ C₁ C₄ : ℝ, 1 ≤ C₁ → 1 ≤ C₄ → ∃ C C' : ℝ,
-    ∀ (E W : Type) [Field E] (D : TB.Data E W) (Θ jn : ℝ) (H : Type) [NormedAddCommGroup H]
-      [InnerProductSpace ℂ H] [CompleteSpace H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ),
-      RecHyp D C₁ C₄ Θ jn Vt c → C' ≤ Θ → (D.r : ℝ) * (C / Θ) ^ D.f ≤ 1 →
-      (∀ i ∈ Icc 1 (D.r + 1), D.e i = 0) →
-      ∀ (P : Type) [Fintype P] (B : S3.MassData P), B.IntN = jn →
-        B.δ = C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f →
-        (∀ M : ℝ, (∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤ M) → B.Smod ≤ M) →
-        B.InTheoremA
-
-def RecursionGivesForm : Prop :=
-  TB.TheoremA → ∀ C₁ C₄ : ℝ, 1 ≤ C₁ → 1 ≤ C₄ → ∃ C C' : ℝ,
-    ∀ (E W : Type) [Field E] (D : TB.Data E W) (Θ jn : ℝ) (H : Type) [NormedAddCommGroup H]
-      [InnerProductSpace ℂ H] [CompleteSpace H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ),
-      RecHyp D C₁ C₄ Θ jn Vt c → C' ≤ Θ → (D.r : ℝ) * (C / Θ) ^ D.f ≤ 1 →
-      (∀ i ∈ Icc 1 D.r, D.e i = 0) →
-      ∀ (P : Type) [Fintype P] (B : S3.MassData P), 1 + D.e (D.r + 1) = B.e1 → B.IntN = jn →
-        B.δ = C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f →
-        (∀ M : ℝ, (∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤ M) →
-          B.c0 * B.c0' * B.KV ≤ B.n0c * M) →
-        B.c0 * B.c0' * B.KV ≤ (1 + B.δ) * B.e1 * (B.n0c * B.IntN)
-
-def ProductOfE : Prop :=
-  ∀ (r : ℕ) (e : ℕ → ℝ) (sd : ℝ), (∀ i ∈ Icc 1 r, e i = 0) → 1 + e (r + 1) = sd →
-    ∏ i ∈ Icc 1 (r + 1), (1 + e i) = sd
-
-def TopE : Prop :=
-  ∀ sd e : ℝ, 1 + e = max sd 1 → sd ≤ 2 → 0 ≤ e ∧ e ≤ 1 ∧ sd ≤ 1 + e
-
-def OnceOnly : Prop :=
-  ∀ (P : Type) [Fintype P] (B : S3.MassData P), B.Pos → B.InKernel → B.InTheoremA →
-    B.c0 * B.c0' * B.KV ≤ (1 + B.δ) * B.supdens * (B.n0c * B.IntN)
-
 def FormGivesMain : Prop :=
   S3.MainTheorem → ∀ (P : Type) [Fintype P] (B : S3.MassData P), B.Pos → 0 < B.e1 → 0 ≤ B.KV → B.InTwoA →
     B.InForm → B.InMass → B.c0 * B.c0' * B.KV ≤ (1 + B.δ) * B.e1 * (B.n0c * B.IntN) →
@@ -507,64 +298,6 @@ def FormGivesMain : Prop :=
     B.GS = B.tt * B.Gam1 * B.Sig ∧
     B.GS ≤ (1 + B.δ) * B.e1 * B.tt * (B.d * B.d' / B.Dstar) ∧
     B.Kgs2 ≤ (1 + B.δ) * B.e1 * B.tt * (B.d * B.d' / B.Dstar)
-
-def MainJoint : Prop :=
-  TB.TheoremA → Sz.SizesMain → ∀ C₁ C₄ Cthr : ℝ, 1 ≤ C₁ → 1 ≤ C₄ →
-    ∃ CA C : ℝ, Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧
-    ∀ (C0 CG CDel cT Cb : ℝ), 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb → 1 < cT * Cb →
-    ∃ k0 : ℕ, ∀ (ι : Type) [Fintype ι] (G : Sz.Glob ι) (bb Cp Cf Th : ℝ) (de de' : ℕ → ℝ) (T T' : ℕ)
-      (du du' : ℝ) (l : ℕ),
-      k0 ≤ G.k → SzHyp G CA C0 CG CDel cT Cb bb Cp Th de de' T T' du du' l →
-      16 ≤ Sz.cExp CDel cT Cb * Cf → Cf * Real.log bb ≤ G.f * Real.log G.k →
-      ∀ (E W : Type) [Field E] (D : TB.Data E W) (jn : ℝ) (H : Type) [NormedAddCommGroup H]
-        [InnerProductSpace ℂ H] [CompleteSpace H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ),
-        D.r = G.r → D.f = G.f → RecHyp D C₁ C₄ Th jn Vt c → (∀ i ∈ Icc 1 (D.r + 1), D.e i = 0) →
-        ∀ (P : Type) [Fintype P] (B : S3.MassData P), B.IntN = jn →
-          B.δ = C * ((D.r : ℝ) + 1) * (C / Th) ^ D.f →
-          (∀ M : ℝ, (∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤ M) → B.Smod ≤ M) →
-          B.InTheoremA ∧ B.δ ≤ (bb ^ 7)⁻¹
-
-def MainJointForm : Prop :=
-  TB.TheoremA → Sz.SizesMain → ∀ C₁ C₄ Cthr : ℝ, 1 ≤ C₁ → 1 ≤ C₄ →
-    ∃ CA C : ℝ, Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧
-    ∀ (C0 CG CDel cT Cb : ℝ), 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb → 1 < cT * Cb →
-    ∃ k0 : ℕ, ∀ (ι : Type) [Fintype ι] (G : Sz.Glob ι) (bb Cp Cf Th : ℝ) (de de' : ℕ → ℝ) (T T' : ℕ)
-      (du du' : ℝ) (l : ℕ),
-      k0 ≤ G.k → SzHyp G CA C0 CG CDel cT Cb bb Cp Th de de' T T' du du' l →
-      16 ≤ Sz.cExp CDel cT Cb * Cf → Cf * Real.log bb ≤ G.f * Real.log G.k →
-      ∀ (E W : Type) [Field E] (D : TB.Data E W) (jn : ℝ) (H : Type) [NormedAddCommGroup H]
-        [InnerProductSpace ℂ H] [CompleteSpace H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ),
-        D.r = G.r → D.f = G.f → RecHyp D C₁ C₄ Th jn Vt c → (∀ i ∈ Icc 1 D.r, D.e i = 0) →
-        ∀ (P : Type) [Fintype P] (B : S3.MassData P), 1 + D.e (D.r + 1) = B.e1 → B.IntN = jn →
-          B.δ = C * ((D.r : ℝ) + 1) * (C / Th) ^ D.f →
-          (∀ M : ℝ, (∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤ M) →
-            B.c0 * B.c0' * B.KV ≤ B.n0c * M) →
-          B.c0 * B.c0' * B.KV ≤ (1 + B.δ) * B.e1 * (B.n0c * B.IntN) ∧ 0 ≤ B.δ ∧ B.δ ≤ (bb ^ 7)⁻¹
-
-def RecHypInst {E W : Type} [Field E] (D : TB.Data E W) (C₄ jn : ℝ) {H : Type}
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ) : Prop :=
-  D.GramPSD ∧ D.KernelPSD ∧ D.WordsPos ∧ D.KernelSupport ∧ D.ThetaDomination ∧ D.EstWave ∧ D.PoissonStep ∧ D.EstLift ∧
-  D.EstBlock C₄ ∧ D.EstE jn ∧ D.Cutoff Vt ∧ D.LeadingDomination Vt c
-
-def MainJointInst : Prop :=
-  TB.TheoremA → Sz.SizesMain → Formalism.SA.C.BoxSum → S6.LatticesGeneral → S6.IdealsMatch → S6.NormIdl →
-    S6.DegreeFacts → ∀ C₄ Cthr : ℝ, 1 ≤ C₄ →
-    ∃ CA C : ℝ, Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧
-    ∀ (C0 CG CDel cT Cb : ℝ), 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb → 1 < cT * Cb →
-    ∃ k0 : ℕ, ∀ (E W : Type) [Field E] [NumberField E] [IsCMField E] (D : TB.Data E W)
-      (e : Fin D.f ≃ InfinitePlace E) (G : Sz.Glob (InfinitePlace E)) (bb Cp Cf Th : ℝ)
-      (de de' : ℕ → ℝ) (T T' : ℕ) (du du' : ℝ) (l : ℕ),
-      k0 ≤ G.k → SzHyp G CA C0 CG CDel cT Cb bb Cp Th de de' T T' du du' l →
-      16 ≤ Sz.cExp CDel cT Cb * Cf → Cf * Real.log bb ≤ G.f * Real.log G.k →
-      S6.Unram E → Inst D e G CA de de' T T' l →
-      ∀ (jn : ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-        (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ),
-        RecHypInst D C₄ jn Vt c → (∀ i ∈ Icc 1 D.r, D.e i = 0) →
-        ∀ (P : Type) [Fintype P] (B : S3.MassData P), 1 + D.e (D.r + 1) = B.e1 → B.IntN = jn →
-          B.δ = C * ((D.r : ℝ) + 1) * (C / Th) ^ D.f →
-          (∀ M : ℝ, (∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤ M) →
-            B.c0 * B.c0' * B.KV ≤ B.n0c * M) →
-          B.c0 * B.c0' * B.KV ≤ (1 + B.δ) * B.e1 * (B.n0c * B.IntN) ∧ 0 ≤ B.δ ∧ B.δ ≤ (bb ^ 7)⁻¹
 
 structure LocSys (E α : Type) [Field E] where
 
@@ -863,14 +596,6 @@ def PullLiftTypedUnit : Prop :=
           x ∈ (pullSys R ψ s (σ.prod (σ.comp (IsCMField.complexConj E).toAlgHom.toRingHom)) u η Θ).L' ↔
             x ∈ S6.locAt E P (S6.liftLat E g ν s)
 
-def TopIsLocalKernel : Prop :=
-  ∀ (K : Type) [CommRing K] (R : Subring K) (ψ : AddChar K ℂ) (E α : Type) [Field E] (m : ℕ)
-    (σ : E →+* K) (u : Kˣ) (τ₀ : K) (η : α → A5.Point K) (Θ : K → A5.Point K → A5.Point K → ℂ),
-    (∀ (c : Kˣ) (h h' : A5.Point K), h.1.sum = m → h'.1.sum = m →
-      Θ (c : K) h h' = A5.Ns R ψ 1 h h' c c) →
-    ∀ (t : E) (c : Kˣ), (c : K) = (u : K) * σ t - τ₀ → ∀ h h', (η h).1.sum = m → (η h').1.sum = m →
-      (topSys R ψ σ u τ₀ η Θ).N t t h h' = A5.Ns R ψ 1 (η h) (η h') c c
-
 open Classical in
 
 def TopUnitHeads : Prop :=
@@ -892,120 +617,6 @@ def BlockDiagPSD : Prop :=
   ∀ (α β : Type) [DecidableEq β] (F : Finset α) (c : α → β) (k : α → α → ℂ),
     (∀ b, TB.PSDOn (F.filter fun x => c x = b) k) →
     TB.PSDOn F (fun x y => if c x = c y then k x y else 0)
-
-def MinShape : Prop :=
-  ∀ (f K : ℕ) (l x : Fin f → ℝ) (X : ℝ) (M : Finset (Fin f) → ℝ), (∀ v, 0 < l v) → (∀ v, 0 ≤ x v) →
-    (∀ A : Finset (Fin f), (∏ v ∈ A, l v ^ K) * X ≤ (∏ v ∈ A, x v ^ K) * M A) →
-    X ≤ (∏ v, min 1 ((x v / l v) ^ K)) * M (univ.filter fun v => x v < l v)
-
-def ChebToThreshold : Prop :=
-  ∀ (L f d : ℕ) (pl : Fin L → Fin f) (sa al bt : Fin L → ℝ) (κ len : ℝ) (lv be : Fin f → ℝ)
-    (X B Mx : ℝ), 0 < κ → 0 < len → (∀ a, bt a - al a = len) →
-    (∀ a, sa a = κ ^ (1 - (d : ℤ)) * lv (pl a)) →
-    (∏ a, sa a) * X ≤ (∏ a, (1 / 2) * (4 / (bt a - al a)) ^ d) * B →
-    B ≤ (∏ a, κ * be (pl a)) * Mx →
-    (∏ a, lv (pl a)) * X ≤ (∏ a, (1 / 2) * be (pl a) * (4 * κ / len) ^ d) * Mx
-
-def ThresholdBelow : Prop :=
-  ∀ (m i s : ℕ) (C c c₂ κ N I A : ℝ), 0 < κ → 0 < N → 0 < I → 0 ≤ A → 0 < c → 0 ≤ c₂ → 4 * c ≤ C →
-    c₂ / 2 ≤ C →
-    (1 / 2) * (c₂ * ((κ ^ (m - 1))⁻¹ * A)) * (4 * κ / (I / (c * N))) ^ (2 * (i - 1) + s - 1) ≤
-      Sz.lamThreshold m i s C κ N I A
-
-def ThresholdBelowOne : Prop :=
-  ∀ (m : ℕ) (C c₂ κ N I A : ℝ), 0 < κ → 0 ≤ A → c₂ ≤ C →
-    c₂ * ((κ ^ (m - 1))⁻¹ * A) ≤ Sz.lamThreshold m 1 1 C κ N I A
-
-def LettersAtPlaces : Prop :=
-  ∀ (L f K : ℕ) (pl : Fin L → Fin f) (A : Finset (Fin f)) (φ : Fin f → ℝ),
-    (∀ v, (univ.filter fun a => pl a = v).card = if v ∈ A then K else 0) →
-    ∏ a, φ (pl a) = ∏ v ∈ A, φ v ^ K
-
-def WaveLetters : Prop :=
-  F7.PlaneWaveWordCheb → ChebToThreshold →
-  ∀ (R M : Type) [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [Module R M]
-    [IsScalarTower ℂ R M] (Ξ : F7.Sesq M) (n L f : ℕ) (pl : Fin L → Fin f) (dat : Fin L → F7.Dat R)
-    (α β : Fin L → ℝ) (X X' : M) (κ len Mx : ℝ) (lv be : Fin f → ℝ),
-    1 ≤ n → 0 < κ → 0 < len → (∀ a, β a - α a = len) →
-    (∀ a, F7.Shape n (dat a).A (dat a).B ∧ F7.Shape n (dat a).Av (dat a).Bv) →
-    (∀ a, ‖(dat a).s‖ = κ ^ (1 - ((2 * n : ℕ) : ℤ)) * lv (pl a)) →
-    (∀ j : Fin L → Fin (2 * n + 1),
-      ‖F7.Fw Ξ X X' (List.ofFn fun a => (dat a, Formalism.SA.C.chebPt (α a) (β a) (2 * n) (j a))) 1 1‖ ≤
-        (∏ a, κ * be (pl a)) * Mx) →
-    (∏ a, lv (pl a)) * ‖Ξ X X'‖ ≤ (∏ a, (1 / 2) * be (pl a) * (4 * κ / len) ^ (2 * n)) * Mx
-
-def WaveLettersOne : Prop :=
-  F7.PlaneWaveWord →
-  ∀ (R M : Type) [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [Module R M]
-    [IsScalarTower ℂ R M] (Ξ : F7.Sesq M) (L f : ℕ) (pl : Fin L → Fin f) (dat : Fin L → F7.Dat R)
-    (y : Fin L → ℝ) (X X' : M) (κ Mx : ℝ) (lv be : Fin f → ℝ),
-    0 < κ → (∀ a, F7.Shape 0 (dat a).A (dat a).B ∧ F7.Shape 0 (dat a).Av (dat a).Bv) →
-    (∀ a, ‖(dat a).s‖ = κ * lv (pl a)) →
-    ‖F7.Fw Ξ X X' (List.ofFn fun a => (dat a, y a)) 1 1‖ ≤ (∏ a, κ * be (pl a)) * Mx →
-    (∏ a, lv (pl a)) * ‖Ξ X X'‖ ≤ (∏ a, be (pl a)) * Mx
-
-def LiftLetters : Prop :=
-  F7.LiftWordCheb → ChebToThreshold →
-  ∀ (R M : Type) [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [Module R M]
-    [IsScalarTower ℂ R M] (Ξ : F7.Sesq M) (n s L f : ℕ) (pl : Fin L → Fin f) (dat : Fin L → F7.Dat R)
-    (A₀ A₀v : Fin L → Polynomial R) (e t t' : Fin L → ℂ) (α β : Fin L → ℝ) (X X' : M)
-    (κ len Mx : ℝ) (ov be : Fin f → ℝ),
-    1 ≤ s → 0 < κ → 0 < len → (∀ a, β a - α a = len) →
-    (∀ a, (dat a).s = 0) → (∀ a, e a = 1 ∨ e a = -1) → (∀ a, t a ≠ 0 ∧ t' a ≠ 0) →
-    (∀ a, (dat a).A.Monic ∧ (dat a).A.natDegree = n + s ∧
-      (dat a).Av.Monic ∧ (dat a).Av.natDegree = n + s) →
-    (∀ a, (A₀ a).Monic ∧ (A₀ a).natDegree = n ∧ (A₀v a).Monic ∧ (A₀v a).natDegree = n) →
-    (∀ a (Y : ℝ) (Q Q' : R), Ξ (F7.evR (dat a).B Y • Q • X) (Q' • X') =
-      Ξ ((e a * (t a)⁻¹) • F7.evR (A₀ a) Y • Q • X) (Q' • X')) →
-    (∀ a (Y : ℝ) (Q Q' : R), Ξ (Q • X) (F7.evR (dat a).Bv Y • Q' • X') =
-      Ξ (Q • X) ((e a * (starRingEnd ℂ (t' a))⁻¹) • F7.evR (A₀v a) Y • Q' • X')) →
-    (∀ a, ‖1 / t a - 1 / t' a‖ = κ ^ (1 - ((2 * n + s : ℕ) : ℤ)) * ov (pl a)) →
-    (∀ j : Fin L → Fin (2 * n + s + 1),
-      ‖F7.Fw Ξ X X'
-          (List.ofFn fun a => (dat a, Formalism.SA.C.chebPt (α a) (β a) (2 * n + s) (j a))) 1 1‖ ≤
-        (∏ a, κ * be (pl a)) * Mx) →
-    (∏ a, ov (pl a)) * ‖Ξ X X'‖ ≤ (∏ a, (1 / 2) * be (pl a) * (4 * κ / len) ^ (2 * n + s)) * Mx
-
-def WaveLettersMix : Prop :=
-  F7.PlaneWaveWord → F7.ChebSharp →
-  ∀ (R M : Type) [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [Module R M]
-    [IsScalarTower ℂ R M] (Ξ : F7.Sesq M) (n L f : ℕ) (pl : Fin L → Fin f) (dat : Fin L → F7.Dat R)
-    (α β : Fin L → ℝ) (X X' : M) (κ len : ℝ) (Mj : (Fin L → Fin (2 * n + 1)) → ℝ) (lv be : Fin f → ℝ),
-    1 ≤ n → 0 < κ → 0 < len → (∀ a, β a - α a = len) →
-    (∀ a, F7.Shape n (dat a).A (dat a).B ∧ F7.Shape n (dat a).Av (dat a).Bv) →
-    (∀ a, ‖(dat a).s‖ = κ ^ (1 - ((2 * n : ℕ) : ℤ)) * lv (pl a)) →
-    (∀ j : Fin L → Fin (2 * n + 1),
-      ‖F7.Fw Ξ X X' (List.ofFn fun a => (dat a, Formalism.SA.C.chebPt (α a) (β a) (2 * n) (j a))) 1 1‖ ≤
-        (∏ a, κ * be (pl a)) * Mj j) →
-    (∀ j, 0 ≤ F7.thGrid (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n)) j) ∧
-    ∑ j, F7.thGrid (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n)) j = 1 ∧
-    (∏ a, lv (pl a)) * ‖Ξ X X'‖ ≤ (∏ a, (1 / 2) * be (pl a) * (4 * κ / len) ^ (2 * n)) *
-      ∑ j, F7.thGrid (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n)) j * Mj j
-
-def LiftLettersMix : Prop :=
-  F7.LiftWord → F7.ChebSharp →
-  ∀ (R M : Type) [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [Module R M]
-    [IsScalarTower ℂ R M] (Ξ : F7.Sesq M) (n s L f : ℕ) (pl : Fin L → Fin f) (dat : Fin L → F7.Dat R)
-    (A₀ A₀v : Fin L → Polynomial R) (e t t' : Fin L → ℂ) (α β : Fin L → ℝ) (X X' : M)
-    (κ len : ℝ) (Mj : (Fin L → Fin (2 * n + s + 1)) → ℝ) (ov be : Fin f → ℝ),
-    1 ≤ s → 0 < κ → 0 < len → (∀ a, β a - α a = len) →
-    (∀ a, (dat a).s = 0) → (∀ a, e a = 1 ∨ e a = -1) → (∀ a, t a ≠ 0 ∧ t' a ≠ 0) →
-    (∀ a, (dat a).A.Monic ∧ (dat a).A.natDegree = n + s ∧
-      (dat a).Av.Monic ∧ (dat a).Av.natDegree = n + s) →
-    (∀ a, (A₀ a).Monic ∧ (A₀ a).natDegree = n ∧ (A₀v a).Monic ∧ (A₀v a).natDegree = n) →
-    (∀ a (Y : ℝ) (Q Q' : R), Ξ (F7.evR (dat a).B Y • Q • X) (Q' • X') =
-      Ξ ((e a * (t a)⁻¹) • F7.evR (A₀ a) Y • Q • X) (Q' • X')) →
-    (∀ a (Y : ℝ) (Q Q' : R), Ξ (Q • X) (F7.evR (dat a).Bv Y • Q' • X') =
-      Ξ (Q • X) ((e a * (starRingEnd ℂ (t' a))⁻¹) • F7.evR (A₀v a) Y • Q' • X')) →
-    (∀ a, ‖1 / t a - 1 / t' a‖ = κ ^ (1 - ((2 * n + s : ℕ) : ℤ)) * ov (pl a)) →
-    (∀ j : Fin L → Fin (2 * n + s + 1),
-      ‖F7.Fw Ξ X X'
-          (List.ofFn fun a => (dat a, Formalism.SA.C.chebPt (α a) (β a) (2 * n + s) (j a))) 1 1‖ ≤
-        (∏ a, κ * be (pl a)) * Mj j) →
-    (∀ j, 0 ≤ F7.thGrid (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n + s)) j) ∧
-    ∑ j, F7.thGrid (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n + s)) j = 1 ∧
-    (∏ a, ov (pl a)) * ‖Ξ X X'‖ ≤ (∏ a, (1 / 2) * be (pl a) * (4 * κ / len) ^ (2 * n + s)) *
-      ∑ j, F7.thGrid (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n + s)) j * Mj j
 
 end
 

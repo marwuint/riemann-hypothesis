@@ -15,11 +15,6 @@ def KS (G s : Matrix (Fin n) (Fin n) ℂ) : Set (Fin n → Fin n → ℂ) := {k 
 
 theorem isCompact_KS {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) : IsCompact (KS G s) := isCompact_KAt hs
 
-theorem measurableSet_KS (G s : Matrix (Fin n) (Fin n) ℂ) : MeasurableSet (KS G s) := by
-
-  have h : IsClosed (KS G s) := isClosed_KAt G s
-  exact h.measurableSet
-
 section Int
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]

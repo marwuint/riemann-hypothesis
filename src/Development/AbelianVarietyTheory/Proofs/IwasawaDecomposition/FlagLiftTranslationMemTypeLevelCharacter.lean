@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemParLevOfQ
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsOfStarEq
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReductionConjFrameEqCastReductionAtLevelPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelCharacterInvMulDiagEmbeddingEqCharDetStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpperParahoricCharacterInvEqInvDetBlockStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnCharacterComplexEqLevelCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistResidueCharacterComplexEqLevelCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReductionConjFrameEqCastReductionAtLevelPrime
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelCharacterInvMulDiagEmbeddingEqCharDet
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpperParahoricCharacterInvEqInvDetBlock
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnCharacterComplexEqLevelCharacter
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistResidueCharacterComplexEqLevelCharacter
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -135,7 +135,7 @@ theorem inv_redZ_mul_g0Hat_type : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Co
   set y := Formalism.UG.bc (swapAE X.toD7) ((κ : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _) with hy
   have hQ : y ∈ Formalism.L2.DIV.parLev X.toD7.sp.cm (Vc X.toD7 i).gram (L.βV i) (L.datVt i t) := mem_parLev_of_Q X I U L i t κ
   have hZ : ∀ w, redZ X I U L i t A k κ w =
-      LiftBrg.castGL (LiftBrg.rkEq X i).symm (Formalism.L2.DIV.redFn (L.βV i) w.1 y) := GlobalTheory.T.reduction_conj_frame_eq_cast_reduction_at_level_prime X px I U L hL i t A k hF κ
+      LiftBrg.castGL (LiftBrg.rkEq X i).symm (Formalism.L2.DIV.redFn (L.βV i) w.1 y) := _root_.GlobalTheory.Mem.R3.LiftBrg.ActQ.redZ_eq_castGL_redFn X px I U L hL i t A k hF κ
   have hn : X.B.R.nV = X.B.R.r + X.B.R.t := rfl
   have hgg : ∀ (w : Pl X.toD7.host.E) (hw : w ∈ (X.B.primes px).vGs) (hPg : w ∈ L.Pg) (z : G0 L.Pg X.toD7.R.r),
       (eG.symm z) ⟨w, hw⟩ = z ⟨w, hPg⟩ := fun w hw hPg z => by
@@ -203,11 +203,11 @@ theorem inv_redZ_mul_g0Hat_type : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Co
       rw [lev_lam_congr' e (hmem w) hz ex]
       have key : (Formalism.L2.Col.mtTyK I.Ch ((i : ℕ) + 1) ⟨w.1, hw⟩).lam ⟨_, hz⟩ =
           Formalism.L2.Col.chiAt I.Ch ⟨w.1, hw⟩ (i : ℕ) (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf X.B.R.r X.B.R.t) 1 (Formalism.L2.DIV.redFn (L.βV i) w.1 y)) :=
-        GlobalTheory.T.levelCharacter_inv_mul_diagEmbedding_eq_char_det (LiftBrg.rkEq X i).symm hn (L.datVt i t).hr (Formalism.L2.Col.r_le_nV X.B.R) _ (hM1 w hw) _ hz
+        _root_.GlobalTheory.Mem.R3.LiftBrg.LamKV.lamKV_inv_mul_diagEmb (LiftBrg.rkEq X i).symm hn (L.datVt i t).hr (Formalism.L2.Col.r_le_nV X.B.R) _ (hM1 w hw) _ hz
       rw [key, Units.val_inv_eq_inv_val]
       erw [map_inv₀]
       rw [hF1 _ hw, MonoidHom.inv_apply, Units.val_inv_eq_inv_val]
-      exact congrArg (·⁻¹) (GlobalTheory.T.column_character_complex_eq_level_character X px I U L hI hL i w.1 hw _)
+      exact congrArg (·⁻¹) (_root_.GlobalTheory.Mem.ChiType.embLL_chiAt_eq_levChi X px I U L hI hL i w.1 hw _)
     · have e : Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w =
           Formalism.L2.Col.mtTyQ X.B.R (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) (Formalism.L2.Col.QE I.sel (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K)) ⟨w.1, hwQ w hw⟩ := by
         rw [Formalism.L2.Col.mtTyKK, Formalism.L2.Col.LevFam.glue_of_not _ _ w hw]
@@ -223,9 +223,9 @@ theorem inv_redZ_mul_g0Hat_type : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Co
           ⟨w.1, hwQ w hw⟩).lam ⟨_, hz⟩ =
           (Formalism.L2.DIV.resChar (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K) w.1
             (Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blk2 X.B.R.r) 1 (Formalism.L2.DIV.redFn (L.βV i) w.1 y)))⁻¹ :=
-        GlobalTheory.T.upperParahoric_character_inv_eq_inv_det_block (LiftBrg.rkEq X i).symm hn _ (hM2 w hw) _ hz
+        _root_.GlobalTheory.Mem.R3.LiftBrg.LamQInv.lamQ_castGL_inv (LiftBrg.rkEq X i).symm hn _ (hM2 w hw) _ hz
       rw [key, inv_inv, hF2 _ hw]
-      exact GlobalTheory.T.twist_residue_character_complex_eq_level_character X px I U L hI hV hL t w.1 (hwQ w hw) _
+      exact _root_.GlobalTheory.Mem.LevResXi.embLL_resChar_eq_xiR X px I U L hI hV hL t w.1 (hwQ w hw) _
   have hdis : Disjoint (X.B.primes px).vGs (Formalism.L2.Col.QE I.sel (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K)) :=
     GlobalTheory.NormOneUnit.disjoint_vGs_QE t.1 (GlobalTheory.Mem.Col2.base_fields_primes_ok X.B px).2.1 hI.sel_ok hI.g_mem
   have eL : X.toD7.what₂.embLL ((∏ w, ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1) w).lam ⟨_, hmem w⟩)⁻¹ :

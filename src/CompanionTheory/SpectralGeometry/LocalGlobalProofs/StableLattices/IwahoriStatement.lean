@@ -5,7 +5,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.IsPiece
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.IwahoriUpperLowerFactorizationStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.AntiInvolutionSwapsUpperLowerStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.TorusConjugationPreservesCongruenceStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HermitianAdjointExistsStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HermitianAdjointExists
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CongruenceEndomorphismInverseExistsStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.UpperTriangularInverseIsUpperStatement
 
@@ -58,7 +58,7 @@ theorem stIwahori : StIwahori := by
   have hJ : IsCongIdeal (congJ Λ π) P :=
     isCongIdeal_congJ hΛ hπ P fun i x hx => piece_mem hΛ hA hh hδ0 hF i hx
   obtain ⟨st, hst, st_mul, st_one, st_zero, st_P⟩ :=
-    exists_star (δ := δ) (e := e) (f := f) (l := l) hs hh (GlobalTheory.T.hermitian_adjoint_exists s hs h hh)
+    exists_star (δ := δ) (e := e) (f := f) (l := l) hs hh (_root_.GlobalTheory.CompanionTheory.Iwahori.exists_adjoint_herm s hs h hh)
   have hk1 : (k.toLinearMap : Module.End L V) - 1 ∈ congJ Λ π := fun x hx => by
     obtain ⟨y, hy, e1⟩ := hc x hx
     exact ⟨y, hy, by simpa using e1⟩

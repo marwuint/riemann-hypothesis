@@ -13,12 +13,6 @@ universe u
 
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
-section Associativity
-
-variable {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
-
-end Associativity
-
 section Unit
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in

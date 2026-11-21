@@ -79,11 +79,6 @@ theorem cell_mem_blockEnds (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ
   intro q hq
   exact hcon (mem_blockEnds_of_take p q l h1 hq)
 
-theorem cell_last_mem {r : ℕ} (p : Point ℂ (r + 1)) : r + 1 ∈ ptBlockEnds p := by
-  apply mem_blockEnds_of_take p (p.1.map Prod.snd).length (r + 1) (by omega)
-  rw [List.take_length]
-  exact p.2.2.symm
-
 end Formalism.MainNotions.BridgeLemma
 
 end
@@ -170,21 +165,6 @@ theorem one_le_lossP (hb : 1 ≤ b) {C : ℝ} (hC : 0 ≤ C) : 1 ≤ lossP b C m
     nlinarith
   · positivity
 
-theorem lossP_mono (hb : 1 ≤ b) {C C₂ : ℝ} (hC : 0 ≤ C) (h : C ≤ C₂) :
-    lossP b C m z z' γ p ≤ lossP b C₂ m z z' γ p := by
-  unfold lossP
-  have h2 := one_le_foldr_max ((ptBlockEnds p).map fun l => max 1 ‖DminN z z' γ l‖⁻¹)
-  have h1 : 1 ≤ b ^ (C * (m : ℝ)) := Real.one_le_rpow hb (by positivity)
-  have h3 : b ^ (C * (m : ℝ)) ≤ b ^ (C₂ * (m : ℝ)) :=
-    Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right h (by positivity))
-  set Fm := ((ptBlockEnds p).map fun l => max 1 ‖DminN z z' γ l‖⁻¹).foldr max 1 with hF
-  have h4 : b ^ (C * (m : ℝ)) * Fm ≤ b ^ (C₂ * (m : ℝ)) * Fm := mul_le_mul_of_nonneg_right h3 (by linarith)
-  have h5 : 1 ≤ b ^ (C₂ * (m : ℝ)) * Fm := by nlinarith
-  calc (b ^ (C * (m : ℝ)) * Fm) ^ (C * (r : ℝ) ^ 3) ≤ (b ^ (C₂ * (m : ℝ)) * Fm) ^ (C * (r : ℝ) ^ 3) :=
-        Real.rpow_le_rpow (by nlinarith) h4 (by positivity)
-    _ ≤ (b ^ (C₂ * (m : ℝ)) * Fm) ^ (C₂ * (r : ℝ) ^ 3) :=
-        Real.rpow_le_rpow_of_exponent_le h5 (mul_le_mul_of_nonneg_right h (by positivity))
-
 theorem one_le_lossV (hb : 1 ≤ b) {C : ℝ} (hC : 0 ≤ C) (hG : 0 < Gf k r z z' γ)
     (hD : ∀ l ∈ ptBlockEnds p, DminN z z' γ l ≠ 0) : 1 ≤ lossV b C m z z' γ p := by
   unfold lossV
@@ -196,25 +176,6 @@ theorem one_le_lossV (hb : 1 ≤ b) {C : ℝ} (hC : 0 ≤ C) (hG : 0 < Gf k r z 
       Real.one_le_rpow (one_le_max_inv (norm_pos_iff.2 (hD l hl))) (by positivity))
   calc (1 : ℝ) = 1 * 1 * 1 := by norm_num
     _ ≤ _ := mul_le_mul (mul_le_mul h1 h2 zero_le_one (by linarith)) h3 zero_le_one (by positivity)
-
-theorem lossV_mono (hb : 1 ≤ b) {C C₂ : ℝ} (h : C ≤ C₂) (hG : 0 < Gf k r z z' γ)
-    (hD : ∀ l ∈ ptBlockEnds p, DminN z z' γ l ≠ 0) : lossV b C m z z' γ p ≤ lossV b C₂ m z z' γ p := by
-  unfold lossV
-  have hb0 : 0 < b := by linarith
-  have h1 : b ^ (C * (m : ℝ) ^ 4) ≤ b ^ (C₂ * (m : ℝ) ^ 4) :=
-    Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right h (by positivity))
-  have h2 : (max (Gf k r z z' γ) (Gf k r z z' γ)⁻¹) ^ (C * (m : ℝ) ^ 2) ≤
-      (max (Gf k r z z' γ) (Gf k r z z' γ)⁻¹) ^ (C₂ * (m : ℝ) ^ 2) :=
-    Real.rpow_le_rpow_of_exponent_le (one_le_max_inv hG) (mul_le_mul_of_nonneg_right h (by positivity))
-  have h3 := list_prod_map_le (ptBlockEnds p)
-    (fun l => (max ‖DminN z z' γ l‖ ‖DminN z z' γ l‖⁻¹) ^ (C * (m : ℝ)))
-    (fun l => (max ‖DminN z z' γ l‖ ‖DminN z z' γ l‖⁻¹) ^ (C₂ * (m : ℝ)))
-    (fun l hl => ⟨Real.rpow_nonneg (le_trans zero_le_one (one_le_max_inv (norm_pos_iff.2 (hD l hl)))) _,
-      Real.rpow_le_rpow_of_exponent_le (one_le_max_inv (norm_pos_iff.2 (hD l hl)))
-        (mul_le_mul_of_nonneg_right h (by positivity))⟩)
-  have hG1 : 0 ≤ max (Gf k r z z' γ) (Gf k r z z' γ)⁻¹ := le_trans zero_le_one (one_le_max_inv hG)
-  exact mul_le_mul (mul_le_mul h1 h2 (Real.rpow_nonneg hG1 _) (Real.rpow_nonneg hb0.le _)) h3.2 h3.1
-    (mul_nonneg (Real.rpow_nonneg hb0.le _) (Real.rpow_nonneg hG1 _))
 
 end Loss
 
@@ -228,30 +189,11 @@ namespace Formalism.MainNotions.BridgeLemma
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Cnt
 
-theorem hadamard_inequality_packet : VanishingOnXAndXPlusBranching.adm7 := LatticeGluingRadicals.hadamard_section
-
 theorem one_le_b {D : D7} (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b := by
   unfold Scale.b
   apply Real.one_le_exp
   unfold Scale.L
   exact Real.rpow_nonneg (le_trans zero_le_one large₂.sc.one_lt_alt.le) _
-
-theorem abs_pointwise_mono_constant (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 A C1 C C₂ : ℝ} (hC : 0 ≤ C) (h : C ≤ C₂)
-    (H : VanishingOnXAndXPlusBranching.Conclusion4 D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C) : VanishingOnXAndXPlusBranching.Conclusion4 D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C₂ := by
-  intro τ w w' hTT θ hθ W hW S hS hdeg γ p hp θ' hθ' νR hν hH hD
-  have h0 := H τ w w' hTT θ hθ W hW S hS hdeg γ p hp θ' hθ' νR hν hH hD
-  refine le_trans h0 ?_
-  have hv : 0 < D.host.v := lt_of_lt_of_le one_pos hH.1.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
-  have hk : (0 : ℝ) ≤ D.R.k := Nat.cast_nonneg _
-  have hP := lossP_mono large₂.sc.b D.R.m W.z W.z' γ p (one_le_b large₂) hC h
-  have hP0 : 0 ≤ lossP large₂.sc.b C D.R.m W.z W.z' γ p :=
-    le_trans zero_le_one (one_le_lossP large₂.sc.b D.R.m W.z W.z' γ p (one_le_b large₂) hC)
-  have hq : C / (D.R.k * D.host.v) ≤ C₂ / (D.R.k * D.host.v) :=
-    div_le_div_of_nonneg_right h (mul_nonneg hk hv.le)
-  have hq0 : 0 ≤ C / (D.R.k * D.host.v) := div_nonneg hC (mul_nonneg hk hv.le)
-  have hpw := pow_le_pow_left₀ hq0 hq (D.R.rS * (D.R.k - 2 - D.R.rS))
-  exact mul_le_mul_of_nonneg_right (mul_le_mul hP hpw (pow_nonneg hq0 _) (le_trans hP0 hP))
-    (inv_nonneg.2 (pow_nonneg (norm_nonneg _) _))
 
 end Formalism.MainNotions.BridgeLemma
 
@@ -323,52 +265,6 @@ def DegreeRatioUnitShiftBound (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb C
     ∀ lam', l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 → ∀ A : LocS W, GoodS D lam' A →
       ∀ (I : Finset (Fin (2 * D.R.rS + D.R.k + 1))) (s : ℝ), (s = 1 ∨ s = -1) →
         ∀ A' : LocS W, GoodS D (lam' + s • epsI I) A' → A'.deg / A.deg ≤ (D.R.r : ℝ) ^ (hilbertNinetyConstant * (I.card : ℝ))
-
-section Fam
-
-variable {eps : ℝ} (Fm : FamP eps)
-
-def FamilyAbsWithConvergence (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  ∃ Ca : ℝ, 0 ≤ Ca ∧ OwnEv Fm fun C' Cl x i =>
-    VanishingOnXAndXPlusBranching.Conclusion4 (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Ca ∧
-      VanishingOnXAndXPlusBranching.PrimeSumLogBound (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1
-
-def FamilyDecayBound (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  ∃ Cd Ch : ℝ, 0 ≤ Ch ∧ ∀ Cpr : ℝ, ∀ C ≥ Cd, ∀ δ > 0, OwnEv Fm fun C' Cl x i =>
-    VanishingOnXAndXPlusBranching.division_rows_rational_lattice (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cpr C Ch δ
-
-def FamilyAbsFromMoments (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  VanishingOnXAndXPlusBranching.admF3 Fm Cg cb Cu cT CT C0 C1 → VanishingOnXAndXPlusBranching.adm6 → VanishingOnXAndXPlusBranching.adm7 → FamilyAbsWithConvergence Fm Cg cb Cu cT CT C0 A C1
-
-def FamilyDecayFromAbs (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  VanishingOnXAndXPlusBranching.AdmFAt Fm Cg cb Cu cT CT C0 C1 → FamilyAbsWithConvergence Fm Cg cb Cu cT CT C0 A C1 → FamilyDecayBound Fm Cg cb Cu cT CT C0 A C1
-
-def FamilyAbsWithDecay (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  ∃ Ca Ch : ℝ, 0 ≤ Ca ∧ 0 ≤ Ch ∧ ∀ Cpr : ℝ, OwnEv Fm fun C' Cl x i =>
-    AbsWithSizeDecay (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cpr Ca Ch
-
-def FamilyL2WithDecay (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  ∃ K Kh : ℝ, ∀ Cpr : ℝ, ∀ C ≥ K, ∀ Ch ≥ Kh, OwnEv Fm fun C' Cl x i =>
-    HilbertSchmidtBoundWithSizeDecay (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cpr C Ch
-
-def FamilyDegreeRatioUnitShiftBound (Cg cb Cu cT CT C0 C1 : ℝ) : Prop :=
-  ∃ hilbertNinetyConstant : ℝ, 0 ≤ hilbertNinetyConstant ∧ ∀ Cn : ℝ, OwnEv Fm fun C' Cl x i =>
-    DegreeRatioUnitShiftBound (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 Cn C1 hilbertNinetyConstant
-
-def FamilyAbsAllParameters (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  ∃ Ca : ℝ, 0 ≤ Ca ∧ ∀ Cn : ℝ, OwnEv Fm fun C' Cl x i =>
-    AbsAllParameters (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cn Ca
-
-def FamilyAbsAllAndConvergenceOfHypotheses (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  VanishingOnXAndXPlusBranching.AdmFAt Fm Cg cb Cu cT CT C0 C1 →
-    FamilyAbsAllParameters Fm Cg cb Cu cT CT C0 A C1 ∧
-      OwnEv Fm fun C' Cl x i => VanishingOnXAndXPlusBranching.PrimeSumLogBound (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1
-
-def FamilyAbsDecayAndConvergenceOfHypotheses (Cg cb Cu cT CT C0 A C1 : ℝ) : Prop :=
-  VanishingOnXAndXPlusBranching.AdmFAt Fm Cg cb Cu cT CT C0 C1 → FamilyAbsWithDecay Fm Cg cb Cu cT CT C0 A C1 ∧
-    OwnEv Fm fun C' Cl x i => VanishingOnXAndXPlusBranching.PrimeSumLogBound (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1
-
-end Fam
 
 end Formalism.MainNotions.BridgeLemma
 

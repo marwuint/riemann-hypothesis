@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemPowsSUnitsChooseTStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FirstInequalitySUnitsPrimeDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowOfSUnitLocalPowerAtPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsMappingToPowersLeUnitsLocalKummerNormsStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemPowsSUnitsChooseT
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FirstInequalitySUnitsPrimeDegree
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowOfSUnitLocalPowerAtPlaces
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsMappingToPowersLeUnitsLocalKummerNorms
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsAdmissiblePlacesContainingPrimeSupersetMon
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowsSubgroupOfSelfSPow
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsUnionSupPowersEqTopAtPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowCountPlacesNotLocalPowerLeIndexStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsLocalPowersAtPlacesIndexLeStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsUnionSupPowersEqTopAtPlaces
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PowCountPlacesNotLocalPowerLeIndex
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitsLocalPowersAtPlacesIndexLe
 
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
@@ -84,14 +84,14 @@ theorem sUnit_mem_kNorm_of_mem_finNorm : ∀ (p : ℕ) (F : Type) [Field F] [Num
   intro p F _ _ _ ζ δ S hp hζ hS hδ hns x hx hxl
   classical
   have hp0 := hp.pos
-  obtain ⟨T, hST, hcard, hsq, hA⟩ := GlobalTheory.T.exists_places_with_pth_roots_and_separating_units p F ζ δ S hp hζ hS hδ hns
-  have hsurj := GlobalTheory.T.sUnits_union_sup_powers_eq_top_at_places p F S T hp hS hST hA
-  have hinj := GlobalTheory.T.pow_of_sUnit_localPower_at_places p F ζ S T hp hζ hS hsurj
+  obtain ⟨T, hST, hcard, hsq, hA⟩ := _root_.GlobalTheory.CNorm.exists_auxiliary_places_prime p F ζ δ S hp hζ hS hδ hns
+  have hsurj := _root_.GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top p F S T hp hS hST hA
+  have hinj := _root_.GlobalTheory.CNorm.pow_of_mem_sUnits_union_of_mem_finPow p F ζ S T hp hζ hS hsurj
   have hmono : sUnits F S ≤ sUnits F (S ∪ T) := fun y hy v hv =>
     hy v (fun h => hv (by simp only [Finset.coe_union, Set.mem_union]; exact Or.inl h))
   have hS' : AdmP p F (S ∪ T) :=
     (exists_admissiblePlaces_superset_and_mono p F hp0).2 S (S ∪ T) Finset.subset_union_left hS
-  obtain ⟨hN0, hN⟩ := GlobalTheory.T.first_inequality_sUnits_prime_degree p F ζ δ (S ∪ T) hp hζ hS' (hmono hδ) hns
+  obtain ⟨hN0, hN⟩ := _root_.GlobalTheory.CNorm.first_inequality_sUnits_prime p F ζ δ (S ∪ T) hp hζ hS' (hmono hδ) hns
   have ht : tNon p F δ (S ∪ T) = tNon p F δ S := by
     unfold tNon
     congr 1
@@ -105,8 +105,8 @@ theorem sUnit_mem_kNorm_of_mem_finNorm : ∀ (p : ℕ) (F : Type) [Field F] [Num
     · rintro ⟨h, h'⟩
       exact ⟨Or.inl h, h'⟩
   rw [ht] at hN
-  obtain ⟨-, hD⟩ := GlobalTheory.T.pow_countPlacesNotLocalPower_le_index p F ζ δ S hp hζ
-  obtain ⟨hW0, hW⟩ := GlobalTheory.T.unitsLocalPowersAtPlaces_index_le p F S hp0
+  obtain ⟨-, hD⟩ := _root_.GlobalTheory.CNorm.pow_tNon_le_index_finNorm p F ζ δ S hp hζ
+  obtain ⟨hW0, hW⟩ := _root_.GlobalTheory.CNorm.index_finPow_le p F S hp0
   have hU := (pTor_pIdx_sUnits p F ζ (S ∪ T) hp hζ).2
   unfold pIdx at hU
   have hinf : finPow p F S ⊓ sUnits F (S ∪ T) = pows p (sUnits F (S ∪ T)) ⊓ sUnits F (S ∪ T) := by
@@ -117,7 +117,7 @@ theorem sUnit_mem_kNorm_of_mem_finNorm : ∀ (p : ℕ) (F : Type) [Field F] [Num
   have hWU : (finPow p F S).relIndex (sUnits F (S ∪ T)) =
       p ^ ((S ∪ T).card + Fintype.card (InfinitePlace F)) := by
     rw [← Subgroup.inf_relIndex_right, hinf, Subgroup.inf_relIndex_right, hU]
-  obtain ⟨k1, k2⟩ := GlobalTheory.T.unitsMappingToPowers_le_unitsLocalKummerNorms p hp0
+  obtain ⟨k1, k2⟩ := _root_.GlobalTheory.CNorm.powSub_le_kNorm_and_kNorm_map p hp0
   have hWD : finPow p F S ≤ finNorm p F δ S := iInf₂_mono fun _ _ => k1 _ _ _ _
   have hND : kNorm p (RingHom.id F) (δ : F) ≤ finNorm p F δ S :=
     le_iInf₂ fun _ _ => k2 _ _ _ _

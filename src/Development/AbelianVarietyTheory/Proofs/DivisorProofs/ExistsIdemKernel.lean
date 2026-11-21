@@ -76,15 +76,6 @@ def subEquiv {S : Scheme.{0}} {A K T : Over S} (i : K ⟶ A) [Mono i] (P : (T �
     ⟨fun g g' hgg => (cancel_mono i).1 (congrArg Subtype.val hgg),
      fun x => let ⟨g, hg⟩ := (h x.1).2 x.2; ⟨g, Subtype.ext hg⟩⟩
 
-def fibreEquiv {S T : Scheme.{0}} (K : Over S) (y : T ⟶ S) :
-    (Over.mk y ⟶ K) ≃ {s : T ⟶ pullback K.hom y // s ≫ pullback.snd K.hom y = 𝟙 _} where
-  toFun g := ⟨pullback.lift g.left (𝟙 _) (by rw [Category.id_comp]; exact Over.w g), pullback.lift_snd _ _ _⟩
-  invFun s := Over.homMk (s.1 ≫ pullback.fst K.hom y) (by
-    change (s.1 ≫ pullback.fst K.hom y) ≫ K.hom = y
-    rw [Category.assoc, pullback.condition, ← Category.assoc, s.2, Category.id_comp])
-  left_inv g := Over.OverMorphism.ext (pullback.lift_fst _ _ _)
-  right_inv s := Subtype.ext (pullback.hom_ext (pullback.lift_fst _ _ _) ((pullback.lift_snd _ _ _).trans s.2.symm))
-
 theorem eq_one_of_reg {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     {T : Over S} (x : T ⟶ A) (c : ℕ)
     (hc : ∀ (U : T.left.Opens) (f : Γ(T.left, U)), (c : Γ(T.left, U)) * f = 0 → f = 0) (hx : x ^ c = 1)

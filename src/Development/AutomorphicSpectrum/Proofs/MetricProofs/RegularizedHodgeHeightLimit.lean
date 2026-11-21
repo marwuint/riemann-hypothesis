@@ -1,7 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PositionPot
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormula
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StLemmaETailMass
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularChartDataPropertiesStatement
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PNbarLeviChartReg
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
@@ -183,7 +188,7 @@ theorem ptsIntegral_word_eq_mInt : ∀ (K : Type) [Fintype K] (J : K → Type) [
       exact ⟨U ∩ S.R.Yo, hUo.inter hYo, ⟨hyU', hyY⟩, fun y hy => ⟨hUs hy.1, hy.2⟩, s,
         fun y hy => hs y hy.1, fun p => holoOn_mono _ (hh p) Set.inter_subset_left, G,
         holoOn_mono _ hG Set.inter_subset_left, fun y hy => hre y hy.1⟩
-  have hmain := GlobalTheory.T.mixed_integral_model_formula K J (mCoordIdeal D.y) D.n M hex.choose S.R.Yo ∅ ∅ (fun _ => 1)
+  have hmain := _root_.GlobalTheory.CompanionTheory.Ar.Giv.push_chart_integrals K J (mCoordIdeal D.y) D.n M hex.choose S.R.Yo ∅ ∅ (fun _ => 1)
     (fun j : Fin D.n => if (j : ℕ) < i then Bm else Nb) (positionPot S.R.th Pn f i) g G₀ D.arith hex.choose_spec
     hYo hnull' hN hsm hloc (fun z hz _ hY _ => hg z hz hY) hG₀
   have h := (hmain.2.2 hInt).2

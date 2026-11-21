@@ -124,19 +124,6 @@ section Examples
 
 variable {K : Type*} [DecidableEq K] {ι : K → Type*}
 
-theorem isMultiProjPrime_bot {R : Type*} [CommRing R] [IsDomain R] [∀ k, Nonempty (ι k)] :
-    IsMultiProjPrime (⊥ : Ideal (MRing ι R)) where
-  isPrime := Ideal.isPrime_bot
-  multiHomog := by
-    intro f hf b
-    rw [Ideal.mem_bot] at hf ⊢
-    simp [hf]
-  relevant := by
-    intro k
-    refine ⟨Classical.arbitrary _, ?_⟩
-    rw [Ideal.mem_bot]
-    exact X_ne_zero _
-
 omit [DecidableEq K] in
 
 theorem divCycle_one {R : Type*} [CommRing R] (P : Ideal (MRing ι R)) (W : Ideal (MRing ι R)) :
@@ -148,46 +135,6 @@ theorem divCycle_one {R : Type*} [CommRing R] (P : Ideal (MRing ι R)) (W : Idea
   have : P ⊔ Ideal.span {(1 : MRing ι R)} = ⊤ := by
     rw [Ideal.span_singleton_one, sup_top_eq]
   exact hW.ne_top (top_le_iff.mp (this ▸ h.1.2))
-
-theorem isVerticalDivisor_uniformiser {O : Type*} [CommRing O] [IsDomain O]
-    [IsDiscreteValuationRing O] (ϖ : O) (H : Ideal (MRing ι O)) [H.IsPrime]
-    (hϖ : (C ϖ : MRing ι O) ∉ H) :
-    IsVerticalDivisor H ϖ 0 (C ϖ) 1 where
-  degrees := ⟨0, 0, isWeightedHomogeneous_C _ _, isWeightedHomogeneous_one _ _, by
-    funext k; simp⟩
-  num_not_mem := hϖ
-  den_not_mem := Ideal.IsPrime.ne_top' ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one)
-  vertical := by
-    intro W hW
-    unfold ratDiv at hW
-    rw [divCycle_one, sub_zero] at hW
-    unfold divCycle at hW
-    split_ifs at hW with h
-    · exact h.1.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))
-    · exact absurd rfl hW
-  unit_off_special := by
-    intro W hW _ _ hϖW
-    refine ⟨1, C ϖ, ?_, hϖW, ?_⟩
-    · exact (Ideal.ne_top_iff_one W).mp hW.ne_top
-    · rw [one_mul, mul_one, sub_self]
-      exact H.zero_mem
-
-theorem isModelOver_projectiveSpace {O : Type*} [CommRing O] [IsDomain O]
-    [IsDiscreteValuationRing O] (n : ℕ) :
-    IsModelOver (⊥ : Ideal (MRing (fun _ : Unit => Fin (n + 1)) O)) n where
-  multiProj := isMultiProjPrime_bot
-  noTorsion := by
-    ext a
-    simp only [Ideal.mem_comap, Ideal.mem_bot, C_eq_zero]
-  dim := by
-    rw [ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _),
-      MvPolynomial.ringKrullDim_of_isNoetherianRing, IsDiscreteValuationRing.ringKrullDim_eq_one]
-    have hc : Nat.card ((_ : Unit) × Fin (n + 1)) = n + 1 := by
-      rw [Nat.card_eq_fintype_card, Fintype.card_sigma]
-      simp
-    rw [hc, Fintype.card_unit]
-    norm_cast
-    omega
 
 end Examples
 

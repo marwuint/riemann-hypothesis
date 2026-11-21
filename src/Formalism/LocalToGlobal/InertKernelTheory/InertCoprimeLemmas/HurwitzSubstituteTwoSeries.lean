@@ -201,20 +201,6 @@ private theorem hur_one : Hur R (1 : MvPowerSeries σ K) := by
   · exact R.one_mem
   · exact R.zero_mem
 
-theorem hur_pow [DecidableEq σ] {f : MvPowerSeries σ K} (hf : Hur R f) (k : ℕ) : Hur R (f ^ k) := by
-  induction k with
-  | zero => rw [pow_zero]; exact hur_one R
-  | succ k ih => rw [pow_succ]; exact hur_mul R ih hf
-
-theorem hur_prod [DecidableEq σ] {α : Type*} (s : Finset α) (f : α → MvPowerSeries σ K)
-    (h : ∀ a ∈ s, Hur R (f a)) : Hur R (∏ a ∈ s, f a) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => rw [Finset.prod_empty]; exact hur_one R
-  | @insert a s ha ih =>
-    rw [Finset.prod_insert ha]
-    exact hur_mul R (h a (Finset.mem_insert_self a s)) (ih (fun b hb => h b (Finset.mem_insert_of_mem hb)))
-
 theorem hur_gamma [DecidableEq σ] [CharZero K] {f : MvPowerSeries σ K} (hf : Hur R f)
     (hf0 : constantCoeff f = 0) (k : ℕ) : Hur R (C ((k.factorial : K))⁻¹ * f ^ k) := by
   have hC : ∀ (c : K) (i : σ), pderiv K i (C c : MvPowerSeries σ K) = 0 := by
@@ -887,63 +873,6 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 section Transfer
 
 variable (p : ℕ) [Fact p.Prime] (K1 : Type) [Field K1] [Algebra (K0 p) K1]
-
-theorem aL_eq_rename {ι : Type} (s : ι) :
-    Formalism.MainNotions.FormalGroupSystem.Pf.en_aL p K1 s = rename (fun _ : Unit => s) (Formalism.MainNotions.FormalGroupSystem.Pf.en_L p K1) := by
-  rw [rename_eq_subst]
-  rfl
-
-theorem hasSubst_aL_any {ι : Type} : HasSubst (Formalism.MainNotions.FormalGroupSystem.Pf.en_aL p K1 : ι → MvPowerSeries ι K1) where
-  const_coeff s := by rw [Formalism.MainNotions.FormalGroupSystem.Pf.en_aL_zero]; exact IsNilpotent.zero
-  coeff_zero d := by
-    refine d.support.finite_toSet.subset fun s hs => ?_
-    simp only [Set.mem_setOf_eq] at hs
-    rw [aL_eq_rename] at hs
-    by_contra hsd
-    have hd : d ∉ Set.range (Finsupp.mapDomain (fun _ : Unit => s)) := by
-      rintro ⟨u, rfl⟩
-      rw [Finset.mem_coe, Finsupp.mem_support_iff, not_not] at hsd
-      have hu : u = Finsupp.single () (u ()) := Finsupp.unique_single u
-      rw [hu, Finsupp.mapDomain_single, Finsupp.single_eq_same] at hsd
-      rw [hu, Finsupp.mapDomain_single, hsd, Finsupp.single_zero, coeff_zero_eq_constantCoeff_apply,
-        constantCoeff_rename] at hs
-      exact hs (Formalism.MainNotions.FormalGroupSystem.Pf.en_L_zero p K1)
-    exact hs (coeff_rename_eq_zero _ _ hd)
-
-theorem inParamK_rename {σ ι : Type} [Finite σ] (f : σ → ι) [Filter.TendstoCofinite f]
-    (F : MvPowerSeries σ K1) : inParamK p K1 (rename f F) = rename f (inParamK p K1 F) := by
-  rw [Formalism.MainNotions.FormalGroupSystem.Pf.en_inParamK_eq, Formalism.MainNotions.FormalGroupSystem.Pf.en_inParamK_eq, rename_eq_subst, rename_eq_subst,
-    subst_comp_subst_apply (HasSubst.X_comp f) (hasSubst_aL_any p K1),
-    subst_comp_subst_apply (Formalism.MainNotions.FormalGroupSystem.Pf.en_aL_hs p K1) (HasSubst.X_comp f)]
-  congr 1
-  funext i
-  simp only [Function.comp_apply, subst_X (hasSubst_aL_any p K1)]
-  rw [aL_eq_rename, aL_eq_rename, ← rename_eq_subst, rename_rename]
-  rfl
-
-theorem degree_embDomain {σ τ : Type} (e : σ ↪ τ) (x : σ →₀ ℕ) :
-    (Finsupp.embDomain e x).degree = x.degree := by
-  show (∑ k ∈ (Finsupp.embDomain e x).support, (Finsupp.embDomain e x) k) = ∑ k ∈ x.support, x k
-  rw [Finsupp.support_embDomain, Finset.sum_map]
-  simp [Finsupp.embDomain_apply]
-
-theorem killCompl_expS {σ τ : Type} (e : σ ↪ τ) (G : MvPowerSeries τ (K0 p)) :
-    killCompl e (expS p G) = expS p (killCompl e G) := by
-  ext x
-  rw [coeff_killCompl]
-  show ∑ k ∈ range ((Finsupp.embDomain e x).degree + 1), _ = ∑ k ∈ range (x.degree + 1), _
-  rw [degree_embDomain]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [← map_pow, coeff_killCompl]
-
-theorem rename_substitute_two_series {τ : Type} (f : Fin 2 → τ) [Filter.TendstoCofinite f] (be : MvPowerSeries (Fin 2) (K0 p))
-    {u w : MvPowerSeries (Fin 2) (K0 p)} (hu : constantCoeff u = 0) (hw : constantCoeff w = 0) :
-    rename f (sub2 p be u w) = sub2 p be (rename f u) (rename f w) := by
-  unfold sub2
-  rw [rename_eq_subst, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (cc2 hu hw)) (HasSubst.X_comp f)]
-  congr 1
-  funext j
-  fin_cases j <;> simp [← rename_eq_subst]
 
 theorem conj_frobenius_two_variables {be : MvPowerSeries (Fin 2) (K0 p)} (h : BeProp p be) (α : WW p) (hα2 : (sigW p)^[2] α = α) :
     Simeq p (sub2 p be (C (algebraMap (WW p) (K0 p) α) * X 0) (X 1) : MvPowerSeries (Fin 2) (K0 p))

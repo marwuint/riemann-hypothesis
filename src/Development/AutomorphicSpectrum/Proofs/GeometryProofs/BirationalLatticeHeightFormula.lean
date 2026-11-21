@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsPowSubMemSpanOfIsUnitModOfIsAlgClosed
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IntegralClosurePlaceRingsDataStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormScaleConjugateInvariantStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IntegralClosurePlaceRingsData
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormScaleConjugateInvariant
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemOfAevalEqZero
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ProdNormEmbeddingsEqAbsNorm
 
@@ -162,7 +163,7 @@ theorem exists_global {y : (Σ k, ι k) → Ω} {φ : F →+* Ω} {L : Lat ξ E}
       obtain rfl : v = w := by simpa using hw
       exact ⟨π, m, n, h⟩
   choose pl hpl1 hpl2 using hpl
-  obtain ⟨M, α, hM, hα, hv, hx⟩ := GlobalTheory.T.exists_pow_section_associated_global_element F Ω (Cpt ξ) φ (regAt ξ) s pl r
+  obtain ⟨M, α, hM, hα, hv, hx⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_global_generator F Ω (Cpt ξ) φ (regAt ξ) s pl r
     (fun p z hz => hN p z hz)
     (fun p hp => by
       obtain ⟨h1, h2⟩ := hpl1 p hp
@@ -265,7 +266,7 @@ theorem exists_flatHerm_of_adelic : ∀ (K : Type) [Fintype K] (ι : K → Type)
     { M := M, M_pos := hM, f := g ^ M * Q, g := h ^ M * P, df := M • dg + d, dg := M • dh + d, hf := hfH, hg := hgH
       deg := hdeg, f_ne := notMem_of_aeval_ne hf0, g_ne := notMem_of_aeval_ne hgg0, unit := hunit, κ := κ
       κ_pos := hκ_pos
-      κ_conj := GlobalTheory.T.norm_scale_conjugate_invariant K ι Ω F y φ A M _ _ _ κ hO hM hgH (notMem_of_aeval_ne hgg0) hC hκ_pos hnorm'
+      κ_conj := _root_.GlobalTheory.CompanionTheory.Ar.Flat.kappa_conj K ι Ω F y φ A M _ _ _ κ hO hM hgH (notMem_of_aeval_ne hgg0) hC hκ_pos hnorm'
       norm := hnorm' }
   refine ⟨S, ?_⟩
   have hMne : (M : ℝ) ≠ 0 := Nat.cast_ne_zero.2 hM.ne'

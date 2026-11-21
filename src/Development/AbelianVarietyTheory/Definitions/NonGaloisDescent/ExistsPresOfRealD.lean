@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JSmul
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsResCharP
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ResBound
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousCycOInvPow
 
 noncomputable section
 namespace GlobalTheory.Present
@@ -28,15 +29,7 @@ theorem Pres.j_φ' (p : Pres W F ι τ γ) {T A q} (h : Onto T A q) (i : ZMod n)
     p.j T A q i ⟨W.φD T x, φ_mem W T x⟩ = (F.D A).φ i (p.j T A q (i - 1) x) :=
   p.j_φ T A q h i x _ rfl
 
-theorem Pres.j_γ' (p : Pres W F ι τ γ) {T A q} (h : Onto T A q) (i : ZMod n) (x : ↥(DΔ W T)) :
-    p.j T A q i ⟨W.γD T γ x, γ_mem W T γ x⟩ = (F.D A).γ i (p.j T A q i x) :=
-  p.j_γ T A q h i x _ rfl
-
 end GlobalTheory.Present
 
 namespace GlobalTheory.TopSteps.TopSit
-open scoped LaurentSeries PowerSeries
-open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.PhiGam GlobalTheory.Models GlobalTheory.Present
-variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P)
-
 end GlobalTheory.TopSteps.TopSit

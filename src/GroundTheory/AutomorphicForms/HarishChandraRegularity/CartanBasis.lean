@@ -28,48 +28,7 @@ variable {L}
 theorem traceForm_apply (X Y : L) :
     traceForm L X Y = RCLike.re (trace ((X : Matrix ι ι 𝕜) * (Y : Matrix ι ι 𝕜))) := rfl
 
-theorem traceForm_symm (X Y : L) : traceForm L X Y = traceForm L Y X := by
-  rw [traceForm_apply, traceForm_apply, trace_mul_comm]
-
-theorem traceForm_lie (X Y Z : L) : traceForm L ⁅X, Y⁆ Z = -traceForm L Y ⁅X, Z⁆ := by
-  rw [traceForm_apply, traceForm_apply, LieSubalgebra.coe_bracket, LieSubalgebra.coe_bracket,
-    Ring.lie_def, Ring.lie_def]
-  set x := (X : Matrix ι ι 𝕜)
-  set y := (Y : Matrix ι ι 𝕜)
-  set z := (Z : Matrix ι ι 𝕜)
-  have e : trace (y * (z * x)) = trace (x * y * z) := by
-    rw [← Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc]
-  rw [Matrix.sub_mul, Matrix.mul_sub, trace_sub, trace_sub, e, Matrix.mul_assoc y x z,
-    map_sub, map_sub]
-  ring
-
 end TraceForm
-
-section Positivity
-
-variable {𝕜 : Type*} [RCLike 𝕜] {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-theorem re_trace_conjTranspose_mul_self_pos {A : Matrix ι ι 𝕜} (hA : A ≠ 0) :
-    0 < RCLike.re (trace (Aᴴ * A)) := by
-  have e : RCLike.re (trace (Aᴴ * A)) = ∑ i, ∑ j, ‖A j i‖ ^ 2 := by
-    simp only [trace, diag_apply, mul_apply, conjTranspose_apply, map_sum]
-    refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-    rw [RCLike.star_def, RCLike.conj_mul, ← RCLike.ofReal_pow, RCLike.ofReal_re]
-  rw [e]
-  obtain ⟨j, i, hji⟩ : ∃ j i, A j i ≠ 0 := by
-    by_contra hc
-    push Not at hc
-    exact hA (Matrix.ext hc)
-  refine lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hji) 2) ?_
-  calc ‖A j i‖ ^ 2 = ∑ j' ∈ {j}, ‖A j' i‖ ^ 2 := by simp
-    _ ≤ ∑ j', ‖A j' i‖ ^ 2 :=
-        Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => sq_nonneg _
-    _ = ∑ i' ∈ {i}, ∑ j', ‖A j' i'‖ ^ 2 := by simp
-    _ ≤ ∑ i', ∑ j', ‖A j' i'‖ ^ 2 :=
-        Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ =>
-          Finset.sum_nonneg fun _ _ => sq_nonneg _
-
-end Positivity
 
 section Cartan
 
@@ -109,68 +68,6 @@ theorem mem_skewPart {X : L} : X ∈ skewPart L ↔ (X : Matrix ι ι 𝕜)ᴴ =
 theorem mem_hermPart {X : L} : X ∈ hermPart L ↔ (X : Matrix ι ι 𝕜)ᴴ = (X : Matrix ι ι 𝕜) :=
   Iff.rfl
 
-theorem isCompl_skewPart_hermPart (hstar : ∀ X ∈ L, Xᴴ ∈ L) :
-    IsCompl (skewPart L) (hermPart L) := by
-  constructor
-  · rw [Submodule.disjoint_def]
-    intro X hk hp
-    rw [mem_skewPart] at hk
-    rw [mem_hermPart] at hp
-    have h2 : (X : Matrix ι ι 𝕜) = -(X : Matrix ι ι 𝕜) := hp.symm.trans hk
-    have h3 : (2 : ℝ) • (X : Matrix ι ι 𝕜) = 0 := by
-      rw [two_smul]
-      nth_rewrite 2 [h2]
-      exact add_neg_cancel _
-    exact Subtype.ext ((smul_eq_zero.1 h3).resolve_left two_ne_zero)
-  · rw [codisjoint_iff, eq_top_iff]
-    intro X _
-    set Xs : L := ⟨(X : Matrix ι ι 𝕜)ᴴ, hstar _ X.2⟩
-    refine Submodule.mem_sup.2 ⟨(1 / 2 : ℝ) • (X - Xs), ?_, (1 / 2 : ℝ) • (X + Xs), ?_, ?_⟩
-    · rw [mem_skewPart]
-      change ((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) - (X : Matrix ι ι 𝕜)ᴴ))ᴴ =
-        -((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) - (X : Matrix ι ι 𝕜)ᴴ))
-      rw [conjTranspose_smul, star_trivial, conjTranspose_sub, conjTranspose_conjTranspose,
-        ← smul_neg, neg_sub]
-    · rw [mem_hermPart]
-      change ((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) + (X : Matrix ι ι 𝕜)ᴴ))ᴴ =
-        ((1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) + (X : Matrix ι ι 𝕜)ᴴ))
-      rw [conjTranspose_smul, star_trivial, conjTranspose_add, conjTranspose_conjTranspose,
-        add_comm]
-    · apply Subtype.ext
-      change (1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) - (X : Matrix ι ι 𝕜)ᴴ) +
-        (1 / 2 : ℝ) • ((X : Matrix ι ι 𝕜) + (X : Matrix ι ι 𝕜)ᴴ) = X
-      module
-
-theorem traceForm_neg_of_mem_skewPart {X : L} (hX : X ∈ skewPart L) (h0 : X ≠ 0) :
-    traceForm L X X < 0 := by
-  rw [mem_skewPart] at hX
-  have hX0 : (X : Matrix ι ι 𝕜) ≠ 0 := fun e => h0 (Subtype.ext e)
-  have e : (X : Matrix ι ι 𝕜) * X = -((X : Matrix ι ι 𝕜)ᴴ * X) := by
-    rw [hX, Matrix.neg_mul, neg_neg]
-  rw [traceForm_apply, e, trace_neg, map_neg, neg_lt_zero]
-  exact re_trace_conjTranspose_mul_self_pos hX0
-
-theorem traceForm_pos_of_mem_hermPart {X : L} (hX : X ∈ hermPart L) (h0 : X ≠ 0) :
-    0 < traceForm L X X := by
-  rw [mem_hermPart] at hX
-  have hX0 : (X : Matrix ι ι 𝕜) ≠ 0 := fun e => h0 (Subtype.ext e)
-  rw [traceForm_apply]
-  nth_rewrite 1 [← hX]
-  exact re_trace_conjTranspose_mul_self_pos hX0
-
-theorem traceForm_eq_zero_of_skew_herm {X Y : L} (hX : X ∈ skewPart L) (hY : Y ∈ hermPart L) :
-    traceForm L X Y = 0 := by
-  rw [mem_skewPart] at hX
-  rw [mem_hermPart] at hY
-  rw [traceForm_apply]
-  set z := trace ((X : Matrix ι ι 𝕜) * (Y : Matrix ι ι 𝕜))
-  have hz : star z = -z := by
-    rw [← trace_conjTranspose, conjTranspose_mul, hX, hY, Matrix.mul_neg, trace_neg, trace_mul_comm]
-  have h1 : RCLike.re (star z) = RCLike.re z := by
-    rw [RCLike.star_def, RCLike.conj_re]
-  rw [hz, map_neg] at h1
-  linarith
-
 theorem exists_signed_basis {V : Type*} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V]
     (B : LinearMap.BilinForm ℝ V) (hB : ∀ x y, B x y = B y x) {s : ℝ} (hs : s * s = 1)
     (hpos : ∀ v : V, v ≠ 0 → 0 < s * B v v) :
@@ -195,68 +92,6 @@ theorem exists_signed_basis {V : Type*} [AddCommGroup V] [Module ℝ V] [FiniteD
     rw [← mul_assoc, ← sq, inv_pow, hsq, mul_inv, mul_assoc, inv_mul_cancel₀ ht, mul_one]
     exact inv_eq_of_mul_eq_one_right hs
   · rw [hv hij, mul_zero, mul_zero]
-
-theorem exists_cartanBasis (hstar : ∀ X ∈ L, Xᴴ ∈ L) :
-    ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ L) (ε : Fin d → ℝ), (∀ i, ε i = 1 ∨ ε i = -1) ∧
-      (∀ i j, traceForm L (b i) (b j) = if i = j then ε i else 0) ∧
-      ∀ i, ε i = -1 → ((b i : Matrix ι ι 𝕜))ᴴ = -(b i : Matrix ι ι 𝕜) := by
-  classical
-  have : FiniteDimensional ℝ L := Module.Finite.of_injective
-    ((L.incl : L →ₗ⁅ℝ⁆ Matrix ι ι 𝕜) : L →ₗ[ℝ] Matrix ι ι 𝕜) Subtype.val_injective
-  have hc := isCompl_skewPart_hermPart hstar
-  obtain ⟨bk, hbk⟩ := exists_signed_basis ((traceForm L).restrict (skewPart L))
-    (fun x y => traceForm_symm (x : L) y) (s := -1) (by norm_num) (fun v hv => by
-      have h0 : (v : L) ≠ 0 := fun e => hv (Subtype.ext e)
-      have := traceForm_neg_of_mem_skewPart v.2 h0
-      change 0 < _ * traceForm L (v : L) (v : L)
-      linarith)
-  obtain ⟨bp, hbp⟩ := exists_signed_basis ((traceForm L).restrict (hermPart L))
-    (fun x y => traceForm_symm (x : L) y) (s := 1) (by norm_num) (fun v hv => by
-      have h0 : (v : L) ≠ 0 := fun e => hv (Subtype.ext e)
-      have := traceForm_pos_of_mem_hermPart v.2 h0
-      change 0 < _ * traceForm L (v : L) (v : L)
-      linarith)
-  set e := Submodule.prodEquivOfIsCompl (skewPart L) (hermPart L) hc
-  set b0 := (bk.prod bp).map e
-  set f : Fin (Module.finrank ℝ (skewPart L)) ⊕ Fin (Module.finrank ℝ (hermPart L)) → L :=
-    Sum.elim (fun i => (bk i : L)) (fun j => (bp j : L))
-  have hb0 : ∀ x, b0 x = f x := by
-    rintro (i | j)
-    · simp [b0, e, f, Submodule.coe_prodEquivOfIsCompl']
-    · simp [b0, e, f, Submodule.coe_prodEquivOfIsCompl']
-  set ε0 : Fin (Module.finrank ℝ (skewPart L)) ⊕ Fin (Module.finrank ℝ (hermPart L)) → ℝ :=
-    Sum.elim (fun _ => -1) (fun _ => 1)
-  have horth : ∀ x y, traceForm L (b0 x) (b0 y) = if x = y then ε0 x else 0 := by
-    intro x y
-    rw [hb0, hb0]
-    rcases x with i | i <;> rcases y with j | j
-    · have := hbk i j
-      change traceForm L _ _ = _ at this
-      simp only [f, ε0, Sum.elim_inl, Sum.inl.injEq]
-      exact this
-    · simp only [f, ε0, Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]
-      exact traceForm_eq_zero_of_skew_herm (bk i).2 (bp j).2
-    · simp only [f, ε0, Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]
-      rw [traceForm_symm]
-      exact traceForm_eq_zero_of_skew_herm (bk j).2 (bp i).2
-    · have := hbp i j
-      change traceForm L _ _ = _ at this
-      simp only [f, ε0, Sum.elim_inr, Sum.inr.injEq]
-      exact this
-  set σ := finSumFinEquiv (m := Module.finrank ℝ (skewPart L)) (n := Module.finrank ℝ (hermPart L))
-  refine ⟨_, b0.reindex σ, ε0 ∘ σ.symm, fun i => ?_, fun i j => ?_, fun i hi => ?_⟩
-  · rcases hx : σ.symm i with k | k <;> simp [ε0, hx]
-  · rw [Module.Basis.reindex_apply, Module.Basis.reindex_apply, horth]
-    simp only [Function.comp_apply, σ.symm.injective.eq_iff]
-  · rw [Module.Basis.reindex_apply, hb0]
-    simp only [Function.comp_apply] at hi
-    rcases hx : σ.symm i with k | k
-    · rw [hx] at hi
-      simp only [f, Sum.elim_inl]
-      exact (bk k).2
-    · rw [hx] at hi
-      simp [ε0] at hi
-      norm_num at hi
 
 end Cartan
 
@@ -305,85 +140,6 @@ theorem isExpLieAlgebra_top {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 
     zero_mem_expPartialHomeomorph_source ℝ 𝔸, subset_rfl, fun _ _ _ => Submodule.mem_top⟩
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-theorem IsExpLieAlgebra.expG_smul_mem_maxCompact_real {G : Subgroup (Matrix ι ι ℝ)ˣ}
-    {𝔤 : Submodule ℝ (Matrix ι ι ℝ)} (h : IsExpLieAlgebra G 𝔤) {X : 𝔤}
-    (hX : (X : Matrix ι ι ℝ)ᴴ = -(X : Matrix ι ι ℝ)) (t : ℝ) :
-    h.expG (t • X) ∈ maxCompact G := by
-  rw [mem_maxCompact, IsExpLieAlgebra.coe_expG]
-  apply exp_mem_unitaryGroup
-  change (t • (X : Matrix ι ι ℝ))ᴴ = -(t • (X : Matrix ι ι ℝ))
-  rw [conjTranspose_smul, star_trivial, hX, smul_neg]
-
-theorem IsExpLieAlgebra.expG_smul_mem_maxCompact_complex {G : Subgroup (Matrix ι ι ℂ)ˣ}
-    {𝔤 : Submodule ℝ (Matrix ι ι ℂ)} (h : IsExpLieAlgebra G 𝔤) {X : 𝔤}
-    (hX : (X : Matrix ι ι ℂ)ᴴ = -(X : Matrix ι ι ℂ)) (t : ℝ) :
-    h.expG (t • X) ∈ maxCompact G := by
-  rw [mem_maxCompact, IsExpLieAlgebra.coe_expG]
-  apply exp_mem_unitaryGroup
-  change (t • (X : Matrix ι ι ℂ))ᴴ = -(t • (X : Matrix ι ι ℂ))
-  rw [conjTranspose_smul, star_trivial, hX, smul_neg]
-
-theorem IsExpLieAlgebra.exists_cartanData_real {G : Subgroup (Matrix ι ι ℝ)ˣ}
-    {𝔤 : Submodule ℝ (Matrix ι ι ℝ)} (h : IsExpLieAlgebra G 𝔤) (hstar : ∀ X ∈ 𝔤, Xᴴ ∈ 𝔤) :
-    ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ h.lieSubalgebra) (ε : Fin d → ℝ),
-      (∀ i, ε i = 1 ∨ ε i = -1) ∧
-      (∀ i j, traceForm h.lieSubalgebra (b i) (b j) = if i = j then ε i else 0) ∧
-      ∀ i, ε i = -1 → ∀ t : ℝ, h.expG (t • h.ofLie (b i)) ∈ maxCompact G := by
-  obtain ⟨d, b, ε, hε, horth, hskew⟩ := exists_cartanBasis (L := h.lieSubalgebra) hstar
-  exact ⟨d, b, ε, hε, horth, fun i hi t => h.expG_smul_mem_maxCompact_real (hskew i hi) t⟩
-
-theorem IsExpLieAlgebra.exists_cartanData_complex {G : Subgroup (Matrix ι ι ℂ)ˣ}
-    {𝔤 : Submodule ℝ (Matrix ι ι ℂ)} (h : IsExpLieAlgebra G 𝔤) (hstar : ∀ X ∈ 𝔤, Xᴴ ∈ 𝔤) :
-    ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ h.lieSubalgebra) (ε : Fin d → ℝ),
-      (∀ i, ε i = 1 ∨ ε i = -1) ∧
-      (∀ i j, traceForm h.lieSubalgebra (b i) (b j) = if i = j then ε i else 0) ∧
-      ∀ i, ε i = -1 → ∀ t : ℝ, h.expG (t • h.ofLie (b i)) ∈ maxCompact G := by
-  obtain ⟨d, b, ε, hε, horth, hskew⟩ := exists_cartanBasis (L := h.lieSubalgebra) hstar
-  exact ⟨d, b, ε, hε, horth, fun i hi t => h.expG_smul_mem_maxCompact_complex (hskew i hi) t⟩
-
-theorem conjTranspose_mem_indefiniteUnitaryLieAlgebra {p q : ℕ}
-    {X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hX : X ∈ indefiniteUnitaryLieAlgebra p q) :
-    Xᴴ ∈ indefiniteUnitaryLieAlgebra p q := by
-  rw [mem_indefiniteUnitaryLieAlgebra_iff] at hX ⊢
-  have e : indefJ p q * (indefJ p q * X * indefJ p q) * indefJ p q = X := by
-    simp only [← Matrix.mul_assoc, indefJ_mul_self, Matrix.one_mul]
-    rw [Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]
-  rw [conjTranspose_conjTranspose, hX, Matrix.mul_neg, Matrix.neg_mul, neg_neg, e]
-
-theorem mem_maxCompact_indefiniteUnitary {p q : ℕ} {g : indefiniteUnitaryGroup p q} :
-    g ∈ maxCompact (indefiniteUnitaryGroup p q) ↔
-      ((g : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) ∈
-          Matrix.unitaryGroup (Fin p ⊕ Fin q) ℂ ∧
-        ((g : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₁₂ = 0 ∧
-        ((g : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₂₁ = 0 := by
-  rw [mem_maxCompact]
-  refine ⟨fun hu => ⟨hu, ?_⟩, fun h => h.1⟩
-  set u := ((g : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)
-  have hG : uᴴ * indefJ p q * u = indefJ p q := g.2
-  have h1 : u * uᴴ = 1 := by
-    rw [← Matrix.star_eq_conjTranspose]; exact Matrix.mem_unitaryGroup_iff.1 hu
-  have hcomm : indefJ p q * u = u * indefJ p q := by
-    calc indefJ p q * u = (u * uᴴ) * indefJ p q * u := by rw [h1, Matrix.one_mul]
-      _ = u * (uᴴ * indefJ p q * u) := by simp only [Matrix.mul_assoc]
-      _ = u * indefJ p q := by rw [hG]
-  have hent : ∀ i j, indefJ p q i i * u i j = u i j * indefJ p q j j := by
-    intro i j
-    have := congrFun (congrFun hcomm i) j
-    simpa [indefJ, diagonal_mul, mul_diagonal] using this
-  refine ⟨?_, ?_⟩
-  · ext i j
-    have := hent (Sum.inl i) (Sum.inr j)
-    simp only [indefJ, diagonal_apply_eq, Sum.elim_inl, Sum.elim_inr, one_mul, mul_neg,
-      mul_one] at this
-    simp only [toBlocks₁₂, of_apply, Matrix.zero_apply]
-    linear_combination (1 / 2 : ℂ) * this
-  · ext i j
-    have := hent (Sum.inr i) (Sum.inl j)
-    simp only [indefJ, diagonal_apply_eq, Sum.elim_inl, Sum.elim_inr, one_mul, neg_mul,
-      mul_one] at this
-    simp only [toBlocks₂₁, of_apply, Matrix.zero_apply]
-    linear_combination (-1 / 2 : ℂ) * this
 
 end Groups
 

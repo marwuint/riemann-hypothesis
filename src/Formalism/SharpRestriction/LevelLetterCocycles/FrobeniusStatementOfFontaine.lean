@@ -3,7 +3,8 @@ import Formalism.SharpRestriction.LevelLetterCocycles.AdmBoundsBOfAdm
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.LogbHBNonneg
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.LenQuotSpanNeTopDvr
 import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ExistsLiftFLeSgOfThick
-import Formalism.SharpRestriction.LevelLetterCocycles.StatementFamilies.ArcLiftingSetup
+import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
+import Formalism.SharpRestriction.ParConsts
 import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocE
 
 noncomputable section
@@ -221,14 +222,5 @@ theorem frobenius_statement_of_fontaine (C CR CA CB CK Ckap : ℝ) (hC : (320 : 
   stmt_holds D HW F Cm a22 a23 c4 C hC CR CA CB CK Ckap
 
 end Record
-
-theorem stmtF_holds (Dm : Formalism.MainNotions.DFamP) (L : Formalism.MainNotions.ArcLiftingSetup.LayF Dm)
-    (hJ : ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52) (x : ℝ) (i : (Dm ε h0 h1).Ix x),
-      UsedJ ((Dm ε h0 h1).D x i) (L ε h0 h1 x i).1 (L ε h0 h1 x i).2.1) : ArcLiftingSetup.KudlaFamilyStatement Dm L := by
-  rintro ⟨CR, CA, CB, CK, Ckap, h⟩
-  refine ⟨C0, fun ε h0 h1 => ?_⟩
-  obtain ⟨x0, hx⟩ := h ε h0 h1
-  exact ⟨x0, fun C hC x hx0 i => stmt_holds _ _ _ _ (hJ ε h0 h1 x i).a22 (hJ ε h0 h1 x i).a23 (hJ ε h0 h1 x i).c4 C hC
-    CR CA CB CK Ckap (hx x hx0 i)⟩
 
 end Formalism.MainNotions.N.Ln17

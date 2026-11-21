@@ -317,27 +317,6 @@ theorem lubinTateLimitGalEquiv_apply (hf : IsLubinTateSeries π f) (u : 𝒪[K]�
   lubinTateChar_spec hπ hf _ _ hx (u : 𝒪[K]) (by
     rw [lubinTateChar_lubinTateLimitGalEquiv, coe_unitsMk])
 
-theorem lubinTateLimitGalEquiv_eq_iff (hf : IsLubinTateSeries π f) (u : 𝒪[K]ˣ)
-    (σ : lubinTateLimit Ω hπ ≃ₐ[K] lubinTateLimit Ω hπ) :
-    lubinTateLimitGalEquiv hπ hf u = σ ↔
-      ∀ (n : ℕ) (x : IdealPoint Ω (lubinTateFormalGroup hπ hf)) (hx : x ∈ lubinTateTorsion Ω hf n),
-        ((σ ⟨x.val, lubinTateField_le_lubinTateLimit hπ hf n (val_mem_lubinTateField hπ hf hx)⟩ :
-          lubinTateLimit Ω hπ) : Ω) = ((u : 𝒪[K]) • x).val := by
-  constructor
-  · rintro rfl n x hx
-    exact lubinTateLimitGalEquiv_apply hπ hf u hx
-  · intro h
-    refine lubinTateLimit_ext hπ hf fun n => Units.ext ?_
-    rw [lubinTateChar_lubinTateLimitGalEquiv, coe_unitsMk,
-      lubinTateChar_eq_of_apply hπ hf _ σ _ fun x hx => h n x hx]
-
-theorem lubinTateLimitGalEquiv_eq (hf : IsLubinTateSeries π f) (hg : IsLubinTateSeries π g) :
-    lubinTateLimitGalEquiv (Ω := Ω) hπ hf = lubinTateLimitGalEquiv hπ hg := by
-  ext u : 1
-  refine lubinTateLimit_ext hπ hg fun n => ?_
-  rw [← lubinTateChar_eq hπ hf hg (lubinTateField_le_lubinTateLimit hπ hf n),
-    lubinTateChar_lubinTateLimitGalEquiv, lubinTateChar_lubinTateLimitGalEquiv]
-
 end Limit
 
 end FormalGroup

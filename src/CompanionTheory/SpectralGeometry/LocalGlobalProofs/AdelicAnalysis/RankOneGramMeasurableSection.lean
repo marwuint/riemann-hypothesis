@@ -1,10 +1,10 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorInvolutionAlgebraPropertiesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensorStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorInvolutionAlgebraProperties
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensor
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRing
 
 noncomputable section
 
@@ -306,12 +306,12 @@ theorem orbit_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hLoc x hx
   obtain ⟨hTR, hLC, hSC, hT2, hArt, hRed, -, -⟩ := id hLoc
   haveI := hTR; haveI := hLC; haveI := hSC; haveI := hT2; haveI := hArt; haveI := hRed
-  obtain ⟨hKr, hKl, hKs, hKt, hσc, -, -, hBor, -, hgram⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R
+  obtain ⟨hKr, hKl, hKs, hKt, hσc, -, -, hBor, -, hgram⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R
   haveI := hKr; haveI := hKl; haveI := hKs; haveI := hKt
-  obtain ⟨hHg, -, -, -, hHb, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ R
+  obtain ⟨hHg, -, -, -, hHb, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM M J hJ R
   haveI := hHg; haveI := hHb
-  obtain ⟨-, -, h2, hinv, -, -, -⟩ := GlobalTheory.T.tensor_involution_algebra_properties F E σ hCM R
-  have hUe := GlobalTheory.T.units_open_embedding_local_tensor F E σ hCM R hLoc
+  obtain ⟨-, -, h2, hinv, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.KAlg.algebra_tensor_invol F E σ hCM R
+  have hUe := _root_.GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hCM R hLoc
   haveI := hBor 1 M
   have hZ : IsClosed {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x} :=
     isClosed_eq (hgram 1 M J) continuous_const
@@ -337,7 +337,7 @@ theorem orbit_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         rw [Fin.fin_one_eq_zero a, Fin.fin_one_eq_zero b]
         show hform (sigR R σ) (JR R J) (x 0) (x 0) = hform (sigR R σ) (JR R J) (- y₀ 0) (- y₀ 0)
         rw [hform_neg_neg, hβ]
-      obtain ⟨h₀, hh₀⟩ := GlobalTheory.T.witt_extension_artinian_ring F E σ hCM M J hJ R 1 x _ hgp hx
+      obtain ⟨h₀, hh₀⟩ := _root_.GlobalTheory.CompanionTheory.SW.WittTuples.exists_actW_eq_of_gramR_eq F E σ hCM M J hJ R 1 x _ hgp hx
       have hmem : ∀ y ∈ (fun y : Fin 1 → Fin M → R ⊗[F] E => y 0) ⁻¹' U ∩
           {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x},
           y 0 ∈ U ∧ hform (sigR R σ) (JR R J) (y 0) (y 0) = hform (sigR R σ) (JR R J) (y₀ 0) (y₀ 0) :=

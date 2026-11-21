@@ -34,8 +34,6 @@ def ZhangDimensionPushDownGrassmannianHeightBounds : Prop :=
 
 abbrev LemmaS := @SlopeBoundSt
 
-def All : Prop := HS ∧ An ∧ ZhangDimensionPushDownGrassmannianHeightBounds ∧ LemmaS
-
 end Prov
 
 end GlobalTheory.CompanionTheory.Ar

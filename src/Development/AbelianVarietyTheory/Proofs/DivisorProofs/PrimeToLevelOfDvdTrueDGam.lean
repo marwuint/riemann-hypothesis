@@ -1,6 +1,18 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimesLargeOfSizesUsed
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.RationalRankMinkowski
+import Formalism.SharpRestriction.ParConsts
+import Formalism.SharpRestriction.ParamsHeightRankConstant
+import Formalism.SharpRestriction.GlobalSchurBounds.MainIn
+import Formalism.LocalRingCardinality.DataErr
+import Formalism.LocalRingCardinality.DataMink
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardFiniteSubgroupGLIntDvd
+import Formalism.SharpRestriction.Divisibility.LocalQuadraticParts
+import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
+import Formalism.QuotientMetricDivisors.FinalW
+import Formalism.QuotientMetricDivisors.SixthReductionExplicit
+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+import Formalism.LocalToGlobal.GlobalTheory.IsResidueClassZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntSmulMem
+import Formalism.FlagUnipotentLattices.MemOfOrthogonalAnisotropic
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LandherrHasse
@@ -10,7 +22,7 @@ noncomputable section
 
 namespace GlobalTheory.DGamOnRecord
 
-open Formalism.BasicNotions Formalism.MainNotions NumberField GlobalTheory.IndefiniteRowSideFullHecke.LatticeAutomorphismLcm GlobalTheory.DGamPrimeToLevel
+open Formalism.BasicNotions Formalism.MainNotions NumberField
 open Formalism.L2.Col (Sp hStd autLat PosStar)
 open Formalism.HermitianLatticesTheory (isom IsUnimodular)
 open GlobalTheory.Mem.Col2 (DGam autOrd autO gamOrd gamRanks)
@@ -45,10 +57,6 @@ theorem card_dvd_of_minkMult {n N M : ℕ} (hM : MinkMult N M) (hN : Module.finr
   exact hM φ.range (Finite.of_equiv _ e.toEquiv)
 
 end Transport
-
-def trueDGam (D : D7) : ℕ := letI := D.host.cmStar; DGam D.host.E D.R
-
-def ChainsCarryLcm (D : D7) : Prop := ∀ u μ, IsAutLcm D (D.chTw u μ).DGam
 
 end GlobalTheory.DGamOnRecord
 

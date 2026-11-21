@@ -22,9 +22,9 @@ theorem UpperTheory.Gal.Int.Core.downPhi_holds : SphDown .phi := by
     ext1
     exact this.over.symm
   obtain ⟨c, hc, hdegc, hq, -⟩ :=
-    GlobalTheory.T.place_over_transport_ring_iso E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi
+    _root_.GlobalTheory.WeilTransport.weil_equiv E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi
   obtain ⟨S, hS, -, -, -, -, hTw, -⟩ :=
-    GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi
+    _root_.GlobalTheory.WDTransport.exists_equiv_wd E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi
   have hB' : (CG.mk P).HasSat w' B := by
     have := hP.sat w' 1 B (by rw [pow_one, hunder, hq]) (by rw [hunder]; exact hB)
     simpa using this

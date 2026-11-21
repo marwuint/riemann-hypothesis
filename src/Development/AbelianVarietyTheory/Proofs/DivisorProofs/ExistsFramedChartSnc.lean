@@ -111,7 +111,7 @@ end Level
 theorem exists_framed_chart_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (hsm : SmoothOfRelativeDimension Dw.dim (genStr Z)) (hsnc : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z)) (σ : c.F →+* ℂ) (x₀ : CxPts (genStr Z) σ), ∃ (n a g r₀ : ℕ) (e : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)) (ex : ExpMaps Z σ g) (ζ : (Fin n → ℂ) → Fin r₀ → Fin g → ℂ), x₀ ∈ e.source ∧ e x₀ = 0 ∧ IsExpChart e ex ∧ (∀ x ∈ e.source, Inner x ↔ ∀ k : Fin n, (k : ℕ) < a → e x k ≠ 0) ∧ Function.Surjective (ex x₀) ∧ AnalyticOnNhd ℂ ζ (Metric.ball 0 1) ∧ (∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, LinearIndependent ℝ (ζ z)) ∧ (∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ i, ex (e.symm z) (ζ z i) = 1) ∧ IsLatBasis {w | ex x₀ w = 1} (ζ 0) ∧ (∃ C : ℝ, ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ‖ζ z‖ ≤ C) ∧ ∀ j : Fin g, ∃ i, ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ζ z i = Pi.single j 1 := by
   intro E _ _ _ H Dw l Xo c O _ β Z hsm hsnc σ x₀
   obtain ⟨a, e0, hx₀, he0, hhol, hsymm, hbd⟩ :=
-    GlobalTheory.T.exists_snc_coordinates_complexPoint_smoothVariety c.F (gen Z) (genStr Z) Dw.dim (genBd Z) σ hsm hsnc x₀
+    _root_.GlobalTheory.SncChart.exists_coords c.F (gen Z) (genStr Z) Dw.dim (genBd Z) σ hsm hsnc x₀
   have hsym0 : e0.symm 0 = x₀ := by rw [← he0]; exact e0.left_inv hx₀
   have h0t : (0 : Fin Dw.dim → ℂ) ∈ e0.target := he0 ▸ e0.map_source hx₀
   obtain ⟨g, r₀, e, ex, ζ, h⟩ := exists_framed_of_chart (a := a) e0 h0t hhol hsymm hbd
@@ -145,7 +145,7 @@ theorem exists_isLogChart_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   let Pair : ℕ → (Fin n → ℂ) → (Fin g → ℂ) → (Fin g → ℂ) → ℂˣ → Prop := fun N z v w c =>
     GlobalTheory.UU.CubWeil Z.t.cub N (ex (e.symm z) ((N : ℂ)⁻¹ • v)) (ex (e.symm z) ((N : ℂ)⁻¹ • w)) (unitOn c)
   have hLF : IsLatFam (Metric.ball 0 1) K :=
-    GlobalTheory.T.exponentialKernels_isHolomorphicLatticeFamily E H Z.X Z.t n g (Metric.ball 0 1) (fun z => (e.symm z).1 ≫ genι Z) (fun z => ex (e.symm z))
+    _root_.GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker E H Z.X Z.t n g (Metric.ball 0 1) (fun z => (e.symm z).1 ≫ genι Z) (fun z => ex (e.symm z))
       Metric.isOpen_ball hHol fun z hz => hExpAt _ (hsymm z hz)
   have hB0 : IsLatBasis (K 0) (ζ 0) := by
     show IsLatBasis {w | ex (e.symm 0) w = 1} (ζ 0)
@@ -164,7 +164,7 @@ theorem exists_isLogChart_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     have h2 := GlobalTheory.HolPeriods.isHolTo_comp (φ := fun b => (φ b, (N : ℂ)⁻¹ • w b)) hHol hB
       (hφ.prodMk ((differentiableOn_const ((N : ℂ)⁻¹)).smul hw)) fun b hb => Set.mk_mem_prod (hφm hb) (Set.mem_univ _)
     dsimp only at h1 h2
-    exact GlobalTheory.T.cubicalWeilPairing_torsion_const_holomorphic_family Z.X Z.t.G Z.t.PP Z.t.cub m N B (fun b => (e.symm (φ b)).1 ≫ genι Z)
+    exact _root_.GlobalTheory.TorsionPairFam.cubWeil_const_of_isHolTo Z.X Z.t.G Z.t.PP Z.t.cub m N B (fun b => (e.symm (φ b)).1 ≫ genι Z)
       (fun b => ex (e.symm (φ b)) ((N : ℂ)⁻¹ • v b)) (fun b => ex (e.symm (φ b)) ((N : ℂ)⁻¹ • w b)) c b₀ b₁ hN hB hBc
       h1 h2
       (fun b hb => ⟨pow_eq_one_of_map _ (hadd _ (hsymm _ (hφm hb))) (hzero _ (hsymm _ (hφm hb))) hN (hK b hb).1,
@@ -179,7 +179,7 @@ theorem exists_isLogChart_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     have hin : Inner (e.symm z) := (hbd _ (hsymm z hz)).2 fun k hk => by
       rw [e.right_inv (by rw [htarget]; exact hz)]
       exact hnz k hk
-    obtain ⟨Hm, hH, hpos, hspan, hint, hw⟩ := GlobalTheory.T.exponentialKernel_lattice_riemannForm_off_boundary E H Dw l Xo c O β Z σ g (e.symm z) (ex (e.symm z)) hσ hpq
+    obtain ⟨Hm, hH, hpos, hspan, hint, hw⟩ := _root_.GlobalTheory.ShFam.Hor.LogCh.kernel_lattice_of_inner E H Dw l Xo c O β Z σ g (e.symm z) (ex (e.symm z)) hσ hpq
       hin (hExpAt _ (hsymm z hz)) (hslice z hz)
     exact ⟨Hm, hH, hpos, hspan, fun v hv w hw' => hint v w hv hw', fun N v w hN hv hw' => hw N v w _ hN hv hw' rfl⟩
   have hP4 : ∀ N : ℕ, 0 < N → ∃ S : Set (Fin r₀ → ZMod N), N ^ r₀ * Nat.card S = N ^ (2 * g) ∧
@@ -189,14 +189,14 @@ theorem exists_isLogChart_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       have := hslice 0 hmem0
       rw [h0] at this
       exact this
-    obtain ⟨Tt, hT1, hT2, hTc⟩ := GlobalTheory.T.exists_toricTorsion_cubicalWeil_one_complexPoint E H Z.X Z.t (x₀.1 ≫ genι Z) g N (ex x₀) hN (hExpAt x₀ hx₀) hsurj hsl
-    obtain ⟨S, hSc, hS⟩ := GlobalTheory.T.torsion_count_through_exponential_lattice_kernel _ g r₀ N (ex x₀) (ζ 0) Tt hN (hadd x₀ hx₀) hsurj hζB hT1 hTc
+    obtain ⟨Tt, hT1, hT2, hTc⟩ := _root_.GlobalTheory.exists_toric_torsion_cubWeil_one_of_exp E H Z.X Z.t (x₀.1 ≫ genι Z) g N (ex x₀) hN (hExpAt x₀ hx₀) hsurj hsl
+    obtain ⟨S, hSc, hS⟩ := _root_.GlobalTheory.ShFam.Hor.LogCh.exp_lattice_torsion_count _ g r₀ N (ex x₀) (ζ 0) Tt hN (hadd x₀ hx₀) hsurj hζB hT1 hTc
     refine ⟨S, hSc, fun a a' ha => ?_⟩
     show GlobalTheory.UU.CubWeil Z.t.cub N (ex (e.symm 0) ((N : ℂ)⁻¹ • ∑ j, a j • ζ 0 j))
       (ex (e.symm 0) ((N : ℂ)⁻¹ • ∑ j, a' j • ζ 0 j)) (unitOn 1)
     rw [h0, unitOn_one]
     exact hT2 _ (hS a ha) _ (pow_eq_one_of_map _ (hadd x₀ hx₀) (hzero x₀ hx₀) hN ((hζB.2 _).2 ⟨a', rfl⟩))
-  obtain ⟨r, lam, ρ, hc, hs, hg⟩ := GlobalTheory.T.exists_holomorphic_latticeBasis_punctPolydiscCover_polyGrowth n a g r₀ K ζ Pair hLF hζan hζli hζK hB0 hζC hζstd hP1 hP2 hP3 hP4
+  obtain ⟨r, lam, ρ, hc, hs, hg⟩ := _root_.GlobalTheory.ShFam.Hor.LogCh.Core.core n a g r₀ K ζ Pair hLF hζan hζli hζK hB0 hζC hζstd hP1 hP2 hP3 hP4
   exact ⟨n, g, r, a, e, ex, lam, ρ, hx₀, he0, ⟨htarget, hholE, hsymmHol, hadd, hjoint, htan⟩, hbd, hc, hs, hg⟩
 
 theorem logGrowth_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (hsm : SmoothOfRelativeDimension Dw.dim (genStr Z)) (hsnc : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z)) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (τ : E →+* ℂ) (x : ∀ i, Idx Dw τ → (Fu.Di i).La) (hm : Fin Fu.n → Matrix (Idx Dw τ) (Idx Dw τ) E) (h : CxFr Z σ → ℂ), Formalism.L2.PjFree.GoodEmb c σ → 1 ≤ Dw.p + Dw.q → (∀ i, IsPerBasis (Fu.Di i) (x i) (hm i)) → (∀ a i Q, Per Fu a i Q → h a = perVal c σ τ (x i) (hm i) Q) → LogGrowth h := by
@@ -226,7 +226,7 @@ theorem logGrowth_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   obtain ⟨s, hs, hse, hsi, hsn⟩ := exists_log_lift k (ch (a b).1) hz ((hinner _ hs1).1 hin)
   obtain ⟨hd, hw1, hw2⟩ := hdir b hb
   obtain ⟨Q, gm, hQ, hgm, hv⟩ := hmark s hs (a b) (W b) (by rw [hse, ch.left_inv hs1]) hd
-  have hgood := GlobalTheory.T.periodLinearAlgebra_hodgeSequence_exact E H Dw l Xo c O β Z σ g e Fu τ (a b) i Q (x i) (hm i) hQ (hx i)
+  have hgood := _root_.GlobalTheory.ShFam.Hor.goodPer_of_per E H Dw l Xo c O β Z σ g e Fu τ (a b) i Q (x i) (hm i) hQ (hx i)
   obtain ⟨hgood', hnorm, -⟩ := GlobalTheory.T.horizontalCoordinate_lattice_isometry_det_one E H Dw l c σ (Fu.Di i) τ (x i) (hm i) Q gm (hx i) hgood hgm
   set L := 1 + |Real.log ‖∏ j ∈ Finset.univ.filter (fun j : Fin n => (j : ℕ) < k), ch (a b).1 j‖| with hL
   have hL1 : 1 ≤ L := le_add_of_nonneg_right (abs_nonneg _)
@@ -262,7 +262,7 @@ theorem horOf_eq_perVal {Z : Model Xo c β} (hx : ∀ i, IsPerBasis (Fu.Di i) (x
   obtain ⟨j, Q'⟩ := w
   obtain rfl : j = i := (GlobalTheory.T.two_markings_differ_by_level_isometry E H Dw l Xo c O β Z σ g e Fu a).1 _ _ _ _ hs h
   obtain ⟨gm, h1, h2, h3⟩ := (GlobalTheory.T.two_markings_differ_by_level_isometry E H Dw l Xo c O β Z σ g e Fu a).2 _ _ _ h hs
-  have := perVal_isLev (hx j) (GlobalTheory.T.periodLinearAlgebra_hodgeSequence_exact E H Dw l Xo c O β Z σ g e Fu τ a j Q' _ _ hs (hx j)) h1 h2
+  have := perVal_isLev (hx j) (_root_.GlobalTheory.ShFam.Hor.goodPer_of_per E H Dw l Xo c O β Z σ g e Fu τ a j Q' _ _ hs (hx j)) h1 h2
   rw [← this]
   congr 1
   exact AddMonoidHom.ext h3
@@ -271,14 +271,14 @@ theorem horFn_horOf_snc {Z : Model Xo c β} (hsm : SmoothOfRelativeDimension Dw.
     (hsnc : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z)) (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hr : 1 ≤ Dw.p + Dw.q)
     (hx : ∀ i, IsPerBasis (Fu.Di i) (x i) (hm i)) :
     HorFn (Z := Z) τ (horOf Fu τ x hm) := by
-  have good := fun a i Q h => GlobalTheory.T.periodLinearAlgebra_hodgeSequence_exact E H Dw l Xo c O β Z σ g e Fu τ a i Q _ _ h (hx i)
+  have good := fun a i Q h => _root_.GlobalTheory.ShFam.Hor.goodPer_of_per E H Dw l Xo c O β Z σ g e Fu τ a i Q _ _ h (hx i)
   refine ⟨fun a ha => ?_, fun a a' M N ha hM hN => ?_, fun V _ _ _ B a hB hf hi b₀ hb => ?_,
     logGrowth_snc E H Dw l Xo c O β Z hsm hsnc σ g e Fu τ x hm _ hσ hr hx (horOf_eq_perVal hx)⟩
   · obtain ⟨i, Q, h⟩ := GlobalTheory.T.exists_periods_in_frame_off_boundary E H Dw l Xo c O β Z σ g e Fu a ha
     rw [horOf_eq_perVal hx a i Q h]
     exact (good a i Q h).perVal_ne_zero
   · obtain ⟨i, Q, h⟩ := GlobalTheory.T.exists_periods_in_frame_off_boundary E H Dw l Xo c O β Z σ g e Fu a ha
-    obtain ⟨Q', h', hc⟩ := GlobalTheory.T.periods_change_of_eigenFrame E H Dw l Xo c O β Z σ g e Fu a a' i Q h hM.1
+    obtain ⟨Q', h', hc⟩ := _root_.GlobalTheory.ShFam.Hor.per_chg E H Dw l Xo c O β Z σ g e Fu a a' i Q h hM.1
     have key : ∀ ρ M, Chg a a' ρ M → perMat (x i) Q ρ = Mᵀ * perMat (x i) Q' ρ := fun ρ M hM => by
       ext j k
       simp only [perMat, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, hc ρ M hM, mul_comm]

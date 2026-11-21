@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootToFlag
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleFormEqMulPointClassValueStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleFormEqMulPointClassValue
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchubGamApply
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.GoodMetric GlobalTheory.LieBase GlobalTheory.GrassTop
 open Classical
 
@@ -60,7 +61,7 @@ theorem top_eq_smul_point : ∀ {E : Type} [Field E] [NumberField E] [IsCMField 
     IsWeightedHomogeneous Prod.snd Q (Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q)) →
       ∃ c : ℝ, Q - C c * pointPoly H Dw ∈ relIdeal H Dw := by
   intro E _ _ _ H Dw Q hQ
-  obtain ⟨β, hβ⟩ := GlobalTheory.T.admissible_form_eq_mul_point_class_value E H Dw Q
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.GrassTop.span_point E H Dw Q
   set D := Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q) with hD
   let N : Submodule ℝ (MvPolynomial ((E →+* ℂ) × ℕ) ℝ) := Submodule.span ℝ
     {f | ∃ d : (E →+* ℂ) × ℕ →₀ ℕ, (d.sum fun x i => x.2 * i) ≠ D ∧ f = monomial d 1}

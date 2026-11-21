@@ -203,7 +203,7 @@ private theorem frob_fix : GlobalTheory.Published.GlobalArtinReciprocity → ∀
   haveI halg : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic
   haveI hac : IsAlgClosure (IntermediateField.adjoin E {π}) Ω :=
     ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.tower_top (K := E) _⟩
-  obtain ⟨W, hW, hu, hAW, hNW, hunif⟩ := GlobalTheory.T.tameEisensteinExtension_unique_totallyRamified_place E Ω v A hA ϖ hϖ hϖ2 π hπ
+  obtain ⟨W, hW, hu, hAW, hNW, hunif⟩ := _root_.GlobalTheory.TameRecPlace.main E Ω v A hA ϖ hϖ hϖ2 π hπ
   obtain ⟨artK, haK⟩ := hGAR (IntermediateField.adjoin E {π}) Ω
   have hg0 : IntermediateField.AdjoinSimple.gen E π ≠ 0 := by
     intro h0

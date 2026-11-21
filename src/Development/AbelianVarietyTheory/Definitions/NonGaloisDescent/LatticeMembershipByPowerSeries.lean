@@ -66,21 +66,6 @@ def gA : k⸨X⸩ →ₐ[k] k⸨X⸩ :=
 
 end
 
-def ringModel (p : ℕ) [Fact p.Prime] : RingPG (ZMod p) p where
-  φ := FiniteField.frobeniusAlgHom (ZMod p) _
-  γ := gA (ZMod p)
-  φ_int a := ⟨a ^ p, by simp [ZMod.card]⟩
-  γ_int a := ⟨_, gE_coe _ a⟩
-  φ_v := ⟨1, by simp [ZMod.card]⟩
-  γ_v := ⟨inv1 (ZMod p) 1, by simp [inv1], by
-    change gE _ _ = _
-    rw [vv_eq, gE_coe, sb_X, ← map_mul, ← map_one (HahnSeries.ofPowerSeries ℤ (ZMod p)), ← map_sub, ← map_mul]
-    congr 1
-    have := powerSeries_oneAddConstMulX_mul_inv (ZMod p) 1
-    rw [map_one] at this
-    linear_combination PowerSeries.X * this⟩
-  comm x := by simp
-
 section
 variable {k : Type} [Field k]
 
@@ -89,43 +74,12 @@ def lin (σ : k⸨X⸩ →ₐ[k] k⸨X⸩) : k⸨X⸩ →ₗ[k] k⸨X⸩ where
   map_add' := map_add σ
   map_smul' c x := by simp only [smul_eq, map_mul, AlgHom.commutes, RingHom.id_apply]
 
-def unitMod {l : ℕ} (R : RingPG k l) (hγ : Function.Bijective R.γ) (n : ℕ) : ModPG R n k⸨X⸩ where
-  φ _ := lin R.φ
-  γ _ := lin R.γ
-  φ_semi _ a x := map_mul R.φ a x
-  γ_semi _ a x := map_mul R.γ a x
-  etale _ := by
-    rw [eq_top_iff]
-    intro x _
-    have : x = x • (lin R.φ 1) := by change x = x * R.φ 1; simp
-    rw [this]
-    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩)
-  γ_bij _ := hγ
-  comm _ x := R.comm x
-
 def lat (k : Type) [Field k] (a : ℤ) : Submodule k⟦X⟧ k⸨X⸩ := Submodule.span k⟦X⟧ {vv k ^ a}
 
 theorem mem_lat {a : ℤ} {y : k⸨X⸩} : y ∈ lat k a ↔ ∃ b : k⟦X⟧, (b : k⸨X⸩) * vv k ^ a = y := by
   unfold lat
   rw [Submodule.mem_span_singleton]
   simp only [Algebra.smul_def, LaurentSeries.coe_algebraMap]
-
-theorem sh_lat (a b : ℤ) : sh a (lat k b) = lat k (a + b) := by
-  unfold sh lat
-  rw [Submodule.map_span, Set.image_singleton, zpow_add₀ (vv_ne k)]
-  congr 1
-
-theorem isLat_lat (a : ℤ) : IsLat (lat k a) := by
-  unfold IsLat
-  refine ⟨Submodule.fg_span_singleton _, ?_⟩
-  rw [eq_top_iff]
-  intro y _
-  have hmem : vv k ^ a ∈ Submodule.span k⸨X⸩ ((lat k a : Submodule k⟦X⟧ k⸨X⸩) : Set k⸨X⸩) :=
-    Submodule.subset_span (by unfold lat; exact Submodule.mem_span_singleton_self _)
-  have hy : y = (y * (vv k ^ a)⁻¹) • vv k ^ a := by
-    rw [smul_eq_mul, mul_assoc, inv_mul_cancel₀ (zpow_ne_zero _ (vv_ne k)), mul_one]
-  rw [hy]
-  exact Submodule.smul_mem _ _ hmem
 
 theorem nab_apply (g : k⸨X⸩ →ₗ[k] k⸨X⸩) (y : k⸨X⸩) : nab g y = (vv k)⁻¹ * (g y - y) := rfl
 
@@ -161,30 +115,8 @@ theorem nab_vinv : nab (lin (gA k)) (vv k)⁻¹ = (vv k)⁻¹ := by
   change (vv k)⁻¹ * (gE k (vv k)⁻¹ - (vv k)⁻¹) = _
   rw [g_vinv, add_sub_cancel_left, mul_one]
 
-theorem decomp {y : k⸨X⸩} (hy : y ∈ lat k (-1)) :
-    ∃ (c : k) (b : k⟦X⟧), y = c • (vv k)⁻¹ + b := by
-  obtain ⟨b, rfl⟩ := mem_lat.mp hy
-  refine ⟨PowerSeries.constantCoeff b, PowerSeries.mk fun p => PowerSeries.coeff (p + 1) b, ?_⟩
-  conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const b]
-  rw [map_add, map_mul, ← vv_eq, HahnSeries.ofPowerSeries_C, smul_eq, algebraMap_eq, zpow_neg_one]
-  linear_combination ((PowerSeries.mk fun p => PowerSeries.coeff (p + 1) b : k⟦X⟧) : k⸨X⸩) *
-    mul_inv_cancel₀ (vv_ne k)
-
-theorem heckeAlgebra_mapsTo_localisationLatticeSpan {y : k⸨X⸩} : y ∈ lat k 0 ↔ ∃ b : k⟦X⟧, (b : k⸨X⸩) = y := by rw [mem_lat]; simp only [zpow_zero, mul_one]
-
-theorem vinv_mem : (vv k)⁻¹ ∈ lat k (-1) := mem_lat.mpr ⟨1, by rw [map_one, one_mul, zpow_neg_one]⟩
-
 theorem coe_mem (b : k⟦X⟧) : (b : k⸨X⸩) ∈ lat k (-1) := mem_lat.mpr ⟨PowerSeries.X * b, by
   rw [map_mul, ← vv_eq, zpow_neg_one, mul_comm (vv k), mul_inv_cancel_right₀ (vv_ne k)]⟩
-
-theorem vinv_eq : (vv k)⁻¹ = HahnSeries.single (-1) 1 := by
-  unfold vv
-  exact inv_eq_of_mul_eq_one_right (by rw [HahnSeries.single_mul_single, add_neg_cancel, mul_one,
-    HahnSeries.single_zero_one])
-
-theorem coeff_decomp (c : k) (b : k⟦X⟧) : (c • (vv k)⁻¹ + (b : k⸨X⸩)).coeff (-1) = c := by
-  rw [vinv_eq, HahnSeries.coeff_add, HahnSeries.coeff_smul, PowerSeries.coeff_coe]
-  simp
 
 theorem step (x c : k) (b : k⟦X⟧) : ∃ b' : k⟦X⟧,
     (nab (lin (gA k)) - algebraMap k (Module.End k k⸨X⸩) x) (c • (vv k)⁻¹ + b)
@@ -207,158 +139,7 @@ theorem steps (x : k) (m : ℕ) : ∀ (c : k) (b : k⟦X⟧), ∃ b' : k⟦X⟧,
     refine ⟨b₂, ?_⟩
     rw [pow_succ, Module.End.mul_apply, hb₁, hb₂, pow_succ, mul_assoc]
 
-theorem condC : CondC (lin (gA k)) (lat k (-1)) := by
-  rw [condC_iff_nab_mem]
-  intro y hy
-  obtain ⟨c, b, rfl⟩ := decomp hy
-  obtain ⟨b₁, hb₁⟩ := nab_coe (k := k) b
-  rw [map_add, map_smul, nab_vinv, hb₁]
-  exact Submodule.add_mem _ (Submodule.smul_of_tower_mem _ c vinv_mem) (coe_mem b₁)
-
-theorem sen_one : sen (lin (gA k)) (lat k (-1)) 1 = 1 := by
-  have key : ∀ S : Submodule k k⸨X⸩, (∀ c : k, c • (vv k)⁻¹ ∈ S) → (∀ y ∈ S, y ∈ lat k (-1)) →
-      Module.finrank k (↥S ⧸ ((lat k 0).restrictScalars k).submoduleOf S) = 1 := by
-    intro S h1 h2
-    let φ : S →ₗ[k] k :=
-      { toFun := fun y => (y : k⸨X⸩).coeff (-1)
-        map_add' := fun y z => by simp [HahnSeries.coeff_add]
-        map_smul' := fun c y => by simp [HahnSeries.coeff_smul] }
-    have hφ : Function.Surjective φ := fun c => ⟨⟨_, h1 c⟩, by
-      show (c • (vv k)⁻¹ : k⸨X⸩).coeff (-1) = c
-      simpa using coeff_decomp (k := k) c 0⟩
-    have hker : LinearMap.ker φ = ((lat k 0).restrictScalars k).submoduleOf S := by
-      ext ⟨y, hy⟩
-      rw [LinearMap.mem_ker, Submodule.submoduleOf, Submodule.mem_comap, Submodule.coe_subtype,
-        Submodule.restrictScalars_mem]
-      change y.coeff (-1) = 0 ↔ y ∈ lat k 0
-      obtain ⟨c, b, rfl⟩ := decomp (h2 _ hy)
-      rw [coeff_decomp]
-      constructor
-      · intro hc
-        rw [hc, zero_smul, zero_add]
-        exact heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b, rfl⟩
-      · intro h
-        obtain ⟨a, ha⟩ := heckeAlgebra_mapsTo_localisationLatticeSpan.mp h
-        have h3 := congrArg (fun z : k⸨X⸩ => z.coeff (-1)) ha
-        simp only [coeff_decomp] at h3
-        rw [← h3, PowerSeries.coeff_coe]
-        simp
-    rw [← hker, (φ.quotKerEquivOfSurjective hφ).finrank_eq, Module.finrank_self]
-  have hQ : sh 1 (lat k (-1)) = lat k 0 := by rw [sh_lat]; norm_num
-  unfold sen qmult gmult
-  rw [hQ]
-  apply key
-  · intro c
-    refine Submodule.mem_inf.mpr ⟨Submodule.smul_of_tower_mem _ c vinv_mem, ?_⟩
-    refine Submodule.mem_iSup_of_mem 1 ?_
-    obtain ⟨b', hb'⟩ := steps (k := k) 1 1 c 0
-    rw [Submodule.mem_comap, Submodule.restrictScalars_mem]
-    have e : c • (vv k)⁻¹ = c • (vv k)⁻¹ + ((0 : k⟦X⟧) : k⸨X⸩) := by simp
-    rw [e, hb', sub_self, zero_pow one_ne_zero, zero_mul, zero_smul, zero_add]
-    exact heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b', rfl⟩
-  · intro y hy
-    exact (Submodule.mem_inf.mp hy).1
-
-theorem sen_ne {x : k} (hx : x ≠ 1) : sen (lin (gA k)) (lat k (-1)) x = 0 := by
-  have key0 : ∀ (S : Submodule k k⸨X⸩) (P : Submodule k S), P = ⊤ → Module.finrank k (↥S ⧸ P) = 0 := by
-    rintro S P rfl
-    have : Subsingleton (↥S ⧸ (⊤ : Submodule k S)) := Submodule.Quotient.subsingleton_iff.mpr rfl
-    exact Module.finrank_zero_of_subsingleton
-  have hQ : sh 1 (lat k (-1)) = lat k 0 := by rw [sh_lat]; norm_num
-  unfold sen qmult gmult
-  rw [hQ]
-  have hst : ∀ z ∈ lat k 0,
-      (nab (lin (gA k)) - algebraMap k (Module.End k k⸨X⸩) x) z ∈ lat k 0 := by
-    intro z hz
-    obtain ⟨a, rfl⟩ := heckeAlgebra_mapsTo_localisationLatticeSpan.mp hz
-    obtain ⟨b₁, hb₁⟩ := nab_coe (k := k) a
-    rw [LinearMap.sub_apply, Module.algebraMap_end_apply, hb₁]
-    exact Submodule.sub_mem _ (heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b₁, rfl⟩) (Submodule.smul_of_tower_mem _ x hz)
-  have hmono : Monotone fun m : ℕ => ((lat k 0).restrictScalars k).comap
-      ((nab (lin (gA k)) - algebraMap k (Module.End k k⸨X⸩) x) ^ m) := by
-    refine monotone_nat_of_le_succ fun m y hy => ?_
-    rw [Submodule.mem_comap, Submodule.restrictScalars_mem] at hy ⊢
-    rw [pow_succ', Module.End.mul_apply]
-    exact hst _ hy
-  apply key0
-  rw [eq_top_iff]
-  rintro ⟨y, hy⟩ -
-  rw [Submodule.submoduleOf, Submodule.mem_comap, Submodule.coe_subtype, Submodule.restrictScalars_mem]
-  obtain ⟨hy1, hy2⟩ := Submodule.mem_inf.mp hy
-  obtain ⟨m, hm⟩ := (Submodule.mem_iSup_of_directed _ hmono.directed_le).mp hy2
-  rw [Submodule.mem_comap, Submodule.restrictScalars_mem] at hm
-  obtain ⟨c, b, rfl⟩ := decomp hy1
-  obtain ⟨b', hb'⟩ := steps (k := k) x m c b
-  rw [hb'] at hm
-  obtain ⟨a, ha⟩ := heckeAlgebra_mapsTo_localisationLatticeSpan.mp hm
-  have h3 := congrArg (fun z : k⸨X⸩ => z.coeff (-1)) ha
-  simp only [coeff_decomp] at h3
-  have h4 : (1 - x) ^ m * c = 0 := by rw [← h3, PowerSeries.coeff_coe]; simp
-  have hc : c = 0 := (mul_eq_zero.mp h4).resolve_left (pow_ne_zero m (sub_ne_zero.mpr (Ne.symm hx)))
-  change c • (vv k)⁻¹ + (b : k⸨X⸩) ∈ lat k 0
-  rw [hc, zero_smul, zero_add]
-  exact heckeAlgebra_mapsTo_localisationLatticeSpan.mpr ⟨b, rfl⟩
-
 end
-
-def modModel (p : ℕ) [Fact p.Prime] (n : ℕ) : ModPG (ringModel p) n (ZMod p)⸨X⸩ :=
-  unitMod _ (gE (ZMod p)).bijective n
-
-theorem pull_lat (p : ℕ) [Fact p.Prime] (a : ℤ) :
-    pull (lin (ringModel p).φ) (lat (ZMod p) a) = lat (ZMod p) (p * a) := by
-  have hφ : ∀ y : (ZMod p)⸨X⸩, lin (ringModel p).φ y = y ^ p := fun y => by
-    change FiniteField.frobeniusAlgHom (ZMod p) _ y = y ^ p
-    rw [FiniteField.coe_frobeniusAlgHom, ZMod.card]
-  have hpow : (vv (ZMod p) ^ a) ^ p = vv (ZMod p) ^ ((p : ℤ) * a) := by
-    rw [← zpow_natCast, ← zpow_mul, mul_comm]
-  apply le_antisymm
-  · unfold pull
-    rw [Submodule.span_le]
-    rintro _ ⟨y, hy, rfl⟩
-    obtain ⟨b, rfl⟩ := mem_lat.mp hy
-    rw [SetLike.mem_coe, hφ, mul_pow, hpow, ← map_pow]
-    exact mem_lat.mpr ⟨b ^ p, rfl⟩
-  · unfold lat pull
-    rw [Submodule.span_le, Set.singleton_subset_iff]
-    refine Submodule.subset_span ⟨vv (ZMod p) ^ a, Submodule.mem_span_singleton_self _, ?_⟩
-    rw [hφ, hpow]
-
-theorem condAB (p : ℕ) [Fact p.Prime] (n : ℕ) (a : ℤ) :
-    CondAB (modModel p n).φ (fun _ => (1 - p) * a) (fun _ => (p - 1) * a) (fun _ => lat (ZMod p) a) := by
-  intro i
-  dsimp only
-  have h1 : pull ((modModel p n).φ i) (lat (ZMod p) a) = lat (ZMod p) (p * a) := pull_lat p a
-  constructor
-  · rw [h1, sh_lat]
-    apply le_of_eq
-    congr 1
-    ring
-  · rw [h1, sh_lat]
-    apply le_of_eq
-    congr 1
-    ring
-
-theorem condC_model (p : ℕ) [Fact p.Prime] (n : ℕ) (i : ZMod n) :
-    CondC ((modModel p n).γ i) (lat (ZMod p) (-1)) := condC (k := ZMod p)
-
-theorem sen_model (p : ℕ) [Fact p.Prime] (n : ℕ) (i : ZMod n) (x : ZMod p) :
-    sen ((modModel p n).γ i) (lat (ZMod p) (-1)) x = if x = 1 then 1 else 0 := by
-  split_ifs with h
-  · subst h
-    exact sen_one (k := ZMod p)
-  · exact sen_ne (k := ZMod p) h
-
-theorem sg_test : sg 5 (fun _ : ZMod 1 => 9) 0 = 2 := by
-  unfold sg
-  simp only [Nat.cast_ofNat]
-  have h : (∑' j : ℕ, (9 : ℝ) / 5 ^ (j + 1)) = 9 / 4 := by
-    have e : ∀ j : ℕ, (9 : ℝ) / 5 ^ (j + 1) = 9 / 5 * (5⁻¹ : ℝ) ^ j := fun j => by
-      rw [pow_succ, mul_comm ((5 : ℝ) ^ j) 5, ← div_div, div_eq_mul_inv _ ((5 : ℝ) ^ j), ← inv_pow]
-    simp_rw [e]
-    rw [tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
-    norm_num
-  rw [h]
-  exact (Nat.floor_eq_iff (by norm_num)).mpr ⟨by norm_num, by norm_num⟩
 
 section
 variable {k : Type} [Field k]
@@ -384,78 +165,6 @@ theorem gmult_top_bot {U : Type} [AddCommGroup U] [Module k U] (T : Module.End k
   rw [hb]
   exact (Submodule.quotEquivOfEqBot _ rfl).finrank_eq
 
-theorem isEmpty_ringPG_zero : IsEmpty (RingPG k 0) := by
-  refine ⟨fun R => ?_⟩
-  obtain ⟨u, hu⟩ := R.φ_v
-  rw [pow_zero, mul_one] at hu
-  have hc0 : PowerSeries.constantCoeff (u : k⟦X⟧) ≠ 0 :=
-    (PowerSeries.isUnit_iff_constantCoeff.mp u.isUnit).ne_zero
-  have ha : IsUnit (PowerSeries.X - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧) := by
-    rw [PowerSeries.isUnit_iff_constantCoeff]
-    simpa using hc0
-  obtain ⟨w, hw⟩ := ha
-  obtain ⟨b, hb⟩ := R.φ_int ((w⁻¹ : (k⟦X⟧)ˣ) : k⟦X⟧)
-  have h1 : R.φ ((PowerSeries.X - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧) : k⸨X⸩)
-      = (((u : k⟦X⟧) - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧) : k⸨X⸩) := by
-    simp only [map_sub, ← vv_eq, hu, HahnSeries.ofPowerSeries_C, ← algebraMap_eq, AlgHom.commutes]
-  have h2 : R.φ ((PowerSeries.X - PowerSeries.C (PowerSeries.constantCoeff (u : k⟦X⟧)) : k⟦X⟧) : k⸨X⸩)
-      * R.φ ((((w⁻¹ : (k⟦X⟧)ˣ) : k⟦X⟧)) : k⸨X⸩) = 1 := by
-    rw [← map_mul, ← map_mul, ← hw, Units.mul_inv, map_one, map_one]
-  rw [h1, hb, ← map_mul, ← map_one (HahnSeries.ofPowerSeries ℤ k)] at h2
-  have h3 := congrArg PowerSeries.constantCoeff (HahnSeries.ofPowerSeries_injective h2)
-  simp at h3
-
-def twistMod {l : ℕ} (R : RingPG k l) (hγ : Function.Bijective R.γ) (n : ℕ) (c : ZMod n → kˣ) :
-    ModPG R n k⸨X⸩ where
-  φ i := (c i : k) • lin R.φ
-  γ _ := lin R.γ
-  φ_semi i a x := by
-    change (c i : k) • R.φ (a * x) = R.φ a * ((c i : k) • R.φ x)
-    rw [smul_eq, smul_eq, map_mul]; ring
-  γ_semi _ a x := map_mul R.γ a x
-  etale i := by
-    rw [eq_top_iff]
-    intro x _
-    have h0 : algebraMap k k⸨X⸩ (c i) ≠ 0 := by simp
-    have : x = (x * (algebraMap k k⸨X⸩ (c i))⁻¹) • (((c i : k) • lin R.φ) 1) := by
-      change x = _ * ((c i : k) • R.φ 1)
-      rw [smul_eq, map_one]; field_simp
-    rw [this]
-    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩)
-  γ_bij _ := hγ
-  comm i x := by
-    change (c i : k) • R.φ (R.γ x) = lin R.γ ((c i : k) • R.φ x)
-    rw [map_smul, R.comm]; rfl
-
 end
-
-theorem condAB_var (p : ℕ) [Fact p.Prime] (n : ℕ) (a : ZMod n → ℤ) :
-    CondAB (modModel p n).φ (fun i => a i - p * a (i - 1)) (fun i => p * a (i - 1) - a i)
-      (fun i => lat (ZMod p) (a i)) := by
-  intro i
-  dsimp only
-  have h1 : pull ((modModel p n).φ i) (lat (ZMod p) (a (i - 1))) = lat (ZMod p) (p * a (i - 1)) :=
-    pull_lat p (a (i - 1))
-  constructor
-  · rw [h1, sh_lat]
-    apply le_of_eq
-    congr 1
-    ring
-  · rw [h1, sh_lat]
-    apply le_of_eq
-    congr 1
-    ring
-
-theorem sg_sharp : sg 5 (fun _ : ZMod 3 => 4) 0 = 1 := by
-  unfold sg
-  simp only [Nat.cast_ofNat]
-  have h : (∑' j : ℕ, (4 : ℝ) / 5 ^ (j + 1)) = 1 := by
-    have e : ∀ j : ℕ, (4 : ℝ) / 5 ^ (j + 1) = 4 / 5 * (5⁻¹ : ℝ) ^ j := fun j => by
-      rw [pow_succ, mul_comm ((5 : ℝ) ^ j) 5, ← div_div, div_eq_mul_inv _ ((5 : ℝ) ^ j), ← inv_pow]
-    simp_rw [e]
-    rw [tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
-    norm_num
-  rw [h]
-  simp
 
 end GlobalTheory.PhiGam.Model

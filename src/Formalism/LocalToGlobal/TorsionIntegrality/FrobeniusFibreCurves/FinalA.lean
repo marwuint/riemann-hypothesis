@@ -26,11 +26,7 @@ theorem parCauchy : ParCauchy := parallelogram_cauchy_equation
 theorem dqRule : DqRule := difference_quotient_rule_holds
 theorem wpReduced : WpReduced := weierstrassReducedEquations
 theorem wSecond : WSecond := invertedSecondDeriv
-theorem wEven : WEven := invertedEven
 theorem wOfWp : WOfWp := shiftedReciprocalInverted
-theorem addSigma1Log : AddSigma1Log :=
-  Add1.AddSigma1Log_of expLogRules expLogDeriv expLogSubst primRules waveUnique waveKills parCauchy
-    wSecond
 theorem addSigmaLog : AddSigmaLog :=
   AddSigmaLog_of expLogDeriv expLogSubst primRules waveUnique waveKills parCauchy wpReduced dqRule
 theorem addSigma : AddSigma := AddSigma_of addSigmaLog expLogRules expLogSubst dqRule

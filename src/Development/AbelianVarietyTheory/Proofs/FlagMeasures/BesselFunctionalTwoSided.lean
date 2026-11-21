@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Formalism.FormalDegreeBessel.FinalG
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompactStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRepStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompact
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWNStatement
 
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
@@ -277,11 +277,11 @@ theorem truncated_norm_sq : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [I
   obtain ⟨-, hσ, -, -, hμG, ⟨-, hSch⟩, -⟩ := hstd
   obtain ⟨hz, hT, hπ, hμ, -⟩ := hs
   obtain ⟨hz', hT', hπ', hμ', -⟩ := hs'
-  have hS := (GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).2.2.2.1
-  have hS' := (GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hz' hT').2.2.2.1
-  have hG := (GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).1
-  have hP := (GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ).2.1
-  have hP' := (GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z' c' π' hz' hT' hπ').2.1
+  have hS := (_root_.GlobalTheory.SgInf.closedSub_groups k r z hz hT).2.2.2.1
+  have hS' := (_root_.GlobalTheory.SgInf.closedSub_groups k r z' hz' hT').2.2.2.1
+  have hG := (_root_.GlobalTheory.SgInf.closedSub_groups k r z hz hT).1
+  have hP := (_root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z c π hz hT hπ).2.1
+  have hP' := (_root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z' c' π' hz' hT' hπ').2.1
   have hU := (GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hμ
   have hU' := (GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z' hz' hT' μS').1 hμ'
   have hσS := IsURepOn_mono hS.1 hσ

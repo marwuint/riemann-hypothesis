@@ -261,16 +261,6 @@ theorem wa_main (hWA : WAPlaces) (hCM : PI.UG.IsCMUnram E) (p : ℕ) (hp : p.Pri
     rw [Matrix.toLin'_toMatrix', hMdef, Submodule.map_comap_eq_of_surjective]
     exact γ.surjective
 
-theorem waPlaces_hyp_std (p n : ℕ) :
-    ∀ P : Ideal (𝓞 E), P.IsMaximal → (p : 𝓞 E) ∈ P →
-      ∃ g ∈ PI.UG.isom (PI.UG.hStd E n),
-        PI.UG.gmap g (PI.UG.loc (K := E) P (PI.UG.stdLat E n)) = PI.UG.loc (K := E) P (PI.UG.stdLat E n) := by
-  intro P _ _
-  refine ⟨1, Subgroup.one_mem _, ?_⟩
-  unfold PI.UG.gmap
-  ext x
-  simp
-
 end Gen
 
 theorem weakApprox_of (hWA : WAPlaces) : WeakApprox := by

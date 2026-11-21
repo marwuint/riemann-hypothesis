@@ -128,12 +128,6 @@ abbrev AcrEl (P : PAlg l ⥤ Type) (n : ℕ) : El P ⥤ CommAlgCat.{0} (Acris l)
 
 abbrev MH (P : PAlg l ⥤ Type) (n j : ℕ) : Type 1 := CH.H (CH.modF (AcrEl P n)) j
 
-def FilEl (P : PAlg l ⥤ Type) (n r : ℕ) : CH.SubF (CH.modF (AcrEl P n)) where
-  S T := (((elπ P).obj T).Fil n r).restrictScalars (Acris l)
-  map_mem φ _ hx := mapAcr_fil ((elπ P).map φ) n r hx
-
-def MFil (P : PAlg l ⥤ Type) (n r j : ℕ) : Submodule (Acris l) (MH P n j) := (FilEl P n r).img j
-
 def phiMor (P : PAlg l ⥤ Type) (n : ℕ) : CH.Mor (CH.modF (AcrEl P n)) (CH.modF (AcrEl P n)) (ACris.phi ℂ_[l] l) where
   G := 𝟭 _
   τ T := { toFun := ((elπ P).obj T).phi n

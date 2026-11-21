@@ -9,36 +9,6 @@ namespace GlobalTheory.SizeLeafCheck
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs}
 
-def degenerate (O : FunData K Df) : FunData K Df :=
-  { O with S0 := ∅, g1 := 0, g2 := 0, pd := 0, pd' := 0, dE := 0, Bw := 1 }
-
-theorem degenerate_numbers (O : FunData K Df) (C b : ℝ) :
-    (degenerate O).PPF C b = 0 ∧ (degenerate O).Sig0 C b = 0 ∧ (degenerate O).cS = 0 := by
-  refine ⟨?_, ?_, ?_⟩
-  · simp [FunData.PPF, degenerate]
-  · unfold FunData.Sig0; exact Finset.sum_empty
-  · unfold FunData.cS; exact Finset.sum_empty
-
-theorem degenerate_leaves (O : FunData K Df) (C b : ℝ) (hC : 1 ≤ C) (hb : 1 ≤ b) :
-    PrimePowerModuliSumBound (degenerate O) C b ∧ LeafCS (degenerate O) b ∧ LeafWt (degenerate O) C b := by
-  obtain ⟨h1, h2, h3⟩ := degenerate_numbers O C b
-  have hl : 0 ≤ Real.log b := Real.log_nonneg hb
-  refine ⟨⟨fun q hq => absurd hq (Finset.notMem_empty q), by rw [h1, h2]; norm_num⟩, ?_, ?_⟩
-  · unfold LeafCS; rw [h3]; positivity
-  · refine ⟨le_refl _, ?_, ?_⟩
-    · show (1 : ℝ) ≤ C * b
-      nlinarith
-    · show Real.log 1 ≤ C * Real.log b
-      rw [Real.log_one]; positivity
-
-theorem weight_free (O : FunData K Df) (C b : ℝ) : ¬ LeafWt { O with Bw := 0 } C b := by
-  rintro ⟨h, -⟩
-  exact absurd h (by norm_num)
-
-theorem exponent_free (O : FunData K Df) (C x b : ℝ) (hx : 1 < x) : ∃ CH : ℝ, LeafPol O C x CH b := by
-  obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt (O.pol C b) hx
-  exact ⟨n, by unfold LeafPol; rw [Real.rpow_natCast]; exact hn.le⟩
-
 theorem ga_mono (O : FunData K Df) {C C' : ℝ} (h : C ≤ C') : O.ga C ≤ O.ga C' := by
   unfold FunData.ga
   refine max_le_max (max_le_max (Nat.ceil_mono ?_) le_rfl) le_rfl
@@ -46,20 +16,6 @@ theorem ga_mono (O : FunData K Df) {C C' : ℝ} (h : C ≤ C') : O.ga C ≤ O.ga
   have h2 : (0 : ℝ) ≤ (O.nr : ℝ) ^ 7 := by positivity
   have h3 : (0 : ℝ) ≤ (O.nr : ℝ) ^ 3 * Real.sqrt (O.Lc : ℝ) := by positivity
   nlinarith [mul_le_mul_of_nonneg_right h h1, mul_le_mul_of_nonneg_right h h2, mul_le_mul_of_nonneg_right h h3]
-
-theorem le_ga (O : FunData K Df) {C : ℝ} (hC : 0 ≤ C) : C * (O.N : ℝ) ^ 3 ≤ O.ga C := by
-  have h2 : (0 : ℝ) ≤ C * (O.nr : ℝ) ^ 7 := by positivity
-  have h3 : (0 : ℝ) ≤ C * (O.nr : ℝ) ^ 3 * Real.sqrt (O.Lc : ℝ) := by positivity
-  have h := Nat.le_ceil (C * (O.N : ℝ) ^ 3 + C * (O.nr : ℝ) ^ 7 + C * (O.nr : ℝ) ^ 3 * Real.sqrt (O.Lc : ℝ))
-  have h' : (⌈C * (O.N : ℝ) ^ 3 + C * (O.nr : ℝ) ^ 7 + C * (O.nr : ℝ) ^ 3 * Real.sqrt (O.Lc : ℝ)⌉₊ : ℝ) ≤ O.ga C := by
-    unfold FunData.ga
-    exact_mod_cast le_trans (le_max_left _ _) (le_max_left _ _)
-  linarith
-
-theorem ga_gt (O : FunData K Df) (hN : 1 ≤ O.N) (b C : ℝ) (hC : 0 ≤ C) (hb : b < C) : b < O.ga C := by
-  have h := le_ga O hC
-  have h1 : (1 : ℝ) ≤ (O.N : ℝ) ^ 3 := one_le_pow₀ (by exact_mod_cast hN)
-  nlinarith
 
 set_option maxHeartbeats 800000 in
 
@@ -199,41 +155,5 @@ theorem tree_leaf_parameter_arithmetic_of_bounds (O : FunData K Df) (C b : ℝ) 
   rw [Real.log_mul (x := 2 * C) (by positivity) (by positivity), Real.log_pow, hu, Real.log_sqrt (by linarith)] at e6
   push_cast at e6
   linarith
-
-theorem leaf_bounds_of_log_sizes (O : FunData K Df) [DecidableEq O.Sq] (C b : ℝ) (hL : 1 ≤ Real.log b) (hf : 1 ≤ O.f)
-    (h0 : O.sv0 ∈ O.S0) (hq : ∀ q ∈ O.S0, IsPrimePow (O.qq q)) (hq0 : Real.log (O.qq O.sv0) ≤ Real.log b)
-    (hS : ∑ q ∈ O.S0.erase O.sv0, Real.log (O.qq q) ≤ O.f * (20 * Real.log b + 2))
-    (hc : ∀ q ∈ O.S0, O.cc q ≤ 2) (hc0 : O.cc O.sv0 ≤ 1) (hP : 45 * O.f * Real.log b ≤ O.PPF C b) :
-    PrimePowerModuliSumBound O C b ∧ LeafCS O b := by
-  have hf' : (1 : ℝ) ≤ O.f := by exact_mod_cast hf
-  have hfL : Real.log b ≤ O.f * Real.log b := by nlinarith
-  have hfL' : (O.f : ℝ) ≤ O.f * Real.log b := by nlinarith
-  have hlq : 0 < Real.log (O.qq O.sv0) := Real.log_pos (by exact_mod_cast (hq _ h0).one_lt)
-  have hP0 : 0 ≤ O.PPF C b := by nlinarith
-  refine ⟨⟨hq, ?_⟩, ?_⟩
-  · unfold FunData.Sig0
-    rw [← Finset.add_sum_erase _ _ h0]
-    have e1 : ∑ q ∈ O.S0.erase O.sv0, (O.ee C b q : ℝ) * Real.log (O.qq q) =
-        2 * ∑ q ∈ O.S0.erase O.sv0, Real.log (O.qq q) := by
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun q hq' => ?_
-      simp [FunData.ee, Finset.ne_of_mem_erase hq']
-    have e2 : (O.ee C b O.sv0 : ℝ) * Real.log (O.qq O.sv0) ≤ O.PPF C b + Real.log (O.qq O.sv0) := by
-      have h := Nat.floor_le (div_nonneg hP0 hlq.le)
-      rw [le_div_iff₀ hlq] at h
-      simp only [FunData.ee, if_true]
-      push_cast
-      linarith
-    rw [e1]; nlinarith
-  · unfold LeafCS FunData.cS
-    rw [← Finset.add_sum_erase _ _ h0]
-    have e1 : ∑ q ∈ O.S0.erase O.sv0, (O.cc q : ℝ) * Real.log (O.qq q) ≤
-        2 * ∑ q ∈ O.S0.erase O.sv0, Real.log (O.qq q) := by
-      rw [Finset.mul_sum]
-      refine Finset.sum_le_sum fun q hq' => mul_le_mul_of_nonneg_right ?_ (Real.log_natCast_nonneg _)
-      exact_mod_cast hc q (Finset.mem_of_mem_erase hq')
-    have e2 : (O.cc O.sv0 : ℝ) * Real.log (O.qq O.sv0) ≤ 1 * Real.log (O.qq O.sv0) :=
-      mul_le_mul_of_nonneg_right (by exact_mod_cast hc0) hlq.le
-    nlinarith
 
 end GlobalTheory.SizeLeafCheck

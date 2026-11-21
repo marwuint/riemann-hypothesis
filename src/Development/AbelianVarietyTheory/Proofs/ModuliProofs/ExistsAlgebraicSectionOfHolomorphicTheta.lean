@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValA
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsUniquePointOfRingHom
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.EqZeroOfForallAlgHomComplex
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsIntegralOfIsAbelianSchemeField
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLinearLiftOfIsMonHomPolAVStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEqMulOfContinuousOnQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecLbPowDivNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLinearLiftOfIsMonHomPolAV
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEqMulOfContinuousOnQuotient
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecLbPowDivNeZero
 
 noncomputable section
 
@@ -213,7 +213,7 @@ theorem exists_sec_of_same_ex (hL : Out.Laws) (P : Out.PolAV (Sp ℂ)) (N : LB P
     ∃ s : N.Sec, u.IsFn s ϑ := by
   have hint : IsIntegral P.A.left := polAV_isIntegral_of_isAlgClosed ℂ P
   have hsm : Smooth P.A.hom := P.isAb.smooth
-  obtain ⟨n, s₀, p₀, hp₀⟩ := GlobalTheory.T.exists_nonzero_sec_lbPow_div hL ℂ P N hN
+  obtain ⟨n, s₀, p₀, hp₀⟩ := _root_.GlobalTheory.exists_sec_lbPow_div_ne_zero hL ℂ P N hN
   have hcov : ∀ (x : P.A.left) (i : N.ι), x ∈ N.U i →
       ∃ j : (lbPow P.L n).ι, x ∈ (LB.div (lbPow P.L n) N).U (j, i) := by
     intro x i hi
@@ -297,7 +297,7 @@ theorem exists_sec_of_same_ex (hL : Out.Laws) (P : Out.PolAV (Sp ℂ)) (N : LB P
   · refine ⟨0, fun z hz => ?_⟩
     obtain ⟨y, hy, hy0⟩ := hdense.inter_open_nonempty _ hO ⟨z, hz⟩
     exact (hbne y hy hy0 (by rw [hb0, valAt'_zero])).elim
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_eq_mul_of_valAt'_eq_continuous_mul P P.L u₀ U a b _ hL hU hb0 hcont hab
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.exists_eq_mul_of_continuousOn_quotient P P.L u₀ U a b _ hL hU hb0 hcont hab
   refine ⟨c, ?_⟩
   have heq : Set.EqOn (fun z => valAt' (u₀.ex z).left U c) (fun z => ϑ z * u.fr i z)
       ({z | ⊤ ≤ (u₀.ex z).left ⁻¹ᵁ U} ∩ {z | σ z ≠ 0}) := fun z hz => by
@@ -318,7 +318,7 @@ theorem exists_sec_isFn_of_differentiable :
   intro hL _ _ hT P N u ϑ hN hϑ hper
   obtain ⟨rig, hrig⟩ := P.rigid
   obtain ⟨u₀, Hm, χ, Ef, hAH, -, -, -, -, hsec, -⟩ := hT P rig hrig
-  obtain ⟨F, hF⟩ := GlobalTheory.T.exists_linear_lift_of_isMonHom_uniformisation P P P.L N u₀ u (𝟙 _) inferInstance
+  obtain ⟨F, hF⟩ := _root_.GlobalTheory.exists_linear_lift_of_isMonHom_polAV P P P.L N u₀ u (𝟙 _) inferInstance
   replace hF : ∀ z, u.ex (F z) = u₀.ex z := fun z => (hF z).trans (Category.comp_id _)
   obtain ⟨s, hs⟩ := exists_sec_of_same_ex hL P N hN u₀ Hm χ hAH (fun n θ h => ((hsec n).2 θ h).exists)
     (transport u₀ u F hF) rfl (fun z => ϑ (F z))

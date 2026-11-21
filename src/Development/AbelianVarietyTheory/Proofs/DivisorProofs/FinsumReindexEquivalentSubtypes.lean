@@ -16,7 +16,4 @@ theorem finsum_ite_eq_of_equiv {A B : Type} (PA : A → Prop) (PB : B → Prop)
   rw [hA, hB, ← finsum_comp_equiv e]
   exact finsum_congr fun a => (hgh a).symm
 
-example : ∀ {A B : Type} (PA : A → Prop) (PB : B → Prop) (e : {a // PA a} ≃ {b // PB b}) (g : A → ℂ) (h : B → ℂ), (∀ a, h (e a).1 = g a.1) → (∑ᶠ a, if PA a then g a else 0) = ∑ᶠ b, if PB b then h b else 0 :=
-  fun PA PB e g h hgh => finsum_ite_eq_of_equiv PA PB e g h hgh
-
 end GlobalTheory

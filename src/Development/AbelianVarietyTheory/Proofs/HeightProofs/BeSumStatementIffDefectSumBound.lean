@@ -87,41 +87,6 @@ theorem vla_discAt (σ : E →+* K) (la : HeightOneSpectrum (𝓞 K)) :
     vla la (discAt E K) = Module.finrank ℚ E * ord_vw la (conjDifferent σ) := by
   rw [← conjDifferent_pow σ, vla_pow la (conjDifferent_ne_bot σ), ord_vw_eq_vla la (conjDifferent_ne_bot σ)]
 
-theorem finrank_mul_defectAt (σ : E →+* K) (n' : ℕ+) (a : ℕ) (la : HeightOneSpectrum (𝓞 K)) :
-    (Module.finrank ℚ E : ℝ) * defectAt_vw σ n' a la =
-      beOf E ((n' : ℕ) ^ Module.finrank ℚ E) a la := by
-  have h : mOf E ((n' : ℕ) ^ Module.finrank ℚ E) la = Module.finrank ℚ E *
-      max (ord_vw la (conjDifferent σ)) (ord_vw la (Ideal.span {((n' : ℕ) : 𝓞 K)})) := by
-    unfold mOf
-    rw [vla_discAt σ, Nat.cast_pow, ← Ideal.span_singleton_pow, vla_pow la (span_natCast_ne_bot n'),
-      ord_vw_eq_vla la (span_natCast_ne_bot n'), Nat.mul_max_mul_left]
-  unfold beOf defectAt_vw
-  rw [h]
-  push_cast
-  ring
-
-theorem defect_vw_eq_defectAt (σ : E →+* K) (n' : ℕ+) (a : ℕ) (la : HeightOneSpectrum (𝓞 K)) :
-    defect_vw E n' a la = defectAt_vw σ n' a la := by
-  refine le_antisymm (Finset.sup_le fun τ _ => le_of_eq ?_) (defectAt_vw_le σ n' a la)
-  have hn : (Module.finrank ℚ E : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'
-  have := (finrank_mul_defectAt τ n' a la).trans (finrank_mul_defectAt σ n' a la).symm
-  exact_mod_cast mul_left_cancel₀ hn this
-
-theorem finrank_mul_defect (hσ : Nonempty (E →+* K)) (n' : ℕ+) (a : ℕ)
-    (la : HeightOneSpectrum (𝓞 K)) :
-    (Module.finrank ℚ E : ℝ) * defect_vw E n' a la =
-      beOf E ((n' : ℕ) ^ Module.finrank ℚ E) a la := by
-  obtain ⟨σ⟩ := hσ
-  rw [defect_vw_eq_defectAt σ, finrank_mul_defectAt]
-
-theorem support_eq (hσ : Nonempty (E →+* K)) (n' : ℕ+) (a : ℕ) :
-    Function.support (defect_vw E (K := K) n' a) =
-      Function.support (beOf E (K := K) ((n' : ℕ) ^ Module.finrank ℚ E) a) := by
-  ext la
-  have hn : (Module.finrank ℚ E : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'
-  simp only [Function.mem_support, ← finrank_mul_defect hσ, ne_eq, mul_eq_zero, hn, false_or,
-    Nat.cast_eq_zero]
-
 end Galois
 
 end GlobalTheory.DefectSumCompare

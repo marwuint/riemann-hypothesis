@@ -158,15 +158,6 @@ theorem qZ_surj [CharZero k] {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ :
   obtain ⟨c, hc⟩ := hsurj y
   exact ⟨c, c.2, hc⟩
 
-omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
-
-theorem piZ_spec [CharZero k] {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} (hZ : CR Z) (x : Matrix (Fin n) (Fin n) k) :
-    piZ Z x ∈ Z ∧ qZ Z (piZ Z x) = qZ Z x := by
-  have h : ∃ c ∈ Z, qZ Z c = qZ Z x := qZ_surj hZ _
-  unfold piZ
-  rw [dif_pos h]
-  exact h.choose_spec
-
 theorem fibZN [CharZero k] : FibZN (k := k) := by
   intro n Z hZ y
   obtain ⟨c, hc, hcy⟩ := qZ_surj hZ y

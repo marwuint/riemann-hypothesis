@@ -42,20 +42,6 @@ theorem Sq.add {F F' : H → ℂ} (h : Sq μ Γ 𝓕 F) (h' : Sq μ Γ 𝓕 F') 
   simp only [Pi.add_apply, star_add]
   ring
 
-theorem Sq.transl (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {F : H → ℂ} (h : Sq μ Γ 𝓕 F) (y : H) :
-    Sq μ Γ 𝓕 (fun g => F (g * y)) :=
-  ⟨h.1.comp (continuous_mul_right y), fun γ hγ g => by simp only [mul_assoc, h.2.1 γ hγ],
-    integrableOn_mul_right μ Γ 𝓕 h𝓕 (fun h => star (F h) * F h) (fun γ hγ g => by simp only [h.2.1 γ hγ]) y h.2.2⟩
-
-theorem Sq.sum (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {F : H → ℂ} (h : Sq μ Γ 𝓕 F) (A : Finset H) :
-    Sq μ Γ 𝓕 (fun g => ∑ a ∈ A, F (g * a)) := by
-  classical
-  induction A using Finset.induction_on with
-  | empty => exact ⟨by simpa using continuous_const, by simp, by simp⟩
-  | insert a A ha ih =>
-    simp only [Finset.sum_insert ha]
-    exact (h.transl h𝓕 a).add ih
-
 theorem isDC_of_local {H : Type} [Group H] (J L : Subgroup H) (x : H) (A : Finset H) (hx : x ∈ L)
     (hs : ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ L ∧ k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l)
     (hL : ∀ a ∈ A, a ∈ L) (hA : IsDC (J ⊓ L) x A) : IsDC J x A := by

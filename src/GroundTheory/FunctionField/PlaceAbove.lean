@@ -51,45 +51,6 @@ theorem liesOver_of_le [IsFunctionField k K] [Algebra.IsAlgebraic K K'] {w : Pla
   have := Place.eq_of_le (v := v) (w := w.comap) fun x hx => ValuationSubring.mem_comap.2 (h x hx)
   exact liesOver_iff_comap_eq.2 this.symm
 
-theorem exists_liesOver (v : Place k K) : ∃ w : Place k K', w.LiesOver v := by
-  let f : v.ring →+* K' := (algebraMap K K').comp v.ring.subtype
-  have hf : Function.Injective f := (algebraMap K K').injective.comp Subtype.val_injective
-  let g : v.ring →+* f.range := f.rangeRestrict
-  have hg : Function.Bijective g :=
-    ⟨fun a b h => hf (congrArg Subtype.val h), f.rangeRestrict_surjective⟩
-  let I : Ideal f.range := (IsLocalRing.maximalIdeal v.ring).map g
-  have hI : I ≠ ⊤ := fun h =>
-    (IsLocalRing.maximalIdeal.isMaximal v.ring).ne_top ((Ideal.map_eq_top_of_bijective g hg).1 h)
-  obtain ⟨B, hAB, hIB⟩ := Ideal.image_subset_nonunits_valuationSubring I hI
-  have hmem : ∀ a : v.ring, a ∈ IsLocalRing.maximalIdeal v.ring → f a ∈ B.nonunits := fun a ha =>
-    hIB ⟨g a, Ideal.mem_map_of_mem g ha, rfl⟩
-  have hAB' : ∀ a : v.ring, f a ∈ B := fun a => hAB (RingHom.mem_range_self f a)
-  obtain ⟨x, hx0, hx⟩ := v.exists_valuation_lt_one_ne_zero
-  have hxO : x ∈ v.ring := (v.ring.valuation_le_one_iff x).1 hx.le
-  have hfx : algebraMap K K' x ∈ B.nonunits := hmem ⟨x, hxO⟩ ((v.ring.valuation_lt_one_iff _).2 hx)
-  refine ⟨⟨B, ?_, ?_⟩, ?_⟩
-  · intro htop
-    rcases B.mem_nonunits_iff_or.1 hfx with h | h
-    · exact hx0 ((algebraMap K K').injective (h.trans (map_zero _).symm))
-    · exact h (htop ▸ ValuationSubring.mem_top _)
-  · intro c
-    rw [IsScalarTower.algebraMap_apply k K K']
-    exact hAB' ⟨_, v.algebraMap_mem c⟩
-  · apply le_antisymm
-    · intro y hy
-      rw [ValuationSubring.mem_comap] at hy
-      by_contra hyv
-      have hy0 : y ≠ 0 := fun h => hyv (h ▸ v.ring.zero_mem)
-      have hinv : y⁻¹ ∈ v.ring.nonunits := v.ring.inv_mem_nonunits_iff.2 (Or.inr hyv)
-      obtain ⟨hr, hrm⟩ := v.ring.mem_nonunits_iff_exists_mem_maximalIdeal.1 hinv
-      have h1 : algebraMap K K' y⁻¹ ∈ B.nonunits := hmem _ hrm
-      rw [map_inv₀] at h1
-      rcases B.inv_mem_nonunits_iff.1 h1 with h | h
-      · exact hy0 ((algebraMap K K').injective (h.trans (map_zero _).symm))
-      · exact h hy
-    · intro y hy
-      exact ValuationSubring.mem_comap.2 (hAB' ⟨y, hy⟩)
-
 abbrev LiesOver.algebra {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
     Algebra v.ring w.ring :=
   (RingHom.codRestrict ((algebraMap K K').comp v.ring.subtype) w.ring
@@ -228,12 +189,6 @@ theorem LiesOver.finrank_residueField {w : Place k K'} {v : Place k K} (h : w.Li
   let := h.algebra
   have := h.isLocalHom
   rw [inertiaDeg, ← h.deg_mul_finrank, Nat.mul_div_cancel_left _ v.deg_pos]
-
-theorem LiesOver.deg_eq {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
-    w.deg = w.inertiaDeg v * v.deg := by
-  let := h.algebra
-  have := h.isLocalHom
-  rw [← h.finrank_residueField, ← h.deg_mul_finrank, mul_comm]
 
 end Degree
 

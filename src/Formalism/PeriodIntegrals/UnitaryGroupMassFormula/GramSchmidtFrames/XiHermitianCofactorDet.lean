@@ -1,4 +1,4 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.GsFramesOfLoc
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.HermXGen
 
 open MeasureTheory Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C6
 open Matrix
@@ -7,62 +7,6 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.GsFr
 open PI.UnitaryGroupMassFormula.DLm.Gram
-
-section qrefl
-
-variable {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ)
-
-def qr (u : Fin m → ℂ) (c : ℂ) : Matrix (Fin m) (Fin m) ℂ :=
-  1 - c⁻¹ • vecMulVec u (star u ᵥ* H)
-
-lemma vmv_mulVec (u v : Fin m → ℂ) :
-    vecMulVec u (star u ᵥ* H) *ᵥ v = herm H v u • u := by
-  have e : herm H v u = (star u ᵥ* H) ⬝ᵥ v := by unfold herm; rw [dotProduct_mulVec]
-  rw [e]
-  funext i
-  simp only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
-  exact Finset.sum_congr rfl fun j _ => by ring
-
-lemma qr_mulVec (u : Fin m → ℂ) (c : ℂ) (v : Fin m → ℂ) :
-    qr H u c *ᵥ v = v - (herm H v u / c) • u := by
-  rw [qr, sub_mulVec, one_mulVec, smul_mulVec, vmv_mulVec, smul_smul, div_eq_inv_mul]
-
-lemma qr_fix {u v : Fin m → ℂ} (c : ℂ) (h : herm H v u = 0) : qr H u c *ᵥ v = v := by
-  rw [qr_mulVec, h, zero_div, zero_smul, sub_zero]
-
-lemma uh_of_herm {g : Matrix (Fin m) (Fin m) ℂ}
-    (h : ∀ x y : Fin m → ℂ, herm H (g *ᵥ x) (g *ᵥ y) = herm H x y) : g ∈ UH H := by
-  show gᴴ * H * g = H
-  have key : ∀ x y : Fin m → ℂ, herm (gᴴ * H * g) x y = herm H x y := by
-    intro x y
-    rw [← h x y]
-    unfold herm
-    rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-  ext i j
-  have := key (Pi.single j 1) (Pi.single i 1)
-  simpa [herm, dotProduct, mulVec, Pi.single_apply] using this
-
-lemma qr_herm (hH : Hᴴ = H) (u : Fin m → ℂ) {c : ℂ} (hc0 : c ≠ 0) (hc : c + star c = herm H u u)
-    (x y : Fin m → ℂ) : herm H (qr H u c *ᵥ x) (qr H u c *ᵥ y) = herm H x y := by
-  rw [qr_mulVec, qr_mulVec]
-  simp only [hm_sub_l, hm_sub_r, hm_smul_l, hm_smul_r]
-  rw [hm_symm H hH y u, ← hc, star_div₀]
-  have hc1 : star c ≠ 0 := star_ne_zero.2 hc0
-  field_simp
-  ring
-
-lemma qr_uh (hH : Hᴴ = H) (u : Fin m → ℂ) {c : ℂ} (hc0 : c ≠ 0) (hc : c + star c = herm H u u) :
-    qr H u c ∈ UH H := uh_of_herm H (qr_herm H hH u hc0 hc)
-
-lemma uh_mul {g h : Matrix (Fin m) (Fin m) ℂ} (hg : g ∈ UH H) (hh : h ∈ UH H) : g * h ∈ UH H := by
-  have hg' : gᴴ * H * g = H := hg
-  have hh' : hᴴ * H * h = H := hh
-  show (g * h)ᴴ * H * (g * h) = H
-  calc (g * h)ᴴ * H * (g * h) = hᴴ * (gᴴ * H * g) * h := by
-        rw [conjTranspose_mul]; simp only [Matrix.mul_assoc]
-    _ = H := by rw [hg', hh']
-
-end qrefl
 
 section hpk
 
@@ -92,26 +36,6 @@ lemma herm_wb_out {u v : Fin (2 * r + k + 1) → ℂ} (hu : inWb k r u)
     (hv : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → v i = 0) :
     herm (Hpk k r) u v = 0 := by
   rw [hm_symm _ hH_ct v u, herm_out_wb hv hu, star_zero]
-
-lemma bvec_eI_mid (a : Fin r) :
-    ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → bvec (eI k r a) i = 0 := by
-  intro i h1 _
-  simp only [bvec, Pi.single_apply]
-  rw [if_neg]
-  rintro rfl
-  have := a.isLt
-  simp only [eI, Fin.val_mk] at h1
-  omega
-
-lemma bvec_esI_mid (a : Fin r) :
-    ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → bvec (esI k r a) i = 0 := by
-  intro i _ h2
-  simp only [bvec, Pi.single_apply]
-  rw [if_neg]
-  rintro rfl
-  have := a.isLt
-  simp only [esI, Fin.val_mk] at h2
-  omega
 
 lemma wbPart_mid (v : Fin (2 * r + k + 1) → ℂ) :
     ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → (v - wbPart k r v) i = 0 := by
@@ -144,11 +68,6 @@ lemma herm_prW_r {z q : Fin (2 * r + k + 1) → ℂ} (hq : q ∈ Wsp k r z) (v :
   rw [hm_add_r, hm_smul_r, e2, mul_zero, add_zero]
   rw [hm_sub_r, sub_eq_zero] at e1
   exact e1.symm
-
-lemma herm_prW_l {z q : Fin (2 * r + k + 1) → ℂ} (hq : q ∈ Wsp k r z) (v : Fin (2 * r + k + 1) → ℂ) :
-    herm (Hpk k r) (prW k r z v) q = herm (Hpk k r) v q := by
-  rw [hm_symm _ hH_ct q (prW k r z v), herm_prW_r hq]
-  exact (hm_symm _ hH_ct q v).symm
 
 lemma esI_hi {ξ : Fin (2 * r + k + 1) → ℂ} (hX : ∀ a : Fin r, ξ (esI k r a) = 0) :
     ∀ i : Fin (2 * r + k + 1), r + k < i.val → ξ i = 0 := by

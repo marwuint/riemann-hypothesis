@@ -59,14 +59,6 @@ def Fam.sub [Fintype ι] (b : Fam ι κ) : KF ι κ →+* EP (Fin b.r) := eval�
 def Fam.Mem [Fintype ι] (b : Fam ι κ) (Λ : ι → ℂ) (h : κ → ℂ) : Prop :=
   ∃ lam : Fin b.r → ℂ, (∀ i, Λ i = b.Λ i + ∑ j, (b.emb i j : ℂ) * lam j) ∧ ∀ k, h k = ev lam (b.h k)
 
-def Fam.point [Fintype ι] (Λ : ι → ℂ) (h : κ → ℂ) : Fam ι κ where
-  r := 0
-  Λ := Λ
-  emb := 0
-  pr := 0
-  pr_emb := Subsingleton.elim _ _
-  h k := AddMonoidAlgebra.single 0 (C (h k))
-
 def blockE {τ : Type} {n : ℕ} (ti : τ × Fin n) : MvPolynomial (τ × Fin n) ℂ :=
   rename (fun j => (ti.1, j)) (esymm (Fin n) ℂ (ti.2 + 1))
 

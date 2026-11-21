@@ -21,9 +21,6 @@ theorem closed_lower : Closed (IsLower (n := n)) := fun a b ha hb h => by
 theorem closed_upper : Closed (IsUpper (n := n)) := fun a b ha hb h => by
   simp only [IsUpper] at *; rw [h] at ha; exact lt_trans ha hb
 
-theorem closed_diag : Closed (IsDiag (n := n)) := fun a b ha hb h => by
-  simp only [IsDiag] at *; rw [ha, h, hb]
-
 theorem closed_true : Closed (fun _ : Fin n × Fin n => True) := fun _ _ _ _ _ => trivial
 
 def wordSpan (P : Fin n × Fin n → Prop) (k : ℕ) : Submodule ℂ (U n) :=
@@ -47,16 +44,6 @@ theorem e_mul_mem_wordSpan {P : Fin n × Fin n → Prop} {a : Fin n × Fin n} (h
   | zero => simp
   | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
   | smul r x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ r hx
-
-theorem mul_mem_wordSpan {P : Fin n × Fin n → Prop} {v : List (Fin n × Fin n)}
-    (hv : ∀ a ∈ v, P a) {k : ℕ} {u : U n} (hu : u ∈ wordSpan P k) :
-    word v * u ∈ wordSpan P (v.length + k) := by
-  induction v with
-  | nil => simpa using hu
-  | cons a v ih =>
-    rw [word_cons, mul_assoc, List.length_cons, show v.length + 1 + k = (v.length + k) + 1 by omega]
-    exact e_mul_mem_wordSpan (hv a (List.mem_cons_self ..))
-      (ih fun b hb => hv b (List.mem_cons_of_mem _ hb))
 
 theorem commutator_mul_mem_wordSpan {P : Fin n × Fin n → Prop} (hP : Closed P)
     {a b : Fin n × Fin n} (ha : P a) (hb : P b) {l : List (Fin n × Fin n)} (hl : ∀ c ∈ l, P c) :
@@ -294,15 +281,6 @@ theorem span_canon_eq_top : Submodule.span ℂ (Set.range (canon (n := n))) = �
 
 def filt (d : ℕ) : Submodule ℂ (U n) :=
   Submodule.span ℂ {u | ∃ w : List (Fin n × Fin n), w.length ≤ d ∧ word w = u}
-
-theorem word_mem_filt {w : List (Fin n × Fin n)} {d : ℕ} (h : w.length ≤ d) : word w ∈ filt (n := n) d :=
-  Submodule.subset_span ⟨w, h, rfl⟩
-
-theorem filt_mono {d d' : ℕ} (h : d ≤ d') : filt (n := n) d ≤ filt d' :=
-  Submodule.span_mono fun _ ⟨w, hw, hu⟩ => ⟨w, hw.trans h, hu⟩
-
-theorem canon_mem_filt (m : Fin n × Fin n →₀ ℕ) : canon m ∈ filt (n := n) m.degree :=
-  word_mem_filt (length_expand m).le
 
 theorem wordSpan_le_filt (P : Fin n × Fin n → Prop) (k : ℕ) : wordSpan (n := n) P k ≤ filt k :=
   Submodule.span_le.2 fun _ ⟨w, _, hw, hu⟩ => Submodule.subset_span ⟨w, hw.le, hu⟩

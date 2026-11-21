@@ -7,9 +7,13 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixe
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.IsDlDivM
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.OrderOfTranslationMod
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.WcocEdge0
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLogDerivQExpansionModPrimePowOfTranslationStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionFinsetProdZpowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalBMemKummerInvariantSetStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLogDerivQExpansionModPrimePowOfTranslation
+import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionFinsetProdZpow
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalBMemKummerInvariantSet
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFunctionalValueModPrimePowUniqueOddWeightStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowSlashTPow
 open scoped MatrixGroups Matrix
@@ -422,14 +426,14 @@ theorem UpperTheory.Kd.L.mackey :
       IsDl X (A.comap ((ρ y : Ω ≃ₐ[ℚ] Ω) : Ω →+* Ω)) l n ((topMu l n m N : ℕ) : ℚ)
         (X.sl (ofSL (gm r₀ * liftSL _ γ)) (wkMu X l n m N x c d (σ y))) ψ ∧
       ∀ r : ℚ, ψ.coeff r ≠ 0 → (r * ((topMu l n m N : ℕ) : ℚ)).den = 1 := fun y r₀ γ =>
-    GlobalTheory.T.exists_logDerivQExpansion_modPrimePow_of_translationInvariant ε X hj l _ (hlA y) n (topMu l n m N) _ hMpos
+    _root_.GlobalTheory.dl_exists ε X hj l _ (hlA y) n (topMu l n m N) _ hMpos
       ((map_ne_zero _).2 (hwc _).2) (sl_mem_KT X (hwc _).1 _)
   choose ψ hψ1 hψ2 using hψx
   have hn2 := fun y r₀ γ => UpperTheory.Kd.L.nrm ε X l _ (hlA y) n (topMu l n m N) hMpos _ (ψ y r₀ γ)
     (GlobalTheory.Glue.NrmT.resZ (ψ y r₀ γ)) (sl_mem_KT X (hwc _).1 _) (hψ1 y r₀ γ) (hψ2 y r₀ γ)
     (GlobalTheory.Glue.NrmT.resZ_coeff _)
   have hD := fun y r₀ γ => UpperTheory.Kd.L.dlgal ε X l A _ (ρ y) (fun _ => ValuationSubring.mem_comap) n 1 _ _ (hn2 y r₀ γ)
-  have hP := GlobalTheory.T.isLogDerivQExpansion_finset_prod_zpow ε X hj l A hl n 1 _ I
+  have hP := _root_.GlobalTheory.isDl_finset_prod_zpow ε X hj l A hl n 1 _ I
     (fun i => X.gal (ρ i.1) (nrmT X (topMu l n m N) (X.sl (ofSL (gm i.2.1 * liftSL _ i.2.2)) (wkMu X l n m N x c d (σ i.1)))))
     (fun i => HahnSeries.map (GlobalTheory.Glue.NrmT.resZ (ψ i.1 i.2.1 i.2.2)) (ρ i.1 : Ω →+* Ω))
     (fun i => (mx i : ℤ)) (fun i _ => hD i.1 i.2.1 i.2.2)
@@ -449,7 +453,7 @@ theorem UpperTheory.Kd.L.mackey :
     (fun y _ => (UpperTheory.Kd.L.witalg ε X l N n hN0).2.2.1 (ρ y) _ _ (hf2 y))
   have hTh := (isThB_iff X A N l n _ _).2 ⟨_, hwit, by rw [hFval]; exact hP⟩
   have hmemB : ∑ y ∈ S, X.galB l (ρ y) (bB (σ y)) ∈ X.B N l w := sum_mem fun y _ =>
-    GlobalTheory.T.galB_mem_kummer_invariant_set ε X ε.injective hj N l w hp.odd hp.five
+    _root_.GlobalTheory.KZ.StabGal.galB_mem_B ε X ε.injective hj N l w hp.odd hp.five
       ((Nat.Prime.coprime_iff_not_dvd hlp).2 hp.cop).symm hw (ρ y) _ (hB _ (hσ y)).1
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   have hun := GlobalTheory.T.cuspFunctionalValueModPrimePow_unique_oddWeight Ω ε X A N l X.j_hol hp.odd hp.cop hp.five hl n w hw _ hmemB φ _ hφ hTh r

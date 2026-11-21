@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
-import Formalism.LocalToGlobal.ProjectiveLattices.ComponentWModel
+import Formalism.LocalToGlobal.ProjectiveLattices.PetersonNormSubspace
+import Formalism.LocalToGlobal.ProjectiveLattices.PartitionExtendByZeroAntitone
 import Formalism.LocalToGlobal.ProjectiveLattices.NormLaws
 import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
 import Formalism.LocalToGlobal.ProjectiveLattices.DatProofs
@@ -10,12 +11,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.ExistsNormTensor
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryExistsWithPrescribedPartsStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryExistsWithPrescribedParts
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealDivisibleEqZero
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ZeroMemLatOf
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsInverseUnitTower
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TypeFnPeriodExistModuliNonempty
+
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi
 open scoped TensorProduct Topology
@@ -197,66 +199,5 @@ theorem comp_mem_HR (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
 theorem comp_sub_eq {A : Type} [AddCommGroup A] (N : ℕ) (x e w : A) : x - (x + N • e + N • w) = N • -(e + w) := by
   rw [smul_neg, smul_add]
   abel
-
-theorem comp_reindex_one {A : Type} [CommRing A] {n : ℕ} (θ : A →+* ℂ) (x : Matrix (Fin n) (Fin n) ℂ) :
-    x = Matrix.reindex (finCongr rfl) (finCongr rfl) (((1 : GL (Fin n) A) : Matrix (Fin n) (Fin n) A).map θ) * x := by
-  rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.reindex_apply,
-    Matrix.submatrix_one_equiv, one_mul]
-
-theorem comp_attained (D : D7) (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
-    {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} (F : FamilyUnif Xo σ' ty)
-    (hty : IsTypeFn H Dw.p Dw.q ty) {r : ℕ} (hr : V.rank = r) (M : GlobalTheory.FrameUnif.ModelsOf F r)
-    (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
-    (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
-    (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (h : RecOK M V hr io th x₀) (k : Fin F.n) :
-    ∃ g ∈ GfC V, ∃ p : Σ k, Frame (M.X k).Ψ r, p.1 = k ∧ (∀ τ : (M.X p.1).Ψ, mat p.2 τ = x₀ τ.1) ∧
-      MarkSpec M V hr io th x₀ g p := by
-  subst hr
-  obtain ⟨hbase, hW, ⟨hinj, hrange⟩, hEF, -, -⟩ := h
-  obtain ⟨-, P, hP⟩ := (PeriodExists.typeFn_period_exist _ H (F.Di k)).2.1 g ty
-    (by rw [(F.sig k).1, (F.sig k).2]; exact hty)
-  obtain ⟨f, h1, h2, h3, h4⟩ := familyUnif_lattice_genus _ H Dw l Xo σ' g ty F k P hP
-  let c : D.host.E ≃ₐ[D.host.F] D.host.E :=
-    AlgEquiv.ofAlgHom D.sp.cm.sig D.sp.cm.sig (AlgHom.ext fun x => star_star x) (AlgHom.ext fun x => star_star x)
-  obtain ⟨hfg, hsp, hlat⟩ := comp_latG D V
-  rw [← hrange] at hfg hsp hlat
-  have hξ : -(-D.host.xi0) ≠ 0 := by
-    rw [← (hW k).2]
-    exact neg_ne_zero.2 (M.X k).ξ0_ne
-  obtain ⟨gf, hg1, hg2, hg3⟩ := comp_adelic_of_tower D.host.F D.host.E V.rank c (-V.gram.transpose)
-    (-(-D.host.xi0)) hξ Dw.La (F.Di k).La (fun x y => Dw.EF x y) (fun x y => (F.Di k).EF x y) io hinj
-    (M.X k).Λ (M.φ k) hfg hsp (M.X k).Λ_fg (M.X k).Λ_span hEF
-    (fun x y => by
-      have := hbase.ef k x y
-      rw [(hW k).1, (hW k).2] at this
-      exact this) f h1 h2 h3
-  obtain ⟨u, hu, hug⟩ := (GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)
-  have hc := (AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank (M.X k).Λ (M.X k).Λ_fg
-    (M.X k).Λ_span).1
-  refine ⟨u, hu, ⟨k, fun τ => x₀ τ.1⟩, rfl, fun τ => rfl, 1, one_mem _, ?_, fun a ha => ?_, fun τ => ?_⟩
-  · rw [one_mul, (hlat u).1, hug]
-    refine Eq.trans ?_ (Set.image_id _).symm
-    ext v
-    rw [AdLat.latOf, hg1]
-    exact (hc v).symm
-  · obtain ⟨e, he⟩ := h4 a ha
-    obtain ⟨w, hw, hgw⟩ := hg2 l.M (lt_of_lt_of_le (by norm_num) l.three_le) a
-    have hmem : ∀ z, z ∈ latGHat V u ↔ z ∈ AdLat.hat D.host.F ((M.X k).Λ : Set (Fin V.rank → D.host.E)) := by
-      intro z
-      rw [← SetLike.mem_coe, (hlat u).2, hug, hg1, SetLike.mem_coe]
-    rw [one_mul, hug]
-    refine ⟨-(AdLat.fv D.host.F (M.φ k e : Fin V.rank → D.host.E) + w),
-      (hmem _).2 (neg_mem (add_mem ((hc _).2 (M.φ k e).2) hw)), ?_⟩
-    change AdLat.fv D.host.F (M.φ k (F.t k a) : Fin V.rank → D.host.E) - gf.1 *ᵥ AdLat.fv D.host.F (io a) = _
-    rw [hgw, he, map_add, map_nsmul, Submodule.coe_add, Submodule.coe_smul_of_tower, AdLat.cap_fv_add,
-      AdLat.cap_fv_nsmul]
-    exact comp_sub_eq _ _ _ _
-  · have hu' : infHom V u = 1 := hu
-    rw [one_mul, archM, hu']
-    exact comp_reindex_one _ _
-
-theorem component_attained_at_base_frame : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ (j : ℕ) (hj : InR D j) (σ' : KA Q.l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif (Q.Xo j) σ' ty), σ' (baseKA Q.l).ρ = Q.H.rt0 → IsTypeFn Q.H (Q.Dw j).p (Q.Dw j).q ty → ∀ (M : GlobalTheory.FrameUnif.ModelsOf F D.R.r) (io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E)) (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ → ∀ k : Fin F.n, ∃ g ∈ GfC (D.sp.W j), ∃ p : Σ k, Frame (M.X k).Ψ D.R.r, p.1 = k ∧ (∀ τ : (M.X p.1).Ψ, mat p.2 τ = x₀ τ.1) ∧ MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ g p :=
-  fun D _ _ j hj _ _ _ F _ hty M io th x₀ h k =>
-    comp_attained D (D.sp.W j) F hty (D.sp.W_rank j hj.1 hj.2) M io th x₀ h k
 
 end GlobalTheory.RecDict

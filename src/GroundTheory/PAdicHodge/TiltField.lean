@@ -139,11 +139,6 @@ theorem norm_tiltSharp (x : K♭) : ‖tiltSharp K p x‖ = ‖x‖ := rfl
 theorem norm_algebraMap_preTilt (a : 𝒪♭) : ‖algebraMap 𝒪♭ K♭ a‖ = ‖a‖ := by
   rw [← norm_tiltSharp, tiltSharp_algebraMap, preTilt_norm_def]
 
-theorem nnnorm_algebraMap_preTilt (a : 𝒪♭) : ‖algebraMap 𝒪♭ K♭ a‖₊ =
-    PreTilt.val K NormedField.valuation (normInteger K) normInteger_integers p a := by
-  rw [← nnnorm_eq_val]
-  exact NNReal.eq (norm_algebraMap_preTilt a)
-
 theorem dist_algebraMap_preTilt (a b : 𝒪♭) :
     dist (algebraMap 𝒪♭ K♭ a) (algebraMap 𝒪♭ K♭ b) = dist a b := by
   rw [dist_eq_norm, dist_eq_norm, ← map_sub, norm_algebraMap_preTilt]
@@ -184,10 +179,6 @@ def preTiltEquivNormInteger : 𝒪♭ ≃+* normInteger K♭ :=
 @[simp]
 theorem coe_preTiltEquivNormInteger (a : 𝒪♭) :
     ((preTiltEquivNormInteger K p a : normInteger K♭) : K♭) = algebraMap 𝒪♭ K♭ a := rfl
-
-theorem norm_preTiltEquivNormInteger (a : 𝒪♭) :
-    ‖((preTiltEquivNormInteger K p a : normInteger K♭) : K♭)‖ = ‖a‖ := by
-  rw [coe_preTiltEquivNormInteger, norm_algebraMap_preTilt]
 
 theorem exists_tilt_norm_mem_Ioo (r : ℝ) (hr : r < 1) : ∃ x : K♭, r < ‖x‖ ∧ ‖x‖ < 1 := by
   obtain ⟨ϖ, h1, h2⟩ := IsPerfectoidField.exists_norm_mem_Ioo (K := K) (p := p) (max r ‖(p : K)‖)
@@ -264,20 +255,6 @@ theorem exists_tilt_norm_eq {y : K} (hy : y ≠ 0) : ∃ x : K♭, ‖x‖ = ‖
       (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h.le)
     refine ⟨(algebraMap 𝒪♭ K♭ a)⁻¹, ?_⟩
     rw [norm_inv, norm_algebraMap_preTilt, preTilt_norm_def, ha, norm_inv, inv_inv]
-
-theorem image_norm_tilt :
-    (fun x : K♭ => ‖x‖) '' {0}ᶜ = (fun y : K => ‖y‖) '' {0}ᶜ := by
-  ext r
-  constructor
-  · rintro ⟨x, hx, rfl⟩
-    refine ⟨tiltSharp K p x, fun h => hx ?_, rfl⟩
-    exact tiltSharp_eq_zero_iff.1 h
-  · rintro ⟨y, hy, rfl⟩
-    obtain ⟨x, hx⟩ := exists_tilt_norm_eq (K := K) (p := p) hy
-    refine ⟨x, fun h => hy ?_, hx⟩
-    rw [Set.mem_singleton_iff] at h
-    rw [h, norm_zero, eq_comm, norm_eq_zero] at hx
-    exact hx
 
 end ValueGroup
 

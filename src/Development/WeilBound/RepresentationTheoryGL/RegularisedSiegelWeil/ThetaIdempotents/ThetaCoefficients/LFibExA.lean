@@ -41,10 +41,10 @@ theorem thInt (V : HSp D) (hr : 2 * r < V.rank) (μH : Measure (GA D V)) (𝓕 :
     (GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv D.host.F v) b (lam v) (hlam v).1 r
   have hEu : GlobalTheory.CompanionTheory.SW.IsEulerProd b (thM V μH 𝓕 T) 1
       (minf (hermOf (Ainf D.host.F) D.sp.cm.sig T hT)) (fun v => m v (hermOf (Fv D.host.F v) D.sp.cm.sig T hT)) :=
-    GlobalTheory.T.siegel_weil_measure_of_rank_small_or_zero D.host.F D.host.E D.sp.cm.sig hCM r V.rank V.gram hJ (by omega) T hT hdet _ b laminf lam hinf hlam
+    _root_.GlobalTheory.CompanionTheory.SW.AllFrames.swMeas_all D.host.F D.host.E D.sp.cm.sig hCM r V.rank V.gram hJ (by omega) T hT hdet _ b laminf lam hinf hlam
       μH 𝓕 hμH h𝓕 minf m hminf hm
-  obtain ⟨N, φ, A, S, hφ, hA, hAl, hsum⟩ := GlobalTheory.T.schwartz_bruhat_finite_sum_of_products D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr _ b Φ hΦ
-  obtain ⟨S₁, hS₁⟩ := GlobalTheory.T.euler_product_measure_eventually_standard D.host.F D.host.E V.rank r _ b _ 1 _ _ hEu
+  obtain ⟨N, φ, A, S, hφ, hA, hAl, hsum⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.schwartzBruhat_eq_sum_pureTuples D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr _ b Φ hΦ
+  obtain ⟨S₁, hS₁⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.Euler.integrable_integral_pureN D.host.F D.host.E V.rank r _ b _ 1 _ _ hEu
   have hu : ∀ (R : Type) [CommRing R] [Algebra D.host.F R],
       IsUnit (HeckeCharacterZeroLocus.SiegelWeilU.hermOf R D.sp.cm.sig T hT).1.det := by
     intro R _ _
@@ -54,9 +54,9 @@ theorem thInt (V : HSp D) (hr : 2 * r < V.rank) (μH : Measure (GA D V)) (𝓕 :
     exact (IsUnit.mk0 _ hdet).map (HeckeCharacterZeroLocus.SiegelWeilU.inclR R)
   have hP : ∀ i, Integrable (GlobalTheory.CompanionTheory.SiegelND.Coef.pureN (φ i) (A i)) (thM V μH 𝓕 T) := by
     intro i
-    obtain ⟨hφm, hφi, -⟩ := GlobalTheory.T.archimedean_gram_fibre_measure_formula D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr _ b laminf hinf
+    obtain ⟨hφm, hφi, -⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.FibN.fibre_schwartzN D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr _ b laminf hinf
       minf hminf _ (hu _) (φ i) (hφ i)
-    have hfin := fun v => GlobalTheory.T.local_gram_fibre_measure_standard_volume D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr _ b v (lam v)
+    have hfin := fun v => _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.finV_compactOpenN D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r hr _ b v (lam v)
       (hlam v) (m v) (hm v) (hermOf (Fv D.host.F v) D.sp.cm.sig T hT) (hu _) (A i v) (hA i v).1 (hA i v).2
     exact (hS₁ (S ∪ S₁) Finset.subset_union_right (φ i) hφm hφi.self_of_nhds (A i) (fun v => (hfin v).1)
       (fun v => (hfin v).2) (fun v hv => hAl i v fun h => hv (Finset.mem_union_left _ h))).1

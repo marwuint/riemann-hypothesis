@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvOfFintype
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesAndDerivUniqueOfCoefficients
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralBasisOfIntegralAlgebraicElements
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesCongIffCoeffAndIsUnitStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPrimitiveExpansionQuotientLevelOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponentsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvalSeriesCongIffCoeffAndIsUnit
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPrimitiveExpansionQuotientLevelOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponents
 
 open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
@@ -234,7 +234,7 @@ theorem val_ne (hclo : IsClo p Ωl) (hreb : IsReb T n ψ) {A : ValuationSubring 
   have hpn : ((p ^ n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast (pow_pos (Fact.out : p.Prime).pos n).ne'
   have hm : (((r0 * ((p ^ n : ℕ) : ℚ)).num : ℤ) : ℚ) / (p : ℚ) ^ n = r0 := by
     rw [← castM, (Rat.den_eq_one_iff _).1 hd, mul_div_cancel_right₀ _ hpn]
-  refine (GlobalTheory.T.evalSeries_cong_iff_coeff_and_isUnit p Ωl hclo T n ψ hreb 0 _ x x' hx).2 ⟨(r0 * ((p ^ n : ℕ) : ℚ)).num, ?_, ?_⟩ |>.1
+  refine (_root_.GlobalTheory.Glue.ev_cong_iff_and_unit p Ωl hclo T n ψ hreb 0 _ x x' hx).2 ⟨(r0 * ((p ^ n : ℕ) : ℚ)).num, ?_, ?_⟩ |>.1
   · simp only [hm]; exact (map_ne_zero j).2 h0
   · simp only [hm]; rw [← map_inv₀]; exact (hint _).1 hinv
 
@@ -278,7 +278,7 @@ theorem gal_alg (X : GlobalTheory.KZ.Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (κ : 
 
 theorem mem_KT_iff' [IsAlgClosure ℚ Ω] (X : GlobalTheory.KZ.Tower Ω ε) (p n : ℕ) [Fact p.Prime] (a : X.K) :
     a ∈ KT X (p ^ n) ↔ Supp p n (X.exp a) :=
-  GlobalTheory.T.mem_translationInvariantSubfield_iff_exponents ε X (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) a
+  _root_.GlobalTheory.Glue.KTExp.mem_KT_iff ε X (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) a
 
 def Good (X : GlobalTheory.KZ.Tower Ω ε) (A : ValuationSubring Ω) (p n : ℕ) (y a b : X.K) (κ : Ω) (S : Finset Ω) : Prop :=
   κ ≠ 0 ∧ a ∈ KT X (p ^ n) ∧ b ∈ KT X (p ^ n) ∧ y * b = algebraMap Ω X.K κ * a ∧
@@ -430,7 +430,7 @@ theorem isQ_exists (hX : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.
     ∃ v, IsQ X A j n ψ y v := by
   by_cases h0 : y = 0
   · exact ⟨0, h0 ▸ isQ_zero⟩
-  obtain ⟨a, b, κ, S, hκ, hrel, hPa, hPb, hinv, hS⟩ := GlobalTheory.T.exists_primitive_expansion_quotient_level_one ε X hX p A hpA y h0
+  obtain ⟨a, b, κ, S, hκ, hrel, hPa, hPb, hinv, hS⟩ := _root_.GlobalTheory.exists_prim_frac_level_one ε X hX p A hpA y h0
   have hbK : b ∈ KT X (p ^ n) := by
     rw [KT, RingHom.mem_eqLocusField]
     exact hinv _

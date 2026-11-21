@@ -1,9 +1,21 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.SpecMapFactorisation
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CptFlatInputsOfPropZ
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFlatHermHodgeCptConst
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PropZProvedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeCmTypeWeightStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSandwichOfHodgeTateFreeStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PropZProved
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenericCentreSpecializes
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LocalComponentsSurjective
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PropZ
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeCmTypeWeight
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.ThmFlatA
+import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSandwichOfHodgeTateFree
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointExistsUniqueEmbeddingStatement
 
 noncomputable section
@@ -49,19 +61,19 @@ theorem core (hSm : SmoothLine) (hLc : LocalCmp) (hNu : Numerics) (hF : HT.Fargu
   haveI : Nonempty K := hvar.1
   have hN : NormalCpt 𝔐.ξ := XR.normalCpt_of_isCptGen 𝔐.tie.gen 𝔐.normal
   obtain ⟨hφ, a, b, hgen, hrep⟩ := id hflat
-  obtain ⟨i, j, hT⟩ := GlobalTheory.T.hodge_component_matches_model_component E H D l Xo c Y U Z S Ω K J y 𝔐 hgp
+  obtain ⟨i, j, hT⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CptIn.exists_isTie E H D l Xo c Y U Z S Ω K J y 𝔐 hgp
   obtain ⟨a', b', d₁, d₂, h₁, h₂, ha0, hb0, ha', hb', ea, eb⟩ :=
-    GlobalTheory.T.flag_cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 Fl τ i j a b hT hgen
-  have hdeg := GlobalTheory.T.hodge_cpt_flag_degree E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl xdeg e τ hroot
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.CptWedge.exists_pullWedge_flag E H D l Xo c Y U Z S Ω K J y 𝔐 Fl τ i j a b hT hgen
+  have hdeg := _root_.GlobalTheory.CompanionTheory.Ar.Flat.lineLat_isDegOn E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl xdeg e τ hroot
   have he : ∏ i, e (τ, i) ≠ 0 := hdeg.1
   have hchar : CharZero Ω := charZero_of_injective_ringHom ψ.injective
   have hfr : ∀ p ∈ genFibre ℤ 𝔐.ξ, IsCoeffAt (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) D.p D.q a' b' p 1 := by
     intro p hp
-    obtain ⟨⟨x₀, hx₀, ex⟩, hs₁, hs₂⟩ := GlobalTheory.T.cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j hT p hp
+    obtain ⟨⟨x₀, hx₀, ex⟩, hs₁, hs₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CptStalk.main E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j hT p hp
     obtain ⟨hv₁, hv₂, -, -⟩ := GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c _ _ Y U Z τ.1 (int_frac c.F) τ.2
     obtain ⟨W₁, hW₁, u₁, -, hu₁⟩ := hv₁ x₀ hx₀
     obtain ⟨W₂, hW₂, u₂, -, hu₂⟩ := hv₂ x₀ hx₀
-    exact GlobalTheory.T.exterior_coeff_base_change_compat _ _ _ _ _ _ 𝔐.f i _ _ j _ _ _ _ D.p D.q a b a' b' p x₀ u₁ u₂ Z.gen 𝔐.tie.gen hT.1 hT.2.2.1 ex
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Flat.LinePull.isCoeffAt_pull _ _ _ _ _ _ 𝔐.f i _ _ j _ _ _ _ D.p D.q a b a' b' p x₀ u₁ u₂ Z.gen 𝔐.tie.gen hT.1 hT.2.2.1 ex
       (hu₁ x₀ hx₀ hW₁) (hu₂ x₀ hx₀ hW₂) hs₁ hs₂ (hgen.2.2 x₀ hx₀) ha' hb'
   let x₀ : Cpt 𝔐.ξ := ⟨genPt 𝔐.ξ, specializes_rfl⟩
   have hx₀ : x₀ ∈ genFibre ℤ 𝔐.ξ := fun o ho =>
@@ -77,7 +89,7 @@ theorem core (hSm : SmoothLine) (hLc : LocalCmp) (hNu : Numerics) (hF : HT.Fargu
   have hco : ∀ p ∈ genFibre ℤ 𝔐.ξ, IsCoeffAt (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (labelRk D (.inl τ)) (labelRk D (.inr τ))
       (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) p (d₁ / d₂)⁻¹ :=
     fun p hp => CptIn.isCoeffAt_of_smul h₁ h₂ ea eb (hfr p hp)
-  obtain ⟨hL1, hL2, -⟩ := GlobalTheory.T.wedge_line_lattice_vector_bundle 𝔐.X Ω 𝔐.ξ 𝔐.Li (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) _ _ _ _ Set.univ
+  obtain ⟨hL1, hL2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.lineLat_isVBOn_gen_frames 𝔐.X Ω 𝔐.ξ 𝔐.Li (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) _ _ _ _ Set.univ
     (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) hVA hVB haF hbF
     ⟨x₀, trivial, _, hco x₀ hx₀⟩
   have hd0 : d₁ / d₂ ≠ 0 := div_ne_zero h₁ h₂
@@ -92,12 +104,12 @@ theorem core (hSm : SmoothLine) (hLc : LocalCmp) (hNu : Numerics) (hF : HT.Fargu
     intro ℓ hℓ
     by_cases hS : ℓ ∈ S
     · haveI : Fact ℓ.Prime := ⟨hℓ⟩
-      refine Or.inl (GlobalTheory.T.wedge_line_lattice_trivial_mod 𝔐.X Ω 𝔐.ξ 𝔐.Li _ _ _ _ _ _ _ _ (ℓ : Ω) 𝔐.tie.gen (Nat.cast_ne_zero.2 hℓ.ne_zero)
+      refine Or.inl (_root_.GlobalTheory.CompanionTheory.Ar.Flat.DddTriv.trivMod_lineLat 𝔐.X Ω 𝔐.ξ 𝔐.Li _ _ _ _ _ _ _ _ (ℓ : Ω) 𝔐.tie.gen (Nat.cast_ne_zero.2 hℓ.ne_zero)
         (fun q => ?_) hVA hVB haF hbF ⟨x₀, _, hco x₀ hx₀⟩
-        (GlobalTheory.T.hodge_tate_free_cm_type_weight hF E H D l Xo c _ _ Y S Ω K J y 𝔐 ℓ hS hpq (hfree ℓ hS) τ))
+        (_root_.GlobalTheory.CompanionTheory.Ar.Flat.exactModLat_hodgeTate hF E H D l Xo c _ _ Y S Ω K J y 𝔐 ℓ hS hpq (hfree ℓ hS) τ))
       exact natCast_mem _ _
     · exact Or.inr (hnum ℓ hℓ hS _ _ haF hbF ⟨x₀, _, hco x₀ hx₀⟩)
-  obtain ⟨r, hr⟩ := CptIn.exists_orders GlobalTheory.T.PropZ_proved ψ hcl 𝔐.all 𝔐.tie hN _ (d₁ / d₂) hL1 hgn htriv
+  obtain ⟨r, hr⟩ := CptIn.exists_orders _root_.GlobalTheory.CompanionTheory.Ar.Flat.PropZ_holds ψ hcl 𝔐.all 𝔐.tie hN _ (d₁ / d₂) hL1 hgn htriv
   have hO : OverInt y ψ := overInt_of_normalCpt 𝔐.tie hN ψ
   obtain ⟨A, hAa, hAs, hAc, hAn, hAf⟩ := hSm 𝔐.X Ω 𝔐.ξ K J y F' ψ _ _ _ (d₁ / d₂ / ∏ i, e (τ, i))
     (fun σ => Real.exp (N.inf (σ.comp ι))) n 𝔐.all 𝔐.tie hN hO hbir hvar hdeg (by rw [hc₁]; exact hgn)
@@ -115,16 +127,16 @@ theorem core (hSm : SmoothLine) (hLc : LocalCmp) (hNu : Numerics) (hF : HT.Fargu
     have hA₀h : ∀ w', A₀.h w' = ∏ i, (hx (τ, i)).h w' := fun w' => by
       show ∏ i, (hx (τ, i)).h w' ^ (1 : ℤ) = _
       simp only [zpow_one]
-    have hlies := GlobalTheory.T.point_over_number_field_value 𝔐.X Ω 𝔐.ξ K J y F' ψ σ z w hN 𝔐.tie hz hσ (𝔐.all _)
+    have hlies := _root_.GlobalTheory.CompanionTheory.Ar.Flat.LiesOver.valAt_cst 𝔐.X Ω 𝔐.ξ K J y F' ψ σ z w hN 𝔐.tie hz hσ (𝔐.all _)
     have k1 := hAn σ w g h dg dh hσ hg hh (by rw [hAa]; exact hdg) hgh
     have k2 : ‖evC w g‖ = Real.exp (N.inf (σ.comp ι)) * A₀.h w * ‖evC w h‖ := by
       refine GlobalTheory.T.hermitian_norm_section_value 𝔐.X Ω 𝔐.ξ K J y z w A₀ (d₁ / d₂ / ∏ i, e (τ, i)) _ g h dg dh 𝔐.tie.gen hz ?_ hg hh
         (by rw [hA₀a]; exact hdg) hgh hne
       intro cc u hcc hu
-      refine GlobalTheory.T.flag_weighted_degree_section E H D l Xo c Y S Ω K J y 𝔐 Fl xdeg e hx A₀ τ (N.inf (σ.comp ι)) (d₁ / d₂) z w hroot hhod hA₀a
+      refine _root_.GlobalTheory.CompanionTheory.Ar.RootGram.norm_against_root_metrics E H D l Xo c Y S Ω K J y 𝔐 Fl xdeg e hx A₀ τ (N.inf (σ.comp ι)) (d₁ / d₂) z w hroot hhod hA₀a
         (fun w'' _ => hA₀h w'') hz hint hd0 ?_ cc u hcc (by rw [mul_comm, ← div_div]; exact hu)
       intro hc bp bq Γ Δ α κ u' h1 h2 h3 h4 h5 h6 h7 h8 h9
-      refine GlobalTheory.T.cm_type_exterior_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j a b a' b' φ (σ.comp ι) _ z hc bp bq Γ Δ (d₁ * α) (d₂ * κ)
+      refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.HodgeFr.hodge_norm E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j a b a' b' φ (σ.comp ι) _ z hc bp bq Γ Δ (d₁ * α) (d₂ * κ)
         u' hT hφ hgen hrep (hinf _) ha' hb' hint (fun a => ?_) h1 h2 h3 h4 h5 h6 ?_ ?_ ?_
       · rw [← hψ]
         exact hlies (ι a)
@@ -153,7 +165,7 @@ theorem core (hSm : SmoothLine) (hLc : LocalCmp) (hNu : Numerics) (hF : HT.Fargu
       hrep ha' hb' h₁ h₂ ea eb ha0 hb0 hψ hπ0 hm (fun x hx => hord x fun u hu => hx u ((hv u).1 hu)) (hfin ℓ _)
     rw [hrv]
     refine ⟨fun hS => c1 hS fun hd => hS (hdS ℓ ℓ.2 hd), fun hS => ?_⟩
-    obtain ⟨κ, hκ1, hκ2⟩ := GlobalTheory.T.exists_sandwich_of_hodge_tate_free hF E H D l Xo c _ _ Y S Ω K J y 𝔐 ℓ hS hpq (hfree ℓ hS)
+    obtain ⟨κ, hκ1, hκ2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.ModelSandwich.sandwich_of_htFree hF E H D l Xo c _ _ Y S Ω K J y 𝔐 ℓ hS hpq (hfree ℓ hS)
     exact c2 hS (hfree ℓ hS) κ hκ1 hκ2
 
 end RootFieldNumerics.RF

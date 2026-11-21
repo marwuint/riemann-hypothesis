@@ -7,8 +7,9 @@ import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
 import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.LocalInputFourteenOfLocal
 import Formalism.SharpRestriction.LevelLetterCocycles.ExtensionInvariantClause
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeLaterClausesHoldStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaOperatorSemisimpleOfConclusionsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RestrictionCorestrictionH1fStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaOperatorSemisimpleOfConclusions
+import Formalism.SharpRestriction.LevelLetterCocycles.SemisimpleLetterIffForallMem
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RestrictionCorestrictionH1f
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpsExactAdm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HerrPartAEveryRecord
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmulCocycle
@@ -25,8 +26,8 @@ theorem all_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW
   have hU : HerrComplexNaturality.HerrExtensionUpToUnit D HW F := GlobalTheory.HerrExtUnit.main D HW F
   have h17 : LiftingTheory.adm17 D HW F := Formalism.MainNotions.UnusedSlot35.extension_clause D HW F ⟨p1, p8, hU⟩
   have h18 : LiftingTheory.adm18 D HW F := Formalism.MainNotions.UnusedSlot35.extension_invariant_clause D HW F ⟨p1, p8, p9, a, hU⟩
-  have h19 : LiftingTheory.adm19 D HW F := GlobalTheory.T.gamma_operator_semisimple_of_conclusions D HW F Cm (GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm)
-  have h20 : LiftingTheory.adm20 D HW F := GlobalTheory.T.restriction_corestriction_H1f D HW F
+  have h19 : LiftingTheory.adm19 D HW F := _root_.GlobalTheory.dss_semisimple_of_used D HW F Cm (GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm)
+  have h20 : LiftingTheory.adm20 D HW F := _root_.GlobalTheory.res_cor_H1f D HW F
   have h21 : LiftingTheory.adm21 D HW F := class_map_naturality_of_herr D HW F (GlobalTheory.HerrFull.herr_part_a_every_record D HW F)
   have h22 : LiftingTheory.adm22 D HW F := fun l _ K LL =>
     (GlobalTheory.Per.FontaineBound.fontaineLe_of_tied l (D.loc l) (D.locA l) (D.locT l) K LL).1

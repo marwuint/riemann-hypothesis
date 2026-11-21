@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.FiniteDime
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.PageThm
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrderNeTop
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannZetaNeZeroOfMemIoo
 
 namespace PositivityTheory.Stage1.PM
 

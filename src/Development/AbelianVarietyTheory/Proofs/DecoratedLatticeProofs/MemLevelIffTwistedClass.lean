@@ -1,8 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodSingle
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MovedReadingSameMapsBaseReadingAgrees
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ColsStdOfBWit
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevelTrueOfWitness
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PtRows
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BrgStdR
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedArgsColumnHeq
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevTruePackOfPart
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CornerCoordinateAutomatic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemCutQGrp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelReadingRationalAtTwistExtendsIntegralUnitarStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedTupleReadingLevelCharacterStatement
@@ -165,51 +169,6 @@ theorem lev_twArgs {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T : T
   kexactB key g
 
 end Args
-
-set_option maxHeartbeats 2000000 in
-
-theorem data_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
-    (b : Bundle (q.w.D q.Z) q.O c) (hw : Bl.BWit q b) :
-    (pk (packB b)).βX = 1 ∧ (∀ t, (pk (packB b)).Q t = q.w.I.Q ((packB b).P.I.tup t)) ∧
-      ∀ g, g ∈ (lvP (packB b)).H ↔ ∀ PP (h : PP ∈ (q.B.primes q.w.px).vGs) (h' : PP ∈ (pk (packB b)).Pg),
-        g ⟨PP, h'⟩ ∈ (GlobalTheory.Mem.Col2.TC.Ps q.w.I ⟨PP, h⟩).H := by
-  have hu := GlobalTheory.MiS.Check.used_all (packB b)
-  obtain ⟨x, a, ax, y, -, -, -, -, -, -, -, -, -⟩ := hw
-  have hx : a.x = x := eq_of_heq ax
-  subst hx
-  obtain ⟨-, -, hl, -⟩ := GlobalTheory.Mem.R3.twArgs_lev K q.B q.f q.T q.w q.Z _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a
-  have key : ∀ k : Bl.RPk b.R b.S, k = Bl.rpkX y.y → (∀ t, Formalism.IndefR.RecTie.Used0 (q.w.D q.Z) (k.P.I.tup t)) →
-      (letI := k.B.alg
-      k.B.Q.Rl.toRealDat.βX = 1 ∧ (∀ t, k.B.Q.Rl.toRealDat.Q t = q.w.I.Q (k.P.I.tup t)) ∧
-      ∀ g, g ∈ (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true).H ↔
-        ∀ PP (h : PP ∈ (q.B.primes q.w.px).vGs) (h' : PP ∈ k.B.Q.Rl.toRealDat.Pg),
-        g ⟨PP, h'⟩ ∈ (GlobalTheory.Mem.Col2.TC.Ps q.w.I ⟨PP, h⟩).H) := by
-    intro k hk
-    subst hk
-    intro hu
-    letI := a.x.grp
-    letI := a.x.fin
-    letI := a.x.alg
-    refine ⟨a.x.pins.keep.beta.2, fun t => ?_, fun g => ?_⟩
-    · have h1 := eq_of_heq (hl _ (hu t)).1
-      exact (congrArg a.x.R.Q (a.x.Y.tupT_tup t)).symm.trans h1
-    · exact (lev_twArgs a g)
-  exact key (Bl.rpkB b) y.eq hu
-
-set_option maxHeartbeats 2000000 in
-
-theorem levS_iff_cls : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ (u : (q.w.D q.Z).what₂.Word) (t : (packB b).P.T) (h : (packB b).P.I.tup t ≠ (q.w.D q.Z).what₂.mu0) (g : GA (q.w.D q.Z) (q.w.D q.Z).sp.X'), g ∈ (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) ↔ ∃ κ : ((packB b).R.T.tw.pt.cls u ((packB b).P.I.tup t) h).lev.U, GlobalTheory.Core.Rk.Top.HasMat g κ.1 := by
-  intro hL p K q c b hw u t h g
-  obtain ⟨hOk, ⟨hPins⟩, -, -, l0, tw, he, ht, -, -, s⟩ := GlobalTheory.Fam.colsStd_of_bWit q b hw
-  obtain ⟨hβ, hQ, hH⟩ := data_of_bWit q b hw
-  have hPg : (pk (packB b)).Pg = (q.B.primes q.w.px).vGs := Finset.ext (GlobalTheory.Fam.BundleLev.levTrue_packB q b hw).2.1
-  have key : ∀ (Tw : TwForms (q.w.D q.Z)) (t' : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes (packB b).R.T.n.tp (packB b).R.T.cols Tw),
-      Tw = GlobalTheory.Mem.Col2.TC.tw q.w.I q.w.l l0 q.Z → HEq t' tw →
-      (g ∈ (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) ↔
-        ∃ κ : (t'.pt.cls u ((packB b).P.I.tup t) h).lev.U, GlobalTheory.Core.Rk.Top.HasMat g κ.1) := by
-    rintro _ t' rfl rfl
-    exact mem_levS_of_reads q.w.I hOk hPins q.w.l q.Z _ _ (s.what₂ u _ h) _ hβ _ _ hPg (hQ t) _ hH _ _ _ g
-  exact key _ _ he ht
 
 end GlobalTheory.TopVal.TwSet
 

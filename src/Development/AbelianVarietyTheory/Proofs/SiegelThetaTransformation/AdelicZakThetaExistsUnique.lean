@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.GaussRM
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisGFixOfMemLattice
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticCharacterRealFinitePointsMatchStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RealPointsClassicalModelRealVectorSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompactStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompact
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaFunctionSpaceHeisenbergLawsStatement
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HomSymplecticHalfFormAlgebraicLawsContinuous
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EventuallyFinEqOne
@@ -147,7 +147,7 @@ theorem stdL_full (E : Type) [Field E] [NumberField E] (n : ℕ) :
 
 theorem psi_hat (C : Ctx S T) {u u' : WO S T} (hu : u ∈ hatA S T (tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ))
     (hu' : u' ∈ hatA S T (tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ)) : C.ψ (symplOH S T (2 • u) u') = 1 := by
-  obtain ⟨-, h2, h3, h4, -⟩ := GlobalTheory.T.completedTensorLattice_strongApprox_open_compact D S T C _ C.X.Λ (stdL_full _ _) ⟨C.X.Λ_fg, C.X.Λ_span⟩
+  obtain ⟨-, h2, h3, h4, -⟩ := _root_.GlobalTheory.Ker.HatLat.hatA_tens D S T C _ C.X.Λ (stdL_full _ _) ⟨C.X.Λ_fg, C.X.Λ_span⟩
   obtain ⟨-, -, s3, -⟩ := GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C
   have rat : ∀ y ∈ tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ, ∀ y' ∈ tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ,
       C.ψ (symplOH S T (finW S T y) (finW S T y')) ^ 2 = 1 := by
@@ -209,7 +209,7 @@ theorem exists_isZak (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom
     (hφ : SW.IsSB φ) : ∃ f, C.IsZak x φ f := by
   obtain ⟨N, hN, hfix⟩ := heisG_fix_of_mem_lattice _ _ C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even φ hφ
   obtain ⟨hsm, hth, -⟩ := thR_laws _ _ C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even x hx φ hφ
-  obtain ⟨h1, h2, h3, -, h5, -⟩ := GlobalTheory.T.completedTensorLattice_strongApprox_open_compact D S T C _ C.X.Λ (stdL_full _ _) ⟨C.X.Λ_fg, C.X.Λ_span⟩
+  obtain ⟨h1, h2, h3, -, h5, -⟩ := _root_.GlobalTheory.Ker.HatLat.hatA_tens D S T C _ C.X.Λ (stdL_full _ _) ⟨C.X.Λ_fg, C.X.Λ_span⟩
   obtain ⟨-, s2, -, -, -, -, -, s8⟩ := GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C
   obtain ⟨R, -, r1, r2, r3, r4, r5, r6, -⟩ := GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C
   set H := hatA S T (tens (GlobalTheory.SW.stdL D.host.E S.rank) C.X.Λ) with hH

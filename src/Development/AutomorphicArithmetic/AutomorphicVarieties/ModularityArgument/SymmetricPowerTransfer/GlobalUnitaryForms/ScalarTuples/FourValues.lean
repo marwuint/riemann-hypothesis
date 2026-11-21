@@ -1,7 +1,13 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.HodgeTateFromSandwich
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.TraceFormulaEigenvalues.FormsFin
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsCongrIffTraceFormsIsometricCm
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtensionStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtension
+import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
+import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.ExistsNormTensor
+import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.LandherrStIffLandherr
+import Development.AbelianVarietyTheory.PublishedTheorems.AdelicLattices₂.AlgebraMapNormOfBasisOneSqrt
+import Development.AbelianVarietyTheory.Statements.HyperbolicHypotheses.HypothesesInhabitedHyperbolic
 
 open NumberField Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob
 
@@ -13,7 +19,7 @@ private theorem four_values (F : Type) [Field F] [NumberField F] [IsTotallyReal 
   have hx0 : x ≠ 0 := fun h => by simpa [h] using hx σ
   have hΔ0 : Δ ≠ 0 := fun h => by simpa [h] using hΔ σ
   refine ⟨hx0, ?_⟩
-  obtain ⟨y, hy0, hy⟩ := GlobalTheory.LocalQuad.isotropic_of_indefinite GlobalTheory.T.hasse_norm_theorem_quadratic_extension F (ι := Fin 5) ![1, -Δ, 1, -Δ, -x]
+  obtain ⟨y, hy0, hy⟩ := GlobalTheory.LocalQuad.isotropic_of_indefinite _root_.GlobalTheory.QNorm.hasseNormSt F (ι := Fin 5) ![1, -Δ, 1, -Δ, -x]
     (by simp) (fun i => by fin_cases i <;> simp [hx0, hΔ0])
     (fun s => ⟨4, 0, by simpa using hx s, by simp⟩)
   simp [Fin.sum_univ_succ] at hy

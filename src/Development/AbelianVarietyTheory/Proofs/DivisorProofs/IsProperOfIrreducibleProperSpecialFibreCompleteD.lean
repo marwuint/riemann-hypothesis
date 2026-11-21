@@ -1,8 +1,8 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChowLemmaProjectiveModification
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImageClosureCompleteDVRSpecialFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversallyClosedOfClosedCoverInUniversallyCloseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImageClosureCompleteDVRSpecialFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversallyClosedOfClosedCoverInUniversallyClose
 open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory.FibreProper
@@ -56,9 +56,9 @@ theorem isProper_of_irreducible_of_isProper_specialFibre : ∀ (O : Type) [CommR
     rw [hcomm, (Iso.eq_inv_comp (pullbackRightPullbackFstIso f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))) π)).2
       (pullbackRightPullbackFstIso_hom_snd (f := f) (g := Spec.map (CommRingCat.ofHom (IsLocalRing.residue O))) (f' := π))]
     infer_instance
-  have hclosed := GlobalTheory.T.isClosed_image_closure_completeDVR_specialFibre O Y P q s C hs hq hfib' hCirr hmeet
+  have hclosed := _root_.GlobalTheory.FibProperClosed.isClosed_image_closure O Y P q s C hs hq hfib' hCirr hmeet
   have huc : UniversallyClosed f :=
-    GlobalTheory.T.universallyClosed_of_closed_image_cover _ X Y P f π q s (closure C) inferInstance hq hcomm isClosed_closure hclosed hπT
+    _root_.GlobalTheory.universallyClosed_of_closed_cover_in_universallyClosed _ X Y P f π q s (closure C) inferInstance hq hcomm isClosed_closure hclosed hπT
   exact ⟨⟩
 
 end GlobalTheory.FibreProper

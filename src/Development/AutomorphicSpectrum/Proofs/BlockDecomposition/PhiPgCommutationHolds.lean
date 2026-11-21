@@ -2,16 +2,18 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.LeibnizOrd
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedJacquetClosedOpenSequenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCellStructureDataStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCellStructureData
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvaluationMapsLinearStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedEvaluationEquivariantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenEvaluationEquivariantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedEvaluationInducedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenEvaluationInducedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenEvaluationInduced
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotentStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicDoubleCosetDecompositionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedEvaluationSurjectiveStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenEvaluationSurjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedEvaluationVanishingOnOpenStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AverageVanishesClosedCellStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedEvaluationVanishingOnOpen
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AverageVanishesClosedCell
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AverageVanishesOpenCellStatement
 
 noncomputable section
@@ -176,7 +178,7 @@ theorem phiPG_core (ψ : AddChar k Circle) (hψ : Continuous ψ) (i t : ℕ) (τ
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) :
     MExt (mcast (by omega : i + (t + 1) = (i + 1) + t) (RO ψ τ σ)) (phiN ψ (n := (i + 1) + t) (XR' τ σ)) (RC τ σ) := by
   have hh : i + (t + 1) = (i + 1) + t := by omega
-  obtain ⟨hUn, hθ, hCc, hHC, hCU, hdir⟩ := GlobalTheory.T.mirabolic_cell_structure_data k ψ hψ i t
+  obtain ⟨hUn, hθ, hCc, hHC, hCU, hdir⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Grp.main k ψ hψ i t
   obtain ⟨e, he⟩ := mcast_spec hh (RO ψ τ σ)
   let jOl : (mcast hh (RO ψ τ σ)).V →ₗ[ℂ] (Mir k ((i + 1) + t) → (phiN ψ τ).V ⊗[ℂ] σ.V) :=
     mirabolicRestriction ψ τ σ hh ∘ₗ e.symm.toLinearMap
@@ -209,7 +211,7 @@ theorem phiPG_core (ψ : AddChar k Circle) (hψ : Continuous ψ) (i t : ℕ) (τ
       obtain ⟨y, hy⟩ := GlobalTheory.T.closed_evaluation_induced k i t ψ hψ τ σ hτ hσ f
       exact ⟨y, hy⟩)
     (fun f hf => by
-      obtain ⟨y, hy⟩ := GlobalTheory.T.open_evaluation_induced k i t ψ hψ τ σ hτ hσ f hf
+      obtain ⟨y, hy⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.MemO.eO_mem k i t ψ hψ τ σ hτ hσ f hf
       refine ⟨e y, ?_⟩
       funext m
       have e1 : e.symm (e y) = y := e.symm_apply_apply y
@@ -220,8 +222,8 @@ theorem phiPG_core (ψ : AddChar k Circle) (hψ : Continuous ψ) (i t : ℕ) (τ
       refine ⟨f, hf, ?_⟩
       funext m
       exact congrFun hy _)
-    (fun f hf => GlobalTheory.T.closed_evaluation_vanishing_on_open k i t ψ τ σ hτ hσ f hf)
-    (fun f h0 p hp => GlobalTheory.T.average_vanishes_closed_cell k i t ψ hψ τ σ hτ hσ f h0 p hp)
+    (fun f hf => _root_.GlobalTheory.CompanionTheory.BZPhiPG.eC_eq_zero_of_vanish k i t ψ τ σ hτ hσ f hf)
+    (fun f h0 p hp => _root_.GlobalTheory.CompanionTheory.BZPhiPG.LocC.avgVanish_of_mem_Cl k i t ψ hψ τ σ hτ hσ f h0 p hp)
     (fun f h0 p hp => GlobalTheory.T.average_vanishes_open_cell k i t ψ hψ τ σ hτ hσ f (by
       funext m
       have := congrFun h0 (castM k hh m)

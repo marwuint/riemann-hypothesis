@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
-import Development.AbelianVarietyTheory.BlockTheory.CMModuli.ExponentialEtaPeriod
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.EigLatBasis
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueLinearLiftOfHolomorphicAbelianVariet
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.FamilyUniformisationFibreTheta
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPeriodPairOfLatticeInLine
@@ -27,7 +28,6 @@ noncomputable section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory.IndefiniteRowSideFullHecke.ExponentialEtaPeriod
 open scoped CategoryTheory.Obj UpperHalfPlane nonZeroDivisors
 
 namespace GlobalTheory.CMPeriodCompare
@@ -107,67 +107,5 @@ variable {v : epsR R ⟶ P.A}
 variable {ex : ℂ → (Over.mk (spMap s) ⟶ P.A)} {Λ : Submodule ℤ ℂ}
 
 end Analytic
-
-section Arithmetic
-
-variable {K : Type} [Field K] [NumberField K]
-
-end Arithmetic
-
-section Data
-
-variable (d : ℕ) (K : Type) [Field K] [NumberField K] {M : Type} [Field M] [NumberField M]
-
-def PolData (s₀ : M →+* ℂ) (w : M) (P : Out.PolAV (Sp (𝓞 M))) (v : epsR (𝓞 M) ⟶ P.A) : Prop :=
-  s₀ w = (1 + Complex.I * √d) / 2 ∧ P.g = 1 ∧ IsLieBasis ![v] ∧
-  (∃ (P₀ : Out.PolAV (Sp M)) (φ : P₀.A.left ⟶ P.A.left) (v₀ : epsR M ⟶ P₀.A) (W : P₀.A ⟶ P₀.A),
-    IsPolFibre (algebraMap (𝓞 M) M) P P₀ φ ∧ IsVecOver (algebraMap (𝓞 M) M) φ v v₀ ∧ IsLieBasis ![v₀] ∧
-    IsMonHom W ∧ (W ≫ W) * (𝟙 P₀.A) ^ ((1 + d) / 4) = W ∧ IsLieComb ![w] ![v₀] (v₀ ≫ W)) ∧
-  (∀ (P' : Out.PolAV (Sp ℂ)) (φ : P'.A.left ⟶ P.A.left),
-    IsPolFibre (s₀.comp (algebraMap (𝓞 M) M)) P P' φ → ∀ u : HolUnif P'.A P'.L P'.g,
-    ∃ c : ℂ, c ≠ 0 ∧ ∀ z, z ∈ u.Λ ↔ ∃ m n : ℤ, z = fun _ => c * (m + n * s₀ w)) ∧
-  (∀ s : M →+* ℂ, ∃ r : ℝ, 0 < r ∧ ∀ r', IsLieNormSq P v (s.comp (algebraMap (𝓞 M) M)) r' ↔ r' = r) ∧
-  ∀ n : (M →+* ℂ) → ℝ, (∀ s, IsLieNormSq P v (s.comp (algebraMap (𝓞 M) M)) (n s)) →
-  ∀ (σ : K →+* ℂ) (τ : ClassGroup (𝓞 K) → ℍ), (∀ C, IsIdealClassPoint σ C (τ C)) →
-    (∑ s, Real.log (n s)) / Module.finrank ℚ M =
-      (∑ C, -Real.log (4 * Real.pi * (τ C).im * ‖ModularForm.eta (τ C)‖ ^ 4)) / classNumber K
-
-def HasPolCurve : Prop :=
-  ∃ (M : IntermediateField ℚ ℂ) (_ : NumberField M) (w : M) (P : Out.PolAV (Sp (𝓞 M))) (v : epsR (𝓞 M) ⟶ P.A),
-    PolData d K (algebraMap M ℂ) w P v
-
-variable {d K}
-
-def ExpData (io : K →+* ℂ) (s₀ : M →+* ℂ) (A : Over (Sp (𝓞 M))) [GrpObj A] (D : epsR (𝓞 M) ⟶ A) : Prop :=
-  ∃ (j : 𝓞 K →+* 𝓞 M) (act : OAct (𝓞 K) A)
-    (ex : ∀ s : M →+* ℂ, ℂ → (Over.mk (spMap (s.comp (algebraMap (𝓞 M) M))) ⟶ A))
-    (Λ : (M →+* ℂ) → Submodule ℤ ℂ),
-    (∀ a : 𝓞 K, s₀ (j a : M) = io (a : K)) ∧
-    IsAbelianScheme A ∧
-    IsLieBasis (fun _ : Fin 1 => D) ∧
-    (∀ a : 𝓞 K, (D ≫ act.act a).left = spMap (epsScaleR (j a)) ≫ D.left) ∧
-    (∀ s, IsExponential A D (s.comp (algebraMap (𝓞 M) M)) (ex s) (Λ s)) ∧
-    (∀ (s : M →+* ℂ) (a : 𝓞 K) (z : ℂ), ex s (s (j a : M) * z) = ex s z ≫ act.act a) ∧
-    (∃ c : ℂ, c ≠ 0 ∧ ∀ z : ℂ, z ∈ Λ s₀ ↔ ∃ a : 𝓞 K, z = c * io (a : K)) ∧
-    (∃ τ : ClassGroup (𝓞 K) → ℍ, ∀ C, IsClassPoint io C (τ C)) ∧
-    ∀ τ : ClassGroup (𝓞 K) → ℍ, (∀ C, IsClassPoint io C (τ C)) →
-      (∑ s : M →+* ℂ, Real.log (sqLen (Λ s) 1)) / (Module.finrank ℚ M : ℝ) =
-        -((∑ C, Real.log (etaPeriod (τ C))) / (classNumber K : ℝ))
-
-end Data
-
-section Main
-
-def Polarisable {S : Scheme.{0}} (A : Over S) [GrpObj A] : Prop :=
-  ∃ (g : ℕ) (L : LB A.left), SmoothOfRelativeDimension g A.hom ∧ L.IsLB ∧ Out.Rigidified A L ∧ Out.Sym A L ∧
-    Out.RelAmple A L ∧ Out.KTriv A L
-
-variable {d : ℕ} {K : Type} [Field K] [NumberField K]
-
-def HasPolarisableExp (io : K →+* ℂ) : Prop :=
-  ∃ (M : Type) (_ : Field M) (_ : NumberField M) (s₀ : M →+* ℂ) (A : Over (Sp (𝓞 M))) (_ : GrpObj A)
-    (D : epsR (𝓞 M) ⟶ A), Polarisable A ∧ ExpData io s₀ A D
-
-end Main
 
 end GlobalTheory.CMPeriodCompare

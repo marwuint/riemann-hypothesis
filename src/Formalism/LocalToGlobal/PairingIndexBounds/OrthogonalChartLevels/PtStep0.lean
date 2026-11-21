@@ -59,11 +59,4 @@ def ptStep0 (hdet : IsUnit sp.gram0.det) (hk : m + 1 = R.k) (y : compL L p → U
     ((toLE (gamAd L.Uloc bad (ptAd0 (I := I) hdet hk y i Lt))).trans (stdCo (sp.cm.sig : E →+* E) sp.gram0))
     (Matrix.GeneralLinearGroup.det (ptAd0 (I := I) hdet hk y i Lt))
 
-def frCoM (J : Matrix (Fin N) (Fin N) E) {Lb : Submodule (𝓞 E) (Fin N → E)} (fr : FrS I Lb) (hk : m + 1 = N) (v : Fin nV) :
-    Matrix (Fin (m + 1)) (Fin (m + 1)) Qq :=
-  ((((LinearMap.toMatrix' ((stdCo (sp.cm.sig : E →+* E) J : (Fin N → E) ≃ₗ[E] (Fin N → E)) :
-      (Fin N → E) →ₗ[E] (Fin N → E))).map ((fstV I v).comp (inclE (F := F) ((I.plc v).adicCompletion F)))) *
-    ((fr.fr (I.plc v) (I.pl v).2 : GL (Fin N) ((I.plc v).adicCompletion F)) :
-      Matrix (Fin N) (Fin N) ((I.plc v).adicCompletion F))).map (I.eQ v).symm).submatrix (finCongr hk) (finCongr hk)
-
 end Formalism.L2.PairingIndexBounds.F

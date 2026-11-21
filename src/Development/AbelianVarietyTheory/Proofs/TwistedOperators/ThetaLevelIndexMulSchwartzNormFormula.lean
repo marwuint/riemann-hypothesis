@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfLinearCocycle
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LocalIntegralGL
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelLeStabilizerSelfDualLatticeFrameStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardGLDivParabolicIndexFiniteFieldStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelAndTwistPlacesSplitDistinctStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexLevelSelfDualStabilizerEqProdLocalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelVectorSquareNormEqProdLocalVolumesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelLeStabilizerSelfDualLatticeFrame
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardGLDivParabolicIndexFiniteField
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelAndTwistPlacesSplitDistinct
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexLevelSelfDualStabilizerEqProdLocal
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelVectorSquareNormEqProdLocalVolumes
 
 noncomputable section
 
@@ -30,10 +30,10 @@ theorem levelIndexNormC : GlobalTheory.IndefiniteRowSideFullHecke.LocalIntegralG
   refine ⟨?_, fun μ 𝓧 hμ => ?_⟩
   · obtain ⟨c0, hc0⟩ := hC.lev.βV i
     rw [one_pow] at hc0
-    exact GlobalTheory.T.level_le_stabilizer_selfDual_lattice_frame D (Vc D i) _ _ _ hc0
-  · have hn := GlobalTheory.T.levelVector_squareNorm_eq_prod_localVolumes hLoc R F hPM i t σ s P cμ cη m ω BW f₀ f c io hd Hl cl hP μ 𝓧 hμ
-    rw [GlobalTheory.T.relIndex_level_selfDual_stabilizer_eq_prod_local R F i t P m Hl cl hC hP, hn]
-    obtain ⟨hdis, hinj, hsp⟩ := GlobalTheory.T.levelAndTwistPlaces_split_distinct R F hC t
+    exact _root_.GlobalTheory.LevelInLatStab.lev_le_latLev D (Vc D i) _ _ _ hc0
+  · have hn := _root_.GlobalTheory.LevelVecNorm.levelVector_squareNorm_eq_prod_localVolumes_alt hLoc R F hPM i t σ s P cμ cη m ω BW f₀ f c io hd Hl cl hP μ 𝓧 hμ
+    rw [_root_.GlobalTheory.ParIndex.relIndex_levV_latLev R F i t P m Hl cl hC hP, hn]
+    obtain ⟨hdis, hinj, hsp⟩ := _root_.GlobalTheory.TwistTypePlaces.places_split R F hC t
     have hrank : (Vc D i).rank = D.R.nV := D.sp.V_rank _ (Nat.le_add_left _ _) i.2
     have hrt : (Vc D i).rank = D.R.r + D.R.t := D.sp.V_rank _ (Nat.le_add_left _ _) i.2
     have key : ∀ PP ∈ R.Pg ∪ R.Q t, (dLoc D (PP.under (𝓞 D.host.F)))⁻¹ =
@@ -43,7 +43,7 @@ theorem levelIndexNormC : GlobalTheory.IndefiniteRowSideFullHecke.LocalIntegralG
       obtain ⟨h2, hq⟩ := hsp PP hPP
       haveI : Fact PP.asIdeal.IsMaximal := ⟨PP.isMaximal⟩
       letI : Field (kP PP) := Ideal.Quotient.field _
-      rw [GlobalTheory.T.card_GL_div_parabolic_index_finiteField (kP PP) _ D.R.r D.R.t hrt, hrank]
+      rw [_root_.GlobalTheory.Twist.GLIndexLoc.index_loc (kP PP) _ D.R.r D.R.t hrt, hrank]
       unfold dLoc quadTerm quadSign
       rw [if_pos h2, ← Finset.prod_inv_distrib]
       refine Finset.prod_congr rfl fun j _ => ?_

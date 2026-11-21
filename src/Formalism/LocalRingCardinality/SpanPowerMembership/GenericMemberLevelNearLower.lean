@@ -541,7 +541,6 @@ theorem genericRecord_sign (τ) : (genericRecord H hc hgap hlet T Ts hTs Gam hG 
 theorem genericRecord_weight_sign (u τ) : (genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).hcW u τ = hc := rfl
 theorem genericRecord_eta (j w) : (genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.etaJ j w = 0 := rfl
 theorem genericRecord_mem_A_T (u) : ((genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.T = T := rfl
-theorem genericRecord_lowerLevel (u) : ((genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.Tstar = Ts := memG_Tstar hc T Ts hTs Gam hG
 theorem genericRecord_gamma (u) : ((genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.GamP = Gam := rfl
 theorem genericRecord_delta : (genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).s.Del = 1 := rfl
 theorem genericRecord_letter (u l) : (genericRecord H hc hgap hlet T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).s.letter u l = false := rfl

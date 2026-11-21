@@ -1,10 +1,10 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenRegularCharacters
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCuspidalCharacterOfRegularCharacterGLnStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCuspidalCharacterOfRegularCharacterGLn
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonicIrreducibleInjectRegularCharacterOrbitsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCuspidalMultisetsTotalDegreeLeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NcardMonicNatDegreeCoeffZeroNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCuspidalMultisetsTotalDegreeLe
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NcardMonicNatDegreeCoeffZeroNeZero
 
 noncomputable section
 
@@ -69,7 +69,7 @@ theorem count (d : ℕ) (hd : 0 < d) (Lf : ∀ e, (ZMod g)[X] → Gn g e → ℂ
   let ψ : Pc g → (ZMod g)[X] := Function.invFunOn φ s
   have hleft : ∀ P ∈ s, ψ (φ P) = P := fun P hP => hinj.leftInvOn_invFunOn hP
   let T : Set (ZMod g)[X] := {f | f.Monic ∧ f.natDegree = d ∧ f.coeff 0 ≠ 0}
-  obtain ⟨hcard, hfin⟩ := GlobalTheory.T.ncard_monic_natDegree_coeff_zero_ne_zero g d hd
+  obtain ⟨hcard, hfin⟩ := _root_.GlobalTheory.GrPolys.card_monic_coeff_zero_ne_zero g d hd
   let F : (ZMod g)[X] → Multiset (Pc g) := fun f => (UniqueFactorizationMonoid.normalizedFactors f).map φ
   have hback : ∀ f ∈ T, (F f).map ψ = UniqueFactorizationMonoid.normalizedFactors f := by
     intro f hf
@@ -122,7 +122,7 @@ theorem count (d : ℕ) (hd : 0 < d) (Lf : ∀ e, (ZMod g)[X] → Gn g e → ℂ
       · intro p hp
         obtain ⟨P, hP, rfl⟩ := Multiset.mem_map.mp hp
         exact hc _ P (factor_lab hf.2.2 P hP)
-  have hle := GlobalTheory.T.card_cuspidal_multisets_total_degree_le g d hd S hS
+  have hle := _root_.GlobalTheory.GLq.CuspMultisetCount.card_le g d hd S hS
   have hcardS : S.card = g ^ d - g ^ (d - 1) + 1 := by
     rw [Finset.card_insert_of_notMem hnot, Finset.card_image_of_injOn, ← hcard,
       Set.ncard_eq_toFinset_card T hfin]
@@ -136,7 +136,7 @@ open GlobalTheory.GreenRegularCharactersInertiaEigenvalues in
 
 theorem GlobalTheory.greenRegularCharacters_holds : GreenRegularCharacters := by
   intro g _ d hd K _ _ hK
-  obtain ⟨τ, hτ1, hτ2⟩ := GlobalTheory.T.exists_cuspidalCharacter_of_regularCharacter_GLn g d hd K hK
+  obtain ⟨τ, hτ1, hτ2⟩ := _root_.GlobalTheory.GreenRegular.exists_cusp_of_regular g d hd K hK
   refine ⟨τ, hτ1, hτ2, ?_⟩
   have hex : ∀ e, ∃ L : (ZMod g)[X] → Gn g e → ℂ,
       (∀ P, IsPrimeLab e P → IsCusp (L P)) ∧
@@ -153,7 +153,7 @@ theorem GlobalTheory.greenRegularCharacters_holds : GreenRegularCharacters := by
       · refine ⟨fun _ _ => 0, fun P hP => absurd (isPrimeLab_pos hP) (by omega),
           fun P _ hP _ _ => absurd (isPrimeLab_pos hP) (by omega), fun h => absurd h hed⟩
       · have hpos : 0 < e := Nat.pos_of_ne_zero he0
-        obtain ⟨τ', hτ'1, hτ'2⟩ := GlobalTheory.T.exists_cuspidalCharacter_of_regularCharacter_GLn g e hpos (GaloisField g e) (GaloisField.finrank g he0)
+        obtain ⟨τ', hτ'1, hτ'2⟩ := _root_.GlobalTheory.GreenRegular.exists_cusp_of_regular g e hpos (GaloisField g e) (GaloisField.finrank g he0)
         obtain ⟨L, hL1, hL2⟩ := family g e hpos (GaloisField g e) (GaloisField.finrank g he0) τ'
           (fun θ hθ => (hτ'1 θ hθ).1) hτ'2
         exact ⟨L, fun P hP => (hL1 P hP).1, hL2, fun h => absurd h hed⟩

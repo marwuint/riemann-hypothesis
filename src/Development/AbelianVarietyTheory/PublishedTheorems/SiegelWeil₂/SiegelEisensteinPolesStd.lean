@@ -24,13 +24,6 @@ end GlobalTheory.StdUnn
 
 namespace GlobalTheory.Published
 
-open GlobalTheory.StdUnn
-
-def SiegelEisensteinPolesStd : Prop :=
-  ∀ (D : D7) (n : ℕ), 0 < n → ∀ (χ : (AE D)ˣ →* Circle) (b : ℕ), IsHeckeChar D χ → ResEta D χ b →
-  ∀ H : G D n → ℝ≥0, IsHeight H → ∀ (s₁ : ℂ) (φ : G D n → ℂ), IsSection χ s₁ φ →
-  ∀ s₀ : ℂ, 0 < s₀.re → ∀ g, PoleLE (fun s => Eis.cosetSum (P D n) (GF D n) (stdSec H φ s₁ s) g) s₀ 1
-
 end GlobalTheory.Published
 
 end

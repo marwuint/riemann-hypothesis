@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspRapidDecaySiegelGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFundamentalDomainRationalBlockUnipotentGLStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFundamentalDomainRationalBlockUnipotentGL
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
@@ -17,7 +17,7 @@ theorem norm_le_of_unip_variation : ∀ (E : Type) [Field E] [NumberField E] [Is
   letI : MeasurableSpace (BlockIx a s → Ad E) := borel _
   haveI : BorelSpace (BlockIx a s → Ad E) := ⟨rfl⟩
   set μ : Measure (BlockIx a s → Ad E) := Measure.addHaar with hμ
-  obtain ⟨𝓕, h𝓕, h0, htop⟩ := GlobalTheory.T.exists_fundamentalDomain_rationalBlockUnipotentGL E a s μ
+  obtain ⟨𝓕, h𝓕, h0, htop⟩ := _root_.GlobalTheory.CuspRep.exists_isAddFundamentalDomain_ratN E a s μ
   have hc := ContAut.continuous_of_isOpen_stab E a ψ hψ.1.level
   have hI := CuspidalL2GL.integrableOn_unip hc hψ.1.left μ h𝓕 g
   have hz : ∫ x in 𝓕, ψ.1 (unip x * g) ∂μ = 0 := hψ.2 s hs0 hsa μ 𝓕 inferInstance h𝓕 g

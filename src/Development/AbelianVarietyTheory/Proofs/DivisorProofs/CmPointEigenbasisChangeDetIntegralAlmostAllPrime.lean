@@ -12,7 +12,8 @@ import Development.AbelianVarietyTheory.Definitions.CMLattices.IntegralOf
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLetterIntegralInIntegralEigenbasis
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeE
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetBlockChangeOfBasisViaTwoFamiliesImplicitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationDivLeOneCofiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationDivLeOneCofinite
+import Formalism.LocalToGlobal.CMDeterminantIdeals.DetIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentLettersIntegralLieBasisEigenframeRelationStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.Pj Formalism.BasicNotions
@@ -41,7 +42,7 @@ theorem GlobalTheory.DetInt.det_integral : ∀ (E : Type) [Field E] [NumberField
         GlobalTheory.LamT.LieInt T (iK.comp (algebraMap c.F z.K)) M.m1 M.m2 y'.u →
         (∏ b, (g b).det) ∈ Set.range (algebraMap T.V T.Fr) := by
   intro E _ _ _ H Dw l Xo c _ z f La hz
-  obtain ⟨S, hS⟩ := GlobalTheory.T.exists_finset_valuation_div_le_one_of_isLocGen z.K z.LamL.I z.U.det
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.LocGenVal.valuation_div_le_one_cofinite z.K z.LamL.I z.U.det
   refine ⟨S, fun p hp T iK _hfin hval M => ?_⟩
   letI := (iK.comp (algebraMap c.F z.K)).toAlgebra
   intro φ yT y' g a hφ hmap hchg hg hint

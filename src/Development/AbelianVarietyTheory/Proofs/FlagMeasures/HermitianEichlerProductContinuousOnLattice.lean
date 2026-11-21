@@ -142,21 +142,6 @@ theorem Cont.prod {Q : Type} {near : F → Q → Prop}
 
 end Abstract
 
-section Eich
-
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E)
-
-end Eich
-
-section Lat
-
-variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {O : Subring E} {N : ℕ}
-variable (hden : ∀ z : E, ∃ a : F, a ≠ 0 ∧ algebraMap F E a ∈ O ∧ algebraMap F E a * z ∈ O)
-include hden
-
-end Lat
-
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 private lemma exists_algebraMap_mul_mem_O {F : Type} [Field F] [ValuativeRel F]

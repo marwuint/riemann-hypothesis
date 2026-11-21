@@ -3,12 +3,6 @@ open MeasureTheory Filter Topology Metric Set
 
 namespace GlobalTheory
 
-section
-variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
-  [MeasurableSpace V] [BorelSpace V]
-
-end
-
 open MeasureTheory Filter Topology Metric Set in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V] in

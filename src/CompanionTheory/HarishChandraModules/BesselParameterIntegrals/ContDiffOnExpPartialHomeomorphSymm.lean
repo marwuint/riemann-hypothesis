@@ -49,10 +49,6 @@ theorem one_mem_expPartialHomeomorph_target : (1 : 𝔸) ∈ (expPartialHomeomor
   simpa [coe_expPartialHomeomorph] using
     (expPartialHomeomorph 𝕂 𝔸).map_source (zero_mem_expPartialHomeomorph_source 𝕂 𝔸)
 
-theorem expPartialHomeomorph_symm_one : (expPartialHomeomorph 𝕂 𝔸).symm 1 = 0 := by
-  simpa [coe_expPartialHomeomorph] using
-    (expPartialHomeomorph 𝕂 𝔸).left_inv (zero_mem_expPartialHomeomorph_source 𝕂 𝔸)
-
 theorem expPartialHomeomorph_source_subset :
     (expPartialHomeomorph 𝕂 𝔸).source ⊆ expRegularSet 𝕂 𝔸 := fun _ h => h.2
 
@@ -118,71 +114,10 @@ noncomputable def expChartUnits (g : 𝔸ˣ) : OpenPartialHomeomorph 𝔸ˣ 𝔸
     (Units.continuous_val.comp (continuous_const.mul continuous_id)).continuousOn (fun _ hx => hx)
   continuousOn_invFun := (continuous_const.mul (continuous_expUnit 𝕂 𝔸)).continuousOn
 
-theorem mem_expChartUnits_source (g : 𝔸ˣ) : g ∈ (expChartUnits 𝕂 g).source := by
-  show ((g⁻¹ * g : 𝔸ˣ) : 𝔸) ∈ (𝔢).target
-  simpa using one_mem_expPartialHomeomorph_target 𝕂 𝔸
-
-theorem expChartUnits_self (g : 𝔸ˣ) : expChartUnits 𝕂 g g = 0 := by
-  show (𝔢).symm ((g⁻¹ * g : 𝔸ˣ) : 𝔸) = 0
-  simpa using expPartialHomeomorph_symm_one 𝕂 𝔸
-
 theorem expChartUnits_symm_apply (g : 𝔸ˣ) (X : 𝔸) :
     (((expChartUnits 𝕂 g).symm X : 𝔸ˣ) : 𝔸) = g * exp X := rfl
 
-theorem expChartUnits_mem_maximalAtlas (g : 𝔸ˣ) (n : WithTop ℕ∞) :
-    expChartUnits 𝕂 g ∈ IsManifold.maximalAtlas 𝓘(𝕂, 𝔸) n 𝔸ˣ := by
-  rw [IsManifold.mem_maximalAtlas_iff]
-  intro e' he'
-  obtain rfl : e' = _ := he'
-  have h1 : (expChartUnits 𝕂 g).symm ≫ₕ
-      Units.isOpenEmbedding_val.toOpenPartialHomeomorph (Units.val : 𝔸ˣ → 𝔸) ∈
-      contDiffGroupoid n 𝓘(𝕂, 𝔸) := by
-    rw [contDiffGroupoid, mem_groupoid_of_pregroupoid]
-    constructor
-    · simp only [contDiffPregroupoid, modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm,
-        Function.id_comp, Function.comp_id, preimage_id_eq, range_id, inter_univ]
-      exact (contDiff_const.mul (contDiff_exp 𝕂 𝔸)).contDiffOn.congr (fun X _ => rfl)
-    · simp only [contDiffPregroupoid, modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm,
-        Function.id_comp, Function.comp_id, preimage_id_eq, range_id, inter_univ]
-      set e0 := Units.isOpenEmbedding_val.toOpenPartialHomeomorph (Units.val : 𝔸ˣ → 𝔸)
-      have hmaps : MapsTo (fun a : 𝔸 => ((g⁻¹ : 𝔸ˣ) : 𝔸) * a)
-          ((expChartUnits 𝕂 g).symm ≫ₕ e0).symm.source (𝔢).target := by
-        intro a ha
-        rw [OpenPartialHomeomorph.symm_source, OpenPartialHomeomorph.trans_target] at ha
-        have hr : ((e0.symm a : 𝔸ˣ) : 𝔸) = a := e0.right_inv ha.1
-        have := ha.2
-        simp only [mem_preimage] at this
-        change (((g⁻¹ * e0.symm a : 𝔸ˣ) : 𝔸)) ∈ (𝔢).target at this
-        rwa [Units.val_mul, hr] at this
-      refine ((contDiffOn_expPartialHomeomorph_symm 𝕂 𝔸).comp
-        (contDiff_const.mul contDiff_id).contDiffOn hmaps).congr ?_
-      intro a ha
-      rw [OpenPartialHomeomorph.symm_source, OpenPartialHomeomorph.trans_target] at ha
-      have hr : ((e0.symm a : 𝔸ˣ) : 𝔸) = a := e0.right_inv ha.1
-      show (𝔢).symm (((g⁻¹ * e0.symm a : 𝔸ˣ) : 𝔸)) = _
-      rw [Units.val_mul, hr]; rfl
-  refine ⟨h1, ?_⟩
-  have := (contDiffGroupoid n 𝓘(𝕂, 𝔸)).symm h1
-  rwa [OpenPartialHomeomorph.trans_symm_eq_symm_trans_symm, OpenPartialHomeomorph.symm_symm] at this
-
 end UnitsChart
-
-section GeneralLinear
-
-open scoped Matrix.Norms.L2Operator
-
-theorem lieGroup_GL (𝕂 : Type*) [RCLike 𝕂] (n : ℕ) (k : WithTop ℕ∞) :
-    LieGroup 𝓘(𝕂, Matrix (Fin n) (Fin n) 𝕂) k (GL (Fin n) 𝕂) := inferInstance
-
-theorem lieGroup_GL_complex_real (n : ℕ) (k : WithTop ℕ∞) :
-    LieGroup 𝓘(ℝ, Matrix (Fin n) (Fin n) ℂ) k (GL (Fin n) ℂ) := inferInstance
-
-theorem expChart_GL_mem_maximalAtlas (𝕂 : Type*) [RCLike 𝕂] (n : ℕ) (g : GL (Fin n) 𝕂)
-    (k : WithTop ℕ∞) :
-    expChartUnits 𝕂 g ∈ IsManifold.maximalAtlas 𝓘(𝕂, Matrix (Fin n) (Fin n) 𝕂) k (GL (Fin n) 𝕂) :=
-  expChartUnits_mem_maximalAtlas 𝕂 g k
-
-end GeneralLinear
 
 section LinearLie
 
@@ -392,10 +327,6 @@ def indefJ : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ :=
 
 theorem indefJ_mul_self : indefJ p q * indefJ p q = 1 := by
   rw [indefJ, diagonal_mul_diagonal, ← diagonal_one]
-  congr 1; funext i; cases i <;> simp
-
-theorem indefJ_conjTranspose : (indefJ p q)ᴴ = indefJ p q := by
-  rw [indefJ, diagonal_conjTranspose]
   congr 1; funext i; cases i <;> simp
 
 theorem isUnit_indefJ : IsUnit (indefJ p q) :=

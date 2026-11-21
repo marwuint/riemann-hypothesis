@@ -69,14 +69,6 @@ section Ext
 variable {D : DegPre R} {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Field F']
   [Algebra (FractionRing R) F'] {k : ℕ}
 
-theorem qkExt_iff (f : F →+* F') (p : QkPt D F k) (q : QkPt D F' k) :
-    QkExt f p q ↔ ∃ σ : F →ₐ[FractionRing R] F', (σ : F →+* F') = f ∧ q.y = p.y ∧ TorusGraphMaps.GtMap σ p.g q.g := by
-  constructor
-  · intro h
-    exact ⟨⟨f, fun r => DFunLike.congr_fun (DegActCheck.qkExt_compat f p q h) r⟩, rfl, h⟩
-  · rintro ⟨σ, rfl, h⟩
-    exact h
-
 theorem qkMap_iff_exists (σ : F →ₐ[FractionRing R] F') (p : QkPt D F k) (p' : QkPt D F' k) :
     TorusGraphMaps.QkMap σ p p' ↔ ∃ q, QkExt (σ : F →+* F') p q ∧ QkPt.Equiv D F' q p' :=
   exists_congr fun _ => and_assoc.symm

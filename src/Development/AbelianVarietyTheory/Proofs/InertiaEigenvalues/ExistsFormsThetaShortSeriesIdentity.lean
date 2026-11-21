@@ -147,7 +147,7 @@ theorem thetaSum_value_emb : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datu
     have hthF := GlobalTheory.GalLift.Vec.theta_pureTensorO hψ hθ (fun _ => 1) (fun _ => 1) s BW
       (AddValue.theta_transSum hψ V W d.l₂ ι e hf₀ (fun q => σ (w t q))) (MvPolynomial.rename lt (MvPolynomial.map σ (P t)))
     rw [hmove _ hthF, hren]
-    refine (GlobalTheory.T.thetaKernel_translateSum_eq_classicalShortSeries D H Dw ψ θ V W χV χW om ΛV ΛW s f₀ hVP ι hiota.emb hrt d.l₂ e he r g' Dw.p hr _
+    refine (_root_.GlobalTheory.SingleDatum.ShortSum.thetaKO_transSum_eq_short_series D H Dw ψ θ V W χV χW om ΛV ΛW s f₀ hVP ι hiota.emb hrt d.l₂ e he r g' Dw.p hr _
       Dc.hr Dc.bas Dc.idx (fun τ => x₀ τ.1) vr BW (hMod _) Dc.sympl hON (hF _).1 ((hF _).2 Dc.hr) hvr bad N h (γ * g) Λ mk₂
       e' Ps y hbad he' hPs hh hs hy hΛ hT hN ha₂ Y (by rw [hΛk]; exact hY) v (cc (dict g).1 * mu g * κ')
       (by rw [hΛk]; exact hv) (by rw [← hfr]; exact hrd) _ _ (degA Dw a) hhom).trans ?_

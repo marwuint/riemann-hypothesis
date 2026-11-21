@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexPointsNonemptyDenseVarietyStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalEquationComplexPointsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannRochNeBotOfHolomorphicSectionNeBotStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalEquationComplexPoints
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannRochNeBotOfHolomorphicSectionNeBot
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannExtensionOfLogGrowthStatement
 
 set_option autoImplicit false
@@ -172,41 +172,5 @@ theorem exists_extension (R : AnRead p σ' d) (π : Y ⟶ gen Z)
   simpa only [c.e.left_inv hz.1.1, Function.comp_apply] using this
 
 end Flag
-
-theorem H0_ne_bot_of_horFn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (τ : E →+* ℂ) (h : CxFr Z σ → ℂ), τ (H.rt : E) = H.rt0 → HorFn τ h → (C.Y.H0 (divOf C (expo Dw (detSym Dw (fun _ => false) none τ))) ≠ ⊥ ∧ C.Y.H0 (-divOf C (expo Dw (detSym Dw (fun _ => false) none τ))) ≠ ⊥) := by
-  intro E _ _ _ H Dw l Xo c O _ β Z σ F _ _ e C τ h hτ hh
-  obtain ⟨W, δ, a, hW, hδ, ha, hf, hc⟩ := GlobalTheory.T.exists_local_equation_complex_points E H Dw l Xo c O β Z σ F e C τ hτ
-  obtain ⟨hne, hd⟩ := GlobalTheory.T.complexPoints_nonempty_dense_variety F C.Y (σ.comp e.toRingHom)
-  have hA := hd (C.π ⁻¹ᵁ (genBd Z).compl) ⟨genericPt C.Y (IsLocalRing.closedPoint C.Y.Fn), fun hb =>
-    hb ⟨_, congrArg (fun g => g (IsLocalRing.closedPoint C.Y.Fn)) C.y0_x⟩⟩
-  let R := AnRead.all C.Y.str (σ.comp e.toRingHom) C.Y.dim
-  choose u hu he using fun y => exists_extension R C.π hA (isOpen_ptsIn (W y)) (ha y) (hf y) hh.2.2.1 hh.2.2.2
-  choose u' hu' he' using fun y => exists_extension R C.π hA (isOpen_ptsIn (W y)) (ha y) (hf y)
-    (h := fun a => (h a)⁻¹) (fun V _ _ _ B a hB ha hi => (hh.2.2.1 V B a hB ha hi).inv fun b hb => hh.1 _ (hi b hb))
-    (logGrowth_inv hh.2.2.2)
-  have h0 (y) (z) (hz : z ∈ ptsIn _ _ (W y) ∩ ptsIn _ _ (C.π ⁻¹ᵁ (genBd Z).compl)) : h (a y z) ≠ 0 :=
-    hh.1 _ ((inner_iff (ha y z hz.1)).2 hz.2)
-  have hr (y y') (U : C.Y.X.Opens) (r : Γ(C.Y.X, U)) (hr : ∀ hU, fnOf U hU r = (δ y : C.Y.Fn) / (δ y' : C.Y.Fn)) (z)
-      (hy : z ∈ ptsIn _ _ (W y)) (hy' : z ∈ ptsIn _ _ (W y')) (hU : z ∈ ptsIn _ _ U)
-      (hz : z ∈ ptsIn _ _ (C.π ⁻¹ᵁ (genBd Z).compl)) : h (a y z) = ev _ _ U r z * h (a y' z) := by
-    obtain ⟨M, N, hM, hN, hM0, hMN⟩ := hc y y' U (gen_mem (mem_ptsIn.1 hU)) r (hr _) z
-      (mem_ptsIn_inf.2 ⟨mem_ptsIn_inf.2 ⟨hy, hy'⟩, hU⟩)
-    refine mul_right_cancel₀ hM0 ?_
-    rw [hh.2.1 _ _ M N ((inner_iff (ha y' z hy')).2 hz) hM hN, ← hMN]
-    ring
-  refine ⟨GlobalTheory.T.H0_ne_bot_of_holSec_ne_bot F C.Y _ R _ (holSec_ne_bot hA _ W δ hW hδ u hu (fun y z hz => ?_) fun y y' r hr' z hz => ?_),
-    GlobalTheory.T.H0_ne_bot_of_holSec_ne_bot F C.Y _ R _ (holSec_ne_bot hA _ W (fun y => (δ y)⁻¹) hW (fun y y' hy => (hδ y y' hy).neg) u' hu'
-      (fun y z hz => ?_) fun y y' r hr' z hz => ?_)⟩
-  · rw [he y hz]; exact h0 y z hz
-  · have hz' := mem_ptsIn_inf.1 hz.1
-    rw [he y ⟨hz'.1, hz.2⟩, he y' ⟨hz'.2, hz.2⟩]
-    exact hr y y' _ r hr' z hz'.1 hz'.2 hz.1 hz.2
-  · rw [he' y hz]; exact inv_ne_zero (h0 y z hz)
-  · have hz' := mem_ptsIn_inf.1 hz.1
-    have e := hr y' y _ r (fun hU => by
-      rw [hr', Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, inv_div_inv]) z hz'.2 hz'.1 hz.1 hz.2
-    rw [he' y ⟨hz'.1, hz.2⟩, he' y' ⟨hz'.2, hz.2⟩]
-    have h₁ := h0 y' z ⟨hz'.2, hz.2⟩
-    rw [eq_mul_inv_iff_mul_eq₀ h₁, e, _root_.mul_comm, mul_inv_cancel_right₀ (h0 y z ⟨hz'.1, hz.2⟩)]
 
 end GlobalTheory.ShFam.Hor.Sec

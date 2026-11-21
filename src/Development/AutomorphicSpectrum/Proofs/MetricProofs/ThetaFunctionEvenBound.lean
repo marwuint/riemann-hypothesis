@@ -10,14 +10,19 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HasSumPolyDer
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFundamentalDomainMeanNormSqThetaChar
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.IsUnitOfLagrangian
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordSiegel
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSymplecticBasisPrincipalPolarizationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HermitianFormPeriodMatrixNormalFormStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSymplecticBasisPrincipalPolarization
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DualRestrictSurjectiveOfIsTorsionFreeQuotient
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HermitianFormPeriodMatrixNormalForm
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaHolomorphic
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealPartGramInSymplecticGroupStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SemicharacterThetaCharacteristicStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionCanonicalMultiplierStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionCanonicalFormStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaNormInPeriodCoordinatesStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaZeroDivisorJetBoundStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SemicharacterThetaCharacteristic
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionCanonicalMultiplier
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.EqZeroOfSemicharacterMultiplier
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionCanonicalForm
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSymplOfSelfDual
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaNormInPeriodCoordinates
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaZeroDivisorJetBound
+import ReciprocityTheory.AnalyticForms.AnalyticCharts.NullZero
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights TensorProduct
@@ -109,12 +114,12 @@ theorem exists_reduced (g : ℕ) [NeZero g] (Λ : Submodule ℤ (Fin g → ℂ))
       (∀ x y : Λ, (hermForm Hm (x : Fin g → ℂ) (y : Fin g → ℂ)).im =
         ((∑ i, (bs.repr x (Sum.inr i) * bs.repr y (Sum.inl i) -
           bs.repr x (Sum.inl i) * bs.repr y (Sum.inr i)) : ℤ) : ℝ)) := by
-  obtain ⟨bs0, hJ0⟩ := GlobalTheory.T.exists_symplectic_basis_principal_polarization g Λ Hm hd hs hH hpos hint hdual
-  obtain ⟨h0, X0, Y0, -, hX0, hY0, -, -, -, hG0⟩ := GlobalTheory.T.hermitian_form_period_matrix_normal_form g Hm (fun α => (bs0 α : Fin g → ℂ)) hH hpos hJ0
+  obtain ⟨bs0, hJ0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.SymplecticLattice.exists_symplectic_basis g Λ Hm hd hs hH hpos hint hdual
+  obtain ⟨h0, X0, Y0, -, hX0, hY0, -, -, -, hG0⟩ := _root_.GlobalTheory.CompanionTheory.NForm.normal_form_gram g Hm (fun α => (bs0 α : Fin g → ℂ)) hH hpos hJ0
   have hS := (SiegelCoordinates.intersectionNumber_baseChange g).1 X0 Y0 hX0 hY0
   obtain ⟨bs, ρ, hρ, hρ2, hJ, hfirst, hmin, hdet⟩ :=
     GlobalTheory.T.real_part_gram_in_symplectic_group g Λ Hm bs0 hH hpos hJ0 (by rw [hG0]; exact hS.1) (by rw [hG0]; exact hS.2)
-  obtain ⟨h, X, Y, hh, hX, hY, hHh, hin, hinr, -⟩ := GlobalTheory.T.hermitian_form_period_matrix_normal_form g Hm (fun α => (bs α : Fin g → ℂ)) hH hpos hJ
+  obtain ⟨h, X, Y, hh, hX, hY, hHh, hin, hinr, -⟩ := _root_.GlobalTheory.CompanionTheory.NForm.normal_form_gram g Hm (fun α => (bs α : Fin g → ℂ)) hH hpos hJ
   have hτim : (periodMatrix X Y).map Complex.im = Y := periodMatrix_im X Y
   have hexp : ∀ x : Λ, (x : Fin g → ℂ) = ∑ α, (bs.repr x α) • (bs α : Fin g → ℂ) := fun x => by
     have := congrArg Subtype.val (bs.sum_repr x)
@@ -207,11 +212,11 @@ theorem nform : ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∀ {S : Scheme.{0}} {G : Over S}
       have : lam = x := hhi (e.trans hx.symm)
       rw [this]
       exact x.2
-  obtain ⟨a₀, c₀, ha₀, hc₀, hχ⟩ := GlobalTheory.T.semicharacter_theta_characteristic g a.u.Λ bs a.χ (fun l l' => by
+  obtain ⟨a₀, c₀, ha₀, hc₀, hχ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Nform.exists_half_canMult g a.u.Λ bs a.χ (fun l l' => by
     have := hsc l l'
     rw [show (a.herm l l').im = _ from him l l'] at this
     exact this) hsq
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.theta_function_canonical_multiplier g (periodMatrix X Y) h a.Hm a₀ c₀ θ hτs hτp hh hHh hθ.1 (fun m n lam hlam w => by
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.CompanionTheory.CanThLine.level_one_line g (periodMatrix X Y) h a.Hm a₀ c₀ θ hτs hτp hh hHh hθ.1 (fun m n lam hlam w => by
     obtain ⟨x, hx, hxm, hxn⟩ := hxy m n
     obtain rfl : lam = x := hhi (hlam.trans hx.symm)
     have := hθ.2 x w
@@ -220,7 +225,7 @@ theorem nform : ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∀ {S : Scheme.{0}} {G : Over S}
     have e2 : (fun i => bs.repr x (Sum.inr i)) = n := funext hxn
     rw [e1, e2] at this
     exact this)
-  have hb2 := GlobalTheory.T.theta_function_canonical_form g (periodMatrix X Y) h a.Hm a₀ c₀ a.u.Λ θ κ b hτs hτp hh ha₀ hc₀ hmem hHh hκ
+  have hb2 := _root_.GlobalTheory.CompanionTheory.Metric.mean_sq_fixes_norm_const g (periodMatrix X Y) h a.Hm a₀ c₀ a.u.Λ θ κ b hτs hτp hh ha₀ hc₀ hmem hHh hκ
     (fun l hl => ⟨a.χ ⟨l, hl⟩, hχn _, fun w => by
       have := hθ.2 ⟨l, hl⟩ w
       rw [pow_one] at this
@@ -258,7 +263,7 @@ theorem nform : ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∀ {S : Scheme.{0}} {G : Over S}
     have := hLap (L.symm w)
     rw [L.apply_symm_apply, GlobalTheory.ThetaMean.periodMap_apply, add_comm] at this
     exact this
-  have hE := GlobalTheory.T.theta_norm_in_period_coordinates g X Y a₀ c₀ h a.Hm θ κ hX hY hHh hκ
+  have hE := _root_.GlobalTheory.CompanionTheory.Ar.Nform.norm_mul_canTh g X Y a₀ c₀ h a.Hm θ κ hX hY hHh hκ
   set E : ℝ := g * Real.log (1 + 1 / ρ) + C * g * Real.log (2 * g) with hEdef
   have hhalf : ∀ (t : Fin g → ℝ), (∀ i, t i = 0 ∨ t i = 1 / 2) → ∀ i, ∃ m : ℤ, t i = m / 2 := by
     intro t ht i
@@ -308,7 +313,7 @@ theorem nform : ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∀ {S : Scheme.{0}} {G : Over S}
     change θ (w + l) = _ at this
     rw [this]
     simp [hne, Complex.exp_ne_zero]
-  filter_upwards [GlobalTheory.T.theta_zero_divisor_jet_bound g a.u.Λ θ L (Sum.inr 0) (a₀ 0) hθ.1 hnz hLint hinv (hhalf a₀ ha₀ 0)] with m hm
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.TorsOff.torsion_off_zeros g a.u.Λ θ L (Sum.inr 0) (a₀ 0) hθ.1 hnz hLint hinv (hhalf a₀ ha₀ 0)] with m hm
   intro Ix _ r hr hu
   obtain ⟨hne, hcard⟩ := hm Ix r hr hu
   refine ⟨hne, ?_⟩

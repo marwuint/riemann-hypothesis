@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FilProperties
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContractionLieDerivativeDivPowerCompatFiltrationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PdPolynomialCompatibleFormsGeneratedInductionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationHomotopyOperatorFiltrationPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerHomotopyOperatorValuesGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivPowerCompatRelFiltrationTwoSidedRelEqBotOfBasStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContractionLieDerivativeDivPowerCompatFiltration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PdPolynomialCompatibleFormsGeneratedInduction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationHomotopyOperatorFiltrationProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerHomotopyOperatorValuesGenerators
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivPowerCompatRelFiltrationTwoSidedRelEqBotOfBas
 
 set_option autoImplicit false
 
@@ -21,7 +21,7 @@ theorem homotopy_identity : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra 
   have hfilE : ∀ k, Q.e k ∈ fil η k := fun k ↦ by
     have := (GlobalTheory.PDA.fil_properties Q.P (Q.ext J) η).2.2.2.2.1 k (Q.e 1) (Q.e_one_mem_ext J)
     rwa [hstd.var] at this
-  obtain ⟨hot_add, hot_alg, -, hot_rel, hot_fil⟩ := GlobalTheory.T.derivationHomotopyOperator_filtration_properties R Q.P (Q.ext J) η v Q.e N hvd hfilE
+  obtain ⟨hot_add, hot_alg, -, hot_rel, hot_fil⟩ := _root_.GlobalTheory.PDForm.HotFil.hot_fil R Q.P (Q.ext J) η v Q.e N hvd hfilE
   obtain ⟨hrel_mul, -, -, -, hfil0, hfil_anti, hfil_smul⟩ := GlobalTheory.T.divPowerCompatRel_filtration_twoSided_rel_eq_bot_of_base.1 R Q.P (Q.ext J) η
   have hd_fil : ∀ n, ∀ x ∈ filDR R η (n + 1), dDR R Q.P x ∈ filDR R η n := fun n ↦
     (GlobalTheory.T.contraction_lieDerivative_divPowerCompat_filtration_rules.2 R Q.P (Q.ext J) η v hvd n).2.1
@@ -55,7 +55,7 @@ theorem homotopy_identity : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra 
   have hsmul_mem : ∀ n (y : DR R Q.P), Q.e n • y ∈ filDR R η n := fun n y ↦ by
     simpa using hfil_smul n 0 (Q.e n) (hfilE n) y (by rw [hfil0]; trivial)
   intro x
-  refine GlobalTheory.T.pdPolynomial_compatibleForms_generated_induction R B J δ Q η v g hstd hvb hve hvd
+  refine _root_.GlobalTheory.PDForm.pdPoly_forms_induction R B J δ Q η v g hstd hvb hve hvd
     (fun x ↦ x - g.mDR (hε.mDR x) - dDR R Q.P (hot v Q.e N x) - hot v Q.e N (dDR R Q.P x) ∈ filDR R η N)
     ?_ ?_ ?_ ?_ x
   ·
@@ -72,8 +72,8 @@ theorem homotopy_identity : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra 
     abel
   ·
     intro n α
-    have hz := (GlobalTheory.T.dividedPowerHomotopyOperator_values_generators R B J δ Q η v g hstd hvb hve hvd N n α).1
-    have hz' := (GlobalTheory.T.dividedPowerHomotopyOperator_values_generators R B J δ Q η v g hstd hvb hve hvd N n (dDR R B α)).1
+    have hz := (_root_.GlobalTheory.PDForm.hot_values R B J δ Q η v g hstd hvb hve hvd N n α).1
+    have hz' := (_root_.GlobalTheory.PDForm.hot_values R B J δ Q η v g hstd hvb hve hvd N n (dDR R B α)).1
     have hdx : dDR R Q.P (Q.e n • g.mDR α) = ι1 (D R Q.P (Q.e n)) * g.mDR α + Q.e n • g.mDR (dDR R B α) := by
       rw [dDR_smul, g.mDR_dDR]
     have hmx : g.mDR (hε.mDR (Q.e n • g.mDR α)) = algebraMap B Q.P (ε (Q.e n)) • g.mDR α := by
@@ -86,7 +86,7 @@ theorem homotopy_identity : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra 
     | succ m =>
       rw [hεe m, map_zero, zero_smul]
       rcases lt_or_ge m N with hm | hm
-      · have hv := (GlobalTheory.T.dividedPowerHomotopyOperator_values_generators R B J δ Q η v g hstd hvb hve hvd N m α).2 hm
+      · have hv := (_root_.GlobalTheory.PDForm.hot_values R B J δ Q η v g hstd hvb hve hvd N m α).2 hm
         have hr : (ι1 (D R Q.P (Q.e (m + 1))) - Q.e m • ι1 (D R Q.P (Q.e 1))) * g.mDR α ∈ rel R η :=
           hrel_mul _ (hrelgen m) _
         have key : ι1 (D R Q.P (Q.e (m + 1))) * g.mDR α =
@@ -111,8 +111,8 @@ theorem homotopy_identity : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra 
       rw [hε.mDR_smul, map_mul, hεD1, zero_mul, smul_zero, map_zero]
     rw [hmx, sub_zero]
     rcases lt_or_ge n N with hn | hn
-    · have hv := (GlobalTheory.T.dividedPowerHomotopyOperator_values_generators R B J δ Q η v g hstd hvb hve hvd N n α).2 hn
-      have hv' := (GlobalTheory.T.dividedPowerHomotopyOperator_values_generators R B J δ Q η v g hstd hvb hve hvd N n (dDR R B α)).2 hn
+    · have hv := (_root_.GlobalTheory.PDForm.hot_values R B J δ Q η v g hstd hvb hve hvd N n α).2 hn
+      have hv' := (_root_.GlobalTheory.PDForm.hot_values R B J δ Q η v g hstd hvb hve hvd N n (dDR R B α)).2 hn
 
       have hr2 : ι1 (D R Q.P (Q.e n)) * (ι1 (D R Q.P (Q.e 1)) * g.mDR α) ∈ rel R η := by
         cases n with

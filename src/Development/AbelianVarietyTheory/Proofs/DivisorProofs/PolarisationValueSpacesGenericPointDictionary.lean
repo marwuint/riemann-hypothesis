@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPowerT
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueRelationSectionsThroughGeneratingIsoStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueOfSectionPullbackScalarMultipleStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPullbackPowerBundleScalarOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueSectionInChartOfFrameValueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPowerMulGlobalFunctionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointValueSectionInChartOfFrameValue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPowerMulGlobalFunction
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -79,7 +79,7 @@ theorem vs_iff_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     have e : (homOfLE le_top : (⊤ : Y.Opens) ⟶ ⊤) = 𝟙 _ := Subsingleton.elim _ _
     simp only [resTop, e, op_id, CategoryTheory.Functor.map_id]
     rfl
-  have v1 := fun σ ω hv => GlobalTheory.T.pointValue_section_in_chart_of_frame_value t.G.left P.U.LG.L P.U.LG.isLB Ω x' g k σ ω hv i hi
+  have v1 := fun σ ω hv => _root_.GlobalTheory.HeatV.valR_of_isValue t.G.left P.U.LG.L P.U.LG.isLB Ω x' g k σ ω hv i hi
   have v5 : ∀ σ : SecM (𝟙 t.G.left) P.U.LG.L k,
       valR ((ξ ≫ P.U.gen.inv.left) ≫ pullback.fst t.G.hom (jK R)) _ (σ.f fun _ => i) =
         algebraMap Ω (FractionRing Ω) (valR x' _ (σ.f fun _ => i)) := by
@@ -93,7 +93,7 @@ theorem vs_iff_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     obtain ⟨s₁, hs₁⟩ := GlobalTheory.T.exists_section_pullback_power_bundle_scalar_one _ _ P.U.LG.L (pullback.fst t.G.hom (jK R)) k σ
     obtain ⟨σ₀, hσ₀⟩ := GlobalTheory.T.exists_section_power_through_genIso_and_schemeIso _ _ _ P.A.L P.U.LG.L P.U.gen.hom.left (pullback.fst t.G.hom (jK R)) w hw P.A.isLB
       P.U.LG.isLB P.U.gen.inv.left hgi hig k s₁
-    obtain ⟨σ', hσ'⟩ := GlobalTheory.T.exists_section_power_mul_global_function _ P.A.L k σ₀ (scal P.A.A.hom (algebraMap R (FractionRing R) r)⁻¹)
+    obtain ⟨σ', hσ'⟩ := _root_.GlobalTheory.SecSmul.exists_smul _ P.A.L k σ₀ (scal P.A.A.hom (algebraMap R (FractionRing R) r)⁻¹)
     refine ⟨σ', ?_⟩
     have e1 := v1 σ ω hv
     have e2 := GlobalTheory.T.pointValue_of_section_pullback_scalar_multiple _ _ P.U.LG.L (pullback.fst t.G.hom (jK R)) k σ s₁ 1 hs₁ (FractionRing Ω) _ i hiK

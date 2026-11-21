@@ -304,9 +304,6 @@ variable (O rbar) in
 
 def Cond : Type 1 := ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R], Lift O rbar R → Prop
 
-def polyCond (C : Set (MvPolynomial (Γ × ι × ι) O)) : Cond O rbar :=
-  fun _ _ _ _ r => ∀ p ∈ C, MvPolynomial.aeval (fun s : Γ × ι × ι => r.hom s.1 s.2.1 s.2.2) p = 0
-
 def Represents (P : Cond O rbar) (r : Lift O rbar R) : Prop :=
   ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'],
     (∀ f : R →ₐ[O] R', P R' (r.map f)) ∧ ∀ r' : Lift O rbar R', P R' r' → ∃! f : R →ₐ[O] R', r.map f = r'
@@ -316,20 +313,12 @@ def Lift.Generates (r : Lift O rbar R) : Prop :=
 
 variable {X : Type} [AddCommGroup X] (w : ι → X)
 
-variable (rbar) in
-
-def Centralises : Prop := ∀ g a b, w a ≠ w b → rbar g a b = 0
-
 def IsTorusConj (t : Multiplicative X →* Rˣ) (r r' : Lift O rbar R) : Prop :=
   ∀ g a b, r'.hom g a b = t (Multiplicative.ofAdd (w a - w b)) * r.hom g a b
 
 def Lift.TStable (r : Lift O rbar R) : Prop :=
   ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (t : Multiplicative X →* R'ˣ),
     (∀ j, res O R' (t j) = 1) → ∃ f' : R →ₐ[O] R', IsTorusConj w t (r.map f) (r.map f')
-
-def Lift.Adapted (r : Lift O rbar R) (W : WPres O X R) : Prop :=
-  (∀ g a b, r.hom g a b ∈ W.part (w a - w b)) ∧
-    ∀ i, ∃ g a b, ∃ c : O, W.z i = r.hom g a b - algebraMap O R c ∧ W.wt i = w a - w b ∧ (w a ≠ w b → c = 0)
 
 variable (Γ) in
 

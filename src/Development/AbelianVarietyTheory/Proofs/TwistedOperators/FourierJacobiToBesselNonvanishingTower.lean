@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFO
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumDescendsToWittCoreOfExists
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnfoldingLevelsAndStepsHaarMeasuresExist
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumHermitianPair
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridConjugationWeilDataInverseCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridConjugationWeilDataInverseCharacter
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LinkedLineVectorsInvertibleOnThetaFunctionsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftPeriodsIsTameThetaFunctionalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierJacobiPeriodGivesBesselPeriodOfLiftStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierJacobiPeriodGivesBesselPeriodOfLift
 
 noncomputable section
 
@@ -43,7 +43,7 @@ theorem rungB : FockTot → PartFixed → RungB := by
 
   have hi : 2 * k + 1 < D.R.m := by omega
   obtain ⟨hw1, hw2, hodd, -, hdepiff, hdn, hpart, hpartEq, hhaar, hfund⟩ :=
-    GlobalTheory.T.gridConjugation_weilData_inverseCharacter D hD T L μ0 hL sc G W M hM (2 * k + 1) hi
+    _root_.GlobalTheory.Asc.conjRead_holds D hD T L μ0 hL sc G W M hM (2 * k + 1) hi
   obtain ⟨hχS, hχT⟩ := hodd (odd_two_mul_add_one k)
   obtain ⟨hrap, hchain⟩ := hΨ
   obtain ⟨f, hdep, hΨeq⟩ := hchain (2 * k + 1) hi
@@ -75,7 +75,7 @@ theorem rungB : FockTot → PartFixed → RungB := by
   have hsχ : s.χV = (G.ch.chi (D.R.m - (2 * k + 1)))⁻¹ * L.eta := by rw [hsV, hχS]
   have hWA : IsWeilDatumO W.ψ _ _ (G.ch.chi (D.R.m - (2 * k + 1)))⁻¹ s.χW (omCore W (2 * k + 1)) := by
     rw [hsW, hχT]; exact hw2
-  obtain ⟨Φ₁, hΦ₁S, hper₁⟩ := GlobalTheory.T.fourierJacobi_period_gives_bessel_period_of_lift D W.ψ k (F.bes v k h) (F.jac v k h) s 𝒮 Γ₀ _ hLoc (negSp F.Lz) (F.ζ k)
+  obtain ⟨Φ₁, hΦ₁S, hper₁⟩ := _root_.GlobalTheory.UpBessel.upBF D W.ψ k (F.bes v k h) (F.jac v k h) s 𝒮 Γ₀ _ hLoc (negSp F.Lz) (F.ζ k)
     (F.line k) (F.lnk k) _ _ χ' (omCore W (2 * k + 1)) omz hsχ hWA hwz φ G' hφ hG' hfix (star f) Ξ₂ hvac1.1 hΞ₂ hbox' hJper
 
   set ℓ : (WO (G.V (.grid (2 * k + 2) 0)) (G.V (.grid (2 * k + 1) 0)) → ℂ) → ℂ :=

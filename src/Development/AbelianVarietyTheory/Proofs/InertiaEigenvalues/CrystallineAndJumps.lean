@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PeriodDataProper
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysIffOfTwist
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdemNotMemFilVOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrystallineIffMemH1f
-import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.PrimeTypeRows
+import Formalism.SharpRestriction.ParamsHeightRankConstant
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RepresentationOverSumChar
 import Development.AbelianVarietyTheory.Counterexamples.NonGaloisSurvey.CrystallineCyclotomic
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChiCrysOfConstituent
@@ -22,7 +22,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpIffMultNeZ
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSummandAndDualFromInverseCharacterTwiStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfIsCrystallineSpanStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingsRegularPhiSurjectiveFilStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingsRegularPhiSurjectiveFil
+import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 
 noncomputable section
 
@@ -45,7 +46,7 @@ theorem fracInv_of_tied (T : LocTied l P AI) (K : FinExt l) : FracInv (P.PD K) :
 
 theorem lineUnit_of_tied (T : LocTied l P AI) (K : FinExt l) : LineUnit (P.PD K) := by
   intro b hb h
-  refine (GlobalTheory.T.periodRings_regular_phi_surjective_fil l P AI T).1 K b hb fun g hg => ?_
+  refine (_root_.GlobalTheory.MemLoc.tied_regular_and_onto l P AI T).1 K b hb fun g hg => ?_
   obtain ⟨x, hx⟩ := h ⟨g, hg⟩
   exact ⟨x, by rw [← P.PD_actB K ⟨g, hg⟩, hx, Algebra.smul_def]⟩
 

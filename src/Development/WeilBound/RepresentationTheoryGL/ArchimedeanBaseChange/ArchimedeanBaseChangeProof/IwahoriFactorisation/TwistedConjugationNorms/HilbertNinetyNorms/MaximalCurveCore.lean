@@ -104,14 +104,6 @@ theorem ordL_eq_neg_log' (y : L) : ordL y = -WithZero.log (Valued.v y) := by
 
 theorem v_ne_zero' {y : L} (hy : y ≠ 0) : Valued.v y ≠ 0 := (Valuation.ne_zero_iff _).2 hy
 
-theorem log_v_pow_mul (ϖ u : Lˣ) (hϖ : ordL (ϖ : L) = 1) (hu : Valued.v (u : L) = 1) (k : ℤ) :
-    WithZero.log (Valued.v (((ϖ ^ k * u : Lˣ)) : L)) = -k := by
-  have hϖ' : WithZero.log (Valued.v (ϖ : L)) = -1 := by rw [ordL_eq_neg_log'] at hϖ; omega
-  rw [Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀,
-    WithZero.log_mul (zpow_ne_zero _ (v_ne_zero' ϖ.ne_zero)) (by rw [hu]; exact one_ne_zero), WithZero.log_zpow, hu,
-    WithZero.log_one, hϖ', smul_eq_mul]
-  ring
-
 end Val
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]

@@ -93,49 +93,11 @@ def LW : Formalism.L2.DIV.LevDat D.host.E ℂ S.W.rank :=
 
 def KV : Subgroup (GA D S.V) := levA S.V (Formalism.L2.DIV.Kg D.sp.cm S.V.gram S.βV ∅)
 
-def fock (f : WO S.V S.W → ℂ) : MvPolynomial (FVar D S.W.rank S.V.rank) ℂ →ₗ[ℂ] (WO S.V S.W → ℂ) :=
-  pureTensorO S.ψ S.θ S.V S.W S.sV S.sW S.BV S.BW f
-
 end ExpSet
 
 def SplitLevPl (S : ExpSet D) (PP : Formalism.L2.DIV.Pl D.host.E) : Prop :=
   ∃ p : ℕ, p.Prime ∧ p ≠ 2 ∧ Nat.Coprime p S.l ∧ (∀ i, p ≠ S.pde i) ∧ D.host.cls p = .splitK ∧
     ((p : 𝓞 D.host.E) ∈ PP.asIdeal)
-
-theorem natCast_not_mem_of_coprime {PP : Formalism.L2.DIV.Pl D.host.E} {m n : ℕ} (hmn : Nat.Coprime m n)
-    (hm : (m : 𝓞 D.host.E) ∈ PP.asIdeal) : (n : 𝓞 D.host.E) ∉ PP.asIdeal := by
-  intro hn
-  obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 hmn
-  have e : (a : 𝓞 D.host.E) * (m : 𝓞 D.host.E) + (b : 𝓞 D.host.E) * (n : 𝓞 D.host.E) = 1 := by
-    have := congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab
-    push_cast at this
-    exact this
-  have h1 : (1 : 𝓞 D.host.E) ∈ PP.asIdeal := by
-    rw [← e]
-    exact PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hm) (PP.asIdeal.mul_mem_left _ hn)
-  exact PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
-
-theorem SplitLevPl.not_mem_Pl {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : SplitLevPl S PP) : PP ∉ S.Pl := by
-  intro hl
-  obtain ⟨p, -, -, hcop, -, -, hp⟩ := h
-  exact natCast_not_mem_of_coprime hcop hp ((S.lPl PP).1 hl)
-
-theorem SplitLevPl.two_not_mem {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : SplitLevPl S PP) :
-    (2 : 𝓞 D.host.E) ∉ PP.asIdeal := by
-  obtain ⟨p, hp, h2, -, -, -, hpm⟩ := h
-  have hc : Nat.Coprime p 2 := (Nat.coprime_primes hp Nat.prime_two).2 h2
-  have := natCast_not_mem_of_coprime hc hpm
-  exact_mod_cast this
-
-theorem SplitLevPl.conjPl {S : ExpSet D} {PP : Formalism.L2.DIV.Pl D.host.E} (h : SplitLevPl S PP) :
-    SplitLevPl S (Formalism.L2.DIV.conjPl PP) := by
-  obtain ⟨p, hp, h2, hc, hde, hk, hm⟩ := h
-  refine ⟨p, hp, h2, hc, hde, hk, ?_⟩
-  exact (Formalism.L2.DIV.isConjPl_conjPl PP (p : 𝓞 D.host.E) (p : 𝓞 D.host.E) (by simp)).1 hm
-
-theorem isConjPl_conjPl (PP : Formalism.L2.DIV.Pl D.host.E) : IsConjPl (D := D) PP (Formalism.L2.DIV.conjPl PP) :=
-  fun c hc => ⟨Formalism.L2.DIV.starO c,
-    (Formalism.L2.DIV.isConjPl_conjPl PP c (Formalism.L2.DIV.starO c) (Formalism.L2.DIV.starO_coe c)).1 hc, Formalism.L2.DIV.starO_coe c⟩
 
 def HasLevelType (S : ExpSet D) (f : WO S.V S.W → ℂ) : Prop :=
   ∀ κ ∈ levG S.W S.βW S.LW, S.om (1, κ) f = levChi S.W S.βW S.LW κ • f
@@ -287,16 +249,6 @@ variable {S : ExpSet D} {O : Type} [CommRing O] {C : CoefLat S O}
 
 namespace RawDat
 
-def levOne (d : RawDat S C) : Finset (Formalism.L2.DIV.Pl D.host.E) := S.Pg ∪ S.Pd ∪ d.P1 ∪ d.Ph
-
-def lev (d : RawDat S C) : Finset (Formalism.L2.DIV.Pl D.host.E) := d.levOne ∪ d.levOne.image Formalism.L2.DIV.conjPl
-
-def loc (d : RawDat S C) (PP : Formalism.L2.DIV.Pl D.host.E) : WO S.V S.W → ℂ :=
-  if PP ∈ d.P1 then d.Φl PP else fun _ => 1
-
-def serK (d : RawDat S C) (g : GA D S.W) : ℂ :=
-  thetaKO S.om d.h g (S.fock d.φ (C.rd d.P))
-
 def esR (d : RawDat S C) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (eQ : Formalism.L2.DIV.Pl D.host.E → AE D)
     (PP : Formalism.L2.DIV.Pl D.host.E) : AE D :=
   if PP ∈ Q then eQ PP else d.es PP
@@ -360,48 +312,7 @@ def repl (d : RawDat S C) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (eQ : Form
     · rw [if_neg hq]; exact (le_sup_left : d.Rl ≤ d.Rl ⊔ R') (d.Φl_O PP ((Finset.mem_union.1 hPP).resolve_right hq) x)
   vec := hvec
 
-theorem Ph_disj_Pl (d : RawDat S C) : Disjoint d.Ph S.Pl :=
-  Finset.disjoint_left.2 fun _ hPP => (d.Ph_lev _ hPP).not_mem_Pl
-
-theorem two_not_mem_lev (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.P1 ∪ d.Ph) :
-    (2 : 𝓞 D.host.E) ∉ PP.asIdeal := by
-  rcases Finset.mem_union.1 h with h | h
-  · exact (d.split_level_places PP h).two_not_mem
-  · exact (d.Ph_lev PP h).two_not_mem
-
-theorem levOne_split (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.levOne) (h' : PP ∉ S.Pg ∪ S.Pd) :
-    SplitLevPl S PP := by
-  unfold levOne at h
-  rcases Finset.mem_union.1 h with h | h
-  · rcases Finset.mem_union.1 h with h | h
-    · exact absurd h h'
-    · exact d.split_level_places PP h
-  · exact d.Ph_lev PP h
-
-theorem lev_split (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.lev)
-    (h' : PP ∉ (S.Pg ∪ S.Pd) ∪ (S.Pg ∪ S.Pd).image Formalism.L2.DIV.conjPl) : SplitLevPl S PP := by
-  unfold lev at h
-  rcases Finset.mem_union.1 h with h | h
-  · exact d.levOne_split h fun h0 => h' (Finset.mem_union_left _ h0)
-  · obtain ⟨QQ, hQ, rfl⟩ := Finset.mem_image.1 h
-    exact (d.levOne_split hQ fun h0 => h' (Finset.mem_union_right _ (Finset.mem_image_of_mem _ h0))).conjPl
-
-theorem conjPl_mem_lev (d : RawDat S C) {PP : Formalism.L2.DIV.Pl D.host.E} (h : PP ∈ d.lev) :
-    Formalism.L2.DIV.conjPl PP ∈ d.lev := by
-  unfold lev at h ⊢
-  rcases Finset.mem_union.1 h with h | h
-  · exact Finset.mem_union_right _ (Finset.mem_image_of_mem _ h)
-  · obtain ⟨QQ, hQ, rfl⟩ := Finset.mem_image.1 h
-    rw [Formalism.L2.DIV.conjPl_conjPl]
-    exact Finset.mem_union_left _ hQ
-
 end RawDat
-
-theorem isThetaAt_unique {m n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m n → AF D.host.F}
-    {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {c : ℂ}
-    {f₀ Φ f f' : Mx D m n → ℂ} (h : IsThetaAt ψ B hs e Λ c f₀ Φ f) (h' : IsThetaAt ψ B hs e Λ c f₀ Φ f') : f = f' := by
-  obtain ⟨⟨T, hT⟩, hf⟩ := h
-  rw [hf T hT, h'.2 T hT]
 
 section ReplLemmas
 
@@ -417,65 +328,11 @@ variable (d : RawDat S C) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (eQ : Form
   (hvec : IsThetaAt S.ψ (symplO S.V S.W) (heisO S.ψ S.V S.W) (cA D (eTot S (d.P1 ∪ Q) (d.esR Q eQ)))
       (latO S.V S.W S.ΛV S.ΛW fun _ => True) 1 S.f₀ (PhiTot S (d.P1 ∪ Q) (d.esR Q eQ) (d.ΦlR Q ΦQ)) φ')
 
-theorem RawDat.repl_loc_off (PP : Formalism.L2.DIV.Pl D.host.E) (hq : PP ∉ Q) :
-    (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).loc PP = d.loc PP := by
-  unfold RawDat.loc RawDat.repl RawDat.ΦlR
-  simp only [Finset.mem_union, hq, or_false, if_false]
-
-theorem RawDat.repl_loc_on (PP : Formalism.L2.DIV.Pl D.host.E) (hq : PP ∈ Q) :
-    (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).loc PP = ΦQ PP := by
-  unfold RawDat.loc RawDat.repl RawDat.ΦlR
-  simp only [Finset.mem_union, hq, or_true, if_true]
-
-theorem RawDat.repl_levOne : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).levOne = d.levOne ∪ Q := by
-  unfold RawDat.levOne RawDat.repl
-  ext x
-  simp only [Finset.mem_union]
-  tauto
-
-theorem RawDat.repl_lev : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).lev =
-    d.lev ∪ (Q ∪ Q.image Formalism.L2.DIV.conjPl) := by
-  simp only [RawDat.lev, RawDat.repl_levOne, Finset.image_union]
-  ext x
-  simp only [Finset.mem_union]
-  tauto
-
 theorem RawDat.repl_h : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).h = d.h := rfl
 
 theorem RawDat.repl_P : (d.repl Q eQ ΦQ hdisj hlev hat hidem hloc R' hO φ' hvec).P = d.P := rfl
 
-theorem RawDat.repl_empty_phi (hvec0 : IsThetaAt S.ψ (symplO S.V S.W) (heisO S.ψ S.V S.W)
-      (cA D (eTot S (d.P1 ∪ ∅) (d.esR ∅ eQ))) (latO S.V S.W S.ΛV S.ΛW fun _ => True) 1 S.f₀
-      (PhiTot S (d.P1 ∪ ∅) (d.esR ∅ eQ) (d.ΦlR ∅ ΦQ)) φ') : φ' = d.φ := by
-  have he : eTot S (d.P1 ∪ ∅) (d.esR ∅ eQ) = eTot S d.P1 d.es := by
-    simp [eTot, RawDat.esR]
-  have hes : d.esR ∅ eQ = d.es := by funext PP; simp [RawDat.esR]
-  have hΦl : d.ΦlR ∅ ΦQ = d.Φl := by funext PP; simp [RawDat.ΦlR]
-  have hΦ : PhiTot S (d.P1 ∪ ∅) (d.esR ∅ eQ) (d.ΦlR ∅ ΦQ) = PhiTot S d.P1 d.es d.Φl := by
-    rw [hes, hΦl, Finset.union_empty]
-  rw [he, hΦ] at hvec0
-  exact isThetaAt_unique hvec0 d.vec
-
 end ReplLemmas
-
-theorem thetaKO_law {V W : HSp D} (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (h : GA D V) (g κ : GA D W)
-    (f : WO V W → ℂ) (c : ℂ) (hf : om (1, κ) f = c • f) : thetaKO om h (g * κ) f = c * thetaKO om h g f := by
-  unfold thetaKO
-  have e : ((h, g * κ) : GA D V × GA D W) = (h, g) * (1, κ) := Prod.ext (mul_one h).symm rfl
-  rw [e, map_mul, Module.End.mul_apply, hf, map_smul]
-  rfl
-
-def FockFinComm (S : ExpSet D) : Prop :=
-  ∀ κ ∈ GfC S.W, ∀ (f : WO S.V S.W → ℂ) (c : ℂ) (Pp : MvPolynomial (FVar D S.W.rank S.V.rank) ℂ),
-    S.om (1, κ) f = c • f → S.om (1, κ) (S.fock f Pp) = c • S.fock f Pp
-
-theorem levG_fin {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Datum.EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
-    {κ : GA D V} (hκ : κ ∈ levG V β L) : κ ∈ GfC V :=
-  (Subgroup.mem_inf.1 hκ).1
-
-theorem Dat.serK_type (hF : FockFinComm S) (d : Dat S C) (κ : GA D S.W) (hκ : κ ∈ levG S.W S.βW S.LW)
-    (g : GA D S.W) : d.toRawDat.serK (g * κ) = levChi S.W S.βW S.LW κ * d.toRawDat.serK g :=
-  thetaKO_law _ _ _ _ _ _ (hF κ (levG_fin hκ) _ _ _ (d.typ κ hκ))
 
 def BaseVectorHasType (S : ExpSet D) : Prop := HasLevelType S S.φ0
 
@@ -519,47 +376,5 @@ def Dat.base (hT : BaseVectorHasType S) (hO : BaseValO S C) (Ph : Finset (Formal
     exact S.φ0_vec
   typ := hT
   Rl_O := rfl
-
-theorem isIdemSum_zero : IsIdemSum (0 : AE D) ∅ :=
-  ⟨⟨fun _ => 0, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩, zero_mul _⟩
-
-theorem suppAt_zero_one (V : HSp D) : SuppAt (0 : AE D) V 1 := by
-  intro i j
-  have h1 : Formalism.L2.Theta.mt V 1 = 1 := by unfold Formalism.L2.Theta.mt; rw [map_one]; rfl
-  rw [h1, sub_self]
-  simp
-
-theorem dat_nonempty (hT : BaseVectorHasType S) (hO : BaseValO S C) : Nonempty (Dat S C) :=
-  ⟨Dat.base hT hO ∅ 0 1 1 isIdemSum_zero (Subgroup.one_mem _) (suppAt_zero_one S.V)
-    (fun _ h => absurd h (Finset.notMem_empty _)) (Finset.disjoint_empty_left _)
-    (fun _ h => absurd h (Finset.notMem_empty _)) (Subgroup.one_mem _) 0 (Submodule.zero_mem _)⟩
-
-theorem exists_base (hT : BaseVectorHasType S) (hO : BaseValO S C) (Ph : Finset (Formalism.L2.DIV.Pl D.host.E)) (eh : AE D)
-    (hP k : GA D S.V) (heh : IsIdemSum eh Ph) (hfin : hP ∈ GfC S.V) (hsupp : SuppAt eh S.V hP)
-    (hlev : ∀ PP ∈ Ph, SplitLevPl S PP) (hdj : Disjoint Ph (S.Pg ∪ S.Pd))
-    (hcj : ∀ PP ∈ Ph, ∀ QQ ∈ S.Pg ∪ S.Pd, ¬ IsConjPl (D := D) PP QQ) (hk : k ∈ S.KV)
-    (P : C.Cf) (hPm : P ∈ C.LL (hP * k)) :
-    ∃ d : Dat S C, d.h = hP * k ∧ d.P = P ∧ d.φ = S.φ0 ∧
-      d.toRawDat.lev = (S.Pg ∪ S.Pd ∪ Ph) ∪ (S.Pg ∪ S.Pd ∪ Ph).image Formalism.L2.DIV.conjPl :=
-  ⟨Dat.base hT hO Ph eh hP k heh hfin hsupp hlev hdj hcj hk P hPm, rfl, rfl, rfl, by
-    simp [RawDat.lev, RawDat.levOne, Dat.base]⟩
-
-def ClassesSplit (S : ExpSet D) : Prop :=
-  ∀ h ∈ GfC S.V, ∃ γ ∈ GQ S.V, ∃ (Ph : Finset (Formalism.L2.DIV.Pl D.host.E)) (eh : AE D) (hP k : GA D S.V),
-    IsIdemSum eh Ph ∧ hP ∈ GfC S.V ∧ SuppAt eh S.V hP ∧ (∀ PP ∈ Ph, SplitLevPl S PP) ∧ Disjoint Ph (S.Pg ∪ S.Pd) ∧
-    (∀ PP ∈ Ph, ∀ QQ ∈ S.Pg ∪ S.Pd, ¬ IsConjPl (D := D) PP QQ) ∧ k ∈ S.KV ∧ h = γ * (hP * k)
-
-def RawDat.levConj (d : RawDat S C) : Set (Formalism.L2.DIV.Pl D.host.E) :=
-  {PP | ∃ QQ ∈ d.lev, PP = QQ ∨ IsConjPl (D := D) PP QQ}
-
-def CoefLat.triv (S : ExpSet D) (O : Type) [CommRing O] (ι : O →+* ℂ) : CoefLat S O where
-  ι := ι
-  Cf := O
-  LL _ := ⊤
-  act _ := LinearEquiv.refl O O
-  rd := 0
-  rd_smul _ _ := by simp
-  LL_left _ _ _ := by simp
-  LL_right _ _ _ := rfl
 
 end Formalism.IndefR.NX

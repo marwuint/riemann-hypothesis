@@ -3,9 +3,12 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqMulProdOfParti
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLinearMapTensorOfPairing
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointIntertwinerDiscreteSeriesDescends
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedAdjoint
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteDimensionalForallMapMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteDimensionalForallMapMem
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Matrix GlobalTheory.Chain GlobalTheory.Chain.RealIt GlobalTheory.Chain.RealLine
 open scoped TensorProduct InnerProductSpace
@@ -100,11 +103,11 @@ theorem exists_intw {p q r s : ℕ} {T₁ : GrpData p q} {T₂ : GrpData r s} (R
   have hsrc : ∀ Z P y, B (fockAct1 p q r s Z P) y = R₁.HK.act Z (B P y) := fun Z P y =>
     linear_eq_of_upq (B.flip y ∘ₗ (fockAct1 p q r s).flip P) (R₁.HK.act.flip (B P y))
       (fun Z hZ => hB.src Z hZ P y) Z
-  have hlie := (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.1
+  have hlie := (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.1
   obtain ⟨f, hf, sep⟩ := exists_tensor R₁.ι R₂.ι R₁.ι_inj R₂.ι_inj (fun y => B.flip y) hB.adj (fun P => by
-    obtain ⟨W, hW, hP, hst⟩ := ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 P).1
-    obtain ⟨E, hE, hE'⟩ := GlobalTheory.T.exists_finiteDimensional_forall_map_mem' p q R₁.HK hA _ (fockAct1 p q r s) (fun Y Z _ _ => hlie Y Z) W hW hst
-      (fun v _ => ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).1 v).2)
+    obtain ⟨W, hW, hP, hst⟩ := ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).1
+    obtain ⟨E, hE, hE'⟩ := _root_.GlobalTheory.KHomFinite.exists_finiteDimensional_forall_map_mem p q R₁.HK hA _ (fockAct1 p q r s) (fun Y Z _ _ => hlie Y Z) W hW hst
+      (fun v _ => ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 v).2)
     exact ⟨E, hE, fun y => hE' (B.flip y) (fun Z _ v => hsrc Z v y) P hP⟩)
   simp only [LinearMap.flip_apply] at hf
   refine ⟨f, fun Z => ?_, fun Z => ?_, hf⟩

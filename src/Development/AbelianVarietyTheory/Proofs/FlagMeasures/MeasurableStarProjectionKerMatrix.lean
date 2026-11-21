@@ -112,11 +112,4 @@ theorem measurable_starProjection_ker_clm {X : Type*} [TopologicalSpace X] [Meas
 
 end
 
-theorem measurable_starProjection_ker_matrix : ∀ (X : Type) [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X] (n p : ℕ) (L : X → Matrix (Fin p) (Fin n) ℂ) (v : X → EuclideanSpace ℂ (Fin n)), Continuous L → Continuous v → Measurable fun x => (LinearMap.ker (Matrix.toEuclideanLin (L x))).starProjection (v x) := by
-  intro X _ _ _ n p L v hL hv
-  let Φ : Matrix (Fin p) (Fin n) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin p)) :=
-    (LinearMap.toContinuousLinearMap.toLinearMap).comp Matrix.toEuclideanLin.toLinearMap
-  have hΦ : Continuous Φ := Φ.continuous_of_finiteDimensional
-  exact measurable_starProjection_ker_clm (fun x => Φ (L x)) v (hΦ.comp hL) hv
-
 end GlobalTheory

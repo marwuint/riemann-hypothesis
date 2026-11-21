@@ -11,7 +11,7 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetSubPf
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GlobalBasisAlgebra
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBMapPf
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.CanonGaugeExists
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IntegralFramesTransportToFramedPointStatement
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IntegralFramesTransportToFramedPoint
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -25,7 +25,7 @@ theorem chartTransport_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   have hJ : ChartJetTrSt Xo c := chartJetTr_of Xo c (chartJetTan_holds Xo c)
     (chartJetBasis_holds Xo c (fun S _ _ y w hw =>
       FrameTangent.frame_tangent_basis E H Dw l Xo c S y w hw))
-  have hF : ChartFrameTrSt Xo c := GlobalTheory.T.integral_frames_transport_to_framed_point E H Dw l Xo c
+  have hF : ChartFrameTrSt Xo c := _root_.GlobalTheory.chartFrameTransport E H Dw l Xo c
   have hM : FBMapSt := fbMap_holds
   intro hstar T io y I d B tgT uvecT xT eT wPT hbas hch hdir hfr hpr htr hrig
   obtain ⟨B', hF1, hA1, hp1, hp2, hsy, had⟩ := hM T.V T.Fr (algebraMap T.V T.Fr) d (𝓞 E) B

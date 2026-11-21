@@ -7,7 +7,12 @@ import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableF
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsBigThetaSysWithAction
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ZarhinNormalProjectiveModelExistsProofStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ZarhinNormalProjectiveModelExistsProof
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import Development.AbelianVarietyTheory.PublishedTheorems.SemistableReduction₂.SemistableReductionSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsFractionRingOfForallDiv
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSystemOfPolarisedLevel
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
@@ -80,7 +85,7 @@ theorem exists_proper_semiAbelian_family : ∀ (g n : ℕ), n.Prime → Odd n �
   obtain ⟨S, ρ, h, φ₂, -, hN, hr, hgS, hp₂, -⟩ :=
     ThetaReal.exists_thetaSys_real hL hL₂ o Ω R hR hΩ' P' n k j ze hn ho hk hj hun hS' lev'
   obtain ⟨s, rfl⟩ := hR₀
-  obtain ⟨M, U₀, EE, hO, -, -, ⟨out⟩⟩ := T.zarhinNormalProjectiveModelExists_proof o Ω S ρ (big j le_rfl o Ω S (hgS.trans (hg'.trans hg)) hN hr)
+  obtain ⟨M, U₀, EE, hO, -, -, ⟨out⟩⟩ := _root_.GlobalTheory.zhSt_holds o Ω S ρ (big j le_rfl o Ω S (hgS.trans (hg'.trans hg)) hN hr)
     (Option s) (fun i => i.elim 1 Subtype.val) ⟨none, one_ne_zero⟩ (finite_ratios s hΩ S.th S.th_ne)
   obtain ⟨ψ, hψ⟩ := exists_factor (g := spMap S.R.val.toRingHom) hp₂ hp₁
     (Spec.map_comp (CommRingCat.ofHom (Subalgebra.inclusion h).toRingHom)

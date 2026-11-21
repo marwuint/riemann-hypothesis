@@ -64,14 +64,6 @@ variable {B : Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B
 abbrev ColDat.xiS (f : WO ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) → ℂ) : VCx (I.rec7 l Z).what₂.Tau (B.R.N i) (B.R.N (i + 1)) → ℂ :=
   xiN θ _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) I.A.δ I.A.sc f
 
-def ColDat.MoveAt (c₀ : ℂ) (g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X i)) (h : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X (i + 1))) : Prop :=
-  ∀ N N', Moves _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) g N → Moves _ (rankN (I.rec7 l Z) (i + 1) hi) h N' →
-    ∀ x y, IsDetRoot _ g x → IsDetRoot _ h y →
-      ColDat.xiS θ i hi (A.om i (g, h) (A.vac i)) = fun z =>
-        c₀ * (A.chr (i + 1) x : ℂ)⁻¹ * (A.chr (i + 1) y : ℂ) * I.J.V.thMoved (B.R.N i) (B.R.N (i + 1)) N N' z
-
-def ColDat.VacMove : Prop := ∃ c₀ : ℂ, c₀ ≠ 0 ∧ ∀ g ∈ GfC _, ∀ h ∈ GfC _, A.MoveAt θ i hi c₀ g h
-
 end World
 
 end GlobalTheory.AdForm

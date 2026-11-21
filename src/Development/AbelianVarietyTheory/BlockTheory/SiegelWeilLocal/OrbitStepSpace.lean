@@ -59,21 +59,4 @@ theorem stepSpace_mono (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix 
 
 end Defs
 
-example (ε : Fin 1 → Bool) : IsONFamily ε (fun _ => Complex.I • (1 : Matrix (Fin 1) (Fin 1) ℂ)) := by
-  refine ⟨fun _ => ?_, fun i j => ?_⟩
-  · simp [Formalism.REAL.inG, Matrix.conjTranspose_smul]
-  · have : i = j := Subsingleton.elim (α := Fin 1) i j
-    simp [this, Matrix.conjTranspose_smul, smul_smul]
-
-def StepBound : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (b : ℝ) (P : ℕ),
-    Formalism.QuantumDeterminants.IsHCParam lam → IsDS ε lam σ → (∀ a, |lam a| ≤ b ^ 2) →
-      FiniteDimensional ℂ (stepSpace ε lam σ P) ∧
-      (∀ w ∈ stepSpace ε lam σ P, IsDiffVec ε σ w) ∧
-      (∀ E : Fin (n ^ 2) → Matrix (Fin n) (Fin n) ℂ, IsONFamily ε E → ∀ w ∈ stepSpace ε lam σ P,
-        ∑ i, ‖dAct σ (E i) w‖ ^ 2 ≤ stepConst n b P ^ 2 * ‖w‖ ^ 2) ∧
-      ∀ E, Formalism.REAL.inG ε E → ∀ w ∈ stepSpace ε lam σ P,
-        ‖dAct σ E w‖ ≤ Real.sqrt (Formalism.REAL.hs E) * stepConst n b P * ‖w‖
-
 end GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace

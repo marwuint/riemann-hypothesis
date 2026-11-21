@@ -92,47 +92,6 @@ theorem isMultiHomog_prod_X (c : (k : K) → ι k) :
       · simp [hk]
   simpa using key Finset.univ
 
-theorem exists_isValueAt_of_mem_chartRing {y : (Σ k, ι k) → Ω} {c : (k : K) → ι k}
-    {z : (Σ k, ι k) → ℂ} (hyc : segreCoord y c ≠ 0) (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) {r : Ω}
-    (hr : r ∈ chartRing ℤ (segreCoord y) c) : ∃ v, IsValueAt y r z v := by
-  classical
-  induction hr using Algebra.adjoin_induction with
-  | mem x hx =>
-    obtain ⟨c', rfl⟩ := hx
-    refine ⟨(∏ k, z ⟨k, c' k⟩) / ∏ k, z ⟨k, c k⟩, fun _ => 1, ∏ k, X ⟨k, c' k⟩, ∏ k, X ⟨k, c k⟩,
-      ?_, ?_, ?_, ?_, ?_, ?_⟩
-    · exact isMultiHomog_prod_X c'
-    · exact isMultiHomog_prod_X c
-    · simpa [segreCoord] using hyc
-    · simp only [map_prod, aeval_X]
-      exact (div_mul_cancel₀ _ hyc).symm
-    · simp only [map_prod, map_X, eval_X]
-      exact Finset.prod_ne_zero_iff.2 fun k _ => hz k
-    · simp [map_prod]
-  | algebraMap n => exact ⟨n, by simpa using isValueAt_intCast y z n⟩
-  | add a b _ _ ha hb =>
-    obtain ⟨v, hv⟩ := ha
-    obtain ⟨w, hw⟩ := hb
-    exact ⟨v + w, isValueAt_add hv hw⟩
-  | mul a b _ _ ha hb =>
-    obtain ⟨v, hv⟩ := ha
-    obtain ⟨w, hw⟩ := hb
-    exact ⟨v * w, isValueAt_mul hv hw⟩
-
-theorem exists_isValueAt_of_pow_mul_mem {y : (Σ k, ι k) → Ω} {c : (k : K) → ι k}
-    {z : (Σ k, ι k) → ℂ} (hzP : z ∈ mcPts (mCoordIdeal y)) (hyc : segreCoord y c ≠ 0)
-    (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) {f r : Ω} (hf : IsUnitAt y f z) {n : ℕ}
-    (hr : f ^ n * r ∈ chartRing ℤ (segreCoord y) c) : ∃ v, IsValueAt y r z v := by
-  obtain ⟨w, hw⟩ := exists_isValueAt_of_mem_chartRing hyc hz hr
-  obtain ⟨a, ha, ha0⟩ := hf
-  have hf0 : f ≠ 0 := by
-    rintro rfl
-    exact ha0 (isValueAt_zero hzP ha)
-  have hinv := isValueAt_pow (isValueAt_inv ha hf0 ha0) n
-  refine ⟨w * a⁻¹ ^ n, ?_⟩
-  have := isValueAt_mul hw hinv
-  rwa [mul_comm (f ^ n) r, mul_assoc, ← mul_pow, mul_inv_cancel₀ hf0, one_pow, mul_one] at this
-
 end Values
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

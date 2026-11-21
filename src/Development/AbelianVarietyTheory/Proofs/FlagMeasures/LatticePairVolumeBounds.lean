@@ -3,7 +3,7 @@ import Formalism.HarderNarasimhan.ShiftInvariance
 import Formalism.RealPlaceAnalysis.Complexify
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DifferentSmulMemOfTraceIntegral
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeCoveringOfTraceDualLowerBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HilbertSchmidtLowerBoundInverseDifferentStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HilbertSchmidtLowerBoundInverseDifferent
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsTer
 open Formalism.HN Formalism.HermitianLatticesTheory Matrix NumberField Finset
 namespace GlobalTheory.HomCover
@@ -169,7 +169,7 @@ theorem exists_hom_near : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] 
           obtain ⟨m, hm⟩ := hint (fun p => φ p.1 p.2) hS
           refine ⟨m, ?_⟩
           rw [← hm, ← Matrix.toLin'_mul, Matrix.trace_toLin'_eq, dot_eq_trace, toMat_entries])
-      have h3 := GlobalTheory.T.hilbertSchmidt_lower_bound_inverseDifferent K a b X X' A B lo hi hX hX' hA hB hlo hlow hup (toMat f)ᵀ h1 h2
+      have h3 := _root_.GlobalTheory.DualBound.hs_lower_bound K a b X X' A B lo hi hX hX' hA hB hlo hlow hup (toMat f)ᵀ h1 h2
       rw [mul_pow, hss]
       refine h3.trans (le_of_eq ?_)
       refine Finset.sum_congr rfl fun w _ => ?_

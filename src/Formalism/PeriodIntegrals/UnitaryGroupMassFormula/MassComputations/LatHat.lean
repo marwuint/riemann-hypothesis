@@ -185,9 +185,4 @@ end MassDataMassesW.KCptW
 
 namespace MassDataMassesW
 
-open KCptW
-
-theorem kCompactOpen_of_std (hO : StdHatOpen) (hC : StdHatCompact) : KCompactOpen :=
-  kCompactOpen_of (latHatOpen_of @hO) (latHatCompact_of @hC)
-
 end MassDataMassesW

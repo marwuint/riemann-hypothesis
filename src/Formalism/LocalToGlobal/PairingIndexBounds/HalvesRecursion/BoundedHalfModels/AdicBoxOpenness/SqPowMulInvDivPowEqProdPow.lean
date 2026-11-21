@@ -77,9 +77,6 @@ theorem pow_mul_pow_mul_div_pow_eq {P Q : K} (hP : P ≠ 0) (e : ℕ) : P ^ e * 
 theorem gh_matI_add (v : HeightOneSpectrum R) (y z : Matrix m n K) : matI v (y + z) = matI v y + matI v z := by
   ext i j; simp [matI]
 
-theorem gh_matI_sub (v : HeightOneSpectrum R) (y z : Matrix m n K) : matI v (y - z) = matI v y - matI v z := by
-  ext i j; simp [matI]
-
 theorem gh_matI_zero (v : HeightOneSpectrum R) : matI v (0 : Matrix m n K) = 0 := by
   ext i j; simp [matI]
 

@@ -50,10 +50,6 @@ open IndefiniteRowSideFullHecke.Inter
 
 variable {F : Type} [Field F] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
-def noBlockFam (F : Type) [Field F] {K : Type} [Fintype K] [IsEmpty K] (ι : K → Type) [∀ k, Fintype (ι k)] :
-    IFamily F ι :=
-  fun V n _ => if n = 0 then (ptDeg V (fun k => isEmptyElim k) : ℤ) else 0
-
 instance isEmpty_fibreBlock_id : IsEmpty (FibreBlock (id : Unit → Unit)) :=
   ⟨fun k => k.2 ⟨k.1, rfl⟩⟩
 

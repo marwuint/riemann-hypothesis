@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreePartIntegralDifferentialOfCoboundaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreePartIntegralDifferentialOfCoboundary
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
 namespace GlobalTheory.Katz
@@ -53,7 +53,7 @@ theorem quasiInt_of_cob1_int_of_lin_int : ∀ (p : ℕ) [Fact p.Prime] (k : Type
           rw [add_sub_cancel]
           obtain ⟨w, hw⟩ := hcob γ
           exact ⟨1 * w, hw⟩
-        obtain ⟨w, hw⟩ := GlobalTheory.T.degree_part_integralDifferential_of_coboundary p k d μ hμ N g (f - g) hN hgq hh hc α i hα
+        obtain ⟨w, hw⟩ := _root_.GlobalTheory.Katz.WDer.main p k d μ hμ N g (f - g) hN hgq hh hc α i hα
         refine ⟨w, ?_⟩
         have hfα : coeff α (f - g) = coeff α f := by
           rw [map_sub, hg, if_neg (by omega), sub_zero]

@@ -43,10 +43,6 @@ theorem span_singleton_eq_of_unitAt {u : Ω} (hu : unitAt ξ p u) {e e' : E} (h 
     show u⁻¹ • e' = e
     rw [h, smul_smul, inv_mul_cancel₀ h0, one_smul]
 
-theorem unitAt_div_of_inChart {κ : Type} {x : κ → Ω} {c c' : κ} (h : InChart ξ x c p) (h' : InChart ξ x c' p) :
-    unitAt ξ p (x c' / x c) :=
-  ⟨div_ne_zero h'.1 h.1, h.2 c', by rw [inv_div]; exact h'.2 c⟩
-
 end Units
 
 namespace Lat
@@ -87,15 +83,6 @@ theorem IsFrameAt.dual {L : Lat ξ E} {r : ℕ} (b : Module.Basis (Fin r) Ω E) 
       rw [this]
       exact mul_mem a.2 hx
 
-theorem IsVBOn.dual {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ} (h : L.IsVBOn T r ⊤) : L.dual.IsVBOn T r ⊤ := by
-  intro p hp
-  obtain ⟨U, hU, b, hb, hq⟩ := h p hp
-  have hli := (hq p hp hU).1
-  let B : Module.Basis (Fin r) Ω E := Module.Basis.mk hli hb.ge
-  have hB : ⇑B = b := Module.Basis.coe_mk hli hb.ge
-  refine ⟨U, hU, B.dualBasis, B.dualBasis.span_eq, fun q hqT hqU => ?_⟩
-  exact IsFrameAt.dual B (by rw [hB]; exact hq q hqT hqU)
-
 end Lat
 
 section Pull
@@ -135,25 +122,6 @@ namespace Lat
 
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
-theorem exists_of_chart_generators {κ : Type} {x : κ → Ω} (cov : ∀ p : Cpt ξ, ∃ c, InChart ξ x c p) (g : κ → E)
-    (hg : ∀ (p : Cpt ξ) (c c' : κ), InChart ξ x c p → InChart ξ x c' p →
-      Submodule.span (regAt ξ p) {g c'} = Submodule.span (regAt ξ p) {g c}) :
-    ∃ L : Lat ξ E, ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {g c} :=
-  ⟨fun p => Submodule.span (regAt ξ p) {g (cov p).choose}, fun p c hc => hg p c _ hc (cov p).choose_spec⟩
-
-theorem isVB_one_of_chart_generators {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
-    (h : CoordTie o ξ x) {L : Lat ξ E} {g : κ → E} {V : Submodule Ω E}
-    (hL : ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {g c})
-    (h0 : ∀ c, x c ≠ 0 → g c ≠ 0) (hV : ∀ c, x c ≠ 0 → Submodule.span Ω {g c} = V) : L.IsVB 1 V := by
-  intro p _
-  obtain ⟨c, hc⟩ := h.cover p
-  obtain ⟨U, -, hU⟩ := h.affine c hc.1
-  refine ⟨U, (hU p.1).2 ⟨p.2, hc⟩, fun _ => g c, ?_, fun q _ hq => ⟨?_, ?_⟩⟩
-  · rw [Set.range_const, hV c hc.1]
-  · exact LinearIndependent.of_subsingleton 0 (h0 c hc.1)
-  · obtain ⟨hs, hq'⟩ := (hU q.1).1 hq
-    rw [hL q c hq', Set.range_const]
-
 section Multi
 
 variable {K : Type} [Fintype K] {ι : K → Type} {y : (Σ k, ι k) → Ω}
@@ -182,25 +150,6 @@ theorem block_coord_ne_zero {p : Cpt ξ} {c : (k : K) → ι k}
   Finset.prod_ne_zero_iff.1 h.1 k (Finset.mem_univ k)
 
 end Multi
-
-section Single
-
-variable {κ : Type} {x : κ → Ω}
-
-theorem exists_line {o : Type} [CommRing o] [Algebra o Ω] (h : CoordTie o ξ x) (d : ℕ) :
-    ∃ L : Lat ξ Ω, ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {x c ^ d} :=
-  exists_of_chart_generators h.cover (fun c => x c ^ d) fun _ c c' hc hc' =>
-    span_singleton_eq_of_unitAt ((unitAt_div_of_inChart hc hc').zpow (d : ℤ)) (by
-      rw [zpow_natCast, div_pow, smul_eq_mul, div_mul_cancel₀ _ (pow_ne_zero _ hc.1)])
-
-theorem isVB_line {o : Type} [CommRing o] [Algebra o Ω] (h : CoordTie o ξ x) {d : ℕ} {L : Lat ξ Ω}
-    (hL : ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {x c ^ d}) :
-    L.IsVB 1 ⊤ :=
-  isVB_one_of_chart_generators h hL (fun _ hc => pow_ne_zero _ hc) fun c hc => by
-    refine eq_top_iff.2 fun z _ => Submodule.mem_span_singleton.2 ⟨z / x c ^ d, ?_⟩
-    rw [smul_eq_mul, div_mul_cancel₀ _ (pow_ne_zero _ hc)]
-
-end Single
 
 end Lat
 

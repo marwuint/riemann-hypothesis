@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeanTransport
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianIntegralBlockFubini
+import Development.AutomorphicArithmetic.ThetaCorrespondence.FockModels.BoxIntegrals.MeanBlocks
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousPartialFourierMeanStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodicPartialFourierMeanStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqConstOfFourierCoefficientsZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialCoefficientUnipotentMeanStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqConstOfFourierCoefficientsZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialCoefficientUnipotentMean
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierCoefficientConjugationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianBlockDiagonalNormalFormStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankDirectSumHermitianLtStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankDirectSumHermitianLt
 noncomputable section
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct Topology
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory Filter
@@ -68,7 +68,7 @@ theorem coef_pm (hn : ρ + p = n) (m : Meas D ρ p) {lam : Measure (hermA D n)} 
     {lp : Measure (hermA D p)} {𝓖p : Set (hermA D p)} (hp : IsCovolOneH lp 𝓖p) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     (b₀ : HermE D ρ) (β' : HermE D p) (Φ : hermA D n → ℂ) (hc : Continuous Φ) (hper : IsPer Φ) :
     ∫ b in 𝓖, Φ b * chn ψ (dsum hn b₀ β') b ∂lam = ∫ y in 𝓖p, pm hn m ψ b₀ Φ y * chn ψ β' y ∂lp := by
-  have hd := GlobalTheory.T.hermitian_integral_block_fubini hn m h hp (fun b => Φ b * chn ψ (dsum hn b₀ β') b) (hc.mul (chn_cont hψ _))
+  have hd := _root_.GlobalTheory.CompanionTheory.PcFc.mean_blocks hn m h hp (fun b => Φ b * chn ψ (dsum hn b₀ β') b) (hc.mul (chn_cont hψ _))
     (fun γ hγ x => by
       show Φ (γ + x) * chn ψ (dsum hn b₀ β') (γ + x) = _
       rw [hper γ hγ x, chn_per hψ _ γ hγ x])
@@ -113,21 +113,21 @@ theorem pcFc : PcFc := by
     have h2 := coef_pm hn m hC.2 hp hψ b₀ β' _ (cont_nb hF hC.1 (q⁻¹ * g)) (per_nb hinv hC.1 (q⁻¹ * g))
     refine h2.trans ?_
     refine setIntegral_eq_zero_of_forall_eq_zero fun y _ => ?_
-    rw [← GlobalTheory.T.partial_coefficient_unipotent_mean M m ψ b₀ F hC.1, h b₀ hd, zero_mul]
+    rw [← _root_.GlobalTheory.CompanionTheory.PcNb.pc_nb M m ψ b₀ F hC.1, h b₀ hd, zero_mul]
   · intro hR b₀ hb β hβ nb lam 𝓖 hC g
     have hc := cont_nb hF hC.1 g
     have hpr := per_nb hinv hC.1 g
-    have key := GlobalTheory.T.eq_const_of_fourier_coefficients_zero hp hψ (pm hn m ψ b₀ (fun b => F (nb b * g))) (GlobalTheory.T.continuous_partial_fourier_mean hn m hψ b₀ _ hc hpr)
+    have key := _root_.GlobalTheory.CompanionTheory.PcFc.const_of_coeff hp hψ (pm hn m ψ b₀ (fun b => F (nb b * g))) (GlobalTheory.T.continuous_partial_fourier_mean hn m hψ b₀ _ hc hpr)
       (GlobalTheory.T.periodic_partial_fourier_mean hn m ψ b₀ _ hpr)
       (fun a ha => by
         rw [← coef_pm hn m hC.2 hp hψ b₀ a _ hc hpr]
-        exact hR nb lam 𝓖 hC _ (GlobalTheory.T.rank_direct_sum_hermitian_lt hn b₀ hb a ha) g)
+        exact hR nb lam 𝓖 hC _ (_root_.GlobalTheory.CompanionTheory.PcFc.rank_dsum_ge hn b₀ hb a ha) g)
     have e0 : β = dsum hn b₀ (zH D p) := Subtype.ext hβ
     have e1 : fc ψ lam 𝓖 nb F β g = ∫ y in 𝓖p, pm hn m ψ b₀ (fun b => F (nb b * g)) y * chn ψ (zH D p) y ∂lp := by
       rw [e0]
       exact coef_pm hn m hC.2 hp hψ b₀ _ _ hc hpr
     have e2 : pc M m ψ b₀ F g = pm hn m ψ b₀ (fun b => F (nb b * g)) 0 := by
-      have := GlobalTheory.T.partial_coefficient_unipotent_mean M m ψ b₀ F hC.1 g 0
+      have := _root_.GlobalTheory.CompanionTheory.PcNb.pc_nb M m ψ b₀ F hC.1 g 0
       have hz : bT hn (0 : hermA D ρ) 0 (0 : hermA D p) = 0 := by
         apply Subtype.ext
         show (bl hn (0 : Mx D ρ ρ) 0 (adj (0 : Mx D ρ p)) 0 : Mx D n n) = 0

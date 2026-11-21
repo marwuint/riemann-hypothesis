@@ -16,14 +16,21 @@ import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie
 import Formalism.LocalToGlobal.ProjectiveLattices.FullExists
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHLAM
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicGermValueChartIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicGermValueChartIndependent
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.WeightsBelow
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GamAtOfLawsCore
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FinrankHost
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CuspFormFamiliesComplexCombinationOfReadingsStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmFamilyFunctionalsDetectLowCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArithmeticCMKnownTheoremsProofStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.VanishingLowCoefficientReadingsSpanModelsStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CuspFormFamiliesComplexCombinationOfReadings
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.TheoremZeroOfReducedInputs
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LiftIndexPowFourLeDegree
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.AdmissibleModuleIffLatticeQuotients
+import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcDatumIsArcPointBasis
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.LocalUnfoldBStatementHolds
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmFamilyFunctionalsDetectLowCoefficients
+import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.QatOfBridgeAlt
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArithmeticCMKnownTheoremsProof
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.VanishingLowCoefficientReadingsSpanModels
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.WeightFloorInequalities
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RunJoin
@@ -39,7 +46,7 @@ theorem onto_of_page : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : In
   obtain ⟨hA, hB, -, -⟩ := GlobalTheory.RunWeights.weights_below D _ _ j (recPJ h j hj) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0
     hj.1 hPage.hyp
   have key : ∀ u : WeightFamilies.Wt D j, 8 * D.R.f * D.R.r + 4 ≤ u.n → u.LastPos → GlobalTheory.Shares.RdOnto h j u := fun u hn hl =>
-    GlobalTheory.T.cuspForm_families_complex_combination_of_readings GlobalTheory.T.harmonic_germ_value_chart_independent D T h j hj hPar.sh hG hPar.bad hPar.same u hn
+    _root_.GlobalTheory.Shares.rdOnto_rec _root_.GlobalTheory.harmonicValue_chart_independent D T h j hj hPar.sh hG hPar.bad hPar.same u hn
       (ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj u hl)
   refine ⟨fun k => key _ ?_ ?_, ?_⟩
   · have h1 := hB wF (by simp)
@@ -49,7 +56,7 @@ theorem onto_of_page : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : In
     have h1 := (hA wF (by simp)).2.2.2 τ i hi
     have e : (addL wF wL k).aP τ i = wF.aP τ i + k * wL.aP τ i := rfl
     omega
-  · refine GlobalTheory.T.vanishing_low_coefficient_readings_span_models D T h j hj ka 7 Tn _ (fun hlt => ?_)
+  · refine _root_.GlobalTheory.ConjKill.mggOnto_of_rdOnto D T h j hj ka 7 Tn _ (fun hlt => ?_)
       (key ka (hB ka (by simp)) (hA ka (by simp)).2.2.2)
     obtain ⟨t1, t2, t3, t4, t5, t6⟩ := hPage.tie
     have ht : TieC ⟨1, 2, 1, 2, 1, 2, 1, 4, 7⟩ H 1 4 0 11 C2 A2 7 :=
@@ -57,7 +64,7 @@ theorem onto_of_page : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : In
     obtain ⟨hc, -, -, -, -, h2, h11⟩ := GlobalTheory.ExtraWeight.numbers D _ _ j (recPJ h j hj) _ _ _ _ _ large₂ H C2 A2 7 CT ka wL wF
       Tn nP nW h0 hPage.hyp ht hPage.page hlt hj.1 (le_trans (by norm_num) hPage.df)
     have hT : 0 < Tn := by nlinarith
-    exact GlobalTheory.T.cmFamilyFunctionals_detect_lowCoefficients GlobalTheory.T.arithmeticCMKnownTheorems_proof D T.toCore h.toLawsCore j ka 7 Tn _ hG hj hlt (le_trans (by norm_num) hPage.r8)
+    exact _root_.GlobalTheory.ArcCM.detectQ_of_known _root_.GlobalTheory.ArcCM.known_holds D T.toCore h.toLawsCore j ka 7 Tn _ hG hj hlt (le_trans (by norm_num) hPage.r8)
       (by exact_mod_cast hT) hc
 
 end GlobalTheory.RunJoin

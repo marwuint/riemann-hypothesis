@@ -125,11 +125,6 @@ def SzRow (P : FC → ∀ D : D7, SizeData₂ D → Prop) : Prop :=
   ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∀ C : FC, Std C → ∃ c1 : ℝ, ∀ cD ≥ c1, ∃ c2 : ℝ, ∀ ch ≥ c2, ∃ x0 : ℝ,
     ∀ (D : D7) (L : SizeData₂ D), L.sc.eps = eps → x0 ≤ L.sc.x → Val C cD ch L → P C D L
 
-theorem pairWin_self (s : Scale) : PairWin s s.x := by
-  refine ⟨?_, le_rfl⟩
-  have h : 1 / s.J ≤ 1 := (div_le_one (lt_of_lt_of_le one_pos s.one_le_J)).2 s.one_le_J
-  simpa using Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le h
-
 theorem PairWin.one_lt {s : Scale} {Y : ℝ} (h : PairWin s Y) : 1 < Y :=
   (Real.one_lt_rpow s.one_lt_alt (one_div_pos.2 (lt_of_lt_of_le one_pos s.one_le_J))).trans_le h.1
 
@@ -164,14 +159,6 @@ theorem PairWin.z_log_sq_le {s : Scale} {Y : ℝ} (h : PairWin s Y) :
   exact mul_le_mul h1 (pow_le_pow_left₀ h0 h.log_le 2) (sq_nonneg _)
     (Real.rpow_nonneg (by linarith [s.one_lt_alt]) _)
 
-theorem four_mul_QS_div {R : Ranks} (H : Host R) : 4 * (H.QS / 4) = H.QS :=
-  Nat.mul_div_cancel' (Dvd.dvd.trans ⟨2 ^ R.e, by ring⟩ H.tower_dvd)
-
-theorem pairRow_iff_rowq (Y eps : ℝ) {R : Ranks} (H : Host R) : PairRow Y eps H ↔ Rowq Y eps (H.QS / 4) H.q H.d := by
-  have e : (4 : ℝ) * ((H.QS / 4 : ℕ) : ℝ) = H.QS := by exact_mod_cast four_mul_QS_div H
-  unfold PairRow Rowq
-  rw [e]
-
 namespace HostVal
 
 variable {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R}
@@ -194,15 +181,6 @@ theorem log_cond_le (h : HostVal s C8 H) :
   obtain ⟨Y, hY, hr⟩ := h.1
   have := hY.z_log_sq_le
   linarith [hr.2.2.2.2.2.2.2.2.2.2]
-
-theorem d_le (h : HostVal s C8 H) : (H.d : ℝ) ≤ GlobalTheoryTheory.X2 s.x s.eps := by
-  obtain ⟨Y, hY, hr⟩ := h.1
-  exact hr.2.2.2.2.2.2.2.1.trans (Real.exp_le_exp.2 hY.z_log_sq_le)
-
-theorem split (h : HostVal s C8 H) (p : ℕ) (hp : p.Prime) (hle : (p : ℝ) ≤ s.x ^ (s.ez / 5)) :
-    GlobalTheoryTheory.kronSym (-(H.d : ℤ)) p = 1 := by
-  obtain ⟨Y, hY, hr⟩ := h.1
-  exact hr.2.2.2.2.2.2.2.2.2.1 p hp (hle.trans (hY.rpow_ez_le (by norm_num)))
 
 theorem mono (h : HostVal s C8 H) {C8' : ℝ} (hC : C8 ≤ C8') : HostVal s C8' H := by
   have hN : (1 : ℝ) ≤ (H.QS : ℝ) * H.q * H.d := by

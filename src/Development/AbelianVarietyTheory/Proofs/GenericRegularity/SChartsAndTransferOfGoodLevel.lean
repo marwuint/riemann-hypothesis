@@ -11,9 +11,13 @@ import Formalism.LocalToGlobal.ProjectiveLattices.RegQFree
 import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.NormOrderStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsEveryFinitePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHoldStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TransferBoundsAlgebraicToAllPointsOfModelsStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsEveryFinitePlace
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
+import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TransferBoundsAlgebraicToAllPointsOfModels
+import Formalism.LocalToGlobal.ProjectiveLattices.FnTrdegOf
+import Formalism.LocalToGlobal.ProjectiveLattices.RealPtGeo
+import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProofFree
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsValuationSubringComapEqNonunits
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
@@ -25,12 +29,12 @@ theorem sCharts_and_transfer_of_good_level : PartI → N1ab → ∀ (E : Type) [
   intro hP hN E _ _ _ H Dw l Xo c hr hg
   classical
   have hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt := GlobalTheory.abelianSchemeLaws_all.2.secTwist
-  obtain ⟨hE, hI, -⟩ := GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c
+  obtain ⟨hE, hI, -⟩ := _root_.GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c
   have hM : ∀ la, ModelAt Xo c la := by
     intro la
     have h := modelAt_of_good_level hP E H Dw hr
       (Function.update (fun l' => Classical.choice (hN E H Dw l' hr)) l Xo) l c la (fun p hp _ => hg p hp)
     rwa [Function.update_self] at h
-  exact ⟨fun la => GlobalTheory.T.exists_normalCharts_everyFinitePlace hT E H Dw l Xo c hE hI la (hM la), GlobalTheory.T.transfer_bounds_algebraic_to_all_points_of_models hT E H Dw l Xo c hE hI hM⟩
+  exact ⟨fun la => _root_.GlobalTheory.Reg.exists_sCharts hT E H Dw l Xo c hE hI la (hM la), _root_.GlobalTheory.Reg.transfer_of_models hT E H Dw l Xo c hE hI hM⟩
 
 end GlobalTheory.Reg

@@ -1,6 +1,9 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LagrangianDecomposition.LdExOfLeaves
 import Development.WeilBound.ThetaLifts.LatticeBasics.FrameA
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroConjNegOfCmExtensionStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroConjNegOfCmExtension
+import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
+import Formalism.LocalToGlobal.IndefiniteReal.DatumF
 
 noncomputable section
 

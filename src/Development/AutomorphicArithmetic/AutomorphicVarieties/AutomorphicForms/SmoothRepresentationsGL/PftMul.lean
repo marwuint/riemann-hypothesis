@@ -8,12 +8,6 @@ open UpperTheory.V UpperTheory.V.Af.Smo
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspSub)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
-section SlopeTestRemainingChoices
-
-variable {V M : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup M] [NormedSpace ℝ M]
-
-end SlopeTestRemainingChoices
-
 open LineDeriv in
 theorem UpperTheory.V.Af.Smo.pftMul :
     UpperTheory.V.Af.Smo.PftMul := by

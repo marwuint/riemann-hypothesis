@@ -208,9 +208,4 @@ theorem ptAvgSelf_of (hAct : OActSelfSt) (hLim : LimSelfSt) : PTAvgSelfSt := by
 theorem ptSelf_of_act (hEx : PTExSelfSt) (hAct : OActSelfSt) (hLim : LimSelfSt) (hStab : HStabSelfSt) : PTSelfSt :=
   ptSelf_of hEx (ptAvgSelf_of hAct hLim) hStab
 
-theorem ptExSelf_of_pt (h : PTSelfSt) : PTExSelfSt := by
-  intro C _ _ V O _ _ dd Y d _ I0 _ p g a w hw hty
-  obtain ⟨x, hx, h0, -⟩ := h C V O dd Y d I0 p g a w hw hty
-  exact ⟨x, hx, fun c => congrFun h0 (Sum.inl c)⟩
-
 end Formalism.L2.FormalSeriesBounds

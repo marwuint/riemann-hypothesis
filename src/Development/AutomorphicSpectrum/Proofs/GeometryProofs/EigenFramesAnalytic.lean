@@ -7,22 +7,22 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubs
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameFunctionCompareStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GagaLineGeneratorEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeLineLatticeVectorBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeBasisPullbackDominantStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleNormalProperPullbackStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameFunctionCompare
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GagaLineGeneratorEmbedding
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeLineLatticeVectorBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeBasisPullbackDominant
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleNormalProperPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermStalkClosedPointToBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointNormalCoords
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameNearGenericPointStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameNearGenericPoint
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeLatticeGeneratorStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperPullbackLineBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericOfSmoothSurjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValueAlongStalkSurjectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkSurjectiveOpenImmersionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsResolutionGenericFibreStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PointFrameSpecializationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericOfSmoothSurjective
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValueAlongStalkSurjection
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkSurjectiveOpenImmersion
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsResolutionGenericFibre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PointFrameSpecialization
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 
@@ -62,30 +62,30 @@ theorem exists_gen_of_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (
   intro hRes hGaga E _ _ _ H D l Xo c O _ β Y U Z τ σ Φ b₁ b₂ hβ hpq hτ hσ hgeom hΦ hi₁ hs₁ hi₂ hs₂
   classical
   have hξ : IsCptGen (Z.ξ₀ ≫ Y.j) := Z.gen
-  obtain ⟨hA, hB, -, -⟩ := GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hβ hτ
+  obtain ⟨hA, hB, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c O β Y U Z τ hβ hτ
   have hη : (⟨genPt (Z.ξ₀ ≫ Y.j), specializes_rfl⟩ : Cpt (Z.ξ₀ ≫ Y.j)) ∈ Z.genFib := ⟨Y.jQ (genPt Z.ξ₀), rfl⟩
-  obtain ⟨W₁, hW₁, hf₁⟩ := GlobalTheory.T.frame_near_generic_point _ _ _ _ (Z.eig τ) Z.genFib D.p _ b₁ hξ hη hA hi₁ hs₁
-  obtain ⟨W₂, hW₂, hf₂⟩ := GlobalTheory.T.frame_near_generic_point _ _ _ _ (Z.eig (ComplexEmbedding.conjugate τ)) Z.genFib D.q _ b₂ hξ hη hB hi₂ hs₂
+  obtain ⟨W₁, hW₁, hf₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrameOpen.isFrameAt_near_genPt _ _ _ _ (Z.eig τ) Z.genFib D.p _ b₁ hξ hη hA hi₁ hs₁
+  obtain ⟨W₂, hW₂, hf₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrameOpen.isFrameAt_near_genPt _ _ _ _ (Z.eig (ComplexEmbedding.conjugate τ)) Z.genFib D.q _ b₂ hξ hη hB hi₂ hs₂
   obtain ⟨hwA, ha⟩ := GlobalTheory.T.wedge_lattice_generator _ _ _ _ (Z.eig τ) D.p b₁ _ (hf₁ _ hη hW₁)
   obtain ⟨hwB, hb⟩ := GlobalTheory.T.wedge_lattice_generator _ _ _ _ (Z.eig (ComplexEmbedding.conjugate τ)) D.q b₂ _ (hf₂ _ hη hW₂)
   have hcoef : IsCoeffAt (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q
       (exteriorPower.ιMulti Z.Ω D.p b₁) (exteriorPower.ιMulti Z.Ω D.q b₂)
       ⟨genPt (Z.ξ₀ ≫ Y.j), specializes_rfl⟩ 1 :=
     ⟨1, 1, one_ne_zero, one_ne_zero, by rw [one_smul]; exact hwA, by rw [one_smul]; exact hwB, by simp⟩
-  obtain ⟨hLvb, hLgen, hLfr⟩ := GlobalTheory.T.wedge_line_lattice_vector_bundle _ _ _ _ (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q _ _
+  obtain ⟨hLvb, hLgen, hLfr⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.lineLat_isVBOn_gen_frames _ _ _ _ (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q _ _
     Z.genFib _ _ hA hB ha hb ⟨_, hη, 1, hcoef⟩
   have hW₀gen : ∀ x ∈ Z.genFib, x.1 ∈ W₁ ⊓ W₂ → (lineLat (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q
       (exteriorPower.ιMulti Z.Ω D.p b₁) (exteriorPower.ιMulti Z.Ω D.q b₂)).IsGenAt x 1 := fun x hx hxW => by
     have := hLfr x hx b₁ b₂ 1 1 (hf₁ x hx hxW.1) (hf₂ x hx hxW.2) (by rw [one_smul]) (by rw [one_smul])
     simpa using this
   have hpre : IsPreimmersion (pullback.fst Y.s (spMap β)) := isPreimmersion_fst β Y.s hβ
-  obtain ⟨hnoeth, X', f, d, W', jW, hiso, hjW, hfP, hsP, hsm, hsnc⟩ := GlobalTheory.T.exists_resolution_generic_fibre hRes E H D l Xo c O β Y hβ
+  obtain ⟨hnoeth, X', f, d, W', jW, hiso, hjW, hfP, hsP, hsm, hsnc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_resolution_genericFibre hRes E H D l Xo c O β Y hβ
   have hjQo : IsOpenImmersion Y.jQ := Y.jQ_open
   have hmono : Mono Y.j := by
     unfold Model.j
     infer_instance
 
-  have hsurj := GlobalTheory.T.stalk_surjective_open_immersion _ _ _ _ (pullback.fst Y.s (spMap β)) f W' jW Y.jQ hpre hjQo hiso hjW
+  have hsurj := _root_.GlobalTheory.CompanionTheory.Ar.Flat.stalkMap_comp_surjective_of_open_part _ _ _ _ (pullback.fst Y.s (spMap β)) f W' jW Y.jQ hpre hjQo hiso hjW
   obtain ⟨π, hπ⟩ : ∃ π, π = f ≫ pullback.fst Y.s (spMap β) := ⟨_, rfl⟩
   obtain ⟨s', hs'⟩ : ∃ s', s' = f ≫ pullback.snd Y.s (spMap β) := ⟨_, rfl⟩
   rw [← hπ] at hsurj
@@ -105,7 +105,7 @@ theorem exists_gen_of_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (
     rw [hξ', ← Category.assoc, genPt_comp]
     exact (genPt (Z.ξ₀ ≫ inv jW)).2
   have hsm' : Smooth s' := SmoothOfRelativeDimension.smooth d s'
-  have hξg : IsCptGen ξ' := GlobalTheory.T.generic_of_smooth_surjective c.F _ _ _ _ ξ' π s' hsm' h2 hξ (hsurj _ hgW')
+  have hξg : IsCptGen ξ' := _root_.GlobalTheory.CompanionTheory.Ar.CptLift.isCptGen_of_smooth_of_surjective c.F _ _ _ _ ξ' π s' hsm' h2 hξ (hsurj _ hgW')
   have hdom : Dominates ξ' (Z.ξ₀ ≫ Y.j) π (RingHom.id Z.Ω) := by
     unfold Dominates
     rw [h2]
@@ -123,7 +123,7 @@ theorem exists_gen_of_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (
     refine ⟨π ⁻¹ᵁ N, hN, bb, hbb, fun q' _ hq' => ?_⟩
     obtain ⟨h', hT'⟩ := hcpt q'
     have hfr' := hfr _ hT' hq'
-    exact GlobalTheory.T.lattice_basis_pullback_dominant _ _ (Z.ξ₀ ≫ Y.j) _ _ ξ' π (RingHom.id _) Z.Ω Z.Ω (AddMonoidHom.id _) hdom
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp _ _ (Z.ξ₀ ≫ Y.j) _ _ ξ' π (RingHom.id _) Z.Ω Z.Ω (AddMonoidHom.id _) hdom
       (fun a e => rfl) L 1 bb q' h' hfr'.1 hfr'
   obtain ⟨W, hWd⟩ : ∃ W : X'.Opens, W = (π ⁻¹ᵁ (W₁ ⊓ W₂)) ⊓ W' := ⟨_, rfl⟩
   have hWW' : W ≤ W' := by rw [hWd]; exact inf_le_right
@@ -170,7 +170,7 @@ theorem exists_gen_of_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (
       rw [hc]
       rw [hWd] at hcW
       exact hcW.1
-    obtain ⟨v, w, hf, hv, hw⟩ := GlobalTheory.T.point_frame_specialization E H D l Xo c O β Y U Z τ σ b₁ b₂ y h₀ hβ hτ hσ hys
+    obtain ⟨v, w, hf, hv, hw⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FrameVal.exists_framed_values E H D l Xo c O β Y U Z τ σ b₁ b₂ y h₀ hβ hτ hσ hys
       (hf₁ _ hT hxW.1) (hf₂ _ hT hxW.2)
     obtain ⟨v₂, w₂, hq, hr⟩ := hΦ₀ y ⟨v, w, (hQ y v w).2 ⟨hf, hv, hw⟩⟩
     obtain ⟨q1, q2⟩ := (hQ y v₂ w₂).1 hq
@@ -189,9 +189,9 @@ theorem exists_gen_of_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (
     obtain ⟨x, rfl⟩ := hgeom a ⟨p, hp0, by rwa [Polynomial.aeval_def] at hp⟩
     exact ⟨x, 1, one_ne_zero, by simp; rfl⟩
   subst hLd
-  have hext := GlobalTheory.T.eigen_frame_function_compare E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ X' π s' d ξ' W' W jW F hβ hpq hτ hσ hΦ
+  have hext := _root_.GlobalTheory.CompanionTheory.Ar.Flat.extendsUnitAt_resolution E H D l Xo c O β Y U Z τ σ Φ b₁ b₂ X' π s' d ξ' W' W jW F hβ hpq hτ hσ hΦ
     hi₁ hs₁ hi₂ hs₂ hπs hsm hsnc h2 hξg hj1 hj2 hWW' H1 hgenW
-  obtain ⟨f₀, κ, hκ, hgen, hval⟩ := GlobalTheory.T.gaga_line_generator_embedding hGaga c.F σ X' s' Z.Ω ξ' _ W F hsP hsm' h3 hξg hconst hL'vb hgW
+  obtain ⟨f₀, κ, hκ, hgen, hval⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.gaga_rat hGaga c.F σ X' s' Z.Ω ξ' _ W F hsP hsm' h3 hξg hconst hL'vb hgW
     hgenW hext
   have hnorm : NormalCpt (Z.ξ₀ ≫ Y.j) := GlobalTheory.CompanionTheory.Ar.XR.normalCpt_of_isCptGen hξ Y.normal
   have hall := GlobalTheory.T.proper_pullback_line_bundle _ _ _ _ (Z.ξ₀ ≫ Y.j) (Z.ξ₀ ≫ Y.jQ) ξ' (pullback.fst Y.s (spMap β)) f _ Z.genFib f₀ hpre hfP
@@ -228,7 +228,7 @@ theorem exists_gen_of_unitAn : Geo.ResK.ResKStatement → GagaSections → ∀ (
     refine ⟨v, w, ⟨hf.1, hyU, hf.2.2.1, hf.2.2.2⟩, hv, ?_⟩
     have hv' := hval y' e2 hyW' hsp
     have hs := hsurj (centre y') (hWW' (hpt _))
-    have h := GlobalTheory.T.value_along_stalk_surjection _ _ _ _ _ ξ' π y' f₀ _ h2 hs hv'
+    have h := _root_.GlobalTheory.CompanionTheory.Ar.Flat.ValLift.valAt_of_stalkMap_surjective _ _ _ _ _ ξ' π y' f₀ _ h2 hs hv'
     rw [e1, hFe] at h
     exact h
 

@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCocycleUnit
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackThickeningOfCarriesTorusCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionPointOfThickeningEqTransportStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionPointOfThickeningEqTransport
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -60,7 +60,7 @@ theorem closedFibre_iso : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing 
       simp only [Iso.trans_hom, Iso.symm_hom, Over.comp_left, Category.assoc, g]
       rw [this]
     subst hy'
-    obtain ⟨ξ', h1, h2⟩ := GlobalTheory.T.torusExtensionPoint_of_thickening_eq_transport T.hD T.U.toUnifPre Y hφ₀ Z g
+    obtain ⟨ξ', h1, h2⟩ := _root_.GlobalTheory.Mum.isPullPt_of_carries T.hD T.U.toUnifPre Y hφ₀ Z g
     refine ⟨g, ξ', ?_, h1, h2⟩
     rw [hp]
     show (p ≫ e1.inv.left ≫ pullback.fst _ _) ≫ pullback.fst T.G.hom (thick W (maximalIdeal W) 0) = _

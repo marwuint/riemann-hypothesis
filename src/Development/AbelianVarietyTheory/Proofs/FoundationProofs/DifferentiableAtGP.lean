@@ -27,10 +27,6 @@ theorem _root_.GlobalTheory.Sieg.DlogOne.hasProd_gP {q : ℂ} (hq : ‖q‖ < 1)
   simp only [← sub_eq_add_neg] at hm
   exact hm.hasProd
 
-theorem gP_ne_zero {q : ℂ} (hq : ‖q‖ < 1) {a : ℂ} (h : ∀ m : ℕ, 1 - q ^ (m + 1) * a ≠ 0) : gP q a ≠ 0 := by
-  obtain ⟨P, hP, pP⟩ := hasProd_geom hq a h
-  rwa [gP, pP.tprod_eq]
-
 open scoped UpperHalfPlane MatrixGroups Manifold in
 open Filter Topology in
 theorem _root_.GlobalTheory.Sieg.DlogOne.summable_lambert {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) :
@@ -49,23 +45,6 @@ theorem _root_.GlobalTheory.Sieg.DlogOne.summable_lambert {q : ℂ} (hq : ‖q�
   have h2 : (fun m : ℕ => q ^ (m + 1)) =O[atTop] (fun m : ℕ => ‖q‖ ^ (m + 1)) :=
     Asymptotics.isBigO_of_le _ fun m => by simp [norm_pow]
   simpa [div_eq_mul_inv] using h2.mul h1
-
-theorem multLoc {q : ℂ} (hq : ‖q‖ < 1) (R : ℝ) :
-    MultipliableLocallyUniformlyOn (fun (m : ℕ) (a : ℂ) => 1 - q ^ (m + 1) * a) (Metric.ball 0 R) := by
-  simp only [sub_eq_add_neg]
-  refine (((summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one (norm_nonneg _)
-        hq)).mul_right R).multipliableLocallyUniformlyOn_nat_one_add Metric.isOpen_ball
-        (.of_forall fun n z hz ↦ ?_) (fun _ ↦ by fun_prop)
-  rw [norm_neg, norm_mul, norm_pow]
-  have : ‖z‖ ≤ R := (mem_ball_zero_iff.1 hz).le
-  gcongr
-
-theorem differentiableAt_gP {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) : DifferentiableAt ℂ (gP q) a := by
-  have ha : a ∈ Metric.ball (0 : ℂ) (‖a‖ + 1) := by simp
-  have := (multLoc hq (‖a‖ + 1)).hasProdLocallyUniformlyOn.differentiableOn
-    (.of_forall fun _ ↦ by simpa [Finset.prod_fn] using
-      DifferentiableOn.finsetProd (fun _ _ ↦ by fun_prop)) Metric.isOpen_ball
-  exact this.differentiableAt (Metric.isOpen_ball.mem_nhds ha)
 
 def LD (f : ℂ → ℂ) (L z : ℂ) : Prop := HasDerivAt f (L * f z) z
 
@@ -91,32 +70,6 @@ theorem LD.inv {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z) (h0 : f z ≠ 0) : 
 theorem LD.div {f g : ℂ → ℂ} {L M z : ℂ} (hf : LD f L z) (hg : LD g M z) (h0 : g z ≠ 0) :
     LD (fun w => f w / g w) (L - M) z := by
   simpa only [div_eq_mul_inv, sub_eq_add_neg] using hf.mul (hg.inv h0)
-
-theorem LD.zpow_neg {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z) (h0 : f z ≠ 0) (k : ℤ) :
-    LD (fun w => (-f w) ^ k) (k * L) z := by
-  have h1 : -f z ≠ 0 := neg_ne_zero.2 h0
-  have := (hasDerivAt_zpow k (-f z) (Or.inl h1)).comp z (HasDerivAt.fun_neg hf)
-  refine HasDerivAt.congr_deriv this ?_
-  rw [zpow_sub_one₀ h1]; field_simp
-
-theorem LD.gP {q : ℂ} (hq : ‖q‖ < 1) {f : ℂ → ℂ} {L z : ℂ} (hf : LD f L z)
-    (h : ∀ m : ℕ, 1 - q ^ (m + 1) * f z ≠ 0) : LD (fun w => gP q (f w)) (-(L * gS q (f z))) z := by
-  have ha : f z ∈ Metric.ball (0 : ℂ) (‖f z‖ + 1) := by simp
-  have e : ∀ m : ℕ, logDeriv (fun a : ℂ => 1 - q ^ (m + 1) * a) (f z) =
-      -(q ^ (m + 1) / (1 - q ^ (m + 1) * f z)) := by
-    intro m
-    simp [logDeriv_apply, neg_div]
-  have hne := gP_ne_zero hq h
-  have key := logDeriv_tprod_eq_tsum Metric.isOpen_ball ha (f := fun (m : ℕ) (a : ℂ) => 1 - q ^ (m + 1) * a) h
-    (fun _ => by fun_prop) (by simpa only [e] using (summable_lambert hq (f z)).neg) (multLoc hq _) hne
-  simp only [e, tsum_neg] at key
-  have key' : deriv (DlogOne.gP q) (f z) / DlogOne.gP q (f z) = -∑' m : ℕ, q ^ (m + 1) / (1 - q ^ (m + 1) * f z) := key
-  rw [div_eq_iff hne] at key'
-  have := (differentiableAt_gP hq (f z)).hasDerivAt.comp z hf
-  have e2 : gS q (f z) = (∑' m : ℕ, q ^ (m + 1) / (1 - q ^ (m + 1) * f z)) * f z := by
-    rw [gS, ← tsum_mul_right]; exact tsum_congr fun m => by ring
-  refine HasDerivAt.congr_deriv this ?_
-  rw [key', e2]; ring
 
 def E (q t : ℂ) : ℂ := -(t / (1 - t)) - gS q t + gS q t⁻¹
 
@@ -462,7 +415,5 @@ theorem _root_.GlobalTheory.Sieg.DlogOne.E_eq {x : Fin 2 → ℚ}
 end GlobalTheory.Sieg.DlogOne
 
 namespace GlobalTheory.Sieg
-
-open DlogOne
 
 end GlobalTheory.Sieg

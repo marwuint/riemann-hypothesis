@@ -380,20 +380,6 @@ theorem exists_divStage (B : Base) (C : Cols B) (W : RowsRest B C) :
       (C.mem u).C.cls 0 → (C.mem u).C.Y 0 → ℂ) = _
     rw [LinearEquiv.apply_symm_apply]; rfl
 
-theorem RR_finrank {B : Base} {C : Cols B} {W : RowsRest B C} (V : DivStage B C W) :
-    Module.finrank B.LL V.div.RR.V = W.Drows := by
-  have h1 := Module.finrank_eq_card_basis V.div.RR.b
-  have h2 := Module.finrank_eq_card_basis (Module.Basis.mk V.jEE_basis.1 (le_of_eq V.jEE_basis.2.symm))
-  have h3 : Module.finrank ℂ W.EE = W.Drows := by simpa using Module.finrank_eq_card_basis W.onb.toBasis
-  omega
-
-theorem Nu_finrank {B : Base} {C : Cols B} {W : RowsRest B C} (V : DivStage B C W) (u : B.Word) :
-    Module.finrank B.LL (V.div.Nu u).V = (C.mem u).A.du := by
-  have h1 := Module.finrank_eq_card_basis (V.div.Nu u).b
-  have h2 := Module.finrank_eq_card_basis (Module.Basis.mk (V.jN_basis u).1 (le_of_eq (V.jN_basis u).2.symm))
-  have h3 : Module.finrank ℂ (W.Mu u) = (C.mem u).A.du := (W.eMu u).finrank_eq
-  omega
-
 end GlobalTheory.Mem.DivModel
 
 end

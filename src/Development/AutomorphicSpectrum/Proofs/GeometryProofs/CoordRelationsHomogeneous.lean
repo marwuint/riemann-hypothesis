@@ -1,7 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmallPointsCoordRatioBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmallPointsCoordRatioBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MatchStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -365,7 +369,7 @@ theorem finite_families : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero 
     intro L _ _ z hz
     obtain ⟨i, hi⟩ := hz.1 k₀
     obtain ⟨c, hc⟩ := hz.1 k
-    obtain ⟨n, F, hom, rel, hne⟩ := GlobalTheory.T.small_points_coord_ratio_bound X Ω ξ K J y k₀ hT hE L z hz i k c hi hc
+    obtain ⟨n, F, hom, rel, hne⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BlockRatio.ratios_quotients_of_forms X Ω ξ K J y k₀ hT hE L z hz i k c hi hc
     have yc : y ⟨k, c⟩ ≠ 0 := ne_zero_of_pt y hz hc
     refine ⟨F c, ⟨n, F, c, ⟨hom, fun j j' => mul_right_cancel₀ yc ?_⟩, rfl⟩, hne⟩
     linear_combination y ⟨k, j'⟩ * rel j - y ⟨k, j⟩ * rel j'

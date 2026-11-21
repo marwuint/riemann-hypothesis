@@ -1,26 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsHarishChandraParamOfTypeOfUnitaryWStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsQuotientMeasureBesselPeriodSubgroupUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsHarishChandraParamOfTypeOfUnitaryW
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsQuotientMeasureBesselPeriodSubgroupUnitary
+import Formalism.PeriodIntegrals.QuotSetU
+import Formalism.PeriodIntegrals.QuotInv
 
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
-
-theorem besselSide_of_isType (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-    [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (u : ℕ → ℝ) (μW μN μG : Measure (Formalism.QuantumDeterminants.Mt k r)) (hk : 1 ≤ k) (hz : Formalism.QuantumDeterminants.inWb k r z)
-    (hT : 0 < Formalism.QuantumDeterminants.Tz k r z) (hW : B.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
-    (hN : B.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN) (hG : B.IsHaarOn (GG k r) μG) (hπ : Q.IsType k r z π u) :
-    ∃ νq, SideG k r z π u μW μN μG νq := by
-  have hW' := ((GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μW).2.2 z hz hT hk).2 hW
-  have hN' := (GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μN).2.1.2 hN
-  have hG' := (GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μG).1.2 hG
-  obtain ⟨νq, hν⟩ := GlobalTheory.T.exists_quotientMeasure_besselPeriodSubgroup_unitary k r z μW μN μG hz hT hW' hN' hG'
-  exact ⟨νq, hz, hT, GlobalTheory.T.exists_harishChandraParam_of_typeOfUnitaryW k r Wp z π u hz hT hπ, hπ.2.2.2.2.2, hW', hN', hG', hν⟩
 
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in

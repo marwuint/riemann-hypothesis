@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FullToGlIsSelfAdjoint
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisBorderedMatrixNormalFormInvariantsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisBorderedMatrixNormalFormInvariants
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 
 open GlobalTheory.JR Matrix
 
@@ -99,7 +100,7 @@ theorem hasInv_of_lift : ∀ (F E : Type) [NontriviallyNormedField F] [Nontrivia
   have hD : Delta (inv (glMap (algebraMap F E) (lift Z μ l))) ≠ 0 := by
     rw [inv_glMap, Delta_map]
     exact fun h => hΔ (hφ (h.trans (map_zero _).symm))
-  obtain ⟨g, ⟨hg, -⟩, -⟩ := (GlobalTheory.T.jacquetRallis_borderedMatrix_normalForm_invariants E (r + 1)).2.2.2.2 _ _ hD hinv
+  obtain ⟨g, ⟨hg, -⟩, -⟩ := (_root_.GlobalTheory.JR.normalForm_invariants E (r + 1)).2.2.2.2 _ _ hD hinv
   set G : Matrix (Fin (r + 1)) (Fin (r + 1)) E := (g : Matrix (Fin (r + 1)) (Fin (r + 1)) E) with hG
   set Gi : Matrix (Fin (r + 1)) (Fin (r + 1)) E := ((g⁻¹ : GL (Fin (r + 1)) E) : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     with hGi
@@ -166,6 +167,6 @@ theorem hasInv_of_lift : ∀ (F E : Type) [NontriviallyNormedField F] [Nontrivia
       map_one, Matrix.mul_one]
   have hXeq : X.toGl = act u (glMap (algebraMap F E) Z) := (full_injective key).symm
   unfold HasInv
-  rw [hXeq, (GlobalTheory.T.jacquetRallis_borderedMatrix_normalForm_invariants E r).1, inv_glMap]
+  rw [hXeq, (_root_.GlobalTheory.JR.normalForm_invariants E r).1, inv_glMap]
 
 end GlobalTheory.JR.Step

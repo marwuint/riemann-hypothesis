@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbRegOfIsBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankLeCardMulFinrankCharacterSpaceBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankLeCardMulFinrankCharacterSpaceBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbedsInRegularRepresentationCopiesOfGroupDetermStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbedsInRegularRepresentationCopiesOfCharacterTwStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbedsInRegularRepresentationCopiesOfCharacterTw
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders GlobalTheory.BadCount Module
 
 namespace GlobalTheory.BadCount
@@ -30,7 +30,7 @@ theorem embReg_count_of_ranks : ∀ (K Γ R W : Type) [Field K] [Algebra K ℂ] 
   have hn'' : EmbReg (untwist ρ' χ) H n :=
     embReg_of_isBaseChange K ℂ Γ V W f hf ρ (untwist ρ' χ) hf'' H n hn
   have hn' : EmbReg ρ' H n := by
-    refine GlobalTheory.T.embedsInRegularRepresentationCopies_of_characterTwist ℂ Γ W (untwist ρ' χ) ρ' χ ?_ H n hn''
+    refine _root_.GlobalTheory.BadCount.embReg_twist ℂ Γ W (untwist ρ' χ) ρ' χ ?_ H n hn''
     intro g v
     rw [untwist_apply, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]
   let lam' : Hb →* ℂˣ := lam * (χ.comp Hb.subtype)⁻¹
@@ -48,7 +48,7 @@ theorem embReg_count_of_ranks : ∀ (K Γ R W : Type) [Field K] [Algebra K ℂ] 
       simp only [smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul] at this
       rw [this]; congr 1
       rw [mul_left_comm, mul_inv_cancel, mul_one]
-  have hlow := GlobalTheory.T.finrank_le_card_mul_finrank_characterSpace_baseChange K ℂ Γ R W act Hb u0 hu0 Vm V ρ hρ hVm f hf (untwist ρ' χ) hf'' lam'
+  have hlow := _root_.GlobalTheory.BadCount.finrank_le_card_mul_finrank_eig_baseChange K ℂ Γ R W act Hb u0 hu0 Vm V ρ hρ hVm f hf (untwist ρ' χ) hf'' lam'
   rw [← heig] at hlow
   refine ⟨n, hn', ?_⟩
   have h1 : ((n * Nat.card H : ℕ) : ℝ) ≤ finrank K V2 := by exact_mod_cast hnle

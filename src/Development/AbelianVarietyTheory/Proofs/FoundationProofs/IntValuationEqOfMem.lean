@@ -346,12 +346,4 @@ theorem placeEx (i : Fin D.R.m) {K' : Type} [Field K'] (jL : D.what₂.LL →+* 
   choose y _ hy using hc
   exact ⟨fun k => y (x k), fun k => (hx k).trans (hy _).symm⟩
 
-theorem placeEx_of_char (F : Face D A) (hR : R.Char F) (i : Fin D.R.m) {K' : Type} [Field K'] (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ)
-    {v₀ : (R.MW i (sg0 D A)).Vec} {c0' : VsV D i K' →ₛₗ[σ'] (R.cV i).W}
-    {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La] {ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)}
-    {M : ℕ} {Mh : Ideal (𝓞 D.host.E)} {lev : G → La →ₗ[𝓞 D.host.E] La} (hP : ThPinsR R i jL σ' v₀ c0' ι M Mh lev)
-    (t : T0) {Cl : Type} [Fintype Cl] (h : Cl → GA D (Vc D i)) : PlaceEx R i t h c0' := by
-  obtain ⟨_, _, _, hT, hc⟩ := hP.c0
-  exact placeEx R i jL σ' t h c0' hR.models.jV hT hc hR.lev hR.grp.chiW hR.fam.pl_onto hR.fam.muVal
-
 end GlobalTheory.RationalValues

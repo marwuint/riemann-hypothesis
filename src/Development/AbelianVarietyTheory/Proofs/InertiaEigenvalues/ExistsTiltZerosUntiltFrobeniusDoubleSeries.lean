@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusDoubleSeriesHasSumAndNormBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesOntoAndIndependentZerosStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesLinearIndependentOfFirstTerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftHasSumZeroOfSurjectiveModPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusDoubleSeriesHasSumAndNormBounds
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesOntoAndIndependentZeros
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesLinearIndependentOfFirstTer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftHasSumZeroOfSurjectiveModPrime
 open Formalism.Per GlobalTheory.PSer
 open scoped Formalism.Per
 
@@ -22,10 +22,10 @@ theorem exists_zeros (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l])
       ∀ c : Fin h → ℚ_[l], (∀ j : ℕ, j < 2 → ∑ a, algebraMap ℚ_[l] ℂ_[l] (c a) * abelian₂ h j (y a) = 0) →
         c = 0 := by
   have h1 : 1 ≤ h := le_trans (by norm_num) hh
-  obtain ⟨τ, hsurj, x, hxS, hxη, hxind⟩ := GlobalTheory.T.untiltFrobeniusSeries_onto_and_independent_zeros l h μ h1 hμ
+  obtain ⟨τ, hsurj, x, hxS, hxη, hxind⟩ := _root_.GlobalTheory.oneVarCount_onto_independentZeros l h μ h1 hμ
   let η : Fl l → Unit → ℂ_[l] := fun y _ => ∑ i : Fin h, μ i * lam h i y
   let S : Set (Fl l) := {y | ‖sh y‖ ≤ ‖(l : ℂ_[l])‖}
-  have hlift := GlobalTheory.T.lift_hasSum_zero_of_surjective_mod_prime l (Fl l) Unit η (fun _ => τ) S
+  have hlift := _root_.GlobalTheory.lift_hasSum_zero l (Fl l) Unit η (fun _ => τ) S
     (fun t ht => by
       obtain ⟨y, hy, hyt⟩ := hsurj (t ()) (ht ())
       exact ⟨y, hy, fun i => by cases i; exact hyt⟩)
@@ -39,7 +39,7 @@ theorem exists_zeros (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l])
   · intro a
     have hs : ∀ i : Fin h, HasSum (fun k : ℕ => μ i * ((l : ℂ_[l]) ^ k * lam h i (y a k)))
         (μ i * abelian₂ h i (y a)) := fun i =>
-      ((GlobalTheory.T.untiltFrobeniusDoubleSeries_hasSum_and_norm_bounds l h i ‖(l : ℂ_[l])‖ (y a) h1 hr (hyS' a)).1).mul_left (μ i)
+      ((_root_.GlobalTheory.PSer.Lam_main l h i ‖(l : ℂ_[l])‖ (y a) h1 hr (hyS' a)).1).mul_left (μ i)
     have hsum := hasSum_sum (s := Finset.univ) (fun i _ => hs i)
     have hsum' : HasSum (fun k : ℕ => (l : ℂ_[l]) ^ k * η (y a k) ())
         (∑ i : Fin h, μ i * abelian₂ h i (y a)) := by
@@ -48,7 +48,7 @@ theorem exists_zeros (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l])
       simp only [η, Finset.mul_sum]
       refine Finset.sum_congr rfl fun i _ => by ring
     exact hsum'.unique (hysum a ())
-  · refine GlobalTheory.T.untiltFrobeniusSeries_linearIndependent_of_firstTerms l h h ‖(l : ℂ_[l])‖ y hh (norm_nonneg _) hr hyS' ?_
+  · refine _root_.GlobalTheory.PSer.Lam_indep_of_first_terms l h h ‖(l : ℂ_[l])‖ y hh (norm_nonneg _) hr hyS' ?_
     intro n hn a
     simp only [hy0] at hn
     exact hxind n hn a

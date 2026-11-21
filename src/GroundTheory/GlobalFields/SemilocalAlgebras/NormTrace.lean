@@ -55,33 +55,12 @@ theorem trace_pi (x : ∀ i, S i) :
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 variable (v : HeightOneSpectrum (𝓞 K))
 
-theorem norm_one_tmul (x : L) :
-    Algebra.norm (v.adicCompletion K) ((1 : v.adicCompletion K) ⊗ₜ[K] x) =
-      algebraMap K (v.adicCompletion K) (Algebra.norm K x) := by
-  rw [Algebra.norm_apply, Algebra.norm_apply, ← Algebra.baseChange_lmul, LinearMap.det_baseChange]
-
 theorem trace_one_tmul (x : L) :
     Algebra.trace (v.adicCompletion K) (v.adicCompletion K ⊗[K] L)
         ((1 : v.adicCompletion K) ⊗ₜ[K] x) =
       algebraMap K (v.adicCompletion K) (Algebra.trace K L x) := by
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul,
     LinearMap.trace_baseChange]
-
-theorem algebraMap_norm_eq_prod (x : L) :
-    algebraMap K (v.adicCompletion K) (Algebra.norm K x) =
-      ∏ w : PlacesOver L v,
-        Algebra.norm (v.adicCompletion K) (algebraMap L (w.1.adicCompletion L) x) := by
-  rw [← norm_one_tmul, ← Algebra.norm_eq_of_algEquiv (tensorEquiv L v), tensorEquiv_one_tmul,
-    norm_pi]
-  rfl
-
-theorem algebraMap_trace_eq_sum (x : L) :
-    algebraMap K (v.adicCompletion K) (Algebra.trace K L x) =
-      ∑ w : PlacesOver L v, Algebra.trace (v.adicCompletion K) (w.1.adicCompletion L)
-        (algebraMap L (w.1.adicCompletion L) x) := by
-  rw [← trace_one_tmul, ← Algebra.trace_eq_of_algEquiv (tensorEquiv L v), tensorEquiv_one_tmul,
-    trace_pi]
-  rfl
 
 end SemiLocal
 

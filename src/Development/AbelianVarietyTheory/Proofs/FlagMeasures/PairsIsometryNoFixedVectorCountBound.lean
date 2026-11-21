@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FlagPairDefi
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardEmbeddedHermDataIndexLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscriminantOrderCommonFixedLatticeEmbeddedDataStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardIsometriesFixingSubspaceDefiniteLatticesLeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardEmbeddedHermDataIndexLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscriminantOrderCommonFixedLatticeEmbeddedData
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardIsometriesFixingSubspaceDefiniteLatticesLe
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt
 open scoped Pointwise ENNReal Classical
 
@@ -59,7 +59,7 @@ theorem main : MinkowskiBound → ∀ (K V : Type) [Field K] [NumberField K] [St
   intro hM K V _ _ _ _ _ _ _ _ H hK hPD L₀ g j D₀ hL hD hG hg x x' hx hx'
   rcases Set.eq_empty_or_nonempty {p ∈ Trip H g L₀ j x x' | fixSp p.2.2 = ⊥} with he | ⟨p₀, hp₀, hfix⟩
   · rw [he]; simp
-  have h43 := GlobalTheory.T.discriminantOrder_common_fixedLattice_embeddedData K V H hK hPD L₀ g j D₀ hL hD hG hg x x' hx hx' p₀ hp₀
+  have h43 := _root_.GlobalTheory.DegCnt.FixDisc.main K V H hK hPD L₀ g j D₀ hL hD hG hg x x' hx hx' p₀ hp₀
   rw [hfix] at h43
   have hone : GlobalTheory.Mass.discN (GlobalTheory.Mass.hRes H.B.flip (⊥ : Submodule K V))
       (GlobalTheory.Mass.latIn ⊥ (fixLat p₀.1.2)) = 1 := by
@@ -78,15 +78,15 @@ theorem main : MinkowskiBound → ∀ (K V : Type) [Field K] [NumberField K] [St
     have : (1 : ℝ) ≤ Module.finrank ℚ K := by exact_mod_cast Module.finrank_pos
     have := Real.logb_nonneg (b := 2) (by norm_num) this
     linarith
-  have hA := GlobalTheory.T.encard_embedded_hermData_index_le K V H hK hPD L₀ g j D₀ hL hD hG hg x hx
-  have hB := GlobalTheory.T.encard_embedded_hermData_index_le K V H hK hPD L₀ g j D₀ hL hD hG hg x' hx'
+  have hA := _root_.GlobalTheory.DegCnt.encard_isDat_le K V H hK hPD L₀ g j D₀ hL hD hG hg x hx
+  have hB := _root_.GlobalTheory.DegCnt.encard_isDat_le K V H hK hPD L₀ g j D₀ hL hD hG hg x' hx'
   have hcnt := encard_le_of_fibres {p ∈ Trip H g L₀ j x x' | fixSp p.2.2 = ⊥}
     ({d | IsDat H g L₀ j x d} ×ˢ {d | IsDat H g L₀ j x' d}) (fun p => (p.1, p.2.1))
     (fun p hp => ⟨hp.1.1, hp.1.2.1⟩)
     (((4 * (Module.finrank K V) * (Formalism.HermitianLatticesTheory.fDeg K) : ℕ) : ℝ≥0∞) ^ (4 * (Module.finrank K V) * (Formalism.HermitianLatticesTheory.fDeg K)))
     (by
       rintro ⟨d, d'⟩ ⟨hd, hd'⟩
-      have h := GlobalTheory.T.card_isometries_fixing_subspace_definite_lattices_le hM K V H hK hPD ⊥ d'.1 d.1 hd'.1.1 hd.1.1
+      have h := _root_.GlobalTheory.IsoCount.isoCnt hM K V H hK hPD ⊥ d'.1 d.1 hd'.1.1 hd.1.1
       rw [finrank_bot, Nat.sub_zero] at h
       refine le_trans (ENat.toENNReal_le.2 ?_) h
       refine Set.encard_le_encard_of_injOn (f := fun p => p.2.2) ?_ ?_

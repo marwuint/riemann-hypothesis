@@ -47,13 +47,4 @@ theorem delta_ne (HI : IdealLattice) (HD : DiscrNe) (D : D7) (cc : Ideal (Number
   rw [h0, hL] at h12
   exact HD w₁ w₂ hw (by simpa using h12.symm)
 
-theorem transInv_of (HI : IdealLattice) (HD : DiscrNe) (HS : SigmaStarEx) (HT : TransInvLat) (D : D7) : StandardLatticesGL3.transInv D := by
-  intro cc δ hC x ω m hm hx hω
-  obtain ⟨⟨hc, -⟩, hd12⟩ := hC
-  have hδ : δ ≠ 0 := delta_ne HI HD D cc hc δ hd12
-  obtain ⟨w₁, w₂, hw, hL⟩ := lamOf_lat HI D cc hc δ hδ
-  rw [hL] at hx hω ⊢
-  have hspec := Classical.epsilon_spec (HS w₁ w₂ hw)
-  exact HT w₁ w₂ hw _ hspec.2.2.2 x ω m hm hx hω
-
 end Formalism.MainNotions.Ext

@@ -1,4 +1,5 @@
-import Formalism.SharpRestriction.LevelLetterCocycles.UpPositionHypothesis
+import Formalism.SharpRestriction.LevelLetterCocycles.LemCStep
+import Formalism.SharpRestriction.LevelLetterCocycles.ModelKStep
 import Formalism.SharpRestriction.LevelLetterCocycles.DdRFull
 
 noncomputable section

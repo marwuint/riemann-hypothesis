@@ -174,12 +174,6 @@ def basisExt (B : Subalgebra O K⟦X⟧) (τ : ZMod a) : Module.Basis ι B (P.ex
     (P.basisExt B τ i : ι → K⟦X⟧) = (P.mx τ).col i :=
   congrArg Subtype.val (Module.Basis.span_apply _ i)
 
-theorem extc_eq_span {B : Subalgebra O K⟦X⟧} (h : A O K ≤ B) (τ : ZMod a) :
-    P.extc B τ = Submodule.span B (P.Lcomp τ : Set (ι → K⟦X⟧)) := by
-  refine le_antisymm (Submodule.span_mono Submodule.subset_span) (Submodule.span_le.2 fun v hv => ?_)
-  obtain ⟨m, hm, rfl⟩ := P.mem_extc.1 hv
-  exact P.mem_extc.2 ⟨m, fun i => h (hm i), rfl⟩
-
 theorem exists_exponents [NeZero a] : ∃ α β : ℕ, (∀ v ∈ P.L, E K l e ^ α • v ∈ P.M) ∧
     ∀ v ∈ P.M, E K l e ^ β • v ∈ P.L := by
   have key (Y : ZMod a → Matrix ι ι K⟦X⟧) (hY : ∀ τ i j, Y τ i j ∈ invE l e (A O K)) :
@@ -227,13 +221,6 @@ theorem mem_uL_iff {τ : ZMod a} {v : P.Lcomp τ} : v ∈ P.uL τ ↔ red0 (v : 
         P.mxInv τ *ᵥ v := funext h1
     rw [this, Matrix.mulVec_mulVec, mx_mul_mxInv, Matrix.one_mulVec]
 
-def redQ (τ : ZMod a) : (P.Lcomp τ ⧸ (P.uL τ).restrictScalars O) →ₗ[O] (ι → K) :=
-  Submodule.liftQ _ ((red0.restrictScalars O).comp ((P.Lcomp τ).subtype.restrictScalars O))
-    fun _ hv => P.mem_uL_iff.1 hv
-
-theorem redQ_injective (τ : ZMod a) : Function.Injective (P.redQ τ) :=
-  LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ fun _ hv => P.mem_uL_iff.2 hv)
-
 def mx0 (τ : ZMod a) : Matrix ι ι K := (P.mx τ).map constantCoeff
 
 theorem matrix_mul_inv_const_eq_one (τ : ZMod a) : P.mx0 τ * (P.mxInv τ).map constantCoeff = 1 := by
@@ -272,14 +259,6 @@ theorem phi_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
 
 theorem phi_smul (f : K⟦X⟧) (v : Vec K a ι) : P.phi (f • v) = frob K l f • P.phi v :=
   P.phi_smul_tot (fun _ => f) v
-
-theorem phi_injective : Function.Injective P.phi := fun v w h => by
-  ext1 τ
-  ext1 i
-  have := congrArg (fun x => (P.mxInv (τ + 1) *ᵥ x (τ + 1)) i) h
-  simp only [phi_apply, Matrix.mulVec_mulVec, mxInv_mul_mx, Matrix.one_mulVec, add_sub_cancel_right,
-    frobV_apply] at this
-  exact frob_injective l this
 
 theorem phi_mem_ext {B : Subalgebra O K⟦X⟧} (hB : ∀ f ∈ B, frob K l f ∈ B) {v : Vec K a ι}
     (hv : v ∈ P.Mext B) : P.phi v ∈ P.ext B :=
@@ -325,42 +304,6 @@ theorem red_phi (v : Vec K a ι) : red (P.phi v) = P.phiD (red v) := by
   simp
 
 variable [NormedAlgebra ℚ_[l] K]
-
-theorem isLocalizedModule_redQ (τ : ZMod a) :
-    IsLocalizedModule (Submonoid.powers (l : O)) (P.redQ τ) where
-  map_units := by
-    rintro ⟨_, n, rfl⟩
-    rw [Module.End.isUnit_iff]
-    have hl : (l : K) ^ n ≠ 0 := pow_ne_zero _ (l_ne_zero l)
-    have : ⇑(algebraMap O (Module.End O (ι → K)) ((l : O) ^ n)) = fun y => (l : K) ^ n • y := by
-      ext y i
-      rw [Module.algebraMap_end_apply]
-      simp [Algebra.smul_def]
-    rw [this]
-    exact (MulAction.toPerm (Units.mk0 _ hl)).bijective
-  surj y := by
-    choose n b hb using fun i =>
-      exists_pow_mul_mem (O := O) l (((P.mxInv τ).map constantCoeff *ᵥ y) i)
-    let m := Finset.univ.sup n
-    refine ⟨⟨Submodule.Quotient.mk ⟨P.mx τ *ᵥ fun i =>
-      C ((l : K) ^ m * ((P.mxInv τ).map constantCoeff *ᵥ y) i), P.mem_extc.2 ⟨_, fun i => ?_, rfl⟩⟩,
-      ⟨_, m, rfl⟩⟩, ?_⟩
-    · obtain ⟨c, hc⟩ := Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ i))
-      have : (l : K) ^ m * ((P.mxInv τ).map constantCoeff *ᵥ y) i =
-          algebraMap O K ((l : O) ^ c * b i) := by
-        rw [map_mul, ← hb, show m = c + n i from hc, pow_add]
-        simp [mul_assoc]
-      rw [this, ← algebraMap_eq_C]
-      exact Subalgebra.algebraMap_mem _ _
-    · change ((l : O) ^ m) • y = red0 (P.mx τ *ᵥ _)
-      have : (red0 fun i => C ((l : K) ^ m * ((P.mxInv τ).map constantCoeff *ᵥ y) i)) =
-          (l : K) ^ m • ((P.mxInv τ).map constantCoeff *ᵥ y) := by
-        ext i; simp
-      rw [powerSeriesVecReduceModU_mulVec, this, Matrix.mulVec_smul, Matrix.mulVec_mulVec]
-      erw [P.matrix_mul_inv_const_eq_one τ]
-      ext i
-      simp [Algebra.smul_def]
-  exists_of_eq h := ⟨1, by rw [P.redQ_injective τ h]⟩
 
 end PhiMod
 
@@ -417,28 +360,6 @@ theorem app_mem_ext (F : Hom P Q) {B : Subalgebra O K⟦X⟧} (hB : A O K ≤ B)
   rw [app_apply, h, Matrix.mulVec_mulVec, F.comm, ← Matrix.mulVec_mulVec]
   exact Q.mem_extc.2 ⟨_, fun i => Subalgebra.sum_mem _ fun j _ =>
     mul_mem (hB (frob_mem_A l (F.mem _ i j))) (hm j), rfl⟩
-
-variable (P) in
-
-def scalar (c : O) : Hom P P where
-  mat _ := algebraMap O K⟦X⟧ c • (1 : Matrix ι ι K⟦X⟧)
-  mem τ i j := by
-    rw [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
-    split_ifs
-    · simp
-    · simp
-  comm τ := by
-    have : (algebraMap O K⟦X⟧ c • (1 : Matrix ι ι K⟦X⟧)).map (frob K l) =
-        algebraMap O K⟦X⟧ c • (1 : Matrix ι ι K⟦X⟧) := by
-      ext1 i j
-      rw [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, algebraMap_eq_C]
-      split_ifs <;> simp
-    rw [this]
-    simp
-
-theorem app_scalar (c : O) (v : Vec K a ι) : (scalar P c).app v = algebraMap O K⟦X⟧ c • v := by
-  ext1 τ
-  simp only [app_apply, scalar, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply]
 
 def comp (G : Hom Q T) (F : Hom P Q) : Hom P T where
   mat τ := G.mat τ * F.mat τ
@@ -541,32 +462,8 @@ variable {l e a} (P : PhiMod O K l e a ι)
 def Mhat (_ : PhiMod O K l e a ι) : Submodule (Ahat O K l e) (ZMod a → ι → AhatE O K l e) :=
   Submodule.pi Set.univ fun _ => Mhatc O K l e ι
 
-def Lhatc (τ : ZMod a) : Submodule (Ahat O K l e) (ι → AhatE O K l e) :=
-  hatSpan O l e (P.Lcomp τ)
-
-def Lhat : Submodule (Ahat O K l e) (ZMod a → ι → AhatE O K l e) := Submodule.pi Set.univ P.Lhatc
-
 def hatTot (_ : PhiMod O K l e a ι) (v : Vec K a ι) : ZMod a → ι → AhatE O K l e :=
   fun τ => hatV O l e (v τ)
-
-theorem hatSpan_extc {B : Subalgebra O K⟦X⟧} (hB : B ≤ Rpi O K l e) (τ : ZMod a) :
-    hatSpan O l e (P.extc B τ) =
-      Submodule.span _ (Set.range fun j => hatV O l e ((P.mx τ).col j)) := by
-  have hX (i j : ι) : P.mx τ i j ∈ RpiE O K l e := invE_A_le_RpiE l e (P.mx_mem τ i j)
-  refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)
-  · rintro _ ⟨v, ⟨hv, -⟩, rfl⟩
-    obtain ⟨m, hm, rfl⟩ := P.mem_extc.1 hv
-    refine (Submodule.mem_span_range_iff_exists_fun _).2
-      ⟨fun j => toHat O K l e ⟨m j, hB (hm j)⟩, funext fun i => ?_⟩
-    have : (P.mx τ *ᵥ m) i = ((∑ j, ⟨m j, le_away _ _ (hB (hm j))⟩ * ⟨P.mx τ i j, hX i j⟩ :
-        RpiE O K l e) : K⟦X⟧) := by
-      simp [Matrix.mulVec, dotProduct, mul_comm]
-    rw [hatV, this, hat_coe, map_sum, Finset.sum_apply]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    rw [map_mul, Pi.smul_apply, Algebra.smul_def, hatV, Matrix.col_apply, hat_of_mem l e (hX i j),
-      toHatE_eq l e (f := ⟨m j, le_away _ _ (hB (hm j))⟩) (g := ⟨m j, hB (hm j)⟩) rfl]
-  · rintro _ ⟨j, rfl⟩
-    exact ⟨_, ⟨Submodule.subset_span ⟨j, rfl⟩, fun i => hX i j⟩, rfl⟩
 
 end PhiMod
 
@@ -592,64 +489,6 @@ theorem mx_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = n) :
     (rankOne O K l e j).mx τ () () = E K l e ^ n := by
   simp [PhiMod.mx, rankOne, h, Matrix.diagonal_pow]
 
-theorem mxInv_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = -n) :
-    (rankOne O K l e j).mxInv τ () () = E K l e ^ n := by
-  simp [PhiMod.mxInv, rankOne, h, ← map_inv, Matrix.diagonal_pow]
-
-theorem mem_Lcomp_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = n)
-    {v : Unit → K⟦X⟧} :
-    v ∈ (rankOne O K l e j).Lcomp τ ↔ ∃ m ∈ A O K, v () = E K l e ^ n * m := by
-  rw [PhiMod.mem_extc]
-  constructor
-  · rintro ⟨m, hm, rfl⟩
-    exact ⟨m (), hm (), by simp [Matrix.mulVec, dotProduct, mx_rankOne h]⟩
-  · rintro ⟨m, hm, hv⟩
-    exact ⟨fun _ => m, fun _ => hm, funext fun _ => by
-      simp [Matrix.mulVec, dotProduct, mx_rankOne h, hv]⟩
-
-theorem phiD_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = n)
-    (d : (rankOne O K l e j).D) : (rankOne O K l e j).phiD d τ () = (l : K) ^ n * d (τ - 1) () := by
-  simp [PhiMod.phiD_apply, PhiMod.mx0, Matrix.mulVec, dotProduct, mx_rankOne h, constantCoeff_E]
-
-theorem one_notMem_Lcomp_rankOne (τ : ZMod a) :
-    (fun _ => 1) ∉ (rankOne O K l e fun _ : ZMod a => 1).Lcomp τ := by
-  rw [mem_Lcomp_rankOne (n := 1) rfl]
-  rintro ⟨m, hm, h⟩
-  have h1 := congrArg (fun f => ‖constantCoeff f‖) h
-  simp only [map_one, norm_one, pow_one, map_mul, constantCoeff_E, norm_mul] at h1
-  have h2 := hm 0
-  rw [coeff_zero_eq_constantCoeff] at h2
-  have := norm_l_lt_one (K := K) l
-  nlinarith [norm_nonneg (l : K)]
-
 end RankOne
-
-example [Fact (Nat.Prime 3)] : PhiMod ℤ_[3] ℚ_[3] 3 8 2 Unit := rankOne _ _ _ _ fun _ => 5
-
-example [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] :
-    monomial (e * l) ((l.factorial : K)⁻¹) ∈ S O K e ∧
-      monomial (e * l) ((l.factorial : K)⁻¹) ∉ A O K := by
-  have h0 : ‖(l.factorial : K)‖ ≠ 0 := norm_ne_zero_iff.2 (natCast_ne_zero' l l.factorial_ne_zero)
-  refine ⟨monomial_mem_S ?_, fun h => ?_⟩
-  · rw [wS, Nat.mul_div_cancel_left _ (NeZero.pos e), norm_inv, inv_mul_cancel₀ h0]
-  · have h1 := h (e * l)
-    rw [coeff_monomial_same, norm_inv] at h1
-    have h2 := norm_factorial_le (K := K) l l
-    rw [Nat.div_self (Fact.out : l.Prime).pos, pow_one] at h2
-    have h3 := h2.trans_lt (norm_l_lt_one l)
-    exact absurd ((inv_le_one₀ (lt_of_le_of_ne (norm_nonneg _) h0.symm)).1 h1) (not_le.2 h3)
-
-theorem nontrivial_Ahat [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] :
-    Nontrivial (Ahat O K l e) := by
-  have h : idE O K l e ^ 1 ≠ ⊤ := by
-    rw [pow_one, Ne, Ideal.span_singleton_eq_top]
-    intro hu
-    obtain ⟨g, hg⟩ := hu.exists_right_inv
-    have hg' : E K l e * g = 1 := congrArg Subtype.val hg
-    have : (g : K⟦X⟧) = 0 := eq_zero_of_E_mul l e (invL_A_le_Rpi l e g.2) fun n => by
-      rw [hg', coeff_one, if_neg (by have := NeZero.pos e; omega)]
-    simp [this] at hg'
-  have := Ideal.Quotient.nontrivial_iff.2 h
-  exact (AdicCompletion.evalₐ (idE O K l e) 1).toRingHom.domain_nontrivial
 
 end GlobalTheory.BK

@@ -380,9 +380,6 @@ theorem dirPolyDeriv_eq_sum_coeff_taylor (P : MvPolynomial σ ℂ) (f : (σ → 
 @[simp] theorem constantCoeff_taylor (f : (σ → ℂ) → ℂ) :
     MvPowerSeries.constantCoeff (taylor f) = f 0 := constantCoeff_taylorDir _ f
 
-theorem taylor_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
-    taylor (f + g) = taylor f + taylor g := taylorDir_add _ hf hg
-
 @[simp] theorem taylor_const (c : ℂ) :
     taylor (fun _ : σ → ℂ => c) = MvPowerSeries.C c := taylorDir_const _ c
 
@@ -392,10 +389,6 @@ theorem taylor_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
 
 theorem taylor_mul (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylor (f * g) = taylor f * taylor g := taylorDir_mul _ hf hg
-
-theorem taylor_sum {κ : Type*} (s : Finset κ) {F : κ → (σ → ℂ) → ℂ}
-    (hF : ∀ k ∈ s, AnalyticAt ℂ (F k) 0) :
-    taylor (fun z => ∑ k ∈ s, F k z) = ∑ k ∈ s, taylor (F k) := taylorDir_sum _ s hF
 
 theorem taylor_fderiv (hf : AnalyticAt ℂ f 0) (i : σ) :
     taylor (fun z => fderiv ℂ f z (Pi.single i 1)) = MvPowerSeries.pderiv ℂ i (taylor f) :=
@@ -458,32 +451,5 @@ theorem taylorDir_eq_taylor (u : σ → W) {F : W → ℂ} (hF : AnalyticAt ℂ 
   rfl
 
 end Coord
-
-section Examples
-
-example : taylor (fun z : Fin 2 → ℂ => z 0 * z 1 + 3) =
-    MvPowerSeries.X 0 * MvPowerSeries.X 1 + MvPowerSeries.C 3 := by
-  have h := taylor_eval (MvPolynomial.X 0 * MvPolynomial.X 1 + MvPolynomial.C 3 :
-    MvPolynomial (Fin 2) ℂ)
-  simpa using h
-
-example : ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial (Finsupp.single 0 2) 1)
-    (fun i : Fin 1 => (Pi.single i 1 : Fin 1 → ℂ)) (fun z => z 0 ^ 2) 0 = 2 := by
-  have h := taylor_eval (MvPolynomial.X 0 ^ 2 : MvPolynomial (Fin 1) ℂ)
-  simp only [map_pow, MvPolynomial.eval_X] at h
-  rw [dirPolyDeriv_monomial_eq_coeff, ← taylor_eq_taylorDir, h, MvPolynomial.coeff_coe,
-    MvPolynomial.coeff_X_pow]
-  simp
-
-example : MvPowerSeries.pderiv ℂ 0 (taylor fun z : Fin 1 → ℂ => Complex.exp (z 0)) =
-    taylor fun z : Fin 1 → ℂ => Complex.exp (z 0) := by
-  have hd : ∀ z : Fin 1 → ℂ, HasFDerivAt (fun z : Fin 1 → ℂ => Complex.exp (z 0))
-      (Complex.exp (z 0) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0) z :=
-    fun z => (hasFDerivAt_apply 0 z).cexp
-  rw [← taylor_fderiv (SCV.analyticAt_iff_eventually_differentiableAt.2
-    (Eventually.of_forall fun z => (hd z).differentiableAt))]
-  simp [fun z => (hd z).fderiv]
-
-end Examples
 
 end GlobalTheory

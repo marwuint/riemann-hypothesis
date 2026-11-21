@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ThConst
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CorrOfJetsOfAnalyticFrameProductsStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.JetReadingLinearSubstitutionPointsStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CorrOfJetsOfAnalyticFrameProducts
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.JetReadingLinearSubstitutionPoints
 
 set_option autoImplicit false
 
@@ -80,7 +80,7 @@ theorem sy_trivial : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   · show (1 : Jet ℂ (Fin 2 × Fin g) m) = psJet m 1
     rw [← MvPolynomial.coe_one, psJet, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe, map_one]
   have hR := (he m).2
-  have hS := GlobalTheory.T.jetReading_linearSubstitution_points _ Xo.univ.t.G Xo.univ.t.PP y.x g Φ.toAnFr 2 2 m (swapL g)
+  have hS := _root_.GlobalTheory.JetLinSub.jetRd_linSubst _ Xo.univ.t.G Xo.univ.t.PP y.x g Φ.toAnFr 2 2 m (swapL g)
     (fun p : Fin 2 × Fin g => (![fun j => MvPolynomial.X ((1 : Fin 2), j), fun j => MvPolynomial.X ((0 : Fin 2), j)] :
       Fin 2 → Fin g → MvPolynomial (Fin 2 × Fin g) ℂ) p.1 p.2) (by
       rintro ⟨i, j⟩
@@ -88,7 +88,7 @@ theorem sy_trivial : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
       refine Eq.trans ?_ (jetN_coord m (Equiv.swap (0 : Fin 2) 1 i) j).symm
       show Ideal.Quotient.mk _ (MvPolynomial.aeval _ _) = _
       fin_cases i <;> simp) _ _ _ _ _ hR
-  have hC := GlobalTheory.T.corr_of_jets_of_analytic_frame_products _ Xo.univ.t.G Xo.univ.t.PP y.x g Φ.toAnFr hI 2 m _ _ _ _ _ _ _ _ _ _ hR hS (by
+  have hC := _root_.GlobalTheory.AnVal.JetCorr.corr_of_jetRd _ Xo.univ.t.G Xo.univ.t.PP y.x g Φ.toAnFr hI 2 m _ _ _ _ _ _ _ _ _ _ hR hS (by
     intro ψ
     refine (Fintype.sum_equiv swapI _ _ fun I => ?_).symm
     have h1 := hS.1 I

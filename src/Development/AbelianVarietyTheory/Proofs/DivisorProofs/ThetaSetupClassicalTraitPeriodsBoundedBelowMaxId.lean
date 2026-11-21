@@ -122,7 +122,7 @@ theorem main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (
     exact RatModel.norm_val_le_one c.cen ((X₁.M.O z₁).algebraMap_mem a)
   obtain ⟨τ, e, hτ, -⟩ := exists_test_match X₁.o₁ X₁.Ω₁ S' ρ' p y₀ u l
     (GlobalTheory.T.thetaConstant_bounded_by_shortestVector hL hL2 hUT _ _ S' ρ' p y₀ u l hy) (GlobalTheory.T.unitThetaConstants_generate_integralTorsion hL hL2 hUT _ _ S' ρ' p y₀ u l hy)
-    (GlobalTheory.T.weightSpace_values_integralTorsion_bound_shortestVector hL hL2 hUT _ _ S' ρ' p y₀ u l hy) (GlobalTheory.T.exists_norm_torsionSum_shortestVector_eq hL hL2 hUT _ _ S' ρ' p y₀ u l hy)
+    (GlobalTheory.T.weightSpace_values_integralTorsion_bound_shortestVector hL hL2 hUT _ _ S' ρ' p y₀ u l hy) (_root_.GlobalTheory.TestFibre.exists_norm_FF_eq hL hL2 hUT _ _ S' ρ' p y₀ u l hy)
     (GlobalTheory.T.exists_weightZeroSection_unit_integralTorsionPoint hL hL2 hUT _ _ S' ρ' p y₀ u l hy)
   let α₀ : τ.X := e.symm (j.symm (Pi.single 0 x'))
   obtain ⟨v, hv⟩ := exists_shortest τ.q τ.pos X₁.S.N α₀

@@ -43,15 +43,6 @@ def GTSSLMat : Prop :=
     (∀ l ∈ Finset.Icc 1 (P.k - 1), SliceLoc P Bs (d.SS l).1 ∧ SliceLoc P Bs (star (d.SS l)).1) →
       ∃ s t : ℕ → M.Ty P → M.Ty P → ℂ → ℂ, SmST P s t ∧ SSLoc P Bs d e s t
 
-def GTSSLocalOfCut : Prop := GTCLRadT → GTSSLSliceDZ → GTSSLSliceSS → GTSSLMat → GTSSLocal
-
-theorem gTSSLocal_of_cut : GTSSLocalOfCut := by
-  intro hRT hDZ hSS hMat Wp Wq _ _ _ _ _ _ P Bs X d hH e he _
-  have hT := hRT Wp Wq P Bs hH.1 hH.2.1 hH.2.2.1 X
-  have hSl : ∀ (Y : ℂ) (a b : Fin 2), SliceLoc P Bs (X.t Y a b) := fun Y a b =>
-    hDZ Wp Wq P Bs hH.1 _ (hT Y a b)
-  exact hMat Wp Wq P Bs X d hH e he (hSS Wp Wq P Bs X d hH hSl)
-
 end
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

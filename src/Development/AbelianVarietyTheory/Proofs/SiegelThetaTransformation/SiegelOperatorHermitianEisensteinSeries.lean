@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GCauchyStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.NormDetDenomLeRankOne
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisAutomorphyLinear
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicitStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EmbeddingCompatibleWithWeilAndDenominatorStatement
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
@@ -135,7 +135,7 @@ theorem GlobalTheory.SW.eis_siegel_operator : ∀ (E : Type) [Field E] [NumberFi
       refine tendsto_const_nhds.congr' ?_
       filter_upwards [eventually_ge_atTop (0 : ℝ)] with t ht
       obtain ⟨a1, -, a3, a4, -⟩ := hι _ V.2.choose_spec.1
-      rw [(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E Ψ hΨ n (N + 1) hn φ hφ).2 _ (j V).2.choose_spec.1 _ a1
+      rw [(_root_.GlobalTheory.SW.weil_parabolic E Ψ hΨ n (N + 1) hn φ hφ).2 _ (j V).2.choose_spec.1 _ a1
         (j V).2.choose_spec.2 _ (pushZ_mem Ψ hZ _ ht)]
       simp only [eisTerm, EisTrans.hFac_zero, a3, dropZ_pushZ]
       rw [← a4 φ hφ, dropF]

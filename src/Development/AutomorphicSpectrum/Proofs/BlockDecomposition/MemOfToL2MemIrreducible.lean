@@ -6,9 +6,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNonnegBum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalConvolutionCompactStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormalisedCuspFormL2Bounded
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantOfLieOneLEqZero
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalKTypeFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalKTypeFinite
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspDiscreteDecompositionGL
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.NotIsFinitePartOfBot
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleSmoothModuleUnique
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspFiniteVectorsHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspFiniteVectorsHolds
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleCuspidalFormL2Mem
 import GroundTheory.PAdicHodge.ACrisBdR
 
@@ -147,7 +149,7 @@ theorem mem_of_toL2_mem_irreducible {W : Submodule ℂ (Sm E a)} (hW : IsStable 
     ⨆ (T : Y₀ →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : (∀ k w, T (ρ k w) = piInf E a μ k (T w)) ∧ ∀ w, P (T w)), LinearMap.range T
   let M₀ : Submodule ℂ (L2 (latticeGL E a) μ) :=
     ⨆ (T : Y₀ →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : (∀ k w, T (ρ k w) = piInf E a μ k (T w)) ∧ ∀ w, P₀ (T w)), LinearMap.range T
-  haveI hM₀f : FiniteDimensional ℂ M₀ := GlobalTheory.T.cuspidal_K_type_finite E a μ H hcusp hirr U hUo Y₀ ρ
+  haveI hM₀f : FiniteDimensional ℂ M₀ := _root_.GlobalTheory.CompanionTheory.IsoTypes.finiteDimensional_isotypic E a μ H hcusp hirr U hUo Y₀ ρ
   have hMP : M ≤ C ⊓ fixedBy μ U := iSup₂_le fun T hT => by
     rintro _ ⟨w, rfl⟩
     exact hT.2 w
@@ -241,7 +243,7 @@ theorem exists_isFinitePartOf (π : CuspSub E a) (hπ : IsNormalised π) :
       toL2_ne_zero (hm φ hφ) (ContAut.continuous_of_isOpen_stab E a φ (hWa φ hφ).level) fun e => h0 (Subtype.ext e)⟩
   obtain ⟨H, hHC, hi⟩ := exists_irred_le hC hCc hC0
   have hcusp : H ≤ L2cusp μ := hHC.trans hCc
-  obtain ⟨π₀, hf⟩ := GlobalTheory.T.cusp_finite_vectors_holds E a μ H hcusp hi
+  obtain ⟨π₀, hf⟩ := _root_.GlobalTheory.CompanionTheory.Published.cuspFiniteVectorsGL E a μ H hcusp hi
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π₀.ne_bot
   have hφπ : φ ∈ π.V := mem_of_toL2_mem_irreducible π.stable hWa hm hC rfl hcusp hi hHC
     (fun ψ hψ => eq_zero_of_mem_orthogonal hm hi.1 hi.2.1 hHC ψ hψ) φ (π₀.cusp φ hφ).1 (hf.finitePartMemL2 φ hφ)

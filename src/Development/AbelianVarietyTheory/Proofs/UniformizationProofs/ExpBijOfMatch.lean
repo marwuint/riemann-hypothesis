@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFourierJacobiExpansionOverFieldStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FourierJacobiExpansionOverFieldInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FourierJacobiExpansionOverFieldInjective
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BijectiveOfIso
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValueExpansionOfChartExpansionStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ChartExpansionOfValueExpansionStatement
@@ -26,7 +26,7 @@ theorem expBij_of_match : Laws → Laws2 → ∀ (V : Type) [CommRing V] [IsDoma
     unfold UnifPre.SecK
     rw [hM.LG]
   have hK := GlobalTheory.GenericFibreSections.sameK_bijective V _ D.toPre A G U k
-  have hu := GlobalTheory.T.fourierJacobiExpansion_overField_injective V hV D.toPre A G U (FractionRing V) k
+  have hu := _root_.GlobalTheory.UU.ExpFUniq.main V hV D.toPre A G U (FractionRing V) k
   have ht := GlobalTheory.T.exists_fourierJacobi_expansion_over_field h1 h2 V hV D.toPre A G U (FractionRing V) k hk
   have e1 := GlobalTheory.T.valueExpansion_of_chartExpansion V _ D A G U U' hM k
   have e2 := GlobalTheory.T.chartExpansion_of_valueExpansion V _ D A G U U' hM k

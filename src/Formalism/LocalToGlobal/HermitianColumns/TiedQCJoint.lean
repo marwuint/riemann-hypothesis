@@ -24,13 +24,6 @@ def clsCast (D : D7) (u : D.what₂.Word) (i : ℕ) : (D.mem u).C.cls i ≃ (D.c
 def yCast (D : D7) (u : D.what₂.Word) (i : ℕ) : (D.mem u).C.Y i ≃ (D.chTw u D.what₂.mu0).Y i :=
   Equiv.cast (congrArg (fun C => C.Y i) (D.memberColumns_twistedChain_base u).symm)
 
-theorem heq_apply {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C C' : ColumnChain R ι hc} (h : C' = C) (j : ℕ)
-    (f : C'.cls j → C'.Y j → ℂ) (g : C.cls j → C.Y j → ℂ) (hfg : HEq f g) (c : C.cls j) (y : C.Y j) :
-    f (Equiv.cast (congrArg (fun C => C.cls j) h.symm) c) (Equiv.cast (congrArg (fun C => C.Y j) h.symm) y) = g c y := by
-  subst h
-  rw [eq_of_heq hfg]
-  rfl
-
 structure TwChMu0 {D : D7} {inQ : D.what₂.Tup → HeightOneSpectrum (𝓞 D.host.F) → Prop} (T : TwChTied D inQ) : Prop where
   eY : ∀ u i hi, T.eY u D.what₂.mu0 i hi = yCast D u i
   eCls0 : ∀ u, T.eCls0 u D.what₂.mu0 = clsCast D u 0

@@ -43,9 +43,4 @@ lemma linearIndependent_C : LinearIndependent (MvPolynomial σ L) (fun i => (C (
   have := (Fintype.linearIndependent_iff.1 b.linearIndependent) (fun i => coeff m (g i)) h i
   rw [this, coeff_zero]
 
-noncomputable def polyBasis : Module.Basis n (MvPolynomial σ L) (MvPolynomial σ E) :=
-  Module.Basis.mk (linearIndependent_C b) (fun p _ => by
-    rw [eq_sum_crd b p]
-    exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
-
 end ReciprocityTheory.ChartRestriction.G.T0.PolynomialCoordinateBasis

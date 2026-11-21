@@ -44,12 +44,6 @@ theorem exists_finset_iSup_eq_top [CompactSpace X] (U : X → X.Opens) (hU : ∀
   obtain ⟨a, ha, h⟩ := Set.mem_iUnion₂.1 (hT (Set.mem_univ y))
   exact Opens.mem_iSup.2 ⟨⟨a, ha⟩, h⟩
 
-theorem isGenerated_iff_forall [CompactSpace X] : IsGenerated L ↔ ∀ x : X, ∃ s : L.Sec, x ∈ nonzeroLocus s := by
-  refine ⟨fun h => h.exists_mem, fun h => ?_⟩
-  choose s hs using h
-  obtain ⟨T, hT⟩ := exists_finset_iSup_eq_top (fun x => nonzeroLocus (s x)) hs
-  exact isGenerated_of_finite (fun x : T => s x) hT
-
 theorem IsGenerated.exists_fin_succ (h : IsGenerated L) :
     ∃ (N : ℕ) (s : Fin (N + 1) → L.Sec), ⨆ i, nonzeroLocus (s i) = ⊤ := by
   obtain ⟨n, s, hs⟩ := h
@@ -97,22 +91,6 @@ theorem IsGenerated.pow (h : IsGenerated L) (k : ℕ) : IsGenerated (lbPow L k) 
       simp only [nonzeroLocus_secOfFn h.isLB, Scheme.basicOpen_one, iSup_const]⟩
   · obtain ⟨n, s, hs⟩ := h
     exact ⟨n, fun i => secToPow (s i) k, by simp only [nonzeroLocus_secToPow _ hk, hs]⟩
-
-theorem IsGenerated.pow_add {m n : ℕ} (hm : IsGenerated (lbPow L m)) (hn : IsGenerated (lbPow L n)) :
-    IsGenerated (lbPow L (m + n)) := by
-  obtain ⟨a, s, hs⟩ := hm
-  obtain ⟨b, t, ht⟩ := hn
-  refine isGenerated_of_finite (fun p : Fin a × Fin b => secMul (s p.1) (t p.2)) (top_le_iff.1 fun y _ => ?_)
-  obtain ⟨i, hi⟩ := Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))
-  obtain ⟨j, hj⟩ := Opens.mem_iSup.1 (ht.ge (Set.mem_univ y))
-  exact Opens.mem_iSup.2 ⟨(i, j), (nonzeroLocus_secMul (s i) (t j)).ge ⟨hi, hj⟩⟩
-
-theorem isGenerated_of_isQuasiAffine [X.IsQuasiAffine] (hL : L.IsLB) : IsGenerated L := by
-  refine isGenerated_iff_forall.2 fun x => ?_
-  obtain ⟨k, hk⟩ := exists_chart hL x
-  obtain ⟨_, ⟨r, -, rfl⟩, hx, hle⟩ := Opens.isBasis_iff_nbhd.1 (Scheme.IsQuasiAffine.isBasis_basicOpen X) hk
-  obtain ⟨u, hu⟩ := exists_sec_nonzeroLocus_eq_basicOpen hL r k hle
-  exact ⟨u, hu.ge hx⟩
 
 end Generated
 
@@ -165,10 +143,6 @@ theorem isAmpleLB_of_cover (hL : L.IsLB) {n : ℕ} (hn : 1 ≤ n) {ι : Type*} [
   exists_affine x := by
     obtain ⟨i, hi⟩ := Opens.mem_iSup.1 (hs.ge (Set.mem_univ x))
     exact ⟨n, hn, s i, hi, ha i⟩
-
-theorem isAmpleLB_iff_cover : IsAmpleLB L ↔ L.IsLB ∧ ∃ n, 1 ≤ n ∧ ∃ (N : ℕ) (s : Fin (N + 1) → (lbPow L n).Sec),
-    (⨆ i, nonzeroLocus (s i) = ⊤) ∧ ∀ i, IsAffineOpen (nonzeroLocus (s i)) :=
-  ⟨fun h => ⟨h.isLB, h.exists_cover⟩, fun ⟨hL, _, hn, _, s, hs, ha⟩ => isAmpleLB_of_cover hL hn s hs ha⟩
 
 theorem IsAmpleLB.exists_isGenerated_pow (h : IsAmpleLB L) : ∃ n, 1 ≤ n ∧ IsGenerated (lbPow L n) := by
   obtain ⟨n, hn, N, s, hs, -⟩ := h.exists_cover
@@ -255,10 +229,6 @@ theorem isAmpleLB_of_relAmple_of_isAffine {S : Scheme.{0}} [IsAffine S] (A : Ove
   have h₂ := h₁.pull_of_isAffineHom j
   exact h₂.of_lbIso hL (LBIso.chartPull a (chartPullPull _ j) (lbIso_refl h₁.isLB))
 
-theorem polAV_isAmpleLB {S : Scheme.{0}} (P : PolAV S) (U : S.Opens) (hU : IsAffineOpen U) :
-    IsAmpleLB (P.L.pull (P.A.hom ⁻¹ᵁ U).ι) :=
-  isAmpleLB_of_relAmple P.A P.isLB P.ample U hU
-
 end Ample
 
 section Inhabitants
@@ -273,15 +243,6 @@ theorem isAmpleLB_of_isQuasiAffine [X.IsQuasiAffine] (hL : L.IsLB) : IsAmpleLB L
 
 theorem isAmpleLB_of_isAffine [IsAffine X] (hL : L.IsLB) : IsAmpleLB L := isAmpleLB_of_isQuasiAffine hL
 
-theorem isAmpleLB_triv_iff : IsAmpleLB (LB.triv X) ↔ X.IsQuasiAffine := by
-  refine ⟨fun h => ?_, fun _ => isAmpleLB_of_isQuasiAffine (LB.isLB_triv X)⟩
-  have := h.compactSpace
-  refine Scheme.IsQuasiAffine.of_forall_exists_mem_basicOpen X fun x => ?_
-  obtain ⟨n, -, s, hs, ha⟩ := h.exists_affine x
-  have e : nonzeroLocus s = X.basicOpen (U := ⊤) (powSecFn s PUnit.unit) :=
-    (inf_top_eq _).symm.trans (nonzeroLocus_inf_powSecFn s PUnit.unit)
-  exact ⟨powSecFn s PUnit.unit, e ▸ ha, e.le hs⟩
-
 theorem isGenerated_O1 (R : Type) [CommRing R] (N : ℕ) : IsGenerated (ProjSpace.O1 R N) :=
   ⟨N + 1, ProjSpace.coord R N, ProjSpace.iSup_nonzeroLocus_coord R N⟩
 
@@ -291,21 +252,6 @@ theorem isAmple_projective_O_one (R : Type) [CommRing R] (N : ℕ) : IsAmpleLB (
     fun k => by
       rw [nonzeroLocus_secToPow _ le_rfl, ProjSpace.nonzeroLocus_coord]
       exact ProjSpace.isAffineOpen_chart R N k
-
-example [Nonempty X] (L : LB X) [IsEmpty L.ι] : ¬ IsGenerated L ∧ ¬ IsAmpleLB L := by
-  have h : ¬ L.IsLB := fun h => by
-    obtain ⟨i, -⟩ := exists_chart h (Classical.arbitrary X)
-    exact isEmptyElim i
-  exact ⟨fun h' => h h'.isLB, fun h' => h h'.isLB⟩
-
-example : IsAmpleLB (LB.triv (Sp ℤ)) ∧ IsGenerated (LB.triv (Sp ℤ)) :=
-  ⟨isAmpleLB_of_isAffine (LB.isLB_triv _), isGenerated_triv _⟩
-
-example (h : ¬ X.IsSeparated) : IsGenerated (LB.triv X) ∧ ¬ IsAmpleLB (LB.triv X) :=
-  ⟨isGenerated_triv X, fun h' => h (have := isAmpleLB_triv_iff.1 h'; inferInstance)⟩
-
-example : IsAmpleLB (lbPow (ProjSpace.O1 ℚ 2) 3) :=
-  (isAmpleLB_pow_iff (ProjSpace.O1_isLB ℚ 2) (by norm_num)).2 (isAmple_projective_O_one ℚ 2)
 
 end Inhabitants
 

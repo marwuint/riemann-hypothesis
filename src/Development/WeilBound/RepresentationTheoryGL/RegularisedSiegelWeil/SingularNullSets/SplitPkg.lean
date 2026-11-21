@@ -28,16 +28,6 @@ def PlaceEx : Prop := ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.
       χ (ideleAt D.host.F D.host.E v u) = 1) ∧
     ∀ u : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ, (P.π u).1 = (P.π u).2 → χ (ideleAt D.host.F D.host.E v u) = 1
 
-def LocGrp : Prop := ∀ (D : D7) (v : Pl D) (P : SplitPkg D v) (n : ℕ),
-  ∃ Φ : GLoc D.sp.cm.sig (Jst D n) v ≃* GL (Fin (n + n)) (Fv D.host.F v),
-    Continuous Φ ∧ Continuous Φ.symm ∧
-    (∀ g, (Φ g).1 = (matHom (Fv D.host.F v) D.sp.cm.sig (Jst D n) g).1.map (fun y => (P.π y).1)) ∧
-    (∀ g, g ∈ stabLoc D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) v ↔ Φ g ∈ KL D.host.F v n) ∧
-    ∀ g, IsUpper (Φ g).1 → emb D.sp.cm.sig (Jst D n) v g ∈ GlobalTheory.StdUnn.P D n ∧
-      ∃ a : GL (Fin n) (AE D), blkA (mat (emb D.sp.cm.sig (Jst D n) v g)) = a.1 ∧
-        ∃ u : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ, Matrix.GeneralLinearGroup.det a = ideleAt D.host.F D.host.E v u ∧
-          P.π u = ((blkA (Φ g).1).det, ((blkD (Φ g).1).det)⁻¹)
-
 end PositivityTheory.Rg.Rsw.L.LJPos
 
 end

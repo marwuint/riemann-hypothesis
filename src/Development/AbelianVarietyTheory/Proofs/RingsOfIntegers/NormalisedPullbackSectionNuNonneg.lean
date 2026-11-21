@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueCompatibleSectionExpansionIntegralFrStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueCompatibleSectionExpansionIntegralFr
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormalisedPullbackSectionExpandsFamilyStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.TwistingStatementsOfLaws
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
@@ -23,7 +23,7 @@ theorem nuGe_zero_of_pulls : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have hL : Laws := GlobalTheory.firstFiveLaws.1
   have hk₁ : 1 ≤ k := by omega
   have ha' : a * star a = (N : 𝓞 E) := ha
-  have hex := GlobalTheory.T.existsUnique_compatibleSection_expansion_integralFramedPoint E H Dw l Xo c T io y I P hT ϖ hϖ Q hQ F v hv xF h hl
+  have hex := _root_.GlobalTheory.tied_section_expansion_existsUnique E H Dw l Xo c T io y I P hT ϖ hϖ Q hQ F v hv xF h hl
   obtain ⟨⟨σ, hσ, -⟩, hu⟩ := hex k hk₁ hh
   obtain ⟨s, hs, -⟩ := hu σ hσ
   obtain ⟨uΨ, huΨ, -, -⟩ := P.w0

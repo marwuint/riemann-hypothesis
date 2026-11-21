@@ -80,11 +80,6 @@ private theorem exists_int_add_star_eq_one_of_isCMUnram (hK : Formalism.Hermitia
   rw [heq] at hmem
   exact hat (hP.isPrime.mem_of_pow_mem 2 hmem)
 
-theorem exists_theta (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) :
-    ∃ θ : K, θ ∈ pK K 𝔭 0 ∧ θ + star θ = 1 := by
-  obtain ⟨θ, hθ⟩ := exists_int_add_star_eq_one_of_isCMUnram hK hF
-  exact ⟨algebraMap (𝓞 K) K θ, algebraMap_mem_pK 𝔭 θ, hθ⟩
-
 theorem mul_inv_mem_iff {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {A B : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {n : ℕ}
     {U W : V ≃ₗ[K] V} (hUA : U ∈ glSub A) (hUB : U ∈ glSub B) (hWA : W ∈ glSub A) (hWB : W ∈ glSub B) :
     U * W⁻¹ ∈ sSub h B 𝔭 n ⊓ glSub A ↔ IA.phi h U - IA.phi h W ∈ hermL B 𝔭 n := by

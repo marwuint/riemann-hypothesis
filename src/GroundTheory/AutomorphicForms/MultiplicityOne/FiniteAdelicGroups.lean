@@ -18,11 +18,6 @@ noncomputable section
 
 variable (K : Type*) [Field K] [NumberField K]
 
-def localChar (v : HeightOneSpectrum (𝓞 K)) : AddChar (v.adicCompletion K) ℂ where
-  toFun x := (GroundTheory.Global.localAdelicChar K v x : ℂ)
-  map_zero_eq_one' := by simp
-  map_add_eq_mul' x y := by simp [AddChar.map_add_eq_mul]
-
 theorem sigma_mem_integralGL {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {n : ℕ} {g : GL (Fin n) F} (hg : g ∈ GLnLocal.integralGL F n) :
     sigma g ∈ GLnLocal.integralGL F n := by
@@ -62,34 +57,6 @@ def sigmaRes : FinRes K n ≃ₜ FinRes K n where
 
 @[simp] theorem sigmaRes_apply (x : FinRes K n) (v : HeightOneSpectrum (𝓞 K)) :
     sigmaRes K n x v = sigma (x v) := rfl
-
-def sigmaF : AdelicGLn.FiniteAdelicGL K n ≃ₜ AdelicGLn.FiniteAdelicGL K n :=
-  ((AdelicGLn.finiteRestrictedEquiv K n).toHomeomorph.trans (sigmaRes K n)).trans
-    (AdelicGLn.finiteRestrictedEquiv K n).symm.toHomeomorph
-
-def unipotentF : Subgroup (AdelicGLn.FiniteAdelicGL K n) where
-  carrier := {g | ∀ v, AdelicGLn.finiteRestrictedEquiv K n g v ∈
-    Iwasawa.unipotent (v.adicCompletion K) n}
-  mul_mem' {g h} hg hh v := by
-    show AdelicGLn.finiteRestrictedEquiv K n (g * h) v ∈ _
-    rw [map_mul, RestrictedProduct.mul_apply]
-    exact (Iwasawa.unipotent _ n).mul_mem (hg v) (hh v)
-  one_mem' v := by
-    show AdelicGLn.finiteRestrictedEquiv K n 1 v ∈ _
-    rw [map_one, RestrictedProduct.one_apply]
-    exact (Iwasawa.unipotent _ n).one_mem
-  inv_mem' {g} hg v := by
-    show AdelicGLn.finiteRestrictedEquiv K n g⁻¹ v ∈ _
-    rw [map_inv, RestrictedProduct.inv_apply]
-    exact (Iwasawa.unipotent _ n).inv_mem (hg v)
-
-def superdiagF (M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) :
-    FiniteAdeleRing (𝓞 K) K :=
-  ∑ i : Fin n, ∑ j : Fin n, if j.val = i.val + 1 then M i j else 0
-
-def psiF (g : AdelicGLn.FiniteAdelicGL K n) : ℂ :=
-  (GroundTheory.Global.finiteAdelicChar K
-    (superdiagF K n (g : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K))) : ℂ)
 
 variable [DecidableEq (HeightOneSpectrum (𝓞 K))]
 

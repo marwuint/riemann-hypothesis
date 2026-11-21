@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.Finit
 import Formalism.LocalToGlobal.ProjectiveLattices.RecConj
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.QbridgeOfNumGood
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmFamilyFunctionalsDetectLowCoefficients
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmArcDatumFamilyFunctionalBoundedLinearOnCuspForStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmArcDatumFamilyFunctionalBoundedLinearOnCuspFor
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.FreeQuotientRank
 open Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.BasicNotions Formalism.L2.LamCM GlobalTheory.ArcCM
@@ -81,7 +81,7 @@ theorem qat_of_kill_detect : Known → ∀ (D : D7) (T : Core D) (h : LawsCore T
   · by_contra hno
     refine hF (hdet F fun K₁ i1 i2 i3 d hd => ?_)
     by_contra hne
-    obtain ⟨φ, hφ, hgood⟩ := GlobalTheory.T.cmArcDatumFamily_functional_bounded_linear_on_cuspForms hK D T h j ka CR Tt cc large₂ hG hj hjm K₁ d hd
+    obtain ⟨φ, hφ, hgood⟩ := _root_.GlobalTheory.ArcCM.numGood_of_famQ hK D T h j ka CR Tt cc large₂ hG hj hjm K₁ d hd
     refine hno ⟨K₁, i1, i2, i3, φ, fun G hGm => ?_, ?_, hgood⟩
     · exact (hφ G).trans (hkill K₁ d hd G hGm)
     · exact fun h0 => hne ((hφ F).symm.trans h0)

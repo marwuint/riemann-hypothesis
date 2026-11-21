@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNotPrimePow
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExpSumBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExpSumBounds
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem
 open scoped Classical
 
@@ -342,7 +342,7 @@ lemma th_eq {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} (h : χ * χ = 1) (t : ℝ) 
 
 theorem norm_F_one_ge : ∃ A c : ℝ, 0 < A ∧ 0 < c ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ), χ * χ = 1 →
     c / 𝓕.B ^ A ≤ ‖𝓕.F χ 1‖ := by
-  obtain ⟨C, hC, H⟩ := GlobalTheory.T.tsum_exp_mul_aChi_bounds
+  obtain ⟨C, hC, H⟩ := _root_.GlobalTheory.Hk.LFam.exp_sum_bounds
   set K := ∫ w in Set.Ioi (0 : ℝ), wt w with hK
   have hK0 : 0 ≤ K := setIntegral_nonneg measurableSet_Ioi fun w hw => wt_nonneg hw
   have hw0 := besW_one_pos

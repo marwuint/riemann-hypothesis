@@ -117,16 +117,4 @@ theorem exists_fockInner_sub_eq_zero {σ : Type*} (W : Submodule ℂ (MvPolynomi
 
 end Adjoint
 
-section Triangular
-
-variable {R : Type*} [CommRing R] {T : Type*} [Fintype T] {p q n : ℕ}
-
-end Triangular
-
-section Density
-
-variable {T κ : Type*} [Fintype κ] {p q n : ℕ}
-
-end Density
-
 end GlobalTheory.Harm

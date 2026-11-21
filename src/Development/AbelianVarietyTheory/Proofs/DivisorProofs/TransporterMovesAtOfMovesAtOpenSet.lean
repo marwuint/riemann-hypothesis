@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranspOfMovesAt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarOfBorelMovesOpenFramesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarOfBorelMovesOpenFrames
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCandidateBorelMoveOpenFramesBaireStatement
 
 set_option autoImplicit false
@@ -50,7 +51,7 @@ theorem movesAt_of_movesAt_open : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies
     (fun z hz => by
       obtain ⟨γ', hγ', b, hb, e⟩ := step z (hWd hz) hz
       exact ⟨γ', hγ', _, hborc b hb, hcast z b γ' (eq_of_heq (Sigma.mk.inj_iff.1 e).2)⟩)
-  obtain ⟨s, hs⟩ := GlobalTheory.T.scalar_of_borel_moves_open_frames ((uAt r v i).X k) _ V hVo hVn hVd hV
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.scalar_of_triangular_moves_open ((uAt r v i).X k) _ V hVo hVn hVd hV
   set m : GL (Fin D.R.r) D.host.E := (γ' * a)⁻¹ * c with hm_def
   have hcm : (c : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) =
       (γ' : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) * (a : Matrix _ _ _) * (m : Matrix _ _ _) := by

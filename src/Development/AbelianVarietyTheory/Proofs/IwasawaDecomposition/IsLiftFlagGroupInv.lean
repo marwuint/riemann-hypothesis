@@ -111,12 +111,6 @@ theorem eC_inv {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : Fam
   rw [h, h, map_inv]
   exact GlobalTheory.RowLev.GroupAlgPos.isSA_central _ h2 (fun a => (Subalgebra.mem_center_iff.1 h1 a).symm) _
 
-theorem ipM_e0 : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ F : Face D A, R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → ∀ U ∈ Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (Formalism.IndefR.Lev.levChi _ (R.βY 0) (R.dat0 R.triv)), ∀ U' ∈ R.EEat R.triv, ipM (R.MY 0) R.ν0 R.fd0 (postOn (R.MY 0) R.e0 U) U' = ipM (R.MY 0) R.ν0 R.fd0 U U' := by
-  intro hP D G _ _ Pl0 T A Ks _ _ _ R F _ hG hM U hU U' hU'
-  have h : postOn (R.MY 0) R.e0 U' = U' := sub_eq_zero.1 (LinearMap.mem_ker.1 hU'.2)
-  exact (ipM_gaL (L := R.dat0 R.triv) hP hM.inf hM.ν0.1.1 hM.ν0.2 R.eG _ (eC_inv R hG.record) hU hU'.1).trans
-    (congrArg (ipM (R.MY 0) R.ν0 R.fd0 U) h)
-
 end GlobalTheory.ProjectorAdjoint
 
 end

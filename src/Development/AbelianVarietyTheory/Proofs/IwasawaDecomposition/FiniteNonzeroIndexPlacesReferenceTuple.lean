@@ -173,33 +173,6 @@ theorem seedW_bound {K : Ctx} {P : Pre} {f : Top.Fr P} {F F₀ : IntermediateFie
   rw [Set.Finite.coe_toFinset]
   exact ⟨v, hv, rfl⟩
 
-theorem seeds_uniform : SeedBd := by
-  classical
-  refine evG_all fun K P f F F₀ => ?_
-  have key : ∀ c : (Fin 2 → 𝓞 P.host.E) × (P.Word → 𝓞 P.host.E), ∃ (S : Finset ℕ) (S₂ : Finset ℂ), (∀ z ∈ S₂, IsAlgebraic ℚ z) ∧
-      ∀ Y : PreX P, (Y.piG, Y.piT) = c → SeedW K P f F F₀ Y Set.univ ⊤ →
-        SeedW K P f F F₀ Y (S : Set ℕ) (IntermediateField.adjoin ℚ (S₂ : Set ℂ)) := by
-    intro c
-    by_cases hc : ∃ X : PreX P, (X.piG, X.piT) = c ∧ SeedW K P f F F₀ X Set.univ ⊤
-    · obtain ⟨X, hX, hs⟩ := hc
-      obtain ⟨S, S₂, hS₂, hb⟩ := seedW_bound hs
-      refine ⟨S, S₂, hS₂, fun Y hY _ => ?_⟩
-      have e := hX.trans hY.symm
-      exact seedW hb (congrArg Prod.fst e) (congrArg Prod.snd e)
-    · exact ⟨∅, ∅, by simp, fun Y hY hs => absurd ⟨Y, hY, hs⟩ hc⟩
-  choose S S₂ hS₂ hS using key
-  have hfin := finite_gens P
-  refine ⟨hfin.toFinset.biUnion S, hfin.toFinset.biUnion S₂, ?_, fun Y hs => ?_⟩
-  · intro z hz
-    obtain ⟨c, -, hz⟩ := Finset.mem_biUnion.1 hz
-    exact hS₂ c z hz
-  · have hm : (Y.piG, Y.piT) ∈ hfin.toFinset := hfin.mem_toFinset.2 ⟨Y, rfl⟩
-    refine (hS _ Y rfl hs).mono ?_ (IntermediateField.adjoin.mono _ _ _ ?_)
-    · intro p hp
-      exact Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨_, hm, hp⟩)
-    · intro p hp
-      exact Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨_, hm, hp⟩)
-
 end GlobalTheory.Mem.R3.Rw.Resize
 
 end

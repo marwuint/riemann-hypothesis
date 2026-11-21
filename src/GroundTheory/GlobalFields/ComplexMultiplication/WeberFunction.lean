@@ -28,11 +28,6 @@ theorem IsShortForm.Δ_eq {W : WeierstrassCurve F} (hW : IsShortForm W) :
   simp only [WeierstrassCurve.Δ, b₂, b₄, b₆, b₈, hW.a₁_eq, hW.a₂_eq, hW.a₃_eq]
   ring
 
-theorem IsShortForm.Δ_eq_g {W : WeierstrassCurve F} (hW : IsShortForm W) :
-    W.Δ = g₂ W ^ 3 - 27 * g₃ W ^ 2 := by
-  rw [hW.Δ_eq, g₂, g₃]
-  ring
-
 theorem IsShortForm.a₄_ne_zero_or_a₆_ne_zero {W : WeierstrassCurve F} [W.IsElliptic]
     (hW : IsShortForm W) : W.a₄ ≠ 0 ∨ W.a₆ ≠ 0 := by
   by_contra h

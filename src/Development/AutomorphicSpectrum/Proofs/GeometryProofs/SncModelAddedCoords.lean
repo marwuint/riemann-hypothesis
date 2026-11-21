@@ -7,10 +7,12 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMu
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AddJFintype
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncModelReindexedCoords
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominantSmoothMapCoordsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FractionFieldCoordsGeneratedStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FractionFieldCoordsGenerated
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothMapLocalizationCompatStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerRankTranscendenceDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerRankLocalizationBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerRankLocalizationBound
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagStep
 
@@ -158,9 +160,9 @@ theorem isSncModel_pull : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀
         a ∈ Algebra.adjoin ℚ (insert (algebraMap Ω₀ Ω (f₀ l))⁻¹ (Set.range (bratio (addY y x') c₁))) := fun a ha' => by
       rw [← adjoin_insert_eq (addY y x') c₁ hc₁]
       exact Algebra.subset_adjoin (Set.mem_insert_of_mem _ ha')
-    obtain ⟨t, ht, hG⟩ := GlobalTheory.T.kaehler_rank_localization_bound Ω₀ Ω _ _ (bratio y c) (bratio (addY y x') c₁) (addV J N) hv e _ bd hfin (f₀ l) h0 _ _ rfl rfl
-      ψ hψ hψs (hfr _ _ hA₀ (GlobalTheory.T.fraction_field_coords_generated X Ω₀ ξ _ (seg y) tie c hxc))
-      (hfr₁ _ _ hA₁ (GlobalTheory.T.fraction_field_coords_generated X' Ω ξ' _ (seg (addY y x')) tie' c₁ hxc₁)) hSm z n hn hli hspan hbd P hP (fl l) rfl hl
+    obtain ⟨t, ht, hG⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocalStep.local_step Ω₀ Ω _ _ (bratio y c) (bratio (addY y x') c₁) (addV J N) hv e _ bd hfin (f₀ l) h0 _ _ rfl rfl
+      ψ hψ hψs (hfr _ _ hA₀ (_root_.GlobalTheory.CompanionTheory.Ar.ChartFrac.exists_eq_div_chart X Ω₀ ξ _ (seg y) tie c hxc))
+      (hfr₁ _ _ hA₁ (_root_.GlobalTheory.CompanionTheory.Ar.ChartFrac.exists_eq_div_chart X' Ω ξ' _ (seg (addY y x')) tie' c₁ hxc₁)) hSm z n hn hli hspan hbd P hP (fl l) rfl hl
     exact ⟨t, ht, fun _ => hG⟩
   obtain ⟨m', f', a', hs', hG⟩ := exists_cover _ hloc
   refine ⟨m', fun l => (f' l : Ω), fun l => (a' l : Ω), fun l => (f' l).2, fun l => (a' l).2, ?_, fun l hl S' hS' => ?_⟩

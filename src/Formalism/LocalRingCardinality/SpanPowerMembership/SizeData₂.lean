@@ -19,27 +19,6 @@ def scBig (B : ℕ) : Scale where
   J := 1
   one_le_J := le_rfl
 
-theorem scBig_floor (B : ℕ) : ⌊(scBig B).x ^ ((scBig B).ez / 5)⌋₊ = B + 2 := by
-  have h0 : (0 : ℝ) ≤ ((B + 2 : ℕ) : ℝ) := by positivity
-  have ee : (scBig B).ez = (scBig B).eps := div_one _
-  rw [ee]
-  simp only [scBig]
-  rw [← Real.rpow_mul h0]
-  have e : (500 : ℝ) * (1 / 100 / 5) = 1 := by norm_num
-  rw [e, Real.rpow_one, Nat.floor_natCast]
-
-theorem sizeData_sc_not_surjective : ∀ D : D7, ¬ ∀ sc : Scale, ∃ L : SizeData₂ D, L.sc = sc := by
-  intro D h
-  obtain ⟨L, hL⟩ := h (scBig D.host.splitBound)
-  have h1 := L.split_tie
-  rw [hL, scBig_floor] at h1
-  omega
-
-theorem scale_a_nonneg (sc : Scale) : 0 ≤ sc.a := by
-  unfold Scale.a Scale.b
-  have := sc.one_lt_alt
-  positivity
-
 theorem scale_L_pos (sc : Scale) : 0 < sc.L := by
   unfold Scale.L
   exact Real.rpow_pos_of_pos (by linarith [sc.one_lt_alt]) _

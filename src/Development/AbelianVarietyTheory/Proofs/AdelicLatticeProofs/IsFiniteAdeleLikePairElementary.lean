@@ -5,27 +5,6 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
-theorem AdelicPair.exists_mul_mem {R : Type} [CommRing R] [Algebra ℚ R] {R₀ : Subring R}
-    (h : AdelicPair R R₀) (r : R) : ∃ M : ℕ, 0 < M ∧ (M : R) * r ∈ R₀ := by
-  obtain ⟨q, a, ha, e⟩ := h.approx 1 one_pos r
-  refine ⟨q.den, q.den_pos, ?_⟩
-  have h1 : (q.den : R) * algebraMap ℚ R q = (q.num : R) := by
-    rw [← map_natCast (algebraMap ℚ R), ← map_mul, ← map_intCast (algebraMap ℚ R)]
-    congr 1
-    exact Rat.den_mul_eq_num q
-  rw [e, mul_add, h1]
-  exact R₀.add_mem (intCast_mem R₀ _)
-    (R₀.mul_mem (natCast_mem R₀ _) (R₀.mul_mem (natCast_mem R₀ _) ha))
-
-theorem AdelicPair.exists_mul_mem_family {R : Type} [CommRing R] [Algebra ℚ R] {R₀ : Subring R}
-    (h : AdelicPair R R₀) (κ : Type) [Fintype κ] (r : κ → R) :
-    ∃ M : ℕ, 0 < M ∧ ∀ k, (M : R) * r k ∈ R₀ := by
-  classical
-  choose m hm hmem using fun k => h.exists_mul_mem (r k)
-  refine ⟨∏ k, m k, Finset.prod_pos fun k _ => hm k, fun k => ?_⟩
-  rw [← Finset.prod_erase_mul Finset.univ m (Finset.mem_univ k), Nat.cast_mul, mul_assoc]
-  exact R₀.mul_mem (natCast_mem R₀ _) (hmem k)
-
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 private lemma exists_pos_nat_clearing_rat_denominators {κ : Type} [Fintype κ] (q : κ → ℚ) :

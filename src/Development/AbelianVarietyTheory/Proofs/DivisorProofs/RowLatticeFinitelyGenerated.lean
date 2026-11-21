@@ -1,6 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearEmbSupLatticeOntoRealisationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearEmbSupLatticeOntoRealisation
+import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
+import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
+import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulNonnegOfPow
 set_option synthInstance.maxHeartbeats 400000
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Pj Formalism.IndefR.Links Formalism.IndefR.FWT
@@ -47,21 +53,3 @@ theorem fg_span_image {K L V W : Type} [Field K] [Field L] [Algebra K L] [AddCom
 
 end GlobalTheory.CovTop.LatAllFG
 
-open GlobalTheory.CovTop.LatAllFG in
-
-theorem GlobalTheory.CovTop.latAll_fg_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
-    {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz),
-    p.Rows → RecTied D L → ∀ i : Fin D.R.m, (latAll p.R.toRealDat i).FG := by
-  intro D L hT Gi Gl Kc Y0 cX ex Csz p _ _ i
-  have hj : InR D ((i : ℕ) + 1) := ⟨by omega, i.2⟩
-  obtain ⟨τ⟩ : Nonempty D.what₂.Tau := ⟨D.eTau.symm (Classical.arbitrary _)⟩
-  have hn : 0 < (p.κ i).n := by
-    rw [(p.fw.kap i τ).2.2]
-    have := D.R.three_m_lt_t
-    rw [Ranks.nV]
-    omega
-  have hW := latW_fg p.T p.fw.laws _ hj (p.κ i) hn
-  obtain ⟨ι, -, -, himg⟩ := GlobalTheory.T.exists_semilinear_emb_supLattice_onto_realisation _ _ _ _ _ _ _ _ _ p.fw i
-  unfold latAll
-  rw [← himg]
-  exact fg_span_image ι _ hW

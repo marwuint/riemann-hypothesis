@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepAtBIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSectionOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSpecializesSameFibreIsIntegralHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointDefinedOverSubfieldOfIsIntegralHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatIntOfIntegralSchemeGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisationBlowupPullbackFiniteCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSpecializesSameFibreIsIntegralHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointDefinedOverSubfieldOfIsIntegralHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatIntOfIntegralSchemeGenericPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisationBlowupPullbackFiniteCover
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.UPoinc GlobalTheory.TorRef
@@ -67,7 +67,7 @@ theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     exact hJi _ hJ ⟨y, hy⟩
   have hm0J : (g' ≫ U.ι) m0 ∉ J.support := hgm m0 ⟨y0, hm0.symm⟩
   obtain ⟨S₁, hS₁i, p₁, ν₁, hS₁n, hp₁P, hν₁fin, hcomm, hEff, hrange, hlift⟩ :=
-    GlobalTheory.T.exists_normalisation_blowup_pullback_finiteCover (o := CommRingCat.of C.o) C.z b J hB U g' ⟨m0, hm0J⟩
+    _root_.GlobalTheory.USep.exists_normalisation_pullback_cover (o := CommRingCat.of C.o) C.z b J hB U g' ⟨m0, hm0J⟩
   haveI := hν₁fin
 
   haveI : IsPreimmersion (spMap C.b) := by
@@ -89,7 +89,7 @@ theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     haveI : IsLocallyNoetherian C.Z := LocallyOfFiniteType.isLocallyNoetherian (C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o)))
     rw [← hg'U]
     infer_instance
-  · apply GlobalTheory.T.flat_int_of_integral_scheme_generic_point _ x0
+  · apply _root_.GlobalTheory.IntFlat.flat_of_generic_zero _ x0
     have eM : C.i ≫ C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o)) =
         (C.iF ≫ pullback.snd C.z (spMap C.b)) ≫ Spec.map (CommRingCat.ofHom (C.b.comp (algebraMap ℤ C.o))) := by
       simp only [UCompact.i, Category.assoc, pullback.condition_assoc]
@@ -146,13 +146,13 @@ theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     refine ⟨fun p => ?_, ?_⟩
     · have e1 : ∀ t, ν₁ (ξ₁ t) = ψU (ν (a t)) := fun t => by
         rw [← Scheme.Hom.comp_apply, hξν]; rfl
-      apply GlobalTheory.T.eq_of_specializes_same_fibre_isIntegralHom ν₁
+      apply _root_.GlobalTheory.eq_of_specializes_of_isIntegralHom ν₁
       · exact (IsLocalRing.specializes_closedPoint _).map ξ₁.continuous
       · have e2 := e1 (closedPoint R)
         have e3 : a ((spMap ev') p) = a (closedPoint R) := hcl p
         rw [Scheme.Hom.comp_apply, e1, e3]
         exact e2.symm
-    · apply GlobalTheory.T.pointDefinedOverSubfield_of_isIntegralHom ν₁ k₀ hk₀
+    · apply _root_.GlobalTheory.DefOverIntegral.defOver_of_isIntegralHom ν₁ k₀ hk₀
       obtain ⟨P₀, hP₀⟩ := hdef
       refine ⟨P₀ ≫ ν ≫ ψU, ?_⟩
       simp only [Category.assoc, hξν]

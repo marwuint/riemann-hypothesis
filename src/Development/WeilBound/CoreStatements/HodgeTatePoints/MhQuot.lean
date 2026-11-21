@@ -1,7 +1,11 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MhBase
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDenominatorBtOrderStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDenominatorBtOrder
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Semi
@@ -36,7 +40,7 @@ theorem quot : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (
   rw [quotOrder, Subalgebra.mem_comap, mem_top_iff, mem_top_iff]
   constructor
   · intro hf t
-    obtain ⟨d, hd0, hd⟩ := GlobalTheory.T.exists_denominator_btOrder R T Γ
+    obtain ⟨d, hd0, hd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.btOrder_full_rank R T Γ
     obtain ⟨s0, hs0⟩ := (mem_top_iff Γ _).1 (hd (fun x => f (t * x))) 1
     obtain ⟨h0, rfl⟩ := hα t
     obtain ⟨s₁, hs₁⟩ := hf h0

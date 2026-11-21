@@ -1,7 +1,7 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionDvrFlagLift
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionDvrFlagLiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PhiAt
 
 section
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
@@ -14,16 +14,8 @@ open GlobalTheory.HSApp
 set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.UnifTrait
-section Frames
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-  {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
-end Frames
 end GlobalTheory.UnifTrait
 namespace GlobalTheory.UnifTrait
-section Split
-open IsLocalRing ReciprocityTheory.ChartRestriction.G.Out
-open scoped CategoryTheory.Obj
-end Split
 end GlobalTheory.UnifTrait
 namespace GlobalTheory.UnifTrait
 open IsLocalRing

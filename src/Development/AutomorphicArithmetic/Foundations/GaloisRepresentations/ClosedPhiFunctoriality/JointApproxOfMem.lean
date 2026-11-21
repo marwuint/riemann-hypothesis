@@ -44,13 +44,6 @@ def ClosedPhi : Prop :=
           IsJumpsAt P Bw (ρ.comp (Dec (F := E) A).subtype) τ (J τ)) →
       wdTr P ι Bw h hj (r.comp (Dec (F := E) A).subtype) g = θ
 
-def PolyOfTr : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (a : ℕ) (X Y : WD h), X.unr → Y.unr →
-    X.lpDim = a → Y.lpDim = a → ∀ F : ↥(Weil h), deg F = -1 →
-    (∀ j : ℕ, 1 ≤ j → j ≤ a → (X.charPol (F ^ j)).nextCoeff = (Y.charPol (F ^ j)).nextCoeff) →
-    ∀ g : ↥(Weil h), X.charPol g = Y.charPol g
-
 abbrev iA (l : ℕ) [Fact l.Prime] : Ainf l →+* Per.Acris l := algebraMap (Ainf l) (Per.Acris l)
 
 abbrev iB (l : ℕ) [Fact l.Prime] : Per.Acris l →+* Per.Bcris l := algebraMap (Per.Acris l) (Per.Bcris l)
@@ -76,9 +69,6 @@ structure IsSecQ (bk : BK K) (N k : ℕ) {d : ℕ} (A : Matrix (Fin d) (Fin d) b
 structure IsPerU {d : ℕ} (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (U : Matrix (Fin d) (Fin d) (Per.Bcris l)) : Prop where
   unit : IsUnit U
   inv : ∀ g : ↥(GK K), (ρ g).val.map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U
-
-def IsOp {d : ℕ} (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (n : ℕ) (s : Per.Bcris l) (V : Matrix (Fin d) (Fin d) (Per.Bcris l)) : Prop :=
-  ∃ U, IsPerU ρ U ∧ V * U = s • U.map ⇑(Per.φB l ^ n)
 
 def FixUr (K : FinExt l) (n : ℕ) : Prop := ∀ c : ↥(MaximalUnramifiedExtension l), (c : Om l) ∈ K.1 → (frobUr l ^ n) c = c
 

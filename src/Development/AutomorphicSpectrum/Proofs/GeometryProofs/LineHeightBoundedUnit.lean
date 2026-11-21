@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedA
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PBoundedSectionTransfer
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArchimedeanValueBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VerticalBoundHeightCompareStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VerticalBoundHeightCompare
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Small GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.Ht
 
@@ -97,7 +97,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Ht.lineHt_bounded_of_genUnit : ∀ (K : 
   obtain ⟨C, hC⟩ := exists_arch_bound hAr hB hS hV
   refine ⟨(c + C) / k, fun L _ _ w hw => ?_⟩
   obtain ⟨val, hv, hval⟩ := hG L w hw
-  have hU := GlobalTheory.T.vertical_bound_height_compare K ι Ω y d hAr hB (fun b => k * A.a b) u c hV
+  have hU := _root_.GlobalTheory.CompanionTheory.Ar.Ht.abs_ptHt_sub_le_of_vertBound K ι Ω y d hAr hB (fun b => k * A.a b) u c hV
     (fun z => (k : ℝ) * Real.log (A.h z)) L w hw val hv hval
   rw [ptHt_pow] at hU
   have hk' : (0 : ℝ) < k := by exact_mod_cast hk

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierIntertwinesWeylHeisenbergSchrodingerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelParabolicWeylElementGenerateUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierIntertwinesWeylHeisenbergSchrodinger
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelParabolicWeylElementGenerateUnitary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelParabolicOperatorsHeisenbergCompatStatement
 open MeasureTheory Matrix GlobalTheory.KSp GlobalTheory.SplitUnitary
 open GlobalTheory.WeilM (UG IsQuad IsHerm ResEtaPow)
@@ -47,9 +47,9 @@ theorem weil_heis_intertwine : ∀ (F : Type) [Field F] [CharZero F] [ValuativeR
     simp only [Module.End.mul_apply, heis_apply, hK.wey]
     have hs : ∀ f : Matrix α ν E → ℂ, heisFun c ψ Q w (κ • f) = κ • heisFun c ψ Q w f := by
       intro f; funext x; simp only [heisFun, Pi.smul_apply, smul_eq_mul]; ring
-    rw [hs, GlobalTheory.T.fourier_intertwines_weyl_heisenberg_schrodinger F E c δ hE α ν Q hQ ψ μ w φ]
+    rw [hs, _root_.GlobalTheory.KSp.heisFun_fou F E c δ hE α ν Q hQ ψ μ w φ]
     rfl
-  have hU := GlobalTheory.T.siegelParabolic_weylElement_generate_unitary F E c δ hE ν U hsieg hweyl
+  have hU := _root_.GlobalTheory.KSp.sieg_weyl_generate F E c δ hE ν U hsieg hweyl
   intro g w
   have hg : g ∈ U := hU ▸ Subgroup.mem_top g
   exact hg w

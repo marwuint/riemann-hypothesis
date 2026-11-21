@@ -265,9 +265,6 @@ theorem diamond_elements_of_local (Tf : FormsTied D u) (h : LocalDiamondElements
   obtain ⟨k, hk, hl⟩ := h i hi v a
   exact ⟨k, hk, is_diamond_of_local_diamond _ _ _ k hl⟩
 
-theorem diamond_mul_of_local_diamonds (Tf : FormsTied D u) (h : LocalDiamondElementsExist Tf) : Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u :=
-  diamond_mul_of_diamond_elements Tf (diamond_elements_of_local Tf h)
-
 end Tied
 
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases

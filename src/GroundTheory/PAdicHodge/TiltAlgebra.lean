@@ -124,10 +124,6 @@ theorem algebraMap_tilt_eq :
 theorem norm_algebraMap_tilt (x : K♭) : ‖algebraMap K♭ C♭ x‖ = ‖x‖ :=
   norm_tiltMap _ _ x
 
-theorem tiltSharp_algebraMap_tilt (x : K♭) :
-    tiltSharp C p (algebraMap K♭ C♭ x) = algebraMap K C (tiltSharp K p x) :=
-  tiltSharp_tiltMap _ _ x
-
 instance tiltNormedAlgebra : NormedAlgebra K♭ C♭ where
   norm_smul_le r x := by
     rw [Algebra.smul_def, norm_mul, norm_algebraMap_tilt]
@@ -190,10 +186,6 @@ def tiltIntermediateField : IntermediateField K♭ C♭ where
   algebraMap_mem' x := by
     rw [algebraMap_tilt_eq_comp F]
     exact ⟨_, rfl⟩
-
-theorem mem_tiltIntermediateField {z : C♭} :
-    z ∈ tiltIntermediateField p F ↔ ∃ y : F♭, tiltInclusion p F y = z :=
-  RingHom.mem_fieldRange
 
 theorem tiltSharp_mem_of_mem_tiltIntermediateField {z : C♭}
     (hz : z ∈ tiltIntermediateField p F) : tiltSharp C p z ∈ F := by

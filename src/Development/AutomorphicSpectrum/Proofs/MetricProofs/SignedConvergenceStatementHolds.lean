@@ -4,13 +4,14 @@ import ReciprocityTheory.AnalyticForms.LeviForms.TailCutA
 import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LoglogQuotNonneg
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalDensityInclusionExclusionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDensityNonnegOffNullSetStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ZeroWeightRegularFamilyStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalDensityInclusionExclusion
+import ReciprocityTheory.AnalyticForms.LeviForms.ConvExpandStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDensityNonnegOffNullSet
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ZeroWeightRegularFamily
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularFamilyEventuallySmoothPshStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PshAddPshPotentialOnOpenStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExpandMIntStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExpandMInt
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
 
@@ -22,7 +23,7 @@ theorem zero_member {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e
     (hte : t₁ ≤ Real.exp (-Real.exp 1)) :
     IsSingWeight A L s (LocPot.ofFun 0) 0 C₅ ∧
       IsRegFamily A Θ L s (LocPot.ofFun 0) 0 (fun _ => 0) C t₁ ∧ IsRegFamilyC2 A s 0 (fun _ => 0) :=
-  GlobalTheory.T.zero_weight_regular_family A Θ L s C₅ C t₁ hΘ hΘp hs hC₅ hC ht₁ hte
+  _root_.GlobalTheory.CompanionTheory.Ar.Giv.zeroMember_isRegFamily A Θ L s C₅ C t₁ hΘ hΘp hs hC₅ hC ht₁ hte
 
 theorem eventually_isPsh {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ L : LocPot X) (s : X → X → ℂ) (th : LocPot X) (ph : X → ℝ) (phT : ℝ → X → ℝ) (C t₀ : ℝ)
@@ -47,7 +48,7 @@ theorem expand_mInt {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [
       mInt A (fun i => P i + LocPot.ofFun (f i)) g = ∑ T : Finset (Fin e), (-1 : ℝ) ^ (e - T.card) *
         mInt A (fun i => (if i ∈ T then P i else LocPot.ofFun 0) +
           LocPot.ofFun (if i ∈ T then f i else 0) + Θ) g :=
-  GlobalTheory.T.mixed_integral_inclusion_exclusion_alt A U P f Θ g hU hnull hP hΘ hf hT
+  _root_.GlobalTheory.CompanionTheory.Metric.ExpandMInt.expand_mInt A U P f Θ g hU hnull hP hΘ hf hT
 
 theorem isPsh_of_isPosPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (h : IsPosPot A Θ) : IsPsh A Θ := by
@@ -123,12 +124,12 @@ theorem convergenceSigned : ConvergenceSignedStatement := by
     · exact (hz i).2.1
     · exact hC2 i
     · exact (hz i).2.2
-  have hconv := fun T : Finset (Fin e) => GlobalTheory.T.convergence_statement_holds A Θ L s m W hΘ hΘp hL hS hSNC hs
+  have hconv := fun T : Finset (Fin e) => _root_.GlobalTheory.CompanionTheory.Ar.Giv.convergence_holds A Θ L s m W hΘ hΘp hL hS hSNC hs
     (fun i => if i ∈ T then th i else LocPot.ofFun 0) (fun i => if i ∈ T then ph i else 0)
     (fun i t => if i ∈ T then phT i t else 0) |C₅| |C| _ (hmem T).1 (hmem T).2.1 (hmem T).2.2
     g gT C₆ hgc hgb hlim
   have hgcont : ContinuousOn g (bdry s)ᶜ := hlim.continuousOn (Eventually.of_forall hgc).frequently
-  have hlimT := fun T : Finset (Fin e) => GlobalTheory.T.mInt_eq_integral_maMeasure A (bdry s)ᶜ
+  have hlimT := fun T : Finset (Fin e) => _root_.GlobalTheory.CompanionTheory.Ar.Giv.mInt_eq_integral_maMeasure_off_null A (bdry s)ᶜ
     (fun i => if i ∈ T then th i else LocPot.ofFun 0) (fun i => if i ∈ T then ph i else 0) Θ hUo hnull
     (fun i => ((hmem T).1 i).1) hΘ hΘpsh (fun i => ((hmem T).1 i).2.1)
     (fun i => isPshOn_add_psh A _ _ _ Θ hUo ((hmem T).1 i).1 hΘ ((hmem T).1 i).2.1
@@ -159,7 +160,7 @@ theorem convergenceSigned : ConvergenceSignedStatement := by
     · refine (eventually_all.2 fun i => ?_).and (hconv T).2.2.2.1
       exact eventually_isPsh A Θ L s _ _ _ _ _ hΘ hΘp ((hmem T).1 i).1 ((hmem T).2.1 i)
   filter_upwards [hev] with t ht
-  have hmt := fun T : Finset (Fin e) => GlobalTheory.T.mInt_eq_integral_maMeasure A (bdry s)ᶜ
+  have hmt := fun T : Finset (Fin e) => _root_.GlobalTheory.CompanionTheory.Ar.Giv.mInt_eq_integral_maMeasure_off_null A (bdry s)ᶜ
     (fun i => if i ∈ T then th i else LocPot.ofFun 0) (fun i => if i ∈ T then phT i t else 0) Θ hUo hnull
     (fun i => ((hmem T).1 i).1) hΘ hΘpsh (fun i => smoothOn_of_smooth A _ _ ((ht.2 T).1 i).1)
     (fun i => isPshOn_of_isPsh A _ _ ((ht.2 T).1 i).2) (gT t) (hgc t) (ht.2 T).2

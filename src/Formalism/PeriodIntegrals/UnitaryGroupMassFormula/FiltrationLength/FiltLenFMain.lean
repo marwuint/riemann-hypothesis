@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.PeriodIntegrals.FiltLen
 import Formalism.PeriodIntegrals.FiltLenF
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiltrationLength.LengthQuotLeOfKerLe
 
@@ -84,16 +83,5 @@ theorem filtLenF_main : PI.FiltLenF := by
   have hfin := hsum a le_rfl
   rw [hX0, hXa] at hfin
   exact hfin
-
-theorem filtLen_of_F : PI.FiltLenF → PI.FiltLen := by
-  intro hF R W _ _ _ F a hanti h0 ha V _ _ φ hinj M N P Q hNM hP hQ
-  refine hF R W F a hanti h0 ha V (fun k => (φ k).comp (F k).subtype)
-    (fun k x hx => hinj k x x.2 hx) M N P Q hNM ?_ ?_
-  · intro k hk
-    rw [Submodule.map_comp, Submodule.map_comap_subtype, inf_comm]
-    exact hP k hk
-  · intro k hk
-    rw [Submodule.map_comp, Submodule.map_comap_subtype, inf_comm]
-    exact hQ k hk
 
 end PI.FiltrationLength

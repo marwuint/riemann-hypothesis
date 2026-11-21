@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubNatCompSubIncl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemAdjoinOfLocalizationAwayStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineInterFiniteBasicOpenCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineInterFiniteBasicOpenCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAdjoinRestrictedSectionsOfLocalStatement
 open AlgebraicGeometry CategoryTheory Limits Opposite GlobalTheory.QcSub
 
@@ -75,7 +75,7 @@ theorem GlobalTheory.QcSub.pow_mul_mem_sub_of_res_basicOpen : ∀ (X : Scheme.{0
   classical
   haveI := Fintype.ofFinite ι
   rw [mem_sub] at ha
-  choose s hs1 hs2 using fun j => GlobalTheory.T.exists_finset_basicOpen_cover_inf_of_isAffineOpen X hX W (V j) hW (hV j)
+  choose s hs1 hs2 using fun j => _root_.GlobalTheory.affine_inter_finite_basicOpen_cover X hX W (V j) hW (hV j)
   have hle : ∀ j, ∀ h ∈ s j, X.basicOpen h ≤ V j := by
     intro j h hh
     obtain ⟨r, hr⟩ := hs1 j h hh

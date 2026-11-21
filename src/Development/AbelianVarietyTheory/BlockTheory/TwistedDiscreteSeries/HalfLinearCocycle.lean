@@ -385,13 +385,6 @@ def PlaceModels (D : D7) : Prop :=
   Unitary D ∧ RestrictedTensor D ∧ CoeffProduct D ∧ SplitModel D ∧ SplitModelAdj D ∧ SplitLattice D ∧
     InertVacuumFixed D ∧ SplitVacuumFixed D ∧ FockModel D ∧ FockPure D ∧ ThetaVecLocal D ∧ StepVecLocal D
 
-example (V : HSp D) (v : FinPl D) (g : GA D V) : gAt V (.inl v) (gAt V (.inl v) g) = gAt V (.inl v) g := by
-  simp [gAt]
-
-example : fockIp (MvPolynomial.monomial (Finsupp.single () 2) (1 : ℂ)) (MvPolynomial.monomial (Finsupp.single () 2) 1) = 2 := by
-  classical
-  simp [fockIp, MvPolynomial.support_monomial, Finsupp.prod_single_index]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting
 
 end

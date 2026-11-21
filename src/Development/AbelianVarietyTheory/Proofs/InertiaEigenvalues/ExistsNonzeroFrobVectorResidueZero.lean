@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBcrisPlusSeriesWithThetaResiduesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesLinearIndependentOfFirstTerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSortedNormalizedOrthBasisComplexPAdicStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOrthogonalFamilyResidueZerosStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBcrisPlusSeriesWithThetaResidues
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesLinearIndependentOfFirstTer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSortedNormalizedOrthBasisComplexPAdic
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOrthogonalFamilyResidueZeros
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BcrisPlusFrobeniusStableSubringInFilZero
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon TensorProduct
@@ -48,7 +48,7 @@ open GlobalTheory.PSer
 
 theorem exII : ExII := by
   intro l _ P AI T h hh lam hlam hind
-  obtain ⟨S, θ, hS, hker, hQ, hser⟩ := GlobalTheory.T.exists_BcrisPlus_series_with_theta_residues l P AI T
+  obtain ⟨S, θ, hS, hker, hQ, hser⟩ := _root_.GlobalTheory.PSer.series_residues l P AI T
   obtain ⟨-, hPev, hPring, hPq, -, -⟩ := GlobalTheory.PMon.CrisPlus.plus_props l P AI T
   have hθq : ∀ (c : ℚ_[l]) (hm : algebraMap ℚ_[l] P.R.BdR c ∈ S),
       θ ⟨_, hm⟩ = algebraMap ℚ_[l] ℂ_[l] c := by
@@ -68,9 +68,9 @@ theorem exII : ExII := by
       refine Finset.sum_congr rfl fun j _ => ?_
       rw [map_mul, hθq]
     exact (hker ⟨_, hm⟩).1 h0
-  obtain ⟨Pm, μ', hdet, hμ', hnorm, hanti, hlt, horth⟩ := GlobalTheory.T.exists_sorted_normalized_orthBasis_complexPAdic l h μ hμind
+  obtain ⟨Pm, μ', hdet, hμ', hnorm, hanti, hlt, horth⟩ := _root_.GlobalTheory.PMonE.OrthBasis.exists_orthBasis l h μ hμind
   obtain ⟨y, j0, r, R, hr0, hr1, hR1, hyR, hyr, hy0, hzero⟩ :=
-    GlobalTheory.T.exists_orthogonal_family_residue_zeros l h μ' hh hnorm hanti hlt horth
+    _root_.GlobalTheory.CoreOrth.residue_zeros l h μ' hh hnorm hanti hlt horth
   have hb : ∀ k : Fin h, ∃ b : P.R.B, Plus T b ∧ P.φB^[h] b = (l : P.R.B) * b ∧
       ∀ j : ℕ, ∃ hm, θ ⟨ev P j b, hm⟩ = abelian₂ h j (y k) :=
     fun k => hser h R (y k) hh hR1 (hyR k)
@@ -79,7 +79,7 @@ theorem exII : ExII := by
 
   have hbne : b j0 ≠ 0 := by
     intro h0
-    have hc := GlobalTheory.T.untiltFrobeniusSeries_linearIndependent_of_firstTerms l h 1 r (fun _ => y j0) hh hr0 hr1 (fun _ k => hyr k) ?_ (fun _ => 1) ?_
+    have hc := _root_.GlobalTheory.PSer.Lam_indep_of_first_terms l h 1 r (fun _ => y j0) hh hr0 hr1 (fun _ k => hyr k) ?_ (fun _ => 1) ?_
     · exact one_ne_zero (congrFun hc 0)
     · intro n hn a
       by_contra hd

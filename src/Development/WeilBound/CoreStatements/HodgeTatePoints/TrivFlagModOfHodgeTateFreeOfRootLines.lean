@@ -9,10 +9,10 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.Famproj
 import Development.WeilBound.CoreStatements.HodgeTatePoints.Hcptgen
 import Development.WeilBound.CoreStatements.HodgeTatePoints.FinrankDualEqOfProjective
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GaSurj
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentIntegralAtPrimeInSStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartRingMemAfterMonomialScalingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeChartTransitionIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpElementDividesPrimeSqStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentIntegralAtPrimeInS
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartRingMemAfterMonomialScaling
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeChartTransitionIntegral
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpElementDividesPrimeSq
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NumberFieldIntegersInIntegrallyClosedStatement
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.HT ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles
 
@@ -52,7 +52,7 @@ theorem triv_flag_mod_of_hodge_tate_free_of_root_lines (hb : FarguesHodgeTate �
     intro s
     obtain ⟨hN, hIC, hFR, -⟩ := hA s.1 s.2
     let κs : chartRing o (mseg y) s.1 := ⟨κ, hκA s⟩
-    have hk2 : κs ∣ (p : chartRing o (mseg y) s.1) ^ 2 := GlobalTheory.T.cp_element_divides_prime_sq (chartRing o (mseg y) s.1) Ω p κs hκ
+    have hk2 : κs ∣ (p : chartRing o (mseg y) s.1) ^ 2 := _root_.GlobalTheory.CompanionTheory.Ar.HT.KappaDvd.kappa_dvd_sq (chartRing o (mseg y) s.1) Ω p κs hκ
     have hkR : κs * (p : chartRing o (mseg y) s.1) ^ (𝔐.R p - 2) ∣ (p : chartRing o (mseg y) s.1) ^ (𝔐.R p) := by
       have : (p : chartRing o (mseg y) s.1) ^ (𝔐.R p) = (p : chartRing o (mseg y) s.1) ^ 2 * (p : chartRing o (mseg y) s.1) ^ (𝔐.R p - 2) := by
         rw [← pow_add]; congr 1; omega
@@ -71,19 +71,19 @@ theorem triv_flag_mod_of_hodge_tate_free_of_root_lines (hb : FarguesHodgeTate �
     rwa [h2] at h1
   choose i hi using hcs
   have hom : ∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}), ∀ x ∈ (Dc s).om, ∃ n : ℕ, (mseg y s.1 / mseg y t.1) ^ n • x ∈ (Dc t).om :=
-    fun s t x hx => GlobalTheory.T.hodge_component_integral_at_prime_in_S E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho Dc hfam s t x
+    fun s t x hx => _root_.GlobalTheory.CompanionTheory.Ar.HT.pow_smul_mem_om_of_overlap E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho Dc hfam s t x
       (fun q hs _ hz => (hfam.om_iff s x).1 hx q hs hz)
   have hh : ∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}) (x : Fin (D.p + D.q) → 𝓞 E), ∃ n : ℕ, ∃ w ∈ (Dc t).om, (mseg y s.1 / mseg y t.1) ^ n • ((Dc s).h x - (Dc t).h x) = ((p : Ω) ^ (𝔐.R p)) • w := by
     intro s t x
     have hp0 : ((p : Ω) ^ (𝔐.R p)) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)
-    obtain ⟨n, hn⟩ := GlobalTheory.T.hodge_component_integral_at_prime_in_S E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho Dc hfam s t (((p : Ω) ^ (𝔐.R p))⁻¹ • ((Dc s).h x - (Dc t).h x)) (by
+    obtain ⟨n, hn⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.pow_smul_mem_om_of_overlap E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho Dc hfam s t (((p : Ω) ^ (𝔐.R p))⁻¹ • ((Dc s).h x - (Dc t).h x)) (by
       intro q hs ht hz
       obtain ⟨w, hw, he⟩ := hfam.glue s t q hs ht hz x
       rw [he, add_sub_cancel_left, ← Nat.cast_smul_eq_nsmul Ω, smul_smul, Nat.cast_pow, inv_mul_cancel₀ hp0, one_smul]
       exact hw)
     refine ⟨n, _, hn, ?_⟩
     rw [smul_comm ((p : Ω) ^ (𝔐.R p)) ((mseg y s.1 / mseg y t.1) ^ n), smul_smul ((p : Ω) ^ (𝔐.R p)) ((p : Ω) ^ (𝔐.R p))⁻¹, mul_inv_cancel₀ hp0, one_smul]
-  have hovl1 := GlobalTheory.T.hodge_chart_transition_integral o Ω K J y E (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li) Dc hom hh (fun s t => (hρe s t).1) (fun s t a ha => GlobalTheory.T.chart_ring_mem_after_monomial_scaling o Ω K J y s.1 t.1 s.2 t.2 a ha)
+  have hovl1 := _root_.GlobalTheory.CompanionTheory.Ar.HT.Overlap.omHT_pow_smul_mem o Ω K J y E (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li) Dc hom hh (fun s t => (hρe s t).1) (fun s t a ha => _root_.GlobalTheory.CompanionTheory.Ar.HT.ChartOverlap.pow_mul_mem_chartRing_mseg o Ω K J y s.1 t.1 s.2 t.2 a ha)
   have hovl2 : ∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}) (σ' : E →+* Ω) x, ∃ n : ℕ, ∃ z ∈ (Dc t).omHT σ', (mseg y s.1 / mseg y t.1) ^ n • eigProj (Dc t).ρΩ σ' ((Dc s).h x - (Dc t).h x) = ((p : Ω) ^ (𝔐.R p - 2)) • z := by
     intro s t σ' x
     obtain ⟨n, w, hw, he⟩ := hh s t x

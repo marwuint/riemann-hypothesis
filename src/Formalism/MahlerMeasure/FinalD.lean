@@ -4,7 +4,7 @@ import Formalism.MahlerMeasure.MahlerMeasureProofs.SmithZp
 import Formalism.MahlerMeasure.MahlerMeasureProofs.LieMat
 import Formalism.MahlerMeasure.MahlerMeasureProofs.LieRoots
 import Formalism.MahlerMeasure.MahlerMeasureProofs.DeterminantBlockLeadingTerm
-import Formalism.MahlerMeasure.MahlerMeasureProofs.SmithBall
+import Formalism.MahlerMeasure.StatementD
 
 namespace Formalism.GM.Top
 open Formalism.GM

@@ -34,17 +34,6 @@ theorem eb_applyD (P : MvPolynomial σ (MvPolynomial τ ℤ)) (F : MvPowerSeries
   intro n _
   rw [MvPolynomial.coeff_map]
 
-theorem eb_J_C_mul (F : MvPowerSeries σ K) (r : MvPolynomial τ K) (Q : MvPolynomial σ (MvPolynomial τ K)) :
-    eb_J F (MvPolynomial.C r * Q) = r * eb_J F Q := by
-  rw [eb_J_subset F (MvPolynomial.C r * Q) Q.support (by
-    rw [MvPolynomial.C_mul']
-    exact MvPolynomial.support_smul)]
-  unfold eb_J
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro n _
-  rw [MvPolynomial.coeff_C_mul, mul_smul_comm]
-
 theorem eb_w_mapDomain (ε : κ → σ) (hε : Function.Injective ε) (F : MvPowerSeries σ K) (n : κ →₀ ℕ) :
     eb_w F (n.mapDomain ε) = eb_w (resV ε F) n := by
   classical

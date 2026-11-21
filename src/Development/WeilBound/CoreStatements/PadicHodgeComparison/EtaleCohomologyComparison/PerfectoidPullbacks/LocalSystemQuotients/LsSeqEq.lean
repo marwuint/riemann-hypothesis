@@ -1,11 +1,12 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocalSystemQuotients.ModFSW
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatWittTowerLevelStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothModelRestrictionBijectiveStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatWittTowerLevel
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothModelRestrictionBijective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientReductionBijectiveOfFlatStatement
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocalSystemQuotients.QuoZeroSub
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LseqOfFlatTowerStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LseqOfLevelIsosStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LseqOfLevelIsos
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocalSystemQuotients.QuoDMk
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -25,15 +26,15 @@ theorem seq_flat {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicA
       ∀ n j x, (ψ n).mapH j (resF l (B.schFn M.p) r.ρ n j ((Wc.HS l (B.schFn M.p) r.ρ j).r n x)) =
         (prj l (Kt l (B.schFn M.p) r.ρ (n + 1)) n).mapH j (resF l (B.schFn M.p) r.ρ (n + 1) j x) := by
   obtain ⟨ψ, hψ, hc⟩ := LsQ.seqflat0_pf r M hM
-  have hfl : ∀ c, FlatL l c (Kt l (B.schFn M.p) r.ρ c) := fun c => GlobalTheory.T.flat_witt_tower_level l r.k _ (B.schFn M.p) r.ρ c
+  have hfl : ∀ c, FlatL l c (Kt l (B.schFn M.p) r.ρ c) := fun c => _root_.GlobalTheory.CompanionTheory.FlatLevel.flatL_Kt l r.k _ (B.schFn M.p) r.ρ c
   exact ⟨ψ, hψ, fun m b h j => GlobalTheory.T.quotient_reduction_bijective_of_flat _ l _ _ m (ψ m) (hfl m) (hfl (m + 1)) (hψ m) b h j, hc⟩
 
 theorem ls_seq {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K)
     (hM : M.Sm) (j : ℕ) :
     Nonempty (CrystallineSemistableComparison.Tw.LSeq l (Wc.HS l (B.schFn M.p) r.ρ j) (Wc.HS l (B.schFn M.p) r.ρ (j + 1))) := by
   obtain ⟨ψ, hψ, hq, hc⟩ := seq_flat r M hM
-  have hf := GlobalTheory.T.smooth_model_restriction_bijective r M hM
-  have hfl : ∀ c, FlatL l c (Kt l (B.schFn M.p) r.ρ c) := fun c => GlobalTheory.T.flat_witt_tower_level l r.k _ (B.schFn M.p) r.ρ c
+  have hf := _root_.GlobalTheory.CompanionTheory.FlatRes.flat_restriction r M hM
+  have hfl : ∀ c, FlatL l c (Kt l (B.schFn M.p) r.ρ c) := fun c => _root_.GlobalTheory.CompanionTheory.FlatLevel.flatL_Kt l r.k _ (B.schFn M.p) r.ρ c
   have fwd : ∀ i n x, (tsys l (Kt l (B.schFn M.p) r.ρ) ψ hψ i).r n (resF l (B.schFn M.p) r.ρ (n + 1) i x) =
       resF l (B.schFn M.p) r.ρ n i ((Wc.HS l (B.schFn M.p) r.ρ i).r n x) := by
     intro i n x
@@ -51,7 +52,7 @@ theorem ls_seq {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlg
         have h1 := fwd i n ((E i (n + 1)).symm y)
         have h2 : resF l (B.schFn M.p) r.ρ (n + 1) i ((E i (n + 1)).symm y) = y := (E i (n + 1)).apply_symm_apply y
         exact h1.symm.trans (congrArg _ h2) }
-  exact GlobalTheory.T.lseq_of_level_isos _ l _ _ _ _ (e j) (e (j + 1)) (fun n => (E j n).symm.bijective) (fun n => (E (j + 1) n).symm.bijective)
+  exact _root_.GlobalTheory.CompanionTheory.TowerSeq.lseq_transport _ l _ _ _ _ (e j) (e (j + 1)) (fun n => (E j n).symm.bijective) (fun n => (E (j + 1) n).symm.bijective)
     (GlobalTheory.T.lseq_of_flat_tower _ l _ ψ hψ hfl hq j).some
 
 end CrystallineSemistableComparison.Pb.LsG

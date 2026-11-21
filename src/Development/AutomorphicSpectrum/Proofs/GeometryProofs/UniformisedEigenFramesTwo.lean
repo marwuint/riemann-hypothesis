@@ -5,9 +5,9 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsE
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameOneStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameOne
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodEigenFrame
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodHermitianTypeCompatibilityStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodHermitianTypeCompatibility
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FcHoloDetDifferentiableAt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DifferentiableOnExponentialFrameMatrix
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ContinuousOnThetaFrameValueHolomorphicFamily
@@ -135,7 +135,7 @@ theorem anHol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
     rw [h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]
     rfl
   choose! xx hxx using fun b (hb : b ∈ B') =>
-    (GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hty hrt hτ i (e i) (P b) _ (v b) (w b) (he i) (hP.1 b hb)
+    (_root_.GlobalTheory.CompanionTheory.Ar.Flat.anSolve E H D l Xo c τ τ' σ g ty FU hty hrt hτ i (e i) (P b) _ (v b) (w b) (he i) (hP.1 b hb)
       (hun b hb) (hfr b (hsub hb)).1).exists
   have hVW : ∀ b ∈ B', LinearIndependent ℂ (xx b).1 ∧
       (∀ z, tyPart ty τ' z ∈ Submodule.span ℂ (Set.range (xx b).1)) ∧ LinearIndependent ℂ (xx b).2.1 := by
@@ -170,7 +170,7 @@ theorem anHol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
       (fun n => tyPart_differentiableAt ty _ _ b₀ (hPd n)) (hVW b₀ hb').2.2
       (by filter_upwards [hnb] with b hb n using (hxx b hb).2.2.1 n) j n
   obtain ⟨Hm, hHh, -, hHi⟩ := id (hP.1 b₀ hb').2.2.2.2
-  obtain ⟨-, -, hd⟩ := GlobalTheory.T.period_hermitian_type_compatibility E H (FU.Di i) g ty (P b₀) Hm (hP.1 b₀ hb') hHh hHi
+  obtain ⟨-, -, hd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.riemann_tau_component E H (FU.Di i) g ty (P b₀) Hm (hP.1 b₀ hb') hHh hHi
   have hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q := by
     rw [(FU.sig i).1, (FU.sig i).2]; simp
   let S : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ :=

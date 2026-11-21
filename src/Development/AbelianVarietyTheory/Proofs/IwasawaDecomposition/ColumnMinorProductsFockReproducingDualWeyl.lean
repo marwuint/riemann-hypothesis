@@ -14,26 +14,6 @@ namespace GlobalTheory.WeylReproducingSym
 
 open Formalism.GradedWeylDivisibility GlobalTheory.WeylMinorDual
 
-def oeEquivCard (h n : ℕ) : {S : Finset (Fin n) // S.card = h} ≃ (Fin h ↪o Fin n) where
-  toFun S := S.1.orderEmbOfFin S.2
-  invFun I := ⟨Finset.univ.map I.toEmbedding, by simp⟩
-  left_inv S := by
-    apply Subtype.ext
-    ext x
-    simp only [Finset.mem_map, Finset.mem_univ, true_and]
-    constructor
-    · rintro ⟨i, rfl⟩
-      exact Finset.orderEmbOfFin_mem _ _ i
-    · intro hx
-      have : x ∈ Set.range (S.1.orderEmbOfFin S.2) := by rw [Finset.range_orderEmbOfFin]; exact hx
-      obtain ⟨i, hi⟩ := this
-      exact ⟨i, hi⟩
-  right_inv I := by
-    apply OrderEmbedding.range_inj.mp
-    rw [Finset.range_orderEmbOfFin]
-    ext x
-    simp
-
 private theorem det_mul_eq_sum_det_submatrix_mul_prod {R : Type} [CommRing R] {h n : ℕ}
     (A : Matrix (Fin h) (Fin n) R) (B : Matrix (Fin n) (Fin h) R) :
     (A * B).det = ∑ p : Fin h → Fin n, (A.submatrix id p).det * ∏ i, B (p i) i := by

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyBreuilKisinPrismCoproductStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimeDvdAinfEnvelopeOfGaloisSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOrientedPrismUniformizerFrameBreuilKisinHomStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinEnvelopeDvdPrimeOfAinfStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyBreuilKisinPrismCoproduct
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrimeDvdAinfEnvelopeOfGaloisSections
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOrientedPrismUniformizerFrameBreuilKisinHom
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinEnvelopeDvdPrimeOfAinf
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -18,9 +18,9 @@ set_option maxHeartbeats 400000 in
 theorem dvd_l_of_sections_env_bk : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) (κ : Type) [Fintype κ] (x : κ → En.Q.A) (c : κ → κ → En.Q.A) (h : ℕ), (∀ j, BK.hf En.inl bk.E ^ h * x j = ∑ i, En.Q.D.φ (x i) * c i j) → (∀ (g : ↥(GK K)) (σ : Hom En.Q (ainfObj K)), σ.comp En.inl = bk.ι → σ.comp En.inr = (ainfHom K g).comp bk.ι → ∀ j, ((l : ℕ) : (ainfObj K).A) ∣ σ.f (x j)) → ∀ j, ((l : ℕ) : En.Q.A) ∣ x j := by
   intro l _ K bk En κ _ x c h hrel hsec j
   have hfr : IsFrame bk (ainfObj K) (bk.ev bk.E) (bk.ev X) := by
-    have := GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom l K bk (ainfObj K) bk.ι
+    have := _root_.GlobalTheory.BSP.isFrame_hf l K bk (ainfObj K) bk.ι
     rwa [show BK.hf bk.ι = bk.ev from rfl] at this
-  have hAn := GlobalTheory.T.nonempty_breuilKisinPrismCoproduct l K bk (ainfObj K) (bk.ev bk.E) (bk.ev X) hfr
+  have hAn := _root_.GlobalTheory.BSP.nonempty_env l K bk (ainfObj K) (bk.ev bk.E) (bk.ev X) hfr
   obtain ⟨An⟩ := hAn
   obtain ⟨q, ⟨hq1, hq2⟩, -⟩ := En.univ An.Q (An.inl.comp bk.ι) An.inr
   have hE : q.f (BK.hf En.inl bk.E) = An.inl.f (bk.ev bk.E) := by
@@ -49,7 +49,7 @@ theorem dvd_l_of_sections_env_bk : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (
     have h2 : (s.comp q).comp En.inr = (ainfHom K g).comp bk.ι := by
       rw [show (s.comp q).comp En.inr = s.comp (q.comp En.inr) from Hom.ext' rfl, hq2, hs2]
     exact hsec g (s.comp q) h1 h2 j
-  have key := GlobalTheory.T.prime_dvd_ainfEnvelope_of_galois_sections l K bk An κ (fun i => q.f (x i)) (fun i k => q.f (c i k)) h hrel' hsec'
-  exact GlobalTheory.T.breuilKisin_envelope_dvd_prime_of_ainf l K bk En An q hq1 hq2 (x j) (key j)
+  have key := _root_.GlobalTheory.BSP.l_dvd_of_galois_sections l K bk An κ (fun i => q.f (x i)) (fun i k => q.f (c i k)) h hrel' hsec'
+  exact _root_.GlobalTheory.BSP.envPush_dvd_l l K bk En An q hq1 hq2 (x j) (key j)
 
 end GlobalTheory.BSP

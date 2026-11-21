@@ -69,8 +69,6 @@ structure Bundle (D : D7) (O : Obj D) (c : ℝ) : Type 1 where
   C : SquareIntegrableColumnsCompatible R.T P
   B : Formalism.IndefR.RealTB R P C.c.face C.Sp (zsc P DH.1.1 DH.1.2 c) S
 
-abbrev BdR : BdT := fun _ O _ => Formalism.L2.RecT O.ex
-
 variable {𝒜 : FamClass} (σ : RawSel Bundle 𝒜)
 
 def sel : Formalism.L2.TSel 𝒜 := fun Fm hc => ⟨Fm.x1, fun x hx _ i => (σ Fm hc x hx i).R⟩

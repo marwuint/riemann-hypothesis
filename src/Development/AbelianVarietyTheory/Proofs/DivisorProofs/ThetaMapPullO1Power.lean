@@ -1,12 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.MinSt2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelSemiAbelianRelDimCotangentVectorBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoOfIsoOnRationalModelComponentsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetInvariantDiffIsoHodgeLineBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapPullO1PowerHodgeStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelSemiAbelianRelDimCotangentVectorBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoOfIsoOnRationalModelComponents
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetInvariantDiffIsoHodgeLineBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapPullO1PowerHodge
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.UPoinc GlobalTheory.Ex.OneGen
@@ -22,19 +23,19 @@ theorem theta_pull_O1_pow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   obtain ⟨N, i, hi, hs⟩ := Y.proj
   haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (↥c.F) N
   haveI : IsProper Y.s := by rw [← hs]; infer_instance
-  have hvb := (GlobalTheory.T.modelSemiAbelian_relDim_cotangent_vectorBundle E H Dw l Xo c Y).2
+  have hvb := (_root_.GlobalTheory.ModelRelDim.relDim_and_isVB_omega E H Dw l Xo c Y).2
   have hO : ((ProjSpace.O1 o n).pull g).IsLB := LB.isLB_pull (ProjSpace.O1_isLB o n) g
   have hA : (lbPow ((ProjSpace.O1 o n).pull g) (8 * (n + 1).factorial)).IsLB := LB.isLB_linComb hO _ _
   have hB : (lbPow (GlobalTheory.SiegelTor.hodge Y.t.G (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)))
       (4 * (n + 1).factorial * (n + 1).factorial)).IsLB := LB.isLB_linComb hvb.isLB_det _ _
   have hC : (lbPow (GlobalTheory.FlagMod.detOm Y) (4 * (n + 1).factorial * (n + 1).factorial)).IsLB :=
     LB.isLB_linComb hdet _ _
-  have hAB := GlobalTheory.T.lineBundleIso_of_iso_on_rational_model_components (↥c.F) Y.X Y.s _ _ Y.normal inferInstance inferInstance inferInstance hA hB
-    (fun Ω _ _ M io hio hio' => GlobalTheory.T.theta_map_pull_O1_power_hodge E H Dw l Xo c o m n f hodd hm hunit hn hth Y g hg Ω M io hio hio')
+  have hAB := _root_.GlobalTheory.UMin.lbIso_of_ratModels (↥c.F) Y.X Y.s _ _ Y.normal inferInstance inferInstance inferInstance hA hB
+    (fun Ω _ _ M io hio hio' => _root_.GlobalTheory.UMin.KeyOne.lbIso_pull_O1_hodge E H Dw l Xo c o m n f hodd hm hunit hn hth Y g hg Ω M io hio hio')
   have hCB : LBIso (lbPow (GlobalTheory.FlagMod.detOm Y) (4 * (n + 1).factorial * (n + 1).factorial))
       (lbPow (GlobalTheory.SiegelTor.hodge Y.t.G (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)))
         (4 * (n + 1).factorial * (n + 1).factorial)) :=
-    GlobalTheory.PowPrimitive.lbIso_linComb (GlobalTheory.T.detInvariantDiff_iso_hodgeLineBundle E H Dw l Xo c Y hdet) _ _
+    GlobalTheory.PowPrimitive.lbIso_linComb (_root_.GlobalTheory.UMin.lbIso_detOm_hodge E H Dw l Xo c Y hdet) _ _
   exact LBIso.trans hA hB hC hAB hCB.symm
 
 end GlobalTheory.ThetaPullback

@@ -1,6 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.FlagLine
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PlueckerCoordinates.FlagLine
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PlueckerCoordinates.IsPlueckerCoord
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -31,30 +32,16 @@ structure Match {D : ComponentDataHodge II Ψ K ι Ω E} (Pl : PlueckerData D.to
 variable {D : ComponentDataHodge II Ψ K ι Ω E} {Pl : PlueckerData D.toComponentData}
   {P : IndefiniteRowSideFullHecke.LowerBoundFree.PlueckerData D}
 
-def varMap (h : Match Pl P) : (Σ k, Pl.ιY k) → (Σ k, IndefiniteRowSideFullHecke.LowerBoundFree.ιY P k)
-  | ⟨Sum.inl k, t⟩ => ⟨Sum.inl k, (t : ι k)⟩
-  | ⟨Sum.inr q, m⟩ => ⟨Sum.inr (q.1, stepTw q.2), Fin.cast (h.M_eq q.1 q.2) m⟩
-
-def forget (h : Match Pl P) : MRing Pl.ιY →ₐ[ℤ] MRing (IndefiniteRowSideFullHecke.LowerBoundFree.ιY P) :=
-  rename (varMap h)
-
 end Defs
 
 section Inhabitant
 
-open Line IndefiniteRowSideFullHecke.LowerBoundFree.LineFlag
+open Line
 
 abbrev linePlData : PlueckerData lineDataHodgeZero.toComponentData := linePl zeroSystem fun _ _ => le_rfl
 
 end Inhabitant
 
 end FlagModelAlt
-
-def FlagModelAlt.Statement : Prop :=
-  ∀ {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {K : Type} [Fintype K] {ι : K → Type}
-    [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] (D : ComponentDataHodge II Ψ K ι Ω E) (Pl : PlueckerData D.toComponentData)
-    (P : IndefiniteRowSideFullHecke.LowerBoundFree.PlueckerData D) (h : FlagModelAlt.Match Pl P),
-    Pl.PY = (IndefiniteRowSideFullHecke.LowerBoundFree.PY P).comap (FlagModelAlt.forget h)
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

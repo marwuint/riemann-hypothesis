@@ -14,9 +14,10 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ThetaAtEqSumH
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
 import Development.AbelianVarietyTheory.Definitions.Divisors.CmHostImaginaryGeneratorNeZero
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemGridPairWeilLatticeIffStandardOfHalfStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHalfCosetRepresentativesCardDvdStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfLatticeCharSumDetectsNsmulMultipleStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemGridPairWeilLatticeIffStandardOfHalf
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHalfCosetRepresentativesCardDvd
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfLatticeCharSumDetectsNsmulMultiple
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim
 open Formalism.L2.Host (HChar)
@@ -97,8 +98,8 @@ theorem model_coset {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
       rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hec]
     have := h _ (GlobalTheory.SplitScalar.idem_smul_mem hec u hu) hcu
     rwa [← GlobalTheory.PlaceModel.symplO_smul, show e • x = x from Matrix.ext fun i j => hx i j] at this
-  obtain ⟨R, hR1, hR2, hRd⟩ := GlobalTheory.T.exists_halfCosetRepresentatives_card_dvd S T ΛS ΛT hS hT e P he k hk
-  have hsum := GlobalTheory.T.halfLattice_charSum_detects_nsmul_multiple ψ S T Λ e k R hk hLL hdual hR1 hR2
+  obtain ⟨R, hR1, hR2, hRd⟩ := _root_.GlobalTheory.HalfCosetCount.halfCoset_reps_card S T ΛS ΛT hS hT e P he k hk
+  have hsum := _root_.GlobalTheory.CharSumHalf.charSum_detects_multiple ψ S T Λ e k R hk hLL hdual hR1 hR2
   have hcard : R.card ≠ 0 := by
     intro h0
     rw [h0, zero_dvd_iff] at hRd
@@ -218,7 +219,7 @@ theorem GlobalTheory.RowEx.fourierVec : ∀ {D : D7} {T : Type} {L : LevCh D T} 
   intro D T L sc G W S t p hp k d hk hc hz hP
   obtain ⟨x₀, hx₀, hkx, hfn⟩ := hc
   have he : IsIdemSum d.e (locPl G t) := hP ▸ d.e_is
-  have hag := GlobalTheory.T.mem_gridPairWeilLattice_iff_standard_of_half S t p hp d.e he
+  have hag := _root_.GlobalTheory.StdHalfLat.mem_pairLat_iff_std S t p hp d.e he
   have hcos : halfCoset d.e (pairLat G p) k x₀ = halfCoset d.e (latO (G.pS p) (G.pT p)
       (S.N.latS p : Set (Fin (G.pS p).rank → D.host.E)) (S.N.latT p : Set (Fin (G.pT p).rank → D.host.E)) fun _ => True) k x₀ := by
     ext x

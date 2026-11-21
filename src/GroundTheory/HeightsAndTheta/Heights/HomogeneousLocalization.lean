@@ -97,10 +97,6 @@ def polySection {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A} (hP : P ∈ ProjSpa
     (self A N).H0 (twistN A N n) :=
   ProjTwist.mkSection (polyFun P ⊤) (isLocallyFraction_polyFun hP ⊤)
 
-lemma monomial_mem_grading (a : Fin (N + 1) →₀ ℕ) {n : ℕ} (ha : a.degree = n) :
-    MvPolynomial.monomial a (1 : A) ∈ ProjSpace.grading A N n :=
-  (MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.isHomogeneous_monomial 1 ha)
-
 theorem polySection_ne_zero [IsDomain A] {n : ℕ} {P : MvPolynomial (Fin (N + 1)) A}
     (hP : P ∈ ProjSpace.grading A N n) (hP0 : P ≠ 0)
     (x : ProjectiveSpectrum (ProjSpace.grading A N)) : polySection hP ≠ 0 := by
@@ -140,27 +136,11 @@ def FSNormConj.Statement : Prop :=
           ((self A N).sectionValue _ hx' s) =
         fsFibreNorm n ρ x ((self A N).sectionValue x hx s)
 
-def FSValue.Statement : Prop :=
-  ∀ (A : Type u) [CommRing A] (N n : ℕ) (ρ : A →+* ℂ) (P : MvPolynomial (Fin (N + 1)) A)
-    (hP : P ∈ ProjSpace.grading A N n) (x : (self A N).complexPoints ρ),
-      fsFibreNorm n ρ x ((self A N).evalGlobalSection (twistN A N n) x (polySection hP)) =
-        CP.fsNormPoly n (MvPolynomial.map ρ P) x.1
-
 def FSFullSupport.Statement : Prop :=
   ∀ (N : ℕ) (U : Set (CP N)), IsOpen U → U.Nonempty → 0 < CP.fsMeasure N U
 
 def FSConjInvariant.Statement : Prop :=
   ∀ N : ℕ, (CP.fsMeasure N).map CP.conj = CP.fsMeasure N
-
-def PolySections.Statement : Prop :=
-  ∀ (A : Type u) [CommRing A] (N n : ℕ),
-    ∃ e : ProjSpace.grading A N n ≃ₗ[A] (self A N).H0 (twistN A N n),
-      ∀ P : ProjSpace.grading A N n, e P = polySection P.2
-
-def MonomialBasis.Statement : Prop :=
-  ∀ (A : Type u) [CommRing A] (N n : ℕ),
-    ∃ b : Module.Basis {a : Fin (N + 1) →₀ ℕ // a.degree = n} A ((self A N).H0 (twistN A N n)),
-      ∀ a, b a = polySection (monomial_mem_grading (A := A) a.1 a.2)
 
 end SectionsLatticeFS
 
@@ -192,80 +172,11 @@ def fsPointMeasures (N : ℕ) (hs : FSFullSupport.Statement) (hc : FSConjInvaria
   pos_of_isOpen σ U hU hne := hs N U hU (hne.mono Set.inter_subset_left)
   map_conj σ := (hc N).symm
 
-def fsSupNorm (n : ℕ) (σ : K →+* ℂ) (t : Heights.Fibre σ ((self (𝓞 K) N).H0 (twistN (𝓞 K) N n))) : ℝ :=
-  ⨆ x : (self (𝓞 K) N).complexPoints (intEmb σ),
-    fsFibreNorm n (intEmb σ) x ((self (𝓞 K) N).evalFibre (twistN (𝓞 K) N n) σ x t)
-
-variable {K} in
-
-def fsFibreInner (n : ℕ) {ρ : 𝓞 K →+* ℂ} (x : (self (𝓞 K) N).complexPoints ρ)
-    (v w : (self (𝓞 K) N).Fibre (twistN (𝓞 K) N n) x) : ℂ :=
-  ((((fsFibreNorm n ρ x (v + w)) ^ 2 - (fsFibreNorm n ρ x (v - w)) ^ 2 : ℝ) : ℂ) +
-    (((fsFibreNorm n ρ x (v - Complex.I • w)) ^ 2 -
-      (fsFibreNorm n ρ x (v + Complex.I • w)) ^ 2 : ℝ) : ℂ) * Complex.I) / 4
-
-open Classical in
-
-def fubiniStudyL2Inner (n : ℕ) (μ : Measure (CP N)) (σ : K →+* ℂ)
-    (t u : Heights.Fibre σ ((self (𝓞 K) N).H0 (twistN (𝓞 K) N n))) : ℂ :=
-  ∫ v, (if h : v ∈ (self (𝓞 K) N).complexPoints (intEmb σ) then
-      fsFibreInner n ⟨v, h⟩ ((self (𝓞 K) N).evalFibre (twistN (𝓞 K) N n) σ ⟨v, h⟩ t)
-        ((self (𝓞 K) N).evalFibre (twistN (𝓞 K) N n) σ ⟨v, h⟩ u)
-    else 0) ∂μ
-
 variable {K}
-
-omit [NumberField K] in
-
-theorem l2Inner_eq_fubiniStudyL2Inner {n : ℕ} (m : (self (𝓞 K) N).ContinuousMetric (twistN (𝓞 K) N n))
-    (hm : ∀ ρ x s, m.norm ρ x s = fsFibreNorm n ρ x s) (μ : Measure (CP N)) (σ : K →+* ℂ) (t u) :
-    (self (𝓞 K) N).l2Inner ⟨twistN (𝓞 K) N n, isInvertibleSheaf_twistN n, m⟩ μ σ t u =
-      fubiniStudyL2Inner K n μ σ t u := by
-  simp only [l2Inner, fibreInner, fubiniStudyL2Inner, fsFibreInner, hm]
-
-omit [NumberField K] in
-
-theorem l2Inner_fubiniStudyBundle (hf : FSContinuousFrame.Statement.{0}) (hc : FSNormConj.Statement.{0})
-    (n : ℕ) (μ : Measure (CP N)) (σ : K →+* ℂ) (t u) :
-    (self (𝓞 K) N).l2Inner (fsBundle hf hc n) μ σ t u = fubiniStudyL2Inner K n μ σ t u :=
-  l2Inner_eq_fubiniStudyL2Inner _ (fun _ _ _ => rfl) μ σ t u
 
 end ProjScheme
 
 namespace SectionsLatticeFS
-
-open ProjScheme
-
-def SupMonomial.Statement : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (N : ℕ) (σ : K →+* ℂ) (a : Fin (N + 1) →₀ ℕ),
-    fsSupNorm K a.degree σ
-        ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] polySection (monomial_mem_grading (A := 𝓞 K) a rfl)) =
-      √((∏ i, ((a i : ℝ) ^ a i)) / (a.degree : ℝ) ^ a.degree)
-
-def L2MonomialOrthogonality.Statement : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (N : ℕ) (σ : K →+* ℂ) (a b : Fin (N + 1) →₀ ℕ)
-    (hb : b.degree = a.degree),
-    fubiniStudyL2Inner K a.degree (CP.fsMeasure N) σ
-        ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] polySection (monomial_mem_grading (A := 𝓞 K) a rfl))
-        ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] polySection (monomial_mem_grading (A := 𝓞 K) b hb)) =
-      if a = b then
-        (((∏ i, ((a i).factorial : ℝ)) * N.factorial / (a.degree + N).factorial : ℝ) : ℂ)
-      else 0
-
-variable {K : Type} [Field K] [NumberField K] {N : ℕ}
-
-def fsSectionsHermitian (hfin : SectionsLattice.Finite.Statement) (hl2 : SectionsLattice.L2.Statement)
-    (hflat : PNFlat.Statement.{0}) (hred : PNReduced.Statement.{0})
-    (hf : FSContinuousFrame.Statement.{0}) (hc : FSNormConj.Statement.{0})
-    (hs : FSFullSupport.Statement) (hci : FSConjInvariant.Statement) (n : ℕ) : HermitianBundle K :=
-  SectionsLattice.sectionsHermitian hfin hl2 (self (𝓞 K) N) (hflat (𝓞 K) N) (hred (𝓞 K) N)
-    (fsBundle hf hc n) (fsPointMeasures K N hs hci)
-
-def fsSectionsNormed (hfin : SectionsLattice.Finite.Statement) (hsup : SectionsLattice.SupNorm.Statement)
-    (hflat : PNFlat.Statement.{0}) (hred : PNReduced.Statement.{0})
-    (hf : FSContinuousFrame.Statement.{0}) (hc : FSNormConj.Statement.{0}) (n : ℕ) : NormedBundle K :=
-  SectionsLattice.sectionsNormed hfin hsup (self (𝓞 K) N) (hflat (𝓞 K) N) (hred (𝓞 K) N)
-    (fsBundle hf hc n)
 
 end SectionsLatticeFS
 
@@ -283,24 +194,6 @@ lemma pointQ_mem : (self (𝓞 ℚ) 1).point pointQ ∈ ProjSpace.stdOpen (𝓞 
   change (basePoint 1).rep 0 ≠ 0
   rw [basePoint, ← ha]
   simp [Units.smul_def]
-
-example : IsInvertibleSheaf (twistN (𝓞 ℚ) 1 1) := isInvertibleSheaf_twistN 1
-
-example : 0 < fsFibreNorm 1 _ pointQ
-    ((self (𝓞 ℚ) 1).sectionValue pointQ pointQ_mem (stdFrame (𝓞 ℚ) 0 1)) :=
-  fsFibreNorm_pos _ _ _ _ (value_ne_zero _ (isBasisOn_frame 0 1))
-
-example : polySection (N := 1) (ProjSpace.X_mem (A := 𝓞 ℚ) 0) ≠ 0 :=
-  polySection_ne_zero _ (MvPolynomial.X_ne_zero 0) (projPoint (intEmb (Rat.castHom ℂ)) (basePoint 1))
-
-example : IsBasisOn ((preMod (self (𝓞 ℚ) 1).X).obj (twistN (𝓞 ℚ) 1 1)) (ProjSpace.stdOpen (𝓞 ℚ) 1 0)
-    (stdFrame (𝓞 ℚ) 0 1) :=
-  isBasisOn_frame 0 1
-
-example : (Finsupp.single (0 : Fin 2) 1).degree = 1 := by simp
-
-example : IsOpen (Set.univ : Set (CP 1)) ∧ (Set.univ : Set (CP 1)).Nonempty :=
-  ⟨isOpen_univ, Set.univ_nonempty⟩
 
 end ProjScheme
 

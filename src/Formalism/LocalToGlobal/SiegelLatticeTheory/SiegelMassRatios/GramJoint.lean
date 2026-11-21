@@ -57,34 +57,6 @@ def DNeZeroAt : Prop :=
     ∀ (r T T' : ℕ), (S.sig τ).2 = r + 1 → 0 < T → 0 < T' →
     ∀ (F : FlagG S r (T : E)) (F' : FlagG S r (T' : E)), Gflag F F' ≠ 0 → Dl F F' (r + 1) ≠ 0
 
-def GmatScale : Prop :=
-  ∀ (E : Type) [Field E] [StarRing E] (r : ℕ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E)
-    (c c' : Fin (r + 1) → E), c (Fin.last r) = 1 → c' (Fin.last r) = 1 →
-    Gmat (Matrix.diagonal (fun a => star (c a)) * Z * Matrix.diagonal c') T T' =
-      (∏ a : Fin r, star (c a.castSucc) * c' a.castSucc) *
-        star (∏ a : Fin r, star (c a.castSucc) * c' a.castSucc) * Gmat Z T T'
-
-section Record
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-open Formalism.MainNotions.S.Lat
-
-def GtermGram (D : D7) : Prop :=
-  ∀ (X : TermTie D) (u u' : D.what₂.Word) (t : D.s.Term u u'),
-    algebraMap D.host.F D.host.E (D.s.Gterm t) =
-      (-1) ^ (D.R.rS + 1) * (gramFF (X.fl t).fl (X.fl' t).fl).det
-
-def GtermJoint (D : D7) : Prop :=
-  ∀ (X : TermTie D) (u u' : D.what₂.Word) (t : D.s.Term u u'), D.s.Gterm t ≠ 0 →
-    Dr1 (X.fl t) (X.fl' t) ≠ 0 ∧ Xplus (X.fl t) ⊓ Xplus (X.fl' t) = ⊥
-
-def GtermNonneg (D : D7) : Prop :=
-  Nonempty (TermTie D) → ∀ (u u' : D.what₂.Word) (t : D.s.Term u u') (τ : D.host.E →+* ℂ),
-    ∃ c : ℝ, 0 ≤ c ∧ τ (algebraMap D.host.F D.host.E (D.s.Gterm t)) = c
-
-end Record
-
 section Lemmas
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
@@ -205,50 +177,11 @@ theorem dNeZeroAt_of (h : GNonnegAt) : DNeZeroAt := by
     exact (map_eq_zero_iff τ τ.injective).1 hN
   exact hG (by rw [hG', hD0]; simp)
 
-theorem gmatScale : GmatScale := by
-  intro E _ _ r Z T T' c c' hc hc'
-  have hminor : ∀ (l : ℕ) (hl : l ≤ r + 1),
-      leadMinorE (Matrix.diagonal (fun a => star (c a)) * Z * Matrix.diagonal c') l =
-        (∏ a : Fin l, star (c (Fin.castLE hl a)) * c' (Fin.castLE hl a)) * leadMinorE Z l := by
-    intro l hl
-    unfold leadMinorE
-    rw [dif_pos hl, dif_pos hl]
-    have hsub : (Matrix.diagonal (fun a => star (c a)) * Z * Matrix.diagonal c').submatrix (Fin.castLE hl)
-        (Fin.castLE hl) = Matrix.diagonal (fun a : Fin l => star (c (Fin.castLE hl a))) *
-          Z.submatrix (Fin.castLE hl) (Fin.castLE hl) * Matrix.diagonal (fun a : Fin l => c' (Fin.castLE hl a)) := by
-      ext i j
-      simp only [Matrix.submatrix_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]
-    rw [hsub, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, Finset.prod_mul_distrib]
-    ring
-  have h1 := hminor (r + 1) (le_refl (r + 1))
-  have h0 := hminor r (Nat.le_succ r)
-  have e1 : (∏ a : Fin (r + 1), star (c (Fin.castLE (le_refl (r + 1)) a)) * c' (Fin.castLE (le_refl (r + 1)) a)) =
-      ∏ a : Fin r, star (c a.castSucc) * c' a.castSucc := by
-    rw [Fin.prod_univ_castSucc]
-    have hlast : star (c (Fin.castLE (le_refl (r + 1)) (Fin.last r))) *
-        c' (Fin.castLE (le_refl (r + 1)) (Fin.last r)) = 1 := by
-      show star (c (Fin.last r)) * c' (Fin.last r) = 1
-      rw [hc, hc', star_one, one_mul]
-    rw [hlast, mul_one]
-    rfl
-  have e0 : (∏ a : Fin r, star (c (Fin.castLE (Nat.le_succ r) a)) * c' (Fin.castLE (Nat.le_succ r) a)) =
-      ∏ a : Fin r, star (c a.castSucc) * c' a.castSucc := rfl
-  rw [e1] at h1
-  rw [e0] at h0
-  unfold Gmat
-  rw [h1, h0, star_mul, star_mul]
-  ring
-
 section Record
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Formalism.MainNotions.S.Lat
-
-theorem gtermGram (D : D7) : GtermGram D := by
-  intro X u u' t
-  rw [X.G_eq t, gramDetFlag D.host.E (hS D) D.R.rS _ _ (X.fl t).fl (X.fl' t).fl, ← mul_assoc, ← pow_add, ← two_mul,
-    pow_mul, neg_one_sq, one_pow, one_mul]
 
 theorem sig_hS (D : D7) (τ : D.host.E →+* ℂ) : ((hS D).sig τ).2 = D.R.rS + 1 := by
   show ((D.sp.Y 0).sig τ).2 = D.R.rS + 1
@@ -267,43 +200,6 @@ theorem Tu_pos (D : D7) (u : D.what₂.Word) : 0 < Tu D u := by
   have h1 := Nat.dvd_one.1 hdvd
   rw [Nat.pow_eq_one] at h1
   rcases h1 with h1 | h1 <;> omega
-
-theorem gval_ne_zero (D : D7) (X : TermTie D) {u u' : D.what₂.Word} (t : D.s.Term u u')
-    (hG : D.s.Gterm t ≠ 0) : Gval (X.fl t) (X.fl' t) ≠ 0 := by
-  intro h
-  apply hG
-  have e := X.G_eq t
-  rw [h] at e
-  exact (map_eq_zero_iff _ (algebraMap D.host.F D.host.E).injective).1 e
-
-theorem gtermJoint_of (h : GNonnegAt) (D : D7) : GtermJoint D := by
-  intro X u u' t hG
-  haveI : NumberField.IsCMField D.host.E := D.host.isCMField_hostE
-  have hG' := gval_ne_zero D X t hG
-  have hτ : ∀ a : D.host.E, D.host.φ₀ (star a) = starRingEnd ℂ (D.host.φ₀ a) := by
-    intro a
-    first
-      | exact NumberField.IsCMField.complexEmbedding_complexConj D.host.φ₀ a
-      | exact (NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) D.host.φ₀ a)
-  refine ⟨?_, ?_⟩
-  · exact dNeZeroAt_of h D.host.E (hS D) D.host.φ₀ hτ (D.sp.Y_sig 0) D.R.rS (Tu D u) (Tu D u') (sig_hS D _)
-      (Tu_pos D u) (Tu_pos D u') (X.fl t).fl (X.fl' t).fl hG'
-  · exact (gramIndep D.host.E (hS D) D.R.rS _ _ (X.fl t).fl (X.fl' t).fl hG').2
-
-theorem gtermNonneg_of (h : GNonnegAt) (D : D7) : GtermNonneg D := by
-  rintro ⟨X⟩ u u' t τ
-  haveI : NumberField.IsCMField D.host.E := D.host.isCMField_hostE
-  have hτ : ∀ a : D.host.E, τ (star a) = starRingEnd ℂ (τ a) := by
-    intro a
-    first
-      | exact NumberField.IsCMField.complexEmbedding_complexConj τ a
-      | exact (NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) τ a)
-      | simp [Formalism.BasicNotions.Host.cmStar]
-  obtain ⟨c, hc, e⟩ := h D.host.E (hS D) τ hτ (D.sp.Y_sig 0) D.R.rS (Tu D u) (Tu D u') (sig_hS D τ)
-    (Tu_pos D u) (Tu_pos D u') (X.fl t).fl (X.fl' t).fl
-  refine ⟨c, hc, ?_⟩
-  rw [X.G_eq t]
-  exact e
 
 end Record
 

@@ -24,12 +24,4 @@ theorem rankMu_of_cols (D : D7) (Lv : LevelData D) (C : Formalism.L2.Forms.ColsT
   rw [hfin, hDu u]
   exact hr
 
-theorem rankMu_of_bundle {D : D7} {O : Obj D} {c : ℝ} (b : GlobalTheory.Fc.Bundle D O c) (u : D.what₂.Word) :
-    GlobalTheory.Core.Rk.RankMu D u :=
-  rankMu_of_cols D O.ex.lev b.R.T.toTiedDataS.cols O.ex.duStar_def u
-
-theorem member_rankMu : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL),
-    GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => ∀ u, GlobalTheory.Core.Rk.RankMu D u) :=
-  fun _ _ => RowE.of_all fun _ _ _ _ b _ _ _ u => rankMu_of_bundle b u
-
 end GlobalTheory.Fam.MemberCount

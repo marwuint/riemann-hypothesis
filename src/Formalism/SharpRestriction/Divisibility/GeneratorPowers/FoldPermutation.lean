@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.MainNotions.ModuliIntegralCharts.H1.FoldPermutation
 
 open MvPowerSeries Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB
-open Formalism.MainNotions.ModuliIntegralCharts.H1.FormalGroupOnCopies Formalism.MainNotions.ModuliIntegralCharts.H1.PartialDerivativeExponent Formalism.MainNotions.ModuliIntegralCharts.H1.FormalGroupCopies
+open Formalism.MainNotions.ModuliIntegralCharts.H1.PartialDerivativeExponent Formalism.MainNotions.ModuliIntegralCharts.H1.FormalGroupCopies
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
@@ -22,13 +22,6 @@ theorem cz_embP {n' n : ℕ} (e : Fin n' → Fin n) : LogPf.CZ (embP (k := k) (d
 theorem cz_ptz {n : ℕ} (b : Fin n) : LogPf.CZ (![pt k d b, 0] : Fin 2 → Pt k n d) := by
   intro j i
   fin_cases j <;> simp [pt]
-
-theorem cc_ev {m n : ℕ} {a : Fin m → Pt k n d} (ha : LogPf.CZ a) (f : PS k m d) :
-    constantCoeff (ev a f) = constantCoeff f := by
-  have h0 : constantCoeff (f - C (constantCoeff f)) = 0 := by simp
-  have e1 : f = C (constantCoeff f) + (f - C (constantCoeff f)) := by ring
-  conv_lhs => rw [e1]
-  rw [LogPf.ev_add ha, LogPf.ev_C ha, map_add, LogPf.constantCoeff_ev ha h0, add_zero, constantCoeff_C]
 
 theorem pderiv_embP {n' n : ℕ} (e : Fin n' → Fin n) (he : Function.Injective e) (g : PS k n' d) (b : Fin n')
     (j : Fin d) : pderiv k (e b, j) (ev (embP e) g) = ev (embP e) (pderiv k (b, j) g) := by
@@ -142,23 +135,5 @@ theorem dofN_comm (G : FGLaw k d) {n : ℕ} (b b' : Fin n) (u v : Fin d → k) (
   rw [hz, WickVanishing.Nab.vf_zeroc]
 
 end Comm
-
-section Fold
-
-variable {n' n : ℕ} (F : Fin d → PS k 2 d)
-  (hF : ∀ (b b' : Fin n) (v v' : Fin d → k) (G : PS k n d), DofN F b v (DofN F b' v' G) = DofN F b' v' (DofN F b v G))
-  (e : Fin n' → Fin n) (he : Function.Injective e) {ι ι' : Type} [Fintype ι] [Fintype ι']
-  (cp : ι → Fin n) (u : ι → Fin d → k) (cp' : ι' → Fin n') (u' : ι' → Fin d → k) (φ : ι' → ι)
-  (hφ : Function.Injective φ) (hcp : ∀ l, cp (φ l) = e (cp' l)) (hu : ∀ l, u (φ l) = u' l)
-include hF he hφ hcp hu
-
-end Fold
-
-section Val
-
-variable {R : Type} [CommRing R] {O : Type} [CommRing O] [StarRing O] (B : FB R d O) (K : Type) [CommRing K]
-  [Algebra ℚ K] [Algebra R K]
-
-end Val
 
 end Formalism.MainNotions.ModuliIntegralCharts.H1.FoldPermutation

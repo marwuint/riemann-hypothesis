@@ -1,6 +1,7 @@
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EigenvectorAdjointIntertwinerNormalOperatorsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EigenvectorAdjointIntertwinerNormalOperators
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSphericalOperatorsRowsNormalEigenspacesStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RealizationFamilyNormalOperatorsStatement
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
@@ -48,7 +49,7 @@ theorem matched_commute : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T :
   have cE : Commute (h0 P c0) (h0 P (dualC (Finsupp.mapRange star (star_zero ℂ) c0))) := h0n.1 P P hg0 hg0 _ _
   have nE : Commute (h0 P c0) (LinearMap.adjoint (h0 P c0)) :=
     @Eq.subst (Module.End ℂ R.HE.H) (fun B => Commute (h0 P c0) B) _ _ eE.symm cE
-  exact GlobalTheory.T.eigenvector_adjoint_intertwiner_normal_operators (R.Th t) (fun _ : Unit => hX P cX) (fun _ : Unit => h0 P c0)
+  exact _root_.GlobalTheory.HkUp.eigen_up_along_adjoint (R.Th t) (fun _ : Unit => hX P cX) (fun _ : Unit => h0 P c0)
     (fun _ u => part1 h0 h0o u) (fun _ => nX) (fun _ => nE) () _ w (h0e c P hg0 c0 w hw)
 
 end GlobalTheory.Hk3.SysE

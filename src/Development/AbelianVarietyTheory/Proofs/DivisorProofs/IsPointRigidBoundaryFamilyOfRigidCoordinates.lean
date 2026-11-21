@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorusMemOfSepAtBTate
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullUUnitsCompatGeneric
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSubfieldOfBilinFormBasisMonomialsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitTauScaledGeneratorTorusMonomialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSubfieldOfBilinFormBasisMonomials
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitTauScaledGeneratorTorusMonomial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodGeneratorsAgreeOverAlgClosedSubfieldStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -27,7 +27,7 @@ theorem pointRigid_of_hasRigidCoords : ∀ {E : Type} [Field E] [NumberField E] 
   have key : ∀ a b : C.P.D.toPre.X,
       ((∏ k, t k ^ ((l.M' : ℤ) * (ε k : LinearMap.BilinForm ℤ C.P.D.toPre.X) a b) : Kˣ) : K) ∈ k₀ := by
     intro a b
-    have hτ' := GlobalTheory.T.isUnitTau_scaledGenerator_torusMonomial Xo c φ R C N s ε τ₀ hs hε hτ u hu' a b
+    have hτ' := _root_.GlobalTheory.UCanon.ScaleTorus.isUnitTau_scaleGen Xo c φ R C N s ε τ₀ hs hε hτ u hu' a b
     obtain ⟨τ₁, hτ₁, hv⟩ := hrel a b _ hτ'
     obtain ⟨x, hx⟩ := GlobalTheory.T.periodGenerators_agree_over_algClosedSubfield R C.P.D.toPre τ₀ K ev k₀ hk W₀ ιb hFB hιb B₀ M₀ c₀ B' π₁ π₀ w c' hB hM hp₁ hp₀ hw hc
       a b τ₁ hτ₁
@@ -64,7 +64,7 @@ theorem pointRigid_of_hasRigidCoords : ∀ {E : Type} [Field E] [NumberField E] 
       rw [hA, hU, ← e₄, mul_inv_rev, inv_mul_cancel_right]
     rw [e₅]
     exact (x⁻¹ : k₀ˣ).val.2
-  have := GlobalTheory.T.mem_subfield_of_bilinForm_basis_monomials C.P.D.toPre.X (balForms H.bar C.P.D.toPre.X) (Fin C.m ⊕ Fin N) ε K k₀ hk (l.M')
+  have := _root_.GlobalTheory.mem_subfield_of_bilinForm_monomials C.P.D.toPre.X (balForms H.bar C.P.D.toPre.X) (Fin C.m ⊕ Fin N) ε K k₀ hk (l.M')
     (by exact_mod_cast (level_pos l).ne') t key (.inr j)
   simpa [t, u] using this
 

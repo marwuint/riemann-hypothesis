@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ModuleFlatOfFlatAndFibreFlatStatement
+import Development.WeilBound.CoreStatements.HodgeTatePoints.PfibRing
 open TensorProduct
 
 namespace GlobalTheory.CompanionTheory.FinAlgFlat
@@ -131,7 +131,7 @@ theorem flat_localization_of_fibre (R P Q : Type) [CommRing R] [IsLocalRing R] [
   have hfib := fibreMap_flat_localize R (IsLocalRing.ResidueField R) P Q (Localization.AtPrime p)
     (Localization.AtPrime n) p.primeCompl n.primeCompl h
   have hBA : Module.Flat (Localization.AtPrime p) (Localization.AtPrime n) :=
-    GlobalTheory.T.module_flat_of_flat_and_fibre_flat R (Localization.AtPrime p) (Localization.AtPrime n) hfl hfib
+    _root_.PositivityTheory.HtPt.Pfib.fibre_crit_ring R (Localization.AtPrime p) (Localization.AtPrime n) hfl hfib
   exact (Module.flat_iff_of_isLocalization (Localization.AtPrime p) p.primeCompl
     (Localization.AtPrime n)).mp hBA
 

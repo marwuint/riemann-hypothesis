@@ -1,7 +1,8 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PositiveDegreeClassesDieOnEtaleCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrictlyHenselianIffStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PositiveDegreeClassesDieOnEtaleCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrictlyHenselianIff
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
@@ -23,7 +24,7 @@ private theorem exists_section_of_etale (O : Type) [CommRing O] [HenselianLocalR
     change f (U.f (U.idx y) x) = _
     rw [hx, hy]
   let p : PrimeSpectrum (U.X (U.idx y)) := x
-  obtain ⟨s, hs⟩ := (GlobalTheory.T.exists_etale_section_iff_henselian_and_isSepClosed O).mpr ⟨inferInstance, inferInstance⟩ (U.X (U.idx y)) p.asIdeal
+  obtain ⟨s, hs⟩ := (_root_.GlobalTheory.StrictHensel.strictlyHenselian_iff O).mpr ⟨inferInstance, inferInstance⟩ (U.X (U.idx y)) p.asIdeal
     (congrArg PrimeSpectrum.asIdeal h1)
   refine ⟨Spec.map (CommRingCat.ofHom s.toRingHom) ≫ U.f (U.idx y), ?_⟩
   rw [Category.assoc, ← hφ, ← Spec.map_comp, ← Spec.map_id]
@@ -36,7 +37,7 @@ theorem UpperTheory.cohomology_subsingleton_pos_of_strictly_henselian :
   intro R _ O _ hO F n hn
   obtain ⟨_, _⟩ := hO
   refine subsingleton_of_forall_eq 0 fun x => ?_
-  obtain ⟨Y, f, hf, hsurj, hx⟩ := GlobalTheory.T.positiveDegreeClasses_die_on_etaleCover R _ F n hn x
+  obtain ⟨Y, f, hf, hsurj, hx⟩ := _root_.GlobalTheory.EtC.classes_die_on_etale_cover R _ F n hn x
   obtain ⟨s, hs⟩ := exists_section_of_etale O f
   calc x = pull R (sch.map (s ≫ f)) F n x := by
         rw [hs, sch.map_id, pull_id]

@@ -15,9 +15,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def blocks {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) : Matrix (Fin (n + n)) (Fin (n + n)) R :=
   (Matrix.fromBlocks a b c d).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
 
-def upperLeft {R : Type} {n : ℕ} (g : Matrix (Fin (n + n)) (Fin (n + n)) R) : Matrix (Fin n) (Fin n) R :=
-  g.submatrix (Fin.castAdd n) (Fin.castAdd n)
-
 def blockIdx (n : ℕ) (i : Fin (n + n)) : ℕ := if (i : ℕ) < n then 0 else 1
 
 variable (D : D7)
@@ -53,9 +50,6 @@ def siegel (n : ℕ) : Subgroup (GG D n) where
     letI := (AdelicU.matHom (AF D.host.F) D.sp.cm.sig (skewJ D n) g).invertible
     exact Matrix.blockTriangular_inv_of_blockTriangular hg
 
-def maxCpt (n : ℕ) : Subgroup (GG D n) :=
-  AdelicU.levelAll D.sp.cm.sig (skewJ D n) (AdelicU.stdLattice D.host.E (n + n)) 1
-
 abbrev rat {k : ℕ} (T : Matrix (Fin k) (Fin k) D.host.E) : Subgroup (UA D T) := AdelicU.ratPts D.sp.cm.sig T
 
 def Cosets (n : ℕ) : Type := Quotient (QuotientGroup.rightRel ((siegel D n).subgroupOf (rat D (skewJ D n))))
@@ -66,9 +60,6 @@ def Cosets.rep {n : ℕ} (c : Cosets D n) : GG D n := (Quotient.out c : rat D (s
 
 def absDet {n : ℕ} (a : GL (Fin n) (AE D)) : ℝ≥0 :=
   Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det a)
-
-def IsAbsLevi {n : ℕ} (α : GG D n → ℝ≥0) : Prop :=
-  ∀ p ∈ siegel D n, ∀ a : GL (Fin n) (AE D), upperLeft (mat p) = a.1 → ∀ k ∈ maxCpt D n, α (p * k) = absDet a
 
 section Space
 
@@ -113,28 +104,6 @@ structure IsWeil (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (�
 
   lin : ∀ (h : UA D T) (Φ : Sch θ m n) (x : Mx D m n), (ω (1, h) Φ).1 x = Φ.1 (mmul (mat h⁻¹) x)
 
-def IsRealPart (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (c : D.what₂.Tau → ℝ) : Prop :=
-  ∀ t : Ainf D.host.F, psiInf D.host.F ψ t =
-    Complex.exp (2 * Real.pi * Complex.I * ∑ τ, (c τ : ℂ) * θ τ (t ⊗ₜ[D.host.F] (1 : D.host.E)))
-
-variable (T) in
-
-def gauss (c : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
-    (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : ℂ :=
-  Complex.exp (-(2 * Real.pi) * ∑ τ, ((|c τ| : ℝ) : ℂ) * Matrix.trace ((z τ)ᴴ * (T.map (tauE D τ) * s τ) * z τ))
-
-def polyVal (P : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : ℂ :=
-  MvPolynomial.eval (fun v => if v.2.2.2 then conj (z v.1 v.2.1 v.2.2.1) else z v.1 v.2.1 v.2.2.1) P
-
-variable (θ n T) in
-
-def fockSpace (c : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) : Submodule ℂ (Mx D m n → ℂ) :=
-  Submodule.span ℂ {Φ | ∃ (P : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ)
-    (f : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ),
-      f ∈ WeilM.SB (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) ∧
-      Φ = fun x => polyVal P (fun τ => compAt θ τ x) * gauss T c s (fun τ => compAt θ τ x) *
-        f (fun i j => finPart D (x i j))}
-
 def s0 (m n : ℕ) : ℂ := (m : ℂ) / 2 - (n : ℂ) / 2
 
 def sect (α : GG D n → ℝ≥0) (ω : Rep θ n T) (Φ : Sch θ m n) (s : ℂ) (g : GG D n) : ℂ :=
@@ -143,53 +112,7 @@ def sect (α : GG D n → ℝ≥0) (ω : Rep θ n T) (Φ : Sch θ m n) (s : ℂ)
 def eisTerm (α : GG D n → ℝ≥0) (ω : Rep θ n T) (Φ : Sch θ m n) (g : GG D n) (s : ℂ) (γ : Cosets D n) : ℂ :=
   sect α ω Φ s (γ.rep * g)
 
-def thetaTerm (ω : Rep θ n T) (Φ : Sch θ m n) (g : GG D n) (h : UA D T) (x : Matrix (Fin m) (Fin n) D.host.E) : ℂ :=
-  (ω (g, h) Φ).1 (x.map (incA D))
-
-def theta (ω : Rep θ n T) (Φ : Sch θ m n) (g : GG D n) (h : UA D T) : ℂ := ∑' x, thetaTerm ω Φ g h x
-
-def FormulaAt (α : GG D n → ℝ≥0) (ω : Rep θ n T) (Φ : Sch θ m n) (g : GG D n) : Prop :=
-  (∀ s : ℂ, (n : ℝ) / 2 < s.re → Summable fun γ => ‖eisTerm α ω Φ g s γ‖) ∧
-  ∃ Eis : ℂ → ℂ, MeromorphicOn Eis Set.univ ∧ (∀ s : ℂ, (n : ℝ) / 2 < s.re → Eis s = ∑' γ, eisTerm α ω Φ g s γ) ∧
-    AnalyticAt ℂ Eis (s0 m n) ∧
-    (∀ h, Summable fun x => ‖thetaTerm ω Φ g h x‖) ∧
-    ∀ (μ : Measure (UA D T)) (𝓕 : Set (UA D T)), μ.IsHaarMeasure → IsFundamentalDomain (rat D T) 𝓕 μ → μ 𝓕 = 1 →
-      IntegrableOn (theta ω Φ g) 𝓕 μ ∧ Eis (s0 m n) = ∫ h in 𝓕, theta ω Φ g h ∂μ
-
 end Weil
-
-def FormulaFor (n : ℕ) {m : ℕ} (T : Matrix (Fin m) (Fin m) D.host.E) : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D),
-    IsCharAF D.host.F ψ → IsHeckeChar D χ → ResEta D χ m → IsInfFam θ →
-    AllSome (IsWeil (θ := θ) (n := n) (T := T) ψ χ) fun ω =>
-      ∀ α : GG D n → ℝ≥0, IsAbsLevi α →
-      ∀ c : D.what₂.Tau → ℝ, IsRealPart ψ θ c →
-      ∀ s : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ, (∀ τ, IsCartanInv (T.map (tauE D τ)) (s τ)) →
-      ∀ Φ : Sch θ m n, Φ.1 ∈ fockSpace θ n T c s → ∀ g, FormulaAt α ω Φ g
-
-def SiegelWeil (D : D7) : Prop :=
-  ∀ (n m : ℕ) (T : Matrix (Fin m) (Fin m) D.host.E), IsHermND D.sp.cm.sig T →
-    n < m → m ≤ 2 * n → n + wittIdx T < m → FormulaFor n T
-
-theorem bddAbove_witt {m : ℕ} (T : Matrix (Fin m) (Fin m) D.host.E) :
-    BddAbove {r | ∃ W : Submodule D.host.E (Fin m → D.host.E),
-      (∀ x ∈ W, ∀ y ∈ W, hE D.sp.cm.sig T x y = 0) ∧ Module.finrank D.host.E W = r} :=
-  ⟨m, by rintro _ ⟨W, -, rfl⟩; simpa using W.finrank_le⟩
-
-theorem upperLeft_blocks {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) : upperLeft (blocks a b c d) = a := by
-  ext i j; simp [upperLeft, blocks]
-
-theorem mem_siegel_of_blocks {n : ℕ} {g : GG D n} {a b d : Mx D n n} (h : mat g = blocks a b 0 d) : g ∈ siegel D n := by
-  change (mat g).BlockTriangular _
-  rw [h]
-  intro i j hij
-  obtain ⟨i, rfl⟩ := finSumFinEquiv.surjective i
-  obtain ⟨j, rfl⟩ := finSumFinEquiv.surjective j
-  simp only [blocks, Matrix.submatrix_apply, Equiv.symm_apply_apply]
-  rcases i with i | i <;> rcases j with j | j <;> simp [blockIdx] at hij ⊢
-
-example {θ : InfFam D} {m n : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (α : GG D n → ℝ≥0) (ω : Rep θ n T)
-    (Φ : Sch θ m n) (g : GG D n) : sect α ω Φ (s0 m n) g = (ω (g, 1) Φ).1 0 := by simp [sect]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks
 

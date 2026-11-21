@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefMapNormE
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHarmonicCoefficientMapAtWeights
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PureTensorOSmul
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLatticeEmbeddingLiftDatumHermitianSpace
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexCoefficientMapCoreFieldPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexCoefficientMapCoreFieldProperties
 
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
@@ -91,6 +91,4 @@ theorem thetaVector_ne_zero_of_clauses (D : D7) (G : Type) [Group G] [Fintype G]
 end GlobalTheory.AdTh.PhaseMapFree
 
 namespace GlobalTheory.AdTh.PhaseMapFree
-open GlobalTheory.AdTh.PhaseMap
-
 end GlobalTheory.AdTh.PhaseMapFree

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartSingleton
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArithStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchIntegrableOfProjArithAmbientStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArith
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchIntegrableOfProjArithAmbient
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedArchIntegralAdditiveAndDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedHeightPowEqDegreeLogCardFiniteFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedHeightPowEqDegreeLogCardFiniteField
 
 set_option autoImplicit false
 
@@ -49,7 +49,7 @@ theorem mix_pow {m : ℕ} {T : ∀ d : ℕ, (Fin d → HermLB p) → X → ℝ} 
 theorem exists_isArithHeight : ArchInteg → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ T, IsMix p (D + 1) T → ∀ N : HermLB p, ∃ h : X → ℝ, N.IsArithHeight h ∧ ∀ (x : X) (d : ℕ), HasDim x d → h x = T d (fun _ => N) x := by
   intro HI k _ X p D hX T hT N
   have hA : IsAmb p := isAmb_of_isArithVar hX
-  obtain ⟨-, -, -, -, himm, hgen⟩ := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hA
+  obtain ⟨-, -, -, -, himm, hgen⟩ := _root_.GlobalTheory.MixHt.hasDim_basic k X p hA
   let h : X → ℝ := fun x =>
     T ((topologicalKrullDim (closure ({x} : Set X))).unbotD 0).toNat (fun _ => N) x
   have hh (x : X) (d : ℕ) (hd : HasDim x d) : h x = T d (fun _ => N) x := by
@@ -68,7 +68,7 @@ theorem exists_isArithHeight : ArchInteg → ∀ (k : Type) [CommRing k] (X : Sc
   refine ⟨h, ⟨fun Z i _ _ κ _ _ _ d hd => ?_, fun Z i _ _ _ hc hd r hr => ?_,
     fun Z i _ _ _ hc e he hd m r hr => ?_⟩, hh⟩
   · rw [hh _ d (hgi Z i d hd)]
-    exact GlobalTheory.T.mixedHeight_pow_eq_degree_log_card_finiteField k X p hA (D + 1) T hT N d (hle Z i d hd) Z i κ hd
+    exact _root_.GlobalTheory.MixHtVert.mixHt_pow_eq_topSelf k X p hA (D + 1) T hT N d (hle Z i d hd) Z i κ hd
   · have hd1 : topologicalKrullDim Z = ((0 + 1 : ℕ) : WithBot ℕ∞) := by rw [hd]; rfl
     have hZ : IsArithVar (i ≫ p) 0 := hX.of_isClosedImmersion i hc hd1
     have hAZ : IsAmb (i ≫ p) := hA.sub i
@@ -86,10 +86,10 @@ theorem exists_isArithHeight : ArchInteg → ∀ (k : Type) [CommRing k] (X : Sc
     by_cases hz : ((N.restr i).div hr).mult z = 0
     · simp [hz]
     have hz1 := CartierDiv.coheight_eq_one_of_mult_ne_zero hz
-    have hz0 : HasDim (i z) 0 := (himm Z i z 0).2 (((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Z (i ≫ p) hAZ 0 hd1).1 z).1 hz1)
+    have hz0 : HasDim (i z) 0 := (himm Z i z 0).2 (((_root_.GlobalTheory.MixHt.dimOne k Z (i ≫ p) hAZ 0 hd1).1 z).1 hz1)
     rw [hT.zero _ _ hz0, card_residueField_eq i z]
   · have hAZ : IsAmb (i ≫ p) := hA.sub i
-    refine ⟨GlobalTheory.T.archIntegrable_of_projArithAmbient HI k Z (i ≫ p) hAZ e hd _ _ r hr, ?_⟩
+    refine ⟨_root_.GlobalTheory.MixHt.archIntegrable_of_isAmb HI k Z (i ≫ p) hAZ e hd _ _ r hr, ?_⟩
     have hle' := hle Z i (e + 1) hd
     have hx := hgi Z i (e + 1) hd
     have hiso : ((N.pow m).pull i rfl).Isometric ((N.restr i).pow m) :=
@@ -105,7 +105,7 @@ theorem exists_isArithHeight : ArchInteg → ∀ (k : Type) [CommRing k] (X : Sc
     by_cases hz : (((N.restr i).pow m).div hr).mult z = 0
     · simp [hz]
     have hz1 := CartierDiv.coheight_eq_one_of_mult_ne_zero hz
-    have hze : HasDim (i z) e := (himm Z i z e).2 (((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Z (i ≫ p) hAZ e hd).1 z).1 hz1)
+    have hze : HasDim (i z) e := (himm Z i z e).2 (((_root_.GlobalTheory.MixHt.dimOne k Z (i ≫ p) hAZ e hd).1 z).1 hz1)
     rw [hh _ e hze]
 
 end GlobalTheory.MixHtDiag

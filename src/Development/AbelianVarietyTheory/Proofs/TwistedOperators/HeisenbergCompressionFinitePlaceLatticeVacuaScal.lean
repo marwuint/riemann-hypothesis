@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOne
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIntegralSplitIdempotentOverTwo
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OneEqSumPlaceIdempotentsOverTwoAddTwoMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisThetaLaws
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CmAdeleIdempotentOfPlacePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitianStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CmAdeleIdempotentOfPlaceProperties
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitian
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilMatrixComponentAtPlaceMemCompletedLatticeStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting GlobalTheory.PlaceTensor
@@ -45,7 +45,7 @@ theorem exists_char_act (v : FinPl D) {u : WO S T} (hu : u ∈ latO S T LS LT fu
     ∃ y : AF D.host.F, ∀ f, IsLatVac (heisO ψ S T) (latO S T LS LT fun w => w = v) f →
       heisO ψ S T u f = ψ y • f := by
   classical
-  have hidem := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.2.2.1 v
+  have hidem := (_root_.GlobalTheory.PlaceTensor.idem_spec D).2.2.2.1 v
   by_cases h2 : (2 : 𝓞 D.host.F) ∈ v.asIdeal
   · obtain ⟨e, hee, hec, hsum, -⟩ := GlobalTheory.SplitIdem.exists_split_idempotent D v h2
     have hsum' : e + cA D e = idem D (.inl v) := by rw [hsum]; rfl
@@ -95,7 +95,7 @@ theorem compress_fin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp 
     have h := hψ
     unfold IsStdChar IsCharAF at h
     exact h.1.2.1
-  obtain ⟨hI1, -, hI3, hI4, -⟩ := GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D
+  obtain ⟨hI1, -, hI3, hI4, -⟩ := _root_.GlobalTheory.PlaceTensor.idem_spec D
   obtain ⟨ι, hι⟩ : ∃ ι, ι = idem D (.inl v) := ⟨_, rfl⟩
   have hιι : ι * ι = ι := by rw [hι]; exact hI1 _
   have hcι : cA D ι = ι := by rw [hι]; exact hI3 _
@@ -130,7 +130,7 @@ theorem compress_fin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp 
     obtain ⟨y, hy⟩ := exists_char_act (ψ := ψ) v hxv (by rw [← hι]; exact hιx)
     refine ⟨starRingEnd ℂ (ψ y), fun f g hf hg hvf hvg => ?_⟩
     rw [hy f hvf]
-    exact ((GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ g f hg hf).2.2.1 (ψ y)).2
+    exact ((_root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ g f hg hf).2.2.1 (ψ y)).2
   · push_neg at hA
     obtain ⟨l, hl, hl1⟩ := hA
     have hιl : ι • (ι • l) = ι • l := by rw [smul_smul, hιι]
@@ -139,7 +139,7 @@ theorem compress_fin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp 
     rw [zero_mul]
     have hxf : IsThetaFunO ψ S T (heisO ψ S T x f) :=
       (GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 x f hf
-    have hU := ((GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ g (heisO ψ S T x f) hg hxf).2.2.2.2.2.2.1 (ι • l)).1
+    have hU := ((_root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ g (heisO ψ S T x f) hg hxf).2.2.2.2.2.2.1 (ι • l)).1
     rw [hy g hvg, heisO_comm, hy f hvf, heisO_smul, smul_smul, ipO_smul_smul', map_mul] at hU
     have hc : ψ y * starRingEnd ℂ (ψ y) = 1 := by
       rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]

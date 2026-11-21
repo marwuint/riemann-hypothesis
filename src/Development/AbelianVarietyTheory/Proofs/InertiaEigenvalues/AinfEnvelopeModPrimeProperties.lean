@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffZeroMapPowNullFactsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffZeroMapPowNullFacts
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfDivisibilityBreuilKisinFactsStatement
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
@@ -13,7 +13,7 @@ theorem TopBasis.dvd_iff_dvd_coeff {S A ι : Type} [CommRing S] [CommRing A] {s 
     (tb : TopBasis s I ι) (hI : IsHausdorff I S) (p : S)
     (hp : ∀ (n : ℕ) (y : S), p * y ∈ I ^ (2 * n + 2) → y ∈ I ^ n) (x : A) :
     s p ∣ x ↔ ∀ i, p ∣ tb.c i x := by
-  obtain ⟨h0, -, h2⟩ := GlobalTheory.T.coeff_zero_map_pow_null_facts S A ι s I tb
+  obtain ⟨h0, -, h2⟩ := _root_.GlobalTheory.BSP.TopBasis.coeff_facts S A ι s I tb
   refine ⟨?_, fun h => ?_⟩
   · rintro ⟨y, rfl⟩ i
     exact ⟨_, tb.c_mul i p y⟩
@@ -32,7 +32,7 @@ theorem TopBasis.mod_props {S A ι : Type} [CommRing S] [CommRing A] {s : S →+
       ∀ x : A, (∀ m : ℕ, ∃ z, (l : A) ∣ x - s u ^ m * z) → (l : A) ∣ x := by
   have key := tb.dvd_iff_dvd_coeff hI (l : S) hp
   rw [← map_natCast s l]
-  refine ⟨fun x hx => (GlobalTheory.T.coeff_zero_map_pow_null_facts S A ι s I tb).1 x fun i => h1 _ ?_, fun x hx => (key x).2 fun i => h2 _ ?_,
+  refine ⟨fun x hx => (_root_.GlobalTheory.BSP.TopBasis.coeff_facts S A ι s I tb).1 x fun i => h1 _ ?_, fun x hx => (key x).2 fun i => h2 _ ?_,
     fun x hx => (key x).2 fun i => h3 _ fun m => ?_⟩
   · rw [← tb.c_mul, hx, map_zero]
   · rw [← tb.c_mul]

@@ -1,5 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.DistinctAbsIrredConstituents
@@ -30,8 +30,6 @@ def GaloisFamilyConditions' : Prop :=
     Formalism.MainNotions.SumRepresentations.At.G1 D.nd i r ∧ _root_.UpperTheory.GalS.G2a D.nd D.naut i r ∧ _root_.UpperTheory.GalS.G3 D.nd i r ∧
       Formalism.MainNotions.SumRepresentations.At.G4 D.nd i r
 def LocalGlobalCompatibility' : Prop := _root_.Formalism.MainNotions.SumRepresentations.adm2_alt D
-section Pending
-end Pending
 end Formalism.MainNotions.PairedCharacterCondition
 end
 end

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIrrCharAddStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsIrrCharAdd
 open GlobalTheory.BI
 namespace GlobalTheory.BI
 

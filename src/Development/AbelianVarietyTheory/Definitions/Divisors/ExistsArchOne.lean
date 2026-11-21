@@ -6,8 +6,15 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEq
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsMulNe
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ArchAtEmptyOfRhoZero
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.JetInj
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.CountJet
+import Development.AbelianVarietyTheory.Definitions.UpperBounds.CountAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.LocalUnfoldBStatementHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspidalExponentialDecay
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.InterpStatementPfK
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.NormLeOfDet
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NormQuotientThetaFlatAttainsSupOffCommonZeros
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.QuotientNoPositiveMaxOffCommonZeros
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
 
 set_option autoImplicit false
 
@@ -51,23 +58,6 @@ def ArchOn (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (T : ℕ) : Prop :=
 
 def sOf (M : TwoLevels E r U C) : ℕ := 2 * r + 50 * r ^ 2 * M.dimX + 2
 
-theorem ArchOne.upper {X : Data E r} {L Fp : Wt X.Ψ r} {T : ℕ} (h : ArchOne X L Fp T) :
-    ∃ (Xa : ArchInM X) (Fl : FlatM X Xa), Xa.L = L ∧ Xa.Fp = Fp ∧ Xa.T = T ∧ GlobalTheory.Shares.Margins X Xa ∧
-      ∀ (m : ℕ) (f : Fin m → Frame X.Ψ r → ℂ), (∀ q, f q ∈ X.SS (Fp + T • L)) →
-        (∀ u : Fin m → ℂ, (∀ x ∈ X.dom, ∑ q, u q * f q x = 0) → u = 0) →
-        m ≤ Fl.δ * (T + 2 * ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X + 6).choose (ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X) := by
-  obtain ⟨Xa, rfl, rfl, rfl, hm, ⟨Fl⟩⟩ := h
-  exact ⟨Xa, Fl, rfl, rfl, rfl, hm, fun m f hf hi => GlobalTheory.UpperModel.upper E r X Xa Fl m f (fun q => (hf q).1) hi⟩
-
-theorem ArchOne.jetInjAt {X : Data E r} {L Fp : Wt X.Ψ r} {T : ℕ} (h : ArchOne X L Fp T) :
-    ∃ Xa : ArchInM X, Xa.L = L ∧ Xa.Fp = Fp ∧ Xa.T = T ∧ GlobalTheory.Shares.Margins X Xa ∧ ∃ Fl : FlatM X Xa, JetInjAt X Xa Fl := by
-  obtain ⟨Xa, h1, h2, h3, hm, ⟨Fl⟩⟩ := h
-  exact ⟨Xa, h1, h2, h3, hm, Fl, GlobalTheory.UpTie.jetInj E r X Xa Fl⟩
-
-theorem exists_archOne (h : Module.finrank ℚ E = 4) : ∃ (X : Data E 2) (L Fp : Wt X.Ψ 2) (T : ℕ), ArchOne X L Fp T := by
-  obtain ⟨X, Xa, Fl, -, -, hm⟩ := GlobalTheory.Shares.Model.relIn_margins_lines (E := E) (RingHom.id ℂ) h
-  exact ⟨X, Xa.L, Xa.Fp, Xa.T, Xa, rfl, rfl, rfl, hm, ⟨Fl⟩⟩
-
 theorem even_sOf (M : TwoLevels E r U C) : Even (sOf M) := ⟨r + 25 * (r ^ 2 * M.dimX) + 1, by unfold sOf; ring⟩
 
 theorem le_sOf (M : TwoLevels E r U C) : 2 * r + 50 * r ^ 2 * M.dimX + 1 ≤ sOf M := Nat.le_succ _
@@ -75,19 +65,6 @@ theorem le_sOf (M : TwoLevels E r U C) : 2 * r + 50 * r ^ 2 * M.dimX + 1 ≤ sOf
 theorem sOf_sub (M : TwoLevels E r U C) (H : Subgroup U) : sOf (sub M H) = sOf M := rfl
 
 theorem cusp_sub (M : TwoLevels E r U C) (H : Subgroup U) (la : Wt M.Ψ r) : (sub M H).cusp la = M.cusp la := rfl
-
-theorem IsPullRep.restrict {M : TwoLevels E r U C} {la : Wt M.Ψ r} {ρ : Representation ℂ U (M.cusp la)} (h : IsPullRep M la ρ)
-    (H : Subgroup U) : IsPullRep (sub M H) la (ρ.comp H.subtype) := by
-  obtain ⟨a, ha⟩ := h
-  exact ⟨fun u c => a u c, fun u F hF c x => ha u F hF c x⟩
-
-theorem ranks_zero (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (h : Module.Finite ℂ (M.cusp ka)) : Ranks M ka 0 0 1 := by
-  have h0 : deMul M.Ψ r M.p0 0 = 0 := by
-    funext τ i
-    simp [deMul]
-  unfold Ranks
-  rw [h0, smul_zero, add_zero, sub_zero ka]
-  exact ⟨h, h, by simp, by simp, h⟩
 
 end Model
 
@@ -121,14 +98,6 @@ def BadW (del : ℝ) : Prop :=
 end Point
 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigOn
-
-def ModelSt : Prop := AtRuns fun Fm x hx ι p _ _ => ∀ i, ModelAt p i (Fm.parT x hx ι).TO
-
-def ShareWSt : Prop := AtRuns fun Fm x _ ι p _ _ => ∀ i,
-  ShareW p i (1 / (4 * (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.k) ^ 3))
-
-def BadWSt : Prop := AtRuns fun Fm x _ ι p _ _ => ∀ i,
-  BadW p i (Real.exp (-((Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 7))))
 
 end GlobalTheory.ShareOn
 

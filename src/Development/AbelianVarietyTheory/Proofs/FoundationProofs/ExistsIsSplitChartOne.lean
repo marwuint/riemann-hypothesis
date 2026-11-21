@@ -174,14 +174,6 @@ theorem isSplit_of_algHom (hc : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) : IsSp
   ⟨splitPrime (τ.comp σ), splitPrime τ, splitPrime_comp_ne hc τ, Ideal.ext (algebraMap_mem_splitPrime _),
     Ideal.ext (algebraMap_mem_splitPrime _)⟩
 
-theorem exists_isSplitChart_one (hc : IsCMExt F E σ) (n : ℕ) :
-    ∃ (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v), IsSplit (E := E) v ∧
-      ∃ e, IsSplitChart σ (1 : Matrix (Fin n) (Fin n) E) (stdLattice E n) h e ∧ Continuous e ∧ Continuous e.symm := by
-  obtain ⟨v, ⟨τ⟩⟩ := exists_split_place hc
-  have hL : Submodule.IsLattice E (stdLattice E n) := isLattice_stdLattice
-  exact ⟨v, _, splitPrime_under τ, isSplit_of_algHom hc τ, exists_isSplitChart hc (isHermND_one σ n) hL.fg
-    hL.span_eq_top _ (isSplit_of_algHom hc τ) (isSelfDualAt_stdLattice_one σ v)⟩
-
 end GlobalTheory.LFun.SplitChart
 
 end

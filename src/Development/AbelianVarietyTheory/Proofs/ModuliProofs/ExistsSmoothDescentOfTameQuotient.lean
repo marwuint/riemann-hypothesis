@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsQuotientOfFini
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmulApplyEqOfEqOnInvariants
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.QuotientExistsUniqueCompEq
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothOfIsPullbackOfSurjectiveOfFlat
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsPullbackFlatOfTameStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsPullbackFlatOfTame
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -35,7 +35,7 @@ theorem exists_smooth_descent_of_tame_quotient :
     exact ⟨V, hV, fun g => hF ⟨g, rfl⟩⟩)
   obtain ⟨p', hp', -⟩ := quotient_existsUnique_comp_eq Γ G.left Y' τ φ hφ X' (G.hom ≫ π)
     (fun g => by rw [← Category.assoc, hτ g, Category.assoc, hπ.2.1 g])
-  obtain ⟨hpb, hflat, hlft⟩ := GlobalTheory.T.isPullback_flat_of_tame_alt Γ X X' G.left Y' ρ τ π φ G.hom p' hπ hφ hp' hτ hfin
+  obtain ⟨hpb, hflat, hlft⟩ := _root_.GlobalTheory.TameDescent.isPullback_flat_of_tame Γ X X' G.left Y' ρ τ π φ G.hom p' hπ hφ hp' hτ hfin
     inferInstance inferInstance hstab hfib
   have hsurj : Surjective π := (quotient_isIntegral_surjective_orbits Γ X X' ρ π hπ).2.1
   haveI : LocallyOfFinitePresentation p' := inferInstance

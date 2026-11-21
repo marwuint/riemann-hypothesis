@@ -49,31 +49,4 @@ theorem isFrame_mul_intGL {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (�
     rw [e2]
     exact intGL_mulVec_int _ _ h i
 
-theorem latKeep : ∀ (D : D7) (V W : HSp D) (F : GlobalTheory.ExportSeries.Frame V W), F.Good → ∀ k ∈ GfC V,
-    Formalism.UG.bc (Lev.swapAE D) (finPt V k).1 ∈ Formalism.L2.DIV.St F.βS →
-    ∀ u : WO V W, u ∈ F.lat ↔ actO V W k 1 u ∈ F.lat := by
-  intro D V W F hF k _ hk u
-  obtain ⟨y, hy⟩ := hk
-  have hfin : ((Formalism.UG.bc (Lev.swapAE D) (finPt V k).1 : GL (Fin V.rank) (EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (EAf D))
-      = (mt V k).map (toEAf D) := rfl
-  have hβ' : Formalism.L2.DIV.IsFrame (F.βS * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y) F.ΛS := isFrame_mul_intGL hF.frS y
-  have hg : (F.βS * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y).val = (mt V k).map (toEAf D) * F.βS.val := by
-    rw [← hfin, ← hy]
-    simp [Formalism.L2.DIV.frGL, MulAut.conj_apply, Matrix.mul_assoc]
-  have hh : F.βT.val = (mt W 1).map (toEAf D) * F.βT.val := by
-    have h1 : (mt W 1).map (toEAf D) = 1 := by
-      rw [GlobalTheory.AdelicLatMove.mt_one]
-      exact Matrix.map_one _ (toEAf D).map_zero (toEAf D).map_one
-    rw [h1, Matrix.one_mul]
-  constructor
-  · intro hu
-    exact GlobalTheory.AdelicLatMove.actO_mem_latO V W k 1 F.ΛS F.ΛS F.ΛT F.ΛT F.βS _ F.βT F.βT hF.frS hβ' hF.frT hF.frT hg hh u hu
-  · intro hu
-    have h2 := GlobalTheory.AdelicLatMove.actO_mem_latO V W k⁻¹ 1⁻¹ F.ΛS F.ΛS F.ΛT F.ΛT _ F.βS F.βT F.βT hβ' hF.frS hF.frT hF.frT
-      (GlobalTheory.AdelicLatMove.frame_inv V k _ _ hg) (GlobalTheory.AdelicLatMove.frame_inv W 1 _ _ hh) _ hu
-    have e := GlobalTheory.AdelicLatMove.actO_actO_inv V W k⁻¹ 1⁻¹ u
-    rw [inv_inv, inv_inv] at e
-    rw [e] at h2
-    exact h2
-
 end GlobalTheory.LatKeep

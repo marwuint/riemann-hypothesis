@@ -2,7 +2,20 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.GrowthConstantBoundGcR
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RootDiscriminantDegreeRatioLeRootDiscriminantSq
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CombinedValuationBoundAlgebraicPointsStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CombinedValuationBoundAlgebraicPoints
+import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
+import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
+import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.RPfVal
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ConjugateMinimaInstance
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GramSpace
+import Formalism.SharpRestriction.Divisibility.WeightAlgebra
+import Formalism.LocalToGlobal.ProjectiveLattices.DepRun
+import Formalism.LocalToGlobal.ProjectiveLattices.RegXInst
+import Formalism.LocalToGlobal.ProjectiveLattices.Adm3OfExtension
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.TheoremZeroSplitOfLocalAndSum
 
 set_option autoImplicit false
 
@@ -52,6 +65,6 @@ set_option synthInstance.maxHeartbeats 400000 in
 theorem combBound_run : (∀ (p : ℕ) [Fact p.Prime], Pdiv.ChartF.HTFSt p) → ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), GlobalTheory.PtTie.Oriented T EX → PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → ∀ G : GlobalFamilyData (recPJ h j hj) ka wL wF, (j < D.R.m → EtaOK h j hj large₂ wL G.iet G.et) → CombBound G (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) (cc D large₂ C2 A2 7 wL) (nusR h j wL) ∧ 0 < (cc D large₂ C2 A2 7 wL) := by
   intro hH D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hO hP G hG
   obtain ⟨hR, hc⟩ := hP.runNum hj
-  exact ⟨GlobalTheory.T.combinedValuationBound_algebraicPoints hH D T h j hj hinj EX wL _ hO hR ka wF _ G rfl (fun hm => ⟨(hG hm).1, (hG hm).2.2.1⟩), hc⟩
+  exact ⟨_root_.GlobalTheory.PtTie.combBound_alg hH D T h j hj hinj EX wL _ hO hR ka wF _ G rfl (fun hm => ⟨(hG hm).1, (hG hm).2.2.1⟩), hc⟩
 
 end GlobalTheory.RunJoin

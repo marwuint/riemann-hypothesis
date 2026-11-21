@@ -15,16 +15,6 @@ abbrev iO (a : 𝓞 F) : Fv F v := algebraMap F (Fv F v) (algebraMap (𝓞 F) F 
 
 theorem vcoe (x : F) : Valued.v (algebraMap F (Fv F v) x) = v.valuation F x := IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
-theorem lt_one_iff_le_expm1 (g : WithZero (Multiplicative ℤ)) : g < 1 ↔ g ≤ WithZero.exp (-1 : ℤ) := by
-  rcases eq_or_ne g 0 with rfl | hg
-  · constructor
-    · intro _
-      exact zero_le'
-    · intro _
-      exact zero_lt_one
-  · rw [← WithZero.exp_log hg, ← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.exp_le_exp]
-    omega
-
 theorem v_iO_le (a : 𝓞 F) : Valued.v (iO v a) ≤ 1 := by
   show Valued.v (algebraMap F (Fv F v) (algebraMap (𝓞 F) F a)) ≤ 1
   rw [vcoe]
@@ -246,89 +236,10 @@ theorem red_eq_zero_iff {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) :
 
 theorem red_zero : red v 0 = 0 := (red_eq_zero_iff v (zero_mem _)).mpr (by simp)
 
-theorem red_neg {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : red v (-x) = -red v x := by
-  have h := red_add v hx (neg_mem hx)
-  rw [add_neg_cancel, red_zero] at h
-  linear_combination (-1 : 𝓞 F ⧸ v.asIdeal) * h
-
 theorem red_surj (t : 𝓞 F ⧸ v.asIdeal) : ∃ x ∈ v.adicCompletionIntegers F, red v x = t := by
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective t
   exact ⟨iO v a, mem_O_iO v a, red_iO v a⟩
 
-theorem lt_one_iff_unif (x : Fv F v) :
-    Valued.v x < 1 ↔ Valued.v ((unifV v)⁻¹ * x) ≤ 1 := by
-  have hπ : Valued.v (unifV v) = WithZero.exp (-1 : ℤ) := by
-    have h := vcoe v (v.valuation_exists_uniformizer F).choose
-    rw [(v.valuation_exists_uniformizer F).choose_spec] at h
-    exact h
-  rw [Valuation.map_mul, map_inv₀, hπ, lt_one_iff_le_expm1,
-    inv_mul_le_iff₀ (zero_lt_iff.mpr WithZero.exp_ne_zero), mul_one]
-
-theorem ev_int (x : F) : ∀ᶠ v in cofinite,
-    algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F := (algebraMap F (FiniteAdeleRing (𝓞 F) F) x).2
-
-theorem ev_unit {x : F} (hx : x ≠ 0) : ∀ᶠ v in cofinite,
-    Valued.v (algebraMap F (Fv F v) x) = 1 := by
-  filter_upwards [ev_int x, ev_int x⁻¹] with w h1 h2
-  have h1' : Valued.v (algebraMap F (Fv F w) x) ≤ 1 := h1
-  have h2' : Valued.v (algebraMap F (Fv F w) x⁻¹) ≤ 1 := h2
-  have hm : Valued.v (algebraMap F (Fv F w) x) * Valued.v (algebraMap F (Fv F w) x⁻¹) = 1 := by
-    rw [← Valuation.map_mul, ← map_mul, mul_inv_cancel₀ hx, map_one, Valuation.map_one]
-  refine le_antisymm h1' ?_
-  by_contra hlt
-  push_neg at hlt
-  have h3 : Valued.v (algebraMap F (Fv F w) x) * Valued.v (algebraMap F (Fv F w) x⁻¹) ≤
-      Valued.v (algebraMap F (Fv F w) x) * 1 := by gcongr
-  rw [hm, mul_one] at h3
-  exact absurd h3 (not_le.mpr hlt)
-
 end Res
-
-section Count
-
-theorem measure_count {G V : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
-    [AddCommGroup V] [Finite V] (μ : Measure G) [μ.IsAddLeftInvariant] (L N : AddSubgroup G)
-    (hNL : N ≤ L) (hN : MeasurableSet (N : Set G)) (φ : G → V)
-    (hadd : ∀ x ∈ L, ∀ y ∈ L, φ (x + y) = φ x + φ y) (hker : ∀ x ∈ L, φ x = 0 ↔ x ∈ N)
-    (hsurj : ∀ w, ∃ x ∈ L, φ x = w) (S : Set V) :
-    μ {x | x ∈ L ∧ φ x ∈ S} = (Nat.card S : ENNReal) * μ N := by
-  classical
-  haveI := Fintype.ofFinite V
-  choose x hxL hxφ using hsurj
-  have key : ∀ w y, -x w + y ∈ N → φ y = w := by
-    intro w y hn
-    have h1 := hadd _ (hxL w) _ (hNL hn)
-    rw [add_neg_cancel_left, hxφ, (hker _ (hNL hn)).mpr hn, add_zero] at h1
-    exact h1
-  have hset : {y | y ∈ L ∧ φ y ∈ S} = ⋃ w ∈ S.toFinset, (fun h => -x w + h) ⁻¹' (N : Set G) := by
-    ext y
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_toFinset, exists_prop, Set.mem_preimage,
-      SetLike.mem_coe]
-    constructor
-    · rintro ⟨hy, hyS⟩
-      refine ⟨φ y, hyS, ?_⟩
-      have hmem : -x (φ y) + y ∈ L := L.add_mem (L.neg_mem (hxL _)) hy
-      rw [← hker _ hmem]
-      have h1 := hadd _ (hxL (φ y)) _ hmem
-      rw [add_neg_cancel_left, hxφ] at h1
-      calc φ (-x (φ y) + y) = -φ y + (φ y + φ (-x (φ y) + y)) := by abel
-        _ = -φ y + φ y := by rw [← h1]
-        _ = 0 := by abel
-    · rintro ⟨w, hw, hn⟩
-      have hyL : y ∈ L := by
-        have h2 := L.add_mem (hxL w) (hNL hn)
-        rwa [add_neg_cancel_left] at h2
-      refine ⟨hyL, ?_⟩
-      rw [key w y hn]
-      exact hw
-  rw [hset, MeasureTheory.measure_biUnion_finset]
-  · simp only [MeasureTheory.measure_preimage_add]
-    rw [Finset.sum_const, nsmul_eq_mul, Nat.card_eq_card_toFinset]
-  · intro w1 _ w2 _ hne
-    exact Set.disjoint_left.mpr fun y h1 h2 => hne ((key w1 y h1).symm.trans (key w2 y h2))
-  · intro w _
-    exact (measurable_const_add (-x w)) hN
-
-end Count
 
 end PI.VolStabSW

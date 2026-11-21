@@ -179,10 +179,6 @@ def dropF (φ : Matrix (Fin n) (Fin (N + 1)) E → ℂ) : Matrix (Fin n) (Fin N)
 def pushZ (Z : CM Ψ N N) (v : Fin N → E) (t : ℝ) : CM Ψ N N := fun τ =>
   Z τ + (I * t) • vecMulVec (fun a => τ.1 (v a)) fun a => conj (τ.1 (v a))
 
-theorem first_coordinate_admissible : admitted 1 1 (0 : Fam E n N) :=
-  ⟨⟨one_pos, one_pos⟩, fun _ _ _ _ _ _ _ _ => rfl, fun _ _ _ h => (h rfl).elim,
-    fun _ _ _ _ _ => rfl, fun _ _ _ _ _ _ _ _ => rfl⟩
-
 namespace Base
 
 theorem isType_data {r : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) : IsType X.Ψ := X.cmType
@@ -264,32 +260,6 @@ theorem cls_eq_iff {M : ℕ} (Λ Λ' : Vset E n M) :
       fun ⟨g, hg, m⟩ ⟨h, hh, m'⟩ => ⟨h * g, mul_mem_DH hh hg, moves_mul m m'⟩⟩
   exact Quot.eq.trans this.eqvGen_iff
 
-theorem wt_moves {M : ℕ} {h : Matrix (Fin n) (Fin n) E} (hh : h ∈ DH E n M) {Λ Λ' : Lt E n}
-    (m : Moves h Λ Λ') : wt M Λ' = wt M Λ := by
-  have hu : ccT h * h = 1 := hh.1
-  have hu' : h * ccT h = 1 := mul_eq_one_comm.1 hu
-  unfold wt
-  congr 2
-  refine Set.ncard_congr (fun g _ => ccT h * g * h) (fun g hg => ?_) (fun g g' _ _ e => ?_)
-    (fun g hg => ⟨h * g * ccT h, ?_, ?_⟩)
-  · exact ⟨mul_mem_DH (mul_mem_DH (ccT_mem_DH hh) hg.1) hh,
-      moves_mul m (moves_mul hg.2 (moves_ccT hu m))⟩
-  · have k : ∀ g : Matrix (Fin n) (Fin n) E, h * (ccT h * g * h) * ccT h = g := fun g => by
-      rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hu', one_mul, Matrix.mul_assoc, hu', mul_one]
-    rw [← k g, ← k g']
-    exact congrArg (fun a => h * a * ccT h) e
-  · exact ⟨mul_mem_DH (mul_mem_DH hh hg.1) (ccT_mem_DH hh),
-      moves_mul (moves_ccT hu m) (moves_mul hg.2 m)⟩
-  · change ccT h * (h * g * ccT h) * h = g
-    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hu, one_mul, Matrix.mul_assoc, hu, mul_one]
-
-theorem classSum_eq {M : ℕ} {f : Lt E n → ℂ} (hf : IsClassFn M f) (s : Cls E n M → Vset E n M)
-    (hs : ∀ c, Quot.mk _ (s c) = c) :
-    classSum M f = ∑ᶠ c : Cls E n M, (wt M (s c).1 : ℂ) * f (s c).1 := by
-  refine finsum_congr fun c => ?_
-  obtain ⟨h, hh, m⟩ := (cls_eq_iff (s c) (Quot.out c)).1 ((hs c).trans (Quot.out_eq c).symm)
-  rw [wt_moves hh m, hf h hh _ (s c).2 _ (Quot.out c).2 m]
-
 theorem classSum_congr {M : ℕ} {f g : Lt E n → ℂ} (h : ∀ Λ ∈ Vset E n M, f Λ = g Λ) :
     classSum M f = classSum M g :=
   finsum_congr fun c => by rw [h _ (Quot.out c).2]
@@ -305,24 +275,6 @@ theorem expo_eq_trace (x : Matrix (Fin n) (Fin N) E) (Z : CM Ψ N N) (z z' : CM 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [Matrix.mul_assoc]
   rfl
-
-theorem expo_mul {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1)
-    (x : Matrix (Fin n) (Fin N) E) (Z : CM Ψ N N) (z z' : CM Ψ n N) :
-    expo Ψ (h * x) Z z z' =
-      expo Ψ x Z (fun τ => (h.map τ.1)ᵀ * z τ) (fun τ => (h.map τ.1)ᴴ * z' τ) := by
-  rw [expo_eq_trace, expo_eq_trace]
-  refine Finset.sum_congr rfl fun τ _ => ?_
-  have e : (h.map τ.1)ᴴ * h.map τ.1 = 1 := by
-    rw [← ccT_map, ← Matrix.map_mul, hu, Matrix.map_one _ (map_zero _) (map_one _)]
-  rw [Matrix.map_mul, Matrix.conjTranspose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]
-  generalize h.map τ.1 = H at e ⊢
-  generalize x.map τ.1 = X
-  congr 1
-  · congr 1
-    · rw [← Matrix.mul_assoc, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
-        ← Matrix.mul_assoc, e, Matrix.one_mul]
-    · rw [Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc]
-  · rw [← Matrix.mul_assoc, Matrix.trace_mul_comm, ← Matrix.mul_assoc]
 
 theorem swd_zero (M : ℕ) (φ : Fam E n N) (Z : CM Ψ N N) : swd Ψ M φ Z 0 0 = swDiff Ψ M φ Z := rfl
 
@@ -394,11 +346,6 @@ theorem mem_of_coprime {m : ℕ} (Λ : Lt E m) {s R : ℕ} (h : s.Coprime R) {v 
   rw [e]
   exact Λ.add_mem (Λ.toAddSubgroup.zsmul_mem h1 a) (Λ.toAddSubgroup.zsmul_mem h2 b)
 
-open Classical in
-
-def indF (E : Type) [Field E] [NumberField E] (n N : ℕ) : Fam E n N := fun Λ x =>
-  if ColsIn Λ x then 1 else 0
-
 omit [NumberField E] [IsCMField E] in
 
 theorem I_mem_Hn : (fun _ => I • (1 : Matrix (Fin N) (Fin N) ℂ) : CM Ψ N N) ∈ Hn Ψ N := by
@@ -416,10 +363,6 @@ theorem ccT_J : ccT (Matrix.J (Fin N) E) = -Matrix.J (Fin N) E := by
   have : (Matrix.J (Fin N) E).map cc = Matrix.J (Fin N) E := by
     ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [Matrix.J, cc, h]
   rw [ccT, this, Matrix.J_transpose]
-
-theorem J_mem_UU : Matrix.J (Fin N) E ∈ UU E N := by
-  change ccT _ * _ * _ = _
-  rw [ccT_J, neg_mul, Matrix.J_squared]; simp
 
 theorem one_mem_UU : (1 : M2 E N) ∈ UU E N := by
   change ccT _ * _ * _ = _

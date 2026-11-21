@@ -173,10 +173,6 @@ theorem exists_root2 : ∃ ζ : MaximalUnramifiedExtension l, IsPrimitiveRoot ζ
     rwa [Nat.sub_sub_self h1.le] at this
   exact hl.out.one_lt.ne' (Nat.dvd_one.1 h3)
 
-theorem exists_pi : ∃ ϖ : ℂ_[l], ϖ ^ (l ^ 2 - 1) = (l : ℂ_[l]) := by
-  have h1 : 1 < l ^ 2 := by have := hl.out.two_le; nlinarith
-  exact IsAlgClosed.exists_pow_nat_eq _ (by omega)
-
 end Field
 
 end FAux
@@ -197,40 +193,5 @@ theorem complex_multiplication_field_data : FieldDataCM := by
     exact hσ.1.one_lt.ne' (Nat.dvd_one.1 h3))
   obtain ⟨om, oms, h1, h2⟩ := trDualExists (MaximalUnramifiedExtension l) l d σ hσ hd ζ hζ
   exact ⟨ζ, om, oms, hζ, h1, h2⟩
-
-theorem ThmAEntryCM_of (hF1 : CurveExponentCoboundaryCocycle) : ThmAEntryCM := by
-  intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι
-  obtain ⟨g2, g3, ε, hg, hε, hth⟩ := FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι
-  refine ⟨g2, g3, ε, hg, hε, hth, ?_⟩
-  intro σ hσ F hF s2 hN
-  obtain ⟨a1, a2, -⟩ := FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN
-  exact thmAEntryOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2
-
-theorem ThmAGaussCM_of (hF1 : CurveExponentCoboundaryCocycle) : ThmAGaussCM := by
-  intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι
-  obtain ⟨g2, g3, ε, hg, hε, hth⟩ := FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι
-  refine ⟨g2, g3, ε, hg, hε, hth, ?_⟩
-  intro σ hσ F hF s2 hN
-  obtain ⟨a1, a2, -⟩ := FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN
-  exact thmAGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2
-
-theorem OneLetterGaussCM_of (hF1 : CurveExponentCoboundaryCocycle) : OneLetterGaussCM := by
-  intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι
-  obtain ⟨g2, g3, ε, hg, hε, hth⟩ := FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι
-  refine ⟨g2, g3, ε, hg, hε, hth, ?_⟩
-  intro σ hσ F hF s2 hN
-  obtain ⟨a1, a2, a3⟩ := FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN
-  exact oneLetterGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2
-    (FAux.exists_root2 l) _ a3
-
-theorem KernelCM_of (hF1 : CurveExponentCoboundaryCocycle) : KernelCM := by
-  intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι
-  obtain ⟨g2, g3, ε, hg, hε, hth⟩ := FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι
-  refine ⟨g2, g3, ε, hg, hε, hth, ?_⟩
-  intro σ hσ F hF s2 hN ν r0 r1 _ om oms
-  obtain ⟨a1, a2, -⟩ := FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN
-  have : CompleteSpace (MaximalUnramifiedExtension l) := kurComplete l
-  exact kernelOfF l (MaximalUnramifiedExtension l) σ hσ (FAux.exists_root2 l) F hF _ a1 a2 ℂ_[l] (MaximalUnramifiedExtension l).subtype ν r0 r1
-    (FAux.norm_coe l) (FAux.exists_pi l) om oms
 
 end Formalism.L2.Th1.D

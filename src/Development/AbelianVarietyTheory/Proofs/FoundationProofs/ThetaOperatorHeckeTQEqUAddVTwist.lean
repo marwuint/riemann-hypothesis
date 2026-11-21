@@ -8,7 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsCuspFunctional
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntMatrixActionMemHomogeneousPolyFunctions
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsThBActSgDDiamIff
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLogDerivQExpansionModPrimePowOfTranslationStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLogDerivQExpansionModPrimePowOfTranslation
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerClassEqImpPowRatioStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerRootOfInvariantTInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LogDerivQExpansionMulPrimePowCongrStatement
@@ -476,7 +477,7 @@ theorem isThB_heckeT : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed 
       ← StabHecke.act_act X l _ _ (sl_pos _) (sl_pos _),
       eval_act X N l w n b hb _ _ a h00 (by rw [h10]; exact ⟨N * l, by ring⟩) f₀ hf₀c]
   obtain ⟨u, hu⟩ := GlobalTheory.T.modularTower_class_eq_imp_pow_ratio X l n _ _ hcl
-  obtain ⟨ψ, hψ, -⟩ := GlobalTheory.T.exists_logDerivQExpansion_modPrimePow_of_translationInvariant ε X (by obtain ⟨φ, h1, h2⟩ := X.j_hol; exact ⟨φ, h2, h1⟩) l A hlA n 1
+  obtain ⟨ψ, hψ, -⟩ := _root_.GlobalTheory.dl_exists ε X (by obtain ⟨φ, h1, h2⟩ := X.j_hol; exact ⟨φ, h2, h1⟩) l A hlA n 1
     ((su X τ f₀ : X.Kˣ) : X.K) one_pos (Units.ne_zero _) (by
       show X.sl (ofSL (ModularGroup.T ^ 1)) _ = _
       rw [pow_one]

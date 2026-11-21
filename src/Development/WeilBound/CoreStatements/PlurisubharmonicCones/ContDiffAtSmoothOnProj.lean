@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivializationStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLocalAnalyticTrivialization
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHoloInjDerivInj
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.GlueCharts
@@ -159,7 +159,7 @@ theorem analyticAt_proj {e : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ)} (he :
   obtain ⟨a, t, ht, c, hc, hgu⟩ := D.chart_cover _ hm.self_of_nhds
   have ht' : t ∈ ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1 :=
     mem_ball_zero_iff.2 (ht.trans_lt (by norm_num))
-  exact analyticAt_proj_gen (n := D.n) D.arith.2.1.2.1 M (D.chart a) he ht' (GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a t ht')
+  exact analyticAt_proj_gen (n := D.n) D.arith.2.1.2.1 M (D.chart a) he ht' (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.chart_torus_open K J II Ψ Ω W D a t ht')
     hg hm hsrc hc hgu
 
 theorem comp_proj_eventuallyEq {β : Type*} (G : M.Xc → β) (e : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ))

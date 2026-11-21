@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsNoetherianModelOfSmooth
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreGoingDownTensorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreGoingDownTensor
 open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.NzdDescent
@@ -62,7 +62,7 @@ theorem of_model (hN : (∀ (A B : Type) [CommRing A] [IsNoetherianRing A] [Comm
   haveI : Q₁.IsPrime := hQ₁.1.1
   let uT : Ideal (A ⊗[S] B₁) := u.asIdeal.comap e.toAlgHom.toRingHom
   haveI : uT.IsPrime := Ideal.comap_isPrime _ _
-  obtain ⟨QT, hQTp, hQTu, hQT1, hQTA⟩ := GlobalTheory.T.exists_prime_le_comap_of_goingDown_tensor S A B₁ uT Q₁ (fun x hx => hQ₁u hx) (by
+  obtain ⟨QT, hQTp, hQTu, hQT1, hQTA⟩ := _root_.GlobalTheory.fibre_going_down_tensor S A B₁ uT Q₁ (fun x hx => hQ₁u hx) (by
     apply le_antisymm
     · intro s hs
       have : algebraMap S B₁ s ∈ u₁.asIdeal := hQ₁u hs

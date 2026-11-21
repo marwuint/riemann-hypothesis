@@ -4,7 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulVSubRight
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdChar
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PThIndep
 import Formalism.LocalToGlobal.GlobalTheory.GL3.DeterminantNormOneOfUnitDisc
-import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkChi
+import Formalism.LocalToGlobal.GlobalTheory.GL3.Statement
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardTrivialFirstComponent
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThU
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.CayleyGaussianIntegralsCongrFact
 
@@ -244,9 +246,6 @@ theorem Lat0 (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     exact AddSubgroup.sum_mem _ fun i _ => AddSubgroup.sum_mem _ fun j _ => key i j (hz i j)
 
 end Lat0
-
-theorem lat0OK {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (N N' : ℕ) : B.Lat0OK N N' :=
-  Lat0 D cc δ
 
 section
 variable {D : D7}

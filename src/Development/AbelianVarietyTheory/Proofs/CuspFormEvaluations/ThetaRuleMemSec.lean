@@ -4,9 +4,9 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndBC
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaValueNaturalAlgebraMapStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaValueNaturalAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaValueExistsUniqueOfChartIndependence
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaValueWeightTriangularFrameStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaValueWeightTriangularFrame
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
@@ -20,7 +20,7 @@ theorem thetaRule_mem_sec : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] 
   unfold sec secW
   refine ⟨?_, ?_⟩
   · intro p q φ y z hyz
-    exact (GlobalTheory.T.thetaValue_natural_algebraMap hL hC E H Dw l Xo c nab hnab p.R q.R φ y z hyz a n x P hP _ _ (hR p y) (hR q z)).symm
+    exact (_root_.GlobalTheory.thetaValue_natural hL hC E H Dw l Xo c nab hnab p.R q.R φ y z hyz a n x P hP _ _ (hR p y) (hR q z)).symm
   · intro p t y y' hB
     have hid : FrMap (AlgHom.id c.F p.R) y' y' := by
       have hs : spMap (AlgHom.id c.F p.R).toRingHom = 𝟙 _ := by
@@ -42,7 +42,7 @@ theorem thetaRule_mem_sec : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] 
           erw [CategoryTheory.Functor.map_id]
         erw [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp, e]
         rfl
-    have h1 := (GlobalTheory.T.thetaValue_weight_triangular_frame hL hC E H Dw l Xo c nab hnab p.R y y' t hB n a P).1 hP x (f p y) (hR p y)
-    exact GlobalTheory.T.thetaValue_natural_algebraMap hL hC E H Dw l Xo c nab hnab p.R p.R (AlgHom.id c.F p.R) y' y' hid a n x P hP _ _ (hR p y') h1
+    have h1 := (_root_.GlobalTheory.thetaValue_weight hL hC E H Dw l Xo c nab hnab p.R y y' t hB n a P).1 hP x (f p y) (hR p y)
+    exact _root_.GlobalTheory.thetaValue_natural hL hC E H Dw l Xo c nab hnab p.R p.R (AlgHom.id c.F p.R) y' y' hid a n x P hP _ _ (hR p y') h1
 
 end GlobalTheory

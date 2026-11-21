@@ -15,9 +15,16 @@ import Development.WeilBound.CoreStatements.FlagImmersions.ExistsResDegree
 import Development.WeilBound.CoreStatements.FlagImmersions.ValNeOfIntegral
 import Development.WeilBound.CoreStatements.FlagImmersions.VertCloseStep
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HasReferenceOfSandwichAllPrimes
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSandwichOfHodgeTateFreeStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerM1NefStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationPullbackCompatibleStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSandwichOfHodgeTateFree
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GoodTowerM1Nef
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationPullbackCompatible
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PCoordArithOfFnField
 
@@ -130,12 +137,12 @@ theorem level (hRes : ResExistsStatement) (II : IntersectionSystem) (hII : IsFul
   have hH1 : ∀ k, 0 ≤ Hl.a k := fun k =>
     (mul_nonneg (Nat.cast_nonneg _) (pullDeg_nonneg hv₀.1 (fun _ => zero_le_one) k)).trans (hH0 k)
   refine ⟨K, inferInstance, ι, inferInstance, mCoordIdeal y, Re, Re', Hl, ?_, ?_, rfl, hHs, ?_, ?_, ?_⟩
-  · refine GlobalTheory.T.realisation_pullback_compatible II hII M.K M.ι _ _ Sys M.P o.Re K ι M.Ω y Sys Re κ v hv him
+  · refine _root_.GlobalTheory.CompanionTheory.Ar.PB.pb_indep_cover II hII M.K M.ι _ _ Sys M.P o.Re K ι M.Ω y Sys Re κ v hv him
       (Eventually.of_forall fun t a => ⟨rfl, fun _ => rfl⟩) ?_
     have : y ∘ v = M.y := funext hy
     rw [this, tM, ty, IntermediateField.relfinrank_self, one_mul]
     rfl
-  · refine GlobalTheory.T.realisation_pullback_compatible II hII R.K R.ι _ _ Sys R.P o₀.Re K ι M.Ω y Sys Re' κ₀ v₀ hv₀ him₀
+  · refine _root_.GlobalTheory.CompanionTheory.Ar.PB.pb_indep_cover II hII R.K R.ι _ _ Sys R.P o₀.Re K ι M.Ω y Sys Re' κ₀ v₀ hv₀ him₀
       (Eventually.of_forall fun t a => ⟨rfl, fun _ => rfl⟩) ?_
     rw [relfinrank_restr i hy₀ tR ty, o₀.Re_deg, hdeg, mul_one]
     have h1 := finrank_comp' o₀.g i
@@ -178,7 +185,7 @@ theorem RootFieldNumerics.global_model_real_tower_smooth : Given → ∀ (E : Ty
   intro hG E _ _ _ _ H D Xo l c Y _ T o II hY hX hII hp hq
   have hFar : HT.FarguesHodgeTate := hG.2.2.2.2.2.2.1
   have hRes : ResExistsStatement := hG.2.2.2.2.2.2.2.2.2.1.resExists
-  have hM1 := GlobalTheory.T.good_tower_M1_nef hG E H D Xo l c Y T o II hY hII hp hq
+  have hM1 := _root_.GlobalTheory.CompanionTheory.Ar.Top.or_m1nef hG E H D Xo l c Y T o II hY hII hp hq
   choose C₀ hC₀ using fun a => val_bound E H D l (Xo l) c Y (o.Sys a) (o.Fx a) (o.R a) (o.refOr a)
   choose e L s hs hs' using o.ample
   have hn : ∀ a, ∃ n : ℕ, ∀ b k, -((o.refOr a).Re.ref b).a k ≤ n := fun a => by
@@ -203,7 +210,7 @@ theorem RootFieldNumerics.global_model_real_tower_smooth : Given → ∀ (E : Ty
     exact Dvd.dvd.mul_right (Dvd.dvd.mul_left hd 2) _
   have hsand : ∀ p ∈ o.S B, ∃ κ, HT.IsCp p κ ∧ HT.Sandwich (o.Or B a).𝔐 p κ := fun p hpS => by
     haveI : Fact p.Prime := ⟨hSp p hpS⟩
-    exact GlobalTheory.T.exists_sandwich_of_hodge_tate_free hFar E H D l (Xo l) c _ _ Y _ _ _ _ _ (o.Or B a).𝔐 p hpS (by omega) (o.omVB B a p hpS)
+    exact _root_.GlobalTheory.CompanionTheory.Ar.HT.ModelSandwich.sandwich_of_htFree hFar E H D l (Xo l) c _ _ Y _ _ _ _ _ (o.Or B a).𝔐 p hpS (by omega) (o.omVB B a p hpS)
   obtain ⟨q, m, hq0, hm0, hmS, hlog, hval⟩ := hC₀ a (o.S B) (T.M B a) (o.Or B a) i hi hdisc hsand
   obtain ⟨K, _, ι, _, P, Re, Re', Hl, h1, h2, h3, h4, h5, h6, h7⟩ := level hRes II hII (o.Or B a) (o.refOr a) hi
     (o.smooth B a).1 (o.ref_top a) (o.ref_deg a)

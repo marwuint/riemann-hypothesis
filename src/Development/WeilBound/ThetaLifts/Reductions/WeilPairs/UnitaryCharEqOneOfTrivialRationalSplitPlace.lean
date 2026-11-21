@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.ExistsSplitAt
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.ImportsAlt
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.DoubledTargetWeilTransportRestrictFirstFactorImp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeltaTApply
 
 set_option linter.unusedSectionVars false
 

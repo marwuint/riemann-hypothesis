@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoFromNormalization
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyHomologyEquiv
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverCompOfIsClosedImmersion
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonoPullbackMapOfFlatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonoPullbackMapOfFlat
 
 set_option autoImplicit false
 
@@ -40,7 +40,7 @@ theorem semiNeg_descends_baseChange : ∀ (k : Type) [Field k] (C : Scheme.{0}) 
     have hinst : (‹Algebra k Γ(C, ⊤)›) = algebraΓOfHom f :=
       Algebra.algebra_ext _ _ (algebraMap_eq_strHom k C)
     haveI : Flat (pullback.fst f t) := inferInstance
-    have hm := GlobalTheory.T.mono_pullback_map_of_flat' _ _ (pullback.fst f t) W F i
+    have hm := _root_.GlobalTheory.mono_pullback_map_of_flat _ _ (pullback.fst f t) W F i
     have h := hF _ r (hW.pullback _) _ hm
     rw [← interNum_congr_lbIso k' _ (isLB_vecOne (LB.isLB_pull hW.isLB_det _)) (isLB_vecOne (hW.pullback _).isLB_det)
       (fun j => by fin_cases j; exact hW.lbIso_det_pullback _)] at h

@@ -2,24 +2,24 @@ import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionPowAnalyticVectorNormLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockActionPowAnalyticVectorNormLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembersStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectorOfIntegrableDiscreteSeriesCoefficientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHarishChandraDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHarishChandraDiscreteSeries
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesIntegrableCoefficientProjectorStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockModelDualPairCasimirApplyStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestKTypesJointHarmonicShapeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CasimirNumberIdentityDualPairStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EmbedsOfLowestTypeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestKTypesJointHarmonicShape
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CasimirNumberIdentityDualPair
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EmbedsOfLowestType
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SameBlockOfPosC
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedActionsAdjointCasimirSymmetricStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryQuotientStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormProportionalOfIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DenseRangeFiniteVectorsDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsometryIntertwinerOfDerivedActionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTensorEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DenseRangeFiniteVectorsDiscreteSeries
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsometryIntertwinerOfDerivedAction
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTensorEmbedding
 
 noncomputable section
 namespace GlobalTheory.FockTensor
@@ -106,9 +106,9 @@ theorem opE_comm (F : FockData T0 T1 T2) (e : T1.G → ℂ) (h : T2.G) (x : F.H)
 @[reducible] def polMod₂ (p q r s : ℕ) : GKMod r s where
   V := Pol p q r s
   act := fockAct2 p q r s
-  lie := (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.2.1
-  kfin P := ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).2 P).1
-  wts P := ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).2 P).2
+  lie := (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.1
+  kfin P := ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).2 P).1
+  wts P := ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).2 P).2
 
 theorem fock_bound₂ (F : FockData T0 T1 T2) (Y : Mat r s) (Q : Pol p q r s) :
     ∃ C ρ : ℝ, 0 ≤ C ∧ 0 < ρ ∧ ∀ k : ℕ,
@@ -118,7 +118,7 @@ theorem fock_bound₂ (F : FockData T0 T1 T2) (Y : Mat r s) (Q : Pol p q r s) :
   have hact : fockAct2 p q r s Y = omAct p q r s Z := rfl
   refine ⟨(2 : ℝ) ^ ((Q.totalDegree : ℝ) / 2 + 1) * ‖F.ι Q‖, 4 * (∑ l, ∑ l', ‖Z l l'‖) + 1,
     by positivity, by positivity, fun k => ?_⟩
-  have h := (GlobalTheory.T.fockAction_pow_analyticVector_norm_le p q r s F.H F.ι (GlobalTheory.FockAlg.isFockIsometry_of_fockData F) Z Q.totalDegree k Q
+  have h := (_root_.GlobalTheory.FockAnalytic.omAct_pow_norm_le p q r s F.H F.ι (GlobalTheory.FockAlg.isFockIsometry_of_fockData F) Z Q.totalDegree k Q
     le_rfl).2
   rw [hact]
   refine h.trans ?_
@@ -179,10 +179,10 @@ theorem exists_embedding₂ (F : FockData T0 T1 T2) (hF : Continuous F.emb) (hrs
     rw [← map_casimir f hf, map_smul, hEf, hEf]
     exact hcasΦ
   obtain ⟨v', hv'⟩ := exists_isHW hone
-  obtain ⟨⟨M, ip, hi1, hi2, hi3⟩, hB⟩ := GlobalTheory.T.exists_unitary_harishChandra_discreteSeries r s T2 D'
+  obtain ⟨⟨M, ip, hi1, hi2, hi3⟩, hB⟩ := _root_.GlobalTheory.DiscreteSeriesUnitary.exists_unitary r s T2 D'
   dsimp only at hB
   subst hB
-  obtain ⟨e, -, hev, he⟩ := GlobalTheory.T.exists_injective_intertwiner_of_lowest_type h7 h8 r s lam' hpar hgap A ⟨D'.HK, ip, hi1, hi2, hi3⟩
+  obtain ⟨e, -, hev, he⟩ := _root_.GlobalTheory.LowestType.embeds_of_lowest_type h7 h8 r s lam' hpar hgap A ⟨D'.HK, ip, hi1, hi2, hi3⟩
     (f Φ) v' hu hv' hcu (hcas v') hirr
   let E₂ : D'.HK.V →ₗ[ℂ] (fockU₂ F hF).H := Eb ∘ₗ e
   have hE₂v : E₂ v' = P (F.ι Φ) := by
@@ -233,8 +233,8 @@ theorem exists_embedding₂ (F : FockData T0 T1 T2) (hF : Continuous F.emb) (hrs
     calc _ = c⁻¹ * (c * ‖D'.ι ((D'.HK.act Y ^ k) y)‖) := by field_simp
       _ ≤ c⁻¹ * (‖P‖ * (C * ρ ^ k * (k.factorial : ℝ))) := by gcongr
       _ = _ := by ring
-  have hden := GlobalTheory.T.dense_range_finite_vectors_discrete_series r s hrs T2 D' hirr.1 hbd
-  obtain ⟨j, hj1, hj2⟩ := GlobalTheory.T.exists_isometry_intertwiner_of_derived_action r s hrs T2 D' (fockU₂ F hF) (((c⁻¹ : ℝ) : ℂ) • E₂) hden
+  have hden := _root_.GlobalTheory.AnalyticDense.dense_range_of_factorial_bound r s hrs T2 D' hirr.1 hbd
+  obtain ⟨j, hj1, hj2⟩ := _root_.GlobalTheory.FockTensor.exists_isometry_intertwiner_of_derived r s hrs T2 D' (fockU₂ F hF) (((c⁻¹ : ℝ) : ℂ) • E₂) hden
     (fun y => by
       rw [LinearMap.smul_apply, norm_smul, hc, Complex.norm_real, Real.norm_eq_abs,
         abs_of_pos (inv_pos.2 hc0)]
@@ -294,7 +294,7 @@ theorem arii_of (X : ProvA) (hD1 : DiscreteSeriesBlattner X) (hD3 : DiscreteSeri
         proj_casimir₁ F hF D v _ (hcas v) P hsa hio', ← sub_smul, hnum]
       push_cast
       rfl)
-  obtain ⟨Tm, hT1, hT2, hT3, hT4⟩ := GlobalTheory.T.exists_isometric_tensor_embedding_intertwining p q _ D (fockU₁ F hF) v hv.2 D'.U.H j
+  obtain ⟨Tm, hT1, hT2, hT3, hT4⟩ := _root_.GlobalTheory.FockTensor.exists_tensor_embedding p q _ D (fockU₁ F hF) v hv.2 D'.U.H j
     (fun g y y' => by
       have e1 := hsa (j y) ((fockU₁ F hF).π g (P (j y')))
       rw [hPP, inner_smul_right, hj2, hj2, j.inner_map_map] at e1
@@ -314,7 +314,7 @@ theorem fock_contains_tensor : ∀ X : ProvA, admH1 X → admH2 X → DiscreteSe
   have hD3 := GlobalTheory.T.discreteSeries_integrableCoefficient_projector X hD2 h6
   refine ⟨fun t al be ga de h => ?_, fun t al be ga de h => ?_⟩
   · obtain ⟨hA, -, hG2, hG3⟩ := id h
-    obtain ⟨⟨hp1, hp2, -⟩, -⟩ := GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de hA
+    obtain ⟨⟨hp1, hp2, -⟩, -⟩ := _root_.GlobalTheory.lowestKTypes_jointShape t al be ga de hA
     have hn : al.length + be.length + (ga.length + de.length) =
       al.length + be.length + ga.length + de.length := by omega
     have hM : al.length + de.length + t + (ga.length + be.length) =
@@ -323,9 +323,9 @@ theorem fock_contains_tensor : ∀ X : ProvA, admH1 X → admH2 X → DiscreteSe
       (h1.1 t al be ga de h)
     · rw [rangeOfSeventhSum, hn]; exact hG3
     · rw [hM]; exact hG2
-    · rw [hn, hM, (GlobalTheory.T.casimir_number_identity_dualPair t al be ga de hA).1]; push_cast; ring
+    · rw [hn, hM, (_root_.GlobalTheory.CasimirNumber.casimir_number_identity t al be ga de hA).1]; push_cast; ring
   · obtain ⟨hA, -, hG2, hG3⟩ := id h
-    obtain ⟨⟨hp1, -, hp2⟩, -⟩ := GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de hA
+    obtain ⟨⟨hp1, -, hp2⟩, -⟩ := _root_.GlobalTheory.lowestKTypes_jointShape t al be ga de hA
     have hn : al.length + be.length + (ga.length + de.length) =
       al.length + be.length + ga.length + de.length := by omega
     have hM : al.length + de.length + (ga.length + be.length + t) =
@@ -334,7 +334,7 @@ theorem fock_contains_tensor : ∀ X : ProvA, admH1 X → admH2 X → DiscreteSe
       (h1.2 t al be ga de h)
     · rw [rangeOfSeventhSum, hn]; exact hG3
     · rw [hM]; exact hG2
-    · rw [hn, hM, (GlobalTheory.T.casimir_number_identity_dualPair t al be ga de hA).2, (GlobalTheory.T.casimir_number_identity_dualPair t al be ga de hA).1]
+    · rw [hn, hM, (_root_.GlobalTheory.CasimirNumber.casimir_number_identity t al be ga de hA).2, (_root_.GlobalTheory.CasimirNumber.casimir_number_identity t al be ga de hA).1]
       push_cast; ring
 
 end GlobalTheory.FockTensor

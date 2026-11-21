@@ -26,11 +26,6 @@ def invCoef (n : ℕ) {G : Type*} {k : ℕ} (w : Fin k → FreeMonoid G) (α : F
 
 def evalW {G : Type*} [Monoid G] (w : FreeMonoid G) : G := FreeMonoid.lift id w
 
-structure DetMon (n : ℕ) (G B : Type*) [Monoid G] [CommRing B] where
-  Θ : Inv n G →+* B
-  compat : ∀ (k : ℕ) (w w' : Fin k → FreeMonoid G) (α : Fin k →₀ ℕ), (∀ j, evalW (w j) = evalW (w' j)) →
-    Θ (invCoef n w α) = Θ (invCoef n w' α)
-
 structure Det (n : ℕ) (A E B : Type*) [CommRing A] [Ring E] [Algebra A E] [CommRing B] [Algebra A B] where
   D : ∀ k : ℕ, (Fin k → E) → MvPolynomial (Fin k) B
   lin : ∀ (k k' : ℕ) (y : Fin k' → E) (c : Fin k → Fin k' → A), D k (fun j => ∑ l, c j l • y l) =
@@ -52,12 +47,6 @@ def tr (x : E) : B := D.lam 1 x
 
 def Kills (x : E) : Prop := ∀ (k : ℕ) (w : Fin k → E), D.D (k + 1) (Fin.cons x w) = rename Fin.succ (D.D k w)
 
-def IsOf {ι : Type*} [Fintype ι] [DecidableEq ι] (ρ : E → Matrix ι ι B) : Prop :=
-  ∀ (k : ℕ) (x : Fin k → E), D.D k x = detPoly fun j => ρ (x j)
-
-def IsPull {A' E' B' : Type*} [CommRing A'] [Ring E'] [Algebra A' E'] [CommRing B'] [Algebra A' B']
-    (D' : Det n A' E' B') (f : E' → E) (φ : B →+* B') : Prop :=
-  ∀ (k : ℕ) (x : Fin k → E'), D'.D k x = map φ (D.D k (f ∘ x))
 end Det
 
 section sch
@@ -68,12 +57,6 @@ def Det.rel (D : Det n A E A) : Set E := {x | ∃ (k : ℕ) (c : Fin k → Inv n
 
 def Det.IsGen (D : Det n A E A) : Prop := ∀ x ∈ D.rel, x = 0
 end sch
-
-section sqz
-variable {A N : Type*} [CommRing A] [AddCommGroup N] [Module A N] [Module Aᵐᵒᵖ N] [IsCentralScalar A N]
-
-def scaleEps (c : A) : TrivSqZeroExt A N →ₐ[A] TrivSqZeroExt A N := TrivSqZeroExt.map (c • LinearMap.id)
-end sqz
 
 def Det.IsMap {n : ℕ} {G B A : Type} [Group G] [CommRing B] [CommRing A]
     (D : Det n B (MonoidAlgebra B G) B) (D' : Det n A (MonoidAlgebra A G) A) (φ : B →+* A) : Prop :=

@@ -22,14 +22,6 @@ private theorem band_pos (ha : 0 < a) :
   ext g
   simp only [band, Set.mem_setOf_eq, ha.ne', false_or, Set.mem_preimage, Set.mem_Ico]
 
-private theorem measurableSet_band : MeasurableSet (band E a) := by
-  rcases Nat.eq_zero_or_pos a with rfl | ha
-  · rw [band_zero]; exact MeasurableSet.univ
-  · rw [band_pos ha]
-    have hc : Continuous fun g : GA E a => (detModule E a g : ℝ) :=
-      continuous_subtype_val.comp continuous_detModule
-    exact hc.measurable (measurableSet_Ico (a := (1 : ℝ)) (b := (detModule E a (splitCentre E a 1) : ℝ)))
-
 private theorem meas_retract : Measurable (retractOne : GA E a → G1 E a) := continuous_retractOne.measurable
 
 private theorem muOne_apply (μ : Measure (GA E a)) {A : Set (G1 E a)} (hA : MeasurableSet A) :

@@ -1,6 +1,6 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NormAlmostAll
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwGFree
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DvdOfAeval
+import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EqZeroOfAevalEqZero
 
 open Matrix Polynomial NumberField IsDedekindDomain
@@ -25,13 +25,6 @@ private theorem kry_mulVec (g : Matrix (Fin n) (Fin n) R) (v c : Fin n → R) :
   simp only [Matrix.mulVec, dotProduct, kry, Matrix.of_apply]
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
-private theorem coeff_pol (c : Fin n → R) (i : Fin n) : (pol c).coeff i = c i := by
-  simp [pol, coeff_monomial, Fin.val_inj]
-
-private theorem degree_pol (c : Fin n → R) : (pol c).degree < n := by
-  simp only [pol, ← C_mul_X_pow_eq_monomial]
-  exact degree_sum_fin_lt c
-
 private theorem pol_coeff (p : R[X]) (h : p.degree < n) : pol (fun i : Fin n => p.coeff i) = p := by
   simp only [pol]
   exact sum_fin (fun i a => monomial i a) (by simp) h |>.trans (sum_monomial_eq p)
@@ -48,42 +41,6 @@ private theorem mul_kry [Nontrivial R] (g : Matrix (Fin n) (Fin n) R) (v : Fin n
   have := congrFun (aeval_mulVec g v (X ^ ((j : ℕ) + 1))) i
   rw [map_pow, aeval_X, pow_succ', ← Matrix.mulVec_mulVec] at this
   exact this
-
-private theorem kry_map {S : Type} [CommRing S] (f : R →+* S) (g : Matrix (Fin n) (Fin n) R) (v : Fin n → R) :
-    (kry g v).map f = kry (g.map f) (f ∘ v) := by
-  ext i j
-  simp only [kry, Matrix.map_apply, Matrix.of_apply, RingHom.map_mulVec, ← Matrix.map_pow]
-
-end
-
-section
-variable {K : Type} [Field K] {n : ℕ}
-
-private theorem dvd_of_aeval (g : Matrix (Fin n) (Fin n) K) (h : g.charpoly.Separable) (p : K[X])
-    (hp : aeval g p = 0) : g.charpoly ∣ p :=
-  _root_.UpperTheory.Reformulated.B.DvdOfAeval.dvd_of_aeval g h p hp
-
-private theorem exists_kry_field (g : Matrix (Fin n) (Fin n) K) (h : g.charpoly.Separable) :
-    ∃ v, (kry g v).det ≠ 0 := by
-  obtain ⟨x, hx⟩ := Module.exists_ker_toSpanSingleton_eq_annihilator (R := K[X])
-    (M := Module.AEval' (Matrix.toLin' g))
-  obtain ⟨v, rfl⟩ := (Module.AEval'.of (Matrix.toLin' g)).surjective x
-  refine ⟨v, fun h0 => ?_⟩
-  obtain ⟨c, hc, h1⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h0
-  rw [kry_mulVec] at h1
-  have e : aeval (Matrix.toLin' g) (pol c) = Matrix.toLin' (aeval g (pol c)) :=
-    aeval_algHom_apply (Matrix.toLinAlgEquiv' (R := K) (n := Fin n)) g (pol c)
-  have h2 : pol c ∈ LinearMap.ker (LinearMap.toSpanSingleton K[X] _ (Module.AEval'.of (Matrix.toLin' g) v)) := by
-    rw [LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← Module.AEval.of_aeval_smul, e]
-    simp [h1]
-  rw [hx, ← span_minpoly_eq_annihilator, Ideal.mem_span_singleton, minpoly.dvd_iff, e,
-    LinearEquiv.map_eq_zero_iff] at h2
-  have h3 := dvd_of_aeval g h _ h2
-  have h4 : pol c = 0 := eq_zero_of_dvd_of_degree_lt h3 (by
-    rw [Matrix.charpoly_degree_eq_dim, Fintype.card_fin]; exact degree_pol c)
-  apply hc
-  funext i
-  rw [← coeff_pol c i, h4, coeff_zero, Pi.zero_apply]
 
 end
 

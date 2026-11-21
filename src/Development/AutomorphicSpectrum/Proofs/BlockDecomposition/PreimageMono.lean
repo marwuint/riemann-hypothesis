@@ -20,7 +20,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverCupActionB
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StableCoverCechVanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedWittIsNoetherian
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGradedVanishing
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinatesRestrictAffineOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinatesRestrictAffineOpen
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobSerre
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.PolynomialSiteTraces.PolyAll
 set_option backward.isDefEq.respectTransparency false
@@ -213,7 +213,7 @@ theorem free_at (hp : p ≠ 0) (hn : IsNilpotent (p : R)) {V W : X.Opens} (h : W
     (c : Coord q V d) {u : Fin d → ∀ T : Thick (nlFun γ p X q κ), T.B}
     (hu : IsLift (fib hI q κ γ p) (jF hI q κ ⁻¹ᵁ V) (fun i => jf hI q κ V (c.t i)) u) (r : ℕ) :
     Free (fib hI q κ γ p) (jF hI q κ ⁻¹ᵁ W) (SQ q κ γ p W) r u := by
-  obtain ⟨c', hc'⟩ := GlobalTheory.T.coordinates_restrict_affine_open c h hW
+  obtain ⟨c', hc'⟩ := _root_.GlobalTheory.CompanionTheory.CoordRes.main c h hW
   have hu' : IsLift (fib hI q κ γ p) (jF hI q κ ⁻¹ᵁ W) (fun i => jf hI q κ W (c'.t i)) u :=
     isLift_res _ (preimage_mono' hI h) hu fun i => by rw [hc', jf_rs]
   obtain ⟨E, σ, θ, hGr, hbot, hco, hσ, hpt⟩ := frame_at hI hp hn c' u hu'
@@ -328,17 +328,6 @@ theorem cover_pre (U : Cov q) : (⨆ α, jF hI q κ ⁻¹ᵁ U.U α) = ⊤ := by
   obtain ⟨α, hα⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨α, hα⟩
 
-include hI in
-theorem cech_fin [IsNoetherianRing R] (hp : p ≠ 0) (hn : IsNilpotent (p : R)) [IsProper q] (U : Cov q) (r a : ℕ) :
-    Module.Finite R ((CrystallineSemistableComparison.Pb.cechH (GF (nlFun γ p X q κ) r) (fun α => SQ q κ γ p (U.U α)) r).cx.H a) := by
-  haveI : IsProper (qF hI q κ) := MorphismProperty.pullback_snd (P := @IsProper) _ _ inferInstance
-  obtain ⟨V⟩ := vb_cech (γ := γ) (p := p) (κ := κ) hI hp hn U r
-  have ha : ∀ n (i : Fin (n + 1) → U.ι), IsAffineOpen (capO (fun α => jF hI q κ ⁻¹ᵁ U.U α) i) := fun n i => by
-    rw [capO_pre]
-    exact aff_pre hI (GlobalTheory.CompanionTheory.GrCech.capO_affine U n i)
-  have h := @vb_fin R _ _ (XF hI q κ) (qF hI q κ) _ U.ι _ (fun α => jF hI q κ ⁻¹ᵁ U.U α) (cover_pre hI U) ha
-      (CrystallineSemistableComparison.Pb.cechH (GF (nlFun γ p X q κ) r) (fun α => SQ q κ γ p (U.U α)) r) V a
-  exact h
 end Fin
 
 end GlobalTheory.CompanionTheory.FibGr

@@ -2,12 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedDoublingIntegralInertPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalDoublingSectionGraphDiagonalEqStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BiInvariantReplaceSameDoubleCosetSumsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosets
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BiInvariantReplaceSameDoubleCosetSums
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SummableNormCosetOutStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsZonalSphericalFunctionUnramifiedUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsZonalSphericalFunctionUnramifiedUnitary
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSatVecUOfDiag
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GaussianBinomialClosedForm
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TrivialParameterBound
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice MeasureTheory IsDedekindDomain NumberField Matrix
@@ -170,7 +172,7 @@ theorem hasSum_zetaSum_inert : ∀ (L : Type) [Field L] [Valued L (WithZero (Mul
   have hint1 := ((hdouble α0 _ hw0).1 (hdom α0 (tb_triv q r hq2 α0 hα0))).1
   have hintφ : Integrable φ μ := by simpa [hΦφ] using hint1
 
-  obtain ⟨w, hw⟩ := GlobalTheory.T.exists_zonalSphericalFunction_unramifiedUnitary L ϖ σ q r hU α
+  obtain ⟨w, hw⟩ := _root_.GlobalTheory.IndefiniteRowSideFullHecke.ZonalExists.exists_isZonal L ϖ σ q r hU α
   obtain ⟨hintw, hval, -⟩ := (hdouble α w hw).1 (hdom α hα)
   simp only [hΦφ] at hintw hval
   have hFw : ∀ g, ∀ k ∈ KU σ r, φ (g * k) * w (g * k) = φ g * w g := fun g k hk => by
@@ -178,7 +180,7 @@ theorem hasSum_zetaSum_inert : ∀ (L : Type) [Field L] [Valued L (WithZero (Mul
     simp only [OneMemClass.coe_one, one_mul] at h1
     rw [hright g k hk, h1]
   have hsw := (GlobalTheory.T.summable_norm_coset_out' _ μ (KU σ r) hKo hμK _ hFw hintw).of_norm
-  have hci := (GlobalTheory.T.integral_right_invariant_eq_sum_open_subgroup_cosets _ μ (KU σ r) hKo hμK (fun g => φ g * w g) _ hFw hsw.hasSum).2
+  have hci := (_root_.GlobalTheory.InertZeta.cosetIntegral_holds _ μ (KU σ r) hKo hμK (fun g => φ g * w g) _ hFw hsw.hasSum).2
   have hS1 : HasSum (fun a : GU σ r ⧸ KU σ r => φ a.out * w a.out)
       (closedForm q r (varX q r (χ ϖu) ((t : ℂ) / 2)) (varY q (χ ϖu) ((t : ℂ) / 2)) α) := by
     rw [← hval, hci]; exact hsw.hasSum
@@ -206,7 +208,7 @@ theorem hasSum_zetaSum_inert : ∀ (L : Type) [Field L] [Valued L (WithZero (Mul
         (ℓ.toAddMonoidHom.map_finsum (GlobalTheory.LFun.finite_heckeVec hK (hm g) ρ x)).symm
       simp
     rw [e1, e2, h1, h2, mul_comm]
-  have hswap := GlobalTheory.T.biInvariant_replace_same_double_coset_sums _ (KU σ r) hK φ (fun g => ℓ x * w g) (fun g => ℓ (ρ g x)) _
+  have hswap := _root_.GlobalTheory.InertZeta.dosetSwap _ (KU σ r) hK φ (fun g => ℓ x * w g) (fun g => ℓ (ρ g x)) _
     (fun a b g => kerU_biInv hU hφ g a.2 b.2)
     (fun a b g => by simp only [hw.1 a b g]) hcond hsψ.hasSum
   have h2 : HasSum (fun a : GU σ r ⧸ KU σ r => φ a.out * (ℓ x * w a.out))

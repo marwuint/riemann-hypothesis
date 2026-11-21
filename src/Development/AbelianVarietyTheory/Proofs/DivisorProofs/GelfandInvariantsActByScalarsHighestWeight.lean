@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexifiedDerivedActionIsLieActionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexifiedDerivedActionIsLieAction
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfInnerSmooth
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommuteGelfandInvariantMatrixUnitsOfGlRel
 import Development.AbelianVarietyTheory.Definitions.Foundations.TracePowApply
@@ -132,17 +132,17 @@ def dEnd (hh : Hm.IsHermitian) (hd : Hm.det ≠ 0) (hσ : IsURepOn (Formalism.Qu
     { toFun := fun v => ⟨dRepC Hm σ Z v.1,
         GlobalTheory.SmVec.dRepC_mem ((Matrix.isUnit_iff_isUnit_det Hm).2 hd.isUnit) hh hσ Z v.2⟩
       map_add' := fun v v' => Subtype.ext (by
-        simpa using ((GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ v.1 v'.1 v.2 v'.2).1 1 Z Z).2.1)
+        simpa using ((_root_.GlobalTheory.HolDict.LieAct.main n Hm H σ hh hd hσ v.1 v'.1 v.2 v'.2).1 1 Z Z).2.1)
       map_smul' := fun c v => Subtype.ext (by
-        have h0 := ((GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ 0 0 (smSub Hm σ).zero_mem (smSub Hm σ).zero_mem).1 1 Z Z).2.1
-        have h1 := ((GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ v.1 0 v.2 (smSub Hm σ).zero_mem).1 c Z Z).2.1
+        have h0 := ((_root_.GlobalTheory.HolDict.LieAct.main n Hm H σ hh hd hσ 0 0 (smSub Hm σ).zero_mem (smSub Hm σ).zero_mem).1 1 Z Z).2.1
+        have h1 := ((_root_.GlobalTheory.HolDict.LieAct.main n Hm H σ hh hd hσ v.1 0 v.2 (smSub Hm σ).zero_mem).1 c Z Z).2.1
         simp only [one_smul, add_zero, left_eq_add] at h0
         simpa [h0] using h1) }
   map_add' Z Z' := LinearMap.ext fun v => Subtype.ext (by
-    simpa using ((GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ v.1 v.1 v.2 v.2).1 1 Z Z').1)
+    simpa using ((_root_.GlobalTheory.HolDict.LieAct.main n Hm H σ hh hd hσ v.1 v.1 v.2 v.2).1 1 Z Z').1)
   map_smul' c Z := LinearMap.ext fun v => Subtype.ext (by
-    have h0 := ((GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ v.1 v.1 v.2 v.2).1 1 0 0).1
-    have h1 := ((GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ v.1 v.1 v.2 v.2).1 c Z 0).1
+    have h0 := ((_root_.GlobalTheory.HolDict.LieAct.main n Hm H σ hh hd hσ v.1 v.1 v.2 v.2).1 1 0 0).1
+    have h1 := ((_root_.GlobalTheory.HolDict.LieAct.main n Hm H σ hh hd hσ v.1 v.1 v.2 v.2).1 c Z 0).1
     simp only [one_smul, add_zero, left_eq_add] at h0
     simpa [h0] using h1)
 
@@ -279,7 +279,7 @@ theorem gelfRep_scalar : ∀ (n : ℕ) (Hm : Mt n) (q : ℕ) (x₀ : Mt n) (w : 
   obtain ⟨hh, hd, hdx⟩ := orthFr_facts hfr
   have hHu : IsUnit Hm := (Matrix.isUnit_iff_isUnit_det Hm).2 hd.isUnit
   obtain ⟨v₀s, rfl⟩ : ∃ u : GlobalTheory.SmVec.smSub Hm σ, (u : H) = v₀ := ⟨⟨v₀, hsm⟩, rfl⟩
-  have hI := fun (v v' : GlobalTheory.SmVec.smSub Hm σ) => GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ v.1 v'.1 v.2 v'.2
+  have hI := fun (v v' : GlobalTheory.SmVec.smSub Hm σ) => _root_.GlobalTheory.HolDict.LieAct.main n Hm H σ hh hd hσ v.1 v'.1 v.2 v'.2
   have hc : ∀ Z (v : GlobalTheory.SmVec.smSub Hm σ), (dEnd hh hd hσ Z v : H) = dRepC Hm σ Z v :=
     fun Z v => dEnd_coe hh hd hσ Z v
   have hcomm : ∀ Z Z', dEnd hh hd hσ (Z * Z' - Z' * Z) =

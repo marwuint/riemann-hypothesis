@@ -43,13 +43,6 @@ theorem pl_lmul {t : ℕ} {f : ℂ → A} (c : A) (hf : PolyLe t f) : PolyLe t (
   rw [hC, Finset.mul_sum]
   exact Finset.sum_congr rfl fun l _ => Algebra.left_comm _ _ _
 
-theorem pl_rmul {t : ℕ} {f : ℂ → A} (e : A) (hf : PolyLe t f) : PolyLe t (fun u => f u * e) := by
-  obtain ⟨C, hC⟩ := hf
-  refine ⟨fun l => C l * e, fun u => ?_⟩
-  dsimp only
-  rw [hC, Finset.sum_mul]
-  exact Finset.sum_congr rfl fun l _ => mul_assoc _ _ _
-
 theorem pl_mono {t : ℕ} {f : ℂ → A} (hf : PolyLe t f) : PolyLe (t + 1) f := by
   obtain ⟨C, hC⟩ := hf
   refine ⟨Fin.snoc (α := fun _ => A) C 0, fun u => ?_⟩

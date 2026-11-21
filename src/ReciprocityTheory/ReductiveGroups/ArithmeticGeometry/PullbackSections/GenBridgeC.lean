@@ -67,13 +67,4 @@ theorem genBC_frame (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChange
     (w := idIso ((tA x).PP.L.pull (mB ρ x).φ)) (σB ρ x s0) (hσ_of ρ x s0) (secCP (cpU' ρ x) s'')
   exact ⟨a, key_fwd ρ x s0 s'' a ha, fun a' ha' => hu a' (key_bwd ρ x s0 s'' a' ha')⟩
 
-theorem bcGenSt_of (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt)
-    (c : Coeff l) : BcGenSt Xo c := by
-  intro p K _ _ ψ' y
-  exact ⟨secCP (cpS ψ'.toRingHom y.x) y.s, fun i h => rfl, genBC_frame y.x hS hT ψ'.toRingHom y.s y.gen⟩
-
-theorem bcEx_of_laws (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt)
-    (c : Coeff l) (hL : BcLieSt Xo c) (σ : c.F →+* ℂ) : BCEx Xo c σ :=
-  bcEx_of (bcGenSt_of hS hT c) hL σ
-
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

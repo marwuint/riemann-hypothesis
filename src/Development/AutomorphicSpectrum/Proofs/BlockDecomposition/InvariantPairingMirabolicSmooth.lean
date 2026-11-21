@@ -5,11 +5,11 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Mirabol
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicEvaluationLinearStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorVanishingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorVanishing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedInvariantPairingCharacterStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingDepthInductionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorShiftStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorExtensionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorShift
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorExtension
 
 noncomputable section
 
@@ -37,7 +37,7 @@ theorem pairing_phi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   obtain ⟨c, hc⟩ := exists_hasConductor_of_continuous ψ hψ h1
   have hinv : TwInv T T' B s := hB
   have hlin := GlobalTheory.T.mirabolic_evaluation_linear ν ψ T B hψ hT
-  have hex := GlobalTheory.T.mirabolic_pairing_exists_eventual_value ν ψ c T T' B s hψ hc hT hT' hinv
+  have hex := _root_.GlobalTheory.CompanionTheory.MirPair.exists_evVal ν ψ c T T' B s hψ hc hT hT' hinv
   have huniq : ∀ {v v' A A'}, EvVal ν ψ T B v v' A → EvVal ν ψ T B v v' A' → A = A' := by
     rintro v v' A A' ⟨t₀, h₀⟩ ⟨t₁, h₁⟩
     rcases le_total (valuation k (t₀ : k)) (valuation k (t₁ : k)) with h | h
@@ -59,9 +59,9 @@ theorem pairing_phi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
     exact huniq (hf _ _) (GlobalTheory.T.mirabolic_pairing_depth_induction ν ψ T T' B s hψ hT hinv y v v' _ (hf _ _)).2
   · intro p v v'
     rw [hB₀, hB₀]
-    exact huniq (hf _ _) (GlobalTheory.T.mirabolic_pairing_conductor_shift ν ψ c T T' B s hψ hc hT hT' hinv p v v' _ (hf _ _))
+    exact huniq (hf _ _) (_root_.GlobalTheory.CompanionTheory.MirPair.evVal_conj ν ψ c T T' B s hψ hc hT hT' hinv p v v' _ (hf _ _))
   · intro v hv
-    obtain ⟨v', A, hA, hA0⟩ := GlobalTheory.T.mirabolic_pairing_conductor_extension ν ψ c T T' B s hψ hc hT hT' hinv hnd v hv
+    obtain ⟨v', A, hA, hA0⟩ := _root_.GlobalTheory.CompanionTheory.MirPair.exists_evVal_ne_zero ν ψ c T T' B s hψ hc hT hT' hinv hnd v hv
     exact ⟨v', by rw [hB₀, huniq (hf _ _) hA]; exact hA0⟩
 
 end GlobalTheory.CompanionTheory.MirPair

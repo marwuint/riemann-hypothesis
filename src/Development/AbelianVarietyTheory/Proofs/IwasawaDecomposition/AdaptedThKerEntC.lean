@@ -7,8 +7,8 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsIn
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.DiagramFitsSourceRank
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormNatCastEqOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProdOfMemSupport
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelEntryHypOfTrueColumnChoicesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominantWeightPolynomialFunctionalMinorsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelEntryHypOfTrueColumnChoices
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominantWeightPolynomialFunctionalMinors
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DtTiedTrue
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RelDetAdelicOfPinned
@@ -163,19 +163,5 @@ theorem adaptedTh_kerEntC {D : D7} {P : Examples₂.EntPl D} {O : ∀ u μ, GL3T
   · rfl
 
 end GlobalTheory.Mem.Col2.KerEntTrue
-
-theorem GlobalTheory.Mem.Col2.TC.kerEnt_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (Y : DivX (I.rec7 l Z)) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (Pl : Examples₂.EntPl (I.rec7 l Z)), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → (∀ u a i, i < B.R.m → UnfIsAll (O u a) i) → ColIn.JetsIn I → ∃ E : KerEnt (I.rec7 l Z) Y (I.tw l l0 Z), E.lam = Pl.lam ∧ EntOk E O := by
-  intro B X I hok hp l Z l0 Y O Pl hq hs hu hj
-  choose Pm h1 h2 h3 using AdaptedBases.exists_sys Pl O
-  have hU := AdaptedBases.dgenUnitAd Pl O
-  have hB : BasOk Pl O (fun u μ w i c τ => (Pm w u μ i c τ).map (Formalism.MainNotions.TaylorLogMetric.tauEmb _ (Pl.lam w) τ)) :=
-    fun u μ w i hi c τ => h1 w u μ i hi c τ
-  have hC := GlobalTheory.T.toy_entPl_canOnto _ Pl
-  have h := GlobalTheory.T.kernelEntryHyp_of_trueColumnChoices I hok hp l Z l0 Y O Pl _ hq hs hB
-    (fun u a w _ i _ c τ j k => GlobalTheory.KerRescale.tauEmb_mem Pl w τ (Pm w u a i c τ j k)) hu hj
-  exact ⟨GlobalTheory.KerRescale.kerEntR Pl O _ (GlobalTheory.KerRescale.adUnit Pl O) (GlobalTheory.KerRescale.norm_adUnit Pl O hU) h, rfl,
-    ⟨fun u μ w _ => GlobalTheory.KerRescale.tieR Pl O _ _ _ hB hC h u μ w,
-      fun u μ w _ => GlobalTheory.KerRescale.tieR_un Pl O _ _ _ hB hC h u μ (KerEntTrue.rhoAlg_std I hok hp l Z hs u μ) w⟩,
-    GlobalTheory.KerRescale.adaptedTh_kerEntR Pl O hU Pm h1 h2 h3 h⟩
 
 end

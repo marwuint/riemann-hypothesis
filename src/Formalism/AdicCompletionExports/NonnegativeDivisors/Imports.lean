@@ -1,6 +1,0 @@
-import Mathlib
-import Formalism.AdicCompletionExports.NonnegativeDivisors.Statement
-
-namespace Formalism.AdicCompletionExports.NonnegativeDivisors
-
-end Formalism.AdicCompletionExports.NonnegativeDivisors

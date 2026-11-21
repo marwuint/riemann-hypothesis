@@ -21,8 +21,6 @@ theorem mem_rootPat {p : Point ℂ (r + 1)} {i j : Fin (r + 1)} :
     (i, j) ∈ rootPat p ↔ i < j ∧ blockIdx p.1 i.val = blockIdx p.1 j.val := by
   simp only [rootPat, Finset.mem_filter, Finset.mem_univ, true_and]
 
-theorem sum_pt (p : Point ℂ (r + 1)) : (p.1.map Prod.snd).sum = r + 1 := p.2.2
-
 private theorem blockIdx_pv_eq : ∀ (bs : List (ℂ × ℕ)) (i : ℕ), i < (bs.map Prod.snd).sum →
     blockIdx bs (pv bs i) = blockIdx bs i
   | [], i, h => by simp at h

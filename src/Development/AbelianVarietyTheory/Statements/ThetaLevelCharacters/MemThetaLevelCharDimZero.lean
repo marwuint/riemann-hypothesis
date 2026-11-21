@@ -125,54 +125,6 @@ theorem valAt'_id_bijective (U : (Sp ℂ).Opens) (hU : U = ⊤) :
   rw [show valAt' (𝟙 (Sp ℂ)) ⊤ = _ from funext valAt'_id]
   exact ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom
 
-theorem unit_hom_left {X : Over (Sp ℂ)} (v : X ⟶ 𝟙_ (Over (Sp ℂ))) : v.left = X.hom :=
-  (Category.comp_id v.left).symm.trans (Over.w v)
-
-def zeroUnif : HolUnif (zeroPolAV (Sp ℂ)).A (zeroPolAV (Sp ℂ)).L 0 where
-  ex _ := 1
-  ex_add _ _ := (_root_.mul_one _).symm
-  ex_onto x := ⟨0, toUnit_unique _ _⟩
-  Λ := ⊤
-  ker _ := by simp
-  discrete := inferInstance
-  full := by simp
-  hol U f := ⟨isOpen_discrete _, differentiableOn_const _⟩
-  fr _ _ := 1
-  fr_hol _ := differentiableOn_const _
-  fr_ne _ _ _ := one_ne_zero
-  fr_compat i j z _ := by
-    rw [_root_.mul_one]
-    exact (valAt'_id_bijective _ (inf_idem _)).2.symm
-
-theorem isTangent_zero (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : IsTangent v := by
-  have h1 : v.left = (epsR ℂ).hom := unit_hom_left v
-  have h2 : η[(zeroPolAV (Sp ℂ)).A].left = 𝟙 (Sp ℂ) := unit_hom_left (X := 𝟙_ _) _
-  rw [IsTangent, h1, h2]
-  change spMap _ ≫ spMap _ = _
-  rw [← Spec.map_comp]
-  refine Eq.trans ?_ (Spec.map_id (CommRingCat.of ℂ))
-  congr 1
-
-theorem snd_pull_eq_zero (φ : Sp (DualNumber ℂ) ⟶ Sp ℂ) (hφ : φ = spMap (algebraMap ℂ (DualNumber ℂ)))
-    (U : (Sp ℂ).Opens) (h : ⊤ ≤ φ ⁻¹ᵁ U) (f : Γ(Sp ℂ, U)) :
-    TrivSqZeroExt.snd (show DualNumber ℂ from
-      (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((φ.appLE U ⊤ h).hom f)) = 0 := by
-  have hU : U = ⊤ := top_unique fun x _ => by
-    obtain ⟨y⟩ : Nonempty (Sp (DualNumber ℂ)) := inferInstanceAs (Nonempty (PrimeSpectrum (DualNumber ℂ)))
-    have hy : φ y ∈ U := h (show y ∈ (⊤ : (Sp (DualNumber ℂ)).Opens) from trivial)
-    rwa [show x = φ y from Subsingleton.elim (α := PrimeSpectrum ℂ) _ _]
-  subst hU hφ
-  have e : (spMap (algebraMap ℂ (DualNumber ℂ))).appLE ⊤ ⊤ h = (spMap (algebraMap ℂ (DualNumber ℂ))).appTop :=
-    Scheme.Hom.appLE_eq_app _
-  have n := congrArg (fun k => k.hom f) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))))
-  rw [e]
-  exact (congrArg (TrivSqZeroExt.snd (R := ℂ) (M := ℂ)) n).trans rfl
-
-theorem isDiff_zero (w : Fin 0 → ℂ) (v : epsR ℂ ⟶ (zeroPolAV (Sp ℂ)).A) : zeroUnif.IsDiff w v := by
-  intro U h f
-  rw [Subsingleton.elim w 0, map_zero]
-  exact snd_pull_eq_zero v.left (unit_hom_left v) U h f
-
 end DimZero
 
 end TorusAlg

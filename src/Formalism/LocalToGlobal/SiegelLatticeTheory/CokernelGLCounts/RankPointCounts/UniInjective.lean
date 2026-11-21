@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CovolOneCOf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ChartC
 
 noncomputable section
 
@@ -15,13 +15,6 @@ variable {P : Type} [Fintype P] (ht : P → ℕ)
 
 def IsUni (A : (P → ℂ) →ₗ[ℂ] (P → ℂ)) : Prop :=
   ∀ (x x' : P → ℂ) p, (∀ q, ht q < ht p → x q = x' q) → A x p - x p = A x' p - x' p
-
-theorem uni_low {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) :
-    ∀ n (x x' : P → ℂ), (∀ q, ht q < n → x q = x' q) → ∀ q, ht q < n → A x q = A x' q := by
-  intro n x x' h q hq
-  have h1 := hA x x' q (fun r hr => h r (lt_trans hr hq))
-  rw [h q hq] at h1
-  exact sub_left_injective h1
 
 theorem uni_injective {A : (P → ℂ) →ₗ[ℂ] (P → ℂ)} (hA : IsUni ht A) : Function.Injective A := by
   intro x x' hxx

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsFinEmb
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsDualOfAnisotropicOrthogonal
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitaryOrthogonalEmbeddingStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitaryOrthogonalEmbeddingStabilizer
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnipotentRadicalMemAdelic
 
@@ -166,7 +166,7 @@ theorem image_rational_eq_stab : ∀ (I : AutInst) (D : Sib I) (s : Bool) (x : F
     rw [hβ]; cases s <;> simp [GlobalTheory.GaussMean.sgn]
   obtain ⟨u, A', hA'A, hA'x, huA, hux, hres, hAJx⟩ :=
     exists_dual_of_anisotropic_orthogonal I.E I.n D.n I.J D.J x A hn hJ D.J_det hβ0 hxA hAJ
-  obtain ⟨j, hjv, hjr⟩ := GlobalTheory.T.exists_unitary_orthogonal_embedding_stabilizer I.E (starRingEnd I.E) I.n D.n I.J D.J x u A A'
+  obtain ⟨j, hjv, hjr⟩ := _root_.GlobalTheory.StabRing.exists_emb I.E (starRingEnd I.E) I.n D.n I.J D.J x u A A'
     (isUnit_iff_ne_zero.mpr hβ0) hxA hAJx hAJ hA'A hA'x huA hux hres
   ext y
   constructor

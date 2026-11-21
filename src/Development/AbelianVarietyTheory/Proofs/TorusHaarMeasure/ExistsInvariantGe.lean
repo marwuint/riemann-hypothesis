@@ -28,9 +28,6 @@ theorem Covers.trans {X : Data E r} {x y z : Frame X.Ψ r} (h : Covers X x y) (h
   obtain ⟨ξ2, h2, e2⟩ := h'.2.2 ξ1 h1
   exact ⟨ξ2, h2, e2.trans e1⟩
 
-def hull (X : Data E r) (ps : Frame X.Ψ r → ℝ) (x : Frame X.Ψ r) : ℝ :=
-  sSup (ps '' {y | Covers X x y})
-
 end
 
 end GlobalTheory.FinVolModes

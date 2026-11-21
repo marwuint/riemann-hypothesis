@@ -279,68 +279,6 @@ theorem qr_detHat_of (hA : Formalism.FourierDecayAlt.Qr.AlgDet) (hC : Formalism.
 
 namespace FrameEntries
 
-section Reg
-
-variable {k r : ℕ}
-
-def entL (k r : ℕ) (p q : Fin (2 * r + k + 1)) : Mx k r →L[ℝ] ℂ :=
-  LinearMap.toContinuousLinearMap
-    { toFun := fun M => M p q
-      map_add' := fun _ _ => rfl
-      map_smul' := fun _ _ => rfl }
-
-theorem poly_contDiff
-    (p : MvPolynomial ((Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) ℂ) :
-    ContDiff ℝ ∞ fun g : Mx k r => MvPolynomial.eval
-      (Sum.elim (fun x => g x.1 x.2) (fun x => (Hpk k r * gᴴ * Hpk k r) x.1 x.2)) p := by
-  induction p using MvPolynomial.induction_on with
-  | C a =>
-    simpa using (contDiff_const : ContDiff ℝ ∞ fun _ : Mx k r => a)
-  | add p q hp hq =>
-    simpa only [map_add] using hp.add hq
-  | mul_X p n hp =>
-    simp only [map_mul, MvPolynomial.eval_X]
-    refine hp.mul ?_
-    cases n with
-    | inl x =>
-      simp only [Sum.elim_inl]
-      exact (entL k r x.1 x.2).contDiff
-    | inr x =>
-      simp only [Sum.elim_inr, Matrix.mul_apply, Matrix.conjTranspose_apply]
-      refine ContDiff.sum fun c _ => ContDiff.mul ?_ contDiff_const
-      refine ContDiff.sum fun d _ => ContDiff.mul contDiff_const ?_
-      exact Complex.conjCLE.contDiff.comp (entL k r c d).contDiff
-
-theorem regular_smooth {f : Mx k r → ℂ} (hf : IsRegular k r f) (i : Fin (r + 1)) (D : Set (Mx k r)) :
-    SmoothLev k r i D f := by
-  obtain ⟨p, hp⟩ := hf
-  intro g₀ _
-  refine ⟨Set.univ, _, isOpen_univ, Set.mem_univ _, (poly_contDiff p).contDiffOn, fun g _ hg => ?_⟩
-  have hU : gᴴ * Hpk k r * g = Hpk k r := by
-    simp only [Glev, UH, Set.mem_setOf_eq] at hg
-    exact hg.1
-  have hl : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
-    calc (Hpk k r * gᴴ * Hpk k r) * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
-      _ = 1 := by rw [hU, Hpk_mul_self_eq_one]
-  rw [hp g]
-  simp only [Matrix.inv_eq_left_inv hl]
-
-end Reg
-
 end FrameEntries
-
-theorem qr_detHatRegular_of (h : Formalism.FourierDecayAlt.Q.DetHat) : Formalism.FourierDecayAlt.Q.DetHatRegular := by
-  intro k r z z' f hz hz' hT hT' hf
-  exact h ℂ k r z z' Set.univ f hz hz' hT hT' isOpen_univ (FrameEntries.regular_smooth hf (Fin.last r) Set.univ)
-
-theorem qr_detGeneric_of (h : Formalism.FourierDecayAlt.Q.DetHatRegular) : Formalism.FourierDecayAlt.Q.DetGeneric := by
-  intro k r z z' f u u' hz hz' hT hT' hf _ Bs Bs' hB hB' hE g hg Y
-  rw [h k r z z' f hz hz' hT hT' hf Bs Bs' hB hB' g ⟨hg, Set.mem_univ _⟩ Y,
-    Qx8.loc_capLft isOpen_univ Bs hB.1 _ _ _ (fun x hx => (hE x hx.1 Y).2) g ⟨hg, Set.mem_univ _⟩,
-    FrameEntries.capLft_smul]
-  beta_reduce
-  rw [(hE g hg Y).1, Finset.prod_mul_distrib]
-  simp only [smul_eq_mul]
-  ring
 
 end Formalism.FourierDecayAlt.P

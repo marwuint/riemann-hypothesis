@@ -301,10 +301,6 @@ variable {T} (F : T.TeichFrob)
 theorem red_φ' (x : Γ) : T.red (F.φ.toRingHom x) = iterateFrobenius L p F.a (T.red x) := by
   rw [iterateFrobenius_def]; exact F.red_φ x
 
-theorem φ_teich (c : L) : F.φ (T.teich c) = T.teich (c ^ p ^ F.a) := by
-  have := T.map_teich F.φ.toRingHom (iterateFrobenius L p F.a) F.red_φ' c
-  rwa [iterateFrobenius_def] at this
-
 theorem red_symm (x : Γ) :
     T.red (F.φ.symm x) = (iterateFrobeniusEquiv L p F.a).symm (T.red x) := by
   rw [RingEquiv.eq_symm_apply, iterateFrobeniusEquiv_def, ← F.red_φ, RingEquiv.apply_symm_apply]
@@ -412,10 +408,6 @@ def toB : T.B ≃+* T.B :=
 
 theorem toB_algebraMap (x : Γ) : F.toB (algebraMap Γ T.B x) = algebraMap Γ T.B (F.φ x) :=
   F.toBHom_algebraMap x
-
-theorem toB_symm_algebraMap (x : Γ) :
-    F.toB.symm (algebraMap Γ T.B x) = algebraMap Γ T.B (F.φ.symm x) :=
-  F.toBSymmHom_algebraMap x
 
 theorem toB_mul_pow_eq {b : T.B} {x : Γ} {N : ℕ}
     (hb : b * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B x) {v : Γ} (hv : F.u * v = 1) :

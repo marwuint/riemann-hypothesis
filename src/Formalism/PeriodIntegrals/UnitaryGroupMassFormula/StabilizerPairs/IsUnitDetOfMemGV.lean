@@ -197,9 +197,6 @@ theorem herm_es (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   ext
   simp [esI, eI, h2]
 
-theorem bvec_apply (i j : Fin (2 * r + k + 1)) : bvec i j = if j = i then 1 else 0 := by
-  simp [bvec, Pi.single_apply]
-
 theorem herm_sum_left (v : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (c : Fin (r + 1) → ℂ)
     (w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (∑ a, c a • v a) w = ∑ a, c a * herm (Hpk k r) (v a) w := by

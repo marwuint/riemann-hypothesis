@@ -37,11 +37,6 @@ theorem area_eq_holds : AreaEq := by
   unfold F.area
   nlinarith [abs_nonneg ((starRingEnd ℂ) L.ω₁ * L.ω₂).im]
 
-theorem area_pos_lattice_holds : AreaPosLat := by
-  rintro Λ ⟨L, rfl⟩
-  rw [area_eq_holds L]
-  exact F.areaPos L
-
 theorem koszul_homology_eq (L : PeriodPair) (z w : ℂ) : H1 L.lattice.toAddSubgroup z w = F.herm L z w := by
   unfold H1 F.herm
   rw [area_eq_holds L]

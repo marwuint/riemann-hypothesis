@@ -33,10 +33,6 @@ theorem cut_span (M : Submodule (𝓞 K) V) (hM : Submodule.span K (M : Set V) =
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
-theorem rk_cut (M : Submodule (𝓞 K) V) (hM : Submodule.span K (M : Set V) = ⊤) (X : Submodule K V) :
-    Formalism.HN.rkK (M ⊓ X.restrictScalars (𝓞 K)) = Module.finrank K X := by
-  rw [Formalism.HN.rkK, cut_span M hM X]
-
 theorem fg_cut (M : Submodule (𝓞 K) V) (hM : M.FG) (X : Submodule K V) : (M ⊓ X.restrictScalars (𝓞 K)).FG :=
   Submodule.FG.of_le hM inf_le_left
 
@@ -78,12 +74,6 @@ theorem BlockHyp.psi_mem (H : BlockHyp X Y Φ Ψ Γ) (y : V) (hy : y ∈ Y) :
     LinearMap.pi Ψ y ∈ Submodule.pi Set.univ fun _ : Fin n => X :=
   fun j _ => H.h3 j y hy
 
-theorem BlockHyp.phi_inj (H : BlockHyp X Y Φ Ψ Γ) (x : Fin n → V) (hx : x ∈ Submodule.pi Set.univ fun _ => X)
-    (h0 : Φt Φ x = 0) : x = 0 := by
-  have := H.psiPhi x hx
-  rw [h0, map_zero] at this
-  rw [← matV_inv_cancel' Γ H.det x, ← this, map_zero]
-
 theorem BlockHyp.psi_inj (H : BlockHyp X Y Φ Ψ Γ) (y : V) (hy : y ∈ Y) (h0 : LinearMap.pi Ψ y = 0) : y = 0 := by
   obtain ⟨x, hx, rfl⟩ := H.h4 y hy
   have hx' : x ∈ Submodule.pi Set.univ fun _ : Fin n => X := fun i _ => hx i
@@ -112,29 +102,6 @@ theorem BlockHyp.map_psi (H : BlockHyp X Y Φ Ψ Γ) :
       exact Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (hx l (Set.mem_univ l))
     refine ⟨Φt Φ (matV Γ⁻¹ x), H.phi_mem _ hx', ?_⟩
     rw [H.psiPhi _ hx', matV_inv_cancel Γ H.det]
-
-theorem BlockHyp.finrank [FiniteDimensional K V] (H : BlockHyp X Y Φ Ψ Γ) : Module.finrank K Y = n * Module.finrank K X := by
-  let f : (Fin n → X) →ₗ[K] Y := LinearMap.codRestrict Y
-    (Φt Φ ∘ₗ LinearMap.pi (fun i => X.subtype ∘ₗ LinearMap.proj i))
-    (fun x => H.phi_mem _ (fun i _ => (x i).2))
-  have hf : Function.Bijective f := by
-    constructor
-    · intro x y hxy
-      have h := congrArg Subtype.val hxy
-      simp only [f, LinearMap.codRestrict_apply, LinearMap.comp_apply] at h
-      rw [← sub_eq_zero, ← map_sub] at h
-      have := H.phi_inj _ (Submodule.sub_mem _ (fun i _ => (x i).2) (fun i _ => (y i).2)) h
-      funext i
-      apply Subtype.ext
-      have := congrFun this i
-      simpa [sub_eq_zero] using this
-    · rintro ⟨y, hy⟩
-      obtain ⟨x, hx, rfl⟩ := H.h4 y hy
-      refine ⟨fun i => ⟨x i, hx i⟩, ?_⟩
-      apply Subtype.ext
-      simp [f, Φt_apply]
-  rw [← (LinearEquiv.ofBijective f hf).finrank_eq, Module.finrank_pi_fintype]
-  simp
 
 end Block
 

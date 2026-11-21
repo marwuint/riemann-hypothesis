@@ -22,9 +22,6 @@ def cj (x : 𝓞 E) : 𝓞 E := Classical.choose (star_int x)
 
 @[simp] theorem coe_cj (x : 𝓞 E) : ((cj x : 𝓞 E) : E) = star (x : E) := Classical.choose_spec (star_int x)
 
-theorem cj_cj (x : 𝓞 E) : cj (cj x) = x := by
-  apply RingOfIntegers.ext; simp
-
 theorem exists_beta (P : HeightOneSpectrum (𝓞 E)) :
     ∃ β : E, (∀ p ∈ P.asIdeal, ∃ o : 𝓞 E, β * (p : E) = (o : E)) ∧
       ∀ s : 𝓞 E, s ∉ P.asIdeal → ∀ o : 𝓞 E, (s : E) * β ≠ (o : E) := by

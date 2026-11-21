@@ -63,14 +63,6 @@ theorem card_stabU (x : GA sp) : Nat.card (StabU L x) = Nat.card (C.stab 0 (clsO
   obtain ⟨h0, rfl⟩ := exists_ratA h hh
   exact (Nat.card_congr ((stabRec _).trans (stabConj _ x h0 κ hκ e))).symm
 
-theorem trivStabU_of_rec (h : ∀ c : C.cls 0, Nat.card (C.stab 0 c) = 1) : TrivStabU L := by
-  intro x γ hγ
-  have h1 : Nat.card (StabU L x) = 1 := by rw [card_stabU, h]
-  have h2 : Subsingleton (StabU L x) := (Nat.card_eq_one_iff_unique.1 h1).1
-  have h3 : x⁻¹ * ratA sp (1 : UJ (sp.cm.sig : E →+* E) sp.gram0) * x ∈ KA L := by
-    rw [map_one, mul_one, inv_mul_cancel]; exact (KA L).one_mem
-  exact congrArg Subtype.val (h2.elim (⟨γ, hγ⟩ : StabU L x) ⟨1, h3⟩)
-
 variable (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
     (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
     (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ) (e : ℕ) (hdet : IsUnit sp.gram0.det) (hH : HypAtP I)

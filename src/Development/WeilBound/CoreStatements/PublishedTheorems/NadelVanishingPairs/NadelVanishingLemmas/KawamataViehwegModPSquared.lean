@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimag
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.KodairaVanishingModPSquaredStatement
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.CanonicalBundleOpenRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CohomologySubsingletonOfDisjointOpenCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralClopenCoverOfSmoothQuasiCompactFieStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CohomologySubsingletonOfDisjointOpenCover
+import Development.AbelianVarietyTheory.Definitions.Divisors.SameDiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralClopenCoverOfSmoothQuasiCompactFie
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.OpenSubschemeClosedBaseChange
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.RelativeSncOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
@@ -21,8 +22,8 @@ theorem charp_vanishing_liftable : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0
   intro p _ Y X g f π d _ hpb hproj hdp s L σ h K M A hM hA r b hr hb heq q hq
   have hprop : IsProper f := GlobalTheory.SchemeWords.isProper_of_isProjOver hproj
   have : Smooth f := SmoothOfRelativeDimension.smooth d f
-  obtain ⟨κ, U, hcov, hdisj, hU⟩ := GlobalTheory.T.exists_integral_clopen_cover_of_smooth_quasiCompact_field (ZMod p) X f
-  refine GlobalTheory.T.cohomology_subsingleton_of_disjoint_open_cover X M κ U hM hcov hdisj q (fun c => ?_)
+  obtain ⟨κ, U, hcov, hdisj, hU⟩ := _root_.GlobalTheory.exists_integral_clopen_cover_of_smooth_field (ZMod p) X f
+  refine _root_.GlobalTheory.coh_subsingleton_of_disjoint_cover X M κ U hM hcov hdisj q (fun c => ?_)
   have hint := (hU c).1
   have hcl := (hU c).2
   obtain ⟨W, ρ, hρ, hpb'⟩ := GlobalTheory.T.open_subscheme_closed_base_change (ZMod (p ^ 2)) (ZMod p)

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmithNormalFormIntegralMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompleteSquareDiagonalNegPowUniformizerStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhaseConditionSubIntegralMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhaseConditionIntegralBasisChangeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmithNormalFormIntegralMatrix
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompleteSquareDiagonalNegPowUniformizer
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhaseConditionSubIntegralMatrix
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhaseConditionIntegralBasisChange
 
 noncomputable section
 open Matrix
@@ -40,7 +40,7 @@ theorem gen {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ 
       ∀ i j, ((x - l) * A * Matrix.transpose ((x - l).map σ)) i j ∈ Formalism.UG.intL L := by
   have hσ : ∀ x, σ (σ x) = x := hU.1
   have hv : ∀ x, Valued.v (σ x) = Valued.v x := hU.2.1
-  obtain ⟨P, P', Q, Q', a, hP, hP', hPP', hQ, hQ', hQQ', hE⟩ := GlobalTheory.T.smith_normal_form_integral_matrix L ϖ hU.2.2.2.1 n n' x
+  obtain ⟨P, P', Q, Q', a, hP, hP', hPP', hQ, hQ', hQQ', hE⟩ := _root_.GlobalTheory.Hk3.smith_int_approx L ϖ hU.2.2.2.1 n n' x
   have hQ'Q : Q' * Q = 1 := mul_eq_one_comm.mp hQQ'
   have hP'P : P' * P = 1 := mul_eq_one_comm.mp hPP'
   have hA'i : ∀ i j, (Q' * A * Matrix.transpose (Q'.map σ)) i j ∈ Formalism.UG.intL L :=
@@ -64,10 +64,10 @@ theorem gen {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ 
     intro i j
     have := congrFun (congrFun hm i) j
     simpa using this
-  have hy := GlobalTheory.T.phaseCondition_integral_basisChange L σ δ n n' A ψ P Q Q' hσ hv hP hQ' hQQ' x hx
-  have hD := GlobalTheory.T.phaseCondition_sub_integral_matrix L ϖ σ q δ n n' _ ψ hU hq hA'i hδ.1 hδ.2 hpi (P * x * Q) _ hE hy
+  have hy := _root_.GlobalTheory.phaseCondition_basisChange L σ δ n n' A ψ P Q Q' hσ hv hP hQ' hQQ' x hx
+  have hD := _root_.GlobalTheory.Hk3.ShiftPhase.shift L ϖ σ q δ n n' _ ψ hU hq hA'i hδ.1 hδ.2 hpi (P * x * Q) _ hE hy
   rw [sub_sub_cancel] at hD
-  obtain ⟨l', hl', hG⟩ := GlobalTheory.T.completeSquare_diagonalNegPowUniformizer L ϖ σ q δ n n' _ _ ψ hU hq hA'i hB'i hA'B' hA'h hδ hpi hne a hD
+  obtain ⟨l', hl', hG⟩ := _root_.GlobalTheory.Hk3.SquareDiag.square_diag L ϖ σ q δ n n' _ _ ψ hU hq hA'i hB'i hA'B' hA'h hδ hpi hne a hD
   refine ⟨P' * ((P * x * Q - (Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0))) + l') * Q', ?_, ?_⟩
   · intro i j
     exact mul_int (mul_int hP' (fun i j => add_mem (hE i j) (hl' i j))) hQ' i j

@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentOfEqualisedProperCoverNormalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentOfEqualisedProperCoverNormal
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -62,7 +63,7 @@ theorem mul_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRin
 
   have hepi : ∀ {W : Scheme.{0}} (a b : (G ⊗ G).left ⟶ W), p ≫ a = p ≫ b → a = b := by
     intro W a b hab
-    obtain ⟨c, -, hc⟩ := GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S _ _ W π _ p _ hprop hsurj hint hflat hpb (p ≫ a)
+    obtain ⟨c, -, hc⟩ := _root_.GlobalTheory.MorDescent.descend R S _ _ W π _ p _ hprop hsurj hint hflat hpb (p ≫ a)
       (by rw [← Category.assoc, pullback.condition, Category.assoc])
     exact (hc a rfl).trans (hc b hab.symm).symm
 
@@ -106,7 +107,7 @@ theorem mul_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRin
     rw [← Category.assoc f₁, ← e₁, ← Category.assoc f₂, ← e₂, ← hAB, Over.comp_left]
     simp only [Category.assoc]
     rw [hdat]
-  obtain ⟨h₀, hh₀, -⟩ := GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S _ _ _ π _ p _ hprop hsurj hint hflat hpb (μ[G'].left ≫ β) heq
+  obtain ⟨h₀, hh₀, -⟩ := _root_.GlobalTheory.MorDescent.descend R S _ _ _ π _ p _ hprop hsurj hint hflat hpb (μ[G'].left ≫ β) heq
   have hover : h₀ ≫ G.hom = (G ⊗ G).hom := by
     apply hepi
     rw [← Category.assoc, hh₀, Category.assoc, hβ.w, ← Category.assoc, Over.w μ[G'], hpb.w]

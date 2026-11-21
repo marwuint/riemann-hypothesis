@@ -472,7 +472,7 @@ private theorem exists_log (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAi
     rw [lRoot_zero, map_natCast] at this
     exact this.trans (SubringClass.coe_natCast _ _).symm)
   obtain ⟨u, hu⟩ := GlobalTheory.T.exists_logOnePlus_kerTheta_deRhamPlus l (beta ϖ) (by
-    rw [GlobalTheory.T.kerP_eq_span_beta_of_untilt_eq l ϖ hϖ]; exact Ideal.mem_span_singleton_self _)
+    rw [_root_.GlobalTheory.Pst.StLat.ker_localizedTheta_eq_span_beta l ϖ hϖ]; exact Ideal.mem_span_singleton_self _)
   have hg := GlobalTheory.T.galois_logTeichmullerRatio_eq_add_kummer l P Co hC.ζ ϖ hr hϖ u hu
   have hct : ∀ g : GQ l, T.eD (P.ιB ((kummer P g : ℚ_[l]) • P.tB)) =
       algebraMap (Per.BdRp l) (Per.BdR l)

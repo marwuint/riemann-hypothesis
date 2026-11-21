@@ -2,7 +2,10 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineSchrodingerModel
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaActionLocalAtArchimedeanPlace
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineSchrodingerModelStatement
+import Mathlib
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
 
 section
 noncomputable section
@@ -30,8 +33,8 @@ theorem archimedean_real_line_invariance : _root_.GlobalTheory.FunPr.ThetaLocalI
   intro hP F E _ _ _ _ _ σ n d X W M ψ χX χW om hCM hψ hW γ hγ
   have hex : ∀ h ∈ UAt σ W (evI F), ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d),
       Acts (evI F) (om (1, h)) ⇑f ⇑f₁ := fun h hh f => _root_.GlobalTheory.T.theta_action_archimedean_locality hP M ψ χX χW om hCM hψ hW h hh f
-  obtain ⟨hadd, hsmul, hone, hmul⟩ := GlobalTheory.T.archimedean_weilOperators_linear_one_mul M ψ χX χW om hW hex
-  obtain ⟨aadd, asmul, amul⟩ := GlobalTheory.T.unitary_archimedean_coordinate_action_linear_mul M
+  obtain ⟨hadd, hsmul, hone, hmul⟩ := _root_.GlobalTheory.ArchLine.archOp_laws M ψ χX χW om hW hex
+  obtain ⟨aadd, asmul, amul⟩ := _root_.GlobalTheory.ArchLine.archAct_linear_mul M
   have hγU : ∀ t : ℝ, γ (Multiplicative.ofAdd t) ∈ UAt σ W (evI F) := fun t => hγ.2 _
   have hγ0 : γ (Multiplicative.ofAdd 0) = 1 := by rw [ofAdd_zero, map_one]
   have hγadd : ∀ s t : ℝ, γ (Multiplicative.ofAdd (s + t)) = γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd t) :=
@@ -68,7 +71,7 @@ theorem archimedean_real_line_invariance : _root_.GlobalTheory.FunPr.ThetaLocalI
   · refine continuous_pi fun i => continuous_pi fun j => ?_
     simp only [g, LinearMap.toMatrix'_apply]
     exact (continuous_apply i).comp ((LinearMap.continuous_of_finiteDimensional φ.toLinearMap).comp
-      (GlobalTheory.T.continuous_oneParameter_unitary_coordinate_action M γ hγ _))
+      (_root_.GlobalTheory.ArchLine.continuous_archAct_line M γ hγ _))
   · have e : ψt 0 = LinearMap.id := LinearMap.ext fun w => by rw [hψt, hγ0, archAct_one]; simp
     simp only [g, e, LinearMap.toMatrix'_id]
   · intro s t
@@ -99,19 +102,19 @@ theorem archimedean_real_line_invariance : _root_.GlobalTheory.FunPr.ThetaLocalI
       have e1 : ⇑(eΦ.symm h) = ⇑h ∘ ⇑C := funext (hΦs h)
       rw [e1, hC, LinearEquiv.apply_symm_apply]
       funext y; rw [hΦs, hh₁]; rfl
-    have key := GlobalTheory.T.archimedean_weilOperator_intertwines_schroedinger M ψ χX χW om hψ hW hex _ (hγU t) (φ.symm w) _ _ hf
+    have key := _root_.GlobalTheory.ArchHeis.archOp_schrF M ψ χX χW om hψ hW hex _ (hγU t) (φ.symm w) _ _ hf
     have e2 : ⇑(archOp om (γ (Multiplicative.ofAdd t)) (eΦ.symm h)) = ⇑(T t h) ∘ ⇑C := by
       funext y; rw [Function.comp_apply, hT, ContinuousLinearEquiv.symm_apply_apply]
     funext x
     rw [hT, key, e2, hC, hg, hψt]
     simp
   · intro t h
-    have e := GlobalTheory.T.archWeilOperator_unitaryW_lintegral_norm_eq M ψ χX χW om hW hex _ (hγU t) N C (eΦ.symm h)
+    have e := _root_.GlobalTheory.ArchimedeanLineL2.archOp_lintegral_eq M ψ χX χW om hW hex _ (hγU t) N C (eΦ.symm h)
     refine Eq.trans ?_ (e.trans ?_)
     · rfl
     · simp only [hΦs, ContinuousLinearEquiv.apply_symm_apply]
   · intro h x
-    exact GlobalTheory.T.continuous_oneParameter_archimedean_weilOperator M ψ χX χW om hW hex γ hγ (eΦ.symm h) (C.symm x)
+    exact _root_.GlobalTheory.ArchLine.archOp_apply_continuous M ψ χX χW om hW hex γ hγ (eΦ.symm h) (C.symm x)
   · intro t f
     have e : eΦ.symm (T t (eΦ f)) = archOp om (γ (Multiplicative.ofAdd t)) f := by
       ext y; rw [hΦs, hT]; simp

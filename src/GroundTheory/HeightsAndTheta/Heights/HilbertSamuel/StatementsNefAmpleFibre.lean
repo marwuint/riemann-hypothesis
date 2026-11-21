@@ -14,12 +14,6 @@ def NefAmpleFibre.Statement : Prop :=
     IsArithVar (mCoordIdeal y) (D + 1) → NefOnFibres (mCoordIdeal y) α → 1 ≤ b → 1 ≤ a → ℓ.Prime →
     KH.AmpleV (ZMod ℓ) (fibreIdeal ℓ y) ((b : ℤ) • α + fun _ => (a : ℤ))
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

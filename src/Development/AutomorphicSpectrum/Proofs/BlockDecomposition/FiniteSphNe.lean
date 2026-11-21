@@ -36,13 +36,6 @@ theorem isHecke_lpow (hL : LocAlg) {w : Pl E} {K' : Subgroup (UL n w)} (hK : IsL
   | zero => exact isHecke_lone hL hK
   | succ k ih => exact isHecke_lconv hL hK hg ih
 
-section Fam
-
-variable {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n} {K' : ∀ w : Pl E, Subgroup (UL n w)}
-  (F : UFam S lam K') {B : Finset (Pl E)}
-
-end Fam
-
 end GlobalTheory.CompanionTheory.UnitaryWord
 
 end

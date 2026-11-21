@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
 import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.CenteredPerpendicularSets
 import Formalism.HarderNarasimhan.ShiftInvariance
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsStabilizerNilradicalIntegralLiftOfOrthogonStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsStabilizerNilradicalIntegralLiftOfOrthogon
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsStabilizerNilradicalLiftOfIsotropicStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ComplexSpanAtRealPlaceAutPointLatticePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SubquotientCoveringRadiusRealPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPointStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ComplexSpanAtRealPlaceAutPointLatticeProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SubquotientCoveringRadiusRealPlaces
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPoint
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualPropertiesStatement
 open GlobalTheory.Count GlobalTheory.IndefiniteRowSideFullHecke.CenteredPerpendicularSets Formalism.MainNotions.S Formalism.HN Formalism.REAL Matrix NumberField Finset
 
@@ -117,18 +117,18 @@ theorem main : ∀ (I : AutInst) (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n �
       exact ⟨y, hiso hy, rfl⟩
     · rintro _ ⟨y, hy, rfl⟩ hz
       exact hsat.2.2 _ ⟨y, hpl hy, rfl⟩ hz
-  obtain ⟨-, -, hperp, hnil, -⟩ := GlobalTheory.T.complexSpanAtRealPlace_autPointLattice_properties I x R
+  obtain ⟨-, -, hperp, hnil, -⟩ := _root_.GlobalTheory.RealSpan.spanAt_properties I x R
   have hP : ∀ v u, u ∈ perpSet (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v) ↔
       u ∈ spanAt I (perpIn I x R) v := by
     intro v u
     rw [← hperp v]; rfl
   have hmono : ∀ v, spanAt I R v ≤ spanAt I (perpIn I x R) v := fun v =>
     Submodule.span_mono (Set.image_mono hiso)
-  obtain ⟨Φ, hΦ0, hΦ1, D, hD, hDn⟩ := GlobalTheory.T.subquotient_covering_radius_real_places I x (perpIn I x R) R R lo hi (hfg.of_le hpl) hsat'
+  obtain ⟨Φ, hΦ0, hΦ1, D, hD, hDn⟩ := _root_.GlobalTheory.Count.SubquotFrame.subquot_frame I x (perpIn I x R) R R lo hi (hfg.of_le hpl) hsat'
     (hfg.of_le hsat.1) hlo hhi (fun N h1 h2 => hlow N h1 (h2.trans hpl)) hlarge Y
     (fun v y hy => (hY v).2.2.2 _ (mem_spanAt I v R y hy))
     (fun v y hy => (hY v).2.2.1 _ ((hP v _).2 (mem_spanAt I v _ y hy)))
-  obtain ⟨Y₀, hY₀, hY₀Φ⟩ := GlobalTheory.T.exists_stabilizerNilradicalIntegral_lift_of_orthogonal I x R hiso Φ hΦ0 hΦ1
+  obtain ⟨Y₀, hY₀, hY₀Φ⟩ := _root_.GlobalTheory.NilLift.exists_nilInt_lift I x R hiso Φ hΦ0 hΦ1
   have hA : ∀ v, ∃ A : Matrix (Fin I.n) (Fin I.n) ℂ,
       InNil (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v) A ∧
       (∀ u ∈ perpSet (starRingEnd ℂ) (I.J.map (I.φ v)) (spanAt I R v), A *ᵥ u = D v *ᵥ u) ∧
@@ -176,7 +176,7 @@ theorem main : ∀ (I : AutInst) (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n �
       rw [frame_inv, frame_inv]
       exact hA3 v
     have hrk : rkK (perpIn I x R) + rkK R = I.n :=
-      ((GlobalTheory.T.orthogonal_canonicalFiltration_steps_autPoint I x).2.2.2 R R hsat hsat le_rfl).2.1
+      ((_root_.GlobalTheory.Count.PerpStep.main I x).2.2.2 R R hsat hsat le_rfl).2.1
     have hf : (0 : ℝ) < I.f := by
       have : 0 < I.f := Module.finrank_pos
       exact_mod_cast this

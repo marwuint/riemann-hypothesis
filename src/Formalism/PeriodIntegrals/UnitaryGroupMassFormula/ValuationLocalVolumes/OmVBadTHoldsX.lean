@@ -17,16 +17,9 @@ variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.
 theorem omVLocU_holds : OmVLocU X ψ := fun v a Y =>
   PI.OmLocU.Done.omLocU_closed X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) a Y
 
-theorem omVBadT_holds : OmVBadT X u' ψ :=
-  PI.OmVg.omVBadT_of_ff X u' ψ (OmW.omVStd_holds X ψ) (OmW.omVLat_holds X) (OmW.omVGram_holds X u')
-    PI.OmVe.Top.fFInertB_holds PI.OmVe.Top.fFSplitB_holds
-
 theorem omVBadT_holdsX : Formalism.L2.SG.Pf.NcX.OmVSt.OmVBadT X u' ψ :=
   PI.OmVg.omVBadT_of_ffX X u' ψ (Formalism.L2.SG.Pf.NcX.OmVSt.omega_standard_holds X ψ) (Formalism.L2.SG.Pf.NcX.OmVSt.omega_lattice_holds X)
     (OmW.omVGram_holds X u') PI.OmVe.Top.fFInertB_holds PI.OmVe.Top.fFSplitB_holds
-
-theorem omV_holds : Formalism.L2.SG.Pf.NcVal.OmV X u' ψ :=
-  OmX.omV_of_rest X u' ψ (OmVc.omVScale_holds X u' ψ) (omVBadT_holds X u' ψ) (omVLocU_holds X ψ)
 
 end Formalism.L2.SG.Pf.NcVal.OmVSt.OmVZ
 

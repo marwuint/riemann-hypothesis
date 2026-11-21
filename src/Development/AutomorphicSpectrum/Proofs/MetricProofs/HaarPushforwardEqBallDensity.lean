@@ -7,7 +7,7 @@ import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PMajorantStabCompact
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallAutomorphismInverseExists
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereDensityOfBallPotentialStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereDensityChangeOfVariablesStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereDensityChangeOfVariables
 open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.FiniteCovolume
 open scoped ENNReal InnerProductSpace
 
@@ -350,7 +350,7 @@ theorem ballDens_transform {A : (Fin n → ℂ) → Fin n → ℂ} {Gf : (Fin n 
     ring
   have hφ : ContDiffAt ℝ 2 (fun t' => ballPot q t' / 2) (A t) :=
     (contDiffAt_ballPot q (hAD t ht)).div_const 2
-  have h := GlobalTheory.T.monge_ampere_density_change_of_variables n (fun t' => ballPot q t' / 2) (fun t' => ballPot q t' / 2) A
+  have h := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.maDensity_const_eq_normSq_jacobian_mul n (fun t' => ballPot q t' / 2) (fun t' => ballPot q t' / 2) A
     (fun t' => -(Gf t') / 2) t hAan hGan hφ hev
   rw [hdens t ht, hdens _ (hAD t ht)] at h
   have hc' : c ≠ 0 := hc.ne'

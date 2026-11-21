@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BalTau
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricPullbackGeneratorSecondDifferenceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricPullbackGeneratorEvenValueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricPullbackGeneratorSecondDifference
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricPullbackGeneratorEvenValue
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -80,7 +80,7 @@ theorem exists_psi_rLaws : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
     have e5 := hbal.2.2.2 w0 u hu hu0 y z p J hJ
     have e6 := hbal.2.2.1 y (w0 • z) (star w0 • z) p J hJ
     rw [← add_smul, hw, one_smul] at e6
-    have g := GlobalTheory.T.symmetricPullbackGenerator_second_difference R D₀ (onB.act w0) (onB.act (star w0)) hfg uw huw uw0 u hu hu0 _ (D₀.c y) (D₀.c z) p J hJ
+    have g := _root_.GlobalTheory.UTau0.SecondDiff.uw_second_diff R D₀ (onB.act w0) (onB.act (star w0)) hfg uw huw uw0 u hu hu0 _ (D₀.c y) (D₀.c z) p J hJ
     simp only [cadd, hc] at e1 e2 e3 e6
     unfold tauV
     rw [Vψ _ p J hJ, Vψ _ p J hJ, Vψ _ p J hJ, smul_add]
@@ -104,7 +104,7 @@ theorem exists_psi_rLaws : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
     have z2 := hbal.2.2.1 (-y) 0 0 p J hJ
     rw [add_neg_cancel] at f1 f2
     rw [add_zero] at z1 z2
-    have g := GlobalTheory.T.symmetricPullbackGenerator_even_value R D₀ (onB.act w0) uw huw uw0 _ (D₀.c y) p J hJ
+    have g := _root_.GlobalTheory.UTau0.uw_even_val R D₀ (onB.act w0) uw huw uw0 _ (D₀.c y) p J hJ
     simp only [cneg, hc, c0] at f1 z1 f2 z2 ⊢
     rw [C.face] at z1 z2
     apply Additive.ofMul.injective

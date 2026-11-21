@@ -16,7 +16,4 @@ theorem frame_independent_at_infinity : FrameIndependentAtInfinity := by
   have h2 : orbM X u' 1 = Y0 X u' := one_smul _ _
   rwa [h2] at h
 
-theorem constTest_of_polar_prop (hP : PolarLoc) (hPr : ProperOrb) : ConstTest :=
-  constTest_of_polar_proper hP frame_independent_at_infinity hPr
-
 end PI.AprimeInfW

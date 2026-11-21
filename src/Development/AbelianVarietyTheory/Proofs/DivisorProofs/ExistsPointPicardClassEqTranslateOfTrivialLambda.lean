@@ -26,7 +26,7 @@ theorem exists_point_cls_eq_lam : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : 
   have := hB.comm
   have := hB.smooth
   have := hB.proper
-  have hpr : IsProjBy B.hom := GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety K B hB
+  have hpr : IsProjBy B.hom := _root_.GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme K B hB
   have hproj : ∀ (R : Type) [CommRing R] (u : Spec (CommRingCat.of R) ⟶ Spec (CommRingCat.of K)) (X : Scheme.{0})
       (π : X ⟶ B.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f B.hom u → IsProjBy f :=
     fun R _ u X π f h => GlobalTheory.AbLaw.CubeProj.isProjBy_baseChange hpr h

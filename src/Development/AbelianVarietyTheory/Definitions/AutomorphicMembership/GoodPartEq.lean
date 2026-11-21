@@ -93,9 +93,6 @@ theorem wat_eq : R.Wat = (by with_unfolding_all exact ((letI := alg b iK; (real 
   exact (by with_unfolding_all exact ((congrArg (fun m : type_of% (@goodPart a.D) =>
     m R.θ (R.MW i σ) (levS _ (R.βW i) (R.datWp i P)) (levChi _ (R.βW i) (R.datWp i P)) (R.eWf i σ)) (goodPart_eq b a)) :))
 
-theorem cc_eq : R.CC = (@RealDat.CC (@Late.D B C b) G ‹Group G› ‹Fintype G› Pl0 T (@famM B C a b G ‹Group G› ‹Fintype G› Pl0 T A) Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› (@alg B C a b Ks ‹Field Ks› iK) (@real B C a b G ‹Group G› ‹Fintype G› Pl0 T Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› iK A R)) :=
-  (by with_unfolding_all exact ((congrArg (fun m : type_of% (@MultT a.D) => ccW (@m) R) (multT_eq b a)) :))
-
 theorem thDn_eq : R.thDn = (@RealDat.thDn (@Late.D B C b) G ‹Group G› ‹Fintype G› Pl0 T (@famM B C a b G ‹Group G› ‹Fintype G› Pl0 T A) Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› (@alg B C a b Ks ‹Field Ks› iK) (@real B C a b G ‹Group G› ‹Fintype G› Pl0 T Ks ‹Field Ks› ‹@NumberField Ks ‹Field Ks›› iK A R)) :=
   (by with_unfolding_all exact ((io_congr R (multT_eq b a) (fun m y x => thDnW (@m) R y x) ((R.ioY)) ((R.ioX))) : _))
 

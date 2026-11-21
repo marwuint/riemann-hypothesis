@@ -21,10 +21,6 @@ def GenericProjClosureDim.Statement : Prop :=
       (e : Module.Basis (Fin N) Ω E) (t : Fin N → Φ), AlgebraicIndependent Ω t →
       IsModelOver (pointIdeal O (pairProjCoord y e φ φ' t)) (d + (N - 1))
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

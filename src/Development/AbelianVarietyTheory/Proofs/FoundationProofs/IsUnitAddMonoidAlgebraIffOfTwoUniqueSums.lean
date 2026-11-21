@@ -154,17 +154,6 @@ variable {M : Type*} [AddCommGroup M] [Module R M]
 noncomputable def hochschildD₀ (ρ : M →ₗ[R] M ⊗[R] H) : M →ₗ[R] M ⊗[R] H :=
   ρ - (TensorProduct.mk R M H).flip 1
 
-noncomputable def hochschildD₁ (ρ : M →ₗ[R] M ⊗[R] H) : M ⊗[R] H →ₗ[R] M ⊗[R] (H ⊗[R] H) :=
-  (TensorProduct.assoc R M H H).toLinearMap ∘ₗ ρ.rTensor H - (comul (R := R)).lTensor M +
-    ((TensorProduct.mk R H H).flip 1).lTensor M
-
-noncomputable def hochschildD₂ (ρ : M →ₗ[R] M ⊗[R] H) :
-    M ⊗[R] (H ⊗[R] H) →ₗ[R] M ⊗[R] (H ⊗[R] (H ⊗[R] H)) :=
-  (TensorProduct.assoc R M H (H ⊗[R] H)).toLinearMap ∘ₗ ρ.rTensor (H ⊗[R] H) -
-    ((TensorProduct.assoc R H H H).toLinearMap ∘ₗ (comul (R := R)).rTensor H).lTensor M +
-    ((comul (R := R)).lTensor H).lTensor M -
-    (((TensorProduct.mk R H H).flip 1).lTensor H).lTensor M
-
 variable (R H M) in
 
 noncomputable def trivialCoaction : M →ₗ[R] M ⊗[R] H := (TensorProduct.mk R M H).flip 1
@@ -174,130 +163,7 @@ noncomputable def trivialCoaction : M →ₗ[R] M ⊗[R] H := (TensorProduct.mk 
 @[simp] theorem hochschildD₀_trivialCoaction : hochschildD₀ (trivialCoaction R H M) = 0 :=
   sub_self _
 
-theorem hochschildD₁_trivialCoaction : hochschildD₁ (trivialCoaction R H M) =
-    (TensorProduct.mk R H H 1).lTensor M - (comul (R := R)).lTensor M +
-      ((TensorProduct.mk R H H).flip 1).lTensor M := by
-  ext m h; simp [hochschildD₁]
-
-theorem hochschildD₂_trivialCoaction : hochschildD₂ (trivialCoaction R H M) =
-    (TensorProduct.mk R H (H ⊗[R] H) 1).lTensor M -
-      ((TensorProduct.assoc R H H H).toLinearMap ∘ₗ (comul (R := R)).rTensor H).lTensor M +
-      ((comul (R := R)).lTensor H).lTensor M -
-      (((TensorProduct.mk R H H).flip 1).lTensor H).lTensor M := by
-  ext m h k; simp [hochschildD₂]
-
 variable {X : Type*} [AddMonoid X]
-
-theorem hochschild_homotopy_one (ρ : M →ₗ[R] M ⊗[R] R[X]) (f : M ⊗[R] R[X]) :
-    (tensorCoeff R R[X] (0 : X)).lTensor M (hochschildD₁ ρ f) -
-      hochschildD₀ ρ (tensorCoeff R M 0 f) = f := by
-  classical
-  induction f with
-  | zero => simp
-  | add a b ha hb => simp only [map_add]; rw [add_sub_add_comm, ha, hb]
-  | tmul m p =>
-    have h : ∀ (t : M ⊗[R] R[X]) (p : R[X]), (tensorCoeff R R[X] (0 : X)).lTensor M
-        (TensorProduct.assoc R M R[X] R[X] (t ⊗ₜ p)) = p.coeff 0 • t := by
-      intro t p
-      induction t with
-      | zero => simp
-      | add a b ha hb => simp only [add_tmul, map_add, ha, hb, smul_add]
-      | tmul m q => simp
-    induction p using AddMonoidAlgebra.induction_linear with
-    | zero => simp
-    | add a b ha hb => simp only [tmul_add, map_add]; rw [add_sub_add_comm, ha, hb]
-    | single y r =>
-      simp only [hochschildD₁, hochschildD₀, LinearMap.add_apply, LinearMap.sub_apply,
-        LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.rTensor_tmul, map_add, map_sub, h]
-      by_cases hy : y = 0
-      · subst hy; simp [one_def, ← tmul_smul]
-      · simp [one_def, hy]
-
-theorem hochschild_homotopy_two (ρ : M →ₗ[R] M ⊗[R] R[X]) (f : M ⊗[R] (R[X] ⊗[R] R[X])) :
-    hochschildD₁ ρ ((tensorCoeff R R[X] (0 : X)).lTensor M f) -
-      ((tensorCoeff R R[X] (0 : X)).lTensor R[X]).lTensor M (hochschildD₂ ρ f) = f := by
-  classical
-  induction f with
-  | zero => simp
-  | add a b ha hb => simp only [map_add]; rw [add_sub_add_comm, ha, hb]
-  | tmul m u =>
-    have h : ∀ (t : M ⊗[R] R[X]) (u : R[X] ⊗[R] R[X]),
-        ((tensorCoeff R R[X] (0 : X)).lTensor R[X]).lTensor M
-        (TensorProduct.assoc R M R[X] (R[X] ⊗[R] R[X]) (t ⊗ₜ u)) =
-        TensorProduct.assoc R M R[X] R[X] (t ⊗ₜ tensorCoeff R R[X] (0 : X) u) := by
-      intro t u
-      induction t with
-      | zero => simp
-      | add a b ha hb => simp only [add_tmul, map_add, ha, hb]
-      | tmul m q => simp
-    induction u with
-    | zero => simp
-    | add a b ha hb => simp only [tmul_add, map_add]; rw [add_sub_add_comm, ha, hb]
-    | tmul p q =>
-      induction p using AddMonoidAlgebra.induction_linear with
-      | zero => simp
-      | add a b ha hb => simp only [add_tmul, tmul_add, map_add]; rw [add_sub_add_comm, ha, hb]
-      | single x c =>
-        induction q using AddMonoidAlgebra.induction_linear with
-        | zero => simp
-        | add a b ha hb => simp only [tmul_add, map_add]; rw [add_sub_add_comm, ha, hb]
-        | single y r =>
-          simp only [hochschildD₁, hochschildD₂, LinearMap.add_apply, LinearMap.sub_apply,
-            LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.rTensor_tmul,
-            LinearMap.lTensor_tmul, map_add, map_sub, h]
-          by_cases hy : y = 0
-          · subst hy
-            have e : (single x (r * c) : R[X]) ⊗ₜ[R] (single 0 1 : R[X]) =
-                single x c ⊗ₜ[R] single 0 r := by
-              rw [← smul_eq_mul, ← smul_single, smul_tmul, smul_single, smul_eq_mul, _root_.mul_one]
-            simp [one_def, e]
-          · simp [one_def, hy]
-
-theorem IsCoaction.exact_hochschildD₀_hochschildD₁ {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ) :
-    Function.Exact (hochschildD₀ ρ) (hochschildD₁ ρ) := by
-  classical
-  intro f
-  refine ⟨fun hf => ⟨-tensorCoeff R M 0 f, ?_⟩, ?_⟩
-  · simpa [hf] using hochschild_homotopy_one ρ f
-  · rintro ⟨m, rfl⟩
-    let := h.decomposition
-    induction m using DirectSum.Decomposition.inductionOn (torusWeightSpace ρ) with
-    | zero => simp
-    | add a b ha hb => simp only [map_add, ha, hb, add_zero]
-    | homogeneous m =>
-      simp [hochschildD₀, hochschildD₁, mem_coactionWeightSpace.1 m.2, one_def]
-
-theorem IsCoaction.exact_hochschildD₁_hochschildD₂ {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ) :
-    Function.Exact (hochschildD₁ ρ) (hochschildD₂ ρ) := by
-  classical
-  intro f
-  refine ⟨fun hf => ⟨(tensorCoeff R R[X] (0 : X)).lTensor M f, ?_⟩, ?_⟩
-  · simpa [hf] using hochschild_homotopy_two ρ f
-  · rintro ⟨g, rfl⟩
-    let := h.decomposition
-    induction g with
-    | zero => simp
-    | add a b ha hb => simp only [map_add, ha, hb, add_zero]
-    | tmul m p =>
-      induction m using DirectSum.Decomposition.inductionOn (torusWeightSpace ρ) with
-      | zero => simp
-      | add a b ha hb => simp only [add_tmul, map_add, ha, hb, add_zero]
-      | homogeneous m =>
-        induction p using AddMonoidAlgebra.induction_linear with
-        | zero => simp
-        | add a b ha hb => simp only [tmul_add, map_add, ha, hb, add_zero]
-        | single y r =>
-          rw [← _root_.mul_one r, ← smul_eq_mul, ← smul_single, tmul_smul, map_smul, map_smul]
-          refine smul_eq_zero_of_right _ ?_
-          simp [hochschildD₂, hochschildD₁, mem_coactionWeightSpace.1 m.2, one_def]
-          abel
-
-variable (R M X) in
-
-theorem hochschildD₁_trivialCoaction_injective :
-    Function.Injective (hochschildD₁ (trivialCoaction R R[X] M)) := by
-  refine (injective_iff_map_eq_zero _).2 fun f hf => ?_
-  simpa [hf] using (hochschild_homotopy_one (trivialCoaction R R[X] M) f).symm
 
 end Tensor
 

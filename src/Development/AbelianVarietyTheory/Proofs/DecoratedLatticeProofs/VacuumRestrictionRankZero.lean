@@ -83,11 +83,4 @@ end GlobalTheory.RankZeroVac
 
 namespace GlobalTheory.RankZeroVac
 
-variable {D : D7}
-
-section
-variable {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (T : HSp D)
-
-end
-
 end GlobalTheory.RankZeroVac

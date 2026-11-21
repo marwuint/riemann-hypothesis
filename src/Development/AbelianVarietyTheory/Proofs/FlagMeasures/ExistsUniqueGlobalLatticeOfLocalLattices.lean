@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNatMulMemIntegersQuadraticCompletionStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalLatticeBetweenScaledStandardLatticesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNatBoundLocalLatticesStandardAeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsIntegralOfIntegralAllQuadraticCompletionsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsIntegralOfIntegralAllQuadraticCompletions
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NatCastIsUnitQuadraticCompletionAlmostAllStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeOfSqueezedBetweenNatMultiplesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalLatticeLeCompletionGluedLatticeStatement
@@ -52,7 +52,7 @@ theorem glue : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
           funext i; simp [Places.bc]
         rw [this]
         exact (hb p).1 _ fun i => ιE_mem A p _ (hx i)
-      · refine GlobalTheory.T.isIntegral_of_integral_all_quadraticCompletions A _ fun p => ?_
+      · refine _root_.GlobalTheory.HL.isIntegral_of_forall_mem_O A _ fun p => ?_
         have := (hb p).2 _ (hx p) i
         simpa [Places.bc] using this
     refine ⟨Γ, hL, fun p => le_antisymm ?_ ?_⟩

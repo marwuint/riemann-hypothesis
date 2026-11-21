@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalCuspidalFormsGLTotallyComplexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalCuspidalFormsGLTotallyComplex
 open NumberField GlobalTheory.CuspRep GlobalTheory.HCF GlobalTheory.CuspQuot MeasureTheory Topology
 
 noncomputable section
@@ -21,7 +21,7 @@ theorem finiteDimensional_cuspSpan : ∀ (E : Type) [Field E] [NumberField E] [I
     change finRep E a (k * l) φ = φ
     rw [map_mul, Module.End.mul_apply, hφ l hl]
     exact hk
-  refine GlobalTheory.T.finiteDimensional_cuspidalForms_GL_totallyComplex E a L hL W ‹_› {χ} (Set.finite_singleton χ) N _
+  refine _root_.GlobalTheory.HCF.finiteDimensional_cuspGL E a L hL W ‹_› {χ} (Set.finite_singleton χ) N _
     (Submodule.span_mono fun φ hφ => hφ.1) ?_
   intro φ hφ
   have P : (∀ k ∈ L, finRep E a k φ = φ) ∧ (∀ γ g, φ.1 (ratGL E a γ * g) = φ.1 g) ∧ IsCuspidal φ.1 := by

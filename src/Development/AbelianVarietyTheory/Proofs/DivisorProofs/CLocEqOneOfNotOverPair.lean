@@ -14,8 +14,6 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.C
 
 namespace GlobalTheory.LadicPair
 
-variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime]
-
 end GlobalTheory.LadicPair
 
 namespace GlobalTheory.LadicPair
@@ -39,8 +37,6 @@ theorem cT_cLoc_conjSrc_mul {n : ℕ} (g : UA E n) (u : HeightOneSpectrum (𝓞 
 end GlobalTheory.LadicPair
 
 namespace GlobalTheory.LadicPair
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime]
 
 end GlobalTheory.LadicPair
 

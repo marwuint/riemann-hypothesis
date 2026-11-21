@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyTorusExtensionOfSurjectivePointsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyTorusExtensionOfSurjectivePoints
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -22,7 +22,7 @@ theorem isSemiAbelian_of_retract : ∀ (S : Scheme.{0}) (G G₁ : Over S) [GrpOb
     · show IsSeparated (pullback.snd G₁.hom p); infer_instance
     · show QuasiCompact (pullback.snd G₁.hom p); infer_instance
     · show GeometricallyConnected (pullback.snd G₁.hom p); infer_instance
-  refine GlobalTheory.T.nonempty_torusExtension_of_surjective_points' Ω ((Over.pullback p).obj G) ((Over.pullback p).obj G₁) h₂ (hG.fibres Ω p)
+  refine _root_.GlobalTheory.SS.nonempty_torusExtension_of_surjective_points Ω ((Over.pullback p).obj G) ((Over.pullback p).obj G₁) h₂ (hG.fibres Ω p)
     ((Over.pullback p).map r) inferInstance fun y => ⟨y ≫ (Over.pullback p).map i, ?_⟩
   rw [Category.assoc, ← Functor.map_comp, hir, CategoryTheory.Functor.map_id, Category.comp_id]
 

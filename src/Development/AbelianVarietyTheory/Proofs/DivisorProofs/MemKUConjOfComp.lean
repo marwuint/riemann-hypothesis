@@ -52,6 +52,4 @@ end GlobalTheory.EulerTw.IntRead
 
 namespace GlobalTheory.EulerTw.IntRead
 
-open GlobalTheory.EulerTw
-
 end GlobalTheory.EulerTw.IntRead

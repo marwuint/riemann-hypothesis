@@ -120,24 +120,6 @@ theorem exists_isFrameFam (hV : V.SigOK) : ∃ ε fr, IsFrameFam V ε fr := by
   choose ε fr h using key
   exact ⟨ε, fr, h⟩
 
-theorem const_mem_forms (U : Subgroup (GA D V)) (ε : D.what₂.Tau → Fin V.rank → Bool)
-    (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (a : ℂ) :
-    (fun _ => a) ∈ forms θ V U ε fr (fun τ => Representation.trivial ℂ (Formalism.REAL.KG (ε τ)) ℂ) (fun _ _ => 0) := by
-  refine ⟨isAutFunSm_const θ V a, fun _ _ _ _ => rfl, fun τ x => Submodule.subset_span ⟨LinearMap.id, a, rfl⟩,
-    fun τ k => ?_⟩
-  rw [zero_smul, gelf]
-  refine Finset.sum_eq_zero fun idx _ => ?_
-  rw [List.ofFn_succ, List.foldr_cons]
-  obtain ⟨b, hb⟩ := foldr_const V (List.ofFn fun i : Fin k =>
-    RderC θ V τ (Matrix.single (idx i.succ) (idx (i.succ + 1)) 1)) (fun f hf c₀ => by
-      obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hf
-      exact ⟨0, RderC_const θ V τ _ c₀⟩) a
-  rw [hb, RderC_const]
-  rfl
-
-theorem isContRep_trivial {K : Type} [Group K] [TopologicalSpace K] : IsContRep (Representation.trivial ℂ K ℂ) :=
-  fun ℓ w => (continuous_const : Continuous fun _ : K => ℓ w)
-
 end AutFin
 
 end GlobalTheory.Published

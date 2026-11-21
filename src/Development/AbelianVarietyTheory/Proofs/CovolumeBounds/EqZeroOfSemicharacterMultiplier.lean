@@ -424,10 +424,6 @@ theorem finrank_thetaLevelChar (hτ : τ ∈ SiegelH ι) (hN : 0 < N) :
     LinearIndependent.of_comp (thetaLevelChar a b N τ).subtype h
   simpa using h'.fintype_card_le_finrank
 
-theorem finrank_thetaLevel (hτ : τ ∈ SiegelH ι) (hN : 0 < N) :
-    Module.finrank ℂ (thetaLevel N τ) = N ^ Fintype.card ι :=
-  thetaLevelChar_zero N τ ▸ finrank_thetaLevelChar hτ hN
-
 theorem span_levelTheta (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ : Type*}
     {r : κ → ι → ℤ} (hr : Function.Bijective fun k i => (r k i : ZMod N)) :
     Submodule.span ℂ (Set.range fun k => levelTheta a b N τ (r k)) = thetaLevelChar a b N τ := by
@@ -563,9 +559,5 @@ theorem exists_half_char_of_sign {α : (ι → ℤ) → (ι → ℤ) → ℂ}
   have : ofRealVec (fun i => (((-q) i : ℤ) : ℝ) / 2) = -ofRealVec (fun i => (q i : ℝ) / 2) := by
     funext i; simp [ofRealVec, neg_div]
   rw [this, neg_dotProduct]; ring
-
-example : Module.finrank ℂ (thetaLevel 3 !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I]) = 9 := by
-  rw [finrank_thetaLevel ⟨isSiegel_example.1, isSiegel_example.2⟩ (by norm_num)]
-  simp
 
 end GlobalTheory

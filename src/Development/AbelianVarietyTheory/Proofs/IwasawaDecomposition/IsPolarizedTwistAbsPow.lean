@@ -133,20 +133,6 @@ theorem locPar_twist_absPow (π : CG E a) {ν : HChar E} {s : ℝ} (hν : ν.IsA
   congr 1
   exact loc_of_isAbsPow hν w
 
-include hF in
-
-theorem exists_hasSat (π : CG E a) (h : IsPlaceOver A w) (hu : (locPar hL π h).unr) :
-    ∃ B : Multiset ℂˣ, π.HasSat w B ∧ (locPar hL π h).frobEig = B.map fun b => ((b⁻¹ : ℂˣ) : ℂ) := by
-  induction π using Quotient.inductionOn with | _ π =>
-  obtain ⟨σ, hσ, -⟩ := LocEx.exists_isLocComp hF E a π w
-  have e : locPar hL (Quotient.mk _ π) h = _ := locPar_mk hL hσ h
-  rw [e] at hu
-  obtain ⟨α, hα⟩ := exists_hasSatake_of_unr (isRec_locRec hL h) hu
-  refine ⟨Finset.univ.val.map α, hasSatGL_locRep hσ (GlobalTheory.LFun.SatCompare.hasSatGL_of_hasSatakeGL
-    ((GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ _ _).2 ⟨α, rfl, hα⟩)), ?_⟩
-  rw [e, rec_eq_diag (isRec_locRec hL h) hα, WD.frobEig_diag, Multiset.map_map]
-  rfl
-
 end Local
 
 section Polar
@@ -353,71 +339,9 @@ theorem perm_of_split (hC : GlobalTheory.Published.ChebotarevDegreeOne) (hJ : Is
 
 end Record
 
-section True
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.RowPar GlobalTheory.RowTie GlobalTheory.CuspRep GlobalTheory.WeilDeligne
-
-variable {hL : GlobalTheory.Published.LocalLanglandsGL} (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {D : D7} {T : WDTie D.nd D.naut}
-  (C : CGTrue hL D T)
-
-include hF in
-
-theorem readsCusp : haveI := host_isCMField D.host; ReadsCusp D.naut fun a π => (C.e a π).1 := by
-  have := host_isCMField D.host
-  refine ⟨fun a _ => Subtype.val_injective.comp (C.e a).injective, fun a π _ => (C.e a π).2, fun a π w _ hu => ?_⟩
-  rw [T.frobEig w _ hu, C.loc]
-  exact exists_hasSat hL hF _ _ (by have e := (T.unr w _).1 hu; rwa [C.loc] at e)
-
-include hF C in
-
-theorem cuspFam (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) {l : ℕ} [hp : Fact l.Prime] (ι : Qbar l ≃+* ℂ) :
-    CuspFam D.naut ι := by
-  intro a ha π hc s hs
-  have := host_isCMField D.host
-  obtain ⟨r, h1, h3⟩ := exists_rep hL hF hG D.nd.Om ι ha (C.e a π).1 ((C.csd a π).1 hc) s fun τ => by
-    have := hs τ
-    rwa [C.inf] at this
-  have hfin : ∀ᶠ w : PlE D.host in cofinite, ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := by
-    have h0 : Ideal.span {((l : ℕ) : 𝓞 D.host.E)} ≠ 0 := by simpa using hp.out.ne_zero
-    exact ((Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv).eventually_cofinite_notMem
-  refine ⟨fun z σ => (r σ : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.eval z, fun z => ?_, ?_⟩
-  · simp only [Matrix.eval_charpoly]
-    exact (continuous_const.sub h1).matrix_det
-  · filter_upwards [hfin, D.naut.locG_unr_ae π] with w hl hu B σ hB hσ z
-    have hu' := (D.naut.unr_tw _ (s + (1 - (a : ℝ)) / 2)).2 hu
-    have e : T.e w (D.naut.lpTw (D.naut.locG π w) (s + (1 - (a : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r := by
-      rw [← D.naut.lpTw_add, T.tw, T.tw, C.loc, h3]
-      rfl
-    rw [galPol, T.frobEig w _ hu', e, ← frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hσ]
-    exact (eval_map_apply ι.toRingHom _).symm
-
-end True
-
 end GlobalTheory.HeightCounting.Blocks
 
 namespace GlobalTheory.HeightCounting
-
-open Formalism.BasicNotions GlobalTheory.CuspRep Blocks
-
-theorem CGTrue.blocksUnique (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
-    (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hJ : GlobalTheory.Published.JacquetShalikaRigidity)
-    (hC : GlobalTheory.Published.ChebotarevDegreeOne) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T) :
-    BlocksUnique D := by
-  intro Sig Sig' h _ _ e
-  have := host_isCMField D.host
-  haveI : Fact (Nat.Prime 2) := Nat.fact_prime_two
-  obtain ⟨ι⟩ := GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2
-  have h1 := fun p hp => h p (List.mem_append_left Sig' hp)
-  have h2 := fun p hp => h p (List.mem_append_right Sig hp)
-  exact Multiset.coe_eq_coe.2 ((perm_of_split hC (GlobalTheory.RowPar.isobaricRigid_of_jacquetShalika hJ (readsCusp hF C))
-    (cuspFam hF C hG (l := 2) ι) (fun p hp => ⟨(h1 p hp).1, (h1 p hp).2.1⟩) (fun p hp => ⟨(h2 p hp).1, (h2 p hp).2.1⟩)
-    ⟨fun p hp => (h1 p hp).2.2.1, fun p hp => (h1 p hp).2.2.2⟩ ⟨fun p hp => (h2 p hp).2.2.1, fun p hp => (h2 p hp).2.2.2⟩
-    (Filter.Eventually.of_forall e)).map _)
-
-theorem blocksUnique_of_cgTrue : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.AutomorphicFormsFiniteGL →
-    GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.JacquetShalika →
-    GlobalTheory.Published.ChebotarevDegreeOne → ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), CGTrue hL D T → BlocksUnique D :=
-  fun hL hF hG _ hJ hC _ _ C => C.blocksUnique hL hF hG hJ.1 hC
 
 end GlobalTheory.HeightCounting
 

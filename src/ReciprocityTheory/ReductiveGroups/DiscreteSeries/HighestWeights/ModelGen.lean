@@ -27,12 +27,6 @@ variable [FiniteDimensional ℂ V] {ε : Fin n → Bool} (τ : KG ε →* unitar
     HasDerivAt (fun t => ((τ (γ t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V)) (dτ X) 0)
 
 include hcont hder in
-theorem pre_op_eq_exp (k : KG ε) :
-    ∃ Y : Matrix (Fin n) (Fin n) ℂ, inK ε Y ∧
-      ((τ k : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = NormedSpace.exp (dτ Y) := by
-  exact pre_op_eq_exp' τ dτ hder k
-
-include hcont hder in
 theorem pre_kRel : Formalism.REAL.KRel ε (preUnits dτ) := by
   intro a b c d hab hcd
   have hbr := pre_dτ_bracket_single τ dτ hder hab hcd
@@ -178,11 +172,5 @@ def kTypeOfGen {ε : Fin n → Bool} {Λ : Fin n → ℝ} (V : Type) [NormedAddC
   w_norm := hw
   w_wt := hwt
   w_hw := hhw
-
-example (ε : Fin n → Bool) : KType ε 0 :=
-  kTypeOfGen ℂ 1 continuous_const 0
-    (fun _ _ _ _ => by simpa using hasDerivAt_const (0 : ℝ) (1 : ℂ →L[ℂ] ℂ)) 1 (by simp) (fun a => by simp)
-    (fun _ _ _ _ => by simp)
-    (fun W _ h => eq_top_iff.2 fun x _ => by simpa using W.smul_mem x h)
 
 end ReciprocityTheory.ChartRestriction.DS.HW

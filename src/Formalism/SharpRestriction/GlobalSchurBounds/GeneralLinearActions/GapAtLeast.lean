@@ -75,10 +75,6 @@ def idxPi (D : D7) (g₁ g₂ : ℕ) : ℝ := idxColLoc g₁ D.R.k ^ D.R.f * idx
 def idxSig (D : D7) (g₁ g₂ : ℕ) : ℝ :=
   idxRowLoc g₁ D.R.k D.R.m ^ D.R.f * idxRowLoc g₂ D.R.k D.R.m ^ D.R.f
 
-def dimN (k m : ℕ) : ℕ :=
-  ((range (k + m - 1) ×ˢ range (k + m - 1)).filter
-    (fun p : ℕ × ℕ => p.1 < p.2 ∧ blk (m / 2 - 1) k p.1 ≠ blk (m / 2 - 1) k p.2)).card
-
 def duStarP (D : D7) (g₁ g₂ : ℕ) (uc : D.what₂.Tau → Fin D.R.k → ℝ) : ℝ :=
   massI D D.R.k * idxPi D g₁ g₂ * ∏ ρ, dimV (uc ρ)
 

@@ -1,11 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCechDeRhamClassOfQuasiPeriodicFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRegularSectionOfRegularDifferencesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegOfPeriodicOfIsRegSubStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularFderivConstantVectorUniformisedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularOnOpenUniformisedOfLocallyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularOnOpenUniformisedSubalgebraRestrictStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRulesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCechDeRhamClassOfQuasiPeriodicFunctions
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRegularSectionOfRegularDifferences
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegOfPeriodicOfIsRegSub
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularFderivConstantVectorUniformised
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularOnOpenUniformisedOfLocally
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularOnOpenUniformisedSubalgebraRestrict
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
 
@@ -22,10 +22,10 @@ theorem fderiv_congr_on {g : ℕ} {S : Set (Fin g → ℂ)} (hS : IsOpen S) {f f
 
 theorem exists_isPer : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (K : Type) (W : K → A.left.Opens) (h : K → (Fin g → ℂ) → ℂ) (q : u.Λ → ℂ), ⨆ i, W i = ⊤ → (∀ i, DifferentiableOn ℂ (h i) (pre u.ex (W i))) → (∀ i j, IsReg u.ex (W i ⊓ W j) (h i - h j)) → (∀ i (l : u.Λ), ∀ z ∈ pre u.ex (W i), h i (z + l) = h i z + q l) → ∃ x, IsPer u.ex u.Λ x q := by
   intro A _ g L u hA K W h q hW hd hr hq
-  obtain ⟨bo, bd, bp, bv, bi, bm, bs, -, -, -, -, bt⟩ := GlobalTheory.T.uniformisation_preimage_value_rules A g L u
-  have ra := GlobalTheory.T.isRegularOnOpenUniformised_subalgebra_restrict A g L u
-  have der := GlobalTheory.T.isRegular_fderiv_constant_vector_uniformised A g L u hA
-  have glue := GlobalTheory.T.isRegularOnOpenUniformised_of_locally A g L u hA
+  obtain ⟨bo, bd, bp, bv, bi, bm, bs, -, -, -, -, bt⟩ := _root_.GlobalTheory.CechPer.pre_val_rules A g L u
+  have ra := _root_.GlobalTheory.RegAlg.main A g L u
+  have der := _root_.GlobalTheory.CechPer.isReg_fderiv_val A g L u hA
+  have glue := _root_.GlobalTheory.CechPer.isReg_of_locally A g L u hA
 
   have dsub : ∀ (U : A.left.Opens) (k k' : (Fin g → ℂ) → ℂ) (w : Fin g → ℂ), DifferentiableOn ℂ k (pre u.ex U) →
       DifferentiableOn ℂ k' (pre u.ex U) → IsReg u.ex U (k - k') →
@@ -37,7 +37,7 @@ theorem exists_isPer : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.le
     rfl
   have hreg : ∀ (w : Fin g → ℂ) i, IsReg u.ex (W i) fun z => fderiv ℂ (h i) z w := by
     intro w
-    refine GlobalTheory.T.isReg_of_periodic_of_isReg_sub' A g L u hA K W (fun i z => fderiv ℂ (h i) z w) hW (fun i => ?_) (fun i l z hz => ?_) fun i j => ?_
+    refine _root_.GlobalTheory.CechPer.isReg_of_periodic_of_isReg_sub A g L u hA K W (fun i z => fderiv ℂ (h i) z w) hW (fun i => ?_) (fun i l z hz => ?_) fun i j => ?_
     · have := (GlobalTheory.SCV.analyticOnNhd_of_differentiableOn (bo (W i)) (hd i)).fderiv.differentiableOn
       exact this.clm_apply (differentiableOn_const w)
     · have e := fderiv_congr_on (bo (W i)) (f := fun z => h i (z + l)) (f' := fun z => h i z + q l) (hq i l) hz
@@ -45,14 +45,14 @@ theorem exists_isPer : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.le
       change fderiv ℂ (h i) (z + l) w = fderiv ℂ (h i) z w
       rw [e]
     · exact dsub _ _ _ w ((hd i).mono (bm _ _ inf_le_left)) ((hd j).mono (bm _ _ inf_le_right)) (hr i j)
-  choose k hk using GlobalTheory.T.exists_regular_section_of_regular_differences A g L u hA K W h hW hr
+  choose k hk using _root_.GlobalTheory.CechPer.exists_section_of_isReg_sub A g L u hA K W h hW hr
   have cov : ∀ z, ∃ i, z ∈ pre u.ex (W i) := fun z => (bs K W z).1 (hW ▸ bt z)
   have kd : ∀ (U : A.left.affineOpens) i, DifferentiableOn ℂ (k U) (pre u.ex (U.1 ⊓ W i)) := fun U i => by
     have := ((ra _).2.2.2.2.1 _ (hk U i)).add ((hd i).mono (bm _ _ inf_le_right))
     simpa using this
   have mem : ∀ (U : A.left.Opens) z i, z ∈ pre u.ex U → z ∈ pre u.ex (W i) → z ∈ pre u.ex (U ⊓ W i) :=
     fun U z i h1 h2 => by rw [bi]; exact ⟨h1, h2⟩
-  refine GlobalTheory.T.exists_cechDeRham_class_of_quasiPeriodic_functions A g L u hA k q (fun U z hz => ?_) (fun U V hVU => ?_) (fun U a => ?_) fun U l z hz => ?_
+  refine _root_.GlobalTheory.CechPer.exists_isPer_of_quasiPeriodic A g L u hA k q (fun U z hz => ?_) (fun U V hVU => ?_) (fun U a => ?_) fun U l z hz => ?_
   · obtain ⟨i, hi⟩ := cov z
     exact ((kd U i).differentiableAt ((bo _).mem_nhds (mem _ _ _ hz hi))).differentiableWithinAt
   · refine glue _ _ fun z hz => ?_

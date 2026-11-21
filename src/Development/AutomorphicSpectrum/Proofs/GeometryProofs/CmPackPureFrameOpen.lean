@@ -1,13 +1,14 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TransitionMatrixPeriodFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TransitionMatrixPeriodFrame
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackEigenPeriodStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrameStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveZNeZeroStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofiniteStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureTypeLatticesOrthogonalStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTransitionMatrixGramStatement
+import Development.WeilBound.CoreStatements.SesquilinearFractions.GFrameBC
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrame
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveZNeZero
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofinite
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureTypeLatticesOrthogonal
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTransitionMatrixGram
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -60,7 +61,7 @@ end GlobalTheory.CompanionTheory.Ar.Fl.CMValue
 
 theorem GlobalTheory.CompanionTheory.Ar.Fl.CMValue.value_on_cmFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Z : ∀ b : Bool, Curve0 H (sgnRt H b)) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (X : CMPack Z c FU i hP) (x : Fin D.p ⊕ Fin D.q → (FU.Di i).La) (hx : IsPure hP x) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) (e : Fin D.p ⊕ Fin D.q → (FU.Di i).La) (ρ : ℂ) (T : Matrix (Fin D.p ⊕ Fin D.q) (Fin D.p ⊕ Fin D.q) E) (v : Vecs X.y D.p) (w : Vecs X.y D.q), IsTypeFn H D.p D.q ty → τ (H.rt : E) = H.rt0 → (∀ P (y : Sp ℂ ⟶ Xo.XF c), IsPeriod (FU.Di i) ty P → under y = FU.u i P → y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → Set.range y ⊆ U) → IsLineFn U τ φ → LinearIndependent (𝓞 E) e → IsConstMul U τ φ FU i e ρ → LinearIndependent (𝓞 E) x → IsTransition (FU.Di i) x e T → X.IsCMFrame τ hx v w → IsFramed U τ X.β X.y v w ∧ ((φ X.K X.y v w : X.K) : ℂ) * τ T.det * (Z true).z ^ D.p = ρ * (Z false).z ^ D.q * τ (gramE (FU.Di i) (x ∘ Sum.inr)).det := by
   intro E _ _ _ H D l Xo c g ty FU i Z P hP X x hx U τ φ e ρ T v w hty hτ hmem hline he hconst hxi hT hfr
-  have hfr0 := (GlobalTheory.T.cm_pack_pure_frame E H D l Xo c g ty FU i Z P hP X x hx τ hty hτ hxi).2 v w hfr
+  have hfr0 := (_root_.GlobalTheory.CompanionTheory.Relay.cm_pack_pure_frame E H D l Xo c g ty FU i Z P hP X x hx τ hty hτ hxi).2 v w hfr
   let f : X.K →+* ℂ := algebraMap X.K ℂ
   have hcomp : f.comp X.β = algebraMap c.F ℂ := by ext a; rfl
   let y' : Sp ℂ ⟶ Xo.XF c := spMap f ≫ X.y
@@ -72,9 +73,9 @@ theorem GlobalTheory.CompanionTheory.Ar.Fl.CMValue.value_on_cmFrame : ∀ (E : T
     rw [← CMValue.range_comp f X.y]
     exact hmem P y' hP hy'u hy's
   have hF : IsFramed U τ X.β X.y v w := ⟨hfr0.1, hU, hfr0.2.2⟩
-  obtain ⟨⟨v', hv'⟩, hv⟩ := GlobalTheory.T.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ f (under X.y) (under y')
+  obtain ⟨⟨v', hv'⟩, hv⟩ := _root_.PositivityTheory.Xgf.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ f (under X.y) (under y')
     (X.β.comp (tauIn c τ)) D.p v hyu
-  obtain ⟨⟨w', hw'⟩, hw⟩ := GlobalTheory.T.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ f (under X.y) (under y')
+  obtain ⟨⟨w', hw'⟩, hw⟩ := _root_.PositivityTheory.Xgf.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ f (under X.y) (under y')
     (X.β.comp (tauIn c (ComplexEmbedding.conjugate τ))) D.q w hyu
   have hF' : IsFramed U τ (algebraMap c.F ℂ) y' v' w' := by
     refine ⟨hy's, ?_, ?_, ?_⟩
@@ -83,13 +84,13 @@ theorem GlobalTheory.CompanionTheory.Ar.Fl.CMValue.value_on_cmFrame : ∀ (E : T
       rwa [← RingHom.comp_assoc, hcomp] at this
     · have := (hw w' hw').1 hF.2.2.2
       rwa [← RingHom.comp_assoc, hcomp] at this
-  have hz₂ : (Z false).z ≠ 0 := GlobalTheory.T.curve_z_ne_zero E H _ (Z false)
+  have hz₂ : (Z false).z ≠ 0 := _root_.GlobalTheory.CompanionTheory.Ar.Fl.curve0_z_ne_zero E H _ (Z false)
   have hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q := by
     simp [(FU.sig i).1, (FU.sig i).2]
 
   have hTdet : T.det ≠ 0 := by
-    obtain ⟨T', hT', -, hT'det, -⟩ := GlobalTheory.T.exists_transition_matrix_gram E H (FU.Di i) (Fin D.p ⊕ Fin D.q) x e hcard he
-    have hge := (GlobalTheory.T.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) (Fin D.p ⊕ Fin D.q) e hcard he).1
+    obtain ⟨T', hT', -, hT'det, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.transition_matrix_exists E H (FU.Di i) (Fin D.p ⊕ Fin D.q) x e hcard he
+    have hge := (_root_.GlobalTheory.CompanionTheory.Relay.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) (Fin D.p ⊕ Fin D.q) e hcard he).1
     have hmul : T * gramE (FU.Di i) e = T' * gramE (FU.Di i) e := by
       ext m n
       simp only [Matrix.mul_apply, gramE, Matrix.of_apply]
@@ -99,10 +100,10 @@ theorem GlobalTheory.CompanionTheory.Ar.Fl.CMValue.value_on_cmFrame : ∀ (E : T
       rw [← Matrix.mul_nonsing_inv_cancel_right _ T hu, hmul, Matrix.mul_nonsing_inv_cancel_right _ T' hu]
     rw [hTT]
     exact hT'det hxi
-  have hconst' := GlobalTheory.T.transition_matrix_period_frame E H D l Xo c g ty FU i U τ φ e x T ρ he hT hTdet hconst
+  have hconst' := _root_.GlobalTheory.CompanionTheory.Ar.Fl.constMul_change_generator E H D l Xo c g ty FU i U τ φ e x T ρ he hT hTdet hconst
 
   have orth : ∀ a j, sesq (FU.Di i) (x (.inl a)) (x (.inr j)) = 0 ∧ sesq (FU.Di i) (x (.inr j)) (x (.inl a)) = 0 :=
-    fun a j => GlobalTheory.T.pure_type_lattices_orthogonal E H (FU.Di i) g ty P hP _ _ (hx.1 a) (hx.2 j)
+    fun a j => _root_.GlobalTheory.CompanionTheory.Ar.PureOrth.sesq_eq_zero_of_opposite_pure E H (FU.Di i) g ty P hP _ _ (hx.1 a) (hx.2 j)
   have hgram : gramE (FU.Di i) x =
       Matrix.fromBlocks (gramE (FU.Di i) (x ∘ Sum.inl)) 0 0 (gramE (FU.Di i) (x ∘ Sum.inr)) := by
     ext m n
@@ -112,7 +113,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Fl.CMValue.value_on_cmFrame : ∀ (E : T
     · exact (orth b j).2
     · rfl
   have hG₀ : (gramE (FU.Di i) (x ∘ Sum.inr)).det ≠ 0 := by
-    have h := (GlobalTheory.T.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) (Fin D.p ⊕ Fin D.q) x hcard hxi).1
+    have h := (_root_.GlobalTheory.CompanionTheory.Relay.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) (Fin D.p ⊕ Fin D.q) x hcard hxi).1
     rw [hgram, Matrix.det_fromBlocks_zero₂₁] at h
     exact right_ne_zero_of_mul h
   let G : Matrix (Fin D.q) (Fin D.q) ℂ := τ.mapMatrix (gramE (FU.Di i) (x ∘ Sum.inr))

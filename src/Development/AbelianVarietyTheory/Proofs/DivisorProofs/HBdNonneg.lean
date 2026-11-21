@@ -19,8 +19,6 @@ theorem hBd_mono {D : D7} {n N : ℕ} (hn : n ≤ N) (h1 : 1 ≤ 12 * (D.R.f : �
         pow_le_pow_left₀ (by positivity) hb _
     _ ≤ _ := pow_le_pow_right₀ h1 (by gcongr)
 
-example (D : D7) : hBd D 0 = 1 := by simp [hBd]
-
 end GlobalTheory.ClassCount
 
 end

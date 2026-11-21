@@ -1,7 +1,8 @@
 import Mathlib
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.InfinitesimalCharacterPaths.TensDecomp
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NilpotentOdeFirstStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NilpotentOdeSecondStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NilpotentOdeFirst
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.LineFormulas.RightRule
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NilpotentOdeSecond
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapStarMul
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.MemUnitaryGroupIffMulConjTranspose
 
@@ -255,13 +256,13 @@ theorem eig_bounds (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : 
     refine hi ?_
     filter_upwards [hv'] with x hg
     exact ⟨line_continuous hc hA x.2 i u,
-      GlobalTheory.T.NilpotentOdeFirst z s' (not_le.1 hz) _ _ (fun t _ => ode x t) hg.1 hg.2⟩
+      _root_.GlobalTheory.CompanionTheory.OdeRoots.odeA z s' (not_le.1 hz) _ _ (fun t _ => ode x t) hg.1 hg.2⟩
   · by_contra hz
     have hz' : s ≤ z.re := not_lt.1 hz
     refine hi ?_
     filter_upwards [hv', ht] with x hg hf
     exact ⟨line_continuous hc hA x.2 i u,
-      GlobalTheory.T.NilpotentOdeSecond z s' s (lt_of_lt_of_le hlt hz') hz' _ _ (fun t _ => ode x t) hg.1 hg.2 hf.2⟩
+      _root_.GlobalTheory.CompanionTheory.OdeRoots.Above.odeB z s' s (lt_of_lt_of_le hlt hz') hz' _ _ (fun t _ => ode x t) hg.1 hg.2 hf.2⟩
 
 end Fam
 

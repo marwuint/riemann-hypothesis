@@ -1,5 +1,5 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
-import Development.WeilBound.CoreStatements.NefModelVolumes.WeightSectionBasisBound
+import Mathlib
+import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.FiniteTypeSections
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 
 section

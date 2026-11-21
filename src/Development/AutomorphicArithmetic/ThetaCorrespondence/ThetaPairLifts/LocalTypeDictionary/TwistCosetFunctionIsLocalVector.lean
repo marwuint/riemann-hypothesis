@@ -1,7 +1,13 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalVectorRightEdgeCosine
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorGiven
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmulMemLatOIdem
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSBHalfHalfExtensionLatticeIndicatorFnStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsThetaAtHalfExtensionLatticeIndicatorFnStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIdemSumSubOfSubsetAndOrthogonalStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HostIdealUnitAtPlacesPrimeToLevel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GivenStageFunctionRowArrowEqHalfExtensionStatement
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalVectorRightEdgeCosineStatement
 
 section
 noncomputable section
@@ -20,7 +26,7 @@ theorem GlobalTheory.CosetRow.coset_function_isLocalVector : _root_.GlobalTheory
   have hee : e₀ + (e - e₀) = e := add_sub_cancel e₀ e
   have hAA : ∀ w ∈ R.toLevCh.Q t, w ∉ ch.G.pl.W0 → ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1) := by
     intro w hw _
-    refine GlobalTheory.T.host_ideal_unit_at_places_prime_to_level D w (fun h => (hL.Q_off t w hw).1 ?_) (fun h => s.guard.2 t w hw ?_)
+    refine _root_.GlobalTheory.AAUnit.aa_unit D w (fun h => (hL.Q_off t w hw).1 ?_) (fun h => s.guard.2 t w hw ?_)
     · rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ h
     · rw [Nat.cast_mul]; exact Ideal.mul_mem_left _ _ h
   rw [GlobalTheory.T.givenStageFunction_rowArrow_eq_halfExtension hL ch.S.B t Φ he he₀ hAA i, ch.rm.vX_row]

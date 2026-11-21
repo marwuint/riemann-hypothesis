@@ -1,6 +1,7 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistAtOfNe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NrmCoeffProdLinearStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NrmCoeffProdLinear
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef Polynomial
@@ -65,7 +66,7 @@ theorem ordVec_symMat_mulVec_triangular : ∀ (k E : Type) [Field k] [Field E] [
       rw [Finset.prod_insert ha, Finset.sum_insert ha,
         WithZero.log_mul (hnz a) (Finset.prod_ne_zero_iff.2 fun j _ => hnz j), ih]
   have hmain : nrm P ((symMat m A).mulVec q) = P.1 c * ∏ j, nrm P (A.mulVec ![s j, t j]) := by
-    rw [hvec, hsup, GlobalTheory.T.nrm_coeff_prod_linear' k E P m α β]
+    rw [hvec, hsup, _root_.GlobalTheory.Nef.nrm_coeff_prod_linear k E P m α β]
     simp only [hw]
   rw [ordVec, hmain, WithZero.log_mul hPc (Finset.prod_ne_zero_iff.2 fun j _ => hnz j), hlogprod, ord]
   simp only [ordVec, Finset.sum_neg_distrib]

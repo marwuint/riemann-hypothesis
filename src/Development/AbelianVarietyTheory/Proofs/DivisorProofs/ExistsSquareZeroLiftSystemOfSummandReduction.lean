@@ -3,13 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SurjectiveOfIsPullb
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsNoetherianRingDualNumber
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdealCochainOfCoboundaryConstantsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareZeroLiftSystemFiltrationInfEqAndFullStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLiftSystemFiltrationSupIffHodgeFiltrationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsComplOfAgreeModSqZeroIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineClassSecondSystemEqNegDefectStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocIsoTransportCochainsInIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistSquareZeroSmoothLiftSystemByDerivatioStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdealCochainOfCoboundaryConstants
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareZeroLiftSystemFiltrationInfEqAndFull
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLiftSystemFiltrationSupIffHodgeFiltration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsComplOfAgreeModSqZeroIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineClassSecondSystemEqNegDefect
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocIsoTransportCochainsInIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistSquareZeroSmoothLiftSystemByDerivatio
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearLiftOfProjective
 open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.DeRham GlobalTheory.SqLift GlobalTheory.LiftSys GlobalTheory.Published
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -36,10 +36,10 @@ theorem exists_sys_of_summand : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀]
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ hG hR S' hF hN K hN' hsup
   obtain ⟨N, hN⟩ := hN
 
-  have lin := GlobalTheory.T.isCompl_of_agree_mod_sqZero_ideal R I hI (Cr hI π s₀) (S'.K hI) K N hN hsup
+  have lin := _root_.GlobalTheory.SqZeroSummand.summand_of_agree_mod_sqZero R I hI (Cr hI π s₀) (S'.K hI) K N hN hsup
   obtain ⟨hKinf, u, hu, hu0, hall⟩ := lin.2 hN'
   have hKN : IsCompl K N := lin.1 hKinf
-  have ksup := GlobalTheory.T.mem_liftSystemFiltration_sup_iff_hodgeFiltration R R₀ I hI π hπ hk X₀ s₀
+  have ksup := _root_.GlobalTheory.LiftSys.Sys.mem_K_sup_iff R R₀ I hI π hπ hk X₀ s₀
 
   have fadd : ∀ (c1 c2 : Cr hI π s₀) (w1 w2 : GlobForm s₀), FormOf hI hk c1 w1 → FormOf hI hk c2 w2 → FormOf hI hk (c1 + c2) (w1 + w2) := by
     rintro c1 c2 w1 w2 ⟨f1, h1, e1⟩ ⟨f2, h2, e2⟩
@@ -94,27 +94,27 @@ theorem exists_sys_of_summand : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀]
     have := Ideal.mul_mem_mul (Ideal.mem_map_of_mem (algebraMap R (S'.F.obj V)) hrI) (hm U V a)
     rw [← sq, map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot] at this
     exact this
-  have trans' := GlobalTheory.T.locIso_transport_cochains_in_ideal R R₀ I hI π hπ hk X₀ s₀
+  have trans' := _root_.GlobalTheory.LiftSys.locIso_transport R R₀ I hI π hπ hk X₀ s₀
   have hq : ∀ w, ∃ m ∈ S'.cocyclesInIdealExtensions, CatCoh.H1.mk S'.F m = v w := by
     intro w
     obtain ⟨z, z', hz, hmk, -, -⟩ := (trans' S' S' (Sys.LocIso.refl S')).2.2 (-(u (cw w))) (neg_mem (hu (cw w)).1)
     exact ⟨z, hz, by rw [hmk, map_neg]; rfl⟩
   obtain ⟨u', hu's, hu'W, hu'q⟩ := exists_semilinear_lift_of_projective R R₀ π hπ (GlobForm s₀) hG.proj (Z1 S'.F)
     (CatCoh.H1 S'.F) S'.cocyclesInIdealExtensions hW (CatCoh.H1.mk S'.F) v hv hq
-  obtain ⟨S'', Φ, θ, hdef, hθ⟩ := GlobalTheory.T.exists_twist_squareZeroSmoothLiftSystem_by_derivationCocycle R R₀ I hI π hπ hk X₀ s₀ hG.par S' u' hu'W hu's
+  obtain ⟨S'', Φ, θ, hdef, hθ⟩ := _root_.GlobalTheory.LiftSys.exists_twist R R₀ I hI π hπ hk X₀ s₀ hG.par S' u' hu'W hu's
 
   have hle : K ≤ S''.K hI := by
     intro k hk'
     obtain ⟨c, rfl⟩ := hall k hk'
     obtain ⟨w, hw⟩ := hex c.1 c.2
     obtain ⟨zw, -, hzw⟩ := (trans' S' S'' Φ).1 (u' w) (hu'W w)
-    have hmain := GlobalTheory.T.crystallineClass_secondSystem_eq_neg_defect R R₀ I hI π hπ hk X₀ s₀ hG.const S' S'' Φ θ hdef c.1 c.2 w hw zw
+    have hmain := _root_.GlobalTheory.LiftSys.r_eq_neg_defect R R₀ I hI π hπ hk X₀ s₀ hG.const S' S'' Φ θ hdef c.1 c.2 w hw zw
       (fun U V a ↦ (hzw U V a).trans (hθ w U V a).symm)
     obtain ⟨z, z2, hzI, hz1, hz2, hzz⟩ := (trans' S' S'' Φ).2.2 (u c) (hu c).1
     have heq : u c = u (cw w) := hwd c (cw w) w hw (hcw w)
     have hsum : CatCoh.H1.mk S'.F (z + u' w) = 0 := by
       rw [map_add, hz1, hu'q w, hvdef, heq, add_neg_cancel]
-    obtain ⟨g, hgI, hg⟩ := GlobalTheory.T.exists_ideal_cochain_of_coboundary_constants R R₀ I hI π hπ hk X₀ s₀ hG.const S' (z + u' w)
+    obtain ⟨g, hgI, hg⟩ := _root_.GlobalTheory.LiftSys.cobound_I R R₀ I hI π hπ hk X₀ s₀ hG.const S' (z + u' w)
       (S'.cocyclesInIdealExtensions.add_mem hzI (hu'W w)) hsum
     have h2 : CatCoh.H1.mk S''.F (z2 + zw) = 0 := by
       refine CatCoh.H1.mk_eq_zero.2 ⟨fun W ↦ Φ.φ W (g W), ?_⟩
@@ -126,13 +126,13 @@ theorem exists_sys_of_summand : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀]
     have h3 := eq_neg_of_add_eq_zero_left h2
     rw [Sys.K, LinearMap.mem_ker, map_sub, hmain, ← hz2, h3, sub_neg_eq_add, neg_add_cancel]
 
-  have kinf := GlobalTheory.T.squareZeroLiftSystem_filtration_inf_eq_and_full R R₀ I hI π hπ hk X₀ s₀ hG.const
+  have kinf := _root_.GlobalTheory.LiftSys.K_inf_eq_and_full R R₀ I hI π hπ hk X₀ s₀ hG.const
   have hF'' : S''.Full hI := (kinf S' S'').2 hF
   have hsup'' : S''.K hI ⊔ I • (⊤ : Submodule R (Cr hI π s₀)) = S'.K hI ⊔ I • ⊤ := by
     ext c
     rw [ksup S'' hR hF'' c, ksup S' hR hF c]
   have hS''N : IsCompl (S''.K hI) N :=
-    (GlobalTheory.T.isCompl_of_agree_mod_sqZero_ideal R I hI (Cr hI π s₀) (S'.K hI) (S''.K hI) N hN hsup'').1 ((kinf S'' S').1)
+    (_root_.GlobalTheory.SqZeroSummand.summand_of_agree_mod_sqZero R I hI (Cr hI π s₀) (S'.K hI) (S''.K hI) N hN hsup'').1 ((kinf S'' S').1)
   refine ⟨S'', le_antisymm ?_ hle⟩
   calc S''.K hI = (K ⊔ N) ⊓ S''.K hI := by rw [hKN.sup_eq_top, top_inf_eq]
     _ = K ⊔ N ⊓ S''.K hI := sup_inf_assoc_of_le N hle

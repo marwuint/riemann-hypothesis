@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.BlockOfNormalForm
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SumEqOfIsHomogeneous
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.BlockValueOnRowsEqStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RowDataMainTermNormalFormAndLevelOneStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MainTermImpliesRowHypothesisStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MainTermImpliesRowHypothesis
 
 noncomputable section
 open scoped BigOperators
@@ -99,7 +99,7 @@ theorem window_letterDet (X : RowData K V d I J) (hA : X.Alt) (hl : 5 ≤ V.l) (
   obtain ⟨n0, e, v', Φ, hM, -⟩ := (GlobalTheory.T.rowData_mainTerm_normalForm_and_levelOne K V d I J X).1 hA hl g a ha i hi hid _ _
     (satIn_single X g a p hp hty) (satIn_single X (1 - g) _ p' hp' hty')
   have hn : n0 ≤ X.n := hM.1.2
-  obtain ⟨hR, hH1, hH2, -⟩ := GlobalTheory.T.mainTerm_implies_rowHypothesis K V d I J X g a i _ _ n0 e v' Φ hM hn
+  obtain ⟨hR, hH1, hH2, -⟩ := _root_.GlobalTheory.mainTerm_to_rowHypothesis K V d I J X g a i _ _ n0 e v' Φ hM hn
   obtain ⟨S, t, hSt, hr, tt, tt', hB, hy⟩ :=
     block_of_normal_form X g a i p p' hp hp' n0 e v' Φ hM hn _ hR
   have hrank : X.n - n0 ≤ (i + 1) * X.m := by

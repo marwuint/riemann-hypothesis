@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CyclotomicDvdExpandOfCoprime
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormOpCongrStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormOpFrobStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormOpCongr
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormOpFrob
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ColemanNormOperatorPowerSeriesCoeffAutMapCommStatement
 open GlobalTheory.Col PowerSeries
 
@@ -24,12 +24,12 @@ theorem normOp_iterate_congr : ∀ (R : Type) [CommRing R] (p : ℕ) [hp : Fact 
   intro R _ p hp σ hσ h hu j
   induction j with
   | zero =>
-    obtain ⟨r, hr⟩ := GlobalTheory.T.normOp_eq_smap_add_mul R p σ hσ h
+    obtain ⟨r, hr⟩ := _root_.GlobalTheory.Col.normOp_frob R p σ hσ h
     exact ⟨r, by simpa using hr⟩
   | succ j ih =>
     obtain ⟨r, hr⟩ := ih
     have hu2 : IsUnit (smap σ ((normOp p)^[j] h)) := (normOp_iterate_isUnit p hu j).map _
-    obtain ⟨r', hr'⟩ := GlobalTheory.T.normOp_congr_mod_pow_succ R p σ hσ _ _ r (j + 1) (by omega) hu2 hr
+    obtain ⟨r', hr'⟩ := _root_.GlobalTheory.Col.normOp_congr R p σ hσ _ _ r (j + 1) (by omega) hu2 hr
     refine ⟨r', ?_⟩
     rw [Function.iterate_succ_apply' (normOp p) (j + 1), hr', GlobalTheory.T.colemanNormOperator_powerSeriesCoeffAutMap_comm R p σ, ← Function.iterate_succ_apply' (normOp p) j]
 

@@ -18,9 +18,6 @@ def l0s (V : HSp D) : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E) :=
 theorem mem_self_dual_lattice_set (V : HSp D) (x : Fin V.rank → D.host.E) : x ∈ l0s V ↔ x ∈ L0c D V := by
   simp [l0s, crd, L0c, Module.Basis.equivFun_symm_apply]
 
-theorem coe_self_dual_lattice_set (V : HSp D) : (l0s V : Set (Fin V.rank → D.host.E)) = L0c D V := by
-  ext x; exact mem_self_dual_lattice_set V x
-
 theorem hT_crd (V : HSp D) (x y : Fin V.rank → D.host.E) :
     V.hT (crd V x) (crd V y) = ∑ i, ∑ j, star (x i) * V.gram i j * y j := by
   simp only [crd, Module.Basis.equivFun_symm_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply,

@@ -2,16 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemilinearBaseChangeIffIsBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisinStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCoverStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStratifiedPhiModuleValueStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStratifiedValueTransitionBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalizedFractionSemilinearTransitionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisin
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCover
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStratifiedPhiModuleValue
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStratifiedValueTransitionBaseChange
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalizedFractionSemilinearTransition
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemilinearBaseChangeLocalizedOfTorsionBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinHomEisensteinSpanAndNonZeroDivisorStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinHomEisensteinSpanAndNonZeroDivisor
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobeniusOnStratifiedValueStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StratifiedValueFrobeniusCommTransitionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LinearizedFrobeniusInvertibleUpToPowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StratifiedValueFrobeniusCommTransition
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LinearizedFrobeniusInvertibleUpToPow
 
 noncomputable section
 
@@ -53,8 +53,8 @@ variable {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ} {S : Stra
 
 theorem eval_ext {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N] (V : Eval S B N) {x y : N}
     (h : ∀ (Q : Obj l ↥(OL K)) (a : Hom B Q) (g : Hom bk.prism Q), V.v a g x = V.v a g y) : x = y := by
-  obtain ⟨C, c, ⟨f⟩, hc⟩ := GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B
-  exact (GlobalTheory.T.injective_and_range_of_prism_cover l K bk d S B C N V c f hc).1 (h C c f)
+  obtain ⟨C, c, ⟨f⟩, hc⟩ := _root_.GlobalTheory.BSP.exists_cover_receiving_bk l K bk B
+  exact (_root_.GlobalTheory.BSP.Eval.effective_of_cover l K bk d S B C N V c f hc).1 (h C c f)
 
 theorem v_id_bijective {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N] (V : Eval S B N)
     (f : Hom bk.prism B) : Function.Bijective (V.v (Hom.id B) f) :=
@@ -64,7 +64,7 @@ theorem semiBC_fracMap {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module
     (t : B.A) (ht : t ∈ B.I) (Ψ : N →ₛₗ[B.D.φ] N) (hΨ : IsPsi V t Ψ) : SemiBC (fracMap t S.a Ψ) := by
   obtain ⟨P, _, _, u, hu⟩ := exists_semiBC B.D.φ N
   obtain ⟨L, hL, -⟩ := hu N Ψ
-  obtain ⟨n, h1, h2⟩ := GlobalTheory.T.linearizedFrobenius_invertible_up_to_pow l K bk d S B N V t ht Ψ hΨ P u hu L hL
+  obtain ⟨n, h1, h2⟩ := _root_.GlobalTheory.BSP.LinFrob.linFrob_inv_pow l K bk d S B N V t ht Ψ hΨ P u hu L hL
   exact GlobalTheory.T.isSemilinearBaseChange_localized_of_torsion_bounded B.A B.D.φ t N P u hu L n S.a h1 h2 _ fun x => by
     rw [hL]; exact isFrac_fracMap _ _ _ _
 
@@ -75,10 +75,10 @@ theorem exists_crys : ∃ (M : FCrys l ↥(OL K)) (V : ∀ B, Eval S B (M.M B)),
       (V B').v a g (M.tr k x) = (V B).v (a.comp k) g x) ∧
     ∀ (B : Obj l ↥(OL K)) (t : ↥B.I), ∃ Ψ : M.M B →ₛₗ[B.D.φ] M.M B, IsPsi (V B) t Ψ ∧
       ∀ x, IsFrac (t : B.A) (M.Φ B t x) (Ψ x) S.a := by
-  choose N acg mod hV using GlobalTheory.T.exists_stratifiedPhiModuleValue l K bk d S
+  choose N acg mod hV using _root_.GlobalTheory.BSP.exists_eval l K bk d S
   have V : ∀ B, Eval S B (N B) := fun B => (hV B).some
   choose tr trbc htr using fun (B B' : Obj l ↥(OL K)) (k : Hom B B') =>
-    GlobalTheory.T.exists_stratifiedValue_transition_baseChange l K bk d S B B' (N B) (N B') (V B) (V B') k
+    _root_.GlobalTheory.BSP.eval_transition l K bk d S B B' (N B) (N B') (V B) (V B') k
   choose Ψ hΨ using fun (B : Obj l ↥(OL K)) (t : ↥B.I) =>
     GlobalTheory.T.exists_frobenius_on_stratifiedValue l K bk d S B (N B) (V B) t t.2
   let M : FCrys l ↥(OL K) :=
@@ -96,9 +96,9 @@ theorem exists_crys : ∃ (M : FCrys l ↥(OL K)) (V : ∀ B, Eval S B (M.M B)),
       Φ := fun B t => fracMap (t : B.A) S.a (Ψ B t)
       Φ_bc := fun B t => semiBC_fracMap (V B) t t.2 _ (hΨ B t)
       Φ_nat := fun {B B'} k t t' x m i n j h1 h2 =>
-        GlobalTheory.T.isLocalizedFraction_semilinear_transition B.A B'.A k.f (N B) (N B') (tr _ _ k) t t' S.a _ _ _ m _ n i j
+        _root_.GlobalTheory.BSP.isFrac_transition B.A B'.A k.f (N B) (N B') (tr _ _ k) t t' S.a _ _ _ m _ n i j
           (isFrac_fracMap _ _ _ _) h1 (isFrac_fracMap _ _ _ _) h2
-          (GlobalTheory.T.stratifiedValue_frobenius_comm_transition l K bk d S B B' (N B) (N B') (V B) (V B') k (tr _ _ k) (htr _ _ k) t t' _ _
+          (_root_.GlobalTheory.BSP.psi_nat l K bk d S B B' (N B) (N B') (V B) (V B') k (tr _ _ k) (htr _ _ k) t t' _ _
             (hΨ B t) (hΨ B' t') x) }
   exact ⟨M, V, fun B B' Q k a g x => htr _ _ k Q a g x, fun B t => ⟨Ψ B t, hΨ B t, fun _ => rfl⟩⟩
 
@@ -140,7 +140,7 @@ theorem coord_psi {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A 
   rw [hx, funext (map_single B.D.φ j), Matrix.mulVec_single_one] at h1
   subst ht
   ext i
-  exact (mul_cancel_left_mem_nonZeroDivisors (pow_mem (GlobalTheory.T.breuilKisinHom_eisenstein_span_and_nonZeroDivisor l K bk B f).2 S.a)).1 (congrFun h1 i)
+  exact (mul_cancel_left_mem_nonZeroDivisors (pow_mem (_root_.GlobalTheory.BSP.hf_E_span_and_regular l K bk B f).2 S.a)).1 (congrFun h1 i)
 
 theorem exists_framed (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) :
     ∃ (M : FCrys l ↥(OL K)) (e : Module.Basis (Fin d) bk.prism.A (M.M bk.prism)), Framed S M e := by
@@ -161,7 +161,7 @@ theorem exists_framed (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : �
     rfl
   · have h0 : ∀ x, BK.hf (Hom.id bk.prism) x = bk.toP x := fun _ => rfl
     have ht : bk.toP bk.E ∈ bk.prism.I := by
-      rw [(GlobalTheory.T.breuilKisinHom_eisenstein_span_and_nonZeroDivisor l K bk bk.prism (Hom.id _)).1, h0]
+      rw [(_root_.GlobalTheory.BSP.hf_E_span_and_regular l K bk bk.prism (Hom.id _)).1, h0]
       exact Ideal.mem_span_singleton_self _
     have hh := hΦ bk.prism ⟨bk.toP bk.E, ht⟩
     obtain ⟨Ψ, hΨ, h⟩ := hh

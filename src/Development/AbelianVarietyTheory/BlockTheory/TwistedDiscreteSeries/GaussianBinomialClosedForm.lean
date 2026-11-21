@@ -139,11 +139,6 @@ theorem isZonal_one [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : 
     ring
   · rfl
 
-example (q : ℕ) (ε s : ℂ) (α : Fin (1 / 2) → ℂˣ) (h : varY q ε s ≠ 1) :
-    closedForm q 1 (varX q 1 ε s) (varY q ε s) α = 1 := by
-  have : varX q 1 ε s = varY q ε s := by simp [varX, varY]
-  simp [closedForm, this, sub_ne_zero.2 h.symm]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables
 
 end

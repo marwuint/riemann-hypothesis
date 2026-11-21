@@ -227,81 +227,7 @@ theorem leafUnip_of (O : OnObj S (∀ v, Pm v) c) (fN : ℕ) (hG : IsLevelGroups
     ring
   · rfl
 
-def IsTypeList {G : Type} [Group G] [Fintype G] {τ : Type} (V : τ → FDRep ℂ G) : Prop :=
-  (∀ t, Simple (V t)) ∧ ∀ t u, t ≠ u → IsEmpty (V t ≅ V u)
-
-def IsGoodIdem {G : Type} [Group G] [Fintype G] (σ : K →+* ℂ) {τ : Type} [Fintype τ] (V : τ → FDRep ℂ G)
-    (ε : MonoidAlgebra K G) : Prop :=
-  MonoidAlgebra.mapRingHom G σ ε = ∑ t, PI.CharIdem.charIdem (V t)
-
-def TieProj {G : Type} [Group G] {P : Type} [Group P] [Finite P] (O : OnObj S P c)
-    (ρG : ∀ j, Representation K G (Fin (O.nZ j) → K)) (ε : Bs.J → MonoidAlgebra K G) : Prop :=
-  ∀ j, O.e j = (ρG j).asAlgebraHom (ε j) ∧ O.V₀ j = LinearMap.range (O.e j)
-
 end Discharge
-
-section Builder
-
-variable {Bs : DefBase K} {Df : DefSide Bs} {S : IndefData Df} {c : OnConst}
-
-abbrev regroup {P' : Type} [Group P'] [Finite P'] (T : OnObj S P' c) (P : Type) [Group P] [Finite P]
-    (ρ : ∀ j, Representation K P (Fin (T.nZ j) → K)) (U : Subgroup P) (ψ : P → 𝓞 K)
-    (V₀ : ∀ j, Submodule K (Fin (T.nZ j) → K)) (e : ∀ j, (Fin (T.nZ j) → K) →ₗ[K] (Fin (T.nZ j) → K))
-    (f rr k : ℝ) (g1 g2 : ℕ) : OnObj S P c where
-  nZ := T.nZ
-  ρ := ρ
-  U := U
-  ψ := ψ
-  V₀ := V₀
-  e := e
-  Ms := T.Ms
-  φ := T.φ
-  Th1 := T.Th1
-  Th := T.Th
-  ThK := T.ThK
-  Th0 := T.Th0
-  ThJ := T.ThJ
-  X₃ := T.X₃
-  σ := T.σ
-  a := T.a
-  E := T.E
-  r1 := T.r1
-  r2 := T.r2
-  pde := T.pde
-  ε0 := T.ε0
-  nX := T.nX
-  θ' := T.θ'
-  eX := T.eX
-  pr := T.pr
-  Mt := T.Mt
-  nnK := T.nnK
-  Jp := T.Jp
-  k := k
-  m := T.m
-  f := f
-  bp := T.bp
-  Sc := T.Sc
-  eta := T.eta
-  T := T.T
-  DF := T.DF
-  X2 := T.X2
-  x := T.x
-  eps := T.eps
-  vd := T.vd
-  rr := rr
-  de2 := T.de2
-  Nc := T.Nc
-  wt := T.wt
-  th := T.th
-  ad := T.ad
-  T2 := T.T2
-  g1 := g1
-  g2 := g2
-  q1 := T.q1
-  dd := T.dd
-  sm := T.sm
-
-end Builder
 
 section Groups
 
@@ -383,8 +309,6 @@ instance fact_prime_examplePrime (v : Fin 2) : Fact (toyG v).Prime := ⟨by fin_
 
 instance neZero_examplePrime (v : Fin 2) : NeZero (toyG v) := ⟨(fact_prime_examplePrime v).out.ne_zero⟩
 
-abbrev ExampleFiniteField (v : Fin 2) : Type := ZMod (toyG v)
-
 abbrev KC : Type := CyclotomicField 143 ℚ
 
 @[instance_reducible] noncomputable def starKC : StarRing KC := starRingOfComm
@@ -397,32 +321,8 @@ theorem cycKC : IsCyclotomicExtension {143} ℚ KC := CyclotomicField.isCyclotom
 
 attribute [local instance] cycKC
 
-noncomputable def zC : 𝓞 KC := (IsCyclotomicExtension.zeta_spec 143 ℚ KC).toInteger
-
-theorem zC_prim : IsPrimitiveRoot zC 143 := (IsCyclotomicExtension.zeta_spec 143 ℚ KC).toInteger_isPrimitiveRoot
-
-theorem toyRoot_prim (v : Fin 2) : IsPrimitiveRoot (zC ^ (143 / toyG v)) (toyG v) :=
-  zC_prim.pow (by norm_num) (by fin_cases v <;> norm_num [toyG])
-
-noncomputable def toyAddChar (v : Fin 2) : AddChar (ExampleFiniteField v) (𝓞 KC) :=
-  AddChar.zmodChar (toyG v) (toyRoot_prim v).pow_eq_one
-
-abbrev ExampleMirabolicGroup : Type := ∀ v : Fin 2, mirabSub (ExampleFiniteField v) 1
-
-noncomputable abbrev mirabolicExample (v0 : InfinitePlace KC) (Tw0 : Finset (HeightOneSpectrum (𝓞 KC))) :
-    OnObj (exampleIndefiniteData KC v0 Tw0 0) ExampleMirabolicGroup exampleC :=
-  regroup (exampleObject KC v0 Tw0) ExampleMirabolicGroup (fun _ => 1) (Subgroup.pi Set.univ fun v => uniSub (ExampleFiniteField v) 1)
-    (psiU ExampleFiniteField 1 toyAddChar fun v => mirabSub (ExampleFiniteField v) 1) (fun _ => ⊥) (fun _ => 0) 1 2 1 11 13
-
 variable (v0 : InfinitePlace KC) (Tw0 : Finset (HeightOneSpectrum (𝓞 KC)))
 
 end ToyLevel
-
-section NotProjectiveExample
-
-variable (K)
-variable (v0 : InfinitePlace K) (Tw0 : Finset (HeightOneSpectrum (𝓞 K)))
-
-end NotProjectiveExample
 
 end Formalism.L2.Indef.Tree

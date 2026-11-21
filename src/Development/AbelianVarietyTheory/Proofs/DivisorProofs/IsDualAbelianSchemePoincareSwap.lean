@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualPoincareLeftKernelTrivialAlgClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualAbelianSchemePoincareStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualPoincareLeftKernelTrivialAlgClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualAbelianSchemePoincare
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdditiveSwapOfIsDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomOfClassifying
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoOfIsClosedImmersion
@@ -58,7 +58,7 @@ theorem fibre_isIso : ∀ (S : Scheme.{0}) (A B C : Over S) [GrpObj A] [GrpObj B
   have hP' : (P.pull h).IsLB := pull_isLB hd.isLB _
   have hd' : IsDual _ _ (P.pull h) := IsDual.baseChange (isGrpPullback_pullback A t) (isGrpPullback_pullback B t)
     h₁ h₂ hP' ((cls_eq_iff hP' hP').1 rfl) hd
-  have ker := GlobalTheory.T.dualPoincare_left_kernel_trivial_algClosed Ω _ _ g (P.pull h) hA' hB' hgA hgB hd'
+  have ker := _root_.GlobalTheory.DualKer.leftKer_eq_one Ω _ _ g (P.pull h) hA' hB' hgA hgB hd'
   have hs : (swap P).IsLB := pull_isLB hd.isLB _
   have hE : (ev Q (fst B A) (snd B A ≫ κ)).IsLB := pull_isLB hQ.isLB _
   have ce : cls _ hs = cls _ hE := (cls_eq_iff hs hE).2 e
@@ -94,7 +94,7 @@ theorem fibre_isIso : ∀ (S : Scheme.{0}) (A B C : Over S) [GrpObj A] [GrpObj B
 theorem isDual_swap : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left),
     IsAbelianScheme A → IsAbelianScheme B → DimLe A B → IsDual A B P → IsDual B A (swap P) := by
   intro S A B _ _ P hA hB hAB hd
-  obtain ⟨C, _, Q, hC, hBC, hQ⟩ := GlobalTheory.T.exists_dual_abelianScheme_poincare S B hB
+  obtain ⟨C, _, Q, hC, hBC, hQ⟩ := _root_.GlobalTheory.DualExist.exists_dual S B hB
   have hs : (swap P).IsLB := pull_isLB hd.isLB _
   have ha : IsAdditive (swap P) := isDual_isAdditive_swap S A B P hB hd
   obtain ⟨κ, e, -⟩ := hQ.univ A (swap P) hs ha

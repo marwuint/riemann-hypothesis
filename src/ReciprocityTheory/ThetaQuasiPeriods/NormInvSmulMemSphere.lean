@@ -23,14 +23,6 @@ theorem norm_inv_smul_mem_sphere {x : ι → ℝ} (hx : x ≠ 0) :
   rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm,
     inv_mul_cancel₀ (norm_ne_zero_iff.mpr hx)]
 
-theorem quad_pos_of_sphere (A : Matrix ι ι ℝ)
-    (h : ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1, 0 < y ⬝ᵥ (A *ᵥ y)) (x : ι → ℝ) (hx : x ≠ 0) :
-    0 < x ⬝ᵥ (A *ᵥ x) := by
-  have h1 := h _ (norm_inv_smul_mem_sphere hx)
-  rw [quad_smul] at h1
-  have h2 : 0 ≤ ‖x‖⁻¹ ^ 2 := by positivity
-  exact pos_of_mul_pos_right h1 h2
-
 theorem sum_sq_le (x : ι → ℝ) : ∑ i, x i ^ 2 ≤ (Fintype.card ι) * ‖x‖ ^ 2 := by
   calc ∑ i, x i ^ 2 ≤ ∑ _i : ι, ‖x‖ ^ 2 := Finset.sum_le_sum fun i _ => by
         have h := norm_le_pi_norm x i
@@ -90,63 +82,9 @@ theorem quad_lower {X : Type*} [TopologicalSpace X] (Mf : X → Matrix ι ι ℝ
           nlinarith [mul_nonneg hmpos.le (sq_nonneg ‖x‖)]
         _ ≤ _ := h2
 
-theorem symPart_isHermitian (A : Matrix ι ι ℝ) : (A + Aᵀ).IsHermitian := by
-  refine Matrix.IsHermitian.ext fun i j => ?_
-  simp [add_comm]
-
-theorem symPart_posDef_of_sphere (A : Matrix ι ι ℝ)
-    (h : ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1, 0 < y ⬝ᵥ ((A + Aᵀ) *ᵥ y)) : (A + Aᵀ).PosDef := by
-  exact Matrix.posDef_iff_dotProduct_mulVec.mpr
-    ⟨symPart_isHermitian A, fun x hx => by simpa using quad_pos_of_sphere _ h x hx⟩
-
 end ReciprocityTheory.PTheta.sphereQuadraticPositivity
 
 namespace ReciprocityTheory.PTheta
-open sphereQuadraticPositivity
-
-theorem siegelSubDomain_holds : SiegelSubDomainStatement := by
-  unfold SiegelSubDomainStatement ThetaDomain SiegelH
-  intro ι _ τ hτ
-  obtain ⟨hs, hp⟩ := hτ
-  have ht : (τ.map Complex.im)ᵀ = τ.map Complex.im := by
-    rw [← Matrix.transpose_map, hs.eq]
-  show (τ.map Complex.im + (τ.map Complex.im)ᵀ).PosDef
-  rw [ht]
-  exact hp.add hp
-
-theorem domainOpen_holds : DomainOpenStatement := by
-  unfold DomainOpenStatement
-  intro ι _
-  classical
-  let Mt : (ι → ι → ℂ) → Matrix ι ι ℝ :=
-    fun t => (of t).map Complex.im + ((of t).map Complex.im)ᵀ
-  have hc : Continuous Mt := by
-    refine continuous_pi fun i => continuous_pi fun j => ?_
-    exact (Complex.continuous_im.comp ((continuous_apply j).comp (continuous_apply i))).add
-      (Complex.continuous_im.comp ((continuous_apply i).comp (continuous_apply j)))
-  have hF : Continuous (fun q : (ι → ι → ℂ) × (ι → ℝ) => q.2 ⬝ᵥ (Mt q.1 *ᵥ q.2)) := by
-    fun_prop
-  have hset : {t : ι → ι → ℂ | of t ∈ ThetaDomain ι} =
-      {t | ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1, 0 < y ⬝ᵥ (Mt t *ᵥ y)} := by
-    ext t
-    constructor
-    · intro ht y hy
-      have ht' : (Mt t).PosDef := ht
-      have hy0 : y ≠ 0 := by
-        rintro rfl
-        simp at hy
-      have h0 := (Matrix.posDef_iff_dotProduct_mulVec.mp ht').2 hy0
-      simpa using h0
-    · intro ht
-      exact symPart_posDef_of_sphere ((of t).map Complex.im) ht
-  rw [hset, isOpen_iff_mem_nhds]
-  intro t0 ht0
-  have hev : ∀ y ∈ Metric.sphere (0 : ι → ℝ) 1,
-      ∀ᶠ q : (ι → ι → ℂ) × (ι → ℝ) in nhds (t0, y), 0 < q.2 ⬝ᵥ (Mt q.1 *ᵥ q.2) :=
-    fun y hy => (hF.tendsto (t0, y)).eventually (lt_mem_nhds (ht0 y hy))
-  exact (isCompact_sphere (0 : ι → ℝ) 1).eventually_forall_of_forall_eventually
-    (P := fun t y => 0 < y ⬝ᵥ (Mt t *ᵥ y)) hev
-
 end ReciprocityTheory.PTheta
 
 namespace ReciprocityTheory.PTheta.sphereQuadraticPositivity

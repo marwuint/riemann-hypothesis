@@ -22,29 +22,11 @@ noncomputable def diagToPoly : (MvPolynomial (Fin 2) R ⧸ diagonalIdeal R) →�
 noncomputable def polyToDiag : Polynomial R →ₐ[R] (MvPolynomial (Fin 2) R ⧸ diagonalIdeal R) :=
   Polynomial.aeval (Ideal.Quotient.mk (diagonalIdeal R) (X 0))
 
-lemma mk_X_one_eq : Ideal.Quotient.mk (diagonalIdeal R) (X 1) =
-    Ideal.Quotient.mk (diagonalIdeal R) (X 0) := by
-  rw [Ideal.Quotient.eq]
-  exact Ideal.mem_span_singleton'.2 ⟨-1, by ring⟩
-
 @[simp] lemma diagToPoly_mk (p : MvPolynomial (Fin 2) R) :
     diagToPoly R (Ideal.Quotient.mk _ p) = diagEval R p := rfl
 
 @[simp] lemma diagEval_X (i : Fin 2) : diagEval R (X i) = Polynomial.X := by
   simp [diagEval]
-
-noncomputable def diagEquiv : (MvPolynomial (Fin 2) R ⧸ diagonalIdeal R) ≃ₐ[R] Polynomial R :=
-  AlgEquiv.ofAlgHom (diagToPoly R) (polyToDiag R)
-    (by
-      apply Polynomial.algHom_ext
-      simp [polyToDiag])
-    (by
-      apply Ideal.Quotient.algHom_ext
-      apply MvPolynomial.algHom_ext
-      intro i
-      fin_cases i
-      · simp [polyToDiag]
-      · simp [polyToDiag, mk_X_one_eq])
 
 noncomputable def mixedEval : MvPolynomial (Fin 2) R →ₐ[R] LaurentPolynomial R :=
   MvPolynomial.aeval ![T 1, T (-1)]
@@ -96,40 +78,6 @@ noncomputable def laurentToMixed :
     laurentToMixed R (LaurentPolynomial.C a) = algebraMap R _ a := by
   rw [LaurentPolynomial.C_eq_algebraMap, AlgHom.commutes]
 
-noncomputable def mixedEquiv :
-    (MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R) ≃ₐ[R] LaurentPolynomial R :=
-  AlgEquiv.ofAlgHom (mixedToLaurent R) (laurentToMixed R)
-    (by
-      apply AlgHom.coe_ringHom_injective
-      apply IsLocalization.ringHom_ext (Submonoid.powers (Polynomial.X : Polynomial R))
-      apply Polynomial.ringHom_ext
-      · intro a
-        simp [algebraMap_eq_toLaurent]
-      · simp [algebraMap_eq_toLaurent])
-    (by
-      apply Ideal.Quotient.algHom_ext
-      apply MvPolynomial.algHom_ext
-      intro i
-      fin_cases i
-      · simp
-      · simp)
-
 end DiagonalQuotient
-
-open DiagonalQuotient in
-
-theorem DiagonalQuotient.proof : DiagonalQuotient.Statement := by
-  intro R _
-  refine ⟨⟨diagEquiv R, ?_, ?_⟩, ?_, ?_, ⟨mixedEquiv R, ?_, ?_⟩, ?_, ?_⟩
-  · simp [diagEquiv]
-  · simp [diagEquiv]
-  · exact Module.Flat.of_linearEquiv (diagEquiv R).toLinearEquiv
-  · intro _
-    exact Function.Injective.isDomain (diagEquiv R) (diagEquiv R).injective
-  · simp [mixedEquiv]
-  · simp [mixedEquiv]
-  · exact Module.Flat.of_linearEquiv (mixedEquiv R).toLinearEquiv
-  · intro _
-    exact Function.Injective.isDomain (mixedEquiv R) (mixedEquiv R).injective
 
 end GroundTheory.Heights₂.Heights.FlagBundles

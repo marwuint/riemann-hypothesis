@@ -42,21 +42,6 @@ theorem length_quotient_smul_top_of_free [Nontrivial R] [Module.Free R M] [Modul
     Module.length_pi, mul_comm]
   simp
 
-theorem submoduleOf_smul_self (A : Submodule R M) (a : R) :
-    (a • A).submoduleOf A = (a • ⊤ : Submodule R A) := by
-  ext x
-  rw [Submodule.submoduleOf, Submodule.mem_comap, Submodule.mem_smul_pointwise_iff_exists,
-    Submodule.mem_smul_pointwise_iff_exists]
-  constructor
-  · rintro ⟨y, hy, h⟩
-    exact ⟨⟨y, hy⟩, trivial, Subtype.ext h⟩
-  · rintro ⟨y, -, rfl⟩
-    exact ⟨y, y.2, rfl⟩
-
-theorem relLength_smul_self_eq_length (A : Submodule R M) (a : R) :
-    relLength A (a • A) = Module.length R (A ⧸ (a • ⊤ : Submodule R A)) := by
-  rw [relLength_def, submoduleOf_smul_self]
-
 end General
 
 section DVR
@@ -68,10 +53,6 @@ variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 theorem length_quotient_span_singleton_dvr (a : R) :
     Module.length R (R ⧸ Ideal.span {a}) = addVal R a :=
   Ring.ord_eq_addVal a
-
-theorem addVal_irreducible_pow {ϖ : R} (hϖ : Irreducible ϖ) (e : ℕ) :
-    addVal R (ϖ ^ e) = e := by
-  rw [addVal_pow, addVal_uniformizer hϖ, nsmul_one]
 
 section Free
 
@@ -86,44 +67,6 @@ end Free
 variable {V : Type*} [AddCommGroup V] [Module R V] [Module.IsTorsionFree R V]
   {A : Submodule R V}
 
-theorem relLength_smul_self (hA : A.FG) (a : R) :
-    relLength A (a • A) = addVal R a * (Module.finrank R A : ℕ∞) := by
-  have : Module.Finite R A := Module.Finite.iff_fg.mpr hA
-  rw [relLength_smul_self_eq_length, length_quotient_smul_top_dvr]
-
-theorem relLength_smul_self_of_addVal_eq (hA : A.FG) {a : R} {n : ℕ} (hn : addVal R a = n) :
-    relLength A (a • A) = ((n * Module.finrank R A : ℕ) : ℕ∞) := by
-  rw [relLength_smul_self hA, hn, Nat.cast_mul]
-
-theorem relLength_irreducible_pow_smul_self (hA : A.FG) {ϖ : R} (hϖ : Irreducible ϖ) (e : ℕ) :
-    relLength A (ϖ ^ e • A) = ((e * Module.finrank R A : ℕ) : ℕ∞) :=
-  relLength_smul_self_of_addVal_eq hA (addVal_irreducible_pow hϖ e)
-
-theorem relLength_smul_self_ne_top (hA : A.FG) {a : R} (ha : a ≠ 0) :
-    relLength A (a • A) ≠ ⊤ := by
-  rw [relLength_smul_self hA]
-  exact WithTop.mul_ne_top (addVal_eq_top_iff.not.mpr ha) (ENat.coe_ne_top _)
-
-theorem lengthCommensurable_smul_self (hA : A.FG) {a : R} (ha : a ≠ 0) :
-    LengthCommensurable A (a • A) :=
-  (lengthCommensurable_iff_of_ge (Submodule.smul_le_self_of_tower a A)).mpr
-    (relLength_smul_self_ne_top hA ha)
-
-theorem signedLength_smul_self_of_addVal_eq (hA : A.FG) {a : R} {n : ℕ} (hn : addVal R a = n) :
-    signedLength A (a • A) = (n : ℤ) * (Module.finrank R A : ℤ) := by
-  have ha : a ≠ 0 := addVal_eq_top_iff.not.mp (hn ▸ ENat.coe_ne_top n)
-  rw [← Nat.cast_mul, (lengthCommensurable_smul_self hA ha).signedLength_eq_natCast_iff_of_ge
-    (Submodule.smul_le_self_of_tower a A), relLength_smul_self_of_addVal_eq hA hn]
-
-theorem signedLength_smul_self (hA : A.FG) {a : R} (ha : a ≠ 0) :
-    signedLength A (a • A) = ((addVal R a).toNat : ℤ) * (Module.finrank R A : ℤ) :=
-  signedLength_smul_self_of_addVal_eq hA (ENat.coe_toNat (addVal_eq_top_iff.not.mpr ha)).symm
-
 end DVR
-
-example (p : ℕ) [Fact p.Prime] :
-    relLength (⊤ : Submodule ℤ_[p] (Fin 2 → ℤ_[p])) ((p : ℤ_[p]) ^ 3 • ⊤) = 6 := by
-  rw [relLength_irreducible_pow_smul_self Module.Finite.fg_top PadicInt.irreducible_p]
-  simp
 
 end GlobalTheory

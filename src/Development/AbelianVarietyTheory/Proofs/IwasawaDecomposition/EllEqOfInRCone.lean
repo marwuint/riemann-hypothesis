@@ -21,7 +21,4 @@ theorem ell_eq_of_inRCone {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O
   rw [h4, h3, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by rw [hsw.1 i]; ring
 
-example : InRCone ![mulForm] ((3 : ℤ) • mulForm) :=
-  ⟨![3], fun i => by fin_cases i; norm_num, LinearMap.ext₂ fun a b => by simp⟩
-
 end GlobalTheory.PolFan.StarKey

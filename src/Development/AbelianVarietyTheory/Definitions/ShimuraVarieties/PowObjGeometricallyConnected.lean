@@ -110,10 +110,6 @@ theorem IsLinearHom.inv {a : OAct O G} {b : OAct O H} (e : G ≅ H) (he : IsLine
   ⟨by have := he.1; infer_instance, fun c ↦ by
     rw [Iso.comp_inv_eq, Category.assoc, he.comm, Iso.inv_hom_id_assoc]⟩
 
-theorem IsLinearHom.int [IsCommMonObj G] [IsCommMonObj H] (f : G ⟶ H) [IsMonHom f] :
-    IsLinearHom (intAct G) (intAct H) f :=
-  ⟨inferInstance, fun n ↦ by simp [GrpObj.zpow_comp, GrpObj.comp_zpow]⟩
-
 @[reducible] def pointsModule [IsCommMonObj G] (a : OAct O G) (T : Over S) :
     Module O (Additive (T ⟶ G)) where
   smul c x := Additive.ofMul (x.toMul ≫ a.act c)
@@ -182,8 +178,6 @@ theorem mk_comp_act (x : T ⟶ G) (r : O) : mk a (x ≫ a.act r) = r • mk a x 
 @[simp] theorem hom_sum {I : Type*} (s : Finset I) (x : I → Pts a T) :
     (∑ i ∈ s, x i).hom = ∏ i ∈ s, (x i).hom := toMul_sum s x
 
-def addEquiv (a : OAct O G) (T : Over S) : Pts a T ≃+ Additive (T ⟶ G) := AddEquiv.refl _
-
 def pre (a : OAct O G) (u : T' ⟶ T) : Pts a T →ₗ[O] Pts a T' where
   toFun x := mk a (u ≫ x.hom)
   map_add' x y := ext (MonObj.comp_mul u x.hom y.hom)
@@ -192,9 +186,6 @@ def pre (a : OAct O G) (u : T' ⟶ T) : Pts a T →ₗ[O] Pts a T' where
 @[simp] theorem hom_pre (u : T' ⟶ T) (x : Pts a T) : (pre a u x).hom = u ≫ x.hom := rfl
 
 @[simp] theorem pre_id : pre a (𝟙 T) = LinearMap.id := by ext x; simp
-
-theorem pre_comp (v : T'' ⟶ T') (u : T' ⟶ T) : pre a (v ≫ u) = pre a v ∘ₗ pre a u := by
-  ext x; simp
 
 def post {f : G ⟶ H} (hf : IsLinearHom a b f) (T : Over S) : Pts a T →ₗ[O] Pts b T where
   toFun x := mk b (x.hom ≫ f)
@@ -205,10 +196,6 @@ def post {f : G ⟶ H} (hf : IsLinearHom a b f) (T : Over S) : Pts a T →ₗ[O]
     (post hf T x).hom = x.hom ≫ f := rfl
 
 @[simp] theorem post_id : post (IsLinearHom.id a) T = LinearMap.id := by ext x; simp
-
-theorem post_comp {f : G ⟶ H} {g : H ⟶ K} (hf : IsLinearHom a b f) (hg : IsLinearHom b c g) :
-    post (hf.comp hg) T = post hg T ∘ₗ post hf T := by
-  ext x; simp
 
 theorem pre_post {f : G ⟶ H} (hf : IsLinearHom a b f) (u : T' ⟶ T) (x : Pts a T) :
     pre b u (post hf T x) = post hf T' (pre a u x) := by
@@ -336,15 +323,6 @@ theorem hom_ext {K : Over S} [GrpObj K] {f g : H ⟶ K} [IsMonHom f] [IsMonHom g
   · simp only [Category.assoc, e]
   · simp only [MonObj.mul_comp, hy, hz]
 
-theorem ext_tmul {h₁ h₂ : IsTensor H b G a M} (e : ∀ m, h₁.tmul m = h₂.tmul m) : h₁ = h₂ := by
-  obtain ⟨e₁, n₁⟩ := h₁
-  obtain ⟨e₂, n₂⟩ := h₂
-  congr 1
-  funext T
-  refine LinearEquiv.toLinearMap_injective (TensorProduct.ext' fun m x ↦ Pts.ext ?_)
-  exact ((hom_equiv_tmul ⟨e₁, n₁⟩ m x).trans (by rw [e])).trans
-    (hom_equiv_tmul ⟨e₂, n₂⟩ m x).symm
-
 def liftPts {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K} (f : M →ₗ[O] Pts c G)
     (hf : ∀ m, IsLinearHom a c (f m).hom) (T : Over S) : Pts b T →ₗ[O] Pts c T :=
   TensorProduct.lift (LinearMap.mk₂ O (fun m x ↦ Pts.post (hf m) T x)
@@ -426,20 +404,9 @@ theorem map_add_left (φ ψ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a
   have := isMonHom_mul (h.map h' φ hf) (h.map h' ψ hf)
   exact h.hom_ext fun m ↦ by simp [MonObj.comp_mul, tmul_add]
 
-theorem map_mul_right (φ : M →ₗ[O] M') {f g : G ⟶ G'} (hf : IsLinearHom a a' f)
-    (hg : IsLinearHom a a' g) :
-    h.map h' φ (hf.mul hg) = h.map h' φ hf * h.map h' φ hg := by
-  have := isMonHom_mul (h.map h' φ hf) (h.map h' φ hg)
-  exact h.hom_ext fun m ↦ by simp [MonObj.comp_mul, MonObj.mul_comp]
-
 @[simp] theorem map_zero_left {f : G ⟶ G'} (hf : IsLinearHom a a' f) : h.map h' 0 hf = 1 := by
   have := isMonHom_one (G := H) (H := H')
   exact h.hom_ext fun m ↦ by simp
-
-theorem map_smul_left (c : O) (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
-    h.map h' (c • φ) hf = h.map h' φ hf ≫ b'.act c := by
-  have := b'.hom c
-  exact h.hom_ext fun m ↦ by simp [tmul_smul]
 
 end Map
 
@@ -474,13 +441,6 @@ theorem mapLeft_add (φ ψ : M →ₗ[O] M') :
   h.map_add_left h' φ ψ _
 
 @[simp] theorem mapLeft_zero : h.mapLeft h' 0 = 1 := h.map_zero_left h' _
-
-theorem mapLeft_smul (c : O) (φ : M →ₗ[O] M') :
-    h.mapLeft h' (c • φ) = h.mapLeft h' φ ≫ b'.act c :=
-  h.map_smul_left h' c φ _
-
-theorem mapLeft_smul_id (c : O) : h.mapLeft h (c • LinearMap.id) = b.act c := by
-  rw [mapLeft_smul, mapLeft_id, Category.id_comp]
 
 def mapLeftIso (e : M ≃ₗ[O] M') : H ≅ H' where
   hom := h.mapLeft h' e
@@ -525,25 +485,6 @@ theorem tmul_mapRight {f : G ⟶ G'} (hf : IsLinearHom a a' f) (m : M) :
 
 @[simp] theorem mapRight_id : h.mapRight h (IsLinearHom.id a) = 𝟙 H := h.map_id
 
-theorem mapRight_comp {f : G ⟶ G'} (hf : IsLinearHom a a' f) {g : G' ⟶ G''}
-    (hg : IsLinearHom a' a'' g) :
-    h.mapRight h'' (hf.comp hg) = h.mapRight h' hf ≫ h'.mapRight h'' hg :=
-  h.hom_ext fun m ↦ by simp
-
-theorem mapRight_mul {f g : G ⟶ G'} (hf : IsLinearHom a a' f) (hg : IsLinearHom a a' g) :
-    h.mapRight h' (hf.mul hg) = h.mapRight h' hf * h.mapRight h' hg :=
-  h.map_mul_right h' _ hf hg
-
-theorem mapRight_act (c : O) : h.mapRight h (IsLinearHom.act a c) = b.act c := by
-  have := b.hom c
-  exact h.hom_ext fun m ↦ by simp [(h.isLinearHom_tmul m).comm]
-
-def mapRightIso (e : G ≅ G') (he : IsLinearHom a a' e.hom) : H ≅ H' where
-  hom := h.mapRight h' he
-  inv := h'.mapRight h (he.inv e)
-  hom_inv_id := h.hom_ext fun m ↦ by simp
-  inv_hom_id := h'.hom_ext fun m ↦ by simp
-
 end MapRight
 
 section Unique
@@ -572,11 +513,6 @@ theorem eq_uniqueIso (f : H ⟶ H')
   have e := (hf H ((h.equiv H).symm (Pts.mk b (𝟙 H)))).trans
     (h.hom_equiv_comp_uniqueIso h' _).symm
   simpa using e
-
-theorem existsUnique_iso : ∃! e : H ≅ H',
-    ∀ (T : Over S) (z : M ⊗[O] Pts a T), (h.equiv T z).hom ≫ e.hom = (h'.equiv T z).hom :=
-  ⟨h.uniqueIso h', fun _ z ↦ h.hom_equiv_comp_uniqueIso h' z,
-    fun e he ↦ Iso.ext (h.eq_uniqueIso h' e.hom he)⟩
 
 end Unique
 
@@ -658,9 +594,6 @@ theorem tmul_algAct (c : O') (m : M) : h.tmul m ≫ (h.algAct O').act c = h.tmul
   have := (h.algAct O').hom (algebraMap O O' c)
   exact h.hom_ext fun m ↦ by simp [tmul_smul]
 
-theorem isLinearHom_algAct (c : O') : IsLinearHom b b ((h.algAct O').act c) :=
-  h.isLinearHom_mapLeft h _
-
 variable (O') in
 
 theorem comapAct_algAct : comapAct (h.algAct O') (algebraMap O O') = b := by
@@ -688,14 +621,6 @@ def algEquiv (T : Over S) : M ⊗[O] Pts a T ≃ₗ[O'] Pts (h.algAct O') T wher
 
 @[simp] theorem hom_algEquiv (z : M ⊗[O] Pts a T) :
     (h.algEquiv O' T z).hom = (h.equiv T z).hom := rfl
-
-theorem isLinearHom_algAct_map [Module O' M'] [IsScalarTower O O' M']
-    (h' : IsTensor H' b' G' a' M') (φ : M →ₗ[O'] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
-    IsLinearHom (h.algAct O') (h'.algAct O') (h.map h' (φ.restrictScalars O) hf) :=
-  ⟨inferInstance, fun c ↦ by
-    have := (h.algAct O').hom c
-    have := (h'.algAct O').hom c
-    exact h.hom_ext fun m ↦ by simp⟩
 
 def trans {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O' K} {N : Type} [AddCommGroup N]
     [Module O' N] [Module O N] [IsScalarTower O O' N]
@@ -1151,9 +1076,6 @@ structure Summand (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O 
 
 variable {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M]
 
-def Summand.free (O : Type) [CommRing O] (n : ℕ) : Summand O (Fin n → O) :=
-  ⟨n, LinearMap.id, LinearMap.id, rfl⟩
-
 variable (O M) in
 
 theorem Summand.nonempty [Module.Finite O M] [Module.Projective O M] : Nonempty (Summand O M) := by
@@ -1171,22 +1093,9 @@ namespace Summand
 
 variable (P : Summand O M) (a : OAct O G)
 
-def matrix : Matrix (Fin P.n) (Fin P.n) O := LinearMap.toMatrix' (P.incl ∘ₗ P.proj)
-
-theorem toLin'_matrix : Matrix.toLin' P.matrix = P.incl ∘ₗ P.proj := Matrix.toLin'_toMatrix' _
-
-theorem matrix_mul_self : P.matrix * P.matrix = P.matrix := by
-  rw [matrix, ← LinearMap.toMatrix'_comp, LinearMap.comp_assoc, ← LinearMap.comp_assoc _ _ P.proj,
-    P.proj_incl, LinearMap.id_comp]
-
 def idem : powObj G P.n ⟶ powObj G P.n :=
   (IsTensor.pow (powIsPowGrp G P.n) a).mapLeft (IsTensor.pow (powIsPowGrp G P.n) a)
     (P.incl ∘ₗ P.proj)
-
-theorem idem_pr (i : Fin P.n) :
-    P.idem a ≫ powPr G i = ∏ j, powPr G j ≫ a.act (P.matrix i j) := by
-  rw [idem, ← toLin'_matrix]
-  exact IsTensor.pow_mapLeft_pr _ (powIsPowGrp G P.n) a _ i
 
 instance isMonHom_idem : IsMonHom (P.idem a) := IsTensor.isMonHom_mapLeft _ _ _
 
@@ -1272,10 +1181,6 @@ def retract (P : Summand O M) : Retract H (powObj G P.n) where
   r := (pow (powIsPowGrp G P.n) a).mapLeft h P.proj
   retract := by rw [← mapLeft_comp, P.proj_incl, mapLeft_id]
 
-theorem tmul_mapLeft_self (t : M →ₗ[O] O) {m : M} (hm : t m = 1) :
-    h.tmul m ≫ h.mapLeft (self a) t = 𝟙 G := by
-  rw [tmul_mapLeft, self_tmul, hm, a.one]
-
 variable [Module.Finite O M] [Module.Projective O M]
 include h
 
@@ -1293,24 +1198,6 @@ theorem smooth [hG : Smooth G.hom] : Smooth H.hom :=
   h.property @Smooth inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.smooth h₁ h₂) hG
 
-theorem etale [hG : Etale G.hom] : Etale H.hom :=
-  haveI : MorphismProperty.IsStableUnderComposition @Etale.{0} := ⟨fun _ _ _ _ ↦ inferInstance⟩
-  h.property @Etale inferInstance
-    (fun h₁ h₂ _ ↦ GlobalTheory.Retract.etale h₁ h₂) hG
-
-theorem flat [hG : Flat G.hom] : Flat H.hom :=
-  h.property @Flat inferInstance
-    (fun h₁ h₂ _ ↦ GlobalTheory.Retract.flat h₁ h₂) hG
-
-theorem locallyOfFiniteType [hG : LocallyOfFiniteType G.hom] : LocallyOfFiniteType H.hom :=
-  h.property @LocallyOfFiniteType inferInstance
-    (fun h₁ h₂ _ ↦ GlobalTheory.Retract.locallyOfFiniteType h₁ h₂) hG
-
-theorem locallyOfFinitePresentation [hG : LocallyOfFinitePresentation G.hom] :
-    LocallyOfFinitePresentation H.hom :=
-  h.property @LocallyOfFinitePresentation inferInstance
-    (fun h₁ h₂ _ ↦ GlobalTheory.Retract.locallyOfFinitePresentation h₁ h₂) hG
-
 theorem quasiCompact [hG : QuasiCompact G.hom] : QuasiCompact H.hom :=
   h.property @QuasiCompact inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.quasiCompact h₁ h₂) hG
@@ -1322,16 +1209,6 @@ theorem isSeparated [hG : IsSeparated G.hom] : IsSeparated H.hom :=
 theorem isProper [hG : IsProper G.hom] : IsProper H.hom :=
   h.property @IsProper inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isProper h₁ h₂) hG
-
-theorem isAffineHom [hG : IsAffineHom G.hom] : IsAffineHom H.hom :=
-  haveI : MorphismProperty.IsStableUnderComposition @IsAffineHom.{0} :=
-    ⟨fun _ _ _ _ ↦ inferInstance⟩
-  h.property @IsAffineHom inferInstance
-    (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isAffineHom h₁ h₂) hG
-
-theorem isFinite [hG : IsFinite G.hom] : IsFinite H.hom :=
-  h.property @IsFinite inferInstance
-    (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isFinite h₁ h₂) hG
 
 theorem geometricallyConnected [UniversallyOpen G.hom] [GeometricallyConnected G.hom] :
     GeometricallyConnected H.hom := by
@@ -1352,10 +1229,6 @@ theorem of_isSemiAbelian (hG : IsSemiAbelian G) :
   have := hG.quasiCompact
   have := hG.geomConnected
   exact ⟨h.smooth, h.isSeparated, h.quasiCompact, h.geometricallyConnected⟩
-
-theorem abLocus_subset : abLocus G ⊆ abLocus H := fun s hs K _ _ t ht ↦ by
-  have : IsProper ((Over.pullback t).obj G).hom := hs K t ht
-  exact (h.pullback t).isProper
 
 end IsTensor
 
@@ -1381,65 +1254,6 @@ instance projective_fractionalIdeal (I : FractionalIdeal (𝓞 E)⁰ E) : Module
   have : Module.FinitePresentation (𝓞 K) I := Module.finitePresentation_of_finite _ _
   Module.Flat.projective_of_finitePresentation
 
-example (A : Over S) [GrpObj A] [IsCommMonObj A] [IsAbelianScheme A] (a : OAct (𝓞 K) A)
-    (I : FractionalIdeal (𝓞 E)⁰ E) :
-    IsAbelianScheme (tensorObj I a) ∧ ∃ c : OAct (𝓞 E) (tensorObj I a),
-      comapAct c (algebraMap (𝓞 K) (𝓞 E)) = tensorAct I a :=
-  ⟨inferInstance, (isTensor I a).algAct (𝓞 E), (isTensor I a).comapAct_algAct (𝓞 E)⟩
-
 end Ideals
-
-section Examples
-
-abbrev gmRat : Over (Spec (CommRingCat.of ℚ)) := splitTorusAff (CommRingCat.of ℚ) ℤ
-
-theorem gmRat_id_ne_one : (𝟙 gmRat : gmRat ⟶ gmRat) ≠ 1 := by
-  intro e
-  let φ : AddMonoidAlgebra ℚ ℤ →ₐ[ℚ] AddMonoidAlgebra ℚ ℤ := AddMonoidAlgebra.lift ℚ _ ℤ 1
-  let x : gmRat ⟶ gmRat := Over.homMk (Spec.map (CommRingCat.ofHom φ.toRingHom)) (by
-    change Spec.map _ ≫ Spec.map _ = Spec.map _
-    rw [← Spec.map_comp]
-    congr 1
-    exact CommRingCat.hom_ext φ.comp_algebraMap)
-  have hx : x = 𝟙 gmRat := by rw [← Category.comp_id x, e, MonObj.comp_one]
-  have h₁ : Spec.map (CommRingCat.ofHom φ.toRingHom) = Spec.map (𝟙 _) :=
-    (congrArg (fun y ↦ y.left) hx).trans (Spec.map_id _).symm
-  have h₂ := congrArg (fun g ↦ g.hom (AddMonoidAlgebra.single (1 : ℤ) (1 : ℚ)))
-    (Spec.map_injective h₁)
-  have h₃ : (1 : AddMonoidAlgebra ℚ ℤ) = AddMonoidAlgebra.single (1 : ℤ) (1 : ℚ) := by
-    refine Eq.trans ?_ h₂
-    change _ = φ (AddMonoidAlgebra.single (1 : ℤ) (1 : ℚ))
-    rw [AddMonoidAlgebra.lift_single, MonoidHom.one_apply, one_smul]
-  rw [AddMonoidAlgebra.one_def] at h₃
-  exact zero_ne_one (AddMonoidAlgebra.single_left_injective one_ne_zero h₃)
-
-def gmRatSquare : IsTensor (powObj gmRat 2) (powAct (powIsPowGrp gmRat 2) (intAct gmRat)) gmRat
-    (intAct gmRat) (Fin 2 → ℤ) :=
-  IsTensor.pow _ _
-
-example : gmRatSquare.tmul ![1, -3] ≫ powPr gmRat 0 = 𝟙 gmRat ∧
-    gmRatSquare.tmul ![1, -3] ≫ powPr gmRat 1 = (𝟙 gmRat) ^ (-3 : ℤ) :=
-  ⟨(IsTensor.pow_tmul_pr (powIsPowGrp gmRat 2) _ _ 0).trans (by simp),
-    IsTensor.pow_tmul_pr (powIsPowGrp gmRat 2) _ _ 1⟩
-
-example : (isTensor (Fin 2 → ℤ) (intAct gmRat)).tmul ![1, 0] ≠ 1 := fun e ↦ gmRat_id_ne_one <| by
-  rw [← (isTensor (Fin 2 → ℤ) (intAct gmRat)).tmul_mapLeft_self (LinearMap.proj 0)
-    (m := ![1, 0]) rfl, e, MonObj.one_comp]
-
-example (G : Over S) [GrpObj G] [IsCommMonObj G] :
-    let c := (isTensor (QuadraticAlgebra ℤ (-1) 0) (intAct G)).algAct (QuadraticAlgebra ℤ (-1) 0)
-    c.act ⟨0, 1⟩ ≫ c.act ⟨0, 1⟩ = (𝟙 _)⁻¹ := by
-  intro c
-  have e : (⟨0, 1⟩ * ⟨0, 1⟩ + 1 : QuadraticAlgebra ℤ (-1) 0) = 0 := by
-    decide
-  rw [← c.mul, eq_inv_iff_mul_eq_one, ← c.one, ← c.add, e, act_zero]
-
-example {O : Type} [CommRing O] {G : Over S} [GrpObj G] [IsCommMonObj G] (a : OAct O G) :
-    𝟙 (tensorObj PUnit a) = 1 := by
-  have := isMonHom_one (G := tensorObj PUnit a) (H := tensorObj PUnit a)
-  exact (isTensor PUnit a).hom_ext fun m ↦ by
-    rw [Subsingleton.elim m 0, IsTensor.tmul_zero]; simp
-
-end Examples
 
 end GlobalTheory.Serre

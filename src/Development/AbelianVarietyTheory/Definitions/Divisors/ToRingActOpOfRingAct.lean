@@ -39,9 +39,6 @@ structure ActRep (A : Over S) [GrpObj A] (Q : LB (A ⊗ A).left) (bar : O → O)
 
 attribute [instance] ActRep.grp
 
-theorem IsRAct.of_oAct {O : Type} [CommRing O] {A : Over S} [GrpObj A] (i : OAct O A) : IsRAct A i.act :=
-  ⟨i.hom, i.one, i.mul, i.add⟩
-
 theorem IsRAct.op_of_ringAct {A : Over S} [GrpObj A] [IsCommMonObj A] (ρ : Out.RingAct A O) :
     IsRAct A (fun a : Oᵐᵒᵖ => ρ.act a.unop) :=
   ⟨fun _ => ρ.hom _, ρ.map_one, fun _ _ => ρ.map_mul _ _, fun _ _ => ρ.map_add _ _⟩
@@ -63,22 +60,5 @@ def IsRAct.toOAct {O : Type} [CommRing O] {A : Over S} [GrpObj A] {act : O → (
 
 @[simp] theorem IsRAct.toOAct_act {O : Type} [CommRing O] {A : Over S} [GrpObj A] {act : O → (A ⟶ A)}
     (h : IsRAct A act) : h.toOAct.act = act := rfl
-
-theorem IsRAct.act_mul_comm {O : Type} [CommRing O] {A : Over S} [GrpObj A] {act : O → (A ⟶ A)}
-    (h : IsRAct A act) (a b : O) : act (a * b) = act b ≫ act a := by
-  rw [mul_comm]; exact h.2.2.1 b a
-
-theorem IsRAct.comp_comm {O : Type} [CommRing O] {A : Over S} [GrpObj A] {act : O → (A ⟶ A)}
-    (h : IsRAct A act) (a b : O) : act a ≫ act b = act b ≫ act a := by
-  rw [← h.2.2.1, ← h.2.2.1, mul_comm]
-
-example (A : Over S) [GrpObj A] (act : O → (A ⟶ A)) (h : IsRAct A act) (a : O) : act (a * 1) = act a := by
-  rw [h.2.2.1, h.2.1, Category.comp_id]
-
-example {A : Over S} [GrpObj A] [IsCommMonObj A] (ρ : Out.RingAct A O) (a b : O) :
-    ρ.act (b * a) = ρ.act a ≫ ρ.act b :=
-  (IsRAct.op_of_ringAct ρ).2.2.1 (MulOpposite.op a) (MulOpposite.op b)
-
-example {O : Type} [CommRing O] {A : Over S} [GrpObj A] (i : OAct O A) : (IsRAct.of_oAct i).toOAct = i := rfl
 
 end GlobalTheory.EndLoc

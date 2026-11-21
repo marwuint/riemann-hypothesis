@@ -81,14 +81,6 @@ def LogDensityM : Prop :=
     (∀ p ∈ S, ∀ p' ∈ S, p ≠ p' → p.1 = p'.1 → 1 ≤ |p.2.im - p'.2.im|) →
     (S.card : ℝ) ≤ C * ((M : ℝ) * T) ^ (A * (1 - σ)) * Real.log ((M : ℝ) * T) ^ B
 
-def DeuringHeilbronnM : Prop :=
-  ∃ c₀ c₁ c₂ : ℝ, 0 < c₀ ∧ 0 < c₁ ∧ 0 < c₂ ∧
-    ∀ (M : ℕ) [NeZero M] (χ₁ χ : DirichletCharacter ℂ M) (β₁ T : ℝ) (ρ : ℂ),
-    3 ≤ M → 2 ≤ T → χ₁ ^ 2 = 1 → χ₁ ≠ 1 → DirichletCharacter.LFunction χ₁ (β₁ : ℂ) = 0 →
-    1 - c₁ / Real.log ((M : ℝ) * T) < β₁ → β₁ < 1 →
-    IsLZero χ ρ → 1 - c₀ ≤ ρ.re → |ρ.im| ≤ T → (χ, ρ) ≠ (χ₁, (β₁ : ℂ)) →
-    c₂ * Real.log (c₁ / ((1 - β₁) * Real.log ((M : ℝ) * T))) / Real.log ((M : ℝ) * T) ≤ 1 - ρ.re
-
 def ZeroSum : Prop :=
   ∃ κ : ℝ, 0 < κ ∧ κ ≤ 1 / 20 ∧ ∀ C₁ A₁ : ℝ, 1 ≤ A₁ → ∃ c A C₀ : ℝ, 0 < c ∧
     ∀ (M : ℕ) [NeZero M] (Z : DirichletCharacter ℂ M → Finset ℂ) (m : DirichletCharacter ℂ M → ℂ → ℕ),
@@ -105,8 +97,6 @@ def ZeroSum : Prop :=
 def GlueOf : Prop := PsiRelA → (∀ cA : ℝ, 0 < cA → PsiRelB cA) → PsiRel
 
 def PiOf : Prop := PsiRel → PNTAPRelW
-
-def ZeroSumOf : Prop := LogDensityM → DeuringHeilbronnM → ZeroSum
 
 def PsiRelBOf : Prop := ExplicitS → SharpenS → ZeroSum → ∀ cA : ℝ, 0 < cA → PsiRelB cA
 

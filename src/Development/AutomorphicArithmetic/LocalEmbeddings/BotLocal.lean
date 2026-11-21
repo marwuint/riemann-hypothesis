@@ -3,7 +3,8 @@ import Development.AutomorphicArithmetic.LocalEmbeddings.BotCoord
 import Development.AutomorphicArithmetic.DivisorFrames.ExistsMaxCompactEqFrameGramSplitBasis
 import Development.AutomorphicArithmetic.DivisorFrames.LocalCharConductorLeOfHeckeExponent
 import Development.AutomorphicArithmetic.DivisorFrames.ExistsScaledStandardPairSectionsOfMaxCompactTran
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeesawCharacterConductorAtRamifiedPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeesawCharacterConductorAtRamifiedPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocPart
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix ValuativeRel
@@ -51,7 +52,7 @@ theorem local_pair {ψ : AddChar (AF D.host.F) ℂ} {W W₁ X : HSp D} {A : Glob
     show Xc.α / Xc.β = _
     rw [h.α, h.β]
   obtain ⟨I, I', hI, hI', -, -, hiff⟩ := hM.fin.zeta i hi
-  obtain ⟨-, -, hquot, ⟨m, hmα, hmβ⟩, hua, hub⟩ := GlobalTheory.T.seesawCharacter_conductor_at_ramified_place _ _ _ Bs _ _ Γ Xc om om' hM.triple i hi
+  obtain ⟨-, -, hquot, ⟨m, hmα, hmβ⟩, hua, hub⟩ := _root_.GlobalTheory.StdPairConeChars.nu_cond_at_ram _ _ _ Bs _ _ Γ Xc om om' hM.triple i hi
   obtain ⟨hcond, hc1⟩ := UpperTheory.localChar_conductor_le_of_heckeExponent D (α / β) νH hν i.1 (Bs.τ i) c hc
   have hram := hM.triple.chars.ram (splitPrime (Bs.τ i)) ((splitPrime_under (Bs.τ i)).symm ▸ hi)
   rw [hXν] at hram

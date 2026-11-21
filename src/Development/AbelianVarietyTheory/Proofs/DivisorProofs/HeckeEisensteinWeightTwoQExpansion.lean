@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorizati
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KFacDifferentiable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormEqProd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckePhiFourierTransformSigmaZeroEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableHilbertEisensteinWeightTwoQSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckePhiFourierTransformSigmaZeroEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableHilbertEisensteinWeightTwoQSeries
 
 noncomputable section
 
@@ -22,14 +22,14 @@ theorem hTrans_zero (ν y : ℝ) (hy : y ≠ 0) :
   rcases hy.lt_or_gt with h | h
   · have e := hTrans_zero_neg (-ν) y
     rw [neg_neg] at e
-    rw [← e, GlobalTheory.T.heckePhiFourierTransform_sigma_zero_eq _ _ (neg_pos.2 h)]
+    rw [← e, _root_.GlobalTheory.HeckeTwo.hTrans_sigma_zero_eq _ _ (neg_pos.2 h)]
     by_cases hν : 0 < -ν
     · have h2 : 0 < ν * y := by nlinarith
       rw [if_pos hν, if_pos h2, abs_of_neg (by linarith : ν < 0),
         show -(2 * Real.pi * -ν * -y) = -(2 * Real.pi * (ν * y)) by ring]
     · have h2 : ¬ 0 < ν * y := by nlinarith
       rw [if_neg hν, if_neg h2]
-  · rw [GlobalTheory.T.heckePhiFourierTransform_sigma_zero_eq _ _ h]
+  · rw [_root_.GlobalTheory.HeckeTwo.hTrans_sigma_zero_eq _ _ h]
     by_cases hν : 0 < ν
     · have h2 : 0 < ν * y := mul_pos hν h
       rw [if_pos hν, if_pos h2, abs_of_pos hν, show 2 * Real.pi * ν * y = 2 * Real.pi * (ν * y) by ring]
@@ -70,7 +70,7 @@ theorem bOne_zero_expansion [IsTotallyReal F] (𝔞 𝔟 : Frac F) (z : Emb F �
     Summable (qClass 𝔞 𝔟 2 z) ∧
       (cK F 2 : ℂ) * (kFac F 0 * (omegaFactor 𝔞 : ℂ) * bOne 𝔞 𝔟 0 z) / (omegaFactor 𝔞 : ℂ) ^ 2 =
         ∑' c, qClass 𝔞 𝔟 2 z c := by
-  have hS := GlobalTheory.T.summable_hilbertEisensteinWeightTwoQSeries F 𝔞 𝔟 z hz
+  have hS := _root_.GlobalTheory.HeckeTwoSum.summable_qClass F 𝔞 𝔟 z hz
   refine ⟨hS, ?_⟩
   have hn : (nrm 𝔞 : ℂ) ≠ 0 := by exact_mod_cast nrm_ne_zero 𝔞
   have hs : ((dF F ^ ((1 : ℝ) / 2) : ℝ) : ℂ) ≠ 0 := by

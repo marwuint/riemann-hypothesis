@@ -288,9 +288,6 @@ def IsInvAt {ι : Type} [DecidableEq ι] (V : ι → HSp D) (K : ∀ v, Subgroup
   ∀ v (x : ∀ v, GfC (V v)), (∀ γ ∈ ratFin (V v), ∀ z, f (Function.update x v (γ * z)) = f (Function.update x v z)) ∧
     ∀ k ∈ (K v).comap (finG (V v)), ∀ z, f (Function.update x v (z * k)) = f (Function.update x v z)
 
-example {ι : Type} [DecidableEq ι] (V : ι → HSp D) (K : ∀ v, Subgroup (GL (Fin (V v).rank) (Lev.EAf D))) :
-    IsInvAt V K fun _ => 1 := fun _ _ => ⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩
-
 theorem finCl_regroup_pi {ι : Type} [Fintype ι] [DecidableEq ι] (V : ι → HSp D)
     (hV : ∀ v, ∀ φ : D.host.E →+* ℂ, ((V v).gram.map φ).PosDef) {K K'' : ∀ v, Subgroup (GL (Fin (V v).rank) (Lev.EAf D))}
     (hK : ∀ v, IsCO (V v) (K v)) (hK'' : ∀ v, IsCO (V v) (K'' v)) (hle : ∀ v, K'' v ≤ K v)
@@ -360,7 +357,5 @@ theorem finCl_regroup_prod {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype
 end GlobalTheory.ClassRegroup
 
 namespace GlobalTheory.ClassRegroup
-
-variable {D : D7}
 
 end GlobalTheory.ClassRegroup

@@ -1,7 +1,4 @@
 import Mathlib
-import Formalism.BehrendSets.StatementE
-import Formalism.BehrendSets.BehrendVariance.ProbEqSumIte
-import Formalism.BehrendSets.BehrendVariance.Select
 
 open Finset
 
@@ -9,7 +6,7 @@ noncomputable section
 
 namespace Formalism.BehrendSets.E4
 
-open Formalism.BehrendSets Formalism.BehrendSets.Rand
+open Formalism.BehrendSets
 
 variable {α : Type} [DecidableEq α]
 
@@ -31,7 +28,5 @@ lemma residue (o j i : ℕ) (hj : j < o) (hd : o ∣ j + i) : (o - i % o) % o = 
 end Formalism.BehrendSets.E4
 
 namespace Formalism.BehrendSets
-
-open Formalism.BehrendSets.Rand Formalism.BehrendSets.E4
 
 end Formalism.BehrendSets

@@ -1,7 +1,11 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.LUnlinkedComm
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityDropZeroBlocksStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityDropZeroBlocks
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DropHom
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardBlocksReindexStrictMono
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorProductDropZeroFactorsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JordanHolderMultiplicityJacquetEqBorelJacquetOfS
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Cos
 
 namespace GlobalTheory.CompanionTheory.FineProd
@@ -72,7 +76,7 @@ theorem jm_row : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
     intro r x y hx hy e
     subst e
     rfl
-  rw [GlobalTheory.T.jacquet_multiplicity_drop_zero_blocks Y hd o ho hnz hsum π, jmL, dif_pos hdeg]
+  rw [_root_.GlobalTheory.CompanionTheory.FineProd.JmDrop.jm_drop Y hd o ho hnz hsum π, jmL, dif_pos hdeg]
   exact hcongr _ _ _ _ hget.symm
 
 end GlobalTheory.CompanionTheory.FineProd

@@ -6,10 +6,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.Pe
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TwoMulChainStartIndexAddOneOfOdd
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CoeffLeafGaugeSubMainTermEqZeroOnFirstAxisStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PderivLeafGaugeEqPairingAddIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearSubstCoordinateIntegralOfDegreeLtStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearSubstCoordinateIntegralOfDegreeLt
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CoeffIntegralOnExponentsSubstOfLowerSetStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CoeffCoordinatesGoodTangentsLtSqStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HPullWUpGTwoGroupEmbeddingEqRenameStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CoeffCoordinatesGoodTangentsLtSq
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HPullWUpGTwoGroupEmbeddingEqRename
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds GlobalTheory.MainTerm Classical
 
 namespace GlobalTheory.MainTerm
@@ -85,7 +85,7 @@ theorem mPlus_of_good_tangents : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [
     exact tan_pure (S g) (em c) x (by rw [hty c]; exact hx)
   obtain ⟨γ, hγ, hγeq⟩ := GlobalTheory.T.pderiv_leafGauge_eq_pairing_add_integral C V d I J X hAlt g a 1 odd_one hd S t hT (Fin N) (Fin X.n)
     (fun δ => (S g).tan (em δ)) v' he_pure hint hpure b
-  have h91 := GlobalTheory.T.hPullW_upG_twoGroupEmbedding_eq_rename C I g (Fin N) (Fin X.n) (fun δ => (S g).tan (em δ)) v'
+  have h91 := _root_.GlobalTheory.MainTerm.hPullW_upG_toW C I g (Fin N) (Fin X.n) (fun δ => (S g).tan (em δ)) v'
   have hsingle : Finsupp.single (Sum.inr b) 1 ≤ μ :=
     Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hb)
   obtain ⟨μ', rfl⟩ : ∃ μ', μ = μ' + Finsupp.single (Sum.inr b) 1 :=
@@ -149,7 +149,7 @@ theorem mPlus_of_good_tangents : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [
         rw [h91.1]
         apply ge_coeff_rename_inl V
         intro ν' hν'
-        rw [(GlobalTheory.T.coeff_coordinates_good_tangents_lt_sq C V d (I j) (J j) (X.G j) (S j) (t j) (hT j) N em hal ν'
+        rw [(_root_.GlobalTheory.MainTerm.coeff_low_good C V d (I j) (J j) (X.G j) (S j) (t j) (hT j) N em hal ν'
           (by rw [hν']; exact hP.1)).1 x, map_sum]
         apply VF.Ge.sum
         intro δ _
@@ -163,12 +163,12 @@ theorem mPlus_of_good_tangents : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [
         rw [h91.2]
         apply ge_coeff_rename_inr V
         intro ν' hν'
-        exact GlobalTheory.T.linearSubst_coordinate_integral_of_degree_lt C V d (I (1 - g)) (J (1 - g)) (X.G (1 - g)) (S (1 - g)) (t (1 - g))
+        exact _root_.GlobalTheory.MainTerm.linPull_coord_int_of_degree_lt C V d (I (1 - g)) (J (1 - g)) (X.G (1 - g)) (S (1 - g)) (t (1 - g))
           (hT (1 - g)) X.n v' hint ν' (by rw [hν']; exact hP.2) x
   · apply ge_coeff_rename_inl V
     intro ν hν
     have hdeg : ν.degree < V.l ^ 2 := by rw [hν]; exact hl'
-    have h19 := (GlobalTheory.T.coeff_coordinates_good_tangents_lt_sq C V d (I g) (J g) (X.G g) (S g) (t g) (hT g) N em hal ν hdeg).2
+    have h19 := (_root_.GlobalTheory.MainTerm.coeff_low_good C V d (I g) (J g) (X.G g) (S g) (t g) (hT g) N em hal ν hdeg).2
     have hz : MvPowerSeries.coeff ν G = 0 := by
       rw [hG, map_sub, map_sum]
       simp only [MvPowerSeries.coeff_smul, h19, map_neg, map_sum, hΦ]

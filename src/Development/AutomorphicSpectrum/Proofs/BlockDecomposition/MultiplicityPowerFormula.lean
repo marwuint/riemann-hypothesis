@@ -1,9 +1,12 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.CProps
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCardStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCard
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianMatrixDiagonalizableStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardRangeMulQuotientBoundedLevel
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiplicityReductionDiagonalProdStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiplicityReductionDiagonalProd
+import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.LocalDefs
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedNondeg
 
 noncomputable section
 
@@ -23,20 +26,20 @@ theorem card_range_pow {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : �
     exact ⟨0, by rw [hr]; simp⟩
   · exact ⟨e, by
       rw [Scaled.card_range_mul hR.reg (hR.fixLocal c hc hc1) e a₀,
-        GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR e, pow_mul]⟩
+        _root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε hR e, pow_mul]⟩
 
 theorem nuPow : PositivityTheory.SiegelWeilFormula.Gunr.NuPow := by
   intro R _ σ ϖ q ε hR n k B hB
   obtain ⟨h, hh, rfl⟩ := hB
   have hq := hR.one_lt
   have hfin : Finite (R ⧸ lev ϖ k) := Nat.finite_of_card_ne_zero (by
-    rw [GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR k]
+    rw [_root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε hR k]
     exact pow_ne_zero _ (by omega))
   let _ : Fintype (R ⧸ lev ϖ k) := Fintype.ofFinite _
   obtain ⟨g, g', d, hgg, hgg', hd, hgd⟩ := GlobalTheory.T.hermitian_matrix_diagonalizable R σ ϖ q ε hR n h hh
   choose eI hcard using fun i => card_range_pow hR k (d i) (hd i)
   have hnu : nuAt ϖ (red ϖ k h) = (q ^ 2) ^ (∑ i, eI i) := by
-    rw [GlobalTheory.T.multiplicity_reduction_diagonal_prod R σ ϖ hR.fix_ϖ hR.inv k n h g g' d hgg hgg' hgd,
+    rw [_root_.GlobalTheory.CompanionTheory.SiegLoc.NuDiag.nuAt_eq_prod R σ ϖ hR.fix_ϖ hR.inv k n h g g' d hgg hgg' hgd,
       Finset.prod_congr rfl (fun i _ => hcard i), Finset.prod_pow_eq_pow_sum]
   rw [hnu, Nat.log_pow (Nat.one_lt_pow (by norm_num) hq)]
 

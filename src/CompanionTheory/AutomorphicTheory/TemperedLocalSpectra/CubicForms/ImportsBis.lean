@@ -1,2 +1,0 @@
-import Mathlib
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.CubeTheorem.CubeTheoremHolds

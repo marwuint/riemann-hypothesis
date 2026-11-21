@@ -217,8 +217,6 @@ theorem log_gaussNorm_support_finite {ι : Type*} {f : MvPolynomial ι K} (hf : 
 
 end NumberField
 
-theorem gaussLemma : GaussLemma.Statement := fun _K _ _ v _ι f g => gaussNorm_mul v f g
-
 end
 
 end GroundTheory.Heights₂.Heights

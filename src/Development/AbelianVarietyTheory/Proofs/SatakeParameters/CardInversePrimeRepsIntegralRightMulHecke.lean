@@ -6,9 +6,10 @@ import Formalism.LocalToGlobal.Columns.HeckeSp
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardKerSubspacesAndHeckePolyOfConvolutionStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardKerSubspacesAndHeckePolyOfConvolution
+import Formalism.LocalToGlobal.IndefiniteReal.Bridge
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPlaceChartOfSplitIdempotentStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitChartUniformiserAndResidueCardStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitChartUniformiserAndResidueCard
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSplitFrameSelfDualLatticeCompletionStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemHomLatticeIffIntegralMatrixSplitChartStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemHyperspecialIffGIntOfSuppAtSplitStatement
@@ -17,7 +18,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeElementComp
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FinrankReductionRangeAddCorankStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardCosetsEqSubspacesKernelResidueStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NatCardMatricesMulEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardSubspacesKerTransposeEqCardRangeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardSubspacesKerTransposeEqCardRange
 
 noncomputable section
 
@@ -180,7 +181,7 @@ theorem nKer_eq_sum {k : Type} [Field k] [Finite k] {m n t d : ℕ} (h : n = m +
   rw [← h] at h1
   rw [nKer, h1, Nat.card_eq_fintype_card (α := k)]
   symm
-  simp only [← GlobalTheory.T.card_subspaces_ker_transpose_eq_card_range k m n]
+  simp only [← _root_.GlobalTheory.SplitHecke.card_le_ker_transpose_eq_card_range_le k m n]
   refine Finset.sum_subset (Finset.range_subset_range.2 (by omega)) fun j hj hj' => ?_
   rw [Finset.mem_range] at hj hj'
   have : IsEmpty {W : Submodule k (Fin m → k) // Module.finrank k W + j = m ∧ W ≤ LinearMap.ker wᵀ.mulVecLin} :=
@@ -402,7 +403,7 @@ theorem hecke_identity_split : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S 
   classical
   have he := hP.1
   obtain ⟨v, π, hπ⟩ := GlobalTheory.T.exists_place_chart_of_splitIdempotent e he
-  obtain ⟨⟨p, hpϖ, hp⟩, hq⟩ := GlobalTheory.T.splitChart_uniformiser_and_residueCard e P v π hP hπ ϖ hϖ hϖ2
+  obtain ⟨⟨p, hpϖ, hp⟩, hq⟩ := _root_.GlobalTheory.SplitUnif.unif_chart e P v π hP hπ ϖ hϖ hϖ2
   obtain ⟨βS, hβS⟩ := GlobalTheory.T.exists_splitFrame_selfDualLattice_completion e v π he hπ S
   obtain ⟨βT, hβT⟩ := GlobalTheory.T.exists_splitFrame_selfDualLattice_completion e v π he hπ T
   obtain ⟨c, hc, hΛ⟩ := GlobalTheory.T.mem_homLattice_iff_integralMatrix_splitChart e v π he hπ S T βS βT hβS hβT

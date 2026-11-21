@@ -349,9 +349,6 @@ theorem unfold_of_mahler (hM : Mahler) : Unfold := by
     exact GlobalTheory.CompanionTheory.QuotUnfold.quotIntegral_unfold (Γ := (ratGL E n).range) (Γ₀ := ratCent δ)
       (fun _ ⟨t, _, e⟩ => ⟨t, e⟩) hF (hHm δ) (hinvH δ) hfin
 
-theorem unfold_of_absUnfold_mahler_kerFin : PositivityTheory.Rg.BcB.D4.AbsUnfold → Mahler → PositivityTheory.Rg.BcB.D4.KerFin → Unfold :=
-  fun _ hM _ => unfold_of_mahler hM
-
 end GlobalTheory.CompanionTheory.UnfoldCut
 
 end

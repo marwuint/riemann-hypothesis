@@ -28,37 +28,4 @@ def PrIso {D : D7} (MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (cX : CoefA D.sp.
     inner ℂ w w' = ∑ f : (∀ τ, ι τ),
       starRingEnd ℂ (prX w (PiTensorProduct.tprod ℂ fun τ => b τ (f τ))) * prX w' (PiTensorProduct.tprod ℂ fun τ => b τ (f τ))
 
-theorem brgAt_of_sides (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (L : LevCh D T)
-    (h : ∀ eG : G ≃* Formalism.L2.DIV.G0 L.Pg D.R.r, RecL A3 L eG → ∀ θ : InfFam D, IsInfFam θ →
-      ∀ MX : DSModel D.sp.X' (parB (Ptw D) D.R.m),
-      ∃ (cX : CoefA D.sp.X') (cV : ∀ i, CoefA (Vc D i)) (pl : Pl0 → Pl D.host.E) (Sb : Finset (Pl D.host.E)) (plI : I0 → Pl D.host.E)
-        (SF : Finset (HeightOneSpectrum (𝓞 D.host.F))) (prX : cX.W →ₗ[ℂ] SmT MX →ₗ[ℂ] ℂ)
-        (RS : ∀ t, Set (RowSideT A3 L cX pl t)) (LS : ∀ i t, Set (LiftSideT A3 L cV pl i t)),
-        cX.Is ∧ (∀ i, (cV i).Is) ∧ IsDualPair θ MX cX prX ∧ (∀ t, (RS t).Nonempty) ∧ (∀ i t, (LS i t).Nonempty) ∧
-        (D.sp.X'.rank = A3.A.r + D.R.m * A3.A.t ∧ ∀ i : Fin D.R.m, (Vc D i).rank = A3.A.r + A3.A.t) ∧
-        ∀ B : BType A3 L cX cV pl, (∀ t, B.R t ∈ RS t) → (∀ i t, B.L i t ∈ LS i t) → BrgL A3 L eG cX cV pl Sb B plI SF) :
-    BrgAt A3 L := by
-  unfold BrgAt
-  intro eG hrec θ hθ MX
-  obtain ⟨cX, cV, pl, Sb, plI, SF, prX, RS, LS, hcX, hcV, hdual, hRS, hLS, hrk, hB⟩ := h eG hrec θ hθ MX
-  refine ⟨cX, cV, pl, Sb, ⟨fun t => (hRS t).some, fun i t => (hLS i t).some, hrk.1, hrk.2⟩, plI, SF, prX, hcX, hcV, hdual, ?_⟩
-  exact hB _ (fun t => (hRS t).some_mem) (fun i t => (hLS i t).some_mem)
-
-theorem brgAtP_of_sides (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (L : LevCh D T)
-    (Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (_cv : ∀ i, CoefA (Vc D i)), (c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ) → Prop)
-    (h : ∀ eG : G ≃* Formalism.L2.DIV.G0 L.Pg D.R.r, RecL A3 L eG → ∀ θ : InfFam D, IsInfFam θ →
-      ∀ MX : DSModel D.sp.X' (parB (Ptw D) D.R.m),
-      ∃ (cX : CoefA D.sp.X') (cV : ∀ i, CoefA (Vc D i)) (pl : Pl0 → Pl D.host.E) (Sb : Finset (Pl D.host.E)) (plI : I0 → Pl D.host.E)
-        (SF : Finset (HeightOneSpectrum (𝓞 D.host.F))) (prX : cX.W →ₗ[ℂ] SmT MX →ₗ[ℂ] ℂ)
-        (RS : ∀ t, Set (RowSideT A3 L cX pl t)) (LS : ∀ i t, Set (LiftSideT A3 L cV pl i t)),
-        cX.Is ∧ (∀ i, (cV i).Is) ∧ IsDualPair θ MX cX prX ∧ Pr MX cX cV prX ∧ (∀ t, (RS t).Nonempty) ∧ (∀ i t, (LS i t).Nonempty) ∧
-        (D.sp.X'.rank = A3.A.r + D.R.m * A3.A.t ∧ ∀ i : Fin D.R.m, (Vc D i).rank = A3.A.r + A3.A.t) ∧
-        ∀ B : BType A3 L cX cV pl, (∀ t, B.R t ∈ RS t) → (∀ i t, B.L i t ∈ LS i t) → BrgL A3 L eG cX cV pl Sb B plI SF) :
-    BrgAtP A3 L Pr := by
-  unfold BrgAtP
-  intro eG hrec θ hθ MX
-  obtain ⟨cX, cV, pl, Sb, plI, SF, prX, RS, LS, hcX, hcV, hdual, hPr, hRS, hLS, hrk, hB⟩ := h eG hrec θ hθ MX
-  refine ⟨cX, cV, pl, Sb, ⟨fun t => (hRS t).some, fun i t => (hLS i t).some, hrk.1, hrk.2⟩, plI, SF, prX, hcX, hcV, hdual, hPr, ?_⟩
-  exact hB _ (fun t => (hRS t).some_mem) (fun i t => (hLS i t).some_mem)
-
 end Formalism.IndefR.Seed

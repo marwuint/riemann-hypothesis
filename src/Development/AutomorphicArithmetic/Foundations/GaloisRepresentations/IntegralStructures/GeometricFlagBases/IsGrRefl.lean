@@ -54,9 +54,6 @@ variable (l : ℕ) [Fact l.Prime] (H : HTower k) (Ω : Type) [Field Ω] [Algebra
 def piece (θ : H.Γ → L) : Submodule L (L ⊗[ℚ_[l]] Htot l (sch.obj (H.geomZ Ω))) :=
   ⨅ g, Module.End.eigenspace ((hop l H Ω g).baseChange L) (θ g)
 
-theorem piece_le (θ : H.Γ → L) : piece l H Ω L θ ≤ GlobalTheory.GalV.V l H Ω L id θ :=
-  iInf_mono fun _ => Module.End.eigenspace_le_maxGenEigenspace
-
 def IsMat (θ : H.Γ → L) {d : ℕ} (ρ : (Ω ≃ₐ[k] Ω) →* GL (Fin d) L) : Prop :=
   ∃ b : Module.Basis (Fin d) L (piece l H Ω L θ), ∀ σ j,
     galV l H Ω L σ (b j).1 = ∑ i, (ρ σ : Matrix (Fin d) (Fin d) L) i j • (b i).1
@@ -66,9 +63,6 @@ end Tower
 def IsGr {Γ L : Type} [Group Γ] [Field L] {d : ℕ} (ρ₀ ρ : Γ →* GL (Fin d) L) : Prop :=
   ∃ c : Fin d → ℕ, ∀ g, (ρ₀ g : Matrix (Fin d) (Fin d) L).BlockTriangular c ∧
     ∀ i j, (ρ g : Matrix (Fin d) (Fin d) L) i j = if c i = c j then (ρ₀ g : Matrix (Fin d) (Fin d) L) i j else 0
-
-theorem isGr_refl {Γ L : Type} [Group Γ] [Field L] {d : ℕ} (ρ : Γ →* GL (Fin d) L) : IsGr ρ ρ :=
-  ⟨fun _ => 0, fun _ => ⟨fun _ _ h => absurd h (lt_irrefl _), fun _ _ => by simp⟩⟩
 
 section Cover
 

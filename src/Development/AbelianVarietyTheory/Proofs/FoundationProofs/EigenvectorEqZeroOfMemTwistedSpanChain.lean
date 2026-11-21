@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterEigenspaceIsComplPrincipalSeriesTwistedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EigEqZeroOfMemAugOfNotIntertwineStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsEigTranslateOfSubMemAugStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterEigenspaceIsComplPrincipalSeriesTwisted
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EigEqZeroOfMemAugOfNotIntertwine
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsEigTranslateOfSubMemAug
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 
@@ -34,12 +34,12 @@ theorem eig_eq_zero_of_mem_aug_chain : ∀ (G V : Type) [Group G] [TopologicalSp
   induction m with
   | zero =>
     intro u hu heig
-    refine (GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan G V π hπ (N 0) (fun _ => 1) (hN 0)).1 u hu ?_
+    refine (_root_.GlobalTheory.PsType.eig_compl_aug G V π hπ (N 0) (fun _ => 1) (hN 0)).1 u hu ?_
     intro y hy
     rw [heig y (h0 y hy).1, (h0 y hy).2]
   | succ m ih =>
     intro u hu heig
-    obtain ⟨u', hu'eig, hsub⟩ := (GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan G V π hπ (N 1) (fun _ => 1) (hN 1)).2 u
+    obtain ⟨u', hu'eig, hsub⟩ := (_root_.GlobalTheory.PsType.eig_compl_aug G V π hπ (N 1) (fun _ => 1) (hN 1)).2 u
     have hsub' : u - u' ∈ aug π (N (m + 1)) (fun _ => 1) :=
       aug_mono_set π _ (hmono (Nat.succ_le_succ (Nat.zero_le m))) hsub
     have hu' : u' ∈ aug π (N (m + 1)) (fun _ => 1) := by
@@ -48,7 +48,7 @@ theorem eig_eq_zero_of_mem_aug_chain : ∀ (G V : Type) [Group G] [TopologicalSp
     have hzu : π z u' ∈ aug π (N m) (fun _ => 1) :=
       map_mem_aug_of_conj π (N m) (N (m + 1)) z (fun y hy => (hconj m y).1 hy) u' hu'
     have hzeig : IsEig π J θ (π z u') :=
-      GlobalTheory.T.isEig_apply_of_sub_mem_aug G V π hπ J (N 0) (N 1) θ z hJ (hN 0) h0 (hconj 0) hz u u' heig hu'eig hsub
+      _root_.GlobalTheory.PsType.isEig_translate_of_sub_mem_aug G V π hπ J (N 0) (N 1) θ z hJ (hN 0) h0 (hconj 0) hz u u' heig hu'eig hsub
     have hz0 : π z u' = 0 := ih _ hzu hzeig
     have hu0 : u' = 0 := by
       have e : π z⁻¹ (π z u') = u' := by
@@ -56,6 +56,6 @@ theorem eig_eq_zero_of_mem_aug_chain : ∀ (G V : Type) [Group G] [TopologicalSp
         simp
       rw [← e, hz0, map_zero]
     rw [hu0, sub_zero] at hsub
-    exact GlobalTheory.T.eq_zero_of_mem_aug_of_isEig_of_not_intertwine G V π hπ J (N 1) θ hJ (hN 1) h1 u hsub heig
+    exact _root_.GlobalTheory.PsType.eig_eq_zero_of_mem_aug_of_not_intertwine G V π hπ J (N 1) θ hJ (hN 1) h1 u hsub heig
 
 end GlobalTheory.PsType

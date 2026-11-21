@@ -4,9 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NilradicalLatticeZMemSpan
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SatGramActRRep
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluedTermFrameAdmissibleIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowLatticeOfLocallyStandardFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowRepresentativesUpToFrameAdaptedIsometryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluedTermFrameAdmissibleIntegral
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowLatticeOfLocallyStandardFrame
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowRepresentativesUpToFrameAdaptedIsometry
 open scoped Classical ENNReal
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.Unfold
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -91,7 +91,7 @@ theorem rowLat_first {D : D7} (X : HidaSetting D) {u u' : D.what₂.Word} (F : L
     (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (hB : Based Z FP (Tu D u) (Tu D u') F F')
     (Λ : LV D) (y : Dat Z FP) (hL : LocOver Λ y) :
     ∃ g, Adapt g (lf D (X.Fu u)) F ∧ IsRowLat D (X.Fu u) (Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ) :=
-  GlobalTheory.T.rowLattice_of_locally_standard_frame D (Tu D u) (D.mem u).A.T_prime.ne_zero (X.Fu u) F Z
+  _root_.GlobalTheory.RowLatAdapt.row_lattice_of_local_standard D (Tu D u) (D.mem u).A.T_prime.ne_zero (X.Fu u) F Z
     (fun p => (FP p).A) (fun p => (hB p).1) Λ hL.1 (fun p => by
       obtain ⟨τ, hτ, hlat⟩ := hL.2 p
       have h4 := hτ.2.2.1
@@ -102,7 +102,7 @@ theorem rowLat_second {D : D7} (X : HidaSetting D) {u u' : D.what₂.Word} (F : 
     (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (hB : Based Z FP (Tu D u) (Tu D u') F F')
     (Λ : LV D) (y : Dat Z FP) (hL : LocOver Λ y) :
     ∃ g, Adapt g (lf D (X.Fu u')) F' ∧ IsRowLat D (X.Fu u') (Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ) :=
-  GlobalTheory.T.rowLattice_of_locally_standard_frame D (Tu D u') (D.mem u').A.T_prime.ne_zero (X.Fu u') F' Z
+  _root_.GlobalTheory.RowLatAdapt.row_lattice_of_local_standard D (Tu D u') (D.mem u').A.T_prime.ne_zero (X.Fu u') F' Z
     (fun p => (FP p).B) (fun p => (hB p).2.1) Λ hL.1 (fun p => by
       obtain ⟨τ, hτ, hlat⟩ := hL.2 p
       have h4 := hτ.2.2.2.1
@@ -112,8 +112,8 @@ theorem exists_term_of_locOver : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (
   intro D X Y u u' F F' w hw hG Z FP hB hR Λ y hL
   obtain ⟨g0, hg0, hrow0⟩ := rowLat_first X F F' Z FP hB Λ y hL
   obtain ⟨g0', hg0', hrow0'⟩ := rowLat_second X F F' Z FP hB Λ y hL
-  obtain ⟨Λ₁, hΛ₁, σ, hσ, hσΛ⟩ := (GlobalTheory.T.row_representatives_up_to_frame_adapted_isometry D X Y u u).1 _ hrow0
-  obtain ⟨Λ₁', hΛ₁', σ', hσ', hσΛ'⟩ := (GlobalTheory.T.row_representatives_up_to_frame_adapted_isometry D X Y u' u').1 _ hrow0'
+  obtain ⟨Λ₁, hΛ₁, σ, hσ, hσΛ⟩ := (_root_.GlobalTheory.RowRep.rowReps D X Y u u).1 _ hrow0
+  obtain ⟨Λ₁', hΛ₁', σ', hσ', hσΛ'⟩ := (_root_.GlobalTheory.RowRep.rowReps D X Y u' u').1 _ hrow0'
   have hg : Adapt (g0 * σ) (lf D (X.Fu u)) F := adapt_mul hg0 hσ
   have hg' : Adapt (g0' * σ') (lf D (X.Fu u')) F' := adapt_mul hg0' hσ'
   have hgΛ : Formalism.HermitianLatticesTheory.gmap (g0 * σ)⁻¹ Λ = Λ₁ := by
@@ -122,7 +122,7 @@ theorem exists_term_of_locOver : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (
     rw [mul_inv_rev, gmap_mul', ← hσΛ', ← gmap_mul', inv_mul_cancel, gmap_one']
   have hrow : IsRowLat D (X.Fu u) (Formalism.HermitianLatticesTheory.gmap (g0 * σ)⁻¹ Λ) := hgΛ ▸ (Y.rowsOK u).1 Λ₁ hΛ₁
   have hrow' : IsRowLat D (X.Fu u') (Formalism.HermitianLatticesTheory.gmap (g0' * σ')⁻¹ Λ) := hgΛ' ▸ (Y.rowsOK u').1 Λ₁' hΛ₁'
-  have hPD := GlobalTheory.T.gluedTerm_frame_admissibleIntegral D X Y u u' F F' w hw hG Z FP hB hR Λ y hL _ _ hg hg' hrow hrow'
+  have hPD := _root_.GlobalTheory.Unfold.AdmGlued.glued_frame_PD D X Y u u' F F' w hw hG Z FP hB hR Λ y hL _ _ hg hg' hrow hrow'
   rw [hgΛ] at hPD
   set g := g0 * σ with hgdef
   set g' := g0' * σ' with hg'def

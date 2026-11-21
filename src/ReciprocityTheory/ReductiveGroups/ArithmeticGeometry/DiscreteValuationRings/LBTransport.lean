@@ -101,13 +101,6 @@ lemma tr_res {V V' : Y.Opens} (hV : V' ≤ V) {ψ : Y ⟶ X} {a b : L.ι} (h : V
     res hV (tr L V ψ a b) = tr L V' ψ a b := by
   rw [tr_def L h, tr_def L (hV.trans h), res_res']
 
-lemma tr_self (hL : L.IsLB) {V : Y.Opens} {ψ : Y ⟶ X} {a : L.ι} (h : V ≤ ψ ⁻¹ᵁ L.U a) :
-    tr L V ψ a a = 1 := by
-  have h' : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U a) := fun y hy => ⟨h hy, h hy⟩
-  rw [tr_def L h']
-  have e := res_pullU_eq ψ (le_inf le_rfl le_rfl : L.U a ≤ L.U a ⊓ L.U a) h' h (L.g a a)
-  rw [e, hL.g_self, map_one, map_one]
-
 lemma tr_cocycle (hL : L.IsLB) {V : Y.Opens} {ψ : Y ⟶ X} {a b c : L.ι}
     (h : V ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b ⊓ L.U c)) :
     tr L V ψ a b * tr L V ψ b c = tr L V ψ a c := by
@@ -490,9 +483,6 @@ lemma fsum_sumElim {K₂ : Type} [Fintype K₂] (φ : K → (Y ⟶ X)) (ε : K �
 
 lemma fsum_neg (φ : K → (Y ⟶ X)) (ε : K → ℤ) : fsum φ (fun k => - ε k) = - fsum φ ε := by
   simp [fsum, Finsupp.single_neg]
-
-lemma fsum_smul (φ : K → (Y ⟶ X)) (ε : K → ℤ) (n : ℤ) : fsum φ (fun k => n * ε k) = n • fsum φ ε := by
-  simp [fsum, Finset.smul_sum, Finsupp.smul_single]
 
 lemma fsum_comp (φ : K → (Y ⟶ X)) (ε : K → ℤ) {Z : Scheme.{0}} (h : Z ⟶ Y) :
     fsum (fun k => h ≫ φ k) ε = Finsupp.mapDomain (fun ψ => h ≫ ψ) (fsum φ ε) := by

@@ -25,26 +25,11 @@ def AmpleV (S : Type*) [CommRing S] {K : Type*} [Fintype K] [LinearOrder K] {ι 
   ∃ q : ℕ, 1 ≤ q ∧ GeneratedV S V (q • N) ∧
     ∀ e : K → ℤ, ∃ c₁ : ℕ, ∀ c : ℕ, c₁ ≤ c → Subsingleton (cechHc ι (quotPart S V) (e + (c * q) • N) 1)
 
-def SerreGenStatement : Prop :=
-  ∀ (S : Type) [CommRing S] (K : Type) [Fintype K] [LinearOrder K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] (V : Ideal (MRingOver S ι)) (e : K → ℤ),
-    IsNoetherianRing S → IsMultiHomogIdeal V →
-    ∃ c₀ : ℕ, ∀ c : ℕ, c₀ ≤ c → GeneratedV S V (e + fun _ => (c : ℤ))
-
 def KAmpStatement : Prop :=
   ∀ (F : Type) [Field F] (K : Type) [Fintype K] [LinearOrder K] (ι : K → Type)
     [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] (I : IFamily F ι) (V : Ideal (MRingOver F ι)) (d : ℕ)
     (α : K → ℤ) (b a : ℕ),
     IsFieldIntersection I → IsProjVarF V d → NefOnF I V α → 1 ≤ b → 1 ≤ a →
     AmpleV F V (b • α + fun _ => (a : ℤ))
-
-def SiuStatement : Prop :=
-  ∀ (F : Type) [Field F] (K : Type) [Fintype K] [LinearOrder K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] (I : IFamily F ι) (V : Ideal (MRingOver F ι)) (D : ℕ)
-    (α β : K → ℤ) (q : ℕ),
-    IsFieldIntersection I → IsProjVarF V (D + 1) → 1 ≤ q → GeneratedV F V (q • α) → GeneratedV F V (q • β) →
-    ((D + 1 : ℕ) : ℤ) * I V (D + 1) (Fin.snoc (α := fun _ => K → ℤ) (fun _ : Fin D => α) β) <
-      I V (D + 1) (fun _ => α) →
-    ∃ k : ℕ, 1 ≤ k ∧ ∃ z ∈ cechZc ι (quotPart F V) (k • (α - β)) 0, z ≠ 0
 
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverExtAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalRingOfIdem
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AddValNormUnramifiedInvolutionFieldExtEqMulStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AddValNormUnramifiedInvolutionFieldExtEqMul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBasisTraceInvolutionDetUnitUnramifiedStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DetTraceGramBlockMatrixStatement
 
@@ -61,7 +61,7 @@ theorem eta_overExt : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt 
   have hN : Algebra.norm K.E H.det ≠ 0 := by
     rw [Ne, Algebra.norm_eq_zero_iff]; exact hH0
   unfold UQ.eta
-  rw [val_mul_of_ne (pow_ne_zero _ hw0) hN, val_pow_of_ne hw0, hwv, GlobalTheory.T.addVal_norm_unramifiedInvolutionFieldExt_eq_mul K K' d φ hU hd0, mul_zero, zero_add,
+  rw [val_mul_of_ne (pow_ne_zero _ hw0) hN, val_pow_of_ne hw0, hwv, _root_.GlobalTheory.UnitLemma.Unr.NormVal.normval K K' d φ hU hd0, mul_zero, zero_add,
     zpow_mul]
   rw [zpow_natCast, hd.neg_one_pow]
 

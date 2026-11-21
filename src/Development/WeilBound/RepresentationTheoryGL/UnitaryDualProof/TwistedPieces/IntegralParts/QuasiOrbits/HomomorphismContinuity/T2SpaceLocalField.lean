@@ -277,8 +277,6 @@ theorem orbQ_of (h3 : Reps0 k) (h4 : StepModH k) (h5 : ModH k) : OrbQ k := by
       obtain ⟨p, hp, hqp⟩ := hcov q.1 hq1 hqn q.2 hqU
       exact Set.mem_iUnion₂.2 ⟨p, hp, hqp⟩
 
-example : ModH k := PositivityTheory.RgUd.TP.Nil.Orb.modBound0 k
-
 end Final
 
 end PositivityTheory.RgUd.TP.Nil.Orb.Asm

@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBess
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompact
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselHaarFiniteCompactPosOpen
 import Formalism.FormalDegreeBessel.FinalG
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightDerivativeSmoothOnIndefiniteUnitaryGroupStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselUnitaryHaarTransportDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SobolevValueAtOneFixedCompactDiagSignUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightDerivativeSmoothOnIndefiniteUnitaryGroup
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselUnitaryHaarTransportDiagonal
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SobolevValueAtOneFixedCompactDiagSignUnitary
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SobolevInequalityAtOneIndefiniteUnitary
 
 noncomputable section
 
@@ -33,8 +34,8 @@ theorem sobolev_at_one_G : ∀ (k r : ℕ) (μG : Measure (Mt k r)), IsHaarOn (G
   have hPu : IsUnit P := (Matrix.isUnit_iff_isUnit_det P).2 hPd
   have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPd
   have hPP' : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul P hPd
-  obtain ⟨S, C, Q, hQ, hS, hC, hsob⟩ := GlobalTheory.T.sobolev_valueAtOne_fixedCompact_diagSignUnitary (2 * r + k + 1) ε
-  obtain ⟨c, hc, hB⟩ := GlobalTheory.T.besselUnitary_haar_transport_diagonal k r μG ε P hμ hPd hPJ
+  obtain ⟨S, C, Q, hQ, hS, hC, hsob⟩ := _root_.GlobalTheory.SobolevHaar.sobolev_at_one_compact (2 * r + k + 1) ε
+  obtain ⟨c, hc, hB⟩ := _root_.GlobalTheory.HaarTransport.haar_transport k r μG ε P hμ hPd hPJ
   let cj : Mat k r → Mat k r := fun Y => P⁻¹ * Y * P
   have hcjc : Continuous cj := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
   let ψ : Formalism.REAL.UJ ε → Mt k r := fun y => Matrix.of.symm (cj (umat y))
@@ -87,11 +88,11 @@ theorem sobolev_at_one_G : ∀ (k r : ℕ) (μG : Measure (Mt k r)), IsHaarOn (G
     | nil => intro _; exact hf
     | cons X l ih =>
       intro hl
-      exact (GlobalTheory.T.rightDerivative_smooth_on_indefinite_unitary_group _ (Hpk k r) X B (rdWord l f) (hl X List.mem_cons_self)
+      exact (_root_.GlobalTheory.rdM_smoothOnH _ (Hpk k r) X B (rdWord l f) (hl X List.mem_cons_self)
         (ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY))).2.1
   have hcont : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) →
       ContinuousOn (rdWord (l.map cj) f) (GG k r) := fun l hl =>
-    (GlobalTheory.T.rightDerivative_smooth_on_indefinite_unitary_group _ (Hpk k r) 0 B _ (by simp) (hword _ (hwm l hl))).1
+    (_root_.GlobalTheory.rdM_smoothOnH _ (Hpk k r) 0 B _ (by simp) (hword _ (hwm l hl))).1
   have hof : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) := continuous_id
   have hI : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) →
       ContinuousOn (fun x : Mt k r => ‖rdWord (l.map cj) f (Matrix.of x)‖ ^ 2) (ψ '' Q) := fun l hl =>
@@ -110,7 +111,7 @@ theorem sobolev_at_one_G : ∀ (k r : ℕ) (μG : Measure (Mt k r)), IsHaarOn (G
   have hFd : ∀ l : List (Mat k r), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ∀ X, Formalism.REAL.inG ε X →
       ∀ g ∈ UJset ε, HasDerivAt (fun t : ℝ => F l (g * NormedSpace.exp ((t : ℂ) • X))) (F (X :: l) g) 0 := by
     intro l hl X hX g hg
-    have hA := (GlobalTheory.T.rightDerivative_smooth_on_indefinite_unitary_group _ (Hpk k r) (cj X) B (rdWord (l.map cj) f) (hlie X hX) (hword _ (hwm l hl))).2.2
+    have hA := (_root_.GlobalTheory.rdM_smoothOnH _ (Hpk k r) (cj X) B (rdWord (l.map cj) f) (hlie X hX) (hword _ (hwm l hl))).2.2
       (cj g) (hmemG g hg)
     have h2 := (ℓ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hA
     have e : ∀ t : ℝ, cj (g * NormedSpace.exp ((t : ℂ) • X)) = cj g * NormedSpace.exp ((t : ℂ) • cj X) := by

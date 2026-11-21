@@ -3,7 +3,14 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.PulledRead
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GeomClausesIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorSimilitudeFixingPointEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackTer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorObjectPullbackBis
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianLocalRingOfIsAdicComplete
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.Definitions.Degenerations.ExistsGenPullTriv
+import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
+import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES
@@ -16,7 +23,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.secSurj_of :
     ConstSub → OMod → QuotObj → ObjTri → PullKer → SecSurj := by
   intro hCS hOM hQO hOT hPK
   intro p _ D O _ _ _ _ f b N r w _ hstd M j hj T K _ _ hp x G hGk hGs hGc
-  obtain ⟨o₁, ⟨m⟩⟩ := GlobalTheory.T.exists_harrisTaylorObject_pullback p D O b N M.X (Sp K) M.s x M.univ
+  obtain ⟨o₁, ⟨m⟩⟩ := _root_.GlobalTheory.HTPull.exists_objMap_pull p D O b N M.X (Sp K) M.s x M.univ
   have hcm : ∀ {X Y Z : Over M.X} [MonObj Z] (e : X ⟶ Y) (u v : Y ⟶ Z), e ≫ (u * v) = (e ≫ u) * (e ≫ v) := by
     intro X Y Z _ e u v
     rw [Hom.mul_def, Hom.mul_def, ← Category.assoc, CartesianMonoidalCategory.comp_lift]

@@ -24,14 +24,4 @@ theorem projFin_ratEmb_val (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (F
 
 end Reduction
 
-section Lattices
-
-open GroundTheory.Automorphic GroundTheory.Heights₂.Heights.FiniteCovolume Module
-open scoped Pointwise
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-  [Algebra.IsQuadraticExtension F E]
-
-end Lattices
-
 end GlobalTheory.CompanionTheory.ClassFin

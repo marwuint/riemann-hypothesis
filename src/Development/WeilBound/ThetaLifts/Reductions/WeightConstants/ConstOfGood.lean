@@ -32,9 +32,6 @@ theorem lInt2 : LInt2 := by
     rw [Formalism.L2.Host.HChar.loc_inv, hloc]
     exact (map_inv Circle.toUnits _).symm
 
-theorem constOfGood (hS : GlobalTheory.Published.StrongApproxSU) : ConstOfGood :=
-  constOfGood_of hS GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne_holds
-
 end GlobalTheory.ThK.Dbl
 
 end

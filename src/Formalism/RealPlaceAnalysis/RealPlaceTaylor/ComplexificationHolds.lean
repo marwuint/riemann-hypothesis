@@ -6,19 +6,6 @@ noncomputable section
 
 namespace Formalism.REAL
 
-private lemma inG_iff_star_signed_entries_eq_zero {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
-    inG ε X ↔ ∀ i j, star (X j i) * (if ε j then 1 else -1) + (if ε i then 1 else -1) * X i j = 0 := by
-  unfold inG Jm
-  constructor
-  · intro h i j
-    have := congrFun (congrFun h i) j
-    simpa only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply,
-      Matrix.zero_apply] using this
-  · intro h
-    ext i j
-    simpa only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply,
-      Matrix.zero_apply] using h i j
-
 lemma f1auxiliary_hs_eq {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = (trace (gᴴ * g)).re := by
   simp only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.re_sum]
   conv_lhs => rw [Finset.sum_comm]

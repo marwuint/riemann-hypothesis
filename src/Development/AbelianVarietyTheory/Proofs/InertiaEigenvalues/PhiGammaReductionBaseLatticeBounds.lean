@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JSmul
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaActionReductionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachDeltaInvariantsReductionIsLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaActionReduction
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachDeltaInvariantsReductionIsLattice
 
 noncomputable section
 namespace GlobalTheory.BaseABC
@@ -314,10 +314,10 @@ end Gen
 
 theorem base_abc : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (S : TopSit P) (k : Type) [Field k] [Algebra S.O k] [CharP k l], S.IsRes k → ∀ {R : RingPG k l} (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) (F : DFun R S.n S.G) (τ : ZMod S.n → ZMod (Module.finrank ℚ_[l] ↥(K0 S.K))) (γ : (S.W H).Gam) (p : Pres (S.W H) F ι τ γ), GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.IsCyclotomic R ι → (∀ i, (S.W H).emb (τ i) = S.emb i) → ((S.W H).χΓ γ : S.O) = 1 + (l : S.O) → GlobalTheory.WachUse.QN (S.W H) → ∀ (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) (A : Ob k S.G) q (U : ZMod S.n → Multiset ℤ), Onto T A q → KerIs S.Γ.lam q → CrysWith (P.PD S.K) S.emb T.ρ U → ∀ N : Lats k S.n A.m, (∀ i y, y ∈ N i ↔ ∃ x : ↥(DΔ (S.W H) T), (x : (S.W H).DD T) ∈ (S.W H).N T ∧ p.j T A q i x = y) → ∀ w w' : ZMod S.n → ℕ, (∀ i, ∀ u ∈ U i, -(w i : ℤ) ≤ u ∧ u ≤ w' i) → ABC (F.D A) (fun i => w i) (fun i => w' i) N := by
   intro l _ P H S k _ _ _ hk R ι F τ γ p hι hτ hγ hQN T A q U hq hker hU N hN w w' hw
-  obtain ⟨N', hN', hL⟩ := GlobalTheory.T.wachDeltaInvariants_reduction_isLattice H S k hk ι F τ γ p hι hτ hγ hQN T A q U hq hker hU
+  obtain ⟨N', hN', hL⟩ := _root_.GlobalTheory.Present.RedLat.red_isLat H S k hk ι F τ γ p hι hτ hγ hQN T A q U hq hker hU
   have hNN : N = N' := funext fun i => Submodule.ext fun y => (hN i y).trans (hN' i y).symm
   subst hNN
-  exact ⟨hL, cond_all p hι (GlobalTheory.T.map_gamma_eq_deltaPi_teichmuller H S k).2 (P.PD_p S.K) (H.W_s _ _ _ _) hk.1 S.emb S.hyp.1.2.2.2.1 hτ hQN
+  exact ⟨hL, cond_all p hι (_root_.GlobalTheory.RedAct.gamma_action_reduction H S k).2 (P.PD_p S.K) (H.W_s _ _ _ _) hk.1 S.emb S.hyp.1.2.2.2.1 hτ hQN
     hq U hU N hN w w' hw⟩
 
 end GlobalTheory.BaseABC

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIndexIdeal
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.NotIsOfFinOrderUnitQuot
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonIndexIdealInfSupLatticesStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetSpanConjMulIntegralOfIntegralPairingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSquareAbsNormConjInvariantMovedPrimesIdealStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSquareAbsNormConjInvariantMovedPrimesIdeal
 
 set_option autoImplicit false
 
@@ -140,7 +140,7 @@ theorem index_eq (H : Host E) (L : Submodule (𝓞 E) (Fin n → E)) (cc : Ideal
     have : y = m ^ n := RingOfIntegers.ext e
     rw [← this]
     exact Ideal.le_of_dvd (Dvd.intro_left cc rfl) hy
-  obtain ⟨k, hk⟩ := GlobalTheory.T.isSquare_absNorm_conjInvariant_movedPrimes_ideal E H 𝔡 (by rwa [Ne, Ideal.absNorm_eq_zero_iff] at d0) e9
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.SquareNorm.isSquare_absNorm E H 𝔡 (by rwa [Ne, Ideal.absNorm_eq_zero_iff] at d0) e9
     fun P hP hle => m3 P hP (hP.mem_of_pow_mem (r := m) n (hle hm))
   refine ⟨k, by rintro rfl; exact d0 hk, ?_⟩
   rw [← e3, ← e6, map_mul, hk, sq]

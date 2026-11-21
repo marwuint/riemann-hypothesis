@@ -28,8 +28,6 @@ end GlobalTheory.Core.Rk.SecPar
 
 namespace GlobalTheory.Core.Rk.SecPar
 
-open GlobalTheory.LFun
-
 end GlobalTheory.Core.Rk.SecPar
 
 namespace GlobalTheory.Core.Rk.SecPar
@@ -43,13 +41,9 @@ theorem cw_incA {D : D7} {q : FinPl D} {w : HeightOneSpectrum (𝓞 D.host.E)} (
 end GlobalTheory.Core.Rk.SecPar
 
 namespace GlobalTheory.Core.Rk.SecPar
-open GlobalTheory.LFun
-
 end GlobalTheory.Core.Rk.SecPar
 
 namespace GlobalTheory.Core.Rk.SecPar
-open GlobalTheory.LFun
-
 end GlobalTheory.Core.Rk.SecPar
 
 end

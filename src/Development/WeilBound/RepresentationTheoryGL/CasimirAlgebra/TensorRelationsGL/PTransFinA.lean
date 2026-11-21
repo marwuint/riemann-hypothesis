@@ -30,13 +30,6 @@ theorem coef {Y : Type*} [AddCommGroup Y] [Module ℂ Y] (d : ℕ) (y : ℕ → 
   rw [Finset.sum_ite_eq] at hc
   simpa [hi] using hc
 
-theorem pow_mem {U : Type*} [AddCommGroup U] [Module ℂ U] (T : Module.End ℂ U) (Z : Submodule ℂ U)
-    (hZ : ∀ z ∈ Z, T z ∈ Z) : ∀ k : ℕ, ∀ z ∈ Z, (T ^ k) z ∈ Z := by
-  intro k
-  induction k with
-  | zero => intro z hz; simpa using hz
-  | succ k ih => intro z hz; rw [pow_succ', Module.End.mul_apply]; exact hZ _ (ih z hz)
-
 theorem qdet_mem {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A) (B : Subalgebra ℂ A)
     (hF : ∀ a b, F a b ∈ B) (u : ℂ) : qdet F u ∈ B := by
   unfold qdet qminor

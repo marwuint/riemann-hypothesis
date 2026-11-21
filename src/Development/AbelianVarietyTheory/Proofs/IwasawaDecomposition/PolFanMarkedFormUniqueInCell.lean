@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MarkValEqZeroOrOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarrierDimLeOfAddCellGenerators
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCellOfInFaceOfCellFormCMFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellLeastDimVanishesWhereFormVanishesDiagonalStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCellOfInFaceOfCellFormCMField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellLeastDimVanishesWhereFormVanishesDiagonal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InvFunEvalZAddOfLinearOnRealConeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeSummandsOfEvalZAdditiveCellStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanRankLeOfInRealConePolyhedralCellStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanRankLeOfInRealConePolyhedralCell
 
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.Mark
 
@@ -111,7 +111,7 @@ theorem genRank_le_of_label_le {E : Type} [Field E] [NumberField E] [IsCMField E
     rw [← toReal_sum', evalR_toReal] at this
     simpa using this
   have hin := GlobalTheory.T.inRealCone_summands_of_evalZ_additive_cell (𝓞 E) H.bar ψ X m' γ hγ m v hv.mem hv.nonneg hσγ hψσ.le
-  have hr := GlobalTheory.T.spanRank_le_of_inRealCone_polyhedralCell (𝓞 E) H.bar ψ X m' m γ v hγ hv.mem hv.nonneg hin
+  have hr := _root_.GlobalTheory.PolFan.genRank_le_of_inRCone_cell (𝓞 E) H.bar ψ X m' m γ v hγ hv.mem hv.nonneg hin
   have h2 : sInf {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ σ ∧
       genRank γ = k} ≤ i + 1 := by exact_mod_cast hl
   rw [hrk] at hr
@@ -128,10 +128,10 @@ theorem inFace_iff_of_isMarked {E : Type} [Field E] [NumberField E] [IsCMField E
   obtain ⟨hβ1, hβ2, -, hβl, -⟩ := hβ
   constructor
   · rintro ⟨hx1, hx2, -, hx4, hx5⟩
-    exact ⟨hx1, hx2, GlobalTheory.T.inRealCone_cell_of_inFace_of_cellForm_CMField E H q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv x hx1 hx2 hx4 hx5⟩
+    exact ⟨hx1, hx2, _root_.GlobalTheory.PolFan.Mark.FaceIn.inRCone_of_add E H q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv x hx1 hx2 hx4 hx5⟩
   · rintro ⟨hx1, hx2, hxv⟩
     have hrk := genRank_le_of_label_le H q ψ lab i hlab X hX v hv hb
-    have hvan := GlobalTheory.T.cell_leastDim_vanishes_where_form_vanishes_diagonal E H q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv (by rw [hβl]; exact_mod_cast hrk)
+    have hvan := _root_.GlobalTheory.PolFan.Mark.vanish_of_inRCone_of_genRank_le E H q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv (by rw [hβl]; exact_mod_cast hrk)
     have hsum := inRCone_add' hβv hxv
     have hs1 : β + x ∈ balForms H.bar X := add_mem hβ1 hx1
     have hs2 : ∀ y, 0 ≤ (β + x) y y := fun y => by

@@ -2,10 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMumfordFamOfSubsingleton
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleOfGenericFibreNormalLocalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NondegeneratePairingOfGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelBasisEveryGeometricPointLocalRingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingDeterminedAtGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleOfGenericFibreNormalLocalDomain
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NondegeneratePairingOfGenericFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelBasisEveryGeometricPointLocalRing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingDeterminedAtGenericPoint
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDescendsFromGenericFibre
@@ -206,8 +208,8 @@ theorem extend (O K : Type) [CommRing O] [IsRegularLocalRing O] [Field K] [Algeb
   obtain ⟨P, hP, e, r₁, r₂, sy⟩ := exists_bundle hA h sq c'.isLB c'.rig₁ c'.rig₂ c'.symm
   have ed : LBIso c'.diag ((P.pull (lift (𝟙 A) (𝟙 A)).left).pull ψ) := diag_iso sq e
   have amp : Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) :=
-    GlobalTheory.T.relAmple_of_genericFibre_normalLocalDomain O K A c'.A ψ hA h _ _ (pull_isLB hP _) (pull_isLB c'.isLB _) ed hc'.1
-  have nd := GlobalTheory.T.nondegenerate_pairing_of_generic_fibre O K A c'.A ψ φ₂ hA h sq P c'.P hP c'.isLB e r₁ r₂ sy amp hc'.2
+    _root_.GlobalTheory.AmpleGenericLocal.relAmple_of_generic O K A c'.A ψ hA h _ _ (pull_isLB hP _) (pull_isLB c'.isLB _) ed hc'.1
+  have nd := _root_.GlobalTheory.NondegSpread.nondeg_of_generic O K A c'.A ψ φ₂ hA h sq P c'.P hP c'.isLB e r₁ r₂ sy amp hc'.2
   obtain ⟨σ, rfl⟩ := Models.RankZero.exists_spMap s'
   have hnO : IsUnit (n : O) := by simpa using hnB.map σ
   obtain ⟨lev, add, tors, hl⟩ := exists_lev (K := K) hA h hn c'.lev c'.lev_add c'.lev_tors
@@ -230,7 +232,7 @@ theorem extend (O K : Type) [CommRing O] [IsRegularLocalRing O] [Field K] [Algeb
     obtain ⟨u', rfl⟩ := push_surjective h (Over.mk xk) u
     obtain ⟨a, ha⟩ := g2 u' (push_injective h _ (by rw [map_pow, hu, map_one]))
     exact ⟨a, by rw [← pl a, ha]⟩
-  have TT := GlobalTheory.T.levelBasis_every_geometricPoint_localRing O A hA g n hnO lev add tors k₀ _ t1 t2
+  have TT := _root_.GlobalTheory.LevelSpread.basis_at_every_point O A hA g n hnO lev add tors k₀ _ t1 t2
   have w0 : ∀ a b, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) n (toUnit (Over.mk (spMap j)) ≫ lev a)
       (toUnit (Over.mk (spMap j)) ≫ lev b) (unitOn (Units.map j.toMonoidHom (ζO ^ (2 * omegaStd a b)))) :=
     fun a b => by
@@ -256,7 +258,7 @@ theorem extend (O K : Type) [CommRing O] [IsRegularLocalRing O] [Field K] [Algeb
   refine ⟨c1, c2, fun a b => ?_⟩
   have hβ : ρ.comp σ = β := spMap_inj ((Models.RankZero.spMap_comp σ ρ).symm.trans hx)
   have hzz : Units.map ρ.toMonoidHom ζO = z := Units.ext (by rw [hz, ← hβ]; rfl)
-  have := GlobalTheory.T.commutatorPairing_determined_at_genericPoint O A hA P hP r₁ r₂ amp n (Nat.pos_of_ne_zero hn) hnO (lev a) (lev b) (tors a) (tors b)
+  have := _root_.GlobalTheory.WeilGeneric.weilIs_of_generic O A hA P hP r₁ r₂ amp n (Nat.pos_of_ne_zero hn) hnO (lev a) (lev b) (tors a) (tors b)
     (ζO ^ (2 * omegaStd a b)) k₀ j hjinj (w0 a b) k ρ
   rwa [map_zpow, hzz] at this
 

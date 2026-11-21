@@ -17,8 +17,6 @@ def CD.Inf (D : CD E n) (m : (E →+* ℂ) → Multiset ℂ) : Prop := ∀ τ, �
 
 def CD.Reg (D : CD E n) : Prop := ∀ τ, ∃ lam : DomWeight n, ∑ i, (D.P i).infChar τ = infOfWeight lam
 
-example : (CD.nil E).Inf fun _ => 0 := fun _ => rfl
-
 def mW (l : InfinitePlace E → DomWeight n) : (E →+* ℂ) → Multiset ℂ :=
   PositivityTheory.Rg.BcB.CG.mOf fun v => PositivityTheory.RgBcC.infOf (l v).w
 

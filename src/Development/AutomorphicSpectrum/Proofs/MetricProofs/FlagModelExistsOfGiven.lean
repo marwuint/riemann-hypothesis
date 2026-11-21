@@ -5,14 +5,14 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ColFlags
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTwistedGeneratorsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameViaTwistedGeneratorsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptIsVectorBundleRankStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptBasesLinearIndependentSpanStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlkFProperStepInjectiveBlockDiagStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptIsVectorBundleRank
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptBasesLinearIndependentSpan
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlkFProperStepInjectiveBlockDiag
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.GMatIsGenericFlagStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.DetFacGMatEqOneStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartYvEqAlgebraMapXbStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.YvEqSumMinorsGMatStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsNonzeroXbOfLeftInverseStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsNonzeroXbOfLeftInverse
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameChangeDeterminantStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameChangeRegularStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameMinorValuationStatement
@@ -21,7 +21,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameUnitCrit
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameGenericRankStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameLeadingTermStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameDegreeFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptBaseChangeCompatibleStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptBaseChangeCompatible
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameDivisorFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptFrameHeightFormulaStatement
 
@@ -34,8 +34,8 @@ noncomputable section
 theorem GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists : GlobalTheory.CompanionTheory.Ar.Top.Given → PB.FlagModelExists := by
   intro _ E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 nd d bW bO hv hd
   classical
-  have hVB := GlobalTheory.T.hodgeCpt_isVectorBundle_rank E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐
-  have hcc := GlobalTheory.T.hodgeCpt_bases_linearIndependent_span E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO
+  have hVB := _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.LL_isVB E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐
+  have hcc := _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.GenBases.cc_basis E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO
   have hg : ∀ s, ∃ (m n : ℕ) (φ : Fin n → Module.Dual Ω (EE 𝔐)), IsTwistGen 𝔐.ξ (seg x₀) (LL 𝔐 s) m φ := fun s =>
     GlobalTheory.T.exists_twisted_generators 𝔐.X Ω 𝔐.ξ (EE 𝔐) ((k : K₀) → J₀ k) (seg x₀) (LL 𝔐 s) _ (VV 𝔐 s) 𝔐.tie 𝔐.all (hVB s)
   choose m n φ hφ using hg
@@ -47,15 +47,15 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.FMX.flagModelExists : GlobalTheory.Co
     obtain ⟨c₀, hc₀⟩ := exists_inBlockChart 𝔐.tie ⟨genPt 𝔐.ξ, specializes_refl _⟩
     exact fun k => ⟨c₀ k, (hc₀ k).1⟩
   have ht := GlobalTheory.T.hodgeCpt_frame_change_determinant E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF
-  have hP := GlobalTheory.T.blkF_properStep_injective_blockDiag (CMType H) D.p D.q Ω K₀
+  have hP := _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.Blocks.blocks_main (CMType H) D.p D.q Ω K₀
   have hmod : ModelOK (aOf 𝔐 bW bO φ) x₀ m :=
-    ⟨hP.1, hP.2.1, GlobalTheory.T.exists_nonzero_xb_of_left_inverse _ _ _ Ω _ _ K₀ J₀ x₀ hx₀ hB,
+    ⟨hP.1, hP.2.1, _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.BasePt.xb_block_ne _ _ _ Ω _ _ K₀ J₀ x₀ hx₀ hB,
       GlobalTheory.T.basePart_yv_eq_algebraMap_xb _ _ _ Ω _ _ K₀ J₀ x₀, hP.2.2, GlobalTheory.T.isGenericFlag_gMat _ _ _ Ω, GlobalTheory.T.yv_eq_sum_minors_gMat _ _ _ Ω _ _ K₀ J₀ x₀,
       GlobalTheory.T.hodgeCpt_frame_change_regular E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF ht⟩
   have hT := GlobalTheory.T.hodgeCpt_frame_minor_valuation E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF ht hmod
   obtain ⟨Z, ξ', f, htie, hall, hdom, hsm⟩ := GlobalTheory.T.hodgeCpt_frame_leading_term E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF
   have hnorm := GlobalTheory.T.hodgeCpt_frame_degree_formula E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF Z ξ' f htie hall hdom hsm
-  obtain ⟨𝔐', e, j, -, hov, hR, hsp, hV⟩ := GlobalTheory.T.hodgeCpt_base_change_compatible E H D l Xo c Y S Ω _ (algebraMap Ω _) K₀ _ J₀ _ x₀ _ 𝔐 Z ξ' f hall htie hnorm hdom hsm
+  obtain ⟨𝔐', e, j, -, hov, hR, hsp, hV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HcptFlat.hodgeCpt_pull_smooth E H D l Xo c Y S Ω _ (algebraMap Ω _) K₀ _ J₀ _ x₀ _ 𝔐 Z ξ' f hall htie hnorm hdom hsm
   obtain ⟨Fl, hdeg, hfl⟩ := GlobalTheory.T.hodgeCpt_frame_divisor_formula E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ d hF hd 𝔐' _ j hov hsp hV
   obtain ⟨xdeg, hroot, hdy⟩ := GlobalTheory.T.hodgeCpt_frame_height_formula E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF ht hmod 𝔐' _ j Fl hov hsp hV hfl
   let M := model (aOf 𝔐 bW bO φ) x₀ m hmod

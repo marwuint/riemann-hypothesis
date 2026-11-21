@@ -3,14 +3,14 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.KerScheme
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeSetEtaleLevelStructureExistsStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeSetEtaleLevelStructureExists
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientDescendsEtaleSurjectiveCoverStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsoQuotientsSameKernelReducedBaseStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsoQuotientsSameKernelReducedBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGeomPtRangeEq
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeKernelSchemeUniversalReducedBasesStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsogenyPullbackHeckeModuliObjectStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeKernelSchemeUniversalReducedBases
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsogenyPullbackHeckeModuliObject
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeOfIsPullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientExistsListedKernelsSmoothBaseStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientExistsListedKernelsSmoothBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsReducedIsNormalSchemeIsLocallyNoetherianOfSmoo
@@ -58,7 +58,7 @@ theorem corr_heckeSet_kill {E : Type} [Field E] [NumberField E] [IsCMField E] {H
 
 theorem corr_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ), 1 ≤ D.p + D.q → admitted l 𝔓 p → Nonempty (Corr Xo 𝔓 p i) := by
   intro E _ _ _ H D l Xo P p i hr hA
-  obtain ⟨Z, hZ⟩ := GlobalTheory.T.exists_heckeKernelScheme_universal_reduced_bases E H D l Xo P p i hA
+  obtain ⟨Z, hZ⟩ := _root_.GlobalTheory.HkFam.exists_kerScheme E H D l Xo P p i hA
   have := Z.et₁
   have := Xo.smooth
   have hXs : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim Xo.s
@@ -66,9 +66,9 @@ theorem corr_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   have hred : IsReduced Z.Hk :=
     (GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ hs).1
   obtain ⟨S', π, o', m, τ, hf, he, hsu, hL⟩ :=
-    GlobalTheory.T.hecke_set_etale_level_structure_exists E H D l P p i Z.Hk _ Z.o₁ Z.K hA hZ Z.hecke
+    _root_.GlobalTheory.exists_cover_lists_heckeSet E H D l P p i Z.Hk _ Z.o₁ Z.K hA hZ Z.hecke
   have hH' := ((GlobalTheory.heckeSets_pull E H D P p i _ _ _ _ _ m.toSABMap Z.o₁.proper).2 Z.K).1 Z.hecke
-  have hq' := GlobalTheory.T.heckeQuotient_exists_listed_kernels_smooth_base E H D l Xo P p i _ S' _ o' τ _ hr hA inferInstance hL hH'
+  have hq' := _root_.GlobalTheory.hasQuot_of_lists_of_smooth E H D l Xo P p i _ S' _ o' τ _ hr hA inferInstance hL hH'
   obtain ⟨o₂, ψ, hi, hk⟩ := GlobalTheory.T.heckeQuotient_descends_etale_surjective_cover E H D l Xo P p i Z.Hk S' _ π Z.o₁ o' m Z.K hA Z.hecke he hsu
     inferInstance hq'
   obtain ⟨π₂, ⟨hb, ⟨m₂⟩⟩, -⟩ := Xo.rep _ _ hred o₂
@@ -80,11 +80,11 @@ theorem corr_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   refine ⟨h, ⟨hh, ?_⟩, ?_⟩
   · obtain ⟨o₃, ⟨n₃⟩⟩ := GlobalTheory.obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ _ s h rfl rfl
       (by rw [hh]; simp [spMap]) o₂
-    obtain ⟨⟨ψ₃, hψ₃, -⟩, hall⟩ := GlobalTheory.T.exists_isogeny_pullback_heckeModuliObject E H D l p _ _ _ _ h Z.o₁ o₂ o o₃ n₁ n₃ ψ
+    obtain ⟨⟨ψ₃, hψ₃, -⟩, hall⟩ := _root_.GlobalTheory.HkFam.isog_pull E H D l p _ _ _ _ h Z.o₁ o₂ o o₃ n₁ n₃ ψ
     obtain ⟨hi₃, hk₃⟩ := hall ψ₃ hψ₃
     have hk₃' := hk₃ Z.K hi.1.1 hk
     rw [← hn₁] at hk₃'
-    obtain ⟨m, hm⟩ := GlobalTheory.T.exists_iso_quotients_same_kernel_reduced_base E H D l p S s o o' o₃ ψ' ψ₃ K' hA.2.2.1 hA.2.2.2.2 hi' (hi₃ hi) hk' hk₃'
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.exists_objMap_of_isIsog_of_kerSet E H D l p S s o o' o₃ ψ' ψ₃ K' hA.2.2.1 hA.2.2.2.2 hi' (hi₃ hi) hk' hk₃'
       (corr_heckeSet_kill o.t hA.2.2.2.1 hH)
     have hc := ((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o₂ o₃ o').2 h (𝟙 S) n₃).1 m
     have hc' : ∀ g : S ⟶ Z.Hk, g = h → (∃ m'' : ObjMap o' o₂ g, m''.toSABMap.φ = m.toSABMap.φ ≫ n₃.toSABMap.φ) →
@@ -94,7 +94,7 @@ theorem corr_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     obtain ⟨n₂, hn₂⟩ := hc' _ (Category.id_comp h) hc
     exact ⟨n₁, n₂, by rw [hn₂, ← Category.assoc, hm, hψ₃]⟩
   · rintro h' ⟨hh', n₁', n₂', e⟩
-    have hk₃ := ((GlobalTheory.T.exists_isogeny_pullback_heckeModuliObject E H D l p _ _ _ _ h' Z.o₁ o₂ o o' n₁' n₂' ψ).2 ψ' e).2 Z.K hi.1.1 hk
+    have hk₃ := ((_root_.GlobalTheory.HkFam.isog_pull E H D l p _ _ _ _ h' Z.o₁ o₂ o o' n₁' n₂' ψ).2 ψ' e).2 Z.K hi.1.1 hk
     exact hu h' ⟨hh', n₁', corr_kerSet_unique hk' hk₃⟩
 
 end GlobalTheory.HkFam

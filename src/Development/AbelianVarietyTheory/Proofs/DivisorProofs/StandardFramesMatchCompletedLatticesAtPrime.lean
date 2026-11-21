@@ -13,9 +13,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgrou
 import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOneTmulMem
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompletedLatticeIntegralityFacts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatSmulMatrixMulVecCompletedSelfDualStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatSmulMatrixMulVecCompletedSelfDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceHyperspecialStableLatticeEqMultipleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceHyperspecialStableLatticeEqMultipleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceHyperspecialStableLatticeEqMultiple
 
 noncomputable section
 
@@ -85,8 +86,8 @@ theorem frames_match_lattices : ∀ {D : D7} {V V' : HSp D} {n : ℕ} (hF : D.ho
     intro W N y hy
     rw [Nat.cast_smul_eq_nsmul]
     exact AddSubgroup.nsmul_mem _ hy N
-  obtain ⟨N1, hN1, hB1⟩ := GlobalTheory.T.exists_nat_smul_matrix_mulVec_completedSelfDual V V' X
-  obtain ⟨N2, hN2, hB2⟩ := GlobalTheory.T.exists_nat_smul_matrix_mulVec_completedSelfDual V' V X'
+  obtain ⟨N1, hN1, hB1⟩ := _root_.GlobalTheory.LatMatch.mulVec_lamHat_bound V V' X
+  obtain ⟨N2, hN2, hB2⟩ := _root_.GlobalTheory.LatMatch.mulVec_lamHat_bound V' V X'
   let hom : (Fin V.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) →+ (Fin V'.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) :=
     (DistribMulAction.toAddMonoidHom _ φ).comp (Matrix.mulVecLin X).toAddMonoidHom
   have hhom : ∀ y, hom y = φ • X.mulVec y := fun y => rfl
@@ -131,7 +132,7 @@ theorem frames_match_lattices : ∀ {D : D7} {V V' : HSp D} {n : ℕ} (hF : D.ho
       rw [← hfe] at h
       exact h c1 c2 c3 c4
     · rw [← hfe] at hpl hint
-      exact GlobalTheory.T.inertPlace_hyperspecialStable_lattice_eq_multiple V' P f hpl hint M c1 c2 c3 c4
+      exact _root_.GlobalTheory.InertLatMult.lattice_eq_mult V' P f hpl hint M c1 c2 c3 c4
   obtain ⟨c, ⟨u, rfl⟩, hcM⟩ := hcore
   refine ⟨(u : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) • X, (↑u⁻¹ : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) • X', ?_, ?_, ?_, ?_⟩
   · rw [Matrix.smul_mul (u : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) X, Matrix.mul_smul X (↑u⁻¹ : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) X', smul_smul, hX1, Units.mul_inv, one_smul]

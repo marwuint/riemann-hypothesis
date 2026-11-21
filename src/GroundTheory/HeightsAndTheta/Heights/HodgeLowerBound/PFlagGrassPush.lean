@@ -208,45 +208,4 @@ theorem flagInt_C_mul (c : ℚ) (P : RootPoly Ψ N) : flagInt Ψ N (C c * P) = c
 
 end Forms
 
-theorem FlagGrassPush.proof (hAI3 : Inter.PushforwardArithIntersection.Statement) (hStep : Inter.PFStep.Statement)
-    (hGr : GroundTheory.Heights₂.Heights.GrassArithVar.Statement) (hAr : FlagArithVar.Statement)
-    (hIm : FlagImageGrass.Statement) (hCnt : VandCount.Statement) (hProd : HFlProdLinear.Statement)
-    (hInv : FsInvPow.Statement) (hFib : FlagGrassFibreDeg.Statement) (hDeg : GrassDegFlagInt.Statement) :
-    FlagGrassPush.Statement := by
-  intro II Ψ _ _ _ N j cf hII hN hj hjN
-  have hcnt : dimN Ψ N j + vandCount Ψ N j = dimFl Ψ N := hCnt Ψ N j (by omega)
-  have hArFl : IsArithVar (PFl Ψ N) (dimN Ψ N j + 1 + vandCount Ψ N j) := by
-    have h := hAr Ψ N hN
-    rwa [show dimFl Ψ N + 1 = dimN Ψ N j + 1 + vandCount Ψ N j by omega] at h
-  have hArGr : IsArithVar (grassIdeal (Fintype.card Ψ) j (N - j)) (dimN Ψ N j + 1) :=
-    hGr (Fintype.card Ψ) j (N - j) Fintype.card_pos
-  have hArIm : IsArithVar (imageZ (grFlV Ψ N j hj hjN) (PFl Ψ N)) (dimN Ψ N j + 1) := by
-    rw [hIm Ψ N j hj hjN]
-    exact hArGr
-  obtain ⟨G, J, hJ, hJval⟩ := hFib Ψ N j hj hjN
-  have hPF := Inter.PushforwardProjLineFlag.proof hAI3 hStep II hII (Fin (Fintype.card Ψ)) (plBlocks (Fintype.card Ψ) j (N - j))
-    (FlBlock Ψ N) (FlIdx Ψ N) (grFlKappa Ψ N j hj hjN) (grFlV Ψ N j hj hjN) (PFl Ψ N) (dimN Ψ N j + 1)
-    (vandCount Ψ N j) G J (fun _ => fsHerm (plBlocks (Fintype.card Ψ) j (N - j)) (fun _ => -1))
-    (fun _ => linLine Ψ N (muForm Ψ N j)) (vandLine Ψ N j) (isBlockMap_grFl hj hjN) hArFl hArIm hJ
-    (fun _ => isSmoothHerm_fsHerm _) (fun _ => isPullHerm_mu hj hjN) (fun _ => isSmoothHerm_fsHerm _)
-  rw [hIm Ψ N j hj hjN] at hPF
-  have hprod := hProd II Ψ N (dimN Ψ N j + 1 + vandCount Ψ N j) cf (faForms Ψ N j) hII hN (by omega)
-  rw [linLine_faForms Ψ N j, hPF, ← FA_eq_prod] at hprod
-  have hinv := hInv II (Fin (Fintype.card Ψ)) (plBlocks (Fintype.card Ψ) j (N - j))
-    (grassIdeal (Fintype.card Ψ) j (N - j)) (dimN Ψ N j + 1) hII hArGr
-  have hJr : ((J (fibreIdeal (grFlKappa Ψ N j hj hjN) G) (vandCount Ψ N j)
-      (fun i => fibreDeg (grFlKappa Ψ N j hj hjN) (vandLine Ψ N j i).a) : ℤ) : ℝ) = (fdeg Ψ N j : ℝ) := by
-    rw [← hJval]
-    push_cast
-    rfl
-  have hJint : (Jint Ψ N j cf : ℝ) =
-      (cf : ℝ) * ((flagInt Ψ N (muPoly Ψ N j ^ dimN Ψ N j * vandBlocks Ψ N j) : ℚ) : ℝ) := by
-    unfold Jint fib
-    rw [show muPoly Ψ N j ^ dimN Ψ N j * (C cf * vandBlocks Ψ N j) =
-      C cf * (muPoly Ψ N j ^ dimN Ψ N j * vandBlocks Ψ N j) by ring, flagInt_C_mul]
-    push_cast
-    rfl
-  rw [hprod, hinv, hJr, hJint, hDeg Ψ N j hN hj hjN]
-  ring
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

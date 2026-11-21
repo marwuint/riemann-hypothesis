@@ -27,19 +27,10 @@ theorem map_neg (h : IsDer D) (a : A) : D (-a) = -D a := by
   rw [show a + -a = 0 by ring, h.map_zero] at h1
   linear_combination -h1
 
-theorem map_sub (h : IsDer D) (a b : A) : D (a - b) = D a - D b := by
-  rw [sub_eq_add_neg, h.map_add, h.map_neg, ← sub_eq_add_neg]
-
 theorem map_natCast (h : IsDer D) (n : ℕ) : D (n : A) = 0 := by
   induction n with
   | zero => rw [Nat.cast_zero]; exact h.map_zero
   | succ n ih => rw [Nat.cast_succ, h.map_add, ih, h.map_one, add_zero]
-
-theorem map_intCast (h : IsDer D) (n : ℤ) : D (n : A) = 0 := by
-  rcases n with n | n
-  · rw [Int.ofNat_eq_coe, Int.cast_natCast]
-    exact h.map_natCast n
-  · rw [Int.cast_negSucc, h.map_neg, h.map_natCast, neg_zero]
 
 theorem map_ofNat (h : IsDer D) (n : ℕ) [n.AtLeastTwo] : D (OfNat.ofNat n : A) = 0 := by
   have h1 := h.map_natCast (OfNat.ofNat n)
@@ -69,16 +60,6 @@ theorem map_of_mul_eq_one (h : IsDer D) {v w : A} (hvw : v * w = 1) : D v = -v ^
   have h2 := h.2 v w
   rw [hvw, h.map_one] at h2
   linear_combination (-D v) * hvw - v * h2
-
-theorem neg (h : IsDer D) : IsDer (fun a => -D a) :=
-  ⟨fun a b => by
-    show -D (a + b) = -D a + -D b
-    rw [h.map_add]
-    ring,
-   fun a b => by
-    show -D (a * b) = a * -D b + b * -D a
-    rw [h.map_mul]
-    ring⟩
 
 def toDerivation (h : IsDer D) : Derivation ℤ A A :=
   Derivation.mk' (AddMonoidHom.toIntLinearMap ⟨⟨D, h.map_zero⟩, h.1⟩) fun a b => by

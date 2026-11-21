@@ -1,5 +1,7 @@
 import Mathlib
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.WeylGroupActions.HasDerivAtExpReal
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutMP2
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.CapelliHighestWeightConjugated
+import CompanionTheory.HarishChandraModules.NonemptyRepresentations.ExpEntry
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.OperatorRepresentations
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.DifferentialOperatorBracket
 
@@ -33,11 +35,5 @@ theorem qdet_perm {E : Fin n → Fin n → A} (hE : GlRel E) (σ : Equiv.Perm (F
   simp [Formalism.FourierDecayAlt.Q.Econj, P, Q, ite_smul]
 
 end perm
-
-section order
-
-variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
-
-end order
 
 end GlobalTheory.CompanionTheory.HolCoef.CapLW

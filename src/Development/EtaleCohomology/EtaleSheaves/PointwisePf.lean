@@ -80,5 +80,4 @@ end LateralTheory.E.PointwisePf
 
 namespace LateralTheory.E.PointwisePf
 
-theorem Pointwise_of : LateralTheory.E.KillCokPf.Pointwise := Pointwise_of_pushColim pushColim
 end LateralTheory.E.PointwisePf

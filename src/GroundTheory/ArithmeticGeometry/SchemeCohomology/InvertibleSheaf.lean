@@ -65,12 +65,6 @@ lemma tensorToSheaf_tensorLift {M N G : X.Modules}
   rw [tensorToSheaf, tensorLift, Category.assoc, ← Functor.map_comp, Iso.hom_inv_id_assoc,
     ← Adjunction.homEquiv_unit, Equiv.apply_symm_apply]
 
-lemma tensorLift_unique {M N G : X.Modules}
-    (e : (preMod X).obj M ⊗ (preMod X).obj N ⟶ (preMod X).obj G) (f : M ⊗ N ⟶ G)
-    (hf : tensorToSheaf M N ≫ (preMod X).map f = e) : f = tensorLift e := by
-  rw [← hf, tensorLift, tensorToSheaf, Category.assoc, ← Functor.map_comp,
-    ← Adjunction.homEquiv_unit, Equiv.symm_apply_apply, Iso.inv_hom_id_assoc]
-
 lemma W_tensorToSheaf (M N : X.Modules) :
     ModulesTensor.W (Opens.grothendieckTopology X) X.sheaf.obj (tensorToSheaf M N) := by
   refine MorphismProperty.comp_mem _ _ _ ?_ (MorphismProperty.of_isIso _ _)

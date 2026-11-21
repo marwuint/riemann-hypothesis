@@ -85,9 +85,6 @@ theorem hasCentral_iff : π.HasCentral ω ↔ π.HasCentChar ω := by
   rw [← infId_mul_finId z, map_mul, map_mul, map_mul, Module.End.mul_apply, hf _ φ hφ, map_smul, hi _ φ hφ, smul_smul,
     Units.val_mul, mul_comm]
 
-theorem Iso.hasCentral (h : Iso π π') (hω : π.HasCentral ω) : π'.HasCentral ω :=
-  hasCentral_iff.2 (h.hasCentChar (hasCentral_iff.1 hω))
-
 theorem HasCentral.unique (h : π.HasCentral ω) (h' : π.HasCentral ω') : ω = ω' := by
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot
   exact Subtype.ext (MonoidHom.ext fun z => Units.ext (smul_left_injective ℂ h0 ((h z φ hφ).symm.trans (h' z φ hφ))))
@@ -103,9 +100,6 @@ theorem HasCentral.apply (h : π.HasCentral ω) {φ : Sm E a} (hφ : φ ∈ π.V
 variable (π) in
 
 def IsUnitary : Prop := ∃ ω : HChar E, ω.IsUnitary ∧ π.HasCentral ω
-
-theorem Iso.isUnitary (h : Iso π π') (hu : π.IsUnitary) : π'.IsUnitary :=
-  hu.imp fun _ hω => ⟨hω.1, h.hasCentral hω.2⟩
 
 theorem HasCentral.isUnitary_iff (h : π.HasCentral ω) : π.IsUnitary ↔ ω.IsUnitary :=
   ⟨fun ⟨_, h1, h2⟩ => h2.unique h ▸ h1, fun h1 => ⟨ω, h1, h⟩⟩
@@ -127,13 +121,6 @@ theorem isUnitary_pow {χ : HChar E} (h : χ.IsUnitary) (n : ℕ) : (χ ^ n).IsU
   induction n with
   | zero => rw [pow_zero]; exact isUnitary_one
   | succ n ih => rw [pow_succ]; exact ih.mul h
-
-omit [IsTotallyComplex E] in
-
-theorem isUnitary_of_pow {χ : HChar E} {n : ℕ} (hn : n ≠ 0) (h : (χ ^ n).IsUnitary) : χ.IsUnitary := fun x => by
-  have h1 : ‖(((χ ^ n).1 x : ℂˣ) : ℂ)‖ = 1 := h x
-  rw [show (χ ^ n).1 x = χ.1 x ^ n from MonoidHom.pow_apply χ.1 n x, Units.val_pow_eq_pow_val, norm_pow] at h1
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 h1
 
 namespace CG
 
@@ -165,12 +152,6 @@ theorem isUnitary_toChar_iff (σ : CG E 1) : (toChar σ).IsUnitary ↔ σ.IsUnit
 theorem IsUnitary.tw (h : π.IsUnitary) {σ : CG E 1} (hσ : σ.IsUnitary) : (π.tw σ).IsUnitary :=
   h.twist ((isUnitary_toChar_iff σ).2 hσ)
 
-theorem IsUnitary.not_twist_absPow (ha : 1 ≤ a) (h : π.IsUnitary) {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) (hs : s ≠ 0) :
-    ¬ (π.twist ν).IsUnitary := fun h' =>
-  hs (exponent_unique ha h h' hν (ν' := 1) (s' := 0)
-    ⟨fun _ _ _ => rfl, fun _ => by simp [HChar.val, HChar.locK, HChar.loc], fun _ => by simp [HChar.inf]⟩
-    (twist_one _).symm)
-
 end CG
 
 variable (E a) in
@@ -197,13 +178,6 @@ abbrev IsRegAlg : Prop := π.1.IsRegAlg
 
 abbrev IsCsd {L : Type} [Field L] [NumberField L] [IsCMField L] (π : CGu L a) : Prop := π.1.IsCsd
 
-def centChar : {χ : HChar E // χ.IsUnitary} := ⟨π.2.choose, π.2.choose_spec.1⟩
-
-theorem hasCentChar_centChar : π.1.HasCentChar π.centChar.1 := π.2.choose_spec.2
-
-theorem centChar_twist (χ : {χ : HChar E // χ.IsUnitary}) : (π.twist χ).centChar.1 = π.centChar.1 * χ.1 ^ a :=
-  (π.twist χ).hasCentChar_centChar.unique (π.hasCentChar_centChar.twist χ.1)
-
 variable (E) in
 
 def equivChar : CGu E 1 ≃ {χ : HChar E // χ.IsUnitary} where
@@ -223,9 +197,6 @@ theorem equivChar_tw (σ σ' : CGu E 1) : (equivChar E (σ.tw σ')).1 = (equivCh
   rw [ofChar_equivChar, ← CG.twist_ofChar, ofChar_equivChar]
   rfl
 
-theorem tw_tw (σ σ' : CGu E 1) : (π.tw σ).tw σ' = π.tw (σ.tw σ') :=
-  Subtype.ext ((π.1.twist_mul _ _).symm.trans (congrArg π.1.twist (equivChar_tw σ σ').symm))
-
 instance : Inhabited (CGu E 1) := ⟨(equivChar E).symm ⟨1, isUnitary_one⟩⟩
 
 instance : Nontrivial (CGu E 1) := by
@@ -240,21 +211,7 @@ instance : Inhabited (CGu E 0) :=
 
 end CGu
 
-theorem exists_not_isUnitary : ∃ σ : CG E 1, ¬ σ.IsUnitary :=
-  ⟨_, (default : CGu E 1).2.not_twist_absPow le_rfl
-    (ν := ⟨GlobalTheory.Mem.Chr.CharModel.absHom E 1, (GlobalTheory.Mem.Chr.CharModel.absChar E 1).2⟩)
-    (GlobalTheory.Mem.Chr.CharModel.absChar_isAbsPow (F := E) 1) one_ne_zero⟩
-
 abbrev HostCGu {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (a : ℕ) : Type :=
   haveI := host_isCMField H; CGu H.E a
-
-example (π : CGu E 2) (χ : {χ : HChar E // χ.IsUnitary}) : (π.twist χ).centChar.1 = π.centChar.1 * χ.1 * χ.1 := by
-  rw [CGu.centChar_twist, sq, mul_assoc]
-
-example (τ : E →+* ℂ) : (default : CGu E 1).IsRegAlg ∧ (default : CGu E 1).infChar τ = {0} :=
-  ⟨(CG.isRegAlg_ofChar 1).2 fun τ => ⟨0, by simp [CG.expo_one]⟩, by rw [← CG.expo_one τ]; exact CG.infChar_ofChar 1 τ⟩
-
-example {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) : Nonempty (HostCGu H 1 ≃ {χ : HChar H.E // χ.IsUnitary}) :=
-  haveI := host_isCMField H; ⟨CGu.equivChar H.E⟩
 
 end GlobalTheory.CuspRep

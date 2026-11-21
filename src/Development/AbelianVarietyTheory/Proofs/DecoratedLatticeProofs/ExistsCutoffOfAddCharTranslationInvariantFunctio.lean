@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierTransformInversionLocalFieldPi
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSchwartzBruhatConvolutionLocalFieldPower
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegralScaledBoxPiSupersetOfIsCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFinsetIntegralScaledBoxPiCosetRepsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SumIntegralScaledBoxPiCosetRepsShiftInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralBoxInvariantEqMeasureRealMulSumRepsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFinsetIntegralScaledBoxPiCosetReps
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SumIntegralScaledBoxPiCosetRepsShiftInvariant
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralBoxInvariantEqMeasureRealMulSumReps
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitWeil.FourierPi
 open scoped Topology
 
@@ -53,7 +53,7 @@ theorem sum_char {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) {n : 
     simp
   · rw [Set.indicator_of_notMem hys, zero_mul]
     obtain ⟨a, ha, hne⟩ := exists_dot_ne_one h s hys
-    have key := GlobalTheory.T.sum_integralScaledBoxPi_coset_reps_shift_invariant k n (c * R⁻¹) (c * s⁻¹) S hS hU (fun b => (ψ (b ⬝ᵥ y) : ℂ))
+    have key := _root_.GlobalTheory.CosetSumShift.sum_shift k n (c * R⁻¹) (c * s⁻¹) S hS hU (fun b => (ψ (b ⬝ᵥ y) : ℂ))
       (fun t ht z => by
         rw [add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, dot_eq_one h R ht hy,
           Circle.coe_one, mul_one]) a ha
@@ -72,7 +72,7 @@ theorem exists_cutoff_of_char_invariant : ∀ (k : Type) [Field k] [ValuativeRel
   have hvr : valuation k ((c * R⁻¹ : kˣ) : k) ≤ valuation k ((c * s⁻¹ : kˣ) : k) := by
     simp only [Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]
     exact mul_le_mul' le_rfl (inv_anti₀ (by simp [zero_lt_iff]) hsR)
-  obtain ⟨S, hS, hU⟩ := GlobalTheory.T.exists_finset_integralScaledBoxPi_coset_reps k I₁ (c * R⁻¹) (c * s⁻¹) hvr
+  obtain ⟨S, hS, hU⟩ := _root_.GlobalTheory.BoxReps.exists_finset_box_reps k I₁ (c * R⁻¹) (c * s⁻¹) hvr
   have hmem : ∀ b : I₁ → k,
       (fun x : (I₀ → k) × (I₁ → k) × (I₂ → k) => (ψ (b ⬝ᵥ x.2.1) : ℂ) * Φ.1 x) ∈
         SB ((I₀ → k) × (I₁ → k) × (I₂ → k)) := fun b => by

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsCoprimeZpow
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleLatticeTorsionHom
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijectiveOverAlgClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClopenOfSpecializesIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateSimilitudeIffOfSpecializesGeometricPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateSimilitudeIffOfSpecializesGeometricPoints
 
 noncomputable section
 
@@ -113,7 +113,7 @@ theorem exists_liftScheme : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type
       (x' : Sp k' ⟶ Z.left) (u : Sp k) (u' : Sp k'), x'.base u' ⤳ x.base u →
       (TateAt o N' (x ≫ Z.hom) (fun a => (Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ et a) ↔
         TateAt o N' (x' ≫ Z.hom) (fun a => (Over.homMk x' rfl : Over.mk (x' ≫ Z.hom) ⟶ Z) ≫ et a)) :=
-    fun x x' u u' h => GlobalTheory.T.tateSimilitude_iff_of_specializes_geometric_points p D R b N N' hc S s o Z et eadd eker elin x x' u u' h
+    fun x x' u u' h => _root_.GlobalTheory.HTSpecTate.tateIsoO_iff_of_specializes p D R b N N' hc S s o Z et eadd eker elin x x' u u' h
   let U : Set Z.left := {z | ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (x : Sp k ⟶ Z.left),
     z ∈ Set.range x.base ∧
       TateAt o N' (x ≫ Z.hom) (fun a => (Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ et a)}

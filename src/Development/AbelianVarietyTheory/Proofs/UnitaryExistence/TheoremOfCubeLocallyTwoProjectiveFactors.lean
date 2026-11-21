@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsKerI
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.NonemptyPerfectSectionsComplexOfSmoothProj
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsProjByOfIsPullback
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LineBundleTrivialBasicOpenOfTrivialFibreProductStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LineBundleTrivialBasicOpenOfTrivialFibreProduct
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsProjByBaseChange
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.BijectiveAppTopBaseChange
 
@@ -206,7 +206,7 @@ theorem triv_locally_of_faces :
     have pf := GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy R _ _ sm pj
     refine ⟨_, q, (B ⊗ C).hom, hq,
       GlobalTheory.TrivLocus.isClosed_trivLocus R _ _ _ hN (pf _ hN) (pf _ (isLB_pw hN _)) pr gi,
-      fun F _ g W π f' => GlobalTheory.T.lineBundle_trivial_basicOpen_of_trivial_fibre_product R B C x₁ y₁ inferInstance inferInstance pB pC
+      fun F _ g W π f' => _root_.GlobalTheory.Exist.ProdOpen.triv_basicOpen_of_triv_fibre_prod R B C x₁ y₁ inferInstance inferInstance pB pC
         (bijective_appTop_baseChange X x₀ pX iX hB) (bijective_appTop_baseChange Y y₀ pY iY hC)
         (bijective_appTop_baseChange (X ⊗ Y) (lift x₀ y₀) prXY giXY hm) _ hN (pf _ hN) ?_ ?_ F g W π f'⟩
     · rw [triv_pull_comp_iff]

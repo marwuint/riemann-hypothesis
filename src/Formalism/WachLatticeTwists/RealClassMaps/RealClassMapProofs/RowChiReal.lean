@@ -1,6 +1,10 @@
 import Formalism.WachLatticeTwists.RealClassMaps.Statement
-import Formalism.WachLatticeTwists.ShapeRowIsomorphisms.Imports
-import Formalism.WachLatticeTwists.CupProductVanishing.Imports
+import Formalism.WachLatticeTwists.ShapeRowIsomorphisms.ShapeRowProofs.LocallyConstantH1Eq
+import Formalism.WachLatticeTwists.ShapeRowIsomorphisms.ShapeRowProofs.BkInRow
+import Formalism.WachLatticeTwists.ShapeRowIsomorphisms.ShapeRowProofs.Clause5Row
+import Formalism.WachLatticeTwists.CupProductVanishing.CupProductProofs.Clause4GK
+import Formalism.WachLatticeTwists.CupProductVanishing.CupProductProofs.CoboundaryTrivialActionZero
+import Formalism.WachLatticeTwists.CupProductVanishing.CupProductProofs.H2MapInjectiveStatement
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
 
@@ -46,21 +50,5 @@ theorem rowRhoReal : StatRowRhoReal := by
     · exact clause4GK p K O A T' _ r χ E (Aw.decompositionSubgroup Ek) ε hK hO i (hεD ▸ hcD) hA
     · exact clause5Row O VT VT' A T' _ M r χ (Aw.decompositionSubgroup Ek) ε T₁ T₂ ρ₁ ρ₂ π γ
         (withInv D inv.toLinearMap invF.toLinearMap) u hu v hε hD.contT hπ hv hγ hk C₁ c3'
-
-set_option maxHeartbeats 1000000 in
-theorem rowChiReal : StatRowChiReal := by
-  intro p _ O _ _ _ _ _ hinj Ek Ω _ _ _ _ _ Aw hp pl hpl A T' _ _ _ _ M _ _ _ _ r χ E ε e hcyc hM hact F hF1 hF0
-    uu ww s m d U hTB
-  obtain ⟨sh1, sh0⟩ := shapeDec p O hinj Ek Ω Aw hp pl hpl A T' M r χ ε e hcyc hM hact
-  refine ⟨?_, hTB, ?_⟩
-  · rcases Nat.eq_zero_or_pos e with he | he
-    · rw [hF0 he]; exact inf_le_left
-    · rw [hF1 he]; exact bot_le
-  · rcases Nat.eq_zero_or_pos e with he | he
-    · have := sh0 he
-      rw [hF0 he]
-      unfold QuotShape at this ⊢
-      rwa [Submodule.comap_inf, Submodule.comap_subtype_self, top_inf_eq]
-    · rw [hF1 he]; exact sh1 he
 
 end Formalism.RepresentationBoundsCohomology.FIN

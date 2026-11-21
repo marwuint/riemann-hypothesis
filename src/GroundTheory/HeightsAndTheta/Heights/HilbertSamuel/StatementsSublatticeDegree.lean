@@ -39,8 +39,6 @@ instance : DiscreteTopology (imageLattice φ1) := by
 
 instance : IsZLattice ℝ (imageLattice φ1) := isZLattice_of_eq imageLattice_φ1
 
-def g1 : lat1 := ⟨b1 0, Submodule.subset_span ⟨0, rfl⟩⟩
-
 end SublatticeDegree
 
 end

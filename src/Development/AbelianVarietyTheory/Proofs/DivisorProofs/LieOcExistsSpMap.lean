@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieRankAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedOfLocalIdealPointPropertyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedOfLocalIdealPointProperty
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorLieConditionOfBasicOpenCoverStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzLieConditionLocallyCutOutByIdealStatement
 
@@ -89,7 +90,7 @@ theorem lieHer_closed (b : Base D R) (s : S ⟶ Sp R) (A : Over S) [GrpObj A] [I
         rw [RingHom.id_comp, ← RingHom.comp_assoc, hlift, RingHom.comp_assoc]
       rw [e1, e2] at h
       exact h
-  obtain ⟨Z, i, hi, hZ⟩ := GlobalTheory.T.isClosed_of_local_ideal_point_property S P her loc (fun z => by
+  obtain ⟨Z, i, hi, hZ⟩ := _root_.GlobalTheory.PtClosed.closed_of_points S P her loc (fun z => by
     obtain ⟨U, hU, hz, K, hK⟩ := GlobalTheory.T.kottwitzLieCondition_locally_cut_out_by_ideal p D R b S s A hA act z
     refine ⟨U, hU, hz, K, fun R' _ f => ?_⟩
     obtain ⟨β, hβ⟩ := lieOc_exists_spMap (spMap f ≫ hU.fromSpec ≫ s)

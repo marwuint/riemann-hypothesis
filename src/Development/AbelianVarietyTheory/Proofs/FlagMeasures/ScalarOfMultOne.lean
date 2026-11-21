@@ -149,14 +149,4 @@ lemma URep_K {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProdu
   exact ⟨⟨h1, fun a ha b hb => hm a (K_UJ ha) b (K_UJ hb)⟩, fun g hg v => hi g (K_UJ hg) v,
     fun v => (hc v).mono (fun g hg => K_UJ hg)⟩
 
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
-lemma smooth_cont {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (h : SmoothOnG ε f) :
-    ContinuousOn f (UJset ε) := by
-  intro g₀ hg₀
-  obtain ⟨U, F, hU, hgU, hF, hfF⟩ := h g₀ hg₀
-  have hFc : ContinuousAt F g₀ := hF.continuousOn.continuousAt (hU.mem_nhds hgU)
-  refine hFc.continuousWithinAt.congr_of_eventuallyEq ?_ (hfF g₀ hgU hg₀)
-  filter_upwards [inter_mem_nhdsWithin (UJset ε) (hU.mem_nhds hgU)] with g hg
-  exact hfF g hg.2 hg.1
-
 end GlobalTheory.Dec.FormF

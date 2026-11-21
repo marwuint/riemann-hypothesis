@@ -129,7 +129,7 @@ theorem embProj_holds : EmbProj := by
       exact hFi (e.symm y) v
     · ext v : 1
       exact congrArg Subtype.val (DFunLike.congr_fun h0 v :)
-  have htop := (GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor _ _ _ _ _ π.rep s _ _ π.isIrreducible_rep hirr hirr hc f hf).1
+  have htop := (_root_.GlobalTheory.CuspRep.CompUniq.isotypic _ _ _ _ _ π.rep s _ _ π.isIrreducible_rep hirr hirr hc f hf).1
   have hUS : U ≤ sSup S := by
     intro φ hφ
     have h1 : (⟨φ, hφ⟩ : U) ∈ (⨆ f : (smallRep (unitaryIncl a) κ).IntertwiningMap (π.rep.comp s), LinearMap.range f.toLinearMap) :=

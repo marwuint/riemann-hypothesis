@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitStabilizerMassS
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PrimitiveSublatticeMeanCountBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalMassLatticesOrbitsSubspacesSharpExponentStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalMassIntegralLatticesBoundedDetLineStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardHermitianLatticesGluedAlongLineStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardHermitianLatticesGluedAlongLine
 
 open NumberField Matrix GlobalTheory.Mass Formalism.HermitianLatticesTheory
 open scoped ENNReal Classical
@@ -65,9 +65,9 @@ theorem orbMass_stabilizer_le (K V : Type) [Field K] [NumberField K] [StarRing K
     rw [discN_smul]
     exact ⟨isIntLat_smul _ g M hM.1, hM.2⟩
   have fA : ∀ M ∈ A, Finite (MulAction.stabilizer (isom (hRes h U)) M) := fun M hM =>
-    (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K U (hRes h U) hK hs1 hp1 M hM.1.1).2.2.2.1 M hM.1.1
+    (_root_.GlobalTheory.Mass.GenusOrb.main K U (hRes h U) hK hs1 hp1 M hM.1.1).2.2.2.1 M hM.1.1
   have fB : ∀ M ∈ B, Finite (MulAction.stabilizer (isom (hRes h (perp h U))) M) := fun M hM =>
-    (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K (perp h U) (hRes h (perp h U)) hK hs2 hp2 M ((memB M).1 hM).1.1).2.2.2.1 M
+    (_root_.GlobalTheory.Mass.GenusOrb.main K (perp h U) (hRes h (perp h U)) hK hs2 hp2 M ((memB M).1 hM).1.1).2.2.2.1 M
       ((memB M).1 hM).1.1
   have sX : Stable (MulAction.stabilizer (isom h) U) X := by
     rintro γ L ⟨h1, h2, h3, h5, h4⟩
@@ -109,8 +109,8 @@ theorem orbMass_stabilizer_le (K V : Type) [Field K] [NumberField K] [StarRing K
   have e2 := GlobalTheory.T.orbitStabilizerMass_prod_eq_mul (MulAction.stabilizer (isom h) U) _ _ _ _ φ A B hact sA sB fA fB
   have e3 : orbMass (isom (hRes h (perp h U))) B ≤ ∑ n' ∈ Finset.Icc 1 (n * N₀),
       orbMass (isom (hRes h (perp h U))) (latsDisc (R := 𝓞 K) (hRes h (perp h U)) n') :=
-    (GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (isom (hRes h (perp h U))) (Submodule (𝓞 K) (perp h U))).2.2.1 ℕ _ B _ _ subset_rfl
-  obtain ⟨m1, m2, -⟩ := GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (MulAction.stabilizer (isom h) U)
+    (_root_.GlobalTheory.Mass.OrbMono.main (isom (hRes h (perp h U))) (Submodule (𝓞 K) (perp h U))).2.2.1 ℕ _ B _ _ subset_rfl
+  obtain ⟨m1, m2, -⟩ := _root_.GlobalTheory.Mass.OrbMono.main (MulAction.stabilizer (isom h) U)
     (Submodule (𝓞 K) U × Submodule (𝓞 K) (perp h U))
   rw [e1]
   refine (m1 _ (A ×ˢ B) _
@@ -118,7 +118,7 @@ theorem orbMass_stabilizer_le (K V : Type) [Field K] [NumberField K] [StarRing K
     subset_rfl ?_).trans ?_
   · rintro ⟨M, M'⟩ ⟨h1, h2⟩
     obtain ⟨b1, -, -⟩ := (memB M').1 h2
-    have cnt := GlobalTheory.T.card_hermitianLattices_glued_along_line K V h hK hs hp U M M' T hT dW h1.1 b1
+    have cnt := _root_.GlobalTheory.Mass.LineGlue.main K V h hK hs hp U M M' T hT dW h1.1 b1
     have sub : X ∩ (fun L : Submodule (𝓞 K) V => (latIn U L, latIn (perp h U) L)) ⁻¹' {(M, M')} ⊆
         {L : Submodule (𝓞 K) V | IsIntLat h L ∧ (∀ x ∈ dual h L, T • x ∈ L) ∧ latIn U L = M ∧
           latIn (perp h U) L = M'} :=
@@ -140,8 +140,8 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
   have m2 := mass_nonneg h₂ I₂
   have h1 := orbSum_encard_le (isom h) (Submodule (𝓞 K) V) (Submodule K V) 𝒢
     (fun L => primSp h L j (de ^ 2))
-    (fun g L U => (GlobalTheory.T.primitive_sublattices_move_with_isometries K V h hK hs hnd g L U j (de ^ 2)).1) hst
-    (fun L hL => (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp L (h𝒢 L hL).1.1).2.2.2.1 L (h𝒢 L hL).1.1) S
+    (fun g L U => (_root_.GlobalTheory.Mass.PrimMove.main K V h hK hs hnd g L U j (de ^ 2)).1) hst
+    (fun L hL => (_root_.GlobalTheory.Mass.GenusOrb.main K V h hK hs hp L (h𝒢 L hL).1.1).2.2.2.1 L (h𝒢 L hL).1.1) S
     (fun L hL U hU => hcov U hU.1 ⟨latIn U L, isIntLat_latIn h (h𝒢 L hL).1 U, hU.2⟩)
   refine h1.trans ?_
   have d0 : (0 : ℝ) < de := by exact_mod_cast hde
@@ -155,7 +155,7 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
     have dW : Module.finrank K (perp h U) = 1 := by
       have := Submodule.finrank_add_eq_of_isCompl hc
       omega
-    have a1 := (GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (MulAction.stabilizer (isom h) U) (Submodule (𝓞 K) V)).1
+    have a1 := (_root_.GlobalTheory.Mass.OrbMono.main (MulAction.stabilizer (isom h) U) (Submodule (𝓞 K) V)).1
       {L | L ∈ 𝒢 ∧ U ∈ primSp h L j (de ^ 2)}
       {L : Submodule (𝓞 K) V | IsIntLat h L ∧ discN h L = t ^ 2 ∧ (∃ t : Finset V, t.card ≤ 1 ∧
         dual h L = L ⊔ Submodule.span (𝓞 K) (t : Set _)) ∧ (∀ x ∈ dual h L, T • x ∈ L) ∧

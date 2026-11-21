@@ -416,40 +416,6 @@ lemma Eab_perm (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (a b : Fin n) (f :
     simp [Matrix.single_apply, s.injective.eq_iff]
   simp only [Formalism.REAL.Eab, Formalism.REAL.Ec, rd_submatrix_perm, cpart1_submatrix_perm, cpart2_submatrix_perm, hsg]
 
-lemma Eword_perm (ε : Fin n → Bool) (s : Equiv.Perm (Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : List (Fin n × Fin n)) :
-    Eword ε (w.map fun p => (s p.1, s p.2)) (fun x => f (x.submatrix s s)) =
-      fun g => Eword (ε ∘ s) w f (g.submatrix s s) := by
-  induction w with
-  | nil => rfl
-  | cons p w ih =>
-    funext g
-    simp only [List.map_cons, Formalism.REAL.Eword]
-    rw [ih]
-    exact Eab_perm ε s p.1 p.2 _ g
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
-lemma isZEigen_perm {ε : Fin n → Bool} (s : Equiv.Perm (Fin n)) {χ : Fin n → ℂ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
-    (h : IsZEigen (ε ∘ s) χ f) : IsZEigen ε χ (fun x => f (x.submatrix s s)) := by
-  obtain ⟨hsm, hev⟩ := h
-  have hc : ∀ {k : WithTop ℕ∞}, ContDiff ℝ k (fun x : Matrix (Fin n) (Fin n) ℂ => x.submatrix s s) :=
-    contDiff_pi.2 fun i => contDiff_pi.2 fun j => contDiff_apply_apply ℝ ℂ (s i) (s j)
-  refine ⟨?_, ?_⟩
-  · intro g₀ hg₀
-    obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hsm (g₀.submatrix s s) (UJ_perm s hg₀)
-    exact ⟨(fun x : Matrix (Fin n) (Fin n) ℂ => x.submatrix s s) ⁻¹' U, fun x => F (x.submatrix s s),
-      hU.preimage (hc (k := 0)).continuous, hgU, hF.comp hc.contDiffOn (fun x hx => hx),
-      fun g hg hgu => hfF _ hg (UJ_perm s hgu)⟩
-  · intro m g hg
-    have hg' : g.submatrix s s ∈ UJset (ε ∘ s) := UJ_perm s hg
-    have key : gelf ε m (fun x => f (x.submatrix s s)) g = gelf (ε ∘ s) m f (g.submatrix s s) := by
-      unfold gelf
-      symm
-      refine Fintype.sum_equiv (Equiv.piCongrRight fun _ => s) _ _ (fun a => ?_)
-      have hw : cycWord ((Equiv.piCongrRight fun _ => s) a) = (cycWord a).map fun p => (s p.1, s p.2) := by
-        simp [cycWord, List.map_ofFn, Function.comp_def]
-      rw [hw, Eword_perm]
-    rw [key, hev m _ hg']
-
 theorem trWord : ∀ (n : ℕ) (ε : Fin n → Bool) (χ : Fin n → ℂ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ), SmoothOnG ε f → IsZEigen ε χ f → ∀ m : ℕ, ∀ g ∈ UJset ε, ∑ a : Fin (m + 1) → Fin n, Eword ε ((cycWord a).map Prod.swap) f g = (-1) ^ (m + 1) * gelfVal (fun a => -χ a) (m + 1) * f g := by
   intro n ε χ f hf hz m g hg
   have hT := trace_transpose_pow (GlobalTheory.CapelliCentral.eabEnd ε ℂ) GlobalTheory.CapelliCentral.eabEnd_glRel χ (GlobalTheory.CapelliCentral.mk f hz.1) (fun k => gelf_mk hz k) (m + 1)

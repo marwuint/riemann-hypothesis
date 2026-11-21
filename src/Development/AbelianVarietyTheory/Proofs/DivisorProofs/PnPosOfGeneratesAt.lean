@@ -1,8 +1,33 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualRef
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueLiesUnder
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfWeightLocPot
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PotentialChartContDiffAtTwo
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLineFubiniStudyFacts
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShift
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LogInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.SNCAtlas
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.GreenSt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLLocalStatement
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AtlasIndep
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
+import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import Development.AbelianVarietyTheory.Definitions.Divisors.FirstChernLeviEqConstant
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
+
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.CxPts
 
@@ -40,28 +65,6 @@ end Atlas
 
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F}
 
-theorem isAlgAtlas_tAtlas {e : ℕ} {M : Man e} (I : ManIs M Y) (a : Fin (M.n + 1)) :
-    IsAlgAtlas (tAtlas (M.A a) (I.pt a)) := fun j => by
-  obtain ⟨c, hc⟩ := I.alg a j
-  refine ⟨c, OpenPartialHomeomorph.ext _ _ (fun x => ?_) (fun x => ?_) ?_⟩
-  · change (M.A a).chart j ((I.pt a).symm x) = _
-    rw [hc]; simp
-  · change I.pt a (((M.A a).chart j).symm x) = _
-    rw [hc]; simp
-  · change (I.pt a).symm ⁻¹' ((M.A a).chart j).source = _
-    rw [hc]; ext x; simp
-
-def readFn {e : ℕ} {M : Man e} (I : ManIs M Y) (f : M.Fun) : ∀ σ : F →+* ℂ, Pts Y σ → ℝ :=
-  I.ε.piCongrLeft (fun σ => Pts Y σ → ℝ) fun a y => f a ((I.pt a).symm y)
-
-theorem readFn_apply {e : ℕ} {M : Man e} (I : ManIs M Y) (f : M.Fun) (a : Fin (M.n + 1)) (x : M.X a) :
-    readFn I f (I.ε a) (I.pt a x) = f a x := by
-  rw [readFn, Equiv.piCongrLeft_apply_apply, Homeomorph.symm_apply_apply]
-
-theorem readFn_apply' {e : ℕ} {M : Man e} (I : ManIs M Y) (f : M.Fun) (a : Fin (M.n + 1)) (y : Pts Y (I.ε a)) :
-    readFn I f (I.ε a) y = f a ((I.pt a).symm y) := by
-  rw [readFn, Equiv.piCongrLeft_apply_apply]
-
 section Met
 
 variable {σ : F →+* ℂ} {Δ : Y.Dv}
@@ -95,13 +98,6 @@ def metWeight (Δ : Y.Dv) (m : C.Met Y σ Δ) (hm : ∀ y, PosAt m y) : Weight Y
 
 theorem metWeight_φ (m : C.Met Y σ Δ) (hm : ∀ y, PosAt m y) (c : (toLB Δ).ι) (y : Pts Y σ) :
     (metWeight Δ m hm).φ c y = -Real.log (C.pn Y σ Δ m (C.cx Y σ (c.1.2 : Y.Fn)⁻¹) y) := rfl
-
-theorem IsPot.pullback_symm {X : Type} [TopologicalSpace X] {m : C.Met Y σ Δ} {h : X ≃ₜ Pts Y σ} {Q : LocPot X}
-    (hQ : IsPot h m Q) : IsPot id m (Q.pullback h.symm h.symm.continuous) := fun x => by
-  obtain ⟨f, hf⟩ := hQ (h.symm x)
-  refine ⟨f, fun y hy => ?_⟩
-  have := hf (h.symm y) hy
-  simpa [LocPot.pullback] using this
 
 end Met
 

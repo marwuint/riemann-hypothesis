@@ -86,13 +86,6 @@ namespace GlobalTheory.JSLog
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
-theorem hasSat_sat {a : ℕ} {π : CG E a} {T : Finset (HeightOneSpectrum (𝓞 E))} (h : UnrOutside T π)
-    {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ T) : π.HasSat w (sat π w) := by
-  have hex : ∃ B, π.HasSat w B := h w hw
-  unfold sat
-  rw [dif_pos hex]
-  exact hex.choose_spec
-
 theorem sat_zero (π : CG E 0) (w : HeightOneSpectrum (𝓞 E)) : sat π w = 0 := by
   unfold sat
   split_ifs with h

@@ -336,31 +336,6 @@ def RowStepsC : Prop :=
 
 def TRExistsC : Prop := ∀ (D : D7) (X : HidaSetting D), X.LevelSubgroupCharacter → ∃ TR : TypedRed X, ∀ v, TR.psi0 v ≠ 1
 
-def FundNC : Prop :=
-  ∀ (D : D7) (X : HidaSetting D), X.LevelSubgroupCharacter → ∀ u : D.what₂.Word, ∃ FN : Set X.B.I.Ginf, IsSFund X.B.I (NOinf X u) FN
-
-def LocC : Prop :=
-  ∀ D : D7, ∃ (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp)
-    (M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-    (∀ p, Formalism.MainNotions.S.LocalSplitGroups.Agree δ M p) ∧
-    ∀ (p : Formalism.MainNotions.S.LocalSplitGroups.PlF D) (i : Fin 2), ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal →
-      δ p = (D.s.atP p).ιF (((D.host.g 0 : ℕ) : D.host.F) * ((D.host.g 1 : ℕ) : D.host.F) /
-        ((D.host.g i : ℕ) : D.host.F))
-
-theorem fullExists_of (h1 : TRExistsC) (hR : RowStepsC) (h3 : FundNC) (h4 : LocC) : FullExists := by
-  intro D X hK
-  obtain ⟨TR, hTR⟩ := h1 D X hK
-  have h2 : ∀ u : D.what₂.Word, ∃ what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V), IsRowReps D (X.Fu u) what₂ ∧
-      (∀ Λ ∈ what₂, Formalism.L2.SG.Saturated.IsSplitRow D (X.Fu u) Λ) ∧ ∃ cs : ColSys X u what₂, ColReps hK cs := by
-    intro u
-    obtain ⟨a0, a1, a2, a3, a4, a5, a6⟩ := hR D X hK u
-    exact rowsCols_of X u hK a0 a1 a2 a3 a4 a5 a6
-  choose what₂ hrows hsplit cs hcs using h2
-  choose Dt hDt using fun u => repsExist X u
-  choose FN hFN using h3 D X hK
-  obtain ⟨δ, M, hag, hpin⟩ := h4 D
-  exact ⟨⟨hK, TR, hTR, what₂, hrows, hsplit, cs, hcs, Dt, hDt, FN, hFN, δ, M, hag, hpin⟩⟩
-
 section R0
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
@@ -514,9 +489,6 @@ theorem rowStepsC_of (h : RowStepsC') : RowStepsC := fun D X hK u =>
 
 theorem volPosC_of' (h2 : NOCountC) (h3 : NOCofiniteC) (h4 : HFiniteC) : VolPosC :=
   volPosC_of noSubC h2 h3 h4
-
-theorem fullExists_of' (h1 : TRExistsC) (hR : RowStepsC') (h3 : FundNC) (h4 : LocC) : FullExists :=
-  fullExists_of h1 (rowStepsC_of hR) h3 h4
 
 section R6a
 
@@ -732,15 +704,6 @@ theorem noCountC : NOCountC := fun _ X u => noCount X u
 
 theorem volPosC_of'' (h3 : NOCofiniteC) (h4 : HFiniteC) : VolPosC := volPosC_of' noCountC h3 h4
 
-def RowStepsC'' : Prop :=
-  ∀ (D : D7) (X : HidaSetting D) (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word),
-    LatRowLat X u ∧ LatSurj X u ∧ LatInj X u ∧ ClassFin X u hK
-
-theorem fullExists_of'' (h1 : TRExistsC) (hR : RowStepsC'') (h4 : LocC) : FullExists :=
-  fullExists_of' h1 (fun D X hK u =>
-    let ⟨a2, a3, a4, a5⟩ := hR D X hK u
-    ⟨latSub X u, latRow_of X u a2, a3, a4, a5, gamIsom_of X (inclInj_holds X) u⟩) fundNC_holds h4
-
 theorem classFin_of {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
     (h : Formalism.L2.SG.PoincareInHH.Cut.ClassFin X u hK) : ClassFin X u hK := by
   haveI : Finite (Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u hK)) := h
@@ -754,10 +717,5 @@ theorem classFin_of {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.Le
 def LatticeRowBijectionClassFinite : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word),
     LatRowLat X u ∧ LatSurj X u ∧ LatInj X u ∧ Formalism.L2.SG.PoincareInHH.Cut.ClassFin X u hK
-
-theorem full_exists_of_lattice_steps (h1 : TRExistsC) (hR : LatticeRowBijectionClassFinite) (h4 : LocC) : FullExists :=
-  fullExists_of'' h1 (fun D X hK u =>
-    let ⟨a2, a3, a4, a5⟩ := hR D X hK u
-    ⟨a2, a3, a4, classFin_of X u hK a5⟩) h4
 
 end Formalism.L2.SG.Pf

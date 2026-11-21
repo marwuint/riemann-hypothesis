@@ -106,66 +106,6 @@ def ZeroCaseDD : Prop :=
     ∀ v ∈ DDsp σ w0, ∀ x ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ,
       be z c π σ μW μN x v = 0
 
-def DDFormOne : Prop :=
-  Inputs → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
-    (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
-    (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Side k r ε lam h σ w0 z Formalism.QuantumDeterminants.cStd u π μW μN μG νq →
-    DDForm z Formalism.QuantumDeterminants.cStd π μW μN μG νq σ w0
-
-def AtFormOne : Prop :=
-  Inputs → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
-    (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
-    (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Side k r ε lam h σ w0 z Formalism.QuantumDeterminants.cStd u π μW μN μG νq →
-    AtForm z Formalism.QuantumDeterminants.cStd π μW μN μG νq σ
-
-def AtFormAdmOne : Prop :=
-  Inputs → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
-    (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
-    (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Side k r ε lam h σ w0 z Formalism.QuantumDeterminants.cStd u π μW μN μG νq →
-    AtFormAdm z Formalism.QuantumDeterminants.cStd π μW μN μG νq σ w0
-
-def OrbConvDD : Prop :=
-  Inputs → ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
-    [FiniteDimensional ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
-    [FiniteDimensional ℂ Wq] (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq)
-    (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
-    (u u' : Fin k → ℝ) (νq νq' : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Side k r ε lam h σ w0 D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq →
-    Side k r ε lam h σ w0 D.z' Formalism.QuantumDeterminants.cStd u' D.π' D.μW' D.μN D.μG νq' →
-    ∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
-      (∀ γ ∈ Formalism.FourierDecayAlt.JF.Om k r D.z D.z',
-        Integrable (fun p => ⟪x, σ (Formalism.FourierDecayAlt.B.sgs p γ) y⟫_ℂ) D.μSS) ∧
-      ∀ K : Set (Mx k r), IsCompact K → K ⊆ Formalism.FourierDecayAlt.JF.Om k r D.z D.z' →
-        ∃ b : Formalism.FourierDecayAlt.B.SS k r → ℝ, Integrable b D.μSS ∧
-          ∀ γ ∈ K, ∀ᵐ p ∂D.μSS, ‖⟪x, σ (Formalism.FourierDecayAlt.B.sgs p γ) y⟫_ℂ‖ ≤ b p
-
-def JFDD : Prop :=
-  Inputs → SchurH → ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
-    [FiniteDimensional ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
-    [FiniteDimensional ℂ Wq] (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq)
-    (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
-    (u u' : Fin k → ℝ) (νq νq' : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Side k r ε lam h σ w0 D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq →
-    Side k r ε lam h σ w0 D.z' Formalism.QuantumDeterminants.cStd u' D.π' D.μW' D.μN D.μG νq' →
-    ∀ (l : H → Wp) (l' : H → Wq),
-      (∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
-        be D.z Formalism.QuantumDeterminants.cStd D.π σ D.μW D.μN x y = (innerSL ℂ (l y)).smulRight (l x)) →
-      (∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
-        be D.z' Formalism.QuantumDeterminants.cStd D.π' σ D.μW' D.μN x y = (innerSL ℂ (l' y)).smulRight (l' x)) →
-      ∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0, ∀ X0 : Wq →L[ℂ] Wp, ∃ cc : ℂ, ∀ γ ∈ Formalism.FourierDecayAlt.JF.Om k r D.z D.z',
-        Formalism.FourierDecayAlt.B.JF D (fun g => ⟪x, σ g y⟫_ℂ • X0) γ = cc • Mop D.μG σ w0 l l' γ
-
 def BesselNonvanishingL2 : Prop :=
   Inputs → SchurH → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
@@ -180,35 +120,6 @@ def BesselNonvanishingL2 : Prop :=
         PI.BesselPeriodGGP.rconv μG (PI.BesselPeriodGGP.eFun μG σ w0) W x = W x) →
       0 < PI.BesselPeriodGGP.l2SG νq W → PI.BesselPeriodGGP.l2SG νq W < ⊤ →
       ∃ x ∈ DDsp σ w0, ∃ y ∈ DDsp σ w0, be z c π σ μW μN x y ≠ 0
-
-def DDFormOneOfSteps : Prop :=
-  PsiConst → SchurH → NormInv → GrowthS → GrowthG → DecDD → BeConv → NormIdSm → BeBessel → Shape → DDFormOne
-
-def AtFormOneOfSteps : Prop :=
-  SchurH → BeConv → NormIdSm → BeBessel → Shape → KFinForm → ZeroCase → AtFormOne
-
-def AtFormAdmOneOfSteps : Prop :=
-  SchurH → BeConv → NormIdSm → BeBessel → Shape → KFinForm → ZeroCase → ZeroCaseDD → AtFormAdmOne
-
-def JFDDOfSteps : Prop :=
-  NormInv → GrowthS → GrowthG → DecDD → BeConv → OrbConvDD → JFDD
-
-def Repro : Prop :=
-  Inputs → SchurH → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
-    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
-    (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
-    (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (u : Fin k → ℝ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)),
-    Side k r ε lam h σ w0 z c u π μW μN μG νq →
-    ∀ Bm : H → Wp, PI.BesselMapUniq.IsBesselMapSm (k := k) (r := r) z (Formalism.QuantumDeterminants.psi k r z c) σ π Bm →
-      (∀ x ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ, ∀ v ∈ DDsp σ w0,
-        be z c π σ μW μN x v = (innerSL ℂ (Bm v)).smulRight (Bm x)) →
-      ∀ x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r),
-        Integrable (fun y : Formalism.QuantumDeterminants.Mt k r =>
-          ((PI.BesselPeriodGGP.fdegH μG σ w0 : ℂ) * star ⟪w0, σ (Matrix.of y) w0⟫_ℂ) •
-            Bm (σ (x * Matrix.of y) w0)) μG ∧
-        ∫ y, ((PI.BesselPeriodGGP.fdegH μG σ w0 : ℂ) * star ⟪w0, σ (Matrix.of y) w0⟫_ℂ) •
-            Bm (σ (x * Matrix.of y) w0) ∂μG = Bm (σ x w0)
 
 def PhiReg : Prop :=
   Inputs → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
@@ -266,11 +177,6 @@ def QuadConv : Prop :=
             ((‖l (σ (Matrix.of zz) w0)‖₊ : ℝ≥0) : ℝ≥0∞) * ((‖l (σ (Matrix.of zz') w0)‖₊ : ℝ≥0) : ℝ≥0∞)
           ∂(muSof D.μW D.μN) ∂νq ∂νq < ⊤
 
-def ReproOfSteps : Prop := SchurH → NormInv → GrowthS → GrowthG → DecDD → BeConv → Repro
-
 def BesselNonvanishingReduction : Prop := SchurH → NormInv → GrowthS → GrowthG → DecDD → BeConv → BesselNonvanishingL2
-
-def MoreOfSteps : Prop :=
-  SchurH → NormIdSm → NormInv → GrowthS → GrowthG → DecDD → BeConv → OrbConvDD → (PhiReg ∧ OOConv ∧ QuadConv)
 
 end CompanionTheory.D.Upq.BesselFunctionalConstruction

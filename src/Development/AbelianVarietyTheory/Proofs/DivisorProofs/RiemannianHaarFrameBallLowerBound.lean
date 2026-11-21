@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PermMMulTranspose
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentHaarRealSUOfMap
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NonemptyCompactDualHaar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianLieMeasureFrameBoxGeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieHaarLeTwoMulTangentNormalizedHaarStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianLieMeasureFrameBoxGe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieHaarLeTwoMulTangentNormalizedHaar
 open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.AdLat GlobalTheory.UCls GlobalTheory.SUVol ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.CovTop.VolUp
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.StandardLattice Formalism.IndefR.Lev Formalism.IndefR.Datum GlobalTheory.AdelicScalar
 open scoped ENNReal
@@ -121,7 +121,7 @@ theorem riemHaar_frBall_ge : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
         riemHaar Ψ G x (frBall Ψ G x ε) := by
   intro E _ _ _ r Ψ G x hr hG hx
   obtain ⟨lam, hlam, hmap⟩ := exists_lam Ψ G x hx
-  obtain ⟨δ, hδ, hlow⟩ := GlobalTheory.T.lieHaar_le_two_mul_tangentNormalizedHaar E r Ψ G hG lam
+  obtain ⟨δ, hδ, hlow⟩ := _root_.GlobalTheory.CovTop.VolUp.LowDens.lam_le_two_mul_tangentHaar E r Ψ G hG lam
   obtain ⟨C, hC, hconj⟩ := exists_conj_bound Ψ x hx
   obtain ⟨δ', hδ', hexp⟩ := exists_exp_entry (Fin r)
   refine ⟨min 2 (min δ' (δ / C)), lt_min two_pos (lt_min hδ' (div_pos hδ hC)), fun ε hε hε₀ => ?_⟩
@@ -141,7 +141,7 @@ theorem riemHaar_frBall_ge : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   set s : Set (realLie Ψ G) := Subtype.val ⁻¹' S with hs
   have hsm : MeasurableSet s := measurable_subtype_coe hSm
   have h1 : ENNReal.ofReal ((ε / 2 / ((Ψ.card : ℝ) * (r : ℝ) ^ 2)) ^ (Ψ.card * (r ^ 2 - 1))) ≤ lam s := by
-    have := GlobalTheory.T.riemannianLieMeasure_frameBox_ge E r Ψ G x hr hG hx (ε / 2) (by positivity) (by linarith)
+    have := _root_.GlobalTheory.CovTop.VolUp.riemLie_frameBox_ge E r Ψ G x hr hG hx (ε / 2) (by positivity) (by linarith)
     rw [← hmap, Measure.map_apply measurable_subtype_coe hSm] at this
     exact this
   have hball : s ⊆ Metric.ball 0 δ := by

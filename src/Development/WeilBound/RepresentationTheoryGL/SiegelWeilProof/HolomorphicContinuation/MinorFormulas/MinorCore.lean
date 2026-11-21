@@ -114,6 +114,4 @@ theorem core : Core := by
     simp only [map_prod, map_sub, map_natCast]
     ring
 
-theorem core_of : MComm → RenInt → Core := fun _ _ => core
-
 end PositivityTheory.Rg.Sw.SP.Mi

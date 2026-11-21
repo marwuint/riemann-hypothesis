@@ -25,18 +25,25 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PChartSecGen
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PCutNonempty
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PFiniteSections
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PIdealTwistFamily
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PLocalizeBundle
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PNefExtendIso
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PNefGenericLocalize
+import Mathlib
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.LocalizeBundleSt
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.AlgebraMapMemChartRingLine
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.TwistAlg
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.LocalizeNefAboveSt
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.FiniteHZeroOfExact
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PQuotSectionsFinite
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PQuotTrans
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSnapperFinite
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSpecialModelPoint
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.BaseComap
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsBisSide
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsBisTail
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsFurtherLast
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepTwoPiece
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepTwoReduce
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PTildeShift
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsAmpleByFiniteMapOfFinite
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsGraphGenTwistBundleZero
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.Objects
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ZpowMemSubringOfInvMem
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsBis
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ChartRingOverOneBlockBase
@@ -44,28 +51,14 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.MemChartOfMemSecOve
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.OfPowRealises
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ProdNotMemPrimeOfForall
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsBisAlt
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.OfModelMulSecs
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.Fintype
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.FoldTensorToSubSystem
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PTwistTilde
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PAntisymPerturbation
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PFrameGraphGeneric
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PFrameImplicitGraph
+
 set_option maxSynthPendingDepth 1
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.model_point_exists_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelPoint.Statement :=
-  @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelPoint.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BlockGenOfModel.proof GroundTheory.Heights₂.Heights.AutoClose.block_generation_transfer_holds GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelOfBlockGen.proof
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.model_mul_sections_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelMulSecs.Statement :=
-  @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelMulSecs.proof GroundTheory.Heights₂.Heights.AutoClose.tensor_product_realises_holds GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BaseRealises.proof
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.special_model_point_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SpecialModelPoint.Statement :=
-  @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SpecialModelPoint.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.BlockGenOfModel.proof GroundTheory.Heights₂.Heights.AutoClose.block_generation_transfer_holds GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelOfBlockGen.proof
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.model_change_generated_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelChangeGen.Statement :=
-  @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelChangeGen.proof GroundTheory.Heights₂.Heights.AutoClose.model_twist_generated_holds
-
-theorem GroundTheory.Heights₂.Heights.AutoClose.model_twist_mul_sections_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelTwistMulSecs.Statement :=
-  @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelTwistMulSecs.proof GroundTheory.Heights₂.Heights.AutoClose.tensor_product_realises_holds
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.FrameGraphGeneric : GroundTheory.Heights₂.Heights.FrameGraphGeneric.Statement :=
   @GroundTheory.Heights₂.Heights.FrameGraphGeneric.proof GroundTheory.Heights₂.Heights.AutoClose.FrameJacobianGeneric GroundTheory.Heights₂.Heights.FrameImplicitGraph.proof

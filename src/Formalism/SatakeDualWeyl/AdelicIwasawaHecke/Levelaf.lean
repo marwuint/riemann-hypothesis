@@ -325,70 +325,6 @@ theorem levelaf_mem_range_of_integral (O : Subring L) (U : GL n L)
   simp only [bc, Units.coe_map]
   exact hA
 
-theorem levelaf_conj_integral (O : Subring L) (g : GL n L) (c : O)
-    (hg : (c : L) • (g : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range)
-    (hg' : (c : L) • ((g⁻¹ : GL n L) : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range)
-    (h : GL n O) (hh : redGL (n := n) (Ideal.span {c * c}) h = 1) :
-    ((g⁻¹ * bc (n := n) O.subtype h * g : GL n L) : Matrix n n L) ∈
-      (RingHom.mapMatrix (m := n) O.subtype).range := by
-  have hm : RingHom.mapMatrix (m := n) (Ideal.Quotient.mk (Ideal.span {c * c})) (h : Matrix n n O) =
-      RingHom.mapMatrix (m := n) (Ideal.Quotient.mk (Ideal.span {c * c})) 1 := by
-    rw [map_one]; exact congrArg Units.val hh
-  have hent : ∀ a b, (h : Matrix n n O) a b - (1 : Matrix n n O) a b ∈ Ideal.span {c * c} := by
-    intro a b
-    rw [← Ideal.Quotient.eq]
-    simpa only [RingHom.mapMatrix_apply, Matrix.map_apply] using congrFun (congrFun hm a) b
-  choose e he using fun a b => Ideal.mem_span_singleton'.1 (hent a b)
-  let E : Matrix n n O := Matrix.of e
-  have hL : ∀ a b, (((h : Matrix n n O) a b : O) : L) =
-      (1 : Matrix n n L) a b + (c : L) * (c : L) * ((e a b : O) : L) := by
-    intro a b
-    have h1 := he a b
-    rw [Matrix.one_apply] at h1 ⊢
-    split_ifs at h1 ⊢ with hab
-    · have := congrArg Subtype.val h1
-      push_cast at this
-      linear_combination -this
-    · have := congrArg Subtype.val h1
-      push_cast at this
-      linear_combination -this
-  have hkey : ((bc (n := n) O.subtype h : GL n L) : Matrix n n L) =
-      1 + ((c : L) * (c : L)) • RingHom.mapMatrix (m := n) O.subtype E := by
-    ext a b
-    simp only [bc, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe,
-      RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul,
-      E, Matrix.of_apply, Subring.coe_subtype]
-    exact hL a b
-  have hcalc : ((g⁻¹ * bc (n := n) O.subtype h * g : GL n L) : Matrix n n L) =
-      1 + ((c : L) • ((g⁻¹ : GL n L) : Matrix n n L)) * RingHom.mapMatrix (m := n) O.subtype E *
-        ((c : L) • (g : Matrix n n L)) := by
-    rw [Units.val_mul, Units.val_mul, hkey, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one,
-      ← Units.val_mul, inv_mul_cancel, Units.val_one]
-    congr 1
-    simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]
-  rw [hcalc]
-  exact add_mem (one_mem _) (mul_mem (mul_mem hg' ⟨E, rfl⟩) hg)
-
-theorem levelaf_princ_le_map_conj (O : Subring L) (g : GL n L) (c : O)
-    (hg : (c : L) • (g : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range)
-    (hg' : (c : L) • ((g⁻¹ : GL n L) : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range) :
-    princ (n := n) O.subtype (Ideal.span {c * c}) ≤
-      (bc (n := n) O.subtype).range.map (MulAut.conj g).toMonoidHom := by
-  intro k hk
-  simp only [princ, congPre] at hk
-  obtain ⟨h, hh, rfl⟩ := Subgroup.mem_map.1 hk
-  have hh' : redGL (n := n) (Ideal.span {c * c}) h = 1 := by
-    simpa only [Subgroup.mem_comap, Subgroup.mem_bot] using hh
-  have hh'' : redGL (n := n) (Ideal.span {c * c}) h⁻¹ = 1 := by rw [map_inv, hh', inv_one]
-  refine Subgroup.mem_map.2 ⟨g⁻¹ * bc (n := n) O.subtype h * g, ?_, ?_⟩
-  · apply levelaf_mem_range_of_integral
-    · exact levelaf_conj_integral O g c hg hg' h hh'
-    · have : (g⁻¹ * bc (n := n) O.subtype h * g)⁻¹ = g⁻¹ * bc (n := n) O.subtype h⁻¹ * g := by
-        rw [map_inv]; group
-      rw [this]
-      exact levelaf_conj_integral O g c hg hg' h⁻¹ hh''
-  · simp [MulAut.conj_apply, mul_assoc]
-
 theorem levelaf_princ_relIndex_ne_zero (O : Subring L) (I : Ideal O) [Finite (O ⧸ I)] :
     (princ (n := n) O.subtype I).relIndex (bc (n := n) O.subtype).range ≠ 0 := by
   classical
@@ -442,56 +378,5 @@ theorem levelaf_exists_denom (g : GL n 𝒜) : ∃ d : 𝓞 F, d ≠ 0 ∧ ∃ c
     ext i j; simp
 
 end Final
-
-theorem finite_adelic_level_commute : Formalism.UG.LevelAfComm := by
-  intro F E _ _ _ _ _ n _ _ σ J g
-  obtain ⟨d, hd0, c, hc, hg, hg'⟩ := levelaf_exists_denom (E := E) (n := n)
-    (g : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
-  have hcc : ((c * c : tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) :
-      E ⊗[F] FiniteAdeleRing (𝓞 F) F) = levelafC E (d * d) := by
-    rw [levelafC_mul, ← hc]; rfl
-  have hfin : Finite (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) ⧸
-      Ideal.span {c * c}) := levelaf_finite_quot (d * d) (mul_ne_zero hd0 hd0) (c * c) hcc
-  have hP := levelaf_princ_le_map_conj _ (g : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) c hg hg'
-  have hne := levelaf_princ_relIndex_ne_zero (n := n)
-    (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (Ideal.span {c * c})
-  have hstab : stabGL (stdLat (n := n) (A := E ⊗[F] FiniteAdeleRing (𝓞 F) F)
-      (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F))) =
-      (bc (n := n) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)).subtype).range :=
-    stabilizer_standard_lattice _ _ n Subtype.val_injective
-  have hLU : levelAf σ J ≤ UPts σ J (FiniteAdeleRing (𝓞 F) F) := inf_le_left
-  have hLS : levelAf σ J ≤
-      (bc (n := n) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)).subtype).range :=
-    hstab ▸ inf_le_right
-  have h1 : (princ (n := n) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)).subtype
-      (Ideal.span {c * c})).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F)) ≤
-      ((levelAf σ J).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))).map
-        (MulAut.conj g).toMonoidHom := by
-    intro h hh
-    rw [Subgroup.mem_subgroupOf] at hh
-    obtain ⟨l, hl, hlh⟩ := Subgroup.mem_map.1 (hP hh)
-    refine Subgroup.mem_map.2 ⟨g⁻¹ * h * g, ?_, ?_⟩
-    · rw [Subgroup.mem_subgroupOf]
-      refine Subgroup.mem_inf.2 ⟨(g⁻¹ * h * g).2, ?_⟩
-      have : ((g⁻¹ * h * g : UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
-          GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = l := by
-        simp only [Subgroup.coe_mul, Subgroup.coe_inv, ← hlh, MulEquiv.coe_toMonoidHom,
-          MulAut.conj_apply]
-        group
-      rw [this, hstab]; exact hl
-    · apply Subtype.ext
-      simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Subgroup.coe_mul, Subgroup.coe_inv]
-      group
-  have h2 : ((princ (n := n) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)).subtype
-      (Ideal.span {c * c})).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))).relIndex
-      ((levelAf σ J).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))) ≠ 0 := by
-    rw [Subgroup.relIndex_subgroupOf hLU]
-    intro h0
-    exact hne (Subgroup.relIndex_eq_zero_of_le_right hLS h0)
-  intro h0
-  have hd := Subgroup.relIndex_dvd_of_le_left
-    ((levelAf σ J).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))) h1
-  rw [h0] at hd
-  exact h2 (Nat.eq_zero_of_zero_dvd hd)
 
 end Formalism.UG.P

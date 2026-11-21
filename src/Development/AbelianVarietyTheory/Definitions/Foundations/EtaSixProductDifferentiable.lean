@@ -13,28 +13,6 @@ def ev (k : ℤ) (F : ℍ → ℂ) (τ : ℍ) : SL(2, ℤ) → ℂ := fun x => (
 def lead (M : ℕ) (k : ℤ) (F : ℍ → ℂ) : SL(2, ℤ) → Fin M → ℂ := fun x a =>
   (qExpansion (M : ℝ) (F ∣[k] x)).coeff (a : ℕ)
 
-def Vodd (Γ : Subgroup SL(2, ℤ)) : Submodule ℂ (SL(2, ℤ) → ℂ) where
-  carrier := {v | (∀ γ ∈ Γ, ∀ x, v (γ * x) = v x) ∧ ∀ x, v (-x) = -v x}
-  add_mem' := by
-    rintro v v' ⟨h1, h2⟩ ⟨h1', h2'⟩
-    exact ⟨fun γ hγ x => by simp [h1 γ hγ x, h1' γ hγ x], fun x => by simp [h2 x, h2' x]; abel⟩
-  zero_mem' := ⟨fun _ _ _ => rfl, fun _ => by simp⟩
-  smul_mem' := by
-    rintro c v ⟨h1, h2⟩
-    exact ⟨fun γ hγ x => by simp [h1 γ hγ x], fun x => by simp [h2 x]⟩
-
-def VoddT (Γ : Subgroup SL(2, ℤ)) : Submodule ℂ (SL(2, ℤ) → ℂ) where
-  carrier := {v | v ∈ Vodd Γ ∧ ∀ x, v (x * ModularGroup.T) = v x}
-  add_mem' := by
-    rintro v v' ⟨h1, h2⟩ ⟨h1', h2'⟩
-    exact ⟨Submodule.add_mem _ h1 h1', fun x => by simp [h2 x, h2' x]⟩
-  zero_mem' := ⟨Submodule.zero_mem _, fun _ => rfl⟩
-  smul_mem' := by
-    rintro c v ⟨h1, h2⟩
-    exact ⟨Submodule.smul_mem _ c h1, fun x => by simp [h2 x]⟩
-
-def n0 (Γ : Subgroup SL(2, ℤ)) : ℕ := Module.finrank ℂ (VoddT Γ)
-
 structure Frame (Γ : Subgroup SL(2, ℤ)) (M r : ℕ) where
   wt : Fin r → ℕ
   F : ∀ i, ModularForm Γ (wt i : ℤ)
@@ -129,24 +107,10 @@ def eta6Mult : SL(2, ℤ) →* ℂ where
   map_mul' x y := eta6Mult0_eq (by
     rw [SlashAction.slash_mul, eta_six_slash_multiplier, SL_smul_slash, eta_six_slash_multiplier, smul_smul])
 
-lemma eta6Mult_T_eq_I : eta6Mult ModularGroup.T = Complex.I := eta6Mult0_eq eta6_slash_three_T_eq_I_smul
-
-lemma eta6Mult_S : eta6Mult ModularGroup.S = Complex.I := eta6Mult0_eq eta_six_slash_S
-
-lemma eta6Mult_neg_one : eta6Mult (-1) = -1 := by
-  have : (-1 : SL(2, ℤ)) = ModularGroup.S * ModularGroup.S := by decide
-  rw [this, map_mul, eta6Mult_S, I_mul_I]
-
 def eta6Group : Subgroup SL(2, ℤ) := eta6Mult.toHomUnits.ker
 
 lemma mem_eta6Group (γ : SL(2, ℤ)) : γ ∈ eta6Group ↔ eta6Mult γ = 1 := by
   simp [eta6Group, MonoidHom.mem_ker, Units.ext_iff]
-
-lemma T_pow_four_mem_eta6Group : ModularGroup.T ^ 4 ∈ eta6Group := by
-  rw [mem_eta6Group, map_pow, eta6Mult_T_eq_I, I_pow_four]
-
-lemma neg_one_not_mem_eta6Group : (-1 : SL(2, ℤ)) ∉ eta6Group := by
-  rw [mem_eta6Group, eta6Mult_neg_one]; norm_num
 
 lemma eta_six_holomorphic : MDiff eta6 := by
   rw [UpperHalfPlane.mdifferentiable_iff]
@@ -183,60 +147,6 @@ def eta6Form : ModularForm eta6Group (3 : ℤ) where
     exact (eta_six_zero_at_infinity.isBoundedAtImInfty).smul _
 
 lemma coe_eta6Form : (eta6Form : ℍ → ℂ) = eta6 := rfl
-
-lemma eta_six_cusp_function : Set.EqOn (cuspFunction 4 eta6)
-    (fun q ↦ q * (∏' i, (1 - (q ^ 4) ^ (i + 1))) ^ 6) (Metric.ball 0 1) := by
-  intro q hq
-  by_cases hq0 : q = 0
-  · simpa [hq0] using eta_six_zero_at_infinity.cuspFunction_apply_zero (by norm_num)
-  · have him := Periodic.im_invQParam_pos_of_norm_lt_one (h := 4) (by norm_num)
-      (by simpa [dist_zero_right] using hq) hq0
-    have h4 : Periodic.qParam 1 (Periodic.invQParam 4 q) = q ^ 4 := by
-      conv_rhs => rw [← Periodic.qParam_right_inv (h := 4) (by norm_num) hq0]
-      simp only [Periodic.qParam, ← Complex.exp_nat_mul]
-      congr 1; push_cast; ring
-    simp [cuspFunction, Periodic.cuspFunction_eq_of_nonzero 4 _ hq0,
-      ofComplex_apply_of_im_pos him, eta_six_product_formula ⟨_, him⟩,
-      Periodic.qParam_right_inv (h := 4) (by norm_num) hq0, eta_q, h4]
-
-lemma eta_six_product_differentiable :
-    DifferentiableOn ℂ (fun q : ℂ ↦ (∏' i, (1 - (q ^ 4) ^ (i + 1))) ^ 6) (Metric.ball 0 1) := by
-  refine DifferentiableOn.fun_pow ?_ 6
-  refine differentiableOn_tprod_one_sub_pow.comp (f := fun q : ℂ => q ^ 4) (by fun_prop) ?_
-  intro q hq
-  simp only [Metric.mem_ball, dist_zero_right, norm_pow] at hq ⊢
-  exact pow_lt_one₀ (norm_nonneg _) hq (by norm_num)
-
-lemma eta_six_first_coefficient : (qExpansion 4 eta6).coeff 1 = 1 := by
-  have hmem : (0 : ℂ) ∈ Metric.ball (0 : ℂ) 1 := Metric.mem_ball_self one_pos
-  calc (qExpansion 4 eta6).coeff 1
-      = derivWithin (cuspFunction 4 eta6) (Metric.ball 0 1) 0 := by
-        simp [qExpansion_coeff, ← derivWithin_of_isOpen Metric.isOpen_ball hmem]
-    _ = derivWithin (fun q ↦ q * (∏' i, (1 - (q ^ 4) ^ (i + 1))) ^ 6) (Metric.ball 0 1) 0 :=
-        derivWithin_congr eta_six_cusp_function (eta_six_cusp_function hmem)
-    _ = 1 := by
-        rw [derivWithin_fun_mul differentiableWithinAt_fun_id (eta_six_product_differentiable _ hmem),
-          derivWithin_id' _ _ (Metric.isOpen_ball.uniqueDiffWithinAt hmem)]
-        simp
-
-def eta6Frame : Frame eta6Group 4 1 where
-  wt := fun _ => 3
-  F := fun _ => eta6Form
-  odd _ := by decide
-  pt τ := by
-    refine linearIndependent_unique_iff.2 fun h => eta_six_ne_zero τ ?_
-    have := congrFun h 1
-    simpa [ev, coe_eta6Form] using this
-  cusp := by
-    refine linearIndependent_unique_iff.2 fun h => one_ne_zero (α := ℂ) ?_
-    have := congrFun (congrFun h 1) 1
-    simp only [lead, SlashAction.slash_one, Pi.zero_apply, coe_eta6Form, Nat.cast_ofNat] at this
-    rw [show ((1 : Fin 4) : ℕ) = 1 from rfl, eta_six_first_coefficient] at this
-    exact this
-
-example : eta6Frame.wt 0 = 3 := rfl
-example : eta6Mult ModularGroup.T = Complex.I := eta6Mult_T_eq_I
-example : (-1 : SL(2, ℤ)) ∉ eta6Group := neg_one_not_mem_eta6Group
 
 end EtaSix
 

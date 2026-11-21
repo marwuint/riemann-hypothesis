@@ -52,10 +52,6 @@ theorem IsRootOne.ne_zero {a : ℂ} (ha : IsRootOne a) : a ≠ 0 := by
   rw [zero_pow hm.ne'] at h
   exact zero_ne_one h
 
-theorem IsRootOne.inv {a : ℂ} (ha : IsRootOne a) : IsRootOne a⁻¹ := by
-  obtain ⟨m, hm, h⟩ := ha
-  exact ⟨m, hm, by rw [inv_pow, h, inv_one]⟩
-
 theorem IsRootOne.isAlgUnit {a : ℂ} (ha : IsRootOne a) : IsAlgUnit a := by
   have h0 := ha.ne_zero
   obtain ⟨m, hm, h⟩ := ha

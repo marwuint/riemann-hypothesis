@@ -50,15 +50,6 @@ def IsComp {E : Type} [Field E] [NumberField E] (χ : HChar E) (w : HeightOneSpe
     (ξ : (w.adicCompletion E)ˣ →* ℂˣ) : Prop :=
   IsSmoothChar ξ ∧ ∀ x : Eˣ, ξ (Units.map (algebraMap E (w.adicCompletion E)).toMonoidHom x) = χ.locK w x
 
-structure IsTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (P : Pin hL D) (S : Reading P.T) : Prop where
-  rc : ∀ i w hw, (S i w hw).rc = rcAt hL D w
-  row : ∀ i (s : SplitPlace D.host.E) (hw : IsSplitPl D.host s.w) σ, D.what₂.isot (D.nd.j i) σ ≠ ⊥ →
-    IsLocS (P.rep σ).S s ((S i s.w hw).row σ).toIrrRep
-  rep : ∀ i (s : SplitPlace D.host.E) (hw : IsSplitPl D.host s.w) Q,
-    IsLocS (n := D.R.nV) (P.H.av.S i Q) s ((S i s.w hw).rep Q).toIrrRep
-  mu : ∀ i w hw (j : Fin D.R.m), j.1 + 1 = D.nd.j i → IsComp (P.tp.tup (D.nd.mu i) j) w (S i w hw).mu
-  eta : ∀ i w hw, IsComp P.cf.eta w (S i w hw).eta
-
 def MtForm (D : D7) (M : MtFam D) (i : D.nd.Loc) : Prop :=
   ∃ B : (GAf D.host.E D.R.nV → (M.loc i).wt.W) →ₗ⋆[ℂ] (GAf D.host.E D.R.nV → (M.loc i).wt.W) →ₗ[ℂ] ℂ,
     (∀ f ∈ NG.AFall D.host.E D.R.nV (M.loc i).wt.ρ, ∀ f' ∈ NG.AFall D.host.E D.R.nV (M.loc i).wt.ρ,
@@ -117,12 +108,6 @@ structure ThetaMod (D : D7) (M : MtFam D) (i : D.nd.Loc) {rep : D.what₂.FT →
   loc : ∀ (s : SplitPlace D.host.E) μw ηw, IsComp μ s.w μw → IsComp η s.w ηw →
     φ₀ ∈ ⨆ (ι : SB (Matrix (Fin D.R.nV) (Fin D.R.r) (s.w.adicCompletion D.host.E)) →ₗ[ℂ] Ω)
       (_ : IsLinAt ω s μw ηw ι), LinearMap.range ι
-
-structure Join {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (P : Pin hL D) : Type 1 where
-  form : ∀ i, MtForm D P.M i
-  rowM : ∀ i : D.nd.Loc, RowMod D P.rep (D.nd.j i)
-  th : ∀ (i : D.nd.Loc) (j : Fin D.R.m), j.1 + 1 = D.nd.j i →
-    ThetaMod D P.M i (rowM i) (P.tp.tup (D.nd.mu i) j) P.cf.eta
 
 end GlobalTheory.NPin
 

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.PrimesOneModNSplitCompletelyWeberField
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeberValuesCongruencesModDegreeOnePrimeStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeberValuesCongruencesModDegreeOnePrime
 
 open NumberField IsDedekindDomain Polynomial GlobalTheory.FieldSize GlobalTheory.WeberSplit
 open scoped IntermediateField
@@ -16,9 +16,9 @@ theorem splits_completely_of_three_le : ∀ (K : IntermediateField ℚ ℂ) [Num
   have g2 := g₂_ne_zero K h2 L hL hd
   have g3 := g₃_ne_zero K h2 L hL hd
   have hD := g₂_cube_sub_g₃_sq_ne_zero L
-  obtain ⟨hfin, halg, hperm⟩ := GlobalTheory.T.weberValues_finite_algebraic_permuted L n (by omega) g2 g3
+  obtain ⟨hfin, halg, hperm⟩ := _root_.GlobalTheory.FieldSize.weberSet_finite_algebraic_permuted L n (by omega) g2 g3
   replace halg := halg (invariant_isAlgebraic K h2 L hL)
-  have hweb := GlobalTheory.T.weber_values_congruences_mod_degree_one_prime K h2 L hL
+  have hweb := _root_.GlobalTheory.WeberCongruenceAnyOrder.weber_congruences K h2 L hL
   have hJw : L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) ∈ weberSet L n := Or.inl rfl
   have hJ0 : L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) ≠ 0 := div_ne_zero (pow_ne_zero _ g2) hD
   have hJ1 : L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) - 1 ≠ 0 := by

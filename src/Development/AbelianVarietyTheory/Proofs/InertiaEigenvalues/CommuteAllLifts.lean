@@ -151,33 +151,6 @@ theorem family_comm (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.I
   obtain ⟨c', hc'⟩ := hr i m k' P' hk' α' Rc' ha' hR'
   exact commute_of_read Rl cG S Y hL hF.Sb hW m (hinj m) so so' ha ha' hR hR' hc hc'
 
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem hkComm_of_row (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hW : Rl.toRealDat.models_HW)
-    (hinj : ∀ i, Function.Injective ((Rl.FW i).j (sg0 D A3.A))) (hC : GlobalTheory.ExportPin.Model.Covered Rl)
-    (h2 : ∀ i, placesOver D.host.E 2 ⊆ ↑(D.ntw.S0 i))
-    (H : NExpRealH Rl cG S Y) (X : NExpHeckeRowX Rl cG S Y H fun _ => 1) : HkComm D :=
-  hkComm_of_family Rl cG S Y H.hL H.hs H.cHk H.hkEq fun i j a b k P k' P' hk hk' =>
-    family_comm Rl cG S Y hL hF hW hinj hC H.hL
-      (fun i n k P hk α R ha hR => ⟨_, fun x => X.tie n k P hk.2.2.1 (hC i P hk.2.2.2 hk.2.2.1) ⟨i, hk.2.2.2⟩
-        (fun h => hk.2.2.2 (h2 i h)) hk.2.1 α R ha hR x rfl⟩)
-      i j a b k P k' P' hk hk'
-
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem hkComm_of_pin (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hW : Rl.toRealDat.models_HW)
-    (hinj : ∀ i, Function.Injective ((Rl.FW i).j (sg0 D A3.A))) (hC : GlobalTheory.ExportPin.Model.Covered Rl)
-    (hp : GlobalTheory.ExportPin.HeckePin Rl cG S Y) (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
-    (hs : ∀ j, 1 ≤ j → j ≤ D.R.m → HeckeStabR S j (f j)) (hf : GlobalTheory.ExportPin.Reads Rl cG S Y f) : HkComm D := by
-  obtain ⟨u, hu⟩ := hp f hs hf
-  exact hkComm_of_family Rl cG S Y f hs (fun i b k P => algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P) ^ k) hu
-    fun i j a b k P k' P' hk hk' => family_comm Rl cG S Y hL hF hW hinj hC f
-      (fun i n k P hk α R ha hR => ⟨_, fun x => hf n k P hk.2.2.1 (hC i P hk.2.2.2 hk.2.2.1) hk.2.1 α R ha hR x⟩)
-      i j a b k P k' P' hk hk'
-
 end Tied
-
-theorem commute_all_lifts (D : D7) (hC : HkComm D) (hO : OffRange D) : Formalism.MainNotions.LatticeVariant.adm13 D := fun i hi j b k k' P P' hk hk' =>
-  ((GlobalTheory.SupLaw.Model.heckeLaws_of D hC hO) i hi).1 j b k P k' P' hk hk'
 
 end GlobalTheory.SupLaw

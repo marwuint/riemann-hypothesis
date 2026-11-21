@@ -1,5 +1,9 @@
 import Development.DiscreteGroups.GlobalIrreducibility.ExistsColChar
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnipRadStdBlocksTwoNeBotStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnipRadStdBlocksTwoNeBot
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StandardCosocleGL
 
 noncomputable section
 
@@ -26,7 +30,7 @@ theorem step {c : kˣ} (hc : HasConductor ψ c) (hcusp : IsCuspidal π) (j : ℕ
     have h : ∑ i, ![j, n - j] i = n := by simp [Fin.sum_univ_two]; omega
     have htw : twKer π (unipRad k (stdBlocks ![j, n - j] h)) 1 = ⊤ :=
       Submodule.Quotient.subsingleton_iff.1 (hcusp.2 2 ![j, n - j] (stdBlocks ![j, n - j] h)
-        (GlobalTheory.T.unipRad_stdBlocks_two_ne_bot' k n j (n - j) h hj1 (by omega)))
+        (_root_.GlobalTheory.unipRad_stdBlocks_two_ne_bot k n j (n - j) h hj1 (by omega)))
     exact hξ (eq_top_iff.2 (by rw [← htw]; exact twKer_le π ψ j hj h ξ hz))
   · push Not at hz
     obtain ⟨p, hp, hpξ⟩ := hz

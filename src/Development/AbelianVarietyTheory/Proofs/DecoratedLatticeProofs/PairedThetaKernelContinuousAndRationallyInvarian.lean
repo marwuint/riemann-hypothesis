@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaAbsoluteSum
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumThetaJointlyContinuousStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumThetaJointlyContinuous
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicMatrixQuotientPeriodicIntegralContinuousPaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepresentationRationalTranslateSubstitutionStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepresentationRationalTranslateSubstitution
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow
@@ -37,7 +37,7 @@ theorem om_emb {ψ : AddChar (AF D.host.F) ℂ} {S T A L : HSp D} {χ χ' : (AE 
     rw [cancel₂ (o.emb_jB _ _), mt_one, Matrix.mul_one]
   have key : ∀ (δ : GA D T) (x : WO S T), δ ∈ GQ T → mt T δ⁻¹ ⬝ x = x → ∀ k, om (h₀, δ * k) f x = om (h₀, k) f x := by
     intro δ x hδ hx k
-    have e := GlobalTheory.T.weilRepresentation_rational_translate_substitution D ψ S T _ _ _ h f hf 1 (GQ S).one_mem δ hδ h₀ k x
+    have e := _root_.GlobalTheory.Unf.om_rat_mul D ψ S T _ _ _ h f hf 1 (GQ S).one_mem δ hδ h₀ k x
     rwa [one_mul h₀, hx, mt_one, Matrix.mul_one] at e
   rw [← a1]
   exact key _ _ hg (by rw [a2]; exact a3) _
@@ -52,7 +52,7 @@ theorem pairKer_law : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (
   have hP : ∀ h₀ h₁, pairKer s vL Y Ξ h₀ h₁ = ∫ w in vL.𝓕, K w (h₀, h₁) ∂vL.μ := fun h₀ h₁ => by
     simp only [pairKer, contractT, thPair, OrthDec.resT_symm_apply, Matrix.mul_zero, zero_add, hK]
   have hc : Continuous (Function.uncurry K) := by
-    have h1 := GlobalTheory.T.weilDatum_theta_jointlyContinuous D ψ _ _ _ _ _ s.weil₀ Ξ hΞ
+    have h1 := _root_.GlobalTheory.Unf.jointCont_all D ψ _ _ _ _ _ s.weil₀ Ξ hΞ
     have h2 : Continuous fun q : Mx D B.L.rank J.W₀.rank × GA D J.W₀ × GA D B.A =>
         (((q.2.1, B.o.emb (q.2.2, 1)), B.o.jB ⬝ q.1) : (GA D J.W₀ × GA D B.V₀) × WO J.W₀ B.V₀) :=
       ((continuous_fst.comp continuous_snd).prodMk (B.o.continuous_emb.comp
@@ -84,7 +84,7 @@ theorem pairKer_law : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (
   · rw [hP, hP, ← hinv (mulRight J.W₀ _ γ) (continuous_id.matrix_mul continuous_const)
       (continuous_id.matrix_mul continuous_const) ?_ (h₀, h₁)]
     · congr 1; funext w
-      have e := GlobalTheory.T.weilRepresentation_rational_translate_substitution D ψ _ _ _ _ _ s.weil₀ Ξ hΞ γ hγ 1 (one_mem _) h₀ (B.o.emb (h₁, 1)) (B.o.jB ⬝ w)
+      have e := _root_.GlobalTheory.Unf.om_rat_mul D ψ _ _ _ _ _ s.weil₀ Ξ hΞ γ hγ 1 (one_mem _) h₀ (B.o.emb (h₁, 1)) (B.o.jB ⬝ w)
       rw [one_mul, inv_one, mt_one, Matrix.one_mul, Matrix.mul_assoc] at e
       change s.om₀ (γ * h₀, B.o.emb (h₁, 1)) Ξ (B.o.jB ⬝ w) * star (Y (γ * h₀) w) =
         s.om₀ (h₀, B.o.emb (h₁, 1)) Ξ (B.o.jB ⬝ (w ⬝ mt J.W₀ γ)) * star (Y h₀ (w ⬝ mt J.W₀ γ))

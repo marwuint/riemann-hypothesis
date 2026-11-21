@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralPreimageAddImageEqLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianDualSubsetOfIntegralGramStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianDualSubsetOfIntegralGram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianFormIntegralPreimageLatticeStatement
 open Matrix
 
@@ -49,7 +49,7 @@ theorem GlobalTheory.Hk3.HoweG.selfDual_lattice_of_gram_int : ∀ (L : Type) [Fi
       simp only [hy, GlobalTheory.Hk3.HoweG.adj, Formalism.UG.cT, Matrix.mul_assoc]
     rw [this]; exact iMM _ _ hx eJT
   have T4 := GlobalTheory.T.integral_preimage_add_image_eq_lattice
-  have T5 := GlobalTheory.T.hermitianDual_subset_of_integral_gram
+  have T5 := _root_.GlobalTheory.Hk3.HoweG.hermDual_subset_of_gram_int
   have FreeQuotientRank := GlobalTheory.T.hermitianForm_integral_preimage_lattice
   obtain ⟨a, ha⟩ := T4 L n n' x y
   have hcol : ∀ j, ∃ u : Fin n → L, ∃ w : Fin n' → L, (∀ i, u i ∈ Formalism.UG.intL L) ∧ (∀ i, (x *ᵥ u) i ∈ Formalism.UG.intL L) ∧

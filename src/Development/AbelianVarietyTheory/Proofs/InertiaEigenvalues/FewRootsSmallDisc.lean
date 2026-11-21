@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardRootsClosedBallBoundsUltrametricStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdditivePolyTaylorCoeffSubNormLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardRootsClosedBallBoundsUltrametric
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdditivePolyTaylorCoeffSubNormLe
 open Polynomial
 open Classical
 
@@ -62,7 +62,7 @@ theorem few_roots_small_disc : ∀ (l : ℕ) [Fact l.Prime] (E M : ℕ) (a : ℕ
   have hd1 : 1 ≤ l ^ M := Nat.one_le_pow _ _ (by omega)
   have hGd : G.coeff (l ^ M) = a M := coeff_sum_monomial_pow l E a M hME
   have hdiff : ∀ j, 1 ≤ j → ‖H.coeff j - G.coeff j‖ ≤ ‖(l : ℂ_[l])‖ :=
-    GlobalTheory.T.norm_taylor_coeff_sub_coeff_le_norm_l l E a W ha hW
+    _root_.GlobalTheory.additive_poly_taylor_coeff_sub_norm_le l E a W ha hW
   have hρj : ∀ j, 1 ≤ j → ρ ^ j < 1 := fun j hj => pow_lt_one₀ hρ0.le hρ1 (by omega)
   have hdiffsmall : ∀ j, 1 ≤ j → ‖H.coeff j - G.coeff j‖ * ρ ^ j < ‖(l : ℂ_[l])‖ := by
     intro j hj
@@ -93,6 +93,6 @@ theorem few_roots_small_disc : ∀ (l : ℕ) [Fact l.Prime] (E M : ℕ) (a : ℕ
       _ = max (‖G.coeff j‖ * ρ ^ j) (‖H.coeff j - G.coeff j‖ * ρ ^ j) := max_mul_of_nonneg _ _ hρ
       _ < ‖(l : ℂ_[l])‖ := max_lt (coeff_sum_monomial_small l E M a ρ hρ0 hgt j hj)
           (hdiffsmall j (by omega))
-  exact (GlobalTheory.T.card_roots_closedBall_bounds_ultrametric ℂ_[l] H ρ (l ^ M) hρ0 hHd0).2 hbig
+  exact (_root_.GlobalTheory.card_roots_le_radius_bounds ℂ_[l] H ρ (l ^ M) hρ0 hHd0).2 hbig
 
 end GlobalTheory

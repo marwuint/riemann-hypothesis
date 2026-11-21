@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
-import Formalism.MeanHeightDescent.CovolumeFullAssemblyWeighted
+import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
+import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizes
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBarStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightDivisionL1BoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightDivisionL1Bound
 
 open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.L2.Indef.Tree NumberField GlobalTheory.MeanTop
 
@@ -53,7 +54,7 @@ theorem g_le_of (hW : W.Hyp) {x : ℤ} (hx : W.h0 ≤ 4 * W.T * x) : W.g ≤ (x 
 
 theorem adj_ge (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a + 1) (hb : W.p ≤ (b : ℕ)) :
     W.g ≤ reWt W.u' τ a - reWt W.u' τ b := by
-  obtain ⟨-, h2, h3⟩ := GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hW hD τ a b hab
+  obtain ⟨-, h2, h3⟩ := _root_.GlobalTheory.MeanTop.divided_gaps ι N W hW hD τ a b hab
   have hk := hW.kc_lt
   by_cases hp : (b : ℕ) = W.p
   · have := g_le_of W hW (h2 hp).2
@@ -75,7 +76,7 @@ theorem adj_lt (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : �
   · have := adj_ge W hW hD τ a b hab hb
     have := g_pos W hW
     linarith
-  · obtain ⟨h1, -, -⟩ := GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hW hD τ a b hab
+  · obtain ⟨h1, -, -⟩ := _root_.GlobalTheory.MeanTop.divided_gaps ι N W hW hD τ a b hab
     have h := h1 (by omega)
     have h' : W.u1 τ b < W.u1 τ a := by omega
     have ha : (a : ℕ) < W.p := by omega
@@ -112,7 +113,7 @@ theorem entry_le (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (i : Fin N) :
     |reWt W.u' τ i| ≤ 2 * W.b / W.T := by
   have hT := T_pos W hW
   have h1 := (GlobalTheory.MeanTop.divided_entries ι N W hW hD τ i).1
-  have h2 := (GlobalTheory.T.weight_division_l1_bound ι N W hW hD).2.2 τ i
+  have h2 := (_root_.GlobalTheory.MeanTop.divided_weight_size ι N W hW hD).2.2 τ i
   have h3 := hW.h5 τ i
   have h1' : ((W.T : ℝ) + W.Dd + 1) * |(W.u1 τ i : ℝ)| ≤ |(W.u τ i : ℝ)| + W.c0 + 4 * N := by exact_mod_cast h1
   have h2' : |(W.u' τ i : ℝ)| ≤ |(W.u1 τ i : ℝ)| := by exact_mod_cast h2

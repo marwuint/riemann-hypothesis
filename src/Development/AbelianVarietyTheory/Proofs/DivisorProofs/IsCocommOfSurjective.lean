@@ -69,53 +69,6 @@ theorem _root_.GlobalTheory.PDivGroup.KerGrp.map_res_kerIdeal {p : ℕ} {k : Typ
   rw [← hres]
   rfl
 
-theorem exists_of_family {p : ℕ} {k : Type} [Field k] (G : PDivGroup p k)
-    (u : G ⟶ G) (h₀ : ℕ) (B : ℕ → Type) [∀ n, CommRing (B n)] [∀ n, HopfAlgebra k (B n)]
-    (π : ∀ n, G.A n →ₐc[k] B n) (hπ : ∀ n, Function.Surjective (π n))
-    (hk : ∀ n, RingHom.ker (π n) = kerIdeal (u.app n))
-    (h : ∀ n : ℕ, Module.finrank k (B n) = p ^ (n * h₀)) :
-    ∃ (K : PDivGroup p k) (i : K ⟶ G), ∀ n : ℕ, Function.Surjective (i.app n) ∧
-      RingHom.ker (i.app n) = kerIdeal (u.app n) := by
-  haveI : ∀ n, IsCocomm k (B n) := fun n => isCocomm_of_surjective (π n) (hπ n)
-  have hle : ∀ n, RingHom.ker (π (n + 1)) ≤ RingHom.ker ((π n).comp (G.res n)) := fun n a ha => by
-    have : G.res n a ∈ RingHom.ker (π n) := by
-      rw [hk, ← map_res_kerIdeal]
-      rw [hk] at ha
-      exact Ideal.mem_map_of_mem (G.res n : G.A (n + 1) →ₐ[k] G.A n) ha
-    exact this
-  let r := fun n => liftSurj (π (n + 1)) (hπ (n + 1)) ((π n).comp (G.res n)) (hle n)
-  have hr : ∀ n a, r n (π (n + 1) a) = π n (G.res n a) := fun n a => liftSurj_apply ..
-  let K : PDivGroup p k :=
-    { height := h₀
-      A := B
-      finite := fun n => Module.Finite.of_surjective (π n : G.A n →ₗ[k] B n) (hπ n)
-      rank_eq := fun n q => by rw [Module.rankAtStalk_eq_finrank_of_free, h]; rfl
-      res := r
-      res_surjective := fun n b => by
-        obtain ⟨c, rfl⟩ := hπ n b
-        obtain ⟨a, rfl⟩ := G.res_surjective n c
-        exact ⟨_, hr n a⟩
-      ker_res := fun n => by
-        rw [← map_torsionIdeal (hπ (n + 1)), ← G.ker_res]
-        refine le_antisymm (fun b hb => ?_) (Ideal.map_le_iff_le_comap.2 fun a ha => ?_)
-        · obtain ⟨a, rfl⟩ := hπ _ b
-          have h1 : G.res n a ∈ RingHom.ker (π n) := (hr n a).symm.trans hb
-          rw [hk, ← map_res_kerIdeal] at h1
-          obtain ⟨c, hc, e⟩ := (Ideal.mem_map_iff_of_surjective
-            (G.res n : G.A (n + 1) →ₐ[k] G.A n) (G.res_surjective n)).1 h1
-          rw [← hk] at hc
-          have hc' : π (n + 1) c = 0 := hc
-          have e' : G.res n c = G.res n a := e
-          have h2 : a - c ∈ RingHom.ker (G.res n) := by
-            rw [RingHom.mem_ker, map_sub, e', sub_self]
-          have h3 : π (n + 1) a = π (n + 1) (a - c) := by rw [map_sub, hc', sub_zero]
-          rw [h3]
-          exact Ideal.mem_map_of_mem (π (n + 1) : G.A (n + 1) →ₐ[k] B (n + 1)) h2
-        · have ha' : G.res n a = 0 := ha
-          change r n (π (n + 1) a) = 0
-          rw [hr, ha', map_zero] }
-  exact ⟨K, ⟨π, fun n => BialgHom.ext fun a => hr n a⟩, fun n => ⟨hπ n, hk n⟩⟩
-
 set_option autoImplicit false in
 open CategoryTheory TensorProduct Coalgebra Bialgebra in
 

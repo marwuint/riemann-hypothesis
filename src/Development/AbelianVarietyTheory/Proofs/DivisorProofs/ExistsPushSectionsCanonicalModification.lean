@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsUniqueLbIsoPullEqOfCoheightLeOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJacobianSectionIsUnitGermOfLocalIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralSmoothProjectiveModificationOfNonemptyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBijectiveStalkMapOverDvrPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermMemRangeStalkOfPullbackMulLocalIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJacobianSectionIsUnitGermOfLocalIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralSmoothProjectiveModificationOfNonempty
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBijectiveStalkMapOverDvrPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermMemRangeStalkOfPullbackMulLocalIso
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -77,8 +77,8 @@ theorem exists_push_sections : ∀ (F : Type) [Field F] [CharZero F] (Y : Scheme
   have : GlobalTheory.IsNormalScheme Y := isNormalScheme_of_smooth p
   have : Nonempty U := hU.to_subtype
   have := M.iso
-  have hXi : IsIntegral M.X := GlobalTheory.T.isIntegral_smoothProjectiveModification_of_nonempty F Y p U d M hU
-  obtain ⟨J, hJ⟩ := GlobalTheory.T.exists_jacobian_section_isUnit_germ_of_localIso F Y M.X p M.σ d K K'
+  have hXi : IsIntegral M.X := _root_.GlobalTheory.isIntegral_of_nonempty_modif F Y p U d M hU
+  obtain ⟨J, hJ⟩ := _root_.GlobalTheory.exists_jacobian_section_isUnit_germ F Y M.X p M.σ d K K'
   have hL : (tens K.bundle B).IsLB := isLB_tens K.isLB hB
   let C := jacChart M.σ K'.isLB K.isLB hB
   have hopn : ∀ x ∈ M.opn, Function.Bijective (M.σ.stalkMap x).hom :=
@@ -94,11 +94,11 @@ theorem exists_push_sections : ∀ (F : Type) [Field F] [CharZero F] (Y : Scheme
       rw [hs₀]; exact (C.mulEquiv hJU).apply_symm_apply _
     obtain ⟨t, ht⟩ := (exists_sec_res_eq_iff hL (W := U) (LB.coord_mem s₀)).2 (fun x hx1 _ => by
       have := IsNormalScheme.isDiscreteValuationRing_stalk hx1
-      obtain ⟨x', rfl, hb⟩ := GlobalTheory.T.exists_bijective_stalkMap_over_dvrPoint F Y p U d M hproj hU x this
+      obtain ⟨x', rfl, hb⟩ := _root_.GlobalTheory.CompHS.Modif.exists_bijective_stalkMap_of_dvr F Y p U d M hproj hU x this
       obtain ⟨i, hi⟩ := exists_chart hL (M.σ x')
       have : Nonempty ((tens K.bundle B).U i) := ⟨⟨_, hi⟩⟩
       have hne := nonempty_inf_of_isIntegral U ((tens K.bundle B).U i)
-      exact ⟨i, hne, hi, GlobalTheory.T.germ_mem_range_stalk_of_pullback_mul_localIso F Y M.X p M.σ U _ _ _ C J g s₀ rel x' hb (hJ x' hb) i hi⟩)
+      exact ⟨i, hne, hi, _root_.GlobalTheory.germToFunctionField_mem_range_stalk_of_mul_pull F Y M.X p M.σ U _ _ _ C J g s₀ rel x' hb (hJ x' hb) i hi⟩)
     refine ⟨H0.ofSec p ⊤ t, ?_⟩
     have e : H0.restr (le_top : U ≤ ⊤) (H0.ofSec p ⊤ t) = s₀ := by
       rw [restr_ofSec]; exact LB.sec_ext fun i => ht i

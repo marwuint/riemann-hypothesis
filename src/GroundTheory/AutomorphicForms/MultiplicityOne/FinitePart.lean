@@ -77,60 +77,6 @@ def fpOp (S : FinitePartSpace σ V₀ hV₀) : V₀ →L[ℂ] H :=
 theorem fpOp_finitePart (w : AdelicGLn.FiniteAdelicGL K n) (S : FinitePartSpace σ V₀ hV₀) :
     fpOp σ V₀ hV₀ (finitePart σ V₀ hV₀ w S) = σ (finProj K n w) ∘L fpOp σ V₀ hV₀ S := rfl
 
-theorem fpOp_mem_homArch (S : FinitePartSpace σ V₀ hV₀) : fpOp σ V₀ hV₀ S ∈ homArch σ V₀ hV₀ :=
-  ((S : smoothVectors (finRep σ V₀ hV₀)).1 : homArch σ V₀ hV₀).2
-
-section Admissible
-
-variable {σ V₀}
-variable {U₀ : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hV₀U : V₀ ≤ fixedSubspace σ U₀)
-
-include hV₀ hV₀U in
-
-theorem isInvariant_levelSubgroup {U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hU' : U' ≤ U₀) :
-    (σ.compHom (levelSubgroup K n U').subtype continuous_subtype_val).IsInvariant V₀ := by
-  rintro ⟨x, hx⟩ v hv
-  obtain ⟨A, u, hu, rfl⟩ := exists_of_mem_levelSubgroup hx
-  show σ (archProj K n A * finProj K n u) v ∈ V₀
-  rw [UnitaryRep.map_mul_apply, hV₀U hv u (hU' hu)]
-  exact hV₀ A v hv
-
-def levelType {U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hU' : U' ≤ U₀) :
-    UnitaryRep (levelSubgroup K n U') V₀ :=
-  (σ.compHom (levelSubgroup K n U').subtype continuous_subtype_val).restrict V₀
-    (isInvariant_levelSubgroup hV₀ hV₀U hU')
-
-theorem fpOp_fixed {U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)}
-    (S : fixedVectors (finitePart σ V₀ hV₀) U') {u : AdelicGLn.FiniteAdelicGL K n} (hu : u ∈ U')
-    (v : V₀) : σ (finProj K n u) (fpOp σ V₀ hV₀ S.1 v) = fpOp σ V₀ hV₀ S.1 v := by
-  have h := congrArg (fpOp σ V₀ hV₀) (S.2 u hu)
-  rw [fpOp_finitePart] at h
-  exact congrArg (fun T : V₀ →L[ℂ] H => T v) h
-
-def toLevelHom {U' : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hU' : U' ≤ U₀) :
-    fixedVectors (finitePart σ V₀ hV₀) U' →ₗ[ℂ]
-      (levelType hV₀ hV₀U hU').intertwiners (levelRep σ U') where
-  toFun S := ⟨(fpOp σ V₀ hV₀ S.1).codRestrict (fixedSubspace σ U')
-      (fun v u hu => fpOp_fixed hV₀ S hu v),
-    by
-      rintro ⟨x, hx⟩ v
-      obtain ⟨A, u, hu, rfl⟩ := exists_of_mem_levelSubgroup hx
-      refine Subtype.ext ?_
-      have hvA : σ (archProj K n A * finProj K n u) v = σ (archProj K n A) v := by
-        rw [UnitaryRep.map_mul_apply, hV₀U v.2 u (hU' hu)]
-      have e : (levelType hV₀ hV₀U hU' ⟨_, hx⟩ v : V₀) = archType σ V₀ hV₀ A v := Subtype.ext hvA
-      calc fpOp σ V₀ hV₀ S.1 (levelType hV₀ hV₀U hU' ⟨_, hx⟩ v)
-          = fpOp σ V₀ hV₀ S.1 (archType σ V₀ hV₀ A v) := congrArg _ e
-        _ = σ (archProj K n A) (fpOp σ V₀ hV₀ S.1 v) := fpOp_mem_homArch σ V₀ hV₀ S.1 A v
-        _ = σ (archProj K n A * finProj K n u) (fpOp σ V₀ hV₀ S.1 v) := by
-            rw [UnitaryRep.map_mul_apply, fpOp_fixed hV₀ S hu v]⟩
-  map_add' S S' := rfl
-  map_smul' c S := rfl
-
-variable {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
-
-end Admissible
-
 end MultiplicityOne
 
 end

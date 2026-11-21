@@ -1,5 +1,7 @@
 import CompanionTheory.AutomorphicTheory.ThetaDilations.IntFou
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionGrowthBoundStatement
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionGrowthBound
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
@@ -63,7 +65,7 @@ theorem ei_inv : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)
   have hsum : ∀ φ, SB φ → ∀ τ : InfinitePlace F → ℂ, (∀ w, 0 < (τ w).im) → Summable (eiTerm ψ lf B ρ P φ τ) := by
     intro φ hφ τ hτ
     obtain ⟨w₀, hw₀⟩ := Finite.exists_min fun w => (τ w).im
-    obtain ⟨_, s⟩ := GlobalTheory.T.summable_norm_eiTerm_and_wt_mul_tsum_le F lf hlf h1 ψ hψ ι M B ρ P hQ hM φ hφ _ (hτ w₀)
+    obtain ⟨_, s⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.EiBound.ei_bound F lf hlf h1 ψ hψ ι M B ρ P hQ hM φ hφ _ (hτ w₀)
     exact (s τ hw₀).1.of_norm
   refine ⟨fun b => ?_, fun a ha => ?_, ?_, fun c => ?_⟩
   · rw [eis, eis, ← (Equiv.addLeft b).tsum_eq (eiTerm ψ lf B ρ P φ τ)]

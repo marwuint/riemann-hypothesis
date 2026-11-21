@@ -28,17 +28,8 @@ theorem isMonHom_prod {G H : Over S} [GrpObj G] [GrpObj H] [IsCommMonObj H] {n :
     (ha : ∀ i, IsMonHom (a i)) : IsMonHom (∏ i, a i) :=
   Finset.prod_induction a (fun z => IsMonHom z) (fun x y _ _ => isMonHom_mul x y) isMonHom_one fun i _ => ha i
 
-theorem comp_prod {T G H : Over S} [GrpObj H] [IsCommMonObj H] {n : ℕ} (x : T ⟶ G) (a : Fin n → (G ⟶ H)) :
-    x ≫ ∏ i, a i = ∏ i, x ≫ a i :=
-  map_prod (preHom (G := H) x) a Finset.univ
-
-def incl {G' G : Over S} [GrpObj G'] [GrpObj G] {n : ℕ} (p : Out.IsPowGrp G' G n) (i : Fin n) : G ⟶ G' :=
-  powLift p fun k => if k = i then 𝟙 G else 1
-
 end GlobalTheory.PowQuotient
 
 namespace GlobalTheory
-
-open PowQuotient
 
 end GlobalTheory

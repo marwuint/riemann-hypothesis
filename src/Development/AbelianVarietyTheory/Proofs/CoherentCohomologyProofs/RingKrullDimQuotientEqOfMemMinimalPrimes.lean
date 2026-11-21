@@ -216,16 +216,6 @@ theorem ringKrullDim_quotient_eq_of_mem_minimalPrimes {q : Ideal A}
   refine ringKrullDim_eq_of_trdeg_eq (O ⧸ maximalIdeal O) _ ?_
   rw [trdeg_quotient_eq_of_mem_minimalPrimes O _ Ideal.Quotient.mk_surjective hq, hd]
 
-omit [Algebra.FiniteType O A] [IsDiscreteValuationRing O] in
-
-theorem trdeg_fractionRing_eq (K F : Type u) [Field K] [Algebra O K] [IsFractionRing O K]
-    [Field F] [Algebra A F] [IsFractionRing A F] [Algebra O F] [Algebra K F]
-    [IsScalarTower O A F] [IsScalarTower O K F] :
-    Algebra.trdeg K F = Algebra.trdeg O A := by
-  have : Algebra.IsAlgebraic O K := IsLocalization.isAlgebraic _ (nonZeroDivisors O)
-  have : Algebra.IsAlgebraic A F := IsLocalization.isAlgebraic _ (nonZeroDivisors A)
-  rw [← trdeg_eq_of_isAlgebraic_bot O K F, trdeg_eq_of_isAlgebraic_top O A F]
-
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 omit [IsDiscreteValuationRing O] in
 
@@ -244,46 +234,7 @@ theorem ringKrullDim_genericFibre_eq (K : Type u) [Field K] [Algebra O K] [IsFra
   refine ringKrullDim_eq_of_trdeg_eq K _ ?_
   rw [← trdeg_eq_of_isAlgebraic_bot O K, trdeg_eq_of_isAlgebraic_top O A, hd]
 
-theorem trdeg_residueField_eq_of_mem_minimalPrimes (k : Type u) [Field k] [Algebra O k]
-    (hk : Function.Surjective (algebraMap O k)) (q : Ideal A) [q.IsPrime]
-    (hq : q ∈ ((maximalIdeal O).map (algebraMap O A)).minimalPrimes)
-    [Algebra k q.ResidueField] [IsScalarTower O k q.ResidueField] :
-    Algebra.trdeg k q.ResidueField = Algebra.trdeg O A := by
-  have hle : RingHom.ker (algebraMap O k) ≤ RingHom.ker (algebraMap O (A ⧸ q)) := by
-    rw [eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ hk)]
-    intro x hx
-    exact Ideal.Quotient.eq_zero_iff_mem.mpr (hq.1.2 (Ideal.mem_map_of_mem _ hx))
-  let := ((algebraMap O k).liftOfSurjective hk ⟨_, hle⟩).toAlgebra
-  have : IsScalarTower O k (A ⧸ q) := IsScalarTower.of_algebraMap_eq fun x ↦
-    (RingHom.liftOfSurjective_comp_apply _ hk ⟨_, hle⟩ x).symm
-  have : IsScalarTower k (A ⧸ q) q.ResidueField := IsScalarTower.of_algebraMap_eq fun x ↦ by
-    obtain ⟨x, rfl⟩ := hk x
-    rw [← IsScalarTower.algebraMap_apply O k (A ⧸ q), ← IsScalarTower.algebraMap_apply O k,
-      ← IsScalarTower.algebraMap_apply O (A ⧸ q)]
-  have : Algebra.IsAlgebraic (A ⧸ q) q.ResidueField :=
-    IsLocalization.isAlgebraic _ (nonZeroDivisors _)
-  rw [trdeg_eq_of_isAlgebraic_top k (A ⧸ q), trdeg_quotient_eq_of_mem_minimalPrimes O k hk hq]
-
 end DVR
-
-theorem height_eq_one_and_ringKrullDim_eq_of_flat
-    (O K k : Type u) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [Field K] [Algebra O K] [IsFractionRing O K]
-    [Field k] [Algebra O k] (hk : Function.Surjective (algebraMap O k))
-    (A F : Type u) [CommRing A] [IsDomain A] [Algebra O A] [Algebra.FiniteType O A]
-    [Module.Flat O A] [Field F] [Algebra A F] [IsFractionRing A F] [Algebra O F] [Algebra K F]
-    [IsScalarTower O A F] [IsScalarTower O K F]
-    {ϖ : O} (hϖ : Irreducible ϖ) (q : Ideal A) [q.IsPrime]
-    (hq : q ∈ (Ideal.span {algebraMap O A ϖ}).minimalPrimes)
-    [Algebra k q.ResidueField] [IsScalarTower O k q.ResidueField] :
-    q.height = 1 ∧ ∃ d : ℕ, ringKrullDim (A ⧸ q) = d ∧ Algebra.trdeg k q.ResidueField = d ∧
-      Algebra.trdeg K F = d ∧ ringKrullDim (K ⊗[O] A) = d := by
-  rw [← map_maximalIdeal_eq_span_of_irreducible O hϖ] at hq
-  obtain ⟨d, hd⟩ := exists_trdeg_eq_natCast O (A := A)
-  exact ⟨height_eq_one_of_mem_minimalPrimes_map_maximalIdeal O hq, d,
-    ringKrullDim_quotient_eq_of_mem_minimalPrimes O hq hd,
-    (trdeg_residueField_eq_of_mem_minimalPrimes O k hk q hq).trans hd,
-    (trdeg_fractionRing_eq O (A := A) K F).trans hd, ringKrullDim_genericFibre_eq O K hd⟩
 
 theorem isLocalHom_algebraMap_localization_of_liesOver (O : Type*) [CommRing O] [IsLocalRing O]
     {A : Type*} [CommRing A] [Algebra O A] (q : Ideal A) [q.IsPrime]
@@ -292,27 +243,6 @@ theorem isLocalHom_algebraMap_localization_of_liesOver (O : Type*) [CommRing O] 
   rw [IsScalarTower.algebraMap_apply O A, IsLocalization.AtPrime.isUnit_to_map_iff _ q] at hx
   by_contra h
   exact hx ((Ideal.mem_of_liesOver q (maximalIdeal O) x).mp h)
-
-theorem height_eq_one_and_ringKrullDim_eq_of_flat_canonical
-    (O : Type u) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (A : Type u) [CommRing A] [IsDomain A] [Algebra O A] [Algebra.FiniteType O A]
-    [Module.Flat O A] {ϖ : O} (hϖ : Irreducible ϖ) (q : Ideal A) [q.IsPrime]
-    (hq : q ∈ (Ideal.span {algebraMap O A ϖ}).minimalPrimes) :
-    haveI := liesOver_maximalIdeal_of_mem_minimalPrimes O
-      (map_maximalIdeal_eq_span_of_irreducible O (A := A) hϖ ▸ hq)
-    haveI := isLocalHom_algebraMap_localization_of_liesOver O q
-    letI := FractionRing.liftAlgebra O (FractionRing A)
-    q.height = 1 ∧ ∃ d : ℕ, ringKrullDim (A ⧸ q) = d ∧
-      Algebra.trdeg (ResidueField O) q.ResidueField = d ∧
-      Algebra.trdeg (FractionRing O) (FractionRing A) = d ∧
-      ringKrullDim (FractionRing O ⊗[O] A) = d := by
-  have := liesOver_maximalIdeal_of_mem_minimalPrimes O
-    (map_maximalIdeal_eq_span_of_irreducible O (A := A) hϖ ▸ hq)
-  have := isLocalHom_algebraMap_localization_of_liesOver O q
-  let := FractionRing.liftAlgebra O (FractionRing A)
-  have := FractionRing.isScalarTower_liftAlgebra O (FractionRing A)
-  exact height_eq_one_and_ringKrullDim_eq_of_flat O (FractionRing O) (ResidueField O)
-    residue_surjective A (FractionRing A) hϖ q hq
 
 section Topology
 
@@ -550,13 +480,6 @@ theorem exists_topologicalKrullDim_fibres_eq_of_isEmbedding
     (topologicalKrullDim_preimage_genericPoint_eq f hd),
     fun Z hZ ↦ topologicalKrullDim_eq_of_mem_irreducibleComponents_of_trdeg_eq f hi hr hZ hd⟩
 
-theorem topologicalKrullDim_component_fiber_eq {Z : Set (f.fiber (closedPoint O))}
-    (hZ : Z ∈ irreducibleComponents (f.fiber (closedPoint O))) :
-    topologicalKrullDim Z = topologicalKrullDim (f.fiber (genericPoint (Spec (.of O)))) := by
-  obtain ⟨d, h₁, h₂⟩ := exists_topologicalKrullDim_fibres_eq_of_isEmbedding f
-    (f.fiberι _).isEmbedding (f.range_fiberι _) (f.fiberι _).isEmbedding (f.range_fiberι _)
-  rw [h₁, h₂ Z hZ]
-
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsIntegral Y] [LocallyOfFiniteType f] [Flat f] in
 
 theorem isEmbedding_and_range_eq_of_isPullback {T P : Scheme.{u}} {g : T ⟶ Spec (.of O)}
@@ -606,13 +529,5 @@ theorem exists_topologicalKrullDim_fibres_eq_of_isPullback
     ringKrullDim_stalk_eq_one_of_mem_irreducibleComponents f e₀ r₀ hZ hz⟩⟩
 
 end Fibres
-
-example (O : Type u) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
-    (hϖ : Irreducible ϖ) : (Ideal.span {algebraMap O (Polynomial O) ϖ}).height = 1 := by
-  have : (Ideal.span {algebraMap O (Polynomial O) ϖ}).IsPrime :=
-    (Ideal.span_singleton_prime (by simpa using hϖ.ne_zero)).mpr
-      (Polynomial.prime_C_iff.mpr hϖ.prime)
-  exact (height_eq_one_and_ringKrullDim_eq_of_flat_canonical O (Polynomial O) hϖ _
-    (by rw [Ideal.minimalPrimes_eq_subsingleton_self]; rfl)).1
 
 end GlobalTheory

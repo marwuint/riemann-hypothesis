@@ -37,8 +37,6 @@ def pglCat (N : ℕ) : CommRingCat.{0} ⥤ Cat.{0,0} where
   map_id A := rfl
   map_comp f g := rfl
 
-abbrev BGL (N : ℕ) (S : Scheme.{0}) : Spc := ofCat (glCat N) ⨯ sch.obj S
-
 def PGL (N : ℕ) : Spc := ofCat (pglCat N)
 
 def Um.toGL (N : ℕ) (A : Type) [CommRing A] : Um N A ⥤ SingleObj (GL (Fin N) A) where
@@ -132,37 +130,6 @@ def blockNat (a b : ℕ) : prodCat (glCat a) (glCat b) ⟶ glCat (a + b) where
 def bsumOf {E : Spc} {a b : ℕ} (V : E ⟶ ofCat (glCat a)) (W : E ⟶ ofCat (glCat b)) : E ⟶ ofCat (glCat (a + b)) :=
   liftCat V W ≫ ofCatMap (blockNat a b)
 
-def bsum (a b : ℕ) : ofCat (glCat a) ⨯ ofCat (glCat b) ⟶ ofCat (glCat (a + b)) := bsumOf prod.fst prod.snd
-
-def tautOf {E : Spc} (C : CommRingCat.{0} ⥤ Cat.{0,0}) (A : CommRingCat.{0}) (V : E ⟶ cst (C.obj A)) (s : E ⟶ sch.obj (Spec A)) :
-    E ⟶ ofCat C where
-  app n :=
-    { app := fun U => TypeCat.ofHom fun x =>
-        (show Fin (n.unop.len + 1) ⥤ C.obj A from (V.app n).app U x) ⋙
-          (C.map ((Scheme.ΓSpecIso A).inv ≫ (show U.unop ⟶ Spec A from (s.app n).app U x).appTop)).toFunctor
-      naturality := fun U U' f => by
-        ext x
-        have h1 : (V.app n).app U' ((E.obj n).map f x) = (V.app n).app U x :=
-          ConcreteCategory.congr_hom ((V.app n).naturality f) x
-        have h2 : (s.app n).app U' ((E.obj n).map f x) = f.unop ≫ (show U.unop ⟶ Spec A from (s.app n).app U x) :=
-          ConcreteCategory.congr_hom ((s.app n).naturality f) x
-        change (show Fin (n.unop.len + 1) ⥤ C.obj A from (V.app n).app U' ((E.obj n).map f x)) ⋙
-          (C.map ((Scheme.ΓSpecIso A).inv ≫ (show U'.unop ⟶ Spec A from (s.app n).app U' ((E.obj n).map f x)).appTop)).toFunctor =
-          ((show Fin (n.unop.len + 1) ⥤ C.obj A from (V.app n).app U x) ⋙
-          (C.map ((Scheme.ΓSpecIso A).inv ≫ (show U.unop ⟶ Spec A from (s.app n).app U x).appTop)).toFunctor) ⋙
-            (C.map f.unop.appTop).toFunctor
-        rw [h1, h2, Scheme.Hom.comp_appTop, ← Category.assoc, C.map_comp]
-        rfl }
-  naturality n m f := by
-    ext U x
-    have h1 := ConcreteCategory.congr_hom (NatTrans.congr_app (V.naturality f) U) x
-    have h2 := ConcreteCategory.congr_hom (NatTrans.congr_app (s.naturality f) U) x
-    exact congrArg₂ (fun (y : Fin (m.unop.len + 1) ⥤ C.obj A) (t : U.unop ⟶ Spec A) =>
-      y ⋙ (C.map ((Scheme.ΓSpecIso A).inv ≫ t.appTop)).toFunctor) h1 h2
-
-def taut (N : ℕ) (A : Type) [CommRing A] : cst (SingleObj (GL (Fin N) A)) ⨯ sp A ⟶ ofCat (glCat N) :=
-  tautOf (glCat N) (CommRingCat.of A) prod.fst prod.snd
-
 def grpSimplex {Γ : Type} [Group Γ] {m : ℕ} (g : Fin m → Γ) : ComposableArrows (SingleObj Γ) m :=
   ComposableArrows.mkOfObjOfMapSucc (fun _ => SingleObj.star Γ) (fun i => (g i)⁻¹)
 
@@ -199,11 +166,6 @@ open Classical in
 def slantR (R : Type) [CommRing R] (Γ : Type) [Group Γ] (X : Scheme.{0}) (F : Shv R) (m : ℕ) (n : ℤ) :
     groupHomology (Rep.trivial R Γ R) m →+ H R (cst (SingleObj Γ) ⨯ sch.obj X) F (m + n) →+ H R (sch.obj X) F n :=
   if h : ∃ S, IsSlantMap R Γ X F m n S then h.choose else 0
-
-abbrev slant (q : ℕ) (Γ : Type) [Group Γ] (X : Scheme.{0}) (F : Shv (ZMod q)) (m : ℕ) (n : ℤ) :
-    groupHomology (Rep.trivial (ZMod q) Γ (ZMod q)) m →+
-      H (ZMod q) (cst (SingleObj Γ) ⨯ sch.obj X) F (m + n) →+ H (ZMod q) (sch.obj X) F n :=
-  slantR (ZMod q) Γ X F m n
 
 end GlobalTheory.EtC
 

@@ -17,7 +17,12 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordO
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LevelOfSplitAndLevelCoeffExist
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongrOfDvdModulus
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapsClosed
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsModuliSchemePolarizedAbelianLevelStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsModuliSchemePolarizedAbelianLevel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -63,39 +68,5 @@ theorem exists_imag_neg {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
   · refine ⟨-(H.rt : E), ?_, neg_ne_zero.2 h0, fun τ hτ => by rw [map_neg, hτ]; simpa using h⟩
     have : cc (-(H.rt : E)) = -cc (H.rt : E) := by simp [cc]
     rw [this, hcc]
-
-theorem exists_prime_jacobi_neg {d : ℕ} (hd : Odd d) (N : ℕ) :
-    ∃ p : ℕ, N < p ∧ p.Prime ∧ jacobiSym (-(d : ℤ)) p = 1 := by
-  obtain ⟨p, hp, hN, hm⟩ := Nat.exists_prime_gt_modEq_one (k := 4 * d) N (by have := hd.pos; omega)
-  have h4 : p % 4 = 1 := hm.of_mul_right d
-  have hpd : p ≡ 1 [MOD d] := hm.of_mul_left 4
-  have hodd : Odd p := Nat.odd_iff.2 (by omega)
-  refine ⟨p, hN, hp, ?_⟩
-  rw [jacobiSym.neg _ hodd, ZMod.χ₄_nat_one_mod_four h4, _root_.one_mul,
-    ← jacobiSym.quadratic_reciprocity_one_mod_four h4 hd,
-    jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast hpd), jacobiSym.one_left]
-
-theorem exists_split_cover {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Geo.Tor.Level H) :
-    ∃ (pd : ℕ) (J : Ideal (𝓞 E)) (l₂ : Geo.Tor.Level H) (c : Coeff l) (c₂ : Coeff l₂), pd.Prime ∧ 3 < pd ∧
-      c₂.F = c.F ∧ l.Dvd l₂ ∧ l₂.M = l.M * pd ∧ pd.Coprime l.M ∧ l₂.Mb = l.Mb * J ∧
-      J ⊔ J.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ ∧ l₂.A = l.A := by
-  have hM := l.three_le
-  obtain ⟨p, hN, hp, hj⟩ := exists_prime_jacobi_neg (d := H.d) (Nat.odd_iff.2 (by have := H.d_mod; omega)) l.M
-  have hco : p.Coprime l.M := (Nat.Prime.coprime_iff_not_dvd hp).2 fun h => by
-    have := Nat.le_of_dvd (by omega) h
-    omega
-  obtain ⟨J, h1, h2, h3⟩ := (GlobalTheory.exists_level_mul_split E H l).2 p hp (by omega) hj
-  obtain ⟨l₂, hd, hM₂, hMb, hA⟩ := (GlobalTheory.exists_level_mul_split E H l).1 p J (hp.odd_of_ne_two (by omega)) hco h1 h2 h3
-  let c₂ : Coeff l₂ := LevelExist.minCoeff l₂
-  have hz : zeta l.M' ∈ c₂.F := by
-    obtain ⟨k, hk⟩ := LevelExist.zeta_eq_pow_of_dvd (LevelExist.M'_pos l₂)
-      (show l.M' ∣ l₂.M' from Nat.lcm_dvd (hd.1.trans (Nat.dvd_lcm_left _ _)) (hd.2.2.trans (Nat.dvd_lcm_right _ _)))
-    rw [hk]
-    exact pow_mem c₂.zeta_mem k
-  have hle : KA l ≤ c₂.F := by
-    have := c₂.le
-    unfold KA at this ⊢
-    rwa [hA] at this
-  exact ⟨p, J, l₂, ⟨c₂.F, c₂.fin, c₂.conj, hz, hle⟩, c₂, hp, by omega, rfl, hd, hM₂, hco, hMb, h3, hA⟩
 
 end GlobalTheory.SpanInhab

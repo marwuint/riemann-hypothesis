@@ -128,10 +128,6 @@ theorem subst_single_var {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.Has
   rw [PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply hX hb, MvPowerSeries.subst_X hb]
   rfl
 
-theorem hasSubst_X_comp [Finite σ] (g : σ → τ) :
-    MvPowerSeries.HasSubst (fun s => (MvPowerSeries.X (g s) : MvPowerSeries τ K)) :=
-  MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => MvPowerSeries.constantCoeff_X _
-
 end Gen
 
 variable {l : ℕ} [Fact l.Prime]
@@ -714,67 +710,5 @@ theorem sum_beta_even : SumBeEven := by
   exact z_sum _ _ fun e _ => z_sgn hp _ _ (fun j => by fin_cases j <;> simp) (even3 hp hB)
 
 end Even2
-
-section Iff
-
-variable {p : ℕ} [Fact p.Prime]
-
-theorem intR_mul {ι K1 : Type} [Field K1] {R1 : Subring K1} {f g : MvPowerSeries ι K1} (hf : IntR R1 f)
-    (hg : IntR R1 g) : IntR R1 (f * g) := by
-  classical
-  intro n
-  rw [MvPowerSeries.coeff_mul]
-  exact Subring.sum_mem _ fun x _ => Subring.mul_mem _ (hf _) (hg _)
-
-theorem inParamK_map {ι K1 : Type} [Finite ι] [Field K1] [Algebra (K0 p) K1] (g : MvPowerSeries ι (K0 p)) :
-    inParamK p K1 (MvPowerSeries.map (algebraMap (K0 p) K1) g) =
-      MvPowerSeries.map (algebraMap (K0 p) K1) (inParam p g) := by
-  unfold inParamK inParam
-  rw [MvPowerSeries.map_subst hasSubst_log]
-  congr 1
-  funext i
-  rw [PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)),
-    MvPowerSeries.map_X]
-
-theorem inParamK_mul {ι K1 : Type} [Finite ι] [Field K1] [Algebra (K0 p) K1] (f g : MvPowerSeries ι K1) :
-    inParamK p K1 (f * g) = inParamK p K1 f * inParamK p K1 g := by
-  unfold inParamK
-  exact MvPowerSeries.subst_mul (MvPowerSeries.hasSubst_of_constantCoeff_zero
-    fun i => PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) _ (by
-      rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
-        PowerSeries.coeff_zero_eq_constantCoeff_apply, cc_log, map_zero])) f g
-
-theorem first_kernel_general_iff : FirstKernelGeneratorIff := by
-  intro p _ hp ι _ K1 _ _ R1 hW be Th
-  refine ⟨fun h => ?_, fun h => first_kernel_of_sum p ι K1 R1 be Th h.1 h.2.1 h.2.2⟩
-  obtain ⟨Ph, U, hTh, hU, -, hB, hPS⟩ := h
-  change Simeq p Ph (sumBe p be) at hPS
-  refine ⟨hB, sum_beta_even p hp ι be hB, ?_⟩
-  have hS0 : MvPowerSeries.constantCoeff (sumBe p be : MvPowerSeries (ι ⊕ ι) (K0 p)) = 0 := cc_sumBe (cc_be hB)
-  have hP0 : MvPowerSeries.constantCoeff Ph = 0 := by
-    have := hPS.1
-    rwa [map_sub, hS0, sub_zero] at this
-  have hz := z_neg ((simeq_iff_zero Ph _).1 hPS)
-  obtain ⟨-, v, -, hv⟩ := hz
-  rw [sub_zero, neg_sub] at hv
-  have hD0 : MvPowerSeries.constantCoeff (sumBe p be - Ph : MvPowerSeries (ι ⊕ ι) (K0 p)) = 0 := by
-    rw [map_sub, hS0, hP0, sub_zero]
-  have key : Th * MvPowerSeries.map (algebraMap (K0 p) K1) (expS p (sumBe p be)) =
-      U * MvPowerSeries.map (algebraMap (K0 p) K1) (expS p (sumBe p be - Ph)) := by
-    rw [hTh, sub_eq_add_neg, expS_add' _ _ hS0 (by rw [map_neg, hP0, neg_zero]), map_mul]
-    ring
-  rw [key, inParamK_mul, inParamK_map, inParam_expS _ hD0, hv]
-  refine intR_mul hU fun n => ?_
-  rw [MvPowerSeries.coeff_map, ← map_one (MvPowerSeries.map (algebraMap (WW p) (K0 p))), ← map_add,
-    MvPowerSeries.coeff_map]
-  exact hW _
-
-theorem first_kernel_of_orthogonal : FirstKernelGeneratorOfOrthogonal := by
-  intro l _ h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN ι n _ _ _ _ f f' hP be hB hTie Θ hI
-  letI := Formalism.L2.G.Pend.wittFractionAlgebraCp l
-  exact first_kernel_of_sum l ι ℂ_[l] (Formalism.L2.G.Pend.OcC l) be _ hB (sum_beta_even l (by omega) ι be hB)
-    (hyperbolic_of_orthogonal l h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN ι n f f' hP be (cc_be hB) hTie Θ hI)
-
-end Iff
 
 end Formalism.L2.KerInert.K1

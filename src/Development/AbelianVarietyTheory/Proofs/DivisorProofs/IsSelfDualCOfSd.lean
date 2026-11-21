@@ -333,7 +333,7 @@ theorem mem_of_char_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
       rfl
   rw [e]
   refine add_mem (finTens_mem_latO (one_mem_intAf _) ?_) hu₀
-  refine (GlobalTheory.T.rationalHermitianRankOneLattice_selfDual D S T ΛS ΛT hS hT (GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S ΛS hS) _).2 fun ℓ hℓ => ?_
+  refine (_root_.GlobalTheory.LatVac.latRat_selfDual D S T ΛS ΛT hS hT (_root_.GlobalTheory.LatVacDual.dualFamily D S ΛS hS) _).2 fun ℓ hℓ => ?_
   have hl := finTens_mem_latO (one_mem_intAf _) hℓ
   have h1 := h _ hℓ
   rw [e, symplO_add_left, ψ.map_add_eq_mul, char_sympl_eq_one hψ hS hT hu₀ hl, mul_one, symplO_finTens,

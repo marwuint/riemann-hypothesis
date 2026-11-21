@@ -75,9 +75,6 @@ theorem transfer_smooth_of_regularity (hR : GRegJ) : JfSmoothBuilt := by
   refine ⟨fun g₀ hg₀ => hS g₀ (hsub g₀ hg₀), fun g hg n hn => hL g (hsub g hg) n hn,
     fun g hg n hn => hRt g (hsub g hg) n hn, fun g hg h hh h' hh' => hU g (hsub g hg) h hh h' hh'⟩
 
-theorem model_place_of_regularity (hR : GRegJ) (h3 : ModelPlaceBuilt3) : Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2 :=
-  modelPlaceBuilt2_of_3' (transfer_smooth_of_regularity hR) h3
-
 end
 
 end Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity

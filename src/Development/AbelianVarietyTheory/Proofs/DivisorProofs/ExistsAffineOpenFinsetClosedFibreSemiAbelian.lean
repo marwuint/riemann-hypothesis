@@ -1,11 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteEtaleSectionOfSmoothClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenDescendingFiniteFreeBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenTranslationsMovingClosedPointsIntoOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateBaseChangeAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteEtaleSectionOfSmoothClosedFibre
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenDescendingFiniteFreeBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenTranslationsMovingClosedPointsIntoOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateBaseChangeAffineOpen
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -53,10 +55,10 @@ theorem exists_affine_open_of_finset_closedFibre :
     (show x₀ ∈ (⊤ : G.left.Opens) from trivial)
 
   obtain ⟨O, ⟨u, huO, hu⟩, hmove⟩ :=
-    GlobalTheory.T.exists_open_translations_moving_closedPoints_into_open R G hG V ⟨x₀, hxV, hs x₀ hx₀⟩ s' hs'
+    _root_.GlobalTheory.Mum.exists_open_mul_mem R G hG V ⟨x₀, hxV, hs x₀ hx₀⟩ s' hs'
 
   obtain ⟨R₁, _, _, _, ρ, a, hfin, het, ha, haO⟩ :=
-    GlobalTheory.T.exists_finiteEtale_section_of_smooth_closedFibre R hR G hG.smooth O ⟨u, huO, hu⟩
+    _root_.GlobalTheory.Mum.exists_finEtale_section_of_smooth R hR G hG.smooth O ⟨u, huO, hu⟩
   letI : Algebra R R₁ := ρ.toAlgebra
   haveI : Module.Finite R R₁ := hfin.2.2
   haveI : Algebra.Etale R R₁ := het
@@ -64,11 +66,11 @@ theorem exists_affine_open_of_finset_closedFibre :
   haveI : Module.Free R R₁ := Module.free_of_flat_of_isLocalRing
 
   let A : Over.mk (spMap ρ) ⟶ G := Over.homMk a ha
-  obtain ⟨W, hW, hzW⟩ := GlobalTheory.T.exists_affineOpen_translate_baseChange R R₁ ρ G V hV A
+  obtain ⟨W, hW, hzW⟩ := _root_.GlobalTheory.Mum.translate_baseChange_affineOpen R R₁ ρ G V hV A
 
   have hpb : IsPullback (pullback.fst G.hom (spMap ρ)) (pullback.snd G.hom (spMap ρ)) G.hom
       (spMap (algebraMap R R₁)) := IsPullback.of_hasPullback G.hom (spMap ρ)
-  refine GlobalTheory.T.exists_affineOpen_descending_finiteFreeBaseChange R R₁ G.left (pullback G.hom (spMap ρ)) G.hom (pullback.snd _ _) (pullback.fst _ _)
+  refine _root_.GlobalTheory.Mum.exists_isAffineOpen_of_preimage_le_affine R R₁ G.left (pullback G.hom (spMap ρ)) G.hom (pullback.snd _ _) (pullback.fst _ _)
     hpb inferInstance inferInstance W hW s' ?_
   intro z hz
   let Ω := (pullback G.hom (spMap ρ)).residueField z

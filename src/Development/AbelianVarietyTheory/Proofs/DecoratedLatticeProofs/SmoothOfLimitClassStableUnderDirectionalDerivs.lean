@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DifferentiableAtLimitOfDirectionalDerivsConvergeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DifferentiableAtLimitOfDirectionalDerivsConverge
 open scoped ContDiff Topology
 
 namespace GlobalTheory
@@ -12,7 +12,7 @@ theorem contDiff_of_class_tendstoLocallyUniformly : ∀ {E : Type} [NormedAddCom
     intro φ hφ
     obtain ⟨g, hg, hlim, hd⟩ := hP φ hφ
     choose α hα χ hχ hlim' using hd
-    have h := GlobalTheory.T.differentiableAt_limit_of_directional_derivs_converge v c hc φ g (fun a y => α a y * φ y + χ a y) hg hlim hlim'
+    have h := _root_.GlobalTheory.differentiableAt_of_tendstoLocallyUniformly_directional v c hc φ g (fun a y => α a y * φ y + χ a y) hg hlim hlim'
     refine ⟨fun y => (h y).1, α, χ, hα, hχ, ?_⟩
     funext y
     ext x

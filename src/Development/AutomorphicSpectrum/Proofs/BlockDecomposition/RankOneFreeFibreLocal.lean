@@ -29,7 +29,7 @@ theorem isFibreFamily_field {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   haveI := h2
   haveI := h3
   haveI := h4
-  obtain ⟨-, -, -, hT2, -, htr, -, hBor, -, hgr⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ h R
+  obtain ⟨-, -, -, hT2, -, htr, -, hBor, -, hgr⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ h R
   haveI := hT2
   haveI : BorelSpace (HermR R σ 1) := ⟨rfl⟩
   obtain ⟨hc1, hc2, hc3⟩ := hm
@@ -64,6 +64,6 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.Free
 theorem isFibreFamily_length : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ (m : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)), IsGramFibFree (Fv F v) σ J 1 (coordW (Fv F v) b lam 1 M) (coordHerm (Fv F v) σ b lam 1) m → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily (coordW (Fv F v) b lam 1 M) (fun X : Fin 1 → Fin M → Fv F v ⊗[F] E => algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (gramR (Fv F v) σ J X 0 0)) id {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} lam Set.univ (fun s => m (hermScal (Fv F v) σ s)) := by
   intro F E _ _ _ _ _ σ hσ M J hJ d b v lam hlam m hm
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  exact LengthFibre.isFibreFamily_field (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) hσ b lam hlam.1 m hm
+  exact LengthFibre.isFibreFamily_field (Fv F v) (_root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) hσ b lam hlam.1 m hm
 
 end GlobalTheory.CompanionTheory.WeilSiegel.Free

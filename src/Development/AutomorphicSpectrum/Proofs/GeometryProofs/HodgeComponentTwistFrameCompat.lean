@@ -1,7 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorIffStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EqOfEqGenericProjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorIff
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.AdelicGroupAlgebraActionInjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EqOfEqGenericProjective
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 namespace GlobalTheory.CompanionTheory.Ar.TwistInterior
@@ -40,7 +45,7 @@ theorem lift_transfer {X X' W W' V : Scheme.{0}} {Ω : Type} [Field Ω] {R : Typ
   have hxu : ξp ≫ u' = x' := by
     rw [← cancel_mono j', Category.assoc, hu', ← Category.assoc, hξp, hf']
   have heq : u' ≫ Ψ.inv ≫ j = X'.fromSpecStalk p ≫ e.hom ≫ f := by
-    refine GlobalTheory.T.eq_of_eq_generic_projective R (Spec (X'.presheaf.stalk p)) W sW Ω ξp _ _ hproj hgp ?_
+    refine _root_.GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic R (Spec (X'.presheaf.stalk p)) W sW Ω ξp _ _ hproj hgp ?_
     have h1 : ξp ≫ u' ≫ Ψ.inv ≫ j = x ≫ j := by rw [reassoc_of% hxu, reassoc_of% hx]
     have h2 : ξp ≫ X'.fromSpecStalk p ≫ e.hom ≫ f = x ≫ j := by rw [reassoc_of% hξp, reassoc_of% hξ, hf]
     rw [h1, h2]
@@ -83,8 +88,8 @@ theorem interior_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     apply pullback.hom_ext
     · simp only [ΦF, Category.assoc, pullback.lift_fst, hfst]
     · simp only [ΦF, Category.assoc, pullback.lift_snd, hsnd]
-  obtain ⟨hjY, hA⟩ := GlobalTheory.T.hodge_cpt_interior_iff E H D l Xo c O β Y S Ω K J y A (z ≫ e.hom) hβ
-  obtain ⟨hjY', hA'⟩ := GlobalTheory.T.hodge_cpt_interior_iff E H D l Xo c O' β' Y' S Ω K J y A' z hβ'
+  obtain ⟨hjY, hA⟩ := _root_.GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor E H D l Xo c O β Y S Ω K J y A (z ≫ e.hom) hβ
+  obtain ⟨hjY', hA'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.IntOpen.interior_iff_factor E H D l Xo c O' β' Y' S Ω K J y A' z hβ'
   have hc : centre (z ≫ e.hom) = e.hom (centre z) := rfl
   rw [hA, hA', hc]
   constructor

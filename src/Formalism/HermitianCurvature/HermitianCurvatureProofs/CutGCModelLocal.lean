@@ -37,15 +37,6 @@ theorem locOp_zero : LocOpQ (0 : Module.End ℂ (MA.SmQ r TT)) :=
 theorem locOp_one : LocOpQ (1 : Module.End ℂ (MA.SmQ r TT)) :=
   fun _ _ _ _ _ hag q hq hqV => hag q hq hqV
 
-theorem locOp_sum {ι : Type} (s : Finset ι) (T : ι → Module.End ℂ (MA.SmQ r TT)) (hT : ∀ i ∈ s, LocOpQ (T i)) :
-    LocOpQ (∑ i ∈ s, T i) := by
-  classical
-  revert hT
-  refine Finset.induction_on s (fun _ => by simpa using locOp_zero) ?_
-  intro i s hi ih hT
-  rw [Finset.sum_insert hi]
-  exact locOp_add (hT i (Finset.mem_insert_self i s)) (ih fun j hj => hT j (Finset.mem_insert_of_mem hj))
-
 theorem locOp_mulOp (f : MA.SmQ r TT) : LocOpQ ((MA.anQ r TT).mulOp f) := by
   intro h₁ h₂ c V hV hag q hq hqV
   show ((f * h₁ : MA.SmQ r TT) : MA.Qp r TT → ℂ) q = ((f * h₂ : MA.SmQ r TT) : MA.Qp r TT → ℂ) q
@@ -198,8 +189,6 @@ theorem locOp_dzb : LocOpQ (MA.DQ P).dzbP.1 := by
   show LocOpQ ((MA.DQ P).mulOp ((MA.DQ P).inv ((MA.DQ P).x M.vzb)) * (MA.DQ P).ev M.vzb)
   exact locOp_mul (locOp_mulOp _) (locOp_euler M.vzb (by simp [M.vzb]))
 
-theorem locOp_fnP (f fb : (MA.DQ P).R) : LocOpQ ((MA.DQ P).fnP f fb).1 := locOp_mulOp f
-
 theorem entOK_nab : EntOK P (MA.nabA P (MA.DQ P)) := by
   refine entOK_diag P _ fun π => ?_
   show LocOpQ ((MA.DQ P).dzP.1 + (M.aC P π : ℂ) • ((MA.DQ P).mulOp ((MA.DQ P).x M.vzb) *
@@ -213,10 +202,6 @@ theorem entOK_nabs : EntOK P (MA.nabsA P (MA.DQ P)) := by
   refine locOp_add ?_ (locOp_smul _ (locOp_mul (locOp_mulOp _) (locOp_mulOp _)))
   rw [show -(MA.DQ P).dzbP.1 = (-1 : ℂ) • (MA.DQ P).dzbP.1 by rw [neg_one_smul]]
   exact locOp_smul _ (locOp_dzb P)
-
-theorem entOK_smulA (z : ℂ) {A : MA.A P (MA.DQ P)} (hA : EntOK P A) : EntOK P (z • A) := by
-  intro π π'
-  exact locOp_smul z (hA π π')
 
 private theorem locOpQ_neg {r : ℕ} {TT : ℝ} {T : Module.End ℂ (MA.SmQ r TT)} (hT : LocOpQ T) :
     LocOpQ (-T) := by

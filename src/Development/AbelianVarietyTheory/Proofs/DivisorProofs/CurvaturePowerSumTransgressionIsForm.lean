@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvaturePowerPullbackHolomorphicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernTransgressionFormHolomorphicPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvaturePowerSumTransgressionSmoothDbarClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramConnectionPairChernFieldsLocalFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvaturePowerPullbackHolomorphic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernTransgressionFormHolomorphicPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvaturePowerSumTransgressionSmoothDbarClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramConnectionPairChernFieldsLocalFrame
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.L2DbarEstimates (V)
@@ -84,20 +84,20 @@ theorem isForm_pow_trans : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : Ho
   intro M _ n A r _ _ G G' hG k
   have sG : ∀ y, SmoothUnitAt A (G y) y := fun y => (hG.smooth y).1
   have sG' : ∀ y, SmoothUnitAt A (G' y) y := fun y => (hG.smooth y).2
-  have near := GlobalTheory.T.gramConnectionPair_chernFields_local_frame M n A r G G' hG
+  have near := _root_.GlobalTheory.ChernCalc.loc_fields_near M n A r G G' hG
   constructor
   · refine ⟨fun i S => ?_, fun x x' h => ?_⟩
     · intro v hv
       let x : A.Pt := ⟨(i, (A.e i).symm v), (A.e i).map_target hv⟩
       have hx : x.crd = v := (A.e i).right_inv hv
       obtain ⟨h1, h2⟩ := smooth_crd A G sG x
-      have hs := (GlobalTheory.T.curvature_power_sum_transgression_smooth_dbar_closed n r _ _ x.crd h1 h2 h1 h2 k).1 S
+      have hs := (_root_.GlobalTheory.ChernCalc.powAt_transAt_smooth n r _ _ x.crd h1 h2 h1 h2 k).1 S
       have key : ContDiffAt ℝ ∞ (fun v => (bas n).repr (A.loc (fld A (powFld A G k)) i v) S) x.crd :=
         hs.congr_of_eventuallyEq ((near x k).mono fun u hu => congrArg (fun a => (bas n).repr a S) hu.1)
       rw [hx] at key
       exact key.contDiffWithinAt
     · obtain ⟨h1, h2⟩ := smooth_change A G sG x x' h
-      have hc := ((GlobalTheory.T.curvature_power_pullback_holomorphic n n r _ (x'.ch ∘ x.ch.symm) x.crd (contDiffAt_change A x x' h) h1 h2).2 k).1
+      have hc := ((_root_.GlobalTheory.ChernCalc.curv_pow_chern_comp_holo n n r _ (x'.ch ∘ x.ch.symm) x.crd (contDiffAt_change A x x' h) h1 h2).2 k).1
       show (powAt (fun v => G x.pt (x.ch.symm v)) x.crd k : Alt n) =
         pull (fderiv ℂ (x'.ch ∘ x.ch.symm) x.crd) (powAt (fun v => G x'.pt (x'.ch.symm v)) x'.crd k : Alt n)
       rw [powAt_congr (germ_change A G x x' h), hc, change_crd A x x' h]
@@ -107,14 +107,14 @@ theorem isForm_pow_trans : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : Ho
       have hx : x.crd = v := (A.e i).right_inv hv
       obtain ⟨h1, h2⟩ := smooth_crd A G sG x
       obtain ⟨h1', h2'⟩ := smooth_crd A G' sG' x
-      have hs := (GlobalTheory.T.curvature_power_sum_transgression_smooth_dbar_closed n r _ _ x.crd h1 h2 h1' h2' k).2.2 S
+      have hs := (_root_.GlobalTheory.ChernCalc.powAt_transAt_smooth n r _ _ x.crd h1 h2 h1' h2' k).2.2 S
       have key : ContDiffAt ℝ ∞ (fun v => (bas n).repr (A.loc (transFld A G G' k) i v) S) x.crd :=
         hs.congr_of_eventuallyEq ((near x k).mono fun u hu => congrArg (fun a => (bas n).repr a S) hu.2.2)
       rw [hx] at key
       exact key.contDiffWithinAt
     · obtain ⟨h1, h2⟩ := smooth_change A G sG x x' h
       obtain ⟨h1', h2'⟩ := smooth_change A G' sG' x x' h
-      have hc := GlobalTheory.T.chernTransgressionForm_holomorphic_pullback n n r _ _ (x'.ch ∘ x.ch.symm) x.crd (contDiffAt_change A x x' h) h1 h2 h1' h2' k
+      have hc := _root_.GlobalTheory.ChernCalc.transAt_comp_holo n n r _ _ (x'.ch ∘ x.ch.symm) x.crd (contDiffAt_change A x x' h) h1 h2 h1' h2' k
       show transAt (fun v => G x.pt (x.ch.symm v)) (fun v => G' x.pt (x.ch.symm v)) x.crd k =
         pull (fderiv ℂ (x'.ch ∘ x.ch.symm) x.crd)
           (transAt (fun v => G x'.pt (x'.ch.symm v)) (fun v => G' x'.pt (x'.ch.symm v)) x'.crd k)

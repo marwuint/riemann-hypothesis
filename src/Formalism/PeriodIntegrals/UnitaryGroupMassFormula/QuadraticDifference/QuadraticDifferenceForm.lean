@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.PeriodIntegrals.QuadDiff
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadDiffOf
 
 noncomputable section

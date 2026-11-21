@@ -1,7 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.LocPoly
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RealCusp
+import GroundTheory.AutomorphicForms.ReductionSplitting
+import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaPair
 import GroundTheory.AutomorphicForms.GL2.GJMatrixAdelic
 import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Height
+
 open NumberField IsDedekindDomain GlobalTheory.HenQ
 open GlobalTheory.CuspRep (GA Af finGL)
 
@@ -24,7 +27,5 @@ theorem sFin_fst (x : Af K) : (GlobalTheory.CuspRep.sFin K x).1 = 0 := rfl
 end GlobalTheory.HenQ
 
 namespace GlobalTheory.HenQ
-
-variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 end GlobalTheory.HenQ

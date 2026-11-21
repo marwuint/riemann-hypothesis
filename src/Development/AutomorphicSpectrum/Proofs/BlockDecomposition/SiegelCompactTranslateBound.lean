@@ -4,11 +4,11 @@ import Development.WeilBound.ThetaLifts.Reductions.SiegelPar
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqZeroOfIsIntegralMulOfSmall
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GoodConstOfAniso
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumFrameIdem
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusArchimedeanFrameActionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusArchimedeanFrameAction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeFrameWeightRatioBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicFrameBlockZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicFrameBlockZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFiniteAdelicDenominatorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameBlockZeroStabilizesFlagStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameBlockZeroStabilizesFlag
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdeleSplitSndDiagonal
 
 noncomputable section
@@ -116,7 +116,7 @@ theorem block_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
       rw [map_sum]; rfl
     rw [this, sum_frameIdem, map_one]
   have hTor : ∀ β, A * P β = ((frameWt t β : ℝ) : ℂ) • P β := fun β =>
-    GlobalTheory.T.torus_archimedean_frame_action F E σ h n J hJ r X Y hW t a ha ht.1 w τ β
+    _root_.GlobalTheory.CompanionTheory.RapidDecay.torus_mul_frameIdem F E σ h n J hJ r X Y hW t a ha ht.1 w τ β
   have hA : A = ∑ β, ((frameWt t β : ℝ) : ℂ) • P β := by
     calc A = A * ∑ β, P β := by rw [hP, Matrix.mul_one]
       _ = _ := by rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun β _ => hTor β
@@ -140,7 +140,7 @@ theorem block_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
       (P α * G * P α' * M₁ * P β' * G' * P β)) u v‖ ≤ K * Bt / ratio t s := fun α' β' => by
     have hnn : 0 ≤ K * Bt / ratio t s := div_nonneg (mul_nonneg hK0 hBt0) hr.le
     by_cases h1 : frameLev s α' = 2
-    · have h0 : P α * G * P α' = 0 := GlobalTheory.T.minimal_parabolic_frame_block_zero F E σ h n J hJ r X Y hW p hp' w τ s α α' hα h1
+    · have h0 : P α * G * P α' = 0 := _root_.GlobalTheory.CompanionTheory.RapidDecay.minPar_frame_block_eq_zero F E σ h n J hJ r X Y hW p hp' w τ s α α' hα h1
       simpa [h0] using hnn
     by_cases h2 : frameLev s β' = 2
     · have h3 : frameLev s α' < frameLev s β' := by
@@ -157,7 +157,7 @@ theorem block_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
       calc _ ≤ K / ratio t s * Bt := mul_le_mul h4 h5 (norm_nonneg _) (div_nonneg hK0 hr.le)
         _ = _ := by ring
     · have h3 : frameLev s β' < 2 := lt_of_le_of_ne (frameLev_le s β') h2
-      have h0 : P β' * G' * P β = 0 := GlobalTheory.T.minimal_parabolic_frame_block_zero F E σ h n J hJ r X Y hW p⁻¹ hp'' w τ s β' β h3 hβ
+      have h0 : P β' * G' * P β = 0 := _root_.GlobalTheory.CompanionTheory.RapidDecay.minPar_frame_block_eq_zero F E σ h n J hJ r X Y hW p⁻¹ hp'' w τ s β' β h3 hβ
       have h7 : P α * G * P α' * M₁ * P β' * G' * P β = 0 := by
         simp only [Matrix.mul_assoc] at h0 ⊢
         simp [h0]
@@ -211,7 +211,7 @@ theorem flag_key : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
         rw [← mul_div_assoc, div_lt_one hr0]
         nlinarith
       exact pow_lt_one₀ (by positivity) h2 Module.finrank_pos.ne'
-  exact GlobalTheory.T.frame_block_zero_stabilizes_flag E (σ : E →+* E) n r J X Y (gram_YX hcm hJ hW) γ.1.1 j hzero l hl
+  exact _root_.GlobalTheory.CompanionTheory.RapidDecay.stabilises_flag_span E (σ : E →+* E) n r J X Y (gram_YX hcm hJ hW) γ.1.1 j hzero l hl
 
 end GlobalTheory.CompanionTheory.FlagKey
 

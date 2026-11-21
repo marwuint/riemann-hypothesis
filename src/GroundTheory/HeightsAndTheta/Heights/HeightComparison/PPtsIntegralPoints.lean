@@ -165,32 +165,6 @@ theorem homogProof : HomogStatement := by
   rw [Geo.ptsIntegral, dif_pos hex]
   exact ptsIntegralAt_eq P hP g hg _ hex.choose_spec
 
-example : Geo.IsMultiHomogIdeal (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint) ∧
-    Finite (projPts (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint)) ∧
-    ∀ (c : Unit → ℂ) (z : Coord (fun _ : Unit ↦ 1) → ℂ), (∀ k, c k ≠ 0) →
-      z ∈ Geo.mcPts (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint) →
-      (fun w : Coord (fun _ : Unit ↦ 1) → ℂ ↦ ‖w ⟨(), 0⟩‖ / ‖w ⟨(), 1⟩‖) (fun p ↦ c p.1 * z p) =
-        (fun w : Coord (fun _ : Unit ↦ 1) → ℂ ↦ ‖w ⟨(), 0⟩‖ / ‖w ⟨(), 1⟩‖) z := by
-  refine ⟨OrbitCurve.isMultiHomogIdeal_orbitIdeal samplePoint,
-    (Nat.card_pos_iff.mp (OrbitDegree.full Unit _ samplePoint samplePoint_blockNonzero)).2,
-    fun c z hc _ ↦ ?_⟩
-  simp only [norm_mul]
-  exact mul_div_mul_left _ _ (norm_ne_zero_iff.mpr (hc ()))
-
-section Dependence
-
-open MvPolynomial
-
-noncomputable def affPtIdeal : Ideal (Geo.MRing (fun _ : Unit ↦ Fin 2)) :=
-  Ideal.span {X ⟨(), 0⟩ - 2, X ⟨(), 1⟩ - 1}
-
-noncomputable def affPt : (Σ _ : Unit, Fin 2) → ℂ := fun p ↦ if p.2 = 0 then 2 else 1
-
-noncomputable def affProj (s : ℂ) : (((k : Unit) → Fin 2) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ) :=
-  s • LinearMap.pi fun _ ↦ LinearMap.proj fun _ ↦ 0
-
-end Dependence
-
 end PtsIntegralPoints
 
 end GroundTheory.Heights₂.Heights

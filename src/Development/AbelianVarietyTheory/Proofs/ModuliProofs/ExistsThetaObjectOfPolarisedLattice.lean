@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubeLineBundleAdjointIffHermFormAdjointStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AppellHumbertUniformisationRiemannFormStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SymplecticTorsionSystemIsGeometricBasisStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueIsMonHomOfLinearMapLatticeAnyDimStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NormalisedPolarisationStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAppellHumbertFrameOfPulledBiextensionStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AppellHumbertUniformisationRiemannForm
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SymplecticTorsionSystemIsGeometricBasis
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueIsMonHomOfLinearMapLatticeAnyDim
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NormalisedPolarisation
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAppellHumbertFrameOfPulledBiextension
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalTorusAlgebraic
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
@@ -94,7 +94,7 @@ theorem thetaObject_of_lattice :
     hspan hH hpos (fun a c => by rw [← he a, ← he c, him]; simp) hbij
   subst hg
   have hmem : ∀ z, z ∈ u.Λ ↔ z ∈ Q.range := fun z => by rw [hΛ]; rfl
-  have hhom := fun j => GlobalTheory.T.existsUnique_isMonHom_of_linearMap_lattice_anyDim h1 h2 h3 h4 P P P.L P.L u u (F j) (fun z hz => by
+  have hhom := fun j => _root_.GlobalTheory.existsUnique_isMonHom_of_map_lattice h1 h2 h3 h4 P P P.L P.L u u (F j) (fun z hz => by
     obtain ⟨x, rfl⟩ := (hmem z).1 hz
     exact (hmem _).2 ⟨_, (hF j x).symm⟩)
   choose act hact using fun j => (hhom j).exists
@@ -107,7 +107,7 @@ theorem thetaObject_of_lattice :
     haveI := P.isAb.comm
     haveI := (hact w).1
     haveI := (hact w').1
-    refine (GlobalTheory.T.existsUnique_isMonHom_of_linearMap_lattice_anyDim h1 h2 h3 h4 P P P.L P.L u u LinearMap.id (fun z hz => hz)).unique ⟨?_, fun z => ?_⟩
+    refine (_root_.GlobalTheory.existsUnique_isMonHom_of_map_lattice h1 h2 h3 h4 P P P.L P.L u u LinearMap.id (fun z hz => hz)).unique ⟨?_, fun z => ?_⟩
       ⟨inferInstance, fun z => by simp⟩
     · rw [Hom.mul_def]; infer_instance
     · rw [MonObj.comp_mul, ← (hact w).2, ← (hact w').2, ← u.ex_add, ← LinearMap.add_apply, hFF]
@@ -116,14 +116,14 @@ theorem thetaObject_of_lattice :
     rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩
     rw [hF, hF, him, him, hadj]
   have hiso := (GlobalTheory.T.cubeLineBundle_adjoint_iff_hermForm_adjoint h1 h2 h3 h4 P u Hm χ _ _ _ _ hAH (hact w).1 (hact w').1 (hact w).2 (hact w').2).2 hadjH
-  obtain ⟨m1, m2, m3, m4, m5, -, m7, m8⟩ := GlobalTheory.T.normalised_polarisation' h1 h3 ℂ P _ _ (hact w).1 (hact w').1 hmul hiso _ rfl
-  obtain ⟨Ef, hEf, -⟩ := GlobalTheory.T.appellHumbert_uniformisation_riemannForm h1 h2 h3 h4 P u Hm χ hAH
-  obtain ⟨u₁, χ₁, hex, hΛ₁, hAH₁, hχ₁⟩ := GlobalTheory.T.exists_appellHumbert_frame_of_pulled_biextension h1 h2 h3 h4 P u Hm χ Ef (act w) (F w) (F w') hAH hEf
+  obtain ⟨m1, m2, m3, m4, m5, -, m7, m8⟩ := _root_.GlobalTheory.PrimNormPol.normalised_polarisation h1 h3 ℂ P _ _ (hact w).1 (hact w').1 hmul hiso _ rfl
+  obtain ⟨Ef, hEf, -⟩ := _root_.GlobalTheory.AnyAppellHumbert.isAH_properties h1 h2 h3 h4 P u Hm χ hAH
+  obtain ⟨u₁, χ₁, hex, hΛ₁, hAH₁, hχ₁⟩ := _root_.GlobalTheory.PulledBiextFrame.exists_appellHumbert_frame h1 h2 h3 h4 P u Hm χ Ef (act w) (F w) (F w') hAH hEf
     (hact w).2 hFF hadjH
   let P₁ : Out.PolAV (Sp ℂ) :=
     { A := P.A, isAb := P.isAb, g := P.g, smoothDim := P.smoothDim, L := cubeLB P.A ![𝟙 P.A, act w] P.L,
       isLB := m1, rigid := m2, sym := m3, ample := m4, ktriv := m5 }
-  obtain ⟨Ef₁, hEf₁, -, -, -, -, -, -, hweil⟩ := GlobalTheory.T.appellHumbert_uniformisation_riemannForm h1 h2 h3 h4 P₁ u₁ Hm χ₁ hAH₁
+  obtain ⟨Ef₁, hEf₁, -, -, -, -, -, -, hweil⟩ := _root_.GlobalTheory.AnyAppellHumbert.isAH_properties h1 h2 h3 h4 P₁ u₁ Hm χ₁ hAH₁
   have hmem₁ : ∀ z, z ∈ u₁.Λ ↔ z ∈ Q.range := fun z => by rw [hΛ₁]; exact hmem z
   have hk : (k : ℂ) ≠ 0 := by simpa using (b.unit.map em).ne_zero
   have hk0 : 0 < k := Nat.pos_of_ne_zero (by rintro rfl; simp at hk)
@@ -140,7 +140,7 @@ theorem thetaObject_of_lattice :
     rw [show (hermForm Hm _ _).im = _ from him (lam i) (lam j), Int.cast_inj] at h5
     rw [h5, hlam]
     simp
-  have hb := GlobalTheory.T.symplectic_torsion_system_is_geometric_basis h1 ℂ P₁ k (Units.map em.toMonoidHom b.ζ) pt hk
+  have hb := _root_.GlobalTheory.symplectic_system_torsion_basis h1 ℂ P₁ k (Units.map em.toMonoidHom b.ζ) pt hk
     (IsPrimitiveRoot.coe_units_iff.1 (b.prim ℂ em)) htor hpair
   refine ⟨{ A := P.A, ab := P.isAb, dim := P.smoothDim, L := cubeLB P.A ![𝟙 P.A, act w] P.L,
             isLB := m1, rigid := m2, sym := m3, ample := m4, ktriv := m5, pt := pt, torsion := htor, bij := hb,

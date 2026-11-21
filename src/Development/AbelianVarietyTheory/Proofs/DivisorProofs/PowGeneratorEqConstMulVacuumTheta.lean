@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.Reading
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsLetterRowWeightDictionary
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FockHxDifferentiable
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsIsNabUncond
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnalyticFibreDescriptionUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnalyticFibreDescriptionUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelOneThetaNeZeroOnIdealHalfLatticeStatement
 
 namespace GlobalTheory.AdTh.GenConst
@@ -309,7 +309,7 @@ theorem GlobalTheory.AdTh.prod_gen_eq_const_mul_thA : Formalism.MainNotions.Modu
   obtain ⟨A, ϑ, hϑ, h1⟩ := h x hux
   refine ⟨⟨ϑ, A, hϑ⟩, ?_⟩
   rintro ϑ' ⟨A', hϑ'⟩
-  have h2 := ((GlobalTheory.T.analyticFibreDescription_unique E H Dw l Xo c r g _ bas idx e x.1 _ _ A A' hs x.2 hL).2 ϑ').2 hϑ'
+  have h2 := ((_root_.GlobalTheory.AnUniq.anFib_unique E H Dw l Xo c r g _ bas idx e x.1 _ _ A A' hs x.2 hL).2 ϑ').2 hϑ'
   obtain rfl : ϑ = ϑ' :=
     (reads_existsUnique_theta E H Dw l Xo c r g _ bas idx e x.1 _ _ A hs x.2 hL 1 _).1.unique hϑ h2
   exact h1

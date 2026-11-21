@@ -1,12 +1,15 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianMeasureData
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypOneZeroZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTamagawaMeasureNormalization
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureAddRankOneBlock
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentExtendByUnitVectorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentUnitaryActionIffStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentUnitaryActionIff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFreeSetProjectsCompactStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreIntegralContinuousInParameterStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureOrthogonalSumStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureExtensionByOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreIntegralContinuousInParameter
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureOrthogonalSum
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureExtensionByOne
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductNormalization
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.PiLocalization₂ GlobalTheory.CompanionTheory.SW.StageF GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WeilSiegel.Free NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -20,17 +23,17 @@ theorem fibSF_support : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   by_cases hS : S ∈ BsetF R σ B₀
   swap
   · simp [fibSF, hS]
-  obtain ⟨m₀, D₀⟩ := GlobalTheory.T.local_fibre_measure_extension_by_one F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D
+  obtain ⟨m₀, D₀⟩ := _root_.GlobalTheory.CompanionTheory.SW.StageF.ToOld.stageData_of_stageDataF F E σ M J t n R d b lam m₁ m' s B₀ a κ₁ cm D
   obtain ⟨h1, h2, h3, h4, -⟩ := id D.hR
-  have hk := GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R
-  have hJ' := GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht
-  have hH := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ D.hCM (M + 1) _ hJ' R
+  have hk := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ D.hCM R
+  have hJ' := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap F E σ M J D.hJ t D.ht
+  have hH := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ D.hCM (M + 1) _ hJ' R
   obtain ⟨-, -, hscH, -, hbH, hactH⟩ := hH
   obtain ⟨-, -, hscK, hT2K, -, -, -, hbor, -, hgram⟩ := hk
   obtain ⟨hcont, -, -, hpres⟩ := hactH (n + 1)
-  have hcoord := (GlobalTheory.T.gram_block_one_schur_coordinates F E σ M J t n R d b lam m₁ m₀ s B₀ a κ₁ cm D₀).2
-  have hker₁ := GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁
-  obtain ⟨hsf', -, -, hfib'⟩ := GlobalTheory.T.local_fibre_measure_orthogonal_sum F E σ D.hCM M n J D.hJ R D.hR d b lam D.hlam m' D.hm'
+  have hcoord := (_root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.GramCoord.coords F E σ M J t n R d b lam m₁ m₀ s B₀ a κ₁ cm D₀).2
+  have hker₁ := _root_.GlobalTheory.CompanionTheory.SW.PiLocalization₂.gramFib_basic F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁
+  obtain ⟨hsf', -, -, hfib'⟩ := _root_.GlobalTheory.CompanionTheory.SW.StageF.gramFibFree_basic F E σ D.hCM M n J D.hJ R D.hR d b lam D.hlam m' D.hm'
   obtain ⟨-, hlf₁, -⟩ := hker₁
   haveI := hbor (n + 1) (M + 1)
   haveI := hbor n M
@@ -49,7 +52,7 @@ theorem fibSF_support : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     have := hcont.measurable.comp
       ((D.hs.comp measurable_fst).prodMk ((measurable_vec α c).comp measurable_snd))
     exact this
-  have hopen := GlobalTheory.T.linearly_independent_frames_open F E σ D.hCM R D.hR (n + 1) (M + 1)
+  have hopen := _root_.GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ D.hCM R D.hR (n + 1) (M + 1)
   have hcl : MeasurableSet ((gramR R σ (blockOne (algebraMap F E t) J) ⁻¹' {(S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E))} ∩
       {X : Fin (n + 1) → Fin (M + 1) → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X})ᶜ) :=
     ((isClosed_singleton.preimage (hgram (n + 1) (M + 1) (blockOne (algebraMap F E t) J))).measurableSet.inter
@@ -65,7 +68,7 @@ theorem fibSF_support : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         (actW R σ (blockOne (algebraMap F E t) J) (s p.1) (vec α c p.2)) = _
       rw [hpres]
       exact hcoord S p.2 hS hp.1
-    · exact (GlobalTheory.T.linearIndependent_unitary_action_iff F E R σ (M + 1) (n + 1) _ (s p.1) (vec α c p.2)).2
+    · exact (_root_.GlobalTheory.CompanionTheory.WeilSiegel.Free.ActFree.actW_linearIndependent_iff F E R σ (M + 1) (n + 1) _ (s p.1) (vec α c p.2)).2
         ((GlobalTheory.T.linearIndependent_extend_by_unit_vector (R ⊗[F] E) M n α hα c p.2).2 hp.2)
   have hsub : (gramR R σ (blockOne (algebraMap F E t) J) ⁻¹' {(S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E))} ∩
       UsetF σ J t B₀)ᶜ ⊆

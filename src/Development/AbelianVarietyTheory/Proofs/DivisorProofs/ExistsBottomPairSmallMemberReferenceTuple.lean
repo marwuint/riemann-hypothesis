@@ -11,9 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CondESupConj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridNuUnitTrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StdSumFixEig
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVectorConjIsThetaSomeLevel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilActionCosetVectorFixedPrincipalCongruenceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVectorBlockLevelUnimodularEigenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateModulusStandardThetaPresentationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilActionCosetVectorFixedPrincipalCongruence
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVectorBlockLevelUnimodularEigen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateModulusStandardThetaPresentation
 
 noncomputable section
 
@@ -44,7 +44,7 @@ theorem smallPair_exists : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
     rw [hW2, hν, GlobalTheory.BotPairSmall.CondNu.nuH_inv_eq_one_of_cong hL G i j u hu h]
   obtain ⟨R, hR1, hR2⟩ := GlobalTheory.CongReps.exists_reps D (botSmall D i j) _ (conj_smul_ne_bot D hm)
   have hTT := GlobalTheory.BotPairSmall.cvec_conj_mem_TT D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl
-  have hK := GlobalTheory.T.weilAction_cosetVector_fixed_principalCongruence D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl
+  have hK := _root_.GlobalTheory.BotPairSmall.CvFix.om_cvec_of_congOne D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl
   have hS := GlobalTheory.StdSumFix.stdSum_fix_eig D δ _ _ e0 W _ _ hTT hK R hR1 hR2
   have hN := GlobalTheory.ModulusNorm.absNorm_condE G.pl
   have hidx := GlobalTheory.BotPairSmall.blockJ_relIndex D (condE G.pl) hm (botBig D i j) (botBig D i j + botSmall D i j)
@@ -55,7 +55,7 @@ theorem smallPair_exists : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
         (botBig D i j + botSmall D i j) e0)) = c • ∑ r ∈ R, W.Om r 1 (cvec D δ (D.host.conj • condE G.pl) (botBig D i j)
           (botSmall D i j) (botBig D i j + botSmall D i j) e0) := by
     intro h hh
-    obtain ⟨k, hk, c, hc1, e⟩ := GlobalTheory.T.cosetVector_blockLevel_unimodular_eigen D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl h hh
+    obtain ⟨k, hk, c, hc1, e⟩ := _root_.GlobalTheory.BotPairSmall.cvec_eig D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl h hh
     exact ⟨c, hc1, hS.2 h k c hk e⟩
   refine ⟨{
       crv := hc, pt0 := ht, a := botSmall D i j, d := botBig D i j + botSmall D i j, a_le := Nat.le_add_left _ _,
@@ -63,7 +63,7 @@ theorem smallPair_exists : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
       n := fun τ => ((χν.n τ - ((botBig D i j + botSmall D i j : ℕ) : ℤ)) / 2).toNat, wt := ?_,
       F := ∑ r ∈ R, W.Om r 1 (cvec D δ (D.host.conj • condE G.pl) (botBig D i j) (botSmall D i j)
       (botBig D i j + botSmall D i j) e0),
-      pres := GlobalTheory.T.conjugateModulus_standardTheta_presentation D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hb hcond (botBig D i j) rfl _ hN R hR1 hR2,
+      pres := _root_.GlobalTheory.BotPairSmall.pres_conj_std D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hb hcond (botBig D i j) rfl _ hN R hR1 hR2,
       fix := hS.1,
       J := blockJ D (condE G.pl) (botBig D i j) (botBig D i j + botSmall D i j),
       J_le := blockJ_le _ _ _ _,

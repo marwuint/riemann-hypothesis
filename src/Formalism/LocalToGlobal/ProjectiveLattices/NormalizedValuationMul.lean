@@ -42,9 +42,6 @@ structure FromW (ζ : PtsG G la) (y : E.Pt' la) extends SecPt ζ y where
     IsLocalization.Away.lift (sec (xplus X E hM) la G.w 0) toSecPt.s0 (x : Lw (xplus X E hM) la G.w) =
       algebraMap T.V T.Fr (ι (algebraMap _ (Loc ζ) a))
 
-def SecPtSt (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) : Prop :=
-  ∀ ζ : PtsG G la, ∃ y : E.Pt' la, Nonempty (SecPt ζ y)
-
 def secQ (y : PtsG G la → E.Pt' la) (hs : ∀ ζ, SecPt ζ (y ζ)) (g0 : B.Cusp j wF) : LocalPointData G la where
   y ζ := .inr (y ζ)
   g0 := g0

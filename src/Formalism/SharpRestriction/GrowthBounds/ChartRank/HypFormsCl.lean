@@ -87,10 +87,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T fT : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {ι : Type} [Fintype ι]
 
-theorem foGrp {Γ : Type} [Group Γ] (a b y k l : Γ) (h : a * y * k = b * y * l) : y = a⁻¹ * b * y * (l * k⁻¹) := by
-  rw [show a⁻¹ * b * y * (l * k⁻¹) = a⁻¹ * (b * y * l) * k⁻¹ by group, ← h]
-  group
-
 theorem foInf_unit (emb : ι → E →+* ℂ) (γ : GL (Fin n) E) (τ : ι) : IsUnit (atInf emb γ.1 τ).det := by
   have h := ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).map (emb τ)
   rwa [RingHom.map_det] at h
@@ -140,141 +136,8 @@ def FoInv (S : StepLevel F E σ J T fT bad) (emb : ι → E →+* ℂ) (y0 : UPt
 
 variable (S : StepLevel F E σ J T fT bad) (emb : ι → E →+* ℂ)
 
-theorem foInv_wd {y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ} (hv : FoInv S emb y0 v)
-    {γa γb : GL (Fin n) E} (ha : γa ∈ UJ (σ : E →+* E) J) (hb : γb ∈ UJ (σ : E →+* E) J) {κa κb : S.U}
-    (h : bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γa * y0.1 * κa.1 =
-      bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γb * y0.1 * κb.1)
-    (z : Formalism.L2.Forms.Frames (gramC J emb)) :
-    (S.chi κa : ℂ) * v (foTrR emb γa⁻¹ z) = (S.chi κb : ℂ) * v (foTrR emb γb⁻¹ z) := by
-  have hy : y0.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γa⁻¹ * γb) * y0.1 * (κb * κa⁻¹).1 := by
-    rw [map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]
-    exact foGrp _ _ _ _ _ h
-  have ht : foTrR emb γa⁻¹ z = foTrR emb (γa⁻¹ * γb) (foTrR emb γb⁻¹ z) := by
-    rw [← foTrR_mul]
-    simp [mul_assoc]
-  have := hv (γa⁻¹ * γb) (Subgroup.mul_mem _ (Subgroup.inv_mem _ ha) hb) (κb * κa⁻¹) hy _ _
-    ((foIsTr_iff emb _ _ _).2 ht)
-  rw [this, map_mul, map_inv, Units.val_mul]
-  have e : (S.chi κa : ℂ) * ((S.chi κa)⁻¹ : ℂˣ) = 1 := Units.mul_inv _
-  linear_combination ((S.chi κb : ℂ) * v (foTrR emb γb⁻¹ z)) * e
-
-open Classical in
-
-def foForm (y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ) :
-    UPts σ J (FiniteAdeleRing (𝓞 F) F) → Formalism.L2.Forms.Frames (gramC J emb) → ℂ := fun x =>
-  if h : ∃ γ : GL (Fin n) E, γ ∈ UJ (σ : E →+* E) J ∧ ∃ κ : S.U,
-      x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * y0.1 * κ.1 then
-    fun y => (S.chi h.choose_spec.2.choose : ℂ) * v (foTrR emb h.choose⁻¹ y)
-  else 0
-
 variable {S emb}
 
-theorem foForm_eq {y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ} (hv : FoInv S emb y0 v)
-    {x : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {γ : GL (Fin n) E} (hγ : γ ∈ UJ (σ : E →+* E) J) {κ : S.U}
-    (hx : x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * y0.1 * κ.1) (y : Formalism.L2.Forms.Frames (gramC J emb)) :
-    foForm S emb y0 v x y = (S.chi κ : ℂ) * v (foTrR emb γ⁻¹ y) := by
-  have h : ∃ γ : GL (Fin n) E, γ ∈ UJ (σ : E →+* E) J ∧ ∃ κ : S.U,
-      x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * y0.1 * κ.1 := ⟨γ, hγ, κ, hx⟩
-  simp only [foForm, dif_pos h]
-  exact foInv_wd S emb hv h.choose_spec.1 hγ (h.choose_spec.2.choose_spec.symm.trans hx) y
-
-theorem foForm_off {y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ}
-    {x : UPts σ J (FiniteAdeleRing (𝓞 F) F)}
-    (hx : ¬ ∃ γ : GL (Fin n) E, γ ∈ UJ (σ : E →+* E) J ∧ ∃ κ : S.U,
-      x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * y0.1 * κ.1) :
-    foForm S emb y0 v x = 0 := by
-  simp only [foForm, dif_neg hx]
-
-theorem foForm_adFun {y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ} (hv : FoInv S emb y0 v) :
-    foForm S emb y0 v ∈ AdFun S emb := by
-  intro γ hγ x x' κ h y y' hy
-  by_cases hx : ∃ γ1 : GL (Fin n) E, γ1 ∈ UJ (σ : E →+* E) J ∧ ∃ κ1 : S.U,
-      x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ1 * y0.1 * κ1.1
-  · obtain ⟨γ1, hγ1, κ1, hx1⟩ := hx
-    have hx' : x'.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ * γ1) * y0.1 * (κ1 * κ).1 := by
-      rw [h, hx1, map_mul, Subgroup.coe_mul]
-      group
-    have e : (γ * γ1)⁻¹ * γ = γ1⁻¹ := by group
-    rw [foForm_eq hv (Subgroup.mul_mem _ hγ hγ1) hx' y, foForm_eq hv hγ1 hx1 y', map_mul, Units.val_mul,
-      (foIsTr_iff emb γ y' y).1 hy, ← foTrR_mul, e]
-    ring
-  · have hx' : ¬ ∃ γ1 : GL (Fin n) E, γ1 ∈ UJ (σ : E →+* E) J ∧ ∃ κ1 : S.U,
-        x'.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ1 * y0.1 * κ1.1 := by
-      rintro ⟨γ1, hγ1, κ1, hx1⟩
-      refine hx ⟨γ⁻¹ * γ1, Subgroup.mul_mem _ (Subgroup.inv_mem _ hγ) hγ1, κ1 * κ⁻¹, ?_⟩
-      have h2 : x.1 = (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ)⁻¹ * x'.1 * κ.1⁻¹ := by
-        rw [h]
-        group
-      rw [h2, hx1, map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]
-      group
-    rw [foForm_off hx, foForm_off hx']
-    simp
-
-theorem foForm_val {y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ} (hv : FoInv S emb y0 v)
-    {lam : ι → DomWeight n} (hV : v ∈ ValC (gramC J emb) lam) (x : UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
-    foForm S emb y0 v x ∈ ValC (gramC J emb) lam := by
-  by_cases hx : ∃ γ1 : GL (Fin n) E, γ1 ∈ UJ (σ : E →+* E) J ∧ ∃ κ1 : S.U,
-      x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ1 * y0.1 * κ1.1
-  · obtain ⟨γ1, hγ1, κ1, hx1⟩ := hx
-    have e : foForm S emb y0 v x = (S.chi κ1 : ℂ) • fun y => v (foTr (atInf emb (γ1⁻¹).1) (foInf_unit emb γ1⁻¹) y) := by
-      funext y
-      rw [foForm_eq hv hγ1 hx1 y]
-      rfl
-    rw [e]
-    exact Submodule.smul_mem _ _ (foValC_tr lam _ _ hV)
-  · rw [foForm_off hx]
-    exact Submodule.zero_mem _
-
-theorem foForm_mem {y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ} (hv : FoInv S emb y0 v)
-    {lam : ι → DomWeight n} (hV : v ∈ ValC (gramC J emb) lam) : foForm S emb y0 v ∈ AdForms S emb lam :=
-  Submodule.mem_inf.2 ⟨foForm_adFun hv, Submodule.mem_pi.2 fun x _ => foForm_val hv hV x⟩
-
-theorem foForm_self {y0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)} {v : Formalism.L2.Forms.Frames (gramC J emb) → ℂ} (hv : FoInv S emb y0 v) :
-    foForm S emb y0 v y0 = v := by
-  funext y
-  rw [foForm_eq hv (Subgroup.one_mem _) (κ := 1) (by simp) y]
-  simp [foTrR_one]
-
 end Adelic
-
-section Rec
-
-open Formalism.MainNotions.G Formalism.L2.G Formalism.L2.G.Cmp Formalism.MainNotions.G.CmpJ Formalism.MainNotions.G.CmpJ.PCard Formalism.MainNotions.G.CmpJ.PRankGe Formalism.MainNotions.G.CmpJ.PInvLe
-
-variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
-  {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {p : ℕ} {i : ℕ} {hi : i ≤ D.R.m} {G : GAtP p}
-
-theorem formsOnClassOf_holds (S : StepIn M i hi G) : FormsOnClassOf S := by
-  intro β c v hv
-  refine Submodule.mem_map.2 ⟨_, Submodule.mem_map.2 ⟨_, foForm_mem hv.2 hv.1, rfl⟩, ?_⟩
-  exact foForm_self hv.2
-
-theorem valLiftOf_of_cmp (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h2 : CmpLiftOf S e) : ValLiftOf S e :=
-  valLiftOf_of S e (formsOnClassOf_holds S) h2
-
-theorem invLeOf_of_cmp (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h2 : CmpLiftOf S e) : InvLeOf S e :=
-  invLeOf_of_two S e (formsOnClassOf_holds S) h2
-
-theorem chartRankGe_of_cmp [IsFractionRing G.O G.Kf] (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β)
-    (hS : BlockRationalityField) (X : KAat.ChX S) (h2 : CmpLiftOf S e) : ChartRankGe S :=
-  chartRankGe_of_lift S e H hS X (valLiftOf_of_cmp S e h2)
-
-end Rec
-
-section Card
-
-open Formalism.MainNotions.G Formalism.L2.G Formalism.L2.G.Cmp Formalism.MainNotions.G.CmpJ Formalism.MainNotions.G.CmpJ.PCard Formalism.MainNotions.G.CmpJ.PRankGe Formalism.MainNotions.G.CmpJ.PInvLe
-
-variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
-  {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
-
-theorem cmpJHyp_of_cmp (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
-    (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)
-    (twUnit : ∀ j hj β, (I.at' j hj).st.TwUnit w β) (valIntN : ∀ j hj, (I.at' j hj).st.ValIntN (c.embW u w h) w)
-    (iwF : ∀ j hj β, (I.at' j hj).st.IwF β) (hfin : ∀ j, j + 1 ≤ D.R.m → (gatJ Lv (j + 1)).FinClasses)
-    (X : ∀ j hj, KAat.ChX (I.at' j hj).st) (h2 : ∀ j hj, CmpLiftOf (I.at' j hj).st (c.embW u w h)) : CmpJHyp c I :=
-  cmpJHyp_of_two c Gt hS core ok twUnit valIntN iwF hfin X (fun _ _ => formsOnClassOf_holds _) h2
-
-end Card
 
 end Formalism.MainNotions.G.CmpJ.PFormsCl

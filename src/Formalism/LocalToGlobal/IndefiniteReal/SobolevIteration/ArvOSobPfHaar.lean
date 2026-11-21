@@ -51,15 +51,6 @@ theorem inv_mem_KAt {G s a : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (ha
       _ = (a⁻¹ * a) * s * a⁻¹ := by simp only [Matrix.mul_assoc]
       _ = s * a⁻¹ := by rw [hleft', Matrix.one_mul]
 
-theorem inv_eq_of_UH {G k : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hk : k ∈ Formalism.QuantumDeterminants.UH G) :
-    k⁻¹ = G⁻¹ * kᴴ * G := by
-
-  have h1 : kᴴ * G * k = G := hk
-  have hleft : (G⁻¹ * kᴴ * G) * k = 1 := by
-    calc (G⁻¹ * kᴴ * G) * k = G⁻¹ * (kᴴ * G * k) := by simp only [Matrix.mul_assoc]
-      _ = 1 := by rw [h1, Matrix.nonsing_inv_mul G hG]
-  exact Matrix.inv_eq_left_inv hleft
-
 def Kg {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ where
   carrier := {u | (u : Matrix (Fin n) (Fin n) ℂ) ∈ KAt G s}
   mul_mem' {a b} ha hb := by

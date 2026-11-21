@@ -158,43 +158,6 @@ def IsPhiTranslate (j : ℕ) (q : QkPt D F j)
 variable {D F} {j : ℕ} {q : QkPt D F j}
   {v : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F q.g.b) (DegPre.lineε j))} {α : D.X}
 
-theorem isPhiTranslate_iff (hG : GlobalFnsSt) (hv : v.IsGen) (s : SecBMod D j α) (t : SecBMod D j (α + q.y)) :
-    IsPhiTranslate D F j q v α s t ↔ ∀ (T : Over (Spec (CommRingCat.of R))) (ρ : T ⟶ DegPre.BF D F) (z : T.left) (J),
-      Good D.P.L z J → sval t (ρ ≫ DegPre.prB D F).left z J =
-        sval s (ρ ≫ DegPre.trPt D F q.g.b ≫ DegPre.prB D F).left z J *
-          (uVal D F j α q.g.b ρ z J * val (LB.mulGen D.P.L _ _ _ _ (q.g.s α) v) (ρ ≫ fst _ _).left z J).val := by
-  obtain ⟨⟨u, hu, hc⟩, hval⟩ := gen_phi hG q v hv α
-  constructor
-  · intro H T ρ z J hJ
-    have e := (secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (H u hu hc) _ ρ.left z J hJ
-    rw [sval_resF _ _ _ _ hJ, sval_resF _ _ _ _ hJ, hval u hu hc T ρ z J hJ, Category.assoc] at e
-    exact e
-  · intro H u hu hc
-    refine (secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_
-    have e := H _ (𝟙 _) y J hJ
-    rw [← hval u hu hc _ (𝟙 _) y J hJ] at e
-    rw [sval_resF _ _ _ _ hJ, sval_resF _ _ _ _ hJ, Category.assoc]
-    exact e
-
-theorem IsPhiTranslate.unique (hG : GlobalFnsSt) (hv : v.IsGen) {s : SecBMod D j α} {t t' : SecBMod D j (α + q.y)}
-    (h : IsPhiTranslate D F j q v α s t) (h' : IsPhiTranslate D F j q v α s t') : t = t' := by
-  obtain ⟨⟨u, hu, hc⟩, -⟩ := gen_phi hG q v hv α
-  refine resF_injective D F j _ (sec_ext' D.P.isLB fun y J hJ => ?_)
-  exact ((secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h u hu hc) _ _ y J hJ).trans
-    ((secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h' u hu hc) _ _ y J hJ).symm
-
-theorem IsPhiTranslate.lin (c : R) {s s' : SecBMod D j α} {t t' : SecBMod D j (α + q.y)}
-    (h : IsPhiTranslate D F j q v α s t) (h' : IsPhiTranslate D F j q v α s' t') :
-    IsPhiTranslate D F j q v α (c • s + s') (c • t + t') := by
-  intro u hu hc
-  refine (secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_
-  have e : (𝟙 _ ≫ (DegPre.trPt D F q.g.b).left) ≫ strF D F = 𝟙 _ ≫ strF D F := by
-    rw [Category.assoc, ← Over.comp_left, tr_fst]
-  rw [map_add, map_add, map_smulₛₗ, map_smulₛₗ, sval_add' hJ, sval_add' hJ, sval_smul' hJ, sval_smul' hJ,
-    (secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h u hu hc) _ _ y J hJ,
-    (secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h' u hu hc) _ _ y J hJ, e]
-  ring
-
 end Translate
 
 section OverField
@@ -230,11 +193,6 @@ theorem exists_isPhiTranslate (hG : GlobalFnsSt) (hk₀ : Function.Surjective (t
     (hval u' hu' hc' _ (𝟙 _) y J hJ).trans (hval u hu hc _ (𝟙 _) y J hJ).symm
   rw [e]
   exact (ht _ _ y J hJ).trans (sval_pullMulSec _ _ _ _ _ y hJ)
-
-theorem toF_surjective_fractionRing : Function.Surjective (toF (R := k) (FractionRing k)) :=
-  fun x => ⟨FractionRing.algEquiv k k x, by
-    show algebraMap k (FractionRing k) _ = x
-    exact ((FractionRing.algEquiv k k).symm.commutes _).symm.trans ((FractionRing.algEquiv k k).symm_apply_apply x)⟩
 
 theorem toF_surjective_self [Algebra (FractionRing k) k] [IsScalarTower k (FractionRing k) k] :
     Function.Surjective (toF (R := k) k) :=
@@ -514,25 +472,6 @@ theorem exists_transport (hG : GlobalFnsSt) {j : ℕ} (q : QkPt a.D₀ F j) (hd 
     simp only [Nat.cast_one, _root_.one_mul] at this
     exact (gtRel_zpow_iff (toF_X_ne_zero (k := k) F) _ _ _).1 this
 
-theorem equiv_of_transport (hG : GlobalFnsSt) {j : ℕ} (hj : 1 ≤ j) {q q' : QkPt a.D₀ F j} {p p' : QkPt P.toPre F j}
-    (hy : p.y = e q.y) (hy' : p'.y = e q'.y)
-    (h : ∀ z, GenRel w (p.g.s (e z)) (q.g.s z) (toF (R := PowerSeries k) F PowerSeries.X ^ (a.be q.y z / j)))
-    (h' : ∀ z, GenRel w (p'.g.s (e z)) (q'.g.s z) (toF (R := PowerSeries k) F PowerSeries.X ^ (a.be q'.y z / j)))
-    (hq : QkPt.Equiv a.D₀ F q q') : QkPt.Equiv P.toPre F p p' := by
-  have hι' := fun x g₀ g => isIota_of_gtRel hW hF (x := x) (g₀ := g₀) (g := g)
-  obtain ⟨gp, hw, hr, -, hc, hψ⟩ := hW
-  have hT := ArcTransport.base_comm hF
-  have hw' := (isGen_iff w).1 hw
-  obtain ⟨z, hz, g₀, hι, hadd⟩ := hq
-  obtain ⟨g, hg⟩ := exists_gtRel gp hT (e := e.toAddEquiv) hc hw' hG
-    (fun χ => Units.mk0 _ (toF_X_ne_zero (k := k) F) ^ a.be z χ) (fun x y => by rw [map_add, zpow_add]) g₀
-  refine ⟨e z, by rw [hy', hy, hz, map_add, map_nsmul], g, hι' z g₀ g hg hι, ?_⟩
-  refine GtRel.isAdd gp hT (e := e.toAddEquiv) hc hw' hG (fun χ => ?_)
-    ((gtRel_zpow_iff (toF_X_ne_zero (k := k) F) _ _ _).2 h) hg
-    ((gtRel_zpow_iff (toF_X_ne_zero (k := k) F) _ _ _).2 h') hadd
-  rw [← zpow_add, hz, map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul,
-    Int.add_mul_ediv_left _ _ (Int.natCast_ne_zero.2 (by omega))]
-
 end Transport
 
 end GlobalTheory.ThetaTranslate
@@ -600,63 +539,5 @@ theorem phiRel_transport_constFam (hG : GlobalFnsSt)
       rw [Units.val_zpow_eq_zpow_val, ← hq.1]
       exact hp α) h₀
   rwa [Units.val_mul, Units.val_zpow_eq_zpow_val] at H
-
-theorem theta_operators_at_points (hG : GlobalFnsSt) (hK : KerPowSt) :
-    (∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I)
-      (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R)))
-      [GrpObj G] [IsCommMonObj G] (U : Unif I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ),
-      1 ≤ k → ∀ (p : QkPt D.toPre F k) (x : TFK (R := R) F ⟶ A.A), QkToAkU U.toUnifPre F k p x →
-      ∀ (w : LB.Iso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst G.hom (jK R)))), w.IsGen →
-      (∃ v : LB.Gen (LB.LinComb D.toPre.P.L (DegPre.lineφ D.toPre F p.g.b) (DegPre.lineε k)), v.IsGen) ∧
-      ∀ (v : LB.Gen (LB.LinComb D.toPre.P.L (DegPre.lineφ D.toPre F p.g.b) (DegPre.lineε k))), v.IsGen →
-      (∀ t, ∃ s s' t', U.toUnifPre.ExpandsF F k w t s ∧ PhiRel D.toPre F k p v s s' ∧
-        U.toUnifPre.ExpandsF F k w t' s') ∧
-      (∃ θ : ThetaGrp A.A A.L (k : ℤ) (TFK (R := R) F), θ.pt = x ∧ ∀ t t' s s', U.toUnifPre.ExpandsF F k w t s →
-        U.toUnifPre.ExpandsF F k w t' s' → (PhiRel D.toPre F k p v s s' ↔ IsActOf A.A A.L (k : ℤ) θ t t')) ∧
-      ∀ (t₁ t₂ t₁' t₂' : LB.Sec (LPow A.A A.L (k : ℤ) (TFK (R := R) F))) (s₁ s₂ s₁' s₂' : Fam D.toPre F k),
-        U.toUnifPre.ExpandsF F k w t₁ s₁ → U.toUnifPre.ExpandsF F k w t₂ s₂ →
-        PhiRel D.toPre F k p v s₁ s₁' → PhiRel D.toPre F k p v s₂ s₂' →
-        U.toUnifPre.ExpandsF F k w t₁' s₁' → U.toUnifPre.ExpandsF F k w t₂' s₂' →
-        ∀ (z : TFK (R := R) F ⟶ A.A) (a b : Fin 1 → A.L.ι),
-          ⊤ ≤ (ptSecT A.A (z * x)).left ⁻¹ᵁ (LPow A.A A.L (k : ℤ) (TFK (R := R) F)).U a →
-          ⊤ ≤ (ptSecT A.A z).left ⁻¹ᵁ (LPow A.A A.L (k : ℤ) (TFK (R := R) F)).U b →
-          valF (F := F) (ptSecT A.A (z * x)).left _ (t₁.f a) * valF (F := F) (ptSecT A.A z).left _ (t₂'.f b) =
-            valF (F := F) (ptSecT A.A (z * x)).left _ (t₂.f a) * valF (F := F) (ptSecT A.A z).left _ (t₁'.f b)) ∧
-    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (c : Coeff l)
-      (O : Type) [CommRing O] (β : O →+* c.F) (k : Type) [Field k] (b : O →+* k) (a : ArcIn D l β k b)
-      (P : DegData (PowerSeries k) (Ideal.span {PowerSeries.X})) [Module (𝓞 E) P.toPre.X]
-      (oP : letI := H.starRing; P.toPre.OAct (𝓞 E)) (φ : P.toPre.P.A.left ⟶ a.D₀.P.A.left)
-      (he : eSec P.toPre.P.A ≫ φ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
-      (w : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ)) (e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X) (hW : WitData a P oP φ he w e)
-      (F : Type) [Field F] [Algebra (FractionRing (PowerSeries k)) F] [Algebra (FractionRing k) F]
-      (k₀ : Type) [Field k₀] [Algebra (FractionRing k) k₀], Function.Surjective (toF (R := k) k₀) →
-      ∀ (f : k₀ →+* F) (j : ℕ) (hj : 1 ≤ j) (q₀ : QkPt a.D₀ k₀ j), (∀ z, (j : ℤ) ∣ a.be q₀.y z) →
-      (∃ v₀ : LB.Gen (LB.LinComb a.D₀.P.L (DegPre.lineφ a.D₀ k₀ q₀.g.b) (DegPre.lineε j)), v₀.IsGen) ∧
-      (∀ v₀ : LB.Gen (LB.LinComb a.D₀.P.L (DegPre.lineφ a.D₀ k₀ q₀.g.b) (DegPre.lineε j)), v₀.IsGen →
-        ∀ α s₀, ∃! s₀', IsPhiTranslate a.D₀ k₀ j q₀ v₀ α s₀ s₀') ∧
-      ∀ q : QkPt a.D₀ F j, QkExt f q₀ q →
-        (IsAlgClosed F → (∀ x, algebraMap (FractionRing k) F (algebraMap k _ x) = constF k F x) →
-          ∃ p : QkPt P.toPre F j, p.y = e q.y ∧ ∀ z, GenRel w (p.g.s (e z)) (q.g.s z)
-            (toF (R := PowerSeries k) F PowerSeries.X ^ (a.be q.y z / j))) ∧
-        ∀ p : QkPt P.toPre F j, p.y = e q.y →
-          (∀ z, GenRel w (p.g.s (e z)) (q.g.s z) (toF (R := PowerSeries k) F PowerSeries.X ^ (a.be q.y z / j))) →
-          ∀ (v₀ : LB.Gen (LB.LinComb a.D₀.P.L (DegPre.lineφ a.D₀ k₀ q₀.g.b) (DegPre.lineε j)))
-            (v : LB.Gen (LB.LinComb P.toPre.P.L (DegPre.lineφ P.toPre F p.g.b) (DegPre.lineε j))),
-            v₀.IsGen → v.IsGen → ∃ κ : F, κ ≠ 0 ∧ GenRel (F := F) w v (LB.pullGen _ _ _ v₀ (spMap f)) κ ∧
-              ∀ (α : a.D₀.X) (n : ℤ), j * n = a.be q₀.y α →
-                ∀ (s₀ : SecBMod a.D₀ j α) (s₀' : SecBMod a.D₀ j (α + q₀.y)),
-                  IsPhiTranslate a.D₀ k₀ j q₀ v₀ α s₀ s₀' →
-                  PhiRel P.toPre F j p v (constFam hW F hG hj α s₀)
-                    ((κ * toF (R := PowerSeries k) F PowerSeries.X ^ n) • constFam hW F hG hj (α + q₀.y) s₀') := by
-  refine ⟨fun R _ _ I D A G _ _ U F _ _ k hk p x hx w hw => ⟨exists_normalisation k _, fun v hv =>
-    values_at_translate hG hK U F hk p x hx w hw v hv⟩,
-    fun E _ _ _ H D l c O _ β k _ b a P _ oP φ he w e hW F _ _ _ k₀ _ _ hk₀ f j hj q₀ hd =>
-      ⟨exists_normalisation j _, fun v₀ hv₀ α s₀ => existsUnique_of_exists_of_unique
-        (exists_isPhiTranslate hG hk₀ q₀ hv₀ α s₀) fun _ _ h h' => h.unique hG hv₀ h', fun q hq =>
-        ⟨fun _ hF => exists_transport hW hF hG q (by rw [hq.1]; exact hd), fun p hy hp v₀ v hv₀ hv => ?_⟩⟩⟩
-  obtain ⟨κ, h₁, h₂, h₃⟩ := phiRel_transport_constFam hG hW F f hj q₀ q p hq hy hp v₀ hv₀ v hv
-  refine ⟨κ, h₁, h₂, fun α n hn s₀ s₀' h => ?_⟩
-  have := h₃ α s₀ s₀' h
-  rwa [← hn, Int.mul_ediv_cancel_left _ (Int.natCast_ne_zero.2 (by omega))] at this
 
 end GlobalTheory

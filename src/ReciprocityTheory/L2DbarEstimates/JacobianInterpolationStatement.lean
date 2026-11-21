@@ -49,11 +49,6 @@ def MVStatement (n : ℕ) : Prop :=
     ENNReal.ofReal (‖u 0‖ ^ 2) * ∫⁻ y : V n, ρ ‖y‖ ≤
       ∫⁻ y : V n, ENNReal.ofReal (‖u y‖ ^ 2) * ρ ‖y‖
 
-def MVBlowupStatement (n : ℕ) : Prop :=
-  1 ≤ n →
-    Tendsto (fun δ : ℝ => ∫⁻ y in ball (0 : V n) 1, ENNReal.ofReal ((‖y‖ ^ 2 + δ) ^ (-(n : ℝ))))
-      (𝓝[>] 0) (𝓝 ⊤)
-
 def MVIntStatement (n : ℕ) : Prop :=
   1 ≤ n → ∀ s : ℝ,
     (∫⁻ y in ball (0 : V n) 1, ENNReal.ofReal ‖y‖ ^ (-2 * s) < ⊤ ↔ s < n)
@@ -103,34 +98,8 @@ def NORMStatement (n : ℕ) (M : Type*) [TopologicalSpace M] : Prop :=
     (∀ x, z x = 0 → VanishesBeyond n z u x m) →
     u = 0
 
-def ohsawaTakegoshiConstant (n : ℕ) (r : ℝ) : ℝ :=
-  280 * Real.pi ^ n / (Nat.factorial (n - 1) : ℝ) * r ^ (2 * n)
-
-def JacobianInterpolationStatement (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
-    [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : Prop :=
-  ∀ (X : EtaleStein n M) (g : Fin n → M → ℂ) (ph ph2 : M → ℝ) (r : ℝ) (j : ℕ) (c : M → ℂ),
-    1 ≤ n → 2 ≤ j → 0 < r → (∀ i, Holo n X.z (g i)) →
-    SmoothR n X.z ph → LeviNonneg n X.z ph → SmoothR n X.z ph2 → LeviNonneg n X.z ph2 →
-    (∀ x, (∑ i, ‖g i x‖ ^ 2) * Real.exp (-ph x) ≤ r ^ 2) →
-    {x | ∀ i, g i x = 0}.Finite →
-    (∀ x, (∀ i, g i x = 0) → jac n X.z g x ≠ 0) →
-    ∃ F : M → ℂ, Holo n X.z F ∧ (∀ x, (∀ i, g i x = 0) → F x = c x * jac n X.z g x) ∧
-      ∫⁻ x, ENNReal.ofReal (‖F x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x)) ∂vol n X.z ≤
-        ENNReal.ofReal (ohsawaTakegoshiConstant n r) *
-          ∑' x : {x : M // ∀ i, g i x = 0},
-            ENNReal.ofReal (‖c x‖ ^ 2 * Real.exp (-ph2 x - (j : ℝ) * ph x))
-
-def MAStatement (n : ℕ) : Prop :=
-  ∀ (Ω : Set (V n)) (ph v : V n → ℝ),
-    IsOpen Ω → ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ph Ω → ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) v → HasCompactSupport v → tsupport v ⊆ Ω →
-    ∫ y in Ω, ((cHess n (fun w => ((ph w + v w : ℝ) : ℂ)) y).det -
-      (cHess n (fun w => (ph w : ℂ)) y).det) = 0
-
 def DetMonoStatement (n : ℕ) : Prop :=
   ∀ A B : Matrix (Fin n) (Fin n) ℂ, B.PosSemidef → (A - B).PosSemidef → B.det.re ≤ A.det.re
-
-def InhabitedStatement (n : ℕ) : Prop :=
-  Nonempty (EtaleStein n (V n))
 
 end
 

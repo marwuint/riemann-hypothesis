@@ -20,12 +20,6 @@ def HyperbolicPairTransitive.Statement [FiniteDimensional E W] (h : HermitianFor
 
 end Transitive
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

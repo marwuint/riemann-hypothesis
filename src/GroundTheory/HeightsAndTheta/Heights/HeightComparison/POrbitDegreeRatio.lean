@@ -124,8 +124,6 @@ theorem OrbitDegreeRatio.proof : OrbitDegreeRatio.Statement := by
   rw [← Nat.card_congr (Equiv.ofBijective Φ ⟨hinj, hΦ⟩), Nat.card_eq_fintype_card,
     NumberField.Embeddings.card]
 
-example : BlockNonzero samplePoint := samplePoint_blockNonzero
-
 end
 
 end GroundTheory.Heights₂.Heights

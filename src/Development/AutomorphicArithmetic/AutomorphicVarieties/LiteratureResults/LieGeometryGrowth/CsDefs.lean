@@ -56,8 +56,6 @@ def IsFun (Φ : S → V → ℝ) : Prop :=
   (∀ s, ContDiffOn ℝ ∞ (Φ s) G.Y) ∧ (∀ γ s, ∀ p ∈ G.Y, Φ (G.σ γ s) (G.ρ γ p) = Φ s p) ∧
     ∀ s (t : ℝ), 0 < t → ∀ p ∈ G.Y, Φ s (t • p) = Φ s p
 
-theorem isFun_zero : IsFun G 0 := ⟨fun _ => contDiffOn_const, fun _ _ _ _ => rfl, fun _ _ _ _ _ => rfl⟩
-
 end Geo
 
 section Ad

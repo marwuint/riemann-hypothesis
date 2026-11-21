@@ -63,13 +63,6 @@ def SymCube : Prop :=
       ∀ᶠ w : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∃ α β : ℂˣ, π.HasSat w {α, β} ∧
         P.HasSat w {α ^ 3, α ^ 2 * β, α * β ^ 2, β ^ 3}
 
-def CyclicBaseChangeC : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
-    [IsGalois F E], (Module.finrank F E).Prime → ∀ (a : ℕ), 1 ≤ a → ∀ π : CuspSub F a,
-      (∃ η : HChar F, IsNormChar E η ∧ SelfTw (CG.mk π).HasSat η) ∨ ∃ P : CuspSub E a,
-        (∀ (τ : E →+* ℂ) (m : Multiset ℂ), π.HasInfChar (τ.comp (algebraMap F E)) m → P.HasInfChar τ m) ∧
-        WeakBC (CG.mk π).HasSat (CG.mk P).HasSat
-
 def QuadInduction : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [IsTotallyReal E] [Algebra F E],
     Module.finrank F E = 2 → ∀ (a : ℕ), 1 ≤ a → ∀ π : TR.CuspSub E a,

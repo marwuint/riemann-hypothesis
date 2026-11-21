@@ -229,16 +229,6 @@ theorem forgetFr_eq_iff (hd : Disjoint SG Q) (p q : DecoF E n ST SG Q) :
     rw [redGQ_eq_one hc]
     exact (one_smul (UF E n × GLG E n (uSG SG Q)) _).symm
 
-theorem forgetFr_base [NeZero n] : forgetFr (DecoF.base E n ST SG Q) = DecoSet.base E n ST (uSG SG Q) := by
-  apply Subtype.ext
-  ext1
-  · rfl
-  · rfl
-  · funext w
-    by_cases h : w.1 ∈ SG
-    · exact forgetDeco_be_of_mem _ w h
-    · exact forgetDeco_be_of_not _ w h
-
 end Forget
 
 section Groups
@@ -433,17 +423,6 @@ theorem tilFr_deco (p : DecoF E n ∅ SG Q) : (tilFr (ST := ST) hN pi p).deco = 
 theorem tilFr_fr (p : DecoF E n ∅ SG Q) (P : Q) : (tilFr (ST := ST) hN pi p).fr P = sumE hN (p.fr P) (unitOf pi) := by
   exact congrArg (fun x => DecoF.fr x P) (tilFr_eq hN hT hG hQ p)
 
-theorem tilFr_fr_last (p : DecoF E n ∅ SG Q) (P : Q) :
-    (tilFr (ST := ST) hN pi p).fr P (Pi.single (Br.iL hN) 1) = Pi.single (Br.iL hN) (pi : E) := by
-  have h0 : ∀ t : E, prH E hN (Pi.single (Br.iL hN) t) = 0 := fun t => funext fun i => by
-    have h : Br.iC hN i ≠ Br.iL hN := fun h => absurd (congrArg Fin.val h) i.2.ne
-    rw [prH_apply, Pi.single_eq_of_ne h]
-    rfl
-  rw [tilFr_fr hN hT hG hQ]
-  refine ext_prH hN ?_ ?_
-  · rw [prH_sumE, h0, h0, map_zero]
-  · rw [sumE_last, unitOf_val (hQ P), Pi.single_eq_same, Pi.single_eq_same, mul_one]
-
 theorem tilFr_smul (a : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ∅ SG Q) :
     tilFr (ST := ST) hN pi (a • p) =
       ((extUH hN a.1, extGH hN a.2.1, extQ E hN Q a.2.2) : UF E N × GLG E N SG × GLQ E N Q) • tilFr (ST := ST) hN pi p := by
@@ -454,19 +433,6 @@ theorem tilFr_smul (a : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ∅ SG
   · show (tilFr hN pi (a • p)).fr P = (extUH hN a.1).1 * (tilFr hN pi p).fr P * ((extI hN P.1 (a.2.2 P))⁻¹).1
     rw [tilFr_fr hN hT hG hQ, tilFr_fr hN hT hG hQ, ← map_inv, extI_val, extUH_val, ← sumE_mul, ← sumE_mul, one_mul, mul_one]
     rfl
-
-theorem tilFr_injective : Function.Injective (tilFr hN pi : DecoF E n ∅ SG Q → DecoF E N ST SG Q) := by
-  intro p q h
-  refine Subtype.ext (Prod.ext ?_ (funext fun P => ?_))
-  · have e := congrArg DecoF.deco h
-    rw [tilFr_deco hN hT hG hQ, tilFr_deco hN hT hG hQ] at e
-    subst hN
-    have e1 : (DecoSet.til (ST := ST) pi p.deco).1 = (DecoSet.til (ST := ST) pi q.deco).1 := congrArg Subtype.val e
-    rw [DecoSet.til_val _ hT hG, DecoSet.til_val _ hT hG] at e1
-    exact Subtype.ext (Deco.til_injective p.deco.2 q.deco.2 e1)
-  · have e := congrArg (fun x => DecoF.fr x P) h
-    simp only [tilFr_fr hN hT hG hQ] at e
-    exact sumE_inj hN e
 
 theorem forgetFr_tilFr (p : DecoF E n ∅ SG Q) :
     forgetFr (tilFr (ST := ST) hN pi p) = DecoSet.tilH hN pi (forgetFr p) := by
@@ -603,19 +569,6 @@ instance neZero_rankX (R : Ranks) : NeZero (R.N R.m - 1) := ⟨by
   have h2 := R.m_add_three_le_k
   unfold Ranks.r at h1
   omega⟩
-
-example : Nonempty ((stepX Ch sel mu P).D ()) := ⟨trivPt X _ _ _ _ (DecoF.base _ _ _ _ _)⟩
-
-example : toRow sel mu (DecoF.base _ _ _ _ _ : XPt Pr R sel mu) = DecoSet.base _ _ _ _ := forgetFr_base
-
-example (Q : QE sel (mu : Chr X.F X.E X.K)) (k : (levQX R sel mu Q).H) :
-    (levQX R sel mu Q).lam k * lamQP (mu : Chr X.F X.E X.K) Q.1 (R.N R.m - 1) R.r (R.m * R.t) ⟨redGL _ Q.1 k.1, k.2⟩ = 1 :=
-  inv_mul_cancel _
-
-example (hPr : Pr.Ok) (u : Pr.Word) (hQ : ∀ P : QE sel (mu : Chr X.F X.E X.K), Pr.piT u ∉ P.1.asIdeal) (p : XPt Pr R sel mu)
-    (Q : QE sel (mu : Chr X.F X.E X.K)) :
-    (tilF sel mu u p).fr Q (Pi.single (Br.iL (N_m_succ R)) 1) = Pi.single (Br.iL (N_m_succ R)) (Pr.piT u : X.E) :=
-  tilFr_fr_last _ (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) hQ p Q
 
 end XStep
 

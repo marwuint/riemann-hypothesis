@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistedKernelClosedFiniteFlatAffineBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleFamilyAgreementLocusOfAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistedKernelClosedFiniteFlatAffineBase
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleFamilyAgreementLocusOfAffineOpen
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -31,10 +31,10 @@ theorem exists_cover : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Ove
     have fV : Fam A (ev N (fst A (Over.mk (V.1.ι ≫ T.hom))) (snd A _ ≫ j)) :=
       ⟨hNV, (isAdditive_iff hNV).2 fun Y a a' t ↦ by
         rw [eV, eV, eV]; exact (isAdditive_iff hN.isLB).1 hN.add Y a a' (t ≫ j)⟩
-    obtain ⟨H, h, h1, h2, h3, h4, h5⟩ := GlobalTheory.T.exists_twistedKernel_closed_finiteFlat_affineBase R A hA L hL hamp _ _ fV
+    obtain ⟨H, h, h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.DualCover.twistedKernel_affine R A hA L hL hamp _ _ fV
     refine ⟨H, h, h1, h2, h3, h4, fun Y u t ↦ ?_⟩
     rw [← h5, same_iff hP hN.isLB, same_iff hP hNV, eV, Category.assoc]
-  obtain ⟨H, h, -, hfin, hfl, hsu, hrep⟩ := GlobalTheory.T.exists_lineBundleFamily_agreementLocus_of_affineOpens R A hA A T (abelian₂ A L) N hP hN.isLB
+  obtain ⟨H, h, -, hfin, hfl, hsu, hrep⟩ := _root_.GlobalTheory.DualCon.GlueKernel.exists_kernel_of_affine R A hA A T (abelian₂ A L) N hP hN.isLB
     (fun Y u ↦ by rw [eP, lam_one_left]) (fun Y t ↦ hN.add.evc_one hN.isLB t) loc
   refine ⟨H, h ≫ snd A T, h ≫ fst A T, hfl, hsu, inferInstance, fun Y a y ↦ ?_⟩
   have hs : Same A (abelian₂ A L) N (y ≫ h ≫ fst A T) (y ≫ h ≫ snd A T) :=

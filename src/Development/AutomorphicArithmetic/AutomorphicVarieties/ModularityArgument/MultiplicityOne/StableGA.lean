@@ -19,7 +19,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.EndomorphismSli
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.ThetaFixTop
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.GlobalCharacterOfFiniteInputs
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.AdelicHeckeBlocks.ImportsAlt
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NontrivialInfinitePlaceOfUnramifiedStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NontrivialInfinitePlaceOfUnramified
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 
 noncomputable section
 
@@ -78,7 +80,7 @@ theorem UpperTheory.V.Z.Mult.stableGA :
     PiFin → PiAdm → GrowthPiJ → CmbPiA → CuspReadI → UpperTheory.V.Z.Mult.StableBlockGA := by
   intro hFin hAdm hG hPi hR E _ _ _ hE n hn l₁ l₂
   have hSp := specP _ (cuspReadP_inf hR)
-  haveI : Nontrivial (InfinitePlace E) := GlobalTheory.T.nontrivial_infinite_place_of_unramified E hE
+  haveI : Nontrivial (InfinitePlace E) := _root_.GlobalTheory.CompanionTheory.UnrCM.nontrivial_infinitePlace E hE
   haveI : BorelSpace (GA E n) := ⟨rfl⟩
   haveI : BorelSpace (GA E 0) := ⟨rfl⟩
   obtain ⟨μ₁, hμ₁⟩ := haarEx E n

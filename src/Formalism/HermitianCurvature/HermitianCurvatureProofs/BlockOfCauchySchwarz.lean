@@ -232,8 +232,4 @@ theorem block_cross_le {α β : Type} {Y₁ : Finset α} {Y₂ : Finset β} {a :
     rw [hns, hnr, hcr] at k2
     nlinarith [mul_pos hn hn, k2]
 
-theorem blockSchur_true : KB.BlockSchur := by
-  intro ι α β _ Y₁ Y₂ κa κw κb a w b hκ hv
-  exact block_cross_le (blockPSD_mul hκ (blockPSD_prod Finset.univ a w b (fun v _ => hv v)))
-
 end Formalism.FourierDecayAlt.P.PBA

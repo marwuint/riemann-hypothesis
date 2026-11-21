@@ -29,12 +29,6 @@ def GoodRowCuspParam (D : D7) (S : GlobalTheory.HeightCounting.RowSide D) : Prop
   ∀ j : ℕ, 1 ≤ j → j ≤ D.R.m → ∀ σ : D.what₂.FT, D.what₂.isot j σ ≠ ⊥ → D.nd.goodRow σ →
     ∃ π : D.naut.CG D.R.r, IsCuspParam D S σ π
 
-theorem card_hcSigma {R : Ranks} (P : HCParam R) : Multiset.card (hcSigma P) = R.r := by
-  have := R.m_add_three_le_k
-  simp only [hcSigma, Multiset.card_add, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin,
-    Ranks.r]
-  omega
-
 theorem hcSigma_int {R : Ranks} (P : HCParam R) : ∀ z ∈ hcSigma P, ∃ n : ℤ, z = (n : ℂ) := by
   intro z hz
   simp only [hcSigma, Multiset.mem_add, Multiset.mem_map] at hz

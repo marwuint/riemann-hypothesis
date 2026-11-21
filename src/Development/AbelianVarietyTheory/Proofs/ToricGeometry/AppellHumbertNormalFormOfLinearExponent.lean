@@ -32,35 +32,6 @@ theorem _root_.GlobalTheory.AppellHumbert.eq_sum_re_im {g : ℕ} (u : Fin g → 
   ext i
   simp [Finset.sum_apply, Finset.sum_add_distrib, Pi.single_apply, Complex.re_add_im]
 
-theorem apply_eq_sum {g : ℕ} (φ : (Fin g → ℂ) →ₗ[ℂ] ℂ) (z : Fin g → ℂ) :
-    φ z = ∑ i, z i * φ (Pi.single i 1) := by
-  conv_lhs => rw [pi_eq_sum_univ' z]
-  simp [map_sum]
-
-theorem exists_split {g : ℕ} (F : (Fin g → ℂ) →ₗ[ℝ] ((Fin g → ℂ) →ₗ[ℂ] ℂ)) :
-    ∃ S H : Matrix (Fin g) (Fin g) ℂ, ∀ u z,
-      F u z = z ⬝ᵥ S.mulVec u + z ⬝ᵥ H.mulVec (star u) := by
-  refine ⟨Matrix.of fun a b => (F (Pi.single b 1) (Pi.single a 1)
-      - I * F (Pi.single b I) (Pi.single a 1)) / 2,
-    Matrix.of fun a b => (F (Pi.single b 1) (Pi.single a 1)
-      + I * F (Pi.single b I) (Pi.single a 1)) / 2, fun u z => ?_⟩
-  rw [apply_eq_sum, ← dotProduct_add, dotProduct]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  congr 1
-  conv_lhs => rw [eq_sum_re_im u]
-  simp only [map_sum, map_add, map_smul, LinearMap.sum_apply, LinearMap.add_apply,
-    LinearMap.smul_apply, Pi.add_apply, mulVec, dotProduct, of_apply, ← Finset.sum_add_distrib,
-    Pi.star_apply, real_smul]
-  refine Finset.sum_congr rfl fun b _ => ?_
-  have h1 : u b = (u b).re + (u b).im * I := (re_add_im _).symm
-  have h2 : star (u b) = (u b).re - (u b).im * I := by
-    apply Complex.ext <;> simp
-  rw [h2]
-  generalize (u b).re = x at *
-  generalize (u b).im = y at *
-  rw [h1]
-  linear_combination (y * F (Pi.single b I) (Pi.single a 1)) * I_mul_I
-
 end AppellHumbert
 
 open Complex Matrix Filter Topology in

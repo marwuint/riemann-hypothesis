@@ -48,16 +48,9 @@ def bilin (h : HasConstSecondDiff f) : X →ₗ[ℤ] X →ₗ[ℤ] A :=
   (AddMonoidHom.mk' (fun μ => (AddMonoidHom.mk' (fun ν => secondDiff f 0 μ ν) (hr μ)).toIntLinearMap)
     (fun μ μ' => LinearMap.ext fun ν => hl μ μ' ν)).toIntLinearMap
 
-theorem bilin_apply (h : HasConstSecondDiff f) (a μ ν : X) :
-    h.bilin μ ν = f (a + μ + ν) - f (a + μ) - f (a + ν) + f a :=
-  h 0 a μ ν
-
 theorem bilin_apply_zero (h : HasConstSecondDiff f) (μ ν : X) :
     h.bilin μ ν = f (μ + ν) - f μ - f ν + f 0 :=
   secondDiff_zero f μ ν
-
-theorem bilin_comm (h : HasConstSecondDiff f) (μ ν : X) : h.bilin μ ν = h.bilin ν μ :=
-  secondDiff_comm f 0 μ ν
 
 theorem map_add (h : HasConstSecondDiff f) (μ ν : X) :
     f (μ + ν) - f 0 = (f μ - f 0) + (f ν - f 0) + h.bilin μ ν := by
@@ -91,54 +84,7 @@ def quadraticMap (h : HasConstSecondDiff f) (he : ∀ x, f (-x) = f x) : Quadrat
 @[simp] theorem quadraticMap_apply (h : HasConstSecondDiff f) (he : ∀ x, f (-x) = f x) (x : X) :
     h.quadraticMap he x = f x - f 0 := rfl
 
-theorem polar_quadraticMap (h : HasConstSecondDiff f) (he : ∀ x, f (-x) = f x) (μ ν : X) :
-    QuadraticMap.polar (h.quadraticMap he) μ ν = h.bilin μ ν := by
-  simp only [QuadraticMap.polar, quadraticMap_apply, h.bilin_apply_zero]
-  abel
-
-theorem polarBilin_quadraticMap (h : HasConstSecondDiff f) (he : ∀ x, f (-x) = f x) :
-    (h.quadraticMap he).polarBilin = h.bilin :=
-  LinearMap.ext₂ (h.polar_quadraticMap he)
-
-theorem comp_left {A' : Type*} [AddCommGroup A'] (h : HasConstSecondDiff f) (v : A →+ A') :
-    HasConstSecondDiff (v ∘ f) := fun a a' μ ν => by
-  simpa [secondDiff] using congrArg v (h a a' μ ν)
-
-theorem bilin_comp_left {A' : Type*} [AddCommGroup A'] (h : HasConstSecondDiff f) (v : A →+ A')
-    (μ ν : X) : (h.comp_left v).bilin μ ν = v (h.bilin μ ν) := by
-  simp [bilin_apply_zero]
-
 end HasConstSecondDiff
-
-theorem hasConstSecondDiff_quadraticMap_add (Q : QuadraticMap ℤ X A) (c : A) :
-    HasConstSecondDiff fun x => Q x + c := by
-  have key : ∀ a μ ν, secondDiff (fun x => Q x + c) a μ ν = QuadraticMap.polar Q μ ν := by
-    intro a μ ν
-    simp only [secondDiff, QuadraticMap.map_add Q, QuadraticMap.polar_add_left]
-    abel
-  intro a a' μ ν
-  rw [key, key]
-
-theorem exists_biadditive_of_secondDiff_const (f : X → A)
-    (h : ∀ a a' μ ν : X, f (a + μ + ν) - f (a + μ) - f (a + ν) + f a =
-      f (a' + μ + ν) - f (a' + μ) - f (a' + ν) + f a') :
-    ∃ B : X →+ X →+ A, (∀ a μ ν, B μ ν = f (a + μ + ν) - f (a + μ) - f (a + ν) + f a) ∧
-      ∀ μ ν, B μ ν = B ν μ := by
-  have h' : HasConstSecondDiff f := h
-  exact ⟨LinearMap.toAddMonoidHom'.comp h'.bilin.toAddMonoidHom, h'.bilin_apply, h'.bilin_comm⟩
-
-theorem exists_bimultiplicative_of_secondQuot_const {G : Type*} [CommGroup G] (ψ : X → G)
-    (h : ∀ a a' μ ν : X, ψ (a + μ + ν) / ψ (a + μ) / ψ (a + ν) * ψ a =
-      ψ (a' + μ + ν) / ψ (a' + μ) / ψ (a' + ν) * ψ a') :
-    ∃ τ : X → X → G, (∀ a μ ν, τ μ ν = ψ (a + μ + ν) / ψ (a + μ) / ψ (a + ν) * ψ a) ∧
-      (∀ μ μ' ν, τ (μ + μ') ν = τ μ ν * τ μ' ν) ∧ (∀ μ ν ν', τ μ (ν + ν') = τ μ ν * τ μ ν') ∧
-      ∀ μ ν, τ μ ν = τ ν μ := by
-  obtain ⟨B, hB, hs⟩ := exists_biadditive_of_secondDiff_const
-    (fun x => (Additive.ofMul (ψ x) : Additive G)) h
-  refine ⟨fun μ ν => (B μ ν).toMul, fun a μ ν => congrArg Additive.toMul (hB a μ ν),
-    fun μ μ' ν => ?_, fun μ ν ν' => ?_, fun μ ν => congrArg Additive.toMul (hs μ ν)⟩
-  · simp
-  · simp
 
 end SecondDifference
 
@@ -239,22 +185,6 @@ theorem posDef_of_tendsto_comp {X V : Type*} [AddCommGroup X] [AddCommGroup V] [
   intro v hv
   simpa using hp (b.equivFun v) (by simpa using hv)
 
-theorem exists_pos_mul_norm_sq_le_of_posDef {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] {Q : QuadraticForm ℝ V} (hQ : Q.PosDef) :
-    ∃ c : ℝ, 0 < c ∧ ∀ v, c * ‖v‖ ^ 2 ≤ Q v := by
-  have := FiniteDimensional.proper_real V
-  obtain ⟨c, hc, h⟩ := (isCompact_sphere (0 : V) 1).exists_forall_le'
-    (continuous_quadraticForm Q).continuousOn (a := 0)
-    (fun v hv => hQ v (by rintro rfl; simp at hv))
-  refine ⟨c, hc, fun v => ?_⟩
-  by_cases hv : v = 0
-  · simp [hv]
-  have hn : ‖v‖ ≠ 0 := norm_ne_zero_iff.2 hv
-  have h₁ := h (‖v‖⁻¹ • v) (by simp [norm_smul, hn])
-  rw [QuadraticMap.map_smul, smul_eq_mul] at h₁
-  calc c * ‖v‖ ^ 2 ≤ ‖v‖⁻¹ * ‖v‖⁻¹ * Q v * ‖v‖ ^ 2 := by gcongr
-    _ = Q v := by field_simp
-
 end Definite
 
 section RealExtension
@@ -286,15 +216,6 @@ theorem realExt_apply (Q : QuadraticMap ℤ X ℝ) (v : ℝ ⊗[ℤ] X) :
     smul_eq_mul]
   ring
 
-theorem polar_realExt_one_tmul (Q : QuadraticMap ℤ X ℝ) (x y : X) :
-    QuadraticMap.polar (realExt Q) (1 ⊗ₜ x) (1 ⊗ₜ y) = QuadraticMap.polar Q x y := by
-  simp only [QuadraticMap.polar, ← tmul_add, realExt_tmul, one_mul]
-
-theorem polarBilin_realExt (Q : QuadraticMap ℤ X ℝ) :
-    (realExt Q).polarBilin = realExtBilin Q.polarBilin := by
-  ext x y
-  simp [polar_realExt_one_tmul]
-
 theorem span_range_one_tmul :
     Submodule.span ℝ (Set.range fun x : X => (1 : ℝ) ⊗ₜ[ℤ] x) = ⊤ := by
   refine eq_top_iff.2 fun v _ => ?_
@@ -316,44 +237,6 @@ theorem posDef_realExt_of_tendsto [Module.Finite ℤ X] (Q : QuadraticMap ℤ X 
     (h : Tendsto Q cofinite atTop) : (realExt Q).PosDef :=
   posDef_of_tendsto_comp (TensorProduct.mk ℤ ℝ X 1).toAddMonoidHom span_range_one_tmul _
     (h.congr fun x => by simp)
-
-theorem exists_pos_mul_sum_sq_le_of_posDef_realExt {ι : Type*} [Fintype ι] (b : Basis ι ℤ X)
-    {Q : QuadraticMap ℤ X ℝ} (hQ : (realExt Q).PosDef) :
-    ∃ c : ℝ, 0 < c ∧ ∀ x, c * ∑ i, (b.repr x i : ℝ) ^ 2 ≤ Q x := by
-  let e : EuclideanSpace ℝ ι ≃ₗ[ℝ] ℝ ⊗[ℤ] X :=
-    (WithLp.linearEquiv 2 ℝ (ι → ℝ)).trans (b.baseChange ℝ).equivFun.symm
-  obtain ⟨c, hc, h⟩ := exists_pos_mul_norm_sq_le_of_posDef (Q := (realExt Q).comp e.toLinearMap)
-    (fun v hv => hQ _ (by simpa using hv))
-  refine ⟨c, hc, fun x => ?_⟩
-  have h₁ := h (e.symm (1 ⊗ₜ x))
-  rw [EuclideanSpace.real_norm_sq_eq, QuadraticMap.comp_apply, LinearEquiv.coe_coe,
-    e.apply_symm_apply] at h₁
-  simpa [e] using h₁
-
-theorem tendsto_of_posDef_realExt [Module.Free ℤ X] [Module.Finite ℤ X]
-    {Q : QuadraticMap ℤ X ℝ} (hQ : (realExt Q).PosDef) : Tendsto Q cofinite atTop := by
-  let b := Module.finBasis ℤ X
-  obtain ⟨c, hc, h⟩ := exists_pos_mul_sum_sq_le_of_posDef_realExt b hQ
-  refine tendsto_atTop.2 fun C => eventually_cofinite.2 ?_
-  refine ((Set.finite_Icc (fun _ => -⌈C / c⌉) (fun _ => ⌈C / c⌉)).preimage
-    b.equivFun.injective.injOn).subset fun x hx => ?_
-  have hx' : Q x < C := not_le.1 hx
-  have hi : ∀ i, |b.repr x i| ≤ ⌈C / c⌉ := fun i => by
-    have h₁ : (b.repr x i : ℝ) ^ 2 ≤ ∑ i, (b.repr x i : ℝ) ^ 2 :=
-      Finset.single_le_sum (f := fun i => (b.repr x i : ℝ) ^ 2) (fun i _ => sq_nonneg _)
-        (Finset.mem_univ i)
-    have h₂ : (b.repr x i : ℝ) ^ 2 ≤ C / c := by
-      rw [le_div_iff₀' hc]
-      exact ((mul_le_mul_of_nonneg_left h₁ hc.le).trans (h x)).trans hx'.le
-    have h₃ : (b.repr x i) ^ 2 ≤ ⌈C / c⌉ := by exact_mod_cast h₂.trans (Int.le_ceil _)
-    refine le_trans ?_ h₃
-    rw [← sq_abs]
-    exact Int.le_self_sq _
-  exact ⟨fun i => (abs_le.1 (hi i)).1, fun i => (abs_le.1 (hi i)).2⟩
-
-theorem posDef_realExt_iff_tendsto [Module.Free ℤ X] [Module.Finite ℤ X]
-    (Q : QuadraticMap ℤ X ℝ) : (realExt Q).PosDef ↔ Tendsto Q cofinite atTop :=
-  ⟨tendsto_of_posDef_realExt, posDef_realExt_of_tendsto Q⟩
 
 theorem posDef_gram_of_posDef_realExt {ι : Type*} [Fintype ι] (b : Basis ι ℤ X)
     {Q : QuadraticMap ℤ X ℝ} (hQ : (realExt Q).PosDef) :
@@ -384,43 +267,6 @@ theorem posDef_of_posDef_realExt [Module.Free ℤ X] [Module.Finite ℤ X]
     refine b.repr.injective (Finsupp.ext fun i => ?_)
     simpa using congrArg (fun v => (b.baseChange ℝ).repr v i) h₀
   simpa using h
-
-theorem HasConstSecondDiff.posDef_realExt [Module.Finite ℤ X] {f : X → ℝ}
-    (h : HasConstSecondDiff f) (he : ∀ x, f (-x) = f x) (ht : Tendsto f cofinite atTop) :
-    (realExt (h.quadraticMap he)).PosDef :=
-  posDef_realExt_of_tendsto _ (tendsto_atTop_add_const_right _ (-f 0) ht)
-
-theorem exists_posDef_of_secondDiff_const [Module.Free ℤ X] [Module.Finite ℤ X] (f : X → ℝ)
-    (h : ∀ a a' μ ν : X, f (a + μ + ν) - f (a + μ) - f (a + ν) + f a =
-      f (a' + μ + ν) - f (a' + μ) - f (a' + ν) + f a')
-    (he : ∀ x, f (-x) = f x) (ht : Tendsto f cofinite atTop) :
-    ∃ (B : X →+ X →+ ℝ) (Q : QuadraticForm ℝ (ℝ ⊗[ℤ] X)),
-      (∀ a μ ν, B μ ν = f (a + μ + ν) - f (a + μ) - f (a + ν) + f a) ∧
-      (∀ μ ν, B μ ν = B ν μ) ∧ (∀ x, f x - f 0 = B x x / 2) ∧ (∀ x, x ≠ 0 → 0 < f x - f 0) ∧
-      Q.PosDef ∧ (∀ x, Q (1 ⊗ₜ x) = f x - f 0) ∧
-      ∀ μ ν, QuadraticMap.polar Q (1 ⊗ₜ μ) (1 ⊗ₜ ν) = B μ ν := by
-  have h' : HasConstSecondDiff f := h
-  have hp := h'.posDef_realExt he ht
-  refine ⟨LinearMap.toAddMonoidHom'.comp h'.bilin.toAddMonoidHom, realExt (h'.quadraticMap he),
-    h'.bilin_apply, h'.bilin_comm, fun x => ?_, posDef_of_posDef_realExt hp, hp,
-    fun x => by simp, fun μ ν => ?_⟩
-  · change _ = h'.bilin x x / 2
-    rw [h'.bilin_self he, two_smul]
-    ring
-  · exact (polar_realExt_one_tmul _ μ ν).trans (h'.polar_quadraticMap he μ ν)
-
-example : HasConstSecondDiff (fun x : ℤ => ((x : ℝ) ^ 2 + 1)) ∧
-    (∀ x : ℤ, (((-x : ℤ) : ℝ) ^ 2 + 1) = (x : ℝ) ^ 2 + 1) ∧
-    Tendsto (fun x : ℤ => ((x : ℝ) ^ 2 + 1)) cofinite atTop := by
-  refine ⟨fun a a' μ ν => ?_, fun x => by simp, tendsto_atTop_add_const_right _ _ ?_⟩
-  · simp only [secondDiff]
-    push_cast
-    ring
-  · have h : Tendsto (fun x : ℤ => |(x : ℝ)|) cofinite atTop := by
-      rw [Int.cofinite_eq, tendsto_sup]
-      exact ⟨tendsto_abs_atBot_atTop.comp (tendsto_intCast_atBot_iff.2 tendsto_id),
-        tendsto_abs_atTop_atTop.comp tendsto_intCast_atTop_atTop⟩
-    simpa [Function.comp_def] using (tendsto_pow_atTop two_ne_zero).comp h
 
 end RealExtension
 

@@ -44,15 +44,6 @@ theorem dvd_of_dvd_conj (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : I
   refine ⟨z₂ + z₁, ?_⟩
   rw [smul_add, ← hz₁, ← hz₂, map_smul, ← add_smul, hij, one_smul]
 
-theorem dvd_of_zmod (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
-    (hsup : I ⊔ I.map bar = ⊤) (M : ℕ) {X Y : Type*} [AddCommGroup X] [Module O X] [AddCommGroup Y]
-    [Module O Y] [Module.Free ℤ Y] (d : X →ₗ[O] Y)
-    (h₁ : ∀ x ∈ I.map bar, ∀ y, ∃ z : Y, d (x • y) = M • z)
-    (h₂ : ∀ t : Y →+ ZMod M, ∀ x ∈ I.map bar, ∀ y, t (bar x • d y) = 0) (y : X) :
-    ∃ z : Y, d y = M • z :=
-  dvd_of_dvd_conj bar hbar I hsup M d h₁
-    (fun x hx y => exists_eq_nsmul_of_forall_zmod M _ fun t => h₂ t x hx y) y
-
 theorem dvd_of_addChar (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
     (hsup : I ⊔ I.map bar = ⊤) {M : ℕ} (hM : M ≠ 0) {C : Type*} [CommMonoid C] {ζ : C}
     (hζ : IsPrimitiveRoot ζ M) {X Y : Type*} [AddCommGroup X] [Module O X] [AddCommGroup Y]
@@ -184,58 +175,6 @@ theorem fix_torsion_of_fix_conj_rel (bar : O ≃+* O) (I : Ideal O) (hsup : I �
     exact hu _ _ _ (tors _ _ hx) hy (R_adj _ _ _ _ hx hy (he _ _ hx (tors _ _ hy)))
   · intro x y hx hy
     exact hu _ _ _ (tors _ _ hx) (tors _ _ hy) (θ_iso _ _ _ hx hy (he _ _ hx hy))
-
-theorem eq_id_of_fix_conj_mul (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.map bar = ⊤) (M : ℕ)
-    (hIJ : I * I.map bar ≤ Ideal.span {(M : O)}) {N A : Type*} [CommGroup N] [CommGroup A]
-    (hN : ∀ x : N, x ^ M = 1) (act : O → N →* N) (act_one : ∀ x, act 1 x = x)
-    (act_add : ∀ a b x, act (a + b) x = act a x * act b x)
-    (act_mul : ∀ a b x, act (a * b) x = act a (act b x))
-    (e : N → N → A) (e_mul : ∀ x x' y, e (x * x') y = e x y * e x' y)
-    (e_nondeg : ∀ x, (∀ y, e x y = 1) → x = 1)
-    (e_adj : ∀ a x y, e (act a x) y = e x (act (bar a) y))
-    (θ : N →* N) (θ_act : ∀ a x, θ (act a x) = act a (θ x))
-    (θ_iso : ∀ x y, e (θ x) (θ y) = e x y)
-    (θ_fix : ∀ a ∈ I.map bar, ∀ y, θ (act a y) = act a y) : θ = MonoidHom.id N :=
-  MonoidHom.ext fun x => fix_torsion_of_fix_conj bar I hsup M hIJ act act_one act_add act_mul e
-    (fun x x' y _ _ _ => e_mul x x' y) (fun x _ h => e_nondeg x fun y => h y (hN y))
-    (fun a x y _ _ => e_adj a x y) θ (fun a x _ => θ_act a x) (fun x y _ _ => θ_iso x y)
-    (fun a ha y _ => θ_fix a ha y) x (hN x)
-
-theorem eq_id_of_fix_conj (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.map bar = ⊤) (M : ℕ)
-    (hIJ : I * I.map bar ≤ Ideal.span {(M : O)}) {N A : Type*} [AddCommGroup N] [Module O N]
-    [AddCommGroup A] (hN : ∀ x : N, M • x = 0)
-    (e : N → N → A) (e_add : ∀ x x' y, e (x + x') y = e x y + e x' y)
-    (e_nondeg : ∀ x, (∀ y, e x y = 0) → x = 0)
-    (e_adj : ∀ (a : O) x y, e (a • x) y = e x (bar a • y))
-    (θ : N →ₗ[O] N) (θ_iso : ∀ x y, e (θ x) (θ y) = e x y)
-    (θ_fix : ∀ a ∈ I.map bar, ∀ y, θ (a • y) = a • y) : θ = LinearMap.id := by
-  have h := eq_id_of_fix_conj_mul bar I hsup M hIJ (N := Multiplicative N) (A := Multiplicative A)
-    (fun x => hN x.toAdd)
-    (fun a => AddMonoidHom.toMultiplicative (DistribSMul.toAddMonoidHom N a))
-    (fun x => one_smul O x.toAdd) (fun a b x => add_smul a b x.toAdd)
-    (fun a b x => mul_smul a b x.toAdd)
-    (fun x y => Multiplicative.ofAdd (e x.toAdd y.toAdd)) (fun x x' y => e_add _ _ _)
-    (fun x h => e_nondeg x.toAdd fun y => h (Multiplicative.ofAdd y)) (fun a x y => e_adj a _ _)
-    (AddMonoidHom.toMultiplicative θ.toAddMonoidHom) (fun a x => θ.map_smul a x.toAdd)
-    (fun x y => θ_iso _ _) (fun a ha y => θ_fix a ha _)
-  ext x
-  exact DFunLike.congr_fun h (Multiplicative.ofAdd x)
-
-theorem level_rigidity (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
-    (hsup : I ⊔ I.map bar = ⊤) (M : ℕ) (hIJ : I * I.map bar = Ideal.span {(M : O)}) :
-    (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Free ℤ X] (d : X →ₗ[O] X),
-      (∀ x ∈ I.map bar, ∀ y, ∃ z : X, d (x • y) = M • z) →
-      (∀ t : X →+ ZMod M, ∀ x ∈ I.map bar, ∀ y, t (bar x • d y) = 0) →
-      ∀ y, ∃ z : X, d y = M • z) ∧
-    (∀ (N A : Type) [AddCommGroup N] [Module O N] [AddCommGroup A], (∀ x : N, M • x = 0) →
-      ∀ e : N →+ N →+ A, (∀ x, e x = 0 → x = 0) → (∀ (a : O) x y, e (a • x) y = e x (bar a • y)) →
-      ∀ θ : N ≃ₗ[O] N, (∀ x y, e (θ x) (θ y) = e x y) → (∀ a ∈ I.map bar, ∀ y, θ (a • y) = a • y) →
-      θ = LinearEquiv.refl O N) := by
-  refine ⟨fun X _ _ _ d h₁ h₂ y => dvd_of_zmod bar hbar I hsup M d h₁ h₂ y,
-    fun N A _ _ _ hN e hnd hadj θ hiso hfix => ?_⟩
-  have h := eq_id_of_fix_conj bar I hsup M hIJ.le hN (fun x y => e x y)
-    (fun x x' y => by simp) (fun x h => hnd x (AddMonoidHom.ext h)) hadj θ.toLinearMap hiso hfix
-  exact LinearEquiv.toLinearMap_injective h
 
 end ConjIdeal
 

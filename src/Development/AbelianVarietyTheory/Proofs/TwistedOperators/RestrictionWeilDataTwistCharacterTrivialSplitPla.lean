@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.T2SpaceHalfAdelicMatrixAddSubgroup
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLeftInverseIsotropicFrameKillingEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfAdelicHomDecomposeIsotropicMiddleComplementStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLeftInverseIsotropicFrameKillingEmbedding
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HalfAdelicHomDecomposeIsotropicMiddleComplement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictionComplementTranslatesLocallyConstStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHalfInvariantFormIsotropicAverageNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPosIntegralHalfAdelicMatrixLeftMulEqStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPosIntegralHalfAdelicMatrixLeftMulEq
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicQuotientWittTowerPropertieStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
@@ -60,7 +60,7 @@ set_option maxHeartbeats 1000000 in
 theorem charTwist_eq_one_at_split : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT χT' : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ω' : GA D V' × GA D W →* Module.End ℂ (WO V' W → ℂ)), IsWeilDatumO ψ V W χS χT ω → IsWeilDatumO ψ V' W χS χT' ω' → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ c : GA D W →* Circle, (∀ h f, IsThetaFunO ψ V W f → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (1, h) f) = (c h : ℂ) • ω' (1, h) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f)) → ∀ e, IsSplitIdem D e → ∀ g, Formalism.L2.Theta.SuppAt e W g → c g = 1 := by
   intro D V V' W r C B hs ψ χS χT χT' ω ω' hω hω' μ 𝓨 hμ c hc e he g hg
   have hψ := hω.std
-  obtain ⟨K, hKC, hKB⟩ := GlobalTheory.T.exists_leftInverse_isotropicFrame_killing_embedding D V V' r C B hs
+  obtain ⟨K, hKC, hKB⟩ := _root_.GlobalTheory.HalfAverage.exists_leftInv_frame_kill_emb D V V' r C B hs
   have hR := (GlobalTheory.T.thetaRestrictIsotropicQuotient_wittTower_properties D V V' W r C B hs ψ hψ μ 𝓨 hμ).1
   obtain ⟨ℓ', hℓ', f₀, hf₀, hA⟩ := GlobalTheory.T.exists_halfInvariantForm_isotropicAverage_ne_zero D ψ hψ V V' W r C B hs μ 𝓨 hμ K hKC hKB e he
   have hth : ∀ {f : WO V W → ℂ}, IsThetaFunO ψ V W f → ∀ u, IsThetaFunO ψ V W (heisO ψ V W u f) :=
@@ -136,7 +136,7 @@ theorem charTwist_eq_one_at_split : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C :
       ℓ (heisO ψ V W u f) = ℓ f := by
     intro u hu f hf
     rw [hℓP _ (hP _ (hth hf u)), hℓP _ (hP f hf)]
-    obtain ⟨y, x, t₀, hy, hx, ht₀, rfl⟩ := GlobalTheory.T.halfAdelicHom_decompose_isotropic_middle_complement D V V' W r C B hs K hKC hKB (cA D e) u hu
+    obtain ⟨y, x, t₀, hy, hx, ht₀, rfl⟩ := _root_.GlobalTheory.HalfDecomp.half_decomp D V V' W r C B hs K hKC hKB (cA D e) u hu
     unfold avgForm
     let t₀' : halfMx (cA D e) W.rank r := ⟨t₀, ht₀⟩
     have h1 : IsHalf (cA D e) (isoPart V W C y) := isHalf_mul hy _
@@ -185,7 +185,7 @@ theorem charTwist_eq_one_at_split : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C :
   obtain ⟨r₁, hr₁, hsp⟩ := hω.om_split e he 1 g (hV1 V) hg 1 y (hD1 V) hy
   obtain ⟨r₂, hr₂, hsp'⟩ := hω'.om_split e he 1 g (hV1 V') hg 1 y (hD1 V') hy
   have E1 := hsp ℓ hinv f₀ hf₀
-  obtain ⟨κ, hκ, hscale⟩ := GlobalTheory.T.exists_pos_integral_halfAdelicMatrix_leftMul_eq D (cA D e) W.rank r (mt W g⁻¹) (mt W g) him hmi
+  obtain ⟨κ, hκ, hscale⟩ := _root_.GlobalTheory.HalfAverage.integral_leftMul_eq_smul D (cA D e) W.rank r (mt W g⁻¹) (mt W g) him hmi
   have E2 : ℓ (ω (1, g) f₀) = ((c g : ℂ) * r₂ * splitFacO χS χT' 1 y * κ) * ℓ f₀ := by
     rw [hℓP _ (hP _ (hω.om_pres _ _ hf₀)), hℓP _ (hP _ hf₀)]
     unfold avgForm

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.InFlagDomainOne
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsOpenFlagDomainNondegenerateMinorsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsOpenFlagDomainNondegenerateMinors
 
 noncomputable section
 
@@ -135,7 +135,7 @@ theorem gramHead_det_ne_zero_of_triangular {N : ℕ} (hd : Fin N → ℝ) (hd0 :
 
 theorem gramHead_det_ne_zero (N j : ℕ) (hj : j ≤ N) (g : Matrix (Fin N) (Fin N) ℂ)
     (hg : InFlagDomain N j g) (k : ℕ) : (gramHead (sigForm N j) k g).det ≠ 0 := by
-  obtain ⟨u, b, hu, hb, hbu, hug⟩ := GlobalTheory.T.flag_domain_unitary_triangular N j hj g hg
+  obtain ⟨u, b, hu, hb, hbu, hug⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.exists_unitary_translate_flag N j hj g hg
   have e : gramHead (sigForm N j) k g = gramHead (sigForm N j) k b := by
     unfold gramHead
     rw [← hug, gramOf_mul_of_preserves _ _ _ hu]

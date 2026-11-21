@@ -34,12 +34,6 @@ def SepCont (M : DSModel V S) (Λ : SmT M →ₗ[ℂ] ℂ) : Prop :=
 
 def KVecP (M : DSModel V S) (v : M.Vec) : Prop := ∀ τ, IsKFin (M.ε τ) (M.σ τ) (v τ : M.H τ)
 
-def PolStable (θ : InfFam D) (M : DSModel V S) (ω : Om V W) (pt : PolF D W.rank V.rank → (WO V W → ℂ)) : Prop :=
-  ∀ τ, (∀ X ∈ lieAt V τ, ∀ P, ∃ P', ∀ z, HasDerivAt (fun t : ℝ => ω (oneP θ V τ X t, 1) (pt P) z) (pt P' z) 0) ∧
-    ∃ deg : ℕ → Submodule ℂ (PolF D W.rank V.rank), (∀ n, FiniteDimensional ℂ (deg n)) ∧ (∀ P, ∃ n, P ∈ deg n) ∧
-      ∀ k ∈ Formalism.REAL.Kset (M.ε τ), ∀ n, ∀ P ∈ deg n, ∃ P' ∈ deg n,
-        pt P' = ω (atTau θ V τ ((M.fr τ)⁻¹ * k * M.fr τ), 1) (pt P)
-
 def ItSpans (M : DSModel V S) (M' : DSModel W S') (It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M) : Prop :=
   ∀ v : M.Vec, KVecP M v → PiTensorProduct.tprod ℂ v ∈
     Submodule.span ℂ {x | ∃ (P : PolF D W.rank V.rank) (y : M'.Vec), KVecP M' y ∧ x = It P (PiTensorProduct.tprod ℂ y)}
@@ -150,32 +144,7 @@ variable {F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u} (S : STrue D F₀) (u : D
 
 def colOf (x : D.s.Cu u) : Cu S.X u S.Y.hK := (S.hI S.hF).eCu u x
 
-def shift (t : GA D (D.sp.Y 0)) : GA D (D.sp.Y 0) := (iotaX S.X S.inst).symm (1, S.X.xu u) * t
-
-def ThetaIdentityOfMapsAt (t : GA D (D.sp.Y 0)) {A : HSp D} (B : SBes S.X S.inst u W.ψ A) : Prop :=
-  ∃ U : (D.mem u).A.Mram →ₗ[ℂ] D.s.Cu u, Function.Injective U ∧
-    ∀ (ξ : S.X.Vpi u) (x : SmT (W.MY 0)), ∃ a : ℂ,
-      ∀ (φ : (D.mem u).A.Mram) (F : (D.mem u).P.Mt) (T₀ : SmT (W.MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ)), W.IsDn (L.eT F) T₀ →
-        B.lev.per W.ψ (B.colForm (colOf S u (U φ)).1 ξ) (rTrans (shift S u t) (T₀ x)) =
-          a * PhiC (D.mem u).C (D.mem u).A (D.mem u).P φ F
-
-def ThetaVectorCompatibility (v₀ : (W.MY 0).Vec) (t : GA D (D.sp.Y 0)) : Prop :=
-  L.RowPinAt S.toSTies S.hF v₀ t ∧
-    Matches S.X S.inst (levS (Yc D 0) (W.βY 0) (W.datYt () 0 L.P)) (levChi (Yc D 0) (W.βY 0) (W.datYt () 0 L.P)) t
-
 end MI
-
-open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
-
-def ThetaIdentityOfMapsAll {Bs : Base} {Xp : PreX Bs.toPre} {I : TC Bs Xp} {l : I.Laws} {Z : TC.Later Bs (I.cols l)} (w : World I l Z)
-    (u : (I.rec7 l Z).what₂.Word) : Prop :=
-  ∃ (W : Tower (I.rec7 l Z)) (L : Link (I.rec7 l Z) u W) (v₀ : (W.MY 0).Vec) (t : GA (I.rec7 l Z) ((I.rec7 l Z).sp.Y 0))
-    (B : SBes w.S.X w.S.inst u W.ψ ((I.rec7 l Z).sp.X 0)),
-    W.Is ∧ L.TopPin (w.C.forms u) ∧ ThetaVectorCompatibility w.S u W L v₀ t ∧ B.Adapted (w.S.tr u).wt ∧ ThetaIdentityOfMapsAt w.S u W L t B
-
-example {I : Type} (τ : I → ℂ) : PropTo (fun _ => 0) τ := ⟨0, fun _ => by simp⟩
-
-example : ¬ PropTo (fun _ : Unit => (1 : ℂ)) (fun _ => 0) := fun ⟨a, h⟩ => by simpa using h ()
 
 end GlobalTheory.Core.Mi
 

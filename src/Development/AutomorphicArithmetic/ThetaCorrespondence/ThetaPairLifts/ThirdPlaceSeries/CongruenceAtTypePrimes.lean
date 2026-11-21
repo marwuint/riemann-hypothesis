@@ -1,5 +1,5 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.CongruenceSingleEndomorphism
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.TrivialLocalCondition
 
 set_option synthInstance.maxHeartbeats 200000
@@ -10,16 +10,6 @@ noncomputable section
 namespace Formalism.MainNotions.PairedCharacterCondition.CongruenceModules
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal
   Module IsDiscreteValuationRing
-section Hecke
-open Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br Formalism.NG Formalism.NG.QuotientPowerLengths
-variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X : Type} [Fintype X]
-  {M : Type} [AddCommGroup M] [Module O M] [Module.Finite O M]
-  (T : Subalgebra O (X → O)) (act : T →ₐ[O] Module.End O M)
-end Hecke
-section Record
-open Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br
-variable {D : D7}
-end Record
 section Reduce
 open Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br Formalism.NG Formalism.NG.QuotientPowerLengths
 variable {D : D7}

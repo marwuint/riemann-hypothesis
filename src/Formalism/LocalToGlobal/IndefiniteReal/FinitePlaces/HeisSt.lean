@@ -126,12 +126,6 @@ theorem heisStable : HeisStable D := by
     rw [e]
     exact (contDiff_const.mul (Formalism.IndefR.PHeisTh.psiSmooth D ψ hψ k s hs)).mul (hf.smooth k L hL hL0 (x + w))
 
-theorem svnSchurO_all_of_heis (hK : KernelId D) (h : HeisStable D) : SvNSchurOAll D :=
-  svnSchurO_all_of hK h
-
-theorem svnSchurO_all_of_char (hC : CharComplete D) : SvNSchurOAll D :=
-  svnSchurO_all_of_heis (kernelId_of hC) heisStable
-
 end Formalism.IndefR.Fin
 
 end

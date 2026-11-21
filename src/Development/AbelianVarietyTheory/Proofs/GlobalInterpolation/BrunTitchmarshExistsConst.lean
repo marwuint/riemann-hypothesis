@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ZerosDisc
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ArithmeticLargeSieveOneResidueClassPerPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ArithmeticLargeSieveOneResidueClassPerPrime
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology GlobalTheory.Lin
 open scoped Classical
 
@@ -25,7 +25,7 @@ theorem card_large_primes_class_le (q a Q M N : ℕ) (P : Finset ℕ) (hq : 1 �
     intro p hp p' hp' h
     have h' : p / q = p' / q := by simpa using h
     rw [hdec p hp, hdec p' hp', h']
-  have key := GlobalTheory.T.arithmeticLargeSieve_one_residue_class_per_prime M N Q q (P.image fun p => p / q + 1) hQ hq ?_ ?_
+  have key := _root_.GlobalTheory.arithmetic_large_sieve_one_class M N Q q (P.image fun p => p / q + 1) hQ hq ?_ ?_
   · rwa [Finset.card_image_of_injOn hinj] at key
   · intro n hn
     obtain ⟨p, hp, rfl⟩ := Finset.mem_image.1 hn

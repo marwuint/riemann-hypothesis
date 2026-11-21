@@ -2,8 +2,8 @@ import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisDivisibleOfKernelPowersStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFiltrationApproxByEnvelopeKernelPowerStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisDivisibleOfKernelPowers
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFiltrationApproxByEnvelopeKernelPower
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
 open scoped Formalism.Per
@@ -18,8 +18,8 @@ theorem crisP_ker_dvd (l : ℕ) [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l
   obtain ⟨-, -, hd, hdv⟩ := acris_basic l
   obtain ⟨s, z, hs⟩ := hd x 1
   have h1 : (l : Per.Acris0 l) ∣ s := by
-    refine GlobalTheory.T.acris_divisible_of_kernel_powers l s fun n => ?_
-    obtain ⟨u, z', hu, e⟩ := GlobalTheory.T.acris_filtration_approx_by_envelope_kernel_power l j hj n x (by rw [hx]; exact zero_mem _)
+    refine _root_.GlobalTheory.MemLoc.dvd_of_forall_fil_add l s fun n => ?_
+    obtain ⟨u, z', hu, e⟩ := _root_.GlobalTheory.MemLoc.fil_dense l j hj n x (by rw [hx]; exact zero_mem _)
     obtain ⟨w, hw⟩ := (hdv (s - u) 1).1 ⟨z' - z, by rw [map_sub]; linear_combination e - hs⟩
     exact ⟨u, w, by linear_combination hw, hu⟩
   obtain ⟨w, hw⟩ := h1

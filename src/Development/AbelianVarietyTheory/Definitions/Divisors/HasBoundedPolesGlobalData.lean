@@ -41,9 +41,6 @@ variable (T : HermSys F)
 def weight (hb : T.BasePointFree) (hh : T.Hermitian) (σ : F →+* ℂ) : Weight T.str σ T.L :=
   Weight.fsBasis T.str σ T.isLB T.b hb (T.A σ) (hh σ)
 
-theorem isSmooth_weight (hb : T.BasePointFree) (hh : T.Hermitian) {σ : F →+* ℂ} {D : ℕ} (R : AnRead T.str σ D) :
-    (T.weight hb hh σ).IsSmooth R := Weight.isSmooth_fsBasis _ _ _ _ _
-
 theorem weight_φ (hb : T.BasePointFree) (hh : T.Hermitian) (σ : F →+* ℂ) (i : T.L.ι) (y : CxPts T.str σ) :
     (T.weight hb hh σ).φ i y = Real.log (archSize (T.A σ) (fun j => secVal T.str σ (T.b j) i y) ^ 2) := by
   rw [archSize, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
@@ -173,9 +170,6 @@ def φ₂ (σ : F →+* ℂ) : Weight G.str σ G.L₂ := G.second.weight G.alg�
 
 def φTw (m : ℤ) (σ : F →+* ℂ) : Weight G.str σ (tw G.L₂ G.L m) := (G.φ₂ σ).tens ((G.φ σ).zpow m)
 
-theorem isSmooth_φTw (m : ℤ) {σ : F →+* ℂ} (R : AnRead G.str σ G.D) : (G.φTw m σ).IsSmooth R :=
-  (G.second.isSmooth_weight _ _ R).tens ((G.isSmooth_weight _ _ R).zpow m)
-
 abbrev adj (j : ℕ) : LB G.Y := tw (tens G.K.bundle G.LA) G.L j
 
 abbrev adj₂ (j : ℕ) : LB G.Y := tw (tens G.K.bundle G.L₂) G.L (j + G.D)
@@ -209,25 +203,8 @@ def mulE (j : ℕ) : H0 G.str (G.adj₂ j) ⊤ →ₗ[F] G.Sec j :=
 
 theorem mulE_mem_global (j : ℕ) (f : H0 G.str (G.adj₂ j) ⊤) : G.mulE j f ∈ G.global j := ⟨_, rfl⟩
 
-theorem mulE_apply (j : ℕ) (f : H0 G.str (G.adj₂ j) ⊤) :
-    G.mulE j f = Vanishing.mulE G.K G.isLB G.isLBA G.isLB₂ G.e rfl (H0.restr le_top f) :=
-  (ProdChart.restr_mul _ _ _ _).trans (by rw [H0.restr_ofSec]; rfl)
-
-theorem mulE_injective (j : ℕ) : Function.Injective (G.mulE j) := fun f f' h => by
-  rw [mulE_apply, mulE_apply] at h
-  exact G.restr_injective _ ((ProdChart.bijective_mul _ fun y hy i hi => by
-    rw [H0.germ_ofSec, isUnit_ger_iff]; exact G.U_le hy).1 h)
-
 def sqInt (j : ℕ) (σ : F →+* ℂ) (f : (G.adj₂ j).ι → CxPts G.str σ → ℂ) : ℝ≥0∞ :=
   (AnRead.all G.str σ G.D).topInt G.K (G.φTw (j + G.D) σ) (assocVal f)
-
-theorem sqInt_eq (j : ℕ) {σ : F →+* ℂ} (R : AnRead G.str σ G.D) (f : (G.adj₂ j).ι → CxPts G.str σ → ℂ) :
-    G.sqInt j σ f = R.topInt G.K (G.φTw (j + G.D) σ) (assocVal f) := AnRead.topInt_eq _ _ _ _ _
-
-theorem sqInt_lt_top (j : ℕ) (σ : F →+* ℂ) {ι : Type*} [Fintype ι] (c : ι → ℂ) (f : ι → H0 G.str (G.adj₂ j) ⊤) :
-    G.sqInt j σ (∑ i, c i • cval σ (f i)) < ⊤ :=
-  AnRead.topInt_lt_top _ (G.isSmooth_φTw _ _) (assocVal_mem_holSec
-    (Submodule.sum_mem _ fun _ _ => Submodule.smul_mem _ _ (cval_mem_holSec σ _ _)))
 
 variable (s : Fin G.D → Fin G.N → F)
 
@@ -273,9 +250,6 @@ def weightOn (s : Fin G.D → Fin G.N → F) (j : ℕ) (σ : F →+* ℂ) :
   (G.φTw j σ).pull _ rfl
 
 def IsGood.normOn (j : ℕ) : HermFam F (G.SecOn s j) := pointHerm hs.finite hs.etale (weightOn s j)
-
-theorem IsGood.nrm_normOn_sq (j : ℕ) (σ : F →+* ℂ) (g : G.SecOn s j) :
-    (hs.normOn j).nrm σ g ^ 2 = ∑ᶠ y, (weightOn s j σ).nsq (cval σ g) y := nrm_pointHerm_sq _ _ _ σ g
 
 variable (G) (E : Type) [Field E] [NumberField E] [Algebra F E]
 
@@ -385,8 +359,6 @@ def rho (C h : ℝ) : ℝ := Real.exp (G.logRho C h)
 
 def g : ℝ := ((G.D : ℝ) + 1) * (Real.log G.n + 1) / 2 + 1
 
-def Ra (a : ℕ) : ℕ := (a + G.D - 1).choose (G.D - 1)
-
 def globalData (T : ℕ) (hT : G.D + 1 ≤ T) : Data F where
   toGeo := G
   T := T
@@ -415,10 +387,6 @@ variable {F : Type} [Field F] [NumberField F] (X : Data F)
 instance finiteDimensional (j : ℕ) : FiniteDimensional F (X.V j) := (X.full j).finiteDimensional
 
 theorem latRank_M (j : ℕ) : latRank F (X.M j) = Module.finrank F (X.V j) := (X.full j).latRank_eq
-
-def HasBoundedPoles : Prop :=
-  ∀ j ≤ X.T, ∃ (P : LB X.Y) (hP : P.IsLB) (t : P.Sec) (ht : X.U ≤ nonzeroLocus t),
-    X.V j ≤ polar X.str (X.adj j) hP (X.isLB_adj j) t ht
 
 def inclE {j : ℕ} (hj : j ≤ X.T) : H0 X.str (X.adj₂ j) ⊤ →ₗ[F] X.V j :=
   (X.mulE j).codRestrict _ fun f => X.global_le j hj (X.mulE_mem_global j f)
@@ -456,13 +424,6 @@ def baseChange : Data E where
 
 def toExtV (j : ℕ) : X.V j →ₛₗ[algebraMap F E] (X.baseChange E).V j := extMap (X.toExt E j) (X.V j)
 
-theorem nrm_toExtV (j : ℕ) (τ : E →+* ℂ) (x : X.V j) :
-    ((X.baseChange E).nm j).nrm τ (X.toExtV E j x) = (X.nm j).nrm (τ.comp (algebraMap F E)) x :=
-  nrm_extend (X.isExtension_extMap E j) _ τ x
-
-theorem finrank_V_baseChange (j : ℕ) : Module.finrank E ((X.baseChange E).V j) = Module.finrank F (X.V j) :=
-  (X.isExtension_extMap E j).finrank_eq
-
 end BaseChange
 
 def MulStable : Prop :=
@@ -485,10 +446,6 @@ def IntegralBound (β κ : (F →+* ℂ) → ℝ) : Prop :=
 def ShortFamily (j : ℕ) (Λ : ℝ) : Prop :=
   ∃ v : Fin (latRank F (X.M j)) → X.V j, (∀ i, v i ∈ X.M j) ∧ LinearIndependent F v ∧
     ∀ i σ, (X.nm j).nrm σ (v i) ≤ Λ
-
-def ShortFamilyMean (j : ℕ) (Λ : ℝ) : Prop :=
-  ∃ v : Fin (latRank F (X.M j)) → X.V j, (∀ i, v i ∈ X.M j) ∧ LinearIndependent F v ∧
-    ∀ i, meanLog F (fun σ => (X.nm j).nrm σ (v i)) ≤ Real.log Λ
 
 def ResidueDegree (J : ℝ) : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [Algebra F E] (s : Fin X.D → Fin X.N → E),
@@ -517,32 +474,6 @@ structure Hyp : Prop where
 
   residueDegree : X.ResidueDegree X.J
 
-structure MeanHyp (β κ : (F →+* ℂ) → ℝ) : Prop where
-
-  totallyComplex : IsTotallyComplex F
-
-  beta_pos : ∀ σ, 0 < β σ
-
-  kappa_pos : ∀ σ, 0 < κ σ
-
-  log_beta : Real.log X.beta = max 0 (meanLog F β)
-
-  pos : X.Positivity
-
-  mulStable : X.MulStable
-
-  mulBound : X.MulBound β
-
-  integralBound : X.IntegralBound β κ
-
-  shortW : X.ShortGenerators
-
-  shortD : X.ShortFamilyMean X.D X.LamD
-
-  shortT : X.ShortFamilyMean X.T X.LamT
-
-  residueDegree : X.ResidueDegree X.J
-
 def d : ℕ := latRank F (X.M X.T)
 
 def a₀ : ℕ := X.T - X.D - 1
@@ -554,21 +485,6 @@ def z : ℝ := 1 - X.R * X.del / X.d
 theorem d_eq_finrank : X.d = Module.finrank F (X.V X.T) := (X.full _).latRank_eq
 
 theorem a₀_add : X.a₀ + X.D + 1 = X.T := by have := X.le_T; rw [a₀]; omega
-
-theorem sum_Ra : ∑ a ∈ Finset.range (X.a₀ + 1), X.Ra a = X.R := by
-  obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le' X.geom.alg.variety.one_le
-  simp only [R, ← X.a₀_add, Geo.Ra, hk, ← add_assoc, Nat.add_sub_cancel]
-  exact Nat.sum_range_add_choose _ _
-
-theorem R_pos : 0 < X.R := Nat.choose_pos (by have := X.le_T; omega)
-
-theorem d_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : (X.baseChange E).d = X.d := by
-  rw [d_eq_finrank, d_eq_finrank]
-  exact X.finrank_V_baseChange E _
-
-theorem z_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : (X.baseChange E).z = X.z := by
-  rw [z, z, d_baseChange, ← FieldChangeInter.del_baseChange F E _ X.geom.alg.variety.proj]
-  rfl
 
 variable {X}
 
@@ -590,167 +506,10 @@ theorem MulStable.mulBound (h : X.MulStable) {β : (F →+* ℂ) → ℝ} (hb : 
   conv_lhs => rw [pi_eq_sum_univ' w]
   simp [Fintype.sum_prod_type, LinearMap.sum_apply]
 
-theorem meanLog_const (c : ℝ) : meanLog F (fun _ => c) = Real.log c := by
-  rw [meanLog, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul,
-    mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 Module.finrank_pos.ne')]
-
-theorem ShortFamily.mean {j : ℕ} {Λ : ℝ} (h : X.ShortFamily j Λ) : X.ShortFamilyMean j Λ := by
-  obtain ⟨v, h₁, h₂, h₃⟩ := h
-  refine ⟨v, h₁, h₂, fun i => meanLog_const (F := F) Λ ▸ div_le_div_of_nonneg_right
-    (Finset.sum_le_sum fun σ _ => Real.log_le_log (nrm_pos _ σ (h₂.ne_zero i)) (h₃ i σ)) (Nat.cast_nonneg _)⟩
-
-theorem Hyp.meanHyp (h : X.Hyp) : X.MeanHyp (fun _ => X.beta) fun _ => 1 :=
-  ⟨h.1, fun _ => one_pos.trans_le X.one_le_beta, fun _ => one_pos,
-    by rw [meanLog_const, max_eq_right (Real.log_nonneg X.one_le_beta)], h.2, h.3, h.4, h.5, h.6, h.7.mean,
-    h.8.mean, h.9⟩
-
-theorem MeanHyp.isAdelic {β κ : (F →+* ℂ) → ℝ} (h : X.MeanHyp β κ) : X.IsAdelic :=
-  ⟨X.geom, h.pos.bir, X.herm, X.conj, h.shortW⟩
-
-theorem MeanHyp.two_le_theta {β κ : (F →+* ℂ) → ℝ} (h : X.MeanHyp β κ) (hd : 0 < X.del) (t : ℝ) :
-    2 ≤ X.theta t := by
-  have h₁ : (1 : ℝ) ≤ X.n := Nat.one_le_cast.2 X.one_le_n
-  have h₂ : (1 : ℝ) ≤ X.D := Nat.one_le_cast.2 X.geom.alg.variety.one_le
-  have h₃ : (1 : ℝ) ≤ X.j₀ := Nat.one_le_cast.2 h.pos.bir.one_le
-  have h₄ : (1 : ℝ) ≤ X.del := by exact_mod_cast hd
-  have h₅ := Real.log_nonneg h.shortW.one_le
-  exact (by linarith [abs_nonneg t] : 2 ≤ 2 + |t| + Real.log X.abelian₂).trans (le_mul_of_one_le_left (by positivity)
-    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h₁ h₂) h₃) h₄))
-
 end Data
-
-theorem Geo.hasBoundedPoles_globalData {F : Type} [Field F] [NumberField F] (G : Geo F) {T : ℕ} (hT : G.D + 1 ≤ T) :
-    (G.globalData T hT).HasBoundedPoles := fun _ _ =>
-  ⟨_, LB.isLB_div G.isLBA (isLB_tw G.isLB₂ G.isLB _), G.e, G.U_le, range_restr_le_polar _ _ _ _⟩
-
-theorem Geo.shortFamily_globalData {F : Type} [Field F] [NumberField F] (G : Geo F) {T : ℕ} (hT : G.D + 1 ≤ T)
-    (j : ℕ) : (G.globalData T hT).ShortFamily j 1 := by
-  have e := (G.globalData T hT).latRank_M j
-  exact ⟨Module.finBasis F (G.global j) ∘ Fin.cast e,
-    fun i => Submodule.subset_span (M := G.global j) ⟨_, rfl⟩,
-    (Module.finBasis F (G.global j)).linearIndependent.comp _ (Fin.cast_injective e),
-    fun i σ => (nrm_ofBasis _ σ _).le⟩
 
 namespace Proj
 
-open ProjSpace
-
-variable (F : Type) [Field F] [NumberField F] (M : ℕ)
-
-abbrev tuple : Tuple F where
-  toLinSys := projSys F M
-  n := M + 1
-  w := 1
-  A _ := 1
-  abelian₂ := 1
-  bd := (chart F M (Fin.last M)).compl
-  j₀ := 1
-  th := secToPow (coord F M (Fin.last M)) 1
-
-theorem U_eq : (tuple F M).U = nonzeroLocus (coord F M (Fin.last M)) :=
-  (Opens.compl_compl _).trans (nonzeroLocus_coord F M _).symm
-
-theorem isAlgebraicData (hM : 1 ≤ M) : (tuple F M).IsAlgebraicData :=
-  ⟨projSys.isVariety F M hM, projSys.indep F M, top_le_iff.1 fun u _ => by
-    rw [pi_eq_sum_univ' u]
-    refine Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, funext fun j => ?_⟩)
-    simp [Matrix.one_apply, Pi.single_apply], projSys.basePointFree F M⟩
-
-abbrev bundleA : LB (PSpace F M) := tens (O1 F M) (tw (O1 F M) (O1 F M) M)
-
-theorem isLB_bundleA : (bundleA F M).IsLB := isLB_tens (O1_isLB F M) (isLB_tw (O1_isLB F M) (O1_isLB F M) M)
-
-theorem exists_e : ∃ e : (LB.div (bundleA F M) (tw (O1 F M) (O1 F M) M)).Sec,
-    nonzeroLocus e = nonzeroLocus (coord F M (Fin.last M)) :=
-  have h := isLB_tw (O1_isLB F M) (O1_isLB F M) M
-  exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_div (isLB_bundleA F M) h) (O1_isLB F M)
-    ((cls_eq_iff (LB.isLB_div (isLB_bundleA F M) h) _).1 (by rw [cls_div (isLB_bundleA F M) h, cls_tens (O1_isLB F M) h, add_sub_cancel_right])) _
-
-variable {M} (hM : 1 ≤ M)
-
-def geo : Geo F where
-  toTuple := tuple F M
-  geom := ⟨isAlgebraicData F M hM, fun h => (h.ge (Set.mem_univ (projSys.gen F M))) (projSys.gen_mem F M _)⟩
-  herm σ := by simp
-  conj σ x := by simp [frameNorm]
-  K := CanonLB.all _ _
-  L₂ := O1 F M
-  isLB₂ := O1_isLB F M
-  N₂ := M + 1
-  b₂ := coord F M
-  n₂ := M + 1
-  w₂ := 1
-  A₂ _ := 1
-  alg₂ := isAlgebraicData F M hM
-  herm₂ σ := by simp
-  conj₂ σ x := by simp [frameNorm]
-  LA := bundleA F M
-  isLBA := isLB_bundleA F M
-  e := (exists_e F M).choose
-  U_le := ((U_eq F M).trans (exists_e F M).choose_spec.symm).le
-
-theorem hasNonzeroSec_pow (M n : ℕ) : HasNonzeroSec (lbPow (O1 F M) n) :=
-  lineBundleHasNonzeroSection_of_globalSectionsDim_pos (k := F) (by rw [sectionDim_twistingSheaf_pow]; exact Nat.choose_pos (by omega))
-
-theorem positivity : (geo F hM).Positivity := by
-  have hl : nonzeroLocus (tuple F M).th = chart F M (Fin.last M) :=
-    (nonzeroLocus_secToPow _ le_rfl).trans (nonzeroLocus_coord F M (Fin.last M))
-  have := (geo F hM).isIntegral
-  have hc : cls _ (isLB_bundleA F M) = cls _ (isLB_lbPow (O1_isLB F M) (M + 2)) := by
-    rw [cls_tens (O1_isLB F M) (isLB_tw (O1_isLB F M) (O1_isLB F M) M),
-      cls_tens (O1_isLB F M) (Twist.isLB_lbZPow (O1_isLB F M) M), cls_lbZPow (O1_isLB F M), cls_lbPow (O1_isLB F M)]
-    module
-  have key : IsNef F (bundleA F M) ∧ IsBig F (bundleA F M) :=
-    ⟨((isNef_twistingSheaf F M).pow (isAmple_projective_O_one F M) _).of_cls_eq _ hc,
-      (@IsBig.pow _ _ _ _ _ this _ (algebraMap_top_eq F M) (isProjOver_str F M) (isBig_twistingSheaf F M) _
-        (by omega)).of_cls_eq _ hc⟩
-  rw [← projSys.algebraΓ_eq] at key
-  refine ⟨⟨projSys.birational F M, projSys.noContract F M _, le_rfl, fun h => ?_, fun y hy => hl ▸ hy⟩, key.1, key.2⟩
-  have := hl.ge (projSys.gen_mem F M _)
-  rw [show (tuple F M).th = 0 from h] at this
-  exact nonzeroLocus_secZero.le this
-
-omit hM in
-
-theorem cls_adj {Y : Scheme.{0}} {K L : LB Y} (hK : K.IsLB) (hL : L.IsLB) (M j : ℕ) (h₁ h₂ h₃) :
-    cls (tw (tens K (tens L (tw L L M))) L j) h₁ = cls (tens K (lbPow L (M + 1))) h₂ + cls (lbPow L (j + 1)) h₃ := by
-  have h := isLB_tens hL (isLB_tw hL hL M)
-  rw [cls_tens (isLB_tens hK h) (Twist.isLB_lbZPow hL j), cls_tens hK h, cls_tens hL (isLB_tw hL hL M),
-    cls_tens hL (Twist.isLB_lbZPow hL M), cls_tens hK (isLB_lbPow hL _), cls_lbZPow hL, cls_lbZPow hL, cls_lbPow hL,
-    cls_lbPow hL]
-  module
-
-theorem finrank_global_pos (j : ℕ) : 0 < Module.finrank F ((geo F hM).global j) := by
-  have hO := O1_isLB F M
-  let G := geo F hM
-  obtain ⟨c, hc⟩ := exists_chart (G.K.isLB_adj hO (M + 1)) (projSys.gen F M)
-  have h₁ : HasNonzeroSec (G.K.adj (O1 F M) (M + 1)) := ⟨G.K.jacSec (coord F M), sec_ne_zero_of_mem
-    ((isUnit_ger_iff _ hc).1 ((@isUnit_jacSec_coord F _ M G.smooth G.K c).map _))⟩
-  obtain ⟨s, hs⟩ := HasNonzeroSec.of_cls_eq_add (X := G.Y) h₁ (hasNonzeroSec_pow F M (j + 1)) (G.isLB_adj j)
-    (G.K.isLB_adj hO _) (isLB_lbPow hO _) (cls_adj G.K.isLB hO M j _ _ _)
-  refine Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨_, H0.ofSec _ ⊤ s, rfl⟩, fun h => hs ?_⟩
-  exact H0.bijective_ofSec_top.1 ((G.restr_injective _ ((congrArg Subtype.val h).trans (map_zero _).symm)).trans
-    (map_zero _).symm)
-
-def data (T : ℕ) (hT : M + 1 ≤ T) : Data F := (geo F hM).globalData T hT
-
-theorem d_pos (T : ℕ) (hT : M + 1 ≤ T) : 0 < (data F hM T hT).d :=
-  (finrank_global_pos F hM T).trans_eq (data F hM T hT).d_eq_finrank.symm
-
 end Proj
-
-example : ∃ X : Data (CyclotomicField 4 ℚ), X.U ≠ ⊤ ∧ 0 < X.d ∧ X.Positivity ∧ X.HasBoundedPoles ∧
-    X.ShortFamily X.D X.LamD ∧ X.ShortFamily X.T X.LamT :=
-  ⟨Proj.data _ le_rfl 3 (by norm_num), fun h => AmpleModel.coord_ne_top _ ((Proj.U_eq _ 1).symm.trans h),
-    Proj.d_pos _ le_rfl _ _, Proj.positivity _ le_rfl, Geo.hasBoundedPoles_globalData _ _, Geo.shortFamily_globalData _ _ _,
-    Geo.shortFamily_globalData _ _ _⟩
-
-example : (Proj.data ℚ one_le_two 5 (by norm_num)).a₀ = 2 ∧ (Proj.data ℚ one_le_two 5 (by norm_num)).R = 6 ∧
-    (Proj.data ℚ one_le_two 5 (by norm_num)).Ra 2 = 3 := ⟨rfl, rfl, rfl⟩
-
-example : (Proj.geo ℚ le_rfl).g = Real.log 2 + 2 := by
-  change (((1 : ℕ) : ℝ) + 1) * (Real.log ((1 + 1 : ℕ) : ℝ) + 1) / 2 + 1 = _
-  norm_num
-  ring
 
 end GlobalTheory.HilbertSamuel

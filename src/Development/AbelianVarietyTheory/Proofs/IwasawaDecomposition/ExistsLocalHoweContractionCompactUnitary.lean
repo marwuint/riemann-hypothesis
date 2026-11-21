@@ -4,7 +4,7 @@ import ReciprocityTheory.DualLattices.FischerSelfNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TotalDegreeSubstFLe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetTwistedConjugateIsKTypeOfReversedStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateUnitaryKTypeSameWeightStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTensorTypesIntertwinerMatrixPolynomialsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTensorTypesIntertwinerMatrixPolynomials
 
 open Formalism.MainNotions.S Matrix GlobalTheory.CompactHowe
 open scoped TensorProduct
@@ -144,7 +144,7 @@ theorem exists_local_contraction : ∀ (N n : ℕ) (hn : n ≤ N) (ν : Fin N �
   rw [e1] at hτK
   rw [e2] at hτK'
   obtain ⟨E, i1, i2, i3, π, J, hJ, hπ, hπK, hπJ⟩ := GlobalTheory.T.exists_conjugate_unitaryKType_sameWeight N _ H' _ hτ' hτK'
-  obtain ⟨Ψ, hΨ0, hΨ⟩ := GlobalTheory.T.exists_tensor_types_intertwiner_matrix_polynomials N n hn ν H _ E π hν hν0 hτ hτK hπ hπK
+  obtain ⟨Ψ, hΨ0, hΨ⟩ := _root_.GlobalTheory.CompactHoweJoint.exists_joint_intertwiner N n hn ν H _ E π hν hν0 hτ hτK hπ hπK
   obtain ⟨I, hI⟩ := exists_contraction J Ψ
   refine ⟨I, fun h0 => hΨ0 ?_, fun h hh g hg P v => ?_⟩
   · ext1 w

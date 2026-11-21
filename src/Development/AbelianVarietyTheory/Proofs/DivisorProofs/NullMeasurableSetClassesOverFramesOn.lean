@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramePointsOverComponentOpenSetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramePointsOverComponentOpenSet
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFinPartMat
 open NumberField IsDedekindDomain MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum
 
@@ -20,7 +20,7 @@ theorem nullMeasurableSet_classesOver_framesOn : ∀ (D : D7) (H : ReciprocityTh
     · intro h
       exact ⟨(dict σ g).2, h⟩
     · rintro ⟨y, hy⟩
-      exact GlobalTheory.T.framePointsOverComponent_open_set D.host.E H Dw l Xo c r U σ hU Z _ y _ (d4 g) hy
+      exact _root_.GlobalTheory.FramesUnion.framesOn_of_mem D.host.E H Dw l Xo c r U σ hU Z _ y _ (d4 g) hy
   have hP : IsOpen {g : GA D (V σ) | (dict σ g).1 ∈ S} := by
     rw [isOpen_iff_mem_nhds]
     intro g₀ hg₀

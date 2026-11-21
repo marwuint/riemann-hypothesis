@@ -7,19 +7,32 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocRatio
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsValues
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionSystemWeightRightStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionDatumDegreeSumStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompactDatumIntersectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAtStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionSystemWeightRight
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DetLatticeTensorIsDegOnMuTwDeg
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ComponentDataHeightIdentity
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtComplexEmbedding
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRatioProductFormula
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordValuationBoundLocal
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartIntegralPointAltBis
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartIntegralLatticeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataAbelianPartBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartLatticeEigenCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TensorLatticeCoordDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GluedLatticeFromLocalMatricesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuesOfFrame
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartIntegralLattice
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataAbelianPartBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartLatticeEigenCompat
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TensorLatticeCoordDegree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GluedLatticeFromLocalMatrices
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -87,12 +100,12 @@ theorem datum (hG : Top.Given) (E : Type) [Field E] [NumberField E] [IsCMField E
   classical
   obtain ⟨e₀⟩ : Nonempty (L →+* ℂ) := inferInstance
   have hw₀ := coords_field_map Or.𝔐.ξ hw e₀
-  obtain ⟨⟨d⟩, hall⟩ := GlobalTheory.T.intersection_system_weight_right hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or _ _ hw₀
+  obtain ⟨⟨d⟩, hall⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.phMu_eq_log_small_blocks_abelian hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or _ _ hw₀
   obtain ⟨⟨s, hs⟩, hs2⟩ := hall d
   obtain ⟨hfr, hu0, -⟩ := hs2 s hs
   have hT := Or.𝔐.tie
   have tv : ∀ (e : L →+* ℂ) (a : Ω) (r : ℂ), ValAt Or.𝔐.ξ (spMap e ≫ zL) a r ↔ IsValueAt Dc.y a (fun p => e (w p)) r :=
-    fun e a r => GlobalTheory.T.valAt_iff_value_at _ _ _ K J _ hT _ _ (Or.𝔐.all _) (coords_field_map Or.𝔐.ξ hw e) a r
+    fun e a r => _root_.GlobalTheory.CompanionTheory.Ar.valAt_iff_isValueAt_coords _ _ _ K J _ hT _ _ (Or.𝔐.all _) (coords_field_map Or.𝔐.ξ hw e) a r
 
   obtain ⟨vf, hvf, hvf0⟩ := d.inDom.2
   obtain ⟨fL, hfL, hfe⟩ := val_descend _ _ _ ((tv e₀ _ _).2 hvf)
@@ -167,7 +180,7 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     datum hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or L (spMap (algebraMap (𝓞 L) L) ≫ z) w hw
 
   have hS₀ : ∀ p ∈ S₀, p ≠ 0 := fun p hp => (Or.𝔐.S_prime p hp).ne_zero
-  have hvs := GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
+  have hvs := _root_.LevelTowerAlt.component_data_height_identity E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
   have hS' : ∀ p ∈ S₀ ∪ Dc.SB B, p ≠ 0 := fun p hp => (hvs.1 p hp).ne_zero
   have hV : ∀ t', Or.𝔐.V t' ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩ =
       Or.𝔐.dR t' ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩ := fun t' =>
@@ -180,7 +193,7 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   have hfrS : ∀ τ, (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)).IsFrameAt (s τ)
       ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩ :=
     fun τ => ⟨(hfr τ).1, (hVS _).trans (hdr τ).2⟩
-  choose sL hsLv hsLi hsLs using fun τ => GlobalTheory.T.abelian_part_integral_point_alt E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV A (Or.sm τ) _ (s τ) hLP (hdr τ)
+  choose sL hsLv hsLi hsLs using fun τ => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.FrameVal.values_of_frame E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV A (Or.sm τ) _ (s τ) hLP (hdr τ)
 
   obtain ⟨τ₀⟩ := cm_nonempty H
   have hrk : r + k = Dc.N - Dc.j := by
@@ -227,12 +240,12 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     have := hvs.2.2.2 (Or.sm τ)
     rwa [Or.rk_sm] at this
   choose T T' b' hb1 hb2 hb3 hb4 hb5 hb6 using fun τ =>
-    GlobalTheory.T.abelian_part_lattice_eigen_compat E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) _ _ (s τ) (sL τ)
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.FinFrame.fin_frame E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) _ _ (s τ) (sL τ)
       (hvb τ) (hfrS τ) (hsLv τ) (hsLi τ)
   have hidx : ∀ τ, logIdx (Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) (A.fam (Or.sm τ) v (q τ)) =
       (∑ᶠ x : FinitePlace L, Real.log (x (T τ x).det)) + ∑ σ : L →+* ℂ, Real.log ‖σ (C τ).det‖ := by
     intro τ
-    rw [← GlobalTheory.T.glued_lattice_from_local_matrices L V _ (sL τ) _ (T τ) (C τ) (hsLi τ) (hb4 τ) (hC2 τ) (hb5 τ) (hb6 τ)]
+    rw [← _root_.GlobalTheory.CompanionTheory.Ar.Cusp.LocFrame.logIdx_localFrames L V _ (sL τ) _ (T τ) (C τ) (hsLi τ) (hb4 τ) (hC2 τ) (hb5 τ) (hb6 τ)]
     refine logIdx_congr _ _ _ ?_
     ext x
     constructor
@@ -242,11 +255,11 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       exact ⟨Fin.cast hrk.symm i, by rw [hC1 τ]; simp⟩
 
   have hvert : ∀ p ∈ Dc.SB B, _ := fun p hp =>
-    GlobalTheory.T.exists_val_at_vert_factor_eq_norm_mul_prod E H D l (Xo l) c Y II K J Ω W Dc Hd S₀ Or L (spMap (algebraMap (𝓞 L) L) ≫ z) w cc p hw hc (Finset.mem_filter.1 hp).1
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.Vert.vertical_value E H D l (Xo l) c Y II K J Ω W Dc Hd S₀ Or L (spMap (algebraMap (𝓞 L) L) ≫ z) w cc p hw hc (Finset.mem_filter.1 hp).1
   choose! t ht0 htv htf using hvert
   set g : L := uL * ∏ p ∈ Dc.SB B, t p with hg
   have hg0 : g ≠ 0 := mul_ne_zero huL (Finset.prod_ne_zero_iff.2 ht0)
-  have hmd := GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B b s (u * chartMono Dc.y cc Hd.aMu) hsm heq
+  have hmd := _root_.LevelTowerAlt.det_lattice_tensor_isDegOn_muTwDeg E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B b s (u * chartMono Dc.y cc Hd.aMu) hsm heq
 
   have hy : ∀ k, Dc.y ⟨k, cc k⟩ ≠ 0 := fun k => (hw.2 k (cc k) (isUnit_iff_ne_zero.2 (hc k))).1
   have cm_ne : ∀ x : K → ℤ, chartMono Dc.y cc x ≠ 0 := fun x =>
@@ -299,7 +312,7 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
           (ih fun x hx => hs (Finset.mem_insert_of_mem hx))
     exact hsub _ subset_rfl
   have hunit : ∀ x : FinitePlace L, (∏ τ, x (T τ x).det) * GlobalTheory.CompanionTheory.Ar.RootHt.locRatio (muTwDeg Hd B) w cc x = x g :=
-    fun x => GlobalTheory.T.tensor_lattice_coord_degree Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y (CMType H) Or.𝔐.Li (fun τ => Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) _ s
+    fun x => _root_.GlobalTheory.CompanionTheory.Ar.RootHt.FinUnit.det_frames_size Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y (CMType H) Or.𝔐.Li (fun τ => Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) _ s
       (muTwDeg Hd B) _ Or.𝔐.all Or.𝔐.tie hmd.1 hmd.2 L w z cc g x (fun τ => b' τ x) (fun τ => T' τ x) (fun τ => T τ x)
       hw hc hΘ hg0 (fun τ => hb1 τ x) (fun τ => hb2 τ x) (fun τ => hb3 τ x) (fun τ => hb4 τ x)
   obtain ⟨hρ, hfin, hsum⟩ := GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum L K J (muTwDeg Hd B) w cc g
@@ -319,7 +332,7 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       intro hbad
       exact hx (by simp [hbad.2])
 
-  have harch := GlobalTheory.T.abelian_part_integral_lattice E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV A Or.sm r k _ hrk v q s sL C hLP hO hAd hsLv hC1 hC2
+  have harch := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.Arch.geo_height_arch E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV A Or.sm r k _ hrk v q s sL C hLP hO hAd hsLv hC1 hC2
   choose hgram ν hGeo hν0 hνe using harch
   refine ⟨fun e => Real.log (‖GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y u (fun p => e (w p))‖ * ∏ k', ‖e (w ⟨k', cc k'⟩)‖ ^ Hd.aMu k') + Real.log (ν e) / 2,
     fun e => ⟨⟨cc, f, hdom e, b, had, u, hun, heq⟩, s, ν e, hsm, hGeo e, hν0 e, rfl⟩, ?_⟩

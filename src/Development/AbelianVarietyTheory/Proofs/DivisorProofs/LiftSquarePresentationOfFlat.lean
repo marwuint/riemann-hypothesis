@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerInfMapLeMapMulKerOfFlatTargetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeSupKerMulOfLeSupMaximalMulSectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerInfMapLeMapMulKerOfFlatTarget
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeSupKerMulOfLeSupMaximalMulSection
 open scoped TensorProduct
 
 namespace GlobalTheory
@@ -101,10 +101,10 @@ theorem lift_square_presentation_of_flat : ∀ (O B A k H σ : Type) [CommRing O
       show T (F - F1) = 0
       rw [map_sub, hF', sub_self]
     have h3 := Ideal.mul_mono_left hp
-      (GlobalTheory.T.ker_inf_map_le_map_mul_ker_of_flat_target B (MvPolynomial σ B) A Ψ hx (RingHom.ker τ) h2)
+      (_root_.GlobalTheory.ker_inf_map_le_map_mul_ker_of_flat B (MvPolynomial σ B) A Ψ hx (RingHom.ker τ) h2)
     have h4 : F = F1 + (F - F1) := by ring
     rw [h4]
     exact add_mem hF1 (Ideal.mem_sup_right h3)
-  exact GlobalTheory.T.le_sup_ker_mul_of_le_sup_maximal_mul_section O (MvPolynomial σ B) η _ _ hfg key
+  exact _root_.GlobalTheory.nakayama_at_section O (MvPolynomial σ B) η _ _ hfg key
 
 end GlobalTheory

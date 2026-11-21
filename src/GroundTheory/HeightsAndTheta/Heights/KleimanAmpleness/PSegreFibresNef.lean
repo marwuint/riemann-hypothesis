@@ -1,10 +1,12 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsSideTail
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SegreJoin
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsSideLast
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsTailBis
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsTailTer
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsTailAlt
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.ImportsSideSide
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
@@ -38,12 +40,5 @@ theorem segreFibresNef_of_map (hA : SegreLiftComap.Statement) (hB : SegreLiftPri
     have hpos := h _ hWp hPW hdimW
     rw [heq, hN F K ι _ hWp β]
     exact hpos
-
-theorem SegreFibresNef.proof (hA : SegreLiftComap.Statement) (hB : SegreLiftPrime.Statement)
-    (hC : SegreLiftRelDim.Statement) (hN : SegreLiftIntNum.Statement)
-    (hD : SegreFibreIdeal.Statement) : SegreFibresNef.Statement := by
-  intro O _ _ _ Ω _ _ _ _ K _ _ ι _ y _ β
-  exact ⟨segreFibresNef_of_map hA hB hC hN hD O Ω _ (IsLocalRing.residue O) K ι y β,
-    segreFibresNef_of_map hA hB hC hN hD O Ω _ (algebraMap O (FractionRing O)) K ι y β⟩
 
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

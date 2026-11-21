@@ -2,13 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDVRLocalEmbeddingNormal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLabelsSurjectiveHomLatticeModLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePointsJoinedBySpecialisationChainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaMemberThroughModelPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitLiftToSemiAbelianModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemiAbelianExtendingModelAboveThetaSystemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMembersLatticesIsoOfSpecializesDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedMemberBaseChangeInjectiveLocalHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLabelsSurjectiveHomLatticeModLevel
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePointsJoinedBySpecialisationChain
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaMemberThroughModelPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitLiftToSemiAbelianModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemiAbelianExtendingModelAboveThetaSystem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMembersLatticesIsoOfSpecializesDvr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedMemberBaseChangeInjectiveLocalHom
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -44,8 +46,8 @@ theorem LatTo.symm
     {X : Type} [AddCommGroup X] {t : X → V} {δ : I → X → X}
     {𝔪₀ : GMem X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀} {𝔪 : GMem X₁ z₁ act V ev X t δ} (h : 𝔪₀.LatTo 𝔪) : 𝔪.LatTo 𝔪₀ := by
   obtain ⟨K, hK, hl⟩ := h
-  have y₀ := GlobalTheory.T.thetaLabels_surjective_hom_lattice_mod_level I X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀ 𝔪₀
-  have y₁ := GlobalTheory.T.thetaLabels_surjective_hom_lattice_mod_level I X₁ z₁ act V ev X t δ 𝔪
+  have y₀ := _root_.GlobalTheory.GSep.Labels.yy_hom I X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀ 𝔪₀
+  have y₁ := _root_.GlobalTheory.GSep.Labels.yy_hom I X₁ z₁ act V ev X t δ 𝔪
   refine ⟨K.symm, fun a mu => K.injective ?_, fun a mu' h => ?_⟩
   · rw [K.apply_symm_apply, hK, K.apply_symm_apply]
   · obtain ⟨mu, hmu⟩ := y₀.1 a
@@ -76,7 +78,7 @@ theorem latTo_all (hact : IsAct X₁ act)
     {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
     {X : Type} [AddCommGroup X] {t : X → V} {δ : I → X → X}
     (𝔪₀ : GMem X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀) (𝔪 : GMem X₁ z₁ act V ev X t δ) : 𝔪₀.LatTo 𝔪 := by
-  obtain ⟨Y, πY, hY⟩ := GlobalTheory.T.exists_semiAbelianExtendingModel_above_thetaSystem X₁
+  obtain ⟨Y, πY, hY⟩ := _root_.GlobalTheory.GSep.exists_zhAbove X₁
   have lift : ∀ {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
       {X : Type} [AddCommGroup X] {t : X → V} {δ : I → X → X}
       (𝔪 : GMem X₁ z₁ act V ev X t δ), ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V')
@@ -88,10 +90,10 @@ theorem latTo_all (hact : IsAct X₁ act)
     haveI := 𝔪.loc
     haveI := hl₁
     obtain ⟨V₂, _, _, _, _, j₂, ξ, hcn₂, hj₂, hl₂, hξ⟩ :=
-      GlobalTheory.T.exists_trait_lift_to_semiAbelianModel X₁ z₁ Y πY hY V₁ (j₁.comp ev) inferInstance hcn₁
+      _root_.GlobalTheory.GSep.TraitLift.exists_lift X₁ z₁ Y πY hY V₁ (j₁.comp ev) inferInstance hcn₁
     haveI := hl₂
     have hj : Function.Injective (j₂.comp j₁) := hj₂.comp hj₁
-    obtain ⟨𝔫, -, hyy⟩ := GlobalTheory.T.uniformisedMember_baseChange_injective_localHom I X₁ z₁ act V ev X t δ 𝔪 V₂ (j₂.comp j₁)
+    obtain ⟨𝔫, -, hyy⟩ := _root_.GlobalTheory.GSep.MemBC.gMem_baseChange I X₁ z₁ act V ev X t δ 𝔪 V₂ (j₂.comp j₁)
       (IsFractionRing.map (K := FractionRing V) (L := FractionRing V₂) hj) hcn₂ hj inferInstance
       (fun v => IsLocalization.map_eq _ v)
     refine ⟨V₂, inferInstance, inferInstance, inferInstance, inferInstance, (j₂.comp j₁).comp ev, _, 𝔫, ξ, ?_,
@@ -105,17 +107,17 @@ theorem latTo_all (hact : IsAct X₁ act)
     ξc ≫ πY = spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ → ξc (closedPoint V) = y → 𝔫₀.LatTo 𝔠
   have step : ∀ a b : Y.Z, πY a = z₁ → πY b = z₁ → a ⤳ b → (P a ↔ P b) := by
     intro a b ha hb hab
-    obtain ⟨Va, _, _, _, _, eva, Xa, _, ta, δa, 𝔠a, ξa, hξa, hca, -⟩ := GlobalTheory.T.exists_thetaMember_through_model_point I X₁ z₁ act hact Y πY hY a ha
-    obtain ⟨Vb, _, _, _, _, evb, Xb, _, tb, δb, 𝔠b, ξb, hξb, hcb, -⟩ := GlobalTheory.T.exists_thetaMember_through_model_point I X₁ z₁ act hact Y πY hY b hb
+    obtain ⟨Va, _, _, _, _, eva, Xa, _, ta, δa, 𝔠a, ξa, hξa, hca, -⟩ := _root_.GlobalTheory.GSep.Thru.exists_gMem_thru I X₁ z₁ act hact Y πY hY a ha
+    obtain ⟨Vb, _, _, _, _, evb, Xb, _, tb, δb, 𝔠b, ξb, hξb, hcb, -⟩ := _root_.GlobalTheory.GSep.Thru.exists_gMem_thru I X₁ z₁ act hact Y πY hY b hb
     constructor
     · intro hP V _ _ _ _ ev X _ t δ 𝔠 ξc hξc hc
       have h1 := hP Va eva Xa ta δa 𝔠a ξa hξa hca
-      have h2 := GlobalTheory.T.thetaMembers_lattices_iso_of_specializes_dvr I X₁ z₁ act hact Y πY hY Va eva Xa ta δa 𝔠a ξa V ev X t δ 𝔠 ξc hξa hξc
+      have h2 := _root_.GlobalTheory.GSep.Spz.latTo_of_specializes I X₁ z₁ act hact Y πY hY Va eva Xa ta δa 𝔠a ξa V ev X t δ 𝔠 ξc hξa hξc
         (by rw [hca, hc]; exact hab)
       exact h1.trans h2
     · intro hP V _ _ _ _ ev X _ t δ 𝔠 ξc hξc hc
       have h1 := hP Vb evb Xb tb δb 𝔠b ξb hξb hcb
-      have h2 := GlobalTheory.T.thetaMembers_lattices_iso_of_specializes_dvr I X₁ z₁ act hact Y πY hY V ev X t δ 𝔠 ξc Vb evb Xb tb δb 𝔠b ξb hξc hξb
+      have h2 := _root_.GlobalTheory.GSep.Spz.latTo_of_specializes I X₁ z₁ act hact Y πY hY V ev X t δ 𝔠 ξc Vb evb Xb tb δb 𝔠b ξb hξc hξb
         (by rw [hc, hcb]; exact hab)
       exact h1.trans h2.symm
   have key : ∀ y y' : Y.Z, Relation.EqvGen (fun a b : Y.Z => πY a = z₁ ∧ πY b = z₁ ∧ a ⤳ b) y y' → (P y ↔ P y') := by
@@ -131,8 +133,8 @@ theorem latTo_all (hact : IsAct X₁ act)
   have c₁ : πY (ξ₁ (closedPoint W₁)) = z₁ := closed_over hξ₁
   have P0 : P (ξ₀ (closedPoint W₀)) := by
     intro V _ _ _ _ ev X _ t δ 𝔠 ξc hξc hc
-    exact GlobalTheory.T.thetaMembers_lattices_iso_of_specializes_dvr I X₁ z₁ act hact Y πY hY W₀ e₀ X₀ s₀ δ₀ 𝔫₀ ξ₀ V ev X t δ 𝔠 ξc hξ₀ hξc (by rw [hc])
-  have P1 := (key _ _ (GlobalTheory.T.fibre_points_joined_by_specialisation_chain X₁ z₁ Y πY hY _ _ c₀ c₁)).1 P0
+    exact _root_.GlobalTheory.GSep.Spz.latTo_of_specializes I X₁ z₁ act hact Y πY hY W₀ e₀ X₀ s₀ δ₀ 𝔫₀ ξ₀ V ev X t δ 𝔠 ξc hξ₀ hξc (by rw [hc])
+  have P1 := (key _ _ (_root_.GlobalTheory.GSep.fibre_chain X₁ z₁ Y πY hY _ _ c₀ c₁)).1 P0
   exact a₀.trans ((P1 W₁ e₁ X s₁ δ 𝔫₁ ξ₁ hξ₁ rfl).trans a₁.symm)
 
 theorem exists_latTo_of_members : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), GlobalTheory.GSep.IsAct X₁ act → ∀ (V₀ : Type) [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] (ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀) (X₀ : Type) [AddCommGroup X₀] (t₀ : X₀ → V₀) (δ₀ : I → X₀ → X₀) (𝔪₀ : GlobalTheory.GSep.GMem X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ), 𝔪₀.LatTo 𝔪 := by

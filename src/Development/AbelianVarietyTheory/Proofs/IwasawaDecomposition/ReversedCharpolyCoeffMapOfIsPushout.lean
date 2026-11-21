@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapNormCoeff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyMulBaseChangeFiniteMapOfIsPushoutStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharpolyBaseChangeIntegrallyClosedStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCharpolyBaseChangeIntegrallyClosed
 
 open CategoryTheory Polynomial GlobalTheory.NormalDescent
 
@@ -17,7 +17,7 @@ theorem normCoeff_map_of_isPushout {A B A' B' : Type} [CommRing A] [IsDomain A] 
     (hα : Function.Injective α) (hφ : φ.Finite) (hφ' : φ'.Finite) (b : B) (k : ℕ) :
     α (normCoeff φ hφ b k) = normCoeff φ' hφ' (β b) k := by
   have hbc := @GlobalTheory.T.charpolyMulBaseChangeFinite_map_of_isPushout
-  have hint := @GlobalTheory.T.exists_charpoly_baseChange_integrallyClosed
+  have hint := @_root_.GlobalTheory.NormalDescent.exists_map_eq_charK
   let ι : FractionRing A →+* FractionRing A' := IsLocalization.map (FractionRing A') α
     (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective α hα)
   have hι : ∀ a : A, ι (algebraMap A (FractionRing A) a) = algebraMap A' (FractionRing A') (α a) :=

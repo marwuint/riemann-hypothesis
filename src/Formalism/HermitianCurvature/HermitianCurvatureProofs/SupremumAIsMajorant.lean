@@ -19,43 +19,6 @@ theorem sup_core {ι : Type} [Fintype ι] (G : Sz.Glob ι) (de de' : ℕ → ℝ
     rw [smul_eq_mul, mul_assoc]
   rw [e, Real.sSup_smul_of_nonneg ha.le, smul_eq_mul, mul_div_cancel_left₀ _ ha.ne']
 
-theorem lambda_threshold_mono (m i s : ℕ) {C C' κ N I A : ℝ} (hC : 0 ≤ C) (h : C ≤ C') (hκ : 0 ≤ κ) (hN : 0 ≤ N)
-    (hI : 0 ≤ I) (hA : 0 ≤ A) :
-    0 ≤ Sz.lamThreshold m i s C κ N I A ∧ Sz.lamThreshold m i s C κ N I A ≤ Sz.lamThreshold m i s C' κ N I A := by
-  have hC' : 0 ≤ C' := hC.trans h
-  unfold Sz.lamThreshold
-  constructor
-  · positivity
-  · gcongr
-
-theorem lamPrimeSq_mono (m i : ℕ) {C C' κ N I A TT : ℝ} (hC : 0 ≤ C) (h : C ≤ C') (hκ : 0 ≤ κ)
-    (hN : 0 ≤ N) (hI : 0 ≤ I) (hA : 0 ≤ A) :
-    Sz.lamPrimeSq m i C κ N I A TT ≤ Sz.lamPrimeSq m i C' κ N I A TT := by
-  have hC' : 0 ≤ C' := hC.trans h
-  unfold Sz.lamPrimeSq
-  gcongr
-
-theorem supA_nonneg {ι : Type} [Fintype ι] (G : Sz.Glob ι) (de de' : ℕ → ℝ) (T T' : ℝ) (l : ℕ)
-    (one : Bool) (w : ι) (hg : 0 < G.g) (hv : 0 < G.v) : 0 ≤ supA G de de' T T' l one w := by
-  have hka : 0 < G.ka := by unfold Sz.Glob.ka; positivity
-  have hel : ∀ Y, 0 ≤ G.g ^ G.m * (G.place w).be G.ka de de' T T' Y := by
-    intro Y
-    unfold Sz.Cfg.be Sz.Cfg.core
-    positivity
-  unfold supA
-  apply div_nonneg _ (by positivity)
-  cases one
-  · simp only [Bool.false_eq_true, if_false]
-    unfold Sz.Glob.supI
-    apply Real.sSup_nonneg
-    rintro x ⟨Y, _, rfl⟩
-    exact hel Y
-  · simp only [if_true]
-    unfold Sz.Glob.cutSupLong
-    apply Real.sSup_nonneg
-    rintro x ⟨Y, _, rfl⟩
-    exact hel Y
-
 section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
@@ -117,21 +80,6 @@ end Formalism.FourierDecayAlt.P.Jx5
 namespace Formalism.FourierDecayAlt.P
 
 open Jx5
-
-theorem supremum_A_is_majorant : SupAIsCore := by
-  intro ι _ G de de' T T' l w hg hk
-  constructor
-  · exact sup_core G de de' T T' w hg hk _
-  · exact sup_core G de de' T T' w hg hk _
-
-theorem threshold_mono : ThresholdsMonotone := by
-  intro ι _ G C C' de de' T T' l hC h hg hv hI b s w
-  have hκ : 0 ≤ 2 * Real.pi / G.g := by positivity
-  have hN : 0 ≤ G.N := by unfold Sz.Glob.N; positivity
-  have h1 := lambda_threshold_mono G.m b s hC h hκ hN hI.le
-    (supA_nonneg G de de' T T' l (decide (b = 1 ∧ s = 1)) w hg hv)
-  refine ⟨h1.1, h1.2, Real.sqrt_nonneg _, Real.sqrt_le_sqrt ?_⟩
-  exact lamPrimeSq_mono G.m b hC h hκ hN hI.le (supA_nonneg G de de' T T' l false w hg hv)
 
 theorem instance_sizes : InstSizes := by
   intro hLG hIM hNI hDF hFP hX E W _ _ _ D e G C de de' T T' l Θ hU hInst hg1 hg2 hC hI hΘ hGr
@@ -409,15 +357,5 @@ theorem global_positive : GlobPositive := by
   have hD : 16 ≤ G.Del := le_trans h16 hyp.hDel
   unfold Sz.Glob.lenI
   linarith
-
-theorem majorant_mono : MajMono := by
-  intro E W _ D ρ ρ' l h hav
-  unfold TB.Data.maj
-  apply Finset.prod_le_prod
-  · intro v _
-    exact le_min zero_le_one (pow_nonneg (div_nonneg (h v).1 (hav v)) _)
-  · intro v _
-    apply min_le_min le_rfl
-    exact pow_le_pow_left₀ (div_nonneg (h v).1 (hav v)) (div_le_div_of_nonneg_right (h v).2 (hav v)) _
 
 end Formalism.FourierDecayAlt.P

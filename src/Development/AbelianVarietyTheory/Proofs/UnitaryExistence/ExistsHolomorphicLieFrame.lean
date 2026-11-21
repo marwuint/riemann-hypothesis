@@ -151,85 +151,8 @@ theorem differentiableAt_fderiv {m g : ℕ} {X : Scheme.{0}} {B : Set (Fin m →
     (n := 2) h1.contDiffAt contDiffAt_const le_rfl
   exact h2.differentiableAt one_ne_zero
 
-section Fibre
-
-open GlobalTheory.GrpTangent
-
-variable {G : Over (Sp ℂ)} [GrpObj G] {X : Scheme.{0}} {ψ : G.left ⟶ X} {g : ℕ} {e : (Fin g → ℂ) → (Sp ℂ ⟶ X)}
-
-theorem isTangent_mul {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) : IsTangent (v * w) := by
-  rw [isTangent_iff] at hv hw ⊢
-  rw [comp_mul, hv, hw, _root_.mul_one]
-
-theorem isTangent_one : IsTangent (1 : epsR ℂ ⟶ G) := by
-  rw [isTangent_iff, comp_one]
-
-theorem evalPt_congr {A : Type} [CommRing A] {x y : Sp A ⟶ X} (h : x = y) (U : X.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ U)
-    (hy : ⊤ ≤ y ⁻¹ᵁ U) : evalPt x U hx = evalPt y U hy := by
-  subst h; rfl
-
-theorem tangent_base {v : epsR ℂ ⟶ G} (hv : IsTangent v) : spMap fstC ≫ v.left ≫ ψ = η[G].left ≫ ψ := by
-  rw [← Category.assoc]
-  exact congrArg (· ≫ ψ) hv
-
-theorem tangent_le {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) {U : X.Opens}
-    (h : ⊤ ≤ (v.left ≫ ψ) ⁻¹ᵁ U) : ⊤ ≤ (w.left ≫ ψ) ⁻¹ᵁ U := by
-  refine (top_le_preimage_iff _ U).2 ?_
-  rw [tangent_base hw, ← tangent_base hv]
-  exact (top_le_preimage_iff _ U).1 h
-
-theorem snd_evalPt_mul {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) (U : X.Opens) (f : Γ(X, U))
-    (h : ⊤ ≤ ((v * w).left ≫ ψ) ⁻¹ᵁ U) (h₁ : ⊤ ≤ (v.left ≫ ψ) ⁻¹ᵁ U) (h₂ : ⊤ ≤ (w.left ≫ ψ) ⁻¹ᵁ U) :
-    (evalPt (R := DualNumber ℂ) ((v * w).left ≫ ψ) U h f).snd =
-      (evalPt (R := DualNumber ℂ) (v.left ≫ ψ) U h₁ f).snd + (evalPt (R := DualNumber ℂ) (w.left ≫ ψ) U h₂ f).snd := by
-  let i₁ := LinearMap.inl ℂ ℂ ℂ
-  let i₂ := LinearMap.inr ℂ ℂ ℂ
-  let p := (sqZeroMap i₁ ≫ v) * (sqZeroMap i₂ ≫ w)
-  have hp : ∀ l : ℂ × ℂ →ₗ[ℂ] ℂ, sqZeroMap l ≫ p = (epsScale (l (1, 0)) ≫ v) * (epsScale (l (0, 1)) ≫ w) := by
-    intro l
-    simp only [p, comp_mul, ← Category.assoc, sqZeroMap_comp_eq]
-    rfl
-  have e₁ : sqZeroMap (LinearMap.fst ℂ ℂ ℂ) ≫ p = v := by
-    rw [hp]; simp [epsScale_one, epsScale_zero_comp hw]
-  have e₂ : sqZeroMap (LinearMap.snd ℂ ℂ ℂ) ≫ p = w := by
-    rw [hp]; simp [epsScale_one, epsScale_zero_comp hv]
-  have e₃ : sqZeroMap (LinearMap.fst ℂ ℂ ℂ + LinearMap.snd ℂ ℂ ℂ) ≫ p = v * w := by
-    rw [hp]; simp [epsScale_one]
-  have hs : Function.Surjective (spMap (TrivSqZeroExt.map (LinearMap.fst ℂ ℂ ℂ)).toRingHom) := by
-    refine (PrimeSpectrum.isHomeomorph_comap (TrivSqZeroExt.map (LinearMap.fst ℂ ℂ ℂ)).toRingHom
-        (fun x => ⟨1, one_pos, TrivSqZeroExt.map i₁ x, by ext <;> simp [i₁]⟩) fun d hd => ?_).surjective
-    have h : d.fst = 0 := by simpa using congrArg TrivSqZeroExt.fst hd
-    exact ⟨2, by ext1 <;> simp [pow_two, h]⟩
-  have hU : ⊤ ≤ (p.left ≫ ψ) ⁻¹ᵁ U := by
-    intro q _
-    obtain ⟨q, rfl⟩ := hs q
-    rw [← e₁] at h₁
-    exact h₁ (Set.mem_univ q)
-  have key : ∀ (l : ℂ × ℂ →ₗ[ℂ] ℂ) (x : epsR ℂ ⟶ G) (hx : ⊤ ≤ (x.left ≫ ψ) ⁻¹ᵁ U), sqZeroMap l ≫ p = x →
-      (evalPt (R := DualNumber ℂ) (x.left ≫ ψ) U hx f).snd =
-        l (evalPt (R := TrivSqZeroExt ℂ (ℂ × ℂ)) (p.left ≫ ψ) U hU f).snd := by
-    rintro l _ hx rfl
-    have := evalPt_spMap_comp (TrivSqZeroExt.map l).toRingHom (p.left ≫ ψ) U hU hx f
-    exact (congrArg TrivSqZeroExt.snd this).trans (TrivSqZeroExt.snd_map _ _)
-  rw [key _ _ _ e₁, key _ _ _ e₂, key _ _ _ e₃]
-  rfl
-
-theorem isDerivAt0_mul {v w : epsR ℂ ⟶ G} (hv : IsTangent v) (hw : IsTangent w) {a b : Fin g → ℂ}
-    (ha : IsDerivAt0 e a (v.left ≫ ψ)) (hb : IsDerivAt0 e b (w.left ≫ ψ)) :
-    IsDerivAt0 e (a + b) ((v * w).left ≫ ψ) := by
-  have hm := isTangent_mul hv hw
-  refine ⟨(tangent_base hm).trans ((tangent_base hv).symm.trans ha.1), fun U h f => ?_⟩
-  rw [map_add, ← ha.2 U (tangent_le hm hv h) f, ← hb.2 U (tangent_le hm hw h) f]
-  exact snd_evalPt_mul hv hw U f h _ _
-
-end Fibre
-
 end GlobalTheory.HolLieFrame
 
 namespace GlobalTheory
-
-open HolLieFrame
-open scoped Matrix nonZeroDivisors
-open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key ReciprocityTheory.ChartRestriction.G.Key.Chi
 
 end GlobalTheory

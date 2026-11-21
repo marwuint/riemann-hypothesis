@@ -203,15 +203,6 @@ theorem slopeMaxGiven_of_class (D : D7) (h : SlopeMaxClass D) : SlopeMaxGiven D 
   obtain ⟨c, hc⟩ := muMax_le_class CV
   exact hc.trans (h u CV c (hs c))
 
-theorem third_proposition_of_class (h : ∀ D, SlopeMaxClass D) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : ConclusionF6 Fm :=
-  family_third_bound_of_max_slope Fm ⟨0, fun x _ _ i => slopeMaxGiven_of_class _ (h _)⟩
-
-theorem Link6F_of_class (h : ∀ D, SlopeMaxClass D) : Link6F :=
-  fun _ Fm _ _ _ => third_proposition_of_class h Fm
-
-theorem packet_of_slope_max_class (h : ∀ D, SlopeMaxClass D) : KudlaFamilyOfMinkowskiTransference :=
-  packet_of_third_proposition (Link6F_of_class h)
-
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 
 end

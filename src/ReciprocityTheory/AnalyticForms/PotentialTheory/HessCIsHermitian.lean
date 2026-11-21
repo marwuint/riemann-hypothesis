@@ -44,13 +44,6 @@ theorem hessC_add' (φ ψ : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hφ : 
   push_cast
   ring
 
-theorem mdisc_comp_perm' (M : Fin D → Matrix (Fin D) (Fin D) ℂ) (σ : Equiv.Perm (Fin D)) :
-    mdisc (M ∘ σ) = mdisc M := by
-  unfold mdisc
-  congr 1
-  exact Fintype.sum_equiv σ.finsetCongr _ _ fun S => by
-    simp [Equiv.finsetCongr_apply, Finset.sum_map, Finset.card_map]
-
 theorem mdisc_cons_add {e : ℕ} (B C : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ)
     (F : Fin e → Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) :
     mdisc (Fin.cons (B + C) F : Fin (e + 1) → Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) =

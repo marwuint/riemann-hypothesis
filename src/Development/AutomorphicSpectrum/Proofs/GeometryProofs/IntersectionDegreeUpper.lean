@@ -3,18 +3,19 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoun
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
-import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExists
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagStatement
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.TrivFlagHodgeStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCompCoverCmSignsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionDatumDegreeSumStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompactDatumIntersectionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCompCoverCmSigns
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DetLatticeTensorIsDegOnMuTwDeg
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ComponentDataHeightIdentity
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -41,7 +42,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.intersection_degree_upper : To
   intro hG hW E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ B hA hB
   haveI : CharZero Ω := algebraRat.charZero Ω
   obtain ⟨hY, hgood, hS₀, -, hB₁, hS, -⟩ := hA
-  obtain ⟨v1, v2, v3, v4⟩ := GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
+  obtain ⟨v1, v2, v3, v4⟩ := _root_.LevelTowerAlt.component_data_height_identity E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B
   let g : Cpt Or.𝔐.ξ := ⟨genPt Or.𝔐.ξ, specializes_rfl⟩
   obtain ⟨ch, hch⟩ := Or.𝔐.tie.cover g
   obtain ⟨m, f, cc, -, -, hsum, hl⟩ := Hd.locally ch hch.1
@@ -58,7 +59,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.intersection_degree_upper : To
     obtain ⟨x, hx, z, hz, hxz⟩ := Submodule.mem_sup.1 h1
     exact ⟨z, hz, by rw [← hxz, add_sub_cancel_right]; exact hx⟩
   choose s hs using hs
-  obtain ⟨w1, w2⟩ := GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ
+  obtain ⟨w1, w2⟩ := _root_.LevelTowerAlt.det_lattice_tensor_isDegOn_muTwDeg E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ
   have hspan : ∀ τ, LinearIndependent Ω (s τ) ∧ Submodule.span Ω (Set.range (s τ)) = Or.𝔐.Vgen (Or.sm τ) := fun τ => by
     obtain ⟨U, hU, b, hb, hfr⟩ := v4 (Or.sm τ) g trivial
     exact ⟨w1 τ, GlobalTheory.CompanionTheory.Ar.Cusp.span_eq_of_card_nef (w1 τ) (hfr g trivial hU).1 hb (fun k => (hs τ k).1) (Or.rk_sm τ)⟩
@@ -72,7 +73,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.intersection_degree_upper : To
     rcases Or.side with ⟨-, h, -⟩ | ⟨-, h, -⟩
     · exact .inr h
     · exact .inl h
-  refine GlobalTheory.T.hodge_comp_cover_cm_signs hG hW E H D Xo l c Y (S₀ ∪ Dc.SB B) Ω K J Dc.y (Or.𝔐.withS _ v1 v2 v3 v4) Or.deg Or.sm _ s _ _
+  refine _root_.GlobalTheory.CompanionTheory.Relay.hodge_comp_cover_cm_signs hG hW E H D Xo l c Y (S₀ ∪ Dc.SB B) Ω K J Dc.y (Or.𝔐.withS _ v1 v2 v3 v4) Or.deg Or.sm _ s _ _
     hY hpq.1 hpq.2 Or.cover (fun p hp => ?_) (fun p hp hpS => ?_) hside hspan w2
   · rcases Finset.mem_union.1 hp with h | h
     · exact hgood.1 p h

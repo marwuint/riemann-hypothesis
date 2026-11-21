@@ -82,53 +82,6 @@ end AdicAux
 
 namespace PDivGroup
 
-open PDiv Coalgebra Bialgebra
-
-variable {p : ℕ} {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (G : PDivGroup p R)
-
-def cotBase (n : ℕ) : Cot R (G.A n) →ₗ[R] Cot R' ((G.baseChange R').A n) :=
-  AugCot.mapBase (ε := counitAlgHom R (G.A n)) (ε' := counitAlgHom R' (R' ⊗[R] G.A n))
-    (Algebra.TensorProduct.includeRight : G.A n →ₐ[R] R' ⊗[R] G.A n)
-    (fun a => (toBaseChange R R' (G.A n)).counit_map a)
-
-theorem cotBase_isBaseChange (n : ℕ) : IsBaseChange R' (G.cotBase (R' := R') n) :=
-  AugCot.isBaseChange_mapBase _ _ (TensorProduct.isBaseChange R (G.A n) R')
-
-theorem toBase_cot_eq (n : ℕ) (v : Cot R (G.A n)) :
-    ((G.toBase R').app n).cot v = G.cotBase n v := by
-  obtain ⟨a, rfl⟩ := AugCot.d_surjective _ v
-  have h1 := SemiBialgHom.cot_d ((G.toBase R').app n) a
-  have h2 := AugCot.mapBase_d (ε := counitAlgHom R (G.A n))
-    (ε' := counitAlgHom R' (R' ⊗[R] G.A n))
-    (Algebra.TensorProduct.includeRight : G.A n →ₐ[R] R' ⊗[R] G.A n)
-    (fun a => (toBaseChange R R' (G.A n)).counit_map a) a
-  exact h1.trans h2.symm
-
-variable {M : Type} [AddCommGroup M] [Module R M] (c : M →ₗ[R] G.omega)
-
-def omegaToBaseChangeOmega : M →ₗ[R] (G.baseChange R').omega where
-  toFun w := (G.toBase R').omega (c w)
-  map_add' v w := by rw [map_add, map_add]
-  map_smul' r w := by
-    rw [map_smul, map_smulₛₗ, RingHom.id_apply, algebraMap_smul]
-
-def omegaBCMap : R' ⊗[R] M →ₗ[R'] (G.baseChange R').omega :=
-  LinearMap.liftBaseChange R' (G.omegaToBaseChangeOmega c)
-
-theorem omegaBCMap_level (n : ℕ) (x : R' ⊗[R] M) :
-    (G.omegaBCMap c x).1 n =
-      (G.cotBase_isBaseChange n).equiv (((G.omegaLevel n).comp c).baseChange R' x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [map_zero]; rfl
-  | add x y hx hy =>
-    rw [map_add, map_add, map_add, ← hx, ← hy]; rfl
-  | tmul r w =>
-    rw [LinearMap.baseChange_tmul, IsBaseChange.equiv_tmul, omegaBCMap,
-      LinearMap.liftBaseChange_tmul]
-    change r • ((G.toBase R').app n).cot ((c w).1 n) = _
-    rw [toBase_cot_eq]
-    rfl
-
 end PDivGroup
 
 end GlobalTheory
@@ -136,8 +89,6 @@ end GlobalTheory
 namespace GlobalTheory
 
 namespace PDivGroup
-
-open PDiv
 
 end PDivGroup
 

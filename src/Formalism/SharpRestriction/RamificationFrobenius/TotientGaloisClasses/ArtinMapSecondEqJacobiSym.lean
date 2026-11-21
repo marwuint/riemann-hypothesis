@@ -144,12 +144,6 @@ theorem artinMap_first_eq_one (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) (hu : (u : ZM
   rw [artinMap_first_eq_jacobiSym, jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast Int.natCast_modEq_iff.mpr hu), jacobiSym.one_left]
   rfl
 
-theorem artinMap_second_eq_one (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) (hu : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD d]) :
-    (art0 e hH u).1.2 = 1 := by
-  apply Units.ext
-  rw [artinMap_second_eq_jacobiSym, jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast Int.natCast_modEq_iff.mpr hu), jacobiSym.one_left]
-  rfl
-
 theorem artinMap_dyadic_eq_one (u : (ZMod (2 ^ (e + 2) * q * d))ˣ)
     (hu : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD 2 ^ (e + 2)]) : (art0 e hH u).2 = 1 := by
   rw [artinMap_dyadic_eq e hH u 1 (by rw [(ZMod.natCast_eq_natCast_iff _ _ _).mpr hu]; simp), hcl_one]

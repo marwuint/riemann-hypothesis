@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartValEq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOfIntegralAtFibreGenericPointStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOfIntegralAtFibreGenericPoint
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -45,7 +46,7 @@ theorem GlobalTheory.Mum.intAt_of_closedFibre : ∀ (R : Type) [CommRing R] [IsD
     exact ⟨g₀, hg₀⟩
   obtain ⟨g, hg, hgg₀⟩ := Flat.generalizingMap G.hom (show G.hom ζ ⤳ G.hom g₀ from hg₀ ▸ hy₀)
   have hζg' : ζ ⤳ g := hζg g (hgg₀.trans hζ)
-  have hnζ : ¬ IntAt L α s ζ := fun h => hx (GlobalTheory.T.integral_of_integral_at_fibre_generic_point R M G hsm hqc hgi L hL Y α t hpb k s x ζ hζ hζg h)
+  have hnζ : ¬ IntAt L α s ζ := fun h => hx (_root_.GlobalTheory.Mum.intAt_of_intAt_fibreGeneric R M G hsm hqc hgi L hL Y α t hpb k s x ζ hζ hζg h)
   have hclosed : IsClosed {z : G.left | ¬ IntAt L α s z} := (isOpen_setOf_intAt L α s).isClosed_compl
   have : ¬ IntAt L α s g₀ := (hζg'.trans hg).mem_closed hclosed hnζ
   exact this (hcl g₀ (by rw [hg₀, hy₀c]))

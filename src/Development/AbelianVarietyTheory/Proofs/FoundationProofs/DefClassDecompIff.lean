@@ -15,31 +15,6 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section Group
-
-variable {G : Type} [Group G] (Γ K : Subgroup G)
-
-end Group
-
-section Stab
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-  (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
-
-def stabEquiv (K : Subgroup (HA (AF F) σ J)) (g : HA (AF F) σ J) :
-    stabAt σ J K g ≃ Unfold.stab (ratPts σ J) K g where
-  toFun γ := ⟨⟨γ.1, ((mem_stabAt σ J K g γ.1).1 γ.2).1⟩, by
-    have h := ((mem_stabAt σ J K g γ.1).1 γ.2).2
-    rw [mul_assoc] at h
-    exact h⟩
-  invFun γ := ⟨γ.1.1, (mem_stabAt σ J K g γ.1.1).2 ⟨γ.1.2, by
-    rw [mul_assoc]
-    exact γ.2⟩⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-end Stab
-
 theorem frame_inv {n P Q : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.UG.HasSignature G P Q)
     {A : Matrix (Fin P ⊕ Fin Q) (Fin n) ℂ} (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) :
     ∃ L : Matrix (Fin n) (Fin P ⊕ Fin Q) ℂ, L * A = 1 ∧ A * L = 1 := by

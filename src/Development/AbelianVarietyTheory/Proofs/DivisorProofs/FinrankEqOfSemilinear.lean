@@ -3,11 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.GreenSeriesSt
 import Formalism.LocalToGlobal.GlobalTheory.IrreducibleOfCountSizes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelFlagDomainCuspFormRanksShiftedWeightsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelFlagDomainEigenspaceShareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteCuspFormsFiniteRegularRepresentationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWhittakerCharacterPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShareSizeBoundsAlongFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankIInfKerEqOfIsBaseChangeFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelFlagDomainEigenspaceShare
+import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteCuspFormsFiniteRegularRepresentation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWhittakerCharacterPair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShareSizeBoundsAlongFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankIInfKerEqOfIsBaseChangeFamily
+import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 
 set_option autoImplicit false
 
@@ -58,7 +60,7 @@ theorem finrank_eig_eq {LL G W : Type} [Field LL] [Group G] [AddCommGroup W] [Mo
     rw [Basis.mk_apply]
     rfl
   have hbc : IsBaseChange ℂ f' := hf' ▸ IsBaseChange.of_fintype_basis LL b
-  have key := (GlobalTheory.T.finrank_iInf_ker_eq_of_isBaseChange_family LL ℂ (Fin n → LL) W H f' hbc
+  have key := (_root_.GlobalTheory.BadCount.finrank_iInf_ker_baseChange LL ℂ (Fin n → LL) W H f' hbc
     (fun h => ρV h - ((μ h : LLˣ) : LL) • LinearMap.id)
     (fun h => ρ h - ((σ (μ h : LLˣ)) : ℂ) • LinearMap.id) (fun h v => by
       show ρ h (f v) - σ ((μ h : LLˣ) : LL) • f v = f (ρV h v - ((μ h : LLˣ) : LL) • v)
@@ -90,12 +92,6 @@ theorem finrank_eq_of_semilinear {LL W : Type} [Field LL] [AddCommGroup W] [Modu
 end GlobalTheory.ShareOn.Alg
 
 namespace GlobalTheory.ShareOn
-
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.CovTop
-open GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
-  {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 end GlobalTheory.ShareOn
 
@@ -135,7 +131,7 @@ theorem shareW_of_modelAt (p : PtAt ex Csz) (i : Fin D.R.m) (T : ℕ) (y : ℝ) 
   have hn : finrank ℂ (M.cusp ka) = p.R.toRealDat.nW i := Alg.finrank_eq_of_semilinear σ f hli hsp
   have key : (1 - y) * (finrank ℂ (M.cusp ka) : ℝ) ≤ (Nat.card H : ℝ) * finrank ℂ (GlobalTheory.BadCount.eig ρ H lam) := by
     rcases hcase with hdef | ⟨h0, hr, harch⟩
-    · have hd := (GlobalTheory.T.definite_cuspForms_finite_regularRepresentation _ _ _ _ M hdef ka ρ hpull).2 H (hlev H hH)
+    · have hd := (_root_.GlobalTheory.ShareOn.Definite.share_definite _ _ _ _ M hdef ka ρ hpull).2 H (hlev H hH)
       rw [← Nat.cast_mul, hd.2 lam]
       have : (0 : ℝ) ≤ finrank ℂ (M.cusp ka) := Nat.cast_nonneg _
       nlinarith
@@ -145,7 +141,7 @@ theorem shareW_of_modelAt (p : PtAt ex Csz) (i : Fin D.R.m) (T : ℕ) (y : ℝ) 
         rw [hcard]
         exact this
       have hR := GlobalTheory.T.twoLevelFlagDomain_cuspForm_ranks_shifted_weights _ _ _ _ M (hlev ⊥ (halfUnip_bot p)) h0 hr ka T harch hsO
-      have hS := (GlobalTheory.T.twoLevelFlagDomain_eigenspace_share _ _ _ _ M ka ρ hpull _ _ hR H (hlev H hH) lam).2
+      have hS := (_root_.GlobalTheory.ShareEig.share_eig _ _ _ _ M ka ρ hpull _ _ hR H (hlev H hH) lam).2
       have hY : ((M.dimY : ℝ) * (M.dimY + 6) / T) ≤ y := by
         unfold TwoLevels.dimY
         rw [hcard]
@@ -159,22 +155,5 @@ theorem shareW_of_modelAt (p : PtAt ex Csz) (i : Fin D.R.m) (T : ℕ) (y : ℝ) 
 end GlobalTheory.ShareOn
 
 namespace GlobalTheory.ShareOn
-
-open NumberField IsDedekindDomain
-open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.FWT
-open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.RealIndexBound GlobalTheory.OnTies Formalism.MainNotions.ArithmeticCylinders
-
-theorem shareWSt_of_modelSt : ModelSt → ShareWSt := by
-  intro hM
-  unfold ModelSt AtRuns AtPts at hM
-  unfold ShareWSt AtRuns AtPts
-  refine (hM.and GlobalTheory.T.shareSize_bounds_along_family).imp ?_
-  intro eps Fm CH _ h
-  obtain ⟨⟨x1, h1⟩, ⟨x2, h2⟩⟩ := h
-  refine ⟨max x1 x2, fun x hx hle ι p hp hmore r hr hown i => ?_⟩
-  have hm := h1 x hx ((le_max_left _ _).trans hle) ι p hp hmore r hr hown i
-  have hn := h2 x hx ((le_max_right _ _).trans hle) ι
-  exact shareW_of_modelAt p i _ _ (by positivity) hm (by obtain ⟨_, _, -, -, h⟩ := GlobalTheory.T.exists_whittaker_character_pair _ _ _ _ _ _ _ _ _ _ p hp; exact h)
-    (fun p0 h0 => (hn p0 h0).1) (hn 0 (Nat.zero_le _)).2
 
 end GlobalTheory.ShareOn

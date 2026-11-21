@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.RightDerivativeAlongLieCommutatorEqBracket
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsLieDataCircle
+
 open GlobalTheory.SmoothForms NumberField Matrix
 open scoped ContDiff Topology
 set_option maxHeartbeats 1000000 in

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarOperatorLocalCalculusComplexFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothCoefficientFormsClosedUnderOperationsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureMatrixEvenFormsEntriesSmoothCoefficientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarCurvatureMatrixEvenFormsEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarOperatorLocalCalculusComplexForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothCoefficientFormsClosedUnderOperations
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureMatrixEvenFormsEntriesSmoothCoefficient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarCurvatureMatrixEvenFormsEqZero
 
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -25,8 +25,8 @@ theorem diff_of_smooth {α : V n → Alt n} (h : ∀ S, ContDiffAt ℝ ∞ (fun 
   exact h1.differentiableAt (by simp)
 
 theorem good_const (c : Ev n) : Good n v (fun _ => c) := by
-  refine ⟨fun S => (GlobalTheory.T.smooth_coefficient_forms_closed_under_operations n v).1 (c : Alt n) S, ?_⟩
-  exact (GlobalTheory.T.dbar_operator_local_calculus_complex_forms n v).2.2.2.1 (c : Alt n)
+  refine ⟨fun S => (_root_.GlobalTheory.ChernCalc.smooth_coeff_closure n v).1 (c : Alt n) S, ?_⟩
+  exact (_root_.GlobalTheory.CxForm.dbarAt_local_calculus n v).2.2.2.1 (c : Alt n)
 
 theorem good_sum {J : Type} (s : Finset J) (f : J → V n → Ev n) (h : ∀ j ∈ s, Good n v (f j)) :
     Good n v (fun x => ∑ j ∈ s, f j x) := by
@@ -37,8 +37,8 @@ theorem good_sum {J : Type} (s : Finset J) (f : J → V n → Ev n) (h : ∀ j �
   unfold Good
   beta_reduce
   simp only [hfun]
-  refine ⟨(GlobalTheory.T.smooth_coefficient_forms_closed_under_operations n v).2.1 J s (fun j x => (f j x : Alt n)) (fun j hj => (h j hj).1), ?_⟩
-  rw [(GlobalTheory.T.dbar_operator_local_calculus_complex_forms n v).2.1 J s (fun j x => (f j x : Alt n))
+  refine ⟨(_root_.GlobalTheory.ChernCalc.smooth_coeff_closure n v).2.1 J s (fun j x => (f j x : Alt n)) (fun j hj => (h j hj).1), ?_⟩
+  rw [(_root_.GlobalTheory.CxForm.dbarAt_local_calculus n v).2.1 J s (fun j x => (f j x : Alt n))
     (fun j hj S => diff_of_smooth (α := fun x => (f j x : Alt n)) (h j hj).1 S)]
   exact Finset.sum_eq_zero fun j hj => (h j hj).2
 
@@ -50,8 +50,8 @@ theorem good_mul (f g : V n → Ev n) (hf : Good n v f) (hg : Good n v g) : Good
   unfold Good
   beta_reduce
   simp only [hfun]
-  refine ⟨(GlobalTheory.T.smooth_coefficient_forms_closed_under_operations n v).2.2.2 (fun x => (f x : Alt n)) (fun x => (g x : Alt n)) hf.1 hg.1, ?_⟩
-  rw [(GlobalTheory.T.dbar_operator_local_calculus_complex_forms n v).2.2.2.2 f (fun x => (g x : Alt n))
+  refine ⟨(_root_.GlobalTheory.ChernCalc.smooth_coeff_closure n v).2.2.2 (fun x => (f x : Alt n)) (fun x => (g x : Alt n)) hf.1 hg.1, ?_⟩
+  rw [(_root_.GlobalTheory.CxForm.dbarAt_local_calculus n v).2.2.2.2 f (fun x => (g x : Alt n))
     (diff_of_smooth (α := fun x => (f x : Alt n)) hf.1) (diff_of_smooth (α := fun x => (g x : Alt n)) hg.1)]
   rw [hf.2, hg.2]
   simp
@@ -77,7 +77,7 @@ theorem goodM_pow (M : V n → Matrix r r (Ev n)) (hM : ∀ i j, Good n v (fun x
     exact goodM_mul (fun x => M x ^ k) M (fun a b => ih a b) hM i j
 
 theorem goodM_curv (G : V n → Matrix r r ℂ) (hG : MContDiffAt ∞ G v) (hd : IsUnit (G v).det) (i j : r) :
-    Good n v (fun x => curvEv G x i j) := ⟨((GlobalTheory.T.curvatureMatrixEvenForms_entries_smooth_coefficients n r G v hG hd) i j).2, GlobalTheory.T.dbar_curvatureMatrixEvenForms_eq_zero n r G v hG hd i j⟩
+    Good n v (fun x => curvEv G x i j) := ⟨((_root_.GlobalTheory.CurvSmooth.curvEv_entry_smooth n r G v hG hd) i j).2, _root_.GlobalTheory.ChernCalc.CurvClosed.dbarAt_curvEv n r G v hG hd i j⟩
 
 end GlobalTheory.PowCurv
 

@@ -13,12 +13,12 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FlagDomainModels
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointsAllNormalisationsFamilyUnif
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FamilyUniformisationIsComplexUniformisation
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ArithmeticGroupCuspCentreLattice
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspSectionAdelicLeftInvariantContinuousStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMemberDictionaryContextGoodEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsDictionaryByMarkingRuleStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DictIsUnifOfMarkingRuleDictionaryStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemberDictionaryInvariantRationalLevelStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryAdelicCharOfHeckeCharStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspSectionAdelicLeftInvariantContinuous
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMemberDictionaryContextGoodEmbedding
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsDictionaryByMarkingRule
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DictIsUnifOfMarkingRuleDictionary
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemberDictionaryInvariantRationalLevel
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryAdelicCharOfHeckeChar
 
 noncomputable section
 
@@ -34,10 +34,10 @@ theorem exists_pkgLaws : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.
   have hS := GlobalTheory.firstFiveLaws.1.secBaseChange
   have hT := GlobalTheory.firstFiveLaws.2.1.secTwist
   have hneg : GlobalTheory.FrameUnif.NegXi C.M :=
-    (GlobalTheory.T.exists_memberDictionaryContext_goodEmbedding D H Dw l Xo c σ V r C.hr C.ι hC.iota hC.pos hC.lA hC.good).2.1 C hC
+    (_root_.GlobalTheory.Member.exists_ctx D H Dw l Xo c σ V r C.hr C.ι hC.iota hC.pos hC.lA hC.good).2.1 C hC
   obtain ⟨un, hun⟩ := GlobalTheory.FrameUnif.exists_framesOK hS hT _ H Dw l Xo c σ C.g C.e C.F r C.M hC.good hC.base hneg
-  obtain ⟨dict, hd⟩ := GlobalTheory.T.exists_dictionary_by_marking_rule D H Dw l Xo c σ V r C hC
-  obtain ⟨mu, hval, hmul, hnorm, hrat, hcont⟩ := GlobalTheory.T.exists_unitaryAdelicChar_of_heckeChar D V χ hχ hχF
+  obtain ⟨dict, hd⟩ := _root_.GlobalTheory.Member.Ctx.exists_isDict D H Dw l Xo c σ V r C hC
+  obtain ⟨mu, hval, hmul, hnorm, hrat, hcont⟩ := _root_.GlobalTheory.Member.exists_muVal D V χ hχ hχF
   have hU := GlobalTheory.FrameUnif.isUnf_built hS _ H Dw l Xo c σ C.g C.e C.F r C.M un hC.good hC.base hneg hun
   haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)
   refine ⟨un, dict, mu, hd, hun, ?_⟩
@@ -47,14 +47,14 @@ theorem exists_pkgLaws : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.
       chi1 := hC.base.chi
       modelW := hC.modelW
       familyUniformisationBasePointOrthogonal := hC.orth
-      muUnit := ⟨hmul, hnorm, hrat, (GlobalTheory.T.memberDictionary_invariant_rational_level D H Dw l Xo c σ V r C hC dict hd Kf hK).2.2.2.1⟩
+      muUnit := ⟨hmul, hnorm, hrat, (_root_.GlobalTheory.Member.dict_invariant D H Dw l Xo c σ V r C hC dict hd Kf hK).2.2.2.1⟩
       muCont := hcont
       muVal := hval
-      adelAut := GlobalTheory.T.cuspSection_adelic_leftInvariant_continuous D H Dw l Xo c σ V r C hC dict hd mu hmul hrat hcont
+      adelAut := _root_.GlobalTheory.Member.adel_leftInv_and_continuous D H Dw l Xo c σ V r C hC dict hd mu hmul hrat hcont
       expo := fun ρ => ⟨GlobalTheory.CuspCentre.latZ _ r ρ _ C.M.X,
         GlobalTheory.ExpoModels.expoMatch_models _ H Dw l Xo _ C.g _ C.F r C.M ρ hC.base hC.lA⟩
       dictLaws := ⟨C.g, C.e, C.F, id, C.M.φ, C.th, fun _ τ => hC.inf τ.1,
-        GlobalTheory.T.dictIsUnif_of_markingRule_dictionary D H Dw l Xo c σ V r C hC dict hd Kf hK, ⟨hC.base.ef, fun k x => ?_⟩, fun h => ?_⟩ }
+        _root_.GlobalTheory.Member.dictIsUnif_of_isDict D H Dw l Xo c σ V r C hC dict hd Kf hK, ⟨hC.base.ef, fun k x => ?_⟩, fun h => ?_⟩ }
   · obtain ⟨Pm, h1, h2, h3, h4, -⟩ := hun.1 k x
     exact ⟨Pm, h1, h2, h3, h4⟩
   · obtain ⟨γ, ⟨h1, h2, h3⟩, h4⟩ := hd.1 h

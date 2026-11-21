@@ -1,4 +1,4 @@
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.TheoremPCompactOfTransportSite
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.DerivCombCongr
 
 open MeasureTheory Filter Topology
 open scoped Matrix

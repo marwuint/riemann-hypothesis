@@ -6,11 +6,11 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementRe
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalExtend
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproxStabStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexComapPairOfDenseImageStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarInvVolumeRelIndexPiUnivEqFinprodStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproxStab
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexComapPairOfDenseImage
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarInvVolumeRelIndexPiUnivEqFinprod
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordinateLatticeUniqueTermAlmostAllPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordinateLatticeUniqueTermAlmostAllPlaces
 
 noncomputable section
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
@@ -134,7 +134,7 @@ theorem mass_eq_finprod : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
       G.mu Λ = ∏ᶠ p, (G.S p).mu (A.lat p Λ) := by
   intro F E _ _ _ _ _ sig A r k G hk Λ hΛ
   obtain ⟨-, hlat, hcoord⟩ := GlobalTheory.T.numberField_lattice_determined_by_local_lattices A (k + 2 * r + 1) Λ hΛ
-  have hstd := GlobalTheory.T.coordinateLattice_unique_term_almost_all_places A r k G hk
+  have hstd := _root_.GlobalTheory.HL.StdPlace.coordinate_lattice_standard A r k G hk
   let U : ∀ p, Subgroup (G.S p).GLV :=
     fun p => (G.S p).St ⊓ MulAction.stabilizer (G.S p).GLV (A.lat p Λ)
   let K : ∀ p, Subgroup (G.S p).GLV := fun p => (G.S p).K0
@@ -185,7 +185,7 @@ theorem mass_eq_finprod : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
         have := (Subgroup.mem_pi _).1 h p (Set.mem_univ p)
         rw [he] at this
         exact this
-    obtain ⟨γ, -, hγ⟩ := GlobalTheory.T.exists_mem_St_approximating_local_elements A r k G Λ hΛ c hc g hgSt hgfin
+    obtain ⟨γ, -, hγ⟩ := _root_.GlobalTheory.HL.StrongSt.strong_approx_stab A r k G Λ hΛ c hc g hgSt hgfin
     refine ⟨γ, ?_⟩
     have key : ∀ p, (g p)⁻¹ * φ γ p ∈ K p ⊓ U p := by
       intro p
@@ -211,7 +211,7 @@ theorem mass_eq_finprod : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
       have := (K p ⊓ U p).inv_mem (key p)
       simpa [mul_inv_rev] using this
     exact ⟨(Subgroup.mem_pi _).2 fun p _ => (key2 p).1, (Subgroup.mem_pi _).2 fun p _ => (key2 p).2⟩
-  obtain ⟨hKU, hUK⟩ := GlobalTheory.T.relIndex_comap_pair_of_dense_image φ (Subgroup.pi Set.univ K) (Subgroup.pi Set.univ U) hdense
+  obtain ⟨hKU, hUK⟩ := _root_.GlobalTheory.HL.relIndex_pair_comap_of_dense_image φ (Subgroup.pi Set.univ K) (Subgroup.pi Set.univ U) hdense
   have hidx : ∀ p, (K p).relIndex (U p) ≠ 0 ∧ (U p).relIndex (K p) ≠ 0 := by
     intro p
     haveI := (A.loc p).lf
@@ -219,7 +219,7 @@ theorem mass_eq_finprod : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
     obtain ⟨a, b, -⟩ := (GlobalTheory.HL.volSt (A.L p) r k (G.S p)).1 (A.lat p Λ) (hlat p)
     exact ⟨a, b⟩
   have hKU' : {p | K p ≠ U p}.Finite := hfin.subset fun p hp h => hp h.symm
-  obtain ⟨-, -, hprod⟩ := GlobalTheory.T.haarInvVolumeRelIndex_pi_univ_eq_finprod K U hKU' hidx
+  obtain ⟨-, -, hprod⟩ := _root_.GlobalTheory.HL.invVol_pi_univ K U hKU' hidx
   refine ⟨hfin, ?_⟩
   have e1 : G.K0 = (Subgroup.pi Set.univ K).comap φ := (comap_pi A _ K).symm
   have e2 : G.stabL Λ = (Subgroup.pi Set.univ U).comap φ := (comap_pi A _ U).symm

@@ -171,11 +171,11 @@ theorem sobCont_conjMap {D : D7} {S : D.what₂.Tau → SPar} (X : Formalism.L2.
     show star (GlobalTheory.ConjRowMult.contRepL X (F fun τ => (u τ : M.H τ)) (T (x * t⁻¹))) = _
     rw [e]
     simp only [MulEquiv.symm_apply_apply]
-  haveI : ∀ τ, CompleteSpace (M.H τ) := fun τ => (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D (D.sp.Y 0) S M τ).1
+  haveI : ∀ τ, CompleteSpace (M.H τ) := fun τ => (_root_.GlobalTheory.HolDict.ModelRep.model_rep D (D.sp.Y 0) S M τ).1
   have hH : ∀ τ, (gramAt D (D.sp.Y 0) τ).IsHermitian := GlobalTheory.SmoothAutCheck.gramAt_herm (D.sp.Y 0)
   have hdet : ∀ τ, (gramAt D (D.sp.Y 0) τ).det ≠ 0 := fun τ => (GlobalTheory.SmoothAutCheck.gramAt_unit (D.sp.Y 0) τ).ne_zero
-  have hsv := fun τ => GlobalTheory.T.smoothVectors_subspace_stable_sobolevForm_deriv (D.sp.Y 0).rank (gramAt D (D.sp.Y 0) τ) (M.H τ) (M.rep τ) (hH τ) (hdet τ)
-    (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D (D.sp.Y 0) S M τ).2.1
+  have hsv := fun τ => _root_.GlobalTheory.UnitarySmVec.smoothVec_basic (D.sp.Y 0).rank (gramAt D (D.sp.Y 0) τ) (M.H τ) (M.rep τ) (hH τ) (hdet τ)
+    (_root_.GlobalTheory.HolDict.ModelRep.model_rep D (D.sp.Y 0) S M τ).2.1
   have hsm : ∀ τ, ∀ Y ∈ lieAt (D.sp.Y 0) τ, ∀ w : M.sm τ, dRep (M.rep τ) Y (w : M.H τ) ∈ M.sm τ :=
     fun τ Y hY w => Submodule.subset_span (((hsv τ).2 w ((hsv τ).1 w w.2)).2.1 Y hY).1
   have hder : ∀ (y : M.Vec) τ', ∀ Y ∈ lieAt (D.sp.Y 0) τ',

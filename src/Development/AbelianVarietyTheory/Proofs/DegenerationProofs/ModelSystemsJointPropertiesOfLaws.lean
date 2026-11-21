@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelUniformisationOfAbelianLocusDirectImageStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelUniformisationOfAbelianLocusDirectImage
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcFamilyFourthConditionInvertiblePushforwardStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigidSys
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
@@ -26,7 +26,7 @@ theorem partI_of_inputs : DVR.TwistBaseChangeStatement → Laws → Laws2 → La
   refine ⟨h0, fun E _ _ _ H D hD Xo => ?_⟩
   obtain ⟨Y, hY, hgl⟩ := hM E H D hD Xo
   refine ⟨Y, fun p W hp hW => ⟨(hY p W hp hW).1, fun i => ⟨((hY p W hp hW).2 i).1, ?_, ?_⟩⟩, hgl⟩
-  · exact GlobalTheory.T.model_uniformisation_of_abelianLocus_directImage h1 h2 h3 h4 h5 hE hU hP E H D _ _ _ _ _ p ((hY p W hp hW).1.1 i)
+  · exact _root_.GlobalTheory.model_uniformisation_of_clauses h1 h2 h3 h4 h5 hE hU hP E H D _ _ _ _ _ p ((hY p W hp hW).1.1 i)
   · exact GlobalTheory.T.arcFamily_fourthCondition_invertible_pushforward hT h1 h2 h3 h4 h5 h6 hE hU hP hH hA E H D _ _ _ _ _ p ((hY p W hp hW).1.1 i)
       ((hY p W hp hW).2 i).2
 

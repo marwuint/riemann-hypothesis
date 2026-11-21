@@ -22,22 +22,11 @@ section Family
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
-theorem allSteps_injective {B : Mdl Y i₀} : Function.Injective (allSteps : Lat B → Finset (Step Y i₀)) := fun L L' h => by
-  have h₁ : (⟨B, L, Classical.arbitrary _, 0, Nat.zero_le _⟩ : Step Y i₀) ∈ allSteps L' :=
-    h ▸ mem_allSteps.2 ⟨_, _, _, rfl⟩
-  obtain ⟨σ, r, hr, e⟩ := mem_allSteps.1 h₁
-  exact eq_of_heq (Step.mk.inj e).2.1
-
 variable {P : ∀ B : Mdl Y i₀, Lat B → Prop}
 
 open Classical in
 
 def FlagFam.lat {Z : Mdl Y i₀} (s : FlagFam P Z) : Lat Z := if h : ∃ L : Lat Z, s.1 = allSteps L then h.choose else Lat.top Z
-
-theorem FlagFam.lat_full {Z : Mdl Y i₀} (L : Lat Z) (h : L.IsTop ∨ P Z L) : (FlagFam.full L h).lat = L := by
-  have h₁ : ∃ L' : Lat Z, (FlagFam.full L h).1 = allSteps L' := ⟨L, rfl⟩
-  rw [FlagFam.lat, dif_pos h₁]
-  exact (allSteps_injective h₁.choose_spec).symm
 
 open Classical in
 variable (P) in
@@ -134,9 +123,6 @@ def psiBar : LinearMap.BilinForm ct.kbar ct.LaBar := S.Dw.EF.baseChange ct.kbar
 
 def locus (l : ct.Sum1) : Closeds ct.FlP :=
   between j (fun τ => l.bar.submoduleOf (ct.eigBar τ)) fun τ => (ct.psiBar.orthogonal l.bar).submoduleOf (ct.eigBar τ)
-
-theorem FlP.sub_le {ct : At S κ p} (F : ct.FlP) (τ : PsiT D) (i : ℕ) : F.sub τ i ≤ ct.eigBar τ :=
-  Submodule.map_subtype_le _ _
 
 theorem FlP.ext {ct : At S κ p} {F F' : ct.FlP} (h : ∀ τ i, F.sub τ i = F'.sub τ i) : F = F' :=
   Flags.ext fun τ i => Submodule.map_injective_of_injective (ct.eigBar τ).injective_subtype (h τ i)
@@ -252,15 +238,5 @@ def crhOf (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (hf : ∀ Z, Fla
   CrvS Z := Curve ct.Fbar (ct.flagCl Z (hf Z).1).X
   degGr c := ct.degLatPiece (hf _).lat c
   nefHT_def _ _ := Iff.rfl
-
-example (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (hf : ∀ Z, FlagFam P Z) (Z : ct.Mdl) :
-    (crhOf ct P hf).nefHT Z 0 := fun c => by simp
-
-example (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (hf : ∀ Z, FlagFam P Z) (Z : ct.Mdl) :
-    Nonempty ((crhOf ct P hf).YsP Z) ∧ Nonempty ((crhOf ct P hf).CrvS Z) ∧ Nonempty (crhOf ct P hf).FlP :=
-  ⟨ct.nonempty_spPt _, ct.nonempty_curve _, inferInstanceAs (Nonempty ct.FlP)⟩
-
-example (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (hf : ∀ Z, FlagFam P Z) (Z : ct.Mdl) :
-    (crhOf ct P hf).CrvS Z = Curve ct.Fbar ((flgOf ct P).flagCl Z ((crhOf ct P hf).htFlags Z)).X := rfl
 
 end GlobalTheory.LocM

@@ -17,10 +17,4 @@ def PullbackEliminationOfVariable.Statement : Prop :=
     ∃ (h : MRing ι) (a : K → ℕ), IsMultiHomog h a ∧ h ∉ imageZ v P' ∧
       ∀ z' ∈ mcPts P', z' ∈ mcPts J' → eval (fun p => z' (v p)) (map (Int.castRingHom ℂ) h) = 0
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

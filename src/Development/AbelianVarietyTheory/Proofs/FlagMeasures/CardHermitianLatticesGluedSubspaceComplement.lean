@@ -11,30 +11,6 @@ open scoped ENNReal Classical
 
 namespace GlobalTheory.Mass.Glue
 
-section
-
-variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
-
-theorem mem_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (v : V) :
-    v ∈ perp h U ↔ ∀ x ∈ U, h x v = 0 := by
-  simp [perp, Submodule.mem_iInf]
-
-theorem nondeg_of_pd [NumberField K] (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : PD h) : h.Nondegenerate := by
-  obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
-  constructor
-  · intro x hx
-    by_contra h0
-    have := hp τ x h0
-    rw [hx x] at this
-    simp at this
-  · intro x hx
-    by_contra h0
-    have := hp τ x h0
-    rw [hx x] at this
-    simp at this
-
-end
-
 open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]

@@ -68,31 +68,6 @@ theorem fd_setIntegral_char_eq_zero (h𝓕 : IsAddFundamentalDomain Λ 𝓕 μ) 
 
 end Gen
 
-section FDom
-
-end FDom
-
-section Cent
-
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-
-variable (F : Type) [Field F] [NumberField F]
-
-def ratV (r : ℕ) : AddSubgroup (Fin r → AF F) :=
-  (AddMonoidHom.compLeft (algebraMap F (AF F)).toAddMonoidHom (Fin r)).range
-
-end Cent
-
-section Frame
-
-open Formalism.BasicNotions.TH Formalism.L2.Theta
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : Formalism.BasicNotions.D7}
-
-end Frame
-
 end Formalism.IndefR.Tow
 
 end

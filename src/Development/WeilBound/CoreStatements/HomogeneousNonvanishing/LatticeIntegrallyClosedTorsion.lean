@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsOfPolAV
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.NatCastSmulMemHtLatK
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorsionQuasiFiniteGroupStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackIffStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGenericWeilPairingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackIff
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGenericWeilPairing
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 
@@ -283,7 +285,7 @@ theorem genWeil_trivial (o : Obj D l b s) (t : SAB H X) (m : SABMap o.t t ξ) {n
       have h2 := congrArg (fun w => w.left) (push_one m.cart (Over.mk (spMap i)))
       rw [hz]
       exact h2.trans (congrArg (fun w => w.left) h1).symm
-    rw [← GlobalTheory.T.weil_pairing_pullback_iff E H X (Sp Ω) t o.t ξ m k (spMap i) 1 1 xk gk n c (e1 xk hxk) (e1 gk hgk)]
+    rw [← _root_.GlobalTheory.CompanionTheory.Ar.WeilPull.main E H X (Sp Ω) t o.t ξ m k (spMap i) 1 1 xk gk n c (e1 xk hxk) (e1 gk hgk)]
     have hx1 := hW _ (GlobalTheory.Obj.toPolAV o) n (Over.mk (spMap i))
     have h1 : WeilIs o.t.G o.t.PP.L n (1 : Over.mk (spMap i) ⟶ o.t.G) 1 (unitOn (1 : kˣ)) := by
       rw [GenWeilModel.unitOn_one]
@@ -335,7 +337,7 @@ theorem htOm_eq_htLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   have hw : ∃ e, GenWeil t.G t.PP.L ξ n e := by
     rcases Nat.eq_zero_or_pos (D.p + D.q) with h | h
     · exact ⟨_, genWeil_trivial o t m hn h⟩
-    · have := GlobalTheory.T.exists_generic_weil_pairing GlobalTheory.PairingLawZeroCounterexample.laws.1 E H D l B b (Sp Ω) X s o t ξ m Ω (𝟙 _) n hn
+    · have := _root_.GlobalTheory.CompanionTheory.Ar.WeilObj.genWeil_of_obj GlobalTheory.PairingLawZeroCounterexample.laws.1 E H D l B b (Sp Ω) X s o t ξ m Ω (𝟙 _) n hn
         (by rwa [Category.id_comp]) (by simpa using hroot h)
       rwa [Category.id_comp] at this
   obtain ⟨e, hw⟩ := hw

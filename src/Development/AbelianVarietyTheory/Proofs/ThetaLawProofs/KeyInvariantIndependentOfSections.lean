@@ -11,12 +11,11 @@ import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyPBRing
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.PwIsoIsGen
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.BasisPowerSectionsLocalBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyInvariantAfterDvrExtension
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyInvariantAfterDvrExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantEqOfIndependentGenericTuplesStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyInvariantAlgClosedTransversalStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.GenericSectionsMeetTransversallyStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantFromIntersectionUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantEqOfIndependentGenericTuples
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantBaseChange
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyInvariantAlgClosedTransversal
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.GenericSectionsMeetTransversally
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantFromIntersectionUnique
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsAlgHomOfIsTranscendenceBasis
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory
@@ -113,7 +112,7 @@ theorem Framed.kaVal (hL : Out.Laws) (hA : admitted x.P.g n l l' al) {R R' : Typ
     (hκ : KaVal x' n l l' al s κ) : KaVal x'' n l l' al s' (Units.map j.toMonoidHom κ) := by
   obtain ⟨φ, w, hg, H, hs⟩ := h.via h'
   have hA' : admitted x'.P.g n l l' al := by rw [h.g_eq]; exact hA
-  exact GlobalTheory.T.keyInvariant_baseChange hL R R' x' x'' j φ w n l l' al hg s s' κ hA' H hs hκ
+  exact _root_.GlobalTheory.KaBaseChange.kaVal_baseChange hL R R' x' x'' j φ w n l l' al hg s s' κ hA' H hs hκ
 
 def ValAt (b : Fin (n ^ x.P.g) → RR x n) (l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (R : Type) [CommRing R]
     [Algebra K R] (T : Fin x.P.g × Fin (n ^ x.P.g) → R) (a : R) : Prop :=
@@ -139,7 +138,7 @@ theorem valAt_unique [CharZero K] (hL : Out.Laws) (hA : admitted x.P.g n l l' al
     simpa only [RingHom.id_comp, RingHom.coe_id, Function.id_comp] using h2
   have hk := h1.kaVal hL hA h2' hk1
   have hA2 : admitted x2.P.g n l l' al := by rw [h2.g_eq]; exact hA
-  have e := GlobalTheory.T.keyInvariantFromIntersection_unique hL F x2 n l l' al s2 _ _ hA2 hk hk2
+  have e := _root_.GlobalTheory.KaUnique.kaVal_unique hL F x2 n l l' al s2 _ _ hA2 hk hk2
   rw [← e]
   rfl
 
@@ -153,9 +152,9 @@ theorem exists_valAt [CharZero K] (hL : Out.Laws) (hA : admitted x.P.g n l l' al
   have hinj : Function.Injective
       (fun p : Fin x'.P.g × Fin (n ^ x.P.g) => ((p.1.cast hg, p.2) : Fin x.P.g × Fin (n ^ x.P.g))) :=
     fun p q hpq => Prod.ext (Fin.ext (congrArg (fun r => (r.1 : ℕ)) hpq)) (congrArg (fun r => r.2) hpq)
-  obtain ⟨d, z, ch, hz⟩ := GlobalTheory.T.generic_sections_meet_transversally hL K Ω x x' φ w n b b' (fun p => T (p.1.cast hg, p.2)) s hA.1 H hb hb'
+  obtain ⟨d, z, ch, hz⟩ := _root_.GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent hL K Ω x x' φ w n b b' (fun p => T (p.1.cast hg, p.2)) s hA.1 H hb hb'
     (hT.comp _ hinj) hs
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.exists_keyInvariant_algClosed_transversal hL Ω x' n l l' al d s z ch hA'
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed hL Ω x' n l l' al d s z ch hA'
     (Nat.cast_ne_zero.mpr (degProd_ne_zero hA')) hz
   exact ⟨κ, x', s, κ, hf, hκ, rfl⟩
 
@@ -176,7 +175,7 @@ theorem valAt_generic [CharZero K] (hL : Out.Laws) (hA : admitted x.P.g n l l' a
     fun p q hpq => Prod.ext (Fin.ext (congrArg (fun r => (r.1 : ℕ)) hpq)) (congrArg (fun r => r.2) hpq)
   have hind := hT.comp _ (Sum.map_injective.mpr ⟨hinj, hinj⟩)
   rw [Sum.elim_comp_map] at hind
-  have e := GlobalTheory.T.keyInvariant_eq_of_independent_generic_tuples hL K Ω x x1 φ w n l l' al b b' (fun p => T (p.1.cast hg, p.2))
+  have e := _root_.GlobalTheory.KeyGeneric.kaVal_eq_of_generic hL K Ω x x1 φ w n l l' al b b' (fun p => T (p.1.cast hg, p.2))
     (fun p => T' (p.1.cast hg, p.2)) s1 s3 κ1 _ hA H hb hb' hind hs1 hs3 hk1 hk3
   rw [e]
   rfl
@@ -200,7 +199,7 @@ theorem valAt_lift [CharZero K] (hL : Out.Laws) (hA : admitted x.P.g n l l' al) 
     have := (IsUnit.mk0 _ h0).map (algebraMap K O)
     rwa [map_natCast] at this
   obtain ⟨O', i1, i2, i3, j, r', x', φ', w', hg', s', u, hj, -, hr', H', hs', hu'⟩ :=
-    GlobalTheory.T.exists_keyInvariant_after_dvr_extension hL O Ω (r : O →+* Ω) xO xΩ φ w n l l' al _ hg sO sΩ z ch hr hAO hu H hs hz
+    _root_.GlobalTheory.KaLift.exists_kaVal_extension hL O Ω (r : O →+* Ω) xO xΩ φ w n l l' al _ hg sO sΩ z ch hr hAO hu H hs hz
   letI : Algebra K O' := (j.comp (algebraMap K O)).toAlgebra
   let jA : O →ₐ[K] O' := { toRingHom := j, commutes' := fun c => rfl }
   let rA : O' →ₐ[K] Ω :=
@@ -226,7 +225,7 @@ theorem valAt_lift [CharZero K] (hL : Out.Laws) (hA : admitted x.P.g n l l' al) 
       rw [e] at h1
       exact hsec n (sO (i.cast hg2)) (s' (i.cast hg3)) (s'' i) h1 (hs2 i)
     have hA' : admitted x'.P.g n l l' al := by rw [hg']; exact hAO
-    have hk := GlobalTheory.T.keyInvariant_baseChange hL O' O' x' x'' (RingHom.id O') φ3 w3 n l l' al hg3 s' s'' u hA' H3 hs3 hu'
+    have hk := _root_.GlobalTheory.KaBaseChange.kaVal_baseChange hL O' O' x' x'' (RingHom.id O') φ3 w3 n l l' al hg3 s' s'' u hA' H3 hs3 hu'
     exact ⟨x'', s'', _, h'', hk, rfl⟩
 
 theorem kaVal_independent : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] [IsAlgClosed K] (x : KeyIn K) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ), admitted x.P.g n l l' al → ∃ κ : Kˣ, (∀ (K' : Type) [Field K'] [IsAlgClosed K'] (f : K →+* K') (x' : KeyIn K') (s' : Fin x'.P.g → RR x' n) (κ' : K'ˣ), KeyPB x' x f → KaVal x' n l l' al s' κ' → (κ' : K') = f κ) ∧ ∃ (K' : Type) (_ : Field K') (_ : IsAlgClosed K') (f : K →+* K') (x' : KeyIn K') (φ : _) (w : _) (s' : Fin x'.P.g → RR x' n) (κ' : K'ˣ), KeyVia x' x f φ w ∧ KaVal x' n l l' al s' κ' := by

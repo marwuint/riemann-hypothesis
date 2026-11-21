@@ -2,7 +2,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjDualOfLabe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MembersGood
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompAtEqOneOfTameAt
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.GoodLem
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MTwinA
@@ -27,8 +27,6 @@ theorem UpperTheory.One.M.cls_eq_of_locV_eq' (hL : _root_.UpperTheory.Zero.LLC.R
     GlobalTheory.LocLanglands.cls σ = GlobalTheory.LocLanglands.cls σ' :=
   _root_.UpperTheory.One.M.local_component_class_eq_of_good hL D P i Q Q' sp σ σ' hσ hσ' he (_root_.UpperTheory.One.M.good_cls_of_isLocS_av P i Q' sp σ' hσ')
 end
-section
 namespace GlobalTheory.ConjPlaceDual
 end GlobalTheory.ConjPlaceDual
-end
 end

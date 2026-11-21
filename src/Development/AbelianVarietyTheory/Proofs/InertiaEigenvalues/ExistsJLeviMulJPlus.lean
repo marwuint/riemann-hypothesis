@@ -111,13 +111,6 @@ theorem conj_mem_jPlus (e : (Σ a, m a) ≃ n) {d u : GL n k} (hd : d ∈ jLevi 
   exact ⟨(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k e g) u).1 hu.1,
     (KO k n).mul_mem ((KO k n).mul_mem h hu.2) ((KO k n).inv_mem h)⟩
 
-theorem conj_mem_jMinus (e : (Σ a, m a) ≃ n) {d c : GL n k} (hd : d ∈ jLevi k e) (hc : c ∈ jMinus k e) :
-    d * c * d⁻¹ ∈ jMinus k e := by
-  have h := jLevi_le_KOne e hd
-  obtain ⟨g, -, rfl⟩ := hd
-  exact ⟨(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer_lower k e g) c).1 hc.1,
-    (KOne k n).mul_mem ((KOne k n).mul_mem h hc.2) ((KOne k n).inv_mem h)⟩
-
 theorem plus_levi_minus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
     ∃ u ∈ jPlus k e, ∃ d ∈ jLevi k e, ∃ c ∈ jMinus k e, g = u * d * c := by
   obtain ⟨u, hu, x, hx, rfl⟩ := exists_jPlus_mul_KOne e hg
@@ -131,42 +124,5 @@ theorem levi_plus_minus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad 
     ∃ d ∈ jLevi k e, ∃ u ∈ jPlus k e, ∃ c ∈ jMinus k e, g = d * u * c := by
   obtain ⟨u, hu, d, hd, c, hc, rfl⟩ := plus_levi_minus e hg
   exact ⟨d, hd, _, conj_mem_jPlus e (inv_mem hd) hu, c, hc, by group⟩
-
-theorem plus_minus_levi (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
-    ∃ u ∈ jPlus k e, ∃ c ∈ jMinus k e, ∃ d ∈ jLevi k e, g = u * c * d := by
-  obtain ⟨u, hu, d, hd, c, hc, rfl⟩ := plus_levi_minus e hg
-  exact ⟨u, hu, _, conj_mem_jMinus e hd hc, d, hd, by group⟩
-
-theorem minus_levi_plus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
-    ∃ c ∈ jMinus k e, ∃ d ∈ jLevi k e, ∃ u ∈ jPlus k e, g = c * d * u := by
-  obtain ⟨u, hu, d, hd, c, hc, h⟩ := plus_levi_minus e (inv_mem hg)
-  exact ⟨_, inv_mem hc, _, inv_mem hd, _, inv_mem hu, by rw [← inv_inv g, h]; group⟩
-
-theorem levi_minus_plus (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
-    ∃ d ∈ jLevi k e, ∃ c ∈ jMinus k e, ∃ u ∈ jPlus k e, g = d * c * u := by
-  obtain ⟨c, hc, d, hd, u, hu, rfl⟩ := minus_levi_plus e hg
-  exact ⟨d, hd, _, conj_mem_jMinus e (inv_mem hd) hc, u, hu, by group⟩
-
-theorem minus_plus_levi (e : (Σ a, m a) ≃ n) {g : GL n k} (hg : g ∈ proRad k e) :
-    ∃ c ∈ jMinus k e, ∃ u ∈ jPlus k e, ∃ d ∈ jLevi k e, g = c * u * d := by
-  obtain ⟨c, hc, d, hd, u, hu, rfl⟩ := minus_levi_plus e hg
-  exact ⟨c, hc, _, conj_mem_jPlus e hd hu, d, hd, by group⟩
-
-theorem proRad_factorisation (e : (Σ a, m a) ≃ n) :
-    proRad k e = KOne k n ⊔ jPlus k e ∧ jMinus k e ⊔ jLevi k e ⊔ jPlus k e = proRad k e ∧
-    ∀ g ∈ proRad k e,
-      ((∃ x ∈ KOne k n, ∃ u ∈ jPlus k e, g = x * u) ∧ ∃ u ∈ jPlus k e, ∃ x ∈ KOne k n, g = u * x) ∧
-      (∃ c ∈ jMinus k e, ∃ d ∈ jLevi k e, ∃ u ∈ jPlus k e, g = c * d * u) ∧
-      (∃ c ∈ jMinus k e, ∃ u ∈ jPlus k e, ∃ d ∈ jLevi k e, g = c * u * d) ∧
-      (∃ d ∈ jLevi k e, ∃ c ∈ jMinus k e, ∃ u ∈ jPlus k e, g = d * c * u) ∧
-      (∃ d ∈ jLevi k e, ∃ u ∈ jPlus k e, ∃ c ∈ jMinus k e, g = d * u * c) ∧
-      (∃ u ∈ jPlus k e, ∃ c ∈ jMinus k e, ∃ d ∈ jLevi k e, g = u * c * d) ∧
-      (∃ u ∈ jPlus k e, ∃ d ∈ jLevi k e, ∃ c ∈ jMinus k e, g = u * d * c) := by
-  refine ⟨proRad_eq_sup e, le_antisymm
-    (sup_le (sup_le (jMinus_le_proRad e) (jLevi_le_proRad e)) (jPlus_le_proRad e)) fun g hg => ?_, fun g hg =>
-    ⟨⟨exists_KOne_mul_jPlus e hg, exists_jPlus_mul_KOne e hg⟩, minus_levi_plus e hg, minus_plus_levi e hg,
-      levi_minus_plus e hg, levi_plus_minus e hg, plus_minus_levi e hg, plus_levi_minus e hg⟩⟩
-  obtain ⟨c, hc, d, hd, u, hu, rfl⟩ := minus_levi_plus e hg
-  exact Subgroup.mul_mem_sup (Subgroup.mul_mem_sup hc hd) hu
 
 end GlobalTheory.LocGL.IwahoriFactor

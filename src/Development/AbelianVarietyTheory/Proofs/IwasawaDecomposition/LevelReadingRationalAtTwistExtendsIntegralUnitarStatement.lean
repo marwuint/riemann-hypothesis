@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelReadingRationalAtTwistExtendsIntegralUnitar
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RdLevOn
 
 open scoped TensorProduct

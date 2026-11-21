@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ReInnerLeOnImageOfIntertwiningStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumNormAddSqLeOfBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasKIsSymmetricAndFormStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ReInnerLeOnImageOfIntertwining
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumNormAddSqLeOfBounds
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasKIsSymmetricAndForm
 open Finset BranchingSupport Formalism.REAL Formalism.QuantumDeterminants
 open scoped InnerProductSpace
 
@@ -74,8 +74,8 @@ theorem core (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [Finite
     · simp
   have hbound : ∀ x, (⟪x, CasK ε K x⟫_ℂ).re ≤ (c + s) ^ 2 * ‖x‖ ^ 2 := by
     intro x
-    rw [(GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε K hKu).2 x]
-    have h := GlobalTheory.T.sum_norm_add_sq_le_add_sq_mul V (Fin n × Fin n × ι)
+    rw [(_root_.GlobalTheory.casK_isSymmetric_and_form _ n ε K hKu).2 x]
+    have h := _root_.GlobalTheory.sum_norm_add_sq_le_of_bounds V (Fin n × Fin n × ι)
       (fun p => if ε p.1 = ε p.2.1 then E p.1 p.2.1 (x p.2.2) else 0)
       (fun p => if ε p.1 = ε p.2.1 then ∑ j, A p.1 p.2.1 p.2.2 j • x j else 0) c s (‖x‖ ^ 2) hc hs
       (by positivity) ?_ ?_
@@ -108,8 +108,8 @@ theorem core (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [Finite
       simp [Pi.single_eq_of_ne hi]
     · simp
   · rintro _ ⟨x, rfl⟩
-    exact GlobalTheory.T.re_inner_le_on_image_of_intertwining' _ N (sumMap φ) (CasK ε K) (CasK ε F) _ (GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε K hKu).1
-      (GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε F hF).1 hcas hbound x
+    exact _root_.GlobalTheory.re_inner_le_on_image_of_intertwining _ N (sumMap φ) (CasK ε K) (CasK ε F) _ (_root_.GlobalTheory.casK_isSymmetric_and_form _ n ε K hKu).1
+      (_root_.GlobalTheory.casK_isSymmetric_and_form _ n ε F hF).1 hcas hbound x
 
 theorem casKLe_tensor_operator : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (N ι : Type) [NormedAddCommGroup N] [InnerProductSpace ℂ N] [Fintype ι] [DecidableEq ι] (F : Fin n → Fin n → Module.End ℂ N) (φ : ι → M →ₗ[ℂ] N) (A : Fin n → Fin n → Matrix ι ι ℂ) (c s : ℝ), KUnit ε E → KUnit ε F → 0 ≤ c → 0 ≤ s → (∀ a b, ε a = ε b → (A a b).conjTranspose = A b a) → (∀ x : ι → M, ∑ a, ∑ b, (if ε a = ε b then ∑ i, ‖∑ j, A a b i j • x j‖ ^ 2 else 0) ≤ s ^ 2 * ∑ j, ‖x j‖ ^ 2) → (∀ a b, ε a = ε b → ∀ j w, F a b (φ j w) = φ j (E a b w) + ∑ i, A a b i j • φ i w) → ∀ w, CasKLe ε E c w → ∀ j, CasKLe ε F (c + s) (φ j w) := by
   intro M _ _ n ε E N ι _ _ _ _ F φ A c s hE hF hc hs hA hAs hφ w hw j
@@ -130,7 +130,7 @@ theorem casKLe_tensor_operator : ∀ (M : Type) [NormedAddCommGroup M] [InnerPro
     simp [hE' a b h, hφ a b h]
   · intro x
     have h := hb x x.2
-    rw [(GlobalTheory.T.casK_isSymmetric_and_inner_re_eq _ n ε E hE).2] at h
+    rw [(_root_.GlobalTheory.casK_isSymmetric_and_form _ n ε E hE).2] at h
     refine le_trans (le_of_eq ?_) h
     refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
     split_ifs with hab

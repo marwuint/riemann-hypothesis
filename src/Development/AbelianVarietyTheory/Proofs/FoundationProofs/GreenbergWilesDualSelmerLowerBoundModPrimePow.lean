@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SelNZero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnramifiedH1CardInvariants
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedDualEvalBidualApply
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrdinarySelmerModPrimePowInjectsResidualSelmerStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DualSelmerClassesGiveNoncohomologousCochainsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DualSelmerClassesGiveNoncohomologousCochains
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardOrdinaryLocalConditionModPrimePowLeConstMulStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardGaloisInvariantsOrdinaryRankTwoModPowBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ArchimedeanInvariantsCardStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardGaloisInvariantsOrdinaryRankTwoModPowBounded
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ArchimedeanInvariantsCard
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.Ord2.GwIneq
 open scoped Matrix
 
@@ -40,7 +40,7 @@ theorem gw_ineq : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [F
   classical
   intro hL l _ Ω _ _ _ e S A W hW c hint
   have hN := kills_NS hW
-  obtain ⟨C0, hC0⟩ := GlobalTheory.T.card_galoisInvariants_ordinaryRankTwo_mod_pow_bounded l Ω e S A W hW c hint hN
+  obtain ⟨C0, hC0⟩ := _root_.GlobalTheory.Ord2.GwCard.exists_card_H0_rhoS_le l Ω e S A W hW c hint hN
   obtain ⟨CA, hCA⟩ := GlobalTheory.T.card_ordinaryLocalConditionModPrimePow_le_const_mul hL l Ω e S A W hW c hint hN
   refine ⟨C0 * CA, fun n hn N y hy hyd => ?_⟩
   have hn0 : 0 < n := hn
@@ -70,7 +70,7 @@ theorem gw_ineq : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [F
     rw [e1]
     exact GlobalTheory.Ord2.UrCard.card_unramified_h1_eq_card_h0 ℚ Ω l n (Mn c n) (Av A S v) v.1 _
       (hρ.comp' (continuous_locFam S (Av A S) v)) (isPlaceOver_Av A S v)
-  have harch := GlobalTheory.T.archimedean_invariants_card l Ω e S A W hW c hint hN n hn cc hcc
+  have harch := _root_.GlobalTheory.Ord2.GwIneq.Arch.archimedean_h0_card_eq l Ω e S A W hW c hint hN n hn cc hcc
   rw [harch, ← Finset.mul_prod_erase _ _ (Finset.mem_univ vA),
     ← Finset.mul_prod_erase _ _ (Finset.mem_univ vA),
     Finset.prod_congr rfl fun v hv => hLv v (Finset.ne_of_mem_erase hv)] at hgw
@@ -106,7 +106,7 @@ theorem gw_ineq : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [F
       exact hyd i j hne (hinj _ _ (hy i) (hy j) (congrArg Subtype.val hij))
     simpa using Nat.card_le_card_of_injective f hf
 
-  obtain ⟨z, hz, hzd⟩ := GlobalTheory.T.dualSelmer_classes_give_noncohomologous_cochains hL l Ω e S A W hW c hint hN n hn μ hμ
+  obtain ⟨z, hz, hzd⟩ := _root_.GlobalTheory.Ord2.SelPerp.sel_perp hL l Ω e S A W hW c hint hN n hn μ hμ
   let eqv := Finite.equivFin (SelD c n W hint S hN A hW.cont μ)
   refine ⟨Nat.card (SelD c n W hint S hN A hW.cont μ), fun i => z (eqv.symm i), ?_, fun i => hz _, ?_⟩
   · exact hN1.trans hsel

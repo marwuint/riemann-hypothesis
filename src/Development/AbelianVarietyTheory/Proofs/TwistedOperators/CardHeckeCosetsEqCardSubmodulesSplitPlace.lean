@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.HkSupSize
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SplitLinearModelNorm
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnramifiedCharacter
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckePrimeDetection
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceHeckeDoubleCosetCardGaussBinomStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardStableLatticeSubgroupsEqGaussianBinomialStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceHeckeDoubleCosetCardGaussBinom
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RealPoints
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GaussianBinomialFormula
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardStableLatticeSubgroupsEqGaussianBinomial
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
@@ -27,7 +29,7 @@ theorem card_eq_latCount : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke
         (Ideal.absNorm P.asIdeal ^ k)) := by
   intro D hHP hSL hVF G _ _ Pl0 T0 A T _ R F κ v₀ hL hG hF hM hTh hTie i σ hσ hV hFP P p k α Rc hs
   obtain ⟨hso, hp, hpP, -, hk, hα, hdc⟩ := hs
-  rw [GlobalTheory.T.splitPlace_hecke_doubleCoset_card_gaussBinom D R hL hF i P k α Rc hso hk hα hdc]
+  rw [_root_.GlobalTheory.SplitCosetCount.card_cosets D R hL hF i P k α Rc hso hk hα hdc]
   have hj : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
   have hr := (hTie.laws.unf _ hj T.σ₀ T.good_σ₀).1
   have hrk : Module.finrank (𝓞 D.host.E) (T.Q.Dw ((i : ℕ) + 1)).La = D.R.r := by
@@ -44,6 +46,6 @@ theorem card_eq_latCount : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke
   have hN : Ideal.absNorm J = Ideal.absNorm P.asIdeal := by
     rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
     exact Nat.card_congr (Ideal.quotientEquiv P.asIdeal J T.Q.H.bar (by rw [hJdef, GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels.conjIdeal])).toEquiv.symm
-  rw [← hN, GlobalTheory.T.card_stableLatticeSubgroups_eq_gaussianBinomial _ p J hp.pos hJm hpJ k, hrk]
+  rw [← hN, _root_.GlobalTheory.LatCountGauss.card_latCount _ p J hp.pos hJm hpJ k, hrk]
 
 end GlobalTheory.HeckeCosetCount

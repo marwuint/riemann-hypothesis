@@ -5,9 +5,9 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsTriangularReframeExistsAndUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorelStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirationalStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorel
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirational
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.PolyChartSmoothFractionLift
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsLowerMulUpperOfLeadingMinors
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
@@ -227,7 +227,7 @@ theorem reframe_cancel {S : Type} [CommRing S] [Algebra c.F S]
     (hg : ∀ τ, IsUnit (g τ).det) (h : Reframe g y y') (h' : Reframe (fun τ => g τ * b τ) y y'') :
     Reframe b y' y'' := by
   obtain ⟨b', ⟨_, hb'⟩, _⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c S y').2 y'' (h'.1.trans h.1.symm)
-  have e := reframe_unique ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).1 _ _ _ _ _ h hb') h'
+  have e := reframe_unique ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).1 _ _ _ _ _ h hb') h'
   have : b' = b := funext fun τ => ((Matrix.isUnit_iff_isUnit_det _).2 (hg τ)).mul_left_cancel (e τ)
   exact this ▸ hb'
 
@@ -256,7 +256,7 @@ theorem reframe_pt (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
     {S : Type} [CommRing S] [Algebra c.F S] {ψ : R →ₐ[c.F] S} {z₀ z : FrPt Xo c S}
     (hz₀ : FrMap (ψ.comp (cst q)) yA z₀) (hz : FrMap ψ y z) :
     Reframe (cellM σ fun v => ψ (q (MvPolynomial.X v))) z₀ z := by
-  have := (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c R).2.1 S ψ _ _ _ _ _ hy (frMap_cancel _ _ _ _ _ _ _ _ h₀ hz₀) hz
+  have := (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c R).2.1 S ψ _ _ _ _ _ hy (frMap_cancel _ _ _ _ _ _ _ _ h₀ hz₀) hz
   simpa only [cellM_map] using this
 
 include bc in
@@ -275,7 +275,7 @@ theorem catches (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v => 
   obtain ⟨z, hz⟩ := bc _ _ ψ y
   have h3 := reframe_pt σ q h₀ hy (h1 ▸ hz₀) hz
   rw [h2] at h3
-  obtain ⟨t, ht⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).2.2 z w).2 ⟨b, hb, reframe_cancel (isUnit_det_cellM σ x) h3 hw⟩
+  obtain ⟨t, ht⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).2.2 z w).2 ⟨b, hb, reframe_cancel (isUnit_det_cellM σ x) h3 hw⟩
   exact ⟨ψ, z, t, hz, ht⟩
 
 variable {j : Sp A ⟶ Xo.XF c} [IsOpenImmersion j] (hj : j ≫ pullback.snd _ _ = spMap (algebraMap c.F A))
@@ -294,9 +294,9 @@ theorem mono_chart (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
   have h1 : ψ.comp (cst q) = ψ'.comp (cst q) :=
     algHom_eq_of_point j hj _ _ (by rw [← point_eq σ q hA h₀ hy hz, ← point_eq σ q hA h₀ hy hz', ht.1])
   obtain ⟨z₀, hz₀⟩ := bc _ _ (ψ.comp (cst q)) yA
-  obtain ⟨b, hb, hbz⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).2.2 z z').1 ⟨t, ht⟩
+  obtain ⟨b, hb, hbz⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).2.2 z z').1 ⟨t, ht⟩
   have h2 := cellM_unique σ _ _ b hb (reframe_unique
-    ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).1 _ _ _ _ _ (reframe_pt σ q h₀ hy hz₀ hz) hbz)
+    ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).1 _ _ _ _ _ (reframe_pt σ q h₀ hy hz₀ hz) hbz)
     (reframe_pt σ q h₀ hy (h1 ▸ hz₀) hz'))
   have h3 : ψ.comp q.toAlgHom = ψ'.comp q.toAlgHom :=
     MvPolynomial.algHom_ext' h1 fun v => congrFun h2 v
@@ -338,16 +338,16 @@ theorem open_chart (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
   obtain ⟨G, ⟨_, hG⟩, _⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c S₁ z₁).2 w₁ hx₁
   have base : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (ν : S₁ →ₐ[c.F] S') (z' w' : FrPt Xo c S'),
       FrMap (ν.comp f₁) yA z' → FrMap (ν.comp i₁) w w' → Reframe (fun τ => (G τ).map ν) z' w' :=
-    fun S' _ _ ν z' w' h1 h2 => (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S₁).2.1 S' ν _ _ _ _ _ hG
+    fun S' _ _ ν z' w' h1 h2 => (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S₁).2.1 S' ν _ _ _ _ _ hG
       (frMap_cancel _ _ _ _ _ _ _ _ hz₁ h1) (frMap_cancel _ _ _ _ _ _ _ _ hw₁ h2)
   obtain ⟨χ₁, hχ₁⟩ := ext L χ (IsUnit.mk0 _ hg₁)
   obtain ⟨z₀, hz₀⟩ := bc _ _ (χ₁.comp f₁) yA
   have hGL := base L χ₁ z₀ wL hz₀ (hχ₁ ▸ hw)
   have he : χ₁.comp f₁ = ψ.comp (cst q) :=
     algHom_eq_of_point j hj _ _ (by rw [← hL, hGL.1, hz₀.1, hA])
-  obtain ⟨b, hb, hbz⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c L).2.2 z wL).1 ⟨t, ht⟩
+  obtain ⟨b, hb, hbz⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c L).2.2 z wL).1 ⟨t, ht⟩
   have hmin := (minor_iff σ _).2 ⟨_, b, hb, reframe_unique hGL
-    ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c L).1 _ _ _ _ _ (reframe_pt σ q h₀ hy (he ▸ hz₀) hz) hbz)⟩
+    ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c L).1 _ _ _ _ _ (reframe_pt σ q h₀ hy (he ▸ hz₀) hz) hbz)⟩
   obtain ⟨n, g₂, hg₂⟩ := IsLocalization.Away.surj g₁ (∏ k, minor σ G k)
   have hval : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (ν : S₁ →ₐ[c.F] S'),
       (ν.comp i₁) g₂ = (∏ k, minor σ (fun τ => (G τ).map ν) k) * (ν.comp i₁) g₁ ^ n := by
@@ -392,7 +392,7 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   obtain ⟨zκ, hzκ⟩ := bc _ _ f yA
   obtain ⟨G, ⟨hGu, hG⟩, _⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c _ zκ).2 y₀ (by
     rw [hy₀, hzκ.1, hA, ← Category.assoc, hf]; rfl)
-  obtain ⟨e, b, hb, he⟩ := GlobalTheory.T.exists_flagCoordinates_cellChange_birational (kap Z) (E →+* ℂ) Dw.mult G σ hGu
+  obtain ⟨e, b, hb, he⟩ := _root_.GlobalTheory.Reg.cell_change_birational (kap Z) (E →+* ℂ) Dw.mult G σ hGu
   obtain ⟨θ, hθ, hθC, hθX, hθf⟩ := exists_poly_embed (V := FlagVar Dw) f hfi hfr e
   let q : MvPolynomial (FlagVar Dw) A ≃ₐ[c.F] θ.range := AlgEquiv.ofInjective θ hθ
   obtain ⟨u₀, hu₀⟩ := bc _ _ (cst q) yA
@@ -401,7 +401,7 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   let k : kap Z →ₐ[c.F] Om Z := IsScalarTower.toAlgHom c.F (kap Z) (Om Z)
   obtain ⟨zΩ, hzΩ⟩ := bc _ _ k zκ
   obtain ⟨yΩ, hyΩ⟩ := bc _ _ k y₀
-  have h1 := (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).2.1 _ k _ _ _ _ _ hG hzΩ hyΩ
+  have h1 := (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c _).2.1 _ k _ _ _ _ _ hG hzΩ hyΩ
   have hx : (genFr h Z).x = yΩ.x := by rw [hgx, hyΩ.1, hy₀]; rfl
   have h2 : Reframe (lowM fun v => algebraMap (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z) (MvPolynomial.X v)) yΩ
       (genFr h Z) := by
@@ -410,7 +410,7 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     rw [hx] at this
     rw [funext (hyΩ.2.1 τ)]
     exact this
-  have h3 := (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).1 _ _ _ _ _ h1 h2
+  have h3 := (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c _).1 _ _ _ _ _ h1 h2
   have hc : θ.range.val.comp (cst q) = k.comp f := AlgHom.ext hθC
   have h4 := reframe_pt σ q hu₀ hu (hc ▸ frMap_trans _ _ _ _ _ _ _ _ hzκ hzΩ) hyg
   have hX : (fun v => θ.range.val (q (MvPolynomial.X v))) =
@@ -419,13 +419,13 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have h5 : Reframe b yg (genFr h Z) := reframe_cancel (isUnit_det_cellM σ _) h4 (by
     have := funext he
     exact this ▸ h3)
-  obtain ⟨t, ht⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).2.2 _ _).2
+  obtain ⟨t, ht⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c _).2.2 _ _).2
     ⟨b, fun τ => ⟨(hb τ).1, fun i => IsUnit.mk0 _ ((hb τ).2 i)⟩, h5⟩
   have hsm' : Algebra.Smooth c.F θ.range := by
     have : Algebra.Smooth A (MvPolynomial (FlagVar Dw) A) := ⟨inferInstance, inferInstance⟩
     have : Algebra.Smooth c.F (MvPolynomial (FlagVar Dw) A) := Algebra.Smooth.comp c.F A _
     exact Algebra.Smooth.of_equiv q
-  refine ⟨⟨Z, θ.range, hsm', hθf, u, yg, t⁻¹, hyg, (GlobalTheory.T.frameBorel_groupoid_properties E H Dw l Xo c _).2.2.1 _ _ _ ht,
+  refine ⟨⟨Z, θ.range, hsm', hθf, u, yg, t⁻¹, hyg, (_root_.GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c _).2.2.1 _ _ _ ht,
     fun L _ _ => mono_chart bc σ q hj hA hu₀ hu, open_chart bc σ q hj hA hu₀ hu⟩, ?_⟩
   intro L _ _ f' z₀ y x b' hz₀ hb' hr
   exact catches bc σ q hu₀ hu f' z₀ y x b' hz₀ (fun τ => ⟨(hb' τ).1, fun i => IsUnit.mk0 _ ((hb' τ).2 i)⟩) hr

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspRapidDecaySiegelGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeightMulLeOfIsCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCuspFormOperatorActStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormGLSiegelConeDecayOneStepStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeightMulLeOfIsCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCuspFormOperatorAct
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormGLSiegelConeDecayOneStep
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 
 namespace GlobalTheory.CuspRapid
@@ -14,7 +14,7 @@ theorem iterated_decay : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀
   | zero =>
     intro ψ _ htame Ω hΩ
     obtain ⟨C0, hC0⟩ := htame []
-    obtain ⟨B, hB1, hB⟩ := GlobalTheory.T.exists_height_mul_le_of_isCompact E a Ω hΩ
+    obtain ⟨B, hB1, hB⟩ := _root_.GlobalTheory.AutGrowth.height_mul_le_of_isCompact E a Ω hΩ
     refine ⟨|C0| * B ^ N, by positivity, ?_⟩
     intro r d _ _ _ c hc
     have h1 := hC0 (d * c)
@@ -27,12 +27,12 @@ theorem iterated_decay : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀
       _ = |C0| * B ^ N * (r j / r i) ^ 0 * height d ^ N := by rw [mul_pow]; ring
   | succ m ih =>
     intro ψ hψ htame Ω hΩ
-    obtain ⟨Ω', B, C, hΩ', hC, hstep⟩ := GlobalTheory.T.cuspForm_GL_siegel_cone_decay_one_step E a ψ hψ t ht i j hij Ω hΩ
+    obtain ⟨Ω', B, C, hΩ', hC, hstep⟩ := _root_.GlobalTheory.cuspForm_decay_step E a ψ hψ t ht i j hij Ω hΩ
     have hY : ∀ Y ∈ B, ∃ C' : ℝ, 0 ≤ C' ∧ ∀ (r : Fin a → ℝ) (d : GL (Fin a) (Cinf E)), (∀ i, 0 < r i) →
         (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) → d.val = Matrix.diagonal (fun i => fun _ => (r i : ℂ)) →
         ∀ c ∈ Ω', ‖(lie E a Y ψ).1 (infGL E a (d * c))‖ ≤ C' * (r j / r i) ^ m * height d ^ N := by
       intro Y _
-      have hcusp : IsCuspForm (lie E a Y ψ) := GlobalTheory.T.isCuspForm_operator_act hfin E a (.lie Y) ψ hψ
+      have hcusp : IsCuspForm (lie E a Y ψ) := _root_.GlobalTheory.CuspStabFin.isCuspForm_act hfin E a (.lie Y) ψ hψ
       refine ih (lie E a Y ψ) hcusp ?_ Ω' hΩ'
       intro l
       obtain ⟨C1, hC1⟩ := htame (l ++ [Y])

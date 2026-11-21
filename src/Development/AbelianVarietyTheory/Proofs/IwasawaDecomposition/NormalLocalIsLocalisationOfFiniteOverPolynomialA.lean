@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsQuasiFinitePolynomialMapStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsQuasiFinitePolynomialMap
 
 open IsLocalRing
 
@@ -99,7 +99,7 @@ theorem GlobalTheory.normal_local_is_localisation_of_finite_over_polynomial :
   haveI hat : IsLocalization 𝔮.primeCompl A :=
     IsLocalization.of_le M _ hM (fun s hs => hunit s hs)
   haveI : CharZero S₀ := (algebraMap S₀ A).charZero
-  obtain ⟨r, y, hy, hqf⟩ := GlobalTheory.T.exists_quasi_finite_polynomial_map S₀ 𝔮
+  obtain ⟨r, y, hy, hqf⟩ := _root_.GlobalTheory.exists_algebraicIndependent_int_quasiFiniteAt S₀ 𝔮
   let P := MvPolynomial (Fin r) ℤ
   letI algPS : Algebra P S₀ := (MvPolynomial.aeval y : P →ₐ[ℤ] S₀).toRingHom.toAlgebra
   letI algPA : Algebra P A := ((algebraMap S₀ A).comp (algebraMap P S₀)).toAlgebra

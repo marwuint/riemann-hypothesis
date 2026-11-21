@@ -39,12 +39,6 @@ theorem chrMap_ker (ξ : Chr F E K) : (chrMap ι ξ).ker = ξ.ker := by
   · intro h
     rw [h, map_one]
 
-theorem chrMap_injective : Function.Injective (chrMap (F := F) (E := E) ι) := by
-  intro a b h
-  refine MonoidHom.ext fun x => units_map_injective ι ?_
-  have hx := DFunLike.congr_fun h x
-  rwa [chrMap_apply, chrMap_apply] at hx
-
 theorem chrMap_mem_tupGrp {S : Set ℕ} {ξ : Chr F E K} (h : ξ ∈ tupGrp F E K S) : chrMap ι ξ ∈ tupGrp F E L S := by
   have hk : (chrMap ι ξ).ker = ξ.ker := chrMap_ker ι ξ
   have mk : ∀ (H : Subgroup (AfE F E)ˣ) (ζ : Chr F E L), ζ ∈ kills Lˣ H ↔ H ≤ ζ.ker := fun _ _ => Iff.rfl
@@ -66,26 +60,6 @@ def tupMap (S : Set ℕ) : Tup F E K S →* Tup F E L S :=
   ((chrMap ι).comp (tupGrp F E K S).subtype).codRestrict (tupGrp F E L S) fun x => chrMap_mem_tupGrp ι x.2
 
 theorem tupMap_coe {S : Set ℕ} (μ : Tup F E K S) : ((tupMap ι S μ : Tup F E L S) : Chr F E L) = chrMap ι μ := rfl
-
-theorem tupMap_injective (S : Set ℕ) : Function.Injective (tupMap (F := F) (E := E) ι S) := by
-  intro a b h
-  apply Subtype.ext
-  apply chrMap_injective ι
-  first
-  | exact congrArg Subtype.val h
-  | rw [← tupMap_coe, ← tupMap_coe, h]
-
-def tupMapEmb (S : Set ℕ) : Tup F E K S ↪ Tup F E L S := ⟨tupMap ι S, tupMap_injective ι S⟩
-
-theorem tupleMap_trivialTuple (S : Set ℕ) : tupMap ι S (mu0 F E K S) = mu0 F E L S := by
-  first
-  | (unfold mu0; exact map_one _)
-  | simp [mu0]
-
-theorem Qprime_chrMap (ξ : Chr F E K) : Qprime (chrMap ι ξ) = Qprime ξ := by
-  first
-  | (unfold Qprime; rw [chrMap_ker])
-  | simp only [Qprime, chrMap_ker]
 
 theorem isResChar_chrMap {ξ : Chr F E K} {P : HeightOneSpectrum (𝓞 E)} {χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ}
     (h : IsResChar ξ P χ) : IsResChar (chrMap ι ξ) P ((Units.map ι.toMonoidHom).comp χ) := by
@@ -221,12 +195,6 @@ theorem lambdaAtPrime_characterMap {F E : Type} [Field F] [NumberField F] [Field
 
 end LevChars
 
-open Classical in
-theorem hfs_dite_finite {α β : Type} (f : α → β) {A B : Set α} (h : A = B) :
-    (if h : A.Finite then h.toFinset.image f else ∅) = (if h : B.Finite then h.toFinset.image f else ∅) := by
-  subst h
-  rfl
-
 section Ext
 
 variable (X : Fields) (L : Type) [Field L] [NumberField L] [StarRing L] (ι : X.K →+* L)
@@ -240,54 +208,7 @@ variable (X : Fields) (L : Type) [Field L] [NumberField L] [StarRing L] (ι : X.
 
 variable {X L ι}
 
-@[reducible] def Primes.coefExt (Pr : Primes X) : Primes (X.coefExt L ι) where
-  cond := Pr.cond
-  g := Pr.g
-  piG := Pr.piG
-  Word := Pr.Word
-  T := Pr.T
-  piT := Pr.piT
-
-@[reducible] def Wts.coefExt {Word : Type} {R : Ranks} (W : Wts X Word R) : Wts (X.coefExt L ι) Word R where
-  row := W.row
-  hc := W.hc
-  tops := W.tops
-
-@[reducible] def Chars.coefMap {Pr : Primes X} {m : ℕ} (Ch : Chars X Pr m) : Chars (X.coefExt L ι) (Pr.coefExt (L := L) (ι := ι)) m where
-  psi0 w := ι.toMonoidHom.compAddChar (Ch.psi0 w)
-  chi j w := (Units.map ι.toMonoidHom).comp (Ch.chi j w)
-  muVal j v := Units.map ι.toMonoidHom (Ch.muVal j v)
-  etaVal v := Units.map ι.toMonoidHom (Ch.etaVal v)
-
 variable {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-
-theorem chiAt_coefMap (w : {w // w ∈ Pr.vGs}) (s : ℕ) :
-    chiAt (Ch.coefMap (L := L) (ι := ι)) w s = (Units.map ι.toMonoidHom).comp (chiAt Ch w s) := by
-  first
-  | (unfold chiAt; exact extChi_coefMap ι (fun j => Ch.chi j w) s)
-  | exact extChi_coefMap ι _ s
-
-private theorem lamK_comp_units_map {κ K₀ L₀ : Type} [CommRing κ] [Field K₀] [Field L₀] (φ : K₀ →+* L₀)
-    (χ : ℕ → κˣ →* K₀ˣ) (χ' : ℕ → κˣ →* L₀ˣ) (h : ∀ s, χ' s = (Units.map φ.toMonoidHom).comp (χ s)) {n : ℕ} (r : ℕ)
-    (bl : List ℕ) : lamK χ' n r bl = (Units.map φ.toMonoidHom).comp (lamK χ n r bl) := by
-  have hχ : χ' = fun s => (Units.map φ.toMonoidHom).comp (χ s) := funext h
-  subst hχ
-  exact lamK_coefMap φ χ r bl
-
-set_option maxHeartbeats 800000 in
-
-theorem rowTyK_coefMap : rowTyK (R := R) (Ch.coefMap (L := L) (ι := ι)) = (rowTyK Ch).coefMap ι := by
-  funext w
-  exact congrArg (Lev.mk _) (lamK_comp_units_map ι (chiAt Ch w) (chiAt (Ch.coefMap (L := L) (ι := ι)) w)
-    (fun s => chiAt_coefMap Ch w s) _ _)
-
-set_option maxHeartbeats 800000 in
-
-theorem mtTyK_coefMap (j : ℕ) : mtTyK (R := R) (Ch.coefMap (L := L) (ι := ι)) j = (mtTyK Ch j).coefMap ι := by
-  funext w
-  exact congrArg (Lev.mk _) (lamK_comp_units_map ι (fun _ => (chiAt Ch w (j - 1))⁻¹)
-    (fun _ => (chiAt (Ch.coefMap (L := L) (ι := ι)) w (j - 1))⁻¹)
-    (fun _ => (congrArg (fun f => f⁻¹) (chiAt_coefMap Ch w (j - 1))).trans (coefMap_comp_inv ι _)) _ _)
 
 variable (R) in
 theorem rowTyQ_coefMap {S : Set ℕ} (μ : Tup X.F X.E X.K S) (Q : Finset (HeightOneSpectrum (𝓞 X.E))) (P : Q) :
@@ -309,42 +230,6 @@ theorem mtTyQ_coefMap {S : Set ℕ} (μ : Tup X.F X.E X.K S) (Q : Finset (Height
      rw [lambdaAtPrime_characterMap ι _ (tup_tame μ)])
 
 variable (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-
-theorem QE_coefMap (ξ : Chr X.F X.E X.K) : QE (X := X.coefExt L ι) sel (chrMap ι ξ) = QE sel ξ := by
-  first
-  | (unfold QE; exact hfs_dite_finite sel (Qprime_chrMap ι ξ))
-  | simp only [QE, Qprime_chrMap]
-
-theorem rowSG_coefMap (μ : Tup X.F X.E X.K S) :
-    rowSG (Pr.coefExt (L := L) (ι := ι)) sel (tupMap ι S μ) = rowSG Pr sel μ := by
-  first
-  | exact congrArg (uSG Pr.vGs) (QE_coefMap sel (μ : Chr X.F X.E X.K))
-  | simp only [rowSG, uSG, tupMap_coe, QE_coefMap]
-
-set_option maxHeartbeats 800000 in
-
-theorem rowTyKK_coefMap (μ : Tup X.F X.E X.K S) :
-    rowTyKK (Ch.coefMap (L := L) (ι := ι)) sel (tupMap ι S μ) =
-      ((rowTyKK Ch sel μ).coefMap ι).reidx (rowSG_coefMap sel μ) := by
-  first
-  | exact LevFam.glue_coefMap_reidx ι (QE_coefMap sel (μ : Chr X.F X.E X.K)) _ _ _ _ (rowTyK_coefMap Ch)
-      (fun P => rowTyQ_coefMap R μ _ P)
-  | (unfold rowTyKK
-     exact LevFam.glue_coefMap_reidx ι (QE_coefMap sel (μ : Chr X.F X.E X.K)) _ _ _ _ (rowTyK_coefMap Ch)
-      (fun P => by
-        simp only [rowTyQ, Lev.coefMap, lambdaAtPrime_characterMap ι (μ : Chr X.F X.E X.K) (tup_tame μ), coefMap_comp_inv]))
-
-set_option maxHeartbeats 800000 in
-
-theorem mtTyKK_coefMap (μ : Tup X.F X.E X.K S) (j : ℕ) :
-    mtTyKK (Ch.coefMap (L := L) (ι := ι)) sel (tupMap ι S μ) j =
-      ((mtTyKK Ch sel μ j).coefMap ι).reidx (rowSG_coefMap sel μ) := by
-  first
-  | exact LevFam.glue_coefMap_reidx ι (QE_coefMap sel (μ : Chr X.F X.E X.K)) _ _ _ _ (mtTyK_coefMap Ch j)
-      (fun P => mtTyQ_coefMap R μ _ P)
-  | (unfold mtTyKK
-     exact LevFam.glue_coefMap_reidx ι (QE_coefMap sel (μ : Chr X.F X.E X.K)) _ _ _ _ (mtTyK_coefMap Ch j)
-      (fun P => by simp only [mtTyQ, Lev.coefMap, lambdaAtPrime_characterMap ι (μ : Chr X.F X.E X.K) (tup_tame μ)]))
 
 end Ext
 

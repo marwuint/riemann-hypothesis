@@ -5,12 +5,11 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaBasic
 import Formalism.LatticeTheta.ThetaShiftInversion
 import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaSummable
-import Formalism.HermitianLattices.HermitianLatticesProofs.ExampleZ
+import Formalism.HermitianLattices.StatementLat
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 import Formalism.HermitianLattices.HermitianLatticesProofs.GenusBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 import Formalism.HermitianLattices.HermitianLatticesProofs.IndexBasic
-import Formalism.HermitianLattices.HermitianLatticesProofs.NeighbourBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.FinIntermediate
 import Formalism.HermitianLattices.HermitianLatticesProofs.ShortVectors
 import Formalism.HermitianLattices.HermitianLatticesProofs.IsomOfTrace
@@ -22,7 +21,7 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.ClassSetAssembly
 import Formalism.HermitianLattices.HermitianLatticesProofs.MajLattice
 import Formalism.HermitianLattices.HermitianLatticesProofs.AutFinite
 import Formalism.HermitianLattices.HermitianLatticesProofs.MajDual
-import Formalism.HermitianLattices.HermitianLatticesProofs.OpBound
+import Formalism.HermitianLattices.StatementMaj
 import Formalism.HermitianLattices.HermitianLatticesProofs.MajBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovol
 import Formalism.HermitianLattices.HermitianLatticesProofs.NeighbourConstruct
@@ -32,9 +31,7 @@ import Formalism.HermitianLattices.HermitianLatticesProofs.UnimodUnramUnique
 
 namespace Formalism.HermitianLatticesTheory
 
-theorem final_dualBasic : DualBasic := Formalism.HermitianLatticesTheory.dualBasic
 theorem final_isomAct : IsomAct := Formalism.HermitianLatticesTheory.isomAct
-theorem final_locDual : LocDual := Formalism.HermitianLatticesTheory.locDual
 theorem final_genusBasic : GenusBasic := Formalism.HermitianLatticesTheory.genusBasic
 theorem final_finIntermediate : FinIntermediate := Formalism.HermitianLatticesTheory.finIntermediate
 theorem final_shortVectors : ShortVectors := Formalism.HermitianLatticesTheory.shortVectors

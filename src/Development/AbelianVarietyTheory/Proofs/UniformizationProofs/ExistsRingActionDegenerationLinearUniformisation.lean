@@ -14,8 +14,8 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.AllDV
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsNsmulAndNeg
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsEndomorphismActionUniformizationDataStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformizationEndomorphismCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RosatiAdjointAbelianPartAndClassifyingMapLinearStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationAdjointEndomorphismsCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RosatiAdjointAbelianPartAndClassifyingMapLinear
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationAdjointEndomorphismsCommute
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsNsmulIffEq
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.InvariantFunctionsDescend
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CorrOfGenericOfIsSeparated
@@ -131,8 +131,8 @@ theorem exists_oAct : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → 
   have hadj : ∀ a, LBIso (cubeLB G ![fst G G ≫ (E a).aG, snd G G] U.LG.L)
       (cubeLB G ![fst G G, snd G G ≫ (E (star a)).aG] U.LG.L) := fun a => by
     rw [EG, EG]; exact hros a
-  have ros := fun a => GlobalTheory.T.rosatiAdjoint_abelianPart_and_classifying_map_linear hL R I hI D A G hS U _ _ (hadj a)
-  have bal := fun a => (GlobalTheory.T.uniformisation_adjoint_endomorphisms_commute hL h₁ h₂ h₃ h₄ R I hI D A G hS U (AlgebraicClosure (FractionRing R)) _ _ (hadj a)).1
+  have ros := fun a => _root_.GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU hL R I hI D A G hS U _ _ (hadj a)
+  have bal := fun a => (_root_.GlobalTheory.Balanced.main hL h₁ h₂ h₃ h₄ R I hI D A G hS U (AlgebraicClosure (FractionRing R)) _ _ (hadj a)).1
   obtain ⟨E₁, g₁, -, b₁, x₁, -⟩ := (GlobalTheory.IntEnd.exists_nsmul_and_neg hL R I hI D A G hS U).1 1
   have one := (hcalc (E 1) E₁ E₁).2.2.2.1 (by rw [EG, ιG.map_one, g₁, pow_one])
   have add := fun a b => (hcalc (E a) (E b) (E (a + b))).2.2.2.2.1 (by rw [EG, EG, EG, ιG.map_add]; rfl)

@@ -1,13 +1,16 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SameOrbitRefl
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationInvariantSingularPotentialStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularWeightMonotoneRegularizationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicDegreeOneBiholomorphismStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationInvariantSingularPotential
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.CompRightEqZero
+import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularWeightMonotoneRegularization
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicDegreeOneBiholomorphism
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BiholomorphicLiftSystemStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LiftSystemComplexConjugationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationAntiholomorphicChartsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LiftSystemRealStructureStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationAntiholomorphicCharts
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LiftSystemRealStructure
 import ReciprocityTheory.AnalyticForms.LeviForms.TailCutA
 open MvPolynomial Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
@@ -119,10 +122,10 @@ theorem conj_of_flagAn [Fintype Ψ] {M : FlagModel y Ψ N j} {n d : ℕ} {BM : B
   have hdeg : IsDegreeOff FA.S.A FA.Re.R.A FA.Re.π 1 ∅ := by
     have := FA.Re.degree
     rwa [FA.deg_one, FA.br_empty] at this
-  obtain ⟨g, hgπ, hπg, hgh⟩ := GlobalTheory.T.holomorphic_degree_one_biholomorphism FA.S.A FA.Re.R.A FA.Re.π FA.Re.holo hdeg
+  obtain ⟨g, hgπ, hπg, hgh⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.Cj.exists_holoMap_inverse_of_degree_one FA.S.A FA.Re.R.A FA.Re.π FA.Re.holo hdeg
   have hsys := GlobalTheory.T.biholomorphic_lift_system FA.J_top FA.Re.R FA.S.A g FA.Re.π hgπ hπg hgh FA.Re.holo
   obtain ⟨c, hspec, hcont, hinv⟩ := GlobalTheory.T.lift_system_complex_conjugation hsys
-  have hanal := GlobalTheory.T.conjugation_antiholomorphic_charts hsys c hspec hcont
+  have hanal := _root_.GlobalTheory.CompanionTheory.Ar.PB.Cj.conj_analytic hsys c hspec hcont
   have hmem : ∀ r, FA.Re.R.lift r r ∈ mcPts (mCoordIdeal y) := fun r =>
     FA.Re.R.mem r r (FA.Re.R.mem_U r)
 
@@ -154,7 +157,7 @@ theorem conj_of_flagAn [Fintype Ψ] {M : FlagModel y Ψ N j} {n d : ℕ} {BM : B
     | some p => rw [FA.ref_some]; exact fs_conj _
   have hth : ∀ a x, ∃ V : Set FA.S.X, IsOpen V ∧ x ∈ V ∧ ∃ G : FA.S.X → ℂ, FA.S.A.HoloOn V G ∧
       ∀ y' ∈ V, (FA.S.th a).φ (c x) (c y') - (FA.S.th a).φ x y' = (G y').re := fun a =>
-    GlobalTheory.T.lift_system_real_structure hsys c hspec hcont hanal (FA.Re.ref a) (href a) (FA.S.th a) fun x => by
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.Cj.pot_conj_pluriharmonic hsys c hspec hcont hanal (FA.Re.ref a) (href a) (FA.S.th a) fun x => by
       obtain ⟨V, hV, hxV, G, hG, hGe⟩ := FA.Re.ref_pot a (g x) (Set.mem_univ _)
       refine ⟨g ⁻¹' V, hV.preimage hgh.1, hxV, G ∘ g, holoOn_comp hgh hG, fun y' hy' => ?_⟩
       have := hGe (g y') hy'
@@ -186,7 +189,7 @@ theorem conj_of_flagAn [Fintype Ψ] {M : FlagModel y Ψ N j} {n d : ℕ} {BM : B
   have hreg : ∀ a, ∃ C' t' : ℝ, IsRegFamily FA.S.A FA.S.Θ FA.S.L FA.S.s (FA.S.th a) (FA.S.ph a)
         (fun t y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2) C' t' ∧
       IsRegFamilyC2 FA.S.A FA.S.s (FA.S.ph a) fun t y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2 :=
-    fun a => GlobalTheory.T.conjugation_invariant_singular_potential (d + 1) FA.S.X FA.S.A FA.S.Θ FA.S.L FA.S.s FA.S.nb FA.S.m FA.S.W FA.S.potL FA.S.sec
+    fun a => _root_.GlobalTheory.CompanionTheory.Ar.PB.an_conj_symmetrise (d + 1) FA.S.X FA.S.A FA.S.Θ FA.S.L FA.S.s FA.S.nb FA.S.m FA.S.W FA.S.potL FA.S.sec
       FA.S.snc FA.S.norm_le FA.S.potΘ FA.S.posΘ c hcont hinv hanal hcb hcr (FA.S.th a) (FA.S.ph a) (FA.S.phT a)
       FA.S.C FA.S.t₀ (FA.S.sing a).1 (hth a) (hphall a) (FA.S.reg a) (FA.S.c2 a)
   choose Cf tf hregf hc2f using hreg
@@ -206,7 +209,7 @@ theorem conj_of_flagAn [Fintype Ψ] {M : FlagModel y Ψ N j} {n d : ℕ} {BM : B
     Finset.single_le_sum (f := fun a => |Cf a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)
   have hreg' : ∀ a, IsRegFamily FA.S.A FA.S.Θ FA.S.L FA.S.s (FA.S.th a) (FA.S.ph a)
       (fun t y' => (FA.S.phT a t y' + FA.S.phT a t (c y')) / 2) Cs T := fun a =>
-    (GlobalTheory.T.singular_weight_monotone_regularization (d + 1) FA.S.X FA.S.A FA.S.Θ FA.S.L FA.S.s FA.S.nb FA.S.m FA.S.W FA.S.potL FA.S.sec
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.enlarging_constants_smooth_members (d + 1) FA.S.X FA.S.A FA.S.Θ FA.S.L FA.S.s FA.S.nb FA.S.m FA.S.W FA.S.potL FA.S.sec
       FA.S.snc FA.S.norm_le FA.S.potΘ FA.S.posΘ).2.1 _ _ _ _ _ _ _ (hCle a) hT0 (hTf a) hTe (hregf a) (FA.S.sing a).1
 
   have hline : ∀ a t, 0 < t → t ≤ T → ∀ x,

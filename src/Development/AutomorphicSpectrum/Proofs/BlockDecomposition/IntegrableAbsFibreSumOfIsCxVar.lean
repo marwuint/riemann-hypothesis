@@ -20,7 +20,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsCxVarOfMemMinimalPr
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConePtsSubsetMcPtsOfMinimal
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemChartComponents
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.DomCellLogNormMeasurableInvariant
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LintegralFibreLogNormFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LintegralFibreLogNormFinite
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -146,7 +146,7 @@ theorem integrable_absFibreSum_of_isCxVar {K : Type} [Fintype K] {ι : K → Typ
     exact Finset.sum_congr rfl fun w _ => abs_setSheetDensity_eq hS Ψ (pot L) A s y w
   refine ⟨?_, (hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun y =>
     finsum_nonneg fun w => finsum_nonneg fun _ => abs_nonneg _)).2
-    (GlobalTheory.T.lintegral_fibre_logNorm_finite K ι Q e Ψ L A s a hQ hΨ hL hA hAa hs hsQ)⟩
+    (_root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.logNorm_mass_lt_top K ι Q e Ψ L A s a hQ hΨ hL hA hAa hs hsQ)⟩
   rw [heq]
   exact (h1.add h2).aestronglyMeasurable
 

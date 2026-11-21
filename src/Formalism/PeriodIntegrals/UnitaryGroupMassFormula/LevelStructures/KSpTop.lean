@@ -25,6 +25,4 @@ theorem kSpOpen_holds : KSpOpen := by
   exact (LatTop.isOpen_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J).preimage
     continuous_subtype_val
 
-theorem typedNe_holds : TypedNe := typedNe_of kSpCompact_holds kSpOpen_holds
-
 end MassDataLevelSSteps

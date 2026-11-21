@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LeviOf
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HintEqOfLe
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCosetSumCompactStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCosetSumCompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HintConstMulSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UNInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModulusHalfLeviAbsDet
@@ -122,7 +122,7 @@ theorem hk_ind_apply : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n
     rfl
   have e2 := GlobalTheory.CompanionTheory.HintSmaller.hint_eq_of_le (GlobalTheory.LFun.KGL w n) K' φ hle (fun k hk g => hφr g k hk)
     (by rw [hcard]; exact hX0) (GlobalTheory.CompanionTheory.DiagAvg.finite_cosets K' hopen φ hφc)
-  have e3 := GlobalTheory.T.hecke_coset_sum_compact E n a b h w K' hopen hle hnorm X hXK hX φ hφr hφc
+  have e3 := _root_.GlobalTheory.CompanionTheory.IntDec.integral_decomposition E n a b h w K' hopen hle hnorm X hXK hX φ hφr hφc
   rw [hcard] at e2
   have e4 : ∑ᶠ q : GLw n w ⧸ K', φ q.out =
       ∑ y ∈ X, hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) fun m =>

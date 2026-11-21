@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DatumOfIsIntegersLa
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPrimeSpanOfSqEqNegPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPrimeSpanOfSqEqNegPrime
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -43,7 +43,7 @@ theorem natPrime_not_mem_cube_of_isUnramifiedAt :
     rw [h0] at hy
     have : ((p : 𝓞 K)) = 0 := by simpa using hy.symm
     exact hp.ne_zero (by exact_mod_cast this)
-  have hprime : (Ideal.span {y}).IsPrime := GlobalTheory.T.isPrime_span_of_sq_eq_neg_prime_quadratic p K y hp hK hy
+  have hprime : (Ideal.span {y}).IsPrime := _root_.GlobalTheory.CMModel.isPrime_span_of_sq_eq_neg_prime p K y hp hK hy
   set Y : 𝓞 H := algebraMap (𝓞 K) (𝓞 H) y with hYdef
   have hpY : (p : 𝓞 H) = -(Y ^ 2) := by
     rw [hYdef, ← map_pow, hy, map_neg, map_natCast, neg_neg]

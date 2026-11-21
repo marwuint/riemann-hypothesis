@@ -1,13 +1,16 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsSmulMemEig
 import GroundTheory.HeightsAndTheta.Heights.ArithDegreeIdeal
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.RatProductFormulaStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.RatProductFormula
+import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsOfNonzeroAdelicStatement
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.ProductFormulaLogNormsStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsExtDegreeAdelicStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElementStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogIdealMulSpanMapStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumLogIdealEqLogAbsNormStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogIdealSupportFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsExtDegreeAdelic
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogIdealMulSpanMap
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumLogIdealEqLogAbsNorm
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogIdealSupportFinite
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicEmbeddingDiscreteValuationRingStatement
 
 noncomputable section
@@ -30,7 +33,7 @@ theorem exists_max_det {n : ℕ} (E : Submodule (𝓞 L) (Fin n → 𝓞 L)) (hD
     j.injective.comp (IsFractionRing.injective (𝓞 L) L)
   obtain ⟨V, -, hV, hVO, -⟩ := GlobalTheory.T.padic_embedding_discrete_valuation_ring L p j
   have hle1 : ∀ r : 𝓞 L, ‖(j.comp (algebraMap (𝓞 L) L)) r‖ ≤ 1 := fun r => (hV _).2 (hVO r)
-  obtain ⟨a, haI, ha0, hamax, hlog⟩ := GlobalTheory.T.padic_logIdeal_max_element L p _ (detIdeal E) hj'inj hD
+  obtain ⟨a, haI, ha0, hamax, hlog⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_logIdeal_attained L p _ (detIdeal E) hj'inj hD
   have hapos : 0 < ‖(j.comp (algebraMap (𝓞 L) L)) a‖ :=
     norm_pos_iff.2 (fun h => ha0 (hj'inj (by rw [h, map_zero])))
   obtain ⟨v, hvE, hv⟩ : ∃ v : Fin n → Fin n → 𝓞 L, (∀ i, v i ∈ E) ∧
@@ -65,12 +68,12 @@ theorem exists_max_det {n : ℕ} (E : Submodule (𝓞 L) (Fin n → 𝓞 L)) (hD
     rintro rfl
     rw [Ideal.mul_bot] at hJ
     exact hspan0 hJ
-  obtain ⟨hmul, hsing, -⟩ := GlobalTheory.T.log_ideal_mul_span_map L p _ hj'inj
+  obtain ⟨hmul, hsing, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.logIdeal_mul_span_map L p _ hj'inj
   have hJlog : logIdeal (j.comp (algebraMap (𝓞 L) L)) J = 0 := by
     have := hmul _ J hD hJ0
     rw [← hJ, hsing, hdeq, hlog] at this
     linarith
-  obtain ⟨u, huJ, hu0, -, hulog⟩ := GlobalTheory.T.padic_logIdeal_max_element L p _ J hj'inj hJ0
+  obtain ⟨u, huJ, hu0, -, hulog⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_logIdeal_attained L p _ J hj'inj hJ0
   have hu1 : ‖(j.comp (algebraMap (𝓞 L) L)) u‖ = 1 := by
     have hpos : 0 < ‖(j.comp (algebraMap (𝓞 L) L)) u‖ :=
       norm_pos_iff.2 (fun h => hu0 (hj'inj (by rw [h, map_zero])))
@@ -257,7 +260,7 @@ theorem exists_local_frame {M : Type} [AddCommGroup M] [Module (𝓞 L) M] [Modu
   have hji : Function.Injective (j.comp (algebraMap (𝓞 L) L)) :=
     j.injective.comp (IsFractionRing.injective (𝓞 L) L)
   have hc' : logIdeal (j.comp (algebraMap (𝓞 L) L)) (Ideal.span {c ^ n}) = Real.log ‖j ((c : L))‖ * n := by
-    rw [(GlobalTheory.T.log_ideal_mul_span_map L p _ hji).2.1]
+    rw [(_root_.GlobalTheory.CompanionTheory.Ar.Fl.logIdeal_mul_span_map L p _ hji).2.1]
     simp [map_pow, norm_pow, Real.log_pow, mul_comm]
   have hnorm : ‖j (T.det : L)‖ * ‖j ((Matrix.of v).det : L)‖ = ‖j (c : L)‖ ^ n := by
     have := congrArg (fun a : 𝓞 L => ‖j (a : L)‖) hdetT
@@ -368,15 +371,15 @@ theorem exists_logNorms {L : Type} [Field L] [NumberField L] (B : HermitianBundl
   have hd0 : Ideal.absNorm (detIdeal E) ≠ 0 := right_ne_zero_of_mul hprod
   have hfs : N.finSum = fun p : Nat.Primes => Real.log ‖((idx : ℚ) : ℂ_[p])‖ := by
     funext p
-    have e1 := GlobalTheory.T.sum_logIdeal_eq_log_absNorm L _ hcn p
-    have e2 := GlobalTheory.T.sum_logIdeal_eq_log_absNorm L _ hD p
+    have e1 := _root_.GlobalTheory.CompanionTheory.Ar.Fl.sum_logIdeal_eq_log_norm_absNorm L _ hcn p
+    have e2 := _root_.GlobalTheory.CompanionTheory.Ar.Fl.sum_logIdeal_eq_log_norm_absNorm L _ hD p
     have hne1 : ‖((idx : ℕ) : ℂ_[p])‖ ≠ 0 := norm_ne_zero_iff.2 (Nat.cast_ne_zero.2 hi0)
     have hne2 : ‖((Ideal.absNorm (detIdeal E) : ℕ) : ℂ_[p])‖ ≠ 0 := norm_ne_zero_iff.2 (Nat.cast_ne_zero.2 hd0)
     show ∑ j : L →+* ℂ_[p], (logIdeal (j.comp (algebraMap (𝓞 L) L)) (Ideal.span {c ^ n}) -
       logIdeal (j.comp (algebraMap (𝓞 L) L)) (detIdeal E)) = _
     rw [Finset.sum_sub_distrib, e1, e2, hidx, Nat.cast_mul, norm_mul, Real.log_mul hne1 hne2, Rat.cast_natCast]
     ring
-  have hpf := (GlobalTheory.T.rat_product_formula (idx : ℚ) (Nat.cast_ne_zero.2 hi0)).2
+  have hpf := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.rat_product_formula_complex (idx : ℚ) (Nat.cast_ne_zero.2 hi0)).2
   let s : Fin n → F := fun i => ⟨x i, hx i⟩
   have hsli : LinearIndependent (𝓞 L) s := LinearIndependent.of_comp F.subtype hli
   have hsub : (Submodule.span (𝓞 L) (Set.range s)).toAddSubgroup =
@@ -390,7 +393,7 @@ theorem exists_logNorms {L : Type} [Field L] [NumberField L] (B : HermitianBundl
     rfl
   have hdeg := HermitianBundle.degree_eq_of_linearIndependent B F hsli (by rw [Fintype.card_fin, hn])
   refine ⟨N, ?_, ?_, fun σ => rfl, fun p j => ?_⟩
-  · refine ((GlobalTheory.T.logIdeal_support_finite L _ hcn).union (GlobalTheory.T.logIdeal_support_finite L _ hD)).subset ?_
+  · refine ((_root_.GlobalTheory.CompanionTheory.Ar.Fl.finite_logIdeal_ne_zero L _ hcn).union (_root_.GlobalTheory.CompanionTheory.Ar.Fl.finite_logIdeal_ne_zero L _ hD)).subset ?_
     rintro p ⟨j, hj⟩
     by_contra hc'
     simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_exists, not_not] at hc'
@@ -422,9 +425,9 @@ theorem deg_eq_sub {k L L' : Type} [Field k] [NumberField k] [Field L] [NumberFi
     (hfin : ∀ (p : Nat.Primes) (j : L' →+* ℂ_[p]),
       N.fin p (j.comp β) = Real.log ‖j a‖ + N₁.fin p (j.comp e) - N₂.fin p (j.comp e)) :
     N.deg = N₁.deg - N₂.deg := by
-  obtain ⟨hd, _⟩ := GlobalTheory.T.logNorms_ext_degree_adelic k L' β N
-  obtain ⟨hd₁, ha₁⟩ := GlobalTheory.T.logNorms_ext_degree_adelic L L' e N₁
-  obtain ⟨hd₂, ha₂⟩ := GlobalTheory.T.logNorms_ext_degree_adelic L L' e N₂
+  obtain ⟨hd, _⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.logNorms_ext_deg_isAdelic k L' β N
+  obtain ⟨hd₁, ha₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.logNorms_ext_deg_isAdelic L L' e N₁
+  obtain ⟨hd₂, ha₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.logNorms_ext_deg_isAdelic L L' e N₂
   obtain ⟨_, hpf⟩ := GlobalTheory.T.product_formula_log_norms L' a ha
   have f0 := finite_finSum (GlobalTheory.T.log_norms_of_nonzero_adelic L' a ha)
   have f1 := finite_finSum (ha₁.2 h₁)

@@ -1,9 +1,9 @@
 import Mathlib
 import Formalism.HermitianCurvature.StatementTBB
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CccoefMono
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CutoffCompactApproximantsConvergeDecayClassStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliProductLevelZeroPairingNormLeStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliProductLevelZeroPairingSesquilinearStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CutoffCompactApproximantsConvergeDecayClass
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliProductLevelZeroPairingNormLe
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliProductLevelZeroPairingSesquilinear
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filter Topology MeasureTheory
 
 namespace GlobalTheory.LevelZeroApprox
@@ -72,10 +72,10 @@ theorem beta_approx : ∃ Cc : ℝ, ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCom
   refine ⟨20, ?_⟩
   intro k r Wp Wq _ _ _ _ _ _ Bs s w χ f A N hχ hf hfA hA hw ε₁ ε₂ h₁ h₂
   have hth := (threshold k r N w.length hw).trans hA
-  obtain ⟨K₁, hK₁, hH₁, hX₁⟩ := GlobalTheory.T.cutoff_compact_approximants_converge_decay_class k r Wp Wq Bs χ f A ε₁ (B.AB k r) _ hχ h₁ hf hfA hth
-  obtain ⟨K₂, hK₂, hH₂, hX₂⟩ := GlobalTheory.T.cutoff_compact_approximants_converge_decay_class k r Wp Wq Bs χ f A ε₂ (B.AB k r) _ hχ h₂ hf hfA hth
-  obtain ⟨C, hC, hbd⟩ := GlobalTheory.T.capelliProduct_levelZeroPairing_norm_le k r Wp Wq Bs s w (B.AB k r) le_rfl
-  have hsq := GlobalTheory.T.capelliProduct_levelZeroPairing_sesquilinear k r Wp Wq Bs s w (B.AB k r) le_rfl 1
+  obtain ⟨K₁, hK₁, hH₁, hX₁⟩ := _root_.GlobalTheory.cutF_approximants_ccle k r Wp Wq Bs χ f A ε₁ (B.AB k r) _ hχ h₁ hf hfA hth
+  obtain ⟨K₂, hK₂, hH₂, hX₂⟩ := _root_.GlobalTheory.cutF_approximants_ccle k r Wp Wq Bs χ f A ε₂ (B.AB k r) _ hχ h₂ hf hfA hth
+  obtain ⟨C, hC, hbd⟩ := _root_.GlobalTheory.beta_capelliFold_norm_le k r Wp Wq Bs s w (B.AB k r) le_rfl
+  have hsq := _root_.GlobalTheory.beta_foldCapelli_sesquilinear k r Wp Wq Bs s w (B.AB k r) le_rfl 1
   have hc₁ := Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF Bs hχ hf ε₁
   have hx₁ := ckOn_bump_smul hc₁
   have lo : ∀ {F : B.Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ},

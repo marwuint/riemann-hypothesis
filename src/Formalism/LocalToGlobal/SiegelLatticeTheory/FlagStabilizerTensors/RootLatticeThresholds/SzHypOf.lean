@@ -29,8 +29,6 @@ include e in
 theorem card_places : Fintype.card (InfinitePlace D.host.E) = D.R.f := by
   rw [Fintype.card_congr e]; exact Formalism.MainNotions.BridgeLemma.szf_card_Tau D
 
-theorem gOf_f : (Formalism.L2.SG.SpectralTiesReal.gOf D e).f = D.R.f := card_places D e
-
 theorem deOf_eq (h5 : ∀ (u : D.what₂.Word) τ, ¬ IsTop D τ → uOne D u τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
     (hDel : (D.s.Del : ℝ) ≠ 0) (τ : D.what₂.Tau) (u : D.what₂.Word) :
     Formalism.L2.SG.SpectralTiesReal.deOf D τ u = Formalism.MainNotions.BridgeLemma.deOf D u := by
@@ -284,19 +282,6 @@ theorem sizesAt_of {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu CT CA Cn : ℝ}
   · have e1 : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (D.host.g 0 * D.host.g 1) ^ 2] :=
       ((d9 u).2 : _ ≡ 1 [MOD _]).trans ((d9 u').2 : _ ≡ 1 [MOD _]).symm
     exact e1
-
-theorem fdl_of_cTvG {large₂ : SizeData₂ D} {CV : ℝ} (hg : Formalism.MainNotions.S.UnitaryVolumeMass.cTvG D large₂ (1 / 2) CV) (τ : D.what₂.Tau) :
-    Sz.FormalDegreeLower (Formalism.MainNotions.BridgeLemma.cfgOf D τ) (1 / 2) (VV D τ) := by
-  unfold Sz.FormalDegreeLower
-  rw [Formalism.MainNotions.BridgeLemma.Vand_lam D τ]
-  have h := (hg τ).1
-  linarith
-
-variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
-
-theorem szRowsAt_of {C0 : ℝ} (hD : StandingNumericalData D C0) (hR : LocalBesselAndTopKernel.FamilyMidVolume D)
-    (hFD : ∀ τ, Sz.FormalDegreeLower (Formalism.MainNotions.BridgeLemma.cfgOf D τ) (1 / 2) (VV D τ)) : SzRowsAt D :=
-  ⟨Formalism.MainNotions.BridgeLemma.mass_ratio_of_siegel_cm_unramified Formalism.HermitianLattices.Ext.L3.siegelMassRatio D, hR, Formalism.MainNotions.BridgeLemma.sza_spl_of_data hD, hFD⟩
 
 section Row
 

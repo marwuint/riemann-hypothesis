@@ -1,5 +1,10 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsMuModelChartUnit
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PlueckerCoordinates.IsHodgeFibrePt
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PlueckerCoordinates.IsPlueckerCoord
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.IsFrameOverLine
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -26,13 +31,6 @@ theorem alternating_sum_smul {R M : Type*} [CommRing R] [AddCommGroup M] [Module
   rw [h, mul_comm]
   congr 1
   exact Matrix.det_transpose A
-
-theorem castLE_ne_tailIdx {j N : ℕ} (hj : j ≤ N) (a : Fin j) (a' : Fin (N - j)) :
-    Fin.castLE hj a ≠ tailIdx hj a' := by
-  intro h
-  have := congrArg Fin.val h
-  simp [tailIdx] at this
-  omega
 
 def splitEquiv {j N : ℕ} (hj : j ≤ N) : Fin j ⊕ Fin (N - j) ≃ Fin N :=
   finSumFinEquiv.trans (finCongr (Nat.add_sub_cancel' hj))
@@ -97,67 +95,6 @@ theorem exists_form_quotWedge_eq_one {b' : Fin N → V} (hli : LinearIndependent
   have : (fun a => F.mkQ (b' (tailIdx hj a))) = ⇑Q := funext fun a => (Basis.mk_apply hli' hspan a).symm
   rw [this, Basis.det_self]
 
-theorem one_factor {b b' : Fin N → V}
-    (hb : LinearIndependent Ω b ∧ span Ω (Set.range b) = ⊤ ∧ span Ω (Set.range (b ∘ Fin.castLE hj)) = F)
-    (hb' : LinearIndependent Ω b' ∧ span Ω (Set.range b') = ⊤ ∧ span Ω (Set.range (b' ∘ Fin.castLE hj)) = F)
-    (φ : V [⋀^Fin N]→ₗ[Ω] Ω) (ψ : V [⋀^Fin j]→ₗ[Ω] Ω) (ℓ : ⋀[Ω]^(N - j) (V ⧸ F) →ₗ[Ω] Ω)
-    (hℓ : ℓ (quotWedge F hj b') = 1) :
-    φ b * ψ (b' ∘ Fin.castLE hj) = φ b' * ψ (b ∘ Fin.castLE hj) * ℓ (quotWedge F hj b) := by
-  let B := Basis.mk hb'.1 hb'.2.1.ge
-  have hB : ∀ i, B i = b' i := fun i => Basis.mk_apply _ _ i
-  let S := B.toMatrix b
-  have hexp : ∀ q, b q = ∑ p, S p q • b' p := by
-    intro q
-    simp only [S, Basis.toMatrix_apply, ← hB]
-    exact (B.sum_repr (b q)).symm
-  have hzero : ∀ a a', S (tailIdx hj a) (Fin.castLE hj a') = 0 := by
-    intro a a'
-    have hm : b (Fin.castLE hj a') ∈ span Ω (Set.range (b' ∘ Fin.castLE hj)) :=
-      hb'.2.2 ▸ hb.2.2 ▸ subset_span ⟨a', rfl⟩
-    obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun Ω).mp hm
-    simp only [S, Basis.toMatrix_apply, ← hc, Function.comp_apply, ← hB, map_sum, map_smul,
-      Basis.repr_self, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply,
-      Finsupp.single_apply, castLE_ne_tailIdx, if_false, smul_zero, Finset.sum_const_zero]
-  have hF' : ∀ a, b' (Fin.castLE hj a) ∈ F := fun a => hb'.2.2 ▸ subset_span ⟨a, rfl⟩
-  have hφ : φ b = S.det * φ b' := by
-    rw [← alternating_sum_smul φ b' S]
-    exact congrArg φ (funext hexp)
-  have hψ : ψ (b ∘ Fin.castLE hj) = (S.submatrix (Fin.castLE hj) (Fin.castLE hj)).det * ψ (b' ∘ Fin.castLE hj) := by
-    rw [← alternating_sum_smul ψ (b' ∘ Fin.castLE hj)]
-    refine congrArg ψ (funext fun q => ?_)
-    rw [Function.comp_apply, hexp, sum_split hj]
-    simp [hzero]
-  have hq : ∀ ℓ' : ⋀[Ω]^(N - j) (V ⧸ F) →ₗ[Ω] Ω,
-      ℓ' (quotWedge F hj b) = (S.submatrix (tailIdx hj) (tailIdx hj)).det * ℓ' (quotWedge F hj b') := by
-    intro ℓ'
-    have := alternating_sum_smul (ℓ'.compAlternatingMap (exteriorPower.ιMulti Ω (N - j)))
-      (fun a => F.mkQ (b' (tailIdx hj a))) (S.submatrix (tailIdx hj) (tailIdx hj))
-    simp only [LinearMap.compAlternatingMap_apply, Matrix.submatrix_apply] at this
-    rw [quotWedge, quotWedge, ← this]
-    congr 2
-    funext q
-    rw [hexp, map_sum, sum_split hj]
-    have h0 : ∀ a, F.mkQ (S (Fin.castLE hj a) (tailIdx hj q) • b' (Fin.castLE hj a)) = 0 := fun a => by
-      simpa using Or.inr (hF' a)
-    simp only [h0, Finset.sum_const_zero, zero_add, map_smul]
-  have hdet := det_split_of_zero hj S hzero
-  rw [hφ, hψ, hq ℓ, hℓ, hdet]
-  ring
-
 end WedgeTransition
-
-theorem WedgeTransition.proof : WedgeTransition.Statement := by
-  rintro Ψ _ Ω _ E _ _ F N j r s hj hr hs rfl rfl b b' hb hb' φ ψ κ κ' h
-  classical
-  choose ℓ hℓ using fun τ => WedgeTransition.exists_form_quotWedge_eq_one (F τ) hj (hb' τ).1 (hb' τ).2.1
-    (hb' τ).2.2
-  have key := congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra Ω Ψ Ω).compLinearMap ℓ)) h
-  simp only [map_smul, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply,
-    MultilinearMap.mkPiAlgebra_apply, hℓ, Finset.prod_const_one, smul_eq_mul, mul_one] at key
-  have hτ : ∀ τ, φ τ (b τ ∘ Fin.castLE hs) * ψ τ (b' τ ∘ Fin.castLE hr) =
-      φ τ (b' τ ∘ Fin.castLE hs) * ψ τ (b τ ∘ Fin.castLE hr) * ℓ τ (quotWedge (F τ) hj (b τ)) :=
-    fun τ => WedgeTransition.one_factor (F τ) hj (hb τ) (hb' τ) (φ τ) (ψ τ) (ℓ τ) (hℓ τ)
-  rw [Finset.prod_congr rfl fun τ _ => hτ τ, Finset.prod_mul_distrib, ← key]
-  ring
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.LowerBoundFree

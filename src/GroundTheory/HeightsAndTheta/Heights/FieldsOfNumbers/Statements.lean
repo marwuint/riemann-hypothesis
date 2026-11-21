@@ -92,16 +92,6 @@ instance addBlock.nonempty (ι : K → Type) [∀ k, Nonempty (ι k)] (N : ℕ) 
   | none => (inferInstance : Nonempty (Fin (N + 1)))
   | some k => (inferInstance : Nonempty (ι k))
 
-def addBlockIncl (ι : K → Type) (N : ℕ) : (Σ k, ι k) → (Σ o, addBlock ι N o) :=
-  fun v => ⟨some v.1, v.2⟩
-
-def addBlockPrime {ι : K → Type} (N : ℕ) (P : Ideal (MRing ι F)) :
-    Ideal (MRing (addBlock ι N) F) :=
-  P.map (rename (addBlockIncl ι N))
-
-def newBlockDeg : Option K → ℤ :=
-  fun o => Option.elim o 1 (fun _ => 0)
-
 end Blocks
 
 def GradedFinite.Statement : Prop :=
@@ -204,12 +194,6 @@ def CutRational.Statement : Prop :=
       intNum F P (Fin.snoc (α := fun _ => K → ℤ) bs (fun k => (bf k : ℤ) - bg k)) =
         cycEval (fun W => intNum F W bs) (ratDiv P f g)
 
-def DivPrincipalDegree.Statement : Prop :=
-  ∀ (F : Type u) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)), IsMultiProjPrime P → relDim P = 1 →
-    ∀ (b : K → ℕ) (f g : MRing ι F), IsMultiHomog f b → IsMultiHomog g b → f ∉ P → g ∉ P →
-      cycEval (fun x => (resDeg x : ℤ)) (ratDiv P f g) = 0
-
 def ExistsForm.Statement : Prop :=
   ∀ (F : Type u) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)), IsMultiProjPrime P → ∀ b : K → ℤ,
@@ -257,15 +241,6 @@ def ProjectionFormulaDegree.Statement : Prop :=
       (homFracDegZero (contractPrime j P')).map (contractFracMap j P') ≤ homFracDegZero P' ∧
         intNum F P' (fun i => pullDeg j (bs i)) =
           relDeg j P' * intNum F (contractPrime j P') bs
-
-def ProductWithProjectiveSpace.Statement : Prop :=
-  ∀ (F : Type u) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)), IsMultiProjPrime P →
-    ∀ e N r m : ℕ, relDim P = e → r + m = e + N → ∀ cs : Fin r → K → ℤ,
-      intNum F (addBlockPrime N P)
-          (Fin.append (fun _ : Fin m => (newBlockDeg : Option K → ℤ))
-            (fun i => pullDeg Function.Embedding.some (cs i))) =
-        if m = N then intNum F P cs else 0
 
 end
 

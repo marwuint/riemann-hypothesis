@@ -1,44 +1,17 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.RootMultiplicityCancellation
+import Formalism.SharpRestriction.LevelLetterCocycles.DataN
+import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
 
 noncomputable section
 
 namespace GlobalTheory.InertialTypesCmp
 
 open Formalism.BasicNotions Formalism.MainNotions.N NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
-open Formalism.MainNotions.SumRepresentations.At GlobalTheory.IndefiniteRowSideFullHecke.InertiaTypeCancellation
+open Formalism.MainNotions.SumRepresentations.At
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
-
-def ClauseQ : Prop :=
-  ∀ (i : N.Loc) (P : A.AV i) (w : PlE H), (w ∈ N.S i ∨ w ∈ N.Q i) →
-    (w ∈ N.Q i ∨ (Del N i ∧ (w ∈ placesOver H.E H.pde ∨ (N.l i = H.pde ∧ w ∈ placesOver H.E H.pde')))) →
-    A.mono0 (A.locV i P w) ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w),
-      A.inePol (A.locV i P w) σ = (X - 1) ^ R.r * (X - C (iotaO N A i (chi1 N i σ))) ^ R.t
-
-def ClauseG : Prop :=
-  ∀ (i : N.Loc) (P : A.AV i) (w : PlE H), w ∈ N.S i → (∃ k, w ∈ placesOver H.E (H.g k)) →
-    TameGen N (N.plOm.1 w) (N.gam0 i w) →
-    (A.inePol (A.locV i P w) (N.gam0 i w)).rootMultiplicity (iotaO N A i (chi1 N i (N.gam0 i w))) ≤ R.t →
-    ∃ a b : A.LP w, A.locV i P w = A.lpSum a b ∧ A.lpDim a = R.r ∧ A.lpDim b = R.t ∧ A.mono0 b ∧
-      ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol b σ = (X - C (iotaO N A i (chi1 N i σ))) ^ R.t
-
-def ClauseC : Prop := ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b
-
-def Rest : Prop :=
-  ∀ (i : N.Loc) (P : A.AV i) (k : Fin 2) (w : PlE H), w ∈ placesOver H.E (H.g k) →
-    w ∉ placesOver H.E (N.l i) →
-    (A.inePol (A.locV i P w) (N.gam0 i w)).rootMultiplicity (chiC N A i (N.gam0 i w)) ≤ R.t →
-    A.lpDim (A.locV i P w) = R.nV ∧
-    (A.inePol (A.locV i P w) (N.gam0 i w) = 0 →
-      ∃ a b : A.LP w, A.locV i P w = A.lpSum a b ∧ A.lpDim b = R.t ∧ HasInertia N A i w b 0 R.t)
-
-def Regular : Prop :=
-  ∀ (i : N.Loc) (P : A.AV i) (k : Fin 2) (w : PlE H), w ∈ placesOver H.E (H.g k) →
-    w ∉ placesOver H.E (N.l i) →
-    A.lpDim (A.locV i P w) = R.nV ∧ A.inePol (A.locV i P w) (N.gam0 i w) ≠ 0
 
 open NumberField IsDedekindDomain Polynomial in
 variable {R : _root_.Formalism.BasicNotions.Ranks} {H : _root_.Formalism.BasicNotions.Host R} {what₂ : _root_.Formalism.BasicNotions.Rows.Data R} (N : _root_.Formalism.BasicNotions.NData R H what₂) (A : _root_.Formalism.BasicNotions.NAut N) in

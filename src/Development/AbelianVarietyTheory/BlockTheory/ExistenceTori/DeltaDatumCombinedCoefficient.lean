@@ -99,20 +99,6 @@ variable {F : Type} [Field F]
 def phiDelta (δ : DeltaChar a F) (v : Vol D a) {n : ℕ} (x : Fin n → ConjCl D a.l₂) : F :=
   δ.loc⁻¹ (a.barQuot (v.det₁ x))
 
-theorem phiDelta_transform (δ : DeltaChar a F) (v : Vol D a) {n : ℕ} (k : D.La →ₗ[𝓞 E] D.La) (d : (𝓞 E ⧸ a.conj)ˣ)
-    (hd : IsDetMod D a.conj k d) (u : Fin n → D.La) :
-    phiDelta δ v (fun b => Submodule.Quotient.mk (u b)) =
-      δ.loc (a.barQuot d) * phiDelta δ v (fun b => Submodule.Quotient.mk (k (u b))) := by
-  have h : v.det₁ (fun b => (Submodule.Quotient.mk (k (u b)) : ConjCl D a.l₂)) =
-      d * v.det₁ (fun b => (Submodule.Quotient.mk (u b) : ConjCl D a.l₂)) := by
-    unfold Vol.det₁
-    split_ifs with h
-    · exact hd (v.ω.compLinearMap (Submodule.mkQ _)) fun i => u (Fin.castLE h i)
-    · rw [mul_zero]
-  have hu : IsUnit (a.barQuot d) := d.isUnit.map _
-  rw [phiDelta, phiDelta, h, map_mul, map_mul, ← _root_.mul_assoc, ← MulChar.mul_apply, mul_inv_cancel,
-    MulChar.one_apply hu, _root_.one_mul]
-
 end Datum
 
 section Cover
@@ -141,27 +127,6 @@ structure Cover (Xo : Moduli D l) (c : Coeff l) (a : IsAuxiliarySplitSquarefreeL
   w : LB.Iso Xo₂.univ.t.PP.L (Xo.univ.t.PP.L.pull m.φ)
   level : IsLevelMap Xo a Xo₂ r m
   bundle : IsBundleIso m w
-
-theorem eq_inclusion (a : IsAuxiliarySplitSquarefreeLevel l) (jK : KA l →+* KA a.l₂) (hj : ∀ x, ((jK x : KA a.l₂) : ℂ) = ((x : KA l) : ℂ)) :
-    jK = (IntermediateField.inclusion a.KA_le).toRingHom :=
-  RingHom.ext fun x => Subtype.ext ((hj x).trans (IntermediateField.coe_inclusion a.KA_le x).symm)
-
-theorem exists_bundleIso {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) :
-    ∃ w, IsBundleIso m w := m.lin
-
-theorem nonempty_cover (h : ToroidalLevelCompatibility (H := H) (D := D)) (Xo : Moduli D l) (c : Coeff l) (a : IsAuxiliarySplitSquarefreeLevel l)
-    (Xo₂ : Moduli D a.l₂) (c₂ : Coeff a.l₂) (hF : c.F = c₂.F) : Nonempty (Cover Xo c a) := by
-  obtain ⟨r, jK, m, hj, hs, he, hA, -⟩ := h l a.l₂ Xo Xo₂ a.dvd
-  obtain ⟨w, hw⟩ := exists_bundleIso m
-  have hM : 0 < l.M := by have := l.three_le; omega
-  have e₁ : a.l₂.M / l.M = a.p := by rw [a.M_eq, Nat.mul_div_cancel_left _ hM]
-  have e₂ : a.l₂.A / l.A = 1 := by rw [a.A_eq, Nat.div_self l.A_pos]
-  have e₃ : jK = (IntermediateField.inclusion a.KA_le).toRingHom := eq_inclusion a jK hj
-  rw [e₃] at hs
-  refine ⟨⟨Xo₂, c₂, hF, r, m, w, ⟨hs, fun x => ?_, fun x => ?_⟩, hw⟩⟩
-  · rw [← e₁]; exact he x
-  · have := hA x
-    rwa [e₂, pow_one] at this
 
 variable {Xo : Moduli D l} {c : Coeff l} {a : IsAuxiliarySplitSquarefreeLevel l} (C : Cover Xo c a)
 
@@ -255,66 +220,15 @@ variable {Xo : Moduli D l} {c : Coeff l} {nab : NabV Xo c} (Δ : DeltaDatum Xo c
 def fnVal {S : Type} [CommRing S] [Algebra Δ.cov.c₂.F S] (y₂ : FrPt Δ.cov.Xo₂ Δ.cov.c₂ S) : S :=
   fnAt (basePt y₂) Δ.fn
 
-def deltaCoeff {n : ℕ} (t : Fin n → NamedCl D Δ.a.l₂) : Δ.cov.c₂.F :=
-  fourier Δ.cov.c₂ (phiDelta Δ.δ Δ.vol) t
-
 def combined {n : ℕ} (x₀ : Fin n → ConjCl D l) (x : Fin n → ConjCl D Δ.a.l₂) : Δ.cov.c₂.F :=
   Δ.cov.incl (indicatorCl c x₀ fun b => Δ.a.red D (x b)) * phiDelta Δ.δ Δ.vol x
 
 def combinedCoeff {n : ℕ} (x₀ : Fin n → ConjCl D l) (t : Fin n → NamedCl D Δ.a.l₂) : Δ.cov.c₂.F :=
   fourier Δ.cov.c₂ (Δ.combined x₀) t
 
-def CoeffProduct (n : ℕ) : Prop :=
-  ∀ (x₀ : Fin n → ConjCl D l) (u₁ u₂ : Fin n → D.La),
-    Δ.combinedCoeff x₀ (fun b => Submodule.Quotient.mk (Δ.a.p • u₁ b + l.M • u₂ b)) =
-      Δ.cov.incl (indCoeff c x₀ fun b => Submodule.Quotient.mk (u₁ b)) *
-        Δ.deltaCoeff fun b => Submodule.Quotient.mk (l.M • u₂ b)
-
-def CoeffTransform (n : ℕ) : Prop :=
-  ∀ g : Sim D, g.InGam l Δ.a.l₂ → ∀ d, IsDetMod D Δ.a.named (g.f Δ.a.l₂.M) d →
-    ∀ (x₀ : Fin n → ConjCl D l) (u : Fin n → D.La),
-      Δ.combinedCoeff x₀ (fun b => Submodule.Quotient.mk (g.f Δ.a.l₂.M (u b))) =
-        Δ.δ.loc d * Δ.combinedCoeff x₀ fun b => Submodule.Quotient.mk (u b)
-
-def FnTransform : Prop :=
-  ∀ (g : Sim D) (ρ : Δ.cov.Xo₂.X ≅ Δ.cov.Xo₂.X), g.InGam l Δ.a.l₂ → Δ.cov.Xo₂.LevAut g ρ →
-    ∀ d, IsDetMod D Δ.a.named (g.f Δ.a.l₂.M) d →
-    ∀ (S : Type) [CommRing S] (β : Δ.cov.c₂.F →+* S) (y y' : Sp S ⟶ Δ.cov.Xo₂.XF Δ.cov.c₂),
-      y ≫ pullback.snd _ _ = spMap β → y' ≫ pullback.snd _ _ = spMap β →
-      y' ≫ pullback.fst _ _ = y ≫ pullback.fst _ _ ≫ ρ.hom → fnAt y' Δ.fn = β (Δ.δ.loc d) * fnAt y Δ.fn
-
-def FnRootOfUnity : Prop := ∃ N : ℕ, 0 < N ∧ Δ.fn ^ N = 1
-
 end DeltaDatum
 
 variable {Xo : Moduli D l} {c : Coeff l} {a : IsAuxiliarySplitSquarefreeLevel l} (C : Cover Xo c a)
-
-def PresentationExists : Prop :=
-  ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty →
-    ∀ (U : FamilyUnif C.Xo₂ (KA a.l₂).val.toRingHom ty) (i : Fin U.n),
-      ∃ m β₀ 𝔞 d, IsPresentation a (U.Di i) (U.t i) m β₀ 𝔞 d
-
-def DeltaDetExists (δ : DeltaChar a C.c₂.F) : Prop := ∃ f, IsDeltaDet C δ f
-
-def DeltaDetUnique (δ : DeltaChar a C.c₂.F) : Prop := ∀ f f', IsDeltaDet C δ f → IsDeltaDet C δ f' → f = f'
-
-def IsGaloisCover : Prop :=
-  (∀ g : Sim D, g.InGam l a.l₂ → ∃ ρ : C.Xo₂.X ≅ C.Xo₂.X, C.Xo₂.LevAut g ρ ∧ ρ.hom ≫ C.r = C.r) ∧
-  ∃ rF : C.Xo₂.XF C.c₂ ⟶ Xo.XF c, rF ≫ pullback.fst _ _ = pullback.fst _ _ ≫ C.r ∧
-    rF ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap C.incl ∧ IsFinite rF ∧ Etale rF ∧ Surjective rF ∧
-    ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ C.Xo₂.XF C.c₂), y ≫ rF = y' ≫ rF →
-      (∃ (g : Sim D) (ρ : C.Xo₂.X ≅ C.Xo₂.X), g.InGam l a.l₂ ∧ C.Xo₂.LevAut g ρ ∧ ρ.hom ≫ C.r = C.r ∧
-        y' ≫ pullback.fst _ _ = y ≫ pullback.fst _ _ ≫ ρ.hom) ∧
-      ∀ (g : Sim D) (ρ : C.Xo₂.X ≅ C.Xo₂.X), g.InGam l a.l₂ → C.Xo₂.LevAut g ρ →
-        y ≫ pullback.fst _ _ ≫ ρ.hom = y ≫ pullback.fst _ _ → g.TrivAt a.l₂
-
-def FramesOverFrames : Prop :=
-  (∀ (S : Type) [CommRing S] [Algebra c.F S] [Algebra C.c₂.F S],
-    algebraMap c.F S = (algebraMap C.c₂.F S).comp C.incl →
-    ∀ y₂ : FrPt C.Xo₂ C.c₂ S, ∃! y : FrPt Xo c S, C.LiesOver (RingHom.id S) y₂ y) ∧
-  ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S),
-    ∃ (S' : Type) (_ : CommRing S') (_ : Algebra C.c₂.F S') (φ : S →+* S') (y₂ : FrPt C.Xo₂ C.c₂ S'),
-      φ.Finite ∧ φ.Etale ∧ φ.FaithfullyFlat ∧ C.LiesOver φ y₂ y
 
 end Delta
 
@@ -352,100 +266,6 @@ def Cover.triv (Xo : Moduli D l) (c : Coeff l) : Cover Xo c (IsAuxiliarySplitSqu
     (maps_iff _ _ (thφ Xo.univ.t.G (x3 Xo.univ.t.G)) _ Xo.univ.t.cub.t Xo.univ.t.cub.t (𝟙 _) _
       ((GlobalTheory.ObjLower.cubeId Xo.univ.t.G).theta_le Xo.univ.t.PP.L) (fun _ => rfl)).2
       (GlobalTheory.ObjLower.pmaps_idIso _ _ _ _ Xo.univ.t.cub.isGen)⟩
-
-open Classical in
-
-def DeltaChar.triv (l : Level H) (F : Type) [Field F] : DeltaChar (IsAuxiliarySplitSquarefreeLevel.triv l) F where
-  loc := 1
-  ideal :=
-    { toFun := fun 𝔞 => if 𝔞 = 0 then 0 else 1
-      map_zero' := if_pos rfl
-      map_one' := if_neg one_ne_zero
-      map_mul' := fun 𝔞 𝔟 => by by_cases h : 𝔞 = 0 <;> by_cases h' : 𝔟 = 0 <;>
-        simp only [mul_eq_zero, h, h', or_true, true_or, or_self, if_true, if_false, mul_zero, zero_mul, _root_.mul_one] }
-  ideal_zero := fun 𝔞 h => absurd (by rw [IsAuxiliarySplitSquarefreeLevel.triv_pId, sup_top_eq]) h
-  principal := fun α hα _ => by
-    rw [MulChar.one_apply (isUnit_of_subsingleton _), MulChar.one_apply (isUnit_of_subsingleton _), _root_.mul_one]
-    exact if_neg (by simpa using hα)
-  real := fun 𝔟 h _ => if_neg fun e => h ((Ideal.map_eq_bot_iff_of_injective
-    (FaithfulSMul.algebraMap_injective _ _)).1 e)
-
-theorem Cover.triv_nabOver (Xo : Moduli D l) (c : Coeff l) (nab : NabV Xo c) :
-    (Cover.triv Xo c).NabOver @nab @nab := by
-  intro S _ i₁ i₂ y₂ y h pm hpm k F₂ F hF α
-  obtain rfl : i₁ = i₂ := Algebra.algebra_ext _ _ fun r => RingHom.congr_fun h.1 r
-  have key : ∀ {x : Sp S ⟶ Xo.X} (pm : Gx x ⟶ Gx x), (Cover.triv Xo c).IsGroupMap (RingHom.id S) x x pm →
-      ∀ (k : ℤ) (F₂ F : LB.Sec (Out.LPow Xo.univ.t.G Xo.univ.t.PP.L k (Over.mk x))),
-        (Cover.triv Xo c).SecOver pm k F₂ F → F₂ = F := by
-    intro x pm hpm k F₂ F hF
-    obtain rfl : pm = 𝟙 _ := by
-      have e : spMap (RingHom.id S) = 𝟙 _ := Spec.map_id _
-      have h2 := hpm.2
-      rw [e] at h2
-      exact pullback.hom_ext (h2.trans ((Category.comp_id _).trans (Category.id_comp _).symm))
-        (hpm.1.trans ((Category.comp_id _).trans (Category.id_comp _).symm))
-    obtain ⟨f₂, c₂⟩ := F₂
-    obtain ⟨f, c₁⟩ := F
-    congr 1
-    funext J
-    obtain ⟨i, rfl⟩ : ∃ i, J = fun _ => i := ⟨J 0, funext fun a => congrArg J (Subsingleton.elim _ _)⟩
-    have hle : (Out.LPow Xo.univ.t.G Xo.univ.t.PP.L k (Over.mk x)).U (fun _ => i) ≤
-        (snd (Over.mk x) Xo.univ.t.G).left ⁻¹ᵁ Xo.univ.t.PP.L.U i :=
-      LB.wchart_le Xo.univ.t.PP.L (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => i) 0
-    have H := hF i i _ le_rfl le_rfl (fun z hz => ⟨mem_pull.2 (hle hz), hle hz⟩)
-    have hw : (Cover.triv Xo c).w.s (fun _ => i, i) = 1 := by
-      have h0 := congrArg (res (inf_le_right : (Xo.univ.t.PP.L.pull (𝟙 _)).U (fun _ => i) ⊓ Xo.univ.t.PP.L.U i ≤
-        Xo.univ.t.PP.L.U i)) (Xo.univ.t.PP.isLB.g_self i)
-      rw [map_one] at h0
-      refine Eq.trans (Units.ext ?_) h0
-      change _ = (Xo.univ.t.G.left.presheaf.map _ ≫ Xo.univ.t.G.left.presheaf.map _).hom _
-      erw [← Functor.map_comp]
-      rfl
-    have hid : ∀ (Y : Scheme.{0}) (U : Y.Opens) (z : Γ(Y, U)), (Y.presheaf.map (homOfLE (le_refl U)).op).hom z = z :=
-      fun Y U z => by
-        have : (homOfLE (le_refl U)).op = 𝟙 _ := rfl
-        rw [this, CategoryTheory.Functor.map_id]; rfl
-    rw [hw, map_one, map_one, one_zpow, Units.val_one, _root_.one_mul] at H
-    exact (hid _ _ _).symm.trans (H.symm.trans (hid _ _ _))
-  obtain ⟨x₂, hx₂, u₂, t₂, e₂, b₂, s₂, g₂⟩ := y₂
-  obtain ⟨x, hx, u, t, e, b, s, g⟩ := y
-  obtain ⟨-, h1, h2, pm', h3, h4⟩ := h
-  have e : spMap (RingHom.id S) = 𝟙 _ := Spec.map_id _
-  have e' : spMap (dualMap (RingHom.id S)) = 𝟙 _ := by
-    have : dualMap (RingHom.id S) = RingHom.id _ := RingHom.ext fun z => TrivSqZeroExt.inl_fst_add_inr_snd_eq z
-    rw [this]; exact Spec.map_id _
-  obtain rfl : x₂ = x := by
-    rw [e] at h1
-    exact (Category.comp_id _).symm.trans (h1.trans (Category.id_comp _))
-  obtain rfl : u₂ = u := by
-    funext τ i
-    have := h2 τ i
-    rw [e'] at this
-    exact (Category.comp_id _).symm.trans (this.trans (Category.id_comp _))
-  obtain rfl : s₂ = s := key pm' h3 1 _ _ h4
-  obtain rfl : F₂ = F := key pm hpm k _ _ hF
-  rfl
-
-def DeltaDatum.triv (Xo : Moduli D l) (c : Coeff l) (nab : NabV Xo c) : DeltaDatum Xo c nab where
-  a := IsAuxiliarySplitSquarefreeLevel.triv l
-  split := fun 𝔮 h h1 => absurd ((Ideal.eq_top_iff_one _).2 (by simpa [IsAuxiliarySplitSquarefreeLevel.triv] using h1)) h.ne_top
-  cov := Cover.triv Xo c
-  nab₂ := @nab
-  nab_over := Cover.triv_nabOver Xo c @nab
-  δ := DeltaChar.triv l _
-  vol := ⟨0, fun _ => 0, Subsingleton.elim _ _⟩
-  fn := 1
-  fn_eq := fun g ty _ U i P _ y _ _ m β₀ 𝔞 d h => by
-    have h1 : ∀ z, (DeltaChar.triv l (Cover.triv Xo c).c₂.F).loc z = 1 := fun z =>
-      MulChar.one_apply (isUnit_of_subsingleton _)
-    have h2 : (DeltaChar.triv l (Cover.triv Xo c).c₂.F).ideal 𝔞 = 1 := if_neg h.ne_bot
-    rw [h1, h1, h2]
-    simp [fnAt]
-
-theorem phiDelta_triv (F : Type) [Field F] (v : Vol D (IsAuxiliarySplitSquarefreeLevel.triv l)) {n : ℕ}
-    (x : Fin n → ConjCl D (IsAuxiliarySplitSquarefreeLevel.triv l).l₂) : phiDelta (DeltaChar.triv l F) v x = 1 := by
-  change (1 : MulChar _ F)⁻¹ _ = 1
-  rw [inv_one, MulChar.one_apply (isUnit_of_subsingleton _)]
 
 end Trivial
 

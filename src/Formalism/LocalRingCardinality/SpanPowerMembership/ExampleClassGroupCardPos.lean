@@ -30,11 +30,6 @@ theorem LocalGap.tame {R : Ranks} {H : Host R} (_G : LocalGap H) : TameHyp H := 
 
 def LocalGap.cd {R : Ranks} {H : Host R} (_G : LocalGap H) : CDHaar := CD.cdHaar
 
-def LocalGap.transport {R R' : Ranks} {H : Host R} (G : LocalGap H) (H' : Host R') : LocalGap H' :=
-  ⟨G.nloc, G.nlocA, G.nlocT⟩
-
-def LocalGap.localGapOfRecord (D : D7) {R : Ranks} (H : Host R) : LocalGap H := ⟨D.loc, D.locA, D.locT⟩
-
 variable (H : Host R0) (T : ℕ) [hT : Fact T.Prime]
 
 abbrev Tau0 : Type := ↥(R0.Psi)

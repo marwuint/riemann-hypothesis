@@ -64,15 +64,6 @@ theorem appLinearBase_apply (p : X ⟶ Spec R) (g : Y ⟶ X) {F : X.Modules} {G 
     (φ : F ⟶ (Scheme.Modules.pushforward g).obj G) (U : X.Opens) (s : Γ(F, U)) :
     appLinearBase p g φ U s = φ.app U s := rfl
 
-def appLinearPreimage (g : Y ⟶ X) {F : X.Modules} {G : Y.Modules}
-    (φ : F ⟶ (Scheme.Modules.pushforward g).obj G) (U : X.Opens) :
-    letI := Module.compHom Γ(G, g ⁻¹ᵁ U) (g.app U).hom
-    Γ(F, U) →ₗ[Γ(X, U)] Γ(G, g ⁻¹ᵁ U) :=
-  letI := Module.compHom Γ(G, g ⁻¹ᵁ U) (g.app U).hom
-  { toFun := φ.app U
-    map_add' := map_add _
-    map_smul' := fun r s ↦ φ.app_smul r s }
-
 end Base
 
 section Localization
@@ -87,10 +78,6 @@ omit S in
 theorem baseRingHom_algebraMap (V : Y.Opens) (r : R) :
     baseRingHom q V (algebraMap R L r) = baseRingHom (g ≫ p) V r := by
   rw [H.w, baseRingHom_comp_SpecMap]; rfl
-
-omit S in
-theorem isAffineHom_of_isPullback_SpecMap : IsAffineHom g :=
-  MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance
 
 theorem isLocalization_app {V : X.Opens} (hV : IsAffineOpen V) :
     letI := (g.app V).hom.toAlgebra

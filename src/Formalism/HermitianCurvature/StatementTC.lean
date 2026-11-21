@@ -57,17 +57,9 @@ end towers
 def DomMinOfText : Prop :=
   ∀ (E W : Type) [Field E] (D : TB.Data E W) (T : TB.Tower E) Th, DomText D T Th → DomMin D T Th
 
-def AfterOfOld : Prop :=
-  ∀ (E W : Type) [Field E] (D : TB.Data E W), D.KernelPSD → D.ThetaDomination →
-    KrPSD D ∧ EBounds D ∧ (∀ T : TB.Tower E, DomText D T D.Th) ∧ DomAfter D
-
 def MajorantPSD : Prop :=
   ∀ (E W : Type) [Field E] (D : TB.Data E W) (T : TB.Tower E) Th, KrPSD D → DomMin D T Th →
     ∀ i s, 1 ≤ s → s ≤ i → i ≤ D.r + 1 → ∀ t ∈ T.Sg (i - s + 1) s, TB.PSDOn (T.X (i - s)) (Th i s t)
-
-def DomMonoE : Prop :=
-  ∀ (E W : Type) [Field E] (D : TB.Data E W) (T : TB.Tower E) Th (e' : ℕ → ℝ), KrPSD D →
-    (∀ i, D.e i ≤ e' i) → DomMin D T Th → DomMin { D with e := e' } T Th
 
 def OneLevelAfter : Prop :=
   ∀ (E W : Type) [Field E] (D : TB.Data E W) (ep C₄ : ℝ), D.GramPSD → KrPSD D → D.WordsPos →
@@ -100,137 +92,11 @@ def TheoremAAfter : Prop :=
 def TheoremAAfterOfSteps : Prop :=
   OneLevelAfter → TB.LimitStep → Formalism.FourierDecayAlt.K.JointTheoremA → TheoremAAfter
 
-def TheoremAOfAfter : Prop := TheoremAAfter → TB.TheoremA
-
-section sets
-
-variable {E : Type} [Field E] [DecidableEq E]
-
-def withThA (D : TA.Data E) (Th : ℕ → ℕ → E → TA.Pt E → TA.Pt E → ℂ) : TA.Data E :=
-  { D with Th := Th }
-
-def DomTextA (D : TA.Data E) (Sg : ℕ → ℕ → Finset E)
-    (Th : ℕ → ℕ → E → TA.Pt E → TA.Pt E → ℂ) : Prop :=
-  ∀ i s, 1 ≤ s → s ≤ i → i ≤ D.r + 1 →
-    (∀ t : E, TA.PSDOn (TA.PT Sg (i - s)) (Th i s t)) ∧
-    (∀ t l : E, l ∈ D.La i s →
-      ∀ h ∈ TA.PT Sg (i - s), ∀ h' ∈ TA.PT Sg (i - s), Th i s (t + l) h h' = Th i s t h h') ∧
-    (∀ t : E, t ≠ 0 → TA.PSDOn (TA.PT Sg (i - s))
-      (fun h h' => Th i s t h h' - D.K i (TA.ext h s t) (TA.ext h' s t))) ∧
-    (∀ R : Finset E, (∀ x ∈ R, ∀ y ∈ R, x - y ∈ D.La i s → x = y) →
-      TA.PSDOn (TA.PT Sg (i - s))
-        (fun h h' => ((1 + D.e i : ℝ) : ℂ) * D.K (i - s) h h' - ∑ t ∈ R, Th i s t h h'))
-
-def DomMinA (D : TA.Data E) (Sg : ℕ → ℕ → Finset E)
-    (Th : ℕ → ℕ → E → TA.Pt E → TA.Pt E → ℂ) : Prop :=
-  ∀ i s, 1 ≤ s → s ≤ i → i ≤ D.r + 1 →
-    (∀ t ∈ Sg i s, TA.PSDOn (TA.PT Sg (i - s))
-      (fun h h' => Th i s t h h' - D.K i (TA.ext h s t) (TA.ext h' s t))) ∧
-    (∀ t ∈ Sg i s, ∀ t' ∈ Sg i s, t - t' ∈ D.La i s →
-      ∀ h ∈ TA.PT Sg (i - s), ∀ h' ∈ TA.PT Sg (i - s), Th i s t h h' = Th i s t' h h') ∧
-    (∀ R : Finset E, R ⊆ Sg i s → (∀ x ∈ R, ∀ y ∈ R, x - y ∈ D.La i s → x = y) →
-      TA.PSDOn (TA.PT Sg (i - s))
-        (fun h h' => ((1 + D.e i : ℝ) : ℂ) * D.K (i - s) h h' - ∑ t ∈ R, Th i s t h h'))
-
-def DomAfterA (D : TA.Data E) : Prop :=
-  ∀ Sg : ℕ → ℕ → Finset E, TA.NZSg Sg → ∃ Th, DomMinA D Sg Th
-
-end sets
-
-def DomMinOfTextA : Prop :=
-  ∀ (E : Type) [Field E] [DecidableEq E] (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) Th,
-    TA.NZSg Sg → DomTextA D Sg Th → DomMinA D Sg Th
-
-def AfterOfOldA : Prop :=
-  ∀ (E : Type) [Field E] [DecidableEq E] (D : TA.Data E), TA.ThetaDomination D →
-    (∀ Sg : ℕ → ℕ → Finset E, TA.NZSg Sg → DomTextA D Sg D.Th) ∧ DomAfterA D
-
-def MajorantPSDA : Prop :=
-  ∀ (E : Type) [Field E] [DecidableEq E] (D : TA.Data E) (Sg : ℕ → ℕ → Finset E) Th,
-    TA.NZSg Sg → TA.AxK D → DomMinA D Sg Th →
-    ∀ i s, 1 ≤ s → s ≤ i → i ≤ D.r + 1 → ∀ t ∈ Sg i s, TA.PSDOn (TA.PT Sg (i - s)) (Th i s t)
-
-def OneLevelAfterA : Prop :=
-  ∀ (E : Type) [Field E] [DecidableEq E] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (W : Type) [Fintype W] (len : W → ℕ) (Kl : ℕ) (D : TA.Data E) (Sg : ℕ → ℕ → Finset E)
-    (Φ : W → TA.Pt E → H) (tr : W → Finset (TA.Pt E) → (TA.Pt E → TA.Pt E → ℂ) → E → ℂ)
-    (Pat1 Pat3 : Type) [Fintype Pat3] (pat1 : E → Pat1) (pat3 : ℕ → E → E → Pat3) (c1 : E → ℝ)
-    (c3 : ℕ → E → ℝ) (ep1 : ℝ) (ep3 bd4 : ℕ → ℝ) (ep a : ℝ) (i : ℕ),
-    TA.NZSg Sg → 1 ≤ i → i ≤ D.r + 1 → 0 ≤ ep → 0 ≤ a →
-    TA.AxK D → TA.KernelSupport D → (∃ Th, DomMinA D Sg Th) → TA.AxE D →
-    TA.LevelEst len Kl D Φ tr pat1 pat3 c1 c3 bd4 i →
-    TA.LevelSizes D Pat3 c1 c3 ep1 ep3 bd4 ep a i →
-      √(TA.lsup D len Kl Sg Φ i) ≤ (1 + ep) * √(1 + D.e i) * √(TA.lsup D len Kl Sg Φ (i - 1)) +
-        ∑ s ∈ Icc 2 i, a ^ (s - 1) * √(TA.lsup D len Kl Sg Φ (i - s))
-
-def OneLevelAfterOfOldA : Prop := TA.OneLevel → OneLevelAfterA
-
-def ReductionAfter : Prop :=
-  ∀ C₀ : ℝ, 1 ≤ C₀ → ∃ C' C : ℝ,
-    ∀ (E : Type) [Field E] [DecidableEq E] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-      [CompleteSpace H] (W : Type) [Fintype W] (len : W → ℕ) (Kl f : ℕ) (Θ : ℝ) (D : TA.Data E)
-      (Pat1 Pat3 : Type) [Fintype Pat3] (pat1 : ℕ → E → Pat1) (pat3 : ℕ → ℕ → E → E → Pat3)
-      (c1 : ℕ → E → ℝ) (c3 : ℕ → ℕ → E → ℝ) (ep1 : ℕ → ℝ) (ep3 bd4 : ℕ → ℕ → ℝ)
-      (Φ : ℝ → W → TA.Pt E → H)
-      (tr : ℝ → ℕ → W → Finset (TA.Pt E) → (TA.Pt E → TA.Pt E → ℂ) → E → ℂ)
-      (w0 : W) (V : TA.Pt E → H) (jn : ℝ) (ρ : Type) (c : ρ → TA.Pt E → ℂ),
-      4 ≤ Kl → 1 ≤ f → C' ≤ Θ → (D.r : ℝ) * (C₀ / Θ) ^ f ≤ 1 →
-      TA.AxK D → TA.KernelSupport D → DomAfterA D → TA.AxE D →
-      (∀ i ∈ Icc 1 (D.r + 1), TA.LevelSizes D Pat3 (c1 i) (c3 i) (ep1 i) (ep3 i) (bd4 i)
-        ((C₀ * Θ ^ (-((Kl : ℝ) - 5 / 2))) ^ f) ((C₀ / Θ) ^ f) i) →
-      (∀ eps : ℝ, 0 < eps → ∀ i ∈ Icc 1 (D.r + 1),
-        TA.LevelEst len Kl D (Φ eps) (tr eps i) (pat1 i) (pat3 i) (c1 i) (c3 i) (bd4 i) i) →
-      (∀ w, len w ≤ 4 * Kl * (D.r + 1) → Tendsto (fun eps => ‖Φ eps w []‖ ^ 2) (𝓝[>] 0) (𝓝 jn)) →
-      len w0 = 0 →
-      (∀ p, TA.IsPt (D.r + 1) p → ∀ᶠ eps in 𝓝[>] (0 : ℝ), Φ eps w0 p = V p) →
-      (∀ (P : Finset (TA.Pt E)) (R : Finset ρ), (∀ p ∈ P, TA.IsPt (D.r + 1) p) →
-        TA.PSDOn P (fun p p' => D.K (D.r + 1) p p' - ∑ x ∈ R, conj (c x p) * c x p')) →
-      (∀ x, Summable (fun p : {p : TA.Pt E // TA.IsPt (D.r + 1) p} => ‖c x p.1‖ * ‖V p.1‖)) →
-        ∀ R : Finset ρ,
-          ∑ x ∈ R, ‖∑' p : {p : TA.Pt E // TA.IsPt (D.r + 1) p}, c x p.1 • V p.1‖ ^ 2 ≤
-          (1 + C * ((D.r : ℝ) + 1) * (C₀ / Θ) ^ f) * (∏ i ∈ Icc 1 (D.r + 1), (1 + D.e i)) * jn
-
-def ReductionAfterOfSteps : Prop :=
-  OneLevelAfterA → TA.EpsLimit → TA.TopDominationLimit → Formalism.FourierDecayAlt.K.JointTheoremA → ReductionAfter
-
-def ReductionOfAfter : Prop := ReductionAfter → TA.TheoremAReduction
-
-def DomAgree : Prop :=
-  J.PSDAgree → J.PSDTranspose → J.TowersAgree →
-  ∀ (E W : Type) [Field E] [DecidableEq E] (D : TB.Data E W) (T : TB.Tower E) Th,
-    DomMin D T Th →
-    DomMinA (J.toTA D) (fun j s => T.Sg (j - s + 1) s) (fun i s t h h' => Th i s t h' h)
-
-def DomTextOfSystems : Prop :=
-  ∀ (E W : Type) [Field E] (D : TB.Data E W) (T : TB.Tower E) Th,
-    (∀ i s, 1 ≤ s → s ≤ i → i ≤ D.r + 1 → (J.sysOf (withTh D Th) i s).Ok (T.X (i - s))) →
-    DomText D T Th
-
 def RecHypAfter {E W : Type} [Field E] (D : TB.Data E W) (C₁ C₄ Θ jn : ℝ) {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ) : Prop :=
   4 ≤ D.K ∧ 1 ≤ D.f ∧ 0 < Θ ∧ D.SizesBelow Θ ∧ D.GramPSD ∧ KrPSD D ∧ D.WordsPos ∧ D.KernelSupport ∧
   EBounds D ∧ DomAfter D ∧ D.EstWave ∧ D.PoissonStep ∧ D.EstLift ∧ D.EstBlock C₄ ∧
   D.LatticeSums ((C₁ * Θ ^ (-((D.K : ℝ) - 5 / 2))) ^ D.f) ∧ D.EstE jn ∧ D.Cutoff Vt ∧ D.LeadingDomination Vt c
-
-def RecHypAfterOfOld : Prop :=
-  AfterOfOld → ∀ (E W : Type) [Field E] (D : TB.Data E W) (C₁ C₄ Θ jn : ℝ) (H : Type)
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ),
-    J.RecHyp D C₁ C₄ Θ jn Vt c → RecHypAfter D C₁ C₄ Θ jn Vt c
-
-def RecursionGivesUniformBoundsAfter : Prop :=
-  TheoremAAfter → ∀ C₁ C₄ : ℝ, 1 ≤ C₁ → 1 ≤ C₄ → ∃ C C' : ℝ,
-    ∀ (E W : Type) [Field E] (D : TB.Data E W) (Θ jn : ℝ) (H : Type) [NormedAddCommGroup H]
-      [InnerProductSpace ℂ H] [CompleteSpace H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ),
-      RecHypAfter D C₁ C₄ Θ jn Vt c → C' ≤ Θ → (D.r : ℝ) * (C / Θ) ^ D.f ≤ 1 →
-      (∀ i ∈ Icc 1 (D.r + 1), D.e i = 0) →
-      ∀ (P : Type) [Fintype P] (B : S3.MassData P), B.IntN = jn →
-        B.δ = C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f →
-        (∀ M : ℝ, (∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤ M) → B.Smod ≤ M) →
-        B.InTheoremA
-
-def EOfDens : Prop :=
-  ∀ (r : ℕ) (e : ℕ → ℝ) (sd : ℝ), (∀ i ∈ Icc 1 r, e i = 0) → 1 + e (r + 1) = max sd 1 → sd ≤ 2 →
-    ∀ i, 1 ≤ i → i ≤ r + 1 → 0 ≤ e i ∧ e i ≤ 1
 
 def ProductOfEMax : Prop :=
   ∀ (r : ℕ) (e : ℕ → ℝ) (sd : ℝ), (∀ i ∈ Icc 1 r, e i = 0) → 1 + e (r + 1) = max sd 1 →
@@ -255,15 +121,6 @@ def RecursionWithDens : Prop :=
       (∀ i ∈ Icc 1 D.r, D.e i = 0) → 1 + D.e (D.r + 1) = max sd 1 →
       ∀ R : Finset ℕ, ∑ ρ ∈ R, ‖∑' p, c ρ p • Vt p‖ ^ 2 ≤
         (1 + C * ((D.r : ℝ) + 1) * (C / Θ) ^ D.f) * max sd 1 * jn
-
-def OnceOnlyMax : Prop :=
-  J.OnceOnly → ∀ (P : Type) [Fintype P] (B : S3.MassData P), B.Pos → B.InKernel → B.InTheoremA →
-    B.c0 * B.c0' * B.KV ≤ (1 + B.δ) * max B.supdens 1 * (B.n0c * B.IntN)
-
-def MassDataCovers : Prop :=
-  ∀ (P : Type) [Fintype P] (B : S3.MassData P) (r : ℕ) (e : ℕ → ℝ), B.InDens → 1 ≤ B.e1 →
-    (∀ i ∈ Icc 1 r, e i = 0) → 1 + e (r + 1) = max B.supdens 1 →
-    ∏ i ∈ Icc 1 (r + 1), (1 + e i) ≤ B.e1
 
 def scaleTop {E W : Type} [Field E] (D : TB.Data E W) (lam : ℝ) : TB.Data E W :=
   { D with

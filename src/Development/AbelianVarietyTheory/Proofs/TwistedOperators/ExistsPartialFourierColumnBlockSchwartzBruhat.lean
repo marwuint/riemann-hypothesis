@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocIsoRefl
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeasurePreservingPiCurry
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierMemSchwartzBruhatStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierInversionSchwartzBruhatStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierEqFiniteFourierSumDepthStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierMemSchwartzBruhat
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierInversionSchwartzBruhat
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierEqFiniteFourierSumDepth
 
 namespace GlobalTheory.ColFourier
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip
@@ -96,9 +96,9 @@ theorem GlobalTheory.ColFourier.exists_blockFourier : ∀ (k : Type) [Field k] [
   haveI := hm.1
   have hψ' : HasConductor ψ⁻¹ 1 := GlobalTheory.ColFourier.hasConductor_inv hψ
   have hSB := fun (χ : AddChar k Circle) (hχ : HasConductor χ 1) (Ξ : Matrix A C k → ℂ)
-    (h : Ξ ∈ SB (Matrix A C k)) => GlobalTheory.T.partialColumnFourier_mem_schwartzBruhat k A C χ m hχ hm P Ξ h
+    (h : Ξ ∈ SB (Matrix A C k)) => _root_.GlobalTheory.ColFourier.fourierInt_mem_SB k A C χ m hχ hm P Ξ h
   have hInv := fun (χ : AddChar k Circle) (hχ : HasConductor χ 1) (Ξ : Matrix A C k → ℂ)
-    (h : Ξ ∈ SB (Matrix A C k)) => GlobalTheory.T.partialColumnFourier_inversion_schwartzBruhat k A C χ m hχ hm P Ξ h
+    (h : Ξ ∈ SB (Matrix A C k)) => _root_.GlobalTheory.ColFourier.fourierInt_inv_fourierInt k A C χ m hχ hm P Ξ h
   let L : SB (Matrix A C k) →ₗ[ℂ] (Matrix A C k → ℂ) :=
     { toFun := fun Ξ => fourierInt ψ m P Ξ
       map_add' := fun a b => GlobalTheory.ColFourier.fourierInt_add ψ m hψ hm P a.2 b.2
@@ -150,5 +150,5 @@ theorem GlobalTheory.ColFourier.exists_blockFourier : ∀ (k : Type) [Field k] [
   · rw [hFe _ (hmod Ξ hΞ T R), hFe _ hΞ]
     exact GlobalTheory.ColFourier.fourierInt_shift ψ m hm P Ξ T R hT hR
   · rw [hFe _ hΞ] at hn ⊢
-    rw [← GlobalTheory.T.partialColumnFourier_eq_finiteFourierSum_depth k A C ψ⁻¹ m ϖ hϖ hψ' hm P n _ hn]
+    rw [← _root_.GlobalTheory.ColFourier.fourierInt_eq_fourierSum k A C ψ⁻¹ m ϖ hϖ hψ' hm P n _ hn]
     exact hInv ψ hψ Ξ hΞ

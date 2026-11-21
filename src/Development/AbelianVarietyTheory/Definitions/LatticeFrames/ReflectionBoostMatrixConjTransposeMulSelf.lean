@@ -83,23 +83,6 @@ theorem chart_one {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.hos
   have : π (e - 1) = 0 := (hπ.2.1 _).2 (by rw [mul_sub, h1, mul_one, sub_self])
   rwa [RingHom.map_sub, RingHom.map_one, sub_eq_zero] at this
 
-theorem chart_cont {e : AE D} (he : IsSplitIdem D e) {v : HeightOneSpectrum (𝓞 D.host.F)}
-    {π : AE D →+* Fv D.host.F v} (hπ : GlobalTheory.SplitHecke.Chart e v π) : Continuous π := by
-  obtain ⟨h1, h2, -⟩ := he
-  have tA : ∀ z : AE D, algebraMap (AF D.host.F) (AE D) (Algebra.trace (AF D.host.F) (AE D) z) = z + cA D z :=
-    GlobalTheory.FockCompare.SymplVal.trace_tensor D.sp.cm.deg2 D.sp.cm.sig (fun e => star_star e)
-    (fun e he => (D.sp.cm.fixed e).1 he) (AF D.host.F)
-  have ht : Continuous (Algebra.trace (AF D.host.F) (AE D)) := IsModuleTopology.continuous_of_linearMap _
-  have hc : Continuous fun x : AE D => Algebra.trace (AF D.host.F) (AE D) (e * x) :=
-    ht.comp (continuous_const.mul continuous_id)
-  have hev : Continuous fun y : AF D.host.F => evalV D.host.F v (sndA D.host.F y) :=
-    (RestrictedProduct.continuous_eval v).comp continuous_snd
-  refine (hev.comp hc).congr fun x => ?_
-  have h4 : π (cA D (e * x)) = 0 := (hπ.2.1 _).2 (by rw [RingHom.map_mul, ← mul_assoc, h2, zero_mul])
-  have h5 := hπ.2.2.1 (Algebra.trace (AF D.host.F) (AE D) (e * x))
-  rw [tA, RingHom.map_add, h4, add_zero, RingHom.map_mul, chart_one h1 hπ, one_mul] at h5
-  exact h5.symm
-
 theorem single_add {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
     singleV F v (a + b) = singleV F v a + singleV F v b := by
   refine RestrictedProduct.ext _ _ fun w => ?_
@@ -135,22 +118,6 @@ theorem sec_chart {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.hos
   rw [← this]
   change e * _ = e * (e * _)
   rw [← mul_assoc, h1]
-
-theorem exists_idem (D : D7) : ∃ e, IsSplitIdem D e := by
-  have h2 : ¬ IsUnit (2 : 𝓞 D.host.F) := by
-    intro hu
-    have hn := hu.map (Algebra.norm ℤ (S := 𝓞 D.host.F))
-    rw [show (2 : 𝓞 D.host.F) = algebraMap ℤ (𝓞 D.host.F) 2 by simp, Algebra.norm_algebraMap,
-      isUnit_pow_iff Module.finrank_pos.ne'] at hn
-    rcases Int.isUnit_iff.mp hn with h | h <;> omega
-  obtain ⟨M, hM, h2M⟩ := Ideal.exists_le_maximal (Ideal.span {(2 : 𝓞 D.host.F)})
-    (by rwa [Ne, Ideal.span_singleton_eq_top])
-  have hm : (2 : 𝓞 D.host.F) ∈ M := h2M (Ideal.mem_span_singleton_self 2)
-  have hM0 : M ≠ ⊥ := by
-    rintro rfl
-    exact two_ne_zero ((Submodule.mem_bot _).mp hm)
-  obtain ⟨e, a, b, c, -⟩ := GlobalTheory.SplitIdem.exists_split_idempotent D ⟨M, hM.isPrime, hM0⟩ hm
-  exact ⟨e, a, b, _, _, ⟨_, rfl, GlobalTheory.SplitCoord.evalV_single _ 1, fun w hw => GlobalTheory.SplitCoord.evalV_single_ne hw 1⟩, c⟩
 
 theorem isCompact_half {e : AE D} (he : IsSplitIdem D e) {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}

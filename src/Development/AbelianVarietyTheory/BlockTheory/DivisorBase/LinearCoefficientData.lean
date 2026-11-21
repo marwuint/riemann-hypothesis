@@ -121,9 +121,6 @@ def Wc (θ : InfFam D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
   Mult.Wpart θ j M (Lev.levG (D.sp.W j) β (datWj D j h1 h2 Pg P)) (Lev.levChi (D.sp.W j) β (datWj D j h1 h2 Pg P))
     (eLin (D.sp.W j) β (datWj D j h1 h2 Pg P) (eCoef h)) S c
 
-def ParamGap (D : D7) : Prop :=
-  ∀ τ (n : ℕ), n + 1 < D.R.r → Formalism.L2.NTheta.lamAt (D.hc τ) (n + 1) + (D.R.r : ℚ) ≤ Formalism.L2.NTheta.lamAt (D.hc τ) n
-
 def IsFrameOf (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) : Prop :=
   ∃ (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), Lev.IsBaseFrame V β Λ N
 
@@ -142,30 +139,6 @@ def DimPartsAt {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) (P : LevelP Pg
   ∀ c : Eig D,
     FiniteDimensional ℂ (EEc θ M₀ h β₀ P S c) ∧ FiniteDimensional ℂ (Wc θ j h1 h2 M₁ h β₁ P S c) ∧
       Module.finrank ℂ (Wc θ j h1 h2 M₁ h β₁ P S c) = Module.finrank ℂ (EEc θ M₀ h β₀ P S c)
-
-def DimensionDecompositionAtBasePrime (D : D7) : Prop :=
-  ∀ (Pg : Finset (Pl D.host.E)) (h : IsRecPlaces D Pg) (ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ),
-    IsGenericPsi Pg ψ → DimPartsAt h (P0 Pg D.R.r ψ)
-
-def DimParts : Prop :=
-  ∀ D : D7, ParamGap D → GlobalTheory.GLq.ESerTie D → DimensionDecompositionAtBasePrime D
-
-def DimPartsThree : Prop :=
-  ∀ D : D7, ParamGap D → GlobalTheory.GLq.ESerTie D →
-    ∀ (Pg : Finset (Pl D.host.E)) (h : IsRecPlaces D Pg) (ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ),
-      IsGenericPsi Pg ψ → DimPartsAt h (LevelP.triv Pg D.R.r ℂ) ∧ DimPartsAt h (P0 Pg D.R.r ψ) ∧
-        DimPartsAt h (PsharpSym Pg D.R.r D.R.rS D.R.k ψ)
-
-theorem DimPartsThree.dimParts (h : DimPartsThree) : DimParts :=
-  fun D h1 h2 Pg hP ψ hψ => (h D h1 h2 Pg hP ψ hψ).2.1
-
-theorem exists_isRecPlaces (D : D7) : ∃ Pg, IsRecPlaces D Pg := by
-  classical
-  letI := D.nd.finPlG
-  exact ⟨Finset.univ.image fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.naut.plGw kv.1 kv.2, fun PP => by simp⟩
-
-example (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (Pg : Finset (Pl D.host.E)) (P : LevelP Pg D.R.r ℂ) :
-    (datE D Pg P).P = P ∧ (datWj D j h1 h2 Pg P).P = P.conj := ⟨rfl, rfl⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LinearCoefficientData
 

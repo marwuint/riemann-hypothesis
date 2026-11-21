@@ -127,20 +127,6 @@ theorem norm_mul_hsD_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : Con
   rw [← hsD_const_mul hg, e]
   exact (hsD_sub_le hfg hr k x).trans (add_le_add le_rfl (hsD_mul_sub_le hf hg k x))
 
-theorem hsD_mul_le' {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (k : ℕ) (x : 𝔼) :
-    hsD k (fun y ↦ f y * g y) x ≤ ‖f x‖ * hsD k g x +
-      ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1),
-        (k.choose ij.1 : ℝ) * hsD ij.1 f x * hsD ij.2 g x := by
-  have hr : ContDiff ℝ ∞ (fun y ↦ f y * g y - f x * g y) :=
-    (hf.mul hg).sub (contDiff_const.mul hg)
-  have e : (fun y ↦ f y * g y) = fun y ↦ f x * g y + (f y * g y - f x * g y) := by
-    funext y
-    ring
-  rw [e]
-  refine (hsD_add_le (contDiff_const.mul hg) hr k x).trans ?_
-  rw [hsD_const_mul hg]
-  exact add_le_add le_rfl (hsD_mul_sub_le hf hg k x)
-
 theorem norm_pderiv_mul_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
     (α : Fin n → ℕ) (x : 𝔼) :
     ‖pderiv α (fun y ↦ f y * g y) x - f x * pderiv α g x‖ ≤

@@ -10,9 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMember
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupleChainMiddleStageChartsJoinedMemberStatement
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocGen
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsChartsReadingStepZeroStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DualLatticeLocalBasisIffUnimodularCompanionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexValueDetShiftMulRatSpanStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FormsLatticeAtClassIffTwistedPolynomialStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DualLatticeLocalBasisIffUnimodularCompanion
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexValueDetShiftMulRatSpan
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FormsLatticeAtClassIffTwistedPolynomial
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
@@ -45,8 +45,8 @@ theorem kerEntHyp_latS : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
     refine ⟨hrat.1, fun c => ?_⟩
     obtain ⟨Bm, hBm⟩ := Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis ((I.rec7 l Z).what₂.places.resChar w) _ _
       ((I.stp u μ i).rep c).1.1.deco.2.lat.fg ((I.stp u μ i).rep c).1.1.deco.2.lat.span_eq_top
-    have hBm' := (GlobalTheory.T.dualLattice_localBasis_iff_unimodularCompanion I hOk hPins l Z Y u μ w hw i hi.le c Bm).2 hBm
-    exact (GlobalTheory.T.formsLattice_atClass_iff_twistedPolynomial I hOk hPins l Z Y O Pl Bs hQp hStd hBas hEnt u μ w hw i hi (Equiv.refl _) hY c _ (hrat.2 c) Bm
+    have hBm' := (_root_.GlobalTheory.DualOffLevel.isLocBasis_dual_iff_N I hOk hPins l Z Y u μ w hw i hi.le c Bm).2 hBm
+    exact (_root_.GlobalTheory.LatSCore.latS_at_class I hOk hPins l Z Y O Pl Bs hQp hStd hBas hEnt u μ w hw i hi (Equiv.refl _) hY c _ (hrat.2 c) Bm
       hBm).1 (hlat c Bm hBm')
   · rintro ⟨hFi, hc⟩
     have hrat : ∀ c, ∃ P ∈ Formalism.L2.Forms.RatSpan (I.rec7 l Z) ((I.fm l u μ).lam i), ∀ z, φ c z =
@@ -55,11 +55,11 @@ theorem kerEntHyp_latS : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
       intro c
       obtain ⟨v, hv, -⟩ := hc c
       rw [← hv]
-      exact GlobalTheory.T.complexValue_det_shift_mul_ratSpan I hOk hPins l Z Y O hQp hStd u μ i hi (Equiv.refl _) hY v
+      exact _root_.GlobalTheory.KerValRat.evC_ratSpan I hOk hPins l Z Y O hQp hStd u μ i hi (Equiv.refl _) hY v
     obtain ⟨x, hx⟩ := (V.rat φ).2 ⟨hFi, hrat⟩
     refine ⟨x, (V.lat w trivial x).2 fun c Bm hBm => ?_, hx⟩
-    have hBm' := (GlobalTheory.T.dualLattice_localBasis_iff_unimodularCompanion I hOk hPins l Z Y u μ w hw i hi.le c Bm).1 hBm
-    have h1 := (GlobalTheory.T.formsLattice_atClass_iff_twistedPolynomial I hOk hPins l Z Y O Pl Bs hQp hStd hBas hEnt u μ w hw i hi (Equiv.refl _) hY c _ (hrat c) Bm
+    have hBm' := (_root_.GlobalTheory.DualOffLevel.isLocBasis_dual_iff_N I hOk hPins l Z Y u μ w hw i hi.le c Bm).1 hBm
+    have h1 := (_root_.GlobalTheory.LatSCore.latS_at_class I hOk hPins l Z Y O Pl Bs hQp hStd hBas hEnt u μ w hw i hi (Equiv.refl _) hY c _ (hrat c) Bm
       hBm').2 (hc c)
     rw [hx]
     exact h1

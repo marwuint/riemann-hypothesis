@@ -173,23 +173,6 @@ section density
 
 open scoped ComplexOrder
 
-def PosDensityCC : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
-    (T : D.LevTower P0.k P0.r Wp Wq) (s : ℂ) (j : Fin (P0.r + 1)) (w : List C.Letter) (A : ℝ) (mm : ℕ) (ε : ℝ),
-    0 < ε → P5.Auser P0 w.length + 1 ≤ A → P5.mmUser P0 w.length ≤ mm →
-    (∀ x : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp),
-      (∀ a, ∃ F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp), B.CkOn ⊤ (B.GV P0.k (P0.r - j)) F ∧
-        (∀ (A' : ℝ) (m' : ℕ), B.InCC A' m' F) ∧
-        (∀ g ∈ B.GV P0.k (P0.r - j), F g ≠ 0 → ε ≤ Formalism.QuantumDeterminants.Gf P0.k (P0.r - j) (T.bs j).z (T.bs j).z' g) ∧
-        x a = F) →
-      0 ≤ D.formLev T s j w x x) →
-    ∀ x : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp),
-      (∀ a, ∃ F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp), B.CkOn ⊤ (B.GV P0.k (P0.r - j)) F ∧ B.InCC A mm F ∧
-        (∀ g ∈ B.GV P0.k (P0.r - j), F g ≠ 0 → ε ≤ Formalism.QuantumDeterminants.Gf P0.k (P0.r - j) (T.bs j).z (T.bs j).z' g) ∧
-        x a = F) →
-      0 ≤ D.formLev T s j w x x
-
 def CCCoef {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (A : ℝ) (mm : ℕ) (ε : ℝ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     Prop :=
@@ -206,28 +189,6 @@ def FormLevSesqCC : Prop :=
       D.formLev T s j w (x + c • x') y = D.formLev T s j w x y + c * D.formLev T s j w x' y ∧
         D.formLev T s j w y (x + c • x') = D.formLev T s j w y x + starRingEnd ℂ c * D.formLev T s j w y x'
 
-def ThmPModuleOfActual : Prop :=
-  P5.ThmPActual → RadialModuleForm → PosDensityCC → FormLevSesqCC →
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
-    (T : D.LevTower P0.k P0.r Wp Wq) (l0 N : ℕ) (admitted : List C.Letter → Prop) (A : ℝ) (mm : ℕ),
-    1 ≤ l0 → l0 ≤ P0.k → (∀ w, admitted w → w.length ≤ N) → P5.Auser P0 N + 1 ≤ A → P5.mmUser P0 N ≤ mm →
-    (∀ j : Fin (P0.r + 1),
-      ∃ (X : Q.ActualOps (parLev P0 j).k (parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π')
-        (μ : MeasureTheory.Measure (Formalism.QuantumDeterminants.Mt (parLev P0 j).k (parLev P0 j).r))
-        (L : R.LevelData (Q.Pr (Q.RadSp (parLev P0 j).k (parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π
-          (T.bs j).π')) (parLev P0 j).r)
-        (st : Fr.Start (Q.Pr (Q.RadSp (parLev P0 j).k (parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π
-          (T.bs j).π'))),
-        P5.IsData (parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' X μ L st l0 ∧
-        ∀ w, admitted w → P5.WordOK (parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' st l0 (D.positionted w)) →
-    ∃ KK : ∀ j : Fin (P0.r + 1), Submodule ℂ (B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)),
-      D.ThmPModule T (M.sgn P0 l0) admitted KK ∧
-      ∀ (j : Fin (P0.r + 1)) (F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (ε : ℝ), 0 < ε → B.InCC A mm F →
-        B.CkOn ⊤ (B.GV P0.k (P0.r - j)) F →
-        (∀ g ∈ B.GV P0.k (P0.r - j), F g ≠ 0 → ε ≤ Formalism.QuantumDeterminants.Gf P0.k (P0.r - j) (T.bs j).z (T.bs j).z' g) →
-        F ∈ KK j
-
 def CCCoefM {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (A : ℝ) (mm : ℕ) (ε : ℝ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     Prop :=
@@ -243,38 +204,6 @@ def FormLevSesqMM : Prop :=
       (∀ a, CCCoefM (T.bs j) A mm ε (y a)) →
       D.formLev T s j w (x + c • x') y = D.formLev T s j w x y + c * D.formLev T s j w x' y ∧
         D.formLev T s j w y (x + c • x') = D.formLev T s j w y x + starRingEnd ℂ c * D.formLev T s j w y x'
-
-def PosDensityMM : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
-    (T : D.LevTower P0.k P0.r Wp Wq) (s : ℂ) (j : Fin (P0.r + 1)) (w : List C.Letter) (A : ℝ) (mm : ℕ) (ε : ℝ),
-    0 < ε → P5.Auser P0 w.length + 1 ≤ A → P5.mmUser P0 w.length ≤ mm →
-    (∀ ε' : ℝ, 0 < ε' → ∀ x : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp),
-      (∀ a, NiceCoef (T.bs j) ε' (x a)) → 0 ≤ D.formLev T s j w x x) →
-    ∀ x : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp),
-      (∀ a, CCCoefM (T.bs j) A mm ε (x a)) → 0 ≤ D.formLev T s j w x x
-
-def ThmPModuleOfActualMM : Prop :=
-  P5.ThmPActual → RadialModuleForm → PosDensityMM → FormLevSesqMM →
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
-    (T : D.LevTower P0.k P0.r Wp Wq) (l0 N : ℕ) (admitted : List C.Letter → Prop) (A : ℝ) (mm : ℕ),
-    1 ≤ l0 → l0 ≤ P0.k → (∀ w, admitted w → w.length ≤ N) → P5.Auser P0 N + 1 ≤ A → P5.mmUser P0 N ≤ mm →
-    (∀ j : Fin (P0.r + 1),
-      ∃ (X : Q.ActualOps (parLev P0 j).k (parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π')
-        (μ : MeasureTheory.Measure (Formalism.QuantumDeterminants.Mt (parLev P0 j).k (parLev P0 j).r))
-        (L : R.LevelData (Q.Pr (Q.RadSp (parLev P0 j).k (parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π
-          (T.bs j).π')) (parLev P0 j).r)
-        (st : Fr.Start (Q.Pr (Q.RadSp (parLev P0 j).k (parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π
-          (T.bs j).π'))),
-        P5.IsData (parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' X μ L st l0 ∧
-        ∀ w, admitted w → P5.WordOK (parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' st l0 (D.positionted w)) →
-    ∃ KK : ∀ j : Fin (P0.r + 1), Submodule ℂ (B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)),
-      D.ThmPModule T (M.sgn P0 l0) admitted KK ∧
-      ∀ (j : Fin (P0.r + 1)) (F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (ε : ℝ), 0 < ε → B.InCC A mm F →
-        B.CkOn (mm : ℕ∞) (B.GV P0.k (P0.r - j)) F →
-        (∀ g ∈ B.GV P0.k (P0.r - j), F g ≠ 0 → ε ≤ Formalism.QuantumDeterminants.Gf P0.k (P0.r - j) (T.bs j).z (T.bs j).z' g) →
-        F ∈ KK j
 
 end density
 
@@ -375,67 +304,9 @@ end Formalism.FourierDecayAlt.JC
 
 end Decay
 
-section Data
-
 namespace Formalism.FourierDecayAlt.JC
 
-open Finset NumberField
-
-noncomputable section
-
-def MkDataInst : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq)
-    (Kr : ℕ → TB.Pt E → TB.Pt E → ℂ) (hK0 : Kr 0 [] [] = 1)
-    (Th : ℕ → ℕ → E → TB.Pt E → TB.Pt E → ℂ) (e : ℕ → ℝ),
-    J.Inst (S.mkData Kr hK0 Th e) S.pl S.G S.CA S.de S.de' S.T S.T' S.l
-
-def ThetaExistence₂ : Prop :=
-  ∀ (ι : Type) [Fintype ι] (G : Sz.Glob ι) (C : ℝ) (de de' : ℕ → ℝ) (T T' : ℝ) (l : ℕ),
-    1 ≤ G.f → (∀ x ∈ G.thrSet C de de' T T' l, 0 < x) →
-    ∃ Θ : ℝ, 0 < Θ ∧ IsGreatest (G.thrSet C de de' T T' l) ((Θ ^ G.f)⁻¹)
-
-def SizesConcrete : Prop :=
-  ∃ C₁ : ℝ, 1 ≤ C₁ ∧
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq)
-    (Kr : ℕ → TB.Pt E → TB.Pt E → ℂ) (hK0 : Kr 0 [] [] = 1)
-    (Th : ℕ → ℕ → E → TB.Pt E → TB.Pt E → ℂ) (e : ℕ → ℝ) (Θ : ℝ),
-    S6.Unram E → 0 < S.G.g1 → 0 < S.G.g2 → 0 ≤ S.CA → 0 < S.G.lenI → 4 < Θ →
-    IsGreatest (S.G.thrSet S.CA S.de S.de' S.T S.T' S.l) ((Θ ^ S.G.f)⁻¹) →
-    (S.mkData Kr hK0 Th e).SizesBelow Θ ∧
-      (S.mkData Kr hK0 Th e).LatticeSums ((C₁ * Θ ^ (-((C.Kst : ℝ) - 5 / 2))) ^ S.f)
-
-def SizesConcreteOfParts : Prop :=
-  J.LatticeSumsJoint → J.InstSizes → Formalism.SA.C.BoxSum → S6.LatticesGeneral → S6.IdealsMatch → S6.NormIdl →
-    S6.DegreeFacts → J.FrameProducts → J.XIsLamOne → J.InstLatticeSums → MkDataInst → SizesConcrete
-
-def AxiomsConcrete : Prop :=
-  PB.AxiomsOfLocalModel → PB.LocalCores → (∀ s, 1 ≤ s → A5.A13 s) →
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq)
-    (Kr : ℕ → TB.Pt E → TB.Pt E → ℂ) (hK0 : Kr 0 [] [] = 1)
-    (Th : ℕ → ℕ → E → TB.Pt E → TB.Pt E → ℂ),
-    PB.LocalModel (S.mkData Kr hK0 Th fun _ => 0) →
-      TC.KrPSD (S.mkData Kr hK0 Th fun _ => 0) ∧ (S.mkData Kr hK0 Th fun _ => 0).KernelSupport ∧
-        TC.EBounds (S.mkData Kr hK0 Th fun _ => 0) ∧ TC.DomAfter (S.mkData Kr hK0 Th fun _ => 0)
-
-def LocalModelExists : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq),
-    S6.Unram E → 0 < S.G.g1 → 0 < S.G.g2 →
-    ∃ (Kr : ℕ → TB.Pt E → TB.Pt E → ℂ) (hK0 : Kr 0 [] [] = 1) (Th : ℕ → ℕ → E → TB.Pt E → TB.Pt E → ℂ),
-      PB.LocalModel (S.mkData Kr hK0 Th fun _ => 0)
-
-end
-
 end Formalism.FourierDecayAlt.JC
-
-end Data
 
 section Needs
 
@@ -471,22 +342,6 @@ def ThmPIntOfPlaces : Prop :=
       ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1) ≠ 0) →
     (∀ v, ThmPIntPlace S v fun i => dl i v) →
     C.ThmPInt S
-
-def ThmPIntBuilt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
-    (S : C.HidaSetting E Wp Wq)
-    (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
-    (f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (χ : ℝ → ℝ)
-    (ν' : Fin S.f → Fin (2 * S.G.r + S.G.k + 1) → ℂ) (m₀ : Fin S.f → B.Mat S.G.k S.G.r)
-    (top : ∀ v : Fin S.f, (B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) → List C.Letter → C.LPt → C.LPt → ℂ)
-    (A₀ : ℝ),
-    0 < S.G.g1 → 0 < S.G.g2 → S6.Unram E → D.IsBuilt S T f χ ν' m₀ top A₀ →
-    ∃ dl : ℕ → Fin S.f → ℝ,
-      (∀ i, 1 ≤ i → i ≤ S.G.r + 1 →
-        ∏ v, dl i v = ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1)) ∧
-      ∀ v, ThmPIntPlace S v fun i => dl i v
 
 def GramPlace {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]

@@ -1,7 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.QxChain
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.HasFDerivAtFsvOther
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.MemLevelZeroOfMemGroup
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ResGDifferentiableAt
 
 open Matrix
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q
@@ -55,29 +54,6 @@ theorem br2 (l : Fin r) (Θ : (Mx k r → X) → (Mx k r → X)) (hS : Formalism
     rfl
   rw [e, hS, hL]
   rfl
-
-def sumQ {ι : Type} (s : Finset ι) {t : ℕ} (κ : ι → Mx k r → ℂ) (a b : ι → Fin t → Fin (2 * r + k + 1))
-    (u : ι → ℂ) (f : Mx k r → X) : Mx k r → X :=
-  fun x => ∑ i ∈ s, κ i x • qminorOp (EH k r) (a i) (b i) (u i) f x
-
-theorem sumQ_smulC {ι : Type} (s : Finset ι) {t : ℕ} (κ : ι → Mx k r → ℂ)
-    (a b : ι → Fin t → Fin (2 * r + k + 1)) (u : ι → ℂ) : Formalism.FourierDecayAlt.P5.SmulC (sumQ (X := X) s κ a b u) := by
-  intro α f
-  funext x
-  simp only [sumQ, Pi.smul_apply, Finset.smul_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Formalism.FourierDecayAlt.P5.qminorOp_smulC (fun a b => Formalism.FourierDecayAlt.P5.eabH_smulC _ a b) (a i) (b i) (u i) α f]
-  rw [Pi.smul_apply, smul_comm]
-
-theorem sumQ_left {ι : Type} (s : Finset ι) {t : ℕ} (κ : ι → Mx k r → ℂ)
-    (a b : ι → Fin t → Fin (2 * r + k + 1)) (u : ι → ℂ) (P : Mx k r) (hκ : ∀ i ∈ s, ∀ x, κ i (P * x) = κ i x)
-    (f : Mx k r → X) : sumQ s κ a b u (fun x => f (P * x)) = fun x => sumQ s κ a b u f (P * x) := by
-  funext x
-  simp only [sumQ]
-  refine Finset.sum_congr rfl fun i hi => ?_
-  rw [hκ i hi x]
-  congr 1
-  exact congrFun (Formalism.FourierDecayAlt.P.quantum_minor_left_hermitian X _ _ (Hpk k r) f (a i) (b i) (u i) P) x
 
 end Br2
 

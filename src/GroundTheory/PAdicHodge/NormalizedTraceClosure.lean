@@ -273,12 +273,6 @@ theorem extendToClosure_smul (σ : Gal(PadicAlgCl p/K₀)) (hσ : ∀ y ∈ E, �
   change ((R (σ y) : PadicAlgCl p) : ℂ_[p]) = _
   rw [hσR y y.2, gal_smul_coe]
 
-omit hadd hbound in
-variable (E R) in
-
-def kernelInCp : Set ℂ_[p] :=
-  closureInCp E ∩ extendToClosure E R ⁻¹' {0}
-
 variable {k : IntermediateField ℚ_[p] (PadicAlgCl p)}
   (hkE : k ≤ E) (hmaps : ∀ y ∈ E, R y ∈ k) (hfix : ∀ a ∈ k, R a = a)
   (γ : Gal(PadicAlgCl p/K₀)) (hγ : ∀ y ∈ E, γ y ∈ E) (hγR : ∀ y ∈ E, R (γ y) = γ (R y))

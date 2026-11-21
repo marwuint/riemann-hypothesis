@@ -4,8 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsCentAtScalar
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilRepCentralActsByDilationUnitStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftVectorEqUnitMulDilatedFlatDatumStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilRepCentralActsByDilationUnit
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftVectorEqUnitMulDilatedFlatDatum
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.L2.Pj
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -55,8 +56,8 @@ theorem flat_eq_unit_smul_om : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl
   obtain ⟨ϖ, hϖ0, hϖ⟩ := exists_unif D.host.E (R.Q t)
   have hϖE : (ϖ : D.host.E) ≠ 0 := by exact_mod_cast hϖ0
   obtain ⟨z, hz, hzm⟩ := GlobalTheory.CentScal.exists_isCentAt_scalar D i (R.Q t) eQ heQ (ϖ : D.host.E) hϖE
-  obtain ⟨κ, hκ, hact⟩ := GlobalTheory.T.weilRep_central_acts_by_dilation_unit D G Pl0 T0 A Ks R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ z hzm
-  obtain ⟨Gc, hG, hSB, hvP⟩ := GlobalTheory.T.lift_vector_eq_unit_mul_dilated_flat_datum D G Pl0 T0 A Ks R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ
+  obtain ⟨κ, hκ, hact⟩ := _root_.GlobalTheory.TupDil.om_model_eq_unit_smul_dilate D G Pl0 T0 A Ks R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ z hzm
+  obtain ⟨Gc, hG, hSB, hvP⟩ := _root_.GlobalTheory.LiftFlatModel.lift_eq_model_flat D G Pl0 T0 A Ks R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ
   obtain ⟨Tm, hTm⟩ := hf.1
   have hfT := hf.2 Tm hTm
   have hvT := hvP Tm hTm

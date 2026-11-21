@@ -84,10 +84,4 @@ theorem tangent_bijection (hs : SmoothOfRelativeDimension g A.hom) :
     (exists_coord_adapted (HolChart.exists_holomorphic_chart valAt'_rules existsUnique_point_of_ringHom
       exists_holomorphic_section_of_etale) A L g u hs (eq_zero_of_fderiv_eq_zero u))
 
-theorem riemannData_tangent : ∀ (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d : P.RiemannData y),
-    (∀ v : epsR ℂ ⟶ d.B, IsTangent v → ∃! w, d.u.IsDiff w v) ∧
-      (∀ w, ∃! v : epsR ℂ ⟶ d.B, IsTangent v ∧ d.u.IsDiff w v) := fun _ P _ d =>
-  tangent_bijection d.u
-    ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback d.isPull.1 P.smoothDim)
-
 end GlobalTheory.UnifTangent

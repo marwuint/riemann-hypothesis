@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismHomMapIdealEqStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteProductOrientedBoundedPrismsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RingHomIsPushoutOfPiComponentsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteProductOrientedBoundedPrisms
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RingHomIsPushoutOfPiComponents
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -93,7 +93,7 @@ theorem prodStable : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (n : �
     have hC' : ∀ i, ∃ t, (C' i).I = Ideal.span {t} := fun i => by
       obtain ⟨t, ht⟩ := hC i
       exact ⟨(k' i).f t, by rw [← GlobalTheory.T.prism_hom_map_ideal_eq l R _ _ (k' i), ht, Ideal.map_span, Set.image_singleton]⟩
-    obtain ⟨Q', π', hbij', -, huniv⟩ := GlobalTheory.T.exists_finite_product_oriented_boundedPrisms l R n C' hC'
+    obtain ⟨Q', π', hbij', -, huniv⟩ := _root_.GlobalTheory.Prism.finite_product_oriented l R n C' hC'
     have hQ'I : ∀ i, Q'.I.map (π' i).f = (C' i).I := fun i => GlobalTheory.T.prism_hom_map_ideal_eq l R Q' (C' i) (π' i)
     obtain ⟨K, hK⟩ := huniv Q fun i => (k' i).comp (π i)
     obtain ⟨H, hH⟩ := huniv B' h'
@@ -105,7 +105,7 @@ theorem prodStable : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (n : �
         _ = (h' i).comp k := (hpo i).comm
         _ = ((π' i).comp H).comp k := by rw [hH i]
         _ = (π' i).comp (H.comp k) := Hom.ext' rfl
-    · refine GlobalTheory.T.ringHom_isPushout_of_pi_components (qmap h m) (qmap k m) (qmap K m) (qmap H m) (fun i => qmap (π i) m)
+    · refine _root_.GlobalTheory.isPushout_of_pi_components (qmap h m) (qmap k m) (qmap K m) (qmap H m) (fun i => qmap (π i) m)
         (fun i => qmap (π' i) m) (fun i => qmap (k' i) m) (fun i => qmap (h' i) m)
         (qmap_pi_bij π hbij hQI m) (qmap_pi_bij π' hbij' hQ'I m) (fun i => ?_) (fun i => ?_) (fun i => ?_)
       · rw [← qmap_comp, ← qmap_comp, hK i]

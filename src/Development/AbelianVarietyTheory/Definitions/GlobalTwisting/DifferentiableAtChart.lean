@@ -28,8 +28,6 @@ def sInf : Cinf E →ₙ+* Ad E where
 
 def infGL (a : ℕ) : GL (Fin a) (Cinf E) →* GA E a := cornerGL a (sInf E)
 
-def infId : (Cinf E)ˣ →* Ideles E := Units.map (corner (sInf E))
-
 variable {E} {a : ℕ}
 
 theorem ad_ext {x y : Ad E} (h1 : pInf E x = pInf E y) (h2 : pFin E x = pFin E y) : x = y :=
@@ -57,17 +55,6 @@ theorem infGL_comm (y : GL (Fin a) (Cinf E)) (k : GL (Fin a) (Af E)) :
     infGL E a y * finGL E a k = finGL E a k * infGL E a y :=
   ga_ext (by simp) (by simp)
 
-theorem det_infGL (y : GL (Fin a) (Cinf E)) :
-    GeneralLinearGroup.det (infGL E a y) = infId E (GeneralLinearGroup.det y) := by
-  refine Units.ext (ad_ext ?_ ?_)
-  · rw [← CuspRep.det_map, pInf_infGL]
-    change _ = pInf E (1 - sInf E 1 + sInf E _)
-    have h : ∀ x, pInf E (sInf E x) = x := fun x => (infEq E).symm_apply_apply x
-    simp [h]
-  · rw [← CuspRep.det_map, pFin_infGL]
-    change _ = (1 : Af E) - 0 + 0
-    simp
-
 abbrev toL (x : Matrix (Fin a) (Fin a) (Cinf E)) : Lie E a := Matrix.of.symm x
 
 def invSet (E : Type) [Field E] (a : ℕ) : Set (Lie E a) := {x | IsUnit (Matrix.of x)}
@@ -82,8 +69,6 @@ theorem isOpen_invSet : IsOpen (invSet E a) := by
     ext x; exact Matrix.isUnit_iff_isUnit_det _
   rw [this]
   exact Units.isOpen.preimage contDiff_det.continuous
-
-theorem val_mem_invSet (y : GL (Fin a) (Cinf E)) : (toL y.val) ∈ invSet E a := y.isUnit
 
 open Classical in
 
@@ -204,40 +189,6 @@ def lie : Lie E a →ₗ[ℝ] Module.End ℂ (Sm E a) where
 
 @[simp] theorem lie_apply (X : Lie E a) (φ : Sm E a) (g : GA E a) : (lie E a X φ).1 g = lieD X φ.1 g := rfl
 
-theorem hasDerivAt_curve (φ : Sm E a) (g : GA E a) (c : ℝ → GL (Fin a) (Cinf E)) (X : Lie E a) (h0 : c 0 = 1)
-    (hc : HasDerivAt (fun t => toL (c t).val) X 0) :
-    HasDerivAt (fun t => φ.1 (g * infGL E a (c t))) (lieD X φ.1 g) 0 := by
-  have h : HasFDerivAt (chart φ.1 g) (fderiv ℝ (chart φ.1 g) (oneL E a)) (toL (c 0).val) := by
-    rw [h0]; exact (differentiableAt_chart φ.2 g).hasFDerivAt
-  have h2 := h.comp_hasDerivAt (0 : ℝ) hc
-  simp only [Function.comp_def, chart_val] at h2
-  exact h2
-
-theorem lie_rt_fin (X : Lie E a) (k : GL (Fin a) (Af E)) :
-    lie E a X * rt E a (finGL E a k) = rt E a (finGL E a k) * lie E a X :=
-  LinearMap.ext fun φ => Subtype.ext <| funext fun g =>
-    congrArg (fun f => fderiv ℝ f (oneL E a) X) (chart_rt_fin φ.1 g k)
-
-theorem lie_comm (X Y : Lie E a) :
-    lie E a X * lie E a Y - lie E a Y * lie E a X =
-      lie E a (toL (Matrix.of X * Matrix.of Y)) - lie E a (toL (Matrix.of Y * Matrix.of X)) := by
-  refine LinearMap.ext fun φ => Subtype.ext <| funext fun g => ?_
-  have hs : ContDiffAt ℝ ∞ (chart φ.1 g) (oneL E a) := contDiffAt_chart φ.2 g isUnit_one
-  have hd : DifferentiableAt ℝ (fderiv ℝ (chart φ.1 g)) (oneL E a) :=
-    (hs.fderiv_right (m := 1) (by norm_cast)).differentiableAt (by simp)
-  have key : ∀ X Y : Lie E a, lieD X (lieD Y φ.1) g =
-      fderiv ℝ (fderiv ℝ (chart φ.1 g)) (oneL E a) X Y + lieD (toL (Matrix.of X * Matrix.of Y)) φ.1 g := by
-    intro X Y
-    have e : chart (lieD Y φ.1) g =ᶠ[𝓝 (oneL E a)] fun x => fderiv ℝ (chart φ.1 g) x (rmul Y x) :=
-      Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun x hx => chart_lieD φ.2 Y g hx
-    rw [lieD, e.fderiv_eq, fderiv_clm_apply hd (rmul Y).differentiableAt, ContinuousLinearMap.fderiv]
-    have e1 : rmul Y (oneL E a) = Y := one_mul (Matrix.of Y)
-    rw [e1, add_comm]
-    rfl
-  change lieD X (lieD Y φ.1) g - lieD Y (lieD X φ.1) g = lieD _ φ.1 g - lieD _ φ.1 g
-  rw [key, key, (hs.isSymmSndFDerivAt (by simp; norm_cast)).eq X Y]
-  ring
-
 open Classical in
 
 def atEmb (τ : E →+* ℂ) (z : ℂ) : Cinf E :=
@@ -252,26 +203,6 @@ open Classical in
 
 def idIm (τ : E →+* ℂ) : Cinf E := if ComplexEmbedding.IsReal τ then 0 else (-1 / 2 : ℝ) • atEmb τ Complex.I
 
-theorem id_idem (τ : E →+* ℂ) : idRe τ * idRe τ - idIm τ * idIm τ = idRe τ ∧ idRe τ * idIm τ + idIm τ * idRe τ = idIm τ := by
-  classical
-  unfold idRe idIm
-  by_cases h : ComplexEmbedding.IsReal τ
-  · have hr : (InfinitePlace.mk τ).IsReal := InfinitePlace.isReal_mk_iff.2 h
-    simp only [if_pos h, mul_zero, zero_mul, sub_zero, add_zero, and_true]
-    refine Prod.ext (funext fun w => ?_) (funext fun w => ?_)
-    · simp only [atEmb, Prod.fst_mul, Pi.mul_apply]; split_ifs <;> simp
-    · simp only [atEmb, Prod.snd_mul, Pi.mul_apply]; split_ifs <;> simp
-  · have hw : ∀ w : {w : InfinitePlace E // w.IsReal}, w.1 ≠ InfinitePlace.mk τ := fun w e =>
-      h (InfinitePlace.isReal_mk_iff.1 (e ▸ w.2))
-    simp only [if_neg h]
-    constructor <;> refine Prod.ext (funext fun w => ?_) (funext fun w => ?_)
-    · simp [atEmb, hw w]
-    · simp only [atEmb, Prod.snd_mul, Prod.snd_sub, Prod.smul_snd, Pi.mul_apply, Pi.sub_apply, Pi.smul_apply]
-      split_ifs <;> apply Complex.ext <;> simp <;> norm_num
-    · simp [atEmb, hw w]
-    · simp only [atEmb, Prod.snd_mul, Prod.snd_add, Prod.smul_snd, Pi.mul_apply, Pi.add_apply, Pi.smul_apply]
-      split_ifs <;> apply Complex.ext <;> simp <;> norm_num
-
 variable (E a) in
 
 def lieS (i j : Fin a) : Cinf E →ₗ[ℝ] Module.End ℂ (Sm E a) :=
@@ -279,48 +210,10 @@ def lieS (i j : Fin a) : Cinf E →ₗ[ℝ] Module.End ℂ (Sm E a) :=
 
 theorem lieS_apply (i j : Fin a) (x : Cinf E) : lieS E a i j x = lie E a (toL (Matrix.single i j x)) := rfl
 
-theorem lieS_comm (i j k l : Fin a) (x y : Cinf E) :
-    lieS E a i j x * lieS E a k l y - lieS E a k l y * lieS E a i j x =
-      (if j = k then lieS E a i l (x * y) else 0) - (if l = i then lieS E a k j (x * y) else 0) := by
-  simp only [lieS_apply]
-  rw [lie_comm]
-  congr 1
-  · split_ifs with h
-    · subst h; exact congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_same _ _ _ _ _)
-    · exact (congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_of_ne _ _ _ _ h _)).trans (map_zero _)
-  · split_ifs with h
-    · subst h; rw [mul_comm x]; exact congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_same _ _ _ _ _)
-    · exact (congrArg (fun X => lie E a (toL X)) (Matrix.single_mul_single_of_ne _ _ _ _ h _)).trans (map_zero _)
-
 def Eop (τ : E →+* ℂ) (i j : Fin a) : Module.End ℂ (Sm E a) :=
   lieS E a i j (idRe τ) + Complex.I • lieS E a i j (idIm τ)
 
-theorem glRel_Eop (τ : E →+* ℂ) : Formalism.REAL.GlRel (Eop (a := a) τ) := by
-  intro i j k l
-  have h1 := lieS_comm i j k l (idRe τ) (idRe τ)
-  have h2 := lieS_comm i j k l (idRe τ) (idIm τ)
-  have h3 := lieS_comm i j k l (idIm τ) (idRe τ)
-  have h4 := lieS_comm i j k l (idIm τ) (idIm τ)
-  have e : ∀ p q : Fin a, Eop τ p q = lieS E a p q (idRe τ * idRe τ) - lieS E a p q (idIm τ * idIm τ) +
-      Complex.I • (lieS E a p q (idRe τ * idIm τ) + lieS E a p q (idIm τ * idRe τ)) := fun p q => by
-    rw [← map_sub, ← map_add, (id_idem τ).1, (id_idem τ).2, Eop]
-  rw [e i l, e k j]
-  simp only [Eop, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, smul_add, smul_smul]
-  have hI : Complex.I * Complex.I = -1 := Complex.I_mul_I
-  split_ifs at h1 h2 h3 h4 ⊢ <;>
-    linear_combination (norm := skip) (exp := 1) h1 + (Complex.I : ℂ) • h2 + (Complex.I : ℂ) • h3 - h4 <;>
-    match_scalars <;> ring_nf <;> simp
-
 def cap (τ : E →+* ℂ) (u : ℂ) : Module.End ℂ (Sm E a) := Formalism.REAL.qdet (Eop τ) (u + ((a : ℂ) - 1) / 2)
-
-theorem cap_comm (τ : E →+* ℂ) (u : ℂ) (i j : Fin a) : cap τ u * Eop τ i j = Eop τ i j * cap τ u :=
-  Formalism.REAL.qDetCentral _ a _ (glRel_Eop τ) _ i j
-
-theorem cap_highest (τ : E →+* ℂ) (ν : Fin a → ℂ) (φ : Sm E a) (h : Formalism.REAL.IsHW (Eop τ) ν φ) (u : ℂ) :
-    cap τ u φ = (∏ k : Fin a, (u + (ν k + (((a : ℂ) - 1) / 2 - (k : ℕ))))) • φ := by
-  rw [cap, Formalism.REAL.qDetHW _ a _ ν φ (glRel_Eop τ) h]
-  congr 1
-  exact Finset.prod_congr rfl fun k _ => by ring
 
 variable (E a) in
 
@@ -526,15 +419,6 @@ theorem Iso.hasCentChar (h : Iso π π') {η : HChar E} (hη : π.HasCentChar η
 
 variable (π) in
 
-def fn : Submodule ℂ (GA E a → ℂ) := π.V.map (Sm E a).subtype
-
-variable (π π') in
-
-def IsTwist (χ : HChar E) : Prop :=
-  ∀ ψ : GA E a → ℂ, ψ ∈ π'.fn ↔ ∃ φ ∈ π.fn, ψ = fun g => φ g * ((chiDet a χ g : ℂˣ) : ℂ)
-
-variable (π) in
-
 def HasFixed (U : Subgroup (GL (Fin a) (Af E))) : Prop := ∃ φ ∈ π.V, φ ≠ 0 ∧ ∀ k ∈ U, finRep E a k φ = φ
 
 theorem Iso.hasFixed (h : Iso π π') {U : Subgroup (GL (Fin a) (Af E))} (hU : π.HasFixed U) : π'.HasFixed U := by
@@ -548,46 +432,6 @@ theorem Iso.hasFixed (h : Iso π π') {U : Subgroup (GL (Fin a) (Af E))} (hU : �
     exact h1.symm
 
 end CuspSub
-
-def barK (k : Kinf E a) : Kinf E a :=
-  ⟨(star k.1)ᵀ, Matrix.mem_unitaryGroup_iff.2 (by
-    have e : star ((star k.1)ᵀ) = k.1ᵀ := by
-      ext i j : 1
-      simp [Matrix.star_apply]
-    have h' : k.1 * star k.1 = 1 := Matrix.mem_unitaryGroup_iff.1 k.2
-    rw [e, ← Matrix.transpose_mul, h', Matrix.transpose_one])⟩
-
-def Paired (π π' : CuspSub E a) (s : Op E a → Op E a) : Prop :=
-  ∃ B : π.V →ₗ[ℂ] π'.V →ₗ[ℂ] ℂ, (∀ φ, (∀ ψ, B φ ψ = 0) → φ = 0) ∧ (∀ ψ, (∀ φ, B φ ψ = 0) → ψ = 0) ∧
-    (∀ k φ ψ, B (π.op (.fin k) φ) (π'.op (s (.fin k)) ψ) = B φ ψ) ∧
-    (∀ k φ ψ, B (π.op (.cpt k) φ) (π'.op (s (.cpt k)) ψ) = B φ ψ) ∧
-    ∀ X φ ψ, B (π.op (.lie X) φ) ψ + B φ (π'.op (s (.lie X)) ψ) = 0
-
-def IsConjAut (c : E ≃+* E) : Prop := ∀ (τ : E →+* ℂ) (x : E), τ (c x) = starRingEnd ℂ (τ x)
-
-def conjOp (c : E ≃+* E) : Op E a → Op E a
-  | .fin k => .fin (GeneralLinearGroup.map (conjFin c) k)
-  | .cpt k => .cpt (barK k)
-  | .lie X => .lie fun i j => star (X i j)
-
-def DualIsConjBy (π : CuspSub E a) (c : E ≃+* E) (ψ : HChar E) : Prop :=
-  ∃ π' : CuspSub E a, π.IsTwist π' ψ⁻¹ ∧ Paired π' π (conjOp c)
-
-def chiInf (χ : HChar E) (x : Cinf E) : ℂ := if h : IsUnit x then ((χ.1 (infId E h.unit) : ℂˣ) : ℂ) else 0
-
-def dchi (χ : HChar E) : Cinf E →L[ℝ] ℂ := fderiv ℝ (chiInf χ) 1
-
-def expo (χ : HChar E) (τ : E →+* ℂ) : ℂ := dchi χ (idRe τ) + Complex.I * dchi χ (idIm τ)
-
-variable (E) in
-
-def Ohat : Subring (Af E) := ⨅ v : HeightOneSpectrum (𝓞 E), (v.adicCompletionIntegers E).toSubring.comap (pLoc E v)
-
-variable (E a) in
-
-def Kpr (M : ℕ) : Subgroup (GL (Fin a) (Af E)) :=
-  (GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {(M : Ohat E)}))).ker.map
-    (GeneralLinearGroup.map (Ohat E).subtype)
 
 variable (E a) in
 
@@ -634,11 +478,6 @@ theorem isAutForm_const {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ {oneFn E 
   · rw [← e]
     change ‖c * 1‖ ≤ _
     simp
-
-theorem cap_oneFn (τ : E →+* ℂ) (u : ℂ) :
-    cap τ u (oneFn E a) = (∏ k : Fin a, (u + (((a : ℂ) - 1) / 2 - (k : ℕ)))) • oneFn E a := by
-  have h : ∀ i j, Eop τ i j (oneFn E a) = 0 := fun i j => by simp [Eop, lieS_apply, lie_oneFn]
-  simpa using cap_highest τ 0 (oneFn E a) ⟨fun i => by simp [h], fun i j _ => h i j⟩ u
 
 variable (E) in
 
@@ -724,14 +563,6 @@ def HasFixed (π : CG E a) (U : Subgroup (GL (Fin a) (Af E))) : Prop :=
 instance : Inhabited (CG E 1) := ⟨mk (CuspSub.triv E le_rfl)⟩
 
 instance : Inhabited (CG E 0) := ⟨mk (CuspSub.triv E zero_le_one)⟩
-
-theorem isRegAlg_triv : (mk (CuspSub.triv E (le_refl 1))).IsRegAlg := fun τ => by
-  have h : (mk (CuspSub.triv E (le_refl 1))).HasInfChar τ {0} := ⟨rfl, fun u φ hφ => by
-    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ
-    rw [map_smul, cap_oneFn, smul_comm]
-    simp⟩
-  rw [h.infChar_eq]
-  exact ⟨by simp, fun z hz => ⟨0, by simpa using hz⟩⟩
 
 end CG
 

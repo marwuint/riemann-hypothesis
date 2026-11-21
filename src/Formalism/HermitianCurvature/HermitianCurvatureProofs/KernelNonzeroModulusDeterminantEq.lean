@@ -254,10 +254,6 @@ theorem dl_mul (hL : Lat (LL R ι)) {M N : Matrix ι ι K} (hM : IsUnit M.det) (
   rw [map_mv_mul, ← gi_trans (lat_map hM (lat_map hN hL)) (lat_map hM hL) hL,
     gi_map (mv_injective hM), mul_comm]
 
-theorem dl_pos (hL : Lat (LL R ι)) {M : Matrix ι ι K} (hM : IsUnit M.det) : 0 < dl R M := by
-  unfold dl
-  exact gi_pos (lat_map hM hL) hL
-
 end Mat
 
 section Block

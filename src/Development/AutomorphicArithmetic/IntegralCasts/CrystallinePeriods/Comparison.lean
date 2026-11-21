@@ -226,12 +226,6 @@ theorem eval_toBdRPlus (n : ℕ) (x : Acris p R) :
     toBdRPlus p R (algebraMap _ _ a) = algebraMap _ _ a :=
   toBdRPlus_algebraMap_zero _
 
-theorem map_toBdRPlus (f : R →+* S) (x : Acris p R) :
-    BdRPlus.map p f (toBdRPlus p R x) = toBdRPlus p S (map p f x) :=
-  BdRPlus.ext_eval fun n => by
-    rw [BdRPlus.eval_map, eval_toBdRPlus, eval_toBdRPlus]
-    exact map_toRange _ (AcrisZero.map p f) (fun _ => rfl) _ (map_algebraMap_zero f) x
-
 omit [IsDomain R] [ValuationRing R] [CharZero R] [IsAlgClosed (FractionRing R)] in
 theorem coe_logPartial (N : ℕ) (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     (logPartial N u hu : AinfInv p R) = truncLog N (algebraMap _ _ (u - 1)) := by
@@ -316,11 +310,6 @@ def toBdRPlus : BcrisPlus p R →+* BdRPlus p R :=
     ← IsScalarTower.algebraMap_apply ℤ_[p] ℚ_[p] (AinfInv p R)]
   rfl
 
-theorem map_toBdRPlus (f : R →+* S) (x : BcrisPlus p R) :
-    BdRPlus.map p f (toBdRPlus p R x) = toBdRPlus p S (map p f x) :=
-  RingHom.congr_fun (hom_ext (f := (BdRPlus.map p f).comp (toBdRPlus p R))
-    (g := (toBdRPlus p S).comp (map p f)) (by simp [Acris.map_toBdRPlus])) x
-
 end BcrisPlus
 
 namespace Bcris
@@ -348,11 +337,6 @@ def toBdR : Bcris p R →+* BdR p R :=
 @[simp] theorem toBdR_logTeich (η : tateModule p R) :
     toBdR p R (logTeich η) = algebraMap _ _ (BdRPlus.logTeich η) := by
   rw [logTeich, toBdR_algebraMap_acris, Acris.toBdRPlus_logTeich]
-
-theorem map_toBdR (e : R ≃+* S) (he : Function.Injective (e : R →+* S)) (x : Bcris p R) :
-    BdR.map p e (toBdR p R x) = toBdR p S (map p (e : R →+* S) he x) :=
-  RingHom.congr_fun (hom_ext (f := (BdR.map p e).toRingHom.comp (toBdR p R))
-    (g := (toBdR p S).comp (map p (e : R →+* S) he)) (by simp [BcrisPlus.map_toBdRPlus])) x
 
 variable (p R) in
 
@@ -382,12 +366,6 @@ def toBdR : Bst p R →+* BdR p R :=
     toBdR p R (algebraMap _ _ a) = algebraMap _ _ a := by
   rw [IsScalarTower.algebraMap_apply _ (Bcris p R), toBdR_algebraMap, Bcris.toBdR_algebraMap_padic]
 
-theorem map_toBdR (e : R ≃+* S) (he : Function.Injective (e : R →+* S)) (x : Bst p R) :
-    BdR.map p e (toBdR p R x) = toBdR p S (map p (e : R →+* S) he x) :=
-  RingHom.congr_fun (hom_ext (f := (BdR.map p e).toRingHom.comp (toBdR p R))
-    (g := (toBdR p S).comp (map p (e : R →+* S) he)) (fun x => by simp [Bcris.map_toBdR e he])
-    (by simp [BdRPlus.map_logFlat])) x
-
 variable (p R) in
 
 def fil (i : ℤ) : AddSubgroup (Bst p R) :=
@@ -399,16 +377,5 @@ theorem mem_fil_iff (i : ℤ) (x : Bst p R) : x ∈ fil p R i ↔ toBdR p R x �
 end Bst
 
 variable {G : Type*} [Group G] [MulSemiringAction G R]
-
-theorem Acris.smul_toBdRPlus (g : G) (x : Acris p R) :
-    g • Acris.toBdRPlus p R x = Acris.toBdRPlus p R (g • x) := Acris.map_toBdRPlus _ x
-theorem BcrisPlus.smul_toBdRPlus (g : G) (x : BcrisPlus p R) :
-    g • BcrisPlus.toBdRPlus p R x = BcrisPlus.toBdRPlus p R (g • x) := BcrisPlus.map_toBdRPlus _ x
-theorem Bcris.smul_toBdR (g : G) (x : Bcris p R) :
-    g • Bcris.toBdR p R x = Bcris.toBdR p R (g • x) :=
-  Bcris.map_toBdR (MulSemiringAction.toRingEquiv G R g) _ x
-theorem Bst.smul_toBdR (g : G) (x : Bst p R) :
-    g • Bst.toBdR p R x = Bst.toBdR p R (g • x) :=
-  Bst.map_toBdR (MulSemiringAction.toRingEquiv G R g) _ x
 
 end Reformulated.AutPerF

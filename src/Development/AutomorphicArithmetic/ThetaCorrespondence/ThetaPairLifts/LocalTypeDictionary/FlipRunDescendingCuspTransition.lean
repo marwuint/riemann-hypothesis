@@ -1,7 +1,12 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalAlongDownGridArrows
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspidalAlongDownGridArrowsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RangeSndRel
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
@@ -30,15 +35,15 @@ theorem cuspStep_down_of_large_flipRun : (∀ D : D7, GlobalTheory.IndefiniteRow
   have hCS := hS D (GlobalTheory.RowSizes.sizes_of_sizeRows large₂ hset.size) Γ Pl0 T A Ks R G hRB hG
   have eA := ga_eq_of_match hMa hi (Nat.succ_le_of_lt hj)
   have eB := ga_eq_of_match hMa hi hj.le
-  have hΨ := GlobalTheory.T.isThetaFunction_fock_vector_downward_arrow ch.rm t i j hi hj he hf Q
-  obtain ⟨Φ, hΦ, hK⟩ := GlobalTheory.T.thetaKernel_downward_testGrid_eq_sender_grid ch.W hch.weil G hG hMa t i j hi hj eA eB _ hΨ
-  have hF' := (GlobalTheory.T.isCuspTyped_testGrid_iff_sender_grid_conj hset hgap ch.W hch.weil G hG hMa i (j + 1) hi (Nat.succ_le_of_lt hj) eA Fn).1 hFn
+  have hΨ := _root_.GlobalTheory.DownFock.isThetaFunO_fock_down ch.rm t i j hi hj he hf Q
+  obtain ⟨Φ, hΦ, hK⟩ := _root_.GlobalTheory.FlipDown.kernel_down ch.W hch.weil G hG hMa t i j hi hj eA eB _ hΨ
+  have hF' := (_root_.GlobalTheory.ListedTypeConj.isCuspListed_grid_iff hset hgap ch.W hch.weil G hG hMa i (j + 1) hi (Nat.succ_le_of_lt hj) eA Fn).1 hFn
   obtain ⟨hint, hcusp⟩ := hCS.th t i j hi hj Φ hΦ _ hF'
   have hθ : ch.W.θ = R.θ := hch.weil.θ
   have hinv : ∀ h, ∀ γ ∈ GQ (ch.G.V (.grid i (j + 1))), ∀ g,
       (fun g => ch.W.kerA (.down t i j) (ch.W.fock (.mu t i j) f Q) g h * Fn g) (γ * g) =
       (fun g => ch.W.kerA (.down t i j) (ch.W.fock (.mu t i j) f Q) g h * Fn g) g := fun h γ hγ g => by
-    simp only [GlobalTheory.T.thetaKernel_downward_arrow_left_invariant ch.W t i j hi hj _ hΨ h γ hγ g, hFn.1.toIsAutFun.left γ hγ g]
+    simp only [_root_.GlobalTheory.DownKer.kerA_down_left_inv ch.W t i j hi hj _ hΨ h γ hγ g, hFn.1.toIsAutFun.left γ hγ g]
   have key := fun h => GlobalTheory.T.testGrid_measure_domain_downward_eq_sender hset hgap ch.W hch.weil G hG hMa M t hMt i j hi hj eA
     (fun g => ch.W.kerA (.down t i j) (ch.W.fock (.mu t i j) f Q) g h * Fn g) (hinv h)
   have hcb : ∀ h : GA D (ch.G.V (.grid i j)), cast eB (cast eB.symm h) = h := fun h => cast_cast _ _ h
@@ -46,7 +51,7 @@ theorem cuspStep_down_of_large_flipRun : (∀ D : D7, GlobalTheory.IndefiniteRow
   · rw [← hcb h]
     refine (key _).1.1 ?_
     simpa only [hK] using hint (cast eB.symm h)
-  · refine (GlobalTheory.T.isCuspTyped_testGrid_iff_sender_grid_conj hset hgap ch.W hch.weil G hG hMa i j hi hj.le eB _).2 ?_
+  · refine (_root_.GlobalTheory.ListedTypeConj.isCuspListed_grid_iff hset hgap ch.W hch.weil G hG hMa i j hi hj.le eB _).2 ?_
     convert hcusp using 2 with h
     rw [liftA_apply, ← (key _).2]
     simp only [hK]

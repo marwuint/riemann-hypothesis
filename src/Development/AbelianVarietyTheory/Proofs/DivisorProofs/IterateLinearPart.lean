@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationFormalGroupLawIsLinearStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIteratePInvariantDerivationMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffIteratePInvariantDerivationMul
 
 set_option autoImplicit false
 
@@ -82,7 +82,7 @@ theorem iterate_linear_part : ∀ (p : ℕ) [Fact (Nat.Prime p)] (R : Type) [ins
   have key : ∀ j : Fin d, ∃ r : R, constantCoeff ((D ^ p)
       (X j * (part F j - C (coeff (Finsupp.single j 1) F)))) = p * r := fun j => by
     rw [← hD]
-    exact GlobalTheory.T.constantCoeff_iterate_p_invariantDerivation_mul p R d μ h0 h1 u _ _ (by simp) (by simp [constantCoeff_part])
+    exact _root_.GlobalTheory.LawDer.constantCoeff_iterate_invDer_mul p R d μ h0 h1 u _ _ (by simp) (by simp [constantCoeff_part])
   choose r hr using key
   refine ⟨∑ j, r j, ?_⟩
   have hF : constantCoeff ((D ^ p) F) = ∑ j, constantCoeff ((D ^ p) (X j * part F j)) := by

@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoordConjOfCoord
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNatCoeffsDetSumSmulNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OneMemOfMulClosedOfDetNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNatCoeffsDetSumSmulNeZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OneMemOfMulClosedOfDetNeZero
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sl2AdjointNoInvariantOfIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceFormNeZeroOfStableLineIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AugSpanOneMemOfOrthogonalThreeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceFormNeZeroOfStableLineIrreducible
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AugSpanOneMemOfOrthogonalThree
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAugmentationSpanEqIdOnIrreducible
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 
@@ -53,16 +54,16 @@ theorem GlobalTheory.Sl2Ad.augmentation_contains_one : ∀ (l : ℕ) [Fact l.Pri
   intro l _ c Γ _ r _ hirr
   set S : Γ →* Matrix (Fin 3) (Fin 3) (Qbar l) := adHom.comp r with hS
   have hSg : ∀ g, S g = ad (r g) := fun g => rfl
-  have h1 := GlobalTheory.T.one_mem_span_sub_one_of_orthogonal_irreducible_three S form form_nondegenerate form_isSymm (fun g v w => form_ad _ v w)
+  have h1 := _root_.GlobalTheory.augSpan_one_mem_of_orthogonal_three S form form_nondegenerate form_isSymm (fun g v w => form_ad _ v w)
     (fun v hv => GlobalTheory.T.forall_ad_invariant_eq_zero_of_isIrr r hirr v (fun g => by rw [← hSg]; exact hv g))
-    (fun y hy hy' => GlobalTheory.T.traceForm_ne_zero_of_stable_line_irreducible r hirr y hy (fun g => by rw [← hSg]; exact hy' g))
+    (fun y hy hy' => _root_.GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr r hirr y hy (fun g => by rw [← hSg]; exact hy' g))
   obtain ⟨n, b, g, hg⟩ := Submodule.mem_span_set'.mp h1
   choose γ hγ using fun i => (g i).2
   have hdet : (∑ i, b i • (S (γ i) - 1)).det ≠ 0 := by
     have : ∑ i, b i • (S (γ i) - 1) = 1 :=
       (Finset.sum_congr rfl fun i _ => by rw [← hγ i]).trans hg
     rw [this, Matrix.det_one]; exact one_ne_zero
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_nat_coeffs_det_sum_smul_ne_zero (fun i => S (γ i) - 1) b hdet
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.exists_nat_coeffs_det_ne_zero (fun i => S (γ i) - 1) b hdet
   set J : Submodule ℚ_[l] (Matrix (Fin 3) (Fin 3) (Qbar l)) := Submodule.span ℚ_[l] (Set.range fun g => S g - 1) with hJ
   have hmul : ∀ x ∈ J, ∀ y ∈ J, x * y ∈ J := by
     intro x hx y hy
@@ -86,7 +87,7 @@ theorem GlobalTheory.Sl2Ad.augmentation_contains_one : ∀ (l : ℕ) [Fact l.Pri
     refine J.sum_mem fun i _ => ?_
     rw [Nat.cast_smul_eq_nsmul]
     exact J.nsmul_mem (Submodule.subset_span ⟨_, rfl⟩) _
-  have hone := GlobalTheory.T.one_mem_of_mul_mem_of_det_ne_zero J hmul _ hT ha
+  have hone := _root_.GlobalTheory.one_mem_of_mulClosed_of_det_ne_zero J hmul _ hT ha
   obtain ⟨n', a', g', hg'⟩ := Submodule.mem_span_set'.mp hone
   choose γ' hγ' using fun i => (g' i).2
   refine ⟨n', γ', a', fun X hX => ?_⟩

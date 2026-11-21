@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentAndTwistData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCentralGroupAlgebraIdempotentUniversal
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearDescentToBaseChangeOfFormStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodTwistSideFormsLeSpanGoodLiftFormsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearDescentToBaseChangeOfForm
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodTwistSideFormsLeSpanGoodLiftForms
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 
@@ -19,7 +19,7 @@ theorem descend_exists (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : Ra
       ∀ w : ↥(WKr D S j), Φ (w : S.WL j) = (1 : KT D T i b) ⊗ₜ[S.Ks] w := by
   obtain ⟨n, bs, hb, -, hKs, hLi, hLs⟩ := In.ks j h1 h2
   have hW : WKr D S j = (S.A j).WK := WKr_of D S h1 h2
-  exact GlobalTheory.T.exists_semilinear_descent_to_baseChange_of_form D.LL0 S.kKs S.kKs_spec (WKr D S j) bs (fun k => hW ▸ hb k) (hW ▸ hKs) hLi hLs
+  exact _root_.GlobalTheory.exists_semilinear_descent_to_baseChange D.LL0 S.kKs S.kKs_spec (WKr D S j) bs (fun k => hW ▸ hb k) (hW ▸ hKs) hLi hLs
     (KT := KT D T i b) (readK D T i b) (fun s => rfl)
 
 theorem descend_actL (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool)
@@ -99,42 +99,5 @@ theorem descend_mem_eigenspace (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) 
     LinearMap.baseChange (KT D T i b) (hLr D S In j k P) (Φ x) : KT D T i b ⊗[S.Ks] ↥(WKr D S j)) = _
   rw [← hf _ _ hw, hx, hc]
   exact smul_smul _ _ _
-
-theorem goodPart_le_iSup_eigen : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (S : RatDat D.ntw)
-    (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T),
-    In.Sb ⊆ Sx → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) →
-    ∀ (i : T.Tw) (j : ℕ) (b : Bool), 1 ≤ j → j ≤ D.R.m →
-      V0T D T S In.rho In.chi In.θ i j b ≤
-        ⨆ σ ∈ {σ : D.what₂.FT | D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ},
-          V0T D T S In.rho In.chi In.θ i j b ⊓
-            ⨅ (k : ℕ) (P : PlE D.host) (_ : 1 ≤ k ∧ k ≤ D.R.r ∧ IsSplitPl D.host P ∧ P ∉ T.S0 i),
-              Module.End.eigenspace (hkT D T S In i j b k P)
-                (algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i b P : T.O i) ^ k * readT D T i b (In.eig j σ k P)) := by
-  intro D cf jE A S In b0 b1 Sx T Sp hSb hstar i j b hj1 hj2
-  obtain ⟨Φ, hc, hf, hw⟩ := descend_exists D T S In i j b hj1 hj2
-  have ha := descend_actL D T S In i j b hj1 hj2 Φ hc hf
-  have he := descend_eSum D T S In i j b Φ hc ha
-  refine (GlobalTheory.T.V0T_le_span_image_goodL D S In T i j b hj1 hj2 (eIdem_all D) Φ hc ha he hw).trans (Submodule.span_le.mpr ?_)
-  intro y hy
-  obtain ⟨x, hx, rfl⟩ := hy
-  rw [SetLike.mem_coe]
-  refine Submodule.iSup_induction (motive := fun y => Φ y ∈ _) _ (In.span j hj1 hj2 hx) ?_ ?_ ?_
-  · intro σ y hy
-    refine Submodule.iSup_induction (motive := fun y => Φ y ∈ _) _ hy ?_ ?_ ?_
-    · intro hσ z hz
-      refine Submodule.mem_iSup_of_mem σ (Submodule.mem_iSup_of_mem hσ ?_)
-      rw [Submodule.mem_inf] at hz ⊢
-      refine ⟨descend_mem_V0T D T S In i j b Φ hc ha he z hz.1, ?_⟩
-      have hz2 := hz.2
-      simp only [Submodule.mem_iInf] at hz2 ⊢
-      intro k P hkP
-      have hPb : P ∉ In.Sb := fun hP => hkP.2.2.2 (by
-        rw [← Finset.mem_coe, Sp.ringSpec_excludedPlaces_eq i]
-        exact Or.inr (Finset.mem_coe.mpr (hSb hP)))
-      exact descend_mem_eigenspace D T S In i j b hj1 hj2 Φ hc hf k P _ z (hz2 k P ⟨hkP.1, hkP.2.1, hkP.2.2.1, hPb⟩)
-    · rw [map_zero]; exact zero_mem _
-    · intro y z hy hz; rw [map_add]; exact add_mem hy hz
-  · rw [map_zero]; exact zero_mem _
-  · intro y z hy hz; rw [map_add]; exact add_mem hy hz
 
 end GlobalTheory.HeightCounting.FormsStep

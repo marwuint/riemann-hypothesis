@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDifferentialsConnectedPDivGroupCoordinaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDifferentialsConnectedPDivGroupCoordina
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
 noncomputable section
@@ -19,7 +19,7 @@ theorem exists_rigMap (p : ℕ) (k : Type) [Field k] (d : ℕ) (G : PDivGroup p 
   let S : Submodule k (MvPowerSeries (Fin d ⊕ Fin d) k) := G.cocycles.comap L
   let T₀ : S →ₗ[k] G.cocycles := L.restrict (fun x hx => hx)
   obtain ⟨T, hT⟩ := LinearMap.exists_extend T₀
-  have hU := (GlobalTheory.T.invariantDifferentials_connectedPDivGroup_coordinates p k d G c).1
+  have hU := (_root_.GlobalTheory.OmegaCoord.omega_coord p k d G c).1
   let U : (Fin d → k) →ₗ[k] G.omega :=
     { toFun := fun w => ⟨fun n => ∑ i, w i • dUnit k (c.x n i), hU w⟩
       map_add' := fun a b => Subtype.ext (funext fun n => by

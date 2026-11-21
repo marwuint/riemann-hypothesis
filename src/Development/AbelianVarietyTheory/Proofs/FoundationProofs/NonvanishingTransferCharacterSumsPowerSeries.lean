@@ -1,18 +1,19 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Foundations.NotZeroChi
-import Development.AbelianVarietyTheory.Definitions.Foundations.ZetaSysUOfHalves
+import Development.AbelianVarietyTheory.Definitions.Foundations.HTLawAt
+import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsLocallyConstantCycMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ChSumSubCMul
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSubOnePowThreeLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SeriesEqZeroOfValsTendstoZero
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesEqOfCongruentValuesAtPrimitiveRootsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesEqOfCongruentValuesAtPrimitiveRoots
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralOfNormLeOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TruncatedShiftedSeriesEqIntegralPolyCombinationStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TruncatedShiftedSeriesEqIntegralPolyCombination
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterTwistedSumCongrGaussSumDiracStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AmiceRiemannSumCongrDiracCoefficientsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TeichmullerDecompositionDirichletTwistedPowerStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPrimitiveCharacterTwistStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormGaussSumModPrimePowerLeHalfPowerStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussSumModPrimePowerMulInvEqPrimePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussSumModPrimePowerMulInvEqPrimePow
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ PowerSeries GlobalTheory.KZ.Cmp
 
@@ -208,7 +209,7 @@ theorem mellin_comp (l : ℕ) [Fact l.Prime] (c : Coef l) (F : PowerSeries (Qbar
   have hl1 : ‖(l : Qbar l)‖ ≤ 1 := IsUltrametricDist.norm_natCast_le_one _ l
   have hmono : ∀ {i j : ℕ}, i ≤ j → ‖(l : Qbar l) ^ j‖ ≤ ‖(l : Qbar l) ^ i‖ := fun h => by
     rw [norm_pow, norm_pow]; exact pow_le_pow_of_le_one (norm_nonneg _) hl1 h
-  choose a haO ha using fun N => GlobalTheory.T.truncated_shifted_series_eq_integral_poly_combination l c F N hF
+  choose a haO ha using fun N => _root_.GlobalTheory.KZ.Cmp.tval_eq_sum_pow_of_integral l c F N hF
   choose ε t hε hεr hεc using fun R j => GlobalTheory.T.teichmuller_decomposition_dirichlet_twisted_power l φ e R j hl2
   have hεO : ∀ R j, ε R j ∈ c.O := fun R j => (hε R j).elim (fun h => h ▸ zero_mem _) (hc _)
   have hF1 : ∀ n, ‖F.coeff n‖ ≤ 1 := fun n => FirstDer.norm_le_one_of_mem c (hF n)
@@ -336,7 +337,7 @@ theorem nonvanishing_transfer : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (Gs L 
     have h4 := hR R le_rfl
     simp only [h3, norm_zero] at h4
     linarith
-  obtain ⟨-, hpin⟩ := GlobalTheory.T.powerSeries_eq_of_congruent_values_at_primitiveRoots l c' _ _ (a' / a) (fun k => v' (k + 1) / v (k + 1) * (a' / a)) c₁ (m₀ + 2 * c₁) hAO hBO hB0 hu hw
+  obtain ⟨-, hpin⟩ := _root_.GlobalTheory.KZ.autoPin_congr l c' _ _ (a' / a) (fun k => v' (k + 1) / v (k + 1) * (a' / a)) c₁ (m₀ + 2 * c₁) hAO hBO hB0 hu hw
     (fun k hk ζ hζ => by
       obtain ⟨z, hz, hzψ⟩ := hyp (k + 1) (by omega)
       obtain ⟨ψ, hψ, hin, hψζ⟩ := GlobalTheory.T.exists_primitive_character_twist l φ e k ζ hl2 (by omega) hζ
@@ -346,7 +347,7 @@ theorem nonvanishing_transfer : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (Gs L 
       rw [tval_C_mul, tval_C_mul]
       refine cg_div_gauss l k c₁ (chSum Gs (k + 1) z ψ) (chSum L (k + 1) z ψ) _ _ _ _
         (1 - (c₀ : Qbar l) * ψ⁻¹ (c₀ : ZMod (l ^ (k + 1)))) _ _ a a' κ p (by omega) (hv _).1 (hv' _).1 ha ha' hp1 hN
-        (GlobalTheory.T.gaussSumModPrimePower_mul_inv_eq_prime_pow l (k + 1) z ψ hz hψ) (GlobalTheory.T.norm_gaussSumModPrimePower_le_half_power l (k + 1) z⁻¹ ψ⁻¹ hz.inv.pow_eq_one) g1 ?_ (hzψ ψ hψ)
+        (_root_.GlobalTheory.KZ.Cmp.gSum_mul_gSum_inv_prim l (k + 1) z ψ hz hψ) (GlobalTheory.T.norm_gaussSumModPrimePower_le_half_power l (k + 1) z⁻¹ ψ⁻¹ hz.inv.pow_eq_one) g1 ?_ (hzψ ψ hψ)
       rw [hAL, tval_sub_C_mul]
       convert g2 using 1 <;> ring)
   have hy : ‖(1 + (l : Qbar l)) ^ e - 1‖ ≤ 1 := by

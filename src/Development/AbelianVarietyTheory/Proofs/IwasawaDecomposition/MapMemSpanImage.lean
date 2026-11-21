@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SameForm
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsSStageUnconditional
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsCombOfMemClosureFinset
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivHermitianFrameNormAtComplexPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroColumnsClassSumFormPosDefStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralFormsHermLatticeGoodAndComplexBasisStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivHermitianFrameNormAtComplexPlace
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroColumnsClassSumFormPosDef
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralFormsHermLatticeGoodAndComplexBasis
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTupleUnitaryFormsEquivPeriodRowFormsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowsPrescribedUnitaryFormsStandInsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowsPrescribedUnitaryFormsStandIns
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResCharConj
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Df
 attribute [local instance] GlobalTheory.Mem.Col2.starE
@@ -36,9 +36,9 @@ open GlobalTheory.Mem.Df.RowsEx in
 theorem GlobalTheory.Mem.Df.rowsDef_nonempty : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (hX : B.fields.Ok), Nonempty (RowsDef I l hX) := by
   intro B X I hI hP l hX
   classical
-  have hb := fun a => GlobalTheory.T.integralFormsHermLattice_good_and_complexBasis I hX a
+  have hb := fun a => _root_.GlobalTheory.Mem.Df.mtHL_good_basis I hX a
   choose j hj using fun a => (hb a).2.1
-  have hA := fun a => GlobalTheory.T.exists_equiv_hermitianFrameNorm_at_complexPlace B.LL B.embLL (MtHL I hX a) (MtCx I a) (j a) (hb a).1.1
+  have hA := fun a => _root_.GlobalTheory.exists_equiv_normAt_eq_norm B.LL B.embLL (MtHL I hX a) (MtCx I a) (j a) (hb a).1.1
     (by simpa only [hj] using (hb a).2.2.1) (by simpa only [hj] using (hb a).2.2.2)
   choose n gA hgA using hA
   have hme := GlobalTheory.T.exists_tupleUnitaryForms_equiv_periodRowForms I hI hP l hX
@@ -59,8 +59,8 @@ theorem GlobalTheory.Mem.Df.rowsDef_nonempty : ∀ {B : Base} {X : PreX B.toPre}
   have hmt : ∀ w, mt (B.places.conj w) = mt w := fun w => by
     simp only [mt, GlobalTheory.Mem.Top.TwFin.resChar_conj]
   obtain ⟨W, g, hstd, hmuAt, hmuTw, he0, heT, hcar, hgen, heOp, hze⟩ :=
-    GlobalTheory.T.exists_rows_prescribedUnitaryForms_standIns B (I.cols l) n (fun u => (mq u I.mu0).symm.trans (gA I.mu0))
-      (fun u a => (mq u a).symm.trans (gA a)) L mt hmt (GlobalTheory.T.stepZeroColumns_classSumForm_posDef I hI hP l hX)
+    _root_.GlobalTheory.Mem.DfGen.exists_rowsRest_std B (I.cols l) n (fun u => (mq u I.mu0).symm.trans (gA I.mu0))
+      (fun u a => (mq u a).symm.trans (gA a)) L mt hmt (_root_.GlobalTheory.Mem.Df.cols_pos I hI hP l hX)
   letI := W.instAmb
   letI := W.instAmbi
   refine ⟨⟨W, fun a => (gA a).trans (g a).toLinearEquiv, ?_, hstd⟩⟩

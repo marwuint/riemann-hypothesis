@@ -263,7 +263,7 @@ theorem PositivityTheory.Xgn.torus_uniformization_continuous : ∀ (X : Scheme.{
   let φ : Γ(X, W) →+* Γ(Z', V) := (ρ.appLE W V hVW).hom
   have hφ : spMap φ ≫ x = xV ≫ ρ := IsAffineOpen.SpecMap_appLE_fromSpec ρ hW hV hVW
   obtain ⟨E, _, _, ⟨MR⟩⟩ := lieModel_exists X G Γ(X, W) x
-  haveI : Module.Finite Γ(X, W) E := (GlobalTheory.T.lie_model_finite_base_change X G Γ(X, W) x E MR).1
+  haveI : Module.Finite Γ(X, W) E := (_root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X G Γ(X, W) x E MR).1
   obtain ⟨n, s, hs⟩ := Module.Finite.exists_fin (R := Γ(X, W)) (M := E)
   obtain ⟨c, hc⟩ := local_formula h hΦ u β H hH x xV φ hφ MR s hs
   obtain ⟨ψ, hψ⟩ := exists_lift x ξ (by

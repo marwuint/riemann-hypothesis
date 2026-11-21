@@ -367,27 +367,4 @@ theorem Val.dilT (Q : ValCrd W Λ σ₀ u i) : Val.DilT W Λ hc hX hPr σ₀ hσ
 
 end Clauses
 
-section Rec
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (u : d.what₂.Word) (i : ℕ)
-  (hi : i ≤ d.R.m) (eV : ((d.colRec a).mem u).A.vT ≃ CF.PlT (d.colRec a) u) (heV : ∀ P, IsOver (eV P).1 P.1)
-
-include heV in
-
-theorem valDil_rec :
-    Val.Dil (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i) eV
-      (valCrd a hS hH u i hi) :=
-  Val.dil (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ u i _ (hP u i) eV heV _
-
-include heV in
-
-theorem valDilT_rec :
-    Val.DilT (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i) eV
-      (valCrd a hS hH u i hi) :=
-  Val.dilT (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i _ (hP u i) eV heV _
-
-end Rec
-
 end Formalism.L2.Col

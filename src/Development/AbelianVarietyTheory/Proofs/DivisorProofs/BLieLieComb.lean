@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapPairDetCovec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralModelPAdicComparisonStatement
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open NumberField IsDedekindDomain
@@ -29,15 +28,6 @@ theorem lieComb_zero {O : Type} [CommRing O] (G : Over (Spec (CommRingCat.of O))
 theorem lieComb_succ {O : Type} [CommRing O] (G : Over (Spec (CommRingCat.of O))) [GrpObj G] [IsCommMonObj G]
     {m : ℕ} (a : Fin (m + 1) → O) (x : Fin (m + 1) → LieG G) :
     lieComb G a x = lieAdd (AvDefs.lieScale G (a 0) (x 0)) (lieComb G (Fin.tail a) (Fin.tail x)) := rfl
-
-theorem bLie_lieComb {E : Type} [Field E] [NumberField E] {p : ℕ} [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p)
-    {m : ℕ} (a : Fin m → 𝓞_ℂ_[p])
-    (x : Fin m → LieG P.Gt) : P.bLie (lieComb P.Gt a x) = ∑ i, a i • P.bLie (x i) := by
-  induction m with
-  | zero => simp [lieComb_zero, P.bLie_zero]
-  | succ m ih =>
-    rw [lieComb_succ, P.bLie_add, P.bLie_scale, ih, Fin.sum_univ_succ]
-    rfl
 
 end GlobalTheory.FlatModel
 

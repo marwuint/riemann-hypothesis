@@ -8,11 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorLiftsT
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegenerationTangentPointUniqueLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentRelationAdditiveScaling
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsPointOfIffThick
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieBasisCardEqDimUniformisationDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusExtensionTangentOfAdditiveMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieBasisTorusExtensionOfLiftsAndDualsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLieBasisOfCompatibleTangentRelationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionTangentPullbackComplexDualNumbersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieBasisCardEqDimUniformisationDvr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusExtensionTangentOfAdditiveMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieBasisTorusExtensionOfLiftsAndDuals
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLieBasisOfCompatibleTangentRelation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionTangentPullbackComplexDualNumbers
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory.MBModel GlobalTheory.KeyCl GlobalTheory.Ex GlobalTheory.MBLow GlobalTheory.SecJet
@@ -36,7 +36,7 @@ theorem main : AllVC fun {V} _ _ _ {D} {A} {G} _ _ U {C} _ _ {N} ν => ∃ (vB :
   let bX : Module.Basis (Fin r) ℤ N.X := Module.finBasis ℤ N.X
   let bD : Module.Basis (Fin r) ℤ D.toPre.X := bX.map ν.eX.toIntLinearEquiv
   choose lf hlf using fun i => (GlobalTheory.MBLow.GtVec.main V D.toPre).1 (vB i) (hvB.1 i)
-  choose tv htv using fun l : Fin r => GlobalTheory.T.exists_torusExtensionTangent_of_additiveMap V D.toPre ((Int.castAddHom V).comp (bD.coord l).toAddMonoidHom)
+  choose tv htv using fun l : Fin r => _root_.GlobalTheory.MBLow.TorVec.exists_torus_tangent V D.toPre ((Int.castAddHom V).comp (bD.coord l).toAddMonoidHom)
   have hco : ∀ (l : Fin r) (χ : D.toPre.X), ((Int.castAddHom V).comp (bD.coord l).toAddMonoidHom) χ = ((bD.repr χ l : ℤ) : V) :=
     fun l χ => by simp [Module.Basis.coord_apply]
   let gm₀ : Fin D.toPre.P.g ⊕ Fin r → GtPt D.toPre (epsR V) := Sum.elim lf tv
@@ -47,7 +47,7 @@ theorem main : AllVC fun {V} _ _ _ {D} {A} {G} _ _ U {C} _ _ {N} ν => ∃ (vB :
   let x : Fin D.toPre.P.g ⊕ Fin r → (epsR V ⟶ H) := fun j => (Φ _).symm (gm₀ j)
   have hx : ∀ j, Φ _ (x j) = gm₀ j := fun j => Equiv.apply_symm_apply _ _
   have hxB : ∀ (n : ℕ) (σ : Fin n ≃ Fin D.toPre.P.g ⊕ Fin r), IsLieBasis (fun k => x (σ k)) := fun n σ =>
-    GlobalTheory.T.lieBasis_torusExtension_of_lifts_and_duals V D.toPre H Φ hΦ r vB bD x hvB (fun j => by rw [hx]; exact hgt j) (fun i => by rw [hx]; exact (hlf i).2)
+    _root_.GlobalTheory.GtBasis.main V D.toPre H Φ hΦ r vB bD x hvB (fun j => by rw [hx]; exact hgt j) (fun i => by rw [hx]; exact (hlf i).2)
       (fun l => by
         rw [hx]
         refine ⟨(htv l).2.1, fun χ Z q z J hJ => ?_⟩
@@ -99,12 +99,12 @@ theorem main : AllVC fun {V} _ _ _ {D} {A} {G} _ _ U {C} _ _ {N} ν => ∃ (vB :
       ((tanRel_iff_isPointOf _ _ _).1 h')
   choose yy hyy using fun j => (existsUnique_tangent_of_gtTan V hV D A G hS U (gm₀ j) (hgt j)).exists
   have hyB : ∀ (n : ℕ) (σ : Fin n ≃ Fin D.toPre.P.g ⊕ Fin r), IsLieBasis (fun k => yy (σ k)) := fun n σ =>
-    GlobalTheory.T.isLieBasis_of_compatible_tangentRelation V G H Rel h1 hmul hsc hex huy hux n _ _ (hxB n σ) fun k => ⟨(hyy _).1, by
+    _root_.GlobalTheory.LieTransfer.isLieBasis_of_rel V G H Rel h1 hmul hsc hex huy hux n _ _ (hxB n σ) fun k => ⟨(hyy _).1, by
       show TanRel _ _ _
       rw [hx]; exact (hyy _).2⟩
-  have hdim : D.toPre.P.g + r = A.g := GlobalTheory.T.lieBasis_card_eq_dim_uniformisation_dvr V D A G U.toUnifPre _ _ (hyB _ finSumFinEquiv.symm)
+  have hdim : D.toPre.P.g + r = A.g := _root_.GlobalTheory.LieRankUnif.card_eq_g V D A G U.toUnifPre _ _ (hyB _ finSumFinEquiv.symm)
   let σ : Fin A.g ≃ Fin D.toPre.P.g ⊕ Fin r := (finCongr hdim.symm).trans finSumFinEquiv.symm
-  choose gmC hgmC using fun j => GlobalTheory.T.torusExtensionTangent_pullback_complexDualNumbers V D.toPre C N ν (gm₀ j) (hgt j)
+  choose gmC hgmC using fun j => _root_.GlobalTheory.MBLow.TanPull.main V D.toPre C N ν (gm₀ j) (hgt j)
   refine ⟨vB, r, bX, σ, fun k => yy (σ k), fun k => gm₀ (σ k), fun k => gmC (σ k), hyB _ σ,
     ⟨hvB, fun j => (hgmC _).2.1, fun i => ?_, fun l => ?_⟩, fun k => ⟨(hyy _).2, hgt _, (hgmC _).1⟩⟩
   · dsimp only

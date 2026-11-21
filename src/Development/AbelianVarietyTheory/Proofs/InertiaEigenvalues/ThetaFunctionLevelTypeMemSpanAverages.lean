@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeisOAdd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanKilledUnionAveragesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MirabolicDetCharacterFunctionConjStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MirabolicDetCharacterFunctionConj
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef
 open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.IndefR.Links
@@ -167,7 +167,7 @@ theorem cleanSpan : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (ε = 1 ∨ ε = -1) ∧ c = mirC R i PP a tr ε}
   have hC : ∀ c ∈ C, ∀ x : G, (fun g => c (x * g * x⁻¹)) ∈ C := by
     rintro c ⟨PP, a, ha, tr, ε, hε, rfl⟩ x
-    obtain ⟨a', ha', he⟩ := GlobalTheory.T.mirabolicDetCharacterFunction_conj D G Pl0 T A Ks R i PP a ha tr ε x
+    obtain ⟨a', ha', he⟩ := _root_.GlobalTheory.DownLift.GenFinite.mirC_conj D G Pl0 T A Ks R i PP a ha tr ε x
     exact ⟨PP, a', ha', tr, ε, hε, funext he⟩
   have havg : ∀ (PP : R.Pg) (a : Fin D.R.r → kP PP.1) (tr : Bool) (ε : ℤ) (κ' : G → GA D (Vc D i)), IsLifts R i t κ' →
       ∀ w ∈ S, avgW R i t PP a tr ε κ' w = ∑ g, mirC R i PP a tr ε g • π g w := by

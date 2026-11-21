@@ -51,10 +51,6 @@ theorem Bf_Ek_Ek [FiniteDimensional F E] (σ : E →ₐ[F] E) (J : Matrix (Fin m
 def bM (bs : Module.Basis (Fin 2) F E) : Module.Basis (Fin m × Fin n × Fin 2) (AF F) (Mx F E m n) :=
   (Algebra.TensorProduct.basis (AF F) bs).matrix (Fin m) (Fin n)
 
-theorem bM_apply (bs : Module.Basis (Fin 2) F E) (k : Fin m × Fin n × Fin 2) : bM bs k = Ek bs k := by
-  obtain ⟨i, j, l⟩ := k
-  simp [bM, Ek, Algebra.TensorProduct.basis_apply]
-
 theorem bM_repr (bs : Module.Basis (Fin 2) F E) (X : Mx F E m n) (k : Fin m × Fin n × Fin 2) :
     (bM bs).repr X k = crdB bs X k := by
   obtain ⟨i, j, l⟩ := k

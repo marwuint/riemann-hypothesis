@@ -7,63 +7,6 @@ open Finset Matrix
 
 namespace ReciprocityTheory.ChartRestriction.DS
 
-section Gen
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-  {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
-
-theorem anyf_projE_le (j : V →L[ℂ] H) (hj : ∀ v, ‖j v‖ = ‖v‖) (E : H →L[ℂ] H) (S : Submodule ℂ H)
-    (hE : Formalism.MainNotions.S.IsOrthProjOnto E S) (hS : LinearMap.range (j : V →ₗ[ℂ] H) = S) (z : H) :
-    ∃ w : V, j w = E z ∧ ‖E z‖ ≤ ‖ContinuousLinearMap.adjoint j z‖ := by
-  have hEz : E z ∈ S := by
-    rw [← hE.2.2]
-    exact LinearMap.mem_range_self _ z
-  obtain ⟨w, hw⟩ : E z ∈ LinearMap.range (j : V →ₗ[ℂ] H) := by
-    rw [hS]
-    exact hEz
-  have hw' : j w = E z := hw
-  have hfix : ∀ y ∈ S, E y = y := by
-    intro y hy
-    rw [← hE.2.2] at hy
-    obtain ⟨u, rfl⟩ := hy
-    show E (E u) = E u
-    rw [← ContinuousLinearMap.comp_apply, hE.1]
-  have hinner : ∀ v v' : V, @inner ℂ H _ (j v) (j v') = @inner ℂ V _ v v' := by
-    intro v v'
-    let J : V →ₗᵢ[ℂ] H := { toLinearMap := (j : V →ₗ[ℂ] H), norm_map' := hj }
-    exact J.inner_map_map v v'
-  have hadj : ContinuousLinearMap.adjoint j z = w := by
-    refine ext_inner_right ℂ fun v => ?_
-    rw [ContinuousLinearMap.adjoint_inner_left]
-    have hjv : j v ∈ S := by
-      rw [← hS]
-      exact LinearMap.mem_range_self _ v
-    rw [← hfix _ hjv, ← hE.2.1, ← hw', hinner]
-  exact ⟨w, hw', le_of_eq (by rw [hadj, ← hw', hj])⟩
-
-theorem anyf_comp_norm_le (j : V →L[ℂ] H) (hj : ∀ v, ‖j v‖ = ‖v‖) (E A : H →L[ℂ] H) (S : Submodule ℂ H)
-    (hE : Formalism.MainNotions.S.IsOrthProjOnto E S) (hS : LinearMap.range (j : V →ₗ[ℂ] H) = S) :
-    ‖E.comp (A.comp E)‖ ≤ ‖(ContinuousLinearMap.adjoint j).comp (A.comp j)‖ := by
-  refine ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun z => ?_
-  obtain ⟨w, hw, hle⟩ := anyf_projE_le j hj E S hE hS z
-  have hjn : ‖j‖ ≤ 1 := ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by simp [hj]
-  have hwz : ‖w‖ ≤ ‖z‖ := by
-    calc ‖w‖ = ‖E z‖ := by rw [← hw, hj]
-      _ ≤ ‖ContinuousLinearMap.adjoint j z‖ := hle
-      _ ≤ ‖ContinuousLinearMap.adjoint j‖ * ‖z‖ := (ContinuousLinearMap.adjoint j).le_opNorm z
-      _ = ‖j‖ * ‖z‖ := by rw [LinearIsometryEquiv.norm_map]
-      _ ≤ 1 * ‖z‖ := by gcongr
-      _ = ‖z‖ := one_mul _
-  obtain ⟨w', -, hle'⟩ := anyf_projE_le j hj E S hE hS (A (j w))
-  calc ‖(E.comp (A.comp E)) z‖ = ‖E (A (j w))‖ := by
-        rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ← hw]
-    _ ≤ ‖ContinuousLinearMap.adjoint j (A (j w))‖ := hle'
-    _ = ‖((ContinuousLinearMap.adjoint j).comp (A.comp j)) w‖ := rfl
-    _ ≤ ‖(ContinuousLinearMap.adjoint j).comp (A.comp j)‖ * ‖w‖ := ContinuousLinearMap.le_opNorm _ _
-    _ ≤ ‖(ContinuousLinearMap.adjoint j).comp (A.comp j)‖ * ‖z‖ := by gcongr
-
-end Gen
-
 section Main
 
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

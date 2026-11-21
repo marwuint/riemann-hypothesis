@@ -168,23 +168,6 @@ instance : Unique (CxSt F) := ⟨⟨std F⟩, eq_std⟩
 
 variable (C : CxSt F) (Y : Var F) (σ : F →+* ℂ) (Δ : Y.Dv) (m : C.Met Y σ Δ)
 
-theorem pn_nonneg (f : C.FnC Y σ) (y : Pts Y σ) : 0 ≤ C.pn Y σ Δ m f y := by
-  obtain rfl := C.eq_std
-  exact Var.pn_nonneg
-
-theorem pn_sum {ι : Type} [Fintype ι] (c : ι → ℂ) (f : ι → Y.Fn) (y : Pts Y σ) (g : Y.Fnˣ) (hg : Δ.IsEqn (under y) g)
-    (hf : ∀ i, Δ.RegularAt (under y) (f i)) : C.pn Y σ Δ m (∑ i, c i • C.cx Y σ (f i)) y =
-      ‖∑ i, c i * ratVal (f i * (g : Y.Fn)) y‖ ^ 2 * C.pn Y σ Δ m (C.cx Y σ (g⁻¹ : Y.Fnˣ)) y := by
-  obtain rfl := C.eq_std
-  have e := (Var.hasVal_sum_smul (y := y) hg (fun i => Var.secReg_cx_iff.2 (hf i)) c).val_eq
-  simp only [Var.fval_cx] at e
-  exact (Var.pn_eq hg).trans (congrArg₂ (‖·‖ ^ 2 * ·) e (Var.pn_frame hg).symm)
-
-theorem mSmooth_ofWeight_iff {L : LB Y.X} {r : L.ι → Y.Fnˣ} (h : Presents Δ L r) (φ : Weight Y.str σ L) :
-    C.mSmooth Y σ Δ (C.ofWeight Y σ Δ L r h φ) ↔ φ.IsCInf := by
-  obtain rfl := C.eq_std
-  exact (Var.mSmooth_ofWeight_iff h φ).trans (Weight.isCInf_iff_isSmooth _).symm
-
 end CxSt
 
 abbrev below {K : Type} [Field K] {Z : Scheme.{0}} (y : Sp K ⟶ Z) : Z := y (IsLocalRing.closedPoint K)
@@ -273,8 +256,6 @@ variable {C : CxSt F} {Y : Var F} (A : Adl C Y)
 def twist (ci : InfinitePlace F → ℝ) (cf : HeightOneSpectrum (𝓞 F) → ℝ) : Adl C Y :=
   { A with ci := A.ci + ci, lg := fun v e y => A.lg v e y - (A.n : ℕ) * cf v }
 
-def divide (k : ℕ+) : Adl C Y := { A with n := A.n * k, ci := fun v => A.ci v / (k : ℕ) }
-
 def deg : ℝ := (Y.inter (fun _ => A.D) : ℝ) / ((A.n : ℕ) : ℝ) ^ Y.dim
 
 def secs (τ : ℕ) : Set Y.Fn := {f | f ^ (A.n : ℕ) ∈ Y.H0 (τ • A.D)}
@@ -322,8 +303,6 @@ def Induced (M : Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (�
       (k : ℕ) * A.lg v e y =
         Real.log (e.w (valAt y.1 (((eqn A.D (below y.1))⁻¹ ^ (k : ℕ) * r i : Y.Fnˣ) : Y.Fn))) - (k : ℕ) * (A.n : ℕ) * cf v
 
-def IsModel : Prop := ∃ (M : Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced M L k cf
-
 def IsArTop (t : ℝ) : Prop :=
   ∃ (M : Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ) (a : ℝ), A.Induced M L k cf ∧
     (haveI := M.ar.isIntegral; L.IsSelfInter a) ∧
@@ -342,40 +321,9 @@ def Nef : Prop := A.SemiPos ∧ A.NefFib ∧ ∀ x : Y.X, IsClosed ({x} : Set Y.
 
 variable {A}
 
-theorem NefFib.isModel (h : A.NefFib) : A.IsModel := have ⟨M, L, k, cf, h, _⟩ := h; ⟨M, L, k, cf, h⟩
-
-theorem IsArTop.isModel {t : ℝ} (h : A.IsArTop t) : A.IsModel := have ⟨M, L, k, cf, _, h, _⟩ := h; ⟨M, L, k, cf, h⟩
-
-theorem Nef.isModel (h : A.Nef) : A.IsModel := h.2.1.isModel
-
 end Adl
 
 namespace Base
-
-theorem ringKrullDim_integers : ringKrullDim (𝓞 F) = 1 := by
-  refine eq_of_le_of_not_lt ?_ fun h' => RingOfIntegers.not_isField F ?_
-  · rw [← Nat.cast_one, ← Ring.krullDimLE_iff]
-    exact Ring.krullDimLE_one_iff_of_noZeroDivisors.2 fun I hI hP => hP.isMaximal hI
-  · have h'' : ringKrullDim (𝓞 F) ≤ 0 := Order.le_of_lt_succ h'
-    rw [← Nat.cast_zero, ← Ring.krullDimLE_iff] at h''
-    exact Ring.KrullDimLE.isField_of_isDomain
-
-theorem isArithVar_pspace (n : ℕ) : IsArithVar (PSpace.str (𝓞 F) n) n := by
-  have := ProjSpace.isIntegral_of_isDomain (𝓞 F) n
-  have hc : ∀ i, topologicalKrullDim (ProjSpace.chart (𝓞 F) n i : Set (PSpace (𝓞 F) n)) = (n + 1 : ℕ) := fun i => by
-    rw [topologicalKrullDim_eq_of_isEmbedding (ProjSpace.chartι (𝓞 F) n i).isOpenEmbedding.isEmbedding
-      (congrArg SetLike.coe (ProjSpace.opensRange_chartι (𝓞 F) n i))]
-    refine (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim
-      (R := MvPolynomial {j // j ≠ i} (𝓞 F))).trans ?_
-    rw [MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_integers]
-    simp [add_comm]
-  have : Smooth (PSpace.str (𝓞 F) n) := SmoothOfRelativeDimension.smooth n _
-  have : Flat (spMap (Int.castRingHom (𝓞 F))) := (ArithBase.isArithVar_id ringKrullDim_integers).flat
-  refine ⟨inferInstance, inferInstance, ‹_›, ⟨n, 𝟙 _, inferInstance, Category.id_comp _⟩, inferInstance,
-    le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_)
-      ((hc 0).ge.trans (topologicalKrullDim_subspace_le _ _))⟩
-  obtain ⟨i, hi⟩ := ProjSpace.exists_mem_chart (𝓞 F) n x
-  exact ⟨_, (ProjSpace.chart (𝓞 F) n i).isOpen, hi, (hc i).le⟩
 
 theorem valAt_stalk {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
     (a : Z.presheaf.stalk (below y)) :
@@ -401,53 +349,14 @@ theorem ratVal_one {Y : Var F} {σ : F →+* ℂ} (y : Pts Y σ) : ratVal (1 : Y
   have e := ratVal_fnOf (y := y) CxPts.mem_ptsIn_top trivial 1
   rwa [map_one, CxPts.ev_one CxPts.mem_ptsIn_top] at e
 
-omit [NumberField F] in
-
-theorem unitAt_eqn_zero {Y : Var F} (x : Y.X) : UnitAt x (eqn (0 : Y.Dv) x : Y.Fn) := by
-  simpa using (CartierDiv.isEqn_zero x).iff_unitAt.1 (isEqn_eqn 0 x)
-
 end Base
 
 open Base
-
-variable (F) in
-
-def Model.pspace (n : ℕ) : Model (proj F n) where
-  X := PSpace (𝓞 F) n
-  p := PSpace.str (𝓞 F) n
-  ar := isArithVar_pspace n
-  j := (proj F n).ι ≫ ProjSpace.baseChange n (algebraMap (𝓞 F) F)
-  pb := by
-    have H : IsPullback (proj F n).ι (proj F n).str (PSpace.str F n) (𝟙 _) :=
-      IsPullback.of_horiz_isIso ⟨(Category.comp_id _).symm⟩
-    simpa using H.paste_horiz (ProjSpace.isPullback_baseChange n (algebraMap (𝓞 F) F))
 
 namespace Adl
 
 variable {C : CxSt F} {Y : Var F} {A : Adl C Y} {M : Model Y} {L : HermLB M.p} {k : ℕ+}
   {cf : HeightOneSpectrum (𝓞 F) → ℝ}
-
-theorem Induced.divide (h : A.Induced M L k cf) (j : ℕ+) :
-    (A.divide j).Induced M L k fun v => cf v / (j : ℕ) := by
-  have hj : ((j : ℕ) : ℝ) ≠ 0 := by exact_mod_cast j.ne_zero
-  obtain ⟨h₁, r, hr, h₂, h₃⟩ := h
-  refine ⟨h₁.subset fun v hv h0 => hv (by simp [h0]), r, hr, fun σ y y' i f a b c => ?_, fun v e y yt i a b => ?_⟩
-  · refine Eq.trans (congrArg (Real.exp · * _) ?_) (h₂ σ y y' i f a b c)
-    simp only [Adl.divide, PNat.mul_coe, Nat.cast_mul]
-    field_simp
-  · refine (h₃ v e y yt i a b).trans (congrArg _ ?_)
-    simp only [Adl.divide, PNat.mul_coe, Nat.cast_mul]
-    field_simp
-
-theorem Induced.twist_fin (h : A.Induced M L k cf) {c : HeightOneSpectrum (𝓞 F) → ℝ}
-    (hc : (Function.support c).Finite) : (A.twist 0 c).Induced M L k (cf + c) := by
-  obtain ⟨h₁, r, hr, h₂, h₃⟩ := h
-  refine ⟨(h₁.union hc).subset (Function.support_add _ _), r, hr, fun σ y y' i f a b c => ?_,
-    fun v e y yt i a b => ?_⟩
-  · simpa only [twist, add_zero] using h₂ σ y y' i f a b c
-  · have := h₃ v e y yt i a b
-    simp only [twist, Pi.add_apply]
-    linear_combination this
 
 variable (C Y) in
 
@@ -457,72 +366,6 @@ def triv : Adl C Y where
   m σ := C.ofWeight Y σ 0 (LB.triv Y.X) (fun _ => 1) presents_zero (Weight.ofFun fun _ => 0)
   ci := 0
   lg _ e y := -Real.log (e.w (valAt y.1 (eqn (0 : Y.Dv) (below y.1) : Y.Fn)))
-
-theorem pn_triv (σ : F →+* ℂ) (τ : ℕ) {f : Y.Fn} {y : Pts Y σ} (hf : RegAt (under y) f) :
-    C.pn Y σ _ (C.mPow Y σ 0 τ ((triv C Y).m σ)) (C.cx Y σ f) y = ‖ratVal f y‖ ^ 2 := by
-  have g : (0 : Y.Dv).GeneratesAt (under y) 1 := CartierDiv.generatesAt_zero_iff.2 (unitAt_one _)
-  have h₁ := C.pn_mul Y σ _ (C.mPow Y σ 0 τ ((triv C Y).m σ)) f 1 y hf (by rw [smul_zero]; exact g.regularAt)
-  have h₂ := C.pn_mPow Y σ 0 τ ((triv C Y).m σ) 1 y g
-  have h₃ := C.pn_ofWeight Y σ 0 (LB.triv Y.X) (fun _ => 1) presents_zero (Weight.ofFun fun _ => 0) 1 y
-    PUnit.unit trivial g.regularAt
-  rw [mul_one] at h₁
-  rw [one_pow] at h₂
-  rw [h₁, h₂]
-  erw [h₃]
-  simp [ratVal_one, Weight.ofFun]
-
-variable (C) in
-
-theorem induced_triv (M : Model Y) : (triv C Y).Induced M (HermLB.triv M.p) 1 0 := by
-  have hL := LB.isLB_pull (HermLB.triv M.p).isLB M.j
-  refine ⟨by simp, fun _ => 1, ⟨hL, fun a b h => ?_, fun _ x _ => ?_⟩, fun σ y y' i f _ _ hf => ?_,
-    fun v e y yt i _ _ => ?_⟩
-  · obtain rfl : a = b := Subsingleton.elim (α := PUnit → PUnit) _ _
-    have := congrArg (fun u : Γ(Y.X, _)ˣ => fnOf _ h.1 u.val) (hL.g_self a)
-    rw [Units.val_one, map_one] at this
-    exact (this.symm.trans (fnOf_resG _ h.1 _)).trans (mul_one _).symm
-  · exact (smul_zero (1 : ℕ) : _ • (0 : Y.Dv) = 0).symm ▸ CartierDiv.isEqn_zero x
-  · have hf' : RegAt (under y) f := CartierDiv.regularAt_zero_iff.1 ((smul_zero (1 : ℕ) : _ • (0 : Y.Dv) = 0) ▸ hf)
-    refine (congrArg _ (pn_triv σ _ hf')).trans ?_
-    simp [triv, HermLB.triv, Weight.ofFun]
-  · have := (valAt_zpow y.1 (unitAt_eqn_zero (below y.1))).2 (-1)
-    simp only [zpow_neg, zpow_one] at this
-    simp [triv, this]
-
-theorem nrmInf_triv (σ : F →+* ℂ) (τ : ℕ) (y : Pts Y σ) : (triv C Y).nrmInf σ τ 1 y = 1 := by
-  have := pn_triv (C := C) σ τ (unitAt_one (under y)).regAt
-  simp only [nrmInf]
-  erw [one_pow, this]
-  simp [triv, ratVal_one]
-
-theorem nrmFin_triv (v : HeightOneSpectrum (𝓞 F)) (τ : ℕ) (e : Ext v) (y : AlgPt Y) :
-    (triv C Y).nrmFin v τ 1 e y = 1 := by
-  obtain ⟨h₀, h⟩ := valAt_zpow y.1 (unitAt_eqn_zero (below y.1))
-  have h₁ := h τ
-  have h₂ := e.w.pos h₀
-  simp only [zpow_natCast] at h₁
-  simp only [nrmFin, triv, PNat.val_ofNat, Nat.cast_one, div_one, one_pow, one_mul, h₁, map_pow, Real.rpow_one,
-    mul_neg, Real.exp_neg, Real.exp_nat_mul, Real.exp_log h₂]
-  exact mul_inv_cancel₀ (pow_pos h₂ _).ne'
-
-theorem IsModel.divide (h : A.IsModel) (j : ℕ+) : (A.divide j).IsModel :=
-  have ⟨M, L, k, _, h⟩ := h; ⟨M, L, k, _, h.divide j⟩
-
-theorem nefFib_triv (C : CxSt F) (M : Model Y) : (triv C Y).NefFib :=
-  ⟨_, _, _, _, induced_triv C M, (HermLB.isNef_triv _ 0).vertical⟩
-
-theorem isModel_triv_proj (C : CxSt F) (n : ℕ) {c : HeightOneSpectrum (𝓞 F) → ℝ} (hc : (Function.support c).Finite)
-    (j : ℕ+) : (((triv C (proj F n)).twist 0 c).divide j).IsModel :=
-  IsModel.divide ⟨_, _, _, _, (induced_triv C (Model.pspace F n)).twist_fin hc⟩ j
-
-theorem mSmooth_triv (σ : F →+* ℂ) : C.mSmooth Y σ 0 ((triv C Y).m σ) :=
-  (C.mSmooth_ofWeight_iff Y σ 0 presents_zero _).2 (Weight.isCInf_ofFun (CxPts.cInfAt_const 0))
-
-theorem one_mem_small_triv (τ : ℕ) : 1 ∈ (triv C Y).small τ := by
-  refine ⟨?_, fun σ y => (nrmInf_triv σ τ y).le, fun v e y => (nrmFin_triv v τ e y).le⟩
-  change 1 ^ _ ∈ Y.H0 (τ • 0)
-  rw [one_pow, smul_zero]
-  exact Var.eff_iff_one_mem.1 Y.eff_zero
 
 end Adl
 
@@ -664,32 +507,5 @@ omit [StarRing F] in
 
 theorem deg_twist {C : CxSt F} {Y : Var F} (A : Adl C Y) (ci : InfinitePlace F → ℝ)
     (cf : HeightOneSpectrum (𝓞 F) → ℝ) : (A.twist ci cf).deg = A.deg := rfl
-
-omit [StarRing F] in
-
-example (C : CxSt F) (Y : Var F) (ci : InfinitePlace F → ℝ) (cf : HeightOneSpectrum (𝓞 F) → ℝ) (v : InfinitePlace F)
-    (τ : ℕ) : ((Adl.triv C Y).twist ci cf).supInf v τ 1 = Real.exp (-((τ : ℝ) * ci v)) := by
-  simp [supInf_twist, Adl.supInf.eq_1 (Adl.triv C Y), Adl.nrmInf_triv]
-
-omit [StarRing F] in
-
-example (C : CxSt F) (Y : Var F) : 1 ∉ ((Adl.triv C Y).twist (fun _ => -1) 0).small 1 := fun h => by
-  obtain ⟨σ⟩ : Nonempty (F →+* ℂ) := inferInstance
-  obtain ⟨y⟩ : Nonempty (Pts Y σ) := inferInstance
-  have h₁ := h.2.1 σ y
-  have h₂ := Adl.nrmInf_triv (C := C) σ 1 y
-  simp only [Adl.nrmInf, Adl.twist, Pi.add_apply, show (Adl.triv C Y).ci = 0 from rfl, Pi.zero_apply, mul_zero, neg_zero,
-    Real.exp_zero, one_mul] at h₁ h₂
-  rw [h₂] at h₁
-  norm_num at h₁
-
-omit [StarRing F] in
-
-example (C : CxSt F) (Y : Var F) (σ : F →+* ℂ) (Δ : Y.Dv) : ¬ C.mSmooth Y σ Δ (C.fsMet Y σ Δ fun _ : Unit => 0) := by
-  obtain rfl := C.eq_std
-  intro h
-  obtain ⟨y⟩ : Nonempty (Pts Y σ) := inferInstance
-  obtain ⟨_, hk⟩ := (Var.mSmooth_fsMet_iff.1 h y).2
-  exact hk ⟨_, Var.mem_eqnSet Δ y, by rw [zero_mul]; exact Var.hasVal_zero⟩
 
 end GlobalTheory.TrueGeo

@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumSupportRename
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EvSelfTwo
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CovariantDerivativeValueCharacterGermsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CanonicalGaugeEigenvectorPairingIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CovariantDerivativeValueCharacterGerms
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CanonicalGaugeEigenvectorPairingIntegral
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Formalism.L2.Pj
@@ -70,7 +71,7 @@ theorem exists_germ_valuation_eq : ∀ (C : Type) [Field C] [CharZero C] (v : Va
   have hh : MvPowerSeries.constantCoeff h = 0 := by
     have := congrArg MvPowerSeries.constantCoeff hg.ax0
     rwa [TB.WickVanishing.gt_const_ev_eq _ (TB.WickVanishing.pair_points_zero_constant TB.WickVanishing.gp_zero₂ (TB.WickVanishing.gp_pt 0)), map_zero] at this
-  obtain ⟨g, ρ, hρ, hsum⟩ := GlobalTheory.T.covariantDerivative_value_character_germs O d OE C B h hg hinj w0 N k n (ballIdeal hv _ hx0)
+  obtain ⟨g, ρ, hρ, hsum⟩ := _root_.GlobalTheory.nabVal_character_columns_of_canonGauge O d OE C B h hg hinj w0 N k n (ballIdeal hv _ hx0)
     (by show v (algebraMap O C (N : O)) < _; rwa [map_natCast]) (fun b => a (ty b)) (fun _ => 1)
     (fun b => by rw [ha1, mul_one]) (Σ τ : Ty, Fin (r τ)) u (fun b => {l | l.1 = ty b})
     (fun b l => σ l.1 (a (ty b)))
@@ -86,7 +87,7 @@ theorem exists_germ_valuation_eq : ∀ (C : Type) [Field C] [CharZero C] (v : Va
       have e1 : l.1 = ty b := hl
       have e2 : l'.1 = ty b := hl'
       obtain ⟨a0, ha0⟩ := h0 (ty b)
-      exact GlobalTheory.T.canonicalGauge_eigenvector_pairing_integral O d OE C B h hg (σ (ty b)) a0 ha0 (u l) (u l') (fun c => e1 ▸ hu l c)
+      exact _root_.GlobalTheory.CharDepth.eigen_pair_mem_range O d OE C B h hg (σ (ty b)) a0 ha0 (u l) (u l') (fun c => e1 ▸ hu l c)
         (fun c => e2 ▸ hu l' c) _)
     χ y (fun b => (hχ b).1)
     (fun b l _ => GlobalTheory.MultiplicativeSeries.main O d B.G (χ b) (hχ b).2 (u l))

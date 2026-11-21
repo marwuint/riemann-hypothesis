@@ -77,8 +77,6 @@ def IsSumFrame {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalE
 
 def frameSign (R : Type) [Ring R] (c : ℕ) (p : Fin c) : R := if c < 2 * p.1 + 1 then -1 else 1
 
-example : frameSign ℤ 3 = ![1, 1, -1] ∧ frameSign ℤ 2 = ![1, -1] := by decide
-
 section Wt
 
 variable {ι : Type} [Fintype ι] {n : ℕ} (σ : ι → DomWeight n)
@@ -112,9 +110,6 @@ noncomputable def chainTo {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j,
   | 0 => LinearMap.id
   | n + 1 => k n ∘ₗ chainTo k n
 
-example {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)] (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (v : V 0) :
-    chainTo k 2 v = k 1 (k 0 v) := rfl
-
 theorem one_le_sLen : 1 ≤ sLen D := (odd_sLen D).pos
 
 def unitVol (w : Pl D.host.E) : Measure (Kw w) := GlobalTheory.SplitWeil.Model.exists_isUnitVol.choose
@@ -142,40 +137,6 @@ def aaTerm (w : Pl D.host.E) : UnfTerm (bareGrid w) :=
 def aaScalar (w : Pl D.host.E) : ℂ :=
   (aaTerm W w).coef * (aaTerm W w).datum 0 0 * ((oppositePath D.R.m).map fun b =>
     apow (genAt w D.host.AAbar / genAt w D.host.AA) (((bareGrid w).rank b.src * (bareGrid w).rank b.tgt : ℕ) / 4)).prod
-
-theorem invVol_conjLevel_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {Γ : Grid k}
-    (hs : 1 ≤ Γ.s) {j : ℕ} (hj : j < Γ.m) : invVol (conjLevel hs (fun _ => KO k _) 1 hj) = 1 := by
-  rw [← invVol_KO (k := k) (n := Fin (topRank Γ j)) (c := Γ.m - 1 - j), conjLevel]
-  congr 1
-  ext g
-  rw [Pi.one_apply, map_one, Subgroup.map_equiv_eq_comap_symm', Subgroup.map_equiv_eq_comap_symm', Subgroup.mem_comap,
-    Subgroup.mem_comap, mem_KO_iff, mem_KO_iff, ← map_inv, ← map_inv]
-  have h : topRank Γ j + (Γ.m - 1 - j) = Γ.rank (Γ.m, j) := by have := topRank_add hs j; omega
-  exact and_congr ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl)
-    ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl)
-
-theorem unfTerm_coef_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]
-    [BorelSpace k] {Γ : Grid k} (hs : 1 ≤ Γ.s) (ψ : AddChar k Circle) (ν : Measure k) (keep : Bool) (S : Γ.Args → ℂ) :
-    (unfTerm ψ ν keep (Reps.through hs (fun _ => KO k _) fun _ => 1) S fun _ => DoubleCoset.mk _ _ 1).coef = 1 := by
-  simp only [unfTerm, UnfModel.elt_one, invVol_conjLevel_one, Finset.prod_const_one]
-
-theorem aaScalar_eq_one {w : Pl D.host.E} (h : FractionalIdeal.count D.host.E w D.host.AA = 0)
-    (h' : FractionalIdeal.count D.host.E w D.host.AAbar = 0) (hψ : ∀ a ∈ 𝒪[Kw w], psiAt W w a = 1) : aaScalar W w = 1 := by
-  have e1 : genAt w D.host.AA = 1 := by rw [genAt, h, zpow_zero]
-  have e2 : genAt w D.host.AAbar = 1 := by rw [genAt, h', zpow_zero]
-  have e3 : aaElt w = fun _ => 1 := funext fun j => Units.ext (by simp [aaElt, e1, e2, diagGL_val])
-  have key : ∀ g : ∀ j, GL (Fin ((bareGrid w).rank ((bareGrid w).m, j))) (Kw w), (g = fun _ => 1) →
-      let u := unfTerm (psiAt W w) (unitVol w) false (Reps.through (G := bareGrid w) one_le_sLen (fun _ => KO _ _) g) (aaVac w)
-        fun i => DoubleCoset.mk _ _ (g (i + 1))
-      u.datum 0 0 = 1 ∧ u.coef = 1 := by
-    rintro _ rfl
-    exact ⟨(UnfModel.vacuum_term (G := bareGrid w) one_le_sLen _ _ hψ (isUnitVol_unitVol w) (aaVac w)
-      (fun z hz => Set.indicator_of_mem (by simpa [e1] using hz) _)
-      (fun z hz => Set.indicator_of_notMem (by simpa [e1] using hz) _) _ _).1,
-      unfTerm_coef_one (Γ := bareGrid w) one_le_sLen _ _ _ _⟩
-  obtain ⟨e4, e5⟩ : (aaTerm W w).datum 0 0 = 1 ∧ (aaTerm W w).coef = 1 := key _ e3
-  have e6 : ∀ z, apow (1 : (Kw w)ˣ) z = 1 := apow_of_valuation_eq_one (map_one _)
-  simp only [aaScalar, e1, e2, e4, e5, div_one, e6, List.map_const', List.prod_replicate, one_pow, Rat.cast_one, mul_one]
 
 variable (G) in
 

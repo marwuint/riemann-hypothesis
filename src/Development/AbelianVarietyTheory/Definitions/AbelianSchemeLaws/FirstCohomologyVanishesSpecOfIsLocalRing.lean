@@ -111,9 +111,6 @@ theorem isLB_pw {H : LB X} (hH : H.IsLB) (t : ℤ) : (pw H t).IsLB where
 theorem isLB_tw {M H : LB X} (hM : M.IsLB) (hH : H.IsLB) (t : ℤ) : (tw M H t).IsLB :=
   LB.isLB_div hM (isLB_pw hH (-t))
 
-theorem pw_one (H : LB X) : pw H 1 = H := by
-  simp only [pw, zpow_one]
-
 theorem tw_g (M H : LB X) (t : ℤ) (p q : M.ι × H.ι) :
     (tw M H t).g p q =
       res (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) :
@@ -123,23 +120,6 @@ theorem tw_g (M H : LB X) (t : ℤ) (p q : M.ι × H.ι) :
   change _ * (res _ (H.g p.2 q.2 ^ (-t)))⁻¹ = _
   rw [map_zpow, zpow_neg, inv_inv]
   rfl
-
-theorem firstCohomologyVanishes_of_every_cover_trivial (M : LB X)
-    (hX : ∀ (I : Type) (V : I → X.Opens), ⨆ a, V a = ⊤ → ∃ a, V a = ⊤) : FirstCohomologyVanishes M := by
-  intro I V c hV hc φ hφ
-  obtain ⟨d, hd⟩ := hX I V hc
-  have hle : ∀ U : X.Opens, U ≤ V d := fun U => hd ▸ le_top
-  refine ⟨fun a => rs X (le_inf le_rfl (hle _) : V a ≤ V a ⊓ V d) (φ a d), fun a b => ?_⟩
-  have h := congrArg (rs X (le_inf le_rfl (hle _) : V a ⊓ V b ≤ V a ⊓ V b ⊓ V d)) (hφ a b d)
-  simp only [map_add, map_mul, rs_rs, rs_self] at h
-  simp only [rs_rs]
-  exact eq_sub_of_add_eq h
-
-theorem firstCohomologyVanishes_spec_of_isLocalRing [IsLocalRing R] (M : LB (Spec (CommRingCat.of R))) : FirstCohomologyVanishes M := by
-  refine firstCohomologyVanishes_of_every_cover_trivial M fun I V hc => ?_
-  have hx : IsLocalRing.closedPoint R ∈ (⨆ a, V a) := by rw [hc]; trivial
-  obtain ⟨a, ha⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
-  exact ⟨a, (IsLocalRing.closedPoint_mem_iff (V a)).1 ha⟩
 
 theorem cst_bijective (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] {W : X.Opens} (hW : W = ⊤) :
     Function.Bijective (cst f W) := by
@@ -188,59 +168,5 @@ theorem isProjBy_of_isIso (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] : IsProj
 
 theorem isProjBy_id (R : Type) [CommRing R] : IsProjBy (𝟙 (Spec (CommRingCat.of R))) :=
   isProjBy_of_isIso _
-
-theorem pull_trivLB_U (π : X' ⟶ X) (j : ((Inh.trivLB X).pull π).ι) :
-    ((Inh.trivLB X).pull π).U j = ⊤ :=
-  top_unique fun _ _ => Set.mem_iInter.2 fun _ => trivial
-
-def cstSec (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R)) (r : R) :
-    LB.Sec ((Inh.trivLB X).pull π) where
-  f := fun j => cst f' _ r
-  compat := fun i j => by
-    rw [Inh.linComb_triv_g, Units.val_one, _root_.one_mul]
-    exact (rs_cst f' _ r).trans (rs_cst f' _ r).symm
-
-theorem cstSec_bijective (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R)) [IsIso f'] :
-    Function.Bijective (cstSec π f') := by
-  let j₀ : ((Inh.trivLB X).pull π).ι := fun _ => PUnit.unit
-  have hb := cst_bijective f' (pull_trivLB_U π j₀)
-  refine ⟨fun r r' h => hb.1 (congrArg (fun s => s.f j₀) h), fun s => ?_⟩
-  obtain ⟨r, hr⟩ := hb.2 (s.f j₀)
-  refine ⟨r, ?_⟩
-  obtain ⟨sf, hs⟩ := s
-  have : (fun j => cst f' (((Inh.trivLB X).pull π).U j) r) = sf := funext fun _ => hr
-  subst this
-  rfl
-
-def perfTriv (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] : Perf f (Inh.trivLB X) where
-  a := 1
-  b := 0
-  c := 0
-  D₀ := 0
-  D₁ := 0
-  comp := Subsingleton.elim _ _
-  I := PUnit
-  W := fun _ => ⊤
-  ch := fun _ => PUnit.unit
-  le := fun _ => le_rfl
-  cover := iSup_const
-  u := fun _ _ => 1
-  sec := fun R' _ g X' π f' h => by
-    haveI : IsIso f' := h.isIso_snd_of_isIso
-    refine ⟨((Equiv.subtypeUnivEquiv fun _ => Subsingleton.elim _ _).trans
-      (Equiv.funUnique (Fin 1) R')).trans (Equiv.ofBijective _ (cstSec_bijective π f')), ?_⟩
-    intro v i
-    rw [Fin.sum_univ_one, map_one, _root_.mul_one]
-    exact rs_cst f' _ _
-  exact := fun R' _ g X' π f' _ _ w _ => ⟨0, Subsingleton.elim _ _⟩
-
-example (R : Type) [CommRing R] :
-    Nonempty (Perf (𝟙 (Spec (CommRingCat.of R))) (Inh.trivLB _)) := ⟨perfTriv _⟩
-
-example (R : Type) [CommRing R] : (perfTriv (𝟙 (Spec (CommRingCat.of R)))).a = 1 := rfl
-
-example : IsProjBy (𝟙 (Spec (CommRingCat.of ℤ))) := isProjBy_id ℤ
-
-example : FirstCohomologyVanishes (Inh.trivLB (Spec (CommRingCat.of ℚ))) := firstCohomologyVanishes_spec_of_isLocalRing _
 
 end GlobalTheory.AbLaw

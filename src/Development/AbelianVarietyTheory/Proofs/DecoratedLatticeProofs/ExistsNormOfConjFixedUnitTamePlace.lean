@@ -5,12 +5,12 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EqIdOfIsUnram
 import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SigV
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalIntegersTensorCoordsPrimeToDiscriminantStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompletionTensorRelativeBasisCoordsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsEqAdicCompletionIntegersStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegralAdeleAtPlaceWithComponentStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdeleComponentAtFinitePlaceIntegralMemLocalTensoStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegerOfRelativeTraceNormIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalIntegersTensorCoordsPrimeToDiscriminant
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompletionTensorRelativeBasisCoordsUnique
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsEqAdicCompletionIntegers
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegralAdeleAtPlaceWithComponent
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdeleComponentAtFinitePlaceIntegralMemLocalTenso
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegerOfRelativeTraceNormIntegral
 
 noncomputable section
 
@@ -52,16 +52,16 @@ theorem fixed_unit_norm : ∀ (D : D7) (v : Pl D) (ε : AE D), Tame D v → ε *
       push_cast; exact this
     have e3 : t ^ 2 - 4 * n = 0 := RingOfIntegers.coe_eq_zero_iff.1 e2
     rw [e3]; exact v.asIdeal.zero_mem
-  obtain ⟨W, hW⟩ := GlobalTheory.T.exists_integer_of_relative_trace_norm_integral D w t n h1 h2
+  obtain ⟨W, hW⟩ := _root_.GlobalTheory.FixedUnitNorm.integral_of_trace_norm_integral D w t n h1 h2
 
   have hone : (1 : Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ intV D v :=
     AddSubgroup.subset_closure ⟨1, (v.adicCompletionIntegers D.host.F).one_mem, 1, by simp [Algebra.TensorProduct.one_def]⟩
   have hε1 : compAt D v ε = 1 := by
-    obtain ⟨z, hz, hz1⟩ := GlobalTheory.T.exists_integralAdele_atPlace_with_component D v 1 hone
+    obtain ⟨z, hz, hz1⟩ := _root_.GlobalTheory.FixedUnitNorm.exists_intAt_compAt_eq D v 1 hone
     have h := congrArg (compAt D v) ((hid z).1 hz.1)
     rwa [RingHom.map_mul, hz1, mul_one] at h
 
-  obtain ⟨a, ha, b, hb, hU⟩ := GlobalTheory.T.localIntegers_tensor_coords_prime_to_discriminant D v w t n h1 h2 h3 _ (GlobalTheory.T.adeleComponentAtFinitePlace_integral_mem_localTensor D v u hu)
+  obtain ⟨a, ha, b, hb, hU⟩ := _root_.GlobalTheory.FixedUnitNorm.Coords.mem_intV_coords D v w t n h1 h2 h3 _ (_root_.GlobalTheory.FixedUnitNorm.compAt_mem_intV_of_intAt D v u hu)
   have hsig : sigV D v (compAt D v u) = compAt D v u := by rw [← compAt_cA, hcu]
   have hsw : D.sp.cm.sig w = algebraMap D.host.F D.host.E t - w := by rw [← h1]; ring
   have hb0 : b = 0 := by
@@ -72,7 +72,7 @@ theorem fixed_unit_norm : ∀ (D : D7) (v : Pl D) (ε : AE D), Tame D v → ε *
         map_one, hsw, TensorProduct.tmul_sub, tmul_algebraMap, TensorProduct.neg_tmul]
       rw [show (2 : Fv D.host.F v) * b = b + b by ring, TensorProduct.add_tmul]
       abel
-    have := (GlobalTheory.T.completion_tensor_relativeBasis_coords_unique D v w hw _ _ e').2
+    have := (_root_.GlobalTheory.CoordUnique.coords_unique D v w hw _ _ e').2
     have h2b : (2 : Fv D.host.F v) * b = 0 := neg_eq_zero.1 this
     have h2ne : (2 : Fv D.host.F v) ≠ 0 := by
       intro h
@@ -81,20 +81,20 @@ theorem fixed_unit_norm : ∀ (D : D7) (v : Pl D) (ε : AE D), Tame D v → ε *
       rw [map_ofNat, map_zero]; exact h
     exact (mul_eq_zero.1 h2b).resolve_left h2ne
   rw [hb0, TensorProduct.zero_tmul, add_zero] at hU
-  obtain ⟨a', ha', b', hb', hY⟩ := GlobalTheory.T.localIntegers_tensor_coords_prime_to_discriminant D v w t n h1 h2 h3 _ (GlobalTheory.T.adeleComponentAtFinitePlace_integral_mem_localTensor D v y hy)
+  obtain ⟨a', ha', b', hb', hY⟩ := _root_.GlobalTheory.FixedUnitNorm.Coords.mem_intV_coords D v w t n h1 h2 h3 _ (_root_.GlobalTheory.FixedUnitNorm.compAt_mem_intV_of_intAt D v y hy)
   have haa : a * a' = 1 := by
     have e : compAt D v u * compAt D v y = 1 := by rw [← RingHom.map_mul, huy, hε1]
     rw [hU, hY, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul] at e
     have e' : (a * a' - 1) ⊗ₜ[D.host.F] (1 : D.host.E) + (a * b') ⊗ₜ[D.host.F] w = 0 := by
       rw [TensorProduct.sub_tmul, ← Algebra.TensorProduct.one_def, ← e]; abel
-    exact sub_eq_zero.1 (GlobalTheory.T.completion_tensor_relativeBasis_coords_unique D v w hw _ _ e').1
+    exact sub_eq_zero.1 (_root_.GlobalTheory.CoordUnique.coords_unique D v w hw _ _ e').1
   let A : v.adicCompletionIntegers D.host.F := ⟨a, ha⟩
   have hAu : IsUnit A := ⟨⟨A, ⟨a', ha'⟩, Subtype.ext haa, Subtype.ext (by rw [mul_comm]; exact haa)⟩, rfl⟩
   have hD : IsUnit (algebraMap (𝓞 D.host.F) (v.adicCompletionIntegers D.host.F) t ^ 2 -
       4 * algebraMap (𝓞 D.host.F) (v.adicCompletionIntegers D.host.F) n) := by
     have := (GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v _).2 h3
     rwa [map_sub, map_pow, map_mul, map_ofNat] at this
-  obtain ⟨r, s, hrs⟩ := GlobalTheory.T.exists_binary_quadratic_eq_unit_of_disc_isUnit D.host.F v _ _ A hD hAu
+  obtain ⟨r, s, hrs⟩ := _root_.GlobalTheory.BinaryUnitForm.exists_eq_adicCompletionIntegers D.host.F v _ _ A hD hAu
 
   set x' : Fv D.host.F v ⊗[D.host.F] D.host.E := (r : Fv D.host.F v) ⊗ₜ[D.host.F] (1 : D.host.E) + (s : Fv D.host.F v) ⊗ₜ[D.host.F] w
   have hx'i : x' ∈ intV D v := by
@@ -117,7 +117,7 @@ theorem fixed_unit_norm : ∀ (D : D7) (v : Pl D) (ε : AE D), Tame D v → ε *
     rw [key, ← TensorProduct.add_tmul, ← TensorProduct.add_tmul]
     congr 1
     rw [← hrs']; ring
-  obtain ⟨x, hxi, hxc⟩ := GlobalTheory.T.exists_integralAdele_atPlace_with_component D v x' hx'i
+  obtain ⟨x, hxi, hxc⟩ := _root_.GlobalTheory.FixedUnitNorm.exists_intAt_compAt_eq D v x' hx'i
   refine ⟨x, hxi, ?_⟩
   have hx0 := (mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D _ x).1 hxi.1
   have hu0 := (mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D _ u).1 hu.1

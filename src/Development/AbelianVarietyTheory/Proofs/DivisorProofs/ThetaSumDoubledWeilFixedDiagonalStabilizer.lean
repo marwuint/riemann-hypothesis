@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagonalLagrangianInvariantForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartz
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumDiagonalIntegralRationalHeisenbergStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicModuleNormRationalUnitEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicModuleNormRationalUnitEqOne
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix TensorProduct
 
@@ -182,7 +182,7 @@ theorem GlobalTheory.ThetaSiegelRat.thetaSum_omd_of_fix_diag : ∀ (F E : Type) 
       Units.ext (by rw [hdett]; rfl)
     rw [e]
     exact hχ.2 _
-  have hmod := GlobalTheory.T.adelicModule_norm_rationalUnit_eq_one F E (Matrix.GeneralLinearGroup.det t) _ hdett
+  have hmod := _root_.GlobalTheory.NormModule.modu_norm_rat F E (Matrix.GeneralLinearGroup.det t) _ hdett
 
   have hdiag : ∀ (y : Matrix (Fin a) (Fin b) (AE F E)), ∀ φ' ∈ schA F (κ ⊕ κ),
       GlobalTheory.DiagForm.lDiag F κ (dd.rho ψ (Matrix.fromCols y y) φ') = GlobalTheory.DiagForm.lDiag F κ φ' := by

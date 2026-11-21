@@ -150,10 +150,6 @@ def UnitInChart : Prop :=
   ∃ (B : Type) (_ : CommRing B) (_ : Algebra R B) (j : sp B ⟶ G) (u : B →ₐ[R] A),
     IsOpenImmersion j.left ∧ spMap u ≫ j = 1
 
-theorem UnitInChart.map (h : UnitInChart G A) (φ : A →ₐ[R] A') : UnitInChart G A' := by
-  obtain ⟨B, _, _, j, u, hj, hu⟩ := h
-  exact ⟨B, _, _, j, φ.comp u, hj, by rw [← spMap_comp, Category.assoc, hu, comp_one']⟩
-
 variable (G A) in
 theorem span_unitInChart :
     Ideal.span {f : A | UnitInChart G (Localization.Away f)} = ⊤ := by

@@ -191,9 +191,6 @@ end Formalism.L2.SG.Pf.OrthogonalComplementGenusMass
 
 namespace Formalism.L2.SG.Pf.Cnt
 
-theorem genusMassW_of (h1 : JordanExists) (h5 : AlphaDisc) : GenusMassW :=
-  OrthogonalComplementGenusMass.genusMassW_of h1 h5
-
 theorem glueMass_of' (h1 : JordanExists) (h2 : JordanInv) (h5 : AlphaDisc) (h6 : GlueLoc)
     (h8 : GlueProd) : GlueMass :=
   glueMass_of h1 h2 h6 h8 (OrthogonalComplementGenusMass.genusMassW_of h1 h5)

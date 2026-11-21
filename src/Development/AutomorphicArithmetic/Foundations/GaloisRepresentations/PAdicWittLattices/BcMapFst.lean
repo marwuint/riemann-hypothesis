@@ -169,13 +169,6 @@ open Classical in
 def hecke (j : X.ι) (f : G → R) : Module.End R (T.H (X.q j)) :=
   if h : ∃ A, X.IsHop T j f A then h.choose else 0
 
-structure Endo where
-  e : ∀ i, X.Z i ⟶ X.Z i
-  e_q : ∀ i, e i ≫ X.q i = X.q i
-  comm : ∀ i j h a b, e i ≫ X.tr i j h a b = X.tr i j h a b ≫ e j
-
-def Endo.id : X.Endo := ⟨fun _ => 𝟙 _, fun _ => Category.id_comp _, fun _ _ _ _ _ => by simp⟩
-
 end Tower
 
 end UpperTheory.Gal.G3

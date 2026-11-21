@@ -4,9 +4,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.A
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothGrpSchemeDescendsToFgSubring
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricallyConnectedDescendsToFinitelyGenerateStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricallyConnectedDescendsToFinitelyGenerate
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SeparatedPropernessFgSubalgebraStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianSchemeModelBaseChangeSubalgebraStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianSchemeModelBaseChangeSubalgebra
 open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -52,7 +52,7 @@ theorem abelianScheme_descends_to_fg_subring : ∀ (R : Type) [CommRing R] (A : 
   have hφ' : IsGrpPullback A A₀ (spMap (algebraMap k R)) φ := hφ
   obtain ⟨R₁, hR₁, pr₁⟩ := GlobalTheory.T.separated_properness_fg_subalgebra k R A₀.left A₀.hom sep₀ inferInstance qc₀
     (prop_snd_of_isPullback @IsProper hφ.1 hA.proper)
-  obtain ⟨i₁, φ₁, h₁₀, h₁, -⟩ := GlobalTheory.T.abelianScheme_model_baseChange_subalgebra k R A A₀ φ hφ' R₁
+  obtain ⟨i₁, φ₁, h₁₀, h₁, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Approx.model_passes_to_subalgebra k R A A₀ φ hφ' R₁
   haveI : Algebra.FiniteType k R₁ := (Subalgebra.fg_iff_finiteType R₁).1 hR₁
   haveI : IsNoetherianRing R₁ := Algebra.FiniteType.isNoetherianRing k R₁
   haveI : IsCommMonObj (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁)))) :=
@@ -62,9 +62,9 @@ theorem abelianScheme_descends_to_fg_subring : ∀ (R : Type) [CommRing R] (A : 
       (spMap (algebraMap R₁ R)) φ₁ := h₁
   have sm₁ : Smooth (pullback.snd A₀.hom (spMap (algebraMap k R₁))) :=
     by haveI := s₀; infer_instance
-  obtain ⟨R₂, hR₂, gc₂⟩ := GlobalTheory.T.geometricallyConnected_descends_to_finitelyGenerated R₁ R (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁))))
+  obtain ⟨R₂, hR₂, gc₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_descends_to_fg R₁ R (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁))))
     sm₁ pr₁ (prop_snd_of_isPullback @GeometricallyConnected h₁.1 hA.geomConnected)
-  obtain ⟨i₂, φ₂, h₂₁, h₂, -⟩ := @GlobalTheory.T.abelianScheme_model_baseChange_subalgebra R₁ R _ _ _ A _
+  obtain ⟨i₂, φ₂, h₂₁, h₂, -⟩ := @_root_.GlobalTheory.CompanionTheory.Ar.Approx.model_passes_to_subalgebra R₁ R _ _ _ A _
     (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R₁)))) i₁ φ₁ h₁' R₂
   haveI : Algebra.FiniteType R₁ R₂ := (Subalgebra.fg_iff_finiteType R₂).1 hR₂
   have hk₂ : Algebra.FiniteType ℤ R₂ := Algebra.FiniteType.trans hk₁ inferInstance

@@ -35,8 +35,6 @@ open scoped Classical
 
 namespace GlobalTheory.Core.Rk.SplitPsi
 
-variable {D : D7} {q : FinPl D} {w : HeightOneSpectrum (𝓞 D.host.E)}
-
 end GlobalTheory.Core.Rk.SplitPsi
 
 end

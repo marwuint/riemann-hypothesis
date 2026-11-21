@@ -200,6 +200,4 @@ theorem averaging_vanishes : C6.AveragingZero := by
   rw [le_div_iff₀ hNpos] at hb
   nlinarith
 
-theorem averaging_of_parts : C6.AveragingOfParts := fun _ => averaging_vanishes
-
 end Formalism.FourierDecayAlt.P

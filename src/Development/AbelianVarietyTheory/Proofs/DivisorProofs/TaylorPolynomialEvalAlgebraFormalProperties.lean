@@ -46,11 +46,6 @@ theorem _root_.GlobalTheory.PeriodFamily.taylor_congr_germ (f g : (I → ℂ) �
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun s _ => ?_
   rw [(h.iteratedFDeriv ℂ k).eq_of_nhds]
 
-theorem map_taylor_algHom (D' : Type) [CommRing D'] [Algebra ℂ D'] (ψ : D →ₐ[ℂ] D') (f : (I → ℂ) → ℂ) :
-    ψ (taylor N t f) = taylor N (fun i ↦ ψ (t i)) f := by
-  unfold taylor
-  simp only [map_sum, map_smul, map_prod]
-
 set_option autoImplicit false in
 open Filter Topology in
 variable {I : Type} [Fintype I] [DecidableEq I] {D : Type} [CommRing D] [Algebra ℂ D] (N : ℕ) (t : I → D) in

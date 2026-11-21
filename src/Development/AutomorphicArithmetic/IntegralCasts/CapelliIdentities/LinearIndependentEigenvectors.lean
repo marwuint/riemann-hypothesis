@@ -1,5 +1,4 @@
 import Mathlib
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IndependenceCharacters
 
 theorem UpperTheory.Reformulated.B.LinearIndependentEigenvectors.li_eig :
     ∀ {V : Type} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {Ξ P : Type}

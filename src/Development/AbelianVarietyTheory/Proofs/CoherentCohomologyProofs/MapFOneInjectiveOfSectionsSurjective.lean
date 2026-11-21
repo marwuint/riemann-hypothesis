@@ -94,19 +94,7 @@ lemma map_comp (f : F ⟶ G) (g : G ⟶ K) (n : ℕ) (U : C) (x : Sheaf.H'.{w'} 
       y.comp (Ext.mk₀ (0 : F ⟶ G)) (add_zero n) = 0 := by simp
   exact this x
 
-lemma map_add_hom (f g : F ⟶ G) (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) :
-    map (f + g) n U x = map f n U x + map g n U x := by
-  have (y : Ext.{w'} ((freeYoneda J).obj U) F n) :
-      y.comp (Ext.mk₀ (f + g)) (add_zero n) =
-        y.comp (Ext.mk₀ f) (add_zero n) + y.comp (Ext.mk₀ g) (add_zero n) := by
-    simp [Ext.mk₀_add]
-  exact this x
-
 @[simp] lemma res_id (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) : res F n (𝟙 U) x = x := by
-  simp [res]
-
-lemma res_comp (n : ℕ) {U V W : C} (i : V ⟶ U) (j : W ⟶ V) (x : Sheaf.H'.{w'} F n U) :
-    res F n (j ≫ i) x = res F n j (res F n i x) := by
   simp [res]
 
 lemma res_map (f : F ⟶ G) (n : ℕ) {U V : C} (i : V ⟶ U) (x : Sheaf.H'.{w'} F n U) :
@@ -259,10 +247,6 @@ theorem subsingleton₁ (n : ℕ) (U : C) (h₃ : Subsingleton (Sheaf.H'.{w'} S.
     Subsingleton (Sheaf.H'.{w'} S.X₁ (n + 1) U) :=
   (δ_surjective_of_subsingleton hS n U h₂).subsingleton
 
-theorem subsingleton₁_zero (U : C) (h₂ : Subsingleton (Sheaf.H'.{w'} S.X₂ 0 U)) :
-    Subsingleton (Sheaf.H'.{w'} S.X₁ 0 U) :=
-  (injective_zero hS U).subsingleton
-
 theorem subsingleton₁_one_of_sections_surjective (U : C)
     (h : Function.Surjective (S.g.hom.app (op U)))
     (h₂ : Subsingleton (Sheaf.H'.{w'} S.X₂ 1 U)) : Subsingleton (Sheaf.H'.{w'} S.X₁ 1 U) :=
@@ -309,14 +293,6 @@ theorem shortExact_map_toSheaf {S : ShortComplex (SheafOfModules.{v} R)} (hS : S
   hS.map_of_exact _
 
 end Modules
-
-section Top
-
-open TopologicalSpace
-
-variable {X : TopCat.{u}}
-
-end Top
 
 section Scheme
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PrimitiveStructureSheafDegTwoVanish
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H1StructureBaseChangeExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianSchemeBaseChangeAndSquare
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H1StructureBaseChangeExtension
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUnobstructed
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
@@ -15,9 +15,9 @@ namespace GlobalTheory.Obs
 theorem axesE1_of_axesO1 : AxesVanishingStructureSheafDegOne → AxesVanishingExtendedDegOne := by
   intro hO R₀ R₁ _ _ _ q hq A _ g hab hsm c h₁ h₂
   obtain ⟨B, hB, pr, pr', habB, hsmB, hp, hp', -, -, -, hl, hr⟩ :=
-    GlobalTheory.T.exists_abelianScheme_baseChange_and_square R₀ R₁ A g hab hsm
+    _root_.GlobalTheory.AbBaseChangeSq.exists_baseChange_and_sq R₀ R₁ A g hab hsm
   letI : GrpObj B := hB
-  obtain ⟨e, he⟩ := GlobalTheory.T.h1_structure_base_change_extension R₀ R₁ q hq
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.Obs.BC.extO1 R₀ R₁ q hq
   set c₁ := (e _ _ _ _ _ hp').symm c with hc₁
   have hc : e _ _ _ _ _ hp' c₁ = c := by simp [hc₁]
   have hl' : IsPullO (overW (lift (𝟙 B) 1)) c₁ 0 := by

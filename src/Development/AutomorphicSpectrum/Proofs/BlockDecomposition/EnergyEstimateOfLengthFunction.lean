@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Rr
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothTimeRightDerivativesCommuteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothTimeRightDerivativesCommute
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivIntegralCompactSupportStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EnergyDensityTimeDerivativeStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EnergyDensitySmoothStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EnergyDensityPointwiseEstimateStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EnergyDensityPointwiseEstimate
 open MeasureTheory Matrix Finset
 open scoped ContDiff ComplexConjugate InnerProductSpace
 open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.WaveSpd
@@ -89,13 +89,13 @@ theorem pt_bound {ℓ : Mat n → ℝ} (hℓ : ContDiffOn ℝ ∞ ℓ (GLs n)) {
         (1 / 2) * ∑ p : Ix n,
           Rr (hm p) (fun y' => cw ℓ χ C r s y' * ⟪Rt (hm p) u s y', dt u s y'⟫_ℝ) y ≤
       (‖A‖ + 1) * (cw ℓ χ C r s y * dens u s y) := by
-  have hdu := (GlobalTheory.T.smooth_time_right_derivatives_commute u hu).1
-  have hRt := (GlobalTheory.T.smooth_time_right_derivatives_commute u hu).2.1
+  have hdu := (_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus u hu).1
+  have hRt := (_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus u hu).2.1
   have hℓd := diffAt_of_sm hℓ hy
-  have hw : DifferentiableAt ℝ (dt u s) y := diffAt_of_sm ((GlobalTheory.T.smooth_time_right_derivatives_commute _ hdu).2.2.1 s) hy
+  have hw : DifferentiableAt ℝ (dt u s) y := diffAt_of_sm ((_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ hdu).2.2.1 s) hy
   have hY : ∀ p : Ix n, DifferentiableAt ℝ (Rt (hm p) u s) y :=
-    fun p => diffAt_of_sm ((GlobalTheory.T.smooth_time_right_derivatives_commute _ (hRt _)).2.2.1 s) hy
-  have hpt := GlobalTheory.T.energy_density_pointwise_estimate (dt u s y) (u s y) (fun p : Ix n => Rt (hm p) u s y)
+    fun p => diffAt_of_sm ((_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ (hRt _)).2.2.1 s) hy
+  have hpt := _root_.GlobalTheory.CompanionTheory.WaveSpd.pointwise_energy_ineq (dt u s y) (u s y) (fun p : Ix n => Rt (hm p) u s y)
     (fun p => fderiv ℝ ℓ y (y * hm p)) A C₁ C (deriv χ (ℓ y + C * s - r)) (cw ℓ χ C r s y)
     hC₁ hC (hχ' _) (hχ0 _) (fun p => hL y hy p)
   have hD : ‖dt u s y‖ ^ 2 + (1 / 4) * ∑ p : Ix n, ‖Rt (hm p) u s y‖ ^ 2 + ‖u s y‖ ^ 2
@@ -129,7 +129,7 @@ theorem energy_diff_ineq : ∀ {n : ℕ} {W : Type} [NormedAddCommGroup W] [Inne
   intro n W _ _ _ _ μ _ ℓ hℓ hcpt C₁ hC₁ hL hIBP χ hχ hχ' hχ0 hχ1 u hu A hwave C hC r
   refine ⟨‖A‖ + 1, fun s => ?_⟩
   have hC0 : 0 ≤ C := le_trans (mul_nonneg hC₁ (by positivity)) hC
-  have hdu := (GlobalTheory.T.smooth_time_right_derivatives_commute u hu).1
+  have hdu := (_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus u hu).1
   have hcw := sm_cw C r hℓ hχ
   let ρ : ℝ → Mat n → ℝ := fun s y => cw ℓ χ C r s y * dens u s y
   have hρ : Sm ρ := sm_mul hcw (GlobalTheory.T.energy_density_smooth u hu).1
@@ -158,8 +158,8 @@ theorem energy_diff_ineq : ∀ {n : ℕ} {W : Type} [NormedAddCommGroup W] [Inne
     show deriv (fun r' => ρ r' y.val) s = 0
     rw [h1.deriv_eq]; simp
   have I_dt := integrable_of_val μ
-    ((GlobalTheory.T.smooth_time_right_derivatives_commute _ (GlobalTheory.T.smooth_time_right_derivatives_commute _ hρ).1).2.2.1 s).continuousOn hK hdtvan
-  have I_ρ := integrable_of_val μ ((GlobalTheory.T.smooth_time_right_derivatives_commute _ hρ).2.2.1 s).continuousOn hK
+    ((_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ (_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ hρ).1).2.2.1 s).continuousOn hK hdtvan
+  have I_ρ := integrable_of_val μ ((_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ hρ).2.2.1 s).continuousOn hK
     (hvan s (Metric.mem_ball_self one_pos))
   have hRs : r + 1 - C * s ≤ R := by
     have h1 := neg_abs_le s
@@ -178,10 +178,10 @@ theorem energy_diff_ineq : ∀ {n : ℕ} {W : Type} [NormedAddCommGroup W] [Inne
     rw [h1.fderiv_eq]; simp
   have I_rr : ∀ p : Ix n, Integrable (fun y : G n => Rr (hm p) (Ψ p s) y.val) μ := fun p =>
     integrable_of_val μ
-      ((GlobalTheory.T.smooth_time_right_derivatives_commute _ ((GlobalTheory.T.smooth_time_right_derivatives_commute _ (hΨ p)).2.1 (hm p))).2.2.1 s).continuousOn hK
+      ((_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ ((_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ (hΨ p)).2.1 (hm p))).2.2.1 s).continuousOn hK
       (hrrvan p)
   have hZ : ∀ p : Ix n, ∫ y : G n, Rr (hm p) (Ψ p s) y.val ∂μ = 0 := fun p =>
-    hIBP (Ψ p s) ((GlobalTheory.T.smooth_time_right_derivatives_commute _ (hΨ p)).2.2.1 s)
+    hIBP (Ψ p s) ((_root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus _ (hΨ p)).2.2.1 s)
       ⟨r + 1 - C * s, fun y _ hy => by
         have h4 : 1 ≤ ℓ y + C * s - r := by linarith
         simp only [Ψ, cw, hχ1 _ h4, zero_mul]⟩ (hm p)

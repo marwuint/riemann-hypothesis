@@ -323,10 +323,6 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
-theorem crude_integrability_of_parts : Formalism.FourierDecayAlt.B2.AssembleCCIntCrude := by
-  intro hCC hGN k r Wp Wq _ _ _ _ D A hA
-  exact hCC k r Wp Wq D A (hGN k r D.μG A D.haarG hA)
-
 theorem base_vector_exists : Formalism.FourierDecayAlt.B2.ZExists := by
   intro k r
   constructor

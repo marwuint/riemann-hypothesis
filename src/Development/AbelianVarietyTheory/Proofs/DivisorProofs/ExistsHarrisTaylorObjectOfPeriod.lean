@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.Uniformised
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianVarietyOfHalvedPeriodMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagFormTwoSmulAndKerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianVarietyOfHalvedPeriodMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagFormTwoSmulAndKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiAdjointIffBiextensionPullbacksIsomorphicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirigidifiedBundleKernelKilledOfComplexPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieConditionOfComplexExpIntertwinesActionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeToPTateSimilitudeComplexTorusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowEqOneOfPoincareKernelComplexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirigidifiedBundleKernelKilledOfComplexPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieConditionOfComplexExpIntertwinesAction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeToPTateSimilitudeComplexTorus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowEqOneOfPoincareKernelComplex
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
@@ -63,10 +63,10 @@ theorem GlobalTheory.UPel.HT.exists_obj_unifAt_of_period : ∀ (p : ℕ) [Fact p
   intro p _ D R _ b N σ ρ D' t Q hN hNp htype hcls hper
   obtain ⟨hgen, E₁, hE₁, e₀, he₀p, hperf⟩ := hcls
   obtain ⟨A, _, _, act, P, e, hab, hdim, hP, r₁, r₂, hsy, ham, hexp, hker, hact, hweil⟩ :=
-    GlobalTheory.T.exists_abelianVariety_of_halved_periodMap D.O D.inv D.g ρ D' Q E₁ hper hE₁
+    _root_.GlobalTheory.HalvedPeriod.exists_abelian_of_isPeriod D.O D.inv D.g ρ D' Q E₁ hper hE₁
   have hadd := hexp.1
   have hsurj := hexp.2.1
-  obtain ⟨hlie, hlieR⟩ := GlobalTheory.T.lieCondition_of_complexExp_intertwines_action p D R b N σ ρ A act e hab hdim hexp hact htype
+  obtain ⟨hlie, hlieR⟩ := _root_.GlobalTheory.UPel.HT.lie_of_complexExp p D R b N σ ρ A act e hab hdim hexp hact htype
   have hgen' := hgen
   obtain ⟨f, ν, rfl, -, hf⟩ := hgen
   have hfN := hf N hN hNp
@@ -77,7 +77,7 @@ theorem GlobalTheory.UPel.HT.exists_obj_unifAt_of_period : ∀ (p : ℕ) [Fact p
     rw [hper.1, ← Matrix.mulVec_smul, hact]
   have hNz : (N : ℂ) ≠ 0 := by exact_mod_cast hN.ne'
   have hQ1 : ∀ x, e (Q x) = 1 := fun x => (hker _).2 ⟨x, rfl⟩
-  have hgeom := GlobalTheory.T.exists_primeToP_tateSimilitude_complexTorus p D N ρ A act _ D' (f N) Q e eta hN hNp hab (pull_isLB hP _) hgen' hper hadd hsurj hker
+  have hgeom := _root_.GlobalTheory.UPel.HT.exists_tateIsoO_of_period p D N ρ A act _ D' (f N) Q e eta hN hNp hab (pull_isLB hP _) hgen' hper hadd hsurj hker
     hact hweil heta
   let o : Obj b N (spMap σ) :=
     { A := A
@@ -89,8 +89,8 @@ theorem GlobalTheory.UPel.HT.exists_obj_unifAt_of_period : ∀ (p : ℕ) [Fact p
       rig₂ := r₂
       symm := hsy
       ample := ham
-      kerP := ⟨e₀, he₀p, GlobalTheory.T.birigidified_bundle_kernel_killed_of_complex_points A D.g hab hdim P hP r₁ r₂ hsy ham e₀ (fun x hx => by
-        obtain ⟨k, hk, hxk⟩ := GlobalTheory.T.exists_pow_eq_one_of_poincareKernel_complex A D.g hab hdim P hP r₁ r₂ hsy ham e D'.La Q D'.EF hexp hper.2.1
+      kerP := ⟨e₀, he₀p, _root_.GlobalTheory.BiKill.kernel_pow_eq_one A D.g hab hdim P hP r₁ r₂ hsy ham e₀ (fun x hx => by
+        obtain ⟨k, hk, hxk⟩ := _root_.GlobalTheory.KerPoincare.exists_pow_eq_one_of_kernel A D.g hab hdim P hP r₁ r₂ hsy ham e D'.La Q D'.EF hexp hper.2.1
           hper.2.2.2.1 hker hweil x hx
         obtain ⟨z, rfl⟩ := hsurj x
         have hk' : (k : ℂ) ≠ 0 := by exact_mod_cast hk.ne'
@@ -98,7 +98,7 @@ theorem GlobalTheory.UPel.HT.exists_obj_unifAt_of_period : ∀ (p : ℕ) [Fact p
         obtain ⟨a, ha⟩ := (hker _).1 h1
         have hz : z = (k : ℂ)⁻¹ • Q a := by
           rw [ha, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hk', one_smul]
-        obtain ⟨E₁', hE₁', hdiv⟩ := GlobalTheory.T.diag_form_two_smul_and_ker_alt A D.g hab hdim P hP r₁ r₂ hsy ham e D'.La Q D'.EF hexp
+        obtain ⟨E₁', hE₁', hdiv⟩ := _root_.GlobalTheory.SymBirig.diag_form_two_smul_and_ker A D.g hab hdim P hP r₁ r₂ hsy ham e D'.La Q D'.EF hexp
           hper.2.1 hker hweil
         have hx' : ∃ t : (P.pull (lift (snd A (Over.mk (𝟙 (Sp ℂ))) ≫ e ((k : ℂ)⁻¹ • Q a))
             (fst A (Over.mk (𝟙 (Sp ℂ))))).left).Gen, t.IsGen := by

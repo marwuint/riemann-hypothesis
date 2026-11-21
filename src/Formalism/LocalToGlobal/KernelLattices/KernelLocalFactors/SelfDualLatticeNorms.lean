@@ -49,11 +49,6 @@ theorem kerStd_core {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.hos
     rw [hB.1] at h
     exact h
 
-theorem kerStdAmb_of (hK : ∀ D, KappaAll D) : KerStdAmb := by
-  intro D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p _ ι hok hcc hδ hχ hcm hB hae hbe hN hN' hsN hsN' hdisc hcD hW
-  exact kerStd_core s B χ cD N N' a₀ b₀ c₀ ha hd lam hlam p ι hok hcc hδ hχ hcm hB hae hbe hN hN' hsN hsN' hdisc hcD hW
-    (hK D cc δ B hcc hδ p ι trivial)
-
 theorem kerStd_congr {X : Fields} {A A' : Amb X} (h : A = A') {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < A.d) (hd' : 0 < A'.d) (lam : ℂ) (hlam : lam ≠ 0) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p])
     (hK : KerStd A' N N' a₀ b₀ c₀ ha hd' lam hlam p ι) : KerStd A N N' a₀ b₀ c₀ ha hd lam hlam p ι := by
@@ -77,35 +72,11 @@ theorem kerStdExOn_of (Q : D7 → ℕ → Prop) (hK : ∀ D, KappaOn Q D) : KerS
   intro a b N N' p _ ι hae hbe hN hN' hsN hsN' hdisc hcD hp hQ
   exact kerStdLatOn_of Q hK D X s cc δ B χ cD a b N N' a₀ b₀ c₀ ha hd lam hlam p ι hok hcc hδ hχ hcm hl hae hbe hN hN' hsN hsN' hdisc hcD hp hQ
 
-theorem kerStdAmb : KerStdAmb := kerStdAmb_of KS.kappaAll
-theorem kerStdLat : KerStdLat := kerStdLatOn_of _ KS.kappaAll
-theorem kerStdLatSplit : KerStdLatSplit := by
-  refine kerStdLatOn_of _ fun D => ?_
-  intro cc δ B h1 h2 p _ ι _
-  exact KS.kappaAll D cc δ B h1 h2 p ι trivial
 theorem kerStdEx : KerStdEx := kerStdExOn_of _ KS.kappaAll
-theorem kerStdExSplit : KerStdExSplit := by
-  refine kerStdExOn_of _ fun D => ?_
-  intro cc δ B h1 h2 p _ ι _
-  exact KS.kappaAll D cc δ B h1 h2 p ι trivial
-
 namespace Test
 
 open scoped ComplexConjugate
 open IsDedekindDomain
-
-theorem thF_ne_zero {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
-    {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
-    (hok : s.Ok) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : TaylorLogMetric.IsChi D χ)
-    (hae : Even a) (hbe : Even b) (hN : IsSdLat N) (hN' : IsSdLat N') : Formalism.L2.AlgTh.thF (ambOf s B χ cD) N N' ≠ 0 := by
-  have h0 : δ ≠ 0 := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.brcc_delta_ne D cc hcc δ hδ
-  have hne := (B.vec_mem_ne hcc hδ h0 (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ) χ hχ a b _ _ (s.admissible_of_selfDual_lattices hok hae hbe hN hN')).2
-  intro h
-  apply hne
-  funext w
-  have h1 := congrFun h ((s.flatV a b).symm w)
-  rw [KS.thF_eq] at h1
-  simpa using h1
 
 theorem jetAtSplit_ambOf {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     (hok : s.Ok) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : TaylorLogMetric.IsChi D χ)

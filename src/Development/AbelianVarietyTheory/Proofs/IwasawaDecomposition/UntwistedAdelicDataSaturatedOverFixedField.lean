@@ -5,8 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsReadsAtO
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBelowOfRange
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIs
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResCharMemF0Primes
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniformNormalisedAdelicSeedsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlacesOverFixedFieldSameCoefficientPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniformNormalisedAdelicSeeds
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteNonzeroIndexPlacesReferenceTuple
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlacesOverFixedFieldSameCoefficientPlace
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimesLifts
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimes
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResCharEqOfOverOne
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Cx Formalism.IndefR.RecTie
@@ -21,7 +24,7 @@ theorem stepW_seed_fixed : StepW Pinned fun K B f T _ =>
     (↑(NonzeroPlacesOverPrimes.forcedContentSupportPrimes K B.toPre) : Set ℕ) ⊆ ↑T.pl ∧ ∀ px : PreX B.toPre,
       (∃ F₀, SeedW K B.toPre f B.KsC F₀ px Set.univ ⊤) → ∃ F₀, SeedW K B.toPre f B.KsC F₀ px ↑T.pl B.fixedCoefficientFieldInComplex := by
   refine evG_all fun K => ?_
-  choose S S₁ hS₁ hS using GlobalTheory.T.exists_uniform_normalisedAdelicSeeds K
+  choose S S₁ hS₁ hS using _root_.GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists K
   refine ⟨fun P f F => S₁ P f F, fun P f F _ => S P f F ∪ NonzeroPlacesOverPrimes.forcedContentSupportPrimes K P, fun _ _ _ _ _ => ∅,
     fun _ _ _ _ _ => ∅, fun P f F => hS₁ P f F, by simp, ?_⟩
   intro B f T _ hHas hP _ _ _ _ w _
@@ -88,7 +91,7 @@ theorem dat_saturated_of_untw : GlobalTheory.Published.GreenCuspidal → DatExS 
     rcases (Dat.mem_auxiliaryPlaces_iff_three_parts z' _ v₁).1 hv₁ with h | h
     · obtain ⟨v, hB⟩ := Untw.exists_below_of_range (w₀.D Z₀) (w.D Z) hE.2.2.2 v₁
       have hv : v ∈ z₀.W1 (fun _ _ => 0) := (hExt.W1 v v₁ hB).2 ((Dat.mem_auxiliaryPlaces_iff_three_parts z' _ v₁).2 (Or.inl h))
-      have hB₂ := GlobalTheory.T.placesOverFixedField_same_coefficient_place (w₀.D Z₀) (w.D Z) hsub v v₁ v₂ hov hB
+      have hB₂ := _root_.GlobalTheory.Mem.Top.Bl.below_of_overOne (w₀.D Z₀) (w.D Z) hsub v v₁ v₂ hov hB
       have hv₂ := (hExt.W1 v v₂ hB₂).1 hv
       rcases (Dat.mem_auxiliaryPlaces_iff_three_parts z' _ v₂).1 hv₂ with h₂ | h₂
       · exact (Dat.mem_auxiliaryPlaces_iff_three_parts z' _ v₂).2 (Or.inl h₂)

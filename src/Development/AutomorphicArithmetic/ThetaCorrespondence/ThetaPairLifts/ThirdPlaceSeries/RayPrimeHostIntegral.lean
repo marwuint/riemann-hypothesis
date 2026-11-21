@@ -1,5 +1,11 @@
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayPrimeHostIntegralStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayPrimeHostIntegral
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenUsedOfCenReal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PublishedInputsThirdLayer
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.FixedFieldIsStableUnderStar
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EigenExponentIsIntegralAllStages
@@ -22,7 +28,7 @@ theorem elem_all_alt_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputs
   rintro K B f T w P x ⟨⟨⟨h1, h2⟩, h3, h4⟩, h5, h6⟩
   refine ⟨⟨h1, h2, h3⟩, h4, h5, ?_⟩
   obtain ⟨hT⟩ := HostTied.exists (Dof x)
-  exact ⟨hT, hT.fr.j.toRingHom, fun y => rfl, fun k => GlobalTheory.T.isRayPrime_of_norm_integer_congruent_one (Dof x) k _ (h6 k).1 (h6 k).2⟩
+  exact ⟨hT, hT.fr.j.toRingHom, fun y => rfl, fun k => _root_.GlobalTheory.RayPrimeOfNorm.isRayPrime_of_norm_eq (Dof x) k _ (h6 k).1 (h6 k).2⟩
 end GlobalTheory.ElemAtStates
 end
 section

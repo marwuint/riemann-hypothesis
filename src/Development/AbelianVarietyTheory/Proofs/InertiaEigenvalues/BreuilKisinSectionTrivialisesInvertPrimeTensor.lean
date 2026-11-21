@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemInvLSIffTendsto
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerContentValuationDetPowBounds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinXiExtMemRigidTensorIffStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinXiExtMemRigidTensorIff
 open PowerSeries GlobalTheory.BK Filter Topology
 
 namespace GlobalTheory.BK
@@ -113,7 +113,7 @@ theorem GlobalTheory.BK.xi_trivialises_invL_S : ∀ (O K : Type) [CommRing O] [N
   have hk1 : 1 / ((e : ℝ) * l) < k := by rw [hkdef]; linarith
   have hk2 : k < 1 / ((e : ℝ) * (l - 1)) := by rw [hkdef]; linarith
   have hRB := R_le_invL_S O K l e k hk2
-  have hT := GlobalTheory.T.breuilKisin_xiExt_mem_rigidTensor_iff O K l e a ι P k hk1
+  have hT := _root_.GlobalTheory.BK.xiExt_mem_Lk_iff O K l e a ι P k hk1
   set Y : ZMod a → Matrix ι ι K⟦X⟧ := fun τ => P.mxInv τ * P.xiMat τ with hY
   have hext : ∀ (B : Subalgebra O K⟦X⟧) (v : Vec K a ι),
       P.xiExt v ∈ P.ext B ↔ ∀ τ, Y τ *ᵥ v τ ∈ vecs ι B := by

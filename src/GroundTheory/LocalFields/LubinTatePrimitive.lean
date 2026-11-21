@@ -84,17 +84,6 @@ theorem lubinTateField_mono (hf : IsLubinTateSeries π f) {m n : ℕ} (h : m ≤
   rintro _ ⟨x, hx, rfl⟩
   exact val_mem_lubinTateField hπ hf (lubinTateTorsion_mono hπ hf h hx)
 
-theorem lubinTateField_le_succ (hf : IsLubinTateSeries π f) (n : ℕ) :
-    lubinTateField Ω hπ hf n ≤ lubinTateField Ω hπ hf (n + 1) :=
-  lubinTateField_mono hπ hf n.le_succ
-
-theorem lubinTatePointEquiv_primitive_iff (hf : IsLubinTateSeries π f) (hg : IsLubinTateSeries π g)
-    (n : ℕ) (x : IdealPoint Ω (lubinTateFormalGroup hπ hg)) :
-    (lubinTatePointEquiv hf hg x ∈ lubinTateTorsion Ω hf n ∧
-        lubinTatePointEquiv hf hg x ∉ lubinTateTorsion Ω hf (n - 1)) ↔
-      (x ∈ lubinTateTorsion Ω hg n ∧ x ∉ lubinTateTorsion Ω hg (n - 1)) := by
-  rw [lubinTatePointEquiv_mem_torsion_iff, lubinTatePointEquiv_mem_torsion_iff]
-
 theorem aeval_ltEisenstein_of_primitive {k : ℕ}
     {l : IdealPoint Ω (lubinTateFormalGroup hπ (isLubinTateSeries_ltPoly π))}
     (hl : l ∈ lubinTateTorsion Ω (isLubinTateSeries_ltPoly π) (k + 1))
@@ -109,37 +98,6 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Topol
 theorem exists_integer_eq {E : IntermediateField K Ω} {x : Ω} (hxE : x ∈ E)
     (hx : valuation Ω x < 1) : ∃ y : 𝒪[E], ((y : E) : Ω) = x :=
   ⟨⟨⟨x, hxE⟩, ((valuation_coe_lt_one_iff E ⟨x, hxE⟩).mp hx).le⟩, rfl⟩
-
-omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω] [TopologicalSpace Ω]
-  [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
-
-theorem norm_neg_eq_coeff_zero {E : IntermediateField K Ω} {a : Ω} (hE : E = K⟮a⟯) (ha : a ∈ E)
-    {p : 𝒪[K][X]} (hpm : p.Monic) (hfin : Module.finrank K E = p.natDegree)
-    (hp : aeval a (p.map (algebraMap 𝒪[K] K)) = 0) :
-    Algebra.norm K (-(⟨a, ha⟩ : E)) = ((p.coeff 0 : 𝒪[K]) : K) := by
-  subst hE
-  have hint : IsIntegral K a := (Algebra.IsAlgebraic.isAlgebraic a).isIntegral
-  have hqm : (p.map (algebraMap 𝒪[K] K)).Monic := hpm.map _
-  have hmin : minpoly K a = p.map (algebraMap 𝒪[K] K) := by
-    refine (Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hqm
-      (minpoly.dvd K a hp) ?_).symm
-    rw [← adjoin.finrank hint, hfin, natDegree_map_eq_of_injective
-      (FaithfulSMul.algebraMap_injective 𝒪[K] K)]
-  set pb := adjoin.powerBasis hint
-  have hgen : (⟨a, ha⟩ : K⟮a⟯) = pb.gen := by
-    rw [adjoin.powerBasis_gen]
-    rfl
-  have hdim : pb.dim = Module.finrank K K⟮a⟯ := by
-    rw [adjoin.powerBasis_dim, adjoin.finrank hint]
-  have hnorm : Algebra.norm K pb.gen =
-      (-1) ^ Module.finrank K K⟮a⟯ * ((p.coeff 0 : 𝒪[K]) : K) := by
-    rw [Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly, hdim, adjoin.powerBasis_gen,
-      minpoly_gen, hmin, coeff_map]
-    rfl
-  rw [hgen]
-  have h1 : (-1 : K⟮a⟯) = algebraMap K K⟮a⟯ (-1) := by simp
-  rw [neg_eq_neg_one_mul, h1, map_mul, Algebra.norm_algebraMap,
-    hnorm, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]
 
 theorem irreducible_of_eq_adjoin_of_isEisensteinAt {E : IntermediateField K Ω} [FiniteDimensional K E]
     {a : Ω} (hE : E = K⟮a⟯) {p : 𝒪[K][X]} (hp : p.IsEisensteinAt (IsLocalRing.maximalIdeal 𝒪[K]))
@@ -261,24 +219,6 @@ theorem irreducible_of_primitive (hf : IsLubinTateSeries π f) {n : ℕ}
     rw [← psEval_coe _ φ (fun _ => (y : lubinTateField Ω hπ hf n)) (fun _ => by rw [hy]; exact m.valuation_lt_one), hy]
   rw [hxe]
   exact hassoc.irreducible hyirr
-
-theorem norm_neg_eq_uniformizer_of_primitive (hf : IsLubinTateSeries π f) {n : ℕ}
-    {l : IdealPoint Ω (lubinTateFormalGroup hπ (isLubinTateSeries_ltPoly π))}
-    (hl : l ∈ lubinTateTorsion Ω (isLubinTateSeries_ltPoly π) n)
-    (hl' : l ∉ lubinTateTorsion Ω (isLubinTateSeries_ltPoly π) (n - 1)) :
-    Algebra.norm K (-(⟨l.val, val_mem_lubinTateField_of_mem hπ hf (isLubinTateSeries_ltPoly π) hl⟩ :
-      lubinTateField Ω hπ hf n)) = (π : K) := by
-  obtain ⟨k, rfl⟩ : ∃ k, n = k + 1 := by
-    cases n with
-    | zero => exact absurd hl hl'
-    | succ k => exact ⟨k, rfl⟩
-  rw [Nat.add_sub_cancel] at hl'
-  have hE : lubinTateField Ω hπ hf (k + 1) = K⟮l.val⟯ :=
-    (lubinTateField_eq hπ hf (isLubinTateSeries_ltPoly π) _).trans
-      (lubinTateField_eq_adjoin_of_primitive hπ _ hl (by rwa [Nat.add_sub_cancel]))
-  rw [norm_neg_eq_coeff_zero hE _ (ltEisenstein_monic π k).1 ?_
-    (aeval_ltEisenstein_of_primitive hπ hl hl'), coeff_zero_ltEisenstein]
-  rw [(finrank_and_ramificationIndex_lubinTateField_succ hπ hf k).1, (ltEisenstein_monic π k).2]
 
 end Torsion
 

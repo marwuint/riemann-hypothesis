@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ETExSt
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.EtValLink
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ETPointStatement
 import Formalism.LocalToGlobal.ProjectiveLattices.Adm3OfExtension
 
 set_option autoImplicit false
@@ -40,10 +40,6 @@ theorem phiC_nonneg (X : WeightAlgebra.PJ D B P j) (la : HeightOneSpectrum (𝓞
           exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring
         rw [h2]; exact h1.le
   · exact le_rfl
-
-theorem zero (X : WeightAlgebra.PJ D B P j) (i : ℕ) : EtVal X i 0 := by
-  intro la y
-  rw [map_zero, X.vAt_zero]; exact le_top
 
 theorem mem_Mlat (X : WeightAlgebra.PJ D B P j) (i : ℕ) (η : B.Cusp j (Formalism.L2.Pj.wEt D j i)) (h : EtVal X i η) :
     η ∈ B.Mlat j _ := by

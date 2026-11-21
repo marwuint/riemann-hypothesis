@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceOpen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquaringOpenAtOneOfCompleteTwoNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquaringOpenAtOneOfCompleteTwoNeZero
 open NumberField IsDedekindDomain GlobalTheory.QSA
 open scoped Quaternion Topology
 
@@ -18,7 +18,7 @@ theorem sqOpen_and_nhdsNE_zero_neBot_adicCompletion :
     have h' : algebraMap F (v.adicCompletion F) 2 = algebraMap F (v.adicCompletion F) 0 := by
       rw [map_ofNat, map_zero]; exact h
     exact two_ne_zero ((algebraMap F (v.adicCompletion F)).injective h')
-  refine ⟨GlobalTheory.T.squaringOpenAtOne_of_complete_two_ne_zero (v.adicCompletion F) h2, ?_⟩
+  refine ⟨_root_.GlobalTheory.sqOpen_of_two_ne_zero (v.adicCompletion F) h2, ?_⟩
   infer_instance
 
 end GlobalTheory.QSA

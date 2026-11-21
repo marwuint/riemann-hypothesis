@@ -131,21 +131,6 @@ theorem piInf_cA {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F}
     congr 1
     exact (Complex.conj_eq_iff_im.2 (im_extension h.1 w _)).symm
 
-omit [NumberField E] in
-theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf τ) := by
-  let φ : AF F →+* ℂ := (InfinitePlace.Completion.extensionEmbedding w).comp (evInf F w : AF F →+* w.Completion)
-  have hφ : Continuous φ := (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp
-    ((continuous_apply w).comp continuous_fst)
-  let : Algebra (AF F) ℂ := φ.toAlgebra
-  have : ContinuousSMul (AF F) ℂ := ⟨(hφ.comp continuous_fst).mul continuous_snd⟩
-  let L : AE F E →ₗ[AF F] ℂ :=
-    { toFun := piInf τ
-      map_add' := map_add _
-      map_smul' := fun c y => by
-        have : c • y = (c ⊗ₜ[F] (1 : E)) * y := by rw [Algebra.smul_def]; rfl
-        rw [this, map_mul, piInf_tmul, map_one, mul_one]; rfl }
-  exact IsModuleTopology.continuous_of_linearMap L
-
 theorem eq_zero_of_piInf {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (x : AE F E)
     (hx : At (evI F) x) (hinf : ∀ w, piInf (τ w) x = 0) : x = 0 := by
   obtain ⟨β, hβ⟩ := exists_moved h

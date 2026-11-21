@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ThConst
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.AbelianHolomorphicFrameReadingConstOfFormsCancelStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.AbelianHolomorphicFrameReadingConstOfFormsCancel
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GeneratorReadingCorrMulInv
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GeneratorReadingPullbackPeriodRigid
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ReadingTwistedPullback
@@ -73,7 +73,7 @@ theorem mulN_genRd (N : ℕ)
     simp [Fin.sum_univ_two, hermForm]
     simp only [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
     ring
-  obtain ⟨⟨v, -, hv⟩, -⟩ := GlobalTheory.T.abelianHolomorphicFrame_reading_const_of_forms_cancel S A L x0 g Φ A.left (Fin 2) ![𝟙 A.left, (mulA A N).left]
+  obtain ⟨⟨v, -, hv⟩, -⟩ := _root_.GlobalTheory.AnVal.genRd_const S A L x0 g Φ A.left (Fin 2) ![𝟙 A.left, (mulA A N).left]
     ![(N : ℤ) ^ 2, -1] α₀ hg g (fun z => (Φ.e z).left) ![LinearMap.id, (N : ℂ) • LinearMap.id] Φ.lat Φ.hol hφ
     Φ.span hper hherm
   have hrig : Φ.GenRd (K := PUnit) (fun _ => eSec A) (fun _ => 1) L.rig x0 (fun _ => 0) 1 := by

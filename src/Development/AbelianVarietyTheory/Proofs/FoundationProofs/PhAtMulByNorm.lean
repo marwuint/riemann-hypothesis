@@ -10,10 +10,12 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TaylorSeriesInPa
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SigmaStarSquareQuotientInModelParameter
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntSerOfIsWq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicComplexIntegralBoundedSeriesLaws
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormPadicModelAbscissaLeOneOfTorsionCoprimeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormPadicModelAbscissaLeOneOfTorsionCoprime
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SigmaStarMulSqEqProdKernelQuotientsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicComplexIntegralOfSqIntegralOddStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExpMvPhiSeriesSubNsmulEqDivStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicComplexIntegralOfSqIntegralOdd
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExpMvPhiSeriesSubNsmulEqDiv
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExpMvNegLogMvMul
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralSubst
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.OkpDict
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.AdditionIdentityOfSigmaFormulaUnit
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertPrimeTeichmuller.NormLeOneOfIntegralInt
@@ -174,7 +176,7 @@ theorem phAt_mulBy_norm : ∀ (D : D7), GL3Theta.endInt D → GL3Theta.addInt D 
     fun i => GlobalTheory.EvenTheta.Param.sqTh_atU p g hok.2.1 hlat' h2 h3 halgσ (Q i) (hQ i).1
       (hwp _ ⟨k + 1, Nat.succ_pos k, hLaQ i⟩ (hQ i).1).1
   have hx : ∀ i, ‖xAt g (Q i)‖ ≤ 1 := fun i =>
-    GlobalTheory.T.norm_padicModelAbscissa_le_one_of_torsion_coprime D p cc δ g hg' (k + 1) (Q i) (Nat.succ_pos k) hcop' (hLaQ i) (hQ i).1
+    _root_.GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul D p cc δ g hg' (k + 1) (Q i) (Nat.succ_pos k) hcop' (hLaQ i) (hQ i).1
   obtain ⟨hr, -, hC, hXI, -, -⟩ := GlobalTheory.EvenTheta.SerRing.series_ring_laws p
   have hlineI : ∀ x : ℂ_[p], ‖x‖ ≤ 1 → IntSer (lineSer g.wq⁻¹ x) := fun x hx =>
     (hr _ _ hw ((hr _ _ ((hC x).2 hx) (by rw [sq]; exact (hr _ _ hXI hXI).2.2)).2.2)).2.1
@@ -227,8 +229,8 @@ theorem phAt_mulBy_norm : ∀ (D : D7), GL3Theta.endInt D → GL3Theta.addInt D 
   have hI2 := intSer_sq_of_eq h (subst h f) f _ τ (k + 1) hhI hh0 hh1 hτu hF0 hLI hL0 e
   have hH0 : constantCoeff ((subst h f : PowerSeries ℂ_[p])⁻¹ * f ^ (k + 1)) = 1 := by
     rw [map_mul, PowerSeries.constantCoeff_inv, hF0, map_pow, hE]; simp
-  have hI := GlobalTheory.T.padicComplex_integral_of_sq_integral_odd p hp _ hH0 hI2
-  obtain ⟨c0, ex⟩ := GlobalTheory.T.expMv_phiSeries_sub_nsmul_eq_div p g h (k + 1) hE hh0
+  have hI := _root_.GlobalTheory.EvenTheta.intSer_of_sq_main p hp _ hH0 hI2
+  obtain ⟨c0, ex⟩ := _root_.GlobalTheory.ExpLogShift.expMv_phAt_sub_nsmul p g h (k + 1) hE hh0
   have hmb : (g.mulBy τ (GL3Theta.Xv ()) : MvPowerSeries Unit ℂ_[p]) = h := hh.symm
   rw [hmb, htn]
   refine ⟨c0, ?_⟩

@@ -347,17 +347,6 @@ def uSimR (R : Type) [CommRing R] [Algebra ℚ R] : UPts star R →* Rˣ :=
 theorem uSimR_ubc (R : Type) [CommRing R] [Algebra ℚ R] (g : UQpts star) :
     ((uSimR R (ubc R g) : Rˣ) : R) = algebraMap ℚ R (uSimQ g : ℚ) := rfl
 
-theorem ubcMap_ubc {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R'] (f : R →ₐ[ℚ] R')
-    (g : UQpts star) : ubcMap f (ubc R g) = ubc R' g := by
-  apply Subtype.ext
-  apply Prod.ext
-  · apply Units.ext
-    change (Algebra.TensorProduct.map f (AlgHom.id ℚ C)) ((1 : R) ⊗ₜ (((g : Cˣ × ℚˣ).1 : Cˣ) : C)) =
-      (1 : R') ⊗ₜ (((g : Cˣ × ℚˣ).1 : Cˣ) : C)
-    simp [Algebra.TensorProduct.map_tmul]
-  · apply Units.ext
-    exact f.commutes _
-
 variable [Module.Finite ℚ C]
 
 instance UPts.instTop (R : Type) [CommRing R] [Algebra ℚ R] [TopologicalSpace R] :
@@ -452,25 +441,6 @@ structure HTGroup (p : ℕ) [Fact p.Prime] where
 
 attribute [instance] HTGroup.fieldF HTGroup.numF HTGroup.cmF HTGroup.ringC HTGroup.algC HTGroup.algQC
   HTGroup.towerC HTGroup.finC HTGroup.centralC HTGroup.simpleC
-section BcLemmas
-
-variable {F : Type} [Field F] [NumberField F] [IsCMField F] {n : ℕ} {H : Matrix (Fin n) (Fin n) F}
-
-theorem bcMap_bc {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R'] (f : R →ₐ[ℚ] R')
-    (g : GQpts F H) : bcMap f (bc R g) = bc R' g := by
-  apply Subtype.ext
-  apply Prod.ext
-  · apply Units.ext
-    ext i j
-    change (Algebra.TensorProduct.map f (AlgHom.id ℚ F))
-        (Algebra.TensorProduct.includeRight (((g : GL (Fin n) F × ℚˣ).1 : Matrix (Fin n) (Fin n) F) i j)) =
-      Algebra.TensorProduct.includeRight (((g : GL (Fin n) F × ℚˣ).1 : Matrix (Fin n) (Fin n) F) i j)
-    simp [Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
-  · apply Units.ext
-    simp only [bcMap, bc, simMap_snd]
-    exact f.commutes _
-
-end BcLemmas
 namespace HTGroup
 
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p)
@@ -478,8 +448,6 @@ variable {p : ℕ} [Fact p.Prime] (G : HTGroup p)
 instance finQ : Module.Finite ℚ G.C := Module.Finite.trans G.F G.C
 
 abbrev GQ : Type := UQpts G.star
-
-abbrev W : Type := Fin G.m
 
 abbrev GR : Type := UPts G.star ℝ
 
@@ -490,8 +458,6 @@ abbrev GQp : Type := UPts G.star ℚ_[p]
 abbrev GQbar : Type := UPts G.star (AlgebraicClosure ℚ)
 
 def toAf : G.GQ →* G.GAf := ubc (AfP p)
-
-def toR : G.GQ →* G.GR := ubc ℝ
 
 def sim : G.GQ →* ℚˣ := uSimQ
 
@@ -514,21 +480,6 @@ def localization₂ : G.GQp →* ℚ_[p]ˣ × ((i : Fin G.m) → GL (Fin G.n) (G
         ℚ_[p] ⊗[ℚ] G.C →* Matrix (Fin G.n) (Fin G.n) (G.Fw i))).comp
       ((MonoidHom.fst _ _).comp (UPts G.star ℚ_[p]).subtype))
 
-def toP : G.GQ →* ℚ_[p]ˣ × ((i : Fin G.m) → GL (Fin G.n) (G.Fw i)) := G.localization₂.comp (ubc ℚ_[p])
-
-theorem toPadic_fst (g : G.GQ) : (((G.toP g).1 : ℚ_[p]ˣ) : ℚ_[p]) = ((G.sim g : ℚ) : ℚ_[p]) := by
-  show ((((ubc ℚ_[p] g : UPts G.star ℚ_[p]) : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ).2 : ℚ_[p]ˣ) : ℚ_[p]) = _
-  simp only [ubc, uMap_snd]
-  rfl
-
-theorem toPadic_snd (g : G.GQ) (w : G.W) :
-    ((G.toP g).2 w : Matrix (Fin G.n) (Fin G.n) (G.Fw w)) = G.rho w (((g : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) := by
-  change G.locW w ((1 : ℚ_[p]) ⊗ₜ (((g : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) = _
-  change (Algebra.ofId ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (1 : ℚ_[p])) *
-    (G.rho w).toRatAlgHom (((g : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = _
-  rw [map_one, one_mul]
-  rfl
-
 def IsSS (γ : G.GQ) : Prop :=
   Module.End.IsSemisimple (LinearMap.mulLeft G.F (((γ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C))
 
@@ -544,42 +495,14 @@ def IsEllR (γ : G.GR) : Prop :=
 
 def StQ (γ γ' : G.GQ) : Prop := ∃ h : G.GQbar, h * ubc _ γ * h⁻¹ = ubc _ γ'
 
-def StAf (γ₀ : G.GQ) (γ : G.GAf) : Prop :=
-  ∀ v : AwayP p, ∃ h : UPts G.star (AlgebraicClosure (v.1.adicCompletion ℚ)),
-    h * ubcMap (IsScalarTower.toAlgHom ℚ (v.1.adicCompletion ℚ) (AlgebraicClosure (v.1.adicCompletion ℚ)))
-      (ubcMap (AfP.eval v) γ) * h⁻¹ = ubc _ γ₀
-
 def MuIdx : Type := {s : G.F →+* AlgebraicClosure ℚ // LiesOver G.Kq G.u (G.iotaP.comp s)}
 
 def placeOf (s : G.MuIdx) : Fin G.m := (G.emb_all _ s.2).choose
-
-def mu0 : ℤ := 1
-
-def mu (s : G.MuIdx) : Fin G.n → ℤ :=
-  if sigPosH (G.gram_herm (InfinitePlace.mk (G.iotaC.comp s.1))) = 1 then Pi.single ⟨0, G.n_pos⟩ 1 else 0
 
 structure Level (G : HTGroup p) where
 
   K : OpenSubgroup G.GAf
   compact : IsCompact (K : Set G.GAf)
-
-theorem stQ_refl (γ : G.GQ) : G.StQ γ γ := ⟨1, by simp⟩
-
-theorem stQ_symm {γ γ' : G.GQ} (h : G.StQ γ γ') : G.StQ γ' γ := by
-  obtain ⟨x, hx⟩ := h
-  exact ⟨x⁻¹, by rw [← hx]; group⟩
-
-theorem stQ_trans {γ γ' γ'' : G.GQ} (h : G.StQ γ γ') (h' : G.StQ γ' γ'') : G.StQ γ γ'' := by
-  obtain ⟨x, hx⟩ := h
-  obtain ⟨y, hy⟩ := h'
-  exact ⟨y * x, by rw [← hy, ← hx]; group⟩
-
-theorem stAf_toAf (γ₀ : G.GQ) : G.StAf γ₀ (G.toAf γ₀) := fun v => ⟨1, by simp [toAf, ubcMap_ubc]⟩
-
-theorem isSS_one : G.IsSS 1 := by
-  show Module.End.IsSemisimple (LinearMap.mulLeft G.F (1 : G.C))
-  rw [LinearMap.mulLeft_one]
-  exact Module.End.isSemisimple_id
 
 end HTGroup
 
@@ -606,42 +529,6 @@ instance finiteDimensional_Fw (i : Fin G.m) : FiniteDimensional ℚ_[p] (G.Fw i)
     exact h1.tower_top
   exact Module.Finite.of_injective (IntermediateField.inclusion hle).toLinearMap
     (IntermediateField.inclusion hle).injective
-
-theorem isEllR_one : G.IsEllR 1 := by
-  intro v
-  have h1 : Matrix.toLin' (G.psiR v ((((1 : G.GR) : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)) =
-      LinearMap.id := by
-    simp
-  rw [h1]
-  refine ⟨Module.End.isSemisimple_id, fun μ hμ => ?_⟩
-  obtain ⟨x, hx⟩ := hμ.exists_hasEigenvector
-  have h2 : x = μ • x := by simpa using hx.apply_eq_smul
-  have h3 : μ = 1 := by
-    have : (μ - 1) • x = 0 := by rw [sub_smul, one_smul, ← h2, sub_self]
-    exact sub_eq_zero.1 ((smul_eq_zero.1 this).resolve_right hx.2)
-  simp [h3]
-
-theorem sim_pos_of_isEllR {γ : G.GR} (h : G.IsEllR γ) : 0 < (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).2 : ℝˣ) : ℝ) := by
-  obtain ⟨v⟩ : Nonempty (InfinitePlace G.F) := inferInstance
-  haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩
-  obtain ⟨μ, hμ⟩ := Module.End.exists_eigenvalue
-    (Matrix.toLin' (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)))
-  have hc := (h v).2 μ hμ
-  have hu : IsUnit (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)) :=
-    ((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1.isUnit).map (G.psiR v)
-  have hdet := ((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero
-  obtain ⟨x, hx⟩ := hμ.exists_hasEigenvector
-  have hμ0 : μ ≠ 0 := by
-    rintro rfl
-    have h0 : (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)) *ᵥ x = 0 := by
-      simpa [Matrix.toLin'_apply] using hx.apply_eq_smul
-    exact hx.2 (Matrix.eq_zero_of_mulVec_eq_zero hdet h0)
-  rw [← hc]
-  exact pow_pos (norm_pos_iff.2 hμ0) 2
-
-example : IsTopologicalGroup G.GAf := inferInstance
-example : IsTopologicalGroup G.GR := inferInstance
-example : IsTopologicalGroup G.GQp := inferInstance
 
 end HTGroup
 
@@ -731,36 +618,6 @@ theorem mul_eq_smul_one_comm {K : Type*} [Field K] {A B : Matrix (Fin n) (Fin n)
     calc B * A = c • (c⁻¹ • (B * A)) := by rw [smul_smul, mul_inv_cancel₀ hc, one_smul]
       _ = c • 1 := by rw [h2]
   exact ⟨key A B, key B A⟩
-
-theorem hermStar_mul_eq_iff {H : Matrix (Fin n) (Fin n) F}
-    (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H) (hdet : H.det ≠ 0) {c : F} (hc : c ≠ 0)
-    (g : Matrix (Fin n) (Fin n) F) :
-    g * (hermStar H hdet g).unop = c • 1 ↔ gᵀ * H * g.map (IsCMField.complexConj F : F →+* F) = c • H := by
-  have hT : H.map (IsCMField.complexConj F : F →+* F) = Hᵀ := by
-    rw [← Matrix.transpose_transpose (H.map _), hH]
-  have hu : IsUnit (H.map (IsCMField.complexConj F : F →+* F)).det := by
-    rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
-    exact (map_ne_zero _).2 hdet |>.isUnit
-  have e : ∀ M : Matrix (Fin n) (Fin n) F, (H.map (IsCMField.complexConj F : F →+* F))⁻¹ * M = c • 1 ↔
-      M = c • H.map (IsCMField.complexConj F : F →+* F) := fun M =>
-    ⟨fun h => by rw [← Matrix.mul_nonsing_inv_cancel_left _ M hu, h, Matrix.mul_smul, Matrix.mul_one],
-     fun h => by rw [h, Matrix.mul_smul, Matrix.nonsing_inv_mul _ hu]⟩
-  rw [hermStar_apply, mul_eq_smul_one_comm hc, Matrix.mul_assoc, Matrix.mul_assoc, e, hT]
-  constructor
-  · intro h
-    have := congrArg Matrix.transpose h
-    simpa [Matrix.transpose_mul, Matrix.mul_assoc] using this
-  · intro h
-    have := congrArg Matrix.transpose h
-    simpa [Matrix.transpose_mul, Matrix.mul_assoc] using this
-
-theorem mem_UQpts_hermStar_iff {H : Matrix (Fin n) (Fin n) F}
-    (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H) (hdet : H.det ≠ 0)
-    (x : (Matrix (Fin n) (Fin n) F)ˣ × ℚˣ) :
-    x ∈ UQpts (hermStar H hdet) ↔ ((x.1 : Matrix (Fin n) (Fin n) F))ᵀ * H *
-      (x.1 : Matrix (Fin n) (Fin n) F).map (IsCMField.complexConj F : F →+* F) = algebraMap ℚ F (x.2 : ℚ) • H := by
-  have hc : algebraMap ℚ F (x.2 : ℚ) ≠ 0 := (map_ne_zero _).2 x.2.ne_zero
-  rw [UQpts, mem_uGroup, ← hermStar_mul_eq_iff hH hdet hc, Algebra.algebraMap_eq_smul_one, algebraMap_smul]
 
 end Herm
 
@@ -887,77 +744,9 @@ def gaussianToQFive : QI →+* ℚ_[5] :=
       simp [Finset.sum_range_succ]; ring
     rw [this]; simpa using sqrtNegOne_sq) |>.toRingHom
 
-def Hc (c : ℚ) : Matrix (Fin 1) (Fin 1) QI := !![(c : QI)]
-
-theorem herm_Hc (c : ℚ) : ((Hc c).map (IsCMField.complexConj QI : QI →+* QI))ᵀ = Hc c := by
-  ext i j; fin_cases i; fin_cases j; simp [Hc]
-
-theorem eig_Hc (c : ℚ) (τ : QI →+* ℂ) (i : Fin 1) :
-    (isHermitian_gramAt (herm_Hc c) τ).eigenvalues i = c := by
-  have h := (isHermitian_gramAt (herm_Hc c) τ).det_eq_prod_eigenvalues
-  obtain rfl : i = 0 := Subsingleton.elim _ _
-  simp only [Fin.prod_univ_one, gramAt, Hc, Matrix.det_unique, Matrix.transpose_apply, Matrix.map_apply,
-    Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_fin_one, map_ratCast] at h
-  have h' : ((isHermitian_gramAt (herm_Hc c) τ).eigenvalues 0 : ℂ) = ((c : ℝ) : ℂ) := by
-    rw [Complex.ofReal_ratCast]; first | exact h | exact h.symm
-  exact_mod_cast h'
-
-theorem sig_Hc (c : ℚ) (hc : c ≠ 0) (τ : QI →+* ℂ) :
-    (sigPos (herm_Hc c) τ = 1 ∧ sigNeg (herm_Hc c) τ = 1 - 1) ∨ (sigPos (herm_Hc c) τ = 0 ∧ sigNeg (herm_Hc c) τ = 1) := by
-  unfold sigPos sigNeg
-  simp only [eig_Hc]
-  rcases lt_or_gt_of_ne hc with h | h
-  · right
-    have h' : (c : ℝ) < 0 := by exact_mod_cast h
-    simp [h', not_lt.2 h'.le]
-  · left
-    have h' : (0 : ℝ) < c := by exact_mod_cast h
-    simp [h', not_lt.2 h'.le]
-
-def ex (c : ℚ) (hc : c ≠ 0) : HTGroup 5 :=
-  ofHerm QI ⊤ hK_QI (gaussianToQFive.comp (⊤ : Subfield QI).subtype) 1 Nat.one_pos (Hc c) (herm_Hc c) (by simp [Hc, hc])
-    (sig_Hc c hc) 1 (fun _ => (algebraMap ℚ_[5] (PadicAlgCl 5)).comp gaussianToQFive) (fun _ _ => rfl)
-    (fun i j _ _ => Subsingleton.elim i j)
-    (fun τ hτ => ⟨0, AlgEquiv.refl, by ext x; exact hτ ⟨x, Subfield.mem_top x⟩⟩)
-    (haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ;
-      (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] PadicAlgCl 5).toRingHom)
-    (haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ;
-      (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] ℂ).toRingHom)
-
-example : (ex 1 one_ne_zero).n = 1 := rfl
-example : (ex (-1) (by norm_num)).IsSS 1 := HTGroup.isSS_one _
-example (γ : (ex 1 one_ne_zero).GQ) : (ex 1 one_ne_zero).StQ γ γ := HTGroup.stQ_refl _ γ
-example : (ex 1 one_ne_zero).IsEllR 1 := HTGroup.isEllR_one _
-example : Module.finrank (ex 1 one_ne_zero).F (ex 1 one_ne_zero).C = 1 := (ex 1 one_ne_zero).rankC.trans rfl
-
 end Example
 
 namespace Example
-
-theorem sigPos_Hc (c : ℚ) (τ : QI →+* ℂ) : sigPos (herm_Hc c) τ = if 0 < c then 1 else 0 := by
-  unfold sigPos
-  simp only [eig_Hc]
-  split_ifs with h
-  · have h' : (0 : ℝ) < c := by exact_mod_cast h
-    simp [h']
-  · have h' : ¬ (0 : ℝ) < c := by exact_mod_cast h
-    simp [h']
-
-theorem card_infinitePlace_QI : Fintype.card (InfinitePlace QI) = 1 := by
-  have h1 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank QI
-  have h2 : NumberField.InfinitePlace.nrRealPlaces QI = 0 := NumberField.IsTotallyComplex.nrRealPlaces_eq_zero QI
-  rw [finrank_QI, h2] at h1
-  rw [NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, h2]
-  omega
-
-theorem a_ex_one : (ex 1 one_ne_zero).a = 1 := by
-  show Fintype.card {v : InfinitePlace QI // sigPos (herm_Hc 1) v.embedding = 1} = 1
-  simp only [sigPos_Hc, zero_lt_one, if_true]
-  rw [Fintype.card_subtype_true, card_infinitePlace_QI]
-
-theorem a_ex_neg_one : (ex (-1) (by norm_num)).a = 0 := by
-  show Fintype.card {v : InfinitePlace QI // sigPos (herm_Hc (-1)) v.embedding = 1} = 0
-  simp [sigPos_Hc]
 
 end Example
 

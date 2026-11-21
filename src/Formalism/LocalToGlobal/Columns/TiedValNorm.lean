@@ -12,12 +12,6 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV F
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section Poly
-
-variable {ι : Type} [Fintype ι] {n : ℕ}
-
-end Poly
-
 section Pair
 
 variable {E K : Type} [Field E] [Field K] [StarRing K] {ι : Type} [Fintype ι] {n : ℕ}
@@ -155,20 +149,5 @@ theorem Val.norm (Q : ValCrd W Λ σ₀ u i) : Val.Norm W Λ hX σ₀ hσ u i Q 
   rfl
 
 end Gen
-
-section Rec
-
-variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (u : d.what₂.Word) (i : ℕ)
-  (hi : i ≤ d.R.m) (eV : ((d.colRec a).mem u).A.vT ≃ CF.PlT (d.colRec a) u)
-
-set_option maxHeartbeats 1000000 in
-
-theorem normTie (V : CF.ValTied (D := d.colRec a) u eV i hi (classAgreement a hS hH hP u i hi))
-    (hV : V.eY = valEY (Pr := d.Pr) d.W d.lev d.σ₀ u i (valCrd a hS hH u i hi)) : CF.NormTie V := by
-  intro s x Pc hPc o ho
-  rw [hV] at hPc
-  exact Val.norm (Pr := d.Pr) d.W d.lev d.hX d.σ₀ d.star_cx u i (valCrd a hS hH u i hi) s x Pc hPc o ho
-
-end Rec
 
 end Formalism.L2.Col

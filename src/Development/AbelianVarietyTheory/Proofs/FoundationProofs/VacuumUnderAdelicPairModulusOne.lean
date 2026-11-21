@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZ
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValuesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleIntegralSeparatedCompleteStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCmIdempotentsSelectConjugatePrimesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRationalPointOfMemMovedThetaLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaLatticePointMemThetaLatticeOfAdelicStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCmIdempotentsSelectConjugatePrimes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRationalPointOfMemMovedThetaLattice
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaLatticePointMemThetaLatticeOfAdelic
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleStrongApproxModAdelicIdealStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHalfIdem
 
@@ -199,9 +199,9 @@ theorem exists_scalar {D : D7} (hI : Inp D) {cc : Ideal (𝓞 D.host.K)} {δ : �
         rw [sub_smul, one_smul, ← h2, sub_self]
       exact (smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)
     rw [hφ, h3, one_smul]
-  obtain ⟨z', rfl, hz'⟩ := GlobalTheory.T.exists_rationalPoint_of_mem_movedThetaLattice D hI.g1 cc δ hcc N N' g g' L₁ L₁' h h' x hx
-  have hlatb := GlobalTheory.T.cmThetaLatticePoint_mem_thetaLattice_of_adelic D hI.g1 cc δ hcc N N' g g' L₁ L₁' h h'
-  have hlat0 := GlobalTheory.T.cmThetaLatticePoint_mem_thetaLattice_of_adelic D hI.g1 cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')
+  obtain ⟨z', rfl, hz'⟩ := _root_.GlobalTheory.NormSum.exists_pt_of_mem_La_moved D hI.g1 cc δ hcc N N' g g' L₁ L₁' h h' x hx
+  have hlatb := _root_.GlobalTheory.NormSum.pt_mem_La_of_adelic D hI.g1 cc δ hcc N N' g g' L₁ L₁' h h'
+  have hlat0 := _root_.GlobalTheory.NormSum.pt_mem_La_of_adelic D hI.g1 cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')
   simp only [OneMemClass.coe_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one] at hlat0
   simp only [← MI_one] at hz' hlatb hlat0
   obtain ⟨m0, hm0, hl0⟩ := W.lift g g' 0 e0 hT
@@ -312,7 +312,7 @@ theorem GlobalTheory.NormSum.vacuum_under_adelic_pair : ∀ (D : D7), Inp D → 
         ← Units.val_zpow_eq_zpow_val, ← Units.val_mul, mul_pow]
       congr 2 <;> (rw [← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul]; congr 1; push_cast; ring)
     rw [h4]
-    exact algebraicModulusOneAll_mul (algebraicModulusOneAll_zpow (GlobalTheory.T.unitaryHeckeCharacter_values D N W.chV x').1 _) (algebraicModulusOneAll_zpow (GlobalTheory.T.unitaryHeckeCharacter_values D N' W.chV' x).1 _)
+    exact algebraicModulusOneAll_mul (algebraicModulusOneAll_zpow (_root_.GlobalTheory.HeckeVal.hecke_values D N W.chV x').1 _) (algebraicModulusOneAll_zpow (_root_.GlobalTheory.HeckeVal.hecke_values D N' W.chV' x).1 _)
   refine ⟨c, hmod, hce, fun p _ lam k' hk' ht ht' => ?_⟩
   have hm1 : Moves D (k' : GL (Fin N') (AE D)) (stdL D N') := by
     simpa using moves_mul_int hk' (moves_one D N')
@@ -322,9 +322,9 @@ theorem GlobalTheory.NormSum.vacuum_under_adelic_pair : ∀ (D : D7), Inp D → 
     obtain ⟨z', x', hz', hx', hxi'⟩ := exists_splitComp D _ (det_norm D k')
     obtain ⟨sg, hsg, hc2⟩ := (hI.odd4 cc δ hc N N' hev e0 he W.nz W 1 k' _ _ a (moves_one D N) hm1 hae).1
       z z' x x' hz hz' hx hx'
-    obtain ⟨m, hm, hxm⟩ := (GlobalTheory.T.unitaryHeckeCharacter_values D N' W.chV' x).2.1
+    obtain ⟨m, hm, hxm⟩ := (_root_.GlobalTheory.HeckeVal.hecke_values D N' W.chV' x).2.1
       (hxi (det_int D _ (((mem_ratG_intG D N).2.1 1).1 (one_mem _))))
-    obtain ⟨m', hm', hxm'⟩ := (GlobalTheory.T.unitaryHeckeCharacter_values D N W.chV x').2.1
+    obtain ⟨m', hm', hxm'⟩ := (_root_.GlobalTheory.HeckeVal.hecke_values D N W.chV x').2.1
       (hxi' (det_int D _ (((mem_ratG_intG D N').2.1 k').1 hk')))
     refine ⟨2 * (2 * (m * m')), by positivity, ?_⟩
     have hs : sg ^ 2 = 1 := by rcases hsg with rfl | rfl <;> norm_num

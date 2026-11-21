@@ -206,15 +206,6 @@ noncomputable def principalDivisor : Additive (X.functionField)ˣ →+ WeilDivis
 lemma principalDivisor_apply (f : (X.functionField)ˣ) (x : PrimeDivisor X) :
     principalDivisor (Additive.ofMul f) x = x.ord (f : X.functionField) := rfl
 
-variable (X) in
-
-noncomputable def principalDivisors : AddSubgroup (WeilDivisor X) :=
-  (principalDivisor (X := X)).range
-
-variable (X) in
-
-abbrev ClassGroup : Type u := WeilDivisor X ⧸ principalDivisors X
-
 end Divisor
 
 end GroundTheory.Arith.SchemeCoh

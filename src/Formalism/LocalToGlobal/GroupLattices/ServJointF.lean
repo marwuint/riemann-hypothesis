@@ -101,29 +101,6 @@ theorem val2AllAtRF (D : D7) (L : SizeData₂ D) (B : ColBrF D) (hB : B.Tied) (h
       exact h' G hG hG0)
   exact key φ (Submodule.subset_span hφ) F hF
 
-def ColBr.toF {D : D7} (B : ColBr D) : ColBrF D where
-  Bs := B.A.fam.base
-  Df1 := B.A.side B.Ps B.ψs B.Zs
-  Dc := B.Dc
-  wU := B.I.wU
-  eNu := fun u x => B.I.eNu u x
-  tup := B.I.tup
-  eV := fun t F => B.I.jA t ((rV0 D B.A B.Ps B.ψs t).mulVec F)
-  tz := B.S1.μ
-
-theorem ColBr.toF_tied {D : D7} {B : ColBr D} (hB : B.Tied) : (ColBr.toF B).Tied where
-  mu := hB.mu
-  v0 := fun t F _ => by
-    obtain ⟨s0, hOk⟩ := hB.ok
-    refine ⟨B.I.jA t ((rV0 D B.A B.Ps B.ψs t).mulVec F), ?_⟩
-    have h1 := (hB.sharp.forms t).op_eq ((rV0 D B.A B.Ps B.ψs t).mulVec F)
-    rw [level_operator_fixes_image hOk B.Ps B.ψs B.Zs t F] at h1
-    exact h1
-  gen := fun t F hF => by
-    obtain ⟨s0, hOk⟩ := hB.ok
-    exact ((hB.sharp.Mtilde t).2 _).1 ((image_mem_nabla_iff hOk B.Ps B.ψs B.Zs t F).2 hF)
-  dcPt := hB.dcPt
-
 end Formalism.L2.G.ServJointF
 
 end

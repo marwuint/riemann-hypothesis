@@ -368,25 +368,10 @@ theorem isParamVec_conj (hE : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfD
     exact Or.inl ⟨hv, _, he', isSatVecGL_invT c hc hq hx⟩
   · exact absurd (isSplit_of_ne hne h h') (not_isSplit_of_isInertAt hw)
 
-theorem hasParam_conj (hE : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfDualAt σ J L v) (hne : w ≠ w')
-    (h : w.under (𝓞 F) = v) (h' : w'.under (𝓞 F) = v) (hρ : HasParam σ J L h ρ B) :
-    HasParam σ J L h' ρ (B.map (·⁻¹)) := by
-  obtain ⟨x, hx⟩ := hρ.exists_vec
-  rcases isParamVec_conj hE hJ hL hne h h' hx with ⟨hv, e, he, hx'⟩ | ⟨hw, -⟩
-  · exact Or.inl ⟨hv, e, he, (Submodule.ne_bot_iff _).2 ⟨x, hx'.2.1, hx'.1⟩, fun y hy h0 =>
-      (isParamVec_conj hE hJ hL hne h h' (hρ.isParamVec ((mem_fixed_comp_symm e he.2).1 hy) h0)).isSatVecGL hv he⟩
-  · exact absurd (isSplit_of_ne hne h h') (not_isSplit_of_isInertAt hw)
-
 theorem eq_map_inv_of_isParamVec (hE : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfDualAt σ J L v) (hne : w ≠ w')
     {h : w.under (𝓞 F) = v} {h' : w'.under (𝓞 F) = v} (hx : IsParamVec σ J L h ρ x B)
     (hx' : IsParamVec σ J L h' ρ x B') : B' = B.map (·⁻¹) :=
   hx'.unique_of_isSplit (isSplit_of_ne hne h h') (isParamVec_conj hE hJ hL hne h h' hx)
-
-theorem eq_map_inv_of_hasParam (hE : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfDualAt σ J L v) (hne : w ≠ w')
-    {h : w.under (𝓞 F) = v} {h' : w'.under (𝓞 F) = v} (hρ : HasParam σ J L h ρ B)
-    (hρ' : HasParam σ J L h' ρ B') : B' = B.map (·⁻¹) := by
-  obtain ⟨x, hx⟩ := hρ.exists_vec
-  exact eq_map_inv_of_isParamVec hE hJ hL hne hx (hρ'.isParamVec hx.mem_fixed hx.ne_zero)
 
 theorem bcParam_map_inv (n : ℕ) (α : Fin (n / 2) → ℂˣ) : (bcParam n α).map (·⁻¹) = bcParam n α := by
   simp only [bcParam, Multiset.map_add, Multiset.map_map, Function.comp_def, inv_inv, Multiset.map_replicate, inv_one]
@@ -397,42 +382,6 @@ theorem map_inv_of_isParamVec (hw : IsInertAt F E v w) {h : w.under (𝓞 F) = v
   rcases hx with ⟨hv, -⟩ | ⟨-, c, ϖ, e, α, -, -, -, rfl⟩
   · exact absurd hv (not_isSplit_of_isInertAt hw)
   · exact bcParam_map_inv n α
-
-theorem map_inv_of_hasParam (hw : IsInertAt F E v w) {h : w.under (𝓞 F) = v} (hρ : HasParam σ J L h ρ B) :
-    B.map (·⁻¹) = B := hρ.exists_vec.elim fun _ hx => map_inv_of_isParamVec hw hx
-
-theorem param_conj_place (hE : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfDualAt σ J L v)
-    (h : w.under (𝓞 F) = v) (ρ : Representation ℂ (GLoc σ J v) V) (B : Multiset ℂˣ) :
-    (∀ (w' : HeightOneSpectrum (𝓞 E)) (h' : w'.under (𝓞 F) = v), w ≠ w' →
-      (∀ x, IsParamVec σ J L h ρ x B → IsParamVec σ J L h' ρ x (B.map (·⁻¹))) ∧
-      (HasParam σ J L h ρ B → HasParam σ J L h' ρ (B.map (·⁻¹)))) ∧
-    (IsInertAt F E v w → (∀ x, IsParamVec σ J L h ρ x B → B.map (·⁻¹) = B) ∧
-      (HasParam σ J L h ρ B → B.map (·⁻¹) = B)) ∧
-    ∀ α : Fin (n / 2) → ℂˣ, (bcParam n α).map (·⁻¹) = bcParam n α :=
-  ⟨fun _ h' hne => ⟨fun _ => isParamVec_conj hE hJ hL hne h h', hasParam_conj hE hJ hL hne h h'⟩,
-    fun hw => ⟨fun _ => map_inv_of_isParamVec hw, map_inv_of_hasParam hw⟩, bcParam_map_inv n⟩
-
-theorem exists_isSplitChart_of_basis (hE : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : IsSelfDualAt σ J L v)
-    (h : w.under (𝓞 F) = v) {τ : E →ₐ[F] Fv F v} (hτ : splitPrime τ = w) {β : GL (Fin n) (Fv F v)}
-    (hβ : IsSplitBasis τ L β) : ∃ e, IsSplitChart σ J L h e := by
-  let φ := complEquiv hE h hτ
-  refine ⟨(splitEquivIn hE hJ τ β).toMulEquiv.trans (Units.mapEquiv φ.mapMatrix.toMulEquiv),
-    ⟨_, (isFrameAt_iff hE h hτ β).2 hβ, fun g => ?_⟩, fun g => (mem_stabLoc_iff_GLint hE hJ hL hβ).trans ?_⟩
-  · rw [locMat_eq hE h hτ, ← map_inv, ← map_mul, ← map_mul]; rfl
-  · rw [mem_GLint_iff, mem_GLint_iff]
-    exact (and_congr (forall₂_congr fun _ _ => complEquiv_mem_iff hE h hτ _)
-      (forall₂_congr fun _ _ => complEquiv_mem_iff hE h hτ _)).symm
-
-example (hE : IsCMExt F E σ) (α : Fin n → ℂˣ) :
-    ∃ (v : HeightOneSpectrum (𝓞 F)) (w w' : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v)
-      (h' : w'.under (𝓞 F) = v) (ρ : Representation ℂ (GLoc σ (1 : Matrix (Fin n) (Fin n) E) v) (psSpaceGL w α)),
-      w ≠ w' ∧ HasParam σ 1 (stdLattice E n) h ρ (Finset.univ.val.map α) ∧
-        HasParam σ 1 (stdLattice E n) h' ρ ((Finset.univ.val.map α).map (·⁻¹)) := by
-  obtain ⟨v, τ, hJ, hL, hβ⟩ := exists_split_data hE n
-  have hne := (splitPrime_comp_ne hE τ).symm
-  obtain ⟨e, he⟩ := exists_isSplitChart_of_basis hE hJ hL (splitPrime_under τ) rfl hβ
-  have H := hasParam_psFunGL (isSplit_of_ne hne (splitPrime_under _) (splitPrime_under _)) he α
-  exact ⟨v, _, _, splitPrime_under τ, splitPrime_under _, _, hne, H, hasParam_conj hE hJ hL hne _ _ H⟩
 
 end GlobalTheory.LFun.ConjPlace
 

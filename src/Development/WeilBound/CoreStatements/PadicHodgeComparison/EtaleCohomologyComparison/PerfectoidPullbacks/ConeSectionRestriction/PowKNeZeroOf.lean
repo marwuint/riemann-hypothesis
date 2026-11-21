@@ -9,7 +9,8 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.JacSpanLe
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.ConeTransfer
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeCocycleClosedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConeLiftStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConeLift
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.Precomp
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocVan
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ChartGrConst
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GrCechFin
@@ -95,7 +96,7 @@ theorem powK_ne_zero_of (hG : LocalCohomologySetup.GeoSetupP) (hR : LocalCohomol
       obtain ⟨σ, hσ⟩ := wch_mem D N i hO j
       exact ⟨wch i j, σ, hσ, fun x hx => (hW hx).2⟩
     let Λ : CLiftK (wU q i y (n + 2)).ι D :=
-      (GlobalTheory.T.exists_cone_lift q D (n + 2)).some.precomp (ObjectProperty.ιOfLE (wU_le q D i y (n + 2) hO))
+      (_root_.GlobalTheory.CompanionTheory.ConeLiftEx.nonempty_cLiftK q D (n + 2)).some.precomp (ObjectProperty.ιOfLE (wU_le q D i y (n + 2) hO))
     obtain ⟨z, hz, hzf, hzc⟩ := hc (n + 2) _ (wU q i y (n + 2)).ι hsQ hVQ Λ
     obtain ⟨hzp, hzp0⟩ := powK_pull q (wU q i y (n + 2)).ι c z hz hzc (n + 1)
     rw [h0, map_zero] at hzp0

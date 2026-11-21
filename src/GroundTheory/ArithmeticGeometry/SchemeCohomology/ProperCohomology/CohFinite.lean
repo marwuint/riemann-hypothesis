@@ -60,12 +60,6 @@ theorem FiniteH.of_shortExact₁ {S : ShortComplex X.Modules} (hS : S.ShortExact
     exact finite_of_exact_noetherian (H.δLinear A hS' p) (H.linearMap A S.f (p + 1))
       fun x hx => H.exact₁ hS' rfl x hx
 
-theorem FiniteH.of_shortExact₃ {S : ShortComplex X.Modules} (hS : S.ShortExact)
-    (h₁ : FiniteH.{w'} A S.X₁) (h₂ : FiniteH.{w'} A S.X₂) : FiniteH.{w'} A S.X₃ := fun p =>
-  have := h₂ p
-  have := h₁ (p + 1)
-  finite_H_X₃ A hS p
-
 end
 
 end GroundTheory.Arith.SchemeCoh

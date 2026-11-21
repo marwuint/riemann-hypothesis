@@ -264,22 +264,4 @@ theorem IsExtValue.change (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordin
   rw [map_mul, map_mul, hr.1 _ g _ a ha, hr'.1 _ g _ a' ha', RingHom.map_det, RingHom.map_det]
   exact this.symm
 
-theorem exists_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : (Xo.XF c).Opens) (τ : E →+* ℂ), EigStable Y.t c → IsOpen (FramedFlatCoordinates.compactification Y U) → ∀ sig ∈ FramedFlatCoordinates.sections Y U τ, ∃ f : RamifiedPlacesSplitEigen.Rule Y, RamifiedPlacesSplitEigen.IsDetSection Y τ f ∧ ∀ (R : Type) [CommRing R] (j : c.F →+* R) (a : FramedFlatCoordinates.Framed Y U τ R j), f R j (a.x ≫ pullback.fst _ _) a.v a.w = sig R j a := by
-  intro E _ _ _ H Dw l Xo c Y U τ hT hU sig hs
-  let f : RamifiedPlacesSplitEigen.Rule Y := fun R _ φ x v w => @Classical.epsilon R ⟨0⟩ (IsExtValue sig φ x v w)
-  have hf : ∀ (R : Type) [CommRing R] (φ : c.F →+* R) (x : Sp R ⟶ Y.X) v w, RamifiedPlacesSplitEigen.IsFrame Y τ φ x v w →
-      IsExtValue sig φ x v w (f R φ x v w) := fun R _ φ x v w h =>
-    Classical.epsilon_spec_aux ⟨0⟩ _ (exists_extValue hT hU hs h)
-  refine ⟨f, ⟨fun R _ φ x v v' w w' M N h h' hM hN => ?_, fun R R' _ _ g φ x v w v' w' h h' hv hw => ?_⟩,
-    fun R _ j a => ?_⟩
-  · exact IsExtValue.change hT hU hs h h' hM hN (hf _ _ _ _ _ h) (hf _ _ _ _ _ h')
-  · exact extValue_unique hT hU h' (hf _ _ _ _ _ h') ((hf _ _ _ _ _ h).map g hv hw)
-  · have h : RamifiedPlacesSplitEigen.IsFrame Y τ j (a.x ≫ pullback.fst _ _) a.v a.w := by
-      refine ⟨?_, a.v_basis, a.w_basis⟩
-      rw [Category.assoc, pullback.condition, ← Category.assoc, a.x_over, spMap_comp]
-    refine (hf _ _ _ _ _ h).1 R (RingHom.id R) j a ⟨rfl, ?_, fun i => ?_, fun i => ?_⟩
-    · rw [spMap_id R, Category.id_comp, Category.assoc, fst_toGen, Category.comp_id]
-    · rw [dual_id]; exact (Category.id_comp _).symm
-    · rw [dual_id]; exact (Category.id_comp _).symm
-
 end GlobalTheory.DetExtendZero

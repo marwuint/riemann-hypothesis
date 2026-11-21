@@ -3,12 +3,16 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFO
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealPlaceThetaObjectsTheoremARPartsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealPlaceThetaObjectsTheoremARParts
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieActionFockOperatorsScalarsTraceStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactSubgroupsActOnFockVectorsAllSignaturesStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluingLawHoldsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsAreCoverDiscreteSeriesOfHarishChandraStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftCuspFormAutomorphicSmoothModerateGrowthStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsAreCoverDiscreteSeriesOfHarishChandra
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.BarMatrix
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftCuspFormAutomorphicSmoothModerateGrowth
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RapidDecayLift
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrameExistsSignCompat
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegralForm
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignBlockDeterminantNeZeroOfMemMaxCompact
@@ -75,8 +79,8 @@ theorem lowVanishFock (h1 : GlobalTheory.Published.DiscreteSeriesCover) (h2 : Gl
     (h3 : GlobalTheory.Published.CuspRapidDecay) : ∀ D : D7, LowVanishFock D := by
   classical
   intro D
-  obtain ⟨X, hX, -, h5, -, -, -, hAR⟩ := GlobalTheory.T.exists_provA_discreteSeries_archimedeanRallis h1 h2
-  have hTB := (GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra h1 h2 D).2
+  obtain ⟨X, hX, -, h5, -, -, -, hAR⟩ := _root_.GlobalTheory.RealPlaceTheta.exists_record_theta h1 h2
+  have hTB := (_root_.GlobalTheory.CoverModel.modelsAreCoverSeries_all h1 h2 D).2
   intro k i V' W M' θ ψ hθ hP hi hs ω' hω ν 𝓕 hν h𝓕 J χ F hF v A f₀ hf P
   obtain ⟨χS, χT, hW, hexp⟩ := hω
   by_cases f0 : f₀ = 0
@@ -105,7 +109,7 @@ theorem lowVanishFock (h1 : GlobalTheory.Published.DiscreteSeriesCover) (h2 : Gl
   have hp : ptF ψ θ A (Fr.ofModel M') f₀ = pt := rfl
   have hpt : ∀ φ, IsThetaFunO ψ V' W (pt φ) := fun φ =>
     GlobalTheory.Chain.InnerSteps.theta_pureTensorO hW.std hθ _ _ _ _ hf.1 φ
-  have L := GlobalTheory.T.thetaLift_cuspForm_automorphic_smooth_moderateGrowth h3 D V' W θ ψ χS χT ω' hθ hW ν 𝓕 hν h𝓕
+  have L := _root_.GlobalTheory.Chain.LiftReg.liftProps_obj h3 D V' W θ ψ χS χT ω' hθ hW ν 𝓕 hν h𝓕
   have hint : ∀ F' : MultT θ M' J χ, ∀ φ x g, IntegrableOn
       (fun h => thetaKO ω' g h (pt φ) * (F' : SmT M' →ₗ[ℂ] (GA D W → ℂ)) x h) 𝓕 ν := fun F' φ x g => by
     induction x using PiTensorProduct.induction_on with

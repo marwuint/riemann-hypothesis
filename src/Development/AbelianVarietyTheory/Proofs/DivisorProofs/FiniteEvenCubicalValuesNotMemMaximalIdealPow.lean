@@ -1,8 +1,10 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import Mathlib
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSublevelOfIntQuadraticGeOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeightOneValuationsControlSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSublevelOfIntQuadraticGeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeightOneValuationsControlSubgroup
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -112,7 +114,7 @@ theorem finite_not_mem_pow : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoether
   have hΓ := mem_closure_of_gen hneg hcube (fun x : S => (x : X)) hcl
   set gg := Sum.elim (fun i : S => κ (i : X)) (fun p : S × S => κ ((p.1 : X) + p.2))
   set Γ := Subgroup.closure (Set.range gg)
-  obtain ⟨s, v, hv1, hv2⟩ := GlobalTheory.T.exists_heightOne_valuations_control_subgroup R (S ⊕ (S × S)) gg
+  obtain ⟨s, v, hv1, hv2⟩ := _root_.GlobalTheory.HtVal.exists_vals R (S ⊕ (S × S)) gg
   set K := FractionRing R
   let w : Kˣ → Fin s → ℤ := fun x i => Multiplicative.toAdd (v i x)
   have wmul : ∀ x y i, w (x * y) i = w x i + w y i := fun x y i => by simp [w]
@@ -209,7 +211,7 @@ theorem finite_not_mem_pow : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoether
       refine ⟨t' * t, ?_, ?_⟩
       · rw [pow_succ]; exact Ideal.mul_mem_mul ht'm htm
       · rw [map_mul, ← ht', ← ht, ← Units.val_mul, _root_.mul_assoc, inv_mul_cancel, _root_.mul_one]
-  apply (GlobalTheory.T.finite_sublevel_of_int_quadratic_ge_one X q hqneg hqcube hqpos (C * n)).subset
+  apply (_root_.GlobalTheory.posquad_finite X q hqneg hqcube hqpos (C * n)).subset
   intro a ha
   by_contra hlt
   exact ha (key n (κ a) (hΓ a) (wκ a) (le_of_lt (not_le.mp hlt)))

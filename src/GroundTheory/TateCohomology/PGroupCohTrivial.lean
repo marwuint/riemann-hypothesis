@@ -48,10 +48,4 @@ theorem tateAcyclic_cohTrivial_of_isZero_of_shift (P : Rep.{u} k G → Prop)
 
 end Shift
 
-section Field
-
-variable {k G : Type u} [Field k] [Group G] [Fintype G] {p : ℕ} [Fact p.Prime] [CharP k p]
-
-end Field
-
 end GroundTheory.GroupCoh

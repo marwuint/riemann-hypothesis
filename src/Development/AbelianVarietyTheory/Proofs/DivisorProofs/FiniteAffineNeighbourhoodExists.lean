@@ -292,47 +292,4 @@ theorem exists_finite_etale_of_isProper [IsProper π] [IsLocallyNoetherian X] [C
     Algebra.Etale.of_restrictScalars Γ(X, V') Γ(X, X.basicOpen h) Γ(Y, π ⁻¹ᵁ X.basicOpen h)
   exact this
 
-private lemma eq_zero_of_natCast_eq_zero_stalk_spec_int (z : PrimeSpectrum ℤ) (n : ℕ)
-    (hn : ((n : ℕ) : (Spec.structureSheaf ℤ).presheaf.stalk z) = 0) : n = 0 := by
-  have hL : IsLocalization.AtPrime ((Spec.structureSheaf ℤ).presheaf.stalk z) z.asIdeal :=
-    StructureSheaf.IsLocalization.to_stalk ℤ z
-  have hinj := IsLocalization.injectiveₛ (M := z.asIdeal.primeCompl)
-    (S := (Spec.structureSheaf ℤ).presheaf.stalk z)
-    (fun m hm => isRegular_of_ne_zero (fun h0 => hm (h0 ▸ Ideal.zero_mem _)))
-  have h3 : ((n : ℤ)) = 0 := hinj (by rw [map_natCast, map_zero]; exact hn)
-  exact_mod_cast h3
-
-private lemma charZero_globalSections_of_flat_over_spec_int (Z : Scheme.{0}) [IsIntegral Z] (g : Z ⟶ Sp ℤ) [Flat g] :
-    CharZero Γ(Z, ⊤) := by
-  obtain ⟨x⟩ : Nonempty Z := inferInstance
-  refine charZero_of_inj_zero fun n hn => ?_
-  have h1 : ((n : ℕ) : Z.presheaf.stalk x) = 0 := by
-    have := congrArg (Z.presheaf.germ ⊤ x trivial) hn
-    simpa using this
-  have hfl : (g.stalkMap x).hom.Flat := Flat.stalkMap g x
-  algebraize [(g.stalkMap x).hom]
-  haveI : IsLocalHom (algebraMap ((Sp ℤ).presheaf.stalk (g x)) (Z.presheaf.stalk x)) :=
-    inferInstanceAs (IsLocalHom (g.stalkMap x).hom)
-  haveI : Module.FaithfullyFlat ((Sp ℤ).presheaf.stalk (g x)) (Z.presheaf.stalk x) :=
-    Module.FaithfullyFlat.of_flat_of_isLocalHom
-  have hinj := FaithfulSMul.algebraMap_injective ((Sp ℤ).presheaf.stalk (g x)) (Z.presheaf.stalk x)
-  have h2 : ((n : ℕ) : (Sp ℤ).presheaf.stalk (g x)) = 0 := hinj (by simpa using h1)
-  exact eq_zero_of_natCast_eq_zero_stalk_spec_int π hη hd (g x) n h2
-
-omit hη hd π in
-
-theorem exists_finite_etale : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar p 1 → IsArithVar q 1 → ∀ (π : Y ⟶ X), π ≫ p = q → π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ U₀ : X.Opens, genericPoint X ∈ U₀ → ∃ U : X.Opens, U ≤ U₀ ∧ IsAffineOpen U ∧ genericPoint X ∈ U ∧ IsAffineOpen (π ⁻¹ᵁ U) ∧ (π.app U).hom.Finite ∧ (π.app U).hom.Etale ∧ (letI := (π.app U).hom.toAlgebra; Module.finrank Γ(X, U) Γ(Y, π ⁻¹ᵁ U)) = π.residueDegree (genericPoint Y) := by
-  intro k _ X p _ Y _ q hp hq π hπ hη hd U₀ h₀
-  haveI : Module.Finite ℤ k := hp.finite
-  haveI : IsNoetherianRing k := Algebra.FiniteType.isNoetherianRing ℤ k
-  haveI : IsProper p := SchemeWords.isProper_of_isProjOver hp.isProjOver
-  haveI : IsProper q := SchemeWords.isProper_of_isProjOver hq.isProjOver
-  haveI : IsProper (π ≫ p) := by rw [hπ]; infer_instance
-  haveI : IsProper π := IsProper.of_comp π p
-  haveI : IsLocallyNoetherian (Sp k) := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of k)))
-  haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p
-  haveI : Flat (p ≫ spMap (Int.castRingHom k)) := hp.flat
-  haveI : CharZero Γ(X, ⊤) := charZero_globalSections_of_flat_over_spec_int π hη hd X (p ≫ spMap (Int.castRingHom k))
-  exact exists_finite_etale_of_isProper π hη hd U₀ h₀
-
 end GlobalTheory.GenFiniteEtale

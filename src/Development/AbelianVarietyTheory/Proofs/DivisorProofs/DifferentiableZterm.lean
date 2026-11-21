@@ -116,11 +116,6 @@ theorem differentiable_zterm (χ : HChar E) (z : (Af E)ˣ) : Differentiable ℂ 
   Differentiable.const_mul (Differentiable.const_cpow differentiable_id
     (Or.inl (by exact_mod_cast (ObjModel.modF_pos z).ne'))) _
 
-theorem zterm_ne_zero (χ : HChar E) (s : ℂ) (z : (Af E)ˣ) : zterm χ s z ≠ 0 :=
-  mul_ne_zero (Units.ne_zero _) (by
-    rw [Ne, Complex.cpow_eq_zero_iff, not_and_or]
-    exact Or.inl (by exact_mod_cast (ObjModel.modF_pos z).ne'))
-
 theorem modF_eq_one {u : (Af E)ˣ} (hu : ∀ w, Valued.v ((u : Af E) w) = 1) : modF u = 1 := by
   unfold modF
   exact finprod_eq_one_of_forall_eq_one fun v => by simp [hu v]

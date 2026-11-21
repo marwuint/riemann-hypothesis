@@ -108,13 +108,6 @@ theorem latticeMean_eq [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
   borelize E
   simp [latticeMean_eq_integral]
 
-theorem latticeMean_finset_sum {ι : Type*} (s : Finset ι) {f : ι → E → G}
-    (hf : ∀ i ∈ s, Continuous (f i)) :
-    latticeMean L (fun x => ∑ i ∈ s, f i x) = ∑ i ∈ s, latticeMean L (f i) := by
-  borelize E
-  simp only [latticeMean_eq_integral]
-  exact integral_finset_sum s fun i hi => integrable_latticeProb L (hf i hi)
-
 theorem latticeMean_const_mul {𝕜 : Type*} [RCLike 𝕜] (c : 𝕜) (f : E → 𝕜) :
     latticeMean L (fun x => c * f x) = c * latticeMean L f := by
   borelize E
@@ -125,22 +118,6 @@ theorem latticeMean_nonneg {f : E → ℝ} (hf : ∀ x, 0 ≤ f x) : 0 ≤ latti
   borelize E
   simp only [latticeMean_eq_integral]
   exact integral_nonneg hf
-
-theorem latticeMean_comp_add {f : E → G} (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x) (w : E) :
-    latticeMean L (fun x => f (x + w)) = latticeMean L f := by
-  borelize E
-  set μ : Measure E := Measure.addHaar
-  have hD : IsAddFundamentalDomain L ((fun x => x + w) ⁻¹' latticeDomain L) μ := by
-    refine IsAddFundamentalDomain.mk'
-      ((measurable_add_const w) (measurableSet_latticeDomain L)).nullMeasurableSet fun x => ?_
-    have := existsUnique_add_mem_latticeDomain L (x + w)
-    simpa [Submodule.vadd_def, add_comm, add_left_comm, add_assoc] using this
-  rw [latticeMean_eq L μ hD (f := fun x => f (x + w))
-    (fun a ha x => by simpa [add_right_comm] using hf a ha (x + w)),
-    latticeMean_eq_latticeDomain L μ]
-  congr 1
-  exact (measurePreserving_add_right μ w).setIntegral_preimage_emb
-    (measurableEmbedding_addRight w) f _
 
 theorem eq_zero_of_latticeMean_eq_zero {f : E → ℝ} (hc : Continuous f) (h0 : ∀ x, 0 ≤ f x)
     (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x) (h : latticeMean L f = 0) : f = 0 := by
@@ -175,22 +152,6 @@ theorem exists_forall_le_of_periodic {f : E → ℝ} (hc : Continuous f)
   obtain ⟨a, ha, -⟩ := existsUnique_add_mem_latticeDomain L x
   rw [← hf a a.2 x]
   exact hx₀ (subset_closure ha)
-
-theorem latticeMean_eq_of_periodic (L' : Submodule ℤ E) [DiscreteTopology L'] [IsZLattice ℝ L']
-    [CompleteSpace G] {f : E → G} (hc : Continuous f) (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x)
-    (hf' : ∀ a ∈ L', ∀ x, f (x + a) = f x) : latticeMean L f = latticeMean L' f := by
-  borelize E
-  obtain ⟨x₀, hx₀⟩ := exists_forall_le_of_periodic L hc.norm (fun a ha x => by rw [hf a ha x])
-  have hi : Integrable (Function.uncurry fun x y : E => f (x + y))
-      ((latticeProb L).prod (latticeProb L')) :=
-    Integrable.of_bound (hc.comp continuous_add).aestronglyMeasurable ‖f x₀‖
-      (ae_of_all _ fun p => hx₀ _)
-  have h := integral_integral_swap hi
-  simp only [← latticeMean_eq_integral] at h
-  have h1 : ∀ x, latticeMean L' (fun y => f (x + y)) = latticeMean L' f := fun x => by
-    simpa only [add_comm x] using latticeMean_comp_add L' hf' x
-  simp only [h1, latticeMean_comp_add L hf, latticeMean_const] at h
-  exact h.symm
 
 theorem latticeMean_comp_equiv {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E']
     [FiniteDimensional ℝ E'] (L' : Submodule ℤ E') [DiscreteTopology L'] [IsZLattice ℝ L']

@@ -25,9 +25,9 @@ theorem exists_ext {S : Scheme.{0}} {G : Over S} [GrpObj G] (hs : Smooth G.hom) 
       Submodule.span R' (Set.range j) = ⊤ := by
   subst hy
   letI := i.toAlgebra
-  obtain ⟨j, hj, hl, hsp⟩ := GlobalTheory.T.lie_model_base_change_map S G R R' x E E' M M'
+  obtain ⟨j, hj, hl, hsp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange S G R R' x E E' M M'
   have hbc := hsp hs
-  obtain ⟨m, ⟨b₁⟩⟩ := GlobalTheory.T.lie_model_free_over_local_ring S G hs R x E M
+  obtain ⟨m, ⟨b₁⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieFreeSmooth.lieModel_free_of_smooth S G hs R x E M
   refine ⟨j, hj, ⟨hl, fun n b hb => LiePull.indep_of_bases b₁ j (fun m B => (hbc m B).1) b hb⟩, ?_⟩
   refine top_le_iff.1 ((hbc m b₁).2.symm.le.trans (Submodule.span_mono ?_))
   rintro _ ⟨k, rfl⟩

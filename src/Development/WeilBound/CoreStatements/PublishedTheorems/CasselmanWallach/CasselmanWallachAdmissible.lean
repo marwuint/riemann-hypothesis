@@ -107,21 +107,6 @@ theorem cw_of_steps (hM : MaxPr) (hmod : AllIrr fun _ ε _ _ _ σ => ∃ E, KDer
     rw [this]
     exact isClosed_singleton
 
-theorem casselman_wallach_admissible (c5 : C5) (h : GlobalTheory.Published.CasselmanWallach) : GlobalTheory.Published.CasselmanWallachAdm := by
-  intro n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ T₀ hT₀ _
-  obtain ⟨T, h1, h2, -, h4, h5⟩ := h n ε H σ hU hI E p π dπ hπ T₀ hT₀
-  refine ⟨T, h1, h2, h4, fun hinj S hS => ?_⟩
-  by_cases h0 : ∃ v, IsKFin ε σ v ∧ T₀ v ≠ 0
-  · exact h5 h0 S hS
-  · refine ⟨0, continuous_const, fun w hw => ?_⟩
-    refine le_of_forall_pos_le_add fun δ hδ => ?_
-    obtain ⟨v, hv, h⟩ := (c5 n ε H σ hU hI).2.2 w hw S hS δ hδ
-    have : v = 0 := hinj v hv (by
-      by_contra h
-      exact h0 ⟨v, hv, h⟩)
-    rw [this, sub_zero] at h
-    simpa using h.le
-
 end PositivityTheory.CW
 
 end

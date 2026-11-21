@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import ReciprocityTheory.DualLattices.FischerSelfNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TotalDegreeSubstFLe
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryGroupIntertwinerOfHighestWeightPolyStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryGroupIntertwinerOfHighestWeightPoly
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsJointHighestWeightLeadingMinorProductStatement
 
 open Formalism.MainNotions.S Matrix GlobalTheory.CompactHowe
@@ -119,13 +119,13 @@ theorem exists_joint_intertwiner : ∀ (N n : ℕ) (hn : n ≤ N) (ν : Fin N �
   have hinj : Function.Injective
       (rename (Prod.swap : Fin n × Fin N → Fin N × Fin n) : MvPolynomial _ ℂ → MvPolynomial _ ℂ) :=
     rename_injective _ Prod.swap_injective
-  obtain ⟨L', hL', v₀', hv'⟩ := GlobalTheory.T.exists_unitaryGroup_intertwiner_of_highest_weight_polynomial N (Fin n) ν H' τ' Δ hτ' hK' hΔ
+  obtain ⟨L', hL', v₀', hv'⟩ := _root_.GlobalTheory.HighestPolynomial.exists_intertwiner N (Fin n) ν H' τ' Δ hτ' hK' hΔ
     (fun g hg => by rw [← subst2_one_right, hU g 1 hg (isUpperUnitri_one n)])
     (fun d => by
       have := hD d (fun _ => 1)
       rw [Matrix.diagonal_one, subst2_one_right] at this
       simpa using this)
-  obtain ⟨L, hL, v₀, hv⟩ := GlobalTheory.T.exists_unitaryGroup_intertwiner_of_highest_weight_polynomial n (Fin N) (fun a => ν (Fin.castLE hn a)) H τ
+  obtain ⟨L, hL, v₀, hv⟩ := _root_.GlobalTheory.HighestPolynomial.exists_intertwiner n (Fin N) (fun a => ν (Fin.castLE hn a)) H τ
     (rename Prod.swap Δ) hτ hK
     (fun h => hΔ (by rw [← hsw Δ, h, map_zero]))
     (fun g hg => hinj (by rw [← subst2_one_left, hsw, hU 1 g (isUpperUnitri_one N) hg]))

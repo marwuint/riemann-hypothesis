@@ -8,7 +8,8 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaFiniteDataMatchEachStage
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.SquareIdentityOfMatching
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.RegularisedIntegralComparison
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StageFactorNonvanishingScalarsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.RegConst
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Theta Formalism.L2.DIV IsDedekindDomain NumberField MeasureTheory
@@ -45,7 +46,7 @@ theorem regularised_thetaInt_comparison_smul (hP : _root_.GlobalTheory.FunPr.The
       rw [thetaInt_smul] at h1
       rw [mul_comm c, mul_smul, ← h1, smul_smul, mul_left_comm, mul_inv_cancel₀ h0, mul_one]
   refine ⟨⟨z, hz0, intg_of_modInt hzM, hI⟩, fun hi => ?_⟩
-  rw [thetaInt_wop_intg hν₁ (GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D ψ θ hθ W₁ X A₁ B _ _ ωB hm.weilB Φ' hΦ') hi z, smul_comm] at hI
+  rw [thetaInt_wop_intg hν₁ (_root_.GlobalTheory.SquareComm.ThetaLeft.main D ψ θ hθ W₁ X A₁ B _ _ ωB hm.weilB Φ' hΦ') hi z, smul_comm] at hI
   exact smul_right_injective _ hz0 hI
 set_option maxHeartbeats 1000000 in
 theorem regulator_constant_eq : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
@@ -126,7 +127,7 @@ theorem regulator_constant_eq : _root_.GlobalTheory.FunPr.ThetaLocalInputs → G
       fun γ hγ u => GlobalTheory.SquareIdent.thetaKO_left_neg W.θ_is _ _ wA mA γ hγ u h
     have cB := fun h => integral_change _ hIs.meas' hνB hs'
       (fun u => thetaKO (X.ω' t) u h (fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀)))
-      fun γ hγ u => GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D W.ψ W.θ W.θ_is _ _ _ _ _ _ _ wB _ mB γ hγ u h
+      fun γ hγ u => _root_.GlobalTheory.SquareComm.ThetaLeft.main D W.ψ W.θ W.θ_is _ _ _ _ _ _ _ wB _ mB γ hγ u h
     have iB : GlobalTheory.RegCompare.Intg (X.ω' t) (M.ν _) (M.fd _) (fockF W.ψ W.θ false A₁ (frSum AV AV₁) (X.f' t) (σ' P₀)) :=
       fun h => (cB h).1 (by simpa only [← hk'] using hP₀i t h)
     have eA : thetaInt (X.ω t) (M.ν _) (M.fd _) (fockF W.ψ W.θ true A (frSum AV AV₁) (X.f t) P₁) =

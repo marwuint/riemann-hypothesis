@@ -193,8 +193,6 @@ def Frame.triv (bk : BK K) (d : ℕ) : Frame bk 0 d (fun _ => 1) where
   ε _ := 1
   gal g := by simp [zW, Matrix.map_one]
 
-theorem Frame.triv_isCr (bk : BK K) (d : ℕ) : (Frame.triv bk d).IsCr := fun _ i j => by simp [Frame.triv]
-
 end GlobalTheory.BKLim
 
 end

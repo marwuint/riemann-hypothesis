@@ -148,66 +148,8 @@ end GlobalTheory.CxForm
 
 namespace GlobalTheory.Published
 
-open GlobalTheory.CxForm
-
-def ArithChowRing : Prop := ∃ B : BottChern, ∀ (k : Type) [CommRing k], Nonempty (ArChow B k)
-
 end GlobalTheory.Published
 
 namespace GlobalTheory.CxForm.ArRing
-
-open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory.ArInt MvPolynomial
-
-variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} {B : BottChern} {h : IsRegVar p D}
-  (R : ArRing B h) (L : HermLB p) {ι : Type} [Fintype ι]
-
-theorem firstChern_trivial : R.c1 (.triv p) = 0 :=
-  left_eq_add.1 ((R.firstChernCongr _ _ (HermLB.triv p).isometric_tens_triv).symm.trans (R.firstChernTensor _ _))
-
-theorem firstChern_dual : R.c1 L.dual = -R.c1 L :=
-  eq_neg_of_add_eq_zero_left ((R.firstChernTensor _ _).symm.trans ((R.firstChernCongr _ _ L.isometric_dual_tens).trans R.firstChern_trivial))
-
-theorem firstChern_pow (m : ℕ) : R.c1 (L.pow m) = m • R.c1 L := by
-  induction m with
-  | zero => rw [R.firstChernCongr _ _ L.isometric_pow_zero, firstChern_trivial, zero_smul]
-  | succ m ih => rw [R.firstChernCongr _ _ (L.isometric_pow_succ m), R.firstChernTensor, ih, succ_nsmul]
-
-theorem firstChern_zpow (m : ℤ) : R.c1 (zp L m) = m • R.c1 L := by
-  rw [zp, R.firstChernTensor, firstChern_dual, firstChern_pow, firstChern_pow, ← natCast_zsmul, ← natCast_zsmul, ← sub_eq_add_neg, ← sub_smul,
-    Int.toNat_sub_toNat_neg]
-
-theorem firstChern_tensor_powers (L : ι → HermLB p) (m : ι → ℤ) : R.c1 (comb L m) = ∑ i, m i • R.c1 (L i) := by
-  rw [← Finset.sum_map_toList, comb]
-  induction (Finset.univ : Finset ι).toList with
-  | nil => exact R.firstChern_trivial
-  | cons a l ih => rw [List.foldr_cons, R.firstChernTensor, firstChern_zpow, ih, List.map_cons, List.sum_cons]
-
-theorem deg_aeval [IsIntegral X] {L : ι → HermLB p} {Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun L D Φ)
-    (P : MvPolynomial ι ℚ) : R.deg (aeval (fun i => R.c1 (L i)) P) = Φ (map (algebraMap ℚ ℝ) P) := by
-  let Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ :=
-    (basisMonomials ι ℝ).constr ℝ fun d => R.deg (aeval (fun i => R.c1 (L i)) (monomial d (1 : ℚ)))
-  have h₀ (d) : Ψ (monomial d 1) = R.deg (aeval (fun i => R.c1 (L i)) (monomial d (1 : ℚ))) :=
-    (basisMonomials ι ℝ).constr_basis ℝ _ d
-  have h₁ (P : MvPolynomial ι ℚ) : R.deg (aeval (fun i => R.c1 (L i)) P) = Ψ (map (algebraMap ℚ ℝ) P) := by
-    induction P using MvPolynomial.induction_on' with
-    | monomial d c =>
-      rw [map_monomial, ← mul_one (algebraMap ℚ ℝ c), ← smul_eq_mul, ← smul_monomial, map_smul, h₀, algebraMap_smul,
-        ← map_smul, ← map_smul, smul_monomial, smul_eq_mul, mul_one]
-    | add P Q hP hQ => simp only [map_add, hP, hQ]
-  have h₂ : Ψ - Φ = 0 := Model.eq_zero_of_pow (D + 1) _ (fun m => ?_) fun P e he hP => ?_
-  · rw [h₁, sub_eq_zero.1 h₂]
-  · have e : lin (fun i => (m i : ℝ)) ^ (D + 1) = map (algebraMap ℚ ℝ) ((∑ i, m i • MvPolynomial.X i) ^ (D + 1)) := by
-      simp [lin]
-    rw [LinearMap.sub_apply, ← R.degreeFirstChernPow _ _ (hΦ.1 m), e, ← h₁, firstChern_tensor_powers]
-    simp
-  · rw [LinearMap.sub_apply, hΦ.2 P e he hP, sub_zero, P.as_sum, map_sum]
-    refine Finset.sum_eq_zero fun d hd => ?_
-    rw [← mul_one (coeff d P), ← smul_eq_mul, ← smul_monomial, map_smul, h₀, R.deg_eq_zero e he, smul_zero]
-    rw [aeval_monomial, map_one, one_mul, ← hP (mem_support_iff.1 hd), Finsupp.weight_apply]
-    exact SetLike.prod_mem_graded R.gr _ _ fun i _ => SetLike.pow_mem_graded _ (R.constant_one_mem_nonvanishing _)
-
-theorem deg_surjective_int (R : ArRing B isRegVar_int) : Function.Surjective R.deg := fun t =>
-  ⟨_, R.degreeFirstChernPow _ t (ArithBase.isSelfInter_trivShift t)⟩
 
 end GlobalTheory.CxForm.ArRing

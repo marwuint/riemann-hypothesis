@@ -261,13 +261,6 @@ theorem Uop_pow_one (c : ℤ) (k : ℕ) :
     simp only [MvPolynomial.smul_eq_C_mul, map_mul]
     ring
 
-theorem one_int : (1 : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) ∈ IntPol p (Fin (K + 1) × Fin r) := by
-  classical
-  rw [intPol_iff_norm]
-  intro m
-  rw [coeff_one]
-  split_ifs <;> simp
-
 private theorem Uop_add_one_apply (c : ℤ) (H : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
     Uop p LL (c + 1) Cs a H = Uop p LL c Cs a H + X (Fin.last K, a) * H := by
   rw [Uop_eq, Uop_eq]

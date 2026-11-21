@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.CrystallinePeriods.CrystallineLogarithm.
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrystallineLogarithm.FactorialMulTruncLog
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrystallineLogarithm.ExistsExtensionU
 import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.MapEqPadicPowCyclotomicCharacter
-import Development.AutomorphicArithmetic.TeichmullerLogarithm.LogQuot
+import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.CrisTheta
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
@@ -54,11 +54,6 @@ theorem exists_pow_mul_eq_zero (e : Per.Fl l) (he : e.untilt = 1) (hne : e ≠ 1
     (hx : algebraMap (Per.Acris l) (Per.Bcris l) x = 0) :
     ∃ n : ℕ, algebraMap (Per.Ainf l) (Per.Acris l) (Per.tm e - 1) ^ n * x = 0 := by
   first | exact @PowMulEqZero.Bridge.CrisLoc.exists_pow_mul_eq_zero | exact PowMulEqZero.Bridge.CrisLoc.exists_pow_mul_eq_zero .. | (intros; apply PowMulEqZero.Bridge.CrisLoc.exists_pow_mul_eq_zero <;> assumption)
-
-theorem exists_extension (e : Per.Fl l) (he : e.untilt = 1) (hne : e ≠ 1) {R : Type*} [CommRing R]
-    (g : Per.Acris l →+* R) (hg : IsUnit (g (algebraMap (Per.Ainf l) (Per.Acris l) (Per.tm e - 1)))) :
-    ∃ F : Per.Bcris l →+* R, ∀ x : Per.Acris l, F (algebraMap _ _ x) = g x :=
-  CrisExtensionUnit.Bridge.CrisLoc.exists_extension_u l e he hne g hg
 
 theorem bdR_hom_ext {R : Type*} [CommRing R] {f g : Per.BdR l →+* R}
     (h : ∀ x : Per.BdRp l, f (algebraMap _ _ x) = g (algebraMap _ _ x)) : f = g :=

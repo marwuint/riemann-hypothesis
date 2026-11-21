@@ -1,5 +1,11 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RepresentationIndependence.IsFixedConvMap
-import Formalism.PeriodIntegrals.RepsIndep
+import Mathlib
+import Formalism.SharpRestriction.CuspSpanNormBounds.UniformConstantsAndStatements
+import Formalism.SharpRestriction.CuspSpanNormBounds.LocalBesselAndTopKernel
+import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.OwnEvIntro
+import Formalism.SharpRestriction.CuspSpanNormBounds.MassAndBranchingHypotheses
+import Formalism.SharpRestriction.CuspSpanNormBounds.AmplitudeAndVolumeBounds
 
 noncomputable section
 
@@ -57,63 +63,8 @@ theorem FrameOK_map {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h
   rw [XLam_mapL hγ, h.2]
   exact (XS_map hγ F'.fl).symm
 
-theorem EZ_map {T T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
-    {Λ : Cnt.LatV D} {F : LFlag (Lat.hS D) D.R.rS T} {Z : Cnt.GramM D} {F' : LFlag (Lat.hS D) D.R.rS T'}
-    (h : F' ∈ EZ D T' Λ F Z) : mapL γ hγ F' ∈ EZ D T' (Formalism.HermitianLatticesTheory.gmap γ Λ) (mapL γ hγ F) Z := by
-  obtain ⟨h1, h2, h3⟩ := h
-  refine ⟨?_, IsGeneric_map hγ h2, ?_⟩
-  · unfold IsNormFrame at h1 ⊢
-    obtain ⟨k1, k2, k3⟩ := h1
-    exact ⟨IsLift_map hγ k1, AdmWit_map hγ k2, FrameOK_map hγ k3⟩
-  · subst h3
-    unfold ZhatL
-    exact Zhat_mapF hγ F.fl F'.fl
-
-theorem cntZ_map {T : D.host.E} (T' : D.host.E) {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
-    (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (Λ : Cnt.LatV D) (F : LFlag (Lat.hS D) D.R.rS T) (Z : Cnt.GramM D) :
-    cntZ D T' (Formalism.HermitianLatticesTheory.gmap γ Λ) (mapL γ hγ F) Z = cntZ D T' Λ F Z := by
-  unfold cntZ
-  have hγ' := iso_symm hγ
-  have hΛ : Formalism.HermitianLatticesTheory.gmap γ.symm (Formalism.HermitianLatticesTheory.gmap γ Λ) = Λ := by
-    ext x
-    simp [Formalism.HermitianLatticesTheory.gmap]
-  refine cntCl_equiv (mapL γ hγ) (mapL γ.symm hγ') (mapL_symm hγ) (fun a => ?_) _ _ _ _
-    (fun a => ?_) (fun a b => ?_)
-  · first
-      | exact mapL_symm hγ' a
-      | simpa using mapL_symm hγ' a
-  · constructor
-    · intro h
-      have := EZ_map hγ' h
-      rwa [hΛ, mapL_symm hγ, mapL_symm hγ] at this
-    · exact EZ_map hγ
-  · constructor
-    · intro h
-      have := rel_map hγ' h
-      rwa [hΛ, mapL_symm hγ, mapL_symm hγ, mapL_symm hγ] at this
-    · exact rel_map hγ
-
-theorem lf_map {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) {γ₀ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ₀ ∈ stabF D F0)
-    (hfix : ∀ a, γ₀ (F0.e a) = F0.e a) : mapL γ₀ hγ.1 (lf D F0) = lf D F0 := by
-  have hz : γ₀ F0.z = F0.z := hγ.2.2
-  unfold lf mapL mapF
-  congr 1
-  all_goals first
-    | exact hz
-    | (cases F0; simp only [FlagG.mk.injEq]; exact ⟨funext hfix, hz⟩)
-
 end PI.RepsIndep.Tr
 
 namespace PI.RepsIndep
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.UniformConstantsAndStatements
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-theorem stepCnt (D : D7) : StepCnt D := by
-  unfold StepCnt
-  intro T T' F0 Λ _ γ₀ hγ hfix Z
-  have h := PI.RepsIndep.Tr.cntZ_map T' hγ.1 Λ (lf D F0) Z
-  rwa [PI.RepsIndep.Tr.lf_map F0 hγ hfix] at h
 
 end PI.RepsIndep

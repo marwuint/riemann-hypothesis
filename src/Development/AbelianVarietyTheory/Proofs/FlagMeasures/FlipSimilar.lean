@@ -73,8 +73,6 @@ theorem flipG_flipG {n : ℕ} (x : Gn g n) : flipG (flipG x) = x := by
   apply Units.ext
   simp only [flipG_coe, flip_flip]
 
-def flipE (n : ℕ) : Gn g n ≃ Gn g n := ⟨flipG, flipG, flipG_flipG, flipG_flipG⟩
-
 theorem flipG_conj {n : ℕ} (x : Gn g n) : ∃ p : Gn g n, flipG x = p * x * p⁻¹ := by
   obtain ⟨P, hP, hPx⟩ := flip_similar (x : Mt g n)
   refine ⟨hP.unit, Units.ext ?_⟩

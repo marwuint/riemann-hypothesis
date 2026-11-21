@@ -29,12 +29,6 @@ structure KerSizes (t : KerEntTied ex) (W : Wts t.X t.Pr.Word D.R) (Del h0 : ℕ
   what₂ : ∀ u, GlobalTheory.Core.Ht2.SizeRowsS CY (ofRecord D L Del h0) (letterOf D L Del h0 u)
   logT : ∀ u, Real.log (((D.mem u).A.T : ℕ) : ℝ) ≤ CT * D.R.m * L.sc.L
 
-theorem KerSizes.mono {t : KerEntTied ex} {W : Wts t.X t.Pr.Word D.R} {Del h0 : ℕ} {CY CT CT' : ℝ} (h : KerSizes t W Del h0 CY CT)
-    (hC : CT ≤ CT') (hL : 0 ≤ L.sc.L) : KerSizes t W Del h0 CY CT' :=
-  ⟨h.sizes, h.what₂, fun u => (h.logT u).trans (by
-    have : (0 : ℝ) ≤ D.R.m := Nat.cast_nonneg _
-    gcongr)⟩
-
 end GlobalTheory.ColRows
 
 end

@@ -1,5 +1,8 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeSheetGram
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChartGram
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeIntegralMass
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights

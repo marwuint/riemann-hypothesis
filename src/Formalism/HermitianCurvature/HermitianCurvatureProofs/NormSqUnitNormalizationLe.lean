@@ -365,14 +365,6 @@ theorem coefficient_growth_le_power (n r : ℕ) (b H CH C₃ : ℝ) (hb : 2 ≤ 
   push_cast
   nlinarith [mul_le_mul_of_nonneg_right hC (sq_nonneg (2 * (r : ℝ) + 2))]
 
-theorem big_cell_expansion_of_parts (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b C₃ CH : ℝ) (a₁ : ℕ)
-    (d : PieriExpansionData P Wp Wq) (hf : f = unitF p (d.J d.lam)) (hb : 2 ≤ b) (hn : (d.n : ℝ) ≤ b) (hH : 0 ≤ d.H)
-    (hHb : d.H ≤ b ^ (CH * ((2 * P.r + 2 : ℕ) : ℝ))) (hC : CH / 2 + 5 / 8 ≤ C₃) (hc0 : P.r + 1 ≤ d.c0)
-    (hrange : (P.r + 1) * a₁ + d.c0 ≤ d.q0)
-    (hP : PieriExpansion p d) (hT : PieriCoefficientBound d) (hD : PieriDegreeConditions p d) (hM : PieriMeasurability p d) : BigCellDerivativeExpansion p f b C₃ a₁ :=
-  big_cell_expansion_of_family p f b C₃ a₁ (by linarith)
-    (family_expansion_of_parts p f b C₃ a₁ d hf hH hc0 hrange (coefficient_growth_le_power d.n P.r b d.H CH C₃ hb hn hH hHb hC) hP hT hD hM)
-
 end place
 
 end

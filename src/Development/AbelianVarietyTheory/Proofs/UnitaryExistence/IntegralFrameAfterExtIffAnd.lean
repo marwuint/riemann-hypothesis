@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CoreProofs
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProofFree
-import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.AlgebraicPointWeights
+import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtGMulVec
@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.AlgLawsCompare
 
 open NumberField IsDedekindDomain IsLocalRing AlgebraicGeometry CategoryTheory
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.IndefiniteRowSideFullHecke.AlgebraicPointWeights GlobalTheory.Frames
+open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
 section Valuations
 
@@ -35,13 +35,6 @@ theorem valV_lt_one_iff (v : V) : valV V (algebraMap V K' v) < 1 ↔ v ∈ maxim
 theorem valV_eq_one_iff_isUnit (v : V) : valV V (algebraMap V K' v) = 1 ↔ IsUnit v := by
   rw [← notMem_maximalIdeal, ← valV_lt_one_iff (K' := K'), not_lt]
   exact ⟨fun h => h.ge, fun h => le_antisymm (valV_le_one v) h⟩
-
-theorem vV_nonneg (v : V) : 0 ≤ vV V (algebraMap V K' v) := by
-  by_cases h : algebraMap V K' v = 0
-  · simp [h, vV]
-  · have := (WithZero.log_le_log (valV_ne_zero (V := V) h) one_ne_zero).2 (valV_le_one v)
-    simp only [WithZero.log_one] at this
-    simp only [vV]; omega
 
 theorem vV_pos {v : V} (h0 : v ≠ 0) (h : v ∈ maximalIdeal V) : 0 < vV V (algebraMap V K' v) := by
   have h1 : algebraMap V K' v ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective V K')).2 h0
@@ -110,60 +103,6 @@ theorem exists_overLa {K : Type} [Field K] [NumberField K] (T : CDVR) (io : K �
   simp only [vV, smul_eq_mul] at h2 ⊢
   linarith
 
-theorem finite_of_finite_residueField {V K W L : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-    [IsAdicComplete (maximalIdeal V) V] [Field K] [Algebra V K] [IsFractionRing V K] [CommRing W] [IsDomain W]
-    [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (i : K →+* L) {r : ℕ} (hr : 0 < r)
-    (hi : ∀ z, vV W (i z) = (r : ℤ) * vV V z) (h' : Finite (ResidueField W)) : i.Finite := by
-  have hint : ∀ a : V, ∃ v : W, algebraMap W L v = i (algebraMap V K a) := fun a =>
-    Formalism.L2.PjFree.mem_range_of_vV_nonneg (by rw [hi]; exact mul_nonneg (by positivity) (vV_nonneg a))
-  choose g0 hg0 using hint
-  have hinj := IsFractionRing.injective W L
-  let g : V →+* W :=
-    { toFun := g0
-      map_one' := hinj (by simp [hg0])
-      map_mul' := fun a b => hinj (by simp [hg0])
-      map_zero' := hinj (by simp [hg0])
-      map_add' := fun a b => hinj (by simp [hg0]) }
-  have hg : ∀ a, algebraMap W L (g a) = i (algebraMap V K a) := hg0
-  letI : Algebra V W := g.toAlgebra
-  letI : Algebra K L := i.toAlgebra
-  letI : Algebra V L := ((algebraMap W L).comp g).toAlgebra
-  have : IsScalarTower V W L := IsScalarTower.of_algebraMap_eq fun _ => rfl
-  have : IsScalarTower V K L := IsScalarTower.of_algebraMap_eq fun a => hg a
-  have hgi : Function.Injective (algebraMap V W) := fun a b hab => by
-    apply IsFractionRing.injective V K
-    apply i.injective
-    rw [← hg, ← hg]
-    exact congrArg _ hab
-  have : FaithfulSMul V W := (faithfulSMul_iff_algebraMap_injective _ _).2 hgi
-  have hle : (maximalIdeal V).map (algebraMap V W) ≤ maximalIdeal W := by
-    rw [Ideal.map_le_iff_le_comap]
-    intro a ha
-    by_cases h0 : a = 0
-    · simp [h0]
-    rw [Ideal.mem_comap, mem_maximalIdeal]
-    intro hu
-    have h1 : valV W (algebraMap W L (g a)) = 1 := (valV_eq_one_iff_isUnit _).2 hu
-    have h2 := hi (algebraMap V K a)
-    have h3 : (0 : ℤ) < r * vV V (algebraMap V K a) := mul_pos (by exact_mod_cast hr) (vV_pos h0 ha)
-    rw [← h2, ← hg, vV, h1] at h3
-    simp at h3
-  have hne : (maximalIdeal V).map (algebraMap V W) ≠ ⊥ := by
-    rw [Ne, Ideal.map_eq_bot_iff_of_injective hgi]
-    exact IsDiscreteValuationRing.not_a_field V
-  have htop : (maximalIdeal V).map (algebraMap V W) ≠ ⊤ :=
-    ne_top_of_le_ne_top (maximalIdeal.isMaximal W).ne_top hle
-  have : IsHausdorff ((maximalIdeal V).map (algebraMap V W)) W := IsHausdorff.of_isDomain _ htop
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible W
-  obtain ⟨n, hn⟩ := IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hne hϖ
-  have : Finite (W ⧸ (maximalIdeal V).map (algebraMap V W)) := by
-    rw [hn, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]
-    have : Finite (W ⧸ maximalIdeal W) := h'
-    exact Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n
-  have : Module.Finite V (W ⧸ (maximalIdeal V).map (algebraMap V W)) := Module.Finite.of_finite
-  have : Module.Finite V W := GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal V)
-  exact Module.Finite.of_isLocalization V W (nonZeroDivisors V)
-
 theorem exists_testRing_factor {K : Type} [Field K] (p : TRing K) {S : Type} [Field S] [Algebra K S]
     (φ : p.R →ₐ[K] S) {J : Type} [Fintype J] (g : J → S) :
     ∃ (r : TRing K) (α : p.R →ₐ[K] r.R) (χ : r.R →ₐ[K] S) (gr : J → r.R),
@@ -207,13 +146,6 @@ variable {Xo : Moduli Dw l} {c : Coeff l}
 theorem exists_baseChange {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) : ∃ z : FrPt Xo c T, FrMap φ y z :=
   FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c S T φ y
-
-theorem exists_frame {L : Type} [Field L] [Algebra c.F L] (x : Sp L ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c L) :
-    ∃ y : FrPt Xo c L, y.x = x := by
-  classical
-  obtain ⟨y, -, h, -⟩ := gfp_frPt_gen (L' := L) GlobalTheory.abelianSchemeLaws_all.2.secTwist (fun _ => rfl) x hx
-    (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')
-  exact ⟨y, h⟩
 
 theorem fromTest_of_same_point {S : Type} [Field S] [Algebra c.F S] {y y' : FrPt Xo c S} (hx : y'.x = y.x)
     (hy : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y) :
@@ -267,17 +199,5 @@ theorem reFrame : Formalism.L2.PjFree.ReFrame Xo c := by
     exact IntRebase.id_appLE_apply _ _ h _
 
 variable (Xo c)
-
-def FramesExtendAt (T : CDVR) (io : c.F →+* T.Fr) : Prop :=
-  letI := io.toAlgebra
-  ∀ y : FrPt Xo c T.Fr, ∃ (T' : CDVR) (io' : c.F →+* T'.Fr),
-    letI := io'.toAlgebra
-    ∃ (φ : T.Fr →ₐ[c.F] T'.Fr) (r : ℕ), 0 < r ∧ (∀ x : T.Fr, vV T'.V (φ x) = (r : ℤ) * vV T.V x) ∧
-      φ.toRingHom.Finite ∧ (T.FinRes → T'.FinRes) ∧
-      ∃ (z : FrPt Xo c T'.Fr) (y' : IntFr Xo c T' io') (t : Ix Dw → T'.Frˣ), FrMap φ y z ∧ FrBor t z y'.1
-
-def IntegralFrameAfterExtFinRes : Prop :=
-  ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la T.V io e → T.FinRes →
-    FramesExtendAt Xo c T io
 
 end GlobalTheory.AlgLawsCompare

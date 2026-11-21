@@ -29,10 +29,6 @@ theorem fixed_frob (c : ↥(MaximalUnramifiedExtension l)) (hc : frobUr l c = c)
   refine ⟨q, (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective ?_⟩
   rw [← hq, ← IsScalarTower.algebraMap_apply]
 
-def cyc (K : FinExt l) (a : ℤ) : ↥(GK K) →* GL (Fin 1) ↥(MaximalUnramifiedExtension l) :=
-  (Units.map ((Matrix.scalar (Fin 1)).comp (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l))).toMonoidHom).comp
-    ((zpowGroupHom a).comp (P.χQ.comp (GK K).subtype))
-
 theorem kd_alg (q : ℚ_[l]) : kd P (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q) = algebraMap ℚ_[l] P.R.BdR q := by
   rw [IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR]; rfl
 

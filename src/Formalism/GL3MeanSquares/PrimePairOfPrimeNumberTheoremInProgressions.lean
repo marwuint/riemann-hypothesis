@@ -1,6 +1,5 @@
 import Mathlib
-import Formalism.GL3MeanSquares.PrimePairOfBoxAndWeakMeanSquareHypotheses
-import Formalism.GL3MeanSquares.ZeroDensityBox
+import Formalism.GL3MeanSquares.SecondEstimateOfIntervalHypothesis
 import Formalism.GL3MeanSquares.BoxCountAll
 
 open Finset Classical
@@ -32,11 +31,5 @@ def PNTAPRelW : Prop :=
         |(piAP X M b : ℝ) - mainAP e b X| ≤
           A₀ * (Real.exp (-(c₃ * Real.log X / Real.log M)) + Real.exp (-Real.sqrt (c₃ * Real.log X))) *
             mainAP e b X
-
-def MeanSquareFromPNT : Prop :=
-  PNTAPRelW → ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∃ C x₀ : ℝ, 0 < C ∧ Formalism.HermitianLattices.WeakMeanSquareEstimates.MeanSquareHypW ε C x₀
-
-def PrimePairOfPrimeNumberTheoremInProgressions : Prop :=
-  PNTAPRelW → ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∃ C x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → Formalism.HermitianLattices.ZeroFreeRegionGL2.ExistsSplitGoodPrimePair ε C x
 
 end Formalism.HermitianLattices.PrimeNumberTheoremConsequences

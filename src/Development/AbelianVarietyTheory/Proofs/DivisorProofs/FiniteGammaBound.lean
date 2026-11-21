@@ -284,16 +284,4 @@ theorem finGamAt_of {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : Form
 end GlobalTheory.GamLoss
 
 namespace GlobalTheory.GamLoss
-open GlobalTheory.SumSize GlobalTheory.RowClaim
-
-theorem finGamK : GlobalTheory.FunPr.Hypotheses₂ → FinGamK := by
-  intro _
-  refine ⟨0, fun CF _ => ⟨90, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ _ => ?_⟩⟩⟩
-  have hL : (1 : ℝ) ≤ large₂.sc.L := Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
-  have hb : (1 : ℝ) ≤ large₂.sc.b := Real.one_le_exp (by linarith)
-  have hlb : (1 : ℝ) ≤ Real.log large₂.sc.b := by
-    show (1 : ℝ) ≤ Real.log (Real.exp large₂.sc.L)
-    rw [Real.log_exp]; exact hL
-  exact finGamAt_of ch hC hb hlb
-
 end GlobalTheory.GamLoss

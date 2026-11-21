@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IndMulClassFunEqI
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.OneMemClosureInducedCentralByPrimePower
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IndApplyOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InducedClassFunctionFromSubgroupTransStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InducedClassFunctionMemInducedDegreeOneCharDiffStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InducedClassFunctionMemInducedDegreeOneCharDiff
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InducedOneSubIndexMemDegreeOneCharacterDiffStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLtCommutatorMemOfNeTopStatement
 
@@ -26,7 +26,7 @@ theorem step_ind_ind {G : Type} [Group G] [Finite G] (K A : Subgroup G) (hKA : K
 
 theorem inducedClassFunction_mem_degreeOneCharacterDiff {G : Type} [Group G] [Finite G] (E : Subgroup G) (f : E → ℂ) (hf : f ∈ D0 E) :
     ind E f ∈ D0 G :=
-  GlobalTheory.T.inducedClassFunction_mem_inducedDegreeOneCharDiff E f hf
+  _root_.GlobalTheory.BrauerZero.ind_mem_D0_of_mem_D0 E f hf
 
 theorem step_ind_one_sub_index_of_comm {G : Type} [Group G] [Finite G] (K : Subgroup G)
     (hc : ∀ a b : G, a * b * a⁻¹ * b⁻¹ ∈ K) :

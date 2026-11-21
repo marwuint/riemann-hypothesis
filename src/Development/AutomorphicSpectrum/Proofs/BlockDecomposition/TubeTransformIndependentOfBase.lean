@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussTubeOfTubeGood
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TubeTransformHorizontalInvarianceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TubeTransformHorizontalInvariance
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TubeTransformVerticalInvarianceStatement
 
 open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.CompanionTheory.TubeFourier
@@ -16,9 +16,9 @@ theorem phi_eq_of_convex : ∀ (X : Type) [NormedAddCommGroup X] [NormedSpace �
       GlobalTheory.CompanionTheory.TubeFourier.phi G (a, c) t = GlobalTheory.CompanionTheory.TubeFourier.phi G (b, c) t := by
     intro a b c h
     rcases le_total a b with hab | hba
-    · exact GlobalTheory.T.tube_transform_horizontal_invariance X Ω G hG a b c hab
+    · exact _root_.GlobalTheory.CompanionTheory.TubeFourier.phi_shift_fst X Ω G hG a b c hab
         (fun s hs => h s (Set.Icc_subset_uIcc hs)) t
-    · exact (GlobalTheory.T.tube_transform_horizontal_invariance X Ω G hG b a c hba
+    · exact (_root_.GlobalTheory.CompanionTheory.TubeFourier.phi_shift_fst X Ω G hG b a c hba
         (fun s hs => h s (Set.Icc_subset_uIcc' hs)) t).symm
   have hver : ∀ a b c : ℝ, (∀ s ∈ Set.uIcc a b, (c, s) ∈ Ω) →
       GlobalTheory.CompanionTheory.TubeFourier.phi G (c, a) t = GlobalTheory.CompanionTheory.TubeFourier.phi G (c, b) t := by

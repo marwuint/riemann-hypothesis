@@ -10,19 +10,26 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapFromSpecStalk
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermStalkClosedPointToBaseChange
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateLatticeLeOmegaStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroupStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsHodgeTateFunctionalStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueEquivStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QuasiFiniteGroupFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongOrderDividesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongGroupPullbackStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateLatticeLeOmega
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompat
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroup
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.HtExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalUnique
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueEquiv
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.QuasiFiniteGroupFinite
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusPointOverFractionField
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongOrderDivides
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongGroupPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionAlongUniqueUpToIsoStatement
 
 noncomputable section
@@ -54,9 +61,9 @@ theorem lieBC {S : Scheme.{0}} {G : Over S} [GrpObj G] {A B : Type} [CommRing A]
     show (c a * b) • e = c a • b • e
     rw [mul_smul]⟩
   haveI : Smooth G.hom := hsm
-  obtain ⟨j, h1, h2, -⟩ := GlobalTheory.T.lie_model_base_change_map S G A B x E E' M M'
+  obtain ⟨j, h1, h2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange S G A B x E E' M M'
   let β : E →ₗ[A] E' := { toFun := j, map_add' := map_add j, map_smul' := fun a e => h2 a e }
-  have hbc : IsBaseChange B β := (GlobalTheory.T.lie_model_finite_base_change S G A x E M).2.2 B E' M' β h1
+  have hbc : IsBaseChange B β := (_root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange S G A x E M).2.2 B E' M' β h1
   refine ⟨j, h1, h2, ?_, ?_⟩
   · refine eq_top_iff.2 fun e _ => ?_
     refine hbc.inductionOn e (fun z => z ∈ Submodule.span B (Set.range j)) (Submodule.zero_mem _) ?_ ?_ ?_
@@ -127,9 +134,9 @@ theorem core {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
       (∀ l : Module.Dual R L, ∃ l' : Module.Dual R' L', ∀ e, l' (β e) = algebraMap R R' (l e)) ∧
       ∀ (χ : T →* Rˣ) (w₀ : Module.Dual R L) (w₀' : Module.Dual R' L'), (∀ e, w₀' (β e) = algebraMap R R' (w₀ e)) →
         Γ.IsHT i M₀ N χ w₀ → Γ'.IsHT i' M₀' N ((Units.map (algebraMap R R' : R →* R')).comp χ) w₀' := by
-  obtain ⟨Γ', F, hF⟩ := GlobalTheory.T.exists_base_change_group R T Γ R' (algebraMap R R') hs
-  have tor₁ := GlobalTheory.T.torsion_along_base_change R T Γ X G x N i hi R' (algebraMap R R') Γ' F hF
-  obtain ⟨i', hi', tor'⟩ := GlobalTheory.T.torsion_along_group_pullback R' T Γ' X X' G G' f φ x' _ N (F ≫ i) hφ hx tor₁
+  obtain ⟨Γ', F, hF⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective R T Γ R' (algebraMap R R') hs
+  have tor₁ := _root_.GlobalTheory.CompanionTheory.Ar.TorBC.isTorsionAlong_baseChange R T Γ X G x N i hi R' (algebraMap R R') Γ' F hF
+  obtain ⟨i', hi', tor'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TorPull.exists_lift_isTorsionAlong R' T Γ' X X' G G' f φ x' _ N (F ≫ i) hφ hx tor₁
   have key : ∀ y : Sp R' ⟶ X, x' ≫ f = y → ∃ M₂ : LieModel G y L', ∀ e, (M₀'.pt e).left ≫ φ = (M₂.pt e).left := by
     rintro _ rfl
     exact ⟨LieMove.pushModel hφ M₀', fun _ => rfl⟩
@@ -137,7 +144,7 @@ theorem core {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
   obtain ⟨β, hβ, -, hsp, hext⟩ := lieBC (algebraMap R R') x _ rfl hsm M₀ M₂
   refine ⟨Γ', i', β, tor', fun e => ?_, hsp, hext, fun χ w₀ w₀' hw H => ?_⟩
   · rw [hM₂, hβ]
-  · have H' := GlobalTheory.T.hodge_tate_functional_base_change R T Γ X G x N i hi L M₀ R' Γ' F hF tor₁ L' M₂ β hβ hsp χ w₀ w₀' hw H
+  · have H' := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.isHT_baseChange R T Γ X G x N i hi L M₀ R' Γ' F hF tor₁ L' M₂ β hβ hsp χ w₀ w₀' hw H
     exact isHT_move Γ' hφ.1 hi' tor'.isOver hM₂ H'
 
 section Setup
@@ -193,7 +200,7 @@ theorem forward (hs : Function.Injective (algebraMap R R'))
     (H : M.IsHTFormOver N x k w) : M'.IsHTFormOver N x' k' w' := by
   have hsm' : Smooth G'.hom := MorphismProperty.of_isPullback hφ.1 hsm
   obtain ⟨_, T, _, Γ, i₀, L, _, _, M₀, j₀, χ, w₀, tor, hj₀, hHT, hw⟩ := H
-  haveI := GlobalTheory.T.quasi_finite_group_finite R T Γ
+  haveI := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.finite_of_qfGroup R T Γ
   obtain ⟨L', _, _, ⟨M₀'⟩⟩ := lieModel_exists X' G' R' x'
   obtain ⟨Γ', i', β, tor', hβ, hsp, hext, hcore⟩ := core hs x x' f hx φ hφ hsm Γ N i₀ tor M₀ M₀'
   obtain ⟨j', hj', hjs, -, -⟩ := lieBC k' x' ξ' hξ' hsm' M₀' M'
@@ -228,23 +235,23 @@ theorem backward [IsIntegrallyClosed R] [IsNoetherianRing R] (hs : Function.Inje
         (M'.pt e).left = Spec.map (CommRingCat.ofHom (dualMap k')) ≫ v.left → u' e ∈ k'.range := by
   have hsm' : Smooth G'.hom := MorphismProperty.of_isPullback hφ.1 hsm
   obtain ⟨_, T, _, Γ, i₀, L, _, _, M₀, -, -, -, tor, -, -, -⟩ := h0
-  haveI := GlobalTheory.T.quasi_finite_group_finite R T Γ
+  haveI := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.finite_of_qfGroup R T Γ
   obtain ⟨_, T₂, _, Γ₂, i₂, L₂, _, _, M₂, j₂, χ₂, w₂, tor₂, hj₂, hHT₂, hw₂⟩ := H
   obtain ⟨L', _, _, ⟨M₀'⟩⟩ := lieModel_exists X' G' R' x'
   obtain ⟨Γ', i', β, tor', hβ, hsp, hext, hcore⟩ := core hs x x' f hx φ hφ hsm Γ N i₀ tor M₀ M₀'
   obtain ⟨b, hb⟩ := GlobalTheory.T.torsion_along_unique_up_to_iso R' T₂ T Γ₂ Γ' X' G' x' N i₂ i' tor₂ tor'
   have H₁ := hb L₂ M₂ χ₂ w₂ hHT₂
-  obtain ⟨g, hg, -⟩ := GlobalTheory.T.lie_model_existsUnique_equiv X' G' R' x' L' L₂ M₀' M₂
+  obtain ⟨g, hg, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_existsUnique_equiv X' G' R' x' L' L₂ M₀' M₂
   have H₂ := isHT_lie Γ' g hg H₁
-  obtain ⟨χ, hχ⟩ := char_descends (algebraMap R R') hs hN hz (GlobalTheory.T.torsion_along_order_divides R T Γ X G x N i₀ tor)
+  obtain ⟨χ, hχ⟩ := char_descends (algebraMap R R') hs hN hz (_root_.GlobalTheory.CompanionTheory.Ar.BT.TorsionKilled.pow_eq_one R T Γ X G x N i₀ tor)
     (χ₂.comp b.symm.toMonoidHom)
-  obtain ⟨w₀, hw₀⟩ := GlobalTheory.T.exists_hodge_tate_functional R T Γ X G x N i₀ tor hsm L M₀ χ
+  obtain ⟨w₀, hw₀⟩ := _root_.PositivityTheory.UnitarySelfGeneration.ht_exists R T Γ X G x N i₀ tor hsm L M₀ χ
   obtain ⟨j₁, hj₁, -, -, hj₁ext⟩ := lieBC k x ξ hξ hsm M₀ M
   obtain ⟨w, hw⟩ := hj₁ext w₀
   obtain ⟨w₀', hw₀'⟩ := hext w₀
   have H₃ := hcore χ w₀ w₀' hw₀' hw₀
   rw [hχ] at H₃
-  obtain ⟨u, hu⟩ := (GlobalTheory.T.hodge_tate_functional_unique_mod_smul R' T Γ' X' G' x' N i' tor' hsm' hN0 L' M₀' _ w₀' _ H₃).1 H₂
+  obtain ⟨u, hu⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.BT.HT.isHT_iff R' T Γ' X' G' x' N i' tor' hsm' hN0 L' M₀' _ w₀' _ H₃).1 H₂
   obtain ⟨j', hj', hjs, hjsp, hjext⟩ := lieBC k' x' ξ' hξ' hsm' M₀' M'
   obtain ⟨u', hu'⟩ := hjext u
   refine ⟨w, ⟨inferInstance, T, _, Γ, i₀, L, _, _, M₀, j₁, χ, w₀, tor, hj₁, hw₀, hw⟩, u', ?_, ?_⟩
@@ -280,7 +287,7 @@ theorem om_decomp {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} {x : 
       ∀ u' : Module.Dual Ω' V', u' = ∑ a, u' (j (b a)) • jd (δ a) := by
   obtain ⟨L, _, _, ⟨M₀⟩⟩ := lieModel_exists X G R x
   haveI : Smooth G.hom := hsm
-  obtain ⟨hfin, hproj, -⟩ := GlobalTheory.T.lie_model_finite_base_change X G R x L M₀
+  obtain ⟨hfin, hproj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X G R x L M₀
   haveI := hfin
   haveI := hproj
   haveI : Module.Free R L := Module.free_of_flat_of_isLocalRing
@@ -330,7 +337,7 @@ theorem GlobalTheory.CompanionTheory.Ar.HTPull.main : ∀ (X X' : Scheme.{0}) (�
   intro X X' Ω Ω' _ _ ξ ξ' f i G G' _ _ _ _ φ V V' _ _ _ _ M M' j gen gen' dom hφ hsm hj jd hjd N hN p' h hic hnoe
     hroot h0
   obtain ⟨ζ, hζ⟩ := hroot
-  obtain ⟨hext, hspan, hlat⟩ := GlobalTheory.T.lie_lattice_dominant_compat X X' Ω Ω' ξ ξ' f i G G' φ V V' M M' j gen gen' dom hφ hsm hj
+  obtain ⟨hext, hspan, hlat⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LiePull.main X X' Ω Ω' ξ ξ' f i G G' φ V V' M M' j gen gen' dom hφ hsm hj
   have hsm' : Smooth G'.hom := MorphismProperty.of_isPullback hφ.1 hsm
   let p : Cpt ξ := ⟨f p'.1, h⟩
   let k := genMap ξ p
@@ -388,7 +395,7 @@ theorem GlobalTheory.CompanionTheory.Ar.HTPull.main : ∀ (X X' : Scheme.{0}) (�
       obtain ⟨v, hv, hev⟩ := ((lieLat_carrier X G Ω ξ V M p).1 e).1 he
       exact hδ a e v hv hev
     have hNδ : ∀ a, (N : Ω) • δ a ∈ M.htLat N p := fun a =>
-      (GlobalTheory.T.hodge_tate_lattice_le_omega X Ω ξ G V M N p gen hsm).2 h0 (δ a) (hδom a)
+      (_root_.GlobalTheory.CompanionTheory.Ar.htLat_le_omLat_and_smul_mem X Ω ξ G V M N p gen hsm).2 h0 (δ a) (hδom a)
     have hc : ∀ a, u' (j (b a)) ∈ regAt ξ' p' := by
       intro a
       apply hu''

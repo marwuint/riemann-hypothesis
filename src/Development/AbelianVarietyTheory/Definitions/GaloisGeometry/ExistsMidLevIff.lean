@@ -189,38 +189,7 @@ def TopLev (j : ℕ) (P : rowSG Pr sel mu) (g : Sp X.E (R.N j) ≃ₗ[X.E] Sp X.
     atNL X.E (R.N j) (R.N j - 1) ∘ₗ g.toLinearMap = atNL X.E (R.N j) (R.N j - 1) ∧
     z = rowChrTop Ch mu cst.sharp j (R.N j) P.1 g'.toLinearMap
 
-example (j : ℕ) (P : rowSG Pr sel mu) : ∃ z, TopLev Ch sel mu cst j P 1 z :=
-  ⟨_, 1, Subgroup.one_mem _, rfl, rfl, rfl⟩
-
-example (j : ℕ) (P : rowSG Pr sel mu) (h : AutY X R j) : ∃ z, MidLev Ch sel mu cst j P h 1 z :=
-  (exists_midLev_iff Ch sel mu cst j P h 1).2 (Subgroup.one_mem _)
-
 end Levels
-
-section Moved
-
-open Formalism.L2.Forms
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-  {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
-  {S : StepLevel F E σ J T f bad} (k : basePts S) (κ : S.U)
-
-theorem mul_toMoved {x x₁ : UPts σ J (FiniteAdeleRing (𝓞 F) F)} (e : x₁.1 = x.1 * κ.1) :
-    (x₁ * basePtU k).1 = (x * basePtU k).1 * (toMoved k κ).1 := by
-  show x₁.1 * k.1 = x.1 * k.1 * (k.1⁻¹ * κ.1 * k.1)
-  rw [e]
-  group
-
-theorem det_toMoved : Matrix.GeneralLinearGroup.det (toMoved k κ).1 = Matrix.GeneralLinearGroup.det κ.1 := by
-  show Matrix.GeneralLinearGroup.det (k.1⁻¹ * κ.1 * k.1) = _
-  rw [map_mul, map_mul, map_inv, inv_mul_cancel_comm]
-
-theorem prV_mul_basePt {x x₁ : UPts σ J (FiniteAdeleRing (𝓞 F) F)} (v : HeightOneSpectrum (𝓞 F))
-    (e : bc (prV (E := E) v) x₁.1 = bc (prV (E := E) v) x.1) :
-    bc (prV (E := E) v) (x₁ * basePtU k).1 = bc (prV (E := E) v) (x * basePtU k).1 := by
-  rw [Subgroup.coe_mul, Subgroup.coe_mul, map_mul, map_mul, e]
-
-end Moved
 
 section Charts
 
@@ -334,10 +303,6 @@ def FunMoved {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (P : ST) (v : Heigh
       (Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) lev.Lb)),
     (z.1 = fun l => prV (E := D.host.E) v (pullV (F := D.host.F) x (fun a => s.iE (w a)) l)) → d.f P w = ι (lev.fT v h z)
 
-example (P : SB) : InFrame s fb dep P 1 1 := by
-  unfold InFrame NearAt
-  simpa using congAt_one (F := D.host.F) (N := D.R.N i) (seamP s P.1) (dep P)
-
 end LevTie
 
 section Comparison₂
@@ -370,20 +335,6 @@ theorem IsAdIso.val_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   have h4 : (algebraMap E (FiniteAdeleRing (𝓞 E) E) (algebraMap (𝓞 E) E s) * ι z) P =
       (algebraMap E (FiniteAdeleRing (𝓞 E) E) (algebraMap (𝓞 E) E s)) P * ι z P := rfl
   rwa [h4, map_mul, h3, one_mul] at h1
-
-example {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (P : HeightOneSpectrum (𝓞 E)) (n : ℕ)
-    (h : CongAt (F := F) P n (-1 : GL (Fin 1) (AfE F E))) : P.valuation E ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2)) ≤ 1 := by
-  obtain ⟨ι, hι⟩ := exists_isAdIso F E
-  have h1 := hι.val_le (h 0 0)
-  have h2 : iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * (((-1 : GL (Fin 1) (AfE F E)) : Matrix (Fin 1) (Fin 1) (AfE F E)) - 1) 0 0 =
-      iA F E ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2)) := by
-    rw [map_mul, map_neg, map_ofNat]
-    congr 1
-    simp
-    norm_num
-  rw [h2, show ι (iA F E ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2))) = algebraMap E _ ((((qOf P : ℕ) : E) ^ n)⁻¹ * (-2)) from hι.1 _] at h1
-  rw [← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-  exact h1
 
 section W
 
@@ -630,8 +581,6 @@ structure AdLawAt (XiAd : AdDatum St) (muT : ℕ → (AfE D.host.F D.host.E)ˣ �
     ∀ z : D.host.Eˣ, (z : D.host.E) * D.host.conj (z : D.host.E) = 1 →
       muT (i + 1) (ratId D.host.F D.host.E z) = ∏ τ, TaylorLogMetric.embT D τ (z : D.host.E) ^ e τ
 
-def AdLaw : Prop := ∃ XiAd muT, AdLawAt A dtU a XiAd muT
-
 variable {A dtU a}
 
 theorem AdLawAt.mu_ne {XiAd : AdDatum St} {muT : ℕ → (AfE D.host.F D.host.E)ˣ → ℂ} (H : AdLawAt A dtU a XiAd muT) {i : ℕ} (hi : i < D.R.m)
@@ -641,134 +590,11 @@ theorem AdLawAt.mu_ne {XiAd : AdDatum St} {muT : ℕ → (AfE D.host.F D.host.E)
   rw [mul_inv_cancel, (H.mu_mul i hi).1, h0, zero_mul] at h
   exact one_ne_zero h
 
-variable (St) in
-
-abbrev ChainBase : Type := ∀ i hi, (St i hi).Base
-
-variable (St) in
-
-def moveCharts (k : ChainBase St) : ChainCharts D u μ := fun i hi => (St i hi).move (k i hi)
-
-def AdData.unmove {k : ChainBase St} (B : AdData t u μ (moveCharts St k)) : AdData t u μ St :=
-  ⟨B.crd, B.iA, B.q, B.pt, B.yb, B.ib, B.fb, B.y0⟩
-
-theorem AdPins.unmove_iff {k : ChainBase St} (B : AdData t u μ (moveCharts St k)) : AdPins B.unmove dtU ↔ AdPins B dtU :=
-  ⟨fun h => { h with }, fun h => { h with }⟩
-
-def AdDatum.unmove {k : ChainBase St} (Xi : AdDatum (moveCharts St k)) : AdDatum St := fun i hi β β' x x' =>
-  Xi i hi β β' (x * basePtU (k i _ β)) (x' * basePtU (k (i + 1) hi β'))
-
 variable (A dtU a)
-
-structure AdLawAtB (k : ChainBase St) (XiAd : AdDatum St) (muT : ℕ → (AfE D.host.F D.host.E)ˣ → ℂ) : Prop where
-
-  read : ∀ i hi c c' z, XiAd i hi ((St i _).chOf c) ((St (i + 1) hi).chOf c') ((St i _).y c) ((St (i + 1) hi).y c') z =
-    (t.rd u μ).Xi i c c' (seamHom t.seam (inFr
-      (toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i (Nat.le_of_succ_le hi)) (A.crd i (Nat.le_of_succ_le hi)))
-      (toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D (i + 1) hi) (A.crd (i + 1) hi)) z))
-
-  rat : ∀ i hi β β' x x' x₁ x₁', ∀ γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i (Nat.le_of_succ_le hi)),
-    ∀ γ' ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D (i + 1) hi), x₁.1 = ratA D.host.F γ * x.1 → x₁'.1 = ratA D.host.F γ' * x'.1 →
-    ∀ z, XiAd i hi β β' x₁ x₁' z = XiAd i hi β β' x x' (inFr
-      (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i (Nat.le_of_succ_le hi)) γ)
-      (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D (i + 1) hi) γ') z)
-
-  lev : ∀ i hi β β' x x' x₁ x₁' (κ : ((St i (Nat.le_of_succ_le hi)).K β).lev.U) (κ' : ((St (i + 1) hi).K β').lev.U),
-    x₁.1 = x.1 * κ.1 → x₁'.1 = x'.1 * κ'.1 → ∀ z,
-    muT (i + 1) (Matrix.GeneralLinearGroup.det κ'.1) * ((((St i _).K β).lev.chi κ : ℂˣ) : ℂ) * XiAd i hi β β' x₁ x₁' z =
-      muT (i + 1) (Matrix.GeneralLinearGroup.det κ.1) * ((((St (i + 1) hi).K β').lev.chi κ' : ℂˣ) : ℂ) * XiAd i hi β β' x x' z
-
-  away : ∀ i hi β β' x x' x₁ x₁',
-    (∀ v ∈ plUnder D.host.F (ssRec t u μ), bc (prV (E := D.host.E) v) x₁.1 = bc (prV (E := D.host.E) v) x.1 ∧
-      bc (prV (E := D.host.E) v) x₁'.1 = bc (prV (E := D.host.E) v) x'.1) → XiAd i hi β β' x₁ x₁' = XiAd i hi β β' x x'
-
-  loc : ∀ i hi β β' x x', DatLoc D t.cc (ssRec t u μ) (t.rd u μ).lev
-    (latK D.sp (gramN D i (Nat.le_of_succ_le hi)) a x.1 ((St i _).K β).lev.Lb)
-    (latK D.sp (gramN D (i + 1) hi) a x'.1 ((St (i + 1) hi).K β').lev.Lb) (XiAd i hi β β' x x')
-
-  supp : ∀ i hi β β' x x' z, XiAd i hi β β' x x' z ≠ 0 → z ∈ divLat (t.rd u μ).lev (homAt (ssRec t u μ)
-    (latK D.sp (gramN D i (Nat.le_of_succ_le hi)) a x.1 ((St i _).K β).lev.Lb)
-    (latK D.sp (gramN D (i + 1) hi) a x'.1 ((St (i + 1) hi).K β').lev.Lb))
-
-  int : ∀ i hi β β' x x' z, IntOff (t.O u μ).S (XiAd i hi β β' x x' z)
-
-  mu_read : ∀ i < D.R.m, ∀ y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm,
-    muT (i + 1) (Matrix.GeneralLinearGroup.det y.1) = (((t.O u μ).mt (i + 1) (dtU y) : ℂˣ) : ℂ)
-
-  mu_cls : ∀ i < D.R.m, ∀ j hj c, muT (i + 1) (Matrix.GeneralLinearGroup.det (((St j hj).y c).1 * (k j hj ((St j hj).chOf c)).1)) =
-    (((t.O u μ).mt (i + 1) ((t.O u μ).dt j c) : ℂˣ) : ℂ)
-
-  mu_mul : ∀ i < D.R.m, muT (i + 1) 1 = 1 ∧ ∀ x ∈ U1 (sigD D), ∀ y ∈ U1 (sigD D), muT (i + 1) (x * y) = muT (i + 1) x * muT (i + 1) y
-
-  mu_alg : ∀ i < D.R.m, ∀ x ∈ U1 (sigD D), muT (i + 1) x ∈ TaylorLogMetric.Qbar
-
-  mu_unr : ∀ i < D.R.m, ∀ x ∈ U1 (sigD D), x ∈ intU D.host.F D.host.E →
-    (∀ v, UnderSB t μ v → prV (E := D.host.E) v (x : AfE D.host.F D.host.E) = 1) → muT (i + 1) x = 1
-
-  mu_rat : ∀ i (hi : i < D.R.m), ∃ e : D.what₂.Tau → ℤ, (∀ τ, ((e τ : ℤ) : ℚ) = (D.hc τ).e ⟨i, hi⟩) ∧
-    ∀ z : D.host.Eˣ, (z : D.host.E) * D.host.conj (z : D.host.E) = 1 →
-      muT (i + 1) (ratId D.host.F D.host.E z) = ∏ τ, TaylorLogMetric.embT D τ (z : D.host.E) ^ e τ
-
-def AdLawB (k : ChainBase St) : Prop := ∃ XiAd muT, AdLawAtB A dtU a k XiAd muT
 
 variable {A dtU a}
 
-theorem adLawAtB_one_iff {XiAd : AdDatum St} {muT : ℕ → (AfE D.host.F D.host.E)ˣ → ℂ} :
-    AdLawAtB A dtU a (fun _ _ _ => 1) XiAd muT ↔ AdLawAt A dtU a XiAd muT :=
-  ⟨fun h => { h with mu_cls := fun i hi j hj c => by simpa using h.mu_cls i hi j hj c },
-    fun h => { h with mu_cls := fun i hi j hj c => by simpa using h.mu_cls i hi j hj c }⟩
-
-theorem latK_basePt {i : ℕ} {hi : i ≤ D.R.m} {β : (St i hi).Ch} (k : basePts ((St i hi).K β).lev)
-    (x : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
-    latK D.sp (gramN D i hi) a (x * k.1) ((St i hi).K β).lev.Lb = latK D.sp (gramN D i hi) a x ((St i hi).K β).lev.Lb := by
-  unfold latK
-  rw [latAd_basePt]
-
-set_option maxHeartbeats 1000000 in
-
-theorem AdLawAt.unmove {k : ChainBase St} {B : AdData t u μ (moveCharts St k)} {Xi : AdDatum (moveCharts St k)}
-    {muT : ℕ → (AfE D.host.F D.host.E)ˣ → ℂ} (H : AdLawAt B dtU a Xi muT) : AdLawAtB B.unmove dtU a k Xi.unmove muT where
-  read := H.read
-  rat i hi β β' x x' x₁ x₁' γ hγ γ' hγ' e e' := H.rat i hi β β' _ _ _ _ γ hγ γ' hγ'
-    ((congrArg (· * (k i _ β).1) e).trans (mul_assoc _ _ _)) ((congrArg (· * (k (i + 1) hi β').1) e').trans (mul_assoc _ _ _))
-  lev i hi β β' x x' x₁ x₁' κ κ' e e' z := by
-    have h := H.lev i hi β β' (x * basePtU (k i _ β)) (x' * basePtU (k (i + 1) hi β')) (x₁ * basePtU (k i _ β)) (x₁' * basePtU (k (i + 1) hi β'))
-      (toMoved (k i _ β) κ) (toMoved (k (i + 1) hi β') κ') (mul_toMoved _ _ e) (mul_toMoved _ _ e') z
-    rw [← det_toMoved (k i _ β) κ, ← det_toMoved (k (i + 1) hi β') κ', ← chi_toMoved (k i _ β) κ, ← chi_toMoved (k (i + 1) hi β') κ']
-    exact h
-  away i hi β β' x x' x₁ x₁' h := H.away i hi β β' _ _ _ _ fun v hv =>
-    ⟨prV_mul_basePt _ v (h v hv).1, prV_mul_basePt _ v (h v hv).2⟩
-  loc i hi β β' x x' := by
-    rw [← latK_basePt (k i _ β), ← latK_basePt (k (i + 1) hi β')]
-    exact H.loc i hi β β' (x * basePtU (k i _ β)) (x' * basePtU (k (i + 1) hi β'))
-  supp i hi β β' x x' := by
-    rw [← latK_basePt (k i _ β), ← latK_basePt (k (i + 1) hi β')]
-    exact H.supp i hi β β' (x * basePtU (k i _ β)) (x' * basePtU (k (i + 1) hi β'))
-  int i hi β β' x x' := H.int i hi β β' _ _
-  mu_read := H.mu_read
-  mu_cls := H.mu_cls
-  mu_mul := H.mu_mul
-  mu_alg := H.mu_alg
-  mu_unr := H.mu_unr
-  mu_rat := H.mu_rat
-
-theorem AdLaw.unmove {k : ChainBase St} {B : AdData t u μ (moveCharts St k)} (H : AdLaw B dtU a) : AdLawB B.unmove dtU a k :=
-  let ⟨_, _, h⟩ := H
-  ⟨_, _, h.unmove⟩
-
-example {k : ChainBase St} {B : AdData t u μ (moveCharts St k)} (H : AdTie B dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i)
-    (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm)
-    (h : Matrix.GeneralLinearGroup.det y.1 = Matrix.GeneralLinearGroup.det (((St i hi).y c).1 * (k i hi ((St i hi).chOf c)).1)) :
-    (t.O u μ).dt i c = dtU y := H.dt i hi c y h
-
 end Comparison₂
-
-open Formalism.MainNotions in
-
-def AdLawOfTie : Prop :=
-  ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC)
-    (ex : Extra D L hT Gi Gl Kc Y cX) (t : Formalism.L2.Ker.KerEntTied ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (St : ChainCharts D u μ) (A : AdData t u μ St)
-    (dtU : (letI := D.host.cmStar; Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm) →* D.Dt) (a : 𝓞 D.host.E), AdPins A dtU → AdTie A dtU a → AdLaw A dtU a
 
 end GlobalTheory.TwU
 

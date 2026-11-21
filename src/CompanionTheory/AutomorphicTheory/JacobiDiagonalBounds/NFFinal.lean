@@ -2,7 +2,7 @@ import CompanionTheory.AutomorphicTheory.JacobiDiagonalBounds.NFModel
 import CompanionTheory.AutomorphicTheory.NumberFieldModels.ModelPt
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.MatrixUnitZeroZeroEqInsert
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJDHatBdd
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NFModelNFg
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFTopDomCore
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelsOfBuiltSetting
 
 namespace Formalism.FourierDecayAlt.P.NormalFormRelations
@@ -30,20 +30,6 @@ theorem model_nf {P : M.Par} {L : LevelData (MA.A P (MA.DQ P)) P.r} (hP : P.OK) 
     (model_adm hP h1 h2 hw) a
   rw [gM_eq hM]
   simpa only [D.positionted, List.length_ofFn] using this
-
-theorem nfModelNFg_ok (P : M.Par) (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (hP : P.OK)
-    (hM : MA.IsModelLevel P (MA.DQ P) L) (l0 : ℕ) (h1 : 1 ≤ l0) (h2 : l0 ≤ P.k) (Y : Finset ℝ) (w : List C.Letter)
-    (hw : TBB.AdmW P l0 Y w) (e : Wd.Ix (Fin w.length)) :
-    ∃ (m : ℕ) (b : Fin m → MA.A P (MA.DQ P)) (i i' : Fin m → ℕ) (h : Fin m → List (MA.A P (MA.DQ P))),
-      (∀ j, b j ∈ Submonoid.closure (MA.bddSet P L)) ∧ (∀ j, i j + i' j = w.length) ∧
-      (∀ j, (h j).length = w.length ∧ ∀ a ∈ h j, a ∈ MA.hatSet P L) ∧
-      ∑ e' : Wd.Ix (Fin w.length),
-          (Fr.ofWord L (MA.startM P (MA.DQ P) l0) (D.positionted w)).F e e' *
-            Wd.uw (MA.sites P (MA.DQ P)) (D.positionted w) e' =
-        ∑ j, b j * L.Di ^ i j * L.Dbi ^ i' j * (h j).prod := by
-  obtain ⟨m, b, u, hb, hu, e1⟩ := nfs_fin (model_nf hP hM h1 h2 hw.1 e).2
-  exact ⟨m, b, fun _ => w.length, fun _ => 0, u, hb, fun _ => rfl, hu, by
-    simp only [pow_zero, mul_one]; exact e1⟩
 
 theorem model_pt {P : M.Par} {L : LevelData (MA.A P (MA.DQ P)) P.r} (hP : P.OK) (hM : MA.IsModelLevel P (MA.DQ P) L)
     {l0 : ℕ} (h1 : 1 ≤ l0) (h2 : l0 ≤ P.k) {w : List C.Letter} (hw : KB.CutWord P l0 w) (a : Ix (Fin w.length))

@@ -4,16 +4,16 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.BeData
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsConstantCoeffOne
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRingHomRhoK
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FrobeniusLiftMovesLetterCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OrthonormalLocalBasisCoordinatesDualStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LambdaTauOrthonormalBasisSumCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormLocalBasisStandardCoordLeOneInertStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperbolicCoordinatesIntegralSigmaSqFixedStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperbolicCoordinatesIsotropicStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperbolicCoordinatesDualStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TraceDualExpansionOrbitLengthStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LinearFormsHyperbolicCoordinatesEqTargetStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StandardSeriesScaledEqOrthonormalBasisSeriesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FrobeniusLiftMovesLetterCoordinates
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OrthonormalLocalBasisCoordinatesDual
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LambdaTauOrthonormalBasisSumCoordinates
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormLocalBasisStandardCoordLeOneInert
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperbolicCoordinatesIntegralSigmaSqFixed
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperbolicCoordinatesIsotropic
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperbolicCoordinatesDual
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TraceDualExpansionOrbitLength
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LinearFormsHyperbolicCoordinatesEqTarget
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StandardSeriesScaledEqOrthonormalBasisSeries
 
 noncomputable section
 
@@ -31,22 +31,22 @@ theorem GlobalTheory.KerStd.hyp_of_stdBases : ∀ (D : D7) (p : ℕ) [Fact p.Pri
     Formalism.L2.KerInert.RepFrame.lamONB_of_cols D lam b
       (Formalism.L2.KerInert.RepFrame.rank_of_locBasis L L' hA.2.2.1 hA.2.2.2 b hb)
       (Formalism.L2.KerInert.RepFrame.cols_of_trace D (Formalism.L2.KerInert.RepFrame.trace_tau_sum D) lam b ho)
-  obtain ⟨hg, hh⟩ := GlobalTheory.T.frobeniusLift_moves_letter_coordinates D p lam σ hσ hcl' N N' L L' P P' hP hP' r b
-  have hpair := GlobalTheory.T.orthonormalLocalBasis_coordinates_dual D p lam σ hσ hcl' N N' L L' P P' hP hP' r b hONB
+  obtain ⟨hg, hh⟩ := _root_.GlobalTheory.KerStd.HypCoord.FrobMove.frob_moves_coords D p lam σ hσ hcl' N N' L L' P P' hP hP' r b
+  have hpair := _root_.GlobalTheory.KerStd.HypCoord.hK_gK_dual D p lam σ hσ hcl' N N' L L' P P' hP hP' r b hONB
   have hiso := norm_sigma_eq p σ hσ
-  have hhint := GlobalTheory.T.norm_localBasis_standardCoord_le_one_inert D p lam σ hσ hcl' N N' L L' P P' hP hP' r b hb
+  have hhint := _root_.GlobalTheory.KerStd.HypCoord.norm_hK_le_one D p lam σ hσ hcl' N N' L L' P P' hP hP' r b hb
   have hgint : ∀ z a b₀ i, ‖gK D lam P P' b z a b₀ i‖ ≤ 1 := fun z a b₀ i => by
     rw [← hiso, hg]; exact hhint _ _ _ _
   have hg2 : ∀ z a b₀ i, σ (σ (gK D lam P P' b z a b₀ i)) = gK D lam P P' b (posPl D p z 2) a b₀ i :=
     fun z a b₀ i => by rw [hg, hh, posPl_add]
-  obtain ⟨hf1, hf2⟩ := GlobalTheory.T.hyperbolicCoordinates_integral_sigma_sq_fixed D p σ om oms R N N' r (gK D lam P P' b) hO
+  obtain ⟨hf1, hf2⟩ := _root_.GlobalTheory.KerStd.HypCoord.fOf_integral_sigma_sq D p σ om oms R N N' r (gK D lam P P' b) hO
     (fun x hx => by rw [hiso]; exact hx) hOw hgint hg2
-  obtain ⟨hi1, hi2⟩ := GlobalTheory.T.hyperbolicCoordinates_isotropic D p σ om oms R N N' r (gK D lam P P' b) (hK D lam P P' b) hO hR hg hpair
-  have hd := GlobalTheory.T.hyperbolicCoordinates_dual D p σ om oms R N N' r (gK D lam P P' b) (hK D lam P P' b) hO hR hTr hg hpair
+  obtain ⟨hi1, hi2⟩ := _root_.GlobalTheory.KerStd.HypCoord.fOf_isotropic D p σ om oms R N N' r (gK D lam P P' b) (hK D lam P P' b) hO hR hg hpair
+  have hd := _root_.GlobalTheory.KerStd.HypCoord.fOf_fOf'_dual D p σ om oms R N N' r (gK D lam P P' b) (hK D lam P P' b) hO hR hTr hg hpair
   refine ⟨fOf D p σ om R (gK D lam P P' b), fOf' D p σ oms R (gK D lam P P' b), ⟨hf1, hf2, hi1, hi2, hd⟩, ?_⟩
-  have hlin := GlobalTheory.T.linearForms_hyperbolicCoordinates_eq_target D p σ om oms R N N' r _ (gK D lam P P' b) (Formalism.L2.KerInert.RepFrame.lamB D lam b)
-    (fun k j => chgB D lam P P' k ((0 : ZMod 1), (tauPl D j.1, j.2))) hO hR (GlobalTheory.T.traceDual_expansion_orbitLength D p σ om oms hTr)
-    (fun q z a b₀ => GlobalTheory.T.lambdaTau_orthonormalBasis_sum_coordinates D p lam σ hσ hcl' N N' L L' P P' hP hP' r b hONB q z a b₀)
-  refine GlobalTheory.T.standardSeries_scaled_eq_orthonormalBasisSeries D p lam N N' r P P' b _ (fun i => ?_) hlin
+  have hlin := _root_.GlobalTheory.KerStd.HypCoord.linForm_hypZ D p σ om oms R N N' r _ (gK D lam P P' b) (Formalism.L2.KerInert.RepFrame.lamB D lam b)
+    (fun k j => chgB D lam P P' k ((0 : ZMod 1), (tauPl D j.1, j.2))) hO hR (_root_.GlobalTheory.KerStd.HypCoord.trDual_expand D p σ om oms hTr)
+    (fun q z a b₀ => _root_.GlobalTheory.KerStd.HypCoord.lamB_sum_gK D p lam σ hσ hcl' N N' L L' P P' hP hP' r b hONB q z a b₀)
+  refine _root_.GlobalTheory.KerStd.HypCoord.stdSer_scaled_eq_thOrth D p lam N N' r P P' b _ (fun i => ?_) hlin
   simp only [hypZ, linEv, linOd, map_sum, map_add, map_mul, MvPowerSeries.constantCoeff_C, MvPowerSeries.constantCoeff_X,
     mul_zero, apply_ite MvPowerSeries.constantCoeff, map_zero, ite_self, Finset.sum_const_zero, add_zero]

@@ -5,7 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanon
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyCartierOfLocallyPrincipalStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyCartierOfLocallyPrincipal
+import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyCuspFrame
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -58,10 +60,10 @@ theorem nonempty_resol (hPr : GlobalTheory.Published.Principalisation) {F : Type
     ⟨z.1, z.2⟩
   let M₂ : Modif M₁.str M₁.opn D := ⟨Y₂, s₂, hs₂, hp₂, iso₂, (s₂ ⁻¹ᵁ (s₁ ⁻¹ᵁ U)).isOpen.dense ⟨z₂, hz₂⟩⟩
   have Δ₂ : Cartier ((baseIdeal (C.isLB a₂) W₂).comap (s₂ ≫ s₁)) := by
-    rw [Scheme.IdealSheafData.comap_comp]; exact (GlobalTheory.T.nonempty_cartier_of_locally_principal' _ _ hc₂).some
+    rw [Scheme.IdealSheafData.comap_comp]; exact (_root_.GlobalTheory.CompHS.nonempty_cartier_of_locally_principal _ _ hc₂).some
   have Δ₁ : Cartier ((baseIdeal (C.isLB a₁) W₁).comap (s₂ ≫ s₁)) := by
     rw [Scheme.IdealSheafData.comap_comp]
-    exact (GlobalTheory.T.nonempty_cartier_of_locally_principal' _ _ hc₁).some.pullOfInt s₂ (z₀ := z₂) (by
+    exact (_root_.GlobalTheory.CompHS.nonempty_cartier_of_locally_principal _ _ hc₁).some.pullOfInt s₂ (z₀ := z₂) (by
       rw [Scheme.IdealSheafData.support_comap]; exact h₁ _ hz₂)
   exact ⟨{ toModif := M₁.trans M₂, Δ₁ := Δ₁, Δ₂ := Δ₂ }⟩
 

@@ -4,8 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinsupp
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisActionSiegelUnitInTower
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasQExpansionSmoothedEisensteinFxWeightOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxCoefficientSeqOneMemSubringStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasQExpansionSmoothedEisensteinFxWeightOne
+import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
+import Development.AbelianVarietyTheory.Definitions.Foundations.CthFac
+import Development.AbelianVarietyTheory.Definitions.Foundations.MultipliableAndSgNeZero
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelLinearOperations
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxCoefficientSeqOneMemSubring
 
 noncomputable section
 
@@ -104,7 +109,7 @@ theorem sgN_two_variable : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClo
     have : r = k + n := by exact_mod_cast h
     omega
   have hb := HasQ.coeff_unique hM qb (by
-    simpa only [neg_mul, one_mul] using ((GlobalTheory.T.hasQExpansion_smoothedEisensteinFx_weightOne c M A₁ (N * g') hM).mul_conv qa).const_mul (-1))
+    simpa only [neg_mul, one_mul] using ((_root_.GlobalTheory.Sieg.EisQ.hasQ_cF_one c M A₁ (N * g') hM).mul_conv qa).const_mul (-1))
   choose θ t1 t2 t3 using fun n => exists_finsupp (hj n)
   have cases : ∀ r : ℤ, r < k ∨ ∃ n : ℕ, r = k + n := fun r => by
     rcases lt_or_ge r k with h | h
@@ -176,7 +181,7 @@ theorem sgN_two_variable : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClo
       rcases Int.eq_nat_or_neg m with ⟨m, rfl | rfl⟩
       · rw [zpow_natCast]; exact pow_mem m0 _
       · rw [zpow_neg, zpow_natCast, ← inv_pow]; exact pow_mem m1 _
-    refine GlobalTheory.T.smoothedEisensteinFxCoefficientSeq_one_mem_subring Ω _ c M _ A₁ _ hM hcM hA (by rw [hz]; exact m2 _) ?_
+    refine _root_.GlobalTheory.KummerEisensteinGalois.smF_one_mem_subring Ω _ c M _ A₁ _ hM hcM hA (by rw [hz]; exact m2 _) ?_
     rw [zpow_neg, hz, ← zpow_neg]
     exact m2 _
   · have := c1 0

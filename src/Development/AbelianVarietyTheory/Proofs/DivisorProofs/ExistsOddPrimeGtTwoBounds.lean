@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitar
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitOpenAndCongrOpen
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ExistsIdealsPrimeToEqSpan
 import Development.AbelianVarietyTheory.Definitions.Foundations.AbsCharNotUnitary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitRealOfCongrOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitRealOfCongrOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdArgRealUnitEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmAlgCharEqArgMulAbsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmAlgCharEqArgMulAbs
 
 noncomputable section
 
@@ -20,7 +20,7 @@ theorem phase_prod_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] {q 
     (ht : ¬ q ∣ Nat.card (Units.torsion E)) (u : (𝓞 E)ˣ) (hu : (u : 𝓞 E) - 1 ∈ Ideal.span {((q : ℕ) : 𝓞 E)})
     (m : InfinitePlace E → ℤ) (w0 : ℤ) (hm : ∀ w, ∃ a, m w = 2 * a - w0) :
     ∏ w : InfinitePlace E, (w.embedding ((u : 𝓞 E) : E) / ((‖w.embedding ((u : 𝓞 E) : E)‖ : ℝ) : ℂ)) ^ m w = 1 := by
-  have hr := GlobalTheory.T.unit_real_of_sub_one_mem_span_prime E q hq ht u hu
+  have hr := _root_.GlobalTheory.UnitReal.unit_real_of_congr_one E q hq ht u hu
   have hs := GlobalTheory.T.prod_arg_real_unit_eq_one' E q hq hq2 u hu hr
   have hsq : ∀ w : InfinitePlace E,
       (w.embedding ((u : 𝓞 E) : E) / ((‖w.embedding ((u : 𝓞 E) : E)‖ : ℝ) : ℂ)) ^ m w =
@@ -94,7 +94,7 @@ theorem exists_algChar_unr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
       rw [hχU _ (hmem k)]
       exact hinf k
     rw [HChar.inf_mul, Units.val_mul, h1, hν.2.2 k]
-    exact GlobalTheory.T.cm_algChar_eq_arg_mul_abs E n w0 hn (k : E) k.ne_zero
+    exact _root_.GlobalTheory.Div.CMAlgChar.algChar_eq_arg_mul_abs E n w0 hn (k : E) k.ne_zero
   · have hwq : ¬ w.asIdeal ∣ 𝔪 := by
       rw [h𝔪, Ideal.dvd_span_singleton]
       intro hqw

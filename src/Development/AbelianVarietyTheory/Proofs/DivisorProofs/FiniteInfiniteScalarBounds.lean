@@ -440,11 +440,4 @@ theorem core {large₂ : SizeData₂ D} {F : Face D A} (s : HidaSetting large₂
 
 end Core
 
-theorem finScal_infScal : GlobalTheory.FunPr.Hypotheses₂ → FinScalK ∧ InfScalK := by
-  intro _
-  refine ⟨⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ hF => ?_⟩⟩⟩,
-    ⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ hF => ?_⟩⟩⟩⟩
-  · exact (core s ch hF hC).1
-  · exact (core s ch hF hC).2
-
 end GlobalTheory.ScalAA

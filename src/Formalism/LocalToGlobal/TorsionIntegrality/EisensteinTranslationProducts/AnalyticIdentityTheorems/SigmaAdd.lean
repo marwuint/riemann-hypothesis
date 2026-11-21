@@ -121,19 +121,6 @@ private lemma exists_twistedGamma_eq_sq_mul_analytic (he : SigmaEntire) (ho : Si
   rw [← e1, ← e2]
   ring
 
-lemma additionNumerator_order (he : SigmaEntire) (ho : SigmaOdd) (hz : SigmaZero) (hs : SigmaSimple) :
-    (2 : WithTop ℤ) ≤ meromorphicOrderAt (frobeniusStickelbergerDetMulSigmaCube L w) 0 := by
-  obtain ⟨m, hm, hgm⟩ := exists_twistedGamma_eq_sq_mul_analytic L w he ho hz hs
-  have hfun : frobeniusStickelbergerDetMulSigmaCube L w = (fun y : ℂ => y ^ 2) * m := funext fun y => hgm y
-  have hmer : MeromorphicAt (fun y : ℂ => y ^ 2) 0 := (analyticAt_id.pow 2).meromorphicAt
-  have h2 : meromorphicOrderAt (fun y : ℂ => y ^ 2) 0 = ((2 : ℤ) : WithTop ℤ) :=
-    (meromorphicOrderAt_eq_int_iff hmer).2
-      ⟨fun _ => 1, analyticAt_const, one_ne_zero, Filter.Eventually.of_forall fun y => by simp⟩
-  rw [hfun, meromorphicOrderAt_mul hmer hm.meromorphicAt, h2]
-  have h3 := hm.meromorphicOrderAt_nonneg
-  calc (2 : WithTop ℤ) = ((2 : ℤ) : WithTop ℤ) + 0 := by norm_cast
-    _ ≤ ((2 : ℤ) : WithTop ℤ) + meromorphicOrderAt m 0 := add_le_add le_rfl h3
-
 private lemma meromorphicAt_weierstrassP (z : ℂ) : MeromorphicAt L.weierstrassP z := by
   classical
   obtain ⟨l, hl⟩ : ∃ l : L.lattice, z ∉ (L.lattice : Set ℂ) \ {(l : ℂ)} := by
@@ -196,12 +183,6 @@ private lemma exists_analytic_eq_additionQuotient_near_zero (he : SigmaEntire) (
   rw [eq_div_iff (pow_ne_zero _ h2)]
   apply mul_left_cancel₀ (pow_ne_zero 2 hy)
   linear_combination h1
-
-lemma additionQuotient_order_zero (he : SigmaEntire) (ho : SigmaOdd) (hz : SigmaZero) (hs : SigmaSimple)
-    (hord : SigmaOrder) : 0 ≤ meromorphicOrderAt (additionQuotient L w) 0 := by
-  obtain ⟨A, hA, hfA⟩ := exists_analytic_eq_additionQuotient_near_zero L w he ho hz hs
-  rw [meromorphicOrderAt_congr hfA]
-  exact hA.meromorphicOrderAt_nonneg
 
 lemma additionQuotient_order (he : SigmaEntire) (ho : SigmaOdd) (hz : SigmaZero) (hs : SigmaSimple)
     (hq : SigmaQuasi) (hord : SigmaOrder) (z : ℂ) : 0 ≤ meromorphicOrderAt (additionQuotient L w) z := by

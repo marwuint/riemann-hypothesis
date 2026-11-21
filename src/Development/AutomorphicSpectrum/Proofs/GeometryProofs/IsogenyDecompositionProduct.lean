@@ -13,7 +13,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.isogeny_decomposition_product 
   intro R V _ _ _ f n N C v B ψ χ G _ π hg hv hψ hχ hpc hpo hN hpb
   obtain ⟨EBR, _, _, ⟨MBR⟩⟩ := lieModel_exists (Sp R) B.A R (𝟙 (Sp R))
   obtain ⟨EBV, _, _, ⟨MBV⟩⟩ := lieModel_exists (Sp R) B.A V (spMap f ≫ 𝟙 (Sp R))
-  obtain ⟨j, hj, -⟩ := GlobalTheory.T.lie_model_existsUnique_semilinear (Sp R) B.A R V f (𝟙 _) EBR EBV MBR MBV
+  obtain ⟨j, hj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieBaseChange.existsUnique_semilinear_lifts (Sp R) B.A R V f (𝟙 _) EBR EBV MBR MBV
   have hx : spMap f ≫ 𝟙 (Sp R) = 𝟙 (Sp V) ≫ spMap f := by simp
   obtain ⟨MG, hMG⟩ := (GlobalTheory.T.lie_model_pullback_equivalence (Sp R) (Sp V) B.A G (spMap f) π hpb V (𝟙 (Sp V)) EBV).1 (castM hx MBV)
   have hMG' : ∀ e, (MG.pt e).left ≫ π = (MBV.pt e).left := fun e => (hMG e).trans (castM_left hx MBV e)
@@ -52,9 +52,9 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.isogeny_decomposition_product 
         congr 1
         rw [← Over.comp_left, MonObj.comp_one]
       simp [fV, e2]
-  obtain ⟨bB⟩ := GlobalTheory.T.lie_model_free_of_smooth (Sp R) B.A n (hg ▸ B.smoothDim) V (spMap f ≫ 𝟙 (Sp R)) EBV MBV
-  obtain ⟨hli, hsp⟩ := GlobalTheory.T.dual_family_is_basis V EBV n bB EV fV (N : V) hN hval
-  have bridge := (GlobalTheory.T.lie_model_eigenvectors_action (Sp V) V G (𝟙 (Sp V)) EBV MG).1 n
+  obtain ⟨bB⟩ := _root_.PositivityTheory.UnitarySelfGeneration.lie_free (Sp R) B.A n (hg ▸ B.smoothDim) V (spMap f ≫ 𝟙 (Sp R)) EBV MBV
+  obtain ⟨hli, hsp⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.linearIndependent_span_of_dual_unit V EBV n bB EV fV (N : V) hN hval
+  have bridge := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Bridge.comb_eig_frame (Sp V) V G (𝟙 (Sp V)) EBV MG).1 n
   refine ⟨fun k => MG.pt (EV k), fun k => hMG' (EV k) ▸ hEV k, fun k => MG.tan _, fun w hw => ?_⟩
   obtain ⟨e, rfl⟩ := MG.onto w hw
   have hmem : e ∈ Submodule.span V (Set.range EV) := hsp ▸ Submodule.mem_top

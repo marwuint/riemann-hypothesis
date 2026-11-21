@@ -115,11 +115,6 @@ theorem CechAcyclic.of_shortExact₃
     (h₁ : CechAcyclic V U S.X₁) (h₂ : CechAcyclic V U S.X₂) : CechAcyclic V U S.X₃ :=
   fun s hs q => SheafLES.subsingleton₃ hS _ _ (h₂ s hs q) (h₁ s hs (q + 1))
 
-theorem CechAcyclic.of_shortExact₂
-    {S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})} (hS : S.ShortExact)
-    (h₁ : CechAcyclic V U S.X₁) (h₃ : CechAcyclic V U S.X₃) : CechAcyclic V U S.X₂ :=
-  fun s hs q => SheafLES.subsingleton₂ hS _ _ (h₁ s hs q) (h₃ s hs q)
-
 theorem sections_shortExact_of_subsingleton
     {S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})} (hS : S.ShortExact)
     (W : Opens T) (h : Subsingleton (Sheaf.H'.{u} S.X₁ 1 W)) :
@@ -304,14 +299,6 @@ theorem cechAcyclicMod_iff_of_le (h : ∀ i, U i ≤ V) : CechAcyclicMod V U F �
   exact ⟨fun H q hq => by
     obtain ⟨q, rfl⟩ := Nat.exists_eq_add_one_of_ne_zero hq.ne'
     exact H q, fun H q => H _ q.succ_pos⟩
-
-theorem CechAcyclicMod.of_shortExact₃ {S : ShortComplex X.Modules} (hS : S.ShortExact)
-    (h₁ : CechAcyclicMod V U S.X₁) (h₂ : CechAcyclicMod V U S.X₂) : CechAcyclicMod V U S.X₃ :=
-  fun s hs q => cohOn.subsingleton₃ hS _ _ (h₂ s hs q) (h₁ s hs (q + 1))
-
-theorem CechAcyclicMod.of_shortExact₂ {S : ShortComplex X.Modules} (hS : S.ShortExact)
-    (h₁ : CechAcyclicMod V U S.X₁) (h₃ : CechAcyclicMod V U S.X₃) : CechAcyclicMod V U S.X₂ :=
-  fun s hs q => cohOn.subsingleton₂ hS _ _ (h₁ s hs q) (h₃ s hs q)
 
 variable [LinearOrder ι] (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)]
 

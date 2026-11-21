@@ -1,15 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LabRange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsLastMore
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NormPsiPullLocalRingsOfIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NormPsiPullLocalRingsOfIntegers
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.OLinBaseChangeSt
+import Development.AbelianVarietyTheory.Definitions.Degenerations.RigGen
+import Development.AbelianVarietyTheory.BlockTheory.CMModuli.UniformityLowerBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiNormIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonCompleteDvrPadicAlgClosureUnitBallsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianIsoDescendsFromAlgebraicExtensioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianPointLiftsThroughIntermediatePulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianRelDimEqOfGrpPullbackFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonCompleteDvrPadicAlgClosureUnitBalls
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianIsoDescendsFromAlgebraicExtensio
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianPointLiftsThroughIntermediatePul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianRelDimEqOfGrpPullbackField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationMovesAlongDvrInjectionGivenFibreStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiCoordinateNormChartEqCoordinateNormPadicDVRStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiCoordinateNormInvariantDegDataPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiCoordinateNormInvariantDegDataPullback
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -65,7 +68,7 @@ theorem main : ∀ {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [
 
   obtain ⟨W₀, _, _, _, _, hW₀c, hW₀n, -, hW₀alg, ⟨φ₀, φK₀, hφK₀, hmax₀, hcp₀⟩,
       ⟨φ₀', φK₀', hφK₀', hmax₀', hcp₀'⟩⟩ :=
-    GlobalTheory.T.exists_common_complete_dvr_padicAlgClosure_unitBalls p u.V u'.V u.complete u'.complete u.norm_le u'.norm_le ∅
+    _root_.GlobalTheory.UnifField.exists_common_ring p u.V u'.V u.complete u'.complete u.norm_le u'.norm_le ∅
 
   obtain ⟨B₁, b₁, -, hb₁, hLb₁⟩ := bc (spMap φK₀) u.A
   obtain ⟨B₂, b₂, -, hb₂, hLb₂⟩ := bc (spMap φK₀') u'.A
@@ -75,18 +78,18 @@ theorem main : ∀ {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [
   have hpa' : IsGrpPullback P₀.A u'.A.A
       (spMap (algebraMap (FractionRing W₀) (PadicAlgCl p)) ≫ spMap φK₀') a' :=
     ha'.congr (by rw [spComp, hcp₀']) rfl
-  obtain ⟨c₁, hc₁b, hc₁h, hc₁, hc₁L⟩ := GlobalTheory.T.polarisedAbelianPoint_lifts_through_intermediate_pullback (spMap φK₀)
+  obtain ⟨c₁, hc₁b, hc₁h, hc₁, hc₁L⟩ := _root_.GlobalTheory.PolLift.lift_of_pullback_comp (spMap φK₀)
     (spMap (algebraMap (FractionRing W₀) (PadicAlgCl p))) u.A B₁ P₀ b₁ a hb₁ hpa
-  obtain ⟨c₂, hc₂b, hc₂h, hc₂, hc₂L⟩ := GlobalTheory.T.polarisedAbelianPoint_lifts_through_intermediate_pullback (spMap φK₀')
+  obtain ⟨c₂, hc₂b, hc₂h, hc₂, hc₂L⟩ := _root_.GlobalTheory.PolLift.lift_of_pullback_comp (spMap φK₀')
     (spMap (algebraMap (FractionRing W₀) (PadicAlgCl p))) u'.A B₂ P₀ b₂ a' hb₂ hpa'
   have hLc₁ := hc₁L hLa hLb₁
   have hLc₂ := hc₂L hLa' hLb₂
 
-  obtain ⟨s, hs⟩ := GlobalTheory.T.polarisedAbelian_iso_descends_from_algebraicExtension (FractionRing W₀) (PadicAlgCl p) (algebraMap _ _) hW₀alg B₁ B₂ P₀ c₁ c₂
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.PolIsoDescent.model_descends (FractionRing W₀) (PadicAlgCl p) (algebraMap _ _) hW₀alg B₁ B₂ P₀ c₁ c₂
     hc₁ hc₂ hLc₁ hLc₂
 
   obtain ⟨W, _, _, _, _, hWc, hWn, hsW, -, ⟨α₀, αK, hαK, hαmax, hαcp⟩, -⟩ :=
-    GlobalTheory.T.exists_common_complete_dvr_padicAlgClosure_unitBalls p W₀ W₀ hW₀c hW₀c hW₀n hW₀n s
+    _root_.GlobalTheory.UnifField.exists_common_ring p W₀ W₀ hW₀c hW₀c hW₀n hW₀n s
   have hcomm : (αK.comp φK₀).comp (algebraMap u.V (FractionRing u.V)) =
       (algebraMap W (FractionRing W)).comp (α₀.comp φ₀) := by
     ext v
@@ -116,14 +119,14 @@ theorem main : ∀ {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [
 
   obtain ⟨C, ψ₁, hgC, hψ₁, hLψ₁⟩ := bc (spMap (αK.comp φK₀)) u.A
   have hψ₁' : IsGrpPullback C.A u.A.A (spMap αK ≫ spMap φK₀) ψ₁ := hψ₁.congr (spComp _ _).symm rfl
-  obtain ⟨χ, hχb, -, hχ, hχL⟩ := GlobalTheory.T.polarisedAbelianPoint_lifts_through_intermediate_pullback (spMap φK₀) (spMap αK) u.A B₁ C b₁ ψ₁ hb₁ hψ₁'
+  obtain ⟨χ, hχb, -, hχ, hχL⟩ := _root_.GlobalTheory.PolLift.lift_of_pullback_comp (spMap φK₀) (spMap αK) u.A B₁ C b₁ ψ₁ hb₁ hψ₁'
   have hLχ := hχL hLψ₁ hLb₁
   obtain ⟨χ₂, hχ₂, hLχ₂, hd⟩ :=
     hs (FractionRing W) αK (algebraMap (FractionRing W) (PadicAlgCl p)) hαcp hsW C χ hχ hLχ
   have hψ₂ : IsGrpPullback C.A u'.A.A (spMap (αK.comp φK₀')) (χ₂ ≫ b₂) :=
     (hχ₂.comp hb₂).congr (spComp _ _) rfl
   have hLψ₂ : LBIso C.L (u'.A.L.pull (χ₂ ≫ b₂)) := lbcomp u'.A.isLB B₂.isLB C.isLB hLb₂ hLχ₂
-  have hgC' : C.g = u'.A.g := GlobalTheory.T.polarisedAbelian_relDim_eq_of_grpPullback_field (FractionRing W) _ (spMap (αK.comp φK₀')) u'.A C (χ₂ ≫ b₂) hψ₂
+  have hgC' : C.g = u'.A.g := _root_.GlobalTheory.PolDim.g_eq_of_isGrpPullback (FractionRing W) _ (spMap (αK.comp φK₀')) u'.A C (χ₂ ≫ b₂) hψ₂
 
   obtain ⟨D₁, hD₁, G₁, _, _, U₁, hG₁, htor₁⟩ :=
     GlobalTheory.T.uniformisation_moves_along_dvr_injection_given_fibre u.V W u.complete hWc (α₀.comp φ₀) (αK.comp φK₀) hcomm hmax u.D u.A u.G u.U C ψ₁ hψ₁ hLψ₁
@@ -157,8 +160,8 @@ theorem main : ∀ {o Ω o' Ω' : Type} [CommRing o] [Field Ω] [Algebra o Ω] [
   · intro χ r
     obtain ⟨y, rfl⟩ := hD₁.xe.surjective χ
     rw [psiNorm_iff, psiNorm_iff]
-    have e1 := GlobalTheory.T.psiCoordinate_norm_invariant_degData_pullback p u.V W (α₀.comp φ₀) hv₁ hW1 u.D.toPre D₁.toPre hD₁ y r
-    have e2 := GlobalTheory.T.psiCoordinate_norm_invariant_degData_pullback p u'.V W (α₀.comp φ₀') hv₂ hW1 u'.D.toPre D₂.toPre hD₂ (ε y) r
+    have e1 := _root_.GlobalTheory.UnifTorsK.psiNormAt_pull p u.V W (α₀.comp φ₀) hv₁ hW1 u.D.toPre D₁.toPre hD₁ y r
+    have e2 := _root_.GlobalTheory.UnifTorsK.psiNormAt_pull p u'.V W (α₀.comp φ₀') hv₂ hW1 u'.D.toPre D₂.toPre hD₂ (ε y) r
     obtain ⟨⟨r₁, hr₁⟩, n₁⟩ := GlobalTheory.T.psiCoordinate_norm_chart_eq_coordinate_norm_padicDVR p W hWn D₁ y
     obtain ⟨⟨r₂, hr₂⟩, n₂⟩ := GlobalTheory.T.psiCoordinate_norm_chart_eq_coordinate_norm_padicDVR p W hWn D₂ (ε y)
     have e3 : PsiNormAt p D₁.toPre y r ↔ PsiNormAt p D₂.toPre (ε y) r := by

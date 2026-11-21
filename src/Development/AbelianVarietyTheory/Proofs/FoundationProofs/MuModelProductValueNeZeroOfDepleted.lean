@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ChapterMu
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.CuspidalUnitaryTwistsClaim
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinProductSeriesEqDepletedEisensteinProduStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AtkinLehnerEisStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinProductSeriesEqDepletedEisensteinProdu
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AtkinLehnerEis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZsEqMulDepEis
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPeriodicWeightsIsModularFormStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletionStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPeriodicWeightsIsModularForm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletion
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffEisensteinSeriesTwistedHeckeUHeckeV
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUVCauchyProductIdentities
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqMulAndQExpansion
@@ -17,6 +17,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqEqOfPosCoeffEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionFunctionInjectiveOfPolynomialGrowth
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DirichletCharFiniteFourierTransformProperties
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -122,7 +123,7 @@ lemma U_eis_eq {j L l : ℕ} (ε : ℤ → ℂ) (c t : ℂ) (a b : ℤ → ℂ) 
     (hlL : l ∣ L) (hper : ∀ d, ε (d + L) = ε d) (hMF : MF j L ε (eis j c a b))
     (ha : ∀ x : ℤ, (l : ℤ) ∣ x → a x = 0) (hb : ∀ y, b (l * y) = t * b y) :
     Uo l (eis j c a b) = t • eis j c a b := by
-  have h1 := (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion j L l ε _ hj hl hlL hper hMF).1
+  have h1 := (_root_.GlobalTheory.depletion_mf j L l ε _ hj hl hlL hper hMF).1
   have h2 := ((GlobalTheory.EisM.mf_linear j L ε).2.2.1 t _ hMF).1
   refine GlobalTheory.EisM.eq_of_coeff_pos_eq j L ε _ _ hj hL h1 h2 (fun n hn => ?_)
   simp only [Uo, Pi.smul_apply, smul_eq_mul]
@@ -200,13 +201,13 @@ theorem _root_.GlobalTheory.zm_val_ne_zero : ∀ (e N l : ℕ) (χ θ : Dirichle
   have hθ'm : θ' (-1) = -((-1 : ℂ) ^ e * ψ (-1)) := by
     rw [hθ', MulChar.mul_apply, dc_inv_neg_one, hχm, hpar]; ring
 
-  obtain ⟨c1, hE1⟩ := GlobalTheory.T.eisenstein_periodic_weights_isModularForm e l N (ch ψ) (ch θ) (ch ψ) (ch θ) he hl0 hN
+  obtain ⟨c1, hE1⟩ := _root_.GlobalTheory.eis_periodic_weights e l N (ch ψ) (ch θ) (ch ψ) (ch θ) he hl0 hN
     (ch_zero_of_dvd ψ hl 0 (dvd_zero _))
     (fun x => ch_per ψ l dvd_rfl x) (fun x => ch_per θ N dvd_rfl x)
     (fun d _ => ⟨fun x => by rw [ch_mul', mul_comm], fun x => by rw [ch_mul', mul_comm]⟩)
     (by rw [chm, chm, hpar]; linear_combination ((-1 : ℂ) ^ e) * hψsq)
   rw [mul_comm l N] at hE1
-  obtain ⟨c2, hE2⟩ := GlobalTheory.T.eisenstein_periodic_weights_isModularForm (e + 1) (N * l) 1 (fun y => ch ψ⁻¹ y * hat θ' y) (fun _ => 1)
+  obtain ⟨c2, hE2⟩ := _root_.GlobalTheory.eis_periodic_weights (e + 1) (N * l) 1 (fun y => ch ψ⁻¹ y * hat θ' y) (fun _ => 1)
     (fun d => ch ψ⁻¹ d * ch θ'⁻¹ d) (fun _ => 1) (by omega) hNl one_pos
     (by rw [ch_zero_of_dvd ψ⁻¹ hl 0 (dvd_zero _), zero_mul])
     (fun x => by rw [hper ψ⁻¹ hlNl, hatper]) (fun x => rfl)
@@ -215,7 +216,7 @@ theorem _root_.GlobalTheory.zm_val_ne_zero : ∀ (e N l : ℕ) (χ θ : Dirichle
       fun x => by simp⟩)
     (by simp only [chm, dc_inv_neg_one, hθ'm]; linear_combination (-(-1 : ℂ) ^ e) * hψsq)
   simp only [mul_one] at hE2
-  obtain ⟨c3, hF1⟩ := GlobalTheory.T.eisenstein_periodic_weights_isModularForm e (N * l) 1 (fun y => ch ψ y * hat θ y) (fun _ => 1)
+  obtain ⟨c3, hF1⟩ := _root_.GlobalTheory.eis_periodic_weights e (N * l) 1 (fun y => ch ψ y * hat θ y) (fun _ => 1)
     (fun d => ch ψ d * ch θ⁻¹ d) (fun _ => 1) he hNl one_pos
     (by rw [ch_zero_of_dvd ψ hl 0 (dvd_zero _), zero_mul])
     (fun x => by rw [hper ψ hlNl, hatper]) (fun x => rfl)
@@ -224,15 +225,15 @@ theorem _root_.GlobalTheory.zm_val_ne_zero : ∀ (e N l : ℕ) (χ θ : Dirichle
       fun x => by simp⟩)
     (by simp only [chm, dc_inv_neg_one, hpar]; linear_combination ((-1 : ℂ) ^ e) * hψsq)
   simp only [mul_one] at hF1
-  obtain ⟨c4, hF2⟩ := GlobalTheory.T.eisenstein_periodic_weights_isModularForm (e + 1) l N (ch ψ⁻¹) (ch θ') (ch ψ⁻¹) (ch θ') (by omega) hl0 hN
+  obtain ⟨c4, hF2⟩ := _root_.GlobalTheory.eis_periodic_weights (e + 1) l N (ch ψ⁻¹) (ch θ') (ch ψ⁻¹) (ch θ') (by omega) hl0 hN
     (ch_zero_of_dvd ψ⁻¹ hl 0 (dvd_zero _))
     (fun x => ch_per ψ⁻¹ l dvd_rfl x) (fun x => ch_per θ' N dvd_rfl x)
     (fun d _ => ⟨fun x => by rw [ch_mul', mul_comm], fun x => by rw [ch_mul', mul_comm]⟩)
     (by rw [chm, chm, dc_inv_neg_one, hθ'm]; linear_combination (-(-1 : ℂ) ^ e) * hψsq)
   rw [mul_comm l N] at hF2
 
-  obtain ⟨κ1, hκ1, hW1⟩ := GlobalTheory.T.exists_ne_zero_slz_qs_eis_eq_smul e N l ψ θ c1 c3 a₀ b₀ c₀ d₀ hdet he hN hl hlN hE1 hF1
-  obtain ⟨κ2, hκ2, hW2⟩ := GlobalTheory.T.exists_ne_zero_slz_qs_eis_eq_smul (e + 1) N l ψ⁻¹ θ' c4 c2 a₀ b₀ c₀ d₀ hdet (by omega) hN hl hlN hF2 hE2
+  obtain ⟨κ1, hκ1, hW1⟩ := _root_.GlobalTheory.EisAL.atkin_lehner_eis e N l ψ θ c1 c3 a₀ b₀ c₀ d₀ hdet he hN hl hlN hE1 hF1
+  obtain ⟨κ2, hκ2, hW2⟩ := _root_.GlobalTheory.EisAL.atkin_lehner_eis (e + 1) N l ψ⁻¹ θ' c4 c2 a₀ b₀ c₀ d₀ hdet (by omega) hN hl hlN hF2 hE2
   set W : M2 := !![(N : ℤ) * a₀, b₀; N * l * c₀, N * d₀] with hW
   have hWd : W.det = N := by rw [hW, Matrix.det_fin_two_of]; linear_combination (N : ℤ) * hdet
   obtain ⟨d, hd, hWW⟩ := slashIntMatrixPosDet_atkinLehner_twice e N l a₀ b₀ c₀ d₀ hdet he hN _ _ hE1.2
@@ -299,7 +300,7 @@ theorem _root_.GlobalTheory.zm_val_ne_zero : ∀ (e N l : ℕ) (χ θ : Dirichle
 
   have hZm : Zm (2 * e + 1) l (hat θ) (ch θ') (fun A d => ψ A * ψ⁻¹ d * ((d : ℂ) / A) ^ e) =
       mul (dep l F1) (dep l F2) := by
-    have := GlobalTheory.T.eisensteinProductSeries_eq_depleted_eisenstein_product (2 * e + 1) l e (hat θ) (ch θ') (ch ψ) (ch ψ⁻¹) c3 c4 (by omega)
+    have := _root_.GlobalTheory.zm_eq_mul_dep_eis (2 * e + 1) l e (hat θ) (ch θ') (ch ψ) (ch ψ⁻¹) c3 c4 (by omega)
     rw [show 2 * e + 1 - 1 - e = e by omega,
       show (fun x => hat θ x * ch ψ x) = fun x => ch ψ x * hat θ x from funext fun x => mul_comm _ _] at this
     rw [hFF, this]

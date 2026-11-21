@@ -120,33 +120,6 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.G Formalism.FourierDecayAlt.P.FourierUniquenessMirabolic
 
-theorem quotient_measure_long_orbit : Formalism.FourierDecayAlt.G.QuotientMeasureLong := by
-  intro d β
-  have hι : MeasurePreserving (fun k : UT d → ℂ => coordU (wMat d * (upper k)⁻¹ * wMat d)ᵀ)
-      (muPi β (UT d)) (muPi β (UT d)) := by
-    simp only [G5.coordU_conj]
-    exact (G5.mp_comp_equiv β (G5.revEquiv d)).comp (G5.mp_invU β d)
-  have hm : Measurable (Function.uncurry fun (k : UT d → ℂ) (u : UT d → ℂ) => coordU (upper k * upper u)) := by
-    refine Continuous.measurable ?_
-    exact (G5.continuous_coordU d).comp
-      (((G5.continuous_upper d).comp continuous_fst).matrix_mul ((G5.continuous_upper d).comp continuous_snd))
-  exact hι.skew_product (μc := muPi β (UT d)) (μd := muPi β (UT d)) hm
-    (Filter.Eventually.of_forall fun k => (G5.mp_lmulU β d k).map_eq)
-
-theorem stabilizer_invariant : Formalism.FourierDecayAlt.G.StabInvariant := by
-  intro n β g l u k k' hg hl hu hk hk' hs
-  have h0 : subSum k + superSum k' = 0 := by
-    rcases hg with ⟨z, hz, rfl⟩ | ⟨t, c, ht, rfl⟩
-    · exact (stabilizer_long_point n z hz k k' hk hk').2 hs
-    · exact (stabilizer_block_point n t c ht k k' hk hk').2 hs
-  constructor
-  · calc l * k * g * (k' * u) = l * (k * g * k') * u := by simp only [Matrix.mul_assoc]
-      _ = l * g * u := by rw [hs]
-  · rw [(character_additive n l k).2 hl hk, (character_additive n k' u).1 hk' hu,
-      ← (additive_character_psi β _ _).1, ← (additive_character_psi β _ _).1]
-    congr 1
-    linear_combination h0
-
 theorem cofactor_lower_bound_radius : Formalism.FourierDecayAlt.G.CofLowerR := by
   intro m Kc hK h0 R hR
   obtain ⟨d, hd, hball⟩ := Metric.isOpen_iff.mp hK.isClosed.isOpen_compl 0 h0
@@ -207,14 +180,6 @@ theorem cofactor_lower_bound_radius : Formalism.FourierDecayAlt.G.CofLowerR := b
     rw [hLdef]; field_simp
   rw [hinv, e, div_le_iff₀ hL0]
   exact h5
-
-theorem smooth_cutoff_spec : Formalism.FourierDecayAlt.G.Chi0Spec := by
-  refine ⟨fun r hr => ?_, fun r hr => ?_, fun r => ⟨?_, ?_⟩, fun k => ?_⟩
-  · exact Real.smoothTransition.one_of_one_le (by linarith)
-  · exact Real.smoothTransition.zero_of_nonpos (by linarith)
-  · exact Real.smoothTransition.nonneg _
-  · exact Real.smoothTransition.le_one _
-  · exact (Real.smoothTransition.contDiff).comp (contDiff_const.sub contDiff_id)
 
 theorem amplitude_eq : Formalism.FourierDecayAlt.G.AmpEq := by
   intro m β D t ht V _ _ Φ p

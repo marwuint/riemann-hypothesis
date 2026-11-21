@@ -40,24 +40,4 @@ theorem nFun_eq_bigN (D : D7) : BlochKatoReduction.Gen.NFun D.R = GlobalTheory.G
     rw [Nat.odd_iff]; unfold Ranks.r; omega
   simp only [BlochKatoReduction.Gen.NFun, BlochKatoReduction.Gen.sFun, if_pos h, GlobalTheory.Grid.bigN, GlobalTheory.Grid.sLen]
 
-theorem nFun_add_one_lt_eExp_add_cen (D : D7) (j a : Fin D.R.m) (g : D.R.Psi) :
-    (BlochKatoReduction.Gen.NFun D.R : ℚ) + 1 < eExp D j g + (GlobalTheory.Grid.cen D (D.eTau.symm g) (a.1 + 1) : ℚ) := by
-  have h1 := e_add_v_two_pos (D.hc (D.eTau.symm g)) (GlobalTheory.Grid.sLen D) (GlobalTheory.Grid.gap D) 0 j
-  have h2 := Int.lt_floor_add_one ((GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).mid (a.1 + 1))
-  have h3 := (GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).mid_eq (i := a.1 + 1) (by omega)
-  have h4 : (GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).a (a.1 + 1) =
-      ((GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).v 2 : ℚ) + 1 / 2 +
-        ((D.R.m : ℚ) + 1 - ((a.1 + 1 : ℕ) : ℚ)) * (GlobalTheory.Grid.gap D : ℚ) := rfl
-  have h5 : ((GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).ga : ℚ) = GlobalTheory.Grid.gap D := rfl
-  have h6 := (GlobalTheory.Grid.isLeast_gap D).1.2.1
-  have h7 : GlobalTheory.Grid.bigN D ≤ GlobalTheory.Grid.bigN D ^ 3 := Nat.le_self_pow (by norm_num) _
-  have h8 : ((GlobalTheory.Grid.bigN D + 2 : ℕ) : ℚ) ≤ GlobalTheory.Grid.gap D := by exact_mod_cast (by omega)
-  have h9 : ((a.1 + 1 : ℕ) : ℚ) ≤ D.R.m := by exact_mod_cast a.2
-  have h10 : (0 : ℚ) ≤ GlobalTheory.Grid.gap D := by positivity
-  have h11 : (GlobalTheory.Grid.gap D : ℚ) ≤ ((D.R.m : ℚ) + 1 - ((a.1 + 1 : ℕ) : ℚ)) * (GlobalTheory.Grid.gap D : ℚ) := by nlinarith
-  rw [nFun_eq_bigN]
-  unfold eExp GlobalTheory.Grid.cen
-  push_cast at h8
-  linarith
-
 end GlobalTheory.LamTie

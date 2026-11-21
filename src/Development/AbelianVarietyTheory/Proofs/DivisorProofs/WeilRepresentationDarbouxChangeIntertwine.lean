@@ -11,14 +11,6 @@ noncomputable section
 
 namespace GlobalTheory.TowU
 
-section Dbl
-
-variable {R : Type} [CommRing R] [Invertible (2 : R)] {E : Type} [CommRing E] [Algebra R E] {c : E →ₐ[R] E}
-  {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E}
-  {κ κ' : Type} [Fintype κ] [Fintype κ']
-
-end Dbl
-
 section Adelic
 
 variable {F : Type} [Field F] [NumberField F]

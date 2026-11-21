@@ -33,9 +33,6 @@ theorem kill_subst {κ : Type} [Finite κ] (e : σ ↪ τ) {a : κ → MvPowerSe
 
 def kp (e : σ ↪ τ) {κ : Type} (a : κ → MvPowerSeries τ C) : κ → MvPowerSeries σ C := fun k => killCompl e (a k)
 
-theorem zc_kp (e : σ ↪ τ) {κ : Type} {a : κ → MvPowerSeries τ C} (ha : Zc a) : Zc (kp e a) :=
-  fun k => cc_kill e (ha k)
-
 theorem killCompl_substPointsPowerSeries_two (e : σ ↪ τ) {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (f : PS C 2 dd) :
     killCompl e (sb ![a, b] f) = sb ![kp e a, kp e b] f := by
   unfold sb

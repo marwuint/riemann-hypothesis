@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0Torsio
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineThetaEqZeroIffFontaineXiElementDvd
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjective
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientCompleteStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCanonicalAcrisToBdRPlusStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApproxStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInjectiveBcrisToBdRStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisMembershipSpanIffStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientComplete
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCanonicalAcrisToBdRPlus
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInjectiveBcrisToBdR
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisMembershipSpanIff
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMaps
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMapsLoc
@@ -309,7 +309,7 @@ theorem acris0_le {e : Per.Fl l} (he : IsEps e) {q : Per.AinfP l} (hq : (l : Per
         (l : Per.AinfP l) ^ n := h
     exact GlobalTheory.FrobInj.dividedPower_mem hq (xi e) 1 (Per.zA l c) n
       (GlobalTheory.RingBasics.isUnit_nat l n.factorial n.factorial_ne_zero) h' (by rw [mul_one]; exact hn)
-  exact H ((GlobalTheory.T.acris_membership_span_iff l e he s).1 s.2)
+  exact H ((_root_.GlobalTheory.MemLoc.mem_Acris0_iff_span l e he s).1 s.2)
 
 noncomputable def phi0 : Per.Acris0 l →+* Per.Acris0 l :=
   (Per.extP (Per.φA l)).restrict _ _ (GlobalTheory.CrisMaps.frob_extends l).mem
@@ -356,7 +356,7 @@ theorem approx_mem {e : Per.Fl l} (he : IsEps e) {q : Per.AinfP l} (hq : (l : Pe
     rw [map_zero]
     linear_combination q * this - algebraMap (Per.Ainf l) (Per.AinfP l) a * hq'
   have hsat : ∀ a : Per.Ainf l, xi e ∣ (l : Per.Ainf l) * a → xi e ∣ a := by
-    simpa using (GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l e he 1).1
+    simpa using (_root_.GlobalTheory.MemLoc.XiSat.xi_sat l e he 1).1
   have hx0 : xi e ≠ 0 := by
     intro h
     have h1 := (theta_eq_zero_iff_xi_dvd l e he (mu e)).1 (by
@@ -406,12 +406,12 @@ theorem phiA_injective : Function.Injective (phiA l) := by
   obtain ⟨e, he⟩ := exists_eps l
   obtain ⟨q, hq⟩ := (GlobalTheory.RingBasics.isUnit_l l).exists_right_inv
   have hq' : algebraMap (Per.Ainf l) (Per.AinfP l) (l : Per.Ainf l) * q = 1 := by rwa [map_natCast]
-  obtain ⟨j, hj⟩ := GlobalTheory.T.exists_canonical_acris_to_bdRPlus l
+  obtain ⟨j, hj⟩ := _root_.GlobalTheory.MemLoc.exists_isCrisP l
   rw [injective_iff_map_eq_zero]
   intro x hx
-  apply GlobalTheory.T.acrisToBdRPlus_injective l j hj
+  apply _root_.GlobalTheory.MemLoc.crisP_injective l j hj
   rw [map_zero]
-  refine eq_zero_of_ev l _ fun n => (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l j hj).2.2 n x 0 fun r => ?_
+  refine eq_zero_of_ev l _ fun n => (_root_.GlobalTheory.MemLoc.crisP_unique_equivariant l j hj).2.2 n x 0 fun r => ?_
   obtain ⟨s, z, hs⟩ := (acris_basic l).2.2.1 x (r + n)
   obtain ⟨m, hm, e1⟩ := approx_mem l he hq x hx (r + n) s z hs
   obtain ⟨a, y, e2⟩ := GlobalTheory.FrobInj.bounded_mod hq' (xi e) n m hm
@@ -431,11 +431,11 @@ theorem phiA_injective : Function.Injective (phiA l) := by
     (mem_kerP l _ ((theta_eq_zero_iff_xi_dvd l e he _).2 dvd_rfl)) n)
 
 theorem algebraMap_acris_bcris_injective : Function.Injective (algebraMap (Per.Acris l) (Per.Bcris l)) := by
-  obtain ⟨j, hj⟩ := GlobalTheory.T.exists_canonical_acris_to_bdRPlus l
-  obtain ⟨ι, hι, -⟩ := GlobalTheory.T.exists_injective_bcris_to_bdR l j hj
+  obtain ⟨j, hj⟩ := _root_.GlobalTheory.MemLoc.exists_isCrisP l
+  obtain ⟨ι, hι, -⟩ := _root_.GlobalTheory.MemLoc.exists_iota_cris_dR l j hj
   intro x y h
-  apply GlobalTheory.T.acrisToBdRPlus_injective l j hj
-  apply (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.1
+  apply _root_.GlobalTheory.MemLoc.crisP_injective l j hj
+  apply (_root_.GlobalTheory.MemLoc.BdRField.bdR_isField l).2.1
   rw [← hι, ← hι, h]
 
 theorem φB_inj : Function.Injective (Per.φB l) := by

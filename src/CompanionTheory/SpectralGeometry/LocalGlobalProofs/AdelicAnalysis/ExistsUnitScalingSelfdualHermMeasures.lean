@@ -4,7 +4,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.Coordin
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnipotentInvariantCompactlySupportedWeightStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnipotentInvariantCompactlySupportedWeight
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SelfdualMeasureTransportEquivStatement
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix Kronecker
@@ -370,7 +370,7 @@ theorem sdHerm_eq_coord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   intro F E _ _ _ _ _ σ hcm d b laminf lam hinf hv ψ hψ n
   obtain ⟨hinv, -⟩ := HaarCoord.conj_facts hcm
   haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; omega)
-  obtain ⟨cinf, c, hu, h1, h2⟩ := GlobalTheory.T.exists_unipotentInvariant_compactlySupported_weight F hcm.1 laminf lam hinf hv ψ hψ
+  obtain ⟨cinf, c, hu, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.SW.SdCoord.selfDual_coord F hcm.1 laminf lam hinf hv ψ hψ
     (HermSd.Idx n d) (HermSd.formB σ b n) (HermSd.formB_isSymm hinv b n)
     (HermSd.formB_det hinv b n)
   refine ⟨cinf, c, hu, ?_, fun v => ?_⟩

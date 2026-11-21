@@ -299,8 +299,4 @@ theorem exists_kerOpInf_rowFreq_colGL : ∀ (E : Type) [Field E] [NumberField E]
     simp only [η', ContinuousLinearMap.comp_apply]
     ring
 
-example (E : Type) [Field E] [NumberField E] (n : ℕ) :
-    IsKerOpInf (fun W (_ : ℝ × (Fin n → Cinf E)) g => W (g * (1 : GL (Fin n) (Cinf E)))) :=
-  isKerOpInf_dirac (ℝ × (Fin n → Cinf E)) 1
-
 end GlobalTheory.JSW.MirCinf

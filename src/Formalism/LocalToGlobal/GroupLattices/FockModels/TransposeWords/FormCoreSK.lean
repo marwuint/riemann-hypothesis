@@ -13,7 +13,6 @@ open Formalism.L2.G.Model.TS Formalism.GradedWeylDivisibility
 
 theorem fockRBilin : FockRBilin := Formalism.L2.G.Model.TS.fock_pairing_bilinear
 theorem fockRMap : FockRMap := Formalism.L2.G.Model.TS.fock_pairing_map
-theorem fockRMonomial : FockRMonomial := Formalism.L2.G.Model.TS.fock_pairing_monomial
 theorem fockRBlock : FockRBlock := Formalism.L2.G.Model.TS.fock_pairing_block
 theorem hWNorm : HWNorm := Formalism.L2.G.Model.TS.highest_weight_norm
 theorem fockRRowDivAdj : FockRRowDivAdj := Formalism.L2.G.Model.TS.fock_pairing_divided_adjoint

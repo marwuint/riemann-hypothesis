@@ -5,10 +5,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsE
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFramesAllStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFramesTwoStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameTwoStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameOneStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFramesAll
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFramesTwo
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameTwo
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformisedEigenFrameOne
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodEigenFrame
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtIffIsDerivAt0
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -147,9 +147,9 @@ theorem chg_of_isFlatAn {c : Coeff l} {τ τ' : E →+* ℂ} {σ : c.F →+* ℂ
     (Φ : CFn Xo c) (ρ : ℂ) (hΦ : IsFlatAn Set.univ τ τ' σ Φ FU i e ρ) :
     Φ y v' w' * A.det = Φ y v w * Bm.det := by
   obtain ⟨⟨V, W, Fm, B₀, d⟩, ⟨k1, k2, k3, k4, k5, ⟨C, hC⟩, k7⟩, hu⟩ :=
-    GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hT hrt hτ i e P y v w he hP hy hf
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.anSolve E H D l Xo c τ τ' σ g ty FU hT hrt hτ i e P y v w he hP hy hf
   obtain ⟨⟨V', W', Fm', B', d'⟩, ⟨l1, l2, l3, l4, l5, ⟨C', hC'⟩, l7⟩, -⟩ :=
-    GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hT hrt hτ i e P y v' w' he hP hy hf'
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.anSolve E H D l Xo c τ τ' σ g ty FU hT hrt hτ i e P y v' w' he hP hy hf'
   have f1 : Φ y v w * d = ρ := by
     have := hΦ P y v w V W C Fm B₀ hP hy hf k1 k2 hC k3 k4
     rwa [k7 C hC] at this
@@ -188,7 +188,7 @@ theorem anUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Hos
     obtain ⟨f, hf⟩ := exists_linearIndependent_of_le_finrank hr
     exact ⟨f ∘ finSumFinEquiv, hf.comp _ finSumFinEquiv.injective⟩
   choose e he using hrank
-  choose t ht hN using fun i => GlobalTheory.T.uniformised_eigen_frame_two E H D l Xo c τ τ' σ g ty FU hT hrt hτ i (e i) (he i)
+  choose t ht hN using fun i => _root_.GlobalTheory.CompanionTheory.Ar.Flat.hodgeNorm_flat E H D l Xo c τ τ' σ g ty FU hT hrt hτ i (e i) (he i)
   let ρ : Fin FU.n → ℂ := fun i => (((Real.sqrt (t i))⁻¹ : ℝ) : ℂ)
   have hs : ∀ i, Real.sqrt (t i) ≠ 0 := fun i => (Real.sqrt_pos.2 (ht i)).ne'
   have hρ : ∀ i, ρ i ≠ 0 := fun i => Complex.ofReal_ne_zero.2 (inv_ne_zero (hs i))
@@ -198,7 +198,7 @@ theorem anUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Hos
       show ‖(((Real.sqrt (t i))⁻¹ : ℝ) : ℂ)‖ = _
       rw [Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 (Real.sqrt_nonneg _))]
     rw [h1, inv_pow, Real.sq_sqrt (ht i).le, inv_mul_cancel₀ (ht i).ne']
-  obtain ⟨Φ, hΦ⟩ := GlobalTheory.T.uniformised_eigen_frames_all E H D l Xo c τ τ' σ g ty FU hT hrt hτ e ρ he
+  obtain ⟨Φ, hΦ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.anDef E H D l Xo c τ τ' σ g ty FU hT hrt hτ e ρ he
   have hloc : ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap σ →
       ∃ (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ)), IsPeriod (FU.Di i) ty P ∧ under y = FU.u i P := by
     intro y hy
@@ -211,7 +211,7 @@ theorem anUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Hos
   · intro y v w hf h0
     obtain ⟨i, P, hP, hy⟩ := hloc y hf.1
     obtain ⟨⟨V, W, Fm, B₀, d⟩, ⟨k1, k2, k3, k4, k5, ⟨C, hC⟩, k7⟩, -⟩ :=
-      GlobalTheory.T.uniformised_eigen_frame_one E H D l Xo c τ τ' σ g ty FU hT hrt hτ i (e i) P y v w (he i) hP hy hf
+      _root_.GlobalTheory.CompanionTheory.Ar.Flat.anSolve E H D l Xo c τ τ' σ g ty FU hT hrt hτ i (e i) P y v w (he i) hP hy hf
     have := hΦ i P y v w V W C Fm B₀ hP hy hf k1 k2 hC k3 k4
     rw [h0, zero_mul] at this
     exact hρ i this.symm
@@ -223,6 +223,6 @@ theorem anUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Hos
     have := hN i (ρ i) Φ (hΦ i) P y v w Γ Δ hP hy hf hΓ hΔ
     rw [this, hρt i, _root_.one_mul]
   · intro R _ x vR wR m B ψ v w h1 h2 h3
-    exact GlobalTheory.T.uniformised_eigen_frames_two E H D l Xo c τ τ' σ g ty FU hT hrt hτ e ρ Φ he hΦ R x vR wR m B ψ v w h1 h2 h3
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Flat.anHol E H D l Xo c τ τ' σ g ty FU hT hrt hτ e ρ Φ he hΦ R x vR wR m B ψ v w h1 h2 h3
 
 end GlobalTheory.CompanionTheory.Ar.Flat

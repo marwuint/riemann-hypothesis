@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionTransformationStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplexStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
 
 noncomputable section
 
@@ -59,7 +59,7 @@ theorem sl_siegel : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   intro Ω _ _ _ ε T c x γ hx
   symm
   apply siegel_eq
-  rw [T.an_sl _ _ _ (GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε T c x hx)]
+  rw [T.an_sl _ _ _ (_root_.GlobalTheory.KZ.SiegelMem.an_siegel_eq Ω ε T c x hx)]
   apply germ_eq_of_eqOn
   intro z hz
   have hτ : ((⟨z, hz⟩ : ℍ) : ℂ) = z := rfl
@@ -67,4 +67,3 @@ theorem sl_siegel : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
 
 end GlobalTheory.KZ.SiegelSL
 
-example : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Tower Ω ε) (c : ℕ) (x : Fin 2 → ℚ) (γ : SL(2, ℤ)), admitted c x → T.sl (ofSL γ) (siegel T c x) = siegel T c (act x γ) := GlobalTheory.KZ.SiegelSL.sl_siegel

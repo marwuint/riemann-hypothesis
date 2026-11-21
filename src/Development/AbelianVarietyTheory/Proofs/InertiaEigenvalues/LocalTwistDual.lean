@@ -9,7 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EmbeddingMapsInt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitOfSpan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LineOfSingleJump
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocChiEpsU
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensionalStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional
+import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain
 
@@ -40,7 +41,7 @@ theorem local_twist_dual (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf
   have hb : Function.Bijective (dotProductBilin ↥LL.1 ↥LL.1 :
       (Fin n → ↥LL.1) →ₗ[↥LL.1] (Fin n → ↥LL.1) →ₗ[↥LL.1] ↥LL.1) :=
     (dotProductEquiv ↥LL.1 (Fin n)).bijective
-  have hd := GlobalTheory.T.galois_representation_hom_finite_dimensional l P AI hT K LL _ (matRep T) _ (matRep U) _ 1 hb (by
+  have hd := _root_.GlobalTheory.DRDual.twisted_dual_deRham l P AI hT K LL _ (matRep T) _ (matRep U) _ 1 hb (by
     intro g x y
     rw [matRep_apply, matRep_apply, hU, zpow_one]
     simp only [dotProductBilin_apply_apply, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]

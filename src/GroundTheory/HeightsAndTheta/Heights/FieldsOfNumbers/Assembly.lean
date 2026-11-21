@@ -24,13 +24,14 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumUnique
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumBaseChange
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFDegree
-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbAddBlock
+import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPNProduct
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameHilbFn
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameIntNum
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSplitRelDeg
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.FieldNumbers
@@ -86,9 +87,6 @@ theorem CutRegular.full : CutRegular.Statement.{u} :=
 theorem CutRational.full : CutRational.Statement.{u} :=
   CutRational.proof CutRegular.full IntNumAdd.full
 
-theorem DivPrincipalDegree.full : DivPrincipalDegree.Statement.{u} :=
-  DivPrincipalDegree.proof CutRational.full IntNumBase.full IntNumZeroSlot.full
-
 theorem ExistsForm.full : ExistsForm.Statement.{u} := ExistsForm.proof
 
 theorem DivCycleSupport.full : DivCycleSupport.Statement.{u} := DivCycleSupport.proof
@@ -96,29 +94,15 @@ theorem DivCycleSupport.full : DivCycleSupport.Statement.{u} := DivCycleSupport.
 theorem IntNumUnique.full : IntNumUnique.Statement.{u} :=
   IntNumUnique.proof CutRational.full IntNumBase.full ExistsForm.full DivCycleSupport.full
 
-theorem IntNumBaseChange.full : IntNumBaseChange.Statement := IntNumBaseChange.intersectionNumber_baseChange
-
 theorem ProjectionFormulaContracted.full : ProjectionFormulaContracted.Statement.{u} :=
   PFContracted.proof MixedDiffConst.full CutRational.full
-
-theorem HilbAddBlock.full : HilbAddBlock.Statement.{u} := HilbAddBlock.proof
-
-theorem ProductWithProjectiveSpace.full : ProductWithProjectiveSpace.Statement.{u} :=
-  ProductWithProjectiveSpace.proof MixedDiffConst.full HilbAddBlock.full
 
 theorem ProjectionFormulaDegree.of_divPushForward (h : DivPushForward.Statement.{u}) :
     ProjectionFormulaDegree.Statement.{u} :=
   ProjectionFormulaDegree.proof CutRational.full IntNumBase.full ProjectionFormulaContracted.full h
 
-theorem RenameMultiHomog.full : RenameMultiHomog.Statement.{u} := RenameMultiHomog.proof
-
 theorem RenameHilbFn.full : RenameHilbFn.Statement.{u} := RenameHilbFn.proof
 
 theorem RenameIntNum.full : RenameIntNum.Statement.{u} := RenameIntNum.proof RenameHilbFn.full
-
-theorem RenameMultiProjPrime.full : RenameMultiProjPrime.Statement.{u} :=
-  RenameMultiProjPrime.proof
-
-theorem SplitRelDeg.full : SplitRelDeg.Statement.{u} := SplitRelDeg.proof
 
 end GroundTheory.Heights₂.Heights.FieldNumbers

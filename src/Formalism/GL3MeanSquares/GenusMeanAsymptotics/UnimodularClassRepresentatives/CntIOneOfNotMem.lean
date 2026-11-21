@@ -173,18 +173,4 @@ theorem cntI_one_of_mem (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (M : ℕ) {n :
     rw [Ideal.Quotient.eq_zero_iff_mem, pow_one]
     exact hn
 
-theorem cntI_one_of_notMem (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (M : ℕ) {n : 𝓞 K}
-    (hn : n ∉ extP K 𝔭) : cntI hF 𝔭 1 M n = 0 := by
-  unfold cntI
-  rw [Nat.card_eq_zero]
-  left
-  constructor
-  rintro ⟨x, hx1, hx2⟩
-  apply hn
-  have h0 : ∑ i, sg hF 𝔭 1 (x i) * x i = 0 :=
-    Finset.sum_eq_zero fun i _ => by rw [eq_zero_of_inQ_one (hx1 i), mul_zero]
-  rw [h0] at hx2
-  have := Ideal.Quotient.eq_zero_iff_mem.1 hx2.symm
-  rwa [pow_one] at this
-
 end Formalism.HermitianLattices.Ext.L3.unitaryAbsoluteValueBounds

@@ -55,14 +55,6 @@ def M4 (I : Ideal A) : Prop :=
 
 variable (K) in
 
-def OrbitVanishingLocal (I : Ideal A) : Prop :=
-  ∀ ξ : A →ₐ[O] K, OnS I ξ → TwoSigned 𝒜 ξ → ∀ f : TensorProduct O K A,
-    (∀ t : Kˣ, Algebra.TensorProduct.lift (AlgHom.id O K) (act 𝒜 (tz t) ξ) (fun _ _ => Commute.all _ _) f = 0) →
-    ∃ g : TensorProduct O K A, Algebra.TensorProduct.lift (AlgHom.id O K) ξ (fun _ _ => Commute.all _ _) g ≠ 0 ∧
-      g * f ∈ I.map (Algebra.TensorProduct.includeRight : A →ₐ[O] TensorProduct O K A)
-
-variable (K) in
-
 def M5 (x : A →ₐ[O] O) (I : Ideal A) (a : A) : Prop :=
   a ∈ 𝒜 0 ∧ x a = 0 ∧ ∀ ξ : A →ₐ[O] K, OnS I ξ → TwoSigned 𝒜 ξ → ξ a ≠ 0
 

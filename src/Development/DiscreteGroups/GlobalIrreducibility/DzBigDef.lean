@@ -22,9 +22,6 @@ def DepthZeroInertiaBig : Prop :=
     GlobalTheory.SerSys.TameGen.Inflates (σ.ρ.comp (Matrix.GeneralLinearGroup.map i.toRingHom)) τ →
     (rc (cls σ)).inePol t = GlobalTheory.SerSys.TameGen.liftPoly L.teich P
 
-theorem depthZeroInertiaBig_of (H : GlobalTheory.Published.DepthZeroInertia) : DepthZeroInertiaBig :=
-  fun E Ω _ _ _ _ _ _ g _ A w h rc hrc i hi κ L t ht hT n _ => H E Ω g A w h rc hrc i hi κ L t ht hT n
-
 theorem big_of_le_nV (D : Formalism.BasicNotions.D7) (k : Fin 2) {n : ℕ} (hn : n ≤ D.R.nV) : 16 * n ^ 2 < D.host.g k := by
   have hg : D.host.g k % (D.host.QS * D.host.q * D.host.d) = 1 := D.ntypes.g_cond k
   have hq := D.host.qd_big

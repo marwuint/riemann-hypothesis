@@ -14,11 +14,6 @@ def UnitCols : Prop :=
       ∀ (A : Type) [CommRing A] (z : Fin n → ℕ → A),
         (catM l (unitM A I) z).det = (ε : A) * (Matrix.of fun i i' : Fin l => z (J i') i.val).det
 
-def UnitColsZero : Prop :=
-  ∀ (n l : ℕ), l ≤ n → ∀ I : Fin (n - l) → Fin n, ¬ Function.Injective I →
-    ∀ (A : Type) [CommRing A], (∀ z : Fin n → ℕ → A, (catM l (unitM A I) z).det = 0) ∧
-      initMinor A (n := n) I (Nat.sub_le n l) = 0
-
 def MinorZero : Prop :=
   ∀ (A : Type) [CommRing A] (r n s : ℕ) (hs : s ≤ n) (I : Fin s → Fin r), ¬ Function.Injective I → initMinor A I hs = 0
 

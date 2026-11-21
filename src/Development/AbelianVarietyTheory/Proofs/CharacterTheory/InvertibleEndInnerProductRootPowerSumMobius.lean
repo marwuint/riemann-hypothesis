@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvertibleEndInnerProductRootPowerSumEqTorusSumStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvertibleEndInnerProductRootPowerSumEqTorusSum
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.AdditiveEqPolynomialVonMangoldtConvolutionOneStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EndomorphismMassMobiusInverseMonicEqStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EndomorphismMassMobiusInverseMonicEq
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEquiStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobiStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobi
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FrobeniusTorusMinpolyDegreeRootPowerSumStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FrobeniusTorusCharacterOrthogonalityStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FrobeniusTorusCharacterOrthogonality
 
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
@@ -41,10 +41,10 @@ theorem ipGL_psi_rootSum (F : Type) [Field F] [Finite F] (V : Type) [AddCommGrou
   have hN : 0 < q ^ n - 1 := by
     have : 1 < q ^ n := Nat.one_lt_pow hn.ne' hq
     omega
-  obtain ⟨hadd, -⟩ := GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow F θ k
+  obtain ⟨hadd, -⟩ := _root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one F θ k
   have hclass : IsClassFn (psi (rootSum θ k) V) := fun e g => GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj F _ V V e g
-  have hprim := GlobalTheory.T.isPrimitiveEndClassFunction_invariantSubspaceMobiusInverse F V _ hadd
-  rw [GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_eq_torusSum F V θ _ hclass hprim hn l]
+  have hprim := _root_.GlobalTheory.CuspGL.isPrimitive_psi F V _ hadd
+  rw [_root_.GlobalTheory.CuspGL.ipGL_rootSum_eq_sum_torus F V θ _ hclass hprim hn l]
 
   have hS : {α : AlgebraicClosure F | α ^ (q ^ n - 1) = 1} =
       ↑((nthRoots (q ^ n - 1) (1 : AlgebraicClosure F)).toFinset) := by
@@ -68,7 +68,7 @@ theorem ipGL_psi_rootSum (F : Type) [Field F] [Finite F] (V : Type) [AddCommGrou
     have hdeg : (minpoly F α ^ (n / (minpoly F α).natDegree)).natDegree = n := by
       rw [hmon.natDegree_pow]
       exact Nat.div_mul_cancel hdvd
-    rw [GlobalTheory.T.endomorphismMass_mobiusInverse_monic_eq F V _ hadd _ (hmon.pow _) hdeg, hdeg,
+    rw [_root_.GlobalTheory.CuspGL.mass_psi_eq_glCard_mul_mangoldt_div F V _ hadd _ (hmon.pow _) hdeg, hdeg,
       (GlobalTheory.T.additive_eq_polynomialVonMangoldt_convolution_one F _ hadd).2.1 _ _ hmon hirr hm]
     have h1 : ((n / (minpoly F α).natDegree : ℕ) : ℂ) * rootSum θ k (minpoly F α) =
         ∑ i ∈ Finset.range n, θ α ^ (k * q ^ i) := by
@@ -84,7 +84,7 @@ theorem ipGL_psi_rootSum (F : Type) [Field F] [Finite F] (V : Type) [AddCommGrou
         if k * q ^ i ≡ l [MOD q ^ n - 1] then ((q ^ n - 1 : ℕ) : ℂ) else 0 := by
     intro i
     rw [← finsum_mem_coe_finset, ← hS]
-    exact (GlobalTheory.T.frobeniusTorus_character_orthogonality F θ hθ n hn).2 _ _
+    exact (_root_.GlobalTheory.CuspGL.torus_orthogonality F θ hθ n hn).2 _ _
   rw [Finset.sum_congr rfl fun i _ => h2 i, Finset.sum_ite, Finset.sum_const_zero, add_zero,
     Finset.sum_const, nsmul_eq_mul]
   have hc : ((q ^ n - 1 : ℕ) : ℂ) = (q : ℂ) ^ n - 1 := by

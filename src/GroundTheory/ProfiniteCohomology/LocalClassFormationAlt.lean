@@ -187,10 +187,6 @@ noncomputable def localClassFormation : ClassFormation (galUnits.{0} K Ksep) whe
   inv_res := localInv_res K Ksep
   inv_bijective := localInv_bijective K Ksep
 
-theorem localClassFormation_inv (U : OpenSubgroup Gal(Ksep/K)) :
-    (localClassFormation K Ksep).inv U = localInv K Ksep U := by
-  simp only [localClassFormation]
-
 end Formation
 
 section SepClosure

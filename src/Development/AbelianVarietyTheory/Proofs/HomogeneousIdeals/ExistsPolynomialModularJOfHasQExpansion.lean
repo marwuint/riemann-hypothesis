@@ -193,15 +193,4 @@ theorem exists_polynomial_modularJ_of_hasQExpansion (A : AddSubgroup ℂ) {m : �
       exacts [hA 0, A.zero_mem]
     · simp [← hP4]
 
-theorem exists_polynomial_modularJ {m : ℕ} {f : ℍ → ℂ}
-    (hinv : ∀ (γ : SL(2, ℤ)) (τ : ℍ), f (γ • τ) = f τ) (hhol : MDiff f)
-    (hbdd : IsBoundedAtImInfty fun τ : ℍ ↦ 𝕢 1 τ ^ m * f τ) :
-    ∃ P : Polynomial ℂ, P.natDegree ≤ m ∧
-      P.coeff m = coeff 0 (qExpansion 1 fun τ ↦ 𝕢 1 τ ^ m * f τ) ∧
-      (∀ i, P.coeff i ∈ AddSubgroup.closure
-        (Set.range fun k ↦ coeff k (qExpansion 1 fun τ ↦ 𝕢 1 τ ^ m * f τ))) ∧
-      ∀ τ, f τ = P.eval (modularJ τ) :=
-  exists_polynomial_modularJ_of_hasQExpansion _ hinv (hasQExpansion_qParam_pow_mul hinv hhol hbdd)
-    fun k ↦ AddSubgroup.subset_closure ⟨k, rfl⟩
-
 end GlobalTheory

@@ -22,13 +22,6 @@ theorem isBC_of_isBaseChange {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N
   cases h2
   rfl
 
-theorem baseChangeDefinite_of_cmDatum_recLaws : ∀ (D : D7) (rc : RecMap D.naut), GlobalTheory.Published.BaseChangeDefiniteUnitary →
-    GlobalTheory.Published.BernsteinUnitaryProductIrreducible → DiscreteSpectrum D.host.E → RecProd rc → RecSpeh rc →
-    RecSatake rc → CuspRead rc → UnitaryRead D.nbc rc → SphericalInertData.Conclusion1 D := by
-  intro D rc hNT hB hMW hP hS hSat hC hU _ _ j h1 h2 _ _ π hπ
-  obtain ⟨Pa, hPa⟩ := baseChangeDefinite_at D.nbc rc hNT hB hMW hP hS hSat hC hU j h1 h2 π hπ
-  exact ⟨Pa, isBC_of_isBaseChange hPa⟩
-
 end GlobalTheory.DefiniteBCFrozen
 
 end

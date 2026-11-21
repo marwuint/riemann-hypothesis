@@ -645,12 +645,6 @@ theorem first_kernel_properties_of_hypotheses : Formalism.FourierDecayAlt.A5.Sin
   intro hF hI hCD hCO hCC hG
   exact ⟨first_kernel_periodic_of_formula hF, first_kernel_gram_of_second hG, first_kernel_parseval_of_formula hF hI hCD hCO hCC⟩
 
-theorem first_theta_properties_of_parts : Formalism.FourierDecayAlt.A5.SingleBlockThetaOfSteps := by
-  unfold Formalism.FourierDecayAlt.A5.SingleBlockThetaOfSteps
-  intro hPer hGram hPars hSup hBD _
-  have h := first_theta_equality_of_kernel_facts hPer hGram hPars hSup hBD
-  exact ⟨first_theta_eq_of_equality h, h⟩
-
 theorem lattice_average_lemma_from_parts : Formalism.FourierDecayAlt.A5.LemmaAAssemble := by
   unfold Formalism.FourierDecayAlt.A5.LemmaAAssemble Formalism.FourierDecayAlt.A5.LemmaA
   intro hA2 hPars hTh hA13 hStep hN0 hSup hBD

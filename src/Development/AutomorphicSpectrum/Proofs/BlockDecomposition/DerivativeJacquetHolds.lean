@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.UnipotentDerivatives.DerUnipLeUnipB
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicTwistedKernelDerivativeZeroStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedJacquetPhiMinusEquiv
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionMirabolicTwistedKernelStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionMirabolicTwistedKernel
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviIrreducibleTensorDecompositionStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IrreducibleSubquotientParabolicProductTwoFiniteL
@@ -205,7 +205,7 @@ theorem exists_jac_deriv (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddComm
     have h1 : π (u : GL (Fin (n + j + 1)) k) v - (((1 : (unipRad k (stdBlocks (dd n (j + 1)) (dd_sum n j))) →* ℂˣ) u : ℂˣ) : ℂ) • v ∈
         twKer π (derUnip k (n + j + 1) n) (derChar k ψ (n + j + 1) n) :=
       Submodule.subset_span ⟨⟨u, hmem⟩, v, by rw [derChar_eq_one (dd_sum n j) ψ ⟨u, hmem⟩ u.2]; rfl⟩
-    rw [← GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ (n + j) n V π] at h1
+    rw [← _root_.GlobalTheory.CompanionTheory.BZMirDer.twKer_resM_derUnipM k ψ (n + j) n V π] at h1
     exact (Submodule.Quotient.mk_eq_zero _).2 (hk (Submodule.mem_map_of_mem h1))
   refine ⟨(twKer π (unipRad k (stdBlocks (dd n (j + 1)) (dd_sum n j))) 1).liftQ q hker, ?_, fun g v => ?_⟩
   · intro x

@@ -142,27 +142,4 @@ def QuotientMeasures : Prop :=
   InvariantMeasureClause ∧ NormaliseQuotientClause ∧ NormaliseSubgroupClause ∧
     NormaliseGroupClause ∧ DiscreteClause ∧ ModulusClause ∧ CompactClause
 
-example {G : Type} [Group G] (Γ : Subgroup G) (γ : Γ) (g : G) : γ • g = (γ : G) * g := rfl
-
-example {G : Type} [Group G] (H : Subgroup G) (a g : G) :
-    a • (g : G ⧸ H) = ((a * g : G) : G ⧸ H) := rfl
-
-example (G : Type) [CommGroup G] [TopologicalSpace G] [MeasurableSpace G] : IsUnimodular G := by
-  intro μ hμ
-  refine ⟨fun g => ?_⟩
-  have := map_mul_left_eq_self μ g
-  simpa [mul_comm] using this
-
-example (G : Type) [Group G] [Finite G] [TopologicalSpace G] (H : Subgroup G)
-    [MeasurableSpace (G ⧸ H)] [DiscreteMeasurableSpace (G ⧸ H)] :
-    IsInvariantRadon H (Measure.count : Measure (G ⧸ H)) where
-  ne_zero := Measure.count_ne_zero''
-  finiteOnCompacts := inferInstance
-  invariant := ⟨fun c s _ => by
-    have h1 := Measure.count_injective_image (f := (MulAction.toPerm c).symm)
-      (MulAction.toPerm c : (G ⧸ H) ≃ (G ⧸ H)).symm.injective s
-    rw [← h1]
-    congr 1
-    exact (Equiv.image_symm_eq_preimage (MulAction.toPerm c) s).symm⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre

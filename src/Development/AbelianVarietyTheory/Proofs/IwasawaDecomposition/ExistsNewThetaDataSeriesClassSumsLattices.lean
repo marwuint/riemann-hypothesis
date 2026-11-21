@@ -15,7 +15,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MtLatFgOfReps
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotDvdDiscrIffRamificationIdx
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SecondStepHeckeOperatorsNormalisedSumsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteHomEqOfFramesKeepMatricesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteHomEqOfFramesKeepMatrices
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.StandardLattice Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.TwInputs GlobalTheory.SeriesTie GlobalTheory.ExportSeries NumberField IsDedekindDomain
 open Formalism.MainNotions.IntegralHeckeForms (TwOK HkIdx)
@@ -73,7 +73,7 @@ theorem exists_preTie : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D
     join := fun PV hPV i j b k Q ψ hAd hT => ?_ }⟩
   obtain ⟨ω, hω, he⟩ := hjoin i j b k Q ψ hAd hT
   refine ⟨ω, hω, fun f g => ?_⟩
-  rw [← he f g, GlobalTheory.T.finiteHom_eq_of_frames_keep_matrices D _ _ hF (PV j) (PV₀ j) (hPV j) (hPV₀ j) g]
+  rw [← he f g, _root_.GlobalTheory.FrameFinPart.finHom_eq_of_idFrame D _ _ hF (PV j) (PV₀ j) (hPV j) (hPV₀ j) g]
   exact congrFun (congrArg (fun r => r k Q ψ f) (ht i j b)) _
 
 end GlobalTheory.HeightCounting.SerCopy

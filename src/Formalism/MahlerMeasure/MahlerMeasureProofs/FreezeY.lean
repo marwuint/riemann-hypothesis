@@ -7,8 +7,6 @@ open MvPolynomial Finset
 section Parts
 variable {N r : ℕ}
 
-def ev (N : ℕ) (c : Fin r) : Fin (N + 1) × Fin r := (Fin.last N, c)
-
 noncomputable def llPart (m : Fin (N + 1) × Fin r →₀ ℕ) : Fin N × Fin r →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm (fun x => m (Fin.castSucc x.1, x.2))
 
@@ -256,9 +254,6 @@ theorem glAct_apply (LL : Letters N) (j : ℕ) (c d : Fin r) (F : MvPolynomial (
 
 theorem snoc_vec_castSucc (LL : Letters N) (n : ℕ) (i : Fin N) :
     (LL.snoc n).vec (Fin.castSucc i) = LL.vec i := by
-  simp [Formalism.GM.M.Letters.snoc]
-
-theorem snoc_vec_last (LL : Letters N) (n : ℕ) : (LL.snoc n).vec (Fin.last N) = false := by
   simp [Formalism.GM.M.Letters.snoc]
 
 theorem snoc_deg_castSucc (LL : Letters N) (n : ℕ) (i : Fin N) :

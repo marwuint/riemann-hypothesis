@@ -59,67 +59,6 @@ theorem exists_ext_of_integral {A B O C : Type} [CommRing A] [IsDomain A] [CommR
   rw [this]
   exact hj0
 
-theorem exSt_of_cmpSt : CmpSt → ExSt := by
-  intro hC E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hpq _hA _hgood Z la p _ Xw hcov yb hyb
-  obtain ⟨⟨T, kO, yT, hfin, hkO, hyT⟩, hXw⟩ := hyb
-  obtain ⟨hover, -, -, -, hjr, -, -, -, -⟩ := hcov
-  have hiO : Function.Injective (algebraMap 𝓞_ℂ_[p] ℂ_[p]) := (PadicComplexInt.integers p).hom_inj
-
-  have hgXw : Set.range (spMap (algebraMap T.V T.Fr) ≫ yT) ⊆ (Xw : Set Y.X) := by
-    rintro _ ⟨s, rfl⟩
-    obtain rfl : s = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum T.Fr) := Subsingleton.elim (α := PrimeSpectrum T.Fr) _ _
-    have h1 := bot_map (IsFractionRing.injective T.V T.Fr) yT
-    have h2 := bot_map (φ := (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO) (hiO.comp hkO) yT
-    have h3 : (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ_[p]) ∈ (Xw : Set Y.X) :=
-      hXw ⟨_, rfl⟩
-    rw [← hyT, sp_sp, h2] at h3
-    rw [h1]
-    exact h3
-  obtain ⟨yyT, hyyT⟩ := GlobalTheory.LN.ArcClause.exists_lift (c'.V W) Y _ (hgXw.trans hjr)
-  obtain ⟨io', hio'⟩ : ∃ io' : c'.F →+* T.Fr, yyT ≫ pullback.snd _ _ = spMap io' :=
-    ⟨(Spec.preimage (yyT ≫ pullback.snd _ _)).hom, (Spec.map_preimage (yyT ≫ pullback.snd _ _)).symm⟩
-  let io : c.F →+* T.Fr := io'.comp (IntermediateField.inclusion hle).toRingHom
-  have hrs : yyT ≫ r ≫ pullback.snd _ _ = spMap io := by
-    rw [hover, ← Category.assoc, hio', spMap_spMap]
-  let x : Sp T.Fr ⟶ Xo.X := yyT ≫ r ≫ pullback.fst _ _
-  have hx : (letI := io.toAlgebra; x ≫ Xo.s = sOf c T.Fr) := by
-    letI := io.toAlgebra
-    show (yyT ≫ r ≫ pullback.fst _ _) ≫ Xo.s = _
-    rw [Category.assoc, Category.assoc, pullback.condition, ← Category.assoc r, ← Category.assoc yyT, hrs, sOf,
-      spMap_spMap]
-  obtain ⟨T', i, rr, hrr, hv, hfin', y₀, hy₀⟩ := GlobalTheory.AnyLevelFrame.intFrExt E H Dw l Xo c hpq T io hfin x hx
-  obtain ⟨φ, hφ, hloc⟩ := GlobalTheory.GoodChartExt.exists_local_restrict T T' i rr hrr hv
-  have hφi : Function.Injective φ := by
-    intro a b h
-    apply i.injective.comp (IsFractionRing.injective T.V T.Fr)
-    have ha := RingHom.congr_fun hφ a
-    have hb := RingHom.congr_fun hφ b
-    simp only [RingHom.comp_apply] at ha hb
-    simp only [Function.comp_apply, ← ha, ← hb, h]
-  have hfinφ : φ.Finite := GlobalTheory.CompHS.finite_of_finRes hfin' φ hφi
-  obtain ⟨kO', hkO', hinj'⟩ := exists_ext_of_integral (Valued.v : Valuation ℂ_[p] ℝ≥0) (PadicComplexInt.integers p)
-    φ hφi hfinφ.to_isIntegral kO (hiO.comp hkO)
-  let k : T'.Fr →+* ℂ_[p] := IsFractionRing.lift hinj'
-  have hk : ∀ a, algebraMap 𝓞_ℂ_[p] ℂ_[p] (kO' a) = k (algebraMap T'.V T'.Fr a) := fun a =>
-    (IsFractionRing.lift_algebraMap hinj' a).symm
-  letI := (i.comp io).toAlgebra
-  letI : Algebra c.F ℂ_[p] := (k.comp (i.comp io)).toAlgebra
-  letI := H.starRing
-  let kA : T'.Fr →ₐ[c.F] ℂ_[p] := { k with commutes' := fun _ => rfl }
-  obtain ⟨y, hy⟩ := GlobalTheory.CompHt.exists_isHTFrame (p := p) (v := (Valued.v : Valuation ℂ_[p] ℝ≥0)) (O := 𝓞_ℂ_[p])
-    (fun _ => rfl) (PadicComplexInt.integers p) y₀ hfin' kA kO' hk
-  have hcomm : spMap (algebraMap T'.V T'.Fr) ≫ (spMap φ ≫ yT) = (spMap i ≫ yyT) ≫ Y.j := by
-    rw [sp_sp, hφ, ← sp_sp, Category.assoc, hyyT]
-  have hpt : (spMap i ≫ yyT) ≫ r = spMap (RingHom.id T'.Fr) ≫ GlobalTheory.AllWt.ptF y₀.1 := by
-    rw [show spMap (RingHom.id T'.Fr) = 𝟙 _ from Spec.map_id _, Category.id_comp]
-    apply pullback.hom_ext
-    · rw [GlobalTheory.AllWt.ptF, pullback.lift_fst, hy₀, Category.assoc, Category.assoc]
-    · rw [GlobalTheory.AllWt.ptF, pullback.lift_snd, Category.assoc, Category.assoc, hrs, spMap_spMap]
-  obtain ⟨P, π, ψ, h⟩ := hC E H Dw l l' Xo Xo' c c' W Y r ν hle hover p T' T' (RingHom.id _) (RingHom.id _)
-    (fun _ => rfl) (i.comp io) y₀ kA y hy k kO' hk (fun _ => rfl) (spMap φ ≫ yT) (spMap i ≫ yyT) hcomm hpt
-  rw [sp_sp, hkO', hyT] at h
-  exact ⟨_, _, y, P, π, ψ, h⟩
-
 end GlobalTheory.FlatModel
 
 end

@@ -44,26 +44,7 @@ theorem relab_rt_iff (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (τ
     · exfalso
       exact h0 (by linear_combination (h.symm.trans hx) / 2)
 
-theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ :=
-  RingHom.ext fun z => Complex.conj_conj (τ z)
-
 variable {σ : c.F →+* ℂ}
-
-open Classical in
-
-def letCol (U : Unf Xo c σ r) (k : U.Comp)
-    (hmP : ∀ τ', relab c σ τ' ∈ (U.X k).Ψ → Dw.mult τ' + (U.X k).p0 ≤ r)
-    (hmQ : ∀ τ', relab c σ τ' ∉ (U.X k).Ψ → conjEmb (relab c σ τ') ∈ (U.X k).Ψ ∧ Dw.mult τ' ≤ (U.X k).p0)
-    (b : Σ τ' : E →+* ℂ, Fin (Dw.mult τ')) : (U.X k).Ψ × Fin r :=
-  if h : relab c σ b.1 ∈ (U.X k).Ψ then
-    (⟨_, h⟩, ⟨(U.X k).p0 + b.2, by have := hmP _ h; have := b.2.isLt; omega⟩)
-  else (⟨_, (hmQ _ h).1⟩, ⟨(U.X k).p0 - 1 - b.2, by have := (hmQ _ h).2; have := b.2.isLt; have := (U.X k).p0_le; omega⟩)
-
-open Classical in
-
-def aCol (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (k : U.Comp) (τ : (U.X k).Ψ) (j : Fin r) : ℝ :=
-  if (U.X k).p0 ≤ (j : ℕ) then (a (Function.invFun (relab c σ) τ.1, (j : ℕ) - (U.X k).p0) : ℝ)
-  else -(a (Function.invFun (relab c σ) (conjEmb τ.1), (U.X k).p0 - 1 - (j : ℕ)) : ℝ)
 
 def nCol (U : Unf Xo c σ r) (n : ℕ) (k : U.Comp) (j : Fin r) : ℝ :=
   if (U.X k).p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℝ) else -((n / 2 : ℕ) : ℝ)

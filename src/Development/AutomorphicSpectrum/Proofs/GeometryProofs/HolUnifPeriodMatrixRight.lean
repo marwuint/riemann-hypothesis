@@ -11,7 +11,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsAbLift
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLinearLiftOfAdditiveFamily
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExponentialSurjectiveSemiabelianStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExponentialSurjectiveSemiabelian
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHolPtsOfFamExp
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GeometricallyConnectedOfIsPullbackOfSurjective
@@ -345,6 +347,6 @@ theorem periods_map_onto_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsC
     show P₁ (T δ ≫ P.τ.i) = _
     rw [hT, hτ]
   exact core P₁ (ptU_bijective _ c₁) D (ptU_bijective hA c₂).1 Q hQ (e.ex b) (e.add b hb)
-    (GlobalTheory.T.exponential_surjective_semiabelian R t.G g n M B ψ e t.semi b hb) u.ex u.ex_add u.Λ u.ker ℓ hl hker
+    (_root_.GlobalTheory.CompanionTheory.Ar.Flat.famExp_ex_surjective R t.G g n M B ψ e t.semi b hb) u.ex u.ex_add u.Λ u.ker ℓ hl hker
 
 end GlobalTheory.CompanionTheory.Ar.QuotLoc

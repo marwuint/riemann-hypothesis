@@ -78,11 +78,6 @@ theorem gsdbc_lift_li (b : GSDBC ι S S') {κ : Type} [Fintype κ] (v : Module.B
   rw [← e.sum_repr (c k)]
   simp [hz]
 
-noncomputable def resLift (b : GSDBC ι S S') (hS : S.Ok) (hS' : S'.Ok) : (S.toCSD hS).Forms →+ (S'.toCSD hS').Forms where
-  toFun x := S'.res hS' (b.lift ((S.res hS).symm x))
-  map_zero' := by simp only [map_zero, b.lift_zero]
-  map_add' x y := by simp only [map_add, b.lift_add]
-
 theorem gsdbc_basis_of_read (b : GSDBC ι S S') {M M' : Type} [AddCommGroup M] [AddCommGroup M'] (Lm : M → M')
     {_ : Module K M} {_ : Module L M'} (r : M ≃ₗ[K] S.EqFun) (r' : M' ≃ₗ[L] S'.EqFun) (hL : ∀ x, r' (Lm x) = b.lift (r x))
     {κ : Type} [Fintype κ] (v : Module.Basis κ K M) :

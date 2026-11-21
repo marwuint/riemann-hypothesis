@@ -38,8 +38,4 @@ theorem locFac_of_neg (q : ℕ) {n : ℕ} (α : Fin n → ℂ) (x : ℝ) {ν : F
     locFac q α x ν = 0 := by
   rw [locFac, if_neg fun h' => absurd (h'.2 i) (not_le.2 h)]
 
-example {E : Type} [Field E] [NumberField E] {n : ℕ} (T : Finset (HeightOneSpectrum (𝓞 E)))
-    (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin n → ℂ) (x : ℝ) : cellProd T α x 0 = 1 := by
-  simp [cellProd]
-
 end GlobalTheory.RSCell

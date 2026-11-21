@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GaloisStableSubmoduleLeSpanRationalStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GaloisStableSubmoduleLeSpanRational
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -39,7 +39,7 @@ theorem mem_span_vanI_of_vanish : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] 
         rw [MvPolynomial.smul_eval, h1, mul_zero] }
   have hrepr : ∀ (p : MvPolynomial (ι × ι) ℂ) k,
       (MvPolynomial.basisMonomials (ι × ι) ℂ).repr p k = MvPolynomial.coeff k p := fun p k => rfl
-  have key := GlobalTheory.T.galoisStable_submodule_le_span_rational _ _ (MvPolynomial.basisMonomials (ι × ι) ℂ) W (by
+  have key := _root_.GlobalTheory.ClassFin.GaloisDescent.le_span_rational _ _ (MvPolynomial.basisMonomials (ι × ι) ℂ) W (by
     intro σ w hw
     refine ⟨MvPolynomial.map (σ : ℂ →+* ℂ) w, ?_, ?_⟩
     · intro g hg

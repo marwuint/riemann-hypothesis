@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualMeasureGauss
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CmEulerProductDiscrUnramified
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsOrthComplementOfUnitVectorAtRealPlace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnramifiedAdditiveCharacterConductor
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ArchimedeanDensityProductTestFunctionAtSignStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousDensitySelfDualLatticeIndicatorAtUnitStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ArchimedeanDensityProductTestFunctionAtSign
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousDensitySelfDualLatticeIndicatorAtUnit
+import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SelfDualUnramifiedPlaces
 
 open MeasureTheory NumberField IsDedekindDomain Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Count GlobalTheory.GaussMean
 open Formalism.MainNotions.S (AutInst uMat)
@@ -278,7 +279,7 @@ theorem test_smooth (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ
 
 theorem siegelMeanCc_of_oneVectorCc : OneVectorCc → SiegelMeanCc := by
   intro hW I hn s μf _ _ fund hfund
-  obtain ⟨hCM, hJ, T, hT1, hT2, hT3⟩ := GlobalTheory.T.exists_adelic_unitaryGroup_models_equiv I
+  obtain ⟨hCM, hJ, T, hT1, hT2, hT3⟩ := _root_.GlobalTheory.AdelicModels.exists_adelic_equiv I
   obtain ⟨a1, b1⟩ := hW I.F I.E I.cm.sig hCM I.n I.J hJ
   choose θ hθ using fun v => (GlobalTheory.Mem.VolEmb.existsUnique_infEmb _ _ _ hCM (I.φ v)).exists
   obtain ⟨μ, S, hμ, hS, hTm, hvol, hint⟩ := GlobalTheory.SiegelWeilMean.exists_transport I T hT1 μf fund hfund
@@ -303,18 +304,18 @@ theorem siegelMeanCc_of_oneVectorCc : OneVectorCc → SiegelMeanCc := by
     cases s <;> simp [sgn]
   obtain ⟨⟨ψ, hψ⟩, hB⟩ := b1 hn (sgn I.F s) (hs1 _) _ b _ _ _ _ g1 g2 g3
     ⟨GlobalTheory.T.isSchwartzBruhat_indicator_localLatticeCompletion I.F I.E I.n I.L hL, (GlobalTheory.T.eventually_localLatticeCompletion_eq_coordinateLattice I.F I.E I.n _ b I.L hL).mono fun v hv => by rw [hv],
-      GlobalTheory.T.indicator_completedLattice_eq_finprod_local I.F I.E I.n I.L hL⟩ fun _ => rfl
+      _root_.GlobalTheory.AdelicU.indicator_latHat_eq_finprod I.F I.E I.n I.L hL⟩ fun _ => rfl
   obtain ⟨⟨μi, hμi⟩, ⟨νi, hνi⟩, ⟨μv, hμv⟩, ⟨νv, hνv⟩, hQ⟩ := ((hB ψ hψ).2 μ hμ).2 S hS
   obtain ⟨Fi, Fl, hFi, hFl, -, hmean⟩ := hQ μi νi μv νv hμi hνi hμv hνv
   obtain ⟨lam, m, hlam, hψi, hm, hdual, hprod⟩ := GlobalTheory.T.adelic_character_frequencies_and_conductor_product I θ hθ ψ hψ
   obtain ⟨hE1, hE2, hE3⟩ := GlobalTheory.T.cm_euler_product_discr_unramified I I.n (by omega)
-  obtain ⟨n1, n2, n3, -, n5, -⟩ := GlobalTheory.T.autInst_degree_rootDiscriminant_rank I
-  have hreal := GlobalTheory.T.archimedean_density_product_testFunction_at_sign I θ hθ lam _ hlam hψi μi νi hμi hνi φ D (fun v => ⟨hc v, hK v, (hφ v).2.2.2⟩) Fi hFi s
+  obtain ⟨n1, n2, n3, -, n5, -⟩ := _root_.GlobalTheory.FlagMeas.instance_numbers I
+  have hreal := _root_.GlobalTheory.GaussMean.RealDensityCc.density_at_sign I θ hθ lam _ hlam hψi μi νi hμi hνi φ D (fun v => ⟨hc v, hK v, (hφ v).2.2.2⟩) Fi hFi s
   have hloc : ∀ u, Fl u (algebraMap I.F (Fv I.F u) (sgn I.F s)) =
       (((GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard I.F u ^ m u) ^ ((1 / 2 : ℝ) - (I.n : ℝ)) *
         (1 - GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta I.F I.E u ^ I.n * (GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard I.F u ^ I.n)⁻¹) : ℝ) : ℂ) := fun u => by
-    obtain ⟨Lv, h1, h2⟩ := GlobalTheory.T.exists_selfDualLattice_completion_maxOrder I.F I.E I.cm.sig I.n I.J I.L hJ hL I.L_dual u
-    refine GlobalTheory.T.continuousDensity_selfDualLatticeIndicator_at_unit I.F I.E I.cm.sig hCM I.n (by omega) I.J hJ u (hE3 u) (GlobalTheory.LocalDensityValue.localChar I.F ψ u)
+    obtain ⟨Lv, h1, h2⟩ := _root_.GlobalTheory.CompletedSelfDual.exists_isSelfDualLattice I.F I.E I.cm.sig I.n I.J I.L hJ hL I.L_dual u
+    refine _root_.GlobalTheory.LatticeContDensity.contDensity_unit I.F I.E I.cm.sig hCM I.n (by omega) I.J hJ u (hE3 u) (GlobalTheory.LocalDensityValue.localChar I.F ψ u)
       (GlobalTheory.LocalDensityValue.isLocalChar I.F ψ hψ u (m u) (hdual u)) (m u) (hdual u) Lv h1
       _ _ (hμv u) (hνv u) _ (by simpa only [h2] using hFl u) _ ?_
     rw [hsg]

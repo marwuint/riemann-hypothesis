@@ -19,8 +19,6 @@ structure Hypotheses4 : Prop where
   eis : Published.HilbertEisOne
   one : Published.HilbertOne
 
-def HypothesesOf : Prop := Af.HypothesesH → Published.HidaGal → Published.AdjointLift → Hypotheses₂
-
 abbrev Pl (F : Type) [Field F] : Type := HeightOneSpectrum (𝓞 F)
 
 open Classical in
@@ -152,12 +150,6 @@ def PropM : Prop :=
 def SplitL (F : Type) [Field F] [NumberField F] (l : ℕ) : Prop :=
   ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → Ideal.absNorm w.asIdeal = l ∧ ((l : ℕ) : 𝓞 F) ∉ w.asIdeal ^ 2
 
-def GlobVec : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (π : TR.CuspSub F 2) (c : Pl F → ℕ), {w | c w ≠ 0}.Finite →
-    ∀ lam : Pl F → ℂ, (∀ w, c w = 0 → HasFixed (π.locRep w) (K1 w 0)) → (∀ w, c w ≠ 0 → HasU w (π.locRep w) (c w) (lam w)) →
-    ∃ (v : π.V) (mu : Pl F → ℂ), v ≠ 0 ∧ (∀ w, c w ≠ 0 → mu w = lam w) ∧
-      ∀ w, v ∈ Hi.fixd (π.locRep w) (K1 w (c w)) ∧ Uop w (π.locRep w) (c w) v = mu w • v
-
 def WeightChange : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 →
     Even (Module.finrank ℚ F) → SplitL F l → ∀ (ι : Qbar l ≃+* ℂ) (ξ : G F Ω →* (Qbar l)ˣ) s c m a π r, OrdForm ι ξ s c m a π r →
@@ -188,34 +180,6 @@ def OrdAbove : Prop :=
 def OrdIrr : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 →
     SplitL F l → ∀ (ι : Qbar l ≃+* ℂ) (ξ : G F Ω →* (Qbar l)ˣ) s c m a π r, OrdForm ι ξ s c m a π r → IsIrr r
-
-def MixSeed : Prop :=
-  ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 →
-    Even (Module.finrank ℚ F) → SplitL F l → ∀ (ι : Qbar l ≃+* ℂ) (ξ : G F Ω →* (Qbar l)ˣ), IsOpen (ξ.ker : Set (G F Ω)) →
-    (∀ c, IsConjEl c → ξ c = -1) → (∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → Ine (F := F) A ≤ ξ.ker) →
-    (∃ (u : Pl F) (A : ValuationSubring Ω), normV u = 2 ∧ IsPlaceOver A u ∧ ¬ Ine (F := F) A ≤ ξ.ker) → (∃ g, ¬ Cong (ξ g ^ 2) 1) →
-    (∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∃ σ ∈ Dec (F := F) A, ¬ Cong (ξ σ) 1) →
-    ∀ P : Set (Pl F), (∃ w ∈ P, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) → (∃ w ∉ P, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) →
-    ∃ (k t : ℕ) (π : TR.CuspSub F 2) (r : G F Ω →* GL (Fin 2) (Qbar l)), 2 ≤ k ∧ 2 ≤ t ∧ l - 1 ∣ k ∧ l - 1 ∣ t ∧
-      Continuous r ∧ IrrOpen r ∧ AttR ι r π ∧ Matrix.GeneralLinearGroup.det.comp r = cycBar F Ω l ^ k * ξ ∧ ResSum r ![1, ξ] ∧
-      TypeAway r ![1, ξ] ∧ ∀ w : Pl F, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal →
-        (w ∈ P → (∀ A, IsPlaceOver A w → OrdAt r ![(k : ℤ) + t, -(t : ℤ)] ![ξ, 1] A) ∧ ∀ τ : F →+* Qbar l, EmbAt w τ →
-          π.HasInfChar (InfinitePlace.mk (ι.toRingHom.comp τ)) (infOf ![(k : ℤ) + t, -(t : ℤ)])) ∧
-        (w ∉ P → (∀ A, IsPlaceOver A w → OrdAt r ![(k : ℤ), 0] ![1, ξ] A) ∧ ∀ τ : F →+* Qbar l, EmbAt w τ →
-          π.HasInfChar (InfinitePlace.mk (ι.toRingHom.comp τ)) (infOf ![(k : ℤ), 0]))
-
-def IndAut : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsTotallyReal E] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra E Ω],
-    Module.finrank ℚ E = 2 → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (π : TR.CuspSub E 2) (r : G E Ω →* GL (Fin 2) (Qbar l))
-    (m m' : Fin 2 → ℤ), AttR ι r π → (∃ v v', v ≠ v' ∧ π.HasInfChar v (infOf m) ∧ π.HasInfChar v' (infOf m')) →
-    Function.Injective ![m 0, m 1, m' 0, m' 1] → ∀ R : G ℚ Ω →* GL (Fin 4) (Qbar l), IsSSRep R →
-    (∀ t : G ℚ Ω, t ∉ galOf ℚ E Ω →
-      (∀ g g' : G E Ω, galEmb ℚ E Ω g' = t⁻¹ * galEmb ℚ E Ω g * t →
-        (R (galEmb ℚ E Ω g) : Matrix (Fin 4) (Fin 4) (Qbar l)).charpoly =
-          (r g : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly * (r g' : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly) ∧
-      ∀ g : G E Ω, galEmb ℚ E Ω g = t * t →
-        (R t : Matrix (Fin 4) (Fin 4) (Qbar l)).charpoly = (r g : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly.comp (X ^ 2)) →
-    IsAutR ι R
 
 def FinCoef : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] (n : ℕ)

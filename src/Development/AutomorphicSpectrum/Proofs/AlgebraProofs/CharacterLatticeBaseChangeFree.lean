@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLatticeData
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocFreeMapMkQIff
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeQuotientStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChange
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeBaseChangeQuotient
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SmulMemSpanOver
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.Imports
 
@@ -59,7 +59,7 @@ theorem comap_inl (hb : IsBaseChange C b) (hb' : IsBaseChange C b')
     (hf : LocFree R N (Γ.map (AddMonoidHom.snd V Z))) :
     (spanOver RC (Prod.map b b' '' Γ)).comap (AddMonoidHom.inl Vc Zc) =
       spanOver RC (b '' Γ.comap (AddMonoidHom.inl V Z)) := by
-  have key := (GlobalTheory.T.locally_free_base_change_quotient R RC hR b' b hb' hb (swp Γ) ⊥ N (swp_stable R hs)
+  have key := (_root_.GlobalTheory.CompanionTheory.Ar.GraphRestrict.main R RC hR b' b hb' hb (swp Γ) ⊥ N (swp_stable R hs)
     (by rw [map_fst_swp]; exact hf) bot_le
     (by
       intro a _ v hv
@@ -83,7 +83,7 @@ theorem inf_top_prod (hb : IsBaseChange C b) (hb' : IsBaseChange C b')
     (hH : ∀ a ∈ R, ∀ v ∈ H, a • v ∈ H) :
     spanOver RC (Prod.map b b' '' Γ) ⊓ (⊤ : AddSubgroup Vc).prod (spanOver RC (b' '' H)) =
       spanOver RC (Prod.map b b' '' (Γ ⊓ (⊤ : AddSubgroup V).prod H : AddSubgroup (V × Z))) := by
-  have key := (GlobalTheory.T.locally_free_base_change_quotient R RC hR b' b hb' hb (swp Γ) H N (swp_stable R hs)
+  have key := (_root_.GlobalTheory.CompanionTheory.Ar.GraphRestrict.main R RC hR b' b hb' hb (swp Γ) H N (swp_stable R hs)
     (by rw [map_fst_swp]; exact hf) (by rw [map_fst_swp]; exact hle) hH).1
   have hres : swp Γ ⊓ H.prod (⊤ : AddSubgroup V) =
       swp (Γ ⊓ (⊤ : AddSubgroup V).prod H : AddSubgroup (V × Z)) := by
@@ -146,7 +146,7 @@ theorem core (ha : IsBaseChange C a) (hb : IsBaseChange C b) (hc : IsBaseChange 
   have hKG : K ≤ Gam.map (AddMonoidHom.snd A B) := by
     rw [hGD]
     exact fun v hv => (AddSubgroup.mem_inf.1 hv).1
-  have e1 := (GlobalTheory.T.locally_free_base_change_quotient R RC hR b c hb hc Del hh n₁ hDs f₁ hle hhs).1
+  have e1 := (_root_.GlobalTheory.CompanionTheory.Ar.GraphRestrict.main R RC hR b c hb hc Del hh n₁ hDs f₁ hle hhs).1
   have e2 := comap_inl R RC hR b c hb hc T n₂ hTs f₂
   have e3 := comap_inl R RC hR b c hb hc Del n₂ hDs f₃
   have e4 : (spanOver RC (Prod.map a b '' Gam)).map (AddMonoidHom.snd Ac Bc) =
@@ -228,7 +228,7 @@ theorem smul_mem_stdLat_of_mem_hh {o Ω : Type} [CommRing o] [Field Ω] [Algebra
 
 theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → D.Good₂ R p χ → (∀ τ, mulLat w (stdLat R _) ≤ D.af R p (χ τ)) → ∀ (C : Type) [Field C] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → ∀ τ, (D.bc RC).kerH RC p τ (fun a => algebraMap Ω C (χ τ a)) = spanOver RC (bcMap Ω C _ '' D.kerH R p τ (χ τ)) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hcd hB hG₁ hG₂ hw C _ _ _ _ RC hR τ
-  obtain ⟨h1a, h1b⟩ := GlobalTheory.T.lattice_good_base_change D R p w χ hcd hB hG₁
+  obtain ⟨h1a, h1b⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main D R p w χ hcd hB hG₁
   have hhh := (h1b C RC hR).2 τ |>.2.1
   have hw0 : w ≠ 0 := by
     rintro rfl

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocUnitApply
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntValuationNormEqSumResidueDegreeMulStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntValuationNormEqSumResidueDegreeMul
 
 noncomputable section
 
@@ -149,7 +149,7 @@ theorem prod_locUnit_eq_prod_locUnit_norm : ∀ (E K : Type) [Field E] [NumberFi
       · exact fun h => h.2
       · intro h
         exact ⟨(memTK w).mpr (h ▸ hv), h⟩
-    have key := GlobalTheory.T.intValuation_norm_eq_sum_residueDegree_mul E K v a _ hs
+    have key := _root_.GlobalTheory.NormValuation.log_valuation_norm_eq_sum E K v a _ hs
     simp only [ordF, hNa, Units.coe_map, MonoidHom.coe_coe] at key ⊢
     rw [key, ← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl fun w _ => ?_

@@ -61,9 +61,6 @@ theorem bil_smul_right (z : ℤ) (a b : ι →₀ ℤ) : bil C a (z • b) = z �
   refine Finsupp.sum_congr fun y _ => ?_
   rw [smul_eq_mul, mul_left_comm, mul_smul]
 
-theorem bil_single (x y : ι) : bil C (Finsupp.single x 1) (Finsupp.single y 1) = C x y := by
-  simp [bil, Finsupp.sum_single_index]
-
 theorem bil_comm (hC : ∀ x y, C x y = C y x) (a b : ι →₀ ℤ) : bil C a b = bil C b a := by
   unfold bil
   rw [Finsupp.sum_comm]

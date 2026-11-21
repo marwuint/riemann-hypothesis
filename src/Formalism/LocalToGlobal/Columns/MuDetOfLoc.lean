@@ -33,22 +33,6 @@ structure DetChr.Loc (Dc : DetChr X R.m) (Ch : Chars X Pr R.m) (sel : HeightOneS
   trivChi : (Formalism.L2.DIV.h90 σ).ker ≤ Dc.chi.ker
   unrChi : ∀ y ∈ intU X.F X.E, Dc.chi y = 1
 
-def PtSurjAll (hc : Formalism.BasicNotions.CMData X.F X.E) (Pr : Primes X) (R : Ranks) (u : Pr.Word) : Prop :=
-  ∀ n, n ≤ R.m → ∀ p : DecoSet X.E (R.N n) (Pr.vT u) Pr.vGs,
-    letI : NeZero (R.N n) := ⟨(R.N_pos n).ne'⟩
-    decoOf (Pr.vT u) Pr.vGs (ptOf hc (R.N n) (Pr.vT u) Pr.vGs p : GL (Fin (R.N n)) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) = p
-
-def MuDetOfLoc : Prop :=
-  ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
-    (cst : LocCst X (rowSG Pr sel (mu0 X.F X.E X.K S))) (Dc : DetChr X R.m) (hc : Formalism.BasicNotions.CMData X.F X.E) (u : Pr.Word),
-    X.Ok → Pr.Ok → (∀ v, (sel v).asIdeal.under (𝓞 X.F) = v.asIdeal) → Dc.Loc Ch sel (mu0 X.F X.E X.K S) cst hc.sig → PtSurjAll hc Pr R u →
-    ∀ i, i < R.m → ∀ n, (n = i ∨ n = i + 1) → ∀ p : DecoSet X.E (R.N n) (Pr.vT u) Pr.vGs,
-      letI : NeZero (R.N n) := ⟨(R.N_pos n).ne'⟩
-      (((Formalism.L2.DIV.detTw hc.sig (Dc.muAt i)
-          (ptOf hc (R.N n) (Pr.vT u) Pr.vGs p : GL (Fin (R.N n)) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)))⁻¹ : X.Kˣ) : X.K) =
-        muInvDet sel (rowSG Pr sel (mu0 X.F X.E X.K S)) (mUof Ch (mu0 X.F X.E X.K S) i) (muAt Ch sel (mu0 X.F X.E X.K S) cst i) p.1.N
-          (frsD sel (mu0 X.F X.E X.K S) p)
-
 end Loc
 
 end Formalism.L2.Col

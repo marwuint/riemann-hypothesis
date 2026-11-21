@@ -700,13 +700,6 @@ theorem exists_isAdapted (hs : IsSympl X bas) {ξ : Fin r → E} (hξ : herm X.G
       Set.image_image]
     rfl
 
-example : ∃ (bas : (Fin 2 ⊕ Fin 2 → ℤ) ≃ₗ[ℤ] HyperbolicCusp.flagData.Λ) (S : Finset (Fin 2)),
-    IsSympl _ bas ∧ HyperbolicCusp.flagData.IsIso ![1, 1] ∧ IsAdapted _ bas ![1, 1] S ∧
-      Gauss.one ∈ HyperbolicCusp.flagData.dom ∧ ∀ τ, cuspLin _ bas ![1, 1] τ ≠ 0 := by
-  obtain ⟨bas, S, h₁, h₂⟩ := exists_isAdapted Gauss.isSympl_bas HyperbolicCusp.isIso_one.2.1
-  exact ⟨bas, S, h₁, HyperbolicCusp.isIso_one, h₂, Gauss.one_mem,
-    h₂.cuspLin_ne_zero h₁ HyperbolicCusp.isIso_one⟩
-
 end
 
 end GlobalTheory.ThFr

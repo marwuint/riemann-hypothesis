@@ -103,9 +103,6 @@ theorem zc_eq (hS : SpStd d.toColBase) :
     funext j
     simp [Pi.single_apply]
 
-theorem piT_coe_ne_zero (u : d.what₂.Word) : (d.piT u : d.host.E) ≠ 0 :=
-  (basePi_of_ok (Pr := d.Pr) d.hX d.hPr u).coe_ne_zero
-
 theorem lastCoordinateUniformizerVector_spans_orthogonal_line (hS : SpStd d.toColBase) (u : d.what₂.Word) : ∃ c : d.host.E, d.z0 u = c • CF.zc (d.colRec a) := by
   obtain ⟨c, hc0, hc⟩ := zc_eq a hS
   refine ⟨(d.piT u : d.host.E) / c, ?_⟩

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesDerivativeGrowthBoundStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesDerivativeGrowthBound
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesRealDerivativeFormulaStatement
 open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta GlobalTheory.CompanionTheory.Hypotheses₂.Shintani GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
@@ -54,7 +54,7 @@ theorem diff_bound (ι : Type) [Fintype ι] [DecidableEq ι] (r : ℕ) (a : ι �
       ‖DLR cs (Fr a b s β) x‖ ≤ C * sizeE x ^ ((Fintype.card ι : ℤ) * (B : ℤ) - ∑ j, (β j : ℤ) - (cs.length : ℤ)) := by
   induction cs generalizing β with
   | nil =>
-    obtain ⟨C, hC, h⟩ := GlobalTheory.T.cone_series_derivative_growth_bound ι r a b ha hb B R β
+    obtain ⟨C, hC, h⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.baseBound ι r a b ha hb B R β
     refine ⟨C, hC, fun s hs hB x hx => ?_⟩
     simpa [DLR] using h s hs hB x hx
   | cons c cs ih =>

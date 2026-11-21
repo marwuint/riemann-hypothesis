@@ -71,7 +71,7 @@ theorem harmonicValue_translate : ∀ (E : Type) [Field E] [NumberField E] [IsCM
 
   obtain ⟨τ, hτG, hτEL, hτT⟩ := frame1St_holds E H T.V C.I.G P (chD C.ch) C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT
     C.xT C.eT C.wPT C.15 C.17 C.18
-  have hUJ : IsUnivJ C.I.G.G (Fin 1 × Fin (chD C.ch)) C.xT := GlobalTheory.T.universal_statement E H Dw l Xo c T io y C
+  have hUJ : IsUnivJ C.I.G.G (Fin 1 × Fin (chD C.ch)) C.xT := _root_.GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y C
   have hAG := GlobalTheory.GermBasic.main T.V _ _ _ P.U _ C.xT hUJ τ hτG F l.M
 
   letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra

@@ -183,21 +183,6 @@ def wdTieWD (N : NData R H what₂) (hE : IsEmpty N.Loc) (pl : ∀ k, N.PlG k �
   ⟨fun _ => Equiv.refl _, fun _ _ => rfl, fun _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl,
     fun _ _ => Iff.rfl, fun _ _ => Iff.rfl, fun _ _ _ => rfl, fun _ _ => Iff.rfl, fun _ _ _ _ => rfl⟩
 
-theorem exists_nAut_wdTie (N : NData R H what₂) (hE : IsEmpty N.Loc) (pl : ∀ k, N.PlG k → PlE H)
-    (h1 : ∀ k v, pl k v ∈ placesOver H.E (H.g k)) (h2 : ∀ k, Function.Injective (pl k))
-    (h3 : ∀ k v v', ¬ IsConjPl H (pl k v) (pl k v'))
-    (τ : ∀ k, Fb (H.g k) (H.g_prime k) →* ℂ) (t : ∀ k, N.PlG k → G H.E N.Om) :
-    ∃ (A : NAut N) (T : GlobalTheory.RowTie.WDTie N A), A.plGw = pl ∧ ∀ k v (a : A.LP (A.plGw k v)),
-      haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
-      A.items₂ k (A.plGw k v) a = WD.lab (τ k) (t k v) (T.e _ a) := by
-  classical
-  let γ : Fin 2 → PlE H → G H.E N.Om := fun k => Function.extend (pl k) (t k) fun _ => 1
-  refine ⟨nAutWD N hE pl h1 h2 h3 τ γ, wdTieWD N hE pl h1 h2 h3 τ γ, rfl, fun k v a => ?_⟩
-  have hγ : γ k (pl k v) = t k v := (h2 k).extend_apply _ _ _
-  have : Fact (H.g k).Prime := ⟨H.g_prime k⟩
-  show WD.lab (τ k) (γ k (pl k v)) a = WD.lab (τ k) (t k v) a
-  rw [hγ]
-
 end
 
 end GlobalTheory.HeightCounting

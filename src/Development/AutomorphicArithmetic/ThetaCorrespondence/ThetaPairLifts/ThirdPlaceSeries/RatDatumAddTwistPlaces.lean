@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TrueGeometryRowPairProperty
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.FamilyConstants
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GeoAll
@@ -50,7 +50,7 @@ theorem facAt_sgnAt_mul_sgnAt (hW : _root_.GlobalTheory.Fam.AllFamilyConditions 
     ((J.E i).dL_mid j d H (α i) (γ i)) _ fun z => ?_
   obtain ⟨e', he'⟩ := exists_xOrd B.R j
   obtain ⟨e, he⟩ := exists_xOrd B.R (j + 1)
-  have h1 := (GlobalTheory.T.finiteDatum_factors_over_twistPrimes_local I hW.tr.ok hW.tr.tw l Z u _ J.Ch₀ J.A hJ.is).2 _ rfl _ _ _ (J.G i) _ (J.E i) (J.hψ i) (J.sg i) (J.π i) (J.P i)
+  have h1 := (_root_.GlobalTheory.QTw.Join.xi_factor_and_entry I hW.tr.ok hW.tr.tw l Z u _ J.Ch₀ J.A hJ.is).2 _ rfl _ _ _ (J.G i) _ (J.E i) (J.hψ i) (J.sg i) (J.π i) (J.P i)
     hm.toReadsAt j d H hj hj' (J.ι j α) (J.ι (j + 1) γ) e' e he' he (homOf I l Z j hj z)
   rw [hJ.sec j (Nat.le_of_succ_le hj), hJ.sec (j + 1) hj] at h1
   have h2 := toLoc_frames ((J.G i).q.pr.comp (incA (I.rec7 l Z))) (rankN (I.rec7 l Z) j (Nat.le_of_succ_le hj))
@@ -259,7 +259,7 @@ theorem ratDatum_add_twist_places_alt : ∀ {B : GlobalTheory.Mem.Base} {X : Pre
   have hm := B.R.two_le_m
   obtain ⟨hP⟩ := hW.tr.pins
   have hc : ∀ j, j < B.R.m → ∀ i, i ≤ B.R.m → ∀ β, ∃ n : ℕ, 0 < n ∧ ((J.A.chr (j + 1) (J.A.xr i β) : ℂ)) ^ n = 1 :=
-    fun j hj i hi β => rou_circle (GlobalTheory.T.tupleCharacter_at_basePointDetRoot_rootOfUnity I hW.tr.ok hP l Z u _ J.Ch₀ J.A hJ.is j hj i hi β)
+    fun j hj i hi β => rou_circle (_root_.GlobalTheory.CharRoot.chr_xr_pow_eq_one I hW.tr.ok hP l Z u _ J.Ch₀ J.A hJ.is j hj i hi β)
   have c1 : ∀ j, j < B.R.m → ∀ α : J.Ch j, ∃ n : ℕ, 0 < n ∧
       ((∏ i, σ i j (J.ι j α)) * (J.A.chr (j + 1) (J.A.xr j (J.ι j α)) : ℂ)) ^ n = 1 :=
     fun j hj α => rou_mul (rou_prod _ _ fun i _ => hσ i j _) (hc j hj j hj.le _)
@@ -289,7 +289,7 @@ theorem ratDatum_add_twist_places_alt : ∀ {B : GlobalTheory.Mem.Base} {X : Pre
   · intro e₀ he₀ j hj α γ Ξ f hf
     have hv := _root_.GlobalTheory.Fam.VacTheta.main_alt_alt W hW u a ha haT j hj
     obtain ⟨Q, hQ, hdis, hsum⟩ := _root_.GlobalTheory.TwPlaces.exists_disjoint_places_isIdemSum hW ha haT hJ he₀
-    have key := GlobalTheory.T.rationalDatum_foldr_local_combinations (I.rec7 l Z) (_root_.GlobalTheory.Fam.pk_z W).ψ haT.pinX.std _ _ _ Q J.r J.pl hJ.inj hQ hdis
+    have key := _root_.GlobalTheory.LocComb.ratDatum_foldr_comb (I.rec7 l Z) (_root_.GlobalTheory.Fam.pk_z W).ψ haT.pinX.std _ _ _ Q J.r J.pl hJ.inj hQ hdis
       (fun i => (J.E i).dL j (α i) (γ i)) _ (fun i => (hloc i j hj α γ).1) (a.g.x j).L (a.g.x (j + 1)).L
       (ha.x j (Nat.le_of_succ_le hj)).sd (ha.x (j + 1) hj).sd (Set.ext (haT.pinX.xs j (Nat.le_of_succ_le hj)).2.2)
       (Set.ext (haT.pinX.xs (j + 1) hj).2.2) Ξ (a.g.vac j) f hv.1 hv.2.1

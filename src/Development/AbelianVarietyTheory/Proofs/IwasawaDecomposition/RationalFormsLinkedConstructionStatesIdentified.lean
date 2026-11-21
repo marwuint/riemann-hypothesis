@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RealMoveOfParts
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesRationalFormsCorrespondCoordinatewisStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesSupLatticeMemIffCoordinateImageStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesCorrespondingFormsSameAdelicFunctionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesGeometricActionsCorrespondStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesFiniteGroupCharactersCorrespondStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesRationalFormsCorrespondCoordinatewis
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesSupLatticeMemIffCoordinateImage
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesCorrespondingFormsSameAdelicFunction
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesGeometricActionsCorrespond
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinkedStatesFiniteGroupCharactersCorrespond
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.TwistChoice
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
@@ -38,19 +38,19 @@ theorem formsCl_of_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' :
     apply (Dof x').what₂.embLL.injective
     rw [l.cp.embLL]
     exact (x'.m.z.alg_eq (eK c)).trans ((heK c).trans (x.m.z.alg_eq c).symm)
-  have hphi := fun j j' h => (GlobalTheory.T.linkedStates_rationalForms_correspond_coordinatewise x x' ι e g g' l hg hg' a a' j j' h)
+  have hphi := fun j j' h => (_root_.GlobalTheory.HeightCounting.SerMove.forms_corr_link x x' ι e g g' l hg hg' a a' j j' h)
   choose hn φ hφ using hphi
   refine ⟨fun j j' h => { φ := φ j j' h, alg := halg, smul := ?_, mk_iff := ?_, rho := ?_, chi := ?_ }, ?_⟩
   · intro c y
     exact coord_smul ι (hn j j' h) (φ j j' h) (hφ j j' h) (halg c) y
   · intro y
-    exact GlobalTheory.T.linkedStates_supLattice_mem_iff_coordinateImage x x' ι e g g' l hg hg' a a' j j' h y.1 (φ j j' h y).1 (hφ j j' h y) y.2
+    exact _root_.GlobalTheory.HeightCounting.SerMove.mk_iff_of_link x x' ι e g g' l hg hg' a a' j j' h y.1 (φ j j' h y).1 (hφ j j' h y) y.2
   · intro u y z
     exact coord_eq_iff ι (hn j j' h)
-      (GlobalTheory.T.linkedStates_geometricActions_correspond x x' ι e g g' l hg hg' a a' γ hγ j j' h y.1 (φ j j' h y).1 (hφ j j' h y) u) (hφ j j' h z)
+      (_root_.GlobalTheory.HeightCounting.SerMove.rho_link x x' ι e g g' l hg hg' a a' γ hγ j j' h y.1 (φ j j' h y).1 (hφ j j' h y) u) (hφ j j' h z)
   · intro u
-    exact GlobalTheory.T.linkedStates_finiteGroupCharacters_correspond x x' ι e g g' l hg hg' a a' γ hγ j j' h u
+    exact _root_.GlobalTheory.HeightCounting.SerMove.chi_link_side x x' ι e g g' l hg hg' a a' γ hγ j j' h u
   · intro j j' h y
-    exact GlobalTheory.T.linkedStates_corresponding_forms_same_adelicFunctions x x' ι e g g' l hg hg' a a' j j' h y.1 (φ j j' h y).1 (hφ j j' h y)
+    exact _root_.GlobalTheory.HeightCounting.SerMove.reading_link x x' ι e g g' l hg hg' a a' j j' h y.1 (φ j j' h y).1 (hφ j j' h y)
 
 end GlobalTheory.HeightCounting.SerMove.FormsMove

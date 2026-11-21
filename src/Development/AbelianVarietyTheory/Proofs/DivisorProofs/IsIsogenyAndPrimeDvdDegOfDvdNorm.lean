@@ -71,6 +71,4 @@ end GlobalTheory.AV.AbVar.DegNorm
 
 namespace GlobalTheory.AV.AbVar.DegNorm
 
-open IntermediateField
-
 end GlobalTheory.AV.AbVar.DegNorm

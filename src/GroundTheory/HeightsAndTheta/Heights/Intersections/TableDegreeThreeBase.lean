@@ -38,10 +38,6 @@ theorem IsPullHerm.isSmoothHerm {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι
   rw [e]
   exact hA.comp hR.contDiffOn fun z hz => blocks_ne_zero_restrict hv hz
 
-theorem pullExists : PullExistsStatement := fun _ _ _ _ _ _ _ _ _ _ A hv =>
-  ⟨IndefiniteRowSideFullHecke.Inter.pullHerm hv A, IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv A,
-    IsPullHerm.isSmoothHerm hv (IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv A)⟩
-
 omit [Fintype K] [Fintype K'] in
 theorem pullDeg_add (κ : K → K') (a b : K → ℤ) : pullDeg κ (a + b) = pullDeg κ a + pullDeg κ b := by
   classical

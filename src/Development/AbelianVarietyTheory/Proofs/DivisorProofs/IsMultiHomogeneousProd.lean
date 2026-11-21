@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.JoinCastSucc
 import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FramedLatticeZeroCycleHeight
-import Development.AbelianVarietyTheory.Definitions.Divisors.BlockSphereMeanLinForm
+import ReciprocityTheory.SemistableReduction.SphereLogIntegrableStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsIsHomogeneousOfEquivariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinSubstLinSubst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussAbsEqISup
 
@@ -11,8 +12,6 @@ set_option autoImplicit false
 noncomputable section
 
 open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HSCore GlobalTheory.HSChoice
-open GlobalTheory.IndefiniteRowSideFullHecke.FramedLatticeZeroCycleHeight
-
 namespace GlobalTheory.ZeroCycleHt
 
 theorem linSubst_mul {R : Type} [CommRing R] {B N n : ℕ} (M : Matrix (Fin N) (Fin n) R)

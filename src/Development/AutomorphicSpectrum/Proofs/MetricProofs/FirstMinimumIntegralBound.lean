@@ -3,8 +3,8 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
 import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FirstMinimumAttainedWithBoundsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FirstMinimumContinuousCuspWeightMeasurableStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FirstMinimumAttainedWithBounds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FirstMinimumContinuousCuspWeightMeasurable
 open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.FiniteCovolume
 open scoped ENNReal InnerProductSpace
 
@@ -236,7 +236,7 @@ theorem group_mean_logPlus_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   set C : ℕ := ⌊(vr * Real.sqrt (2 * Module.finrank ℚ (maximalRealSubfield E))) ^
     (2 * Module.finrank ℚ (maximalRealSubfield E))⌋₊ with hC
   set VV := Δ.shortSet C with hVV
-  have hI := fun a => GlobalTheory.T.first_minimum_attained_with_bounds E Ψ j j' n g Λ (F.R (Δ.π a)) F.σ vr F.cm (F.sig _ (Δ.π_mem a)) hj' hvr hfam
+  have hI := fun a => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.ShortVec.short_vectors E Ψ j j' n g Λ (F.R (Δ.π a)) F.σ vr F.cm (F.sig _ (Δ.π_mem a)) hj' hvr hfam
   obtain ⟨FD, hFD, hm⟩ := ScalingLaw.full Δ.h (Pi.basisFun E (Fin (j + j'))) Δ.M μ Δ.Dn Δ.e.range VV Δ.integral (fun x hx => hx.1)
     (fun x hx => ⟨hx.2.1, hx.2.2.1⟩) (Δ.shortSet_stable C) ⟨C, fun x hx => hx.2.2.2⟩
   obtain ⟨FD₂, hFD₂, hlt⟩ := ArithmeticCovolumeFinite.full Δ.h (Pi.basisFun E (Fin (j + j'))) μ Δ.Dn Δ.e.range Δ.integral
@@ -257,7 +257,7 @@ theorem group_mean_logPlus_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       exact measure_mono_null Set.inter_subset_right hz
     exact (isOpen_univ.measure_ne_zero μ Set.univ_nonempty) h1
   refine ⟨FD, hFD, h0, hT, ?_⟩
-  have hcont := (GlobalTheory.T.first_minimum_continuous_cusp_weight_measurable E Ψ j j' n g Λ F hj').1
+  have hcont := (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamilyMeas.first_minimum_cusp_weight_regular E Ψ j j' n g Λ F hj').1
   have hlamc : Continuous fun a => (F.R (Δ.π a)).lam1 := hcont.comp_continuous Δ.π_cont Δ.π_mem
 
   have hfinS : ∀ a t, (F.R (Δ.π a)).lam1 < t → t ≤ r →

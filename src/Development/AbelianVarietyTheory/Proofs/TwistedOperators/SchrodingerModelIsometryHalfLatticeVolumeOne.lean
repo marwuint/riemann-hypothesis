@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitianStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitian
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSchwartzBruhatHalfIffPullbackMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatHalfSpanModulatedTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatHalfSpanModulatedTranslates
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasDerivAtZeroAndIsTheta
@@ -85,7 +85,7 @@ theorem ipO_translates (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT 
   have h0' : cA D (cA D a) * cA D a = 0 := by rw [mul_comm]; exact hb.2.1
   have th : ∀ w g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (heisO ψ S T w g) := fun w g hg =>
     GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg w
-  have I := GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ
+  have I := _root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ
   have t1 := th y _ (th x _ hf)
   have t2 := th y' _ (th x' _ hf)
   have key : ∀ l, heisO ψ S T l f = f → ψ (symplO S T l (y - y') + symplO S T l (x - x')) ≠ 1 →
@@ -200,9 +200,9 @@ theorem placeModel_isometry : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ 
     simp only [Function.comp, pull, if_pos (h1 z), h2]
   refine ⟨(hκ.2.2.1.measure_pos _ ⟨κ 0, 0, ⟨zero_mem _, fun _ _ => mul_zero _⟩, rfl⟩).ne',
     hκ.2.2.2.measure_lt_top.ne, ?_⟩
-  obtain ⟨w1, w2⟩ := GlobalTheory.T.schwartzBruhatHalf_span_modulated_translates D ψ S T ΛS ΛT hψ hS hT a ha.1 ha.2.1 (infPart_splitIdem ha)
+  obtain ⟨w1, w2⟩ := _root_.GlobalTheory.PlaceTensor.halfWaves_span D ψ S T ΛS ΛT hψ hS hT a ha.1 ha.2.1 (infPart_splitIdem ha)
   obtain ⟨c1, c2⟩ := GlobalTheory.T.isSchwartzBruhatHalf_iff_pullback_matrix D S T v m n a _ κ hκ
-  have I := GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ
+  have I := _root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ
   set W := {Ψ : WO S T → ℂ | ∃ x y : WO S T, IsHalf a x ∧ IsHalf (cA D a) y ∧
     Ψ = fun t => ψ (symplO S T t y) * halfInd a (latO S T ΛS ΛT fun _ => True) (t + x)} with hW
   have good : ∀ Ψ ∈ Submodule.span ℂ W, IsThetaFunO ψ S T (Tm Ψ) ∧

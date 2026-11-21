@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigCongr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsColumnCharacterEigenSubmoduleNeBotStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviWhittakerColumnCharacterEigenVecMulNeBotStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBlockTriVecMulEqSinglePredStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCommOfIrreducibleMultiplicityLeOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCommOfIrreducibleMultiplicityLeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankCommonFixedLeOneOfCommutingHeckeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhittakerSpaceDimFiniteGLLeOneStatement
 
@@ -300,7 +300,7 @@ theorem finrank_le_one [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) {V : Ty
     intro c c' hc g h
     rw [ha, ha]
     exact ((Pi.mulSingle_commute (f := fun c => GL (Fin (n c)) F) hc g h).map D).map σ
-  have hex := fun c => GlobalTheory.T.hecke_comm_of_irreducible_multiplicity_le_one (GL (Fin (n c)) F) (unip F (n c)) (fun g => ψ (edgeSum supEdge g))
+  have hex := fun c => _root_.GlobalTheory.FinGL.LeviWh.exists_idem_hecke_comm (GL (Fin (n c)) F) (unip F (n c)) (fun g => ψ (edgeSum supEdge g))
     (fun x hx y hy => by
       have := congrArg Multiplicative.toAdd ((supHom F (n c)).map_mul ⟨x, hx⟩ ⟨y, hy⟩)
       have h' : edgeSum supEdge (x * y) = edgeSum supEdge x + edgeSum supEdge y := this

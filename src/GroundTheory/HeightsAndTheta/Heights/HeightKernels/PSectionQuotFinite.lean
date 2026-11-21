@@ -138,9 +138,6 @@ theorem SectionQuotFinite.closed : SectionQuotFinite.Statement := by
   rw [natCast_zsmul]
   exact hnq
 
-theorem SectionQuotFinite.proof (_hC : CurveCharts.Statement) : SectionQuotFinite.Statement :=
-  SectionQuotFinite.closed
-
 end
 
 end GroundTheory.Heights₂.Heights

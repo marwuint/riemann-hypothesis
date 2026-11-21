@@ -73,14 +73,6 @@ theorem ideleMap_infiniteEmbedding (w : InfinitePlace K) (a : (w.Completion)ˣ) 
   have h : ∀ v, finiteProj v (infiniteEmbedding w a) = 1 := fun v ↦ Units.ext rfl
   simp [h]
 
-theorem ideleMap_comp_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) :
-    (ideleMap φ φinf hφ).comp (finiteEmbedding v) = φ v :=
-  MonoidHom.ext (ideleMap_finiteEmbedding φ φinf hφ v)
-
-theorem ideleMap_comp_infiniteEmbedding (w : InfinitePlace K) :
-    (ideleMap φ φinf hφ).comp (infiniteEmbedding w) = φinf w :=
-  MonoidHom.ext (ideleMap_infiniteEmbedding φ φinf hφ w)
-
 theorem ideleMap_eq_one_of_forall_mem
     (N : ∀ v : HeightOneSpectrum (𝓞 K), Subgroup (v.adicCompletion K)ˣ)
     (Ninf : ∀ w : InfinitePlace K, Subgroup (w.Completion)ˣ)

@@ -35,9 +35,6 @@ theorem t2Space_adeleRing : T2Space 𝔸[K] :=
 instance IdeleGroup.locallyCompactSpace : LocallyCompactSpace (IdeleGroup K) :=
   inferInstance
 
-theorem IdeleGroup.t2Space : T2Space (IdeleGroup K) :=
-  inferInstance
-
 instance locallyCompactSpace_units_finiteAdeleRing :
     LocallyCompactSpace (FiniteAdeleRing (𝓞 K) K)ˣ :=
   inferInstance

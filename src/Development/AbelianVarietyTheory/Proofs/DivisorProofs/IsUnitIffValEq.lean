@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegPull
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLab
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMulOfValLe
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRootStalk
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValueAtOrigin
@@ -12,6 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RelationsAreFunc
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsValuationClosure
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowFrameOne
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH

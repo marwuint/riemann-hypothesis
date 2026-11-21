@@ -6,9 +6,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.Lattice
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeGramScalarAlmostAll
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresInvariantStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresInvariant
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -55,9 +55,9 @@ theorem stage_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have : BorelSpace (Fv F v) := ⟨rfl⟩
   obtain ⟨-, -, -, -, -, -, -, hBorel, -, -⟩ := TopK.topTens_props F E σ hCM (Fv F v)
   have := hBorel n M
-  have hOpen := ((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2
-  obtain ⟨-, -, -, -, -, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 1) _ hND (Fv F v)
-  obtain ⟨-, -, -, -, -, hactJ⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (Fv F v)
+  have hOpen := ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b n M).2.2.2.1 v).2
+  obtain ⟨-, -, -, -, -, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM (M + 1) _ hND (Fv F v)
+  obtain ⟨-, -, -, -, -, hactJ⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM M J hJ (Fv F v)
   obtain ⟨-, hone, hmul, hgram⟩ := hact 1
   by_cases he : actW (Fv F v) σ _ h (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0)) ∈ latV b v
   · rw [Set.indicator_of_mem he]
@@ -84,7 +84,7 @@ theorem stage_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     have hcont : Continuous (actW (Fv F v) σ J u : (Fin n → Fin M → Fv F v ⊗[F] E) → _) :=
       (hactJ n).1.comp (Continuous.prodMk continuous_const continuous_id)
     rw [hset, ← Measure.map_apply hcont.measurable hOpen.measurableSet,
-      GlobalTheory.T.gram_fiber_measures_invariant F E σ hCM M J hJ (Fv F v) hLoc n μ ν m hμ hν hm u]
+      _root_.GlobalTheory.CompanionTheory.SW.FibreInv.map_actW_fibre F E σ hCM M J hJ (Fv F v) hLoc n μ ν m hμ hν hm u]
   · rw [Set.indicator_of_notMem he]
     have hempty : {X : Fin n → Fin M → Fv F v ⊗[F] E | actW (Fv F v) σ _ h (consTup X) ∈ latV b v} = ∅ := by
       ext X

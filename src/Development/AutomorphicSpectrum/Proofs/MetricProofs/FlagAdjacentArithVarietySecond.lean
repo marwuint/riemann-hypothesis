@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartFlagPt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodStatementStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackPullback
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorProperties
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
@@ -40,7 +41,7 @@ theorem exists_flags_of_point : ∀ (K : Type) [Fintype K] (ι : K → Type) [�
     show t (some k) * z ⟨some k, m⟩ = β _
     simp only [t, dif_pos hk]
     rw [e, inv_mul_cancel_left₀ (hc _)]
-  have P := GlobalTheory.T.log_period_statement K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hj hblk hca hcb hy (BM.F l) z₁ (BM.isFrame l)
+  have P := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Pts.main K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hj hblk hca hcb hy (BM.F l) z₁ (BM.isFrame l)
     (by rw [eb]; exact g1) (by rw [eb]; exact g2) (by rw [eb]; exact g3)
   obtain ⟨h, s, f1, f2⟩ := P.1 hz₁
   refine ⟨h, s, f1.2.1, orbit_trans (orbit_symm o2) ?_⟩

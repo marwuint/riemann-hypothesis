@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBallFamMonoNegAdd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearIndependentAdaptedToDecreasingChainAStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EncardSeminormBallLePowMulSmallerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearIndependentAdaptedToDecreasingChainA
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EncardSeminormBallLePowMulSmaller
 open Filter Topology
 open GlobalTheory GlobalTheory.VolBr
 
@@ -48,7 +48,7 @@ theorem log_ncard_unit_ball_le_of_indep_bound :
 
   have hstep : ∀ i, (S i).encard ≤ ((q ^ r i : ℕ) : ℕ∞) * (S (i + 1)).encard := by
     intro i
-    have h := GlobalTheory.T.encard_seminormBall_le_pow_mul_smaller G Λ B hB ((2 / q : ℝ) ^ i) q (r i) (by omega)
+    have h := _root_.GlobalTheory.VolBr.encard_ball_le_pow_mul G Λ B hB ((2 / q : ℝ) ^ i) q (r i) (by omega)
       (fun n e he hmem => hrmax i n e he hmem)
     have heq : 2 * (2 / q : ℝ) ^ i / q = (2 / q : ℝ) ^ (i + 1) := by
       rw [pow_succ]; ring
@@ -76,7 +76,7 @@ theorem log_ncard_unit_ball_le_of_indep_bound :
     calc (S K).encard ≤ ({0} : Set G).encard := Set.encard_le_encard hSK
       _ = 1 := Set.encard_singleton 0
 
-  obtain ⟨e, n, he, hmem, hsum⟩ := GlobalTheory.T.exists_linearIndependent_adapted_to_decreasing_chain' G S hSdec K r hrspec hrdec
+  obtain ⟨e, n, he, hmem, hsum⟩ := _root_.GlobalTheory.exists_linearIndependent_adapted_to_decreasing_chain G S hSdec K r hrspec hrdec
   have hM : ((∑ i ∈ Finset.range K, r i : ℕ) : ℝ) ≤ T := by
     have h1 := hbound (r 0) e n he hmem
     have h2 : ∑ i ∈ Finset.range K, r i ≤ ∑ i ∈ Finset.range (K + 1), r i :=
@@ -106,4 +106,3 @@ theorem log_ncard_unit_ball_le_of_indep_bound :
 
 end GlobalTheory.VolBr
 
-example : ∀ (G : Type) [AddCommGroup G] [IsAddTorsionFree G] (Λ : AddSubgroup G) (B : ℝ → Set G), IsBallFam Λ B → (B 1).Finite → ∀ (q : ℕ) (T : ℝ), 3 ≤ q → 0 ≤ T → (∀ (r : ℕ) (e : Fin r → G) (n : Fin r → ℕ), LinearIndependent ℤ e → (∀ j, e j ∈ B ((2 / q : ℝ) ^ n j)) → ((∑ j, (n j + 1) : ℕ) : ℝ) ≤ T) → Real.log ((B 1).ncard : ℝ) ≤ Real.log q * T := GlobalTheory.VolBr.log_ncard_unit_ball_le_of_indep_bound

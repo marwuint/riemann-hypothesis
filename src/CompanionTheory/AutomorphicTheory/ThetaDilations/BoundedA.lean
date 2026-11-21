@@ -1,12 +1,14 @@
 import CompanionTheory.AutomorphicTheory.ThetaDilations.Bounded
 import CompanionTheory.AutomorphicTheory.ThetaDilations.FstarDil
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacterStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RealQuadraticFormLemmaStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SchurFunctionSmoothRightInvariantStatement
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RealQuadraticFormLemma
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SchurFunctionSmoothRightInvariant
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SchurFunctionWhittakerEquivariantStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.QuadraticLevelSetDensityStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeFundamentalDomainVolumeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WeilOperatorIntegralInvarianceStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeFundamentalDomainVolume
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WeilOperatorIntegralInvariance
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
@@ -78,20 +80,20 @@ theorem core : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀
   refine ⟨C, Df, Di, fun a ha => ⟨d1 a ha, d2 a ha, d3 a ha⟩, ⟨i1, i2, i3⟩, fun a ha β hβ => ?_⟩
   obtain ⟨-, -, -, -, -, -, hint, -, hK, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
   have hs := sb_indL (F := F) (ι := ι) ha
-  obtain ⟨N₁, p1, n1⟩ := GlobalTheory.T.weil_operator_integral_invariance F lf hlf h1 ψ hψ ι M B ρ P hQ _ hs
+  obtain ⟨N₁, p1, n1⟩ := _root_.GlobalTheory.CompanionTheory.SW.FstarPer.fstar_periodic F lf hlf h1 ψ hψ ι M B ρ P hQ _ hs
   have hq : Continuous (qf (hf F) (Bf B) : (ι → A F) → A F) := by unfold qf; fun_prop
   obtain ⟨N₂, p2, n2⟩ := hK _ ((hs.2.isCompact.image hq).insert (algebraMap F (A F) β))
   have hN : 0 < N₁ * N₂ := Nat.mul_pos p1 p2
   have hβN : ∃ r : 𝓞 F, (r : F) = ((N₁ * N₂ : ℕ) : F) * β := (hint _).1 (by
     rw [map_mul, map_natCast, Nat.cast_mul, mul_assoc]
     exact oh_mul (oh_nat N₁) (n2 _ (Set.mem_insert _ _)))
-  obtain ⟨⟨D, hD⟩, -, -, hvol⟩ := GlobalTheory.T.lattice_fundamental_domain_volume F hF ρ hρ _ hN
-  obtain ⟨I, e1, j1, e2⟩ := GlobalTheory.T.real_quadratic_form_lemma F ι M B ρ P hQ Ω Pr gf gi hC a ha β hβ _ hN hβN (fun y hy => by
+  obtain ⟨⟨D, hD⟩, -, -, hvol⟩ := _root_.GlobalTheory.CompanionTheory.SW.FD.main F hF ρ hρ _ hN
+  obtain ⟨I, e1, j1, e2⟩ := _root_.GlobalTheory.CompanionTheory.SW.CoefTheta.fourier_coefficient F ι M B ρ P hQ Ω Pr gf gi hC a ha β hβ _ hN hβN (fun y hy => by
     rw [Nat.cast_mul, mul_assoc]
     refine oh_mul (oh_nat N₁) (n2 _ (Set.mem_insert_of_mem _ ⟨y, subset_tsupport _ ?_, rfl⟩))
     rw [Function.mem_support, indL, Set.indicator_of_mem (s := {x : ι → A F | ∀ i, (a : A F) * x i ∈ Oh F}) hy]
     exact one_ne_zero) D hD
-  obtain ⟨j2, e3⟩ := GlobalTheory.T.schur_function_smooth_right_invariant F lf hlf h1 ψ hψ ι M B ρ P hQ hM _ hs (d4 a ha) i4 β hβ _ hN hβN
+  obtain ⟨j2, e3⟩ := _root_.GlobalTheory.CompanionTheory.SW.CoefEis.fourier_coeff_eis F lf hlf h1 ψ hψ ι M B ρ P hQ hM _ hs (d4 a ha) i4 β hβ _ hN hβN
     (fun x hx y => by
       rw [Nat.cast_mul, mul_assoc]
       exact (n1 _ (oh_mul (oh_nat N₂) hx)).2 y) D hD

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
 import Formalism.LocalToGlobal.HermitianForms.TiedStep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitPlaceLatticeComponentsStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralExtensionFiniteAdelesBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstComponentsBasisLocalLatticeSplitStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalLevelUnitriangularIffStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstComponentsBasisLocalLatticeSplit
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalLevelUnitriangularIff
 open Formalism.BasicNotions Formalism.UG Formalism.L2.Forms NumberField IsDedekindDomain Matrix GlobalTheory.St.G
 open scoped TensorProduct
 
@@ -132,7 +132,7 @@ theorem local_frame_first_factor : ∀ (F E : Type) [Field F] [NumberField F] [F
     psi hpsi_add hpsi_int hne
   have hbd1 : ∀ i a, (sp (bd i a)).1 = 0 := fun i a => fst_of_sig cm.sig sp hsig e he (bd i) (hbde i) a
   have hb2 : ∀ j a, (sp (b j a)).2 = 0 := fun j a => snd_of_e sp e he (b j) (hbe j) a
-  obtain ⟨fr, hfr, hlat⟩ := GlobalTheory.T.first_components_basis_local_lattice_split F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b (Set.range bd) hb
+  obtain ⟨fr, hfr, hlat⟩ := _root_.GlobalTheory.St.G.first_components_basis F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b (Set.range bd) hb
     (by rintro x ⟨i, rfl⟩ a; exact hbd1 i a) hspan
   have hpsi0 : psi 0 = 1 := hpsi_int 0 (zero_mem _)
   have hgF : (g : F) ≠ 0 := by
@@ -187,7 +187,7 @@ theorem local_frame_first_factor : ∀ (F E : Type) [Field F] [NumberField F] [F
     rw [hea]
     exact h2.symm
   · intro y hy
-    obtain ⟨hMint, hiff⟩ := GlobalTheory.T.hermitian_local_level_unitriangular_iff F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b fr hb hb2 hfr hlat t y hy
+    obtain ⟨hMint, hiff⟩ := _root_.GlobalTheory.St.G.FirstColumn.unitriangular_iff F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b fr hb hb2 hfr hlat t y hy
     refine ⟨hiff, fun _ => ?_⟩
 
     choose s hs hsd using hdual

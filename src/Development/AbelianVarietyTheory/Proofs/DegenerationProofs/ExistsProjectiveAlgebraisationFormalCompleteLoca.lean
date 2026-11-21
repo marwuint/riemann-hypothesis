@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.HomEqOfPullS
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsPullbackOfEquationsLift
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SubmoduleEqTopOfSupSmulOfIsNilpotent
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFormLimitIdeal
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFormCorrectionNextThickeningLocalStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFormCorrectionNextThickeningLocal
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw
@@ -222,7 +222,7 @@ theorem GlobalTheory.Degen.exists_projective_of_formal_embedding_local : ∀ (R 
     ((Y e).hom ≫ thick V I e) (H e) (s e) (hH e).1 (hVA e).1 (fun t F hF h =>
       (mem_vanIdeal _ _ _).1 (mem_vanIdeal_of_sat _ _ (hVA e).1 fun i =>
         ((hB t F hF).1 h i).imp fun _ hm => hS e hm))
-  obtain ⟨t₀, ht₀⟩ := GlobalTheory.T.exists_form_correction_next_thickening_local V I hI Y β hβ hflat H v hH n s hs hva
+  obtain ⟨t₀, ht₀⟩ := _root_.GlobalTheory.Degen.exists_form_correction_local V I hI Y β hβ hflat H v hH n s hs hva
   refine ⟨Over.mk f, H', s', b, w, hH', hva', fun e => ?_, fun e => ?_, fun e => ⟨hw e, hr e⟩,
     fun t F hF h => hB' t F hF fun e => (mem_vanIdeal _ _ _).2 (h e)⟩
   · refine GlobalTheory.ProjBaseChange.isPullback_of_equations_lift V B f H' n s' hH' hva' _ _ Ideal.Quotient.mk_surjective

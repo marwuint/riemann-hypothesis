@@ -7,12 +7,12 @@ import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubs
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeFrameOpenConditionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeIntersectionFrameSubspaceStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeFrameSubBasisStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AffineDomainGenericSpecializesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeSectionsAffineModelStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeFrameOpenCondition
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeIntersectionFrameSubspace
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeFrameSubBasis
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AffineDomainGenericSpecializes
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeSectionsAffineModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentComplexPointTangentsStatement
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsChartLieBasisMatrices
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -30,13 +30,13 @@ theorem exists_affine_eigenframes : ∀ (E : Type) [Field E] [NumberField E] [Is
   haveI : IsLocallyNoetherian Y.X := LocallyOfFiniteType.isLocallyNoetherian Y.s
   haveI : GlobalTheory.IsNormalScheme Y.X := GlobalTheory.IsNormalScheme.of_pred Y.normal
   haveI : Smooth Y.t.G.hom := Y.t.semi.smooth
-  obtain ⟨-, -, h3c, -⟩ := GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ ⟨hinj, hnoeth, hfr⟩ hτ
+  obtain ⟨-, -, h3c, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c O β Y U Z τ ⟨hinj, hnoeth, hfr⟩ hτ
   obtain ⟨g, b, hb, hS⟩ := h3c p₀ hp₀
   obtain ⟨S₁, hS₁⟩ := hS τ
   obtain ⟨S₂, hS₂⟩ := hS (ComplexEmbedding.conjugate τ)
-  obtain ⟨hspan, N, hpN, hN⟩ := GlobalTheory.T.lattice_frame_open_condition Y.X Y.t.G Z.Ω _ Z.V Z.M p₀ g b hb
-  have e₁ := GlobalTheory.T.lattice_intersection_frame_subspace Y.X Z.Ω _ Z.V Z.M.lat (eigSp Z.ρ (Z.inc.comp (tauIn c τ))) p₀ g b S₁ Z.gen hspan hb.2 hS₁
-  have e₂ := GlobalTheory.T.lattice_intersection_frame_subspace Y.X Z.Ω _ Z.V Z.M.lat (eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ)))) p₀ g b S₂
+  obtain ⟨hspan, N, hpN, hN⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieVB.isFrameAt_span_and_nhd Y.X Y.t.G Z.Ω _ Z.V Z.M p₀ g b hb
+  have e₁ := _root_.GlobalTheory.CompanionTheory.Ar.LocalFrames.span_eq_of_saturated Y.X Z.Ω _ Z.V Z.M.lat (eigSp Z.ρ (Z.inc.comp (tauIn c τ))) p₀ g b S₁ Z.gen hspan hb.2 hS₁
+  have e₂ := _root_.GlobalTheory.CompanionTheory.Ar.LocalFrames.span_eq_of_saturated Y.X Z.Ω _ Z.V Z.M.lat (eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ)))) p₀ g b S₂
     Z.gen hspan hb.2 hS₂
   have card : ∀ (S : Finset (Fin g)) (n : ℕ) (u : Fin n → Z.V), LinearIndependent Z.Ω u →
       Submodule.span Z.Ω (Set.range u) = Submodule.span Z.Ω (b '' S) → S.card = n := by
@@ -59,9 +59,9 @@ theorem exists_affine_eigenframes : ∀ (E : Type) [Field E] [NumberField E] [Is
   have hmem : ∀ i, b i ∈ Z.M.lat p₀ := fun i => by
     rw [hb.2]
     exact Submodule.subset_span ⟨i, rfl⟩
-  obtain ⟨A, hA, EB, i₁, i₂, MB, e, hpA, hAN, hval⟩ := GlobalTheory.T.lattice_sections_affine_model Y.X Y.t.G Z.Ω _ Z.V Z.M p₀ (N ⊓ W) (Fin g) b ⟨hpN, hW⟩ hmem
+  obtain ⟨A, hA, EB, i₁, i₂, MB, e, hpA, hAN, hval⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFrames.Chart.exists_chart_values Y.X Y.t.G Z.Ω _ Z.V Z.M p₀ (N ⊓ W) (Fin g) b ⟨hpN, hW⟩ hmem
   have hd : IsDomain Γ(Y.X, A) := hWd A hpA (hAN.trans inf_le_right)
-  have hcl := GlobalTheory.T.affine_domain_generic_specializes Y.X Z.Ω _ A hA p₀ Z.gen hd hpA
+  have hcl := _root_.GlobalTheory.CompanionTheory.Ar.LocFrames.genPt_specializes_of_isDomain Y.X Z.Ω _ A hA p₀ Z.gen hd hpA
   have hcA : ∀ (f : Γ(Y.X, A) →+* ℂ) (y : Sp ℂ ⟶ Y.X), y = spMap f ≫ hA.fromSpec → centre y ∈ A := by
     intro f y hy
     have h5 : centre y ∈ Set.range hA.fromSpec := by
@@ -69,17 +69,17 @@ theorem exists_affine_eigenframes : ∀ (E : Type) [Field E] [NumberField E] [Is
       exact ⟨spMap f (IsLocalRing.closedPoint ℂ), (Scheme.Hom.comp_apply _ _ _).symm⟩
     rwa [hA.range_fromSpec] at h5
   refine ⟨A, hA, EB, i₁, i₂, MB, e ∘ ι₁, e ∘ ι₂, b ∘ ι₁, b ∘ ι₂, hpA, fun q hq => ⟨?_, ?_⟩, ?_, ?_⟩
-  · exact GlobalTheory.T.lattice_frame_sub_basis Y.X Z.Ω _ Z.V Z.M.lat _ q g D.p b ι₁ ι₁.injective hb.1 (hN q (hAN hq).1).2 (by rw [r₁]; exact e₁)
-  · exact GlobalTheory.T.lattice_frame_sub_basis Y.X Z.Ω _ Z.V Z.M.lat _ q g D.q b ι₂ ι₂.injective hb.1 (hN q (hAN hq).1).2 (by rw [r₂]; exact e₂)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.SubFrame.isFrameAt_comp Y.X Z.Ω _ Z.V Z.M.lat _ q g D.p b ι₁ ι₁.injective hb.1 (hN q (hAN hq).1).2 (by rw [r₁]; exact e₁)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.SubFrame.isFrameAt_comp Y.X Z.Ω _ Z.V Z.M.lat _ q g D.q b ι₂ ι₂.injective hb.1 (hN q (hAN hq).1).2 (by rw [r₂]; exact e₂)
   · intro f y v w hy hs hv hw
     have hyA := hcA f y hy
     have h := hcl _ hyA
     have hq := (hN ⟨centre y, h⟩ (hAN hyA).1).2
     exact ⟨GlobalTheory.T.component_complex_point_tangents E H D l Xo c O β Y U Z τ σ D.p _ y h v hinj hfr hs
-        (GlobalTheory.T.lattice_frame_sub_basis Y.X Z.Ω _ Z.V Z.M.lat _ _ g D.p b ι₁ ι₁.injective hb.1 hq (by rw [r₁]; exact e₁))
+        (_root_.GlobalTheory.CompanionTheory.Ar.SubFrame.isFrameAt_comp Y.X Z.Ω _ Z.V Z.M.lat _ _ g D.p b ι₁ ι₁.injective hb.1 hq (by rw [r₁]; exact e₁))
         (fun i => hval y f h hy (ι₁ i) (v i) (hv i)),
       GlobalTheory.T.component_complex_point_tangents E H D l Xo c O β Y U Z _ σ D.q _ y h w hinj hfr hs
-        (GlobalTheory.T.lattice_frame_sub_basis Y.X Z.Ω _ Z.V Z.M.lat _ _ g D.q b ι₂ ι₂.injective hb.1 hq (by rw [r₂]; exact e₂))
+        (_root_.GlobalTheory.CompanionTheory.Ar.SubFrame.isFrameAt_comp Y.X Z.Ω _ Z.V Z.M.lat _ _ g D.q b ι₂ ι₂.injective hb.1 hq (by rw [r₂]; exact e₂))
         (fun j => hval y f h hy (ι₂ j) (w j) (hw j))⟩
   · intro f y v w hy h hv hw
     exact ⟨fun i => hval y f h hy (ι₁ i) (v i) (hv i), fun j => hval y f h hy (ι₂ j) (w j) (hw j)⟩

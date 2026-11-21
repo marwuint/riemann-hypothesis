@@ -8,10 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitChar
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EqOfValHomEq
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FinrankSpanReductionLe
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomGenericPoint
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemTorusExtensionConeIffSmallDegreeFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisedTestDimensionsAndSplitFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemTorusExtensionConeIffSmallDegreeForms
+import Development.AbelianVarietyTheory.Definitions.Degenerations.PullChartIsLB
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisedTestDimensionsAndSplitFibre
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegreeFormsDimensionGenericFibreLeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LePreimageOpenPartIffTestCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LePreimageOpenPartIffTestCoordinates
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionPointsSpecialFibreSupportCoordinatesStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -65,8 +66,8 @@ theorem mem_cone_iff [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hB : BaseFacts 
   haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1
   have hsm : SmoothOfRelativeDimension S.g t.mod.Φ.G.hom :=
     (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback t.mod.cart.1 t.mod.smooth
-  have hbig : Big S.g S.N (S.r * S.N) := ⟨(GlobalTheory.T.uniformisedTest_dimensions_and_split_fibre hL o Ω S ρ p y₀ t.u).2.2.2.1, hS.1, hS.2.1⟩
-  have key := GlobalTheory.T.mem_torusExtensionCone_iff_smallDegreeForms hL.1 hL.2.1 (kb p) t.mod.Φ S.g S.N (S.r * S.N) _ S.J _ t.mod.F t.mod.pol hbig
+  have hbig : Big S.g S.N (S.r * S.N) := ⟨(_root_.GlobalTheory.ZH.utest_dim_and_split hL o Ω S ρ p y₀ t.u).2.2.2.1, hS.1, hS.2.1⟩
+  have key := _root_.GlobalTheory.ZH.FibCone.mem_cone_iff hL.1 hL.2.1 (kb p) t.mod.Φ S.g S.N (S.r * S.N) _ S.J _ t.mod.F t.mod.pol hbig
     t.mod.good t.mod.dim (level_ne_zero S y) hsm
     (fun d hd => (Mod.hilb_special_le_generic p _ _ _ _ _ 0 _ _ _ _ _ _ t.mod d).trans
       (GlobalTheory.T.degreeFormsDimension_genericFibre_le hL o Ω S ρ p y₀ t.u S.J t.σ d hd)) v
@@ -101,7 +102,7 @@ theorem image_special_fibre_iff : GlobalTheory.UT.LL → ∀ (o Ω : Type) [Comm
     have hov := image_over tm c' hc'
     obtain ⟨k₁, k₂⟩ := (mem_cone_iff hL hB tm hS v).1 ⟨x₀, h₂, hv⟩
     rw [← Category.assoc]
-    refine ⟨(GlobalTheory.T.le_preimage_openPart_iff_testCoordinates o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS _ v hov hcr).2 k₁,
+    refine ⟨(_root_.GlobalTheory.ZH.TestCrit.le_preimage_G_iff_test o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS _ v hov hcr).2 k₁,
       InFibChart.inFib_of_chart o Ω S ρ M U₀ EE hB Q _ tm.l _ _ hcr ?_⟩
     rw [hov]
     exact k₂
@@ -124,7 +125,7 @@ theorem image_special_fibre_iff : GlobalTheory.UT.LL → ∀ (o Ω : Type) [Comm
     have k₂ := hF tm.l x' _ rfl hw
     rw [hx] at k₂
     obtain ⟨x₀, h₂, hv⟩ := (mem_cone_iff hL hB tm hS v).2
-      ⟨(GlobalTheory.T.le_preimage_openPart_iff_testCoordinates o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS x' v hx' hw).1 hG, k₂⟩
+      ⟨(_root_.GlobalTheory.ZH.TestCrit.le_preimage_G_iff_test o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS x' v hx' hw).1 hG, k₂⟩
     obtain ⟨h₁, hcr⟩ := crd_image tm x₀ h₂ v hv
     refine ⟨x₀ ≫ t.mod.r, h₁, ?_⟩
     have e : ((x₀ ≫ t.mod.r) ≫ tm.f) ≫ (Q.P.hom ∣_ Q.W tm.l) = x' ≫ (Q.P.hom ∣_ Q.W tm.l) := by

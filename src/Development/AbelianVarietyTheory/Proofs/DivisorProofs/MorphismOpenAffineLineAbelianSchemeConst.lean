@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendAffineLineMorphismToProperAcrossPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveLineToAbelianVarietyConstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveLineToAbelianVarietyConst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInversionCoordinateLocalizationPolynomialStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
@@ -161,7 +161,7 @@ theorem maps_from_open_line_const : ∀ (k : Type) [Field k] [IsAlgClosed k] (B 
             rw [spMap_comp', Category.assoc, e₁]
         _ = _ := by
             rw [h2, ← rhoMap_comp_aeval, spMap_comp', Category.assoc]
-  have key := GlobalTheory.T.projectiveLine_to_abelianVariety_const k B hB f₀ f₁ hf₀ hf₁ hc
+  have key := _root_.GlobalTheory.LineConst.projLine_map_const k B hB f₀ f₁ hf₀ hf₁ hc
     (a.comp (IsScalarTower.toAlgHom k (Polynomial k) (Localization.Away P)))
     (b.comp (IsScalarTower.toAlgHom k (Polynomial k) (Localization.Away P)))
   rw [← e₀, ← Category.assoc, ← Category.assoc, ← spMap_comp', ← spMap_comp']

@@ -54,106 +54,6 @@ theorem log_mass_ratio_telescoping (D : D7) (k : ℕ) (hk : 1 ≤ k) (n : ℕ) :
     push_cast
     ring
 
-theorem log_word_scale_closed_form (D : D7) : LogWordScaleClosedFormOfIndexFormulas D := by
-  let _ := D.host.cmStar
-  intro h2b h2v h43 u
-  have hv := host_v_pos D
-  have hk := D.R.k_ge
-  have hm := D.R.two_le_m
-  have hr : D.R.r = D.R.k + (D.R.m - 1) := by
-    have er : D.R.r = D.R.k + D.R.m - 1 := rfl
-    omega
-  have hf : (0 : ℝ) < D.R.f := by exact_mod_cast degree_pos_alt D
-  have hkR : (0 : ℝ) < D.R.k := by exact_mod_cast (by omega : 0 < D.R.k)
-  have hg : ∀ i : Fin 2, (2 : ℝ) ≤ (D.host.g i : ℝ) := fun i => by exact_mod_cast (D.host.g_prime i).two_le
-  have hfac : ∀ (i : Fin 2) (j : ℕ), 1 ≤ j → 0 < 1 - ((D.host.g i : ℝ) ^ j)⁻¹ := by
-    intro i j hj
-    have h1 : (2 : ℝ) ≤ (D.host.g i : ℝ) ^ j :=
-      le_trans (hg i) (le_self_pow₀ (by linarith [hg i]) (by omega))
-    have h2 : ((D.host.g i : ℝ) ^ j)⁻¹ ≤ 2⁻¹ := inv_anti₀ (by norm_num) h1
-    norm_num at h2 ⊢
-    linarith
-  have e1 : (D.R.f : ℝ) * D.R.k * logXuD D u = Real.log (DstarD D / duStarU D u) := by
-    unfold logXuD logXu
-    field_simp
-  set R := ∏ M ∈ Ico (D.R.k + 1) (D.R.k + (D.R.m - 1) + 1), ratioH D M with hR
-  have hmass : massI D D.R.r = massI D D.R.k * R := by
-    rw [hr]; exact mass_telescope D h2b hv D.R.k (by omega) (D.R.m - 1)
-  have hRpos : 0 < R := Finset.prod_pos fun M hM => mass_ratio_pos D hv M (by have := (Finset.mem_Ico.1 hM).1; omega)
-  set Q := ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) ^ (D.R.f * (D.R.m * (2 * D.R.k + D.R.m - 1) / 2)) *
-      ∏ i : Fin 2, ∏ j ∈ Finset.Ioc D.R.k D.R.r, (1 - ((D.host.g i : ℝ) ^ j)⁻¹) ^ D.R.f with hQ
-  have hgg : 0 < (D.host.g 0 : ℝ) * (D.host.g 1 : ℝ) := mul_pos (by linarith [hg 0]) (by linarith [hg 1])
-  have hQ2 : 0 < ∏ i : Fin 2, ∏ j ∈ Finset.Ioc D.R.k D.R.r, (1 - ((D.host.g i : ℝ) ^ j)⁻¹) ^ D.R.f :=
-    Finset.prod_pos fun i _ => Finset.prod_pos fun j hj =>
-      pow_pos (hfac i j (by have := (Finset.mem_Ioc.1 hj).1; omega)) _
-  have hQpos : 0 < Q := mul_pos (pow_pos hgg _) hQ2
-  have h3 : idxSig D (D.host.g 0) (D.host.g 1) / idxPi D (D.host.g 0) (D.host.g 1) = Q := h43.2.2
-  have hidx : idxPi D (D.host.g 0) (D.host.g 1) ≠ 0 := by
-    intro h0
-    rw [h0, div_zero] at h3
-    exact hQpos.ne h3
-  have hmk : massI D D.R.k ≠ 0 := (massI_pos D D.R.k).ne'
-  have hdim : ∀ ρ, 0 < dimV (uColR D u ρ) := fun ρ => dim_weyl_pos_of_strictAnti _ (column_param_strictAnti D u ρ)
-  have hP : 0 < ∏ ρ, (D.dsig ρ / dimV (uColR D u ρ)) :=
-    Finset.prod_pos fun ρ _ => div_pos (D.dsig_pos ρ) (hdim ρ)
-  have e2 : DstarD D / duStarU D u = R * Q * ∏ ρ, (D.dsig ρ / dimV (uColR D u ρ)) := by
-    unfold DstarD DstarP duStarU duStarP
-    rw [volume_eq_mass_at_rank D h2v, hmass, Finset.prod_div_distrib, ← h3]
-    have hd : (∏ ρ, dimV (uColR D u ρ)) ≠ 0 := (Finset.prod_pos fun ρ _ => hdim ρ).ne'
-    field_simp
-  have eR : Real.log R = ∑ M ∈ Ico (D.R.k + 1) (D.R.k + (D.R.m - 1) + 1), Real.log (ratioH D M) :=
-    Real.log_prod fun M hM => (mass_ratio_pos D hv M (by have := (Finset.mem_Ico.1 hM).1; omega)).ne'
-  have eQ : Real.log Q = ((D.R.f * (D.R.m * (2 * D.R.k + D.R.m - 1) / 2) : ℕ) : ℝ) *
-        Real.log ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) +
-      (D.R.f : ℝ) * ∑ i : Fin 2, ∑ j ∈ Finset.Ioc D.R.k D.R.r, Real.log (1 - ((D.host.g i : ℝ) ^ j)⁻¹) := by
-    rw [hQ, Real.log_mul (pow_pos hgg _).ne' hQ2.ne', Real.log_pow, Real.log_prod]
-    · congr 1
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      rw [Real.log_prod, Finset.mul_sum]
-      · exact Finset.sum_congr rfl fun j _ => Real.log_pow _ _
-      · exact fun j hj => (pow_pos (hfac i j (by have := (Finset.mem_Ioc.1 hj).1; omega)) _).ne'
-    · exact fun i _ => (Finset.prod_pos fun j hj =>
-        pow_pos (hfac i j (by have := (Finset.mem_Ioc.1 hj).1; omega)) _).ne'
-  have eP : Real.log (∏ ρ, (D.dsig ρ / dimV (uColR D u ρ))) =
-      ∑ ρ, Real.log (D.dsig ρ * facProd D.R.r / vand (uColR D u ρ)) -
-        (D.R.f : ℝ) * (Real.log (facProd D.R.r) - Real.log (facProd D.R.k)) := by
-    rw [Real.log_prod fun ρ _ => (div_pos (D.dsig_pos ρ) (hdim ρ)).ne']
-    have : ∀ ρ, Real.log (D.dsig ρ / dimV (uColR D u ρ)) =
-        Real.log (D.dsig ρ * facProd D.R.r / vand (uColR D u ρ)) -
-          (Real.log (facProd D.R.r) - Real.log (facProd D.R.k)) := by
-      intro ρ
-      have hvd : 0 < vand (uColR D u ρ) := by
-        have := hdim ρ
-        unfold dimV at this
-        exact (div_pos_iff_of_pos_right (factorial_product_pos _)).1 this
-      unfold dimV
-      rw [Real.log_div (D.dsig_pos ρ).ne' (div_pos hvd (factorial_product_pos _)).ne',
-        Real.log_div hvd.ne' (factorial_product_pos _).ne',
-        Real.log_div (mul_pos (D.dsig_pos ρ) (factorial_product_pos _)).ne' hvd.ne',
-        Real.log_mul (D.dsig_pos ρ).ne' (factorial_product_pos _).ne']
-      ring
-    rw [Finset.sum_congr rfl fun ρ _ => this ρ, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ,
-      D.what₂.card_Tau, nsmul_eq_mul]
-  have he : ((D.R.f * (D.R.m * (2 * D.R.k + D.R.m - 1) / 2) : ℕ) : ℝ) =
-      (D.R.f : ℝ) * ((D.R.m : ℝ) * (2 * D.R.k + D.R.m - 1) / 2) := by
-    obtain ⟨c, hc⟩ := D.R.m_even
-    have h1 : D.R.m * (2 * D.R.k + D.R.m - 1) / 2 = c * (2 * D.R.k + D.R.m - 1) := by
-      have : D.R.m * (2 * D.R.k + D.R.m - 1) = 2 * (c * (2 * D.R.k + D.R.m - 1)) := by
-        generalize 2 * D.R.k + D.R.m - 1 = X
-        rw [hc]
-        ring
-      rw [this, Nat.mul_div_cancel_left _ (by norm_num)]
-    have hX : ((2 * D.R.k + D.R.m - 1 : ℕ) : ℝ) = 2 * (D.R.k : ℝ) + D.R.m - 1 := by
-      rw [Nat.cast_sub (by omega)]; push_cast; ring
-    have hmc : (D.R.m : ℝ) = 2 * c := by rw [hc]; push_cast; ring
-    rw [h1, Nat.cast_mul, Nat.cast_mul, hX, hmc]
-    ring
-  have hn : ((D.R.m - 1 : ℕ) : ℝ) = (D.R.m : ℝ) - 1 := by rw [Nat.cast_sub (by omega)]; simp
-  rw [e1, e2, Real.log_mul (mul_pos hRpos hQpos).ne' hP.ne', Real.log_mul hRpos.ne' hQpos.ne', eR, eQ, eP,
-    log_mass_ratio_telescoping D D.R.k (by omega) (D.R.m - 1), he, hn, Ico_succ_eq_Ioc, ← hr]
-  ring
-
 theorem piN_succ (n g : ℕ) : piN (n + 1) g = piN n g * (1 - ((g : ℝ) ^ (n + 1))⁻¹) := by
   unfold piN
   rw [Finset.prod_Icc_succ_top (by omega)]
@@ -383,8 +283,5 @@ theorem indices_four_three_of_indices_four_two (D : D7) (h : LocalIndexFormulasA
   ring
 
 theorem index_product_formulas_and_ratio (D : D7) : IndexProductFormulasAndRatio D := indices_four_three_of_indices_four_two D (local_index_formulas_and_bounds D)
-
-theorem identity_five_one_of_aux2b_of_aux2v (D : D7) (h2b : MassRatio₂ D) (h2v : VolumeEqMass₂ D) : LemmaFiveOneIdentity D :=
-  log_word_scale_closed_form D h2b h2v (index_product_formulas_and_ratio D)
 
 end Formalism.MainNotions.StandardLattice

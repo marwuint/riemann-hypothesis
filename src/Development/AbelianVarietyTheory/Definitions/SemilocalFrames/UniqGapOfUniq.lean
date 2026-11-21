@@ -28,9 +28,6 @@ def UniqGap : Prop :=
       PI.BesselMapUniq.IsBesselMapSm (k := k) (r := r) z (PI.BesselMapUniq.psiGen k r z c) σ π B₂ →
       ∃ a b : ℂ, (a ≠ 0 ∨ b ≠ 0) ∧ ∀ v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ, a • B₁ v + b • B₂ v = 0
 
-theorem uniqGap_of_uniq (h : PI.BesselMapUniq.BesselMapUniq) : UniqGap :=
-  fun k r ε lam _ H _ _ σ z c u Wp _ _ π _ _ _ => h k r ε lam H σ z c u Wp π
-
 def Hyp : Prop :=
   BranchingSupport.HypsG ∧ UniqGap ∧ Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOneG ∧ Formalism.L2.SG.Pf.SzHypFD.DsigHC
 

@@ -19,8 +19,6 @@ def CurveSmallCountLower.Statement : Prop :=
 
 namespace CurveSmallCountLower
 
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet
-
 end CurveSmallCountLower
 
 end

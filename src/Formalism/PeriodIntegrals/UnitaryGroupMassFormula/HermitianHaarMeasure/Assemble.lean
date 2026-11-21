@@ -11,7 +11,4 @@ theorem qnHermHaar_of_alg (hA : HermAlgFrom) :
     RdSkew → StarMinor → ContractionsCovariant → MoveVec → MoveCov → YLeibniz → EabGlLev → EabPres → HermHaar :=
   qnHermHaar_of hA elementary_generator_adjoint elementary_generator_preserves_test multiplication_preserves_test test_function_pairing_integral conjugate_y_relation conjugate_x_relation restricted_gram_hermitian_involution glue_holds_var
 
-theorem hermFromSteps_of_alg (hA : HermAlgFrom) : HermFromSteps :=
-  hermFromSteps_of hA elementary_generator_adjoint elementary_generator_preserves_test multiplication_preserves_test test_function_pairing_integral conjugate_y_relation conjugate_x_relation restricted_gram_hermitian_involution glue_holds_var
-
 end PI.QnHermHaar

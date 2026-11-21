@@ -4,10 +4,11 @@ import ReciprocityTheory.GaloisValuations.Global
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.Statement
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import ReciprocityTheory.NeutralLocalFields.HilbertClassField
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HilbertClassFieldOfGlobalArtinReciprocityStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HilbertClassFieldOfGlobalArtinReciprocity
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthAddMonoidHomFiniteGroupFractionQuotientLeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HilbertSubgroupLeKerOfKillsInertiaStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisAddHomVanishesComplexConjugationStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisAddHomVanishesComplexConjugation
+import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.HilbertClassFieldA
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 namespace GlobalTheory.UnramifiedClassBound
@@ -16,7 +17,7 @@ open Neutral.HilbertClassField
 theorem vhE_of_globalArtinReciprocity (hA : GlobalTheory.Published.GlobalArtinReciprocity) : ReciprocityTheory.ChartRestriction.T2.VhE := by
   intro E Ω _ _ _ _ _ Av hAv l _ O _ _ _ _ _ hl M _ _ hM ρ hρ S hS hU
   obtain ⟨eM⟩ := hM
-  obtain ⟨art, hsurj, hker, -⟩ := GlobalTheory.T.hilbertClassField_of_globalArtinReciprocity hA E Ω
+  obtain ⟨art, hsurj, hker, -⟩ := _root_.GlobalTheory.Published.GlobalArtinReciprocity.hilbertClassField hA E Ω
 
   let ψ : (Additive (ClassGroup (𝓞 E)) →+ M) →ₗ[O] coZ1s ρ :=
     { toFun := fun f => ⟨fun g => f (Additive.ofMul (art g)), fun g h => by
@@ -42,7 +43,7 @@ theorem vhE_of_globalArtinReciprocity (hA : GlobalTheory.Published.GlobalArtinRe
       have := congrFun hw ⟨σ, hσ⟩
       simp only [coD0, resRep, LinearMap.coe_mk, AddHom.coe_mk] at this
       exact (show (z : G E Ω → M) σ = _ from this.symm).trans (by simp [hρ])
-    have hkill := GlobalTheory.T.hilbertSubgroup_le_ker_of_kills_inertia E Ω Av hAv M z hz hlc hI (fun c hc => GlobalTheory.T.galoisAddHom_vanishes_complexConjugation E Ω l O hl M z hz c hc)
+    have hkill := GlobalTheory.T.hilbertSubgroup_le_ker_of_kills_inertia E Ω Av hAv M z hz hlc hI (fun c hc => _root_.GlobalTheory.addHom_complexConjugation_eq_zero E Ω l O hl M z hz c hc)
     let zH : G E Ω →* Multiplicative M :=
       { toFun := fun g => Multiplicative.ofAdd ((z : G E Ω → M) g)
         map_one' := by

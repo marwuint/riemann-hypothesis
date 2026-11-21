@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
 
 noncomputable section
 
@@ -188,7 +188,7 @@ theorem coe_fockHarmonicsSecondMemberSubmodule : (sub2 p q r s : Set (Pol p q r 
 
 theorem fockHarmonicsFirstMember_kStable : KStable (fockAct1 p q r s) (sub1 p q r s) ∧
     KStable (fockAct2 p q r s) (sub1 p q r s) := by
-  obtain ⟨-, -, h2, h3⟩ := GlobalTheory.T.fockOperators_lie_representation_commute p q r s
+  obtain ⟨-, -, h2, h3⟩ := _root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s
   exact ⟨fun Y hY _ hw => map_mem_lowKer (degZero_fockAct1 hY)
       (fun Z _ => Or.inl (h3 Y Z).symm) hw,
     fun Y hY _ hw => map_mem_lowKer (degZero_fockAct2 hY)
@@ -196,7 +196,7 @@ theorem fockHarmonicsFirstMember_kStable : KStable (fockAct1 p q r s) (sub1 p q 
 
 theorem fockHarmonicsSecondMember_kStable : KStable (fockAct1 p q r s) (sub2 p q r s) ∧
     KStable (fockAct2 p q r s) (sub2 p q r s) := by
-  obtain ⟨-, h1, -, h3⟩ := GlobalTheory.T.fockOperators_lie_representation_commute p q r s
+  obtain ⟨-, h1, -, h3⟩ := _root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s
   exact ⟨fun Y hY _ hw => map_mem_lowKer (degZero_fockAct1 hY)
       (fun Z hZ => Or.inr ⟨_, isPC_bracket hY hZ, h1 Z Y⟩) hw,
     fun Y hY _ hw => map_mem_lowKer (degZero_fockAct2 hY)

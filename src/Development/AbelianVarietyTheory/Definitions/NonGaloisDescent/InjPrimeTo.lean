@@ -77,13 +77,6 @@ def WildOne (D : D7) : Prop :=
       ∀ s ∈ Ine (F := D.host.E) (D.nd.plOm.1 (D.naut.plGw k v)),
         s ∈ wildSet D.nd (D.nd.plOm.1 (D.naut.plGw k v)) → D.naut.inePol L s = (X - 1) ^ D.naut.lpDim L
 
-def GalAway (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (a : ℕ), 1 ≤ a → ∀ π : D.naut.CG a, D.naut.csd π → D.naut.ralg π →
-    ∃ r : G D.host.E D.nd.Om →* GL (Fin a) (Qbar (D.nd.l i)),
-      Continuous (fun g => ((r g : GL (Fin a) (Qbar (D.nd.l i))) : Matrix (Fin a) (Fin a) (Qbar (D.nd.l i)))) ∧
-      ∀ w, w ∉ placesOver D.host.E (D.nd.l i) →
-        D.naut.wdOf i r w = D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)
-
 def FrobDense (D : D7) : Prop :=
   ∀ T : Set (PlE D.host), T.Finite → Dense {s : G D.host.E D.nd.Om | ∃ w : PlE D.host, w ∉ T ∧ IsSplitPl D.host w ∧
     ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F := D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) s}
@@ -98,20 +91,6 @@ def RedVia (D : D7) (i : D.nd.Loc) (k : Fin 2)
     p.map (iotaO D.nd D.naut i) = (s.map fun x => X - C (D.ntypes.teichC k x)).prod →
     p.map ((D.naut.kFbar i).comp (IsLocalRing.residue (D.nd.O i))) = (s.map fun x => X - C (ι x)).prod
 
-def IotaLoc (D : D7) : Prop :=
-  ∀ i : D.nd.Loc, ∃ (B : ValuationSubring ℂ) (κ : IsLocalRing.ResidueField B ≃+*
-      Fb (D.what₂.places.resChar (D.nd.w i)) (D.what₂.places.resChar_prime (D.nd.w i))),
-    (∀ y : D.nd.O i, ∃ h : iotaO D.nd D.naut i y ∈ B,
-      fbCast (D.nd.w_l i) (D.what₂.places.resChar_prime (D.nd.w i)) (D.nd.lPrime i).out
-        (κ (IsLocalRing.residue B ⟨_, h⟩)) = D.naut.kFbar i (IsLocalRing.residue (D.nd.O i) y)) ∧
-    ∀ k v x, ∃ h : D.ntypes.teichC k x ∈ B, D.ntypes.iota k v (D.nd.w i) x = κ (IsLocalRing.residue B ⟨_, h⟩)
-
-def RowModel (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (σ : D.what₂.FT), D.what₂.isot (D.nd.j i) σ ≠ ⊥ → D.nd.goodRow σ →
-    ∃ (i' : D.nd.Loc) (π : D.naut.CG D.R.r) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i')),
-      D.nd.w i' = D.nd.w i ∧ HasParamW D.nd D.naut i' σ [⟨D.R.r, π, 1⟩] ∧ D.naut.csd π ∧ D.naut.ralg π ∧
-      IsRepOfSig D.nd D.naut i' [⟨D.R.r, π, 1⟩] ρ
-
 def TwistInv (D : D7) : Prop :=
   (∀ (a : ℕ) (π : D.naut.CG a), 1 ≤ a → D.naut.tw (D.naut.tw π D.naut.etaT) D.naut.etaTinv = π) ∧
   ∀ (a : ℕ) (π : D.naut.CG a), 1 ≤ a → D.naut.tw (D.naut.tw π D.naut.etaTinv) D.naut.etaT = π
@@ -123,7 +102,5 @@ def CharLaws (D : D7) : Prop :=
 
 def MultOne (D : D7) : Prop :=
   ∀ (a : ℕ) (π π' : D.naut.CG a), 1 ≤ a → (∀ w, D.naut.locG π w = D.naut.locG π' w) → π = π'
-
-def GoodBase (D : D7) : Prop := ∀ σ, D.nd.goodRow (D.what₂.ft0 σ)
 
 end GlobalTheory.TypeLeaf

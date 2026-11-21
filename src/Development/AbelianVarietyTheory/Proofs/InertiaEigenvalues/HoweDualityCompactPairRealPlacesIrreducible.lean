@@ -12,10 +12,10 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Raisin
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TranslateMemCoefLatFn
 import Development.AbelianVarietyTheory.Definitions.Foundations.ForallEventuallyFinLocIff
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HoweDualityCompactPairPolynomialFockAllRealPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HoweDualityCompactPairPolynomialFockAllRealPlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealPointsActFockByRealComponentsBasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasDerivAtFockVectorsTargetLieRealPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanConjUnitaryLieAlgebraRealPlaceEqTopStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasDerivAtFockVectorsTargetLieRealPlace
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanConjUnitaryLieAlgebraRealPlaceEqTop
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef
 open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.IndefR.Links
@@ -71,7 +71,7 @@ theorem howe_irr : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) 
   have hlie : ∀ ψ ∈ M, ∀ (τ : D.what₂.Tau) (Z : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ),
       GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin (Vc D i).rank => true) (fun j : Fin (Wc D i).rank => decide ((j : ℕ) < w.p τ)) Z ∘ₗ ψ ∈ M := by
     intro ψ hψ τ
-    obtain ⟨κ, hκ⟩ := GlobalTheory.T.hasDerivAt_fockVectors_targetLie_realPlace D G Pl0 T A Ks R F hG hFull i t τ
+    obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.FockLieW.hasDerivAt_fockVector D G Pl0 T A Ks R F hG hFull i t τ
     have hε' : (R.MW i (sg0 D A)).ε τ = fun j : Fin (Wc D i).rank => decide ((j : ℕ) < w.p τ) := funext (hε τ)
     set fr := (R.MW i (sg0 D A)).fr τ with hfr
     have base : ∀ Y ∈ lieAt (Wc D i) τ,
@@ -85,7 +85,7 @@ theorem howe_irr : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) 
       convert h3 using 1
       ext x
       simp
-    have hsp := GlobalTheory.T.span_conj_unitaryLieAlgebra_realPlace_eq_top D (Wc D i) τ fr ((R.MW i (sg0 D A)).fr_unit τ)
+    have hsp := _root_.GlobalTheory.LieSpanConj.span_conj_lieAt_eq_top D (Wc D i) τ fr ((R.MW i (sg0 D A)).fr_unit τ)
     intro Z
     have hZ : Z ∈ Submodule.span ℂ {Z : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ | ∃ Y ∈ lieAt (Wc D i) τ, Z = fr * Y * fr⁻¹} := by
       rw [hsp]; exact Submodule.mem_top
@@ -100,7 +100,7 @@ theorem howe_irr : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) 
       rw [fockT_add, LinearMap.add_comp]; exact M.add_mem hx hy
     | smul c x _ hx =>
       rw [fockT_smul, LinearMap.smul_comp]; exact M.smul_mem c hx
-  exact GlobalTheory.T.howeDuality_compactPair_polynomialFock_allRealPlaces D (Vc D i).rank (Wc D i).rank w BS ↥(GinfC (Vc D i)) r hU hsurj (R.cV i).W ρ' hirr M
+  exact _root_.GlobalTheory.HoweCompactAlg.mem_of_equivariant D (Vc D i).rank (Wc D i).rank w BS ↥(GinfC (Vc D i)) r hU hsurj (R.cV i).W ρ' hirr M
     (fun ψ hψ => eqv ψ (hMeq ψ hψ)) hlie hM0 φ (eqv φ hφ)
 
 end GlobalTheory.HoweIrrCompact

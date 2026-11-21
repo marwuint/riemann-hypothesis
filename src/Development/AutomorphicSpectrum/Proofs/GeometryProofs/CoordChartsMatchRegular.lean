@@ -2,8 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSncPatchRat
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIsLocalRingIsFractionRingStalk
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.SncBase
@@ -124,10 +125,10 @@ theorem regAt_eq_of_units (hA : CoordTie o ξ t) (hF : CoordTie F ξ' t) {c : κ
   ext a
   constructor
   · intro ha
-    obtain ⟨s, hs, hsu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ o κ t hA c p hc a).1 ha
+    obtain ⟨s, hs, hsu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ o κ t hA c p hc a).1 ha
     exact mem_regAt_of_unitAt_mul ((hu s hs).1 hsu) (hA' _ hsa)
   · intro ha
-    obtain ⟨s, hs, hsu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization W Ω ξ' F κ t hF c p' hc' a).1 ha
+    obtain ⟨s, hs, hsu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction W Ω ξ' F κ t hF c p' hc' a).1 ha
     obtain ⟨d, hd, hds⟩ := exists_mul_mem_adjoin o F _ s hs
     obtain ⟨e, he, hes⟩ := exists_mul_mem_adjoin o F _ _ hsa
     have hunit : unitAt ξ' p' (algebraMap o Ω e * (algebraMap o Ω d * s)) :=
@@ -135,7 +136,7 @@ theorem regAt_eq_of_units (hA : CoordTie o ξ t) (hF : CoordTie F ξ' t) {c : κ
     have hmemA : algebraMap o Ω e * (algebraMap o Ω d * s) ∈
         Algebra.adjoin o (Set.range fun j => t j / t c) :=
       mul_mem (Subalgebra.algebraMap_mem _ e) hds
-    refine (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ o κ t hA c p hc a).2
+    refine (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ o κ t hA c p hc a).2
       ⟨_, hmemA, (hu _ hmemA).2 hunit, ?_⟩
     have : algebraMap o Ω e * (algebraMap o Ω d * s) * a =
         algebraMap o Ω d * (algebraMap o Ω e * (s * a)) := by ring
@@ -156,7 +157,7 @@ theorem regAt_frac :
     have hsub : ∀ s ∈ Algebra.adjoin o (Set.range fun j => t j / t c), s ∈ regAt ξ' p' := fun s hs =>
       (hF.ring c hc.1 s).1 (adjoin_subset o F _ s hs) p' hc
     obtain ⟨I, hI, hIu⟩ := exists_prime_of_subset _ (regAt ξ' p') hloc hsub
-    obtain ⟨p, ⟨hp, hpu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ o κ t hA c hc.1 I hI
+    obtain ⟨p, ⟨hp, hpu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ o κ t hA c hc.1 I hI
     refine ⟨p, regAt_eq_of_units o F hA hF hp hc fun s hs => ?_⟩
     exact (hpu ⟨s, hs⟩).symm.trans (hIu ⟨s, hs⟩)
   · intro p hd
@@ -166,7 +167,7 @@ theorem regAt_frac :
       obtain ⟨d, hd0, hds⟩ := exists_mul_mem_adjoin o F _ s hs
       exact mem_regAt_of_unitAt_mul (hd d hd0) ((hA.ring c hc.1 _).1 hds p hc)
     obtain ⟨I, hI, hIu⟩ := exists_prime_of_subset _ (regAt ξ p) hloc hsub
-    obtain ⟨p', ⟨hp', hpu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point W Ω ξ' F κ t hF c hc.1 I hI
+    obtain ⟨p', ⟨hp', hpu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime W Ω ξ' F κ t hF c hc.1 I hI
     refine ⟨p', regAt_eq_of_units o F hA hF hc hp' fun s hs => ?_⟩
     have hsB := adjoin_subset o F _ s hs
     exact (hIu ⟨s, hsB⟩).symm.trans (hpu ⟨s, hsB⟩)

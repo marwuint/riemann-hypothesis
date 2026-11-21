@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobeniusCompatibleLiftStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPrismCoproductHomEqOfAgreeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfEnvelopeModPrimePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisConjOfTeichmullerCongrStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorEqTeichmullerOfFrobeniusEqPowSelfStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinEisensteinImageTeichmullerPowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorTeichmullerIsAdicCompleteOfPerfectStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorRingHomEqMapOfCoeffZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFrobeniusCompatibleLift
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPrismCoproductHomEqOfAgree
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfEnvelopeModPrimeProperties
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisConjOfTeichmullerCongr
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorEqTeichmullerOfFrobeniusEqPowSelf
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinEisensteinImageTeichmullerPow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorTeichmullerIsAdicCompleteOfPerfect
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorRingHomEqMapOfCoeffZero
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
@@ -47,14 +47,14 @@ theorem mapE_facts {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (O : Type
     WittVector.map ψ (bk.ev bk.E) ∈ nonZeroDivisors (WittVector l O) ∧
     IsHausdorff ((Ideal.span {((l : ℕ) : WittVector l (OCb l))} ⊔ Ideal.span {bk.ev bk.E}).map (WittVector.map ψ))
       (WittVector l O) := by
-  obtain ⟨w, -, hwE⟩ := GlobalTheory.T.breuilKisin_eisenstein_image_teichmuller_pow l K bk O ψ hxu
+  obtain ⟨w, -, hwE⟩ := _root_.GlobalTheory.BSP.EisImage.map_E_eq l K bk O ψ hxu
   have hE0 : WittVector.map ψ (bk.ev bk.E) ≠ 0 := fun h => by
     have h1 := congrArg (WittVector.constantCoeff (p := l) (R := O)) h
     rw [hwE, map_add, map_mul, map_pow, map_natCast, CharP.cast_eq_zero, zero_mul, add_zero,
       WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, map_zero] at h1
     exact hx0 ((pow_eq_zero_iff bk.deg_pos.ne').1 h1)
   refine ⟨mem_nonZeroDivisors_of_ne_zero hE0, isHausdorff_of_le_ideal ?_
-    (GlobalTheory.T.wittVector_teichmuller_isAdicComplete_of_perfect l O (ψ bk.flat) hx0 hxc).2.toIsHausdorff⟩
+    (_root_.GlobalTheory.WittTeichComplete.main l O (ψ bk.flat) hx0 hxc).2.toIsHausdorff⟩
   rw [Ideal.map_sup, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, map_natCast]
   refine sup_le le_sup_left ?_
   rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, hwE]
@@ -91,7 +91,7 @@ theorem envPoint_eq {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) (En : En
       (WittVector l O) :=
     isHausdorff_map_congr (congrArg (Ideal.span {((l : ℕ) : (ainfObj K).A)} ⊔ ·) hI) hFinl hH
   have hFF : F = F' :=
-    GlobalTheory.T.breuilKisinPrismCoproduct_hom_eq_of_agree l K bk (ainfObj K) (bk.ev bk.E) (bk.ev X) En (WittVector l O) WittVector.frobenius F F'
+    _root_.GlobalTheory.BSP.envExt_agree l K bk (ainfObj K) (bk.ev bk.E) (bk.ev X) En (WittVector l O) WittVector.frobenius F F'
       htfW hFφ hF'φ hinl (hinr.trans (hF'a _).symm) hnzd hhaus
   rw [hFF, hF'a]
 
@@ -115,11 +115,11 @@ theorem envPoint_factors : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK 
   have hflat : f (En.inl.f (bk.ev X)) = ψ bk.flat := by
     rw [hψ, bk.ev_X, WittVector.teichmuller_coeff_zero]
   rw [hflat] at hx0 hxu hxc
-  obtain ⟨htf, -, -⟩ := GlobalTheory.T.ainf_envelope_mod_prime_properties l K bk En
-  obtain ⟨F, hF0, hFφ⟩ := GlobalTheory.T.exists_frobenius_compatible_wittVector_lift l En.Q.A En.Q.D.φ
+  obtain ⟨htf, -, -⟩ := _root_.GlobalTheory.BSP.env_ainf_mod l K bk En
+  obtain ⟨F, hF0, hFφ⟩ := _root_.GlobalTheory.DworkLift.exists_frobenius_compatible_lift l En.Q.A En.Q.D.φ
     (fun a => ⟨En.Q.D.δ a, by rw [En.Q.D.φ_eq]; ring⟩) htf O f
   have hFinl : F.comp En.inl.f = WittVector.map ψ :=
-    GlobalTheory.T.wittVector_ringHom_eq_map_of_coeff_zero l (OCb l) O (F.comp En.inl.f) ψ (fun a => (hF0 (En.inl.f a)).trans (hψ a))
+    _root_.GlobalTheory.WittMapUniq.eq_map_of_coeff_zero l (OCb l) O (F.comp En.inl.f) ψ (fun a => (hF0 (En.inl.f a)).trans (hψ a))
   have hFi : ∀ b : WittVector l (OCb l), F (En.inl.f b) = WittVector.map ψ b := fun b => RingHom.congr_fun hFinl b
 
   have hφX : En.Q.D.φ (BK.hf En.inr X) = BK.hf En.inr X ^ l :=
@@ -129,7 +129,7 @@ theorem envPoint_factors : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK 
   set v := F (BK.hf En.inr X) with hvdef
   have hv : WittVector.frobenius v = v ^ l := by
     rw [hvdef, ← hFφ, hφX, map_pow]
-  have hvt := GlobalTheory.T.wittVector_eq_teichmuller_of_frobenius_eq_pow_self l O v hv
+  have hvt := _root_.GlobalTheory.wittVector_eq_teichmuller_of_frobenius_eq_pow l O v hv
   have e1 : F (En.inl.f (bk.ev X)) = WittVector.teichmuller l (ψ bk.flat) := by
     rw [hFi, bk.ev_X, WittVector.map_teichmuller]
   have e2 : F (En.inl.f (bk.ev bk.E)) = WittVector.map ψ (bk.ev bk.E) := hFi _
@@ -140,7 +140,7 @@ theorem envPoint_factors : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK 
   have hdvd : WittVector.map ψ (bk.ev bk.E) ∣
       WittVector.teichmuller l (v.coeff 0) - WittVector.teichmuller l (ψ bk.flat) :=
     ⟨F En.w, by rw [← hvt]; linear_combination h1⟩
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_galois_conj_of_teichmuller_congr l K bk O ψ hx0 hxu hxc (v.coeff 0) hdvd
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.BSP.exists_gal_of_teichmuller_congr l K bk O ψ hx0 hxu hxc (v.coeff 0) hdvd
   obtain ⟨s, ⟨hs1, hs2⟩, -⟩ := En.univ (ainfObj K) (Hom.id _) ((ainfHom K g).comp bk.ι)
 
   have hinr : F (BK.hf En.inr X) = WittVector.map ψ (s.f (BK.hf En.inr X)) := by

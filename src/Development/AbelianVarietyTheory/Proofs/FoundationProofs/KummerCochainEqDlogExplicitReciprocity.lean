@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTLawAt
 import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemCycAlgOfPow
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AnnihilatorKaehlerDerivationPrimitiveRootStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SqPrimeSmulKaehlerDerivationEqSmulRootOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AnnihilatorKaehlerDerivationPrimitiveRoot
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SqPrimeSmulKaehlerDerivationEqSmulRootOfUnity
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertiaTransportsKaehlerRelationsOverInvariantsStatement
 
 noncomputable section
@@ -109,7 +109,7 @@ theorem kummer_eq_dlog_one : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∃ c : �
     exact hu0 (by rw [← hV, zero_pow (hpos m).ne'])
   have hVA : V ∈ A := mem_of_pow_mem A (hpos m).ne' (hV ▸ hu)
   have hVA' : V⁻¹ ∈ A := mem_of_pow_mem A (hpos m).ne' (by rw [inv_pow, hV]; exact hu')
-  obtain ⟨α, hα⟩ := GlobalTheory.T.sq_prime_smul_kaehlerDerivation_eq_smul_rootOfUnity l hl2 Ω A hA ⟨V, hVA⟩
+  obtain ⟨α, hα⟩ := _root_.GlobalTheory.RecOne.l_sq_smul_dA_eq_smul l hl2 Ω A hA ⟨V, hVA⟩
   obtain ⟨Z, hZ⟩ := IsAlgClosed.exists_pow_nat_eq ζ' (hpos α)
   have hZζ : Z ^ l ^ (α + m) = ζ := by rw [pow_add, pow_mul, hZ, hζ']
   have hZp : IsPrimitiveRoot Z (l ^ (α + m + m)) := by
@@ -139,7 +139,7 @@ theorem kummer_eq_dlog_one : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∃ c : �
     simpa using hV
   have hd : dA A (VA ^ l ^ m) = pA • dA A (ZA ^ l ^ (α + m)) := by
     rw [hVu, Derivation.map_aeval]
-  obtain ⟨w, hwA, hw⟩ := GlobalTheory.T.annihilator_kaehlerDerivation_primitiveRoot l hl2 Ω A hA _ ZA hZp _ (rel_one (dA A) _ VA ZA pA y _ _ hy hd)
+  obtain ⟨w, hwA, hw⟩ := _root_.GlobalTheory.RecOne.pow_four_mul_mem_of_smul_dA_eq_zero l hl2 Ω A hA _ ZA hZp _ (rel_one (dA A) _ VA ZA pA y _ _ hy hd)
   have hw1 : (l : Ω) ^ 4 * ((l : Ω) ^ m * u * Z * y - (l : Ω) ^ 2 * V * p * ((l : Ω) ^ α * (l : Ω) ^ m) * ζ) =
       (l : Ω) ^ α * (l : Ω) ^ m * (l : Ω) ^ m * w := by
     rw [← hV, ← hpAp, ← hZζ, ← pow_add, ← pow_add, ← hw]
@@ -160,7 +160,7 @@ theorem kummer_eq_dlog_one : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∃ c : �
   obtain ⟨c, -, hc⟩ := hZp.eq_pow_of_pow_eq_one (ξ := s Z) (by rw [← map_pow, hZp.pow_eq_one, map_one])
   have htr := GlobalTheory.T.inertia_transports_kaehler_relations_over_invariants Ω A s hs ((l : A) ^ 2) VA y ZA ((l : A) ^ 2) ((ZA ^ l ^ (α + m)) ^ k.val * VA)
     ⟨s y, hsA _ y.2⟩ (ZA ^ c) (by simp) (by push_cast; rw [hZζ]; exact hsV.symm) rfl (by simpa using hc) hy
-  obtain ⟨w₂, hw₂A, hw₂⟩ := GlobalTheory.T.annihilator_kaehlerDerivation_primitiveRoot l hl2 Ω A hA _ ZA hZp _ (rel_two (dA A) _ VA ZA y _ _ _ _ hy htr)
+  obtain ⟨w₂, hw₂A, hw₂⟩ := _root_.GlobalTheory.RecOne.pow_four_mul_mem_of_smul_dA_eq_zero l hl2 Ω A hA _ ZA hZp _ (rel_two (dA A) _ VA ZA y _ _ _ _ hy htr)
   have hw2 : (l : Ω) ^ 4 * (s y * (c : Ω) * s Z - Z * ζ ^ k.val * y -
       (l : Ω) ^ 2 * V * (k.val : Ω) * ((l : Ω) ^ α * (l : Ω) ^ m) * ζ ^ k.val) =
       (l : Ω) ^ α * (l : Ω) ^ m * (l : Ω) ^ m * w₂ := by

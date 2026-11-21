@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerAlong
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientHeightLowerBoundShortIsotropicVector
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsFinNormComparison
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsInfFamAndStdChar
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNatMulIntegralMatricesSubsetOpenAddSubgrouStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqSumFiniteCoordsOfInfinitePartZeroStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteAdeleTensorCoordsMulDenominatorBoundStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNatMulIntegralMatricesSubsetOpenAddSubgrou
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqSumFiniteCoordsOfInfinitePartZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteAdeleTensorCoordsMulDenominatorBound
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedDenominatorFiniteCoordsIntegralStatement
 
 noncomputable section
@@ -23,17 +23,17 @@ theorem openSub (D : D7) (V W : HSp D) (U : AddSubgroup (WO V W)) (hU : IsOpen (
       (∀ i j k, a i j k ∈ intRing D.host.F) →
       (Matrix.of fun i j => ∑ k, pairA D.host.F 0 ((M₀ : Af D.host.F) * a i j k) ⊗ₜ[D.host.F]
         Module.finBasis D.host.F D.host.E k : WO V W) ∈ U :=
-  GlobalTheory.T.exists_natMul_integralMatrices_subset_openAddSubgroup D V W U hU
+  _root_.GlobalTheory.OpenSubAdele.exists_nat_mul_mem_openAddSubgroup D V W U hU
 
 theorem eq_sum_of_infPart (D : D7) (z : AE D) (hz : infPart D z = 0) :
     z = ∑ k, pairA D.host.F 0 (finCoord D (finPr D z) k) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k :=
-  GlobalTheory.T.eq_sum_finiteCoords_of_infinitePart_zero D z hz
+  _root_.GlobalTheory.InfZeroFinSum.eq_sum_finCoord_of_infPart_eq_zero D z hz
 
 theorem exists_denom_mul (D : D7) : ∃ c : ℕ, 0 < c ∧ ∀ (e₁ e₂ : ℕ) (a b : Af D.host.F ⊗[D.host.F] D.host.E),
     (∀ k, (e₁ : Af D.host.F) * finCoord D a k ∈ intRing D.host.F) →
     (∀ k, (e₂ : Af D.host.F) * finCoord D b k ∈ intRing D.host.F) →
     ∀ k, ((c * e₁ * e₂ : ℕ) : Af D.host.F) * finCoord D (a * b) k ∈ intRing D.host.F :=
-  GlobalTheory.T.finiteAdeleTensorCoords_mul_denominator_bound D
+  _root_.GlobalTheory.CoordDenom.finCoord_mul_denom D
 
 theorem exists_denom_integral (D : D7) : ∃ d : ℕ, 0 < d ∧ ∀ x : D.host.E, IsIntegral ℤ x →
     ∀ k, (d : Af D.host.F) * finCoord D ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) k ∈ intRing D.host.F :=
@@ -49,10 +49,6 @@ theorem finPr_finLift {D : D7} {m n : ℕ} (z : Matrix (Fin m) (Fin n) D.host.E)
     (finLift z).map (finPr D) = z.map (fun e => (1 : Af D.host.F) ⊗ₜ[D.host.F] e) := by
   ext i j
   rfl
-
-theorem map_mul_three_alt {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {a b c d : ℕ} (A : Matrix (Fin a) (Fin b) R)
-    (B : Matrix (Fin b) (Fin c) R) (C : Matrix (Fin c) (Fin d) R) : (A * B * C).map f = A.map f * B.map f * C.map f := by
-  rw [Matrix.map_mul, Matrix.map_mul]
 
 theorem tmul_natCast_mul {D : D7} (N : ℕ) (e : D.host.E) :
     (1 : Af D.host.F) ⊗ₜ[D.host.F] ((N : D.host.E) * e) =
@@ -127,12 +123,6 @@ theorem den_matMul {D : D7} {c : ℕ} (hc : ∀ (e₁ e₂ : ℕ) (a b : Af D.ho
   fun i j => by
     rw [Matrix.mul_apply]
     exact den_sum _ _ fun l _ => hc e₁ e₂ _ _ (hA i l) (hB l j)
-
-theorem mt_mul_inv {D : D7} (V : HSp D) (g : GA D V) : mt V g * mt V g⁻¹ = 1 := by
-  simp only [Formalism.L2.Theta.mt, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
-
-theorem mt_inv_mul {D : D7} (V : HSp D) (g : GA D V) : mt V g⁻¹ * mt V g = 1 := by
-  simp only [Formalism.L2.Theta.mt, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 theorem finCoord_natCast_mul (D : D7) (N : ℕ) (z : Af D.host.F ⊗[D.host.F] D.host.E) (k) :
     finCoord D ((N : Af D.host.F ⊗[D.host.F] D.host.E) * z) k = (N : Af D.host.F) * finCoord D z k := by

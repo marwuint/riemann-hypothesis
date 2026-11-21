@@ -12,7 +12,4 @@ theorem one_level_inequality_split_by_size : Formalism.FourierDecayAlt.TB.OneLev
   levelInequalityOfSteps splitByLastSize schurRecursion_true diagStep
     singleBlockStep longBlockStep
 
-theorem sharp_recursion_theorem_a : Formalism.FourierDecayAlt.TB.TheoremA :=
-  towerBoundOfSteps one_level_inequality_split_by_size limitStep joint_theorem_A'
-
 end Formalism.FourierDecayAlt.P

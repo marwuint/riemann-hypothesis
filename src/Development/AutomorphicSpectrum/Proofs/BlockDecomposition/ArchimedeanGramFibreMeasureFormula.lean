@@ -4,15 +4,16 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensor
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentities
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolumeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalUniqueSquareRootNearOneStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolume
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalUniqueSquareRootNearOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformLowerBoundNearInjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralUniformNearParameterStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralUniformNearParameter
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsBumpWithNonzeroIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGramFibrationUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGramFibrationUnique
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresSupport
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published.SiegelOneVector GlobalTheory.CompanionTheory.SiegelND GlobalTheory.CompanionTheory.SiegelND.Coef
 open scoped TensorProduct ENNReal NNReal Topology
 
@@ -22,7 +23,7 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Coef.FibN
 
 theorem orbit_section : ∀ (B V : Type) [Ring B] [TopologicalSpace B] [IsTopologicalRing B] [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (ψ : B ≃+ V), Continuous ψ → Continuous ψ.symm → ∀ (ad : B → B), Continuous ad → (∀ x y, ad (x * y) = ad y * ad x) → ad 1 = 1 → ∀ (c ci : B), c * ci = 1 → ci * c = 1 → ad c = c → ∃ t : B → B, Filter.Tendsto t (nhdsWithin c {s | ad s = s}) (nhds 1) ∧ ∀ᶠ s in nhdsWithin c {s | ad s = s}, ad (t s) * c * t s = s := by
   intro B V _ _ _ _ _ _ ψ hψ hψ' ad hadc hmul h1 c ci hc1 hc2 hcs
-  obtain ⟨r, U, hU, hr1, hr2, hinj⟩ := GlobalTheory.T.local_unique_square_root_near_one B V ψ hψ hψ'
+  obtain ⟨r, U, hU, hr1, hr2, hinj⟩ := _root_.GlobalTheory.CompanionTheory.RingSqrt.exists_local_sqrt B V ψ hψ hψ'
   have hci : ad ci = ci := by
     have h2 : ad ci * c = 1 := by rw [← h1, ← hc1, hmul, hcs]
     calc ad ci = ad ci * (c * ci) := by rw [hc1, mul_one]
@@ -97,8 +98,8 @@ theorem family_core : ∀ (X P : Type) [AddCommGroup X] [TopologicalSpace X] [Me
   have huc : Continuous u := Complex.continuous_ofReal.comp hvc
   obtain ⟨Cf, hCf⟩ := schwartz_decay f
   obtain ⟨Cu, hCu⟩ := compact_decay v hvc hvs
-  obtain ⟨hI1, hI2⟩ := GlobalTheory.T.lintegral_uniform_near_parameter X P N e he c m0 A hAc hAt δ hδ hlow hfin f Cf f.continuous hCf
-  obtain ⟨-, hJ2⟩ := GlobalTheory.T.lintegral_uniform_near_parameter X P N e he c m0 A hAc hAt δ hδ hlow hfin u Cu huc hCu
+  obtain ⟨hI1, hI2⟩ := _root_.GlobalTheory.CompanionTheory.FibSch.integral_comp_additive_continuousAt X P N e he c m0 A hAc hAt δ hδ hlow hfin f Cf f.continuous hCf
+  obtain ⟨-, hJ2⟩ := _root_.GlobalTheory.CompanionTheory.FibSch.integral_comp_additive_continuousAt X P N e he c m0 A hAc hAt δ hδ hlow hfin u Cu huc hCu
   have hAm : ∀ s, Measurable (A s) := fun s => (hAc s).measurable
   have key : ∀ (G : X → ℂ), Continuous G → ∀ s, m s = κ s • m0.map (A s) →
       ∫ x, G x ∂(m s) = (κ s : ℂ) * ∫ x, G (A s x) ∂m0 := by
@@ -177,22 +178,22 @@ def matCoords {K W : Type} [AddCommGroup K] [AddCommGroup W] (ε : K ≃+ W) (n 
 theorem fibre_schwartzN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ), 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → ∀ minf : HermR (Ainf F) σ n → Measure (Fin n → Fin M → Ainf F ⊗[F] E), GlobalTheory.CompanionTheory.SW.IsGramFib (Ainf F) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n) minf → ∀ c : HermR (Ainf F) σ n, IsUnit (c : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det → ∀ φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, IsSchwartzArch φ → Measurable φ ∧ (∀ᶠ s in nhds c, Integrable φ (minf s)) ∧ ContinuousAt (fun s => ∫ X, φ X ∂(minf s)) c := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn d b laminf hlam minf hm c hc φ hφ
   have hlH : laminf.IsAddHaarMeasure := hlam.1
-  have hloc := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1
-  obtain ⟨ρ, e0, -, he0, -⟩ := GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hCM.1
+  have hloc := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1
+  obtain ⟨ρ, e0, -, he0, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.real_iso F hCM.1
   obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
   haveI := hTR
   haveI := hLC
   haveI := hSC
   haveI := hT2
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
-  obtain ⟨i1, i2, i3, i4, hsc, -, hrepr, hB, -, hgc⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)
+  obtain ⟨i1, i2, i3, i4, hsc, -, hrepr, hB, -, hgc⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Ainf F)
   haveI := hB n M
   obtain ⟨hLH, hSH, hT2H, hBH, -⟩ := GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM (Ainf F) n
   haveI := hLH
   haveI := hSH
   haveI := hT2H
   haveI := hBH
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hlH
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Ainf F) d b laminf hlH
   haveI := hW n M
   haveI := hH n
   obtain ⟨halg, hcomp, hone, hmem, -⟩ := GlobalTheory.CompanionTheory.SW.GramAlg.gram_algebra F E σ hCM M J hJ (Ainf F) n
@@ -290,7 +291,7 @@ theorem fibre_schwartzN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
     have hd : IsUnit (g0⁻¹ * t (s : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))).det := by
       rw [Matrix.det_mul]
       exact hgid.mul (hdetO s hs)
-    obtain ⟨κ, hκ0, hκ⟩ := GlobalTheory.T.local_gram_fibration_unique F E σ hCM M J hJ (Ainf F) hloc n μ ν minf (hW n M) (hH n) hm _ hd
+    obtain ⟨κ, hκ0, hκ⟩ := _root_.GlobalTheory.CompanionTheory.SW.FibSch.fib_scale F E σ hCM M J hJ (Ainf F) hloc n μ ν minf (hW n M) (hH n) hm _ hd
     refine ⟨κ, hκ0, hκ s0 s ?_⟩
     show (s : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) = ad _ * _ * _
     have h0 : (s0 : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) = ad g0 * c * g0 := (hOs s0 hs0O).1.symm

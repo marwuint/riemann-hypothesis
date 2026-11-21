@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointOfLatticeTauLatticeMembershipStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointOfLatticeTauLatticeMembership
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EllipticOnePole
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate
 open GlobalTheory.QFam GlobalTheory.WpFam
@@ -10,7 +10,7 @@ namespace GlobalTheory.WpFam
 theorem wp_wpd_separate : ∀ (N : ℕ) [NeZero N] (τ : ℍ) (x y : Fin 2 → ZMod N), x ≠ 0 → y ≠ 0 →
     wp N x τ = wp N y τ → wpd N x τ = wpd N y τ → x = y := by
   intro N _ τ x y hx hy h1 h2
-  obtain ⟨hsub, -, hmem, -, -⟩ := GlobalTheory.T.torsionPointOfLatticeTau_lattice_membership N τ
+  obtain ⟨hsub, -, hmem, -, -⟩ := _root_.GlobalTheory.WpFam.TorsMem.main N τ
   have hc : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := Complex.two_pi_I_ne_zero
   have hz : tors N τ x ∉ (tauPair τ).lattice := fun h => hx ((hmem x).1 h)
   have hw : tors N τ y ∉ (tauPair τ).lattice := fun h => hy ((hmem y).1 h)

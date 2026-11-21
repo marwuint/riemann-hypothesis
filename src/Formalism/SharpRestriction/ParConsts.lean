@@ -96,8 +96,6 @@ structure FamP (eps : ℝ) extends FamCore eps where
   kapI_eq : ∀ x (i i' : Ix x), (Gx x i).kapI = (Gx x i').kapI
   ep_eq : ∀ x (i i' : Ix x), (Gx x i).ep = (Gx x i').ep
 
-def DFamP : Type 1 := ∀ ε : ℝ, 0 < ε → ε < 1 / 52 → FamP ε
-
 end Formalism.MainNotions
 
 end

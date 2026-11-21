@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueFamOfReps
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DimEqOfFiniteSurjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClearDenominatorBundleSectionGenericFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClearDenominatorBundleSectionGenericFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitValueTranslatedBundleSectionStatement
 
 set_option autoImplicit false
@@ -94,9 +94,9 @@ theorem exists_triple : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
   intro R _ _ _ _ _ Dd k hk mu mu' α
   obtain ⟨s₀, hs₀⟩ := GlobalTheory.FamFree.exists_sec_ne_zero (D := Dd.toPre) (F := FractionRing R) GlobalTheory.CMClaims.secTwist hk α
   obtain ⟨F, hFα, -⟩ := GlobalTheory.FamFree.exists_fam_single GlobalTheory.CMClaims.laws.globalFns Dd.tau_bimult hk α s₀
-  obtain ⟨r₀, hr₀, σ₀, h₀⟩ := GlobalTheory.T.exists_clear_denominator_bundleSection_genericFibre R Dd.toPre k α (F.s α)
-  obtain ⟨r₁, hr₁, σ₁, h₁⟩ := GlobalTheory.T.exists_clear_denominator_bundleSection_genericFibre R Dd.toPre k (α + k • mu) (F.s (α + k • mu))
-  obtain ⟨r₂, hr₂, σ₂, h₂⟩ := GlobalTheory.T.exists_clear_denominator_bundleSection_genericFibre R Dd.toPre k (α + k • (mu + mu')) (F.s (α + k • (mu + mu')))
+  obtain ⟨r₀, hr₀, σ₀, h₀⟩ := _root_.GlobalTheory.ClearSecB.exists_clear R Dd.toPre k α (F.s α)
+  obtain ⟨r₁, hr₁, σ₁, h₁⟩ := _root_.GlobalTheory.ClearSecB.exists_clear R Dd.toPre k (α + k • mu) (F.s (α + k • mu))
+  obtain ⟨r₂, hr₂, σ₂, h₂⟩ := _root_.GlobalTheory.ClearSecB.exists_clear R Dd.toPre k (α + k • (mu + mu')) (F.s (α + k • (mu + mu')))
   have g₀ := rel_scale (Q := Dd.toPre) (σ := σ₀) h₀ (r₁ * r₂)
   have g₁ := rel_scale (Q := Dd.toPre) (σ := σ₁) h₁ (r₀ * r₂)
   have g₂ := rel_scale (Q := Dd.toPre) (σ := σ₂) h₂ (r₀ * r₁)

@@ -39,10 +39,6 @@ attribute [local instance] biAction
 theorem biAction_smul (h : NN F n) (g : GL (Fin n) F) :
     h • g = (h.1 : GL (Fin n) F) * g * (h.2 : GL (Fin n) F)⁻¹ := rfl
 
-theorem transl_apply_biAction (h : NN F n) (f : GL (Fin n) F → ℂ) (x : GL (Fin n) F) :
-    transl h f x = f ((h.1 : GL (Fin n) F)⁻¹ * x * (h.2 : GL (Fin n) F)) := by
-  simp [transl, biAction_smul]
-
 variable (ψ₀ : AddChar F ℂ)
 
 noncomputable def chi : NN F n →* ℂ where

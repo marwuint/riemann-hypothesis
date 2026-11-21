@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrrParIffCuspidalPr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfIrr
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasLabelTransportEquiv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviTensorBlockExt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviPiTensorRepresentationIsIrreducibleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviPiTensorRepresentationIsIrreducible
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalPiTensorNoBlockUnipotentFixedStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCuspidalFactorAtBlockLeviPiTensorStatement
 
@@ -161,7 +161,7 @@ theorem isIrrRep_of_monotone {C : LabelConv K} (O : LabelMap K C) (b : Fin r →
     (hinj : Function.Injective (fun c => labO O (lam c))) (hm : Monotone b) : IsIrrRep (hcRep K b lam) := by
   have hd : GlobalTheory.FinGL.IsCuspDatum (natBlocks b) (leviTensor b lam) :=
     { mono := fun i j hij => hm hij
-      irr := GlobalTheory.T.leviPiTensorRepresentation_isIrreducible K r s b lam fun c => (hl c).1
+      irr := _root_.GlobalTheory.HcIrr.leviTensor_isIrreducible K r s b lam fun c => (hl c).1
       infl := fun p hp => by
         rw [leviTensor_apply]
         have : ∀ c, (lam c).ρ (levi K b c (Subgroup.inclusion (blockTri_le_parab b) p)) = LinearMap.id := by

@@ -15,11 +15,6 @@ def NuPair : Prop :=
       (hd' : ∑ a, (![β', α.nu 1] a).1 = N), 0 < α.1 ∧ 0 < β.1 ∧ β'.1 = β.1 ∧ 1 ≤ Zc.jm ![α, β] hd ω ∧
         1 ≤ Zc.jm ![β', α.nu 1] hd' ω
 
-def CuspPairSubGeneric : Prop :=
-  ∀ (x y : IrrGL k) (N : ℕ) (hd : ∑ a, (![x, y] a).1 = N), x.IsCusp → y.IsCusp → y ≠ x.nu 1 →
-    ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin N) k) W)
-      (f : σ.IntertwiningMap (prodIrr ![x, y] hd)), Function.Injective f → Nontrivial W → IsGeneric σ
-
 end GlobalTheory.BZSeg
 
 end

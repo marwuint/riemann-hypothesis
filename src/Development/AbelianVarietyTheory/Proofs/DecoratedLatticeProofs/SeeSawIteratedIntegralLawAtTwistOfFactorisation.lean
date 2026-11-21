@@ -1,8 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsIteratedQuotientIntegralFinsetSum
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralIndicatorGivesLocalVacuumSplitPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralIndicatorGivesLocalVacuumSplitPlace
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.AllPositions
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLocalGroupClosedEmbeddingIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleStepAdelicIntegralFiniteTwistPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleStepAdelicIntegralFiniteTwistPlaces
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SeeSaw GlobalTheory.LocMod GlobalTheory.QPl ValuativeRel
 open GlobalTheory.PosOne (toOne Covers TriPos)
@@ -204,7 +208,7 @@ theorem model_of_vac (hc : c.Is) (hv : v.Is) (Q : QAt v χ) (n : ℕ) (hn : n + 
     (h₁ : n + 1 + d = Q.s + 1) {P : Pl D → Prop} (hP : P Q.q.v) {f : WO (c.V n) (c.V (n + 1)) → ℂ}
     (hf : Vac c.ψ _ _ (v.N n) (v.N (n + 1)) P f) :
     ∃ T O, (ofSplit Q.q).IsModel c.ψ (Q.FY n (d + 1) h₀) (Q.FY (n + 1) d h₁) T ∧ IsOne O ∧ T O = f := by
-  obtain ⟨T, hT, hO⟩ := (GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D Q.k Q.q Q.unit _ _ _ _ (Q.FY n (d + 1) h₀) (Q.FY (n + 1) d h₁) c.ψ Q.ψk hc.std Q.char
+  obtain ⟨T, hT, hO⟩ := (_root_.GlobalTheory.LocMod.indicator_vac D Q.k Q.q Q.unit _ _ _ _ (Q.FY n (d + 1) h₀) (Q.FY (n + 1) d h₁) c.ψ Q.ψk hc.std Q.char
     Q.cond _ _ (hv.sd n (by omega)) (hv.sd (n + 1) hn) (Q.latY _ _ _) (Q.latY _ _ _)).2 f
     (vac_single hc.std (hv.sd n (by omega)) (hv.sd (n + 1) hn) hP hf)
   obtain ⟨O, h1⟩ := GlobalTheory.BiComb.exists_isOne (k := Q.k) (Q.X (n + 1) ⊕ Fin d) (Q.X n ⊕ Fin (d + 1))
@@ -248,7 +252,7 @@ theorem oneChart (hc : c.Is) (hv : v.Is) (hW : WeilOK (t := t) v) {w : VTup t} (
     obtain rfl : u = 0 := Finset.mem_singleton.1 (Finsupp.support_single_subset hu)
     intro a b
     exact mul_zero _
-  have V := GlobalTheory.T.doubleStep_adelicIntegral_finiteTwistPlaces D c.ψ hc.std σ (dblOf H) F.r (fun i => stepOf H (F.Q i) (F.eqv j α i)) hF.inj (· ∈ w.Q) hF.places
+  have V := _root_.GlobalTheory.QVal.valQ D c.ψ hc.std σ (dblOf H) F.r (fun i => stepOf H (F.Q i) (F.eqv j α i)) hF.inj (· ∈ w.Q) hF.places
     μ₁ ρ₁ μ₂ ρ₂ hN₁.1 hN₁.2.1 hN₂.1 hN₂.2.1
     ((congrArg μ₁ (Set.ext fun x => n₁ x.1 x.2)).trans hN₁.2.2.1)
     ((congrArg ρ₁ (Set.ext fun x => n₁ x.1.1 x.1.2)).trans hN₁.2.2.2)

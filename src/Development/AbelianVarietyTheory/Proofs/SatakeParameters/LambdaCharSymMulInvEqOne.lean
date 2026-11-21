@@ -66,15 +66,6 @@ theorem of_inv_mul {q : ℕ} (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {a
   · rw [e]; exact (IntAt.coe P _).mul h
   · rw [e, reduction_mul (IntAt.coe P _) h, reduction_coe, Ideal.Quotient.eq_zero_iff_mem.2 hP, zero_mul]
 
-theorem unitV_mul_eq_one {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E}
-    (h : redP P a * redP P b = 1) : unitV χ a * unitV χ b = 1 := by
-  have ha : IsUnit (redP P a) := IsUnit.of_mul_eq_one _ h
-  have hb : IsUnit (redP P b) := IsUnit.of_mul_eq_one_right _ h
-  unfold unitV
-  rw [dif_pos ha, dif_pos hb, ← Units.val_mul, ← map_mul]
-  have : ha.unit * hb.unit = 1 := Units.ext (by simpa using h)
-  rw [this, map_one, Units.val_one]
-
 end Red
 
 section Comb
@@ -87,60 +78,6 @@ theorem symIdx_cases (k rS i : ℕ) : (i < k ∧ symIdx k rS i = i + rS) ∨
 
 theorem symmetricBlockBoundary_cases (k rS s : ℕ) : (s = rS + k ∧ bd5 k rS s = rS) ∨ (s ≠ rS + k ∧ bd5 k rS s = s) := by
   unfold bd5; split_ifs <;> omega
-
-theorem superdiag {n k₀ rS r : ℕ} (hr : k₀ + rS < r) (hn : r ≤ n) (A B : ℕ → ℕ → κ)
-    (hA : ∀ l p', l < n → p' < r → bd5 k₀ rS (symIdx k₀ rS p') ≤ symIdx k₀ rS l →
-      A l p' = if l = p' then 1 else 0)
-    (hB : ∀ l p', l < n → p' < r → bd5 k₀ rS (symIdx k₀ rS p') ≤ symIdx k₀ rS l →
-      B l p' = if l = p' then 1 else 0)
-    (p : ℕ) (hp : p + 1 < r) (hp' : p + 1 ≠ k₀)
-    (hAB : ∑ l ∈ Finset.range n, A p l * B l (p + 1) = 0) :
-    A p (p + 1) + B p (p + 1) = 0 := by
-  have hle : ∀ s, bd5 k₀ rS (symIdx k₀ rS s) ≤ symIdx k₀ rS s := by
-    intro s; unfold bd5; split_ifs <;> omega
-  rw [Finset.sum_eq_add_of_mem p (p + 1) (by simp; omega) (by simp; omega) (by omega)] at hAB
-  · rw [hA p p (by omega) (by omega) (hle p), hB (p + 1) (p + 1) (by omega) hp (hle _)] at hAB
-    simpa [add_comm] using hAB
-  · rintro l hl ⟨h1, h2⟩
-    rw [Finset.mem_range] at hl
-    by_cases h : bd5 k₀ rS (symIdx k₀ rS (p + 1)) ≤ symIdx k₀ rS l
-    · rw [hB l (p + 1) hl hp h, if_neg h2, mul_zero]
-    · have h3 : l < r ∧ bd5 k₀ rS (symIdx k₀ rS l) ≤ symIdx k₀ rS p := by
-        have e1 := symIdx_cases k₀ rS l
-        have e2 := symIdx_cases k₀ rS p
-        have e3 := symIdx_cases k₀ rS (p + 1)
-        have e4 := symmetricBlockBoundary_cases k₀ rS (symIdx k₀ rS l)
-        have e5 := symmetricBlockBoundary_cases k₀ rS (symIdx k₀ rS (p + 1))
-        constructor <;> omega
-      rw [hA p l (by omega) h3.1 h3.2, if_neg (Ne.symm h1), zero_mul]
-
-theorem block {n a t : ℕ} (hn : a + t ≤ n) (A B : ℕ → ℕ → κ)
-    (hA : ∀ l l', l < n → l' < a → a ≤ l → A l l' = 0)
-    (hB : ∀ l l', l < n → l' < a + t → a + t ≤ l → B l l' = 0)
-    (hAB : ∀ p p', p < n → p' < n →
-      ∑ l ∈ Finset.range n, A p l * B l p' = if p = p' then 1 else 0) :
-    (Matrix.of fun s s' : Fin t => A (a + s.1) (a + s'.1)).det *
-      (Matrix.of fun s s' : Fin t => B (a + s.1) (a + s'.1)).det = 1 := by
-  rw [← Matrix.det_mul]
-  convert Matrix.det_one (n := Fin t) (R := κ)
-  ext s s'
-  have hs := s.2
-  have hs' := s'.2
-  rw [Matrix.mul_apply]
-  simp only [Matrix.of_apply]
-  rw [Fin.sum_univ_eq_sum_range (fun l => A (a + s.1) (a + l) * B (a + l) (a + s'.1)) t]
-  have h := hAB (a + s.1) (a + s'.1) (by omega) (by omega)
-  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
-  rw [Finset.sum_range_add, Finset.sum_range_add, Finset.sum_eq_zero (s := Finset.range a),
-    Finset.sum_eq_zero (s := Finset.range m), zero_add, add_zero] at h
-  · rw [h, Matrix.one_apply]
-    simp [Fin.ext_iff]
-  · intro l hl
-    rw [Finset.mem_range] at hl
-    rw [hB _ _ (by omega) (by omega) (by omega), mul_zero]
-  · intro l hl
-    rw [Finset.mem_range] at hl
-    rw [hA _ _ (by omega) (by omega) (by omega), zero_mul]
 
 end Comb
 
@@ -171,22 +108,6 @@ theorem entB_zero (k₀ n : ℕ) (ex : ℕ → ℕ) (g : HomE E (n + 0) (n + 0))
   unfold entB mat
   rw [fIdx_zero, fIdx_zero, scE_lt _ hp, scE_lt _ hp']
   simp
-
-omit [NumberField E] [StarRing E] in
-theorem mat_mul_inv {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N) {p p' : ℕ} (hp : p < N) :
-    ∑ l ∈ Finset.range N, mat g p l * mat (g⁻¹ : Sp E N ≃ₗ[E] Sp E N) l p' = if p = p' then 1 else 0 := by
-  rw [← Fin.sum_univ_eq_sum_range (fun l => mat g p l * mat (g⁻¹ : Sp E N ≃ₗ[E] Sp E N) l p') N]
-  set v := (g⁻¹ : Sp E N ≃ₗ[E] Sp E N) (eN E N p') with hv
-  have h1 : g v = eN E N p' := LinearEquiv.apply_symm_apply g _
-  have h2 : v = ∑ l : Fin N, v l • eN E N l.1 := by
-    funext i
-    simp [Finset.sum_apply, eN, Fin.val_inj]
-  have h3 := congrFun h1 ⟨p, hp⟩
-  rw [h2, map_sum, Finset.sum_apply] at h3
-  refine Eq.trans ?_ (h3.trans rfl)
-  refine Finset.sum_congr rfl fun l _ => ?_
-  simp only [mat, atN, dif_pos hp, dif_pos l.2, map_smul, Pi.smul_apply, smul_eq_mul, ← hv]
-  rw [mul_comm]
 
 variable {P q}
 
@@ -267,19 +188,6 @@ theorem mat_blk (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k₀ rS r t n 
   rw [dif_pos (show l < n + 0 from hl)]
   exact (of_inv_mul P hq hP h2).2
 
-theorem red_mul_inv {k₀ rS r t n : ℕ}
-    {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0) (p p' : ℕ) (hp : p < n) :
-    ∑ l ∈ Finset.range n, redP P (mat g p l) *
-      redP P (mat (g⁻¹ : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) l p') = if p = p' then 1 else 0 := by
-  have hg' := inv_mem hg
-  have h := congrArg (redP P) (mat_mul_inv g (p' := p') (show p < n + 0 from hp))
-  rw [reduction_sum₂ P (Finset.range (n + 0)) _ fun l hl => (mat_intAt hg p l hp).mul (mat_intAt hg' l p' (Finset.mem_range.1 hl))] at h
-  refine Eq.trans (Finset.sum_congr rfl fun l hl => ?_) (h.trans ?_)
-  · exact (reduction_mul (mat_intAt hg p l hp) (mat_intAt hg' l p' (Finset.mem_range.1 hl))).symm
-  · split_ifs
-    · exact reduction_one' P
-    · exact redP_zero' P
-
 theorem redP_superdiag {k₀ rS r t n : ℕ} (hr : k₀ + rS < r) (hn : r ≤ n)
     {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0) (ex : ℕ → ℕ) :
     redP P (∑ i ∈ Finset.range (k₀ - 1), entB q k₀ 0 n 0 n ex ex g.toLinearMap i (i + 1) +
@@ -320,39 +228,5 @@ theorem redP_det_blk {k₀ rS r t n a : ℕ} (hn : a + t ≤ n)
     fun s s' => mat_intAt hg (a + s.1) (a + s'.1) (by have := s.2; omega)
 
 end Main
-
-theorem lamGBS_mul_inv : ∀ (E K : Type) [Field E] [NumberField E] [StarRing E] [Field K] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ), q ≠ 0 → (q : 𝓞 E) ∈ P.asIdeal → ∀ (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ rS r t j n : ℕ), k₀ + rS < r → r + j * t ≤ n → ∀ g ∈ LocE.JGsym P q k₀ rS r t n 0, LocE.lamGBS q ψ₀ χ k₀ r t j n 0 g.toLinearMap * LocE.lamGBS q ψ₀ χ k₀ r t j n 0 (g⁻¹).toLinearMap = 1 := by
-  intro E K _ _ _ _ P q hq hP ψ₀ χ k₀ rS r t j n hr hn g hg
-  have hg' := inv_mem hg
-  have hrn : r ≤ n := le_trans (Nat.le_add_right _ _) hn
-  have hsd : ∀ p, p + 1 < r → p + 1 ≠ k₀ → redP P (mat g p (p + 1)) +
-      redP P (mat (g⁻¹ : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) p (p + 1)) = 0 := fun p hp hp' =>
-    superdiag hr hrn (fun a b => redP P (mat g a b))
-      (fun a b => redP P (mat (g⁻¹ : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) a b))
-      (mat_col hq hP hr hrn hg) (mat_col hq hP hr hrn hg') p hp hp'
-      ((red_mul_inv hg p (p + 1) (by omega)).trans (if_neg (by omega)))
-  unfold lamGBS lamGvS
-  rw [mul_mul_mul_comm, ← AddChar.map_add_eq_mul, ← Finset.prod_mul_distrib,
-    redP_superdiag hr hrn hg, redP_superdiag hr hrn hg', add_add_add_comm,
-    ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, Finset.sum_eq_zero, Finset.sum_eq_zero,
-    add_zero, AddChar.map_zero_eq_one, one_mul]
-  · refine Finset.prod_eq_one fun i hi => unitV_mul_eq_one P _ ?_
-    rw [Finset.mem_range] at hi
-    have hi' : r + i * t + t ≤ n := by
-      have : (i + 1) * t ≤ j * t := Nat.mul_le_mul_right t hi
-      rw [add_mul, one_mul] at this
-      omega
-    rw [redP_det_blk hi' hg, redP_det_blk hi' hg']
-    refine block hi' (fun a b => redP P (mat g a b))
-      (fun a b => redP P (mat (g⁻¹ : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) a b))
-      (mat_blk hq hP hr hg i) ?_ fun p p' hp _ => red_mul_inv hg p p' hp
-    have h := mat_blk hq hP hr hg' (i + 1)
-    rwa [add_mul, one_mul, ← add_assoc] at h
-  · intro i hi
-    rw [Finset.mem_range] at hi
-    exact hsd _ (by omega) (by omega)
-  · intro i hi
-    rw [Finset.mem_range] at hi
-    exact hsd _ (by omega) (by omega)
 
 end GlobalTheory.SymLevelInv

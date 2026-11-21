@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegenerationDataValuesIsoTransportFormsLevelsFamStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegenerationValuesTransportFieldIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianKeyValueAdaptedVectorsFieldIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianKeyValueAdaptedVectorsFieldIso
 import Development.AbelianVarietyTheory.Definitions.Divisors.TanRel
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsPolAVSectionInverseImage
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSiegel
@@ -23,7 +23,7 @@ theorem archF_of_arch : ∀ κ : Rule, Funct κ → Arch κ → ArchF κ := by
   obtain ⟨hform, hlev⟩ := GlobalTheory.T.degenerationDataValuesIso_transport_formsLevelsFamilies F ℂ e N N' I hb hh hl
   obtain ⟨β', hβ⟩ := hform k β
   obtain ⟨q', hq', hev⟩ := hlev m g hm ζ q hq
-  obtain ⟨hBK, hadp⟩ := GlobalTheory.T.abelianKeyValue_adaptedVectors_fieldIso κ hF R D F ℂ e he N ν N' ν' I hh hl heX hth hvE vB
+  obtain ⟨hBK, hadp⟩ := _root_.GlobalTheory.MBLow.bKey_adapted_map κ hF R D F ℂ e he N ν N' ν' I hh hl heX hth hvE vB
   obtain ⟨gm', hpull, hAd'⟩ := hadp r g bX σ gm hAd
   choose s' hs1 hs2 using fun a => hfam (m ^ 2) (s a)
   have hs' : ∀ a, ∃ f, ν'.FamV (s' a) f ∧ IsEvFam N' m (q' a) f := by

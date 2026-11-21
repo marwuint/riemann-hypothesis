@@ -116,31 +116,9 @@ lemma jacobi_gen (m : (Matrix (Fin n) (Fin n) R)ˣ) (I J : Finset (Fin n)) :
   rw [pow_add]
   linear_combination ((-1 : R) ^ epsN Jᶜ) * (-h) - ((↑m : Matrix (Fin n) (Fin n) R).det * minorF (↑m⁻¹ : Matrix (Fin n) (Fin n) R).transpose I J) * e
 
-lemma epsN_eq (I : Finset (Fin n)) : epsN I = I.card * (n + 1) + ∑ a ∈ I, a.val := by
-  unfold epsN
-  rw [Finset.sum_add_distrib]
-  simp
-
-lemma epsN_compl (I : Finset (Fin n)) : epsN Iᶜ + epsN I = epsN (univ : Finset (Fin n)) := by
-  unfold epsN
-  exact Finset.sum_compl_add_sum I _
-
 end SignTwistStarLemmas
 
 open SignTwistStarLemmas
-
-theorem JacobiMinor_proof' : JacobiMinor := by
-  intro R _ n m I J hIJ
-  rw [jacobi_gen]
-  congr 1
-  apply neg_one_pow_eq_of
-  have h1 := epsN_compl I
-  have h2 := epsN_compl J
-  rw [epsN_eq I] at h1
-  rw [epsN_eq J, ← hIJ] at h2
-  refine ⟨epsN Iᶜ + ∑ a ∈ I, a.val, ?_⟩
-  generalize I.card * (n + 1) = w at h1 h2
-  omega
 
 namespace SignTwistStarLemmas
 

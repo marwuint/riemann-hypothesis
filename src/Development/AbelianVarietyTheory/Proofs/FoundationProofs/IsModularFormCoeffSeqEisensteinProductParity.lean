@@ -3,10 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ChapterMu
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.CuspidalUnitaryTwistsClaim
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MuModelProductIsModularFormCoeffSeqLocallyAlgebrStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DirichletCharFiniteFourierTransformPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructureStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MuModelProductIsModularFormCoeffSeqLocallyAlgebr
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DirichletCharFiniteFourierTransformProperties
+import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.Chapter
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructure
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -45,10 +47,10 @@ theorem zmf_mf_sum {ι : Type*} (s : Finset ι) (k L : ℕ) (χ : ℤ → ℂ) (
     (h : ∀ i ∈ s, MF k L χ (g i)) : MF k L χ (∑ i ∈ s, g i) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simpa using (GlobalTheory.T.modularFormCoeffSeq_linear_structure k L χ).1
+  | empty => simpa using (_root_.GlobalTheory.EisM.mf_linear k L χ).1
   | insert a s ha ih =>
     rw [Finset.sum_insert ha]
-    exact ((GlobalTheory.T.modularFormCoeffSeq_linear_structure k L χ).2.1 _ _ (h a (Finset.mem_insert_self a s))
+    exact ((_root_.GlobalTheory.EisM.mf_linear k L χ).2.1 _ _ (h a (Finset.mem_insert_self a s))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))).1
 
 theorem zm_fun_mf : ∀ (k N l m : ℕ) (ε θ ν : DirichletCharacter ℂ N) (f : ZMod (l ^ m) → ℂ), 3 ≤ k → Odd k → 0 < N → l.Prime → 1 ≤ m → ¬ l ∣ N → ε = θ⁻¹ * ν → ν (-1) = -θ (-1) → (∀ x, f (-x) = θ (-1) * f x) → MF k (N * l ^ (m + 1)) (ch ε) (Zm k l (hat θ) (ch ν) (fun A d => f ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m))⁻¹))) := by
@@ -98,15 +100,15 @@ theorem zm_fun_mf : ∀ (k N l m : ℕ) (ε θ ν : DirichletCharacter ℂ N) (f
   intro ψ _
   have hsq : ∀ {M : ℕ} (χ : DirichletCharacter ℂ M), χ (-1) * χ (-1) = 1 := by
     intro M χ; rw [← map_mul, neg_one_mul, neg_neg, map_one]
-  have hh := (GlobalTheory.T.dirichletCharFiniteFourierTransform_properties).1 N θ hN
+  have hh := (_root_.GlobalTheory.EisM.hat_char_props).1 N θ hN
   by_cases hψ : ψ (-1) = θ (-1)
   · have h1 : ψ (-1) * θ (-1) = (-1) ^ (k - 1 - 0) := by
       obtain ⟨r, rfl⟩ := hodd
       rw [hψ, hsq, show 2 * r + 1 - 1 - 0 = 2 * r by omega, pow_mul]; norm_num
     have h2 : ψ (-1) * ν (-1) = (-1) ^ (0 + 1) := by
       rw [hψ, hν, mul_neg, hsq]; norm_num
-    exact ((GlobalTheory.T.modularFormCoeffSeq_linear_structure k _ (ch ε)).2.2.1 (c ψ) _
-      (GlobalTheory.T.muModelProduct_isModularFormCoeffSeq_locallyAlgebraic k 0 N l m ε (hat θ) θ ν ψ (by omega) hN hl hm hlN hh.1 hh.2.1 hε h1 h2)).1
+    exact ((_root_.GlobalTheory.EisM.mf_linear k _ (ch ε)).2.2.1 (c ψ) _
+      (_root_.GlobalTheory.zm_char_mf k 0 N l m ε (hat θ) θ ν ψ (by omega) hN hl hm hlN hh.1 hh.2.1 hε h1 h2)).1
   · have hc0 : c ψ = 0 := by
       have hpm : ∀ {M : ℕ} (χ : DirichletCharacter ℂ M), χ (-1) = 1 ∨ χ (-1) = -1 := by
         intro M χ
@@ -133,6 +135,6 @@ theorem zm_fun_mf : ∀ (k N l m : ℕ) (ε θ ν : DirichletCharacter ℂ N) (f
       have : S = 0 := by linear_combination hS' / 2
       simp [hc, ← hS, this]
     rw [hc0, zero_smul]
-    exact (GlobalTheory.T.modularFormCoeffSeq_linear_structure k _ (ch ε)).1
+    exact (_root_.GlobalTheory.EisM.mf_linear k _ (ch ε)).1
 
 end GlobalTheory.EisM

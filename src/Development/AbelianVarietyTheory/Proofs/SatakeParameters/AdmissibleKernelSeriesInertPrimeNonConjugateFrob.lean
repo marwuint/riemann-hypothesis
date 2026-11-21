@@ -7,10 +7,11 @@ import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 import Formalism.LocalToGlobal.KernelLattices.AdaptedEnt
 import Formalism.LocalToGlobal.InertKernelTheory.StatementAlgT
 import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.OrbitAdmissibleOfSplitBound
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsStandardBasesLatticeAtPlaceOfAdaptedBasesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AtLinAdaptedCoefEqStandardSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StandardSeriesBConditionsLargePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedFamilyStandardBasesIntegralityStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsStandardBasesLatticeAtPlaceOfAdaptedBases
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AtLinAdaptedCoefEqStandardSeries
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StandardSeriesBConditionsLargePrime
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementB
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedFamilyStandardBasesIntegrality
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CombOfTied
 
 noncomputable section
@@ -38,7 +39,7 @@ theorem exists_beFam_evenConditionsInert_of_kerEnt : Formalism.L2.KerInert.AlgTA
     · have hO := hOrb _ (D.what₂.places.resChar_prime w) hc
       have hH := hHost D t.cc t.δ t.B t.χ t.cc_ok t.δ_ok t.χ_ok (D.what₂.places.resChar w) (t.ent.lam w) hO.five
         (hc.imp_left And.left)
-      obtain ⟨e, b, he, hb, hB⟩ := GlobalTheory.T.normalisedFamily_standardBases_integrality_alt D t.cc t.δ t.B t.χ _ (t.ent.lam w) hH hO (hc.imp_left (And.imp_right HEv.ne_zero))
+      obtain ⟨e, b, he, hb, hB⟩ := _root_.GlobalTheory.KerStd.normalisedFamily_standardBases_integrality D t.cc t.δ t.B t.χ _ (t.ent.lam w) hH hO (hc.imp_left (And.imp_right HEv.ne_zero))
       exact ⟨e, b, fun _ => ⟨he, hb, hB⟩⟩
     · exact ⟨1, 0, fun h => absurd h hc⟩
   choose ep be hbe using key
@@ -49,7 +50,7 @@ theorem exists_beFam_evenConditionsInert_of_kerEnt : Formalism.L2.KerInert.AlgTA
   · intro u μ w hLev hc R hR
     obtain ⟨he, hb, hB⟩ := hbe w hc
     have hO := hOrb _ (D.what₂.places.resChar_prime w) hc
-    refine ⟨⟨he, fun _ _ => Or.inr rfl, fun _ _ => GlobalTheory.T.standard_series_b_conditions_large_prime _ _ _ hO.five hO.two hO.even hb⟩, ?_⟩
+    refine ⟨⟨he, fun _ _ => Or.inr rfl, fun _ _ => _root_.GlobalTheory.KerStd.bHyps_of_beStd _ _ _ hO.five hO.two hO.even hb⟩, ?_⟩
     intro i hi _ c c'
     have hAdPl : Formalism.L2.Ker.AdPl D w := by
       rcases hc with h | h
@@ -58,10 +59,10 @@ theorem exists_beFam_evenConditionsInert_of_kerEnt : Formalism.L2.KerInert.AlgTA
     obtain ⟨Pm, hBas, -, hConj, hTh⟩ := hAd w hAdPl u μ hLev
     have hcomb := GlobalTheory.Ggeo.KerComb.comb_of_tied hAlg D L hT Gi Gl K Y cX ex t hHyp u μ w hLev i hi c c'
     have hS : ∀ j, j ≤ D.R.m → ∀ c, StdBases D (t.ent.lam w) ((t.O u μ).lat j c).1 (Pm j c) := fun j hj c =>
-      GlobalTheory.T.isStandardBasesLatticeAtPlace_of_adapted_bases D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat j c).2.1 (fun τ => hBas j hj c τ)
+      _root_.GlobalTheory.KerStd.stdBases_of_basR D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat j c).2.1 (fun τ => hBas j hj c τ)
         (fun τ τ' h => hConj j hj c τ τ' h)
     show OrbitPlaces.ThetaExpansionAllPlaces D _ R (ep w) (fun _ => -1) (fun _ => be w) (t.ent.Th u μ w i c c')
-    rw [hTh i hi c c', GlobalTheory.T.atLin_adaptedCoef_eq_standardSeries]
+    rw [hTh i hi c c', _root_.GlobalTheory.atLin_adCoef_eq_stdSer]
     exact hB _ _ _ _ _ _ hcomb.1 (hS i hi.le c) (hS (i + 1) hi c') _ hcomb.2 R hR
 
 end GlobalTheory.KerStd

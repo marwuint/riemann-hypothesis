@@ -239,9 +239,4 @@ lemma uw_sub_S {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh 
   · rw [Matrix.one_apply]
   · rw [Matrix.one_apply]
 
-lemma n_sub_S {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn : n ∈ Nset k r) :
-    n ∈ Sset k r z := by
-  simp only [Sset, Set.mem_setOf_eq]
-  exact ⟨1, one_mem_UW, n, hn, (Matrix.one_mul n).symm⟩
-
 end PI.QuotSetU.UnitaryGroupMassFormula.SW

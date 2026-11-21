@@ -25,9 +25,6 @@ def IsDiffOpOn {m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] 
 def IsRadQQd (L : Lev) (R : ℂ → Matrix (Fin 2) (Fin 2) L.POp) : Prop :=
   L.IsRadQQ R ∧ ∀ (Y : ℂ) (a b : Fin 2), IsDiffOpOn (2 * L.r + L.k0 + 2) L.BD (R Y a b)
 
-theorem IsRadQQd.rad {L : Lev} {R : ℂ → Matrix (Fin 2) (Fin 2) L.POp} (h : IsRadQQd L R) : L.IsRadQQ R := by
-  exact h.1
-
 abbrev GFn {k0 r : ℕ} (L : LocBessel (k0 + 1) r) :=
   Matrix (Fin (2 * r + (k0 + 1) + 1)) (Fin (2 * r + (k0 + 1) + 1)) ℂ → (L.Wq →L[ℂ] L.Wp)
 
@@ -79,29 +76,14 @@ def CkAt (Lt : Lev) (o : ℕ) (F : Lt.GF) (g₀ : Mat Lt.k0 Lt.r) : Prop :=
   ∃ (U : Set (Mat Lt.k0 Lt.r)) (F' : Lt.GF), IsOpen U ∧ g₀ ∈ U ∧ ContDiffOn ℝ o F' U ∧
     ∀ g ∈ U, g ∈ UH (Hpk (Lt.k0 + 1) Lt.r) → F g = F' g
 
-theorem CkAt.of_smooth {Lt : Lev} {F : Lt.GF} (h : SmoothOnH (Hpk (Lt.k0 + 1) Lt.r) F) (o : ℕ) {g₀ : Mat Lt.k0 Lt.r}
-    (hg : g₀ ∈ UH (Hpk (Lt.k0 + 1) Lt.r)) : CkAt Lt o F g₀ := by
-  obtain ⟨U, F', hU, hg0, hF', hEq⟩ := h g₀ hg
-  exact ⟨U, F', hU, hg0, contDiffOn_infty.mp hF' o, fun g hgU hgH => hEq g hgU hgH⟩
-
 def IsInvC (Lt : Lev) (o : ℕ) (Θ : Lt.GF → Lt.GF) : Prop :=
   ∀ h ∈ UWset (Lt.k0 + 1) Lt.r Lt.z, ∀ n ∈ Nset (Lt.k0 + 1) Lt.r, ∀ h' ∈ UWset (Lt.k0 + 1) Lt.r Lt.z',
     ∀ n' ∈ Nset (Lt.k0 + 1) Lt.r, ∀ F : Lt.GF, (∀ g ∈ UH (Hpk (Lt.k0 + 1) Lt.r), CkAt Lt o F g) →
       ∀ g ∈ UH (Hpk (Lt.k0 + 1) Lt.r), Θ (Lt.act h n h' n' F) g = Lt.act h n h' n' (Θ F) g
 
-theorem IsInvC.isInv {Lt : Lev} {o : ℕ} {Θ : Lt.GF → Lt.GF} (h : IsInvC Lt o Θ) : Lt.IsInv Θ := by
-  intro h₀ hh₀ n hn h' hh' n' hn' F hF g hg
-  exact h h₀ hh₀ n hn h' hh' n' hn' F (fun g' hg' => CkAt.of_smooth hF o hg') g hg
-
 def BigPosR (Lt : Lev) : Set (Mat Lt.k0 Lt.r) :=
   {g | g ∈ UH (Hpk (Lt.k0 + 1) Lt.r) ∧ (∀ l : Fin (Lt.r + 2), Dmin (Lt.k0 + 1) Lt.r Lt.z Lt.z' g l ≠ 0) ∧
     0 < Gf (Lt.k0 + 1) Lt.r Lt.z Lt.z' g}
-
-def RadZeroC (Lt : Lev) (o : ℕ) (Θ : Lt.GF → Lt.GF) : Prop :=
-  ∀ J : Lt.GF, (∀ g ∈ BigPosR Lt, CkAt Lt o J g) →
-    (∀ h ∈ UWset (Lt.k0 + 1) Lt.r Lt.z, ∀ n ∈ Nset (Lt.k0 + 1) Lt.r, ∀ h' ∈ UWset (Lt.k0 + 1) Lt.r Lt.z',
-      ∀ n' ∈ Nset (Lt.k0 + 1) Lt.r, ∀ g ∈ BigPosR Lt, Lt.act h n h' n' J g = J g) →
-    ∀ g ∈ BigPosR Lt, Θ J g = 0
 
 def IsCellOpAt (Lt : Lev) (E : List ℕ) (o : ℕ) (dP : ℝ) (Θ : Lt.GF → Lt.GF) : Prop :=
   Lt.IsInv Θ ∧ ∃ (N : ℕ) (ws : Fin N → List (Fin (2 * Lt.r + (Lt.k0 + 1) + 1) × Fin (2 * Lt.r + (Lt.k0 + 1) + 1)))
@@ -138,14 +120,6 @@ def IsLetters (Lt : Lev) (j : ℕ) (hj : j ≤ Lt.r) (w : Word) (Θ : AuxiliaryS
 def LettersExist : Prop :=
   ∀ (k0 r : ℕ) (L : LocBessel (k0 + 1) r) (μsec : Sec k0), (levOf L μsec).Std →
     ∀ (j : ℕ) (hj : j ≤ r) (w : Word), ∃ Θ : AuxiliarySlotStates w.length → GFn L → GFn L, IsLetters (levOf L μsec) j hj w Θ
-
-def snoc {j : ℕ} (h : Point ℂ j) (t : ℂ) (ht : t ≠ 0) (s : ℕ) (hs : 1 ≤ s) : Point ℂ (j + s) :=
-  ⟨h.1 ++ [(t, s)], by
-    refine ⟨fun b hb => ?_, ?_⟩
-    · rcases List.mem_append.1 hb with hb | hb
-      · exact h.2.1 b hb
-      · rw [List.mem_singleton.1 hb]; exact ⟨ht, hs⟩
-    · simp [h.2.2]⟩
 
 def pt0 : Point ℂ 0 := ⟨[], by simp⟩
 
@@ -184,23 +158,7 @@ structure Dat (D : D7) (k0 : ℕ) where
 
 abbrev GWord (D : D7) := D.what₂.Tau → Word
 
-abbrev Head (D : D7) (j : ℕ) := D.what₂.Tau → Point ℂ j
-
 def Len {D : D7} (m : ℕ) (w : GWord D) : Prop := ∀ v, (w v).length ≤ m
-
-def ExtAt {D : D7} (K : ℕ) (A : Set D.what₂.Tau) (w w' : GWord D) : Prop :=
-  ∀ v, ∃ l : Word, l.length ≤ K ∧ (v ∉ A → l = []) ∧ w' v = l ++ w v
-
-def ExtPlusAt {D : D7} (K : ℕ) (A : Set D.what₂.Tau) (w w' : GWord D) : Prop :=
-  ∀ v, ∃ l : Word, l.length ≤ K ∧ (∀ x ∈ l, x.1 = true) ∧ (v ∉ A → l = []) ∧ w' v = l ++ w v
-
-def dualL (l : Word) : Word := l.map fun x => (false, x.2 + 1)
-
-def ExtDualAt {D : D7} (K : ℕ) (A : Set D.what₂.Tau) (w : GWord D) (q : GWord D × GWord D) : Prop :=
-  ∀ v, ∃ l : Word, l.length ≤ K ∧ (∀ x ∈ l, x.1 = true) ∧ (v ∉ A → l = []) ∧
-    q.1 v = l ++ w v ∧ q.2 v = dualL l ++ w v
-
-def IsProb {α : Type*} (θ : α →₀ ℝ) : Prop := (∀ x, 0 ≤ θ x) ∧ θ.sum (fun _ c => c) = 1
 
 def NN (D : D7) (Ks : ℕ) : ℕ := 4 * Ks * (D.R.rS + 1)
 
@@ -250,12 +208,6 @@ def energy (w : GWord D) (χ : ℝ → ℝ) (ε : ℝ) : ℂ :=
 
 def jn2 : ℂ := ∏ v, (X.B v).beta (X.μsec v) (X.f v) (X.f v)
 
-def okT (v : D.what₂.Tau) (j0 s : ℕ) (t : ℂ) : Prop :=
-  t ≠ 0 ∧ (s = 1 → j0 = D.R.rS → X.T v * X.T' v < Complex.normSq t)
-
-def wt (v : D.what₂.Tau) (j0 s : ℕ) (t : ℂ) : ℝ :=
-  Real.sqrt (ptWeightFrom (k0 + 1) D.R.rS (X.T v) (X.T' v) j0 [(t, s)])
-
 def Std (Ks : ℕ) (C₀ Cg : ℝ) : Prop :=
   4 ≤ Ks ∧ ∀ v,
     (∀ i, (X.B v).ε i = epsSH D.R (Fin.cast (by have := X.hk; omega) i)) ∧ (X.B v).c = cStd ∧
@@ -282,43 +234,8 @@ section Weights
 
 variable {D : D7} {k0 : ℕ} (Gm : GramMap k0 D.R.rS) (X : Dat D k0)
 
-def gram (v : D.what₂.Tau) (j : ℕ) (w : Word) (F : GFn (X.B v)) (p p' : Point ℂ j) : ℂ :=
-  if hj : j ≤ D.R.rS then X.gramLow v j hj w F p p' else Gm.top (X.B v) (X.I v) w F p.1 p'.1
-
-open Classical in
-
-def gramS (v : D.what₂.Tau) (j0 s : ℕ) (w : Word) (F : GFn (X.B v)) (h h' : Point ℂ j0) (t t' : ℂ) : ℂ :=
-  if H : 1 ≤ s ∧ X.okT v j0 s t ∧ X.okT v j0 s t' then
-    gram Gm X v (j0 + s) w F (snoc h t H.2.1.1 s H.1) (snoc h' t' H.2.2.1 s H.1) else 0
-
-def N0 (j0 : ℕ) (w : GWord D) (χ : ℝ → ℝ) (ε : ℝ) {Hd : Type} [Fintype Hd] (hd : Hd → Head D j0)
-    (κ : Hd → Hd → ℂ) : ℂ :=
-  (∑ h, ∑ h', κ h h' * ∏ v, gram Gm X v j0 (w v) (X.Fv χ ε v) (hd h v) (hd h' v)) / (X.brk w : ℂ)
-
-def Ns (j0 s : ℕ) (w : GWord D) (χ : ℝ → ℝ) (ε : ℝ) {Hd : Type} [Fintype Hd] (hd : Hd → Head D j0)
-    (κ : Hd → Hd → ℂ) (t t' : D.what₂.Tau → ℂ) : ℂ :=
-  ((∏ v, X.wt v j0 s (t v) * X.wt v j0 s (t' v) : ℝ) : ℂ) *
-    (∑ h, ∑ h', κ h h' * ∏ v, gramS Gm X v j0 s (w v) (X.Fv χ ε v) (hd h v) (hd h' v) (t v) (t' v)) /
-      (X.brk w : ℂ)
-
-def Ntr (j0 : ℕ) (w : GWord D) (χ : ℝ → ℝ) (ε : ℝ) {Hd : Type} [Fintype Hd] (hd : Hd → Head D j0)
-    (κ : Hd → Hd → ℂ) (σ : D.what₂.Tau → ℂ) : ℂ :=
-  ∫ t : D.what₂.Tau → ℂ, Ns Gm X j0 1 w χ ε hd κ t t * ∏ v, fsC (σ v) (t v)
-
 def blockLiftThreshold (C₁ C₂ : ℝ) (Ks j0 s : ℕ) (v : D.what₂.Tau) : ℝ :=
   if j0 + s ≤ D.R.rS then X.abelian₂ C₁ C₂ Ks (s + 1) (j0 + 1) v else 2 * X.LamP C₁ C₂ Ks (j0 + 1) v
-
-def oDiff (t t' : D.what₂.Tau → ℂ) : D.what₂.Tau → ℂ := fun v => (t v)⁻¹ - (t' v)⁻¹
-
-def PatOK (C₁ C₂ : ℝ) (Ks j0 s : ℕ) (p : D.what₂.Tau → Option Bool) (t t' : D.what₂.Tau → ℂ) : Prop :=
-  (∀ v, (p v).isSome ↔ blockLiftThreshold X C₁ C₂ Ks j0 s v < ‖oDiff t t' v‖) ∧
-    (j0 + s ≤ D.R.rS → ∀ v, p v ≠ some false) ∧
-    (∀ v, p v = some true → j0 + s = D.R.rS + 1 → ‖oDiff t t' v‖ / 2 ≤ ‖t v‖⁻¹) ∧
-    (∀ v, p v = some false → ‖oDiff t t' v‖ / 2 ≤ ‖t' v‖⁻¹)
-
-def ChargedPairs (Ks j0 s : ℕ) (w : GWord D) (p : D.what₂.Tau → Option Bool) (q : GWord D × GWord D) : Prop :=
-  if j0 + s ≤ D.R.rS then ExtDualAt Ks {v | (p v).isSome} w q
-  else ExtPlusAt Ks {v | p v = some true} w q.1 ∧ ExtPlusAt Ks {v | p v = some false} w q.2
 
 end Weights
 
@@ -333,9 +250,6 @@ def IsLat (La : AddSubgroup (D.what₂.Tau → ℂ)) (κ : ℝ) : Prop :=
 def dualS (La : AddSubgroup (D.what₂.Tau → ℂ)) : Set (D.what₂.Tau → ℂ) :=
   {σ | ∀ t ∈ La, ∏ v, fsC (σ v) (t v) = 1}
 
-def scId (a : D.what₂.Tau → ℂ) (aa : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : Set (D.what₂.Tau → ℂ) :=
-  {σ | ∃ x ∈ aa, ∀ v, σ v = a v * plEmb D v x}
-
 def scNorm (a : D.what₂.Tau → ℂ) (aa : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : ℝ :=
   ((FractionalIdeal.absNorm aa : ℚ) : ℝ) * ∏ v, ‖a v‖ ^ 2
 
@@ -349,113 +263,7 @@ def E (k0 : ℕ) (Ks : ℕ) (C₀ Cg : ℝ) : Prop :=
   ∀ X : Dat D k0, X.Std Ks C₀ Cg → ∀ χ : ℝ → ℝ, IsCutoff χ → ∀ w : GWord D, X.admitted w → Len (NN D Ks) w →
     Tendsto (fun ε => X.energy w χ ε) (𝓝[>] 0) (𝓝 ((X.brk w : ℂ) * X.jn2))
 
-def SingleLevelGramEstimate (Ks : ℕ) (C₀ Cg C₁ C₂ : ℝ) : Prop :=
-  ∀ X : Dat D k0, X.Std Ks C₀ Cg → ∀ j0 : ℕ, j0 ≤ D.R.rS → ∀ w : GWord D, X.admitted w → Len (NN D Ks - Ks) w →
-    (∀ χ : ℝ → ℝ, IsCutoff χ → ∀ ε : ℝ, 0 < ε →
-      ∀ (Hd : Type) [Fintype Hd] (hd : Hd → Head D j0) (κ : Hd → Hd → ℂ), PSDK κ →
-        (∃ φ : (D.what₂.Tau → ℂ) → ℂ, Continuous φ ∧
-          (∀ t, (∀ v, t v ≠ 0) → φ t = Ns Gm X j0 1 w χ ε hd κ t t) ∧
-          ∃ C : ℝ, ∀ t, ‖φ t‖ ≤ C * ∏ v, (1 + ‖t v‖) ^ (-(3 : ℝ))) ∧
-        Ntr Gm X j0 w χ ε hd κ 0 = N0 Gm X j0 w χ ε hd κ) ∧
-    ∃ θ : Set D.what₂.Tau → (GWord D →₀ ℝ),
-      (∀ A, IsProb (θ A) ∧ ∀ w' ∈ (θ A).support, ExtAt Ks A w w' ∧ X.admitted w') ∧
-      ∀ χ : ℝ → ℝ, IsCutoff χ → ∀ ε : ℝ, 0 < ε →
-        ∀ (Hd : Type) [Fintype Hd] (hd : Hd → Head D j0) (κ : Hd → Hd → ℂ), PSDK κ →
-        ∀ σ : D.what₂.Tau → ℂ,
-          ‖Ntr Gm X j0 w χ ε hd κ σ‖ ≤
-            (∏ v, minFac (X.xi C₁ C₂ Ks (j0 + 1) v) ‖σ v‖ Ks) *
-              (θ {v | X.xi C₁ C₂ Ks (j0 + 1) v < ‖σ v‖}).sum
-                (fun w' c => c * (N0 Gm X j0 w' χ ε hd κ).re)
-
-def BlockLiftEstimate (Ks : ℕ) (C₀ Cg C₁ C₂ : ℝ) : Prop :=
-  ∀ X : Dat D k0, X.Std Ks C₀ Cg → ∀ j0 s : ℕ, 1 ≤ s → (j0 + s ≤ D.R.rS ∨ (2 ≤ s ∧ j0 + s = D.R.rS + 1)) →
-    ∀ w : GWord D, X.admitted w → Len (NN D Ks - Ks) w →
-    ∃ θ : (D.what₂.Tau → Option Bool) → (GWord D × GWord D →₀ ℝ),
-      (∀ p, IsProb (θ p) ∧ ∀ q ∈ (θ p).support, ChargedPairs Ks j0 s w p q ∧ X.admitted q.1 ∧ X.admitted q.2) ∧
-      ∀ χ : ℝ → ℝ, IsCutoff χ → ∀ ε : ℝ, 0 < ε →
-        ∀ (Hd : Type) [Fintype Hd] (hd : Hd → Head D j0)
-          (K : Hd × (D.what₂.Tau → ℂ) → Hd × (D.what₂.Tau → ℂ) → ℂ),
-          PSDK K → ∀ t t' : D.what₂.Tau → ℂ, (∀ v, t v ≠ 0) → (∀ v, t' v ≠ 0) →
-            ∃ p, PatOK X C₁ C₂ Ks j0 s p t t' ∧
-              ‖Ns Gm X j0 s w χ ε hd (fun h h' => K (h, t) (h', t')) t t'‖ ≤
-                (∏ v, minFac (blockLiftThreshold X C₁ C₂ Ks j0 s v) ‖oDiff t t' v‖ Ks) *
-                  (θ p).sum (fun q c => c *
-                    (((Ns Gm X j0 s q.1 χ ε hd (fun h h' => K (h, t) (h', t)) t t).re +
-                      (Ns Gm X j0 s q.2 χ ε hd (fun h h' => K (h, t') (h', t')) t' t').re) / 2))
-
-def LargeBlockLiftEstimate (Ks : ℕ) (C₀ Cg C₁ C₂ C₃ : ℝ) : Prop :=
-  ∀ X : Dat D k0, X.Std Ks C₀ Cg → ∀ j0 s : ℕ, 2 ≤ s → j0 + s ≤ D.R.rS + 1 →
-    ∀ w : GWord D, X.admitted w → Len (NN D Ks - (s + 1) * Ks) w →
-    ∀ (aa : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (a : D.what₂.Tau → ℂ), (∀ v, a v ≠ 0) →
-    (∏ v, X.abelian₂ C₁ C₂ Ks s (j0 + 1) v) ≤ Real.sqrt (scNorm D a aa) →
-    ∃ θ : GWord D →₀ ℝ, IsProb θ ∧ (∀ w' ∈ θ.support, ExtAt ((s + 1) * Ks) Set.univ w w' ∧ X.admitted w') ∧
-      ∀ (La : AddSubgroup (D.what₂.Tau → ℂ)) (κL : ℝ), IsLat D La κL → dualS D La ⊆ scId D a aa →
-      ∀ χ : ℝ → ℝ, IsCutoff χ → ∀ ε : ℝ, 0 < ε →
-        ∀ (Hd : Type) [Fintype Hd] (hd : Hd → Head D j0) (κ : Hd → Hd → ℂ), PSDK κ →
-        ∀ t₀ : D.what₂.Tau → ℂ, ∃ sv : ℝ,
-          HasSum (fun z : La => Ns Gm X j0 s w χ ε hd κ (t₀ + z) (t₀ + z)) (sv : ℂ) ∧
-          κL * sv ≤ C₃ ^ (D.R.f * s) *
-            (∏ s' ∈ Finset.Ico 1 s, ∏ v, X.LamG C₁ C₂ Ks s' (j0 + 1) v ^ 2) *
-            θ.sum (fun w' c => c * (N0 Gm X j0 w' χ ε hd κ).re)
-
 end Estimates
-
-def LowPos (D : D7) (k0 : ℕ) (Ks : ℕ) (C₀ Cg : ℝ) : Prop :=
-  ∀ X : Dat D k0, X.Std Ks C₀ Cg → ∀ (v : D.what₂.Tau) (j : ℕ) (hj : j ≤ D.R.rS) (w : Word), Admissible (X.I v) w →
-    w.length ≤ NN D Ks → ∀ χ : ℝ → ℝ, IsCutoff χ → ∀ ε : ℝ, 0 < ε →
-      PSDK (fun p p' : Point ℂ j => X.gramLow v j hj w (X.Fv χ ε v) p p')
-
-section TopLevel
-
-variable (D : D7) {k0 : ℕ} (Gm : GramMap k0 D.R.rS)
-
-def TopPos (Ks : ℕ) (C₀ Cg : ℝ) : Prop :=
-  ∀ X : Dat D k0, X.Std Ks C₀ Cg → ∀ (v : D.what₂.Tau) (w : Word), Admissible (X.I v) w →
-    w.length ≤ NN D Ks → ∀ χ : ℝ → ℝ, IsCutoff χ → ∀ ε : ℝ, 0 < ε →
-      PSDK (fun p p' : List (ℂ × ℕ) => Gm.top (X.B v) (X.I v) w (X.Fv χ ε v) p p')
-
-def TopWave (Ks : ℕ) (C₀ Cg : ℝ) : Prop :=
-  ∀ X : Dat D k0, X.Std Ks C₀ Cg → ∀ (v : D.what₂.Tau) (w : Word), Admissible (X.I v) w →
-    w.length ≤ NN D Ks → ∀ χ : ℝ → ℝ, IsCutoff χ → ∀ ε : ℝ, 0 < ε → ∀ h h' : Point ℂ D.R.rS,
-      ∃ φt : ℂ → ℂ, Continuous φt ∧ Integrable φt ∧
-        (∀ ζ : ℂ, X.T v * X.T' v < Complex.normSq ζ →
-          φt ζ = ((X.wt v D.R.rS 1 ζ ^ 2 : ℝ) : ℂ) *
-            Gm.top (X.B v) (X.I v) w (X.Fv χ ε v) (h.1 ++ [(ζ, 1)]) (h'.1 ++ [(ζ, 1)])) ∧
-        (∀ ζ : ℂ, Complex.normSq ζ ≤ X.T v * X.T' v → φt ζ = 0) ∧
-        ∀ s : ℂ, ∫ ζ, fsC s ζ * φt ζ =
-          (X.lv v D.R.rS le_rfl).form
-            ((X.lv v D.R.rS le_rfl).wmod (X.R v D.R.rS le_rfl) (X.sg v) (X.B v).u (X.B v).u' w).RR
-            (omApply (Vop s w) (fun β => (X.lv v D.R.rS le_rfl).B
-              (sliceJ (X.B v) (X.μsec v) D.R.rS le_rfl (X.Th v D.R.rS le_rfl w β (X.Fv χ ε v)) h)))
-            (fun β => (X.lv v D.R.rS le_rfl).B
-              (sliceJ (X.B v) (X.μsec v) D.R.rS le_rfl (X.Th v D.R.rS le_rfl w β (X.Fv χ ε v)) h'))
-
-end TopLevel
-
-section Family
-
-variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Gm : ∀ k0 r : ℕ, GramMap k0 r)
-
-def EF (Ks : ℕ) (C₀ Cg : ℝ) : Prop := ∀ x (i : Fm.Ix x), ∀ k0 : ℕ, E (Fm.D x i) k0 Ks C₀ Cg
-
-def FamilyGramEstimate (Ks : ℕ) (C₀ Cg C₁ C₂ : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), ∀ k0 : ℕ, SingleLevelGramEstimate (Fm.D x i) (Gm k0 (Fm.D x i).R.rS) Ks C₀ Cg C₁ C₂
-
-def FamilyBlockLiftEstimate (Ks : ℕ) (C₀ Cg C₁ C₂ : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), ∀ k0 : ℕ, BlockLiftEstimate (Fm.D x i) (Gm k0 (Fm.D x i).R.rS) Ks C₀ Cg C₁ C₂
-
-def FamilyLiftBlockBound (Ks : ℕ) (C₀ Cg C₁ C₂ C₃ : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), ∀ k0 : ℕ, LargeBlockLiftEstimate (Fm.D x i) (Gm k0 (Fm.D x i).R.rS) Ks C₀ Cg C₁ C₂ C₃
-
-def LowPosF (Ks : ℕ) (C₀ Cg : ℝ) : Prop := ∀ x (i : Fm.Ix x), ∀ k0 : ℕ, LowPos (Fm.D x i) k0 Ks C₀ Cg
-
-def TopPosF (Ks : ℕ) (C₀ Cg : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), ∀ k0 : ℕ, TopPos (Fm.D x i) (Gm k0 (Fm.D x i).R.rS) Ks C₀ Cg
-
-def TopWaveF (Ks : ℕ) (C₀ Cg : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), ∀ k0 : ℕ, TopWave (Fm.D x i) (Gm k0 (Fm.D x i).R.rS) Ks C₀ Cg
-
-end Family
 
 end Formalism.MainNotions.S.GramWordSpace
 

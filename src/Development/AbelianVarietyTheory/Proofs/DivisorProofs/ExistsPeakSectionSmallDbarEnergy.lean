@@ -1,13 +1,16 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.AApproxB
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.APrimeI
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothSectionCutoffMulHolomorphicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEnergyCutoffMulSectionLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothBumpChartBallHalfOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothSectionCutoffMulHolomorphic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEnergyCutoffMulSectionLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothBumpChartBallHalfOne
 
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
@@ -30,8 +33,8 @@ theorem peak_isSecOn {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y]
 
 theorem peak_section : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (C : Cover A) (H G : La) (i : ι) (p : V n) (ρ c : ℝ) (q f : V n → ℂ), 0 < ρ → 0 < c → closedBall p ρ ⊆ (A.chart i).target → Differentiable ℂ q → Differentiable ℂ f → (∀ v ∈ closedBall p ρ, c * ‖v - p‖ ^ 2 ≤ A.ph H i ((A.chart i).symm v) - 2 * (q v).re) → ∃ K : ℝ, 0 ≤ K ∧ ∀ k : ℕ, ∃ F0 : ι → Y → ℂ, A.IsSSec (A.kap + (G + k • H)) F0 ∧ (∀ v ∈ ball p (ρ / 2), F0 i ((A.chart i).symm v) = f v * Complex.exp (k * q v)) ∧ (∀ j y, y ∉ (A.chart i).source ∩ A.chart i ⁻¹' ball p ρ → F0 j y = 0) ∧ n1 C (G + k • H) F0 ≤ ENNReal.ofReal (K * Real.exp (-(c * ρ ^ 2 / 4) * k)) := by
   intro n Y _ _ _ _ _ ι La _ A C H G i p ρ c q f hρ hc hball hq hf hpeak
-  obtain ⟨χ, hχs, hχsupp, hχ1⟩ := GlobalTheory.T.smooth_bump_chart_ball_halfOne n Y ι La A i p ρ hρ hball
-  obtain ⟨K0, hK0, hcut⟩ := GlobalTheory.T.n1_cutoff_mul_section_le_lintegral n Y ι La A C χ hχs
+  obtain ⟨χ, hχs, hχsupp, hχ1⟩ := _root_.GlobalTheory.smooth_bump_chart_ball n Y ι La A i p ρ hρ hball
+  obtain ⟨K0, hK0, hcut⟩ := _root_.GlobalTheory.CutEnergy.dbarEnergy_cutoff_mul_section_le n Y ι La A C χ hχs
   set W : Set Y := (A.chart i).source ∩ A.chart i ⁻¹' ball p ρ with hWdef
   set Wi : Set Y := (A.chart i).source ∩ A.chart i ⁻¹' ball p (ρ / 2) with hWidef
   have hWo : IsOpen W := (A.chart i).isOpen_inter_preimage isOpen_ball
@@ -66,7 +69,7 @@ theorem peak_section : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y]
   have hu : Differentiable ℂ (fun v => f v * Complex.exp (k * q v)) :=
     hf.mul ((hq.const_mul _).cexp)
   have hsec := peak_isSecOn A (A.kap + (G + k • H)) i W hWs _ hu
-  refine ⟨_, GlobalTheory.T.smoothSection_cutoff_mul_holomorphic n Y ι La A _ W χ _ hWo hχs hχsupp hsec, ?_, ?_, ?_⟩
+  refine ⟨_, _root_.GlobalTheory.smooth_cutoff_mul_sec n Y ι La A _ W χ _ hWo hχs hχsupp hsec, ?_, ?_, ?_⟩
   · intro v hv
     have hvt : v ∈ (A.chart i).target :=
       hball (ball_subset_closedBall (ball_subset_ball (by linarith) hv))

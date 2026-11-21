@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCo
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHomOfDerivation
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ConstThickeningFieldStructure
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupPullbackTranslationCompEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDualNumberEndoEqTranslationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstOrderLiftDerivationCommTranslationsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupPullbackTranslationCompEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDualNumberEndoEqTranslation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstOrderLiftDerivationCommTranslations
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -65,7 +65,7 @@ theorem isHoriz_of_comm : ∀ (k : Type) [Field k] (R : Type) [CommRing R] (A : 
   have hTB1 : TB ≫ r = r ≫ T₀ := Pr.lift_fst _ _ _
   have hTB2 : TB ≫ B'.hom = B'.hom := Pr.lift_snd _ _ _
   have hcΦ : TB ≫ Φ = Φ ≫ (lift (toUnit A ≫ s) (𝟙 A) ≫ μ[A]).left :=
-    GlobalTheory.T.firstOrderLift_derivation_comm_translations k A₀.left B'.left A.left m₀ B'.hom r dl Φ hb hΦ _ T₀ TB hT₀ hTB1 hTB2 hcomm
+    _root_.GlobalTheory.KS.LiftComm.translate_comm k A₀.left B'.left A.left m₀ B'.hom r dl Φ hb hΦ _ T₀ TB hT₀ hTB1 hTB2 hcomm
   let α : B'.left ⟶ B'.left := P₁.lift Φ B'.hom hΦp
   have hα1 : α ≫ π₁ = Φ := P₁.lift_fst _ _ _
   have hα2 : α ≫ B'.hom = B'.hom := P₁.lift_snd _ _ _
@@ -73,7 +73,7 @@ theorem isHoriz_of_comm : ∀ (k : Type) [Field k] (R : Type) [CommRing R] (A : 
   let αo : B' ⟶ B' := Over.homMk α hα2
   have hB' : IsAbelianScheme B' := GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA h₁
   set w : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B' := η[B'] ≫ αo with hw
-  have hαo : αo = lift (toUnit B' ≫ w) (𝟙 B') ≫ μ[B'] := GlobalTheory.T.abelianScheme_dualNumber_endo_eq_translation k B' hB' αo (fun Z z y hz => by
+  have hαo : αo = lift (toUnit B' ≫ w) (𝟙 B') ≫ μ[B'] := _root_.GlobalTheory.RigidEndo.eq_translate k B' hB' αo (fun Z z y hz => by
     change z ≫ α = z
     rw [← Pj.lift_fst z y hz, Category.assoc, hjα])
   let xo : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B' := Over.homMk x hx
@@ -83,8 +83,8 @@ theorem isHoriz_of_comm : ∀ (k : Type) [Field k] (R : Type) [CommRing R] (A : 
   have hσ1 : σ ≫ π₂ = spMap (constHom ρ) ≫ s.left := P₂.lift_fst _ _ _
   have hσ2 : σ ≫ B'.hom = 𝟙 _ := P₂.lift_snd _ _ _
   let σo : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B' := Over.homMk σ hσ2
-  have tx := GlobalTheory.T.groupPullback_translation_comp_eq B' A (spMap ρ) π₁ h₁ xo s hx1
-  have tσ := GlobalTheory.T.groupPullback_translation_comp_eq B' A (spMap (constHom ρ)) π₂ h₂ σo s hσ1
+  have tx := _root_.GlobalTheory.TranslPull.transl_comp_of_isGrpPullback B' A (spMap ρ) π₁ h₁ xo s hx1
+  have tσ := _root_.GlobalTheory.TranslPull.transl_comp_of_isGrpPullback B' A (spMap (constHom ρ)) π₂ h₂ σo s hσ1
   have hTBσ : TB = (lift (toUnit B' ≫ σo) (𝟙 B') ≫ μ[B']).left := by
     refine P₂.hom_ext ?_ ?_
     · rw [tσ, ← hr1, ← Category.assoc, hTB1, Category.assoc, hT₀, ← Category.assoc]

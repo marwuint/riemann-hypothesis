@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.CxTotalEqFullSumIrrOfCxCountReg
-import Development.AbelianVarietyTheory.Definitions.Divisors.MinpolyIrreducibleNatDegreeOfRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnitaryRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.MarkedSumIrr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinpolyOfRegAfOfFixL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntOfDenLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitalTermIntegralExpression
@@ -15,9 +15,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairWeightSupportFi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteWeightedPairOrbitsOfFiniteWeightedFixedPoiStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeparableFormGroupElementFixesUniquePositiveLineStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FullSumRegroup
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitalIntegralTestFunctionFirst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicEmbeddingValuationSubring
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitalIntegralTestFunctionSecond
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMarkedPairClassesDegreeOneTermNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMarkedPairClassesDegreeOneTermNeZero
 
 noncomputable section
 
@@ -47,7 +47,7 @@ theorem finite_pts_reg (G : HTGroup p) (ha : G.a = 1) (v : InfinitePlace G.F) (h
         f' ((Quot.out q).1.2⁻¹ * toP1 G β y * (Quot.out q).1.2) ≠ 0} := by
   have hsep := sep_of_regAf G v hv f hreg β x t hx hsym htr
   obtain ⟨Y, hY⟩ := Classical.axiomOfChoice
-    (fun P => GlobalTheory.T.orbital_integral_test_function_first p G ha v hv L f hf K' f' hf' β x t hx hsep hsym htr P)
+    (fun P => _root_.GlobalTheory.LKCx.ClsReg.classes_finite p G ha v hv L f hf K' f' hf' β x t hx hsep hsym htr P)
   refine ((GlobalTheory.T.orbital_term_real_trivialisation p G ha v hv L f hf K' f' hf' β x t hx hsym htr).biUnion
     (fun P _ => (Y P).finite_toSet.biUnion
       (fun y₀ _ => GlobalTheory.T.orbital_integral_test_function_second p G ha v hv L f hf K' f' hf' β x t hx hsep hsym htr y₀))).subset ?_

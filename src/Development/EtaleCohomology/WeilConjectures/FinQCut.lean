@@ -1,4 +1,6 @@
-import Development.EtaleCohomology.WeilConjectures.FermatCount
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.EtaleCohomology.KummerTheory.AdicLimPf
 
 noncomputable section

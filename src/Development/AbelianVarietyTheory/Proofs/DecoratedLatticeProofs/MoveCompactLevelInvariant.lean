@@ -125,14 +125,6 @@ theorem root_eq {V : HSp D} {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D 
   obtain ⟨m, rfl⟩ := hn
   rw [map_mul, h2 η hη a, pow_add, ← mul_pow, GlobalTheory.VolHeckeCompare.IsEta_mul_self hη, one_pow, mul_one]
 
-theorem unramAt_of_chrEq {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (hc : ChrEq c χ)
-    (hu : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (∀ k : Fin 2, ¬ Formalism.L2.Host.OverP D.host (D.host.g k) P) → χ.UnrAt P)
-    {v ε} (hv : GlobalTheory.WeilParts.NonSplitAt D v ε) : GlobalTheory.WeilParts.UnramAt ε c := by
-  refine GlobalTheory.UnramOver.unramAt_of_unrAt D c χ hc v ε hv.1 fun P hP => hu P fun k hk => ?_
-  obtain ⟨e, he⟩ := GlobalTheory.ChoiceAdm.exists_idem
-    (GlobalTheory.Mem.Chr.splitsC_main D.R D.host _ (D.host.g_prime k) (D.nd.g_split k) P hk).2.2.1
-  exact GlobalTheory.AdTh.RecPair.under_ne he hv hP
-
 theorem coe_stdL (n : ℕ) : (GlobalTheory.SW.stdL D.host.E n : Set (Fin n → D.host.E)) = intVec D n :=
   Set.ext fun x => GlobalTheory.SW.Base.mem_stdL x
 
@@ -159,36 +151,5 @@ theorem om_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {�
     (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) (fun v ε hv => ⟨hu v ε hv, hu v ε hv⟩) (fun _ => 1) (fun _ => 1)
     (hc S hP.gS) (hc T hP.gT) _ _ sS sT f ?_ k hk k' hk' m m' x y hx hy rx ry⟩
   rwa [coe_stdL, coe_stdL]
-
-theorem xiN_smul (θ : InfFam D) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ) (c : ℂ)
-    (f : WO S T → ℂ) : xiN θ S T hS hT δ sc (c • f) = fun z => c * xiN θ S T hS hT δ sc f z := by
-  funext z
-  simp only [xiN, Pi.smul_apply, smul_eq_mul]
-  ring
-
-theorem moveAt_mul_stab : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∀ c₀ g h, g ∈ GfC _ → h ∈ GfC _ → A.MoveAt θ i hi c₀ g h → ∀ k ∈ GfC _, ∀ k' ∈ GfC _, Moves _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) k (Formalism.L2.Col.stdLat B.fields.E _) → Moves _ (rankN (I.rec7 l Z) (i + 1) hi) k' (Formalism.L2.Col.stdLat B.fields.E _) → A.MoveAt θ i hi c₀ (g * k) (h * k') := by
-  intro B X I l Z w u A ψ θ hA i hi c₀ g h hg hh hM k hk k' hk' mk mk' N N' hN hN' x y hx hy
-  have hP := (GlobalTheory.AdForm.StdSteps.stdPair_steps I l Z w u A ψ θ hA i hi).1
-  have hW := hA.om i hi
-  have b := intG_of_moves _ mk
-  have b' := intG_of_moves _ mk'
-  have a := b.inv hP.gS
-  have a' := b'.inv hP.gT
-  rw [inv_inv] at a a'
-  obtain ⟨x₁, y₁, rx, ry, e⟩ := om_vac hP hW
-    (fun v ε hv => unramAt_of_chrEq (hA.chr ⟨i, hi⟩) (I.C.isMu0 ⟨i, hi⟩).unr hv) (hA.vac i hi) hk hk' a a'
-  obtain ⟨x₀, sx⟩ := (GlobalTheory.Member.isDetRoot_laws _ _).1 g
-  obtain ⟨y₀, sy⟩ := (GlobalTheory.Member.isDetRoot_laws _ _).1 h
-  have e0 := hM N N' (moves_of_mul _ a b hN) (moves_of_mul _ a' b' hN') x₀ y₀ sx sy
-  have ex := root_eq hW.resS hP.rk.2.2.1 ((GlobalTheory.Member.isDetRoot_laws _ _).2.2.2 _ _ _ _ sx rx) hx
-  have ey := root_eq hW.resS hP.rk.2.2.1 ((GlobalTheory.Member.isDetRoot_laws _ _).2.2.2 _ _ _ _ sy ry) hy
-  rw [← Prod.mk_mul_mk, map_mul, Module.End.mul_apply, e, map_smul, ex, ey]
-  refine (xiN_smul _ _ _ _ _ _ _ _ _).trans ?_
-  funext z
-  have e1 := congrFun e0 z
-  simp only [ColDat.xiS] at e1
-  rw [e1]
-  simp only [map_mul, Circle.coe_mul, Circle.coe_inv, mul_inv]
-  ring
 
 end GlobalTheory.AdForm.StabMove

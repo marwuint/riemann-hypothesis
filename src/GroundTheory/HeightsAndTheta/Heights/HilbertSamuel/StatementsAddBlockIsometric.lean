@@ -45,11 +45,6 @@ def AddBlockIsometric.Statement : Prop :=
 
 namespace PowerBlockProjectiveLine
 
-open ProjLine
-
-def fsOldPull : HermLine (addIdx (GlobalTheory (Fin 2)) 2) :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.pullHerm (isBlockMap_oldV (ι := GlobalTheory (Fin 2)) 2) fsLine1
-
 end PowerBlockProjectiveLine
 
 end

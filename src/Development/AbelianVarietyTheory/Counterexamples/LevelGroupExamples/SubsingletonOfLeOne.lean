@@ -389,13 +389,4 @@ theorem rank_le {Y : Model Xo c β} {p : ℕ} {C : SCF p} {P : PointsOfFlagModel
     · have h' : -τ₀ H.rt = b.hom (baseKA l).ρ := by rw [h, neg_neg]
       exact ⟨key _ _ h₁ ((hdet _).1 (e₁.trans h')), key _ _ h₀ ((hdet _).2 (by rw [← h']; exact hne.symm))⟩
 
-theorem ylRank (Y : Model Xo c β) (p : ℕ) : YlRank Y p (Dw.p + Dw.q) Dw.p ∧ YlRank Y p (Dw.p + Dw.q) Dw.q :=
-  ⟨fun _ _ A => (rank_le A).imp fun _ h => ⟨h.1, fun _ _ => by omega⟩,
-    fun _ _ A => (rank_le A).imp fun _ h => ⟨h.1, fun _ _ => by omega⟩⟩
-
-theorem main (Y : Model Xo c β) {p : ℕ} (hp : 1 < p) :
-    Formalism.L2.Pj.BetaAdd Y p ∧ BetaBal Y p (IsCMField.complexConj E) ∧ BetaPosDef Y p ∧
-      YlRank Y p (Dw.p + Dw.q) Dw.p :=
-  ⟨betaAdd Y p, betaBal Y p, betaPosDef Y hp, (ylRank Y p).1⟩
-
 end GlobalTheory.PointLawsEdge

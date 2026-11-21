@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIntermediateFieldOfForallComplexAutFixedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIntermediateFieldOfForallComplexAutFixed
 import Development.AbelianVarietyTheory.Definitions.Divisors.DatumOfIsIntegersLattice
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
@@ -30,8 +30,8 @@ theorem stable_sym_mem (F : IntermediateField ℚ ℂ) (L : PeriodPair) (ι : Ty
     · have := GlobalTheory.ConjPoint.IsConj.add g₂e g₃e (he i) (he i)
       rw [← two_mul, ← two_mul] at this
       exact ((this.resolve_left fun h ↦ h2 i h.1).2.2.1).symm
-  refine ⟨GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F _ fun σ hσ ↦ ?_, GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F _ fun σ hσ ↦ ?_,
-    GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F _ fun σ hσ ↦ ?_, fun h2 ↦ GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F _ fun σ hσ ↦ ?_⟩
+  refine ⟨_root_.GlobalTheory.CMModel.mem_of_forall_ringEquiv_fixed F _ fun σ hσ ↦ ?_, _root_.GlobalTheory.CMModel.mem_of_forall_ringEquiv_fixed F _ fun σ hσ ↦ ?_,
+    _root_.GlobalTheory.CMModel.mem_of_forall_ringEquiv_fixed F _ fun σ hσ ↦ ?_, fun h2 ↦ _root_.GlobalTheory.CMModel.mem_of_forall_ringEquiv_fixed F _ fun σ hσ ↦ ?_⟩
   · obtain ⟨e, a, -, -, -⟩ := key σ hσ
     rw [map_sum]; simp only [a]; exact Equiv.sum_comp e (fun i ↦ L.weierstrassP (T i))
   · obtain ⟨e, -, b, -, -⟩ := key σ hσ

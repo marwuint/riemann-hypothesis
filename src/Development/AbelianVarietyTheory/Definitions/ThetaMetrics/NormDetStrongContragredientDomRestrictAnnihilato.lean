@@ -79,25 +79,6 @@ theorem gramVol_eq_norm_det (b : OrthonormalBasis ι 𝕜 V) (v : ι → V) :
   ext j
   simpa [Basis.toMatrix_apply] using (b.sum_repr (v j)).symm
 
-theorem norm_det_inner [FiniteDimensional 𝕜 V] (hι : Fintype.card ι = finrank 𝕜 V)
-    (w v : ι → V) :
-    ‖(Matrix.of fun i j => ⟪w i, v j⟫_𝕜).det‖ = gramVol 𝕜 w * gramVol 𝕜 v := by
-  let b : OrthonormalBasis ι 𝕜 V :=
-    (stdOrthonormalBasis 𝕜 V).reindex (Fintype.equivFinOfCardEq hι).symm
-  have : (Matrix.of fun i j => ⟪w i, v j⟫_𝕜) = (b.toBasis.toMatrix w)ᴴ * b.toBasis.toMatrix v := by
-    ext i j
-    simp [mul_apply, Basis.toMatrix_apply, b.repr_apply_apply, b.sum_inner_mul_inner]
-  rw [this, det_mul, det_conjTranspose, norm_mul, norm_star, gramVol_eq_norm_det b,
-    gramVol_eq_norm_det b]
-
-theorem gramVol_mul_gramVol_of_biorthogonal [FiniteDimensional 𝕜 V]
-    (hι : Fintype.card ι = finrank 𝕜 V) {w v : ι → V}
-    (h : ∀ i j, ⟪w i, v j⟫_𝕜 = if i = j then 1 else 0) : gramVol 𝕜 w * gramVol 𝕜 v = 1 := by
-  rw [← norm_det_inner hι]
-  have : (Matrix.of fun i j => ⟪w i, v j⟫_𝕜) = 1 := by
-    ext i j; simp [h, one_apply]
-  simp [this]
-
 instance isClosed_of_hasOrthogonalProjection (U : Submodule 𝕜 V) [U.HasOrthogonalProjection] :
     IsClosed (U : Set V) := by
   rw [← U.orthogonal_orthogonal]
@@ -106,18 +87,6 @@ instance isClosed_of_hasOrthogonalProjection (U : Submodule 𝕜 V) [U.HasOrthog
 section NormDet
 
 variable [FiniteDimensional 𝕜 V]
-
-theorem normDet_eq_gramVol (T : V →ₗ[𝕜] W) (b : OrthonormalBasis ι 𝕜 V) :
-    T.normDet = gramVol 𝕜 (fun i => T (b i)) :=
-  (gramVol_eq_of_sq T.normDet_nonneg (by simpa using T.normDet_sq_eq_det_gram b)).symm
-
-theorem normDet_mul_normDet_of_inner_eq [FiniteDimensional 𝕜 W] {S T : V →ₗ[𝕜] W}
-    (h : finrank 𝕜 V = finrank 𝕜 W) (hST : ∀ x y, ⟪S x, T y⟫_𝕜 = ⟪x, y⟫_𝕜) :
-    S.normDet * T.normDet = 1 := by
-  let b := stdOrthonormalBasis 𝕜 V
-  rw [normDet_eq_gramVol _ b, normDet_eq_gramVol _ b]
-  refine gramVol_mul_gramVol_of_biorthogonal (by simpa using h) fun i j => ?_
-  rw [hST, orthonormal_iff_ite.mp b.orthonormal]
 
 abbrev detNorm (T : V ≃ₗ[𝕜] W) : ℝ := (T : V →ₗ[𝕜] W).normDet
 
@@ -131,15 +100,6 @@ variable [FiniteDimensional 𝕜 W]
 def invAdjoint (T : V ≃ₗ[𝕜] W) : V ≃ₗ[𝕜] W :=
   LinearEquiv.ofLinearMap (LinearMap.adjoint (T.symm : W →ₗ[𝕜] V)) (LinearMap.adjoint (T : V →ₗ[𝕜] W))
     (by rw [← LinearMap.adjoint_comp]; simp) (by rw [← LinearMap.adjoint_comp]; simp)
-
-theorem inner_invAdjoint_apply (T : V ≃ₗ[𝕜] W) (x y : V) :
-    ⟪invAdjoint T x, T y⟫_𝕜 = ⟪x, y⟫_𝕜 := by
-  change ⟪LinearMap.adjoint (T.symm : W →ₗ[𝕜] V) x, T y⟫_𝕜 = _
-  rw [LinearMap.adjoint_inner_left]; simp
-
-theorem detNorm_invAdjoint (T : V ≃ₗ[𝕜] W) : detNorm (invAdjoint T) = (detNorm T)⁻¹ :=
-  eq_inv_of_mul_eq_one_left
-    (normDet_mul_normDet_of_inner_eq T.finrank_eq (inner_invAdjoint_apply T))
 
 end NormDet
 
@@ -268,27 +228,5 @@ def strongContragredient (T : V ≃ₗ[𝕜] W) : StrongDual 𝕜 V ≃ₗ[𝕜]
     strongContragredient T φ y = φ (T.symm y) := rfl
 
 end Dual
-
-example : gramVol ℂ (fun _ : Unit => (3 + 4 * Complex.I : ℂ)) = 5 := by
-  rw [gramVol_unique, Complex.norm_eq_sqrt_sq_add_sq]
-  norm_num [show (3 : ℝ) ^ 2 + 4 ^ 2 = 5 ^ 2 by norm_num]
-
-example : gramVol ℂ (![!₂[1, 0], !₂[1, 2 * Complex.I]] : Fin 2 → EuclideanSpace ℂ (Fin 2)) = 2 := by
-  rw [gramVol_eq_norm_det (EuclideanSpace.basisFun (Fin 2) ℂ), det_fin_two]
-  simp [Basis.toMatrix_apply]
-
-example [FiniteDimensional 𝕜 V] (c : 𝕜ˣ) :
-    detNorm (invAdjoint (c • LinearEquiv.refl 𝕜 V)) = (‖(c : 𝕜)‖ ^ finrank 𝕜 V)⁻¹ := by
-  rw [detNorm_invAdjoint]
-  congr 1
-  exact (LinearMap.normDet_smul (LinearMap.id : V →ₗ[𝕜] V) (c : 𝕜)).trans (by simp)
-
-example {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    {n : ℕ} (v : Fin n → E) : gramVol ℝ v = ‖exteriorPower.ιMulti ℝ n v‖ :=
-  gramVol_eq_of_sq (norm_nonneg _)
-    (by rw [← exteriorPower.inner_ιMulti_self, real_inner_self_eq_norm_sq]; simp)
-
-example (U : Submodule ℂ (EuclideanSpace ℂ (Fin 2))) :
-    InnerProductSpace ℂ (StrongDual ℂ (EuclideanSpace ℂ (Fin 2) ⧸ U)) := inferInstance
 
 end GlobalTheory

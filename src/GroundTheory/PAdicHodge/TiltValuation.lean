@@ -112,10 +112,6 @@ instance normedCommRing_preTilt : NormedCommRing (PreTilt (normInteger K) p) whe
 theorem preTilt_norm_def (x : PreTilt (normInteger K) p) :
     ‖x‖ = ‖((x.untilt : normInteger K) : K)‖ := rfl
 
-theorem nnnorm_eq_val (x : PreTilt (normInteger K) p) :
-    ‖x‖₊ = PreTilt.val K NormedField.valuation (normInteger K) normInteger_integers p x := by
-  rw [val_eq_nnnorm_untilt]; rfl
-
 instance : NormMulClass (PreTilt (normInteger K) p) :=
   ⟨fun x y => map_mul (tiltNorm K p) x y⟩
 
@@ -276,12 +272,6 @@ theorem ker_untiltModHom (ϖ' : PreTilt (normInteger K) p) (ϖ : normInteger K)
   rw [RingHom.mem_ker, untiltModHom_apply, Ideal.Quotient.eq_zero_iff_mem,
     mem_span_singleton_iff_norm_le, Ideal.mem_span_singleton, preTilt_dvd_iff_norm_le, ← h]
   rfl
-
-def tiltQuotientEquiv (ϖ' : PreTilt (normInteger K) p) (ϖ : normInteger K)
-    (h : ‖((ϖ'.untilt : normInteger K) : K)‖ = ‖(ϖ : K)‖) (hp : ‖(p : K)‖ ≤ ‖(ϖ : K)‖) :
-    PreTilt (normInteger K) p ⧸ Ideal.span {ϖ'} ≃+* normInteger K ⧸ Ideal.span {ϖ} :=
-  (Ideal.quotEquivOfEq (ker_untiltModHom ϖ' ϖ h hp).symm).trans
-    (RingHom.quotientKerEquivOfSurjective (untiltModHom_surjective ϖ hp))
 
 theorem exists_norm_untilt_eq (a : normInteger K) (ha : ‖(p : K)‖ < ‖(a : K)‖) :
     ∃ x : PreTilt (normInteger K) p, ‖((x.untilt : normInteger K) : K)‖ = ‖(a : K)‖ := by

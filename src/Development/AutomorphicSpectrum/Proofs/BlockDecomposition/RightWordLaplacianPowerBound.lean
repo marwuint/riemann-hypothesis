@@ -179,11 +179,6 @@ theorem lap_apply (hu : Uniq μ V) {f : Mat n → V} (hf : Sob μ f) :
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [Module.End.mul_apply, X_cls hu p hf, X_cls hu p (sob_bs p hf)]
 
-theorem sob_Lap_iter (j : ℕ) {f : Mat n → V} (hf : Sob μ f) : Sob μ (Lap^[j] f) := by
-  induction j generalizing f with
-  | zero => exact hf
-  | succ j ih => exact ih (sob_Lap hf)
-
 theorem pow_apply (hu : Uniq μ V) (j : ℕ) {f : Mat n → V} (hf : Sob μ f) :
     (((-∑ i, X hu i * X hu i) ^ j) ⟨cls μ f, cls_mem hf⟩ : Msob μ V).1 = cls μ (Lap^[j] f) := by
   induction j generalizing f with

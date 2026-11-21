@@ -1,21 +1,21 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToFunNonneg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EllEqOfInRCone
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthCommonDenominatorRankLeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniformStrictnessAndFaceCutBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthLeStrictnessGapOffCentresStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthLeOnCentreCellStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBoundedGeneratorsStarSubdivisionConeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionEstimateOffCentreCellStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthCommonDenominatorRankLe
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniformStrictnessAndFaceCutBounds
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthLeStrictnessGapOffCentres
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthLeOnCentreCell
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBoundedGeneratorsStarSubdivisionCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionEstimateOffCentreCell
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolCell
 
 namespace GlobalTheory.PolFan.StarKey
 
 theorem exists_starFun_strict : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ w : InvFun (𝓞 E)), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsCentreSet H.bar q ψ w → ∃ K D : ℕ, 0 < K ∧ 0 < D ∧ (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℤ, (starFun H.bar ψ w K D).evalZ β = n) ∧ (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ → (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0) → IsStrict H.bar (starFun H.bar ψ w K D) γ) ∧ (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ → ∀ β₀ ∈ balForms H.bar X, (∀ y, 0 ≤ β₀ y y) → w.evalZ β₀ = 1 → InRCone γ β₀ → ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut γ s h → 0 < h β₀ → IsStrict H.bar (starFun H.bar ψ w K D) (Fin.cons β₀ fun j => γ (s j))) := by
   intro E _ _ _ H q ψ w hdom hψ hcs
-  obtain ⟨D₀, hD₀, hint⟩ := GlobalTheory.T.starDepth_common_denominator_rank_le E H q ψ w hψ hcs
-  obtain ⟨N₀, C₀, hdata⟩ := GlobalTheory.T.exists_uniform_strictness_and_face_cut_bounds E H q ψ hdom hψ
-  obtain ⟨b, hgens⟩ := GlobalTheory.T.exists_bounded_generators_star_subdivision_cone E H q ψ w hψ hcs
+  obtain ⟨D₀, hD₀, hint⟩ := _root_.GlobalTheory.PolFan.StarDen.starDepth_den E H q ψ w hψ hcs
+  obtain ⟨N₀, C₀, hdata⟩ := _root_.GlobalTheory.PolFan.StrictData.exists_strict_data E H q ψ hdom hψ
+  obtain ⟨b, hgens⟩ := _root_.GlobalTheory.PolFan.StarGens.exists_bounded_gens E H q ψ w hψ hcs
   have hD₀r : (0 : ℝ) < D₀ := by exact_mod_cast hD₀
   refine ⟨N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1, D₀, by omega, hD₀, ?_, ?_, ?_⟩
   · intro X _ _ _ _ hX β hβ hp
@@ -27,7 +27,7 @@ theorem exists_starFun_strict : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     linear_combination hn₂
   · intro X _ _ _ _ hX m γ hγ hnoc
     obtain ⟨N, ℓ, hN, hNN, hsw, -⟩ := hdata X hX m γ hγ
-    have hgap := GlobalTheory.T.starDepth_le_strictnessGap_off_centres E H q ψ w hψ hcs X hX m γ N ℓ hγ hnoc hN hsw
+    have hgap := _root_.GlobalTheory.PolFan.StarGap.starDepth_le_gap E H q ψ w hψ hcs X hX m γ N ℓ hγ hnoc hN hsw
     have hnn : ∀ β : LinearMap.BilinForm ℤ X, 0 ≤ (starDepth H.bar ψ w).evalZ β := fun β =>
       starDepth_eval_nonneg (fun a b => (β a b : ℝ))
     set K := N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1 with hKdef
@@ -73,7 +73,7 @@ theorem exists_starFun_strict : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     obtain ⟨h', hcut', hpos', hdom'⟩ := hcuts m' s h hcut
     have hp' : 0 < h' β₀ := hpos' β₀ hin₀ hpos
     obtain ⟨hin, hone, hzero, heq⟩ :=
-      GlobalTheory.T.starDepth_le_on_centre_cell E H q ψ w hψ hcs X hX m γ hγ β₀ hβ₀ hp₀ hw₀ hin₀ m' s h' hcut' hp'
+      _root_.GlobalTheory.PolFan.starDepth_on_cell E H q ψ w hψ hcs X hX m γ hγ β₀ hβ₀ hp₀ hw₀ hin₀ m' s h' hcut' hp'
     set K := N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1 with hKdef
     have hKb : N + N * C₀ + N ^ 2 * C₀ * b + 1 ≤ K := by
       rw [hKdef]
@@ -81,7 +81,7 @@ theorem exists_starFun_strict : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
       have h2 : N ^ 2 * C₀ * b ≤ N₀ ^ 2 * C₀ * b :=
         Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ (Nat.pow_le_pow_left hNN 2))
       omega
-    have hoff := GlobalTheory.T.star_subdivision_estimate_off_centre_cell E H q ψ w b hψ hcs X hX (hgens X hX) m γ N ℓ hγ hN hsw β₀ hβ₀ hp₀ hw₀ hin₀ m' s h'
+    have hoff := _root_.GlobalTheory.PolFan.StarKey.OffCell.off_cell E H q ψ w b hψ hcs X hX (hgens X hX) m γ N ℓ hγ hN hsw β₀ hβ₀ hp₀ hw₀ hin₀ m' s h'
       hcut' hp' C₀ hdom' K hKb
     have hlinγ : ∀ β, InRCone γ β → (ℓ β : ℝ) = N * ψ.evalZ β := fun β hβ => StarKey.ell_eq_of_inRCone hγ.linear hsw hβ
     have hcast : (((h' β₀).toNat : ℕ) : ℝ) = (h' β₀ : ℝ) := by

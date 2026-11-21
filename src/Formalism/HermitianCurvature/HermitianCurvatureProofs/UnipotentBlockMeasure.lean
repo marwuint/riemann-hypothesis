@@ -118,56 +118,6 @@ theorem t_NormRe : NormRe := by
           (B.Gam1 * B.AA * ((B.c0 * B.c0')⁻¹ * B.IntN)) := by rw [h2]; ring
     _ ≤ _ := mul_le_mul_of_nonneg_left h1 hvg
 
-theorem t_NormOfMain : NormOfMain := by
-  intro hM P _ B hin
-  obtain ⟨hPos, hJac, hNu, hInf, hVol, hLev, hMas, hCol, hOrd, hTyp, hInd⟩ := hin
-  obtain ⟨hGam, hμK, hμKpp, hμSpp, hμSpp', hMM, hU, hc0, hc0', htt, hAA, hD⟩ := book_constants_pos_of_pos B hPos
-  have hPos' := hPos
-  obtain ⟨hp, hμKo, hμSo, hμSo', hMo, hU00o, hμH, hμH', hμHpp, hμHpp', hμN, hμN', hvolZZ, hvolPP, hal,
-    hvolG, hvolHa, hvolHa', hvolNa, hvolNa', hvolB, hvolH, hvolH', hvolN, hvolN', hCoo, hdeg, hdimπ,
-    hdimπ', hρ0, hρ0', hd, hd', hn0c, hsup, hδ⟩ := hPos'
-  by_cases hI : 0 ≤ B.IntN
-  · let B' : S3.MassData P := { B with
-      δ := 0, e1 := 1, supdens := 1, KtopV := B.IntN / (B.c0 * B.c0'), n0c := B.AA / B.ρ0,
-      KV := B.AA / B.ρ0 * (B.IntN / (B.c0 * B.c0')),
-      Sig := B.ρ0 * (B.AA / B.ρ0 * (B.IntN / (B.c0 * B.c0'))),
-      Kgs2 := B.tt * B.Gam1 * (B.ρ0 * (B.AA / B.ρ0 * (B.IntN / (B.c0 * B.c0')))) }
-    have hPosB' : B'.Pos :=
-      ⟨hp, hμKo, hμSo, hμSo', hMo, hU00o, hμH, hμH', hμHpp, hμHpp', hμN, hμN', hvolZZ, hvolPP, hal,
-        hvolG, hvolHa, hvolHa', hvolNa, hvolNa', hvolB, hvolH, hvolH', hvolN, hvolN', hCoo, hdeg, hdimπ,
-        hdimπ', hρ0, hρ0', hd, hd', div_pos hAA hρ0, zero_le_one, le_refl 0⟩
-    have hTwoA : B'.InTwoA := le_refl _
-    have hForm : B'.InForm := rfl
-    have hKer : B'.InKernel := by
-      refine ⟨?_, div_nonneg hI (mul_pos hc0 hc0').le⟩
-      show B.AA / B.ρ0 * (B.IntN / (B.c0 * B.c0')) ≤ 1 * (B.AA / B.ρ0) * (B.IntN / (B.c0 * B.c0'))
-      rw [one_mul]
-    have hMass : B'.InMass := by
-      show B.AA / B.ρ0 * B.ρ0 = B.AA
-      field_simp
-    have hDens : B'.InDens := le_refl (1 : ℝ)
-    have hThA : B'.InTheoremA := by
-      show B.c0 * B.c0' * (B.IntN / (B.c0 * B.c0')) ≤ (1 + 0) * B.IntN
-      have : B.c0 * B.c0' * (B.IntN / (B.c0 * B.c0')) = B.IntN := by field_simp
-      rw [this]; simp
-    obtain ⟨hGS, hB, -⟩ := hM P B' hPosB' hTwoA hForm hKer hMass hDens hThA hJac hNu hInf hVol hLev hMas
-      hCol hOrd hTyp hInd
-    rw [hGS] at hB
-    have hB2 : B.tt * B.Gam1 * (B.ρ0 * (B.AA / B.ρ0 * (B.IntN / (B.c0 * B.c0')))) ≤
-        (1 + 0) * 1 * B.tt * (B.d * B.d' / B.Dstar) := hB
-    have e : B.tt * B.Gam1 * (B.ρ0 * (B.AA / B.ρ0 * (B.IntN / (B.c0 * B.c0')))) =
-        B.tt * (B.Gam1 * B.AA * ((B.c0 * B.c0')⁻¹ * B.IntN)) := by field_simp
-    rw [e] at hB2
-    have hB3 : B.tt * (B.Gam1 * B.AA * ((B.c0 * B.c0')⁻¹ * B.IntN)) ≤ B.tt * (B.d * B.d' / B.Dstar) := by
-      linarith
-    exact le_of_mul_le_mul_left hB3 htt
-  · have hI' : B.IntN ≤ 0 := le_of_not_ge hI
-    have h1 : B.Gam1 * B.AA * ((B.c0 * B.c0')⁻¹ * B.IntN) ≤ 0 :=
-      mul_nonpos_of_nonneg_of_nonpos (mul_pos hGam hAA).le
-        (mul_nonpos_of_nonneg_of_nonpos (inv_pos.mpr (mul_pos hc0 hc0')).le hI')
-    have h2 : 0 ≤ B.d * B.d' / B.Dstar := (div_pos (mul_pos hd hd') hD).le
-    linarith
-
 end
 
 end Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.A
@@ -180,14 +130,6 @@ section
 
 open Finset
 open Classical
-
-theorem t_ZpowForm : Formalism.FourierDecayAlt.PN.ZpowForm := by
-  unfold Formalism.FourierDecayAlt.PN.ZpowForm
-  intro q k r _ hk
-  rw [zpow_neg]
-  congr 1
-  have e : ((k : ℤ) - 2 * r - 5) = ((k - 2 * r - 5 : ℕ) : ℤ) := by omega
-  rw [e, zpow_natCast]
 
 variable {Cl Nu : Type}
 
@@ -578,13 +520,6 @@ section
 open Finset
 open Classical
 
-theorem t_ExponentSumText : ExponentSumText := by
-  intro r
-  have h : (r + 1) ^ 2 = r ^ 2 + 2 * r + 1 := by ring
-  rw [h]
-  generalize r ^ 2 = s
-  constructor <;> omega
-
 theorem t_ExponentSum : ExponentSum := by
   intro C1 C0 A r hA
   unfold e7 eN
@@ -737,10 +672,6 @@ lemma hpow {b x c : ℝ} (hb : 1 < b) (hx0 : 0 ≤ x) (hx : x ≤ b ^ c) (n : �
     _ ≤ Real.exp (K * M * Real.log b) := by
       apply Real.exp_le_exp.mpr
       nlinarith
-
-lemma hk {c t m5 f : ℝ} (hc : 0 ≤ c) (hf : 0 ≤ f) (ht : t ≤ m5) : c * (f * t) ≤ c * (m5 * f) := by
-  rw [mul_comm m5 f]
-  exact mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left ht hf) hc
 
 lemma core (A : ℕ) (CB CSt Cg CT : ℝ) (_hCB : 0 ≤ CB) (hCSt : 0 ≤ CSt) (hCg : 0 ≤ Cg) (hCT : 0 ≤ CT)
     (r f : ℕ) (b rd g TT cSt e1 m M : ℝ) (hm : m = 2 * (r : ℝ) + 2) (hM : M = m ^ 5 * f)
@@ -935,24 +866,6 @@ theorem occ_of_ne {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [In
   unfold Formalism.FourierDecayAlt.PN.grp
   simp only [hz, tsum_zero]
 
-theorem t_GenMassOfSplit : Formalism.FourierDecayAlt.PN.GenMassOfSplit := by
-  intro τ Rw I H H₁ _ _ _ _ _ X E _ r Cl Nu N AAre e1 Gk dens tw hA hH h γ hγ
-  obtain ⟨hG, ht, hn, hd0, hd, htw, hm⟩ := h γ hγ
-  have hH1 := hH γ hγ
-  have hH0 : 0 ≤ N.Hh γ := by linarith
-  refine ⟨by rw [hn]; positivity, hm.trans ?_⟩
-  have hGk : Gk γ ≤ N.n γ * N.Hh γ ^ (6 * (2 * r + 2)) := by
-    have : Gk γ = N.n γ * (tw γ)⁻¹ := by rw [hn]; field_simp
-    rw [this]
-    exact mul_le_mul_of_nonneg_left htw (by rw [hn]; positivity)
-  have hn0 : 0 ≤ N.n γ := by rw [hn]; positivity
-  have he1 : 0 ≤ e1 * N.Hh γ := hd0.trans hd
-  calc AAre * Gk γ * dens γ * N.Hh γ ^ (10 * (r + 1) ^ 2)
-      ≤ AAre * (N.n γ * N.Hh γ ^ (6 * (2 * r + 2))) * (e1 * N.Hh γ) * N.Hh γ ^ (10 * (r + 1) ^ 2) := by
-        gcongr
-    _ = AAre * e1 * N.Hh γ ^ eN r * N.n γ := by
-        unfold eN; ring
-
 theorem t_RowNGAbstract : Formalism.FourierDecayAlt.PN.RowNGAbstract := by
   intro hC hCSS hRFC hCCS hFB hSB hMA E _ _ _ τ Rw I H H₁ _ _ _ _ _ _ X r k Cl Nu N C1 C0 Aexp
     Pc gf cSt AAre e1 TB hexp hPc hgf hcSt hAA he1 hAbs hClass hAmp hNorm hPts hLoc hMeas hGen hHt hTB
@@ -1073,38 +986,6 @@ theorem t_RowNGJoint : RowNGJoint := by
         apply mul_le_mul_of_nonneg_right _ hddpos.le
         exact mul_le_mul_of_nonneg_left hnum hκ0
 
-theorem t_PairBoundFromLocalNG : PairBoundFromLocalNG := by
-  intro hPBL hPBC hRow hCh hLoop C₄ Cthr CL hC4 hCL C1 C0n A CB CSt Cg CT hCB hCSt hCg hCT hA
-  obtain ⟨hMR, hPB, hLC, hGC, hLL, hAx, hA13, hPBA, hPI, hEI, hPS, hSF, hNP, hNE, hND, hNL, hNNG, hNGE,
-    hEZ⟩ := hPBC
-  obtain ⟨hNDS, hDS, hS0, hGS, hB3, hLJ, hLGR⟩ := hLoop
-  obtain ⟨CA, C, h1, h2, h3, h4, hrest⟩ := hPBL hMR hPB hLC hGC hLL hAx hA13 hPBA hPI hEI hPS hSF hNP hNE
-    hND hNL hNNG hNGE hEZ C₄ Cthr hC4
-  obtain ⟨K₀, hK⟩ := hLJ hNDS hDS hS0 hGS hB3 CL hCL
-  obtain ⟨Cn, hCn0, hCn⟩ := hRow hCh C1 C0n A CB CSt Cg CT hCB hCSt hCg hCT hA
-  refine ⟨CA, C, K₀, Cn, h1, h2, h3, h4, hCn0, ?_⟩
-  intro C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6
-  obtain ⟨k0, hk0⟩ := hrest C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6
-  refine ⟨k0, ?_⟩
-  intro E W _ _ _ D e G bb Cp Cf Th de de' T T' du du' l hk hSz hc1 hc2 hUn hInst hLM jn H _ _ _ Vt c sd
-    hRI hDI P _ B hRows hMassData hEL τ Rw I HS H₁ _ _ _ _ _ _ X hLink hSplit hSN Al NT Gam Xi hAl hPar hXi
-    hlog hLI Cl Nu N cSt e1 Irat Ire hFI hNS hNI
-  have hAbs : X.AbsConv := hSplit.1
-  have hLink' := hLink
-  obtain ⟨hG1, hSig, htyp, hd, hd', hDs⟩ := hLink'
-  obtain ⟨bPos, bForm, bMass, bJac, bNu, bInf, bVol, bLev, bMas, bCol, bOrd, bTyp, bInd⟩ := hMassData
-  have hNormI : NormInputs B := ⟨bPos, bJac, bNu, bInf, bVol, bLev, bMas, bCol, bOrd, bTyp, bInd⟩
-  have hddpos := (pos_facts B bPos).2
-  rw [hd, hd', hDs] at hddpos
-  have hloops := hK τ Rw I HS H₁ X G.k G.r G.f Al bb G.g G.v NT Gam Xi _ hAl hPar hXi hlog hddpos.le hLI
-  obtain ⟨hBig, hNSc⟩ := hLGR hSF τ Rw I HS H₁ X _ _ hAbs hloops
-  have hng := hCn E τ Rw I HS H₁ X G.r G.k Cl Nu N P B bb (2 * G.v) G.g ((T : ℝ) * T') cSt e1 Irat Ire hAbs
-    hG1 hNormI hFI hNS hNI
-  rw [hd, hd', hDs] at hng
-  exact hk0 E W D e G bb Cp Cf Th de de' T T' du du' l hk hSz hc1 hc2 hUn hInst hLM jn H Vt c sd hRI hDI P B
-    hRows ⟨bPos, bForm, bMass, bJac, bNu, bInf, bVol, bLev, bMas, bCol, bOrd, bTyp, bInd⟩ hEL τ Rw I HS H₁ X
-    (1 / 3) Cn hLink hSplit hSN hBig hNSc hng
-
 end
 
 end Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.F
@@ -1112,8 +993,6 @@ end Formalism.FourierDecayAlt.P.HermitianFormNormLemmas.F
 namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt
-
-theorem norm_of_leading_term : Formalism.FourierDecayAlt.PN.NormOfMain := HermitianFormNormLemmas.A.t_NormOfMain
 
 theorem norm_of_lemmas : Formalism.FourierDecayAlt.PN.NormOfLemmas := HermitianFormNormLemmas.A.t_NormOfLemmas
 
@@ -1123,8 +1002,6 @@ theorem pn_norm_bound : Formalism.FourierDecayAlt.PN.NormBound :=
 theorem frame_passage : Formalism.FourierDecayAlt.PN.FramePassage := HermitianFormNormLemmas.A.t_FramePassage
 
 theorem norm_real_part : Formalism.FourierDecayAlt.PN.NormRe := HermitianFormNormLemmas.A.t_NormRe
-
-theorem pn_zpow_form : Formalism.FourierDecayAlt.PN.ZpowForm := HermitianFormNormLemmas.B.t_ZpowForm
 
 theorem mean_amplitude_joint : Formalism.FourierDecayAlt.PN.MeanAmpJoint := HermitianFormNormLemmas.B.t_MeanAmpJoint
 
@@ -1138,18 +1015,12 @@ theorem second_bracket : Formalism.FourierDecayAlt.PN.SecondBracket := Hermitian
 
 theorem line_from_classes : Formalism.FourierDecayAlt.PN.RowFromClasses := HermitianFormNormLemmas.E.t_RowFromClasses
 
-theorem general_mass_of_split : Formalism.FourierDecayAlt.PN.GenMassOfSplit := HermitianFormNormLemmas.E.t_GenMassOfSplit
-
 theorem line_norm_abstract : Formalism.FourierDecayAlt.PN.RowNGAbstract := HermitianFormNormLemmas.E.t_RowNGAbstract
 
 theorem exponent_sum : Formalism.FourierDecayAlt.PN.ExponentSum := HermitianFormNormLemmas.D1.t_ExponentSum
 
-theorem exponent_sum_explicit : Formalism.FourierDecayAlt.PN.ExponentSumText := HermitianFormNormLemmas.D1.t_ExponentSumText
-
 theorem norm_numbers : Formalism.FourierDecayAlt.PN.NGNumbers := HermitianFormNormLemmas.D3.t_NGNumbers
 
 theorem line_norm_joint : Formalism.FourierDecayAlt.PN.RowNGJoint := HermitianFormNormLemmas.F.t_RowNGJoint
-
-theorem pair_bound_from_local_norm : Formalism.FourierDecayAlt.PN.PairBoundFromLocalNG := HermitianFormNormLemmas.F.t_PairBoundFromLocalNG
 
 end Formalism.FourierDecayAlt.P

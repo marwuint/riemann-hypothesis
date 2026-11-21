@@ -1,5 +1,5 @@
 import Formalism.YangianSpanCharacter.StatementF
-import Formalism.YangianSpanCharacter.ModHypYangian
+import Formalism.YangianSpanCharacter.StatementY
 import Formalism.HermitianCurvature.StatementR
 import Formalism.HermitianCurvature.StatementI
 import Formalism.HermitianCurvature.StatementWd
@@ -250,16 +250,6 @@ def Kw (L : LevelData A r) (w : List (Letter ℂ S)) : SlopeTestRemainingChoices
 
 end Defs
 
-def CoordinateBlockCondition : Prop :=
-  ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S] (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (D : ℂ), FreeOf2 a M → ∀ i j : Fin 2,
-    (M * Rh0 a D : M2 (SlopeTestRemainingChoices S A)) i j = ins a (Formalism.YangianSpanCharacter.F.blk (E1 M *
-      ((D - 1)⁻¹ • (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)))) i j)
-
-def TransposedCoordinateBlockCondition : Prop :=
-  ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S] (b : S) (M : M2 (SlopeTestRemainingChoices S A)) (d : ℂ), ∀ i j : Fin 2,
-    (Rht0 b d * M : M2 (SlopeTestRemainingChoices S A)) i j = ins b (Formalism.YangianSpanCharacter.F.blk
-      (((d - 1)⁻¹ • pt1 (d • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A))) * E1 M) i j)
-
 def FrameModHyp : Prop :=
   ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
     (r : ℕ) (L : LevelData A r) (f : FrameData S A), IsFrame L f →
@@ -274,12 +264,6 @@ def EtaLevel : Prop :=
   ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
     (r : ℕ) (L : LevelData A r) (f : FrameData S A) (Y Ya : ℂ), Y ≠ Ya →
     (Y - Ya)⁻¹ • (f.l L Y - f.l L Ya) = -io (L.ζb * L.GGi) + kapL L * f.DD Y Ya
-
-def ZetaConj : Prop :=
-  ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
-    (r : ℕ) (L : LevelData A r) (f : FrameData S A) (Y : ℂ),
-    (∀ g ∈ zfns L, Commute (f.ee Y) (io g)) →
-    io L.ζi * f.l L Y * io L.ζ = f.l L Y - io L.ζi ∧ L.ζb * L.GGi - L.ζi = L.TT • (L.ζi * L.GGi)
 
 def EeConj : Prop :=
   ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
@@ -299,13 +283,6 @@ def NewLetterPlus : Prop :=
     (∀ g ∈ zfns L, Commute (f.ee Y) (io g)) →
     (!![io L.ζi, 0; 0, io L.ζbi] * !![1, 0; io L.GG * f.l L Y, io L.GG]) *ᵥ ![io (L.Ar Y), io (L.Br Y)] =
       ![io (L.Di * L.Ahat Y), io (L.Dbi * L.R0 Y) + f.ee Y * io (L.Di * L.Ahat Y)]
-
-def GaussFormPlus : Prop :=
-  ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
-    (r : ℕ) (L : LevelData A r) (f : FrameData S A) (a : S) (Ya : ℂ), PlusHyp L f a Ya →
-    f.RR * ins a (f.TT Ya) = star (ins a !![1, 0; f.l L Ya, 1] * f.F) *
-      (f.d L * ins a !![f.q Ya • (io L.GGi * f.xi (Ya + 1)), 0; 0, io L.GG * f.x Ya]) *
-      (ins a !![1, 0; f.l L Ya, 1] * f.F)
 
 def PlusForm : Prop :=
   ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
@@ -433,11 +410,6 @@ def CPosCut : Prop :=
     ∀ e : Ix S, Pos (cs (fun Y => (-1) ^ (k - l) * ∏ i ∈ Finset.Icc 1 (k - 1), (Y + (ρ i : ℂ)))
       (fun Y => -((T : ℂ) * T') * ∏ i ∈ Finset.Icc 1 k, ((Y + 1 / 2 + (u i : ℂ)) * (Y + 1 / 2 + (u' i : ℂ)))) w e)
 
-def ResidueStep : Prop :=
-  ∀ (B : Type) [Ring B] [Algebra ℂ B] (Z : B) (γ Ya Y : ℂ), Y ≠ γ → Ya ≠ γ → Y ≠ Ya →
-    (Y - γ)⁻¹ • Z - (Y - Ya)⁻¹ • ((Y - γ)⁻¹ • Z - (Ya - γ)⁻¹ • Z) = (1 + 1 / (Ya - γ)) • ((Y - γ)⁻¹ • Z) ∧
-    (Y - γ)⁻¹ • Z + (Y - Ya)⁻¹ • ((Y - γ)⁻¹ • Z - (Ya - γ)⁻¹ • Z) = (1 - 1 / (Ya - γ)) • ((Y - γ)⁻¹ • Z)
-
 def ResidueForm : Prop :=
   FrameAll → EeConj →
   ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
@@ -459,20 +431,11 @@ def AdmRec (L : LevelData A r) (st : Start A) : List (Letter ℂ S) → Prop
       (if l.plus then (ofWord L st w).q l.pt ≠ 0
        else l.pt - 1 ∈ (ofWord L st w).inv ∧ (ofWord L st w).q (l.pt - 1) ≠ 0)
 
-def AdmBase (st : Start A) (w : List (Letter ℂ S)) : Prop :=
-  (w.map Letter.intersection_update_fsHerm_neg_one).Nodup ∧ (∀ l ∈ w, star l.pt = l.pt) ∧
-    (∀ l ∈ w, ypt l ∈ st.inv ∧ ypt l + 1 ∈ st.inv ∧ (l.plus = false → ypt l + 2 ∈ st.inv) ∧ st.q (ypt l) ≠ 0) ∧
-    w.Pairwise fun l l' => ∀ n : ℤ, |n| ≤ 2 → ypt l - ypt l' ≠ (n : ℂ)
-
 end BaseDefs
 
 def AdmRecOfAdm : Prop :=
   ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
     (r : ℕ) (L : LevelData A r) (st : Start A) (w : List (Letter ℂ S)), admitted st w → AdmRec L st w
-
-def AdmRecOfBase : Prop :=
-  ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
-    (r : ℕ) (L : LevelData A r) (st : Start A) (w : List (Letter ℂ S)), AdmBase st w → AdmRec L st w
 
 def FrameAllRec : Prop :=
   ∀ (A S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
@@ -481,21 +444,6 @@ def FrameAllRec : Prop :=
 
 def FrameRecAssemble : Prop :=
   StartFrame → StartModule → PlusStep → MinusStep → FrameFree → FrameAllRec
-
-def CPosBase : Prop :=
-  ∀ (S : Type) [Fintype S] [DecidableEq S] (x0 q0 : ℂ → ℂ) (w : List (Letter ℂ S)),
-    (∀ l ∈ w, l.pt.im = 0) → (w.Pairwise fun l l' => 2 < |(ypt l).re - (ypt l').re|) →
-    (∀ l ∈ w, Pos (x0 (ypt l)) ∧ Pos (x0 (ypt l + 1)) ∧ Pos (q0 (ypt l))) →
-    ∀ e : Ix S, Pos (cs x0 q0 w e)
-
-def CPosCutBase : Prop :=
-  I.InterlaceSign → I.QPositive → QPositiveShift → CPosBase →
-  ∀ (S : Type) [Fintype S] [DecidableEq S] (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (T T' : ℝ)
-    (w : List (Letter ℂ S)), 1 ≤ l → l ≤ k → I.Interlaces k u u' ρ → 0 < T → 0 < T' →
-    (∀ a ∈ w, a.pt.im = 0 ∧ (I.OnCut u u' l (ypt a).re ∨ I.OnCut u u' l ((ypt a).re + 1))) →
-    (w.Pairwise fun a a' => 2 < |(ypt a).re - (ypt a').re|) →
-    ∀ e : Ix S, Pos (cs (fun Y => (-1) ^ (k - l) * ∏ i ∈ Finset.Icc 1 (k - 1), (Y + (ρ i : ℂ)))
-      (fun Y => -((T : ℂ) * T') * ∏ i ∈ Finset.Icc 1 k, ((Y + 1 / 2 + (u i : ℂ)) * (Y + 1 / 2 + (u' i : ℂ)))) w e)
 
 end
 

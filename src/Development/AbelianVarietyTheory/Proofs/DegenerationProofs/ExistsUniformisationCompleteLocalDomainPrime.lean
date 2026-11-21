@@ -20,10 +20,11 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SurjectiveCu
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LineBundleSymmetryHypothesisBaseChange
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SurjectiveCubeOfGeneric
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisationChartValueFormsCorrespond
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompareUniformisationDataPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegDataPsiOfSectionNonzeroFibresStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompareUniformisationDataPullback
+import Development.AbelianVarietyTheory.Definitions.Uniformization.WCompat
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegDataPsiOfSectionNonzeroFibres
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnifOfCmp
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformizationDataCompleteLocalPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformizationDataCompleteLocalPrime
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -218,12 +219,12 @@ theorem exists_unif : Laws → Laws2 → Laws3 → Ega → USt → ∀ (R : Type
   obtain ⟨A', s, w, hw⟩ := exists_setting hL hL2 hL3 P hS hW hsp A gen hA hV φ hφ hc.ge
   obtain ⟨D', U₀, hLG, -, -⟩ := hU V A' _ s
   obtain ⟨U', hU'⟩ := (GlobalTheory.LN.PreForm.under_exists_and_expands hL hL2 V _ D' A' _ s.semi).1 U₀.toUnifPre
-  obtain ⟨D, U, rfl, rfl⟩ := GlobalTheory.T.exists_uniformization_data_complete_local_prime hL hL2 hL3 hE hU R I hR hpi G P hS hW hsp A gen hgen hA
+  obtain ⟨D, U, rfl, rfl⟩ := _root_.GlobalTheory.PreUnifLocal.exists_preU_local hL hL2 hL3 hE hU R I hR hpi G P hS hW hsp A gen hgen hA
   have := s.semi.smooth
   obtain ⟨w', hw'⟩ := isCPMap_of_eq hL.globalFns s.gen s.P U'.P (hU'.2.1.trans hLG) hw
-  obtain ⟨C, -⟩ := GlobalTheory.T.exists_compare_uniformisationData_pullback hL hL2 hE R V I _ hR.1 hB (IsLocalRing.maximalIdeal.isMaximal V).ne_top φ hle D _ A A'
+  obtain ⟨C, -⟩ := _root_.GlobalTheory.LN.PreCompare.exists_cmp hL hL2 hE R V I _ hR.1 hB (IsLocalRing.maximalIdeal.isMaximal V).ne_top φ hle D _ A A'
     G _ U U' _ (isGrpPullback_pullback G _) w' hw'
-  obtain ⟨psi, h, Dd, hD, e, h₁, h₂, h₃⟩ := GlobalTheory.T.exists_degData_psi_of_section_nonzero_fibres hL hL2 hE R I hR V hV φ hφ hc D D' A A' G _ U U' U₀ _ C hU' hθ
+  obtain ⟨psi, h, Dd, hD, e, h₁, h₂, h₃⟩ := _root_.GlobalTheory.PsiRing.exists_degData_of_thetaNZ hL hL2 hE R I hR V hV φ hφ hc D D' A A' G _ U U' U₀ _ C hU' hθ
   obtain ⟨U₂, C₂, hD₂, eP, eg, k₁, k₂, k₃⟩ := exists_move psi h C hD Dd.toPre e h₁ h₂ h₃
   obtain ⟨U₁, -, hU₁, -⟩ := GlobalTheory.UnifDescent.exists_unif_of_cmp hL hL2 hE R V I _ hR.1 hB hI.ne_top φ hφ hle Dd D' A A' G _ U₂ U' U₀ _ C₂ hD₂
     hU' k₁ k₂ k₃

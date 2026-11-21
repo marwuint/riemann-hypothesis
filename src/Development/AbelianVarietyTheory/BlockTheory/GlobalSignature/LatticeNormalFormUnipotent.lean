@@ -68,34 +68,4 @@ def LatticeNormalFormCoord : Prop :=
         moveBy r Λ = normalForm F q (L.map ((Loc.inX F n c).restrictScalars O))
           (fun i : Fin c => Loc.eN F (n + c) (n + i.1)) e (Loc.inX F n c z)
 
-section Basic₂
-
-variable {F Y : Type} [Field F] [AddCommGroup Y] [Module F Y] {c : ℕ}
-
-theorem isUnip_one (X : Submodule F Y) (a : Fin c → Y) : IsUnip X a 1 :=
-  ⟨fun _ _ => rfl, fun _ _ => rfl, fun i => by
-    show a i - a i ∈ _
-    rw [sub_self]
-    exact zero_mem _⟩
-
-example {O : Type} [CommRing O] [Algebra O F] [Module O Y] (q : O) (M : Submodule O Y) (a : Fin (c + 1) → Y)
-    (e : Fin (c + 1) → ℤ) (z : Y) : (algebraMap O F q) ^ (e 0) • (a 0 + z) ∈ normalForm F q M a e z := by
-  refine Submodule.mem_sup_right (Submodule.mem_iSup_of_mem 0 (Submodule.subset_span ?_))
-  simp
-
-example : IsFrame (F := ℚ) (LinearMap.range (LinearMap.inl ℚ ℚ ℚ)) (fun _ : Fin 1 => ((0, 1) : ℚ × ℚ)) := by
-  refine ⟨by simp [linearIndependent_unique_iff], ?_⟩
-  have h : Submodule.span ℚ (Set.range (fun _ : Fin 1 => ((0, 1) : ℚ × ℚ))) = LinearMap.range (LinearMap.inr ℚ ℚ ℚ) := by
-    ext x
-    simp only [Set.range_const, Submodule.mem_span_singleton, LinearMap.mem_range, LinearMap.coe_inr]
-    constructor
-    · rintro ⟨t, rfl⟩
-      exact ⟨t, by simp⟩
-    · rintro ⟨t, rfl⟩
-      exact ⟨t, by simp⟩
-  rw [h]
-  exact LinearMap.isCompl_range_inl_inr
-
-end Basic₂
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FlagUnipotentSemidirect

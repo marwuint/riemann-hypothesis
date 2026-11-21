@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.LineSCShortExact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPosFrameQuotIn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubquotientCurvatureStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtTraceChartIndepStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnExtTraceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcEqOfLocalEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnExtTrace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcEqOfLocalEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcOfValuesEqStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernAtTwoEqStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfValuesMulOfValuesStatement
@@ -189,8 +189,8 @@ theorem ddc_omF : (hX.atlas σ).ddc (fld _ (omF hX σ h fl)) =
   funext x
   have hmem := crd_mem hX σ h H fl x
   have hpos := isPosFrame_midIn (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1
-  rw [GlobalTheory.T.ddc_eq_of_local_eq _ _ x _ (loc_omF hX σ h H fl x), GlobalTheory.T.ddc_ofValues_eq _ _ (fun a b =>
-    ((GlobalTheory.T.contDiffOn_extTrace_of_isPosFrame hpos _ _).contDiffAt (hpos.1.mem_nhds hmem)).of_le (WithTop.coe_le_coe.2 le_top))]
+  rw [_root_.GlobalTheory.SecForm.DdcGerm.ddc_eq_of_eventuallyEq _ _ x _ (loc_omF hX σ h H fl x), GlobalTheory.T.ddc_ofValues_eq _ _ (fun a b =>
+    ((_root_.GlobalTheory.SecForm.contDiffOn_extTrace hpos _ _).contDiffAt (hpos.1.mem_nhds hmem)).of_le (WithTop.coe_le_coe.2 le_top))]
   have hc := (((GlobalTheory.SubQuotCurv.subQuotCurvature _ (Fin 1) (Fin 1) _ _).2 hpos).2.2.2 (by simp) (by simp) _ hmem).2.2.2
   have hd : ddcForm (extTrace (midIn (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1)) x.crd = fun ξ₁ η₁ ξ₂ η₂ =>
       chernTwo (midIn (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1) x.crd ξ₁ η₁ ξ₂ η₂ -

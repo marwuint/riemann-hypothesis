@@ -144,16 +144,4 @@ theorem k_le_N (R : Ranks) (i : ℕ) : R.k ≤ R.N i := by
   unfold Ranks.N
   exact Nat.le_add_right _ _
 
-abbrev HXS (D : D7) (i : ℕ) (v : HeightOneSpectrum (𝓞 D.host.F)) : Subgroup (GL (Fin (D.R.N i)) (kv D.host.F v)) :=
-  HX (kv D.host.F v) (D.R.N i) D.R.k (rSD D.R) D.R.t (D.R.m - 1 - i) (k_le_N D.R i)
-
-set_option maxHeartbeats 4000000 in
-
-structure OneLevelSymmetricForms (D : D7) (u : D.what₂.Word) extends FormsTiedSym D u (fun _ => Unit) (fun _ _ => ()) where
-  H_eq : ∀ i (_ : 1 ≤ i) (_ : i + 2 ≤ D.R.m) a v hv, H i () a v hv = HXS D i v
-  lamC_eq : ∀ i (_ : 1 ≤ i) (_ : i + 2 ≤ D.R.m) a v hv (M : H i () a v hv), ((lamC i () a v hv M : ℂˣ) : ℂ) =
-    lamX (gl.psi0 a v hv) (gl.chiB a v hv) (D.R.N i) D.R.k (rSD D.R) D.R.t (D.R.m - 1 - i) i (k_le_N D.R i)
-      ((M : GL (Fin (D.R.N i)) (kv D.host.F v)) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) (kv D.host.F v))
-  Yb_one : Subsingleton Yb
-
 end Formalism.L2.Forms

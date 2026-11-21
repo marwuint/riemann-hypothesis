@@ -93,12 +93,4 @@ theorem algHom_ext (τ τ' : ↥B.Kw.1 →ₐ[ℚ_[l]] ↥B.LL.1)
 
 end Local
 
-theorem valuation_lt_one_iff {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (x : Ω) :
-    A.valuation x < 1 ↔ x = 0 ∨ x⁻¹ ∉ A := by
-  by_cases hx : x = 0
-  · simp [hx]
-  · have : A.valuation x ≠ 0 := by simpa using hx
-    rw [← A.valuation_le_one_iff, map_inv₀, inv_le_one₀ (zero_lt_iff.2 this)]
-    simp [hx]
-
 end GlobalTheory.EmbInj

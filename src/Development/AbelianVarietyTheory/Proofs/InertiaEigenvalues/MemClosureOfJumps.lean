@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalIndepBridge
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamExistsHodgeTateEigenbasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VanishAtHodgeTateCocharacterStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateNoTwistedInvariantsComplexPadicStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VanishAtHodgeTateCocharacter
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateNoTwistedInvariantsComplexPadic
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N
 
@@ -48,10 +48,10 @@ theorem poly_vanish : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAin
   have hρ : ∀ (γ : ↥(GK K'')) i j, (ρ γ : Matrix (Fin m) (Fin m) ℂ_[l]) i j =
       ((((r₁ (Subgroup.inclusion (GK_le hK) γ) : Matrix (Fin m) (Fin m) ↥LL.1) i j : ↥LL.1) : Om l) : ℂ_[l]) :=
     fun _ _ _ => rfl
-  have key := GlobalTheory.T.vanish_at_hodgeTate_cocharacter (C := ℂ_[l]) (Γ := ↥(GK K'')) (n := Fin m) χ ?_ ρ ?_ Pm k ?_ f ?_ (Units.mk0 t ht)
+  have key := _root_.GlobalTheory.HTCPoly.vanish_at_cocharacter (C := ℂ_[l]) (Γ := ↥(GK K'')) (n := Fin m) χ ?_ ρ ?_ Pm k ?_ f ?_ (Units.mk0 t ht)
   · simpa [Units.val_zpow_eq_zpow_val] using key
   · intro n hn x H
-    refine GlobalTheory.T.tate_no_twisted_invariants_complexPadic l P AI hT K'' (-n) (neg_ne_zero.mpr hn) x fun g => ?_
+    refine _root_.GlobalTheory.TateChiQ.tate_chiQ l P AI hT K'' (-n) (neg_ne_zero.mpr hn) x fun g => ?_
     exact (H g).trans (by rw [hχ])
   · intro g γ i j
     change Per.σC (g : GQ l) _ = _

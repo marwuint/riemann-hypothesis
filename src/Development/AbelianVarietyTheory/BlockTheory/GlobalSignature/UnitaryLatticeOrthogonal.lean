@@ -156,12 +156,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.
   rw [involution_apply_eq_tensorProductMap_restrictScalars]
   exact IsIntegral.map _ ha
 
-theorem hR_one {M : ℕ} (z y : Fin M → Ev F E v) :
-    hR (Fv F v) σ (1 : Matrix (Fin M) (Fin M) E) z y = ∑ i, sigR (Fv F v) σ (z i) * y i := by
-  simp only [hR, Formalism.UG.hform, JR]
-  rw [Matrix.map_one _ (map_zero _) (map_one _)]
-  simp [Matrix.one_apply]
-
 end Basic₂
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal

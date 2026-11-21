@@ -148,26 +148,6 @@ lemma dA_vM_major (g : ℕ → ℝ) (hg0 : ∀ n, 0 ≤ g n) (hg : ∀ n, 1 ≤ 
   have h3 := key N
   linarith
 
-lemma dA_sum_inv_le (N : ℕ) (hN : 1 ≤ N) : ∑ n ∈ Icc 1 N, (1 : ℝ) / n ≤ 1 + Real.log N := by
-  induction N with
-  | zero => omega
-  | succ M ih =>
-    rcases Nat.eq_zero_or_pos M with h | h
-    · subst h
-      simp
-    · rw [Finset.sum_Icc_succ_top (show 1 ≤ M + 1 by omega)]
-      have ih' := ih (by omega)
-      have hM : (0:ℝ) < M := Nat.cast_pos.mpr h
-      have hM1 : (M:ℝ) + 1 ≠ 0 := by positivity
-      have hlog : Real.log ((M:ℝ) / ((M:ℝ) + 1)) ≤ (M:ℝ) / ((M:ℝ) + 1) - 1 :=
-        Real.log_le_sub_one_of_pos (by positivity)
-      rw [Real.log_div hM.ne' hM1] at hlog
-      have e : (M:ℝ) / ((M:ℝ) + 1) - 1 = -(1 / ((M:ℝ) + 1)) := by
-        rw [div_sub_one hM1]
-        ring
-      push_cast
-      linarith
-
 lemma dA_sum_split (u : ℕ → ℝ) (hu : ∀ n, 0 ≤ u n) (hu1 : ∀ n, u n ≤ 1) (T : ℕ) (B : ℝ)
     (hB : ∀ M, T ≤ M → ∑ n ∈ Ioc T M, u n ≤ B) (M : ℕ) : ∑ n ∈ Icc 1 M, u n ≤ T + B := by
   have hcard : ∀ K : ℕ, ∑ n ∈ Icc 1 K, u n ≤ K := fun K => by
@@ -212,53 +192,6 @@ lemma dA_cN_nonneg {x : ℝ} (hx : 0 ≤ x) (n : ℕ) : 0 ≤ cN x n := by
   exact mul_nonneg ArithmeticFunction.vonMangoldt_nonneg
     (le_min zero_le_one (div_nonneg hx (Nat.cast_nonneg n)))
 
-lemma dA_one_le_of_exp_le {x : ℝ} (hx : Real.exp 1 ≤ x) : 1 ≤ x := by
-  have h := Real.add_one_le_exp (1:ℝ)
-  linarith
-
-lemma dA_one_le_log_of_exp_le {x : ℝ} (hx : Real.exp 1 ≤ x) : 1 ≤ Real.log x := by
-  calc (1:ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
-    _ ≤ Real.log x := Real.log_le_log (Real.exp_pos 1) hx
-
-lemma dA_one_le_floor_pow {x : ℝ} (hx : 1 ≤ x) : 1 ≤ ⌊x ^ 400⌋₊ := by
-  apply Nat.le_floor
-  rw [Nat.cast_one]
-  exact one_le_pow₀ hx
-
-lemma dA_log_le_of_le_floor {x : ℝ} (hx : 1 ≤ x) {n : ℕ} (hn1 : 1 ≤ n) (hn : n ≤ ⌊x ^ 400⌋₊) :
-    Real.log n ≤ 400 * Real.log x := by
-  have h1 : (n:ℝ) ≤ x ^ 400 :=
-    (Nat.cast_le.mpr hn).trans (Nat.floor_le (pow_nonneg (by linarith) 400))
-  have h2 : (0:ℝ) < n := Nat.cast_pos.mpr (by omega)
-  calc Real.log n ≤ Real.log (x ^ 400) := Real.log_le_log h2 h1
-    _ = 400 * Real.log x := by rw [Real.log_pow]; norm_num
-
-theorem sum_cN_le : ∃ C x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x →
-    ∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, cN x n ≤ C * x * Real.log x := by
-  refine ⟨dA_KC * 401, Real.exp 1, fun x hx => ?_⟩
-  have hx1 := dA_one_le_of_exp_le hx
-  have hlog := dA_one_le_log_of_exp_le hx
-  have hx0 : 0 ≤ x := by linarith
-  have hN1 := dA_one_le_floor_pow hx1
-  have hlogN := dA_log_le_of_le_floor hx1 hN1 le_rfl
-  have h1 := dA_vM_major (fun n => min 1 (x / n)) (fun n => le_min zero_le_one (div_nonneg hx0 (Nat.cast_nonneg n)))
-    (fun n hn => by
-      have hn' : (0 : ℝ) < n := by exact_mod_cast hn
-      apply min_le_min_left
-      push_cast
-      gcongr
-      linarith) ⌊x ^ 400⌋₊
-  have h2 : ∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, min 1 (x / (n : ℝ)) ≤ x * (1 + Real.log ⌊x ^ 400⌋₊) := by
-    calc ∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, min 1 (x / (n : ℝ)) ≤ ∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, x * (1 / (n : ℝ)) :=
-          sum_le_sum (fun n _ => by rw [mul_one_div]; exact min_le_right _ _)
-      _ = x * ∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, 1 / (n : ℝ) := by rw [mul_sum]
-      _ ≤ _ := mul_le_mul_of_nonneg_left (dA_sum_inv_le _ hN1) hx0
-  have h3 : x * (1 + Real.log ⌊x ^ 400⌋₊) ≤ x * (401 * Real.log x) :=
-    mul_le_mul_of_nonneg_left (by linarith) hx0
-  calc ∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, cN x n ≤ dA_KC * ∑ n ∈ Icc 1 ⌊x ^ 400⌋₊, min 1 (x / (n : ℝ)) := h1
-    _ ≤ dA_KC * (x * (401 * Real.log x)) := mul_le_mul_of_nonneg_left (h2.trans h3) dA_KC_pos.le
-    _ = _ := by ring
-
 lemma dA_sum_min_pow (x : ℝ) (hx : 1 ≤ x) (p : ℕ) (hp : 2 ≤ p) (L : ℕ) :
     Real.log p * ∑ i ∈ Icc 1 L, min 1 (x / (p : ℝ) ^ i) ≤ Real.log x + 2 * Real.log p := by
   have hp0 : (2:ℝ) ≤ p := by exact_mod_cast hp
@@ -299,63 +232,6 @@ lemma dA_sum_min_pow (x : ℝ) (hx : 1 ≤ x) (p : ℕ) (hp : 2 ≤ p) (L : ℕ)
   have hmul := mul_le_mul_of_nonneg_left hsplit hlp.le
   linarith
 
-private lemma le_pow_self_of_two_le (q k : ℕ) (hq : 2 ≤ q) : k ≤ q ^ k := by
-  induction k with
-  | zero => exact Nat.zero_le _
-  | succ k ih =>
-    rw [pow_succ]
-    have h2 := Nat.mul_le_mul_left (q ^ k) hq
-    have h3 := pow_pos (show 0 < q by omega) k
-    nlinarith
-
-lemma primePowerSum_le_mul_log (x : ℝ) (hx : Real.exp 1 ≤ x) (p : ℕ) :
-    sP (cN x) ⌊x ^ 400⌋₊ p ≤ 801 * Real.log x := by
-  have hx1 := dA_one_le_of_exp_le hx
-  have hlx := dA_one_le_log_of_exp_le hx
-  have hx0 : (0:ℝ) ≤ x := by linarith
-  have key : ∀ S : Finset ℕ, (∀ n ∈ S, n ∈ Icc 1 ⌊x ^ 400⌋₊ ∧ (IsPrimePow n ∧ n.minFac = p)) →
-      ∑ n ∈ S, cN x n ≤ 801 * Real.log x := by
-    intro S hS
-    rcases S.eq_empty_or_nonempty with h | ⟨n0, hn0⟩
-    · rw [h, Finset.sum_empty]
-      linarith
-    obtain ⟨hn0N, hn0pp, hn0min⟩ := hS n0 hn0
-    rw [Finset.mem_Icc] at hn0N
-    have hprime : p.Prime := by
-      rw [← hn0min]
-      exact Nat.minFac_prime hn0pp.ne_one
-    have hpN : p ≤ ⌊x ^ 400⌋₊ := by
-      rw [← hn0min]
-      exact (Nat.minFac_le (by omega)).trans hn0N.2
-    have hlogp : Real.log p ≤ 400 * Real.log x :=
-      dA_log_le_of_le_floor hx1 hprime.one_lt.le hpN
-    have hsub : S ⊆ (Icc 1 ⌊x ^ 400⌋₊).image (fun k => p ^ k) := by
-      intro n hn
-      obtain ⟨hnN, hnpp, hnmin⟩ := hS n hn
-      rw [Finset.mem_Icc] at hnN
-      rw [isPrimePow_nat_iff] at hnpp
-      obtain ⟨q, k, hq, hk, rfl⟩ := hnpp
-      rw [hq.pow_minFac hk.ne'] at hnmin
-      subst hnmin
-      rw [Finset.mem_image]
-      exact ⟨k, Finset.mem_Icc.mpr ⟨hk, (le_pow_self_of_two_le q k hq.two_le).trans hnN.2⟩, rfl⟩
-    calc ∑ n ∈ S, cN x n ≤ ∑ n ∈ (Icc 1 ⌊x ^ 400⌋₊).image (fun k => p ^ k), cN x n :=
-          Finset.sum_le_sum_of_subset_of_nonneg hsub (fun n _ _ => dA_cN_nonneg hx0 n)
-      _ = ∑ k ∈ Icc 1 ⌊x ^ 400⌋₊, cN x (p ^ k) :=
-          Finset.sum_image (fun a _ b _ h => Nat.pow_right_injective hprime.two_le h)
-      _ = Real.log p * ∑ k ∈ Icc 1 ⌊x ^ 400⌋₊, min 1 (x / (p:ℝ) ^ k) := by
-          rw [Finset.mul_sum]
-          refine Finset.sum_congr rfl (fun k hk => ?_)
-          rw [Finset.mem_Icc] at hk
-          simp only [cN, ArithmeticFunction.vonMangoldt_apply_pow (show k ≠ 0 by omega),
-            ArithmeticFunction.vonMangoldt_apply_prime hprime, Nat.cast_pow]
-      _ ≤ Real.log x + 2 * Real.log p := dA_sum_min_pow x hx1 p hprime.two_le _
-      _ ≤ 801 * Real.log x := by linarith
-  simp only [sP]
-  exact key _ (fun n hn => Finset.mem_filter.mp hn)
-
-theorem exists_primePowerSum_le : ∃ C x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ p : ℕ, sP (cN x) ⌊x ^ 400⌋₊ p ≤ C * Real.log x := ⟨801, Real.exp 1, fun x hx p => primePowerSum_le_mul_log x hx p⟩
-
 lemma dA_sum_min_sq (x : ℝ) (hx : 1 ≤ x) (M : ℕ) :
     ∑ m ∈ Icc 1 M, min 1 (x / (m : ℝ) ^ 2) ≤ 3 * Real.sqrt x := by
   have hs1 : 1 ≤ Real.sqrt x := by
@@ -385,94 +261,5 @@ lemma dA_sum_min_sq (x : ℝ) (hx : 1 ≤ x) (M : ℕ) :
     (fun m => min_le_left _ _) ⌊Real.sqrt x⌋₊ (2 * Real.sqrt x) htail M
   have hTle : (⌊Real.sqrt x⌋₊ : ℝ) ≤ Real.sqrt x := Nat.floor_le (Real.sqrt_nonneg x)
   linarith
-
-theorem RR_cN_le : ∃ C x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ (m₀ : ℕ) (y : ℝ), 1 ≤ y →
-    (∀ p : ℕ, p.Prime → p ∣ m₀ → p ≤ ⌊x ^ 400⌋₊ → (p : ℝ) ≤ y) →
-    RR (cN x) m₀ ⌊x ^ 400⌋₊ ≤ C * (Real.sqrt x + y * Real.log x) := by
-  refine ⟨3 * dA_KC + 801, Real.exp 1, fun x hx m₀ y hy hpy => ?_⟩
-  have hx1 := dA_one_le_of_exp_le hx
-  have hlx := dA_one_le_log_of_exp_le hx
-  have hx0 : (0:ℝ) ≤ x := by linarith
-  have hK := dA_KC_pos
-  have hsq0 : 0 ≤ Real.sqrt x := Real.sqrt_nonneg x
-  have hylx : 0 ≤ y * Real.log x := mul_nonneg (by linarith) (by linarith)
-  have key : ∀ S : Finset ℕ, (∀ n ∈ S, n ∈ Icc 1 ⌊x ^ 400⌋₊ ∧ (IsPrimePow n ∧
-      (Even (n.factorization n.minFac) ∨ n.minFac ∣ m₀))) →
-      ∑ n ∈ S, cN x n ≤ (3 * dA_KC + 801) * (Real.sqrt x + y * Real.log x) := by
-    intro S hS
-    have hA : ∑ n ∈ S.filter (fun n => Even (n.factorization n.minFac)), cN x n
-        ≤ dA_KC * (3 * Real.sqrt x) := by
-      have hsubA : S.filter (fun n => Even (n.factorization n.minFac))
-          ⊆ (Icc 1 ⌊x ^ 400⌋₊).image (fun m => m ^ 2) := by
-        intro n hn
-        rw [Finset.mem_filter] at hn
-        obtain ⟨hnS, hev⟩ := hn
-        obtain ⟨hnN, hnpp, -⟩ := hS n hnS
-        rw [Finset.mem_Icc] at hnN
-        rw [isPrimePow_nat_iff] at hnpp
-        obtain ⟨q, k, hq, hk, rfl⟩ := hnpp
-        rw [hq.pow_minFac hk.ne'] at hev
-        simp [Nat.factorization_pow, hq.factorization_self] at hev
-        obtain ⟨j, rfl⟩ := hev
-        rw [Finset.mem_image]
-        have h1 : 1 ≤ q ^ j := Nat.one_le_pow _ _ hq.pos
-        refine ⟨q ^ j, Finset.mem_Icc.mpr ⟨h1, ?_⟩, by show (q ^ j) ^ 2 = q ^ (j + j); ring⟩
-        calc q ^ j ≤ (q ^ j) ^ 2 := by nlinarith
-          _ = q ^ (j + j) := by ring
-          _ ≤ _ := hnN.2
-      have hgm : ∀ m : ℕ, 1 ≤ m → min 1 (x / ((m + 1 : ℕ) : ℝ) ^ 2) ≤ min 1 (x / (m : ℝ) ^ 2) := by
-        intro m hm
-        apply min_le_min_left
-        have hm1 : (0:ℝ) < m := Nat.cast_pos.mpr (by omega)
-        have hm0 : (0:ℝ) < (m:ℝ) ^ 2 := by positivity
-        exact div_le_div_of_nonneg_left hx0 hm0 (by push_cast; nlinarith)
-      have hmaj := dA_vM_major (fun m => min 1 (x / (m : ℝ) ^ 2))
-        (fun m => le_min zero_le_one (div_nonneg hx0 (by positivity))) hgm ⌊x ^ 400⌋₊
-      have hsq := dA_sum_min_sq x hx1 ⌊x ^ 400⌋₊
-      calc ∑ n ∈ S.filter (fun n => Even (n.factorization n.minFac)), cN x n
-          ≤ ∑ n ∈ (Icc 1 ⌊x ^ 400⌋₊).image (fun m => m ^ 2), cN x n :=
-            Finset.sum_le_sum_of_subset_of_nonneg hsubA (fun n _ _ => dA_cN_nonneg hx0 n)
-        _ = ∑ m ∈ Icc 1 ⌊x ^ 400⌋₊, cN x (m ^ 2) :=
-            Finset.sum_image (fun a _ b _ h => Nat.pow_left_injective (by norm_num) h)
-        _ = ∑ m ∈ Icc 1 ⌊x ^ 400⌋₊, vonMangoldt m * min 1 (x / (m : ℝ) ^ 2) := by
-            refine Finset.sum_congr rfl (fun m _ => ?_)
-            simp only [cN, ArithmeticFunction.vonMangoldt_apply_pow (by norm_num : (2:ℕ) ≠ 0),
-              Nat.cast_pow]
-        _ ≤ dA_KC * ∑ m ∈ Icc 1 ⌊x ^ 400⌋₊, min 1 (x / (m : ℝ) ^ 2) := hmaj
-        _ ≤ dA_KC * (3 * Real.sqrt x) := mul_le_mul_of_nonneg_left hsq hK.le
-    have hB : ∑ n ∈ S.filter (fun n => ¬ Even (n.factorization n.minFac)), cN x n
-        ≤ y * (801 * Real.log x) := by
-      have hmaps : ∀ n ∈ S.filter (fun n => ¬ Even (n.factorization n.minFac)),
-          n.minFac ∈ Icc 1 ⌊y⌋₊ := by
-        intro n hn
-        rw [Finset.mem_filter] at hn
-        obtain ⟨hnS, hodd⟩ := hn
-        obtain ⟨hnN, hnpp, hor⟩ := hS n hnS
-        rw [Finset.mem_Icc] at hnN
-        have hdvd : n.minFac ∣ m₀ := hor.resolve_left hodd
-        have hpr : n.minFac.Prime := Nat.minFac_prime hnpp.ne_one
-        have hle : n.minFac ≤ ⌊x ^ 400⌋₊ := (Nat.minFac_le (by omega)).trans hnN.2
-        exact Finset.mem_Icc.mpr ⟨hpr.one_lt.le, Nat.le_floor (hpy n.minFac hpr hdvd hle)⟩
-      rw [← Finset.sum_fiberwise_of_maps_to hmaps]
-      calc _ ≤ ∑ p ∈ Icc 1 ⌊y⌋₊, 801 * Real.log x := by
-            refine Finset.sum_le_sum (fun p _ => ?_)
-            refine le_trans ?_ (primePowerSum_le_mul_log x hx p)
-            simp only [sP]
-            refine Finset.sum_le_sum_of_subset_of_nonneg (fun n hn => ?_)
-              (fun n _ _ => dA_cN_nonneg hx0 n)
-            rw [Finset.mem_filter] at hn
-            obtain ⟨hn1, hn2⟩ := hn
-            rw [Finset.mem_filter] at hn1
-            obtain ⟨hnS, -⟩ := hn1
-            obtain ⟨hnN, hnpp, -⟩ := hS n hnS
-            exact Finset.mem_filter.mpr ⟨hnN, hnpp, hn2⟩
-        _ = (⌊y⌋₊ : ℝ) * (801 * Real.log x) := by simp
-        _ ≤ y * (801 * Real.log x) :=
-            mul_le_mul_of_nonneg_right (Nat.floor_le (by linarith)) (by linarith)
-    rw [← Finset.sum_filter_add_sum_filter_not S (fun n => Even (n.factorization n.minFac))]
-    refine (add_le_add hA hB).trans ?_
-    nlinarith [mul_nonneg hK.le hylx]
-  simp only [RR]
-  exact key _ (fun n hn => Finset.mem_filter.mp hn)
 
 end Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds

@@ -15,12 +15,6 @@ def AnResNullForm.Statement : Prop :=
       ∀ j, volume ((R.A.chart j).target ∩
         (R.A.chart j).symm ⁻¹' {a | eval (R.lift a a) (map (Int.castRingHom ℂ) G) = 0}) = 0
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

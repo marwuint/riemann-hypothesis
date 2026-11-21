@@ -73,6 +73,3 @@ theorem majIntegralProd_ok : MajIntegralProd := by
 
 end Formalism.FourierDecayAlt.P.MajorantIntegrals
 
-theorem Formalism.FourierDecayAlt.P.majorantIntegral : Formalism.FourierDecayAlt.crystallineComparison.MajIntegral := Formalism.FourierDecayAlt.P.MajorantIntegrals.majIntegral_ok
-theorem Formalism.FourierDecayAlt.P.majorantIntegralProd : Formalism.FourierDecayAlt.crystallineComparison.MajIntegralProd :=
-  Formalism.FourierDecayAlt.P.MajorantIntegrals.majIntegralProd_ok

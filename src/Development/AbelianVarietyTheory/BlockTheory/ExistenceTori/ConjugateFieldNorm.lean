@@ -74,10 +74,6 @@ def HSpace.std (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) : HS
 
 variable {r : ℕ}
 
-def HSpace.HasSig (V : HSpace E r) (p : ℕ) : Prop :=
-  p ≤ r ∧ ∀ τ : E →+* ℂ, ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
-    gram τ V.Gm P = Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ)
-
 variable (A : Type) [CommRing A] [Algebra F A]
 
 def incl : E →+* A ⊗[F] E := (Algebra.TensorProduct.includeRight : E →ₐ[F] A ⊗[F] E).toRingHom
@@ -125,17 +121,10 @@ def levelK (V : HSpace E r) (N : ℕ) : Subgroup (GA F V) where
     obtain ⟨w, hw, e1⟩ := g3 _ ((s z).1 hz)
     exact ⟨-w, neg_mem hw, by rw [smul_neg, ← e1, e]; abel⟩
 
-def LevelByCongruence (V : HSpace E r) (N : ℕ) : Prop :=
-  ∀ k : GA F V, k ∈ levelK F V N ↔
-    k.1 = 1 ∧ ∀ z ∈ latHat F V.L, ∃ w ∈ latHat F V.L, k.2.1.val.mulVec z - z = N • w
-
 def latAt (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (V : HSpace E r) (g : UA F (Af F) V) :
     Submodule (𝓞 E) (Fin r → E) :=
   Submodule.span (𝓞 E) {v | ∃ a ∈ 𝔄, ∃ x : Fin r → E,
     (∃ z ∈ latHat F V.L, (fun i => incl F (Af F) (x i)) = g.1.val.mulVec z) ∧ v = a • x}
-
-def IsArch (τ : E →+* ℂ) (th : Ai F ⊗[F] E →+* ℂ) : Prop :=
-  (Continuous fun a : Ai F => th (a ⊗ₜ[F] 1)) ∧ ∀ x, th (incl F (Ai F) x) = τ x
 
 end Adelic
 
@@ -150,18 +139,11 @@ structure Nums (E : Type) [Field E] [NumberField E] where
   AA : FractionalIdeal (nonZeroDivisors (𝓞 E)) E
   Os : Subring ℂ
 
-example (E : Type) [Field E] [NumberField E] : Nums E :=
-  ⟨2, 2, ![3, 5], fun i => by fin_cases i <;> norm_num, by decide, 1, one_pos, 1, ⊥⟩
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 def Nums.r (R : Nums E) : ℕ := R.k + R.m - 1
 
 abbrev Nums.J (R : Nums E) : Type := {j : ℕ // 1 ≤ j ∧ j ≤ R.m}
-
-def Nums.p (R : Nums E) (j : R.J) : ℕ := R.k + j.1 - 1
-
-def Nums.q (R : Nums E) (j : R.J) : ℕ := R.m - j.1
 
 variable (F : Type) [Field F] [NumberField F] [IsTotallyReal F] [Algebra F E]
 
@@ -188,97 +170,9 @@ namespace CorePar
 
 variable {F} {R : Nums E} (Q : CorePar F R)
 
-def xi0 : E := -1 / ((R.Nc : E) * (Q.H.rt : E))
-
-def xiAbs : ℝ := 1 / ((R.Nc : ℝ) * Real.sqrt Q.H.d)
-
-theorem norm_embedding_hostFormConstant_eq (τ : E →+* ℂ) : ‖τ Q.xi0‖ = Q.xiAbs := by
-  have h : τ (Q.H.rt : E) ^ 2 = -(Q.H.d : ℂ) := by
-    have := congrArg (fun x : 𝓞 E => τ (x : E)) Q.H.rt_sq
-    simpa using this
-  have h2 : ‖τ (Q.H.rt : E)‖ = Real.sqrt Q.H.d := by
-    rw [← Real.sqrt_sq (norm_nonneg (τ (Q.H.rt : E))), ← norm_pow, h]; simp
-  simp [xi0, xiAbs, h2]
-
 def sg0 : Q.c.F →+* ℂ := Q.c.F.val.toRingHom
 
 theorem base_embedding_good : GoodEmb Q.c Q.sg0 := rfl
-
-def PinBase : Prop :=
-  Module.finrank F E = 2 ∧
-  Q.H.rt0 = Complex.I * (Real.sqrt Q.H.d : ℝ) ∧
-  (∀ x : E, x ∈ R.AA ↔ ∀ a ∈ R.AA, Algebra.trace ℚ E (Q.xi0 * x * cc a) ∈ Set.range (Int.cast : ℤ → ℚ)) ∧
-  Q.l.M = R.g 0 * R.g 1 ∧ Q.l.A = 1 ∧
-  (∀ i, Q.pi i ∈ Algebra.adjoin ℤ {Q.H.w0} ∧ Q.pi i * Q.H.bar (Q.pi i) = (R.g i : 𝓞 E)) ∧
-  Q.l.Mb = Ideal.span {Q.H.bar (Q.pi 0) * Q.H.bar (Q.pi 1)} ∧
-  ∀ z : ℂ, z ∈ R.Os ↔ ∃ x : 𝓞 Q.c.F, Q.sg0 (x : Q.c.F) = z
-
-def PinSpace (j : R.J) : Prop :=
-  (Q.V j).HasSig (R.p j) ∧ (Q.Dw j).p = R.p j ∧ (Q.Dw j).q = R.q j ∧
-  (∃ φ : (Q.Dw j).La →ₗ[𝓞 E] (Fin R.r → E), Function.Injective φ ∧
-    LinearMap.range φ = latAt F R.AA (Q.V j) 1 ∧
-    ∀ x y, (((Q.Dw j).EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-Q.xi0 * herm (Q.V j).Gm (φ x) (φ y))) ∧
-  Q.Kf j = levelK F (Q.V j) (R.g 0 * R.g 1)
-
-def PinDict (j : R.J) (σ : Q.c.F →+* ℂ) (hσ : GoodEmb Q.c σ) : Prop :=
-  IsUnf (Q.U j σ) ∧
-  ∃ (gk : (Q.U j σ).Comp → UA F (Af F) (Q.V j)) (x0 : ∀ k, Frame ((Q.U j σ).X k).Ψ R.r)
-    (th : (E →+* ℂ) → (Ai F ⊗[F] E →+* ℂ)), (∀ τ, IsArch F τ (th τ)) ∧
-    (∀ k, ((Q.U j σ).X k).Gm = -(Q.V j).Gm ∧ ((Q.U j σ).X k).ξ0 = -Q.xi0 ∧
-      (∀ la, ∀ γ ∈ ((Q.U j σ).X k).Γ, ((Q.U j σ).X k).χ la γ = 1) ∧
-      ((Q.U j σ).X k).Λ = latAt F R.AA (Q.V j) (gk k) ∧
-      (∀ γ, γ ∈ ((Q.U j σ).X k).Γ ↔ ∃ g : GA F (Q.V j), IsRat F (Q.V j) γ g ∧
-        ((1, (gk k)⁻¹ * g.2 * gk k) : GA F (Q.V j)) ∈ Q.Kf j) ∧
-      x0 k ∈ ((Q.U j σ).X k).dom ∧ ∀ τ i, ‖dmin ((Q.U j σ).X k).Gm (x0 k) τ i‖ = 1) ∧
-    ∀ h : GA F (Q.V j), ∃ (γ : GL (Fin R.r) E) (g : GA F (Q.V j)), IsRat F (Q.V j) γ g ∧
-      ((1, (gk (Q.dict j σ hσ h).1)⁻¹ * (g * h).2) : GA F (Q.V j)) ∈ Q.Kf j ∧
-      ∀ τ, mat (Q.dict j σ hσ h).2 τ = ((g * h).1.1.val.map (th τ.1)) * mat (x0 (Q.dict j σ hσ h).1) τ
-
-def PinMu (j : R.J) (σ : Q.c.F →+* ℂ) (hσ : GoodEmb Q.c σ) : Prop :=
-  (∀ g g', Q.mu j σ hσ (g * g') = Q.mu j σ hσ g * Q.mu j σ hσ g') ∧ (∀ g, ‖Q.mu j σ hσ g‖ = 1) ∧
-  (∀ γ g, IsRat F (Q.V j) γ g → Q.mu j σ hσ g = 1) ∧
-  ∀ g : GA F (Q.V j), g.1.1.val.det = 1 → g.2.1.val.det = 1 → Q.mu j σ hσ g = 1
-
-def Pins : Prop := Q.PinBase ∧ ∀ j, Q.PinSpace j ∧ ∀ σ hσ, Q.PinDict j σ hσ ∧ Q.PinMu j σ hσ
-
-abbrev Rules (j : R.J) : Type := Rul (Q.Xo j) Q.c
-
-def Cusp (j : R.J) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Submodule Q.c.F (Q.Rules j) := cusp (Q.Xo j) Q.c (Q.U j) a n
-
-def supAt (j : R.J) (σ : Q.c.F →+* ℂ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Q.Cusp j a n) : ℝ :=
-  supC (Q.Xo j) Q.c (Q.U j) Q.xiAbs (goodOf Q.c σ) a n f
-
-abbrev X0 (j : R.J) : (Q.U j Q.sg0).Comp → Data E R.r := (Q.U j Q.sg0).X
-
-def frI (_Q : CorePar F R) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E := 1
-
-abbrev Cu (j : R.J) : Type := FJ.CuF (Q.X0 j) (min (R.p j) (R.q j))
-
-def Xc (j : R.J) (cu : Q.Cu j) : Submodule (𝓞 E) (Fin (min (R.p j) (R.q j)) → E) := FJ.XcF (Q.X0 j) Q.frI cu
-
-def Pt (j : R.J) (la : HeightOneSpectrum (𝓞 Q.c.F)) : Type :=
-  PtV (Q.Xo j) Q.c (algCls (Q.Xo j) Q.c) Unit (fun _ _ _ _ => True) la
-
-def vAt_vw {j : R.J} {la : HeightOneSpectrum (𝓞 Q.c.F)} (y : Q.Pt j la) (f : Q.Rules j) : EReal := vAtV y f
-
-def nrm {j : R.J} {la : HeightOneSpectrum (𝓞 Q.c.F)} (y : Q.Pt j la) (f : Q.Rules j) : ℝ := nrmOf la (Q.vAt_vw y f)
-
-theorem nrm_le_one_iff {j : R.J} {la : HeightOneSpectrum (𝓞 Q.c.F)} (y : Q.Pt j la) (f : Q.Rules j) :
-    Q.nrm y f ≤ 1 ↔ 0 ≤ Q.vAt_vw y f := nrmOf_le_one_iff la (vAtV_ne_bot y f)
-
-def adelFn (j : R.J) (σ : Q.c.F →+* ℂ) (hσ : GoodEmb Q.c σ) : Q.Rules j →ₛₗ[σ] (GA F (Q.V j) → ℂ) where
-  toFun f g := Q.mu j σ hσ g * rdU (Q.U j σ) f (Q.dict j σ hσ g).1 (Q.dict j σ hσ g).2
-  map_add' f f' := by funext g; rw [map_add]; exact mul_add _ _ _
-  map_smul' a f := by funext g; rw [map_smulₛₗ]; exact mul_left_comm _ _ _
-
-def adel0 (j : R.J) : Q.Rules j →ₛₗ[Q.sg0] (GA F (Q.V j) → ℂ) := Q.adelFn j Q.sg0 Q.base_embedding_good
-
-def XiAbsModels : Prop := ∀ j σ, GoodEmb Q.c σ → ∀ k (τ : E →+* ℂ), ‖τ ((Q.U j σ).X k).ξ0‖ = Q.xiAbs
-
-theorem xiAbsModels_of_pins (h : Q.Pins) : Q.XiAbsModels := by
-  intro j σ hσ k τ
-  obtain ⟨_, gk, x0, th, _, h2, _⟩ := ((h.2 j).2 σ hσ).1
-  rw [(h2 k).2.1, map_neg, norm_neg, norm_embedding_hostFormConstant_eq]
 
 end CorePar
 

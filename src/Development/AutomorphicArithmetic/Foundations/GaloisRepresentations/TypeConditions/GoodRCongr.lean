@@ -2,7 +2,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeC
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisRepBaseChange
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisRepTwist
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepWeilJumps
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepMultisetJumps
+import Mathlib
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
+import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AwayRepIsoLoc
+
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open GlobalTheory.GalIsoBC GlobalTheory.HalfTwist
 
@@ -208,7 +212,7 @@ theorem goodR_part (D : D7) (h0 : SumRepresentations.tie0 D) (h2 : AutomorphicGa
       (fun τ => (((List.range p.d).map fun k : ℕ =>
         (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - (k : ℂ)))).sum).map
           (fun z => -z + ((D.R.nV : ℂ) - 1) / 2)) := by
-  have hreg := GlobalTheory.T.infWt_nodup_and_half_integral D i P
+  have hreg := _root_.GlobalTheory.weight_localisation_regular_algebraic D i P
   set e : ℕ → ℤ := fun k => (p.d : ℤ) - 2 * k - D.R.nV with he
   have hne : List.range p.d ≠ [] := by
     rw [Ne, List.range_eq_nil]; omega

@@ -39,18 +39,6 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroup
 def perU (Fs : Set X.B.I.GA) (f : X.B.I.L2 X.B.μf X.B.fund) (T : Cu X u hK) : ℂ :=
   ∫ g in Fs, X.B.I.ext f g * Ph X u hK T g ∂(X.B.I.muA X.B.μf)
 
-def BesselUnfold (Dt Fs : Set X.B.I.GA) : Prop :=
-  IsReps X u Dt → InHH X u hK → IFinite X u hK → PhWellDef X u hK → PhProps X u hK →
-    Formalism.L2.SG.WuDecay.FoldOK X u hK →
-    IsFundamentalDomain (Srat X u) Fs (X.B.I.muA X.B.μf) →
-    ∀ (f : X.B.I.L2 X.B.μf X.B.fund) (T : Cu X u hK),
-      IntegrableOn (fun g => X.B.I.ext f g * Ph X u hK T g) Fs (X.B.I.muA X.B.μf) ∧
-      ⟪star f, PuFun X u hK Dt T⟫_ℂ = perU X u hK Fs f T
-
-def PoincareSeriesHypotheses (Dt Fs : Set X.B.I.GA) : Prop :=
-  IsReps X u Dt ∧ InHH X u hK ∧ IFinite X u hK ∧ PhWellDef X u hK ∧ PhProps X u hK ∧
-    Formalism.L2.SG.WuDecay.FoldOK X u hK ∧ IsFundamentalDomain (Srat X u) Fs (X.B.I.muA X.B.μf)
-
 end Unfold
 
 section Ker
@@ -60,13 +48,6 @@ variable {D : D7} (X : HidaSetting D) (G : GoodOp X) (j : D.what₂.EE ≃ₗᵢ
 
 def rowL (F : D.what₂.EE) : X.B.I.L2 X.B.μf X.B.fund := ((j F : EEC X G) : L2X X)
 
-def KerSide (Fs : D.what₂.Word → Set X.B.I.GA) : Prop :=
-  ∃ V : D.what₂.EE ≃ₗᵢ[ℂ] D.what₂.EE, ∀ u, ∃ a : ℂ, a ≠ 0 ∧ ∃ U : D.what₂.Mu u ≃ₗᵢ[ℂ] D.what₂.Mu u,
-    ∀ (φ : D.what₂.Mu u) (F : D.what₂.Amb D.what₂.mu0), F ∈ D.what₂.V0 D.what₂.mu0 →
-    ∀ T : Cu X u hK, colDictL X (Tr u) hK T =
-        ((D.eMu u (U φ) : (D.mem u).A.Mram) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) →
-      D.what₂.perCol u D.what₂.mu0 φ F = a * perU X u hK (Fs u) (rowL X G j (V (D.what₂.iota D.what₂.mu0 F))) T
-
 def KerJoinS (Dt : D.what₂.Word → Set X.B.I.GA) : Prop :=
   ∃ V : D.what₂.EE ≃ₗᵢ[ℂ] D.what₂.EE, ∀ u, ∃ a : ℂ, a ≠ 0 ∧ ∃ U : D.what₂.Mu u ≃ₗᵢ[ℂ] D.what₂.Mu u,
     ∀ (φ : D.what₂.Mu u) (F : D.what₂.Amb D.what₂.mu0), F ∈ D.what₂.V0 D.what₂.mu0 →
@@ -74,18 +55,6 @@ def KerJoinS (Dt : D.what₂.Word → Set X.B.I.GA) : Prop :=
         ((D.eMu u (U φ) : (D.mem u).A.Mram) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) →
       D.what₂.perCol u D.what₂.mu0 φ F =
         a * ⟪((conjHH X G (j (V (D.what₂.iota D.what₂.mu0 F))) : HHX X) : L2X X), PuFun X u hK (Dt u) T⟫_ℂ
-
-theorem kerJoinS_of_parts (Dt Fs : D.what₂.Word → Set X.B.I.GA) (hH : ∀ u, PoincareSeriesHypotheses X u hK (Dt u) (Fs u))
-    (hU : ∀ u, BesselUnfold X u hK (Dt u) (Fs u)) (hS : KerSide X G j Tr hK Fs) : KerJoinS X G j Tr hK Dt := by
-  obtain ⟨V, hV⟩ := hS
-  refine ⟨V, fun u => ?_⟩
-  obtain ⟨a, ha, U, hU'⟩ := hV u
-  refine ⟨a, ha, U, fun φ F hF T hT => ?_⟩
-  rw [hU' φ F hF T hT]
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7⟩ := hH u
-  have e := (hU u h1 h2 h3 h4 h5 h6 h7 (rowL X G j (V (D.what₂.iota D.what₂.mu0 F))) T).2
-  rw [← e, conjHH_apply]
-  rfl
 
 end Ker
 

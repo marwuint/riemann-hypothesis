@@ -50,10 +50,6 @@ theorem poinX_coords (ψ : AddChar (AF D.host.F) ℂ) {S S₀ T : HSp D} {ρ : �
       ∑' γ : Matrix (Fin T.rank) (Fin ρ) D.host.E, ψ (trHalf D (pairS T (x + 2 • rat γ) a)) * β (x + rat γ) := by
   simp only [poinX, coord_jX, coord_jY]
 
-example (ψ : AddChar (AF D.host.F) ℂ) {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
-    poinX ψ d T 0 = 0 := by
-  funext u; simp [poinX]
-
 end GlobalTheory.BumpMix
 
 end

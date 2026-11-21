@@ -2,8 +2,14 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesLimitTTop
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogRatio
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralTendstoOffDivisorStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralTendstoOffDivisor
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormula
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StLemmaETailMass
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularChartDataPropertiesStatement
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar.Giv.Mix
 
@@ -38,11 +44,11 @@ theorem tendsto_ptsIntegral_of_chart_conv : ∀ (K : Type) [Fintype K] (ι : K �
       letI : MeasurableSpace M.Xc := borel M.Xc
       haveI : BorelSpace M.Xc := ⟨rfl⟩
       exact (continuous_of_atlasSmooth ht.1).measurable.indicator hYo.measurableSet
-    obtain ⟨-, hint, hlim⟩ := GlobalTheory.T.mixed_integral_tendsto_off_divisor n M.Xc M.atlas R Θ hΘ hΘp Pp f fT G GT C hP hf hfT hconv
+    obtain ⟨-, hint, hlim⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.mixed_integral_tendsto_of_C2_off_divisor n M.Xc M.atlas R Θ hΘ hΘp Pp f fT G GT C hP hf hfT hconv
       hmeas hGc
     refine ⟨_, hlim.congr' ?_⟩
     filter_upwards [hint, hfT, hGT, hrel, hg] with t hit hft hgt hrt hgt'
-    have hpush := GlobalTheory.T.mixed_integral_model_formula K ι P n M hQ.choose Set.univ ∅ ∅ (fun _ => 1) (L t)
+    have hpush := _root_.GlobalTheory.CompanionTheory.Ar.Giv.push_chart_integrals K ι P n M hQ.choose Set.univ ∅ ∅ (fun _ => 1) (L t)
       (fun i => Pp i + LocPot.ofFun (fT i t)) (g t) (GT t) hV hQ.choose_spec isOpen_univ
       (fun j => by simp)
       (fun Ψ _ => by simp)

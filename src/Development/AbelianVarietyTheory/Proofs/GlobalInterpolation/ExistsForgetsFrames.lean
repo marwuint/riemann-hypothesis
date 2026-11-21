@@ -102,11 +102,6 @@ section Points
 
 variable {X : Fields} {n : ℕ} {ST SG Q Q' : Finset (HeightOneSpectrum (𝓞 X.E))}
 
-theorem exists_pt {y : Ys X n} (hy : ∀ N, y.ys N = {∅}) (d : DecoSet X.E n ST SG) :
-    ∃ p : PtY ST SG Q y, p.1.1.deco = d := by
-  choose f hf using fun P : Q => GlobalTheory.CharValCompare.exists_isFr P.1 d.2.lat
-  exact ⟨⟨(⟨(d, f), hf⟩, ∅), by rw [hy]; rfl⟩, rfl⟩
-
 theorem mv_deco {y : Ys X n} (p : PtY ST SG Q y) (d : DecoSet X.E n ST SG) (h : (p.mv d).1.1.deco.1.N = d.1.N) :
     (p.mv d).1.1.deco = d := by
   by_cases hc : (∀ (P : Q) (x : Sp X.E n), p.1.1.1.2 P x ∈ d.1.at P.1 ↔ x ∈ stdAt X.E n P.1) ∧ p.1.2 ∈ y.ys d.1.N
@@ -173,74 +168,6 @@ theorem exists_lift {y' : Ys X n} (hy : ∀ N, y.ys N = {∅}) {Λ₁ Λ₂ : Le
 
 end Points
 
-section Start
-
-variable {X : Fields} {n : ℕ} {ST SG Q Q' : Finset (HeightOneSpectrum (𝓞 X.E))} {T : ℕ}
-  {y y' : Ys X n} {β β' : Type} {iβ : Fintype β} {jβ : DecidableEq β} {iβ' : Fintype β'} {jβ' : DecidableEq β'}
-  {Λ : β → LevFam X.E X.K n SG} {Θ : β → LevQFam X.E X.K n Q} {pref : DecoF X.E n ST SG Q → Prop}
-  {Λ' : β' → LevFam X.E X.K n SG} {Θ' : β' → LevQFam X.E X.K n Q'} {pref' : DecoF X.E n ST SG Q' → Prop}
-  (σ : X.K →+* ℂ) (lam : X.Tau → DomWeight n)
-
-def ForgetsFrames (e : ((stepY ST y β Λ Θ pref).Cl → Fr X.emb σ n → ℂ) ≃ₗ[ℂ]
-    ((stepY ST y' β' Λ' Θ' pref').Cl → Fr X.emb σ n → ℂ)) : Prop :=
-  ∀ φ ∈ (stepY ST y β Λ Θ pref).Fi X.emb σ lam, ∀ (b : β) (b' : β') (p : PtY ST SG Q y) (p' : PtY ST SG Q' y'),
-    p.1.1.deco = p'.1.1.deco →
-      valAt (stepY ST y' β' Λ' Θ' pref') X.emb σ (e φ) b' p' = valAt (stepY ST y β Λ Θ pref) X.emb σ φ b p
-
-theorem exists_read (hy : ∀ N, y.ys N = {∅}) (b₀ : β) (hb : ∀ b, b = b₀) {Λ₀ : LevFam X.E X.K n SG} (hΛ : ∀ b, Λ b = Λ₀)
-    (hΛ' : ∀ b, Λ' b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (hΘ' : ∀ b, Θ' b = LevQFam.top X.E X.K n Q')
-    (hf : (stepY ST y β Λ Θ pref).Free) :
-    ∃ e : ((stepY ST y β Λ Θ pref).Cl → Fr X.emb σ n → ℂ) →ₗ[ℂ] ((stepY ST y' β' Λ' Θ' pref').Cl → Fr X.emb σ n → ℂ),
-      ∀ φ (b : β) (b' : β') (p : PtY ST SG Q y) (p' : PtY ST SG Q' y'), p.1.1.deco = p'.1.1.deco →
-        valAt (stepY ST y' β' Λ' Θ' pref') X.emb σ (e φ) b' p' = valAt (stepY ST y β Λ Θ pref) X.emb σ φ b p := by
-  choose π hπ using fun c : (stepY ST y' β' Λ' Θ' pref').Cl =>
-    exists_pt (Q := Q) hy (show PtY ST SG Q' y' from (stepY ST y' β' Λ' Θ' pref').rep c).1.1.deco
-  refine ⟨LinearMap.pi fun c => ((stepY ST y β Λ Θ pref).trTo X.emb σ b₀ (π c)).toLinearMap ∘ₗ
-    LinearMap.proj ((stepY ST y β Λ Θ pref).cl b₀ (π c)), fun φ b b' p p' h => ?_⟩
-  obtain rfl := hb b
-  have hm := (stepY ST y' β' Λ' Θ' pref').mv_smul b' p'
-  obtain ⟨g, g1, g2, g3⟩ := exists_lift hy ((hΛ b).trans (hΛ' b').symm) (hΘ b) (hΘ' b')
-    ((stepY ST y' β' Λ' Θ' pref').mv b' p') (π ((stepY ST y' β' Λ' Θ' pref').cl b' p')) p _ (hπ _)
-    (h.trans (congrArg (fun q : PtY ST SG Q' y' => q.1.1.deco) hm).symm)
-  have h1 := valAt_smul X.emb σ hf φ b g (π ((stepY ST y' β' Λ' Θ' pref').cl b' p'))
-  refine Eq.trans ?_ (h1.symm.trans (congrArg _ g1))
-  have h2 : (stepY ST y' β' Λ' Θ' pref').tr X.emb σ b' ((stepY ST y' β' Λ' Θ' pref').mv b' p') =
-      (stepY ST y β Λ Θ pref).tr X.emb σ b g :=
-    congrArg₂ (trFr X.emb σ) (congrArg (ufGL X.E n) g2.symm) g3.symm
-  exact congrFun (congrArg DFunLike.coe h2) _
-
-variable {σ lam} {e : ((stepY ST y β Λ Θ pref).Cl → Fr X.emb σ n → ℂ) ≃ₗ[ℂ]
-    ((stepY ST y' β' Λ' Θ' pref').Cl → Fr X.emb σ n → ℂ)}
-
-theorem up_mem (hf : (stepY ST y β Λ Θ pref).Free) (P : ST) (s : ∀ c, Finset ((tdatY ST T y β Λ Θ pref).lv P c))
-    {φ} (hφ : φ ∈ (stepY ST y β Λ Θ pref).Fi X.emb σ lam) :
-    (fun c => ∑ x ∈ s c, valAt (stepY ST y β Λ Θ pref) X.emb σ φ c.1 ((tdatY ST T y β Λ Θ pref).upPt P c x)) ∈
-      (stepY ST y β Λ Θ pref).Fi X.emb σ lam :=
-  DiaStab.mem_Fi _ X.emb σ lam hf _ fun _ => Submodule.sum_mem _ fun _ _ => DiaStab.tr_mem _ X.emb σ _ _ _ (hφ _).1
-
-theorem ForgetsFrames.up (he : ForgetsFrames σ lam e) (hy : ∀ N, y.ys N = {∅}) (b₀ : β)
-    (hf : (stepY ST y β Λ Θ pref).Free) (hf' : (stepY ST y' β' Λ' Θ' pref').Free)
-    (hA : (tdatY ST T y β Λ Θ pref).Ok T) (hT : (tdatY ST T y β Λ Θ pref).Tied T)
-    (hA' : (tdatY ST T y' β' Λ' Θ' pref').Ok T) (hT' : (tdatY ST T y' β' Λ' Θ' pref').Tied T) (P : ST)
-    (s : ∀ c, Finset ((tdatY ST T y β Λ Θ pref).lv P c)) (hs : ∀ c x, x ∈ s c ↔ (tdatY ST T y β Λ Θ pref).fv P c x = 1)
-    (s' : ∀ c, Finset ((tdatY ST T y' β' Λ' Θ' pref').lv P c))
-    (hs' : ∀ c x, x ∈ s' c ↔ (tdatY ST T y' β' Λ' Θ' pref').fv P c x = 1)
-    {φ} (hφ : φ ∈ (stepY ST y β Λ Θ pref).Fi X.emb σ lam) :
-    e (fun c => ∑ x ∈ s c, valAt (stepY ST y β Λ Θ pref) X.emb σ φ c.1 ((tdatY ST T y β Λ Θ pref).upPt P c x)) =
-      fun c => ∑ x ∈ s' c,
-        valAt (stepY ST y' β' Λ' Θ' pref') X.emb σ (e φ) c.1 ((tdatY ST T y' β' Λ' Θ' pref').upPt P c x) := by
-  funext c
-  obtain ⟨p, hp⟩ := exists_pt (Q := Q) hy (show PtY ST SG Q' y' from (stepY ST y' β' Λ' Θ' pref').rep c).1.1.deco
-  refine (valAt_rep X.emb σ hf' _ c).symm.trans ((he _ (up_mem hf P s hφ) b₀ c.1 p _ hp).trans ?_)
-  have hN := congrArg (fun d : DecoSet X.E n ST SG => d.1.N) hp
-  have hF := congrArg (fun d : DecoSet X.E n ST SG => d.1.f P) hp
-  refine up_match X.emb σ hf hA hT hA' hT' P s hs c (s' c) (hs' c) φ (e φ) b₀ p hN hF fun x hx h1 => ?_
-  refine he φ hφ b₀ c.1 _ _ ?_
-  exact (up_deco hT b₀ p P x hx h1).trans ((congrArg (fun d : DecoSet X.E n ST SG => d.up P (T : 𝓞 X.E) x) hp).trans
-    (up_deco hT' c.1 _ P x (hN ▸ hx) ((congrFun hF x).symm.trans h1)).symm)
-
-end Start
-
 section Lattice
 
 variable {D : D7} {u : D.what₂.Word} {X Y : Ch D u} {e : Fn X 0 ≃ₗ[ℂ] Fn Y 0} {eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0}
@@ -291,13 +218,6 @@ section Chains
   deTau := Classical.decEq _
   emb := emb
 
-@[reducible] def chOf (D : D7) (u : D.what₂.Word) {E : Type} [Field E] [NumberField E] [StarRing E]
-    (emb : D.what₂.Tau → E →+* D.what₂.LL) {I : ChainIn E D.what₂.LL D.what₂.Tau D.R} {J : AtIn I} {Q : PerIn I}
-    (Z : FmIn J D.what₂.places) (hI : I.Ok) (hJ : J.Ok) (hQ : Q.Ok) (l : J.Laws emb D.what₂.embLL (D.hcW u))
-    (lf : FmLaws J Q emb D.what₂.embLL (D.hcW u) D.what₂.places hI hQ) (hO : Q.Over J) : Ch D u :=
-  ⟨I.chain emb D.what₂.embLL hI (D.hcW u), J.atT emb D.what₂.embLL hI hJ (D.hcW u) l, Q.per emb D.what₂.embLL hI hQ (D.hcW u),
-    forms J Q emb D.what₂.embLL (D.hcW u) Z hI hJ hQ l lf hO⟩
-
 end Chains
 
 section Inputs
@@ -316,49 +236,8 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
     AtIn (chainOn sel mu cst L Tp u rho rho' jet DG) :=
   ⟨Pr.T u, Pr.vT u, tdatAt sel mu cst L Tp u, psi, du, Ds, Ga⟩
 
-def ForgetsAt {mu' : Tup X.F X.E X.K S} (cst' : LocCst X (rowSG Pr sel mu'))
-    (L' : ChIdx X Pr R (QE sel (mu' : Chr X.F X.E X.K))) (Tp' : TopLev X Pr R (QE sel (mu' : Chr X.F X.E X.K)))
-    (σ : X.K →+* ℂ) (lam : X.Tau → DomWeight (R.N 0))
-    (e : ((stepAt sel mu cst L Tp u 0).Cl → Fr X.emb σ (R.N 0) → ℂ) ≃ₗ[ℂ]
-      ((stepAt sel mu' cst' L' Tp' u 0).Cl → Fr X.emb σ (R.N 0) → ℂ)) : Prop :=
-  ForgetsFrames σ lam e
-
-theorem ysAt_zero (N : Submodule (𝓞 X.E) (Sp X.E (R.N 0))) : (ysAt R sel mu cst 0).ys N = {∅} := by
-  have h := R.two_le_m
-  unfold ysAt
-  rw [if_neg (by omega)]
-  rfl
-
 variable {sel mu cst L} {Cr : Chars X Pr R.m} {G : ChGlob X R.m} {m2 : ℕ}
 
 end Inputs
-
-section Main
-
-variable {D : D7} {u : D.what₂.Word} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
-  {emb : D.what₂.Tau → E →+* D.what₂.LL} {Pr : Primes (fieldsOver D F E emb)} {u' : Pr.Word}
-
-def SeesAs [Nonempty D.what₂.Tau] (Pr : Primes (fieldsOver D F E emb)) (u' : Pr.Word) (seen : D.what₂.places.Pl → Bool)
-    (tau : D.what₂.places.Pl → (Pr.vT u' ≃ D.what₂.Tau)) : Prop :=
-  ∀ w, D.what₂.places.resChar w = Pr.T u' → (seen w = true ↔ seenC Pr u' (D.plEq w)) ∧
-    ∀ P : Pr.vT u', tau w P = tauOfC (X := fieldsOver D F E emb) (D.plEq w) P.1
-
-variable {Cr : Chars (fieldsOver D F E emb) Pr D.R.m} {sel : HeightOneSpectrum (𝓞 F) → HeightOneSpectrum (𝓞 E)} {S : Set ℕ} {m2 : ℕ}
-  {mu₀ : Tup F E D.what₂.LL S} {cst₀ : LocCst (fieldsOver D F E emb) (rowSG Pr sel mu₀)}
-  {L₀ : ChIdx (fieldsOver D F E emb) Pr D.R (QE (X := fieldsOver D F E emb) sel (mu₀ : Chr F E D.what₂.LL))}
-  {Tp₀ : TopLev (fieldsOver D F E emb) Pr D.R (QE (X := fieldsOver D F E emb) sel (mu₀ : Chr F E D.what₂.LL))}
-  {G₀ : ChGlob (fieldsOver D F E emb) D.R.m} {rho₀ rho₀' jet₀} {DG₀ : ℕ} {psi₀} {du₀ : ℕ} {Ds₀ Ga₀ : ℝ}
-  {Q₀ : PerIn (chainOn (X := fieldsOver D F E emb) sel mu₀ cst₀ L₀ Tp₀ u' rho₀ rho₀' jet₀ DG₀)}
-  {Z₀ : FmIn (levelOn (X := fieldsOver D F E emb) sel mu₀ cst₀ L₀ Tp₀ u' (rho := rho₀) (rho' := rho₀') (jet := jet₀) (DG := DG₀)
-    psi₀ du₀ Ds₀ Ga₀) D.what₂.places} {hI₀ hJ₀} {hQ₀ : Q₀.Ok} {l₀ lf₀ hO₀}
-  {mu : Tup F E D.what₂.LL S} {cst : LocCst (fieldsOver D F E emb) (rowSG Pr sel mu)}
-  {L : ChIdx (fieldsOver D F E emb) Pr D.R (QE (X := fieldsOver D F E emb) sel (mu : Chr F E D.what₂.LL))}
-  {Tp : TopLev (fieldsOver D F E emb) Pr D.R (QE (X := fieldsOver D F E emb) sel (mu : Chr F E D.what₂.LL))}
-  {G : ChGlob (fieldsOver D F E emb) D.R.m} {rho rho' jet} {DG : ℕ} {psi} {du : ℕ} {Ds Ga : ℝ}
-  {Q : PerIn (chainOn (X := fieldsOver D F E emb) sel mu cst L Tp u' rho rho' jet DG)}
-  {Z : FmIn (levelOn (X := fieldsOver D F E emb) sel mu cst L Tp u' (rho := rho) (rho' := rho') (jet := jet) (DG := DG)
-    psi du Ds Ga) D.what₂.places} {hI hJ} {hQ : Q.Ok} {l lf hO}
-
-end Main
 
 end GlobalTheory.LvT.StartTie

@@ -161,18 +161,7 @@ theorem germLoc_of_fibres {S : C.HidaSetting E Wp Wq} {v : Fin S.f} (hI : JC.Thm
 
 end loc
 
-def GermLocOfFibres : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq),
-    0 < S.G.g1 → 0 < S.G.g2 → KB.IntAll S → (∀ v, GermFibres S v) → (∀ v, GermCont S v) → ∀ v, KB.GermLoc S v
-
-theorem germLocOfFibres : GermLocOfFibres := by
-  intro E _ _ _ Wp Wq _ _ _ _ S hg1 hg2 hI hF hC v
-  exact germLoc_of_fibres (hI v) hg1 hg2 (hF v) (hC v)
-
 end
 
 end Formalism.FourierDecayAlt.P.GermRealisation
 
-theorem Formalism.FourierDecayAlt.P.germ_local_of_fibres : Formalism.FourierDecayAlt.P.GermRealisation.GermLocOfFibres := Formalism.FourierDecayAlt.P.GermRealisation.germLocOfFibres

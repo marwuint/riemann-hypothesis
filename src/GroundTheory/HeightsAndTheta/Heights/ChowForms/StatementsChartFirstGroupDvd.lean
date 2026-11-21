@@ -15,10 +15,6 @@ def ChartFirstGroupDvd.Statement : Prop :=
       (∑ m, X m * C (chartX I t e (X m))) ∣
         map (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e)) (firstGroup f)
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

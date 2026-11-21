@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UltrametricMatrixInvNearOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixMulEntryNormLeUltrametricStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UltrametricMatrixInvNearOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixMulEntryNormLeUltrametric
 
 namespace GlobalTheory
 
@@ -11,7 +11,7 @@ theorem norm_mul_sub_one_le_of_norm_sub_one_le {E : Type} [NormedField E] [IsUlt
   intro i j
   have hXY : X * Y - 1 = (X - 1) + (Y - 1) + (X - 1) * (Y - 1) := by
     simp only [sub_mul, mul_sub, mul_one, one_mul]; abel
-  have hp := GlobalTheory.T.norm_mul_apply_le_of_ultrametric E n (X - 1) (Y - 1) t t h0 h0 hX hY i j
+  have hp := _root_.GlobalTheory.matrix_mul_entry_norm_le_ultrametric E n (X - 1) (Y - 1) t t h0 h0 hX hY i j
   have htt : t * t ≤ t := by nlinarith
   rw [hXY, Matrix.add_apply, Matrix.add_apply]
   refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (hp.trans htt))
@@ -37,7 +37,7 @@ theorem congruenceSubgroups_GL_padic : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [
     inv_mem' := by
       intro X hX
       simp only [Set.mem_setOf_eq] at *
-      exact GlobalTheory.T.ultrametric_matrix_inv_near_one ℚ_[l] n (X : Matrix n n ℚ_[l]) ((X⁻¹ : GL n ℚ_[l]) : Matrix n n ℚ_[l]) _
+      exact _root_.GlobalTheory.matrix_inv_near_one ℚ_[l] n (X : Matrix n n ℚ_[l]) ((X⁻¹ : GL n ℚ_[l]) : Matrix n n ℚ_[l]) _
         (ht k).1 (ht k).2 (Units.inv_mul X) hX }, fun k X => Iff.rfl⟩
 
 end GlobalTheory

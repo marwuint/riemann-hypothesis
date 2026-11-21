@@ -41,24 +41,6 @@ theorem galT_ext {g : GQ l} {x z : OCb l}
   have : y₁ = y₂ := Subtype.ext (h₁.trans h₂.symm)
   exact e₁.trans (this ▸ e₂.symm)
 
-theorem galT_one (x : OCb l) : galT (1 : GQ l) x = x :=
-  galT_ext fun _ y hy => ⟨y, by rw [map_one]; rfl, hy⟩
-
-theorem galT_mul (g h : GQ l) (x : OCb l) : galT (g * h) x = galT g (galT h x) :=
-  galT_ext fun n y hy => by
-    obtain ⟨y₁, h₁, e₁⟩ := galT_coeff h x n y hy
-    obtain ⟨y₂, h₂, e₂⟩ := galT_coeff g (galT h x) n y₁ e₁
-    exact ⟨y₂, by rw [h₂, h₁, map_mul]; rfl, e₂⟩
-
-theorem ζO_zero : ζO l 0 = 1 :=
-  Subtype.ext rfl
-
-theorem ζO_succ (n : ℕ) : ζO l (n + 1) ^ l = ζO l n := by
-  rw [ζO, ζO, ← map_pow, rootSeqInt_succ_pow]
-
-theorem ζO_one : ζO l 1 ≠ 1 := fun h =>
-  rootSeq_one_ne_one (p := l) (congrArg Subtype.val h)
-
 theorem εO_coeff (n : ℕ) :
     PreTilt.coeff n (εO l) = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (ζO l n) := rfl
 
@@ -102,10 +84,6 @@ theorem aB_act (g : GQ l) (a : Ainf l) :
     exact tiltMap_tiltInv l _
   rw [frob_aB_apply, frob_aB_apply, σB_cB, h, ← ACris.gal_smul_algebraMap, ACris.gal_smul_def]
 
-theorem ιCD_aB_mem_zero (a : Ainf l) : ιCD l (Per6.aB l a) ∈ Per6.FilD l 0 := by
-  rw [ιCD_aB]
-  exact (IsPerfectoidField.mem_fil_zero_iff ℂ_[l] l).2 ⟨_, rfl⟩
-
 theorem tiltMap_εO : Per6.tiltMap l (εO l) = epsilon l := tiltMap_tiltInv l _
 
 theorem fil_nat (b : Per6.BdRp l) (n : ℕ) :
@@ -116,35 +94,6 @@ theorem fil_nat (b : Per6.BdRp l) (n : ℕ) :
 theorem θD_aD (a : Ainf l) : Per6.θD l (Per6.aD l a) =
     ((WittVector.fontaineTheta ↥(normInteger ℂ_[l]) l (Per6.ainfMap l a) : normInteger ℂ_[l]) : ℂ_[l]) :=
   IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus l _
-
-theorem ιCD_aB_mem_one (a : Ainf l) : ιCD l (Per6.aB l a) ∈ Per6.FilD l 1 ↔
-    ∃ b : Ainf l, a = (∑ i ∈ Finset.range l,
-      (WittVector.teichmuller l ((frobeniusEquiv (OCb l) l).symm (εO l))) ^ i) * b := by
-  have hξ : Per6.ainfMap l (∑ i ∈ Finset.range l,
-      (WittVector.teichmuller l ((frobeniusEquiv (OCb l) l).symm (εO l))) ^ i) =
-      AInf.xi (K := ℂ_[l]) (epsilon l) := by
-    have e : Per6.tiltMap l ((frobeniusEquiv (OCb l) l).symm (εO l)) =
-        (frobeniusEquiv (PreTilt ↥(normInteger ℂ_[l]) l) l).symm (epsilon l) := by
-      apply (frobeniusEquiv (PreTilt ↥(normInteger ℂ_[l]) l) l).injective
-      rw [RingEquiv.apply_symm_apply, frobeniusEquiv_apply, frobenius_def, ← map_pow,
-        frobeniusEquiv_symm_pow_p, tiltMap_εO]
-    rw [map_sum, AInf.xi]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [map_pow, frob_ainfMap_teich, e]
-  have h1 : ιCD l (Per6.aB l a) ∈ Per6.FilD l 1 ↔
-      Per6.ainfMap l a ∈ Ideal.span {AInf.xi (K := ℂ_[l]) (epsilon l)} := by
-    rw [ιCD_aB, ← AInf.ker_fontaineTheta_eq_span_xi untilt_epsilon
-      untilt_frobeniusEquiv_symm_epsilon_ne_one, RingHom.mem_ker]
-    refine (fil_nat (Per6.aD l a) 1).trans ?_
-    rw [pow_one, RingHom.mem_ker, θD_aD]
-    exact ⟨fun h => Subtype.ext h, fun h => by rw [h]; rfl⟩
-  rw [h1, Ideal.mem_span_singleton, ← hξ]
-  constructor
-  · rintro ⟨c, hc⟩
-    obtain ⟨b, rfl⟩ := ainfMap_surjective c
-    exact ⟨b, ainfMap_injective (hc.trans (map_mul _ _ _).symm)⟩
-  · rintro ⟨b, rfl⟩
-    exact ⟨Per6.ainfMap l b, map_mul _ _ _⟩
 
 theorem ainf_zA (z : ℤ_[l]) :
     Per6.ainfMap l (Per6.zA l z) = IsPerfectoidField.padicIntToWitt l z := by
@@ -160,10 +109,6 @@ theorem qB_coe (z : ℤ_[l]) : qB l (z : ℚ_[l]) = Per6.zB l z := by
 theorem oD_coe (z : ℤ_[l]) : oD l (algebraMap ℚ_[l] (Om l) (z : ℚ_[l])) = Per6.zD l z := by
   rw [← ιCD_qB, qB_coe, Per6.zB, RingHom.comp_apply, ιCD_aB]
   rfl
-
-theorem oD_lift (x : Om l) : ∃ y : Per6.BdRp l,
-    oD l x = algebraMap (Per6.BdRp l) (Per6.BdR l) y ∧ Per6.θD l y = (x : ℂ_[l]) :=
-  ⟨algClToBdR l x, rfl, thetaAlgHom_algClToBdR l x⟩
 
 theorem isCrisDR_iff (f : Per6.Bcris l →+* Per6.BdR l) : Per6.IsCrisDR l f ↔ f = ιCD l := by
   constructor
@@ -205,12 +150,5 @@ theorem isLog_iff (ε : OCb l) (y : Per6.BdRp l) : Per6.IsLog l ε y ↔
   · rintro ⟨hε, rfl⟩ n
     rw [hm]
     exact fontaineT_sub_sum_mem hε n
-
-theorem isLog_tBdR : Per6.IsLog l (εO l) (tBdR l) := by
-  rw [isLog_iff]
-  have h : ∀ e, e = epsilon l → ∃ h : PreTilt.untilt e = 1, tBdR l = fontaineT e h := by
-    rintro _ rfl
-    exact ⟨untilt_epsilon, rfl⟩
-  exact h _ tiltMap_εO
 
 end PositivityTheory.LocInh

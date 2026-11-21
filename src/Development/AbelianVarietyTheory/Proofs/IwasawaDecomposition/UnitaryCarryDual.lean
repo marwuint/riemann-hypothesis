@@ -9,66 +9,6 @@ noncomputable section
 
 namespace GlobalTheory.Mem.LevDual
 
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-
-local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
-
-theorem sigR_int (σ : E →ₐ[F] E) (x : E ⊗[F] 𝔸)
-    (hx : x ∈ tensInt (F := F) 𝔸 (intOE E) (intAd F)) :
-    sigR σ 𝔸 x ∈ tensInt (F := F) 𝔸 (intOE E) (intAd F) := by
-  have hle : tensInt (F := F) 𝔸 (intOE E) (intAd F) ≤
-      (tensInt (F := F) 𝔸 (intOE E) (intAd F)).comap (sigR σ 𝔸) := by
-    conv_lhs => unfold tensInt
-    rw [Subring.closure_le]
-    rintro _ (⟨a, rfl⟩ | ⟨y, rfl⟩)
-    · rw [SetLike.mem_coe, Subring.mem_comap]
-      obtain ⟨a, r, hr⟩ := a
-      subst hr
-      have hi : IsIntegral ℤ (σ (r : E)) := map_isIntegral_int σ (RingOfIntegers.isIntegral_coe r)
-      change (σ (r : E)) ⊗ₜ[F] (1 : 𝔸) ∈ _
-      exact Subring.subset_closure (Or.inl ⟨⟨σ (r : E), ⟨⟨σ (r : E), hi⟩, rfl⟩⟩, rfl⟩)
-    · rw [SetLike.mem_coe, Subring.mem_comap]
-      change (σ (1 : E)) ⊗ₜ[F] (y : 𝔸) ∈ _
-      rw [map_one]
-      exact Subring.subset_closure (Or.inr ⟨y, rfl⟩)
-  exact hle hx
-
-theorem form_latS_int (σ : E →ₐ[F] E) {n : ℕ} (L' : Submodule (𝓞 E) (Fin n → E))
-    (z : Fin n → E) (hz : z ∈ dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L')
-    (u : Fin n → E ⊗[F] 𝔸)
-    (hu : u ∈ latS (F := F) 𝔸 (tensInt (F := F) 𝔸 (intOE E) (intAd F)) L') :
-    (fun i => sigR σ 𝔸 (u i)) ⬝ᵥ (fun a => inclE (F := F) 𝔸 (z a)) ∈
-      tensInt (F := F) 𝔸 (intOE E) (intAd F) := by
-  induction hu using Submodule.span_induction with
-  | mem u hu =>
-    obtain ⟨l, hl, rfl⟩ := hu
-    obtain ⟨r, hr⟩ := hz l hl
-    have e : (fun i => sigR σ 𝔸 (inclE (F := F) 𝔸 (l i))) ⬝ᵥ (fun a => inclE (F := F) 𝔸 (z a)) =
-        inclE (F := F) 𝔸 (hform (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) l z) := by
-      have h1 : hform (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) l z = ∑ i, σ (l i) * z i := by
-        unfold hform
-        refine Finset.sum_congr rfl fun i _ => ?_
-        simp [Matrix.one_apply]
-      rw [h1, map_sum]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      rw [map_mul]
-      rfl
-    simp only [] at e ⊢
-    rw [e, ← hr]
-    exact Subring.subset_closure (Or.inl ⟨⟨_, ⟨r, rfl⟩⟩, rfl⟩)
-  | zero => simp
-  | add a b _ _ ha hb =>
-    have : (fun i => sigR σ 𝔸 ((a + b) i)) = (fun i => sigR σ 𝔸 (a i)) + (fun i => sigR σ 𝔸 (b i)) := by
-      funext i; simp
-    rw [this, add_dotProduct]
-    exact add_mem ha hb
-  | smul c a _ ha =>
-    have : (fun i => sigR σ 𝔸 ((c • a) i)) = sigR σ 𝔸 (c : E ⊗[F] 𝔸) • (fun i => sigR σ 𝔸 (a i)) := by
-      funext i
-      simp [Subring.smul_def]
-    rw [this, smul_dotProduct]
-    exact mul_mem (sigR_int σ _ c.2) ha
-
 end GlobalTheory.Mem.LevDual
 
 namespace GlobalTheory.Mem.LevDual
@@ -77,12 +17,6 @@ theorem sigR_inclE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     (σ : E →ₐ[F] E) (e : E) :
     sigR σ (FiniteAdeleRing (𝓞 F) F) (inclE (F := F) (FiniteAdeleRing (𝓞 F) F) e) =
       inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (σ e) := rfl
-
-theorem hform_one {E : Type} [Field E] (σ : E →+* E) {n : ℕ} (x y : Fin n → E) :
-    hform σ (1 : Matrix (Fin n) (Fin n) E) x y = ∑ i, σ (x i) * y i := by
-  unfold hform
-  refine Finset.sum_congr rfl fun i _ => ?_
-  simp [Matrix.one_apply]
 
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in

@@ -36,11 +36,6 @@ theorem haarUp_N (hSF : HaarUniqueSF) (hCN : ClosedN) (hHN : HaarNExists) {k r :
   obtain ⟨μ₀, h₀⟩ := hHN k r
   exact haarUp hSF (hCN k r) h₀ hμ
 
-theorem haarUp_G (hSF : HaarUniqueSF) (hCG : ClosedG) (hHG : HaarGExists) {k r : ℕ}
-    {μG : Measure (Mt k r)} (hμ : Formalism.MainNotions.S.IsHaarOn (UH (Hpk k r)) μG) : Formalism.FourierDecayAlt.B.IsHaarOn (GV k r) μG := by
-  obtain ⟨μ₀, h₀⟩ := hHG k r
-  exact haarUp hSF (hCG k r) h₀ hμ
-
 theorem haar_measure_univ_lt_infinity_of_compactW (hCpW : CompactW) {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r)}
     (hz : inWb k r z) (hT : 0 < Tz k r z) (hμ : Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) μW) : μW Set.univ < ∞ := by
   have hK : μW (UWset k r z : Set (Mt k r)) < ∞ := hμ.finite_compact _ (hCpW k r z hz hT)

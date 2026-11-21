@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocallyFreeOfFiniteProjective
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsQProjOverCompImmersion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSemiAbelianImage
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormallyUnramifiedAdjointRingActionScheme
@@ -8,6 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsNoetherianRingCom
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleSpreadSubring
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeSubsetOfGeom
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.SiegelTor GlobalTheory.EndLoc
 open scoped CategoryTheory.Obj

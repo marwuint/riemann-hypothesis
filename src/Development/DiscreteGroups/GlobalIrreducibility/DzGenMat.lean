@@ -14,30 +14,6 @@ section Ring
 
 variable {R : Type} [CommRing R] {m : ℕ}
 
-theorem mul_apply_super {u c : GL (Fin m) R} (hu : u ∈ unipB R (Fin m)) (hc : c ∈ unipB R (Fin m))
-    {i j : Fin m} (hij : j.val = i.val + 1) :
-    ((u * c : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) i j =
-      (u : Matrix (Fin m) (Fin m) R) i j + (c : Matrix (Fin m) (Fin m) R) i j := by
-  obtain ⟨hu0, hu1⟩ := (mem_unipB _).1 hu
-  obtain ⟨hc0, hc1⟩ := (mem_unipB _).1 hc
-  have hne : i ≠ j := by intro h; subst h; omega
-  rw [Units.val_mul, Matrix.mul_apply, Fintype.sum_eq_add i j hne]
-  · rw [hu1, hc1, one_mul, mul_one, add_comm]
-  · rintro l ⟨hli, hlj⟩
-    rcases lt_or_gt_of_ne hli with h | h
-    · rw [hu0 i l h, zero_mul]
-    · have hjl : j < l := by
-        have h1 := Fin.val_ne_of_ne hlj
-        rw [Fin.lt_def] at h ⊢
-        omega
-      rw [hc0 l j hjl, mul_zero]
-
-theorem superDiag_mul {u c : GL (Fin m) R} (hu : u ∈ unipB R (Fin m)) (hc : c ∈ unipB R (Fin m)) :
-    superDiag (u * c) = superDiag u + superDiag c := by
-  simp only [superDiag, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj => ?_
-  exact mul_apply_super hu hc (Finset.mem_filter.1 hj).2
-
 theorem wRev_sq : (1 : Matrix (Fin m) (Fin m) R).submatrix Fin.rev id * (1 : Matrix (Fin m) (Fin m) R).submatrix Fin.rev id
     = 1 := by
   ext i j
@@ -96,23 +72,6 @@ theorem mem_KO_of_unip {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m))
   show ((u⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) i j ∈ 𝒪[k]
   rw [hinv, ← hA, ← RingHom.map_adjugate]
   exact (A.adjugate i j).2
-
-theorem mem_KOne_of_unip {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m))
-    (h : ∀ i j, i < j → valuation k ((u : Matrix (Fin m) (Fin m) k) i j) < 1) : u ∈ KOne k (Fin m) := by
-  refine GlobalTheory.StepData.mem_KOne.2 fun i j => ?_
-  rcases lt_trichotomy i j with hij | rfl | hij
-  · simpa [Matrix.sub_apply, Matrix.one_apply_ne hij.ne] using h i j hij
-  · simp [Matrix.sub_apply, ((mem_unipB _).1 hu).2 i]
-  · simp [Matrix.sub_apply, Matrix.one_apply_ne hij.ne', ((mem_unipB _).1 hu).1 i j hij]
-
-theorem val_lt_of_mem_KOne {u : GL (Fin m) k} (hu : u ∈ KOne k (Fin m)) {i j : Fin m} (hij : i ≠ j) :
-    valuation k ((u : Matrix (Fin m) (Fin m) k) i j) < 1 := by
-  have := GlobalTheory.StepData.mem_KOne.1 hu i j
-  simpa [Matrix.sub_apply, Matrix.one_apply_ne hij] using this
-
-theorem val_le_of_mem_KO {u : GL (Fin m) k} (hu : u ∈ KO k (Fin m)) (i j : Fin m) :
-    valuation k ((u : Matrix (Fin m) (Fin m) k) i j) ≤ 1 :=
-  (Valuation.mem_integer_iff _ _).1 (((GlobalTheory.SplitFlip.mem_KO_iff u).1 hu).1 i j)
 
 end Local
 

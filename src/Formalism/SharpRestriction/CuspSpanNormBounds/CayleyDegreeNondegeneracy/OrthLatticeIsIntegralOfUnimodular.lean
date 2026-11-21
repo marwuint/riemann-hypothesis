@@ -22,10 +22,6 @@ theorem orth_embedding_injective : Function.Injective (D.sp.iXY 0) := by
   refine (D.sp.X 0).nondeg.1 x fun y => ?_
   rw [← orth_embedding_isometry, hx]; simp
 
-theorem finrank_orth_space_eq_k : finrank D.host.E (D.sp.X 0).V = D.R.k := by
-  rw [(D.sp.X 0).rank_eq, D.sp.X_rank 0 (Nat.zero_le _)]
-  simp [Ranks.N]
-
 variable {D} {u : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
   (he : F0.e = D.sp.hypE) (hz : F0.z = D.zmOf u)
 

@@ -11,9 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsPeriodLatti
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaZeroNorm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjugateIdealLatticeDiscrOneHomotheticIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MeanLogCovolumeConjugateLatticesEqStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegralThetaEtaTwelfthPowerConjugatesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjugateIdealLatticeDiscrOneHomotheticIdeal
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MeanLogCovolumeConjugateLatticesEq
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsIntegralThetaEtaTwelfthPowerConjugates
 
 noncomputable section
 
@@ -31,10 +31,10 @@ theorem core (hP : PeriodLatticeAgreement.LatticePeriodEta) (hW : ThetaConstantW
       SignedLogMeans.meanPosLog M (lamOf D cc δ) t ≤
         SignedLogMeans.meanLog M (lamOf D cc δ) t + ((1 / 4) * Real.log D.host.d + max 0 (2 * Real.log C₀)) := by
   classical
-  have hArea := GlobalTheory.T.mean_log_covolume_conjugateLattices_eq D cc δ M t hS
-  obtain ⟨X, hX0, hXi, hXρ⟩ := GlobalTheory.T.exists_integral_thetaEta_twelfth_power_conjugates hP hW D hJ cc δ M t hS
+  have hArea := _root_.GlobalTheory.MeanLogArea.mean_log_area D cc δ M t hS
+  obtain ⟨X, hX0, hXi, hXρ⟩ := _root_.GlobalTheory.IntegralXCore.exists_integral_theta_ratio hP hW D hJ cc δ M t hS
   have hInt := sum_log_nonneg M X hX0 hXi
-  have hB := GlobalTheory.T.conjugateIdealLattice_discr_one_homothetic_ideal D cc δ M t hS
+  have hB := _root_.GlobalTheory.ConjLatticeCore.conj_lattice_core D cc δ M t hS
   have hT0 := hS.2.2.2
   set Λ := lamOf D cc δ with hΛ
   choose hdisc c hc x hx hΛeq using hB

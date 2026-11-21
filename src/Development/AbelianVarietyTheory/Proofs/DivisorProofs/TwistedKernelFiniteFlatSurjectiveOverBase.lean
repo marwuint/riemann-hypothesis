@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClosedSubschemeAdditiveFamiliesAgree
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TheoremOfCubeAbelianSchemeOverArbitraryBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamPoincareDualityOfCubeDual
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteTwistedKernelCubeLambdaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatFiniteTwistedKernelOverAffineParameterStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveTwistedKernelAdditiveLineBundleFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteTwistedKernelCubeLambda
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatFiniteTwistedKernelOverAffineParameter
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveTwistedKernelAdditiveLineBundleFamily
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -40,8 +40,8 @@ theorem twisted_kernel : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : O
     rw [← hH Y (lift a t), same_iff hΛ.isLB hN.isLB, same_iff (hΛ.ev (fst A T)).isLB (hN.ev (snd A T)).isLB,
       evc_ev hΛ.isLB, evc_ev hN.isLB]
     simp
-  exact ⟨H, h, hh, GlobalTheory.T.isFinite_twisted_kernel_cubeLambda R A hA L hL ha T hT N hN H h hh rep,
-    GlobalTheory.T.flat_finiteTwistedKernel_over_affineParameter R A hA L hL ha T hT N hN H h hh rep (GlobalTheory.T.isFinite_twisted_kernel_cubeLambda R A hA L hL ha T hT N hN H h hh rep),
-    GlobalTheory.T.surjective_twistedKernel_additiveLineBundleFamily R A hA L hL ha T hT N hN H h hh rep, rep⟩
+  exact ⟨H, h, hh, _root_.GlobalTheory.TwistKerFinite.isFinite_twisted_kernel R A hA L hL ha T hT N hN H h hh rep,
+    _root_.GlobalTheory.TwistFlat.flat_twisted_kernel R A hA L hL ha T hT N hN H h hh rep (_root_.GlobalTheory.TwistKerFinite.isFinite_twisted_kernel R A hA L hL ha T hT N hN H h hh rep),
+    _root_.GlobalTheory.TwistKerSurj.surjective_twist_kernel R A hA L hL ha T hT N hN H h hh rep, rep⟩
 
 end GlobalTheory.TwistKernel

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
 import Development.AbelianVarietyTheory.Definitions.UpperBounds.FreeBallIffOfDimXEqZero
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.OneAddLeLminorSq
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallUnipotentUnitaryElementIsOneProofStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallUnipotentUnitaryElementIsOneProof
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ModeHalfStatementPfA
 open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 
@@ -68,7 +68,7 @@ theorem freeBall_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r 
   rw [FundSetPf.lact_rmul, rhX_rmul _ _ hb'] at hlt2
   rw [rhX_rmul _ _ hb'] at hlt
   have h2 := isOrth_lact_of_isUStab (hΛ γ hγ) hz1
-  exact hne (GlobalTheory.T.smallUnipotentUnitaryElementIsOne_proof E r X g hsp hg G hL' hU x1 hx1 hNC1 γ hγ
+  exact hne (_root_.GlobalTheory.SmallElement.smallElement E r X g hsp hg G hL' hU x1 hx1 hNC1 γ hγ
     (opNormLe_of_ball hr X.toData h1 hz1 h2 hlt hlt2))
 
 end GlobalTheory.FreeBallAt

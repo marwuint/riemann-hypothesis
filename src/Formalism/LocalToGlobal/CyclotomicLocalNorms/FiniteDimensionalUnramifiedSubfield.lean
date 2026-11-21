@@ -29,23 +29,12 @@ def σ (K : FinExt l) : ↥(K0 K) →ₐ[ℚ_[l]] ↥(K0 K) := (σE K : ↥(K0 K
 
 theorem σ_apply (K : FinExt l) (x : ↥(K0 K)) : σ K x = σE K x := rfl
 
-theorem σ_bij (K : FinExt l) : Function.Bijective (σ K) := (σE K).bijective
-
 theorem σE_pow_coe (K : FinExt l) (i : ℕ) (x : ↥(K0 K)) :
     (((σE K ^ i) x : ↥(K0 K)) : Om l) = (FrobQ l ^ i) (x : Om l) := by
   have h : σE K ^ i = (FrobQ l ^ i).restrictNormal ↥(K0 K) :=
     (map_pow (AlgEquiv.restrictNormalHom (K₁ := Om l) ↥(K0 K)) (FrobQ l) i).symm
   rw [h]
   exact AlgEquiv.restrictNormal_commutes (FrobQ l ^ i) ↥(K0 K) x
-
-theorem σ_coe (K : FinExt l) (x : ↥(K0 K)) : ((σ K x : ↥(K0 K)) : Om l) = FrobQ l (x : Om l) := by
-  have := σE_pow_coe K 1 x
-  rwa [pow_one, pow_one] at this
-
-theorem PD_σ (K : FinExt l) (x : ↥(K0 K)) (hx : ‖((x : ↥(K0 K)) : Om l)‖ ≤ 1) :
-    ‖(((σ K x : ↥(K0 K))) : Om l) - ((x : ↥(K0 K)) : Om l) ^ l‖ < 1 := by
-  rw [σ_coe]
-  exact FrobQ_spec _ hx
 
 theorem σE_pow_eq_one_iff (K : FinExt l) (i : ℕ) :
     σE K ^ i = 1 ↔ Module.finrank ℚ_[l] ↥(K0 K) ∣ i := by
@@ -64,32 +53,6 @@ theorem orderOf_σE (K : FinExt l) : orderOf (σE K) = Module.finrank ℚ_[l] �
   apply Nat.dvd_antisymm
   · exact orderOf_dvd_of_pow_eq_one ((σE_pow_eq_one_iff K _).2 dvd_rfl)
   · exact (σE_pow_eq_one_iff K _).1 (pow_orderOf_eq_one _)
-
-theorem exists_pow_σE (K : FinExt l) (τ : ↥(K0 K) →ₐ[ℚ_[l]] Om l) :
-    ∃ i < Module.finrank ℚ_[l] ↥(K0 K), ∀ x, τ x = (((σE K ^ i) x : ↥(K0 K)) : Om l) := by
-  obtain ⟨g, hg⟩ := exists_GQ_of_algHom τ
-  obtain ⟨i, hi, h⟩ := exists_pow_of_GQ (finiteDimensional_unramified_subfield K) (unramified_subfield_le_maxUnramified K) g
-  exact ⟨i, hi, fun x => by rw [← hg, σE_pow_coe, h x x.2]⟩
-
-theorem σ_fixed (K : FinExt l) (x : ↥(K0 K)) (h : σ K x = x) :
-    ∃ a : ℚ_[l], algebraMap ℚ_[l] ↥(K0 K) a = x := by
-  have h1 : FrobQ l (x : Om l) = x := by rw [← σ_coe, h]
-  obtain ⟨a, ha⟩ := IntermediateField.mem_bot.1 (mem_bot_of_FrobQ_fixed (unramified_subfield_le_maxUnramified K x.2) h1)
-  exact ⟨a, Subtype.ext ha⟩
-
-theorem eq_σ_of_congr (K : FinExt l) (τ : ↥(K0 K) →ₐ[ℚ_[l]] ↥(K0 K))
-    (hτ : ∀ x : ↥(K0 K), ‖((x : ↥(K0 K)) : Om l)‖ ≤ 1 →
-      ‖(((τ x : ↥(K0 K))) : Om l) - ((x : ↥(K0 K)) : Om l) ^ l‖ < 1) : τ = σ K := by
-  obtain ⟨g, hg⟩ := exists_GQ_of_algHom ((K0 K).val.comp τ)
-  have h1 : ∀ y ∈ K0 K, ‖y‖ ≤ 1 → ‖g y - y ^ l‖ < 1 := by
-    intro y hy hy1
-    have := hτ ⟨y, hy⟩ hy1
-    have h2 : g y = ((τ ⟨y, hy⟩ : ↥(K0 K)) : Om l) := hg ⟨y, hy⟩
-    rw [h2]
-    exact this
-  ext x
-  rw [σ_coe, ← eq_FrobQ_of_congr (finiteDimensional_unramified_subfield K) (unramified_subfield_le_maxUnramified K) g h1 x.2]
-  exact (hg x).symm
 
 def emb {K LL : FinExt l} (hle : K0 K ≤ LL.1) (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) :
     ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1 :=

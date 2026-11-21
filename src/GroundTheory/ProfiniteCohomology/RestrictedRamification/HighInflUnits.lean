@@ -142,19 +142,6 @@ theorem isIsoModCoprime_gsUnitsInfl {r : ℕ} (hr : 1 ≤ r) : IsIsoModCoprime �
   exact h'.comp (IsIsoModCoprime.of_bijective
     (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r).bijective)
 
-include hℓ hS in
-
-theorem eq_zero_of_gsUnitsInfl_eq_zero {r : ℕ} (hr : 1 ≤ r)
-    (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) (hx : gsUnitsInfl K S r x = 0) {k : ℕ}
-    (hk : ℓ ^ k • x = 0) : x = 0 :=
-  (isIsoModCoprime_gsUnitsInfl K S hℓ hS hr).eq_zero_of_pow_nsmul hx hk
-
-include hℓ hS in
-
-theorem exists_gsUnitsInfl_eq {r : ℕ} (hr : 1 ≤ r) (y : cohomology (unitsLimitRep K) r) {k : ℕ}
-    (hk : ℓ ^ k • y = 0) : ∃ x, (∃ j : ℕ, ℓ ^ j • x = 0) ∧ gsUnitsInfl K S r x = y :=
-  (isIsoModCoprime_gsUnitsInfl K S hℓ hS hr).exists_pow_nsmul hℓ (isTorsion_cohomology _ hr) hk
-
 noncomputable def gsUnitsInflPrimaryEquiv {r : ℕ} (hr : 1 ≤ r) :
     AddCommGroup.primaryComponent (cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) ℓ ≃+
       AddCommGroup.primaryComponent (cohomology (unitsLimitRep K) r) ℓ :=

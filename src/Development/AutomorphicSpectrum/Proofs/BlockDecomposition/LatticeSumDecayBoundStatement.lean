@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeSumDecayBound
-import Mathlib
+
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in

@@ -3,11 +3,17 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegre
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsPresents
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JoinCol
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableZeroCountStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RandomSectionZeroCountStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RandomSectionZeroCount
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianDetLeviIntegralStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexHessianLogFubiniStudyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexHessianLogDehomogeniseStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChangeVariablesZeroCountStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralSplitColumn
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAreaMultiplicityWeight
 open CategoryTheory AlgebraicGeometry TopologicalSpace MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
-open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.Published.ArDegreeModel GlobalTheory.CompanionTheory.FSCrofton
+open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.CompanionTheory.FSCrofton
 open scoped ENNReal
 
 namespace GlobalTheory.CompanionTheory.FSCrofton.Chart
@@ -120,5 +126,5 @@ theorem GlobalTheory.CompanionTheory.FSCrofton.crofton_chart : ∀ (Y : Var ℂ)
     exact GlobalTheory.T.measurable_zero_count Y.dim (Fin n) U (c.e '' A) (chartVal b c i)
       (fun j => (hd j).continuousOn) hBU hBs
   · simp only [hcnt]
-    have key := GlobalTheory.T.random_section_zero_count Y.dim (Fin n) j₀ U (c.e '' A) (chartVal b c i) hUo hd h0 hBU hBs
+    have key := _root_.GlobalTheory.CompanionTheory.FSCrofton.LocalCrofton.crofton_local Y.dim (Fin n) j₀ U (c.e '' A) (chartVal b c i) hUo hd h0 hBU hBs
     rw [key, Fintype.card_fin, chernPart_eq_lintegral hL b hb c i A hAm hAc hAi hBm]

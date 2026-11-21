@@ -16,7 +16,7 @@ theorem exists_inv_filD {l : ℕ} [Fact l.Prime] (x : Per.BdR l) (h0 : x ∈ Per
   obtain ⟨-, hone, -, -, -, -, hlast⟩ := GlobalTheory.MemLoc.filD_laws l
   obtain ⟨-, hker, hunit, -, -⟩ := GlobalTheory.MemLoc.thetaD_props l
   obtain ⟨e, he⟩ := GlobalTheory.MemLoc.FilLaws.exists_isEps l
-  obtain ⟨z, hz⟩ := (GlobalTheory.T.mem_deRhamFiltration_iff_xi_pow l e he 0 x).1 h0
+  obtain ⟨z, hz⟩ := (_root_.GlobalTheory.MemLoc.mem_FilD_iff_xi_pow l e he 0 x).1 h0
   rw [neg_zero, Int.toNat_zero, pow_zero, pow_zero, mul_one, one_mul] at hz
   subst hz
   have hz1 : Per.θD l z ≠ 0 := fun h => h1 ((hlast 1 z).2 ((hker z).1 h))

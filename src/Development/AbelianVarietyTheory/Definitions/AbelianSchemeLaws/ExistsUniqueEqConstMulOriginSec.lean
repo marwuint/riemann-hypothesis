@@ -366,9 +366,6 @@ theorem secPull_originSec_eq_zero_iff {T : Scheme.{0}} (g : T ⟶ scheme W) :
       exact absurd ((zero_preimage_coordOpen_two W).le ht) id
     · exact ((eq_comp_zero_iff W g).1 e).2
 
-def originDivisor : EffCartierData (scheme W) :=
-  .ofSec (originLB_isLB W) (originSec W) (isRegularSec_originSec W)
-
 def coordFn (j : Fin 3) : ∀ i, Γ(scheme W, (originLB W).U i) :=
   twoChartFn (originUnit W)
     (originCofactor W _ (originOpen_le W) * ratioOn W _ 1 (originOpen_le W) j) (ratio W 2 j)
@@ -576,23 +573,6 @@ def chartPullOriginLB : ChartPull (originLB W') (originLB W) (mapHom W f h) wher
     rw [gs_eq (𝟙 _) y _ hj]
     exact hr
 
-theorem existsUnique_iso_pull_originLB :
-    ∃! w : LB.Iso (originLB W') ((originLB W).pull (mapHom W f h)), w.IsGen ∧
-      Cartier.SecMaps w (originSec W') (Cartier.secPull (originSec W) (mapHom W f h)) := by
-  refine Cartier.existsUnique_secMaps (isRegularSec_originSec W') fun p q => ?_
-  have hp : ((originLB W).pull (mapHom W f h)).U p ⊓ (originLB W').U q ≤ (originLB W').U (p ⟨⟩) :=
-    inf_le_left.trans ((Cartier.pull_U _ _ p).trans (mapHom_preimage_originLB_U W f h _)).le
-  have e : resG _ (inf_le_left : ((originLB W).pull (mapHom W f h)).U p ⊓ (originLB W').U q ≤ _)
-      ((Cartier.secPull (originSec W) (mapHom W f h)).f p) = resG _ hp ((originSec W').f (p ⟨⟩)) :=
-    (resG_resG _ _ _).trans ((congrArg (resG _ _) (mapHom_app_originSec W f h _)).trans
-      (resG_resG _ _ _))
-  rw [e, Cartier.sec_compat (originSec W') (p ⟨⟩) q hp inf_le_right]
-  exact associated_unit_mul_right _ _ ((Units.isUnit _).map _)
-
-theorem lbIso_pull_originLB : LBIso (originLB W') ((originLB W).pull (mapHom W f h)) :=
-  let ⟨w, hw, _⟩ := existsUnique_iso_pull_originLB W f h
-  ⟨w, hw.1⟩
-
 end BaseChange
 
 theorem existsUnique_eq_const_mul_secPull {R' : Type} [CommRing R'] {f : R →+* R'} {Y : Scheme.{0}}
@@ -695,37 +675,6 @@ theorem relAmple_originLB : RelAmple (schemeOver W) (originLB W) := by
         (isAffineOpen_coordOpen W i))
     exact eval₂Hom_surjective_of_isPushout po (Scheme.ΓSpecIso (.of R)).inv.hom (ratio W i)
       (eval₂Hom_ratio_surjective W i)
-
-theorem not_isGen_originLB [Nontrivial R] (t : (originLB W).Gen) : ¬ t.IsGen := by
-  intro ht
-  obtain ⟨c, hc, -⟩ := existsUnique_eq_const_mul_originSec W
-    ⟨fun i => (t.s i).val, fun i j => congrArg Units.val (ht i j)⟩
-  have h : IsUnit (originParam W) :=
-    isUnit_of_mul_isUnit_right ((congrArg IsUnit (hc true)).mp (t.s true).isUnit)
-  have := h.map (originValue W)
-  rw [originValue_originParam] at this
-  exact not_isUnit_zero this
-
-example (s : (originLB W).Sec) :
-    resG _ (inf_le_left : originOpen W ⊓ coordOpen W 2 ≤ _) (s.f true) =
-      ratioOn W _ 1 (inf_le_left.trans (originOpen_le W)) 0 * resG _ inf_le_right (s.f false) :=
-  s.compat true false
-
-example : (originUnit W : Γ(scheme W, originOpen W ⊓ coordOpen W 2)) *
-    resG _ inf_le_right (affineFnEquiv W (affineY W)) =
-      resG _ inf_le_right (affineFnEquiv W (affineX W)) := by
-  rw [affineFnEquiv_affineX, affineFnEquiv_affineY, mul_comm]
-  exact ratioOn_mul_ratioOn inf_le_right (inf_le_left.trans (originOpen_le W))
-
-example (hP : IsUnimodularSol ((⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ).map (RingHom.id ℚ)) ![2, -5, 8])
-    (h : ⊤ ≤ ptHom _ _ _ hP ⁻¹ᵁ coordOpen _ 1) :
-    evalPt (ptHom _ _ _ hP) _ h (originCofactor _ _ le_rfl) = 1 / 25 := by
-  have h₀ := evalPt_ptHom_ratioOn_mul _ _ hP le_rfl h 0
-  have h₂ := evalPt_ptHom_ratioOn_mul _ _ hP le_rfl h 2
-  simp only [Matrix.cons_val_zero, Matrix.cons_val, Matrix.cons_val_one] at h₀ h₂
-  simp only [originCofactor, map_add, map_sub, map_mul, map_pow, map_one, map_zero, map_neg]
-  rw [eq_div_of_mul_eq (by norm_num) h₀, eq_div_of_mul_eq (by norm_num) h₂]
-  norm_num
 
 end WeierstrassCurve
 

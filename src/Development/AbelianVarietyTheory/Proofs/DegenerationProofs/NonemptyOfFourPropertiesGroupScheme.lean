@@ -1,8 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.PublishedTheorems.SemistableReduction₂.SemistableReductionSt
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EndoLbIsoSymmetryHypothesisExtendNormalModelStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaModelRelAmpleAndPrincipalAbelianLocusStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EndoLbIsoSymmetryHypothesisExtendNormalModel
+import Development.AbelianVarietyTheory.Definitions.Degenerations.LocTheta
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaModelRelAmpleAndPrincipalAbelianLocus
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaDividedByConstantNonvanishingFibresStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSectionsPowLineBundleFromLocalBasisStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSecOnPowerOfLocalBasesStatement
@@ -12,7 +15,10 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.BaseFacts
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitCharts
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsInvertibleMatrixChangeOfSpanEq
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjSpaceMapOfLocalSectionsNoCommonZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsClosedImmersionProjSpaceOfSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsClosedImmersionProjSpaceOfSections
+import Development.AbelianVarietyTheory.Definitions.Degenerations.PullChartIsLB
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphismRestrictOfRelAmple
+import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemRangeCompIffOfIsClosedImmersion
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsImmersionProjSpaceOfLocalLinearChangeStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -108,7 +114,7 @@ theorem ZHPre.immersedBy_of_clos (Q : ZHPre ρ M U₀) (C : Clos ρ M U₀ EE) (
   have hκ : κ ≫ (C.P.hom ⁻¹ᵁ C.W l).ι = Y.ι ≫ V.ι ≫ k := IsOpenImmersion.lift_fac _ _ _
   have : IsOpenImmersion (κ ≫ (C.P.hom ⁻¹ᵁ C.W l).ι) := by rw [hκ]; infer_instance
   have : IsOpenImmersion κ := IsOpenImmersion.of_comp κ (C.P.hom ⁻¹ᵁ C.W l).ι
-  obtain ⟨ψ, hψ1, hψ2, hψ3⟩ := GlobalTheory.T.exists_closedImmersion_projSpace_of_sections _ _ _ _ _ (C.σ l) m e (C.imm l)
+  obtain ⟨ψ, hψ1, hψ2, hψ3⟩ := _root_.GlobalTheory.ZH.ImmProj.exists_closedImmersion_of_immBy _ _ _ _ _ (C.σ l) m e (C.imm l)
   obtain ⟨K, _, β, g, r, jP, h1, h2, h3, h4⟩ := Q.exists_generic hU
   have hgen : ∀ T : Q.G.left.Opens, ∀ p ∈ T, Set.range (g ≫ Q.φ) ⊆ T := by
     rintro T p hp _ ⟨w, rfl⟩
@@ -203,8 +209,8 @@ theorem ThetaSys.isOpen_setOf_TT_eq_bot {o Ω : Type} [CommRing o] [Field Ω] [A
 
 theorem ZHPre.nonempty_out : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → (∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R], IsNoetherianRing R → IsIntegrallyClosed R → IsAdicComplete (IsLocalRing.maximalIdeal R) R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (_ : CubicalStr G L) (W : (Sp R).Opens), IsSemiAbelian G → L.IsSymmetric → HypS G L.L → (∃ E : SplitExt (Sp (IsLocalRing.ResidueField R)), E.IsGt ((Over.pullback (spMap (IsLocalRing.residue R))).obj G)) → (∃ θ : LB.Sec L.L, ∃ x ∈ nonzeroLocus θ, G.hom x = IsLocalRing.closedPoint R) → (W : Set (Sp R)).Nonempty → (W : Set (Sp R)) = abLocus G → IsProper (pullback.snd G.hom W.ι) → RelAmple ((Over.pullback W.ι).obj G) (L.L.pull (pullback.fst G.hom W.ι)) → KTriv ((Over.pullback W.ι).obj G) (L.L.pull (pullback.fst G.hom W.ι)) → ∃ (D : DegData R (IsLocalRing.maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (IsLocalRing.maximalIdeal R) D A G), U.LG = L ∧ ∀ y, PsiUnitOn D.toPre y W) → GlobalTheory.Published.SemistableReductionSt → ThmUSt → Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Q : ZHPre ρ M U₀) (C : Clos ρ M U₀ EE) (ex : C.Ext), (∃ e : Q.G.left ≅ C.G.toScheme, e.hom ≫ C.G.ι ≫ C.P.hom = Q.G.hom ∧ Q.u₀ = C.u₀ ∧ HEq (Q.φ ≫ e.hom) ex.a) → S.Big → S.Over₀ M U₀ → S.IsEE M U₀ EE → Q.Sec → Q.LocTheta → Q.SecO EE → Q.Ab → Nonempty (ZHOut ρ M U₀ EE) := by
   intro hExt hUnif hSS hU hL hL2 hT o Ω _ _ _ _ S ρ M U₀ EE Q C ex ⟨e, he1, he2, he3⟩ hBig hO hEE hSec hLoc hSecO hAb
-  obtain ⟨hS, hEndo, hIso⟩ := GlobalTheory.T.endo_lbIso_symmetryHypothesis_extend_normalModel hExt o Ω S ρ M U₀ Q hO
-  have hPol := GlobalTheory.T.thetaModel_relAmple_and_principal_abelianLocus o Ω S ρ M U₀ EE Q hL hO hSecO hAb
+  obtain ⟨hS, hEndo, hIso⟩ := _root_.GlobalTheory.ZH.EndoExtend.hypS_and_endo_and_iso_extend hExt o Ω S ρ M U₀ Q hO
+  have hPol := _root_.GlobalTheory.ZH.AbPol.relAmple_and_kTriv o Ω S ρ M U₀ EE Q hL hO hSecO hAb
   have hOpen : IsOpen (abLocus Q.G) := by
     rw [hAb.1]
     exact S.isOpen_setOf_TT_eq_bot M

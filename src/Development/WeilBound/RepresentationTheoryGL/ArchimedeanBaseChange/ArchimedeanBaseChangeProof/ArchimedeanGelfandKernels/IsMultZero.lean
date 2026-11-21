@@ -29,8 +29,6 @@ structure KMod (n : ℕ) : Type 1 where
 
 attribute [instance] KMod.nacg KMod.ips KMod.fd
 
-def KMod.triv (n : ℕ) : KMod n := ⟨ℂ, 1, fun _ _ => rfl, continuous_const⟩
-
 section Ops
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
@@ -92,9 +90,6 @@ def IsMult (k : Mat n → (E.V →L[ℂ] E.V)) (val : Inf n → ℂ) (T : ℝ) :
     (∀ i, IsBump (g i) T ∧ IsKer μ E (w i) (g i) (ks i)) ∧ (∀ y ∈ GLs n, k y = ∑ i, c i • ks i y) ∧
       ∀ χ, val χ = ∑ i, c i * zVal (w i) χ * coshT (g i) (cas χ)
 
-theorem isMult_zero (T : ℝ) : IsMult μ E 0 0 T :=
-  ⟨0, Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp, by simp⟩
-
 def conv (k k' : Mat n → (E.V →L[ℂ] E.V)) : Mat n → (E.V →L[ℂ] E.V) :=
   fun x => ∫ y : G n, k y.val * k' ((y⁻¹ : G n).val * x) ∂μ
 
@@ -146,17 +141,5 @@ def Lef : Prop :=
       ∀ (d : G n) (z : Fin n → ℂ), d.val = diagonal z → (∀ a, ‖z a‖ = 1) → (Function.Injective fun a => z a ^ 2) →
         Integrable (fun x => phiOf E Tθ k (tw x d)) μ ∧
           ∫ x, phiOf E Tθ k (tw x d) ∂μ = val (infOf lam) * conj (weylChar lam fun a => z a ^ 2)
-
-def Laplace : Prop :=
-  ∀ (a b : ℕ) (γ : Fin (a + b) → ℂ) (m : Fin (a + b) → ℤ),
-    (Matrix.of fun i j => γ i ^ m j).det =
-      ∑ S : {S : Finset (Fin (a + b)) // S.card = a ∧ Sᶜ.card = b},
-        (-1) ^ (∑ s ∈ S.1, (s : ℕ) + ∑ i ∈ range a, i) *
-          (Matrix.of fun i j : Fin a => γ (Fin.castAdd b i) ^ m (S.1.orderEmbOfFin S.2.1 j)).det *
-          (Matrix.of fun i j : Fin b => γ (Fin.natAdd a i) ^ m (S.1ᶜ.orderEmbOfFin S.2.2 j)).det
-
-def ValSep : Prop :=
-  ∀ (n : ℕ) (χ χ' : Inf n), (∃ g T, IsBump g T ∧ coshT g (cas χ) ≠ 0) ∧
-    ((∀ s m, GlobalTheory.Dec.gelfVal (χ s) m = GlobalTheory.Dec.gelfVal (χ' s) m) → ∀ s, ∃ σ : Equiv.Perm (Fin n), ∀ a, χ' s (σ a) = χ s a)
 
 end PositivityTheory.RgBcC

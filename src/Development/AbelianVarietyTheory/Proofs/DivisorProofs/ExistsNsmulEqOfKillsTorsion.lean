@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompEqOneOfKillsGeometricTorsionPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorThroughIsogenyOfKillsKernelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorThroughIsogenyOfKillsKernel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegree
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -25,10 +25,10 @@ theorem exists_nsmul_eq_of_kills_torsion : ∀ (K : Type) [Field K] (A C : AbVar
     apply hn
     have : n = 0 := by exact_mod_cast h
     simp [this]
-  obtain ⟨hiso, -⟩ := GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A (n : ℤ) hn0
+  obtain ⟨hiso, -⟩ := _root_.GlobalTheory.MulIsogeny.mul_isogeny K A (n : ℤ) hn0
   have hiso' : IsIsogeny (n • 𝟙 A) := by rwa [natCast_zsmul] at hiso
   have hkill := GlobalTheory.T.comp_eq_one_of_kills_geometric_torsionPoints K A C f n hn hf
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_factor_through_isogeny_of_kills_kernel K A A C (n • 𝟙 A) f hiso' (fun T x hx => by
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.AV.AbVar.exists_factor_of_isogeny K A A C (n • 𝟙 A) f hiso' (fun T x hx => by
     apply hkill T x
     rw [nsmul_hom, id_hom, comp_id_pow_eq] at hx
     exact hx)

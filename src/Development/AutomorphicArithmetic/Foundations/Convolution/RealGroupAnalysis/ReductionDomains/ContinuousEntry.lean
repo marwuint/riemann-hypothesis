@@ -71,8 +71,6 @@ theorem cD_cD (s t : (A F)ˣ) (g : G1 F) : cD s (cD t g) = cD (s * t) g :=
 theorem cD_one (g : G1 F) : cD 1 g = g := gl_inj (by rw [gl_cD', dM_one]; group)
 theorem cD_nU (t : (A F)ˣ) (b : A F) : cD t (nU b) = nU (b * ((t⁻¹ : (A F)ˣ) : A F)) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [cD, nU]
-theorem cD_mD (t a : (A F)ˣ) : cD t (mD a) = mD a := by
-  ext i j; fin_cases i <;> fin_cases j <;> simp [cD, mD]
 theorem cD_sq (t : (A F)ˣ) (g : G1 F) : cD (t * t) g = (mD t)⁻¹ * g * mD t := by
   rw [← mD_inv]
   refine Subtype.ext ?_; rw [val_mul, val_mul]; ext i j; fin_cases i <;> fin_cases j <;>

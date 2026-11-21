@@ -43,57 +43,14 @@ theorem explicitFormula_of_perron_shift (κ : ℝ) (h1 : ∃ C, 0 < C ∧ Perron
     _ ≤ (C1 + C2 + C4) * (Err N u T + S1 χ) := by
         nlinarith [mul_nonneg hC1.le hS, mul_nonneg hC4.le hS]
 
-def GluePerronTrunc : Prop :=
-  PerronKernel → (∃ C, 0 < C ∧ PerronSumBound C) → ∃ C, 0 < C ∧ PerronTrunc C
-
-def GluePerronL : Prop := (∃ C, 0 < C ∧ PerronTrunc C) → ∃ C, 0 < C ∧ PerronL C
-
-def GlueRectResidue : Prop := RectCauchy → RectResidue
-
-def GlueGoodHeight : Prop := PI.ZerosWindow → ∃ κ, 0 < κ ∧ GoodHeightExists κ
-
-def GlueTruncChange : Prop := PI.ZerosWindow → ∃ C, 0 < C ∧ TruncChange C
-
-def GlueZerosFinite : Prop := PI.ZerosWindow → ZerosFinite
-
 def GlueLocalLemma : Prop :=
   LocalAbstract → (∃ A C, 0 < A ∧ 0 < C ∧ LGrowth A C) → ZeroLocus → PI.ZerosWindow →
     ∃ C, 0 < C ∧ LocalLemma C
-
-def GlueHoriz : Prop :=
-  PI.ZerosWindow → (∃ C, 0 < C ∧ LocalLemma C) → ZeroLocus → ∀ κ, 0 < κ → ∃ C, 0 < C ∧ LogDerivHoriz κ C
-
-def GlueLeft : Prop :=
-  PI.ZerosWindow → (∃ C, 0 < C ∧ LocalLemma C) → ZeroLocus → ∃ C, 0 < C ∧ LogDerivLeft C
-
-def GlueRegAtZero : Prop :=
-  PI.ZerosWindow → (∃ C, 0 < C ∧ LocalLemma C) → ∃ C, 0 < C ∧ RegAtZero C
 
 def GlueContour : Prop := RectResidue → ZeroLocus → ZerosFinite → ContourIdentity
 
 def GlueSides : Prop :=
   ∀ κ, 0 < κ → (∃ C, 0 < C ∧ LogDerivHoriz κ C) → (∃ C, 0 < C ∧ LogDerivLeft C) →
     ∃ C, 0 < C ∧ SidesBound κ C
-
-def GlueShift : Prop :=
-  ∀ κ, 0 < κ → RegularPart → ContourIdentity → (∃ C, 0 < C ∧ SidesBound κ C) →
-    (∃ C, 0 < C ∧ RegAtZero C) → ∃ C, 0 < C ∧ ShiftBound κ C
-
-theorem explicitFormula_of_leaves
-
-    (hK : PerronKernel) (hPS : ∃ C, 0 < C ∧ PerronSumBound C) (hRC : RectCauchy)
-    (hZL : ZeroLocus) (hRP : RegularPart) (hZW : PI.ZerosWindow) (hLA : LocalAbstract)
-    (hG : ∃ A C, 0 < A ∧ 0 < C ∧ LGrowth A C)
-
-    (g1 : GluePerronTrunc) (g2 : GluePerronL) (g3 : GlueRectResidue) (g4 : GlueGoodHeight)
-    (g5 : GlueTruncChange) (g6 : GlueZerosFinite) (g7 : GlueLocalLemma) (g8 : GlueHoriz)
-    (g9 : GlueLeft) (g10 : GlueRegAtZero) (g11 : GlueContour) (g12 : GlueSides) (g13 : GlueShift) :
-    PI.ExplicitFormula := by
-  obtain ⟨κ, hκ, hGood⟩ := g4 hZW
-  have hLL := g7 hLA hG hZL hZW
-  have hZF := g6 hZW
-  exact explicitFormula_of_perron_shift κ (g2 (g1 hK hPS))
-    (g13 κ hκ hRP (g11 (g3 hRC) hZL hZF) (g12 κ hκ (g8 hZW hLL hZL κ hκ) (g9 hZW hLL hZL)) (g10 hZW hLL))
-    hGood (g5 hZW) hZF
 
 end PI.EF

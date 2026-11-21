@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FinrankEqZeroIff
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartEmbeddingHoldsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartRootsHoldsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartEmbeddingHolds
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartRootsHolds
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniquePoint
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 
@@ -166,7 +166,7 @@ theorem exists_lower {i i' : Idx H p} {τ : (Y i').X ⟶ (Y i).X} {mu : SABMap (
 theorem tower : TowerSt := by
   intro E _ _ _ H D Xo p W Y hp hW hpq C i₁ P₁
   have laws : Out.Laws := GlobalTheory.abelianSchemeLaws_all.1
-  obtain ⟨j₀, hj, hj'⟩ := GlobalTheory.T.chart_embedding_holds p W i₁.c.F C P₁.fK hp hW i₁.c.fin fun x hx =>
+  obtain ⟨j₀, hj, hj'⟩ := _root_.GlobalTheory.LocM.Cht.embSt p W i₁.c.F C P₁.fK hp hW i₁.c.fin fun x hx =>
     (DFunLike.congr_fun P₁.compat ⟨x, hx⟩ ▸ (P₁.alg ⟨x, hx⟩).2 : ‖(P₁.fK.comp (i₁.c.V W).subtype) ⟨x, hx⟩‖ ≤ 1)
   have halg : ∀ (i : Idx H p) (x : i.c.F), (x : ℂ) ∈ algebraicClosure ℚ ℂ := fun i x => by
     have := i.c.fin
@@ -189,7 +189,7 @@ theorem tower : TowerSt := by
   obtain ⟨o, ho, hc⟩ := exists_isFibre (Y i₁).oF P₁.y
   obtain ⟨hρ, hζ⟩ := hc (P₁.fK.comp (IntermediateField.inclusion i₁.c.le).toRingHom) (by
     rw [pullback.condition, ← Category.assoc, P₁.y_over, spMap_comp])
-  obtain ⟨I, hI, hA, hM⟩ := GlobalTheory.T.chart_roots_holds E H D i₁.l _ _ _ _ o.I z hpq
+  obtain ⟨I, hI, hA, hM⟩ := _root_.GlobalTheory.LocM.RootsPrescribe.roots E H D i₁.l _ _ _ _ o.I z hpq
     (fun n hn => (IsPrimitiveRoot.of_map_of_injective (f := u) (hu₀ n ▸ ValInh.zetaU_prim n hn) hu).map_of_injective
       (Units.map_injective j₀.injective))
     (fun n m hn hm => by

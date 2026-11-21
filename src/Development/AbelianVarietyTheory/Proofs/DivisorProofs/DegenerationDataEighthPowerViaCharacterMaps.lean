@@ -8,16 +8,16 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqAddNsmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianPartHomUniformisedGroups
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupHomCharacterMapConstant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupHomInducedMapsUnique
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupProdZpowOverAbelianPartsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupProdZpowCharacterMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricTorsionMatchOfCharacterMapOnTorusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjointAbelianPartsOfUniformisedRetractStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodPointMapOfAdjointSplitUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMultiplierEqOfPrimitiveAdjointBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBiextensionExpansionGeneratorOfTauBimultStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBiextensionComparisonGeneratorOfAdjointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerDataTensorBundleIsoWithPsiValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefOfRefinesTensorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupProdZpowOverAbelianParts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupProdZpowCharacterMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricTorsionMatchOfCharacterMapOnTorus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjointAbelianPartsOfUniformisedRetract
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodPointMapOfAdjointSplitUniformisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMultiplierEqOfPrimitiveAdjointBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBiextensionExpansionGeneratorOfTauBimult
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBiextensionComparisonGeneratorOfAdjoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerDataTensorBundleIsoWithPsiValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpRefOfRefinesTensor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedEighthPowerBundleClassEqSumStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
@@ -158,15 +158,15 @@ theorem exists_tens (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : B
   have un := over₀_onTorus_unique R _ hA D D A A G G U.toUnifPre U.toUnifPre
   have un₀ := over₀_onTorus_unique R _ hA D₀ D₀ A₀ A₀ G₀ G₀ U₀.toUnifPre U₀.toUnifPre
   have oz : ∀ m : ℤ, Over₀ U₀.toUnifPre U₀.toUnifPre (𝟙 G₀ ^ m) (𝟙 _ ^ m) := fun m => by
-    simpa using GlobalTheory.T.uniformisedGroup_prod_zpow_over_abelianParts R _ D₀ D₀ A₀ A₀ G₀ G₀ U₀.toUnifPre U₀.toUnifPre Unit (fun _ => m) _ _ fun _ => FactorPol.over_id
+    simpa using _root_.GlobalTheory.Mum.PowData.over₀_prod_zpow R _ D₀ D₀ A₀ A₀ G₀ G₀ U₀.toUnifPre U₀.toUnifPre Unit (fun _ => m) _ _ fun _ => FactorPol.over_id
   have tz : ∀ m : ℤ, OnTorus U₀.toUnifPre U₀.toUnifPre (𝟙 G₀ ^ m) (fun χ => m • χ) := fun m => by
-    simpa using GlobalTheory.T.uniformisedGroup_prod_zpow_characterMap R _ D₀ D₀ A₀ A₀ G₀ G₀ U₀.toUnifPre U₀.toUnifPre Unit (fun _ => m) _ _ fun _ => FactorPol.onTorus_id
+    simpa using _root_.GlobalTheory.Mum.PowData.onTorus_prod_zpow R _ D₀ D₀ A₀ A₀ G₀ G₀ U₀.toUnifPre U₀.toUnifPre Unit (fun _ => m) _ _ fun _ => FactorPol.onTorus_id
   have iqB : ∀ a b, iB a ≫ qB b = 𝟙 _ ^ (if a = b then 1 else 0 : ℤ) := fun a b =>
     (un₀ _).1 _ _ (iq a b ▸ FactorPol.over_comp (oi a) (oq b)) (oz _)
   have jqB : ∀ a b, jB a ≫ qB b = 𝟙 _ ^ N b a := fun a b =>
     (un₀ _).1 _ _ (jq a b ▸ FactorPol.over_comp (oj a) (oq b)) (oz _)
   have idB : ∏ a, (qB a ≫ iB a) ^ (1 : ℤ) = 𝟙 _ := (un _).1 _ _
-    (idq ▸ GlobalTheory.T.uniformisedGroup_prod_zpow_over_abelianParts R _ D D A A G G U.toUnifPre U.toUnifPre _ (fun _ => 1) _ _ fun a => FactorPol.over_comp (oq a) (oi a))
+    (idq ▸ _root_.GlobalTheory.Mum.PowData.over₀_prod_zpow R _ D D A A G G U.toUnifPre U.toUnifPre _ (fun _ => 1) _ _ fun a => FactorPol.over_comp (oq a) (oi a))
     FactorPol.over_id
   have kh : ∀ a b χ, k a (h b χ) = N b a • χ := fun a b =>
     congrFun ((un₀ _).2 _ _ (jq a b ▸ FactorPol.onTorus_comp (tk a) (hh b)) (tz _))
@@ -180,9 +180,9 @@ theorem exists_tens (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : B
   have extB : ∀ {T : Over (Sp R)} (x x' : T ⟶ D.toPre.P.A), (∀ a, x ≫ qB a = x' ≫ qB a) → x = x' := fun x x' e => by
     rw [← Category.comp_id x, ← Category.comp_id x', ← idB, comp_prod_zpow, comp_prod_zpow]
     simp only [← Category.assoc, e]
-  have per := fun a => GlobalTheory.T.periodPoint_map_of_adjoint_split_uniformisation R hR D D₀ A A₀ G G₀ hG hG₀ U U₀ (q a) (inc a) (j a) (hinc a) (hj a) (iq₁ a) (adjq a) (qB a) (h a)
+  have per := fun a => _root_.GlobalTheory.Mum.PowData.periodRel_of_adj R hR D D₀ A A₀ G G₀ hG hG₀ U U₀ (q a) (inc a) (j a) (hinc a) (hj a) (iq₁ a) (adjq a) (qB a) (h a)
     (k a) ⟨hq a, hqB a, oq a, hh a⟩ (tk a)
-  have adjB := fun a => GlobalTheory.T.adjoint_abelianParts_of_uniformised_retract R hR D D₀ A A₀ G G₀ hG hG₀ U U₀ (q a) (rr' a) (inc a) (j a) (hq a) (hrr a) (hinc a) (hj a) (iq₁ a)
+  have adjB := fun a => _root_.GlobalTheory.Mum.PowData.adjCls_abelianPart R hR D D₀ A A₀ G G₀ hG hG₀ U U₀ (q a) (rr' a) (inc a) (j a) (hq a) (hrr a) (hinc a) (hj a) (iq₁ a)
     (jr a) (adjq a) (adjr a) (qB a) (jB a) (hqB a) (hjB a) (oq a) (oj a)
   have cz : ∀ (m : ℤ) χ, D₀.toPre.c (m • χ) = D₀.toPre.c χ ^ m := fun m χ => by
     let φ : Multiplicative D₀.toPre.X →* (𝟙_ (Over (Sp R)) ⟶ D₀.toPre.P.A) :=
@@ -190,11 +190,11 @@ theorem exists_tens (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : B
     exact map_zpow φ (Multiplicative.ofAdd χ) m
   have ch : ∀ a χ, D.toPre.c (h a χ) = D₀.toPre.c χ ≫ jB a := fun a χ => extB _ _ fun b => by
     rw [← (per b).1, kh, cz, Category.assoc, jqB, comp_zpow', Category.comp_id, hNs]
-  obtain ⟨w, hw, hψ⟩ := GlobalTheory.T.powerData_tensorBundleIso_with_psi_values R D.toPre D₀.toPre r W qB jB (fun a => h a) (fun a => k a) ch (fun a => (per a).1)
-    (fun a => (per a).2) (fun a => GlobalTheory.T.isBiextensionComparisonGenerator_of_adjoint R _ _ _ _ (hqB a) (hjB a) (adjB a)) (GlobalTheory.T.isBiextensionExpansionGenerator_of_tauBimult R _ D.tau_bimult _ _ _ _ _)
-    (GlobalTheory.T.thetaMultiplier_eq_of_primitive_adjoint_bundle R hR D A G hG U f f' hf hf' ff adjf primf _ _
-      (GlobalTheory.T.uniformisedGroup_prod_zpow_over_abelianParts R _ D D A A G G U.toUnifPre U.toUnifPre _ _ _ _ fun ab => FactorPol.over_comp (oq ab.2) (oj ab.1))
-      (GlobalTheory.T.uniformisedGroup_prod_zpow_characterMap R _ D D A A G G U.toUnifPre U.toUnifPre _ _ _ _ fun ab => FactorPol.onTorus_comp (hh ab.1) (tk ab.2)))
+  obtain ⟨w, hw, hψ⟩ := _root_.GlobalTheory.Mum.PowData.tens_iso_psi R D.toPre D₀.toPre r W qB jB (fun a => h a) (fun a => k a) ch (fun a => (per a).1)
+    (fun a => (per a).2) (fun a => _root_.GlobalTheory.Mum.PowData.cmpTwo_of_adjCls R _ _ _ _ (hqB a) (hjB a) (adjB a)) (_root_.GlobalTheory.Mum.PowData.expand_of_tauBimult R _ D.tau_bimult _ _ _ _ _)
+    (_root_.GlobalTheory.PrimAdj.primVal_of_adj R hR D A G hG U f f' hf hf' ff adjf primf _ _
+      (_root_.GlobalTheory.Mum.PowData.over₀_prod_zpow R _ D D A A G G U.toUnifPre U.toUnifPre _ _ _ _ fun ab => FactorPol.over_comp (oq ab.2) (oj ab.1))
+      (_root_.GlobalTheory.Mum.PowData.onTorus_prod_zpow R _ D D A A G G U.toUnifPre U.toUnifPre _ _ _ _ fun ab => FactorPol.onTorus_comp (hh ab.1) (tk ab.2)))
   have lf : ∀ {T : Over (Sp R)} (y : Fin r → (T ⟶ D₀.toPre.P.A)) b, (∏ a, (y a ≫ iB a) ^ (1 : ℤ)) ≫ qB b = y b := fun y b => by
     simp only [prod_zpow_comp, Category.assoc, iqB, comp_zpow', Category.comp_id]
     simp
@@ -217,11 +217,11 @@ theorem GlobalTheory.Mum.PowData.sharpRef_of_characters : ∀ (g n : ℕ) (o : T
   have hh : ∀ u, OnTorus U.toUnifPre U₀.toUnifPre (q u) (ch u) := fun u => by
     obtain ⟨h, th⟩ := unifPre_hom_character_const V₁ _ hR.1 D D₀ P A₀ G G₀ U.toUnifPre U₀.toUnifPre (q u) (hq u)
     rwa [torMatch_unique V₁ hR G₀ hG₀ D₀ A₀ U₀ V₁ hR G hG D P U _ _ Function.injective_id _ _ (hch u)
-      (GlobalTheory.T.toricTorsionMatch_of_characterMap_on_torus V₁ hR D D₀ P A₀ G G₀ hG hG₀ U U₀ (q u) (hq u) h th)]
+      (_root_.GlobalTheory.Poinc.HomTorChar.torMatch_of_onTorus V₁ hR D D₀ P A₀ G G₀ hG hG₀ U U₀ (q u) (hq u) h th)]
   obtain ⟨T, hT⟩ := GlobalTheory.Mum.PowData.exists_tens V₁ hR D D₀ P A₀ G G₀ hG hG₀ U U₀ W (W + W.transpose)⁻¹
     (Matrix.mul_nonsing_inv _ (by rw [hW.2]; exact isUnit_one)) q hq huniv hc ch hh
     (e.symm.trans (AddEquiv.piCongrRight fun _ => e₀.symm)) (fun mu => by
       show e (fun a => e₀ (mu a)) = _
       simp [he])
-  refine GlobalTheory.T.sharpRef_of_refines_tensor W V Q V₁ ρ D₀.toPre D.toPre e₀ hRef T e fun mu a => ?_
+  refine _root_.GlobalTheory.Mum.PowData.sharpRef_of_tens W V Q V₁ ρ D₀.toPre D.toPre e₀ hRef T e fun mu a => ?_
   simp [hT]

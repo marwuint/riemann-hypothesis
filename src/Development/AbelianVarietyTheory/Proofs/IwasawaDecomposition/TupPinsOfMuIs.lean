@@ -46,19 +46,4 @@ theorem xiTw_unr (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : B.places.Pl) (v 
   · exact (f.isDel.unr v fun hn => h
       (Examples₂.PlacesToy.prime_mem_unique v (B.places.resChar_prime w) B.host.pde_prime hv hn)).mul hψ
 
-theorem tupPins_of_muIs : ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (xi : X.C.Tup → HChar X.B.host.E), MuIs X f T xi → ∀ (nch : NChoice X.toD7) (tp : TupTied X.toD7 (Fr.at X f) nch), tp.xi = xi → TupPins tp := by
-  intro X f T xi h nch tp hxi
-  refine ⟨fun μ v hv => ?_, fun w v hv => ?_⟩
-  · rw [hxi] at hv
-    obtain ⟨h1, h2, h3, h4⟩ := (isTwist_types X.B f T (xi μ) (h.range ▸ Set.mem_range_self μ)).2.2.2 v hv
-    exact ⟨h1, h2, h3, fun k hk => h4
-      ⟨k, Examples₂.PlacesToy.prime_mem_unique v (X.B.host.g_prime k) h2 hk (Ideal.absNorm_mem _)⟩⟩
-  · rw [hxi]
-    show (xi (X.W.muAt w)).UnrAt v
-    by_cases hw : X.B.places.resChar w ∈ T.pl
-    · rw [h.on w hw, h.tw w]
-      exact xiTw_unr X.B f T w v hv
-    · rw [h.off w hw, h.mu0]
-      exact fun x _ => HChar.loc_one _ _
-
 end GlobalTheory.Mem.HD.TupPin

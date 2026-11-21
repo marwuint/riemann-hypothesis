@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DetCharacterMemPrincipalCongruenceFixedVectors
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.ClassMapD
 
 set_option synthInstance.maxHeartbeats 200000
@@ -19,8 +19,6 @@ def LocalCompatibility (D : D7) (rc : Corr D) : Prop :=
       D.naut.locV i P (D.naut.plGw k v) = rc k v D.R.nV π ∧
       ActsThrough π D.R.r D.R.t χ (D.naut.typeV i P) fun a => D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (atPlace D k v a)
 namespace Loc
-section Det
-end Det
 end Loc
 end GlobalTheory.SerSys
 end

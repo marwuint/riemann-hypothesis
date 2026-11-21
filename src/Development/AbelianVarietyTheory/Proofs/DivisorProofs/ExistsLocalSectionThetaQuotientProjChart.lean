@@ -2,13 +2,18 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocSecZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.MinSt2
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantUniqueAndLinearInSection
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveChartCoordinateRatioMemModelRingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineNbhdNoetherianIntegrallyClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveChartCoordinateRatioMemModelRing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousCoordsInStandardChartRatio
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineNbhdNoetherianIntegrallyClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenImmersionSpecRingOnAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendRegularThetaSectionAnyFractionFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalSectionOfOpenImmersionSpecStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendRegularThetaSectionAnyFractionField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreSectionExtendsNonzeroOfIntegralThetaConstan
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreIffOfGrpPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaConstantListOfFibrePullbackFieldExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalSectionOfOpenImmersionSpec
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.UPoinc GlobalTheory.Ex.OneGen
@@ -29,8 +34,8 @@ theorem exists_locSec_of_openImmersion (E : Type) [Field E] [NumberField E] [IsC
   have hlft : LocallyOfFiniteType t.G.hom := by
     haveI := t.semi.smooth
     infer_instance
-  obtain ⟨σ, hσ, hσnz⟩ := GlobalTheory.T.extend_regularThetaSection_any_fractionField E H S t g m N R K χ θ pt c hodd hm3 hm hpol hth hu
-  obtain ⟨s, hs, hsgen, hsfib⟩ := GlobalTheory.T.exists_localSection_of_openImmersion_spec S t.G t.PP.L R χ σ hlft hσnz
+  obtain ⟨σ, hσ, hσnz⟩ := _root_.GlobalTheory.UMin.ExtFrac.ext_any_frac E H S t g m N R K χ θ pt c hodd hm3 hm hpol hth hu
+  obtain ⟨s, hs, hsgen, hsfib⟩ := _root_.GlobalTheory.UMin.LocSecOfImm.exists_locSec S t.G t.PP.L R χ σ hlft hσnz
   refine ⟨s, hs, ?_, hsfib⟩
   have := hsgen K (algebraMap R K)
   rw [hσ] at this
@@ -45,8 +50,8 @@ theorem exists_locSec_theta_chart : ∀ (E : Type) [Field E] [NumberField E] [Is
       ∃ s : LocSec t.G t.PP.L N, IsLocSec s ∧
         GenIs M.pt s ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (c a)⁻¹ • SecM.ofSec t.G θ) ∧ FibNz s N := by
   intro E _ _ _ H k Ω _ _ _ _ _ M t g m n c h θ pt hN hodd hm3 hmu hpol hgen hth hcrd a z hz
-  obtain ⟨hca, hdiv⟩ := GlobalTheory.T.projective_chart_coordinate_ratio_mem_model_ring k Ω M n c h a z hcrd hz
-  obtain ⟨W, hWa, hzW, hWV, hnoeth, hic⟩ := GlobalTheory.T.exists_affine_nbhd_noetherian_integrallyClosed k Ω M hN (h ⁻¹ᵁ chart k n a) z hz
+  obtain ⟨hca, hdiv⟩ := _root_.GlobalTheory.UMin.ChartDiv.chart_ratio_mem_O k Ω M n c h a z hcrd hz
+  obtain ⟨W, hWa, hzW, hWV, hnoeth, hic⟩ := _root_.GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed k Ω M hN (h ⁻¹ᵁ chart k n a) z hz
   have hne : (W : Set M.Z).Nonempty := ⟨z, hzW⟩
   obtain ⟨χ, hoi, hrange, hgenpt⟩ := GlobalTheory.T.exists_openImmersion_spec_ringOn_affine k Ω M W hWa hne
   haveI := M.isFractionRing_ringOn hWa hne

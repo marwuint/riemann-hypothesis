@@ -5,12 +5,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalizationAway
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowEqOfIntegers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UpPull2Cob1
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NmulSucc
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubstFormalGroupLawNatMultipleEqCoboundarySumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapPowerSeriesFamilyToFractionsFormalGroupLawNatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffSubstOfForallConstantCoeffZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualBasisCoordMemMaximalIdealOfForallApplyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsQuasiLogarithmBasisReductionThickeningStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapPowerSeriesFamilyToFractionsFormalGroupLawNat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantCoeffSubstOfForallConstantCoeffZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualBasisCoordMemMaximalIdealOfForallApply
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsQuasiLogarithmBasisReductionThickening
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmTangentVectorsBasisDualLieStatement
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
@@ -59,8 +59,8 @@ theorem constantCoeff_formalGroupLawCoboundaryOne {R : Type} [CommRing R] (μ : 
     (hμ : ∀ i, constantCoeff (μ i) = 0) (g : MvPowerSeries (Fin d) R) :
     constantCoeff (cob1 μ g) = - constantCoeff g := by
   simp only [cob1, inL, inR, map_sub]
-  rw [GlobalTheory.T.constantCoeff_subst_of_forall_constantCoeff_zero R _ _ _ hμ, GlobalTheory.T.constantCoeff_subst_of_forall_constantCoeff_zero R _ _ _ (fun _ => constantCoeff_X _),
-    GlobalTheory.T.constantCoeff_subst_of_forall_constantCoeff_zero R _ _ _ (fun _ => constantCoeff_X _)]
+  rw [_root_.GlobalTheory.constantCoeff_subst_of_constantCoeff_zero R _ _ _ hμ, _root_.GlobalTheory.constantCoeff_subst_of_constantCoeff_zero R _ _ _ (fun _ => constantCoeff_X _),
+    _root_.GlobalTheory.constantCoeff_subst_of_constantCoeff_zero R _ _ _ (fun _ => constantCoeff_X _)]
   ring
 
 theorem defect_add (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hν : ∀ i, constantCoeff (ν i) = 0)
@@ -80,7 +80,7 @@ theorem defect_log (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hν : ∀
     rw [hg, map_zero] at this
     exact neg_eq_zero.1 this.symm
   unfold defect
-  rw [GlobalTheory.T.mapPowerSeriesFamilyToFractions_formalGroupLawNatMultiple O C d ν hν n, GlobalTheory.T.subst_formalGroupLawNatMultiple_eq_coboundary_sum C d (up C ν) hνC g n, hg, hc]
+  rw [_root_.GlobalTheory.QLog.up_nmul O C d ν hν n, GlobalTheory.T.subst_formalGroupLawNatMultiple_eq_coboundary_sum C d (up C ν) hνC g n, hg, hc]
   have h0 : ∀ k, (at2 (0 : MvPowerSeries (Fin d ⊕ Fin d) C) (nmul (up C ν) k) fun i => X i) = 0 := by
     intro k
     have ha : HasSubst (Sum.elim (nmul (up C ν) k) fun i => (X i : MvPowerSeries (Fin d) C)) :=
@@ -140,7 +140,7 @@ theorem isLie_comb (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
   have hμ : ∀ i, constantCoeff (c.μ i) = 0 := c.isLaw.const
   have lin : ∀ (f g : MvPowerSeries (Fin d) E) (l l' : G.dual.Lie) (a : O), c.IsLie f l → c.IsLie g l' →
       QL c.μ ⊤ f → QL c.μ ⊤ g → c.IsLie (f + algebraMap O E a • g) (l + a • l') :=
-    fun f g l l' a hf hg => (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF f g l l' a hf hg).1
+    fun f g l l' a hf hg => (_root_.GlobalTheory.LieLin.main p C v O hv G d c E hF f g l l' a hf hg).1
   have hQL0 : QL c.μ ⊤ (0 : MvPowerSeries (Fin d) E) := by
     refine ⟨by simp, fun i => ⟨0, trivial, by simp [Katz.lin]⟩, fun α => ⟨0, trivial, ?_⟩⟩
     have := formalCoboundary_smul (fun i => by simp [up, hμ] : ∀ i, constantCoeff (up E c.μ i) = 0) 0
@@ -220,7 +220,7 @@ theorem defect_level_one_nonunit : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Fiel
     rw [he', ← map_formalGroupLawCoboundaryOne_square F.θ Θ hΘ μ' c.μ hμ' hmap, coeff_map, hbα, hΘ, RingHom.mem_ker.1 hb,
       map_zero, map_zero]
   obtain ⟨lb, hlb⟩ := GlobalTheory.T.quasiLogarithm_tangentVectors_basis_dual_lie p C v O hv G d c C hE k e'
-    (GlobalTheory.T.isQuasiLogarithmBasis_reduction_thickening p C v O hv ε hε F G d c μ' hlift hmap k e hbasis Θ hΘ) hlog
+    (_root_.GlobalTheory.ReduceBasis.isBasis_map p C v O hv ε hε F G d c μ' hlift hmap k e hbasis Θ hΘ) hlog
   set b : Fin k → O := fun j => F.θ (w (Sum.inr j)) with hb
   set f := comb (Sum.elim 0 b) e' with hf
   set L : G.dual.Lie := ∑ j, b j • lb j with hL
@@ -269,7 +269,7 @@ theorem defect_level_one_nonunit : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Fiel
     rw [this]
     exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ (by simpa using hpm)) hφm
   obtain ⟨hfin, hproj⟩ := GlobalTheory.PDiv.omega_finite_projective p C v O hv G.dual
-  have h6 := GlobalTheory.T.dualBasis_coord_mem_maximalIdeal_of_forall_apply O G.dual.omega k lb L key j
+  have h6 := _root_.GlobalTheory.dualBasis_coord_mem_maximalIdeal O G.dual.omega k lb L key j
   have hrep : lb.repr L j = b j := by
     have : L = lb.equivFun.symm b := by rw [Module.Basis.equivFun_symm_apply]
     rw [← Module.Basis.equivFun_apply, this, LinearEquiv.apply_symm_apply]

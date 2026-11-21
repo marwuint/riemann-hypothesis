@@ -7,8 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatKernelPo
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsGenThetaOfIsProjBy
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.VeryAmpleByOfRelAmple
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KernelFiniteFlatHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleProductAcyclicOverAffineFiniteClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelOfLineBundleRationalPointsFiniteClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleProductAcyclicOverAffineFiniteClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelOfLineBundleRationalPointsFiniteClosed
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -32,7 +32,7 @@ theorem additive_eq_lam_of_ample : ∀ (K : Type) [Field K] [IsAlgClosed K] (A :
       (π : X ⟶ A.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f A.hom u → IsProjBy f :=
     fun R _ u X π f h => GlobalTheory.StabFlat.isProjBy_baseChange hpr h
   have hΘ : ∃ t : LB.Gen (Theta A L), t.IsGen := GlobalTheory.exists_gen_theta_of_isProjBy K A hA hpr L hL
-  obtain ⟨S, hS, hSK⟩ := GlobalTheory.T.kernelOfLineBundle_rationalPoints_finite_closed K A hA L hL hamp
+  obtain ⟨S, hS, hSK⟩ := _root_.GlobalTheory.KLFinite.kl_finite K A hA L hL hamp
   let O : LB A.left := ev N (𝟙 A) (toUnit A)
   have hO : O.IsLB := pull_isLB hN.isLB _
   have hLam : (abelian₂ A L).IsLB := LB.isLB_linComb hL _ _
@@ -84,7 +84,7 @@ theorem additive_eq_lam_of_ample : ∀ (K : Type) [Field K] [IsAlgClosed K] (A :
   rw [hpq.w] at total
   let o : Spec (CommRingCat.of K) ⟶ A.left := η[A].left
   have ho : o ≫ A.hom = 𝟙 _ := Over.w η[A]
-  have all := GlobalTheory.T.lineBundle_product_acyclic_over_affine_finite_closed K _ _ _ _ _ _ _ hpq.flip inferInstance inferInstance inferInstance
+  have all := _root_.GlobalTheory.ProductAcyclicFin.acyclic_over_affine_of_finite_closed K _ _ _ _ _ _ _ hpq.flip inferInstance inferInstance inferInstance
     inferInstance F hF S hS (fun R _ t Y π f h ht hne => ac_of_slices hproj hpq.flip h hF fun x hx hr => by
       let x' : 𝟙_ _ ⟶ A := Over.homMk x hx
       refine ⟨(lift (𝟙 A) (toUnit A ≫ x')).left, ?_, ?_, ac_of_primitive hA hpr (pull_isLB hF _) ?_ ?_⟩

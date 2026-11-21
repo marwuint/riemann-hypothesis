@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.DepthPays
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeSumProdNormLeOfProdNormLowerBoundStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeSumProdNormLeOfProdNormLowerBound
 
 noncomputable section
 
@@ -65,7 +65,7 @@ theorem latSum_le : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (B : Fr V) (g : GA 
       have hz : compVec θ V B g (x - y) = 0 := by rw [map_sub, hxy, sub_self]
       rw [hzero _ hz] at h1
       linarith
-    have key := GlobalTheory.T.lattice_sum_prod_norm_le_of_prod_norm_lower_bound D.what₂.Tau V.rank (L.toAddSubgroup.map (compVec θ V B g)) R hn hR ?_
+    have key := _root_.GlobalTheory.ProdNormSum.lattice_sum_le D.what₂.Tau V.rank (L.toAddSubgroup.map (compVec θ V B g)) R hn hR ?_
       (s.image (compVec θ V B g)) ?_
     · rw [Finset.sum_image hinj] at key
       simpa only [hnorm] using key

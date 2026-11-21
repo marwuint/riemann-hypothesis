@@ -557,9 +557,3 @@ theorem existsUnique_hom_extension_of_dvr
 
 end GlobalTheory.HomExtNormal
 
-open GlobalTheory.TorRef in
-
-theorem GlobalTheory.homExtNormal : HomExtNormalSt :=
-  fun X U _ j hX _ _ G G' _ _ hG hG' f hf ↦
-    GlobalTheory.HomExtNormal.existsUnique_hom_extension_of_dvr GlobalTheory.homExtension_semiAbelian_dvr X U j hX
-      G G' hG hG' f hf

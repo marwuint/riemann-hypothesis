@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColMapEqColMapV
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockCompTranslate
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VecIsThetaFunOAlt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairVEqOfProdFunEq
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExpansionProductInvariantInnerVertexLevelStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExpansionProductInvariantInnerVertexLevel
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.ExpansionInvariance
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
@@ -77,7 +77,7 @@ theorem pairPts_update_top : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Const
     refine Finsupp.sum_congr fun d hd => ?_
     rw [hcol d hd]
   rw [key]
-  refine congrArg (fun φ => φ (Ψ (x 0)) (F (y 0))) (GlobalTheory.ExpansionInvariance.pairV_eq_of_prodFun_eq S t τ _ _ _ _ ?_ ?_ (GlobalTheory.T.expansion_product_invariant_inner_vertex_level S hL hde hc ht hβ hτ hv j hjm k hk) x y)
+  refine congrArg (fun φ => φ (Ψ (x 0)) (F (y 0))) (GlobalTheory.ExpansionInvariance.pairV_eq_of_prodFun_eq S t τ _ _ _ _ ?_ ?_ (_root_.GlobalTheory.ExpansionInvariance.product_invariant S hL hde hc ht hβ hτ hv j hjm k hk) x y)
   · intro d hd j'
     refine ⟨?_, thv d hd j'⟩
     by_cases h2 : j' = ⟨j + 1, hjm⟩

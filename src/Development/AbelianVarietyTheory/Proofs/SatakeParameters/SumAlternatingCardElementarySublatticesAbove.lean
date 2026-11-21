@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QBinomialSumCardQuotientSubspacesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QBinomialSumCardQuotientSubspaces
 open GlobalTheory.LatHecke
 
 namespace GlobalTheory.LatHecke
@@ -116,7 +116,7 @@ theorem sum_alt_card_subElem_ge : ∀ (O K : Type) [CommRing O] [IsDomain O] [Is
     intro j
     rw [hset j, Set.ncard_image_of_injective _ hinj, ← Nat.card_coe_set_eq]
     rfl
-  have hI := GlobalTheory.T.qBinomial_sum_card_quotient_subspaces k V 1
+  have hI := _root_.GlobalTheory.qBinomial_subspaces k V 1
   rw [Finset.prod_eq_zero (Finset.mem_range.2 (by rw [hdV]; omega : 0 < Module.finrank k V)) (by simp)] at hI
   have hqk : (Nat.card k : ℂ) = (qRes O : ℂ) := rfl
   simp only [one_pow, mul_one, hqk, hdV] at hI

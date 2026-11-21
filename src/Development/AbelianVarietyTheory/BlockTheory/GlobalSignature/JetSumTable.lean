@@ -49,21 +49,6 @@ def InIntClosure {H I : Type} (Sup : Set H) (tab : H → I → ℂ_[p]) (M : Set
     ∃ c : H →₀ ℂ_[p], (c.support : Set H) ⊆ Sup ∧ (∀ x, ‖c x‖ ≤ 1) ∧
       ∀ m ∈ F, ‖J m - c.sum fun x r => r * tab x m‖ < ε
 
-theorem InIntClosure.single {H I : Type} {Sup : Set H} (tab : H → I → ℂ_[p]) (M : Set I) {x : H} (hx : x ∈ Sup) :
-    InIntClosure Sup tab M (tab x) := by
-  classical
-  intro F _ ε hε
-  refine ⟨Finsupp.single x 1, ?_, ?_, ?_⟩
-  · intro y hy
-    have := Finsupp.support_single_subset (Finset.mem_coe.1 hy)
-    rw [Finset.mem_singleton] at this
-    exact this ▸ hx
-  · intro y
-    rw [Finsupp.single_apply]
-    split_ifs <;> simp
-  · intro m _
-    simp [hε]
-
 variable {X : Fields} {a b : ℕ}
 
 def Induces (ι : X.K →+* ℂ_[p]) (w : HeightOneSpectrum (𝓞 X.K)) : Prop :=

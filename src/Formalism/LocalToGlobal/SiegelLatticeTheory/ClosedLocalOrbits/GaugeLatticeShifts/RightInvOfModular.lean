@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.EqOneOfZpowMem
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.HermitianZZEqNeg
 import Formalism.RealPlaceAnalysis.FinalF
 
@@ -80,55 +79,6 @@ local notation "SS" => (SG ε e z)
 instance instLCSG : LocallyCompactSpace SS := (SG_closed ε e z).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 instance instSCSG : SecondCountableTopology SS := Topology.IsEmbedding.subtypeVal.secondCountableTopology
-
-theorem rightInv_of_modular (hΔ : ∀ s : SS, Measure.modularCharacterFun s = 1)
-    (μ : Measure (Formalism.REAL.UJ ε)) (hμ : IsHaarS (SLoc ε e z) μ) :
-    ∀ s ∈ SLoc ε e z, μ.map (· * s) = μ := by
-  intro s hs
-  obtain ⟨⟨hσ, hne, hcompl, hinv⟩, hfin⟩ := hμ
-  have hSm : MeasurableSet (SG ε e z : Set (Formalism.REAL.UJ ε)) := (SG_closed ε e z).measurableSet
-  have memb : MeasurableEmbedding (Subtype.val : SS → Formalism.REAL.UJ ε) := MeasurableEmbedding.subtype_coe hSm
-  set ν : Measure SS := μ.comap Subtype.val with hν
-  have hrestr : μ.restrict (SG ε e z : Set (Formalism.REAL.UJ ε)) = μ := by
-    apply Measure.restrict_eq_self_of_ae_mem
-    rw [ae_iff]
-    exact hcompl
-  have hmapν : ν.map Subtype.val = μ := by
-    rw [hν, memb.map_comap, Subtype.range_coe, hrestr]
-  have himg : ∀ (t : SS) (A : Set SS), Subtype.val '' ((fun x => t * x) ⁻¹' A) =
-      (fun x => (t : Formalism.REAL.UJ ε) * x) ⁻¹' (Subtype.val '' A) := by
-    intro t A
-    ext x
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      exact ⟨t * y, hy, rfl⟩
-    · rintro ⟨a, ha, hax⟩
-      have hxS : x ∈ SS := by
-        have : x = ((t⁻¹ * a : SS) : Formalism.REAL.UJ ε) := by
-          simp only [Subgroup.coe_mul, Subgroup.coe_inv, hax]; group
-        rw [this]; exact (t⁻¹ * a).2
-      refine ⟨⟨x, hxS⟩, ?_, rfl⟩
-      show t * ⟨x, hxS⟩ ∈ A
-      have : t * ⟨x, hxS⟩ = a := Subtype.ext (by simpa using hax.symm)
-      rw [this]; exact ha
-  have hνinv : ν.IsMulLeftInvariant := by
-    refine ⟨fun t => ?_⟩
-    ext A hA
-    rw [Measure.map_apply (measurable_const_mul t) hA, hν, memb.comap_apply, memb.comap_apply, himg,
-      ← Measure.map_apply (measurable_const_mul _) (memb.measurableSet_image.2 hA), hinv _ t.2]
-  have hνfin : IsFiniteMeasureOnCompacts ν := by
-    refine ⟨fun K hK => ?_⟩
-    rw [hν, memb.comap_apply]
-    exact (hK.image continuous_subtype_val).measure_lt_top
-  have hνeq : ν = ν.haarScalarFactor Measure.haar • Measure.haar := Measure.isMulLeftInvariant_eq_smul ν Measure.haar
-  have hνright : ν.map (· * ⟨s, hs⟩) = ν := by
-    rw [hνeq, Measure.map_smul, Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.Modular.map_right, hΔ, one_smul]
-  calc μ.map (· * s) = (ν.map Subtype.val).map (· * s) := by rw [hmapν]
-    _ = (ν.map (· * ⟨s, hs⟩)).map Subtype.val := by
-        rw [Measure.map_map (measurable_mul_const s) measurable_subtype_coe,
-          Measure.map_map measurable_subtype_coe (measurable_mul_const _)]
-        rfl
-    _ = μ := by rw [hνright, hmapν]
 
 end Sub
 

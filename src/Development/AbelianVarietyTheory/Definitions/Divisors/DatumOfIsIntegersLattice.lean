@@ -44,24 +44,4 @@ structure Datum (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : 
 
   ker : GlobalTheory.Published.sqrtNegNat p * t ∈ L.lattice
 
-theorem stable_empty (L : PeriodPair) (F : IntermediateField ℚ ℂ) (T : Empty → ℂ) : Stable L F T :=
-  fun _ _ => ⟨Equiv.refl _, fun i => i.elim⟩
-
-theorem stable_of_isRat {L : PeriodPair} {F : IntermediateField ℚ ℂ} {ι : Type} {T : ι → ℂ}
-    (h : ∀ i, GlobalTheory.ConjPoint.IsRat L F (T i)) : Stable L F T :=
-  fun _ hσ => ⟨Equiv.refl _, fun i => (h i).isConj hσ⟩
-
-theorem stable_single (L : PeriodPair) (t : ℂ) :
-    Stable L ℚ⟮L.weierstrassP t, L.derivWeierstrassP t⟯ (fun _ : Unit => t) :=
-  stable_of_isRat fun _ =>
-    .inr ⟨IntermediateField.subset_adjoin _ _ (by simp), IntermediateField.subset_adjoin _ _ (by simp)⟩
-
-example : Fintype.card (Sq 7) = 3 := by
-  have h : ∀ k : Fin 7, (((k : ℕ) : ZMod 7) ≠ 0 ∧ IsSquare ((k : ℕ) : ZMod 7)) ↔ k = 1 ∨ k = 2 ∨ k = 4 := by
-    decide
-  rw [Fintype.card_congr (Equiv.subtypeEquivRight h)]; decide
-
-example (L : PeriodPair) : shortTwist 1 (-L.g₂ / 4) (-L.g₃ / 4) = GlobalTheory.latticeCurve L := by
-  simp [shortTwist, GlobalTheory.latticeCurve]
-
 end GlobalTheory.CMModel

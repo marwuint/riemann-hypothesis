@@ -51,15 +51,6 @@ theorem eventually_finrank_fiber_le [Module.Finite R M] (p : PrimeSpectrum R) :
 
 variable (M) in
 
-theorem upperSemicontinuous_finrank_fiber [Module.Finite R M] :
-    UpperSemicontinuous fun p : PrimeSpectrum R =>
-      finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) := by
-  intro p n hn
-  filter_upwards [eventually_finrank_fiber_le (M := M) p] with q hq
-  exact hq.trans_lt hn
-
-variable (M) in
-
 theorem isLocallyConstant_finrank_fiber [Module.Finite R M] [Module.Projective R M] :
     IsLocallyConstant fun p : PrimeSpectrum R =>
       finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) := by
@@ -173,34 +164,6 @@ theorem tensorKer_bijective_of_comp_comp_eq (S N : Type*) [CommRing S] [Algebra 
       LinearMap.lTensor_sub, LinearMap.lTensor_id, LinearMap.lTensor_comp, LinearMap.sub_apply,
       LinearMap.comp_apply, hz, map_zero, sub_zero, LinearMap.id_apply]
 
-theorem exists_baseChange_homology_equiv (S : Type*) [CommRing S] [Algebra R S]
-    (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0)
-    (s : M₂ →ₗ[R] M₁) (hs : g ∘ₗ s ∘ₗ g = g) :
-    ∃ e : S ⊗[R] (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) ≃ₗ[S]
-        LinearMap.ker (g.baseChange S) ⧸
-          (LinearMap.range (f.baseChange S)).submoduleOf (LinearMap.ker (g.baseChange S)),
-      ∀ (a : S) (x : LinearMap.ker g), e (a ⊗ₜ Submodule.Quotient.mk x) =
-        Submodule.Quotient.mk ⟨a ⊗ₜ (x : M₁), by simp⟩ := by
-  let e₀ : S ⊗[R] LinearMap.ker g ≃ₗ[S] LinearMap.ker (g.baseChange S) :=
-    LinearEquiv.ofBijective (LinearMap.tensorKer S S g)
-      (tensorKer_bijective_of_comp_comp_eq S S g s hs)
-  have he₀ : ∀ z, (e₀ z : S ⊗[R] M₁) = (LinearMap.ker g).subtype.baseChange S z :=
-    fun z => LinearMap.tensorKer_coe S S g z
-  let f' : M₀ →ₗ[R] LinearMap.ker g := f.codRestrict _ (LinearMap.congr_fun hfg)
-  have hf' : (LinearMap.range f).submoduleOf (LinearMap.ker g) = LinearMap.range f' :=
-    (LinearMap.range_codRestrict _ _ _).symm
-  have hff' : ∀ y, (e₀ (f'.baseChange S y) : S ⊗[R] M₁) = f.baseChange S y := fun y => by
-    rw [he₀, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp]
-    rfl
-  refine ⟨baseChangeQuotEquiv S _ ≪≫ₗ Submodule.Quotient.equiv _ _ e₀ ?_, fun a x => rfl⟩
-  rw [hf', baseChange_range]
-  ext z
-  constructor
-  · rintro ⟨_, ⟨y, rfl⟩, rfl⟩
-    exact ⟨y, (hff' y).symm⟩
-  · rintro ⟨y, hy⟩
-    exact ⟨_, ⟨y, rfl⟩, Subtype.ext ((hff' y).trans hy)⟩
-
 theorem exists_homology_retract (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0)
     (u : M₁ →ₗ[R] M₀) (hu : f ∘ₗ u ∘ₗ f = f) (s : M₂ →ₗ[R] M₁) (hs : g ∘ₗ s ∘ₗ g = g) :
     ∃ (ι : (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) →ₗ[R] M₁)
@@ -305,30 +268,6 @@ theorem projective_coker_of_isLocallyConstant [IsReduced R] [Module.Finite R M�
     have h4 := finrank_baseChange_homology_add p.asIdeal.ResidueField f g hfg
     have h5 := finrank_baseChange_homology_add q.asIdeal.ResidueField f g hfg
     omega
-
-theorem grauert_linearMap_homology [IsReduced R] [Module.Finite R M₀]
-    [Module.Finite R M₁] [Module.Projective R M₁] [Module.Finite R M₂] [Module.Projective R M₂]
-    (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0)
-    (h : IsLocallyConstant fun p : PrimeSpectrum R => finrank p.asIdeal.ResidueField
-      (LinearMap.ker (g.baseChange p.asIdeal.ResidueField) ⧸
-        (LinearMap.range (f.baseChange p.asIdeal.ResidueField)).submoduleOf
-          (LinearMap.ker (g.baseChange p.asIdeal.ResidueField)))) :
-    Module.Finite R (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) ∧
-    Module.Projective R (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) ∧
-    ∀ (S : Type*) [CommRing S] [Algebra R S],
-      ∃ e : S ⊗[R] (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) ≃ₗ[S]
-          LinearMap.ker (g.baseChange S) ⧸
-            (LinearMap.range (f.baseChange S)).submoduleOf (LinearMap.ker (g.baseChange S)),
-        ∀ (a : S) (x : LinearMap.ker g), e (a ⊗ₜ Submodule.Quotient.mk x) =
-          Submodule.Quotient.mk ⟨a ⊗ₜ (x : M₁), by simp⟩ := by
-  obtain ⟨h1, h2⟩ := projective_coker_of_isLocallyConstant f g hfg h
-  obtain ⟨u, hu⟩ := exists_comp_comp_eq_of_projective f
-  obtain ⟨s, hs⟩ := exists_comp_comp_eq_of_projective g
-  obtain ⟨ι, ρ, hρ⟩ := exists_homology_retract f g hfg u hu s hs
-  exact ⟨Module.Finite.of_surjective ρ
-      (RightInverse.surjective (g := ι) (LinearMap.congr_fun hρ)),
-    Module.Projective.of_split ι ρ hρ,
-    fun S _ _ => exists_baseChange_homology_equiv S f g hfg s hs⟩
 
 end ThreeTerm
 
@@ -532,16 +471,6 @@ theorem sum_finrank_homology_extendScalars [c.EulerCharSigns]
   congr 2
   exact (nonempty_extendScalars_obj_equiv k (K.X i)).elim fun e => e.finrank_eq
 
-theorem sum_finrank_homology_fiber_eq_sum_rankAtStalk [c.EulerCharSigns]
-    (K : HomologicalComplex (ModuleCat.{v} R) c)
-    [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
-    (s : Finset ι) (hs : ∀ i ∉ s, IsZero (K.X i)) (p : PrimeSpectrum R) :
-    ∑ i ∈ s, (c.χ i : ℤ) * finrank p.asIdeal.ResidueField
-      ((((ModuleCat.extendScalars (algebraMap R p.asIdeal.ResidueField)).mapHomologicalComplex
-        c).obj K).homology i) = ∑ i ∈ s, (c.χ i : ℤ) * Module.rankAtStalk (R := R) (K.X i) p := by
-  rw [sum_finrank_homology_extendScalars K s hs]
-  exact Finset.sum_congr rfl fun i _ => by rw [Module.rankAtStalk_eq]
-
 theorem isLocallyConstant_sum_finrank_homology_fiber [c.EulerCharSigns]
     (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
@@ -555,22 +484,6 @@ theorem isLocallyConstant_sum_finrank_homology_fiber [c.EulerCharSigns]
   filter_upwards [(Filter.eventually_all_finset s).2 fun i _ =>
     (isLocallyConstant_finrank_fiber (R := R) (K.X i)).eventually_eq p] with q hq
   exact Finset.sum_congr rfl fun i hi => by rw [hq i hi]
-
-theorem isLocallyConstant_homologyEulerChar_fiber [c.EulerCharSigns]
-    (K : HomologicalComplex (ModuleCat.{v} R) c)
-    [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
-    (s : Finset ι) (hs : ∀ i ∉ s, IsZero (K.X i)) :
-    IsLocallyConstant fun p : PrimeSpectrum R =>
-      (((ModuleCat.extendScalars (algebraMap R p.asIdeal.ResidueField)).mapHomologicalComplex
-        c).obj K).homologyEulerChar := by
-  convert isLocallyConstant_sum_finrank_homology_fiber K s hs using 2 with p
-  refine HomologicalComplex.homologyEulerChar_eq_sum_finSet_of_finrankSupport_subset _ s
-    ((GradedObject.finrankSupport_subset_iff _ _).2 fun i hi => ?_)
-  have := ModuleCat.isZero_iff_subsingleton.1
-    (ShortComplex.isZero_homology_of_isZero_X₂
-      ((((ModuleCat.extendScalars (algebraMap R p.asIdeal.ResidueField)).mapHomologicalComplex
-        c).obj K).sc i) ((ModuleCat.extendScalars _).map_isZero (hs i hi)))
-  exact @Module.finrank_zero_of_subsingleton _ _ _ _ _ _ this
 
 theorem isLocallyConstant_sum_range_finrank_homology_fiber
     (K : CochainComplex (ModuleCat.{v} R) ℕ)
@@ -707,12 +620,6 @@ theorem semicontinuity_finite_projective_complex (K : CochainComplex (ModuleCat.
     isLocallyConstant_sum_range_finrank_homology_fiber K n hn,
     fun i _ h => grauert_homology K i h,
     ker_free_of_valuationRing (FractionRing R) _⟩
-
-example : UpperSemicontinuous fun p : PrimeSpectrum ℤ => finrank p.asIdeal.ResidueField
-    (LinearMap.ker ((0 : ℤ →ₗ[ℤ] ℤ).baseChange p.asIdeal.ResidueField) ⧸
-      (LinearMap.range ((LinearMap.lsmul ℤ ℤ 2).baseChange p.asIdeal.ResidueField)).submoduleOf
-        (LinearMap.ker ((0 : ℤ →ₗ[ℤ] ℤ).baseChange p.asIdeal.ResidueField))) :=
-  upperSemicontinuous_finrank_linearMap_homology _ _ (LinearMap.zero_comp _)
 
 end Main
 

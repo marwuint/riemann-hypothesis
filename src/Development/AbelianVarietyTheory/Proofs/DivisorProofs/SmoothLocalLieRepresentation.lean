@@ -90,55 +90,8 @@ def derL (X : skewSub J) : Module.End ℂ (smLoc J s) where
 theorem derL_apply (X : skewSub J) (φ : smLoc J s) :
     (derL hJ hu hs X φ).1 = Der (expMap (skewSub J).subtype s) X φ.1 := rfl
 
-include hu hs in
-
-theorem lineOf_add (Z : skewSub J) (t u : ℝ) : lineOf s Z.1 t * lineOf s Z.1 u = lineOf s Z.1 (t + u) := by
-  have h1 : IsUni J (NormedSpace.exp (t • Z.1)) := exp_mem_UH hu (t • Z).2
-  have h2 : IsUni J (NormedSpace.exp (u • Z.1)) := exp_mem_UH hu (u • Z).2
-  unfold lineOf
-  rw [← hs _ _ h1 h2, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Z.1).smul_left t).smul_right u)]
-
-theorem hasDerivAt_derL (X : skewSub J) (φ : smLoc J s) (g : G) (t : ℝ) :
-    HasDerivAt (fun τ : ℝ => φ.1 (g * lineOf s X.1 τ)) ((derL hJ hu hs X φ).1 (g * lineOf s X.1 t)) t := by
-  have hsm := (mem_smLoc_iff hJ hu hs _).1 φ.2
-  set F : ℝ → ℂ := fun τ => φ.1 (g * lineOf s X.1 τ) with hFdef
-  have hF : Differentiable ℝ F :=
-    ((hsm g).comp (contDiff_id.smul contDiff_const : ContDiff ℝ ∞ fun τ : ℝ => τ • X)).differentiable (by simp)
-  have key : (fun u : ℝ => φ.1 (g * lineOf s X.1 t * expMap (skewSub J).subtype s (u • X))) =
-      fun u => F (t + u) := funext fun u => by
-    show φ.1 (g * lineOf s X.1 t * lineOf s X.1 u) = φ.1 (g * lineOf s X.1 (t + u))
-    rw [mul_assoc, lineOf_add hu hs]
-  have e : (derL hJ hu hs X φ).1 (g * lineOf s X.1 t) = deriv F t := by
-    rw [derL_apply]
-    show deriv (fun u : ℝ => φ.1 (g * lineOf s X.1 t * expMap (skewSub J).subtype s (u • X))) 0 = _
-    rw [key, deriv_comp_const_add, add_zero]
-  rw [e]
-  exact (hF t).hasDerivAt
-
 end GlobalTheory.TorFin.RightRep
 
 namespace GlobalTheory.TorFin
-
-open RightRep in
-
-theorem exists_rightDer_rep : ∀ (n : ℕ) (G : Type) [Group G] (J : Matrix (Fin n) (Fin n) ℂ)
-    (s : Matrix (Fin n) (Fin n) ℂ → G), Jᴴ = J → IsUnit J.det → IsMulOn J s →
-    ∃ ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (smLoc J s), IsLieRep ρ ∧ IsRightDer J s ρ := by
-  intro n G _ J s hJ hu hs
-  have H := isLieData hJ hu hs
-  have hl := hasLog_of_isLieData _ _ _ _ _ _ H
-  let ρ₀ : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J → Module.End ℂ (smLoc J s) := fun X => derL hJ hu hs ⟨X.1, X.2⟩
-  have hsm : ∀ φ : smLoc J s, Sm (expMap (skewSub J).subtype s) φ.1 := fun φ => (mem_smLoc_iff hJ hu hs _).1 φ.2
-  obtain ⟨R, -, hR, hc⟩ := GlobalTheory.UnitaryLieComplexification.exists_extension hJ hu ρ₀
-    (fun X Y => LinearMap.ext fun φ => Subtype.ext
-      ((der_smooth_and_linear _ _ _ _ _ _ H hl φ.1 (hsm φ)).2.1 ⟨X.1, X.2⟩ ⟨Y.1, Y.2⟩))
-    (fun c X => LinearMap.ext fun φ => Subtype.ext
-      ((der_smooth_and_linear _ _ _ _ _ _ H hl φ.1 (hsm φ)).2.2 c ⟨X.1, X.2⟩))
-    (fun X Y Z hZ => LinearMap.ext fun φ => Subtype.ext
-      (Bracket.der_bracket _ _ _ _ _ _ H hl φ.1 (hsm φ) ⟨X.1, X.2⟩ ⟨Y.1, Y.2⟩ ⟨Z.1, Z.2⟩ hZ).symm)
-  refine ⟨R, hc, fun Z hZ φ g t => ?_⟩
-  have hRZ : R Z = derL hJ hu hs ⟨Z, hZ⟩ := hR ⟨Z, hZ⟩
-  rw [hRZ]
-  exact hasDerivAt_derL hJ hu hs ⟨Z, hZ⟩ φ g t
 
 end GlobalTheory.TorFin

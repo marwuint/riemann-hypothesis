@@ -22,10 +22,6 @@ theorem comap_congr {g g' : Finset κ → Finset ι} (hg : Monotone g) (hg' : Mo
   obtain rfl : g = g' := funext h
   rfl
 
-def comapMap (g : Finset κ → Finset ι) (hg : Monotone g) {A B : Cube.{v} ι R} (φ : A ⟶ B) :
-    comap g hg A ⟶ comap g hg B :=
-  homMk (fun s => (φ.app (g s)).hom) fun _ _ => app_res φ _ _
-
 variable [LinearOrder ι] [LinearOrder κ]
 
 theorem monotone_union_map (f : κ ↪o ι) (s : Finset ι) :
@@ -159,25 +155,6 @@ noncomputable def suppIso (φ : A ⟶ B) (hP : P.OrdConnected)
 noncomputable def suppIsoSelf (A : Cube.{v} ι R) (hP : P.OrdConnected) (h : ∀ s, s ∈ P) :
     supp A P hP ≅ A :=
   isoMk (fun s => suppEquiv A hP (h s)) fun hst x => suppEquiv_res hst _ _ x
-
-noncomputable def suppSuppIso (A : Cube.{v} ι R) (hP : P.OrdConnected) (hP' : P'.OrdConnected) :
-    supp (supp A P hP) P' hP' ≅ supp A (P ∩ P') (hP.inter hP') := by
-  classical
-  refine isoMk (fun s => if hs : s ∈ P ∩ P' then
-      suppEquiv _ hP' hs.2 ≪≫ₗ suppEquiv _ hP hs.1 ≪≫ₗ (suppEquiv A (hP.inter hP') hs).symm
-    else
-      haveI := subsingleton_supp A (hP.inter hP') hs
-      haveI : Subsingleton ((supp (supp A P hP) P' hP').obj s) :=
-        ⟨fun _ _ => supp_ext fun hs' => supp_ext fun hs'' => absurd ⟨hs'', hs'⟩ hs⟩
-      LinearEquiv.ofSubsingleton _ _) fun {s t} hst x => ?_
-  by_cases hs : s ∈ P ∩ P'
-  · refine supp_ext fun ht => ?_
-    rw [suppEquiv_res hst hs]
-    simp only [dif_pos hs, dif_pos ht, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]
-    rw [suppEquiv_res hst hs.2, suppEquiv_res hst hs.1]
-  · have : x = 0 := supp_ext fun hs' => supp_ext fun hs'' => absurd ⟨hs'', hs'⟩ hs
-    rw [this]
-    simp only [map_zero]
 
 open Classical in
 
@@ -662,16 +639,6 @@ noncomputable def truncBothHomologyIsoEmpty [Finite ι] (h : IsCompl (Set.range 
     (cubeComplex (truncBoth e f A)).homology (n + 2) ≅ (cechComplex (lowerFace e A)).homology n :=
   truncOverHomologyIsoEmpty h ordConnected_nonempty A hA (n + 1) ≪≫ truncHomologyIso _ n
 
-noncomputable def truncBothHomologyIsoSingleton [Finite κ]
-    (h : IsCompl (Set.range e) (Set.range f)) (k : κ) (A : Cube.{v} μ R)
-    (hA : ∀ t : Finset κ, t.Nonempty → t ≠ {k} →
-      (cechComplex (slice e (t.map f.toEmbedding) A)).Acyclic) (n : ℕ) :
-    (cubeComplex (truncBoth e f A)).homology (n + 2) ≅
-      (cechComplex (slice e (({k} : Finset κ).map f.toEmbedding) A)).homology n :=
-  truncOverHomologyIsoSingleton h ordConnected_nonempty k A
-    (fun t ht ht' => (cubeComplex_trunc₁_acyclic_iff _).2 (hA t ht ht')) (n + 1) ≪≫
-  truncHomologyIso _ n
-
 end Compare
 
 namespace Cube
@@ -847,12 +814,6 @@ noncomputable def trunc₂HomologyIsoFstSingleton [Finite κ] (k : κ) (A : Cube
     (fun t ht ht' => (cubeComplex_trunc₁_acyclic_iff _).2 (hA t ht ht')) (n + 1) ≪≫
   truncHomologyIso _ n
 
-noncomputable def trunc₂HomologyIsoSndSingleton [Finite ι] (i : ι) (A : Cube.{v} (ι ⊕ₗ κ) R)
-    (hA : ∀ s : Finset ι, s.Nonempty → s ≠ {i} → (cechComplex (sliceSnd A s)).Acyclic) (n : ℕ) :
-    (cubeComplex (trunc₂ A)).homology (n + 2) ≅ (cechComplex (sliceSnd A {i})).homology n :=
-  cubeHomologyMapIso (eqToIso (truncBoth_comm A)) (n + 2) ≪≫
-    truncBothHomologyIsoSingleton (isCompl_range_inlEmb_inrEmb ι κ).symm i A hA n
-
 end Main
 
 section Three
@@ -959,18 +920,5 @@ noncomputable def trunc₃HomologyIsoDropFirst [Finite κ] [Finite ν]
     exact hA _ _ hu.1 hu.2) n
 
 end Three
-
-section Examples
-
-example : ¬ IsZero ((cubeComplex (Cube.trunc₂
-    (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ)))).homology 2) := fun h => by
-  have h' := h.of_iso (trunc₂HomologyIsoFst (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ))
-    (fun s _ => cubeComplex_acyclic_of_bijective _ 0 fun _ _ => Function.bijective_id) 0).symm
-  rw [← exactAt_iff_isZero_homology, cochainComplex_exactAt_zero_iff, cechComplex_d _ 0] at h'
-  have h0 : Cube.aug (Cube.sliceFst (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ)) ∅)
-      (1 : ℤ) = 0 := h' ((Cube.d_aug _ _).trans (map_zero _).symm)
-  exact (one_ne_zero : (1 : ℤ) ≠ 0) (congrFun h0 ⟨{0}, rfl⟩)
-
-end Examples
 
 end GlobalTheory

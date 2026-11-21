@@ -398,7 +398,7 @@ theorem isSBArgs_stair [ν.IsAddHaarMeasure] {ϖ : kˣ} {e : ℕ} {T : G.Args �
     IsSBArgs G ϖ e (flatTensor hs ψ ν (moved G keep (dg G ϖ e) T)) := by
   have h1 : (1 : ValueGroupWithZero k) ≤ valuation k (((ϖ ^ e)⁻¹ : kˣ) : k) := by
     simpa using val_inv_pow_mono hϖ (Nat.zero_le e)
-  refine ⟨(GlobalTheory.T.flatTensor_depends_below_and_small_translation_invariant G hs ψ ν ϖ e T keep _ hϖ hψ hT).1, fun x y a b ha hb => flat_per hs ψ ν hψ hT keep x a y b ha hb,
+  refine ⟨(_root_.GlobalTheory.FunObj.FlatDep.flatTensor_dep_and_per G hs ψ ν ϖ e T keep _ hϖ hψ hT).1, fun x y a b ha hb => flat_per hs ψ ν hψ hT keep x a y b ha hb,
     fun x y hxy => ⟨fun j hj r s => ?_, fun i hi r s => ((flat_supp hs ψ ν hT keep x y hxy).2 i hi r s).trans h1⟩⟩
   by_cases hr : j + 1 = G.m ∧ r = topLast G (j + 1)
   · obtain ⟨h2, rfl⟩ := hr

@@ -41,24 +41,4 @@ theorem ubint_mvExp_sum [CharZero C] {ι : Type} (s : Finset ι) (f : ι → MvP
 
 end UBIntLemmas
 
-section UBIntRows
-
-variable {C : Type} [Field C] {n0 : ℕ}
-
-open Classical in
-
-def ubint_rowPart (h : MvPowerSeries (PVar n0) C) (b : Fin n0) : MvPowerSeries (PVar n0) C :=
-  fun m => if ∀ x ∈ m.support, rowOf x = b then coeff m h else 0
-
-end UBIntRows
-
-section UBIntMain
-
-variable {C : Type} [Field C] {n0 : ℕ}
-
-def ubint_box (n0 L y : ℕ) : Set (PVar n0 →₀ ℕ) :=
-  {m | (∀ b, rowDegZ m b ≤ L * y) ∧ ∀ b, rowDegZ' m b ≤ y}
-
-end UBIntMain
-
 end Formalism.UnitaryBoundIntegral

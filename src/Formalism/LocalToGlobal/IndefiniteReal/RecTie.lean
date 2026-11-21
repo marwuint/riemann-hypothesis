@@ -30,9 +30,6 @@ theorem ProjTie.eq_of_mem {Y : Type*} {C : Submodule ℂ N} {ip : N → N → �
     rw [hP x y, hH x (j.symm ⟨g y, hy⟩), LinearEquiv.apply_symm_apply]
   rw [h1, LinearEquiv.apply_symm_apply]
 
-theorem hilbTie_top : HilbTie (⊤ : Submodule ℂ X) (fun a b => ⟪a, b⟫_ℂ) (Submodule.topEquiv.symm) :=
-  fun _ _ => rfl
-
 end Gen
 
 section Pair
@@ -43,10 +40,6 @@ abbrev AmbT (M : Mult.DSModel V S) : Type := (⨂[ℂ] τ, M.sm τ) →ₗ[ℂ] 
 
 def ipMT (M : Mult.DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (x y : AmbT M) : ℂ :=
   Mult.ipM M μ 𝓕 (PiTensorProduct.lift.symm x) (PiTensorProduct.lift.symm y)
-
-def ipWT {W : HSp D} {κ : ∀ τ : D.what₂.Tau, Fin (W.sig (tauE D τ)).1 ⊕ Fin (W.sig (tauE D τ)).2 → ℤ}
-    (M : Mult.DSModel W (Mult.parW W κ)) (μ : Measure (GA D W)) (𝓕 : Set (GA D W)) (x y : AmbT M) : ℂ :=
-  Mult.ipW M μ 𝓕 (PiTensorProduct.lift.symm x) (PiTensorProduct.lift.symm y)
 
 end Pair
 
@@ -180,10 +173,6 @@ def IoOK (b : Bool) (μ : D.what₂.Tup) : Prop :=
   (1 ≤ D.R.m → Lift.IsIo (C.measX b μ) (C.fdX μ) (C.thX μ) (C.ptX b μ) C.ItX (C.CCX b μ) (C.CC b μ (D.R.m - 1))
     (C.ioX b μ))
 
-def partE (b : Bool) (c : HeightOneSpectrum (𝓞 D.host.E) → ℕ → ℂ) : Submodule ℂ (C.Amb 0) :=
-  (Mult.part C.θ (C.MY 0) (C.JE b) (C.χE b) C.Sb c).map
-    (PiTensorProduct.lift : Mult.MMap (C.MY 0) ≃ₗ[ℂ] C.Amb 0).toLinearMap
-
 end ChainReal
 
 def Used0 (D : D7) (μ : D.what₂.Tup) : Prop := μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w
@@ -243,24 +232,6 @@ structure RowSideReal (X : RowSide D EE) (C : ChainReal D) (b : Bool) (I : RowId
   ft : ∀ σ, ((I.jE (bs σ) : C.EEc b) : C.Amb 0) ∈ I.prt (ty σ)
 
   prt_disj : ∀ π π', π ≠ π' → I.prt π ⊓ I.prt π' = ⊥
-
-structure RowSideKer (C : ChainReal D) (b : Bool) : Prop where
-
-  isIo : ∀ μ, Lift.IsChainIo (G := fun j => GA D (C.Y j)) (D := fun j => ⨂[ℂ] τ, (C.MY j).sm τ)
-    (C.CC b μ) (D.R.m - 1) (C.meas b μ) (C.fd μ) (C.th μ) (C.pt b μ) C.It (C.ioC b μ)
-
-  isIoX : 1 ≤ D.R.m → ∀ μ, Lift.IsIo (C.measX b μ) (C.fdX μ) (C.thX μ) (C.ptX b μ) C.ItX (C.CCX b μ)
-    (C.CC b μ (D.R.m - 1)) (C.ioX b μ)
-
-  kernel : ∀ μ, Lift.IsChainKernel C.ψ (C.chr μ) C.η (D.R.m - 1) C.Y (C.th μ)
-
-  kernelX : 1 ≤ D.R.m → ∀ μ, Lift.IsStepKernel C.ψ (C.chr μ) C.η D.R.m (C.Y (D.R.m - 1)) C.X (C.thX μ)
-
-  chars : ∀ μ, Lift.CharsOK (C.chr μ) C.η D.R.m
-
-  ptTh : ∀ μ k, k + 1 < D.R.m → Lift.PtTheta C.ψ (C.Y k) (C.Y (k + 1)) (C.pt b μ k)
-
-  ptThX : 1 ≤ D.R.m → ∀ μ, Lift.PtTheta C.ψ (C.Y (D.R.m - 1)) C.X (C.ptX b μ)
 
 end Rows
 
@@ -339,10 +310,6 @@ def Wc (i : Fin D.R.m) : Submodule ℂ (L.AmbW i) :=
 def ipWc (i : Fin D.R.m) (x y : L.AmbW i) : ℂ :=
   (∏ τ, ((Mult.dimK _ _ (L.κ i τ) : ℚ) : ℂ)) * ipMT (L.MW i) (L.measW i) (L.fdW i) x y
 
-def partW (i : Fin D.R.m) (c : HeightOneSpectrum (𝓞 D.host.E) → ℕ → ℂ) : Submodule ℂ (L.AmbW i) :=
-  (Mult.part C.θ (L.MW i) (L.JW i) (L.χW i) L.SbW c).map
-    (PiTensorProduct.lift : Mult.MMap (L.MW i) ≃ₗ[ℂ] L.AmbW i).toLinearMap
-
 end LiftReal
 
 section Lifts
@@ -378,14 +345,6 @@ structure LiftTie (L : LiftReal D C) (I : LiftIds L) : Prop where
   lamP : ∀ μ, Used0 D μ → ∀ (i : Fin D.R.m) π (c : ℝ), D.what₂.isot (i + 1) π ≠ ⊥ →
     (∀ y ∈ D.what₂.isot (i + 1) π, D.what₂.thetaP μ (i + 1) (D.what₂.thetaT μ (i + 1) y) = (c : ℂ) • y) →
     D.what₂.lamP μ (i + 1) π = c
-
-structure LiftKer (L : LiftReal D C) : Prop where
-
-  thP : ∀ μ i, Lift.IsThetaP (L.measV μ i) (L.fdV μ i) (L.thW μ i) (L.ptW μ i) (L.ioK i) (L.Amt μ i) (L.thC μ i)
-
-  ptTh : ∀ μ i, Lift.PtTheta C.ψ (L.V i) (L.W i) (L.ptW μ i)
-
-  kerP : ∀ μ (i : Fin D.R.m), Lift.IsThPKernel C.ψ (C.chr μ) C.η (i + 1) (L.V i) (L.W i) (L.thW μ i)
 
 end Lifts
 

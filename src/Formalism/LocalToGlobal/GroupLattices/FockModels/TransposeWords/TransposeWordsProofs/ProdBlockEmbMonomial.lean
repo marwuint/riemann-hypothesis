@@ -199,14 +199,6 @@ theorem fock_pairing_bilinear : FockRBilin := fun _ _ _ f f' g a =>
 
 theorem fock_pairing_map : FockRMap := fun _ _ _ _ _ φ f g => fockR_map φ f g
 
-theorem fock_pairing_monomial : FockRMonomial := by
-  unfold FockRMonomial
-  intros
-  classical
-  split_ifs with h
-  · rw [fockR_monomial, if_pos h]
-  · rw [fockR_monomial, if_neg h]
-
 theorem fock_pairing_block : FockRBlock := fun _ _ _ _ _ _ F G => fockR_block F G
 
 theorem highest_weight_norm : HWNorm := fockR_hw_norm

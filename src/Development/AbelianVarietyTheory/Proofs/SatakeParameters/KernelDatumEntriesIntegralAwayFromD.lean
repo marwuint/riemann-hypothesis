@@ -4,9 +4,15 @@ import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.StdBases
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CombOfTied
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsRealPlaceLocalBasesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsNormalisedThetaCombinationsAwayDStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KvalGeZeroOfIntegralJetsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsRealPlaceLocalBases
+import Formalism.SharpRestriction.GlobalSchurBounds.GL3Columns
+import Formalism.LocalToGlobal.KernelLattices.ThDistC
+import Formalism.GaussJetBounds.StatementN
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralJetsNormalisedThetaCombinationsAwayD
+import Formalism.LocalToGlobal.KernelLattices.KerStd
+import Formalism.LocalToGlobal.InertKernelTheory.StatementIota
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KvalGeZeroOfIntegralJets
+import Formalism.SharpRestriction.Divisibility.ProductZerothFirstParts
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Classical
 
 namespace GlobalTheory.Ggeo.AdmEntInt
@@ -29,13 +35,13 @@ theorem GlobalTheory.Ggeo.AdmEntInt.kernelDatum_entries_integral_away_from_d : G
   obtain ⟨hAdm, hComb⟩ := GlobalTheory.Ggeo.KerComb.comb_of_tied hIn.algT D L hT Gi Gl K Y cX ex t hHyp u μ w hlf' i hi c c'
   have hd3 : D.what₂.places.resChar w = 3 → D.host.d % 3 = 2 := fun _ =>
     GlobalTheory.Ggeo.AdmEntInt.mod_three_eq_two_of_jacobiSym_neg_eq_one _ (D.host.split_small 3 Nat.prime_three (by norm_num) h3)
-  have hJ := GlobalTheory.T.integralJets_normalisedThetaCombinations_away_d hIn D t.cc t.δ t.cc_ok t.δ_ok t.B t.χ t.χ_ok t.X t.seam t.seam_ok _ _ _ _ hAdm
+  have hJ := _root_.GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d.jetsAll hIn D t.cc t.δ t.cc_ok t.δ_ok t.B t.χ t.χ_ok t.X t.seam t.seam_ok _ _ _ _ hAdm
     (D.what₂.places.resChar w) (t.ent.lam w) hd hd3 _ hComb
   let T := t.kf u μ w hlf'
   have hB := T.B_bas i hi.le c
   have hB' := T.B_bas (i + 1) hi c'
-  have hK := GlobalTheory.T.integral_jets_realPlace_local_bases D (t.O u μ).dgen (t.O u μ).dgen_gen _ _ _ _ hAdm (D.what₂.places.resChar w) (t.ent.lam w)
+  have hK := _root_.GlobalTheory.Proof.integral_jets_realPlace_local_bases.jetsIntegral_basR D (t.O u μ).dgen (t.O u μ).dgen_gen _ _ _ _ hAdm (D.what₂.places.resChar w) (t.ent.lam w)
     (T.B i c) (T.B (i + 1) c') (fun τ => T.c0 i c c' τ * TaylorLogMetric.lamC (t.ent.lam w) ((t.O u μ).dgen τ)) hB hB'
     (fun τ => by rw [norm_mul, T.unitAbs_eq_one, one_mul]) _ hJ
   rw [← T.th i hi c c'] at hK
-  exact GlobalTheory.T.kvalGe_zero_of_integral_jets _ _ _ _ _ _ hK
+  exact _root_.GlobalTheory.Proof.kvalGe_zero_of_integral_jets.kvalGe_zero _ _ _ _ _ _ hK

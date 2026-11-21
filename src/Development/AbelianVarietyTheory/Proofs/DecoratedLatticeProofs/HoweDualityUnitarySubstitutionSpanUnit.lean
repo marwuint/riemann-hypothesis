@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SqRepTopVecOfUnitriangular
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockSubstitutionIdentitiesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStablStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EquivariantHomMultiplicityFreeIrreducibleStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorUnitIndexIrreducibleUnStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStabl
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EquivariantHomMultiplicityFreeIrreducible
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorUnitIndexIrreducibleUn
 
 noncomputable section
 
@@ -56,7 +56,7 @@ namespace GlobalTheory.HoweOne
 open GlobalTheory.Branching
 
 theorem vn_stable {a : ℕ} (lam : Unit → DomWeight a) (n : Unit → ℕ) (g : Unit → Matrix (Fin a) (Fin a) ℂ) :
-    ∀ F ∈ Vn lam n, lft g F ∈ Vn lam n := (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable Unit a lam n).2 g
+    ∀ F ∈ Vn lam n, lft g F ∈ Vn lam n := (_root_.GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem Unit a lam n).2 g
 
 def vnMap {a : ℕ} (lam : Unit → DomWeight a) (n : Unit → ℕ) (g : Unit → Matrix (Fin a) (Fin a) ℂ) :
     Vn lam n →ₗ[ℂ] Vn lam n :=
@@ -90,7 +90,7 @@ theorem vnRep_apply {a : ℕ} (lam : Unit → DomWeight a) (n : Unit → ℕ) (k
 
 theorem vnRep_irreducible {a : ℕ} (ha : 0 < a) (lam : Unit → DomWeight a) (n : Unit → ℕ) :
     (vnRep lam n).IsIrreducible := by
-  obtain ⟨hne, hirr⟩ := GlobalTheory.T.weylDeterminantTwistTensor_unitIndex_irreducible_unitary a ha lam n
+  obtain ⟨hne, hirr⟩ := _root_.GlobalTheory.KJInf.Vn_unit_irreducible a ha lam n
   obtain ⟨F₀, hF₀, hF₀0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
   refine { exists_pair_ne := ⟨⊥, ⊤, fun e => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }
   · have e' := congrArg Subrepresentation.toSubmodule e
@@ -172,7 +172,7 @@ theorem comp_subMap {a b : ℕ} (hab : a ≤ b) (lam : Unit → DomWeight a) (n 
 
 theorem howeSpan_unit : HoweSpan Unit := by
   intro a b hab ha lam n Q hQ
-  haveI : FiniteDimensional ℂ (Vn lam n) := (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable Unit a lam n).1
+  haveI : FiniteDimensional ℂ (Vn lam n) := (_root_.GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem Unit a lam n).1
   have hb : 1 ≤ b := le_trans ha hab
   let S := Submodule.span ℂ (subSet hab lam n)
   have h1 : ∀ T ∈ S, ∀ k F, T (vnRep lam n k F) =
@@ -198,7 +198,7 @@ theorem howeSpan_unit : HoweSpan Unit := by
     | add T T' _ _ hT hT' => rw [LinearMap.comp_add]; exact S.add_mem hT hT'
     | smul c T _ hT => rw [LinearMap.comp_smul]; exact S.smul_mem c hT
   have h3 : S ≠ ⊥ := by
-    obtain ⟨F₀, hF₀, hF₀0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (GlobalTheory.T.weylDeterminantTwistTensor_unitIndex_irreducible_unitary a ha lam n).1
+    obtain ⟨F₀, hF₀, hF₀0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (_root_.GlobalTheory.KJInf.Vn_unit_irreducible a ha lam n).1
     have hmem : subMap hab lam n (fun _ => 1) ∈ S :=
       Submodule.subset_span ⟨_, fun _ => by simp, rfl⟩
     intro hS
@@ -213,7 +213,7 @@ theorem howeSpan_unit : HoweSpan Unit := by
     simp only [Q', LinearMap.comp_apply, Submodule.subtype_apply, AlgHom.toLinearMap_apply]
     rw [vnRep_apply, polyRep_apply, hQ _ (fun _ => transpose_uni k) F F.2]
     rfl
-  have key := GlobalTheory.T.equivariantHom_multiplicityFree_irreducible (Matrix.unitaryGroup (Fin a) ℂ) (GL (Fin b) ℂ) (Part (min a b))
+  have key := _root_.GlobalTheory.EquivHomIrr.equivariantHom_mem_of_stable (Matrix.unitaryGroup (Fin a) ℂ) (GL (Fin b) ℂ) (Part (min a b))
     (fun j => nablaSq ℂ a (pad a j)) (fun j => nablaSq ℂ b (pad b j))
     (fun j => smallRep (unitaryIncl a) (pad a j)) (fun j => smallRep (MonoidHom.id (GL (Fin b) ℂ)) (pad b j))
     (irreducibleDistinct_unitary (min_le_left a b)).1 (irreducibleDistinct_gl (min_le_right a b)).1

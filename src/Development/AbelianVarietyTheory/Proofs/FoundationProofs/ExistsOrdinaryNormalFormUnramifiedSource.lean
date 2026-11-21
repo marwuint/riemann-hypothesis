@@ -4,15 +4,16 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.VanishOrdL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.GalUnitary
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.RepNewform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoefficientRingFiniteExtensionPadicStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoefficientRingFiniteExtensionPadic
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ImportsExtra
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUpperTriangularConjIntegralCompactStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.AdmissibleTwistByDet
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUpperTriangularConjIntegralCompact
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnramifiedOfLevelAwayInertiaCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterPowPredEqOneOfKillsPrimeRootsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IrreducibleRestrictionOfIsoStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterPowPredEqOneOfKillsPrimeRoots
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IrreducibleRestrictionOfIso
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNf
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SrcOfRepIso
+
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 
@@ -45,8 +46,8 @@ theorem GlobalTheory.Ord2.exists_nf_srcUr : ∀ (l : ℕ) [Fact l.Prime] (Ω : T
     exact (continuous_const.mul hW.cont).mul continuous_const
   obtain ⟨E, hE, hEm⟩ := GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l (G ℚ Ω) 2 r
     (fun i j => ((Units.continuous_val.comp hrc).matrix_elem i j))
-  obtain ⟨B, hB10, hBint⟩ := GlobalTheory.T.exists_upperTriangular_conj_integral_compact l (G ℚ Ω) E r hE hrc hEm
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_coefficientRing_finiteExtension_padic l E hE
+  obtain ⟨B, hB10, hBint⟩ := _root_.GlobalTheory.StableLatticeTriangular.exists_upperTriangular_conj_integral l (G ℚ Ω) E r hE hrc hEm
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CoefJoin.coef_of_finite l E hE
   let h : GL (Fin 2) (Qbar l) := B * g
   let W' : R2 Ω l := (MulAut.conj h).toMonoidHom.comp W
   have hh : ∀ s, W' s = h * W s * h⁻¹ := fun s => rfl
@@ -109,7 +110,7 @@ theorem GlobalTheory.Ord2.exists_nf_srcUr : ∀ (l : ℕ) [Fact l.Prime] (Ω : T
         unr := ?_
         det2 := by rw [hdt]; exact hW.det2
         odd := by rw [hdt]; exact hW.odd
-        irr := GlobalTheory.T.irreducible_restriction_of_iso Ω l W W' hiso hW.irr
+        irr := _root_.GlobalTheory.IrrConj.irr_of_repIso Ω l W W' hiso hW.irr
         atL := hA
         upper := fun s hs => (hup s hs).1
         wt := ?_
@@ -123,7 +124,7 @@ theorem GlobalTheory.Ord2.exists_nf_srcUr : ∀ (l : ℕ) [Fact l.Prime] (Ω : T
     · refine ⟨l - 1, ?_, fun s hs => ?_⟩
       · have := (Fact.out : l.Prime).two_le; omega
       · rw [hline s hs, mul_pow, ← pow_mul]
-        have hχ1 := GlobalTheory.T.character_pow_pred_eq_one_of_killsPrimeRoots Ω l _ χ s hχ
+        have hχ1 := _root_.GlobalTheory.KillsMuOrd.charPow_sub_one_eq_one Ω l _ χ s hχ
         rw [← Units.val_pow_eq_pow_val (χ s), hχ1, Units.val_one, mul_one]
     · obtain ⟨s, hs⟩ := hne A κ hA ⟨g, hg⟩
       refine ⟨s, s.2, ?_⟩

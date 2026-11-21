@@ -86,49 +86,4 @@ theorem cor_holds : CorStatement.{u} := by
       _ = (N.comp ι).H n x := (Hom.H_comp _ _ n x).symm
       _ = U.index • x := Hom.H_nsmul _ _ n (hNι n) x
 
-theorem resInj_holds : ResInjStatement.{u} := by
-  intro R _ G _ _ _ M U _ hU hunit n x y hxy
-  obtain ⟨cor, -, hcor⟩ := cor_holds R G M U hU
-  have h1 := hcor n x
-  have h2 := hcor n y
-  rw [hxy, h2] at h1
-  have h3 : (U.index : R) • x = (U.index : R) • y := by
-    rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
-    exact h1.symm
-  exact (hunit.smul_left_cancel).1 h3
-
-theorem resNormal_holds : ResNormalStatement.{u} := by
-  intro R _ G _ _ _ M N _ _ hN hunit n x hx
-  classical
-  haveI : Fintype (Quotient (QuotientGroup.rightRel N)) := Fintype.ofFinite _
-  obtain ⟨cor, hcor, -⟩ := cor_holds R G M N hN
-  set res := (Pair.res M N.subtype continuous_subtype_val).hom
-  have key : ∀ f, (res.comp cor).f n f = ∑ c : Quotient (QuotientGroup.rightRel N),
-      (conjPrime₂ M N c.out⁻¹).hom.f n f := by
-    intro f
-    apply Subtype.ext
-    funext g
-    show (cor.f n f).1 (fun i => (g i : G)) = _
-    rw [hcor]
-    erw [Submodule.coe_sum]
-    rw [Finset.sum_apply]
-    unfold corFun
-    rw [finsum_eq_sum_of_fintype]
-    refine Finset.sum_congr rfl fun c _ => ?_
-    show _ = M.rho c.out⁻¹ (f.1 fun i => conjHom N c.out⁻¹ (g i))
-    refine congrArg (M.rho c.out⁻¹) (congrArg f.1 (funext fun i => ?_))
-    apply Subtype.ext
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv]
-    rw [retr_conj N _ _ (by rw [partialProd_coe]; exact SetLike.coe_mem _),
-      retr_conj N _ _ (by rw [partialProd_coe]; exact SetLike.coe_mem _), rep_out,
-      Fin.partialProd_succ]
-    show _ = (c.out⁻¹)⁻¹ * (g i : G) * c.out⁻¹
-    group
-  have hrc : res.H n (cor.H n x) = N.index • x := by
-    rw [← Hom.H_comp, Hom.H_sum _ _ _ n key]
-    rw [Finset.sum_congr rfl fun c _ => hx c.out⁻¹ (conjPrime₂ M N c.out⁻¹) (fun _ => rfl) (fun _ => rfl)]
-    rw [Finset.sum_const, Finset.card_univ, card_rightRel]
-  refine ⟨cor.H n (((hunit.unit⁻¹ : Rˣ) : R) • x), ?_⟩
-  rw [map_smul, map_smul, hrc, ← Nat.cast_smul_eq_nsmul R, smul_smul, hunit.val_inv_mul, one_smul]
-
 end ReciprocityTheory.Coh

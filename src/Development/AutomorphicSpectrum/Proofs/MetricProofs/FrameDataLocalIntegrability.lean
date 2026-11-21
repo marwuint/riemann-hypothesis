@@ -3,10 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionOpenStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalDegreeEstimateStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionOpen
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalDegreeEstimate
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwapStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwap
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartFourth
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
@@ -19,8 +19,8 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.PFl.ChartRead
 
 theorem chart_reads : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ∀ w ∈ pD ε V, pPhi M F keep v bl h ε w ∈ pO M Rb keep v F kb V r h ∧ pRho M Rb keep v F kb r h ε (pPhi M F keep v bl h ε w) = w := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc w hw
-  obtain ⟨hflag, hbase, hread⟩ := GlobalTheory.T.frameData_local_resolution_open K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc w hw
-  obtain ⟨z, hz, hzv, -⟩ := GlobalTheory.T.frameData_local_degree_estimate K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc w hw
+  obtain ⟨hflag, hbase, hread⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Exact.chart_points K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc w hw
+  obtain ⟨z, hz, hzv, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Ext.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc w hw
   obtain ⟨hκ, -, hF, hBC, hr, -, hh⟩ := hc
   have hwV : pB ε w ∈ V := hw
   obtain ⟨hzb, -, hG, horb⟩ := hBC.2.2.2.2 _ hwV
@@ -61,7 +61,7 @@ theorem chart_reads : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Finty
         rcases e' : M.blk (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) with _ | k
         · exact absurd hpr ((M.blk_none _).1 e')
         · exact ⟨k, rfl⟩
-      obtain ⟨hsgn, hsgn0⟩ := GlobalTheory.T.minorIJ_lowerUni_swap N (pMat keep (pL ε w) q.1.1.1)
+      obtain ⟨hsgn, hsgn0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.MatRead.minor_replace N (pMat keep (pL ε w) q.1.1.1)
         (stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2)) q.1.1.2.1 q.1.1.2.2 (hL _) haS hbS q.1.2.1 hzero
       have e1 := hminor _ k hkeep hk
       rw [hbase]

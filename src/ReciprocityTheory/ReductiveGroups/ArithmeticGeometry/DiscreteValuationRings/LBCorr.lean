@@ -160,9 +160,6 @@ lemma corr_trans (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} {t₂ : LB.Gen 
     erw [res_res', res_res']
     exact f1.trans f2
 
-lemma corr_refl (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : LB.Gen.Corr L φ ε φ ε t t := by
-  exact gen_corr_self t
-
 lemma shape_pull_mul (g : Z ⟶ Y) {U₁ U₂ W : Y.Opens} {Wz W₁ W₂ O Ow : Z.Opens}
     (h₁ : W ≤ U₁) (h₂ : W ≤ U₂) (hz : Wz ≤ g ⁻¹ᵁ W) (hO : O ≤ Wz) (k₁ : W₁ ≤ g ⁻¹ᵁ U₁) (k₂ : W₂ ≤ g ⁻¹ᵁ U₂)
     (m₁ : Ow ≤ W₁) (m₂ : Ow ≤ W₂) (o : O ≤ Ow) (a : Γ(Y, U₁)ˣ) (b : Γ(Y, U₂)ˣ) :
@@ -248,31 +245,6 @@ lemma mulGen_isGen_of_isGen (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t�
   intro i j
   ext
   exact (mulSec L φ ε φ₂ ε₂ (genSec t ht) (genSec t₂ ht₂)).compat i j
-
-lemma shape_pull_inv (g : Z ⟶ Y) {U : Y.Opens} {W O O' : Z.Opens} (h : W ≤ g ⁻¹ᵁ U) (o : O ≤ W) (h' : O' ≤ g ⁻¹ᵁ U)
-    (o' : O ≤ O') (x : Γ(Y, U)ˣ) : res o (res h (pullU g U x⁻¹)) = res o' (res h' (pullU g U x))⁻¹ := by
-  simp only [map_inv, res_res_lemma]
-
-lemma corr_pullGen_invGen (t : LB.Gen (LB.LinComb L φ ε)) (g : Z ⟶ Y) :
-    LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ (LB.invGen L φ ε t) g) (LB.invGen L _ _ (LB.pullGen L φ ε t g)) := by
-  intro j j' _ _ hk
-  obtain rfl : j = j' := funext fun k => hk k k rfl
-  exact shape_pull_inv g _ _ _ _ _
-
-lemma shape_mul_inv_one {U U' O : Y.Opens} {W : Y.Opens} (h₁ : W ≤ U) (h₂ : W ≤ U') (o : O ≤ W) (x : Γ(Y, U)ˣ)
-    (y : Γ(Y, U')ˣ) (hxy : res (inf_le_left : U ⊓ U' ≤ U) x = res (inf_le_right : U ⊓ U' ≤ U') y) :
-    res o (res h₁ x * res h₂ y⁻¹) = 1 := by
-  simp only [map_mul, map_inv, res_res_lemma]
-  rw [res_eq_res_of_le_of_res_eq hxy (le_inf (o.trans h₁) (o.trans h₂)) _ (o.trans h₂), mul_inv_cancel]
-
-lemma corr_ratio_one {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
-    (h : LB.Gen.Corr L φ ε φ' ε' t t') :
-    LB.Gen.Corr L _ _ (K' := PEmpty) PEmpty.elim PEmpty.elim (LB.mulGen L _ _ _ _ t (LB.invGen L φ' ε' t'))
-      (LB.oneGen L) := by
-  intro j j' hc _ _
-  have e := h (j ∘ Sum.inl) (j ∘ Sum.inr) (fun a b e => hc (Sum.inl a) (Sum.inl b) e)
-    (fun a b e => hc (Sum.inr a) (Sum.inr b) e) fun k k' e => hc (Sum.inl k) (Sum.inr k') e
-  exact (shape_mul_inv_one _ _ _ _ _ e).trans (map_one _).symm
 
 theorem exists_normalized_to {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K Kr : Type} [Fintype K] [Fintype Kr]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)

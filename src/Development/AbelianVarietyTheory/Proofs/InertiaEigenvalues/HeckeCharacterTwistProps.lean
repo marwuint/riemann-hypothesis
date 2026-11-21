@@ -59,17 +59,8 @@ theorem finQuot_incA (e : D.host.Eˣ) :
     ((1 : Af D.host.F) ⊗ₜ[D.host.F] D.sp.cm.sig ((e⁻¹ : D.host.Eˣ) : D.host.E)) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
-def delta (xi : (GlobalTheory.FinalJoin.AfE D)ˣ →* ℂˣ) (hn : ∀ u, GlobalTheory.FinalJoin.NormOne u → ‖((xi u : ℂˣ) : ℂ)‖ = 1) :
-    (AE D)ˣ →* Circle where
-  toFun x := ⟨((xi (finQuot D x) : ℂˣ) : ℂ), mem_sphere_zero_iff_norm.2 (hn _ (normOne_finQuot x))⟩
-  map_one' := Subtype.ext (by simp)
-  map_mul' x y := Subtype.ext (show ((xi (finQuot D (x * y)) : ℂˣ) : ℂ) = ((xi (finQuot D x) : ℂˣ) : ℂ) * ((xi (finQuot D y) : ℂˣ) : ℂ) by
-    rw [map_mul, map_mul, Units.val_mul])
-
 end GlobalTheory.NormOneTwist
 
 namespace GlobalTheory.NormOneTwist
-
-variable {D : D7}
 
 end GlobalTheory.NormOneTwist

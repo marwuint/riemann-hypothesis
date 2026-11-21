@@ -118,13 +118,6 @@ def appL (d d' : ℕ) : (Fin d → ℝ) →L[ℝ] (Fin (d + d') → ℝ) :=
         funext i
         refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp }
 
-theorem append_eq_appL {d d' : ℕ} (t : Fin d → ℝ) (s : Fin d' → ℝ) :
-    Fin.append t s = appL d d' t + Fin.append (0 : Fin d → ℝ) s := by
-  funext i
-  refine Fin.addCases (fun i => ?_) (fun i => ?_) i
-  · simp [appL]
-  · simp [appL]
-
 end Formalism.IndefR.Tow.SobPf.Avg
 
 end

@@ -1,11 +1,15 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CutoffHoloSmoothDbarFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedExtensionEtaleSteinSqIntegrableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HoloLimitIncreasingWeightsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CutoffHoloSmoothDbarFormula
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedExtensionEtaleSteinSqIntegrable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HoloLimitIncreasingWeights
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
@@ -175,7 +179,7 @@ theorem twisted_extension_logGrowth : ∀ (n : ℕ) (M : Type) [TopologicalSpace
             ∫⁻ x, ENNReal.ofReal (‖(θ (δ * ψ x) : ℂ) * G x‖ ^ 2 * Real.exp (-φ x)) ∂vol n X.z :=
             lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
         _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin
-    obtain ⟨F, hF, hFle⟩ := GlobalTheory.T.twistedExtension_etaleStein_sqIntegrable n M X (fun x => φ x + N * Lk k x) ψ G Ω δ T θ (hsmk k)
+    obtain ⟨F, hF, hFle⟩ := _root_.GlobalTheory.twistedExtension_sqInt n M X (fun x => φ x + N * Lk k x) ψ G Ω δ T θ (hsmk k)
       hψ hψ0 hδ hT hθ hlev hΩ hG hGhol hΩψ hfin'
     refine ⟨F, hF, hFle.trans ?_⟩
     rw [hB]
@@ -190,7 +194,7 @@ theorem twisted_extension_logGrowth : ∀ (n : ℕ) (M : Type) [TopologicalSpace
   have hψc : Continuous ψ := by
     have h := Smooth.continuous n X.z hz _ hψ
     simpa [Function.comp_def] using Complex.continuous_re.comp h
-  have hF0 := (GlobalTheory.T.cutoff_holo_smooth_dbar_formula n M X ψ G Ω δ (-T + 1) θ hψ hθ.1 hθ.2.2.1 hΩ hGhol hΩψ).1
+  have hF0 := (_root_.GlobalTheory.L2Cutoff.cutoff_smooth_dbar n M X ψ G Ω δ (-T + 1) θ hψ hθ.1 hθ.2.2.1 hΩ hGhol hΩψ).1
   have hF0c := Smooth.continuous n X.z hz _ hF0
   have hden : ∀ x, 0 < 1 + min ((δ * ψ x) ^ 2) ((T + 1) ^ 2) := fun x =>
     add_pos_of_pos_of_nonneg one_pos (le_min (sq_nonneg _) (sq_nonneg _))
@@ -230,7 +234,7 @@ theorem twisted_extension_logGrowth : ∀ (n : ℕ) (M : Type) [TopologicalSpace
     rw [add_zero, Real.log_one] at h3
     have h4 := ((tendsto_const_nhds (x := φ x)).add (h3.const_mul (N : ℝ))).add_const (ψ x)
     simpa using h4
-  obtain ⟨Gf, hGf, hGle⟩ := GlobalTheory.T.exists_holo_l2_bound_of_increasing_weights n M X (fun x => (θ (δ * ψ x) : ℂ) * G x)
+  obtain ⟨Gf, hGf, hGle⟩ := _root_.GlobalTheory.holo_limit_increasing_weights n M X (fun x => (θ (δ * ψ x) : ℂ) * G x)
     (fun x => wT T (δ * ψ x)) (1 / (1 + (T + 1) ^ 2)) (fun k x => (φ x + N * Lk k x) + ψ x)
     (fun x => φ x + ψ x) F B hF0c homc hc hbd hpk hanti htend hFholo hBlt hFle
   exact ⟨Gf, hGf, hGle⟩

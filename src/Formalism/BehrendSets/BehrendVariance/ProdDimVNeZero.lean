@@ -1,4 +1,4 @@
-import Formalism.BehrendSets.StatementE
+import Mathlib
 
 open Finset Real
 
@@ -11,7 +11,5 @@ def F (n : ℕ) : ℝ := ∑ i ∈ range n, Real.log ((i.factorial : ℕ) : ℝ)
 end Formalism.BehrendSets.Count
 
 namespace Formalism.BehrendSets
-
-open Formalism.BehrendSets.Count
 
 end Formalism.BehrendSets

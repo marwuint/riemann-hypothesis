@@ -119,58 +119,6 @@ theorem resMap_of_mem (a : (chartRingOver S y c)) (h : (a : Ω) ∈ locIn (chart
   rw [resMap_eq y c p _ (a := a) (b := 1) (Ideal.one_notMem p) (by simp)]
   simp [resq]
 
-theorem resMap_surjective : Function.Surjective (resMap y c p) := by
-  intro z
-  obtain ⟨x0, y0, hy0, rfl⟩ := IsFractionRing.div_surjective (A := chartRingOver S y c ⧸ p) z
-  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective x0
-  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective y0
-  have hb : b ∉ p := by
-    intro h
-    rw [← Ideal.Quotient.eq_zero_iff_mem] at h
-    rw [h] at hy0
-    have : Nontrivial (chartRingOver S y c ⧸ p) := Ideal.Quotient.nontrivial_iff.mpr hp.ne_top
-    exact zero_notMem_nonZeroDivisors hy0
-  refine ⟨⟨(a : Ω) / b, (mem_locIn_chart_iff y c p).mpr ⟨a, b, hb, rfl⟩⟩, ?_⟩
-  rw [resMap_eq y c p _ hb rfl]
-  rfl
-
-theorem resMap_eq_zero_iff (u : locIn (chartRingOver S y c) p) : resMap y c p u = 0 ↔ ¬ IsUnit u := by
-  obtain ⟨a, b, hb, hu⟩ := exists_rep y c p u
-  constructor
-  · intro h hu'
-    exact (hu'.map (resMap y c p)).ne_zero h
-  · intro h
-    by_contra h0
-    apply h
-    rw [resMap_eq y c p u hb hu] at h0
-    have ha : a ∉ p := fun ha => h0 (by rw [(resq_eq_zero_iff y c p a).mpr ha, zero_div])
-    have ha0 := coe_ne_zero_of_notMem y c p ha
-    have hb0 := coe_ne_zero_of_notMem y c p hb
-    refine IsUnit.of_mul_eq_one ⟨(b : Ω) / a, (mem_locIn_chart_iff y c p).mpr ⟨b, a, ha, rfl⟩⟩ ?_
-    apply Subtype.ext
-    rw [Subring.coe_mul, hu, Subring.coe_one, div_mul_div_comm, mul_comm (a : Ω),
-      div_self (mul_ne_zero hb0 ha0)]
-
-theorem residue_of_mem (a : chartRingOver S y c) : residue S y c p a = resq y c p a := by
-  unfold residue resq
-  rw [dif_pos a.2]
-
-theorem resMap_algebraMap (s : S) (h : algebraMap S Ω s ∈ locIn (chartRingOver S y c) p) :
-    resMap y c p ⟨algebraMap S Ω s, h⟩ = algebraMap S (ResField S y c p) s := by
-  have h' : ((algebraMap S (chartRingOver S y c) s : chartRingOver S y c) : Ω) ∈ locIn (chartRingOver S y c) p := h
-  rw [show (⟨algebraMap S Ω s, h⟩ : locIn (chartRingOver S y c) p) = ⟨_, h'⟩ from rfl, resMap_of_mem, resq]
-  rfl
-
-theorem resImage_eq (z : Subring Ω) (hz : z ≤ locIn (chartRingOver S y c) p) :
-    resImage S y c p z = {v | ∃ u : locIn (chartRingOver S y c) p, (u : Ω) ∈ z ∧ v = resMap y c p u} := by
-  ext v
-  constructor
-  · rintro ⟨a, b, hb, habz, rfl⟩
-    exact ⟨⟨_, hz habz⟩, habz, (resMap_eq y c p _ hb rfl).symm⟩
-  · rintro ⟨u, huz, rfl⟩
-    obtain ⟨a, b, hb, hu⟩ := exists_rep y c p u
-    exact ⟨a, b, hb, hu ▸ huz, resMap_eq y c p u hb hu⟩
-
 end ResidueMap
 
 end

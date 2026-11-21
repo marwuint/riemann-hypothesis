@@ -2,13 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AreaBoundedOfDiscrEqOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanLogPeriodConjugatesEqChowlaSelbergStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaNormUnimodularLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SigmaStarValueLeMeanSquareGenusOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicDataStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatumStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanLogPeriodConjugatesEqChowlaSelberg
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaNormUnimodularLattice
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegral
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SigmaStarValueLeMeanSquareGenusOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
@@ -71,9 +71,9 @@ theorem inv_le (Λ : AddSubgroup ℂ)
   obtain ⟨v, hv2, hv, hvt⟩ := exists_half Λ hΛ t
   have hs : t + v ∉ Λ := fun h => hvt (by convert Λ.sub_mem h h2 using 1; ring)
   have hs2 : 2 * (t + v) ∈ Λ := by convert Λ.add_mem h2 hv2 using 1; ring
-  obtain ⟨a0, -, a1, a2⟩ := GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj t h2 ht
-  obtain ⟨-, -, b1, b2⟩ := GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj v hv2 hv
-  obtain ⟨-, -, c1, c2⟩ := GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj (t + v) hs2 hs
+  obtain ⟨a0, -, a1, a2⟩ := _root_.GlobalTheory.HalfPeriodValue.value_half_period Λ hΛ hd hj t h2 ht
+  obtain ⟨-, -, b1, b2⟩ := _root_.GlobalTheory.HalfPeriodValue.value_half_period Λ hΛ hd hj v hv2 hv
+  obtain ⟨-, -, c1, c2⟩ := _root_.GlobalTheory.HalfPeriodValue.value_half_period Λ hΛ hd hj (t + v) hs2 hs
   have hp := prod_roots hd a2 b2 c2
     (wpF_ne Λ hΛ ht hv hs fun h => hvt (by convert Λ.neg_mem h using 1; ring))
     (wpF_ne Λ hΛ ht hs (fun h => hv (by convert Λ.sub_mem h h2 using 1; ring))
@@ -106,7 +106,7 @@ theorem posLog_nrm_le (Λ : AddSubgroup ℂ)
     Real.posLog (nrm1Sq Λ (GL3Theta.th0 Λ t)) ≤
       2 * Real.posLog B + 3 / 2 * (Real.posLog (2 * Real.pi ^ 2) + Real.posLog (area Λ)⁻¹) := by
   obtain ⟨h0, hi⟩ := inv_le Λ hΛ hd hj hS h2 ht
-  obtain ⟨hN, hth⟩ := GlobalTheory.T.odd_theta_norm_unimodular_lattice Λ hΛ hd
+  obtain ⟨hN, hth⟩ := _root_.GlobalTheory.OddThetaNorm.odd_theta_norm_sigma_star Λ hΛ hd
   rw [hth t h0]
   have e1 : 2 * Real.posLog (nrm1Sq Λ (sgStar Λ)) ≤
       Real.posLog (2 * Real.pi ^ 2) + Real.posLog (area Λ)⁻¹ := by
@@ -183,7 +183,7 @@ theorem exists_crv_conj {D : D7} (hI : Inp D) {cc : Ideal (𝓞 D.host.K)} {δ :
       rw [← e]
       exact (congrArg Tor.abelian₂ hbar).symm
     generalize lamConj M' ρ' (lamOf D cc δ) = Λ at hm
-    obtain ⟨-, -, hdisc, -, hO⟩ := GlobalTheory.T.idealPeriodLattice_of_curveDatum D hI.g1 cc' δ' hc'
+    obtain ⟨-, -, hdisc, -, hO⟩ := _root_.GlobalTheory.CurveLattice.lattice_of_curve D hI.g1 cc' δ' hc'
     have hd : TaylorLogMetric.discr Λ = 1 := by
       rw [← hm, TaylorLogMetric.discr, g2, g3, eisG_conj, eisG_conj] at hdisc
       apply (starRingEnd ℂ).injective
@@ -236,11 +236,11 @@ theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Idea
   have hc2 : 0 ≤ Real.posLog (2 * Real.pi ^ 2) := Real.posLog_nonneg
   refine ⟨18 + 3 / 2 * (Real.posLog (2 * Real.pi ^ 2) + (Real.posLog C + 2)), by positivity, ?_⟩
   intro D hI cc δ t0 hc _ L hL hrd hdl M _ h2 h3 _ t ht
-  obtain ⟨-, hlogd, hr1, -⟩ := GlobalTheory.T.derivationDenominators_and_hostField_sizes D hI.g1
+  obtain ⟨-, hlogd, hr1, -⟩ := _root_.GlobalTheory.NormSum.letters_and_sizes D hI.g1
   have hn : (0 : ℝ) < Module.finrank ℚ M := by exact_mod_cast Module.finrank_pos
   have hcard : (Fintype.card (M →ₐ[ℚ] ℂ) : ℝ) = Module.finrank ℚ M := by
     exact_mod_cast AlgHom.card ℚ M ℂ
-  have hper := GlobalTheory.T.mean_log_period_conjugates_eq_chowlaSelberg D hI.g1 cc δ hc M h2 h3
+  have hper := _root_.GlobalTheory.PeriodMean.mean_log_period D hI.g1 cc δ hc M h2 h3
   have hd0 : (0 : ℝ) < D.host.d := by exact_mod_cast D.host.hyp.2.1.pos
   have hpi := Real.pi_gt_three
   have hγ := Real.one_half_lt_eulerMascheroniConstant
@@ -263,15 +263,15 @@ theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Idea
     obtain ⟨cc', δ', hc', e⟩ := exists_crv_conj hI hc M ρ h2 h3
     have ht' := ht ρ
     rw [e] at ht' ⊢
-    obtain ⟨hΛ, -, hdisc, -, hO⟩ := GlobalTheory.T.idealPeriodLattice_of_curveDatum D hI.g1 cc' δ' hc'
+    obtain ⟨hΛ, -, hdisc, -, hO⟩ := _root_.GlobalTheory.CurveLattice.lattice_of_curve D hI.g1 cc' δ' hc'
     obtain ⟨ha0, haC⟩ := hA _ hΛ hdisc
     constructor
     · rw [Real.log_div ha0.ne' (by positivity)]
       have h1 := Real.posLog_le_posLog ha0.le haC
       have h4 := Real.posLog_sub_posLog_inv (x := area (lamOf D cc' δ'))
       linarith
-    · have := posLog_nrm_le _ hΛ hdisc ((GlobalTheory.T.admJ_and_torsion_data_algebraic D hI.g1).1 cc' δ' hc'.1 hc'.2)
-        (GlobalTheory.T.sigmaStar_value_le_meanSquare_genusOne D hI.g1 cc' δ' hc') ht'.1 (not_mem_lattice_of_isCMTorsionBasePoint ht' hO)
+    · have := posLog_nrm_le _ hΛ hdisc ((_root_.GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).1 cc' δ' hc'.1 hc'.2)
+        (_root_.GlobalTheory.GenusOneSup.value_le_mean_square D hI.g1 cc' δ' hc') ht'.1 (not_mem_lattice_of_isCMTorsionBasePoint ht' hO)
       linarith
   have s1 : ∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹ ≤
       (Real.posLog C + 2) * L * Module.finrank ℚ M := by

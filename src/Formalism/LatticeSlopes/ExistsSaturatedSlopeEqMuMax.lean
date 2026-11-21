@@ -22,7 +22,6 @@ theorem covolEqCovolume : CovolEqCovolume := covol_eq_covolume'
 theorem gramDetLe : GramDetLe := gram_det_le
 theorem slopesBdd : SlopesBdd := slopesBdd_of gramDetLe
 theorem slopeLeMuMax : SlopeLeMuMax := slopeLeMuMax_of slopesBdd
-theorem muMaxMono : MuMaxMono := muMaxMono_of slopesBdd
 theorem degQuot : DegQuot := degree_quotient
 theorem covolAntiSameRank : CovolAntiSameRank := covol_anti_same_rank
 theorem saturProps : SaturProps := saturation_properties
@@ -34,10 +33,6 @@ theorem orthSum : OrthSum := orthogonal_sum_slope
 section
 variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
   [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
-
-theorem muMax_mono {L N : Submodule ℤ E} [DiscreteTopology L] (hN : N ≤ L) (hN0 : N ≠ ⊥) :
-    muMax N ≤ muMax L :=
-  muMaxMono E L N ‹_› hN hN0
 
 theorem covol_pos (L : Submodule ℤ E) [DiscreteTopology L] : 0 < covol L :=
   covolPos E L ‹_›

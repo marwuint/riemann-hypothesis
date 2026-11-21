@@ -14,11 +14,6 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.Mum.OrigVan
 
-theorem stalkMap_gs {X Y Z : Scheme.{0}} (t : Z ⟶ Y) (r : Y ⟶ X) (z : Z) (U : X.Opens) (h : r (t z) ∈ U)
-    (a : Γ(X, U)) : (t.stalkMap z).hom (gs r (t z) U a) = gs (t ≫ r) z U a := by
-  rw [gs_eq r (t z) U h, gs_eq (t ≫ r) z U h]
-  exact Scheme.Hom.germ_stalkMap_apply t (r ⁻¹ᵁ U) z h _
-
 theorem stalkMap_stalkOf {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (z : Sp S) (v : R) :
     ((Spec.map (CommRingCat.ofHom φ)).stalkMap z).hom (stalkOf ((Spec.map (CommRingCat.ofHom φ)) z) v) =
       stalkOf z (φ v) := by

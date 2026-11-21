@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOrbitOpNormIntegralFiniteOnCompactRegularStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompactStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOrbitOpNormIntegralFiniteOnCompactRegular
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompact
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselConstantBoundsOfGeTwoNPowFiveStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRepStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselConstantBoundsOfGeTwoNPowFive
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselFormConvergesEquivariantHermitianStatement
 
 noncomputable section
@@ -21,7 +21,7 @@ variable {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 theorem isUnit_det {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det := by
   by_contra h
-  have h1 := (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).1 g hg
+  have h1 := (_root_.GlobalTheory.SgInf.opn_facts k r).1 g hg
   rw [Matrix.nonsing_inv_apply_not_isUnit _ h] at h1
   have h0 : opn (0 : Mat k r) = 0 := by simp [opn]
   linarith [h1.1, h1.2]
@@ -70,7 +70,7 @@ theorem integrable_majorant (hG : IsClosedSub k r (GG k r)) {μG : Measure (Mt k
     Integrable (fun q : (Mt k r × Mt k r) × Mt k r =>
       Φ q.1 * opn (Matrix.of q.1.1 * Matrix.of q.2 : Mat k r) ^ (-A)) (P.prod μG) := by
   have := hμ.1
-  have hc := (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.1
+  have hc := (_root_.GlobalTheory.SgInf.opn_facts k r).2.2.1
   have hm : Measurable fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-A) :=
     (hc.comp continuous_of).measurable.pow_const _
   have hnn : ∀ x : Mat k r, 0 ≤ opn x ^ (-A) := fun x => Real.rpow_nonneg (opn_nonneg _) _
@@ -158,7 +158,7 @@ theorem integral_coef_translate {σ : Mat k r → (H →L[ℂ] H)} [CompleteSpac
 theorem rpow_bound (hG : IsClosedSub k r (GG k r)) {y y' : Mat k r} (hy : y ∈ GG k r) (hy' : y' ∈ GG k r)
     {a b : ℝ} (hb : 0 ≤ b) (hab : b ≤ a) :
     opn y ^ (-a) * opn y' ^ (-a) ≤ opn (y * y'⁻¹) ^ (-b) * opn y ^ (-(a - b)) := by
-  obtain ⟨hN, hmul, -⟩ := GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r
+  obtain ⟨hN, hmul, -⟩ := _root_.GlobalTheory.SgInf.opn_facts k r
   have h1 := (hN y hy).2
   have h2 := (hN y' hy').2
   have h3 := (hN _ (hG.2.2.2.1 y hy _ (hG.2.2.2.2 y' hy'))).2
@@ -194,13 +194,13 @@ theorem integrable_triple {σ : Mat k r → (H →L[ℂ] H)} {w : H} {a : ℝ} {
   have := hμ.1
   have := hS.1
   have := hS'.1
-  obtain ⟨hG, -, -, hSc, -⟩ := GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT
-  obtain ⟨-, -, -, hSc', -⟩ := GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hz' hT'
-  have hnum := (GlobalTheory.T.bessel_constant_bounds_of_ge_two_n_pow_five k r a hk ha).2
+  obtain ⟨hG, -, -, hSc, -⟩ := _root_.GlobalTheory.SgInf.closedSub_groups k r z hz hT
+  obtain ⟨-, -, -, hSc', -⟩ := _root_.GlobalTheory.SgInf.closedSub_groups k r z' hz' hT'
+  have hnum := (_root_.GlobalTheory.SgInf.a_bounds_of_ge_two_n_pow_five k r a hk ha).2
   set b : ℝ := 2 * ((2 * (r ^ 2 + r + 1) : ℕ) : ℝ) * (2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2) + 1 with hb
   have hb0 : 0 ≤ b := by positivity
   have hn0 : 0 ≤ 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 := by positivity
-  obtain ⟨-, Φ, hΦ, hΦb⟩ := GlobalTheory.T.besselOrbitOpNormIntegral_finite_on_compact_regular k r z z' μS μS' b {γ} hz hz' hT hT' hS hS' (by linarith)
+  obtain ⟨-, Φ, hΦ, hΦb⟩ := _root_.GlobalTheory.SgInf.OrbNorm.orbNormInt_lt_top k r z z' μS μS' b {γ} hz hz' hT hT' hS hS' (by linarith)
     isCompact_singleton (Set.singleton_subset_iff.2 hγ)
   have hγG : γ ∈ GG k r := hγ.1
   have hγi := hG.2.2.2.2 γ hγG
@@ -283,10 +283,10 @@ theorem GlobalTheory.SgInf.OO_eq_inv_deg_smul_Iint : ∀ (k r : ℕ) {H : Type} 
   have hD' := GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z' c' π' μS' hstd hsd'
   obtain ⟨hz, hT, hπ, hS, -⟩ := hsd
   obtain ⟨hz', hT', hπ', hS', -⟩ := hsd'
-  obtain ⟨hG, -, -, hSc, -⟩ := GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT
-  obtain ⟨-, -, -, hSc', -⟩ := GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hz' hT'
-  obtain ⟨-, hP, -⟩ := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ
-  obtain ⟨-, hP', -⟩ := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z' c' π' hz' hT' hπ'
+  obtain ⟨hG, -, -, hSc, -⟩ := _root_.GlobalTheory.SgInf.closedSub_groups k r z hz hT
+  obtain ⟨-, -, -, hSc', -⟩ := _root_.GlobalTheory.SgInf.closedSub_groups k r z' hz' hT'
+  obtain ⟨-, hP, -⟩ := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z c π hz hT hπ
+  obtain ⟨-, hP', -⟩ := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z' c' π' hz' hT' hπ'
   have hI := integrable_triple hstd hz hT hz' hT' hS hS'
     (f := fun s => PiS (psiGen k r z c) π s⁻¹ ξ) (f' := fun s => PiS (psiGen k r z' c') π' s⁻¹ ξ')
     ((hP.2.2 ξ).comp (continuousOn_matInv.mono hSc.1) fun s hs => hSc.2.2.2.2 s hs)

@@ -1,5 +1,5 @@
 import Formalism.LocalToGlobal.RatioJoints.CharacterProductEqOne
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesFixedValues
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RingSpecNormalisedCharacterEqAlt
 
@@ -34,12 +34,7 @@ structure JointsSAlt {ex : Extra D L hT Gi Gl K Y cX} (T : _root_.Formalism.L2.T
       T.theta.W.ψ (ε * algebraMap D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ((c : D.host.F) * (y : D.host.F) / (D.host.g k : D.host.F)))
   div : Nonempty (Formalism.L2.Host.DivisorCharacterCompatibility D T.n.cf ex.nch T.n.tp Y)
 namespace JointsS
-variable {ex : Extra D L hT Gi Gl K Y cX} {T : _root_.Formalism.L2.TiedDataSAlt ex}
-theorem _root_.Formalism.L2.JointsSAlt.idem (_ : _root_.Formalism.L2.JointsSAlt T) (P : HeightOneSpectrum (𝓞 D.host.E)) : ∃ e, Formalism.L2.JoinChr.IsPlIdem D e P :=
-  T.sameChr.idem P
 end JointsS
-section
-end
 end Formalism.L2
 end
 end

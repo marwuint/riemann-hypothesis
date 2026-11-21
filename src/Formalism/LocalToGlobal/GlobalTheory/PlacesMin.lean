@@ -8,18 +8,6 @@ namespace Formalism.L2.GlobalTheoryTheory.Places
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory Formalism.HN Formalism.LFunctionChainParameters
 
-theorem level_prime_division_of_statements {eps : ℝ} (Fm : FamP eps) (crystallineComparison : ℝ) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (tSet : SettingEventually Fm) (hTu : TuSize Fm) :
-    LocalQuadraticParts.LevelTFamily Fm := by
-  obtain ⟨x0, h0⟩ := h10
-  obtain ⟨x1, h1⟩ := tSet
-  refine J.family_levelPrime_summary_closed Fm crystallineComparison hTu (dlSize eps Fm) ⟨max (max x0 x1) (Fm.x1 + 1), fun x hx i => ?_⟩
-  have hx0 : x0 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have hx1 : x1 ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have hx2 : Fm.x1 < x := by
-    have := le_trans (le_max_right _ _) hx
-    linarith
-  exact ⟨fun u => (h0 x hx0 i u (h1 x hx1 hx2 i u)).2.1, fun u => (h0 x hx0 i u (h1 x hx1 hx2 i u)).2.2.2.2.1⟩
-
 theorem placesF_min' {eps : ℝ} (Fm : FamP eps) (h26 : LocalQuadraticParts.LevelTFamily Fm) (hNC : Lnk.NuCommensF Fm) (hTu : TuSize Fm)
     (hRank : J.MuRank Fm) (lG : LinkG Fm) (lMu : LinkMu Fm) : Lnk.PlacesF Fm := by
   have heps := Lnk.fam_eps_pos Fm
@@ -118,9 +106,6 @@ theorem placesF_min' {eps : ℝ} (Fm : FamP eps) (h26 : LocalQuadraticParts.Leve
     have h1 : ¬ ((((Fm.D x i).what₂.places.resChar w : ℕ) : ℝ) ≤ (Fm.L x i).sc.X'' (Fm.D x i).R.n) :=
       fun h => hs (Fm.supp_sat x hx1 i w h)
     linarith [not_le.1 h1]
-
-theorem placesF_of_via_min : PlaceConditionsFamily := by
-  exact placesF_of
 
 end Formalism.L2.GlobalTheoryTheory.Places
 

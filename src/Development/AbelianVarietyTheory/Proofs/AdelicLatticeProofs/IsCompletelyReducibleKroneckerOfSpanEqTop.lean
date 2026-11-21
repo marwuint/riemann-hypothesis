@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsometryMatrixRange
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsLogKronecker
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsConjHarmOfSpanStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsConjHarmOfSpan
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SsTransfer
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
@@ -50,8 +50,8 @@ theorem ss_kronecker_of_span_top : ∀ (ι : Type) [Fintype ι] [DecidableEq ι]
     rw [hτ, ← map_mul, inv_mul_cancel, map_one]
   have i₂ : ∀ s : S, ρ' (τ s : G) * ρ' (s : G) = 1 := fun s => by
     rw [hτ, ← map_mul, inv_mul_cancel, map_one]
-  obtain ⟨P, hP, HP⟩ := GlobalTheory.T.exists_conj_harm_of_span' ι S τ (fun s => ρ (s : G)) i₁ (e₁.trans h)
-  obtain ⟨Q, hQ, HQ⟩ := GlobalTheory.T.exists_conj_harm_of_span' κ S τ (fun s => ρ' (s : G)) i₂ (e₂.trans h')
+  obtain ⟨P, hP, HP⟩ := _root_.GlobalTheory.ClassFin.exists_conj_harm_of_span ι S τ (fun s => ρ (s : G)) i₁ (e₁.trans h)
+  obtain ⟨Q, hQ, HQ⟩ := _root_.GlobalTheory.ClassFin.exists_conj_harm_of_span κ S τ (fun s => ρ' (s : G)) i₂ (e₂.trans h')
   have HK := harm_kronecker ι κ S _ _ HP HQ
   have hPQ : IsUnit (P ⊗ₖ Q).det := by
     rw [det_kronecker]

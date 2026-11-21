@@ -348,10 +348,4 @@ theorem tInZ_of (hS : WpShape.{u}) : TInZ.{u} := by
   linear_combination (-(toL ((tS W xP).subst (expSer W)) * toL X ^ 2)) * hw + toL X ^ 2 * h1
     + (-(toL ((tS W xP).subst (expSer W)))) * hP
 
-theorem logarithm_coeff : LogCoeff.{u} := by
-  intro K _ _ W n
-  simp only [logSer, integ, PowerSeries.coeff_mk, if_neg (Nat.succ_ne_zero n), Nat.add_sub_cancel]
-  have hn : ((n + 1 : ℕ) : K) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.succ_ne_zero n)
-  field_simp
-
 end Formalism.L2.Th1.A

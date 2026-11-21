@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ExistsSncChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanPairIsPrimeHeightTwoOfCotangentIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentCotangentOfIsTopFormFrameOfVaniStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanPairIsPrimeHeightTwoOfCotangentIndependent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentCotangentOfIsTopFormFrameOfVani
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CodimOneGenerizationStalk
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -135,7 +135,7 @@ theorem exists_meet_point : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoethe
     have hu' := hu.map (Y.presheaf.stalkSpecializes (hc.spec i hi)).hom
     rw [hgerm] at hu'
     exact (mem_maximalIdeal _).1 (hmy i hi) hu'
-  have hli := GlobalTheory.T.linearIndependent_cotangent_of_isTopFormFrame_of_vanishing Y q n U z hc.frame w hwU J (fun i => hm i.1 i.2)
+  have hli := _root_.GlobalTheory.CotIndep.linearIndependent_cotangent_of_isFrame Y q n U z hc.frame w hwU J (fun i => hm i.1 i.2)
 
   have hi2 : Function.Injective (![⟨j, hjJ⟩, ⟨j', hj'J⟩] : Fin 2 → J) := by
     intro k l hkl
@@ -145,7 +145,7 @@ theorem exists_meet_point : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoethe
     · exact (hjj (by simpa using (congrArg Subtype.val hkl).symm)).elim
     · rfl
   have hli2 := hli.comp _ hi2
-  obtain ⟨hPp, hPh⟩ := GlobalTheory.T.span_pair_isPrime_height_two_of_cotangent_independent (Y.presheaf.stalk w) (Y.presheaf.germ U w hwU (z j))
+  obtain ⟨hPp, hPh⟩ := _root_.GlobalTheory.PointSep.span_pair_isPrime_and_height_eq_two (Y.presheaf.stalk w) (Y.presheaf.germ U w hwU (z j))
     (Y.presheaf.germ U w hwU (z j')) (hm j hjJ) (hm j' hj'J) (by
       convert hli2 using 1
       funext k; fin_cases k <;> rfl)

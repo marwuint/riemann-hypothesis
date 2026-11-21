@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveFrameDatum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousComplEquivSymm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatCorrSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLatticeCorrespondingLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CorrespondingLatticesBlockLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CorrespondingLatticesBlockLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPrimitiveFrameMatrixTransportIffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaFunctionTransportLocalFieldIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaFunctionTransportLocalFieldIso
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -45,7 +45,7 @@ theorem primFrame_corr (hj : IsLocIso j) (rA : A₂ ≃ A) (cD : D₂ ≃ D) {Λ
 
 theorem corr_blockLat_of (hj : IsLocIso j) (cD : D₂ ≃ D) {ϖ : kˣ} {ϖ₂ : k'ˣ} (hϖ : IsUnif ϖ) (hϖ₂ : IsUnif ϖ₂)
     (e : ℕ) (P : Finset D) (P₂ : Finset D₂) (hP : ∀ c, c ∈ P₂ ↔ cD c ∈ P) :
-    LatCorr j cD (blockLat ϖ e P) (blockLat ϖ₂ e P₂) := GlobalTheory.T.correspondingLattices_blockLattice hj cD hϖ hϖ₂ e P P₂ hP
+    LatCorr j cD (blockLat ϖ e P) (blockLat ϖ₂ e P₂) := _root_.GlobalTheory.PureMatch.Transport.latCorr_blockLat hj cD hϖ hϖ₂ e P P₂ hP
 
 variable [MeasurableSpace k] [BorelSpace k] [MeasurableSpace k'] [BorelSpace k']
 
@@ -54,7 +54,7 @@ theorem fFun_corr (hj : IsLocIso j) (rA : A₂ ≃ A) (rA' : A₂' ≃ A') (cD :
     (hσ : ∀ s, cD (σ₂ s) = σ (Sum.map rA rA' s)) (ν₂ : k'ˣ →* ℂˣ) (ν : kˣ →* ℂˣ)
     (hν : ∀ x, ν x = ν₂ (Units.map (j : k →* k') x)) (Ψ : Matrix A₂' D₂ k' → ℂ) (Z : Matrix A D k) :
     fFun μ₂ σ₂ ν₂ Ψ (trM j rA cD Z) = fFun (pullMeas hj rA' μ₂) σ ν (fun Y => Ψ (trM j rA' cD Y)) Z :=
-  GlobalTheory.T.zetaFunction_transport_localFieldIso hj rA rA' cD μ₂ σ₂ σ hσ ν₂ ν hν Ψ Z
+  _root_.GlobalTheory.PureMatch.Transport.fFun_trM hj rA rA' cD μ₂ σ₂ σ hσ ν₂ ν hν Ψ Z
 
 end General
 end GlobalTheory.PureMatch.Transport

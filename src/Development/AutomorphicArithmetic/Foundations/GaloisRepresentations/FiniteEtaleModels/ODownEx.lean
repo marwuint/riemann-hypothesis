@@ -24,7 +24,7 @@ theorem UpperTheory.Gal.FiniteEtaleModels.O.downEx :
   obtain ⟨t, ⟨ht, m, hmt⟩, -⟩ := X₂.Y.rep X₁.Y.X X₁.Y.s (X₁.Y.univ.forget N₀ hd hcq₁)
     (fun y => X₁.Y.lv ((algebraMap (𝓞 D.F) D.O) ε • y)) hL
   obtain ⟨u, ⟨hu, ⟨mu⟩⟩, -⟩ := X₂.M.rep X₁.M.X X₁.M.s (X₁.M.univ.forget N₀ hd hcq₁)
-  obtain ⟨hfu, heu, -⟩ := GlobalTheory.T.harrisTaylor_levelForgetting_finite_etale_surjective q (datAt S.atq S.sp) (Ow w) S.b N₀ (N₀ * κ) hd hcq₁ h3
+  obtain ⟨hfu, heu, -⟩ := _root_.GlobalTheory.UPel.HT.forget_map_finite_etale_surjective q (datAt S.atq S.sp) (Ow w) S.b N₀ (N₀ * κ) hd hcq₁ h3
     X₂.M X₁.M u hu ⟨mu⟩
   have hsq : t ≫ X₂.π = X₁.π ≫ u := by
     obtain ⟨v, -, huniq⟩ := X₂.M.rep X₁.Y.X X₁.Y.s (X₁.Y.univ.forget N₀ hd hcq₁)

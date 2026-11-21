@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionComponentsPreimageOfIsPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenConnectedComponentOfIsLocallyNoetherianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentInFibreIffOfIsPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionComponentsPreimageOfIsPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenConnectedComponentOfIsLocallyNoetherian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentInFibreIffOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenIsIrreducibleComponentOfRationalPointSmootStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
@@ -22,7 +22,7 @@ theorem exists_open_inter_fiber_subset_sectionComponent (X S : Scheme.{0}) (f : 
     MorphismProperty.of_isPullback hpb inferInstance
   have hN : IsLocallyNoetherian (f.fiber s) :=
     LocallyOfFiniteType.isLocallyNoetherian (f.fiberToSpecResidueField s)
-  have hopen := GlobalTheory.T.isOpen_connectedComponent_of_isLocallyNoetherian' _ hN y₀
+  have hopen := _root_.GlobalTheory.isOpen_connectedComponent_of_isLocallyNoetherian _ hN y₀
   obtain ⟨U, hU, hUe⟩ := (f.fiberι s).isEmbedding.isInducing.isOpen_iff.mp hopen
   refine ⟨⟨U, hU⟩, ?_, ?_⟩
   · change e s ∈ U
@@ -32,7 +32,7 @@ theorem exists_open_inter_fiber_subset_sectionComponent (X S : Scheme.{0}) (f : 
     exact this
   · intro x hx hxs
     obtain ⟨y, rfl⟩ : x ∈ Set.range (f.fiberι s) := by rw [hrange]; exact hxs
-    refine (GlobalTheory.T.mem_connectedComponentIn_fibre_iff_of_isPullback X S f e s _ _ _ y₀ hpb hy₀ y).mpr ?_
+    refine (_root_.GlobalTheory.component_in_fibre_iff_of_isPullback X S f e s _ _ _ y₀ hpb hy₀ y).mpr ?_
     rw [← hUe]
     exact hx
 
@@ -54,7 +54,7 @@ theorem exists_affine_chart_preirreducible_fiber : ∀ (X S : Scheme.{0}) (f : X
     pullback.lift (p ≫ e) (𝟙 _) (by simp [he])
   have he' : e' ≫ pullback.snd f p = 𝟙 _ := pullback.lift_snd _ _ _
   have he'' : e' ≫ pullback.fst f p = p ≫ e := pullback.lift_fst _ _ _
-  have h1 := GlobalTheory.T.preimage_section_connectedComponentIn_of_isPullback X S _ _ f (pullback.snd f p) p (pullback.fst f p) e e' hf
+  have h1 := _root_.GlobalTheory.sectionComponents_preimage_of_isPullback X S _ _ f (pullback.snd f p) p (pullback.fst f p) e e' hf
     (IsPullback.of_hasPullback f p) he he' he''
   have h2 := (GlobalTheory.T.isOpen_isIrreducible_componentOfRationalPoint_smooth k _ (pullback.snd f p) e' inferInstance he').2
   rw [← h1] at h2

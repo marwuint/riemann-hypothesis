@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.Imports
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryLocusIdealLeKerOfIsBasePointStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatedOrdinaryIdealTangentFinrankEqTwelveStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryLocusIdealLeKerOfIsBasePoint
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatedOrdinaryIdealTangentFinrankEqTwelve
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FinrankPointDerivationsVanishingEqOfIsCompl
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 
 theorem GlobalTheory.OrdLoc.rtCompl : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (x : U.R →ₐ[O] O), IsBase D.η D.Ψ U.r.hom x → GlobalTheory.OrdLoc.primesAt0 D U = {GlobalTheory.OrdLoc.It D U} ∧ ∃ φ : U.R →ₐ[O] MvPowerSeries (Fin 12) E, UpperTheory.V.Loc.IsCompl (GlobalTheory.OrdLoc.It D U) x φ := by
   intro hL l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ _ x hx
-  obtain ⟨-, n, P, φ, hφ, hIP, ⟨y, hy, hyP⟩, hIt, h0, -⟩ := GlobalTheory.T.exists_unique_ordinaryPrime_dim_succ_near_base hL D U E x hx
+  obtain ⟨-, n, P, φ, hφ, hIP, ⟨y, hy, hyP⟩, hIt, h0, -⟩ := _root_.GlobalTheory.OrdLoc.saturatedOrdinaryIdeal_smooth_at_residualRep hL D U E x hx
   have hPx : P ≤ RingHom.ker x := by
     have hm : P ∈ GlobalTheory.OrdLoc.primesAt0 D U := by rw [h0]; rfl
     exact hm.2 x hx
@@ -27,7 +27,7 @@ theorem GlobalTheory.OrdLoc.rtCompl : LocalPublishedTheorems → ∀ {l : ℕ} [
         · simp only [LinearMap.smul_apply, h2 a ha, smul_zero] }
   have hT : ∀ δ, δ ∈ T ↔ (∀ a b, δ (a * b) = algebraMap O E (x a) * δ b + algebraMap O E (x b) * δ a) ∧
       ∀ a ∈ GlobalTheory.OrdLoc.IY D U, δ a = 0 := fun δ => Iff.rfl
-  have h1 := GlobalTheory.T.saturatedOrdinaryIdeal_tangent_finrank_eq_twelve hL D U E x hx T hT
+  have h1 := _root_.GlobalTheory.OrdLoc.tangent_finrank_eq_twelve hL D U E x hx T hT
   have h2 : finrank E ↥T = n := UpperTheory.finrank_pointDerivations_vanishing_eq_of_isCompl n P x φ hφ T fun δ => by
     rw [hT]
     refine and_congr_right fun h => ⟨fun h' a ha => ?_, fun h' a ha => h' a (hIP ha)⟩

@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SemiAbelianHomExtendsUniquelyOverDvr
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SmConnIdempotentSplitsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsSemiAbelianOfRetractStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SmConnIdempotentSplits
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsSemiAbelianOfRetract
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -35,8 +35,8 @@ theorem exists_semiAbelian_model_of_retract (W L : Type) [CommRing W] [IsDomain 
     simp only [CategoryTheory.Functor.map_comp, hFe, Category.assoc, reassoc_of% hab]⟩
 
   obtain ⟨G₁, _, i, r, hSm₁, hi, hr, hir, hri⟩ :=
-    GlobalTheory.T.exists_retract_of_smConn_idempotent (Sp W) G (smConn_of_semiAbelian G hG) F hF hFF
-  have hG₁ : IsSemiAbelian G₁ := GlobalTheory.T.isSemiAbelian_of_retract' (Sp W) G G₁ hG hSm₁ i r hr hir
+    _root_.GlobalTheory.SS.smConn_idempotent_splits (Sp W) G (smConn_of_semiAbelian G hG) F hF hFF
+  have hG₁ : IsSemiAbelian G₁ := _root_.GlobalTheory.SS.isSemiAbelian_of_retract (Sp W) G G₁ hG hSm₁ i r hr hir
   subst hri
 
   refine ⟨G₁, inferInstance, hG₁,

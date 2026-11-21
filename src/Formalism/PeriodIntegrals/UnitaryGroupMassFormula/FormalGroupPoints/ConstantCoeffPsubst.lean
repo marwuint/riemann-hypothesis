@@ -23,15 +23,6 @@ theorem serOver_iff (S : Subring K) {σ : Type*} (f : MvPowerSeries σ K) :
     rw [MvPowerSeries.coeff_map]
     exact (MvPowerSeries.coeff n g).2
 
-abbrev law (l ex : PowerSeries K) : MvPowerSeries (Fin 2) K :=
-  PowerSeries.subst
-    (PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) l +
-      PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) l) ex
-
-abbrev mulSer (l ex : PowerSeries K) (c : K) : MvPowerSeries Unit K :=
-  PowerSeries.subst
-    (MvPowerSeries.C c * PowerSeries.subst (MvPowerSeries.X () : MvPowerSeries Unit K) l) ex
-
 end PI.FglPtW.Wk
 
 end

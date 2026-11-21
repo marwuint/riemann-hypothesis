@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegrableInfMeasure
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegrableOnAbsDetRpowLeOneFundamentalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourierTransformUniformRapidDecayFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourierTransformUniformRapidDecayFamily
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOfMemSmoothSpan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SummableNonzeroRationalVectorLeShortestVectorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MellinIntegralRapidDecayEntireOfLeOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MellinIntegralRapidDecayEntireOfLeOne
 
 noncomputable section
 
@@ -82,7 +83,7 @@ theorem exists_norm_rsHat_le {ι : Type} {S S' : Submodule ℂ (Sm E a)} {g : ι
     (hS' : ∀ F ∈ S', ∃ C : ℝ, ∀ x, ‖F.1 x‖ ≤ C) {F F' : Sm E a} (hF : F ∈ S) (hF' : F' ∈ S')
     (hΦ : IsTest (rowSet E ℓ) Φ) (M : ℕ) : ∃ C : ℝ, ∀ i y,
       ‖rsHat ℓ F.1 F'.1 Φ J η (g i) y‖ * (1 + ‖fun j => pInf E (y j)‖) ^ M ≤ C * w i := by
-  obtain ⟨C, hC⟩ := GlobalTheory.T.fourierTransform_uniformRapidDecay_family E a ι w (famSpan ℓ S S' g) (famSpan_bound hS hS')
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.fourier_decay_family E a ι w (famSpan ℓ S S' g) (famSpan_bound hS hS')
     (fun f hf => (famSpan_fderiv hL hL' f hf).2) M _ (Submodule.subset_span ⟨F, hF, F', hF', Φ, hΦ, rfl⟩)
   refine ⟨(finiteMeasurePi E (latt a J)).toReal * C, fun i y => ?_⟩
   have h1 := hC i fun j => pInf E (y j)
@@ -94,53 +95,6 @@ theorem exists_norm_rsHat_le {ι : Type} {S S' : Submodule ℂ (Sm E a)} {g : ι
   exact mul_le_mul_of_nonneg_right (mul_le_of_le_one_right (norm_nonneg _) h2) (by positivity)
 
 variable {π π' : CuspSub E a} {φ φ' : Sm E a}
-
-theorem exists_norm_rsHat_le_const (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ withSmoothings π)
-    (hφ' : φ' ∈ withSmoothings π') (hΦ : IsTest (rowSet E ℓ) Φ) :
-    ∃ C : ℝ, ∀ g y, ‖rsHat ℓ φ.1 φ'.1 Φ J η g y‖ ≤ C := by
-  obtain ⟨C, h⟩ := exists_norm_rsHat_le J η (g := id) (w := fun _ => 1) (fun X _ => lie_mem_withSmoothings X)
-    (fun X _ => lie_mem_withSmoothings X)
-    (fun F hF _ _ => (continuous_bounded hπ hF).2.imp fun C h _ _ _ => (h _).trans_eq (mul_one _).symm)
-    (fun F hF => (continuous_bounded hπ' hF).2) hφ hφ' hΦ 0
-  exact ⟨C, fun g y => by simpa using h g y⟩
-
-theorem exists_tsum_norm_rsHat_le (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ withSmoothings π)
-    (hφ' : φ' ∈ withSmoothings π') (hΦ : IsTest (rowSet E ℓ) Φ) (K : ℕ) : ∃ C : ℝ, ∀ g ∈ lowSet E a,
-      ∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖rsHat ℓ φ.1 φ'.1 Φ J η g
-        ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* (g⁻¹).valᵀ)‖ ≤
-        C * (ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ K := by
-  set N := K + Module.finrank ℝ (Fin a → Cinf E) with hN
-  have had : 1 ≤ a * Module.finrank ℚ E := Nat.mul_pos ℓ.pos Module.finrank_pos
-  obtain ⟨M, C₁, h₁⟩ := GlobalTheory.T.summable_nonzeroRationalVector_le_shortestVector E a (traceDualIdeal E J) (a * Module.finrank ℚ E * N)
-    ((Nat.le_add_left _ K).trans (Nat.le_mul_of_pos_left _ had))
-  obtain ⟨C₂, h₂⟩ := exists_norm_rsHat_le J η
-    (ι := {p : GA E a × (Fin a → E) // p.2 ≠ 0 ∧
-      (fun i => pFin E (((fun j => algebraMap E (Ad E) (p.2 j)) ᵥ* p.1.val) i)) ∈ latt a (traceDualIdeal E J)})
-    (g := fun p => invT a (Ad E) p.1.1)
-    (w := fun p => (‖fun i => pInf E (((fun j => algebraMap E (Ad E) (p.1.2 j)) ᵥ* p.1.1.val) i)‖ ^
-      (a * Module.finrank ℚ E) / (ideleModule E (GeneralLinearGroup.det p.1.1) : ℝ)) ^ N)
-    (fun X _ => lie_mem_withSmoothings X) (fun X _ => lie_mem_withSmoothings X)
-    (fun F hF C₀ hC₀ => (decays_invT hπ hF _ (isCompact_latt _) _ (hC₀.image continuous_invT) N).imp
-      fun C h p c hc => by simpa only [map_mul, invT_invT] using h p.1.1 _ ⟨c, hc, rfl⟩ p.1.2 p.2.1 p.2.2)
-    (fun F hF => (continuous_bounded hπ' hF).2) hφ hφ' hΦ M
-  refine ⟨|C₁| * |C₂|, fun g hg => ?_⟩
-  set δ : ℝ := (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδ
-  have hδ0 : 0 < δ := (ideleModule E _).2
-  have h := (h₁ (invT a (Ad E) g) (|C₂| * δ ^ N)
-    (fun ξ => rsHat ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* (g⁻¹).valᵀ)) (by positivity)
-    (fun ξ hξ => by
-      rw [rsHat_eq J η φ φ' hΦ]
-      exact mul_eq_zero_of_left (mul_eq_zero_of_right _ (Set.indicator_of_notMem hξ _)) _)
-    (fun ξ ξ' h0 hξ' => by
-      have h3 := h₂ ⟨(invT a (Ad E) g, ξ'), h0, hξ'⟩ ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* (g⁻¹).valᵀ)
-      simp only [invT_invT, absDet_invT, ← hδ, div_inv_eq_mul, mul_pow, ← pow_mul] at h3
-      refine h3.trans ?_
-      rw [mul_assoc |C₂|, mul_comm (δ ^ N)]
-      exact mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))).2
-  refine h.trans ?_
-  rw [mul_assoc]
-  refine mul_le_mul (le_abs_self _) (mul_le_mul_of_nonneg_left
-    (pow_le_pow_of_le_one hδ0.le hg (Nat.le_add_right _ _)) (abs_nonneg _)) (by positivity) (abs_nonneg _)
 
 theorem poisson_rsPsi (F F' : Sm E a) (hΦ : IsTest (rowSet E ℓ) Φ) (g : GA E a) :
     Summable (fun ξ : Fin a → E => ‖rsPsi ℓ F.1 F'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val)‖) ∧
@@ -178,75 +132,5 @@ def partB (ℓ : Fin a) (φ φ' : GA E a → ℂ) (Φ : (Fin a → Cinf E) → �
       ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1) ∂μ
 
 variable {μ : Measure (GA E a)} [μ.IsHaarMeasure] {𝓕 : Set (GA E a)}
-
-theorem integrableOn_partA (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ withSmoothings π)
-    (hφ' : φ' ∈ withSmoothings π') (hΦ : IsTest (rowSet E ℓ) Φ) (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ)
-    {s : ℂ} (hs : 1 < s.re) : IntegrableOn (fun g => rsHat ℓ φ.1 φ'.1 Φ J η g 0 *
-      ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1)) (𝓕 ∩ lowSet E a) μ := by
-  obtain ⟨C, hC⟩ := exists_norm_rsHat_le_const J η hπ hπ' hφ hφ' hΦ
-  refine ((GlobalTheory.T.integrableOn_absDet_rpow_le_one_fundamentalDomain E a ℓ.pos μ 𝓕 h𝓕 (s.re - 1) (by linarith)).const_mul C).mono'
-    ((stronglyMeasurable_rsHat J η (continuous_bounded hπ hφ).1 (continuous_bounded hπ' hφ').1 hΦ
-      continuous_const).aestronglyMeasurable.mul
-      ((Complex.measurable_ofReal.comp continuous_absDet.measurable).pow_const _).aestronglyMeasurable)
-    (.of_forall fun g => ?_)
-  rw [norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule E _).2, Complex.sub_re, Complex.one_re]
-  exact mul_le_mul_of_nonneg_right (hC g 0) (Real.rpow_nonneg (ideleModule E _).2.le _)
-
-theorem partB_entire (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ withSmoothings π)
-    (hφ' : φ' ∈ withSmoothings π') (hΦ : IsTest (rowSet E ℓ) Φ) (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ) :
-    (∀ x : ℝ, IntegrableOn (fun g => (∑' ξ : {ξ : Fin a → E // ξ ≠ 0},
-      ‖rsHat ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* (g⁻¹).valᵀ)‖) *
-        (ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x - 1)) (𝓕 ∩ lowSet E a) μ) ∧
-    (∀ s : ℂ, IntegrableOn (fun g => (∑' ξ : {ξ : Fin a → E // ξ ≠ 0},
-      rsHat ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* (g⁻¹).valᵀ)) *
-        ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1)) (𝓕 ∩ lowSet E a) μ) ∧
-    Differentiable ℂ (partB ℓ φ.1 φ'.1 Φ J η μ 𝓕) := by
-  haveI : Countable E := Finsupp.Countable.of_moduleFinite (R := ℚ)
-  have hm : ∀ ξ : {ξ : Fin a → E // ξ ≠ 0}, AEStronglyMeasurable (fun g : GA E a =>
-      rsHat ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* (g⁻¹).valᵀ)) (μ.restrict (𝓕 ∩ lowSet E a)) :=
-    fun ξ => (stronglyMeasurable_rsHat J η (continuous_bounded hπ hφ).1 (continuous_bounded hπ' hφ').1 hΦ
-      (continuous_const.matrix_vecMul Units.continuous_coe_inv.matrix_transpose)).aestronglyMeasurable
-  have hlow : ∀ᵐ g ∂μ.restrict (𝓕 ∩ lowSet E a), g ∈ lowSet E a :=
-    ae_restrict_of_ae_restrict_of_subset Set.inter_subset_right
-      (ae_restrict_mem (isClosed_le continuous_absDet continuous_const).measurableSet)
-  have hδ := hlow.mono (q := fun g => 0 < (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧
-    (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1) fun g hg => ⟨(ideleModule E _).2, hg⟩
-  have hi := GlobalTheory.T.integrableOn_absDet_rpow_le_one_fundamentalDomain E a ℓ.pos μ 𝓕 h𝓕 1 one_pos
-  simp only [Real.rpow_one] at hi
-  have hb := exists_tsum_norm_rsHat_le J η hπ hπ' hφ hφ' hΦ
-  have h1 := GlobalTheory.T.mellin_integral_rapidDecay_entire_of_le_one _ _ _ _ continuous_absDet.measurable hδ hi (AEStronglyMeasurable.tsum hm) fun K =>
-    (hb K).imp fun C h => hlow.mono fun g hg =>
-      (norm_tsum_le_tsum_norm (poisson_rsPsi J η φ φ' hΦ g).2.1).trans (h g hg)
-  have h2 := GlobalTheory.T.mellin_integral_rapidDecay_entire_of_le_one _ _ _ _ continuous_absDet.measurable hδ hi
-    (Complex.continuous_ofReal.comp_aestronglyMeasurable (AEStronglyMeasurable.tsum fun ξ => (hm ξ).norm)) fun K =>
-    (hb K).imp fun C h => hlow.mono fun g hg => by
-      rw [Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _)]
-      exact h g hg
-  refine ⟨fun x => ((h2.1 ((x - 1 : ℝ) : ℂ)).norm).congr (.of_forall fun g => ?_), fun s => h1.1 _,
-    h1.2.comp (differentiable_id.sub_const 1)⟩
-  simp only [norm_mul, Complex.norm_real, Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule E _).2, Complex.ofReal_re]
-  rw [Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _)]
-
-theorem integral_low_eq (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ withSmoothings π)
-    (hφ' : φ' ∈ withSmoothings π') (hΦ : IsTest (rowSet E ℓ) Φ) (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ)
-    {s : ℂ} (hs : 1 < s.re) :
-    IntegrableOn (fun g => (∑' ξ : Fin a → E, rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val)) *
-      ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ s) (𝓕 ∩ lowSet E a) μ ∧
-    ∫ g in 𝓕 ∩ lowSet E a, (∑' ξ : Fin a → E, rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val)) *
-      ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ s ∂μ =
-      partA ℓ φ.1 φ'.1 Φ J η μ 𝓕 s + partB ℓ φ.1 φ'.1 Φ J η μ 𝓕 s := by
-  have hA := integrableOn_partA J η hπ hπ' hφ hφ' hΦ h𝓕 hs
-  have hB := (partB_entire J η hπ hπ' hφ hφ' hΦ h𝓕).2.1 s
-  have e : ∀ g : GA E a, (∑' ξ : Fin a → E, rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val)) *
-      ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ s =
-      rsHat ℓ φ.1 φ'.1 Φ J η g 0 * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1) +
-      (∑' ξ : {ξ : Fin a → E // ξ ≠ 0},
-        rsHat ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* (g⁻¹).valᵀ)) *
-        ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1) := fun g => by
-    rw [(poisson_rsPsi J η φ φ' hΦ g).2.2, Complex.cpow_sub _ _ (Complex.ofReal_ne_zero.2 (ideleModule E _).2.ne'),
-      Complex.cpow_one]
-    ring
-  simp only [e]
-  exact ⟨hA.add hB, integral_add hA hB⟩
 
 end GlobalTheory.RSThetaLow

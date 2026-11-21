@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RangeShape
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CutoffPolynomialConjugationDerivMemShapeSpan
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PseudoCoeffShapeSmoothCompactSupportStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PseudoCoeffShapeSmoothCompactSupport
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExpGContinuousInv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndefiniteUnitaryLieAlgebraMemIffEntriesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndefiniteUnitaryGroupHaarIsMulRightInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndefiniteUnitaryLieAlgebraMemIffEntries
+import Formalism.RealPlaceAnalysis.SmoothOnGVIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndefiniteUnitaryGroupHaarIsMulRightInvariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitalIntegralZeroOfDerivativeAlongConjCurve
 
 open MeasureTheory GlobalTheory.Orb GlobalTheory.PsCo.Pc1
@@ -14,17 +15,17 @@ namespace GlobalTheory.PsCo.Pc1
 
 theorem orbInt_adSpan_eq_zero : GlobalTheory.PsCo.Pc1.StOrbAd := by
   intro n ε μ _ s hs dt _ _ φ hφ
-  haveI : μ.IsMulRightInvariant := GlobalTheory.T.indefiniteUnitaryGroup_haar_isMulRightInvariant n ε μ
+  haveI : μ.IsMulRightInvariant := _root_.GlobalTheory.haar_UJ_isMulRightInvariant n ε μ
   have hp := isProperOrbit_realUJ hs
   induction hφ using Submodule.span_induction with
   | mem φ hφ =>
     obtain ⟨Z, H, P, hZ, hH, rfl⟩ := hφ
-    have hZ' : inG ε Z := (GlobalTheory.T.indefiniteUnitaryLieAlgebra_mem_iff_entries n ε Z).2 hZ
+    have hZ' : inG ε Z := (_root_.GlobalTheory.pcLieEntry n ε Z).2 hZ
     obtain ⟨hc, hinv⟩ := GlobalTheory.expG_continuous_inv n ε Z hZ'
     obtain ⟨hsh, hd⟩ := GlobalTheory.PsCo.Pc1.B.cutoffPolynomial_conjugation_deriv_mem_shapeSpan n ε Z H P hZ hH
     have hb : bas ε H P ∈ ShapeM ε P.totalDegree := Submodule.subset_span ⟨H, P, hH, le_rfl, rfl⟩
-    obtain ⟨-, -, h1, h2⟩ := GlobalTheory.T.pseudoCoeffShape_smooth_compactSupport n ε _ _ hb
-    obtain ⟨-, -, h3, h4⟩ := GlobalTheory.T.pseudoCoeffShape_smooth_compactSupport n ε _ _ hsh
+    obtain ⟨-, -, h1, h2⟩ := _root_.GlobalTheory.ShapeSmoothFinite.stShape n ε _ _ hb
+    obtain ⟨-, -, h3, h4⟩ := _root_.GlobalTheory.ShapeSmoothFinite.stShape n ε _ _ hsh
     refine hasOrbInt_zero_of_hasDerivAt_conj (UJ ε) μ s hp dt (fun t => expG ε Z t) hc _ _ h1 h2 h3 h4 fun g u => ?_
     have e : ∀ v : ℝ, toM ((expG ε Z v)⁻¹ * g * expG ε Z v) =
         NormedSpace.exp (-((v : ℂ) • Z)) * toM g * NormedSpace.exp ((v : ℂ) • Z) := fun v => by

@@ -2,11 +2,11 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCharLab
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegree
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraFrobeniusReciprocityStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelExistsUniqueGLnStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLawsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLaws
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelMulOfConstituentStatement
 
 noncomputable section
@@ -258,14 +258,14 @@ theorem irr_vanish (σ : Fin k ⊕ Fin l ≃ Fin n) (χ : Gn g n → ℂ) (α : 
     commute_map (inB σ) (eN g σ) (fun x c => eN_comm σ 1 x c) _
   have iz : ∀ {G : Type} [Group G] [Fintype G] (χ : G → ℂ), IsIrr χ → IsIdempotentElem (zOf χ) := by
     intro G _ _ χ h
-    simpa [IsIdempotentElem] using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G χ χ h h).1
+    simpa [IsIdempotentElem] using (_root_.GlobalTheory.GLq.ZOrth.zorth G χ χ h h).1
   have hi : IsIdempotentElem
       (eN g σ * mapDomainAlgHom ℂ ℂ (inA σ) (zOf α) * mapDomainAlgHom ℂ ℂ (inB σ) (zOf β) * zOf χ) := by
-    refine IsIdempotentElem.mul_of_commute (((GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).2.1 _).symm) ?_ (iz χ hχ)
+    refine IsIdempotentElem.mul_of_commute (((_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).2.1 _).symm) ?_ (iz χ hχ)
     refine IsIdempotentElem.mul_of_commute (cB.mul_left (commute_AB σ _ _)) ?_ ((iz β hβ).map _)
     exact IsIdempotentElem.mul_of_commute cA (eN_idem σ) ((iz α hα).map _)
   refine eq_zero_of_idem _ hi ?_
-  rw [(GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ _ χ).2.2]
+  rw [(_root_.GlobalTheory.GLq.trIdem _ _ χ).2.2]
   refine mul_eq_zero_of_right _ ?_
   rw [hc, GlobalTheory.T.harishChandra_frobenius_reciprocity g k l n hn χ _ (isClass_of_isIrr hχ), ip, mul_eq_zero] at h
   have h' := h.resolve_left (inv_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero))
@@ -323,7 +323,7 @@ theorem ser_vanish' (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k �
     commute_map (inA σ) (eN g σ) (fun x c => eN_comm σ x 1 c) _
   have cB : Commute (eN g σ) (mapDomainAlgHom ℂ ℂ (inB σ) (eSerC L l f₂)) :=
     commute_map (inB σ) (eN g σ) (fun x c => eN_comm σ 1 x c) _
-  rw [mul_assoc, mul_assoc, (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n).2.1, ← mul_assoc, ← (commute_AB σ _ _).eq,
+  rw [mul_assoc, mul_assoc, (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n).2.1, ← mul_assoc, ← (commute_AB σ _ _).eq,
     ← (cA.mul_right cB).eq, ← mul_assoc]
   exact ser_vanish L h5 hG σ f f₁ f₂ hf
 
@@ -380,8 +380,8 @@ theorem step (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (σ : Fin k ⊕ Fin 
       (T (ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inA σ) (eSerC L k f)) w)) = 0)
     (f f' : (ZMod g)[X]) (hf : f ≠ f') (w : W) :
     ρ'.asAlgebraHom (eSerC L n f') (T (ρ.asAlgebraHom (eSerC L n f) w)) = 0 := by
-  obtain ⟨S₁, -, h₁⟩ := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG k).2.2.2.2
-  obtain ⟨S₂, -, h₂⟩ := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG l).2.2.2.2
+  obtain ⟨S₁, -, h₁⟩ := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG k).2.2.2.2
+  obtain ⟨S₂, -, h₂⟩ := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG l).2.2.2.2
   have e₁ : ∀ v : W, v = ∑ f₁ ∈ S₁, ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inA σ) (eSerC L k f₁)) v := by
     intro v
     rw [← LinearMap.sum_apply, ← map_sum, ← map_sum, h₁, map_one, map_one, Module.End.one_apply]
@@ -430,7 +430,7 @@ theorem vanish (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) {W W' : Type}
   intro ρ ρ' a hU hU' hM f f' hf w
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · rw [equiv_alg ρ ρ' T (fun m => hM m fun i => i.elim0), ← Module.End.mul_apply, ← map_mul,
-      (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG 0).2.2.1 f' f hf.symm]
+      (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG 0).2.2.1 f' f hf.symm]
     simp
   obtain ⟨k, l, σ, M, hk, h₁, h₂⟩ := exists_split a hn
   have one : ∀ i j, (1 : Mt g n) (σ i) (σ j) = Matrix.fromBlocks (1 : Mt g k) 0 0 (1 : Mt g l) i j := by

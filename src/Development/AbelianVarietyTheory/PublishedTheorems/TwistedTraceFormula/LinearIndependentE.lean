@@ -53,16 +53,7 @@ def stdFlag (J : Finset (Fin (wittIndex V))) : IsoFlag V := subFlag Φ.flag0 J
 
 def sub (u : SV (wittIndex V)) : Submodule E V.V := Submodule.span E (Φ.e '' {i | u i = 1} ∪ Φ.f '' {i | u i = -1})
 
-theorem sub_stdVec (j : Fin (wittIndex V)) : Φ.sub (stdVec j) = Φ.flag0.X j.succ := by
-  have h1 : {i | stdVec j i = 1} = {i : Fin (wittIndex V) | i.val < j.succ.val} := Set.ext fun i => by
-    simp [stdVec, Nat.lt_succ_iff]
-  have h2 : {i | stdVec j i = -1} = ∅ := Set.ext fun i => by
-    simp only [stdVec, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]; split_ifs <;> decide
-  rw [sub, h1, h2, Set.image_empty, Set.union_empty]; rfl
-
 variable (hc : CMData F E) (R : Type) [CommRing R] [Algebra F R]
-
-def par (P : Finset (SV (wittIndex V))) : Subgroup (HA R hc.sig V.gram) := ⨅ u ∈ P, parab hc V R (Φ.sub u)
 
 def levi (P : Finset (SV (wittIndex V))) : Subgroup (HA R hc.sig V.gram) :=
   ⨅ u ∈ P, parab hc V R (Φ.sub u) ⊓ parab hc V R (Φ.sub (-u))
@@ -132,28 +123,6 @@ def IsGood (L : Submodule (𝓞 E) (Fin V.rank → E)) (a : GL (Fin V.rank) (AF 
       coordR V w.Completion (Φ.e i) = JR w.Completion V.gram *ᵥ coordR V w.Completion (Φ.f i)
 
 end WittFrame
-
-theorem nonempty_wittFrame (hc : CMData F E) (V : HSpace E) : Nonempty (WittFrame V) := by
-  obtain ⟨W, hW, e⟩ := le_wittIndex_iff.1 (le_refl (wittIndex V))
-  obtain ⟨r, C, hC, rfl⟩ := AutFunCompare.exists_colSpan V W
-  obtain rfl : r = wittIndex V := ((finrank_span_eq_card (hC.map' V.frame.equivFun.symm.toLinearMap
-    (LinearEquiv.ker _))).trans (Fintype.card_fin r)).symm.trans e
-  have key : ∀ (A B : Matrix (Fin V.rank) (Fin (wittIndex V)) E) i j, V.hD (AutFunCompare.vecOf V (Aᵀ i))
-      (AutFunCompare.vecOf V (Bᵀ j)) = (Formalism.UG.cT (hc.sig : E →+* E) B * V.gram * A) j i := fun A B i j => by
-    rw [HSpace.hD, AutFunCompare.hT_col hc]
-    simp only [AutFunCompare.repr_vecOf]; rfl
-  have h0 : Formalism.UG.cT (hc.sig : E →+* E) C * V.gram * C = 0 := Matrix.ext fun a b =>
-    (key C C b a).symm.trans (mem_perp.1 (hW (Submodule.subset_span ⟨b, rfl⟩)) _ (Submodule.subset_span ⟨a, rfl⟩))
-  obtain ⟨L, hL, hL'⟩ := AutFunCompare.exists_dual hc V C hC h0
-  have hu := IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V
-  have e1 : Formalism.UG.cT (hc.sig : E →+* E) (V.gram⁻¹ * Formalism.UG.cT (hc.sig : E →+* E) L) * V.gram = L := by
-    rw [Formalism.UG.cT_mul, AutFunCompare.cT_cT', AutFunCompare.cT_gram_inv, Matrix.nonsing_inv_mul_cancel_right _ _ hu]
-  refine ⟨⟨fun i => AutFunCompare.vecOf V (Cᵀ i),
-    fun i => AutFunCompare.vecOf V ((V.gram⁻¹ * Formalism.UG.cT (hc.sig : E →+* E) L)ᵀ i), fun i j => ?_, fun i j => ?_,
-    fun i j => ?_⟩⟩
-  · rw [key, h0]; rfl
-  · rw [key, e1, ← Matrix.mul_assoc, hL']; rfl
-  · rw [key, e1, hL, Matrix.one_apply]; simp only [eq_comm]
 
 def IsSSPart {n : ℕ} (γ s : Matrix (Fin n) (Fin n) E) : Prop :=
   Module.End.IsSemisimple (Matrix.toLin' s) ∧ Commute γ s ∧ IsNilpotent (γ - s)

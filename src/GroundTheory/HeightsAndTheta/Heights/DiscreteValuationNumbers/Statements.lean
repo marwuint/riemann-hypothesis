@@ -11,8 +11,6 @@ noncomputable section
 
 universe u v
 
-abbrev LengthFormulaDimOne.Statement : Prop := ReciprocityTheory.ChartRestriction.G.AI.LocalLengthAdditivity.{u, v}
-
 abbrev LengthFormulaDimTwo.Statement : Prop := ReciprocityTheory.ChartRestriction.G.AI.LocalLengthMultiplicativity.{u}
 
 def ConservationOfNumber.Statement : Prop :=
@@ -60,8 +58,6 @@ def dimTwoExampleIdeal : Ideal (Polynomial ℤ_[2]) :=
   RingHom.ker (Polynomial.eval₂RingHom (PadicInt.toZMod : ℤ_[2] →+* ZMod 2) 0)
 
 instance : dimTwoExampleIdeal.IsPrime := RingHom.ker_isPrime _
-
-abbrev DimTwoExample : Type := Localization.AtPrime dimTwoExampleIdeal
 
 end Examples
 

@@ -3,9 +3,14 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetSubLeftO
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ExhUnipRadOne
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSupportOfIsSubquotientProdIrr
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BernsteinZelevinskyFiniteness
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetOfInducedFiltrationStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.InducedCellSemisimplificationStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IrreducibleSmoothAdmissibleGLStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetOfInducedFiltration
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
+import GroundTheory.AutomorphicForms.GeometricLemma
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.InducedCellSemisimplification
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IrreducibleSmoothAdmissibleGL
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 
 noncomputable section
 
@@ -16,7 +21,7 @@ namespace PositivityTheory.Exh
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 theorem geometricLemmaGL : GlobalTheory.Published.GeometricLemma :=
-  fun k _ _ _ _ => ⟨GlobalTheory.T.jacquet_of_induced_filtration k, GlobalTheory.T.induced_cell_semisimplification k⟩
+  fun k _ _ _ _ => ⟨_root_.GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration k, _root_.GlobalTheory.CompanionTheory.Glob.cellSemisimplification k⟩
 
 theorem embL_of_eq {x : IrrGL k} {l : List (IrrGL k)} {y : Fin l.length → IrrGL k} (e : y = l.get)
     (hd : ∑ a, (y a).1 = x.1) (f : x.rep.IntertwiningMap (prodIrr y hd)) (hf : Function.Injective f) : EmbL x l := by
@@ -92,7 +97,7 @@ theorem suppP : SuppP k := by
   exact List.get_mem l i
 
 theorem irreducibleAdmissibleGL : GlobalTheory.Published.IrreducibleAdmissibleGL :=
-  fun k _ _ _ _ n => GlobalTheory.T.irreducible_smooth_admissible_GL k (Fin n)
+  fun k _ _ _ _ n => _root_.GlobalTheory.CompanionTheory.SmGLBridge.irreducibleAdmissible k (Fin n)
 
 variable (k) in
 

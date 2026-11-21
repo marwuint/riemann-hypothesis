@@ -191,9 +191,6 @@ theorem map_homologyπ_shortHomologyComparison (S : ShortComplex C) [S.HasHomolo
       shortCyclesComparison F S ≫ (S.map F).homologyπ :=
   Cofork.IsColimit.π_desc (CokernelCofork.mapIsColimit _ S.homologyIsCokernel F)
 
-theorem epi_map_homologyπ (S : ShortComplex C) [S.HasHomology] : Epi (F.map S.homologyπ) :=
-  epi_of_isColimit_cofork (CokernelCofork.mapIsColimit _ S.homologyIsCokernel F)
-
 end ShortComplex
 
 section Complex
@@ -227,17 +224,6 @@ end Complex
 
 end Comparison
 
-section Homotopy
-
-open CategoryTheory Category Limits
-
-set_option backward.isDefEq.respectTransparency false
-
-variable {C D : Type*} [Category* C] [Category* D] [Preadditive C] [Preadditive D]
-  [CategoryWithHomology C] [CategoryWithHomology D] {ι : Type*} {c : ComplexShape ι}
-
-end Homotopy
-
 section Modules
 
 open CategoryTheory Category Limits
@@ -259,53 +245,5 @@ theorem isZero_homology_extendScalars_iff (S : Type w) [CommRing S] [inst : Alge
   rfl
 
 end Modules
-
-section Explicit
-
-open CategoryTheory Category Limits ChangeOfRings
-
-universe u
-
-variable {R : Type u} [CommRing R] (S : Type u) [CommRing S] [Algebra R S]
-  {ι : Type*} {c : ComplexShape ι}
-
-set_option backward.isDefEq.respectTransparency false in
-
-noncomputable def tensorEquivExtendScalars (M : ModuleCat.{u} R) :
-    S ⊗[R] M ≃ₗ[S] (ModuleCat.extendScalars.{u, u, u} (algebraMap R S)).obj M :=
-  let e : S ≃ₗ[R] (ModuleCat.restrictScalars (algebraMap R S)).obj (ModuleCat.of S S) :=
-    { toFun := fun s => s
-      invFun := fun s => s
-      map_add' := fun _ _ => rfl
-      map_smul' := fun r s => Algebra.smul_def r s
-      left_inv := fun _ => rfl
-      right_inv := fun _ => rfl }
-  { (TensorProduct.congr e (LinearEquiv.refl R M)).toAddEquiv with
-    map_smul' := fun s x => by
-      change TensorProduct.congr e (LinearEquiv.refl R M) (s • x) =
-        s • TensorProduct.congr e (LinearEquiv.refl R M) x
-      induction x with
-      | zero => simp
-      | tmul a m => rfl
-      | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add] }
-
-noncomputable def homologyBaseChange (K : HomologicalComplex (ModuleCat.{u} R) c) (p : ι) :
-    S ⊗[R] (K.homology p : ModuleCat R) →ₗ[S]
-      ((((ModuleCat.extendScalars.{u, u, u} (algebraMap R S)).mapHomologicalComplex c).obj
-        K).homology p : ModuleCat S) :=
-  (homologyComparison (ModuleCat.extendScalars.{u, u, u} (algebraMap R S)) K p).hom ∘ₗ
-    (tensorEquivExtendScalars S (K.homology p)).toLinearMap
-
-end Explicit
-
-section Main
-
-open CategoryTheory Category Limits
-
-universe u
-
-variable {R : Type u} [CommRing R]
-
-end Main
 
 end GlobalTheory

@@ -9,7 +9,8 @@ import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.ZarhinStatem
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateDatumStatement
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.OrdinaryCurveStatement
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedFlagStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAugmentationTheoremStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAugmentationTheorem
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedAFStatement
 
 noncomputable section
 
@@ -264,7 +265,7 @@ theorem gp_polAV : HodgeTateDatumStatement → ∀ (p : ℕ) [Fact p.Prime] (C :
   letI : Algebra ℤ_[p] R := (Av.zpLift p R hc).toAlgebra
   obtain ⟨-, cp, US, H, pt₀, h₀, hT⟩ := hHT p C v R hint hp hc P
   obtain ⟨e, he⟩ := Av.exists_addEquiv h₀ hpt
-  have key := GlobalTheory.T.polarised_augmentation_theorem p P.g C v R ℤ_[p] AlgEquiv.refl cp US H
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.GR.polarisedAF p P.g C v R ℤ_[p] AlgEquiv.refl cp US H
   dsimp only at key
   obtain ⟨-, -, -, -, -, -, -, hG, hTi⟩ := key
   rw [hT T] at hG hTi

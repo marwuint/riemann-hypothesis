@@ -106,19 +106,6 @@ theorem v_eq_iff (P : LocPrime l) (LL : FinExt l) (x : ↥LL.1) (q : ℚ) :
     linarith
   rw [← hs, show q = s by exact_mod_cast hqs]
 
-theorem norm_chiQ_le_one (P : LocPrime l) (g : GQ l) : ‖((P.χQ g : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1 := by
-  obtain ⟨a, ha, -⟩ := P.χQ_cyc g 0 1 (one_pow _)
-  rw [Nat.cast_zero, neg_zero, zpow_zero] at ha
-  have hA : ‖((a : ℕ) : ℚ_[l])‖ ≤ 1 := by
-    have := IsUltrametricDist.norm_intCast_le_one ℚ_[l] (a : ℤ)
-    simpa using this
-  calc ‖((P.χQ g : ℚ_[l]ˣ) : ℚ_[l])‖
-      = ‖(((P.χQ g : ℚ_[l]ˣ) : ℚ_[l]) - a) + a‖ := by rw [sub_add_cancel]
-    _ ≤ max ‖((P.χQ g : ℚ_[l]ˣ) : ℚ_[l]) - a‖ ‖((a : ℕ) : ℚ_[l])‖ := IsUltrametricDist.norm_add_le_max _ _
-    _ ≤ 1 := max_le ha hA
-
-def chiInt (P : LocPrime l) (g : GQ l) : ℤ_[l] := ⟨(P.χQ g : ℚ_[l]), norm_chiQ_le_one P g⟩
-
 theorem arithTied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), Formalism.L2.ArithTied P := fun l _ P =>
   ⟨fun LL x q => v_eq_iff P LL x q⟩
 

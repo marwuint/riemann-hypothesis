@@ -21,17 +21,6 @@ structure IsBichar (χ : G → G → ℂ) : Prop where
   zero_left : ∀ y, χ 0 y = 1
   zero_right : ∀ a, χ a 0 = 1
 
-theorem isBichar_one : IsBichar (fun _ _ : G => (1 : ℂ)) := by
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> intros <;> simp
-
-theorem isBichar_neg_one_zpow : IsBichar (fun a b : ℤ => (-1 : ℂ) ^ (a * b)) := by
-  have h0 : (-1 : ℂ) ≠ 0 := by norm_num
-  refine ⟨fun a b y => ?_, fun a y z => ?_, fun y => ?_, fun a => ?_⟩
-  · rw [add_mul, zpow_add₀ h0]
-  · rw [mul_add, zpow_add₀ h0]
-  · simp
-  · simp
-
 variable {χ : G → G → ℂ} {X Y L L' : AddSubgroup G}
 
 theorem ind_add (L : AddSubgroup G) (t : G) {u : G} (hu : u ∈ L) : ind L (t + u) = ind L t := by

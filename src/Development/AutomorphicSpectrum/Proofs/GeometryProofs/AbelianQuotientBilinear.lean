@@ -8,9 +8,9 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalBilinearTermPr
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientLineBundleGaugeStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGermPowerSeriesStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientDifferentialMatrixStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGaugeTransformStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGaugeTransform
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnitTrivialOnBothAxesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGaugeUnitStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGaugeUnit
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianQuotientGaugeRelationStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SubstitutionBilinearFormTransformStatement
 
@@ -29,12 +29,12 @@ theorem frame_gauge : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   obtain ⟨w, hw⟩ := Q.bun
   obtain ⟨Qs, hc, hQ⟩ := GlobalTheory.T.abelian_quotient_germ_power_series E H hstar X t k p x Q d d' g gB
   have hl := GlobalTheory.T.abelian_quotient_differential_matrix E H hstar X t k p x Q d d' g gB P hP Qs hc hQ
-  obtain ⟨lam, hax, hlam⟩ := GlobalTheory.T.abelian_quotient_gauge_transform E H hstar X t k p x Q d d' g gB w hw Qs hc hQ
+  obtain ⟨lam, hax, hlam⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.Lamex.exists_lam E H hstar X t k p x Q d d' g gB w hw Qs hc hQ
   refine ⟨bil lam 1 1, fun a => ?_⟩
   obtain ⟨wL, hwL, hrL⟩ := g.frame.ad a
   obtain ⟨wB, hwB, hrB⟩ := gB.frame.ad a
   obtain ⟨u, hu⟩ := GlobalTheory.T.abelian_quotient_line_bundle_gauge E H hstar X t k p x Q d d' g gB w hw a wL wB hwL hwB
-  obtain ⟨h0, h1⟩ := GlobalTheory.T.abelian_quotient_gauge_unit E H hstar X t k p x Q d d' g gB w hw Qs hc hQ a wL wB hwL hwB hrL hrB u hu
+  obtain ⟨h0, h1⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.FrGauge.UAxis.unit_one_on_axes E H hstar X t k p x Q d d' g gB w hw Qs hc hQ a wL wB hwL hwB hrL hrB u hu
   obtain rfl := GlobalTheory.T.unit_trivial_on_both_axes E H hstar X t k p x Q d g u h0 h1
   have hrel := GlobalTheory.T.abelian_quotient_gauge_relation E H hstar X t k p x Q d d' g gB w hw Qs hc hQ lam hlam a wL wB hwL hwB hrL hrB hu
   rw [← hstar a] at hrel

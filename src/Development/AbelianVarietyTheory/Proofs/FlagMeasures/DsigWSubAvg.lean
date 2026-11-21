@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactKH
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsHaarProbabilityMaxCompactHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRealTraceBumpPowFiniteTranslationStablePoStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsHaarProbabilityMaxCompactHermitian
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRealTraceBumpPowFiniteTranslationStablePo
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralTranslateFamilyIsKFiniteHermitianStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasDerivAtDerivedActionMaxCompactAverageStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRealTraceBumpPeakPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoIntegralNormalisedPowPeakStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRealTraceBumpPeakProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoIntegralNormalisedPowPeak
 
 open MeasureTheory Matrix Filter Topology
 
@@ -42,9 +42,9 @@ theorem dsigW_sub_avg {μ : Measure (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + 
 theorem kDense : Formalism.MainNotions.S.Pv.AmpDD.KDense := by
   intro k r ε lam H _ _ _ σ _ hDS v hv Ws hWs e he
   obtain ⟨-, hU, -⟩ := GlobalTheory.BesselMapOne.rep_of_isDSHpk hDS
-  obtain ⟨μ, hμ⟩ := GlobalTheory.T.exists_isHaarProbabilityMaxCompactHermitian k r
+  obtain ⟨μ, hμ⟩ := _root_.GlobalTheory.KFinAvg.exists_isHaarKH k r
   have hv' : Formalism.MainNotions.S.IsSmoothVec (k := k) (r := r) σ v := hv
-  obtain ⟨hpc, hp1, hp01, hpδ⟩ := GlobalTheory.T.unitaryRealTraceBump_peak_properties (2 * r + k + 1) (Nat.succ_pos _)
+  obtain ⟨hpc, hp1, hp01, hpδ⟩ := _root_.GlobalTheory.KFinAvg.peak_properties (2 * r + k + 1) (Nat.succ_pos _)
   have hKc : IsCompact (GlobalTheory.ThA.KH k r) := isCompact_KH k r
   have hK1 : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ GlobalTheory.ThA.KH k r :=
     ⟨by show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * _ * 1 = _; simp,
@@ -61,7 +61,7 @@ theorem kDense : Formalism.MainNotions.S.Pv.AmpDD.KDense := by
     intro w hw
     have hc := (Formalism.MainNotions.LowestKTypeMultiplicity.orbit_cont hU hv' w (hWs w hw)).mono
       (Set.inter_subset_left : GlobalTheory.ThA.KH k r ⊆ _)
-    have := GlobalTheory.T.tendsto_integral_normalised_pow_smul_of_unique_peak _ μ hμ.1 _ 1 _ hKc hμ.2.1 hK1 hμ.2.2.2 hpc hp1 hpK hpU H _ hc
+    have := _root_.GlobalTheory.tendsto_integral_normalised_pow_peak _ μ hμ.1 _ 1 _ hKc hμ.2.1 hK1 hμ.2.2.2 hpc hp1 hpK hpU H _ hc
     rw [hσ1, ContinuousLinearMap.one_apply] at this
     exact this
   set L := Ws.length
@@ -71,7 +71,7 @@ theorem kDense : Formalism.MainNotions.S.Pv.AmpDD.KDense := by
         (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v) < e / (L + 1) :=
     (Filter.eventually_all_finite Ws.finite_toSet).2 fun w hw => Metric.tendsto_nhds.1 (hconv w hw) _ hε
   obtain ⟨m, hm⟩ := hev.exists
-  obtain ⟨N, b, c, hbc, hpoly, htr⟩ := GlobalTheory.T.unitaryRealTraceBump_pow_finite_translation_stable_polys (2 * r + k + 1) m
+  obtain ⟨N, b, c, hbc, hpoly, htr⟩ := _root_.GlobalTheory.KFinAvg.peak_pow_polynomial (2 * r + k + 1) m
   set Z : ℝ := ∫ h, peak (2 * r + k + 1) h ^ m ∂μ
   have e1 : ∀ g, peakN μ m g = ∑ j, (c j / (Z : ℂ)) * b j g := fun g => by
     show ((peak (2 * r + k + 1) g ^ m / Z : ℝ) : ℂ) = _

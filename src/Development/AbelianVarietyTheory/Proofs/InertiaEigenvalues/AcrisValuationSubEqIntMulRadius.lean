@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PHomogeneousDifferenceLinearStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PHomogeneousDifferenceLinear
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisValuationAtRadiusConcaveContSlopeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisValuationRadiusLawsStatement
 open GlobalTheory.PMon.Gauss
@@ -37,7 +37,7 @@ theorem vr_sub_eq_int_mul : ∀ (l : ℕ) [Fact l.Prime] (h s : ℕ), s < h → 
   have hl0 : (0 : ℝ) < l := by exact_mod_cast (by omega : 0 < l)
   obtain ⟨cA, kA, sA⟩ := GlobalTheory.T.acrisValuationAtRadius_concave_cont_slope l w hw
   obtain ⟨cB, kB, sB⟩ := GlobalTheory.T.acrisValuationAtRadius_concave_cont_slope l w' hw'
-  have key := GlobalTheory.T.exists_int_sub_mul_eq_int_mul_of_homogeneous l h s 1 hl2 hsh le_rfl (fun r => vr l r w) (fun r => vr l r w')
+  have key := _root_.GlobalTheory.PHomCalc.p_homogeneous_difference_linear l h s 1 hl2 hsh le_rfl (fun r => vr l r w) (fun r => vr l r w')
     cA cB kA kB sA sB ?_ ?_
   · obtain ⟨n, hn⟩ := key
     exact ⟨n, fun r hr => by simpa using hn r hr⟩

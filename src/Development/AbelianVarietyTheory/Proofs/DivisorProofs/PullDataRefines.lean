@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusEndOfPadd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinHomIffLinEnd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoCompValuesMulStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoCompValuesMul
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -19,7 +20,7 @@ theorem pullData_refines : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing 
   obtain ⟨β', β'₂, w', hpb', hsq', hw', hc', ht'⟩ := hR
   have hs : spMap (RingHom.id V) = 𝟙 (Sp V) := Spec.map_id _
   letI := D.P.isAb.comm
-  obtain ⟨w'', hw'', hv⟩ := GlobalTheory.T.mumfordBundleIso_comp_values_mul _ _ _ D.P.A Q'.B Q.B D.P.L Q'.M.L Q.M.L
+  obtain ⟨w'', hw'', hv⟩ := _root_.GlobalTheory.LamComp.lam_comp _ _ _ D.P.A Q'.B Q.B D.P.L Q'.M.L Q.M.L
     D.P.isLB Q'.M.isLB Q.M.isLB β'₂ β₂ _ rfl w hw w' hw'
   refine ⟨β' ≫ β, β'₂ ≫ β₂, w'', ?_, ?_, hw'', fun a => ?_, fun a b => ?_⟩
   · exact (hpb'.comp hpb).congr (by rw [hs, Category.id_comp]) rfl

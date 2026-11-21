@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRatioOfWeightSumsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusStableGoodOpenOfWeightUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRatioOfWeightSums
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusStableGoodOpenOfWeightUnits
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LocallyOfFinitePresentationDiagMap
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FlatQuotientIsoOfSameKernel
@@ -199,7 +199,7 @@ theorem exists_open (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpO
       (∀ χ ∈ weights i, SplitTorus.val t χ = 1) → ⊤ ≤ ((t ≫ i) * g).left ⁻¹ᵁ U → ⊤ ≤ g.left ⁻¹ᵁ U →
       ∀ h₁ h₂, (((t ≫ i) * g).left.appLE W ⊤ h₁).hom f = (g.left.appLE W ⊤ h₂).hom f := by
     intro f
-    obtain ⟨U, hU, n, a, b, χ, hne, hw, hb, e⟩ := GlobalTheory.T.exists_ratio_of_weight_sums' k G hG X i hi W f ⟨x, hx⟩
+    obtain ⟨U, hU, n, a, b, χ, hne, hw, hb, e⟩ := _root_.GlobalTheory.SS.WtRat.exists_ratio_of_weight_sums k G hG X i hi W f ⟨x, hx⟩
     refine ⟨U, hne, fun Y t g ht k₁ k₂ h₁ h₂ => ?_⟩
     have key : ∀ (c : Γ(G.left, U)) (ψ : X), Wt i U c ψ → (c = 0 ∨ IsUnit c) →
         (((t ≫ i) * g).left.appLE U ⊤ k₁).hom c = (g.left.appLE U ⊤ k₂).hom c := by
@@ -262,7 +262,7 @@ theorem exists_factor_goodOpen : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : O
     exact e'
   obtain ⟨i', hi', e⟩ := FlatQuotient.exists_desc ρ _ i hker hkill
   refine ⟨weights i, inferInstance, hfree, hfin, i', ρ, hi', inferInstance, hsurj, e,
-    GlobalTheory.T.exists_torusStableGoodOpen_of_weightUnits k G hG (weights i) i' hi' fun χ => ?_⟩
+    _root_.GlobalTheory.SS.exists_goodOpen_of_weight_units k G hG (weights i) i' hi' fun χ => ?_⟩
   obtain ⟨V, u, hV, hu, h⟩ := χ.2
   exact ⟨V, u, hV, hu, wt_desc φ hφ i' e h⟩
 

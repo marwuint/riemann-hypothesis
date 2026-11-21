@@ -47,35 +47,12 @@ def locC (D : D7) (p : HeightOneSpectrum (𝓞 D.host.F)) : Formalism.MainNotion
 
 @[simp] theorem locC_Fp (D : D7) (p : HeightOneSpectrum (𝓞 D.host.F)) : (locC D p).Fp = p.adicCompletion D.host.F := rfl
 
-structure SiegelLatticeAgreement (D : D7) : Prop where
-
-  loc : ∀ p, Nonempty (LocIso (D.s.atP p) (locC D p))
-
-  term : Nonempty (Formalism.MainNotions.S.TermTie D)
-
-theorem letter_eq (D : D7) (w : D.what₂.Word) (τ : D.what₂.Tau) (l : Fin (D.R.k - 2)) :
-    D.s.letter w l = letterOf (D.hcW w τ) l := by
-  have hu := D.s.u_letter w τ l.1 l.2
-  have hD := D.s.Del_pos
-  unfold letterOf
-  rw [hu]
-  cases hb : D.s.letter w l
-  · simp [hb]
-  · simp [hb, hD.ne']
-
 theorem del_eq (D : D7) (hk : 3 ≤ D.R.k) (w : D.what₂.Word) (τ : D.what₂.Tau) :
     (D.s.Del : ℚ) = delOf (D.hcW w τ) hk := by
   have h : (D.hcW w τ).v ⟨0, by omega⟩ - (D.hcW w τ).v ⟨1, by omega⟩ = 4 * D.s.Del :=
     D.s.cloud_gap w τ 0 (by omega)
   unfold delOf
   linarith
-
-theorem letterOf_inj (D : D7) (τ : D.what₂.Tau) : Function.Injective fun w => letterOf (D.hcW w τ) := by
-  have e : (fun w => letterOf (D.hcW w τ)) = D.s.letter := by
-    funext w l
-    exact (letter_eq D w τ l).symm
-  rw [e]
-  exact D.s.letter_inj
 
 def LocIso.refl {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : Formalism.MainNotions.S.Loc.LocAt F E sig p) : LocIso A A where
@@ -120,13 +97,5 @@ theorem loc_of_adj (D : D7)
   obtain ⟨s, hs⟩ := h p
   rw [hs]
   exact ⟨LocIso.setSplit (locC D p) s⟩
-
-def SplitAgree (D : D7) (L : LevelData D) : Prop :=
-  letI := D.host.cmStar
-  ∀ (p : HeightOneSpectrum (𝓞 D.host.F)) S, (D.s.atP p).split = some S →
-    ∀ (u : D.what₂.Word) (i : Fin 2) (h : ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal) (x y : D.host.E),
-      ((S.e ((D.s.atP p).ιE x)).1 ≤ᵥ (S.e ((D.s.atP p).ιE y)).1 ↔
-        Valued.v (((L u).splitG i p h (x ⊗ₜ[D.host.F] (1 : p.adicCompletion D.host.F))).1) ≤
-          Valued.v (((L u).splitG i p h (y ⊗ₜ[D.host.F] (1 : p.adicCompletion D.host.F))).1))
 
 end Formalism.L2.S

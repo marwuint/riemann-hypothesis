@@ -6,12 +6,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartEqOneOfLevel
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsValCharTwist
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeTateFunctionalEquationCM
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HeckeLPartialContinuationHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanValuationGeOfIntegralAtPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialZetaValuesAtNegIntUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeanValuationGeOfIntegralAtPrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialZetaValuesAtNegIntUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareNuTwistedTupleIsCMValueHeckeCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlacesUnderSplitCoprimeConductorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareNuTwistedTupleRamifiedAtTwistPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlacesUnderPrimeNotMemOfNormCoprimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlacesUnderSplitCoprimeConductor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareNuTwistedTupleRamifiedAtTwistPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlacesUnderPrimeNotMemOfNormCoprime
 
 noncomputable section
 open NumberField IsDedekindDomain Polynomial
@@ -25,11 +25,11 @@ theorem meanVal_lower {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {�
     {w : Formalism.PairingDivisionLocalBalance.Pl K} (hw : (l : 𝓞 K) ∈ w.asIdeal) {m : ℕ}
     (h : IntAt l ((l : ℂ) ^ m * (σ c * β))) :
     -((m : ℝ) * (vw w (l : K) : ℝ)) ≤ (vw w c : ℝ) + meanVal_vw w p :=
-  GlobalTheory.T.meanValuation_ge_of_integral_at_prime σ hp hβ hc hl hw h
+  _root_.GlobalTheory.FunObj.SqNum.meanVal_vw_ge_of_intAt σ hp hβ hc hl hw h
 
 theorem classZetaVals_unique {E : Type} [Field E] [NumberField E] {k : ℕ} (hk : 2 ≤ k) {z z' : ClassGroup (OF E) → ℚ}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsClassZetaVals k z) (h' : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsClassZetaVals k z') : z = z' :=
-  GlobalTheory.T.partialZeta_values_at_neg_int_unique hk h h'
+  _root_.GlobalTheory.ZetaValUnique.classZetaVals_unique hk h h'
 
 section Twist
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
@@ -45,18 +45,18 @@ open Classical in
 
 theorem squareTopTwistPlaces_coprime_splitPlaces {μ₀ : T} (hL : L.Is μ₀) (t : T) :
     IsFinSetSplitPlacesCoprimeConductor (condF G.pl) ((GlobalTheory.SqTop.twPl G t).image fun P => P.under (𝓞 D.host.F)) :=
-  GlobalTheory.T.isFinSetSplitPlacesCoprimeConductor_twPl_under G hL t
+  _root_.GlobalTheory.KummerTwistLemmas.twist_places_under_split_coprime_conductor G hL t
 
 theorem twist_ram {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) :
     ∀ P ∈ GlobalTheory.SqTop.twPl G t, ¬ (nuH G t i j).UnrAt P :=
-  GlobalTheory.T.square_nu_twisted_tuple_ramified_at_twist_place G hL t i j
+  _root_.GlobalTheory.SqTop.nuH_not_unrAt_twPl G hL t i j
 
 open Classical in
 
 theorem twist_prime (t : T) {l : ℕ} (hl : l.Prime) {w : Formalism.PairingDivisionLocalBalance.Pl D.what₂.LL} (hlw : (l : 𝓞 D.what₂.LL) ∈ w.asIdeal)
     (hQ : (GlobalTheory.SqTop.Qn G t : 𝓞 D.what₂.LL) ∉ w.asIdeal) :
     ∀ q ∈ (GlobalTheory.SqTop.twPl G t).image (fun P => P.under (𝓞 D.host.F)), (l : 𝓞 D.host.F) ∉ q.asIdeal :=
-  GlobalTheory.T.twist_places_under_prime_not_mem_of_norm_coprime G t hl hlw hQ
+  _root_.GlobalTheory.twPl_under_not_mem_prime G t hl hlw hQ
 
 end Twist
 

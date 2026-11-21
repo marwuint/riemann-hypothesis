@@ -176,45 +176,4 @@ end Compl
 
 end LocFldPf
 
-open LocFldPf in
-
-theorem locFld : LocFld := by
-  intro K L _ _ _ _ j la
-  let : Algebra K L := j.toAlgebra
-  have := la.isMaximal
-  obtain ⟨Q, hQ, hQl⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) la.asIdeal
-  have hQ0 : Q ≠ ⊥ := Ideal.ne_bot_of_liesOver_of_ne_bot la.ne_bot Q
-  let w : HeightOneSpectrum (𝓞 L) := ⟨Q, hQ.isPrime, hQ0⟩
-  have : w.asIdeal.LiesOver la.asIdeal := hQl
-  have : Finite (𝓞 L ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot
-  have : CharZero (adicCompletionIntegers L w) :=
-    charZero_of_injective_algebraMap
-      (FaithfulSMul.algebraMap_injective (𝓞 L) (adicCompletionIntegers L w))
-  obtain ⟨e1, he1, h1⟩ := exists_e (L := L) w
-  let T : CDVR := { V := adicCompletionIntegers L w, cpl := isAdicComplete w }
-  have he2 : la.asIdeal.ramificationIdx' w.asIdeal ≠ 0 :=
-    Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal la.ne_bot
-  refine ⟨T, kMap w, la.asIdeal.ramificationIdx' w.asIdeal * e1,
-    ⟨Nat.mul_pos (Nat.pos_of_ne_zero he2) he1, fun a => ?_⟩, finite_res w⟩
-  show vV (adicCompletionIntegers L w) (kMap w (j a)) = _
-  simp only [vV, vLa]
-  rw [h1, show j a = algebraMap K L a from rfl, ← valuation_liesOver L la w a, ← pow_mul,
-    WithZero.log_pow]
-  push_cast
-  simp
-
-section Cor
-
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-  {Xo : Moduli Dw l} {c : Coeff l}
-
-theorem algPtLa_of_numPt (hN : XoNumPt Xo c) : AlgPtLa Xo c := algPtLa_of hN locFld
-
-theorem intFrNe_of_numPt (hN : XoNumPt Xo c) (hE : IntFrExt Xo c) : IntFrNe Xo c (algCls Xo c) :=
-  intFrNe_of' hN locFld hE
-
-end Cor
-
 end Formalism.L2.Pj

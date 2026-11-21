@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsKum
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HerbrandPrimeOrderStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CyclicKummerNormFixedHilbert90Statement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HerbrandPrimeOrder
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CyclicKummerNormFixedHilbert90
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PIdxUnitsFiniteExtensionAdicCompletionStatement
 
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
@@ -46,7 +46,7 @@ theorem exists_local_nonnorm : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F
   have hζ' : IsPrimitiveRoot (algebraMap F (v.adicCompletion F) ζ) p :=
     hζ.map_of_injective (algebraMap F (v.adicCompletion F)).injective
   obtain ⟨L, _, _, θ, σ, hK⟩ := exists_isKum p (v.adicCompletion F) _ _ hp hζ' hδ
-  obtain ⟨hfd, hrk, hσp, hfix, -, -, hnorm⟩ := GlobalTheory.T.cyclic_hilbert90_kummer_and_mem_kNorm_iff p _ L _ _ θ σ hK
+  obtain ⟨hfd, hrk, hσp, hfix, -, -, hnorm⟩ := _root_.GlobalTheory.CNorm.kummer_basic p _ L _ _ θ σ hK
   obtain ⟨e, he⟩ : ∃ e : ℕ, v.valuation F (p : F) = WithZero.exp (-(e : ℤ)) := by
     have h0 : v.valuation F (p : F) ≠ 0 := by
       rw [Valuation.ne_zero_iff]
@@ -94,7 +94,7 @@ theorem exists_local_nonnorm : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F
   have hiL0 : pIdx p (⊤ : Subgroup Lˣ) ≠ 0 := by
     rw [hiL]
     exact mul_ne_zero (mul_ne_zero hp.ne_zero (pow_ne_zero _ hQ)) htL
-  obtain ⟨-, h1, -, -, hH⟩ := GlobalTheory.T.herbrand_prime_order' p Lˣ s hp
+  obtain ⟨-, h1, -, -, hH⟩ := _root_.GlobalTheory.CNorm.herbrand_prime_order p Lˣ s hp
     (fun a => Units.ext (by rw [hs, hσp])) hiL0 htL
   have h0 : (nrm s p).range.relIndex (fix s) = 1 := by
     rw [Subgroup.relIndex_eq_one, hfx]

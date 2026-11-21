@@ -232,14 +232,6 @@ lemma pII0_floor (L Y k Q a B : ℝ) (hQ0 : 0 < Q) (ha : 0 ≤ a) (hYk100 : 100 
       gcongr
     exact le_trans (Int.floor_le _) h3
 
-lemma sizeBound_one_le_product (k r N Q c' Y : ℝ) (hk : 1 ≤ k) (hr : 1 ≤ r) (hN : 1 ≤ N) (hQ : 1 ≤ Q)
-    (hc : 1 ≤ c') (hY : 1 ≤ Y) : 1 ≤ k ^ 3 * r ^ 2 * N * Q ^ 5 * c' * Y := by
-  have h1 : 1 ≤ k ^ 3 := one_le_pow₀ hk
-  have h2 : 1 ≤ r ^ 2 := one_le_pow₀ hr
-  have h3 : 1 ≤ Q ^ 5 := one_le_pow₀ hQ
-  exact pII0_one_le_mul (pII0_one_le_mul (pII0_one_le_mul (pII0_one_le_mul
-    (pII0_one_le_mul h1 h2) hN) h3) hc) hY
-
 lemma pII0_om (r N n' c₀ c'' : ℕ) (hr : 1 ≤ r) (hN : 1 ≤ N) : (c₀ : ℝ) ≤ omII r N n' c₀ c'' := by
   unfold omII
   have hr' : (1 : ℝ) ≤ r := by exact_mod_cast hr

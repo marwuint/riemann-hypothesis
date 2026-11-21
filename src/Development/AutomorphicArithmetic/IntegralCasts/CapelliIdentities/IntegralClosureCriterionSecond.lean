@@ -9,10 +9,6 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Integra
     Formalism.BasicNotions.D7 → ℂ :=
     fun (D : Formalism.BasicNotions.D7) ↦ Complex.I * (↑√(↑D.host.d : ℝ) : ℂ)
 
-theorem UpperTheory.Reformulated.B.IntegralClosureCriterionSecond.aux2 :
-    ((1 : ℕ) + (1 : ℕ)).AtLeastTwo := by
-  exact ⟨le_rfl⟩
-
 noncomputable def UpperTheory.Reformulated.B.IntegralClosureCriterionSecond.OKc :
     Formalism.BasicNotions.D7 → ℂ → Prop :=
     fun (D : Formalism.BasicNotions.D7) (z : ℂ) ↦

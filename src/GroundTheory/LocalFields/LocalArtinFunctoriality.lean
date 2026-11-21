@@ -32,17 +32,6 @@ instance finiteDimensional_map_algEquiv :
     FiniteDimensional K (E.map (σ : Ω →ₐ[K] Ω)) :=
   LinearEquiv.finiteDimensional (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)).toLinearEquiv
 
-theorem localArtinMap_conj_apply (x : Eˣ) {y : Ω} (hy : y ∈ maximalAbelianExtension E Ω) :
-    σ ((localArtinMap E Ω x ⟨y, hy⟩ : maximalAbelianExtension E Ω) : Ω) =
-      ((localArtinMap (E.map (σ : Ω →ₐ[K] Ω)) Ω
-        (Units.map (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)).toRingEquiv.toRingHom.toMonoidHom x)
-          ⟨σ y, (mem_maximalAbelianExtension_transport_iff
-            (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)).toRingEquiv σ.toRingEquiv
-            (fun _ => rfl)).2 hy⟩ : maximalAbelianExtension (E.map (σ : Ω →ₐ[K] Ω)) Ω) : Ω) :=
-  transport_localArtinMap_apply (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)).toRingEquiv
-    (fun a b => vle_algEquiv_apply_iff (IntermediateField.equivMap E (σ : Ω →ₐ[K] Ω)) a b)
-    σ.toRingEquiv (fun _ => rfl) x hy
-
 end Conjugation
 
 section Finite

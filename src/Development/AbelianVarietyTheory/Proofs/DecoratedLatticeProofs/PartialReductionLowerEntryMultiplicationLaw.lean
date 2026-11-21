@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChLApply
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatCompAffineMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralCoordinateShearHaarLocalFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatCompAffineMatrix
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralCoordinateShearHaarLocalField
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData
 
 noncomputable section
@@ -161,7 +161,7 @@ theorem evalLaw_low : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   set T := GlobalTheory.PartRed.transSet (n := n) (n' := n') (c := c) ρ with hT
   set u := elem (k := k) r l hrl (-b) with hu
   have hgN : embA n u ∈ N k n c (ρ + 1) := embA_elem_mem r l hrl hrl' (-b) (ρ + 1)
-  have hmem := GlobalTheory.T.schwartzBruhat_comp_affine_matrix k (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) (embA n u)⁻¹ 0 Φ.1 Φ.2
+  have hmem := _root_.GlobalTheory.AffineSB.mem_SB_comp_affine k (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) (embA n u)⁻¹ 0 Φ.1 Φ.2
   let Φ₁ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) := ⟨_, hmem⟩
   have hΦ₁ : ∀ t, Φ₁.1 t = Φ.1 (((embA n u)⁻¹).val * t) := fun t => by simp [Φ₁]
   have hL1 := hL u hgN Φ Φ₁ hΦ₁
@@ -224,7 +224,7 @@ theorem evalLaw_low : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
       intro y j hj
       simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hj
       simp only [s, if_neg hj]
-    have hchg := GlobalTheory.T.integral_coordinate_shear_haar_localField k ν hν T S s hs_cont hs_dep hs_supp G
+    have hchg := _root_.GlobalTheory.CoordShear.integral_shear k ν hν T S s hs_cont hs_dep hs_supp G
     simp only [GlobalTheory.PartRed.red, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, GlobalTheory.PartRed.chL_apply]
     calc ∫ y : T → k, (ψ (-(b * β (Sum.inr l) (Sum.inr i))) : ℂ) * Φ₁.1 (GlobalTheory.PartRed.fillAt β E T x y) *
           (ψ (-ch (GlobalTheory.PartRed.fillAt β E T x y)) : ℂ) ∂(Measure.pi fun _ => ν)

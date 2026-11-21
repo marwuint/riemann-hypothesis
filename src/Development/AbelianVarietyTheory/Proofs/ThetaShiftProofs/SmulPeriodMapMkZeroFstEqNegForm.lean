@@ -172,11 +172,6 @@ theorem nilTo_ne_zero {a : A.La} (ha : a.y ≠ 0) :
   have h2 : (0 : ℤ) = A.be a.y a.y := by simpa using h1
   exact (A.be_pos _ ha).ne h2
 
-example (c τ₀ : ℂ) : KerPerp.nilTo (gaussCM c τ₀).EF_smul (gaussCM c τ₀).EF_bijective
-    (gaussCM c τ₀).yLin_surjective (gaussCM c τ₀).be_adj
-    (La.mk (A := gaussCM c τ₀) (1 : GaussianInt) 0 0) ≠ 0 :=
-  (gaussCM c τ₀).nilTo_ne_zero (one_ne_zero (α := GaussianInt))
-
 end AnArc
 
 end GlobalTheory

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalRingOfLocalizationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalRingOfLocalization
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleAdjoinBaseChangeImageStatement
 open IsLocalRing TensorProduct
 
@@ -17,7 +17,7 @@ theorem localRing_of_etale_over_essEtale : ∀ (R S' E : Type) [CommRing R] [Com
   haveI : IsScalarTower R (Localization.AtPrime q) E := IsScalarTower.of_algebraMap_eq (fun r => by
     show algebraMap R E r = algebraMap S' E (ψ (algebraMap R _ r))
     rw [ψ.commutes, ← IsScalarTower.algebraMap_apply])
-  exact GlobalTheory.T.etale_local_ring_of_localization R A E q P
+  exact _root_.GlobalTheory.essEtale_atPrime_of_etale_over_atPrime R A E q P
 
 theorem span_one_tmul_eq_top (S B : Type) [CommRing S] [CommRing B] [Algebra S B] (A₀ B₀ : Type)
     [CommRing A₀] [CommRing B₀] [Algebra A₀ S] [Algebra A₀ B₀] (e : B ≃ₐ[S] S ⊗[A₀] B₀) :

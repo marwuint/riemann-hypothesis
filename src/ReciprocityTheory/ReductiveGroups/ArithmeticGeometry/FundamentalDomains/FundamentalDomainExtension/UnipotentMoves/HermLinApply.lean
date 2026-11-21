@@ -49,13 +49,6 @@ lemma maj_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ)
   rw [e, Complex.re_ofReal_mul]
   ring
 
-lemma herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) (c : E) :
-    herm G x (c • y) = cc c * herm G x y := by
-  unfold herm cc
-  simp only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  ring
-
 lemma O_smul {r : ℕ} (β : 𝓞 E) (v : Fin r → E) : β • v = (β : E) • v := rfl
 
 end DeltaValuation

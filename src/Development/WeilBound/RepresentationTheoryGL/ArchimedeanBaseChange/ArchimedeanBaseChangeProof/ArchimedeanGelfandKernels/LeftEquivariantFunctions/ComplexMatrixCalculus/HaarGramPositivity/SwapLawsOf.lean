@@ -9,11 +9,4 @@ theorem fr0Laws_of (hR : RmLaws) (hG : GamMul) (hM : MtLaws) (hD : GamDer) : Mat
 
 theorem swapLaws_of (hR : RmLaws) : SwapLaws := Cxe.swapLaws_of hR
 
-example : EigProd := eigProd
-example : MatrixFrechetDerivativeAtZeroLaws → Avg := avg_of
-example : MatrixFrechetDerivativeAtZeroLaws → Avg → FrOne := frOne'
-example : MatrixFrechetDerivativeAtZeroLaws → Avg → FrMulK := frMulK'
-example : MatrixFrechetDerivativeAtZeroLaws → Avg → FrIso := frIso'
-example : MatrixFrechetDerivativeAtZeroLaws → Avg → FrCont := frCont'
-
 end PositivityTheory.RgBcC

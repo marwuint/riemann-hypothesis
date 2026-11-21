@@ -5,8 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCountabl
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CompRel
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralDegenerationValuesStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomTransport
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationValuesOverSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorsionPairDescentAlgClosedSubfieldStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationValuesOverSubfield
+import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsQkPullEquiv
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsScalarFormTraceForm
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorsionPairDescentAlgClosedSubfield
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationValuesIsoFieldPullbackStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsIsPullQk
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFiniteCubeInduction
@@ -176,7 +179,7 @@ theorem exists_sub (hL : Laws) (hGt : BrGtSt) (hWp : BrWpSt) {R F F' : Type} [Co
   let _ := H.starRing
   have hG := hL.globalFns
   have hB := A'.bimult
-  obtain ⟨N, ν, I, he, hr⟩ := GlobalTheory.T.exists_degenerationValues_over_subfield hG R A'.D₀ A'.even hB F F' f hf _ A'.ν
+  obtain ⟨N, ν, I, he, hr⟩ := _root_.GlobalTheory.ValuesSubfield.exists_values_subfield hG R A'.D₀ A'.even hB F F' f hf _ A'.ν
   choose q hq using fun k (p : QkPt A'.D₀ F k) => (((hGt R _ A'.even hB F N ν).2.2.2.2 k).1 p).exists
   obtain ⟨ρ, hρ⟩ := mem_range_of_pow_eq f two_pos (c := -(H.d : F)) (A'.ρ_sq.trans (by simp))
   have : ∀ n, ∃ z : Fˣ, 0 < n → f z = A'.I.ζ n := fun n => by
@@ -191,7 +194,7 @@ theorem exists_sub (hL : Laws) (hGt : BrGtSt) (hWp : BrWpSt) {R F F' : Type} [Co
   have : ∀ n a, ∃ p : QkPt A'.D₀ F n, 0 < n → qkExt hB f hf p = A'.I.ev n a := fun n a => by
     rcases n.eq_zero_or_pos with rfl | hn
     · exact ⟨qkZero hB F 0, fun h => absurd h (lt_irrefl _)⟩
-    · obtain ⟨p, hp⟩ := GlobalTheory.T.exists_torsionPair_descent_algClosed_subfield hL R _ hB F F' f hf n hn (A'.I.ev n a)
+    · obtain ⟨p, hp⟩ := _root_.GlobalTheory.QkDescent.exists_qkExt_of_isAlgClosed hL R _ hB F F' f hf n hn (A'.I.ev n a)
       exact ⟨p, fun _ => ((qkExt_iff hB f hf _ _).1 hp).symm⟩
   choose ev hev using this
   have eqv : ∀ {n} (p p' : QkPt A'.D₀ F n), QkPt.Equiv _ F' (qkExt hB f hf p) (qkExt hB f hf p') ↔ QkPt.Equiv _ F p p' :=

@@ -4,21 +4,6 @@ open Polynomial TensorProduct UpperTheory.V.Alg UpperTheory.V.J UpperTheory.V.Z.
 
 namespace UpperTheory.V.Z.Desc.V0.GeneralizedEigenRange
 
-section Lin
-
-variable {K V V' : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
-
-end Lin
-
-section Mu
-
-variable {O Λ B K : Type} [CommRing O] [CommRing Λ] [CommRing B] [Field K] [Algebra O Λ] [Algebra O B]
-  (lam : Λ →ₐ[O] B) {M M' : Type} [AddCommGroup M] [Module B M] [Module Λ M]
-  [AddCommGroup M'] [Module B M'] [Module Λ M']
-  (hs : ∀ (a : Λ) (m : M), a • m = lam a • m) (hs' : ∀ (a : Λ) (m : M'), a • m = lam a • m)
-
-end Mu
-
 end UpperTheory.V.Z.Desc.V0.GeneralizedEigenRange
 
 open UpperTheory.V.Z.Desc.V0.GeneralizedEigenRange

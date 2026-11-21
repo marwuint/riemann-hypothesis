@@ -69,9 +69,9 @@ theorem UpperTheory.V.Z.Int.vecForm :
   have hspan : ∀ v, (⨆ f : (σ v).IntertwiningMap (ρ.comp (s v)), LinearMap.range f.toLinearMap) = ⊤ :=
     fun v => span_sub (σ v) (ρ.comp (s v)) (π.rep.comp (embU n (φ v)).subtype) (hirr v)
       (Submodule.inclusion hNV) (Submodule.inclusion_injective hNV) (fun g y => Subtype.ext rfl)
-      (GlobalTheory.T.iSup_range_weightMaps_eq_top_definiteUnitary E n π (φ v) (lam v) (hW v))
+      (_root_.GlobalTheory.DefU.iSup_range_weight_eq_top E n π (φ v) (lam v) (hW v))
   haveI : Nontrivial N := ⟨⟨⟨φ₀, (hmemN _).2 ⟨hφ₀, hfix⟩⟩, 0, fun h => hne (congrArg Subtype.val h)⟩⟩
-  obtain ⟨F, hF0, hF⟩ := GlobalTheory.T.exists_multilinearMap_of_isotypic_commuting_subgroups (InfinitePlace E) (infU E n) N (fun v => embU n (φ v))
+  obtain ⟨F, hF0, hF⟩ := _root_.GlobalTheory.exists_multilinearMap_of_isotypic_commuting (InfinitePlace E) (infU E n) N (fun v => embU n (φ v))
     (fun v => nablaSq ℂ n (lam v)) ρ s σ inferInstance hirr hcomm hspan
   let f : MultilinearMap ℂ (fun v => nablaSq ℂ n (lam v)) (UA E n → ℂ) := N.subtype.compMultilinearMap F
   have hfN : ∀ x, f x ∈ N := fun x => (F x).2
@@ -85,7 +85,7 @@ theorem UpperTheory.V.Z.Int.vecForm :
   have hact : ∀ g ∈ infU E n, ∀ x : (∀ v, nablaSq ℂ n (lam v)),
       f (fun v => GlobalTheory.Branching.sqRep ℂ n (lam v) (cEmb (φ v) g) (x v)) = RU E n g (f x) := by
     intro g hg x
-    obtain ⟨y, hy, -, hprod⟩ := GlobalTheory.T.definiteUnitaryInfinitePoint_eq_list_prod_placeParts E n g hg
+    obtain ⟨y, hy, -, hprod⟩ := _root_.GlobalTheory.DefU.infU_eq_list_prod_embU E n g hg
     have hy' : ∀ v, y v ∈ embU n (φ v) := fun v => (hE v).symm ▸ hy v
     have hone : ∀ u v, u ≠ v → cEmb (φ v) (y u) = 1 := by
       intro u v huv

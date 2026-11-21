@@ -3,7 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IotaSpec
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.WeilGroupDenseInGaloisGroup
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegreeStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegree
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published UpperTheory.V.W UpperTheory.V.Hi
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -122,7 +124,7 @@ private theorem ce_open {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   haveI hUfi : U.toSubgroup.FiniteIndex := U.toOpenSubgroup.finiteIndex_of_finite_quotient
   have he : U.toSubgroup.index ≠ 0 := Subgroup.FiniteIndex.index_ne_zero
   have hn : 0 < Nat.card B := Nat.card_pos
-  obtain ⟨ζ, hζ⟩ := GlobalTheory.T.exists_rootOfUnity_fixed_dvd_weilGroupDegree F Ω A w h (U.toSubgroup.index * Nat.card B)
+  obtain ⟨ζ, hζ⟩ := _root_.GlobalTheory.exists_fixed_dvd_deg F Ω A w h (U.toSubgroup.index * Nat.card B)
     (Nat.mul_pos (Nat.pos_of_ne_zero he) hn)
   haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic
   haveI : FiniteDimensional F (IntermediateField.adjoin F {ζ}) :=

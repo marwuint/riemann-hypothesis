@@ -141,22 +141,6 @@ variable {c}
 def IsFracImage {O : Type} [CommRing O] (β : O →+* c.F) : Prop :=
   ∀ x : c.F, ∃ a s : O, β s ≠ 0 ∧ x * β s = β a
 
-lemma isFracImage_V (W : ValuationSubring ℂ) : IsFracImage (c.V W).subtype := by
-  intro x
-  rcases eq_or_ne x 0 with rfl | hx
-  · exact ⟨0, 1, by simp, by simp⟩
-  rcases (c.V W).mem_or_inv_mem x with h | h
-  · exact ⟨⟨x, h⟩, 1, by simp, by simp⟩
-  · exact ⟨1, ⟨x⁻¹, h⟩, by simpa using hx, by simpa using mul_inv_cancel₀ hx⟩
-
-lemma IsFracImage.ext {O K : Type} [CommRing O] [Field K] {β : O →+* c.F} (h : IsFracImage β)
-    {gam gam' : c.F →+* K} (hgam : ∀ x, gam (β x) = gam' (β x)) : gam = gam' := by
-  ext x
-  obtain ⟨a, s, hs, hx⟩ := h x
-  have h1 : gam x * gam (β s) = gam' x * gam (β s) := by
-    rw [← map_mul, hx, hgam a, hgam s, ← map_mul, hx]
-  exact mul_right_cancel₀ ((map_ne_zero gam).mpr hs) h1
-
 end Base
 
 structure ArcInput (D : Datum H) {l : Level H} (c : Coeff l) {O : Type} [CommRing O]
@@ -196,9 +180,6 @@ namespace ArcInput
 
 variable {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
-
-lemma gam_unique (x x' : ArcInput D c β O' b) : x.gam = x'.gam :=
-  x.frac.ext fun a => by rw [x.gam_over, x'.gam_over]
 
 lemma gam_rt (x : ArcInput D c β O' b) (r : O) (hr : ((β r : c.F) : ℂ) = H.rt0) :
     x.gam (coeffRt c) = algebraMap O' (FractionRing O') (b r) := by

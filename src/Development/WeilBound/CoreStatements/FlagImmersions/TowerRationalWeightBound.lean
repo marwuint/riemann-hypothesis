@@ -4,12 +4,12 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinearStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootModelLogIntegralFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RationalWeightIntegralCoeffsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CurveDegreeLinearNefConeStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionDivisorSupportStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionSectionBoundStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinear
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootModelLogIntegralFormula
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RationalWeightIntegralCoeffs
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CurveDegreeLinearNefCone
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionDivisorSupport
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithIntersectionSectionBound
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 
@@ -38,7 +38,7 @@ theorem geomDeg_comb (II : IntersectionSystem) (hII : IsFullIntersectionSystem I
     (hW : IsArithVar W 2) :
     geomDeg W (combLine ℓ n) 1 = ∑ j, (n j : ℝ) * geomDeg W (ℓ j) 1 := by
   classical
-  have h := (GlobalTheory.T.log_integral_multilinear II hII K ι W 1 J ℓ (fun _ => n) hW hℓ).1
+  have h := (_root_.GlobalTheory.CompanionTheory.Ar.Top.geo_multilin II hII K ι W 1 J ℓ (fun _ => n) hW hℓ).1
   unfold geomDeg
   rw [h]
   refine Fintype.sum_equiv (Equiv.funUnique (Fin 1) J) _ _ fun w => ?_
@@ -82,7 +82,7 @@ theorem geo_mixed (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) 
     ptsIntegral M.P (fun k z => Real.log ((combLine (M.line 1) (n k)).h z)) (fun _ => 1) =
       (M.δ * ∏ k, (q k : ℝ)) * M.geoFun (∏ k, linA (lam k) (s k)) := by
   subst hD
-  have h := GlobalTheory.T.root_model_log_integral_formula II hII Ψ N M 1 (fun k => (q k : ℝ) • lam k) (fun k => q k * s k) 1 n
+  have h := _root_.GlobalTheory.CompanionTheory.Ar.Top.geoFun_comb_mixed II hII Ψ N M 1 (fun k => (q k : ℝ) • lam k) (fun k => q k * s k) 1 n
     (fun k j => by rw [coef_smul, hn]; simp)
   rw [h]
   simp only [linA_smul, Finset.prod_mul_distrib]
@@ -115,9 +115,9 @@ include hK hE hS hII
 theorem nef_prod (M : RootModel Ψ N) (lam : Fin (dimFl Ψ N) → Wt Ψ N) (s : Fin (dimFl Ψ N) → ℚ)
     (hr : ∀ k, IsRatWt (lam k)) (hnef : ∀ k, M.NefGen (lam k) (s k)) :
     0 ≤ M.geoFun (∏ k, linA (lam k) (s k)) := by
-  choose q n hq hn using fun k => GlobalTheory.T.rational_weight_integral_coeffs Ψ N M (lam k) (s k) (hr k)
+  choose q n hq hn using fun k => _root_.GlobalTheory.CompanionTheory.Ar.Top.clear_rat_weight_coef Ψ N M (lam k) (s k) (hr k)
   have h1 := geo_mixed II hII M _ rfl lam (fun k => s k) q n hn
-  have h2 := GlobalTheory.T.ptsIntegral_log_nonneg hK hE hS II hII M.K M.ι M.P (dimFl Ψ N) (fun k => combLine (M.line 1) (n k))
+  have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Top.kleiman_generic_fibre_integral hK hE hS II hII M.K M.ι M.P (dimFl Ψ N) (fun k => combLine (M.line 1) (n k))
     M.arith (fun k => smooth_comb (smooth_line M 1) _)
     (fun k W hW hP => nef_comb II hII M (hn k) (hnef k) W hW hP)
   rw [h1] at h2
@@ -128,7 +128,7 @@ theorem nef_prod (M : RootModel Ψ N) (lam : Fin (dimFl Ψ N) → Wt Ψ N) (s : 
 theorem eff_prod (M : RootModel Ψ N) (e : ℕ) (he : dimFl Ψ N = e + 1) (lam : Fin e → Wt Ψ N) (s : Fin e → ℚ)
     (hr : ∀ k, IsRatWt (lam k)) (hnef : ∀ k, M.NefGen (lam k) (s k)) (nu : Wt Ψ N) (hnu : M.EffDiff nu) :
     0 ≤ M.geoFun ((∏ k, linA (lam k) (s k)) * linA nu (-1)) := by
-  choose q n hq hn using fun k => GlobalTheory.T.rational_weight_integral_coeffs Ψ N M (lam k) (s k) (hr k)
+  choose q n hq hn using fun k => _root_.GlobalTheory.CompanionTheory.Ar.Top.clear_rat_weight_coef Ψ N M (lam k) (s k) (hr k)
   obtain ⟨q0, n0, hq0, hn0, σ, hσ0, hσ⟩ := hnu
   have h1 := geo_mixed II hII M (e + 1) he (Fin.snoc lam nu) (Fin.snoc (fun k => (s k : ℝ)) (-1))
     (Fin.snoc q q0) (Fin.snoc n n0) (by
@@ -139,7 +139,7 @@ theorem eff_prod (M : RootModel Ψ N) (e : ℕ) (he : dimFl Ψ N = e + 1) (lam :
   have har : IsArithVar (mCoordIdeal M.y) (e + 2) := by
     have := M.arith
     rwa [he] at this
-  have h2 := GlobalTheory.T.arith_intersection_section_bound hK hE hS II hII M.K M.ι M.Ω M.y e (fun k => combLine (M.line 1) (n k))
+  have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Top.effective_mul_nef_nonneg hK hE hS II hII M.K M.ι M.Ω M.y e (fun k => combLine (M.line 1) (n k))
     (combLine (M.line 1) n0) σ har M.birational (fun k => smooth_comb (smooth_line M 1) _)
     (smooth_comb (smooth_line M 1) _) hσ0 hσ
     (fun k W hW hP => nef_comb II hII M (hn k) (hnef k) W hW hP)
@@ -176,7 +176,7 @@ theorem RootFieldNumerics.tower_rational_weight_bound : ReciprocityTheory.ChartR
     push_cast
     rfl
   have hnM : (T.M B c).NefGen (T.lamS lam s) s :=
-    (GlobalTheory.T.curve_degree_linear_nef_cone Ψ N (T.M B c) (T.lamS lam s) 0 s 0 0).2.2.2 hs' (h71 _ hd') h72
+    (_root_.GlobalTheory.CompanionTheory.Ar.Top.curveDeg_linear_nef Ψ N (T.M B c) (T.lamS lam s) 0 s 0 0).2.2.2 hs' (h71 _ hd') h72
   have hnL : (T.M B c).NefGen lam ((0 : ℚ) : ℝ) := by simpa using h71 _ hd
   have hL : T.vol c * flagDeg lam = (T.M B c).geoFun (linA lam 0 ^ dimFl Ψ N) := by
     rw [flagDeg, ← hP.2.1 B c]

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoveringRepresentationTypeFrame
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 
 set_option synthInstance.maxHeartbeats 200000
@@ -17,18 +17,6 @@ open scoped TensorProduct
 set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.BadEmb
-section Abstract
-variable {K Γ A : Type} [Field K] [Group Γ] [CommRing A] [Algebra K A] (B : Subalgebra K A) (tr : Γ → A →ₐ[K] A)
-  (t1 : ∀ f, tr 1 f = f) (tm : ∀ g h f, tr (g * h) f = tr g (tr h f)) (tB : ∀ g, ∀ f ∈ B, tr g f ∈ B)
-end Abstract
-section General
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-  {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M)
-  {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
-end General
-section Weights
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
-end Weights
 theorem lifts_of_four_quantitative_conditions {Q₁ Q₂ Q₃ Q₄ R : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
       (_i : Fin (Fm.D x ι).R.m) (_PP _C : ℝ), Prop}
     (h₁ : _root_.GlobalTheory.CovTop.LiftsCondition Q₁) (h₂ : _root_.GlobalTheory.CovTop.LiftsCondition Q₂) (h₃ : _root_.GlobalTheory.CovTop.LiftsCondition Q₃) (h₄ : _root_.GlobalTheory.CovTop.LiftsCondition Q₄)

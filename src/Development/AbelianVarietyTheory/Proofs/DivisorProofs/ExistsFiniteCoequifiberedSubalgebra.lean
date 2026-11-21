@@ -1,8 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubNatCompSubIncl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMulMemSubalgebraOfResBasicOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMulMemSubalgebraOfResBasicOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemAdjoinOfLocalizationAwayStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineInterFiniteBasicOpenCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAdjoinRestrictedSectionsOfLocalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCutOutSubalgebraQuasiCoherentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteSetsSubalgebraFiniteAffineCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteSetsSubalgebraFiniteAffineCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoequifiberedGeneratedSubalgebraQuasiCoherentStatement
 
 open AlgebraicGeometry CategoryTheory Limits Opposite GlobalTheory.QcSub
@@ -30,9 +33,9 @@ theorem exists_finite_coequifibered_subalgebra : ∀ (X : Scheme.{0}), IsNoether
   have hS' : ∀ j, (S' j).Finite := by
     rintro (k | A)
     exacts [(S k).finite_toSet, Set.finite_empty]
-  obtain ⟨T, hTfin, hST⟩ := GlobalTheory.T.exists_finite_sets_subalgebra_finite_affine_cover X hX F α hα V hV S' hS'
+  obtain ⟨T, hTfin, hST⟩ := _root_.GlobalTheory.sub_choose_finite X hX F α hα V hV S' hS'
   refine ⟨subFunctor F α V T, subNat F α V T, subIncl F α V T,
-    GlobalTheory.T.coequifibered_generated_subalgebra_quasiCoherent X F α hα V T (GlobalTheory.T.pow_mul_mem_subalgebra_of_res_basicOpen X hX F α hα V hV T), subNat_comp_subIncl F α V T,
+    GlobalTheory.T.coequifibered_generated_subalgebra_quasiCoherent X F α hα V T (_root_.GlobalTheory.QcSub.pow_mul_mem_sub_of_res_basicOpen X hX F α hα V hV T), subNat_comp_subIncl F α V T,
     subIncl_injective F α V T,
     fun W => GlobalTheory.T.finite_cut_out_subalgebra_quasiCoherent X hX F α hα hint V hV hcov T hTfin W.unop.1 W.unop.2,
     fun k x hx => ⟨⟨x, hST (.inl k) (Finset.mem_coe.mpr hx)⟩, rfl⟩⟩

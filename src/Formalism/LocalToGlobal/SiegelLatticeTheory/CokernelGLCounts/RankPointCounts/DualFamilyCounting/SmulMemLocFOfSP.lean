@@ -12,22 +12,6 @@ open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt Formalism.Hermiti
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
-theorem inP_alg_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (a : 𝓞 F) :
-    InP 𝔭 k (algebraMap F K (a : F)) ↔ a ∈ 𝔭 ^ k := by
-  haveI := h𝔭.isPrime
-  rw [← idealPowerSpanBounds.mem_pow_iff (K := K)]
-  constructor
-  · rintro ⟨t, ht, z, hz, hzeq⟩
-    have hz' : z = algebraMap (𝓞 F) (𝓞 K) t * algebraMap (𝓞 F) (𝓞 K) a := by
-      apply IsFractionRing.injective (𝓞 K) K
-      rw [hzeq, map_mul]
-      rfl
-    refine idealPowerSpanBounds.mem_of_mul_mem h𝔭 (v := 0) (d := t) (by simpa using ht) ?_
-    rw [zero_add, ← hz']
-    exact hz
-  · intro ha
-    exact inP_jK ha
-
 private theorem mem_pow_vF_of_ne_zero {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 F} (ha : a ≠ 0) :
     a ∈ 𝔭 ^ vF 𝔭 a ∧ a ∉ 𝔭 ^ (vF 𝔭 a + 1) := by
   have hex : ∃ j, a ∉ 𝔭 ^ j := by
@@ -160,28 +144,6 @@ theorem unit_part_c (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
   rw [hc, map_mul, map_pow, ← mul_assoc, mul_comm (algebraMap F K (b : F)), mul_assoc, hbK]
   field_simp
 
-theorem pair_solve {q a c r X Y : K} (hq : q ≠ 0) (ha : a ≠ 0) (hc : c ≠ 0)
-    (hr : a + c = q ^ 2 * r) :
-    (X * q * (a⁻¹ * q) - Y * (a⁻¹ * q)) * (q⁻¹ ^ 2 * (a + c)) +
-        (Y * r * (a⁻¹ * q) * (c⁻¹ * q) - X * (a⁻¹ * q)) * (q⁻¹ * c) = X ∧
-      (X * q * (a⁻¹ * q) - Y * (a⁻¹ * q)) * (q⁻¹ * c) +
-        (Y * r * (a⁻¹ * q) * (c⁻¹ * q) - X * (a⁻¹ * q)) * c = Y := by
-  obtain rfl : c = q ^ 2 * r - a := by rw [← hr]; ring
-  constructor
-  · field_simp
-    ring
-  · field_simp
-    ring
-
-theorem pair_coeffs_mem {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {q a c r X Y : K}
-    (hp : q ∈ SP K 𝔭) (hua : a⁻¹ * q ∈ SP K 𝔭) (huc : c⁻¹ * q ∈ SP K 𝔭) (hr : r ∈ SP K 𝔭)
-    (hX : X ∈ SP K 𝔭) (hY : Y ∈ SP K 𝔭) :
-    X * q * (a⁻¹ * q) - Y * (a⁻¹ * q) ∈ SP K 𝔭 ∧
-      Y * r * (a⁻¹ * q) * (c⁻¹ * q) - X * (a⁻¹ * q) ∈ SP K 𝔭 := by
-  exact ⟨(SP K 𝔭).sub_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem hX hp) hua) ((SP K 𝔭).mul_mem hY hua),
-    (SP K 𝔭).sub_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem hY hr) hua) huc)
-      ((SP K 𝔭).mul_mem hX hua)⟩
-
 section Vec
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
@@ -194,20 +156,6 @@ theorem smul_mem_locF_of_SP {𝔭 : Ideal (𝓞 F)} [hp : 𝔭.IsPrime] {L : Sub
     rw [← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) t) (r • v), smul_smul, ← hz, algebraMap_smul]
   rw [he]
   exact L.smul_mem z hv
-
-theorem eq_zero_of_orth {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h) {ι' : Type}
-    (G : ι' → V) (hG : Submodule.span K (Set.range G) = ⊤) {z : V} (hz : ∀ s, h (G s) z = 0) :
-    z = 0 := by
-  apply hnd
-  intro y
-  have hy : y ∈ Submodule.span K (Set.range G) := hG ▸ Submodule.mem_top
-  induction hy using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨s, rfl⟩ := hx
-    rw [← hs.eq, hz s, map_zero]
-  | zero => simp
-  | add x w _ _ hx hw => rw [map_add, hx, hw, add_zero]
-  | smul c x _ hx => rw [map_smul, hx, smul_zero]
 
 end Vec
 

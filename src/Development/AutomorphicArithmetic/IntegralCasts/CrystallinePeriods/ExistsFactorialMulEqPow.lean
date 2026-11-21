@@ -50,10 +50,6 @@ variable {p}
 @[simp] theorem tateModule.map_id (η : tateModule p R) : tateModule.map p (RingHom.id R) η = η :=
   Subtype.ext (Tilt.map_id _)
 
-theorem tateModule.map_map (f : R →+* S) (g : S →+* U) (η : tateModule p R) :
-    tateModule.map p g (tateModule.map p f η) = tateModule.map p (g.comp f) η :=
-  Subtype.ext (Tilt.map_map _ _ _)
-
 @[simp] theorem PFlat.coe_map (f : R →+* S) (ϖ : PFlat p R) :
     (PFlat.map p f ϖ).1 = Tilt.map p f ϖ.1 := rfl
 
@@ -246,14 +242,6 @@ theorem map_frob (f : R →+* S) (x : Acris p R) : map p f (frob p R x) = frob p
   RingHom.congr_fun (hom_ext (f := (map p f).comp (frob p R)) (g := (frob p S).comp (map p f))
     (by simp [AcrisZero.map_frob])) x
 
-theorem map_log (f : R →+* S) (u : Ainf p R) (hu : Ainf.theta p R u = 1)
-    (hv : Ainf.theta p S (Ainf.map p f u) = 1) : map p f (log u hu) = log (Ainf.map p f u) hv :=
-  extend_log _ _ _ _ _ (AcrisZero.map_algebraMap f u)
-
-theorem frob_log (u : Ainf p R) (hu : Ainf.theta p R u = 1)
-    (hv : Ainf.theta p R (Ainf.frob p R u) = 1) : frob p R (log u hu) = log (Ainf.frob p R u) hv :=
-  extend_log _ _ _ _ _ (AcrisZero.frob_algebraMap u)
-
 @[simp] theorem map_logTeich (f : R →+* S) (η : tateModule p R) :
     map p f (logTeich η) = logTeich (tateModule.map p f η) :=
   extend_log _ _ _ _ _ (by rw [AcrisZero.map_algebraMap, Ainf.map_teich]; rfl)
@@ -320,11 +308,6 @@ theorem map_map (f : R →+* S) (g : S →+* U) (x : BcrisPlus p R) :
     map p g (map p f x) = map p (g.comp f) x :=
   RingHom.congr_fun (hom_ext (f := (map p g).comp (map p f)) (g := map p (g.comp f))
     (by simp [Acris.map_map])) x
-
-theorem map_frob (f : R →+* S) (x : BcrisPlus p R) :
-    map p f (frob p R x) = frob p S (map p f x) :=
-  RingHom.congr_fun (hom_ext (f := (map p f).comp (frob p R)) (g := (frob p S).comp (map p f))
-    (by simp [Acris.map_frob])) x
 
 end BcrisPlus
 
@@ -404,11 +387,6 @@ theorem map_map (f : R →+* S) (hf : Function.Injective f) (g : S →+* U)
 theorem map_congr {f g : R →+* S} (hf : Function.Injective f) (hg : Function.Injective g)
     (h : f = g) : map p f hf = map p g hg := by subst h; rfl
 
-theorem map_frob (f : R →+* S) (hf : Function.Injective f) (x : Bcris p R) :
-    map p f hf (frob p R x) = frob p S (map p f hf x) :=
-  RingHom.congr_fun (hom_ext (f := (map p f hf).comp (frob p R))
-    (g := (frob p S).comp (map p f hf)) (by simp [BcrisPlus.map_frob])) x
-
 @[simp] theorem map_logTeich (f : R →+* S) (hf : Function.Injective f) (η : tateModule p R) :
     map p f hf (logTeich η) = logTeich (tateModule.map p f η) := by
   simp [logTeich]
@@ -469,11 +447,6 @@ theorem map_map (f : R →+* S) (hf : Function.Injective f) (g : S →+* U)
 theorem map_congr {f g : R →+* S} (hf : Function.Injective f) (hg : Function.Injective g)
     (h : f = g) : map p f hf = map p g hg := by subst h; rfl
 
-theorem map_frob (f : R →+* S) (hf : Function.Injective f) (x : Bst p R) :
-    map p f hf (frob p R x) = frob p S (map p f hf x) :=
-  RingHom.congr_fun (hom_ext (f := (map p f hf).comp (frob p R))
-    (g := (frob p S).comp (map p f hf)) (by simp [Bcris.map_frob]) (by simp)) x
-
 theorem induction_on {P : Bst p R → Prop} (x : Bst p R)
     (h₁ : ∀ a : Bcris p R, P (algebraMap _ _ a)) (h₂ : ∀ x y, P x → P y → P (x + y))
     (h₃ : ∀ x ϖ, P x → P (x * logFlat ϖ)) : P x := by
@@ -485,25 +458,6 @@ theorem induction_on {P : Bst p R → Prop} (x : Bst p R)
 
 @[simp] theorem monodromy_algebraMap (a : Bcris p R) : monodromy p R (algebraMap _ _ a) = 0 :=
   Derivation.map_algebraMap _ a
-
-theorem monodromy_frob (x : Bst p R) :
-    monodromy p R (frob p R x) = p * frob p R (monodromy p R x) := by
-  induction x using induction_on with
-  | h₁ a => simp
-  | h₂ x y hx hy => simp only [map_add, hx, hy, mul_add]
-  | h₃ x ϖ hx =>
-    simp only [map_mul, map_add, Derivation.leibniz, smul_eq_mul, frob_logFlat, monodromy_logFlat,
-      hx, Derivation.map_natCast, map_neg, map_one]
-    ring
-
-theorem monodromy_map (f : R →+* S) (hf : Function.Injective f) (x : Bst p R) :
-    monodromy p S (map p f hf x) = map p f hf (monodromy p R x) := by
-  induction x using induction_on with
-  | h₁ a => simp
-  | h₂ x y hx hy => simp only [map_add, hx, hy]
-  | h₃ x ϖ hx =>
-    simp only [map_mul, map_add, Derivation.leibniz, smul_eq_mul, map_logFlat, monodromy_logFlat,
-      hx, map_neg, map_one]
 
 end Bst
 

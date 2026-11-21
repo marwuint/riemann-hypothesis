@@ -22,11 +22,4 @@ def SemistableReductionZero : Prop :=
       (∃ e : baseChange V' K' G ≅ baseChange K K' A, IsMonHom e.hom) ∧
       Nonempty (TorusExt (specialFibre V' G))
 
-theorem SemistableReductionPlus.plusCondition_to_zeroCondition (h : SemistableReductionPlus) : SemistableReductionZero := by
-  intro V _ _ _ _ K _ _ _ _ A _ hA
-  obtain ⟨K', i1, i2, i3, V', i4, i5, i6, i7, i8, i9, h1, h2, h3, G, i10,
-    h4, h5, h6, h7, h8, h9, -⟩ := h V K A hA
-  exact ⟨K', i1, i2, i3, V', i4, i5, i6, i7, i8, i9, h1, h2, h3, G, i10,
-    h4, h5, h6, h7, h8, h9⟩
-
 end ReciprocityTheory.ChartRestriction.G.Semi

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StdHermitianFibreProductChangeOfBasisStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerAnisotropicVectorEquivComplemenStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryGroupPointsEquivOfChangeOfBasisStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StdHermitianFibreProductChangeOfBasis
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerAnisotropicVectorEquivComplemen
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryGroupPointsEquivOfChangeOfBasis
 
 noncomputable section
 
@@ -158,11 +158,11 @@ theorem GlobalTheory.GaugeEx.stepRel_basis : ∀ (F E : Type) [Field F] [NumberF
   have hL : lrAct ((P : Matrix (Fin (M + 1)) (Fin (M + 1)) E).map (inclR (AF F)))
       (1 : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)) = ⇑L := lrAct_one PA
   have hν : IsStdX s σ J a (ν₂.map L) := by
-    have h := GlobalTheory.T.stdHermitianFibreProduct_change_of_basis F E σ hCM d b s (M + 1) J J₂ P a ν₂ hJ₂ hν₂
+    have h := _root_.GlobalTheory.GaugeEx.BasisX.isStdX_basis F E σ hCM d b s (M + 1) J J₂ P a ν₂ hJ₂ hν₂
     rwa [hL] at h
-  have hcP := (GlobalTheory.T.unitary_group_points_equiv_of_change_of_basis F E σ (AF F) (M + 1) J J₂ P hJ₂).2 eP (fun g => hePF g)
-  have hcQ := (GlobalTheory.T.unitary_group_points_equiv_of_change_of_basis F E σ (AF F) M J' J₂' Q hJ₂').2 eQ (fun g => heQF g)
-  have hc₂ := (GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hCM (AF F) M J₂ x₂ a B₂ J₂' hSD₂).2.2 e₂ (fun g => he₂ g)
+  have hcP := (_root_.GlobalTheory.GaugeFrameBasis.frame_basis F E σ (AF F) (M + 1) J J₂ P hJ₂).2 eP (fun g => hePF g)
+  have hcQ := (_root_.GlobalTheory.GaugeFrameBasis.frame_basis F E σ (AF F) M J' J₂' Q hJ₂').2 eQ (fun g => heQF g)
+  have hc₂ := (_root_.GlobalTheory.FrameStep.frameStep F E σ hCM (AF F) M J₂ x₂ a B₂ J₂' hSD₂).2.2 e₂ (fun g => he₂ g)
   have hF : ∀ g : HA (AF F) σ J,
       (↑(HA.mat (AF F) σ J g) : Matrix (Fin (M + 1)) (Fin (M + 1)) (AF F ⊗[F] E)) *
           (PA : Matrix (Fin (M + 1)) (Fin (M + 1)) (AF F ⊗[F] E)) =

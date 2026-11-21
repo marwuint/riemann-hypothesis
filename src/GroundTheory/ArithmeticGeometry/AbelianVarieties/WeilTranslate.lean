@@ -47,18 +47,6 @@ theorem ordPoint_translate (P R : W.toAffine.Point) {f : W.toAffine.FunctionFiel
     exp_inj] at h
   exact neg_injective h
 
-theorem divisorOf_translate_apply (R : W.toAffine.Point) {f : W.toAffine.FunctionField} (hf : f ≠ 0)
-    (P : W.toAffine.Point) : divisorOf W (translate W R f) P = divisorOf W f (P + R) := by
-  rw [divisorOf_apply, divisorOf_apply, ordPoint_translate W P R hf]
-
-omit [DecidableEq F] [IsAlgClosed F] in
-
-theorem mulPullback_mul {m n : ℤ} (hm : m ≠ 0) (hn : n ≠ 0) :
-    mulPullback W (m * n) (mul_ne_zero hm hn) = (mulPullback W m hm).comp (mulPullback W n hn) := by
-  apply algHom_eq_of_map_genericPoint
-  rw [map_mulPullback_genericPoint, ← Point.map_map, map_mulPullback_genericPoint, map_zsmul,
-    map_mulPullback_genericPoint, mul_comm, mul_zsmul]
-
 omit [DecidableEq F] [IsAlgClosed F] in
 theorem mulPullback_algebraMap {n : ℤ} (hn : n ≠ 0) (c : F) : mulPullback W n hn (ι c) = ι c :=
   (mulPullback W n hn).commutes c

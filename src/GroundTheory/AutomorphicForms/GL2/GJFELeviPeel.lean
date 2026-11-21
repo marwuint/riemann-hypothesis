@@ -89,14 +89,6 @@ variable {G₁ G₂ : Type*} [Group G₁] [TopologicalSpace G₁] [IsTopological
   [TopologicalSpace G₂] [IsTopologicalGroup G₂] (e : G₁ ≃ₜ* G₂) {W : Type*} [AddCommGroup W]
   [Module ℂ W] (ρ : Representation ℂ G₂ W)
 
-theorem mem_smoothVectors_comp_iff {v : W} :
-    v ∈ smoothVectors (ρ.comp e.toMonoidHom) ↔ v ∈ smoothVectors ρ := by
-  rw [mem_smoothVectors, mem_smoothVectors]
-  have : (stabilizerOf (ρ.comp e.toMonoidHom) v : Set G₁) = e ⁻¹' (stabilizerOf ρ v : Set G₂) :=
-    rfl
-  rw [this]
-  exact e.toHomeomorph.isOpen_preimage
-
 theorem mem_smoothVectors_dual_comp_iff {ℓ : Module.Dual ℂ W} :
     ℓ ∈ smoothVectors (Representation.dual (ρ.comp e.toMonoidHom)) ↔
       ℓ ∈ smoothVectors (Representation.dual ρ) := by

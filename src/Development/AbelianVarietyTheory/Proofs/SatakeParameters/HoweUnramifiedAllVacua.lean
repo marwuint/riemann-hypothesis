@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalThetaPairExistenceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedLocalPairActsOnVacuaByHeisenbergCombStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalThetaPairExistence
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedLocalPairActsOnVacuaByHeisenbergComb
 
 noncomputable section
 
@@ -71,7 +71,7 @@ theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued 
       (∀ h : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L),
         (h : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) → ω (1, h) w = w) →
       w ∈ Submodule.span ℂ (Set.range fun g => ω (g, 1) s0) := by
-  have scal := GlobalTheory.T.unramifiedLocalPair_acts_on_vacua_by_heisenberg_comb L ϖ σ q δ n n' JS JT ψ M ρ ω hp
+  have scal := _root_.GlobalTheory.Hk3.locPair_act_vac_comb L ϖ σ q δ n n' JS JT ψ M ρ ω hp
   set M0 := Submodule.span ℂ (Set.range fun x => ρ x s0) with hM0
   have hs0 : s0 ∈ M0 := by
     refine Submodule.subset_span ⟨0, ?_⟩
@@ -168,8 +168,8 @@ theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued 
 
 theorem howe_all_vacua : HoweUnram → ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →* Module.End ℂ M), LocPair ϖ σ q δ JS JT ψ ρ ω → (∀ cT : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →₀ ℂ, (∀ s, LocVac ρ s → ∀ k : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L), (k : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) → ω (1, k) (cT.sum fun b z => z • ω (1, b) s) = cT.sum fun b z => z • ω (1, b) s) → ∃ cS : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) →₀ ℂ, ∀ s, LocVac ρ s → (cT.sum fun b z => z • ω (1, b) s) = cS.sum fun a z => z • ω (a, 1) s) ∧ ∀ cS : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) →₀ ℂ, (∀ s, LocVac ρ s → ∀ k : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L), (k : GL (Fin n) L) ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → ω (k, 1) (cS.sum fun a z => z • ω (a, 1) s) = cS.sum fun a z => z • ω (a, 1) s) → ∃ cT : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →₀ ℂ, ∀ s, LocVac ρ s → (cS.sum fun a z => z • ω (a, 1) s) = cT.sum fun b z => z • ω (1, b) s := by
   intro hH L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hp
-  have scal := GlobalTheory.T.unramifiedLocalPair_acts_on_vacua_by_heisenberg_comb L ϖ σ q δ n n' JS JT ψ M ρ ω hp
-  have model := GlobalTheory.T.locPair_vacuum_relation_independent L ϖ σ q δ n n' JS JT ψ M ρ ω hp
+  have scal := _root_.GlobalTheory.Hk3.locPair_act_vac_comb L ϖ σ q δ n n' JS JT ψ M ρ ω hp
+  have model := _root_.GlobalTheory.Hk3.locVac_rel_indep L ϖ σ q δ n n' JS JT ψ M ρ ω hp
   by_cases hz : ∃ s0 : M, s0 ≠ 0 ∧ LocVac ρ s0
   · obtain ⟨s0, h0, hv⟩ := hz
     obtain ⟨hA, hB⟩ := howe_on_span hH hp s0 h0 hv

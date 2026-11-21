@@ -60,7 +60,4 @@ theorem geometricallyConnected_of_locallyOfFiniteType {F : Type} [Field F] [Char
   rw [Set.mem_preimage, hx₀]
   exact hg
 
-theorem geometricallyConnected_of_algClosed_in_functionField : ∀ (F : Type) [Field F] [CharZero F] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp F) [Smooth p], IsProjOver p → (∀ a : X.functionField, (∃ P : Polynomial F, P ≠ 0 ∧ P.eval₂ (GlobalTheory.Cartier.constFn p) a = 0) → a ∈ (GlobalTheory.Cartier.constFn p).range) → GeometricallyConnected p :=
-  fun _ _ _ _ _ p _ _ h => geometricallyConnected_of_locallyOfFiniteType p h
-
 end GlobalTheory.GeomConnFn

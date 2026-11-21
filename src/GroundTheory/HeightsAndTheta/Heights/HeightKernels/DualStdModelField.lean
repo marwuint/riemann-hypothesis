@@ -73,27 +73,6 @@ def DualStdModelTransc.Statement : Prop :=
           dualStdModelPt b (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k)))
         (dualStdModelPt b (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k))
 
-example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
-    (Φ₀ : Subfield (dualStdModelField ℚ 1)),
-    (algebraMap Φ₀ (dualStdModelField ℚ 1)).fieldRange =
-      Subfield.closure (Set.range (dualStdModelPt b ∘ inrV (ι := dualBlocks Unit) (ι₂ := PBlk 1))) ∧ 1 ≤ 1 :=
-  ⟨dualBasisStandard, _, Subfield.fieldRange_subtype _, le_rfl⟩
-
-example : ∃ (_ : GenFibre (ι := PBlk 1) (ι' := PBlk 1) id ⊥) (z : (Σ _ : Unit, Fin 1) → FractionRing (MRing (PBlk 1)))
-    (Φ₀ : Subfield (FractionRing (MRing (PBlk 1)))),
-    RingHom.ker (eval₂Hom (Int.castRingHom _) z : MRing (PBlk 1) →+* FractionRing (MRing (PBlk 1))) = ⊥ ∧
-      (algebraMap Φ₀ (FractionRing (MRing (PBlk 1)))).fieldRange = Subfield.closure (Set.range (z ∘ id)) := by
-  have : (⊥ : Ideal (MRing (PBlk 1))).IsPrime := Ideal.isPrime_bot
-  refine ⟨Inter.genFibreIdOf ⊥, fun q => algebraMap (MRing (PBlk 1)) _ (X q), _, ?_, Subfield.fieldRange_subtype _⟩
-  refine (RingHom.injective_iff_ker_eq_bot _).mp ?_
-  have h : (eval₂Hom (Int.castRingHom _) fun q => algebraMap (MRing (PBlk 1)) (FractionRing (MRing (PBlk 1))) (X q) :
-      MRing (PBlk 1) →+* _) = algebraMap (MRing (PBlk 1)) (FractionRing (MRing (PBlk 1))) := by
-    ext q
-    · simp
-    · simp
-  rw [h]
-  exact IsFractionRing.injective _ _
-
 end
 
 end GroundTheory.Heights₂.Heights

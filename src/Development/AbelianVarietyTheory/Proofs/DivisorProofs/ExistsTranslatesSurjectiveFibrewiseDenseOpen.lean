@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrys
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.EqOfAgreeOnTorsion
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveInfOfGeometricallyIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveInfOfGeometricallyIntegral
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.EndOnTorsion
 open scoped CategoryTheory.Obj
@@ -50,7 +50,7 @@ theorem exists_translates_surjective : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj
       have e : w.left ((lift (lift (fst A B) a₀) (snd A B)).left z) = j.left ((snd A B).left z) := by
         rw [← Scheme.Hom.comp_apply, ← Over.comp_left, hw, Over.comp_left, Scheme.Hom.comp_apply]
       rw [e]; exact hjV _
-  refine GlobalTheory.T.surjective_inf_comp_of_geometricallyIntegral _ _ _ _ _ (GlobalTheory.T.surjective_inf_comp_of_geometricallyIntegral _ _ _ _ _ (GlobalTheory.T.surjective_inf_comp_of_geometricallyIntegral _ _ _ _ _ ?_ ?_) ?_) ?_
+  refine _root_.GlobalTheory.surjective_inf_of_geometricallyIntegral _ _ _ _ _ (_root_.GlobalTheory.surjective_inf_of_geometricallyIntegral _ _ _ _ _ (_root_.GlobalTheory.surjective_inf_of_geometricallyIntegral _ _ _ _ _ ?_ ?_) ?_) ?_
   · refine key ((fst A B)⁻¹ * (snd A B ≫ j)) _ ?_
     simp [MonObj.comp_mul, GrpObj.comp_inv]
   · refine key ((snd A B ≫ j)⁻¹ * fst A B) _ ?_

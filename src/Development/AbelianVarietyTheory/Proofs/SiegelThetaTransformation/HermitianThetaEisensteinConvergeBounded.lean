@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaSummableAndDeterminesTestFnStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicitStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaSummableAndDeterminesTestFn
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLattice
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LinearIndependentMul
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PosSemidefSubMulConjTranspose
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableEisMajorantStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableEisMajorant
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real
@@ -132,7 +132,7 @@ theorem theta_bdd (hΨ : IsType Ψ) {R : ℕ} {δ : ℝ} (hR : 0 < R) (hδ : 0 <
   let Z₀ : CM Ψ N N := fun _ => (I * δ) • (1 : Matrix (Fin N) (Fin N) ℂ)
   have hZ₀ : Z₀ ∈ Hn Ψ N := fun τ => by
     simp only [Z₀, imH_scalar]; exact posDef_scalar hδ
-  have hs := (GlobalTheory.T.hermitianTheta_summable_and_determines_testFn E Ψ hΨ n N φ₀ h₀ Z₀ hZ₀).1 0 0
+  have hs := (_root_.GlobalTheory.SW.thH_summable_and_inj E Ψ hΨ n N φ₀ h₀ Z₀ hZ₀).1 0 0
   refine ⟨∑' x, ‖φ₀ x * cexp (2 * π * I * expo Ψ x Z₀ 0 0)‖, fun φ hφ B hB Z hZ => ?_⟩
   rw [← tsum_mul_right]
   refine tsum_of_norm_bounded (hs.mul_right B).hasSum fun x => ?_
@@ -204,13 +204,13 @@ theorem eis_bdd (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {R : ℕ} {δ :
       (Summable fun U : Lag E N => ‖eisTerm Ψ U.2.choose φ Z 0 0‖) ∧ ‖eis Ψ φ Z 0 0‖ ≤ C * B := by
   obtain ⟨c, hc, hrep⟩ := LagRep.exists_rep_den E N
   choose rep hU hD hS using hrep
-  have hm := GlobalTheory.T.summable_prod_inv_norm_det_hDen_pow E Ψ hΨ n N hN c rep hc fun U => ⟨hU U, hD U, hS U⟩
+  have hm := _root_.GlobalTheory.SW.summable_eis_majorant E Ψ hΨ n N hN c rep hc fun U => ⟨hU U, hD U, hS U⟩
   set m : Lag E N → ℝ := fun U => ∏ τ : Ψ,
     (‖(hDen Ψ (rep U) (fun _ => I • (1 : Matrix (Fin N) (Fin N) ℂ)) τ).det‖ ^ n)⁻¹ with hmd
   have hm0 : ∀ U, 0 ≤ m U := fun U => Finset.prod_nonneg fun _ _ => by positivity
   obtain ⟨K, hK⟩ := approx_herm (N := N) hΨ
   obtain ⟨κ, hκ, hcomp⟩ := norm_det_denom_compare N δ K hδ
-  obtain ⟨R', C, -, hC⟩ := GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n N hn c R hc hR
+  obtain ⟨R', C, -, hC⟩ := _root_.GlobalTheory.SW.weil_level_and_sup E Ψ hΨ n N hn c R hc hR
   set L : ℝ := |C| * ∏ _τ : Ψ, (κ ^ n)⁻¹ with hL
   have hL0 : 0 ≤ L := mul_nonneg (abs_nonneg _) (Finset.prod_nonneg fun _ _ => by positivity)
   refine ⟨L * ∑' U, m U, fun φ hφ B hB Z hZ => ?_⟩
@@ -235,7 +235,7 @@ theorem eis_bdd (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {R : ℕ} {δ :
       fun x y hy => hφ.2 x y fun k a => (Base.mem_stdL _).1 (hy a) k⟩
   have key : ∀ U : Lag E N, ‖eisTerm Ψ U.2.choose φ Z 0 0‖ ≤ L * B * m (σ U) := fun U => by
     have hγ := HAct.mul_mem ht' (hU (σ U))
-    rw [(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E Ψ hΨ n N hn φ ⟨R, hR, hφ⟩).2 _ U.2.choose_spec.1 _ hγ
+    rw [(_root_.GlobalTheory.SW.weil_parabolic E Ψ hΨ n N hn φ ⟨R, hR, hφ⟩).2 _ U.2.choose_spec.1 _ hγ
       (U.2.choose_spec.2.trans (hσ U).symm) Z (mem_Hn hδ hZ)]
     have hden : Den c (rep (σ U) * fromBlocks 1 (-β) 0 1) := by
       intro i j

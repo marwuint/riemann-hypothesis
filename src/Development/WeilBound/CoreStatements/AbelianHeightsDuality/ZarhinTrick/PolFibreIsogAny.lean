@@ -5,9 +5,22 @@ import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.Su
 import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.FibLamC
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsogenousRetractPolarisedFiniteExt
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFiniteClosedSubschemeRepresentsKernelAmpleStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFiniteClosedSubschemeRepresentsKernelAmple
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.IsNsmul
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.QkToAkU
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FlatAndSurjectiveOfSurjectivePointsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FlatAndSurjectiveOfSurjectivePoints
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
+import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 
 set_option autoImplicit false
 
@@ -36,7 +49,7 @@ theorem polFibreIsogAny : PositivityTheory.PrwZar.PolFibreIsogAny := by
   have hgA' := GlobalTheory.FiniteData.relDim_pullback s A hgA
   have hgB' := GlobalTheory.FiniteData.relDim_pullback s B hgB
   haveI := hA'.comm
-  obtain ⟨H, j, -, hH, hK⟩ := GlobalTheory.T.exists_finite_closed_subscheme_represents_kernel_ample GlobalTheory.globalFns_holds Ω ((Over.pullback s).obj A) hA' L hL ha
+  obtain ⟨H, j, -, hH, hK⟩ := _root_.GlobalTheory.KernelRep.exists_finite_closed_kernel GlobalTheory.globalFns_holds Ω ((Over.pullback s).obj A) hA' L hL ha
   have hfin : IsFinite ((Over.pullback s).map l).left :=
     isFinite_of_ker hA' hB' _ H j hH fun T x hx => (hK T x).1 (ker_memKL hD l s L hL e x hx)
   obtain ⟨hfl, hsu⟩ := flat_surj_of_finite hA' hB' g hgA' hgB' _ hfin

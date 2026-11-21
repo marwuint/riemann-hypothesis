@@ -51,18 +51,6 @@ theorem sum_wd_eq {n : ℕ} (g : V n → ℂ) (y : V n) (ζ : V n) :
   simp only [wd, PiLp.smul_apply, smul_eq_mul, Complex.I_mul_re, Complex.I_mul_im]
   apply Complex.ext <;> simp <;> ring
 
-theorem norm_dbv_le {n : ℕ} (D : V n →L[ℝ] ℂ) (ζ : V n) : ‖dbv D ζ‖ ≤ ‖D‖ * ‖ζ‖ := by
-  have hI : ‖D (I • ζ)‖ ≤ ‖D‖ * ‖ζ‖ := by
-    calc ‖D (I • ζ)‖ ≤ ‖D‖ * ‖I • ζ‖ := D.le_opNorm _
-      _ = ‖D‖ * ‖ζ‖ := by rw [norm_smul, Complex.norm_I, one_mul]
-  have h1 : ‖D ζ + I * D (I • ζ)‖ ≤ ‖D‖ * ‖ζ‖ + ‖D‖ * ‖ζ‖ := by
-    calc ‖D ζ + I * D (I • ζ)‖ ≤ ‖D ζ‖ + ‖I * D (I • ζ)‖ := norm_add_le _ _
-      _ = ‖D ζ‖ + ‖D (I • ζ)‖ := by rw [norm_mul, Complex.norm_I, one_mul]
-      _ ≤ ‖D‖ * ‖ζ‖ + ‖D‖ * ‖ζ‖ := add_le_add (D.le_opNorm ζ) hI
-  unfold dbv
-  rw [norm_div, Complex.norm_two]
-  linarith
-
 theorem leviV_eq_dv {n : ℕ} {g : V n → ℂ} {y : V n} (hg : ContDiffAt ℝ 2 g y) (ξ : Fin n → ℂ) :
     leviV n g y ξ =
       dv (fderiv ℝ (fun v => dbv (fderiv ℝ g v) (WithLp.toLp 2 ξ)) y) (WithLp.toLp 2 ξ) := by

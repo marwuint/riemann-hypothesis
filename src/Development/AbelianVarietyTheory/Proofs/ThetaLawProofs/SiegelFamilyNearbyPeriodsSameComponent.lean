@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.KeyFormula.GeomIntSelf
 import Development.AbelianVarietyTheory.Statements.FundamentalDomains.AtOfNumberField
 import Development.AbelianVarietyTheory.Statements.ThetaLevelCharacters.MemThetaLevelCharDimZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsSymmetricSqrtPrincipalSiegelFiniteEtaleStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsSymmetricSqrtPrincipalSiegelFiniteEtale
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsRigidTranslatePrincipalPolarisationOrderTw
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsTwoTorsionTranslateSameLambdaBundleStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsTwoTorsionTranslateSameLambdaBundle
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SiegelFamilyComplexPointEqOfSamePeriodMatrixStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsLocalPeriodMatrix
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsSeparatingPairs
@@ -72,7 +72,7 @@ theorem exists_sqOf_polPB (hL : Out.Laws) {R : Type} [CommRing R] {c : SiegPre h
   obtain ⟨Q₀, ψ₀, hpb⟩ := exists_polPB hL.polBaseChange Q p
   have h₀ := (sqOf_calculus h k o ζ S _ _ s c f).1 p Q Q₀ φ ψ₀ hQ hpb
   obtain ⟨e, he, heφ, hlam⟩ := (sqOf_calculus h k o ζ S _ S s c (p ≫ f)).2.1 Q₀ P₀ _ _ h₀ hP
-  obtain ⟨t₀, ht₀, i₀⟩ := GlobalTheory.T.exists_twoTorsion_translate_same_lambdaBundle hL ℂ Q₀ P₀ e he hlam
+  obtain ⟨t₀, ht₀, i₀⟩ := _root_.GlobalTheory.SameLam.exists_two_torsion_translate hL ℂ Q₀ P₀ e he hlam
   obtain ⟨t, ht, hy⟩ := hT ℂ ((𝟙_ (Over (Sp ℂ))).hom ≫ p) (pushHom hpb.1 _ t₀) (by rw [← map_pow, ht₀, map_one])
   have et : t₀.left ≫ ψ₀ = p ≫ t.left := by
     refine (congrArg (fun q => q.left) hy).trans ?_
@@ -128,7 +128,7 @@ theorem exists_etale_sqrt (hL : Out.Laws) {K : Type} [Field K] {ζ : K} (σ : K 
   have : IsOpenImmersion f := inferInstanceAs (IsOpenImmersion hU.fromSpec)
   obtain ⟨β, -⟩ := Spec.map_surjective (f ≫ F.s)
   letI : Algebra ℚ Γ(F.X, U) := (β.hom.comp (algebraMap ℚ K)).toAlgebra
-  obtain ⟨R, _, _, Q, φ, ⟨h₁, h₂, h₃⟩, hQ, hT⟩ := GlobalTheory.T.exists_symmetric_sqrt_principal_siegel_finite_etale hL h k K ζ Γ(F.X, U) F.X F.s F.univ f hk hζ F.princ
+  obtain ⟨R, _, _, Q, φ, ⟨h₁, h₂, h₃⟩, hQ, hT⟩ := _root_.GlobalTheory.SiegelSqrt.exists_sqrt hL h k K ζ Γ(F.X, U) F.X F.s F.univ f hk hζ F.princ
   have : IsFinite (spMap (algebraMap Γ(F.X, U) R)) :=
     (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 h₁)
   have : Surjective (spMap (algebraMap Γ(F.X, U) R)) := ⟨PrimeSpectrum.comap_surjective_of_faithfullyFlat⟩

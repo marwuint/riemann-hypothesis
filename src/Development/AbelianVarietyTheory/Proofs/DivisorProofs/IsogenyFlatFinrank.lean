@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyDimLeOfFiniteAndOfSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIsIntegralNoetherianCompactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyDimLeOfFiniteAndOfSurjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIsIntegralNoetherianCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatSurjectiveGeomFibre
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
@@ -15,7 +15,7 @@ theorem isogeny_flat_finrank : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A �
     A.dim = B.dim ∧ Flat f.hom.left ∧ 0 < deg f ∧ ∀ y : B.X.left, f.hom.left.finrank y = deg f := by
   intro K _ A B f hf
   obtain ⟨hfin, hsurj⟩ := hf
-  have hd := GlobalTheory.T.abelianVariety_dim_le_of_finite_and_of_surjective K A B f
+  have hd := _root_.GlobalTheory.AV.DimLe.dim_le K A B f
   have hdim : A.dim = B.dim := le_antisymm (hd.1 hfin) (hd.2 hsurj)
   have hflat : Flat f.hom.left := by
     have hAg := A.smooth
@@ -32,7 +32,7 @@ theorem isogeny_flat_finrank : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A �
       (Over.forget (Sp K)).map_isIso ((Over.pullbackId (X := Sp K)).hom.app B.X)
     rw [e']
     exact Flat.comp _ _
-  obtain ⟨hBint, hBnoeth, -⟩ := GlobalTheory.T.abelianVariety_isIntegral_noetherian_compact K B
+  obtain ⟨hBint, hBnoeth, -⟩ := _root_.GlobalTheory.AV.AbVar.isIntegral_isLocallyNoetherian_compactSpace K B
   have hdeg : deg f = f.hom.left.finrank B.origin := if_pos ⟨hfin, hsurj⟩
   have hconst : ∀ y : B.X.left, f.hom.left.finrank y = deg f := by
     intro y

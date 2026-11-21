@@ -35,10 +35,4 @@ def CurveEndoUnitBall : Prop :=
     (∀ α : O, ‖τ α - τ (star α)‖ = 1 → ∀ i : ℕ,
       ‖jet (logSer W) (mvExp (-(Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W))) : PowerSeries K) i‖ ≤ 1)
 
-def CurveJetsUnitBall : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K], ‖(2 : K)‖ = 1 →
-    ∀ (W : WeierstrassCurve K), Formalism.L2.Th1.A.IntModel W → ∀ s2 : K,
-    ∀ i : ℕ, 1 ≤ i → i ≠ 2 →
-      ‖jet (logSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W)) i‖ ≤ 1
-
 end Formalism.L2.Th1.C

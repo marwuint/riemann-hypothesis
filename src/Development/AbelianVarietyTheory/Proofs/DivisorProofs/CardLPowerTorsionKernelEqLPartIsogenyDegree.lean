@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsogenyCompIffAndDegreeMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsogenyCompIffAndDegreeMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotDvdDegOfNoTorsionInKernelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteIffFiniteKerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrankStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveIffPtMapSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteIffFiniteKer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveIffPtMapSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientOfGaloisStableFiniteSubgroupStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
@@ -44,7 +44,7 @@ theorem card_kerLPart_eq (K : Type) [Field K] (l : ℕ) [Fact l.Prime] (hl : (l 
     Nat.card {x : A.Pt // x ≫ f.hom = 1 ∧ ∃ n : ℕ, x ^ l ^ n = 1} = l ^ padicValNat l (deg f) := by
   set G := kerLPart l f with hG
   change Nat.card G = _
-  have hker : Finite (ptMap f).ker := (GlobalTheory.T.isFinite_iff_finite_ker' K A B f).1 hf.1
+  have hker : Finite (ptMap f).ker := (_root_.GlobalTheory.AV.AbVar.isFinite_iff_finite_ker K A B f).1 hf.1
   haveI hGfin : Finite G := Finite.of_injective (Subgroup.inclusion (kerLPart_le l f))
     (Subgroup.inclusion_injective _)
   have hpG : IsPGroup l G := fun g => by
@@ -61,12 +61,12 @@ theorem card_kerLPart_eq (K : Type) [Field K] (l : ℕ) [Fact l.Prime] (hl : (l 
     · rw [← map_pow, hn, map_one]
   obtain ⟨B', q, hq, hdq, hkq, huniv⟩ := GlobalTheory.T.exists_quotient_of_galoisStable_finite_subgroup K A G hGfin hcardK hgal
   obtain ⟨h, hqh⟩ := huniv B f (kerLPart_le l f)
-  have hdAB := (GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f hf).1
-  have hdAB' := (GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B' q hq).1
-  have hcomp := GlobalTheory.T.isIsogeny_comp_iff_and_degree_mul K A B' B q h hdAB' (hdAB'.symm.trans hdAB)
+  have hdAB := (_root_.GlobalTheory.AV.AbVar.isogeny_flat_finrank K A B f hf).1
+  have hdAB' := (_root_.GlobalTheory.AV.AbVar.isogeny_flat_finrank K A B' q hq).1
+  have hcomp := _root_.GlobalTheory.AV.AbVar.isIsogeny_comp_iff_and_deg_comp K A B' B q h hdAB' (hdAB'.symm.trans hdAB)
   rw [hqh] at hcomp
   have hh : IsIsogeny h := (hcomp.1.mp hf).2
-  have hsurj := (GlobalTheory.T.abVar_surjective_iff_ptMap_surjective K A B' q).1 hq.2
+  have hsurj := (_root_.GlobalTheory.AV.AbVar.surjective_iff_ptMap_surjective K A B' q).1 hq.2
   have hnot : ¬ l ∣ deg h := by
     refine GlobalTheory.T.not_dvd_deg_of_no_torsion_in_kernel' K l hl B' B h hh ?_
     intro y hyl hyh

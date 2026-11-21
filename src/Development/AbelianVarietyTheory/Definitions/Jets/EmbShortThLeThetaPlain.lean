@@ -108,10 +108,6 @@ theorem spanK_fg_of_fg [Module (𝓞 F) C] [IsScalarTower (𝓞 F) F C] {N : Sub
   rw [key]
   exact Submodule.fg_span (t.finite_toSet.image _)
 
-example : spanK z (∅ : Set C) = ⊥ := by simp [spanK]
-
-example : spanK z ({0} : Set C) = ⊥ := by simp [spanK]
-
 end Span
 
 section Short
@@ -231,9 +227,5 @@ theorem OneCover.eq_withCoeff {T : Top D} {j : ℕ} (h : OneCover T j) (n n' : �
   obtain ⟨φ', e'⟩ := h n'
   rw [e, e']
   exact ⟨φ', rfl⟩
-
-def topOfCover (T : Top D) {m : ℕ → ℕ} (d : ∀ j, DeltaDat (T.Q.Xo j) T.Q.c (m j))
-    (φ : ∀ j n, (Fin n → LevQ (T.Q.Dw j) (d j).l₂) → T.Q.c.F) : Top D :=
-  { T with dδ := fun j n => withCoeff (d j) (φ j n) }
 
 end GlobalTheory.FormTies

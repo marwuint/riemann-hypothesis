@@ -69,18 +69,9 @@ def IsTauRule (R : ℕ) {J : Type} [Fintype J] {n : ℕ} (cf : J → ℤ) (x : J
 def IsGenRule (R : ℕ) {n : ℕ} (x₀ : Fin n → Dw.La) (u : Fin n → LatMod Dw R) (f : Rul Xo c) : Prop :=
   IsTauRule Xo c R (fun _ : Unit => 1) (fun _ => shiftFam R x₀ u) f
 
-def genSpan (R : ℕ) {n : ℕ} (x₀ : Fin n → Dw.La) : Submodule c.F (Rul Xo c) :=
-  Submodule.span c.F {f | ∃ u, IsGenRule Xo c R x₀ u f}
-
-def IsTauZero (R : ℕ) [Fintype (LatMod Dw R)] {n : ℕ} (x₀ : Fin n → Dw.La) (cf : (Fin n → LatMod Dw R) → ℤ)
-    (f : Rul Xo c) : Prop :=
-  IsTauRule Xo c R cf (shiftFam R x₀) f
-
 variable {Xo c}
 
 def NonzeroOn (Z : Comp Xo c) (f : Rul Xo c) : Prop := genVal Z f ≠ 0
-
-def NonzeroAll (f : Rul Xo c) : Prop := ∀ Z : Comp Xo c, NonzeroOn Z f
 
 section Val
 
@@ -305,21 +296,5 @@ theorem nonzeroOn_thetaOn_iff (h : HasPts U Z) (s : ∀ τ, FlatSec U x Z τ) (K
     mul_ne_zero_iff_right (pow_ne_zero _ h3), pow_ne_zero_iff (by norm_num)]
 
 end Theta
-
-example (τ : Psi H) (i : Fin (Dw.mult τ.1)) (j : Fin (Dw.mult (conjEmb τ.1))) (hi : (i : ℕ) < Dw.p)
-    (hj : (j : ℕ) < Dw.q) (N : ℤ) : exOf Dw ((8 * N) • hodgeWt Dw) 0 (some ⟨τ.1, i⟩) = 0 ∧
-      exOf Dw ((8 * N) • hodgeWt Dw) 0 (some ⟨conjEmb τ.1, j⟩) = 8 * N ∧ exOf Dw ((8 * N) • hodgeWt Dw) 0 none = 0 := by
-  refine ⟨(wtOf_big _ 0 τ i hi).trans ?_, (wtOf_small _ 0 τ j hj).trans ?_, rfl⟩ <;> simp [hodgeWt, barWt, hi]
-
-example {R : ℕ} (hR : Odd R) (hM : R ^ 4 ∣ l.M) (x₀ : Fin 0 → Dw.La) (u : Fin 0 → LatMod Dw R) :
-    IsGenRule Xo c R x₀ u 1 := fun p y => by
-  obtain ⟨B, _, _, φ, y', ev, w, hφ, hm, hev, hw⟩ := exists_cover hR hM y
-  exact ⟨B, inferInstance, inferInstance, φ, y', ev, w, hφ, hm, hev, hw, by simp [tauExpr]⟩
-
-example {R : ℕ} (hR : Odd R) (hM : R ^ 4 ∣ l.M) [Fintype (LatMod Dw R)] {n : ℕ} (x₀ : Fin n → Dw.La) (Z : Comp Xo c) :
-    IsTauZero Xo c R x₀ 0 0 ∧ ¬ NonzeroOn Z 0 := by
-  refine ⟨fun p y => ?_, fun h => h.ne_zero rfl⟩
-  obtain ⟨B, _, _, φ, y', ev, w, hφ, hm, hev, hw⟩ := exists_cover hR hM y
-  exact ⟨B, inferInstance, inferInstance, φ, y', ev, w, hφ, hm, hev, hw, by simp [tauExpr]⟩
 
 end GlobalTheory.ThetaConst

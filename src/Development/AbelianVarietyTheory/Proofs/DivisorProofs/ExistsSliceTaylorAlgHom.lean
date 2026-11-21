@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.MemAnalyticAtZer
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ConstantCoeffDpolyOfAdditiveTaylorPts
 import Development.AbelianVarietyTheory.Definitions.Divisors.FderivFnCongr
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraFormalPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraMulOfProdEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnalyticAtIteratedFDerivSliceAndFderivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorHolomorphicExtOfValuesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraFormalProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraMulOfProdEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnalyticAtIteratedFDerivSliceAndFderiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorHolomorphicExtOfValues
 
 set_option autoImplicit false
 
@@ -68,7 +68,7 @@ theorem GlobalTheory.AnPer.exists_sliceTaylor_algHom : ∀ {I : Type} [Fintype I
     have han : ∀ (k : ℕ) (v : Fin k → (I ⊕ Fin g → ℂ)), AnalyticOnNhd ℂ (fun p ↦ iteratedFDeriv ℂ k
         (fun x : I ⊕ Fin g → ℂ ↦ h.fn (fun i ↦ x (Sum.inl i), a p + fun b ↦ x (Sum.inr b))) 0 v) W₀ :=
       fun k v p hp ↦
-        AnalyticAt.comp_of_eq (GlobalTheory.T.analyticAt_iteratedFDeriv_slice_and_fderiv_eq _ (a p) k v (analyticAt_joint h (hW p hp))).1 (ha p hp) rfl
+        AnalyticAt.comp_of_eq (_root_.GlobalTheory.analyticAt_iteratedFDeriv_slice_and_fderiv _ (a p) k v (analyticAt_joint h (hW p hp))).1 (ha p hp) rfl
     unfold GlobalTheory.PeriodFamily.taylor
     refine ⟨∑ k ∈ Finset.range (N + 1), ∑ s : Fin k → I ⊕ Fin g,
       ((k.factorial : ℂ)⁻¹ • ∏ b, t (s b)) ⊗ₜ[ℂ] Hol.mk _ (han k fun b ↦ Pi.single (s b) 1), fun p hp ↦ ?_⟩
@@ -77,21 +77,21 @@ theorem GlobalTheory.AnPer.exists_sliceTaylor_algHom : ∀ {I : Type} [Fintype I
     rw [Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, Hol.ev_apply, Hol.fn_mk _ _ hp,
       AlgHom.id_apply, Algebra.ofId_apply, mul_comm, ← Algebra.smul_def, smul_smul, mul_comm]
   choose r hr using key
-  obtain ⟨hadd, -, hconst, hcongr, -, -⟩ := GlobalTheory.T.taylorPolynomialEvalAlgebra_formal_properties N t
+  obtain ⟨hadd, -, hconst, hcongr, -, -⟩ := _root_.GlobalTheory.PeriodFamily.taylor_formal_properties N t
   have hc : ∀ c : ℂ, r (algebraMap ℂ _ c) = algebraMap ℂ _ c := fun c ↦ by
-    refine GlobalTheory.T.tensor_holomorphic_ext_of_values W₀ D _ _ fun p hp ↦ ?_
+    refine _root_.GlobalTheory.tensor_hol_ext_of_values W₀ D _ _ fun p hp ↦ ?_
     rw [hr, AlgHom.commutes, ← hconst c]
     refine hcongr _ _ ?_
     filter_upwards [eventually_mem (hW p hp)] with x hx using Hol.fn_algebraMap c hx
   have hA : ∀ f h : Hol W, r (f + h) = r f + r h := fun f h ↦ by
-    refine GlobalTheory.T.tensor_holomorphic_ext_of_values W₀ D _ _ fun p hp ↦ ?_
+    refine _root_.GlobalTheory.tensor_hol_ext_of_values W₀ D _ _ fun p hp ↦ ?_
     rw [map_add, hr, hr, hr, ← hadd _ _ (analyticAt_slice f (hW p hp)) (analyticAt_slice h (hW p hp))]
     refine hcongr _ _ ?_
     filter_upwards [eventually_mem (hW p hp)] with x hx using Hol.fn_add f h hx
   have hM : ∀ f h : Hol W, r (f * h) = r f * r h := fun f h ↦ by
-    refine GlobalTheory.T.tensor_holomorphic_ext_of_values W₀ D _ _ fun p hp ↦ ?_
+    refine _root_.GlobalTheory.tensor_hol_ext_of_values W₀ D _ _ fun p hp ↦ ?_
     rw [map_mul, hr, hr, hr,
-      ← GlobalTheory.T.taylorPolynomialEvalAlgebra_mul_of_prod_eq_zero N t ht _ _ (analyticAt_slice f (hW p hp)) (analyticAt_slice h (hW p hp))]
+      ← _root_.GlobalTheory.PeriodFamily.taylor_mul_of_prod_eq_zero N t ht _ _ (analyticAt_slice f (hW p hp)) (analyticAt_slice h (hW p hp))]
     refine hcongr _ _ ?_
     filter_upwards [eventually_mem (hW p hp)] with x hx using Hol.fn_mul f h hx
   exact ⟨{ toFun := r

@@ -92,12 +92,6 @@ theorem FirstInequality.finrank_eq_one_of_eventually_splitsCompletely (hFI : Fir
     Module.finrank K L = 1 :=
   hFI.finrank_eq_one_of_sup_eq_top (ideleNorm_range_sup_eq_top_of_eventually_splitsCompletely h)
 
-theorem FirstInequality.finrank_eq_one_of_splitsCompletely_of_finite (hFI : FirstInequality.{u})
-    {T : Set (HeightOneSpectrum (𝓞 K))} (hT : T.Finite) (h : ∀ v ∉ T, SplitsCompletely L v) :
-    Module.finrank K L = 1 :=
-  hFI.finrank_eq_one_of_eventually_splitsCompletely
-    (eventually_cofinite.2 (hT.subset fun v hv ↦ by_contra fun hvT ↦ hv (h v hvT)))
-
 end Cyclic
 
 end

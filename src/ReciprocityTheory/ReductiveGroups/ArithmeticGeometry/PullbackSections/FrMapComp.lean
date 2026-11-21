@@ -77,8 +77,4 @@ theorem frMap_trans {S T U : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Al
     simp only [CommRingCat.hom_comp, RingHom.comp_apply]
     rw [ha1 i h1, ha2 i h2]
 
-theorem faithfullyFlat_id (S : Type) [CommRing S] : (RingHom.id S).FaithfullyFlat := by
-  show Module.FaithfullyFlat S S
-  exact Module.FaithfullyFlat.self S
-
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

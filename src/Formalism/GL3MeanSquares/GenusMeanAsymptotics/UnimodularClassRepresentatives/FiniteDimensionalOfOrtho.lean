@@ -111,23 +111,6 @@ theorem isTotPosDef_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K
   refine Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩
   exact Complex.normSq_pos.2 (by simpa using hi)
 
-theorem trace_pos_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
-    (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :
-    ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (h x x) := by
-  intro x hx
-  have hp := isTotPosDef_of_ortho hK hs hL x hx
-  have ht := trace_eq_sum_embeddings (K := ℚ) (L := K) ℂ (x := h x x)
-  have hre := congrArg Complex.re ht
-  rw [Complex.re_sum] at hre
-  have hpos : 0 < ∑ σ : K →ₐ[ℚ] ℂ, (σ (h x x)).re :=
-    Finset.sum_pos (fun σ _ => hp σ.toRingHom)
-      ⟨(Classical.arbitrary (K →+* ℂ)).toRatAlgHom, Finset.mem_univ _⟩
-  rw [← hre] at hpos
-  have : (algebraMap ℚ ℂ (Algebra.trace ℚ K (h x x))).re = ((Algebra.trace ℚ K (h x x) : ℚ) : ℝ) := by
-    simp
-  rw [this] at hpos
-  exact_mod_cast hpos
-
 theorem isIntegralLat_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {n : ℕ}
     (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) : Formalism.HermitianLatticesTheory.IsIntegralLat h L := by
   obtain ⟨e, hli, hsp, rfl, he⟩ := hL

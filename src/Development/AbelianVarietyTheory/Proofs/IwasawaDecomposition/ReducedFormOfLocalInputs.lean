@@ -1,6 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempotentFixesOfOnlySeriesOfLabelActs
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PartsGiveDimensionStatement
+import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsobaricDiscreteSelfDualStrongMultiplicityOne
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisRepBaseChange
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeGaloisRepQbarConjugateUnique
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsHeckeGaloisQOfIsHeckeGalois
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeGaloisLocalWeights
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeGaloisLocalWeightsDeRham
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedMuPartInBaseChange
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowParamOfThetaLiftBaseChangeStatement
 
 noncomputable section
 
@@ -28,14 +38,6 @@ theorem map_MjSig_eq (D : D7) (i : D.nd.Loc) (hInt : Rows.IsotInternal D.what₂
     exact (LinearMap.finrank_range_of_inj hfi).symm
   rw [h1, h2]
   exact Submodule.finrank_mono (hDown x hx Sig hS)
-
-theorem reducedMultiplicity_of_rows :
-    ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7), GlobalTheory.NRows.Inputs hL D → GlobalTheory.NRows.Rows D → SumRepresentations.ReducedMultiplicityStatement D := by
-  intro hL D I R i _
-  have hInt : Rows.IsotInternal D.what₂ := I.isot
-  have h42 : SumRepresentations.Conclusion42 D := (I.Conclusion1 (GlobalTheory.T.parts_give_dimension D) R.a R.b).2.2
-  have h1 := map_MjSig_eq D i hInt (h42 i) (R.c.parUp i) (R.c.downMem i) (R.typeNZ i)
-  exact ⟨h1, (SumRepresentations.good_part_image_iff D.nd D.naut i hInt (h42 i) h1).2 (R.c.goodPart i)⟩
 
 end GlobalTheory.PtSt
 

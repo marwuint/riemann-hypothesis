@@ -7,39 +7,6 @@ open MvPolynomial TensorProduct
 
 variable {σ : Type} [Fintype σ]
 
-noncomputable def quotExtEquiv (𝔭 : Ideal (MvPolynomial σ ℚ)) :
-    (ℂ ⊗[ℚ] (MvPolynomial σ ℚ ⧸ 𝔭)) ≃+* (MvPolynomial σ ℂ ⧸ Ideal.map (MvPolynomial.map (algebraMap ℚ ℂ)) 𝔭) :=
-  (Algebra.TensorProduct.tensorQuotientEquiv (R := ℚ) ℂ (MvPolynomial σ ℚ) ℂ 𝔭).toRingEquiv.trans
-    (Ideal.quotientEquiv _ _ (algebraTensorAlgEquiv ℚ ℂ).toRingEquiv (by
-      have h : (algebraTensorAlgEquiv (σ := σ) ℚ ℂ).toRingEquiv.toRingHom.comp
-          (Algebra.TensorProduct.includeRight : MvPolynomial σ ℚ →ₐ[ℚ] ℂ ⊗[ℚ] MvPolynomial σ ℚ).toRingHom
-          = MvPolynomial.map (algebraMap ℚ ℂ) := by
-        apply RingHom.ext
-        intro p
-        simp [Algebra.TensorProduct.includeRight_apply, algebraTensorAlgEquiv_tmul]
-      rw [← h, ← Ideal.map_map]
-      rfl))
-
-section Rad
-
-theorem isRadical_map (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime] : (Ideal.map (MvPolynomial.map (algebraMap ℚ ℂ)) 𝔭).IsRadical := by
-  rw [Ideal.isRadical_iff_quotient_reduced]
-  set A := MvPolynomial σ ℚ ⧸ 𝔭
-  set K := FractionRing A
-  have : Algebra.EssFiniteType ℚ K := inferInstanceAs (Algebra.EssFiniteType ℚ (Localization _))
-  have h1 : IsReduced (K ⊗[ℚ] ℂ) := isReduced_tensor_of_essFiniteType K ℂ
-  have h2 : IsReduced (ℂ ⊗[ℚ] K) :=
-    isReduced_of_injective (Algebra.TensorProduct.comm ℚ ℂ K).toRingEquiv.toRingHom
-      (Algebra.TensorProduct.comm ℚ ℂ K).injective
-  have hinj : Function.Injective (Algebra.TensorProduct.map (AlgHom.id ℚ ℂ)
-      (IsScalarTower.toAlgHom ℚ A K)) :=
-    Module.Flat.lTensor_preserves_injective_linearMap _ (IsFractionRing.injective _ _)
-  have h3 : IsReduced (ℂ ⊗[ℚ] A) := isReduced_of_injective (Algebra.TensorProduct.map (AlgHom.id ℚ ℂ)
-      (IsScalarTower.toAlgHom ℚ A K)).toRingHom hinj
-  exact isReduced_of_injective (quotExtEquiv 𝔭).symm.toRingHom (quotExtEquiv 𝔭).symm.injective
-
-end Rad
-
 section GD
 
 attribute [local instance] MvPolynomial.algebraMvPolynomial

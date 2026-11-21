@@ -113,16 +113,6 @@ section Position
 
 variable {Pr : Primes X} {u : Pr.Word} {SG : Finset (HeightOneSpectrum (𝓞 X.E))} {n : ℕ}
 
-theorem moveHyp_of_notMem (hPr : Pr.Ok) (h : ∀ w ∈ SG, (Pr.T u : 𝓞 X.E) ∉ w.asIdeal) (P : Pr.vT u) :
-    MoveHyp (Pr.vT u) SG P := by
-  refine ⟨(moveHyp_of_ok hPr u P).ne, (moveHyp_of_ok hPr u P).st, fun w => ⟨fun e => ?_, fun e => ?_⟩⟩
-  · apply h w.1 w.2
-    rw [e]
-    exact T_mem hPr u P
-  · apply h w.1 w.2
-    rw [e, mem_conjP, map_natCast]
-    exact T_mem hPr u P
-
 theorem above_finite_nonempty (hX : X.Ok) (hPr : Pr.Ok) {P : Pr.vT u} (hP : MoveHyp (Pr.vT u) SG P)
     (d' : DecoSet X.E n (Pr.vT u) SG) :
     {d₁ : DecoSet X.E n (Pr.vT u) SG | d'.1.IsUp P (Pr.T u : 𝓞 X.E) d₁.1}.Finite ∧
@@ -173,18 +163,6 @@ theorem T_notMem_rowSG (hPr : Pr.Ok) (hsel : IsSel X sel) (hT : Pr.T u ∈ S) :
       exact hT
     · simp at h
 
-variable {W u j} in
-
-theorem alcoveAt_of_sizes {a : ℝ} (h : Sizes Pr W a) (hj : j ≤ R.m) : AlcoveAt W u j := by
-  intro τ s t
-  have h1 := h.two_spread_lt u j hj τ
-  have h0 := R.N_pos j
-  rw [DomWeight.spread, dif_pos h0] at h1
-  have h2 : (W.lamTrue u j τ).w s ≤ (W.lamTrue u j τ).w ⟨0, h0⟩ := (W.lamTrue u j τ).anti (Nat.zero_le _)
-  have h3 : (W.lamTrue u j τ).w ⟨R.N j - 1, by omega⟩ ≤ (W.lamTrue u j τ).w t :=
-    (W.lamTrue u j τ).anti (show t.1 ≤ R.N j - 1 by have := t.2; omega)
-  omega
-
 namespace Hyp
 
 variable {Z : Dat} {H : D7} {s : Seam H Z.X} {cc : Ideal (𝓞 H.host.K)} {δ : ℂ} {χ : TaylorLogMetric.IdE H → ℂ} {cD : H.what₂.Tau → ℂ}
@@ -197,60 +175,6 @@ theorem g_mem (h : Hyp Z s cc δ χ cD sel S mu cst u) (k : Fin 2) : Z.Pr.g k �
   apply h.host
   fin_cases k <;> simp [hostS]
 
-theorem ram_mem (h : Hyp Z s cc δ χ cD sel S mu cst u) {p : ℕ} (hp : p.Prime) (hd : p ∣ H.host.condN) : p ∈ S := by
-  rcases hp.dvd_mul.1 hd with h1 | h1
-  · rcases hp.dvd_mul.1 h1 with h2 | h2
-    · exact h.small p (Nat.mem_primeFactors.2 ⟨hp, h2, H.host.QS_pos.ne'⟩)
-    · rw [(Nat.prime_dvd_prime_iff_eq hp H.host.hyp.1).1 h2]
-      exact h.host (by simp [hostS])
-  · rw [(Nat.prime_dvd_prime_iff_eq hp H.host.hyp.2.1).1 h1]
-    exact h.host (by simp [hostS])
-
-theorem moveHyp (h : Hyp Z s cc δ χ cD sel S mu cst u) {SG : Finset (HeightOneSpectrum (𝓞 Z.X.E))}
-    (hSG : SG ⊆ rowSG Z.Pr sel mu) (P : Z.Pr.vT u) : MoveHyp (Z.Pr.vT u) SG P :=
-  moveHyp_of_notMem h.ok.primes (fun w hw => T_notMem_rowSG mu h.ok.primes h.isSel h.T_mem w (hSG hw)) P
-
-theorem alcoveAt (h : Hyp Z s cc δ χ cD sel S mu cst u) {j : ℕ} (hj : j ≤ Z.R.m) : AlcoveAt Z.W u j :=
-  alcoveAt_of_sizes h.ok.sizes hj
-
 end Hyp
-
-open Classical in
-
-theorem offBox_indicator {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) :
-    InBoxOfRowSelection sel mu cst u N N' fun x => if x ∈ homAt (rowSG Pr sel mu) N N' then (1 : X.K) else 0 := by
-  refine ⟨fun x hx => ?_, fun x y hy => ?_⟩
-  · have h : x ∈ homAt (rowSG Pr sel mu) N N' := by
-      by_contra h
-      exact hx (if_neg h)
-    exact Submodule.smul_mem _ _ h
-  · obtain ⟨z, hz, rfl⟩ := hy
-    have h : ((cBof sel mu cst u : 𝓞 X.E) • (LinearMap.id : HomE X.E a b →ₗ[𝓞 X.E] HomE X.E a b)) z ∈
-        homAt (rowSG Pr sel mu) N N' := Submodule.smul_mem _ _ hz
-    simp only [Submodule.add_mem_iff_left _ h]
-
-example {n : ℕ} (SB : Finset (HeightOneSpectrum (𝓞 X.E))) : Framed (SB := SB) (stdLat X.E n) fun _ => 1 := fun _ _ => Iff.rfl
-
-example (hPr : Pr.Ok) (P : Pr.vT u) : MoveHyp (Pr.vT u) ∅ P ∧ MoveHyp (Pr.vT u) Pr.vGs P :=
-  ⟨moveHyp_of_notMem hPr (by simp) P, moveHyp_of_ok hPr u P⟩
-
-example (P : Pr.vT u) : ¬ MoveHyp (Pr.vT u) {P.1} P := fun h => (h.sg ⟨P.1, Finset.mem_singleton_self _⟩).1 rfl
-
-theorem term_congr {SG₁ SG₂ SG₁' SG₂' : Finset (HeightOneSpectrum (𝓞 X.E))} (d₁ : DecoSet X.E (R.N i) (Pr.vT u) SG₁)
-    (d₂ : DecoSet X.E (R.N i) (Pr.vT u) SG₂) (d₁' : DecoSet X.E (R.N j) (Pr.vT u) SG₁') (d₂' : DecoSet X.E (R.N j) (Pr.vT u) SG₂')
-    (hN : d₁.1.N = d₂.1.N) (hf : d₁.1.f = d₂.1.f) (hN' : d₁'.1.N = d₂'.1.N) (hf' : d₁'.1.f = d₂'.1.f)
-    (fr : Frs X.E (R.N i) (rowSG Pr sel mu)) (fr' : Frs X.E (R.N j) (rowSG Pr sel mu)) (Ξ₀ : HomE X.E (R.N i) (R.N j) → X.K) :
-    term W Ch sel mu cst A u i j d₁ fr d₁' fr' Ξ₀ = term W Ch sel mu cst A u i j d₂ fr d₂' fr' Ξ₀ := by
-  have h : phiT X.K d₁.1 d₁'.1 = phiT X.K d₂.1 d₂'.1 := by
-    funext x
-    unfold phiT Deco.at
-    rw [hN, hf, hN', hf']
-  unfold term
-  rw [h, hN, hN']
-
-example {SG SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (d : DecoSet X.E (R.N i) (Pr.vT u) SG)
-    (fr : Frs X.E (R.N i) (rowSG Pr sel mu)) (d' : DecoSet X.E (R.N j) (Pr.vT u) SG') (fr' : Frs X.E (R.N j) (rowSG Pr sel mu)) :
-    term W Ch sel mu cst A u i j d fr d' fr' (fun _ => 0) = 0 := by
-  simp [term, ker, kerOf, latSum]
 
 end GlobalTheory.KerT

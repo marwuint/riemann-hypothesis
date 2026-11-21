@@ -3,11 +3,12 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalk
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NoLeak
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetKernelBoundByWeightStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermDoubleCosetMovesFiniteTargetsSplitStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetKernelBoundByWeight
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Cint
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermDoubleCosetMovesFiniteTargetsSplit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameMovesKernelCommonStabilizerSmulEqStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetKernelRowSumNearOneStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermDoubleCosetMoveKernelSymmStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermDoubleCosetMoveKernelSymm
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -23,11 +24,11 @@ theorem exists_symm_invariant_kernel : ∀ {F : Type} [Field F] [ValuativeRel F]
   · intro h hh x y hx _
     exact GlobalTheory.T.frameMovesKernel_commonStabilizer_smul_eq L r k S d x hx.1 β (j + 1) βJ y h hh
   · intro x hx
-    have base := GlobalTheory.T.hermDoubleCosetMoves_finite_targets_split L r k S j β βJ d x hx.1 hx.2
+    have base := _root_.GlobalTheory.HL.moves_split_by_target L r k S j β βJ d x hx.1 hx.2
     refine ⟨?_, ?_, GlobalTheory.T.hermitianDoubleCoset_kernel_row_sum_near_one L r k S hk j β βJ d x hx.1 hx.2,
-      GlobalTheory.T.hermitianDoubleCoset_kernel_bound_by_weight L r k S hk j β βJ d x hx.1 hx.2⟩
+      _root_.GlobalTheory.HL.KernelWeight.kernel_weight L r k S hk j β βJ d x hx.1 hx.2⟩
     · exact base.2.2.1.subset fun y hy => hy.2
     · intro y hy
-      exact ⟨base.2.2.2.1 y, GlobalTheory.T.hermDoubleCosetMoveKernel_symm L r k S j β βJ d x hx.1 hx.2 y hy.1 hy.2⟩
+      exact ⟨base.2.2.2.1 y, _root_.GlobalTheory.HL.KernSym.kern_symm L r k S j β βJ d x hx.1 hx.2 y hy.1 hy.2⟩
 
 end GlobalTheory.HL

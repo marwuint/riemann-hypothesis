@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCountableCharts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationsSamePointDifferByIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeOfCountableHolomorphicImagesCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeOfInjOnDifferentiableOnComplexStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicMapLiftsLocallyToPeriodFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationsSamePointDifferByIsometry
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeOfCountableHolomorphicImagesCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeOfInjOnDifferentiableOnComplex
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicMapLiftsLocallyToPeriodFamilies
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
@@ -160,7 +160,7 @@ theorem dim_eq : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+*
     intro B y b₀ hB hb₀ hys hyh
     obtain ⟨D'', t'', P'', e'', -, hU⟩ := hF.pts (y b₀) (hys b₀ hb₀)
     obtain ⟨B', P, e, hB', hb₀', hsub, -, hhol, -, hU'⟩ :=
-      GlobalTheory.T.holomorphicMap_lifts_locally_to_periodFamilies O bar g ρ Λ F N D'' t'' d B y b₀ P'' e'' hN heta hlft hB hb₀ hys hyh hU
+      _root_.GlobalTheory.PELU.holomorphic_map_lifts_to_periods O bar g ρ Λ F N D'' t'' d B y b₀ P'' e'' hN heta hlft hB hb₀ hys hyh hU
     exact ⟨B', hB', hb₀', hsub, D'', t'', P, e, hhol, hU'⟩)
   choose Dl tl Pl el hPl hUl using fun i => (hch i).2.2.2.2
   obtain ⟨BZ, Q, Z, s, ε, hBZ, hε, hQ, hZ0, hQZ0, hZQ, hnear, hinv, hZhol⟩ := hPC P₀ hP₀
@@ -170,13 +170,13 @@ theorem dim_eq : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+*
     obtain ⟨i, c₀, hc₀, hyc₀⟩ := hcov y₀ hU₀.1
     subst hyc₀
     obtain ⟨B', P, e, hB', hc₀', hsub, hPc₀, hhol, -, hU'⟩ :=
-      GlobalTheory.T.holomorphicMap_lifts_locally_to_periodFamilies O bar g ρ Λ F N D' t d (B i) (y i) c₀ P₀ e₀ hN heta hlft (hch i).1 hc₀ (hch i).2.1
+      _root_.GlobalTheory.PELU.holomorphic_map_lifts_to_periods O bar g ρ Λ F N D' t d (B i) (y i) c₀ P₀ e₀ hN heta hlft (hch i).1 hc₀ (hch i).2.1
         (hch i).2.2.1 hU₀
     let U := {b | b ∈ B' ∧ ∀ x ∈ s, ‖P b x - P₀ x‖ < ε}
     have hUo : IsOpen U := isOpen_near B' hB' (fun b x => P b x) (fun x => (hhol.2 x).continuousOn) s P₀ ε
     have hc₀U : c₀ ∈ U := ⟨hc₀', fun x _ => by simp [hPc₀, hε]⟩
     have hholU : IsHolPeriods D' ρ U P := ⟨fun b hb => hhol.1 b hb.1, fun x => (hhol.2 x).mono fun b hb => hb.1⟩
-    refine GlobalTheory.T.le_of_injOn_differentiableOn_complex d d' U (fun b => Z (P b)) hUo ⟨c₀, hc₀U⟩ (hZhol d U P hUo hholU fun b hb => hb.2) ?_
+    refine _root_.GlobalTheory.InjHol.le_of_injOn_differentiableOn d d' U (fun b => Z (P b)) hUo ⟨c₀, hc₀U⟩ (hZhol d U P hUo hholU fun b hb => hb.2) ?_
     intro b hb b' hb' heq
     have heq' : Z (P b) = Z (P b') := heq
     obtain ⟨-, h1, hh1⟩ := hnear (P b) (hhol.1 b hb.1) hb.2
@@ -208,14 +208,14 @@ theorem dim_eq : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+*
     let W := {b | b ∈ BZ ∧ ∀ x ∈ s, ‖Q b x - P₀ x‖ < ε}
     have hWo : IsOpen W := isOpen_near BZ hBZ (fun b x => Q b x) (fun x => (hQ.2 x).continuousOn) s P₀ ε
     have hWne : W.Nonempty := ⟨Z P₀, hZ0, fun x _ => by simp [hQZ0, hε]⟩
-    refine GlobalTheory.T.le_of_countable_holomorphic_images_cover_open d d' J U (fun j c => Z (per j c)) W hUo
+    refine _root_.GlobalTheory.le_of_countable_holomorphic_images_cover d d' J U (fun j c => Z (per j c)) W hUo
       (fun j => hZhol d (U j) (per j) (hUo j) (hperU j) fun c hc => hc.2) hWo hWne ?_
     intro b hb
     have hQb := hQ.1 b hb.1
     obtain ⟨yb, eb, hUb⟩ := hF.occ D' t (Q b) hC hQb
     obtain ⟨i, c, hc, hyc⟩ := hcov yb hUb.1
     subst hyc
-    obtain ⟨w, h, hw, hwP, -⟩ := GlobalTheory.T.complexUniformisations_same_point_differ_by_isometry O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' (Dl i) t (tl i) (Q b) (Pl i c)
+    obtain ⟨w, h, hw, hwP, -⟩ := _root_.GlobalTheory.PELU.unifAt_cmp O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' (Dl i) t (tl i) (Q b) (Pl i c)
       (y i c) eb (el i c) hN hUb (hUl i c hc)
     have hPic := (hPl i).1 c hc
     let M₀ : Matrix (Fin g) (Fin g) ℂ := LinearMap.toMatrix' (h.symm : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))

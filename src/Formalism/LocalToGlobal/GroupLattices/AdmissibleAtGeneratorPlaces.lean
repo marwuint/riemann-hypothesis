@@ -1,4 +1,7 @@
-import Formalism.LocalToGlobal.GroupLattices.AdmissibleOfInclusion
+import Formalism.SharpRestriction.AdmissibleParameterJoins.GandSy
+import Formalism.SharpRestriction.SmoothDesignExistence.SumOverPrimesHypotheses
+import Formalism.SharpRestriction.AdmissibleParameterJoins.DIVfromGLs
+import Formalism.SharpRestriction.Divisibility.ChainOperators.PerCol
 import Formalism.SharpRestriction.AdmissibleParameterJoins.GandSaj
 
 noncomputable section
@@ -26,13 +29,6 @@ def UsedTuplesBoundByConstant (D : D7) (L : SizeData₂ D) (EX : ErrX D) (C1 : �
   ∀ (i : Fin 2) w, LiftErrorLocal.Over D i w → ∀ u : D.what₂.Word, D.what₂.places.resChar w ≠ (D.mem u).A.T → ∀ μ : D.what₂.Tup, LocalQuadraticParts.UsedT D μ →
     ∀ φ ∈ DV.MramL D u, ∀ F ∈ (D.what₂.Mtilde μ).carrier, ∃ y : D.what₂.LL, D.what₂.embLL y = D.what₂.perCol u μ (D.jN u φ) F ∧
       (y = 0 ∨ -(∑ j ∈ LiftErrorLocal.lifts D, vNN EX i u j w) - C1 * LiftErrorLocal.errC D L ≤ LiftErrorLocal.vG D w y)
-
-example {D : D7} {T : TwForms D} (h : TwistedChainIntegral D T) : TwistedPointIntegral D T := fun u μ _ hμ => h u μ hμ
-example {D : D7} {Dx : DivX D} {T : TwForms D} (h : TwistedPeriodIntegral D Dx T) : TwistedPeriodAdmissible D Dx T := fun hD u μ _ hμ => h hD u μ hμ
-example {D : D7} {Dx : DivX D} {T : TwForms D} {u : D.what₂.Word} (h : product_first_zeroth_parts.TupleChainSharpColumnValuation Dx T u) : TwistedColumnBoundAtT Dx T u :=
-  fun w hw μ _ _ hQ x hx => h w hw μ hQ x hx
-example {D : D7} {L : SizeData₂ D} {EX : ErrX D} {C1 C2 : ℝ} (h : LiftErrorLocal.PropositionCLatticeBound D L EX C1 C2) : UsedTuplesBoundByConstant D L EX C1 :=
-  fun i w hi u hw μ _ φ hφ F hF => h.1 i w hi u hw μ φ hφ F hF
 
 variable {D : D7} {L : SizeData₂ D}
 
@@ -244,22 +240,6 @@ theorem admissible_level_two {X : Inst D L} {Y : LatInst D} {K : Consts} {c : La
       exact atG_coreU hCL hSg u w i hi hw φ hφ F hF1
     · exact admissible_away_from_twist h0 hT hp0 hpT hE ht.fdef hS.2.2 u w hw hg φ hφ F hF1 hF0
 
-example (h : ∀ u, ∃ hR : (D.fm u).PRat, (D.fm u).PtilIntegral hR) (hp0 : PeriodClassSumWeyl D) (hD : DGamDef D) : ∀ u (w : D.what₂.places.Pl),
-    ∀ z ∈ locW D.what₂.places w ((D.fm u).lat D.R.m).L,
-    ∀ F ∈ (D.what₂.Mtilde D.what₂.mu0).carrier, F ∈ D.what₂.V0 D.what₂.mu0 →
-      ∃ y : D.what₂.LL, D.what₂.embLL y = (D.mem u).P.Ptil ((D.fm u).emb D.R.m z) ((D.eMt u).symm F) ∧
-        (y = 0 ∨ -ur D w (vDG D u w) ≤ (vAdd (D.plEq w) y : ℝ)) := by
-  intro u w z hz F hF hF0
-  obtain ⟨hR, hI⟩ := h u
-  let g : ((D.fm u).lat D.R.m).V →ₛₗ[D.what₂.embLL] ℂ :=
-    ((((D.mem u).P.period.flip ((D.eMt u).symm F)).comp ((D.mem u).P.lowerMap.comp (D.mem u).P.evz))).comp ((D.fm u).emb D.R.m)
-  refine pair_core D w _ g _ ?_ z hz
-  intro x hx
-  obtain ⟨y, hy, hv⟩ := hp0 hD u _ (hI x hx) F hF hF0
-  refine ⟨y, ?_, hv w⟩
-  rw [hy, (D.fm u).PtL_spec hR x]
-  rfl
-
 theorem famU {eps : ℝ} (he : 0 < eps) (Fm : FamP eps)
     (g1 : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (_ : Fm.x1 < x) (i : Fm.Ix x), ∀ u, product_first_zeroth_parts.Conclusion6 (Fm.D x i) u)
     (g2 : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), TwistedPointIntegral (Fm.D x i) (Fm.ex x hx i).tw)
@@ -336,16 +316,6 @@ theorem admissible_family_of_inclusion {𝒞 : FamClass} (h : Adm2InU 𝒞) :
   refine ⟨ε1, hε1, fun eps he hle => (hK eps he hle).imp fun K hK' Fm CH hc hL => ?_⟩
   obtain ⟨g1, g2, g3, g4, hS, ha, hb, C1, hCL, hSg⟩ := hK' Fm CH hc hL
   exact famU he Fm g1 g2 g3 g4 hS ha hb hCL hSg
-
-theorem inU_of_in {𝒞 : FamClass} (h : Formalism.L2.G.Adm2In.Adm2In 𝒞) : Adm2InU 𝒞 where
-  pt0 := h.pt0
-  ptTw := h.ptTw.imp fun _ _ _ ⟨x0, g⟩ => ⟨x0, fun x hx h1 i u μ _ hμ => g x hx h1 i u μ hμ⟩
-  per0 := h.per0
-  perTw := h.perTw.imp fun _ _ _ ⟨x0, g⟩ => ⟨x0, fun x hx h1 i hD u μ _ hμ => g x hx h1 i hD u μ hμ⟩
-  serv := h.serv
-  p10 := h.p10.imp fun _ _ _ ⟨x0, g⟩ => ⟨x0, fun x hx h1 i u => ⟨(g x hx h1 i u).1, fun w hw μ _ _ hQ y hy => (g x hx h1 i u).2 w hw μ hQ y hy⟩⟩
-  dgt := h.dgt
-  atG := h.atG.imp fun _ _ _ ⟨C1, _, ⟨x0, g⟩, hSg⟩ => ⟨C1, ⟨x0, fun x h1 hx i j w hj u hw μ _ φ hφ F hF => (g x h1 hx i).1 j w hj u hw μ φ hφ F hF⟩, hSg⟩
 
 end Formalism.L2.G.Adm2InU
 

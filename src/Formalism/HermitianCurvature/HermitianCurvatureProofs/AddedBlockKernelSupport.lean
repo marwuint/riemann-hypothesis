@@ -618,84 +618,8 @@ noncomputable def stdChar : AddChar ℚ_[p] ℂ where
 theorem stdChar_apply (x : ℚ_[p]) :
     stdChar p x = Complex.exp (2 * Real.pi * Complex.I * ((fr p x : ℚ) : ℂ)) := rfl
 
-theorem stdChar_eq_one_iff (x : ℚ_[p]) : stdChar p x = 1 ↔ ‖x‖ ≤ 1 := by
-  rw [stdChar_apply, Complex.exp_eq_one_iff]
-  constructor
-  · rintro ⟨n, hn⟩
-    have hq : fr p x = n := by
-      have h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by simp [Real.pi_ne_zero]
-      have h3 : ((fr p x : ℚ) : ℂ) = ((n : ℤ) : ℂ) := by
-        apply mul_left_cancel₀ h2
-        rw [hn]
-        ring
-      exact_mod_cast h3
-    calc ‖x‖ = ‖(x - ((fr p x : ℚ) : ℚ_[p])) + ((n : ℤ) : ℚ_[p])‖ := by
-          rw [hq, Rat.cast_intCast, sub_add_cancel]
-      _ ≤ max ‖x - ((fr p x : ℚ) : ℚ_[p])‖ ‖((n : ℤ) : ℚ_[p])‖ := Padic.nonarchimedean _ _
-      _ ≤ 1 := max_le (fr_norm p x) (Padic.norm_int_le_one n)
-  · intro hx
-    have hn : ‖((fr p x : ℚ) : ℚ_[p])‖ ≤ 1 := by
-      calc ‖((fr p x : ℚ) : ℚ_[p])‖ = ‖x - (x - ((fr p x : ℚ) : ℚ_[p]))‖ := by
-            rw [sub_sub_cancel]
-        _ ≤ max ‖x‖ ‖x - ((fr p x : ℚ) : ℚ_[p])‖ := by
-            rw [sub_eq_add_neg]
-            exact (Padic.nonarchimedean _ _).trans_eq (by rw [norm_neg])
-        _ ≤ 1 := max_le hx (fr_norm p x)
-    obtain ⟨z, hz⟩ := inS_int p (fr_inS p x) hn
-    exact ⟨z, by rw [hz]; push_cast; ring⟩
-
 theorem mem_subring_iff (x : ℚ_[p]) : x ∈ PadicInt.subring p ↔ ‖x‖ ≤ 1 := Iff.rfl
-
-theorem datum : LocalDatum ℚ_[p] (PadicInt.subring p) (stdChar p) where
-  t2 := inferInstance
-  isOpen := by
-    have : ((PadicInt.subring p : Subring ℚ_[p]) : Set ℚ_[p]) = Metric.closedBall 0 1 := by
-      ext x; simp
-    rw [this]
-    exact IsUltrametricDist.isOpen_closedBall 0 one_ne_zero
-  isCompact := by
-    have : ((PadicInt.subring p : Subring ℚ_[p]) : Set ℚ_[p]) = Metric.closedBall 0 1 := by
-      ext x; simp
-    rw [this]
-    exact isCompact_closedBall 0 1
-  unif := by
-    have hp0' : (p : ℚ_[p]) ≠ 0 := by exact_mod_cast hp.out.ne_zero
-    have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt
-    refine ⟨Units.mk0 (p : ℚ_[p]) hp0', ?_, fun x => ?_⟩
-    · rw [mem_subring_iff]; simpa using Padic.norm_int_le_one (p := p) (p : ℤ)
-    · obtain ⟨k, hk⟩ := pow_unbounded_of_one_lt ‖x‖ hp1
-      refine ⟨k, ?_⟩
-      rw [mem_subring_iff, Units.val_mk0, norm_mul, norm_pow, Padic.norm_p, inv_pow,
-        inv_mul_le_iff₀ (by positivity)]
-      simpa using hk.le
-  artin := inferInstance
-  red := inferInstance
-  unitRep := by
-    intro x
-    by_cases hx : x = 0
-    · exact ⟨1, (PadicInt.subring p).one_mem, by simp [hx]⟩
-    · exact ⟨0, (PadicInt.subring p).zero_mem, by simpa using hx⟩
-  unitary := by
-    intro x
-    rw [AddChar.map_neg_eq_inv, stdChar_apply, ← Complex.exp_conj, ← Complex.exp_neg]
-    congr 1
-    simp [Complex.conj_ofReal, Complex.conj_ofNat]
-  selfDual := by
-    intro a
-    constructor
-    · intro h
-      have := h 1 (PadicInt.subring p).one_mem
-      rw [mul_one, stdChar_eq_one_iff] at this
-      exact this
-    · intro ha r hr
-      rw [stdChar_eq_one_iff]
-      exact (PadicInt.subring p).mul_mem ha hr
 
 end Padic
 end Formalism.FourierDecayAlt.P.A5x7
 
-theorem Formalism.FourierDecayAlt.P.padic_local_datum_facts : Formalism.FourierDecayAlt.A5.DatumPadic := by
-  intro p hp
-  refine ⟨⟨Formalism.FourierDecayAlt.P.A5x7.stdChar p, Formalism.FourierDecayAlt.P.A5x7.datum p⟩, fun n hn => ?_⟩
-  rw [isUnit_iff_ne_zero]
-  exact_mod_cast hn

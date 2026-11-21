@@ -84,8 +84,6 @@ def SameCar {D : D7} (F F' : ∀ u, Forms0 D u) : Prop :=
   ∀ u : D.what₂.Word, (F' u).cls0.lev.Lb = (F u).cls0.lev.Lb ∧ (F' u).cls0.lev.U = (F u).cls0.lev.U ∧
     HEq (F' u).cls0.lev.chi (F u).cls0.lev.chi ∧ (F' u).cls0.y = (F u).cls0.y ∧ (F' u).val0.eY = (F u).val0.eY
 
-theorem SameCar.refl {D : D7} (F : ∀ u, Forms0 D u) : SameCar F F := fun _ => ⟨rfl, rfl, HEq.rfl, rfl, rfl⟩
-
 set_option maxHeartbeats 4000000 in
 
 def SameStd : Prop :=

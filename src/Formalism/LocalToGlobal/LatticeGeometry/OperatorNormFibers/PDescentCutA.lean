@@ -102,34 +102,4 @@ theorem opNormAt_le_of_points {K V ι W κ : Type} [Field K] [NumberField K] [St
       | exact h'
       | (rw [hn, hn]; exact h')
 
-theorem sq_sum_le {C Hb : Type} [AddCommGroup C] [Fintype Hb] (B : C →+ C →+ ℂ)
-    (hpos : ∀ x, 0 ≤ (B x x).re) (y : Hb → C) :
-    (B (∑ g, y g) (∑ g, y g)).re ≤ (Fintype.card Hb : ℝ) * ∑ g, (B (y g) (y g)).re := by
-  classical
-  have hS : (B (∑ g, y g) (∑ g, y g)).re = ∑ g, ∑ h, (B (y g) (y h)).re := by
-    simp only [map_sum, AddMonoidHom.finset_sum_apply, Complex.re_sum]
-    first
-      | rfl
-      | exact Finset.sum_comm
-  have hD : ∀ g h, (B (y g - y h) (y g - y h)).re =
-      (B (y g) (y g)).re + (B (y h) (y h)).re - (B (y g) (y h)).re - (B (y h) (y g)).re := by
-    intro g h
-    simp only [map_sub, AddMonoidHom.sub_apply, Complex.sub_re]
-    ring
-  have hnn : 0 ≤ ∑ g, ∑ h, (B (y g - y h) (y g - y h)).re :=
-    Finset.sum_nonneg fun g _ => Finset.sum_nonneg fun h _ => hpos _
-  have expand : ∑ g, ∑ h, (B (y g - y h) (y g - y h)).re =
-      ∑ g, ∑ h : Hb, (B (y g) (y g)).re + ∑ g : Hb, ∑ h, (B (y h) (y h)).re -
-        ∑ g, ∑ h, (B (y g) (y h)).re - ∑ g, ∑ h, (B (y h) (y g)).re := by
-    simp only [hD, Finset.sum_sub_distrib, Finset.sum_add_distrib]
-  have a1 : ∑ g, ∑ h : Hb, (B (y g) (y g)).re = (Fintype.card Hb : ℝ) * ∑ g, (B (y g) (y g)).re := by
-    rw [Finset.mul_sum]
-    simp
-  have a2 : ∑ g : Hb, ∑ h, (B (y h) (y h)).re = (Fintype.card Hb : ℝ) * ∑ g, (B (y g) (y g)).re := by
-    simp
-  have a3 : ∑ g, ∑ h, (B (y h) (y g)).re = ∑ g, ∑ h, (B (y g) (y h)).re := Finset.sum_comm
-  rw [expand, a1, a2, a3] at hnn
-  rw [hS]
-  linarith
-
 end Formalism.L2.Geo.ExtensionFiltration

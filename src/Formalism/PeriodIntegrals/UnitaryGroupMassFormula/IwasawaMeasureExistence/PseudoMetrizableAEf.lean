@@ -31,11 +31,6 @@ theorem char_eq_of_map' (μ : Measure A) [μ.IsAddHaarMeasure] (φ : A ≃ₜ+ A
   have h5 : addEquivAddHaarChar φ * c = 1 := by exact_mod_cast h4
   exact eq_inv_of_mul_eq_one_left h5
 
-theorem char_eq_one_of_map (μ : Measure A) [μ.IsAddHaarMeasure] (φ : A ≃ₜ+ A) (h : μ.map φ = μ) :
-    addEquivAddHaarChar φ = 1 := by
-  have h1 : μ.map φ = (1 : ℝ≥0) • μ := by rw [one_smul]; exact h
-  simpa using char_eq_of_map' μ φ one_ne_zero h1
-
 def piE {ι : Type*} [Fintype ι] (φ : ι → A ≃ₜ+ A) : (ι → A) ≃ₜ+ (ι → A) where
   toFun x i := φ i (x i)
   invFun x i := (φ i).symm (x i)
@@ -74,41 +69,6 @@ theorem char_pi {ι : Type} [Fintype ι] [DecidableEq ι] (φ : ι → A ≃ₜ+
   rw [h3, Finset.prod_inv_distrib, inv_inv]
 
 end Gen
-
-section AEf
-
-variable (I : AutInst)
-
-attribute [local instance] AfT.tAf Nrm.topRing Nrm.t2 Nrm.mAf Nrm.borel_mAf MFI.locallyCompact_AEf
-
-theorem sigmaCompact_AEf : SigmaCompactSpace (AEf I) := by
-  refine ⟨⟨fun N => (fun x => (((AfT.isUnit_natCast I (N + 1) (by omega)).unit⁻¹ : (AEf I)ˣ) : AEf I) * x) ''
-    ((IntAf I.F I.E : Subring (AEf I)) : Set (AEf I)), fun N => (Nrm.isCompact_IntAf I).image
-      (continuous_const.mul continuous_id), ?_⟩⟩
-  refine Set.eq_univ_of_forall fun t => ?_
-  obtain ⟨N, hN, hmem⟩ := AfT.exists_nat_mul_mem I t
-  refine Set.mem_iUnion.2 ⟨N - 1, (N : AEf I) * t, hmem, ?_⟩
-  have e : ((N - 1 + 1 : ℕ) : AEf I) = N := by congr 1; omega
-  show (((AfT.isUnit_natCast I (N - 1 + 1) (by omega)).unit⁻¹ : (AEf I)ˣ) : AEf I) * ((N : AEf I) * t) = t
-  rw [← mul_assoc]
-  have h2 : (((AfT.isUnit_natCast I (N - 1 + 1) (by omega)).unit⁻¹ : (AEf I)ˣ) : AEf I) * (N : AEf I) = 1 := by
-    rw [← e]; exact (AfT.isUnit_natCast I (N - 1 + 1) (by omega)).val_inv_mul
-  rw [h2, one_mul]
-
-theorem pseudoMetrizable_AEf : TopologicalSpace.PseudoMetrizableSpace (AEf I) := by
-  letI : UniformSpace (AEf I) := IsTopologicalAddGroup.rightUniformSpace (AEf I)
-  haveI : IsUniformAddGroup (AEf I) := isUniformAddGroup_of_addCommGroup
-  haveI : (𝓝 (0 : AEf I)).IsCountablyGenerated := (AfT.hasBasis_nhds_zero_tAf I).isCountablyGenerated
-  haveI : (uniformity (AEf I)).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated
-  exact UniformSpace.pseudoMetrizableSpace
-
-theorem secondCountable_AEf : SecondCountableTopology (AEf I) := by
-  haveI := sigmaCompact_AEf I
-  haveI := pseudoMetrizable_AEf I
-  letI := TopologicalSpace.pseudoMetrizableSpacePseudoMetric (AEf I)
-  infer_instance
-
-end AEf
 
 end PI.IwaMeasEx.MH
 

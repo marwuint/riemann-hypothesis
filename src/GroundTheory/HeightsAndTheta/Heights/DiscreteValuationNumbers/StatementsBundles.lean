@@ -134,8 +134,6 @@ def ScalarQuotient.Statement : Prop :=
 
 section Examples
 
-abbrev LineIdx : Unit → Type := fun _ => Fin 2
-
 theorem isVerticalDivisor_one {K : Type*} [DecidableEq K] {ι : K → Type*} {O : Type*} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (H : Ideal (MRing ι O)) [H.IsPrime] :
     IsVerticalDivisor H ϖ 0 1 1 where
@@ -175,8 +173,6 @@ theorem isPairExpansion_psum (N k : ℕ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [mul_comm, (Commute.all _ _).geom_sum₂_mul]
 
-abbrev LineFieldTwoElement : Type := FractionRing (MRing LineIdx (ZMod 2))
-
 end Examples
 
 section ExamplesDVR
@@ -201,60 +197,18 @@ theorem isFlagPair_self (ϖ : O) (y : (Σ k, ι k) → Ω) (r : ℕ) {s : Ω} (h
   generic i := by
     simp
 
-def firstLine (Ω : Type*) [Field Ω] : (Fin 1 → Ω) →ₗ[Ω] (Fin 2 → Ω) :=
-  LinearMap.pi fun q : Fin 2 => if q = 0 then LinearMap.proj 0 else 0
-
-def secondCoord (Ω : Type*) [Field Ω] : (Fin 2 → Ω) →ₗ[Ω] (Fin 1 → Ω) :=
-  LinearMap.pi fun _ : Fin 1 => LinearMap.proj 1
-
 end ExamplesDVR
 
 section ExamplesZ2
-
-abbrev LineFieldDyadic : Type := FractionRing (MRing LineIdx ℤ_[2])
 
 theorem isHomogeneous_psum (N k : ℕ) : (psum (Fin N) ℤ k).IsHomogeneous k := by
   unfold psum
   refine IsHomogeneous.sum _ _ _ fun i _ => ?_
   simpa using (isHomogeneous_X ℤ i).pow k
 
-abbrev scaledTrivialBundleDyadicLine (r : ℕ) {s : LineFieldDyadic} (hs : s ≠ 0) :
-    ChartBundle ℤ_[2] (segreVec (genericPt ℤ_[2] LineIdx)) r (Fin r → LineFieldDyadic) :=
-  scaledTrivBundle ℤ_[2] (segreVec (genericPt ℤ_[2] LineIdx)) r hs
-
 abbrev PointIdx : Unit → Type := fun _ => Fin 1
 
 end ExamplesZ2
-
-section ExamplesEuler
-
-variable {Ω : Type*} [Field Ω] {R : Type*} [CommRing R] [Algebra R Ω]
-
-abbrev LinePt (Ω : Type*) := (Σ k : Unit, LineIdx k) → Ω
-
-def eulerEquiv (y0 y1 s : Ω) (h0 : y0 ≠ 0) (hs : s ≠ 0) : (Fin 2 → Ω) ≃ₗ[Ω] (Fin 2 → Ω) where
-  toFun v := ![-(v 1) / (s * y0), (y0 * v 0 + y1 * v 1) / s]
-  map_add' u v := by
-    funext i; fin_cases i <;> simp <;> field_simp <;> ring
-  map_smul' a v := by
-    funext i; fin_cases i <;> simp <;> field_simp
-  invFun p := ![s * (p 0 * y1 + p 1 / y0), - (s * p 0 * y0)]
-  left_inv v := by
-    funext i; fin_cases i <;> simp <;> field_simp <;> ring
-  right_inv p := by
-    funext i; fin_cases i <;> simp <;> field_simp <;> ring
-
-def eulerBasis (y0 y1 s : Ω) (h0 : y0 ≠ 0) (hs : s ≠ 0) : Module.Basis (Fin 2) Ω (Fin 2 → Ω) :=
-  Module.Basis.ofEquivFun (eulerEquiv y0 y1 s h0 hs)
-
-def eulerDeg : Fin 2 → Unit → ℤ := ![fun _ => -1, fun _ => 1]
-
-section Pair
-variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω]
-
-end Pair
-
-end ExamplesEuler
 
 end
 

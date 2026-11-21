@@ -111,9 +111,6 @@ theorem HfGenRec_of_arith (h : HfArithRec) : HfGenRec := by
   rw [FL.Hf_embV D (tor0 D cc δ) (fun _ _ => rfl) A B]
   exact h D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'
 
-theorem LinkThIndep_of_arith (hA : HfArithRec) (hB : SelfDualRec) : LinkThIndep :=
-  LinkThIndep_of_gen (HfGenRec_of_arith hA) hB
-
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 end

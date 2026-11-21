@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixMulEntryNormLeUltrametricStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixMulEntryNormLeUltrametric
 
 namespace GlobalTheory
 
@@ -27,12 +27,12 @@ theorem normalisedPeriod_algebraic_estimate :
     simp [Matrix.sub_apply, Matrix.map_apply, map_neg]
     ring
   have hMD : ∀ i j, ‖(M * D) i j‖ ≤ a * s :=
-    GlobalTheory.T.norm_mul_apply_le_of_ultrametric E n M D a s ha hs hM hD
+    _root_.GlobalTheory.matrix_mul_entry_norm_le_ultrametric E n M D a s ha hs hM hD
   have hXb : ∀ i j, ‖(C.map σ - 1) i j‖ ≤ a * s := by
     intro i j
     rw [hX, Matrix.neg_apply, norm_neg, Matrix.map_apply, hσ]
     exact hMD i j
   rw [hkey]
-  exact GlobalTheory.T.norm_mul_apply_le_of_ultrametric E n (r - 1) (C.map σ - 1) t (a * s) ht (mul_nonneg ha hs) hrt hXb i j
+  exact _root_.GlobalTheory.matrix_mul_entry_norm_le_ultrametric E n (r - 1) (C.map σ - 1) t (a * s) ht (mul_nonneg ha hs) hrt hXb i j
 
 end GlobalTheory

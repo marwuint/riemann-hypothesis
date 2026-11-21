@@ -90,23 +90,6 @@ theorem exists_reps_of_open (V : HSp D) (hV : ∀ τ, (gramAt D V τ).PosDef) (J
     simp only [map_mul, map_inv, e']
     group
 
-theorem exists_reps : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
-    {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
-    IsBottomTri W i j X →
-    ∀ J : Subgroup (GA D WW), IsOpen (J : Set (GA D WW)) → ∃ H : Finset (GA D WW), (∀ h ∈ H, h ∈ GfC WW) ∧
-      ∀ h ∈ GfC WW, ∃ γ ∈ GQ WW, ∃ r ∈ GinfC WW, ∃ h₀ ∈ H, ∃ κ ∈ J, κ ∈ GfC WW ∧ h = γ * r * h₀ * κ := by
-  intro D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX J hJ
-  have hg : WW.gram = 1 := hX.stdW.1
-  have hV : ∀ τ, (gramAt D WW τ).PosDef := by
-    intro τ
-    have : gramAt D WW τ = 1 := by
-      unfold gramAt
-      rw [hg]
-      exact Matrix.map_one _ (map_zero _) (map_one _)
-    rw [this]
-    exact Matrix.PosDef.one
-  exact exists_reps_of_open WW hV J hJ
-
 end GlobalTheory.BotClassFin
 
 end

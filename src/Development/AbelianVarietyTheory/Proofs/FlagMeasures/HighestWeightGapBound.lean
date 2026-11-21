@@ -5,7 +5,7 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.FirstSlotSliceSlotMixedCasimi
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IsCompactInvariantOrthogonalInf
 import Formalism.RealPlaceAnalysis.FinalF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DerivedModuleCoefficientsAndStableFlows
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.JetUniquenessAlgebraicStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.JetUniquenessAlgebraic
 
 open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.DSId GlobalTheory.Jet
 open scoped InnerProductSpace ComplexOrder
@@ -32,18 +32,6 @@ theorem smooth_comb {f g : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 theorem smooth_zero : SmoothOnG ε (fun _ : Matrix (Fin n) (Fin n) ℂ => 0) := fun _ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
-
-def smSub (ε : Fin n → Bool) : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ → ℂ) where
-  carrier := {f | SmoothOnG ε f}
-  add_mem' := fun {f g} hf hg => by
-    have := smooth_comb 1 hf hg
-    simp only [one_mul] at this
-    exact this
-  zero_mem' := smooth_zero
-  smul_mem' := fun c f hf => by
-    have := smooth_comb c smooth_zero hf
-    simp only [zero_add] at this
-    exact this
 
 theorem eab_smooth {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) (a b : Fin n) :
     SmoothOnG ε (Eab ε a b f) := by
@@ -126,17 +114,6 @@ theorem eword_zero (w : List (Fin n × Fin n)) :
     show Eab ε p.1 p.2 (Eword ε w fun _ => 0) g = 0
     rw [ih]
     simp [Eab, Ec, Rd]
-
-def dw (ε : Fin n → Bool) (w : List (Fin n × Fin n)) : smSub ε →ₗ[ℂ] ℂ where
-  toFun f := Eword ε w f.1 1
-  map_add' f f' := by
-    have := eword_comb f.2 f'.2 1 w 1 inUJ_one
-    simp only [one_mul] at this
-    exact this
-  map_smul' c f := by
-    have := eword_comb smooth_zero f.2 c w 1 inUJ_one
-    simp only [zero_add, eword_zero] at this
-    exact this
 
 theorem eword_append (w w' : List (Fin n × Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     Eword ε (w ++ w') f = Eword ε w (Eword ε w' f) := by
@@ -259,7 +236,7 @@ theorem jets_vanish {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End �
     intro x hx w
     simp only [ι, LinearMap.comp_apply, hp' x hx, LinearMap.codRestrict_apply]
   have hev : ∀ y : jets ε E u, ev y = y.1 [] := fun y => rfl
-  have key := GlobalTheory.T.jet_uniqueness_algebraic V n ε E lam g u h1 h2 h3 h4 h5 h6 (jets ε E u) (shift ε E u) ι ev (shift_gl ε E u)
+  have key := _root_.GlobalTheory.Jet.UniqAlg.uniqAlg V n ε E lam g u h1 h2 h3 h4 h5 h6 (jets ε E u) (shift ε E u) ι ev (shift_gl ε E u)
     (by
       intro c d h x hx
       apply Subtype.ext; funext w

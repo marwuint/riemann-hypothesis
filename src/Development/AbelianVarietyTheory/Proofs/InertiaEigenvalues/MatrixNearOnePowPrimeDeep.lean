@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixOneAddPowSubEntryLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixOneAddPowSubEntryLe
 
 namespace GlobalTheory
 
@@ -32,7 +32,7 @@ theorem matrix_near_one_pow_prime_deep : ∀ (l : ℕ) [Fact l.Prime] (n : Type)
   have tsmall : t ≤ u ^ 2 := e2 ▸ h1 i0 j0
   have u1 : u ≤ 1 := by linarith
   have t1 : t ≤ 1 := tsmall.trans (pow_le_one₀ u0.le u1)
-  have hR := GlobalTheory.T.norm_one_add_pow_sub_one_sub_smul_le_sq ℚ_[l] n Y t t0 t1 hall l i0 j0
+  have hR := _root_.GlobalTheory.matrix_one_add_pow_sub_entry_le ℚ_[l] n Y t t0 t1 hall l i0 j0
   have hX : (1 + Y) = X := by rw [hY]; abel
   rw [hX] at hR
   have key : ‖((l:ℚ_[l]) • Y) i0 j0‖ ≤ max (‖(X ^ l - 1) i0 j0‖) (t ^ 2) := by

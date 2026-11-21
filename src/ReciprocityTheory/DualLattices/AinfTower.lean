@@ -222,16 +222,9 @@ def ainfTower : ATower (R0 p O ε) p where
   ζ n := (zeta_unit p O hv ε hε n).unit
   ζ_spec n := by rw [IsUnit.unit_spec, IsUnit.unit_spec]; rfl
 
-theorem ainfTower_c_ne_zero : (ainfTower p O hv ε hε).c ≠ 0 := by
-  exact theta_nu p O hv ε hε
-
 theorem ainfTower_isDomain : IsDomain ((ainfTower p O hv ε hε).O : Type) := by
   show IsDomain O
   exact Function.Injective.isDomain (algebraMap O C) hv.hom_inj
-
-theorem thmA_ainf (B : BX (R0 p O ε)) (hB1 : PairingPropertiesStatement B) (hB3 : TangentPairingStatement B) :
-    ThmAFullStatement B (ainfTower p O hv ε hε) := by
-  exact thmAFull B hB1 hB3 _
 
 end Ainf
 

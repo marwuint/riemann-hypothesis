@@ -194,30 +194,6 @@ theorem denseRange (ι : Ω →+* PadicAlgCl p) : DenseRange ι := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F
   exact denseRange_of_isAlgClosed ι
 
-theorem exists_norm_sub_lt (ι : Ω →+* PadicAlgCl p) (x : Kloc F ι) {ε : ℝ} (hε : 0 < ε) :
-    ∃ y : F, ‖(x : PadicAlgCl p) - ι (algebraMap F Ω y)‖ < ε := by
-  classical
-  let f : F →+* PadicAlgCl p := ι.comp (algebraMap F Ω)
-  let S : Subfield (PadicAlgCl p) := f.fieldRange.topologicalClosure
-  have hQ : ∀ c : ℚ_[p], algebraMap ℚ_[p] (PadicAlgCl p) c ∈ S := by
-    intro c
-    show _ ∈ closure (f.fieldRange : Set (PadicAlgCl p))
-    refine Metric.mem_closure_iff.2 fun δ hδ => ?_
-    obtain ⟨q, hq⟩ := Padic.rat_dense p c hδ
-    refine ⟨f q, RingHom.mem_fieldRange.2 ⟨q, rfl⟩, ?_⟩
-    rw [dist_eq_norm, map_ratCast f, ← map_ratCast (algebraMap ℚ_[p] (PadicAlgCl p)), ← map_sub]
-    convert hq using 1
-    exact PadicAlgCl.norm_extends ..
-  let L : IntermediateField ℚ_[p] (PadicAlgCl p) := S.toIntermediateField hQ
-  have hle : Kloc F ι ≤ L := IntermediateField.adjoin_le_iff.2 (by
-    rintro _ ⟨y, rfl⟩
-    show _ ∈ closure (f.fieldRange : Set (PadicAlgCl p))
-    exact subset_closure (RingHom.mem_fieldRange.2 ⟨y, rfl⟩))
-  have hx : (x : PadicAlgCl p) ∈ closure (f.fieldRange : Set (PadicAlgCl p)) := hle x.2
-  obtain ⟨b, hb1, hb⟩ := Metric.mem_closure_iff.1 hx ε hε
-  obtain ⟨y, rfl⟩ := RingHom.mem_fieldRange.1 hb1
-  exact ⟨y, by rw [← dist_eq_norm]; exact hb⟩
-
 theorem norm_map (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (x : PadicAlgCl p) : ‖σ x‖ = ‖x‖ := by
   exact (spectralNorm_eq_of_equiv σ x).symm
 

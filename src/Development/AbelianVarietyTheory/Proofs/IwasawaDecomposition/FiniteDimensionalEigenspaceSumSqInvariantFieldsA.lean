@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IntegralConjInnerMulInnerOfIsEmptyEquiv
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalOfUniformlyAlmostInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RightTranslationCurveSqLeAndIntegralDerivEqZeroAStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalOfUniformlyAlmostInvariant
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RightTranslationCurveSqLeAndIntegralDerivEqZeroA
 open MeasureTheory Filter Topology
 open scoped ContDiff
 
@@ -26,7 +26,7 @@ theorem finiteDimensional_eigenspace_sum_sq_invariantFields : ∀ (K : Type) [Gr
       Complex.continuous_conj.comp (hc f)
     have c2 : Continuous fun x => (starRingEnd ℂ) ((d Y f).1 x) :=
       Complex.continuous_conj.comp (hc _)
-    have h := (GlobalTheory.T.right_translation_curve_sq_le_and_integral_deriv_eq_zero_alt K μ (fun t => e (t • Y)) (he Y) (by simp [he0])
+    have h := (_root_.GlobalTheory.right_translation_curve_sq_le_and_integral_deriv_eq_zero K μ (fun t => e (t • Y)) (he Y) (by simp [he0])
       (fun x => (starRingEnd ℂ) (f.1 x) * (d Y f).1 x)
       (fun x => (starRingEnd ℂ) ((d Y f).1 x) * (d Y f).1 x
         + (starRingEnd ℂ) (f.1 x) * (d Y (d Y f)).1 x)
@@ -98,11 +98,11 @@ theorem finiteDimensional_eigenspace_sum_sq_invariantFields : ∀ (K : Type) [Gr
   have hev : ∀ᶠ Y in 𝓝 (0 : L), (∑ i, (a Y i) ^ 2) * ‖lam‖ < 1 / 4 :=
     hcont.continuousAt.eventually_lt continuousAt_const (by simp)
   obtain ⟨r, hr, hball⟩ := Metric.eventually_nhds_iff_ball.mp hev
-  have hfin := GlobalTheory.T.finiteDimensional_of_uniformly_almost_invariant_alt K μ
+  have hfin := _root_.GlobalTheory.finiteDimensional_of_uniformly_almost_invariant K μ
     ((Module.End.eigenspace (∑ i, d (X i) * d (X i)) lam).map S.subtype)
     (by rintro _ ⟨f, -, rfl⟩; exact hc f) _ (hU r hr) (by
       rintro _ ⟨f, hf, rfl⟩ _ ⟨Y, hY, rfl⟩
-      have h := (GlobalTheory.T.right_translation_curve_sq_le_and_integral_deriv_eq_zero_alt K μ (fun t => e (t • Y)) (he Y) (by simp [he0])
+      have h := (_root_.GlobalTheory.right_translation_curve_sq_le_and_integral_deriv_eq_zero K μ (fun t => e (t • Y)) (he Y) (by simp [he0])
         f.1 (d Y f).1 (hc _) (hc _) (hder Y f)).1
       simp only [one_smul] at h
       have hn : 0 ≤ ∫ x, ‖f.1 x‖ ^ 2 ∂μ := integral_nonneg fun x => by positivity

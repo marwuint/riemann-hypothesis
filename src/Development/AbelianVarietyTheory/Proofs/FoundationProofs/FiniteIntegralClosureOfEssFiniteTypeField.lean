@@ -473,12 +473,6 @@ theorem finite_integralClosure_of_essFiniteType_of_isReduced (B : Type*) [CommRi
   rw [minimalPrimes, Ideal.sInf_minimalPrimes] at h
   exact IsReduced.eq_zero b (mem_nilradical.mp h)
 
-example : let R := Algebra.adjoin ℤ ({X ^ 2, X ^ 3} : Set ℤ[X])
-    Module.Finite R (integralClosure R (FractionRing R)) := by
-  intro R
-  haveI : Algebra.FiniteType ℤ R := .adjoin_of_finite (Set.toFinite _)
-  exact finite_integralClosure_dedekind ℤ R (FractionRing R) (FractionRing R)
-
 end Main
 
 section Schemes
@@ -626,11 +620,6 @@ theorem isFinite_fromNormalization_SpecMap_fromSpecStalk (y : Y) {L : Type u} [F
     exact .comp (RingHom.FiniteType.of_surjective _
       (Scheme.Hom.stalkMap_surjective _ _)).essFiniteType (essFiniteType_stalkMap_SpecMap φ hφ x)
   exact h.residueFieldMap
-
-omit f g in
-
-example : IsFinite (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))).fromNormalization :=
-  isFinite_fromNormalization_of_over_fractionRing (o := .of ℤ) _ (𝟙 _) ℚ (𝟙 _) (by simp)
 
 end Schemes
 

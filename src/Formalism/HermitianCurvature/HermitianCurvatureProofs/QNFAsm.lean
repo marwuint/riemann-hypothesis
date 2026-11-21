@@ -6,10 +6,6 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.InterlaceSignTwo
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem actual_spectral_hypotheses : Formalism.FourierDecayAlt.NF.ActualSHyp :=
-  actual_hypotheses_of_parts actual_start zeta_commutes leading_term_alt spectral_two_by_two
-    level_coordinates_commute types_complete
-
 theorem normalFormFromModule_statement : Formalism.FourierDecayAlt.Q.NormalFormFromModule :=
   normal_form_from_module theorem_S_ring actual_pre_level actual_hypotheses_of_parts
     level_coordinates_commute types_complete

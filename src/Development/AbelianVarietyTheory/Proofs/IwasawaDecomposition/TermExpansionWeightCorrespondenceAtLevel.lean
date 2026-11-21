@@ -8,7 +8,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.WeightedChartPullback.CancelSecAct
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.WeightedChartPullback.TorusInj
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpandsAtTransport
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCoordSecondPresentationWeightEqStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCoordSecondPresentationWeightEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniformisationExpansionSumsEqTransportStatement
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Formalism.L2.Pj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -280,7 +280,7 @@ theorem GlobalTheory.termMatch_at_level : ∀ (R : Type) [CommRing R] [IsDomain 
         LB.wchart D'.toPre.P.L (D'.toPre.Oφ (U'.gt e).pG β) (jt' β) := fun z hz => hVt' β hβ hz
     have ha' : W' ≤ (act (U.gt e)).left ⁻¹ᵁ LB.wchart D'.toPre.P.L (D'.toPre.Oφ (U'.gt e).pG β) (jt' β) :=
       fun z hz => hVt' β hβ (ha hz)
-    have T := GlobalTheory.T.torusCoord_secondPresentation_weight_eq R hCN G hSA D D' A A' U U' e xe (hM e) β (jt' β) (fun k1 k2 h => congrArg c' h) W' hs ha'
+    have T := _root_.GlobalTheory.WtSecond.wt_second R hCN G hSA D D' A A' U U' e xe (hM e) β (jt' β) (fun k1 k2 h => congrArg c' h) W' hs ha'
     have m1 : (thickObj R (maximalIdeal R) e G).left.presheaf.map (homOfLE (hVt' β hβ)).op ≫
         (act (U.gt e)).left.appLE Vst W' ha = (act (U.gt e)).left.appLE _ W' ha' := Scheme.Hom.map_appLE _ _ _
     have m2 : (thickObj R (maximalIdeal R) e G).left.presheaf.map (homOfLE (hVt' β hβ)).op ≫

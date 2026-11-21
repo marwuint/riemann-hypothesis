@@ -35,26 +35,12 @@ def FglGroup : Prop :=
   ∀ (R : Type u) [CommRing R] (W : WeierstrassCurve R),
     ∃ F : FormalGroup R, F.toPowerSeries = fgl W ∧ F.IsComm
 
-def FglInvariant : Prop :=
-  ∀ (R : Type u) [CommRing R] (W : WeierstrassCurve R),
-    MvPowerSeries.pderiv R 0 (fgl W) * (fw W).subst (U₁ : MvPowerSeries (Fin 2) R)
-      = (fw W).subst (fgl W) ∧
-    MvPowerSeries.pderiv R 1 (fgl W) * (fw W).subst (U₂ : MvPowerSeries (Fin 2) R)
-      = (fw W).subst (fgl W)
-
 def FglLog : Prop :=
   ∀ (K : Type u) [Field K] [CharZero K] (W : WeierstrassCurve K),
     (logSer W).subst (fgl W) = (logSer W).subst (U₁ : MvPowerSeries (Fin 2) K)
       + (logSer W).subst (U₂ : MvPowerSeries (Fin 2) K) ∧
     fgl W = (expSer W).subst ((logSer W).subst (U₁ : MvPowerSeries (Fin 2) K)
       + (logSer W).subst (U₂ : MvPowerSeries (Fin 2) K))
-
-def FglLogBase : Prop :=
-  ∀ (R : Type u) (K : Type v) [CommRing R] [Field K] [CharZero K] (φ : R →+* K)
-    (W : WeierstrassCurve R),
-    (logSer (W.map φ)).subst (MvPowerSeries.map φ (fgl W))
-      = (logSer (W.map φ)).subst (U₁ : MvPowerSeries (Fin 2) K)
-        + (logSer (W.map φ)).subst (U₂ : MvPowerSeries (Fin 2) K)
 
 def FglInv : Prop :=
   ∀ (R : Type u) [CommRing R] (W : WeierstrassCurve R),

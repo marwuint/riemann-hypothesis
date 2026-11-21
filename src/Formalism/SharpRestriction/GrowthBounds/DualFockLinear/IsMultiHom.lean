@@ -1,5 +1,5 @@
 import Formalism.SharpRestriction.GrowthBounds.ScaleEdges
-import Formalism.LocalToGlobal.GroupLattices.FockModels.WeylDim
+import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 
 noncomputable section
 

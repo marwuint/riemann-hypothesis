@@ -22,11 +22,4 @@ def SubEmbedding : Prop :=
       ∃ (c : ℕ) (x : Fin c → IrrGL k) (hd : ∑ a, (x a).1 = N), (∀ a, (x a).IsCusp) ∧
         ∃ φ : π.IntertwiningMap (prodIrr x hd), Function.Injective φ
 
-def PrinSeriesWord : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    (c N : ℕ) (x : Fin c → IrrGL k) (hd : ∑ a, (x a).1 = N), (∀ a, (x a).IsUnramChar) →
-    ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V),
-      IsSmooth π → π.IsIrreducible → ∀ φ : π.IntertwiningMap (prodIrr x hd), Function.Injective φ →
-        ∃ w, wordMult π w ≠ 0
-
 end Ysupp

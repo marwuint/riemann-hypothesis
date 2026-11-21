@@ -18,10 +18,6 @@ theorem mixedPairing2_comm (x y : Fin 2 → mixedSpace K) :
     mixedPairing2 K x y = mixedPairing2 K y x :=
   Finset.sum_congr rfl fun i _ => mixedTraceForm_comm K (x i) (y i)
 
-theorem mixedPairing2_neg_right (x y : Fin 2 → mixedSpace K) :
-    mixedPairing2 K x (-y) = -mixedPairing2 K x y := by
-  simp only [mixedPairing2, Pi.neg_apply, map_neg, Finset.sum_neg_distrib]
-
 def mixedMeasure2 : Measure (Fin 2 → mixedSpace K) := Measure.pi fun _ => selfDualMeasure K
 
 instance : (mixedMeasure2 K).IsAddHaarMeasure := by
@@ -62,18 +58,6 @@ theorem measurePreserving_toEuclid2 :
   rw [h]
   exact h3.comp (h2.comp h1)
 
-theorem measurePreserving_toEuclid2Conj :
-    MeasurePreserving (toEuclid2Conj K) (mixedMeasure2 K) volume := by
-  have h1 := measurePreserving_finTwoArrow (selfDualMeasure K)
-  have h2 := (measurePreserving_mixedToEuclideanConj K).prod
-    (measurePreserving_mixedToEuclideanConj K)
-  have h3 := WithLp.volume_preserving_toLp (euclidean.mixedSpace K) (euclidean.mixedSpace K)
-  have h : ⇑(toEuclid2Conj K) = WithLp.toLp 2 ∘
-      Prod.map (mixedToEuclideanConj K) (mixedToEuclideanConj K) ∘ MeasurableEquiv.finTwoArrow :=
-    rfl
-  rw [h]
-  exact h3.comp (h2.comp h1)
-
 theorem measurePreserving_toEuclid2_symm :
     MeasurePreserving (toEuclid2 K).symm volume (mixedMeasure2 K) := by
   have : MeasurePreserving (toEuclid2 K).toHomeomorph.toMeasurableEquiv
@@ -83,23 +67,12 @@ theorem measurePreserving_toEuclid2_symm :
 def mixedFourier2 (f : (Fin 2 → mixedSpace K) → ℂ) (y : Fin 2 → mixedSpace K) : ℂ :=
   ∫ x, 𝐞 (-mixedPairing2 K x y) • f x ∂mixedMeasure2 K
 
-def mixedFourierInv2 (f : (Fin 2 → mixedSpace K) → ℂ) (x : Fin 2 → mixedSpace K) : ℂ :=
-  ∫ y, 𝐞 (mixedPairing2 K x y) • f y ∂mixedMeasure2 K
-
 theorem mixedFourier2_eq (f : (Fin 2 → mixedSpace K) → ℂ) (y : Fin 2 → mixedSpace K) :
     mixedFourier2 K f y = 𝓕 (f ∘ (toEuclid2 K).symm) (toEuclid2Conj K y) := by
   rw [mixedFourier2, Real.fourier_eq, ← (measurePreserving_toEuclid2 K).integral_comp
     (toEuclid2 K).toHomeomorph.measurableEmbedding]
   refine integral_congr_ae (Eventually.of_forall fun x => ?_)
   simp [mixedPairing2_eq_inner]
-
-theorem mixedFourierInv2_eq (f : (Fin 2 → mixedSpace K) → ℂ) (x : Fin 2 → mixedSpace K) :
-    mixedFourierInv2 K f x = 𝓕⁻ (f ∘ (toEuclid2Conj K).symm) (toEuclid2 K x) := by
-  rw [mixedFourierInv2, Real.fourierInv_eq, ← (measurePreserving_toEuclid2Conj K).integral_comp
-    (toEuclid2Conj K).toHomeomorph.measurableEmbedding]
-  refine integral_congr_ae (Eventually.of_forall fun y => ?_)
-  simp only [Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]
-  rw [mixedPairing2_eq_inner, real_inner_comm]
 
 def mixedFourier2Schwartz : 𝓢(Fin 2 → mixedSpace K, ℂ) →L[ℂ] 𝓢(Fin 2 → mixedSpace K, ℂ) :=
   (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (toEuclid2Conj K)).comp
@@ -111,34 +84,6 @@ theorem mixedFourier2Schwartz_apply (f : 𝓢(Fin 2 → mixedSpace K, ℂ)) :
   funext y
   rw [mixedFourier2_eq]
   rfl
-
-theorem mixedFourierInv2_mixedFourier2 (f : 𝓢(Fin 2 → mixedSpace K, ℂ))
-    (x : Fin 2 → mixedSpace K) : mixedFourierInv2 K (mixedFourier2 K f) x = f x := by
-  set F : 𝓢(WithLp 2 (euclidean.mixedSpace K × euclidean.mixedSpace K), ℂ) :=
-    SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (toEuclid2 K).symm f with hFdef
-  have hF : (F : WithLp 2 (euclidean.mixedSpace K × euclidean.mixedSpace K) → ℂ) =
-      f ∘ (toEuclid2 K).symm := rfl
-  have h1 : mixedFourier2 K f ∘ (toEuclid2Conj K).symm =
-      𝓕 (F : WithLp 2 (euclidean.mixedSpace K × euclidean.mixedSpace K) → ℂ) := by
-    funext v
-    rw [Function.comp_apply, mixedFourier2_eq, ContinuousLinearEquiv.apply_symm_apply, hF]
-  have h2 : Integrable
-      (𝓕 (F : WithLp 2 (euclidean.mixedSpace K × euclidean.mixedSpace K) → ℂ)) := by
-    rw [← SchwartzMap.fourier_coe]
-    exact (𝓕 F).integrable
-  rw [mixedFourierInv2_eq, h1, F.continuous.fourierInv_fourier_eq F.integrable h2, hF,
-    Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]
-
-theorem mixedFourier2_neg (f : (Fin 2 → mixedSpace K) → ℂ) (x : Fin 2 → mixedSpace K) :
-    mixedFourier2 K f (-x) = mixedFourierInv2 K f x := by
-  rw [mixedFourier2, mixedFourierInv2]
-  refine integral_congr_ae (Eventually.of_forall fun y => ?_)
-  dsimp only
-  rw [mixedPairing2_neg_right, neg_neg, mixedPairing2_comm]
-
-theorem mixedFourier2_mixedFourier2 (f : 𝓢(Fin 2 → mixedSpace K, ℂ))
-    (x : Fin 2 → mixedSpace K) : mixedFourier2 K (mixedFourier2 K f) x = f (-x) := by
-  rw [← neg_neg x, mixedFourier2_neg, mixedFourierInv2_mixedFourier2, neg_neg]
 
 variable {K}
 

@@ -2,11 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.GreenSeriesSt
 import Formalism.LocalToGlobal.GlobalTheory.IrreducibleOfCountSizes
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRowsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BadShareSizeBoundsAlongFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRows
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BadShareSizeBoundsAlongFamily
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankAtPlacesFromComparison
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SignAtBasePlaceEqEmbedding
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitEnergyOfCoordinates
+import Development.AbelianVarietyTheory.Definitions.Foundations.ThetaSeriesTies
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LiftWeightComplexPointEqTwist
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClassPresBasic
 
 set_option autoImplicit false
 
@@ -105,60 +108,8 @@ end GlobalTheory.BadOnRec
 
 namespace GlobalTheory.BadOnRec
 
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-attribute [local instance] runAlgBad
-
-section Point
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
-  {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
-
-theorem bad_rec (hR : p.Rows) (hm : More p) {Pm : ParameterChoice' D L} {Tp : ParamsT D L Pm} {r : TwoRuns p.T p.P.Gp}
-    {c : OnConst} {O : Obj p c} (hrec : RecAt p Tp r O) {del : ℝ} (j : Fin D.R.m) (hbad : BadW p j del) :
-    (1 - del) * O.d0 j ≤ ((S2 p).D : ℝ) := by
-  obtain ⟨hC, hOk, -, -, hRk, -⟩ := GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hR hm.1
-  obtain ⟨hc, hinj, z, act, y, ht⟩ := hrec.1.tied
-  have hU : (F2 p).P0 ≤ (mirIncl (R2 p)).range := fun g hg => by
-    obtain ⟨u, -, e⟩ := (mem_base_iff hC.grp.levels g).1 hg
-    exact ⟨u, e⟩
-  obtain ⟨v₁, -⟩ := exists_place3 D.what₂.LL
-  have hmem := mem_eig_iff (ht v₁ j).1 (ht v₁ j).2 hC.grp hU
-  have hf := finrank_eq_of_bij _ (GlobalTheory.OnTies.toForms_bijective (hrec.1.ok.laws v₁).p (fw2 p) j (z j)) _ _ hmem
-  have hd0 : O.d0 j = (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j) : ℝ) := by
-    unfold OnObj.d0
-    exact congrArg (fun n : ℕ => (n : ℝ)) hf
-  have hV : ∀ x ∈ GlobalTheory.CovTop.spType (R2 p) (F2 p) j, goodOp (R2 p) j x ∈ GlobalTheory.CovTop.spType (R2 p) (F2 p) j :=
-    fun x hx g => by
-      rw [← GlobalTheory.BigOn.goodOp_rho_comm hOk.irr j (g : p.P.Gp) x, hx g, map_smul]
-  have hsplit := finrank_inf_range_add_inf_ker (goodOp (R2 p) j)
-    (fun x => LinearMap.congr_fun (goodOp_idem hOk.irr j) x) _ hV
-  have hD : (S2 p).D = finrank D.what₂.LL ((R2 p).WL (F2 p) false j) := (hRk.2 j).symm
-  have hbad' : (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j ⊓ LinearMap.ker (goodOp (R2 p) j) :
-      Submodule D.what₂.LL _) : ℝ) ≤ del * finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j) := hbad
-  have hs : (finrank D.what₂.LL ((R2 p).WL (F2 p) false j) : ℝ) +
-      (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j ⊓ LinearMap.ker (goodOp (R2 p) j) : Submodule D.what₂.LL _) : ℝ) =
-      finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j) := by
-    exact_mod_cast hsplit
-  rw [hd0, hD]
-  nlinarith
-
-end Point
-
 end GlobalTheory.BadOnRec
 
 namespace GlobalTheory.BigOn
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-theorem badSt_of_badW : BadWSt → BadSt := by
-  intro hB
-  refine (hB.and GlobalTheory.T.badShareSize_bounds_along_family).imp fun Fm CH _ H => ?_
-  obtain ⟨⟨x1, H1⟩, ⟨x2, H2⟩⟩ := H
-  refine ⟨0, fun c _ _ => ⟨max x1 x2, fun x hx hle i p hR hm r O hrec => ?_⟩⟩
-  have hb := H1 x hx ((le_max_left _ _).trans hle) i p hR hm r hrec.1.ok hrec.2
-  have hq := (H2 x hx ((le_max_right _ _).trans hle) i).2.2.1
-  intro j
-  exact ⟨_, (Real.exp_pos _).le, hq, GlobalTheory.BadOnRec.bad_rec hR hm hrec j (hb j)⟩
 
 end GlobalTheory.BigOn

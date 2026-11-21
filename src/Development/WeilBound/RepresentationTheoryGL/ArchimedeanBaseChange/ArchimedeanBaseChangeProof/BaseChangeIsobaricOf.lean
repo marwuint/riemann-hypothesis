@@ -77,27 +77,6 @@ theorem core_of (hS : RunSplit) (hI : RunInert) (hR : Rigid) (hE : Unr E) (hn : 
     obtain ⟨B', hB', e⟩ := (hR E n hn π hπ D D' hD hD' w).2 B hB
     exact ⟨B, hB, fun s ϖ q a b α hα => e.trans (h1 B' hB' s ϖ q a b α hα)⟩
 
-open GlobalTheory.PfBCI in
-theorem baseChangeIsobaric_of (hS : RunSplit) (hI : RunInert) (hR : Rigid) : GlobalTheory.Published.BaseChangeIsobaric := by
-  intro E _ _ _ hE n hn π hπ
-  obtain ⟨D, hwt, hS', hU⟩ := core_of hS hI hR hE hn π hπ
-  have hex : ∀ w, ∃ P, AtPlace π D.h D.σ w P := by
-    intro w
-    by_cases hs : IsSplitAt w
-    · obtain ⟨P, hsub, hc⟩ := hS' w hs
-      exact ⟨P, split_component D.h D.σ hs P hsub (split_spherical hπ hs P hc) hc⟩
-    by_cases hu : IsUnramU π w
-    · obtain ⟨B, hB, hsum⟩ := hU w hu hs
-      obtain ⟨P, hsub, hsph, hsat⟩ := unram_component D.h w (D.σ · w) B hB
-      refine ⟨P, hsub, fun _ => hsph, fun s' ϖ q hc hinv α hα => ?_, fun h' => absurd h' hs⟩
-      rw [← hsum s' ϖ q hc hinv α hα]
-      exact hsat
-    · obtain ⟨P, hP'⟩ := local_subquotient D.h w (D.σ · w)
-      exact ⟨P, hP', fun h' => absurd h' hu, inert_of_not_unram hu P, fun h' => absurd h' hs⟩
-  choose P hPw using hex
-  exact ⟨D.c, D.N, D.h, D.V, D.σ, D.m, P, D.pos, D.discrete, D.csd, D.loc, D.inf, fun w => (hPw w).1,
-    fun w => (hPw w).2.1, fun w => (hPw w).2.2.1, fun w => (hPw w).2.2.2, hwt⟩
-
 end PositivityTheory.Rg.BcB
 
 end

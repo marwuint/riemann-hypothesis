@@ -165,12 +165,6 @@ theorem ptF_eq_of_ptY_eq {y y' : FrPt Xo c S} (h : ptY Y y = ptY Y y') : ptF y =
   · simpa only [ptY, Model.j, Category.assoc] using h
   · simp only [Category.assoc, Y.jQ_over, ptF_snd]
 
-theorem u_eq_of_tanY_eq {y y' : FrPt Xo c S} (h : ptY Y y = ptY Y y') {τ : E →+* ℂ} {i : Fin (D.mult τ)}
-    (h' : tanY Y y τ i = tanY Y y' τ i) : y.u τ i = y'.u τ i := by
-  have : tanF Y y τ i = tanF Y y' τ i :=
-    Y.m.cart.1.hom_ext h' (by rw [tanF_hom, tanF_hom, ptF_eq_of_ptY_eq Y h])
-  rw [← tanF_φ Y y, this, tanF_φ]
-
 variable {T : Type} [CommRing T] [Algebra c.F T]
 
 theorem ptF_map {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (h : FrMap φ y z) :
@@ -244,11 +238,6 @@ def rdHom : Rul Xo c →+* RM.Ω where
 
 @[simp] theorem rdHom_apply (f : Rul Xo c) : Fr.rdHom f = Fr.rd f := rfl
 
-theorem rd_pow (f : Rul Xo c) (n : ℕ) : Fr.rd (f ^ n) = Fr.rd f ^ n := map_pow Fr.rdHom f n
-
-theorem rd_sum {I : Type} (s : Finset I) (f : I → Rul Xo c) : Fr.rd (∑ i ∈ s, f i) = ∑ i ∈ s, Fr.rd (f i) :=
-  map_sum Fr.rdHom f s
-
 theorem exists_spread : letI := cstAlg Or
     ∃ (p : TRing c.F) (φ : p.R →ₐ[c.F] RM.Ω) (y : FrPt Xo c p.R), FrMap φ y Fr.y₀ ∧ ∀ f, Fr.rd f = φ (f p y) := by
   letI := cstAlg Or
@@ -265,35 +254,8 @@ theorem rd_eq_of_frMap (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun 
   rw [hr]
   exact hWD f hf _ q p ψ φ z y _ hz h
 
-theorem x_eq (Fr' : GenFrame Or) : letI := cstAlg Or; Fr.y₀.x = Fr'.y₀.x := by
-  letI := cstAlg Or
-  rw [← ptF_fst Fr.y₀, ← ptF_fst Fr'.y₀, ptF_eq_of_ptY_eq Y (Fr.pt_eq.trans Fr'.pt_eq.symm)]
-
-theorem u_eq (Fr' : GenFrame Or) : letI := cstAlg Or; Fr.y₀.u = Fr'.y₀.u := by
-  letI := cstAlg Or
-  funext σ i
-  obtain ⟨s, rfl⟩ := (labelC_bijective H).2 σ
-  exact u_eq_of_tanY_eq Y (Fr.pt_eq.trans Fr'.pt_eq.symm)
-    ((Fr.tan_eq s (Fin.cast (mult_labelC D s) i)).trans (Fr'.tan_eq s (Fin.cast (mult_labelC D s) i)).symm)
-
-set_option synthInstance.maxHeartbeats 200000 in
-
-example (a : c.F) : Fr.rd (algebraMap c.F (Rul Xo c) a) = Or.𝔐.cst a := by
-  rw [Algebra.algebraMap_eq_smul_one, rd_smul, rd_one, _root_.mul_one]
-
 end GenFrame
 
 end Gen
-
-example (τ : CMType H) : D.mult (conjEmb τ.1) = D.q := mult_labelC D (.inr τ)
-
-example (τ : CMType H) (hp : 0 < D.p) :
-    rootFrameIx D (τ, ⟨0, by omega⟩) = labelIx D ⟨.inl τ, ⟨0, hp⟩⟩ := by
-  simp [rootFrameIx, HodgeCpt.rootIdx, hp]
-
-example (τ : CMType H) (hq : 0 < D.q) :
-    rootFrameIx D (τ, ⟨D.p + D.q - 1, by omega⟩) = labelIx D ⟨.inr τ, ⟨0, hq⟩⟩ := by
-  have h : ¬ D.p + D.q - 1 < D.p := by omega
-  simp [rootFrameIx, HodgeCpt.rootIdx, h]
 
 end GlobalTheory.CompanionTheory.Ar.Small

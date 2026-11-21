@@ -117,10 +117,6 @@ theorem LamLetters.isLetter_toFrozen {o : LamObj c nΨ n'} (L : LamLetters o) (k
   dsimp only
   cases L.src k <;> rfl
 
-theorem LamLetters.isLetter_ofFrozen {o : Formalism.L2.Pj.abelian₂.LamObj c nΨ n'} (L : Formalism.L2.Pj.abelian₂.LamLetters o)
-    (k : Fin o.xB.P.g) (w : epsR o.K₁ ⟶ o.xB.P.A) : (LamLetters.ofFrozen L).IsLetter k w ↔ L.IsLetter k w :=
-  (LamLetters.isLetter_toFrozen (LamLetters.ofFrozen L) k w).symm
-
 theorem LamLetters.isGood_toFrozen {o : LamObj c nΨ n'} (L : LamLetters o) : L.toFrozen.IsGood ↔ L.IsGood := by
   unfold LamLetters.IsGood Formalism.L2.Pj.abelian₂.LamLetters.IsGood
   refine and_congr Iff.rfl (and_congr (forall_congr' fun b => forall_congr' fun i => ?_)

@@ -8,19 +8,22 @@ import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSection
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.OverZpOfInFibre
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeIntegralModelsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeFlagLatticeLowerStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeFlagLatticeUpperStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeIntegralModels
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeFlagLatticeLower
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeFlagLatticeUpper
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PointHTOfFarguesHodgeTateStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartSequenceHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateChartDifferentGeneratorsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartSequenceHolds
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateChartDifferentGenerators
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LeadMinor
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExtendLin
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateChartDualActionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeChartDualActionCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateChartDualAction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeChartDualActionCompat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentIntegralOverRingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentResidueIntegralityStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentReductionAtPStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentResidueIntegrality
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeComponentReductionAtP
 
 open CategoryTheory AlgebraicGeometry NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.HT GlobalTheory.CompanionTheory.Ar.Flat ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles Module GlobalTheory.CompanionTheory.Ar.Flat
@@ -202,8 +205,8 @@ theorem h_mem_om' {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [
 
 theorem chart_pack : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [Field K] [Algebra A K] [IsFractionRing A K] [CharZero K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Li : Type) [AddCommGroup Li] [Module K Li] (D : HTChart A K c p R N (Module.Dual K Li)) (ρ : 𝓞 E →+* Module.End K Li), (∀ (a : 𝓞 E) (w : Module.Dual K Li), D.ρΩ a w = w ∘ₗ ρ (RingOfIntegers.mapRingEquiv c a)) → ∀ (σ : E →+* K) (d : A) (m : ℕ) (i : Module.Dual A (D.omHT (σ.comp c.toRingHom)) →ₗ[A] (Fin N → A)), algebraMap A K d ≠ 0 → D.ExactMod σ m i → D.IsDualMap σ d m i → Module.Projective A (D.omHT σ) → ∃ J : Li →ₗ[K] (Fin N → K), ∀ B : Subring K, HTL.IsLocIn A B → (∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∀ l, J e l ∈ B) ∧ (∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∀ j, ∃ z ∈ B, ∑ l, J e l * D.gram σ d l j = algebraMap A K d * D.h (Pi.single j 1) e + (p : K) ^ m * z) ∧ (∃ Rr : (Fin N → K) →ₗ[K] Li, (∀ k, Rr (Pi.single k 1) ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B) ∧ ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∃ e' ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, Rr (J e) = e + ((p : K) ^ m) • e') ∧ (∃ Rr : (Fin N → K) →ₗ[K] Li, (∀ k, Rr (Pi.single k 1) ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B) ∧ ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B, ∃ e' ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B, Rr (fun l => D.h (Pi.single l 1) e) = e + ((p : K) ^ m) • e') ∧ ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∀ e' ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B, ∃ z ∈ B, ∑ l, J e l * D.h (Pi.single l 1) e' = (p : K) ^ m * z := by
   intro A K _ _ _ _ _ _ _ E _ _ c hc p R N _ Li _ _ D ρ hact σ d m i hd hex hdual hproj
-  obtain ⟨J, Rr, hJ1, hJ2, hJ3⟩ := GlobalTheory.T.hodge_tate_chart_dual_action A K E c hc p R N Li D ρ hact σ d m i hd hex
-  obtain ⟨Rr', hR1, hR2⟩ := GlobalTheory.T.hodge_chart_dual_action_compat A K E c hc p R N Li D ρ hact σ m hproj hex.2.2
+  obtain ⟨J, Rr, hJ1, hJ2, hJ3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.HTL.exists_lift_retract A K E c hc p R N Li D ρ hact σ d m i hd hex
+  obtain ⟨Rr', hR1, hR2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.HTL.exists_retraction_mod A K E c hc p R N Li D ρ hact σ m hproj hex.2.2
   have hσσ : (σ.comp c.toRingHom).comp c.toRingHom = σ := by
     ext x
     simp [hc]
@@ -302,9 +305,9 @@ set_option maxHeartbeats 2000000 in
 theorem exactModLat_hodgeTate : FarguesHodgeTate → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime], p ∈ S → 0 < D.p + D.q → HTFree 𝔐 p → ∀ τ : CMType H, ExactModLat (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (p : Ω) (D.p + D.q) := by
   intro hF E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS hpq hfree τ
   obtain ⟨o, ho⟩ := HTL.exists_zp Ω p
-  obtain ⟨Dc, hfam, htest⟩ := GlobalTheory.T.hodge_tate_free_flag_lattice_lower E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho
-  obtain ⟨hproj, hdiff, κ, hκ, hκs⟩ := GlobalTheory.T.hodge_tate_free_flag_lattice_upper E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho Dc hfam hfree
-  obtain ⟨hchar, -, -, -, -, -, hcharts⟩ := GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho
+  obtain ⟨Dc, hfam, htest⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.hodgeTate_family_exists E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho
+  obtain ⟨hproj, hdiff, κ, hκ, hκs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.family_proj E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho Dc hfam hfree
+  obtain ⟨hchar, -, -, -, -, -, hcharts⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.hcpt_generic_point E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho
   haveI := hchar
   have hPt : PointHT := GlobalTheory.T.pointHT_of_fargues_hodge_tate hF
   have hc : ∀ x, cmConj E (cmConj E x) = x := fun x => by
@@ -347,7 +350,7 @@ theorem exactModLat_hodgeTate : FarguesHodgeTate → ∀ (E : Type) [Field E] [N
     have hdiv : κs * (p : chartRing o (mseg y) s.1) ^ m ∣ (p : chartRing o (mseg y) s.1) ^ (𝔐.R p) := by
       rw [hm, pow_add, mul_comm ((p : chartRing o (mseg y) s.1) ^ m)]
       exact mul_dvd_mul_right hκd _
-    obtain ⟨⟨-, hκ1⟩, hseq⟩ := GlobalTheory.T.chart_sequence_holds (chartRing o (mseg y) s.1) Ω E (cmConj E) hc p (𝔐.R p) (D.p + D.q)
+    obtain ⟨⟨-, hκ1⟩, hseq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.FinrankDualChartSequence.chartSequence (chartRing o (mseg y) s.1) Ω E (cmConj E) hc p (𝔐.R p) (D.p + D.q)
       (Module.Dual Ω 𝔐.Li) (Dc s) κs m hdiv (htest s κs hPt hκ) (hproj s).1
     obtain ⟨i, hi1, hi2⟩ := hseq σ ds ds' hds2 hds2' ((hproj s).2 σ) ((hproj s).2 _)
     have hact : ∀ (a : 𝓞 E) (w : Module.Dual Ω 𝔐.Li), (Dc s).ρΩ a w = w ∘ₗ 𝔐.ρ (RingOfIntegers.mapRingEquiv (cmConj E) a) := fun a w => by
@@ -355,7 +358,7 @@ theorem exactModLat_hodgeTate : FarguesHodgeTate → ∀ (E : Type) [Field E] [N
       exact hfam.act s a w
     obtain ⟨Jc, hJ⟩ := HTL.chart_pack (chartRing o (mseg y) s.1) Ω E (cmConj E) hc p (𝔐.R p) (D.p + D.q) 𝔐.Li (Dc s) 𝔐.ρ hact σ ds m i
       (HTL.ne_zero_of_gen _ Ω E σ ds hds2) hi2 hi1 ((hproj s).2 σ)
-    obtain ⟨G, H', Z, -, hG, hGH, -⟩ := GlobalTheory.T.hodge_tate_chart_different_generators (chartRing o (mseg y) s.1) Ω hinj E (cmConj E) hc p (𝔐.R p) (D.p + D.q)
+    obtain ⟨G, H', Z, -, hG, hGH, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.gram_integral_unit_mod (chartRing o (mseg y) s.1) Ω hinj E (cmConj E) hc p (𝔐.R p) (D.p + D.q)
       (Module.Dual Ω 𝔐.Li) (Dc s) σ ds (fun a => HTL.emb_mem _ Ω E σ a) hds2
     exact ⟨ds, κs, Jc, hds1, hds2, rfl, hκd, hκ1, ⟨G, H', Z, hG, hGH⟩, hJ⟩
 
@@ -434,8 +437,8 @@ theorem exactModLat_hodgeTate : FarguesHodgeTate → ∀ (E : Type) [Field E] [N
       exact mul_mem (mul_mem (pow_mem (natCast_mem _ p) _) hbB) h1
     constructor
     · intro e he i
-      have hes := (GlobalTheory.T.hodge_component_residue_integrality E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ s (ds s) (hgd s) q hs hq e).1 he
-      have het := (GlobalTheory.T.hodge_component_residue_integrality E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ t (ds t) (hgd t) q ht hq e).1 he
+      have hes := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.HTStalk.mem_V_inl_iff E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ s (ds s) (hgd s) q hs hq e).1 he
+      have het := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.HTStalk.mem_V_inl_iff E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ t (ds t) (hgd t) q ht hq e).1 he
       obtain ⟨a1, a2, -, -, -⟩ := hpack s _ hls
       obtain ⟨b1, b2, -, -, -⟩ := hpack t _ hlt
       obtain ⟨G, H', Z, hGg, hGH⟩ := hG s
@@ -479,7 +482,7 @@ theorem exactModLat_hodgeTate : FarguesHodgeTate → ∀ (E : Type) [Field E] [N
         rw [e1]
         exact add_mem h3 (mul_mem (pow_mem (natCast_mem _ p) _) (sub_mem hz hz'))
     · intro e he j
-      have hes := (GlobalTheory.T.hodge_component_reduction_at_p E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ s q hs hq e).1 he
+      have hes := (_root_.GlobalTheory.CompanionTheory.Ar.Flat.mem_V_inr_iff_latOn E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ s q hs hq e).1 he
       obtain ⟨w, hw, hwe⟩ := hfam.glue s t q hs ht hZ (Pi.single j 1)
       have h1 := hrem 1 e w (hsp 1 e hes.2) hw
       have e1 : J' s e j - J' t e j = 1 * ((p ^ 𝔐.R p) • w) e := by
@@ -496,8 +499,8 @@ theorem exactModLat_hodgeTate : FarguesHodgeTate → ∀ (E : Type) [Field E] [N
   have hZ := HT.ModelTest.overZp_of_inFibre 𝔐 (Fact.out : p.Prime) q hqF
   have hls := GlobalTheory.T.hodge_component_integral_over_ring E H D l Xo c O β Y S Ω K J y 𝔐 p o ho (sx x).1 q hqc' hZ
   obtain ⟨k1, -, ⟨R1, hR1, hR1'⟩, ⟨R2, hR2, hR2'⟩, k5⟩ := hpack (sx x) _ hls
-  have hl := fun e => GlobalTheory.T.hodge_component_residue_integrality E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ (sx x) (ds (sx x)) (hgd _) q hqc' hqF e
-  have hr := fun e => GlobalTheory.T.hodge_component_reduction_at_p E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ (sx x) q hqc' hqF e
+  have hl := fun e => _root_.GlobalTheory.CompanionTheory.Ar.Flat.HTStalk.mem_V_inl_iff E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ (sx x) (ds (sx x)) (hgd _) q hqc' hqF e
+  have hr := fun e => _root_.GlobalTheory.CompanionTheory.Ar.Flat.mem_V_inr_iff_latOn E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ (sx x) q hqc' hqF e
   obtain ⟨ov1, ov2⟩ := hov (sx x) (sx q) q hqc' (hsx q) hqF
   have hpB : (p : Ω) ^ (m - 1) ∈ regAt 𝔐.ξ q := pow_mem (natCast_mem _ p) _
   refine ⟨⟨fun w hw k => ⟨k1 w ((hl w).1 hw) k, ov1 w hw k⟩, R1, fun k => (hl _).2 (hR1 k), fun w hw => ?_⟩,

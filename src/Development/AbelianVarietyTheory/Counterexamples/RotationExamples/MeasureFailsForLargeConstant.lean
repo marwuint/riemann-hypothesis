@@ -11,8 +11,6 @@ section Bound₂
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
-def withLevel (P : SlopeBoundParameters) (t : ℝ) : SlopeBoundParameters := { P with g12 := t }
-
 def OneConstant {d : ℕ} (X X' : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (c : InfinitePlace K → ℝ) : Prop :=
   ∀ v, 0 < c v ∧ ∀ x y, Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v x y =
     (c v : ℂ) * Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X' v x y

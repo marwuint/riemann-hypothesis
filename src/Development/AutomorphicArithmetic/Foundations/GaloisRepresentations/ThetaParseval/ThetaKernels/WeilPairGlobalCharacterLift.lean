@@ -13,10 +13,6 @@ open scoped TensorProduct Matrix ComplexConjugate Pointwise
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace PositivityTheory.ThKW.DblSchur
-open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.DblTargetDelta PositivityTheory.ThKW.Dbl GlobalTheory.ThetaSchurF
-open GlobalTheory.WeilSchrodinger.DblTargetF (dblG)
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {nS nT : ℕ}
-variable {σ : E →ₐ[F] E} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
 end PositivityTheory.ThKW.DblSchur
 open PositivityTheory.ThKW.DblSchur PositivityTheory.ThKW.Dbl Formalism.IndefR.DatumF MeasureTheory GlobalTheory.DblTargetDelta in
 theorem PositivityTheory.ThKW.weil_pair_global_character_lift : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),

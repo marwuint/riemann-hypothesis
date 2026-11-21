@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.DenseGenericOfF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCycAwayHomComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSiegelObjectOddLevelRigid
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelObjectLoweredLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitudeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitude
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelObjectPullbackLevelPowerCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModNStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModN
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowSection
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -72,7 +72,7 @@ theorem exists_twist (hN : N ≠ 0) {T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (
     (root : σ (zetaAway N) = zetaAway N ^ m) (fix : σ.comp j = j)
     (symp : ∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N])
     (low : ∀ x, F.univ.lev (T x) ^ (N / n) = F.univ.lev x ^ (N / n)) : ∃ f, Twist F j T m σ f := by
-  obtain ⟨hinj, hsurj, -⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN cop symp
+  obtain ⟨hinj, hsurj, -⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN cop symp
   obtain ⟨hr, hd⟩ := F.isReduced_and_dense
   obtain ⟨f, hf, H⟩ := F.rep F.X (F.s ≫ spMap σ) (relabel F.univ T σ hN (zeta_pow hN) root symp hinj hsurj) hr
     (hd.mono fun x hx => by
@@ -88,7 +88,7 @@ theorem exists_twist (hN : N ≠ 0) {T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (
 theorem Twist.unique (hN : N ≠ 0) {T T' : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)} {m m' : ℕ}
     {σ σ' : cycAway N →+* cycAway N} {f f' : F.X ⟶ F.X} (t : Twist F j T m σ f) (t' : Twist F j T' m' σ' f')
     (hσ : σ = σ') (hT : ∀ x, F.univ.lev (T x) = F.univ.lev (T' x)) : f = f' := by
-  obtain ⟨hinj, hsurj, -⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN t.cop t.symp
+  obtain ⟨hinj, hsurj, -⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN t.cop t.symp
   refine F.hom_ext (relabel F.univ T σ hN (zeta_pow hN) t.root t.symp hinj hsurj) f f' (by rw [t.comm, t'.comm, hσ])
     (t.siegPB hN hinj hsurj) ?_
   obtain ⟨ν, a, ⟨ν₂, b, c⟩, d⟩ := t'.map
@@ -238,7 +238,7 @@ theorem exists_twist_of_points (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj :
   have a3 : SRel Cy' Cy (N / n) (N / n) (𝟙 _ ≫ 𝟙 _) := sRel_comp a1 a2
   rw [Category.comp_id] at a3
   obtain ⟨φ, hφ, ⟨φ₂, hsq, hP⟩, hl⟩ := a3
-  obtain ⟨T, hTω, hTl⟩ := (GlobalTheory.T.siegel_level_change_by_symplectic_similitude h N (cycAway N) (cycBase hN0) hN).2 R β m β' Cy Cy' φ φ₂ hm hφ hsq hP
+  obtain ⟨T, hTω, hTl⟩ := (_root_.GlobalTheory.siegel_level_change_by_similitude h N (cycAway N) (cycBase hN0) hN).2 R β m β' Cy Cy' φ φ₂ hm hφ hsq hP
 
   have low : ∀ x, F.univ.lev (T x) ^ (N / n) = F.univ.lev x ^ (N / n) := fun x => by
     have e1 := pow_section hφ _ _ ((hTl x).trans (Category.id_comp _).symm) (N / n)
@@ -266,7 +266,7 @@ theorem exists_twist_of_points (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj :
   have fix : σ.toRingHom.comp j = j := (cycAway_galois n hn0).2.1 _ _ _ (by
     rw [RingHom.comp_apply, hj, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, map_pow, hσ, ← pow_mul, e6])
   obtain ⟨f, t⟩ := exists_twist (F := F) hN0 σ.injective hmc hσ fix hTω low
-  obtain ⟨hinj, hsurj, -⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN0 hmc hTω
+  obtain ⟨hinj, hsurj, -⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN0 hmc hTω
   have X0 : SiegPB Cy' (relabel Cy T σ.toRingHom hN0 (zeta_pow hN0) hσ hTω hinj hsurj) (𝟙 _) :=
     ⟨φ, φ₂, hφ, hsq, hP, fun x => (hTl x).trans (Category.id_comp _).symm⟩
   obtain ⟨p, p₂, hp1, hp2, hp3, hp4⟩ := hCy
@@ -291,7 +291,7 @@ theorem Twist.exists_inv (hN : N ≠ 0) (hN1 : 1 < N) (hn0 : n ≠ 0) (hj : j (z
     (t : Twist F j T m σ f) :
     ∃ (T' : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)) (m' : ℕ) (σ' : cycAway N →+* cycAway N) (f' : F.X ⟶ F.X),
       Twist F j T' m' σ' f' ∧ f ≫ f' = 𝟙 _ := by
-  obtain ⟨-, -, T', hT', hω'⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN t.cop t.symp
+  obtain ⟨-, -, T', hT', hω'⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN t.cop t.symp
   haveI : NeZero N := ⟨hN⟩
   set m' : ℕ := (((ZMod.unitOfCoprime m t.cop)⁻¹ : (ZMod N)ˣ) : ZMod N).val with hm'
   have hmm : m * m' ≡ 1 [MOD N] := by

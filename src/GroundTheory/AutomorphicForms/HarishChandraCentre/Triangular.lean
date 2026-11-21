@@ -110,13 +110,6 @@ theorem not_isDiagExp_of_hasUpper {m : Fin n × Fin n →₀ ℕ} (h : HasUpper 
   simp only [IsUpper, IsDiag] at ha this
   rw [this] at ha; exact lt_irrefl _ ha
 
-theorem not_isDiagExp_of_hasLower {m : Fin n × Fin n →₀ ℕ} (h : HasLower m) : ¬ IsDiagExp m := by
-  obtain ⟨a, ha, hm⟩ := h
-  intro hd
-  have := hd a hm
-  simp only [IsLower, IsDiag] at ha this
-  rw [this] at ha; exact lt_irrefl _ ha
-
 def cartanSet (n : ℕ) : Set (U n) := Set.range fun i : Fin n => e (i, i)
 
 theorem e_diag_commute (i j : Fin n) : e (i, i) * e (j, j) = e (j, j) * e (i, i) := by
@@ -151,9 +144,6 @@ noncomputable def diagExp (m : Fin n × Fin n →₀ ℕ) : Fin n →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm fun i => m (i, i)
 
 @[simp] theorem diagExp_apply (m : Fin n × Fin n →₀ ℕ) (i : Fin n) : diagExp m i = m (i, i) := rfl
-
-theorem e_pow_mem_cartanSub (i : Fin n) (k : ℕ) : e (n := n) (i, i) ^ k ∈ cartanSub n :=
-  Subalgebra.pow_mem _ (Algebra.subset_adjoin (s := cartanSet n) (Set.mem_range_self i)) k
 
 theorem word_blockW_diagL (m : Fin n × Fin n →₀ ℕ) :
     word (blockW (diagL n) m) = hcEmb (monomial (diagExp m) 1) := by
@@ -191,9 +181,6 @@ theorem canon_eq_triangular (m : Fin n × Fin n →₀ ℕ) :
 def nPlusU (n : ℕ) : Submodule ℂ (U n) :=
   Submodule.span ℂ {x | ∃ (u : U n) (a : Fin n × Fin n), IsUpper a ∧ u * e a = x}
 
-def nMinusU (n : ℕ) : Submodule ℂ (U n) :=
-  Submodule.span ℂ {x | ∃ (u : U n) (a : Fin n × Fin n), IsLower a ∧ e a * u = x}
-
 theorem mul_mem_nPlusU (v : U n) {x : U n} (hx : x ∈ nPlusU n) : v * x ∈ nPlusU n := by
   induction hx using Submodule.span_induction with
   | mem x hx =>
@@ -203,15 +190,6 @@ theorem mul_mem_nPlusU (v : U n) {x : U n} (hx : x ∈ nPlusU n) : v * x ∈ nPl
   | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
   | smul r x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ r hx
 
-theorem mem_nMinusU_mul {x : U n} (hx : x ∈ nMinusU n) (v : U n) : x * v ∈ nMinusU n := by
-  induction hx using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨u, a, ha, rfl⟩ := hx
-    exact Submodule.subset_span ⟨u * v, a, ha, (mul_assoc _ _ _).symm⟩
-  | zero => simp
-  | add x y _ _ hx hy => rw [add_mul]; exact Submodule.add_mem _ hx hy
-  | smul r x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r hx
-
 theorem canon_mem_nPlusU {m : Fin n × Fin n →₀ ℕ} (h : HasUpper m) : canon m ∈ nPlusU n := by
   obtain ⟨a, ha, hm⟩ := h
   have hne := blockW_ne_nil (mem_upL.2 ha) hm
@@ -219,20 +197,8 @@ theorem canon_mem_nPlusU {m : Fin n × Fin n →₀ ℕ} (h : HasUpper m) : cano
   refine Submodule.subset_span ⟨_, _, ?_, rfl⟩
   exact mem_upL.1 (mem_of_mem_blockW (List.getLast_mem hne)).1
 
-theorem canon_mem_nMinusU {m : Fin n × Fin n →₀ ℕ} (h : HasLower m) : canon m ∈ nMinusU n := by
-  obtain ⟨a, ha, hm⟩ := h
-  have hne := blockW_ne_nil (mem_lowL.2 ha) hm
-  obtain ⟨b, l, hbl⟩ := List.exists_cons_of_ne_nil hne
-  rw [canon_eq_blocks, hbl, word_cons, mul_assoc, mul_assoc]
-  refine Submodule.subset_span ⟨_, b, ?_, rfl⟩
-  have : b ∈ blockW (lowL n) m := by rw [hbl]; exact List.mem_cons_self ..
-  exact mem_lowL.1 (mem_of_mem_blockW this).1
-
 noncomputable def notUpper (m : Fin n × Fin n →₀ ℕ) : Fin n × Fin n →₀ ℕ :=
   m.filter fun a => ¬ IsUpper a
-
-noncomputable def notLower (m : Fin n × Fin n →₀ ℕ) : Fin n × Fin n →₀ ℕ :=
-  m.filter fun a => ¬ IsLower a
 
 theorem isUpper_of_mem_support {P : Fin n × Fin n → Prop} {m : Fin n × Fin n →₀ ℕ}
     (hm : ∀ a ∈ m.support, P a) {a : Fin n × Fin n} (ha : ¬ P a) : m a = 0 := by
@@ -270,25 +236,6 @@ theorem canon_notUpper_add {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m
     have h := mem_upL.1 ha
     simp [notUpper, h]
 
-theorem canon_add_notLower {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m'.support, IsLower a) :
-    canon m' * word (blockW (diagL n) m) * word (blockW (upL n) m) = canon (m' + notLower m) := by
-  have hup : ∀ a ∈ upL n, m' a = 0 := fun a ha =>
-    isUpper_of_mem_support hm' (not_lower_of_upper (mem_upL.1 ha))
-  have hdiag : ∀ a ∈ diagL n, m' a = 0 := fun a ha =>
-    isUpper_of_mem_support hm' (not_lower_of_diag (mem_diagL.1 ha))
-  rw [canon_eq_blocks m', blockW_eq_nil hup, blockW_eq_nil hdiag, canon_eq_blocks (m' + notLower m)]
-  simp only [word_nil, mul_one]
-  congr 2
-  · refine congrArg word (blockW_congr fun a ha => ?_)
-    have h := mem_lowL.1 ha
-    simp [notLower, h]
-  · refine congrArg word (blockW_congr fun a ha => ?_)
-    have h := mem_diagL.1 ha
-    simp [notLower, not_lower_of_diag h, hdiag a ha]
-  · refine blockW_congr fun a ha => ?_
-    have h := mem_upL.1 ha
-    simp [notLower, not_lower_of_upper h, hup a ha]
-
 theorem hasUpper_notUpper_add {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m'.support, IsUpper a)
     (hdeg : 1 ≤ m'.degree) : HasUpper (notUpper m + m') := by
   have : m' ≠ 0 := by rintro rfl; simp at hdeg
@@ -297,19 +244,8 @@ theorem hasUpper_notUpper_add {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a �
   simp only [Finsupp.add_apply]
   exact fun h => ha (by simp at ha ⊢; omega)
 
-theorem hasLower_add_notLower {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m'.support, IsLower a)
-    (hdeg : 1 ≤ m'.degree) : HasLower (m' + notLower m) := by
-  have : m' ≠ 0 := by rintro rfl; simp at hdeg
-  obtain ⟨a, ha⟩ := Finsupp.ne_iff.1 this
-  refine ⟨a, hm' a (Finsupp.mem_support_iff.2 ha), ?_⟩
-  simp only [Finsupp.add_apply]
-  exact fun h => ha (by simp at ha ⊢; omega)
-
 def spanUpper (n : ℕ) : Submodule ℂ (U n) :=
   Submodule.span ℂ {x | ∃ m : Fin n × Fin n →₀ ℕ, HasUpper m ∧ canon m = x}
-
-def spanLower (n : ℕ) : Submodule ℂ (U n) :=
-  Submodule.span ℂ {x | ∃ m : Fin n × Fin n →₀ ℕ, HasLower m ∧ canon m = x}
 
 theorem canon_mul_e_mem_spanUpper (m : Fin n × Fin n →₀ ℕ) {a : Fin n × Fin n} (ha : IsUpper a) :
     canon m * e a ∈ spanUpper n := by
@@ -338,35 +274,6 @@ theorem canon_mul_e_mem_spanUpper (m : Fin n × Fin n →₀ ℕ) {a : Fin n × 
     | smul r x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ r hx
   exact this _ hspan
 
-theorem e_mul_canon_mem_spanLower (m : Fin n × Fin n →₀ ℕ) {a : Fin n × Fin n} (ha : IsLower a) :
-    e a * canon m ∈ spanLower n := by
-  have hw : ∀ b ∈ a :: blockW (lowL n) m, IsLower b := by
-    intro b hb
-    rcases List.mem_cons.1 hb with rfl | hb
-    · exact ha
-    · exact mem_lowL.1 (mem_of_mem_blockW hb).1
-  have hspan := word_mem_canonSpan closed_lower _ hw
-  rw [List.length_cons, show min 1 ((blockW (lowL n) m).length + 1) = 1 by omega] at hspan
-  rw [canon_eq_blocks, ← mul_assoc, ← mul_assoc, ← word_cons]
-  have : ∀ y ∈ canonSpan IsLower 1 ((blockW (lowL n) m).length + 1),
-      y * word (blockW (diagL n) m) * word (blockW (upL n) m) ∈ spanLower n := by
-    intro y hy
-    induction hy using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨m', hm', h1, -, rfl⟩ := hx
-      rw [canon_add_notLower hm']
-      exact Submodule.subset_span ⟨_, hasLower_add_notLower hm' h1, rfl⟩
-    | zero => simp
-    | add x y _ _ hx hy => rw [add_mul, add_mul]; exact Submodule.add_mem _ hx hy
-    | smul r x _ hx => rw [smul_mul_assoc, smul_mul_assoc]; exact Submodule.smul_mem _ r hx
-  exact this _ hspan
-
-theorem spanUpper_le_nPlusU : spanUpper n ≤ nPlusU n :=
-  Submodule.span_le.2 fun _ ⟨_, h, hx⟩ => hx ▸ canon_mem_nPlusU h
-
-theorem spanLower_le_nMinusU : spanLower n ≤ nMinusU n :=
-  Submodule.span_le.2 fun _ ⟨_, h, hx⟩ => hx ▸ canon_mem_nMinusU h
-
 theorem nPlusU_le_spanUpper : nPlusU n ≤ spanUpper n := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨u, a, ha, rfl⟩
@@ -377,16 +284,5 @@ theorem nPlusU_le_spanUpper : nPlusU n ≤ spanUpper n := by
   | zero => simp
   | add x y _ _ hx hy => rw [add_mul]; exact Submodule.add_mem _ hx hy
   | smul r x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r hx
-
-theorem nMinusU_le_spanLower : nMinusU n ≤ spanLower n := by
-  refine Submodule.span_le.2 ?_
-  rintro _ ⟨u, a, ha, rfl⟩
-  have hu : u ∈ Submodule.span ℂ (Set.range (canon (n := n))) := by
-    rw [span_canon_eq_top]; trivial
-  induction hu using Submodule.span_induction with
-  | mem x hx => obtain ⟨m, rfl⟩ := hx; exact e_mul_canon_mem_spanLower m ha
-  | zero => simp
-  | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
-  | smul r x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ r hx
 
 end GroundTheory.Automorphic.HarishChandra

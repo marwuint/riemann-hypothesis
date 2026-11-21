@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsRetractionMulP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvEqOneOfForallPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHopfQuotientTorsionIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionFibreDimQuotientPDivGroupLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveRankAtStalkOfConstFibreDimStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHopfQuotientTorsionIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionFibreDimQuotientPDivGroupLevel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveRankAtStalkOfConstFibreDim
 
 set_option autoImplicit false
 
@@ -20,7 +20,7 @@ theorem exists_quotPDivGroup : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing
     (∀ m, RingHom.ker (q m) = torsionIdeal O (τ.B m) (p ^ m)) ∧
     ∀ m b, H.res m (q (m + 1) b) = q m (τ.r m b) := by
   intro p _ O _ _ _ G τ
-  have hex := fun m => GlobalTheory.T.exists_hopf_quotient_ker_eq_torsionIdeal O (τ.B m) (p ^ m)
+  have hex := fun m => _root_.GlobalTheory.PDiv.exists_hopf_quotient_torsionIdeal O (τ.B m) (p ^ m)
   choose D iR iH iC q hq hk using hex
   letI := iR
   letI := iH
@@ -28,13 +28,13 @@ theorem exists_quotPDivGroup : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing
   have hB1 : ∀ m (x : PrimeSpectrum O),
       fibreDim (τ.B m ⧸ torsionIdeal O (τ.B m) (p ^ m)) x = p ^ (m * G.height) := by
     intro m x
-    have h := GlobalTheory.T.torsion_fibreDim_quotient_pDivGroupLevel p O G 1 m le_rfl (τ.B m)
+    have h := _root_.GlobalTheory.TorsDim.fibreDim_quot_torsionIdeal p O G 1 m le_rfl (τ.B m)
     rw [show 1 + m = m + 1 from Nat.add_comm 1 m] at h
     exact h (τ.j m) (τ.ρ m) (τ.ρ_j m) (τ.tors_le m) x
   have hB2 : ∀ m (x : PrimeSpectrum O),
       fibreDim (τ.B (m + 1) ⧸ torsionIdeal O (τ.B (m + 1)) (p ^ m)) x = p ^ (m * G.height) := by
     intro m x
-    have h := GlobalTheory.T.torsion_fibreDim_quotient_pDivGroupLevel p O G 2 m (by norm_num) (τ.B (m + 1))
+    have h := _root_.GlobalTheory.TorsDim.fibreDim_quot_torsionIdeal p O G 2 m (by norm_num) (τ.B (m + 1))
     rw [show 2 + m = m + 1 + 1 by omega] at h
     exact h (τ.j (m + 1)) (τ.ρ (m + 1)) (τ.ρ_j (m + 1)) (τ.tors_le (m + 1)) x
   haveI hfin : ∀ m, Module.Finite O (D m) := fun m =>
@@ -46,7 +46,7 @@ theorem exists_quotPDivGroup : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing
       (Ideal.quotientKerAlgEquivOfSurjective (f := (q m : τ.B m →ₐ[O] D m)) (hq m))).toLinearEquiv
     rw [← hB1 m x]
     exact (fibreDim_congr e x).symm
-  have hPR := fun m => GlobalTheory.T.projective_rankAtStalk_of_const_fibreDim O (D m) (p ^ (m * G.height)) (hD m)
+  have hPR := fun m => _root_.GlobalTheory.ConstFibreFree.projective_and_rankAtStalk_of_fibreDim O (D m) (p ^ (m * G.height)) (hD m)
   haveI hproj : ∀ m, Module.Projective O (D m) := fun m => (hPR m).1
   have hle : ∀ m, RingHom.ker (q (m + 1)) ≤ RingHom.ker ((q m).comp (τ.r m)) := by
     intro m b hb

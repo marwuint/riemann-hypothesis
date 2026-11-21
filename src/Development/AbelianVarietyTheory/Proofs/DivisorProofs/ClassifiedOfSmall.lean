@@ -2,10 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrincipalSiegelObjectGlueArtinFibreProductStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSiegelObjectDeterminedOverArtinianPinchStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelObjectDualNumberClassifiedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecFibreProductLocalArtinianGlueExistsUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrincipalSiegelObjectGlueArtinFibreProduct
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSiegelObjectDeterminedOverArtinianPinch
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelObjectDualNumberClassified
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecFibreProductLocalArtinianGlueExistsUnique
+import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftsAlong
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPrePullbackPrincipalRingChange
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.BijectiveRestrictPointsOfEtaleOfHenselian
@@ -247,12 +250,12 @@ theorem classified_of_small : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n →
   have h0c : SiegPB c₀' c₀ (𝟙 _) := pb_cancel hx₀ (by rw [Category.id_comp]; exact hc₀')
   have h0c' : SiegPB c₀' c (spMap π) := by simpa using pb_comp hc₀ h0c
   have h02 : SiegPB c₀' c₂ (spMap π) := pb_cancel hc₂ (by rw [Category.comp_id]; exact h0c')
-  obtain ⟨e', he'p, he'1, he'2⟩ := GlobalTheory.T.exists_principalSiegelObject_glue_artinFibreProduct g n hn hodd P (CommRingCat.of C) (CommRingCat.of C)
+  obtain ⟨e', he'p, he'1, he'2⟩ := _root_.GlobalTheory.ArtinGlue.exists_principal_glue g n hn hodd P (CommRingCat.of C) (CommRingCat.of C)
     (CommRingCat.of (C ⧸ Ideal.span {e})) p σ πC πC sq1 hPl hPa Ideal.Quotient.mk_surjective
     Ideal.Quotient.mk_surjective βP c₁ c₂ (hc₁p F.princ) (hc₂p hc) ⟨c₀', h01, h02⟩
   obtain ⟨eε, heε, heεp⟩ := pull_ex (s' := Spec.map q ≫ Spec.map βP) (Spec.map q) rfl e'
   obtain ⟨eε', heε', heε'p⟩ := pull_ex (s' := spMap β') (𝟙 _) (by rw [Category.id_comp, hqβ]) eε
-  obtain ⟨v, hvs, hv₀⟩ := GlobalTheory.T.siegelObject_dualNumber_classified g n hg hn hodd F k β' eε' (heε'p (heεp he'p))
+  obtain ⟨v, hvs, hv₀⟩ := _root_.GlobalTheory.SiegelTangent.classified_dualNumber g n hg hn hodd F k β' eε' (heε'p (heεp he'p))
   have hεε : SiegPB eε eε' (𝟙 _) := pb_cancel heε' (by rw [Category.id_comp]; exact pb_id eε)
   have hv : SiegPB eε F.univ v := by simpa using pb_comp hv₀ hεε
   let ρ : CommRingCat.of C ⟶ CommRingCat.of k := CommRingCat.ofHom (IsLocalRing.residue C)
@@ -266,7 +269,7 @@ theorem classified_of_small : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n →
   have hglue : Spec.map ρ ≫ x₁ = Spec.map ε₀ ≫ v := by
     refine F.inj k _ _ _ ck ?_ hk1 hk3
     rw [Category.assoc, Category.assoc, hx₁s, hvs, ← hpβ, ← hqβ, ← Category.assoc, hw, Category.assoc]
-  have hsq := GlobalTheory.T.spec_fibreProduct_localArtinian_glue_existsUnique P (CommRingCat.of C) (CommRingCat.of (DualNumber k)) (CommRingCat.of k) p q ρ ε₀ sq2
+  have hsq := _root_.GlobalTheory.spec_pullback_localArtinian_glue_existsUnique P (CommRingCat.of C) (CommRingCat.of (DualNumber k)) (CommRingCat.of k) p q ρ ε₀ sq2
     hPl hPa hps hqs inferInstance
   obtain ⟨w, ⟨hw1, hw2⟩, -⟩ := hsq F.X x₁ v hglue
   have hws : w ≫ F.s = Spec.map βP := by
@@ -278,7 +281,7 @@ theorem classified_of_small : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n →
   obtain ⟨e'', he'', he''p⟩ := pull_ex (s' := Spec.map βP) w hws F.univ
   have hq1 : SiegPB c₁ e'' (Spec.map p) := pb_cancel he'' (by rw [hw1]; exact hc₁)
   have hq2 : SiegPB eε e'' (Spec.map q) := pb_cancel he'' (by rw [hw2]; exact hv)
-  have hiso : SiegPB e' e'' (𝟙 _) := GlobalTheory.T.principalSiegelObject_determined_over_artinianPinch g n hn hodd P (CommRingCat.of C) (CommRingCat.of (DualNumber k))
+  have hiso : SiegPB e' e'' (𝟙 _) := _root_.GlobalTheory.SiegPinch.siegPB_of_pinch g n hn hodd P (CommRingCat.of C) (CommRingCat.of (DualNumber k))
     (CommRingCat.of k) p q ρ ε₀ sq2 hPl hPa IsLocalRing.residue_surjective (fun x => ⟨TrivSqZeroExt.inl x, rfl⟩)
     βP e'' e' c₁ eε (he''p F.princ) he'p hq1 he'1 hq2 heε
   refine ⟨Spec.map σ ≫ w, by rw [Category.assoc, hws, hσβ], ?_⟩

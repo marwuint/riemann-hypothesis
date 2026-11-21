@@ -15,53 +15,9 @@ theorem spDiag_mem (U : (Matrix (Fin g) (Fin g) ℤ)ˣ) : spDiag U ∈ spH g := 
 
 theorem J_mem_spH : J (Fin g) ℤ ∈ spH g := Submonoid.subset_closure (Set.mem_union_right _ (Set.mem_singleton _))
 
-theorem spTransl_neg_mul (S : Matrix (Fin g) (Fin g) ℤ) : spTransl (-S) * spTransl S = 1 := by
-
-  simp [spTransl, fromBlocks_multiply, fromBlocks_one]
-
-theorem spDiag_inv_mul (U : (Matrix (Fin g) (Fin g) ℤ)ˣ) : spDiag U⁻¹ * spDiag U = 1 := by
-
-  simp [spDiag, fromBlocks_multiply, ← Matrix.transpose_mul, fromBlocks_one]
-
 theorem J_cube : J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ = -J (Fin g) ℤ := by
 
   rw [Matrix.J_squared, neg_mul, one_mul]
-
-theorem J_pow_four : J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ = 1 := by
-
-  rw [J_cube, neg_mul, Matrix.J_squared, neg_neg]
-
-theorem spH_exists_inv {x : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} (hx : x ∈ spH g) :
-    ∃ y ∈ spH g, y * x = 1 := by
-
-  induction hx using Submonoid.closure_induction with
-  | mem x hx =>
-    rcases hx with (⟨S, hS, rfl⟩ | ⟨U, rfl⟩) | hJ
-    · have hS' : (-S).IsSymm := by
-        unfold Matrix.IsSymm at hS ⊢
-        rw [Matrix.transpose_neg, hS]
-      exact ⟨spTransl (-S), spTransl_mem hS', spTransl_neg_mul S⟩
-    · exact ⟨spDiag U⁻¹, spDiag_mem _, spDiag_inv_mul U⟩
-    · rw [Set.mem_singleton_iff] at hJ
-      subst hJ
-      exact ⟨J (Fin g) ℤ * J (Fin g) ℤ * J (Fin g) ℤ, mul_mem (mul_mem J_mem_spH J_mem_spH) J_mem_spH, J_pow_four⟩
-  | one => exact ⟨1, one_mem _, one_mul 1⟩
-  | mul x y _ _ hx hy =>
-    obtain ⟨x', hx'm, hx'⟩ := hx
-    obtain ⟨y', hy'm, hy'⟩ := hy
-    refine ⟨y' * x', mul_mem hy'm hx'm, ?_⟩
-    rw [mul_assoc, ← mul_assoc x' x y, hx', one_mul, hy']
-
-theorem mem_spH_of_mul_eq_one {M N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} (hN : N ∈ spH g)
-    (h : N * M = 1) : M ∈ spH g := by
-
-  obtain ⟨y, hy, hyN⟩ := spH_exists_inv hN
-  have h1 : M = y := by
-    calc M = (y * N) * M := by rw [hyN, one_mul]
-      _ = y * (N * M) := mul_assoc _ _ _
-      _ = y := by rw [h, mul_one]
-  rw [h1]
-  exact hy
 
 theorem spTransl_mem_sp {S : Matrix (Fin g) (Fin g) ℤ} (hS : S.IsSymm) :
     spTransl S ∈ symplecticGroup (Fin g) ℤ := by
@@ -140,20 +96,6 @@ theorem spPJ_mem (j : Fin g) : spPJ j ∈ spH g := by
     rw [Matrix.transpose_neg, hE]
   rw [spPJ_eq]
   exact mul_mem (mul_mem (spTransl_mem hE) (spLow_mem hE')) (spTransl_mem hE)
-
-theorem fromBlocks_mul_inl (A B C D : Matrix (Fin g) (Fin g) ℤ)
-    (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :
-    (fromBlocks A B C D * M) (Sum.inl i) p =
-      (∑ j, A i j * M (Sum.inl j) p) + ∑ j, B i j * M (Sum.inr j) p := by
-
-  simp [Matrix.mul_apply, Fintype.sum_sum_type]
-
-theorem fromBlocks_mul_inr (A B C D : Matrix (Fin g) (Fin g) ℤ)
-    (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :
-    (fromBlocks A B C D * M) (Sum.inr i) p =
-      (∑ j, C i j * M (Sum.inl j) p) + ∑ j, D i j * M (Sum.inr j) p := by
-
-  simp [Matrix.mul_apply, Fintype.sum_sum_type]
 
 theorem mul_col_of_unit {M O : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} {p : Fin g ⊕ Fin g}
     (h : ∀ r, M r p = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r p) (q : Fin g ⊕ Fin g) :

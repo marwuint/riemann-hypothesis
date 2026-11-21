@@ -514,47 +514,6 @@ theorem FBChart.bil_ad (Y : FBChart C V O dd) (a : O) (w v : Fin dd → C) :
   rw [hg, bil_expS ((van_ev_left Y.axisAll (Y.B.A.const a)).sub (van_ev_right Y.axisAll (Y.B.A.const (star a)))),
     bil_sub, bil_ev_left Y.axisAll (Y.B.A.const a), bil_ev_right Y.axisAll (Y.B.A.const (star a))]
 
-theorem FBChart.raw_first_pairing_eq (Y : FBChart C V O dd) {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] (p : PairData Y d I)
-    (w v : Fin dd → C) : (Y.raw p).sg1 w v = -bil Y.h w v := by
-  have hs : ∀ x, coeff (Finsupp.single x 1) ((Y.raw p).sg v) =
-      -∑ i, v i * coeff (E2 ((0 : Fin 2), x) ((1 : Fin 2), i)) Y.h := by
-    intro x
-    show -∑ i, v i * coeff ((Finsupp.single x 1).mapDomain (fun x : Fin dd => ((0 : Fin 2), x)) +
-      Finsupp.single ((1 : Fin 2), i) 1) Y.h = _
-    rw [Finsupp.mapDomain_single]
-    rfl
-  unfold RawChart.sg1 bil
-  simp only [hs, mul_neg, Finset.sum_neg_distrib, Finset.mul_sum]
-  congr 1
-  apply Finset.sum_congr rfl
-  intro i _
-  apply Finset.sum_congr rfl
-  intro j _
-  ring
-
 end Final
-
-theorem hStabFB : HStabFBSt := by
-  intro C _ _ V O _ _ dd Y d _ I _ p g c q hty
-  have hconj : ∀ (g : Fin 2) t a, p.em (1 - g) t (star a) = p.em g t a := by
-    intro g t a
-    rcases fin_two_eq_zero_or_eq_one g with rfl | rfl
-    · show p.em 1 t (star a) = p.em 0 t a
-      rw [p.em_conj, star_star]
-    · show p.em 0 t (star a) = p.em 1 t a
-      rw [p.em_conj]
-  obtain ⟨a, ha⟩ := p.em_sep (g, p.ty g c) (g, p.ty (1 - g) q) (fun h => hty (Prod.mk.inj h).2)
-  have ha' : V.v (p.em g (p.ty g c) a - p.em g (p.ty (1 - g) q) a) = 0 := ha
-  have hb := Y.bil_ad a (p.u g c) (p.u (1 - g) q)
-  rw [p.u_eig g c a, p.u_eig (1 - g) q (star a), hconj, bil_smul_left, bil_smul_right, ← sub_mul] at hb
-  have hint : V.Ge 0 (bil (Y.B.ad a) (p.u g c) (p.u (1 - g) q)) :=
-    bil_int (Y.intAd a) (p.u_int g c) (p.u_int (1 - g) q)
-  rw [hb] at hint
-  have hβ : V.Ge 0 (bil Y.h (p.u g c) (p.u (1 - g) q)) := by
-    unfold VF.Ge at hint ⊢
-    rwa [V.v.map_mul, ha', zero_add] at hint
-  show V.Ge 0 ((Y.raw p).sg1 (p.u g c) (p.u (1 - g) q))
-  rw [Y.raw_first_pairing_eq]
-  exact hβ.neg
 
 end Formalism.L2.FormalSeriesBounds

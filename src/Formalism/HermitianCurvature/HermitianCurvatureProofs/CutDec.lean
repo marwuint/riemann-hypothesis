@@ -186,15 +186,6 @@ theorem corS_of_cpt (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) 
   exact Formalism.FourierDecayAlt.P.corSOfLemmaS_statement Wp Wq P p nn G Y Λ K N C₂ hKN hC₂ hPos
     (hLS Wp Wq P p nn G Y Λ K N hK hΛ hPos hI2 hI3 hI4 hI5)
 
-theorem blockGrowthBound_apx_cutF_of_germAtPD (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (χ : ℝ → ℝ)
-    (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (K N : ℕ) (hχ : C6.IsCut0 χ)
-    (hF : B.CkOn ⊤ (B.GV P.k P.r) F) (hnn : ∀ y, 0 ≤ nn y)
-    (hG : ∀ ε : ℝ, 0 < ε → ∀ n : ℕ, GermAtPD p nn (apx (D.cutF p.T.base χ F ε) n) Y K N) :
-    ∀ ε : ℝ, 0 < ε → ∀ n : ℕ, TBB.BlockGrowthBound p nn (apx (D.cutF p.T.base χ F ε) n) Y K N := by
-  intro ε hε n
-  exact block_growth_bound_of_positive_germ p nn _ Y K N
-    (posAt_of_cpt hA p nn _ Y N hnn (cptCoef_apx P p.T.base hχ hF hε n)) (hG ε hε n)
-
 end place
 
 theorem ptBound_dec_all (hA : P5.ThmPActual) : ∃ C₂ : ℝ, 0 < C₂ ∧

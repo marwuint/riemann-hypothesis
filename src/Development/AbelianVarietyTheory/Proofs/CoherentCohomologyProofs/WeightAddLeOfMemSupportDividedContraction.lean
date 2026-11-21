@@ -65,8 +65,6 @@ variable {R S : Type*} [CommSemiring R] [CommSemiring S] {σ : Type*}
 
 def multiChoose (n β : σ →₀ ℕ) : ℕ := β.prod fun i e => (n i).choose e
 
-def multiFactorial (β : σ →₀ ℕ) : ℕ := β.prod fun _ e => e.factorial
-
 @[simp] theorem multiChoose_zero (n : σ →₀ ℕ) : multiChoose n 0 = 1 := by simp [multiChoose]
 
 theorem multiChoose_eq_mul_erase (n β : σ →₀ ℕ) (i : σ) :
@@ -414,63 +412,5 @@ theorem factorial_smul_dividedContraction (γ : ι → κ → R) (n : ℕ) :
   simpa using factorial_smul_dividedContraction γ 1
 
 end Contraction
-
-section Integrality
-
-variable {R : Type*} [CommSemiring R] {ι κ : Type*}
-
-noncomputable def degreeLeft (P : MvPolynomial (ι ⊕ κ) R) : ℕ :=
-  weightedTotalDegree (Sum.elim (fun _ => 1) fun _ => 0 : ι ⊕ κ → ℕ) P
-
-noncomputable def degreeRight (P : MvPolynomial (ι ⊕ κ) R) : ℕ :=
-  weightedTotalDegree (Sum.elim (fun _ => 0) fun _ => 1 : ι ⊕ κ → ℕ) P
-
-variable [Fintype ι] [Fintype κ]
-
-variable {A : Type*} [CommSemiring A] [Algebra A R]
-
-end Integrality
-
-section Fractional
-
-open scoped nonZeroDivisors
-
-variable {A K : Type*} [CommRing A] [CommRing K] [Algebra A K] {ι κ : Type*} [Fintype ι] [Fintype κ]
-
-end Fractional
-
-section Formula
-
-variable {k A M : Type*} [CommRing k] [Ring A] [Algebra k A] [AddCommGroup M] [Module A M]
-  {ι κ : Type*}
-
-variable [Fintype κ]
-
-variable [Fintype ι] {a b : ι → A} {a' b' : κ → A} {γ : ι → κ → k} {v : M}
-
-end Formula
-
-example : ∃ (a b : Unit → Module.End ℚ (Polynomial ℚ)) (a' b' : Unit → Module.End ℚ (Polynomial ℚ))
-    (γ : Unit → Unit → ℚ) (v : Polynomial ℚ), v ≠ 0 ∧ γ () () = 1 ∧
-    (∀ i j, Commute (a i) (a j)) ∧ (∀ i j, Commute (a i) (b j)) ∧ (∀ i j, Commute (b i) (b j)) ∧
-    (∀ i j, Commute (a' i) (a' j)) ∧ (∀ i j, Commute (a' i) (b' j)) ∧
-    (∀ i j, Commute (b' i) (b' j)) ∧ (∀ i j, Commute (b i) (b' j)) ∧
-    (∀ i j, b i * a' j - a' j * b i = algebraMap ℚ _ (γ i j)) ∧
-    (∀ i, b i • v = 0) ∧ (∀ j, b' j • v = 0) := by
-  refine ⟨0, fun _ => Polynomial.derivative, fun _ => LinearMap.mulLeft ℚ Polynomial.X, 0,
-    fun _ _ => 1, 1, one_ne_zero, rfl, fun _ _ => Commute.refl _, fun _ _ => Commute.zero_left _,
-    fun _ _ => Commute.refl _, fun _ _ => Commute.refl _, fun _ _ => Commute.zero_right _,
-    fun _ _ => Commute.refl _, fun _ _ => Commute.zero_right _, fun _ _ => ?_, fun _ => by simp,
-    fun _ => by simp⟩
-  refine LinearMap.ext fun p => ?_
-  simp
-
-example : dividedContraction (fun _ _ : Unit => (1 : ℤ)) 2
-    (X (Sum.inl ()) * (X (Sum.inl ()) * rename Sum.inr (X () ^ 2))) = 2 := by
-  rw [dividedContraction_succ_X_inl_mul, dividedContraction_succ_X_inl_mul,
-    dividedContraction_succ_X_inl_mul]
-  simp only [dividedContraction_succ_rename_inr]
-  have h : pderiv (Sum.inr ()) (2 : MvPolynomial (Unit ⊕ Unit) ℤ) = 0 := pderiv_C (a := 2)
-  simp [rowContraction_apply, pderiv_X, h]
 
 end GlobalTheory.Wick

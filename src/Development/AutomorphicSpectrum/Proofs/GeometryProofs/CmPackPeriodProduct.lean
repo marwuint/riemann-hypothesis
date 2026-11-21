@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieNormSquareOfFamilyStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramLinearCombinationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramInvariantPullbackStatement
+import Development.WeilBound.CoreStatements.SesquilinearFractions.LieNormSquareOfFamily
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
+import Development.WeilBound.CoreStatements.SesquilinearFractions.GGramComb
+import Development.WeilBound.CoreStatements.SesquilinearFractions.GGramPush
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualBasisHermitianSumStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieNormSqBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieNormSqBaseChange
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Matrix GlobalTheory GlobalTheory.CM GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
@@ -217,16 +218,16 @@ theorem gram_family (X : CMPack Z c FU i hP) (b : Bool) (τ : E →+* ℂ) (hτ 
   have hU' := fun q => exists_lift X b (aq q) (Wq q) (hW q) s (U q) (hUl q)
   choose U' h1 h2 using hU'
   have hnorm : IsLieNormSq (X.C b).P (X.C b).v (sg X s) r :=
-    (T.lie_norm_sq_base_change E H _ _ _ _ (Z b).C (X.C b) _ (X.φ b) (sg X s) r (X.map b)).1 hr
+    (_root_.GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange E H _ _ _ _ (Z b).C (X.C b) _ (X.φ b) (sg X s) r (X.map b)).1 hr
   have hk : kap X τ s (wK H) = sg X s (X.ω b) := w_eq X b τ hτ s
-  have g0 := T.lie_norm_square_of_family E H (FU.Di i) (𝓞 X.K) (X.ω b) (X.C b) X.B (fun x x' => X.h b x x') _ (X.ψ b) (sg X s)
+  have g0 := _root_.PositivityTheory.Xgf.lie_norm_square_of_family E H (FU.Di i) (𝓞 X.K) (X.ω b) (X.C b) X.B (fun x x' => X.h b x x') _ (X.ψ b) (sg X s)
     (kap X τ s) r M aq U (X.fam b) hk hnorm hUl
   have hx1 : spMap (sg X s) = spMap s ≫ spMap (algebraMap (𝓞 X.K) X.K) := (spMap_comp_spMap _ _).symm
   have hx2 : under (spMap s ≫ X.y) = spMap s ≫ under X.y := Category.assoc _ _ _
   have hV2 : ∀ q, (V q).left = (U' q).left ≫ X.m.φ := fun q => (hV q).trans (h1 q).symm
   have hU2 : ∀ q, (U q).left = (U' q).left ≫ X.m'.φ := fun q => (h2 q).symm
-  have g1 := (T.hodge_gram_invariant_pullback E H _ _ X.B.t X.t _ X.m' (spMap s) (spMap (sg X s)) M U' U _ hx1 hU2).2 g0
-  have g2 := (T.hodge_gram_invariant_pullback E H _ _ Xo.univ.t X.t _ X.m (spMap s) (under (spMap s ≫ X.y)) M U' V _ hx2 hV2).1 g1
+  have g1 := (_root_.PositivityTheory.Xgf.hodge_gram_invariant_pullback E H _ _ X.B.t X.t _ X.m' (spMap s) (spMap (sg X s)) M U' U _ hx1 hU2).2 g0
+  have g2 := (_root_.PositivityTheory.Xgf.hodge_gram_invariant_pullback E H _ _ Xo.univ.t X.t _ X.m (spMap s) (under (spMap s ≫ X.y)) M U' V _ hx2 hV2).1 g1
   refine ⟨fun q => ?_, g2⟩
   exact (tan_iff X.m hx2 (U' q) (V q) (hV2 q)).1
     ((tan_iff X.m' hx1 (U' q) (U q) (hU2 q)).2 (hUt q (one_tangent X b (aq q))))
@@ -300,7 +301,7 @@ theorem hodgeGram_cmVec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       simp only [Equiv.apply_symm_apply]
       rw [← hk]
       exact e.symm_apply_apply q
-  have g3 := T.hodge_gram_linear_combination _ _ _ _ _ _ V v' _ A ht hg hcomb
+  have g3 := _root_.PositivityTheory.Xgf.hodge_gram_linear_combination _ _ _ _ _ _ V v' _ A ht hg hcomb
   convert g3 using 1
   ext k k'
   have m1 := mat_id e x (fun p p' => (r : ℂ) * kap X τ s (X.h b

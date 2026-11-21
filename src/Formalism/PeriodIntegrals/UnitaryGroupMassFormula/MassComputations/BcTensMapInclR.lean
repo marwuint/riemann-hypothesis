@@ -59,15 +59,6 @@ theorem continuous_haMap [FiniteDimensional F E] {R S : Type} [CommRing R] [Alge
         ht.comp ((continuous_apply j).comp ((continuous_apply i).comp hi))
   exact key.subtype_mk _
 
-theorem inclR_comp_sig (R : Type) [CommRing R] [Algebra F R] :
-    (inclR (F := F) R).comp (σ : E →+* E) = (sigR R σ).comp (inclR R) := by
-  ext e
-  simp [inclR, sigR]
-
-def ratPt (R : Type) [CommRing R] [Algebra F R] (γ0 : GL (Fin n) E) (h : γ0 ∈ Formalism.UG.UJ (σ : E →+* E) J) :
-    HA R σ J :=
-  ⟨Formalism.UG.bc (inclR R) γ0, Formalism.UG.P.bc_mem (σ : E →+* E) (sigR R σ) (inclR R) (inclR_comp_sig σ R) J γ0 h⟩
-
 end Gen
 
 end MassDataMassesW

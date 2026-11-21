@@ -7,9 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Imports
 import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.RestAt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreePowerSumMulZeroStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RemainderTermSummableStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestPolynomialShiftTotalStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreePowerSumMulZero
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RemainderTermSummable
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestPolynomialShiftTotal
 
 noncomputable section
 
@@ -206,11 +207,6 @@ theorem rl_X (e : Ψ ≃ Fin f) (τ : Ψ) (i : Fin (j + k)) :
     rl e j k (X (τ, i)) = X (e τ, i) := by
   simp [rl]
 
-omit [Fintype Ψ] [DecidableEq Ψ] in
-theorem rli_X (e : Ψ ≃ Fin f) (τ : Fin f) (i : Fin (j + k)) :
-    rli e j k (X (τ, i)) = X (e.symm τ, i) := by
-  simp [rli]
-
 def flagI (e : Ψ ≃ Fin f) (j k : ℕ) : RestTerms.Roots f j k →ₗ[ℝ] ℝ :=
   (degFlL (j + k)).comp (rli e j k).toLinearMap
 
@@ -229,7 +225,7 @@ theorem isFlag (e : Ψ ≃ Fin f) (hf : Fintype.card Ψ = f) : RestTerms.IsFlagI
   kills m τ G h1 _ _ := by
     obtain ⟨t, rfl⟩ := e.surjective τ
     rw [flagI_apply, psumAt_eq, map_mul, rli_rl]
-    exact GlobalTheory.T.flag_degree_power_sum_mul_zero Ψ (j + k) t m _ h1
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero Ψ (j + k) t m _ h1
   ne_zero := by
     subst hf
     refine ⟨rl e j k (monomial (permExp fun _ => 1) 1), ?_, ?_⟩
@@ -404,7 +400,7 @@ theorem finite_bound [Nonempty Ψ] (hj : 1 ≤ j) (hk : 1 ≤ k) (frob : ℕ →
   have hI : flagI e j k (RestTerms.degPoly (Fintype.card Ψ) j k bot) = ε * testDeg Ψ (j + k) j := by
     rw [hdeg, map_smul, flagI_rl]
     rfl
-  have hpos : 0 < testDeg Ψ (j + k) j := (GlobalTheory.T.test_polynomial_shift_total Ψ (j + k) j hj (by omega)).2.1
+  have hpos : 0 < testDeg Ψ (j + k) j := (_root_.GlobalTheory.CompanionTheory.Ar.Top.testPoly_facts Ψ (j + k) j hj (by omega)).2.1
   have habs : |ε| = 1 := by rcases hε with rfl | rfl <;> simp
   rw [← Finset.mul_sum, abs_mul, habs, one_mul, hI, abs_mul, habs, one_mul, abs_of_pos hpos, hn] at hmain
   calc _ ≤ _ := hmain
@@ -418,7 +414,7 @@ theorem testRest_bound : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
   intro Ψ _ _ N j bad frob B₀ Q hj hjN hB hQ
   obtain ⟨k, rfl⟩ : ∃ k, N = j + k := ⟨N - j, by omega⟩
   have hk : 1 ≤ k := by omega
-  have hJ : 0 < testDeg Ψ (j + k) j := (GlobalTheory.T.test_polynomial_shift_total Ψ (j + k) j hj hjN).2.1
+  have hJ : 0 < testDeg Ψ (j + k) j := (_root_.GlobalTheory.CompanionTheory.Ar.Top.testPoly_facts Ψ (j + k) j hj hjN).2.1
   rcases isEmpty_or_nonempty Ψ with hΨ | hΨ
   · simp only [Finset.univ_eq_empty, Finset.sum_empty, abs_zero]
     exact mul_nonneg (by norm_num) (mul_nonneg (by positivity) hJ.le)
@@ -426,7 +422,7 @@ theorem testRest_bound : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
       ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), restTerm j p (frob p τ) m (Q τ m))
       atTop (𝓝 (∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), restSum j bad frob B₀ τ m (Q τ m))) :=
     tendsto_finset_sum _ fun τ _ => tendsto_finset_sum _ fun m _ =>
-      (GlobalTheory.T.remainder_term_summable Ψ (j + k) j bad frob τ m (Q τ m)).2 B₀
+      (_root_.GlobalTheory.CompanionTheory.Ar.Top.restTerm_bound_and_tendsto Ψ (j + k) j bad frob τ m (Q τ m)).2 B₀
   refine le_of_tendsto hlim.abs (Eventually.of_forall fun B => ?_)
   have h := TestRest.finite_bound hj hk frob B₀ Q hB hQ
     ((Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad))

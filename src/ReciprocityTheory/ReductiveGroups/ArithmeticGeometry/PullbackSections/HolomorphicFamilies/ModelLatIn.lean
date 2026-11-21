@@ -1,5 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ModelLat
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.ExistsSmallMemIdeal
+import Mathlib
 import Formalism.FrobeniusOrbits.HostCorollaries
 
 noncomputable section
@@ -58,24 +58,6 @@ theorem bb_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
   have h0 := (halfDiffNorm D).1
   rw [h, Ideal.absNorm_bot] at h0
   exact lt_irrefl 0 h0
-
-theorem absNorm_bb_sq_le (D : D7) : Ideal.absNorm D.host.𝔟 ^ 2 ≤ (discr D.host.E).natAbs := by
-  obtain ⟨h0, hl⟩ := halfDiffNorm D
-  have hd : (0 : ℝ) < |((discr D.host.E : ℤ) : ℝ)| := by
-    rw [abs_pos]
-    exact_mod_cast NumberField.discr_ne_zero D.host.E
-  have hN : (0 : ℝ) < (Ideal.absNorm D.host.𝔟 : ℝ) := by exact_mod_cast h0
-  have key : (Ideal.absNorm D.host.𝔟 : ℝ) ^ 2 ≤ |((discr D.host.E : ℤ) : ℝ)| := by
-    rw [← Real.log_le_log_iff (by positivity) hd, Real.log_pow]
-    push_cast
-    linarith
-  have h2 : ((discr D.host.E).natAbs : ℝ) = |((discr D.host.E : ℤ) : ℝ)| := by
-    rw [Nat.cast_natAbs, Int.cast_abs]
-  have h3 : ((Ideal.absNorm D.host.𝔟 ^ 2 : ℕ) : ℝ) ≤ ((discr D.host.E).natAbs : ℝ) := by
-    rw [h2]
-    push_cast
-    exact key
-  exact_mod_cast h3
 
 theorem finrank_E (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   haveI := D.host.galois

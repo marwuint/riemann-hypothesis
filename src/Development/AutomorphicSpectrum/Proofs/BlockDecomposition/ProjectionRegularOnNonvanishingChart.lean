@@ -1,8 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatiosEqOfSameOrbit
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticoneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticone
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothHermCombLine
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnSourceIffOfDensity
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnderOfSameOrbitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnderOfSameOrbit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointIdealMultiprojectivePrime
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PPtsSheetOnlyNull
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreChartZeroSet
@@ -93,7 +96,7 @@ theorem over_scale_vecAt {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) 
     (b : Fin (m + 1) → ℂ) (hb : ∀ k, b k ≠ 0) :
     Over i y (fun q => b q.1 * vecAt i p y q) ∧
       (fun q : Σ k, Bk n k => b q.1 * vecAt i p y q) ∈ mcPts (ptIdeal (i (genericPoint X))) := by
-  obtain ⟨z', hz', hU⟩ := GlobalTheory.T.complex_point_lifts_to_multicone m n X i y
+  obtain ⟨z', hz', hU⟩ := _root_.GlobalTheory.CompanionTheory.MPDict.exists_mem_mcPts_isUnder m n X i y
   have hne : ∀ k, z' ⟨k, p k⟩ ≠ 0 := fun k => (hU k (p k)).1.1 (hy k)
   have hc : ∀ k, b k / z' ⟨k, p k⟩ ≠ 0 := fun k => div_ne_zero (hb k) (hne k)
   have e : (fun q : Σ k, Bk n k => b q.1 * vecAt i p y q) =
@@ -106,7 +109,7 @@ theorem over_scale_vecAt {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) 
     rw [← h2]
     field_simp
   rw [e]
-  exact ⟨GlobalTheory.T.isUnder_of_same_orbit m n _ z' _ hU ⟨_, hc, rfl⟩,
+  exact ⟨_root_.GlobalTheory.CompanionTheory.MixZ.Orbit.isUnder_of_sameOrbit m n _ z' _ hU ⟨_, hc, rfl⟩,
     GroundTheory.Heights₂.Heights.SegreChartZeroSet.scaleAll_mem _ (isMultiProjPrime_ptIdeal m n _).2.1 _ hc hz'⟩
 
 theorem over_liftOf {X : Scheme.{0}} {i : X ⟶ MP ℤ m n} {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀}
@@ -236,7 +239,7 @@ theorem mem_pieceSet : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) 
           lam (φ.symm t) q := rfl
     refine ⟨?_, ?_, ?_, ?_⟩
     · rw [hsy]
-      refine GlobalTheory.T.isUnder_of_same_orbit m n _ _ _ hU ⟨fun k : Fin (m + 1) => if k = 0 then (Ψ (segre (lam (φ.symm t))) 0)⁻¹ else 1, fun k => ?_, hG⟩
+      refine _root_.GlobalTheory.CompanionTheory.MixZ.Orbit.isUnder_of_sameOrbit m n _ _ _ hU ⟨fun k : Fin (m + 1) => if k = 0 then (Ψ (segre (lam (φ.symm t))) 0)⁻¹ else 1, fun k => ?_, hG⟩
       dsimp only
       split_ifs
       · exact hcne

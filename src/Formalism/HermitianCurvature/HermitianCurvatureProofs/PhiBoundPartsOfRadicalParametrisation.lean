@@ -692,11 +692,6 @@ lemma hasFDeriv_chart {g0 : Mat k r} (hg0 : g0 ∈ GV k r) {H : Mat k r → E}
     _ = ∑ i, aC g0 i Y W • -(Lt i * c) := by
         simp only [hA, Finset.sum_mul, Matrix.smul_mul, smul_neg, Finset.sum_neg_distrib]
 
-lemma continuous_gN : Continuous (gN : Mat k r → ℝ) := by
-  unfold gN
-  exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
-    Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))
-
 lemma cont_chart {g0 : Mat k r} (hg0 : g0 ∈ GV k r) {H : Mat k r → E}
     (hH : CkOn ((0 : ℕ) : ℕ∞) (GV k r) H) : ContinuousOn (fun Y => H (chart g0 Y)) (Dom k r) := by
   intro Y hY
@@ -1464,22 +1459,8 @@ theorem Ux10.phi_bound_parts_of_radical_parametrisation (hR : RadicalParam) : Po
 theorem Ux10.phiSupport_of_parts (hM : SliceMem) (hR : RadicalParam) : PhiSupport :=
   Ux10.phiSupport_of hM hR hat_z_on_slice
 
-theorem Ux10.size_decay_of_slice_membership (hM : SliceMem) : CoordinateDecay :=
-  norm_decay_of_coordinate_sizes
-    (coordinate_sizes_of_parts hM block3_apply_embedding aux_statement_17 hat_z_on_slice level_determinant_z)
-
-theorem Ux10.derivative_cost_of_slice_and_radical (hM : SliceMem) (hR : RadicalParam) (hCP : DerivativeCostFromComponents) : DerivativeCost :=
-  hCP hM hR slice_right_coordinates slice_left_coordinates slice_z_coordinates directions_in_parabolic
-    (coordinate_sizes_of_parts hM block3_apply_embedding aux_statement_17 hat_z_on_slice level_determinant_z)
-
-theorem Ux10.phi_bound_of_slice_radical_cost (hM : SliceMem) (hR : RadicalParam) (hCP : DerivativeCostFromComponents) : PointwiseIntegralBound :=
-  Ux10.phi_bound_parts_of_radical_parametrisation hR hM (Ux10.derivative_cost_of_slice_and_radical hM hR hCP) (Ux10.size_decay_of_slice_membership hM) weight_integrability
-
 theorem phi_bound_of_parts : Formalism.FourierDecayAlt.U.PointwiseIntegralBoundFromComponents := Ux10.phi_bound_parts_of_radical_parametrisation radical_parametrisation
 
 theorem phi_support_determinant : Formalism.FourierDecayAlt.U.PhiSupport := Ux10.phiSupport_of_parts slice_membership radical_parametrisation
-
-theorem Ux10.phi_bound_of_derivative_cost_parts (hCP : DerivativeCostFromComponents) : PointwiseIntegralBound :=
-  Ux10.phi_bound_of_slice_radical_cost slice_membership radical_parametrisation hCP
 
 end Formalism.FourierDecayAlt.P

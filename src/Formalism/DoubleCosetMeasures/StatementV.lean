@@ -66,15 +66,6 @@ def GLRed : Prop :=
       Nat.card ((GLint O a) ⧸ (congSub O ϖ a).subgroupOf (GLint O a)) =
         Nat.card (GL (Fin a) (kF O ϖ hϖ))
 
-def VolJ : Prop :=
-  ∀ (F : Type) [Field F] [TopologicalSpace F] [IsTopologicalRing F] (O : Subring F),
-    IsOpen (O : Set F) → ∀ (ϖ : F) (hϖ : ϖ ∈ O), ϖ ≠ 0 → IsLocalAt O ϖ →
-    Finite (kF O ϖ hϖ) → ∀ (a : ℕ) (μ : Measure (GL (Fin a) F)) [μ.IsMulLeftInvariant]
-      (J' : Subgroup (GL (Fin a) F)), congSub O ϖ a ≤ J' → J' ≤ GLint O a →
-      μ (J' : Set (GL (Fin a) F)) * (Nat.card (GL (Fin a) (kF O ϖ hϖ)) : ENNReal) =
-        (Nat.card (J' ⧸ (congSub O ϖ a).subgroupOf J') : ENNReal) *
-          μ (GLint O a : Set (GL (Fin a) F))
-
 def VolII : Prop :=
   ∀ (F : Type) [Field F] [TopologicalSpace F] [IsTopologicalRing F] [MeasurableSpace F]
     [BorelSpace F] (O : Subring F), IsOpen (O : Set F) → ∀ (ϖ : F) (hϖ : ϖ ∈ O), ϖ ≠ 0 →

@@ -5,7 +5,7 @@ noncomputable section
 namespace period_ring_base
 
 open Formalism.Per6 hiding σB aB
-open GroundTheory.PAdicHodge DeRhamPotentiallySemistable.DRPst PfDRPst Matrix
+open GroundTheory.PAdicHodge DeRhamPotentiallySemistable.DRPst Matrix
 
 theorem base_ainf_φ (l : ℕ) [Fact l.Prime] : ∀ x ∈ Ainf' l, φ l x ∈ Ainf' l :=
   BaseC.ainf_φ

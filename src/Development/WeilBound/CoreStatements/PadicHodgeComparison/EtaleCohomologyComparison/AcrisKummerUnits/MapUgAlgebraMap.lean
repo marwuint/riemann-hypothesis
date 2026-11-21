@@ -188,13 +188,6 @@ instance (n : ℕ) : IsScalarTower (Ainf l) (Acris l) (A.Acr n) :=
   IsScalarTower.of_algebraMap_eq fun x => (A.cris_algebraMap n x).symm
 instance (n : ℕ) : IsScalarTower (Ainf l) A.W (A.Acr n) := IsScalarTower.of_algebraMap_eq fun _ => rfl
 
-abbrev Wn (n : ℕ) : Type := A.W ⧸ Ideal.span {(l : A.W) ^ n}
-
-def wnToAcr (n : ℕ) : A.Wn n →+* A.Acr n :=
-  Ideal.Quotient.lift _ (A.toAcr n) fun a ha => by
-    obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 ha
-    rw [map_mul, map_pow, map_natCast, pow_l_acr, mul_zero]
-
 abbrev Un (n : ℕ) : Type := A.U ⧸ Ideal.span {(l : A.U) ^ n}
 
 instance : Algebra (Ainf l) A.U := (A.th.comp A.sW).toAlgebra
@@ -317,11 +310,6 @@ def mapUg (f : A ⟶ B) : A.Ug →+* B.Ug :=
 theorem mapUg_algebraMap (f : A ⟶ B) (x : A.U) : mapUg f (algebraMap _ _ x) = algebraMap _ _ (mapU f x) :=
   IsLocalization.lift_eq _ x
 
-def wnMap (f : A.A →+* B.A) (n : ℕ) : A.Wn n →+* B.Wn n :=
-  Ideal.quotientMap _ (WittVector.map f) (by
-    rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_pow, map_natCast]
-    exact Ideal.mem_span_singleton_self _)
-
 def mapUn (f : A ⟶ B) (n : ℕ) : A.Un n →+* B.Un n :=
   Ideal.quotientMap _ (mapU f) (by
     rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_pow, map_natCast]
@@ -363,26 +351,6 @@ theorem mapAcr_phi (f : A ⟶ B) (n : ℕ) (x : A.Acr n) : mapAcr f n (A.phi n x
   congr 2
   exact RingHom.ext fun x => map_pow (Hom.f f) x l
 
-variable (A) in
-
-def Fix (n : ℕ) : Subring (A.Wn n) := RingHom.eqLocus (wnMap A.frob n) (RingHom.id _)
-
-def mapFix (f : A ⟶ B) (n : ℕ) : A.Fix n →+* B.Fix n :=
-  ((wnMap (Hom.f f) n).comp (A.Fix n).subtype).codRestrict _ fun x => by
-    obtain ⟨x, hx⟩ := x
-    change wnMap B.frob n (wnMap (Hom.f f) n x) = wnMap (Hom.f f) n x
-    have hx' : wnMap A.frob n x = x := hx
-    conv_rhs => rw [← hx']
-    obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-    change Ideal.Quotient.mk _ (WittVector.map _ (WittVector.map _ y)) = Ideal.Quotient.mk _ (WittVector.map _ (WittVector.map _ y))
-    rw [← wmap_comp, ← wmap_comp]
-    congr 3
-    exact RingHom.ext fun x => (map_pow (Hom.f f) x l).symm
-
-variable (A) in
-
-def fixToAcr (n : ℕ) : A.Fix n →+* A.Acr n := (A.wnToAcr n).comp (A.Fix n).subtype
-
 end Phi
 
 end PAlg
@@ -411,17 +379,6 @@ def redF {m n : ℕ} (h : n ≤ m) : AcrF l m ⟶ AcrF l n where
       rw [RingHom.comp_apply, cris_of, cris_of, red_mk]) a⟩)
   naturality _ _ f := ModuleCat.hom_ext (LinearMap.ext fun x => (pdOk_hom f).red_acr h x)
 
-def WnF (n : ℕ) : PAlg l ⥤ ModuleCat.{0} (Ainf l) where
-  obj A := ModuleCat.of _ (A.Wn n)
-  map {A B} f := ModuleCat.ofHom (AlgHom.toLinearMap (R := Ainf l) ⟨wnMap (Hom.f f) n, fun a =>
-    congrArg (Ideal.Quotient.mk _) (mapW_sW f a)⟩)
-  map_id A := ModuleCat.hom_ext (LinearMap.ext fun x => by
-    obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-    exact congrArg (Ideal.Quotient.mk _) (wmap_id y))
-  map_comp f g := ModuleCat.hom_ext (LinearMap.ext fun x => by
-    obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-    exact congrArg (Ideal.Quotient.mk _) (wmap_comp (Hom.f f) (Hom.f g) y))
-
 def UnF (n : ℕ) : PAlg l ⥤ ModuleCat.{0} (Ainf l) where
   obj A := ModuleCat.of _ (A.Un n)
   map {A B} f := ModuleCat.ofHom (AlgHom.toLinearMap (R := Ainf l) ⟨mapUn f n, fun a =>
@@ -432,35 +389,6 @@ def UnF (n : ℕ) : PAlg l ⥤ ModuleCat.{0} (Ainf l) where
   map_comp f g := ModuleCat.hom_ext (LinearMap.ext fun x => by
     obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
     exact congrArg (Ideal.Quotient.mk _) (RingHom.congr_fun (mapU_comp f g) y))
-
-variable {l} in
-
-def QF (a : Ob l) : PAlg l ⥤ ModuleCat.{0} (Ob l) where
-  obj A := ModuleCat.of _ (A.Q a)
-  map {A B} f := ModuleCat.ofHom (AlgHom.toLinearMap (R := Ob l) ⟨mapQ f a, fun c =>
-    congrArg (Ideal.Quotient.mk _) (RingHom.congr_fun (Hom.comm f) c)⟩)
-  map_id A := ModuleCat.hom_ext (LinearMap.ext fun x => by
-    obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-    rfl)
-  map_comp f g := ModuleCat.hom_ext (LinearMap.ext fun x => by
-    obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-    rfl)
-
-def FixR (n : ℕ) : PAlg l ⥤ CommRingCat.{0} where
-  obj A := CommRingCat.of (A.Fix n)
-  map f := CommRingCat.ofHom (mapFix f n)
-  map_id A := CommRingCat.hom_ext (RingHom.ext fun ⟨x, _⟩ => Subtype.ext (by
-    obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-    exact congrArg (Ideal.Quotient.mk _) (wmap_id y)))
-  map_comp f g := CommRingCat.hom_ext (RingHom.ext fun ⟨x, _⟩ => Subtype.ext (by
-    obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
-    exact congrArg (Ideal.Quotient.mk _) (wmap_comp (Hom.f f) (Hom.f g) y)))
-
-def UR : PAlg l ⥤ CommRingCat.{0} where
-  obj A := CommRingCat.of A.U
-  map f := CommRingCat.ofHom (mapU f)
-  map_id _ := CommRingCat.hom_ext mapU_id
-  map_comp f g := CommRingCat.hom_ext (mapU_comp f g)
 
 def UgR : PAlg l ⥤ CommRingCat.{0} where
   obj A := CommRingCat.of A.Ug

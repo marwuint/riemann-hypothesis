@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowsRestWordColumnUnitBaseTupleAlt
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftHilbertModelInjectiveContainsGoodFormsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGoodIntegralFormsLatticeBaseLevelStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftDefiniteFormsEqUnitaryFormsClassSumPairingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeRestrictionInjectiveOnMultiplicityStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodFormsNonisomorphicTypePartsInfEqBotStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftHilbertModelInjectiveContainsGoodForms
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGoodIntegralFormsLatticeBaseLevel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftDefiniteFormsEqUnitaryFormsClassSumPairing
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeRestrictionInjectiveOnMultiplicity
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodFormsNonisomorphicTypePartsInfEqBot
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Cx Formalism.IndefR.RecTie
 open scoped TensorProduct InnerProductSpace ComplexOrder
@@ -102,7 +102,7 @@ theorem GlobalTheory.LiftSpaces.exists_lift_spaces : ∀ (D : D7) (G : Type) [Gr
       LinearMap.range (jMJ j hj) = (y.L F.lv2).Wc ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩ ∧
       ∀ x x', ⟪x, x'⟫_ℂ = (y.L F.lv2).ipWc ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩ (jMJ j hj x) (jMJ j hj x') := by
     intro j hj
-    obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.liftHilbertModel_injective_contains_goodForms D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩
+    obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.LiftHilbertModel.hilbert_model_lift D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩
     obtain ⟨e1, e2, -, e4⟩ := hEJ j hj
     refine ⟨?_, ?_, ?_⟩
     · intro x x' hx
@@ -131,7 +131,7 @@ theorem GlobalTheory.LiftSpaces.exists_lift_spaces : ∀ (D : D7) (G : Type) [Gr
         EJ j hj x = (R.toRealDat.FW ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩).j (sg0 D A3.A) v := by
     intro j
     by_cases hj : 1 ≤ j ∧ j ≤ D.R.m
-    · obtain ⟨Lt, hLt⟩ := GlobalTheory.T.exists_goodIntegralForms_lattice_base_level D G Pl0 I0 T A3 Ks R F cG hO hI hP hH ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩ (EuclideanSpace ℂ (Fin (d j)))
+    · obtain ⟨Lt, hLt⟩ := _root_.GlobalTheory.Mem.GoodLatFree.exists_oLat_good D G Pl0 I0 T A3 Ks R F cG hO hI hP hH ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩ (EuclideanSpace ℂ (Fin (d j)))
         (EJ j hj) (hEJ j hj).1 (hEJ j hj).2.1
       exact ⟨Lt, fun _ x => hLt x⟩
     · refine ⟨⟨Finset.univ.image (EuclideanSpace.basisFun (Fin (d j)) ℂ), ?_⟩, fun hj' => absurd hj' hj⟩
@@ -156,7 +156,7 @@ theorem GlobalTheory.LiftSpaces.exists_lift_spaces : ∀ (D : D7) (G : Type) [Gr
     by_cases hU : ∃ t, y.tup t = μ
     · obtain ⟨t0, rfl⟩ := hU
       have fo := ((tL (y.tup t0) j).cast (eqn j hj t0)).forms
-      obtain ⟨J, h1, h2, h3, h4⟩ := GlobalTheory.T.liftDefiniteForms_eq_unitaryForms_classSumPairing D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩ t0 (s (y.tup t0) j).A.T
+      obtain ⟨J, h1, h2, h3, h4⟩ := _root_.GlobalTheory.Mem.R3.Rw.LiftForms.lift_forms_embed D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩ t0 (s (y.tup t0) j).A.T
         ((tL (y.tup t0) j).cast (eqn j hj t0)).j fo.li fo.span fo.inner
       refine ⟨J, fun _ => ⟨h1, h2, h3⟩, ?_⟩
       intro t h x
@@ -178,7 +178,7 @@ theorem GlobalTheory.LiftSpaces.exists_lift_spaces : ∀ (D : D7) (G : Type) [Gr
     by_cases hμ : y.Us μ
     · obtain ⟨f, hf⟩ := GlobalTheory.LiftSpaces.exists_thetaMap (y.L F.lv2) ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩ μ (JM μ j hj)
         (fun x => ((hJM μ j hj).1 hμ).2.1 ▸ LinearMap.mem_range_self _ x) (jMJ j hj) (hjM j hj).1 (hjM j hj).2.1
-        (GlobalTheory.T.lowestKType_restriction_injective_on_multiplicity D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩)
+        (_root_.GlobalTheory.Mem.R3.Rw.LowRes.multW_lowRes_inj D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y ⟨j - 1, Nat.lt_of_lt_of_le (Nat.sub_lt hj.1 Nat.one_pos) hj.2⟩)
       exact ⟨f, fun _ => hf⟩
     · exact ⟨0, fun h => absurd h hμ⟩
   choose TH hTH using hTh
@@ -204,7 +204,7 @@ theorem GlobalTheory.LiftSpaces.exists_lift_spaces : ∀ (D : D7) (G : Type) [Gr
     junk := ?_
     out := ?_
     isot := ?_
-    disj := fun i π π' h => GlobalTheory.T.goodForms_nonisomorphicTypeParts_inf_eq_bot D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y Φ rep hR i π π' h
+    disj := fun i π π' h => _root_.GlobalTheory.Mem.R3.Rw.TypesDisj.prtW_inf_eq_bot D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y Φ rep hR i π π' h
     read := fun i t _ x => (hJM (y.tup t) ((i : ℕ) + 1) (hji i)).2 t rfl x }⟩⟩
   · intro μ hμ i x h w hw e hg
     show jMJ ((i : ℕ) + 1) (hji i) ((if hj : (1 ≤ (i : ℕ) + 1 ∧ (i : ℕ) + 1 ≤ D.R.m) ∧ y.Us μ then TH μ ((i : ℕ) + 1) hj.1 else 0) x) = _

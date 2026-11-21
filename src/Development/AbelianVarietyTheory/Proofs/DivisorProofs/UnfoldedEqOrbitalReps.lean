@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.MaxWeightGL1EqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StabilizerEquivLocPart
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MassFormulaConjugationActionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitSumLocalParts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MassFormulaConjugationAction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantsMonomialApproximation
 
 open scoped Classical
 
@@ -70,9 +70,9 @@ theorem unfolded_eq_orbital : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (W : 
     show (h : G) • (QuotientGroup.mk g : G ⧸ K) = QuotientGroup.mk (Quotient.out (DoubleCoset.mk Γ K g))
     rw [MulAction.Quotient.smul_mk, e, QuotientGroup.eq]
     simpa [smul_eq_mul, mul_assoc] using hk
-  obtain ⟨-, hcE⟩ := GlobalTheory.T.massFormula_conjugation_action G (G ⧸ K) Γ (Φ fun γ => LinearMap.trace ℂ W (ξ γ))
+  obtain ⟨-, hcE⟩ := _root_.GlobalTheory.MassConj.mass_formula_conj G (G ⧸ K) Γ (Φ fun γ => LinearMap.trace ℂ W (ξ γ))
     (hinv (fun γ => LinearMap.trace ℂ W (ξ γ)) htr) hOrb (fun x => hstab Γ x le_rfl) (hsuppΦ _)
-  obtain ⟨hcF, -⟩ := GlobalTheory.T.massFormula_conjugation_action G (G ⧸ K) Γ (Φ fun _ => 1)
+  obtain ⟨hcF, -⟩ := _root_.GlobalTheory.MassConj.mass_formula_conj G (G ⧸ K) Γ (Φ fun _ => 1)
     (hinv (fun _ => 1) fun _ _ => rfl) hOrb (fun x => hstab Γ x le_rfl) (hsuppΦ _)
   refine ⟨hcF.subset fun c hc => ?_, ?_⟩
   · obtain ⟨g, hg⟩ := hc
@@ -87,7 +87,7 @@ theorem unfolded_eq_orbital : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (W : 
       ∑ᶠ γ : Γ, f ((Quotient.out q)⁻¹ * γ * Quotient.out q) * LinearMap.trace ℂ W (ξ γ) =
         F (QuotientGroup.mk (Quotient.out q)) := fun q => finsum_congr fun γ => (hΦmk (fun γ => LinearMap.trace ℂ W (ξ γ)) γ (Quotient.out q)).symm
   simp_rw [hL]
-  rw [GlobalTheory.T.orbit_sum_local_parts G Γ K F hFinv]
+  rw [_root_.GlobalTheory.FinTrace.sum_doubleCoset_eq_sum_orbit G Γ K F hFinv]
   refine Eq.trans hcE ?_
   refine finsum_congr fun c => ?_
   set Hc : Subgroup G := Γ ⊓ Subgroup.centralizer {((Quotient.out c : Γ) : G)} with hHc
@@ -104,7 +104,7 @@ theorem unfolded_eq_orbital : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (W : 
     rw [hδ] at this
     exact this
   rw [mul_finsum]
-  refine (GlobalTheory.T.orbit_sum_local_parts G Hc K _ hcinv).symm.trans (finsum_congr fun y => ?_)
+  refine (_root_.GlobalTheory.FinTrace.sum_doubleCoset_eq_sum_orbit G Hc K _ hcinv).symm.trans (finsum_congr fun y => ?_)
   rw [hΦmk (fun γ => LinearMap.trace ℂ W (ξ γ)) (Quotient.out c) (Quotient.out y)]; ring
 
 theorem card_locPart_conj {G : Type} [Group G] (A B K : Subgroup G) (a g : G) {k : G} (hk : k ∈ K)

@@ -92,31 +92,6 @@ theorem exists_ur_cocycle (a : Kˣ) (χ : charGrp (GK p K)) (hχ : TrivOn p K (M
       (layerInf p K (MaximalUnramifiedExtension p K)).hom.f 2 z, by rw [← (layerInf p K (MaximalUnramifiedExtension p K)).hom.comm, hz, map_zero],
       ht.comp_continuous continuous_quot_mk, htχ, fun g => hm _, fun g => rfl, rfl⟩
 
-theorem pairK_unit_unr (hK : FiniteDimensional ℚ_[p] K) (a : Kˣ) (ha : a ∈ UK p K) (χ : charGrp (GK p K))
-    (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) : pairK p K a χ = 0 := by
-  obtain ⟨t, m, z, hz, -, -, -, hzm, h⟩ := exists_ur_cocycle a χ hχ
-  have hv : vLayerMap p K (MaximalUnramifiedExtension p K) (urOfK p K a) = 0 := by
-    apply Int.cast_injective (α := ℝ)
-    rw [vLayerMap_spec p le_Kur, urOfK_val, vbar_apply]
-    have ha' : ‖((a : K) : PadicAlgCl p)‖ = 1 := ha
-    show (eK p (MaximalUnramifiedExtension p K) : ℝ) * - Real.logb p ‖((a : K) : PadicAlgCl p)‖ = _
-    rw [ha']
-    simp
-  have hf0 : (vLayer p K (MaximalUnramifiedExtension p K)).hom.f 2 z = 0 := by
-    apply Subtype.ext
-    funext g
-    show vLayerMap p K (MaximalUnramifiedExtension p K) (z.1 fun i => g i) = 0
-    rw [hzm, map_zsmul, hv, smul_zero]
-  have hc : (urT p K).coch.cls 2 z hz = 0 := by
-    apply (valuation_unramified_closure_h2_bijective hK).1
-    rw [map_zero]
-    show (trivRep (GalLK p K (MaximalUnramifiedExtension p K)) ℤ).coch.cls 2 ((vLayer p K (MaximalUnramifiedExtension p K)).hom.f 2 z) _ = 0
-    refine (LongExactSequenceMaps.cls_eq_zero _ 2 _ _).2 ?_
-    rw [hf0]
-    exact Submodule.zero_mem _
-  unfold pairK
-  rw [h, hc, map_zero, map_zero]
-
 theorem pairK_uniformiser_unr (hK : FiniteDimensional ℚ_[p] K) (π : Kˣ) (hπ : vK p K π = 1) (χ : charGrp (GK p K))
     (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) : pairK p K π χ = χ.1 (Additive.ofMul (frobK p K)) := by
   obtain ⟨t, m, z, hz, ht, htχ, hm, hzm, h⟩ := exists_ur_cocycle π χ hχ
@@ -128,20 +103,5 @@ theorem pairK_uniformiser_unr (hK : FiniteDimensional ℚ_[p] K) (π : Kˣ) (hπ
   unfold pairK
   rw [h, invBr_layerInf hK, isInv_invUr hK (urOfK p K π) t m z hz (ofK_mem p K _) h1 ht hm hzm]
   exact htχ (frobK p K)
-
-theorem pairK_unr (hK : FiniteDimensional ℚ_[p] K) (a : Kˣ) (χ : charGrp (GK p K)) (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) :
-    pairK p K a χ = vK p K a • χ.1 (Additive.ofMul (frobK p K)) := by
-  obtain ⟨π, hπ⟩ := exists_vK_eq_one p K hK
-  have hzpow : ∀ n : ℤ, pairK p K (π ^ n) χ = n • pairK p K π χ := by
-    intro n
-    obtain ⟨k, rfl | rfl⟩ := n.eq_nat_or_neg
-    · rw [zpow_natCast, pairK_pow, natCast_zsmul]
-    · rw [zpow_neg, zpow_natCast, pairK_inv, pairK_pow, neg_smul, natCast_zsmul]
-  have hu : a * (π ^ vK p K a)⁻¹ ∈ UK p K := by
-    rw [mem_UK_iff p K hK, vK_mul, vK_inv, vK_zpow, hπ]
-    ring
-  have ha : a = a * (π ^ vK p K a)⁻¹ * π ^ vK p K a := by rw [inv_mul_cancel_right]
-  conv_lhs => rw [ha]
-  rw [pairK_mul, pairK_unit_unr hK _ hu χ hχ, zero_add, hzpow, pairK_uniformiser_unr hK π hπ χ hχ]
 
 end ReciprocityTheory.DiscreteGroups.LocalClassField

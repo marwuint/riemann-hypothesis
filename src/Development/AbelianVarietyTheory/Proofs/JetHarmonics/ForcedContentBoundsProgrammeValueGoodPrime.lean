@@ -38,9 +38,6 @@ lemma two_le_ordP (N : NumDatum) (l : ℕ) (hc : Inert N l) (hn : ¬ PhiC N l) :
     have := addOrderOf_pos (N.hP l)
     omega
 
-lemma two_le_ordP_and_even (N : NumDatum) (l : ℕ) (hc : Inert N l) (hn : ¬ ConjIn N l) : 2 ≤ N.ordP l ∧ Even (N.ordP l) :=
-  ⟨two_le_ordP N l hc fun h => hn h.conjIn, even_ordP_of_not_conjIn hc hn⟩
-
 lemma rho_bound (k w l : ℝ) (hk : 1 ≤ k) (hw : 0 ≤ w) (hl : 2 ≤ l) :
     (k - 1) * w / (l ^ 2 - 1) ≤ 2 * (k * w / l ^ 2) := by
   have h4 : 4 ≤ l ^ 2 := by nlinarith

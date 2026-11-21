@@ -109,18 +109,6 @@ instance : Module Γ(T.left, ⊤) (Secs A L a T) where
     rw [add_f, smul_f, smul_f, smul_f, liftFun_eq, liftFun_eq, liftFun_eq, map_add, add_mul]
   zero_smul s := Secs.ext fun j => by rw [smul_f, liftFun_eq, map_zero, zero_mul, zero_f]
 
-theorem appLE_liftFun {T' : Over S} (H : T' ⊗ A ⟶ T ⊗ A) (u : T' ⟶ T)
-    (hH : H ≫ fst T A = fst T' A ≫ u) (W : (T ⊗ A).left.Opens) (W' : (T' ⊗ A).left.Opens)
-    (e : W' ≤ H.left ⁻¹ᵁ W) (r : Γ(T.left, ⊤)) :
-    (H.left.appLE W W' e).hom (liftFun A W r) = liftFun A W' (u.left.appTop.hom r) := by
-  have hl : H.left ≫ (fst T A).left = (fst T' A).left ≫ u.left := by
-    rw [← Over.comp_left, hH, Over.comp_left]
-  have h2 : u.left.appTop.hom r = (u.left.appLE ⊤ ⊤ le_top).hom r :=
-    congrArg (fun φ : Γ(T.left, ⊤) ⟶ Γ(T'.left, ⊤) => φ.hom r) (u.left.app_eq_appLE (U := ⊤))
-  rw [h2]
-  exact (ev_ev H.left (fst T A).left _ hl le_top e le_top r).trans
-    (ev_ev (fst T' A).left u.left _ rfl (U := ⊤) (V := ⊤) (W := W') le_top le_top le_top r).symm
-
 def pullSec {T' : Over S} (u : T' ⟶ T) (s : Secs A L a T) : Secs A L a T' where
   f j := ((u ▷ A).left.appLE _ _ (chart_le_res A L (u ▷ A) (whiskerRight_snd _ _) a j)).hom (s.f j)
   compat i j := by
@@ -135,96 +123,8 @@ def pullSec {T' : Over S} (u : T' ⟶ T) (s : Secs A L a T) : Secs A L a T' wher
     refine (map_ev _ _ _ _).trans ((ev_map _ e _ _ _).symm.trans (h.trans ?_))
     exact congrArg₂ (· * ·) hg ((ev_map _ e _ _ _).trans (map_ev _ _ _ _).symm)
 
-theorem isPullSec_pullSec {T' : Over S} (u : T' ⟶ T) (s : Secs A L a T) :
-    IsPullSec A L a (u ▷ A) (whiskerRight_snd _ _) s (pullSec u s) := fun _ => rfl
-
-theorem pullSec_zero {T' : Over S} (u : T' ⟶ T) : pullSec u (0 : Secs A L a T) = 0 :=
-  Secs.ext fun _ => map_zero _
-
-theorem pullSec_add {T' : Over S} (u : T' ⟶ T) (s t : Secs A L a T) :
-    pullSec u (s + t) = pullSec u s + pullSec u t :=
-  Secs.ext fun _ => map_add _ _ _
-
-theorem pullSec_smul {T' : Over S} (u : T' ⟶ T) (r : Γ(T.left, ⊤)) (s : Secs A L a T) :
-    pullSec u (r • s) = u.left.appTop.hom r • pullSec u s :=
-  Secs.ext fun j => by
-    refine (map_mul _ _ _).trans ?_
-    rw [appLE_liftFun (u ▷ A) u (whiskerRight_fst _ _)]
-    rfl
-
-theorem twist_comb {R R' C : Type} [CommRing R] [CommRing R'] [CommRing C] (F : R →+* C)
-    (G : R' →+* C) (c : C) {x' y' r' : R} {x y r : R'} (hx : F x' = c * G x) (hy : F y' = c * G y)
-    (hr : F r' = G r) :
-    F 0 = c * G 0 ∧ F (x' + y') = c * G (x + y) ∧ F (r' * x') = c * G (r * x) := by
-  refine ⟨by simp, ?_, ?_⟩
-  · rw [map_add, map_add, hx, hy, mul_add]
-  · rw [map_mul, map_mul, hx, hr, mul_left_comm]
-
-theorem isActOf_comb (θ : ThetaGrp A L a T) {s t s' t' : Secs A L a T} (hs : IsActOf A L a θ s s')
-    (ht : IsActOf A L a θ t t') (r : Γ(T.left, ⊤)) :
-    IsActOf A L a θ (s + t) (s' + t') ∧ IsActOf A L a θ (r • s) (r • s') := by
-  have key := fun j : Fin 2 → L.ι => twist_comb
-    ((T ⊗ A).left.presheaf.map (homOfLE (chart_le_zero A L (translPt A θ.pt) j)).op).hom
-    ((translT A θ.pt).left.appLE _ _
-      (chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) j)).hom
-    _ (r' := liftFun A _ r) (r := liftFun A _ r) (hs j) (ht j) (by
-      have h := appLE_liftFun (translT A θ.pt) (𝟙 T) (by simp [translT]) _ _
-        (chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) j) r
-      have hr : (𝟙 T : T ⟶ T).left.appTop.hom r = r := by simp
-      rw [hr] at h
-      exact (map_liftFun _ r).trans h.symm)
-  exact ⟨fun j => (key j).2.1, fun j => (key j).2.2⟩
-
-theorem isActOf_zero (θ : ThetaGrp A L a T) :
-    IsActOf A L a θ (0 : Secs A L a T) (0 : Secs A L a T) := fun j =>
-  (map_zero ((T ⊗ A).left.presheaf.map
-    (homOfLE (chart_le_zero A L (translPt A θ.pt) j)).op).hom).trans
-    ((mul_zero _).symm.trans (congrArg (_ * ·) (map_zero ((translT A θ.pt).left.appLE _ _
-      (chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) j)).hom).symm))
-
 end Sections
 
 variable {S : Scheme.{0}}
-
-def VV (P : PolAV S) (N m : ℕ) (T : Over S) : Submodule Γ(T.left, ⊤) (Secs P.A P.L N T) :=
-  Submodule.span Γ(T.left, ⊤) {s | InVV P N m s}
-
-def eigenSecs (P : PolAV S) (N : ℕ) {T : Over S} {I : Type} (h : I → (T ⟶ P.A))
-    (χ : I → Γ(T.left, ⊤)ˣ) : Submodule Γ(T.left, ⊤) (Secs P.A P.L N T) where
-  carrier := {s | ∀ (V : T.left.Opens) (i : I) (U : ThetaGrp P.A P.L N (overRes V)),
-    SymLift P.A P.L N N (overResι V ≫ h i) U →
-      IsActOf P.A P.L N U (pullSec (overResι V) s)
-        ((unitRes V (χ i) : Γ((overRes V).left, ⊤)) • pullSec (overResι V) s)}
-  zero_mem' := fun V i U _ => by
-    rw [pullSec_zero, smul_zero]; exact isActOf_zero U
-  add_mem' := fun {s t} hs ht V i U hU => by
-    rw [pullSec_add, smul_add]; exact (isActOf_comb U (hs V i U hU) (ht V i U hU) 0).1
-  smul_mem' := fun r s hs V i U hU => by
-    rw [pullSec_smul, smul_comm]; exact (isActOf_comb U (hs V i U hU) (hs V i U hU) _).2
-
-def VVWeight (P : PolAV S) (N m : ℕ) {T : Over S} (_hodd : Odd N)
-    (_hinv : IsUnit (N : Γ(T.left, ⊤))) {I : Type} (h : I → (T ⟶ P.A)) (_hh : ∀ i, h i ^ N = 1)
-    (χ : I → Γ(T.left, ⊤)ˣ) : Submodule Γ(T.left, ⊤) (Secs P.A P.L N T) :=
-  VV P N m T ⊓ eigenSecs P N h χ
-
-abbrev de (P : PolAV S) (T : Over S) : Type := Module.Dual Γ(T.left, ⊤) (Secs P.A P.L 1 T)
-
-def VVLocallyFree (P : PolAV S) (N m n : ℕ) (T : Over S) : Prop :=
-  ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∃ b : Fin n → Secs P.A P.L N (overRes V),
-    ∀ W : (overRes V).left.Opens,
-      ∃ β : Module.Basis (Fin n) Γ((overRes W).left, ⊤) (VV P N m (overRes W)),
-        ∀ l, (β l : Secs P.A P.L N (overRes W)) = pullSec (overResι W) (b l)
-
-def VVRank (S : Scheme.{0}) : Prop :=
-  ∀ (P : PolAV S) (m : ℕ) (ze : Γ(S, ⊤)ˣ), Odd m → IsUnit (m : Γ(S, ⊤)) →
-    Nonempty (Level P (m ^ 2) ze) →
-    ∀ T : Over S, VVLocallyFree P (m ^ 2) m ((m ^ 2) ^ P.g) T
-
-example (P : PolAV S) (N m : ℕ) {T : Over S} (ho : Odd N) (hi : IsUnit (N : Γ(T.left, ⊤))) :
-    VVWeight P N m ho hi (I := Empty) Empty.elim (fun i => i.elim) Empty.elim = VV P N m T :=
-  inf_eq_left.2 fun _ _ _ i => i.elim
-
-example (P : PolAV S) (N m : ℕ) {T : Over S} (s : Secs P.A P.L N T) (hs : InVV P N m s) :
-    s ∈ VV P N m T := Submodule.subset_span hs
 
 end GlobalTheory.IndefiniteRowSideFullHecke.SectionsGroupRank

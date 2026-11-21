@@ -2,15 +2,15 @@ import Mathlib
 import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.RegularHypothesesAndConclusion
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartId
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFreeHom
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShearIsoActionProjectionStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShearIsoActionProjection
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MemOrbitSelfStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.OrbitTransStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteSetBasicOpenAffineStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFlatLocallyFreeAffineStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFreePullbackAffineStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackRestrictOpenStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFreePullbackAffine
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackRestrictOpen
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormNotMemPrimeIffStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BasicOpenNormFibreIffStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BasicOpenNormFibreIff
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory AlgebraicGeometry Opposite
 open scoped CategoryTheory.MonObj
@@ -29,7 +29,7 @@ theorem mem_orbit_iff {x y : X.left} : y ∈ orbit G X x ↔
   · rintro ⟨z, hz, rfl⟩; exact ⟨z, hz, rfl⟩
 
 theorem orbit_symm {x y : X.left} (h : y ∈ orbit G X x) : x ∈ orbit G X y := by
-  obtain ⟨σ, -, h1, h2⟩ := GlobalTheory.T.shear_iso_action_projection G X
+  obtain ⟨σ, -, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotProof.exists_iso_swap_action_snd G X
   obtain ⟨z, rfl, rfl⟩ := (mem_orbit_iff G X).1 h
   refine (mem_orbit_iff G X).2 ⟨σ.left z, ?_, ?_⟩
   · rw [← Scheme.Hom.comp_apply, ← Over.comp_left, h1]
@@ -90,7 +90,7 @@ theorem exists_norm {P D : Scheme.{0}} [IsAffine P] [IsAffine D] (v : P ⟶ D)
   letI := v.appTop.hom.toAlgebra
   have h1 : Module.Free Γ(D, ⊤) Γ(P, ⊤) := hv.1
   have h2 : Module.Finite Γ(D, ⊤) Γ(P, ⊤) := hv.2
-  refine ⟨Algebra.norm Γ(D, ⊤) e, GlobalTheory.T.basic_open_norm_fibre_iff v _ e fun p => ?_⟩
+  refine ⟨Algebra.norm Γ(D, ⊤) e, _root_.GlobalTheory.CompanionTheory.PrimesToPts.primes_to_pts v _ e fun p => ?_⟩
   rw [GlobalTheory.T.norm_not_mem_prime_iff e p.asIdeal p.isPrime]
   constructor
   · intro h q hq
@@ -120,13 +120,13 @@ theorem exists_stable_affine_nbhd : ∀ {S : Scheme.{0}} (G X : Over S) [GrpObj 
   have hDW : D ≤ X.hom ⁻¹ᵁ W := (hfV.trans hV₀O).trans inf_le_right
   have hsq : IsPullback (fst G X).left (snd G X).left G.hom X.hom :=
     IsPullback.of_hasPullback G.hom X.hom
-  obtain ⟨h, u, hpb⟩ := GlobalTheory.T.pullback_restrict_open hsq W D hDW
+  obtain ⟨h, u, hpb⟩ := _root_.GlobalTheory.CompanionTheory.PullbackRestrict.isPullback_restrict_opens hsq W D hDW
   have := isFinite_snd (X := X) hG
   haveI : IsAffine D.toScheme := hD
   haveI : IsAffine W.toScheme := hW
   haveI : IsAffine (G.hom ⁻¹ᵁ W).toScheme := hW.preimage G.hom
   haveI : IsAffine ((snd G X).left ⁻¹ᵁ D).toScheme := hD.preimage (snd G X).left
-  have hfree' := GlobalTheory.T.finite_free_pullback_affine hpb hfree
+  have hfree' := _root_.GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_appTop_of_isPullback hpb hfree
   let P' : (G ⊗ X).left.Opens := (snd G X).left ⁻¹ᵁ D
   let c : P'.toScheme ⟶ X.left := P'.ι ≫ (γ[G, X] : G ⊗ X ⟶ X).left
   have hc : ⊤ ≤ c ⁻¹ᵁ U := by

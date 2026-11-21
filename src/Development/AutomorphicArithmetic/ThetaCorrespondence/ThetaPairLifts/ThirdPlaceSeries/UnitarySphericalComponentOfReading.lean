@@ -1,5 +1,10 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitarySphericalComponentOfReading
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsReadingLaws
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalRepGLExistsSatakeParametersStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeOfUnitarisableHasSatakeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeMultisetMapInv
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Laws
 
 set_option synthInstance.maxHeartbeats 200000
@@ -29,7 +34,7 @@ theorem unitarySphericalComponent_of_reading_alt : GlobalTheory.Published.Bernst
   refine ⟨?_, ?_⟩
   · simpa [Multiset.map_map, Function.comp_def] using h1
   · have := GlobalTheory.RowSatakeBound.finite_residue w
-    exact GlobalTheory.T.isUnitarySphericalSatakeMultiset_map_inv _ _ _ _ h1
+    exact _root_.GlobalTheory.SatakeInv.isUnitarySatake_map_inv _ _ _ _ h1
 end GlobalTheory.SplitRead
 end
 end

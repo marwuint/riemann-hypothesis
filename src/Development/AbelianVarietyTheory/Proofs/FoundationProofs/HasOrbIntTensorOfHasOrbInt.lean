@@ -289,12 +289,6 @@ theorem hasOrbInt_tensor (hμ : IsRestrictedProd σ J L μa μf μ) (hdt : IsCen
   exact ⟨IsHaarProd.isMulRightInvariant hdt (restrGroup_cent L γ), ha', hf',
     hasOrbInt_tensor_of_hasOrbInt hμ hdt hff.2 hK ha' hf'⟩
 
-omit [Submodule.IsLattice E L] in
-
-example (v : HeightOneSpectrum (𝓞 F)) : {x | x⁻¹ * proj σ J v 1 * x ∈ stabLoc σ J L v} =
-    (cent (proj σ J v 1) : Set (GLoc σ J v)) * (stabLoc σ J L v : Set (GLoc σ J v)) :=
-  Set.ext fun x => iff_of_true (by simp) ⟨x, mem_cent.2 (by simp), 1, one_mem _, mul_one x⟩
-
 end Adelic
 
 end GlobalTheory.Orb

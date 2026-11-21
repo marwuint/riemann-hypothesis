@@ -56,10 +56,6 @@ def splitPt {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : SplitPt 
     exact (h1.comp (Continuous.prodMk continuous_const (continuous_singleFin v))).mul continuous_const
   int_iff a := (mem_int_iff a).trans (GlobalTheory.IdemPrime.mem_iff (splitAt_splitIdemAd τ) a).symm
 
-theorem exists_splitPt (D : D7) : ∃ v : Pl D, Nonempty (SplitPt D (Fv D.host.F v)) := by
-  obtain ⟨v, ⟨τ⟩⟩ := exists_split_place (isCMExt_host D)
-  exact ⟨v, ⟨splitPt τ⟩⟩
-
 theorem isHermND (V : HSp D) : IsHermND D.sp.cm.sig V.gram :=
   ⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩
 
@@ -78,15 +74,6 @@ def frame {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (S : HSp D) 
       (proj D.sp.cm.sig S.gram v (emb D.sp.cm.sig S.gram v ((splitEquiv (isCMExt_host D) (isHermND S) τ).symm (β * g * β⁻¹))))
     conv at h => lhs; rw [proj_emb_self, ContinuousMulEquiv.apply_symm_apply]
     exact h.symm
-
-theorem gl_injective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n) : Function.Injective β.gl := by
-  intro g h e
-  have h1 := β.gl_mat g
-  rw [e, β.gl_mat] at h1
-  have key : ∀ x : Matrix n n k, β.b' * (β.b * x * β.b') * β.b = x := fun x => by
-    rw [Matrix.mul_assoc β.b, ← Matrix.mul_assoc β.b', β.b'b, Matrix.one_mul, Matrix.mul_assoc, β.b'b, Matrix.mul_one]
-  exact Units.ext (by rw [← key g.val, ← h1, key])
 
 theorem eq_single {v : Pl D} {a : AE D} (ha : a ∈ idAt D (· = v)) : a = singleTens D.host.E v (compAt D v a) := by
   have hc : ∀ u (z : AE D), GlobalTheory.AdelicU.compFin D.host.F D.host.E u z = compAt D u z := fun u z =>
@@ -178,33 +165,6 @@ theorem mem_latV_std (S : HSp D) (L : Lat S) (hL : ∀ x, x ∈ L ↔ ∀ i, ∃
   by_cases e : j = i
   · subst e; exact ⟨b, by rw [Pi.single_eq_same]⟩
   · exact ⟨0, by rw [Pi.single_eq_of_ne e]; rfl⟩
-
-theorem isLat_std {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (S : HSp D) (L : Lat S)
-    (hL : ∀ x, x ∈ L ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = x i) :
-    (frame τ S 1).IsLat L (Submodule.pi Set.univ fun _ => (1 : Submodule 𝒪[Fv D.host.F v] (Fv D.host.F v))) := fun x => by
-  rw [mem_latV_std S L hL, Submodule.mem_pi]
-  refine forall_congr' fun i => ?_
-  have e : ((frame τ S 1).b *ᵥ x) = x := Matrix.one_mulVec x
-  rw [e]
-  have h1 : (splitPt τ).sec (x i) ∈ idAt D (· = v) := Ideal.mul_mem_right _ _ (single_mem_idAt v _)
-  rw [show (splitPt τ).sec (x i) ∈ intAt D (· = (splitPt τ).v) ↔ _ from and_iff_right h1, ← (splitPt τ).int_iff,
-    Submodule.mem_one]
-  exact ⟨fun h => let ⟨b, hb⟩ := h trivial; hb ▸ b.2, fun h _ => ⟨⟨_, h⟩, rfl⟩⟩
-
-theorem integrand_dual {V V₀ W : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (ψ : AddChar (AF D.host.F) ℂ) (f : WO V W → ℂ)
-    (x a a' : Mx D W.rank ρ) (w₀ : WO V₀ W) :
-    heisO ψ V W (d.extY W a') (heisO ψ V W (d.extX W x) (heisO ψ V W (d.ext0 W w₀) (heisO ψ V W (d.extY W a) f))) 0 =
-      ψ (symplOH V W (d.extX W x) (d.extY W a) + symplOH V W (d.extX W x) (d.extY W a)) *
-        heisO ψ V W (d.extY W (a' + a)) (heisO ψ V W (d.extX W x) (heisO ψ V W (d.ext0 W w₀) f)) 0 := by
-  rw [d.integrandS_eq, d.integrandS_eq, heisO, map_add (d.extY W), ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul,
-    ← AddChar.map_add_eq_mul]
-  have h0 : symplOH V W (d.ext0 W w₀) (d.extY W a) = 0 := by
-    rw [symplOH_skew, d.wittDecomp_sympl_extDual_extAnisotropic, neg_zero]
-  simp only [GlobalTheory.OrientedHeis.symplOH_add_left, d.symplOH_extY_extY, h0, zero_add, add_zero]
-  rw [symplOH_skew V W (d.extX W x) (d.extY W a)]
-  congr 2
-  · ring
-  · abel
 
 end GlobalTheory.FinPl.Model
 

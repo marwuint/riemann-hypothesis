@@ -1,6 +1,10 @@
-import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.CuspPairB
+import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.CuspPairA
 import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiClosT
-import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.IntegrableOfBd
+import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.IntegralMulRightFd
+import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.LogAbsEqLogIdeleNorm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieDerivativeL2InnerProduct
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
+import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.PPrAut
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFiniteMeasureQuotMeasure
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.CuspRapidDecayGL.CuspRapidDecaySiegelGL
 import Development.WeilBound.RepresentationTheoryGL.ConstantTermFiniteness.LieInvariants.InvariantOfLieOneLEqZero
@@ -69,40 +73,6 @@ theorem cp_vol (hn : 1 ≤ n) (D : Dom E n 0) (R : ℝ) : D.ν {x | |ldet x| ≤
     _ < ⊤ := by
         rw [lintegral_const]
         exact ENNReal.mul_lt_top hK.lt_top (measure_lt_top _ _)
-
-theorem cp_pairG (hRD : GlobalTheory.Published.CuspRapidDecaySiegelGL) {ψ : Sm E n} (hψ : IsCuspForm ψ)
-    (hZ : ∀ t g, ψ.1 (splitCentre E n t * g) = ψ.1 g) {φ : Sm E n} (hφ : IsAutForm φ)
-    {u : ℝ → ℂ} (hu : Continuous u) (hus : HasCompactSupport u) {Ω : Set (GA E n)} (hΩ : IsCompact Ω) :
-    ∃ C : ℝ, ∀ x : H E n 0, ∀ y ∈ Ω, ∀ y' ∈ Ω, ‖ψ.1 (x.1 * y) * u (ldet x) * φ.1 (x.1 * y')‖ ≤ C := by
-  obtain ⟨Cu, hCu⟩ := hu.bounded_above_of_compact_support hus
-  obtain ⟨R0, hR0⟩ := bound_of_hasCompactSupport hus
-  obtain ⟨BΩ, hBΩ⟩ := hΩ.exists_bound_of_continuousOn
-    (DiscreteGroups.T1.G.continuous_logAbs_det (E := E) (n := n)).continuousOn
-  have hΩ2 : IsCompact (Ω⁻¹ * Ω) := hΩ.inv.mul hΩ
-  obtain ⟨C, hC⟩ := cp_core hRD ψ φ hψ hZ hφ hΩ2 (R0 + BΩ)
-  refine ⟨max C 0 * max Cu 0, fun x y hy y' hy' => ?_⟩
-  by_cases h0 : u (ldet x) = 0
-  · rw [h0, mul_zero, zero_mul, norm_zero]
-    exact mul_nonneg (le_max_right _ _) (le_max_right _ _)
-  have hl : |logAbs x.1.val.det| ≤ R0 := hR0 _ h0
-  have hdet : |logAbs (x.1 * y).val.det| ≤ R0 + BΩ := by
-    rw [lAbs_mul]
-    have h := hBΩ y hy
-    rw [Real.norm_eq_abs] at h
-    exact (abs_add_le_abs_add_abs _ _).trans (add_le_add hl h)
-  have hyy : y⁻¹ * y' ∈ Ω⁻¹ * Ω := Set.mul_mem_mul (Set.inv_mem_inv.2 hy) hy'
-  have h1 := hC (x.1 * y) hdet _ hyy
-  rw [show x.1 * y * (y⁻¹ * y') = x.1 * y' by group] at h1
-  rw [norm_mul, norm_mul, mul_right_comm]
-  exact mul_le_mul (h1.trans (le_max_left _ _)) ((hCu _).trans (le_max_left _ _)) (norm_nonneg _)
-    (le_max_right _ _)
-
-theorem pairBd_holds : PairBd := by
-  intro E _ _ _ n hn D ψ φ u Ω hψ hZ hφ hu hus hΩ
-  obtain ⟨C, hC⟩ := cp_pairG PositivityTheory.S2.CuspBdd.cuspRapidDecaySiegelGL hψ hZ hφ hu hus hΩ
-  exact ⟨C, hC, cp_supp D (cp_vol hn D) hus⟩
-
-theorem orthAct_holds : OrthAct := orthAct_of PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL pairBd_holds
 
 end DiscreteGroups.T1.G.CP
 

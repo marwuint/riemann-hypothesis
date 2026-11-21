@@ -9,10 +9,6 @@ open NumberField IsDedekindDomain ValuativeRel
 
 namespace Formalism.L2.SG.Pf.PCountEx
 
-section ZM
-
-end ZM
-
 section Approx
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}

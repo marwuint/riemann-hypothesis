@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAugmentationSpanEqIdOnIrreducibleStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAugmentationSpanEqIdOnIrreducible
 open scoped Matrix
 
 namespace GlobalTheory.AugCore
@@ -152,7 +152,7 @@ theorem good_of_stable (S : Γ →* Matrix (Fin 3) (Fin 3) K) [IsAlgClosed K]
         rw [Submodule.eq_bot_iff]
         intro v hv
         exact hfix v (fun g => hc g v hv)
-      exact GlobalTheory.T.exists_augmentationSpan_eq_id_on_irreducible S P hP hirr hnt
+      exact _root_.GlobalTheory.AugSpan.exists_mem_span_sub_one_eq_id_on S P hP hirr hnt
   · push_neg at hirr
     obtain ⟨Q, hQP, hQs, hQ0, hQne⟩ := hirr
     have hQo : Stable S (B.orthogonal Q) := stable_orthogonal S B hinv hQs

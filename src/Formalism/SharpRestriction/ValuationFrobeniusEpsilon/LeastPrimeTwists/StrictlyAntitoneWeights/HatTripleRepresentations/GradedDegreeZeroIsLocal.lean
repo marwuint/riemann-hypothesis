@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.SharpRestriction.ValuationFrobeniusEpsilon.LeastPrimeTwists.StrictlyAntitoneWeights.StepEpsFrob
+import Formalism.SharpRestriction.ValuationFrobeniusEpsilon.LeastPrimeTwists.StrictlyAntitoneWeights.GaussianCaseFreeExponents
 
 noncomputable section
 
@@ -8,10 +8,6 @@ open Formalism.BasicNotions Formalism.BasicNotions.TV NumberField IsDedekindDoma
 namespace Formalism.MainNotions.V.Pf.V3.P4
 
 variable {D : D7} (V : VData D)
-
-def ent (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ) (g1 : GQ)
-    (g : K.fixingSubgroup) (i k : Fin 3) : V.S3 l e χ K g1 :=
-  ((V.unitaryGaloisRepresentation l e χ K g1 g : GL (Fin 3) (V.S3 l e χ K g1)) : Matrix (Fin 3) (Fin 3) (V.S3 l e χ K g1)) i k
 
 def psi3 (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (i : Fin 3) (g : GQ) : V.Ol l :=
   ![V.psi l e χ g, 1, V.psi l e χ g⁻¹] i
@@ -40,22 +36,6 @@ def AllPt (φ : ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : Interme
     (V.S3 l e χ K g1 →+* QbarL l) → Prop) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (g1 : GQ),
     Dat V l e χ K g1 → ∀ ξ : V.S3 l e χ K g1 →+* QbarL l, V.IsPt3 ξ → φ l e χ K g1 ξ
-
-def AllPtW (φ : ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ) (g1 : GQ),
-    (V.S3 l e χ K g1 →+* QbarL l) → Prop) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ : Chi D) (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (g1 : GQ),
-    Dat V l e χ K g1 → LW V l e χ K g1 → ∀ ξ : V.S3 l e χ K g1 →+* QbarL l, V.IsPt3 ξ → φ l e χ K g1 ξ
-
-def GenNeg : Prop := AllDat V fun l _ e χ K g1 =>
-  ∀ j : ℤ, j < 0 → ∀ x ∈ V.S3gr l e χ K g1 j,
-    x ∈ Ideal.span {y | ∃ (g : K.fixingSubgroup) (i k : Fin 3), k < i ∧ y = ent V l e χ K g1 g i k}
-
-def GenPos : Prop := AllDat V fun l _ e χ K g1 =>
-  ∀ j : ℤ, 0 < j → ∀ x ∈ V.S3gr l e χ K g1 j,
-    x ∈ Ideal.span {y | ∃ (g : K.fixingSubgroup) (i k : Fin 3), i < k ∧ y = ent V l e χ K g1 g i k}
-
-def GenAll : Prop := AllDat V fun l _ e χ K g1 =>
-  Algebra.adjoin (V.Ol l) {y | ∃ (g : K.fixingSubgroup) (i k : Fin 3), y = ent V l e χ K g1 g i k} = ⊤
 
 def GradedDegreeZeroIsLocal : Prop := AllDat V fun l _ e χ K g1 =>
   ∀ x ∈ V.S3gr l e χ K g1 0, V.S3emb l e χ K g1 x ∉ IsLocalRing.maximalIdeal (V.S3hat l e χ K g1) →

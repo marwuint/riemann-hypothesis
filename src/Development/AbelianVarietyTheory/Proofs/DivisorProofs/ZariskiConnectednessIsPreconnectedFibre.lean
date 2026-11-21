@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPreconnectedClosedFibreProperCompleteLocalNoetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPreconnectedClosedFibreProperCompleteLocalNoet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppBijectiveOfFlatBaseChangeGlobalFunctions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentOfClopen
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherian
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -66,7 +66,7 @@ theorem isPreconnected_fibre : ∀ (X Y : Scheme.{0}) (a : X ⟶ Y), IsLocallyNo
     rw [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]
     haveI : IsIso e.hom.appTop := inferInstanceAs (IsIso (e.hom.app ⊤))
     exact hres.comp (ConcreteCategory.bijective_of_isIso _)
-  have hp := GlobalTheory.T.app_bijective_of_flat_baseChange_globalFunctions Γ(Y, U) _ _ _ π g (pullback.snd π g) (pullback.fst π g) inferInstance inferInstance hπ
+  have hp := _root_.GlobalTheory.Mum.app_bijective_of_flat_baseChange Γ(Y, U) _ _ _ π g (pullback.snd π g) (pullback.fst π g) inferInstance inferInstance hπ
     inferInstance (IsPullback.of_hasPullback π g).flip
   let Z : Scheme.{0} := pullback π g
   let ψ : A →+* Γ(Z, ⊤) :=
@@ -76,7 +76,7 @@ theorem isPreconnected_fibre : ∀ (X Y : Scheme.{0}) (a : X ⟶ Y), IsLocallyNo
   haveI : IsLocalHom ψ := IsLocalHom.of_surjective ψ hψ.2
   haveI : IsLocalRing Γ(Z, ⊤) := IsLocalRing.of_surjective ψ hψ.2
   haveI : PreconnectedSpace Z := preconnectedSpace_of_isLocalRing Z
-  have hfib := GlobalTheory.T.isPreconnected_closedFibre_proper_completeLocalNoetherian A hAc Z (pullback.snd π g) inferInstance inferInstance
+  have hfib := _root_.GlobalTheory.ClosedFibreConn.isPreconnected_closedFibre A hAc Z (pullback.snd π g) inferInstance inferInstance
   have hg : g (closedPoint A) = P := PrimeSpectrum.ext hφP
   have einj : Function.Injective e.hom := e.hom.isOpenEmbedding.injective
   have key : {x : X | a x = y} = (pullback.fst π g ≫ (a ⁻¹ᵁ U).ι) '' {z | pullback.snd π g z = closedPoint A} := by

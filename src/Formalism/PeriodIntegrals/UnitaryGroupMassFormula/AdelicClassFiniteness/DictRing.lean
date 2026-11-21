@@ -23,10 +23,6 @@ theorem nontrivial : Nontrivial (Af F) := by
   have h2 : (0 : v.adicCompletion F) = 1 := congrArg (fun a : Af F => a v) h
   exact zero_ne_one h2
 
-theorem algebraMap_injective : Function.Injective (algebraMap F (Af F)) := by
-  haveI := nontrivial (F := F)
-  exact (algebraMap F (Af F)).injective
-
 theorem comp_algebraMap (r : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) :
     (algebraMap (𝓞 F) (Af F) r) v = algebraMap (𝓞 F) (v.adicCompletion F) r := by
   rfl

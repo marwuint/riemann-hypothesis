@@ -36,11 +36,6 @@ def Adj (K : Cx k M) (L : Cx k M') (β : M →ₗ[k] M' →ₗ[k] k) (N : ℤ) :
 def Inj (K : Cx k M) (L : Cx k M') (β : M →ₗ[k] M' →ₗ[k] k) (N n : ℤ) : Prop :=
   ∀ a ∈ K.Z n, (∀ b ∈ L.Z (N - n), β a b = 0) → a ∈ K.B n
 
-def Surj (K : Cx k M) (L : Cx k M') (β : M →ₗ[k] M' →ₗ[k] k) (N n : ℤ) : Prop :=
-  ∀ φ : Module.Dual k M', (∀ b ∈ L.B (N - n), φ b = 0) → ∃ a ∈ K.Z n, ∀ b ∈ L.Z (N - n), φ b = β a b
-
-def Perf (K : Cx k M) (L : Cx k M') (β : M →ₗ[k] M' →ₗ[k] k) (N : ℤ) : Prop := ∀ n, Inj K L β N n ∧ Surj K L β N n
-
 def IsMap (K : Cx k M) (L : Cx k M') (f : M →ₗ[k] M') : Prop := ∀ n, ∀ a ∈ K.C n, f a ∈ L.C n ∧ f (K.D a) = L.D (f a)
 
 structure SES (K₁ : Cx k M₁) (K₂ : Cx k M₂) (K₃ : Cx k M₃) (f : M₁ →ₗ[k] M₂) (g : M₂ →ₗ[k] M₃) : Prop where
@@ -52,16 +47,6 @@ structure SES (K₁ : Cx k M₁) (K₂ : Cx k M₂) (K₃ : Cx k M₃) (f : M₁
   inj : ∀ n, ∀ a ∈ K₁.C n, f a = 0 → a = 0
   exact : ∀ n, ∀ a ∈ K₂.C n, g a = 0 ↔ ∃ a' ∈ K₁.C n, f a' = a
   surj : ∀ n, ∀ c ∈ K₃.C n, ∃ a ∈ K₂.C n, g a = c
-
-structure DualSES {N₁ N₂ N₃ : Type} [AddCommGroup N₁] [Module k N₁] [AddCommGroup N₂] [Module k N₂] [AddCommGroup N₃] [Module k N₃]
-    (K₁ : Cx k M₁) (K₂ : Cx k M₂) (K₃ : Cx k M₃) (f : M₁ →ₗ[k] M₂) (g : M₂ →ₗ[k] M₃)
-    (L₁ : Cx k N₁) (L₂ : Cx k N₂) (L₃ : Cx k N₃) (f' : N₂ →ₗ[k] N₁) (g' : N₃ →ₗ[k] N₂)
-    (β₁ : M₁ →ₗ[k] N₁ →ₗ[k] k) (β₂ : M₂ →ₗ[k] N₂ →ₗ[k] k) (β₃ : M₃ →ₗ[k] N₃ →ₗ[k] k) (N : ℤ) : Prop where
-  left : SES K₁ K₂ K₃ f g
-  right : SES L₃ L₂ L₁ g' f'
-  adj : Adj K₂ L₂ β₂ N
-  adjf : ∀ n, ∀ a ∈ K₁.C n, ∀ b ∈ L₂.C (N - n), β₂ (f a) b = β₁ a (f' b)
-  adjg : ∀ n, ∀ a ∈ K₂.C n, ∀ b ∈ L₃.C (N - n), β₂ a (g' b) = β₃ (g a) b
 
 def pt (k : Type) [Field k] : Cx k k := ⟨fun n => if n = 0 then ⊤ else ⊥, 0⟩
 
@@ -105,21 +90,7 @@ section Alg
 
 variable {k : Type} [Field k] {ι : Type} [LinearOrder ι] {E : Type} [Ring E] [Algebra k E]
 
-structure IsDga (sg : E →ₐ[k] E) (d : E →ₗ[k] E) : Prop where
-  sg_sg : ∀ x, sg (sg x) = x
-  d_sg : ∀ x, d (sg x) = -sg (d x)
-  d_mul : ∀ x y, d (x * y) = d x * y + sg x * d y
-  d_d : ∀ x, d (d x) = 0
-
-def cup (sg : E →ₐ[k] E) (a b : Finset ι → E) : Finset ι → E := fun u =>
-  ∑ j ∈ u, (sg ^ ((u.filter (j ≤ ·)).card - 1)) (a (u.filter (· ≤ j))) * b (u.filter (j ≤ ·))
-
-def tsg (sg : E →ₐ[k] E) (a : Finset ι → E) : Finset ι → E := fun s => (-1 : ℤ) ^ (s.card + 1) • sg (a s)
-
 def const (x : E) : Finset ι → E := fun s => if s.card = 1 then x else 0
-
-def cupPow (sg : E →ₐ[k] E) (a : Finset ι → E) (m : ℕ) : Finset ι → E :=
-  Nat.rec (const 1) (fun _ y => cup sg y a) m
 
 end Alg
 

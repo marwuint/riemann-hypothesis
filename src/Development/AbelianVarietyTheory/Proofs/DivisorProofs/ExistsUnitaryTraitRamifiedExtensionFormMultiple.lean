@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryTraitThroughModuliGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitsOfModuliPointHaveIsomorphicProportionalLatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryTraitThroughModuliGenericPoint
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontrivial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitsOfModuliPointHaveIsomorphicProportionalLat
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DvrArcExtensionMonoBase
 
 open AlgebraicGeometry CategoryTheory Limits IsLocalRing NumberField
@@ -33,7 +34,7 @@ theorem uTrait_ramExt : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
   haveI : IsAdicComplete (maximalIdeal T₁.V) T₁.V := T₁.cpl
   have hB₁ : GlobalTheory.Mum.Base T₁.V := mumBase_of_cdvr T₁.V
   obtain ⟨T₂, f, fK, hf, hfl, -, hfK, hy⟩ :=
-    GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint E H Dw l Xo c T₁.V hB₁ inferInstance (spMap gK₁ ≫ T.y)
+    _root_.GlobalTheory.UTraitExt.uTraitExtSt E H Dw l Xo c T₁.V hB₁ inferInstance (spMap gK₁ ≫ T.y)
   haveI : IsDiscreteValuationRing T₂.V := T₂.cdvr.1
   haveI : IsAdicComplete (maximalIdeal T₂.V) T₂.V := T₂.cdvr.2.1
   haveI : CharZero T₂.V := T₂.cdvr.2.2
@@ -68,7 +69,7 @@ theorem uTrait_ramExt : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
   have hcomp : ∀ a, (fK.comp gK₁) (algebraMap T.V _ a) = algebraMap T₂.V _ ((f.comp g₁) a) := fun a => by
     simp only [RingHom.comp_apply]
     rw [hgK₁, hfK]
-  obtain ⟨e, he⟩ := GlobalTheory.T.traitsOfModuliPoint_have_isomorphic_proportional_lattices E H Dw l Xo c T T₂ T₂.V (f.comp g₁) (RingHom.id T₂.V) (fK.comp gK₁)
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.UPoinc.uTraitUniqSt_holds E H Dw l Xo c T T₂ T₂.V (f.comp g₁) (RingHom.id T₂.V) (fK.comp gK₁)
     (RingHom.id _) (mumBase_of_cdvr T₂.V) inferInstance (hf.comp hg₁) Function.injective_id inferInstance
     inferInstance hcomp (fun _ => rfl) hyc T₂.ϖ (e₁ * e₂) 1 T₂.irr hass (by rw [pow_one]; rfl)
   obtain ⟨k, hk⟩ := hne₁

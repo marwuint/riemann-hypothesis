@@ -148,25 +148,4 @@ theorem invariant_flow : FlowL.{u} := by
   intro R _ W
   exact ⟨isFlow_xL_yL W, toL_X_mul_yL W, toL_wSer_mul_yL W, toL_wSer_mul_xL W⟩
 
-theorem x_derivative_square : XLSq.{u} := by
-  unfold XLSq
-  intro R _ W
-  obtain ⟨heq, hx, hy⟩ := isFlow_xL_yL W
-  obtain ⟨c1, c2, c3, c4, c6⟩ := constCurve_DL W
-  have hD := isDer_DL W
-  rw [WeierstrassCurve.Affine.equation_iff] at heq
-  have h1 : DL W 1 = 0 := by simpa using DL_C W 1
-  have h2 : DL W 2 = 0 := by
-    rw [show (2 : LaurentSeries R) = 1 + 1 by norm_num, hD.1, h1, add_zero]
-  have hb2 : HahnSeries.C W.b₂ = (curveL W).b₂ := by simp
-  have hb4 : HahnSeries.C W.b₄ = (curveL W).b₄ := by simp
-  have hb6 : HahnSeries.C W.b₆ = (curveL W).b₆ := by simp
-  rw [hb2, hb4, hb6]
-  simp only [WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆]
-  constructor
-  · rw [hx]
-    linear_combination 4 * heq
-  · rw [hx, hD.1, hD.1, hD.2, hD.2, h2, c1, c3, hy, hx]
-    ring
-
 end Formalism.L2.Th1.A

@@ -18,14 +18,6 @@ def DualGeomDegCharts.Statement : Prop :=
       geomDeg (dualIdeal b) (dualLine F b hb) (i - 1) =
         ∑ σ : K →+* ℂ, chartMass ((A σ)ᴴ * F.metric σ * A σ)
 
-example : Σ' (b : Module.Basis Unit ℤ (dualLattice HermLattice.scaledExample)),
-    Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)) ∧ 1 ≤ 1 :=
-  ⟨dualBasisStandard, dualEmbMatrix_standard_bijective, le_rfl⟩
-
-example : Function.Bijective (1 : Matrix (Fin 1) (Fin (1 - 1 + 1)) ℂ).mulVec := by
-  have h : (1 : Matrix (Fin 1) (Fin 1) ℂ).mulVec = id := funext Matrix.one_mulVec
-  exact h ▸ Function.bijective_id
-
 end
 
 end GroundTheory.Heights₂.Heights

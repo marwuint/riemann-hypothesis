@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DpExpEqSumRangeOfVa
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltration
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodClassInjectiveOfRichChartsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallChartPairAlongLinearMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodPullbackEqOfChartMapClassStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicPointExtOfIsSeparatedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAnalyticChartsRealizationOfAffineStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodPullbackEqOfChartMapClass
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicPointExtOfIsSeparated
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAnalyticChartsRealizationOfAffine
 
 set_option autoImplicit false
 
@@ -23,14 +23,14 @@ theorem isPeriod_pull1_eq_comap : ∀ {I₁ : Type} [Fintype I₁] {g₁ : ℕ} 
   intro I₁ _ g₁ Λ₁ _ F₁ B₁ _ X₁ s₁ σ₁ I₂ _ g₂ Λ₂ _ F₂ B₂ _ X₂ s₂ σ₂ u₁ u₂ h₁ h₂ b hb hbV M A hτ β φ m hσ hE
     c per₂ per₁ hp₂ hp₁ l
   obtain ⟨K₁, K₂, κ, hR, hs₁, hs₂, hW, hle⟩ := GlobalTheory.T.exists_small_chart_pair_along_linear_map u₁ u₂ b hb hbV M A hτ
-  obtain ⟨r₁, hr₁, -⟩ := GlobalTheory.T.exists_analyticChartsRealization_of_affine u₁ h₁ K₁ hs₁
-  obtain ⟨r₂, hr₂, -⟩ := GlobalTheory.T.exists_analyticChartsRealization_of_affine u₂ h₂ K₂ hs₂
+  obtain ⟨r₁, hr₁, -⟩ := _root_.GlobalTheory.AnPer.exists_real_isFor u₁ h₁ K₁ hs₁
+  obtain ⟨r₂, hr₂, -⟩ := _root_.GlobalTheory.AnPer.exists_real_isFor u₂ h₂ K₂ hs₂
   have hΦ : ∀ k, AnalyticOnNhd ℂ (fun p : Tot I₁ g₁ ↦ ((b p.1, M p.2) : Tot I₂ g₂)) (K₁.W k) := fun k p hp ↦
     ((hb _ (K₁.base k p hp)).comp analyticAt_fst).prod
       (((LinearMap.toContinuousLinearMap M).analyticAt p.2).comp analyticAt_snd)
   have hx : ∀ k, spMap (Hol.comap _ (hΦ k) (hW k)).toRingHom ≫ r₂.x (κ k) = r₁.x k ≫ φ := by
     intro k
-    refine GlobalTheory.T.holomorphicPoint_ext_of_isSeparated (K₁.W k) h₂ _ _ fun p hp ↦ ?_
+    refine _root_.GlobalTheory.AnPer.point_hol_ext_of_isSeparated (K₁.W k) h₂ _ _ fun p hp ↦ ?_
     have e : (Hol.ev p hp).toRingHom.comp (Hol.comap _ (hΦ k) (hW k)).toRingHom =
         (Hol.ev ((b p.1, M p.2) : Tot I₂ g₂) (hW k p hp)).toRingHom := by
       refine RingHom.ext fun f ↦ ?_
@@ -40,7 +40,7 @@ theorem isPeriod_pull1_eq_comap : ∀ {I₁ : Type} [Fintype I₁] {g₁ : ℕ} 
       hE p (K₁.base k p hp)]
   let per : Λ₁ →+ Hol F₁.V :=
     ((Hol.comap b hb hbV).toRingHom.toAddMonoidHom.comp per₂).comp A
-  have key := GlobalTheory.T.period_pullback_eq_of_chartMap_class b hb hbV M A hτ K₁ K₂ κ hΦ hW hle r₁ r₂ β φ m hσ hx c per₂ per (fun _ ↦ rfl)
+  have key := _root_.GlobalTheory.AnPer.CmpCore.period_pullback_eq_of_chartMap_class_alt b hb hbV M A hτ K₁ K₂ κ hΦ hW hle r₁ r₂ β φ m hσ hx c per₂ per (fun _ ↦ rfl)
     (hp₂ K₂ r₂ hr₂)
   have := GlobalTheory.T.periodClass_injective_of_rich_charts K₁ hR per₁ per ((hp₁ K₁ r₁ hr₁).symm.trans key)
   rw [this]

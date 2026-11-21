@@ -43,12 +43,4 @@ theorem hasLen_coker_det' {C : Type} [Field C] (v : Valuation C NNReal) (R : Typ
 theorem lenId_of_B (hB : LenIdBStatement) : LenIdStatement :=
   lenId_of (fun C _ v R _ _ hv => hasLen_coker_det' v R hv) hB
 
-theorem hasLen_ext' {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
-    [Algebra R C] (hv : v.Integers R)
-    {A B D : Type} [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup D]
-    [Module R D] (ι : A →ₗ[R] B) (π : B →ₗ[R] D) (hι : Function.Injective ι)
-    (hπ : Function.Surjective π) (hex : LinearMap.range ι = LinearMap.ker π) {a c : NNReal}
-    (ha : HasLen v R A a) (hc : HasLen v R D c) : HasLen v R B (a * c) :=
-  hasLen_ext (hasLen_coker_det' v R hv) ι π hι hπ hex ha hc
-
 end ReciprocityTheory.PGsh.Up

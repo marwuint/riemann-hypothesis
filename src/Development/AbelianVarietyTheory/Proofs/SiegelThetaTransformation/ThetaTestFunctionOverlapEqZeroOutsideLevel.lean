@@ -205,7 +205,7 @@ theorem phi_overlap_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
       exact neg_mem (row_mem hM hΛ hL ha _)) hk
     exact hγ' ((mem_grp γ).2 ⟨hγ, _, mul_mem k.2 (inv_mem k'.2), red_of_red h2 h3⟩)
   have add {φ ψ : TF n g} (h : IsSB φ) (h' : IsSB ψ) : IsSB (φ + ψ) :=
-    (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ _ _ _ _ h h').1
+    (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ _ _ _ _ h h').1
   have zero {ψ : TF n g} (h : IsSB ψ) : SW.ip 0 ψ = 0 := by simpa using ip_smul_left 0 h h
   have key2 : ∀ y ∈ s, SW.ip (wG X bas idx γ (D.phi bas hn v₀ L' Λ)) (heisG X bas y v) = 0 := by
     intro y hy

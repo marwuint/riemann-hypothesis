@@ -31,23 +31,6 @@ def IsBC (h : HermFam K (Fin m → K)) (h' : HermFam K' (Fin m → K')) : Prop :
   ∀ (σ : K' →+* ℂ) (i j : Fin m),
     h'.form σ (Pi.single i 1) (Pi.single j 1) = h.form (σ.comp (algebraMap K K')) (Pi.single i 1) (Pi.single j 1)
 
-def JetSys (h : HermFam K (Fin m → K)) (L : Submodule (𝓞 K) (Fin m → K)) (x : Fin m → K) (n : ℕ) (ν : ℝ)
-    (β : ℕ → (K →+* ℂ) → ℝ) : Prop :=
-  ∃ (r : ℕ) (hE : HermFam K (Fin r → K)) (E : Submodule (𝓞 K) (Fin r → K)) (Vf : ℕ → Submodule K (Fin r → K))
-    (j : ℕ → (Fin r → K) →ₗ[K] K), Full E ∧ MuLe hE E ν ∧ deg hE E = r * ν ∧ Vf 0 = ⊤ ∧ ∀ i ≤ n,
-      Vf (i + 1) = Vf i ⊓ LinearMap.ker (j i) ∧ (∃ v ∈ Vf i, j i v ≠ 0) ∧
-      (∀ v ∈ E, v ∈ Vf i → ∀ a : K, a • x ∈ L → IsIntegral ℤ (a ^ i * j i v)) ∧
-      ∀ (σ : K →+* ℂ) (q : ℕ) (v : Fin q → Fin r → K) (c : Fin q → ℂ), (∀ a, v a ∈ Vf i) →
-        ‖∑ a, c a * σ (j i (v a))‖ ^ 2 ≤
-          (β i σ * h.nrm σ x ^ i) ^ 2 * (∑ a, ∑ b, starRingEnd ℂ (c a) * c b * hE.form σ (v a) (v b)).re
-
-def TorusExt {r m' : ℕ} (h : HermFam K (Fin m → K)) (L : Submodule (𝓞 K) (Fin m → K)) (ε : Fin r → Fin m → K)
-    (q : (Fin m → K) →ₗ[K] (Fin m' → K)) (h' : HermFam K (Fin m' → K)) (L' : Submodule (𝓞 K) (Fin m' → K)) (C : ℝ) : Prop :=
-  Full L ∧ Full L' ∧ LinearIndependent K ε ∧ Function.Surjective q ∧ LinearMap.ker q = Submodule.span K (Set.range ε) ∧
-    L ⊓ (LinearMap.ker q).restrictScalars (𝓞 K) = Submodule.span (𝓞 K) (Set.range ε) ∧ (∀ v ∈ L, q v ∈ L') ∧
-    ∀ σ : K →+* ℂ, ((C : ℂ) • h.gram σ ε - 1).PosSemidef ∧
-      ∀ (n : ℕ) (v : Fin n → Fin m → K), ((C : ℂ) • h.gram σ v - h'.gram σ (q ∘ v)).PosSemidef
-
 end Lat
 
 structure SemiFib (K : Type) [Field K] [NumberField K] : Type 1 where
@@ -92,27 +75,6 @@ def IsRho (ρ : (K →+* ℂ) → ℝ) : Prop :=
 def falt (h : HermFam K (Fin F.P₀.g → K)) : ℝ := -deg h F.lieLat
 
 end SemiFib
-
-def LieSlope : Prop := ∀ g : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K), F.P₀.g ≤ g →
-  ∀ h, F.IsHerm h → Full F.lieLat ∧ MuLe h F.lieLat (C * Real.log (2 + max (F.falt h) 0))
-
-def jetBd (g n i : ℕ) (ρ : ℝ) : ℝ :=
-  √(Real.exp 1 * n * i) ^ i * √(Real.exp 1 * g.factorial) * max ((√Real.pi / 2 * ρ)⁻¹ ^ g) (√n ^ g)
-
-def SecJets : Prop := ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (h : HermFam K (Fin F.P₀.g → K))
-  (ρ : (K →+* ℂ) → ℝ), F.IsHerm h → F.IsRho ρ →
-  ∀ (K' : Type) [Field K'] [NumberField K'] [Algebra K K'] (x : Fin F.P₀.g → K'), x ≠ 0 → ∀ n : ℕ, 2 ≤ n →
-    ∃ (K'' : Type) (_ : Field K'') (_ : NumberField K'') (_ : Algebra K' K'') (_ : Algebra K K'') (_ : IsScalarTower K K' K'')
-      (h'' : HermFam K'' (Fin F.P₀.g → K'')), IsBC h h'' ∧
-      JetSys h'' (latBC K'' F.lieLat) (fun i => algebraMap K' K'' (x i)) n
-        (-F.falt h / 2 + (F.P₀.g : ℝ) / 4 * Real.log ((3 * n : ℕ) / (2 * Real.pi)))
-        fun i σ => jetBd F.P₀.g (3 * n) i (ρ (σ.comp (algebraMap K K'')))
-
-def SemiFib.ofGenFib {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp (𝓞 K))} (hP : IsSemiAbelian P.A)
-    (F : GlobalTheory.CM.GenFib P) : SemiFib K := ⟨F.P₀, P.A, hP, F.φ, F.fib.2.1, F.v, F.basis⟩
-
-example {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp (𝓞 K))} (hP : IsSemiAbelian P.A)
-    (F : GlobalTheory.CM.GenFib P) : (SemiFib.ofGenFib hP F).lieLat = F.lieLat := rfl
 
 end GlobalTheory.LieHt
 end

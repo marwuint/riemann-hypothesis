@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FinitePresentationOfFaithfullyFlatStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FinitePresentationOfFaithfullyFlat
 
 open CategoryTheory Limits AlgebraicGeometry
 
@@ -29,7 +29,7 @@ lemma affine_case {X Y S : Scheme.{0}} [IsAffine X] [IsAffine Y] [IsAffine S] (q
   haveI : Module.FinitePresentation Γ(Y, ⊤) Γ(X, ⊤) :=
     Module.FinitePresentation.of_finite_of_finitePresentation _ _
   have hp : Module.Projective Γ(Y, ⊤) Γ(X, ⊤) := Module.Flat.projective_of_finitePresentation
-  exact GlobalTheory.T.finitePresentation_of_faithfully_flat _ _ _ inferInstance hp inferInstance h4
+  exact _root_.GlobalTheory.CompanionTheory.FinPresDescent.finitePresentation_of_finite_projective_faithfullyFlat _ _ _ inferInstance hp inferInstance h4
 
 theorem descends : ∀ {X Y S : Scheme.{0}} (q : X ⟶ Y) (f : Y ⟶ S), IsFinite q → Flat q →
     LocallyOfFinitePresentation q → Surjective q → LocallyOfFinitePresentation (q ≫ f) →

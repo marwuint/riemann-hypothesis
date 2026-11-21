@@ -4,7 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InclTprodUpdate
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpOfOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealThetaIntertwinerSpanKFiniteTensorsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealThetaIntertwinerSpanKFiniteTensors
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteSupport
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 
 noncomputable section
 
@@ -59,13 +61,13 @@ theorem exists_w_ne (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH : Glob
   have stepY : ∀ k, k + 1 < D.R.m → ∃ (h : KSm (R.MY k)) (h' : KSm (R.MY (k + 1))),
       LinearMap.range (inclK h) ≤ Submodule.span ℂ {x | ∃ φ y, R.ItY k φ (inclK h' y) = x} := fun k hk => by
     obtain ⟨hW, hV⟩ := hS.1 A.μ0 ⟨k, by omega⟩ hk
-    exact GlobalTheory.T.realThetaIntertwiner_span_kFiniteTensors hD hH D ⟨k, by omega⟩ (min k D.R.m) (min (k + 1) D.R.m) (min_eq_left (by omega))
+    exact _root_.GlobalTheory.Chain.KFinOnto.itW_onto_kFin hD hH D ⟨k, by omega⟩ (min k D.R.m) (min (k + 1) D.R.m) (min_eq_left (by omega))
       (min_eq_left (by omega)) _ _ (R.MY k) (R.MY (k + 1)) R.θ R.ψ hθ (hC _) (R.ωY A.μ0 k) (R.vY A.μ0 k) hW hV (R.ItY k)
       (hch.ItY A.μ0 k hk)
   have stepX : ∃ (h : KSm (R.MY (D.R.m - 1))) (h' : KSm R.MX),
       LinearMap.range (inclK h) ≤ Submodule.span ℂ {x | ∃ φ y, R.ItX φ (inclK h' y) = x} := by
     obtain ⟨hW, hV⟩ := hS.2 A.μ0 ⟨D.R.m - 1, by omega⟩ rfl
-    exact GlobalTheory.T.realThetaIntertwiner_span_kFiniteTensors hD hH D ⟨D.R.m - 1, by omega⟩ (min (D.R.m - 1) D.R.m) D.R.m (min_eq_left (Nat.sub_le _ _))
+    exact _root_.GlobalTheory.Chain.KFinOnto.itW_onto_kFin hD hH D ⟨D.R.m - 1, by omega⟩ (min (D.R.m - 1) D.R.m) D.R.m (min_eq_left (Nat.sub_le _ _))
       (by show D.R.m = D.R.m - 1 + 1; omega) _ _ (R.MY (D.R.m - 1)) R.MX R.θ R.ψ hθ (hC _) (R.ωX A.μ0) (R.vX A.μ0) hW hV
       R.ItX (hch.ItX A.μ0)
   have key : ∀ n, n + 1 ≤ D.R.m → ∃ (p : ∀ k, PolF D (Yc D (k + 1)).rank (Yc D k).rank) (h : KSm (R.MY n))

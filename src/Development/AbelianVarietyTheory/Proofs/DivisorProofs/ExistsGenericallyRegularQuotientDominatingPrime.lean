@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularLocalRingQuotientOfDetDerivationUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularLocalRingQuotientOfDetDerivationUnit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericJacobianDataOfPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalizationQuotientComapEquiv
 open IsLocalRing TensorProduct
@@ -40,7 +40,7 @@ theorem prime_generically_regular_quotient :
       fun i => (MvPolynomial.pderiv (s i)).restrictScalars ℤ
     have hdetD : (Matrix.of fun i j => D i (f j)).det ∉ N := by
       simpa [D] using hδN
-    have hreg := GlobalTheory.T.isRegularLocalRing_quotient_of_det_derivation_unit (MvPolynomial (Fin n) Λ) h f D N (fun j => hQN (hfQ j)) hdetD
+    have hreg := _root_.GlobalTheory.JacobianDerivation.isRegularLocalRing_quotient (MvPolynomial (Fin n) Λ) h f D N (fun j => hQN (hfQ j)) hdetD
     have heq : (Ideal.span (Set.range f)).map
           (algebraMap (MvPolynomial (Fin n) Λ) (Localization.AtPrime N)) =
         Q.map (algebraMap (MvPolynomial (Fin n) Λ) (Localization.AtPrime N)) := by

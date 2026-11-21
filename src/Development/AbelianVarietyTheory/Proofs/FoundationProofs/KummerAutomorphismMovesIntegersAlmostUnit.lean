@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerGeneratorApproxCriticalRadiusStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerGeneratorApproxCriticalRadius
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPthPowerScaleThinShellStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubOnePowEqPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubOnePowEqPrime
 
 open GlobalTheory.AlmostEt
 open scoped NNReal
@@ -21,8 +21,8 @@ theorem kummer_moves : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : �
   have hs0 : 0 < s := lt_trans zero_lt_one hs1
   have hrs : r * s < 1 := by
     rw [hs_def, ← div_eq_mul_inv]; exact (div_lt_one ht0).mpr hrt
-  obtain ⟨y, hyF, hy⟩ := GlobalTheory.T.kummer_generator_approx_critical_radius L v p hp F hF hp1 α hαp hp0 s hs1
-  have hz := GlobalTheory.T.valuation_primitiveRoot_sub_one_pow_pred_eq L v p hp ζ hζ
+  obtain ⟨y, hyF, hy⟩ := _root_.GlobalTheory.AlmostEt.kummer_approx_critical L v p hp F hF hp1 α hαp hp0 s hs1
+  have hz := _root_.GlobalTheory.AlmostEt.valuation_sub_one_pow_eq_prime L v p hp ζ hζ
   have hp2 : 2 ≤ p := hp.two_le
   have hpn : p - 1 ≠ 0 := by omega
   set β := α - y with hβ_def

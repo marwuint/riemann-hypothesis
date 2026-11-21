@@ -72,16 +72,6 @@ theorem khw_lowK_mem (hE : IsGlRep E) (hU : IsInfUnitary ε E)
   rw [hsum]
   simp [hz, hw₀]
 
-theorem casValK_lowK_lt (hE : IsGlRep E) (hU : IsInfUnitary ε E)
-    (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
-    (hgap : StdGap ε lam) {μ : Fin n → ℝ} {w : M} (hw : w ∈ genSub E V) (hw0 : w ≠ 0)
-    (hμ : IsKHWVec ε E μ w) (hne : μ ≠ lowK ε lam) :
-    casValK ε (lowK ε lam) < casValK ε μ := by
-  obtain ⟨hmono, h, hh, hbig⟩ := hgap
-  obtain ⟨j, -, hpos, hcas⟩ := casimir_gap_at_noncompact_weight hE hU hV hc hmono hh hbig hw hw0 hμ hne
-  have : (0 : ℝ) < 2 * ((j : ℝ) + 1) * (h - n + 1) := mul_pos (by positivity) hpos
-  linarith
-
 theorem vogan_min (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hgap : StdGap ε lam) {μ : Fin n → ℝ} {w : M} (hw : w ∈ genSub E V) (hw0 : w ≠ 0)

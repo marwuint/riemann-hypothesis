@@ -70,13 +70,4 @@ theorem isSmoothHerm_regLine {A : HermLine ι} (hA : IsSmoothHerm A) {s : MRing 
     IsSmoothHerm (regLine A s ε ha hs) :=
   Real.contDiff_exp.comp_contDiffOn (contDiffOn_regLog hA s hε).neg.neg
 
-theorem isMultiHomog_planeCoordinate (i : Fin 3) : IsMultiHomog (Xc 3 i) (fun _ => 1) := by
-  intro m hm k
-  rw [support_X, Finset.mem_singleton] at hm
-  subst hm
-  simp [Finsupp.single_apply]
-
-def regularisedLogNormSecond : HermLine (PBlk 3) :=
-  regLine (fsLine 3) (Xc 3 1) 1 (fun _ => rfl) (isMultiHomog_planeCoordinate 1)
-
 end GroundTheory.Heights₂.Heights.Targets

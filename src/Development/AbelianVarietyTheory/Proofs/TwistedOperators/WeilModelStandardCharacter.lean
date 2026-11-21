@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerSkewPlaneUniqueDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartz
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelGoodLineActionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelGoodLineAction
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsClmThetaSumRhoPure
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
@@ -82,7 +82,7 @@ theorem hasDerivAt_thetaSum_line : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E
       GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure h (φ i) ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d) := fun i h => (hR i h).2
 
   choose c g hc hg using fun i =>
-    GlobalTheory.T.weil_model_good_line_action hP M ψ χX χW om hCM hψ hM hW γ hγ (f i) (φ i) (hφ i).1 (hφ i).2
+    _root_.GlobalTheory.Twist.smoothLine_pure hP M ψ χX χW om hCM hψ hM hW γ hγ (f i) (φ i) (hφ i).1 (hφ i).2
 
   have hpure : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (g i) (φ i) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i) := by
     intro i

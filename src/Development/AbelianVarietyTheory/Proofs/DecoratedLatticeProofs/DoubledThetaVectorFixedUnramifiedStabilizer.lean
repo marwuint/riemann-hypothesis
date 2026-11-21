@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsThetaFun
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingSphericalVacuaToDoubledLatticeVacuumStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InertPlaceStabilizersFixWeilLatticeVacuum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceLatticeStabilisersFixWeilVacuum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeCharacterOfUnitaryTensorIdelesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeCharacterOfUnitaryTensorIdeles
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TwistedLevelValues
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsUnramifiedAtPlaceIdempotentOfHeckeCharUnramifi
 open scoped ComplexConjugate Matrix NNReal
@@ -26,7 +27,7 @@ theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB 
   have hlv := hvac Sf Φ₁ Φ₂ hU.sph₁ hU.sph₂ v hv
   have u1 : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.UnramAt (1 : (AE D)ˣ →* Circle) v := fun _ _ _ _ => rfl
   have u2 : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.UnramAt χB v := by
-    obtain ⟨χ, hc⟩ := GlobalTheory.T.exists_heckeCharacter_of_unitary_tensorIdeles D χB hW.hecT
+    obtain ⟨χ, hc⟩ := _root_.GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D χB hW.hecT
     refine GlobalTheory.UnramOver.unramAt_of_unrAt D χB χ hc v _ ?_ ?_
     · refine ⟨singleV _ v 1, rfl, ?_, ?_⟩
       · classical

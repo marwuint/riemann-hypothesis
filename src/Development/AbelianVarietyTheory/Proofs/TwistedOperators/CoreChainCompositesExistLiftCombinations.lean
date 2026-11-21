@@ -1,11 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestGridCommonDataPropertiesHoldStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConjStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestGridCommonDataPropertiesHold
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConj
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ChainParSucc
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TransferOn
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointExchangeLawsThetaHeisenbergStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CoreChainPreStepsExistOfDepthCongruenceStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SelfDualLatticeChangeOfLatticeLawsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestGridStageLatticesPropertiesProofStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenRankThetaChainWeilDatumExtendsToStepStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestGridStageLatticesPropertiesProof
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenRankThetaChainWeilDatumExtendsToStep
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.KFiniteSpanLeSpanRealIntertwinerValues
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsCoreLat
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
@@ -36,12 +38,12 @@ namespace GlobalTheory.ChainLifts
 theorem chainEx (hDS : GlobalTheory.Published.DiscreteSeriesCover) (hHC : GlobalTheory.Published.HarishChandraModules)
     (hCR : GlobalTheory.Published.CuspRapidDecay) (hCW : GlobalTheory.Published.CasselmanWallach) (hDF : DepFixed) (hCM : CoreModels) : ChainEx := by
   intro D hq hsz T L μ0 hL sc hgap G W Mv hM v r₀ M₀ hr₀
-  have hCom : (gridCom W).Is := GlobalTheory.T.testGridCommonData_properties_hold D hq hsz T L μ0 hL sc hgap G W Mv hM
-  have hStage := GlobalTheory.T.testGridStageLatticesProperties_proof D hq T L μ0 hL sc G W Mv hM
+  have hCom : (gridCom W).Is := _root_.GlobalTheory.CoreOnto.comOK D hq hsz T L μ0 hL sc hgap G W Mv hM
+  have hStage := _root_.GlobalTheory.CoreOnto.StageProof.stageOK D hq T L μ0 hL sc G W Mv hM
   have hPre := GlobalTheory.T.core_chain_pre_steps_exist_of_depth_congruence hDF D hq hsz T L μ0 hL sc hgap G W Mv hM
   have hCM' := hCM D hq T L μ0 hL sc G W Mv hM
-  have hStep := GlobalTheory.T.evenRankThetaChain_weilDatum_extends_to_step hDS hHC hCR hCW D
-  have hConj := GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hCR D
+  have hStep := _root_.GlobalTheory.EvenOnto.StepExists.stepEx hDS hHC hCR hCW D
+  have hConj := _root_.GlobalTheory.EvenOnto.ConjVal.values_conj_hecke hCR D
   have hEx := GlobalTheory.T.adjointExchange_laws_thetaHeisenberg D
   have hRL := GlobalTheory.T.selfDualLattice_changeOfLattice_laws D
 

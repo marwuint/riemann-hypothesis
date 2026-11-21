@@ -195,7 +195,4 @@ noncomputable def inhab : Data E 1 := by
       fin_cases a; fin_cases b
       simp [transvMat, hξ] }
 
-theorem nonempty_data : Nonempty (Data E 1) :=
-  ⟨inhab⟩
-
 end ReciprocityTheory.ChartRestriction.G.FD

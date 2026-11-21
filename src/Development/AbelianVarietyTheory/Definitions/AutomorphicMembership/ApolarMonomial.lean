@@ -26,17 +26,6 @@ variable {S : Type} [CommRing S] {ρ V : Type}
 def apolar (P : MvPolynomial V S) (f : MvPowerSeries V S) : S :=
   ∑ m ∈ P.support, P.coeff m * ((m.prod fun _ n => (n.factorial : S)) * MvPowerSeries.coeff m f)
 
-theorem apolar_monomial (m : V →₀ ℕ) (c : S) (f : MvPowerSeries V S) :
-    apolar (MvPolynomial.monomial m c) f = c * ((m.prod fun _ n => (n.factorial : S)) * MvPowerSeries.coeff m f) := by
-  classical
-  rw [apolar, Finset.sum_subset (MvPolynomial.support_monomial_subset) fun x _ hx => by
-    rw [MvPolynomial.notMem_support_iff.1 hx, zero_mul], Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]
-
-example : apolar (MvPolynomial.monomial (Finsupp.single () 2) (1 : ℚ))
-    (MvPowerSeries.monomial (Finsupp.single () 2) 1) = 2 := by
-  rw [apolar_monomial, MvPowerSeries.coeff_monomial_same, Finsupp.prod_single_index (by simp)]
-  norm_num [Nat.factorial]
-
 def jetAt (c : ρ → V) (m : ℕ) : Jet S ρ m →ₐ[S] Jet S V m :=
   jetMap (fun r => MvPolynomial.X (c r)) fun r => X_mem_orig (c r)
 

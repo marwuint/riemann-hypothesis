@@ -50,33 +50,15 @@ def W : Submodule C V := LinearMap.ker P.ht
 
 def om' : Submodule O Ω := P.T.map (P.ht.restrictScalars O)
 
-def lie : Submodule O V :=
-  dualLat P.e.flip (P.om.comap (P.ht.restrictScalars O)) ⊓ P.W.restrictScalars O
-
 def Wsp (σ : E →+* C) : Submodule C V := P.W ⊓ eigSp P.ρ σ
 
 def Ωsp (σ : E →+* C) : Submodule C Ω := eigSp P.ρΩ σ
 
-def WHT (σ : E →+* C) : Submodule O V := P.W.restrictScalars O ⊓ eigQuot P.ρ σ P.T
-
 def W' (σ : E →+* C) : Submodule O V := P.W.restrictScalars O ⊓ eigSub P.ρ σ P.T
-
-def Wrec (σ : E →+* C) : Submodule O V := eigSub P.ρ σ P.lie
 
 def omHT (σ : E →+* C) : Submodule O Ω := eigQuot P.ρΩ σ P.om'
 
 def omRec (σ : E →+* C) : Submodule O Ω := eigQuot P.ρΩ σ P.om
-
-def dW (v : Valuation C NNReal) (σ : E →+* C) {j : ℕ} (b : Basis (Fin j) C (P.Wsp σ)) (i : Fin j) : ℝ :=
-  grLog v (latIn (P.WHT σ) (P.Wsp σ)) b i - grLog v (latIn (P.Wrec σ) (P.Wsp σ)) b i
-
-def dΩ (v : Valuation C NNReal) (σ : E →+* C) {k : ℕ} (b : Basis (Fin k) C (P.Ωsp σ)) (i : Fin k) : ℝ :=
-  grLog v (latIn (P.omHT σ) (P.Ωsp σ)) b i - grLog v (latIn (P.omRec σ) (P.Ωsp σ)) b i
-
-def phiDiff (v : Valuation C NNReal) {Ψ : Type} [Fintype Ψ] (τ : Ψ → (E →+* C)) {j k : Ψ → ℕ}
-    (bW : ∀ s, Basis (Fin (j s)) C (P.Wsp (τ s))) (bΩ : ∀ s, Basis (Fin (k s)) C (P.Ωsp (τ s)))
-    (lW : ∀ s, Fin (j s) → ℝ) (lΩ : ∀ s, Fin (k s) → ℝ) : ℝ :=
-  ∑ s, ((∑ i, lW s i * P.dW v (τ s) (bW s) i) + ∑ i, lΩ s i * P.dΩ v (τ s) (bΩ s) i)
 
 def tate (x : Fin N → 𝓞 E) : V := ∑ i, P.ρ (x i) (P.t i)
 

@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.PeriodIntegrals.FiltLen
 
 namespace PI.FiltrationLength
 
@@ -54,21 +53,6 @@ theorem ell_add {A B C : Submodule R W} (hAC : A ≤ C) (hCB : C ≤ B) :
           have := C.sub_mem h1 h2
           simpa using this
   exact Module.length_eq_add_of_exact f g hf hg H
-
-theorem length_quot_le_of_ker_le {X Y : Type} [AddCommGroup X] [Module R X] [AddCommGroup Y]
-    [Module R Y] (g : X →ₗ[R] Y) (K : Submodule R X) (hK : LinearMap.ker g ≤ K) :
-    Module.length R (X ⧸ K) ≤ Module.length R Y := by
-  have h1 : Module.length R (X ⧸ K) ≤ Module.length R (X ⧸ LinearMap.ker g) :=
-    Module.length_le_of_surjective (Submodule.mapQ _ _ LinearMap.id (by simpa using hK))
-      (by
-        intro y
-        induction y using Submodule.Quotient.induction_on with
-        | _ x => exact ⟨Submodule.Quotient.mk x, by simp⟩)
-  have h2 : Module.length R (X ⧸ LinearMap.ker g) = Module.length R (LinearMap.range g) :=
-    (g.quotKerEquivRange).length_eq
-  have h3 : Module.length R (LinearMap.range g) ≤ Module.length R Y :=
-    Module.length_le_of_injective (LinearMap.range g).subtype (Submodule.subtype_injective _)
-  exact h1.trans (h2.le.trans h3)
 
 theorem ell_sup_le {A C D : Submodule R W} (hDA : D ≤ A) :
     ell (A ⊔ C) A ≤ ell C D := by

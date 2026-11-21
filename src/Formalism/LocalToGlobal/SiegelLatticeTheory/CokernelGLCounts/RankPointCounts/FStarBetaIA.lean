@@ -71,11 +71,6 @@ theorem baseChangeAt_perp' {m : (VS D).V} (hm : m ∈ orth (VS D) (Xsp G)) :
 
 end Frame
 
-theorem z_memG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') {Λ : Submodule (𝓞 D.host.E) (VS D).V}
-    (hΛ : Submodule.IsLattice D.host.E Λ) (h : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ) (locF' Zd p G)) :
-    G.fl.z ∈ Λ :=
-  mem_of_bcP Zd hΛ fun p => by rw [← locF'_last Zd p G]; exact (h p).1 _
-
 theorem coef_intG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hprim : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ) (locF' Zd p G)) (c : Fin (D.R.rS + 1) → D.host.E)
     (hc : ∑ a, c a • frame G a ∈ Λ) : IsIntegral ℤ (c (Fin.last D.R.rS)) := by

@@ -5,7 +5,9 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzIsoRes
 import Development.DiscreteGroups.GlobalIrreducibility.DzLCusp
 import Development.DiscreteGroups.GlobalIrreducibility.DzKSchur
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdmissibleLabelWeightsOfGreenCuspidalParametrisa
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducibleStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducible
+import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 
 noncomputable section
 

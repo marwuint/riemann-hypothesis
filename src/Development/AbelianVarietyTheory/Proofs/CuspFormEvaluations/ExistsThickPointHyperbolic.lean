@@ -176,32 +176,6 @@ theorem _root_.GlobalTheory.ThickPoint.traceFormOf_nondegenerate {G : Matrix (Fi
     simpa [Matrix.vecMul, dotProduct, Pi.single_apply] using h
   exact Matrix.eq_zero_of_vecMul_eq_zero hdet h2
 
-theorem discr_smul_mem (X : DataX E r) (u : Fin r → E)
-    (htr : ∀ y ∈ X.L', ∃ k : ℤ, Algebra.trace ℚ E (herm X.Gm u y) = k) :
-    ((discr E : ℤ) : E) • u ∈ X.L' := by
-  set D : FractionalIdeal (𝓞 E)⁰ E := (differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E) with hD
-  have hD0 : D ≠ 0 := FractionalIdeal.coeIdeal_ne_zero.mpr differentIdeal_ne_bot
-  have h1 : ∀ y ∈ X.L', herm X.Gm u y ∈ D⁻¹ := by
-    intro y hy
-    refine TraceDualMin.mem_inv_different fun a => ?_
-    obtain ⟨k, hk⟩ := htr _ (X.L'.smul_mem
-      (⟨cc (a : E), TraceDualMin.isIntegral_cc a.isIntegral_coe⟩ : 𝓞 E) hy)
-    refine ⟨k, ?_⟩
-    rw [← hk]
-    change _ = Algebra.trace ℚ E (herm X.Gm u (cc (a : E) • y))
-    rw [HermitianTraceFormVanishing.herm_smul_right, HermitianTraceFormVanishing.cc_cc, mul_comm]
-  have hδ : ((discr E : ℤ) : E) ∈ D := by
-    have := FractionalIdeal.mem_coeIdeal_of_mem (𝓞 E)⁰ (P := E)
-      (NumberField.discr_mem_differentIdeal E (𝓞 E))
-    rwa [map_intCast] at this
-  refine X.L'_dual _ fun y hy => ?_
-  rw [HermitianTraceFormVanishing.herm_smul_left]
-  have := FractionalIdeal.mul_mem_mul hδ (h1 y hy)
-  rw [mul_inv_cancel₀ hD0] at this
-  obtain ⟨b, hb⟩ := (FractionalIdeal.mem_one_iff _).mp this
-  rw [← hb]
-  exact b.isIntegral_coe
-
 noncomputable def majForm (X : Data E r) (x : Frame X.Ψ r) (hx : x ∈ X.dom) :
     LinearMap.BilinForm ℝ (X.Ψ → Fin r → ℂ) :=
   LinearMap.mk₂ ℝ (MajorantOperators.gI x) (MajorantOperators.gI_add_left x)

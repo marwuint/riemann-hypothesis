@@ -1,7 +1,11 @@
 import Development.WeilBound.CoreStatements.MultihomogeneousSquares.SingSt
 import Development.WeilBound.CoreStatements.FlagImmersions.SumFundOnRoot
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemAbLocusIff
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 
 noncomputable section
 
@@ -104,7 +108,7 @@ theorem stSing_of (h0 : C0) (h1 : C1) (h2 : C2) (h5 : C5) (hW : GradedLineNormsW
   obtain ⟨τ, i⟩ := a
   obtain ⟨⟨pr, j, hov, -, hV, hbW, hbO⟩, -, hdy, he⟩ := htot
   have hT : Tot tie 𝔐' Fl pr j := ⟨hov, hV, hbW, hbO⟩
-  obtain ⟨z, -, hz⟩ := (GlobalTheory.T.complex_points_iff_centres 𝔐'.X Φ 𝔐'.ξ K ι y 𝔐'.tie w).1 hw
+  obtain ⟨z, -, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐'.X Φ 𝔐'.ξ K ι y 𝔐'.tie w).1 hw
   obtain ⟨q, hq⟩ := BM.O_cover x
   have hF := BM.isFrame q
   have hC0 := fun w' hw' => h0 E H D l Xo c Y S K ι Φ y M 𝔐 𝔐' pr j z w' hov hw'
@@ -209,7 +213,7 @@ theorem stSing_of (h0 : C0) (h1 : C1) (h2 : C2) (h5 : C5) (hW : GradedLineNormsW
         rw [hcb, show w' ⟨k'.1, (BM.F q).c k'⟩ = 1 from hn k', norm_one]
       simp only [this, _root_.one_zpow, Finset.prod_const_one, mul_one]
   have hmem : ∀ w', CoordsAt 𝔐'.ξ y z w' → w' ∈ mcPts (mCoordIdeal y) := fun w' hw' =>
-    (GlobalTheory.T.complex_points_iff_centres 𝔐'.X Φ 𝔐'.ξ K ι y 𝔐'.tie w').2 ⟨z, 𝔐'.all _, hw'⟩
+    (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐'.X Φ 𝔐'.ξ K ι y 𝔐'.tie w').2 ⟨z, 𝔐'.all _, hw'⟩
   have hbo : ∀ w', SameOrbit w' w → SameOrbit (basePart M.blk w') (BM.Rb.lift x x) := fun w' ho => by
     refine sameOrbit_trans ?_ horb
     obtain ⟨s, hs, rfl⟩ := ho
@@ -245,7 +249,7 @@ theorem stSing_of (h0 : C0) (h1 : C1) (h2 : C2) (h5 : C5) (hW : GradedLineNormsW
       simp only [Pl]
       ring
     have hbm : basePart M.blk w₁ ∈ mcPts (mCoordIdeal M.x) :=
-      (GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie _).2 ⟨_, 𝔐.all _, (hC0 w₁ hz₁).1⟩
+      (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie _).2 ⟨_, 𝔐.all _, (hC0 w₁ hz₁).1⟩
     obtain ⟨m₀, hm₀⟩ := h5 K ι Φ y _ _ _ M _ (BM.F q) h (τ, i) k₀ hbm hF (hgood w₁ hz₁) hA.2.2.2.1 hA.2.2.2.2.1 hb
     have hP₁ : Pl m₁ ≠ 0 := fun h' => by
       obtain ⟨r, -, hr2⟩ := hP m₀

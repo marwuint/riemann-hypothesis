@@ -6,15 +6,6 @@ namespace GlobalTheory.FitSquare
 
 variable {R : Type} [CommRing R]
 
-theorem exists_lift {ι N M : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup N] [Module R N]
-    [AddCommGroup M] [Module R M] (h : (ι → R) →ₗ[R] M) (g : N →ₗ[R] M)
-    (hh : ∀ y, ∃ z, g z = h y) : ∃ l : (ι → R) →ₗ[R] N, g ∘ₗ l = h := by
-  choose z hz using hh
-  refine ⟨(Pi.basisFun R ι).constr R (fun i => z (Pi.basisFun R ι i)), ?_⟩
-  apply (Pi.basisFun R ι).ext
-  intro i
-  rw [LinearMap.comp_apply, Module.Basis.constr_basis, hz]
-
 section blocks
 variable {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 

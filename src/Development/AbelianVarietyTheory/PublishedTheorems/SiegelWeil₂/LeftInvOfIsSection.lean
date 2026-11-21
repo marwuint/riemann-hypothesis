@@ -50,17 +50,6 @@ theorem isSection_stdSec {χ : (AE D)ˣ →* Circle} {H : G D n → ℝ≥0} (h 
   rw [height_eq h, isSection_iff]
   exact isIwasawa.flatSec_mem isClosed_P continuous_modP isCompact_K (isSection_iff.1 hφ) s
 
-theorem stdSec_of_mem {H : G D n → ℝ≥0} (h : IsHeight H) (φ : G D n → ℂ) (s₁ s : ℂ) {k : G D n} (hk : k ∈ K D n) :
-    stdSec H φ s₁ s k = φ k := by
-  rw [height_eq h]; exact isIwasawa.flatSec_of_mem φ s₁ s hk
-
-theorem leftInv_of_isSection {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) {s : ℂ} {φ : G D n → ℂ}
-    (hφ : IsSection χ s φ) : LeftInv (P D n ⊓ GF D n) φ := fun γ hγ g => by
-  obtain ⟨u, hu⟩ := LeftInvSect.det_rat hγ.2 (leviBlock (D := D) (n := n) ⟨γ, hγ.1⟩) rfl
-  have h1 : absA D (Units.map (incA D).toMonoidHom u) = 1 := absE_inclR u
-  rw [hφ.1 γ hγ.1 (leviBlock (D := D) (n := n) ⟨γ, hγ.1⟩) rfl g, hu, hχ.2 u, h1]
-  simp
-
 theorem hypotheses_hold (D : D7) (n k : ℕ) (s₁ : ℂ) : ∃ (H : G D n → ℝ≥0) (φ : G D n → ℂ),
     IsHeckeChar D 1 ∧ ResEta D 1 (2 * k) ∧ IsHeight H ∧ IsSection 1 s₁ φ ∧ ∀ g, φ g ≠ 0 := by
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -108,28 +97,6 @@ theorem cosetConv_stdSec {χ : (AE D)ˣ →* Circle} {H : G D n → ℝ≥0} (h 
   · have := (isSection_iff.1 (isSection_stdSec h hφ z)).1
     push_cast
     exact this
-
-theorem poleLE_zero {χ : (AE D)ˣ →* Circle} {H : G D n → ℝ≥0} (h : IsHeight H) {s₁ : ℂ} {φ : G D n → ℂ}
-    (hφ : IsSection χ s₁ φ) {s₀ : ℂ} (hs : (n : ℝ) / 2 < s₀.re) (g : G D n) :
-    PoleLE (fun s => cosetSum (P D n) (GF D n) (stdSec H φ s₁ s) g) s₀ 0 := by
-  have ha : AnalyticOnNhd ℂ (fun s => cosetSum (P D n) (GF D n) (stdSec H φ s₁ s) g) (rightOf ((n : ℝ) / 2)) :=
-    analyticOnNhd_tsum_npow (f := term _ _ φ g) (a := term _ _ H g) (fun _ => by rw [height_eq h]; exact iwAbs_pos _ _ _)
-      fun s hs => cosetConv_stdSec h hφ hs g
-  exact ⟨_, ⟨_, hs, isRightDomain_rightOf _, ha.meromorphicOn, 0, fun _ _ => rfl⟩,
-    by simpa using (ha s₀ hs).meromorphicOrderAt_nonneg⟩
-
-theorem polesStd_iff : Published.SiegelEisensteinPolesStd ↔
-    ∀ (D : D7) (n : ℕ) (χ : (AE D)ˣ →* Circle) (b : ℕ), IsHeckeChar D χ → ResEta D χ b →
-    ∀ H : G D n → ℝ≥0, IsHeight H → ∀ (s₁ : ℂ) (φ : G D n → ℂ), IsSection χ s₁ φ →
-    ∀ s₀ : ℂ, 0 < s₀.re → s₀.re ≤ (n : ℝ) / 2 → ∀ g,
-      PoleLE (fun s => cosetSum (P D n) (GF D n) (stdSec H φ s₁ s) g) s₀ 1 := by
-  refine ⟨fun h D n χ b h1 h2 H h3 s₁ φ h4 s₀ h5 h6 => h D n ?_ χ b h1 h2 H h3 s₁ φ h4 s₀ h5,
-    fun h D n _ χ b h1 h2 H h3 s₁ φ h4 s₀ h5 g => ?_⟩
-  · have : (0 : ℝ) < n := by linarith
-    exact_mod_cast this
-  · rcases le_or_gt s₀.re ((n : ℝ) / 2) with e | e
-    · exact h D n χ b h1 h2 H h3 s₁ φ h4 s₀ h5 e g
-    · exact SimplePoleModel.poleLE_succ (poleLE_zero h3 h4 e g)
 
 end GlobalTheory.StdUnn.PolesModel
 

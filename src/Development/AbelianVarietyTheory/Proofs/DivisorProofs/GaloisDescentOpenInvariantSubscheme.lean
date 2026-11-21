@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisTransitiveOnFibresFlatBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisQuotientAffineOpenSpecInvariantsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisTransitiveOnFibresFlatBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisQuotientAffineOpenSpecInvariants
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -119,7 +119,7 @@ theorem exists_act_eq_of_apply_eq {R R' : Type} [CommRing R] [CommRing R'] [Alge
     refine IsPullback.of_bot (v₂₁ := pullback.fst _ _) ?_ hu₂.symm (IsPullback.of_hasPullback _ _).flip
     rw [hu₁]; exact hφ.flip
   have : IsClosedImmersion u := MorphismProperty.of_isPullback (P := @IsClosedImmersion) hu inferInstance
-  obtain ⟨σ, h, h₁, h₂, h₃⟩ := GlobalTheory.T.galois_transitive_on_fibres_flat_baseChange R R' hinj hG Y hY _ _ _ (IsPullback.of_hasPullback _ _) (u p) (u q) (by
+  obtain ⟨σ, h, h₁, h₂, h₃⟩ := _root_.GlobalTheory.Mum.gal_transitive_on_fibres R R' hinj hG Y hY _ _ _ (IsPullback.of_hasPullback _ _) (u p) (u q) (by
     rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hu₁, e])
   obtain ⟨k, k₁, k₂⟩ := hinv σ
   have hk : k ≫ u = u ≫ h := by
@@ -166,7 +166,7 @@ theorem exists_affine_chart : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalR
   generalize pullback.fst G'.hom (thick R' (maximalIdeal R') 0) = κ at *
   obtain ⟨_, ⟨V₁, hV₁, rfl⟩, hxV₁, -⟩ := X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (π x)) isOpen_univ
   obtain ⟨C', _, _, _, _, actC, C, j, l, hj, hl, hlr, hpb, -, -, hcomm, -, hC⟩ :=
-    GlobalTheory.T.galoisQuotient_affineOpen_spec_invariants R R' hB hF hG G' act hact h1 hmul H hH X π hπ haff hinv horb hsec V₁ hV₁
+    _root_.GlobalTheory.Mum.quot_affine_spec_invariants R R' hB hF hG G' act hact h1 hmul H hH X π hπ haff hinv horb hsec V₁ hV₁
   have lift : ∀ (z : H.toScheme) (w : Sp C), π z = l w → ∃ q : Sp C', j q = z ∧ spMap (algebraMap C C') q = w :=
     fun z w e => Scheme.exists_preimage_of_isPullback hpb z w e
   have hw : ∀ q, π (j q) = l (spMap (algebraMap C C') q) := fun q => by

@@ -32,10 +32,4 @@ theorem isGen_fromSpecStalk (C : Scheme.{0}) [IsIntegral C] :
       exact ⟨_, Scheme.fromSpecStalk_closedPoint⟩⟩,
     inferInstanceAs (IsPreimmersion (C.fromSpecStalk (genericPoint C)))⟩
 
-structure IsNeron {K : Type} [Field K] {C : Scheme.{0}} (x : Sp K ⟶ C) (N : Over C) : Prop where
-  smooth : Smooth N.hom
-  separated : IsSeparated N.hom
-  quasiCompact : QuasiCompact N.hom
-  ext : ∀ Y : Over C, Smooth Y.hom → Function.Bijective fun f : Y ⟶ N ↦ (Over.pullback x).map f
-
 end GlobalTheory.NeronCurve

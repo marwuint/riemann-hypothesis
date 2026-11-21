@@ -51,9 +51,6 @@ def RbarTie (D : D7) : Prop :=
         ((ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly.map
           ((D.naut.kFbar i).comp (IsLocalRing.residue (D.nd.O i)))
 
-def TempCSD (D : D7) : Prop :=
-  ∀ (a : ℕ) (π : D.naut.CG a), 1 ≤ a → D.naut.csd π → D.naut.ralg π → ∀ w, D.naut.tempered (D.naut.locG π w)
-
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 def ParUpRec (i : N.Loc) : Prop :=

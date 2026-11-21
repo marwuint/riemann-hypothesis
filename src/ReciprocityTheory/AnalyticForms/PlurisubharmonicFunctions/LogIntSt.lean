@@ -18,10 +18,6 @@ def LogCoordLocIntStatement : Prop :=
 def LogMonoLocIntStatement : Prop :=
   ∀ (D : ℕ) (m : Fin D → ℤ), LocallyIntegrable (logMono m) volume
 
-def LogMonoTestIntStatement : Prop :=
-  ∀ (D : ℕ) (m : Fin D → ℤ) (f : (Fin D → ℂ) → ℝ), Continuous f → HasCompactSupport f →
-    Integrable (fun z => f z * logMono m z) volume
-
 def LogUnitMonoLocIntStatement : Prop :=
   ∀ (D : ℕ) (m : Fin D → ℤ) (U : Set (Fin D → ℂ)) (u : (Fin D → ℂ) → ℂ), IsOpen U →
     DifferentiableOn ℂ u U → (∀ z ∈ U, u z ≠ 0) →

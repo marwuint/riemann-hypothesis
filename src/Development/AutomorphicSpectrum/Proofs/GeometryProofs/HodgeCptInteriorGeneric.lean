@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceDecompositionInternalStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceDecompositionInternal
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializes
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 
@@ -330,7 +331,7 @@ theorem HodgeCpt.basic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   letI : Fintype (CMType H) := Fintype.ofFinite _
   have hcard : Fintype.card (CMType H ⊕ CMType H) = Module.finrank ℚ E := by
     rw [Fintype.card_of_bijective (HodgeBasic.labelHom_bijective H), Embeddings.card]
-  have hint := GlobalTheory.T.eigenspace_decomposition_internal Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard
+  have hint := _root_.GlobalTheory.CompanionTheory.Ar.isInternal_eigSp Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard
   refine ⟨?_, ⟨IsOpenImmersion.lift Y.jQ g hran, ?_⟩, hchar, hinj, ?_, hint.submodule_iSup_eq_top,
     hint.submodule_iSupIndep, ?_⟩
   · refine HodgeBasic.mem_abLocus_of_map 𝔐.m.cart.1 ?_

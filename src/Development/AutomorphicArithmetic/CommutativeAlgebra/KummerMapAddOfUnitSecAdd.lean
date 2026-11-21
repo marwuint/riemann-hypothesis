@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRulesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocallyIffAffineEtalePointCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleToSheafifyLocallyBijectiveAndLiftStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKummerTorsorSplittingKummerTorsorSplittingStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveRootPowUnitSubProdPropertiesStatement
@@ -69,7 +70,7 @@ end UpperTheory
 
 private theorem kumT_eq_of_unitSec_eq (q : ℕ) [NeZero q] {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, ⊤)))
     (a b : (Γ(U, ⊤))ˣ) (h : unitSec a = unitSec b) : kumT q U a = kumT q U b := by
-  apply (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) _ U).1
+  apply (_root_.GlobalTheory.EtC.sec_ext_glue (ZMod q) _ U).1
   refine (GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 U _ _ (UpperTheory.unitSec_loc a b h) ?_
   intro V g hg
   rw [(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 V U g a hq, (GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 V U g b hq, hg]
@@ -77,7 +78,7 @@ private theorem kumT_eq_of_unitSec_eq (q : ℕ) [NeZero q] {U : Scheme.{0}} (hq 
 theorem UpperTheory.kummerMap_add_of_unitSec_add :
     ∀ (q : ℕ) [NeZero q] (κ : (restr (Int.castRingHom (ZMod q))).obj (tw q 1) ⟶ Gm), (∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (u : (Γ(U, ⊤))ˣ), (u : Γ(U, ⊤)) = ζ.1 → Sec.map κ (show Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) U from twGen 1 ζ) = unitSec u) → ∀ (V : Scheme.{0}), IsUnit (q : Γ(V, ⊤)) → ∀ (v v' : (Γ(V, ⊤))ˣ) (s : Sec (tw q 1) V), Sec.map κ (show Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) V from s) + unitSec v = unitSec v' → kumT q V v' = kumT q V v + Sec.map (resι _ (tw q 1)) s := by
   intro q _ κ hκ V hq v v' s hs
-  apply (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) _ V).1
+  apply (_root_.GlobalTheory.EtC.sec_ext_glue (ZMod q) _ V).1
   refine (GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 V _ _ ((GlobalTheory.T.tateTwist_sections_locally_generated q 1).1 V s) ?_
   intro W g hg
   have hqW : IsUnit (q : Γ(W, ⊤)) := by

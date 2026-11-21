@@ -13,9 +13,6 @@ open scoped TensorProduct NNReal Matrix Classical
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace Dense
-open GlobalTheory.CompanionTheory.CMAdele
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
-variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 end Dense
 theorem polSch_k : _root_.GlobalTheory.ThK.Dbl.PolSch_k := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp

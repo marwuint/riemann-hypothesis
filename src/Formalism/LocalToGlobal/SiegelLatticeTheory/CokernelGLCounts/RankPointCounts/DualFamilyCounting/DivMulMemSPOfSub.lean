@@ -71,16 +71,4 @@ theorem div_mem_SP_of_sub {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d : 
   rw [e]
   exact add_mem (div_mem_SP_of_mem h𝔭 hd hk h) (HU.jK_mem_SP w)
 
-theorem div_mul_mem_SP_of_sub {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {d d' : 𝓞 F} (hd : d ≠ 0)
-    (hd' : d' ≠ 0) {z w : 𝓞 K} {k : ℕ} (hk : vF 𝔭 d + vF 𝔭 d' ≤ k)
-    (h : z - w * (ι d * ι d') ∈ extP K 𝔭 ^ k) :
-    haveI := h𝔭.isPrime; jK z / (jK (ι d) * jK (ι d')) ∈ HU.SP K 𝔭 := by
-  have := h𝔭.isPrime
-  have e : jK z / (jK (ι d) * jK (ι d')) =
-      jK (z - w * (ι d * ι d')) / (jK (ι d) * jK (ι d')) + jK w := by
-    rw [map_sub, map_mul, map_mul, sub_div,
-      mul_div_cancel_right₀ _ (mul_ne_zero (jK_ι_ne_zero hd) (jK_ι_ne_zero hd'))]; ring
-  rw [e]
-  exact add_mem (div_mul_mem_SP_of_mem h𝔭 hd hd' hk h) (HU.jK_mem_SP w)
-
 end Formalism.L2.SG.Pf.fibreCountingData

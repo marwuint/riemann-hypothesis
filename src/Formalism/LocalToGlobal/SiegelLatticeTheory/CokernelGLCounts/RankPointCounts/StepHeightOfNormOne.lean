@@ -31,12 +31,6 @@ theorem ngSizes_of {Cg CT CSt : ℝ} {r f : ℕ} {b rd g TT cSt e1 : ℝ} (h : S
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩ := h
   exact ⟨a1, a2, a3, a4, a5, a6, a7, a8, h1, h2, h3, h4⟩
 
-def StepConstants : Prop :=
-  ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-      Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' →
-      ∃ (P : Type) (_ : Fintype P) (B : S3.MassData P) (Irat Ire : ℝ), MassDataAdmissible X Y u u' B Irat Ire
-
 def StepSizes : Prop :=
   ∀ Cg cb Cw cT CT C0 : ℝ, ∃ Cgs CTs : ℝ, 0 ≤ Cgs ∧ 0 ≤ CTs ∧ ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -86,39 +80,6 @@ def StepAnalytic : Prop :=
         PN.MeasureInput (Y.tO u u') (NOf2 Y u u' νL νB ng) cSt ∧
         PN.PointSumInput (Y.tO u u') (NOf2 Y u u' νL νB ng) (A * (D.R.rS + 1) ^ 2)
           (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
-
-theorem ngCut2C_of_steps (hB : StepConstants) (hS : StepSizes) (hC : StepClass) (hN : StepNormals) (hP : StepPoints)
-    (hH : StepHeight) (hA : StepAnalytic) : NGCut2C := by
-  intro Cg cb Cw cT CT C0
-  obtain ⟨B1, B2, hB'⟩ := hB Cg cb Cw cT CT C0
-  obtain ⟨Cgs, CTs, hCgs, hCTs, S1, S2, hS'⟩ := hS Cg cb Cw cT CT C0
-  obtain ⟨N1, N2, hN'⟩ := hN Cg cb Cw cT CT C0
-  obtain ⟨P1, P2, hP'⟩ := hP Cg cb Cw cT CT C0
-  obtain ⟨H1, H2, hH'⟩ := hH Cg cb Cw cT CT C0
-  obtain ⟨C1, C0n, hA1⟩ := hA Cg cb Cw cT CT C0
-  obtain ⟨CB, CSt, hCB, hCSt, A1, A2, hA'⟩ := hA1 (C1 + C0n + 38)
-  refine ⟨C1, C0n, C1 + C0n + 38, CB, CSt, Cgs, CTs, hCB, hCSt, hCgs, hCTs, le_refl _,
-    max B1 (max S1 (max N1 (max P1 (max H1 A1)))), max B2 (max S2 (max N2 (max P2 (max H2 A2)))), ?_⟩
-  intro C' Cl hC' hCl D large₂ X Y u u' h0 hst hct
-  have hctx : Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' := ⟨h0, hst, hct⟩
-  obtain ⟨P, hPf, Bk, Irat, Ire, hBk⟩ := hB' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx
-  letI := hPf
-  have hsz := hS' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx
-  have hnm := hN' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx
-  have hpt := hP' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx
-  have hht := hH' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx
-  obtain ⟨νL, νB, ng, cSt, e1, hL, hB2, hc0, hc1, he0, he1, hamp, hloc, hgm, hms, hps⟩ :=
-    hA' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx P Bk Irat Ire hBk
-  obtain ⟨g1, g2, g3, g4⟩ := hBk
-  exact ⟨P, hPf, Bk, cSt, e1, Irat, Ire, νL, νB, ng, hL, hB2, g1, g2, g3, g4,
-    ngSizes_of hsz hc0 hc1 he0 he1,
-    ⟨hC D X Y u u' hct νL νB ng,
-      Formalism.L2.SG.NGData.ampInput_of_vanish (Y := Y) (u := u) (u' := u') νL νB ng hamp,
-      hnm νL νB ng, hpt νL νB ng, hloc, hgm, hht νL νB ng⟩, ⟨hms, hps⟩⟩
-
-theorem rowNGC_of_steps (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hB : StepConstants) (hS : StepSizes) (hC : StepClass)
-    (hN : StepNormals) (hP : StepPoints) (hH : StepHeight) (hA : StepAnalytic) : RowNGC := by
-  exact Formalism.L2.SG.NGData.counting_bound_of_joint_chain hR hCh (ngCut2C_of_steps hB hS hC hN hP hH hA)
 
 theorem sizes_of_hypotheses : StepSizes := by
   intro Cg cb Cw cT CT C0
@@ -222,10 +183,6 @@ theorem stepClass_of_equiv (h : CorankOneEquivalence) : StepClass := by
     rw [← he] at hmem
     exact ⟨hmem.2.1.symm, hmem.2.2⟩
 
-theorem rowNGC_of_rest (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hB : StepConstants) (hE : CorankOneEquivalence) (hN : StepNormals)
-    (hP : StepPoints) (hH : StepHeight) (hA : StepAnalytic) : RowNGC := by
-  exact rowNGC_of_steps hR hCh hB sizes_of_hypotheses (stepClass_of_equiv hE) hN hP hH hA
-
 def StepNormOne : Prop :=
   ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -253,9 +210,5 @@ theorem stepHeight_of_normOne (h : StepNormOne) : StepHeight := by
     try positivity
   · have hg1 : (1 : ℝ) ≤ X.B.g := by exact_mod_cast hg
     exact (inv_le_one_of_one_le₀ (one_le_pow₀ hg1)).trans (one_le_pow₀ hg1)
-
-theorem rowNGC_of_rest2 (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hB : StepConstants) (hE : CorankOneEquivalence) (hN : StepNormals)
-    (hP : StepPoints) (hO : StepNormOne) (hA : StepAnalytic) : RowNGC := by
-  exact rowNGC_of_rest hR hCh hB hE hN hP (stepHeight_of_normOne hO) hA
 
 end Formalism.L2.SG.NGCut

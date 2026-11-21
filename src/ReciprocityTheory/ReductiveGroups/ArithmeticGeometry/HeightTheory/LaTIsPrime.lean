@@ -88,16 +88,6 @@ variable (d : Data K ι Ω WT A)
 
 open scoped TensorProduct
 
-def Rb : ℕ := (d.T - 1).choose d.D
-
-noncomputable def lenA (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (e : ℕ) : ℕ∞ :=
-  let R := (la.valuationSubringAtPrime K).toSubring
-  letI : Module R (∀ c, A c) := Module.compHom _ R.subtype
-  let Θ := Submodule.span R (d.Theta : Set (∀ c, A c))
-  let X := Submodule.span R
-    ((la.asIdeal ^ e • d.M : Submodule (𝓞 K) (∀ c, A c)) : Set (∀ c, A c))
-  Module.length R (↥(X ⊔ Θ) ⧸ Θ.comap (X ⊔ Θ).subtype)
-
 def Vamb : Type := KTf K d.D d.N ⊗[K] (∀ c, A c)
 
 noncomputable instance : AddCommGroup d.Vamb :=
@@ -122,25 +112,6 @@ noncomputable def genZV : {α : Fin d.D → Fin (d.T + 1) // d.absα α = d.a0} 
 noncomputable def ZK : Submodule (KTf K d.D d.N) d.Vamb :=
   Submodule.span (KTf K d.D d.N) (Set.range d.genZV)
 
-noncomputable def rho : ℕ := Module.finrank (KTf K d.D d.N) d.ZK
-
-noncomputable def lenOp (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (e : ℕ) : ℕ∞ :=
-  letI := d.modOpV la
-  let Θ : Submodule (Op d.D d.N la) d.Vamb := Submodule.span (Op d.D d.N la)
-    ((fun a => d.tv 1 a) '' (d.Theta : Set (∀ c, A c)))
-  let X : Submodule (Op d.D d.N la) d.Vamb :=
-    Submodule.span (Op d.D d.N la) ((fun a => d.tv 1 a) ''
-    ((la.asIdeal ^ e • d.M : Submodule (𝓞 K) (∀ c, A c)) : Set (∀ c, A c)))
-  Module.length (Op d.D d.N la) (↥(X ⊔ Θ) ⧸ Θ.comap (X ⊔ Θ).subtype)
-
-noncomputable def cl (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) : ℝ :=
-  letI := d.modOpV la
-  let Zla : Submodule (Op d.D d.N la) d.Vamb := Submodule.span (Op d.D d.N la) (Set.range d.genZV)
-  let Mla : Submodule (Op d.D d.N la) d.Vamb := Submodule.span (Op d.D d.N la)
-    ((fun a => d.tv 1 a) '' (d.M : Set (∀ c, A c)))
-  let Zsat : Submodule (Op d.D d.N la) d.Vamb := Mla ⊓ Submodule.span (Op d.D d.N la) (d.ZK : Set d.Vamb)
-  ((Module.length (Op d.D d.N la) (Zsat ⧸ Zla.comap Zsat.subtype)).toNat : ℝ)
-
 noncomputable abbrev algOp (h : d.S1) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (c : ι) :
     Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) :=
   (d.OpToS h la c).toAlgebra
@@ -163,31 +134,9 @@ noncomputable def IL (h : d.S1) (sel : Fin d.del → Fin d.np) (e : ∀ c, A c)
   let B := Submodule.span (Op d.D d.N la) (Set.range (d.bvecG sel e))
   ((Module.length (Op d.D d.N la) (A0 ⧸ B.comap A0.subtype)).toNat : ℝ)
 
-noncomputable def bvec (hd : d.Ax 𝒜) : Fin d.del → ∀ c, OmS (Ω c) d.D d.N :=
-  d.bvecG hd.sel (d.eF hd)
-
-def AdmissibleOmegaFamiliesAtPrime (hd : d.Ax 𝒜) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
-    Set (∀ c, OmS (Ω c) d.D d.N) :=
-  d.AdmissibleOmegaFamiliesAtPrimeOfSection (d.eF hd) la
-
-noncomputable def Iterm (h : d.S1) (hd : d.Ax 𝒜) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
-    ℝ :=
-  d.IL h hd.sel (d.eF hd) la
-
 noncomputable def Nl (h : d.S1) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) : ℝ :=
   ∑ c, ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.PlOver la c),
     (d.fze h c w : ℝ) * (d.ord c (d.Wres c w) (d.n1 • d.wde) (d.et c) : ℝ)
-
-noncomputable def ql (hd : d.Ax 𝒜) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) : ℝ :=
-  letI := hd.twistedCentralTestFunction; letI := hd.numberFieldDegreeOne; letI := hd.fieldDegreeAxiom
-  ∑ᶠ (la1 : IsDedekindDomain.HeightOneSpectrum (𝓞 hd.K1))
-    (_ : la1.asIdeal.comap (algebraMap (𝓞 K) (𝓞 hd.K1)) = la.asIdeal),
-    ((la1.asIdeal.ramificationIdx (𝓞 K) * la1.asIdeal.inertiaDeg (𝓞 K) : ℕ) : ℝ) /
-      (Module.finrank K hd.K1 : ℝ) * hd.q la1
-
-noncomputable def rhoP (hd : d.Ax 𝒜) : ℕ :=
-  letI := hd.twistedCentralTestFunction; letI := hd.fieldDegreeAxiom
-  d.rk - Module.finrank hd.K1 hd.MD
 
 end Data
 

@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryGroup
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFinitePartNeBot
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolynomialRepGLComplexAlgebraicWeightEvalPointStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHighestWeightVectorDualWeylModuleUpperStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DualWeylModuleIntertwinesGLOfUnitaryGroupStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHighestWeightVectorDualWeylModuleUpper
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueWeightDefiniteUnitaryAt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArchimedeanUnitaryPointsEquivUnitaryGroupStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DualWeylModuleIntertwinesGLOfUnitaryGroup
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -204,7 +206,7 @@ theorem weight_agree : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n
   haveI : Nontrivial (ι → ℂ) := b.equivFun.symm.toEquiv.nontrivial
   obtain ⟨lam, M₀, hM₀⟩ := GlobalTheory.UnitaryContainsType.exists_smallRep_intertwining n (ι → ℂ) σ hσc
   let M : nablaSq ℂ n lam →ₗ[ℂ] (ι → ℂ) := M₀.toLinearMap
-  have hM := GlobalTheory.T.dualWeylModule_intertwines_GL_of_unitaryGroup n lam ι Φ hΦ M fun u v => Representation.IntertwiningMap.isIntertwining _ _ M₀ u v
+  have hM := _root_.GlobalTheory.AlgWtHW.sqRep_intertwines_of_unitary n lam ι Φ hΦ M fun u v => Representation.IntertwiningMap.isIntertwining _ _ M₀ u v
   have hirr := GlobalTheory.DefU.isIrreducible_sqRep n lam
   have hinj : ∀ v, v ≠ 0 → M v ≠ 0 := by
     intro v hv hMv
@@ -218,7 +220,7 @@ theorem weight_agree : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n
       exact hv (by rw [← Submodule.mem_bot ℂ, ← h1]; exact hMv)
     · have h1 : LinearMap.ker M = ⊤ := congrArg Subrepresentation.toSubmodule h
       exact hM₀ (Representation.IntertwiningMap.ext (LinearMap.ker_eq_top.1 h1))
-  obtain ⟨v₀, hv₀, hw⟩ := GlobalTheory.T.exists_highest_weight_vector_dualWeylModule_upper n lam
+  obtain ⟨v₀, hv₀, hw⟩ := _root_.GlobalTheory.HwUpper.exists_hw_upper n lam
   refine ⟨lam, ?_, ι, inferInstance, inferInstance, b, P, hP, M v₀, hinj v₀ hv₀, fun A hA => ?_⟩
   · obtain ⟨f, hf, hf0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot π.irrS.2.1
     obtain ⟨x₀, hx₀⟩ : ∃ x, f x ≠ 0 := by

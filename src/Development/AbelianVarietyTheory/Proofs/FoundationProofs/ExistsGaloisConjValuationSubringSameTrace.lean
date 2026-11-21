@@ -10,12 +10,6 @@ namespace GlobalTheory.ValConj
 open Finset
 open scoped Pointwise
 
-section tails
-
-variable {L : Type} [Field L]
-
-end tails
-
 variable {F L : Type} [Field F] [Field L] [Algebra F L]
 
 def core (F : Type) [Field F] [Algebra F L] (W₁ W₂ : ValuationSubring L) : Subring L where

@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.NonFie
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCyclicOfFiniteQuotient
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasOrbIntTensorOfHasOrbInt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalStableOrbitalIntegralsWellDefinedStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusCompactQuotientFiniteVolumeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ClassTermEqVolumeMulOrbitalIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusCompactQuotientFiniteVolume
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ClassTermEqVolumeMulOrbitalIntegral
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCentralizerMeasuresFromUnitaryTorusStatement
 
 open MeasureTheory Set Filter Polynomial NumberField IsDedekindDomain
@@ -92,9 +92,9 @@ theorem class_term : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     rw [show qa w = ⟨QuotientGroup.mk x, x, φ, rfl, h⟩ from Subtype.ext e1.symm]
     exact (ha w x φ h e2 _ _ _).1 this
   have hO := (hasOrbInt_tensor_of_hasOrbInt hμ hc hff.2 (eventually_conj_mem_stabLoc hcm hJ L hreg) ha' hf').2
-  have hfin := (GlobalTheory.T.unitaryTorus_compact_quotient_finite_volume F E σ hcm r P).2 dt (IsRestrictedProd.haar hdt)
+  have hfin := (_root_.GlobalTheory.TorCompact.torus_compact_finiteVol F E σ hcm r P).2 dt (IsRestrictedProd.haar hdt)
   have ht := continuous_tensor hfa hff
-  obtain ⟨-, h1, h2⟩ := GlobalTheory.T.classTerm_eq_volume_mul_orbitalIntegral (GAd σ J) (ratPts σ J) (ratEmb σ J γ) (range_ratEmb σ J ▸ ⟨γ, rfl⟩)
+  obtain ⟨-, h1, h2⟩ := _root_.GlobalTheory.ClassUnfold.hasClassInt_of_hasOrbInt (GAd σ J) (ratPts σ J) (ratEmb σ J γ) (range_ratEmb σ J ▸ ⟨γ, rfl⟩)
     (isMulCommutative_cent_ratEmb hreg) μ e 𝓣 h𝓣 (hvol ▸ hfin.lt_top) _ _ ht.1 ht.2 hO _
     (isFundamentalDomain_stdDom _ μ)
   obtain ⟨h3, h4⟩ := integrable_descend_of_stdDom

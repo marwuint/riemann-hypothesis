@@ -86,35 +86,6 @@ theorem hf_sub_l {N : ℕ} (Hm : Matrix (Fin N) (Fin N) R) (a b y : Fin N → R)
     hf L Hm (a - b) y = hf L Hm a y - hf L Hm b y := by
   simp [hf, sub_mul, Finset.sum_sub_distrib]
 
-theorem exists_bound1 (x : R) : ∃ e ∈ 𝒪[K], e ≠ 0 ∧ Sm L e⁻¹ x := by
-  obtain ⟨t, ht⟩ := (L.cj_fix (x + L.cj x)).1 (by rw [map_add, L.cj_cj, add_comm])
-  obtain ⟨n, hn⟩ := (L.cj_fix (x * L.cj x)).1 (by rw [map_mul, L.cj_cj, mul_comm])
-  have key : ∀ k : K, ∃ c ∈ 𝒪[K], c ≠ 0 ∧ c * k ∈ 𝒪[K] := by
-    intro k
-    rcases (ValuativeRel.valuation K).valuationSubring.mem_or_inv_mem k with h | h
-    · exact ⟨1, (𝒪[K]).one_mem, one_ne_zero, by rw [one_mul]; exact h⟩
-    · by_cases hk : k = 0
-      · exact ⟨1, (𝒪[K]).one_mem, one_ne_zero, by simp [hk]⟩
-      · exact ⟨k⁻¹, h, inv_ne_zero hk, by rw [inv_mul_cancel₀ hk]; exact (𝒪[K]).one_mem⟩
-  obtain ⟨c1, hc1, hc10, ht1⟩ := key t
-  obtain ⟨c2, hc2, hc20, hn2⟩ := key n
-  refine ⟨c1 * c2, (𝒪[K]).mul_mem hc1 hc2, mul_ne_zero hc10 hc20, ?_⟩
-  have hI : algebraMap K R (c1 * c2) * x ∈ L.O := by
-    rw [L.O_def]
-    have htr : algebraMap K R (c2 * (c1 * t)) = algebraMap K R (c1 * c2) * x +
-        L.cj (algebraMap K R (c1 * c2) * x) := by
-      rw [map_mul L.cj, AlgEquiv.commutes, ← mul_add, ← ht]; simp only [map_mul]; ring
-    have hnr : algebraMap K R ((c1 * c1 * c2) * (c2 * n)) = algebraMap K R (c1 * c2) * x *
-        L.cj (algebraMap K R (c1 * c2) * x) := by
-      rw [map_mul L.cj, AlgEquiv.commutes]
-      have : algebraMap K R (c1 * c2) * x * (algebraMap K R (c1 * c2) * L.cj x) =
-        algebraMap K R (c1 * c2) * algebraMap K R (c1 * c2) * (x * L.cj x) := by ring
-      rw [this, ← hn]; simp only [map_mul]; ring
-    exact GlobalTheory.HL.PlacesInt.isIntegral_of_quad (R := 𝒪[K]) _ _
-      ⟨_, (𝒪[K]).mul_mem hc2 ht1⟩ ⟨_, (𝒪[K]).mul_mem ((𝒪[K]).mul_mem ((𝒪[K]).mul_mem hc1 hc1) hc2) hn2⟩ htr hnr
-  refine ⟨_, hI, ?_⟩
-  rw [← mul_assoc, ← map_mul, inv_mul_cancel₀ (mul_ne_zero hc10 hc20), map_one, one_mul]
-
 theorem exists_bound {ι : Type} [Fintype ι] (f : ι → R) : ∃ e ∈ 𝒪[K], e ≠ 0 ∧ ∀ i, Sm L e⁻¹ (f i) := by
   first
   | exact @_root_.GlobalTheory.SmulIntegralDenominator.main

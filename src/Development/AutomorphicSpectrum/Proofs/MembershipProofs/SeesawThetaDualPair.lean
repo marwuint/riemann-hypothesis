@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumAdmissibilityStatement
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.RationalUnitsHaarCharacterOneStatement
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaHeisenbergTranslatesSeparateStatement
+import Development.AutomorphicSpectrum.Proofs.MembershipProofs.RationalUnitsHaarCharacterOne
+import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaHeisenbergTranslatesSeparate
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissibleStatement
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.AdelicCharacterRationalDualStatement
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.SplitQuadraticAlgebraOrderStatement
+import Development.AutomorphicSpectrum.Proofs.MembershipProofs.SplitQuadraticAlgebraOrder
 
 open Matrix NumberField IsDedekindDomain GlobalTheory.WeilM MeasureTheory
 open scoped TensorProduct
@@ -257,7 +257,7 @@ theorem theta_split_inc : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompa
     · intro h z
       rw [hform, sub_eq_zero]
       exact h _ ⟨z, rfl⟩
-  obtain ⟨l, hl, ⟨Φ₁, hΦ₁, hΦ₁ne⟩, hinv, heig⟩ := GlobalTheory.T.lagrangian_invariant_functional_exists F κ ψ hψc hψ1 hψF L hLag
+  obtain ⟨l, hl, ⟨Φ₁, hΦ₁, hΦ₁ne⟩, hinv, heig⟩ := _root_.GlobalTheory.CompanionTheory.ThetaAvg.theta_mean F κ ψ hψc hψ1 hψF L hLag
   have hinv' : ∀ z : Matrix α ν (AdeleRing (𝓞 F) F ⊗[F] E), ∀ φ ∈ (adeleClass F).sp κ,
       l (d.rho ψ (z * (Cy.map (inc (F := F) (AdeleRing (𝓞 F) F)))ᵀ) φ) = l φ := fun z φ hφ => by
     refine hinv _ ?_ φ hφ
@@ -270,7 +270,7 @@ theorem theta_split_inc : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompa
     | zero => rw [Matrix.zero_mul, map_zero]; exact zero_mem _
     | add x y _ _ hx hy => rw [Matrix.add_mul, map_add]; exact add_mem hx hy
     | smul r x _ hx => rw [Matrix.smul_mul, map_smul]; exact Submodule.smul_mem _ _ hx
-  have hlam := GlobalTheory.T.lagrangian_stabilizer_character_trivial F E c ξ β ν JB Cy hq hB hL lam.toHomUnits (by
+  have hlam := _root_.GlobalTheory.CompanionTheory.SiegelChar.char_trivial F E c ξ β ν JB Cy hq hB hL lam.toHomUnits (by
     intro p t hpt
     have h1 := hR l hl hinv' (ratPt (AdeleRing (𝓞 F) F) c JB p)
       (Matrix.GeneralLinearGroup.map (inc (F := F) (AdeleRing (𝓞 F) F)) t) (by
@@ -290,7 +290,7 @@ theorem theta_split_inc : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompa
       rw [Units.coe_map, hdet, norm_inc]
       rfl
     have hm : (adeleClass F).modu = distribHaarChar (AdeleRing (𝓞 F) F) := rfl
-    rw [hχ _ _ hdet, hn, hm, GlobalTheory.T.rational_units_haar_character_one F] at h1
+    rw [hχ _ _ hdet, hn, hm, _root_.GlobalTheory.CompanionTheory.AdeleModule.distribHaarChar_principal F] at h1
     have h2 := heig ((d₀.symm.trans (rmul F α (p : GL β E))).trans d₀)
       ((d.e.symm.trans (rmul (AdeleRing (𝓞 F) F) α
         (ratPt (AdeleRing (𝓞 F) F) c JB p : GL β (AdeleRing (𝓞 F) F ⊗[F] E)))).trans d.e).toLinearMap

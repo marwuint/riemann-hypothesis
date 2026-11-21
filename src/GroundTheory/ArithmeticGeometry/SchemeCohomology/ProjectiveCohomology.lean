@@ -18,12 +18,6 @@ namespace ProjSpace
 variable {A : Type u} [CommRing A] {n : ℕ}
   [HasExt.{w'} (Sheaf (Opens.grothendieckTopology (projectiveSpace A n).toTopCat) AddCommGrpCat.{u})]
 
-def HZeroEquiv (k : ℕ) :
-    Sheaf.H.{w'} (modulesAb (twistingSheaf (grading A n) k)) 0 ≃+
-      homogeneousSubmodule (Fin (n + 1)) A k :=
-  (cechHZeroEquivH (modulesAb (twistingSheaf (grading A n) k)) (cover A n)
-    iSup_stdOpen).symm.trans (cechHZeroEquiv' k)
-
 theorem nonempty_HTop_equiv (k : ℤ) (hn : 0 < n) :
     Nonempty (Sheaf.H.{w'} (modulesAb (twistingSheaf (grading A n) k)) n ≃+ (NegMon n k →₀ A)) := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩

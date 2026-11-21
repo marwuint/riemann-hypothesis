@@ -55,11 +55,6 @@ theorem isParamFunV_iff_of_mem_partFull (hJ : SphOff J χ Sb) {c : HeightOneSpec
   isParamFunV_iff_isSysParamD_of_level hJ h0 (((GlobalTheory.MultMem.mem_mult_iff ..).1 h.1).lev x)
     (fun P d R hR => h.2 P d R hR x) B
 
-theorem isParamFunV_iff_of_mem_partDual (hJ : SphOff J χ Sb) {c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ}
-    {T : MMap M} (hT : T ∈ partDual θ M J χ Sb c) {x : M.Vec} (h0 : T x ≠ 0) (B : Fam D.host.E) :
-    IsParamFunV V Sb (T x) B ↔ IsSysParamD D Sb V.rank (fun P d => c P (dualLab d)) B :=
-  isParamFunV_iff_of_mem_partFull hJ hT h0 B
-
 theorem param_iff_sysParam (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ)
     (B : Fam D.host.E) (hJ : SphOff J χ Sb) :

@@ -39,51 +39,6 @@ theorem faithfulSMul_of_tower : FaithfulSMul R A := by
 
 end Local
 
-section Kernel
-
-variable {K L : Type*} [Field K] [Field L] [Algebra K L] {V : Type*} [AddCommGroup V] [Module K V]
-  {ι : Type*}
-
-theorem ker_liftBaseChange_eq_of_finrank_le [Fintype ι] [DecidableEq ι] (c : V →ₗ[K] (ι → L))
-    {W₀ : Submodule K V} (hW : W₀ ≤ LinearMap.ker c) [FiniteDimensional K (V ⧸ W₀)]
-    (hr : finrank K (V ⧸ W₀) ≤ Fintype.card ι) {θ : ι → V}
-    (hdet : (Matrix.of fun i j => c (θ j) i).det ≠ 0) :
-    LinearMap.ker (c.liftBaseChange L) = W₀.baseChange L := by
-  let g : L ⊗[K] (V ⧸ W₀) →ₗ[L] (ι → L) := (W₀.liftQ c hW).liftBaseChange L
-  have hg : c.liftBaseChange L = g ∘ₗ W₀.mkQ.baseChange L := by
-    ext v i
-    simp [g]
-  have hs : Function.Surjective g := by
-    intro y
-    obtain ⟨a, rfl⟩ := Matrix.mulVec_surjective_iff_isUnit.mpr
-      ((Matrix.isUnit_iff_isUnit_det _).mpr (Ne.isUnit hdet)) y
-    refine ⟨∑ j, a j ⊗ₜ Submodule.Quotient.mk (θ j), ?_⟩
-    funext i
-    simp [g, Matrix.mulVec, dotProduct, mul_comm]
-  have hi : LinearMap.ker g = ⊥ := by
-    have h₁ := g.finrank_range_add_finrank_ker
-    rw [LinearMap.range_eq_top.mpr hs, finrank_top, Module.finrank_baseChange,
-      Module.finrank_fintype_fun_eq_card] at h₁
-    rw [← Submodule.finrank_eq_zero]
-    omega
-  rw [hg, LinearMap.ker_comp, hi, Submodule.comap_bot, ker_baseChange_mkQ]
-
-end Kernel
-
-section Scale
-
-variable {R K V ι : Type*} [CommRing R] [Field K] [Algebra R K] [AddCommGroup V] [Module K V]
-  [Module R V] [IsScalarTower R K V]
-
-end Scale
-
-section Free
-
-variable (R S : Type*) [CommRing R] [Nontrivial R] [AddCommGroup S] [Module R S]
-  [Module.Free R S] [Module.Finite R S] (Q : Type*) [AddCommGroup Q] [Module R Q]
-
-end Free
-
 section Valuation
 
 variable {S : Type*} [CommRing S] [IsDedekindDomain S] {L : Type*} [Field L] [Algebra S L]
@@ -267,20 +222,5 @@ variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [FloorRin
 end Semilocal
 
 end ExtField
-
-example {K L : Type*} [Field K] [Field L] [Algebra K L] {a : L} (ha : a ≠ 0) :
-    ∃ W₀ : Submodule K (K × K), W₀ ≠ ⊥ ∧ W₀ ≠ ⊤ ∧ LinearMap.ker ((LinearMap.pi fun _ : Fin 1 =>
-      (LinearMap.fst K K K).smulRight a).liftBaseChange L) = W₀.baseChange L := by
-  refine ⟨LinearMap.ker (LinearMap.fst K K K), ?_, ?_, ?_⟩
-  · rw [Submodule.ne_bot_iff]
-    exact ⟨(0, 1), rfl, by simp⟩
-  · intro h
-    simpa using (h ▸ Submodule.mem_top : (1, 0) ∈ LinearMap.ker (LinearMap.fst K K K))
-  · refine ExtField.ker_liftBaseChange_eq_of_finrank_le _ (fun x hx => ?_) ?_
-      (θ := fun _ => (1, 0)) (by simpa using ha)
-    · funext i
-      simpa [ha] using hx
-    · rw [((LinearMap.fst K K K).quotKerEquivOfSurjective LinearMap.fst_surjective).finrank_eq]
-      simp
 
 end GlobalTheory

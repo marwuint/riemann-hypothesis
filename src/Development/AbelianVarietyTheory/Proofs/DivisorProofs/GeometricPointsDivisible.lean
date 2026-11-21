@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveIffPtMapSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveIffPtMapSurjective
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -19,8 +19,8 @@ theorem pt_comp_id_pow {K : Type} [Field K] (A : AbVar K) (x : A.Pt) (n : ℕ) :
 theorem pt_divisible : ∀ (K : Type) [Field K] (A : AbVar K) (n : ℕ), n ≠ 0 → ∀ x : A.Pt, ∃ y : A.Pt, y ^ n = x := by
   intro K _ A n hn x
   have hz : ((n : ℤ)) ≠ 0 := by exact_mod_cast hn
-  have hiso := (GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A (n : ℤ) hz).1
-  have hs : Function.Surjective (ptMap ((n : ℤ) • 𝟙 A)) := (GlobalTheory.T.abVar_surjective_iff_ptMap_surjective K A A _).1 hiso.2
+  have hiso := (_root_.GlobalTheory.MulIsogeny.mul_isogeny K A (n : ℤ) hz).1
+  have hs : Function.Surjective (ptMap ((n : ℤ) • 𝟙 A)) := (_root_.GlobalTheory.AV.AbVar.surjective_iff_ptMap_surjective K A A _).1 hiso.2
   obtain ⟨y, hy⟩ := hs x
   refine ⟨y, ?_⟩
   rw [← hy, ptMap_apply, natCast_zsmul, nsmul_hom, id_hom, pt_comp_id_pow]

@@ -1,14 +1,15 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCmPeriodEmbeddingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCmPeriodEmbedding
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.ExistsExtensionEmbeddingAlgClosedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrameOpenStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPeriodProductStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveZNeZeroStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTransitionMatrixGramStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofiniteStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureTypeLatticesOrthogonalStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrameOpen
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
+import Development.WeilBound.CoreStatements.SesquilinearFractions.GFrameBC
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPeriodProduct
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveZNeZero
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTransitionMatrixGram
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDetNeZeroLocalBasisCofinite
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureTypeLatticesOrthogonal
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsAlt
 
 noncomputable section
@@ -66,14 +67,14 @@ theorem hasInfNorm_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   intro E _ _ _ H D l Xo c g ty FU i Z U τ φ e ρ k _ hc hM r s n n' t hty hτ hU hline he hconst hr hrz hn hn' hLt hLf hinf
   classical
   obtain ⟨P, hP, x, hx, X, v, w, hkK, hloc, hfr⟩ :=
-    GlobalTheory.T.exists_cm_period_embedding E H D l Xo c g ty FU i Z τ ⟨2, Nat.prime_two⟩ k inferInstance hty hτ
+    _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_cmPoint_locBasis_frames E H D l Xo c g ty FU i Z τ ⟨2, Nat.prime_two⟩ k inferInstance hty hτ
   have hxli : LinearIndependent (𝓞 E) x := hloc.1
   have hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q := by
     simp [(FU.sig i).1, (FU.sig i).2]
-  obtain ⟨T, hT, hgram, hTdet, -⟩ := GlobalTheory.T.exists_transition_matrix_gram E H (FU.Di i) _ x e hcard he
+  obtain ⟨T, hT, hgram, hTdet, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.transition_matrix_exists E H (FU.Di i) _ x e hcard he
   have hTne := hTdet hxli
-  have hGe := (GlobalTheory.T.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) _ e hcard he).1
-  obtain ⟨hfram, hval⟩ := GlobalTheory.T.cm_pack_pure_frame_open E H D l Xo c g ty FU i Z P hP X x hx U τ φ e ρ T v w hty hτ hU hline he
+  have hGe := (_root_.GlobalTheory.CompanionTheory.Relay.gram_det_ne_zero_local_basis_cofinite E H (FU.Di i) _ e hcard he).1
+  obtain ⟨hfram, hval⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.CMValue.value_on_cmFrame E H D l Xo c g ty FU i Z P hP X x hx U τ φ e ρ T v w hty hτ hU hline he
     hconst hxli hT hfr
   obtain ⟨s', hs'⟩ := GlobalTheory.T.exists_extension_embedding_alg_closed k X.K ℂ (IntermediateField.inclusion hkK).toRingHom s
   have hs'a : ∀ a : k, s' (IntermediateField.inclusion hkK a) = s a := fun a => DFunLike.congr_fun hs' a
@@ -88,9 +89,9 @@ theorem hasInfNorm_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
 
   let y' : Sp ℂ ⟶ Xo.XF c := spMap s' ≫ X.y
   have hy' : under y' = spMap s' ≫ under X.y := Category.assoc _ _ _
-  obtain ⟨⟨v', hv'⟩, hvI⟩ := GlobalTheory.T.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ s' (under X.y) (under y')
+  obtain ⟨⟨v', hv'⟩, hvI⟩ := _root_.PositivityTheory.Xgf.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ s' (under X.y) (under y')
     (X.β.comp (tauIn c τ)) D.p v hy'
-  obtain ⟨⟨w', hw'⟩, hwI⟩ := GlobalTheory.T.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ s' (under X.y) (under y')
+  obtain ⟨⟨w', hw'⟩, hwI⟩ := _root_.PositivityTheory.Xgf.tangent_vectors_base_change E H Xo.X Xo.univ.t X.K ℂ s' (under X.y) (under y')
     (X.β.comp (tauIn c (ComplexEmbedding.conjugate τ))) D.q w hy'
   have hfram' : IsFramed U τ (s.comp (IntermediateField.inclusion hc).toRingHom) y' v' w' := by
     refine ⟨?_, ?_, ?_, ?_⟩
@@ -107,9 +108,9 @@ theorem hasInfNorm_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   have hconjτ : ComplexEmbedding.conjugate τ (H.rt : E) = sgnRt H false := by
     simp only [sgnRt, ComplexEmbedding.conjugate_coe_eq, hτ]
     exact conj_eq_neg_of_sq H.d_prime.pos H.sqrt_neg_disc_sq
-  have hΓ := GlobalTheory.T.cm_pack_period_product E H D l Xo c g ty FU i Z P hP X true τ D.p (fun a => ⟨x (.inl a), hx.1 a⟩) v s' y' v' n
+  have hΓ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.GInf.hodgeGram_cmVec E H D l Xo c g ty FU i Z P hP X true τ D.p (fun a => ⟨x (.inl a), hx.1 a⟩) v s' y' v' n
     (by simpa [sgnRt] using hτ) hfr.1 rfl hv' (by rw [hMs]; exact hLt)
-  have hΔ := GlobalTheory.T.cm_pack_period_product E H D l Xo c g ty FU i Z P hP X false (ComplexEmbedding.conjugate τ) D.q
+  have hΔ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.GInf.hodgeGram_cmVec E H D l Xo c g ty FU i Z P hP X false (ComplexEmbedding.conjugate τ) D.q
     (fun a => ⟨x (.inr a), hx.2 a⟩) w s' y' w' n' hconjτ hfr.2 rfl hw' (by rw [hMs]; exact hLf)
   have hmain := hinf y' v' w' _ _ hfram' hΓ hΔ
   rw [hline.nat X.K ℂ s' X.β X.y v w y' v' w' hfram rfl hv' hw'] at hmain
@@ -119,8 +120,8 @@ theorem hasInfNorm_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     ext a b
     rcases a with a | a <;> rcases b with b | b
     · rfl
-    · exact (GlobalTheory.T.pure_type_lattices_orthogonal E H (FU.Di i) g ty P hP _ _ (hx.1 a) (hx.2 b)).1
-    · exact (GlobalTheory.T.pure_type_lattices_orthogonal E H (FU.Di i) g ty P hP _ _ (hx.1 b) (hx.2 a)).2
+    · exact (_root_.GlobalTheory.CompanionTheory.Ar.PureOrth.sesq_eq_zero_of_opposite_pure E H (FU.Di i) g ty P hP _ _ (hx.1 a) (hx.2 b)).1
+    · exact (_root_.GlobalTheory.CompanionTheory.Ar.PureOrth.sesq_eq_zero_of_opposite_pure E H (FU.Di i) g ty P hP _ _ (hx.1 b) (hx.2 a)).2
     · rfl
   have hdet1 : (gramE (FU.Di i) x).det =
       (gramE (FU.Di i) (x ∘ Sum.inl)).det * (gramE (FU.Di i) (x ∘ Sum.inr)).det := by
@@ -162,7 +163,7 @@ theorem hasInfNorm_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
       s' (X.β (tauE c (ComplexEmbedding.conjugate τ) ((H.rt : E) * sesq (FU.Di i) (x (.inr a)) (x (.inr a')))))) (fun _ _ => rfl)
   rw [hσ'] at hlΔ
 
-  have hz := GlobalTheory.T.curve_z_ne_zero E H _ (Z true)
+  have hz := _root_.GlobalTheory.CompanionTheory.Ar.Fl.curve0_z_ne_zero E H _ (Z true)
   have hval2 : ((φ X.K X.y v w : X.K) : ℂ) * τ T.det = (r : ℂ) * τ (gramE (FU.Di i) (x ∘ Sum.inr)).det := by
     apply mul_right_cancel₀ (pow_ne_zero D.p hz)
     rw [hval, ← hrz]

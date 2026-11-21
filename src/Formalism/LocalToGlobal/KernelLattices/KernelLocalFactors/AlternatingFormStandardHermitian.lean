@@ -114,11 +114,6 @@ theorem brk_sub_right (H : Sesq V) (y t t' : V) : brk H y (t - t') = brk H y t *
   rw [sub_add_cancel] at h
   rw [h, mul_assoc, mul_inv_cancel₀ (brk_ne_zero H y t'), mul_one]
 
-theorem brk_sub_left (H : Sesq V) (y y' t : V) : brk H (y - y') t = brk H y t * (brk H y' t)⁻¹ := by
-  have h := brk_add_left H (y - y') y' t
-  rw [sub_add_cancel] at h
-  rw [h, mul_assoc, mul_inv_cancel₀ (brk_ne_zero H y' t), mul_one]
-
 theorem brk_one_of_int (H : Sesq V) {y t : V} (h : ∃ m : ℤ, altE H t y = (m : ℝ)) : brk H y t = 1 := by
   obtain ⟨m, hm⟩ := h
   simp only [brk, hm]; exact Inv.exp_two_pi_int m
@@ -138,127 +133,6 @@ theorem step_translate (H : Sesq V) (hH : IsHerm H) (α : V → ℂ) (Λ : AddSu
     have : (fun v => α x * opU H x θ v) = θ := funext fun v => hθ x hx v
     rw [this]
   rw [← h1]; ring
-
-theorem twist_projection : XiProject := by
-  intro V _ _ H α A B Λ hyp SA SB hSA hSB vol θ hθ Φ y hy z
-  obtain ⟨hH, -, hB, -, -, -, -, -, -, h5⟩ := hyp
-  have hBint := (semicharacterBasic V H hH B α hB).2.2
-  have e1 : ∀ x ∈ SA, (brk H y x)⁻¹ * (α x * opU H x (xiS H α vol SA SB Φ θ) z)
-      = ∑ y' ∈ SB, ((brk H y x)⁻¹ * brk H y' x) * (hatS H vol SA Φ y' * α y' * opU H y' θ z) := by
-    intro x hx
-    rw [step_translate H hH α Λ vol SA SB Φ θ hθ (hSA.1 x hx).1 z, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun y' _ => by ring
-  rw [Finset.sum_congr rfl e1, Finset.sum_comm]
-  simp only [← Finset.sum_mul]
-  rw [Finset.sum_eq_single y]
-  · have : ∑ x ∈ SA, (brk H y x)⁻¹ * brk H y x = (SA.card : ℂ) := by
-      rw [Finset.sum_congr rfl fun x _ => inv_mul_cancel₀ (brk_ne_zero H y x)]; simp
-    rw [this]
-  · intro y' hy' hne
-    have hz : ∑ x ∈ SA, (brk H y x)⁻¹ * brk H y' x = 0 := by
-      by_contra hne0
-      apply hne
-      apply hSB.2.1 y' hy' y hy
-      apply h5 (y' - y) (B.sub_mem (hSB.1 y' hy') (hSB.1 y hy))
-      intro a haA haΛ
-      by_contra hno
-      refine hne0 (char_sum_zero hSA (fun x => (brk H y x)⁻¹ * brk H y' x) ?_ ?_ (x₀ := a) ⟨haΛ, haA⟩ ?_)
-      · intro u v; simp only [brk_add_right, mul_inv]; ring
-      · intro m _ hmB
-        rw [brk_one_of_int H (hBint hmB y (hSB.1 y hy)), brk_one_of_int H (hBint hmB y' (hSB.1 y' hy'))]; simp
-      · intro h1
-        apply hno
-        apply int_of_brk_one H
-        rw [brk_sub_left, mul_comm]; exact h1
-    rw [hz, zero_mul]
-  · intro h; exact absurd hy h
-
-theorem twist_injective_bis : XiInjective := by
-  intro V _ _ H α A B Λ hyp SA SB hSA hSB vol hvol θ hθ hθ0 Φ hΦ hzero t ht
-  have hproj := twist_projection V H α A B Λ hyp SA SB hSA hSB vol θ hθ Φ
-  obtain ⟨hH, -, hB, -, sdB, hΛ, -, -, -, -⟩ := hyp
-  have hΛint := (semicharacterBasic V H hH Λ α hΛ).2.2
-  have hcardA : (SA.card : ℂ) ≠ 0 := by
-    obtain ⟨x, hx, -⟩ := hSA.2.2 0 (AddSubgroup.zero_mem _)
-    exact_mod_cast (Finset.card_pos.2 ⟨x, hx⟩).ne'
-  have hcardB : (SB.card : ℂ) ≠ 0 := by
-    obtain ⟨x, hx, -⟩ := hSB.2.2 0 (AddSubgroup.zero_mem _)
-    exact_mod_cast (Finset.card_pos.2 ⟨x, hx⟩).ne'
-  have hfun : xiS H α vol SA SB Φ θ = fun _ => 0 := funext hzero
-  obtain ⟨w, hw⟩ : ∃ w, θ w ≠ 0 := by
-    by_contra hcon
-    push Not at hcon
-    exact hθ0 (funext hcon)
-
-  have hhat : ∀ y ∈ SB, hatS H vol SA Φ y = 0 := by
-    intro y hy
-    have h1 := hproj y hy (w - y)
-    rw [hfun] at h1
-    simp only [opU, zero_mul, mul_zero, Finset.sum_const_zero, sub_add_cancel] at h1
-    have hα : α y ≠ 0 := by
-      rcases hB.1 y (hSB.1 y hy) with h | h <;> rw [h] <;> norm_num
-    have h2 := h1.symm
-    rcases mul_eq_zero.1 h2 with h3 | h3
-    · exact absurd h3 hcardA
-    · rcases mul_eq_zero.1 h3 with h4 | h4
-      · rcases mul_eq_zero.1 h4 with h5 | h5
-        · exact h5
-        · exact absurd h5 hα
-      · rcases mul_eq_zero.1 h4 with h5 | h5
-        · exact absurd h5 hw
-        · exact absurd h5 (Complex.exp_ne_zero _)
-  have hsq : ((Real.sqrt vol : ℝ) : ℂ) ≠ 0 := by
-    exact_mod_cast (Real.sqrt_pos.2 hvol).ne'
-  have hvolc : ((vol : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hvol.ne'
-  have hS : ∀ y ∈ SB, ∑ s ∈ SA, Φ s * (brk H y s)⁻¹ = 0 := by
-    intro y hy
-    have h1 := hhat y hy
-    simp only [hatS] at h1
-    rcases mul_eq_zero.1 h1 with h2 | h2
-    · exact absurd h2 (inv_ne_zero hsq)
-    · rcases mul_eq_zero.1 h2 with h3 | h3
-      · exact absurd h3 (div_ne_zero hvolc hcardA)
-      · exact h3
-
-  have hSA0 : ∀ t₀ ∈ SA, Φ t₀ = 0 := by
-    intro t₀ ht₀
-    have h1 : ∑ y ∈ SB, brk H y t₀ * ∑ s ∈ SA, Φ s * (brk H y s)⁻¹ = 0 :=
-      Finset.sum_eq_zero fun y hy => by rw [hS y hy, mul_zero]
-    simp only [Finset.mul_sum] at h1
-    rw [Finset.sum_comm] at h1
-    have h2 : ∀ s ∈ SA, ∑ y ∈ SB, brk H y t₀ * (Φ s * (brk H y s)⁻¹) = Φ s * ∑ y ∈ SB, brk H y t₀ * (brk H y s)⁻¹ := by
-      intro s _
-      rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun y _ => by ring
-    rw [Finset.sum_congr rfl h2, Finset.sum_eq_single t₀] at h1
-    · have h3 : ∑ y ∈ SB, brk H y t₀ * (brk H y t₀)⁻¹ = (SB.card : ℂ) := by
-        rw [Finset.sum_congr rfl fun y _ => mul_inv_cancel₀ (brk_ne_zero H y t₀)]; simp
-      rw [h3] at h1
-      exact (mul_eq_zero.1 h1).resolve_right hcardB
-    · intro s hs hne
-      have hz : ∑ y ∈ SB, brk H y t₀ * (brk H y s)⁻¹ = 0 := by
-        by_contra hne0
-        apply hne
-        apply hSA.2.1 s hs t₀ ht₀
-        have hmem : t₀ - s ∈ dualLat H B := by
-          intro y hyB
-          by_contra hno
-          refine hne0 (char_sum_zero hSB (fun y => brk H y t₀ * (brk H y s)⁻¹) ?_ ?_ (x₀ := y) hyB ?_)
-          · intro u v; simp only [brk_add_left, mul_inv]; ring
-          · intro m _ hmΛ
-            rw [brk_one_of_int H (hΛint (hSA.1 t₀ ht₀).1 m hmΛ), brk_one_of_int H (hΛint (hSA.1 s hs).1 m hmΛ)]; simp
-          · intro h1
-            apply hno
-            apply int_of_brk_one H
-            rw [brk_sub_right]; exact h1
-        rw [sdB] at hmem
-        have : s - t₀ = -(t₀ - s) := by abel
-        rw [this]; exact B.neg_mem hmem
-      rw [hz, mul_zero]
-    · intro h; exact absurd ht₀ h
-  obtain ⟨x, hx, hd⟩ := hSA.2.2 t ht
-  have h1 : Φ t = Φ (x + (t - x)) := by congr 1; abel
-  rw [h1, hΦ x (hSA.1 x hx).2 (t - x) (A.sub_mem ht.2 (hSA.1 x hx).2) hd]
-  exact hSA0 x hx
 
 end Inj
 
@@ -562,36 +436,6 @@ theorem lift_exists_alt : LiftExists := by
 theorem repsOf_spec {V : Type} [AddCommGroup V] [Module ℂ V] (Λ₁ Λ₂ : AddSubgroup V) (h : relIdx Λ₁ Λ₂ ≠ 0) : IsReps Λ₁ Λ₂ (repsOf Λ₁ Λ₂) :=
   Classical.epsilon_spec (p := fun S => IsReps Λ₁ Λ₂ S) (cosetRepsExist V Λ₁ Λ₂ h).1
 
-theorem XiIndCClass_of (h : XiIndClass) : XiIndCClass := by
-  intro E _ _ _ ι _ _ a b emb δ d sc AA0 SS N N' c hyp hr1 hr2 θ hθ x x' hl hl' hxx vol
-  set s := liftS SS (perO AA0 N N') c x with hs
-  set s' := liftS SS (perO AA0 N N') c x' with hs'
-  have hA : s - s' ∈ halfAO SS (perO AA0 N N') c := Submodule.sub_mem _ hl.1 hl'.1
-  have hB : s - s' ∈ halfBO SS (perO AA0 N N') c := by
-    have hA' := (mem_twO _ _ _ _).1 hA
-    refine (mem_twO _ _ _ _).2 fun Q => ?_
-    have hAQ := hA' Q
-    rcases expS_cases SS Q with h1 | h1 | h1
-    · have hQ := expS_eq_one SS Q h1
-      rw [h1, zpow_one]
-      have e1 : (c : E)⁻¹ • (s - s') = (c : E)⁻¹ • (s - x) - (c : E)⁻¹ • (s' - x') + (c : E)⁻¹ • (x - x') := by
-        rw [← smul_sub, ← smul_add]; congr 1; abel
-      rw [e1]
-      exact Submodule.add_mem _ (Submodule.sub_mem _ (hl.2 Q hQ) (hl'.2 Q hQ)) (hxx Q hQ)
-    · simp only [h1, neg_zero] at hAQ
-      rw [h1]; exact hAQ
-    · simp only [h1, neg_neg, zpow_one] at hAQ
-      rw [h1, zpow_neg_one, inv_inv]
-      by_cases hc : (c : E) = 0
-      · rw [hc, zero_smul]; exact Submodule.zero_mem _
-      · have h2 := nat_smul_mem _ c (nat_smul_mem _ c hAQ)
-        rwa [smul_smul (c : E) (c : E)⁻¹, mul_inv_cancel₀ hc, one_smul] at h2
-  funext z
-  have e0 : embH emb δ s = embH emb δ s' + embH emb δ (s - s') := by rw [← map_add]; congr 1; abel
-  show xiInd _ _ _ _ _ _ θ (embH emb δ s) z = xiInd _ _ _ _ _ _ θ (embH emb δ s') z
-  rw [e0]
-  exact h _ _ _ _ _ _ hyp _ _ (repsOf_spec _ _ hr1) (repsOf_spec _ _ hr2) _ θ hθ _ ⟨s', hl'.1, rfl⟩ _ ⟨s - s', hA, rfl⟩ ⟨s - s', hB, rfl⟩ z
-
 end Lifts
 
 section TwHomS
@@ -742,54 +586,6 @@ theorem exponent_set_conjugate : ExpSConj := by
   · by_cases h2 : conjPrime₂ Q ∈ SS <;> simp [h1, h2]
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
-
-theorem hatS_one (H : Sesq V) {vol : ℝ} (hvol : 0 < vol) (SA : Finset V) (Φ : V → ℂ) (y : V) :
-    hatS H 1 SA Φ y = ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * hatS H vol SA Φ y := by
-  have hs : ((Real.sqrt vol : ℝ) : ℂ) * ((Real.sqrt vol : ℝ) : ℂ) = ((vol : ℝ) : ℂ) := by exact_mod_cast Real.mul_self_sqrt hvol.le
-  have hs0 : ((Real.sqrt vol : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (Real.sqrt_pos.2 hvol).ne'
-  have h1 : ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * ((vol : ℝ) : ℂ) = 1 := by rw [← hs]; field_simp
-  simp only [hatS, Real.sqrt_one, Complex.ofReal_one, inv_one, one_mul, div_eq_mul_inv]
-  linear_combination (-((SA.card : ℂ)⁻¹ * ∑ t ∈ SA, Φ t * (brk H y t)⁻¹)) * h1
-
-theorem xiS_one (H : Sesq V) (α : V → ℂ) {vol : ℝ} (hvol : 0 < vol) (SA SB : Finset V) (Φ e : V → ℂ) (z : V) :
-    xiS H α 1 SA SB Φ e z = ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * xiS H α vol SA SB Φ e z := by
-  simp only [xiS, sumU, hatS_one H hvol, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun y _ => by ring
-
-theorem xiS_scale (H : Sesq V) (α : V → ℂ) (vol : ℝ) (SA SB : Finset V) (k : ℂ) (Φ e : V → ℂ) (z : V) :
-    xiS H α vol SA SB (fun t => k * Φ t) e z = k * xiS H α vol SA SB Φ e z := by
-  have h := xiS_lin_datum H α vol SA SB k Φ (fun _ => 0) e z
-  have h0 : xiS H α vol SA SB (fun _ => 0) e z = 0 := by simp [xiS, sumU, hatS]
-  simpa [h0] using h
-
-theorem xiL_one (H : Sesq V) (α : V → ℂ) {vol : ℝ} (hvol : 0 < vol) (SX SA SB : Finset V) (Φ e : V → ℂ) :
-    xiL H α 1 SX SA SB Φ e = xiL H α vol SX SA SB (fun t => ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * Φ t) e := by
-  funext z
-  simp only [xiL]
-  refine Finset.sum_congr rfl fun x _ => ?_
-  have h : xiS H α 1 SA SB (fun s => Φ (s - x)) e = xiS H α vol SA SB (fun s => ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * Φ (s - x)) e := by
-    funext v
-    rw [xiS_one H α hvol, xiS_scale]
-  rw [h]
-
-theorem theta_coset_moved : ThCMoved := by
-  intro E _ _ _ ι _ a b emb δ d sc AA0 SS N N' c hvol θ
-  refine ⟨fun Ξ => ?_, fun x z => ?_⟩
-  · have h : onV emb δ (fun x => ((Real.sqrt (volC AA0 SS N N') : ℝ) : ℂ)⁻¹ * Ξ x)
-        = fun t => ((Real.sqrt (volC AA0 SS N N') : ℝ) : ℂ)⁻¹ * onV emb δ Ξ t := by
-      funext v
-      unfold onV
-      split_ifs <;> simp
-    unfold thC xiC xiV
-    rw [h, xiL_one _ _ hvol]
-  · unfold thIndC xiIndC xiIndV xiInd
-    have h : xiS (HV sc) (alV d sc) 1 (repsOf (BC emb δ AA0 SS N N' c) (LamC emb δ AA0 N N' ⊓ AC emb δ AA0 SS N N' c))
-        (repsOf (LamC emb δ AA0 N N') (BC emb δ AA0 SS N N' c)) (indL (BC emb δ AA0 SS N N' c)) θ
-        = fun v => ((Real.sqrt (volC AA0 SS N N') : ℝ) : ℂ)⁻¹ * xiS (HV sc) (alV d sc) (volC AA0 SS N N')
-          (repsOf (BC emb δ AA0 SS N N' c) (LamC emb δ AA0 N N' ⊓ AC emb δ AA0 SS N N' c))
-          (repsOf (LamC emb δ AA0 N N') (BC emb δ AA0 SS N N' c)) (indL (BC emb δ AA0 SS N N' c)) θ v :=
-      funext fun v => xiS_one _ _ hvol _ _ _ _ v
-    rw [h, Inv.opU_const_mul]; ring
 
 theorem volS_pos_of {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ} (SS : Finset (HeightOneSpectrum (𝓞 E)))
     (M₀ M : Submodule (𝓞 E) (HomE E a b))
@@ -1118,48 +914,6 @@ theorem twist_expand_series : XiExpandS := by
   simp only [Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun s _ => by ring
 
-theorem twist_vacuum : XiVacuum := by
-  intro V _ _ H α A B Λ hyp SA SB hSA hSB vol hvol θ hθ z
-  obtain ⟨hH, -, hB, -, -, hΛ, -, -, -, h5⟩ := hyp
-  have hΛint := (semicharacterBasic V H hH Λ α hΛ).2.2
-  have hBint := (semicharacterBasic V H hH B α hB).2.2
-  have hcardA : (SA.card : ℂ) ≠ 0 := by
-    obtain ⟨x, hx, -⟩ := hSA.2.2 0 (AddSubgroup.zero_mem _)
-    exact_mod_cast (Finset.card_pos.2 ⟨x, hx⟩).ne'
-  have hs : ((Real.sqrt vol : ℝ) : ℂ) * ((Real.sqrt vol : ℝ) : ℂ) = ((vol : ℝ) : ℂ) := by exact_mod_cast Real.mul_self_sqrt hvol.le
-  have hs0 : ((Real.sqrt vol : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (Real.sqrt_pos.2 hvol).ne'
-  have hout : ∀ y ∈ SB, y ∉ Λ → hatS H vol SA (fun _ => ((Real.sqrt vol : ℝ) : ℂ)⁻¹) y * α y * opU H y θ z = 0 := by
-    intro y hy hyΛ
-    have hz : ∑ t ∈ SA, (brk H y t)⁻¹ = 0 := by
-      by_contra hne0
-      apply hyΛ
-      apply h5 y (hSB.1 y hy)
-      intro a haA haΛ
-      by_contra hno
-      refine hne0 (char_sum_zero hSA (fun t => (brk H y t)⁻¹) ?_ ?_ (x₀ := a) ⟨haΛ, haA⟩ ?_)
-      · intro u v; simp only [brk_add_right, mul_inv]
-      · intro m _ hmB
-        rw [brk_one_of_int H (hBint hmB y (hSB.1 y hy))]; simp
-      · intro h1
-        apply hno
-        apply int_of_brk_one H
-        exact inv_eq_one.1 h1
-    simp only [hatS, ← Finset.mul_sum, hz, mul_zero, zero_mul]
-  obtain ⟨y0, hy0, hy0Λ, hsum⟩ := Inv.sum_reps hSB
-    (fun y => hatS H vol SA (fun _ => ((Real.sqrt vol : ℝ) : ℂ)⁻¹) y * α y * opU H y θ z) hout
-  show ∑ y ∈ SB, hatS H vol SA (fun _ => ((Real.sqrt vol : ℝ) : ℂ)⁻¹) y * α y * opU H y θ z = θ z
-  rw [hsum]
-  have hone : ∑ t ∈ SA, ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * (brk H y0 t)⁻¹ = ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * (SA.card : ℂ) := by
-    rw [Finset.sum_congr rfl fun t ht => by rw [brk_one_of_int H (hΛint (hSA.1 t ht).1 y0 hy0Λ), inv_one, mul_one]]
-    simp [mul_comm]
-  have hhat : hatS H vol SA (fun _ => ((Real.sqrt vol : ℝ) : ℂ)⁻¹) y0 = 1 := by
-    simp only [hatS, hone]
-    rw [← hs]; field_simp
-  rw [hhat, one_mul]
-  exact hθ y0 hy0Λ z
-
-theorem twist_induced_coset_class : XiIndCClass := XiIndCClass_of twist_induced_class
-
 end Direct
 
 section DirectL
@@ -1263,77 +1017,6 @@ theorem exists_reps_AB (A B Λ : AddSubgroup V) (SX SA : Finset V) (hSX : IsReps
     rw [this]; exact htd
   exact (cosetRepsExist V B A hidx).1
 
-theorem twist_translate : XiTranslate := by
-  intro V _ _ H α A B Λ hyp SX SA SB hSX hSA hSB vol θ hθ Φ hΦ x hx z
-  classical
-  have hcl := twist_induced_class V H α A B Λ hyp SA SB hSA hSB vol θ hθ
-  have hEL := twist_expand_lattice V H α A B Λ hyp
-  have hH := hyp.1
-  have hA := hyp.2.1
-  obtain ⟨S, hS⟩ := exists_reps_AB A B Λ SX SA hSX hSA
-  have hΦ' : InvOn A B fun t => Φ (t + x) := by
-    intro t ht m hm hmB
-    show Φ (t + m + x) = Φ (t + x)
-    have : t + m + x = (t + x) + m := by abel
-    rw [this]; exact hΦ _ (A.add_mem ht hx) m hm hmB
-  rw [hEL S SX SA SB hS hSX hSA hSB vol θ hθ _ hΦ' z]
-  have h2 : xiL H α vol SX SA SB Φ θ = fun v => ∑ s ∈ S, (fun w => Φ s * xiInd H α vol B SA SB θ s w) v :=
-    funext fun v => hEL S SX SA SB hS hSX hSA hSB vol θ hθ Φ hΦ v
-  rw [h2, Inv.opU_finset_sum, Finset.mul_sum]
-  have h3 : ∀ s ∈ S, α x * opU H x (fun w => Φ s * xiInd H α vol B SA SB θ s w) z = Φ s * xiInd H α vol B SA SB θ (s - x) z := by
-    intro s hs
-    rw [Inv.opU_const_mul, mul_left_comm, xiInd_shift H hH α A hA vol B SA SB θ hx (hS.1 s hs) z]
-  rw [Finset.sum_congr rfl h3]
-  have hg : ∀ s ∈ A, ∀ m ∈ A, m ∈ B → (fun s => Φ (s + x) * xiInd H α vol B SA SB θ s z) (s + m)
-      = (fun s => Φ (s + x) * xiInd H α vol B SA SB θ s z) s := by
-    intro s hs m hm hmB
-    show Φ (s + m + x) * _ = Φ (s + x) * _
-    have e' : Φ (s + m + x) = Φ (s + x) := hΦ' s hs m hm hmB
-    rw [e', hcl s hs m hm hmB z]
-  rw [← sum_reps_shift hS _ hg (A.neg_mem hx)]
-  refine Finset.sum_congr rfl fun s _ => ?_
-  show Φ (-x + s + x) * xiInd H α vol B SA SB θ (-x + s) z = _
-  have e1 : -x + s + x = s := by abel
-  have e2 : -x + s = s - x := by abel
-  rw [e1, e2]
-
-theorem G_fixed (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V) (hyp : SplitHyp H α A B Λ) (SA SB : Finset V) (hSA : IsReps B (Λ ⊓ A) SA)
-    (hSB : IsReps Λ B SB) (vol : ℝ) (θ : V → ℂ) (hθ : θ ∈ fixedBy H α Λ) {m : V} (hm : m ∈ B) :
-    (fun v => α m * opU H m (xiS H α vol SA SB (indL B) θ) v) = xiS H α vol SA SB (indL B) θ := by
-  have hz := twist_induced_vanish V H α A B Λ hyp SA SB hSA hSB vol θ
-  obtain ⟨hH, -, hB, -, -, -⟩ := hyp
-  funext v
-  have hG' : xiS H α vol SA SB (indL B) θ
-      = fun w => ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * (((vol : ℝ) : ℂ) / (SA.card : ℂ)) * sumU H α SB θ w := funext hz
-  rw [hG', Inv.opU_const_mul, mul_left_comm, sumU_fixed H hH α B Λ hB SB hSB θ hθ hm]
-
-theorem twist_modulate : XiModulate := by
-  intro V _ _ H α A B Λ hyp SX SA SB hSX hSA hSB vol θ hθ Φ hΦ y hy z
-  have hEL := twist_expand_lattice V H α A B Λ hyp
-  have hfix := G_fixed H α A B Λ hyp SA SB hSA hSB vol θ hθ hy
-  have hH := hyp.1
-  have hBint := (semicharacterBasic V H hH B α hyp.2.2.1).2.2
-  obtain ⟨S, hS⟩ := exists_reps_AB A B Λ SX SA hSX hSA
-  have hΦ' : InvOn A B fun t => brk H y t * Φ t := by
-    intro t ht m hm hmB
-    show brk H y (t + m) * Φ (t + m) = brk H y t * Φ t
-    rw [brk_add_right, brk_one_of_int H (hBint hmB y hy), mul_one, hΦ t ht m hm hmB]
-  rw [hEL S SX SA SB hS hSX hSA hSB vol θ hθ _ hΦ' z]
-  have h2 : xiL H α vol SX SA SB Φ θ = fun v => ∑ s ∈ S, (fun w => Φ s * xiInd H α vol B SA SB θ s w) v :=
-    funext fun v => hEL S SX SA SB hS hSX hSA hSB vol θ hθ Φ hΦ v
-  rw [h2, Inv.opU_finset_sum, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun s _ => ?_
-  rw [Inv.opU_const_mul]
-  have h3 : xiInd H α vol B SA SB θ s = fun v => α s * opU H (-s) (xiS H α vol SA SB (indL B) θ) v := rfl
-  have h4 : brk H (-s) y = brk H y s := by
-    simp only [brk]
-    rw [Inv.altE_neg_right, ← Inv.altE_swap hH y s]
-  have h5 : α y * opU H (-s) (opU H y (xiS H α vol SA SB (indL B) θ)) z = opU H (-s) (xiS H α vol SA SB (indL B) θ) z := by
-    rw [← Inv.opU_const_mul, hfix]
-  rw [h3, Inv.opU_const_mul, (bracket_commutation V H hH).1 (-s) y, h4]
-  show brk H y s * Φ s * (α s * opU H (-s) (xiS H α vol SA SB (indL B) θ) z) = _
-  rw [← h5]; ring
-
 theorem twist_representatives : XiReps := by
   intro V _ _ H α A B Λ hyp SX SA SB SX' SA' SB' hSX hSA hSB hSX' hSA' hSB' vol θ hθ Φ hΦ z
   have hEL := twist_expand_lattice V H α A B Λ hyp
@@ -1357,21 +1040,6 @@ theorem twist_representatives : XiReps := by
 
 end DirectL
 
-open NumberField in
-
-theorem twO_one {E : Type} [Field E] [NumberField E] [StarRing E] {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W]
-    [IsScalarTower (𝓞 E) E W] (M : Submodule (𝓞 E) W) (e : IsDedekindDomain.HeightOneSpectrum (𝓞 E) → ℤ) : twist₂ M 1 e = M := by
-  apply le_antisymm
-  · intro x hx
-    rw [mem_twO] at hx
-    apply mem_of_forall_locP
-    intro Q
-    simpa using hx Q
-  · intro x hx
-    rw [mem_twO]
-    intro Q
-    simpa using le_locP' M Q hx
-
 namespace Test
 
 def H1 : Sesq ℂ :=
@@ -1380,13 +1048,6 @@ def H1 : Sesq ℂ :=
     (by intro x y w; simp only [map_add]; ring) (by intro c x w; simp only [smul_eq_mul, map_mul]; ring)
 
 theorem standard_hermitian_apply (z w : ℂ) : H1 z w = z * (starRingEnd ℂ) w := rfl
-
-theorem alternating_form_standard_hermitian (x y : ℂ) : altE H1 x y = x.im * y.re - x.re * y.im := by
-  simp only [altE, standard_hermitian_apply, Complex.mul_im, Complex.conj_re, Complex.conj_im]; ring
-
-theorem isHermitian_standard_form : IsHerm H1 := by
-  intro x y
-  simp only [standard_hermitian_apply, map_mul, Complex.conj_conj]; ring
 
 def Lp (p : ℝ) : AddSubgroup ℂ where
   carrier := {z | (∃ m : ℤ, z.re = p * m) ∧ ∃ n : ℤ, z.im = n / p}
@@ -1399,84 +1060,6 @@ def Lp (p : ℝ) : AddSubgroup ℂ where
     exact ⟨⟨-m, by rw [Complex.neg_re, hm]; push_cast; ring⟩, ⟨-n, by rw [Complex.neg_im, hn]; push_cast; ring⟩⟩
 
 theorem mem_Lp {p : ℝ} {z : ℂ} : z ∈ Lp p ↔ (∃ m : ℤ, z.re = p * m) ∧ ∃ n : ℤ, z.im = n / p := Iff.rfl
-
-def α1 (z : ℂ) : ℂ := Complex.exp ((Real.pi : ℂ) * Complex.I * ((z.re * z.im : ℝ) : ℂ))
-
-theorem exp_pi_int (k : ℤ) : Complex.exp ((Real.pi : ℂ) * Complex.I * (k : ℂ)) = 1 ∨
-    Complex.exp ((Real.pi : ℂ) * Complex.I * (k : ℂ)) = -1 := by
-  have h : Complex.exp ((Real.pi : ℂ) * Complex.I * (k : ℂ)) = (-1 : ℂ) ^ k := by
-    rw [mul_comm, Complex.exp_int_mul, Complex.exp_pi_mul_I]
-  rw [h]
-  rcases Int.even_or_odd k with hk | hk
-  · left; exact hk.neg_one_zpow
-  · right; exact hk.neg_one_zpow
-
-theorem semi_Lp {p : ℝ} (hp : p ≠ 0) : IsSemiChar H1 (Lp p) α1 := by
-  refine ⟨?_, ?_⟩
-  · rintro x ⟨⟨m, hm⟩, n, hn⟩
-    have h : ((x.re * x.im : ℝ) : ℂ) = ((m * n : ℤ) : ℂ) := by
-      have : x.re * x.im = ((m * n : ℤ) : ℝ) := by rw [hm, hn]; push_cast; field_simp
-      rw [this]; push_cast; ring
-    simp only [α1]; rw [h]; exact exp_pi_int _
-  · rintro x ⟨⟨m, hm⟩, -⟩ y ⟨-, n', hn'⟩
-    have key : x.re * y.im = ((m * n' : ℤ) : ℝ) := by rw [hm, hn']; push_cast; field_simp
-    have key' : (x.re : ℂ) * (y.im : ℂ) = ((m * n' : ℤ) : ℂ) := by exact_mod_cast key
-    simp only [α1]
-    rw [← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]
-    refine ⟨m * n', ?_⟩
-    rw [alternating_form_standard_hermitian, Complex.add_re, Complex.add_im]
-    push_cast at key' ⊢
-    linear_combination (2 * (Real.pi : ℂ) * Complex.I) * key'
-
-theorem selfDual_Lp {p : ℝ} (hp : p ≠ 0) : IsSelfDual H1 (Lp p) := by
-  apply AddSubgroup.ext
-  intro x
-  constructor
-  · intro h
-    obtain ⟨k, hk⟩ := h (p : ℂ) ⟨⟨1, by simp⟩, ⟨0, by simp⟩⟩
-    obtain ⟨l, hl⟩ := h ((p⁻¹ : ℝ) * Complex.I) ⟨⟨0, by simp⟩, ⟨1, by rw [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]; push_cast; ring⟩⟩
-    rw [alternating_form_standard_hermitian] at hk hl
-    simp only [Complex.ofReal_re, Complex.ofReal_im, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, mul_zero, mul_one,
-      sub_zero, add_zero, zero_sub] at hk hl
-    refine ⟨⟨-l, ?_⟩, ⟨k, ?_⟩⟩
-    · push_cast; rw [← hl]; field_simp
-    · rw [← hk]; field_simp
-  · rintro ⟨⟨m, hm⟩, n, hn⟩ y ⟨⟨m', hm'⟩, n', hn'⟩
-    refine ⟨n * m' - m * n', ?_⟩
-    rw [alternating_form_standard_hermitian, hm, hn, hm', hn']; push_cast; field_simp
-
-theorem goodLat_test : GoodLat H1 α1 (Lp (1 / 3)) (Lp 3) (Lp 1) := by
-  refine ⟨semi_Lp one_ne_zero, ?_, ?_, ?_, ?_⟩
-  · rintro x ⟨⟨m, hm⟩, n, hn⟩
-    rw [AddSubgroup.mem_sup]
-    refine ⟨(x.re : ℂ), ⟨⟨⟨m, by simpa using hm⟩, ⟨0, by simp⟩⟩, ⟨⟨3 * m, by rw [Complex.ofReal_re, hm]; push_cast; ring⟩, ⟨0, by simp⟩⟩⟩,
-      (x.im : ℂ) * Complex.I, ⟨⟨⟨0, by simp⟩, ⟨n, by simpa using hn⟩⟩, ⟨⟨0, by simp⟩, ⟨3 * n, by simp [hn]⟩⟩⟩, Complex.re_add_im x⟩
-  · rintro a ⟨⟨m, hm⟩, n, hn⟩ b ⟨⟨m', hm'⟩, -⟩ ⟨⟨k, hk⟩, -⟩
-    refine ⟨⟨k - 3 * m', ?_⟩, ⟨3 * n, ?_⟩⟩
-    · rw [Complex.add_re, hm'] at hk; push_cast; linarith
-    · rw [hn]; push_cast; ring
-  · rintro a ⟨⟨m, hm⟩, n, hn⟩ h
-    obtain ⟨k, hk⟩ := h Complex.I ⟨⟨0, by simp⟩, ⟨3, by simp⟩⟩ ⟨⟨0, by simp⟩, ⟨1, by simp⟩⟩
-    rw [alternating_form_standard_hermitian] at hk
-    simp only [Complex.I_re, Complex.I_im, mul_zero, mul_one, zero_sub] at hk
-    refine ⟨⟨-k, by push_cast; linarith⟩, ⟨3 * n, by rw [hn]; push_cast; ring⟩⟩
-  · rintro b ⟨⟨m, hm⟩, n, hn⟩ h
-    obtain ⟨k, hk⟩ := h 1 ⟨⟨3, by simp⟩, ⟨0, by simp⟩⟩ ⟨⟨1, by simp⟩, ⟨0, by simp⟩⟩
-    rw [alternating_form_standard_hermitian] at hk
-    simp only [Complex.one_re, Complex.one_im, zero_mul, one_mul, zero_sub] at hk
-    refine ⟨⟨3 * m, by rw [hm]; push_cast; ring⟩, ⟨-k, by push_cast; linarith⟩⟩
-
-theorem splitHyp_test : SplitHyp H1 α1 (Lp (1 / 3)) (Lp 3) (Lp 1) :=
-  ⟨isHermitian_standard_form, semi_Lp (by norm_num), semi_Lp (by norm_num), selfDual_Lp (by norm_num), selfDual_Lp (by norm_num), goodLat_test⟩
-
-theorem level_test : ((1 / 3 : ℝ) : ℂ) ∈ Lp (1 / 3) ∧ ((1 / 3 : ℝ) : ℂ) ∉ Lp 1 := by
-  refine ⟨⟨⟨1, by simp⟩, ⟨0, by simp⟩⟩, ?_⟩
-  rintro ⟨⟨m, hm⟩, -⟩
-  rw [Complex.ofReal_re] at hm
-  have h : (3 * m : ℤ) = 1 := by
-    have : (3 : ℝ) * m = 1 := by linarith
-    exact_mod_cast this
-  omega
 
 end Test
 

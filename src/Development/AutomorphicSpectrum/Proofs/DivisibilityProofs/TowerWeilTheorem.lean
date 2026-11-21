@@ -5,12 +5,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithFunctionalLipschitzWeightsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerComponentHeightBoundStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerGapHeightUniformBoundStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArithFunctionalLipschitzWeights
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerComponentHeightBound
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerGapHeightUniformBound
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PerturbedWeightGapBoundsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeLeGapStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ContinuousWallBoundExtendStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeLeGap
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ContinuousWallBoundExtend
 
 noncomputable section
 
@@ -47,7 +48,7 @@ theorem continuous_lin_zero (Φ : RPA Ψ N →ₗ[ℝ] ℝ) (d : ℕ)
 
 theorem continuous_PB (T : RootTower Ψ N) (II : IntersectionSystem) (B : ℕ) :
     Continuous fun lam : Wt Ψ N => T.PB II B lam := by
-  obtain ⟨hcont, -, -⟩ := GlobalTheory.T.arith_functional_lipschitz_weights Ψ N (dimFl Ψ N + 1)
+  obtain ⟨hcont, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.linA_pow_continuous_lipschitz Ψ N (dimFl Ψ N + 1)
   have h : (fun lam : Wt Ψ N => T.PB II B lam) =
       fun lam => ∑ c, (T.M B c).PP II (linA lam 0 ^ (dimFl Ψ N + 1)) := by
     funext lam
@@ -124,15 +125,15 @@ theorem thmW_tower : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Kl
     T.Proportional → T.I1 II → T.I2 II → T.I3 → T.I5 II → T.I6 II → T.I7 → T.ThmW II := by
   intro hKl hEx hDs hZ1 hZ2 II hII Ψ _ _ N T hP h1 h2 h3 h5 h6 h7 c₀ hc₀
   have hc₁ : 0 < c₀ / 2 := by positivity
-  obtain ⟨θ₀, hθ₀, Cs, hCs, hsq⟩ := GlobalTheory.T.tower_gap_height_uniform_bound hZ1 hZ2 II hII Ψ N T h3 h5 h6 (c₀ / 2) hc₁
+  obtain ⟨θ₀, hθ₀, Cs, hCs, hsq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.mbarTop_squeeze hZ1 hZ2 II hII Ψ N T h3 h5 h6 (c₀ / 2) hc₁
   obtain ⟨s₀, hs₀, C3, hI2⟩ := h2 ((Fintype.card Ψ : ℝ) * N)
   obtain ⟨C2, hI1⟩ := h1
-  obtain ⟨C8, hC8, hdeg⟩ := GlobalTheory.T.flag_degree_le_gap Ψ N T.j T.j_pos T.j_lt
-  obtain ⟨-, hlin, Cp, hCp, hLip⟩ := GlobalTheory.T.arith_functional_lipschitz_weights Ψ N (dimFl Ψ N + 1)
+  obtain ⟨C8, hC8, hdeg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.flagDeg_le_mul_gap Ψ N T.j T.j_pos T.j_lt
+  obtain ⟨-, hlin, Cp, hCp, hLip⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.linA_pow_continuous_lipschitz Ψ N (dimFl Ψ N + 1)
   obtain ⟨B₁, hB₁⟩ := GlobalTheory.T.perturbed_weight_gap_bounds Ψ N T (c₀ / 2) (min θ₀ s₀) hc₁ (lt_min hθ₀ hs₀)
   refine ⟨(∑ c, (|C3| + 6 * Cs * C8 * T.vol c + Cp * |C2| * (3 + ‖T.nu‖))) * (5 * Fintype.card Ψ), B₁,
     fun B hB τ₀ lam₀ hlam₀ => ?_⟩
-  refine GlobalTheory.T.continuous_wall_bound_extend Ψ N T.j c₀ _ τ₀ (fun l => T.PB II B l) T.j_pos T.j_lt hc₀ (continuous_PB T II B) ?_ lam₀ hlam₀
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Top.rat_points_suffice_on_walls Ψ N T.j c₀ _ τ₀ (fun l => T.PB II B l) T.j_pos T.j_lt hc₀ (continuous_PB T II B) ?_ lam₀ hlam₀
   intro l hlr hlw
   obtain ⟨hB3, hθ, hθle, hθ1, hnl, hnl2, hgaps, hgap0, hcg, hdom, hdom2, hnef, hdist⟩ := hB₁ B hB τ₀ l hlw
   have hf : (1 : ℝ) ≤ Fintype.card Ψ := by
@@ -171,7 +172,7 @@ theorem thmW_tower : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Kl
   have hper : ∀ c, |T.PPc II B c (linRoot l ^ (dimFl Ψ N + 1))| ≤
       (|C3| + 6 * Cs * C8 * T.vol c + Cp * |C2| * (3 + ‖T.nu‖)) * (θ * Real.log B) := by
     intro c
-    obtain ⟨hm0, hm1⟩ := GlobalTheory.T.tower_component_height_bound hKl hEx hDs II hII Ψ N T hP h7 B c lam s hrat hsQ hdom hdom2
+    obtain ⟨hm0, hm1⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.deg_bounds hKl hEx hDs II hII Ψ N T hP h7 B c lam s hrat hsQ hdom hdom2
     have hsqc := hsq B (by omega) c lam θ s hrat hnl hθ (hθle.trans (min_le_left _ _)) hs hgaps hcg hdom2 hnef hm0
     have hI2c := hI2 B (by omega) c lam s (l1_le_card_mul_of_norm_le_one' lam hnl) hs0 hsle hdom2
     have hmono : ∀ m, |(T.M B c).PP II (monomial m 1)| ≤ |C2| * Real.log B := fun m =>

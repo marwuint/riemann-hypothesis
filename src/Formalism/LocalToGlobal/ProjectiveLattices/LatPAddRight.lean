@@ -34,15 +34,7 @@ variable {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff
 
 def N3Tower (T : Tower p Xo c) : Prop := (∀ v, N3AtPoints (T.Y v) p) ∧ ∀ n w, N3AtPoints (T.YN n w) p
 
-def UniqTow (T : Tower p Xo c) : Prop := (∀ v, UniqBeta (T.Y v) p) ∧ ∀ n w, UniqBeta (T.YN n w) p
-
 def AddTow (T : Tower p Xo c) : Prop := (∀ v, BetaAdd (T.Y v) p) ∧ ∀ n w, BetaAdd (T.YN n w) p
-
-def BalTow (T : Tower p Xo c) (cj : E → E) : Prop := (∀ v, BetaBal (T.Y v) p cj) ∧ ∀ n w, BetaBal (T.YN n w) p cj
-
-def PosDefTow (T : Tower p Xo c) : Prop := (∀ v, BetaPosDef (T.Y v) p) ∧ ∀ n w, BetaPosDef (T.YN n w) p
-
-def RankTow (T : Tower p Xo c) (r j : ℕ) : Prop := (∀ v, YlRank (T.Y v) p r j) ∧ ∀ n w, YlRank (T.YN n w) p r j
 
 variable {T : Tower p Xo c}
 
@@ -84,32 +76,5 @@ def beP (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) : YlatP hN y �
 
 theorem latticeForm_apply (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) (a b : YlatP hN y) :
     beP hN hA y a b = (lattice₂ hN y).beta a b := rfl
-
-theorem latticeForm_symm (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) (a b : YlatP hN y) :
-    beP hN hA y a b = beP hN hA y b a :=
-  latticeAt_form_symm hN y a b
-
-theorem latticeForm_smul_left_eq_conj_smul_right (hN : N3Tower T) (hA : AddTow T) {cj : E → E} (hB : BalTow T cj) {Z : MdlC} (y : Pt T Z)
-    (x x' : 𝓞 E) (hx : (x' : E) = cj (x : E)) (a b : YlatP hN y) :
-    beP hN hA y (x • a) b = beP hN hA y a (x' • b) := by
-  exact latticeAt_cases hN
-    (fun L => ∀ (x x' : 𝓞 E), (x' : E) = cj (x : E) → ∀ a b : L.Y, L.beta (x • a) b = L.beta a (x' • b))
-    (fun v C P A => hB.1 v C P A) (fun n w C P A => hB.2 n w C P A) y x x' hx a b
-
-theorem latticeForm_posDef (hN : N3Tower T) (hA : AddTow T) (hP : PosDefTow T) {Z : MdlC} (y : Pt T Z) :
-    ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ (YlatP hN y)),
-      ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * beP hN hA y (b i) (b k) := by
-  exact latticeAt_cases hN
-    (fun L => ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ L.Y),
-      ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * L.beta (b i) (b k))
-    (fun v C P A => hP.1 v C P A) (fun n w C P A => hP.2 n w C P A) y
-
-theorem exists_finrank_lattice_eq_mul (hN : N3Tower T) {r j : ℕ} (hR : RankTow T r j) {Z : MdlC} (y : Pt T Z) :
-    ∃ ρ : ℕ, Module.finrank ℤ (YlatP hN y) = 2 * (Module.finrank ℚ E / 2) * ρ ∧
-      (1 ≤ j → j + 1 ≤ r → ρ ≤ j ∧ ρ + j ≤ r) := by
-  exact latticeAt_cases hN
-    (fun L => ∃ ρ : ℕ, Module.finrank ℤ L.Y = 2 * (Module.finrank ℚ E / 2) * ρ ∧
-      (1 ≤ j → j + 1 ≤ r → ρ ≤ j ∧ ρ + j ≤ r))
-    (fun v C P A => hR.1 v C P A) (fun n w C P A => hR.2 n w C P A) y
 
 end Formalism.L2.Pj

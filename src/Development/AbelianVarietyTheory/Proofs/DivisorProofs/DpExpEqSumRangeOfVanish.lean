@@ -57,15 +57,6 @@ theorem _root_.GlobalTheory.Cris.IsNilDP.dpExp_add_eq_mul {δ : DividedPowers J}
     Finset.mem_range]
   omega
 
-theorem IsNilDP.map_dpExp_eq {δ : DividedPowers J} {δ' : DividedPowers J'} (h : IsNilDP δ)
-    {f : B →+* B'} (hf : IsDPMorphism δ δ' f) {a : B} (ha : a ∈ J) :
-    f (dpExp δ a) = dpExp δ' (f a) := by
-  obtain ⟨N, hN⟩ := h.exists_dpow_eq_zero
-  rw [dpExp_eq_sum_range_of_vanish δ a N fun n hn ↦ hN n hn a,
-    dpExp_eq_sum_range_of_vanish δ' (f a) N fun n hn ↦ by
-      rw [← hf.map_dpow ha, hN n hn a, map_zero], map_sum]
-  exact Finset.sum_congr rfl fun n _ ↦ hf.map_dpow ha
-
 set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry DividedPowers in
 variable {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : Ideal B'} in

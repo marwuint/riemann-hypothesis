@@ -59,14 +59,4 @@ def ThetaZeroTwoAnalytic : Prop :=
     Simeq (ι := Unit) (evenSigmaLogAtTwoTorsion W (ι (Formalism.L2.Th1.F.s2 L)) (px W (ptW 2 L ι W (ω₀ / 2)))) 0 ∧
       OneUnit (inW 2 ι W (Formalism.L2.Th1.F.th0 L (ω₀ / 2)))
 
-def PointsIntTwo : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l]) (W : WeierstrassCurve ℂ_[l]),
-    Unif l L ι W → IntCurve W → ∀ (α α' t0 t' t'' : ℂ),
-    (∀ t, Formalism.ELL.InFormalGroupPoints (ptW l L ι W t) → Formalism.ELL.InFormalGroupPoints (ptW l L ι W (α * t))) →
-    (∀ t, Formalism.ELL.InFormalGroupPoints (ptW l L ι W t) → Formalism.ELL.InFormalGroupPoints (ptW l L ι W (α' * t))) →
-    (∀ t, Formalism.ELL.InFormalGroupPoints (ptW l L ι W t) → α * t ∈ L.lattice → t ∈ L.lattice) →
-    t0 = t' + t'' → α' * t' ∈ L.lattice → α' * t'' - t'' ∈ L.lattice → t'' ∉ L.lattice →
-    α * t'' ∈ L.lattice →
-    ‖px W (ptW l L ι W t0)‖ ≤ 1 ∧ ∀ Q, α * Q - t0 ∈ L.lattice → ‖px W (ptW l L ι W Q)‖ ≤ 1
-
 end Formalism.L2.Th1.B

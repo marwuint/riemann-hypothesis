@@ -56,10 +56,6 @@ theorem MS_adjugate {M : Matrix n n (E ⊗[F] v.adicCompletion F)} (hM : MS E v 
   rw [← map_toS hM, ← RingHom.map_adjugate]
   exact ((toS hM).adjugate i j).2
 
-theorem det_mem {M : Matrix n n (E ⊗[F] v.adicCompletion F)} (hM : MS E v M) : M.det ∈ Sv E v := by
-  rw [← map_toS hM, ← RingHom.map_det]
-  exact (toS hM).det.2
-
 private lemma dv_mem_Sv' (d : 𝓞 F) : dv E v d ∈ Sv E v := by
   apply Subring.subset_closure
   left

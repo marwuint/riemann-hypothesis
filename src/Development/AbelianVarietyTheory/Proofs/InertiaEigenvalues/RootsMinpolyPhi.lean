@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexFieldAutActsHarishChandraCharactersStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexFieldAutActsHarishChandraCharacters
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
 open scoped Classical
 
@@ -203,7 +203,7 @@ theorem isCuspOf_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) {P : (ZMod g)[X]} {
   obtain ⟨x, rfl⟩ := exists_minpoly hm hi
   have hr := rel_minpoly L τ x
   have hint : IsIntegral (ZMod g) (phi L τ x) := Algebra.IsIntegral.isIntegral _
-  refine ⟨_, hr, ⟨hr.1, minpoly.irreducible hint, ?_, ?_⟩, (GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).2.2 d χ hc, ?_⟩
+  refine ⟨_, hr, ⟨hr.1, minpoly.irreducible hint, ?_, ?_⟩, (_root_.GlobalTheory.Adopt.complexFieldAut_acts_harishChandra_characters g τ).2.2 d χ hc, ?_⟩
   · intro h
     have h2 : (0 : Fbar g) ∈ rootsBar (minpoly (ZMod g) (phi L τ x)) := by
       rw [mem_rootsBar hr.1.ne_zero, ← coeff_zero_eq_aeval_zero', h, map_zero]
@@ -248,7 +248,7 @@ theorem hasLabel_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) {n : ℕ} {χ : Gn 
   refine ⟨Q', h1, ?_, hr.unique h4, ?_⟩
   · rw [h2, ← hd, degL, degL, List.map_map]
     rfl
-  · rw [h2, (GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).2.1, ((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).2.2]
+  · rw [h2, (_root_.GlobalTheory.Adopt.complexFieldAut_acts_harishChandra_characters g τ).2.1, ((_root_.GlobalTheory.Adopt.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).2.2]
     exact fun h => hip ((map_eq_zero τ).1 h)
 
 theorem eSerC_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (n : ℕ) {f f' : (ZMod g)[X]} (hf : f.Monic)
@@ -259,11 +259,11 @@ theorem eSerC_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (n : ℕ) {f f' : (ZMo
     ext χ
     constructor
     · rintro ⟨h1, h2⟩
-      refine ⟨τ.symm ∘ χ, ⟨((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ.symm).1 _ χ).1 h1, hasLabel_map L τ.symm (hr.symm hf) h2⟩, ?_⟩
+      refine ⟨τ.symm ∘ χ, ⟨((_root_.GlobalTheory.Adopt.complexFieldAut_acts_harishChandra_characters g τ.symm).1 _ χ).1 h1, hasLabel_map L τ.symm (hr.symm hf) h2⟩, ?_⟩
       funext x
       simp
     · rintro ⟨χ, ⟨h1, h2⟩, rfl⟩
-      exact ⟨((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).1 h1, hasLabel_map L τ hr h2⟩
+      exact ⟨((_root_.GlobalTheory.Adopt.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).1 h1, hasLabel_map L τ hr h2⟩
   let E := MonoidAlgebra.mapAddEquiv (Gn g n) τ.toAddEquiv
   have hE : ∀ a : MonoidAlgebra ℂ (Gn g n), (E a).coeff = a.coeff.mapRange τ (map_zero τ) := fun a => by
     ext x
@@ -271,7 +271,7 @@ theorem eSerC_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (n : ℕ) {f f' : (ZMo
     rfl
   have hz : ∀ χ : Gn g n → ℂ, E (zOf χ) = zOf (τ ∘ χ) := fun χ => by
     ext x
-    rw [hE, ((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).2.1]
+    rw [hE, ((_root_.GlobalTheory.Adopt.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).2.1]
   rw [← hE, eSerC, eSerC, hset, finsum_mem_image (τ.injective.comp_left.injOn)]
   congr 1
   rw [E.map_finsum]

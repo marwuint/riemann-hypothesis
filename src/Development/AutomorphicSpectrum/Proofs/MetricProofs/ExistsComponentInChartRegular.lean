@@ -72,7 +72,7 @@ theorem exists_point_of_prime : ∀ {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ 
     exact (memW G D hG).1 hGP
   let I : Ideal A := Q.map φ
   have hI : I.IsPrime := Ideal.map_isPrime_of_surjective hsurj hker
-  obtain ⟨p, ⟨hin, hunit⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point Sc Ω ξ ℤ _ (seg y) tie c hx I hI
+  obtain ⟨p, ⟨hin, hunit⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime Sc Ω ξ ℤ _ (seg y) tie c hx I hI
   have hI' : ∀ g : MRing J, φ g ∈ I ↔ g ∈ Q := by
     intro g
     refine ⟨fun h => ?_, Ideal.mem_map_of_mem φ⟩

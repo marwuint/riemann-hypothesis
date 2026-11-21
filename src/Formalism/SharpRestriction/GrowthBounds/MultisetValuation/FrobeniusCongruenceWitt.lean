@@ -73,10 +73,6 @@ theorem sx_dual {n' : ℕ} (B : OmBasis p n') (hev : Even n') (a b : Fin n') (ha
     · rw [if_pos h, if_pos (hii.mpr h), map_one]
     · rw [if_neg h, if_neg (fun h' => h (hii.mp h')), map_zero]
 
-theorem sx_iter_posAdd {n' : ℕ} (x : WW p) (hx : (sigW p)^[n'] x = x) (s : Fin n') (e : ℕ) :
-    (sigW p)^[(posAdd s e).val] x = (sigW p)^[s.val + e] x := by
-  exact Function.IsPeriodicPt.iterate_mod_apply hx (s.val + e)
-
 theorem frobenius_congruence_witt (a : WW p) : ∃ y : WW p, sigW p a = a ^ p + p * y := by
   obtain ⟨y, hy⟩ := Formalism.InvariantFactorPaths.G7.WModel.frob_sub_pow p a
   exact ⟨y, by unfold sigW; linear_combination hy⟩

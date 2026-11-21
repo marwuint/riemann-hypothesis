@@ -1,8 +1,8 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.Splits
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PolynomialRootsOfClosedQuotientStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsolutelyClosedUnitCoefficientRootStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewtonPolygonSlopeExistenceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PolynomialRootsOfClosedQuotient
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsolutelyClosedUnitCoefficientRoot
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewtonPolygonSlopeExistence
 
 open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison CrystallineSemistableComparison.R
 
@@ -41,7 +41,7 @@ theorem isUnit_or_of_add_quot {S : Type} [CommRing S] (ϖ : S)
 theorem step_comp : ∀ {S : Type} [CommRing S] (ϖ : S), ϖ ∈ (⊥ : Ideal S).jacobson →
     ϖ ∈ nonZeroDivisors S → Dich ϖ → Aic (S ⧸ Ideal.span {ϖ ^ 2}) → Step ϖ := by
   intro S _ ϖ hj hnz hD hA Q n hQ hd hn
-  have hRoots : Roots ϖ := GlobalTheory.T.polynomial_roots_of_closed_quotient ϖ hj hnz hD hA
+  have hRoots : Roots ϖ := _root_.GlobalTheory.CompanionTheory.RootsUpToUnits.roots_of_dich ϖ hj hnz hD hA
   have hq0 : Q.coeff 0 = Q.eval 0 := Polynomial.coeff_zero_eq_eval_zero Q
   have hspan : ϖ ^ (n + 1) ∈ Ideal.span {Q.coeff 0, ϖ ^ (n + 1)} :=
     Ideal.subset_span (by simp)
@@ -57,7 +57,7 @@ theorem step_comp : ∀ {S : Type} [CommRing S] (ϖ : S), ϖ ∈ (⊥ : Ideal S)
       have h0 : ϖ ^ (n + 1) * x = 0 := by
         rw [he]; linear_combination e * hx
       exact (mem_nonZeroDivisors_iff_right.mp hpow) x (by rw [mul_comm]; exact h0)
-    obtain ⟨c, hc1, i0, hi1, hi2, hi3⟩ := GlobalTheory.T.newton_polygon_slope_existence ϖ hD hRoots (fun i => Q.coeff i)
+    obtain ⟨c, hc1, i0, hi1, hi2, hi3⟩ := _root_.GlobalTheory.CompanionTheory.NewtonSlope.first_slope ϖ hD hRoots (fun i => Q.coeff i)
       Q.natDegree (n + 1) hd hQ.coeff_natDegree hdiv
     have hs : ∀ i, ∃ t, (i = 0 → t = 1) ∧
         (i ≤ Q.natDegree → Q.coeff i * c ^ i = Q.coeff 0 * t) := by
@@ -95,7 +95,7 @@ theorem step_comp : ∀ {S : Type} [CommRing S] (ϖ : S), ϖ ∈ (⊥ : Ideal S)
       simp only [P, Polynomial.coeff_map]
       rw [hRc i0 hi2]
       exact hunit.map _
-    obtain ⟨y', hy'⟩ := GlobalTheory.T.absolutely_closed_unit_coefficient_root hA (isUnit_or_of_add_quot ϖ hj hD) P i0 hP0 hi1 hPi
+    obtain ⟨y', hy'⟩ := _root_.GlobalTheory.CompanionTheory.UnitRoot.exists_root hA (isUnit_or_of_add_quot ϖ hj hD) P i0 hP0 hi1 hPi
     obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective y'
     have hRy : ϖ ^ 2 ∣ R.eval y := by
       rw [← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]

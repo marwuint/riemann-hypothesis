@@ -1,5 +1,11 @@
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideMultiplicityCusp
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseFrobSet
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteExceptionalPlacesOverPrime
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaloisFamilyLocalGlobal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SplitRep
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteSplittingSetFrobeniusPolynomials
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PtSysFiniteStatement
 
@@ -13,7 +19,7 @@ theorem exists_big_oSplit_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E �
   classical
   have hsys := fun w => _root_.GlobalTheory.T.galois_family_local_global_alt D cf jE A low Pq S hL eig θ Bs M C tp hCS hMt hstar hExp hsplit hCheb w
   choose FA Sy hSy using hsys
-  have hexc := fun w : D.what₂.places.Pl => GlobalTheory.T.finite_exceptional_places_over_prime D (D.what₂.places.resChar w) (D.what₂.places.resChar_prime w)
+  have hexc := fun w : D.what₂.places.Pl => _root_.GlobalTheory.PlacesExc.finite_exceptional D (D.what₂.places.resChar w) (D.what₂.places.resChar_prime w)
   choose FB hFB using hexc
   let Fw : D.what₂.places.Pl → Finset (PlE D.host) := fun w => FA w ∪ FB w ∪ C.Q w
   let Pv : D.what₂.places.Pl → Formalism.ConjugateSelfDual.G D.host.E D.nd.Om → PlE D.host → Prop := fun w σ v =>
@@ -22,7 +28,7 @@ theorem exists_big_oSplit_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E �
   let pw : D.what₂.places.Pl → (PlE D.host → ℕ → ℂ) → Formalism.ConjugateSelfDual.G D.host.E D.nd.Om → ℂ[X] := fun w c σ =>
     if h : ∃ v, Pv w σ v then sysPol D c h.choose else 0
   have hcore := fun (w : D.what₂.places.Pl) (c : PlE D.host → ℕ → ℂ) =>
-    GlobalTheory.T.exists_finite_splitting_set_frobeniusPolynomials (D.what₂.places.resChar w) (A.pl.ι w) D.host.E D.nd.Om D.R.nV (frobSet D (Fw w)) (pw w c)
+    _root_.GlobalTheory.OSplitCore.exists_splitting_set (D.what₂.places.resChar w) (A.pl.ι w) D.host.E D.nd.Om D.R.nV (frobSet D (Fw w)) (pw w c)
       (dense_frobSet D hCheb (Fw w))
   choose SC hSC using hcore
   refine ⟨fun w => (Sy w).biUnion (SC w), ?_⟩

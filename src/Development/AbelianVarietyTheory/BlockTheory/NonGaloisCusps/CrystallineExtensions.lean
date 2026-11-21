@@ -20,35 +20,6 @@ def IsExt (ρ : Representation LL G V) (ρ' : Representation LL G W) (i : V →�
 def IsCocycleOf (ρ' : Representation LL G W) (i : V →ₗ[LL] W) (p : W →ₗ[LL] LL) (c : G → V) : Prop :=
   ∃ e : W, p e = 1 ∧ ∀ g, ρ' g e = e + i (c g)
 
-theorem IsExt.exists_cocycle {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
-    {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) : ∃ c : G → V, IsCocycleOf ρ' i p c := by
-  obtain ⟨-, hex, hs, -, hp⟩ := h
-  obtain ⟨e, he⟩ := hs 1
-  have : ∀ g, ∃ x, i x = ρ' g e - e := fun g => (hex _).mp (by rw [map_sub, hp, sub_self])
-  choose c hc using this
-  exact ⟨c, e, he, fun g => by rw [hc]; abel⟩
-
-theorem IsExt.cocycle_mul {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
-    {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) {c : G → V} (hc : IsCocycleOf ρ' i p c) (g k : G) :
-    c (g * k) = c g + ρ g (c k) := by
-  obtain ⟨e, -, he⟩ := hc
-  apply h.1
-  have h1 := he (g * k)
-  rw [map_mul, Module.End.mul_apply, he k, map_add, he g, ← h.2.2.2.1, add_assoc] at h1
-  rw [map_add]
-  exact (add_left_cancel h1).symm
-
-theorem IsExt.cocycle_sub_mem_coboundaries {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
-    {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) {c c' : G → V} (hc : IsCocycleOf ρ' i p c)
-    (hc' : IsCocycleOf ρ' i p c') : c - c' ∈ B1 ρ := by
-  obtain ⟨e, h1, he⟩ := hc
-  obtain ⟨e', h1', he'⟩ := hc'
-  obtain ⟨x, hx⟩ := (h.2.1 (e - e')).mp (by rw [map_sub, h1, h1', sub_self])
-  refine ⟨x, funext fun g => h.1 ?_⟩
-  change i (ρ g x - x) = i (c g - c' g)
-  rw [map_sub, map_sub, h.2.2.2.1, hx, map_sub, he, he']
-  abel
-
 variable [TopologicalSpace G] [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
 def extRep (ρ : Representation LL G V) (c : ↥(continuousCocycles ρ)) : Representation LL G (V × LL) where

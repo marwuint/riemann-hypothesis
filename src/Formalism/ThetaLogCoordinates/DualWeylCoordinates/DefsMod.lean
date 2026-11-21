@@ -66,9 +66,6 @@ def StdT {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) : Prop :=
 
 def dMu {n : ℕ} [NeZero n] (mu : Fin n → ℤ) : ℕ := Nat.card {I : TIdx mu // StdT I}
 
-def SMu {n : ℕ} [NeZero n] (mu : Fin n → ℤ) : Submodule ℤ (GLCoord ℤ n) :=
-  Submodule.span ℤ (Set.range (brk mu))
-
 def torusPt (n : ℕ) : GL (Fin n) (AddMonoidAlgebra ℤ (Fin n → ℤ)) where
   val := Matrix.diagonal fun a => AddMonoidAlgebra.single (Pi.single a 1) 1
   inv := Matrix.diagonal fun a => AddMonoidAlgebra.single (Pi.single a (-1)) 1
@@ -86,15 +83,6 @@ def IsHighest {n : ℕ} (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → �
   Matrix.mulVec ((prMu M mu).map (Int.castRingHom R)) x = x ∧
   ∀ (R' : Type) [CommRing R'] [Algebra R R'] (u : GL (Fin n) R'), (∀ a, u.val a a = 1) →
     (∀ a b, b < a → u.val a b = 0) → Matrix.mulVec (M.A.map (evGL u)) (fun i => algebraMap R R' (x i)) = fun i => algebraMap R R' (x i)
-
-def typeSum {n : ℕ} (M : GLMod n) (pi : Set (Fin n → ℤ)) : Submodule ℚ (M.ι → ℚ) :=
-  Submodule.span ℚ {y | ∃ mu ∈ pi, ∃ v, IsHighest M ℚ mu v ∧ ∃ g : GL (Fin n) ℚ, y = Matrix.mulVec (M.A.map (evGL g)) v}
-
-def DomLE {n : ℕ} (nu mu : Fin n → ℤ) : Prop :=
-  (∀ a : Fin n, ∑ b ∈ univ.filter (· ≤ a), nu b ≤ ∑ b ∈ univ.filter (· ≤ a), mu b) ∧ ∑ b, nu b = ∑ b, mu b
-
-def DomLowerSet {n : ℕ} (pi : Set (Fin n → ℤ)) : Prop :=
-  (∀ mu ∈ pi, Dominant mu) ∧ ∀ mu ∈ pi, ∀ nu, Dominant nu → DomLE nu mu → nu ∈ pi
 
 structure ColFam {n : ℕ} [NeZero n] (M : GLMod n) where
   J : Type
@@ -115,12 +103,6 @@ attribute [instance] ColFam.fJ ColFam.dJ
 def ColFam.vec {n : ℕ} [NeZero n] {M : GLMod n} (CF : ColFam M) (j : CF.J) (I : TIdx (CF.mu j)) : M.ι → ℤ :=
   fun i => CF.ph j i I
 
-def ColFam.Mpi {n : ℕ} [NeZero n] {M : GLMod n} (CF : ColFam M) (pi : Set (Fin n → ℤ)) : Submodule ℤ (M.ι → ℤ) :=
-  Submodule.span ℤ {x | ∃ j, CF.mu j ∈ pi ∧ ∃ I : TIdx (CF.mu j), x = CF.vec j I}
-
-def ColFam.MM {n : ℕ} [NeZero n] {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) : Submodule ℤ (M.ι → ℤ) :=
-  Submodule.span ℤ {x | ∃ j, CF.mu j = mu ∧ x = CF.vec j (canT (CF.mu j))}
-
 abbrev SymIdx (n b : ℕ) := {α : Fin n → Fin (b + 1) // ∑ a, (α a : ℕ) = b}
 
 def symMono {n b : ℕ} (α : SymIdx n b) : Fin n →₀ ℕ := Finsupp.equivFunOnFinite.symm fun a => (α.1 a : ℕ)
@@ -135,26 +117,6 @@ def ginvC (n : ℕ) (a b : Fin n) : GLCoord ℤ n :=
 def SymDMat (n b : ℕ) : Matrix (SymIdx n b) (SymIdx n b) (GLCoord ℤ n) :=
   fun α β => MvPolynomial.coeff (symMono α)
     (∏ m : Fin n, (∑ a : Fin n, MvPolynomial.C (ginvC n m a) * X a) ^ (β.1 m : ℕ))
-
-abbrev LamIdx (n b : ℕ) := {J : Finset (Fin n) // J.card = b}
-
-def LamMat (n b : ℕ) : Matrix (LamIdx n b) (LamIdx n b) (GLCoord ℤ n) :=
-  fun J I => minorC J.1 I.1 J.2 I.2
-
-def IsTensor {n : ℕ} (M M' : GLMod n) {κ : Type} (B : Matrix κ κ (GLCoord ℤ n)) (e : M'.ι ≃ M.ι × κ) : Prop :=
-  ∀ i j, M'.A i j = M.A (e i).1 (e j).1 * B (e i).2 (e j).2
-
-def IsSMu {n : ℕ} [NeZero n] (M : GLMod n) (mu : Fin n → ℤ) (β : M.ι → GLCoord ℤ n) : Prop :=
-  LinearIndependent ℤ β ∧ Submodule.span ℤ (Set.range β) = SMu mu ∧
-  ∀ (R : Type) [CommRing R] (x g : GL (Fin n) R) (i : M.ι),
-    evGL (x * g) (β i) = ∑ j, evGL g (M.A j i) * evGL x (β j)
-
-def Interl {m : ℕ} (lam : Fin (m + 1) → ℤ) (nu : Fin m → ℤ) : Prop :=
-  ∀ a : Fin m, nu a ≤ lam a.castSucc ∧ lam a.succ ≤ nu a
-
-def IsBlock {m : ℕ} {R : Type} [CommRing R] (h : GL (Fin (m + 1)) R) (g1 : GL (Fin m) R) (t : Rˣ) : Prop :=
-  (∀ a b : Fin m, h.val a.castSucc b.castSucc = g1.val a b) ∧ h.val (Fin.last m) (Fin.last m) = t ∧
-  ∀ a : Fin m, h.val a.castSucc (Fin.last m) = 0 ∧ h.val (Fin.last m) a.castSucc = 0
 
 lemma genMat_map_evalR {n : ℕ} {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (g : Matrix (Fin n) (Fin n) R') :

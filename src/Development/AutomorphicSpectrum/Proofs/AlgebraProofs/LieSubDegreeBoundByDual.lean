@@ -3,10 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGau
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusLatticeDegreeMulP
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LinearIndependentMapVec
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeMonoInjectiveHomStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeMonoInjectiveHom
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeBotAndMaxExistsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShortExactSubDegreeBoundStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DotDualSubDegreeAnnihilatorStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShortExactSubDegreeBound
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DotDualSubDegreeAnnihilator
 
 open GlobalTheory.CompanionTheory.Ar.Crv
 
@@ -30,14 +30,14 @@ theorem frob_estimate : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact 
     have : (2 : ℤ) < (p : ℤ) := by exact_mod_cast hp
     linarith
   have hf := GlobalTheory.CompanionTheory.Ar.Crv.SubFrob.subDeg_frob K C p d D.lie W₀ D.lie_bun
-  have h1 := GlobalTheory.T.sub_degree_mono_injective_hom K C (Fin d → K) ((Fin d → K) × (Fin d → K))
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.subDeg_le_map_of_injective K C (Fin d → K) ((Fin d → K) × (Fin d → K))
     (frobLat C p D.lie) D.H D.α (frobSub p W₀)
     (GlobalTheory.CompanionTheory.Ar.Crv.DegFrob.deg_frobLat K C p d D.lie D.lie_bun).1 D.H_bun D.conj.1
     (fun i x hx => (D.conj.2.2.2.1 i x).1 hx)
-  have h2 := GlobalTheory.T.short_exact_sub_degree_bound K C (Fin d → K) ((Fin d → K) × (Fin d → K)) (Fin d → K)
+  have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.SubDegSes.subDeg_ses K C (Fin d → K) ((Fin d → K) × (Fin d → K)) (Fin d → K)
     (dotDual C D.lie) D.H D.lie (LinearMap.inr K (Fin d → K) (Fin d → K))
     (LinearMap.fst K (Fin d → K) (Fin d → K)) (Submodule.map D.α (frobSub p W₀)) D.H_bun D.hodge
-  have h3 := GlobalTheory.T.dot_dual_sub_degree_annihilator K C d D.lie
+  have h3 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.subDeg_dotDual_orth K C d D.lie
     (dotOrth (Submodule.comap (LinearMap.inr K (Fin d → K) (Fin d → K))
       (Submodule.map D.α (frobSub p W₀))))
     (Submodule.comap (LinearMap.inr K (Fin d → K) (Fin d → K))

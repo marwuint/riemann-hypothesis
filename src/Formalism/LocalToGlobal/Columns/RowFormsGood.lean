@@ -206,9 +206,6 @@ theorem mtilde_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) : (mtildeGSD W C
 theorem mtildeK_good (hX : X.Ok) : (mtildeKGSD W Ch sel mu).Good 1 :=
   formGSD_good hX _ _ (rowVal_eqv W hX _) (rowVal_dualP W hX _)
 
-theorem mt_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : (mtGSD W Ch sel mu P j).Good 1 :=
-  formGSD_good hX _ _ (mtVal_eqv W hX j _) (mtVal_dualP W hX j _)
-
 theorem mtK_good (hX : X.Ok) (j : ℕ) : (mtKGSD W Ch sel mu j).Good 1 :=
   formGSD_good hX _ _ (mtVal_eqv W hX j _) (mtVal_dualP W hX j _)
 
@@ -217,31 +214,16 @@ theorem mtilde_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) : (mtildeGSD W Ch
 
 theorem mtildeK_rat (hX : X.Ok) : (mtildeKGSD W Ch sel mu).Rat := formGSD_rat hX _ _ (rowVal_ratP W hX _)
 
-theorem mt_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) : (mtGSD W Ch sel mu P j).Rat :=
-  formGSD_rat hX _ _ (mtVal_ratP W hX j _)
-
 theorem mtK_rat (hX : X.Ok) (j : ℕ) : (mtKGSD W Ch sel mu j).Rat := formGSD_rat hX _ _ (mtVal_ratP W hX j _)
-
-theorem MtildeCSD_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (h : (mtildeGSD W Ch sel mu P).Ok) :
-    (MtildeCSD W Ch sel mu P h).Good 1 := (mtildeGSD W Ch sel mu P).toCSDOf_good (mtilde_good W Ch sel mu hX P) _
 
 theorem MtildeKCSD_good (hX : X.Ok) (h : (mtildeKGSD W Ch sel mu).Ok) : (MtildeKCSD W Ch sel mu h).Good 1 :=
   (mtildeKGSD W Ch sel mu).toCSDOf_good (mtildeK_good W Ch sel mu hX) _
 
-theorem MtCSD_good (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) (h : (mtGSD W Ch sel mu P j).Ok) :
-    (MtCSD W Ch sel mu P j h).Good 1 := (mtGSD W Ch sel mu P j).toCSDOf_good (mt_good W Ch sel mu hX P j) _
-
 theorem MtKCSD_good (hX : X.Ok) (j : ℕ) (h : (mtKGSD W Ch sel mu j).Ok) : (MtKCSD W Ch sel mu j h).Good 1 :=
   (mtKGSD W Ch sel mu j).toCSDOf_good (mtK_good W Ch sel mu hX j) _
 
-theorem MtildeCSD_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (h : (mtildeGSD W Ch sel mu P).Ok) :
-    (MtildeCSD W Ch sel mu P h).Rat := (mtildeGSD W Ch sel mu P).toCSDOf_rat h (mtilde_rat W Ch sel mu hX P) _
-
 theorem MtildeKCSD_rat (hX : X.Ok) (h : (mtildeKGSD W Ch sel mu).Ok) : (MtildeKCSD W Ch sel mu h).Rat :=
   (mtildeKGSD W Ch sel mu).toCSDOf_rat h (mtildeK_rat W Ch sel mu hX) _
-
-theorem MtCSD_rat (hX : X.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (j : ℕ) (h : (mtGSD W Ch sel mu P j).Ok) :
-    (MtCSD W Ch sel mu P j h).Rat := (mtGSD W Ch sel mu P j).toCSDOf_rat h (mt_rat W Ch sel mu hX P j) _
 
 theorem MtKCSD_rat (hX : X.Ok) (j : ℕ) (h : (mtKGSD W Ch sel mu j).Ok) : (MtKCSD W Ch sel mu j h).Rat :=
   (mtKGSD W Ch sel mu j).toCSDOf_rat h (mtK_rat W Ch sel mu hX j) _

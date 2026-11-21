@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SideEigenExport
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExistsReading
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GaloisReps
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IsTripleAtOfConj
@@ -14,11 +14,6 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.TripInhab
-open GlobalTheory.Triple GlobalTheory.EigTie
-open GlobalTheory.GalChar (IsGal toQ inQ)
-open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf GalE)
-open GlobalTheory.TwistAbove (twGL)
-variable {D : D7} {C : CharFrame D} {art : Neutral.B1.Ideles D.host.E →* GlobalTheory.HeckeGal.Gab D.host.E D.nd.Om}
 end GlobalTheory.TripInhab
 namespace GlobalTheory.TripInhab
 open GlobalTheory.Triple GlobalTheory.EigTie
@@ -29,9 +24,9 @@ theorem isTriple_of_sideB_alt : GlobalTheory.Published.ChebotarevDegreeOne → G
   intro hCheb hArt D cf Rw low Pq S hL eig θ Bs Sb hSb hks hT hG hCS hV hroot hstar hET hEO hRP hRT hGR hall
   obtain ⟨art, ha⟩ := hArt D.host.E D.nd.Om
   refine ⟨cf, art, ha, fun i hi b => ?_,
-    fun i _ s => GlobalTheory.T.twistTriple_eigenvector_in_good_part D cf Rw low Pq S hL eig θ Bs Sb hSb hks hEO i s, hall⟩
+    fun i _ s => _root_.GlobalTheory.TwInputs.goodE_of_eigOcc D cf Rw low Pq S hL eig θ Bs Sb hSb hks hEO i s, hall⟩
   obtain ⟨ρ, w, red, hind, hres⟩ := hRT.exists_reading hstar hi b
-  have hc : IsChars cf art ρ := GlobalTheory.T.firstTwistCharacters_eq_ladic_characters_allReadings hCheb hArt D cf Rw low Pq S hL eig θ Bs hT hG hCS hV hroot art ha i b ρ
+  have hc : IsChars cf art ρ := _root_.GlobalTheory.TwInputs.isChars_of_sideB hCheb hArt D cf Rw low Pq S hL eig θ Bs hT hG hCS hV hroot art ha i b ρ
   refine ⟨ρ, hc, fun s hs => ?_⟩
   subst hs
   obtain ⟨hocc, hgood, hspec⟩ := Bs.rhoS i s

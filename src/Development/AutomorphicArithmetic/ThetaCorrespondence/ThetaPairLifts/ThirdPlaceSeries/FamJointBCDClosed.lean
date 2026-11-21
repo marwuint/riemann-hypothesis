@@ -1,5 +1,18 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConclusionJaIffPxn0Condition
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Formalism.SharpRestriction.ParConsts
+import Formalism.SharpRestriction.LevelLetterCocycles.AdmissibleParameterJ
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CommutingEndomorphismCondition
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThickLetterWordLatticeSurjectionHypotheses
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HodgeTateJumpsAtModulesForSign
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FamJointBCD
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertPrimeNeTypePrime
+import Development.AutomorphicArithmetic.ResidueCharacters.TwistedPlaces
+import Formalism.SharpRestriction.LevelLetterCocycles.LargeLevelLemmas
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoefficientExtensionDecomposition
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
+import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.DeRhamFamilyAway
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PointInputAwayFromTypePrimesStatement
 
@@ -16,6 +29,6 @@ theorem fam_jointBCD_closed_alt : GlobalTheory.Published.FontaineBcris → (∀ 
   refine ⟨x0, fun x hx h1 j HW X hA hX => h x hx h1 j HW X (hJ _ _ hA).1 fun i _ hi π hπ => ?_⟩
   refine _root_.GlobalTheory.T.ptIn_of_ptFam_deRham_away hF _ X hX hA.1 i ?_ π hπ
   simp only [TwistedPlaces.gset, Finset.mem_insert, Finset.mem_singleton, not_or]
-  exact ⟨GlobalTheory.T.inert_prime_ne_typePrime _ _ 0 hi, GlobalTheory.T.inert_prime_ne_typePrime _ _ 1 hi⟩
+  exact ⟨_root_.GlobalTheory.InertNotType.main _ _ 0 hi, _root_.GlobalTheory.InertNotType.main _ _ 1 hi⟩
 end GlobalTheory.HTW.RecS
 end

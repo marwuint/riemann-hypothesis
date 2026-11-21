@@ -48,34 +48,6 @@ theorem hermValue_smul (c : R) (x : ι → R ⊗[K] E) :
 
 end Form
 
-section Compact
-
-attribute [local instance] tensorTopology finite_of_isQuadraticExtension isModuleTopology_tensor
-  isTopologicalRing_tensor
-
-variable (H : Matrix ι ι E)
-variable (R : Type*) [NontriviallyNormedField R] [ProperSpace R] [Algebra K R]
-variable {κ : Type*} [Fintype κ] (b : Basis κ K E)
-
-def anisoVecCoords (x : ι → R ⊗[K] E) : ι × κ → R :=
-  fun p => (Algebra.TensorProduct.basis R b).repr (x p.1) p.2
-
-def anisoVecOfCoords (y : ι × κ → R) : ι → R ⊗[K] E :=
-  fun i => (tensorCoordsHomeomorph R b).symm fun k => y (i, k)
-
-variable {R b}
-
-variable (R b)
-
-def anisoForm (y : ι × κ → R) : κ → R :=
-  tensorCoordsHomeomorph R b (hermValue K H R (anisoVecOfCoords R b y))
-
-variable {H R b}
-
-variable (H R)
-
-end Compact
-
 section RealPlace
 
 open NumberField
@@ -90,14 +62,6 @@ abbrev completionNontriviallyNormedField (w : InfinitePlace K) :
         (map_zero _) 2
       rw [← this, map_ofNat]
       norm_num⟩ }
-
-def IsHermDefiniteAt (w : InfinitePlace K) (hw : w.IsReal) : Prop :=
-  (∀ x : ι → w.Completion ⊗[K] E, x ≠ 0 → ∃ t : w.Completion,
-      hermValue K H w.Completion x = algebraMap w.Completion (w.Completion ⊗[K] E) t ∧
-        0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal hw t) ∨
-    ∀ x : ι → w.Completion ⊗[K] E, x ≠ 0 → ∃ t : w.Completion,
-      hermValue K H w.Completion x = algebraMap w.Completion (w.Completion ⊗[K] E) t ∧
-        InfinitePlace.Completion.extensionEmbeddingOfIsReal hw t < 0
 
 variable {H}
 

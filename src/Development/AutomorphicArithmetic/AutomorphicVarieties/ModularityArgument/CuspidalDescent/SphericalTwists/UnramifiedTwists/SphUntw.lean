@@ -61,30 +61,4 @@ private theorem good_zero (τ : SmIrr (GL (Fin 0) k)) : Good (IrrGL.of τ.ρ τ.
 
 end Loc
 
-theorem sphUntw : SphUntw := by
-  intro _ K Ω _ _ _ _ _ n κ w τ τ' B hB ⟨e⟩
-  have hχ : IsSmoothChar (κ.loc w) := GlobalTheory.HeckeComp.smooth_loc κ w
-  have ex : (IrrGL.of τ.ρ τ.smooth τ.irred).tw (κ.loc w) hχ = IrrGL.of τ'.ρ τ'.smooth τ'.irred := by
-    rw [IrrGL.tw_of]
-    exact IrrGL.of_eq_of.2 ⟨e.symm⟩
-  have ex' : IrrGL.of τ.ρ τ.smooth τ.irred = (IrrGL.of τ'.ρ τ'.smooth τ'.irred).tw (κ.loc w)⁻¹ hχ.inv := by
-    rw [← ex, IrrGL.tw_tw]
-    simp only [mul_inv_cancel, IrrGL.tw_one]
-  have hGG : Good (IrrGL.of τ'.ρ τ'.smooth τ'.irred) ∧ Good (IrrGL.of τ.ρ τ.smooth τ.irred) := by
-    rcases Nat.eq_zero_or_pos n with rfl | hn
-    · exact ⟨good_zero τ', good_zero τ⟩
-    · obtain ⟨ξ, hξ, -, hs, -⟩ := GlobalTheory.T.supercuspidal_support_characters K n hn w τ' B hB
-      have h1 := GlobalTheory.RoadU.CharTwist.hasSupport_rep_tw hs _ hχ.inv
-      rw [GlobalTheory.RoadU.CharTwist.chars_tw, ← ex'] at h1
-      exact ⟨good_chars ξ hξ hs, good_chars _ _ h1⟩
-  obtain ⟨hG', hG⟩ := hGG
-  refine ⟨hG, fun A h rc hrc => ?_⟩
-  obtain ⟨b, hb, ε, L⟩ := toV' hrc
-  have hsph := GlobalTheory.TempSatUnr.isSpherical_of_hasSatGL hB
-  have hu : (rc (IrrGL.of τ'.ρ τ'.smooth τ'.irred)).unr :=
-    (L.sph _).1 (fixed_ne_bot_of_equiv (IrrGL.equivOf τ'.ρ τ'.smooth τ'.irred) hsph)
-  have hg := (UpperTheory.V.Z.Win.Gu.gdLaws K Ω A w h).2.2.2 _ hu
-  rw [algNorm, L.nu_eq, (UpperTheory.V.Z.Win.Gu.gdLaws K Ω A w h).2.1, ex', L.twist _ _ _ hG', L.one, lpChar_lpOfChar]
-  exact gd_lpTwist hg _ _
-
 end UpperTheory.V.Z.Desc.W

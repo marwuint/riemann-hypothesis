@@ -57,11 +57,6 @@ theorem tanMap_mul (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') (a b : epsAt 
   apply Over.OverMorphism.ext
   exact (h.2 _ a b (pushAt h a) (pushAt h b) rfl rfl).symm
 
-theorem tanMap_one (h : IsGrpPullback G' G f φ) (y : Sp R ⟶ S') :
-    tanMap h y (1 : epsAt y ⟶ G') = 1 := by
-  rw [tanMap_eq, pushAt_one, Hom.one_def, Hom.one_def, ← Category.assoc,
-    toUnit_unique (rebase₂ y f ≫ toUnit _) (toUnit _)]
-
 theorem left_eq_of_comp (h : IsGrpPullback G' G f φ) {Z : Scheme.{0}} {a b : Z ⟶ G'.left}
     (h₁ : a ≫ φ = b ≫ φ) (h₂ : a ≫ G'.hom = b ≫ G'.hom) : a = b :=
   h.1.hom_ext h₁ h₂

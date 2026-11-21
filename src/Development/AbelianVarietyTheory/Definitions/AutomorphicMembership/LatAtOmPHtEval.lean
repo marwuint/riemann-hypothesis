@@ -80,11 +80,6 @@ def latAt (M : Sub Z.om) : AddSubgroup ((htpTrue ct).OmV y) :=
   letI := A.H.starRing
   (fibLat (ct.isGrpPullback_htToMdl y) M).toAddSubgroup
 
-theorem latAt_le (M : Sub Z.om) : latAt ct y M ≤ (htpTrue ct).om y :=
-  letI : Fact p.Prime := ⟨ct.hp⟩
-  letI := A.H.starRing
-  fibLat_le (ct.isGrpPullback_htToMdl y) M
-
 theorem IsValAt.mem {t : (htpTrue ct).Tp y} {v : (htpTrue ct).OmV y} (hv : IsValAt ct h y t v) : v ∈ (htpTrue ct).om y :=
   letI : Fact p.Prime := ⟨ct.hp⟩
   letI := A.H.starRing
@@ -243,14 +238,6 @@ structure IntPt (Z : ct.Mdl) : Type where
 
 namespace IntPt
 
-def ofPt (y : ct.Pt Z) : IntPt Z where
-  C := y.C
-  alg := y.P.alg
-  fK := y.P.fK
-  compat := y.P.compat
-  z := y.z
-  z_s := by rw [← Z.π_s, reassoc_of% y.z_π, y.P.yt_over]
-
 variable (y : IntPt Z)
 
 def gen : Sp ↥y.C.S ⟶ Z.X := spMap (intO ↥y.C.S).subtype ≫ y.z
@@ -269,9 +256,6 @@ def ev {U : Z.X.Opens} (e : ⊤ ≤ y.z ⁻¹ᵁ U) (s : Γ(Z.om, U)) : y.Om := 
 def lat (M : Sub Z.om) : AddSubgroup y.Om :=
   Ospan (C := ↥y.C.S) {v | ∃ (U : Z.X.Opens) (e : ⊤ ≤ y.z ⁻¹ᵁ U), ∃ s ∈ M.sec U, y.ev e s = v}
 
-theorem lat_mono {M M' : Sub Z.om} (h : ∀ U, M.sec U ≤ M'.sec U) : y.lat M ≤ y.lat M' :=
-  AddSubgroup.closure_mono fun _ ⟨a, ha, x, ⟨U, e, s, hs, hx⟩, hv⟩ => ⟨a, ha, x, ⟨U, e, s, h U hs, hx⟩, hv⟩
-
 def actOm : 𝓞 D.host.E →+* Module.End ↥y.C.S y.Om where
   toFun a :=
     { toFun := (act (pullAct (omAct Z) y.gen) a).app ⊤
@@ -289,11 +273,6 @@ def eOm (σ : D.host.E →+* ℂ) : y.Om →ₗ[↥y.C.S] y.Om :=
 
 def eLat (σ : D.host.E →+* ℂ) : AddSubgroup y.Om :=
   (y.lat (epsSub ct Z σ)).comap (DistribSMul.toAddMonoidHom _ (y.fK (dif ct Z σ : Z.i.c.F)))
-
-theorem actOm_eOm (σ : D.host.E →+* ℂ) (a : 𝓞 D.host.E) (v : y.Om) :
-    y.actOm a (y.eOm σ v) = y.fK (embK Z.i.c σ a) • y.eOm σ v := by
-  classical
-  exact EigenSplit.mem_eigenSub.1 (EigenSplit.proj_mem ((isSplitting_embK Z.i.c).map y.fK) y.actOm σ v) a
 
 end IntPt
 
@@ -336,39 +315,6 @@ def htmTrue (ct : At S κ p) : HTmSt ct (shfTrue ct) (htpTrue ct) where
   eB y τ := y.1.eOm (At.psiEmb D τ)
 
 namespace HTm
-
-variable (ct : At S κ p)
-
-def omShIso (Z : ct.Mdl) : ((htmTrue ct).omSh Z).toMod ≅ (omSub ct Z).toMod :=
-  @At.presIso _ _ _ _ _ _ _ ct Z _ (isFiniteQC_omP ct _)
-
-def eOmPIso (Z : ct.Mdl) (s : Bool) (τ : PsiT D) :
-    ((htmTrue ct).eOmP Z s τ).toMod ≅ (epsSub ct Z (embB D s τ)).toMod :=
-  @At.presIso _ _ _ _ _ _ _ ct Z _ (isFiniteQC_epsOm ct _ _)
-
-theorem latticeAt_omega_eq_inf_hodgeTateSpan {n : ℕ} (h : HTOn (ct.Xn n) n) (y : ct.Pt (ct.Xn n)) :
-    latAt ct y (omP h) = (htpTrue ct).om y ⊓ (Ospan (C := (ct.fld y).C) (Set.range (htEval ct h y)) ⊔
-      ((htpTrue ct).om y).map (DistribSMul.toAddMonoidHom ((htpTrue ct).OmV y) ((p : (ct.fld y).C) ^ n))) :=
-  latAt_omP ct h y (pow_dvd_A ct n) (isValAt_htEval ct h y)
-
-theorem htSES_k₀ {Z : ct.Mdl} {n : ℕ} (H : IsHTBlowup ct Z (ct.Xn n)) (τ : PsiT D) :
-    At.SES.k₀ ((htmTrue ct).htSES Z τ) = n - 2 := by
-  obtain ⟨h, H', e⟩ := htData_eq ct H
-  exact congrArg (fun d : Σ n, HTOn Z n => d.1 - 2) e
-
-example (Z : ct.Mdl) (y : (htmTrue ct).BPt Z) : (htmTrue ct).omPB y ≤ (htmTrue ct).omB y :=
-  y.1.lat_mono fun U => (Lat.isTop_top U).ge.trans' le_top
-
-example (Z : ct.Mdl) (h : HTOn Z 0) (U : Z.X.Opens) (s : Γ(Z.om, U)) : s ∈ (omP h).sec U := by
-  simpa using pow_smul_mem_omP h s
-
-example (Z : ct.Mdl) : ¬ (htmTrue ct).IsHTBlowup Z (ct.Xn 2) := fun H =>
-  have ⟨_, H'⟩ := (isHTBlowup_iff ct).1 H
-  absurd H'.1 (by decide)
-
-example (Z : ct.Mdl) (y : ct.Pt Z) (x : Sp ↥y.C.S) : (IntPt.ofPt y).gen x ∈ Z.opn :=
-  have e : y.P.y ≫ (ct.Y Z.i).j = (spMap (intO ↥y.C.S).subtype ≫ y.z) ≫ Z.π := by rw [← y.P.ext, ← y.z_π, Category.assoc]
-  ⟨y.P.y x, congr($e x)⟩
 
 end HTm
 

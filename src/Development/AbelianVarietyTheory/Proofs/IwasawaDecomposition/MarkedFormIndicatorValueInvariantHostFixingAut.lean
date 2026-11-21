@@ -139,11 +139,6 @@ theorem markVal_twist : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
         simpa using this⟩
     rw [dif_neg h1, dif_neg h2]
 
-example (H : Host E) (i n : ℕ) (B : (Fin n → 𝓞 E) → (Fin n → 𝓞 E) → ℝ) :
-    markVal H.bar (zeroFun (𝓞 E)) (zeroFun (𝓞 E)) i n (fun a b => B (fun j => (RingEquiv.refl _) (a j))
-      (fun j => (RingEquiv.refl _) (b j))) = markVal H.bar (zeroFun (𝓞 E)) (zeroFun (𝓞 E)) i n B :=
-  markVal_twist E H _ _ i (fun _ _ _ _ => by simp [zeroFun]) (fun _ _ _ _ => by simp [zeroFun]) _ rfl n B
-
 end Main
 
 end GlobalTheory.PolFan.Mark

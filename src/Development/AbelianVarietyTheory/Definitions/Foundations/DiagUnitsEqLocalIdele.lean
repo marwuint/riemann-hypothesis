@@ -38,33 +38,8 @@ theorem infIdele_fst_ne (w u : InfinitePlace L) (h : u ≠ w) (x : (w.Completion
 theorem infIdele_snd (w : InfinitePlace L) (x : (w.Completion)ˣ) :
     ((infIdele L w x : Ideles L) : AdeleRing (𝓞 L) L).2 = 1 := rfl
 
-theorem localIdele_injective (v : HeightOneSpectrum (𝓞 L)) : Function.Injective (localIdele L v) := by
-  intro x y hxy
-  apply Units.ext
-  have h := congrArg (fun z : Ideles L => (z : AdeleRing (𝓞 L) L).2 v) hxy
-  simpa only [localIdele_snd_self] using h
-
-theorem infIdele_injective (w : InfinitePlace L) : Function.Injective (infIdele L w) := by
-  intro x y hxy
-  apply Units.ext
-  have h := congrArg (fun z : Ideles L => (z : AdeleRing (𝓞 L) L).1 w) hxy
-  simpa only [infIdele_fst_self] using h
-
-theorem diagUnits_injective : Function.Injective (diagUnits L) := by
-  intro a b hab
-  apply Units.ext
-  apply NumberField.AdeleRing.algebraMap_injective (R := 𝓞 L) (K := L)
-  exact congrArg (fun z : Ideles L => (z : AdeleRing (𝓞 L) L)) hab
-
 theorem diagUnits_snd (v : HeightOneSpectrum (𝓞 L)) (a : Lˣ) :
     ((diagUnits L a : Ideles L) : AdeleRing (𝓞 L) L).2 v = algebraMap L (v.adicCompletion L) a := rfl
-
-theorem infIdele_continuous (w : InfinitePlace L) : Continuous (infIdele L w) := by
-  classical
-  exact Continuous.units_map _ ((continuous_mulSingle w).prodMk continuous_const)
-
-example : IsTopologicalGroup (Ideles L) := inferInstance
-example : CommGroup (Ideles L) := inferInstance
 
 theorem diagUnits_fst (w : InfinitePlace L) (a : Lˣ) :
     ((diagUnits L a : Ideles L) : AdeleRing (𝓞 L) L).1 w = algebraMap L w.Completion a := rfl
@@ -90,30 +65,5 @@ theorem finSingle_continuous (v : HeightOneSpectrum (𝓞 L)) : Continuous (finS
 
 theorem localIdele_continuous (v : HeightOneSpectrum (𝓞 L)) : Continuous (localIdele L v) := by
   exact Continuous.units_map _ (continuous_const.prodMk (finSingle_continuous L v))
-
-theorem diagUnits_eq_localIdele (v : HeightOneSpectrum (𝓞 L)) (a : Lˣ) (x : (v.adicCompletion L)ˣ)
-    (h : diagUnits L a = localIdele L v x) : a = 1 := by
-  obtain ⟨w⟩ := (inferInstance : Nonempty (InfinitePlace L))
-  have h1 := congrArg (fun z : Ideles L => (z : AdeleRing (𝓞 L) L).1 w) h
-  simp only [diagUnits_fst, localIdele_fst] at h1
-  apply Units.ext
-  apply (algebraMap L w.Completion).injective
-  rw [h1, Units.val_one, map_one]
-  rfl
-
-theorem localIdele_eq_infIdele (v : HeightOneSpectrum (𝓞 L)) (w : InfinitePlace L) (x : (v.adicCompletion L)ˣ)
-    (y : (w.Completion)ˣ) (h : localIdele L v x = infIdele L w y) : x = 1 ∧ y = 1 := by
-  have h1 := congrArg (fun z : Ideles L => (z : AdeleRing (𝓞 L) L).2 v) h
-  have h2 := congrArg (fun z : Ideles L => (z : AdeleRing (𝓞 L) L).1 w) h
-  simp only [localIdele_snd_self, infIdele_snd, localIdele_fst, infIdele_fst_self] at h1 h2
-  exact ⟨Units.ext (h1.trans rfl), Units.ext (h2.symm.trans rfl)⟩
-
-theorem diagUnits_neg_one_ne : diagUnits L (-1) ≠ 1 := by
-  intro h
-  have h1 : (-1 : Lˣ) = 1 := diagUnits_injective L (h.trans (map_one _).symm)
-  have h2 : ((-1 : Lˣ) : L) = ((1 : Lˣ) : L) := congrArg Units.val h1
-  simp only [Units.val_neg, Units.val_one] at h2
-  have h3 : (2 : L) = 0 := by linear_combination -h2
-  exact two_ne_zero h3
 
 end GlobalTheory.Mem.Chr.Model

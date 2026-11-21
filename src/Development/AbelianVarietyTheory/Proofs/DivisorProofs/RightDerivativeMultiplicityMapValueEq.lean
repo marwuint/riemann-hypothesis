@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothReal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsUnitaryRepStableConjSkewAdjointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtSobolevContinuousOrbitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsUnitaryRepStableConjSkewAdjoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtSobolevContinuousOrbit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.ConjAtFixedIff
 
@@ -38,11 +38,11 @@ theorem rder_eq : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau �
   have hH := GlobalTheory.SmoothAutCheck.gramAt_herm V τ
   have hU := GlobalTheory.SmoothAutCheck.gramAt_unit V τ
   have hπ := (GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1
-  obtain ⟨h1, -, h3⟩ := GlobalTheory.T.smoothVectors_unitaryRep_stable_conj_skewAdjoint _ _ _ _ hH hU hπ _ hs
+  obtain ⟨h1, -, h3⟩ := _root_.GlobalTheory.SmVecCalc.smooth_calculus _ _ _ _ hH hU hπ _ hs
   refine ⟨⟨_, Submodule.subset_span (h3 X hX).1⟩, rfl, ?_⟩
   funext x
   obtain ⟨ℓ, hℓ, hℓT⟩ := hT.cont τ v x
-  have hd := GlobalTheory.T.hasDerivAt_sobolevContinuous_orbit _ _ _ _ hH hU hπ _ hs ℓ hℓ X hX
+  have hd := _root_.GlobalTheory.SobOrbit.hasDerivAt_sobCont_orbit _ _ _ _ hH hU hπ _ hs ℓ hℓ X hX
   rw [← hℓT]
   have e : (fun t : ℝ => T v (x * oneP θ V τ X t)) =
       fun t : ℝ => ℓ (M.rep τ (NormedSpace.exp (t • X)) (v τ : M.H τ)) := by

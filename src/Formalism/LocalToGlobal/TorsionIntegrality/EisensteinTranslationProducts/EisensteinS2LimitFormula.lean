@@ -24,19 +24,6 @@ def WpNumDen : Prop :=
 
 def POfLattice : Prop := ∀ L : PeriodPair, pSeries L = pOf L.g₂ L.g₃
 
-def EisensteinRecursion : Prop :=
-  ∀ (L : PeriodPair) (k : ℕ), 2 ≤ k → (2 * (k : ℂ) - 1) * L.G (2 * k) = cW L.g₂ L.g₃ k
-
-def USerLattice : Prop :=
-  ∀ L : PeriodPair,
-    AnalyticAt ℂ (fun z => -2 * L.weierstrassP z / L.derivWeierstrassP z) 0 ∧
-    taylor0 (fun z => -2 * L.weierstrassP z / L.derivWeierstrassP z) = uSer L.g₂ L.g₃
-
-def USerExp : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (g2 g3 : K),
-    Formalism.L2.Th1.A.expSer (shortW g2 g3) = uSer g2 g3 ∧
-    Formalism.L2.Th1.A.g₂ (shortW g2 g3) = g2 ∧ Formalism.L2.Th1.A.g₃ (shortW g2 g3) = g3
-
 def HasCMByStable : Prop :=
   ∀ (d : ℕ) (L : PeriodPair), HasCMBy d L → ∀ m n : ℤ,
     MulStable L ((m : ℂ) + (n : ℂ) * omegaK d) ∧
@@ -86,29 +73,8 @@ def SeriesMap : Prop :=
     PowerSeries.map φ (Formalism.L2.Th1.B.sigma P) = Formalism.L2.Th1.B.sigma (PowerSeries.map φ P) ∧
     PowerSeries.map φ (Formalism.L2.Th1.B.sgStar s P) = Formalism.L2.Th1.B.sgStar (φ s) (PowerSeries.map φ P)
 
-def GoodModelLattice : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l]) (g2 g3 : ℂ_[l]),
-    IsGoodModel l L ι g2 g3 → ∃ (c : ℂ) (hc : c ≠ 0),
-      g2 = ι (scalePair L c hc).g₂ ∧ g3 = ι (scalePair L c hc).g₃ ∧
-      PowerSeries.map (ι : ℂ →+* ℂ_[l]) (pSeries (scalePair L c hc)) = pOf g2 g3 ∧
-      PowerSeries.map (ι : ℂ →+* ℂ_[l]) (taylor0 (wSigma (scalePair L c hc)))
-        = Formalism.L2.Th1.B.sigma (pOf g2 g3) ∧
-      PowerSeries.map (ι : ℂ →+* ℂ_[l]) (taylor0 (sgStar (scalePair L c hc)))
-        = Formalism.L2.Th1.B.sgStar (ι (s2 (scalePair L c hc))) (pOf g2 g3) ∧
-      PowerSeries.map (ι : ℂ →+* ℂ_[l])
-          (taylor0 (fun z => -2 * (scalePair L c hc).weierstrassP z
-            / (scalePair L c hc).derivWeierstrassP z))
-        = uSer g2 g3
-
-def IotaExists : Prop := ∀ (l : ℕ) [Fact l.Prime], Nonempty (ℂ ≃+* ℂ_[l])
-
 def JInvScale : Prop :=
   ∀ (L : PeriodPair) (c : ℂ) (hc : c ≠ 0),
     Formalism.L2.Th1.CM.jInv (scalePair L c hc) = Formalism.L2.Th1.CM.jInv L
-
-def EisensteinS2LimitFormula : Prop :=
-  ∀ L : PeriodPair, Filter.Tendsto
-    (fun s : ℝ => ∑' ω : L.lattice, ((ω : ℂ) ^ 2)⁻¹ * ((‖(ω : ℂ)‖ ^ (-(2 * s)) : ℝ) : ℂ))
-    (nhdsWithin 0 (Set.Ioi 0)) (nhds (s2 L))
 
 end Formalism.L2.Th1.F

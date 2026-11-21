@@ -150,21 +150,6 @@ theorem mL_le_Lf (m : ℕ) : mL I m ≤ I.Lf := by
   rintro _ ⟨x, hx, rfl⟩
   exact sm I (natCast_int I m) hx
 
-theorem mulVec_mL (m : ℕ) (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))
-    (hM : ∀ v ∈ I.Lf, M *ᵥ v ∈ I.Lf) : ∀ v ∈ mL I m, M *ᵥ v ∈ mL I m := by
-  intro v hv
-  induction hv using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨y, hy, rfl⟩ := hx
-    rw [Matrix.mulVec_smul]
-    exact smul_mem_mL I m (hM y hy)
-  | zero => rw [Matrix.mulVec_zero]; exact zero_mem _
-  | add x y _ _ hx hy => rw [Matrix.mulVec_add]; exact add_mem hx hy
-  | smul r x _ hx =>
-    show M *ᵥ ((r : I.E ⊗[I.F] Af I.F) • x) ∈ _
-    rw [Matrix.mulVec_smul]
-    exact sm I r.2 hx
-
 theorem hA_mL_left (m : ℕ) : ∀ v ∈ mL I m, ∀ w ∈ I.Lf, ZMod' I m (hA I v w) := by
   intro v hv
   induction hv using Submodule.span_induction with

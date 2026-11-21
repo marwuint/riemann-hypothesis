@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockSubstitutionIdentitiesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HoweDualityUnitarySubstitutionSpanUnitStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSpanTprodOfCommuteAtEachPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HoweDualityUnitarySubstitutionSpanUnit
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSpanTprodOfCommuteAtEachPlace
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsPiTensorMvPolynomialEquivBlocksStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStablStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStabl
 open MvPolynomial Formalism.BasicNotions Formalism.L2.Forms Formalism.L2.Ker GlobalTheory.KJInf MeasureTheory
 open scoped TensorProduct
 
@@ -173,7 +173,7 @@ theorem pure_rep [Fintype ι] [DecidableEq ι] (hab : a ≤ b) (ha : 0 < a) (lam
   have hH : ∀ τ, ∃ (m : ℕ) (y' : Fin m → Unit → Matrix (Fin b) (Fin b) ℂ) (s : Fin m → ℂ), (∀ j, IsInv (y' j)) ∧
       ∀ F ∈ Vn (fun _ : Unit => lam τ) (fun _ => n τ), T τ F = ∑ j, s j • subY hab (y' j) F := by
     intro τ
-    refine GlobalTheory.T.howeDualityUnitarySubstitutionSpan_unit a b hab ha (fun _ => lam τ) (fun _ => n τ) (T τ) ?_
+    refine _root_.GlobalTheory.HoweOne.howeSpan_unit a b hab ha (fun _ => lam τ) (fun _ => n τ) (T τ) ?_
     intro k hk F hF
     have hk' : k = fun _ => k () := funext fun u => by cases u; rfl
     have e1 : T τ (lft k F) = t τ ((lft (fun _ : Unit => k ())).toLinearMap.restrict (fun F hF => hV τ (k ()) F hF) ⟨F, hF⟩) := by
@@ -216,8 +216,8 @@ theorem GlobalTheory.KJInf.howeSpan_all : ∀ (ι : Type) [Fintype ι], HoweSpan
   have hZ1' : ∀ f, eZ (PiTensorProduct.tprod ℂ f) = ∏ τ, jZ a b τ (f τ) := hZ1
   let V : ι → Submodule ℂ (PY Unit a) := fun τ => Vn (fun _ : Unit => lam τ) (fun _ => n τ)
   have hV : ∀ τ k, ∀ F ∈ V τ, lft (fun _ : Unit => k) F ∈ V τ := fun τ k F hF =>
-    (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable Unit a (fun _ => lam τ) (fun _ => n τ)).2 (fun _ => k) F hF
-  haveI : ∀ τ, FiniteDimensional ℂ (V τ) := fun τ => (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable Unit a (fun _ => lam τ) (fun _ => n τ)).1
+    (_root_.GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem Unit a (fun _ => lam τ) (fun _ => n τ)).2 (fun _ => k) F hF
+  haveI : ∀ τ, FiniteDimensional ℂ (V τ) := fun τ => (_root_.GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem Unit a (fun _ => lam τ) (fun _ => n τ)).1
   let ΦY := eY.toLinearMap ∘ₗ PiTensorProduct.map (fun τ => (V τ).subtype)
   have hrange : LinearMap.range ΦY = Vn lam n := by
     rw [(hY2 V).2]; exact span_jY lam n
@@ -241,7 +241,7 @@ theorem GlobalTheory.KJInf.howeSpan_all : ∀ (ι : Type) [Fintype ι], HoweSpan
     simp only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Q', ΦY, LinearEquiv.apply_symm_apply] at h2 ⊢
     rw [h2, h1]
     exact hQ _ hU _ (hrange ▸ LinearMap.mem_range_self ΦY v)
-  have hsp := GlobalTheory.T.mem_span_tprod_of_commute_at_each_place ι (fun τ => V τ) (fun _ => FP Unit a b) R Q' hcomm
+  have hsp := _root_.GlobalTheory.PiTensorCommute.mem_span_map_of_commute ι (fun τ => V τ) (fun _ => FP Unit a b) R Q' hcomm
   have hle : Submodule.span ℂ {T | ∃ t : ∀ τ, V τ →ₗ[ℂ] FP Unit a b, (∀ τ, ∀ p ∈ R τ, t τ ∘ₗ p.1 = p.2 ∘ₗ t τ) ∧
       T = PiTensorProduct.map t} ≤ RepMaps hab ΦY eZ := by
     rw [Submodule.span_le]
@@ -255,4 +255,3 @@ theorem GlobalTheory.KJInf.howeSpan_all : ∀ (ι : Type) [Fintype ι], HoweSpan
   have := hrep v
   simpa [Q'] using this
 
-example : ∀ (ι : Type) [Fintype ι], HoweSpan ι := GlobalTheory.KJInf.howeSpan_all

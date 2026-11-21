@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamDerivativeEqZeroOfSymmetricFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KaehlerDifferentialsFreeCoordinateFormsAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamDerivativeEqZeroOfSymmetricFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KaehlerDifferentialsFreeCoordinateFormsAbelian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZero
 
 set_option autoImplicit false
 
@@ -51,14 +51,14 @@ theorem exists_closed_form_fderiv_eq (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L
     (hA : IsAbelianScheme A) (U : A.left.affineOpens) (h : (Fin g → ℂ) → ℂ) (hh : DifferentiableOn ℂ h (pre u.ex U.1))
     (hr : ∀ a, IsReg u.ex U.1 fun z => fderiv ℂ h z (Pi.single a 1)) :
     ∃ ξ : Ω[Sec (str A) U.1⁄ℂ], dOne ℂ _ ξ = 0 ∧ ∀ z ∈ pre u.ex U.1, fderiv ℂ h z = evForm u.ex U.1 z ξ := by
-  obtain ⟨hop, hdiff, -, -, -, -, -, -, -, halg, -, -⟩ := GlobalTheory.T.uniformisation_preimage_value_rules A g L u
-  obtain ⟨d, ω, hcomm, hd, hdual, hspan, hev⟩ := GlobalTheory.T.kaehler_differentials_free_coordinate_forms_abelian A g L u hA U
+  obtain ⟨hop, hdiff, -, -, -, -, -, -, -, halg, -, -⟩ := _root_.GlobalTheory.CechPer.pre_val_rules A g L u
+  obtain ⟨d, ω, hcomm, hd, hdual, hspan, hev⟩ := _root_.GlobalTheory.CechPer.kaehler_frame A g L u hA U
   choose k₀ hk₀ using hr
   let k : Fin g → Sec (str A) U.1 := k₀
   have hk : ∀ a, ∀ z ∈ pre u.ex U.1, fderiv ℂ h z (Pi.single a 1) = val u.ex U.1 (k a) z := hk₀
-  refine ⟨∑ a, k a • ω a, GlobalTheory.T.deRhamDerivative_eq_zero_of_symmetric_frame _ g d ω hcomm hdual hspan k fun a b ↦ ?_, fun z hz ↦ ?_⟩
+  refine ⟨∑ a, k a • ω a, _root_.GlobalTheory.CechPer.dOne_eq_zero_of_frame_of_symm _ g d ω hcomm hdual hspan k fun a b ↦ ?_, fun z hz ↦ ?_⟩
   · have h0 : d a (k b) - d b (k a) = 0 := by
-      refine GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA U.1 _ fun z hz ↦ ?_
+      refine _root_.GlobalTheory.ValInj.eq_zero_of_val_eq_zero A g L u hA U.1 _ fun z hz ↦ ?_
       obtain ⟨e, he⟩ := halg U.1 z hz
       have h1 := he (d a (k b) - d b (k a))
       rw [map_sub, ← he (d a (k b)), ← he (d b (k a)), hd a _ z hz, hd b _ z hz,

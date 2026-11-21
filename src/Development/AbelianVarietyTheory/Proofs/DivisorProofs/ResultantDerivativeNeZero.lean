@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.JoinCastSucc
 import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FramedLatticeZeroCycleHeight
+import ReciprocityTheory.SemistableReduction.SphereLogIntegrableStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLine
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PencilLinePolynomialNatDegreeLeAndCoeffStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalDegreePencilLineDiscriminantLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotSquareLinearFactorOfPencilLineDiscriminantNeZStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotSquareLinearFactorOfPencilLineDiscriminantNeZ
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreduciblePencilLinePolynomialGenericLineStatement
 
 set_option autoImplicit false
@@ -96,6 +97,6 @@ theorem exists_poly_noSquare : ∀ (F : Type) [Field F] [CharZero F] (D N δ : �
     rw [e] at hs
     simp only [aeval_X, aeval_C] at hs
     have hc' := GlobalTheory.T.pencilLinePolynomial_natDegree_le_and_coeff F K D N δ f hf s (fun j => algebraMap F K (v (Sum.inl j))) (fun j => algebraMap F K (v (Sum.inr j)))
-    exact GlobalTheory.T.not_square_linear_factor_of_pencilLineDiscriminant_ne_zero F K D N δ f s _ _ hδ hc'.1 hc'.2 hs
+    exact _root_.GlobalTheory.PencilDisc.noSquare_spec_of_disc_ne_zero F K D N δ f s _ _ hδ hc'.1 hc'.2 hs
 
 end GlobalTheory.PencilDisc

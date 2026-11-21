@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteFromSpecResidueFieldCompOfIsClosedOfClosStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteFromSpecResidueFieldCompOfIsClosedOfClos
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -18,7 +19,7 @@ theorem GlobalTheory.Mum.isClosed_image_snd_of_subset_fibre_closedPoint :
   have hlft : LocallyOfFiniteType G.hom := by
     haveI := hG.smooth; infer_instance
   have hfin : IsFinite (G.left.fromSpecResidueField x ≫ G.hom) :=
-    GlobalTheory.T.isFinite_fromSpecResidueField_comp_of_closed R G hlft x hx hxc
+    _root_.GlobalTheory.isFinite_fromSpecResidueField_comp_of_isClosed_of_closedPoint R G hlft x hx hxc
   set k := G.left.fromSpecResidueField x
   set f := G.hom
   let i := pullback.snd k (pullback.fst f f)

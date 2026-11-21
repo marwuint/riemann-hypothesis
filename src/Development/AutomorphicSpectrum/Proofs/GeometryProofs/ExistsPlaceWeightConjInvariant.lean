@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsPowSubMe
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointConjugateStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointConjugate
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointExistsUniqueEmbeddingStatement
 
 noncomputable section
@@ -346,7 +346,7 @@ theorem average {y : (Σ k, ι k) → Ω} {φ : F →+* Ω} {t : (F →+* ℂ) �
       exact ⟨i, by simpa [cj] using hi⟩
     exact (hu.smooth.add (hu.smooth.comp cj_contDiff.contDiffOn hmaps)).div_const 2
   · have h1 := hu.near σ z hz
-    have h3 := hu.near (ComplexEmbedding.conjugate σ) (cj z) (GlobalTheory.T.complex_point_conjugate K ι Ω F y φ σ z hz)
+    have h3 := hu.near (ComplexEmbedding.conjugate σ) (cj z) (_root_.GlobalTheory.CompanionTheory.Ar.Flat.ptOver_conj K ι Ω F y φ σ z hz)
     rw [ht σ] at h3
     have h2 : ∀ᶠ z' in 𝓝 z, u (cj z') = t σ :=
       Filter.Tendsto.eventually ((cj_contDiff (K := K) (ι := ι) (n := 0)).continuous.continuousAt) h3

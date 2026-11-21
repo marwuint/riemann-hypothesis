@@ -97,12 +97,6 @@ def LineStabHaar.Statement (h : HermitianForm F E W) (v : Basis ι E W) : Prop :
           (∏ w, ‖b w‖ₑ ^ (2 * (finrank E W - 2))) *
             ∫⁻ x : vecFixGroup h v x₀, φ ((x : archUnitary h v) * τ b) ∂ν
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

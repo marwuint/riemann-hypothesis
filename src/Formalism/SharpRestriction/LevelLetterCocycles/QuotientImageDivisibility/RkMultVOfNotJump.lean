@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.WeaklyAdmissibleFiltrations.Statement
-import Formalism.WeaklyAdmissibleFiltrations.CrystallineStableLifts.Window
+import Formalism.WeaklyAdmissibleFiltrations.CocyclesFunctorial
 
 noncomputable section
 

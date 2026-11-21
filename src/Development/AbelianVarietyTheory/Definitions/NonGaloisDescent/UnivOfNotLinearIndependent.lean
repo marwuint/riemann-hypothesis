@@ -216,29 +216,7 @@ theorem isAdmissible_univCoef (β : DetBases k r n) (κ : kˣ →* Multiplicativ
       · rw [map_mul, toAdd_mul, hc, map_inv, toAdd_inv]
         abel
 
-theorem univ_of_not_linearIndependent (β : DetBases k r n) (κ : kˣ →* Multiplicative C) {y : Matrix (Fin r) (Fin n) k}
-    (h : ¬ LinearIndependent k y.row) : univ β κ y = 0 := by
-  have hz : ∀ U : Planes k r n, univTerm β κ y U = 0 := by
-    intro U
-    have hd : dU β U y = 0 :=
-      (β.form U).map_linearDependent _ fun hli => h (LinearIndependent.of_comp U.1.mkQ hli)
-    have hc : ¬ Compl U.1 y := fun hc => (dU_ne_zero_iff β U y).2 hc hd
-    unfold univTerm
-    rw [dif_neg hc]
-  unfold univ
-  simp [hz]
-
 end Univ
-
-example {k : Type} [Field k] (ν : kˣ →* ℂˣ) : flat ν (!![1, 0] : Matrix (Fin 1) (Fin 2) k) = 1 := by
-  rw [flat_of_isUnit ν (u := 1) (by simp [topL])]; simp
-
-example {k : Type} [Field k] (ν : kˣ →* ℂˣ) (a : kˣ) (b : k) :
-    flat ν (!![(a : k), b] : Matrix (Fin 1) (Fin 2) k) = ν a :=
-  flat_of_isUnit ν (by simp [topL])
-
-example {k : Type} [Field k] (ν : kˣ →* ℂˣ) : flat ν (!![0, 1] : Matrix (Fin 1) (Fin 2) k) = 0 :=
-  flat_of_not_isUnit ν (by simp [topL])
 
 end GlobalTheory.ExportSeries
 

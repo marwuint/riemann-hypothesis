@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CommOfBezout
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegralIdempotentLiftNewtonStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CommutingIntegralMatrixDecomposeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CommutingIntegralMatrixDecompose
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UltrametricNormDetOneAddSmulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormDetLeOneOfEntriesNormLeOneStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormDetLeOneOfEntriesNormLeOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixCommutantValuationDecompositionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientIntegralUnitStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientIntegralUnit
 
 open Matrix
 
@@ -22,7 +22,7 @@ theorem unit_split {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E]
     ∃ e a : Matrix (Fin n) (Fin n) E, e * N = N * e ∧ a * N = N * a ∧ (∀ i j, ‖e i j‖ ≤ 1 ∧ ‖a i j‖ ≤ 1) ∧
       e * e = e ∧ ‖(y * e + (1 - e)).det‖ = 1 ∧ y * (1 - e) = ϖ • a := by
   obtain ⟨x, z, a₁, a₂, a₃, ⟨hxN, hzN, h1N, h2N, h3N⟩, hint, hx, hyx, hyz⟩ :=
-    GlobalTheory.T.commuting_integral_matrix_decompose E n N ϖ hN hB h0 h1 hϖ y hyN hy
+    _root_.GlobalTheory.UnitDiscAlg.Red.main E n N ϖ hN hB h0 h1 hϖ y hyN hy
   haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E
   obtain ⟨e, a', heN, ha'N, he, heI, ha'I, hea⟩ :=
     GlobalTheory.T.exists_integral_idempotent_lift_newton E n N x a₁ ϖ h1 hxN (fun i j => (hint i j).1) (fun i j => (hint i j).2.2.1) hx
@@ -66,8 +66,8 @@ theorem unit_split {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E]
     simp only [Matrix.det_mul, norm_mul] at hd
     rw [GlobalTheory.T.ultrametric_norm_det_one_add_smul E n _ ϖ h1 (integ_sub (integ_add ha₃I (integ_mul (integ_mul hy hzI) ha'I)) ha'I)]
       at hd
-    have ha := GlobalTheory.T.norm_det_le_one_of_entries_norm_le_one E n _ hwI
-    have hb := GlobalTheory.T.norm_det_le_one_of_entries_norm_le_one E n _ hw'I
+    have ha := _root_.GlobalTheory.norm_det_le_one_of_entries_le_one E n _ hwI
+    have hb := _root_.GlobalTheory.norm_det_le_one_of_entries_le_one E n _ hw'I
     nlinarith [norm_nonneg (y * e + (1 - e)).det, norm_nonneg (z * e + (1 - e)).det]
   · have : y * (1 - e) = y * (1 - x) - y * (e - x) := by noncomm_ring
     rw [this, hyx, hea, Matrix.mul_smul, ← smul_sub]
@@ -81,7 +81,7 @@ theorem units_quotient : ∀ (E : Type) [NontriviallyNormedField E] [IsUltrametr
     fun x y hx hy => comm_of_bezout hB' hx hy
   obtain ⟨e₁, e₂, e₃, u, a₂, a₃, hN6, hI6, hu, h11, h22, h33, h12, h13, h23, hs, hc1, hc2, hc3⟩ :=
     GlobalTheory.T.matrix_commutant_valuation_decomposition E n N ϖ h0 h1 hcomm (unit_split hN hB h0 h1 hϖ hcomm) c hc hcN
-  exact GlobalTheory.T.quotient_integral_unit_alt E n N c b e₁ e₂ e₃ u a₂ a₃ ϖ h0 h1 hcomm hc hcN hbN hb hbd hN6 hI6 hu h11 h22 h33
+  exact _root_.GlobalTheory.UnitDiscAlg.QuotAlg.quotient_integral_unit E n N c b e₁ e₂ e₃ u a₂ a₃ ϖ h0 h1 hcomm hc hcN hbN hb hbd hN6 hI6 hu h11 h22 h33
     h12 h13 h23 hs hc1 hc2 hc3
 
 end GlobalTheory.UnitDiscAlg

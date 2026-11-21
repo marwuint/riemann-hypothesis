@@ -48,18 +48,6 @@ theorem φD_smulA (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • 
   rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
   exact this
 
-theorem γD_smulA (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
-  exact this
-
-theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i) = letE i := by
-  funext j
-  by_cases h : j = i
-  · subst h; simp [LocWach.γA, letγ, letE]
-  · simp [LocWach.γA, letγ, letE, h]
-
 include W in
 
 theorem neZero_letters : NeZero n := by
@@ -100,21 +88,6 @@ theorem Q_pow_smul_cancel (m : ℕ) {x y : W.DD T} (h : W.Q ^ m • x = W.Q ^ m 
   exact ((isUnit_Q W).pow m).smul_left_cancel.1 h
 
 variable {W T}
-
-theorem φD_fixed (i : ZMod n) {x : W.DD T} (hx : x ∈ W.Nl T (i - 1)) :
-    (letE i : LetA O n) • W.φD T x = W.φD T x := by
-  rw [← phi_letE W i, ← φD_smulA, ((mem_Nl_iff W T _ x).1 hx).2]
-
-theorem letE_smul_φpull (i : ZMod n) {y : W.DD T} (hy : y ∈ W.φpull T) :
-    (letE i : LetA O n) • y ∈ phiPullLetter W T i := by
-  induction hy using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨z, hz, rfl⟩ := hx
-    rw [← phi_letE W i, ← φD_smulA]
-    exact Submodule.subset_span ⟨_, letE_smul_mem W T _ hz, rfl⟩
-  | zero => simp
-  | add x y _ _ hx hy => rw [smul_add]; exact Submodule.add_mem _ hx hy
-  | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ a hx
 
 variable (W T)
 

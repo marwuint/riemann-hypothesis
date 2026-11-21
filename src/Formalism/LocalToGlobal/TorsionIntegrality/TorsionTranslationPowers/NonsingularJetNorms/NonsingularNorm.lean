@@ -47,14 +47,6 @@ theorem i_ofNat (n : ℕ) [n.AtLeastTwo] : ‖(OfNat.ofNat n : K)‖ ≤ 1 := by
 
 theorem s_add {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a + b‖ < 1 := (IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)
 
-theorem s_neg {a : K} (ha : ‖a‖ < 1) : ‖-a‖ < 1 := by
-  rw [norm_neg]
-  exact ha
-
-theorem s_sub {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a - b‖ < 1 := by
-  rw [sub_eq_add_neg]
-  exact s_add ha (s_neg hb)
-
 theorem s_mul {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ ≤ 1) : ‖a * b‖ < 1 := by
   rw [norm_mul]
   calc ‖a‖ * ‖b‖ ≤ ‖a‖ * 1 := mul_le_mul_of_nonneg_left hb (norm_nonneg a)

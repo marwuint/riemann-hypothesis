@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIrrCharactersAndFinsumCentralIdempotentsEqStatement
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
 open scoped Classical
@@ -182,7 +182,7 @@ theorem class_expand {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : Is
   · intro ρ' hρ'
     rw [ip_sub_left, ip_finset_sum_left]
     have : ∀ ρ ∈ F, ip χ ρ * ip ρ ρ' = if ρ = ρ' then ip χ ρ' else 0 := fun ρ hρ => by
-      rw [((GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G ρ ρ' ((hmem ρ).1 hρ) hρ').2.2)]
+      rw [((_root_.GlobalTheory.GLq.ZOrth.zorth G ρ ρ' ((hmem ρ).1 hρ) hρ').2.2)]
       split_ifs with h
       · subst h; ring
       · ring
@@ -223,7 +223,7 @@ theorem char_norm_one {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : I
     IsIrr χ := by
   obtain ⟨L, hL, rfl⟩ := char_decomp χ hχ
   have hip : ∀ a ∈ L, ∀ b ∈ L, ip a b = ((if a = b then 1 else 0 : ℕ) : ℂ) := fun a ha b hb => by
-    rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G a b (hL a ha) (hL b hb)).2.2]; split_ifs <;> simp
+    rw [(_root_.GlobalTheory.GLq.ZOrth.zorth G a b (hL a ha) (hL b hb)).2.2]; split_ifs <;> simp
   have key : ip L.sum L.sum = ((L.map fun a => (L.map fun b => if a = b then 1 else 0).sum).sum : ℕ) := by
     rw [ip_list_sum_left, Nat.cast_list_sum, List.map_map]
     refine congrArg List.sum (List.map_congr_left fun a ha => ?_)

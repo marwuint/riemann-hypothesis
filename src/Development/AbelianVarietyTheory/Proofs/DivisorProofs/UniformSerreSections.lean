@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.ExistsAwayFracOfMemHomLoc
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomogeneousIdealOverReesAlgebraStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormOfCompatibleFractionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomogeneousIdealOverReesAlgebra
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFormOfCompatibleFractions
 open MvPolynomial
 
 namespace GlobalTheory.UniformSerre
@@ -83,8 +83,8 @@ open GlobalTheory.UniformSerre in
 
 theorem GlobalTheory.uniform_serre_sections : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), ∀ (n : ℕ) (J : ℕ → Ideal (MvPolynomial (Fin (n + 1)) R)), (∀ (e t : ℕ) (a : R) (F : MvPolynomial (Fin (n + 1)) R), a ∈ I → F.IsHomogeneous t → (∀ m, coeff m F ∈ I ^ e) → F ∈ J e → C a * F ∈ J (e + 1)) → ∃ d₀ : ℕ, ∀ d, d₀ ≤ d → ∀ e : ℕ, ∀ (N : ℕ) (F : Fin (n + 1) → MvPolynomial (Fin (n + 1)) R), (∀ i, (F i).IsHomogeneous (d + N)) → (∀ i m, coeff m (F i) ∈ I ^ e) → (∀ i j, ∃ L : ℕ, ((X i : MvPolynomial (Fin (n + 1)) R) * X j) ^ L * (X j ^ N * F i - X i ^ N * F j) ∈ J e) → ∃ G : MvPolynomial (Fin (n + 1)) R, G.IsHomogeneous d ∧ (∀ m, coeff m G ∈ I ^ e) ∧ ∀ i, ∃ L : ℕ, (X i : MvPolynomial (Fin (n + 1)) R) ^ L * (F i - X i ^ N * G) ∈ J e := by
   intro R _ _ I n J hJ
-  obtain ⟨𝔞, hgr, hmem⟩ := GlobalTheory.T.exists_homogeneous_ideal_over_reesAlgebra R I n J hJ
-  obtain ⟨d₀, hd₀⟩ := GlobalTheory.T.exists_homogeneous_form_of_compatible_fractions (reesAlgebra I) n 𝔞 hgr
+  obtain ⟨𝔞, hgr, hmem⟩ := _root_.GlobalTheory.ReesHomogeneous.exists_homogeneous_ideal R I n J hJ
+  obtain ⟨d₀, hd₀⟩ := _root_.GlobalTheory.exists_form_of_compatible_fractions (reesAlgebra I) n 𝔞 hgr
   refine ⟨d₀, fun d hd e N F hFh hFc hFcomp => ?_⟩
   have hmemiff : ∀ t (H : MvPolynomial (Fin (n+1)) (reesAlgebra I)), H.IsHomogeneous t →
       (H ∈ 𝔞 ↔ ∀ e', comp e' H ∈ J e') := by

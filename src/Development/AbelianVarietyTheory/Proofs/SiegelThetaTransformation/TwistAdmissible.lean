@@ -9,9 +9,6 @@ namespace GlobalTheory.SW.TwistAdm
 
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ}
 
-theorem int_smul_mem (Λ : Lt E n) (k : ℤ) {v : Fin n → E} (h : v ∈ Λ) : (k : E) • v ∈ Λ := by
-  rw [Int.cast_smul_eq_zsmul]; exact zsmul_mem h k
-
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
@@ -115,20 +112,6 @@ theorem _root_.GlobalTheory.SW.TwistAdm.cols_of_cond {R s : ℕ} {𝔛 : _root_.
   exact h1
 
 variable [IsCMField E]
-
-theorem val_smul {M R : ℕ} {φ : Fam E n N} (hφ : admitted M R φ) {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M)
-    {x : Matrix (Fin n) (Fin N) E} {s : ℕ} (hs : s ≡ 1 [MOD R ^ 2])
-    (hx : ColsIn Λ ((R : E) • x)) : φ Λ ((s : E) • x) = φ Λ x := by
-  obtain ⟨k, hk⟩ := hs.symm.dvd
-  have h1 : (s : E) = 1 + R * (k * R) := by
-    have := congrArg (Int.cast : ℤ → E) hk
-    push_cast at this
-    linear_combination this
-  have : (s : E) • x = x + (R : E) • ((k : E) • ((R : E) • x)) := by
-    rw [h1, add_smul, one_smul, smul_smul, smul_smul, mul_assoc]
-  rw [this]
-  refine hφ.per Λ hΛ _ _ fun a => ?_
-  exact int_smul_mem Λ k (hx a)
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
@@ -235,20 +218,6 @@ theorem _root_.GlobalTheory.SW.TwistAdm.twist_val {M R : ℕ} {φ : _root_.Globa
   have hc0 := _root_.GlobalTheory.SW.TwistAdm.cols_of_cond hex.choose_spec.2 h
   rw [← adm_apply_mul_congr_one_mod_sq hφ hΛ x hs hc0, Nat.mul_comm hex.choose s,
     adm_apply_mul_congr_one_mod_sq hφ hΛ x hex.choose_spec.1 hx]
-
-theorem twist_std {M R : ℕ} {φ : Fam E n N} (hφ : admitted M R φ) {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) :
-    twist R (stdL E N) φ Λ = φ Λ := by
-  have hA : Agree (R * M) (stdL E N) (stdL E N) :=
-    ⟨1, one_pos, Nat.coprime_one_left _, fun v hv => by simpa using hv, fun v hv => by simpa using hv⟩
-  funext x
-  by_cases h : ∀ ξ ∈ stdL E N, (R : E) • (x *ᵥ ξ) ∈ Λ
-  · rw [twist_val hφ hA hΛ x 1 rfl h (cols_of_cond (fun v hv => by simpa using hv) h)]
-    simp
-  · rw [twist_eq φ (exists_mult hφ.pos.2 hA), if_neg h]
-    by_contra h0
-    refine h fun ξ hξ => ?_
-    rw [← Matrix.smul_mulVec]
-    exact colsIn_mulVec (hφ.supp Λ hΛ x (Ne.symm h0)) hξ
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
@@ -378,12 +347,6 @@ theorem _root_.GlobalTheory.SW.TwistAdm.twist_adm {M R : ℕ}
         (_root_.GlobalTheory.SW.TwistAdm.cols_of_cond hex.choose_spec.2 hc)
         (_root_.GlobalTheory.SW.TwistAdm.cols_of_cond hex.choose_spec.2 (hiff.mp hc))
     · rw [if_neg hc, if_neg (mt hiff.mpr hc)]
-
-omit [IsCMField E] in
-theorem gidx_pos {m : ℕ} {𝔛 : Lt E N} (hfg : 𝔛.FG) (hA : Agree m 𝔛 (stdL E N)) : 0 < gidx 𝔛 := by
-  obtain ⟨t, ht, -, h1, h2⟩ := hA
-  exact div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero _ _ hfg ht h1)))
-    (Nat.cast_pos.2 (Nat.pos_of_ne_zero (relIndex_ne_zero _ _ std_fg ht h2)))
 
 end GlobalTheory.SW.TwistAdm
 

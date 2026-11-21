@@ -62,11 +62,6 @@ end IndependenceBoundPlain
 
 section Closed
 
-theorem independence_bound_all_charts_of_coefficient_identity (h : CoefficientIdentityCondition) : IndependenceBoundAllCharts := by
-  intro C _ _ V O _ _ dd Y d _ I _ p hrk H hR2
-  have := Y.algClosed
-  exact IndependenceBoundPlain.independence_bound_raw (Y.raw p) hrk H hR2 (h C V O dd Y d I p hrk H)
-
 def CoefficientIdentitySelfConjugate : Prop :=
   AllSelf fun _ _ V _ _ _ _ X => X.RankHyp → ∀ H : ∀ g, X.CartHyp V g, IndependenceBoundPlain.PlainCoefficientIdentity X H
 

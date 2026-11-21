@@ -5,7 +5,7 @@ import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar
 import GroundTheory.AutomorphicForms.HarishChandraInvariance.Compact
 import GroundTheory.AutomorphicForms.DixmierMalliavin
 import GroundTheory.AutomorphicForms.GKModules.ParametricIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DixmierMalliavinFactorisationBasisStepStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DixmierMalliavinFactorisationBasisStep
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousLeftTranslateBoundedDerivFunctional
 open GlobalTheory.HCA MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff
@@ -84,7 +84,7 @@ theorem SmFn.exists_decomp_prodExp : ∀ (𝔸 : Type) [NormedRing 𝔸] [Normed
   | succ n ih =>
     intro j Λ hΛ
     obtain ⟨Λ', u, v, hΛ', hu, hv, hus, hvs, hdec⟩ :=
-      GlobalTheory.T.dixmierMalliavin_factorisation_basis_step 𝔸 G 𝔤 h d b μ hμ S hS hL K hK Λ hΛ (j 0) ε hε
+      _root_.GlobalTheory.HCA.smFn_dixmierMalliavin_step 𝔸 G 𝔤 h d b μ hμ S hS hL K hK Λ hΛ (j 0) ε hε
     obtain ⟨N₁, Λ₁, κ₁, h₁, hd₁⟩ := ih (Fin.tail j) Λ' hΛ'
     obtain ⟨N₂, Λ₂, κ₂, h₂, hd₂⟩ := ih (Fin.tail j) Λ hΛ
     refine ⟨N₁ + N₂, Fin.append Λ₁ Λ₂,

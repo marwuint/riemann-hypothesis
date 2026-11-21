@@ -11,11 +11,6 @@ variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 theorem rpow_neg_div_nonneg (i : ℕ) : 0 ≤ (p : ℝ) ^ (- (i : ℝ) / eK p K) :=
   Real.rpow_nonneg (Nat.cast_nonneg p) _
 
-theorem rpow_neg_div_lt_one (he : 0 < eK p K) {i : ℕ} (hi : 0 < i) : (p : ℝ) ^ (- (i : ℝ) / eK p K) < 1 := by
-  have he' : (0 : ℝ) < eK p K := by positivity
-  have hi' : (0 : ℝ) < i := by positivity
-  exact Real.rpow_lt_one_of_one_lt_of_neg (one_lt_p_real p) (div_neg_of_neg_of_pos (by linarith) he')
-
 def UKi (i : ℕ) : Subgroup Kˣ where
   carrier := {x | x ∈ UK p K ∧ ‖((x : K) : PadicAlgCl p) - 1‖ ≤ (p : ℝ) ^ (- (i : ℝ) / eK p K)}
   one_mem' := ⟨(UK p K).one_mem, by

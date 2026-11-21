@@ -8,9 +8,9 @@ import GroundTheory.ProfiniteCohomology.GaloisCohomology.IsZeroGroupCohomologyQu
 import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
 import GroundTheory.GlobalFields.LocalFieldAtPlace
 import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.TransportA
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KummerCharacterTameFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedCharacterContinuousStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerOrderEqOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KummerCharacterTameFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedCharacterContinuous
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerOrderEqOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DecompositionGroupLocalGaloisStatement
 open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Published GlobalTheory.Published.PoitouTate
 open GroundTheory.ProfCoh GroundTheory.LocalField ValuativeRel CategoryTheory
@@ -80,7 +80,7 @@ theorem inv_class (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] 
   have hJx' : (cohomologyMap (rootsOfUnityToUnits K Ω n) 2).hom (cohomologyπ _ 2 x) =
       cohomologyπ _ 2 ((HomologicalComplex.cyclesMap (cochainsMap (rootsOfUnityToUnits K Ω n)) 2).hom x) := hJx
   rw [hJx']
-  refine GlobalTheory.T.kummer_character_tame_formula K Ω n ζ y a hζ.pow_eq_one ha hy κ χ hκ hadd hcont hF _ fun s => ?_
+  refine _root_.GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup K Ω n ζ y a hζ.pow_eq_one ha hy κ χ hκ hadd hcont hF _ fun s => ?_
   rw [cochainOf_cyclesMap, hx, rootsOfUnityToUnits_hom_apply, muEquiv_apply]
 
 theorem generates_of_inv {n : ℕ} [NeZero n] {H : Type} [AddCommGroup H] [Module (ZMod n) H] (T : H →+ QZ)
@@ -134,7 +134,7 @@ theorem core (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNo
     (hF : ∀ g, unramifiedDegree K Ω g = Multiplicative.ofAdd 1 → χ g = 1)
     (z : Z2 (charRep c)) (hz : ∀ g h, z.1 (g, h) = κ g * χ h) :
     Submodule.span (ZMod n) {(Submodule.Quotient.mk z : H2 (charRep c))} = ⊤ := by
-  have hcont := GlobalTheory.T.unramified_character_continuous K Ω n χ hadd hF
+  have hcont := _root_.GlobalTheory.CompanionTheory.LocalUnram.continuous_of_additive_of_frobenius_eq_one K Ω n χ hadd hF
   have he := mu_equivariant K Ω n c ζ hζ hc
   obtain ⟨e2, hex, he2⟩ := PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 Gal(Ω/K) (ZMod n) (ZMod n) (charRep c)
     (galRootsOfUnity.{0} K Ω n) (muEquiv ζ hζ) he
@@ -219,7 +219,7 @@ theorem span_class_eq_top : ∀ (F Ω : Type) [Field F] [NumberField F] [Field �
   refine core_dec (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F)) (l ^ r)
     (Nat.cast_ne_zero.2 hl0) (Dec (F := F) A) { e with continuous_toFun := hec, continuous_invFun := hes }
     ((cycMod F Ω l r).comp (Dec (F := F) A).subtype) (Units.mk0 (ι ζ) (hιζ.ne_zero hl0)) (Units.mk0 (ι y) hιy)
-    (Units.mk0 _ ha0) (IsPrimitiveRoot.coe_units_iff.1 hιζ) ?_ (GlobalTheory.T.uniformizer_order_eq_one F v ϖ h1 h2) ?_ κ χ ?_ h5 ?_ z h8
+    (Units.mk0 _ ha0) (IsPrimitiveRoot.coe_units_iff.1 hιζ) ?_ (_root_.GlobalTheory.CompanionTheory.Completion.ord_algebraMap_eq_one F v ϖ h1 h2) ?_ κ χ ?_ h5 ?_ z h8
   · intro g
     change g (ι ζ) = (ι ζ) ^ _
     rw [← hl, cyc_apply F Ω l r ζ hζ.pow_eq_one, map_pow]

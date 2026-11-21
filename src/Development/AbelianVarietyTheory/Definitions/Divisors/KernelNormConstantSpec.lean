@@ -296,10 +296,6 @@ def kkMap (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.small)
     VV ℂ (wt G p.small) →ₗ[ℂ] VV ℂ (wt G p.big) :=
   Z.scal c p • fockComp W N.frC p (Z.vec d) (x * N.u _) (y * N.u _)
 
-def kkFr (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.small) (y : FinPt G p.big) :
-    VV ℂ (wt G p.small) →ₗ[ℂ] VV ℂ (wt G p.big) :=
-  rhoVr (tauE D) (wt G p.big) (N.fr _) ∘ₗ Z.kkMap c d x y ∘ₗ rhoVr (tauE D) (wt G p.small) (N.fr _)⁻¹
-
 open Classical in
 
 def kkIn (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.small) (y : FinPt G p.big) :
@@ -314,55 +310,6 @@ def IsRatIn (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.smal
 
 def IsRatAt (d : FinDatum G t p) (x : FinPt G p.small) (y : FinPt G p.big) : Prop := Z.IsRatIn 1 d x y
 
-theorem kkIn_eq (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.small) (y : FinPt G p.big) :
-    Z.kkIn c d x y = (∏ τ, opp p (c τ) ^ fockDeg G p τ) • Z.kk d x y := by
-  rw [kk, kkIn, kkIn, ← map_smul, kkMap, kkMap, smul_smul]
-  congr 2
-  simp only [scal, div_eq_mul_inv, map_mul, mul_pow, Finset.prod_mul_distrib, Pi.one_apply, map_one, one_pow,
-    Finset.prod_const_one]
-  ring
-
-theorem isTheta_vacuum (t : T) (p : Pair T) :
-    (FinDatum.vacuum G t p).IsTheta W (N.latS p) (N.latT p) (Z.vac p) (Z.vac p) := by
-  have h0 : ∀ x : WO (G.pS p) (G.pT p), IsHalf (0 : AE D) x → x = 0 := fun x hx =>
-    Matrix.ext fun i j => by rw [← hx i j, zero_mul]; rfl
-  have hi : ∀ Λ Λ' : AddSubgroup (WO (G.pS p) (G.pT p)), halfInd (0 : AE D) Λ = halfInd 0 Λ' := fun Λ Λ' => funext fun x => by
-    have : (x ∈ Λ ∧ IsHalf (0 : AE D) x) ↔ (x ∈ Λ' ∧ IsHalf (0 : AE D) x) :=
-      and_congr_left fun hx => by rw [h0 x hx]; simp
-    exact halfInd_congr this
-  have hz : ∀ f, heisO W.ψ (G.pS p) (G.pT p) 0 f = f := fun f => funext fun w => by simp [heisO, symplOH, symplO, hO]
-  refine ⟨⟨(LinearMap.proj 0 : (_ → ℂ) →ₗ[ℂ] ℂ).smulRight (Z.vac p), fun Φ _ x hx => ?_, fun Φ _ y hy => ?_, ?_⟩,
-    fun Tm hT => ?_⟩
-  · obtain rfl := h0 x hx
-    rw [hz]; simp
-  · obtain rfl := h0 y (by simpa [FinDatum.vacuum, FinDatum.ind] using hy)
-    rw [hz]; simp [symplO, hO]
-  · simp [halfInd, IsHalf]
-  · have := hT.vac
-    rw [one_smul] at this
-    exact this.symm.trans (congrArg Tm (hi _ _))
-
-theorem jetTab_vacuum (t : T) (hp : DefPair D.R.m p) (k : DVar D.what₂.Tau (G.V p.small).rank (G.V p.big).rank →₀ ℕ) :
-    jetTab W N.frC p (Z.vec (FinDatum.vacuum G t p)) ((N.u _)⁻¹ * N.u _) ((N.u _)⁻¹ * N.u _) k =
-      Z.c0 p * opp p (((k.mapDomain (fvar G p)).prod fun v n => period Z.δ v.1 ^ n) *
-        Formalism.MainNotions.GL3Theta.applyAt0 D (monomial (k.mapDomain (fvar G p)) 1) (Z.e0 p)) := by
-  have h1 : G.toPair p 1 1 = 1 := by cases p <;> simp [GridData.toPair, Prod.ext_iff]
-  have h2 : W.om p (1, 1) = 1 := map_one _
-  rw [← Z.kernelNorm_constant_spec p hp, vec, FinDatum.vec_eq W (Z.isTheta_vacuum t p), inv_mul_cancel, inv_mul_cancel]
-  simp [jetTab, kerFin, GridData.Weil.ker, thetaKO, h1, h2, FinDatum.vacuum, FinDatum.ind]
-
 end Normal
-
-example : ((wtOf 2 {3 / 2, -1 / 2}).w 0 : ℚ) = 1 := by
-  have h : ({3 / 2, -1 / 2} : Finset ℚ).card = 2 := by decide +kernel
-  rw [wtOf_cast h (by
-    intro x hx
-    rcases Finset.mem_insert.1 hx with rfl | hx
-    · exact ⟨1, by norm_num⟩
-    · exact ⟨-1, by rw [Finset.mem_singleton.1 hx]; norm_num⟩), highestWeight,
-    descEnum_unique h (f := ![3 / 2, -1 / 2]) (by decide +kernel) (by decide +kernel)]
-  norm_num
-
-example (i j : ℕ) : opp (.chi i j : Pair T) Complex.I = -Complex.I := Complex.conj_I
 
 end GlobalTheory.FunObj

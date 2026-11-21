@@ -152,5 +152,3 @@ theorem FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of_arExists (hE : 
 theorem FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of (h : GlobalTheory.Published.ArCalc) : GlobalTheory.Published.FubiniStudyChowHeight :=
   FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of_arExists h.arExists
 
-theorem FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of_hypotheses (h : GlobalTheory.CovTop.Hypotheses2) : GlobalTheory.Published.FubiniStudyChowHeight :=
-  FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of h.p4

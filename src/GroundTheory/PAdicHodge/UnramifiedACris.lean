@@ -15,14 +15,6 @@ namespace UnramifiedACris
 
 variable {p : ℕ} [hp : Fact p.Prime]
 
-variable (p) in
-
-theorem irreducible_p : Irreducible (p : 𝒪[ℚ_[p]]) := by
-  have h := (MulEquiv.irreducible_iff
-    (f := (GroundTheory.LocalField.PadicRank.padicIntEquivInteger p).toMulEquiv)
-    (x := (p : ℤ_[p]))).2 PadicInt.irreducible_p
-  simpa using h
-
 variable (K₀ : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K₀]
 
 omit [FiniteDimensional ℚ_[p] K₀] in
@@ -55,36 +47,7 @@ instance charP_residueField : CharP 𝓀[K₀] p :=
     rw [← map_natCast (residue 𝒪[K₀]), residue_eq_zero_iff]
     exact natCast_p_mem_maximalIdeal K₀)
 
-theorem exists_eq_p_mul_of_mem_maximalIdeal
-    [GroundTheory.LocalField.IsUnramified ℚ_[p] K₀] {x : 𝒪[K₀]} (hx : x ∈ 𝓂[K₀]) :
-    ∃ y : 𝒪[K₀], x = p * y := by
-  rw [← (GroundTheory.LocalField.map_maximalIdeal_eq_iff ℚ_[p] K₀).2 inferInstance,
-    (irreducible_p p).maximalIdeal_eq, Ideal.map_span, Set.image_singleton, map_natCast,
-    Ideal.mem_span_singleton] at hx
-  exact hx
-
-def integerToCp : 𝒪[K₀] →+* normInteger ℂ_[p] :=
-  RingHom.codRestrict ((algebraMap (PadicAlgCl p) ℂ_[p]).comp
-    ((algebraMap K₀ (PadicAlgCl p)).comp (𝒪[K₀]).subtype)) (normInteger ℂ_[p]) fun x => by
-    rw [mem_normInteger, RingHom.comp_apply, ← PadicComplex.coe_eq, PadicComplex.norm_extends]
-    exact (mem_integer_iff K₀ x).1 x.2
-
 variable [GroundTheory.LocalField.IsUnramified ℚ_[p] K₀]
-
-def residueToModP : 𝓀[K₀] →+* ModP (normInteger ℂ_[p]) p :=
-  Ideal.Quotient.lift (𝓂[K₀]) ((Ideal.Quotient.mk _).comp (integerToCp K₀)) fun x hx => by
-    obtain ⟨y, rfl⟩ := exists_eq_p_mul_of_mem_maximalIdeal K₀ hx
-    rw [RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, map_mul, map_natCast]
-    exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
-
-def residueToPreTilt : 𝓀[K₀] →+* PreTilt (normInteger ℂ_[p]) p :=
-  Perfection.lift p 𝓀[K₀] (ModP (normInteger ℂ_[p]) p) (residueToModP K₀)
-
-def wittToAInf : WittVector p 𝓀[K₀] →+* AInf ℂ_[p] p :=
-  WittVector.map (residueToPreTilt K₀)
-
-def wittToACris : WittVector p 𝓀[K₀] →+* ACris.ACris ℂ_[p] p :=
-  (algebraMap (AInf ℂ_[p] p) (ACris.ACris ℂ_[p] p)).comp (wittToAInf K₀)
 
 end UnramifiedACris
 

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfDvdInCompleteDVRsFiniteResidueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumAbelianLocusPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyDatumFibreOfComposableBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyDatumPullbackBaseChangeLieBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfDvdInCompleteDVRsFiniteResidue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumAbelianLocusPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyDatumFibreOfComposableBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyDatumPullbackBaseChangeLieBasis
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RangeSubsetAbLocusOfIsProper
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
@@ -51,7 +51,7 @@ theorem mem_range_of_traits {A : Type} [CommRing A] [IsDomain A] [IsIntegrallyCl
   obtain ⟨⟨a, s⟩, hs⟩ := IsLocalization.surj (Submonoid.powers f) b
   obtain ⟨n, hn⟩ := s.2
   have hdiv : f ^ n ∣ a := by
-    refine GlobalTheory.T.dvd_of_dvd_in_completeDVRs_finite_residue A a (f ^ n) (pow_ne_zero n hf) ?_
+    refine _root_.GlobalTheory.KeyEven.dvd_of_forall_fintrait A a (f ^ n) (pow_ne_zero n hf) ?_
     intro V _ _ _ _ hc hfin t ht
     by_cases htf0 : t f = 0
     · cases n with
@@ -97,14 +97,14 @@ theorem keyLoc_of_famUnit_keyTrait : ∀ κ : Rule, FamUnit κ → KeyTrait κ �
     isIntegrallyClosed_of_isLocalization (Localization.Away f) (Submonoid.powers f) hle
   have hinj : Function.Injective (algebraMap A (Localization.Away f)) := IsLocalization.injective _ hle
   haveI : CharZero (Localization.Away f) := charZero_of_injective_algebraMap hinj
-  obtain ⟨xB, hgB, hkB⟩ := GlobalTheory.T.exists_keyDatum_abelianLocus_point A (Localization.Away f) (algebraMap A _) G L σ x.P.g y x.g_pos hG hsm hopen
+  obtain ⟨xB, hgB, hkB⟩ := _root_.GlobalTheory.KeyDatumAb.exists_keyOn A (Localization.Away f) (algebraMap A _) G L σ x.P.g y x.g_pos hG hsm hopen
     hsym hpol hy hσ hfab
   obtain ⟨u, hu⟩ := hFU (Localization.Away f) xB
   have hfu : IsUnit ((algebraMap A (FractionRing A)) f) :=
     isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A))).2 hf0)
   have hc := IsLocalization.Away.lift_comp (S := Localization.Away f) f hfu
   have hpbx : KeyPB x xB (IsLocalization.Away.lift (S := Localization.Away f) f hfu) :=
-    GlobalTheory.T.keyDatum_fibre_of_composable_baseChange A (Localization.Away f) (FractionRing A) (algebraMap A _) _ G L σ x.P.g y xB x hgB rfl hkB
+    _root_.GlobalTheory.KeyEven.keyPB_of_keyOn_comp A (Localization.Away f) (FractionRing A) (algebraMap A _) _ G L σ x.P.g y xB x hgB rfl hkB
       (by rw [hc]; exact hkey0)
   have hval := hu _ _ x hpbx
   have trait : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V],
@@ -117,13 +117,13 @@ theorem keyLoc_of_famUnit_keyTrait : ∀ κ : Rule, FamUnit κ → KeyTrait κ �
       rw [← hh]
       rintro _ ⟨p, rfl⟩
       exact hfab ⟨spMap h p, rfl⟩
-    obtain ⟨xV, hgV, hkV⟩ := GlobalTheory.T.exists_keyDatum_abelianLocus_point A (FractionRing V) ((algebraMap V _).comp t) G L σ x.P.g y x.g_pos hG hsm
+    obtain ⟨xV, hgV, hkV⟩ := _root_.GlobalTheory.KeyDatumAb.exists_keyOn A (FractionRing V) ((algebraMap V _).comp t) G L σ x.P.g y x.g_pos hG hsm
       hopen hsym hpol hy hσ hrange
     have hpbV : KeyPB xV xB h :=
-      GlobalTheory.T.keyDatum_fibre_of_composable_baseChange A (Localization.Away f) (FractionRing V) (algebraMap A _) h G L σ x.P.g y xB xV hgB hgV hkB
+      _root_.GlobalTheory.KeyEven.keyPB_of_keyOn_comp A (Localization.Away f) (FractionRing V) (algebraMap A _) h G L σ x.P.g y xB xV hgB hgV hkB
         (by rw [hh]; exact hkV)
     have hvalV := hu _ h xV hpbV
-    obtain ⟨L', σ', y', hiso, hy', hσ', hk'⟩ := GlobalTheory.T.keyDatum_pullback_baseChange_lieBasis A V (FractionRing V) t (algebraMap V _) G L σ xV
+    obtain ⟨L', σ', y', hiso, hy', hσ', hk'⟩ := _root_.GlobalTheory.KeyEvenBC.keyOn_pullback A V (FractionRing V) t (algebraMap V _) G L σ xV
       (fun i => y (i.cast hgV)) hG (isLieBasis_cast hgV y hy) hσ hkV
     have hne : (spMap t ⁻¹' abLocus G).Nonempty := by
       obtain ⟨q⟩ : Nonempty (Sp (FractionRing V)) := inferInstance

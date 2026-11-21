@@ -170,15 +170,6 @@ theorem heckeAct_eq_sum {f : G → ℂ} {v : V} (hfin : (range fun g => f g • 
     exact fun hg => h ⟨g, hg⟩
   simp [this]
 
-omit [IsTopologicalGroup G] [BorelSpace G] in
-
-theorem heckeAct_mem_of_forall {f : G → ℂ} {v : V} (hfin : (range fun g => f g • ρ g v).Finite)
-    {X : Submodule ℂ V} (hX : ∀ g, f g • ρ g v ∈ X) : heckeAct μ ρ f v ∈ X := by
-  rw [heckeAct_eq_sum hfin]
-  refine Submodule.sum_mem _ fun w hw => Submodule.smul_mem _ _ ?_
-  obtain ⟨g, rfl⟩ := (Set.Finite.mem_toFinset _).1 hw
-  exact hX g
-
 variable (μ) in
 
 theorem dual_heckeAct [IsFiniteMeasureOnCompacts μ] {f : G → ℂ}

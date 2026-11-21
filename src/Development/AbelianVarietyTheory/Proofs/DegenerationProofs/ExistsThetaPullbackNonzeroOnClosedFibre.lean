@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.CompanionTheor
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaSystemNormWeightSumLeExpOfTest
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitCharts
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaSectionsIndependentOnClosedFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaSectionsIndependentOnClosedFibre
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ProjZeroPullbackNeZero
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -66,7 +66,7 @@ theorem exists_mem_nonzeroLocus_fibre : GlobalTheory.UT.LL → ∀ (o Ω : Type)
   by_contra hne
   have hzc : z ∈ ⨆ l, Q.W l := by rw [Q.cover]; trivial
   obtain ⟨l, hl⟩ := TopologicalSpace.Opens.mem_iSup.1 hzc
-  obtain ⟨K, _, x, hx, hind⟩ := GlobalTheory.T.thetaSections_independent_on_closed_fibre hL o Ω S ρ M U₀ EE hB Q hbig hgeo l z hl hz
+  obtain ⟨K, _, x, hx, hind⟩ := _root_.GlobalTheory.ZH.IndepFib.indep_on_closed_fibre hL o Ω S ρ M U₀ EE hB Q hbig hgeo l z hl hz
   have hc : (fun k => valF x (Q.W l) (Q.c l ρ.i₀ k)) = 0 := by
     refine hind _ fun g j hg hgx => ?_
     by_cases hj : ⊤ ≤ g ⁻¹ᵁ (Q.O1.pull (Q.P.hom ⁻¹ᵁ Q.W l).ι).U j

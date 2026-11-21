@@ -14,8 +14,6 @@ theorem matchLMB2₀ : MLM.MatchLMB2 := matchLMB2 hM2 hM3 hM4
 
 theorem matchLMWordS₀ : MLM.MatchLMWordS := matchLMWordS hM3
 
-theorem matchLMWord₀ : MLM.MatchLMWord := matchLMWord hM3
-
 theorem matchLMUnit₀ : MLM.MatchLMUnit := matchLMUnit hM1 hM3
 
 end PositivityTheory.Rg.BcB.F.MatchAll

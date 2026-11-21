@@ -25,12 +25,6 @@ def complexUnitsHom {w : InfinitePlace K} (hw : w.IsComplex) : ℂˣ →ₜ* (w.
   continuous_toFun := Units.continuous_map (isometryEquivComplexOfIsComplex hw).symm.continuous
 
 omit [NumberField K] in
-theorem extensionEmbeddingOfIsReal_realUnitsHom {w : InfinitePlace K} (hw : w.IsReal) (x : ℝˣ) :
-    extensionEmbeddingOfIsReal hw ((realUnitsHom hw x : (w.Completion)ˣ) : w.Completion) = x := by
-  rw [← ringEquivRealOfIsReal_apply]
-  exact (ringEquivRealOfIsReal hw).apply_symm_apply _
-
-omit [NumberField K] in
 
 theorem realUnitsHom_surjective {w : InfinitePlace K} (hw : w.IsReal) (a : (w.Completion)ˣ) :
     realUnitsHom hw (Units.map (ringEquivRealOfIsReal hw : w.Completion →+* ℝ).toMonoidHom a) = a :=
@@ -276,12 +270,6 @@ def realComponent {w : InfinitePlace K} (hw : w.IsReal) : ℝˣ →ₜ* Circle :
 
 def complexComponent {w : InfinitePlace K} (hw : w.IsComplex) : ℂˣ →ₜ* Circle :=
   (χ.infiniteComponent w).comp (complexUnitsHom hw)
-
-def realParam {w : InfinitePlace K} (hw : w.IsReal) : Fin 2 × ℝ :=
-  (existsUnique_realUnits_circle (χ.realComponent hw)).exists.choose
-
-def complexParam {w : InfinitePlace K} (hw : w.IsComplex) : ℤ × ℝ :=
-  (existsUnique_complexUnits_circle (χ.complexComponent hw)).exists.choose
 
 end HeckeCharacter
 

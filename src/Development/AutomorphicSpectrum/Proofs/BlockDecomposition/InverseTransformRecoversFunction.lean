@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussTubeOfTubeGood
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentialFourierIntegralBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierInversionProdStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierInversionProd
 
 noncomputable section
 
@@ -64,7 +64,7 @@ theorem inv_phi_eq : ∀ (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] [
     show Complex.exp (dot (pt x 0) t) • phi G x t =
       ∫ y : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y t : ℝ) : ℂ))) • G (pt x y)
     rw [hdx, hat_eq_smul]
-  have key := GlobalTheory.T.fourier_inversion_real_plane X (fun y => G (pt x y)) hc hint hint2 y
+  have key := _root_.GlobalTheory.CompanionTheory.TubeFourier.fourier_inversion_prod X (fun y => G (pt x y)) hc hint hint2 y
   rw [key]
   unfold inv
   congr 1

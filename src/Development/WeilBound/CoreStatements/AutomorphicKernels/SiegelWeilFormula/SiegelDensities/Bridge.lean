@@ -50,13 +50,13 @@ theorem isEulerProd_smul {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
 theorem densEq_of_C (hB : PositivityTheory.PfSWUS.HMass.SchwartzDensInf) (hC : SWMeasCAll) : PositivityTheory.SiegelWeilFormula.Gen.DensEq := by
   intro F E _ _ _ _ _ σ hCM M hM J hJ haJ T hT hdet d b Φ Φinf Φf Φv hsch hpure hprod
   have ha : PositivityTheory.PfSWUS.HMass.IsAnisoH σ J := fun x hx h0 => hx (haJ x h0)
-  have hfv : FinVol F E σ M J := GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ
+  have hfv : FinVol F E σ M J := _root_.GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ
   refine ⟨hfv.1, fun μ hμ => ⟨(hfv.2 μ hμ).1, fun 𝓕 h𝓕 =>
     ⟨GlobalTheory.CompanionTheory.SW.CharEx.exists_isCharAF F, fun ψ hψ => ?_⟩⟩⟩
   obtain ⟨⟨laminf, hli⟩, hlv⟩ := GlobalTheory.T.exists_standard_local_measures F
   choose lam hlam using hlv
-  obtain ⟨ci, c, hc1, hWi, hWv⟩ := GlobalTheory.T.exists_unit_scaling_selfdual_adelic_measures F E σ hCM M J hJ d b laminf lam hli hlam ψ hψ M
-  obtain ⟨ei, e, he1, hHi, hHv⟩ := GlobalTheory.T.exists_unit_scaling_selfdual_herm_measures F E σ hCM d b laminf lam hli hlam ψ hψ M
+  obtain ⟨ci, c, hc1, hWi, hWv⟩ := _root_.GlobalTheory.CompanionTheory.SW.SdTuples.sdW_coord F E σ hCM M J hJ d b laminf lam hli hlam ψ hψ M
+  obtain ⟨ei, e, he1, hHi, hHv⟩ := _root_.GlobalTheory.CompanionTheory.SW.sdHerm_eq_coord F E σ hCM d b laminf lam hli hlam ψ hψ M
   obtain ⟨hci0, hc0, -, -, hdiv, -⟩ := GlobalTheory.T.unit_product_closure_properties F ci ei c e hc1 he1
   obtain ⟨hei0, he0, -⟩ := GlobalTheory.T.unit_product_closure_properties F ei ci e c he1 hc1
   refine ⟨⟨_, (hWi _).2 rfl⟩, fun μinf hμinf => ⟨⟨_, (hHi _).2 rfl⟩, fun νinf hνinf =>
@@ -77,12 +77,12 @@ theorem densEq_of_C (hB : PositivityTheory.PfSWUS.HMass.SchwartzDensInf) (hC : S
             (fun S => (a / a') • ∫ X, φ X ∂(m S)) := by
     intro R _ _ _ _ _ hR l hl
     obtain ⟨i1, i2, i3, i4, -⟩ := id hR
-    obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b l hl
-    obtain ⟨m, hm⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ R hR M _ _ (hW M M) (hH M)
-    refine ⟨m, hm, fun S => (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ R hR M _ _ m (hW M M) (hH M) hm S).1, ?_⟩
+    obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b l hl
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ R hR M _ _ (hW M M) (hH M)
+    refine ⟨m, hm, fun S => (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM M J hJ R hR M _ _ m (hW M M) (hH M) hm S).1, ?_⟩
     intro a a' ha ha' h1 h2 φ hφ hφc
-    have h3 := GlobalTheory.T.gram_fiber_measures_scaling F E σ hCM M J hJ R hR M _ _ m (hW M M) (hH M) hm a a' ha ha'
-    have h4 := (GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ hCM M J hJ R hR M _ _ _ h1 h2 h3 φ hφ hφc).1
+    have h3 := _root_.GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hCM M J hJ R hR M _ _ m (hW M M) (hH M) hm a a' ha ha'
+    have h4 := (_root_.GlobalTheory.CompanionTheory.SW.GramDensity.isContDensityOn_gram F E σ hCM M J hJ R hR M _ _ _ h1 h2 h3 φ hφ hφc).1
     simpa only [integral_smul_nnreal_measure] using h4
   have keyi : ∃ m : HermR (Ainf F) σ M → Measure (Fin M → Fin M → Ainf F ⊗[F] E),
       IsGramFib (Ainf F) σ J M (coordW (Ainf F) b laminf M M) (coordHerm (Ainf F) σ b laminf M) m ∧
@@ -95,13 +95,13 @@ theorem densEq_of_C (hB : PositivityTheory.PfSWUS.HMass.SchwartzDensInf) (hC : S
           {S | IsUnit (S : Matrix (Fin M) (Fin M) (Ainf F ⊗[F] E)).det} Φinf
           (fun S => (a / a') • ∫ X, Φinf X ∂(m S)) := by
     obtain ⟨i1, i2, i3, i4, -⟩ := id hLi
-    obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hli.1
-    obtain ⟨m, hm⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Ainf F) hLi M _ _ (hW M M) (hH M)
+    obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Ainf F) d b laminf hli.1
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ (Ainf F) hLi M _ _ (hW M M) (hH M)
     obtain ⟨hcI, -, hiI⟩ := hB F E σ hCM M J hJ M _ _ m (hW M M) (hH M) hm Φinf hsch
-    refine ⟨m, hm, fun S => (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ (Ainf F) hLi M _ _ m (hW M M) (hH M) hm S).1,
+    refine ⟨m, hm, fun S => (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM M J hJ (Ainf F) hLi M _ _ m (hW M M) (hH M) hm S).1,
       hcI, hiI, ?_⟩
     intro a a' ha ha' h1 h2
-    have h3 := GlobalTheory.T.gram_fiber_measures_scaling F E σ hCM M J hJ (Ainf F) hLi M _ _ m (hW M M) (hH M) hm a a' ha ha'
+    have h3 := _root_.GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hCM M J hJ (Ainf F) hLi M _ _ m (hW M M) (hH M) hm a a' ha ha'
     have h4 := (hB F E σ hCM M J hJ M _ _ _ h1 h2 h3 Φinf hsch).2.1
     simpa only [integral_smul_nnreal_measure] using h4
   obtain ⟨minf, hmi, hfi, hcI, hiI, hdi⟩ := keyi
@@ -119,7 +119,7 @@ theorem densEq_of_C (hB : PositivityTheory.PfSWUS.HMass.SchwartzDensInf) (hC : S
   obtain ⟨hmeas, hint, hmul, hI⟩ := PositivityTheory.PfSWUS.HMass.euler_int_integrable F E σ hCM d b M M _ _ _ hE1
     inferInstance hlf Φ Φinf Φf Φv hcI
     ((hiI _ (PositivityTheory.PfSWUS.HMass.isUnit_det_hermOf (Ainf F) σ T hT hdet)).smul_measure_nnreal) hpure hprod
-  have hθ := GlobalTheory.T.siegel_mean_value_integrable F E σ hCM M J hJ μ 𝓕 hμ h𝓕 M _ Φ hmeas hint
+  have hθ := _root_.GlobalTheory.CompanionTheory.SW.ThetaMean.mean_thetaS_eq_integral F E σ hCM M J hJ μ 𝓕 hμ h𝓕 M _ Φ hmeas hint
   have hz : Multipliable fun v => (cfac E v : ℝ≥0) • ∫ X, Φv v X ∂(m v (hermOf (Fv F v) σ T hT)) := by
     simpa only [integral_smul_nnreal_measure] using hmul
   obtain ⟨r1, r2⟩ := GlobalTheory.CompanionTheory.SW.TopDens.rescale_tprod (ci / ei) (fun v => c v / e v) hdiv.1 hdiv.2

@@ -4,7 +4,8 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.FlagMinor
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChernClassOnFlagPairStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChernClassOnFlagPair
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Inhabit
 
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
@@ -294,7 +295,7 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
         field_simp
         linear_combination hgen }
   refine ⟨(BundleExamples.sameGeneric_iff hϖ x A A').2 hSF, fun k hk1 hk2 q L Q hQ => ?_⟩
-  exact (GlobalTheory.T.chern_class_on_flag_pair O ϖ hϖ Ω K ι x d hK hModel 1 Ω A A' hSF (lineBasis hu) (lineBasis hu')
+  exact (_root_.GlobalTheory.CompanionTheory.ChernFlagPairRootPolynomial.main O ϖ hϖ Ω K ι x d hK hModel 1 Ω A A' hSF (lineBasis hu) (lineBasis hu')
     (fun _ => a) (fun _ => a') (fun _ => f) (fun _ => g) hFP).1 k hk1 hk2 (psumExpansion 1 k)
     (isPairExpansion_psum 1 k) q L Q hQ
 

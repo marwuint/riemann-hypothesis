@@ -7,8 +7,12 @@ import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTra
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ThetaChr
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimes
 import Formalism.SharpRestriction.Divisibility.AbsolutelyIrreducibleSpan
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ParametersForcedContentEqScaleAtResidueCharStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLatticeLayerKernelDatumTrueColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ForcedContentEqScaleAtResidueChar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLatticeLayerKernelDatumTrueColumns
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SameForm
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData
+import Formalism.LocalRingCardinality.SpanPowerMembership.TwCore
+import Formalism.LocalToGlobal.KernelLattices.ColumnData.KerEntHyp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnLayerConditionsTrueColumnsLaterStagesStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsGaugeOfIsCMExt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResCharConj
@@ -26,7 +30,7 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {𝒮 : Slots} {w :
 
 theorem fval_off (l : Lv4 𝒮 K w Z) (L : SizeData₂ (w.D Z)) (hL : L.sc = K.s) (v : B.places.Pl) (hv : v ∉ l.Wt)
     (j : ℕ) (hj : j ∈ SizeData₂.lifts (w.D Z)) : Fval L j v = 0 := by
-  refine (GlobalTheory.T.forcedContent_eq_scale_at_residueChar (w.D Z) L j v).trans ?_
+  refine (_root_.GlobalTheory.Mem.Top.Bl.Fval_eq_FK (w.D Z) L j v).trans ?_
   rw [hL]
   rw [l.what₂.exact] at hv
   obtain ⟨h1, h2⟩ := Finset.mem_Icc.1 hj
@@ -68,7 +72,7 @@ theorem stepW_core (_h2b : StandardLattice.SiegelMassRatioCM) : ∀ 𝒮 : Slots
     StepW (pinAnd (Has4 𝒮)) (HasC (BuiltE 𝒮)) := by
   intro 𝒮 hA hD hT
   have hp : StepW (pinAnd (Has4 𝒮)) Pinned := StepW.of_all fun _ _ _ _ _ _ _ h => h.1
-  have hAll := hp.trans (((hA.and hD).and hT).and GlobalTheory.T.exists_latticeLayer_kernelDatum_trueColumns)
+  have hAll := hp.trans (((hA.and hD).and hT).and _root_.GlobalTheory.Mem.Top.Bl.gyLay_kerT_entC)
   refine (StepW.and (StepW.of_all fun _ _ _ _ _ _ _ h => h) hAll).trans (StepW.of_all ?_)
   rintro K B f T w hO hF ⟨⟨⟨pin⟩, Z, ⟨l⟩⟩, ⟨⟨hAm, hDv⟩, hTh⟩, hGy⟩
   obtain ⟨a, a0, ha⟩ := hAm Z l

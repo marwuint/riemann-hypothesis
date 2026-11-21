@@ -33,16 +33,6 @@ theorem hf_sum_r {ι : Type} (s : Finset ι) (a : ι → Fin n → E) (y : Fin n
   | empty => simp [hf_zero_r]
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hf_add_r, ih]
 
-theorem exists_mul_mem [IsNonarchimedeanLocalField F] (c : E) :
-    ∃ t : 𝒪[F], t ≠ 0 ∧ algebraMap F E t * c ∈ L.O := by
-  have : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; omega)
-  have h1 : IsAlgebraic F c := Algebra.IsAlgebraic.isAlgebraic c
-  have h2 : IsAlgebraic 𝒪[F] c := (IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 h1
-  obtain ⟨t, ht, h⟩ := h2.exists_integral_multiple
-  refine ⟨t, ht, (L.O_def _).2 ?_⟩
-  convert h using 1
-  rw [Algebra.smul_def]; rfl
-
 theorem exists_smul_mem [IsNonarchimedeanLocalField F] {Λ : Submodule L.O (Fin n → E)}
     (hΛ : IsLat L Λ) (x : Fin n → E) : ∃ t : 𝒪[F], t ≠ 0 ∧ algebraMap F E t • x ∈ Λ := by
   first

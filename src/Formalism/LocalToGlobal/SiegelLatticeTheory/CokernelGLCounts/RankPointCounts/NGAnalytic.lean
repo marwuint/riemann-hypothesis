@@ -92,51 +92,6 @@ def AnaAt (CSt CB : ℝ) (C1 C0n A : ℕ) {D : D7} (large₂ : SizeData₂ D) {X
     PN.PointSumInput (Y.tO u u') (NOf2 Y u u' νL νB ng) (A * (D.R.rS + 1) ^ 2)
       (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
 
-def StepAnalyticConstants : Prop :=
-  ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C1 C0n : ℕ, ∀ A : ℕ, ∃ CB CSt : ℝ, 0 ≤ CB ∧ 0 ≤ CSt ∧
-    ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-      Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' →
-      ∃ (P : Type) (_ : Fintype P) (B : S3.MassData P) (Irat Ire : ℝ), MassDataAdmissible X Y u u' B Irat Ire ∧
-        AnaAt CSt CB C1 C0n A large₂ Y u u' B Ire
-
-theorem ngCut2C_of_merged (hM : StepAnalyticConstants) (hS : StepSizes) (hC : StepClass) (hN : StepNormals)
-    (hP : StepPoints) (hH : StepHeight) : NGCut2C := by
-  intro Cg cb Cw cT CT C0
-  obtain ⟨C1, C0n, hA1⟩ := hM Cg cb Cw cT CT C0
-  obtain ⟨CB, CSt, hCB, hCSt, a₀, b₀, hA2⟩ := hA1 (C1 + C0n + 38)
-  obtain ⟨Cgs, CTs, hCg, hCT, s₀, t₀, hS2⟩ := hS Cg cb Cw cT CT C0
-  obtain ⟨n₀, m₀, hN2⟩ := hN Cg cb Cw cT CT C0
-  obtain ⟨p₀, q₀, hP2⟩ := hP Cg cb Cw cT CT C0
-  obtain ⟨h₀, j₀, hH2⟩ := hH Cg cb Cw cT CT C0
-  refine ⟨C1, C0n, C1 + C0n + 38, CB, CSt, Cgs, CTs, hCB, hCSt, hCg, hCT, le_refl _,
-    max a₀ (max s₀ (max n₀ (max p₀ h₀))), max b₀ (max t₀ (max m₀ (max q₀ j₀))),
-    fun C' Cl h1 h2 D large₂ X Y u u' h0 hs hT => ?_⟩
-  have hc : Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' := ⟨h0, hs, hT⟩
-  have e1' : a₀ ≤ C' := le_trans (by simp) h1
-  have e2' : b₀ ≤ Cl := le_trans (by simp) h2
-  have f1 : s₀ ≤ C' := le_trans (by simp) h1
-  have f2 : t₀ ≤ Cl := le_trans (by simp) h2
-  have i1 : n₀ ≤ C' := le_trans (by simp) h1
-  have i2 : m₀ ≤ Cl := le_trans (by simp) h2
-  have j1 : p₀ ≤ C' := le_trans (by simp) h1
-  have j2 : q₀ ≤ Cl := le_trans (by simp) h2
-  have k1 : h₀ ≤ C' := le_trans (by simp) h1
-  have k2 : j₀ ≤ Cl := le_trans (by simp) h2
-  obtain ⟨P, iP, B, Irat, Ire, hBk, νL, νB, ng, cSt, e1, hL, hBq, c1, c2, c3, c4, hV, hLoc, hGen, hMeas, hSum⟩ :=
-    hA2 C' Cl e1' e2' D large₂ X Y u u' hc
-  obtain ⟨hG, hdd, hNI, hFI⟩ := hBk
-  refine ⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, hL, hBq, hG, hdd, hNI, hFI,
-    ngSizes_of (hS2 C' Cl f1 f2 D large₂ X Y u u' hc) c1 c2 c3 c4, ?_, hMeas, hSum⟩
-  exact ⟨hC D X Y u u' hT νL νB ng, ampInput_of_vanish Y u u' νL νB ng hV,
-    hN2 C' Cl i1 i2 D large₂ X Y u u' hc νL νB ng, hP2 C' Cl j1 j2 D large₂ X Y u u' hc νL νB ng, hLoc, hGen,
-    hH2 C' Cl k1 k2 D large₂ X Y u u' hc νL νB ng⟩
-
-theorem rowNGC_of_merged (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hM : StepAnalyticConstants) (hE : CorankOneEquivalence)
-    (hN : StepNormals) (hP : StepPoints) (hO : StepNormOne) : RowNGC :=
-  counting_bound_of_joint_chain hR hCh
-    (ngCut2C_of_merged hM sizes_of_hypotheses (stepClass_of_equiv hE) hN hP (stepHeight_of_normOne hO))
-
 def TieOfCtx : Prop :=
   ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -169,37 +124,6 @@ def StepChoiceConstantsC : Prop :=
         (vR : Formalism.L2.SG.TermDef.Term D u u' F0 what₂ → ℝ) (Q : Formalism.L2.SG.PairVal.PairSys D u u' F0 what₂)
         (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf),
         ∃ Irat Ire : ℝ, MassDataAdmissible X Y u u' (bk X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq) Irat Ire
-
-def StepAnalyticC : Prop :=
-  ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C1 C0n : ℕ, ∀ A : ℕ, ∃ CB CSt : ℝ, 0 ≤ CB ∧ 0 ≤ CSt ∧
-    ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
-      Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' →
-      ∀ (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
-        (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ), MassDataTie X hb X0 ψ →
-      ∀ (sd C Th : ℝ) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
-        (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
-        (vR : Formalism.L2.SG.TermDef.Term D u u' F0 what₂ → ℝ) (Q : Formalism.L2.SG.PairVal.PairSys D u u' F0 what₂)
-        (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (Irat Ire : ℝ),
-        MassDataAdmissible X Y u u' (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq) Irat Ire →
-        AnaAt CSt CB C1 C0n A large₂ Y u u' (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq) Ire
-
-theorem merged_of (hTi : TieOfCtx) (hB : StepChoiceConstantsC) (hA : StepAnalyticC) : StepAnalyticConstants := by
-  intro Cg cb Cw cT CT C0
-  obtain ⟨C1, C0n, hA1⟩ := hA Cg cb Cw cT CT C0
-  refine ⟨C1, C0n, fun A => ?_⟩
-  obtain ⟨CB, CSt, hCB, hCSt, Ca, La, hA2⟩ := hA1 A
-  obtain ⟨Ct, Lt, hT⟩ := hTi Cg cb Cw cT CT C0
-  obtain ⟨Cb, Lb, hB1⟩ := hB Cg cb Cw cT CT C0
-  refine ⟨CB, CSt, hCB, hCSt, max Ca (max Ct Cb), max La (max Lt Lb),
-    fun C' Cl hC' hCl D large₂ X Y u u' hctx => ?_⟩
-  simp only [max_le_iff] at hC' hCl
-  obtain ⟨hb, X0, ψ, htie⟩ := hT C' Cl hC'.2.1 hCl.2.1 D large₂ X Y u u' hctx
-  obtain ⟨sd, C, Th, F0, what₂, vR, Q, i0, i0', νq, Irat, Ire, hok⟩ :=
-    hB1 C' Cl hC'.2.2 hCl.2.2 D large₂ X Y u u' hctx hb X0 ψ htie
-  have hok' := massDataValid_unscale (kapU_pos D) hok
-  exact ⟨_, inferInstance, bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq, Irat * kapU D, Ire * kapU D, hok',
-    hA2 C' Cl hC'.1 hCl.1 D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq _ _ hok'⟩
 
 end MassData
 
@@ -329,33 +253,6 @@ def StepThmBPinnedC : Prop :=
         PN.PointSumInput (Y.tO u u') (NOf2 Y u u' νL ν ng) (A * (D.R.rS + 1) ^ 2)
           (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
 
-theorem stepAnalyticC_of_steps (hE : StepPinExists) (hV : StepVanishPinned) (hL : StepLocGenPinnedC)
-    (hB : StepThmBPinnedC) : StepAnalyticC := by
-  intro Cg cb Cw cT CT C0
-  obtain ⟨C1, C0n, CSt, hCSt, Cl0, Ll0, hL1⟩ := hL Cg cb Cw cT CT C0
-  refine ⟨C1, C0n, fun A => ?_⟩
-  obtain ⟨CB, hCB, Cb0, Lb0, hB1⟩ := hB Cg cb Cw cT CT C0 A
-  obtain ⟨Ce0, Le0, hE1⟩ := hE Cg cb Cw cT CT C0
-  obtain ⟨Cv0, Lv0, hV1⟩ := hV Cg cb Cw cT CT C0
-  refine ⟨CB, CSt, hCB, hCSt, max Cl0 (max Cb0 (max Ce0 Cv0)), max Ll0 (max Lb0 (max Le0 Lv0)),
-    fun C' Cl hC' hCl D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok => ?_⟩
-  simp only [max_le_iff] at hC' hCl
-  obtain ⟨ν, hν⟩ := hE1 C' Cl hC'.2.2.1 hCl.2.2.1 D large₂ X Y u u' hctx
-  obtain ⟨s, ng, e1, hs1, hs0, hs2, he0, he2, hloc, hgen⟩ :=
-    hL1 C' Cl hC'.1 hCl.1 D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok ν hν
-  have hvan := hV1 C' Cl hC'.2.2.2 hCl.2.2.2 D large₂ X Y u u' hctx ν hν
-  have hpt := hB1 C' Cl hC'.2.1 hCl.2.1 D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire
-    hok ν hν (sc s ν) ng
-  refine ⟨sc s ν, ν, ng, large₂.sc.b ^ (CSt * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 * D.R.f), e1,
-    nuQOK_sc u u' s hs1 hs0 ν hν.1, hν.1, ?_, le_refl _, he0, he2,
-    ampVanish_sc Y u u' s hs0 ν hvan, hloc, hgen, measureInput_sc Y u u' s ν _ hs2 ng, hpt⟩
-  exact le_trans (sq_nonneg _) (hs2 1)
-
-theorem rowNGC_of_pinned (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hX : NondegenerateGramTuple) (hB : StepChoiceConstantsC)
-    (hE : StepPinExists)
-    (hV : StepVanishPinned) (hL : StepLocGenPinnedC) (hT : StepThmBPinnedC) (hQ : CorankOneEquivalence) (hN : StepNormals)
-    (hP : StepPoints) (hO : StepNormOne) : RowNGC := rowNGC_of_merged hR hCh (merged_of (tieOfCtx_of hX) hB (stepAnalyticC_of_steps hE hV hL hT)) hQ hN hP hO
-
 def StepTermVanish : Prop :=
   ∀ Cg cb Cw cT CT C0 : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
     ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -462,9 +359,5 @@ theorem stepLocGenPinnedC_of_loc (h : StepLocPinnedC) : StepLocGenPinnedC := by
   exact nPt_nonneg D.host.rdE hrd _ _ _
 
 end LocLe
-
-theorem rowNGC_of_loc (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hX : NondegenerateGramTuple) (hB : StepChoiceConstantsC) (hE : StepPinExists)
-    (hT0 : StepTermVanish) (hL : StepLocPinnedC) (hT : StepThmBPinnedC) (hQ : CorankOneEquivalence) (hN : StepNormals)
-    (hP : StepPoints) (hO : StepNormOne) : RowNGC := rowNGC_of_pinned hR hCh hX hB hE (stepVanishPinned_of_term hT0) (stepLocGenPinnedC_of_loc hL) hT hQ hN hP hO
 
 end Formalism.L2.SG.NGAnalytic

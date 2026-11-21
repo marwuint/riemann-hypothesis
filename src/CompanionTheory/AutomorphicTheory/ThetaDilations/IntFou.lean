@@ -1,7 +1,9 @@
 import CompanionTheory.AutomorphicTheory.ThetaDilations.ProdRho
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionModularityStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionAutomorphyStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaSeriesSummableStatement
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaSeriesSummable
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
@@ -37,7 +39,7 @@ theorem recip : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)]
   have hU := fun φ τ => (GlobalTheory.T.theta_function_modularity F ψ hψ ι M B ρ P hQ _ _ hO φ τ)
   have hW := GlobalTheory.T.theta_function_automorphy F lf hlf h1 ψ hψ ι M B ρ P hQ _ _ hO
   have hG := GlobalTheory.T.archimedean_gaussian_fourier F ι M B ρ P hQ
-  obtain ⟨φ₀, hφ₀, hne⟩ := (GlobalTheory.T.theta_series_summable F ι M B ρ P hQ _ _ hO τ hτ).2
+  obtain ⟨φ₀, hφ₀, hne⟩ := (_root_.GlobalTheory.CompanionTheory.SW.ThetaSum.theta_summable_and_ne_zero F ι M B ρ P hQ _ _ hO τ hτ).2
   have hρ : ∀ w, ((ρ w b : ℝ) : ℂ) ≠ 0 := fun w => by exact_mod_cast (map_ne_zero (ρ w)).2 hb
   have him : ∀ {σ : InfinitePlace F → ℂ}, (∀ w, 0 < (σ w).im) → ∀ w, 0 < (-(σ w)⁻¹).im := fun h w => by
     rw [Complex.neg_im, Complex.inv_im, neg_div, neg_neg]

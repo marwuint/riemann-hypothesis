@@ -366,11 +366,4 @@ theorem kappa_K1_hypothesis : KappaFirstKernelHypothesis := by
   exact ⟨B.gC.trans u, B.kappa * c, D1, jl, KR.norm_mul_eq_one ι B.kappa c _ hc8 hκu, hmem,
     by rw [h2, hc, smul_smul]; rfl⟩
 
-theorem K1_theta_inert_prime : FirstKernelThetaInert := by
-  intro D cc δ B hcc hδ a₀ b₀ c₀ ha hd lam hlam hcm hB l _ h5 hj ι
-  obtain ⟨g, e, hS, hidx, he, hmem, ht⟩ := kappa_K1_hypothesis D cc δ B hcc hδ a₀ b₀ c₀ ha hd lam hlam hcm hB l h5 hj ι
-  refine ⟨g, hS, hidx, fun g2 g3 ε s2 hN hg2 hg3 hD hε hth t N hN0 hlN hNt σ γ B' hF => ?_⟩
-  exact Formalism.L2.Th1.Top.local_kappa_shape_holds l h5 B.L ι g2 g3 ε s2 hN hg2 hg3 hD hε hth B.ω₀ hS.per hS.half D.what₂.Tau
-    (hOne B.L D.what₂.Tau) B.lamM _ _ g hS hidx e he.le B.thMM hmem ht t N hN0 hlN hNt σ γ B' hF
-
 end Formalism.L2.KerInert.Kap

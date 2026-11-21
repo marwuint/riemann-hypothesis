@@ -103,12 +103,6 @@ lemma hdList_one (l : List (Idx D j G.N →₀ ℕ)) : hdList hs l 1 = 0 ∨ hdL
       · exact Or.inr rfl
       · exact Or.inl rfl
 
-lemma hdList_append (l : List (Idx D j G.N →₀ ℕ)) (β : Idx D j G.N →₀ ℕ) (x : LamL hs) :
-    hdList hs l (hdL hs β x) = hdList hs (l ++ [β]) x := by
-  induction l with
-  | nil => rfl
-  | cons γ l ih => rw [List.cons_append, hdList_cons, hdList_cons, ih]
-
 def IntAllL (x : LamL hs) : Prop := ∀ ζ, 0 ≤ nval (hs ζ).T.V 1 (evL hs ζ x)
 
 lemma intAll_zero : IntAllL hs 0 := fun ζ => by rw [map_zero, nval_zero]; exact le_top
@@ -165,9 +159,6 @@ def RGL : Subring (LamL hs) where
 
 lemma mem_RGL {r : LamL hs} : r ∈ RGL hs ↔ ∀ l, IntAllL hs (hdList hs l r) := Iff.rfl
 
-lemma RGL_hd (β : Idx D j G.N →₀ ℕ) {r : LamL hs} (hr : r ∈ RGL hs) : hdL hs β r ∈ RGL hs := fun l => by
-  rw [hdList_append]; exact hr _
-
 lemma RGL_int {r : LamL hs} (hr : r ∈ RGL hs) (ζ : PtsG G la) : 0 ≤ nval (hs ζ).T.V 1 (evL hs ζ r) := hr [] ζ
 
 lemma mem_RGL_of_stable {S : Set (LamL hs)} (hS : ∀ β, ∀ s ∈ S, hdL hs β s ∈ S) (hI : ∀ s ∈ S, IntAllL hs s)
@@ -182,29 +173,10 @@ lemma mem_RGL_of_stable {S : Set (LamL hs)} (hS : ∀ β, ∀ s ∈ S, hdL hs β
 def eFormL (F : X.Forms) : LamL hs :=
   ιL hs (algebraMap (Rp (xplus X E hM) la G.N) (Lc (xplus X E hM) la G.w) (emb (xplus X E hM) la G.N F))
 
-lemma eFormL_hd (F : X.Forms) {β : Idx D j G.N →₀ ℕ} (hβ : β ≠ 0) : hdL hs β (eFormL hs F) = 0 := by
-  unfold eFormL
-  rw [hdL_ι]
-  have : hasse (xplus X E hM) la G.w β
-      (algebraMap (Rp (xplus X E hM) la G.N) (Lc (xplus X E hM) la G.w) (emb (xplus X E hM) la G.N F)) =
-      algebraMap (Rp (xplus X E hM) la G.N) (Lc (xplus X E hM) la G.w)
-        (hasseRp (xplus X E hM) la G.N β (emb (xplus X E hM) la G.N F)) :=
-    Tay.loc_co (Submonoid.powers (sec (xplus X E hM) la G.w 0)) (Lc (xplus X E hM) la G.w)
-      (tayRp (xplus X E hM) la G.N) (tayRp_isTay _ _ _) β _
-  have h0 : hasseRp (xplus X E hM) la G.N β (emb (xplus X E hM) la G.N F) = 0 := hasseRp_emb _ _ hβ _
-  rw [this, h0, map_zero, map_zero]
-
 lemma evL_eFormL (ζ : PtsG G la) (F : X.Forms) :
     evL hs ζ (eFormL hs F) = (hs ζ).ev (emb (xplus X E hM) la G.N F) := by
   unfold eFormL
   rw [evL_ι, liftC_alg]
-
-lemma eFormL_int {w : WeightFamilies.Wt D j} (F : B.Cusp j w) (hF : ∀ ζ, 0 ≤ E.vAt' la (y ζ) (X.inc w F)) :
-    IntAllL hs (eFormL hs (X.inc w F)) := fun ζ => by
-  rw [evL_eFormL, ← e_mul_nval (hs ζ).ep_pos]
-  have h := hF ζ
-  rw [(hs ζ).hv w F] at h
-  exact EReal.mul_nonneg (by exact_mod_cast Nat.zero_le _) h
 
 def ιW : Lw (xplus X E hM) la G.w →+* LamL hs := ιL hs
 

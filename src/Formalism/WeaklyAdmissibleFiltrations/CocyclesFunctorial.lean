@@ -6,38 +6,6 @@ namespace Formalism.WeaklyAdmissibleFiltrations
 
 open Module TensorProduct
 
-def THWindow : Prop :=
-  ∀ (LL : Type) [Field LL] (D : Type) [AddCommGroup D] [Module LL D] [FiniteDimensional LL D]
-    (n : ℕ) (Emb : Type) [Fintype Emb] (F : FilPhi LL D n Emb) (D' : Submodule LL D) (l h : ℤ),
-    l ≤ F.lo → F.hi ≤ h → F.tHw D' l h = F.tH D'
-
-def DimSum : Prop :=
-  ∀ (LL : Type) [Field LL] (D : Type) [AddCommGroup D] [Module LL D] [FiniteDimensional LL D]
-    (n : ℕ) (Emb : Type) [Fintype Emb] (F : FilPhi LL D n Emb) (D' : Submodule LL D) (τ : Emb),
-    ∑ a ∈ Finset.Ico F.lo F.hi, F.mult D' τ a = (finrank LL ↥(F.Dl (F.letter τ) ⊓ D') : ℤ)
-
-def JumpsIcc : Prop :=
-  ∀ (LL : Type) [Field LL] (D : Type) [AddCommGroup D] [Module LL D]
-    (n : ℕ) (Emb : Type) [Fintype Emb] (F : FilPhi LL D n Emb) (τ : Emb) (l h : ℤ),
-    F.JumpsIn τ (Set.Icc l h) ↔ F.Fil τ l = F.Dl (F.letter τ) ∧ F.Fil τ (h + 1) = ⊥
-
-def SubTopBot : Prop :=
-  ∀ (LL : Type) [Field LL] (D : Type) [AddCommGroup D] [Module LL D]
-    (n : ℕ) (Emb : Type) [Fintype Emb] (F : FilPhi LL D n Emb), F.IsSub ⊤ ∧ F.IsSub ⊥
-
-def RankOneWA : Prop :=
-  ∀ (LL : Type) [Field LL] (D : Type) [AddCommGroup D] [Module LL D] [FiniteDimensional LL D]
-    (n : ℕ) [NeZero n] (Emb : Type) [Fintype Emb] (F : FilPhi LL D n Emb)
-    (v : AddValuation LL (WithTop ℚ)), (∀ i, finrank LL ↥(F.Dl i) = 1) →
-    (F.WeaklyAdmissible v ↔
-      (((F.tH ⊤ : ℚ)) : WithTop ℚ) = F.e • v (LinearMap.det (F.φ : D →ₗ[LL] D)))
-
-def ExWA : Prop :=
-  ∀ (LL : Type) [Field LL] (v : AddValuation LL (WithTop ℚ)) (l : LL), v l = 1 →
-    ∀ (n : ℕ) [NeZero n], ∃ (D : Type) (_ : AddCommGroup D) (_ : Module LL D)
-      (_ : FiniteDimensional LL D) (F F' : FilPhi LL D n (ZMod n)),
-      F.WeaklyAdmissible v ∧ (∀ τ, F.IsJump τ (-1)) ∧ ¬ F'.WeaklyAdmissible v
-
 def CobF : Prop :=
   ∀ (G : Type) [Group G] (Qp K₀ K : Type) [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]

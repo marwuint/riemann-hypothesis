@@ -69,18 +69,6 @@ theorem closGen_le_span (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (h
 
 end Gen
 
-section Phi
-
-variable {ε : Fin n → Bool}
-  {H₁ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
-  {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)} {D₁ : Submodule ℂ H₁}
-  {E₁ : Fin n → Fin n → Module.End ℂ D₁} {V₁ : Submodule ℂ D₁}
-  {H₂ : Type*} [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
-  {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)} {D₂ : Submodule ℂ H₂}
-  {E₂ : Fin n → Fin n → Module.End ℂ D₂} {V₂ : Submodule ℂ D₂}
-
-end Phi
-
 end KTypeIsomorphism
 
 variable {ε : Fin n → Bool} {lam : Fin n → ℝ}

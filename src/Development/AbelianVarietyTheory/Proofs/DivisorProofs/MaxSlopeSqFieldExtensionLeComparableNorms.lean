@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
 import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
-import Formalism.MeanHeightDescent.CovolumeFullAssemblyWeighted
+import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SlopeSqSubLeSlopeSqSpan
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaxSlopeExtendedLatticeGaloisLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaxSlopeExtendedLatticeGaloisLe
+
 open NumberField GlobalTheory.AllWt
 
 noncomputable section
@@ -184,7 +185,7 @@ theorem slopeMax_sq_span_le : ∀ (K K' V V' : Type) [Field K] [NumberField K] [
         exact Real.exp_le_exp.2 ((neg_le_abs _).trans h2)
       · show 0 ≤ N' _ x
         rw [← (hG _).2]; exact Real.sqrt_nonneg _)
-  have h2 := GlobalTheory.T.maxSlope_extendedLattice_galois_le K F V (Fin n → F) N N₂ ψ L hN hN₂ hc
+  have h2 := _root_.GlobalTheory.SlopeGal.slopeMax_sq_span_le K F V (Fin n → F) N N₂ ψ L hN hN₂ hc
     (fun m e he => coordExt_li F b m _ (hli m e he)) hL h0 (fun σ x => by
       show N₂ σ (φ (ι x)) = _
       rw [hφ]

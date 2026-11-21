@@ -1,13 +1,15 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.TwistStripLimits.LimitOfFiniteDiscrete
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.TensorOperatorTrees.TreeLemmas
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitBlockTypesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitTwistBoundStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitBlockTypes
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.TwistStripLimits.BlockTypes
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitTwistBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitNodeEmbeddingStatement
 
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.LimG
 
 theorem lim5 : PositivityTheory.Rg.BcB.SpectralAccumulation.FinDisc → PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5 := fun hFD =>
-  PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5.limit_of_finite_discrete hFD GlobalTheory.T.limit_block_types GlobalTheory.T.limit_twist_bound GlobalTheory.T.limit_node_embedding
+  PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5.limit_of_finite_discrete hFD _root_.GlobalTheory.CompanionTheory.LimV.BlockTy.blockTypes _root_.GlobalTheory.CompanionTheory.TotalTrace.twBound GlobalTheory.T.limit_node_embedding
     PositivityTheory.Rg.BcB.SpectralAccumulation.Trees.treeLemmas.2.2.1 PositivityTheory.Rg.BcB.SpectralAccumulation.Trees.treeLemmas.2.1
     PositivityTheory.Rg.BcB.SpectralAccumulation.Trees.treeLemmas.1
 

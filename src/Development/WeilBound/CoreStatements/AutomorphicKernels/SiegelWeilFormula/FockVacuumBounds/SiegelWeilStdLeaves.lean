@@ -57,28 +57,6 @@ theorem Atop.siegelWeilStd_of (hA : AbsThm) (hT : TAll) (hTC : ThetaCoef) (hLo :
   have hLe := Atop.mainLeOf hRD hLD hVK hPK hEq hSt hVA
   exact Atop.fieldOf hBL hSK hLt hLe
 
-theorem Atop.siegelWeilStd_of' (hT : TAll) (hTC : ThetaCoef) (hLo : LocOpEx) (hLI : LocInst)
-    (hGS : GSplit) (hGI : GIinv) (hGD : GIdil) (hKP : KFinPoly) (hPK : PolyKFin) (hU : Unfold)
-    (hWL : KWhit.WhitLevi) (hWE : WhitEq) (hLD : LDEx) (hVK : VacK) (hSt : Step) : SiegelWeilStd :=
-  Atop.siegelWeilStd_of AbsSt.absThm hT hTC hLo hLI hGS hGI hGD hKP hPK hU (KWhit.iwaRed hT hWL) hWE AbsSt.vacuum_generates_polynomials hLD
-    hVK hSt
-
-theorem Atop.siegelWeilStd_leaves (hT : TAll) (hTC : ThetaCoef) (hLo : LocOpEx) (hLI : LocInst) (hGS : GSplit)
-    (hGI : GIinv) (hGD : GIdil) (hKP : KFinPoly) (hPK : PolyKFin) (hU : Unfold) (hLD : LDEx) (hVK : VacK) (hSt : Step)
-    (hRel : KWhit.RelEx) (hHD : KWhit.HeightDict) (hMD : KWhit.MeasDict) (hTD : KWhit.ThetaDict)
-    (hLF2 : Gen.LocFin2) (hUW : Gen.UnrWhit) (hRW : Gen.RealWhit)
-    (hLFX : Gen.LocFinX) (hUWX : Gen.UnrWhitX) (hRWE : Gen.RealWhitEq) (hLO : Gen.LOrd) (hDE : Gen.DensEq)
-    (hFX : Gen.FactorX) (hSD : PositivityTheory.PfSWUS.HMass.SiegelDensitiesLowA) :
-    SiegelWeilStd := by
-  have hD : KWhit.GenDictX := KWhit.dictAsmX KWhit.cellFormula hRel hHD hMD hTD
-  have hWGL : Gen.WhitGenLt := Gen.whitGenLtOf hLF2 hUW hRW hFX hSD
-  have hWGE : Gen.WhitGenEq := Gen.whitGenEqOf hLFX hUWX hRWE hFX hLO hDE
-  have hW : WhitK := KWhit.whitK_of_X KWhit.iwaRedC KWhit.pureSpan KWhit.linRedC KWhit.coreX hD KWhit.kFinK hT
-    kfour.auxEx Krd.rdEx KFock.fockMem hKP Khead.secK hU hWGL hTC kfour.lamBd hPK
-  have hWE : WhitEq := KWhit.whitEq_of_X KWhit.iwaRedC KWhit.pureSpan KWhit.linRedC KWhit.coreX hD KWhit.kFinK hT
-    kfour.auxEx Krd.rdEx KFock.fockMem hKP Khead.secK hU Aeis.eisWk hWGE hTC kfour.lamBd hPK
-  exact Atop.siegelWeilStd_of AbsSt.absThm hT hTC hLo hLI hGS hGI hGD hKP hPK hU hW hWE AbsSt.vacuum_generates_polynomials hLD hVK hSt
-
 end PositivityTheory.SiegelWeilFormula
 
 end

@@ -7,7 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvFilD
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProductMapTensorAinfToBcrisWachInclusionConstantStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachInclusionLayerIoCommutesFrobeniusGaloisStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PolynomialTeichmullerRootTaylorModFilStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBanachModelTensorAcrisStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBanachModelTensorAcris
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMulMemLatIff
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodOfComplete
 
 noncomputable section
 
@@ -92,7 +94,7 @@ set_option maxHeartbeats 1000000 in
 theorem exists_eval : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∀ β : RA LL →+* ↥LL.1 ⊗[ℚ_[l]] P.R.B, IsBeta AI β → ∃ J, IsEval I β J := by
   intro l _ P AI T K s LL hG Γ R I hW β hβ
   obtain ⟨N, _, _, c, b, κ, φ, γ, t, ⟨hκb, hφb, hκφ, hγb, hκγ, hκt⟩, hc, hb, hbo, hκc, ⟨hφ, hφc⟩, hγ, hs, hlog, hcl⟩ :=
-    GlobalTheory.T.exists_banachModel_tensor_Acris l P AI T LL β hβ
+    _root_.GlobalTheory.HWL.BanachModel.exists_banach_model l P AI T LL β hβ
   haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨by
     haveI := (P.PD K).finK₀
     exact Module.finrank_pos.ne'⟩

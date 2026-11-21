@@ -5,7 +5,10 @@ import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetOfGLintDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryMemIntegralUnitaryDoubleCosetOfGLnDoubleC
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawa
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UniformizerPowerTorusMemNormalUnitarySubgroupStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UniformizerPowerTorusMemNormalUnitarySubgroup
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FSatakeB
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvMemDoubleCosetAndComm
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
 open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
@@ -108,7 +111,7 @@ theorem diag_mem : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative 
     rw [hvrev, WithZero.log_inv]
   obtain ⟨s, hs, hs'⟩ := Formalism.UG.P.fSatake_diag_exists (σ := σ) (fun i => ϖ ^ c i) (fun i => by
     rw [map_zpow₀, hσϖ, hc, ← zpow_add₀ h0, add_neg_cancel, zpow_zero])
-  have hsN : s ∈ N := GlobalTheory.T.uniformizerPowerTorus_mem_normal_unitarySubgroup L ϖ σ q n hU N hN hK hu c hc s hs
+  have hsN : s ∈ N := _root_.GlobalTheory.torus_mem_normal L ϖ σ q n hU N hN hK hu c hc s hs
   have hvpow : ∀ i, Valued.v (ϖ ^ c i) = Valued.v (T i i) := by
     intro i
     rw [map_zpow₀, hϖ', ← WithZero.exp_zsmul, ← WithZero.exp_log (hv0 i)]

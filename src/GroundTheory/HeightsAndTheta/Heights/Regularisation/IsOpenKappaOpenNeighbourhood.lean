@@ -36,10 +36,6 @@ def errorWithLinear (C t : ℝ) : ℝ := errE C t + C * t
 
 variable {D : ℕ} {X : Type*} [TopologicalSpace X]
 
-def DdcGeOn (A : FinHolAtlas D X) (V : Set X) (f : X → ℝ) (P : LocPot X) (c : ℝ) : Prop :=
-  ∀ x ∈ V, ∀ k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (V ∩ P.U x), ∀ w : Fin D → ℂ,
-    c * levi (P.φ x ∘ (A.chart k).symm) y w ≤ levi (f ∘ (A.chart k).symm) y w
-
 def ThGe (A : FinHolAtlas D X) (θ : LocPot X) (f : X → ℝ) (om : LocPot X) (c : ℝ) : Prop :=
   ∀ x k, ∀ y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (θ.U x ∩ om.U x), ∀ w : Fin D → ℂ,
     c * levi (om.φ x ∘ (A.chart k).symm) y w ≤
@@ -89,26 +85,6 @@ def V'' (j : Fin R.n) : Set X := (R.ψ j).source ∩ R.ψ j ⁻¹' R.W'' j
 
 def u (φ : X → ℝ) (j : Fin R.n) (z : Fin D → ℂ) : ℝ := R.q j z + φ ((R.ψ j).symm z)
 
-def phChart (φ : X → ℝ) (ρ : Mollifier D) (t : ℝ) (j : Fin R.n) (x : X) : ℝ :=
-  molli ρ t (R.u φ j) (R.ψ j x) - R.q j (R.ψ j x)
-
-def IsCutoffFamily (C : ℝ) (η : Fin R.n → X → ℝ) : Prop :=
-  ∀ j, A.SmoothOn (R.V' j) (η j) ∧ (∀ x ∈ R.V' j, -1 ≤ η j x ∧ η j x ≤ 0) ∧
-    (∀ x ∈ R.V'' j, η j x = 0) ∧
-    (∃ K : Set (Fin D → ℂ), IsCompact K ∧ K ⊆ R.W' j ∧ ∀ x ∈ R.V' j, R.ψ j x ∉ K → η j x = -1) ∧
-    DdcGeOn A (R.V' j) (η j) R.om (-C)
-
-def regArg (φ : X → ℝ) (ρ : Mollifier D) (η : Fin R.n → X → ℝ) (C t : ℝ) (j : Fin R.n)
-    (x : X) : ℝ :=
-  R.phChart φ ρ t j x + 4 * errorWithLinear C t * η j x
-
-open Classical in
-
-def glued (φ : X → ℝ) (ρ : Mollifier D) (η : Fin R.n → X → ℝ) (C t : ℝ) (x : X) : ℝ :=
-  haveI : Nonempty (Fin R.n) := ⟨(R.cover x).choose⟩
-  regMax (errorWithLinear C t) (fun j => if x ∈ R.V' j then R.regArg φ ρ η C t j x
-      else R.regArg φ ρ η C t (R.cover x).choose x - errorWithLinear C t) + errorWithLinear C t / 2
-
 end RegCharts
 
 structure RegChartData (A : FinHolAtlas D X) extends RegCharts A where
@@ -145,59 +121,11 @@ structure BoundedThPsh {A : FinHolAtlas D X} (R : RegCharts A) where
   bdd : ∃ B, ∀ x, |φ x| ≤ B
   psh : ∀ j, ReciprocityTheory.AnForm.A.IsPsh (R.W j) (R.u φ j)
 
-def ChartComparison.Statement : Prop :=
-  ∀ {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
-    (R : RegChartData A) (ρ : Mollifier D), ∃ C t₀ : ℝ, 0 < t₀ ∧
-      ∀ t, 0 < t → t < t₀ → ∀ j k (x : X), x ∈ R.V' j → x ∈ R.V' k →
-        |R.phChart R.φ ρ t j x - R.phChart R.φ ρ t k x| ≤ errorWithLinear C t
-
-def Cutoffs.Statement : Prop :=
-  ∀ {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
-    (R : RegCharts A), ∃ (C : ℝ) (η : Fin R.n → X → ℝ), R.IsCutoffFamily C η
-
-def GlueRegularised.Statement : Prop :=
-  ∀ {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
-    (R : RegChartData A) (ρ : Mollifier D) (Cη : ℝ) (η : Fin R.n → X → ℝ),
-    R.IsCutoffFamily Cη η → ∃ C t₀ : ℝ, 0 < t₀ ∧ ∀ t, 0 < t → t < t₀ →
-      A.Smooth (R.glued R.φ ρ η C t) ∧
-        ThGe A R.θ (R.glued R.φ ρ η C t) R.om (-(4 * Cη * errorWithLinear C t))
-
-def LemmaS4'.Statement : Prop :=
-  ∀ {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (D : ℕ) (A : FinHolAtlas D X)
-    (R : RegChartData A), ∃ C ℓ₀ : ℝ, ∀ t, 0 < t → ℓ₀ ≤ ell t → ∃ φt : X → ℝ,
-      A.Smooth φt ∧ (∀ x ∈ R.Yo, R.φ x ≤ φt x) ∧ (∀ x, φt x ≤ C) ∧
-      (∀ x, -(C * Real.log (ell t)) ≤ φt x) ∧ ThGe A R.θ φt R.om (-errE C t) ∧
-      (∀ x ∈ R.Yo, R.r x ≤ ell t → φt x ≤ R.φ x + t ^ (1 / 3 : ℝ) + errE C t) ∧
-      (∀ x ∈ R.Yo, φt x ≤ R.φ x + t ^ (1 / 3 : ℝ) + errE C t * R.r x)
-
-def BoundedRegularisationLemma.Statement : Prop :=
-  ∀ {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X]
-    [BorelSpace X] (D : ℕ) (A : FinHolAtlas D X) (R : RegCharts A) (P : BoundedThPsh R),
-    ∃ (C t₀ : ℝ) (φt : ℝ → X → ℝ), 0 < t₀ ∧
-      (∀ t, 0 < t → t < t₀ → A.Smooth (φt t) ∧ (∀ x, P.φ x ≤ φt t x ∧ φt t x ≤ C) ∧
-        ThGe A R.θ (φt t) R.om (-(C / ell t)) ∧
-        Integrable (fun x => φt t x - P.φ x) (maMeasure A (fun _ : Fin D => R.om))) ∧
-      Tendsto (fun t => ∫ x, |φt t x - P.φ x| ∂(maMeasure A (fun _ : Fin D => R.om)))
-        (𝓝[>] 0) (𝓝 0) ∧
-      ∀ x, ContinuousAt P.φ x → Tendsto (fun t => φt t x) (𝓝[>] 0) (𝓝 (P.φ x))
-
 def siegel (g : ℕ) : Set (Matrix (Fin g) (Fin g) ℂ) :=
   {Z | Zᵀ = Z ∧ (Z.map Complex.im).PosDef}
 
-def openPart (n a : ℕ) : Set (Fin n → ℂ) :=
-  {z | z ∈ ball (0 : Fin n → ℂ) 1 ∧ ∀ i : Fin n, (i : ℕ) < a → z i ≠ 0}
-
 def coverSet (n a : ℕ) : Set (Fin n → ℂ) :=
   {w | ∀ i : Fin n, ((i : ℕ) < a → (w i).re < 0) ∧ (a ≤ (i : ℕ) → ‖w i‖ < 1)}
-
-def expCov {n : ℕ} (a : ℕ) (w : Fin n → ℂ) : Fin n → ℂ :=
-  fun i => if (i : ℕ) < a then Complex.exp (w i) else w i
-
-def logCov {n : ℕ} (a : ℕ) (z : Fin n → ℂ) : Fin n → ℂ :=
-  fun i => if (i : ℕ) < a then Complex.log (z i) else z i
-
-def rPer {n : ℕ} (a : ℕ) (z : Fin n → ℂ) : ℝ :=
-  Real.exp 1 + ∑ i ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < a), Real.log (‖z i‖ ^ 2)⁻¹
 
 structure PeriodPolydisc (n a g : ℕ) where
   le : a ≤ n
@@ -214,77 +142,7 @@ structure PeriodPolydisc (n a g : ℕ) where
 
 namespace PeriodPolydisc
 
-variable {n a g : ℕ} (P : PeriodPolydisc n a g)
-
-def Bc (i : Fin n) : Matrix (Fin g) (Fin g) ℂ := (P.B i).map (fun m : ℤ => (m : ℂ))
-
-def Br (i : Fin n) : Matrix (Fin g) (Fin g) ℝ := (P.B i).map (fun m : ℤ => (m : ℝ))
-
-def tau0Cov (w : Fin n → ℂ) : Matrix (Fin g) (Fin g) ℂ :=
-  P.τ w - ∑ i, (w i / (2 * Real.pi * Complex.I)) • P.Bc i
-
-def Hmat (z : Fin n → ℂ) : Matrix (Fin g) (Fin g) ℝ :=
-  ((P.τ (logCov a z)).map Complex.im)⁻¹
-
 end PeriodPolydisc
-
-def ExpExtension.Statement : Prop :=
-  ∀ (n a g : ℕ) (P : PeriodPolydisc n a g) (v : Fin g → ℤ),
-    (∀ i, 0 ≤ v ⬝ᵥ (P.B i *ᵥ v)) ∧
-    ∃ u : (Fin n → ℂ) → ℂ, AnalyticOnNhd ℂ u (ball 0 1) ∧ (∀ z ∈ ball (0 : Fin n → ℂ) 1, u z ≠ 0) ∧
-      ∀ w ∈ coverSet n a,
-        Complex.exp (2 * Real.pi * Complex.I *
-            ((fun k => (v k : ℂ)) ⬝ᵥ (P.τ w *ᵥ fun k => (v k : ℂ)))) =
-          (∏ i, expCov a w i ^ (v ⬝ᵥ (P.B i *ᵥ v)).toNat) * u (expCov a w)
-
-def Tau0Holomorphic.Statement : Prop :=
-  ∀ (n a g : ℕ) (P : PeriodPolydisc n a g), ∃ τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ,
-    (∀ p q, AnalyticOnNhd ℂ (fun z => τ₀ z p q) (ball 0 1)) ∧
-    (∀ w ∈ coverSet n a, τ₀ (expCov a w) = P.tau0Cov w) ∧ ∀ i, (P.Br i).PosSemidef
-
-def KernelPositive.Statement : Prop :=
-  ∀ (n a g : ℕ) (P : PeriodPolydisc n a g) (τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ),
-    (∀ p q, AnalyticOnNhd ℂ (fun z => τ₀ z p q) (ball 0 1)) →
-    (∀ w ∈ coverSet n a, τ₀ (expCov a w) = P.tau0Cov w) →
-    ∀ v : Fin g → ℝ, v ≠ 0 → (∀ i, P.Br i *ᵥ v = 0) →
-      ∀ z ∈ ball (0 : Fin n → ℂ) 1, 0 < v ⬝ᵥ ((τ₀ z).map Complex.im *ᵥ v)
-
-def ImTauBounds.Statement : Prop :=
-  ∀ (n a g : ℕ) (P : PeriodPolydisc n a g), ∃ ρ₀ c C : ℝ, 0 < ρ₀ ∧ ρ₀ < 1 ∧ 0 < c ∧
-    ∀ w ∈ coverSet n a, expCov a w ∈ closedBall (0 : Fin n → ℂ) ρ₀ →
-      ((P.τ w).map Complex.im - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef ∧
-      ((C * rPer a (expCov a w)) • (1 : Matrix (Fin g) (Fin g) ℝ) -
-        (P.τ w).map Complex.im).PosSemidef
-
-def HodgeDerivative.Statement : Prop :=
-  ∀ (n a g : ℕ) (P : PeriodPolydisc n a g), ∃ ρ₀ C : ℝ, 0 < ρ₀ ∧ ρ₀ < 1 ∧
-    (∀ z ∈ openPart n a ∩ closedBall 0 ρ₀, ∀ p q : Fin g,
-      ‖fderiv ℝ (fun y => P.Hmat y p q) z‖ ≤
-          C * (1 + ∑ i ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < a), ‖z i‖⁻¹) ∧
-        ‖fderiv ℝ (fun y => P.Hmat y p q) z‖ ≤ C * Real.exp (rPer a z / 2)) ∧
-    ∀ (m : ℕ) (F : (Fin n → ℂ) → Matrix (Fin g) (Fin m) ℂ),
-      (∀ p q, AnalyticOnNhd ℂ (fun z => F z p q) (ball 0 1)) →
-      (∀ z ∈ ball (0 : Fin n → ℂ) 1, (F z).rank = m) →
-      ∃ C' : ℝ, ∀ z ∈ openPart n a ∩ closedBall 0 ρ₀,
-        ‖fderiv ℝ (fun y => Real.log
-            ((F y)ᴴ * (P.Hmat y).map (fun x : ℝ => (x : ℂ)) * F y).det.re) z‖ ≤
-          C' * rPer a z ^ C' * Real.exp (rPer a z / 2)
-
-theorem polydisc_hyps_inhabited (D : ℕ) :
-    IsOpen (Set.univ : Set (Fin D → ℂ)) ∧
-      ReciprocityTheory.AnForm.A.IsPsh Set.univ (fun z : Fin D → ℂ => ∑ j, ‖z j‖ ^ 2) ∧
-      closedBall (0 : Fin D → ℂ) (2 * 1) ⊆ Set.univ ∧ (1 : ℝ) ≤ 1 ∧ (0 : ℝ) < 1 ∧ (1 : ℝ) * 1 < 2 :=
-  ⟨isOpen_univ, (ReciprocityTheory.AnForm.A.isPshInhabit_thm D).1, Set.subset_univ _, le_rfl, one_pos,
-    by norm_num⟩
-
-theorem mollifier_bounded_inhabited (D : ℕ) : ∃ (ρ : Mollifier D) (B : ℝ), ∀ w, ρ.toFun w ≤ B := by
-  obtain ⟨ρ⟩ := ReciprocityTheory.AnForm.A.mollifierInhabit_thm D
-  have hc : HasCompactSupport ρ.toFun := by
-    refine HasCompactSupport.intro (isCompact_closedBall (0 : Fin D → ℂ) 1) fun x hx => ?_
-    by_contra h
-    exact hx (ball_subset_closedBall (ρ.support_subset (Function.mem_support.2 h)))
-  obtain ⟨B, hB⟩ := ρ.contDiff.continuous.bddAbove_range_of_hasCompactSupport hc
-  exact ⟨ρ, B, fun w => hB ⟨w, rfl⟩⟩
 
 theorem im_mul_inv_two_pi_I (x : ℝ) (w : ℂ) :
     ((x : ℂ) * (2 * Real.pi * Complex.I)⁻¹ * w).im = -x * w.re / (2 * Real.pi) := by
@@ -334,48 +192,6 @@ def diagPeriod (g : ℕ) (d : Fin g → ℕ) : PeriodPolydisc 1 1 g where
       ring
     · simp
 
-def periodGenusOne : PeriodPolydisc 1 1 1 := diagPeriod 1 ![1]
-
-def periodGenusTwo : PeriodPolydisc 1 1 2 := diagPeriod 2 ![1, 0]
-
-theorem periodGenusOne_B : periodGenusOne.B 0 = 1 := by
-  ext p q; fin_cases p; fin_cases q; rfl
-
-theorem periodGenusTwo_B : periodGenusTwo.B 0 = diagonal ![1, 0] := by
-  ext p q; fin_cases p <;> fin_cases q <;> rfl
-
-theorem diagPeriod_tau0Cov (g : ℕ) (d : Fin g → ℕ) (w : Fin 1 → ℂ) :
-    (diagPeriod g d).tau0Cov w = diagonal (fun _ => Complex.I) := by
-  ext p q
-  simp only [PeriodPolydisc.tau0Cov, PeriodPolydisc.Bc, diagPeriod, Fin.sum_univ_one,
-    Matrix.sub_apply, Matrix.smul_apply, Matrix.map_apply, diagonal_apply]
-  split_ifs
-  · push_cast
-    ring
-  · simp
-
-theorem kernelPositive_hyps_inhabited :
-    ∃ τ₀ : (Fin 1 → ℂ) → Matrix (Fin 2) (Fin 2) ℂ,
-      (∀ p q, AnalyticOnNhd ℂ (fun z => τ₀ z p q) (ball 0 1)) ∧
-      (∀ w ∈ coverSet 1 1, τ₀ (expCov 1 w) = periodGenusTwo.tau0Cov w) ∧
-      ∃ v : Fin 2 → ℝ, v ≠ 0 ∧ ∀ i, periodGenusTwo.Br i *ᵥ v = 0 := by
-  refine ⟨fun _ => diagonal (fun _ => Complex.I), fun p q => fun _ _ => analyticAt_const,
-    fun w _ => (diagPeriod_tau0Cov 2 ![1, 0] w).symm, ![0, 1], ?_, ?_⟩
-  · intro h
-    have := congrFun h 1
-    simp at this
-  · intro i
-    have hi0 : i = 0 := Subsingleton.elim _ _
-    subst hi0
-    ext k
-    fin_cases k <;> simp [PeriodPolydisc.Br, periodGenusTwo, diagPeriod, mulVec, dotProduct,
-      diagonal_apply]
-
-theorem hodgeFrame_hyps_inhabited :
-    (∀ p q, AnalyticOnNhd ℂ (fun _ : Fin 1 → ℂ => (1 : Matrix (Fin 1) (Fin 1) ℂ) p q) (ball 0 1)) ∧
-      (1 : Matrix (Fin 1) (Fin 1) ℂ).rank = 1 :=
-  ⟨fun _ _ _ _ => analyticAt_const, by simp [rank_one]⟩
-
 section ProjectiveLine
 
 open ReciprocityTheory.AnForm.M
@@ -392,27 +208,6 @@ def crdj (j : Fin 2) : OnePoint ℂ → ℂ := ![crd0, crd1] j
 
 theorem projLine_chart_apply (j : Fin 2) (x : OnePoint ℂ) : p1.chart j x = fun _ => crdj j x := by
   fin_cases j <;> rfl
-
-theorem crdj_symm_self (j : Fin 2) (y : Fin 1 → ℂ) : crdj j ((p1.chart j).symm y) = y 0 := by
-  fin_cases j
-  · rfl
-  · exact infiniteCoord_projLineChart1_symm y
-
-theorem crdj_symm_other (j k : Fin 2) (hjk : j ≠ k) (y : Fin 1 → ℂ) :
-    crdj j ((p1.chart k).symm y) = (y 0)⁻¹ := by
-  fin_cases j <;> fin_cases k
-  · exact (hjk rfl).elim
-  · exact finiteCoord_projLineChart1_symm y
-  · rfl
-  · exact (hjk rfl).elim
-
-theorem symm_other_ne (j k : Fin 2) (hjk : j ≠ k) (y : Fin 1 → ℂ)
-    (h : (p1.chart k).symm y ∈ (p1.chart j).source) : y 0 ≠ 0 := by
-  fin_cases j <;> fin_cases k
-  · exact (hjk rfl).elim
-  · exact projLineChart1_symm_mem_range.1 h
-  · exact projLineChart0_symm_ne_zero.1 h
-  · exact (hjk rfl).elim
 
 theorem levi_fsPot (x : OnePoint ℂ) (k : Fin 2) (y : Fin 1 → ℂ)
     (hy : y ∈ (p1.chart k).target ∩ (p1.chart k).symm ⁻¹' fsPot.U x) (v : Fin 1 → ℂ) :
@@ -453,100 +248,6 @@ theorem projLine_fubiniStudy_isPosPot : IsPosPot p1 fsPot := by
   have h0 : v 0 ≠ 0 := fun h => hv (funext fun i => by fin_cases i; exact h)
   have : 0 < ‖v 0‖ := norm_pos_iff.2 h0
   positivity
-
-def cutG (s : ℝ) : ℝ := -Real.smoothTransition ((s - 25 / 16) * (64 / 21))
-
-theorem cutG_contDiff : ContDiff ℝ ∞ cutG :=
-  (Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).mul contDiff_const)).neg
-
-def cutoffDeriv : ℝ → ℝ := deriv cutG
-
-def cutoffSecondDeriv : ℝ → ℝ := deriv cutoffDeriv
-
-theorem cutoffDeriv_contDiff : ContDiff ℝ ∞ cutoffDeriv := (contDiff_infty_iff_deriv.mp cutG_contDiff).2
-
-theorem hasDerivAt_cutG (s : ℝ) : HasDerivAt cutG (cutoffDeriv s) s :=
-  ((contDiff_infty_iff_deriv.mp cutG_contDiff).1 s).hasDerivAt
-
-theorem hasDerivAt_cutoffDeriv (s : ℝ) : HasDerivAt cutoffDeriv (cutoffSecondDeriv s) s :=
-  ((contDiff_infty_iff_deriv.mp cutoffDeriv_contDiff).1 s).hasDerivAt
-
-theorem cutoffSecondDeriv_continuous : Continuous cutoffSecondDeriv := (contDiff_infty_iff_deriv.mp cutoffDeriv_contDiff).2.continuous
-
-theorem cut_bound : ∃ M : ℝ, 0 ≤ M ∧ ∀ s ∈ Set.Icc (0 : ℝ) (9 / 4), -M ≤ s * cutoffSecondDeriv s + cutoffDeriv s := by
-  obtain ⟨m, hm⟩ := (isCompact_Icc (a := (0 : ℝ)) (b := 9 / 4)).bddBelow_image
-    (f := fun s => s * cutoffSecondDeriv s + cutoffDeriv s)
-    ((continuous_id.mul cutoffSecondDeriv_continuous).add cutoffDeriv_contDiff.continuous).continuousOn
-  refine ⟨max 0 (-m), le_max_left _ _, fun s hs => ?_⟩
-  have h1 : m ≤ s * cutoffSecondDeriv s + cutoffDeriv s := hm ⟨s, hs, rfl⟩
-  have h2 : -m ≤ max 0 (-m) := le_max_right _ _
-  linarith
-
-def projLineCutoff (j : Fin 2) (x : OnePoint ℂ) : ℝ := cutG (‖crdj j x‖ ^ 2)
-
-theorem cut_comp_self (j : Fin 2) :
-    projLineCutoff j ∘ (p1.chart j).symm = fun y => cutG (‖y 0‖ ^ 2) :=
-  funext fun y => by simp only [Function.comp_apply, projLineCutoff, crdj_symm_self]
-
-theorem cut_comp_other (j k : Fin 2) (hjk : j ≠ k) :
-    projLineCutoff j ∘ (p1.chart k).symm = fun y => cutG ((‖y 0‖ ^ 2)⁻¹) :=
-  funext fun y => by simp only [Function.comp_apply, projLineCutoff, crdj_symm_other j k hjk, norm_inv,
-    inv_pow]
-
-theorem levi_cut_self (y w : Fin 1 → ℂ) :
-    levi (fun y : Fin 1 → ℂ => cutG (‖y 0‖ ^ 2)) y w =
-      (cutoffSecondDeriv (‖y 0‖ ^ 2) * ‖y 0‖ ^ 2 + cutoffDeriv (‖y 0‖ ^ 2)) * ‖w 0‖ ^ 2 :=
-  projLine_leviForm_radial (G := cutG) (G' := cutoffDeriv) (Filter.Eventually.of_forall fun _ => rfl)
-    (Filter.Eventually.of_forall fun t => hasDerivAt_cutG t) (hasDerivAt_cutoffDeriv _) w
-
-theorem levi_cut_other (y w : Fin 1 → ℂ) (hy : y 0 ≠ 0) :
-    levi (fun y : Fin 1 → ℂ => cutG ((‖y 0‖ ^ 2)⁻¹)) y w =
-      ((‖y 0‖ ^ 2)⁻¹) ^ 2 * ((‖y 0‖ ^ 2)⁻¹ * cutoffSecondDeriv ((‖y 0‖ ^ 2)⁻¹) + cutoffDeriv ((‖y 0‖ ^ 2)⁻¹)) *
-        ‖w 0‖ ^ 2 := by
-  have htp : 0 < ‖y 0‖ ^ 2 := by have := norm_pos_iff.2 hy; positivity
-  have hG : ∀ s : ℝ, s ≠ 0 → HasDerivAt (fun s => cutG s⁻¹) (cutoffDeriv s⁻¹ * -(s ^ 2)⁻¹) s :=
-    fun s hs => (hasDerivAt_cutG s⁻¹).comp s (hasDerivAt_inv hs)
-  have h1 : HasDerivAt (fun s : ℝ => cutoffDeriv s⁻¹)
-      (cutoffSecondDeriv (‖y 0‖ ^ 2)⁻¹ * -((‖y 0‖ ^ 2) ^ 2)⁻¹) (‖y 0‖ ^ 2) :=
-    (hasDerivAt_cutoffDeriv _).comp _ (hasDerivAt_inv htp.ne')
-  have h2 : HasDerivAt (fun s : ℝ => -(s ^ 2)⁻¹)
-      (2 * ‖y 0‖ ^ 2 / ((‖y 0‖ ^ 2) ^ 2) ^ 2) (‖y 0‖ ^ 2) := by
-    have := ((hasDerivAt_pow 2 (‖y 0‖ ^ 2)).inv (pow_ne_zero 2 htp.ne')).neg
-    exact this.congr_deriv (by norm_num [neg_div])
-  rw [projLine_leviForm_radial (G := fun s => cutG s⁻¹) (G' := fun s => cutoffDeriv s⁻¹ * -(s ^ 2)⁻¹)
-    (Filter.Eventually.of_forall fun _ => rfl) ?_ (h1.mul h2) w]
-  · congr 1
-    field_simp
-    ring
-  · filter_upwards [eventually_ne_nhds htp.ne'] with s hs
-    exact hG s hs
-
-theorem ineq_self (M t H : ℝ) (hM : 0 ≤ M) (ht0 : 0 ≤ t) (ht : t ≤ 9 / 4) (h : -M ≤ H) :
-    -(2 * M * (13 / 4) ^ 2) * (2 * (1 + t) ^ 2)⁻¹ ≤ H := by
-  have hp : 0 < (1 + t) ^ 2 := by positivity
-  have h1 : (1 + t) ^ 2 ≤ (13 / 4) ^ 2 := by nlinarith
-  have h2 : -(2 * M * (13 / 4) ^ 2) * (2 * (1 + t) ^ 2)⁻¹ = -(M * (13 / 4) ^ 2 / (1 + t) ^ 2) := by
-    field_simp
-  have h3 : M ≤ M * (13 / 4) ^ 2 / (1 + t) ^ 2 := by
-    rw [le_div_iff₀ hp]; nlinarith
-  linarith
-
-theorem ineq_other (M t H : ℝ) (hM : 0 ≤ M) (ht0 : 0 < t) (hs : t⁻¹ ≤ 9 / 4) (h : -M ≤ H) :
-    -(2 * M * (13 / 4) ^ 2) * (2 * (1 + t) ^ 2)⁻¹ ≤ (t⁻¹) ^ 2 * H := by
-  obtain ⟨s, hs0, rfl⟩ : ∃ s : ℝ, 0 < s ∧ t = s⁻¹ := ⟨t⁻¹, inv_pos.2 ht0, (inv_inv t).symm⟩
-  rw [inv_inv] at hs ⊢
-  have hp : 0 < (1 + s) ^ 2 := by positivity
-  have h1 : (1 + s) ^ 2 ≤ (13 / 4) ^ 2 := by nlinarith
-  have h2 : -(2 * M * (13 / 4) ^ 2) * (2 * (1 + s⁻¹) ^ 2)⁻¹ =
-      -(M * (13 / 4) ^ 2 * s ^ 2 / (1 + s) ^ 2) := by
-    field_simp
-    ring
-  have h3 : M * s ^ 2 ≤ M * (13 / 4) ^ 2 * s ^ 2 / (1 + s) ^ 2 := by
-    rw [le_div_iff₀ hp]
-    nlinarith [mul_nonneg (mul_nonneg hM (sq_nonneg s)) (sub_nonneg.2 h1)]
-  have h4 : -(M * s ^ 2) ≤ s ^ 2 * H := by
-    nlinarith [mul_nonneg (sq_nonneg s) (by linarith : 0 ≤ H + M)]
-  linarith
 
 @[reducible] def projLineCharts : RegCharts p1 where
   n := 2
@@ -667,78 +368,6 @@ def projLineChartData : RegChartData p1 where
     show ‖fderiv ℝ (projLineCharts.u (fun _ => 0) j) z‖ ≤ _
     rw [projLineCharts_potential_zero]
     simp
-
-theorem regChartData_inhabited : Nonempty (RegChartData p1) := ⟨projLineChartData⟩
-
-def projLineBoundedPotential : BoundedThPsh projLineCharts where
-  φ _ := 0
-  bdd := ⟨0, fun _ => by simp⟩
-  psh j := by
-    rw [projLineCharts_potential_zero]
-    exact isPsh_const _ 0
-
-theorem projLine_cutoffFamily : ∃ C : ℝ, projLineCharts.IsCutoffFamily C projLineCutoff := by
-  obtain ⟨M, hM, hb⟩ := cut_bound
-  refine ⟨2 * M * (13 / 4) ^ 2, fun j => ⟨?_, ?_, ?_, ?_, ?_⟩⟩
-  · intro k
-    by_cases hjk : j = k
-    · subst hjk
-      rw [cut_comp_self]
-      exact (cutG_contDiff.comp ((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ 0))).contDiffOn
-    · rw [cut_comp_other j k hjk]
-      intro y hy
-      have hy0 : y 0 ≠ 0 := symm_other_ne j k hjk y hy.2.1
-      have hne : ‖y 0‖ ^ 2 ≠ 0 := (pow_pos (norm_pos_iff.2 hy0) 2).ne'
-      have : ContDiffAt ℝ ∞ (fun y : Fin 1 → ℂ => cutG ((‖y 0‖ ^ 2)⁻¹)) y :=
-        cutG_contDiff.contDiffAt.comp y
-          ((((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ 0)).contDiffAt).inv hne)
-      exact this.contDiffWithinAt
-  · intro x _
-    have h1 := Real.smoothTransition.nonneg ((‖crdj j x‖ ^ 2 - 25 / 16) * (64 / 21))
-    have h2 := Real.smoothTransition.le_one ((‖crdj j x‖ ^ 2 - 25 / 16) * (64 / 21))
-    simp only [projLineCutoff, cutG]
-    constructor <;> linarith
-  · intro x hx
-    have hb' : p1.chart j x ∈ ball (0 : Fin 1 → ℂ) (5 / 4) := hx.2
-    rw [projLine_chart_apply, mem_ball_zero_iff, norm_fin_one_eq_alt] at hb'
-    have hlt : ‖crdj j x‖ < 5 / 4 := hb'
-    simp only [projLineCutoff, cutG]
-    rw [Real.smoothTransition.zero_of_nonpos (by nlinarith [norm_nonneg (crdj j x)]), neg_zero]
-  · refine ⟨closedBall 0 (11 / 8), isCompact_closedBall _ _, closedBall_subset_ball (by norm_num),
-      fun x _ hK => ?_⟩
-    have hK' : p1.chart j x ∉ closedBall (0 : Fin 1 → ℂ) (11 / 8) := hK
-    rw [projLine_chart_apply, mem_closedBall_zero_iff, norm_fin_one_eq_alt, not_le] at hK'
-    have hgt : 11 / 8 < ‖crdj j x‖ := hK'
-    simp only [projLineCutoff, cutG]
-    rw [Real.smoothTransition.one_of_one_le (by nlinarith)]
-  · intro x _ k y hy w
-    rw [levi_fsPot x k y ⟨hy.1, hy.2.2⟩ w]
-    by_cases hjk : j = k
-    · subst hjk
-      rw [cut_comp_self, levi_cut_self]
-      have hy1 : p1.chart j ((p1.chart j).symm y) ∈ ball (0 : Fin 1 → ℂ) (3 / 2) := hy.2.1.2
-      rw [(p1.chart j).right_inv hy.1, mem_ball_zero_iff, norm_fin_one_eq_alt] at hy1
-      have ht : ‖y 0‖ ^ 2 ≤ 9 / 4 := by nlinarith [norm_nonneg (y 0)]
-      have hH := hb _ ⟨by positivity, ht⟩
-      have := ineq_self M _ (cutoffSecondDeriv (‖y 0‖ ^ 2) * ‖y 0‖ ^ 2 + cutoffDeriv (‖y 0‖ ^ 2)) hM (by positivity) ht
-        (by linarith [mul_comm (‖y 0‖ ^ 2) (cutoffSecondDeriv (‖y 0‖ ^ 2))])
-      rw [← mul_assoc]
-      exact mul_le_mul_of_nonneg_right this (by positivity)
-    · have hy0 : y 0 ≠ 0 := symm_other_ne j k hjk y hy.2.1.1
-      rw [cut_comp_other j k hjk, levi_cut_other y w hy0]
-      have hy1 : p1.chart j ((p1.chart k).symm y) ∈ ball (0 : Fin 1 → ℂ) (3 / 2) := hy.2.1.2
-      rw [projLine_chart_apply, mem_ball_zero_iff, norm_fin_one_eq_alt] at hy1
-      have hy2 : ‖crdj j ((p1.chart k).symm y)‖ < 3 / 2 := hy1
-      rw [crdj_symm_other j k hjk, norm_inv] at hy2
-      have htp : 0 < ‖y 0‖ ^ 2 := by have := norm_pos_iff.2 hy0; positivity
-      have hs : (‖y 0‖ ^ 2)⁻¹ ≤ 9 / 4 := by
-        rw [← inv_pow]; nlinarith [inv_nonneg.2 (norm_nonneg (y 0))]
-      have hH := hb _ ⟨by positivity, hs⟩
-      have := ineq_other M _ _ hM htp hs hH
-      rw [← mul_assoc]
-      exact mul_le_mul_of_nonneg_right this (by positivity)
-
-theorem glue_hyps_inhabited : ∃ C : ℝ, projLineChartData.IsCutoffFamily C projLineCutoff := projLine_cutoffFamily
 
 end ProjectiveLine
 

@@ -46,15 +46,6 @@ theorem placeInv_brauerLocal_globalCupClass (χ : Additive K.1.fixingSubgroup �
   | .inl v => placeInv_brauerLocal_globalCupClass_inl ι v χ a _
       (exists_eq_one_iff_mem_range_norm v (algebraMap K.1 v.Completion (a : K.1))).choose_spec
 
-theorem finite_support_char_localSymbolAt (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ) :
-    (Function.support fun v : Place K.1 => χ (Additive.ofMul (localSymbolAt ι v a))).Finite := by
-  classical
-  refine ((brauerLocal ι (globalCupClass χ a)).support.finite_toSet).subset fun v hv => ?_
-  rw [Function.mem_support, ← placeInv_brauerLocal_globalCupClass] at hv
-  rw [Finset.mem_coe, DFinsupp.mem_support_iff]
-  intro h
-  exact hv (by rw [h, map_zero])
-
 theorem brauerSumInv_globalCupClass (χ : Additive K.1.fixingSubgroup →ₜ+ QZ) (a : K.1ˣ) :
     brauerSumInv ι (globalCupClass χ a) = ∑ᶠ v : Place K.1, χ (Additive.ofMul (localSymbolAt ι v a)) := by
   classical

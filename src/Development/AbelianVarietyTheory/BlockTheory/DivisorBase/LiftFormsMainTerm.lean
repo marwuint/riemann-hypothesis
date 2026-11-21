@@ -26,10 +26,6 @@ structure Sizes (b : ℝ) : Prop where
   be_le : ∀ τ i j, |(((D.hc τ).b i - (D.hc τ).e j : ℚ) : ℝ)| ≤ b
   g_ge : ∀ i, ((D.R.k : ℝ) * b) ^ 8 ≤ (D.host.g i : ℝ)
 
-variable (D) in
-
-def Lpr (b : ℝ) : ℝ := Real.log (b * D.host.rdE * ((D.host.g 0 : ℝ) * D.host.g 1) * D.R.nV)
-
 abbrev pW (i : Fin D.R.m) (ρ : D.what₂.Tau) : ℕ := ((Wc D i).sig (tauE D ρ)).1
 
 abbrev qW (i : Fin D.R.m) (ρ : D.what₂.Tau) : ℕ := ((Wc D i).sig (tauE D ρ)).2
@@ -38,15 +34,8 @@ def apAt (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) : �
 
 def amAt (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) : ℕ → ℕ := aMi D i (pW i ρ) (qW i ρ) (lab σ ρ)
 
-def mainTerm (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : ℝ :=
-  ∑ ρ : D.what₂.Tau, (Formalism.BasicNotions.DV.logHook (pW i ρ) (fun n => (apAt i σ ρ n : ℝ)) +
-    Formalism.BasicNotions.DV.logHook (qW i ρ) (fun n => (amAt i σ ρ n : ℝ)))
-
 def deltaAtEmb (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : PolF D (Wc D i).rank (Vc D i).rank :=
   delta (pW i) (qW i) (apAt i σ) (amAt i σ)
-
-def SameOnK (σ : D.what₂.LL →+* ℂ) : Prop :=
-  ∀ a : D.host.E, a ∈ D.host.K → σ (D.embE a) = D.what₂.embLL (D.embE a)
 
 def absPow (half : Bool) (P : Pl D.host.E) (k : D.host.E) : ℂ :=
   cond half ((Real.sqrt (NumberField.FinitePlace.mk P k) : ℝ) : ℂ) 1
@@ -59,9 +48,6 @@ def IsConjChr (s : ℂ →+* ℂ) (half : Bool) (c c' : (AE D)ˣ →* Circle) : 
 def conjRes (s : ℂ →+* ℂ) (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ :=
   fun PP => (Units.map s.toMonoidHom).comp (χ PP)
 
-theorem conjRes_id (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : conjRes (RingHom.id ℂ) χ = χ := by
-  funext PP; ext u; rfl
-
 open Classical in
 
 def omegaP {a b : ℕ} {Pg : Finset (Pl D.host.E)} {r : ℕ} (P : LevelP Pg r ℂ) (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
@@ -71,23 +57,6 @@ def omegaP {a b : ℕ} {Pg : Finset (Pl D.host.E)} {r : ℕ} (P : LevelP Pg r �
     ((P.chi h.2.choose : ℂˣ) : ℂ) *
       ∏ PP : Pg, ((χ PP.1 (Matrix.GeneralLinearGroup.det (h.2.choose.1 PP)) : ℂˣ) : ℂ)
   else 0
-
-theorem omegaP_triv {a b : ℕ} (Pg : Finset (Pl D.host.E)) {r : ℕ} (hr : a = r) (χ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
-    (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) :
-    omegaP (LevelP.triv Pg r ℂ) χ y = omegaK Pg y := by
-  subst hr
-  unfold omegaP omegaK
-  have key : ∀ g : (LevelP.triv Pg a ℂ).H, g.1 = 1 := fun g => Subgroup.mem_bot.1 g.2
-  by_cases h : ∀ PP ∈ Pg, LowZero a (y PP) ∧ topL a (y PP) = 1
-  · have h' : (∀ PP ∈ Pg, LowZero a (y PP)) ∧ ∃ g : (LevelP.triv Pg a ℂ).H, ∀ PP : Pg,
-        ((g.1 PP : GL (Fin a) (kP PP.1)) : Matrix (Fin a) (Fin a) (kP PP.1)) = topL a (y PP.1) :=
-      ⟨fun PP hP => (h PP hP).1, 1, fun PP => by rw [(h PP.1 PP.2).2]; rfl⟩
-    rw [dif_pos h', if_pos h, key]
-    simp [LevelP.triv]
-    rfl
-  · rw [if_neg h, dif_neg]
-    rintro ⟨h1, g, hg⟩
-    exact h fun PP hP => ⟨h1 PP hP, by rw [← hg ⟨PP, hP⟩, key]; rfl⟩
 
 open Classical in
 
@@ -125,15 +94,6 @@ def defForms {V : HSp D} (c : CoefA V) (β : GL (Fin V.rank) (Lev.EAf D)) (L : L
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
-def GoodPlaces (R : RealDat D A Ks) (t : T) : Prop :=
-  ∀ PP : Pl D.host.E, PP ∈ R.Pg ∨ PP ∈ R.Q t →
-    ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal
-
-open Classical in
-
-def finS (R : RealDat D A Ks) (t : T) : Finset (HeightOneSpectrum (𝓞 D.host.F)) :=
-  (R.Pg ∪ R.Q t).image fun PP => PP.under (𝓞 D.host.F)
-
 def levV (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (s : ℂ →+* ℂ) (P : LevelP R.Pg D.R.r ℂ) :
     LevDat D.host.E ℂ (Vc D i).rank where
   r := D.R.r
@@ -145,14 +105,6 @@ def levV (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (s : ℂ →+* ℂ) (P : L
   P := P
   cg := fun _ PP => (conjRes s (R.chi ((i : ℕ) + 1)) PP)⁻¹
   xq := conjRes s (R.xiR t)
-
-def typeVec (R : RealDat D A Ks) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (P : LevelP R.Pg D.R.r ℂ) :
-    Submodule ℂ (R.HW i σ).H :=
-  (Mult R.θ (R.MW i σ) (levS _ (R.βW i) (R.datWp i P)) (levChi _ (R.βW i) (R.datWp i P))).comap (R.HW i σ).e
-
-def typePart (R : RealDat D A Ks) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (t : T) (P : LevelP R.Pg D.R.r ℂ)
-    (c : Pl D.host.E → List ℤ → ℂ) : Submodule ℂ (R.HW i σ).H :=
-  (partFull R.θ (R.MW i σ) (levS _ (R.βW i) (R.datWp i P)) (levChi _ (R.βW i) (R.datWp i P)) (finS R t) c).comap (R.HW i σ).e
 
 set_option genInjectivity false in
 set_option genSizeOfSpec false in
@@ -205,55 +157,7 @@ abbrev src (t : T) (s : ℂ →+* ℂ) (P : LevelP R.Pg D.R.r ℂ) : Submodule �
 
 variable {t : T} {s : ℂ →+* ℂ} {P : LevelP R.Pg D.R.r ℂ}
 
-def IsLift (th : X.src t s P →ₗ[ℂ] (R.HW i σ).H) : Prop :=
-  ∃ thP, Lift.IsThetaP X.ν X.fd (fun g h f => thetaKO X.om h g f) X.pt X.io (X.src t s P) thP ∧
-    ∀ (f : X.src t s P) (v : ∀ ρ, lowT (R.MW i σ) ρ),
-      (R.HW i σ).e (th f) (fun ρ => v ρ) = thP f (PiTensorProduct.tprod ℂ v)
-
-def IsAdjVal (th : X.src t s P →ₗ[ℂ] (R.HW i σ).H) (U : (R.HW i σ).H) (f : X.src t s P) : Prop :=
-  ∀ f' : X.src t s P,
-    IntegrableOn (fun h => ⟪(f' : GA D (Vc D i) → X.coef.W) h, (f : GA D (Vc D i) → X.coef.W) h⟫_ℂ) X.fd X.ν ∧
-      ((Nat.card P.H : ℂ))⁻¹ * ⟪th f', U⟫_ℂ =
-        ∫ h in X.fd, ⟪(f' : GA D (Vc D i) → X.coef.W) h, (f : GA D (Vc D i) → X.coef.W) h⟫_ℂ ∂X.ν
-
-def ActsBy (th : X.src t s P →ₗ[ℂ] (R.HW i σ).H) (N : Submodule ℂ (R.HW i σ).H) (l : ℝ) : Prop :=
-  ∀ U ∈ N, ∃ f : X.src t s P, X.IsAdjVal th U f ∧ th f = (l : ℂ) • U
-
 end LiftInput
-
-def ScalarBoundAt (R : RealDat D A Ks) (b : ℝ) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (s : ℂ →+* ℂ) (t : T) : Prop :=
-  ∃ lam : (Pl D.host.E → List ℤ → ℂ) → ℝ,
-    ∀ (P : LevelP R.Pg D.R.r ℂ) (X : LiftInput R i σ), X.Is t s P →
-      (∃ th : X.src t s P →ₗ[ℂ] (R.HW i σ).H, X.IsLift th) ∧
-      ∀ th : X.src t s P →ₗ[ℂ] (R.HW i σ).H, X.IsLift th →
-        (∀ f, th f ∈ typeVec R i σ P) ∧
-        ∀ c, typePart R i σ t P c ≠ ⊥ →
-          X.ActsBy th (typePart R i σ t P c) (lam c) ∧ 0 < lam c ∧
-            mainTerm i σ - 8 * ((D.R.f : ℝ) * (D.R.nV : ℝ) ^ 2 * Lpr D b) ≤ Real.log (lam c)
-
-def AdelicLiftScalarBound (R : RealDat D A Ks) (F : Face D A) (b : ℝ) : Prop :=
-  R.Char F → Sizes D b → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (s : ℂ →+* ℂ) (t : T),
-    SameOnK σ → s.comp D.what₂.embLL = σ → GoodPlaces R t → ScalarBoundAt R b i σ s t
-
-def LiftInputExists (R : RealDat D A Ks) (F : Face D A) : Prop :=
-  R.Char F → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (s : ℂ →+* ℂ) (t : T),
-    SameOnK σ → s.comp D.what₂.embLL = σ → GoodPlaces R t → ∀ P : LevelP R.Pg D.R.r ℂ, ∃ X : LiftInput R i σ, X.Is t s P
-
-def ofReal (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : LiftInput R i (sg0 D A) where
-  mu := R.toLevCh.mu t ((i : ℕ) + 1)
-  eta := R.eta
-  om := R.ωP i t
-  BV := R.BV i
-  BW := onb (R.MW i (sg0 D A))
-  vac := R.vacP i
-  vec := R.vP i t
-  coef := R.cV i
-  io := R.ioP i
-  ν := R.νV i t
-  fd := R.fdV i t
-
-theorem isConjChr_id (half : Bool) {c : (AE D)ˣ →* Circle} (hc : IsHeckeChar D c) : IsConjChr (RingHom.id ℂ) half c c :=
-  ⟨hc, fun _ _ _ _ _ _ => rfl⟩
 
 theorem labE_base (τ : D.what₂.Tau) : labE D.what₂.embLL τ = tauE D τ := by
   ext x
@@ -299,32 +203,6 @@ theorem isONBasis_onb {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
         = (((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ) * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * (M.fr τ)⁻¹) := by simp only [Matrix.mul_assoc]
       _ = _ := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
   · rw [hJ, cart, onb, Matrix.mul_assoc, h1, Matrix.mul_one]
-
-theorem ofReal_is {R : RealDat D A Ks} {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
-    (ofReal R i t).Is t (RingHom.id ℂ) R.triv where
-  mu := isConjChr_id _ (h.thP.ωP i t).hecS
-  eta := isConjChr_id _ h.lev.eta.1
-  om := h.thP.ωP i t
-  BV := h.models.BV i
-  BW := fun τ => isONBasis_onb _ τ _ (h.models.order i τ)
-  vec := by
-    have h1 := h.thP.vP i t
-    unfold IsThPVecOf at h1
-    unfold IsLevelVec
-    simp only [conjRes_id, omegaP_triv R.Pg (D.sp.W_rank _ (Nat.le_add_left _ _) i.2)]
-    exact h1
-  coef := h.models.cV i
-  io := by
-    have e : deltaAtEmb i (sg0 D A) = RealDat.Delta i := by
-      have hl : ∀ ρ, lab (sg0 D A) ρ = ρ := fun ρ => by
-        rw [show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]; exact lab_base ρ
-      unfold deltaAtEmb RealDat.Delta
-      congr 1 <;> funext ρ
-      · unfold apAt; rw [hl]
-      · unfold amAt; rw [hl]
-    rw [e]
-    exact h.thP.ioP i t
-  meas := h.models.νV i t
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm
 

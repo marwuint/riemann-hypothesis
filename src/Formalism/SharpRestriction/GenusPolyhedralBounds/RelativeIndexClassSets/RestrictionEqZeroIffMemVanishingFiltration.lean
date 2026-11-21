@@ -177,11 +177,6 @@ theorem mem_Hfr {u : WeightFamilies.Wt D j} {x : Lw X la w} :
     x ∈ Hfr X la w u ↔ ∃ k : ℕ, ∃ g ∈ Vw X la N (addL u wL k), x = frac X la w k g :=
   mem_frSpan (Lw X la w) fun k g hg => by simpa using sec_pow_mul_mem X la w 0 u k 1 hg
 
-theorem algebraMap_mem_Hfr {u : WeightFamilies.Wt D j} {g : Rp X la N} (hg : g ∈ Vw X la N u) :
-    algebraMap (Rp X la N) (Lw X la w) g ∈ Hfr X la w u := by
-  rw [← frac_zero]
-  exact frac_mem_Hfr X la w (by rwa [addL_zero])
-
 theorem Hfr_mul_le (u u' : WeightFamilies.Wt D j) : Hfr X la w u * Hfr X la w u' ≤ Hfr X la w (wadd u u') :=
   frSpan_mul_le (Lw X la w) fun k l g hg g' hg' => by
     rw [← wadd_addL_addL]
@@ -270,9 +265,6 @@ theorem mem_HK {u : WeightFamilies.Wt D j} {x : Lw X la w} : x ∈ HK X la w u �
   | smul a x _ hx =>
     have := mul_mem_Hfr X la w ((mem_Frac0 X la w).1 a.2) hx
     rwa [zero_weight_add] at this
-
-theorem HK_restrictScalars (u : WeightFamilies.Wt D j) : (HK X la w u).restrictScalars (Kp X la N) = Hfr X la w u :=
-  Submodule.ext fun _ => mem_HK X la w
 
 theorem frac_mem_HK {u : WeightFamilies.Wt D j} {k : ℕ} {g : Rp X la N} (hg : g ∈ Vw X la N (addL u wL k)) :
     frac X la w k g ∈ HK X la w u :=
@@ -375,12 +367,6 @@ def rhoK (u : WeightFamilies.Wt D j) (a T : ℕ) : ↥(Vw X la N (addL u wL T)) 
 theorem rhoK_apply (u : WeightFamilies.Wt D j) (a T : ℕ) (f : ↥(Vw X la N (addL u wL T))) :
     rhoK X la w u a T f = toWK X la w u a (toHK X la w u T f) := rfl
 
-theorem exists_rhoK_eq (u : WeightFamilies.Wt D j) (a : ℕ) (x : WK X la w u a) :
-    ∃ (T : ℕ) (f : ↥(Vw X la N (addL u wL T))), rhoK X la w u a T f = x := by
-  obtain ⟨y, rfl⟩ := toWK_surjective X la w u a x
-  obtain ⟨T, f, rfl⟩ := exists_toHK_eq X la w u y
-  exact ⟨T, f, rfl⟩
-
 def toHK0 (u : WeightFamilies.Wt D j) : ↥(Vw X la N u) →ₗ[Kp X la N] ↥(HK X la w u) :=
   ((frac X la w 0).domRestrict (Vw X la N u)).codRestrict ((HK X la w u).restrictScalars (Kp X la N))
     fun f => frac_mem_HK X la w (by rw [addL_zero]; exact f.2)
@@ -406,12 +392,6 @@ def rhoW (u : WeightFamilies.Wt D j) (a : ℕ) : ↥(Vw X la N u) →ₗ[Kp X la
 theorem rhoW_apply (u : WeightFamilies.Wt D j) (a : ℕ) (f : ↥(Vw X la N u)) :
     rhoW X la w u a f = toWK X la w u a (toHK0 X la w u f) := rfl
 
-theorem rhoK_pow_mul (u : WeightFamilies.Wt D j) (a T m : ℕ) (f : ↥(Vw X la N (addL u wL T))) :
-    rhoK X la w u a (T + m) ⟨sec X la w 0 ^ m * f, sec_pow_mul_mem X la w 0 u T m f.2⟩ = rhoK X la w u a T f := by
-  rw [rhoK_apply, rhoK_apply]
-  congr 1
-  exact Subtype.ext (frac_pow_mul X la w T m f)
-
 def fr0 (k : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k))) : ↥(Frac0 X la w) :=
   ⟨frac X la w k g, Algebra.subset_adjoin (frac_mem_Hfr X la w g.2)⟩
 
@@ -422,21 +402,6 @@ theorem exists_weightZero_fraction_eq (c : ↥(Frac0 X la w)) :
     ∃ (k : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k))), fr0 X la w k g = c := by
   obtain ⟨k, g, hg, hc⟩ := (mem_Hfr X la w).1 ((mem_Frac0 X la w).1 c.2)
   exact ⟨k, ⟨g, hg⟩, Subtype.ext hc.symm⟩
-
-theorem mul_mem_Vw_addL {u : WeightFamilies.Wt D j} {k T : ℕ} {g f : Rp X la N} (hg : g ∈ Vw X la N (addL (wt0 D j) wL k))
-    (hf : f ∈ Vw X la N (addL u wL T)) : g * f ∈ Vw X la N (addL u wL (k + T)) := by
-  have := mul_mem_Vw X la N hg hf
-  rwa [wadd_addL_addL, zero_weight_add] at this
-
-theorem fraction_smul_toLocalized (u : WeightFamilies.Wt D j) (k T : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k)))
-    (f : ↥(Vw X la N (addL u wL T))) : fr0 X la w k g • toHK X la w u T f =
-      toHK X la w u (k + T) ⟨g * f, mul_mem_Vw_addL X la g.2 f.2⟩ :=
-  Subtype.ext (frac_mul X la w k T g f)
-
-theorem fraction_smul_restriction (u : WeightFamilies.Wt D j) (a k T : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k)))
-    (f : ↥(Vw X la N (addL u wL T))) : fr0 X la w k g • rhoK X la w u a T f =
-      rhoK X la w u a (k + T) ⟨g * f, mul_mem_Vw_addL X la g.2 f.2⟩ := by
-  rw [rhoK_apply, rhoK_apply, ← map_smul, fraction_smul_toLocalized]
 
 theorem addL_addL (u wL : WeightFamilies.Wt D j) (T n : ℕ) : addL (addL u wL T) wL n = addL u wL (T + n) := by
   unfold addL wadd wsmul

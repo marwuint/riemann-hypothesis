@@ -16,7 +16,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDescentOfInvGe
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecOnNonvanishingOfTameQuotient
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ResidueFieldMapFiniteSeparableOfTame
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmoothDescentOfTameQuotient
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSemiAbelianTripleOfFiniteQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSemiAbelianTripleOfFiniteQuotient
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct Pointwise
@@ -68,7 +68,7 @@ theorem exists_sab_descent_of_tame_quotient :
     convert htame k (y ≫ t.G.hom) using 2
     exact Nat.card_congr (Equiv.subtypeEquivRight fun g =>
       fixes_iff_fixes_image t.G.hom _ _ y (hw g) (hfib k _ g))) t.PP.isLB u hu₁ hu₂ hu₃
-  obtain ⟨t', ν, e, hν⟩ := T.exists_semiAbelianTriple_of_finiteQuotient E H Γ X X' ρ π t G' a' φ L' hQ hga hsemi' hgp ha hL' hiso
+  obtain ⟨t', ν, e, hν⟩ := _root_.GlobalTheory.QuotTriple.exists_sab_of_quotient E H Γ X X' ρ π t G' a' φ L' hQ hga hsemi' hgp ha hL' hiso
   have hinv' (g : Γ) : (τ g).hom ≫ ν.φ = ν.φ := by
     rw [← cancel_mono e.hom.left, Category.assoc, hν, hinv]
   refine ⟨t', ν, hinv', fun ⟨h₁, h₂, _⟩ hP => ⟨?_, ?_, ?_⟩⟩

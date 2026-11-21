@@ -39,7 +39,4 @@ theorem trace_mul_eq_zero_imp {F A : Type} [Field F] [CharZero F] [CommRing A] [
     rw [h3, mul_assoc, he0, mul_zero]
   exact IsReduced.eq_zero x ⟨n + 1, hxn⟩
 
-example : ∀ {F A : Type} [inst : Field F] [CharZero F] [inst_2 : CommRing A] [inst_3 : Algebra F A] [Module.Finite F A] [IsReduced A] (x : A), (∀ (z : A), (Algebra.trace F A : A → F) (x * z) = (0 : F)) → x = (0 : A) :=
-  @trace_mul_eq_zero_imp
-
 end GlobalTheory.TraceMulVanishing

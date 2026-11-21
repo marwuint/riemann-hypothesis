@@ -67,11 +67,6 @@ theorem aestronglyMeasurable_thS (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarM
       hf.comp (GlobalTheory.AbsThetaSemi.continuous_invPt V ξ)).aestronglyMeasurable)
     (hsum.mono fun h hh => hh.hasSum)
 
-theorem integrable_thS (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {f : Mx D V.rank n → ℂ} (hf : Continuous f)
-    (hfin : absThetaInt V ν f < ⊤) : Integrable (descend (GQ V) (thS V f)) (autMeasure V ν) :=
-  ⟨aestronglyMeasurable_thS V ν hf hfin,
-    lt_of_le_of_lt (lintegral_mono fun q => enorm_thS_le V f q.out) hfin⟩
-
 theorem ae_absTheta_lt (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {M : Mx D V.rank n → ℂ} (hM : Continuous M)
     (hfin : absThetaInt V ν M < ⊤) : ∀ᵐ q ∂autMeasure V ν, descend (GQ V) (absTheta V M) q < ⊤ :=
   ae_lt_top (GlobalTheory.AbsThetaSemi.measurable_descend_absTheta V hM) hfin.ne

@@ -574,22 +574,9 @@ theorem d_homotopy_add (q : ℕ) (σ : Cochain P U (q + 1)) :
   rw [this]
   abel
 
-theorem homotopy_d_zero (σ : Cochain P U 0) :
-    homotopy P U 0 (d P U 0 σ) = σ - altProj P U 0 σ := by
-  funext i
-  rw [homotopy_apply, Pi.sub_apply, altProj_apply]
-  change pair _ _ 0 = σ i - pair σ (inter U i) (Finsupp.single i 1)
-  rw [map_zero, pair_single _ _ _ le_rfl, one_smul, res_refl, sub_self]
-
 theorem exists_d_eq_sub_altProj (q : ℕ) (σ : Cochain P U (q + 1)) (hσ : d P U (q + 1) σ = 0) :
     ∃ τ, d P U q τ = σ - altProj P U (q + 1) σ :=
   ⟨homotopy P U q σ, by rw [← d_homotopy_add, hσ, map_zero, add_zero]⟩
-
-theorem eq_altProj_of_d_eq_zero (σ : Cochain P U 0) (hσ : d P U 0 σ = 0) :
-    altProj P U 0 σ = σ := by
-  have := homotopy_d_zero σ
-  rw [hσ, map_zero] at this
-  exact (sub_eq_zero.mp this.symm).symm
 
 theorem exists_d_eq_of_card_le [Fintype ι] (q : ℕ) (hq : Fintype.card ι ≤ q + 1)
     (σ : Cochain P U (q + 1)) (hσ : d P U (q + 1) σ = 0) : ∃ τ, d P U q τ = σ := by

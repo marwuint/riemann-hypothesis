@@ -151,11 +151,4 @@ theorem decomp_split [IsLocalRing A] (hσ : ∀ z, σ (σ z) = z) {w : A} (hw : 
 
 end Split
 
-section Lift
-
-variable {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] {c : E →ₐ[R] E} {A : Subring E} {σ : A →+* A}
-  {ι : Type} [Fintype ι] [DecidableEq ι]
-
-end Lift
-
 end GlobalTheory.CompanionTheory.VacLoc.BigCellLocal

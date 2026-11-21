@@ -1,19 +1,23 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PerRowC
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeHsNormLeDegreeBoundRealPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeHsNormLeDegreeBoundRealPlace
+import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeArithmetic
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvVolPos
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSigmaFiniteQuot
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentCovolumeFiniteBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralStabiliserCovolumeLeIndexWeightStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermAmplitudeLeCovolumeLocalAmplitudesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormGivesRealNormalFormStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrictFundamentalSetIntegralStabilizerExistsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GapHypothesisOfLargenessConstantGeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointGramMinorsAgreeProofStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormNormsMinorsEqLabelProofStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdaptedNormalFormRelevantTermProofStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalBoundProductOverPlacesLabelStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentCovolumeFiniteBounded
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralStabiliserCovolumeLeIndexWeight
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermAmplitudeLeCovolumeLocalAmplitudes
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ConstC
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormGivesRealNormalForm
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrictFundamentalSetIntegralStabilizerExists
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GapHypothesisOfLargenessConstantGe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointGramMinorsAgreeProof
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormNormsMinorsEqLabelProof
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdaptedNormalFormRelevantTermProof
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalBoundProductOverPlacesLabel
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeSizeConsequencesOfWordIndependentHyps
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IsIdentityOfEqualFlags
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AmpWin
@@ -114,13 +118,13 @@ theorem amplitudeBound_of_localData_of_tailBound : GlobalTheory.TypeAsm.LocDatC 
   intro hLoc hTailP Cg cb Cw cT CT C0 hcb hcT
   obtain ⟨CH, hCH, hT⟩ := hTailP Cg cb Cw cT CT C0 hcb hcT
   refine ⟨CH, hCH, fun Cs hCs => ?_⟩
-  obtain ⟨C₁, hC₁, hProd⟩ := GlobalTheory.T.localBound_productOverPlaces_label Cs hCs
+  obtain ⟨C₁, hC₁, hProd⟩ := _root_.GlobalTheory.TypeAsm.prodC_holds Cs hCs
   obtain ⟨Ca, hCa⟩ := GlobalTheory.amplitude_arithmetic CH hCH
   refine ⟨max Ca 0, le_max_right _ _, fun C hC => ?_⟩
   have hC0 : 0 ≤ C := (le_max_right _ _).trans hC
   have hCaC : Ca ≤ C := (le_max_left _ _).trans hC
   obtain ⟨C'₁, Cl₁, hT1⟩ := hT C₁
-  obtain ⟨Clg, hGap⟩ := GlobalTheory.T.gapC_holds
+  obtain ⟨Clg, hGap⟩ := _root_.GlobalTheory.TypeAsm.gapC
   refine ⟨max C'₁ 40, max (max Cl₁ Clg) 1, fun C' Cl hC' hCl => ?_⟩
   intro D large₂ X Y u hTies hH hConc
   have hCl1 : 1 ≤ Cl := (le_max_right _ _).trans hCl
@@ -132,7 +136,7 @@ theorem amplitudeBound_of_localData_of_tailBound : GlobalTheory.TypeAsm.LocDatC 
   obtain ⟨Ch, hBs, hGood⟩ := hLoc D X ⟨u⟩ hgap hTies.dsig_tie
   have hTail := hT1 C' Cl ((le_max_left _ _).trans hC') ((le_max_left _ _).trans ((le_max_left _ _).trans hCl))
     D large₂ hTies hH hConc.2.2.2.2.2.2.2
-  obtain ⟨hcovTop, hcov1⟩ := GlobalTheory.T.integralUnipotent_covolume_finite_bounded D large₂ X Y u Ch hStd
+  obtain ⟨hcovTop, hcov1⟩ := _root_.GlobalTheory.TypeAsm.covNC_holds D large₂ X Y u Ch hStd
   have hb2 : 2 ≤ large₂.sc.b := by linarith
   intro t ht
   have hj1 : 1 ≤ jT t := Formalism.L2.SG.KappaOffDiagonal.JPosC_holds Cg cb Cw cT CT C0 C' Cl D large₂ X Y u hH hConc t ht
@@ -142,14 +146,14 @@ theorem amplitudeBound_of_localData_of_tailBound : GlobalTheory.TypeAsm.LocDatC 
   have hc0 : 0 ≤ c := mul_nonneg (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)) (amplitude_label_nonneg large₂ hC0 _ _)
   have hinf := (GlobalTheory.DegAsm.WeightInf.main _ _ (HV D) hCM D.R.rS).2 (F0 X u) (Ft t) (dI D) t.lam
   have hex : ∃ N, GlobalTheory.DegAsm.Adapt (F0 X u) (Ft t) (dI D) N := by
-    obtain ⟨N, hN, -⟩ := GlobalTheory.T.exists_adaptedNormalForm_relevantTerm D large₂ X Y u hStd t ht
+    obtain ⟨N, hN, -⟩ := _root_.GlobalTheory.TypeAsm.nfExC_holds D large₂ X Y u hStd t ht
     exact ⟨N, hN⟩
   have key : ∀ N : GlobalTheory.DegCnt.NF (HV D) D.R.rS, GlobalTheory.DegAsm.Adapt (F0 X u) (Ft t) (dI D) N →
       ‖(Y.tO u u).vec t‖ ≤ c * N.om t.lam := by
     intro N hN
-    have hNj : N.j = jT t := (GlobalTheory.T.adaptedNormalForm_normsMinors_eq_label D large₂ X Y u hStd t N hN).1
-    obtain ⟨β, n₁, g, n₂, hfr⟩ := GlobalTheory.T.adaptedNormalForm_gives_real_normal_form D large₂ X Y u Ch hStd t N hN
-    obtain ⟨K, hK⟩ := GlobalTheory.T.strict_fundamentalSet_integralStabilizer_exists D X Y u t
+    have hNj : N.j = jT t := (_root_.GlobalTheory.TypeAsm.labC D large₂ X Y u hStd t N hN).1
+    obtain ⟨β, n₁, g, n₂, hfr⟩ := _root_.GlobalTheory.TypeAsm.frameC_holds D large₂ X Y u Ch hStd t N hN
+    obtain ⟨K, hK⟩ := _root_.GlobalTheory.TypeAsm.fundC_holds D X Y u t
     set μ : D.what₂.Tau → Measure (Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) := fun τ =>
       (ENNReal.ofReal 1 • GlobalTheory.Amp.lebR0 D.R.k D.R.rS N.j β).map (Formalism.QuantumDeterminants.conjM (n₂ τ)⁻¹) with hμ
     have hμN : ∀ τ, GlobalTheory.Amp.IsNormalFormStabilizerMeasure D.R.k D.R.rS N.j_le (zB X (Ch.Qi τ) u τ) (zB X (Ch.Qi τ) u τ)
@@ -158,7 +162,7 @@ theorem amplitudeBound_of_localData_of_tailBound : GlobalTheory.TypeAsm.LocDatC 
       obtain ⟨h1, h2, h3, hfo⟩ := hfr τ
       obtain ⟨-, hz, hz', hTz, ⟨cc, hnorm⟩, -⟩ := hfo
       exact ⟨hz, hz', hTz, n₁ τ, h1, n₂ τ, h2, g τ, β, cc, hnorm, h3, rfl⟩
-    have hvol := GlobalTheory.T.integralStabiliser_covolume_le_indexWeight D large₂ X Y u Ch hStd t N hN μ K hμN hK
+    have hvol := _root_.GlobalTheory.TypeAsm.covTC_holds D large₂ X Y u Ch hStd t N hN μ K hμN hK
     have htr : ∀ (a b : ℕ) (e : a = b) (ha : a ≤ D.R.rS) (hb : b ≤ D.R.rS) (z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ)
         (γ : GlobalTheory.SgInf.Mat D.R.k D.R.rS) (s : ℝ) (μ' : Measure (Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)),
         GlobalTheory.Amp.IsNormalFormStabilizerMeasure D.R.k D.R.rS ha z z' γ s μ' → GlobalTheory.Amp.IsNormalFormStabilizerMeasure D.R.k D.R.rS hb z z' γ s μ' := by
@@ -167,9 +171,9 @@ theorem amplitudeBound_of_localData_of_tailBound : GlobalTheory.TypeAsm.LocDatC 
         (gamT Ch t τ)⁻¹ 1 (μ τ) := fun τ => htr _ _ hNj _ _ _ _ _ _ _ (hμN τ)
     have hq : ∀ τ, _ := fun τ => GlobalTheory.DegVol.StabQuot.exists_sigmaFinite_quot D.R.k D.R.rS (jT t) hjr
       (zB X (Ch.Qi τ) u τ) (zB X (Ch.Qi τ) u τ) (gamT Ch t τ) (muGB X (Ch.Q τ) (Ch.Qi τ) τ) (μ τ)
-      ((hGood.2 u τ).1.2.2.2.2.2.2.1) (hμJ τ) (((GlobalTheory.T.realPointGramMinorsAgree_proof D X Y u Ch τ).2 t).1)
+      ((hGood.2 u τ).1.2.2.2.2.2.2.1) (hμJ τ) (((_root_.GlobalTheory.TypeAsm.gramC_holds D X Y u Ch τ).2 t).1)
     choose hσμ hHaarμ hNR ν hσν hνnull hνq using hq
-    have hfact := GlobalTheory.T.termAmplitude_le_covolume_localAmplitudes D X Y u Ch hBs hGood hcovTop t ht.2 μ ν K
+    have hfact := _root_.GlobalTheory.TypeAsm.factC_holds D X Y u Ch hBs hGood hcovTop t ht.2 μ ν K
       (fun τ => ⟨hσμ τ, hHaarμ τ, hσν τ, hνnull τ, hνq τ⟩) hK
     have hr1 : 1 ≤ D.R.rS := hj1.trans hjr
     have hjk : jT t + 2 ≤ D.R.k := by
@@ -187,7 +191,7 @@ theorem amplitudeBound_of_localData_of_tailBound : GlobalTheory.TypeAsm.LocDatC 
     have hH1 : 1 ≤ H1C large₂ CH := by
       unfold H1C
       exact Real.one_le_rpow (by linarith) (by positivity)
-    have hloc := fun τ => GlobalTheory.T.amplitude_hsNorm_le_degreeBound_realPlace D τ u u 1 (locW Ch u u τ) _ (locS hBs u u τ) (by linarith) one_pos (hTr u)
+    have hloc := fun τ => _root_.GlobalTheory.Amp.sqrt_hsNormSq_amplitude_le_degBd D τ u u 1 (locW Ch u u τ) _ (locS hBs u u τ) (by linarith) one_pos (hTr u)
       (hTr u) (hGood.2 u τ).1 (hGood.2 u τ).2 (jT t) hjr (C₁ * D.R.k * D.R.rS) (gamT Ch t τ) 1 (H1C large₂ CH) (De τ) _
       (ν τ) hj1 hjk hqq one_pos hH1 (hTail τ u _ (hGood.2 u τ).1 _ (hGood.2 u τ).2).1
       (hTail τ u _ (hGood.2 u τ).1 _ (hGood.2 u τ).2).2 (hDeOK τ) (hNR τ) (hνq τ)

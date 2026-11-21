@@ -1,16 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsReducedOfSeparableMarkedCharpolyStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsReducedOfSeparableMarkedCharpoly
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FgUnitsQuotIntegralUnitsFiniteFieldExtStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FgUnitsQuotIntegralUnitsReducedFiniteAlgebraStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FgUnitsQuotIntegralUnitsReducedFiniteAlgebra
 open GlobalTheory.UnitLemma Polynomial
 
 namespace GlobalTheory.NormUnits
 
 theorem fg_quot_intUnits : ∀ (K : UQ) (B : InvAlg K), B.P.Separable →
     Group.FG (B.Aˣ ⧸ intUnits K.O B.A) := fun K B hP =>
-  haveI := GlobalTheory.T.isReduced_of_separable_markedCharpoly K B hP
-  GlobalTheory.T.fg_units_quot_integralUnits_reduced_finite_algebra K (GlobalTheory.T.fg_units_quot_integralUnits_finite_field_ext K) B.A (GlobalTheory.T.isReduced_of_separable_markedCharpoly K B hP)
+  haveI := _root_.GlobalTheory.UnitLemma.InvAlg.isReduced_of_separable_P K B hP
+  _root_.GlobalTheory.UnitLemma.NormUnits.units_quot_intUnits_fg K (GlobalTheory.T.fg_units_quot_integralUnits_finite_field_ext K) B.A (_root_.GlobalTheory.UnitLemma.InvAlg.isReduced_of_separable_P K B hP)
 
 theorem exists_finset_sq_mem {G : Type} [CommGroup G] (N : Subgroup G) (hN : Group.FG (G ⧸ N)) :
     ∃ F : Finset G, ∀ u : G, u ^ 2 ∈ N → ∃ f ∈ F, u * f⁻¹ ∈ N := by

@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsGaloisActionLawsFrobeniusCommStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRFiltrationLawsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRFiltrationLaws
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BcrisFrobeniusFixedFilZeroEqQpStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRGaloisInvariantsEqFinExtStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalPeriodRingsDataUnramifiedLawsStatement
@@ -166,7 +166,7 @@ theorem invariants_Bcris : ∀ (l : ℕ) [Fact l.Prime], ∀ (C : Core l) (K : F
   intro l _ C K b hb
   obtain ⟨hφ, -, -, hι, hσ, -⟩ := GlobalTheory.T.localPeriodRingsData_unramified_laws l C
   have hcomm := (GlobalTheory.T.periodRings_galoisAction_laws_frobenius_comm l).2.2.2.2.1
-  have hfil := (GlobalTheory.T.bdR_filtration_laws l).2.2.2.2.2.2 0
+  have hfil := (_root_.GlobalTheory.MemLoc.filD_laws l).2.2.2.2.2.2 0
   rcases subsingleton_or_nontrivial (Per.BdR l) with hs | hs
   · exact ⟨0, zero_mem _, hι (Subsingleton.elim _ _)⟩
   let O : Om l →+* Per.BdR l := (algebraMap (Per.BdRp l) (Per.BdR l)).comp C.o
@@ -189,7 +189,7 @@ theorem invariants_Bcris : ∀ (l : ℕ) [Fact l.Prime], ∀ (C : Core l) (K : F
     rw [h2]
     refine (hfil (C.o y)).2 ?_
     have hone : (1 : Per.BdRp l) ∈ Per.FilP l 0 :=
-      (hfil 1).1 (by rw [map_one]; exact (GlobalTheory.T.bdR_filtration_laws l).2.1)
+      (hfil 1).1 (by rw [map_one]; exact (_root_.GlobalTheory.MemLoc.filD_laws l).2.1)
     simpa using Ideal.mul_mem_left _ (C.o y) hone
   have hbS : b ∈ S := hb
   obtain ⟨N, hN, hper⟩ := periodic hι hu hφ S hS hO hbS

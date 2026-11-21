@@ -142,15 +142,6 @@ theorem c_val : v (algebraMap O C (fontaineTheta O p (nu p O ε))) ^ (p - 1) = v
   obtain ⟨-, -, -, hX, -, -⟩ := a0 p C v O hv
   exact (hX ε hv hε).2.2.1
 
-include hv hε in
-
-theorem c_dvd (c' : O) (h : v (algebraMap O C c') ^ (p - 1) ≤ v (p : C)) :
-    fontaineTheta O p (nu p O ε) ∣ c' := by
-  apply hv.dvd_of_le
-  rw [← c_val p O hv ε hε] at h
-  have hp1 : p - 1 ≠ 0 := by have := hp.out.two_le; omega
-  exact (pow_le_pow_iff_left₀ zero_le zero_le hp1).1 h
-
 lemma c_eq : (ainfTower p O hv ε hε).c = fontaineTheta O p (nu p O ε) := rfl
 
 end Ainf

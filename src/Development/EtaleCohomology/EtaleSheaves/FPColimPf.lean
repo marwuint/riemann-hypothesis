@@ -45,8 +45,6 @@ instance : IsDirected (Idx R A) (· ≤ ·) :=
 
 instance : Nonempty (Idx R A) := ⟨⟨∅, ∅, by simp, by simp⟩⟩
 
-example : IsFiltered (Idx R A) := inferInstance
-
 def rel (i : Idx R A) : Ideal (MvPolynomial i.s R) :=
   Ideal.comap (rename (R := R) (Subtype.val : i.s → A)) (Ideal.span (i.T : Set (MvPolynomial A R)))
 

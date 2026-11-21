@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChoiceSide
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
@@ -87,10 +87,6 @@ def Mv.sideA_alt {cf : CharFrame D} {jE : D.host.E →+* Qb} (A : _root_.GlobalT
       (locUnr := (by with_unfolding_all exact (A.au.locUnr :)))
       (locPol := (by with_unfolding_all exact (A.au.locPol :))))
     (chiT := (by with_unfolding_all exact (A.chiT :)))
-section
-end
-section
-end
 end GlobalTheory.LayerMove
 end
 end

@@ -39,18 +39,6 @@ def SelfDualG : Prop :=
   ∀ (F : Type) [Field F] (o : Subring F) (q : F), q ∈ o → q ≠ 0 → ∀ a : F × F,
     (∀ b ∈ orderR o q, (a.1 * b.1 - a.2 * b.2) / q ∈ o) ↔ a ∈ orderR o q
 
-noncomputable def Tpoly {A : Type} [Ring A] (p c ci : A) : Matrix (Fin 2) (Fin 2) A[X] :=
-  !![X + C p, -C c; C ci, 0]
-
-noncomputable def TpolyProd {A : Type} [Ring A] (n : ℕ) (p c ci : ℕ → A) :
-    Matrix (Fin 2) (Fin 2) A[X] :=
-  ((List.ofFn (fun l : Fin n => Tpoly (p (l + 1)) (c (l + 1)) (ci (l + 1)))).reverse).prod
-
-def TProdMonic : Prop :=
-  ∀ (A : Type) [Ring A] [Nontrivial A] (n : ℕ) (p c ci : ℕ → A),
-    (TpolyProd n p c ci 0 0).Monic ∧ (TpolyProd n p c ci 0 0).natDegree = n ∧
-      (TpolyProd n p c ci 1 0).degree < n
-
 end
 
 end Formalism.FourierDecayAlt.I

@@ -153,8 +153,6 @@ def TopCols : Prop := All fun {D} _ _ {sc} {G} W _ =>
   ∀ M : DSModel (G.V (.core D.R.m)) (Node.par D sc.cGap (.core D.R.m)), ∀ y ∈ CoreForms G W.θ D.R.m M, ∀ w,
     ∃ c ∈ Cols G W.θ, ∃ ξ : Module.Dual ℂ (coefPlus G W.θ).W, y w = pairVec (coefPlus G W.θ) ξ c
 
-example (V : HSp D) : (ReLat.sp (V := V) ⟨V.L0, V.standardTuple_isLattice, V.baseLattice_isUnimodular⟩).gram = V.gram := rfl
-
 end GlobalTheory.CoreOnto
 
 end

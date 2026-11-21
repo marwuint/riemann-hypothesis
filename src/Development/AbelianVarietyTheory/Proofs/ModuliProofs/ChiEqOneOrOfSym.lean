@@ -1,6 +1,6 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
-import Development.AbelianVarietyTheory.BlockTheory.CMModuli.HermitianTensorPowers
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ConstOfNormPeriodic
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -10,7 +10,7 @@ noncomputable section
 
 namespace GlobalTheory.ThetaUnifCompare
 
-open GlobalTheory.FrameValue GlobalTheory.IndefiniteRowSideFullHecke.HermitianTensorPowers CubeValues SymmetricSemicharacter EigenNorm
+open GlobalTheory.FrameValue CubeValues SymmetricSemicharacter EigenNorm
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A L g}
   {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}

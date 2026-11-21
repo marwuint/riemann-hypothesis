@@ -4,9 +4,9 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsF
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PVerticalDivisorsCommute
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycNumIntAndComb
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberLinearStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberMulExpandStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberRenameStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberLinear
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberMulExpand
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberRename
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num
 
 namespace GlobalTheory.CompanionTheory.Ar.Num
@@ -26,7 +26,7 @@ theorem val_psumExpansion_mul : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDisc
         ((cycEval (fun W => classNum (Sum.elim (T.x ∘ e) (T.x' ∘ e)) (psumExpansion r k a) L W)
           (ratDiv P (T.f (e a)) (T.g (e a))) : ℤ) : ℝ) := by
     intro i L
-    rw [(GlobalTheory.T.cycle_number_linear O K ι (σ ⊕ σ) (ratDiv P (T.f i) (T.g i)) (Sum.elim T.x T.x') L).2.2.1]
+    rw [(_root_.GlobalTheory.CompanionTheory.Ar.Num.cycNum_linear O K ι (σ ⊕ σ) (ratDiv P (T.f i) (T.g i)) (Sum.elim T.x T.x') L).2.2.1]
     refine Finset.sum_congr rfl fun a ha => ?_
     obtain rfl : e a = i := (Finset.mem_filter.mp ha).2
     rw [GlobalTheory.T.cycle_number_rename.1 O K ι (Fin r ⊕ Fin r) (σ ⊕ σ) (Sum.map e e) _ (Sum.elim T.x T.x') _ L, hcomp]
@@ -40,7 +40,7 @@ theorem val_psumExpansion_mul : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDisc
     rw [Finset.sum_fiberwise]
     simp only [LocPair.ck, pairNum, LocPair.comp, Function.comp_apply, Int.cast_sum]
   unfold LocPair.val
-  simp only [GlobalTheory.T.cycle_number_mul_expand O K ι (σ ⊕ σ), List.append_nil, hterm]
+  simp only [_root_.GlobalTheory.CompanionTheory.Ar.Num.cycNum_mul O K ι (σ ⊕ σ), List.append_nil, hterm]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun μ _ => ?_
   rw [← Finset.mul_sum, hck]

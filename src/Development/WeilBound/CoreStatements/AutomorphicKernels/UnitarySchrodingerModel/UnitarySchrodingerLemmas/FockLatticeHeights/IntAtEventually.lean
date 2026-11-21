@@ -1,7 +1,9 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.SchrodingerMatching.PsiPlaces
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiplicityLevelFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueRingStructure
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedFiniteIntegralStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedFiniteIntegral
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.BasisSet
 
 noncomputable section
 
@@ -50,7 +52,7 @@ theorem matV_mem_Rv {d : ℕ} (bs : Module.Basis (Fin d) F E) {n : ℕ}
 
 theorem intAt_eventually {d : ℕ} (bs : Module.Basis (Fin d) F E) :
     ∀ᶠ v in Filter.cofinite, PositivityTheory.SiegelWeilFormula.Gunr.IntAt v (PositivityTheory.SiegelWeilFormula.Gunr.basisSet (AlgHom.id F E) bs) :=
-  GlobalTheory.T.unramified_finite_integral F _
+  _root_.GlobalTheory.CompanionTheory.Gunr.finInt F _
 
 section Lat
 

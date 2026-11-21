@@ -19,11 +19,6 @@ def L2GramLattice.Statement : Prop :=
       (∀ [DiscreteTopology (imageLattice φ)], IsZLattice ℝ (imageLattice φ)) ∧
       ∀ s, ‖φ s‖ = Real.sqrt (∫ z, ‖w s z‖ ^ 2 ∂μ)
 
-def L2GramLattice.intConst : ℤ →+ (Unit → ℂ) where
-  toFun n := fun _ => (n : ℂ)
-  map_zero' := by funext; simp
-  map_add' a b := by funext; simp
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

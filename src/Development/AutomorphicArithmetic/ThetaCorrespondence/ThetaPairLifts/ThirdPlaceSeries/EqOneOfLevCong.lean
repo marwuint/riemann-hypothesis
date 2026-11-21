@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinalRowGramAlgebraicSection
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 
 set_option synthInstance.maxHeartbeats 200000
@@ -10,7 +10,6 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BaseLevelInj
-open Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR
 end GlobalTheory.BaseLevelInj
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.BaseLevelInj in
@@ -25,9 +24,9 @@ theorem GlobalTheory.BaseLevelInj.eq_one_of_lev_sub_mem_Mb : ∀ {D : D7} {L : S
     have h0 : ((p.T.Q.l.M : ℕ) : 𝓞 D.host.E) ∈ Ideal.span {((p.T.Q.l.M : ℕ) : 𝓞 D.host.E)} := Ideal.mem_span_singleton_self _
     rw [← p.T.Q.l.prod] at h0
     exact (Ideal.mul_le_inf.trans inf_le_left : p.T.Q.l.Mb * _ ≤ p.T.Q.l.Mb) h0
-  have h4 := GlobalTheory.T.levelMove_lift_congruent_mod_ideal (Wc D i) (iotaW p.T i) hι p.T.Q.l.M p.T.Q.l.Mb (Mfr p.T.Q.l) p.T.Q.l.coprime hMb κ hfc
+  have h4 := _root_.GlobalTheory.LevelMoveCong.mulVec_sub_mem_hat_smul (Wc D i) (iotaW p.T i) hι p.T.Q.l.M p.T.Q.l.Mb (Mfr p.T.Q.l) p.T.Q.l.coprime hMb κ hfc
     ((p.O i).lev (g : p.P.Gp)) happ hg
-  have h3 := GlobalTheory.T.adelicCongruence_selfDual_of_principalLattice (Wc D i) _ _ h4
+  have h3 := _root_.GlobalTheory.CovolCong.cong_latC_of_cong_latG (Wc D i) _ _ h4
   rw [← GlobalTheory.PrincInLevel.eq_latC hβ] at h3
   have h2 := hatL_cong_of_hat (Wc D i) κ _ _ h3
   have hfr : Formalism.L2.DIV.IsFrame (p.R.βW i) (p.R.ΛW i) := by obtain ⟨c, h, -⟩ := hβ; exact h

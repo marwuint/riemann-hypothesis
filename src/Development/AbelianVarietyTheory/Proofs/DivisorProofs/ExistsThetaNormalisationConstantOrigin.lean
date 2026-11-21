@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBase
 import Development.AbelianVarietyTheory.Definitions.Uniformization.SeriesFrame
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.BijectiveSmulChartSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkOfInjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValueUnitSectionSmulGenericFibreSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CarriesUnitSectionRigidificationUnitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitAdicSumOriginValuesIntegralFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValueUnitSectionSmulGenericFibreSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CarriesUnitSectionRigidificationUnit
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitAdicSumOriginValuesIntegralFamily
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -19,10 +19,10 @@ namespace GlobalTheory.Mum
 
 theorem exists_unit_value_at_unit : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ), 1 ≤ k → ∀ b₀ : D.toPre.SecB k 0, eSec D.toPre.P.A (closedPoint R) ∈ nonzeroLocus b₀ → ∀ F₀ : IntFam (maximalIdeal R) D.toPre k, F₀.Lead 0 b₀ → ∃ s₀ : R, IsUnit s₀ ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (b : W) (σ : SecK C.P.L.L T.β k), T.ExpBy b σ F₀ → ∃ ε : Wˣ, ∀ J, Good C.P.L.L (cpt W) J → sval σ (unitW T.G) (cpt W) J = stalkOf (cpt W) (b * ε * T.φ s₀) * (val C.P.L.rig T.ξ (cpt W) J).val ^ k := by
   intro R _ _ _ hR D C k hk b₀ hb₀ F₀ hF₀
-  obtain ⟨s₀, hs₀, h⟩ := GlobalTheory.T.exists_unit_adic_sum_origin_values_integral_family R hR D C k hk b₀ hb₀ F₀ hF₀
+  obtain ⟨s₀, hs₀, h⟩ := _root_.GlobalTheory.Mum.exists_unit_origin_sum R hR D C k hk b₀ hb₀ F₀ hF₀
   refine ⟨s₀, hs₀, fun W _ _ _ T b σ hσ => ?_⟩
   obtain ⟨σ', f', hc, hp, he⟩ := hσ
-  obtain ⟨ε, hε⟩ := GlobalTheory.T.carries_unitSection_rigidification_unit R D C W T k b σ' σ hc
+  obtain ⟨ε, hε⟩ := _root_.GlobalTheory.Mum.Trait.carries_unit R D C W T k b σ' σ hc
   refine ⟨ε, fun J hJ => ?_⟩
   obtain ⟨J', hJ', -⟩ := exists_good T.U.LG.L T.U.LG.isLB (cpt W) (K := Empty) (fun e => e.elim) (fun e => e.elim)
     (fun e => e.elim) (fun e => e.elim)
@@ -35,7 +35,7 @@ theorem exists_unit_value_at_unit : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
 
 theorem exists_norm_const : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ), 1 ≤ k → ∀ b₀ : D.toPre.SecB k 0, eSec D.toPre.P.A (closedPoint R) ∈ nonzeroLocus b₀ → ∀ F₀ : IntFam (maximalIdeal R) D.toPre k, F₀.Lead 0 b₀ → ∀ s : SecK C.P.L.L C.α k, ∃ c₁ c₂ : R, c₂ ≠ 0 ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (a b : W), a ≠ 0 → b ≠ 0 → T.Exp a b s F₀ → ∃ u : Wˣ, T.φ c₂ * (u : W) * a = T.φ c₁ * b := by
   intro R _ _ _ hR D C k hk b₀ hb₀ F₀ hF₀ s
-  obtain ⟨x, y, hy, h1⟩ := GlobalTheory.T.value_unitSection_smul_genericFibre_section R hR D C k s
+  obtain ⟨x, y, hy, h1⟩ := _root_.GlobalTheory.Mum.UnitGen.value_unit_generic R hR D C k s
   obtain ⟨s₀, hs₀, h2⟩ := exists_unit_value_at_unit R hR D C k hk b₀ hb₀ F₀ hF₀
   have key : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (a b : W), T.Exp a b s F₀ →
       ∃ ε : Wˣ, T.φ y * (b * ε * T.φ s₀) = a * T.φ x := by

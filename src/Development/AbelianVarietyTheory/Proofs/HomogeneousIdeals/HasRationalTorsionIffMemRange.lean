@@ -57,9 +57,6 @@ end Def
 def splitCurve {R : Type*} [CommRing R] (A B : R) : WeierstrassCurve R :=
   ⟨0, -(A + B), 0, A * B, 0⟩
 
-def legendreCurve {R : Type*} [CommRing R] (l : R) : WeierstrassCurve R :=
-  ⟨0, -(1 + l), 0, l, 0⟩
-
 def deuringCurve {R : Type*} [CommRing R] (a b : R) : WeierstrassCurve R :=
   ⟨a, 0, b, 0, 0⟩
 
@@ -72,12 +69,6 @@ theorem splitCurve_Δ (A B : R) : (splitCurve A B).Δ = 16 * A ^ 2 * B ^ 2 * (A 
 
 theorem splitCurve_c₄ (A B : R) : (splitCurve A B).c₄ = 16 * (A ^ 2 - A * B + B ^ 2) := by
   simp only [splitCurve, c₄, b₂, b₄]; ring
-
-theorem legendreCurve_Δ (l : R) : (legendreCurve l).Δ = 16 * l ^ 2 * (l - 1) ^ 2 := by
-  simp only [legendreCurve, Δ, b₂, b₄, b₆, b₈]; ring
-
-theorem legendreCurve_c₄ (l : R) : (legendreCurve l).c₄ = 16 * (l ^ 2 - l + 1) := by
-  simp only [legendreCurve, c₄, b₂, b₄]; ring
 
 theorem deuringCurve_Δ (a b : R) : (deuringCurve a b).Δ = b ^ 3 * (a ^ 3 - 27 * b) := by
   simp only [deuringCurve, Δ, b₂, b₄, b₆, b₈]; ring

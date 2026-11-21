@@ -4,12 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AllTorsMap
 import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.GeneratorValues
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCommGroupSchemeEqOfPowEqOfClosedPointStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsToricTorsionSectionsUniformisationStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCommGroupSchemeEqOfPowEqOfClosedPoint
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsToricTorsionSectionsUniformisation
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorsionMapUniformisationGenericStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPushedTraitPointLocalStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPulledTraitPointFieldStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPushedTraitPointLocal
+import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueTorusCompat
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPulledTraitPointField
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -64,8 +65,8 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
     rcases Nat.eq_zero_or_pos k with h | h
     · subst h; simp at hk
     · exact h
-  obtain ⟨s, s1, s2, s3, s4⟩ := GlobalTheory.T.exists_toric_torsion_sections_uniformisation E H R t P hR k hk1
-  obtain ⟨s', s1', s2', s3', s4'⟩ := GlobalTheory.T.exists_toric_torsion_sections_uniformisation E H W t' P' hW k hk1
+  obtain ⟨s, s1, s2, s3, s4⟩ := _root_.GlobalTheory.ToricTorsionSec.main E H R t P hR k hk1
+  obtain ⟨s', s1', s2', s3', s4'⟩ := _root_.GlobalTheory.ToricTorsionSec.main E H W t' P' hW k hk1
   obtain ⟨fR, hfR, -⟩ := GlobalTheory.T.exists_torsionMap_uniformisation_generic E H R t P hR F k hk1
   obtain ⟨fW, hfW, -⟩ := GlobalTheory.T.exists_torsionMap_uniformisation_generic E H W t' P' hW F k hk1
   let ρm := AddMonoidHom.toMultiplicative ρ
@@ -136,9 +137,9 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
   let τRU := τU.comp ρm
   have hτRU : τRU ^ k = 1 := by
     exact powc τU hτUk
-  have hG1 := GlobalTheory.T.toricTorsionSection_eq_pushed_trait_point_local E H R t P k s s1 s2 s3 _ ρ V ψ tV mV j t₀ m₀ h₀ m₀' hc hd U u hUloc hkU τU τRU hτRU hτUk
+  have hG1 := _root_.GlobalTheory.TorSecLocal.toric_torsion_section_overLocal E H R t P k s s1 s2 s3 _ ρ V ψ tV mV j t₀ m₀ h₀ m₀' hc hd U u hUloc hkU τU τRU hτRU hτUk
     (fun χ => rfl) zU hzU
-  have hG2 := GlobalTheory.T.toricTorsionSection_eq_pulled_trait_point_field E H W t' P' k s' s3' R t g m V ψ tV mV Ω α β hβ tΩ n n' j hb hf Ω' σ (κ.comp φ) hκ.symm
+  have hG2 := _root_.GlobalTheory.ToricOverField.toric_section_eq_over_field E H W t' P' k s' s3' R t g m V ψ tV mV Ω α β hβ tΩ n n' j hb hf Ω' σ (κ.comp φ) hκ.symm
     U u U.subtype hwu τU τ'' h'' (fun χ => (hτU χ).symm) zU hzU
   let τRΩ := τ''.comp ρm
   have hτRΩ : τRΩ ^ k = 1 := by
@@ -158,7 +159,7 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
   obtain ⟨e, he'⟩ := GlobalTheory.LiePull.exists_pushEquiv m.cart (Over.mk (spMap φ)) (spMap (φ.comp g)) (spMap_comp g φ)
   have hkO : IsUnit (k : O) := by simpa using hk.map (φ.comp g)
   have hxy : s O (φ.comp g) τOR hτOR = e (s' O φ τO hτOk) := by
-    refine GlobalTheory.T.smoothCommGroupScheme_eq_of_pow_eq_of_closedPoint (Sp R) t.G t.semi.smooth O (spMap (φ.comp g)) k hkO _ _ ?_ Ω' κ hκloc ?_
+    refine _root_.GlobalTheory.LocalRigid.eq_of_pow_eq_of_closedPoint (Sp R) t.G t.semi.smooth O (spMap (φ.comp g)) k hkO _ _ ?_ Ω' κ hκloc ?_
     · rw [s1, ← map_pow, s1', map_one]
     · rw [he', ← Category.assoc, ← s2' O Ω' φ (κ.comp φ) κ τO hτOk τ'' h'' rfl (fun χ => rfl), hG2,
         ← s2 O Ω' (φ.comp g) ((κ.comp φ).comp g) κ τOR hτOR τRΩ hτRΩ rfl (fun χ => rfl), h8, hG1]

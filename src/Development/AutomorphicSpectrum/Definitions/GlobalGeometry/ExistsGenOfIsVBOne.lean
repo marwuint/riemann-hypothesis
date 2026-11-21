@@ -21,12 +21,6 @@ def TrivMod (L : Lat ξ E) (ϖ : Ω) : Prop :=
     ∀ q : Cpt ξ, q.1 ∈ U → ¬ unitAt ξ q ϖ →
       t p ≠ 0 ∧ L q = Submodule.span (regAt ξ q) {t p} ∧ ∃ y ∈ L q, t p - t q = ϖ • y
 
-def TrivRed (L : Lat ξ E) (ϖ : Ω) : Prop :=
-  ∃ t : Cpt ξ → E, ∀ p : Cpt ξ, ¬ unitAt ξ p ϖ → ∃ U : X.Opens, p.1 ∈ U ∧
-    ∀ q : Cpt ξ, q.1 ∈ U → ¬ unitAt ξ q ϖ →
-      t p ≠ 0 ∧ L q = Submodule.span (regAt ξ q) {t p} ∧
-        ∃ c ∈ regAt ξ q, ¬ unitAt ξ q c ∧ t p - t q = c • t p
-
 def OrderAt (L : Lat ξ E) (σ : E) (ϖ : Ω) (M : ℕ) (a : ℤ) (p : Cpt ξ) : Prop :=
   ∃ (e : E) (c : Ω), e ≠ 0 ∧ L p = Submodule.span (regAt ξ p) {e} ∧ σ = c • e ∧ unitAt ξ p (c ^ M / ϖ ^ a)
 
@@ -84,25 +78,6 @@ end ZUnit
 theorem coe_mem_zeroSet {ϖ : Ω} (p : Cpt ξ) : p.1 ∈ zeroSet ξ ϖ ↔ ¬ unitAt ξ p ϖ :=
   ⟨fun ⟨_, h⟩ => h, fun h => ⟨p.2, h⟩⟩
 
-theorem TrivMod.of_mul {L : Lat ξ E} {ϖ a : Ω} (hϖ : ∀ p, ϖ ∈ regAt ξ p) (ha : ∀ p, a ∈ regAt ξ p)
-    (h : TrivMod L (ϖ * a)) : TrivMod L ϖ := by
-  have key : ∀ p, ¬ unitAt ξ p ϖ → ¬ unitAt ξ p (ϖ * a) := fun p hp hu => hp (ZUnit.of_mul (hϖ p) (ha p) hu)
-  obtain ⟨t, ht⟩ := h
-  refine ⟨t, fun p hp => ?_⟩
-  obtain ⟨U, hU, h⟩ := ht p (key p hp)
-  refine ⟨U, hU, fun q hq hq' => ?_⟩
-  obtain ⟨h0, h1, y, hy, e⟩ := h q hq (key q hq')
-  exact ⟨h0, h1, a • y, (L q).smul_mem (⟨a, ha q⟩ : regAt ξ q) hy, by rw [e, mul_smul]⟩
-
-theorem TrivRed.mono {L : Lat ξ E} {ϖ ϖ' : Ω} (h : TrivRed L ϖ) (hs : zeroSet ξ ϖ' ⊆ zeroSet ξ ϖ) :
-    TrivRed L ϖ' := by
-  have key : ∀ p, ¬ unitAt ξ p ϖ' → ¬ unitAt ξ p ϖ := fun p hp =>
-    (coe_mem_zeroSet p).1 (hs ((coe_mem_zeroSet p).2 hp))
-  obtain ⟨t, ht⟩ := h
-  refine ⟨t, fun p hp => ?_⟩
-  obtain ⟨U, hU, H⟩ := ht p (key p hp)
-  exact ⟨U, hU, fun q hq hq' => H q hq (key q hq')⟩
-
 section Order
 
 variable {L : Lat ξ E} {σ : E} {ϖ : Ω} {M M' : ℕ} {a a' : ℤ} {p : Cpt ξ}
@@ -154,61 +129,6 @@ theorem orderAt_one_zero : OrderAt L σ ϖ 1 0 p ↔ σ ≠ 0 ∧ L p = Submodul
       rw [inv_smul_smul₀ h.1]⟩
   · exact ⟨⟨c, h.2.1⟩, rfl⟩
 
-theorem OrderAt.mul_nat (h : OrderAt L σ ϖ M a p) (k : ℕ) : OrderAt L σ ϖ (M * k) (a * k) p := by
-  obtain ⟨e, c, he, hL, hσ, h⟩ := h
-  refine ⟨e, c, he, hL, hσ, ?_⟩
-  rw [pow_mul, zpow_mul, zpow_natCast, ← div_pow]
-  exact ZUnit.pow h k
-
-theorem OrderAt.unique (h0 : ϖ ≠ 0) (hϖ : ϖ ∈ regAt ξ p) (hp : ¬ Ar.unitAt ξ p ϖ) (ha : OrderAt L σ ϖ M a p)
-    (ha' : OrderAt L σ ϖ M a' p) : a = a' := by
-  obtain ⟨e, c, he, hL, hσ, ha⟩ := ha
-  replace ha' := ha'.unitAt hL hσ
-  have key : ∀ a b : ℤ, Ar.unitAt ξ p (c ^ M / ϖ ^ a) → Ar.unitAt ξ p (c ^ M / ϖ ^ b) → ¬ a < b := by
-    intro a b ha hb hlt
-    obtain ⟨n, rfl⟩ : ∃ n : ℕ, b = a + ((n + 1 : ℕ) : ℤ) := ⟨(b - a - 1).toNat, by omega⟩
-    have hc : c ^ M ≠ 0 := fun h => ha.1 (by rw [h, zero_div])
-    have hu := ZUnit.mul ha (ZUnit.inv hb)
-    have : c ^ M / ϖ ^ a * (c ^ M / ϖ ^ (a + ((n + 1 : ℕ) : ℤ)))⁻¹ = ϖ ^ (n + 1) := by
-      have : ϖ ^ a ≠ 0 := zpow_ne_zero a h0
-      rw [zpow_add₀ h0, zpow_natCast]
-      field_simp
-    rw [this] at hu
-    exact hp (ZUnit.of_pow hϖ n.succ_ne_zero hu)
-  exact le_antisymm (not_lt.1 (key a' a ha' ha)) (not_lt.1 (key a a' ha ha'))
-
-theorem OrderAt.ratio_unique (h0 : ϖ ≠ 0) (hϖ : ϖ ∈ regAt ξ p) (hp : ¬ Ar.unitAt ξ p ϖ)
-    (ha : OrderAt L σ ϖ M a p) (ha' : OrderAt L σ ϖ M' a' p) : a * M' = a' * M :=
-  OrderAt.unique h0 hϖ hp (ha.mul_nat M') (by rw [mul_comm M M']; exact ha'.mul_nat M)
-
 end Order
-
-example {e : E} (he : e ≠ 0) {ϖ : Ω} (h0 : ϖ ≠ 0) (n : ℤ) (p : Cpt ξ) :
-    OrderAt (fun p => Submodule.span (regAt ξ p) {e} : Lat ξ E) (ϖ ^ n • e) ϖ 1 n p :=
-  ⟨e, ϖ ^ n, he, rfl, rfl, by rw [pow_one, div_self (zpow_ne_zero n h0)]; exact ZUnit.one⟩
-
-example {e : E} (he : e ≠ 0) {ϖ : Ω} (h0 : ϖ ≠ 0) (p : Cpt ξ) :
-    OrderAt (fun p => Submodule.span (regAt ξ p) {e} : Lat ξ E) (ϖ ^ 3 • e) (ϖ ^ 2) 2 3 p :=
-  ⟨e, ϖ ^ 3, he, rfl, rfl, by
-    rw [show (ϖ ^ 3) ^ 2 / (ϖ ^ 2) ^ (3 : ℤ) = 1 by rw [zpow_ofNat]; field_simp]; exact ZUnit.one⟩
-
-example (σ : E) (ϖ : Ω) (M : ℕ) (a : ℤ) (p : Cpt ξ) : ¬ OrderAt (fun _ => ⊥ : Lat ξ E) σ ϖ M a p :=
-  fun ⟨_, _, he, h, _⟩ => he (Submodule.span_singleton_eq_bot.1 h.symm)
-
-example (ϖ : Ω) (M : ℕ) (a : ℤ) (p : Cpt ξ) :
-    ¬ OrderAt (fun p => Submodule.span (regAt ξ p) {((1 : Ω), (0 : Ω))} : Lat ξ (Ω × Ω)) (0, 1) ϖ M a p := by
-  rintro ⟨e, c, he, h, hσ, -⟩
-  obtain ⟨u, -, rfl⟩ := ZUnit.exists_of_span_eq he h.symm
-  simpa using congrArg Prod.snd hσ
-
-example {ϖ : Ω} {p : Cpt ξ} (hp : ¬ unitAt ξ p ϖ) : ¬ TrivRed (fun _ => ⊥ : Lat ξ E) ϖ := by
-  rintro ⟨t, ht⟩
-  obtain ⟨U, hU, h⟩ := ht p hp
-  obtain ⟨h0, h1, -⟩ := h p hU hp
-  exact h0 (Submodule.span_singleton_eq_bot.1 h1.symm)
-
-example : zeroSet ξ 1 = ∅ ∧ zeroSet ξ 0 = {q | genPt ξ ⤳ q} :=
-  ⟨Set.eq_empty_of_forall_notMem fun _ ⟨_, h⟩ => h ZUnit.one,
-    Set.ext fun _ => ⟨fun ⟨h, _⟩ => h, fun h => ⟨h, fun hu => hu.1 rfl⟩⟩⟩
 
 end GlobalTheory.CompanionTheory.Ar.Flat

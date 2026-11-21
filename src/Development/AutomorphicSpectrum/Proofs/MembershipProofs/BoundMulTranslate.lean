@@ -227,19 +227,8 @@ theorem temperate_exp : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)
 
 variable {κ : Type} [Fintype κ]
 
-noncomputable def dotL (κ : Type) [Fintype κ] : (κ → ℝ) →L[ℝ] (κ → ℝ) →L[ℝ] ℝ :=
-  ∑ i : κ, (ContinuousLinearMap.proj i : (κ → ℝ) →L[ℝ] ℝ).smulRight (ContinuousLinearMap.proj i : (κ → ℝ) →L[ℝ] ℝ)
-
-noncomputable def phase (q : W κ ℝ × (κ → ℝ)) : ℝ :=
-  2 * Real.pi * dotL κ q.2 q.1.2 + Real.pi * dotL κ q.1.1 q.1.2
-
-noncomputable def ker (s : (κ → ℝ) → ℂ) (q : W κ ℝ × (κ → ℝ)) : ℂ :=
-  cexp (I * (phase q : ℝ)) * s (q.2 + q.1.1)
-
 end GlobalTheory.CompanionTheory.OM.SchDiff
 
 namespace GlobalTheory.CompanionTheory.OM
-
-open SchDiff
 
 end GlobalTheory.CompanionTheory.OM

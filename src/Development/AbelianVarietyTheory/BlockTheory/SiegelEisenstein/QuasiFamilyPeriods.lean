@@ -24,9 +24,6 @@ structure IsQuasiFam (ψ : AddChar (AF D.host.F) ℂ) (S L : HSp D) (Y : GA D S 
   quasi : ∀ h γ w, Y h (ratW L S γ + w) = ψ (-(symplOH S L (ratW L S γ) w)) * Y h w
   left : ∀ γ ∈ GQ S, ∀ h w, Y (γ * h) w = Y h (w ⬝ mt S γ)
 
-theorem isQuasiFam_of_isThetaFam {S L : HSp D} {Y : GA D S → WO S L → ℂ} (hY : IsThetaFam ψ S L Y) : IsQuasiFam ψ S L Y :=
-  ⟨hY.cont, fun h => (hY.theta h).quasi, hY.left⟩
-
 structure PeriodsAgree (s : StepBF ψ B J) (l : Link B L' ζ') (φ : GA D B.A → ℂ) (Ξ : WO B.V₀ J.W₀ → ℂ)
     (G' : GA D J.W → ℂ) : Prop where
 
@@ -60,26 +57,6 @@ def PeriodLinkQuasi (D : D7) : Prop :=
     ∀ φ : GA D B.A → ℂ, IsContAut B.A φ → ∀ Ξ : WO B.V₀ J.W₀ → ℂ, IsThetaFunO ψ B.V₀ J.W₀ Ξ →
       IsQuasiFam ψ J.W₀ L' (handBF s l φ Ξ) ∧
       ∀ G' : GA D J.W → ℂ, RapidDec J.W G' → PeriodsAgree s l φ Ξ G'
-
-theorem PeriodLink.quasi (H : PeriodLink D) : PeriodLinkQuasi D := fun ψ ρ B J s L' ζ' hL l =>
-  ⟨(H ψ ρ B J s L' ζ' hL l).1, fun φ hφ Ξ hΞ =>
-    ⟨isQuasiFam_of_isThetaFam ((H ψ ρ B J s L' ζ' hL l).2 φ hφ Ξ hΞ).1, ((H ψ ρ B J s L' ζ' hL l).2 φ hφ Ξ hΞ).2⟩⟩
-
-def LinkClass (D : D7) : Prop :=
-  ∀ (ρ : ℕ) (B : BesLev D ρ) (L' : HSp D) (ζ₁ : Fin L'.rank → D.host.E), IsLineVec L' ζ₁ →
-    ((∃ a : D.host.E, a ≠ 0 ∧ Nonempty (Link B L' (a • ζ₁))) ↔
-      ∃ t : D.host.E, t ≠ 0 ∧ star ζ₁ ⬝ᵥ L'.gram *ᵥ ζ₁ = (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ) * (t * star t))
-
-example (B : BesLev D ρ) (h0 : D.host.xi0 ≠ 0) : Nonempty (Link B B.L (D.host.xi0⁻¹ • B.ζ)) := by
-  refine ⟨⟨(-D.host.xi0) • 1, ?_, ?_⟩⟩
-  · rw [Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul, neg_mul, mul_inv_cancel₀ h0, neg_smul, one_smul]
-  · have h1 : star D.host.xi0 ≠ 0 := star_ne_zero.2 h0
-    rw [star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, star_inv₀]
-    field_simp
-
-example (l : Link B L' ζ') (f : WO B.L J.W₀ → ℂ) :
-    conjTr l J.W₀ (jacT ψ J.d B.L (yZero B.L ρ B.ζ) 1 f) = jacS ψ J.d L' (zEll L' ρ ζ') 1 (conjTr l J.W₀ f) := by
-  rw [jacT_one, jacS_one]; rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.QuasiFamilyPeriods
 

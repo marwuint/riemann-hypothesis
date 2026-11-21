@@ -108,15 +108,6 @@ structure GOps (B : Base (U3 Δ) (GA Δ) V) (s : B.Tw) (u : ParN F 3 → Module.
 
 end SD
 
-structure GlobIn : Prop where
-  tf : TFId0
-  bG : BaseG
-  bS : BaseS
-  bK : BaseK
-  fG : FinG
-  fS : FinS
-  fK : FinK
-
 def SpecF : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] (Δ : F) (A : SD Δ), A.Ok →
     ∀ (VG VS VK : Type) [AddCommGroup VG] [Module ℂ VG] [FiniteDimensional ℂ VG] [AddCommGroup VS] [Module ℂ VS]

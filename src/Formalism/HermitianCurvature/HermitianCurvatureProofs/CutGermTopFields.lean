@@ -139,15 +139,6 @@ theorem field_mem_unitary : FieldMemU := by
   refine ((hV.int a hloc).re).congr (Filter.Eventually.of_forall fun cc => ?_)
   exact (norm_vecT_sq hV _).symm
 
-section place
-
-variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {I : Type} [Fintype I]
-  {p : KB.Pl P Wp Wq} {nn : ℝ → ℝ} {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} {w : List C.Letter} {c : I → ℝ}
-  {Fi : I → B.Mat P.k P.r → (Wq →L[ℂ] Wp)} {L : I → (Wq →L[ℂ] Wp) →L[ℂ] HS Wp Wq}
-
-end place
-
 end
 
 end Formalism.FourierDecayAlt.P.CutBP.GT

@@ -11,14 +11,8 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 noncomputable section
 namespace GlobalTheory.LagrThetaAdm
-open GlobalTheory.ThetaTrCont
-open scoped Classical
-variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ]
 end GlobalTheory.LagrThetaAdm
 namespace GlobalTheory.LagrThetaAdm
-open GlobalTheory.ThetaTrCont
-open scoped Classical
-variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [Invertible (2 : AdeleRing (𝓞 F) F)]
 end GlobalTheory.LagrThetaAdm
 namespace GlobalTheory.LagrThetaAdm
 open GlobalTheory.ThetaTrCont GlobalTheory.WeilSchrodinger

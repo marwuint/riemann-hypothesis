@@ -46,26 +46,7 @@ def conjEquiv (V : HSp D) : UD D (-V.gram) ≃ₜ* GA D V where
   continuous_toFun := ((continuous_cjG V.rank).comp continuous_subtype_val).subtype_mk _
   continuous_invFun := ((continuous_cjG V.rank).comp continuous_subtype_val).subtype_mk _
 
-theorem isConjV_conjEquiv (V : HSp D) : IsConjV V (conjEquiv V) := fun _ => rfl
-
 theorem conjEquiv_symm_val (V : HSp D) (g : GA D V) : ((conjEquiv V).symm g).1 = cjG D V.rank (matHom V g) := rfl
-
-theorem mem_ratU_iff (V : HSp D) (h : UD D (-V.gram)) : h ∈ ratU D.sp.cm.sig (-V.gram) ↔ conjEquiv V h ∈ GQ V := by
-  constructor
-  · rintro ⟨γ, hγ⟩
-    rw [mem_GQ_iff]
-    refine ⟨γ.1.map D.sp.cm.sig, ?_⟩
-    have h1 : (rat γ.1 : Mx D V.rank V.rank) = umat h := congrArg Units.val hγ
-    show (rat (γ.1.map D.sp.cm.sig) : Mx D V.rank V.rank) = cj (umat h)
-    rw [← h1, cj_rat]
-  · rintro ⟨γ, -, hγ⟩
-    refine ⟨Matrix.GeneralLinearGroup.map (D.sp.cm.sig : D.host.E →+* D.host.E) γ, Units.ext ?_⟩
-    have h1 : (rat γ.1 : Mx D V.rank V.rank) = cj (umat h) := congrArg Units.val hγ
-    show (rat (γ.1.map D.sp.cm.sig) : Mx D V.rank V.rank) = umat h
-    rw [← cj_rat, h1, cj_cj]
-
-theorem exists_conj : ∀ (D : D7) (V : HSp D), ∃ ι : UD D (-V.gram) ≃ₜ* GA D V, IsConjV V ι ∧ ∀ h, h ∈ ratU D.sp.cm.sig (-V.gram) ↔ ι h ∈ GQ V :=
-  fun _ V => ⟨conjEquiv V, isConjV_conjEquiv V, mem_ratU_iff V⟩
 
 end GlobalTheory.SWLink.Conj
 

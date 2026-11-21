@@ -578,15 +578,6 @@ theorem complement_at (hC : GlobalTheory.TwSys.Cheb) (D : D7) (hG : GaloisRepsCu
     hr1 hr2 hT1 fun g => congrFun key g
   exact ⟨ρ, h1, h2, h3⟩
 
-theorem complementF (hC : GlobalTheory.TwSys.Cheb) {eps : ℝ} (Fm : FamP eps)
-    (hG : ∀ x : ℝ, Fm.x1 < x → ∀ k : Fm.Ix x, GaloisRepsCusp (Fm.D x k)) : ComplementF Fm :=
-  fun x hx k => complement_at hC _ (hG x hx k)
-
-theorem complementClosed (hC : GlobalTheory.TwSys.Cheb) (𝒞 : FamClass)
-    (hG : Closed 𝒞 fun Fm _ => ∀ x : ℝ, Fm.x1 < x → ∀ k : Fm.Ix x, GaloisRepsCusp (Fm.D x k)) :
-    ComplementClosed 𝒞 :=
-  Closed.imp hG fun Fm _ _ h => complementF hC Fm h
-
 end Main
 
 end GlobalTheory.BlockComplement

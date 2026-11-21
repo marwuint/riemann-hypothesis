@@ -29,6 +29,4 @@ end Formalism.MainNotions.DIV.Bridge.OneLetterJetKernel
 
 namespace Formalism.MainNotions.DIV.Bridge.DworkPowerSeriesWeights
 
-open Formalism.MainNotions Formalism.MainNotions.DIV.Bridge.OneLetterJetKernel
-
 end Formalism.MainNotions.DIV.Bridge.DworkPowerSeriesWeights

@@ -2,12 +2,17 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsGrpPullbackOfLoc
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnit
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasThStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasTh
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaPointsVanishingIdealRadicalHomogeneous
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescentStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescent
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelIsoUniqueOfDenseCommonFibresStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -68,7 +73,7 @@ theorem exists_hasTh_field (hL : Out.Laws) (hL2 : Out.Laws2) (ho : Odd N') (t : 
     rintro _ ⟨q, rfl⟩
     rwa [Subsingleton.elim (α := PrimeSpectrum K) q (IsLocalRing.closedPoint K)]
   obtain ⟨ρ, hρ⟩ := spMap_surj (IsOpenImmersion.lift x y hr)
-  have := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t R K ρ x v hv
+  have := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b S s t R K ρ x v hv
   rw [hρ, IsOpenImmersion.lift_fac] at this
   exact ⟨_, this⟩
 
@@ -81,12 +86,12 @@ theorem eval_eq_zero_of_fromC (hL : Out.Laws) (hL2 : Out.Laws2) {n : ℕ} (hn : 
   obtain ⟨v₀, hv₀⟩ := exists_hasTh_field hL hL2 ho t₀ K₀ (𝟙 _)
   have a1 : tx.HasTh (𝟙 _) v := (hasTh_iff_of_tmap o g N' J b _ _ t _ _ tx y K _ v h1).2 (by rwa [Category.id_comp])
   have a2 : tx.HasTh (𝟙 _) (fun a => i (v₀ a)) := (hasTh_iff_of_tmap o g N' J b _ _ t₀ _ _ tx _ K _ _ h2).2 (by
-    have := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ _ t₀ K₀ K i _ v₀ hv₀
+    have := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b _ _ t₀ K₀ K i _ v₀ hv₀
     rwa [Category.comp_id, ← Category.id_comp (spMap i)] at this)
   have a3 : tc.HasTh (𝟙 _) (fun a => j (v₀ a)) := (hasTh_iff_of_tmap o g N' J b _ _ t₀ _ _ tc _ ℂ _ _ h3).2 (by
-    have := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ _ t₀ K₀ ℂ j _ v₀ hv₀
+    have := _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b _ _ t₀ K₀ ℂ j _ v₀ hv₀
     rwa [Category.comp_id, ← Category.id_comp (spMap j)] at this)
-  obtain ⟨c, hc⟩ := GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b _ _ tx n K _ _ ⊥ hn hd a2 Ideal.isPrime_bot 0
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.coset_of_hasTh hL hL2 o g N' J b _ _ tx n K _ _ ⊥ hn hd a2 Ideal.isPrime_bot 0
   obtain ⟨u, hu⟩ := hasTh_unique_unit hL hL2 o g N' J b _ _ tx K _ _ _ a2 a1
     (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨_, rfl⟩) (Ne.isUnit (by simpa using hc)))
   obtain rfl : β = i.comp β₀ := spMap_inj (hβ.symm.trans (hi.trans (spMap_comp_eq _ _)))
@@ -126,7 +131,7 @@ theorem inMM_of_dense (hL : Out.Laws) (hL2 : Out.Laws2) {n : ℕ} (hn : 2 ≤ n)
     {t : TObj g (N' ^ 2) J b s} (hD : Dense (fromSet em C t)) {R : Type} [CommRing R] [IsReduced R] (x : Sp R ⟶ S)
     [IsOpenImmersion x] (β : o →+* R) (hβ : x ≫ s = spMap β) (v : Ix g (N' ^ 2) → R) (hv : t.HasTh x v) :
     InMM n N' (thIdeal em C) β v := by
-  refine ⟨fun F hF => ?_, fun q hq => GlobalTheory.T.thetaCosetNonvanishing_of_hasTh hL hL2 o g N' J b S s t n R x v q hn hd hv hq⟩
+  refine ⟨fun F hF => ?_, fun q hq => _root_.GlobalTheory.coset_of_hasTh hL hL2 o g N' J b S s t n R x v q hn hd hv hq⟩
   by_contra hne
   have hb : PrimeSpectrum.basicOpen (MvPolynomial.eval₂ β v F) ≠ ⊥ := fun h =>
     hne ((PrimeSpectrum.basicOpen_eq_bot_iff _).1 h).eq_zero
@@ -134,7 +139,7 @@ theorem inMM_of_dense (hL : Out.Laws) (hL2 : Out.Laws2) {n : ℕ} (hn : 2 ≤ n)
     (PrimeSpectrum.basicOpen (MvPolynomial.eval₂ β v F)).isOpen
     ((TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hb)
   have h0 := eval_eq_zero_of_fromC hL hL2 hn hd ho hem t _ hy (ψ.comp β)
-    (by rw [Category.assoc, hβ, spMap_comp_eq]) _ (GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t R K ψ x v hv) F hF
+    (by rw [Category.assoc, hβ, spMap_comp_eq]) _ (_root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b S s t R K ψ x v hv) F hF
   refine hp (show ψ (MvPolynomial.eval₂ β v F) ∈ (show PrimeSpectrum K from q).asIdeal from ?_)
   rw [MvPolynomial.eval₂_comp_left]
   exact (show MvPolynomial.eval₂ (ψ.comp β) (ψ ∘ v) F = 0 from h0) ▸ Ideal.zero_mem _
@@ -158,16 +163,16 @@ theorem tMap_affine (hL : Out.Laws) (hL2 : Out.Laws2) {m : ℕ} (hm : 2 ≤ m) (
     obtain ⟨t', ht'⟩ := tObj_pull o g _ J b _ _ _ ((spMap (a.comp ψ) ≫ y) ≫ sM) (spMap (a.comp ψ)) tx
       (by rw [Category.assoc, hxy, hβ])
     obtain ⟨u', hu'⟩ := tObj_pull o g _ J b _ _ _ _ (spMap (a.comp ψ)) tx rfl
-    have s0 : t₀.Shape Mat κ := ((GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w₀ w₀ _ _ _ _ _ t₀ tc h3).2.2 K₀ rfl
+    have s0 : t₀.Shape Mat κ := ((_root_.GlobalTheory.shape_prim_pull_and_descend o g _ J b Mat κ w₀ w₀ _ _ _ _ _ t₀ tc h3).2.2 K₀ rfl
       inferInstance inferInstance).1 (hC tc hc)
-    have s1 : tK.Shape Mat κ := (GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w₀ w₀ _ _ _ _ _ t₀ tK h2).1 s0
+    have s1 : tK.Shape Mat κ := (_root_.GlobalTheory.shape_prim_pull_and_descend o g _ J b Mat κ w₀ w₀ _ _ _ _ _ t₀ tK h2).1 s0
     have m1 : TMap t' t (spMap (a.comp ψ) ≫ x) := tMap_comp ht' htx
     have m2 : TMap t' tK (spMap a) := tMap_cancel h1 (by rwa [← Category.assoc, ez])
-    have s2 : t'.Shape Mat κ := (GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w₀ w₀ _ _ _ _ _ tK t' m2).1 s1
+    have s2 : t'.Shape Mat κ := (_root_.GlobalTheory.shape_prim_pull_and_descend o g _ J b Mat κ w₀ w₀ _ _ _ _ _ tK t' m2).1 s1
     have m3 : TMap t' u (spMap (a.comp ψ) ≫ y) := hu _ _ t' _ s2
       ((hasTh_iff_of_tmap o g N' J b _ _ t _ _ t' _ _ _ _ m1).2 (by
-        rw [Category.id_comp]; exact GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b S s t R _ (a.comp ψ) x v hv))
-      (GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b M sM u R _ (a.comp ψ) y v hv')
+        rw [Category.id_comp]; exact _root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b S s t R _ (a.comp ψ) x v hv))
+      (_root_.GlobalTheory.hasTh_baseChange hL2 o g N' J b M sM u R _ (a.comp ψ) y v hv')
     have m4 : TMap u' t' (𝟙 _) := tMap_cancel ht' (by rwa [Category.id_comp])
     have m5 := tMap_comp m4 m3
     rw [Category.id_comp] at m5
@@ -225,7 +230,7 @@ theorem family_universal : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [
     refine ⟨_, a, a', IsOpenImmersion.of_comp a (x i), ⟨r, (x i).isOpenEmbedding.injective ?_⟩, e1.trans e2.symm, ?_⟩
     · rw [← Scheme.Hom.comp_apply, e1, hr]
     · obtain ⟨ρ, hρ⟩ := spMap_surj (R' := T) a
-      have h := GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g _ J b S s' t _ T ρ (x i) (v i) (hv i)
+      have h := _root_.GlobalTheory.hasTh_baseChange hL2 o g _ J b S s' t _ T ρ (x i) (v i) (hv i)
       rw [hρ] at h
       refine uniq T _ _ _ ?_ (tr i T a _ h) (tr i' T a' _ (by rw [e2, ← e1]; exact h))
       rw [Category.assoc, Category.assoc, hy, hy, ← Category.assoc, ← Category.assoc]

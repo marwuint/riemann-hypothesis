@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UniformLevelMultiplicity
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelLiftConditions
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalVectorMemIdealCompletedLatticeIffStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalVectorMemIdealCompletedLatticeIff
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceLatticeFractionalMultipleAgree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLevelSubgroup
@@ -145,7 +145,7 @@ theorem exists_levGrp_induced : ∀ (D : D7) (V : HSp D) (H : ReciprocityTheory.
       rw [hhat]
       exact GlobalTheory.Member.AALev.fv_mem_hat _ (hmem a))
     (fun a => by
-      refine (GlobalTheory.T.rationalVector_mem_ideal_completedLattice_iff D V l.Mb hMb (ι a)).trans ?_
+      refine (_root_.GlobalTheory.IdealCap.finVec_mem_closure_iff D V l.Mb hMb (ι a)).trans ?_
       rw [← hι.2, LinearMap.range_eq_map, ← Submodule.map_smul'']
       constructor
       · rintro ⟨x, hx, e⟩

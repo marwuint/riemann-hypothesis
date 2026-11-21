@@ -131,20 +131,6 @@ theorem expMv_add [CharZero K] {f g : MvPowerSeries σ K} (hf : constantCoeff f 
   rw [Finset.sum_congr rfl key, ← coeff_mul]
   exact coeff_expT_add_eq_coeff_expT_mul_expT hf hg (Nat.lt_succ_self _)
 
-theorem simeqW_add [CharZero K] {W : Subring K} {f g f' g' : MvPowerSeries σ K}
-    (h : SimeqW W f g) (h' : SimeqW W f' g') : SimeqW W (f + f') (g + g') := by
-  classical
-  obtain ⟨h0, hW⟩ := h
-  obtain ⟨h0', hW'⟩ := h'
-  have e : f + f' - (g + g') = (f - g) + (f' - g') := by ring
-  refine ⟨by rw [e, map_add, h0, h0', add_zero], fun n => ?_⟩
-  rw [e, expMv_add h0 h0', coeff_mul]
-  exact W.sum_mem fun p _ => W.mul_mem (hW _) (hW' _)
-
-theorem addPreservesExpCongruence : S3 := by
-  intro K _ _ W σ f g f' g' h h'
-  exact simeqW_add h h'
-
 end PI.FglPhSplit.Wk
 
 end

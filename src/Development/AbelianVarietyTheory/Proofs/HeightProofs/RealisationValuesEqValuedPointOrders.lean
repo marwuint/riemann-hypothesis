@@ -15,9 +15,18 @@ import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NaturalRuleValueBaseChangeOfIsReduced
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHoldStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import Formalism.LocalToGlobal.ProjectiveLattices.DivFinOfLawA3
+import Formalism.LocalToGlobal.ProjectiveLattices.NrmContPf
+import Formalism.LocalToGlobal.ProjectiveLattices.AxHSup
+import Formalism.LocalToGlobal.ProjectiveLattices.RegQFree
+import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.NormOrderStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NumericalConsequencesOfPins
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.GenericSectionPointsInequivalentValuationsStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.GenericSectionPointsInequivalentValuations
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemRangeOfValVLeOne
 
 set_option synthInstance.maxHeartbeats 400000
@@ -112,7 +121,7 @@ theorem generic_of_ne_zero (h : GenFrEx Xo c) (Z : Comp Xo c) (L : Type) [Field 
     (hR : ∀ r : Om Z, r ≠ 0 → ∃ a n, ∃ f ∈ sec Xo c a n, ∃ g ∈ sec Xo c a n,
       evC h Z f = r * evC h Z g ∧ evR Xo c f y ≠ 0) :
     ∃ (ψ : Om Z →ₐ[c.F] L) (z : FrPt Xo c L) (t : Ix Dw → Lˣ), FrMap ψ (genFr h Z) z ∧ FrBor t z y := by
-  obtain ⟨hL, -, -, hA⟩ := GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c
+  obtain ⟨hL, -, -, hA⟩ := _root_.GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c
   obtain ⟨C, ψ0, z0, t', hz0, hb0⟩ := hA h L y
   have G := GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c
   have e1 : ∀ a n, ∀ f ∈ sec Xo c a n,
@@ -155,7 +164,7 @@ theorem ratio_of_generic (h : GenFrEx Xo c) (Z : Comp Xo c) (L : Type) [Field L]
     {y z : FrPt Xo c L} {ψ : Om Z →ₐ[c.F] L} {t : Ix Dw → Lˣ} (hz : FrMap ψ (genFr h Z) z) (hb : FrBor t z y)
     {a n} {f g : Rul Xo c} (hf : f ∈ sec Xo c a n) (hg : g ∈ sec Xo c a n) {r : Om Z}
     (hr : evC h Z f = r * evC h Z g) : evR Xo c f y = ψ r * evR Xo c g y := by
-  obtain ⟨hL, -⟩ := GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c
+  obtain ⟨hL, -⟩ := _root_.GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c
   have e : ∀ f ∈ sec Xo c a n, evR Xo c f y = wchar (ex Dw a n) t * ψ (evC h Z f) := fun f hf => by
     rw [evC, ← GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n f hf _ _ ψ _ _ hz]
     exact hL.wt a n f hf _ t _ _ (hL.test _ _) (hL.test _ _) hb
@@ -361,10 +370,10 @@ set_option maxHeartbeats 4000000 in
 
 theorem GlobalTheory.RealisationValues.values_eq_orders : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) [Fintype (Comp (T.Q.Xo j) T.Q.c)] (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → ∀ (y : ∀ la, PtsG G la → (extAll h j hj).Pt' la) (hw : ∀ la ζ, FromW (E := extAll h j hj) (hM := intAtExt_extAll h j hj) ζ (y la ζ)), (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InCurve) → (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InTie S) → ∀ (δ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (T.Q.Dw j) → ℤ), OrdTie hG δ (trivialClassCondition (T.Q.Xo j) T.Q.c) (fun _ => Unit) (fun _ _ _ _ _ => True) → ∀ la (ζ : PtsG G la), ∃ (Z : Comp (T.Q.Xo j) T.Q.c) (v : AddValuation (Om Z) (WithTop ℤ)), ReciprocityTheory.ChartRestriction.G.T0.IsNormDiscrete v ∧ ReciprocityTheory.ChartRestriction.G.T0.IsOver (K := T.Q.c.F) v la ∧ ∀ (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w), (evC hG Z F.1 = 0 → (hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F)) = 0) ∧ (evC hG Z F.1 ≠ 0 → (hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F)) ≠ 0 ∧ vV (hw la ζ).T.V ((hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F))) = ordC (δ Z v) v (wtZ (wtA w) w.n) (valC hG (wtA w) w.n F.1 Z)) := by
   intro D T h j hj hG _ ka wL wF G S g0 hH hI hC hB y hw _ _ δ hδ la ζ
-  have hT : GenFromTest (T.Q.Xo j) T.Q.c hG := fun Z => (GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold _ _ _ _ (T.Q.Xo j) T.Q.c).1.test _ _
+  have hT : GenFromTest (T.Q.Xo j) T.Q.c hG := fun Z => (_root_.GlobalTheory.Reg.evLaws_genFr_atlas _ _ _ _ (T.Q.Xo j) T.Q.c).1.test _ _
   obtain ⟨n1, n2, -, -, -, -, n3⟩ := GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins
   obtain ⟨n4, n5, -⟩ := n3 j hj
-  obtain ⟨Zc, ι, h1, h2, h3, -⟩ := GlobalTheory.T.generic_section_points_inequivalent_valuations D T h j hj hG hT ka wL wF G S g0 la hH hI hC hB (y la) (hw la)
+  obtain ⟨Zc, ι, h1, h2, h3, -⟩ := _root_.GlobalTheory.GenSep.valSep_of_curveHyp D T h j hj hG hT ka wL wF G S g0 la hH hI hC hB (y la) (hw la)
   obtain ⟨i, hi⟩ := GlobalTheory.RealisationValues.exists_gen_ne_zero (hw la ζ).toSecPt
   have hL : ∀ k, ∃ u : (recB h.toLawsCore).Cusp j (addL (wt0 D j) wL (k + 1)),
       (hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc _ u)) ≠ 0 := fun k => by

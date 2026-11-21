@@ -62,11 +62,6 @@ theorem mem_classGroupAt (z : GA D V) (γ : GQ V) :
   rw [e]
   exact mem_levelFin _
 
-theorem exists_lift (x : Bridge.Gf V) : ∃ z : GA D V, (finHom V).rangeRestrict z = x :=
-  (finHom V).rangeRestrict_surjective x
-
-example (c : ℂ) : IsClassFun V K fun _ => c := ⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral
 
 end

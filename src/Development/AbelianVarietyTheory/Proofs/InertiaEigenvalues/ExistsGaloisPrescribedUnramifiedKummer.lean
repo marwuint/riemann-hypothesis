@@ -252,6 +252,4 @@ theorem exists_cover : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZe
   · rw [AlgEquiv.mul_apply, AlgEquiv.restrictScalars_apply]
     exact hτ
 
-example : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e), e + 1 = l ^ a → ∀ (m : ZMod a) (ζ : Om l), ζ ^ e = 1 → ∃ g : GQ l, (∀ x : Om l, x ^ l ^ a = x → g x = x ^ l ^ m.val) ∧ g (ϖ.seq 0) = ζ * ϖ.seq 0 := exists_cover
-
 end GlobalTheory.TameFrob

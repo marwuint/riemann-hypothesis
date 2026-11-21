@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentXStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentX
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
 set_option autoImplicit false
@@ -29,7 +29,7 @@ theorem counit_dUnit_evA : ∀ (k : Type) [CommRing k] (d : ℕ) (A : Type) [Com
       commutes' := fun r => by simp [MvPowerSeries.algebraMap_apply] }
   have hc0 : ∀ g, c0 g = constantCoeff g := fun _ => rfl
   have h1 : (Bialgebra.counitAlgHom k A).comp (evA k x hx) = c0 :=
-    GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d) k _ _ (fun i => by simp [hev, h0]) (fun i => by simp [hev, h0, hc0])
+    _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k (Fin d) k _ _ (fun i => by simp [hev, h0]) (fun i => by simp [hev, h0, hc0])
   refine ⟨(AlgHom.congr_fun h1 f).trans (hc0 f), ?_⟩
   letI : Module kᵐᵒᵖ (Cot k A) := Module.compHom _ ((RingHom.id k).fromOpposite mul_comm)
   haveI : IsCentralScalar k (Cot k A) := ⟨fun _ _ => rfl⟩
@@ -65,7 +65,7 @@ theorem counit_dUnit_evA : ∀ (k : Type) [CommRing k] (d : ℕ) (A : Type) [Com
   have hlinX : ∀ i j, lin (X i : MvPowerSeries (Fin d) k) j = if j = i then 1 else 0 := fun i j => by
     simp [lin, coeff_X, Finsupp.single_left_inj one_ne_zero]
   have hφψ : φ = ψ := by
-    refine GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d) _ _ _ (fun i => ⟨2, ?_⟩) (fun i => ?_)
+    refine _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k (Fin d) _ _ _ (fun i => ⟨2, ?_⟩) (fun i => ?_)
     · ext
       · simp [pow_two, hφf, hev, h0]
       · simp [pow_two, TrivSqZeroExt.snd_mul, hφf, hev, h0]

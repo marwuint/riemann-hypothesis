@@ -313,14 +313,6 @@ variable {K n}
     ((archCompactRep K n k φ : automorphicForms K n) : AdelicGLn.AdelicGL K n → ℂ) =
       rightTranslate (infEmb K n k) (φ : AdelicGLn.AdelicGL K n → ℂ) := rfl
 
-theorem finRep_archCompactRep_comm (h : AdelicGLn.FiniteAdelicGL K n) (k : archCompact K n)
-    (φ : automorphicForms K n) :
-    finRep K n h (archCompactRep K n k φ) = archCompactRep K n k (finRep K n h φ) := by
-  apply Subtype.ext
-  funext g
-  simp only [coe_finRep_apply, coe_archCompactRep_apply, GroundTheory.Automorphic.rightTranslate,
-    mul_assoc, infEmb_mul_finEmb_comm]
-
 variable (K n)
 
 def finRepCusp : Representation ℂ (AdelicGLn.FiniteAdelicGL K n) (cuspForms K n) where

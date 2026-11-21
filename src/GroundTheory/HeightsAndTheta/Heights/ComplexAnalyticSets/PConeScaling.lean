@@ -17,19 +17,4 @@ theorem eval_smul_of_isHomogeneous {n i : ℕ} {φ : MvPolynomial (Fin n) ℂ} (
     Finset.prod_pow_eq_pow_sum, hdeg]
   ring
 
-attribute [local instance] MvPolynomial.gradedAlgebra in
-
-theorem ConeScaling.proof : ConeScaling.Statement := by
-  intro n J hJ t ht
-  have key : ∀ s : ℂ, s • zeroSet J ⊆ zeroSet J := by
-    rintro s _ ⟨x, hx, rfl⟩
-    show ∀ q ∈ J, eval (s • x) q = 0
-    intro q hq
-    rw [← sum_homogeneousComponent q, map_sum]
-    refine Finset.sum_eq_zero fun i _ => ?_
-    rw [eval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous i q),
-      hx _ (homogeneousComponent_mem_of_mem hJ hq i), mul_zero]
-  refine (key t).antisymm fun x hx => ?_
-  exact ⟨t⁻¹ • x, key _ (Set.smul_mem_smul_set hx), smul_inv_smul₀ ht x⟩
-
 end GroundTheory.Heights₂.Heights.ComplexSets

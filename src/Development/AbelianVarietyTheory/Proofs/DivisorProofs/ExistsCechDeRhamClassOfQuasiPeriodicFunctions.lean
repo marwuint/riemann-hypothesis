@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedOneFormEvaluationRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedOneFormEvaluationRestrictionEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedOneFormEvaluationRestrictionEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClosedAlgebraicFormFderivUniformisedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KaehlerOneFormEqZeroOfUniformisedValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KaehlerOneFormEqZeroOfUniformisedValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZero
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CechDR GlobalTheory.CechPer
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -39,7 +39,7 @@ theorem exists_isPer_of_quasiPeriodic : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : 
       f U W (φ ≫ ψ) = Sec.res (str A) (show W.1 ≤ V.1 from leOfHom ψ.unop) (f U V φ) + f V W ψ := by
     intro U V W φ ψ
     have hle : W.1 ≤ V.1 := leOfHom ψ.unop
-    refine sub_eq_zero.1 (GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA W.1
+    refine sub_eq_zero.1 (_root_.GlobalTheory.ValInj.eq_zero_of_val_eq_zero A g L u hA W.1
       (f U W (φ ≫ ψ) - (Sec.res (str A) hle (f U V φ) + f V W ψ) : Sec (str A) W.1) fun z hz => ?_)
     have e1 := hsub W.1 (f U W (φ ≫ ψ)) (Sec.res (str A) hle (f U V φ) + f V W ψ) z hz
     have e2 := hadd W.1 (Sec.res (str A) hle (f U V φ)) (f V W ψ) z hz
@@ -52,10 +52,10 @@ theorem exists_isPer_of_quasiPeriodic : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : 
   have hform : ∀ (U V : A.left.affineOpens) (φ : Opposite.op U ⟶ Opposite.op V),
       ω V = p1 (OAff (str A)) φ (ω U) + KaehlerDifferential.D ℂ (Sec (str A) V.1) (f U V φ) := by
     intro U V φ
-    refine sub_eq_zero.1 (GlobalTheory.T.kaehlerOneForm_eq_zero_of_uniformised_values A g L u hA V _ fun z hz => ?_)
+    refine sub_eq_zero.1 (_root_.GlobalTheory.form_eq_zero_of_evForm_eq_zero A g L u hA V _ fun z hz => ?_)
     have hle : V.1 ≤ U.1 := leOfHom φ.unop
     have hz' : z ∈ pre u.ex U.1 := hmono _ _ hle hz
-    have e1 := GlobalTheory.T.evForm_restriction_eq A g L u U V φ (ω U) z hz
+    have e1 := _root_.GlobalTheory.CechPer.uniformisedOneFormEvaluation_restriction_eq A g L u U V φ (ω U) z hz
     have e2 := (GlobalTheory.T.uniformisedOneFormEvaluation_rules A g L u V.1 z hz).2.2 (f U V φ)
     have heq : k V =ᶠ[nhds z] k U + val u.ex V.1 (f U V φ) := by
       filter_upwards [(hopen _).mem_nhds hz] with w hw

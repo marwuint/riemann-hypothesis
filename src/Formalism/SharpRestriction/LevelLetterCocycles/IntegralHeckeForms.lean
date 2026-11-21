@@ -195,9 +195,6 @@ def SgJ (i : X.Tw) (j : ℕ) (b : Bool) : Set (Y.Dat i j b) := E.Dat0 i j b
 
 def ThJ (i : X.Tw) (j : ℕ) (b : Bool) : Submodule (X.O i) (Y.Fm i j b) := Th Y i j b (SgJ Y E i j b)
 
-def ThSub (Sg0 : ∀ (i : X.Tw) (j : ℕ) (b : Bool), Set (Y.Dat i j b)) : Prop :=
-  ∀ i, ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool, Th Y i j b (Sg0 i j b) ≤ ThJ Y E i j b
-
 def IdxAt (i : X.Tw) (j : ℕ) (b : Bool) (Sg : Set (Y.Dat i j b)) (k : ℕ) (Q : Finset (PlE D.host))
     (ψ : G D.host.E N.Om →* (X.Ok i k)ˣ) (e : ℝ) : Prop :=
   ∀ (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra (X.Ok i k) O']
@@ -229,15 +226,6 @@ def GoodTw (N0 : X.Tw → ℕ) (i : X.Tw) (eps' : ℝ)
         (((V0 Y i j b).restrictScalars (X.O i)).baseChange (X.Ok i k')) ∧
       InclAt Y i j b (SgJ Y E i j b) k' Q (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (ψ'.comp (X.art i Q)))) ∧
     Formalism.MainNotions.BlochKatoReduction.Gen.partAT bkP i Q k' ψ' eps' ∧ Formalism.MainNotions.BlochKatoReduction.Gen.partC N0 i Q k' ψ' eps' ∧ Formalism.MainNotions.BlochKatoReduction.Gen.partD i Q k' ψ' eps'
-
-def TwistTheoremAtIndex (N0 : X.Tw → ℕ) (i : X.Tw) : Prop :=
-  Formalism.MainNotions.BlochKatoReduction.Gen.SetHyp bkP i → ∀ eps' : ℝ, 0 < eps' →
-    (∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool, FullRk Y E i j b (SgJ Y E i j b)) →
-  ∀ S : ∀ (j : ℕ) (b : Bool), Finset (Y.Dat i j b),
-    (∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool, BasisOf Y i j b (SgJ Y E i j b) (S j b)) →
-  ∀ A : Finset (PlE D.host),
-  ∃ (Q : Finset (PlE D.host)) (k' : ℕ) (ψ' : X.RCG i Q →* (X.Ok i k')ˣ),
-    GoodTw Y bkP E N0 i eps' S A Q k' ψ'
 
 def Mall (i : X.Tw) (j : ℕ) (b : Bool) : Submodule (X.O i) (Y.Fm i j b) :=
   Y.Bsup i j b ⊓ (Fm0 Y i j b).restrictScalars (X.O i)
@@ -296,9 +284,6 @@ def TwistedSeriesSpecialisation : Prop :=
 
 abbrev XD (D : Formalism.BasicNotions.D7) : Type := ExpDat D.nexp
 
-def aux₃ (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochKatoReduction.BK D) (E : XD D) (N0 : D.ntw.Tw → ℕ) : Prop :=
-  ∀ i, D.ntw.NonzeroIndexPlace i → TwistTheoremAtIndex D.nexp (Formalism.MainNotions.BlochKatoReduction.pin bkP) E N0 i
-
 def adm1 (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochKatoReduction.BK D) (N0 : D.ntw.Tw → ℕ) : Prop :=
   Formalism.MainNotions.BlochKatoReduction.aux₃ D bkP N0
 
@@ -325,10 +310,6 @@ def admitted (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochK
     (N0 : D.ntw.Tw → ℕ) : Prop :=
   adm1 D bkP N0 ∧ adm2 D bkP N0 ∧ adm3 D E ∧ ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm7 D E ∧
     adm8 D N0 ∧ adm9 D ∧ adm10 D ∧ adm11 D
-
-def Stmt (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochKatoReduction.BK D) (E : XD D) :
-    Prop :=
-  ∀ N0 : D.ntw.Tw → ℕ, admitted D bkP E N0 → aux₃ D bkP E N0
 
 end Formalism.MainNotions.IntegralHeckeForms
 

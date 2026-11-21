@@ -179,16 +179,6 @@ noncomputable def tateCompactδRes (hS : S.ShortExact) (n : ℕ) :
 
 variable (hS : S.ShortExact)
 
-include hS in
-
-theorem tateCompactRes_exact₂ (n : ℕ) :
-    (ShortComplex.mk (tateCompactCohomologyResMap φ ψ S.f n) (tateCompactCohomologyResMap φ ψ S.g n)
-      (by rw [← tateCompactCohomologyResMap_comp, S.zero, tateCompactCohomologyResMap_zero])).Exact :=
-  tateCompactCohomology_exact₂ φ ψ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom))
-    (fun _ => 𝟙 _) (Sᵣ := fun w => S.map (Rep.resFunctor (ψ w).toMonoidHom)) (fun _ => 𝟙 _) hS
-    (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS)
-    (fun w => (Rep.shortExact_res (ψ w).toMonoidHom).2 hS) n
-
 theorem tateCompactRes_exact₃ (n : ℕ) :
     (ShortComplex.mk (tateCompactCohomologyResMap φ ψ S.g n) (tateCompactδRes φ ψ hS n)
       (tateCompactCohomologyMap₂₃_tateCompactδ φ ψ

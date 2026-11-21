@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenScaledInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScaledLatticeCharacterTrivialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScaledLatticeCharacterTrivial
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix TensorProduct Classical
 namespace GlobalTheory.SchrCharPure
@@ -39,7 +39,7 @@ theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ
         (fun i => x i * algebraMap F (AF F) (b i)) Finset.univ).trans
         (Finset.sum_congr rfl fun i _ => rfl)
     have hfin : ψ (show AF F from (0, u.2)) = 1 := by
-      have := GlobalTheory.T.scaled_lattice_character_trivial F ψ hψ κ a ha b hb _ hz
+      have := _root_.GlobalTheory.TraceDualChar.psi_trivial_on_scaledInt F ψ hψ κ a ha b hb _ hz
       rw [← hu2] at this
       exact this
     have hAt : At (evI F) (show AF F from (u.1, 0)) := by

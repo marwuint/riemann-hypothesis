@@ -21,37 +21,6 @@ namespace CohIntPf
 
 variable {D : Formalism.BasicNotions.D7}
 
-theorem denF' (x : D.host.E) :
-    ∃ d : 𝓞 D.host.F, d ≠ 0 ∧ IsIntegral ℤ (algebraMap D.host.F D.host.E (d : D.host.F) * x) := by
-  obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 D.host.E) x
-  have hb0 : (b : D.host.E) ≠ 0 := by
-    have : (b : 𝓞 D.host.E) ≠ 0 := nonZeroDivisors.ne_zero hb
-    exact_mod_cast this
-  have hbi : IsIntegral ℤ (b : D.host.E) := (b : 𝓞 D.host.E).2
-  have hbc : IsIntegral ℤ (D.conjF (b : D.host.E)) := hbi.map (D.conjF.toRingHom.toIntAlgHom)
-  obtain ⟨t0, ht0⟩ := Formalism.L2.SG.Pf.LocalDenominators.conjF_fix ((b : D.host.E) * D.conjF (b : D.host.E))
-    (by rw [map_mul, Formalism.L2.SG.Pf.LocalDenominators.conjF_invol, mul_comm])
-  have ht0i : IsIntegral ℤ t0 := (isIntegral_algebraMap_iff (algebraMap D.host.F D.host.E).injective).1
-    (by rw [ht0]; exact hbi.mul hbc)
-  refine ⟨⟨t0, ht0i⟩, ?_, ?_⟩
-  · intro h
-    have h1 : t0 = 0 := congrArg Subtype.val h
-    rw [h1, map_zero] at ht0
-    have hc0 : D.conjF (b : D.host.E) ≠ 0 := by
-      intro hc; apply hb0
-      have := congrArg D.conjF hc
-      rwa [Formalism.L2.SG.Pf.LocalDenominators.conjF_invol, map_zero] at this
-    exact mul_ne_zero hb0 hc0 ht0.symm
-  · show IsIntegral ℤ (algebraMap D.host.F D.host.E t0 *
-      (algebraMap (𝓞 D.host.E) D.host.E a / algebraMap (𝓞 D.host.E) D.host.E (b : 𝓞 D.host.E)))
-    have e : algebraMap D.host.F D.host.E t0 *
-        (algebraMap (𝓞 D.host.E) D.host.E a / algebraMap (𝓞 D.host.E) D.host.E (b : 𝓞 D.host.E)) =
-        D.conjF (b : D.host.E) * (a : D.host.E) := by
-      rw [ht0]
-      have hb0' : algebraMap (𝓞 D.host.E) D.host.E (b : 𝓞 D.host.E) ≠ 0 := hb0
-      field_simp
-    rw [e]; exact hbc.mul (a : 𝓞 D.host.E).2
-
 theorem coe_alg (s : 𝓞 D.host.F) :
     ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (s : D.host.F) :=
   rfl
@@ -132,9 +101,5 @@ theorem cohInt_holds : CohInt Zd u u' F0 what₂ := by
   apply hp
   intro b
   exact Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Zd p (scal_mem Zd hg.1 hg.2.1 hg.2.2.1 b) (hb b)
-
-theorem star_coherence_of_three (hDG : CohDG Zd u u' F0 what₂) (hLp : CohLp Zd u u' F0 what₂) (hGood : CohGood Zd u u' F0 what₂) :
-    CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
-  star_coherence_of_four Zd (cohInt_holds Zd) hDG hLp hGood
 
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

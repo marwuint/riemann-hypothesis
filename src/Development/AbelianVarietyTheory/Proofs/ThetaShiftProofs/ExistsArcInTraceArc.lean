@@ -298,28 +298,4 @@ theorem exists_arcIn (hL : Laws) (hL₂ : Laws2) {E : Type} [Field E] [NumberFie
   exact ⟨a, ⟨⟨d, fun _ _ => rfl⟩, σ⟩, rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl,
     fun v => qkExt_fracPt d _ _, fun v => qkExt_fracPt d _ _⟩
 
-section Toric
-
-open HostModel ToricData ToricDict Out.Inh Out.InhTate
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Geo.Tor.Level H)
-
-def traceArc : letI := H.starRing; AnArc (𝓞 E) :=
-  letI := H.starRing
-  AnArc.ofForm (𝓞 E) (𝓞 E) (arcForm l) (fun y z => congrArg ((2 * l.M' : ℤ) * ·) (trForm_symm H y z))
-    (fun _ hy => mul_pos (mul_pos two_pos (Int.natCast_pos.2 (LevelExist.M'_pos l))) (trForm_pos H hy))
-    (fun a y z => congrArg ((2 * l.M' : ℤ) * ·) (trForm_adj H a y z)) fun y => ⟨l.M' * trForm H y y, mul_assoc _ _ _⟩
-
-def traceIso : letI := H.starRing; (hypDatum H).La ≃ₗ[𝓞 E] (traceArc l).La :=
-  letI := H.starRing
-  { toFun v := .mk v.1 (ConjDual.toDual H (-v.2)).toAddMonoidHom 0
-    invFun w := (w.y, -(ConjDual.toDual H).symm (AddMonoidHom.toIntLinearMap w.n))
-    map_add' _ _ := AnArc.La.ext rfl (AddMonoidHom.ext fun _ => neg_add _ _) (add_zero _).symm
-    map_smul' _ _ := AnArc.La.ext rfl (AddMonoidHom.ext fun _ => rfl) (Subtype.ext (Subsingleton.elim (α := Fin 0 → ℂ) _ _))
-    left_inv _ := Prod.ext rfl (neg_neg _)
-    right_inv _ := AnArc.La.ext rfl (AddMonoidHom.ext fun _ => neg_neg _)
-      (Subtype.ext (Subsingleton.elim (α := Fin 0 → ℂ) _ _)) }
-
-end Toric
-
 end GlobalTheory.ArcOfModel

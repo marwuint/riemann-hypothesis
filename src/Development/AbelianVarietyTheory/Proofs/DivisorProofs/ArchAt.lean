@@ -13,10 +13,6 @@ namespace GlobalTheory.ThetaDecay
 def archAt (F : Type) [Field F] [NumberField F] (w : InfinitePlace F) : AF F →+* ℂ :=
   (InfinitePlace.Completion.extensionEmbedding w).comp (evInf F w).toRingHom
 
-def coB (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
-    Module.Basis (Fin (Module.finrank F E)) (AF F) (AE F E) :=
-  Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)
-
 end GlobalTheory.ThetaDecay
 
 end

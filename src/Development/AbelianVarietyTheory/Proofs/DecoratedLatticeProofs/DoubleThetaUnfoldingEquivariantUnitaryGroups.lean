@@ -3,11 +3,15 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegrationByPartsRightDerivativeAdelicQuotient
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryUnimodularExistsFundamentalDomain
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegralCompactAutomorphicQuotientParaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepresentationRationalTranslateSubstitutionStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselToFourierJacobiHandedFamilyContinuousAutomStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegralCompactAutomorphicQuotientPara
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaAbsoluteSum
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepresentationRationalTranslateSubstitution
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselToFourierJacobiHandedFamilyContinuousAutom
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PairedThetaKernelContinuousAndRationallyInvarianStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiHandOffAutomorphicStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiHandOffAutomorphic
 
 noncomputable section
 
@@ -29,7 +33,7 @@ theorem integral_right {V : HSp D} (v : Vol V) {F : GA D V → ℂ} (hF : ∀ γ
 
 theorem IsContAut.integrableOn {V : HSp D} (hV : CoCpt V) (v : Vol V) {F : GA D V → ℂ} (hF : IsContAut V F) :
     IntegrableOn F v.𝓕 v.μ :=
-  (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D V hV v Unit (fun g _ => F g) (hF.2.comp continuous_fst) (fun γ hγ g _ => hF.1 γ hγ g)).1 ()
+  (_root_.GlobalTheory.CocompactParam.continuous_integral_param D V hV v Unit (fun g _ => F g) (hF.2.comp continuous_fst) (fun γ hγ g _ => hF.1 γ hγ g)).1 ()
 
 section BF
 
@@ -41,7 +45,7 @@ theorem contAut_kerBF {φ : GA D B.A → ℂ} {Ξ : WO B.V₀ J.W₀ → ℂ} (h
     IsContAut B.A fun a => φ a * s.om₀ (B.o.emb (a, 1), h) Ξ ((B.o.resS J.W₀).symm (0, u)) := by
   refine ⟨fun γ hγ a => ?_, hφ.2.mul ((s.weil₀.om_cont Ξ hΞ _).comp
     ((B.o.continuous_emb.comp (continuous_id.prodMk continuous_const)).prodMk continuous_const))⟩
-  have e := GlobalTheory.T.weilRepresentation_rational_translate_substitution D ψ _ _ _ _ _ s.weil₀ Ξ hΞ _ (B.o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) (B.o.emb (a, 1)) h
+  have e := _root_.GlobalTheory.Unf.om_rat_mul D ψ _ _ _ _ _ s.weil₀ Ξ hΞ _ (B.o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) (B.o.emb (a, 1)) h
     ((B.o.resS J.W₀).symm (0, u))
   rw [← map_mul, Prod.mk_mul_mk, one_mul, one_mul, inv_one, mt_one, Matrix.one_mul] at e
   beta_reduce
@@ -156,11 +160,11 @@ variable {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev
 
 theorem quasi_handBF (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁) :
     IsQuasiFam ψ J.W₀ B'.L (handBF s₁ l φ Ξ₁) :=
-  GlobalTheory.T.besselToFourierJacobi_handedFamily_continuous_automorphic D ψ _ B J s₁ B'.L B'.ζ B'.line l φ Ξ₁ hφ h₁
+  _root_.GlobalTheory.HandFam.handBF_isQuasiFam D ψ _ B J s₁ B'.L B'.ζ B'.line l φ Ξ₁ hφ h₁
 
 theorem contAut_hand0 (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁) (h₂ : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂) :
     IsContAut B'.A (hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂) :=
-  GlobalTheory.T.fourierJacobiHandOff_automorphic D ψ σ J B' s₂ vL _ Ξ₂ (quasi_handBF s₁ l hφ h₁) h₂
+  _root_.GlobalTheory.handFBLaw D ψ σ J B' s₂ vL _ Ξ₂ (quasi_handBF s₁ l hφ h₁) h₂
 
 theorem doubleThetaUnfolding_linear_function (hφ : IsContAut B.A φ) (hφ' : IsContAut B.A φ') (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁)
     (h₂ : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂) (c : ℂ) :

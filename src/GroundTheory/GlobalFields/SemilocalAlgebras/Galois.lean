@@ -198,18 +198,6 @@ theorem continuous_galEquiv (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞
     Continuous (galEquiv v σ w w' h) :=
   continuous_galHom σ w w' h
 
-theorem continuous_galEquiv_symm (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
-    [w.asIdeal.LiesOver v.asIdeal] [w'.asIdeal.LiesOver v.asIdeal] (h : w' = σ • w) :
-    Continuous (galEquiv v σ w w' h).symm :=
-  continuous_galHom σ⁻¹ w' w (by rw [h, inv_smul_smul])
-
-def galContinuousEquiv (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
-    [w.asIdeal.LiesOver v.asIdeal] [w'.asIdeal.LiesOver v.asIdeal] (h : w' = σ • w) :
-    ContinuousAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (w'.adicCompletion L) where
-  toAlgEquiv := galEquiv v σ w w' h
-  continuous_toFun := continuous_galEquiv v σ w w' h
-  continuous_invFun := continuous_galEquiv_symm v σ w w' h
-
 end Completion
 
 section Product

@@ -25,12 +25,6 @@ def ConstantShift.Statement : Prop :=
     I P (D + 1) (fun _ => HermLine.constShift A η) =
       I P (D + 1) (fun _ => A) - ((D : ℝ) + 1) * η * geomDeg P A D
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

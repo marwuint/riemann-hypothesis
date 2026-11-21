@@ -7,7 +7,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.Rrg
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.ProjRows
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.RowsDef
-import Lemmata.GeneralBFactRightLast.Slot
 
 noncomputable section
 

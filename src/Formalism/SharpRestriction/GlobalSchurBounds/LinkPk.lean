@@ -160,128 +160,13 @@ theorem nuCommens_of {D : D7} {L : SizeData₂ D} (hNu : DV.NuDef D L) (hT : NuA
     obtain ⟨s, hs, hsy⟩ := locLe_zero hEq.2 y hy
     exact ⟨s, fun h0 => hs (by rw [h0]; exact Ideal.zero_mem _), hsy⟩
 
-theorem nuCommensF_of {eps : ℝ} (Fm : FamP eps) (crystallineComparison : ℝ) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hS : SettingEventually Fm) :
-    NuCommensF Fm := by
-  obtain ⟨a0, h10⟩ := h10
-  obtain ⟨a1, hS⟩ := hS
-  refine ⟨max (max a0 a1) (Fm.x1 + 1), fun x hx i => ?_⟩
-  have e0 : a0 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have e1 : a1 ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have e2 : Fm.x1 < x := by have := le_trans (le_max_right (max a0 a1) (Fm.x1 + 1)) hx; linarith
-  exact nuCommens_of (Fm.nuDef x e2 i) (nuAtT_of (Fm.ex x e2 i).lat.atT
-    (fun u w hw => ((h10 x e0 i u (hS x e1 e2 i u)).2.2.2.2.1 w hw).1))
-
 end Formalism.MainNotions.Lnk
 
 end
 
 end Commens
 
-noncomputable section
-
 namespace Formalism.MainNotions
-
-open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory
-
-theorem ramRankF_of {eps : ℝ} (Fm : FamP eps) (crystallineComparison : ℝ) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hS : SettingEventually Fm) : RamRankF Fm := by
-  obtain ⟨a0, h10⟩ := h10
-  obtain ⟨a1, hS⟩ := hS
-  refine ⟨max (max a0 a1) (Fm.x1 + 1), fun x hx i u => ?_⟩
-  have e0 : a0 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have e1 : a1 ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have e2 : Fm.x1 < x := by have := le_trans (le_max_right (max a0 a1) (Fm.x1 + 1)) hx; linarith
-  have h := (h10 x e0 i u (hS x e1 e2 i u)).2.1.1
-  exact_mod_cast h
-
-set_option linter.unusedVariables false in
-
-theorem muRank_pk {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C3 crystallineComparison C22 : ℝ)
-    (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0)
-
-    (s59 : ∀ x : ℝ, Fm.x1 < x → ∀ i : Fm.Ix x, UnusedSlot33.division_rows_rational_lattice (Fm.D x i))
-    (s22 : TaylorLogMetric.StatementFamilyConstant Fm C22) (s23 : flipTwoThree.KudlaFamilyStatement Fm) (s24 : StandardLattice.KudlaFamilyStatement Fm C3) (s10 : product_first_zeroth_parts.KudlaFamilyStatement Fm crystallineComparison)
-
-    (provedFourF : LocalQuadraticParts.SlopeLemmaFamily Fm) (provedFiveF : LocalQuadraticParts.SlopeLossFamily Fm eL) (hF3 : StandardLattice.FamilyTheoremThreeAdmitted Fm)
-
-    (tVol : StandardLattice.TiesF Fm)
-    (tOm : ∀ x (i : Fm.Ix x), ∃ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (Fm.D x i) (Fm.D x i).host.ccK δ ∧
-      OmLink (Fm.D x i) (TaylorLogMetric.tor0 (Fm.D x i) (Fm.D x i).host.ccK δ))
-    (tFree : ∀ x (i : Fm.Ix x), ThFree (Fm.D x i))
-    (tTh : ∀ x (i : Fm.Ix x), ExistsTwelfthRootCharacterThetaFamily (Fm.D x i) C22)
-    (t7 : flipTwoThree.admF7 Fm) (tSet : SettingEventually Fm)
-    (tCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u))
-    (t10 : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), IncidenceTransportConditions (Fm.D x i) u) :
-    TuSize Fm → ChosenE Fm C0 CH → NuFullF Fm ∧ J.MuRank Fm := by
-  intro hTu hCh
-  have hDl : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,
-      |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps := by
-    obtain ⟨C5, c6, Cb, -, -, -, -, -, -, cQD, -, -, -⟩ := hCh
-    exact dl_of_chosen Fm C5 cQD
-  obtain ⟨C₅, h59a⟩ := UnusedSlot33.field_lemmas_except_seven
-  have h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅ := fun x hx i => by
-    obtain ⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩ := h59a (Fm.D x i) (Fm.L x i).sc
-    exact ⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩
-  have h24 := s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol
-  have h244 : StandardLattice.FamilyPartFour Fm C3 := h24.2.2.2.2.2.1
-  have h22 : TaylorLogMetric.ConclusionOnFamily Fm C22 := s22 (TaylorLogMetric.AdmF_of Fm (fun x i => UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _))
-  have h4p : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev :=
-    fun x hx i => (h244 x hx i).2.2.2.1
-  have h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison := s10 (product_first_zeroth_parts.AdmF_of Fm C22 100 C₅ h22 h59 h4p t10)
-  have hNF : NuFullF Fm := nuFullF_of Fm (nuCommensF_of Fm crystallineComparison h10 tSet)
-  have hRank : J.MuRank Fm := muRank_of_chosen Fm crystallineComparison (by linarith) hCh hNF h10 tSet
-  exact ⟨hNF, hRank⟩
-
-theorem linkGLOBAL_pk {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C3 crystallineComparison C22 : ℝ)
-    (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0)
-
-    (s59 : ∀ x : ℝ, Fm.x1 < x → ∀ i : Fm.Ix x, UnusedSlot33.division_rows_rational_lattice (Fm.D x i))
-    (s22 : TaylorLogMetric.StatementFamilyConstant Fm C22) (s23 : flipTwoThree.KudlaFamilyStatement Fm) (s24 : StandardLattice.KudlaFamilyStatement Fm C3) (s10 : product_first_zeroth_parts.KudlaFamilyStatement Fm crystallineComparison)
-
-    (provedFourF : LocalQuadraticParts.SlopeLemmaFamily Fm) (provedFiveF : LocalQuadraticParts.SlopeLossFamily Fm eL) (hF3 : StandardLattice.FamilyTheoremThreeAdmitted Fm)
-
-    (tVol : StandardLattice.TiesF Fm)
-    (tOm : ∀ x (i : Fm.Ix x), ∃ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (Fm.D x i) (Fm.D x i).host.ccK δ ∧
-      OmLink (Fm.D x i) (TaylorLogMetric.tor0 (Fm.D x i) (Fm.D x i).host.ccK δ))
-    (tFree : ∀ x (i : Fm.Ix x), ThFree (Fm.D x i))
-    (tTh : ∀ x (i : Fm.Ix x), ExistsTwelfthRootCharacterThetaFamily (Fm.D x i) C22)
-    (t7 : flipTwoThree.admF7 Fm) (tSet : SettingEventually Fm)
-    (tCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u))
-    (t10 : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), IncidenceTransportConditions (Fm.D x i) u) :
-    Fm.CoverAll → TuSize Fm → DGamSize Fm → LinkGLOBAL Fm Cabs CH C0 Cabs eL := by
-  intro hCov hTu _ hCh hIn
-  have hDl : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,
-      |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps := by
-    obtain ⟨C5, c6, Cb, -, -, -, -, -, -, cQD, -, -, -⟩ := hCh
-    exact dl_of_chosen Fm C5 cQD
-  obtain ⟨C₅, h59a⟩ := UnusedSlot33.field_lemmas_except_seven
-  have h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅ := fun x hx i => by
-    obtain ⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩ := h59a (Fm.D x i) (Fm.L x i).sc
-    exact ⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩
-  have h24 := s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol
-  have h244 : StandardLattice.FamilyPartFour Fm C3 := h24.2.2.2.2.2.1
-  have h22 : TaylorLogMetric.ConclusionOnFamily Fm C22 := s22 (TaylorLogMetric.AdmF_of Fm (fun x i => UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _))
-  have h4p : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev :=
-    fun x hx i => (h244 x hx i).2.2.2.1
-  have h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison := s10 (product_first_zeroth_parts.AdmF_of Fm C22 100 C₅ h22 h59 h4p t10)
-  have hNF : NuFullF Fm := nuFullF_of Fm (nuCommensF_of Fm crystallineComparison h10 tSet)
-  have hRank : J.MuRank Fm := muRank_of_chosen Fm crystallineComparison (by linarith) hCh hNF h10 tSet
-  have hRR : RRRankF Fm := by
-    obtain ⟨C5, c6, Cb, -, -, -, -, -, -, -, -, cPr, -⟩ := hCh
-    obtain ⟨-, lS, lI, lD, -⟩ := hIn
-    exact rrRankF_of Fm Cabs CH C0 (by linarith) lS cPr lI lD
-  have h245 : StandardLattice.PartFiveFamilyBounds Fm := h24.2.2.2.2.2.2.2
-  have hCount : CountF Fm := countF_fam Fm h245
-  have h23 := s23 ⟨flipTwoThree.theta_norm_family_of_linked Fm C22 h22 tOm, flipTwoThree.theta_condition_family_of_linked Fm C22 tFree tTh,
-    flipTwoThree.stabiliser_family_of_column_lemma Fm 100 C₅ h59 h4p,
-    flipTwoThree.injectivity_family_of_theorem Fm crystallineComparison h10 tSet, flipTwoThree.norm_bound_family_of_theorem Fm crystallineComparison h10 tSet, t7⟩
-  have hSM : SlopesMF Fm := flipTwoThree.slopesMF_of_count_fam Fm h23.2.2.2.2.1 h23.2.2.2.2.2.1 hCount hDl tCV
-  exact linkGLOBAL Fm Cabs CH C0 eL hCabs hCH.le heL hCount hSM
-    (fun _ _ => slopes_family_of_division_side Fm provedFourF (ioNonnegF Fm)) hNF hRank hRR
-    (fun cPr cCo lS lI lD => frameF_of Fm CH C0 hCH hC0
-      (frameRealF_of'' Fm Cabs CH C0 hCH.le lD lI lS cPr hNF hRank hTu (ramRankF_of Fm crystallineComparison h10 tSet)
-        (matKF_of Fm Cabs CH C0 (by linarith) lS cPr lD)) (latF Fm lD hNF hRank hRR) cPr cCo hNF)
-    (fun _ _ _ _ _ => losses_family_of_division_side Fm eL provedFiveF (askIsF Fm)) (charF Fm) hCov hCh hIn
 
 end Formalism.MainNotions
 
-end

@@ -211,15 +211,6 @@ section Glue
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
-theorem isUnit_det_hermOf (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E)
-    (hT : ∀ a b, σ (T b a) = T a b) (hdet : T.det ≠ 0) :
-    IsUnit ((hermOf R σ T hT : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) := by
-  show IsUnit (T.map (inclR R)).det
-  have e := RingHom.map_det (inclR (F := F) R) T
-  rw [show (inclR (F := F) R).mapMatrix T = T.map (inclR R) from rfl] at e
-  rw [← e]
-  exact (isUnit_iff_ne_zero.2 hdet).map _
-
 def gramH (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (X : Fin n → Fin M → R ⊗[F] E) : HermR R σ n :=
   ⟨gramR R σ J X, gramR_mem R σ hσ J hJ X⟩

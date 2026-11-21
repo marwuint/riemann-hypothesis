@@ -2,9 +2,9 @@ import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DenominatorPowerSummableStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FourierCoefficientGrowthBoundStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WeilOperatorIntegralInvarianceStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesSelfDualStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FourierCoefficientGrowthBound
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WeilOperatorIntegralInvariance
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesSelfDual
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PositiveDefiniteDensityStatement
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
@@ -280,8 +280,8 @@ theorem density_main : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace
       simp only [opU, indL]
       rw [Set.indicator_of_notMem hu, mul_zero]
   have hint : Integrable fs lf := by
-    obtain ⟨N, hN, hper⟩ := GlobalTheory.T.weil_operator_integral_invariance F lf hlf h1 ψ hψ ι M B ρ P hQ' (indL a) (indL_SB ι ha)
-    obtain ⟨C, hC⟩ := GlobalTheory.T.fourier_coefficient_growth_bound F lf hlf h1 ψ hψ ι M B ρ P hQ' (indL a) (indL_SB ι ha)
+    obtain ⟨N, hN, hper⟩ := _root_.GlobalTheory.CompanionTheory.SW.FstarPer.fstar_periodic F lf hlf h1 ψ hψ ι M B ρ P hQ' (indL a) (indL_SB ι ha)
+    obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.norm_fstar_le_den F lf hlf h1 ψ hψ ι M B ρ P hQ' (indL a) (indL_SB ι ha)
     exact integrable_of_periodic lf hlf h1 fs hN (fun x hx y => (hper x hx).2 y) hM hC
   have hmh : mh = fun y => ((c : ℂ))⁻¹ * fs y := by
     funext y
@@ -291,7 +291,7 @@ theorem density_main : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace
   have hint'' : Integrable mh (ENNReal.ofReal (kap F) • lf) :=
     hint'.smul_measure ENNReal.ofReal_ne_top
   obtain ⟨D, hDc, hD0, hDe, hDm⟩ := GlobalTheory.T.positive_definite_density (A F) (fun x y => ψ (x * y)) _
-    (GlobalTheory.T.adeles_self_dual F lf hlf h1 ψ hψ) m hmfin hint''
+    (_root_.GlobalTheory.CompanionTheory.SW.Core.SelfDual.finiteAdeles_selfDual F lf hlf h1 ψ hψ) m hmfin hint''
   refine ⟨fun y => kap F * D y, continuous_const.mul hDc, fun y => mul_nonneg hk0.le (hD0 y), ?_, hint, ?_⟩
   · intro U hU
     have e1 := hDm U hU

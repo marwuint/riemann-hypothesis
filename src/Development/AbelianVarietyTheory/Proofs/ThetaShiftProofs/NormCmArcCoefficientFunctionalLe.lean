@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.Model
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcDatumSectionValueCoeffEqFourierJacobi
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.EqZeroOfSumSq
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArchBoundFlow
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LetterSquaredLengthLeFlowHeightStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LetterSquaredLengthLeFlowHeight
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmMetrisedLineLengthsEqSectionLieNormsStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NormalisedTrivialisationNormOneComplexReadingStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsTauCanonicalIffOfIsPullDegTauBimultStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NormalisedTrivialisationNormOneComplexReading
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsTauCanonicalIffOfIsPullDegTauBimult
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.QuadraticCoefficientForms
 import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.AbsNormSpanGalois
 
@@ -241,7 +241,7 @@ theorem norm_cfOf_le : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   letI : Algebra (FractionRing ℂ) ℂ := FractionRing.liftAlgebra ℂ ℂ
   haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := FractionRing.isScalarTower_liftAlgebra ℂ ℂ
   letI : Algebra c.F ℂ⸨X⸩ := (ArcId.cstL.comp (em.comp (algebraMap c.F K₁))).toAlgebra
-  obtain ⟨Uw⟩ := GlobalTheory.T.nonempty_unifWitnessData_of_isUnf E H Dw l Xo c _ r U hunf
+  obtain ⟨Uw⟩ := _root_.GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c _ r U hunf
   have hth : ThNZ d.th := s.th_nz
   obtain ⟨⟨a₁, p, hp⟩, hbc⟩ := GlobalTheory.ArcQBC.baseChanges h1 h2 hK.ubc hK.laws5 E H Dw l Xo c _ _ d.Y K₁ ℂ _
     (d.a.restrict (c.V d.Wp).subtype) em em.injective ((em.comp (algebraMap c.F K₁)).comp (c.V d.Wp).subtype) rfl
@@ -268,10 +268,10 @@ theorem norm_cfOf_le : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   obtain ⟨k, ξ', sE, C, hiso, hsE, -, -, hC, hCle, hmain⟩ := GlobalTheory.T.laurentCoeff_sectionValue_arc_eq_fourierJacobi h1 h2 E H Dw l Xo c _ r U Uw _ _ d.Y a₁ _ W₁
     Ha th₁ _ s.ν₀ d.jj a' n hev hgood hunf (fun _ => rfl) hover₁ (mono_spMap_subtype _) hpush (hnz _ _ hth₁ hth) hrk hξ hβ
     hdom htv w hw
-  obtain ⟨v₁, v₂, -, v₄⟩ := GlobalTheory.T.torusExt_exponential_derivative_bijective_tangent h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha
+  obtain ⟨v₁, v₂, -, v₄⟩ := _root_.GlobalTheory.ExpTan.anVec_bijective h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha
   choose z₁ hz₁ using fun τ i => (v₁ (e₁ τ i) (htan _ _ (he₁ τ i) (s.tan τ i))).exists
-  have hN : NormOne Ha := GlobalTheory.T.normalisedTrivialisation_normOne_complexReading hK E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha n' s.n_pos
-    ((GlobalTheory.T.isTauCanonical_iff_of_isPullDeg_tauBimult hK K₁ ℂ em _ _ p n' em.injective d.a.bimult a₁.bimult).1 s.tau)
+  have hN : NormOne Ha := _root_.GlobalTheory.ArcNormOne.normOne_of_tauCan hK E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha n' s.n_pos
+    ((_root_.GlobalTheory.TauCanPull.tauCan_iff_of_isPullDeg hK K₁ ℂ em _ _ p n' em.injective d.a.bimult a₁.bimult).1 s.tau)
   have hCT := hCle _ (((GlobalTheory.T.cm_metrised_line_lengths_eq_section_lie_norms hK E H Dw l c K₁ d.a d.e d.th d.jj n' La c₁ s em).2.2.2 _ p).1 th₁ hth₁)
   rw [sqrt_discr (U.X k)] at hCT
   obtain ⟨hT, hl⟩ := line_pos s em
@@ -303,7 +303,7 @@ theorem norm_cfOf_le : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       hdom.2 (hxi k) hκ
     obtain ⟨-, -, -, -, Hm, hH⟩ := Uw.period k ⟨_, hx''⟩
     have hH' : IsRiem Uw.F (Uw.ik k) (Uw.Pm k ⟨_, hx''⟩) Hm := hH
-    have hlen := fun τ i => GlobalTheory.T.letter_squaredLength_le_flow_height hK E H Dw l Xo c K₁ d.a d.e d.th d.jj n' La c₁ s em _ r U Uw _ _ d.Y a₁ p _ W₁
+    have hlen := fun τ i => _root_.GlobalTheory.LetterLen.letter_length_le hK E H Dw l Xo c K₁ d.a d.e d.th d.jj n' La c₁ s em _ r U Uw _ _ d.Y a₁ p _ W₁
       Ha k ξ' fr ⟨_, hx''⟩ _ w L gm _ Hm rfl hgood hunf hp hLa hep hiso hw hLgm hEgm ht rfl htep hH' τ i _ _ (he₁ τ i)
       (hz₁ τ i)
     rw [inv_inv, max_eq_right (le_max_left 1 c₁)] at hlen

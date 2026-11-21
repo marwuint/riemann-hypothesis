@@ -107,23 +107,24 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraph
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphBound
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphPartition
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphPiece
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaLinear
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsArea
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaMultiplicity
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PBadSetSmaller
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCauchyBinetMinors
+import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCauchyBinet
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PChartMassCompact
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PChartMassCompare
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PComplexJacobian
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeAvoidsExists
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeAvoidsFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeAvoidsOpen
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeChartGram
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConePolar
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeScaling
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeSheetGram
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeToProjective
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PContinuousRootHolomorphic
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PContinuousSectionHolomorphic
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeSheetGramLintegral
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.LogIntegrableOnOfLogIntegrable
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeSheetArea
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeIntegralMass
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.EqZeroOfMemZeroLocusLineOriginIdeal
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCriticalImageNull
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOff
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffBoundaryBound
@@ -141,18 +142,20 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteMapOpen
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjHomInjective
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjectionsContainOpen
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjectionsGeneric
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFormIntLelong
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeLogBound
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PFsLogSmul
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LineInhabitant
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PDivCyclePrime
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFormIntPos
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFormIntSymm
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFrameJacobianSum
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFunctionFieldDegree
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Statements
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGeneralProjection
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGenericPrimitive
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGenericProjectionFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGradDensSheetBound
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGraphAreaHolomorphic
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGraphJacContinuous
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGreenFromLelong
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PProperSymm
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PHessCCompPluri
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PHomogDimZeroPow
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PImplicitCurve
@@ -168,44 +171,46 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLogIntegrable
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLogLogCutHess
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PMaDensLeibniz
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PMassFinite
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PMassFromLelong
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PNullSmaller
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.POneComponentGeneralPoint
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPlaneSliceMass
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPoincareLelong
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPointSliceMass
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVanishNearPoint
+import ReciprocityTheory.AnalyticForms.MaIntEmpty
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.BergmanProjective
+import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.AMassStA
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongRegularise
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongLimit
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PPointLine
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsMahler
+import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PPointIntegral
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPolySublevel
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPosPartIndependent
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPosPartLocal
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPosPartSplit
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPowerUnitCount
+import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPrimitiveElementFibres
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PProjectionCoordinateEquation
+import GroundTheory.ArithmeticGeometry.AbelianVarieties.JacobianSmoothness.RingKrullDimLeRingKrullDimQuotientAddOne
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PProjectionFormula
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPuncturedCoverCycles
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegConeLimit
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRemovableHyperplane
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRiemannExtensionPolynomial
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSectionDegreeSum
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSectionHyperplaneAvoid
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.PRiemannExtensionSlices
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.OsgoodSeparate
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LowerBoundConditional
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetAreaCompare
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetComass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetImageArea
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetLogNormDens
+import GroundTheory.HeightsAndTheta.Heights.Intersections.PTorusInvLevi
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetOnlyNull
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetSumMeasurable
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSimpleRootBranch
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSlabBound
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceComponents
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceCutBoundary
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceCutOffLimit
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.AffineOfCone
+import GroundTheory.HeightsAndTheta.Heights.ChowForms.PMinimalPrimeHomog
+import GroundTheory.HeightsAndTheta.Heights.ChowForms.POrdPolynomialLocalization
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceDim
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceExhaustion
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceFormMass
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceIdeal
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceMassFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceImmersiveGeneral
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceIdeal
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceMatricesOpen
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceSectionMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PStokesOffDiscriminant
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PStokesOnVariety
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PTubeFormCompare
@@ -225,12 +230,7 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StChartMassCompa
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeAvoidsExists
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeAvoidsFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeAvoidsOpen
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeChartGram
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConePolar
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeSheetGram
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeSheetGramLintegral
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StContinuousRootHolomorphic
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StContinuousSectionHolomorphic
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChartGram
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCriticalImageNull
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffBoundaryBound
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffBoundaryParts
@@ -243,9 +243,7 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteCoverPun
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteMapOpen
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteProjHomInjective
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteProjectionsGeneric
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFormIntSlice
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFrameJacobianSum
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFunctionFieldDegree
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGeneralProjection
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGenericPrimitive
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGraphAreaHolomorphic
@@ -254,71 +252,41 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StHessCCompPluri
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StHomogDimZeroPow
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StImplicitCurve
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLeadIdealDim
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongLimit
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongLimitOffZero
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongLimitOnZero
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongRegularise
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLinearFormCut
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLinearNoetherNormalization
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLocalGraphMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLocalGraphProjectionMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLogLogCut
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLogLogCutHess
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StOneComponentGeneralPoint
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPlaneSliceMass
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPointSliceMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPosPartIndependent
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPosPartLocal
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPosPartSplit
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPrimitiveElementFibres
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StProjectionCoordinateEquation
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPuncturedCoverCycles
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRemovableHyperplane
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRiemannExtensionPolynomial
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSectionDegreeSum
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSectionHyperplaneAvoid
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetAreaCompare
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetComass
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetFormCompare
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetImageArea
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetImageAreaSet
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetLogNormDens
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetOnlyNull
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSimpleRootBranch
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBoundaryBound
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceComponents
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceCutBoundary
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceCutDecay
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceCutOffLimit
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceDim
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceExhaustion
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceFormLelong
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceFormMass
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceIdeal
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceImmersiveGeneral
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceLelongError
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceMassFinite
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceMatricesOpen
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceSectionMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StStokesOffDiscriminant
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StTubeEuclMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StTubeFormCompare
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StUnitaryZariskiDense
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVanishNearPoint
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarIntAdd
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarSlabMeasure
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarietyProjectionMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarietySlabMeasure
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StZeroSetOpenMass
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Statements
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsArea
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsGreenReg
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsPowerUnitCount
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsSheetMeasurable
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.VolumeLtHausdorffUnitBallTwenty
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.RingKrullDimQuotBotOne
-import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PPointIntegral
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -341,14 +309,8 @@ theorem AreaGraphBound.full : GroundTheory.Heights₂.Heights.AreaGraphBound.Sta
 theorem AreaGraph.full : GroundTheory.Heights₂.Heights.AreaGraph.Statement :=
   GroundTheory.Heights₂.Heights.AreaGraph.proof GroundTheory.Heights₂.Heights.AreaGraphBound.full
 
-theorem AreaLinear.full : GroundTheory.Heights₂.Heights.AreaLinear.Statement :=
-  GroundTheory.Heights₂.Heights.AreaLinear.proof
-
 theorem AreaMultiplicity.full : GroundTheory.Heights₂.Heights.AreaMultiplicity.Statement :=
   GroundTheory.Heights₂.Heights.AreaMultiplicity.proof
-
-theorem CauchyBinetMinors.full : GroundTheory.Heights₂.Heights.CauchyBinetMinors.Statement :=
-  GroundTheory.Heights₂.Heights.CauchyBinetMinors.proof
 
 theorem ChartChoice.full : GroundTheory.Heights₂.Heights.ChartChoice.Statement :=
   GroundTheory.Heights₂.Heights.ChartChoice.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full
@@ -537,41 +499,8 @@ theorem SectionOrder.full : GroundTheory.Heights₂.Heights.SectionOrder.Stateme
 theorem ChowFormSection.full : GroundTheory.Heights₂.Heights.ChowFormSection.Statement :=
   GroundTheory.Heights₂.Heights.ChowFormSection.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.SectionOrder.full
 
-theorem ComplexJacobian.full : GroundTheory.Heights₂.Heights.ComplexJacobian.Statement :=
-  GroundTheory.Heights₂.Heights.ComplexJacobian.proof
-
-theorem ComplexSets.BadSetSmaller.full : GroundTheory.Heights₂.Heights.ComplexSets.BadSetSmaller.Statement :=
-  GroundTheory.Heights₂.Heights.ComplexSets.BadSetSmaller.proof
-
-theorem ComplexSets.ConeScaling.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeScaling.Statement :=
-  GroundTheory.Heights₂.Heights.ComplexSets.ConeScaling.proof
-
 theorem ComplexSets.FiniteProjectionsGeneric.full : GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.Statement :=
   GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.full GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.full
-
-theorem ComplexSets.FunctionFieldDegree.full : GroundTheory.Heights₂.Heights.ComplexSets.FunctionFieldDegree.Statement :=
-  GroundTheory.Heights₂.Heights.ComplexSets.FunctionFieldDegree.proof
-
-theorem ComplexSets.GenericPrimitive.full : GroundTheory.Heights₂.Heights.ComplexSets.GenericPrimitive.Statement :=
-  GroundTheory.Heights₂.Heights.ComplexSets.GenericPrimitive.proof
-
-theorem ComplexSets.SimpleRootBranch.full : GroundTheory.Heights₂.Heights.ComplexSets.SimpleRootBranch.Statement :=
-  GroundTheory.Heights₂.Heights.ComplexSets.SimpleRootBranch.proof
-
-theorem SliceDim.full : GroundTheory.Heights₂.Heights.SliceDim.Statement :=
-  GroundTheory.Heights₂.Heights.SliceDim.proof
-
-theorem ConeSheetGram.of_open (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
-    GroundTheory.Heights₂.Heights.ConeSheetGram.Statement :=
-  GroundTheory.Heights₂.Heights.ConeSheetGram.proof hConeSheetGramLintegral
-
-theorem ConeChartGram.of_open (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
-    GroundTheory.Heights₂.Heights.ConeChartGram.Statement :=
-  GroundTheory.Heights₂.Heights.ConeChartGram.proof (GroundTheory.Heights₂.Heights.ConeSheetGram.of_open hConeSheetGramLintegral) GroundTheory.Heights₂.Heights.MassFinite.full
-
-theorem ConePolar.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
-    GroundTheory.Heights₂.Heights.ConePolar.Statement :=
-  GroundTheory.Heights₂.Heights.ConePolar.proof GroundTheory.Heights₂.Heights.SliceDim.full hLinearNoetherNormalization (GroundTheory.Heights₂.Heights.ConeChartGram.of_open hConeSheetGramLintegral)
 
 theorem IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof
@@ -593,13 +522,6 @@ theorem PosPartIndep.full : GroundTheory.Heights₂.Heights.PosPartIndep.Stateme
 
 theorem IntegralIndep.full : GroundTheory.Heights₂.Heights.IntegralIndep.Statement :=
   GroundTheory.Heights₂.Heights.IntegralIndep.proof GroundTheory.Heights₂.Heights.PosPartIndep.full
-
-theorem PlaneSliceMass.full : GroundTheory.Heights₂.Heights.PlaneSliceMass.Statement :=
-  GroundTheory.Heights₂.Heights.PlaneSliceMass.proof GroundTheory.Heights₂.Heights.IntegralIndep.full
-
-theorem ConeToProjective.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) :
-    GroundTheory.Heights₂.Heights.ConeToProjective.Statement :=
-  GroundTheory.Heights₂.Heights.ConeToProjective.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full (GroundTheory.Heights₂.Heights.ConePolar.of_open hLinearNoetherNormalization hConeSheetGramLintegral) GroundTheory.Heights₂.Heights.PlaneSliceMass.full
 
 theorem StokesOffDiscriminant.full : GroundTheory.Heights₂.Heights.StokesOffDiscriminant.Statement :=
   GroundTheory.Heights₂.Heights.StokesOffDiscriminant.proof
@@ -669,67 +591,8 @@ theorem VarietySlabMeasure.full : GroundTheory.Heights₂.Heights.VarietySlabMea
 theorem VarSlabMeasure.full : GroundTheory.Heights₂.Heights.VarSlabMeasure.Statement :=
   GroundTheory.Heights₂.Heights.VarSlabMeasure.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full
 
-theorem LogIntegrable.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
-    GroundTheory.Heights₂.Heights.LogIntegrable.Statement :=
-  GroundTheory.Heights₂.Heights.LogIntegrable.proof GroundTheory.Heights₂.Heights.SheetSumMeasurable.full (GroundTheory.Heights₂.Heights.ChartMassCompare.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.VarSlabMeasure.full GroundTheory.Heights₂.Heights.MassFinite.full
-
-theorem LelongRegularise.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
-    GroundTheory.Heights₂.Heights.LelongRegularise.Statement :=
-  GroundTheory.Heights₂.Heights.LelongRegularise.proof (GroundTheory.Heights₂.Heights.LogIntegrable.of_open hSheetImageAreaSet)
-
-theorem LelongLimitOffZero.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
-    GroundTheory.Heights₂.Heights.LelongLimitOffZero.Statement :=
-  GroundTheory.Heights₂.Heights.LelongLimitOffZero.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet)
-
-theorem VarIntAdd.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
-    GroundTheory.Heights₂.Heights.VarIntAdd.Statement :=
-  GroundTheory.Heights₂.Heights.VarIntAdd.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet)
-
-theorem LelongLimit.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
-    GroundTheory.Heights₂.Heights.LelongLimit.Statement :=
-  GroundTheory.Heights₂.Heights.LelongLimit.proof (GroundTheory.Heights₂.Heights.LelongLimitOffZero.of_open hSheetImageAreaSet) hLelongLimitOnZero (GroundTheory.Heights₂.Heights.VarIntAdd.of_open hSheetImageAreaSet)
-
-theorem PoincareLelong.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.PoincareLelong.Statement :=
-  GroundTheory.Heights₂.Heights.PoincareLelong.proof (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.LelongRegularise.of_open hSheetImageAreaSet) (GroundTheory.Heights₂.Heights.LelongLimit.of_open hLelongLimitOnZero hSheetImageAreaSet)
-
-theorem SliceIdeal.full : GroundTheory.Heights₂.Heights.SliceIdeal.Statement :=
-  GroundTheory.Heights₂.Heights.SliceIdeal.proof
-
-theorem SliceComponents.full : GroundTheory.Heights₂.Heights.SliceComponents.Statement :=
-  GroundTheory.Heights₂.Heights.SliceComponents.proof
-
-theorem SliceExhaustion.of_open (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
-    GroundTheory.Heights₂.Heights.SliceExhaustion.Statement :=
-  GroundTheory.Heights₂.Heights.SliceExhaustion.proof GroundTheory.Heights₂.Heights.SliceIdeal.full GroundTheory.Heights₂.Heights.SliceComponents.full hSliceMassFinite hSliceLelongError
-
-theorem SliceSectionMass.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.SliceSectionMass.Statement :=
-  GroundTheory.Heights₂.Heights.SliceSectionMass.proof (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.PoincareLelong.of_open hLelongLimitOnZero hSheetImageAreaSet hTubeEuclMass) GroundTheory.Heights₂.Heights.SliceIdeal.full GroundTheory.Heights₂.Heights.SliceComponents.full (GroundTheory.Heights₂.Heights.SliceExhaustion.of_open hSliceLelongError hSliceMassFinite)
-
-theorem SectionHyperplaneAvoid.full : GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.Statement :=
-  GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.proof
-
-theorem SectionDegreeSum.full : GroundTheory.Heights₂.Heights.SectionDegreeSum.Statement :=
-  GroundTheory.Heights₂.Heights.SectionDegreeSum.proof GroundTheory.Heights₂.Heights.ChowFormSection.full
-
-theorem PointSliceMass.full : GroundTheory.Heights₂.Heights.PointSliceMass.Statement :=
-  GroundTheory.Heights₂.Heights.PointSliceMass.proof
-
-theorem ConeIntegralMass.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.ConeIntegralMass.Statement :=
-  GroundTheory.Heights₂.Heights.ConeIntegralMass.of_slices (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) (GroundTheory.Heights₂.Heights.SliceSectionMass.of_open hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.full GroundTheory.Heights₂.Heights.SectionDegreeSum.full GroundTheory.Heights₂.Heights.PointSliceMass.full
-
-theorem ConeBallFinite.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.ConeBallFinite.Statement :=
-  GroundTheory.Heights₂.Heights.ConeBallFinite.proof (GroundTheory.Heights₂.Heights.ConeIntegralMass.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass)
-
 theorem ConeSlabBound.full : GroundTheory.Heights₂.Heights.ConeSlabBound.Statement :=
   GroundTheory.Heights₂.Heights.ConeSlabBound.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full
-
-theorem ConeFsLogIntegrable.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.ConeFsLogIntegrable.Statement :=
-  GroundTheory.Heights₂.Heights.ConeFsLogIntegrable.proof (GroundTheory.Heights₂.Heights.ConeBallFinite.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.ConeSlabBound.full
 
 theorem ZeroLocusDimH.full : GroundTheory.Heights₂.Heights.ZeroLocusDimH.Statement :=
   GroundTheory.Heights₂.Heights.ZeroLocusDimH.proof
@@ -737,81 +600,11 @@ theorem ZeroLocusDimH.full : GroundTheory.Heights₂.Heights.ZeroLocusDimH.State
 theorem ConeHyperplaneNull.full : GroundTheory.Heights₂.Heights.ConeHyperplaneNull.Statement :=
   GroundTheory.Heights₂.Heights.ConeHyperplaneNull.proof GroundTheory.Heights₂.Heights.ZeroLocusDimH.full GroundTheory.Heights₂.Heights.ChowFormDimLe.full
 
-theorem FormIntLelong.of_open (hChowFormSectionAlgClosed : GroundTheory.Heights₂.Heights.ChowFormSectionAlgClosed.Statement) (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hFormIntSlice : GroundTheory.Heights₂.Heights.FormIntSlice.Statement) (hSliceFormLelong : GroundTheory.Heights₂.Heights.SliceFormLelong.Statement) :
-    GroundTheory.Heights₂.Heights.FormIntLelong.Statement :=
-  GroundTheory.Heights₂.Heights.FormIntLelong.proof (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) hChowFormSectionAlgClosed hFormIntSlice hSliceFormLelong
-
-theorem SliceFormMass.of_open (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
-    GroundTheory.Heights₂.Heights.SliceFormMass.Statement :=
-  GroundTheory.Heights₂.Heights.SliceFormMass.proof GroundTheory.Heights₂.Heights.SliceIdeal.full hSliceMassFinite hSheetFormCompare
-
-theorem SheetLogNormDens.full : GroundTheory.Heights₂.Heights.SheetLogNormDens.Statement :=
-  GroundTheory.Heights₂.Heights.SheetLogNormDens.proof
-
-theorem FormIntPos.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
-    GroundTheory.Heights₂.Heights.FormIntPos.Statement :=
-  GroundTheory.Heights₂.Heights.FormIntPos.proof (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral) (GroundTheory.Heights₂.Heights.SliceFormMass.of_open hSheetFormCompare hSliceMassFinite) GroundTheory.Heights₂.Heights.SheetLogNormDens.full
-
-theorem SliceCutBoundary.of_open (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) :
-    GroundTheory.Heights₂.Heights.SliceCutBoundary.Statement :=
-  GroundTheory.Heights₂.Heights.SliceCutBoundary.proof hSliceBoundaryBound hSliceCutDecay
-
-theorem SliceCutOffLimit.of_open (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) :
-    GroundTheory.Heights₂.Heights.SliceCutOffLimit.Statement :=
-  GroundTheory.Heights₂.Heights.SliceCutOffLimit.proof GroundTheory.Heights₂.Heights.SliceIdeal.full (GroundTheory.Heights₂.Heights.SliceFormMass.of_open hSheetFormCompare hSliceMassFinite) (GroundTheory.Heights₂.Heights.SliceCutBoundary.of_open hSliceBoundaryBound hSliceCutDecay)
-
-theorem FormIntSymm.of_open (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.FormIntSymm.Statement :=
-  GroundTheory.Heights₂.Heights.FormIntSymm.proof GroundTheory.Heights₂.Heights.SliceIdeal.full (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.SliceCutOffLimit.of_open hSheetFormCompare hSliceBoundaryBound hSliceCutDecay hSliceMassFinite)
-
-theorem RegConeLimit.of_open (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.RegConeLimit.Statement :=
-  GroundTheory.Heights₂.Heights.RegConeLimit.proof (GroundTheory.Heights₂.Heights.ConeBallFinite.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) (GroundTheory.Heights₂.Heights.ConeFsLogIntegrable.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.ConeHyperplaneNull.full
-
-theorem GreenFromLelong.of_open (hChowFormSectionAlgClosed : GroundTheory.Heights₂.Heights.ChowFormSectionAlgClosed.Statement) (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hFormIntSlice : GroundTheory.Heights₂.Heights.FormIntSlice.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceFormLelong : GroundTheory.Heights₂.Heights.SliceFormLelong.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.GreenFromLelong.Statement :=
-  GroundTheory.Heights₂.Heights.GreenFromLelong.proof (GroundTheory.Heights₂.Heights.FormIntSymm.of_open hSheetFormCompare hSheetImageAreaSet hSliceBoundaryBound hSliceCutDecay hSliceMassFinite hTubeEuclMass) (GroundTheory.Heights₂.Heights.FormIntPos.of_open hLinearNoetherNormalization hConeSheetGramLintegral hSheetFormCompare hSliceMassFinite) (GroundTheory.Heights₂.Heights.FormIntLelong.of_open hChowFormSectionAlgClosed hLinearNoetherNormalization hConeSheetGramLintegral hFormIntSlice hSliceFormLelong) (GroundTheory.Heights₂.Heights.RegConeLimit.of_open hLinearNoetherNormalization hConeSheetGramLintegral hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) hChowFormSectionAlgClosed
-
-theorem GreenSymmetry.of_open (hChowFormSectionAlgClosed : GroundTheory.Heights₂.Heights.ChowFormSectionAlgClosed.Statement) (hLinearNoetherNormalization : GroundTheory.Heights₂.Heights.ComplexSets.LinearNoetherNormalization.Statement) (hConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement) (hFormIntSlice : GroundTheory.Heights₂.Heights.FormIntSlice.Statement) (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetFormCompare : GroundTheory.Heights₂.Heights.SheetFormCompare.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceBoundaryBound : GroundTheory.Heights₂.Heights.SliceBoundaryBound.Statement) (hSliceCutDecay : GroundTheory.Heights₂.Heights.SliceCutDecay.Statement) (hSliceFormLelong : GroundTheory.Heights₂.Heights.SliceFormLelong.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.GreenSymmetry.Statement :=
-  (GroundTheory.Heights₂.Heights.GreenFromLelong.of_open hChowFormSectionAlgClosed hLinearNoetherNormalization hConeSheetGramLintegral hFormIntSlice hLelongLimitOnZero hSheetFormCompare hSheetImageAreaSet hSliceBoundaryBound hSliceCutDecay hSliceFormLelong hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.IntegralIndep.full (GroundTheory.Heights₂.Heights.CutOff.of_open hTubeEuclMass) (GroundTheory.Heights₂.Heights.StokesOnVariety.of_open hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.LogIntegrable.of_open hSheetImageAreaSet) (GroundTheory.Heights₂.Heights.PoincareLelong.of_open hLelongLimitOnZero hSheetImageAreaSet hTubeEuclMass) (GroundTheory.Heights₂.Heights.ConeToProjective.of_open hLinearNoetherNormalization hConeSheetGramLintegral)
-
 theorem ImplicitCurve.full : GroundTheory.Heights₂.Heights.ImplicitCurve.Statement :=
   GroundTheory.Heights₂.Heights.ImplicitCurve.proof
 
-theorem LineSliceMass.full : GroundTheory.Heights₂.Heights.LineSliceMass.Statement :=
-  GroundTheory.Heights₂.Heights.PlaneSliceMass.line GroundTheory.Heights₂.Heights.PlaneSliceMass.full
-
-theorem MassFromLelong.of_open (hLelongLimitOnZero : GroundTheory.Heights₂.Heights.LelongLimitOnZero.Statement) (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hSliceLelongError : GroundTheory.Heights₂.Heights.SliceLelongError.Statement) (hSliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
-    GroundTheory.Heights₂.Heights.MassFromLelong.Statement :=
-  GroundTheory.Heights₂.Heights.MassFromLelong.proof (GroundTheory.Heights₂.Heights.SliceSectionMass.of_open hLelongLimitOnZero hSheetImageAreaSet hSliceLelongError hSliceMassFinite hTubeEuclMass) GroundTheory.Heights₂.Heights.SectionHyperplaneAvoid.full GroundTheory.Heights₂.Heights.SectionDegreeSum.full GroundTheory.Heights₂.Heights.PointSliceMass.full
-
-theorem PointIntegral.full : GroundTheory.Heights₂.Heights.PointIntegral.Statement :=
-  GroundTheory.Heights₂.Heights.PointIntegral.proof
-
-theorem PolySublevel.full : GroundTheory.Heights₂.Heights.PolySublevel.Statement :=
-  GroundTheory.Heights₂.Heights.PolySublevel.proof
-
-theorem SlabBound.full : GroundTheory.Heights₂.Heights.SlabBound.Statement :=
-  GroundTheory.Heights₂.Heights.SlabBound.proof
-
 theorem SliceMatricesOpen.full : GroundTheory.Heights₂.Heights.SliceMatricesOpen.Statement :=
   GroundTheory.Heights₂.Heights.SliceMatricesOpen.proof
-
-theorem IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.dividedDifference_real_holds
-
-theorem IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.proof
-
-theorem IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.proof
-
-theorem IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.proof
-
-theorem IndefiniteRowSideFullHecke.ComplexSets.ContinuousSectionHolomorphic.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousSectionHolomorphic.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousSectionHolomorphic.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjectionCoordinateEquation.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ContinuousRootHolomorphic.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionPolynomial.full
 
 theorem IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.proof
@@ -819,23 +612,11 @@ theorem IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full : Grou
 theorem IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.proof
 
-theorem IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.GeneralProjection.proof
-
 theorem IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full
 
-theorem IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.OneComponentGeneralPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full
-
-theorem IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PowerUnitCount.proof
-
 theorem IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.full
-
-theorem IndefiniteRowSideFullHecke.ComplexSets.RemovableHyperplane.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RemovableHyperplane.Statement :=
-  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.RemovableHyperplane.proof
 
 theorem IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full

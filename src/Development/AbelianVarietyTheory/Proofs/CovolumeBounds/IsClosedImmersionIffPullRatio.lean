@@ -244,14 +244,6 @@ theorem isUnit_appLE (g : Z ⟶ Y) {T : Z.Opens} {i j : Fin (N + 1)} (hi : T ≤
     (hj : T ≤ g ⁻¹ᵁ U j) : IsUnit ((g.appLE _ T hi).hom (r i j)) :=
   .of_mul_eq_one _ ((H.appLE_mul g hi hj i).trans (by rw [H.self, map_one]))
 
-theorem basicOpen_eq (i j : Fin (N + 1)) : Y.basicOpen (r i j) = U i ⊓ U j := by
-  refine le_antisymm (le_inf (Y.basicOpen_le _) (H.basicOpen_le i j)) ?_
-  have hu : IsUnit (resG Y (inf_le_left : U i ⊓ U j ≤ U i) (r i j)) :=
-    .of_mul_eq_one _ ((H.mul i j i).trans (by rw [H.self, map_one]))
-  have := Y.basicOpen_of_isUnit hu
-  rw [Scheme.basicOpen_res] at this
-  exact this.ge.trans inf_le_right
-
 theorem comp_ofCoords_eq (f : Y ⟶ Sp R) (i j : Fin (N + 1)) (a : Z ⟶ (U i).toScheme)
     (b : Z ⟶ (U j).toScheme) (e : a ≫ (U i).ι = b ≫ (U j).ι) :
     a ≫ ofCoords f (U i) i (r i) = b ≫ ofCoords f (U j) j (r j) := by

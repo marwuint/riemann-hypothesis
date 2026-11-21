@@ -31,23 +31,4 @@ def zRe (ε : Fin m → Bool) (a b : Fin m) : Matrix (Fin m) (Fin m) ℂ :=
 def zIm (ε : Fin m → Bool) (a b : Fin m) : Matrix (Fin m) (Fin m) ℂ :=
   (-(Complex.I / 2) : ℂ) • (Matrix.single a b 1 + (sgn ε a * sgn ε b) • Matrix.single b a 1)
 
-open Classical in
-
-def phiSF (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (Ψ : Mx D m n → ℂ)
-    (f : (Fin m → Fin n → ℂ) → ℂ) : schwartzA θ m n :=
-  if h : tens θ τ fr f Ψ ∈ schwartzA θ m n then ⟨_, h⟩ else 0
-
-def InvGroup : Prop :=
-  ∀ D n V ψ χ θ μ ω H l s ν τ ε fr ι, Cx D n V ψ χ θ μ ω H l s ν τ ε fr ι → ∀ Ψ ∈ awayA θ V n l s τ,
-    ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, IsUe ε X → ∀ (t : ℝ) (P : PX V.rank n) (g : G D n),
-      tens θ τ fr (fun y => fP (cLoc l τ) P ((NormedSpace.exp ((t : ℂ) • X) : Matrix (Fin V.rank) (Fin V.rank) ℂ) * (Matrix.of y : Matrix (Fin V.rank) (Fin n) ℂ))) Ψ ∈ schwartzA θ V.rank n ∧
-      thetaInt ω ν (phiSF θ τ fr Ψ (fun y => fP (cLoc l τ) P ((NormedSpace.exp ((t : ℂ) • X) : Matrix (Fin V.rank) (Fin V.rank) ℂ) * (Matrix.of y : Matrix (Fin V.rank) (Fin n) ℂ)))) g =
-        thetaInt ω ν (phiS θ τ fr (cLoc l τ) Ψ P) g
-
-def DerivT : Prop :=
-  ∀ D n V ψ χ θ μ ω H l s ν τ ε fr ι, Cx D n V ψ χ θ μ ω H l s ν τ ε fr ι → ∀ Ψ ∈ awayA θ V n l s τ,
-    ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, IsUe ε X → ∀ (P : PX V.rank n) (g : G D n),
-      HasDerivAt (fun t : ℝ => thetaInt ω ν (phiSF θ τ fr Ψ (fun y => fP (cLoc l τ) P ((NormedSpace.exp ((t : ℂ) • X) : Matrix (Fin V.rank) (Fin V.rank) ℂ) * (Matrix.of y : Matrix (Fin V.rank) (Fin n) ℂ)))) g)
-        (thetaInt ω ν (phiS θ τ fr (cLoc l τ) Ψ (vfX (cLoc l τ) X P)) g) 0
-
 end PositivityTheory.Rg.Sw.Glob

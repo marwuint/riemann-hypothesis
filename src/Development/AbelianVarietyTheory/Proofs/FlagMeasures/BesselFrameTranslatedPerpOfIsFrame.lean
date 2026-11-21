@@ -208,12 +208,6 @@ theorem colE_mulVec (x : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
 theorem colE_apply (a : Fin r → ℂ) (j : Fin r) : (colE k r *ᵥ a) (eI k r j) = a j := by
   simp [colE, mulVec, dotProduct, eI_inj]
 
-theorem colE_apply_ge (a : Fin r → ℂ) {i : Fin (2 * r + k + 1)} (hi : r ≤ i.val) : (colE k r *ᵥ a) i = 0 := by
-  rw [mulVec, dotProduct]
-  refine Finset.sum_eq_zero fun j _ => ?_
-  have : i ≠ eI k r j := fun h => by have := congrArg Fin.val h; simp only [eI] at this; omega
-  simp [colE, this]
-
 theorem colE_col (j : Fin r) : (fun i => colE k r i j) = bvec (eI k r j) := funext fun i => (bvec_apply _ _).symm
 
 variable {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -228,8 +222,6 @@ theorem frame_perp_bvec (hg : g ∈ UH (Hpk k r)) {j : Fin (2 * r + k + 1)} (hj 
   rw [frame_perp hg, bvec_apply, if_neg (ne_of_inB (inB_bl a) hj)]; rfl
 
 theorem not_inB_eI (a : Fin r) : ¬ InB k r (eI k r a) := by simp only [InB, eI]; omega
-
-theorem not_inB_esI (a : Fin r) : ¬ InB k r (esI k r a) := by simp only [InB, esI]; omega
 
 theorem not_inB_last : ¬ InB k r (wI k r (Fin.last k)) := by simp [InB, wI]
 
@@ -266,23 +258,6 @@ theorem isFrame (hg : IsFrameW k r z g) (hz : inWb k r z) (hT : 0 < Tz k r z) :
     have h' : herm (Hpk k r) z z = 0 := h
     simp [Tz, h'] at hT
 
-theorem mem_Nset {u : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hu : u ∈ unipRad (Hpk k r) (colE k r)) :
-    u ∈ Formalism.QuantumDeterminants.Nset k r := by
-  refine ⟨hu.1, fun a i hi => ?_, fun i j h1 h2 h3 => ?_⟩
-  · obtain ⟨c, hc, h⟩ := hu.2.1 a
-    have h' := congrFun h i
-    rw [colE_col, mulVec_bvec_apply, Matrix.sub_apply, Matrix.one_apply, sub_eq_iff_eq_add] at h'
-    have h0 : (colE k r *ᵥ c) i = 0 := by
-      by_cases hr : i.val < r
-      · exact (colE_apply c ⟨i.val, hr⟩).trans (hc _ hi)
-      · exact colE_apply_ge c (by omega)
-    rw [h0, zero_add] at h'
-    exact h'
-  · obtain ⟨c, h⟩ := hu.2.2 (bvec j) (funext fun a => by
-      rw [colE_mulVec, bvec_apply, if_neg (by simp only [esI, Fin.ext_iff]; omega)]; rfl)
-    have h' := congrFun h i
-    rwa [mulVec_bvec_apply, Matrix.sub_apply, Matrix.one_apply, sub_eq_iff_eq_add, colE_apply_ge c h3, zero_add] at h'
-
 theorem isCharWith (hz : inWb k r z) (c : Fin r → ℂ) :
     IsCharWith (Hpk k r) (colE k r) z c (PI.BesselMapUniq.psiGen k r z c) := by
   intro u _ a ha
@@ -300,31 +275,6 @@ theorem isCharWith (hz : inWb k r z) (c : Fin r → ℂ) :
       rfl
   simp only [PI.BesselMapUniq.psiGen, key]
 
-theorem emb_eq (hg : IsFrameW k r z g) {x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
-    {h : Matrix (Fin k) (Fin k) ℂ} (hx : x ∈ UH (Hpk k r)) (hE : IsEmb (Hpk k r) (g * colW k r) x h) :
-    x ∈ Formalism.QuantumDeterminants.UWset k r z ∧ x = g * blockW k r h * g⁻¹ := by
-  have fix : ∀ j, ¬ InB k r j → x *ᵥ (g *ᵥ bvec j) = g *ᵥ bvec j := fun j hj => hE.2 _ (frame_perp_bvec hg.1 hj)
-  have fix' : ∀ j, ¬ InB k r j → (g⁻¹ * x * g) *ᵥ bvec j = bvec j := fun j hj => by
-    rw [← mulVec_mulVec, ← mulVec_mulVec, fix j hj, mulVec_mulVec, inv_mul_UH' hg.1, one_mulVec]
-  refine ⟨⟨hx, fun a => ⟨?_, ?_⟩, hE.2 _ (besselFrame_translated_perp_of_isFrame hg)⟩, ?_⟩
-  · have := fix _ (not_inB_eI a)
-    rwa [(hg.2.1 a).1] at this
-  · have := fix _ (not_inB_esI a)
-    rwa [(hg.2.1 a).2] at this
-  · have hb := (fix_block (mul_mem_UH (mul_mem_UH (inv_mem_UH hg.1) hx) hg.1)
-      ⟨fun a => ⟨fix' _ (not_inB_eI a), fix' _ (not_inB_esI a)⟩, fix' _ not_inB_last⟩).2
-    have h1 : g⁻¹ * x * g * colW k r = colW k r * h := by
-      rw [Matrix.mul_assoc, Matrix.mul_assoc, hE.1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, inv_mul_UH' hg.1,
-        Matrix.one_mul]
-    have h2 : PI.HwUniqW.sub k r (g⁻¹ * x * g) = h := by
-      ext a b
-      have := congrFun (congrFun h1 (bl k r a)) b
-      rw [Matrix.mul_apply, Matrix.mul_apply] at this
-      simpa [colW, blockIndex_injective.eq_iff, PI.HwUniqW.sub] using this
-    rw [← h2, ← hb]
-    simp only [← Matrix.mul_assoc, mul_inv_UH hg.1, Matrix.one_mul]
-    rw [Matrix.mul_assoc, mul_inv_UH hg.1, Matrix.mul_one]
-
 end Frame
 
 section Dual
@@ -333,39 +283,9 @@ open PI.UpqRep PI.HwUniqW GlobalTheory.RealBessel
 
 variable {k : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
-def contra (ρ : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)) (h : Matrix (Fin k) (Fin k) ℂ) :
-    Module.End ℂ (Module.Dual ℂ W) := (ρ hᴴ : W →ₗ[ℂ] W).dualMap
-
 theorem mem_UH_one {h : Matrix (Fin k) (Fin k) ℂ} : h ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin k) (Fin k) ℂ) ↔ hᴴ * h = 1 := by
   show hᴴ * 1 * h = 1 ↔ _
   rw [Matrix.mul_one]
-
-theorem adj_mem {h : Matrix (Fin k) (Fin k) ℂ} (hh : hᴴ * h = 1) : hᴴ ∈ UJset (allPos k) := by
-  rw [mem_UJset_allPos, conjTranspose_conjTranspose]
-  exact mul_eq_one_comm.1 hh
-
-theorem isContIrred_contra {u : Fin k → ℝ} {ρ : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)} (hρ : IsHCTypeU k u ρ) :
-    IsContIrred (Formalism.QuantumDeterminants.UH 1) (contra ρ) := by
-  obtain ⟨-, hf, ⟨⟨h1, hm⟩, -, hc⟩, -, -, hi, -⟩ := hρ
-  refine ⟨⟨?_, fun a ha b hb => ?_⟩, fun w l => ?_, fun U hU => ?_⟩
-  · ext l x
-    simp [contra, h1]
-  · ext l x
-    simp [contra, hm _ (adj_mem (mem_UH_one.1 hb)) _ (adj_mem (mem_UH_one.1 ha))]
-  · obtain ⟨x, rfl⟩ := (Module.evalEquiv ℂ W).surjective l
-    have := w.continuous_of_finiteDimensional.comp_continuousOn ((hc x).comp
-      (continuous_id.matrix_conjTranspose).continuousOn fun h hh => adj_mem (mem_UH_one.1 hh))
-    exact this
-  · have hs : IsKStableOn (allPos k) ρ U.dualCoannihilator := fun g hg v hv => by
-      rw [Submodule.mem_dualCoannihilator] at hv ⊢
-      intro l hl
-      have hg' : g * gᴴ = 1 := Matrix.mem_unitaryGroup_iff.1 hg.1
-      have := hv _ (hU gᴴ (mem_UH_one.2 (by rwa [conjTranspose_conjTranspose])) l hl)
-      simpa [contra] using this
-    rw [← Subspace.dualCoannihilator_dualAnnihilator_eq (W := U)]
-    rcases hi _ le_top hs with h | h
-    · rw [h]; exact Or.inr Submodule.dualAnnihilator_bot
-    · rw [h]; exact Or.inl Submodule.dualAnnihilator_top
 
 end Dual
 
@@ -392,80 +312,6 @@ theorem rep_of_isDSHpk {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k
     simp only [← Matrix.mul_assoc, nonsing_inv_mul _ hd, Matrix.one_mul]
     rw [Matrix.mul_assoc, nonsing_inv_mul _ hd, Matrix.mul_one]
   exact ⟨hc, e ▸ isURepOn_trRep (ε := ε) hP hG hU, e ▸ isIrredOn_trRep (ε := ε) hP hG hI⟩
-
-theorem exists_form (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.QuantumDeterminants.UH (Hpk k r)) σ) {z : Fin (2 * r + k + 1) → ℂ}
-    {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : IsFrameW k r z g)
-    {ψ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℂ} (hψ : ψ 1 = 1) {u : Fin k → ℝ}
-    {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
-    {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (W →L[ℂ] W)}
-    (hπ : IsHCTypeU k u fun h => π (g * blockW k r h * g⁻¹)) {B : H → W}
-    (hB : IsBesselMapSm (k := k) (r := r) z ψ σ π B) :
-    ∃ β ∈ besselForms (Hpk k r) 1 (g * colW k r) (colE k r) ψ σ (contra fun h => π (g * blockW k r h * g⁻¹))
-      (smSub (Hpk k r) σ), ∀ l x, β l x = l (B x) := by
-  have hs : ∀ v, v ∈ smoothVecs (k := k) (r := r) σ ↔ v ∈ smSub (Hpk k r) σ :=
-    smoothOnH_iff_mem Hpk_conjTranspose Hpk_mul_self hσ
-  obtain ⟨-, hf, ⟨⟨h1, hm⟩, -, -⟩, -⟩ := hπ
-  obtain ⟨ha, hc, he, C, S, hS, hC⟩ := hB
-  have hπ1 : π 1 = 1 := by simpa only [blockW_one, Matrix.mul_one, mul_inv_UH hg.1] using h1
-  let L : smSub (Hpk k r) σ →ₗ[ℂ] W :=
-    { toFun := fun x => B x
-      map_add' := fun x y => ha _ ((hs _).2 x.2) _ ((hs _).2 y.2)
-      map_smul' := fun c x => hc c _ ((hs _).2 x.2) }
-  refine ⟨L.dualMap, ⟨fun w => ?_, fun h hh x hx hE w v y hy => ?_, fun m hm w v y hy => ?_⟩, fun _ _ => rfl⟩
-  · obtain ⟨l, hl⟩ := LinearMap.exists_extend (L.dualMap w)
-    have hl' : ∀ x : smSub (Hpk k r) σ, l x = w (B x) := fun x => LinearMap.congr_fun hl x
-    refine ⟨l, ⟨S, ‖LinearMap.toContinuousLinearMap w‖ * C, hS, fun v hv => ?_⟩, hl'⟩
-    rw [hl' ⟨v, hv⟩, mul_assoc]
-    refine ((LinearMap.toContinuousLinearMap w).le_opNorm _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))
-    simpa only [dsigW_eq] using hC v ((hs v).2 hv)
-  · obtain ⟨hW, rfl⟩ := emb_eq hg hx hE
-    have e := he _ hW 1 (mem_Nset (k := k) (r := r) ⟨one_mem_UH, fun _ => ⟨0, fun _ _ => rfl, by simp⟩,
-      fun _ _ => ⟨0, by simp⟩⟩) v ((hs _).2 v.2)
-    rw [Matrix.mul_one, hψ, one_smul, ← hy] at e
-    have hh' := mem_UH_one.1 hh
-    have e2 := hm _ (adj_mem hh') _ (mem_UJset_allPos.2 hh')
-    rw [hh'] at e2
-    have e3 := congrArg (fun T : W →L[ℂ] W => T (B v)) (h1.symm.trans e2)
-    show w (π (g * blockW k r hᴴ * g⁻¹) (B y)) = w (B v)
-    rw [e]
-    exact congrArg w e3.symm
-  · have e := he 1 ⟨one_mem_UH, fun _ => ⟨one_mulVec _, one_mulVec _⟩, one_mulVec _⟩ m (mem_Nset hm) v ((hs _).2 v.2)
-    rw [Matrix.one_mul, hπ1, ← hy] at e
-    show w (B y) = ψ m * w (B v)
-    rw [e, map_smul]
-    rfl
-
-theorem exists_gen {V : Type} [AddCommGroup V] [Module ℂ V] {S : Submodule ℂ V} (h : Module.rank ℂ S ≤ 1) :
-    ∃ β : V, ∀ x ∈ S, ∃ s : ℂ, s • β = x := by
-  obtain ⟨β, hβ⟩ := rank_le_one_iff.1 h
-  exact ⟨β, fun x hx => (hβ ⟨x, hx⟩).imp fun _ q => congrArg Subtype.val q⟩
-
-theorem besselMapUniq_of_besselUniqueness :
-    GlobalTheory.Published.BesselUniquenessReal → PI.BesselMapUniq.BesselMapUniq := by
-  intro hJ k r ε lam H _ _ σ z c u W _ _ π _ hσ hz hT hc hπ B₁ B₂ h₁ h₂
-  obtain ⟨hH, hU, hI⟩ := rep_of_isDSHpk hσ
-  obtain ⟨g, hg, hπ⟩ := hπ
-  have := hπ.2.1
-  have hχ := isCharWith hz c
-  have hψ : psiGen k r z c 1 = 1 := by
-    rw [hχ 1 ⟨one_mem_UH, fun _ => ⟨0, fun _ _ => rfl, by simp⟩, fun _ _ => ⟨0, by simp⟩⟩ 0 (fun _ => by simp)]
-    simp
-  have hr := hJ _ _ _ _ _ _ _ _ (isFrame hg hz hT) _ ⟨c, hc, hχ⟩ H σ hU hI _ _ (isContIrred_contra hπ)
-  obtain ⟨β₁, m₁, e₁⟩ := exists_form hU hg hψ hπ h₁
-  obtain ⟨β₂, m₂, e₂⟩ := exists_form hU hg hψ hπ h₂
-  obtain ⟨β, hβ⟩ := exists_gen hr
-  obtain ⟨s₁, r₁⟩ := hβ β₁ m₁
-  obtain ⟨s₂, r₂⟩ := hβ β₂ m₂
-  have key : ∀ a b : ℂ, a * s₁ + b * s₂ = 0 → ∀ v ∈ smoothVecs (k := k) (r := r) σ, a • B₁ v + b • B₂ v = 0 := by
-    intro a b hab v hv
-    have hv' := (smoothOnH_iff_mem Hpk_conjTranspose Hpk_mul_self hU v).1 hv
-    refine (Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun l => ?_
-    rw [map_add, map_smul, map_smul, ← e₁ l ⟨v, hv'⟩, ← e₂ l ⟨v, hv'⟩, ← r₁, ← r₂]
-    simp only [LinearMap.smul_apply, smul_eq_mul]
-    rw [← mul_assoc, ← mul_assoc, ← add_mul, hab, zero_mul]
-  by_cases h : s₁ = 0
-  · exact ⟨1, 0, Or.inl one_ne_zero, key _ _ (by simp [h])⟩
-  · exact ⟨s₂, -s₁, Or.inr (neg_ne_zero.2 h), key _ _ (by ring)⟩
 
 end Main
 

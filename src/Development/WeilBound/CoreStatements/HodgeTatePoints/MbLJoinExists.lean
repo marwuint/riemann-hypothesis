@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrL
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.WeilBound.CoreStatements.HodgeTatePoints.InChartOfMemCtrSet
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLMorph
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonemptyStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonempty
 import Development.WeilBound.CoreStatements.HodgeTatePoints.MaBase
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
@@ -79,7 +79,7 @@ theorem join_exists : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebr
       Subring.closure_eq (chRing o (joinCo i x w) (c, l)).toSubring
     rw [hs] at hy hz
     exact ⟨y, hy, z, hz, rfl⟩
-  obtain ⟨M'⟩ := GlobalTheory.T.projective_model_nonempty o Ω' (κ × κ') (joinCo i x w) ⟨(c, l), hJ, hfrac⟩
+  obtain ⟨M'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.nonempty_pModel_of_chart o Ω' (κ × κ') (joinCo i x w) ⟨(c, l), hJ, hfrac⟩
   have hctr : ∀ p', p' ∈ ctrSet o x i M'.ξ := fun p' => (PositivityTheory.HtPt.Mb.join_charts o Ω κ κ' x Ω' i w M' hi p').1
   obtain ⟨f, hf, -⟩ := PositivityTheory.HtPt.Mb.morph o Ω κ x M o Ω' (κ × κ') (joinCo i x w) M' i hctr
   exact ⟨M', f, hf⟩

@@ -6,19 +6,6 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 namespace GlobalTheory.SliceExt
 
-theorem exists_extend {G S V : Type*} [Monoid G] [AddCommGroup S] [Module ℂ S]
-    [AddCommGroup V] [Module ℂ V] (j : S →ₗ[ℂ] V) (hj : Function.Injective j)
-    (ρ : G →* Module.End ℂ S) :
-    ∃ L : G →* Module.End ℂ V, ∀ g s, L g (j s) = j (ρ g s) := by
-  obtain ⟨p, hp⟩ := j.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr hj)
-  have hp' : ∀ s, p (j s) = s := fun s => LinearMap.congr_fun hp s
-  refine ⟨{ toFun := fun g => j ∘ₗ (ρ g) ∘ₗ p + (LinearMap.id - j ∘ₗ p)
-            map_one' := ?_
-            map_mul' := ?_ }, ?_⟩
-  · ext v; simp
-  · intro g g'; ext v; simp [hp']
-  · intro g s; simp [hp']
-
 noncomputable def splitPts (F : Type) [Field F] [NumberField F] (κ : Type) :
     (κ → AF F) ≃ (κ → mixedEmbedding.mixedSpace F) × (κ → Af F) where
   toFun x := (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1, fun i => (x i).2)

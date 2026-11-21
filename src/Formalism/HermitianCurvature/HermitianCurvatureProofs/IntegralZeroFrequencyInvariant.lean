@@ -109,13 +109,6 @@ theorem polar : Polarisation := by
 
 theorem coreC : FormCoreC := core semi polar
 
-theorem core0 : FormCore := by
-  intro V _ _ W β βi hβ hβi hnn hle hW
-  refine coreC V W β βi hβ hβi hnn hle ?_
-  intro x hx
-  obtain ⟨Φ, t₀, h0, hc, ht, U, hU, hae⟩ := hW x hx
-  exact ⟨Φ, fun t => βi (Φ t) (Φ t), t₀, h0, by simp only [h0], hc, ht, U, hU, hae⟩
-
 theorem fatou : FatouParam := by
   intro Q _ μ E _ U J c hU hJm hJc hc hae τ hτ
   have hNe : (ae (volume.restrict U) ⊓ 𝓝 τ).NeBot := by
@@ -365,18 +358,12 @@ end Formalism.FourierDecayAlt.P.B1
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem seminorm_inequality : Formalism.FourierDecayAlt.B.SeminormIneq := B1.semi
-
 theorem bilinear_form_continuity : Formalism.FourierDecayAlt.B.FormCoreC := B1.coreC
-
-theorem bilinear_form_at_zero : Formalism.FourierDecayAlt.B.FormCore := B1.core0
 
 theorem fatou_lemma_in_parameter : Formalism.FourierDecayAlt.B.FatouParam := B1.fatou
 
 theorem integration_by_parts_regularised : Formalism.FourierDecayAlt.B.RegIBP := B1.ibp
 
 theorem test_function_decay : Formalism.FourierDecayAlt.B.TestDecay := B1.decay B1.ibp
-
-theorem integral_zero_frequency_invariant : Formalism.FourierDecayAlt.B.IntRdZeroInv := B1.intZero
 
 end Formalism.FourierDecayAlt.P

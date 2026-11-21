@@ -17,49 +17,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace Sq
 
-theorem val_mem {n : ℕ} (y : G n) : y.val ∈ GLs n :=
-  Matrix.det_ne_zero_of_left_inverse y.inv_mul
-
-theorem unit_mem {n : ℕ} (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n :=
-  Matrix.det_ne_zero_of_left_inverse (Matrix.mem_unitaryGroup_iff'.mp k.2)
-
-theorem mul_mem {n : ℕ} {y : Mat n} (hy : y ∈ GLs n) (k₁ k₂ : Matrix.unitaryGroup (Fin n) ℂ) :
-    k₁.1 * y * k₂.1 ∈ GLs n := by
-  have h1 := unit_mem k₁
-  have h2 := unit_mem k₂
-  simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at h1 h2 hy ⊢
-  exact mul_ne_zero (mul_ne_zero h1 hy) h2
-
 end Sq
-
-theorem adjKer0 (hH : PositivityTheory.RgBcC.Mult.Hyp) (hAW : PositivityTheory.RgBcC.Mult.AdjWave) (hKB : PositivityTheory.RgBcC.Mult.KerBasic)
-    (hKA : PositivityTheory.RgBcC.Mult.KerAgree) : AdjKer0 := by
-  intro n μ hμ M g T k hg hk
-  have : BorelSpace (G n) := ⟨rfl⟩
-  have := hμ
-  obtain ⟨k', hk'⟩ := hH.2.2.2.2.2.2 n μ M [] g T hg
-  have hB := hKB hH n μ M [] g k hk
-  have hB' := hKB hH n μ M [] g k' hk'
-  have h1 : (1 : Mat n) ∈ GLs n := by simp [GLs]
-  have heq : ∀ y ∈ GLs n, PositivityTheory.RgBcC.Mult.kAdj M k y = k' y := by
-    refine hKA hH n μ M (PositivityTheory.RgBcC.Mult.kAdj M k) k' hB.2.2.1 hB'.1 hB.2.2.2 hB'.2.1 ?_
-    intro u hu hc
-    exact (hAW hH n μ M [] g T k hg hk u hu hc 1 h1).trans (hk'.2.2.2 u hu 1 h1).symm
-  change IsKer μ M [] g (PositivityTheory.RgBcC.Mult.kAdj M k)
-  refine ⟨hk'.1.congr heq, ?_, ?_, ?_⟩
-  · obtain ⟨R, hR⟩ := hk'.2.1
-    exact ⟨R, fun y hy h => (heq y hy).trans (hR y hy h)⟩
-  · intro y hy k₁ k₂
-    rw [heq _ (Sq.mul_mem hy k₁ k₂), heq y hy]
-    exact hk'.2.2.1 y hy k₁ k₂
-  · intro u hu x hx
-    have e : RgBcC.act μ M (PositivityTheory.RgBcC.Mult.kAdj M k) (u 0) x = RgBcC.act μ M k' (u 0) x := by
-      unfold RgBcC.act
-      congr 1
-      funext y
-      rw [heq _ (Sq.val_mem y)]
-    rw [e]
-    exact hk'.2.2.2 u hu x hx
 
 theorem sqOk (h0 : AdjKer0) (h1 : BlockOperatorsProductAdjoint) (h2 : BlockWordOperators) : SqOk := by
   intro E _ _ _ B t g m ht hg hka hkb

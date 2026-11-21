@@ -7,7 +7,15 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupercuspidalSup
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SatWDCharPolChars
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupercuspidalSupportTwistNuCharacters
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalContragredientMonomial
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RcUnlinkedChars
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CyclicStrongAtCusp
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LanglandsClassificationSupercuspidalSupportMulti
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodToralOfIsSubquotientProdIrr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BernsteinZelevinskyFinitenessHolds
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneCharpolyTwistSpecial
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalLanglandsExtensionPreservesCuspidal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitaryTwistAbsPow
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSatakeLeOfUnitarySphericalGL
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.LocalCentralUnits.RecTExists
@@ -205,26 +213,3 @@ private theorem val_frob (q a : ℕ) (b : ℂˣ) :
 
 end UpperTheory.V.Z.Desc.W.GaloisCompatibilityAlmostEverywhere
 
-open UpperTheory.V.Z.Desc.W.GaloisCompatibilityAlmostEverywhere in
-theorem UpperTheory.V.Z.Desc.W.galAEOf  :
-    UpperTheory.V.Z.Desc.W.GalAEOf := by
-  intro P hRow E Ω _ _ _ _ _ _ l _ ι a ha π hc s hreg
-  have hp := GlobalTheory.HeightCounting.Blocks.isPolarized_twist_absPow hc s
-  have hpp : GlobalTheory.ContraPair.PolarizedPair (π.twist (GlobalTheory.HeckeGal.Model.absPow E s)) _ :=
-    ⟨hp.sign, GlobalTheory.T.cuspContragredientIsCMConjTwist_of_paired_invTranspose E a _ (GlobalTheory.GalOfCusp.compNorm E _) (P.litN.aut.gk E a _) hp.dual⟩
-  obtain ⟨r, wt, HT, H⟩ := hRow E Ω l ι a ha _ _ hreg hpp
-  refine ⟨r, H.cont, fun w hl B hB A hA g hg => ?_⟩
-  obtain ⟨rc, hrc⟩ := UpperTheory.Zero.LLC.recTExists E Ω A w hA
-  obtain ⟨⟨σ, hσ⟩, hiso⟩ := UpperTheory.V.Af.locCompC P E a (π.twist (GlobalTheory.HeckeGal.Model.absPow E s)) w
-  have hBσ : GlobalTheory.LFun.HasSatGL w σ.ρ B := ((UpperTheory.V.Af.satLoc P E a w σ).2 _ _ (hiso σ hσ) B).1 hB
-  obtain ⟨e1, hT, hM⟩ := rec_sat P.litN.loc.exh P.litN.loc.zel P.litN.aut.js.2 a ha _ w A hA σ B hB hBσ rc hrc
-  have e : wdOf hA hl ι r = satWD hA a B := ((H.away w hl A hA rc hrc σ hσ).tor hT hM).trans e1
-  let φ : Weil hA := ⟨g, mem_Weil_of_isFrob hA hg⟩
-  have hφ : deg φ = 1 := deg_eq_one_iff.2 hg
-  have c := charPol_wdOf (h := hA) hl ι (Units.continuous_val.comp H.cont) φ⁻¹
-  rw [e, GlobalTheory.SatChar.charPol_satWD, deg_inv, hφ] at c
-  refine (show _ = _ from c.symm).trans ?_
-  simp only [UpperTheory.V.Af.algSat, Multiset.map_map, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton]
-  refine congrArg _ (Multiset.map_congr rfl fun b _ => ?_)
-  simp only [Function.comp_apply]
-  rw [val_frob]

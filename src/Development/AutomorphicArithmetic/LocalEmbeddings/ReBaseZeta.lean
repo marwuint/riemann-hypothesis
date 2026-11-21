@@ -1,9 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ZetaIdentityPersistsRowColumnChanges
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorIsotropicTranslationCharSplitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceCharacterAndTranslationCoordsSurjectivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSmulOfCommuteHeisenbergLinearModelSchwartzBruhStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorIsotropicTranslationCharSplit
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocIsoRefl
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceCharacterAndTranslationCoordsSurjectiv
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsCompactIsOpenUnitsAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSmulOfCommuteHeisenbergLinearModelSchwartzBruh
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearModelUnitaryConjugate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatchedFiniteMapsRestriction
 
@@ -122,16 +126,16 @@ theorem linW_change (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew �
   have hψ1 : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1 := GlobalTheory.PsiNontriv.psiAt_ne_one _ hB.std v
   have hsb := fun (u : Matrix (Fin n) (Fin d) (AE F E)) φ hφ =>
     GlobalTheory.SchrSB.schr_mem_SB B.ψ hB.std.1 v (GlobalTheory.LatVac.locCo M.co v u) φ hφ
-  have act := fun b c u hu hp φ hφ => (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hB.cm X W hX.herm hW.skew (GlobalTheory.FinUniq.det_ne_zero_herm hX)
+  have act := fun b c u hu hp φ hφ => (_root_.GlobalTheory.HeisFlip.heis_trans_char hB.cm X W hX.herm hW.skew (GlobalTheory.FinUniq.det_ne_zero_herm hX)
     (GlobalTheory.FinUniq.det_ne_zero_skew hW) M B.ψ hB.std t b c u hu hp φ hφ _ (hsb u φ hφ)
     (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v u hu φ)).1
-  choose zX hzX hzX0 hzXe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).1
-  choose zY hzY hzY0 hzYe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).2
+  choose zX hzX hzX0 hzXe using fun Z => (_root_.GlobalTheory.FlipOnto.coX_coY_onto F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).1
+  choose zY hzY hzY0 hzYe using fun Z => (_root_.GlobalTheory.FlipOnto.coX_coY_onto F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).2
   have y0 : ∀ b c Z, coY σ X W t b c (zX Z) = 0 := fun b c Z => by simp [coY, hzX0]
   have x0 : ∀ b c Z, coX t b c (zY Z) = 0 := fun b c Z => by simp [coX, hzY0]
   have p0 : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), pairM Y 0 = 0 := fun Y => by simp [pairM]
   have p0' : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), pairM 0 Y = 0 := fun Y => by simp [pairM]
-  refine GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (SB (Fin n × Fin d → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 ι₂
+  refine _root_.GlobalTheory.LinSchur.eq_smul_of_commute (SB (Fin n × Fin d → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 ι₂
     (fun φ Y => ι φ (g.val * Y * k.valᵀ)) (Model.IsLin.bij hι₂) (fun x _ y _ a => by rw [map_add, map_smul]; rfl)
     (fun C φ => schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v (zX C)) φ)
     (fun l φ => schr (GlobalTheory.LatVac.psiAt B.ψ v)
@@ -156,11 +160,11 @@ theorem linBar_change (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew
   have hψ1 : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1 := GlobalTheory.PsiNontriv.psiAt_ne_one _ hB.std v
   have hsb := fun (u : Matrix (Fin n) (Fin d) (AE F E)) φ hφ =>
     GlobalTheory.SchrSB.schr_mem_SB B.ψ hB.std.1 v (GlobalTheory.LatVac.locCo M.co v u) φ hφ
-  have act := fun b c u hu hp φ hφ => (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hB.cm X W hX.herm hW.skew (GlobalTheory.FinUniq.det_ne_zero_herm hX)
+  have act := fun b c u hu hp φ hφ => (_root_.GlobalTheory.HeisFlip.heis_trans_char hB.cm X W hX.herm hW.skew (GlobalTheory.FinUniq.det_ne_zero_herm hX)
     (GlobalTheory.FinUniq.det_ne_zero_skew hW) M B.ψ hB.std t b c u hu hp φ hφ _ (hsb u φ hφ)
     (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v u hu φ)).2
-  choose zX hzX hzX0 hzXe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).1
-  choose zY hzY hzY0 hzYe using fun Z => (GlobalTheory.T.splitPlace_characterAndTranslationCoords_surjective F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).2
+  choose zX hzX hzX0 hzXe using fun Z => (_root_.GlobalTheory.FlipOnto.coX_coY_onto F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).1
+  choose zY hzY hzY0 hzYe using fun Z => (_root_.GlobalTheory.FlipOnto.coX_coY_onto F E σ B hB n d _ _ _ _ X W hX hW v t (b * g) (c * k) Z).2
   have y0 : ∀ b c Z, coY σ X W t b c (zX Z) = 0 := fun b c Z => by simp [coY, hzX0]
   have x0 : ∀ b c Z, coX t b c (zY Z) = 0 := fun b c Z => by simp [coX, hzY0]
   have p0 : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), pairM Y 0 = 0 := fun Y => by simp [pairM]
@@ -171,7 +175,7 @@ theorem linBar_change (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew
   have eX : ∀ u, coX t (b * g) (c * k) u = (GlobalTheory.SplitFlip.invT g).valᵀ * coX t b c u * (k⁻¹).valᵀ := fun u => by
     have := coX_mul t (b * g) g⁻¹ (c * k) k⁻¹ u
     rwa [mul_inv_cancel_right, mul_inv_cancel_right] at this
-  refine GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (SB (Fin n × Fin d → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 ι₂
+  refine _root_.GlobalTheory.LinSchur.eq_smul_of_commute (SB (Fin n × Fin d → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 ι₂
     (fun φ Y => ι φ ((GlobalTheory.SplitFlip.invT g).val * Y * (k⁻¹).val)) (Model.IsLin.bij hι₂)
     (fun x _ y _ a => by rw [map_add, map_smul]; rfl)
     (fun C φ => schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v (zY C)) φ)

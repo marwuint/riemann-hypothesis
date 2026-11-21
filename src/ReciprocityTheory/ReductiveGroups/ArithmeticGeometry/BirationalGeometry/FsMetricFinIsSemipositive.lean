@@ -51,17 +51,6 @@ lemma fderiv_logFs_eventuallyEq {z : ι → ℂ} (hz : z ≠ 0) :
     fderiv ℝ (fun z => Real.log ‖fsLp ι z‖) =ᶠ[nhds z] fsGrad := by
   filter_upwards [eventually_ne_nhds hz] with y hy using (hasFDerivAt_logFs hy).fderiv
 
-lemma differentiableAt_fsGrad {z : ι → ℂ} (hz : z ≠ 0) :
-    DifferentiableAt ℝ (fsGrad (ι := ι)) z := by
-  show DifferentiableAt ℝ
-    (fun y => (‖fsLp ι y‖ ^ 2)⁻¹ • (innerSL ℝ (fsLp ι y)).comp (fsLp ι)) z
-  have h1 : DifferentiableAt ℝ (fun y => (‖fsLp ι y‖ ^ 2)⁻¹) z :=
-    (DifferentiableAt.norm_sq ℂ (fsLp ι).differentiableAt).inv (fsLp_normSq_ne_zero hz)
-  have h2 : DifferentiableAt ℝ (fun y => (innerSL ℝ (fsLp ι y)).comp (fsLp ι)) z :=
-    (((ContinuousLinearMap.compL ℝ (ι → ℂ) (EuclideanSpace ℂ ι) ℝ).flip (fsLp ι)).comp
-      ((innerSL ℝ).comp (fsLp ι))).differentiableAt
-  exact h1.smul h2
-
 lemma hess_logFs {z : ι → ℂ} (hz : z ≠ 0) (w : ι → ℂ) :
     fderiv ℝ (fderiv ℝ (fun z => Real.log ‖fsLp ι z‖)) z w w =
       ‖fsLp ι w‖ ^ 2 / ‖fsLp ι z‖ ^ 2 -
@@ -127,7 +116,5 @@ theorem fsMetric_isSemipositive : IsSemipositive (fsMetric ι) := by
   apply div_nonneg
   · nlinarith [h2]
   · positivity
-
-theorem fsMetric_fin_isSemipositive (n : ℕ) : IsSemipositive (fsMetric (Fin n)) := fsMetric_isSemipositive
 
 end ReciprocityTheory.ChartRestriction.G.Geo

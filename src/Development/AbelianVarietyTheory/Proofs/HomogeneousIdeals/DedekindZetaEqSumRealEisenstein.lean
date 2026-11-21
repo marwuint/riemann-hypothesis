@@ -213,12 +213,6 @@ variable [NeZero d] (h2 : finrank ℚ K = 2) (hD : discr K = -d) (hd : 4 < d)
   {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) (σ : K →+* ℂ)
 include h2 hD hd hχ
 
-include σ in
-
-theorem LFunction_one_eq_classNumber : χ.LFunction 1 = (π * classNumber K / √d : ℝ) := by
-  choose τ hτ using exists_isIdealClassPoint h2 hD σ
-  exact (LFunction_one_and_mean_log_eta h2 hD hd hχ σ hτ).1
-
 theorem chowla_selberg_eta {τ : ClassGroup (𝓞 K) → ℍ} (hτ : ∀ c, IsIdealClassPoint σ c (τ c)) :
     (((∑ c, Real.log (4 * π * (τ c).im * ‖ModularForm.eta (τ c)‖ ^ 4)) / classNumber K : ℝ) : ℂ)
       = (Real.eulerMascheroniConstant + Real.log (2 * π / √d) : ℝ)
@@ -321,53 +315,5 @@ theorem discr_eq_neg_of_sq_eq (h2 : finrank ℚ K = 2) (hsq : Squarefree d) (hd 
     linear_combination (y * t - 2 * x + 1) * e3 - 4 * e1
   have hu : IsUnit y := (Int.squarefree_natCast.2 hsq) y ⟨-discr K, by linear_combination e4⟩
   rcases Int.isUnit_iff.1 hu with rfl | rfl <;> simpa using e4
-
-theorem chowla_selberg [NeZero d] (h2 : finrank ℚ K = 2) (hD : discr K = -d) (hd : 4 < d)
-    {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) (σ : K →+* ℂ) :
-    (∀ s : ℂ, 1 < s.re → dedekindZeta K s = riemannZeta s * χ.LFunction s) ∧
-    χ.LFunction 1 = (π * classNumber K / √d : ℝ) ∧
-    (∀ τ : ClassGroup (𝓞 K) → ℍ, (∀ c, IsIdealClassPoint σ c (τ c)) →
-      (((∑ c, Real.log (4 * π * (τ c).im * ‖ModularForm.eta (τ c)‖ ^ 4)) / classNumber K : ℝ) : ℂ)
-        = (Real.eulerMascheroniConstant + Real.log (2 * π / √d) : ℝ)
-          - deriv χ.LFunction 1 / χ.LFunction 1) ∧
-    ∀ (𝔞 : ClassGroup (𝓞 K) → (FractionalIdeal (𝓞 K)⁰ K)ˣ) (L : ClassGroup (𝓞 K) → PeriodPair),
-      (∀ c, ClassGroup.mk K (𝔞 c) = c) → (∀ c, ((L c).lattice : Set ℂ) = σ '' (𝔞 c).1) →
-      (((∑ c, latticeLogPeriod (L c)) / classNumber K : ℝ) : ℂ)
-        = (Real.eulerMascheroniConstant + Real.log (2 * π / √d) : ℝ)
-          - deriv χ.LFunction 1 / χ.LFunction 1 ∧
-      (((∑ c, Real.log ((absNorm (𝔞 c).1 : ℝ) ^ 6 * ‖(L c).g₂ ^ 3 - 27 * (L c).g₃ ^ 2‖))
-          / classNumber K : ℝ) : ℂ)
-        = (12 * Real.log (2 * π) - 6 * Real.log d + 6 * Real.eulerMascheroniConstant : ℝ)
-          - 6 * (deriv χ.LFunction 1 / χ.LFunction 1) :=
-  ⟨fun _ hs => dedekindZeta_eq_mul_LFunction h2 hD hχ hs,
-    LFunction_one_eq_classNumber h2 hD hd hχ σ,
-    fun _ hτ => chowla_selberg_eta h2 hD hd hχ σ hτ,
-    fun _ _ h𝔞 hL => ⟨chowla_selberg_lattice h2 hD hd hχ σ h𝔞 hL,
-      chowla_selberg_discriminant h2 hD hd hχ σ h𝔞 hL⟩⟩
-
-theorem exists_field_discr_neg_seven : ∃ (K : IntermediateField ℚ ℂ) (_ : NumberField K)
-    (χ : DirichletCharacter ℂ 7), finrank ℚ K = 2 ∧ discr K = -(7 : ℕ) ∧ IsKroneckerChar χ := by
-  let r : ℂ := √7 * Complex.I
-  have hr : r ^ 2 = -7 := by
-    rw [mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (by norm_num)]
-    simp
-  have hm : (Polynomial.X ^ 2 + Polynomial.C 7 : Polynomial ℚ).Monic := by monicity!
-  have he : Polynomial.aeval r (Polynomial.X ^ 2 + Polynomial.C 7 : Polynomial ℚ) = 0 := by
-    simp [hr]
-  have hi : IsIntegral ℚ r := ⟨_, hm, he⟩
-  have hfin := IntermediateField.adjoin.finiteDimensional hi
-  have hK : NumberField (IntermediateField.adjoin ℚ {r}) := ⟨⟩
-  have h2 : finrank ℚ (IntermediateField.adjoin ℚ {r}) = 2 := by
-    rw [IntermediateField.adjoin.finrank hi]
-    refine le_antisymm ((Polynomial.natDegree_le_natDegree (minpoly.min ℚ r hm he)).trans
-      (by compute_degree)) ((minpoly.two_le_natDegree_iff hi).2 ?_)
-    rintro ⟨q, hq⟩
-    have := congrArg Complex.im hq
-    simp [r, eq_comm (a := (0 : ℝ))] at this
-  have hD : discr (IntermediateField.adjoin ℚ {r}) = -(7 : ℕ) :=
-    discr_eq_neg_of_sq_eq h2 (by norm_num : Nat.Prime 7).squarefree rfl
-      (r := IntermediateField.AdjoinSimple.gen ℚ r) (Subtype.ext (by simp [hr]; rfl))
-  obtain ⟨χ, hχ⟩ := exists_isKroneckerChar_of_discr h2 hD
-  exact ⟨_, hK, χ, h2, hD, hχ⟩
 
 end GlobalTheory

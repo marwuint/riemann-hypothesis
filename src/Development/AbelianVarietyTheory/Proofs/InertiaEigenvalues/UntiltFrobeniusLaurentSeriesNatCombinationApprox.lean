@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltAddEstimateLeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesRadiusSizeLawsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusLaurentSeriesAddSubLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltAddEstimateLe
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusSeriesRadiusSizeLaws
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusLaurentSeriesAddSubLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltFrobeniusIntegerPowerLawsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltToComplexPAdicBasicLawsStatement
 open Formalism.Per GlobalTheory.PSer
@@ -26,7 +26,7 @@ theorem untiltFrobeniusLaurentSeries_nsmul_approx (l : ℕ) [Fact l.Prime] (h j 
     (hh : 1 ≤ h) (hr0 : 0 ≤ r) (hr1 : r < 1) (hx : ‖sh x‖ ≤ r) (m : ℕ) :
     ‖sh (m • x)‖ ≤ r ∧ ‖lam h j (m • x) - (m : ℂ_[l]) * lam h j x‖ ≤ ‖(l : ℂ_[l])‖ * gam l h j r := by
   have hC : 0 ≤ ‖(l : ℂ_[l])‖ * gam l h j r :=
-    mul_nonneg (norm_nonneg _) (GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j r hh hr0 hr1).2.2.1
+    mul_nonneg (norm_nonneg _) (_root_.GlobalTheory.gam_laws l h j r hh hr0 hr1).2.2.1
   induction m with
   | zero =>
     simp only [zero_smul, Nat.cast_zero, zero_mul, sub_zero, untiltFrobeniusLaurentSeries_zero, norm_zero, (GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l).2.1]
@@ -34,9 +34,9 @@ theorem untiltFrobeniusLaurentSeries_nsmul_approx (l : ℕ) [Fact l.Prime] (h j 
   | succ m ih =>
     obtain ⟨ih1, ih2⟩ := ih
     rw [succ_nsmul]
-    obtain ⟨hadd, hsh⟩ := GlobalTheory.T.tiltUntilt_add_estimate_le l r (m • x) x ih1 hx
+    obtain ⟨hadd, hsh⟩ := _root_.GlobalTheory.PSer.sh_add_le l r (m • x) x ih1 hx
     refine ⟨hsh, ?_⟩
-    have hl := GlobalTheory.T.untiltFrobeniusLaurentSeries_add_sub_le l h j r (m • x) x hh hr1 ih1 hx
+    have hl := _root_.GlobalTheory.PSer.lam_add_sub_le l h j r (m • x) x hh hr1 ih1 hx
     have heq : lam h j (m • x + x) - ((m + 1 : ℕ) : ℂ_[l]) * lam h j x =
         (lam h j (m • x + x) - lam h j (m • x) - lam h j x) + (lam h j (m • x) - (m : ℂ_[l]) * lam h j x) + 0 := by
       push_cast; ring
@@ -49,7 +49,7 @@ theorem untiltFrobeniusLaurentSeries_finset_sum_approx (l : ℕ) [Fact l.Prime] 
     ‖sh (∑ a ∈ s, n a • x a)‖ ≤ r ∧
       ‖lam h j (∑ a ∈ s, n a • x a) - ∑ a ∈ s, (n a : ℂ_[l]) * lam h j (x a)‖ ≤ ‖(l : ℂ_[l])‖ * gam l h j r := by
   have hC : 0 ≤ ‖(l : ℂ_[l])‖ * gam l h j r :=
-    mul_nonneg (norm_nonneg _) (GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j r hh hr0 hr1).2.2.1
+    mul_nonneg (norm_nonneg _) (_root_.GlobalTheory.gam_laws l h j r hh hr0 hr1).2.2.1
   induction s using Finset.induction_on with
   | empty =>
     simp only [Finset.sum_empty, untiltFrobeniusLaurentSeries_zero, sub_zero, norm_zero, (GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l).2.1]
@@ -58,9 +58,9 @@ theorem untiltFrobeniusLaurentSeries_finset_sum_approx (l : ℕ) [Fact l.Prime] 
     obtain ⟨ih1, ih2⟩ := ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     obtain ⟨hu1, hu2⟩ := untiltFrobeniusLaurentSeries_nsmul_approx l h j r (x a) hh hr0 hr1 (hx a) (n a)
-    obtain ⟨hadd, hsh⟩ := GlobalTheory.T.tiltUntilt_add_estimate_le l r (n a • x a) (∑ b ∈ s, n b • x b) hu1 ih1
+    obtain ⟨hadd, hsh⟩ := _root_.GlobalTheory.PSer.sh_add_le l r (n a • x a) (∑ b ∈ s, n b • x b) hu1 ih1
     refine ⟨hsh, ?_⟩
-    have hl := GlobalTheory.T.untiltFrobeniusLaurentSeries_add_sub_le l h j r (n a • x a) (∑ b ∈ s, n b • x b) hh hr1 hu1 ih1
+    have hl := _root_.GlobalTheory.PSer.lam_add_sub_le l h j r (n a • x a) (∑ b ∈ s, n b • x b) hh hr1 hu1 ih1
     have heq : lam h j (n a • x a + ∑ b ∈ s, n b • x b) -
         ((n a : ℂ_[l]) * lam h j (x a) + ∑ b ∈ s, (n b : ℂ_[l]) * lam h j (x b)) =
         (lam h j (n a • x a + ∑ b ∈ s, n b • x b) - lam h j (n a • x a) - lam h j (∑ b ∈ s, n b • x b)) +

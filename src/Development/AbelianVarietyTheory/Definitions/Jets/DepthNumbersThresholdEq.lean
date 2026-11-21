@@ -45,9 +45,6 @@ def PhiC (N : NumDatum) (l : ℕ) : Prop := N.cls l = PrimeClass.inertClass ∧ 
 
 def ConjIn (N : NumDatum) (l : ℕ) : Prop := N.cls l = PrimeClass.inertClass ∧ Odd (addOrderOf (N.hP l))
 
-theorem PhiC.conjIn {N : NumDatum} {l : ℕ} (h : PhiC N l) : ConjIn N l :=
-  ⟨h.1, by rw [h.2, addOrderOf_zero]; exact odd_one⟩
-
 theorem even_ordP_of_not_conjIn {N : NumDatum} {l : ℕ} (hI : Inert N l) (hC : ¬ ConjIn N l) : Even (N.ordP l) := by
   unfold NumDatum.ordP
   by_cases hc : N.cls l = PrimeClass.signal

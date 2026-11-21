@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RealPointsClassicalModelRealVectorSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompactStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeStrongApproxOpenCompact
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaFunctionSpaceHeisenbergLawsStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
@@ -385,7 +385,7 @@ theorem ipO_eq_mean : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (μ : Measur
   have hstdfg : (stdL D.host.E S.rank).FG := by
     unfold stdL
     exact Submodule.fg_span (Set.finite_range _)
-  obtain ⟨hA1, hA2, hA3, -, hA5, hA6⟩ := GlobalTheory.T.completedTensorLattice_strongApprox_open_compact D S T C (stdL D.host.E S.rank) C.X.Λ
+  obtain ⟨hA1, hA2, hA3, -, hA5, hA6⟩ := _root_.GlobalTheory.Ker.HatLat.hatA_tens D S T C (stdL D.host.E S.rank) C.X.Λ
     ⟨hstdfg, span_stdL⟩ ⟨C.X.Λ_fg, C.X.Λ_span⟩
   obtain ⟨-, -, hTh⟩ := GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C
   obtain ⟨-, -, -, -, -, Nf, hNf, hfN⟩ := hTh f hf

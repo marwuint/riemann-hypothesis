@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEquiStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyEqFinsumPsiStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradicStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradic
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.SumPrimitiveEndClassFunctionRestrictMixedSubspacStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FinsumMobiusInverseCharpolyTransversalSubspacesStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FinsumMobiusInverseCharpolyInvariantLeStatement
@@ -154,10 +154,10 @@ theorem step {F : Type} [Field F] [Finite F] (s : F[X] → ℂ) (hs : IsAdditive
       exact res_mixed W hWT hd hle
   have s_split : s (LinearMap.charpoly g) = s (LinearMap.charpoly (g.restrict hg)) +
       s (LinearMap.charpoly (A.mapQ A g (fun x hx => hg x hx))) := by
-    rw [(GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F V A g hg).1]
+    rw [(_root_.GlobalTheory.CuspGL.charpoly_block F V A g hg).1]
     exact hs _ _ (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _)
   have s_const : ∑ h ∈ H, s (LinearMap.charpoly (g + h)) = (H.card : ℂ) * s (LinearMap.charpoly g) := by
-    rw [Finset.sum_congr rfl fun h hh => by rw [(GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F V A g hg).2 h ((memH h).1 hh)],
+    rw [Finset.sum_congr rfl fun h hh => by rw [(_root_.GlobalTheory.CuspGL.charpoly_block F V A g hg).2 h ((memH h).1 hh)],
       Finset.sum_const, nsmul_eq_mul]
   have psi_expand : ∀ k : Module.End F V, psi s V k =
       s (LinearMap.charpoly k) - ∑ W ∈ Finset.univ.erase ⊤, res s W k := by

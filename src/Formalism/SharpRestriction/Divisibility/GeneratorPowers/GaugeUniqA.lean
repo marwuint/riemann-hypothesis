@@ -1,5 +1,5 @@
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.PrimUniqPf
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GaugeUniqH
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GaugeUniq
 
 set_option autoImplicit false
 
@@ -41,13 +41,6 @@ theorem scaled_mul {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X))
   erw [res_res, res_res]
   rw [mul_mul_mul_comm]
   rfl
-
-theorem scaled_pow {M : LB Y} (t t' : LB.Gen M) (u : Γ(Y, ⊤)ˣ)
-    (h : IsScaled u t t') (k : ℕ) :
-    IsScaled (u ^ k) (⟨fun j => t.s j ^ k⟩ : LB.Gen M) ⟨fun j => t'.s j ^ k⟩ := by
-  intro j
-  show t'.s j ^ k = res le_top (u ^ k) * t.s j ^ k
-  rw [h j, mul_pow, map_pow]
 
 theorem pullUnit_res (h : Z ⟶ Y) {V : Y.Opens} {W : Z.Opens} (hWV : W ≤ h ⁻¹ᵁ V) (u : Γ(Y, ⊤)ˣ) :
     res hWV (pullU h V (res (le_top : V ≤ ⊤) u)) = res le_top (pullUnit h u) := by

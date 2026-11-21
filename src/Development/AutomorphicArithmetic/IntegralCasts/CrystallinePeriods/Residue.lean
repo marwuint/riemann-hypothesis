@@ -43,12 +43,6 @@ theorem span_p_le_maximalIdeal : span {(p : A)} ≤ maximalIdeal A := by
   rw [Ideal.span_le, Set.singleton_subset_iff]
   exact (Fact.out : ¬IsUnit (p : A))
 
-omit [CharZero A] in
-theorem residueField_charP : CharP (ResidueField A) p :=
-  (CharP.charP_iff_prime_eq_zero Fact.out).2 (by
-    rw [← map_natCast (residue A), residue_eq_zero_iff]
-    exact (Fact.out : ¬IsUnit (p : A)))
-
 omit [Fact ¬IsUnit (p : A)] in
 theorem exists_maximalIdeal_pow_le_span_p : ∃ e : ℕ, maximalIdeal A ^ e ≤ span {(p : A)} := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible A
@@ -105,15 +99,6 @@ theorem residue_wittResidueToRing (x : WittVector p (ResidueField A)) :
   rw [← modPToResidue_mk p, wittResidueToRing, RingHom.comp_apply, Ainf.theta,
     WittVector.mk_fontaineTheta, Ainf.ofWitt, WittVector.map_coeff, Tilt.coeff_ofPerfect]
   exact modPToResidue_residueSection p A _
-
-theorem wittResidueToRing_injective : Function.Injective (wittResidueToRing p A) := by
-  rw [injective_iff_map_eq_zero]
-  intro x hx
-  by_contra h
-  obtain ⟨m, b, rfl⟩ := WittVector.exists_eq_pow_p_mul' x h
-  rw [map_mul, map_pow, map_natCast] at hx
-  exact mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero))
-    ((Units.isUnit b).map (wittResidueToRing p A)).ne_zero hx
 
 theorem exists_sum_wittResidueToRing {π : A} (hπ : Irreducible π) (n : ℕ) (a : A) :
     ∃ (c : ℕ → WittVector p (ResidueField A)) (b : A),

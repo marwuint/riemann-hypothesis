@@ -75,11 +75,6 @@ theorem gt_rel (oa : D.toPre.OAct O) (a : O) (g g' h g0 : GtPtF D.toPre F) (z : 
   rw [hc3.s01, hc3.s12, e5] at e2
   exact (mul_right_cancel e2).symm
 
-private theorem mul_mul_mul_mul_inv_eq_mul_mul_mul {G : Type*} [CommGroup G] (u rr gs r0 ps rk : G) :
-    u * rr * (gs * (r0 * (ps * rk) * u⁻¹)) = r0 * (gs * rr * (ps * rk)) := by
-  calc u * rr * (gs * (r0 * (ps * rk) * u⁻¹)) = (u * u⁻¹) * (r0 * (gs * rr * (ps * rk))) := by ac_rfl
-    _ = r0 * (gs * rr * (ps * rk)) := by rw [_root_.mul_inv_cancel, _root_.one_mul]
-
 theorem origin (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (N : ℕ) (p : QkPt D.toPre F (1 * N))
     (z : D.toPre.X)
     (r : LB.Gen (LB.LinComb D.toPre.P.L (rosatiφ D.toPre.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε))

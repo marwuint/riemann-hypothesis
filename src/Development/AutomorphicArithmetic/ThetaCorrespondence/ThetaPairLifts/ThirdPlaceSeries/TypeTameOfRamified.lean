@@ -1,5 +1,16 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TameRamifiedTypeAtPlace
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjSPV
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharRamifiedOfRamifiedLocalComponent
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRealSubfieldPlaceInRamifiedSet
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqOrIsConjPlaceOfOverSplitPlace
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjugateSplitPlaceEqConjugatePlaceAndEmbedding
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSplitPlaceParahoricSubgroupCharacter
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLocalComponentEigenvectorAtSplitPlaceIsoty
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicPartSpannedBySplitPlaceLocalComponent
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsParahoricTypeVectorOfUpperParahoricEigen
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLevelCharacterAtConjugateSplitPlace
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsParahoricTypeVectorAtConjugatePlace
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -18,7 +29,7 @@ theorem typeTame_of_ramified_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExi
   let j : Fin D.R.m := ⟨D.nd.j i - 1, by omega⟩
   have hj : j.1 + 1 = D.nd.j i := by simp only [j]; omega
   have hcomp := hT.mu i w hw j hj
-  obtain ⟨v, hov, hvq⟩ := GlobalTheory.T.exists_realSubfield_place_in_ramified_set D _ w hg (GlobalTheory.T.heckeChar_ramified_of_ramified_localComponent _ _ w _ hcomp hram)
+  obtain ⟨v, hov, hvq⟩ := _root_.GlobalTheory.GeoUnder.exists_under_in_qPl D _ w hg (_root_.GlobalTheory.VTypeTame.ramified_of_isComp _ _ w _ hcomp hram)
   obtain ⟨s, ξ, hsv, hcs, hlp⟩ := P.H.level.para i j hj v hvq
   obtain ⟨f, hfI, hfT, hf0⟩ : ∃ f, f ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q) ∧
       f ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ ∧ f ≠ 0 := by
@@ -27,7 +38,7 @@ theorem typeTame_of_ramified_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExi
     refine ⟨(P.M.loc i).real y, hy, ?_, ?_⟩
     · rw [← (P.M.loc i).real_range]; exact ⟨y, rfl⟩
     · intro h; exact hy0 ((P.M.loc i).real_inj (h.trans (map_zero _).symm))
-  obtain ⟨K, θ, hKm, hθ, hKi, hθo, hχθ⟩ := GlobalTheory.T.exists_splitPlaceParahoric_subgroup_character _ _ s D.R.r _ _ ξ hlp hcs.1
+  obtain ⟨K, θ, hKm, hθ, hKi, hθo, hχθ⟩ := _root_.GlobalTheory.ParaLevel.exists_parahoric_char _ _ s D.R.r _ _ ξ hlp hcs.1
   have hfK : ∀ κ, TrivOutside {s.v} κ → ∀ h : s.loc D.R.nV κ ∈ K,
       NG.rt D.host.E D.R.nV κ f = ((θ ⟨s.loc D.R.nV κ, h⟩ : ℂˣ) : ℂ) • f := by
     intro κ hκ h
@@ -37,30 +48,30 @@ theorem typeTame_of_ramified_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExi
   have hmu_eq : ∀ g (hg : NG.ParaRT s D.R.r g) (d : (s.v.adicCompletion (maximalRealSubfield D.host.E))ˣ),
       (d : s.v.adicCompletion (maximalRealSubfield D.host.E)) = NG.detDD s D.R.r g →
       θ ⟨g, (hKm g).2 hg⟩ = ξ d := fun g hg d hd => hθ g _ d hd
-  rcases GlobalTheory.T.eq_or_isConjPlace_of_over_splitPlace D s w (hsv ▸ hov) with hsw | hconj
+  rcases _root_.GlobalTheory.SplitPlaceOver.eq_or_isConjPl D s w (hsv ▸ hov) with hsw | hconj
   · subst hsw
     obtain ⟨c, T, hc, hci, -⟩ := hT.rep i s hw Q
-    obtain ⟨u, hu0, hu⟩ := GlobalTheory.T.exists_localComponent_eigenvector_at_splitPlace_isotypic _ _ (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s _ (hT.rep i s hw Q) c hc hci
+    obtain ⟨u, hu0, hu⟩ := _root_.GlobalTheory.LocVec.main _ _ (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s _ (hT.rep i s hw Q) c hc hci
       K θ hKi hθo f hfI hf0 hfK
-    refine ⟨u, hu0, GlobalTheory.T.isParahoricTypeVector_of_upperParahoric_eigen _ s D.R.r D.R.t _ ξ _ c hc hci hcomp.1 hcs.1 (fun k => (hcs.2 k).trans (hcomp.2 k).symm) u ?_⟩
+    refine ⟨u, hu0, _root_.GlobalTheory.SameParahoric.isParahoricVec_of_eigen _ s D.R.r D.R.t _ ξ _ c hc hci hcomp.1 hcs.1 (fun k => (hcs.2 k).trans (hcomp.2 k).symm) u ?_⟩
     intro g hg d hd
     rw [← hmu_eq g hg d hd]
     exact hu g _
-  · obtain ⟨hw', hci'⟩ := GlobalTheory.T.conjugateSplitPlace_eq_conjugatePlace_and_embedding D s w hconj
+  · obtain ⟨hw', hci'⟩ := _root_.GlobalTheory.TypeTame.conjSP_w_of_isConjPl D s w hconj
     subst hw'
     obtain ⟨c, T, hc, hci, -⟩ := hT.rep i (GlobalTheory.TypeTame.conjSP s) hw Q
-    obtain ⟨K', θ', hK'i, hθ'o, hK'iff, hθ'eq, hK'of⟩ := GlobalTheory.T.exists_level_character_at_conjugateSplitPlace _ _ s K θ hKi hθo
+    obtain ⟨K', θ', hK'i, hθ'o, hK'iff, hθ'eq, hK'of⟩ := _root_.GlobalTheory.TypeTame.exists_conj_level _ _ s K θ hKi hθo
     have hfK' : ∀ κ, TrivOutside {(GlobalTheory.TypeTame.conjSP s).v} κ → ∀ h' : (GlobalTheory.TypeTame.conjSP s).loc D.R.nV κ ∈ K',
         NG.rt D.host.E D.R.nV κ f = ((θ' ⟨(GlobalTheory.TypeTame.conjSP s).loc D.R.nV κ, h'⟩ : ℂˣ) : ℂ) • f := by
       intro κ hκ h'
       have h := (hK'iff κ).1 h'
       rw [hθ'eq κ h h']
       exact hfK κ hκ h
-    obtain ⟨u, hu0, hu⟩ := GlobalTheory.T.exists_localComponent_eigenvector_at_splitPlace_isotypic _ _ (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) (GlobalTheory.TypeTame.conjSP s) _
+    obtain ⟨u, hu0, hu⟩ := _root_.GlobalTheory.LocVec.main _ _ (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) (GlobalTheory.TypeTame.conjSP s) _
       (hT.rep i (GlobalTheory.TypeTame.conjSP s) hw Q) c hc hci K' θ' hK'i hθ'o f hfI hf0 hfK'
     have hcsd : IsCSD D.host (P.tp.tup (D.nd.mu i) j) := by
       rw [← P.chr.muC i j hj]; exact (P.chr.csd _).1 (D.naut.muC_csd i)
-    refine GlobalTheory.T.exists_parahoricType_vector_at_conjugate_place _ (GlobalTheory.TypeTame.conjSP s) D.R.r D.R.t _ ξ _ c hc hci hcomp.1 htame hcs.1 ?_ u hu0 ?_
+    refine _root_.GlobalTheory.ConjParahoric.exists_parahoricVec _ (GlobalTheory.TypeTame.conjSP s) D.R.r D.R.t _ ξ _ c hc hci hcomp.1 htame hcs.1 ?_ u hu0 ?_
     · intro k
       have e : Units.map ((GlobalTheory.TypeTame.conjSP s).i : D.host.E →* s.v.adicCompletion (maximalRealSubfield D.host.E)) k =
           Units.map (s.i : D.host.E →* s.v.adicCompletion (maximalRealSubfield D.host.E))

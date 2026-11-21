@@ -1,11 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitting
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorRepApply
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNormStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNorm
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyMeasAndReps
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocallyConstantTestRepresentationTensorProductStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourBProdIteratedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsKMulOfEtaleSplittingStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourBProdIterated
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsKMulOfEtaleSplitting
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
@@ -96,7 +98,7 @@ theorem etaK_split [Unram F E] (A A₁ A₂ : Et F E) (eK : A.K ≃ₐ[F] A₁.K
   have h₁ : Algebra.norm F (eK s).1 ≠ 0 := ((Prod.isUnit_iff.1 hu).1.map (Algebra.norm F)).ne_zero
   have h₂ : Algebra.norm F (eK s).2 ≠ 0 := ((Prod.isUnit_iff.1 hu).2.map (Algebra.norm F)).ne_zero
   simp only [Et.etaK]
-  rw [norm_split A A₁ A₂ eK, (GlobalTheory.T.unramifiedValuationParitySign_character_kernel_norms F E).1 _ _ h₁ h₂]
+  rw [norm_split A A₁ A₂ eK, (_root_.GlobalTheory.EtaChar.main F E).1 _ _ h₁ h₂]
 
 theorem smul_split (A A₁ A₂ : Et F E) (eK : A.K ≃ₐ[F] A₁.K × A₂.K) (eL : A.L ≃ₐ[F] A₁.L × A₂.L)
     (hS : IsSplitting A A₁ A₂ eK eL) (k : A.K) (y : A.L) :
@@ -131,11 +133,11 @@ theorem fourB_split : ∀ {V V₁ V₂ : Type} [AddCommGroup V] [TopologicalSpac
     (∀ y' y, B y' y = B₁ (e y').1 (e y).1 * B₂ (e y').2 (e y).2) →
     ∀ (μ : Measure V) (μ₁ : Measure V₁) (μ₂ : Measure V₂), μ.IsAddHaarMeasure → μ₁.IsAddHaarMeasure →
     μ₂.IsAddHaarMeasure → ∃ c : ℂ, c ≠ 0 ∧ ∀ φ : V → ℂ, IsTest φ → ∀ y,
-      fourB μ B φ y = c * ∫ u, (∫ v, φ (e.symm (u, v)) * B₂ v (e y).2 ∂μ₂) * B₁ u (e y).1 ∂μ₁ := GlobalTheory.T.fourB_prod_iterated_alt
+      fourB μ B φ y = c * ∫ u, (∫ v, φ (e.symm (u, v)) * B₂ v (e y).2 ∂μ₂) * B₁ u (e y).1 ∂μ₁ := _root_.GlobalTheory.JR.fourB_prod_iterated
 
 theorem absK_split : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A A₁ A₂ : Et F E) (eK : A.K ≃ₐ[F] A₁.K × A₂.K) (t : A.K),
-    A.absK t = A₁.absK (eK t).1 * A₂.absK (eK t).2 := GlobalTheory.T.absK_mul_of_etale_splitting
+    A.absK t = A₁.absK (eK t).1 * A₂.absK (eK t).2 := _root_.GlobalTheory.JR.EtProdAbs.absK_prod
 
 theorem map_nS {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (z : R) :
     SpecialLinearGroup.map f (nS z) = nS (f z) := by

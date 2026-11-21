@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarCompactLtTop
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SobolevInequalityAtIdentityBesselModelUnitaryGroStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoAverageL2CompactStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BallMeanContinuousLinearFunctionalStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SobolevInequalityAtIdentityBesselModelUnitaryGro
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoAverageL2Compact
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BallMeanContinuousLinearFunctional
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothFunctionalOrbitSmoothVectorStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SobolevIneqTranslateCompactStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousLimitUniformCauchyStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousLimitUniformCauchy
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
 open scoped InnerProductSpace
 
@@ -73,7 +74,7 @@ theorem reg_main : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProdu
       Λ'.continuous.comp_continuousOn (hσ.2.2 v)
     have := hc.aestronglyMeasurable (μ := μ) hGm
     rwa [hrest] at this
-  obtain ⟨C₀, Ws, K₀, hK₀, hWs, hsob⟩ := GlobalTheory.T.sobolev_inequality_at_identity_besselModelUnitaryGroup k r μ hμ
+  obtain ⟨C₀, Ws, K₀, hK₀, hWs, hsob⟩ := _root_.GlobalTheory.SobAtOne.sobolev_at_one_G k r μ hμ
   have hsu := GlobalTheory.T.sobolev_ineq_translate_compact k r μ C₀ Ws K₀ hμ hK₀ hsob
   have hclm : ∀ Q : Set (Mt k r), IsCompact Q → ∃ K₂ : Set (Mt k r), IsCompact K₂ ∧
       ∀ (Λ' : H →L[ℂ] Wp) (u : H), IsSmoothVec (k := k) (r := r) σ u → ∀ x ∈ Q,
@@ -97,7 +98,7 @@ theorem reg_main : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProdu
     rw [hd ws (hWs ws hws) _ hy]
   obtain ⟨K₁, hK₁, hone⟩ := hclm {oneM k r} isCompact_singleton
   obtain ⟨c₁, hc₁⟩ := hbd K₁ hK₁
-  choose Λ hΛ using GlobalTheory.T.ballMean_continuousLinearFunctional k r σ μ T hμ hadd hsm hbd heq
+  choose Λ hΛ using _root_.GlobalTheory.SgInf.ballMean_clm k r σ μ T hμ hadd hsm hbd heq
   refine ⟨Real.sqrt (|C₀| * (2 * |c₁|)), Ws, hWs, fun u hu => ?_⟩
   have hloc : ∀ (v : H) (K : Set (Mt k r)), IsCompact K →
       AEStronglyMeasurable (fun z : Mt k r => T v (Matrix.of z)) (μ.restrict K) ∧
@@ -108,7 +109,7 @@ theorem reg_main : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProdu
   have hconv : ∀ (v : H) (K : Set (Mt k r)), IsCompact K → Filter.Tendsto (fun j : ℕ =>
       ∫⁻ x in K, (‖avgR μ j (fun z : Mt k r => T v (Matrix.of z)) x - T v (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ)
       Filter.atTop (nhds 0) :=
-    fun v K hK => GlobalTheory.T.tendsto_average_L2_compact k r μ hμ _ (hloc v) K hK
+    fun v K hK => _root_.GlobalTheory.SgInf.tendsto_average_L2 k r μ hμ _ (hloc v) K hK
 
   have hAm : ∀ (j : ℕ) (v : H) (K : Set (Mt k r)), IsCompact K → AEMeasurable (fun y : Mt k r =>
       (‖avgR μ j (fun z : Mt k r => T v (Matrix.of z)) y - T v (Matrix.of y)‖₊ : ENNReal) ^ 2) (μ.restrict K) := by
@@ -178,7 +179,7 @@ theorem reg_main : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProdu
     have h4 : ‖(Λ j - Λ l) (σ (Matrix.of x) u)‖ ^ 2 ≤ ε ^ 2 := by linarith
     have h5 := (pow_le_pow_iff_left₀ (norm_nonneg _) hε.le (by norm_num)).1 h4
     simpa using h5
-  obtain ⟨F, hFc, hFae, hFl⟩ := GlobalTheory.T.exists_continuous_limit_uniformCauchy k r μ hμ (fun j g => Λ j (σ g u))
+  obtain ⟨F, hFc, hFae, hFl⟩ := _root_.GlobalTheory.SgInf.RegLimit.exists_continuous_limit k r μ hμ (fun j g => Λ j (σ g u))
     (fun z : Mt k r => T u (Matrix.of z)) (fun j => (Λ j).continuous.comp_continuousOn (hσ.2.2 u))
     (fun Q hQ => (hloc u Q hQ).1) hCau (fun Q hQ => by
       refine (hconv u Q hQ).congr fun j => ?_

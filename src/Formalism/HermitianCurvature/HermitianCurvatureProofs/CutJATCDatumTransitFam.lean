@@ -69,28 +69,6 @@ theorem famGram {e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ} (he : ONb k r 
       (hpk_out_in (i := i) (j := j) (by omega) hj).2]
   · rw [fam_out (i := i) (by omega), fam_out (i := j) (by omega), herm_bvec_bvec]
 
-theorem out_cases {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) :
-    (∃ a : Fin r, i = eI k r a) ∨ (∃ a : Fin r, i = esI k r a) := by
-  have := i.isLt
-  rcases hi with hi | hi
-  · left
-    exact ⟨⟨i.val, hi⟩, Fin.ext rfl⟩
-  · right
-    refine ⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext ?_⟩
-    show i.val = 2 * r + k - (2 * r + k - i.val)
-    omega
-
-theorem glev_fix {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r)) {i : Fin (2 * r + k + 1)}
-    (hi : i.val < r ∨ r + k < i.val) : g *ᵥ bvec i = bvec i := by
-  obtain ⟨_, h2⟩ := hg
-  rcases out_cases hi with ⟨a, rfl⟩ | ⟨a, rfl⟩
-  · exact (h2 a (by rw [Fin.val_last]; exact a.isLt)).1
-  · exact (h2 a (by rw [Fin.val_last]; exact a.isLt)).2
-
-theorem uw_glev {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ UWset k r z) : g ∈ Q.Glev k r (Fin.last r) := by
-  obtain ⟨h1, h2, -⟩ := hg
-  exact ⟨h1, fun a _ => h2 a⟩
-
 end
 
 end Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.MC.DT

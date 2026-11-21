@@ -30,10 +30,6 @@ theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p
 def CG (constantFirstHub : ℝ) (Q : MvPolynomial (Fin 3) ℕ) : ℝ :=
   max (max constantFirstHub ((∑ m ∈ Q.support, Q.coeff m : ℕ) : ℝ)) (max (Q.totalDegree : ℝ) 1)
 
-def CF (C' A CV C1 : ℝ) : ℝ := max (max C' A) (max (3 * C1) (1 + max CV 0))
-
-def CH (constantSecondHub C1 : ℝ) : ℝ := max (16 * constantSecondHub + 10) (5 * C1)
-
 end FamilyRepresentationConstants
 
 end Formalism.MainNotions.N

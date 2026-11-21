@@ -171,9 +171,6 @@ theorem precomplete_pi {R : Type*} [CommRing R] (π : R) [IsPrecomplete (Ideal.s
   simpa using h2
 
 omit [NeZero n] in
-theorem jW_natCast : jW p n (p : WQ p n) = (p : W2 p n) := map_natCast _ _
-
-omit [NeZero n] in
 theorem jW_coeff (x : WQ p n) (k : ℕ) : (jW p n x).coeff k = algebraMap (F1 p n) (F2 p n) (x.coeff k) :=
   WittVector.map_coeff _ _ _
 

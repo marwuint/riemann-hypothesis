@@ -39,9 +39,6 @@ theorem HasWt.neg (hf : HasWt v r w f) : HasWt v r w (-f) := by
   rw [map_neg, v.map_neg]
   exact hf A
 
-theorem HasWt.sub (hf : HasWt v r w f) (hg : HasWt v r w g) : HasWt v r w (f - g) := by
-  rw [sub_eq_add_neg]; exact hf.add hg.neg
-
 theorem HasWt.sum {ι : Type*} (s : Finset ι) {F : ι → MvPowerSeries Z k}
     (h : ∀ i ∈ s, HasWt v r w (F i)) : HasWt v r w (∑ i ∈ s, F i) := by
   rw [hasWt_iff]

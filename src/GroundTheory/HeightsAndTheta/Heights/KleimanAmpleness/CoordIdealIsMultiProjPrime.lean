@@ -145,8 +145,6 @@ variable (M : Type) [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScala
 
 abbrev LocM (I : Finset (Fin (N + 1))) : Type := LocalizedModule (denoms S N I) M
 
-example (I : Finset (Fin (N + 1))) : IsScalarTower S (Poly S N) (LocM S N M I) := inferInstance
-
 def locFrac (I : Finset (Fin (N + 1))) (m : M) (n : ℕ) : LocM S N M I :=
   LocalizedModule.mk m ⟨Xprod S N I ^ n, pow_mem (Xprod_mem_denoms S N I) n⟩
 
@@ -224,11 +222,6 @@ def gradedHmap {G : GradedMod S N M} {G' : GradedMod S N M'} {f : M →ₗ[Poly 
     (hf : IsGradedHom S N G G' f) (i : ℕ) (c : ℤ) : gradedH S N M G i c →ₗ[S] gradedH S N M' G' i c :=
   (gradedHom S N hf c).Hmap i
 
-def gradedCmap {G : GradedMod S N M} {G' : GradedMod S N M'} {f : M →ₗ[Poly S N] M'}
-    (hf : IsGradedHom S N G G' f) (c : ℤ) :
-    (∀ I, (gradedSys S N M G c).V I) →ₗ[S] (∀ I, (gradedSys S N M' G' c).V I) :=
-  (gradedHom S N hf c).amb
-
 end Graded
 
 section Cl
@@ -236,8 +229,6 @@ section Cl
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 variable (S : Type) [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω]
-
-abbrev coordRing (x : Fin (N + 1) → Ω) : Subalgebra S (Polynomial Ω) := coneRing S x
 
 def chartRingI (x : Fin (N + 1) → Ω) (I : Finset (Fin (N + 1))) : Subalgebra S Ω :=
   Algebra.adjoin S {y | ∃ i ∈ I, ∃ j, y = x j / x i}
@@ -249,45 +240,14 @@ theorem chartRingI_singleton (x : Fin (N + 1) → Ω) (i : Fin (N + 1)) :
   ext y
   simp [eq_comm]
 
-def IsChart (x : Fin (N + 1) → Ω) (I : Finset (Fin (N + 1))) : Prop :=
-  I.Nonempty ∧ ∀ i ∈ I, x i ≠ 0
-
 variable (E : Type) [AddCommGroup E] [Module Ω E] [Module S E] [IsScalarTower S Ω E]
-
-structure SubFamily (x : Fin (N + 1) → Ω) where
-
-  lat : Fin (N + 1) → AddSubgroup E
-  stable : ∀ i, ∀ a ∈ chartRing S x i, ∀ e ∈ lat i, a • e ∈ lat i
-  overlap : ∀ i j, x i ≠ 0 → x j ≠ 0 → ∀ e ∈ lat i, ∃ m : ℕ, (x i / x j) ^ m • e ∈ lat j
 
 variable {S E}
 
-def SubFamily.ofBundle {x : Fin (N + 1) → Ω} {r : ℕ} (B : ChartBundle S x r E) : SubFamily S E x :=
-  ⟨B.lat, B.stable, B.overlap⟩
-
-def SubFamily.mods {x : Fin (N + 1) → Ω} (F : SubFamily S E x) (i : Fin (N + 1)) : Submodule S E :=
-  Submodule.span S (F.lat i : Set E)
-
 variable (S)
-
-def famI (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) (I : Finset (Fin (N + 1))) :
-    Submodule S E :=
-  ⨅ i ∈ I, Submodule.span S (Set.image2 (· • ·) (chartRingI S x I : Set Ω) (F i : Set E))
-
-def famSys (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) : CechSystem (Fin (N + 1)) S where
-  V _ := E
-  res _ := LinearMap.id
-  piece I := famI S x F I
-  good I := IsChart x I
-
-abbrev famH (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) (i : ℕ) : Type :=
-  cechH (famSys S x F) i
 
 def secs (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) : Submodule S E :=
   ⨅ i, ⨅ (_ : x i ≠ 0), F i
-
-def IsGenerated (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) : Prop :=
-  ∀ i, x i ≠ 0 → F i = Submodule.span S (Set.image2 (· • ·) (chartRing S x i : Set Ω) (secs S x F : Set E))
 
 def IsGeneratedBy (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) {r : ℕ} (η : Fin (r + 1) → E) :
     Prop :=
@@ -298,10 +258,6 @@ def twistA (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) (c : ℤ
     Submodule S E :=
   Submodule.span S ((fun e => (x i ^ c) • e) '' (F i : Set E))
 
-def twistQ (F : Fin (N + 1) → Submodule S E) (Q : Fin (N + 1) → Submodule S Ω) (i : Fin (N + 1)) :
-    Submodule S E :=
-  Submodule.span S (Set.image2 (· • ·) (Q i : Set Ω) (F i : Set E))
-
 variable {S}
 
 abbrev LineBundle (x : Fin (N + 1) → Ω) : Type := ChartBundle S x 1 Ω
@@ -311,32 +267,9 @@ def LineBundle.mods {x : Fin (N + 1) → Ω} (Q : LineBundle (S := S) x) (i : Fi
 
 variable (S)
 
-abbrev bundleA (x : Fin (N + 1) → Ω) : LineBundle (S := S) x := lineBundle S x 1
-
 def lmul (Q Q' : Fin (N + 1) → Submodule S Ω) (i : Fin (N + 1)) : Submodule S Ω := Q i * Q' i
 
 def lpow (Q : Fin (N + 1) → Submodule S Ω) (b : ℕ) (i : Fin (N + 1)) : Submodule S Ω := Q i ^ b
-
-def sumGBA (x : Fin (N + 1) → Ω) (G B : LineBundle (S := S) x) (b : ℕ) (c : ℤ) :
-    Fin (N + 1) → Submodule S Ω :=
-  twistA S x (lmul S G.mods (lpow S B.mods b)) c
-
-def secZ (x : Fin (N + 1) → Ω) (d : ℤ) : Submodule S Ω :=
-  if 0 ≤ d then sec S x d.toNat else ⊥
-
-def gradedGen {n : ℕ} (x : Fin (N + 1) → Ω) (c : Fin n → ℤ) (e : Fin n → E) (d : ℤ) : Submodule S E :=
-  ⨆ k, Submodule.span S (Set.image2 (· • ·) (secZ S x (d - c k) : Set Ω) {e k})
-
-def tildeZero {n : ℕ} (x : Fin (N + 1) → Ω) (c : Fin n → ℤ) (e : Fin n → E) (i : Fin (N + 1)) :
-    Submodule S E :=
-  Submodule.span S {y | ∃ (m : ℕ) (v : E), v ∈ gradedGen S x c e m ∧ y = (x i ^ m)⁻¹ • v}
-
-def IsExtensionOf {n : ℕ} (x : Fin (N + 1) → Ω) (F : Fin (N + 1) → Submodule S E) (c : Fin n → ℤ)
-    (e : Fin n → E) : Prop :=
-  (∀ k, e k ∈ secs S x (twistA S x F (c k))) ∧ ∀ i, x i ≠ 0 → F i = tildeZero S x c e i
-
-def SubFamily.IsFinite {x : Fin (N + 1) → Ω} (F : SubFamily S E x) : Prop :=
-  ∀ i, x i ≠ 0 → ∃ g : Finset E, F.mods i = Submodule.span S (Set.image2 (· • ·) (chartRing S x i : Set Ω) (g : Set E))
 
 def regOn (x : Fin (N + 1) → Ω) (H : Fin (N + 1) → Submodule S Ω) (m : ℕ) {M : ℕ} (h : Fin (M + 1) → Ω)
     (j : Fin (M + 1)) : Subalgebra S Ω :=
@@ -383,28 +316,8 @@ structure PrimeFiltration (G : GradedMod S N M) where
   step_succ : ∀ k : Fin n, step k.succ = step k.castSucc ⊔ Submodule.span (Poly S N) {gen k}
   ann_gen : ∀ (k : Fin n) (f : Poly S N), f • gen k ∈ step k.castSucc ↔ f ∈ prime k
 
-open Classical in
-
-def PrimeFiltration.count {G : GradedMod S N M} (F : PrimeFiltration S N G) (pp : Ideal (Poly S N)) : ℕ :=
-  (Finset.univ.filter fun k => F.prime k = pp).card
-
 variable {S N}
 variable {Ω : Type} [Field Ω] [Algebra S Ω]
-
-def ptCoord (pp : Ideal (Poly S N)) [pp.IsPrime] : Fin (N + 1) → FractionRing (Poly S N ⧸ pp) :=
-  fun k => algebraMap (Poly S N ⧸ pp) _ (Ideal.Quotient.mk pp (X k))
-
-def ResAt (x : Fin (N + 1) → Ω) (pp : Ideal (Poly S N)) [pp.IsPrime] (f : Ω)
-    (y : FractionRing (Poly S N ⧸ pp)) : Prop :=
-  ∃ (d : ℕ) (a b : Poly S N), a.IsHomogeneous d ∧ b.IsHomogeneous d ∧ b ∉ pp ∧
-    f * aeval x b = aeval x a ∧
-    y = algebraMap _ _ (Ideal.Quotient.mk pp a) / algebraMap _ _ (Ideal.Quotient.mk pp b)
-
-def IsRestrictionOf (x : Fin (N + 1) → Ω) (pp : Ideal (Poly S N)) [pp.IsPrime] (Q : LineBundle (S := S) x)
-    (QW : Fin (N + 1) → Submodule S (FractionRing (Poly S N ⧸ pp))) : Prop :=
-  ∃ g : Ω, g ≠ 0 ∧ ∀ i, (X i : Poly S N) ∉ pp →
-    (∀ q ∈ Q.lat i, ∃ y, ResAt x pp (q / g) y) ∧ (∃ q ∈ Q.lat i, ∃ y, ResAt x pp (g / q) y) ∧
-    QW i = Submodule.span S {y | ∃ q ∈ Q.lat i, ResAt x pp (q / g) y}
 
 variable (S)
 
@@ -422,90 +335,7 @@ instance (x : Fin (N + 1) → Ω) : Algebra (Poly S N) (LSp S x) := (laurentMap 
 instance (x : Fin (N + 1) → Ω) : IsScalarTower S (Poly S N) (LSp S x) :=
   IsScalarTower.of_algebraMap_eq fun s => ((laurentMap S x).commutes s).symm
 
-def twLaurent (x : Fin (N + 1) → Ω) (Q : Fin (N + 1) → Submodule S Ω) (I : Finset (Fin (N + 1))) :
-    Submodule (Poly S N) (LSp S x) :=
-  Submodule.span (Poly S N) {y | ∃ I' ⊆ I, I'.Nonempty ∧ ∃ (d : ℤ) (q : Ω),
-    q ∈ famI S x (twistA S x Q d) I' ∧ y = (LaurentPolynomial.C q * LaurentPolynomial.T d : LaurentPolynomial Ω)}
-
-theorem twLaurent_mono (x : Fin (N + 1) → Ω) (Q : Fin (N + 1) → Submodule S Ω) {I J : Finset (Fin (N + 1))}
-    (h : I ⊆ J) : twLaurent S x Q I ≤ twLaurent S x Q J :=
-  Submodule.span_mono fun _ ⟨I', hI', hne, d, q, hq, e⟩ => ⟨I', hI'.trans h, hne, d, q, hq, e⟩
-
-def quotTwistSys (x : Fin (N + 1) → Ω) (pp : Ideal (Poly S N)) (Q : Fin (N + 1) → Submodule S Ω) (c : ℤ) :
-    CechSystem (Fin (N + 1)) S where
-  V I := LSp S x ⧸ (pp • twLaurent S x Q I)
-  res h := (Submodule.mapQ _ _ LinearMap.id (by
-    rw [Submodule.comap_id]
-    exact Submodule.smul_mono le_rfl (twLaurent_mono S x Q h))).restrictScalars S
-  piece I := Submodule.span S {y | ∃ q ∈ famI S x (twistA S x Q c) I,
-    y = Submodule.Quotient.mk (show LSp S x from LaurentPolynomial.C q * LaurentPolynomial.T c)}
-  good I := IsChart x I
-
 end Filtration
-
-section Comparison₂
-
-open ReciprocityTheory.ChartRestriction.G.Geo
-
-variable {S : Type} [CommRing S] {σ : Type} {Ω : Type} [Field Ω] [Algebra S Ω]
-
-theorem coneMap_monomial (x : σ → Ω) (s : σ →₀ ℕ) (a : S) :
-    coneMap S x (monomial s a) = Polynomial.C (algebraMap S Ω a * s.prod fun v e => x v ^ e) *
-      Polynomial.X ^ (s.sum fun _ e => e) := by
-  simp only [coneMap, aeval_monomial, Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib,
-    Finset.prod_pow_eq_pow_sum, map_mul, map_prod, map_pow, Polynomial.algebraMap_apply]
-  ring
-
-theorem coneMap_coeff (x : σ → Ω) (f : MvPolynomial σ S) (d : ℕ) :
-    (coneMap S x f).coeff d = aeval x (homogeneousComponent d f) := by
-  induction f using MvPolynomial.induction_on' with
-  | monomial s a =>
-    rw [coneMap_monomial, Polynomial.coeff_C_mul_X_pow,
-      homogeneousComponent_of_mem (isHomogeneous_monomial (d := s) a (n := s.sum fun _ e => e) rfl)]
-    by_cases h : d = s.sum fun _ e => e
-    · rw [if_pos h, if_pos h, aeval_monomial]
-    · rw [if_neg h, if_neg h, map_zero]
-  | add p q hp hq =>
-    rw [map_add, Polynomial.coeff_add, hp, hq, map_add, map_add]
-
-open GroundTheory.Heights₂.Heights.NumbersDVR in
-
-theorem coordIdeal_isMultiProjPrime {N : ℕ} (x : Fin (N + 1) → Ω) (hx : ∃ i, x i ≠ 0) :
-    IsMultiProjPrime (coordIdeal S (fun v : (Σ _ : Unit, Fin (N + 1)) => x v.2)) where
-  isPrime := RingHom.ker_isPrime (coneMap S (fun v : (Σ _ : Unit, Fin (N + 1)) => x v.2)).toRingHom
-  multiHomog := by
-    intro f hf b
-    have hw : ∀ d : (Σ _ : Unit, Fin (N + 1)) →₀ ℕ,
-        Finsupp.weight (blockWeight (fun _ : Unit => Fin (N + 1))) d = fun _ => d.sum fun _ e => e := by
-      intro d
-      funext u
-      simp only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, blockWeight,
-        smul_eq_mul, Pi.single_apply, if_true, mul_one]
-    have hcomp : weightedHomogeneousComponent (blockWeight (fun _ : Unit => Fin (N + 1))) b f =
-        homogeneousComponent (b ()) f := by
-      ext d
-      rw [coeff_weightedHomogeneousComponent, coeff_homogeneousComponent, hw]
-      have : ((fun _ : Unit => d.sum fun _ e => e) = b) ↔ d.degree = b () := by
-        constructor
-        · intro h; rw [← h]; rfl
-        · intro h; funext u; rw [Subsingleton.elim u ()]; exact h
-      simp only [this]
-    rw [hcomp]
-    rw [coordIdeal, RingHom.mem_ker] at hf ⊢
-    ext k
-    rw [coneMap_coeff, homogeneousComponent_of_mem (homogeneousComponent_mem _ _), Polynomial.coeff_zero]
-    split_ifs with hk
-    · rw [← coneMap_coeff, hf, Polynomial.coeff_zero]
-    · rw [map_zero]
-  relevant := by
-    intro k
-    obtain ⟨i, hi⟩ := hx
-    refine ⟨i, fun h => ?_⟩
-    have h' : coneMap S (fun v : (Σ _ : Unit, Fin (N + 1)) => x v.2) (X ⟨k, i⟩) = 0 := h
-    simp only [coneMap, aeval_X] at h'
-    exact hi (by simpa using congrArg (Polynomial.coeff · 1) h')
-
-end Comparison₂
 
 section Inhabitants
 
@@ -522,41 +352,7 @@ def polyGraded : GradedMod S N (Poly S N) where
     simp only [polyPiece, mem_weightedHomogeneousSubmodule, smul_eq_mul] at hf hm ⊢
     exact hf.mul hm
 
-def punitGraded : GradedMod S N PUnit where
-  piece _ := ⊥
-  internal := by
-    rw [DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
-    exact ⟨fun _ => disjoint_bot_left, Subsingleton.elim _ _⟩
-  smul_mem _ _ _ _ m _ := by simp [Subsingleton.elim m 0]
-
-theorem isGradedHom_id {M : Type} [AddCommGroup M] [Module (Poly S N) M] [Module S M]
-    [IsScalarTower S (Poly S N) M] (G : GradedMod S N M) : IsGradedHom S N G G LinearMap.id :=
-  fun _ _ hm => hm
-
-def polySys : CechSystem (Fin (N + 1)) S := gradedSys S N (Poly S N) (polyGraded S N) 0
-
-def polySysId : CechHom (polySys S N) (polySys S N) := gradedHom S N (isGradedHom_id S N (polyGraded S N)) 0
-
 variable {S} {Ω : Type} [Field Ω] [Algebra S Ω]
-
-theorem bundleA_isGeneratedBy (x : Fin (N + 1) → Ω) :
-    IsGeneratedBy S x (bundleA S x).mods x := by
-  refine ⟨fun k => ?_, fun i hi => ?_⟩
-  · simp only [secs, Submodule.mem_iInf]
-    intro i hi
-    refine Submodule.subset_span ?_
-    refine (mem_lineLat x 1 i _).2 ⟨x k / x i, div_mem_chartRing x i k, ?_⟩
-    field_simp
-  · apply le_antisymm
-    · rw [LineBundle.mods, Submodule.span_le]
-      intro e he
-      obtain ⟨a, ha, rfl⟩ := (mem_lineLat x 1 i e).1 he
-      exact Submodule.subset_span ⟨a, ha, x i, ⟨i, rfl⟩, by simp⟩
-    · rw [Submodule.span_le]
-      rintro _ ⟨a, ha, _, ⟨j, rfl⟩, rfl⟩
-      refine Submodule.subset_span ((mem_lineLat x 1 i _).2 ⟨a * (x j / x i), mul_mem ha (div_mem_chartRing x i j), ?_⟩)
-      simp only [smul_eq_mul]
-      field_simp
 
 end Inhabitants
 
@@ -566,124 +362,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 
 variable {S : Type} [CommRing S] {N : ℕ} {Ω : Type} [Field Ω] [Algebra S Ω]
 
-open Classical in
-
-theorem bundleA_isFinite (x : Fin (N + 1) → Ω) : (SubFamily.ofBundle (bundleA S x)).IsFinite := by
-  intro i hi
-  refine ⟨{x i}, le_antisymm ?_ ?_⟩
-  · rw [SubFamily.mods, Submodule.span_le]
-    intro e he
-    obtain ⟨a, ha, rfl⟩ := (mem_lineLat x 1 i e).1 he
-    exact Submodule.subset_span ⟨a, ha, x i, by simp, by simp⟩
-  · rw [Submodule.span_le]
-    rintro _ ⟨a, ha, _, hb, rfl⟩
-    rw [Finset.coe_singleton, Set.mem_singleton_iff] at hb
-    subst hb
-    exact Submodule.subset_span ((mem_lineLat x 1 i _).2 ⟨a, ha, by simp⟩)
-
-theorem bundleA_pow_le (x : Fin (N + 1) → Ω) (j : Fin (N + 1)) (n : ℕ) :
-    (bundleA S x).mods j ^ n ≤
-      (Subalgebra.toSubmodule (chartRing S x j)).map (LinearMap.mulRight S (x j ^ n)) := by
-  induction n with
-  | zero =>
-    rw [pow_zero, Submodule.one_le]
-    exact ⟨1, (Subalgebra.mem_toSubmodule _).2 (one_mem _), by simp⟩
-  | succ n ih =>
-    rw [pow_succ, Submodule.mul_le]
-    intro m hm e he
-    obtain ⟨a, ha, rfl⟩ := ih hm
-    have hle : (bundleA S x).mods j ≤
-        ((Subalgebra.toSubmodule (chartRing S x j)).map (LinearMap.mulRight S (x j ^ (n + 1)))).comap
-          (LinearMap.mulLeft S (x j ^ n * a)) := by
-      rw [LineBundle.mods, Submodule.span_le]
-      intro e he
-      obtain ⟨b, hb, rfl⟩ := (mem_lineLat x 1 j e).1 he
-      refine ⟨a * b, (Subalgebra.mem_toSubmodule _).2 (mul_mem ((Subalgebra.mem_toSubmodule _).1 ha) hb), ?_⟩
-      simp only [LinearMap.mulRight_apply, LinearMap.mulLeft_apply]
-      ring
-    obtain ⟨y, hy, hye⟩ := hle he
-    refine ⟨y, hy, ?_⟩
-    simp only [LinearMap.mulRight_apply, LinearMap.mulLeft_apply] at hye ⊢
-    rw [hye]
-    ring
-
-def ampleA (x : Fin (N + 1) → Ω) : AmpleData S x (bundleA S x).mods where
-  m := 1
-  m_pos := one_pos
-  M := N
-  h := x
-  gen := by
-    have h1 : lpow S (bundleA S x).mods 1 = (bundleA S x).mods := funext fun i => pow_one _
-    rw [h1]
-    exact bundleA_isGeneratedBy N x
-  finite j hj := by
-    classical
-    refine ⟨{1}, ?_⟩
-    have hle : regOn S x (bundleA S x).mods 1 x j ≤ chartRing S x j := by
-      rw [regOn, Algebra.adjoin_le_iff]
-      intro f hf
-      obtain ⟨n, hn⟩ := hf j hj
-      have h1 : lpow S (bundleA S x).mods 1 j = (bundleA S x).mods j := pow_one _
-      rw [h1] at hn
-      obtain ⟨a, ha, hfa⟩ := bundleA_pow_le x j n hn
-      simp only [LinearMap.mulRight_apply] at hfa
-      have : a = f := mul_right_cancel₀ (pow_ne_zero n hj) hfa
-      exact this ▸ ((Subalgebra.mem_toSubmodule _).1 ha)
-    intro f hf
-    have hf' : f ∈ chartRing S x j := hle hf
-    rw [Finset.coe_singleton]
-    exact Submodule.mem_span_singleton.2 ⟨⟨f, hf'⟩, by simp [Subalgebra.smul_def]⟩
-
 variable (S N)
 
-def polyFiltration [IsDomain S] : PrimeFiltration S N (polyGraded S N) where
-  n := 1
-  step := ![⊥, ⊤]
-  mono := by
-    intro a b hab
-    fin_cases a <;> fin_cases b <;> simp_all
-  step_zero := rfl
-  step_last := rfl
-  graded k := by
-    fin_cases k
-    · simp [IsGradedSub]
-    · simp only [IsGradedSub]
-      simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one, Submodule.restrictScalars_top,
-        top_inf_eq]
-      exact ((polyGraded S N).internal.submodule_iSup_eq_top).symm
-  prime _ := ⊥
-  isPrime _ := Ideal.isPrime_bot
-  homog _ := by
-    intro f hf d
-    rw [Ideal.mem_bot] at hf ⊢
-    simp [hf]
-  ann_le _ := by
-    intro f hf
-    rw [Module.mem_annihilator] at hf
-    have := hf 1
-    rw [smul_eq_mul, mul_one] at this
-    exact (Ideal.mem_bot).2 this
-  deg _ := 0
-  gen _ := 1
-  gen_mem _ := by
-    simp only [polyGraded, polyPiece, mem_weightedHomogeneousSubmodule]
-    exact isWeightedHomogeneous_one S _
-  step_succ k := by
-    fin_cases k
-    simp only [Fin.zero_eta, Fin.succ_zero_eq_one, Fin.castSucc_zero, Matrix.cons_val_one,
-      Matrix.cons_val_fin_one, Matrix.cons_val_zero, bot_sup_eq]
-    exact (Ideal.span_singleton_one).symm
-  ann_gen k f := by
-    fin_cases k
-    simp [smul_eq_mul]
-
 def lineX (k : Type) [Field k] : Fin (1 + 1) → RatFunc k := ![1, RatFunc.X]
-
-def lineFam (k : Type) [Field k] : SubFamily k (RatFunc k) (lineX k) :=
-  SubFamily.ofBundle (bundleA k (lineX k))
-
-theorem lineFam_ne (k : Type) [Field k] : (1 : RatFunc k) ∈ (lineFam k).lat 0 ∧ (1 : RatFunc k) ≠ 0 :=
-  ⟨(mem_lineLat (lineX k) 1 0 1).2 ⟨1, one_mem _, by simp [lineX]⟩, one_ne_zero⟩
 
 end Inhabitants2
 

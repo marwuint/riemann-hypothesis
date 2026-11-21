@@ -249,11 +249,6 @@ def CutWord {S : Type} (l : ℕ) (w : List (Letter ℂ S)) : Prop :=
   (w.map Letter.intersection_update_fsHerm_neg_one).Nodup ∧ (∀ a ∈ w, a.pt.im = 0 ∧ I.OnCut P.u P.u' l a.pt.re) ∧
     w.Pairwise fun a a' => 2 < |a.pt.re - a'.pt.re|
 
-def CutWordBase {S : Type} (l : ℕ) (w : List (Letter ℂ S)) : Prop :=
-  (w.map Letter.intersection_update_fsHerm_neg_one).Nodup ∧
-    (∀ a ∈ w, a.pt.im = 0 ∧ (I.OnCut P.u P.u' l (ypt a).re ∨ I.OnCut P.u P.u' l ((ypt a).re + 1))) ∧
-    w.Pairwise fun a a' => 2 < |(ypt a).re - (ypt a').re|
-
 def fnsA : Set (A P) :=
   Set.range (cA P) ∪ Set.range (ciA P) ∪ Set.range (cbA P) ∪ Set.range (cbiA P) ∪
     {zA P, ziA P, zbA P, zbiA P, ggA P, ggiA P}
@@ -261,10 +256,6 @@ def fnsA : Set (A P) :=
 def zfnsA : Set (A P) := {zA P, ziA P, zbA P, zbiA P, ggA P, ggiA P}
 
 end
-
-def MulOpHom : Prop :=
-  ∀ (r : ℕ) (f g : Fn r) (z : ℂ), mulOp (f * g) = mulOp f * mulOp g ∧ mulOp (f + g) = mulOp f + mulOp g ∧
-    mulOp (1 : Fn r) = 1 ∧ mulOp (algebraMap ℂ (Fn r) z) = algebraMap ℂ (Op r) z
 
 def EulerLeibniz : Prop :=
   ∀ (r : ℕ) (v : Var r) (f g : Fn r), euler v (f * g) = euler v f * g + f * euler v g
@@ -277,8 +268,6 @@ def EulerComm : Prop := ∀ (r : ℕ) (v w : Var r), euler v * euler w = euler w
 
 def EulerMul : Prop :=
   ∀ (r : ℕ) (v : Var r) (f : Fn r), euler v * mulOp f = mulOp f * euler v + mulOp (euler v f)
-
-def FnNonzero : Prop := ∀ (r : ℕ) (v : Var r) (TT : ℝ), coord v ≠ 0 ∧ (gg TT : Fn r) ≠ 0
 
 def ModelNontrivial : Prop :=
   ∀ P : Par, Nontrivial (A P) ∧ ∀ f fb : Fn P.r, sc P (fnP f fb) = 0 → f = 0
@@ -434,10 +423,6 @@ def StartAssemble : Prop := StartIsStart → T21Commute → SSScalar → SSShift
 
 def SitesOKM : Prop := ∀ (P : Par) (l : ℕ), SitesOK (K := ℂ) (startM P l).QQ (sitesFrom P 0)
 
-def SiteJoint : Prop :=
-  ∀ (P : Par) (L : LevelData (A P) P.r), IsModelLevel P L → ∀ (l : Fin P.r) (Y : ℂ),
-    L.Tl Y l = Ts (siteA P l) Y ∧ (star Y = Y → L.Tvl Y l = (Ts (siteA P l) Y).map star)
-
 def ChainM : Prop :=
   ∀ (P : Par) (l : ℕ), (∀ Y, QQlev P l P.r Y = (startM P l).QQ Y) ∧
     ∀ (i : Fin P.r) (Y : ℂ), QQlev P l i Y =
@@ -448,27 +433,10 @@ def LowerCommutes : Prop :=
 
 def LowerStart : Prop := ∀ P : Par, P.OK → ∀ l i : ℕ, i ≤ P.r → IsStart (QQlev P l i) (qC P)
 
-def ModelWords : Prop :=
-  ∀ P : Par, P.OK → ∀ (l : ℕ) (S : Type) [Fintype S] [DecidableEq S] (w : List (Letter ℂ S)), Good w →
-    (∀ i ≤ P.r, IsModule {Y | Reg w Y} (RRw (QQlev P l i) w) (TTw (QQlev P l i) w) (qw (qC P) w)) ∧
-    (∀ i : Fin P.r, star (bT (siteA P i) w) * RRw (QQlev P l (i + 1)) w * bT (siteA P i) w =
-      RRw (QQlev P l i) w) ∧
-    ∀ Y, Reg w Y → star Y = Y → ∀ z : Ix S,
-      (∑ z', Cw (startM P l).QQ (sitesFrom P 0) w Y z z' * uw (sitesFrom P 0) w z') =
-        uw (sitesFrom P 0) w z * C0 (startM P l).QQ (sitesFrom P 0) Y
-
-def ModelWordsAssemble : Prop :=
-  WordsAll → LowerStart → SitesOKM → ChainM → LowerCommutes → ModelWords
-
 def CutAdm : Prop :=
   I.InterlaceSign → I.QPositive → QPositiveShift → TyInterlaces → RealPoints →
   ∀ P : Par, P.OK → ∀ l, 1 ≤ l → l ≤ P.k → ∀ (S : Type) [Fintype S] [DecidableEq S]
     (w : List (Letter ℂ S)), CutWord P l w → admitted (startM P l) w
-
-def CutAdmBase : Prop :=
-  I.InterlaceSign → InterlaceSignTwo → I.QPositive → QPositiveShift → TyInterlaces → RealPoints →
-  ∀ P : Par, P.OK → ∀ l, 1 ≤ l → l ≤ P.k → ∀ (S : Type) [Fintype S] [DecidableEq S]
-    (w : List (Letter ℂ S)), CutWordBase P l w → AdmBase (startM P l) w
 
 def FrameConcl (P : Par) (l : ℕ) (L : LevelData (A P) P.r) {S : Type} [Fintype S] [DecidableEq S]
     (w : List (Letter ℂ S)) : Prop :=
@@ -489,18 +457,8 @@ def ModelFrame : Prop :=
     ∃ L : LevelData (A P) P.r, IsModelLevel P L ∧ IsStarLevel L ∧ IsLevelStart L (startM P l) ∧
       ∀ (S : Type) [Fintype S] [DecidableEq S] (w : List (Letter ℂ S)), CutWord P l w → FrameConcl P l L w
 
-def ModelFrameBase : Prop :=
-  ∀ P : Par, P.OK → ∀ l, 1 ≤ l → l ≤ P.k →
-    ∃ L : LevelData (A P) P.r, IsModelLevel P L ∧ IsStarLevel L ∧ IsLevelStart L (startM P l) ∧
-      ∀ (S : Type) [Fintype S] [DecidableEq S] (w : List (Letter ℂ S)), CutWordBase P l w → FrameConcl P l L w
-
 def ModelAssemble : Prop :=
   I.InterlaceSign → I.QPositive → QPositiveShift → CPos → CPosCut → FrameAll → FrameWord → CDiag →
   LevelExists → LevelStar → StartOK → TyInterlaces → RealPoints → CutAdm → ModelFrame
-
-def ModelAssembleBase : Prop :=
-  I.InterlaceSign → InterlaceSignTwo → I.QPositive → QPositiveShift → CPosBase → CPosCutBase → FrameAllRec →
-  AdmRecOfBase → WordJoint → CDiag → LevelExists → LevelStar → StartOK → TyInterlaces → RealPoints → CutAdmBase →
-  ModelFrameBase
 
 end Formalism.FourierDecayAlt.M

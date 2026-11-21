@@ -33,19 +33,8 @@ def setSheetDensity (S : Set ((Σ k, ι k) → ℂ)) (Ψ : (((k : K) → ι k) �
     g (hγ.choose y) * maDensity (fun j y' => φ j (hγ.choose y')) y
   else 0
 
-def setIntegralAt (S : Set ((Σ k, ι k) → ℂ)) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
-    (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) (g : ((Σ k, ι k) → ℂ) → ℝ) : ℝ :=
-  ∫ y, ∑ᶠ w ∈ setFibre S Ψ y, setSheetDensity S Ψ φ g y w
-
 def IsSetGoodProj (S : Set ((Σ k, ι k) → ℂ)) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) : Prop :=
   ∀ z ∈ S, Ψ (segre z) ≠ 0
-
-def setIntegral (S : Set ((Σ k, ι k) → ℂ)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
-    (g : ((Σ k, ι k) → ℂ) → ℝ) : ℝ := by
-  classical
-  exact if hΨ : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ), IsSetGoodProj S Ψ then
-    setIntegralAt S hΨ.choose φ g
-  else 0
 
 def logNormC (A : HermLine ι) (s : MRingOver ℂ ι) (z : (Σ k, ι k) → ℂ) : ℝ :=
   Real.log (‖eval z s‖ / A.h z)
@@ -75,20 +64,5 @@ theorem mcPts_eq_conePts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintyp
   exact RingHom.mem_ker.mp (Ideal.map_le_of_le_comap hle hf)
 
 end CxInt
-
-open CxInt in
-
-def PoincareLelongC : Prop :=
-  ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Q : Ideal (MRingOver ℂ ι)) (n : ℕ)
-    (L : Fin n → HermLine ι) (A B : HermLine ι) (s : MRingOver ℂ ι) (a : K → ℕ),
-    IsCxVar Q (n + 1) → (∀ j, IsSmoothHerm (L j)) → IsSmoothHerm A → IsSmoothHerm B →
-    B.a = 0 → (∀ k, A.a k = a k) → IsMultiHomog s a → s ∉ Q →
-    setIntegral (ReciprocityTheory.AnForm.R.conePts Q) (Fin.cons (fun z => Real.log (B.h z)) (pot L))
-        (logNormC A s) =
-      (∑ᶠ W ∈ divSupp Q s,
-          (multAt (Q ⊔ Ideal.span {s}) W : ℝ) *
-            setIntegral (ReciprocityTheory.AnForm.R.conePts W) (pot L) (fun z => Real.log (B.h z))) -
-        setIntegral (ReciprocityTheory.AnForm.R.conePts Q) (Fin.cons (fun z => Real.log (A.h z)) (pot L))
-          (fun z => Real.log (B.h z))
 
 end GlobalTheory.CompanionTheory.Ar.Pub

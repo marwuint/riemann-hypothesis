@@ -85,12 +85,6 @@ def homL {N : Type} [AddCommGroup N] [Module ℂ N] (F : Fin n → Fin n → Mod
   zero_mem' := fun a b x => by simp
   smul_mem' c t ht := fun a b x => by simp [ht a b x]
 
-def flipL {N : Type} [AddCommGroup N] [Module ℂ N] (A : Module.End ℂ V) (T : Module.End ℂ N) :
-    (N →ₗ[ℂ] V) →ₗ[ℂ] (N →ₗ[ℂ] V) where
-  toFun t := A ∘ₗ t ∘ₗ T
-  map_add' x y := by ext; simp
-  map_smul' c x := by ext; simp
-
 end Mod
 
 structure UF {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V) : Prop where

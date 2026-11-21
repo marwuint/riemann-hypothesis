@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGr
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ValIrreducible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalRingOfIdem
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DualLattice
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightedCountStableLatticesProductDescentGLStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightedCountStableLatticesProductDescentGL
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeCountAndGramDetSignNormClassStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaGramDetEqOneOfSelfDualLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaGramDetEqOneOfSelfDualLattice
 
 noncomputable section
 
@@ -1032,9 +1032,9 @@ theorem identity_of_swap : ∀ (K : UQ) (B₁ B₂ : InvAlg K), B₁.g * B₁.σ
   have NBq := (Half.prod h₁' h₂').N_one hσe hP hu hi
   have hsp : (p₁ * p₂).Separable := hs.of_dvd ⟨q₁ * q₂, by rw [hd₁, hd₂]; ring⟩
   have hsq : (q₁ * q₂).Separable := hs.of_dvd ⟨p₁ * p₂, by rw [hd₁, hd₂]; ring⟩
-  have Cp := GlobalTheory.T.weighted_count_stable_lattices_product_descent_GL K.O K.E (B₁.A ⧸ Ideal.span {B₁.σ e.1}) (B₂.A ⧸ Ideal.span {B₂.σ e.2})
+  have Cp := _root_.GlobalTheory.UnitLemma.DescentGL.countGL_prod K.O K.E (B₁.A ⧸ Ideal.span {B₁.σ e.1}) (B₂.A ⧸ Ideal.span {B₂.σ e.2})
     (Ideal.Quotient.mk _ B₁.g) (Ideal.Quotient.mk _ B₂.g) hsp
-  have Cq := GlobalTheory.T.weighted_count_stable_lattices_product_descent_GL K.O K.E (B₁.A ⧸ Ideal.span {e.1}) (B₂.A ⧸ Ideal.span {e.2})
+  have Cq := _root_.GlobalTheory.UnitLemma.DescentGL.countGL_prod K.O K.E (B₁.A ⧸ Ideal.span {e.1}) (B₂.A ⧸ Ideal.span {e.2})
     (Ideal.Quotient.mk _ B₁.g) (Ideal.Quotient.mk _ B₂.g) hsq
   have hc : ((Nat.card (IsLocalRing.ResidueField K.O) : ℕ) : ℚ) = (K.q : ℚ) ^ 2 := by
     rw [K.card_res]; push_cast; ring
@@ -1094,7 +1094,7 @@ theorem identity_of_swap : ∀ (K : UQ) (B₁ B₂ : InvAlg K), B₁.g * B₁.σ
     have hab : val K.O (resultant p₁ p₂) = val K.O (resultant q₁ q₂) :=
       zpow_right_injective₀ hQ hQ1 (mul_right_cancel₀ hz (E1.symm.trans E2))
     have hne := X_one_nonempty_of_N_one_ne_zero B₁ (left_ne_zero_of_mul hz)
-    rw [GlobalTheory.T.eta_gramDet_eq_one_of_selfDual_lattice K B₁ 1 (map_one _) hne, E1, ← hab]
+    rw [_root_.GlobalTheory.UnitLemma.Unimod.eta_gramDet_eq_one K B₁ 1 (map_one _) hne, E1, ← hab]
     have hQ0 : (K.q : ℚ) ^ 2 ≠ 0 := hQ.ne'
     rw [show -(val K.O (resultant p₁ p₂) + val K.O (resultant p₁ p₂)) =
         2 * (-val K.O (resultant p₁ p₂)) by ring, zpow_mul,

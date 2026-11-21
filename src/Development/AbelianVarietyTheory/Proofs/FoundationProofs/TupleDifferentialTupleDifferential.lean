@@ -25,10 +25,6 @@ def tupleCoface (a b : X) {n : ℕ} (i : Fin (n + 2)) (x : Fin n → X) : Fin (n
 
 variable (R : Type*) [Ring R] (N : Type*) [AddCommGroup N] [Module R N]
 
-noncomputable def tupleDifferential (a b : X) (n : ℕ) :
-    ((Fin n → X) →₀ N) →ₗ[R] ((Fin (n + 1) → X) →₀ N) :=
-  ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • lmapDomain N R (tupleCoface a b i)
-
 noncomputable def tupleContraction (a : X) (n : ℕ) :
     ((Fin (n + 1) → X) →₀ N) →ₗ[R] ((Fin n → X) →₀ N) :=
   lcomapDomain (fun x => Fin.cons a x) (Fin.cons_right_injective (α := fun _ => X) a)

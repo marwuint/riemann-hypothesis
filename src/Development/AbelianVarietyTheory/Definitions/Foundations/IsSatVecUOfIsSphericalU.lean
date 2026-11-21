@@ -301,14 +301,6 @@ theorem hasSatU_psFunU (hU : IsUnramInv ϖ σ q) (α : Fin (n / 2) → ℂˣ) : 
 
 end U
 
-example (q : ℕ) (a b : ℂˣ) :
-    satEig q 2 {a, b} 2 = a * b ∧ satEig q 2 {a, b} 1 = (q : ℂ) ^ (1 / 2 : ℂ) * (a + b) := by
-  constructor
-  · simp [satEig, Multiset.esymm, Multiset.powersetCard_cons, Multiset.powersetCard_one]
-  · simp [satEig, Multiset.esymm, Multiset.powersetCard_one]; norm_num [add_comm]
-
-example (a : ℂˣ) : GlobalTheory.LGrp.bcParam 3 (fun _ => a) = {a, a⁻¹, 1} := rfl
-
 end GlobalTheory.LFun
 
 end

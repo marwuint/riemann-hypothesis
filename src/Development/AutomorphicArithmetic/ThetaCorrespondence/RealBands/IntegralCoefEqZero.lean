@@ -5,7 +5,9 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.ConvCoef
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.ContinuousAverage
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.InvMemFlagN
 import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.FlagNW
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SchurOrthogonalityIndefiniteUnitaryGroupStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SchurOrthogonalityIndefiniteUnitaryGroup
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 
 open MeasureTheory Filter Matrix Formalism.REAL Formalism.MainNotions.S GlobalTheory.FlagMeas GlobalTheory.RealInd UpperTheory.Lit.Cusp
 open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
@@ -19,7 +21,7 @@ theorem UpperTheory.Lit.Cusp.integral_coef_eq_zero :
           ∫ m, ⟪v, σ (umat (x * m * y)) a⟫_ℂ ∂ν = 0 := by
   intro n ε H _ _ σ hσ v a hvv hav W hW ν hν x y
   obtain ⟨hc, hn, hU, hI, hS⟩ := hσ
-  obtain ⟨d, hd⟩ := GlobalTheory.T.schur_orthogonality_indefiniteUnitaryGroup n ε H σ hU hI hS
+  obtain ⟨d, hd⟩ := _root_.GlobalTheory.schur_orthogonality_unitary n ε H σ hU hI hS
   have hd0 : 0 < d := hd.1
   by_cases hv : v = 0
   · subst hv

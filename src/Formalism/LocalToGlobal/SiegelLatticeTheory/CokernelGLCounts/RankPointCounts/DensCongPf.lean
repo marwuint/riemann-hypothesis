@@ -195,48 +195,6 @@ theorem psi_psi (abelian₂ : Submodule M.L.O V) (c : E) (A B : Matrix ι ι E) 
   rw [Finset.sum_congr rfl fun a _ => e a]
   simp
 
-theorem densCong_body (ϖ : 𝒪[F]) (abelian₂ : Submodule M.L.O V) (G A : Matrix ι ι E)
-    (hAO : ∀ i j, A i j ∈ M.L.O) (hAd : ∃ y ∈ M.L.O, A.det * y = 1) :
-    H.dens ϖ abelian₂ ((A.map M.L.cj).transpose * G * A) = H.dens ϖ abelian₂ G := by
-  obtain ⟨y, hy, hdy⟩ := hAd
-  set B : Matrix ι ι E := y • A.adjugate with hB
-  have hBO : ∀ i j, B i j ∈ M.L.O := fun i j => by
-    rw [hB, Matrix.smul_apply, smul_eq_mul]; exact Subring.mul_mem _ hy (adj_mem A hAO i j)
-  have hAB : A * B = 1 := by
-    rw [hB, Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, mul_comm, hdy, one_smul]
-  have hBA : B * A = 1 := by
-    rw [hB, Matrix.smul_mul, Matrix.adjugate_mul, smul_smul, mul_comm, hdy, one_smul]
-  set c : E := algebraMap F E (ϖ : F)
-  set S : Submodule M.L.O E := Submodule.span M.L.O {c}
-  set G' := (A.map M.L.cj).transpose * G * A with hG'
-  have hGback : (B.map M.L.cj).transpose * G' * B = G := by
-    have e1 : (B.map M.L.cj).transpose * (A.map M.L.cj).transpose = 1 := by
-      rw [← Matrix.transpose_mul]
-      have : A.map M.L.cj * B.map M.L.cj = (A * B).map M.L.cj := by
-        ext i j; simp [Matrix.mul_apply, map_sum]
-      rw [this, hAB]
-      ext i j; simp [Matrix.one_apply, eq_comm]
-    rw [hG', ← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, Matrix.one_mul, Matrix.mul_assoc, hAB, Matrix.mul_one]
-  have hset : cls H ϖ abelian₂ G' = psi H abelian₂ c A hAO '' cls H ϖ abelian₂ G := by
-    ext x
-    constructor
-    · rintro ⟨⟨v', hP, hC⟩, rfl⟩
-      refine ⟨fun a => Submodule.Quotient.mk (p := H.smulLat c abelian₂) (act B v' a),
-        ⟨⟨act B v', prim_act H abelian₂ B A hBO hAO hBA hAB v' hP, ?_⟩, rfl⟩, ?_⟩
-      · have := cong_act H S B G' hBO v' hC
-        rwa [hGback] at this
-      · show psi H abelian₂ c A hAO (fun a => Submodule.Quotient.mk (p := H.smulLat c abelian₂) (act B v' a)) = _
-        rw [psi_mk, act_act, hBA, act_one]
-    · rintro ⟨_, ⟨⟨v, hP, hC⟩, rfl⟩, rfl⟩
-      refine ⟨⟨act A v, prim_act H abelian₂ A B hAO hBO hAB hBA v hP, cong_act H S A G hAO v hC⟩, ?_⟩
-      exact (psi_mk H abelian₂ c A hAO v).symm
-  have hinj : Function.Injective (psi H abelian₂ c A hAO) := fun x x' h => by
-    rw [← psi_psi H abelian₂ c A B hAO hBO hAB x, ← psi_psi H abelian₂ c A B hAO hBO hAB x', h]
-  have hcard : Nat.card (cls H ϖ abelian₂ G') = Nat.card (cls H ϖ abelian₂ G) := by
-    rw [hset, Nat.card_image_of_injective hinj]
-  unfold Loc.HermSp.dens
-  exact congrArg (fun n : ℕ => (n : ℝ) / _) hcard
-
 end Count
 
 end Formalism.L2.SG.Pf.DensCongPf

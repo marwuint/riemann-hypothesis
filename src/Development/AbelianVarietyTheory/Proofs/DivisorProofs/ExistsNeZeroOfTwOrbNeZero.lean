@@ -8,11 +8,6 @@ open scoped Classical TensorProduct
 
 namespace GlobalTheory.BCT
 
-theorem exists_ne_zero_of_avg_ne_zero {H : Type} [Group H] (u : H → ℂ) (h : avg u ≠ 0) : ∃ k, u k ≠ 0 := by
-  by_contra hc
-  push Not at hc
-  exact h (by simp [avg, hc])
-
 theorem exists_ne_zero_of_twOrb_ne_zero {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (δ : G)
     (f : G → ℂ) (h : twOrb θ K δ f ≠ 0) : ∃ x, f (x⁻¹ * δ * θ x) ≠ 0 := by
   by_contra hc
@@ -42,13 +37,5 @@ theorem nrmL_twConj {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ)
   · simp
   · simp only [map_mul, map_inv, hinv]
     group
-
-theorem exists_support_of_stTw_ne_zero (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E)
-    (Q : (w.adicCompletion E)[X]) (φ : GLw n w → ℂ) (h : stTw n w Q φ ≠ 0) :
-    ∃ y, φ y ≠ 0 ∧ (nrmL n w y).val.charpoly = Q := by
-  obtain ⟨δ, hδ, x, hx⟩ := exists_ne_zero_of_clSum_ne_zero _ _ _ _ _ h
-  refine ⟨_, hx, ?_⟩
-  rw [nrmL_twConj, ← (show (nrmL n w δ).val.charpoly = Q from hδ), Units.val_mul, Matrix.charpoly_mul_comm,
-    ← Units.val_mul, mul_inv_cancel_left]
 
 end GlobalTheory.BCT

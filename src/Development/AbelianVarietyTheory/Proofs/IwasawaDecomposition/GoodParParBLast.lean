@@ -212,12 +212,4 @@ theorem exists_models : GlobalTheory.Published.DiscreteSeriesExists → ∀ D : 
   obtain ⟨MW, hMW⟩ := GlobalTheory.RealGeo.FrameModels.exists_frameKs h D Ks hK
   exact ⟨MW, fun i => hMW.2 i _ (labE_lab_embLL D), hMW⟩
 
-theorem order_embLL (D : D7) (i : Fin D.R.m) (M : DSModel (Wc D i) (parAt (Wc D i) D.what₂.embLL)) (τ : D.what₂.Tau)
-    (a : Fin (Wc D i).rank) : M.ε τ a = decide ((a : ℕ) < ((Wc D i).sig (tauE D τ)).1) := by
-  have he := M.enum τ
-  have e : parAt (Wc D i) D.what₂.embLL τ = Formalism.L2.NTheta.holPar _ _ (kapAt (Wc D i) D.what₂.embLL τ) :=
-    if_pos (labE_lab_embLL D τ)
-  rw [e] at he
-  exact (GlobalTheory.HolDict.isEnum_holPar_kapW _ (Formalism.IndefR.FWT.rank_Wc i) (GlobalTheory.RealGeo.FrameModels.sig_add i τ) he a).2
-
 end GlobalTheory.ChainModels

@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareOfValuedSubOneLt
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentativesStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSubSqLtOneOfTwoLtOne
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EvenOrderNormsOneAddFourMulOfNoRootStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitMulSqQuadraticDefectStepStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EvenOrderNormsOneAddFourMulOfNoRoot
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitMulSqQuadraticDefectStep
+
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 
@@ -37,7 +38,7 @@ theorem evenNorms_of_le_four (h2 : (2 : K) ≠ 0)
   have hδρ : δ = 1 + 4 * ρ := by rw [hρ]; field_simp; ring
   have hρ1 : w ρ ≤ 1 := by rw [hρ, map_div₀]; exact div_le_one_of_le₀ h zero_le'
   rw [hδρ]
-  refine GlobalTheory.T.evenOrderNorms_one_add_four_mul_of_no_root K w ρ h2 hρ1 fun x hx => ?_
+  refine _root_.GlobalTheory.QNorm.evenNorms_one_add_four_mul K w ρ h2 hρ1 fun x hx => ?_
   have hle : w (x ^ 2 + x - ρ) ≤ 1 := by
     refine w.map_sub_le (w.map_add_le ?_ hx) hρ1
     rw [map_pow]; exact pow_le_one₀ zero_le' hx
@@ -59,101 +60,6 @@ theorem evenNorms_of_le_four (h2 : (2 : K) ≠ 0)
   have : δ = δ / (1 + 2 * x) ^ 2 * (1 + 2 * x) ^ 2 := (div_mul_cancel₀ _ hy).symm
   rw [this]
   exact hs.mul (IsSquare.sq _)
-
-theorem not_isSquare_mul_sq {δ c : K} (hc : c ≠ 0) (hns : ¬ IsSquare δ) :
-    ¬ IsSquare (δ * c ^ 2) := by
-  intro h
-  apply hns
-  have : δ = δ * c ^ 2 * (c⁻¹) ^ 2 := by field_simp
-  rw [this]
-  exact h.mul (IsSquare.sq _)
-
-theorem unit_case (h2 : (2 : K) ≠ 0) (π : K) (hπ : w π = WithZero.exp (-1))
-    (hsq : ∀ x : K, w (x - 1) < w 4 → IsSquare x)
-    (hres : w 2 < 1 → ∀ x : K, w x ≤ 1 → ∃ y : K, w y ≤ 1 ∧ w (x - y ^ 2) < 1)
-    (m : ℤ) (hm : w 4 = WithZero.exp m) (N : ℕ) :
-    ∀ δ : K, w δ = 1 → ¬ IsSquare δ → w (δ - 1) ≤ WithZero.exp (m + N) →
-      ∃ c : K, c ≠ 0 ∧ ((w (δ * c ^ 2) = 1 ∧ w 4 < w (δ * c ^ 2 - 1) ∧
-        ∃ n : ℤ, w (δ * c ^ 2 - 1) = WithZero.exp (2 * n + 1)) ∨ EvenNorms w (δ * c ^ 2)) := by
-  induction N with
-  | zero =>
-    intro δ hδ hns h
-    refine ⟨1, one_ne_zero, Or.inr ?_⟩
-    rw [one_pow, mul_one]
-    exact evenNorms_of_le_four w h2 hsq δ hδ hns (by simpa [hm] using h)
-  | succ N ih =>
-    intro δ hδ hns h
-    by_cases h4 : w (δ - 1) ≤ w 4
-    · refine ⟨1, one_ne_zero, Or.inr ?_⟩
-      rw [one_pow, mul_one]
-      exact evenNorms_of_le_four w h2 hsq δ hδ hns h4
-    rw [not_le] at h4
-    have hne : δ - 1 ≠ 0 := by
-      intro h0; rw [h0] at h4; simp at h4
-    obtain ⟨d, hd⟩ := exists_exp w hne
-    have hle : w (δ - 1) ≤ 1 := w.map_sub_le hδ.le (by simp)
-    have hd0 : d ≤ 0 := by
-      rw [hd, ← WithZero.exp_zero, WithZero.exp_le_exp] at hle; exact hle
-    rcases Int.even_or_odd' d with ⟨k, hk | hk⟩
-    · have hw2 : w 2 < 1 := by
-        refine lt_of_le_of_ne (map_two_le w) fun h1 => ?_
-        have : w 4 = 1 := by
-          have : (4 : K) = 2 * 2 := by norm_num
-          rw [this, map_mul, h1, one_mul]
-        rw [this] at h4
-        exact absurd hle (not_le.2 h4)
-      obtain ⟨c, hc, hlt⟩ := GlobalTheory.T.exists_unit_mul_sq_quadratic_defect_step K w δ π (-k).toNat hπ (hres hw2) hδ h4 (by
-        rw [hd]; congr 1; omega)
-      have hc0 : c ≠ 0 := by
-        intro h0; rw [h0] at hc; simp at hc
-      have hb : w (δ * c ^ 2 - 1) ≤ WithZero.exp (m + N) := by
-        by_cases h0 : δ * c ^ 2 - 1 = 0
-        · rw [h0]; simp
-        obtain ⟨e, he⟩ := exists_exp w h0
-        have := hlt.trans_le h
-        rw [he, WithZero.exp_lt_exp] at this
-        rw [he, WithZero.exp_le_exp]
-        push_cast at this
-        omega
-      obtain ⟨c', hc', H⟩ := ih (δ * c ^ 2) (by simp [hδ, hc]) (not_isSquare_mul_sq hc0 hns) hb
-      refine ⟨c * c', mul_ne_zero hc0 hc', ?_⟩
-      have : δ * (c * c') ^ 2 = δ * c ^ 2 * c' ^ 2 := by ring
-      rw [this]; exact H
-    · refine ⟨1, one_ne_zero, Or.inl ?_⟩
-      rw [one_pow, mul_one]
-      exact ⟨hδ, h4, k, by rw [hd, hk]⟩
-
-theorem general (h2 : (2 : K) ≠ 0) (π : K) (hπ : w π = WithZero.exp (-1))
-    (hsq : ∀ x : K, w (x - 1) < w 4 → IsSquare x)
-    (hres : w 2 < 1 → ∀ x : K, w x ≤ 1 → ∃ y : K, w y ≤ 1 ∧ w (x - y ^ 2) < 1)
-    (δ : K) (hδ : δ ≠ 0) (hns : ¬ IsSquare δ) :
-    ∃ c : K, c ≠ 0 ∧ ((∃ n : ℤ, w (δ * c ^ 2) = WithZero.exp (2 * n + 1)) ∨
-      (w (δ * c ^ 2) = 1 ∧ w 4 < w (δ * c ^ 2 - 1) ∧
-        ∃ n : ℤ, w (δ * c ^ 2 - 1) = WithZero.exp (2 * n + 1)) ∨ EvenNorms w (δ * c ^ 2)) := by
-  have h4 : (4 : K) ≠ 0 := by
-    have : (4 : K) = 2 * 2 := by norm_num
-    rw [this]; exact mul_ne_zero h2 h2
-  obtain ⟨m, hm⟩ := exists_exp w h4
-  obtain ⟨d, hd⟩ := exists_exp w hδ
-  rcases Int.even_or_odd' d with ⟨k, hk | hk⟩
-  · have hπ0 : π ≠ 0 := by
-      intro h0; rw [h0] at hπ; simp at hπ; exact WithZero.exp_ne_zero hπ.symm
-    have hc0 : π ^ k ≠ 0 := zpow_ne_zero _ hπ0
-    have hu : w (δ * (π ^ k) ^ 2) = 1 := by
-      rw [map_mul, map_pow, map_zpow₀, hπ, hd, ← WithZero.exp_zsmul, ← WithZero.exp_nsmul,
-        ← WithZero.exp_add, ← WithZero.exp_zero]
-      congr 1
-      simp [hk]
-    obtain ⟨c', hc', H⟩ := unit_case w h2 π hπ hsq hres m hm (-m).toNat _ hu
-      (not_isSquare_mul_sq hc0 hns) (by
-        refine (w.map_sub_le hu.le (by simp)).trans ?_
-        rw [← WithZero.exp_zero, WithZero.exp_le_exp]
-        omega)
-    refine ⟨π ^ k * c', mul_ne_zero hc0 hc', Or.inr ?_⟩
-    have : δ * (π ^ k * c') ^ 2 = δ * (π ^ k) ^ 2 * c' ^ 2 := by ring
-    rw [this]; exact H
-  · refine ⟨1, one_ne_zero, Or.inl ⟨k, ?_⟩⟩
-    rw [one_pow, mul_one, hd, hk]
 
 end Defect
 

@@ -9,16 +9,18 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterFib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSheet
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegrableOfResolutionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsHorizontalTwist
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FinitePrimesSumSquaresZeroStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FinitePrimesSumSquaresZero
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistIsPrimeStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RingKrullDimTwistSuccStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistIsMultiHomogIdealStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MultAtTwistQuadEqStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HorizontalDivSuppTwistStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwLineSmoothConjInvariantGlueStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PtsIntegralConjLineEqStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PtsIntegralConjLineEq
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FibreTwistEqUnionEmbeddingsStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwistHeightIntegralDecompositionStatement
 
@@ -43,7 +45,7 @@ theorem exists_prime_noRoot {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
       have h1 : ((a : ℤ) - (b : ℤ)) ∈ W.comap (C : ℤ →+* MRing ι) := h0
       rw [show W.comap (C : ℤ →+* MRing ι) = ⊥ from hh, Ideal.mem_bot] at h1
       omega
-    exact GlobalTheory.T.finite_primes_sum_squares_zero _ _ (Ideal.Quotient.mk W) Ideal.Quotient.mk_surjective
+    exact _root_.GlobalTheory.CompanionTheory.QuadFin.finite_primes_neg_sq _ _ (Ideal.Quotient.mk W) Ideal.Quotient.mk_surjective
   have hfin : (⋃ W ∈ S, {p : ℕ | p.Prime ∧ ∃ a b : MRing ι ⧸ W, b ≠ 0 ∧ a ^ 2 + (p : MRing ι ⧸ W) * b ^ 2 = 0}).Finite :=
     hS.biUnion hbad
   obtain ⟨p, hp, hpn⟩ := (Nat.infinite_setOf_prime.diff hfin).nonempty
@@ -200,7 +202,7 @@ theorem twist_double (hI : PtsIntegrableStatement) (hD : PtsIndepStatement)
     (hA : IsSmoothHerm A) (hs : IsSectionOn Q A s) :
     ptsIntegral (twist p Q) (pot fun j => twLine p (L j)) (logNorm (twLine p A) (inc s)) =
       2 * ptsIntegral Q (pot L) (logNorm A s) := by
-  rw [twist_integral hI hD hp hQ hR hL hA hs, GlobalTheory.T.ptsIntegral_conjLine_eq hD K ι Q e L A s hQ hL hA hs]
+  rw [twist_integral hI hD hp hQ hR hL hA hs, _root_.GlobalTheory.CompanionTheory.Ar.Tw.ptsIntegral_conjLine hD K ι Q e L A s hQ hL hA hs]
   ring
 
 theorem pot_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
@@ -265,7 +267,7 @@ theorem poincareLelong_of_inv :
   intro hRK hInv K _ ι _ P n L A B s hP hL hA hB hBa hs
   classical
   have hI : PtsIntegrableStatement := GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegrable_of_resK hRK
-  have hD : PtsIndepStatement := ptsIndep_of (GlobalTheory.T.resolution_exists_of_resolution_statement hRK) resBridge
+  have hD : PtsIndepStatement := ptsIndep_of (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hRK) resBridge
   have hPp : P.IsPrime := hP.2.1.1
   set H : Set (Ideal (MRing ι)) := {W | W ∈ divSupp P s ∧ IsHorizontal W} with hH
   have hHfin : H.Finite := (divSupp_finite P s).subset fun W h => h.1

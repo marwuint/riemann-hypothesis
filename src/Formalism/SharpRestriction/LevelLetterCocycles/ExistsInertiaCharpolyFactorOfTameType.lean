@@ -1118,30 +1118,6 @@ theorem weil_deligne_clause_of_split (hG1 : At.G1 N i r) (w : PlE H) {K : Type} 
   subst hPP
   exact kill_descend f hf _ _ _ _ (hk x)
 
-theorem weil_deligne_clause_of_decomposition (A : NAut N) (hT : At.TieGal N A) (hG1 : At.G1 N i r) (w : PlE H)
-    (hw : w ∉ placesOver H.E (N.l i))
-    (hcont : ∀ x, At.ContQ N i (mapRep (iotaOQ N A i) (r x)))
-    (hwd : ∀ x, ∃ p q : A.LP w, A.wdOf i (mapRep (iotaOQ N A i) (r x)) w = A.lpSum p q ∧ A.lpDim q = R.t ∧
-      A.mono0 q ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w),
-        A.inePol q σ = (X - C (iotaO N A i (chi1 N i σ))) ^ R.t)
-    (hmult : ∀ x, (((redRep N i (r x) (N.gam0 i w) : GL _ _) :
-        Matrix (Fin R.nV) (Fin R.nV) (IsLocalRing.ResidueField (N.O i))).charpoly).rootMultiplicity
-      (IsLocalRing.residue (N.O i) (chi1 N i (N.gam0 i w))) = R.t) :
-    ∃ Pp : Polynomial (N.T i),
-      IsUnit (Pp.eval (algebraMap (N.O i) (N.T i) (chi1 N i (N.gam0 i w)))) ∧
-      ∀ x, ∀ γ ∈ Ine (F := H.E) (N.plOm.1 w),
-        Polynomial.aeval ((r x (N.gam0 i w) : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i))
-            (Pp.map ((Pi.evalRingHom (fun _ : N.X i => N.O i) x).comp (N.T i).val.toRingHom)) *
-          (((r x γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)) - chi1 N i γ • 1) = 0 := by
-  refine weil_deligne_clause_of_split N r hG1 w (iotaOQ N A i)
-    ((A.iotaQ i).injective.comp (IsFractionRing.injective (N.O i) (FractionRing (N.O i)))) (fun x => ?_) hmult
-  obtain ⟨p, q, h1, h2, h3, h4⟩ := hwd x
-  obtain ⟨U, U', hc, -, hU', hst, hsc⟩ := (hT.2.2.2 i).1 R.nV _ (hcont x) w hw p q h1
-  refine ⟨U, U', hc, hU'.trans h2, fun γ hγ => ⟨(hst γ hγ).1, ?_⟩⟩
-  refine hsc h3 γ hγ (iotaOQ N A i (chi1 N i γ)) ?_
-  rw [h2, h4 γ hγ]
-  rfl
-
 theorem rhobar_fac (hC : Cheb N) (hr : GoodR N i r)
     (rb : G H.E N.Om →* GL (Fin R.r) (IsLocalRing.ResidueField (N.O i))) (hrb : IsRhoBar N i rb)
     (x : N.X i) (g : G H.E N.Om) :
@@ -1236,55 +1212,6 @@ theorem rootMult_le_of_maps {O K k : Type} [CommRing O] [Field K] [Field k] (f :
   rw [le_rootMultiplicity_iff (hF.map g).ne_zero]
   simpa using Polynomial.map_dvd g h3
 
-def At.LGCat (A : NAut N) (w : PlE H) : Prop :=
-  ∀ x, ∃ P, A.ptV i P = some x ∧
-    A.wdOf i (mapRep (iotaOQ N A i) (r x)) w = A.lpTw (A.locV i P w) ((1 - (R.nV : ℝ)) / 2)
-
-theorem exists_inertia_charpoly_factor_of_tame_type (A : NAut N) (hC : Cheb N) (hr : GoodR N i r) (hT : At.TieGal N A) (hTY : At.MonodromyInertiaType N A)
-    (w : PlE H) (hS : w ∈ N.S i) (hg : ∃ k, w ∈ placesOver H.E (H.g k))
-    (hL : At.LGCat N r A w)
-    (rb : G H.E N.Om →* GL (Fin R.r) (IsLocalRing.ResidueField (N.O i))) (hrb : IsRhoBar N i rb)
-    (hnr : ¬ (((rb (N.gam0 i w) : GL _ _) : Matrix (Fin R.r) (Fin R.r) _).charpoly).IsRoot
-      (IsLocalRing.residue (N.O i) (chi1 N i (N.gam0 i w)))) :
-    ∃ Pp : Polynomial (N.T i),
-      IsUnit (Pp.eval (algebraMap (N.O i) (N.T i) (chi1 N i (N.gam0 i w)))) ∧
-      ∀ x, ∀ γ ∈ Ine (F := H.E) (N.plOm.1 w),
-        Polynomial.aeval ((r x (N.gam0 i w) : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i))
-            (Pp.map ((Pi.evalRingHom (fun _ : N.X i => N.O i) x).comp (N.T i).val.toRingHom)) *
-          (((r x γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)) - chi1 N i γ • 1) = 0 := by
-  have hw : w ∉ placesOver H.E (N.l i) := N.SQ_l i w (Or.inl hS)
-  have hcont : ∀ x, At.ContQ N i (mapRep (iotaOQ N A i) (r x)) :=
-    fun x => contQ_of_continuous N A i (r x) (hr x).1
-  have hmult := mult_of_rhobar N r hC hr rb hrb w hw hnr
-  refine weil_deligne_clause_of_decomposition N r A hT (charpoly_clause_of_chebotarev N hC i r hr) w hw hcont (fun x => ?_) hmult
-  obtain ⟨P, -, hP⟩ := hL x
-  have hinj : Function.Injective (iotaO N A i) :=
-    ((A.iotaQC i).injective.comp (A.iotaQ i).injective).comp
-      (IsFractionRing.injective (N.O i) (FractionRing (N.O i)))
-  have hine : A.inePol (A.locV i P w) (N.gam0 i w) =
-      (((r x (N.gam0 i w) : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)).charpoly).map (iotaO N A i) := by
-    rw [← A.inePol_tw (A.locV i P w) ((1 - (R.nV : ℝ)) / 2) _ (N.locNd_chebotarevPlace_mem i w), ← hP,
-      ← A.wdOf_ine i _ w hw (hcont x) _ (N.locNd_chebotarevPlace_mem i w)]
-    have : ((mapRep (iotaOQ N A i) (r x) (N.gam0 i w) : GL _ _) :
-        Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i))) =
-        ((r x (N.gam0 i w) : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)).map (iotaOQ N A i) := rfl
-    rw [this, Matrix.charpoly_map, Polynomial.map_map]
-    rfl
-  have hle : (A.inePol (A.locV i P w) (N.gam0 i w)).rootMultiplicity
-      (iotaO N A i (chi1 N i (N.gam0 i w))) ≤ R.t := by
-    rw [hine]
-    refine (rootMult_le_of_maps (iotaO N A i) hinj (IsLocalRing.residue (N.O i)) _
-      (Matrix.charpoly_monic _) _).trans (le_of_eq ?_)
-    rw [← Matrix.charpoly_map]
-    exact hmult x
-  obtain ⟨a, b, h1, -, h3, h4, h5⟩ := hTY.2.1 i P w hS hg (N.restN_tameGenerator_generates i w (Or.inl hS)).2 hle
-  refine ⟨A.lpTw a ((1 - (R.nV : ℝ)) / 2), A.lpTw b ((1 - (R.nV : ℝ)) / 2), ?_, ?_, ?_, ?_⟩
-  · rw [hP, h1, A.lpTw_sum]
-  · rw [A.lpDim_tw, h3]
-  · exact (A.monomial_twist_iff _ _).2 h4
-  · intro σ hσ
-    rw [A.inePol_tw _ _ σ hσ, h5 σ hσ]
-
 end G5b
 
 section Maschke
@@ -1360,68 +1287,6 @@ theorem split_of_charpoly [CharZero k] {r t : ℕ} (ht : t ≠ 0) (ρ : Γ →* 
     exact diagHom_coe r (r + t) (χ γ)⟩
 
 end Maschke
-
-section G5a
-
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
-  (r : N.X i → (G H.E N.Om →* GL (Fin R.nV) (N.O i)))
-
-theorem SplitI_of_TY (A : NAut N) (hr : GoodR N i r) (w : PlE H) (hw : w ∉ placesOver H.E (N.l i))
-    (hL : At.LGCat N r A w)
-    (hty : ∀ P : A.AV i, A.mono0 (A.locV i P w) ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w),
-      A.inePol (A.locV i P w) σ = (X - 1) ^ R.r * (X - C (iotaO N A i (chi1 N i σ))) ^ R.t)
-    (x : N.X i) : SplitI N r w x := by
-  obtain ⟨P, -, hP⟩ := hL x
-  have hcont := contQ_of_continuous N A i (r x) (hr x).1
-  have hCZ : CharZero (Kf N i) := (A.iotaQ i).charZero
-  have hm : A.mono0 (A.wdOf i (mapRep (iotaOQ N A i) (r x)) w) := by
-    rw [hP]
-    exact (A.monomial_twist_iff _ _).2 (hty P).1
-  have hfinQ := (A.wdOf_mono0 i _ w hw hcont).1 hm
-  have hΦ : Function.Injective (Units.map ((A.iotaQ i).mapMatrix :
-      Matrix (Fin R.nV) (Fin R.nV) (Kf N i) →+* Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i))).toMonoidHom) :=
-    Units.map_injective (Matrix.map_injective (A.iotaQ i).injective)
-  have hfin : (Set.range ((mapRep (algebraMap (N.O i) (Kf N i)) (r x)).comp
-      (Ine (F := H.E) (N.plOm.1 w)).subtype)).Finite := by
-    refine Set.Finite.of_finite_image (hfinQ.subset ?_) hΦ.injOn
-    rintro _ ⟨_, ⟨γ, rfl⟩, rfl⟩
-    exact ⟨γ.1, γ.2, rfl⟩
-  have hj : Function.Injective ((A.iotaQC i).toRingHom.comp (A.iotaQ i)) :=
-    (A.iotaQC i).injective.comp (A.iotaQ i).injective
-  obtain ⟨Pm, hPm⟩ := split_of_charpoly (r := R.r) (t := R.t) R.t_odd.pos.ne'
-    ((mapRep (algebraMap (N.O i) (Kf N i)) (r x)).comp (Ine (F := H.E) (N.plOm.1 w)).subtype)
-    (((Units.map (algebraMap (N.O i) (Kf N i)).toMonoidHom).comp (N.chi i 1)).comp
-      (Ine (F := H.E) (N.plOm.1 w)).subtype) hfin (fun γ => by
-      have h1 := A.wdOf_ine i _ w hw hcont γ.1 γ.2
-      rw [hP, A.inePol_tw _ _ _ γ.2, (hty P).2 _ γ.2] at h1
-      have h2 : ((mapRep (iotaOQ N A i) (r x) γ.1 : GL _ _) :
-          Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i))) =
-          ((r x γ.1 : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)).map (iotaOQ N A i) := rfl
-      rw [h2, Matrix.charpoly_map, Polynomial.map_map] at h1
-      apply Polynomial.map_injective _ hj
-      have h3 : ((((mapRep (algebraMap (N.O i) (Kf N i)) (r x)).comp
-          (Ine (F := H.E) (N.plOm.1 w)).subtype) γ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Kf N i)) =
-          ((r x γ.1 : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i)).map (algebraMap (N.O i) (Kf N i)) := rfl
-      have h4 : (((((mapRep (algebraMap (N.O i) (Kf N i)) (r x)).comp
-          (Ine (F := H.E) (N.plOm.1 w)).subtype) γ : GL _ _) :
-          Matrix (Fin R.nV) (Fin R.nV) (Kf N i)).charpoly).map ((A.iotaQC i).toRingHom.comp (A.iotaQ i)) =
-          (X - 1) ^ R.r * (X - C (iotaO N A i (chi1 N i γ.1))) ^ R.t := by
-        rw [h3, Matrix.charpoly_map, Polynomial.map_map]
-        exact h1
-      refine h4.trans ?_
-      simp only [Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X,
-        Polynomial.map_one, Polynomial.map_C]
-      rfl)
-  exact ⟨Pm, fun γ hγ => hPm ⟨γ, hγ⟩⟩
-
-theorem split_inertia_of_hypotheses (A : NAut N) (hr : GoodR N i r) (hTY : At.MonodromyInertiaType N A) (w : PlE H)
-    (hSQ : w ∈ N.S i ∨ w ∈ N.Q i)
-    (hcond : w ∈ N.Q i ∨ (At.Del N i ∧
-      (w ∈ placesOver H.E H.pde ∨ (N.l i = H.pde ∧ w ∈ placesOver H.E H.pde'))))
-    (hL : At.LGCat N r A w) (x : N.X i) : SplitI N r w x :=
-  SplitI_of_TY N r A hr w (N.SQ_l i w hSQ) hL (fun P => hTY.1 i P w hSQ hcond) x
-
-end G5a
 
 section H0
 
@@ -1629,29 +1494,6 @@ theorem automorphic_hypotheses_iff_reduced : JacquetShalikaStrongMultOne N A ↔
   ⟨fun h => ⟨h.1, h.2.1, h.2.2.1⟩,
     fun h => ⟨h.1, h.2.1, h.2.2, fun _ _ _ ρ ρ' hs hs' hc => brauerNesbitt_matrix ρ ρ' hs hs' hc⟩⟩
 
-def G3a (i : N.Loc) (r : N.X i → (G H.E N.Om →* GL (Fin R.nV) (N.O i))) : Prop :=
-  ∃ (K' : Type) (_ : Field K') (_ : Algebra (Kf N i) K') (_ : FiniteDimensional (Kf N i) K'),
-    ∀ x, (∀ W, IsIrrSub (mapRep ((algebraMap (Kf N i) K').comp (algebraMap (N.O i) (Kf N i))) (r x)) W →
-        AbsIrrSub (mapRep ((algebraMap (Kf N i) K').comp (algebraMap (N.O i) (Kf N i))) (r x)) W) ∧
-      ∀ W₁ W₂, IsIrrSub (mapRep ((algebraMap (Kf N i) K').comp (algebraMap (N.O i) (Kf N i))) (r x)) W₁ →
-        IsIrrSub (mapRep ((algebraMap (Kf N i) K').comp (algebraMap (N.O i) (Kf N i))) (r x)) W₂ →
-        W₁ ⊓ W₂ = ⊥ →
-        ¬ IsoSub (mapRep ((algebraMap (Kf N i) K').comp (algebraMap (N.O i) (Kf N i))) (r x)) W₁ W₂
-
-def ReducedFamilyProposition (i : N.Loc) : Prop :=
-  (∃ rq : N.X i → (G H.E N.Om →* GL (Fin R.nV) (Qbar (N.l i))), ∀ x, IsHeckeGaloisQ N A i x (rq x)) ∧
-  (∀ P P' : A.AV i, A.ptV i P ≠ none → A.ptV i P = A.ptV i P' →
-    (∀ Pa Pa', IsBCV N A i P Pa → IsBCV N A i P' Pa' → Pa.Perm Pa') ∧
-    ∀ w, w ∉ N.S i → w ∉ N.Q i →
-      (IsSplitPl H w → A.locV i P w = A.locV i P' w) ∧
-      (¬ IsSplitPl H w → ubc R.nV (A.satV i P w) = ubc R.nV (A.satV i P' w))) ∧
-  ∀ r, GoodR N i r → G2 N A i r ∧ G3a N i r ∧ G4 N i r
-
-theorem proposition_families_iff (hC : Cheb N) (hO : OLarge N A) (i : N.Loc) : Conclusion41 N A i ↔ ReducedFamilyProposition N A i :=
-  ⟨fun h => ⟨h.1.1, h.2.1, fun r hr => ⟨(h.2.2 r hr).2.1, (h.2.2 r hr).2.2.1.1, (h.2.2 r hr).2.2.2⟩⟩,
-    fun h => ⟨⟨h.1, exists_GoodR N A hO i h.1⟩, h.2.1, fun r hr => ⟨charpoly_clause_of_chebotarev N hC i r hr, (h.2.2 r hr).1,
-      ⟨(h.2.2 r hr).2.1, residual_charpoly_of_chebotarev_clause N i r (charpoly_clause_of_chebotarev N hC i r hr)⟩, (h.2.2 r hr).2.2⟩⟩⟩
-
 def ReducedGaloisClause (i : N.Loc) : Prop :=
   HG N A i → ∀ r, GoodR N i r → ∀ w : PlE H, (w ∈ N.S i ∨ w ∈ N.Q i) →
     w ∉ placesOver H.E (N.l i) →
@@ -1689,28 +1531,6 @@ theorem galois_clause_iff_reduced (i : N.Loc) (hDel : Del N i) : ConclusionG5 N 
       · rw [if_neg hlp] at hp
         exact Or.inr (Or.inl hp)
 
-def SufficientGaloisClause (i : N.Loc) : Prop :=
-  HG N A i → ∀ r, GoodR N i r → ∀ w : PlE H, (w ∈ N.S i ∨ w ∈ N.Q i) →
-    LGCat N r A w ∧
-    (w ∈ N.S i → (∃ rb, IsRhoBar N i rb) ∧ ∀ rb, IsRhoBar N i rb →
-      ¬ (((rb (N.gam0 i w) : GL _ _) : Matrix (Fin R.r) (Fin R.r) _).charpoly).IsRoot
-        (IsLocalRing.residue (N.O i) (chi1 N i (N.gam0 i w))) ∧
-      ∀ e : ℤ, HOneTwoZero N i w (Formalism.MainNotions.N.twistRep (Formalism.MainNotions.N.glRep rb) (chiEpsBar N i e)))
-
-theorem galois_clause_of_sufficient (hC : Cheb N) (hT : TieGal N A) (hTY : MonodromyInertiaType N A) (i : N.Loc) (hDel : Del N i)
-    (h : SufficientGaloisClause N A i) : ConclusionG5 N A i := by
-  rw [galois_clause_iff_reduced N A i hDel]
-  intro hg r hr w hw hl
-  obtain ⟨hL, hS⟩ := h hg r hr w hw
-  refine ⟨fun hq x => split_inertia_of_hypotheses N r A hr hTY w hw ?_ hL x, fun hgk hS' => ?_,
-    fun hS' rb hrb e => ?_⟩
-  · rcases hq with hq | hq
-    · exact Or.inl hq
-    · exact Or.inr ⟨hDel, hq⟩
-  · obtain ⟨⟨rb, hrb⟩, hall⟩ := hS hS'
-    exact exists_inertia_charpoly_factor_of_tame_type N r A hC hr hT hTY w hS' hgk hL rb hrb (hall rb hrb).1
-  · exact (HStarZero_iff N rb w hl ((hS hS').2 rb hrb).1 e).2 (((hS hS').2 rb hrb).2 e)
-
 end At
 
 def ReducedAutomorphicHypotheses (D : D7) : Prop := At.ReducedAutomorphicNoBrauerNesbitt D.nd D.naut
@@ -1719,21 +1539,8 @@ theorem condition_iff_additive_maps (D : D7) : adm5 D ↔ ReducedAutomorphicHypo
 
 def tieLab (D : D7) : Prop := At.TieLab D.nd D.naut
 
-def ReducedFamilyProposition (D : D7) : Prop := ∀ i, At.ReducedFamilyProposition D.nd D.naut i
 def ReducedParameterProposition (D : D7) : Prop := ∀ i, At.ReducedParameterProposition D.nd D.naut i
-def ReducedGaloisClause (D : D7) : Prop := ∀ i, At.ReducedGaloisClause D.nd D.naut i
-def SufficientGaloisClause (D : D7) : Prop := ∀ i, At.SufficientGaloisClause D.nd D.naut i
-
-theorem proposition_families_iff (D : D7) (h5 : adm5 D) (hO : hypO D) : Conclusion41 D ↔ ReducedFamilyProposition D :=
-  forall_congr' fun i => At.proposition_families_iff D.nd D.naut h5.2.2.1 hO i
-
 theorem proposition_parameters_iff_reduced (D : D7) (hT : tieLab D) : Conclusion42 D ↔ ReducedParameterProposition D :=
   forall_congr' fun i => parameter_proposition_iff D.nd D.naut hT i
-
-theorem galois_clause_iff_reduced (D : D7) : ConclusionG5 D ↔ ReducedGaloisClause D :=
-  forall_congr' fun i => At.galois_clause_iff_reduced D.nd D.naut i (Del_holds D i)
-
-theorem galois_clause_of_sufficient (D : D7) (h : AdmA D) (ho : SufficientGaloisClause D) : ConclusionG5 D := fun i =>
-  At.galois_clause_of_sufficient D.nd D.naut h.2.2.2.2.2.2.2.2.1 h.1.2.2 h.2.2.2.2.2.1 i (Del_holds D i) (ho i)
 
 end Formalism.MainNotions.SumRepresentations

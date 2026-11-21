@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSLTwoPermutedModularFamilyIffValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiPeriodNormalisedJetModularTransformStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistHasLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistByMatrixModNMulSL2ZStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiPeriodNormalisedJetModularTransform
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistHasLevel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistByMatrixModNMulSL2Z
 
 open NumberField UpperHalfPlane GlobalTheory.HilbFam GlobalTheory.QFam
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM qPow upperHalf cK omegaFactor IsPartialZeta HasExpansion)
@@ -21,9 +21,9 @@ theorem isFam_hfun_twist : EisExp → ∀ (F : Type) [Field F] [NumberField F] [
   rw [GlobalTheory.T.isSLTwoPermutedModularFamily_iff_values]
   intro i γ τ
   have htw : twist N L (α (act i γ)) = mulMat (twist N L (α i)) (γ : Matrix (Fin 2) (Fin 2) ℤ) := by
-    rw [hα]; exact GlobalTheory.T.hilbertLatticeTwistByMatrixModN_mul_SL2Z F N L (α i) γ hL.2
-  have h := GlobalTheory.T.quasiPeriod_normalised_jet_modular_transform hE F hF s N (twist N L (α i)) hs hN (GlobalTheory.T.hilbertLatticeTwist_hasLevel F N L (α i) hL) κ γ (Ch i)
-    (Ch (act i γ)) τ ⟨_, GlobalTheory.T.hilbertLatticeTwist_hasLevel F N L (α (act i γ)) hL, htw⟩ (hC i γ τ)
+    rw [hα]; exact _root_.GlobalTheory.HilbFam.TwistSL.twist_mul_sl F N L (α i) γ hL.2
+  have h := _root_.GlobalTheory.HilbFam.hfun_slash hE F hF s N (twist N L (α i)) hs hN (_root_.GlobalTheory.HilbFam.hasLevel_twist_of_hasLevel F N L (α i) hL) κ γ (Ch i)
+    (Ch (act i γ)) τ ⟨_, _root_.GlobalTheory.HilbFam.hasLevel_twist_of_hasLevel F N L (α (act i γ)) hL, htw⟩ (hC i γ τ)
   rw [zpow_natCast]
   beta_reduce
   rw [h, htw]

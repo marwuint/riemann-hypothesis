@@ -25,14 +25,4 @@ theorem exists_isDual (i : X.Tw) (s : X.Sig i) : ∃ ρ, IsDual i s ρ := by
         simp only [Tdual, ← Tgl_coe, map_mul, Units.val_mul, Matrix.mul_inv_rev, Matrix.transpose_mul, smul_mul_smul_comm] }
   exact ⟨τ.toHomUnits, fun g => rfl⟩
 
-variable (X) in
-
-theorem continuous_cConj : Continuous (cConj X) := by
-  refine continuous_of_continuousAt_one _ ?_
-  rw [ContinuousAt, map_one]
-  intro U hU
-  obtain ⟨L, hL, hLU⟩ := (krullTopology_mem_nhds_one_iff D.host.E N.Om U).1 hU
-  exact Filter.mem_of_superset ((isOpen_comap_cConj X (IntermediateField.fixingSubgroup_isOpen L)).mem_nhds
-    (Subgroup.one_mem _)) fun g hg => hLU hg
-
 end GlobalTheory.NewPrime

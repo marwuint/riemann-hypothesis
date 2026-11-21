@@ -116,16 +116,4 @@ def SplitPlace.q (s : SplitPlace L) : ℕ := Nat.card (𝓞 L⁺ ⧸ s.v.asIdeal
 
 def SplitPlace.Above (s : SplitPlace L) (l : ℕ) : Prop := ((l : ℕ) : 𝓞 L⁺) ∈ s.v.asIdeal
 
-variable (L) in
-
-structure LPlaces (l : ℕ) where
-  ι : Type
-  fin : Fintype ι
-  s : ι → SplitPlace L
-  inj : ∀ a b, (s a).v = (s b).v → a = b
-  above : ∀ a, (s a).Above l
-  cover : ∀ v : HeightOneSpectrum (𝓞 L⁺), ((l : ℕ) : 𝓞 L⁺) ∈ v.asIdeal → ∃ a, (s a).v = v
-  ϖ : ∀ a, (s a).v.adicCompletion L⁺
-  unif : ∀ a, Valued.v (ϖ a) = WithZero.exp (-1 : ℤ)
-
 end ReciprocityTheory.Aut

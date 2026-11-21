@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EntryAgree
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RanksFourToFrame
+import Formalism.LocalToGlobal.Columns.ChainInst
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PhiTopAgree
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsAtTypeAndOrd
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ResiduesOfCompletionAtPrimeWithUniformizer
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 
@@ -11,154 +13,10 @@ noncomputable section
 namespace GlobalTheory.TwBridge.Model
 open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymBridge GlobalTheory.SymTieExists
 
-section Local
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-
-theorem exists_unram (ϖ : kˣ) (hϖ : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (c : ℂˣ) : ∃ η : kˣ →* ℂˣ, IsUnram η ∧ η ϖ = c := by
-  let v : kˣ →* (ValueGroupWithZero k)ˣ := Units.map (valuation k).toMonoidWithZeroHom.toMonoidHom
-  have hv : ∀ x : kˣ, ((v x : (ValueGroupWithZero k)ˣ) : ValueGroupWithZero k) = valuation k (x : k) := fun _ => rfl
-  have h1 : valuation k (ϖ : k) < 1 := (hϖ _).2 le_rfl
-  have h0 : 0 < valuation k (ϖ : k) := by simp [zero_lt_iff]
-  obtain ⟨g, hg⟩ := hom_extend units_roots (zmultiplesHom (Additive (ValueGroupWithZero k)ˣ) (Additive.ofMul (v ϖ)))
-    (fun a b h => by
-      have h2 : (v ϖ) ^ a = (v ϖ) ^ b := congrArg Additive.toMul h
-      have h3 := congrArg (Units.val) h2
-      rw [Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, hv] at h3
-      exact zpow_right_injective₀ h0 h1.ne h3) (zmultiplesHom (Additive ℂˣ) (Additive.ofMul c))
-  refine ⟨(MonoidHom.toAdditive.symm g).comp v, fun x hx => ?_, ?_⟩
-  · have : v x = 1 := Units.ext (by rw [hv, hx]; rfl)
-    rw [MonoidHom.comp_apply, this, map_one]
-  · have := congrArg Additive.toMul (hg 1)
-    simpa using this
-
-end Local
-
-section Add
-variable {E K k : Type} [Field E] [NumberField E] [Field K]
-  [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-
-theorem exists_psi (P : HeightOneSpectrum (𝓞 E)) (q D : ℕ) (ι : E →+* k) (ϖ : kˣ) (σ₀ : K →+* ℂ) (psi : E → K)
-    (hc : IsCompl P q ι ϖ) (hϖ : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (hD : 1 ≤ D)
-    (hadd : ∀ x y, IntAt P ((q : E) ^ D * x) → IntAt P ((q : E) ^ D * y) → psi (x + y) = psi x * psi y)
-    (hint : ∀ x, IntAt P x → psi x = 1) (hne : psi ((q : E)⁻¹) ≠ 1) :
-    ∃ ψ : AddChar k Circle, HasConductor ψ 1 ∧ ∀ a, IntAt P ((q : E) ^ D * a) → (ψ (ι a) : ℂ) = σ₀ (psi a) := by
-  have hq := ComplRes.q_ne_zero hc
-  let A : AddSubgroup E := (𝒪[k].toAddSubgroup.comap ι.toAddMonoidHom).comap (AddMonoidHom.mulLeft ((q : E) ^ D))
-  have hA : ∀ a, a ∈ A ↔ IntAt P ((q : E) ^ D * a) := fun a => hc.int _
-  have h0 : psi 0 = 1 := hint 0 ((hc.int 0).1 (by simp))
-  have hpow : ∀ (n : ℕ) (a : A), psi (n • (a : E)) = psi a ^ n := by
-    intro n a
-    induction n with
-    | zero => simp [h0]
-    | succ n ih => rw [succ_nsmul, hadd _ _ ((hA _).1 (A.nsmul_mem a.2 n)) ((hA _).1 a.2), ih, pow_succ]
-  have hq' : q ^ D ≠ 0 := pow_ne_zero _ (by rintro rfl; simp at hq)
-  have hnorm : ∀ a : A, ‖σ₀ (psi a)‖ = 1 := fun a => by
-    have h1 : psi a ^ (q ^ D) = 1 := by
-      rw [← hpow, hint]
-      simpa [nsmul_eq_mul] using (hA _).1 a.2
-    have h2 : ‖σ₀ (psi a)‖ ^ (q ^ D) = 1 := by rw [← norm_pow, ← map_pow, h1, map_one, norm_one]
-    exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hq').1 h2
-  let f : A →+ Additive Circle :=
-    { toFun := fun a => Additive.ofMul ⟨σ₀ (psi a), by simpa [Submonoid.unitSphere] using hnorm a⟩
-      map_zero' := congrArg Additive.ofMul (Subtype.ext (by simp [h0]))
-      map_add' := fun a b => congrArg Additive.ofMul (Subtype.ext (by
-        change σ₀ (psi ((a : E) + b)) = σ₀ (psi a) * σ₀ (psi b)
-        rw [hadd _ _ ((hA _).1 a.2) ((hA _).1 b.2), map_mul])) }
-  have hf : ∀ a : A, ((Additive.toMul (f a) : Circle) : ℂ) = σ₀ (psi a) := fun _ => rfl
-  let j : A →+ k ⧸ 𝒪[k].toAddSubgroup := (QuotientAddGroup.mk' _).comp (ι.toAddMonoidHom.comp A.subtype)
-  have hker : j.ker ≤ f.ker := fun a ha => by
-    have h1 : ι a ∈ 𝒪[k] := (QuotientAddGroup.eq_zero_iff _).1 ha
-    refine congrArg Additive.ofMul (Subtype.ext ?_)
-    change σ₀ (psi a) = 1
-    rw [hint _ ((hc.int _).1 h1), map_one]
-  obtain ⟨g, hg⟩ := hom_extend circle_roots (QuotientAddGroup.kerLift j) (QuotientAddGroup.kerLift_injective j)
-    (QuotientAddGroup.lift _ f hker)
-  let ψ : AddChar k Circle := AddChar.toAddMonoidHomEquiv.symm (g.comp (QuotientAddGroup.mk' _))
-  have hv : ∀ a, IntAt P ((q : E) ^ D * a) → (ψ (ι a) : ℂ) = σ₀ (psi a) := fun a ha => by
-    have := hg (QuotientAddGroup.mk ⟨a, (hA a).2 ha⟩)
-    rw [QuotientAddGroup.kerLift_mk, QuotientAddGroup.lift_mk] at this
-    rw [← hf ⟨a, (hA a).2 ha⟩, ← this]
-    rfl
-  refine ⟨ψ, fun x => ⟨fun h => ?_, fun h y hy => ?_⟩, hv⟩
-  · by_contra hx
-    rw [Units.val_one, map_one, not_le] at hx
-    have hx0 : x ≠ 0 := by
-      rintro rfl
-      simp at hx
-    have hxi : valuation k x⁻¹ < 1 := by
-      rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hx
-    have h2 := (hϖ _).1 hxi
-    have h3 : valuation k (ϖ : k)⁻¹ ≤ valuation k x := by
-      rw [map_inv₀] at h2 ⊢
-      exact inv_le_of_inv_le₀ (by simp [zero_lt_iff, hx0]) h2
-    have h4 := h _ h3
-    have h5 : IntAt P ((q : E) ^ D * (q : E)⁻¹) := by
-      obtain ⟨d, rfl⟩ : ∃ d, D = d + 1 := ⟨D - 1, by omega⟩
-      rw [pow_succ, mul_inv_cancel_right₀ hq]
-      have := ComplRes.intAt_coe (P := P) ((q : 𝓞 E) ^ d)
-      simpa using this
-    have h6 := hv _ h5
-    rw [map_inv₀, ← hc.unif, h4] at h6
-    exact hne (σ₀.injective (by rw [← h6]; simp))
-  · have hy1 : y ∈ 𝒪[k] := (Valuation.mem_integer_iff _ _).2 (by simpa using hy.trans h)
-    have : (QuotientAddGroup.mk' 𝒪[k].toAddSubgroup) y = 0 := (QuotientAddGroup.eq_zero_iff _).2 hy1
-    change Additive.toMul (g ((QuotientAddGroup.mk' 𝒪[k].toAddSubgroup) y)) = 1
-    rw [this, map_zero]
-    rfl
-
-omit [Field K] in
-
-theorem exists_delta (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (ϖ : kˣ) (hc : IsCompl P q ι ϖ)
-    (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* ℂˣ) :
-    ∃ δ : kˣ →* ℂˣ, IsTame δ ∧ ∀ a (u : kˣ), IntAt P a → ∀ hu : IsUnit (redP P a), (u : k) = ι a → δ u = χ hu.unit := by
-  obtain ⟨r, hr, h0, hred⟩ := exists_residue P ι hc.int hc.dense
-  obtain ⟨μ, hμ, hμv⟩ := exists_tame r (fun x => (h0 x).2) χ
-  refine ⟨μ, hμ, fun a u ha hu e => ?_⟩
-  let x : 𝒪[k] := ⟨ι a, (hc.int a).2 ha⟩
-  have hx : IsUnit x := by
-    by_contra h
-    have h1 := (h0 x).2 (Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 h)
-    rw [hred] at h1
-    haveI := P.isPrime
-    exact hu.ne_zero h1
-  have e1 : Units.map (𝒪[k]).subtype.toMonoidHom hx.unit = u := Units.ext e.symm
-  have e2 : Units.map r.toMonoidHom hx.unit = hu.unit := Units.ext (hred a _)
-  rw [← e1, hμv, e2]
-
-end Add
-
 section Tw
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S₀ : Set ℕ}
   (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu)
-
-theorem exists_atTwist (s : ℕ) (hP : P.1 ∉ Pr.vGs) (hs : R.m = s + 2) (hok : cst.Ok) (hmu : ∀ i, i < R.m → cst.muq (i + 1) P ≠ 0)
-    (hq : ((qOf P.1 : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal ^ 2) :
-    ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k) (ι : X.E →+* k)
-      (W : TwData k), AtTwist (R := R) sel mu cst σ₀ P ι s W := by
-  classical
-  letI := GlobalTheory.LocalData.complRel P.1
-  haveI := GlobalTheory.LocalData.isLocalField P.1
-  obtain ⟨ϖ, hc, hu⟩ := GlobalTheory.AtTypeExists.exists_compl P.1 hq
-  obtain ⟨ψ, hψ, hψv⟩ := exists_psi P.1 (qOf P.1) (cst.D P) _ ϖ σ₀ (cst.psi P) hc hu (hok.D_pos P) (hok.psi_add P)
-    (hok.psi_int P) (hok.psi_ne P)
-  obtain ⟨δ, hδ, hδv⟩ := exists_delta P.1 (qOf P.1) _ ϖ hc
-    ((Units.map σ₀.toMonoidHom).comp (resChar (mu : Chr X.F X.E X.K) P.1))⁻¹
-  choose η hη hηv using fun i => exists_unram ϖ hu
-    (if h : σ₀ (cst.muq i P) = 0 then 1 else Units.mk0 _ h * (δ ϖ)⁻¹)
-  have hq0 : (Real.sqrt (qOf P.1) : ℂ) ≠ 0 := by
-    have := ComplRes.q_ne_zero hc
-    have h2 : 0 < qOf P.1 := Nat.pos_of_ne_zero fun h => this (by rw [h]; simp)
-    exact_mod_cast (Real.sqrt_pos.2 (by exact_mod_cast h2)).ne'
-  refine ⟨_, _, _, _, inferInstance, _, ⟨ϖ, hu, ψ, hψ.continuous, hψ, δ, hδ, η, hη, σ₀ (cst.sq P) / Real.sqrt (qOf P.1)⟩,
-    hP, hs, hc, hψv, fun a u ha hu' e => ?_, fun i hi => ?_, (div_mul_cancel₀ _ hq0).symm⟩
-  · change (δ u : ℂ) = _
-    rw [hδv a u ha hu' e, LocE.unitV, dif_pos hu']
-    simp
-  · change ((η (i + 1) * δ) ϖ : ℂ) = _
-    have h : σ₀ (cst.muq (i + 1) P) ≠ 0 := (map_ne_zero σ₀).2 (hmu i hi)
-    rw [MonoidHom.mul_apply, hηv, dif_neg h]
-    simp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k)
   (s : ℕ) (W : TwData k)
@@ -169,23 +27,6 @@ theorem sg_sq (h : AtTwist (R := R) sel mu cst σ₀ P ι s W) (hok : cst.Ok) : 
   have hq' : (qOf P.1 : ℂ) ≠ 0 := fun h0 => hq (by rw [show qOf P.1 = 0 by exact_mod_cast h0]; simp)
   rw [map_pow, h.sq, mul_pow, map_natCast, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)] at h1
   exact mul_right_cancel₀ hq' (by simpa using h1)
-
-theorem not_isUnram (h : AtTwist (R := R) sel mu cst σ₀ P ι s W) (hξ : resChar (mu : Chr X.F X.E X.K) P.1 ≠ 1) :
-    ¬ IsUnram W.δ := by
-  intro hun
-  refine hξ (MonoidHom.ext fun c => ?_)
-  obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (c : 𝓞 X.E ⧸ P.1.asIdeal)
-  have hr : redP P.1 (a : X.E) = c := by
-    have := ComplRes.reduction_spec (P := P.1) (a := (a : X.E)) (r := a) (s := 1) (one_notMem _) (by simp)
-    simpa [ha] using this
-  have hi := ComplRes.intAt_coe (P := P.1) a
-  have hu : IsUnit (redP P.1 (a : X.E)) := hr ▸ c.isUnit
-  have hv := (ComplRes.v_eq_one_iff_red h.compl W.unif hi).2 hu
-  have h0 : ι a ≠ 0 := fun h0 => by simp [h0] at hv
-  have h1 := h.del a (Units.mk0 _ h0) hi hu rfl
-  rw [hun _ hv, LocE.unitV, dif_pos hu, show hu.unit = c from Units.ext hr] at h1
-  refine Units.ext (σ₀.injective ?_)
-  simpa using (inv_eq_one.1 h1.symm)
 
 theorem isGL_existsUnique (j c : ℕ) (hc : cOf R j = c) (γ : AutY X R j) :
     ∃! g : GL (XIx (Fin R.k) (Fin R.t) j ⊕ Fin c) k, IsGL ι γ g := by
@@ -344,31 +185,5 @@ theorem om_agree (h : AtTwist (R := R) sel mu cst σ₀ P ι s W) (hok : cst.Ok)
   ring
 
 end Sign
-
-theorem twData_closed : ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k)
-    (W : TwData k), ¬ IsUnram W.δ ∧ (∀ j, W.η j ≠ 1) ∧ W.sg = -1 := by
-  obtain ⟨X, Pr, R, Ch, sel, S₀, mu, cst, σ₀, P, k, i1, i2, i3, i4, ι, s, S, -, -, -, -, hχ, -, hS⟩ :=
-    GlobalTheory.AtTypeClosed.exists_closed_ok
-  obtain ⟨η, hη, hηv⟩ := exists_unram S.ϖ S.unif (-1)
-  refine ⟨k, i1, i2, i3, i4, ⟨S.ϖ, S.unif, S.ψ, S.cond.continuous, S.cond, S.μ 1, S.tame 1, fun _ => η, fun _ => hη, -1⟩,
-    fun hun => ?_, fun _ h => ?_, rfl⟩
-  · refine hχ (MonoidHom.ext fun c => ?_)
-    obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (c : 𝓞 X.E ⧸ P.1.asIdeal)
-    have hr : redP P.1 (a : X.E) = c := by
-      have := ComplRes.reduction_spec (P := P.1) (a := (a : X.E)) (r := a) (s := 1) (one_notMem _) (by simp)
-      simpa [ha] using this
-    have hi := ComplRes.intAt_coe (P := P.1) a
-    have hu : IsUnit (redP P.1 (a : X.E)) := hr ▸ c.isUnit
-    have hv := (ComplRes.v_eq_one_iff_red hS.tie.compl S.unif hi).2 hu
-    have h0 : ι a ≠ 0 := fun h0 => by simp [h0] at hv
-    have h1 := hS.tie.chi 0 a (Units.mk0 _ h0) hi hu rfl
-    have h2 : S.μ (0 + 1) (Units.mk0 _ h0) = 1 := hun _ hv
-    rw [h2, LocE.unitV, dif_pos hu, show hu.unit = c from Units.ext hr] at h1
-    refine Units.ext (σ₀.injective ?_)
-    simpa using h1.symm
-  · have h1 : η = 1 := h
-    rw [h1] at hηv
-    have := congrArg Units.val hηv
-    norm_num at this
 
 end GlobalTheory.TwBridge.Model

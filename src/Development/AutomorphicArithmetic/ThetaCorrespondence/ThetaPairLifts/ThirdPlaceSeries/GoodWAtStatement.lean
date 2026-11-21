@@ -1,5 +1,6 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowGoodWeightDictionaryStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowGoodWeightDictionary
+import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.GoodWAt
 

@@ -23,9 +23,6 @@ lemma jsgn_ne {x y : Bool} (h : x ≠ y) :
     ((if y then 1 else -1 : ℂ)) = -(if x then 1 else -1) := by
   cases x <;> cases y <;> simp at h ⊢
 
-lemma jsgn_ne_zero (x : Bool) : ((if x then 1 else -1 : ℂ)) ≠ 0 := by
-  cases x <;> simp
-
 theorem pmat_inP {ε : Fin n → Bool} (z : PCoord ε → ℂ) : inP ε (pmat z) := by
   have h2 : pmat z * Jm ε = -(Jm ε * pmat z) := by
     ext a b
@@ -140,42 +137,6 @@ theorem sum_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a =
     exact h.symm
   have h3 := Complex.ofReal_eq_zero.mp h2
   convert h3 using 2
-
-lemma trace_mul_self_eq_sum_eigenvalues_sq {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
-    (A * A).trace = ∑ i, ((hA.eigenvalues i : ℂ)) ^ 2 := by
-  set U : Matrix (Fin n) (Fin n) ℂ := (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU
-  set D : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal (RCLike.ofReal ∘ hA.eigenvalues) with hD
-  have hUU : star U * U = 1 := Unitary.coe_star_mul_self hA.eigenvectorUnitary
-  have hA' : A = U * D * star U := hA.spectral_theorem
-  have hsq : A * A = U * (D * D) * star U := by
-    rw [hA']
-    calc U * D * star U * (U * D * star U) = U * D * (star U * U) * D * star U := by
-          simp only [mul_assoc]
-      _ = U * (D * D) * star U := by rw [hUU, mul_one]; simp only [mul_assoc]
-  rw [hsq, Matrix.trace_mul_comm, ← mul_assoc, hUU, one_mul, hD, Matrix.diagonal_mul_diagonal,
-    Matrix.trace_diagonal]
-  simp [sq]
-
-lemma trace_mul_self_eq_hs {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
-    (A * A).trace = ((hs A : ℝ) : ℂ) := by
-  unfold S7.hs
-  rw [Matrix.trace]
-  simp only [Matrix.diag, Matrix.mul_apply]
-  push_cast
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  have hji : A j i = star (A i j) := by
-    have h := congrFun (congrFun hA.eq j) i
-    rw [Matrix.conjTranspose_apply] at h
-    exact h.symm
-  rw [hji, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
-  push_cast
-  ring
-
-theorem sum_pev_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a ^ 2 = hs (pmat z) := by
-  have h1 := trace_mul_self_eq_sum_eigenvalues_sq (pmat_isHermitian z)
-  rw [trace_mul_self_eq_hs (pmat_isHermitian z)] at h1
-  unfold pev
-  exact_mod_cast h1.symm
 
 theorem card_PCoord (ε : Fin n → Bool) : Fintype.card (PCoord ε) = pOf ε * qOf ε := by
   classical

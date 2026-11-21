@@ -27,8 +27,6 @@ theorem toStd_germPts (r : ℕ) (g : ℝ) (h : C.LPt) (s : ℕ) (t c z : ℂ) :
   · rw [toStd_append']
     simp [D.toStd, fs]
 
-theorem lam_pos (g : ℝ) (hg : 0 < g) (n : ℤ) : 0 < (g / (2 * Real.pi)) ^ n := by positivity
-
 theorem roots_std (r : ℕ) (g : ℝ) (hg : 0 < g) (b s : ℕ) (hs : 2 ≤ s) (t c z : ℂ) :
     fs r g b s z ^ s = (-1) ^ (s + 1) * (fs r g (b + (s - 1)) 1 c * fs r g b (s - 1) t ^ (s - 1)) ↔
       z ^ s = c * t ^ (s - 1) := by

@@ -63,26 +63,6 @@ theorem ord_eq_zero_iff_mem {x : Kˣ} : ord (x : K) = 0 ↔ x ∈ unitFiltration
     normalizedValuation_eq_exp_ord x.ne_zero, map_one, ← WithZero.exp_zero, WithZero.exp_inj,
     neg_eq_zero]
 
-theorem setOf_ord_eq {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (m : ℤ) :
-    {y : Kˣ | ord (y : K) = m} =
-      (Homeomorph.mulLeft (uniformizerUnit hϖ ^ (-m))) ⁻¹' (unitFiltrationUnits K 0 : Set Kˣ) := by
-  ext y
-  simp only [Set.mem_ofPred_eq, Set.mem_preimage, Homeomorph.coe_mulLeft, SetLike.mem_coe,
-    ← ord_eq_zero_iff_mem, Units.val_mul, Units.val_zpow_eq_zpow_val, coe_uniformizerUnit]
-  have hϖ0 : (ϖ : K) ≠ 0 := by exact_mod_cast hϖ.ne_zero
-  rw [ord_mul (zpow_ne_zero _ hϖ0) y.ne_zero, ord_zpow hϖ0, ord_uniformizer hϖ]
-  omega
-
-theorem isOpen_setOf_ord_eq (m : ℤ) : IsOpen {y : Kˣ | ord (y : K) = m} := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
-  rw [setOf_ord_eq hϖ]
-  exact (isOpen_unitFiltrationUnits 0).preimage (Homeomorph.continuous _)
-
-theorem isCompact_setOf_ord_eq (m : ℤ) : IsCompact {y : Kˣ | ord (y : K) = m} := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
-  rw [setOf_ord_eq hϖ, Homeomorph.isCompact_preimage]
-  exact isCompact_unitFiltrationUnits 0
-
 variable (K) in
 
 instance locallyCompactSpace_units : LocallyCompactSpace Kˣ :=
@@ -131,11 +111,6 @@ theorem normUnits_unitsIncl (u : 𝒪[L]ˣ) :
     normUnits K L (unitsIncl L u) = unitsIncl K (normIntegerUnits K L u) := by
   ext
   simp [coe_normIntegerUnits]
-
-theorem map_normUnits_unitFiltrationUnits_zero_le :
-    (unitFiltrationUnits L 0).map (normUnits K L) ≤ unitFiltrationUnits K 0 := by
-  rintro _ ⟨_, ⟨u, -, rfl⟩, rfl⟩
-  exact ⟨normIntegerUnits K L u, by simp, (normUnits_unitsIncl u).symm⟩
 
 section Valuation
 
@@ -200,12 +175,6 @@ theorem ord_norm (x : L) : ord (Algebra.norm K x) = residueDegree K L * ord x :=
   rw [Units.val_mk0, ord_norm_uniformizer hπ] at this
   rw [this, mul_comm]
 
-theorem ord_algebraMap_norm (x : L) :
-    ord (algebraMap K L (Algebra.norm K x)) = Module.finrank K L * ord x := by
-  rw [ord_algebraMap, ord_norm, ← ramificationIndex_mul_residueDegree K L]
-  push_cast
-  ring
-
 end Valuation
 
 section Topology
@@ -233,25 +202,6 @@ theorem continuous_normUnits : Continuous (normUnits K L) := by
     rw [← map_inv, coe_normUnits]
   rw [h]
   exact (continuous_algebraNorm K L).comp Units.continuous_coe_inv
-
-theorem isProperMap_normUnits : IsProperMap (normUnits K L) := by
-  rw [isProperMap_iff_isCompact_preimage]
-  refine ⟨continuous_normUnits K L, fun C hC ↦ ?_⟩
-  obtain ⟨t, ht⟩ := hC.elim_finite_subcover (fun m : ℤ ↦ {y : Kˣ | ord (y : K) = m})
-    isOpen_setOf_ord_eq (fun y _ ↦ Set.mem_iUnion.2 ⟨_, rfl⟩)
-  refine IsCompact.of_isClosed_subset
-    (t.isCompact_biUnion fun m _ ↦ isCompact_setOf_ord_eq (m / residueDegree K L))
-    (hC.isClosed.preimage (continuous_normUnits K L)) ?_
-  intro x hx
-  obtain ⟨m, hm, hxm⟩ := Set.mem_iUnion₂.1 (ht hx)
-  refine Set.mem_iUnion₂.2 ⟨m, hm, ?_⟩
-  simp only [Set.mem_ofPred_eq, coe_normUnits, ord_norm] at hxm ⊢
-  have hf : (residueDegree K L : ℤ) ≠ 0 := by exact_mod_cast (residueDegree_pos K L).ne'
-  rw [← hxm, Int.mul_ediv_cancel_left _ hf]
-
-theorem isClosed_range_normUnits : IsClosed ((normUnits K L).range : Set Kˣ) := by
-  rw [MonoidHom.coe_range]
-  exact (isProperMap_normUnits K L).isClosedMap.isClosed_range
 
 end Topology
 

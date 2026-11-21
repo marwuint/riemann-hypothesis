@@ -5,11 +5,11 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralModularFamilyValueDivPeriodPowStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSLTwoPermutedModularFamilyAlgebraClosureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionValuationBoundRingClosureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastAtEmbeddingRingOpsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastOfForallRatGtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionValuationBoundRingClosure
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastAtEmbeddingRingOps
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastOfForallRatGt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegrallyClosedPadicIntegralSubringStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgebraicOfRationalValuationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgebraicOfRationalValuation
 
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 open GlobalTheory.QFam
@@ -25,10 +25,10 @@ theorem sz_value_of_family (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ 
     (hN : 0 < N) (hact : ActBij act) (hf : IsFam act w f) (hq : ∀ i, QAll (Sz l lam r) N (f i))
     (hj : Sz l lam 0 (jT τ₀)) (hΩ : Ω ^ 12 = DD τ₀) (i : ι) :
     Sz l lam r (f i τ₀ / Ω ^ w) := by
-  refine GlobalTheory.T.algebraicValuationAtLeast_of_forall_rat_gt l lam r _ fun q hrq => ?_
-  obtain ⟨c, hc0, hc, hc'⟩ := GlobalTheory.T.exists_algebraic_of_rational_valuation l lam q
+  refine _root_.GlobalTheory.QFam.sz_of_forall_rat_gt l lam r _ fun q hrq => ?_
+  obtain ⟨c, hc0, hc, hc'⟩ := _root_.GlobalTheory.QFam.exists_sz_scale l lam q
   obtain ⟨R, hR, hcl⟩ := GlobalTheory.T.exists_integrallyClosed_padicIntegralSubring l lam
-  obtain ⟨hconst, hmono, -, hmul, -⟩ := GlobalTheory.T.qExpansionValuationBound_ring_closure l lam N hN
+  obtain ⟨hconst, hmono, -, hmul, -⟩ := _root_.GlobalTheory.QFam.QSz.qAll_sz_ring l lam N hN
   have hfam : IsFam act w fun i τ => c * f i τ := (GlobalTheory.T.isSLTwoPermutedModularFamily_algebra_closure ι act).2.2.1 w c f hf
   have hq' : ∀ i, QAll (· ∈ R) N fun τ => c * f i τ := fun i => by
     obtain ⟨a, ha, ha'⟩ := hmono _ 0 _ (by linarith) (hmul _ _ _ _ (hconst _ c hc) (hq i))
@@ -37,7 +37,7 @@ theorem sz_value_of_family (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ 
     isIntegral_algebraMap (R := R) (A := ℂ) (x := ⟨jT τ₀, (hR _).2 hj⟩)
   have h0 : Sz l lam 0 (c * f i τ₀ / Ω ^ w) :=
     (hR _).1 (hcl _ (GlobalTheory.T.isIntegral_modularFamily_value_div_period_pow ι act w N _ R τ₀ Ω hN hact hfam hq' hjR hΩ i))
-  have h1 := (GlobalTheory.T.algebraicValuationAtLeastAtEmbedding_ring_ops l lam).2.2.1 _ _ _ _ hc' h0
+  have h1 := (_root_.GlobalTheory.QFam.SzSum.sz_ring l lam).2.2.1 _ _ _ _ hc' h0
   have e : c⁻¹ * (c * f i τ₀ / Ω ^ w) = f i τ₀ / Ω ^ w := by
     rw [mul_div_assoc, inv_mul_cancel_left₀ hc0]
   rwa [add_zero, e] at h1

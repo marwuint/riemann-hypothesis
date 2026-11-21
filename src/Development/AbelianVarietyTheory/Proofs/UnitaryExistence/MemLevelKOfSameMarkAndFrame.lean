@@ -6,10 +6,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ValSetAlgSubset
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
 import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceLatticeFractionalMultipleAgreeStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceLatticeFractionalMultipleAgree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ArchimedeanMatrixUnitaryContinuousMultiplicativeStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalLevelEqHalfMarkingStabilizerStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletionStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalLevelEqHalfMarkingStabilizer
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
 open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -65,10 +65,10 @@ theorem mem_level_of_mark_of_frame_eq : ∀ (D : D7) (H : ReciprocityTheory.Char
       have e1 : (fun v : Fin V.rank → D.host.E => v ∘ Fin.cast C.hr.symm) = id := rfl
       rwa [e1, Set.image_id, Set.image_id] at e
     have hhat : latGHat V g' = latGHat V g := by
-      rw [(GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.2.1, (GlobalTheory.T.adelicElementLattice_full_and_completion D V g').2.2.2.2.1, hlat]
-    have himg := (GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.1
-    rw [← (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.1] at himg
-    refine ((GlobalTheory.T.principalLevel_eq_halfMarking_stabilizer D H l V).1 _).2 ((((GlobalTheory.T.congruence_lattice_fractionalMultiple_agree D V) _).2 _ _).2 ?_)
+      rw [(_root_.GlobalTheory.Member.latG_lattice_and_completion D V g).2.2.2.2.1, (_root_.GlobalTheory.Member.latG_lattice_and_completion D V g').2.2.2.2.1, hlat]
+    have himg := (_root_.GlobalTheory.Member.latG_lattice_and_completion D V g).2.2.2.1
+    rw [← (_root_.GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1] at himg
+    refine ((_root_.GlobalTheory.Member.finCong_iff_half_and_kfHalf D H l V).1 _).2 ((((_root_.GlobalTheory.Member.AALev.congruences_agree D V) _).2 _ _).2 ?_)
     intro a ha
     rw [← hC.iota.emb.2, LinearMap.range_eq_map, ← Submodule.map_smul''] at ha
     obtain ⟨b, hb, rfl⟩ := ha

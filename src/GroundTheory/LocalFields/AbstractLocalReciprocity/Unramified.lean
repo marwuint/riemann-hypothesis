@@ -160,15 +160,6 @@ theorem tateZeroVal_bijective (hax : ClassFieldAxiom G A) (hLK : L ≤ K)
   refine (D.tateZeroVal_surjective hLK).bijective_of_nat_card_le ?_
   rw [hcard, Nat.card_congr Multiplicative.toAdd, Nat.card_zmod, coe_relInertiaDegreePNat]
 
-noncomputable def tateZeroEquiv (hax : ClassFieldAxiom G A) (hLK : L ≤ K)
-    (hu : (K : Subgroup G) ⊓ D.deg.ker ≤ L) :
-    tateZero A (K : Subgroup G) (L : Subgroup G) ≃*
-      Multiplicative (ZMod ((L : Subgroup G).relIndex K)) :=
-  (MulEquiv.ofBijective _ (D.tateZeroVal_bijective hax hLK hu)).trans
-    (AddEquiv.toMultiplicative
-      (ZMod.ringEquivCongr (m := (D.relInertiaDegreePNat hLK : ℕ))
-        (relIndex_eq_relInertiaDegree (d := D.deg) hLK hu).symm).toAddEquiv)
-
 end TateZero
 
 section Units

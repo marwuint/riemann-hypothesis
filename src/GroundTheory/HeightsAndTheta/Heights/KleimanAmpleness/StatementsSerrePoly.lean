@@ -94,10 +94,6 @@ def SerrePoly.LaurentCohom.Statement : Prop :=
         (Cech.idRes S (Laurent S N) Finset.univ) 0 →
       ∃ f ∈ Finsupp.supported S S (laurentExps N c ∅), ∀ I, z I = f
 
-section Hypotheses
-
-end Hypotheses
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

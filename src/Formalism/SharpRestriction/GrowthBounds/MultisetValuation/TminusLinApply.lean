@@ -164,11 +164,6 @@ theorem Tm_zero {j : ℕ} (v : X.Pl) {F : X.Fm j} (hF : F ∈ X.FQ j) : X.Tm v 0
   · exact Tminus_zero_lat _ _ _ _ hL
   · rw [Tminus_not_lat _ _ _ _ _ hL, FQ_zero_off X hF c L fun h => hL (h _)]
 
-theorem ecal_zero {j : ℕ} (v : X.Pl) {F : X.Fm j} (hF : F ∈ X.FQ j) : X.ecal v 0 j F = F := by
-  unfold Sys.ecal
-  rw [Tm_zero X v hF]
-  simp
-
 end SysLevel
 
 end Formalism.MainNotions.FormalGroupSystem.Pf

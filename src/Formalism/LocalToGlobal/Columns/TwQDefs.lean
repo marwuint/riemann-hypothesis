@@ -75,11 +75,6 @@ def FrOver (q : QLoc hc n Q Θ) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F
 
 variable (hc n ST SG Q)
 
-def DecoPtSurjF (q : QLoc hc n Q Θ) : Prop := ∀ p : DecoF E n ST SG Q, ∃ x : UAd hc n, FrOver q x.1 p
-
-def ptOfF (q : QLoc hc n Q Θ) (p : DecoF E n ST SG Q) : UAd hc n :=
-  open Classical in if h : ∃ x : UAd hc n, FrOver q x.1 p then h.choose else 1
-
 abbrev DecoFCl (H : Subgroup (GLG E n SG)) (Θ' : LevQFam E K n Q) : Type :=
   MulAction.orbitRel.Quotient (UF E n × H × Θ'.grp) (DecoF E n ST SG Q)
 

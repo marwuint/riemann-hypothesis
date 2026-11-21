@@ -16,10 +16,4 @@ def OrbitArchSum.Statement : Prop :=
           Real.log (‖evalCone (fun k i ↦ σ (coordVec x k i)) s‖ /
             A.metric (fun k i ↦ σ (coordVec x k i)))
 
-example : BlockNonzero samplePoint ∧
-    Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo
-      (chartMonomial (fun _ ↦ 0) 1) :=
-  ⟨samplePoint_blockNonzero,
-    isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl)⟩
-
 end GroundTheory.Heights₂.Heights

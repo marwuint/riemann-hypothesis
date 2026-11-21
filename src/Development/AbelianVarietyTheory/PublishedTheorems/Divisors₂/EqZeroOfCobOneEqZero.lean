@@ -174,15 +174,6 @@ theorem eq_zero_of_cobOne_eq_zero [IsDomain O] (hp : (p : O) ≠ 0) (n : ℕ) {b
   rw [G.mulBy_pow_self, h2, map_zero, ← Nat.cast_smul_eq_nsmul O, Nat.cast_pow] at h1
   exact (smul_eq_zero.1 h1.symm).resolve_left (pow_ne_zero _ hp)
 
-theorem rigOfOmega_injective [IsDomain O] (hp : (p : O) ≠ 0) :
-    Function.Injective G.rigOfOmega := by
-  refine (injective_iff_map_eq_zero _).2 fun w hw => ?_
-  obtain ⟨b, hb⟩ := (Submodule.Quotient.mk_eq_zero _).1 hw
-  have h0 : b = 0 := Subtype.ext (funext fun n => G.eq_zero_of_cobOne_eq_zero hp n
-    (congrArg (fun x : G.cocycles × G.omega => x.1.1 n) hb))
-  rw [h0, map_zero] at hb
-  exact (congrArg Prod.snd hb).symm
-
 variable {G H K}
 
 def funsMap (f : G ⟶ H) : H.funs →ₗ[O] G.funs where
@@ -244,21 +235,9 @@ variable (G) in
 
 abbrev LieUniv : Type := Module.Dual O G.RigExt
 
-def lieUnivMap (f : G ⟶ H) : G.LieUniv →ₗ[O] H.LieUniv := (rigExtMap f).dualMap
-
 variable (G) in
 
 def lieUnivToLie : G.LieUniv →ₗ[O] G.Lie := G.rigOfOmega.dualMap
-
-section Carry
-
-variable (p O)
-
-def digitFun (n : ℕ) : (const p O).A n := (constFun p O n).symm fun k => (k.val : O)
-
-variable {p O}
-
-end Carry
 
 end PDivGroup
 

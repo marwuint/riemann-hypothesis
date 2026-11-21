@@ -1,12 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValQOfValQr
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceDoubleStepLocalIteratedIntegralProofStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalInvariantIntegralsSymmetricHaarSubgroupsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceDoubleStepLocalIteratedIntegralProof
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalInvariantIntegralsSymmetricHaarSubgroups
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLocalGroupClosedEmbeddingIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalSchrodingerModelUniqTransportExistsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalSchrodingerModelUniqTransportExists
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ExistsUnitarySupportedAtPlaceOfMulEqIdem
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisOFinsetSum
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombAwayFromPlaceKeepsVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OtherPlacesConvolutionFiniteAwayOrthogonalStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OtherPlacesConvolutionFiniteAwayOrthogonal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SeeSaw GlobalTheory.LocMod GlobalTheory.QPl ValuativeRel
 open GlobalTheory.PosOne (toOne Covers TriPos)
@@ -166,7 +169,7 @@ theorem innerVal_iter2 : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
   obtain ⟨hc, t1, t2, hv, hφ, hf, ht, hg, hh₁, hh₂⟩ := hH
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩ := hL
   have hc2 : (Q 0).c = 2 * σ := by have := (Q 0).F.bes'.1; omega
-  obtain ⟨⟨fc₁, aw₁, or₁⟩, ⟨fc₂, aw₂, or₂⟩⟩ := GlobalTheory.T.otherPlacesConvolution_finite_away_orthogonal D ψ σ S r Q hinj
+  obtain ⟨⟨fc₁, aw₁, or₁⟩, ⟨fc₂, aw₂, or₂⟩⟩ := _root_.GlobalTheory.QVal.inner_supp D ψ σ S r Q hinj
   have hdisj : ∀ p, (places fun i : Fin r => Q i.succ) p → ¬ (p = (Q 0).q.v) := by
     rintro p ⟨i, rfl⟩ h
     exact Fin.succ_ne_zero i (hinj h)
@@ -189,14 +192,14 @@ theorem innerVal_iter2 : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
   let Z : GA D S.B.V → ℂ := fun a' => (Q 0).volJ * ∑ γ : (Q 0).A₁, ∑ β : (Q 0).A₂, (Q 0).w₁ γ * (Q 0).w₂ β *
     S.val (aconv [c₁, (Q 0).d₁ γ]) (aconv [c₂, (Q 0).d₂ γ β]) f₁' f₂' φ (trc (((Q 0).e₂ β).mapDomain (Q 0).gl₂) f)
       (g * a') (h₁ * x) (h₂ * y)
-  have cv := GlobalTheory.T.localInvariantIntegrals_symmetric_haarSubgroups (Q 0).k (Q 0).ν (Q 0).unitVol
+  have cv := _root_.GlobalTheory.HaarR.quot_int_haar (Q 0).k (Q 0).ν (Q 0).unitVol
   have cv2 := ((cv (Q 0).n₂ ((Q 0).c + 1) (σ + 1) (Q 0).m₂ m₂ (Q 0).haar₂ a5 (Q 0).vol₂).1 (by omega) s₂ a7 a8).2
   have cv1 := ((cv (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1) (Q 0).m₁ m₁ (Q 0).haar₁ a1 (Q 0).vol₁).2 (by omega) (by omega) s₁ a3 a4).2
   have hV : ∀ a', ∃ u : GL ((Q 0).n₁ ⊕ Fin ((Q 0).c + 1 + 1)) (Q 0).k → ℂ, a' ∈ E.support →
       (∀ x₀, IsQuotIntL1 s₂ m₂ (Gf a' x₀) (u x₀)) ∧ IsQuotIntL1 s₁ m₁ u (Z a') := by
     intro a'
     by_cases ha : a' ∈ E.support
-    · obtain ⟨u, hu1, hu2⟩ := GlobalTheory.T.splitPlaceDoubleStepLocalIteratedIntegral_proof D ψ hψ σ S (Q 0) m₁ m₂ a1 a5 a2 a6 c₁ c₂ (hc 0).1 (hc 0).2 f₁' f₂' hvac φ f hφ hf
+    · obtain ⟨u, hu1, hu2⟩ := _root_.GlobalTheory.ValOneAt.valOne_all D ψ hψ σ S (Q 0) m₁ m₂ a1 a5 a2 a6 c₁ c₂ (hc 0).1 (hc 0).2 f₁' f₂' hvac φ f hφ hf
         (ht 0) (g * a') (mul_mem hg0 (hE a' ha)) (h₁ * x) (mul_mem hh₁0 hx0) (h₂ * y) (mul_mem hh₂0 hy0)
       exact ⟨u, fun _ => ⟨fun x₀ => cv2 _ _ (hu1 x₀), cv1 _ _ hu2⟩⟩
     · exact ⟨0, fun h => absurd h ha⟩

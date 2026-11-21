@@ -1,19 +1,19 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LineSCShortExact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernRealClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernTensorAddStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernDualNegStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernRealClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernTensorAdd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernDualNeg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernIsometricEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagOmegaFormRealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondChernRealClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondChernFlagIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagOmegaFormSqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedFirstChernSumIndepStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcOmegaFormEqC2SubC1ProductStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointsMapHolomorphicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernFormPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondChernFormPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumFirstChernGradedPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagOmegaFormReal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondChernRealClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondChernFlagIndependent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagOmegaFormSqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedFirstChernSumIndep
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcOmegaFormEqC2SubC1Product
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointsMapHolomorphic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstChernFormPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondChernFormPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumFirstChernGradedPullback
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
@@ -40,12 +40,12 @@ theorem basicForms : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
         c1F hY σ (VMetric.grLB fl' 0 (H.pull π w)) + c1F hY σ (VMetric.grLB fl' 1 (H.pull π w)) =
           c1F hY σ ((VMetric.grLB fl 0 H).pull π w) + c1F hY σ ((VMetric.grLB fl 1 H).pull π w) := by
   intro k _ X _ p D hX σ
-  refine ⟨fun L M => ⟨(GlobalTheory.T.firstChern_real_closed k X p D hX σ L).1, (GlobalTheory.T.firstChern_real_closed k X p D hX σ L).2.1, (GlobalTheory.T.firstChern_real_closed k X p D hX σ L).2.2,
-    GlobalTheory.T.firstChern_tensor_add k X p D hX σ L M, GlobalTheory.T.firstChern_dual_neg k X p D hX σ L, GlobalTheory.T.firstChern_isometric_eq k X p D hX σ L M⟩,
-    fun E h H fl fl' => ⟨GlobalTheory.T.flag_omega_form_real k X p D hX σ E h H fl, (GlobalTheory.T.secondChern_real_closed k X p D hX σ E h H fl).1, (GlobalTheory.T.secondChern_real_closed k X p D hX σ E h H fl).2.1,
-      (GlobalTheory.T.secondChern_real_closed k X p D hX σ E h H fl).2.2, GlobalTheory.T.secondChern_flag_independent k X p D hX σ E h H fl fl', GlobalTheory.T.flag_omega_form_sq_zero k X p D hX σ E h H fl,
-      GlobalTheory.T.graded_first_chern_sum_indep k X p D hX σ E h H fl fl', GlobalTheory.T.ddc_omega_form_eq_c2_sub_c1_product k X p D hX σ E h H fl⟩,
-    fun Y p' D' hY π w => ⟨GlobalTheory.T.points_map_holomorphic k X p D hX σ Y p' D' hY π w, GlobalTheory.T.first_chern_form_pullback k X p D hX σ Y p' D' hY π w,
-      fun E h H fl fl' => ⟨GlobalTheory.T.second_chern_form_pullback k X p D hX σ Y p' D' hY π w E h H fl fl', GlobalTheory.T.sum_first_chern_graded_pullback k X p D hX σ Y p' D' hY π w E h H fl fl'⟩⟩⟩
+  refine ⟨fun L M => ⟨(_root_.GlobalTheory.LineForm.FirstChern.c1F_isRealForm_closed k X p D hX σ L).1, (_root_.GlobalTheory.LineForm.FirstChern.c1F_isRealForm_closed k X p D hX σ L).2.1, (_root_.GlobalTheory.LineForm.FirstChern.c1F_isRealForm_closed k X p D hX σ L).2.2,
+    _root_.GlobalTheory.LineForm.c1F_tens k X p D hX σ L M, _root_.GlobalTheory.LineForm.c1F_dual k X p D hX σ L, GlobalTheory.T.firstChern_isometric_eq k X p D hX σ L M⟩,
+    fun E h H fl fl' => ⟨_root_.GlobalTheory.LineForm.isRealForm_omF k X p D hX σ E h H fl, (_root_.GlobalTheory.ChernReal.c2F_isRealForm_closed k X p D hX σ E h H fl).1, (_root_.GlobalTheory.ChernReal.c2F_isRealForm_closed k X p D hX σ E h H fl).2.1,
+      (_root_.GlobalTheory.ChernReal.c2F_isRealForm_closed k X p D hX σ E h H fl).2.2, _root_.GlobalTheory.LineForm.c2F_flag_indep k X p D hX σ E h H fl fl', _root_.GlobalTheory.LineForm.omF_mul_self k X p D hX σ E h H fl,
+      _root_.GlobalTheory.c1F_grLB_add_grLB_flag_indep k X p D hX σ E h H fl fl', _root_.GlobalTheory.LineForm.ddc_omF_eq k X p D hX σ E h H fl⟩,
+    fun Y p' D' hY π w => ⟨_root_.GlobalTheory.LineForm.isHolo_ptsOver_map k X p D hX σ Y p' D' hY π w, _root_.GlobalTheory.ChernPull.c1F_pull_eq_pullF_c1F k X p D hX σ Y p' D' hY π w,
+      fun E h H fl fl' => ⟨_root_.GlobalTheory.SecondChernPull.c2F_pull_eq_pullF_c2F k X p D hX σ Y p' D' hY π w E h H fl fl', _root_.GlobalTheory.LineForm.c1F_grLB_sum_pullback_eq_pullback_sum k X p D hX σ Y p' D' hY π w E h H fl fl'⟩⟩⟩
 
 end GlobalTheory.LineForm

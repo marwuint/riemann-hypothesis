@@ -103,36 +103,6 @@ theorem sphericalCharacter_unramifiedChar_eq (w : Fin n → ℂˣ)
       evalAt (w * (halfPoint F n)⁻¹) (satakeTransform μ h) := by
   rw [satakeTransform_apply, evalAt_normalize, inv_mul_cancel_right, evalAt_satake]
 
-theorem exists_eq_evalAt_comp_satakeTransform
-    (ω : SphericalHecke μ (F := F) (n := n) →ₐ[ℂ] ℂ) :
-    ∃ z : Fin n → ℂˣ, ω = (evalAt z).comp (satakeTransform μ) := by
-  have hsurj : Function.Surjective ω := fun c => ⟨algebraMap ℂ _ c, AlgHom.commutes ω c⟩
-  have : (RingHom.ker ω).IsMaximal := RingHom.ker_isMaximal_of_surjective _ hsurj
-  obtain ⟨w, hw⟩ := exists_ker_sphericalCharacter_eq (μ := μ) (RingHom.ker ω)
-  refine ⟨w * (halfPoint F n)⁻¹, AlgHom.ext fun h => ?_⟩
-  rw [AlgHom.comp_apply, ← sphericalCharacter_unramifiedChar_eq]
-  have hmem : h - algebraMap ℂ _ (ω h) ∈ RingHom.ker ω := by
-    rw [RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply,
-      sub_self]
-  rw [← hw, RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply,
-    sub_eq_zero] at hmem
-  exact hmem.symm
-
-theorem sphericalCharacter_paramChar_eq_iff (z z' : Fin n → ℂˣ) :
-    sphericalCharacter μ (isUnramified_paramChar (F := F) z) =
-        sphericalCharacter μ (isUnramified_paramChar (F := F) z') ↔
-      ∃ σ : Equiv.Perm (Fin n), z' = z ∘ σ := by
-  rw [← evalAt_comp_satakeTransform_eq_iff (μ := μ) (F := F)]
-  constructor
-  · intro hzz
-    exact AlgHom.ext fun h => by
-      rw [AlgHom.comp_apply, AlgHom.comp_apply, ← sphericalCharacter_paramChar,
-        ← sphericalCharacter_paramChar, hzz]
-  · intro hzz
-    exact AlgHom.ext fun h => by
-      rw [sphericalCharacter_paramChar, sphericalCharacter_paramChar]
-      exact AlgHom.congr_fun hzz h
-
 def IsSatakeParameter {V : Type*} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) F) V) (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
     (z : Fin n → ℂˣ) : Prop :=
@@ -219,14 +189,6 @@ theorem isSatakeParameter_principalSeries (z : Fin n → ℂˣ) :
   rw [heckeAct_smul_right (h : HeckeAlgebra μ).mem c (hs _), heckeAct_sphericalVector hχ,
     ← sphericalCharacter_apply hχ, sphericalCharacter_paramChar, smul_comm]
 
-theorem evalAt_inv_halfPoint_satakeTransform (h : SphericalHecke μ (F := F) (n := n)) :
-    evalAt (halfPoint F n)⁻¹ (satakeTransform μ h) = ∫ g, (h : HeckeAlgebra μ) g ∂μ := by
-  rw [satakeTransform_apply, evalAt_normalize, inv_mul_cancel, evalAt_satake,
-    sphericalCharacter_apply, sphericalEigen]
-  congr 1
-  funext g
-  rw [sphericalFun_unramifiedChar, map_one, mul_one]
-
 end Measure
 
 theorem finrank_fixedVectors_eq_one {V : Type*} [AddCommGroup V] [Module ℂ V]
@@ -281,41 +243,6 @@ theorem nonempty_equiv_of_isSatakeParameter {V W : Type*} [AddCommGroup V] [Modu
       left_inv := f.left_inv
       right_inv := f.right_inv }
   exact nonempty_equiv_of_fixedVectors_equiv hKc hKo hρ hσ hKρ e
-
-theorem exists_irreducible_isSatakeParameter (z : Fin n → ℂˣ) :
-    ∃ (V : Type u) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (GL (Fin n) F) V),
-      IsSmooth ρ ∧ ρ.IsIrreducible ∧ fixedVectors ρ (integralGL F n) ≠ ⊥ ∧
-        IsSatakeParameter ρ μ z := by
-  have hKc := isCompact_integralGL F n
-  have hKo := isOpen_integralGL F n
-  set ω := (evalAt z).comp (satakeTransform μ (F := F) (n := n))
-  have hsurj : Function.Surjective ω := fun c => ⟨algebraMap ℂ _ c, AlgHom.commutes ω c⟩
-  set I := RingHom.ker ω
-  have hI : I.IsMaximal := RingHom.ker_isMaximal_of_surjective _ hsurj
-  have : IsSimpleModule (SphericalHecke μ (F := F) (n := n)) (SphericalHecke μ (F := F) (n := n) ⧸ I) :=
-    isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 hI)
-  have : Nontrivial (SphericalHecke μ (F := F) (n := n) ⧸ I) :=
-    IsSimpleModule.nontrivial (SphericalHecke μ (F := F) (n := n)) _
-  obtain ⟨V, _, _, ρ, hρ, hirr, ⟨e⟩⟩ :=
-    exists_irreducible_fixedVectors_equiv (μ := μ) hKc hKo (SphericalHecke μ (F := F) (n := n) ⧸ I)
-  refine ⟨V, _, _, ρ, hρ, hirr, Submodule.nontrivial_iff_ne_bot.1 e.toEquiv.nontrivial,
-    fun h v hv => ?_⟩
-  have hq : ∀ m : SphericalHecke μ (F := F) (n := n) ⧸ I, h • m = ω h • m := by
-    intro m
-    obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective I m
-    have hmem : h - algebraMap ℂ _ (ω h) ∈ I := by
-      rw [RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply,
-        sub_self]
-    rw [← sub_eq_zero, ← algebraMap_smul (SphericalHecke μ (F := F) (n := n)) (ω h), ← sub_smul,
-      ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]
-    exact I.mul_mem_right a hmem
-  have hv' : h • (⟨v, hv⟩ : fixedVectors ρ (integralGL F n)) = ω h • ⟨v, hv⟩ := by
-    apply e.injective
-    rw [e.map_smul, hq, ← algebraMap_smul (SphericalHecke μ (F := F) (n := n)) (ω h),
-      ← e.map_smul, algebraMap_smul_fixedVectors]
-  have := congrArg Subtype.val hv'
-  rw [coe_smul_fixedVectors] at this
-  exact this
 
 end Classification
 

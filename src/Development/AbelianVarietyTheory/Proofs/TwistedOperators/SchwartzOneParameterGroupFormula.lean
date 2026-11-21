@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHasDerivAtZeroOfMapAddMulStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoSlopeMetaplecticLiftSchwartzStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHasDerivAtZeroOfMapAddMul
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoSlopeMetaplecticLiftSchwartz
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzUnitaryIntertwinerScalarStatement
 
 open scoped Matrix
@@ -117,7 +117,7 @@ theorem main_nonempty (hP : GlobalTheory.FunPr.Hypotheses₂) (l : Type) [Fintyp
     have e := congrArg (fun g : Sch l => g 0) (e1.symm.trans e2)
     simpa [hf0] using e
   have hcontS : ContinuousAt (fun t => omS (γ t) f0) 0 := by
-    have hd := GlobalTheory.T.tendsto_slope_metaplecticLift_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f0
+    have hd := _root_.GlobalTheory.RealWeil.tendsto_slope_omS_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f0
     have h1 : Tendsto (fun t : ℝ => t • (t⁻¹ • (omS (γ t) f0 - f0))) (𝓝[≠] 0) (𝓝 ((0 : ℝ) • quad Z f0)) :=
       (tendsto_nhdsWithin_of_tendsto_nhds tendsto_id).smul hd
     rw [zero_smul] at h1
@@ -138,11 +138,11 @@ theorem main_nonempty (hP : GlobalTheory.FunPr.Hypotheses₂) (l : Type) [Fintyp
     refine hq.congr ?_
     filter_upwards [hcontS0.eventually_ne hS00] with t ht
     rw [hTν, SchwartzMap.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ ht]
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_hasDerivAt_zero_of_map_add_mul' ν hν0 hνmul hνc
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.exists_hasDerivAt_zero_of_map_add_mul ν hν0 hνmul hνc
   refine ⟨a, fun f => ?_⟩
   have hslope := hasDerivAt_iff_tendsto_slope_zero.1 ha
   simp only [zero_add, hν0] at hslope
-  have hd := GlobalTheory.T.tendsto_slope_metaplecticLift_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f
+  have hd := _root_.GlobalTheory.RealWeil.tendsto_slope_omS_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f
   have hν1 : Tendsto ν (𝓝[≠] 0) (𝓝 1) := by
     rw [← hν0]
     exact hνc.tendsto.mono_left nhdsWithin_le_nhds
@@ -187,7 +187,7 @@ theorem main_empty (l : Type) [Fintype l] [DecidableEq l] [IsEmpty l]
       rw [hTadd, LinearMap.comp_apply, hTν t, map_smul, hTν s, smul_smul, mul_comm]
     have e' := congrArg (fun g : Sch l => g 0) e
     simpa [hf0, hνdef] using e'
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_hasDerivAt_zero_of_map_add_mul' ν hν0 hνmul (hTcont f0 0).continuousAt
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.exists_hasDerivAt_zero_of_map_add_mul ν hν0 hνmul (hTcont f0 0).continuousAt
   refine ⟨a, fun f => ?_⟩
   have hslope := hasDerivAt_iff_tendsto_slope_zero.1 ha
   simp only [zero_add, hν0] at hslope

@@ -311,23 +311,4 @@ theorem isRegularRing_of_isRegularLocalRing (R : Type) [CommRing R] [IsRegularLo
   exact isRegularLocalRing_of_flat_of_map_eq_maximalIdeal R _ p
     Localization.AtPrime.map_eq_maximalIdeal.symm
 
-theorem Pat.IsCplAt.isRegularLocalRing_and_ringKrullDim :
-    ∀ (R S : Type) [CommRing R] [IsRegularLocalRing R] [CommRing S] [IsLocalRing S] (q : Ideal R)
-      [q.IsPrime] (φ : R →+* S), IsCplAt q φ →
-      ∃ _ : IsRegularLocalRing S, ringKrullDim S + ringKrullDim (R ⧸ q) = ringKrullDim R := by
-  intro R S _ _ _ _ q _ φ h
-  let _ : Algebra R S := φ.toAlgebra
-  have := h.noeth
-  have : Module.Flat R S := h.flat
-  have hq : maximalIdeal S = q.map (algebraMap R S) := h.max_eq
-  refine ⟨isRegularLocalRing_of_flat_of_map_eq_maximalIdeal R S q hq, ?_⟩
-  have : (maximalIdeal S).LiesOver q := ⟨h.comap_eq.symm⟩
-  have e := Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown q (maximalIdeal S)
-  have e0 : (Ideal.map (Ideal.Quotient.mk (q.map (algebraMap R S))) (maximalIdeal S)).height = 0 := by
-    have hp : (q.map (algebraMap R S)).IsPrime := hq ▸ inferInstance
-    rw [hq, Ideal.map_quotient_self, Ideal.height_bot]
-  rw [e0, add_zero] at e
-  rw [← maximalIdeal_height_eq_ringKrullDim, e]
-  exact (isCM_of_isRegularLocalRing R).height_add_ringKrullDim_quotient q
-
 end GlobalTheory

@@ -22,12 +22,6 @@ def lsh {n : ℕ} (ν : Fin n → ℂ) : Fin n → ℂ := fun a => ν a + ((n : 
 def Amat {n : ℕ} (l : Fin n → ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun a b => if a = b then l a else if a < b then -1 else 0
 
-def Dfac {n : ℕ} (l : Fin n → ℂ) (s : Fin n) : ℂ :=
-  ∏ a ∈ univ.erase s, (l s - l a - 1) / (l s - l a)
-
-def vand {n : ℕ} (l : Fin n → ℂ) : ℂ :=
-  ∏ a, ∏ b ∈ univ.filter (fun b => a < b), (l a - l b)
-
 def EpowCov : Prop :=
   ∀ (A : Type) [Ring A] (n : ℕ) (E : Fin n → Fin n → A), GlRel E →
     ∀ (k : ℕ) (a b c d : Fin n),
@@ -37,11 +31,6 @@ def EpowCov : Prop :=
 def EtrCentral : Prop :=
   ∀ (A : Type) [Ring A] (n : ℕ) (E : Fin n → Fin n → A), GlRel E →
     ∀ (k : ℕ) (c d : Fin n), etr E k * E c d = E c d * etr E k
-
-def UpperKill : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V)
-    (ν : Fin n → ℂ) (v : V), GlRel E → IsHW E ν v →
-    ∀ (k : ℕ) (a b : Fin n), a < b → epow E k a b v = 0
 
 def HWDiag : Prop :=
   ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V)
@@ -56,22 +45,5 @@ def DiagChar : Prop :=
     ∀ a : Fin n,
       ∑ i ∈ range (n + 1),
         (∏ s : Fin n, (Polynomial.X - Polynomial.C (lsh ν s))).coeff i • epow E i a a v = 0
-
-def PPGen : Prop :=
-  ∀ (n : ℕ) (l : Fin n → ℂ) (u : ℂ), (∀ a, u ≠ l a) →
-    ∑ a, ∑ b, ((u • (1 : Matrix (Fin n) (Fin n) ℂ) - Amat l)⁻¹) a b =
-      1 - ∏ a, (u - l a - 1) / (u - l a)
-
-def DsVand : Prop :=
-  ∀ (n : ℕ) (l : Fin n → ℂ), Function.Injective l →
-    ∀ s, Dfac l s = vand (l - Pi.single s 1) / vand l
-
-def DsSum : Prop :=
-  ∀ (n : ℕ) (l : Fin n → ℂ), Function.Injective l → ∑ s, Dfac l s = (n : ℂ)
-
-def TrPowHW : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V)
-    (ν : Fin n → ℂ) (v : V), GlRel E → IsHW E ν v → Function.Injective (lsh ν) →
-    ∀ k : ℕ, etr E k v = (∑ s, Dfac (lsh ν) s * lsh ν s ^ k) • v
 
 end Formalism.REAL

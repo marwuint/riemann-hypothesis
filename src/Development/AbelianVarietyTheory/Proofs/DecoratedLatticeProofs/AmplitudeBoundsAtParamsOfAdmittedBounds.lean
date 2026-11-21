@@ -7,7 +7,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.SBridge
 import Development.AbelianVarietyTheory.Statements.DiscreteSeriesShifts.ThmBpDS
 import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ElementarySizeBoundsOfSizeHypothesesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ElementarySizeBoundsOfSizeHypotheses
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.BridgeLemma GlobalTheory.Core.Deg
 
 noncomputable section
@@ -44,7 +44,7 @@ theorem ampAt_record_of_inputs :
   have h62 : 6 * C ≤ C2 := le_max_left _ _
   have h22 : C ^ 2 + C * Ch ≤ C2 := le_max_right _ _
   refine ⟨C, C2, Ch, hC0, hCh0, fun Cpr δ hδ => ?_⟩
-  obtain ⟨thr0, hthr0⟩ := GlobalTheory.T.size_bounds_of_standingHypotheses (max (max (C + 6 * C * Ch) C) (max (1 / δ) hilbertNinetyConstant))
+  obtain ⟨thr0, hthr0⟩ := _root_.GlobalTheory.Core.Deg.elementary_size_bounds_of_size_hypotheses (max (max (C + 6 * C * Ch) C) (max (1 / δ) hilbertNinetyConstant))
   refine ⟨thr0, fun D large₂ C' Cl cb Cu cT CT C0 hC' hCl hG hA1 hA2 hA5 hA9 hDeg hAbs hA11 hA12 => ?_⟩
   by_cases hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0
   swap

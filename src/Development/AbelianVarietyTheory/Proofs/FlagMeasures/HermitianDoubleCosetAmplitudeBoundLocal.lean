@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Equality
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmpSqLeHeightMulMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NotField
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalSumsEqConstMulCoordinateSumsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesLocalHeightEqResidueCardStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesLocalHeightEqResidueCard
 
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
@@ -57,7 +57,7 @@ theorem ngAt : ∀ (C : ℝ), 39 ≤ C → ∀ {F : Type} [Field F] [ValuativeRe
   letI := hM.char0
   obtain ⟨S, ⟨c⟩⟩ := GlobalTheory.HL.CoordExist.exists_coord M hM H r k P hV hP
   obtain ⟨κ, -, e1, e2, e3, e4⟩ := GlobalTheory.T.hermitianLocalSums_eq_const_mul_coordinateSums M hM H r k P S c R d0
-  obtain ⟨hH, hq, hpr⟩ := GlobalTheory.T.framePairCoordinates_localHeight_eq_residueCard M hM H r k P S c
+  obtain ⟨hH, hq, hpr⟩ := _root_.GlobalTheory.HL.CoordHeight.height_eq M hM H r k P S c
   have n1 := GlobalTheory.HL.NonzeroDefect.ampSq_nonzero_defect M.L r k S hk
   obtain ⟨n2, n3⟩ := GlobalTheory.HL.NoCancellation.ampSq_le_height_mul_mass M.L r k S hk
   have r1 := raise S hC (t := 1) zero_le_one

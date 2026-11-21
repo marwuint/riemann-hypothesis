@@ -1,8 +1,8 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnlinkedGL.UnlinkedRealize
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfNotInCodimOneSubmoduleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientEquivOfSupEqStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupEqOfIrreducibleSubquotientStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientEquivOfSupEq
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupEqOfIrreducibleSubquotient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleSubquotientsEquivOfNotLeStatement
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.RgGu
 open scoped TensorProduct
@@ -48,10 +48,10 @@ theorem nonempty_equiv_of_generic {G V : Type} [Group G] [AddCommGroup V] [Modul
   have hEC : A ⊓ C ≤ C := inf_le_right
   have hEB : ¬ A ⊓ C ≤ B := fun h => hET (le_trans h hBT)
   have hED : ¬ A ⊓ C ≤ D := fun h => hET (le_trans h hDT)
-  have hfillB := GlobalTheory.T.sup_eq_of_irreducible_subquotient ρ A B (A ⊓ C) hBA hAB hEA hEB
-  have hfillD := GlobalTheory.T.sup_eq_of_irreducible_subquotient ρ C D (A ⊓ C) hDC hCD hEC hED
-  obtain ⟨e₁⟩ := GlobalTheory.T.subquotient_equiv_of_sup_eq ρ A B (A ⊓ C) hEA hfillB
-  obtain ⟨e₂⟩ := GlobalTheory.T.subquotient_equiv_of_sup_eq ρ C D (A ⊓ C) hEC hfillD
+  have hfillB := _root_.GlobalTheory.CompanionTheory.GenCore.sup_eq_of_isIrreducible_subQuot ρ A B (A ⊓ C) hBA hAB hEA hEB
+  have hfillD := _root_.GlobalTheory.CompanionTheory.GenCore.sup_eq_of_isIrreducible_subQuot ρ C D (A ⊓ C) hDC hCD hEC hED
+  obtain ⟨e₁⟩ := _root_.GlobalTheory.CompanionTheory.RepSecondIso.subQuot_equiv_of_sup ρ A B (A ⊓ C) hEA hfillB
+  obtain ⟨e₂⟩ := _root_.GlobalTheory.CompanionTheory.RepSecondIso.subQuot_equiv_of_sup ρ C D (A ⊓ C) hEC hfillD
   have hiB : (subQuot (A ⊓ C) B).IsIrreducible := GlobalTheory.Parabolic.isIrreducible_of_equiv e₁.symm hAB
   have hiD : (subQuot (A ⊓ C) D).IsIrreducible := GlobalTheory.Parabolic.isIrreducible_of_equiv e₂.symm hCD
   have hnot : ¬ A ⊓ C ≤ (A ⊓ C) ⊓ B ⊔ (A ⊓ C) ⊓ D := by

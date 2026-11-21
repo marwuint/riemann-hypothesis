@@ -92,9 +92,4 @@ theorem ColumnsFromPieri_of (hSwap : SwapPath) (hSame : SameCol) (hMeas : MeasSw
     exact LinearMap.mem_ker.2 (key _ κ ρ hpath rfl y ((hWt K P M q EM n lam2 κ ρ hpath.start hpath.step y).1 hy))
   exact LinearMap.mem_ker.1 (hle hz)
 
-theorem LemmaDSkeleton4_of (h : ColumnsFromPieri) : LemmaDSkeleton4 := by
-  intro O K V P q _ _ _ _ _ _ _ _ _ _ S B n w lam2 DelL xi lam l e i' hl hu h1 h2 h3 h4 h5 h6 h7 h8 h9
-  exact depth_skeleton_third_form_holds O K V P q S B n w lam2 DelL xi lam l e i' hl hu
-    ⟨h1, h2, h3, h4, h5, h6, h7, h K P S.W q S.EW n lam2 h7, h8, h9⟩
-
 end Formalism.CohomologicalDescent.LC

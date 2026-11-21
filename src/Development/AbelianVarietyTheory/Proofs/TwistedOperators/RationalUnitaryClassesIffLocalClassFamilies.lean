@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyUnitaryTorusOrbitalClassTrivialLocalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianIsometryBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormClassesIffConjUnitaryTorusEllipticElementsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyUnitaryTorusOrbitalClassTrivialLocal
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianIsometryBaseChange
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormClassesIffConjUnitaryTorusEllipticElements
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RationalNormClassesEqLocalUnramifiedCMStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTorusClassOfIrreducibleCharpolyUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TorusElementCharpolyRegularCentralizerStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTorusClassOfIrreducibleCharpolyUnitary
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TorusElementCharpolyRegularCentralizer
 
 open MeasureTheory Set Filter Polynomial NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -53,25 +53,25 @@ include hc hJ
 theorem hasCls_unique {γ : HA k σ J} {q q' : Cls P k} (h : HasCls P k J γ q) (h' : HasCls P k J γ q') : q = q' := by
   obtain ⟨x, φ, h, rfl, e⟩ := h
   obtain ⟨x', φ', h', rfl, e'⟩ := h'
-  exact (GlobalTheory.T.normClasses_iff_conj_unitaryTorusEllipticElements F E σ hc r n P J hJ k x φ h x' φ' h').2.1 (by rw [e, e'])
+  exact (_root_.GlobalTheory.TrEll.cls_conj_torus F E σ hc r n P J hJ k x φ h x' φ' h').2.1 (by rw [e, e'])
 
 theorem hasCls_of_isConj {γ γ' : HA k σ J} {q : Cls P k} (h : HasCls P k J γ q) (e : IsConj γ γ') :
     HasCls P k J γ' q := by
   obtain ⟨x, φ, h, rfl, rfl⟩ := h
   obtain ⟨g, rfl⟩ := isConj_iff.1 e
-  exact (GlobalTheory.T.normClasses_iff_conj_unitaryTorusEllipticElements F E σ hc r n P J hJ k x φ h x φ h).2.2.2 g
+  exact (_root_.GlobalTheory.TrEll.cls_conj_torus F E σ hc r n P J hJ k x φ h x φ h).2.2.2 g
 
 theorem isConj_of_hasCls {γ γ' : HA k σ J} {q : Cls P k} (h : HasCls P k J γ q) (h' : HasCls P k J γ' q) :
     IsConj γ γ' := by
   obtain ⟨x, φ, h, e, rfl⟩ := h
   obtain ⟨x', φ', h', e', rfl⟩ := h'
-  obtain ⟨g, hg⟩ := (GlobalTheory.T.normClasses_iff_conj_unitaryTorusEllipticElements F E σ hc r n P J hJ k x φ h x' φ' h').1 (e.trans e'.symm)
+  obtain ⟨g, hg⟩ := (_root_.GlobalTheory.TrEll.cls_conj_torus F E σ hc r n P J hJ k x φ h x' φ' h').1 (e.trans e'.symm)
   exact isConj_iff.2 ⟨g, (hg _).symm⟩
 
 theorem exists_mapsCls (ψ : k →ₐ[F] k') {γ : HA k σ J} {q : Cls P k} (h : HasCls P k J γ q) :
     ∃ q', MapsCls P ψ q q' ∧ HasCls P k' J (mapH σ J ψ γ) q' := by
   obtain ⟨x, φ, h, rfl, rfl⟩ := h
-  obtain ⟨x', φ', h', e1, e2, -⟩ := GlobalTheory.T.hermitian_isometry_base_change F E σ hc r n P J hJ k k' ψ x φ h
+  obtain ⟨x', φ', h', e1, e2, -⟩ := _root_.GlobalTheory.TrEll.BaseChg.exists_isom_baseChange F E σ hc r n P J hJ k k' ψ x φ h
   exact ⟨_, ⟨x, x', rfl, rfl, e1⟩, x', φ', h', rfl, e2⟩
 
 theorem exists_mapsCls_rat (k : Type) [CommRing k] [Algebra F k] {γ : GRat σ J} {q : Cls P F}
@@ -81,21 +81,21 @@ theorem exists_mapsCls_rat (k : Type) [CommRing k] [Algebra F k] {γ : GRat σ J
 
 theorem exists_hasCls_rat {P : PPol σ n} (γ : GRat σ J) (h : γ.1.1.charpoly = P.1) :
     ∃ q, HasCls P F J (diagH σ J F γ) q := by
-  obtain ⟨P', e, hq⟩ := (GlobalTheory.T.exists_torusClass_of_irreducible_charpoly_unitary F E σ hc n J hJ).2 γ (h ▸ P.2.2.1)
+  obtain ⟨P', e, hq⟩ := (_root_.GlobalTheory.TrEll.RatEll.exists_cls_of_irreducible F E σ hc n J hJ).2 γ (h ▸ P.2.2.1)
   obtain rfl : P' = P := Subtype.ext (e.symm.trans h)
   exact hq
 
 theorem charpoly_of_hasCls {γ : GRat σ J} {q : Cls P F} (h : HasCls P F J (diagH σ J F γ) q) :
     γ.1.1.charpoly = P.1 := by
   obtain ⟨x, φ, h, -, e⟩ := h
-  have h1 := (GlobalTheory.T.torusElement_charpoly_regular_centralizer F E σ hc r n P J hJ F x φ h).1
+  have h1 := (_root_.GlobalTheory.TrEll.gam_charpoly_regular_cent F E σ hc r n P J hJ F x φ h).1
   rw [e] at h1
   apply Polynomial.map_injective (inclR (F := F) (E := E) F) (inclR (F := F) (E := E) F).injective
   rw [← h1, ← Matrix.charpoly_map]
   rfl
 
 theorem isConj_of_diagH {γ γ' : GRat σ J} (h : IsConj (diagH σ J F γ) (diagH σ J F γ')) : IsConj γ γ' := by
-  have hb := (GlobalTheory.T.exists_torusClass_of_irreducible_charpoly_unitary F E σ hc n J hJ).1
+  have hb := (_root_.GlobalTheory.TrEll.RatEll.exists_cls_of_irreducible F E σ hc n J hJ).1
   obtain ⟨g, e⟩ := isConj_iff.1 h
   obtain ⟨g, rfl⟩ := hb.2 g
   exact isConj_iff.2 ⟨g, hb.1 (by simpa only [map_mul, map_inv] using e)⟩
@@ -142,7 +142,7 @@ theorem rat_classes_iff_local (E : Type) [Field E] [NumberField E] (F : Subfield
   · rw [e1]; exact existsUnique_hasCls_rat hc hJ _ γ h
   · rw [e2]; exact existsUnique_hasCls_rat hc hJ _ γ h
   · have := isLattice_stdLattice (E := E) (n := r)
-    filter_upwards [GlobalTheory.T.eventually_unitaryTorus_orbitalClass_trivial_local F E σ hc r P J hJ (stdLattice E r),
+    filter_upwards [_root_.GlobalTheory.TrEll.eventually_unitLoc_orbCls F E σ hc r P J hJ (stdLattice E r),
       eventually_proj_mem_stabLoc σ J (stdLattice E r) (ratEmb σ J γ)] with v hv hm
     obtain ⟨q, hq, -⟩ := existsUnique_hasCls_rat hc hJ (Fv F v) γ h
     rw [← e1] at hq
@@ -157,7 +157,7 @@ theorem rat_classes_iff_local (E : Type) [Field E] [NumberField E] (F : Subfield
     exact isConj_of_diagH hc hJ (isConj_of_hasCls hc hJ hq hq')
   · obtain ⟨q, hq, h2, h3⟩ := H2 qf qa hf ha h1
     obtain ⟨g, hg⟩ := exists_hasCls P hq
-    obtain ⟨γ, rfl⟩ := (GlobalTheory.T.exists_torusClass_of_irreducible_charpoly_unitary F E σ hc r J hJ).1.2 g
+    obtain ⟨γ, rfl⟩ := (_root_.GlobalTheory.TrEll.RatEll.exists_cls_of_irreducible F E σ hc r J hJ).1.2 g
     refine ⟨γ, charpoly_of_hasCls hc hJ hg, fun v => ?_, fun w => ?_⟩
     · rw [e1]; exact hasCls_of_mapsCls hc hJ hg (h2 v)
     · rw [e2]; exact hasCls_of_mapsCls hc hJ hg (h3 w)

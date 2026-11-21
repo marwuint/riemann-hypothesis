@@ -1,5 +1,6 @@
 import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.InfinitesimalCharacterStatementStatement
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.InfinitesimalCharacterStatement
 
 noncomputable section
 
@@ -280,7 +281,7 @@ theorem forward_simple_of_tensor_facts : QdetTens → BackStable → DualFacts �
   intro hQ hB hD hU n X χ s hX hSc h1 h2 h3
   have hXc : HasChar X χ := ⟨1, fun Y => by rw [pow_one, hSc Y, sub_self]⟩
   refine fsb_simple_of_back hD X (step X (χ s)) (χ + Pi.single s 1) s (χ s + 1) (by simp) hX
-    (GlobalTheory.T.InfinitesimalCharacterStatement n X χ s hXc) ?_ ?_ (hB n _ _) (hU n X χ s hB hSc h1 h2 h3)
+    (_root_.GlobalTheory.CompanionTheory.RgExhHecke.StepCharPf.stepChar n X χ s hXc) ?_ ?_ (hB n _ _) (hU n X χ s hB hSc h1 h2 h3)
   · intro t ht
     simpa [Pi.single_apply, ht] using h1 t
   · intro r

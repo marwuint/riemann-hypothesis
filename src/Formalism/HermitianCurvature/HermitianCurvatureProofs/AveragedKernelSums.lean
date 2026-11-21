@@ -445,25 +445,4 @@ theorem finite_family_truncation_module : Formalism.FourierDecayAlt.A6.SupportMo
 theorem head_size_one_in_GL : Formalism.FourierDecayAlt.A6.CSizeOne :=
   fun _ _ _ _ R _ _ h hh => A5x6.cSize_glr R h hh
 
-theorem induction_from_assembled_pieces : Formalism.FourierDecayAlt.A6.ThetaExistenceInductiveFromPieces := by
-  intro aAvg aGH aSt aGP aG aGK aGI aTO aStep
-  intro hMS hPO hON hPG hGR hEB hPC hBS hLF hILR hIKR hVS hPL hCM hPD hLC hMLC hSU hSM' hRF hRS hEx
-  intro hHD hGM hGIn hGAS
-  intro hNS hML hOR hOI hHR hKB hKH hShU hShS hCS hRC hSN hPhD hLoc hCV hXV hCA hUG hUN hCP hUB hAD
-    hCN hTL
-  intro hTB hTS hSM hC1 hMM hIF hKG hKBD hNSup
-  have hAB : AvgBound := aAvg hMS hPO hON
-  have hGH : GaussHess := aGH hGM hGIn hHD hMM hVS
-  have hSP : StationaryPhase :=
-    aSt hNS hML hIKR hMM hRF hLC hPL hMLC hOI hVS hRS hSM' hGAS hLF
-  have hGP : GermPhi := aGP hOR hSP hOI hMM
-  have hG : Germ := aG hHR hGP
-  have hGK : GermKernel := aGK hG hKB hIF hRF
-  intro hA2 hN1
-  have hGI : GermIdentity :=
-    aGI hGH hGK hKH hA2.2 hMM hRF hShU hShS hCS hRC hSN hPhD hLoc hMLC hILR hCV hXV
-  have hTO : ThOm := aTO hGI hAD hLoc hKH hMLC hLC hLF hShU hSU hUG hUN hCP hUB hCA hMM hKG hKBD
-    hGR hAB hPG hPD hPL hCM hCN hTL hTB hTS
-  exact aStep hTO hSM hNSup hC1 hEx hLF hEB hPC hBS hA2 hN1
-
 end Formalism.FourierDecayAlt.P

@@ -49,23 +49,4 @@ end GlobalTheory.ZH.MinorModel
 
 namespace GlobalTheory.ZH.MinorModel
 
-theorem classical_points_regular :
-    ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [Algebra.FiniteType ℤ o] [CharZero Ω] (M : RatModel o Ω)
-      (U₀ : M.Z.Opens), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z →
-      ((∀ U₁ : M.Z.Opens, U₁ ≤ U₀ → (U₁ : Set M.Z).Nonempty → ∀ z : M.Z, IsClosed ({z} : Set M.Z) →
-        (∃ (p : ℕ) (_ : Fact p.Prime) (y : Sp (OO p) ⟶ M.Z), M.Cen U₁ z y) ∧
-        ∀ φ ∈ M.ringOn U₁, (∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₁ z y →
-          ‖M.val (gPt p ≫ y) φ‖ ≤ 1) → φ ∈ M.O z) ∧ JacobsonSpace M.Z) := by
-  intro o Ω _ _ _ _ _ M U₀ hn
-  haveI := locallyOfFiniteType_int M
-  haveI := flat_int M (M.s ≫ spMap (algebraMap ℤ o))
-  refine ⟨fun U _ hU z hz => ⟨GlobalTheory.padicAlgCl_integral_points.1 M.Z (M.s ≫ spMap (algebraMap ℤ o)) z hz U hU,
-    fun φ hφ hb => ?_⟩, (GlobalTheory.jacobson_closedPoints_tools_int M.Z (M.s ≫ spMap (algebraMap ℤ o))).1⟩
-  obtain ⟨f, rfl⟩ := (RatModel.mem_ringOn_iff_exists hU).1 hφ
-  obtain ⟨W, ψ, hzW, h⟩ := GlobalTheory.regular_of_bounded_at_padicAlgCl_points.1 M.Z (M.s ≫ spMap (algebraMap ℤ o)) z hz (hn z).2 U f hU
-    fun p _ y h1 h2 => (RatModel.val_valF h2 f) ▸ hb p y ⟨h1, h2⟩
-  have hWU := M.nonempty_inf ⟨z, hzW⟩ hU
-  exact ⟨W, ψ, hzW, (M.valF_resG inf_le_left hWU ψ).symm.trans
-    ((congrArg _ h).trans (M.valF_resG inf_le_right hWU f))⟩
-
 end GlobalTheory.ZH.MinorModel

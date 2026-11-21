@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PrimitiveCrystalHodgeLiftClasses
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsNoetherianRingDualNumber
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescendsToFinitelyGeneratedSubringStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescendsToFinitelyGeneratedSubring
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 
@@ -219,7 +219,7 @@ theorem exists_noeth_model (P : AbelianDeRham) {R : Type} [CommRing R] {g : ℕ}
       Function.Injective σ ∧ IsAbelianScheme B ∧ SmoothOfRelativeDimension g B.hom ∧
       ∀ (x : HdR B) (x' : HdR A), (∀ c, x' ((redMor h).pull c) = σ (x c)) →
         ∀ c, e x' ((redMor h).pull c) = σ (e₁ x c) := by
-  obtain ⟨S, B, _, φ, -, hS, hB, hgB, h⟩ := GlobalTheory.T.abelianScheme_descends_to_finitelyGenerated_subring R g A ∅ hA hg
+  obtain ⟨S, B, _, φ, -, hS, hB, hgB, h⟩ := _root_.GlobalTheory.AbelianLimit.abelianScheme_descends_to_fg_subring R g A ∅ hA hg
   haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing ℤ S
   obtain ⟨hf, hp, -⟩ := P.1.prim hB hgB
   obtain ⟨n, p, l, hpl⟩ := exists_frame (S := S) (P := primDR B)

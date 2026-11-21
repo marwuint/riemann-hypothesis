@@ -32,13 +32,6 @@ def box (ϖ : kˣ) (a a' : ℤ) : Set (Vars G) :=
 
 variable {G}
 
-theorem moveArgs_one_diag (g : G.VertexGroup) (d : ∀ X : ℕ × ℕ, Fin (G.rank X) → kˣ)
-    (hg : ∀ X, g X = diagGL (d X)) (z : G.Args) (b : Edge) (r : Fin (G.rank b.tgt)) (s : Fin (G.rank b.src)) :
-    G.moveArgs .one g z b r s = (d b.tgt r : k) * z b r s * ((d b.src s)⁻¹ : kˣ) := by
-  have h1 : ∀ X, ((g X)⁻¹).val = diagonal fun i => (((d X i)⁻¹ : kˣ) : k) := fun X => by rw [hg]; rfl
-  simp only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val]
-  rw [h1, hg, diagGL_val, diagonal_transpose, diagonal_transpose, mul_diagonal, diagonal_mul]
-
 omit [ValuativeRel k] in
 
 theorem vtxExp_frame (a a' : ℤ) {t c b : ℕ} (h : t + c = b) (y : Fin t ⊕ Fin c) :

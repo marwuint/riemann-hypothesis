@@ -127,16 +127,6 @@ theorem seriesEval_sub_sum_mem {z : B} (hz : z ∈ I) (f : ℚ⟦X⟧) (n : ℕ)
     seriesEval I z hz f - ∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i f) * z ^ i ∈ I ^ n :=
   Ideal.Quotient.eq.1 (mk_seriesEval hz f n)
 
-theorem tendsto_seriesEval {z : B} (hz : z ∈ I) (f : ℚ⟦X⟧) :
-    @Filter.Tendsto ℕ B (fun n => ∑ i ∈ Finset.range n, algebraMap ℚ B (coeff i f) * z ^ i)
-      Filter.atTop (@nhds B I.adicTopology (seriesEval I z hz f)) := by
-  let _ := I.adicTopology
-  rw [(Ideal.hasBasis_nhds_adic I (seriesEval I z hz f)).tendsto_right_iff]
-  intro n _
-  filter_upwards [Filter.eventually_ge_atTop n] with N hN
-  refine ⟨_, Ideal.pow_le_pow_right hN (neg_mem (seriesEval_sub_sum_mem hz f N)), ?_⟩
-  simp
-
 @[simp]
 theorem seriesEval_X {z : B} (hz : z ∈ I) : seriesEval I z hz X = z := by
   refine eq_of_forall_sub_mem_pow I fun n => ?_
@@ -146,12 +136,6 @@ theorem seriesEval_X {z : B} (hz : z ∈ I) : seriesEval I z hz X = z := by
     coeff_one_X, map_zero, map_one, zero_mul, add_zero, pow_one, one_mul, zero_add] at h
   intro i _
   rw [coeff_X, if_neg (by omega), map_zero, zero_mul]
-
-theorem seriesEval_mem {z : B} (hz : z ∈ I) {f : ℚ⟦X⟧} (hf : constantCoeff f = 0) :
-    seriesEval I z hz f ∈ I := by
-  have h := seriesEval_sub_sum_mem hz f 1
-  rwa [Finset.sum_range_one, coeff_zero_eq_constantCoeff_apply, hf, map_zero, zero_mul, sub_zero,
-    pow_one] at h
 
 theorem seriesEval_subst {z : B} (hz : z ∈ I) {g : ℚ⟦X⟧} (hg : constantCoeff g = 0) {w : B}
     (hw : w ∈ I) (hgw : seriesEval I z hz g = w) (f : ℚ⟦X⟧) :
@@ -259,9 +243,6 @@ theorem logOnePlus_sub_sum_mem {z : B} (hz : z ∈ I) (n : ℕ) :
         RingHom.id_apply]
   rw [hs]
   exact seriesEval_sub_sum_mem hz (log ℚ) n
-
-theorem logOnePlus_mem {z : B} (hz : z ∈ I) : logOnePlus I z hz ∈ I :=
-  seriesEval_mem hz constantCoeff_log
 
 theorem logOnePlus_eq_mul {z : B} (hz : z ∈ I) : ∃ u, u - 1 ∈ I ∧ logOnePlus I z hz = z * u := by
   set h : ℚ⟦X⟧ := mk fun n => coeff (n + 1) (log ℚ)

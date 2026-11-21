@@ -1,5 +1,8 @@
 import Mathlib
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuationTheory
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.TypicalCurveStructureConstants
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.RootStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.FactorialWeightedSumBound
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.OmBStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.WtSubOneLe
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PtBasisMapGood
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
@@ -9,7 +12,7 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ChainLemmaMultiva
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDeterminantPowDepthBasisChangeInvariaStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentialOperatorDepthIntegralCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeFormalGroupDeterminantPowDepthOfRadiiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTypicalCurveBasisAdaptedToSaturatedFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTypicalCurveBasisAdaptedToSaturatedFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdGeExpOfLogSumTwoRadiiStatement
 
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh GlobalTheory.FGDepth
@@ -159,7 +162,7 @@ theorem content_le_detDepth_add :
   intro C _ _ _ v p hp hv d h hh ty G μ τ j i c hcard u hu hsupp
   classical
   obtain ⟨γ, r, g, hB, -, hgdet, htan, hgood⟩ :=
-    GlobalTheory.T.exists_typicalCurve_basis_adapted_to_saturated_frame C v p hp hv d h hh ty G μ τ j i hcard u hu hsupp
+    _root_.GlobalTheory.FGDepth.exists_basis_adapted_frame C v p hp hv d h hh ty G μ τ j i hcard u hu hsupp
   obtain ⟨hγ, hγty, hdet⟩ := hB
   have e1 : detDepth G u c = detDepth G (fun a => tangent (γ (r a))) c := by
     rw [← GlobalTheory.T.formalGroupDeterminantPowDepth_basis_change_invariant C v i d c G u g hgdet]

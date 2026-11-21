@@ -7,11 +7,6 @@ noncomputable section
 open Polynomial Classical
 namespace GlobalTheory.BadShare.Basic
 
-section Central
-variable {G : Type} [Group G] [Fintype G]
-
-end Central
-
 variable {g : ℕ} [Fact g.Prime] {N : ℕ}
 
 open Formalism.MainNotions.ArithmeticCylinders in

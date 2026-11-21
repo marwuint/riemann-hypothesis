@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsElementaryDivisorsIntegralPreimageLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeKernelLeOfMatrixLatticeIndexEqStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ElementaryDivisorColumnsIndependentModUniformizeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsElementaryDivisorsIntegralPreimageLattice
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeKernelLeOfMatrixLatticeIndexEq
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ElementaryDivisorColumnsIndependentModUniformize
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramClassElementaryDivisorColumnsCongrStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralWittTheoremModUniformizerPowStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralWittTheoremModUniformizerPow
 
 noncomputable section
 
@@ -38,7 +38,7 @@ theorem exists_intUnitary_of_gramClass : ∀ (L : Type) [Field L] [Valued L (Wit
     intro a b M v hM hv i
     simp only [Matrix.mulVec, dotProduct]
     exact (Formalism.UG.intL L).sum_mem fun j _ => (Formalism.UG.intL L).mul_mem (hM i j) (hv j)
-  obtain ⟨V, hV, a, hxV⟩ := GlobalTheory.T.exists_elementaryDivisors_integral_preimage_lattice L ϖ hvϖ n n' x
+  obtain ⟨V, hV, a, hxV⟩ := _root_.GlobalTheory.Hk3.IntWitt.exists_glInt_mulVec_mem_iff_forall_dvdPow L ϖ hvϖ n n' x
   obtain ⟨g0, hg0⟩ := hV
   have hVint : ∀ i j, (V : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L := by
     intro i j; rw [← hg0]; exact ((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) i j).2
@@ -51,7 +51,7 @@ theorem exists_intUnitary_of_gramClass : ∀ (L : Type) [Field L] [Valued L (Wit
     intro c hc
     have hu : ∀ i, (Vm *ᵥ c) i ∈ Formalism.UG.intL L := mulVec_int Vm c hVint hc
     rw [← hxV c hc]
-    exact ⟨fun h => GlobalTheory.T.latticeKernel_le_of_matrixLatticeIndex_eq L ϖ σ q hU n n' x y hA.1 hidx _ hu h, fun h => hA.1 _ hu h⟩
+    exact ⟨fun h => _root_.GlobalTheory.Hk3.HoweDuality.ker_le_of_latIdx_eq L ϖ σ q hU n n' x y hA.1 hidx _ hu h, fun h => hA.1 _ hu h⟩
   let ej : Fin n → Fin n → L := fun j => Pi.single j (ϖ ^ a j)
   have hej_int : ∀ j k, ej j k ∈ Formalism.UG.intL L := by
     intro j k
@@ -67,10 +67,10 @@ theorem exists_intUnitary_of_gramClass : ∀ (L : Type) [Field L] [Valued L (Wit
   let zy : {j : Fin n // 0 < a j} → Fin n' → L := fun j => y *ᵥ (Vm *ᵥ ej j)
   have hzx : ∀ j r, zx j r ∈ Formalism.UG.intL L := fun j => (hxV _ (hej_int j)).mpr (hej_dvd j)
   have hzy : ∀ j r, zy j r ∈ Formalism.UG.intL L := fun j => (hyV _ (hej_int j)).mpr (hej_dvd j)
-  have hix : GlobalTheory.Hk3.IntWitt.IndepMod ϖ zx := GlobalTheory.T.elementaryDivisor_columns_independentModUniformizer L ϖ hvϖ n n' x Vm a hxV
-  have hiy : GlobalTheory.Hk3.IntWitt.IndepMod ϖ zy := GlobalTheory.T.elementaryDivisor_columns_independentModUniformizer L ϖ hvϖ n n' y Vm a hyV
+  have hix : GlobalTheory.Hk3.IntWitt.IndepMod ϖ zx := _root_.GlobalTheory.columns_indepMod L ϖ hvϖ n n' x Vm a hxV
+  have hiy : GlobalTheory.Hk3.IntWitt.IndepMod ϖ zy := _root_.GlobalTheory.columns_indepMod L ϖ hvϖ n n' y Vm a hyV
   have hgr := GlobalTheory.T.gramClass_elementaryDivisor_columns_congr L ϖ σ q hU n n' JT x y Vm a hVint hxV hGr
-  obtain ⟨h, hh, hcong⟩ := GlobalTheory.T.integralWittTheorem_mod_uniformizerPow L ϖ σ q hU hq n' JT hJT hT {j : Fin n // 0 < a j} (fun j => a j) zx zy
+  obtain ⟨h, hh, hcong⟩ := _root_.GlobalTheory.Hk3.IntWittMod.witt_mod_pow L ϖ σ q hU hq n' JT hJT hT {j : Fin n // 0 < a j} (fun j => a j) zx zy
     (fun j => j.2) hzx hzy hix hiy (fun i j => hgr i j)
   refine ⟨h, hh, ?_⟩
   set H : Matrix (Fin n') (Fin n') L := ((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) with hH

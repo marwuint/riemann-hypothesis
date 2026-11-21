@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmDecompositionOfTangentDivisibleByPStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfLinearZeroCoboundaryZeroFractionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmDecompositionOfTangentDivisibleByP
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfLinearZeroCoboundaryZeroFractions
 
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
@@ -79,8 +79,8 @@ theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
   let t : Fin d ⊕ Fin k → G.dual.Lie := Sum.elim (fun _ => 0) fun j => lb j
   have ht : ∀ i, c.IsLie (e i) (t i) := by
     rintro (i | j)
-    · obtain ⟨l, hl, -⟩ := GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E hF _ (hQe (Sum.inl i))
-      have := ((GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF _ _ l l 0 hl hl).2.2 (hcob i))
+    · obtain ⟨l, hl, -⟩ := _root_.GlobalTheory.QLogTangent.main p C v O hv G d c E hF _ (hQe (Sum.inl i))
+      have := ((_root_.GlobalTheory.LieLin.main p C v O hv G d c E hF _ _ l l 0 hl hl).2.2 (hcob i))
       subst this
       exact hl
     · exact hLie j
@@ -93,12 +93,12 @@ theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     | empty => rw [Finset.sum_empty, Finset.sum_empty]; exact ⟨c.isLie_zero hinj, ql_zero hμ _⟩
     | cons i s hi ih =>
       rw [Finset.sum_cons, Finset.sum_cons, add_comm, add_comm (b i • t i)]
-      exact ⟨(GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF _ _ _ _ (b i) ih.1 (ht i)).1 ih.2 (hQe i),
+      exact ⟨(_root_.GlobalTheory.LieLin.main p C v O hv G d c E hF _ _ _ _ (b i) ih.1 (ht i)).1 ih.2 (hQe i),
         ql_add hμ ih.2 (ql_smul hμ _ (hQe i))⟩
   have hcombLie : ∀ b : Fin d ⊕ Fin k → O, c.IsLie (comb b e) (∑ i, b i • t i) :=
     fun b => (hcombS b Finset.univ).1
 
-  obtain ⟨l, hl, -⟩ := GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c E hF f hf
+  obtain ⟨l, hl, -⟩ := _root_.GlobalTheory.QLogTangent.main p C v O hv G d c E hF f hf
   let b0 : Fin d ⊕ Fin k → O := Sum.elim (0 : Fin d → O) fun j => lb.repr l j
   have hb0 : ∑ i, b0 i • t i = l := by
     rw [Fintype.sum_sum_type]
@@ -108,10 +108,10 @@ theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
   set f' := f + algebraMap O E (-1) • comb b0 e with hf'
   have hQf' : QL c.μ ⊤ f' := ql_add hμ hf (ql_smul hμ _ (ql_comb hμ b0 e hQe))
   have hLf' : c.IsLie f' ((p : O) • 0) := by
-    have := (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF f (comb b0 e) l _ (-1) hl (hcombLie b0)).1 hf
+    have := (_root_.GlobalTheory.LieLin.main p C v O hv G d c E hF f (comb b0 e) l _ (-1) hl (hcombLie b0)).1 hf
       (ql_comb hμ b0 e hQe)
     rwa [hb0, neg_one_smul, add_neg_cancel, ← smul_zero (p : O)] at this
-  obtain ⟨s, g, hg, hh⟩ := GlobalTheory.T.quasiLogarithm_decomposition_of_tangent_divisible_by_p p C v O hv G d c E hF f' 0 hQf' hLf'
+  obtain ⟨s, g, hg, hh⟩ := _root_.GlobalTheory.QLogInj.main p C v O hv G d c E hF f' 0 hQf' hLf'
   set h := f' - map (algebraMap O E) s - g with hhdef
 
   have hw : ∀ i, ∃ w : O, lin g i = algebraMap O E w := by
@@ -128,7 +128,7 @@ theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     simp [comb, bw, Fintype.sum_sum_type]
 
   have hgw : g = comb bw e := by
-    have key := GlobalTheory.T.eq_zero_of_lin_zero_cob1_zero p O E hF d c.μ c.isLaw (g - comb bw e) ?_ ?_
+    have key := _root_.GlobalTheory.LogUniq.eq_zero_of_linear_zero_coboundary_zero_fractions p O E hF d c.μ c.isLaw (g - comb bw e) ?_ ?_
     · exact sub_eq_zero.1 key
     · funext i
       simp only [lin, hcw, map_sub, map_sum, coeff_smul, Pi.zero_apply] at hw ⊢

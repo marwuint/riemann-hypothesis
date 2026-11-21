@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsNoetheri
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUnobstructed
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianLifting
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsStepNilExp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareZeroLiftingOfNoetherianCaseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckMessingLiftAbelianSchemeOfSquareZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckMessingLiftHomomorphismOfSquareZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareZeroLiftingOfNoetherianCase
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckMessingLiftAbelianSchemeOfSquareZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckMessingLiftHomomorphismOfSquareZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftHomOfIsStep
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftAbelianSchemeAlongSquareZeroFactorizationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftAbelianSchemeAlongSquareZeroFactorization
 
 set_option autoImplicit false
 
@@ -63,7 +63,7 @@ theorem abelianLifting_of_sqLifting (hD : AbelianDeRham) (hU : AbelianUnobstruct
       obtain ⟨R₁, _, J, hJ, ρ, I₁, κ₁, π₁, st, h₁⟩ := exists_isStep_nilExp R R₀ I κ π hπ hker n h
       have hsq := hS R J hJ R₁ ρ st.surj st.kerJ
       have hih := ih R₁ I₁ κ₁ R₀ π₁ st.surj₁ st.ker₁ h₁
-      exact ⟨GlobalTheory.T.liftAbelianScheme_along_squareZero_factorization hD hU R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ st hsq.1 hih.1,
+      exact ⟨_root_.GlobalTheory.SqLift.liftObj_step hD hU R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ st hsq.1 hih.1,
         liftHom_of_isStep hD R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ st hsq.2 hih.2⟩
   intro R _ I κ hκ R₀ _ π hπ hker
   obtain ⟨N, hN⟩ := (isPDNilpotent_iff κ).1 hκ
@@ -72,9 +72,9 @@ theorem abelianLifting_of_sqLifting (hD : AbelianDeRham) (hU : AbelianUnobstruct
 theorem abelianLifting_of_schemeLifts :
     AbelianDeRham → AbelianSchemeLifts → AbelianUnobstructed → AbelianLifting := by
   intro hD hL hU
-  refine abelianLifting_of_sqLifting hD hU (GlobalTheory.T.squareZeroLifting_of_noetherian_case hD ?_)
+  refine abelianLifting_of_sqLifting hD hU (_root_.GlobalTheory.SqLift.sqLifting_of_noetherian hD ?_)
   intro R _ _ I hI R₀ _ π hπ hk
-  exact ⟨GlobalTheory.T.grothendieckMessingLiftAbelianScheme_of_squareZero hD R R₀ I hI π hπ hk (hL R I hI R₀ π hπ hk),
-    GlobalTheory.T.grothendieckMessingLiftHomomorphism_of_squareZero hD R R₀ I hI π hπ hk (hL R I hI R₀ π hπ hk)⟩
+  exact ⟨_root_.GlobalTheory.SqLift.liftObj_sq hD R R₀ I hI π hπ hk (hL R I hI R₀ π hπ hk),
+    _root_.GlobalTheory.SqLift.Hom.liftHom_sq hD R R₀ I hI π hπ hk (hL R I hI R₀ π hπ hk)⟩
 
 end GlobalTheory.SqLift

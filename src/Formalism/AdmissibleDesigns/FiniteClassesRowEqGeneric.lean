@@ -156,17 +156,6 @@ theorem rowTie_disp (hπ : Function.Surjective π)
   simp only [ENat.toNat_coe]
   exact hmk
 
-variable (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ) in
-
-theorem tieRow_disp (hG : K.SelfGood i) (hadm : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ πx dc lenRow) (hπ : Function.Surjective π)
-    (hSub : RowSub (ρ₁ := ρ₁) i dc r) (hOrb : RowOrb (ρ₁ := ρ₁) i dc)
-    (hMat : RowMat i dc VT VT' Dat ρ πx) (hTop : RowTop i dc VT' (T₁ := T₁))
-    (hFin : RowFin i dc VT VT' Dat (T₁ := T₁))
-    (hcob : ∀ n ∈ K.rowsN i dc, OrbC i dc (n := n) (Dat n).ρT') :
-    K.TieRow i dc (rowLenD i dc VT VT' Dat ρ₁ π vD hpD heD) lenRow := by
-  exact K.Sel.tieRow_rec i dc r ρ πx _ lenRow hG hadm
-    (rowTie_disp i dc VT VT' Dat ρ₁ π vD hpD heD r ρ πx hπ hSub hOrb hMat hTop hFin hcob)
-
 end Rec
 
 end Formalism.MainNotions.N.KRow

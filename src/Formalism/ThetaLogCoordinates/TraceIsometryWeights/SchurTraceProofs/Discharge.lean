@@ -44,11 +44,6 @@ theorem dischargeE_of (h : ExtP) : DischargeE := by
   have hk : kapC p (r - 1) LL.total ≤ e1 := (kapC_mono (Nat.sub_le r 1) le_rfl).trans he
   exact ⟨P, h1, h2, h3, h4, fun F hF hW => pow_smul_mem_of_le _ hk (h5 F hF hW)⟩
 
-theorem total_le {N : ℕ} (LL : Letters N) (b : ℕ) (h : ∀ x, LL.deg x ≤ b) : LL.total ≤ b * N := by
-  unfold Letters.total
-  calc ∑ i, LL.deg i ≤ ∑ _i : Fin N, b := Finset.sum_le_sum (fun i _ => h i)
-    _ = b * N := by simp [mul_comm]
-
 theorem kapC_le_real (p : ℕ) [Fact p.Prime] (r d a : ℕ) (h : d + r ≤ p ^ 2 * (8 * a + r) ^ 2) :
     (kapC p r d : ℝ) ≤ (r : ℝ) ^ 2 * lgV2 p a r := by
   rcases Nat.eq_zero_or_pos r with hr | hr
@@ -95,23 +90,5 @@ theorem kapC_le_real (p : ℕ) [Fact p.Prime] (r d a : ℕ) (h : d + r ≤ p ^ 2
       ≤ ((r.choose 2 : ℕ) : ℝ) * (2 * lgV2 p a r) := mul_le_mul_of_nonneg_left hL (Nat.cast_nonneg _)
     _ = (((r.choose 2 : ℕ) : ℝ) * 2) * lgV2 p a r := by ring
     _ ≤ (r : ℝ) ^ 2 * lgV2 p a r := mul_le_mul_of_nonneg_right hc hlg
-
-theorem kappa_le_height_bound : ∀ (p : ℕ) [Fact p.Prime] (N r : ℕ) (LL : Letters N) (a : ℕ) (κ : ℝ),
-    (∀ x, LL.deg x ≤ 2 * a) → 2 * a * N + r ≤ p ^ 2 * (8 * a + r) ^ 2 →
-    ((N + 2) * r ^ 2 : ℝ) * lgV2 p a r ≤ κ → kapC p r LL.total ≤ ⌈κ / (N + 2)⌉₊ := by
-  intro p _ N r LL a κ hdeg hpa hκ
-  have htot := total_le LL (2 * a) hdeg
-  have hk := kapC_le_real p r LL.total a (le_trans (Nat.add_le_add_right htot r) hpa)
-  have hpos : (0 : ℝ) < (N : ℝ) + 2 := by positivity
-  have hb : (r : ℝ) ^ 2 * lgV2 p a r ≤ κ / ((N : ℝ) + 2) := by
-    rw [le_div_iff₀ hpos]
-    calc (r : ℝ) ^ 2 * lgV2 p a r * ((N : ℝ) + 2) = ((N + 2) * r ^ 2 : ℝ) * lgV2 p a r := by ring
-      _ ≤ κ := hκ
-  exact Nat.cast_le.1 ((hk.trans hb).trans (Nat.le_ceil _))
-
-theorem discharge_of_pwe (hP : DischargeP) (hW : DischargeW) (hE : DischargeE) : HeightBoundImplication := by
-  intro p _ N r LL ρ a κ hdeg hpa hκ
-  have hk := kappa_le_height_bound p N r LL a κ hdeg hpa hκ
-  exact ⟨hP p N r LL ρ _ hk, hW p N r LL _ hk, hE p N r LL ρ _ hk⟩
 
 end Formalism.InvariantFactorPaths.PW

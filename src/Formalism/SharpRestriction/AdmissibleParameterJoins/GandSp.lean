@@ -63,9 +63,6 @@ theorem cc_logF : PowerSeries.constantCoeff (logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [logF]
 
-def PhS (ι : Type) [Fintype ι] (be : MvPowerSeries (Fin 2) (K0 p)) : MvPowerSeries (ι ⊕ ι) (K0 p) :=
-  ∑ e : ι, sub2 p be (X (Sum.inl e)) (X (Sum.inr e))
-
 theorem hs2 {τ R : Type} [CommRing R] {a b : MvPowerSeries τ R} (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) :
     HasSubst (![a, b] : Fin 2 → MvPowerSeries τ R) :=  by
   first

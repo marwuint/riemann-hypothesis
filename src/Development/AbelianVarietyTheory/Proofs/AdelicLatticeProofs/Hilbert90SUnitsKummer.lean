@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CyclicKummerNormFixedHilbert90Statement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CyclicKummerNormFixedHilbert90
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.KummerGalois
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GaloisPlacesTransitive
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ValuationUnramifiedKummerOfCoprimeUnitStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ValuationUnramifiedKummerOfCoprimeUnit
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HeightOneSpectrumPlacesOverFiniteSet
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSupersetMemSUnits
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitValuationEqOfAdm
@@ -16,7 +16,7 @@ theorem hilbert90_sUnits_kummer : ∀ (p : ℕ) (F E : Type) [Field F] [NumberFi
   classical
   intro p F E _ _ _ _ _ ζ δ θ σ hq S SE hSE hadm hδ u hu hN
   obtain ⟨hfd, -, hgal, -, hgen, -⟩ := kummer_galois p F E ζ δ θ σ hq
-  obtain ⟨y, hy0, hy⟩ := (GlobalTheory.T.cyclic_hilbert90_kummer_and_mem_kNorm_iff p F E ζ δ θ σ hq).2.2.2.2.1 (u : E) hN
+  obtain ⟨y, hy0, hy⟩ := (_root_.GlobalTheory.CNorm.kummer_basic p F E ζ δ θ σ hq).2.2.2.2.1 (u : E) hN
   obtain ⟨hact, htrans⟩ := galois_places_transitive F E
   rw [mem_sUnits] at hu
   have hval : ∀ w : HeightOneSpectrum (𝓞 E), w ∉ SE → w.valuation E (σ y) = w.valuation E y := by
@@ -57,7 +57,7 @@ theorem hilbert90_sUnits_kummer : ∀ (p : ℕ) (F E : Type) [Field F] [NumberFi
       rw [hτ, hall τ w hw]
     have h4 : w.valuation E y ≠ 0 := by simpa only [ne_eq, map_eq_zero] using hy0
     rw [Units.val_mk0, map_mul,
-      GlobalTheory.T.valuation_unramified_kummer_of_coprime_unit p F E ζ δ θ σ hq w (hadm.2 _ hv) (hδ _ hv), ha _ hv]
+      _root_.GlobalTheory.CNorm.kummer_valuation_unramified p F E ζ δ θ σ hq w (hadm.2 _ hv) (hδ _ hv), ha _ hv]
     simp only [h3]
     rw [WithZero.exp_neg, WithZero.exp_log h4, inv_mul_cancel₀ h4]
   · rw [Units.val_mk0, map_mul, AlgEquiv.commutes, hy, mul_div_mul_left _ _ ha0]

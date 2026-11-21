@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.OfFactorE
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.W8AddTransposeEqE8
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataPsiMemMaximalIdealTendstoZero
@@ -11,10 +11,11 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitVa
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiInIffScalarMem
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiScalarsRelationsUpToBaseUnits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemUnitsK
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataScalarsMemMaximalIdealTendstoZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPeriodScalarCoordinatePolarisedDataLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodScalarCoordinatesSymmBimultUpToUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataScalarsMemMaximalIdealTendstoZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPeriodScalarCoordinatePolarisedDataLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodScalarCoordinatesSymmBimultUpToUnits
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorDataPsiScalarEqUnitMulProdPeriodsStatement
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -36,12 +37,12 @@ theorem psi_pos_tendsto : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing 
     · obtain ⟨rfl, ha⟩ := h
       obtain ⟨s, hs, k, hk, hc⟩ := hQ a ha
       exact ⟨k, hc, fun _ _ => ⟨s, hs, hk⟩⟩
-    · obtain ⟨k, hk⟩ := GlobalTheory.T.exists_periodScalarCoordinate_polarisedData_local R Q a b
+    · obtain ⟨k, hk⟩ := _root_.GlobalTheory.Mum.TensPol.exists_tauCoord R Q a b
       exact ⟨k, hk, fun e ne => (h ⟨e, ne⟩).elim⟩
   choose k hk hkp using hk0
-  obtain ⟨hs, ha⟩ := GlobalTheory.T.periodScalarCoordinates_symm_bimult_up_to_units R Q k hk
+  obtain ⟨hs, ha⟩ := _root_.GlobalTheory.Mum.TensPolRel.tauCoord_rel R Q k hk
   obtain ⟨ga', a', h'⟩ := GlobalTheory.exists_psiScal R D'
-  obtain ⟨hp, ht⟩ := GlobalTheory.T.tensorData_scalars_mem_maximalIdeal_tendsto_zero R Q.X k hs ha (fun y hy => hkp y y rfl hy) W hW (fun z => a' (xe.symm z))
+  obtain ⟨hp, ht⟩ := _root_.GlobalTheory.Mum.TensPolScal.scalars_tens R Q.X k hs ha (fun y hy => hkp y y rfl hy) W hW (fun z => a' (xe.symm z))
     (fun z => by simpa only [AddEquiv.apply_symm_apply] using GlobalTheory.T.tensorData_psiScalar_eq_unit_mul_prod_periods R Q D' W pr xe w hψ k hk ga' a' h' (xe.symm z))
   refine ⟨fun χ hχ => ?_, fun n => ((ht n).preimage xe.injective.injOn).subset fun χ hχ hm => hχ ?_⟩
   · obtain ⟨s, hs, e⟩ := hp (xe χ) (fun h0 => hχ (xe.map_eq_zero_iff.1 h0))

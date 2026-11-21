@@ -294,9 +294,6 @@ theorem bruhatCell_eq_iff {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)} :
   · intro h
     exact doubleCoset_permGL_injective (mem_doubleCoset_bruhatCell g) h
 
-theorem bruhatCell_permGL (w : Equiv.Perm (Fin n)) : bruhatCell (permGL F w) = w :=
-  bruhatCell_eq_iff.2 (mem_doubleCoset_self _ _ _)
-
 theorem bruhatCell_mul_mul {a b : GL (Fin n) F} (ha : a ∈ borel n F) (hb : b ∈ borel n F)
     (g : GL (Fin n) F) : bruhatCell (a * g * b) = bruhatCell g := by
   rw [bruhatCell_eq_iff]
@@ -537,12 +534,6 @@ theorem eq_of_prod_bottomRows_eq {t t' : Fin n → Fˣ}
   have h2 := prodFrom_eq_mul (F := F) t' x
   rw [hall, h2, hall (x.val + 1)] at h1
   exact Units.ext (mul_right_cancel₀ (prodFrom_ne_zero t' _) h1.symm)
-
-theorem cellMinor_diag_perm (w : Equiv.Perm (Fin n)) (t : Fin n → Fˣ) :
-    cellMinor w (Iwasawa.diagGL F n t * permGL F w) =
-      fun k => ∏ a : Fin (k.val + 1), (t (bottomRows k a) : F) := by
-  have := cellMinor_normalForm w (Iwasawa.unipotent F n).one_mem (Iwasawa.unipotent F n).one_mem t
-  rwa [one_mul, mul_one] at this
 
 theorem cellMinor_mul_mul {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)} (hg : bruhatCell g = w)
     {a b : GL (Fin n) F} (ha : a ∈ Iwasawa.unipotent F n) (hb : b ∈ Iwasawa.unipotent F n) :

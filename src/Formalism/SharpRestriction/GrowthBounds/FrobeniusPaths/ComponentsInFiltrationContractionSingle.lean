@@ -371,12 +371,6 @@ theorem lemma_A3_over_domain (D : Formalism.BasicNotions.D7) (hW : WordValuation
 
 end words
 
-theorem lemma_A3_of_word_bound (D : Formalism.BasicNotions.D7) (hW : WordValuationBounds) (hV : ValuationLemmaField D) (hB : AdmB D) : DefiniteRankOne D := by
-  have h17 : PathBasisOverRing D := hB.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
-  have h18 : FirstLettersLowerSet D := hB.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
-  intro p _ O _ _ _ _ N n _ LL B th M
-  exact ⟨lemma_A3_over_domain LL B D hW hV.1 h17 h18 O th M, lemma_A3_over_field LL B D hW hV.1 h17 h18 (FF O) th M⟩
-
 section rank1
 
 variable {n : ℕ} {P : Type*} [CommRing P]
@@ -1068,7 +1062,5 @@ theorem word_valuation_bounds : WordValuationBounds := by
     exact filtration_bound_later_columns LL (-1) _ _ P.mu c _ (i.val + 1) hout h0 N hN (I c)
 
 end final
-
-theorem prvA3_of_valuationField_of_admB (D : Formalism.BasicNotions.D7) (hV : ValuationLemmaField D) (hB : AdmB D) : DefiniteRankOne D := lemma_A3_of_word_bound D word_valuation_bounds hV hB
 
 end Formalism.MainNotions.LemmaBAlt

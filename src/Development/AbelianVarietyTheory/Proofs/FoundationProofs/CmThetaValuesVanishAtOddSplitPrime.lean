@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.PairingDivisors.StatementH
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaPointsIntegralNormConjugateLawsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaPointsIntegralNormConjugateLaws
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.CoeffSubstInvMemOfTwoLeOrder
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
@@ -154,7 +154,7 @@ end Series
 
 theorem splitZero : ∀ D : D7, GL3Theta.splitZero D := by
   intro D p _ cc δ g hg h2 hs
-  obtain ⟨-, hN, hC⟩ := GlobalTheory.T.cmThetaPoints_integral_norm_conjugate_laws D
+  obtain ⟨-, hN, hC⟩ := _root_.GlobalTheory.CMEndo.endo_all D
   have hα := idem_mem D g.lam h2 hs
   have hok : g.Ok := hg.2.2.2.2
   have h1 := hC p cc δ g hg h2 _ hα

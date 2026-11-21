@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSimultaneousDiagonalisationPosDefHermitianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSimultaneousDiagonalisationPosDefHermitian
 open Filter Topology MeasureTheory GlobalTheory.HSAmp
 open scoped ComplexOrder Matrix
 namespace GlobalTheory.HSAmp
@@ -15,7 +15,7 @@ theorem det_re_le_pow_mul_det_re (ι : Type) [Fintype ι] [DecidableEq ι] (A B 
     (κ : ℝ) (hA : A.PosDef) (hB : B.PosDef)
     (hle : ∀ c : ι → ℂ, (star c ⬝ᵥ A *ᵥ c).re ≤ κ * (star c ⬝ᵥ B *ᵥ c).re) :
     A.det.re ≤ κ ^ Fintype.card ι * B.det.re := by
-  obtain ⟨T, d, hT, hTB, hTA⟩ := GlobalTheory.T.exists_simultaneous_diagonalisation_posDef_hermitian ι B A hB hA.isHermitian
+  obtain ⟨T, d, hT, hTB, hTA⟩ := _root_.GlobalTheory.HSAmp.simultaneous_diagonalisation ι B A hB hA.isHermitian
   have hTu : IsUnit T := (Matrix.isUnit_iff_isUnit_det T).2 hT
   have hinj : Function.Injective T.mulVec := Matrix.mulVec_injective_iff_isUnit.2 hTu
 

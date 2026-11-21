@@ -107,10 +107,6 @@ theorem exists_of₂ (z w : IdeleClassLimit) : ∃ (F : FiniteSubfield) (c d : I
     (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) z w
   exact ⟨F, c, d, rfl, rfl⟩
 
-theorem of_eq_of_iff {F E M : FiniteSubfield} (hF : F ≤ M) (hE : E ≤ M) (x : IdeleClassGroup F.1)
-    (y : IdeleClassGroup E.1) : of F x = of E y ↔ FiniteSubfield.ideleClassMap hF x = FiniteSubfield.ideleClassMap hE y := by
-  rw [← of_ideleClassMap hF x, ← of_ideleClassMap hE y, (of_injective M).eq_iff]
-
 section lift
 
 variable {G : Type*} [CommGroup G] (g : ∀ F : FiniteSubfield, IdeleClassGroup F.1 →* G)
@@ -134,23 +130,7 @@ def lift : IdeleClassLimit →* G where
 theorem lift_of (F : FiniteSubfield) (c : IdeleClassGroup F.1) : lift g compat (of F c) = g F c :=
   rfl
 
-theorem lift_comp_of (F : FiniteSubfield) : (lift g compat).comp (of F) = g F :=
-  MonoidHom.ext fun _ ↦ rfl
-
-theorem lift_unique (φ : IdeleClassLimit →* G) (hφ : ∀ F, φ.comp (of F) = g F) :
-    φ = lift g compat := by
-  ext z
-  obtain ⟨F, c, rfl⟩ := exists_of z
-  rw [lift_of, ← hφ F, MonoidHom.comp_apply]
-
 end lift
-
-@[ext]
-theorem hom_ext {G : Type*} [Monoid G] {φ ψ : IdeleClassLimit →* G}
-    (h : ∀ F : FiniteSubfield, φ.comp (of F) = ψ.comp (of F)) : φ = ψ := by
-  ext z
-  obtain ⟨F, c, rfl⟩ := exists_of z
-  exact DFunLike.congr_fun (h F) c
 
 end IdeleClassLimit
 

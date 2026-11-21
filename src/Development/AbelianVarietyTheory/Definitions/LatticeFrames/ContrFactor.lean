@@ -43,20 +43,6 @@ def SupportAt : Prop :=
 
 variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k)
 
-def ClassAt : Prop :=
-  ∀ j c (H : j + 1 + c = s) (p : ℕ), 1 ≤ p → p ≤ c + 1 → ∀ h : GL (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1)) k,
-    opE S.ψ ν p (om (S.μ (j + 1)) 1 h ((S.T t).Phi j (c + 1) (by omega))) ≠ 0 →
-      ∃ r ∈ R k (XIx (Fin κ) t (j + 1)) (c + 1) p, ∃ u ∈ stabLat ((S.T t).bas (j + 1) (c + 1) (by omega)), h = r * u
-
-def CosetAt : Prop :=
-  ∀ j c (H : j + 1 + c = s) (p : ℕ), 1 ≤ p → p ≤ c + 1 → ∀ h : GL (XIx (Fin κ) t (j + 1) ⊕ Fin (c + 1)) k,
-    opE S.ψ ν p (om (S.μ (j + 1)) 1 h ((S.T t).Phi j (c + 1) (by omega))) ≠ 0 →
-      ∃ r ∈ R k (XIx (Fin κ) t (j + 1)) (c + 1) p, ∃ u ∈ ((S.T t).lev (j + 1) (c + 1) (by omega)).J, h = r * u
-
-def SamePos : Prop :=
-  ∀ j c (H : j + 1 + c = s) (p : ℕ), 1 ≤ p → p ≤ c → p ≤ S.ρ → ∃ C : ℝ, 0 < C ∧
-    opE S.ψ ν (p + 1) ((S.T t).Phi j (c + 1) (by omega)) = (C : ℂ) • opE S.ψ ν p ((S.T t).Phi j (c + 1) (by omega))
-
 open Classical in
 
 def PureCol : Prop :=

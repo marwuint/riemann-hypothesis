@@ -30,14 +30,6 @@ variable {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ}
 
 theorem hG : GlobalFnsSt := GlobalTheory.abelianSchemeLaws_all.1.globalFns
 
-variable (D F k) in
-
-def rigPow := GeneratorPullback.powGen D.P.L _ _ (LB.pullGen D.P.L _ _ D.rig (toUnit (TF (R := R) F)).left) k
-
-def LineCorr {b : TF (R := R) F ⟶ D.P.A} (t : LineGen D F k b)
-    (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F b) (DegPre.lineε k))) : Prop :=
-  LB.Gen.Corr D.P.L _ _ _ _ w (LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ t.1) (rigPow D F k))
-
 theorem phiRel_total (hB : D.TauBimult) (q : QkPt D F k)
     {w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F q.g.b) (DegPre.lineε k))} (hw : w.IsGen) (s : Fam D F k) :
     ∃ s', PhiRel D F k q w s s' :=
@@ -60,12 +52,5 @@ theorem weilQkIs_of_equiv (hB : D.TauBimult) {p p' q q' : QkPt D F k} (h : QkPt.
   exact H v v' hv hv' s s₁ s₂ s₃ s₄ ((e' _ _).1 h₁) ((e _ _).1 h₂) ((e _ _).1 h₃) ((e' _ _).1 h₄)
 
 variable {P : PolAV (Spec (CommRingCat.of (FractionRing R)))} {E : SecA F P k → Fam D F k → Prop}
-
-section Unif
-
-variable {I : Ideal R} {Dd : DegData R I} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
-  (U : Unif I Dd P G)
-
-end Unif
 
 end GlobalTheory.PhiOperatorCompare

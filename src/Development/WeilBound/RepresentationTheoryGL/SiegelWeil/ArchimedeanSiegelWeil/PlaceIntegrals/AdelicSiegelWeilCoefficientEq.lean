@@ -1,19 +1,21 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramNear
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitHermOfDet
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSiegelWeilUnramifiedMeasureStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanSiegelWeilMeasureStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductAlmostAllStandardStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorizableSiegelWeilFiniteSetStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilConvergentRangeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSiegelWeilUnramifiedMeasure
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanSiegelWeilMeasure
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerProductAlmostAllStandard
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorizableSiegelWeilFiniteSet
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilConvergentRange
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaPartD
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilProductOverPlacesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBruhatIntegrableAnyHaarStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianEulerProductStandardStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FubiniFourierHermitianIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeGramIntegralAlmostAllStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilProductOverPlaces
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBruhatIntegrableAnyHaar
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianEulerProductStandard
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FubiniFourierHermitianIntegral
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeGramIntegralAlmostAll
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.HermitianLatticeMemIffEntries
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory
@@ -130,10 +132,10 @@ set_option maxHeartbeats 600000 in
 theorem coefS_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ dx : Measure (Fin n → Fin M → AF F ⊗[F] E), SdW F E σ M J (AF F) ψ n dx → ∀ db : Measure (HermR (AF F) σ n), SdHerm F E σ (AF F) ψ n db → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lam v)) → ∀ (minf : HermR (Ainf F) σ n → Measure (Fin n → Fin M → Ainf F ⊗[F] E)), IsGramFibFree (Ainf F) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n) minf → ∀ (m : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFibFree (Fv F v) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b (lam v) n) (m v)) → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a c, σ (T c a) = T a c), ∃ S₁ : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)), ∀ S, S₁ ⊆ S → ∀ φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, GlobalTheory.Published.SiegelOneVector.IsSchwartzArch φ → ∀ A : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Set (Fin n → Fin M → Fv F v ⊗[F] E), (∀ v, IsCompact (A v) ∧ IsOpen (A v)) → (∀ v, v ∉ S → A v = latV b v) → coefS σ J ψ dx db (pureN φ A) T b S = (∫ X, φ X ∂(minf (hermOf (Ainf F) σ T hT))) * ∏ v ∈ S, ((m v (hermOf (Fv F v) σ T hT) (A v)).toReal : ℂ) := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn h2n ψ hψ dx hdx db hdb d b laminf lam hinf hlam minf hminf m hm T hT
   classical
-  obtain ⟨hEu, hlat⟩ := GlobalTheory.T.siegel_weil_product_over_places F E σ hCM M J hJ n hn h2n ψ hψ dx hdx d b laminf lam hinf hlam
-  obtain ⟨S₀, hS₀⟩ := GlobalTheory.T.euler_product_almost_all_standard F E M n d b dx 1 _ _ hEu
-  obtain ⟨S₁, hS₁⟩ := GlobalTheory.T.hermitian_euler_product_standard F E σ hCM n hn ψ hψ db hdb d b laminf lam hinf hlam
-  have hq := GlobalTheory.T.lattice_gram_integral_almost_all F E σ hCM M J hJ n d b T hT
+  obtain ⟨hEu, hlat⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.DxN.selfDual_isEulerProd_n F E σ hCM M J hJ n hn h2n ψ hψ dx hdx d b laminf lam hinf hlam
+  obtain ⟨S₀, hS₀⟩ := _root_.GlobalTheory.CompanionTheory.WhitFree.Euler.integrable_integral_pureN F E M n d b dx 1 _ _ hEu
+  obtain ⟨S₁, hS₁⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.TestDeg.exists_test_approx F E σ hCM n hn ψ hψ db hdb d b laminf lam hinf hlam
+  have hq := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.Grams.sub_gramH_mem_latH F E σ hCM M J hJ n d b T hT
   have hlc := GlobalTheory.T.hermitian_lattice_mem_iff_entries F E σ hCM n d b
   have hqf := Filter.eventually_cofinite.1 hq
   have hlf := Filter.eventually_cofinite.1 hlc
@@ -152,19 +154,19 @@ theorem coefS_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     exact hv (hS (by simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq]; exact Or.inr hc))
   obtain ⟨ρ, U, hρ, hρs, hU, hUs, hUpos, hI, hc, hbd, hlim⟩ := hS₁ S hS1
   have hΦSB : GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (pureN φ A) :=
-    GlobalTheory.T.factorizable_siegel_weil_finite_set F E σ hCM M J hJ n hn h2n d b S φ A hφ hA hAl
-  have hΦdx : Integrable (pureN φ A) dx := GlobalTheory.T.schwartz_bruhat_integrable_any_haar F E σ hCM M n dx hdx.1 _ hΦSB
+    _root_.GlobalTheory.CompanionTheory.WhitFree.pureN_isSchwartzBruhat F E σ hCM M J hJ n hn h2n d b S φ A hφ hA hAl
+  have hΦdx : Integrable (pureN φ A) dx := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.SBInt.integrable_isSchwartzBruhat_tuple F E σ hCM M n dx hdx.1 _ hΦSB
   have hstar : Integrable (starN σ J ψ dx (pureN φ A)) db :=
-    GlobalTheory.T.siegel_weil_convergent_range F E σ hCM M J hJ n h2n ψ hψ dx hdx db hdb _ hΦSB
+    _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.integrable_starN F E σ hCM M J hJ n h2n ψ hψ dx hdx db hdb _ hΦSB
   have hsd := hdx.1
   have hdb1 := hdb.1
   haveI : SFinite dx := by infer_instance
   haveI : SFinite db := sfinite_herm hCM db hdb1
   set cI : HermR (Ainf F) σ n := hermOf (Ainf F) σ T hT with hcI
-  have hInf := GlobalTheory.T.archimedean_siegel_weil_measure F E σ hCM M J hJ n hn h2n d b laminf hinf minf hminf cI φ hφ
+  have hInf := _root_.GlobalTheory.CompanionTheory.WhitFree.AvgInf.avgInf_tendsto F E σ hCM M J hJ n hn h2n d b laminf hinf minf hminf cI φ hφ
   obtain ⟨hφm, -, hInf⟩ := hInf
   have hInf := hInf ρ hρ hρs
-  have hV0 := fun v => GlobalTheory.T.local_siegel_weil_unramified_measure F E σ hCM M J hJ n hn h2n d b v (lam v) (hlam v) (m v) (hm v)
+  have hV0 := fun v => _root_.GlobalTheory.CompanionTheory.AvgFree.avgFree_tendsto F E σ hCM M J hJ n hn h2n d b v (lam v) (hlam v) (m v) (hm v)
     (hermOf (Fv F v) σ T hT) (A v) (hA v).1 (hA v).2
   have hV := fun v => (hV0 v).2.2 (fun k => U k v) (fun k => hU k v) (hUs v)
   have hρpos : ∀ k, 0 < ∫ y, ρ k y ∂(GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n) := fun k => (hρ k).2.2.2
@@ -173,7 +175,7 @@ theorem coefS_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     rw [hc k]
     refine mul_ne_zero (by exact_mod_cast (hρpos k).ne') (Finset.prod_ne_zero_iff.2 fun v _ => ?_)
     exact_mod_cast (hUpos k v).ne'
-  have hfub := fun k => GlobalTheory.T.fubini_fourier_hermitian_integral F E σ M J hJ n hCM ψ hψ dx db inferInstance inferInstance _ hΦdx
+  have hfub := fun k => _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.fubini_starN_fouH F E σ M J hJ n hCM ψ hψ dx db inferInstance inferInstance _ hΦdx
       (GlobalTheory.CompanionTheory.SiegelND.Coef.testH σ b (ρ k) S (U k)) (hI k).1 (hI k).2 T hT
   have hchi : Continuous (GlobalTheory.CompanionTheory.SiegelND.Coef.chiT σ ψ T) := (hfub 0).1
   have hφ'm : ∀ k, Measurable (fun X => φ X * (gramTest (Ainf F) σ J cI (ρ k) X : ℂ)) := by

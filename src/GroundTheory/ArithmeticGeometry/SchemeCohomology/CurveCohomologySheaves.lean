@@ -47,11 +47,6 @@ lemma mem_pointSubgroup_iff (D : WeilDivisor X) (x : X) (f : X.functionField) :
     exact ⟨fun hf _ => hf, fun hf => hf h⟩
   · exact ⟨fun _ h' => absurd h' h, fun _ => AddSubgroup.mem_top f⟩
 
-lemma mem_pointSubgroup_primeDivisor (D : WeilDivisor X) (Z : PrimeDivisor X)
-    (f : X.functionField) : f ∈ pointSubgroup D Z.point ↔ f ∈ Z.divisorSubgroup D := by
-  rw [mem_pointSubgroup_iff, PrimeDivisor.mem_divisorSubgroup]
-  exact ⟨fun hf => hf Z.2, fun hf _ => hf⟩
-
 end Local
 
 section Finite

@@ -3,9 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsLeadOfUnif
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Uniformization.SeriesFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PtR
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicalEvenCharacterLeadingTermsMemMaximalIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEvenCubicIntegralReadingOfTrivialisationsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyTranslatedMembersLeadingTimesIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicalEvenCharacterLeadingTermsMemMaximalIdeal
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEvenCubicIntegralReadingOfTrivialisations
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyTranslatedMembersLeadingTimesIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEvenCubicUnitMultipleFractionRingStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsFamRep
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsTorusAndQuotientHom
@@ -102,7 +104,7 @@ theorem core (hR : Base R) (D : DegData R (maximalIdeal R)) (κ : D.toPre.X → 
       have hmu : mu ≠ 0 := by
         rintro rfl
         exact hβ (by simp)
-      obtain ⟨f, hf1, hf2⟩ := GlobalTheory.T.thetaFamily_translatedMembers_leading_times_integral R hR D κ hκ k hk α b F hb mu (r mu) (hr mu hmu).1
+      obtain ⟨f, hf1, hf2⟩ := _root_.GlobalTheory.ThFam.member_integral R hR D κ hκ k hk α b F hb mu (r mu) (hr mu hmu).1
       refine ⟨f, hf1, fun _ => ⟨hf2 0 (by simpa using (hr mu hmu).2), fun e he => ⟨mu, rfl, ?_⟩⟩⟩
       exact key mu hmu e (fun h => he (hf2 e h))
     · push_neg at hc
@@ -139,7 +141,7 @@ theorem exists_intFam_lead : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRi
   intro R _ _ _ hR D
   haveI := hR.1.1
   haveI := hR.1.2.2.1
-  obtain ⟨κ, hκ, hev, hcub, hpos, htend⟩ := GlobalTheory.T.exists_even_cubic_integral_reading_of_trivialisations R hR D
+  obtain ⟨κ, hκ, hev, hcub, hpos, htend⟩ := _root_.GlobalTheory.ThFamRead.exists_reading R hR D
   obtain ⟨κ', hev', hcub', hu⟩ := GlobalTheory.T.exists_even_cubic_unit_multiple_fractionRing R D.toPre.X κ hev hcub
   have hu0 := hu
   choose u hu' using hu0
@@ -152,7 +154,7 @@ theorem exists_intFam_lead : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRi
     simp only [add_zero] at this
     exact mul_eq_left.1 this
   refine ⟨fun α => ?_, fun k hk b => ?_⟩
-  · obtain ⟨k₁, H⟩ := GlobalTheory.T.cubical_even_character_leading_terms_mem_maximalIdeal R D.toPre.X κ' hev' hcub' hpos' α
+  · obtain ⟨k₁, H⟩ := _root_.GlobalTheory.LeadTerm.lead_mem R D.toPre.X κ' hev' hcub' hpos' α
     exact ⟨max k₁ 1, fun k hk b => core hR D κ hκ κ' hu k (le_of_max_le_right hk) α
       (H k (le_of_max_le_left hk)).1 (H k (le_of_max_le_left hk)).2 b⟩
   · have hl : ∀ mu, lead κ' k 0 mu = κ' mu ^ k := fun mu => by

@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CollSBound
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LoopEvaluationThresholdZero
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.DegenerateConstant
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LoopTerm
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PairAbsCorankGeTwoLeSumCorankClassesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CorankSumsBoundWithExpLossStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CorankSizeHypothesisExplicitConstantSiegelMassStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PairAbsCorankGeTwoLeSumCorankClasses
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CorankSumsBoundWithExpLoss
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CorankSizeHypothesisExplicitConstantSiegelMass
 open scoped Classical
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.PackageTie2 Formalism.L2.SG.TermTieOf GlobalTheory.Core.Deg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -20,14 +20,14 @@ theorem collS_of_rowBounds : Formalism.HermitianLatticesTheory.SiegelMassRatio �
     have h2 : (3 : ℝ) ≤ Real.pi := Real.pi_gt_three.le
     nlinarith
   have hC1 : (1 : ℝ) ≤ C := by nlinarith
-  obtain ⟨K₀, hK⟩ := GlobalTheory.T.corankSums_bound_with_expLoss C hC1
+  obtain ⟨K₀, hK⟩ := _root_.GlobalTheory.Core.Deg.corankSums_expLoss C hC1
   refine ⟨max K₀ 4, ?_⟩
   intro D large₂ X Y hF hI u T Z C' Cl Cg cb Cu cT C0 hC' hCl hH hCc hAbs hTie hFo hn hd
   have hK₀ : K₀ ≤ C' := le_trans (le_max_left _ _) hC'
   have hC'1 : (1 : ℝ) ≤ C' := by linarith [le_max_right K₀ 4]
   have hCl4 : (4 : ℝ) ≤ Cl := le_trans (le_max_right _ _) hCl
   have hHy := Formalism.MainNotions.count_hypotheses_diagonal_words D large₂ C' Cl Cg cb Cu cT CT C0 1 hH.2.1 hH.1 hH.2.2 (by linarith) hC'1 le_rfl u
-  have hXi := GlobalTheory.T.corankSizeHypothesis_explicitConstant_siegelMass hS C hC D large₂ u u C' Cl Cg cb Cu cT CT C0 1 (by linarith) hHy
+  have hXi := _root_.GlobalTheory.Core.Deg.xiSizes_explicit hS C hC D large₂ u u C' Cl Cg cb Cu cT CT C0 1 (by linarith) hHy
   have hP := Formalism.L2.SG.LoopsCut.params_at hH X u hCl4 hCT hC1 hK₀
   have hb := Formalism.MainNotions.BridgeLemma.d_two_le_b D large₂
   have hP1 : Formalism.HermitianLatticeCounting.LatticeSumBounds.Params C K₀ D.R.k (2 * D.R.rS + 2) D.R.f large₂.sc.b (X.B.g : ℝ) D.host.v
@@ -64,7 +64,7 @@ theorem collS_of_rowBounds : Formalism.HermitianLatticesTheory.SiegelMassRatio �
       (Formalism.L2.SG.LoopTieOf.classS_le T hJ hW hFC Z C hn hd s h2 hk)
     rw [hm, ← hg] at base
     exact base
-  have habs := GlobalTheory.T.pairAbs_corank_ge_two_le_sum_corankClasses _ _ _ _ _ (Y.tO u u) D.R.k _ hAbs
+  have habs := _root_.GlobalTheory.Core.Deg.pairAbs_big_le_sum_classes _ _ _ _ _ (Y.tO u u) D.R.k _ hAbs
     (fun p _ => Formalism.L2.SG.LoopsCut.corank_le_k Y u u p.1 p.2) hcls
   have hdd : ddC X Y u u = (D.duS u : ℝ) * BridgeLemma.rDD D u := Formalism.L2.SG.LoopTieOf.ddC_eq hCc u u
   have hdu : duC X Y u = (D.duS u : ℝ) := hCc.2.2.1 u

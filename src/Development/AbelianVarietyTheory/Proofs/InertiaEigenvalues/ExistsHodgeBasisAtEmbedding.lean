@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAdaptedO
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BdRFiltrationKerThetaGeneratorFacts
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PhiSTmul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsExtFixing
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorDeRhamCoordMulGaloisActionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorDeRhamCoordMulGaloisAction
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PhiKernelKillingElementStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardEqOfLinIndepSpanningDeRhamStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardEqOfLinIndepSpanningDeRham
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HodgeBasisOfAdaptedInvariantFamilyStatement
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc GlobalTheory.Pst GlobalTheory.BKLim GlobalTheory.Cong Matrix
 open scoped Formalism.Per NNReal
@@ -23,7 +23,7 @@ theorem exists_hodge_at_embedding : ∀ (l : ℕ) [Fact l.Prime] (K L : FinExt l
   intro l _ K L P AI T C hC ξ hξ a r R hR hDR τ σ hσ
   haveI := K.2
   haveI := L.2
-  haveI := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K L (Fin a → ↥L.1) R).1
+  haveI := (_root_.GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K L (Fin a → ↥L.1) R).1
   obtain ⟨m, d, k, hA⟩ := GlobalTheory.DRFil.exists_adapted (P.PD K) (GlobalTheory.DRFil.isField_dR T) R
     (GlobalTheory.DRFil.filSpans T K L R hDR) τ
   obtain ⟨K', hKK', hK'⟩ := exists_ext_fixing l K L σ
@@ -64,11 +64,11 @@ theorem exists_hodge_at_embedding : ∀ (l : ℕ) [Fact l.Prime] (K L : FinExt l
       ((fun g => (r g).val.map fun x => σ (x : Om l)) g).map (algebraMap (Om l) P.R.BdR) *ᵥ
         (fun j => P.actQdR (g : GQ l) (w i j)) = w i := by
     intro g hg i
-    have h1 := GlobalTheory.T.tensorDeRhamCoordMul_galois_action l P K L σ a r R hR g (fun y => hK' g hg y) (d i)
+    have h1 := _root_.GlobalTheory.HodgeAt.PhiS_act l P K L σ a r R hR g (fun y => hK' g hg y) (d i)
     rw [(GlobalTheory.DRFil.mem_DdR (P.PD K) R _).1 (hA.mem i).1.1 g] at h1
     rw [Matrix.map_map]
     exact h1.symm
-  have hma := GlobalTheory.T.card_eq_of_linIndep_spanning_deRham l P AI T a m w hind (fun j => (hspan j).imp fun u hu => hu.2)
+  have hma := _root_.GlobalTheory.card_eq_of_indep_spans_dR l P AI T a m w hind (fun j => (hspan j).imp fun u hu => hu.2)
   subst hma
   obtain ⟨H, hH⟩ := GlobalTheory.T.hodge_basis_of_adapted_invariant_family l P AI T C hC ξ hξ K K' m _ w k hfil hspan hinv
   exact ⟨K', H, hKK', fun n => by rw [hH n, hA.multV_eq]⟩

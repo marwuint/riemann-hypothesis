@@ -87,47 +87,6 @@ def vΩ : AddValuation (Om l) (WithTop ℚ) :=
 
 theorem vΩ_apply (x : Om l) : vΩ l x = vfun x := rfl
 
-theorem vΩ_of_ne {x : Om l} (hx : x ≠ 0) : vΩ l x = (vq x : WithTop ℚ) := vfun_of_ne hx
-
-theorem le_vΩ_iff (q : ℚ) (x : Om l) : (q : WithTop ℚ) ≤ vΩ l x ↔ ‖x‖ ≤ (l : ℝ) ^ (-(q : ℝ)) := by
-  by_cases hx : x = 0
-  · subst hx
-    rw [vΩ_apply, vfun_zero, norm_zero]
-    exact ⟨fun _ => (Real.rpow_pos_of_pos (by linarith [one_lt_l (l := l)]) _).le, fun _ => le_top⟩
-  · rw [vΩ_of_ne hx, WithTop.coe_le_coe, norm_eq_rpow hx, Real.rpow_le_rpow_left_iff one_lt_l,
-      neg_le_neg_iff]
-    exact_mod_cast Iff.rfl
-
-theorem vΩ_eq_iff (q : ℚ) (x : Om l) : vΩ l x = (q : WithTop ℚ) ↔ ‖x‖ = (l : ℝ) ^ (-(q : ℝ)) := by
-  constructor
-  · intro h
-    have hx : x ≠ 0 := by
-      rintro rfl
-      rw [vΩ_apply, vfun_zero] at h
-      exact WithTop.top_ne_coe h
-    rw [vΩ_of_ne hx, WithTop.coe_inj] at h
-    rw [norm_eq_rpow hx, h]
-  · intro h
-    have hx : x ≠ 0 := by
-      rintro rfl
-      rw [norm_zero] at h
-      exact (Real.rpow_pos_of_pos (by linarith [one_lt_l (l := l)]) _).ne h
-    rw [vΩ_of_ne hx, vq_eq_of_norm h]
-
-theorem norm_l : ‖((l : ℕ) : Om l)‖ = (l : ℝ)⁻¹ := by
-  have h : ((l : ℕ) : Om l) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l]) := by simp
-  rw [h, PadicAlgCl.norm_extends, Padic.norm_p]
-
-theorem vΩ_l : vΩ l ((l : ℕ) : Om l) = 1 := by
-  have : vΩ l ((l : ℕ) : Om l) = ((1 : ℚ) : WithTop ℚ) := by
-    rw [vΩ_eq_iff, norm_l]
-    simp [Real.rpow_neg_one]
-  rw [this]; rfl
-
-theorem zero_le_vΩ_iff (x : Om l) : 0 ≤ vΩ l x ↔ ‖x‖ ≤ 1 := by
-  have := le_vΩ_iff 0 x
-  simpa using this
-
 variable (l) in
 
 def v (LL : FinExt l) : AddValuation ↥LL.1 (WithTop ℚ) := (vΩ l).comap (algebraMap ↥LL.1 (Om l))

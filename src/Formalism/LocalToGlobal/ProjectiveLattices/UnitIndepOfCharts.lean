@@ -36,10 +36,6 @@ theorem wtField_of_borChart (h : BorChartF Xo c) : WtField Xo c := by
 theorem unitIndep_of_charts (h : BorChartF Xo c) (hL : IntLatU Xo c) : UnitIndep Xo c :=
   unitIndep_of (wtField_of_borChart h) (intDiagUnit_of hL)
 
-theorem exist3_of (hC : FrChartF Xo c) (hB : BorChartF Xo c) (hL : IntLatU Xo c) :
-    EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ∧ WtField Xo c ∧ IntDiagUnit Xo c :=
-  ⟨evalWD_fr hC, wtField_of_borChart hB, intDiagUnit_of hL⟩
-
 end Proofs
 
 end Formalism.L2.Pj

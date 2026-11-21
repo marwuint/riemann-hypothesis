@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DelOperatorAtDbarOperatorAtLeibnizOfCommute
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFormOneAddMulSmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DdcFormLocFormChernFormula
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPosFrameQuotIn
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HermitianCurvatureForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubquotientCurvatureStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DelDbarAdditiveComplexLinearOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasIsFormDelDbarSmooth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasIsFormPullbackHolomorphic
@@ -77,9 +79,6 @@ theorem hasDeg_bas (S : Finset (Fin (n + n))) : HasDeg S.card (bas n S) := fun T
   split_ifs at hT with h
   exacts [h ▸ rfl, (hT rfl).elim]
 
-theorem hasDeg_algebraMap (c : ℂ) : HasDeg 0 (algebraMap ℂ (Alt n) c) := by
-  rw [hasDeg_iff_scale, AlgHom.commutes, pow_zero, one_smul]
-
 theorem HasDeg.eq_algebraMap {α : Alt n} (h : HasDeg 0 α) : α = algebraMap ℂ _ ((bas n).repr α ∅) := by
   rw [Algebra.algebraMap_eq_smul_one, ← bas_empty]
   refine (bas n).ext_elem fun S => ?_
@@ -99,25 +98,6 @@ theorem scale_ι (t : ℂ) (u : Fin n ⊕ Fin n → ℂ) :
 
 theorem hasDeg_ι (u : Fin n ⊕ Fin n → ℂ) : HasDeg 1 (ExteriorAlgebra.ι ℂ u) := by
   rw [hasDeg_iff_scale, scale_ι, pow_one]
-
-theorem hasDeg_iff_mem (k : ℕ) (α : Alt n) : HasDeg k α ↔ α ∈ ⋀[ℂ]^k (Fin n ⊕ Fin n → ℂ) := by
-  constructor
-  · intro h
-    rw [← (bas n).sum_repr α]
-    refine Submodule.sum_mem _ fun S _ => ?_
-    by_cases hS : (bas n).repr α S = 0
-    · simp [hS]
-    · refine Submodule.smul_mem _ _ ?_
-      rw [← h S hS, bas, ExteriorAlgebra.basis_apply]
-      exact ExteriorAlgebra.ιMulti_range _ _ ⟨_, rfl⟩
-  · intro h
-    induction h using Submodule.pow_induction_on_left' with
-    | algebraMap r => exact hasDeg_algebraMap r
-    | add x y i _ _ hx hy => exact hx.add hy
-    | mem_mul u hu i x _ hx =>
-      obtain ⟨u, rfl⟩ := hu
-      rw [Nat.succ_eq_one_add]
-      exact (hasDeg_ι u).mul hx
 
 theorem repr_degPart (k : ℕ) (α : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (degPart n k α) S = if S.card = k then (bas n).repr α S else 0 := by
@@ -182,38 +162,6 @@ theorem ι_mul_eq (u : Fin n ⊕ Fin n → ℂ) (α : Alt n) :
   | mul a b ha hb => rw [← mul_assoc, ha, mul_assoc, hb, map_mul, mul_assoc]
   | add a b ha hb => rw [mul_add, ha, hb, map_add, add_mul]
 
-theorem HasDeg.mul_comm {k l : ℕ} {α β : Alt n} (hα : HasDeg k α) (hβ : HasDeg l β) :
-    α * β = (-1 : ℂ) ^ (k * l) • (β * α) := by
-  rw [hasDeg_iff_mem] at hα
-  induction hα using Submodule.pow_induction_on_left' with
-  | algebraMap r => rw [zero_mul, pow_zero, one_smul, Algebra.commutes]
-  | add x y i _ _ hx hy => rw [add_mul, mul_add, hx, hy, smul_add]
-  | mem_mul u hu i x _ hx =>
-    obtain ⟨u, rfl⟩ := hu
-    rw [mul_assoc, hx, mul_smul_comm, ← mul_assoc, ι_mul_eq, hβ.par_eq, smul_mul_assoc, smul_mul_assoc, smul_smul,
-      ← pow_add, mul_assoc, Nat.succ_mul]
-
-theorem mul_mem_holGe {p q : ℕ} {α β : Alt n} (hα : α ∈ holGe n p) (hβ : β ∈ holGe n q) : α * β ∈ holGe n (p + q) := by
-  have key (S : Finset (Fin (n + n))) : bas n S * β ∈ holGe n (holCount S + q) := by
-    induction S using Finset.induction_on with
-    | empty => simpa [bas_empty, holCount] using hβ
-    | insert a s ha ih =>
-      obtain ⟨ε, e⟩ := bas_insert_eq ha
-      rw [e, holCount_insert ha, Units.smul_def, smul_mul_assoc, mul_assoc, add_right_comm]
-      exact zsmul_mem (bas_single_mul_mem a ih) _
-  induction hα using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨S, hS, rfl⟩ := hx
-    exact holGe_anti (Nat.add_le_add_right hS _) (key S)
-  | zero => simp
-  | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
-  | smul c x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c hx
-
-theorem holCount_le (S : Finset (Fin (n + n))) : holCount S ≤ n := by
-  refine (Finset.card_le_card_of_injOn (t := Finset.range n) Fin.val (fun a ha => ?_)
-    Fin.val_injective.injOn).trans_eq (Finset.card_range n)
-  simpa using (Finset.mem_filter.1 ha).2
-
 end Point
 
 section Coord
@@ -241,20 +189,6 @@ theorem dirD_sum_mul (i : Fin n ⊕ Fin n) {ι : Type} [Fintype ι] {f : ι → 
 theorem dirD_zero (i : Fin n ⊕ Fin n) : dirD i (fun _ => 0) v = 0 := by
   rcases i with a | a <;> simp [dirD]
 
-theorem dirD_comm {f : V n → ℂ} (hf : ContDiffAt ℝ 2 f v) (i j : Fin n ⊕ Fin n) :
-    dirD i (dirD j f) v = dirD j (dirD i f) v := by
-  rcases i with a | a <;> rcases j with b | b
-  · exact SecForm.DdcLoc.del_del_comm hf _ _
-  · exact (ddbar_eq_del_dbar hf _ _).symm.trans (ddbar_eq_dbar_del hf _ _)
-  · exact (ddbar_eq_dbar_del hf _ _).symm.trans (ddbar_eq_del_dbar hf _ _)
-  · exact SecForm.DdcLoc.dbar_dbar_comm hf _ _
-
-theorem differentiableAt_dirD {f : V n → ℂ} (hf : ContDiffAt ℝ 2 f v) (i : Fin n ⊕ Fin n) :
-    DifferentiableAt ℝ (dirD i f) v := by
-  rcases i with a | a
-  · exact (SecForm.DdcLoc.contDiffAt_del_at (j := 1) hf (by norm_num) _).differentiableAt one_ne_zero
-  · exact (SecForm.DdcLoc.contDiffAt_dbar_at (j := 1) hf (by norm_num) _).differentiableAt one_ne_zero
-
 theorem repr_linear (L : Alt n →ₗ[ℂ] Alt n) (α : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (L α) S = ∑ T, (bas n).repr (L (bas n T)) S • (bas n).repr α T := by
   conv_lhs => rw [← (bas n).sum_repr α]
@@ -267,48 +201,6 @@ theorem coefwise_dirD_linear (i : Fin n ⊕ Fin n) (L : Alt n →ₗ[ℂ] Alt n)
   rw [FormMul.repr_coefwise, repr_linear L (coefwise _ F)]
   simp only [repr_linear L (F _), FormMul.repr_coefwise]
   exact dirD_sum_mul i hF _
-
-theorem opAt_opAt (s t : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
-    (hF : ∀ S, ContDiffAt ℝ 2 (fun x => (bas n).repr (F x) S) v) :
-    opAt s (opAt t F) v = ∑ a, ∑ b, ExteriorAlgebra.ι ℂ (Pi.single (s a) 1) * ExteriorAlgebra.ι ℂ (Pi.single (t b) 1) *
-      coefwise (fun f => dirD (s a) (dirD (t b) f) v) F := by
-  have hd (b : Fin n) (S) : DifferentiableAt ℝ (fun x => (bas n).repr (coefwise (fun f => dirD (t b) f x) F) S) v := by
-    simp only [FormMul.repr_coefwise]
-    exact differentiableAt_dirD (hF S) _
-  refine Finset.sum_congr rfl fun a _ => ?_
-  have e : opAt t F = fun x => ∑ b, LinearMap.mulLeft ℂ (ExteriorAlgebra.ι ℂ (Pi.single (t b) 1))
-    (coefwise (fun f => dirD (t b) f x) F) := rfl
-  rw [e, coefwise_sum_of, Finset.mul_sum]
-  · refine Finset.sum_congr rfl fun b _ => ?_
-    rw [coefwise_dirD_linear _ _ (hd b), LinearMap.mulLeft_apply, mul_assoc]
-    congr 2
-    refine (bas n).ext_elem fun S => ?_
-    simp only [FormMul.repr_coefwise]
-  · intro S
-    have := dirD_sum_mul (s a) (v := v) (f := fun b x => (bas n).repr (LinearMap.mulLeft ℂ
-      (ExteriorAlgebra.ι ℂ (Pi.single (t b) 1)) (coefwise (fun f => dirD (t b) f x) F)) S) (fun b => by
-        simp only [repr_linear (LinearMap.mulLeft ℂ _) (coefwise _ F)]
-        exact DifferentiableAt.fun_sum fun T _ => (hd b T).fun_const_smul _) 1
-    simpa only [Pi.one_apply, one_smul] using this
-
-theorem opAt_anticomm (s t : Fin n → Fin n ⊕ Fin n) {F : V n → Alt n}
-    (hF : ∀ S, ContDiffAt ℝ 2 (fun x => (bas n).repr (F x) S) v) :
-    opAt s (opAt t F) v + opAt t (opAt s F) v = 0 := by
-  rw [opAt_opAt s t hF, opAt_opAt t s hF, Finset.sum_comm (f := fun a b =>
-    ExteriorAlgebra.ι ℂ (Pi.single (t a) 1) * _ * _), ← Finset.sum_add_distrib]
-  refine Finset.sum_eq_zero fun a _ => ?_
-  rw [← Finset.sum_add_distrib]
-  refine Finset.sum_eq_zero fun b _ => ?_
-  have : coefwise (fun f => dirD (t b) (dirD (s a) f) v) F = coefwise (fun f => dirD (s a) (dirD (t b) f) v) F :=
-    (bas n).ext_elem fun S => by rw [FormMul.repr_coefwise, FormMul.repr_coefwise, dirD_comm (hF S)]
-  rw [this, ← add_mul, ExteriorAlgebra.ι_add_mul_swap, zero_mul]
-
-theorem delAt_dbarAt_sq {F : V n → Alt n} (hF : ∀ S, ContDiffAt ℝ 2 (fun x => (bas n).repr (F x) S) v) :
-    delAt (delAt F) v = 0 ∧ dbarAt (dbarAt F) v = 0 ∧ delAt (dbarAt F) v + dbarAt (delAt F) v = 0 := by
-  have h2 {y : Alt n} (h : y + y = 0) : y = 0 := by
-    rw [← two_smul ℂ] at h
-    exact (smul_eq_zero.1 h).resolve_left two_ne_zero
-  exact ⟨h2 (opAt_anticomm .inl .inl hF), h2 (opAt_anticomm .inr .inr hF), opAt_anticomm .inl .inr hF⟩
 
 theorem delAt_dbarAt_mul {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v)
     (hG : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (G x) S) v) :
@@ -339,18 +231,6 @@ theorem hasDeg_opAt (s : Fin n → Fin n ⊕ Fin n) {k : ℕ} {F : V n → Alt n
   have : (fun x => (bas n).repr (F x) S) = fun _ => 0 := funext fun x => by
     by_contra h'
     exact h (hF x S h')
-  rw [FormMul.repr_coefwise, this, dirD_zero] at hS
-  exact hS rfl
-
-theorem opAt_mem_holGe (s : Fin n → Fin n ⊕ Fin n) {p : ℕ} {F : V n → Alt n} (hF : ∀ x, F x ∈ holGe n p) :
-    opAt s F v ∈ holGe n p := by
-  refine Submodule.sum_mem _ fun a _ => ?_
-  rw [← bas_singleton]
-  refine holGe_anti (Nat.le_add_right _ _) (bas_single_mul_mem _ ((mem_holGe_iff _).2 fun S hS => ?_))
-  by_contra h
-  have : (fun x => (bas n).repr (F x) S) = fun _ => 0 := funext fun x => by
-    by_contra h'
-    exact h ((mem_holGe_iff _).1 (hF x) S h')
   rw [FormMul.repr_coefwise, this, dirD_zero] at hS
   exact hS rfl
 
@@ -443,29 +323,6 @@ variable (A) in
 @[simp] theorem dExt_one : A.dExt 1 = 0 := by
   rw [dExt, (del_dbar_linear M n A).1.1, (del_dbar_linear M n A).1.2, add_zero]
 
-theorem loc_op_eventuallyEq (T : (V n → Alt n) → V n → Alt n) (α : A.Fld) (x : A.Pt) :
-    A.loc (fun y => T (A.loc α y.1.1) y.crd) x.1.1 =ᶠ[𝓝 x.crd] T (A.loc α x.1.1) := by
-  filter_upwards [GlobLin.target_mem_nhds A x] with v hv
-  rw [loc, dif_pos hv]
-  exact congrArg (T _) ((A.e x.1.1).right_inv hv)
-
-theorem del_dbar_sq {α : A.Fld} (hα : A.IsForm α) :
-    A.del (A.del α) = 0 ∧ A.dbar (A.dbar α) = 0 ∧ A.del (A.dbar α) + A.dbar (A.del α) = 0 := by
-  have key (x : A.Pt) : A.del (A.del α) x = 0 ∧ A.dbar (A.dbar α) x = 0 ∧
-      A.del (A.dbar α) x + A.dbar (A.del α) x = 0 := by
-    have h := delAt_dbarAt_sq (v := x.crd) (F := A.loc α x.1.1) fun S =>
-      ((hα.smooth x.1.1 S).contDiffAt (GlobLin.target_mem_nhds A x)).of_le (by norm_cast)
-    have hg := (delAt_dbarAt_linear_local n x.crd).2.2.2.1
-    have h₁ := hg _ _ (loc_op_eventuallyEq delAt α x)
-    have h₂ := hg _ _ (loc_op_eventuallyEq dbarAt α x)
-    exact ⟨h₁.1.trans h.1, h₂.2.trans h.2.1, (congrArg₂ (· + ·) h₂.1 h₁.2).trans h.2.2⟩
-  exact ⟨funext fun x => (key x).1, funext fun x => (key x).2.1, funext fun x => (key x).2.2⟩
-
-theorem dExt_dExt {α : A.Fld} (hα : A.IsForm α) : A.dExt (A.dExt α) = 0 := by
-  obtain ⟨h₁, h₂, h₃⟩ := del_dbar_sq hα
-  rw [dExt.eq_1 A α, dExt_add (A.isForm_del_dbar hα).1 (A.isForm_del_dbar hα).2, dExt, dExt, h₁, h₂, zero_add, add_zero,
-    add_comm, h₃]
-
 theorem del_dbar_mul {α β : A.Fld} (hα : A.IsForm α) (hβ : A.IsForm β) :
     A.del (α * β) = A.del α * β + A.parFld α * A.del β ∧ A.dbar (α * β) = A.dbar α * β + A.parFld α * A.dbar β := by
   have key (x : A.Pt) := delAt_dbarAt_mul (A.loc_diffAt hα x) (A.loc_diffAt hβ x)
@@ -494,14 +351,6 @@ theorem degFld_dExt {α : A.Fld} (hα : A.IsForm α) (k : ℕ) :
   · rw [degFld_apply, dExt_apply, map_add, (degPart_opAt _ k (A.loc_diffAt hα x)).2,
       (degPart_opAt _ k (A.loc_diffAt hα x)).2, add_zero, Pi.zero_apply]
 
-variable (A) in
-
-theorem isDga : GlobalTheory.PD.IsDga A.parForms A.dForms where
-  sg_sg α := Subtype.ext (funext fun x => par_par (α.1 x))
-  d_sg α := Subtype.ext (dExt_parFld α.2)
-  d_mul α β := Subtype.ext (dExt_mul α.2 β.2)
-  d_d α := Subtype.ext (dExt_dExt α.2)
-
 theorem loc_prop {P : Alt n → Prop} (h₀ : P 0) {α : A.Fld} (hα : ∀ x, P (α x)) (i : A.ι) (v : V n) : P (A.loc α i v) := by
   unfold loc
   split_ifs
@@ -521,26 +370,8 @@ theorem IsDeg.degFld_eq {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.degFld k
 theorem IsDeg.parFld_eq {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A.parFld α = (-1 : ℂ) ^ k • α :=
   funext fun x => (hα x).par_eq
 
-theorem IsDeg.mul_comm {k l : ℕ} {α β : A.Fld} (hα : A.IsDeg k α) (hβ : A.IsDeg l β) :
-    α * β = (-1 : ℂ) ^ (k * l) • (β * α) :=
-  funext fun x => (hα x).mul_comm (hβ x)
-
 theorem typeGe_iff {p : ℕ} {α : A.Fld} : A.TypeGe p α ↔ ∀ x, α x ∈ holGe n p :=
   forall_congr' fun x => (mem_holGe_iff (α x)).symm
-
-theorem TypeGe.mul {p q : ℕ} {α β : A.Fld} (hα : A.TypeGe p α) (hβ : A.TypeGe q β) : A.TypeGe (p + q) (α * β) :=
-  typeGe_iff.2 fun x => mul_mem_holGe (typeGe_iff.1 hα x) (typeGe_iff.1 hβ x)
-
-theorem TypeGe.dExt {p : ℕ} {α : A.Fld} (hα : A.TypeGe p α) : A.TypeGe p (A.dExt α) :=
-  typeGe_iff.2 fun x => add_mem (opAt_mem_holGe .inl (loc_prop (zero_mem _) (typeGe_iff.1 hα) x.1.1))
-    (opAt_mem_holGe .inr (loc_prop (zero_mem _) (typeGe_iff.1 hα) x.1.1))
-
-theorem TypeGe.eq_zero {p : ℕ} {α : A.Fld} (hα : A.TypeGe p α) (hp : n < p) : α = 0 :=
-  funext fun x => (bas n).ext_elem fun S => by
-    by_contra h
-    exact ((hα x S (by simpa using h)).trans (holCount_le S)).not_gt hp
-
-theorem isHolo_id : A.IsHolo A id := ⟨continuous_id, fun j i => A.holo j i⟩
 
 variable {A' A''}
 
@@ -575,39 +406,6 @@ theorem dExt_pullback {f : M' → M} (hf : A.IsHolo A' f) {α : A.Fld} (hα : A.
 
 theorem IsDeg.pullback (f : M' → M) {k : ℕ} {α : A.Fld} (hα : A.IsDeg k α) : A'.IsDeg k (A.pullback A' f α) :=
   fun _ => (hα _).pull _
-
-theorem TypeGe.pullback (f : M' → M) {p : ℕ} {α : A.Fld} (hα : A.TypeGe p α) : A'.TypeGe p (A.pullback A' f α) :=
-  typeGe_iff.2 fun _ => pull_mem_holGe _ (typeGe_iff.1 hα _)
-
-theorem pullback_id {α : A.Fld} (hα : A.IsForm α) : A.pullback A id α = α :=
-  funext fun x => (hα.compat x ⟨(_, x.pt), (A.cover x.pt).choose_spec⟩ rfl).symm
-
-theorem pullback_comp {f : M' → M} {g : M'' → M'} (hf : A.IsHolo A' f) (hg : A'.IsHolo A'' g) (α : A.Fld) :
-    A.pullback A'' (f ∘ g) α = A'.pullback A'' g (A.pullback A' f α) := by
-  funext x
-  have hj := (A'.cover (g x.pt)).choose_spec
-  have hi := (A.cover (f (g x.pt))).choose_spec
-  set j := (A'.cover (g x.pt)).choose
-  set i := (A.cover (f (g x.pt))).choose
-  change pull (fderiv ℂ (A.e i ∘ (f ∘ g) ∘ x.ch.symm) x.crd) _ =
-    pull (fderiv ℂ (A'.e j ∘ g ∘ x.ch.symm) x.crd) (pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) (A'.e j (g x.pt))) _)
-  rw [← pull_comp]
-  have hx : x.ch.symm x.crd = x.pt := x.ch.left_inv x.2
-  have hU := x.ch.isOpen_inter_preimage_symm ((A'.e j).open_source.preimage hg.1)
-  have hW := (A'.e j).isOpen_inter_preimage_symm ((A.e i).open_source.preimage hf.1)
-  have hxU : x.crd ∈ x.ch.target ∩ x.ch.symm ⁻¹' (g ⁻¹' (A'.e j).source) :=
-    ⟨x.ch.map_source x.2, by simpa only [Set.mem_preimage, hx] using hj⟩
-  have d₁ := (hg.2 x.1.1 j).differentiableAt (hU.mem_nhds hxU)
-  have d₂ := (hf.2 j i).differentiableAt (hW.mem_nhds (x := A'.e j (g x.pt))
-    ⟨(A'.e j).map_source hj, by simpa only [Set.mem_preimage, (A'.e j).left_inv hj] using hi⟩)
-  have hpt : (A'.e j ∘ g ∘ x.ch.symm) x.crd = A'.e j (g x.pt) := by simp only [Function.comp, hx]
-  have hc := fderiv_comp x.crd (hpt ▸ d₂) d₁
-  rw [hpt] at hc
-  rw [← hc]
-  congr 2
-  refine Filter.EventuallyEq.fderiv_eq (Filter.eventually_of_mem (hU.mem_nhds hxU) fun w hw => ?_)
-  have hw' : g (x.ch.symm w) ∈ (A'.e j).source := hw.2
-  simp only [Function.comp, (A'.e j).left_inv hw']
 
 end HolAtlas
 

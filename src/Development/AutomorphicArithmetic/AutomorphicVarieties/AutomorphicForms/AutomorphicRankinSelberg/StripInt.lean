@@ -41,11 +41,6 @@ def TT (L : ℕ) [NeZero L] (G : (Fin 2 → ZMod L) → ℍ → ℂ) (s : ℝ) :
 def IsCls {L : ℕ} (ψ : DirichletCharacter ℂ L) (F : ℍ → ℂ) (G : (Fin 2 → ZMod L) → ℍ → ℂ) : Prop :=
   ∀ (n : ℕ) (γ : SL(2, ℤ)) (z : ℍ), G (cls L ((n : ℤ) • row γ)) z = ψ (n : ZMod L) * F (γ • z)
 
-example : IsCls (1 : DirichletCharacter ℂ 1) 1 1 := fun _ _ _ => by
-  rw [MulChar.one_apply (isUnit_of_subsingleton _)]; simp
-
-example : Nice 0 := ⟨continuous_const, 0, fun _ _ _ => by simp⟩
-
 def gam (t : ℝ) : ℝ := Real.Gamma t / (4 * Real.pi) ^ t
 
 def VolMap : Prop :=

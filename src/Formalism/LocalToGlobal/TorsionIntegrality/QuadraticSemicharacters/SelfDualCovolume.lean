@@ -18,7 +18,6 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.Cayley
 
 namespace Formalism.L2.Th1.H
 
-theorem unitaryIndex : UnitaryIndex := unitary_index
 theorem phiBasic : PhiBasic := cayleyPhaseBasic
 theorem gaussEighth : GaussEighth := gaussSumEighthPower
 theorem unitaryGauss : UnitaryGauss := UnitaryGauss_of gaussEighth

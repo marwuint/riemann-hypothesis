@@ -405,11 +405,4 @@ theorem Published.PrismaticDieudonneHodge.covariant (h : Published.PrismaticDieu
     (hε : IsPrimitiveRoot (root ε).untilt p) : CovariantDieudonneAt ε :=
   (h p C v O hv ε hε).covariant hv hε
 
-example (h : Published.PrismaticDieudonneHodge) (p : ℕ) [Fact p.Prime] :
-    ∃ (_ : Fact ¬IsUnit ((p : ℕ) : 𝓞_ℂ_[p]))
-      (_ : IsAdicComplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p]) (ε : PreTilt 𝓞_ℂ_[p] p),
-      IsPrimitiveRoot (root ε).untilt p ∧ CovariantDieudonneAt ε := by
-  obtain ⟨h1, h2, ε, hv, hε⟩ := PadicComplexHost.main p
-  exact ⟨h1, h2, ε, hε, h.covariant p ℂ_[p] Valued.v _ hv ε hε⟩
-
 end GlobalTheory

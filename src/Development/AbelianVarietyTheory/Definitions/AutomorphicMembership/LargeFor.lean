@@ -1,9 +1,35 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PeriodComparisonProvisional
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.GeometrySectionsEqRiemannRoch
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTangent
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LinearIndependentOfCutSec
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MSmoothOfWeightIffIsCInf
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClosedPointGeometricFibresFinite
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValAtAlgebraMap
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SumLogEmbeddingAddFinsumLogAdicAbvEqZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDimRingOfIntegers
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocStOfLoc
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.GeoTiedPGraft
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.VarietyWithModels
+import Formalism.LocalToGlobal.LatticeGeometry.ViewsC
+import Formalism.SharpRestriction.Divisibility.PrinLevClass
+import Formalism.SharpRestriction.Divisibility.LatticeTransfer
+import Formalism.SharpRestriction.Divisibility.PlaceRankTwoOne
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
+import Formalism.SharpRestriction.Divisibility.ZetaProductPairs
+import Formalism.SharpRestriction.Divisibility.InnerProductFormulaField
+import Formalism.SharpRestriction.Divisibility.KudlaSiegelWeil
+import Formalism.SharpRestriction.Divisibility.LocalQuadraticParts
+import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.SubsingletonRankIndicatorIff
+import Formalism.SharpRestriction.Divisibility.WeightAlgebra
+import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.WeightFamilies
+import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.LiftErrorLocal
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive
+import Formalism.LocalRingCardinality.DataExtra
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalShimX
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SubRkOfPsiOfEqRkOfCEmb
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalDivX
 import Formalism.LocalToGlobal.LatticeGeometry.GeoTiedP
 
 noncomputable section
@@ -25,13 +51,6 @@ abbrev KitClass (D : D7) : Type 1 :=
 
 variable {D : D7}
 
-def KitClass.Ex (Q : KitClass D) : Prop :=
-  ∀ A N j S κ s L jC, jC.Pinned → ∃ k d, Q A N j S κ s L jC k d
-
-def KitClass.Loc (Q : KitClass D) : Prop :=
-  ∀ A N j S κ s L jC k d, jC.Pinned → Q A N j S κ s L jC k d →
-    ∃ (F : StFam S κ) (cts : Ats S κ), cts.Over jC ∧ LocSt.ofPkg k.pad = locStOf F cts
-
 structure FamOver (Q : KitClass D) (T : Top D) (h : LawsP T) (c : ℕ) : Type 1 where
   F : SrcFam (ambOf T.Q h.pins.1)
   t : ParTie T.Q h.pins.1 F
@@ -52,37 +71,6 @@ structure FamOver (Q : KitClass D) (T : Top D) (h : LawsP T) (c : ℕ) : Type 1 
 
 namespace FamOver
 
-variable {Q : KitClass D} {T : Top D} {h : LawsP T} {c : ℕ} (Φ : FamOver Q T h c)
-
-def fam : ShimFam D (geoTrue D.what₂.LL) (Lv (ambOf T.Q h.pins.1)) := famOf (cutSt _) (resSt _) Φ.k Φ.hg Φ.P
-
-def dH (j : ℕ) : (Φ.fam.Uw j).Comp → D.what₂.Tau → ℝ :=
-  Φ.d _ _ (datW D Φ.F.κg j).two_le (datW D Φ.F.κg j).j_le (datW D Φ.F.κg j).κ
-
-theorem locTie : LocTie h Φ.k := by
-  obtain ⟨I, dat, hI, iW, -, h1, h2, h3⟩ := Φ.prov
-  exact LocTie.localTie_of_provisional (cutSt _) (resSt _) h1 h2 h3
-
-def Reads (X₀ : DivX D)
-    (iM : ∀ j (a : (Φ.fam.Uw j).Comp), (X₀.MjH j).V →ₗ[D.what₂.LL] (geoTrue D.what₂.LL).Fn ((Φ.fam.Uw j).alg.Yv a)) : Prop :=
-  ∀ j, 1 ≤ j → j ≤ D.R.m → (∀ x, (∀ a, iM j a x = 0) → x = 0) ∧
-    ∃ (w : WeightFamilies.Wt D j) (s : Submodule Φ.P.KO (Φ.P.Cusp j w)) (φ : s →ₛₗ[Φ.P.sig0] D.what₂.Mj j),
-      w.n = D.R.nV ∧ Formalism.L2.Geo.wtOf w = DV.kapW D j ∧ Submodule.span ℂ (Set.range φ) = ⊤ ∧
-      (D.what₂.MjLat j).carrier ⊆ Set.range φ ∧
-      (∀ x : s, (x : Φ.P.Cusp j w) ∈ Φ.P.Mlat j w ↔ φ x ∈ (D.what₂.MjLat j).carrier) ∧
-      (∃ vol : ℝ, ∀ x : s, ‖φ x‖ = Real.sqrt (vol * dimKap D j) * Φ.P.l2NormAlt j w Φ.P.sig0 x) ∧
-      ∀ (f : s) x, X₀.jM j x = φ f → ∀ a, iM j a x = Φ.P.cmp j w a f
-
 end FamOver
-
-def IsGeoOf (Q : KitClass D) (J : Core D) (c : ℕ) (X : DivX D) : Prop :=
-  ∃ (T : Top D) (h : LawsP T) (Φ : FamOver Q T h c) (X₀ : DivX D) (iM : _) (hiM : _), T.toCore = J ∧
-    X = GlobalTheory.VarietyModelRecord.record X₀ Φ.fam iM hiM Φ.dH ∧ Φ.Reads X₀ iM ∧ X.vdd = fun p _ => vDiff D.host.E p
-
-def SameSurf (X Y : DivX D) : Prop :=
-  X.Surf = Y.Surf ∧ HEq X.surfCh2 Y.surfCh2 ∧ HEq X.surfDegOm Y.surfDegOm ∧ X.SurfFp = Y.SurfFp ∧ HEq X.surfFpCh2 Y.surfFpCh2
-
-def LargeFor (Q : Par D) (h : Q.PinHost) (c : ℕ) : Prop :=
-  IsLargeFor (ambOf Q h) (D.host.g 0 * D.host.g 1) ∧ IsLargeFor (ambOf Q h) (Nat.lcm (D.host.g 0 * D.host.g 1) (15 ^ c))
 
 end GlobalTheory.ShFam

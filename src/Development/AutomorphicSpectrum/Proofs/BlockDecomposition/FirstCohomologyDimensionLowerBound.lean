@@ -2,10 +2,10 @@ import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.AbelianDeRham.AbelianHodgeDeRham.H1DimGeAbelianDim
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.AbelianSchemeSpreadsOverLocalization
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitelyManySectionsPointsClosedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StalkIdealRepresentsClosedSubschemeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitelyManySectionsPointsClosed
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StalkIdealRepresentsClosedSubscheme
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialLocusRepresentsTrivialityStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedFibreStructureCohomologyFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedFibreStructureCohomologyFinite
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TensorProduct Opposite MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual
 
 set_option autoImplicit false
@@ -97,7 +97,7 @@ theorem core (hFew : FewEqSt) (hFB : FlatBCSt) (k : Type) [Field k] (A : Over (S
   let y : T ⟶ A := Over.homMk y₀ rfl
   have hs := snd_smooth_proper A T
   obtain ⟨f, hf⟩ := hFew R (A ⊗ T).left (snd A T).left (Module.finrank k (HO1 A.hom))
-    hs.1 hs.2 (fun X' s' φ h ↦ GlobalTheory.T.closed_fibre_structure_cohomology_finite hFB k A hfin R _ X' s' φ h)
+    hs.1 hs.2 (fun X' s' φ h ↦ _root_.GlobalTheory.CompanionTheory.FlatFibre.closed_fibre_first_cohomology_finite hFB k A hfin R _ X' s' φ h)
     (ev N (fst A T) (snd A T ≫ y)) (pull_isLB hN _) I hne
     (fun J ↦ (GlobalTheory.T.trivial_locus_represents_triviality A A Z N hN i hi T y (spMap (Ideal.Quotient.mk J))).trans (hJ J))
   exact dim_le R g _ hdim I hne hrad f hf
@@ -115,7 +115,7 @@ theorem first_cohomology_dimension_lower_bound : PositivityTheory.ObstructionTri
   haveI : LocallyOfFiniteType Z.hom := by
     rw [← Over.w i]
     infer_instance
-  have hcl := GlobalTheory.T.finitely_many_sections_points_closed k Z.left Z.hom (finite_sections hKF k A hA L hL hamp Z i hi)
+  have hcl := _root_.GlobalTheory.CompanionTheory.ClosedPts.isClosed_singleton_of_finite_points k Z.left Z.hom (finite_sections hKF k A hA L hL hamp Z i hi)
   let e : Sp k ⟶ A.left := (1 : Over.mk (𝟙 (Sp k)) ⟶ A).left
   have he : e ≫ A.hom = 𝟙 _ := Over.w (1 : Over.mk (𝟙 (Sp k)) ⟶ A)
   let p : Sp k := IsLocalRing.closedPoint k
@@ -125,7 +125,7 @@ theorem first_cohomology_dimension_lower_bound : PositivityTheory.ObstructionTri
     rw [← this]; rfl⟩
   have hd := hSD k A.left A.hom e g he hsm p
   generalize (e.base p : A.left) = x at hx hd
-  obtain ⟨I, hne, hrad, hJ⟩ := GlobalTheory.T.stalk_ideal_represents_closed_subscheme A.left Z.left i.left x hx hcl
+  obtain ⟨I, hne, hrad, hJ⟩ := _root_.GlobalTheory.CompanionTheory.StalkIdeal.exists_stalk_ideal A.left Z.left i.left x hx hcl
   exact @core hFew hFB k _ A _ _ _ hfin (abelian₂ A L) hP Z i hi (A.left.presheaf.stalk x) _ (stalk_local A.left x)
     (stalk_noeth A.left x) (A.left.fromSpecStalk x) g hd I hne hrad hJ
 

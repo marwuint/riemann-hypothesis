@@ -463,34 +463,6 @@ theorem isBaseChange_of_eq_pullbackSections (hU : IsAffineOpen U) (hV : IsAffine
   obtain rfl : l = pullbackSections f G e := LinearMap.ext hl
   exact isBaseChange_pullbackSections f G hU hV e
 
-theorem isBaseChange_pullbackSections_of_isPushout (hU : IsAffineOpen U) (hV : IsAffineOpen V)
-    (e : U ≤ f ⁻¹ᵁ V) {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
-    [Algebra A Γ(Y, V)] [Algebra B Γ(X, U)] [Algebra A Γ(X, U)] [Algebra Γ(Y, V) Γ(X, U)]
-    [IsScalarTower A B Γ(X, U)] [IsScalarTower A Γ(Y, V) Γ(X, U)]
-    [Algebra.IsPushout A B Γ(Y, V) Γ(X, U)]
-    (halg : ∀ r, algebraMap Γ(Y, V) Γ(X, U) r = f.appLE V U e r)
-    [Module A Γ(G, V)] [IsScalarTower A Γ(Y, V) Γ(G, V)]
-    [Module A Γ((Scheme.Modules.pullback f).obj G, U)]
-    [Module B Γ((Scheme.Modules.pullback f).obj G, U)]
-    [IsScalarTower A B Γ((Scheme.Modules.pullback f).obj G, U)]
-    [IsScalarTower B Γ(X, U) Γ((Scheme.Modules.pullback f).obj G, U)]
-    (l : Γ(G, V) →ₗ[A] Γ((Scheme.Modules.pullback f).obj G, U))
-    (hl : ∀ s, l s = pullbackSections f G e s) : IsBaseChange B l := by
-  letI : Module Γ(Y, V) Γ((Scheme.Modules.pullback f).obj G, U) :=
-    Module.compHom _ (algebraMap Γ(Y, V) Γ(X, U))
-  haveI : IsScalarTower Γ(Y, V) Γ(X, U) Γ((Scheme.Modules.pullback f).obj G, U) :=
-    .of_algebraMap_smul fun _ _ ↦ rfl
-  have h := isBaseChange_of_eq_pullbackSections f G hU hV e halg
-    { toFun := pullbackSections f G e
-      map_add' s t := by rw [← hl, ← hl, ← hl, map_add]
-      map_smul' r s := by
-        rw [pullbackSections_smul, ← halg]
-        rfl } fun _ ↦ rfl
-  refine IsBaseChange.of_equiv
-    ((Algebra.IsPushout.cancelBaseChange A B Γ(Y, V) Γ(X, U) Γ(G, V)).symm ≪≫ₗ
-      h.equiv.restrictScalars B) fun s ↦ ?_
-  simp [hl]
-
 theorem finite_sections_pullback (hU : IsAffineOpen U) (hV : IsAffineOpen V) (e : U ≤ f ⁻¹ᵁ V)
     [Module.Finite Γ(Y, V) Γ(G, V)] :
     Module.Finite Γ(X, U) Γ((Scheme.Modules.pullback f).obj G, U) :=
@@ -562,21 +534,6 @@ theorem app_surjective_of_epi_of_isAffineOpen (φ : F ⟶ F') [Epi φ] [F.IsQuas
 
 variable (f : X ⟶ Y)
 
-theorem epi_pushforward_map [IsAffineHom f] (φ : F ⟶ F') [Epi φ] [F.IsQuasicoherent]
-    [F'.IsQuasicoherent] : Epi ((Scheme.Modules.pushforward f).map φ) := by
-  refine epi_of_locally_app_surjective _ fun W y hy ↦ ?_
-  obtain ⟨_, ⟨V, hV, rfl⟩, hyV, hle⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open hy W.2
-  exact ⟨V, hyV, hle, app_surjective_of_epi_of_isAffineOpen φ (IsAffineOpen.preimage hV f)⟩
-
-theorem shortExact_map_pushforward [IsAffineHom f] {S : ShortComplex X.Modules}
-    (hS : S.ShortExact) [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] :
-    (S.map (Scheme.Modules.pushforward f)).ShortExact := by
-  have := hS.mono_f
-  have := hS.epi_g
-  exact ShortComplex.ShortExact.mk'
-    (hS.exact.map_of_mono_of_preservesKernel _ hS.mono_f inferInstance)
-    (inferInstanceAs (Mono ((Scheme.Modules.pushforward f).map S.f))) (epi_pushforward_map f S.g)
-
 theorem exact_map_pullback {S : ShortComplex Y.Modules} (hS : S.Exact) [Epi S.g] :
     (S.map (Scheme.Modules.pullback f)).Exact ∧ Epi (S.map (Scheme.Modules.pullback f)).g :=
   ⟨hS.map_of_epi_of_preservesCokernel _ inferInstance inferInstance,
@@ -612,43 +569,6 @@ theorem mono_pullback_map [Flat f] {G G' : Y.Modules} (φ : G ⟶ G') [Mono φ] 
     (homAppLinear ((Scheme.Modules.pullback f).map φ) U)
     (pullback_map_app_pullbackSections f φ e) (app_injective_of_mono φ V)
 
-theorem shortExact_map_pullback [Flat f] {S : ShortComplex Y.Modules}
-    (hS : S.ShortExact) [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] :
-    (S.map (Scheme.Modules.pullback f)).ShortExact := by
-  have := hS.mono_f
-  have := hS.epi_g
-  exact ShortComplex.ShortExact.mk' (exact_map_pullback f hS.exact).1 (mono_pullback_map f S.f)
-    (exact_map_pullback f hS.exact).2
-
 end Exact
-
-theorem quasicoherent_push_pull {X Y : Scheme.{u}} (f : X ⟶ Y) :
-    (QuasiCompact f → QuasiSeparated f → ∀ F : X.Modules, F.IsQuasicoherent →
-      ((Scheme.Modules.pushforward f).obj F).IsQuasicoherent) ∧
-    (IsFinite f ∨ IsClosedImmersion f → ∀ F : X.Modules, F.IsQuasicoherent →
-      (∀ U : X.Opens, IsAffineOpen U → Module.Finite Γ(X, U) Γ(F, U)) →
-      ((Scheme.Modules.pushforward f).obj F).IsQuasicoherent ∧
-        ∀ V : Y.Opens, IsAffineOpen V →
-          Module.Finite Γ(Y, V) Γ((Scheme.Modules.pushforward f).obj F, V)) ∧
-    (IsAffineHom f → ∀ S : ShortComplex X.Modules, S.ShortExact → S.X₂.IsQuasicoherent →
-      S.X₃.IsQuasicoherent → (S.map (Scheme.Modules.pushforward f)).ShortExact) ∧
-    (∀ G : Y.Modules, G.IsQuasicoherent →
-      ((Scheme.Modules.pullback f).obj G).IsQuasicoherent ∧
-      ∀ (U : X.Opens) (V : Y.Opens), IsAffineOpen U → IsAffineOpen V → ∀ e : U ≤ f ⁻¹ᵁ V,
-        letI := appLEAlgebra f e
-        letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e
-        haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e
-        IsBaseChange Γ(X, U) (pullbackSections f G e)) ∧
-    (∀ S : ShortComplex Y.Modules, S.Exact → Epi S.g →
-      (S.map (Scheme.Modules.pullback f)).Exact ∧ Epi (S.map (Scheme.Modules.pullback f)).g) ∧
-    (Flat f → ∀ S : ShortComplex Y.Modules, S.ShortExact → S.X₁.IsQuasicoherent →
-      S.X₂.IsQuasicoherent → (S.map (Scheme.Modules.pullback f)).ShortExact) := by
-  refine ⟨fun _ _ F _ ↦ inferInstance, fun hf F _ hF ↦ ?_,
-    fun _ S hS _ _ ↦ shortExact_map_pushforward f hS,
-    fun G _ ↦ ⟨inferInstance, fun _ _ hU hV e ↦ isBaseChange_pullbackSections f G hU hV e⟩,
-    fun S hS _ ↦ exact_map_pullback f hS, fun _ S hS _ _ ↦ shortExact_map_pullback f hS⟩
-  have : IsFinite f := hf.elim id fun _ ↦ inferInstance
-  exact ⟨inferInstance, fun V hV ↦
-    finite_sections_pushforward f F hV (hF := hF _ (hV.preimage f))⟩
 
 end GlobalTheory.QCoh

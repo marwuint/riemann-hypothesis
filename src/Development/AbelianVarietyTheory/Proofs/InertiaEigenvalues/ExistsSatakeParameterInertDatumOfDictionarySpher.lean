@@ -11,11 +11,14 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMaxCompac
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDimensionalForms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDoubleCosetsDefiniteUnitaryMaximalLevelStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLevelFullAtInertPlacePrincipalElsewhereStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSatUEigenvectorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeFunIAddSmulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorPreservesProductLevelInvariancStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorMaximalCompactIndicatorEqIdStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLevelFullAtInertPlacePrincipalElsewhere
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSatUEigenvector
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeFunIAddSmul
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorPreservesProductLevelInvarianc
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertLocalMemUnitaryGroupAntidiagonalForm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertLocalMemIntegralPointsOfLatticeStabilizer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertLocalSurjectiveFromTrivOutside
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorMaximalCompactIndicatorEqId
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorConvolutionEqCompStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -29,7 +32,7 @@ theorem exists_satAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n
   intro L _ _ _ n F π U₀ _ v w _ hsph Dv
   obtain ⟨f₀, hf₀S, hf₀0, hf₀K⟩ := hsph
   obtain ⟨-, N, hN, hf₀N⟩ := π.irrS.1.le hf₀S
-  obtain ⟨U, hCU, hU, hdec⟩ := GlobalTheory.T.exists_level_full_at_inert_place_principal_elsewhere L n v N hN
+  obtain ⟨U, hCU, hU, hdec⟩ := _root_.GlobalTheory.InertLevel.exists_level L n v N hN
   have hdec' : ∀ κ ∈ U, ∃ a b : GAf L n, κ = a * b ∧ a ∈ Umax L n ∧ TrivOutside {v} a ∧ b ∈ U ∧
       ∀ x : GAf L n, TrivOutside {v} x → b * x = x * b := fun κ hκ => by
     obtain ⟨a, b, e, ha, hta, hb, hc⟩ := hdec κ hκ
@@ -56,7 +59,7 @@ theorem exists_satAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n
     (GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv) U hU h hh
   have hmemV : ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n), ∀ f ∈ V, heckeFunI L n U Dv h f ∈ V := by
     intro h hh f hf
-    refine ⟨?_, GlobalTheory.T.inertHeckeOperator_preserves_productLevel_invariance L n v w Dv U hU hdec' π.W h hh f hf.2⟩
+    refine ⟨?_, _root_.GlobalTheory.InertSatInv.heckeFunI_rt_invariant_prod L n v w Dv U hU hdec' π.W h hh f hf.2⟩
     obtain ⟨C, a, x, hC⟩ := GlobalTheory.SatIso.heckeFunI_eq_sum Dv U h (hfin h hh)
     rw [hC]
     exact π.S.sum_mem fun c _ => π.S.smul_mem _ (π.irrS.1.stable _ _ hf.1)
@@ -76,16 +79,16 @@ theorem exists_satAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n
     simp only [T, dif_pos hh]
     rfl
   have hK := Formalism.UG.P.isCommensurated_integral_unitary_of_unramified Dv.unram n
-  obtain ⟨α, x, hx0, hx⟩ := GlobalTheory.T.exists_satU_eigenvector_alt Dv.ϖ Dv.σw _ n Dv.unram V T
+  obtain ⟨α, x, hx0, hx⟩ := _root_.GlobalTheory.HeckeSatakeEigen.exists_satU_eigenvector Dv.ϖ Dv.σw _ n Dv.unram V T
     (fun h₁ hh₁ h₂ hh₂ => LinearMap.ext fun f => Subtype.ext (by
       rw [LinearMap.add_apply, Submodule.coe_add, hT (h₁ + h₂) (add_mem hh₁ hh₂) f, hT h₁ hh₁ f, hT h₂ hh₂ f]
-      exact (GlobalTheory.T.heckeFunI_add_and_smul L n v w Dv U hU π.W h₁ h₂ hh₁ hh₂ 0 f).1))
+      exact (_root_.GlobalTheory.InertHeckeAdd.heckeFunI_add_smul L n v w Dv U hU π.W h₁ h₂ hh₁ hh₂ 0 f).1))
     (fun c h hh => LinearMap.ext fun f => Subtype.ext (by
       rw [LinearMap.smul_apply, Submodule.coe_smul, hT (c • h) (Submodule.smul_mem _ c hh) f, hT h hh f]
-      exact (GlobalTheory.T.heckeFunI_add_and_smul L n v w Dv U hU π.W h h hh hh c f).2))
+      exact (_root_.GlobalTheory.InertHeckeAdd.heckeFunI_add_smul L n v w Dv U hU π.W h h hh hh c f).2))
     (LinearMap.ext fun f => Subtype.ext (by
       rw [hT _ (Formalism.UG.Final.DosetIndMem _ _ ℂ 1) f]
-      exact GlobalTheory.T.inertHeckeOperator_maximalCompact_indicator_eq_id L n v w Dv U hU π.W f f.2.2))
+      exact _root_.GlobalTheory.InertHeckeOne.heckeFunI_one L n v w Dv U hU π.W f f.2.2))
     (fun h₁ hh₁ h₂ hh₂ => LinearMap.ext fun f => Subtype.ext (by
       rw [Module.End.mul_apply, hT _ (Formalism.UG.Final.HeckeConvMem _ _ ℂ hK _ hh₁ _ hh₂) f, hT h₁ hh₁ (T h₂ f), hT h₂ hh₂ f]
       exact GlobalTheory.T.inertHeckeOperator_convolution_eq_comp L n v w Dv U hU π.W h₁ h₂ hh₁ hh₂ f f.2.2))

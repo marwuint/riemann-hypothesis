@@ -18,16 +18,4 @@ def BlockTrdeg.Statement : Prop :=
           ((Fintype.card K' - Fintype.card K : ℕ) : Cardinal) ≤
         Algebra.trdeg ℚ (Algebra.adjoin ℚ (Set.range fun q : Σ k', ι' k' ↦ φ (X q)))
 
-section Examples
-
-abbrev pointBlocks : Unit → Type := fun _ ↦ Unit
-
-def genericPairMap :
-    MRing (Sum.elim pointBlocks pointBlocks) →+*
-      FractionRing (MvPolynomial (Σ k : Unit ⊕ Unit, Sum.elim pointBlocks pointBlocks k) ℚ) :=
-  (algebraMap (MvPolynomial (Σ k : Unit ⊕ Unit, Sum.elim pointBlocks pointBlocks k) ℚ) _).comp
-    (MvPolynomial.map (Int.castRingHom ℚ))
-
-end Examples
-
 end GroundTheory.Heights₂.Heights

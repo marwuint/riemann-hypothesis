@@ -11,10 +11,11 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupp
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCEqZeroOfEventuallyEqZero
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocDensAddOfFunContinuousOn
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalDensityInclusionExclusionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalDensityInclusionExclusion
+import ReciprocityTheory.AnalyticForms.LeviForms.ConvExpandStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularChartDataPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedEnergyUniformBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralRegularizedConvergenceStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedEnergyUniformBound
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralRegularizedConvergence
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ContDiff
 
@@ -68,7 +69,7 @@ theorem position_tail (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X]
     split_ifs
     · exact hP i
     · exact isPotential_ofFun A _ hz
-  obtain ⟨CE, hCE⟩ := GlobalTheory.T.mixed_energy_uniform_bound e X A R Θ hΘ hΘp
+  obtain ⟨CE, hCE⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.tailLogProducts e X A R Θ hΘ hΘp
     (fun i => (if i ∈ T then P i else LocPot.ofFun 0) + Θ) |C| hth
   refine ⟨CE, fun u hu hpsh hb => ?_⟩
   have h1 : ∀ i, IsPsh A ((if i ∈ T then P i else LocPot.ofFun 0) +
@@ -135,7 +136,7 @@ theorem expand_on {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X
         (if i ∈ T then P i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then f i else 0) + Θ) j y) := by
     refine (ae_restrict_iff' hKm).2 ?_
     filter_upwards [hae0] with y hy hyK
-    rw [GlobalTheory.T.local_density_inclusion_exclusion A Yo P f Θ hYo hP hΘ hf j y ⟨hKt hyK, hy (hKt hyK)⟩, Finset.mul_sum]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Giv.locDens_expand_ofFun A Yo P f Θ hYo hP hΘ hf j y ⟨hKt hyK, hy (hKt hyK)⟩, Finset.mul_sum]
     refine Finset.sum_congr rfl fun T _ => ?_
     ring
   have hint := fun T (_ : T ∈ (Finset.univ : Finset (Finset (Fin e)))) => (hI T).const_mul ((-1 : ℝ) ^ (e - T.card))
@@ -252,7 +253,7 @@ theorem mixed_integral_tendsto_of_C2_off_divisor : ∀ (e : ℕ) (X : Type) [Top
     · simp only [hi, if_false]
       exact Metric.tendstoUniformlyOn_iff.2 fun ε hε =>
         Eventually.of_forall fun t y _ => by simpa using hε
-  have term := fun T : Finset (Fin e) => GlobalTheory.T.mixed_integral_regularized_convergence e X A R Θ
+  have term := fun T : Finset (Fin e) => _root_.GlobalTheory.CompanionTheory.Ar.Giv.conv_chart_integral e X A R Θ
     (fun i => if i ∈ T then P i else LocPot.ofFun 0) (fun i => if i ∈ T then f i else 0)
     (fun i t => if i ∈ T then fT i t else 0) G GT C (CE T) hΘ (hth T) (hph T)
     (hev.mono fun t h => h T) (hC2 T) hGT hGc

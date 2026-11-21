@@ -16,8 +16,4 @@ def TypePrimeWildIdempotentChoice (D : D7) : Prop :=
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GoodR D.nd i r →
     ∀ π ∈ D.nd.Z i, TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → PairedCharacterCondition.WildIdempotentChoice i r ρ π
 
-def TypePrimeHypotheses (D : D7) : Prop := SumRepresentations.adm5 D ∧ SumRepresentations.Conclusion41 D ∧ AutomorphicSideWildInertia.ResidualIrreducibleGood D ∧ TypePrimeWildIdempotentChoice D
-
-def TypePrimeConclusionsOfHypotheses (D : D7) : Prop := TypePrimeHypotheses D → TypePrimeChoiceConclusions D
-
 end Formalism.MainNotions.TypePrimeCongruences

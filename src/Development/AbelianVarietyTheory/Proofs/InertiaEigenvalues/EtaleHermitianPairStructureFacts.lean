@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticStarStructure
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteNormedAlgebraEqModuleTopology
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyMeasAndReps
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteUnitsQuotSqFiniteEtaleHermitianPairStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteUnitsQuotSqFiniteEtaleHermitianPair
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AddHaarProperSubmoduleEqZeroModuleTopologyStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSubringEqOKStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCompactFiniteEtaleHermitianPairOKStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenFiniteEtaleHermitianPairOKStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCompactFiniteEtaleHermitianPairOK
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenFiniteEtaleHermitianPairOK
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
@@ -127,10 +127,10 @@ theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedF
   have := U.charZero; have := U.lcF
   have : ProperSpace F := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F
   obtain ⟨-, -, hN, htr, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
-  have hq := finite_quot A (GlobalTheory.T.finite_units_quot_sq_finiteEtaleHermitianPair F E A)
+  have hq := finite_quot A (_root_.GlobalTheory.Et.finite_units_quot_sq F E A)
   refine ⟨hN, htr, ⟨fun x hx => ?_, fun x hx => ?_⟩, fun y _ => eta_NL A y, eta_neg_one A,
     (GlobalTheory.isOpenUnits_and_eventually_sq F A.K).2, finite_reps_exists A hq, finite_of_reps A hq,
-    nonunits_null A, GlobalTheory.T.isOpen_finiteEtaleHermitianPair_OK F E A, GlobalTheory.T.isCompact_finiteEtaleHermitianPair_OK F E A, GlobalTheory.T.exists_subring_eq_OK F E A⟩
+    nonunits_null A, _root_.GlobalTheory.JR.OKOpen.isOpen_OK F E A, _root_.GlobalTheory.JR.OKCompact.okCompact F E A, GlobalTheory.T.exists_subring_eq_OK F E A⟩
   · exact EtMeas.eq_zero_of_trace F A.K x fun y => by simpa using hx y
   · exact EtMeas.eq_zero_of_trace F A.K x fun y => by simpa [mul_comm] using hx y
 

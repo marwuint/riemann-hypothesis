@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesAlt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormCoeffIntegralPowerSeriesLeProdZerosStatement
 
 open GlobalTheory.ConvSer
@@ -39,7 +39,7 @@ theorem eq_zero_of_ev_vanish : ∀ (K : Type) [NormedField K] [IsUltrametricDist
   intro K _ _ _ G r hr hr1 hmono hG hT H hH hz
   have hS : ∀ (x y : K), ‖x‖ < 1 → ‖y‖ < 1 →
       Intg (shift1 H y) ∧ ev1 (shift1 H y) x = ev H ![x, y] := fun x y hx hy =>
-    (GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K x hx).2.2.2.2.2.2.2.2.2.1 H y hy hH
+    (_root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K x hx).2.2.2.2.2.2.2.2.2.1 H y hy hH
   have h1 : ∀ m, ∀ y ∈ G m, shift1 H y = 0 := by
     intro m y hy
     have hy1 := (hG m y hy).2

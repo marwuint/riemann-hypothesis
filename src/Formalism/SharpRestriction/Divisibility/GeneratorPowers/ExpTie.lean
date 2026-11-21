@@ -60,14 +60,6 @@ def IsExpGaugeOf (y : FrPt Xo c S) (C : ChartAt Xo c y) (φ : Fin C.d → MvPowe
 
 end Defs
 
-def ExpOfChartSt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) →
-    ∀ (S : Type) [CommRing S] [Algebra c.F S] [Algebra ℚ S] (y : FrPt Xo c S) (C : ChartAt Xo c y), FrTruncC y C →
-    ∃ φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S, IsExpOf C.B.G.F C.uvec φ ∧
-      IsExpChart y (xExp y C φ) ∧
-      ∃ e : ∀ m, ExpFr y (xExp y C φ) m, IsExpGauge y (xExp y C φ) e ∧ IsExpGaugeOf y C φ e
-
 def ExpChartOfSt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
@@ -80,11 +72,6 @@ def ExpGaugeOfSt : Prop :=
     ∀ (S : Type) [CommRing S] [Algebra c.F S] [Algebra ℚ S] (y : FrPt Xo c S) (C : ChartAt Xo c y), FrTruncC y C →
     ∀ (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S), IsExpOf C.B.G.F C.uvec φ → IsExpChart y (xExp y C φ) →
       ∃ e : ∀ m, ExpFr y (xExp y C φ) m, IsExpGauge y (xExp y C φ) e ∧ IsExpGaugeOf y C φ e
-
-theorem expOfChart_of (h1 : ExpChartOfSt) (h2 : ExpGaugeOfSt) : ExpOfChartSt := by
-  intro E _ _ _ H Dw l Xo c _ hs S _ _ _ y C hT
-  obtain ⟨φ, hφ, hx⟩ := h1 E H Dw l Xo c S y C
-  exact ⟨φ, hφ, hx, h2 E H Dw l Xo c hs S y C hT φ hφ hx⟩
 
 def TieSt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)

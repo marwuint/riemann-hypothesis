@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.CompatibleChartProductProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSncAdaptedChartAtPointStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSncAdaptedChartAtPoint
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncAdaptedChartSectionFormStatement
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
@@ -90,7 +90,7 @@ theorem exists_adapted {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X
     (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) {nb : ℕ} {m : Fin nb → ℕ}
     {W : Fin nb → Set X} (hL : IsPotential A L) (hs : IsSection A L s) (hsnc : IsSNC A L s m W) :
     ∃ B : FinHolAtlas e X, IsAdaptedAtlas A B L s := by
-  choose φ S μ v hc hx hball h0 hU hμ hv hv0 hfac using GlobalTheory.T.exists_snc_adapted_chart_at_point e X A L s nb m W hsnc
+  choose φ S μ v hc hx hball h0 hU hμ hv hv0 hfac using _root_.GlobalTheory.CompanionTheory.Ar.PB.LocalForm.exists_local_form e X A L s nb m W hsnc
   have hb := fun x => GlobalTheory.T.snc_adapted_chart_section_form e X A L s hL hs x (φ x) (S x) (μ x) (v x) (hc x) (hball x) (hU x)
     (hμ x) (hv x) (hv0 x) (hfac x)
   choose hzero M hM using fun x => And.intro (hb x).1 (hb x).2

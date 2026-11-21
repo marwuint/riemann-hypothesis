@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ActAtApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryPieceBoundedWeightsOfQuadraticStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryPieceBoundedWeightsOfQuadratic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsHWOfFd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHighestWeightLiftModStableSubspaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHighestWeightLiftModStableSubspace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SameBlockIffIsLeft
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBlockUnitaryFiniteSubspaceComapInjectiveIntertStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyBlockUnitaryOfISupIntertwinerRangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyBlockUnitaryOfISupIntertwinerRange
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemISupInfWeightSubmoduleOfDiagonalStable
 
 open scoped TensorProduct
@@ -140,7 +140,7 @@ theorem exists_hwSub_of_quadMod : ∀ (p q : ℕ) (α β α' β' : ℂ), ∃ B :
     Stab act N' → QuadMod act α β α' β' N N' →
     ∃ μ : Ix p q → ℚ, (∀ a, |μ a| ≤ B) ∧ ∃ v ∈ N', v ∈ hwSub act μ ∧ v ∉ N := by
   intro p q α β α' β'
-  obtain ⟨R, hR⟩ := GlobalTheory.T.exists_unitary_piece_bounded_weights_of_quadratic (Ix p q) (fun a => a.isLeft) α β α' β'
+  obtain ⟨R, hR⟩ := _root_.GlobalTheory.HoweR.exists_unitOn_diag_bounded (Ix p q) (fun a => a.isLeft) α β α' β'
   obtain ⟨B, hB⟩ := exists_rat_gt R
   refine ⟨B, ?_⟩
   intro V _ _ act hG N N' hlt hN hN' hQ
@@ -182,7 +182,7 @@ theorem exists_hwSub_of_quadMod : ∀ (p q : ℕ) (α β α' β' : ℂ), ∃ B :
     (GlobalTheory.T.isBlockUnitaryFiniteSubspace_comap_injective_intertwiner (Ix p q) N' (fun a => a.isLeft) (units (resA act N' hN')) V (units act) N'.subtype
       Subtype.val_injective (fun a b _ x => rfl)).2 hG.2.2
   have hloc : LocU (fun a : Ix p q => a.isLeft) (units A) :=
-    GlobalTheory.T.isLocallyBlockUnitary_of_iSup_intertwiner_range (Ix p q) N' (fun a => a.isLeft) (units (resA act N' hN')) (N' ⧸ K) (units A) {K.mkQ}
+    _root_.GlobalTheory.HoweR.locU_of_iSup_range_eq_top (Ix p q) N' (fun a => a.isLeft) (units (resA act N' hN')) (N' ⧸ K) (units A) {K.mkQ}
       (by
         intro f hf a b _ x
         rw [Set.mem_singleton_iff] at hf
@@ -242,7 +242,7 @@ theorem exists_hwSub_of_quadMod : ∀ (p q : ℕ) (α β α' β' : ℂ), ∃ B :
     exact e
   have kst : ∀ W : Submodule ℂ V, Stab act W → KStable act W := fun W hW X _ w hw => hW X w hw
   obtain ⟨v', hv'N', hv'hw, hxv'⟩ :=
-    GlobalTheory.T.exists_highestWeight_lift_mod_stable_subspace p q V act hG N N' (kst N hN) (kst N' hN') μ (x : V) x.2 hc hd
+    _root_.GlobalTheory.HoweR.LiftMod.lift_mod p q V act hG N N' (kst N hN) (kst N' hN') μ (x : V) x.2 hc hd
   refine ⟨μ, hbd, v', hv'N', hv'hw, fun hv'N => hv0 ?_⟩
   rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
   show (x : V) ∈ N

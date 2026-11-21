@@ -4,10 +4,10 @@ import Formalism.GradedWeylDivisibility.FinalD
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PosOkId
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCofactorTwistDualWeylStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeylLatticeExistsCofactorTwistDualStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCofactorTwistDualWeyl
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeylLatticeExistsCofactorTwistDual
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CofactorTwistRelationDualWeightInvolutiveStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CofactorTwistRelationRowActEquivariantStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CofactorTwistRelationRowActEquivariant
 
 noncomputable section
 
@@ -91,7 +91,7 @@ theorem dualIso_units_smul_smul {M : Type} [AddCommGroup M] (ε : ℤˣ) (x : M)
 theorem dualIso_exists_map (K : Type) [Field K] (m : ℕ) (ν : Fin (m + 1) → ℕ) (hν : Antitone ν)
     (hl : ν (Fin.last m) = 0) :
     ∃ Ψ : MP K (m + 1) →ₗ[K] MP K (m + 1), ∀ f ∈ dualWeyl K (m + 1) (m + 1) ν, CofRel K m ν f (Ψ f) := by
-  choose G hG using GlobalTheory.T.exists_cofactorTwist_dualWeyl K m ν hν hl
+  choose G hG using _root_.GlobalTheory.ValCmp.exists_cofRel_dualWeyl K m ν hν hl
   let Ψ₀ : dualWeyl K (m + 1) (m + 1) ν →ₗ[K] MP K (m + 1) :=
     { toFun := fun f => G f.1 f.2
       map_add' := fun f g =>
@@ -147,11 +147,11 @@ theorem exists_posOk_dual (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Al
     rw [← dualIso_units_smul_smul ε f, h3, smul_zero]
   · apply le_antisymm
     · rintro _ ⟨f, hf, rfl⟩
-      obtain ⟨g, hg, hfg⟩ := GlobalTheory.T.exists_cofactorTwist_dualWeyl Kf m ν hν hl f hf
+      obtain ⟨g, hg, hfg⟩ := _root_.GlobalTheory.ValCmp.exists_cofRel_dualWeyl Kf m ν hν hl f hf
       rw [dualIso_cofRel_unique (hΨ f hf) hfg]
       exact hg
     · intro g hg
-      obtain ⟨f, hf, hgf⟩ := GlobalTheory.T.exists_cofactorTwist_dualWeyl Kf m _ hν' hl' g hg
+      obtain ⟨f, hf, hgf⟩ := _root_.GlobalTheory.ValCmp.exists_cofRel_dualWeyl Kf m _ hν' hl' g hg
       obtain ⟨ε, hε⟩ := GlobalTheory.T.cofactorTwistRelation_dualWeight_involutive Kf m _ hν' hl'
       have h1 := hε g hg f hgf
       rw [hdd] at h1 hf
@@ -160,7 +160,7 @@ theorem exists_posOk_dual (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Al
       have h3 : (ε : ℤ) • f ∈ dualWeyl Kf (m + 1) (m + 1) ν :=
         (dualWeyl Kf (m + 1) (m + 1) ν).toAddSubgroup.zsmul_mem hf _
       exact ⟨_, h3, dualIso_cofRel_unique (hΨ _ h3) h2⟩
-  · have h1 := GlobalTheory.T.cofactorTwistRelation_rowAct_equivariant Kf m ν h hh f hf _ (hΨ f hf)
+  · have h1 := _root_.GlobalTheory.ValCmp.Eqv.cofRel_rowAct Kf m ν h hh f hf _ (hΨ f hf)
     have h2 := dualIso_cofRel_unique (hΨ _ (dualWeylRowStable Kf _ _ _ h⁻¹ f hf)) h1
     have h3 : (h⁻¹).transpose⁻¹ = h.transpose := by
       rw [← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hh]
@@ -170,12 +170,12 @@ theorem exists_posOk_dual (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Al
     rw [← zpow_add₀ hh.ne_zero, ← zpow_add₀ hh.ne_zero]
     congr 2
     ring
-  · refine dualIso_lattice O Kf m ν hν hl Ψ hΨ _ _ le_rfl le_rfl (GlobalTheory.T.exists_cofactorTwist_dualWeyl O m ν hν hl) fun g hg => ?_
-    have := GlobalTheory.T.exists_cofactorTwist_dualWeyl O m _ hν' hl' g hg
+  · refine dualIso_lattice O Kf m ν hν hl Ψ hΨ _ _ le_rfl le_rfl (_root_.GlobalTheory.ValCmp.exists_cofRel_dualWeyl O m ν hν hl) fun g hg => ?_
+    have := _root_.GlobalTheory.ValCmp.exists_cofRel_dualWeyl O m _ hν' hl' g hg
     rwa [hdd] at this
   · refine dualIso_lattice O Kf m ν hν hl Ψ hΨ _ _ (weylLeDual O _ _ _ _ hν) (weylLeDual O _ _ _ _ hν')
-      (GlobalTheory.T.weylLattice_exists_cofactorTwist_dual O m ν hν hl) fun g hg => ?_
-    have := GlobalTheory.T.weylLattice_exists_cofactorTwist_dual O m _ hν' hl' g hg
+      (_root_.GlobalTheory.ValCmp.weyl_exists_cofRel O m ν hν hl) fun g hg => ?_
+    have := _root_.GlobalTheory.ValCmp.weyl_exists_cofRel O m _ hν' hl' g hg
     rwa [hdd] at this
 
 end GlobalTheory.ValCmp

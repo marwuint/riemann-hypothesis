@@ -8,11 +8,19 @@ import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTra
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MtOfFactors
 import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ComparisonZeroEmbedding
 import Formalism.LocalRingCardinality.SpanPowerMembership.EntPlNonempty
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnChoicesKernelDatumAdaptedBasesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeLayerTrueColumnsParametersFreeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnChoicesKernelDatumAdaptedBases
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsEntC
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ColNorm
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedVectorEqOfStandardData
+import Formalism.LocalToGlobal.KernelLattices.TopPin
+import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeLayerTrueColumnsSizeFree
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelsKernelDataAtServedPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScaleStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparison
+import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScale
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
 import Formalism.LocalToGlobal.GroupLattices.CloudFilling.WLeWjOne
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Df NumberField IsDedekindDomain
@@ -26,8 +34,8 @@ def ScaleOK (K : Ctx) : Prop :=
 
 theorem scaleOK_large (eps : ℝ) (he : 0 < eps) (he' : eps < 1 / 52) (cD : ℝ) (hcD : 0 ≤ cD) :
     ∃ x1 : ℝ, ∀ K : Ctx, K.s.eps = eps → K.cD = cD → x1 ≤ K.s.x → ScaleOK K := by
-  obtain ⟨x2, hx2⟩ := GlobalTheory.T.scale_polynomial_quantities_comparison eps (cD + 6) (1 / 2) he (by norm_num)
-  obtain ⟨x3, hx3⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'
+  obtain ⟨x2, hx2⟩ := _root_.GlobalTheory.scale_poly_comparison eps (cD + 6) (1 / 2) he (by norm_num)
+  obtain ⟨x3, hx3⟩ := _root_.GlobalTheory.EX.rank_basic_bounds eps he he'
   refine ⟨max 35 (max x2 x3), fun K e1 e2 hx R hR => ?_⟩
   have h35 : 35 ≤ K.s.x := le_trans (le_max_left _ _) hx
   have hxa : x2 ≤ K.s.x := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx

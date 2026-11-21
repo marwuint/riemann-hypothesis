@@ -268,15 +268,6 @@ theorem exists_repsR_at (K' : Type) [Field K'] (t : T0) {J' : Subgroup (Bridge.G
   · have := h3 k
     exact Nat.card_pos
 
-theorem exists_repsR (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (K' : Type) [Field K'] (t : T0) {b : ℕ} (hb : 0 < b) :
-    ∃ (Cl : Type) (_ : Fintype Cl) (h : Cl → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))) (bad : ℕ)
-      (Lh : Cl → Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)) (gam : Cl → ℕ) (vol : K'),
-      RepsR R i t h bad J' Lh gam vol ∧ b ∣ bad ∧ (∀ k, 0 < gam k) ∧ vol ≠ 0 := by
-  obtain ⟨bad, h0, h1, h2⟩ := exists_bad R t hb
-  obtain ⟨m, h, gam, vol, hr, hg, -⟩ := exists_repsR_at R i K' t le_rfl (by simp) h0
-    (fun k _ hk => fin_mem_levJ R i hβ t h2 k hk) h0 h2 one_pos
-  exact ⟨Fin m, inferInstance, h, _, bad, _, gam, vol, hr, h1, hg, by rw [hr.2.2.2.2.1]; simp⟩
-
 theorem exists_repsR_repsOK (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (hV : VStd D i) (K' : Type) [Field K'] (t : T0)
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H) {b : ℕ} (hb : 0 < b) :
     ∃ (Cl : Type) (_ : Fintype Cl) (h : Cl → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))) (bad : ℕ)
@@ -311,23 +302,6 @@ theorem exists_repsR_repsCov (hβ : IsSDFrame (Vc D i) (R.βV i) (R.ΛV i) 1) (h
   · exact dvd_of_mul_right_dvd (dvd_of_mul_left_dvd (h2 t))
   · exact dvd_of_mul_right_dvd (dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (h2 t)))
   · exact dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (dvd_of_mul_left_dvd (h2 t)))
-
-theorem reps_exist (F : Face D A) (hC : R.Char F) (K' : Type) [Field K'] :
-    (∀ (t : T0) (b : ℕ), 0 < b →
-      ∃ (Cl : Type) (_ : Fintype Cl) (h : Cl → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))) (bad : ℕ)
-        (Lh : Cl → Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)) (gam : Cl → ℕ) (vol : K'),
-        RepsR R i t h bad J' Lh gam vol ∧ b ∣ bad ∧ (∀ k, 0 < gam k) ∧ vol ≠ 0) ∧
-    (VStd D i → ∀ {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l)
-      {Tp : Type} (tup : Tp → T0) (dδ : Tp → DeltaDat Xo c (Vc D i).rank),
-      ∃ (Cl : Tp → Type) (_ : ∀ t, Fintype (Cl t)) (h : ∀ t, Cl t → GA D (Vc D i))
-        (J' : Tp → Subgroup (Bridge.Gf (Vc D i))) (bad : Tp → ℕ)
-        (Lh : ∀ t, Cl t → Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)) (gam : ∀ t, Cl t → ℕ) (vol : Tp → K')
-        (La : ∀ t, Cl t → GenLat D.host.E (Vc D i).rank) (Nc : ∀ t, Cl t → ℕ),
-        (∀ t, RepsR R i (tup t) (h t) (bad t) (J' t) (Lh t) (gam t) (vol t) ∧ vol t ≠ 0) ∧
-        (∀ t, 0 < bad t ∧ BadPin (bad t) (D.host.QS * D.host.q) D.host.d (D.host.g 0 * D.host.g 1)) ∧
-        RepsCov Xo c Cl dδ bad Lh La Nc gam) :=
-  ⟨fun t _ hb => exists_repsR R i (hC.lev.βV i) K' t hb,
-    fun hV _ _ _ Xo c _ tup dδ => exists_repsR_repsCov R i (hC.lev.βV i) hV K' Xo c tup dδ⟩
 
 end Row
 

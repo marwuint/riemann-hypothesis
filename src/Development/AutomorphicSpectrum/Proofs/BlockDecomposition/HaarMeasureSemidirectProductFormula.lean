@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemidirectProductHomeomorphOfClosedComplementStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemidirectProductHomeomorphOfClosedComplement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModularCharacterFunEqOfMapLeftMul
 open MeasureTheory
 open scoped NNReal ENNReal
@@ -19,7 +19,7 @@ theorem modularCharacterFun_semidirect :
     TopologicalSpace.Subtype.secondCountableTopology (N : Set Q)
   haveI : SecondCountableTopology M :=
     TopologicalSpace.Subtype.secondCountableTopology (M : Set Q)
-  obtain ⟨Φ, hΦ⟩ := GlobalTheory.T.semidirect_product_homeomorph_of_closed_complement Q N M hN hM hgen hdisj
+  obtain ⟨Φ, hΦ⟩ := _root_.GlobalTheory.CompanionTheory.TopGroup.homeomorph_prod_of_closed_complements Q N M hN hM hgen hdisj
   let Ψ : (M × N) ≃ₜ Q := (Homeomorph.prodComm M N).trans Φ
   have hΨ : ∀ p : M × N, Ψ p = (p.2 : Q) * (p.1 : Q) := fun p => hΦ (p.2, p.1)
   have hΨm : Measurable Ψ := Ψ.continuous.measurable

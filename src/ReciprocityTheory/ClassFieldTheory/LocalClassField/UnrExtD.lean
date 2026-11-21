@@ -118,12 +118,6 @@ theorem exists_isFrobOn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n
   obtain ⟨k, -, rfl⟩ := hζ₀.eq_pow_of_pow_eq_one hζ
   rw [map_pow, h0, ← pow_mul, ← pow_mul, mul_comm]
 
-theorem IsFrobOn.eqOn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) {φ ψ : GK p K}
-    (hφ : IsFrobOn p K n φ) (hψ : IsFrobOn p K n ψ) {x : PadicAlgCl p} (hx : x ∈ Kn p K n) :
-    φ x = ψ x := by
-  rw [isFrobOn_iff p K hK hn] at hφ hψ
-  exact UnramifiedExtensions.eqOn_Kn K (fun ζ hζ => by rw [hφ ζ hζ, hψ ζ hζ]) hx
-
 theorem IsFrobOn.exists_pow (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) {φ : GK p K}
     (hφ : IsFrobOn p K n φ) (σ : GK p K) : ∃ i < n, ∀ x ∈ Kn p K n, σ x = (φ ^ i) x := by
   rw [isFrobOn_iff p K hK hn] at hφ

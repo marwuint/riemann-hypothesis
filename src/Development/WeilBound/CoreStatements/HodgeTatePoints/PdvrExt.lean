@@ -162,38 +162,4 @@ theorem exists_complete (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuatio
   exact ⟨R, inferInstance, inferInstance, hdvr, algebraMap V R, inferInstance,
     (inferInstance : IsAdicComplete (maximalIdeal R) R), hinj⟩
 
-theorem dvr_ext : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (l : Type)
-    [Field l] [Algebra (IsLocalRing.ResidueField V) l]
-    [FiniteDimensional (IsLocalRing.ResidueField V) l],
-    ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsDiscreteValuationRing R)
-      (f : V →+* R) (_ : IsLocalHom f) (s : l →+* IsLocalRing.ResidueField R),
-      IsAdicComplete (IsLocalRing.maximalIdeal R) R ∧ Function.Injective f ∧
-        s.comp (algebraMap _ l) = IsLocalRing.ResidueField.map f := by
-  intro V _ _ _ l _ _ _
-  let b := Module.finBasis (ResidueField V) l
-  let q : (ResidueField V)[X] := ∏ i, minpoly (ResidueField V) (b i)
-  have hint : ∀ x : l, IsIntegral (ResidueField V) x := fun x => Algebra.IsIntegral.isIntegral x
-  have hq0 : q ≠ 0 := Finset.prod_ne_zero_iff.mpr fun i _ => minpoly.ne_zero (hint _)
-  obtain ⟨S, _, _, _, f, _, hf, hs⟩ := exists_splits _ V q rfl
-  obtain ⟨R, _, _, _, g, _, hR, hg⟩ := exists_complete S
-  have hs' : (q.map (ResidueField.map (g.comp f))).Splits := by
-    rw [ResidueField.map_comp, ← Polynomial.map_map]
-    exact hs.map _
-  let : Algebra (ResidueField V) (ResidueField R) := (ResidueField.map (g.comp f)).toAlgebra
-  have htop : IntermediateField.adjoin (ResidueField V) (Set.range b) = ⊤ := by
-    rw [IntermediateField.adjoin_eq_top_iff, eq_top_iff]
-    intro x _
-    have : x ∈ Submodule.span (ResidueField V) (Set.range b) := by
-      rw [b.span_eq]
-      trivial
-    exact Algebra.span_le_adjoin _ _ this
-  obtain ⟨s⟩ : Nonempty (l →ₐ[ResidueField V] ResidueField R) := by
-    refine IntermediateField.nonempty_algHom_of_adjoin_splits ?_ htop
-    rintro _ ⟨i, rfl⟩
-    refine ⟨hint _, ?_⟩
-    exact hs'.of_dvd (Polynomial.map_ne_zero hq0)
-      (Polynomial.map_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)))
-  exact ⟨R, inferInstance, inferInstance, inferInstance, g.comp f, inferInstance, s.toRingHom,
-    hR, hg.comp hf, s.comp_algebraMap⟩
-
 end PositivityTheory.HtPt.Pdvr

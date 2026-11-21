@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsFlatLift
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusDerivationFactorsThroughKaehlerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusDerivationFactorsThroughKaehler
 open GlobalTheory GlobalTheory.DI
 
 namespace GlobalTheory.DI
@@ -56,7 +56,7 @@ theorem exists_isH_of_isFrob : ∀ {K Kt : Type} [CommRing K] [CommRing Kt] (p :
     intro z
     show g _ = g _
     exact hwd _ _ (Function.surjInv_eq hL.surj _)
-  obtain ⟨f, hfs, hfD⟩ := GlobalTheory.T.frobeniusDerivation_factors_through_kaehler (M := K) p φ (by
+  obtain ⟨f, hfs, hfD⟩ := _root_.GlobalTheory.DI.frobDeriv_factors_kaehler (M := K) p φ (by
     intro a b
     obtain ⟨z, rfl⟩ := hL.surj a
     obtain ⟨z', rfl⟩ := hL.surj b

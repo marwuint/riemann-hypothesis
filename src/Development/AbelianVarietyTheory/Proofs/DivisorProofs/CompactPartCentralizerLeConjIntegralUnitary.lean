@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjZpowersEntriesValuedBoundedOfCompactClosureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIntegralOfCommuteSeparableReductionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjZpowersEntriesValuedBoundedOfCompactClosure
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIntegralOfCommuteSeparableReduction
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -50,7 +50,7 @@ theorem cptPart_le_conj_KL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   rw [Subgroup.closure_le]
   rintro t ⟨ht, hcpt⟩
   have htγ : t * γ = γ * t := by simpa [twCent] using ht
-  obtain ⟨B, hB⟩ := GlobalTheory.T.conj_zpowers_entries_valued_bounded_of_compact_closure E n w t g hcpt
+  obtain ⟨B, hB⟩ := _root_.GlobalTheory.BCT.powers_entries_bdd E n w t g hcpt
   set x : UL n w := g⁻¹ * t * g with hx
   have hxA : x * (g⁻¹ * γ * g) = (g⁻¹ * γ * g) * x := by
     simp only [hx, mul_assoc, mul_inv_cancel_left]
@@ -60,7 +60,7 @@ theorem cptPart_le_conj_KL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have entries : ∀ (y : UL n w), y * (g⁻¹ * γ * g) = (g⁻¹ * γ * g) * y →
       (∀ k : ℕ, ∃ m : ℤ, y ^ k = g⁻¹ * t ^ m * g) → ∀ i j, (y : GLw n w).val i j ∈ w.adicCompletionIntegers E := by
     intro y hy hpow
-    refine GlobalTheory.T.mem_integral_of_commute_separable_reduction E w n P₀ hP₀ A _ hA hAc ?_ ⟨B, fun k i j => ?_⟩
+    refine _root_.GlobalTheory.IntMatSep.integral_of_commute_sep E w n P₀ hP₀ A _ hA hAc ?_ ⟨B, fun k i j => ?_⟩
     · have := congrArg (fun z : UL n w => (z : GLw n w).val) hy
       simpa [Commute, SemiconjBy, hAdef] using this
     · obtain ⟨m, hm⟩ := hpow k

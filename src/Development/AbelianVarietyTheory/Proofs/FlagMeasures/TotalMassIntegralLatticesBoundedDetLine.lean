@@ -27,7 +27,7 @@ theorem sum_encard_fibre_le {α ι : Type*} (S : Set α) (f : α → ι) (s : Fi
 
 theorem orbSum_finsetSum {G α ι : Type} [Group G] [MulAction G α] (X : Set α) (N : ι → α → ℝ≥0∞)
     (s : Finset ι) : ∑ n ∈ s, orbSum G X (N n) = orbSum G X (fun x => ∑ n ∈ s, N n x) := by
-  obtain ⟨-, hconst, -, -, hadd⟩ := GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive G α
+  obtain ⟨-, hconst, -, -, hadd⟩ := _root_.GlobalTheory.Mass.OrbMono.main G α
   induction s using Finset.induction_on with
   | empty => simp [hconst]
   | insert a s ha ih =>
@@ -117,15 +117,15 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
     unfold orbMass orbSum
     exact ENNReal.tsum_eq_zero.2 fun q => (hE ⟨_, q.2.1⟩).elim
   obtain ⟨M₁, hM₁⟩ := hE
-  obtain ⟨hex, -, -⟩ := GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V h hK hs hnd
+  obtain ⟨hex, -, -⟩ := _root_.GlobalTheory.Mass.MaxExists.main K V h hK hs hnd
   obtain ⟨M₀, hM₀, -⟩ := hex M₁ hM₁
   obtain ⟨c, hc⟩ := hMM K hK 1 le_rfl
-  obtain ⟨-, hu', ho'⟩ := GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V' h' hK hs' hnd'
+  obtain ⟨-, hu', ho'⟩ := _root_.GlobalTheory.Mass.MaxExists.main K V' h' hK hs' hnd'
   obtain ⟨hIl, hIu, hIr⟩ := ho' I _ hI
   obtain ⟨hImax, -, hIlam⟩ := hu' I hIl hIu
   have hcI : mass h' I = c := by rw [hc V' h' hs' hp' hIr I hImax, hIlam, mul_one]
   have hdisc := GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hnd
-  obtain ⟨hmass, hmpos, hYst, hfin, -⟩ := GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp M₀ hM₀.1.1
+  obtain ⟨hmass, hmpos, hYst, hfin, -⟩ := _root_.GlobalTheory.Mass.GenusOrb.main K V h hK hs hp M₀ hM₀.1.1
   have hm₀ : mass h M₀ = c := by
     have : lamMax h M₀ = 1 := by
       unfold lamMax
@@ -134,14 +134,14 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
       simp only [hj, pow_one, sub_neg_eq_add, Pi.one_apply]
       exact div_self this
     rw [hc V h hs hp hj M₀ hM₀, this, mul_one]
-  obtain ⟨mono, hconst, -⟩ := GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (isom h) (Submodule (𝓞 K) V)
+  obtain ⟨mono, hconst, -⟩ := _root_.GlobalTheory.Mass.OrbMono.main (isom h) (Submodule (𝓞 K) V)
   have key : ∀ n : ℕ, orbMass (isom h) (latsDisc (R := 𝓞 K) h n) ≤ orbSum (isom h) (genus h M₀)
       (fun M' => ((({N : Submodule (𝓞 K) V | IsIntLat h N ∧ N ≤ M'} ∩ {N | discN h N = n}).encard : ℕ∞) :
         ℝ≥0∞)) := by
     intro n
     have hDst : Stable (isom h) (latsDisc (R := 𝓞 K) h n) := by
       intro g M hM
-      have h1 := (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp M hM.1.1).2.2.1 g M
+      have h1 := (_root_.GlobalTheory.Mass.GenusOrb.main K V h hK hs hp M hM.1.1).2.2.1 g M
         (SpaceMass.mem_genus_self h M hM.1.1)
       have h2 := (hdisc M hM.1).2.2.2.1 _ h1
       exact ⟨h2.1, h2.2.trans hM.2⟩
@@ -159,7 +159,7 @@ theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing 
       refine mono _ _ _ _ subset_rfl fun M hM => ?_
       obtain ⟨M', hM', hle⟩ := hex M hM.1
       have hne : (Y ∩ Prod.fst ⁻¹' {M}).Nonempty :=
-        ⟨(M, M'), ⟨hM, (GlobalTheory.T.mem_genus_iff_maximalIntegralHermitianLattice K V h hK hs hp M₀ M' hM₀).2 hM', hle⟩, rfl⟩
+        ⟨(M, M'), ⟨hM, (_root_.GlobalTheory.Mass.MaxGenus.main K V h hK hs hp M₀ M' hM₀).2 hM', hle⟩, rfl⟩
       have := Set.one_le_encard_iff_nonempty.2 hne
       exact_mod_cast this
     refine s1.trans ?_

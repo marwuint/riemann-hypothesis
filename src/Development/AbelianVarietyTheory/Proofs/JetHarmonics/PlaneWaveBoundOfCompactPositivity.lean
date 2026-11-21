@@ -22,9 +22,6 @@ open Classical
 
 namespace PlaneWaveCompact
 
-variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
-
 end PlaneWaveCompact
 
 open NumberField MeasureTheory in

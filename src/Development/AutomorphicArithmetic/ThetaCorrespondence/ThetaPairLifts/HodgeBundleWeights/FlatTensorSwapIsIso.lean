@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.WeilBound.CoreStatements.ComplexPeriods.FlatDegreeResidues.FlatSlim
 import Development.WeilBound.CoreStatements.ResolutionCharZero.PlugResK
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.FlatDegreeHypotheses

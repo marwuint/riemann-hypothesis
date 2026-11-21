@@ -152,11 +152,6 @@ theorem inhab : Nonempty (LabelDatum g) := by
   · intro x y hx hy h
     exact (key _ _ _ _ (ht' x hx) (ht' y hy)).2 h
 
-theorem inhab_teich (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : ∀ x y, x ≠ 0 → y ≠ 0 → t x = t y → x = y) :
-    ∃ L : LabelDatum g, L.teich = t := by
-  obtain ⟨L⟩ := inhab g
-  exact ⟨⟨t, ht, L.gen, L.gen_order, L.gen_norm⟩, rfl⟩
-
 theorem thetaOf_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ^ (g ^ d - 1) = 1) (n : ℕ) :
     thetaOf L d x (L.gen d ^ n) = L.teich x ^ n := by
   have h : ∃ m : ℕ, L.gen d ^ n = L.gen d ^ m := ⟨n, rfl⟩
@@ -164,8 +159,5 @@ theorem thetaOf_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Formalism.Cyc
   have h1 := (prim_iff hp (pos g hd) _ _).1 h.choose_spec
   have h2 : L.teich x ^ (g ^ d - 1) = 1 := by rw [← map_pow, hx, map_one]
   rw [thetaOf, dif_pos h, pow_eq_pow_mod _ h2, pow_eq_pow_mod n h2, h1]
-
-theorem isCusp_one (χ : Gn g 1 → ℂ) : IsCusp χ ↔ IsIrr χ :=
-  ⟨fun h => h.2.1, fun h => ⟨one_pos, h, fun a h1 h2 => by omega⟩⟩
 
 end GlobalTheory.GLq.LabelModel

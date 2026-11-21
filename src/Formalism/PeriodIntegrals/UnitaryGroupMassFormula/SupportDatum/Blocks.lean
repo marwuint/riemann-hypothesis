@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.SupportParts
+import Formalism.SharpRestriction.CuspSpanNormBounds.LocalGroupInFamilyNontrivial
 
 noncomputable section
 
@@ -131,10 +131,6 @@ theorem dmin_top (D : Formalism.BasicNotions.D7) {n : ℕ} (w : Point D.host.E n
   unfold Dmin ptMat
   rw [dif_pos le_rfl, ← ptEntry_det w.1 n hw.2]
   congr 1
-
-theorem topNe (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1)) : Dmin w (D.R.rS + 1) ≠ 0 := by
-  rw [dmin_top]
-  exact blkDet_ne_zero _ (fun b hb => (w.2.1 b hb).1)
 
 theorem dmin_last_one (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1))
     (head : List (D.host.E × ℕ)) (t : D.host.E) (h : w.1 = head ++ [(t, 1)]) :

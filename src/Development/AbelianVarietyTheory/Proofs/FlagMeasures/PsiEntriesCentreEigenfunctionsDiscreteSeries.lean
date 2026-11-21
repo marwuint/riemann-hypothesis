@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Formalism.RealPlaceAnalysis.QuotientSettingHolds
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PhiCentreEigenfunctionDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiRestrictionHolomorphicNearOneStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiEntriesRealAnalyticStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiRestrictionHolomorphicNearOne
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiEntriesRealAnalytic
 
 open MeasureTheory Matrix Filter Topology Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ContDiff
@@ -723,6 +723,6 @@ theorem psiEigen_of (h1 : PhiEigen) (h2 : PsLocal) (h3 : PsiAnalytic) : PsiEigen
   rw [integral_const_mul]
   ring
 
-theorem psiEigen : PsiEigen := psiEigen_of GlobalTheory.T.phi_centre_eigenfunction_discrete_series GlobalTheory.T.psi_restriction_holomorphic_near_one GlobalTheory.T.psi_entries_real_analytic
+theorem psiEigen : PsiEigen := psiEigen_of GlobalTheory.T.phi_centre_eigenfunction_discrete_series _root_.GlobalTheory.Dec.psLocal _root_.GlobalTheory.Dec.psiAnalytic
 
 end GlobalTheory.Dec.PsiEig

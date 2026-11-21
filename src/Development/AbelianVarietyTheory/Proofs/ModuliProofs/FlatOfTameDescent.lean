@@ -13,24 +13,6 @@ namespace TameFlat
 
 open TensorProduct
 
-theorem cancel_natural {A B R X Y : Type} [CommRing A] [CommRing B] [Algebra A B]
-    [AddCommGroup R] [Module A R]
-    [AddCommGroup X] [Module A X] [Module B X] [IsScalarTower A B X]
-    [AddCommGroup Y] [Module A Y] [Module B Y] [IsScalarTower A B Y]
-    (f : X →ₗ[B] Y) (t : X ⊗[B] (B ⊗[A] R)) :
-    AlgebraTensorModule.cancelBaseChange A B B Y R (f.rTensor _ t) =
-      (f.restrictScalars A).rTensor R (AlgebraTensorModule.cancelBaseChange A B B X R t) := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp
-  | tmul x y =>
-    induction y using TensorProduct.induction_on with
-    | zero => simp
-    | tmul c r =>
-      simp only [LinearMap.rTensor_tmul, AlgebraTensorModule.cancelBaseChange_tmul,
-        LinearMap.restrictScalars_apply, map_smul]
-    | add y z hy hz => simp only [TensorProduct.tmul_add, map_add, hy, hz]
-  | add s u hs hu => simp only [map_add, hs, hu]
-
 theorem flat_of_retraction {A B R : Type} [CommRing A] [CommRing B] [Algebra A B]
     [AddCommGroup R] [Module A R] (e : B →ₗ[A] A) (he : e 1 = 1)
     [Module.Flat B (B ⊗[A] R)] : Module.Flat A R := by

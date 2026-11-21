@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatVInjective
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryAdelicIwasawaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicRationalCompactStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittFrameReduceRankStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalUnitarySendsIsotropicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalUnitaryWittExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicScalesIsotropicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNearMinimalVectorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryAdelicIwasawa
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicRationalCompact
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittFrameReduceRank
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalUnitarySendsIsotropic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalUnitaryWittExtension
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicScalesIsotropic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNearMinimalVector
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ReductionTheoryHeightBoundStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ReductionTheoryLowerBoundStatement
 
@@ -74,25 +74,25 @@ theorem step {r : ℕ} (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (
     (IH : ∀ (n' : ℕ) (J' : Matrix (Fin n') (Fin n') E) (X' Y' : Matrix (Fin n') (Fin r) E),
       IsHermND σ J' → IsWittFrame σ J' X' Y' → HasRed σ J' X' Y') : HasRed σ J X Y := by
   intro a ha
-  obtain ⟨K, hKc, hIw⟩ := GlobalTheory.T.unitary_adelic_iwasawa F E σ h n J hJ (r + 1) X Y hW
-  obtain ⟨n', J', X', Y', ι, hJ', hW', hιc, hιr, hιx, hι1, hιa⟩ := GlobalTheory.T.witt_frame_reduce_rank F E σ h n J hJ r X Y hW
+  obtain ⟨K, hKc, hIw⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.exists_compact_iwasawa_of_frame F E σ h n J hJ (r + 1) X Y hW
+  obtain ⟨n', J', X', Y', ι, hJ', hW', hιc, hιr, hιx, hι1, hιa⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.Levi.exists_levi F E σ h n J hJ r X Y hW
   obtain ⟨hιt, hιcomm, hιdec⟩ := hιa a ha
   obtain ⟨a', ha'⟩ := exists_isTorus h hJ' hW'
   obtain ⟨C', c', hC', hc', hred'⟩ := IH n' J' X' Y' hJ' hW' a' ha'
-  obtain ⟨Ω, hΩc, hΩ1, hΩ⟩ := GlobalTheory.T.minimal_parabolic_rational_compact F E σ h n J hJ (r + 1) X Y hW
+  obtain ⟨Ω, hΩc, hΩ1, hΩ⟩ := _root_.GlobalTheory.CompanionTheory.ParCocompact.minParOne_cocompact F E σ h n J hJ (r + 1) X Y hW
   have hC₁ : IsCompact ((ι '' C') * (K : Set (GAd σ J))) := (hC'.image hιc).mul hKc
   obtain ⟨M₁, hM₁, hfirst⟩ := GlobalTheory.T.reduction_theory_height_bound F E σ h n J hJ r X Y hW a ha Ω _ hΩc hΩ1 hC₁
   obtain ⟨M₂, hM₂, hsimple⟩ := GlobalTheory.T.reduction_theory_lower_bound F E σ h n J hJ r X Y hW a ha Ω _ hΩc hΩ1 hC₁
-  have hact := GlobalTheory.T.rational_unitary_witt_extension F E σ h n J hJ
+  have hact := _root_.GlobalTheory.CompanionTheory.RedCov.exists_sends_hE F E σ h n J hJ
   refine ⟨_, min c' (min M₁⁻¹ M₂⁻¹), hC₁, lt_min hc' (lt_min (inv_pos.2 hM₁) (inv_pos.2 hM₂)), fun g => ?_⟩
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_near_minimal_vector F E σ h n J hJ r X Y hW g
-  obtain ⟨γ₁, hγ₁, hs₁⟩ := GlobalTheory.T.rational_unitary_sends_isotropic F E σ h n J hJ r X Y hW v hv.1 hv.2.1
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.exists_nearMin F E σ h n J hJ r X Y hW g
+  obtain ⟨γ₁, hγ₁, hs₁⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.exists_ratPts_sends_isotropic F E σ h n J hJ r X Y hW v hv.1 hv.2.1
   obtain ⟨p, hp, k, hk, hg₁⟩ := hIw (γ₁⁻¹ * g)
   obtain ⟨g', q₀, hq₀, s₁, hpe, hconj⟩ := hιdec p hp
   obtain ⟨γ', hγ', q', hq', s', hs', κ', hκ', hg'⟩ := hred' g'
   have hQ : (ι γ')⁻¹ * q₀ * ι γ' * ι q' ∈ minParOne σ J X := mul_mem_one h hJ hW ha (hconj γ') (hι1 q' hq')
   obtain ⟨δ, hδ, hδP, ω, hω, hQe⟩ := hΩ _ hQ
-  obtain ⟨e, he, hse⟩ := GlobalTheory.T.minimal_parabolic_scales_isotropic F E σ h n J hJ r X Y hW δ hδ hδP
+  obtain ⟨e, he, hse⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.exists_sends_of_rat_mem_minPar F E σ h n J hJ r X Y hW δ hδ hδP
   set S : Fin (r + 1) → ℝ := Fin.cons s₁ s' with hS
   have hadd : a (Fin.cons s₁ 0) * a (Fin.cons 0 s') = a S := by
     rw [← ha.add]
@@ -203,7 +203,7 @@ theorem cov_main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW K hKc hIw _
   obtain ⟨a, ha⟩ := exists_isTorus h hJ hW
   obtain ⟨C, c, hC, hc, hred⟩ := hasRed_all h r n J X Y hJ hW a ha
-  obtain ⟨Ω, hΩc, hΩ1, hΩ⟩ := GlobalTheory.T.minimal_parabolic_rational_compact F E σ h n J hJ r X Y hW
+  obtain ⟨Ω, hΩc, hΩ1, hΩ⟩ := _root_.GlobalTheory.CompanionTheory.ParCocompact.minParOne_cocompact F E σ h n J hJ r X Y hW
   obtain ⟨τ, hτc, hτadd, hτa, hτ1, hτp⟩ := exists_tau h hJ hW ha
   have hD : IsCompact ((C * (K : Set (GAd σ J))) ∩ minPar σ J X) :=
     (hC.mul hKc).inter_right (isClosed_minPar h hJ hW)

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleLagrangianTransverseFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleLagrangianTransverseField
 open Matrix
 
 namespace GlobalTheory.LocalLift
@@ -135,6 +135,6 @@ theorem exists_admissible_isUnit_det :
       (Matrix.fromBlocks A B C D)ᵀ * Matrix.fromBlocks 0 S S 0 * (Matrix.fromBlocks A B C D).map c =
         Matrix.fromBlocks 0 S S 0 →
       ∃ X : Matrix (Fin n) (Fin n) O, Xᵀ * S + S * X.map c = 0 ∧ IsUnit (A + X * C).det :=
-  lift_of_field GlobalTheory.T.exists_admissible_lagrangian_transverse_field
+  lift_of_field _root_.GlobalTheory.lagrangian_transverse_field
 
 end GlobalTheory.LocalLift

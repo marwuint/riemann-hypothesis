@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvcCompOfIso
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardEqZeroOfTrivialOnDisjointCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardEqZeroOfTrivialOnDisjointCover
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
@@ -34,7 +34,7 @@ theorem fam_of_pieces {S : Scheme.{0}} (A : Over S) [GrpObj A] {κ : Type} [Fini
     simp at hx'
 
   rw [← sub_eq_zero]
-  refine GlobalTheory.T.cechPicard_eq_zero_of_trivial_on_disjoint_cover (fun i => pullback.fst t.left (j i).left) hcovY hdisjY _ (fun i => ?_)
+  refine _root_.GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero (fun i => pullback.fst t.left (j i).left) hcovY hdisjY _ (fun i => ?_)
   let Zi : Over S := Over.mk (pullback.fst t.left (j i).left ≫ Y.hom)
   let u : Zi ⟶ Y := Over.homMk (pullback.fst t.left (j i).left) rfl
   have hv : pullback.snd t.left (j i).left ≫ (B i).hom = Zi.hom := by

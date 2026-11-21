@@ -80,19 +80,6 @@ theorem HasOp.mul {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} {a b : Matr
     · simp only [LinearMap.comp_apply]
       rw [hq₂, ht₁, ← hq₂, ht₂, mul_assoc]
 
-theorem hasOp_one {κ : Type} [Fintype κ] [DecidableEq κ] (ψ : AddChar (AF F) ℂ) : HasOp ψ (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) := by
-  have h1 : ∀ {R : Type} [CommRing R] (w : (κ → R) × (κ → R)), act (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) R) w = w := by
-    intro R _ w
-    simp only [act, Matrix.one_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr]
-  refine ⟨LinearMap.id, 1, ContinuousLinearMap.id ℂ _, fun _ => LinearMap.id, one_ne_zero,
-    Function.surjective_id, fun v => Set.bijOn_id _, ?_, ?_, ?_⟩
-  · intro v w φ _
-    simp only [LinearMap.id_apply, Matrix.map_one _ (map_zero _) (map_one _), h1]
-  · exact Filter.Eventually.of_forall fun v => rfl
-  · intro f φ _
-    refine ⟨rfl, fun w => ?_, by simp⟩
-    simp only [LinearMap.id_apply, Matrix.map_one _ (map_zero _) (map_one _), h1]
-
 end GlobalTheory.RatWeilOp
 
 end

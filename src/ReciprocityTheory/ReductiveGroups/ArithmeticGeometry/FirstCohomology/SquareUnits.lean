@@ -75,41 +75,6 @@ theorem spec_pt_eq (q q' : Spec (CommRingCat.of k)) : q = q' := by
   have h2 : PrimeSpectrum.asIdeal (R := k) q' = ⊥ := @Ideal.eq_bot_of_prime k _ _ (PrimeSpectrum.isPrime (R := k) q')
   exact PrimeSpectrum.ext (h1.trans h2.symm)
 
-theorem unitAt_square (hsq : SquareSt) (P : PolAV (Spec (CommRingCat.of k)))
-    (x₁ x₂ : baseOver (Spec (CommRingCat.of k)) ⟶ P.A) (y : (baseOver (Spec (CommRingCat.of k)) ⊗ P.A).left) :
-    UnitAt P.L ![(translPt P.A (x₁ * x₂)).left, (snd (baseOver (Spec (CommRingCat.of k))) P.A).left,
-      (translPt P.A x₁).left, (translPt P.A x₂).left] ![1, 1, -1, -1] y := by
-  obtain ⟨V, hpV, c, hc⟩ := hsq (Spec (CommRingCat.of k)) P (baseOver (Spec (CommRingCat.of k))) x₁ x₂
-    (IsLocalRing.closedPoint k)
-  have hV : V = ⊤ := eq_top_iff.2 fun q _ => by rw [spec_pt_eq q (IsLocalRing.closedPoint k)]; exact hpV
-  subst hV
-  obtain ⟨s, hs⟩ := exists_sec_of_pullGen (Z := (baseOver (Spec (CommRingCat.of k)) ⊗ P.A).left)
-    ((fst (baseOver (Spec (CommRingCat.of k))) P.A).left ⁻¹ᵁ ⊤).ι c hc
-  let e := IsOpenImmersion.lift ((fst (baseOver (Spec (CommRingCat.of k))) P.A).left ⁻¹ᵁ ⊤).ι (𝟙 _)
-    (by rintro _ ⟨q, rfl⟩; rw [Scheme.Opens.range_ι]; trivial)
-  have he : e ≫ ((fst (baseOver (Spec (CommRingCat.of k))) P.A).left ⁻¹ᵁ ⊤).ι = 𝟙 _ :=
-    IsOpenImmersion.lift_fac _ _ _
-  refine UnitAt.congr P.isLB ?_ ⟨pullSec s e, fun J hJ => ?_⟩
-  · refine formEq_of_add fun U _ hh => ?_
-    simp only [← Category.assoc, he, Category.id_comp]
-  · rw [sval_pullSec s e (𝟙 _) y hJ]
-    exact hs _ y J hJ
-
-theorem unitAt_iter (hsq : SquareSt) (P : PolAV (Spec (CommRingCat.of k)))
-    (b : baseOver (Spec (CommRingCat.of k)) ⟶ P.A) (y : (baseOver (Spec (CommRingCat.of k)) ⊗ P.A).left) :
-    ∀ n : ℕ, UnitAt P.L ![(translPt P.A (b ^ (n + 2))).left, (snd (baseOver (Spec (CommRingCat.of k))) P.A).left,
-      (translPt P.A b).left] ![1, (n : ℤ) + 1, -((n : ℤ) + 2)] y
-  | 0 => by
-    refine UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_) (unitAt_square hsq P b b y)
-    simp [Fin.sum_univ_succ, pow_two]
-    module
-  | n + 1 => by
-    refine UnitAt.congr P.isLB (formEq_of_add fun U _ hh => ?_)
-      ((unitAt_iter hsq P b y n).mul (unitAt_square hsq P (b ^ (n + 2)) b y))
-    have e : b ^ (n + 2) * b = b ^ (n + 1 + 2) := by rw [← pow_succ]
-    simp [Fin.sum_univ_succ, e]
-    module
-
 end Square
 
 end ReciprocityTheory.ChartRestriction.G.H1.SquareUnits

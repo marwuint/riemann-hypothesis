@@ -34,7 +34,7 @@ variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (Xs : Set 
 
 theorem contTw (hr : GoodR D.nd i r) (x : ↥Xs) (v : Fin D.R.nV → Br.LL D.nbr i w hw) :
     Continuous fun g => (Br.loc D.nbr i w hw (rTwO D.nd i r x) g).mulVec v :=
-  (GlobalTheory.JumpDual.loc_cont D i w hw _ (GlobalTheory.T.twisted_dual_families_continuous D i r hr x).1).matrix_mulVec continuous_const
+  (GlobalTheory.JumpDual.loc_cont D i w hw _ (_root_.GlobalTheory.Pass.FamCont.stepCont D i r hr x).1).matrix_mulVec continuous_const
 
 def sumG (hr : GoodR D.nd i r) {a : ℕ} (x : Fin a → ↥Xs) :
     GRep (Br.G D.nbr i w hw) ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw) :=

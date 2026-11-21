@@ -78,13 +78,6 @@ variable {D₀ D₁ D₂ : Type}
     [AddCommGroup D₂] [Module A D₂] [Module ℤ_[p] D₂] [IsScalarTower ℤ_[p] A D₂]
     {W₀ : WachMod B η D₀} {W₁ : WachMod B η D₁} {W₂ : WachMod B η D₂}
 
-def CokerKilled (S : SES W₀ W₁ W₂) (e : ℕ) : Prop :=
-  ∀ n ∈ W₂.N, ∃ n₁ ∈ W₁.N, S.π.f n₁ = (p : ℤ_[p]) ^ e • n
-
-def RatSurj (S : SES W₀ W₁ W₂) : Prop :=
-  ∀ y z, W₂.Cocycle y z → ∃ k : ℕ, ∃ y₁ z₁, W₁.Cocycle y₁ z₁ ∧ ∃ x ∈ W₂.N,
-    S.π.f y₁ = (p : ℤ_[p]) ^ k • y + (W₂.φ x - x) ∧ S.π.f z₁ = (p : ℤ_[p]) ^ k • z + (W₂.γ x - x)
-
 def Lifts (S : SES W₀ W₁ W₂) (c : ℤ_[p]) : Prop :=
   ∀ y z, W₂.Cocycle y z → ∃ y₁ z₁, W₁.Cocycle y₁ z₁ ∧ S.π.f y₁ = c • y ∧ S.π.f z₁ = c • z
 
@@ -93,52 +86,5 @@ end Hyp
 def TorsKilled {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[p] D] [IsScalarTower ℤ_[p] A D]
     (W : WachMod B η D) (c : ℤ_[p]) : Prop :=
   ∀ ω, W.C2 ω → (∃ k : ℕ, W.IsCob2 ((p : ℤ_[p]) ^ k • ω)) → W.IsCob2 (c • ω)
-
-def LiftW : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [Algebra ℤ_[p] A] (B : Base p A) (η : ℕ)
-    (D₀ D₁ D₂ : Type)
-    [AddCommGroup D₀] [Module A D₀] [Module ℤ_[p] D₀] [IsScalarTower ℤ_[p] A D₀]
-    [AddCommGroup D₁] [Module A D₁] [Module ℤ_[p] D₁] [IsScalarTower ℤ_[p] A D₁]
-    [AddCommGroup D₂] [Module A D₂] [Module ℤ_[p] D₂] [IsScalarTower ℤ_[p] A D₂]
-    (W₀ : WachMod B η D₀) (W₁ : WachMod B η D₁) (W₂ : WachMod B η D₂) (S : SES W₀ W₁ W₂)
-    (e : ℕ) (c : ℤ_[p]),
-    CokerKilled S e → RatSurj S → TorsKilled W₀ c → Lifts S ((p : ℤ_[p]) ^ e * c)
-
-def ClaimW : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [Algebra ℤ_[p] A] (B : Base p A) (η : ℕ)
-    (D : Type) [AddCommGroup D] [Module A D] [Module ℤ_[p] D] [IsScalarTower ℤ_[p] A D]
-    (W : WachMod B η D) (δ : D →ₗ[ℤ_[p]] D) (R : Polynomial ℤ_[p]) (a : ℕ) (cΓ : ℤ_[p]),
-    η ≤ (p - 1) * (a + 1) →
-    (∀ y, B.π₀ • δ y = W.γ y - y) →
-    (∀ y, W.QInv y → Polynomial.aeval δ (Polynomial.X * R) y ∈ W.N) →
-    (∀ y, W.QInv y → (p : ℤ_[p]) • y ∈ W.N → y ∈ W.N) →
-    cΓ ≠ 0 →
-    (∀ n ∈ W.N, ∃ x ∈ W.N, ∃ z' ∈ W.N,
-      cΓ • (B.π₀ • n) = (W.γ (B.π₀ • x) - B.π₀ • x) + B.π₀ ^ (a + 1) • z') →
-    (∀ n ∈ W.N, ∃ z ∈ W.N, B.π₀ ^ (a + 1) • n = B.π₀ ^ (a + 1) • z - W.φ (B.π₀ ^ (a + 1) • z)) →
-    TorsKilled W (R.eval 0 * cΓ)
-
-def GammaOnto : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [Algebra ℤ_[p] A] (B : Base p A) (η : ℕ)
-    (D : Type) [AddCommGroup D] [Module A D] [Module ℤ_[p] D] [IsScalarTower ℤ_[p] A D]
-    (W : WachMod B η D) (u : ℤ_[p]) (a : ℕ),
-    (∀ i, 1 ≤ i → i ≤ a → ∀ n ∈ W.N, ∃ n' ∈ W.N,
-      W.γ (B.π₀ ^ i • n) = u ^ i • (B.π₀ ^ i • n) + B.π₀ ^ (i + 1) • n') →
-    ∀ n ∈ W.N, ∃ x ∈ W.N, ∃ z' ∈ W.N,
-      (∏ i ∈ Finset.Icc 1 a, (1 - u ^ i)) • (B.π₀ • n) =
-        (W.γ (B.π₀ • x) - B.π₀ • x) + B.π₀ ^ (a + 1) • z'
-
-def polyBase (p : ℕ) [Fact p.Prime] : Base p (Polynomial ℤ_[p]) where
-  φA := Polynomial.aeval (Polynomial.X * (Polynomial.X + Polynomial.C (p : ℤ_[p])) ^ (p - 1))
-  γA := AlgHom.id ℤ_[p] _
-  π₀ := Polynomial.X
-  q := Polynomial.X + Polynomial.C (p : ℤ_[p])
-  hq := by simp [Polynomial.algebraMap_apply]
-  hφ := ⟨1, by simp⟩
-  comm := fun _ => rfl
-
-def WachNonempty : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime], ∃ W : WachMod (polyBase p) 0 (FractionRing (Polynomial ℤ_[p])),
-    W.N ≠ ⊥ ∧ ¬ IsUnit (polyBase p).π₀
 
 end Formalism.CL.W

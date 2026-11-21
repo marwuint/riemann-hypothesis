@@ -15,10 +15,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChart
 
-def HasRoot {S T : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left) (f : T ⟶ S) : Prop :=
-  ∃ (A' : Over T) (_ : GrpObj A') (_ : IsCommMonObj A') (β : A'.left ⟶ A.left) (β₂ : (G2 A').left ⟶ (G2 A).left)
-    (L : LB A'.left), IsGrpPullback A' A f β ∧ IsSquare β β₂ ∧ L.IsLB ∧ LBIso (abelian₂ A' L) (P.pull β₂)
-
 def IsBiRig {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left) : Prop :=
   P.IsLB ∧ (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) ∧
     (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) ∧ LBIso P (P.pull (lift (snd A A) (fst A A)).left)
@@ -27,16 +23,9 @@ def IsPPol {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2
   IsBiRig A P ∧ RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) ∧
     ∀ (T : Over S) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x = 1
 
-theorem isPPol_of_principal {S : Scheme.{0}} {h M : ℕ} {B : Type} [CommRing B] {ζ : B} {s : S ⟶ Sp B} (c : SiegPre h M ζ s)
-    (hc : c.Principal) : IsPPol c.A c.P := ⟨⟨c.isLB, c.rig₁, c.rig₂, c.symm⟩, hc.1, hc.2⟩
-
 def IsComplAt {A R : Type} [CommRing A] [CommRing R] [IsLocalRing R] (ψ : A →+* R) : Prop :=
   IsNoetherianRing R ∧ IsAdicComplete (maximalIdeal R) R ∧ ψ.Flat ∧ ((maximalIdeal R).comap ψ).map ψ = maximalIdeal R ∧
     ∀ r : R, ∃ a b : A, IsUnit (ψ b) ∧ r * ψ b - ψ a ∈ maximalIdeal R
-
-theorem isComplAt_id (K : Type) [Field K] : IsComplAt (RingHom.id K) :=
-  ⟨inferInstance, inferInstance, RingHom.Flat.id K, by rw [Ideal.comap_id, Ideal.map_id],
-    fun r => ⟨r, 1, isUnit_one, by simp⟩⟩
 
 section From
 
@@ -162,20 +151,8 @@ def TorsRat {R : Type} [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] (n
   ∀ (K : Type) [Field K] [IsAlgClosed K] (κ : FractionRing R →+* K) (x : Over.mk (spMap κ ≫ jK R) ⟶ G), x ^ n = 1 →
     ∃ x₀ : Over.mk (jK R) ⟶ G, x.left = spMap κ ≫ x₀.left
 
-theorem torsRat_one {R : Type} [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] : TorsRat G 1 := fun K _ _ κ x hx =>
-  ⟨1, by
-    rw [pow_one] at hx
-    let ρ : Over.mk (spMap κ ≫ jK R) ⟶ Over.mk (jK R) := Over.homMk (spMap κ) rfl
-    rw [hx, ← MonObj.comp_one ρ]
-    rfl⟩
-
 def GalRigid {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) : Prop :=
   ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (θ : R →+* R') (σ : R' ≃+* R'), IsCN R' → Function.Injective θ →
     θ.Finite → IsOfFinOrder σ → (∀ a, σ (θ (f a)) = θ (f a)) → (∀ r, σ (θ r) - θ r ∈ maximalIdeal R') → ∀ r, σ (θ r) = θ r
-
-theorem galRigid_of_surjective {A R : Type} [CommRing A] [CommRing R] {f : A →+* R} (hf : Function.Surjective f) : GalRigid f :=
-  fun _ _ _ _ _ _ _ _ _ _ h _ r => by
-    obtain ⟨a, rfl⟩ := hf r
-    exact h a
 
 end GlobalTheory.TChart

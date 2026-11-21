@@ -1,5 +1,7 @@
 import Formalism.LocalToGlobal.CharacterGerms.RowTieSelf
-import Formalism.LocalToGlobal.CharacterGerms.ValBlocksChart
+import Formalism.LocalToGlobal.CharacterGerms.BlockAdmissibleChart
+import Formalism.LocalToGlobal.CharacterGerms.RowTieAdm
+import Formalism.LocalToGlobal.CharacterGerms.RowTieJet
 
 noncomputable section
 
@@ -31,21 +33,5 @@ theorem valO_self (ν : ℝ) (hν : (ν : EReal) ≤ Y.nuPlE Ls n) (hs : SelfSep
   exact WithBot.coe_le_coe.1 (hν.trans key)
 
 end Gen
-
-section Two
-
-variable (Y : FBChart C V O dd) (p : ∀ o, SelfData Y 2 (I0 o)) (H : ∀ o, (Y.rawSelf (p o)).Hyps V)
-  (Ls : LetSys C dd) (n : ℕ)
-
-theorem valBlocksC_chart (ν : ℝ) (hν : (ν : EReal) ≤ Y.nuPlE Ls n) (hs : SelfSep Y p) (hv : ValEqSelfSt Y p H Ls n)
-    {N : ℕ} (pl : Fin N × Fin 2 ↪ Fin n) (F : ∀ o, Flag (rdS Y p H o)) (nW : ℕ) (hn : nW ≤ 2 * N + 1)
-    (gaC : Orb → ZMod 2 → ℕ → ℕ) (hM : BlockMembershipSelfConjugate (fun o => rdS Y p H o) N F (imgFamS Y p Ls n pl) gaC)
-    (hA : ∀ o, (rdS Y p H o).Alt) (hj : ∀ o, (rdS Y p H o).j' < (rdS Y p H o).n)
-    (hga : ∀ o s k, gaC o s k ≠ 0 → k ≤ (rdS Y p H o).rkF 0 s) :
-    ValBlocksC (fun o => rdS Y p H o) F nW gaC ν :=
-  valBlocksC_G (hV := valO_self (hν := hν) (hs := hs) (hv := hv) (pl := pl)) (hJ := jetProd) (F := F) (nW := nW)
-    (hn := hn) (gaC := gaC) (hM := hM) (hA := blkAdmC (F := F) (gaC := gaC) (hA := hA) (hj := hj) (hga := hga))
-
-end Two
 
 end Formalism.L2.FormalSeriesBounds.RF

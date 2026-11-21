@@ -264,10 +264,6 @@ theorem productDecay : ProductDecaySummable := by
   haveI : BorelSpace V := ⟨rfl⟩
   exact locSummable_of_norm_le_mul_gP π hπ Λ φ C hφ
 
-theorem stepDecay (h : PoissonStep) : PoissonStepDecay := by
-  intro V _ _ _ _ _ hP Λ _ _ φ b x hc hb h1 h2 hnn S
-  exact h V Λ φ x (hP Λ (fun v => (φ v : ℂ)) (Complex.continuous_ofReal.comp hc) b hb h1 h2 x) hnn S
-
 theorem stepText (h : PoissonStep) (h2 : PoissonSummable) (h3 : ProductDecaySummable) :
     PoissonStepText := by
   intro V _ _ _ _ _ ι _ π hπ Λ _ _ φ C x hc hφ hsum hnn
@@ -279,15 +275,6 @@ theorem stepText (h : PoissonStep) (h2 : PoissonSummable) (h3 : ProductDecaySumm
 end Formalism.FourierDecayAlt.P.PoissonSummationDecay
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem poisson_summation_level : Formalism.FourierDecayAlt.F7.PoissonStep := PoissonSummationDecay.poissonStep
-
-theorem poisson_level_decay : Formalism.FourierDecayAlt.F7.PoissonStepDecay :=
-  PoissonSummationDecay.stepDecay PoissonSummationDecay.poissonStep
-
-theorem poisson_series_summable : Formalism.FourierDecayAlt.F7.PoissonSummable := PoissonSummationDecay.poissonSummable
-
-theorem product_decay_summable : Formalism.FourierDecayAlt.F7.ProductDecaySummable := PoissonSummationDecay.productDecay
 
 theorem poisson_summation_level_statement : Formalism.FourierDecayAlt.F7.PoissonStepText :=
   PoissonSummationDecay.stepText PoissonSummationDecay.poissonStep PoissonSummationDecay.poissonSummable PoissonSummationDecay.productDecay

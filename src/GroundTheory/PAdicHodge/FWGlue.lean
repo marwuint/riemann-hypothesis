@@ -127,30 +127,4 @@ theorem coe_glueAut [Algebra.IsAlgebraic F Ω] (i : ι) (x : Ω) (hx : (x : E) �
 
 end Glue
 
-section AutCongr
-
-variable {F A B : Type*} [Field F] [Field A] [Field B] [Algebra F A] [Algebra F B]
-
-theorem continuous_autCongr (e : A ≃ₐ[F] B) : Continuous (e.autCongr : Gal(A/F) → Gal(B/F)) := by
-  apply continuous_of_continuousAt_one e.autCongr (continuousAt_def.mpr _)
-  intro U hU
-  rw [map_one, krullTopology_mem_nhds_one_iff] at hU
-  obtain ⟨E, hE, hsub⟩ := hU
-  rw [krullTopology_mem_nhds_one_iff]
-  refine ⟨E.map e.symm.toAlgHom, ?_, ?_⟩
-  · exact LinearEquiv.finiteDimensional (IntermediateField.equivMap E e.symm.toAlgHom).toLinearEquiv
-  · intro σ hσ
-    apply hsub
-    rw [SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff] at hσ ⊢
-    intro x hx
-    change e (σ (e.symm x)) = x
-    rw [hσ (e.symm x) ⟨x, hx, rfl⟩, AlgEquiv.apply_symm_apply]
-
-def autCongrHomeomorph (e : A ≃ₐ[F] B) : Gal(A/F) ≃ₜ* Gal(B/F) where
-  toMulEquiv := e.autCongr
-  continuous_toFun := continuous_autCongr e
-  continuous_invFun := continuous_autCongr e.symm
-
-end AutCongr
-
 end GroundTheory.PAdicHodge

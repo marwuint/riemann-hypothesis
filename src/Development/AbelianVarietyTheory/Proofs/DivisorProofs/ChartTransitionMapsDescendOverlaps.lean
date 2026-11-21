@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartSome
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentOfEqualisedProperCoverNormalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentOfEqualisedProperCoverNormal
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -38,7 +39,7 @@ theorem chart_transition_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
       rw [← cancel_mono (e j), h₂e]; simp only [Category.assoc, hZe]
     subst this
     simpa only [Category.assoc] using h₂p.symm
-  obtain ⟨τ, hτ, -⟩ := GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S V.toScheme (pullback.fst U.hom π ⁻¹ᵁ V).toScheme U.left π
+  obtain ⟨τ, hτ, -⟩ := _root_.GlobalTheory.MorDescent.descend R S V.toScheme (pullback.fst U.hom π ⁻¹ᵁ V).toScheme U.left π
     (V.ι ≫ U.hom) p' _ hπ hs hS hflat hpb _ heq
   refine ⟨τ, fun T a b v hab hv => ?_⟩
   let a' := hpb0.lift v a hv

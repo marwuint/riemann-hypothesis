@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRules
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafComplexPairingTensorUniversalPropertyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SheafComplexPairingTensorUniversalProperty
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 open scoped DirectSum TensorProduct
@@ -96,7 +96,7 @@ theorem exists_hom {I J K : Cx R} {τ : Pair I J K} (hτ : τ.IsTensor) (w : ℤ
     (b : ∀ U : Scheme.{0}, Tens I J U w →ₗ[ULift.{1} R] Sec M U)
     (hb : ∀ (V U : Scheme.{0}) (g : V ⟶ U) x, Sec.res g (b U x) = b V (Tens.res g w x)) :
     ∃ m : K.X w ⟶ M, ∀ U x, Sec.map m (τ.lift U w x) = b U x := by
-  obtain ⟨φ, hφn, hφl⟩ := GlobalTheory.T.sheafComplexPairing_tensor_universal_property R R τ hτ w M (fun U => (b U).toAddMonoidHom) hb
+  obtain ⟨φ, hφn, hφl⟩ := _root_.GlobalTheory.EtC.tens_fam R R τ hτ w M (fun U => (b U).toAddMonoidHom) hb
   have hsmul : ∀ U (r : ULift.{1} R) (y : Sec (K.X w) U), φ U (r • y) = r • φ U y := by
     intro U r
     refine eq_of_lift hτ (fun U y => φ U (r • y)) (fun U y => r • φ U y) ?_ ?_ ?_ U

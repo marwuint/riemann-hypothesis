@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddMulDerivativeTrunc
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnitStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdRStatement
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
@@ -23,12 +23,12 @@ theorem logA_mul {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) {e e' : Per
     (he : e.untilt = 1) (he' : e'.untilt = 1) (hy : IsLogA e y) (hy' : IsLogA e' y') :
     IsLogA (e * e') (y + y') := by
   have hee : (e * e').untilt = 1 := by rw [map_mul, he, he', one_mul]
-  obtain ⟨z, _, hz, -, -⟩ := GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l (e * e') hee
+  obtain ⟨z, _, hz, -, -⟩ := _root_.GlobalTheory.MemLoc.exists_isLogA l (e * e') hee
   have h := GlobalTheory.MemLoc.LogAdd.log_add l e e' (j y) (j y') (j z) he he'
     ((GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e y he hy).2.2.2 j hj) ((GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e' y' he' hy').2.2.2 j hj)
     ((GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l _ z hee hz).2.2.2 j hj)
   rw [← map_add] at h
-  rw [← GlobalTheory.T.acrisToBdRPlus_injective l j hj h]
+  rw [← _root_.GlobalTheory.MemLoc.crisP_injective l j hj h]
   exact hz
 
 theorem logA_pow {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) {e : Per.Fl l} {y : Per.Acris l}
@@ -36,7 +36,7 @@ theorem logA_pow {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) {e : Per.Fl
   induction n with
   | zero =>
     have h1 : (1 : Per.Fl l).untilt = 1 := map_one _
-    obtain ⟨z, _, hz, -, -⟩ := GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l 1 h1
+    obtain ⟨z, _, hz, -, -⟩ := _root_.GlobalTheory.MemLoc.exists_isLogA l 1 h1
     have h2 := logA_mul hj h1 h1 hz hz
     rw [one_mul] at h2
     have h3 := (GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l 1 z h1 hz).1 _ h2
@@ -85,7 +85,7 @@ theorem cong (C : Core l) (g : GQ l) (m : ℕ) : ∃ w : Per.Acris l,
       GlobalTheory.RingBasics.σC_coe g _
     push_cast
     rw [h1, hr, h2, C.χ_cyc g m _ (zeta_pow C m), ← ha, ← map_pow, ← map_mul, ← pow_add, hb, zeta_pow, map_one]
-  obtain ⟨z, _, hz, -, -⟩ := GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l _ he
+  obtain ⟨z, _, hz, -, -⟩ := _root_.GlobalTheory.MemLoc.exists_isLogA l _ he
   have h1 := logA_pow C.j_cris he hz (l ^ m)
   have hgε : (Per.σF g C.ε).untilt = 1 := by rw [GlobalTheory.RingBasics.untilt_σF, hε, map_one]
   have h2 := logA_mul C.j_cris hgε (by rw [map_pow, hε, one_pow])

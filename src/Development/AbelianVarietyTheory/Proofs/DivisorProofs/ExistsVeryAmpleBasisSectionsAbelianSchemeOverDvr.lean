@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.TwistingSheafOn
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsRegularFnIffOfIsAffineOpen
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.BijectiveSmulChartSec
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVeryAmpleBySectionsOfLinearSpanCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisLineBundleSectionsProjectiveOverDvrStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVeryAmpleBySectionsOfLinearSpanCombination
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisLineBundleSectionsProjectiveOverDvr
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -19,7 +19,7 @@ theorem GlobalTheory.exists_veryAmpleBy_basis_of_dvr : ∀ (W : Type) [CommRing 
   have hflat : Flat G.hom := by
     haveI := hG.smooth
     infer_instance
-  obtain ⟨n, t, ht⟩ := GlobalTheory.T.exists_basis_lineBundleSections_projective_over_dvr W G.left G.hom M hflat ⟨M, hM, m, t₀, hv⟩ hM
+  obtain ⟨n, t, ht⟩ := _root_.GlobalTheory.AbLaw.exists_basis_sec_of_isDiscreteValuationRing W G.left G.hom M hflat ⟨M, hM, m, t₀, hv⟩ hM
   have hne : Nonempty G.left := by
     obtain ⟨x⟩ : Nonempty (Sp W) := inferInstance
     exact ⟨(η[G]).left x⟩
@@ -36,4 +36,4 @@ theorem GlobalTheory.exists_veryAmpleBy_basis_of_dvr : ∀ (W : Type) [CommRing 
     exact hk'
   obtain ⟨N, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
   choose a ha using fun i => (ht (t₀ i)).exists
-  exact ⟨N, t, GlobalTheory.T.isVeryAmpleBySections_of_linear_span_combination W G.left G.hom M m N t₀ t a hM hv ha, ht⟩
+  exact ⟨N, t, _root_.GlobalTheory.veryAmpleBy_of_span W G.left G.hom M m N t₀ t a hM hv ha, ht⟩

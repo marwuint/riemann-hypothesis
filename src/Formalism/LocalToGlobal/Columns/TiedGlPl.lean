@@ -120,12 +120,6 @@ theorem gwOf_mem (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : �
 theorem gwOf_over (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) :
     IsOver v (gwOf hc hPr i v h).1 := ((glk_under hc hPr i v).2 h).choose_spec.2
 
-theorem gwOf_uniq (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) (w' : Pr.vGs)
-    (hw' : IsOver v w'.1) : w' = gwOf hc hPr i v h := by
-  rcases rll_over_cases hc (gwOf_over hc hPr i v h) hw' with e | e
-  · exact Subtype.ext e
-  · exact absurd e (rlh_vGs_not_conj hPr (gwOf hc hPr i v h).2 w'.2)
-
 variable {hc}
 
 theorem GSplit.ker (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) :
@@ -170,22 +164,6 @@ theorem GSplit.unitOf_val (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneS
     (ϖ : 𝓞 X.E) (hϖ : (Pr.g i : 𝓞 X.E) ∣ ϖ - 1) :
     ((S.unitOf hPr i v h ϖ hϖ : v.adicCompletionIntegers X.F) : v.adicCompletion X.F) =
       gloPhi v (S.sp i v h) (inclE (F := X.F) (v.adicCompletion X.F) (algebraMap (𝓞 X.E) X.E ϖ)) := rfl
-
-theorem GSplit.unitOf_res (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal)
-    (ϖ : 𝓞 X.E) (hϖ : (Pr.g i : 𝓞 X.E) ∣ ϖ - 1) :
-    IsLocalRing.residue (v.adicCompletionIntegers X.F) (S.unitOf hPr i v h ϖ hϖ) = 1 := by
-  rw [← S.res_one hPr i v h ϖ hϖ, gloRho_oToS]
-  rfl
-
-include hPr in
-theorem glk_piT_cong (u : Pr.Word) (i : Fin 2) : (Pr.g i : 𝓞 X.E) ∣ Pr.piT u - 1 := by
-  refine Dvd.dvd.trans ?_ (hPr.piT_cong u)
-  have : Pr.g i ∣ Pr.cond * (Pr.g 0 * Pr.g 1) ^ 2 := by
-    refine Dvd.dvd.mul_left (Dvd.dvd.trans ?_ (dvd_pow_self _ two_ne_zero)) _
-    fin_cases i
-    · exact Dvd.intro _ rfl
-    · exact Dvd.intro_left _ rfl
-  exact Nat.cast_dvd_cast this
 
 end Pl
 

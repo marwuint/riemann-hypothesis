@@ -31,20 +31,4 @@ theorem holUnif_dim_eq_of_linear {A : Over (Sp ℂ)} [GrpObj A] {L L' : LB A.lef
     exact (mul_eq_right.1 h.symm)
   simpa using (LinearEquiv.ofBijective F ⟨hinj, LinearMap.range_eq_top.1 hsurj⟩).finrank_eq
 
-theorem holUnif_dim_eq {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ))
-    {M : LB X.A.left} {g : ℕ} (u : HolUnif X.A M g) : g = Module.finrank ℚ F := by
-  obtain ⟨L₀, u₀, -, -⟩ := Obj.exists_holUnif_ringHom_lift F 𝔠 X
-  obtain ⟨h₁, h₂⟩ := TorusTransfer.tangent_bijective u₀ X.dim
-  obtain ⟨T, hT, -⟩ := GlobalTheory.existsUnique_linear_lift_of_isHolTo X.A X.ab L₀ (Module.finrank ℚ F) g u₀ h₁ h₂
-    u.ex u.ex_add (fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f)
-  exact holUnif_dim_eq_of_linear u u₀ T hT
-
-theorem exists_isMonHom_of_map_lattice : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (M : LB X.A.left) (g : ℕ)
-    (u : HolUnif X.A M g) (T : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ w ∈ u.Λ, T w ∈ u.Λ) →
-      ∃ α : X.A ⟶ X.A, IsMonHom α ∧ ∀ w, u.ex (T w) = u.ex w ≫ α := by
-  intro F _ _ 𝔠 X M g u T hT
-  have hg := holUnif_dim_eq X u
-  subst hg
-  exact GlobalTheory.HolUnifEnd.exists_isMonHom_of_map_lattice X.A _ X.ab X.dim M u T hT
-
 end GlobalTheory.RealMult.Obj

@@ -215,7 +215,7 @@ theorem stepVec_eq_sum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
     · rw [a1 PP hP]; exact hG PP hP
     · rw [a2 PP hP]; exact hQ PP hP
   have sg := fun p => parLev_St (hκ p).2.1
-  have h2 := fun p => om_theta hW hTm hth hΘ (GlobalTheory.T.mem_homLattice_iff_frameStabilizer_act_mem D S T ΛS ΛT βS βT dS dT fS fT (κ p) 1 (sg p) sh)
+  have h2 := fun p => om_theta hW hTm hth hΘ (_root_.GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D S T ΛS ΛT βS βT dS dT fS fT (κ p) 1 (sg p) sh)
     (GlobalTheory.StepVecLaw.om_vac hW kS kT cS cT dS dT fS fT hf he' (fun PP hP => (hres PP hP).1) (fun PP hP => (hres PP hP).2) uS uT
       (hκ p).1 (one_mem _) (sg p) sh)
   rw [hΘ'.2 Tm hTm, Finset.sum_congr rfl fun p _ => by rw [h2 p, smul_smul, ← map_smul], ← map_sum]
@@ -226,12 +226,12 @@ theorem stepVec_eq_sum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   have i0 : ∀ p, IsHalf e' (actO S T (κ p)⁻¹ 1⁻¹ x) ↔ IsHalf e' x := fun p =>
     ⟨fun H => GlobalTheory.AdelicLatMove.actO_actO_inv S T (κ p) 1 x ▸ GlobalTheory.SplitHecke.isHalf_actO (κ p) 1 H,
       fun H => GlobalTheory.SplitHecke.isHalf_actO _ _ H⟩
-  have i12 := fun p => GlobalTheory.T.frameMatrix_movedHom_integral_reductions D S T βS βT (κ p) 1 (sg p) sh x
+  have i12 := fun p => _root_.GlobalTheory.FrameRed.frMapO_actO_int_red D S T βS βT (κ p) 1 (sg p) sh x
   by_cases hx : IsHalf e' x ∧ IsIntM (frMapO S T βS βT x)
   · rw [if_pos hx, omegaG_sum (t := t) (j := k) ha Pg Q P χ ξ (χ (k + 1)) _ (fun p PP => redFn βS PP (finE S (κ p)))
       (fun p PP hP => parLev_g (hκ p).2.1 hP) (fun p PP => congrFun (hκ p).2.2 PP), Finset.sum_mul]
     refine Finset.sum_congr rfl fun p _ => ?_
-    have hoQ := GlobalTheory.T.twistPlaceDatum_parabolic_move D _ _ r ha hb Q ξ 1 (fun PP => redFn βS PP (finE S (κ p))) (fun PP => redFn βT PP (finE T 1))
+    have hoQ := _root_.GlobalTheory.ParabolicDatum.omegaQ_parabolic D _ _ r ha hb Q ξ 1 (fun PP => redFn βS PP (finE S (κ p))) (fun PP => redFn βT PP (finE T 1))
       (fun PP hP => ⟨parLev_q (hκ p).2.1 hP, by rw [r1]; exact one_mem _⟩) (fun PP => redM PP (frMapO S T βS βT x))
     rw [if_pos ⟨(i0 p).2 hx.1, (i12 p).1.2 hx.2⟩, funext ((i12 p).2 hx.2)]
     erw [hoQ]

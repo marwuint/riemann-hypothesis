@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHod
 import Development.AbelianVarietyTheory.Definitions.Divisors.HopfLaurent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiCompactZeroSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueRingHomOfSqZeroExtPointAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslationSqZeroPointsUnitToPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslationSqZeroPointsUnitToPoint
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh GlobalTheory.AbTan
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -295,7 +295,7 @@ theorem exists_globForm_isBaseChange : ∀ (R : Type) [CommRing R] (A : Over (Sp
     [AddCommGroup W] [Module R W], TanRep A W → ∃ j : W →ₗ[R] GlobForm A.hom, ∀ T : AffOp A.left,
     ∃ e : W →ₗ[R] Ω[(OAff A.hom).obj T⁄R], (∀ w, e w = (j w).1 T) ∧ IsBaseChange ((OAff A.hom).obj T) e := by
   intro R _ A _ W _ _ tr
-  obtain ⟨τ, hb, hn⟩ := GlobalTheory.T.exists_translation_sqZeroPoints_unit_to_point R A
+  obtain ⟨τ, hb, hn⟩ := _root_.GlobalTheory.AbTan.exists_translation R A
   let j : W →ₗ[R] GlobForm A.hom :=
     { toFun := fun w ↦ ⟨fun T ↦ eU tr τ T.unop w, fun T T' a ↦ eU_nat tr hb hn a w⟩
       map_add' := fun w w' ↦ Subtype.ext (funext fun T ↦ map_add (eU tr τ T.unop) w w')

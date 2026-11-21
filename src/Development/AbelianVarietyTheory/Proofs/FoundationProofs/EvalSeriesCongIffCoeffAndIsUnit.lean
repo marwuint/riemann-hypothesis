@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjo
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGaloisInvariantValuationIntegersEqIntegral
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ResidueLinearDisjointnessCoeffLtOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralBasisOfIntegralAlgebraicElementsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamifiedDivisibilityOfUnramifiedDivisibilityStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralBasisOfIntegralAlgebraicElements
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamifiedDivisibilityOfUnramifiedDivisibility
 open scoped MatrixGroups NNReal
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 
@@ -134,7 +134,7 @@ theorem GlobalTheory.Glue.ev_cong_iff_and_unit : ∀ (p : ℕ) [Fact p.Prime], �
   have hxv : v x ≤ 1 := by
     rw [hx]; exact v.map_sum_le fun t _ => by rw [map_mul]; exact mul_le_one' (hev t) (hψv _)
   refine ⟨?_, ?_⟩
-  · obtain ⟨E, F, π, κ, lam, hE, -, hπE, hκ, hκu, hesp⟩ := GlobalTheory.T.exists_integral_basis_of_integral_algebraic_elements p Ω hC v hv hp0 hp1 d e he
+  · obtain ⟨E, F, π, κ, lam, hE, -, hπE, hκ, hκu, hesp⟩ := _root_.GlobalTheory.K5.OkBasis.okbasis p Ω hC v hv hp0 hp1 d e he
     have hπ1 : v π < 1 := by
       by_contra h
       push_neg at h
@@ -153,7 +153,7 @@ theorem GlobalTheory.Glue.ev_cong_iff_and_unit : ∀ (p : ℕ) [Fact p.Prime], �
       have h2 := hr r
       rw [h1] at h2
       exact lt_irrefl _ h2
-    have K1 := GlobalTheory.T.ramified_divisibility_of_unramified_divisibility p Ω v ψ E F π κ hE hp0 hp1 hπE hκv hψv LeviInductionForms
+    have K1 := _root_.GlobalTheory.KZ.ramified_divisible_of_unramified p Ω v ψ E F π κ hE hp0 hp1 hπE hκv hψv LeviInductionForms
     have Kk := key_k v hp0 hp1 ψ π κ hπ1.le hκv hψv K1
     obtain ⟨B, hB⟩ : ∃ B : Fin F → Fin E → Lau p, ∀ j s, B j s = ∑ t, HahnSeries.C (lam t j s) * a t :=
       ⟨_, fun _ _ => rfl⟩

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GoodIdempotentFixesMemGoodTypeSpace
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.IsPotCrysAtOfMono0
 
 set_option synthInstance.maxHeartbeats 200000
@@ -17,19 +17,6 @@ open GlobalTheory.HeightCounting (RowSide)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
 open scoped TensorProduct
 variable {D : D7}
-section Sys
-variable {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (Y : NExp D.R D.host D.what₂ D.LL0 N X)
-variable {Y} {i : X.Tw} {j : ℕ} {b : Bool}
-end Sys
-section Read
-variable (X : NTw D.R D.host D.what₂ D.LL0 D.nd)
-variable {X} {i : X.Tw} {b : Bool}
-end Read
-section Par
-variable (C : CharFrame D) (Rw : RowSide D) {X : NTw D.R D.host D.what₂ D.LL0 D.nd}
-  (Y : NExp D.R D.host D.what₂ D.LL0 D.nd X)
-variable {C Rw Y} {i : X.Tw} {b : Bool}
-end Par
 section Res
 variable (Rw : RowSide D)
 def ReductionConditionAtPlace {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : D.what₂.places.Pl) (red : Zbar l →+* FbAt D w) : Prop :=

@@ -27,14 +27,6 @@ def tabDiag {n C : ℕ} (T : Fin C → Finset (Fin n)) : Fin n × Fin n →₀ �
   ∑ c, ∑ b ∈ T c, ∑ a : Fin n,
     if a.val = ((T c).filter (· < b)).card then Finsupp.single (a, b) 1 else 0
 
-def LeadingMinors : Prop :=
-  ∀ (k : Type) [CommRing k] (n C : ℕ) (T : Fin C → Finset (Fin n)),
-    coeff (tabDiag T) (tabMinors k T) = 1 ∧
-    (∀ e ∈ (tabMinors k T).support, e ≠ tabDiag T →
-      ∃ x : Fin n × Fin n, e x < tabDiag T x ∧
-        ∀ y : Fin n × Fin n, (y.1 < x.1 ∨ (y.1 = x.1 ∧ y.2 < x.2)) → e y = tabDiag T y) ∧
-    (∀ T' : Fin C → Finset (Fin n), SemiStd T → SemiStd T' → tabDiag T = tabDiag T' → T = T')
-
 def LemmaA : Prop :=
   ∀ (k : Type) [Field k] (n C : ℕ),
     LinearIndependent k (fun T : {T : Fin C → Finset (Fin n) // SemiStd T} => tabMinors k T.1)
@@ -57,18 +49,6 @@ def psiPath (R : Type*) [CommRing R] {n : ℕ} (isVec : ℕ → Bool) (μ : ℕ 
 def IsIndex {n : ℕ} (μN : Fin n → ℤ) (I : ℤ → Finset (Fin n)) : Prop :=
   ∀ c : ℤ, (I c).card = if 1 ≤ c then colHeight μN c else n - colHeight μN c
 
-def PathWordIsColWord : Prop :=
-  ∀ (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) (μ : ℕ → Fin n → ℤ) (c : ℤ), IsPath n isVec B μ N →
-    ∃ (L : ℕ) (lt : ℕ → ℕ), StrictMono lt ∧ (∀ l < L, lt l < N) ∧
-      (∀ i < N, colHeight (μ (i + 1)) c ≠ colHeight (μ i) c ↔ ∃ l < L, lt l = i) ∧
-      (∀ l ≤ L, 0 ≤ colDeg (decide (1 ≤ c)) isVec lt l ∧ colDeg (decide (1 ≤ c)) isVec lt l ≤ (n : ℤ)) ∧
-      (∀ l < L, colDeg (decide (1 ≤ c)) isVec lt l =
-        if 1 ≤ c then (colHeight (μ (lt l)) c : ℤ) else (n : ℤ) - colHeight (μ (lt l)) c) ∧
-      (colDeg (decide (1 ≤ c)) isVec lt L =
-        if 1 ≤ c then (colHeight (μ N) c : ℤ) else (n : ℤ) - colHeight (μ N) c) ∧
-      ∀ (R : Type) [CommRing R] (Xr : ℕ → Fin n → R),
-        pathWord isVec μ c Xr N = colWord (decide (1 ≤ c)) isVec lt Xr L
-
 def PsiDegrees : Prop :=
   ∀ (R : Type) [CommRing R] (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) (μ : ℕ → Fin n → ℤ)
     (I : ℤ → Finset (Fin n)), IsPath n isVec B μ N → IsIndex (μ N) I →
@@ -77,37 +57,10 @@ def PsiDegrees : Prop :=
     ∀ i : ℕ, IsWeightedHomogeneous (fun x : ℕ × Fin n => if x.1 = i then 1 else 0)
       (psiPath R isVec μ N I) (if i < N then B i else 0)
 
-def expE (R : Type*) [CommRing R] {n : ℕ} (isVec : ℕ → Bool) (a b : Fin n) :
-    MvPolynomial (ℕ × Fin n) R →ₐ[R] Polynomial (MvPolynomial (ℕ × Fin n) R) :=
-  aeval fun x =>
-    if isVec x.1 then
-      (if x.2 = b then Polynomial.C (X x) + Polynomial.X * Polynomial.C (X (x.1, a)) else Polynomial.C (X x))
-    else
-      (if x.2 = a then Polynomial.C (X x) - Polynomial.X * Polynomial.C (X (x.1, b)) else Polynomial.C (X x))
-
-def LemmaA1hw : Prop :=
-  ∀ (R : Type) [CommRing R] (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) (μ : ℕ → Fin n → ℤ),
-    IsPath n isVec B μ N →
-    (∀ m : Fin n, IsWeightedHomogeneous
-      (fun x : ℕ × Fin n => if x.2 = m then (if isVec x.1 then (1 : ℤ) else -1) else 0)
-      (psiPath R isVec μ N (canIdx (μ N))) (μ N m)) ∧
-    ∀ a b : Fin n, a < b →
-      expE R isVec a b (psiPath R isVec μ N (canIdx (μ N))) =
-        Polynomial.C (psiPath R isVec μ N (canIdx (μ N)))
-
 def PathProductLinearIndependent : Prop :=
   ∀ (k : Type) [Field k] (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) (ν : Fin n → ℤ),
     LinearIndependent k
       (fun P : {μ : ℕ → Fin n → ℤ // IsPath n isVec B μ N ∧ μ N = ν ∧ ∀ i, N < i → μ i = 0} =>
         psiPath k isVec P.1 N (canIdx ν))
-
-def LemmaA1lead : Prop :=
-  ∀ (R : Type) [CommRing R] (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) (μ : ℕ → Fin n → ℤ),
-    IsPath n isVec B μ (N + 1) →
-    ∃ ε : ℤ, (ε = 1 ∨ ε = -1) ∧
-      ∀ e : ℕ × Fin n →₀ ℕ, (∀ x ∈ e.support, x.1 < N) →
-        coeff (e + ∑ m : Fin n, Finsupp.single (N, m) (|μ (N + 1) m - μ N m|).toNat)
-            (psiPath R isVec μ (N + 1) (canIdx (μ (N + 1)))) =
-          (ε : R) * coeff e (psiPath R isVec μ N (canIdx (μ N)))
 
 end Formalism.InvariantFactorPaths.GelfandTsetlinBases

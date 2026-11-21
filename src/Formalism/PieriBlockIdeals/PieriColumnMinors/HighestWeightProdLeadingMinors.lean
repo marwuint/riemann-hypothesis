@@ -148,47 +148,6 @@ theorem det_weighted_homog_ones (r : ℕ) : IsWeightedHomogeneous (rowW r r) (ge
     simp [a.isLt]
   rwa [e] at h
 
-theorem exp_le_shift_by_one_iff (l r : ℕ) (ν μ : Fin r → ℕ) (e : ℕ) (hν : Antitone ν) :
-    ExpLe l r (fun a => ν a + 1) (fun a => μ a + 1) e ↔ ExpLe l r ν μ e := by
-  have e1 : (fun a => μ a + 1) = (fun _ : Fin r => 1) + μ := by
-    funext a
-    simp [add_comm]
-  constructor
-  · intro h x hx
-    have hx' : genericDet ℤ r * x ∈ nablaWt r (fun a => ν a + 1) (fun a => μ a + 1) := by
-      refine ⟨det_mul_mem_dual_weyl_shift ν hx.1, ?_⟩
-      rw [e1]
-      exact (det_weighted_homog_ones r).mul hx.2
-    obtain ⟨m, hm, h1⟩ := h _ hx'
-    refine ⟨m, hm, ?_⟩
-    rw [weyl_shift_eq_map_det_mul] at h1
-    obtain ⟨z, hz, hzz⟩ := h1
-    simp only [LinearMap.mulLeft_apply] at hzz
-    rw [← mul_smul_comm] at hzz
-    rw [← mul_left_cancel₀ (generic_det_ne_zero r) hzz]
-    exact hz
-  · intro h x hx
-    obtain ⟨y, rfl⟩ := det_dvd_of_mem_dual_weyl_shift ν hν hx.1
-    have hy : y ∈ nablaWt r ν μ := by
-      refine ⟨mem_dual_weyl_of_det_mul ν hx.1, ?_⟩
-      have h2 := hx.2
-      rw [e1] at h2
-      exact weighted_homogeneous_cancel _ _ y (fun _ => 1) μ (generic_det_ne_zero r) (det_weighted_homog_ones r) h2
-    obtain ⟨m, hm, h1⟩ := h y hy
-    refine ⟨m, hm, ?_⟩
-    rw [weyl_shift_eq_map_det_mul]
-    refine ⟨_, h1, ?_⟩
-    simp only [LinearMap.mulLeft_apply]
-    rw [mul_smul_comm]
-
-theorem expTwist : ExpTwist := by
-  intro l r c ν μ e hν
-  induction c with
-  | zero => exact Iff.rfl
-  | succ c ih =>
-    have hν' : Antitone (fun a => ν a + c) := fun a b hab => Nat.add_le_add_right (hν hab) c
-    exact (exp_le_shift_by_one_iff l r (fun a => ν a + c) (fun a => μ a + c) e hν').trans ih
-
 theorem exp_le_cast_iff (l : ℕ) {r r' : ℕ} (h : r' = r) (ν μ : Fin r → ℕ) (e : ℕ) :
     ExpLe l r' (fun a => ν (Fin.cast h a)) (fun a => μ (Fin.cast h a)) e ↔ ExpLe l r ν μ e := by
   subst h
@@ -1060,18 +1019,6 @@ theorem expDual : ExpDual := expDualOfLattices nablaDual weylDual dualWeight cof
 
 theorem lastGradedOfGradedAlone : LastGradedOfGradedAlone := lastGradedOfGraded expDual
 
-theorem dual_weight_spec : DualWtSpec := dualWtSpec
-theorem block_duality : BlockDual := blockDual
-theorem depth_duality : DepthDual := depthDual
-theorem weight_bound' : WtBound := wtBound
-theorem exponent_twist : ExpTwist := expTwist
-theorem last_graded_of_graded : LastGradedOfGraded := lastGradedOfGraded
-theorem nabla_duality : NablaDual := nablaDual
-theorem weyl_duality : WeylDual := weylDual
-theorem dual_weight' : DualWeight := dualWeight
-theorem cofactor_involution : CofCof := cofCof
-theorem exp_dual_of_lattices : ExpDualOfLattices := expDualOfLattices
-theorem exponent_duality : ExpDual := expDual
 theorem last_graded_of_graded_alone : LastGradedOfGradedAlone := lastGradedOfGradedAlone
 
 end Formalism.CohomologicalDescent.LD

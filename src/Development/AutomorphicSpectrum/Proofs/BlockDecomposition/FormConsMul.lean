@@ -1,7 +1,16 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.FormUniq
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.NLeA
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.Imports
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MemBoundariesZeroIff
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DoubleComplexMapMemTotal
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.FaceMapCompSuccAboveCastSucc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDesc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDifferentialOneInclusion
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TerminalRes
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousCochainFiltrationDecomposition
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ChartGrConst
 
 set_option autoImplicit false
@@ -182,24 +191,6 @@ theorem wedge_mul (hFL : FormLaws) {a : ℕ} (u f : A) (wuf wf wu : Om K A a →
     intro g₀ v
     simp [huf, hf, hu, form_cons_mul])
   exact LinearMap.congr_fun this ω
-
-theorem relOm_map (hFL : FormLaws) {a : ℕ} (φ : A →ₐ[K] B) (f : A) (ω : Om K A a)
-    (hω : ω ∈ relOm K (Ideal.span {f}) a) : omMap φ a ω ∈ relOm K (Ideal.span {φ f}) a := by
-  obtain ⟨-, hφ⟩ := hFL K A B a
-  obtain ⟨h1, h2, -⟩ := hφ φ
-  induction hω using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨g₀, g, hg, rfl⟩ := hx
-    rw [h1]
-    refine Submodule.subset_span ⟨_, _, ?_, rfl⟩
-    have hm : ∀ {x : A}, x ∈ Ideal.span {f} → φ x ∈ Ideal.span {φ f} := fun {x} hx => by
-      obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 hx
-      rw [map_mul]
-      exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
-    exact hg.imp hm fun ⟨k, hk⟩ => ⟨k, hm hk⟩
-  | zero => rw [map_zero]; exact zero_mem _
-  | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
-  | smul c x _ hx => rw [h2]; exact Submodule.smul_mem _ _ hx
 
 theorem wedge_map (hFL : FormLaws) {a : ℕ} (φ : A →ₐ[K] B) (f : A) (w : Om K A a →ₗ[A] Om K A (a + 1))
     (w' : Om K B a →ₗ[B] Om K B (a + 1))

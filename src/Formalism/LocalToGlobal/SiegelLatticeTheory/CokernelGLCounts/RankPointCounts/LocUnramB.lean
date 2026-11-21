@@ -69,17 +69,11 @@ theorem inv_int_loU {A : Matrix (Fin n) (Fin n) B} (h : IsLoU A) (hi : ∀ i j, 
 theorem inv_int_upU {A : Matrix (Fin n) (Fin n) B} (h : IsUpU A) (hi : ∀ i j, A i j ∈ R) : ∀ i j, A⁻¹ i j ∈ R :=
   Formalism.MainNotions.LocalModelPeriodLattices.isInt_inv_of R A hi 1 R.one_mem (by rw [det_upU h, mul_one])
 
-theorem mul_inv_loU {A : Matrix (Fin n) (Fin n) B} (h : IsLoU A) : A * A⁻¹ = 1 :=
-  Matrix.mul_nonsing_inv _ (by rw [det_loU h]; exact isUnit_one)
-
 theorem inv_mul_loU {A : Matrix (Fin n) (Fin n) B} (h : IsLoU A) : A⁻¹ * A = 1 :=
   Matrix.nonsing_inv_mul _ (by rw [det_loU h]; exact isUnit_one)
 
 theorem mul_inv_upU {A : Matrix (Fin n) (Fin n) B} (h : IsUpU A) : A * A⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ (by rw [det_upU h]; exact isUnit_one)
-
-theorem inv_mul_upU {A : Matrix (Fin n) (Fin n) B} (h : IsUpU A) : A⁻¹ * A = 1 :=
-  Matrix.nonsing_inv_mul _ (by rw [det_upU h]; exact isUnit_one)
 
 end GLR
 

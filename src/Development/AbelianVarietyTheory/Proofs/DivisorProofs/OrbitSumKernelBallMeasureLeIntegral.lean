@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrbitSumExpPotentia
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoinConvBdd
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MeasurableSetSatFrames
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetNearOneMatrixNormBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramChartSubFormEntryLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramChartSubFormEntryLe
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates MeasureTheory
 open scoped ENNReal
 
@@ -30,7 +30,7 @@ theorem norm_lminor_Gw_ge (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (hw : 3 * (r
       · subst h; simp [sgn, i.isLt]
       · rfl
     rw [Matrix.submatrix_apply, ← hJ]
-    exact GlobalTheory.T.gramChart_sub_form_entry_le E r X w τ _ _ hw0
+    exact _root_.GlobalTheory.GramChartNear.gw_sub_jd_le E r X w τ _ _ hw0
   · have : (X.p0 : ℝ) ≤ r := by exact_mod_cast hp
     nlinarith [norm_nonneg w]
 

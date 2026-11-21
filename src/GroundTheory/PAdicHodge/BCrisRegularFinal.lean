@@ -25,24 +25,8 @@ theorem isUnit_of_galB_eigen {K : IntermediateField ℚ_[p] (PadicAlgCl p)} [Fin
     IsUnit b :=
   isUnit_of_forall_galB_eq_mul hε hζ senTateCharacters hb0 hb
 
-include hζ in
-set_option maxHeartbeats 3200000 in
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem bCris_isRegular {K : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[p] K] :
-    letI := isDomain_bCris hε hζ
-    letI := galBAction (K := K) hε
-    haveI := smulCommClass_galBAction (K := K) hε
-    IsRegular Gal(PadicAlgCl p/K) ℚ_[p] (BCris hε) :=
-  isRegular_bCris hε hζ senTateCharacters
-
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {V : Type*} [AddCommGroup V] [Module ℚ_[p] V]
   (ρ : Representation ℚ_[p] Gal(PadicAlgCl p/K) V)
-
-def IsCrystalline : Prop :=
-  letI := galBAction (K := K) hε
-  haveI := smulCommClass_galBAction (K := K) hε
-  IsAdmissible (BCris hε) ρ
 
 end ACris
 

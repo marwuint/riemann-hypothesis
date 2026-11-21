@@ -1,11 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsMaxUnramifiedFrobeniusTameStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.WeightLeAddOfTorsionPairingStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionPointsPolarisedAbelianVarietyGaloisStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsSemiAbelianOfProperGenericTorusExtensionSpeciaStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsMaxUnramifiedFrobeniusTame
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.WeightLeAddOfTorsionPairing
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionPointsPolarisedAbelianVarietyGalois
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsSemiAbelianOfProperGenericTorusExtensionSpecialFiber
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeronNeutralComponentFiniteLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FrobeniusCountsIntegralTorsionSpecialFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GaloisActionTorsionPairingTameFixedPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FrobeniusCountsIntegralTorsionSpecialFibre
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GaloisActionTorsionPairingTameFixedPoints
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GrpSchemePointsModelOverFieldStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
@@ -81,20 +81,20 @@ theorem isSemiAbelian_of_rational_torsion (V K : Type) [CommRing V] [Field K] [C
     refine IsLocalization.ringHom_ext (nonZeroDivisors V) ?_
     rw [RingHom.comp_assoc, ← hcW, ← RingHom.comp_assoc, hjW, hVΩ]
   obtain ⟨θ, hθ, hθK⟩ := GlobalTheory.T.grpScheme_points_model_over_field K W L P.A G hmod Ω (j'.comp i) hjK hjW
-  obtain ⟨e, act, hact, he, hpair, hrel, hdef⟩ := GlobalTheory.T.galois_action_torsion_pairing_tame_fixedPoints K P Ω l (p ^ r₀) hl htors σ φ K' j' hζ
+  obtain ⟨e, act, hact, he, hpair, hrel, hdef⟩ := _root_.GlobalTheory.SS.galois_action_torsion_points K P Ω l (p ^ r₀) hl htors σ φ K' j' hζ
     (fun L h₁ h₂ h₃ x hx => ⟨(hL L h₁ h₂ h₃ x hx).1, fun h => by
       obtain ⟨a, b, hb0, hab⟩ := (hL L h₁ h₂ h₃ x hx).2 h
       refine ⟨algebraMap R _ a / algebraMap R _ b, ?_⟩
       rw [map_div₀, hj', hj', div_eq_iff hb0]
       exact hab.symm⟩)
-  have hcard := (GlobalTheory.T.torsion_points_polarised_abelianVariety_galois K P Ω l hl).1
+  have hcard := (_root_.GlobalTheory.torsion_points_galois_module K P Ω l hl).1
   haveI := P.isAb.comm
   have hψ : (φ ^ f).toRingEquiv.toRingHom.comp (j'.comp i) = j'.comp i := by
     refine IsLocalization.ringHom_ext (nonZeroDivisors W) ?_
     rw [RingHom.comp_assoc, hjW]
     exact RingHom.ext fun w => hfix w
   obtain ⟨t, a, m, C, Q, H, U, hm, hH, hcnt, hQ, hU, hHU, hT⟩ :=
-    GlobalTheory.T.frobenius_counts_integral_torsion_specialFibre W R Ω hRΩ hk p (r₀ * f) l hp hpR (Nat.mul_pos hr₀ hf) hl hlR
+    _root_.GlobalTheory.SS.frobenius_on_integral_torsion W R Ω hRΩ hk p (r₀ * f) l hp hpR (Nat.mul_pos hr₀ hf) hl hlR
       (fun c => by
         obtain ⟨m, hm, h⟩ := hres c
         refine ⟨m, hm, ?_⟩
@@ -109,7 +109,7 @@ theorem isSemiAbelian_of_rational_torsion (V K : Type) [CommRing V] [Field K] [C
   rw [hqq] at hU hQ
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective
   have hg : P.g ≤ t + a := by
-    refine GlobalTheory.T.weight_le_add_of_torsion_pairing (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) Ω l ((p ^ r₀) ^ (f * m)) P.g t a c C hl h3
+    refine _root_.GlobalTheory.SS.Weight.le_add_of_torsion (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) Ω l ((p ^ r₀) ^ (f * m)) P.g t a c C hl h3
       (Nat.cast_ne_zero.2 hl.ne_zero) ?_ hc hcard e he (act σ) (act (φ ^ (f * m))) (hpair _) (hrel _)
       (fun x hx => Over.OverMorphism.ext ((hact σ x).trans (htors σ x hx))) H U Q ?_ hcnt hQ hU hHU
     · rw [← pow_mul]
@@ -129,7 +129,7 @@ theorem isSemiAbelian_of_rational_torsion (V K : Type) [CommRing V] [Field K] [C
     have : IsIso ε.hom.left := inferInstanceAs (IsIso ((Over.forget _).map ε.hom))
     infer_instance
   · clear hcard
-    refine GlobalTheory.T.isSemiAbelian_of_proper_generic_torusExtension_special W L G hG hproper _ _ ?_ ?_ (hT hg)
+    refine _root_.GlobalTheory.SS.isSemiAbelian_of_proper_generic_of_torusExtension W L G hG hproper _ _ ?_ ?_ (hT hg)
     · ext w
       rw [RingHom.mem_ker, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal,
         IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]
@@ -151,7 +151,7 @@ theorem potentialSemistable_rational_lTorsion_any_closure (V K : Type) [CommRing
       spMap τ.toRingEquiv.toRingHom ≫ x.left = x.left) :
     PotModel V K P.A (fun _ _ _ G _ => IsSemiAbelian G) := by
   classical
-  obtain ⟨R, _, σ, φ, hSH, hloc, hres, hW, hσ, hφ, hζ, hL⟩ := GlobalTheory.T.exists_maxUnramified_frobenius_tame_alt V K hfin l hl hlu Ω _ rfl
+  obtain ⟨R, _, σ, φ, hSH, hloc, hres, hW, hσ, hφ, hζ, hL⟩ := _root_.GlobalTheory.SS.exists_maxUnramified_frobenius_tame V K hfin l hl hlu Ω _ rfl
   letI := Fintype.ofFinite (IsLocalRing.ResidueField V)
   obtain ⟨p, hpV⟩ := CharP.exists (IsLocalRing.ResidueField V)
   obtain ⟨r₀, hp, hq⟩ := FiniteField.card (IsLocalRing.ResidueField V) p

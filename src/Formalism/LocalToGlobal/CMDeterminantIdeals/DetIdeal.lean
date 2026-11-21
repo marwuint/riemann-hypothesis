@@ -50,11 +50,6 @@ namespace MLat
 
 variable {m : ℕ}
 
-def Good (L : MLat K m) : Prop :=
-  L.M.FG ∧ Submodule.span K (L.M : Set (Fin m → K)) = ⊤ ∧ ∀ σ, (L.H σ).PosDef
-
-def sq (L : MLat K m) (σ : K →+* ℂ) (x : Fin m → K) : ℝ := ReciprocityTheory.MultiplicativeHeights.hq (L.H σ) (ReciprocityTheory.MultiplicativeHeights.embVec σ x)
-
 def detSub (L : MLat K m) : Submodule (𝓞 K) K :=
   Submodule.span (𝓞 K) {d | ∃ x : Fin m → Fin m → K, (∀ i, x i ∈ L.M) ∧ d = (Matrix.of x).det}
 

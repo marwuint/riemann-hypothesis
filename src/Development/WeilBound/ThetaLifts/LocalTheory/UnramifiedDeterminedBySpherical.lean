@@ -113,11 +113,6 @@ def StepTy {a a' a₁ a₁' : ℕ} (G : Geo σ a a') (G₁ : Geo σ a₁ a₁') 
   (a₁ = a ∧ a₁' + 2 = a' ∧ G₁.p = G.p ∧ G₁.q + 1 = G.q ∧ χ = X.β ∧ r = a / 2) ∨
     (a₁ + 2 = a ∧ a₁' = a' ∧ G₁.p + 1 = G.p ∧ G₁.q = G.q ∧ χ = X.α ∧ r = a' / 2)
 
-def UnramifiedDeterminedBySpherical : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' a₁ a₁' : ℕ) (G : Geo σ a a') (G₁ : Geo σ a₁ a₁') (X : Chars F E) om om' om₁ om₁' R Rf R₁ Rf₁
-    (H' : Plane E (a + a') (a₁ + a₁')) (i₀ i₁ : ℕ) χ r, IsMatched B G X om om' R Rf → IsMatched B G₁ X om₁ om₁' R₁ Rf₁ →
-    StepTy G G₁ X χ r → H'.IsAdapted σ B G.W G₁.W i₀ i₁ → ∀ v ∉ X.T, ∀ lam, IsFiniteLocalEquivariantMap om om₁ H' v χ r (Rf.p v) (Rf₁.p v) lam → lam (Rf.p v (G.M.vac v)) = 0 → lam = 0
-
 def RamifiedMultiplicityOne : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' a₁ a₁' : ℕ) (G : Geo σ a a') (G₁ : Geo σ a₁ a₁') (X : Chars F E) om om' om₁ om₁' R Rf R₁ Rf₁
     (H' : Plane E (a + a') (a₁ + a₁')) (i₀ i₁ : ℕ) χ r, IsMatched B G X om om' R Rf → IsMatched B G₁ X om₁ om₁' R₁ Rf₁ →

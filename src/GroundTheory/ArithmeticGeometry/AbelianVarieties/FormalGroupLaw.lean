@@ -601,11 +601,6 @@ instance : (formalGroup W).IsComm where
     funext i
     fin_cases i <;> simp
 
-theorem formalGroup_map {S : Type*} [CommRing S] (f : R →+* S) :
-    (formalGroup W).map f = formalGroup (W.map f) := by
-  ext1
-  simp [map_addSeries]
-
 end FormalGroupLaw
 
 end

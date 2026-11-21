@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvSubstNatMultiplePrimePowConstantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfForallInvariantDifferentialDvdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvSubstNatMultiplePrimePowConstant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfForallInvariantDifferentialDvd
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup
 
 set_option autoImplicit false
@@ -114,7 +114,7 @@ theorem lie_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [Co
     rw [LinearMap.zero_apply]
     refine eq_zero_of_pow_dvd (p := (p : O)) _ fun n => ?_
     obtain ⟨s, hs, z, hz⟩ := H n
-    obtain ⟨φ, hφ⟩ := (T.dvd_of_forall_invariantDifferential_dvd p O G n 1 0 (fun _ _ _ => one_dvd _)).2 w
+    obtain ⟨φ, hφ⟩ := (_root_.GlobalTheory.PDivGroup.dvd_of_forall_omega_dvd p O G n 1 0 (fun _ _ _ => one_dvd _)).2 w
     have h1 := hl.2 n w φ s hφ hs
     have h2 : (p : O) ^ n ∣ φ (c.ev n s) := by
       rw [hz]
@@ -137,7 +137,7 @@ theorem lie_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [Co
       unfold defect
       rw [Nat.cast_smul_eq_nsmul]
       rfl
-    · rw [map_sub, map_nsmul, (T.ev_subst_natMultiple_prime_pow_constant p O G d c n).1 s0, hc, map_zero, sub_zero,
+    · rw [map_sub, map_nsmul, (_root_.GlobalTheory.QLog.Chart.ev_nmul_pow p O G d c n).1 s0, hc, map_zero, sub_zero,
         ← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]
   · refine ⟨0, ?_, 0, ?_⟩
     · unfold defect

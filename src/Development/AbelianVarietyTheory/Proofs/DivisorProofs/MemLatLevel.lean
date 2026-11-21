@@ -41,8 +41,6 @@ theorem mem_latLevel {W : Spc F E d} {k : UA σ W.J} : k ∈ latLevel σ W ↔ k
     ∀ w : Pl F, ∀ z ∈ GlobalTheory.InertSph.latAt W w,
       mat k *ᵥ z ∈ GlobalTheory.InertSph.latAt W w ∧ mat k⁻¹ *ᵥ z ∈ GlobalTheory.InertSph.latAt W w := Iff.rfl
 
-theorem latLevel_le (W : Spc F E d) : (latLevel σ W : Set (UA σ W.J)) ⊆ GlobalTheory.ThKAdm.FinPt σ W := fun _ h => h.1
-
 end GlobalTheory.ThKLevel
 
 end

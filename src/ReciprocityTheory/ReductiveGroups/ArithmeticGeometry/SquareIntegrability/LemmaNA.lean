@@ -22,9 +22,6 @@ lemma nA_Hf_sub_left (u v w : EuclideanSpace ℂ ι) : Hf (u - v) w = Hf u w - H
 lemma nA_Hf_sub_right (u v w : EuclideanSpace ℂ ι) : Hf u (v - w) = Hf u v - Hf u w := by
   simp [Hf, mul_sub, Finset.sum_sub_distrib]
 
-lemma nA_Hf_smul_left (c : ℂ) (v w : EuclideanSpace ℂ ι) : Hf (c • v) w = c * Hf v w := by
-  simp [Hf, Finset.mul_sum, mul_assoc]
-
 lemma nA_Hf_smul_right (c : ℂ) (v w : EuclideanSpace ℂ ι) :
     Hf v (c • w) = (starRingEnd ℂ) c * Hf v w := by
   simp only [Hf, Finset.mul_sum]
@@ -33,12 +30,6 @@ lemma nA_Hf_smul_right (c : ℂ) (v w : EuclideanSpace ℂ ι) :
 
 lemma nA_Hf_conj (v w : EuclideanSpace ℂ ι) : (starRingEnd ℂ) (Hf v w) = Hf w v := by
   simp [Hf, map_sum, mul_comm]
-
-lemma nA_Hf_self_im (v : EuclideanSpace ℂ ι) : (Hf v v).im = 0 := by
-  have h := nA_Hf_conj v v
-  have := congrArg Complex.im h
-  simp at this
-  linarith
 
 variable {n : ℕ}
 
@@ -57,14 +48,8 @@ lemma nA_HC_sub_right (u v w : Fin n → EuclideanSpace ℂ ι) : HC u (v - w) =
 lemma nA_HC_conj (v w : Fin n → EuclideanSpace ℂ ι) : (starRingEnd ℂ) (HC v w) = HC w v := by
   simp [HC, map_sum, nA_Hf_conj]
 
-lemma nA_HC_self_im (v : Fin n → EuclideanSpace ℂ ι) : (HC v v).im = 0 := by
-  simp [HC, Complex.im_sum, nA_Hf_self_im]
-
 lemma nA_HC_re_symm (v w : Fin n → EuclideanSpace ℂ ι) : (HC w v).re = (HC v w).re := by
   rw [← nA_HC_conj v w, Complex.conj_re]
-
-lemma nA_HC_self_ofReal (v : Fin n → EuclideanSpace ℂ ι) : HC v v = ((HC v v).re : ℂ) := by
-  apply Complex.ext <;> simp [nA_HC_self_im]
 
 lemma nA_HC_sub_sub_re (v a : Fin n → EuclideanSpace ℂ ι) :
     (HC (v - a) (v - a)).re = (HC v v).re - 2 * (HC v a).re + (HC a a).re := by

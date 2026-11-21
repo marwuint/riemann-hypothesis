@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OnWithOfIsEmpty
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPageRunRecord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoPiMulWeightLengthLeMaxWeightDegreeSqStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThickSetDensityLeInvFourLwStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiveElementaryInequalitiesEventuallyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiveElementaryInequalitiesEventually
 
 set_option autoImplicit false
 
@@ -115,7 +115,7 @@ theorem sizeRows_along : Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (
     exact (Fm.L 0 i).sc.ez_pos
   have hev : ∀ᶠ x : ℝ in Filter.atTop, 11 ≤ x ^ (Fm.ez / 5) :=
     (tendsto_rpow_atTop (by positivity : 0 < Fm.ez / 5)).eventually_ge_atTop 11
-  obtain ⟨x0, hx0⟩ := Filter.eventually_atTop.1 ((GlobalTheory.T.eventually_rpow_log_inequalities eps he (by linarith)).and hev)
+  obtain ⟨x0, hx0⟩ := Filter.eventually_atTop.1 ((_root_.GlobalTheory.five_elementary_inequalities_eventually eps he (by linarith)).and hev)
   refine ⟨x0, fun x hx hx0' ι => ?_⟩
   have hsx := Fm.L_x x ι hx
   have hse := Fm.L_eps x ι

@@ -115,12 +115,6 @@ theorem embRel_unique (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) (hι : HSpac
   apply GA_ext
   exact split_gen (incA D) P (B.gram⁻¹ * T) _ _ ((key g₁ h₁).trans (key g₂ h₂).symm) (h₁.1.trans h₂.1.symm)
 
-theorem one_mem_KsphC (V : HSp D) (S) : (1 : GA D V) ∈ KsphC V S := by
-  have : finMat D.sp.cm.sig V.gram (1 : GA D V) = 1 :=
-    Matrix.map_one _ (map_zero _) (map_one _)
-  refine ⟨one_mem _, fun y => by rw [this, Matrix.one_mulVec], fun v _ => ?_⟩
-  rw [this]; exact Matrix.map_one _ (map_zero _) (map_one _)
-
 theorem GfC_inf_GinfC (V : HSp D) {g : GA D V} (h₁ : g ∈ GfC V) (h₂ : g ∈ GinfC V) : g = 1 := by
   apply GA_ext
   have a := congrArg Units.val (MonoidHom.mem_ker.1 h₁)

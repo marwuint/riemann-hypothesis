@@ -19,25 +19,6 @@ def ThetaInZIsThetaLog : Prop :=
     ∀ Tht : MvPowerSeries (Bool × Fin ν × Fin r0 × Fin r1) K,
       thetaInZ (d := 2 * ν) l j σ om oms Tht = thetaLog (conjJ j σ om) (conjJ j σ oms) ϖ μ Tht
 
-def ThmSOfF : Prop :=
-  ∀ (K0 K : Type) [NormedField K0] [IsUltrametricDist K0] [CharZero K0] [CompleteSpace K0]
-    [NormedField K] [IsUltrametricDist K] [CharZero K] (j : K0 →+* K) (p ν r0 r1 : ℕ) [NeZero ν]
-    (σ : K0 →+* K0), (∀ a, ‖j a‖ = ‖a‖) → UnrOK K0 p σ →
-    (∃ ζ : K0, IsPrimitiveRoot ζ (p ^ 2 - 1)) →
-    ∀ F : MvPowerSeries (Fin 2) K0, IsLawOfLog p F →
-    ∀ be : MvPowerSeries (Fin 2) K0, F1 F be → F2 p σ be →
-    ∃ c : K0, ‖c‖ ≤ 1 ∧ σ (σ c) = c ∧
-    ∀ (om oms : Fin ν → K0) (ϖ : K) (μ : PowerSeries K)
-      (U0 Φ : MvPowerSeries (Bool × Fin ν × Fin r0 × Fin r1) K),
-      ϖ ^ (p ^ 2 - 1) = (p : K) → OwOK (2 * ν) σ om oms → TrDual (2 * ν) σ om oms →
-      PowerSeries.constantCoeff μ = 0 →
-      (PowerSeries.subst μ (lamF p ϖ) : PowerSeries K) = PowerSeries.X → Integral U0 →
-      MvPowerSeries.constantCoeff Φ = 0 → Simeq Φ (sumE (MvPowerSeries.map j be)) →
-      InClass (p : K) (hhS p (uS (j c) (j (σ c))))
-        (MvPowerSeries.subst
-          (fun x => MvPowerSeries.C ϖ * sSub (conjJ j σ om) (conjJ j σ oms) μ x)
-          (mvExp (-Φ) * U0))
-
 def KernelOfF : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (K0 : Type) [NormedField K0] [IsUltrametricDist K0] [CharZero K0]
     [CompleteSpace K0] (σ : K0 →+* K0), UnrOK K0 p σ → (∃ ζ : K0, IsPrimitiveRoot ζ (p ^ 2 - 1)) →

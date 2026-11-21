@@ -8,19 +8,28 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHoloInjDerivInj
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorPos
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PProjSmoothAlong
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionOfPotentialOnModelStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChartStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotentialStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBoundsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionOfPotentialOnModel
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChart
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsLocalOrbitChart
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicSectionOfPotential
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBounds
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightTendstoC2Statement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularChartDataPropertiesStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogRatio
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntersectionNumberTelescopingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightUniformOnCompactStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightUniformOnCompact
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PshDoublePositivePotentialStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedHodgeMetricFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionVerticalFactorStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralLimitOnModelStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedHodgeMetricFormula
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalSectionVerticalFactor
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralLimitOnModel
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralTendstoOffDivisor
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedIntegralModelFormula
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
+import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StLemmaETailMass
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar.Giv.Mix
 
@@ -71,7 +80,7 @@ theorem log_vert_prod (M : XModel D) (U : Set M.Xc) (σ : M.Xc → (Σ k, ι k) 
   | insert p s hp ih =>
     have hpS : p ∈ D.S := hs (Finset.mem_insert_self p s)
     obtain ⟨V₁, hV₁, hy₁, hVU₁, G₁, hG₁, hl₁⟩ :=
-      GlobalTheory.T.local_section_vertical_factor II Ψ K ι Ω E D p M U σ hpS hU hσ hh y₀ hy₀
+      _root_.GlobalTheory.CompanionTheory.Ar.Giv.Mix.log_vertFactor_eq_re_holo II Ψ K ι Ω E D p M U σ hpS hU hσ hh y₀ hy₀
     obtain ⟨V₂, hV₂, hy₂, hVU₂, G₂, hG₂, hl₂⟩ := ih fun q hq => hs (Finset.mem_insert_of_mem hq)
     refine ⟨V₁ ∩ V₂, hV₁.inter hV₂, ⟨hy₁, hy₂⟩, fun y hy => hVU₁ hy.1, fun y => G₁ y + G₂ y, fun j => ?_,
       fun y hy => ?_⟩
@@ -105,7 +114,7 @@ theorem reg_rel (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) (x : X.M.Xc) :
   have h2 := hlog y' hy'
   have hproj := (hs y' (hVU hy')).2
   show X.S.R.th.φ x y' + X.S.regWeight t y' - _ = _
-  rw [GlobalTheory.T.regularized_hodge_metric_formula II Ψ K ι Ω E D O Lt X B t (s y') hz, Real.log_mul
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.Giv.Mix.muReg_h_eq_of_mem_mcPts II Ψ K ι Ω E D O Lt X B t (s y') hz, Real.log_mul
     (mul_pos (X.S.ref.pos _ hz.1) (Real.exp_pos _)).ne' hvp.ne', Real.log_mul (X.S.ref.pos _ hz.1).ne'
     (Real.exp_pos _).ne', Real.log_exp, hproj, h2, Complex.sub_re]
   linarith
@@ -151,7 +160,7 @@ theorem term_tendsto (X : ComponentSetting D O Lt) (B : ℕ) (Θ : LocPot X.M.Xc
     constructor <;> nlinarith
   have hsm0 : X.M.atlas.Smooth (fun _ : X.M.Xc => (0 : ℝ)) := fun _ => contDiffOn_const
   have hYo : IsOpen R.Yo := (GlobalTheory.T.regular_chart_data_properties D.n X.M.Xc X.M.atlas R).1
-  refine GlobalTheory.T.mixed_integral_limit_on_model K ι (mCoordIdeal D.y) D.n X.M R Θ Pp f fT (fun x => φ t₀ x - R.ph x)
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Giv.Mix.tendsto_ptsIntegral_of_chart_conv K ι (mCoordIdeal D.y) D.n X.M R Θ Pp f fT (fun x => φ t₀ x - R.ph x)
     (fun t x => φ t₀ x - φ t x) (2 * b)
     (fun t => mixWord (n := D.n) (muReg X.H X.S B t) (muReg X.H X.S B t₀) D.A' k i)
     (fun t => logRatio (muReg X.H X.S B t) (muReg X.H X.S B t₀)) D.arith hΘ hΘp ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
@@ -186,7 +195,7 @@ theorem term_tendsto (X : ComponentSetting D O Lt) (B : ℕ) (Θ : LocPot X.M.Xc
     have h3 := abs_sub (φ t₀ x) (φ t x)
     nlinarith
   · intro K' hK' hc
-    have hU := GlobalTheory.T.regularized_weight_uniform_on_compact K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S X.S_tied K' hK' hc
+    have hU := _root_.GlobalTheory.CompanionTheory.Ar.Giv.Mix.tendstoUniformlyOn_regWeight_of_isCompact_subset_Yo K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S X.S_tied K' hK' hc
     rw [Metric.tendstoUniformlyOn_iff] at hU ⊢
     intro ε hε
     filter_upwards [hU ε hε] with t ht x hx
@@ -217,7 +226,7 @@ theorem term_tendsto (X : ComponentSetting D O Lt) (B : ℕ) (Θ : LocPot X.M.Xc
     have hlog : ∀ u : ℝ, Real.log ((muReg X.H X.S B u).h z) = Real.log (X.S.ref.h z) + φ u (X.M.proj z) +
         Real.log (∏ p ∈ D.SB B, D.vertFactor p z) := by
       intro u
-      rw [GlobalTheory.T.regularized_hodge_metric_formula II Ψ K ι Ω E D O Lt X B u z hz, Real.log_mul (mul_pos (X.S.ref.pos z hz.1) (Real.exp_pos _)).ne'
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.Giv.Mix.muReg_h_eq_of_mem_mcPts II Ψ K ι Ω E D O Lt X B u z hz, Real.log_mul (mul_pos (X.S.ref.pos z hz.1) (Real.exp_pos _)).ne'
         (hvp 0).ne', Real.log_mul (X.S.ref.pos z hz.1).ne' (Real.exp_pos _).ne', Real.log_exp]
     unfold logRatio
     rw [if_pos hz.1, hlog, hlog]
@@ -231,11 +240,11 @@ open Mix in
 
 theorem mixed_limit : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → TopNMixedLimit.Statement := by
   intro _ II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B hII _ k hk
-  obtain ⟨Θ, hΘ, hrel⟩ := GlobalTheory.T.local_holomorphic_section_of_potential K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1
-  have hΘp := GlobalTheory.T.local_section_of_potential_on_model II Ψ K ι Ω E D X.M Θ hΘ hrel
-  obtain ⟨-, ⟨C₁, hC₁⟩, hpsh⟩ := GlobalTheory.T.regularized_weight_psh_and_bounds K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S Θ X.S_tied hΘ hΘp
+  obtain ⟨Θ, hΘ, hrel⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.exists_potential_of_smoothHerm K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1
+  have hΘp := _root_.GlobalTheory.CompanionTheory.Ar.Giv.potential_pos_of_section II Ψ K ι Ω E D X.M Θ hΘ hrel
+  obtain ⟨-, ⟨C₁, hC₁⟩, hpsh⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Giv.tied_regularisation_weak K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S Θ X.S_tied hΘ hΘp
   have hsm : ∀ᶠ t in 𝓝[>] (0 : ℝ), IsSmoothHerm (muReg X.H X.S B t) :=
-    MuRegSmooth.proof HermExtend.proof (ProjSmoothAlong.proof HoloInjDerivInj.proof GlobalTheory.T.local_orbit_chart_statement_holds)
+    MuRegSmooth.proof HermExtend.proof (ProjSmoothAlong.proof HoloInjDerivInj.proof _root_.GlobalTheory.CompanionTheory.Ar.Giv.localOrbitChart)
       (VertFactorSmooth.proof VertFactorPos.proof) VertFactorPos.proof II Ψ K ι Ω E D O Lt X B
   have hone : Θ.rsmul 1 = Θ := by
     cases Θ

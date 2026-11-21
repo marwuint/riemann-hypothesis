@@ -257,6 +257,4 @@ def instanceOfRecord : UnitaryGroupInstance D where
   n_eq := rank_eq D
   eps_eq := fun _ _ => rfl
 
-theorem instExists : InstExists D := ⟨instanceOfRecord D⟩
-
 end Formalism.L2.SG.InstExistsPf

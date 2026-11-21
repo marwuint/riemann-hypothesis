@@ -171,9 +171,6 @@ theorem Wd_smul (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (a : ℂ) (F :
     Wd D T x (a • F) = a • Wd D T x F := by
   funext z; simp only [Wd, U, Pi.smul_apply, smul_eq_mul]; ring
 
-theorem Wd_zero (D : D7) (T : Tor D) {N N' : ℕ} (F : VC D N N' → ℂ) : Wd D T 0 F = F := by
-  funext z; simp [Wd, U, wdPh, ee, qH, Hf]
-
 def Nice (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D N N')) : Prop :=
   (∀ x ∈ A, ∀ F, Wd D T x F = fun z => al D T x * U D T x F z) ∧ (∀ x ∈ A, ∀ y ∈ A, bc D T x y = 1) ∧
     ∀ x, (∀ y ∈ A, bc D T x y = bc D T y x) → x ∈ A

@@ -58,6 +58,4 @@ theorem exists_cut_of_cell_le : ∀ (O : Type) [CommRing O] (bar : O → O) (φ 
     obtain ⟨k, c, hk, e⟩ := d3 β hβ hp h2
     exact inRCone_of_nat_rel hk e
 
-example : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (m n : ℕ) (G : Fin m → LinearMap.BilinForm ℤ X) (δ : Fin n → LinearMap.BilinForm ℤ X), IsCell bar φ G → IsCell bar φ δ → (∀ k, InRCone G (δ k)) → ∃ h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, (∀ j, 0 ≤ h (G j)) ∧ (∀ k, h (δ k) = 0) ∧ ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone G β → h β = 0 → InRCone δ β := exists_cut_of_cell_le
-
 end GlobalTheory.PolFan

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndEStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleAdelicMatrixFamilyPullbackExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IwasawaDecompositionAdmissibleFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleAdelicMatrixFamilyPullbackExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IwasawaDecompositionAdmissibleFamily
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientLineDegreeLeOfTriangularFamilyStatement
 
 open scoped IntermediateField Polynomial RatFunc
@@ -49,12 +49,12 @@ theorem deg_le_rank_mul_of_linesLE : ∀ (r : ℕ) (k F : Type) [Field k] [IsAlg
       simp only [LinesLE, not_forall, not_le] at hnot
       obtain ⟨E, _, _, _, _, _, ρ, hρ, x, hx, hlt⟩ := hnot
       have hn : (0 : ℝ) < Module.finrank F E := by exact_mod_cast Module.finrank_pos
-      obtain ⟨hGadm, hGdeg, -, hGlines⟩ := GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hF ρ hρ (r + 1) g hg
-      have hE : IsFF k E := (GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k F hF).2 E
+      obtain ⟨hGadm, hGdeg, -, hGlines⟩ := _root_.GlobalTheory.Nef.PullAd.adm_pullAd_and_deg_mul_finrank k F E hF ρ hρ (r + 1) g hg
+      have hE : IsFF k E := (_root_.GlobalTheory.Nef.isFF_main k F hF).2 E
       have hLG : LinesLE (pullAd ρ g) (a * Module.finrank F E) := hGlines a haS
       have hδle : (degLine (pullAd ρ g) x : ℝ) ≤ a * Module.finrank F E := haS E ρ hρ x hx
       obtain ⟨h, u, -, -, hzero, hadm', hadmq, hdeg, hsum, hlines⟩ :=
-        GlobalTheory.T.iwasawa_decomposition_admissible_family k E hE r (pullAd ρ g) hGadm x hx
+        _root_.GlobalTheory.iwasawa_family k E hE r (pullAd ρ g) hGadm x hx
       have hLq := GlobalTheory.T.quotient_line_degree_le_of_triangular_family k E hE r (fun v => u v * pullAd ρ g v * h) hadm' hzero hadmq
         (a * Module.finrank F E) (hlines _ hLG)
       rw [hsum] at hLq

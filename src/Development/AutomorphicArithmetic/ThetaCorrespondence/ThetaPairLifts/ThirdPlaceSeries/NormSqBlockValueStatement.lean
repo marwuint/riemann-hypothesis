@@ -1,5 +1,6 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallPlaceBlockBoundStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallPlaceBlockBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSystemOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormSqBlockValue
 

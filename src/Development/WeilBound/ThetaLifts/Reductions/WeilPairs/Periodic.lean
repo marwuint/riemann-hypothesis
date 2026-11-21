@@ -2,7 +2,8 @@ import Mathlib
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.Mfac
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.SetIntegralAddRight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralCompAut
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpa
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfPartFPlaceIdem
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
@@ -32,7 +33,7 @@ theorem integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     ∀ f, IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ ψ f →
       Integrable (fun u : WOF F E nS nT => f (dC (AF F ⊗[F] E) nT * u)) (ν.restrict 𝓕) := by
   intro F E _ _ _ _ _ σ nS nT JS JT ξ₀ ψ ν 𝓕 hν h𝓕 f hf
-  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT
+  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT
   have : BorelSpace (WOF F E nS nT) := ⟨rfl⟩
   have : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
   have := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)
@@ -62,7 +63,7 @@ theorem rat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField 
         GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) (ωd (1, γ) f) =
           GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) f := by
   intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ ν 𝓕 hν h𝓕 χS ωd hω γ hγ t ht f hf
-  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT
+  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT
   have : BorelSpace (WOF F E nS nT) := ⟨rfl⟩
   have : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
   have := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)

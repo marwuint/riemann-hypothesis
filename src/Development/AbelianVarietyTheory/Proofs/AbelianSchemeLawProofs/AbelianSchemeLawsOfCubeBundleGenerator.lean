@@ -1,6 +1,6 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsWithoutCohomologyStatement
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsWithoutCohomology
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.HasEnoughRootsOfUnityGlobalSections
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsGenTranslEqPairing
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubicalOfNormalised
@@ -15,7 +15,7 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsIsGe
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.NonemptyEquivPiOfWeights
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsGenOfMemChart
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsGenOfLocalOnBase
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SymmetricLiftOddOrderExistsUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SymmetricLiftOddOrderExistsUnique
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.TwistedPowTranslate
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FormallyUnramifiedMulInvertibleIntegerStatement
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueWeilIs
@@ -56,7 +56,7 @@ theorem weil (h : CubeGen) : WeilSt :=
     (GlobalTheory.weilIs_alternating_skew_natural g lift) (GlobalTheory.PairingLevels.weilIs_mul_iff g h lift w₁)
 
 theorem symLift (h : CubeGen) : SymLiftSt :=
-  (GlobalTheory.T.symmetric_lift_odd_order_exists_unique GlobalTheory.T.abelianScheme_laws_without_cohomology.1 (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2
+  (_root_.GlobalTheory.symLift_odd GlobalTheory.T.abelianScheme_laws_without_cohomology.1 (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2
     (GlobalTheory.exists_gen_negLB GlobalTheory.T.abelianScheme_laws_without_cohomology.1)).2
 
 theorem mulA_props (h : CubeGen) :
@@ -75,7 +75,7 @@ theorem weilNondeg (h : CubeGen) : WeilNondegSt :=
   GlobalTheory.weilNondeg_of_descent (GlobalTheory.torsion_invariant_descends (mulA_props h))
     (GlobalTheory.DescentPairing.exists_gen_transl_eq_pairing g (cube h)
       (GlobalTheory.weilIs_iff_commIsOf_and_lift_subsingleton g lift
-        (GlobalTheory.T.symmetric_lift_odd_order_exists_unique g lift (GlobalTheory.exists_gen_negLB g)).1) (weil h))
+        (_root_.GlobalTheory.symLift_odd g lift (GlobalTheory.exists_gen_negLB g)).1) (weil h))
 
 theorem charPair (h : CubeGen) : CharPairSt :=
   GlobalTheory.charPair_of_weil (weil h)
@@ -91,7 +91,7 @@ theorem sec_split (h : CubeGen) :
     (mulA_props h) (GlobalTheory.torsion_invariant_descends (mulA_props h))
     (GlobalTheory.DescentPairing.exists_gen_transl_eq_pairing g (cube h)
       (GlobalTheory.weilIs_iff_commIsOf_and_lift_subsingleton g lift
-        (GlobalTheory.T.symmetric_lift_odd_order_exists_unique g lift (GlobalTheory.exists_gen_negLB g)).1) (weil h))
+        (_root_.GlobalTheory.symLift_odd g lift (GlobalTheory.exists_gen_negLB g)).1) (weil h))
     (charPair h) (weil h) (GlobalTheory.weilIs_alternating_skew_natural g lift)
     (GlobalTheory.twisted_pow_translate (GlobalTheory.AbSquare.square_of_cube h).1 (mulA_props h))
 

@@ -1,7 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.ThetaSpanAdjoint
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsLiftHermitianIsometryModLevelSelfDualStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryGroupWeakApproximationAtPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsLiftHermitianIsometryModLevelSelfDual
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IntMIffInt
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsBaseClassLevelAdapted
+import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryGroupWeakApproximationAtPrimes
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StandardHermitianFormHostFieldInhabitant
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealDivisibleEqZero
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMulMemOfMemSpan
@@ -83,7 +87,7 @@ theorem step (hur : Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)) 
     ∃ f' : Λ.La →ₗ[𝓞 E] (Fin n → 𝓞 E), IsIsomMod Λ M' (red E n M' ∘ₗ f') ∧ ∀ a, ∃ z, f' a = f a + M • z := by
   obtain ⟨k, rfl⟩ := hd
   haveI := projective_of_fg Λ.La (GlobalTheory.GenusLatCompare.isLat_of_unimod Λ hU).1
-  obtain ⟨io', h1, h2⟩ := GlobalTheory.T.exists_lift_hermitianIsometryModLevel_selfDual E n M hur hM Λ _ hU hf k (Nat.pos_of_mul_pos_left hM')
+  obtain ⟨io', h1, h2⟩ := _root_.GlobalTheory.IsomLift.exists_lift E n M hur hM Λ _ hU hf k (Nat.pos_of_mul_pos_left hM')
   obtain ⟨f', hf'⟩ := Module.projective_lifting_property (red E n (M * k)) io' (red_surjective _)
   refine ⟨f', hf' ▸ h1, fun a => (red_eq_iff _ _ _).1 (funext fun j => ?_)⟩
   exact (h2 a (f' a) (fun j => by rw [← hf', LinearMap.comp_apply, red_apply]) j).symm
@@ -239,7 +243,7 @@ theorem repExists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
   have hherm : GlobalTheory.UnRep.IsHermForm (IsCMField.complexConj E) (1 : Matrix (Fin n) (Fin n) E) :=
     ⟨IsCMField.complexConj_apply_apply E, IsCMField.complexConj_ne_one E, fun a b => by
       simp [Matrix.one_apply, eq_comm], by simp⟩
-  obtain ⟨γ, hγ, t, ht, hc⟩ := GlobalTheory.T.unitaryGroup_weak_approximation_at_primes (maximalRealSubfield E) E (IsCMField.complexConj E) n 1 hherm
+  obtain ⟨γ, hγ, t, ht, hc⟩ := _root_.GlobalTheory.UnRep.WeakApprox.weak_approximation (maximalRealSubfield E) E (IsCMField.complexConj E) n 1 hherm
     (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (stdLat E n) std_fg std_span g⁻¹ (m * bad) m
     (fun x y => by rw [← hg2, hinv', hinv']) (Nat.mul_pos hm hbad) hm
   have hrat := (hat_rational_points_and_approx (maximalRealSubfield E) E n (stdLat E n) std_fg std_span).1

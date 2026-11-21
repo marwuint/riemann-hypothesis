@@ -17,7 +17,4 @@ def IsCO (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) : Prop :=
   IsOpen ((K.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V)) ∧
     IsCompact ((Lev.levA V K : Subgroup (GA D V)) : Set (GA D V))
 
-def LocCO {n : ℕ} {w : Pl D.host.E} (K : Subgroup (GL (Fin n) (Kw w))) : Prop :=
-  IsOpen (K : Set (GL (Fin n) (Kw w))) ∧ ∃ C : Set (GL (Fin n) (Kw w)), IsCompact C ∧ (K : Set (GL (Fin n) (Kw w))) ⊆ C
-
 end GlobalTheory.FunObj

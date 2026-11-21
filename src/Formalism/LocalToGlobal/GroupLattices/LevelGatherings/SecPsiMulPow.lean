@@ -71,11 +71,6 @@ theorem posG_step (v : Fin (nOrb z)) (s : Fin (orderOf z)) : posG z ⟨v, posAdd
   simp only [posAdd]
   exact pow_mod_orderOf z _
 
-theorem nOrb_mul_order : nOrb z * orderOf z = Nat.card G := by
-  unfold nOrb
-  rw [← Nat.card_zpowers, mul_comm]
-  exact (Subgroup.zpowers z).card_mul_index
-
 end Generic
 
 open Formalism.FrobeniusOrbits Formalism.BasicNotions
@@ -84,12 +79,6 @@ theorem iotaH_nsmul (φ : Formalism.HC.Frame) (h : φ.A) (i : ℕ) : φ.iota (i 
   induction i with
   | zero => simp [Formalism.HC.Frame.iota_zero]
   | succ n ih => rw [succ_nsmul, Formalism.HC.Frame.iota_add, ih]; exact (pow_succ _ _).symm
-
-theorem bsC_add_nsmul {N : ℕ} [NeZero N] (h t : ZMod N) (i : ℕ) :
-    Formalism.MainNotions.Inhab.bsC h (t + i • h) = Formalism.MainNotions.Inhab.bsC h t := by
-  induction i with
-  | zero => simp
-  | succ n ih => rw [succ_nsmul, ← add_assoc, Formalism.MainNotions.Inhab.bsC_step, ih]
 
 theorem bsA_add_nsmul {φ : Formalism.HC.Frame} (h t : φ.A) (i : ℕ) :
     Formalism.MainNotions.Inhab.bsA h (t + i • h) = Formalism.MainNotions.Inhab.bsA h t := by

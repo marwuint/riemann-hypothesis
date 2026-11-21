@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemSmulLk
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MiddleStepOneLevelProjectionEqChartProjectionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicRelationClassesCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelFunctionalEqOfClassesRelatedAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDiamondElementsStepLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MiddleStepOneLevelProjectionEqChartProjection
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicRelationClassesCoordinates
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelFunctionalEqOfClassesRelatedAtPlace
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDiamondElementsStepLevels
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClassPairMovedOfMultipliesLocalFunctional
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryCompletionMapsDualLattices
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemStabGLAdeleIff
@@ -221,7 +221,7 @@ theorem diamond_on_hermitian_side : ∀ {B : Base} {X : PreX B.toPre} (I : TC B 
   by_cases hi : i ≤ (I.rec7 l Z).R.m
   swap
   · exact ⟨1, fun h => absurd h hi⟩
-  obtain ⟨k, hk, hE, hM⟩ := GlobalTheory.T.exists_diamond_elements_step_levels I hOk hP l Z H F hF hC u i hi v a
+  obtain ⟨k, hk, hE, hM⟩ := _root_.GlobalTheory.Mem.Col2.HAt.exists_isDia_steps I hOk hP l Z H F hF hC u i hi v a
   have core : ∃ γ : UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi),
       AdC (F u) i hi c (((I.rec7 l Z).fm u).dil i v a c) γ.1 ((F u).atT.eV v).1 ∧
       Formalism.L2.Forms.mulLat γ.1.1 (clsCrd (I.rec7 l Z) u i hi (((I.rec7 l Z).fm u).dil i v a c)) =
@@ -238,14 +238,14 @@ theorem diamond_on_hermitian_side : ∀ {B : Base} {X : PreX B.toPre} (I : TC B 
       obtain ⟨δ, hδ⟩ := hM h1 h2 (H.chOf u i c)
       obtain ⟨γ, g1, g2, g3⟩ := move_mid (F u) i h1 h2 v a c k hk δ hδ
       refine ⟨γ, g1, g2, fun z z' e => ?_⟩
-      have e1 := (GlobalTheory.T.middleStep_oneLevel_projection_eq_chart_projection I hOk hP l Z H F hF hC u i h1 h2 v _).1 z z rfl
-      have e2 := (GlobalTheory.T.middleStep_oneLevel_projection_eq_chart_projection I hOk hP l Z H F hF hC u i h1 h2 v c).1 z' z' rfl
+      have e1 := (_root_.GlobalTheory.Mem.Col2.HAt.pr_lvC_eq_lv I hOk hP l Z H F hF hC u i h1 h2 v _).1 z z rfl
+      have e2 := (_root_.GlobalTheory.Mem.Col2.HAt.pr_lvC_eq_lv I hOk hP l Z H F hF hC u i h1 h2 v c).1 z' z' rfl
       have e3 := g3 z z' e
       rw [e1, e2] at e3
       exact e3
   obtain ⟨γ, g1, g2, g3⟩ := core
   exact ⟨gx i hi γ, fun _ => ⟨dilCl_of_crd (F u).atT (F u).lv i hi v a c γ g2 g3
-    (fun v' hv' z z' e => GlobalTheory.T.levelFunctional_eq_of_classes_related_at_place I hOk hP l Z H F hF hC u i hi v v' c _ γ.1 g1 hv' z z' e),
-    GlobalTheory.T.adelic_relation_classes_coordinates I hOk hP l Z H F hF hC u i hi v c _ γ g1⟩⟩
+    (fun v' hv' z z' e => _root_.GlobalTheory.Mem.Col2.HAt.FvOff.fv_eq_of_adC I hOk hP l Z H F hF hC u i hi v v' c _ γ.1 g1 hv' z z' e),
+    _root_.GlobalTheory.Mem.Col2.HAt.adOf_of_adC I hOk hP l Z H F hF hC u i hi v c _ γ g1⟩⟩
 
 end GlobalTheory.Mem.Col2.HAt.Dil

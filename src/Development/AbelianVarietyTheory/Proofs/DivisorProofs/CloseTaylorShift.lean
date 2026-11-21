@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyShiftMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorPolynomialEvalAlgebraFormalProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorShear
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorHolomorphicExtOfValues
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorSubValueEqSumSqZeroVectorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TaylorSubValueEqSumSqZeroVector
 open Filter Topology TopologicalSpace TensorProduct
 open GlobalTheory.AnPer GlobalTheory.PeriodFamily
 
@@ -37,7 +37,7 @@ theorem close_taylor_shift : ∀ {I : Type} [Fintype I] [DecidableEq I] {g : ℕ
   obtain ⟨p₀, hp₀⟩ := hne
   have h0 : (0 : I → ℂ) ∈ F.V := K.base k' _ (hW p₀ hp₀)
   have hτa : AnalyticAt ℂ (F.τ l) 0 := F.hol l _ h0
-  obtain ⟨n, hn, hnn, hd⟩ := GlobalTheory.T.taylor_sub_value_eq_sum_sqZero_vector J N hJ r m hm hmm (F.τ l) hτa
+  obtain ⟨n, hn, hnn, hd⟩ := _root_.GlobalTheory.PeriodFamily.taylor_sub_value_eq_sum_sqZero J N hJ r m hm hmm (F.τ l) hτa
   have ht : ∀ i, (fun i ↦ ∑ j, m j i) i ∈ J := fun i ↦ J.sum_mem fun j _ ↦ hm j i
   have htN : ∀ s : Fin (N + 1) → I, ∏ a, (fun i ↦ ∑ j, m j i) (s a) = 0 :=
     fun s ↦ hJ _ fun a ↦ ht (s a)

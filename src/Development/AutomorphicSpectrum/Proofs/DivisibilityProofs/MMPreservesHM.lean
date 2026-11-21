@@ -1,9 +1,10 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DSApply
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PureEqPureA
+
 open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open scoped TensorProduct SchwartzMap LineDeriv ContDiff Matrix Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.CompanionTheory.Ar.RT.Lie
+open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 noncomputable section
 

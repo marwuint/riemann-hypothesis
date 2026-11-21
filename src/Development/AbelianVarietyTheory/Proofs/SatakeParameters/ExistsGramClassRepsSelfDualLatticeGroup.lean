@@ -4,19 +4,20 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MulSelfEqOneIffOfLinearOrderedCommGroupWithZero
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFiniteRepresentativesModUniformizerPowStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFinsetRepresentativesMulInvIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteSkewHermitianValuationMaxQuotSumStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSmithNormalFormGeneratorsExactOrdersStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralGramCorrectionSkewHermitianMaximalStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFinsetRepresentativesMulInvIntegral
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteSkewHermitianValuationMaxQuotSum
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSmithNormalFormGeneratorsExactOrders
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmithNormalFormIntegralMatrix
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralGramCorrectionSkewHermitianMaximal
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OneAddMaximalMatrixIntegralInverseStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOneAddSkewHermitianMulLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.VacuumPhaseSubTraceMemIntegersStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralOfTraceCharPairingSkewHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramDifferenceEntryMemUniformizerPowIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralOfTraceCharPairingSkewHermitian
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramDifferenceEntryMemUniformizerPowIntegers
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramClassEqOfSigmaHermitianFormBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TraceSkewHermitianGramIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramHermitianSkewTraceSigmaFixedStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SkewConjGramSigmaConjTransposeTraceIdentityStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TraceSkewHermitianGramIntegral
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramHermitianSkewTraceSigmaFixed
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SkewConjGramSigmaConjTransposeTraceIdentity
 open Matrix
 
 namespace GlobalTheory.Hk3.GramSep
@@ -86,17 +87,17 @@ theorem gram_class_family : ∀ (L : Type) [Field L] [Valued L (WithZero (Multip
     exact matMul_int hx hTJ k l
   have hxa : ∀ i j, (x * (a : Matrix (Fin n) (Fin n) L)) i j ∈ Formalism.UG.intL L := (hHom x).mp hxx
 
-  obtain ⟨r, M, e, he1, hMint, hD1, hD2, hD3⟩ := GlobalTheory.T.exists_smithNormalForm_generators_exactOrders L ϖ hvϖ n a
+  obtain ⟨r, M, e, he1, hMint, hD1, hD2, hD3⟩ := _root_.GlobalTheory.Hk3.snf_generators L ϖ hvϖ n a
   have hR := GlobalTheory.T.exists_finite_representatives_mod_uniformizerPow L ϖ σ q hU
-  obtain ⟨Y, hxY, hYa, hYd, hYc⟩ := GlobalTheory.T.exists_finset_representatives_mul_inv_integral L ϖ hvϖ hR n n' a x hxa
-  haveI hfin := GlobalTheory.T.finite_skewHermitian_valuationMax_quot_sum L ϖ σ hvϖ hR r e
+  obtain ⟨Y, hxY, hYa, hYd, hYc⟩ := _root_.GlobalTheory.Hk3.HoweDuality.exists_finset_reps_mul_inv L ϖ hvϖ hR n n' a x hxa
+  haveI hfin := _root_.GlobalTheory.Hk3.GramSep.gam_quot_finite L ϖ σ hvϖ hR r e
   set G := gam σ ϖ e with hG
   set G0 := (gam0 σ ϖ e).addSubgroupOf G with hG0
   let Γf : (G ⧸ G0) → Matrix (Fin r) (Fin r) L := fun b => ((Quotient.out b : G) : Matrix (Fin r) (Fin r) L)
   have hΓ : ∀ b, Γf b ∈ gam σ ϖ e := fun b => (Quotient.out b).2
   let E : (G ⧸ G0) → Matrix (Fin n) (Fin n) L := fun b => M * Γf b * Formalism.UG.cT σ M * (JS : Matrix (Fin n) (Fin n) L)
-  have hEi : ∀ b, _ := fun b => GlobalTheory.T.integral_gramCorrection_skewHermitian_maximal L ϖ σ hvϖ hσv n r JS a M e (Γf b) hSJ hSD he1 hMint hD1 (hΓ b)
-  have hsk : ∀ b, _ := fun b => GlobalTheory.T.skewConjGram_sigmaConjTranspose_trace_identity L σ hσσ n r JS M (Γf b) hS (hΓ b).1
+  have hEi : ∀ b, _ := fun b => _root_.GlobalTheory.Hk3.GramSep.eint L ϖ σ hvϖ hσv n r JS a M e (Γf b) hSJ hSD he1 hMint hD1 (hΓ b)
+  have hsk : ∀ b, _ := fun b => _root_.GlobalTheory.skewConj_cT_mul_and_trace L σ hσσ n r JS M (Γf b) hS (hΓ b).1
   choose kf hkf hkinv using fun b => GlobalTheory.T.one_add_maximal_matrix_integral_inverse L n (E b) (hEi b).2.2
   have hEint : ∀ b i j, E b i j ∈ Formalism.UG.intL L := fun b i j => le_of_lt ((hEi b).2.2 i j)
 
@@ -151,11 +152,11 @@ theorem gram_class_family : ∀ (L : Type) [Field L] [Valued L (WithZero (Multip
         (hkf b) (hkinv b) hya
       rw [(hsk b).2 n' JT y] at h1
       exact h1
-    · exact (GlobalTheory.T.gram_hermitian_skewTrace_sigmaFixed L σ δ hσσ hδ.2 n' r JT (y * M) (Γf b) hT (hΓ b).1).2
+    · exact (_root_.GlobalTheory.gram_hermitian_and_trace_fixed L σ δ hσσ hδ.2 n' r JT (y * M) (Γf b) hT (hΓ b).1).2
   have hw0 : ∀ Γ0 ∈ gam0 σ ϖ e, ∀ y, (∀ i j, (y * (a : Matrix (Fin n) (Fin n) L)) i j ∈ Formalism.UG.intL L) →
       δ * Matrix.trace (Γ0 * Φ y) ∈ Formalism.UG.intL L ∧ σ (δ * Matrix.trace (Γ0 * Φ y)) = δ * Matrix.trace (Γ0 * Φ y) :=
-    fun Γ0 hΓ0 y hya => ⟨GlobalTheory.T.trace_skewHermitian_gram_integral_alt L ϖ σ δ hσv hδO n n' r JT a y M e Γ0 hTJ hya hD1 hΓ0,
-      (GlobalTheory.T.gram_hermitian_skewTrace_sigmaFixed L σ δ hσσ hδ.2 n' r JT (y * M) Γ0 hT hΓ0.1).2⟩
+    fun Γ0 hΓ0 y hya => ⟨_root_.GlobalTheory.Hk3.GramSep.trace_skewHermitian_gram_integral L ϖ σ δ hσv hδO n n' r JT a y M e Γ0 hTJ hya hD1 hΓ0,
+      (_root_.GlobalTheory.gram_hermitian_and_trace_fixed L σ δ hσσ hδ.2 n' r JT (y * M) Γ0 hT hΓ0.1).2⟩
   have hψ1 : ∀ s : L, s ∈ Formalism.UG.intL L → σ s = s → ψ s = 1 ∧ ψ (-s) = 1 := fun s hs hσs =>
     ⟨hpsi_int s hs hσs, hpsi_int _ ((Formalism.UG.intL L).neg_mem hs) (by rw [map_neg, hσs])⟩
   have hsplit : ∀ b b', ∃ Γ0 ∈ gam0 σ ϖ e, Γf (b + b') = Γ0 + Γf b + Γf b' := by
@@ -206,18 +207,18 @@ theorem gram_class_family : ∀ (L : Type) [Field L] [Valued L (WithZero (Multip
     have hΔh : ∀ j k, σ ((Φ y - Φ x) j k) = (Φ y - Φ x) k j := by
       intro j k
       simp only [Matrix.sub_apply, map_sub]
-      rw [(GlobalTheory.T.gram_hermitian_skewTrace_sigmaFixed L σ δ hσσ hδ.2 n' r JT (y * M) 0 hT (fun _ _ => by simp)).1 j k,
-        (GlobalTheory.T.gram_hermitian_skewTrace_sigmaFixed L σ δ hσσ hδ.2 n' r JT (x * M) 0 hT (fun _ _ => by simp)).1 j k]
+      rw [(_root_.GlobalTheory.gram_hermitian_and_trace_fixed L σ δ hσσ hδ.2 n' r JT (y * M) 0 hT (fun _ _ => by simp)).1 j k,
+        (_root_.GlobalTheory.gram_hermitian_and_trace_fixed L σ δ hσσ hδ.2 n' r JT (x * M) 0 hT (fun _ _ => by simp)).1 j k]
     have hwd : ∀ b, w b y - w b x = δ * Matrix.trace (Γf b * (Φ y - Φ x)) := by
       intro b; simp only [w, Matrix.mul_sub, Matrix.trace_sub]; ring
     have hfix : ∀ b, σ (δ * Matrix.trace (Γf b * (Φ y - Φ x))) = δ * Matrix.trace (Γf b * (Φ y - Φ x)) := by
       intro b
-      rw [← hwd, map_sub, (GlobalTheory.T.gram_hermitian_skewTrace_sigmaFixed L σ δ hσσ hδ.2 n' r JT (y * M) (Γf b) hT (hΓ b).1).2,
-        (GlobalTheory.T.gram_hermitian_skewTrace_sigmaFixed L σ δ hσσ hδ.2 n' r JT (x * M) (Γf b) hT (hΓ b).1).2]
+      rw [← hwd, map_sub, (_root_.GlobalTheory.gram_hermitian_and_trace_fixed L σ δ hσσ hδ.2 n' r JT (y * M) (Γf b) hT (hΓ b).1).2,
+        (_root_.GlobalTheory.gram_hermitian_and_trace_fixed L σ δ hσσ hδ.2 n' r JT (x * M) (Γf b) hT (hΓ b).1).2]
     constructor
     · intro hg b
       rw [hkey _ _ hya, hkey _ _ hxa]
-      have hb := GlobalTheory.T.gramDifference_entry_mem_uniformizerPow_integers L ϖ σ n n' r JT a x y M e hϖO hN hMint hD1 hg
+      have hb := _root_.GlobalTheory.Hk3.HoweG.gramDiff_entry_int L ϖ σ n n' r JT a x y M e hϖO hN hMint hD1 hg
       have hint : δ * Matrix.trace (Γf b * (Φ y - Φ x)) ∈ Formalism.UG.intL L := by
         refine Subring.mul_mem _ hδO ?_
         simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply]
@@ -232,7 +233,7 @@ theorem gram_class_family : ∀ (L : Type) [Field L] [Valued L (WithZero (Multip
     · intro hb
       have hb' : ∀ b, ψ (-(w b y)) = ψ (-(w b x)) := fun b => (hkey b y hya).symm.trans ((hb b).trans (hkey b x hxa))
       refine GlobalTheory.T.gramClassEq_of_sigmaHermitianForm_bounds L ϖ σ hσσ hσv hϖO n n' r JT a x y M e hTJ hT hN hxa hya hMint hD1 hD2 hD3
-        (GlobalTheory.T.integral_of_traceCharPairing_skewHermitian L ϖ σ q δ ψ hU hδ hpsi_ne r e _ hΔh ?_)
+        (_root_.GlobalTheory.Hk3.GramSep.int_of_psi_trace_gam L ϖ σ q δ ψ hU hδ hpsi_ne r e _ hΔh ?_)
       intro Γ hΓm
       let bb : G ⧸ G0 := QuotientAddGroup.mk (⟨Γ, hΓm⟩ : G)
       have hq : -(⟨Γ, hΓm⟩ : G) + Quotient.out bb ∈ G0 :=

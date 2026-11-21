@@ -6,15 +6,19 @@ import Formalism.LocalToGlobal.KernelLattices.KerStd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaZJetsThree
 import Formalism.LocalToGlobal.InertKernelTheory.StatementIota
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ColR
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertiaInvolutionRealPlacePairsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertiaInvolutionRealPlacePairs
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralEigenCombination
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicNormLeOneHostBaseModuleAtDStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalBasisUnitScalarsExistStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualFrameHermitianFormTraceRealPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualFrameColumnsScaledStandardVectorsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualLocalBasesPairDualModRootMinusDStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairEmbeddingsCongrModRootMinusDStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualFramePairedBlocksDiagonalModRootStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicNormLeOneHostBaseModuleAtD
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocPAAAndPrimesNe
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalBasisUnitScalarsExist
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualFrameHermitianFormTraceRealPlaces
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRangeEmb4EqTop
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualFrameColumnsScaledStandardVectors
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualLocalBasesPairDualModRootMinusD
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairEmbeddingsCongrModRootMinusD
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.Inertia
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualFramePairedBlocksDiagonalModRoot
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.Tensor
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Col Classical
 open Formalism.L2.Th1.H (cmL CmOK matH IsIsom taylorMv)
 open Formalism.L2.Th1.GD (LocNorm InMul frameM thetaLin)
@@ -127,7 +131,7 @@ theorem sum_le_one {p : ℕ} [Fact p.Prime] {ι' : Type} (S : Finset ι') (f : �
 
 theorem eigenframe_at_d : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (X : Fields) (s : Seam D X), s.Ok → ∀ (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0), CmOK a₀ b₀ c₀ D.host.d → (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), TaylorLogMetric.admitted D N N' L L' → ∀ (p : ℕ) [Fact p.Prime] (lm : TaylorLogMetric.Qbar →+* ℂ_[p]), p = D.host.d → ∀ ι : ℂ ≃+* ℂ_[p], Formalism.L2.KerInert.IotaExt lm ι → ∀ (cD : D.what₂.Tau → ℂ), IsDgen D cD → ∀ (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E) (κ : D.what₂.Tau → ℂ_[p]), GlobalTheory.KerStd.StdBases D lm L P → GlobalTheory.KerStd.StdBases D lm L' P' → (∀ τ, ‖κ τ‖ ≤ ‖TaylorLogMetric.lamC lm (cD τ)‖) → ∃ u : HH D → ℂ_[p], (∀ t, ‖u t‖ ≤ 1) ∧ ∀ L₁ L₁', TaylorLogMetric.admitted D N N' L₁ L₁' → TaylorLogMetric.EqAt D p L L₁ → TaylorLogMetric.EqAt D p L' L₁' → ∃ (J : Type) (_ : Fintype J) (v : J → DVar X.Tau N N' → ℂ) (A : J → (Bool × HH D) × Fin N × Fin N' → ℂ_[p]) (cE sE : D.host.E ≃+* D.host.E) (δE : D.host.E) (emb : Bool × HH D → (D.host.E →+* ℂ_[p])) (act : 𝓞 D.host.E → (DVar X.Tau N N' → ℂ) →ₗ[ℂ] (DVar X.Tau N N' → ℂ)), Formalism.L2.Th1.GD.IsEigenFrame ι (cmL a₀ b₀ D.host.d ha hd lam hlam) (ι (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ))) (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF (TaylorLogMetric.tor0 D cc δ) L₁ L₁') D.host.E cE sE δE emb act v A u ∧ ∀ i x, frameM (ι : ℂ →+* ℂ_[p]) v A i x = κ (s.iT i.1) * TaylorLogMetric.chgB D lm P P' (s.iT i.1, i.2) ((0 : ZMod 1), (tauPl D x.1, x.2)) := by
   intro D cc δ hcc hδ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L L' hadm p _ lm hp ι hι cD hcD P P' κ hP hP' hκ
-  obtain ⟨cE, sE, δE, hcE, hδ2, hcδ, hsδ, hss, hsc, hinj, hδc, hpair, hkur, hbij, hsg⟩ := GlobalTheory.T.inertiaInvolution_realPlacePairs D p hp ι
+  obtain ⟨cE, sE, δE, hcE, hδ2, hcδ, hsδ, hss, hsc, hinj, hδc, hpair, hkur, hbij, hsg⟩ := _root_.GlobalTheory.InertiaPairs.inertia_pairs D p hp ι
   have htau : ∀ (τ : D.what₂.Tau) (y : D.host.E), TaylorLogMetric.tauEmb D lm τ y = ι (TaylorLogMetric.embT D τ y) := tauEmb_eq_iota D p lm ι hι
   have htauR : ∀ z : Bool × HH D, TaylorLogMetric.tauEmb D lm (tauPl D z) = ⇑(rho D ι z) := fun z => funext fun y => htau _ y
   have heig := fun z : Bool × HH D => GlobalTheory.Proof.IntegralEigenCombination.eigGen_integral_comb D cD hcD p lm (tauPl D z)
@@ -150,8 +154,8 @@ theorem eigenframe_at_d : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), 
   have hA0 : ∀ z (α α' : Σ z : Bool × HH D, Fin (n z)), ‖rho D ι z (a α.1 α.2 * D.host.conj (a α'.1 α'.2))‖ ≤ 1 := by
     intro z α α'
     rw [map_mul, norm_mul]
-    refine mul_le_one₀ (GlobalTheory.T.padic_norm_le_one_host_base_module_at_d D p hp _ _ (ha _ _)) (norm_nonneg _) ?_
-    exact GlobalTheory.T.padic_norm_le_one_host_base_module_at_d D p hp ((rho D ι z).comp (D.host.conj : D.host.E →+* D.host.E)) _ (ha _ _)
+    refine mul_le_one₀ (_root_.GlobalTheory.IntegralAtPlace.norm_le_one D p hp _ _ (ha _ _)) (norm_nonneg _) ?_
+    exact _root_.GlobalTheory.IntegralAtPlace.norm_le_one D p hp ((rho D ι z).comp (D.host.conj : D.host.E →+* D.host.E)) _ (ha _ _)
   have hgc : ∀ z α, ‖gc D cκ r z α‖ ≤ 1 := by
     intro z α
     unfold gc
@@ -169,17 +173,17 @@ theorem eigenframe_at_d : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), 
       have := hP.1 (tauPl D z); rwa [htauR] at this
     have hP'W : ∀ z, TaylorLogMetric.LocBasisW D (rho D ι z) L' (P' (tauPl D z)) := fun z => by
       have := hP'.1 (tauPl D z); rwa [htauR] at this
-    have hden := fun z : Bool × HH D => GlobalTheory.T.local_basis_unit_scalars_exist D p (rho D ι z) N N' L L₁ L' L₁' (P (tauPl D z)) (P' (tauPl D z))
+    have hden := fun z : Bool × HH D => _root_.GlobalTheory.locBasisW_clear_den D p (rho D ι z) N N' L L₁ L' L₁' (P (tauPl D z)) (P' (tauPl D z))
       hadm₁.2.2.1.1 hL hL' (hPW z) (hP'W z)
     choose σ σ' hσ hσ' hrow hcol using hden
-    obtain ⟨⟨hth1, hth0⟩, hcong⟩ := GlobalTheory.T.pair_embeddings_congr_mod_root_minus_d D p hp ι cE sE δE hcE hδ2 hsδ hss hpair hkur
+    obtain ⟨⟨hth1, hth0⟩, hcong⟩ := _root_.GlobalTheory.DFrame.congr_at_d D p hp ι cE sE δE hcE hδ2 hsδ hss hpair hkur
     have hdualP : ∀ t, ((P (tauPl D (true, t))).map D.host.conj).transpose * P (tauPl D (false, t)) = 1 := fun t => by
       have := hP.2.2 hp (tauPl D (false, t)); rwa [(hsg t).1] at this
     have hdualP' : ∀ t, ((P' (tauPl D (true, t))).map D.host.conj).transpose * P' (tauPl D (false, t)) = 1 := fun t => by
       have := hP'.2.2 hp (tauPl D (false, t)); rwa [(hsg t).1] at this
     have hσ0 : ∀ z, rho D ι z (σ z : D.host.E) ≠ 0 := fun z => norm_ne_zero_iff.1 (by rw [hσ z]; exact one_ne_zero)
     have hσ0' : ∀ z, rho D ι z (σ' z : D.host.E) ≠ 0 := fun z => norm_ne_zero_iff.1 (by rw [hσ' z]; exact one_ne_zero)
-    have hframe := GlobalTheory.T.dualFrame_columns_scaled_standard_vectors D p lm ι htau X s n N N' a r cκ c0 P P' σ σ' hσ0 hσ0' (fun z => (hPW z).1) hsum
+    have hframe := _root_.GlobalTheory.DFrame.frameM_coef_eq_chgB D p lm ι htau X s n N N' a r cκ c0 P P' σ σ' hσ0 hσ0' (fun z => (hPW z).1) hsum
     have hfr : ∀ (i : DVar X.Tau N N') (x : (Bool × HH D) × Fin N × Fin N'),
         frameM (ι : ℂ →+* ℂ_[p]) (fun j => vecF D s (mat D a P P' σ σ' j)) (coef D ι cκ r σ σ') i x =
           κ (s.iT i.1) * TaylorLogMetric.chgB D lm P P' (s.iT i.1, i.2) ((0 : ZMod 1), (tauPl D x.1, x.2)) := by
@@ -216,8 +220,8 @@ theorem eigenframe_at_d : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), 
         rw [this, if_neg (fun h => hne (hbij.1 h)), mul_zero]
       · intro b _ hb; simp [hb]
       · intro h; exact absurd (Finset.mem_univ τ) h
-    have hd1 := (GlobalTheory.T.dual_local_bases_pair_dual_mod_root_minus_d D p ι _ hth0 hcong P σ hσ hdualP).1
-    have hd2 := (GlobalTheory.T.dual_local_bases_pair_dual_mod_root_minus_d D p ι _ hth0 hcong P' σ' hσ' hdualP').2
+    have hd1 := (_root_.GlobalTheory.DFrame.dual_local_bases_pair D p ι _ hth0 hcong P σ hσ hdualP).1
+    have hd2 := (_root_.GlobalTheory.DFrame.dual_local_bases_pair D p ι _ hth0 hcong P' σ' hσ' hdualP').2
     refine ⟨JJ D n N N', inferInstance, fun j => vecF D s (mat D a P P' σ σ' j), coef D ι cκ r σ σ', cE, sE, δE,
       rho D ι, act D s N N', ⟨hδ2, hcδ, hsδ, fun y => by rw [hcE (cE y), hcE y, conj_conj'], hss, hsc, ?_,
       fun τ ρ => by simp only [rho, RingHom.coe_comp, Function.comp_apply, hδc (tauPl D τ) (tauPl D ρ)],
@@ -225,7 +229,7 @@ theorem eigenframe_at_d : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), 
       fun e e' he x y => matH_act_adjoint D X s N N' _ e e' (by rw [he, hcE]) x y,
       fun e x hx => act_mem_laF D cc δ X s N N' L₁ L₁' e x hx,
       fun j ω hω => smul_vecF_mem_laF D cc δ X s N N' L₁ L₁' _ (hmem j) ω (by rw [← hlat]; exact hω), ?_, ?_,
-      GlobalTheory.T.dualFrame_paired_blocks_diagonal_mod_root D p ι X s _ _ n N N' a cκ r P P' σ σ' _ hth1 (fun A B => GlobalTheory.T.dualFrame_hermitian_form_trace_real_places D X s _ _ hlat hbij N N' A B p ι) hsep
+      _root_.GlobalTheory.DFrame.pairedBlock_diag D p ι X s _ _ n N N' a cκ r P P' σ σ' _ hth1 (fun A B => _root_.GlobalTheory.DFrame.hOK_vecF D X s _ _ hlat hbij N N' A B p ι) hsep
         hu hd1 hd2⟩, hfr⟩
     · intro z z' h
       apply hinj

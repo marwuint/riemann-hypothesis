@@ -52,10 +52,6 @@ theorem reD_h : (reD D Z).div.h = Z.h := rfl
 
 theorem reD_L (u : D.what₂.Word) : ((reD D Z).div.Nu u).L = Z.N u := rfl
 
-example (D : D7) (u : D.what₂.Word) : (reD D (New.ofDiv D (fun _ => ⊥) fun _ => 1)).div.h u = 1 := rfl
-
-example (D : D7) : (reD D (New.self D)).s = D.s := rfl
-
 set_option maxHeartbeats 4000000 in
 
 def reX (X : HidaSetting D) : HidaSetting (reD D Z) := { X with }

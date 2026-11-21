@@ -2,7 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSubFibreSubFib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 
 set_option backward.isDefEq.respectTransparency false
 
@@ -34,6 +37,6 @@ theorem lieModel_liftBaseChange : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [
     change (M'.pt (f e)).left ≫ 𝟙 G.left = _
     rw [hf, Category.comp_id]
     rfl
-  exact ⟨T, iT, mT, mR, tower, M', j, hl, GlobalTheory.T.lie_model_isBaseChange X G R R' x V T M M' j hl⟩
+  exact ⟨T, iT, mT, mR, tower, M', j, hl, _root_.GlobalTheory.CompanionTheory.Ar.lieModel_isBaseChange X G R R' x V T M M' j hl⟩
 
 end GlobalTheory.CompanionTheory.Ar.FlagFib

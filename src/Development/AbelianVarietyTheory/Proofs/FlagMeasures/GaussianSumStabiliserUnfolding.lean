@@ -1,28 +1,32 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsFinEmb
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicLatticeStabiliserIsCompactIsOpenStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalPointsCountableDiscreteSubgroupAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SecondCountableFiniteAdelicUnitaryPointsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSigmaFiniteHaarFiniteAdelicUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicLatticeStabiliserIsCompactIsOpen
+import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalPointsCountableDiscreteSubgroupAdelic
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SecondCountableFiniteAdelicUnitaryPoints
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSigmaFiniteHaarFiniteAdelicUnitary
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
+import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMeasurableLintegralCosetEqOneClosedSubgrouStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabilizerTransitiveAdelicUnitLengthVectorsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeExistsPosUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeWithDensityUnfoldSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeExistsPosUnique
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeWithDensityUnfoldSubgroup
+import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaussianQuadricDensityExistsPosContinuousStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaugeMeasureQuotientUnitaryJVectorStabiliserStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutInstDegreeRootDiscriminantRankStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthComplementUnitVectorSameFieldsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralTsumCosetsFundamentalDomainEqCovolStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaussianTermMeasurableAndStabilizerInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMassOneCutoffDoubleCosetIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralPiProdMulFintypeProductStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsClosedEmbeddingOfCongruenceSubgroupsConjStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutInstDegreeRootDiscriminantRank
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthComplementUnitVectorSameFields
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralTsumCosetsFundamentalDomainEqCovol
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaussianTermMeasurableAndStabilizerInvariant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMassOneCutoffDoubleCosetIntegral
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralPiProdMulFintypeProduct
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsClosedEmbeddingOfCongruenceSubgroupsConj
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsOrthComplementOfUnitVectorAtRealPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeGaussianSumOfLengthEqTsumStabilizerCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFiniteAdelicOrthogonalStabilizerEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFiniteAdelicOrthogonalStabilizerEmbedding
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsClosedEmbeddingOrthogonalUnitaryRealPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImageRationalOrthComplementUnitaryEqRationalStabStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImageRationalOrthComplementUnitaryEqRationalStab
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemCongruenceLevelIffOrthEmbeddingStatement
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 
@@ -41,7 +45,7 @@ theorem real_quot {n m : ℕ} (ε : Fin n → Bool) (ε' : Fin m → Bool) (s : 
     ENNReal.ofReal c * ∫⁻ g, ENNReal.ofReal (gauss ((uMat g)⁻¹ *ᵥ x₀)) * b g ∂(Formalism.REAL.muG ε) =
       ENNReal.ofReal c' * ENNReal.ofReal (2 ^ n * gaussDens ε (sgn ℝ s)) := by
   subst hn
-  obtain ⟨c₀, h0, -, hu⟩ := GlobalTheory.T.riemannianHaarGauge_exists_pos_unique m ε'
+  obtain ⟨c₀, h0, -, hu⟩ := _root_.GlobalTheory.GaugeConst.gauge_exists_pos_unique m ε'
   have hpos : 0 < c' := hu c' hc' ▸ h0
   have hne : ENNReal.ofReal c' ≠ 0 := (ENNReal.ofReal_pos.2 hpos).ne'
   have hinv : (ENNReal.ofReal c')⁻¹ ≠ ⊤ := ENNReal.inv_ne_top.2 hne
@@ -57,8 +61,8 @@ theorem real_quot {n m : ℕ} (ε : Fin n → Bool) (ε' : Fin m → Bool) (s : 
 
 theorem exists_rat (I : AutInst) : ∃ Γ : Subgroup I.GA, (Γ : Set I.GA) = I.GFset ∧ (Γ : Set I.GA).Countable ∧
     DiscreteTopology Γ := by
-  obtain ⟨⟨Γ, hΓ⟩, hc, hf⟩ := GlobalTheory.T.rationalPoints_countable_discrete_subgroup_adelic I
-  obtain ⟨-, -, h3, h4⟩ := GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen I
+  obtain ⟨⟨Γ, hΓ⟩, hc, hf⟩ := _root_.GlobalTheory.RatDiscrete.subgroup_countable_discrete I
+  obtain ⟨-, -, h3, h4⟩ := _root_.GlobalTheory.adelicStab_isCompact_isOpen I
   refine ⟨Γ, hΓ, hΓ ▸ hc, ?_⟩
   obtain ⟨C, hC, hC1⟩ := exists_compact_mem_nhds (1 : I.GA)
   have hfin : ((fun γ : Γ => (γ : I.GA)) ⁻¹' C).Finite := by
@@ -70,14 +74,14 @@ theorem exists_rat (I : AutInst) : ∃ Γ : Subgroup I.GA, (Γ : Set I.GA) = I.G
   exact discreteTopology_of_isOpen_singleton_one (isOpen_singleton_of_finite_mem_nhds _ hn hfin)
 
 theorem gauge_pos {n : ℕ} {ε : Fin n → Bool} {c : ℝ} (h : IsGauge ε c) : 0 < c := by
-  obtain ⟨c₀, h0, -, hu⟩ := GlobalTheory.T.riemannianHaarGauge_exists_pos_unique n ε
+  obtain ⟨c₀, h0, -, hu⟩ := _root_.GlobalTheory.GaugeConst.gauge_exists_pos_unique n ε
   exact hu c h ▸ h0
 
 theorem haar_muA (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] :
     (I.muA μf).IsHaarMeasure ∧ (I.muA μf).IsMulRightInvariant := by
-  obtain ⟨-, -, h3, h4⟩ := GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen I
-  have := GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints I
-  refine ⟨?_, ⟨(GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf).2.1⟩⟩
+  obtain ⟨-, -, h3, h4⟩ := _root_.GlobalTheory.adelicStab_isCompact_isOpen I
+  have := _root_.GlobalTheory.CongTop.secondCountable_finiteAdelicPoints I
+  refine ⟨?_, ⟨(_root_.GlobalTheory.AdelicUnimod.adelic_unimodular I μf).2.1⟩⟩
   unfold AutInst.muA
   haveI : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := Measure.pi.isHaarMeasure _
   exact Measure.prod.instIsHaarMeasure _ _
@@ -89,27 +93,27 @@ theorem unfold_sib (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
     (fund : Set I.GA) (hc : IsGaugeAll I c) (hc' : IsGaugeAll D.inst c') (hf : I.IsFundDom (I.muA μf) fund) :
     ENNReal.ofReal (∏ v, c v) * (∫⁻ g in fund, gaussSum I (sgn I.E s) g ∂(I.muA μf)) / μf I.Kset =
       gaugeVol D.inst c' μf' * ENNReal.ofReal (2 ^ (I.n * I.f) * ∏ v, gaussDens (I.ε v) (sgn ℝ s)) := by
-  obtain ⟨hKc, hKo, i1, i2⟩ := GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen I
-  obtain ⟨hKc', hKo', i1', i2'⟩ := GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen D.inst
-  have i3 := GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints I
-  have i3' := GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints D.inst
+  obtain ⟨hKc, hKo, i1, i2⟩ := _root_.GlobalTheory.adelicStab_isCompact_isOpen I
+  obtain ⟨hKc', hKo', i1', i2'⟩ := _root_.GlobalTheory.adelicStab_isCompact_isOpen D.inst
+  have i3 := _root_.GlobalTheory.CongTop.secondCountable_finiteAdelicPoints I
+  have i3' := _root_.GlobalTheory.CongTop.secondCountable_finiteAdelicPoints D.inst
   obtain ⟨i4, -⟩ := haar_muA I μf
   obtain ⟨i4', i5'⟩ := haar_muA D.inst μf'
-  have i6' : μf'.IsMulRightInvariant := ⟨(GlobalTheory.T.adelicUnitaryHaar_bi_invariant D.inst μf').2.2.2.1⟩
-  obtain ⟨jf, hjf, hrange⟩ := GlobalTheory.T.exists_finiteAdelic_orthogonal_stabilizer_embedding I D s x A xf hp
+  have i6' : μf'.IsMulRightInvariant := ⟨(_root_.GlobalTheory.AdelicUnimod.adelic_unimodular D.inst μf').2.2.2.1⟩
+  obtain ⟨jf, hjf, hrange⟩ := _root_.GlobalTheory.StabUnfold.exists_finEmb I D s x A xf hp
   have hloc := GlobalTheory.T.isOrthComplementOfUnitVector_at_real_place I D s x A xf hp
   choose jv hjc hjv using fun v => GlobalTheory.T.exists_closedEmbedding_orthogonalUnitary_realPlace I.n D.n (I.ε v) (D.ε v) s _ _ hp.1 (hloc v).1 (hloc v).2.1
     (hloc v).2.2
   obtain ⟨hK, hKg⟩ := GlobalTheory.T.mem_congruence_level_iff_orthEmbedding I D s x A xf hp jf hjf
-  have hjfc := GlobalTheory.T.isClosedEmbedding_of_congruenceSubgroups_conj I D.inst jf xf hKg
+  have hjfc := _root_.GlobalTheory.StabUnfold.isClosedEmbedding_of_conj_Kg I D.inst jf xf hKg
   have hj : Topology.IsClosedEmbedding (embA D jv jf) :=
     (Topology.IsClosedEmbedding.piMap hjc).prodMap hjfc
   obtain ⟨Γ, hΓ, hΓc, -⟩ := exists_rat I
   obtain ⟨Γ', hΓ', -, hΓd⟩ := exists_rat D.inst
   have hS : ((Γ'.map (embA D jv jf) : Subgroup I.GA) : Set I.GA) = stabF I x := by
     rw [Subgroup.coe_map, hΓ']
-    exact GlobalTheory.T.image_rationalOrthComplementUnitary_eq_rationalStabilizer I D s x A xf hp jv jf hjv hjf
-  obtain ⟨hopen, hmv, hleft, hright, hreal⟩ := GlobalTheory.T.gaussianTerm_measurable_and_stabilizer_invariant I x
+    exact _root_.GlobalTheory.StabUnfold.image_rational_eq_stab I D s x A xf hp jv jf hjv hjf
+  obtain ⟨hopen, hmv, hleft, hright, hreal⟩ := _root_.GlobalTheory.StabUnfold.gaussAt_meas_inv I x
   have hind : Measurable ({h : I.Gf | x ∈ lamX I (1, h)}.indicator (1 : I.Gf → ENNReal)) :=
     measurable_one.indicator hopen.measurableSet
   have hΦ : Measurable (gaussAt I x) := by
@@ -133,15 +137,15 @@ theorem unfold_sib (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
   obtain ⟨ι, hι, r, hr1, hr2, hr3⟩ := GlobalTheory.T.latticeGaussianSumOfLength_eq_tsum_stabilizer_cosets I s x hp.2.1
   have hmem : ∀ γ, γ ∈ Γ ↔ γ ∈ I.GFset := fun γ => by rw [← hΓ]; rfl
   have hmemS : ∀ γ, γ ∈ Γ'.map (embA D jv jf) ↔ γ ∈ stabF I x := fun γ => by rw [← hS]; rfl
-  have horb := GlobalTheory.T.lintegral_tsum_cosets_fundamentalDomain_eq_covol I.GA Γ (Γ'.map (embA D jv jf)) (I.muA μf) fund (gaussAt I x) ι r hΓc
-    (fun γ h => (hmem γ).2 ((hmemS γ).1 h).1) (fun γ _ => (GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf).1 γ) hf.1
+  have horb := _root_.GlobalTheory.StabUnfold.lintegral_tsum_cosets_eq_covol I.GA Γ (Γ'.map (embA D jv jf)) (I.muA μf) fund (gaussAt I x) ι r hΓc
+    (fun γ h => (hmem γ).2 ((hmemS γ).1 h).1) (fun γ _ => (_root_.GlobalTheory.AdelicUnimod.adelic_unimodular I μf).1 γ) hf.1
     (fun y => by obtain ⟨γ, h1, h2⟩ := hf.2.1 y; exact ⟨γ, (hmem γ).2 h1, h2⟩)
     (fun γ h => hf.2.2 γ ((hmem γ).1 h)) hΦ
     (by rintro _ ⟨h, -, rfl⟩ g; exact hinv h g) (fun i => (hmem _).2 (hr1 i))
     (fun γ h => by simp only [hmemS]; exact hr2 γ ((hmem γ).1 h))
   have i7 : ∀ v, (Formalism.REAL.muG (D.ε v)).IsMulRightInvariant := fun v => ⟨Formalism.REAL.indefinite_unitary_unimodular _ _⟩
   choose bv hbv hbv1 using fun v => GlobalTheory.T.exists_measurable_lintegral_coset_eq_one_closedSubgroup _ _ (Formalism.REAL.muG (D.ε v)) (jv v) (hjc v)
-  obtain ⟨bf, hbf, hbf1, hbf2⟩ := GlobalTheory.T.exists_massOne_cutoff_doubleCoset_integral I.Gf D.inst.Gf μf μf' jf hjfc (Ksub I) (Ksub D.inst) xf
+  obtain ⟨bf, hbf, hbf1, hbf2⟩ := _root_.GlobalTheory.StabUnfold.exists_cutoff_doubleCoset I.Gf D.inst.Gf μf μf' jf hjfc (Ksub I) (Ksub D.inst) xf
     {h : I.Gf | x ∈ lamX I (1, h)} hKo hKo' hKc' hK (fun g => by
       constructor
       · intro hg
@@ -156,18 +160,18 @@ theorem unfold_sib (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
   have hb1 : ∀ g : I.GA, ∫⁻ h, (∏ v, bv v ((embA D jv jf h * g).1 v)) * bf (embA D jv jf h * g).2
       ∂(D.inst.muA μf') = 1 := by
     intro g
-    have := GlobalTheory.T.lintegral_pi_prod_mul_fintype_product _ _ (fun v => Formalism.REAL.muG (D.ε v)) _ μf' (fun v h => bv v (jv v h * g.1 v))
+    have := _root_.GlobalTheory.StabUnfold.lintegral_pi_prod_mul _ _ (fun v => Formalism.REAL.muG (D.ε v)) _ μf' (fun v h => bv v (jv v h * g.1 v))
       (fun h => bf (jf h * g.2))
       (fun v => (hbv v).comp (((hjc v).continuous.mul continuous_const).measurable))
       (hbf.comp ((hjfc.continuous.mul continuous_const).measurable))
     simp only [hbv1, hbf1, Finset.prod_const_one, mul_one] at this
     exact this
-  have hun := GlobalTheory.T.leftQuotientCovolume_withDensity_unfold_subgroup I.GA D.inst.GA (I.muA μf) (D.inst.muA μf') (embA D jv jf) hj Γ' (gaussAt I x) _ hΦ hb
+  have hun := _root_.GlobalTheory.GenUnfold.covol_withDensity_eq I.GA D.inst.GA (I.muA μf) (D.inst.muA μf') (embA D jv jf) hj Γ' (gaussAt I x) _ hΦ hb
     hinv hb1
   have hint : ∫⁻ g, gaussAt I x g * ((∏ v, bv v (g.1 v)) * bf g.2) ∂(I.muA μf) =
       (∏ v, ∫⁻ g, ENNReal.ofReal (gauss ((uMat g)⁻¹ *ᵥ infVec I v x)) * bv v g ∂(Formalism.REAL.muG (I.ε v))) *
         (μf I.Kset / μf' D.inst.Kset) := by
-    have := GlobalTheory.T.lintegral_pi_prod_mul_fintype_product _ _ (fun v => Formalism.REAL.muG (I.ε v)) _ μf
+    have := _root_.GlobalTheory.StabUnfold.lintegral_pi_prod_mul _ _ (fun v => Formalism.REAL.muG (I.ε v)) _ μf
       (fun v g => ENNReal.ofReal (gauss ((uMat g)⁻¹ *ᵥ infVec I v x)) * bv v g)
       (fun g => {h : I.Gf | x ∈ lamX I (1, h)}.indicator 1 g * bf g)
       (fun v => (hmv v).mul (hbv v)) (hind.mul hbf)
@@ -184,7 +188,7 @@ theorem unfold_sib (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
     ← ENNReal.ofReal_prod_of_nonneg fun v _ => (gauge_pos (hc v)).le,
     ← ENNReal.ofReal_prod_of_nonneg fun v _ => (gauge_pos (hc' v)).le,
     ← ENNReal.ofReal_prod_of_nonneg fun v _ => mul_nonneg (by positivity) (hd v), Finset.prod_mul_distrib,
-    Finset.prod_const, Finset.card_univ, (GlobalTheory.T.autInst_degree_rootDiscriminant_rank I).2.2.2.2.1, ← pow_mul] at hprod
+    Finset.prod_const, Finset.card_univ, (_root_.GlobalTheory.FlagMeas.instance_numbers I).2.2.2.2.1, ← pow_mul] at hprod
   have hK0 : μf I.Kset ≠ 0 := (hKo.measure_pos μf ⟨1, (Ksub I).one_mem⟩).ne'
   have hKt : μf I.Kset ≠ ⊤ := hKc.measure_lt_top.ne
   simp_rw [hr3]
@@ -198,9 +202,9 @@ theorem unfold_sib (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
 
 theorem gaugeUnfold : GaugeUnfold := by
   intro I I' e s x A xf _ hp c μf _ _ c' μf' _ _ fund hc hc' hf
-  obtain ⟨D, B, hD, hvol⟩ := GlobalTheory.T.exists_orthComplement_unitVector_same_fields I I' e s x A xf hp
-  obtain ⟨μ, h1, h2⟩ := GlobalTheory.T.exists_sigmaFinite_haar_finiteAdelicUnitary D.inst
-  choose d _ hd _ using fun v => GlobalTheory.T.riemannianHaarGauge_exists_pos_unique D.n (D.ε v)
+  obtain ⟨D, B, hD, hvol⟩ := _root_.GlobalTheory.PerpReduce.exists_sib I I' e s x A xf hp
+  obtain ⟨μ, h1, h2⟩ := _root_.GlobalTheory.CongTop.exists_haar_sigmaFinite D.inst
+  choose d _ hd _ using fun v => _root_.GlobalTheory.GaugeConst.gauge_exists_pos_unique D.n (D.ε v)
   rw [← hvol d μ c' μf' hd hc']
   exact unfold_sib I D s x B xf hD c μf d μ fund hc hd hf
 

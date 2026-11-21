@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitInvariantMapProperStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitInvariantMapProper
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryActionHermitianInvariantsTransitiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantImageOpenClosedLocalSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDetStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantImageOpenClosedLocalSections
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDet
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryGroupPositiveCharacterTrivialAndUnimodulaStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralLinearHaarIsMulRightInvariantUnramifiedStatement
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
@@ -92,7 +92,7 @@ theorem Cm_sec {r : ℕ} {k : Type} [CommRing k] (a : Inv r k) : Cm (sec a) = ha
 
 theorem lastDet_act_sec {r : ℕ} {k : Type} [CommRing k] (g : GL (Fin r) k) (a : Inv r k) :
     lastDet (act g (sec a)) = (-1) ^ r * (Delta a * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).det) := by
-  rw [(GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det k r).1, (GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det k r).2, Matrix.det_mul, Cm_sec]
+  rw [(_root_.GlobalTheory.JR.transfer_factor_lemma k r).1, (_root_.GlobalTheory.JR.transfer_factor_lemma k r).2, Matrix.det_mul, Cm_sec]
   rfl
 
 theorem eta_eventually {F : Type} [NormedField F] [IsUltrametricDist F] (x : F) (hx : x ≠ 0) :
@@ -116,7 +116,7 @@ theorem part3 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
     ∀ᶠ a in 𝓝 a₀, orbG M f' (sec a) = orbG M f' (sec a₀) := by
   haveI : LocallyCompactSpace F := Unram.lcF (E := E)
   haveI : IsUltrametricDist F := Unram.ultraF (E := E)
-  obtain ⟨hcont, -, hDc, hprop⟩ := GlobalTheory.T.jacquetRallis_orbit_invariant_map_proper F E r
+  obtain ⟨hcont, -, hDc, hprop⟩ := _root_.GlobalTheory.JR.OrbitProper.main F E r
   have hopen : IsOpen {a : Inv r F | Delta a ≠ 0} := isOpen_ne_fun hDc continuous_const
   obtain ⟨Ω, hΩn, hΩsub, hΩc⟩ := local_compact_nhds (hopen.mem_nhds hΔ)
   set K : Set (GL (Fin r) F) :=
@@ -182,7 +182,7 @@ theorem part4 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
     [Unram F E] (r : ℕ) (M : Meas r F E) (f : Hn r F E → ℂ) (hf : IsTest f) (a₀ : Inv r F) (X₀ : Hn r F E)
     (hΔ : Delta a₀ ≠ 0) (hX₀ : HasInv X₀ a₀) :
     ∀ᶠ a in 𝓝 a₀, (∃ X : Hn r F E, HasInv X a) ∧ ∀ X : Hn r F E, HasInv X a → orbU M f X = orbU M f X₀ := by
-  obtain ⟨Ω, s, hΩc, hΩo, ha₀, hs, hsinv, hprop⟩ := (GlobalTheory.T.invariant_image_openClosed_local_sections F E r a₀ hΔ).2 ⟨X₀, hX₀⟩
+  obtain ⟨Ω, s, hΩc, hΩo, ha₀, hs, hsinv, hprop⟩ := (_root_.GlobalTheory.JR.image_openClosed_section F E r a₀ hΔ).2 ⟨X₀, hX₀⟩
   have huniq := (GlobalTheory.T.unitary_action_hermitian_invariants_transitive F E r).2.2.1
   set K : Set (Matrix.unitaryGroup (Fin r) E) :=
     Prod.fst '' {p : Matrix.unitaryGroup (Fin r) E × Inv r F | p.2 ∈ Ω ∧ actU p.1 (s p.2) ∈ tsupport f} with hKdef

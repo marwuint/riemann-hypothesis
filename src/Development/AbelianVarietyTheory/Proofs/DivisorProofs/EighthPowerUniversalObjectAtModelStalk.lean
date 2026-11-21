@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDivisorOfForallCompleteDvrPoints
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescent
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEighthPowerProjectionsExtendFromGenericStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEighthPowerProjectionsExtendFromGeneric
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH
@@ -159,8 +159,8 @@ theorem eighth_power_at_stalk : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o)
     ((V.toScheme.fromSpecStalk z ≫ v) ≫ F.s) (V.toScheme.fromSpecStalk z ≫ v) rfl
     (by rw [hid, Category.comp_id])).1 F.univ
   obtain ⟨χ, χ₂, χ₂', hχ, hsq, hsq', hP⟩ := exists_siegPB_compare F.univ cO c _ u (jK (V.toScheme.presheaf.stalk z)) _ hjv hcO hpb
-  obtain ⟨pr', hpr'χ, hmon', huniv'⟩ := GlobalTheory.T.eighthPowerProjections_groupPullback pr hψpb hχ hmon huniv
-  have t2 := GlobalTheory.T.exists_eighth_power_projections_extend_from_generic (V.toScheme.presheaf.stalk z)
+  obtain ⟨pr', hpr'χ, hmon', huniv'⟩ := _root_.GlobalTheory.GrpPullPow.pr_pull pr hψpb hχ hmon huniv
+  have t2 := _root_.GlobalTheory.PowExtend.exists_pow_projections (V.toScheme.presheaf.stalk z)
   have t3 := t2 ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G)
   have t4 := t3 cO.A
   obtain ⟨prO, hmonO, hprOg, hunivO⟩ := t4 hGO cO.ab pr' hmon' huniv'
@@ -219,7 +219,7 @@ theorem eighth_power_at_stalk : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o)
     have hgen : ((Over.pullback (jK (V.toScheme.presheaf.stalk z))).map ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).map f)).left ≫
         (ψ ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) = (ψ ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) ≫ f₁.left := by
       rw [← Category.assoc, key, Category.assoc, hmapf₁, Category.assoc]
-    have hME := GlobalTheory.T.elementaryMatrixEndomorphism_groupPullback_transport pr pr' a b f₁ _ hψpb hχ hpr'χ hgen hf₁
+    have hME := _root_.GlobalTheory.MatEndPull.matEnd_pull pr pr' a b f₁ _ hψpb hχ hpr'χ hgen hf₁
     have hsemiC := GlobalTheory.isSemiAbelian_of_isAbelianScheme cO.A cO.ab
     have hone : (Over.pullback (jK (V.toScheme.presheaf.stalk z))).map (1 : ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G) ⟶ cO.A) = 1 := by
       apply GlobalTheory.MatEndPull.ext_of_pb (isGrpPullback_pullback cO.A (jK (V.toScheme.presheaf.stalk z)))

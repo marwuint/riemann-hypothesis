@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsCobOfIsAffineOpen
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KunnethSymmProductAffineCoversStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KunnethSymmProductAffineCovers
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
@@ -19,10 +19,6 @@ variable {Z : Scheme.{0}}
 theorem rsT_eq {O₀ O : Z.Opens} (h : O ≤ O₀) (s : Γ(Z, O₀)) : rsT s O = resG Z h s := by
   unfold rsT
   rw [dif_pos h]
-
-theorem rsT_self {O : Z.Opens} (s : Γ(Z, O)) : rsT s O = s := by
-  unfold rsT resG
-  simp
 
 theorem rsT_add {O₀ : Z.Opens} (O : Z.Opens) (s t : Γ(Z, O₀)) : rsT (s + t) O = rsT s O + rsT t O := by
   unfold rsT
@@ -170,7 +166,7 @@ theorem exists_isSymm_of_square : ∀ (K : Type) [Field K] (Y Z : Scheme.{0}) (q
     (inf_le_inf_left _ (p₂.preimage_mono inf_le_left)) (inf_le_inf_left _ (p₂.preimage_mono inf_le_right))
     inf_le_left inf_le_right (fun a => θ a j j') (fun a => e' a i) (k i j) (k i j') (c i j) (c i j')
     (hc i j) (hc i j') (hk₂ i j j')
-  refine GlobalTheory.T.kunneth_symm_product_affine_covers K Y Z q p₁ p₂ I U g θ φ hq H hU hφ u (fun i j j' => -v i j j') ?_
+  refine _root_.GlobalTheory.KS.Kunneth.kunneth_symm K Y Z q p₁ p₂ I U g θ φ hq H hU hφ u (fun i j j' => -v i j j') ?_
   intro i i' j j'
   apply ext_cover hV
   intro α

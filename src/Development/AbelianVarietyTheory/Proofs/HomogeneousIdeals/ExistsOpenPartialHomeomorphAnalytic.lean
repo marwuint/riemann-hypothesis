@@ -230,9 +230,4 @@ theorem exists_chart_of_etale (g : MvPolynomial (Fin d) 𝕜 →ₐ[𝕜] A) (hg
     rw [← (hs z hz).1, hΦ, hΨj] at this
     exact congrArg Prod.fst this
 
-theorem isLocalHomeomorph_coords_of_etale (g : MvPolynomial (Fin d) 𝕜 →ₐ[𝕜] A) (hg : g.Etale) :
-    IsLocalHomeomorph (coords g : (A →ₐ[𝕜] 𝕜) → Fin d → 𝕜) := fun p => by
-  obtain ⟨e, h1, h2, -⟩ := exists_chart_of_etale g hg p
-  exact ⟨e, h1, h2.symm⟩
-
 end GlobalTheory.AffinePoints

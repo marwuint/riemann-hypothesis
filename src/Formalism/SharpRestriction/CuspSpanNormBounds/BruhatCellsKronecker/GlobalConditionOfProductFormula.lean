@@ -461,10 +461,6 @@ theorem laIsPeriod_of_adm (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.M
     (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) (ν s : ℕ) : LaIsPeriod δ M ν s :=
   laIsPeriod_of δ M hA (isDiffGen_of_agree δ M hA h6 h7) ν s
 
-theorem global_condition_of_product_formula (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) (i : ℕ) (hi : i ≤ D.R.rS + 1) : G4 δ M i :=
-  global_condition_of_local_agreement δ M hA (isDiffGen_of_agree δ M hA h6 h7) i hi
-
 def LocalModelsAtRemainingPrimes (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (m s : ℕ) : Prop :=
   let ν := nu D.R.rS (m + 1) (m + s)
   let L := La M δ ν s
@@ -486,24 +482,6 @@ def LocalModelsAtRemainingPrimes (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D
           (∀ t, Th t ≠ 0 → ∃ a ∈ S, t - a ∈ L) ∧
           ∀ x0 : ι, ((((∏ᶠ p, (detNrmP M δ T T' p (hd x0)) ^ (-(2 * (s : ℤ)))) : ℝ) : ℂ) •
             (Matrix.of fun x y => ∏ᶠ p, locK M δ T T' p m (hd x) (hd y)) - ∑ a ∈ S, Th a).PosSemidef
-
-theorem block_condition_iff_fourth_clause (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) (m s : ℕ) : G3blk δ M m s ↔ LocalModelsAtRemainingPrimes δ M m s := by
-  constructor
-  · intro h; exact h.2.2.2
-  · intro h
-    have h1 := G3lat_of δ M hA (isDiffGen_of_agree δ M hA h6 h7) (nu D.R.rS (m + 1) (m + s)) s
-    exact ⟨h1.1, h1.2.1, h1.2.2, h⟩
-
-theorem statement_of_local_block_conditions {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ)
-    (h6 : adm6 D) (h7 : adm7 D)
-    (h : 4 * D.R.rS + 8 ≤ D.R.k →
-      ∃ (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-        (hA : ∀ p, Agree δ M p), G2 δ M (X δ M hA) cN ∧
-        (∀ m s, 1 ≤ s → m + s ≤ D.R.rS + 1 → LocalModelsAtRemainingPrimes δ M m s)) : aux₃ D X cN := by
-  refine lattice_statement_of_root_gram_blocks X cN fun hk => ?_
-  obtain ⟨δ, M, hA, h2, h3⟩ := h hk
-  exact ⟨δ, M, hA, G1root_of_agree δ M hA, h2, fun m s hs hm => (block_condition_iff_fourth_clause δ M hA h6 h7 m s).2 (h3 m s hs hm)⟩
 
 end RecD
 
@@ -687,48 +665,6 @@ theorem localCondition_iff (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.
     exact h2
 
 end LaPS
-
-section Red
-
-open Formalism.MainNotions.S.LocalSplitGroups Formalism.MainNotions.JointEigenvalueBoundsFromAnyDatum Formalism.MainNotions.LocalModelPeriodLattices Formalism.MainNotions Formalism.MainNotions.S
-
-variable {D : Formalism.BasicNotions.D7}
-
-def LocalGeneratorsModelsAgree (D : Formalism.BasicNotions.D7) {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ) : Prop :=
-  4 * D.R.rS + 8 ≤ D.R.k →
-    ∃ (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-      (hA : ∀ p, Agree δ M p), G2 δ M (X δ M hA) cN ∧
-      (∀ m s, 1 ≤ s → m + s ≤ D.R.rS + 1 → LocalModelsAtRemainingPrimes δ M m s)
-
-theorem statement_iff_local_models {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ)
-    (h6 : adm6 D) (h7 : adm7 D) : aux₃ D X cN ↔ LocalGeneratorsModelsAgree D X cN := by
-  constructor
-  · intro h hk
-    obtain ⟨δ, M, hA, -, h2, h3, -⟩ := h hk
-    exact ⟨δ, M, hA, h2, fun m s hs hm => (h3 m s hs hm).2.2.2⟩
-  · exact statement_of_local_block_conditions X cN h6 h7
-
-theorem packet_iff_local_models {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ) (C : ℝ) :
-    Stmt D X cN C ↔ (admitted D X cN C → LocalGeneratorsModelsAgree D X cN) :=
-  ⟨fun h hA => (statement_iff_local_models X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).1 (h hA),
-    fun h hA => (statement_iff_local_models X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).2 (h hA)⟩
-
-variable {eps : ℝ} (Fm : FamP eps) {Y : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i)}
-
-theorem family_statement_iff_local_models (X : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), TermLocs (Fm.D x i) (Y x hx i))
-    (cN : ∀ x (i : Fm.Ix x), (Fm.D x i).what₂.Word → (Fm.D x i).what₂.Word → ℝ) (h6 : admF6 Fm) (h7 : admF7 Fm) :
-    OrbitValuationBound Fm X cN ↔ OwnEv Fm fun _ _ x i => ∀ hx : Fm.x1 < x, LocalGeneratorsModelsAgree (Fm.D x i) (X x hx i) (cN x i) :=
-  ⟨OwnEv.mono fun _ _ x i h hx => (statement_iff_local_models _ _ (h6 x i) (h7 x i)).1 (h hx),
-    OwnEv.mono fun _ _ x i h hx => (statement_iff_local_models _ _ (h6 x i) (h7 x i)).2 (h hx)⟩
-
-theorem family_packet_iff_local_models (X : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), TermLocs (Fm.D x i) (Y x hx i))
-    (cN : ∀ x (i : Fm.Ix x), (Fm.D x i).what₂.Word → (Fm.D x i).what₂.Word → ℝ) :
-    KudlaFamilyStatement Fm X cN ↔ (AdmF Fm X cN →
-      OwnEv Fm fun _ _ x i => ∀ hx : Fm.x1 < x, LocalGeneratorsModelsAgree (Fm.D x i) (X x hx i) (cN x i)) :=
-  ⟨fun h hA => (family_statement_iff_local_models Fm X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).1 (h hA),
-    fun h hA => (family_statement_iff_local_models Fm X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).2 (h hA)⟩
-
-end Red
 
 end Formalism.MainNotions.BridgeLemma
 

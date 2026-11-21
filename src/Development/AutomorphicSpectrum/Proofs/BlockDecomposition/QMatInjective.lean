@@ -1,7 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.OppositeCellIntegration
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PseudoCoefficientUpqTrivial
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DiscreteSeriesCharacter
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleCoefficientsAnalytic
 import GroundTheory.AutomorphicForms.DixmierMalliavinHaar
 import GroundTheory.AutomorphicForms.AdelicDixmierMalliavinLie
+
 noncomputable section
 open MeasureTheory Matrix Filter Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.FlagMeas GlobalTheory.GKModule GlobalTheory.RealInd GlobalTheory.OpTrace
 open GroundTheory.Automorphic
@@ -20,9 +23,6 @@ def jAdj (ε : Fin n → Bool) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (
 
 theorem jAdj_apply (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : jAdj ε Y = Jm ε * Yᴴ * Jm ε := rfl
 
-theorem jAdj_one (ε : Fin n → Bool) : jAdj ε 1 = 1 := by
-  simp [jAdj_apply, Jm_mul_self]
-
 theorem jAdj_mul (ε : Fin n → Bool) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     jAdj ε (X * Y) = jAdj ε Y * jAdj ε X := by
   simp only [jAdj_apply, Matrix.conjTranspose_mul]
@@ -33,20 +33,6 @@ theorem jAdj_jAdj (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : jAdj 
   simp only [jAdj_apply, Matrix.conjTranspose_mul, Jm_conjTranspose, Matrix.conjTranspose_conjTranspose]
   calc Jm ε * (Jm ε * (Y * Jm ε)) * Jm ε = (Jm ε * Jm ε) * Y * (Jm ε * Jm ε) := by simp only [Matrix.mul_assoc]
     _ = Y := by rw [Jm_mul_self]; simp
-
-def jPerp (ε : Fin n → Bool) (U : Submodule ℂ (Fin n → ℂ)) : Submodule ℂ (Fin n → ℂ) where
-  carrier := {y | ∀ z ∈ U, star z ⬝ᵥ (Jm ε *ᵥ y) = 0}
-  add_mem' {y y'} h h' z hz := by
-    have e1 := h z hz
-    have e2 := h' z hz
-    rw [Matrix.mulVec_add, dotProduct_add, e1, e2, add_zero]
-  zero_mem' z _ := by simp
-  smul_mem' c y h z hz := by
-    have e1 := h z hz
-    rw [Matrix.mulVec_smul, dotProduct_smul, e1, smul_zero]
-
-def flagChain (ε : Fin n → Bool) (W : Flag n a) (k : Fin (2 * a + 2)) : Submodule ℂ (Fin n → ℂ) :=
-  if h : (k : ℕ) ≤ a then W ⟨k, by omega⟩ else jPerp ε (W ⟨2 * a + 1 - k, by omega⟩)
 
 def qAlg (ε : Fin n → Bool) (W : Flag n a) : Subalgebra ℂ (Matrix (Fin n) (Fin n) ℂ) where
   carrier := {Y | ∀ i, ∀ y ∈ W i, Y *ᵥ y ∈ W i ∧ jAdj ε Y *ᵥ y ∈ W i}
@@ -97,20 +83,8 @@ def qAdj (ε : Fin n → Bool) (W : Flag n a) : QA ε W →ₗ[ℝ] QA ε W wher
 
 theorem qMat_qAdj (ε : Fin n → Bool) (W : Flag n a) (x : QA ε W) : qMat (qAdj ε W x) = jAdj ε (qMat x) := rfl
 
-theorem qMat_injective {ε : Fin n → Bool} {W : Flag n a} : Function.Injective (qMat (ε := ε) (W := W)) :=
-  fun _ _ h => (RegNorm.toRegNorm (qAlg ε W)).symm.injective (Subtype.ext h)
-
 theorem qMat_one {ε : Fin n → Bool} {W : Flag n a} : qMat (1 : QA ε W) = 1 := rfl
 
 theorem qMat_mul {ε : Fin n → Bool} {W : Flag n a} (x y : QA ε W) : qMat (x * y) = qMat x * qMat y := rfl
-
-theorem qAdj_one (ε : Fin n → Bool) (W : Flag n a) : qAdj ε W 1 = 1 :=
-  qMat_injective (by rw [qMat_qAdj, qMat_one, jAdj_one])
-
-theorem qAdj_mul (ε : Fin n → Bool) (W : Flag n a) (x y : QA ε W) : qAdj ε W (x * y) = qAdj ε W y * qAdj ε W x :=
-  qMat_injective (by rw [qMat_qAdj, qMat_mul, jAdj_mul, qMat_mul, qMat_qAdj, qMat_qAdj])
-
-abbrev qGroup (ε : Fin n → Bool) (W : Flag n a) : Subgroup (QA ε W)ˣ :=
-  formGroup (qAdj ε W) (qAdj_one ε W) (qAdj_mul ε W) 1
 
 end GlobalTheory.CompanionTheory.ModP

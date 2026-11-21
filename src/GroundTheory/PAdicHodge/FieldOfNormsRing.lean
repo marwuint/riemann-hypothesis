@@ -78,28 +78,6 @@ theorem nrm_Nto_sub_Nto_le_ρ (i : ℕ) {j : ℕ} {a b : Ω} (ha : a ∈ t.E (i 
     exact ih (t.N_mem _ ha) (t.N_mem _ hb) (t.nrm_N_le_one _ ha1) (t.nrm_N_le_one _ hb1)
       (t.nrm_N_sub_N_le_ρ _ ha hb ha1 hb1 hab)
 
-theorem nrm_Nto_add_sub_le_ρ (i : ℕ) {j : ℕ} {a b : Ω} (ha : a ∈ t.E (i + j)) (hb : b ∈ t.E (i + j))
-    (ha1 : nrm K a ≤ 1) (hb1 : nrm K b ≤ 1) :
-    nrm K (t.Nto i j (a + b) - t.Nto i j a - t.Nto i j b) ≤ t.ρ := by
-  induction j generalizing a b with
-  | zero => simp [t.ρ_nonneg]
-  | succ j ih =>
-    simp only [Nto_succ]
-    have hNa := t.N_mem _ ha
-    have hNb := t.N_mem _ hb
-    have hNa1 := t.nrm_N_le_one (i + j) ha1
-    have hNb1 := t.nrm_N_le_one (i + j) hb1
-    have h1 := t.nrm_Nto_sub_Nto_le_ρ i (t.N_mem _ (add_mem ha hb)) (add_mem hNa hNb)
-      (t.nrm_N_le_one _ (nrm_add_le_one ha1 hb1)) (nrm_add_le_one hNa1 hNb1)
-      (by rw [sub_add_eq_sub_sub]; exact t.nrm_N_add_sub_le_ρ _ ha hb ha1 hb1)
-    have h2 := ih hNa hNb hNa1 hNb1
-    have e : t.Nto i j (t.N (i + j) (a + b)) - t.Nto i j (t.N (i + j) a) - t.Nto i j (t.N (i + j) b) =
-        (t.Nto i j (t.N (i + j) (a + b)) - t.Nto i j (t.N (i + j) a + t.N (i + j) b)) +
-        (t.Nto i j (t.N (i + j) a + t.N (i + j) b) - t.Nto i j (t.N (i + j) a) -
-          t.Nto i j (t.N (i + j) b)) := by ring
-    rw [e]
-    exact nrm_add_le_of_le h1 h2
-
 def cnt (i j : ℕ) : ℕ :=
   ((Finset.range j).filter fun m ↦ t.k (i + m) ≠ 0).card
 
@@ -334,8 +312,6 @@ theorem add_cong (x y : t.Plus) (n : ℕ) : nrm K ((x + y).1 n - (x.1 n + y.1 n)
 
 theorem neg_cong (x : t.Plus) (n : ℕ) : nrm K ((-x).1 n - -x.1 n) ≤ t.ρ :=
   (exists_neg x).choose_spec.2 n
-
-theorem ρ_nonneg' : 0 ≤ t.ρ := t.ρ_nonneg
 
 private theorem cong4 {a b c d e : Ω} (h1 : nrm K a ≤ t.ρ) (h2 : nrm K b ≤ t.ρ)
     (h3 : nrm K c ≤ t.ρ) (h4 : nrm K d ≤ t.ρ) (he : e = a + b - c - d) : nrm K e ≤ t.ρ := by

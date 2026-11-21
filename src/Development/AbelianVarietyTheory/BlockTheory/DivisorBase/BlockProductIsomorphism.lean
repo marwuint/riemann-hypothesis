@@ -119,28 +119,4 @@ def ProductIsoIff : Prop :=
 
 def IrrPar : Prop := ProductIrreducible ∧ ProductIsoIff
 
-theorem isIsotypicOf_self {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V) :
-    IsIsotypicOf τ τ := by
-  refine top_le_iff.1 (le_trans ?_ (le_iSup _ (Representation.IntertwiningMap.id τ)))
-  intro v _
-  exact ⟨v, rfl⟩
-
-theorem trivial_irreducible (G : Type) [Group G] : (Representation.trivial ℂ G ℂ).IsIrreducible := by
-  refine { toNontrivial := ⟨⟨⊥, ⊤, fun h => ?_⟩⟩, eq_bot_or_eq_top := fun S => ?_ }
-  · have := congrArg Subrepresentation.toSubmodule h
-    exact bot_ne_top (α := Submodule ℂ ℂ) this
-  · rcases eq_bot_or_eq_top (α := Submodule ℂ ℂ) S.toSubmodule with h | h
-    · exact Or.inl (Subrepresentation.ext h)
-    · exact Or.inr (Subrepresentation.ext h)
-
-example : IsRegularCusp (F := F) (fun _ : Fin 1 => 0) (Representation.trivial ℂ _ ℂ) (fun _ => 1) (fun _ => ℂ)
-    (fun _ => Representation.trivial ℂ _ ℂ) := by
-  refine ⟨⟨monotone_const, trivial_irreducible _, fun _ _ => rfl, ?_⟩, ?_, ?_⟩
-  · rintro S ⟨i, j, -, hi, hj⟩
-    exact absurd (Subsingleton.elim i j ▸ hi) hj
-  · rintro c ⟨_, rfl⟩
-    exact ⟨trivial_irreducible _, by simp [block], isIsotypicOf_self _⟩
-  · rintro c ⟨_, rfl⟩ c' ⟨_, rfl⟩ h
-    exact absurd rfl h
-
 end GlobalTheory.IndefiniteRowSideFullHecke.BlockProductIsomorphism

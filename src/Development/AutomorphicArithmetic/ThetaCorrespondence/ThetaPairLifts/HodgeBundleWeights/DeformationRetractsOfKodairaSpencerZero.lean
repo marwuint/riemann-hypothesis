@@ -1,7 +1,9 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupLiftTangentCompatibility
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.Hypotheses2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupLiftTangentCompatibilityStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
+import Development.AbelianVarietyTheory.Definitions.Divisors.P22
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GrothendieckDeformation
 
 section
 set_option autoImplicit false
@@ -10,17 +12,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DeRham
-open GlobalTheory.Cris GlobalTheory.Published GlobalTheory.Published.AbelianDeRham TensorProduct
-variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
 end GlobalTheory.DeRham
 namespace GlobalTheory.DeRham
-open GlobalTheory.Cris GlobalTheory.Published GlobalTheory.Published.AbelianDeRham TensorProduct
-variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
-variable {C : Over (Sp (DualNumber R))} [GrpObj C] {φ : C.left ⟶ A.left} {j : A.left ⟶ C.left}
 end GlobalTheory.DeRham
 namespace GlobalTheory.DeRham
-open GlobalTheory.Cris GlobalTheory.Published GlobalTheory.Published.AbelianDeRham TensorProduct
-variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
 end GlobalTheory.DeRham
 namespace GlobalTheory.FlagTan
 theorem exists_retraction_of_kodaira_spencer_zero : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation →

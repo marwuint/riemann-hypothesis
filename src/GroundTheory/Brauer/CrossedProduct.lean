@@ -214,10 +214,6 @@ theorem smul_single (c : L) (σ : L ≃ₐ[K] L) (a : L) :
     c • (single σ a : CrossedProduct hf) = single σ (c * a) := by
   ext1; simp
 
-theorem single_eq_smul_u (σ : L ≃ₐ[K] L) (a : L) :
-    (single σ a : CrossedProduct hf) = a • u σ := by
-  rw [u, smul_single, mul_one]
-
 theorem single_injective (σ : L ≃ₐ[K] L) :
     Function.Injective (single σ : L → CrossedProduct hf) := fun _ _ h =>
   Finsupp.single_injective σ (congrArg coeff h)
@@ -231,13 +227,6 @@ theorem single_mul_single (σ τ : L ≃ₐ[K] L) (a b : L) :
   CrossedProduct.ext (mulCoeff_single_single σ τ a b)
 
 theorem one_def : (1 : CrossedProduct hf) = single 1 (((f (1, 1))⁻¹ : Lˣ) : L) := rfl
-
-theorem eq_sum_single (x : CrossedProduct hf) :
-    x = x.coeff.sum fun σ a => single σ a := by
-  apply coeff_injective
-  change x.coeff = coeffAddHom (x.coeff.sum fun σ a => single σ a)
-  rw [map_finsuppSum]
-  exact (Finsupp.sum_single x.coeff).symm
 
 @[elab_as_elim]
 theorem induction_on {p : CrossedProduct hf → Prop} (x : CrossedProduct hf) (zero : p 0)

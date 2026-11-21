@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PrimitiveCrystalHodgeLiftClasses
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsNoetherianRingDualNumber
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianHomReductionDescendsFinitelyGeneratedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushMemLiftFilOfInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianHomReductionDescendsFinitelyGenerated
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushMemLiftFilOfInjective
 
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj DividedPowers
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.SqLift GlobalTheory.Published GlobalTheory.Published.GrothendieckMessing
@@ -23,13 +23,13 @@ theorem liftHom_exists_of_noetherian : AbelianDeRham → (∀ (R : Type) [CommRi
     ∃ f : A ⟶ B, i ≫ f.left = f₀.left ≫ j := by
   intro P H R _ I h R₀ _ π hπ hker g A₀ _ A _ i hA abA smA g' B₀ _ B _ j hB abB smB f₀ _ hfil
   obtain ⟨S, ι₀, AS₀, _, AS, _, iS, BS₀, _, BS, _, jS, fS₀, φA, φB, ψA, ψB, hfg, hι, _, hAS, hBS, abAS, smAS,
-    abBS, smBS, pA, pB, qA, qB, cA, cB, cf⟩ := GlobalTheory.T.abelian_hom_reduction_descends_finitely_generated R I R₀ π hπ hker g A₀ A i hA abA smA g' B₀ B j hB abB smB f₀
+    abBS, smBS, pA, pB, qA, qB, cA, cB, cf⟩ := _root_.GlobalTheory.AbHomDesc.abelian_hom_reduction_descends R I R₀ π hπ hker g A₀ A i hA abA smA g' B₀ B j hB abB smB f₀
   have hS : (I.comap S.subtype) ^ 2 = 0 := by
     rw [Ideal.zero_eq_bot, eq_bot_iff]
     refine (Ideal.le_comap_pow _ 2).trans ?_
     rw [h, Ideal.zero_eq_bot, Ideal.comap_bot_of_injective _ Subtype.val_injective]
   haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing ℤ S
-  have hfilS := GlobalTheory.T.push_mem_liftFil_of_injective_alt P R I h R₀ π hπ hker S S.subtype Subtype.val_injective (I.comap S.subtype) hS
+  have hfilS := _root_.GlobalTheory.SqLift.push_mem_liftFil_of_injective P R I h R₀ π hπ hker S S.subtype Subtype.val_injective (I.comap S.subtype) hS
     (S ⧸ I.comap S.subtype) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective (Ideal.mk_ker) ι₀ hι
     g A₀ A i hA AS₀ AS iS hAS abA smA abAS smAS φA ψA pA qA cA
     g' B₀ B j hB BS₀ BS jS hBS abB smB abBS smBS φB ψB pB qB cB f₀ fS₀ cf hfil

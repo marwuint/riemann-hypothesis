@@ -15,12 +15,12 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CubWeilOneLe
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CardTorsionGeometricPointOfField
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.OverPointsExtOfInjective
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.MemOfCubWeilOrthogonal
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.DimEqAbelianPartDimAddTorusRankStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFormalTorusPointsSemiAbelianModelStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueAbelianPartImageAdicCompletePointStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianPartImageOneMulInvStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianPartImageEqOneIffTorusPointStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CubicalWeilPairingEqAbelianPartImageStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.DimEqAbelianPartDimAddTorusRank
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFormalTorusPointsSemiAbelianModel
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueAbelianPartImageAdicCompletePoint
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianPartImageOneMulInv
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AbelianPartImageEqOneIffTorusPoint
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CubicalWeilPairingEqAbelianPartImage
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionLiftAbelianPartFiniteExtensionStatement
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.UU
@@ -118,10 +118,10 @@ theorem GlobalTheory.UU.cubWeil_nondegenerate_generic :
       Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) F)) ≫
         Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))
     rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hcomp])
-  choose ρf hρ hρu using fun y : SW ⟶ G => GlobalTheory.T.existsUnique_abelianPart_image_adicComplete_point V A G s t a W hW hloc y
+  choose ρf hρ hρu using fun y : SW ⟶ G => _root_.GlobalTheory.UU.PointImage.main V A G s t a W hW hloc y
   let ρ : (SW ⟶ G) →* (SW ⟶ a.B) := MonoidHom.mk' ρf fun y y' =>
-    (hρu _ _ ((GlobalTheory.T.abelianPart_image_one_mul_inv V A G s t a W y y' (ρf y) (ρf y')).2 (hρ y) (hρ y')).1).symm
-  obtain ⟨ι', hι, hιs⟩ := GlobalTheory.T.exists_formalTorus_points_semiAbelian_model V A G s t W hW hloc
+    (hρu _ _ ((_root_.GlobalTheory.UU.image_one_mul_inv V A G s t a W y y' (ρf y) (ρf y')).2 (hρ y) (hρ y')).1).symm
+  obtain ⟨ι', hι, hιs⟩ := _root_.GlobalTheory.UU.exists_formalTorus_points V A G s t W hW hloc
   let pG : (SW ⟶ G) →* (TF (R := V) F ⟶ G) := preHom σ
   let pB : (SW ⟶ a.B) →* (TF (R := V) F ⟶ a.B) := preHom σ
   have hpG : Function.Injective pG := fun y y' e =>
@@ -131,7 +131,7 @@ theorem GlobalTheory.UU.cubWeil_nondegenerate_generic :
   let τ := pB.comp ρ
   have hker : ∀ y, τ y = 1 ↔ ∃ c, y = ι' c := fun y => by
     have e1 : τ y = 1 ↔ ρ y = 1 := map_eq_one_iff pB hpB
-    have e2 := GlobalTheory.T.abelianPart_image_eq_one_iff_torus_point V A G s t a W hW hloc y
+    have e2 := _root_.GlobalTheory.UU.image_eq_one_iff_torus_point V A G s t a W hW hloc y
     rw [e1]
     constructor
     · intro h
@@ -147,7 +147,7 @@ theorem GlobalTheory.UU.cubWeil_nondegenerate_generic :
     rw [this]
     exact Over.OverMorphism.ext e
   obtain ⟨g', hg'⟩ := GlobalTheory.AbelianDim.exists_relDim V a.B a.isAb
-  have hdim := (GlobalTheory.T.dim_eq_abelianPart_dim_add_torus_rank V A G s t g').2 a hg'
+  have hdim := (_root_.GlobalTheory.UU.Tower.dim_eq_add_finrank V A G s t g').2 a hg'
   have hB : Nat.card {x : TF (R := V) F ⟶ a.B // x ^ N = 1} = N ^ (2 * g') :=
     GlobalTheory.card_torsion_geometricPoint_of_field hcard _ a.B a.isAb g' hg' F _ N hNF
   have hC := card_hom_torsion s.X W N
@@ -159,7 +159,7 @@ theorem GlobalTheory.UU.cubWeil_nondegenerate_generic :
   have hpair : ∀ y y' : SW ⟶ G, y ^ N = 1 → y' ^ N = 1 → CubWeil a.M.c N (τ y) (τ y') 1 →
       CubWeil s.P.c N (pG y) (pG y') 1 := fun y y' hy hy' h => by
     obtain ⟨ζ, hζ, -⟩ := existsUnique_cubWeil s.P.c hy hy'
-    have h1 := (GlobalTheory.T.cubicalWeilPairing_eq_abelianPart_image V A G s t a W hW hloc N y y' (ρ y) (ρ y') ζ (hρ y) (hρ y') (hρN y hy) (hρN y' hy') hζ).comp σ
+    have h1 := (_root_.GlobalTheory.UU.ImagePairing.cubWeil_image V A G s t a W hW hloc N y y' (ρ y) (ρ y') ζ (hρ y) (hρ y') (hρN y hy) (hρN y' hy') hζ).comp σ
     have h2 := hζ.comp σ
     rw [h1.unique h] at h2
     exact h2

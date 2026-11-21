@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemNonzeroLocusIffPowFn
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.BijectiveSmulChartSec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallySurjectiveToPushforwardAmpleLineBundleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPullbackOfSurjectiveToPushforwardStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallySurjectiveToPushforwardAmpleLineBundle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPullbackOfSurjectiveToPushforward
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSAmp
@@ -47,10 +47,10 @@ theorem exists_sec_nonzero_on_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{
   haveI : Module.Finite ℤ k := hX.finite
   haveI : IsNoetherian ℤ k := inferInstance
   haveI : IsNoetherianRing k := isNoetherian_of_tower ℤ this
-  obtain ⟨N₀, hN₀⟩ := eventually_atTop.1 (GlobalTheory.T.eventually_surjective_toPushforward_ampleLineBundle_pow k X p hX.isProjOver L hL T i)
+  obtain ⟨N₀, hN₀⟩ := eventually_atTop.1 (_root_.GlobalTheory.surjective_toPushforward_app_top_lbPow k X p hX.isProjOver L hL T i)
   have hN : N₀ ≤ n * (N₀ + 1) := by nlinarith
   obtain ⟨σ', hσ'⟩ := exists_sec_pull_pow L i (n * (N₀ + 1)) (secPow s (N₀ + 1))
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_sectionPullback_of_surjective_toPushforward X T i (lbPow L (n * (N₀ + 1))) (isLB_lbPow hL.isLB _) (hN₀ _ hN) σ'
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.LB.exists_secPull_eq_of_surjective_toPushforward X T i (lbPow L (n * (N₀ + 1))) (isLB_lbPow hL.isLB _) (hN₀ _ hN) σ'
   refine ⟨n * (N₀ + 1), u, by nlinarith, ?_⟩
   rintro _ ⟨z, rfl⟩
   have hz : z ∈ nonzeroLocus (GlobalTheory.secPull u i) := by

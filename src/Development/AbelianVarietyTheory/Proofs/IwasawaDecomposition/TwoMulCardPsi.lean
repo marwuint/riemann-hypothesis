@@ -35,30 +35,4 @@ theorem card_tau (D : D7) : Fintype.card D.what₂.Tau = Module.finrank ℚ D.ho
   have h3 := finrank_host D
   omega
 
-theorem cmList_nonempty {D : D7} (A : Amb D) : Nonempty (CmList A) := by
-  let ψ : D.what₂.Tau → GlobalTheory.AllWt.Psi A.H := fun t => ⟨DV.tauEmb D t, A.cm t⟩
-  have hb : Function.Bijective ψ := by
-    constructor
-    · intro a b h
-      exact D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 (congrArg Subtype.val h)))
-    · rintro ⟨τ, hτ⟩
-      obtain ⟨g, rfl⟩ := (factEmb D.R D.host).1.2 τ
-      have h3 : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := D.host.φ₀_mem
-      rw [A.rt_eq, A.cmHost_rootComplex_eq_pm_sqrt, h3] at hτ
-      obtain ⟨t, ht⟩ := (exists_tauEmb_iff D g).2 (((factEmb D.R D.host).2 g).1 hτ)
-      exact ⟨t, Subtype.ext ht.symm⟩
-  exact ⟨⟨Equiv.ofBijective ψ hb, fun _ => rfl⟩⟩
-
-theorem cm_dim : ∀ (D : D7) (A : Amb D), Nonempty (CmList A) ∧ 2 < Module.finrank ℚ D.host.E / 2 ∧
-    ∀ (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (i : s.Comp),
-      (Φ.C i).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N := by
-  intro D A
-  refine ⟨cmList_nonempty A, ?_, fun N j S κ s Φ i => ?_⟩
-  · rw [finrank_host]
-    have h : 2 ^ 2 ≤ 2 ^ D.R.e := Nat.pow_le_pow_right two_pos D.host.two_le_e
-    have h' : 2 ^ D.R.e ≤ D.R.ord := by
-      exact D.R.toFrame.two_pow_le_ord
-    omega
-  · rw [Φ.dim_eq i, Formalism.DegreeFormula.dimFl, card_tau]
-
 end GlobalTheory.ShFam.CmDim

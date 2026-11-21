@@ -187,12 +187,6 @@ theorem cont_uuQ (cy' : Fin (2 * ρ + k + 1) → ℂ) :
   simp only [uuQ, Matrix.vecMul, dotProduct, Matrix.of_apply]
   fun_prop
 
-theorem cont_uuQ' (cy' : Fin (2 * ρ + k + 1) → ℂ) :
-    Continuous (fun cm' : Fin (2 * ρ + k + 1) → Fin j → ℂ => uuQ' (k := k) (ρ := ρ) cy' cm') := by
-  refine continuous_pi fun a => ?_
-  simp only [uuQ', Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply]
-  fun_prop
-
 theorem cont_dltQ (b : Bq k j ρ) :
     Continuous (fun q : (Fin (2 * ρ + k + 1) → Fin j → ℂ) × (Fin j → ℂ) => dltQ b q.1 q.2) := by
   refine continuous_pi fun a => continuous_pi fun c => ?_

@@ -15,12 +15,6 @@ namespace GlobalTheory.Mem.LiteralAutomorphy
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-def NEa (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (A : AtP) : NExt hL := fun K B f T w Z Wt p0 t nch n xd c =>
-  N K B f T w Z Wt p0 t nch n xd c × PLift (A K B f T)
-
-@[reducible] def prmA (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ) (A : AtP) : Prm hL :=
-  prmR (NEa hL (GlobalTheory.HeightCounting.Up.NEl hL cDep) A) SExt.none (geoCl anyGeometry)
-
 abbrev GKey (P : Pre) : Type :=
   HeightOneSpectrum (𝓞 P.host.F) × HeightOneSpectrum (𝓞 P.host.E) × (Fin P.R.m → HChar P.host.E)
 

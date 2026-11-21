@@ -69,43 +69,9 @@ variable (h : G)
 
 def conjSub (Γ : Subgroup G) : Subgroup G := Γ.map (MulAut.conj h⁻¹).toMonoidHom
 
-theorem mem_conjSub {Γ : Subgroup G} {s : G} : s ∈ conjSub h Γ ↔ h * s * h⁻¹ ∈ Γ := by
-  unfold conjSub
-  rw [Subgroup.mem_map]
-  constructor
-  · rintro ⟨g, hg, rfl⟩
-    simpa [mul_assoc] using hg
-  · intro hs
-    exact ⟨h * s * h⁻¹, hs, by simp [mul_assoc]⟩
-
 instance countable_conjSub (Γ : Subgroup G) [Countable Γ] : Countable (conjSub h Γ) := by
   unfold conjSub
   exact Countable.of_equiv _ (Γ.equivMapOfInjective _ (MulAut.conj h⁻¹).injective).toEquiv
-
-theorem SF_conj {Γ : Subgroup G} {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) :
-    SF (conjSub h Γ : Set G) {r | h * r * h⁻¹ ∈ Ω} := by
-  refine ⟨hΩ.1.preimage ((measurable_const_mul h).mul_const h⁻¹), fun x => ?_, fun x hx t ht htx => ?_⟩
-  · obtain ⟨s, hs, hsx⟩ := hΩ.2.1 (h * x * h⁻¹)
-    refine ⟨h⁻¹ * s * h, ?_, ?_⟩
-    · show h⁻¹ * s * h ∈ conjSub h Γ
-      rw [mem_conjSub]
-      simpa [mul_assoc] using hs
-    · show h * (h⁻¹ * s * h * x) * h⁻¹ ∈ Ω
-      simpa [mul_assoc] using hsx
-  · have ht' : h * t * h⁻¹ ∈ Γ := (mem_conjSub h).1 ht
-    have h1 : (h * t * h⁻¹) * (h * x * h⁻¹) ∈ Ω := by simpa [mul_assoc] using htx
-    have h2 : h * t * h⁻¹ = 1 := hΩ.2.2 (h * x * h⁻¹) hx (h * t * h⁻¹) ht' h1
-    calc t = h⁻¹ * (h * t * h⁻¹) * h := by group
-      _ = 1 := by rw [h2]; group
-
-theorem SF_transl {Γ : Subgroup G} {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) (y : G) :
-    SF (conjSub h Γ : Set G) {r | h * (r * y) ∈ Ω} := by
-  have H := SF_mul_right (SF_conj h hΩ) (y * h)
-  have hset : {r | h * (r * y) ∈ Ω} = {r | r * (y * h) ∈ {r | h * r * h⁻¹ ∈ Ω}} := by
-    ext r
-    simp [mul_assoc]
-  rw [hset]
-  exact H
 
 end SF
 

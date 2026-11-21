@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulEqZeroOfApp
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsGenOfUniqueFactorizationMonoid
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsGenOfSmallExtension
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardClassEqZeroOfSquareZeroRetractionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardClassEqZeroOfSquareZeroRetraction
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -66,7 +67,7 @@ theorem lbIso_of_symmetric : ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp
     have hs' : s.fst = 0 := hs
     rw [Ideal.mem_bot]
     ext <;> simp [hr', hs']
-  have hc0 := GlobalTheory.T.cechPicardClass_eq_zero_of_squareZero_retraction i q e hiq h2 hsq c h0 htwo
+  have hc0 := _root_.GlobalTheory.CechPic.eq_zero_of_sqZero_retract i q e hiq h2 hsq c h0 htwo
   exact (cls_eq_iff hL hM).1 (sub_eq_zero.1 hc0)
 
 end GlobalTheory.SymFirstOrder

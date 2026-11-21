@@ -81,9 +81,9 @@ theorem density_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   have hqc : Continuous fun X : Fin n → Fin M → Ainf F ⊗[F] E => gramH hCM hJ (Ainf F) X :=
     (t10 n M J).subtype_mk _
   obtain ⟨ψ, hψ⟩ := GlobalTheory.CompanionTheory.SW.CharEx.exists_isCharAF F
-  obtain ⟨ρ, e, hρ, he, heρ, -, -⟩ := GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hCM.1
-  obtain ⟨a, ha, hinf, -, -, -⟩ := GlobalTheory.T.adelic_character_archimedean_form F hCM.1 ρ e hρ he heρ ψ hψ
-  obtain ⟨τ, Θ, hΘ⟩ := GlobalTheory.T.complex_coordinates_exist_at_infinity F E σ hCM ρ e hρ he heρ
+  obtain ⟨ρ, e, hρ, he, heρ, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.real_iso F hCM.1
+  obtain ⟨a, ha, hinf, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Glob.CharAF.exists_char_data F hCM.1 ρ e hρ he heρ ψ hψ
+  obtain ⟨τ, Θ, hΘ⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord F E σ hCM ρ e hρ he heρ
   have c1 : Continuous Θ := hΘ.1.continuous
   have c2 : Continuous Θ.symm := HermCoord.continuous_symm Θ hΘ.1
   let Ψ0 := HermCoord.hermEquiv σ Θ hΘ.2.1 n

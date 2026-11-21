@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DecayZero
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ContinuousBdGen
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HalfMulTwoAF
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PoissonSummationAdelicTuplesStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EqOfThetaHeisenbergTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PoissonSummationAdelicTuples
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EqOfThetaHeisenbergTranslates
 open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx GlobalTheory.SWQ
 open scoped TensorProduct NNReal ENNReal
 
@@ -16,7 +16,7 @@ theorem fourier_inversion : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (
   intro F _ _ N ψ lam ν a hC Φ hΦ hFΦ hFFΦ
   have hD1 : Decay (Da (-1) Φ) :=
     (GlobalTheory.SWQ.decay_ops F N ψ lam ν a hC Φ hΦ).2.2.1 (-1) isUnit_one.neg
-  apply GlobalTheory.T.eq_of_theta_heisenbergTranslates F N ψ lam ν a hC _ _ hFFΦ hD1
+  apply _root_.GlobalTheory.SWQ.eq_of_theta_rho F N ψ lam ν a hC _ _ hFFΦ hD1
   intro x y
 
   have iΦ := GlobalTheory.SWQ.weil_intertwine F N ψ lam ν a hC Φ
@@ -31,7 +31,7 @@ theorem fourier_inversion : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (
     rw [← e1]; exact (GlobalTheory.SWQ.decay_ops F N ψ lam ν a hC _ hFΦ).2.1 _ _
   have dFFΨ : Decay (Fo ψ ν a (Fo ψ ν a (rho ψ a (-x) (-y) Φ))) := by
     rw [← e2]; exact (GlobalTheory.SWQ.decay_ops F N ψ lam ν a hC _ hFFΦ).2.1 _ _
-  rw [e2, GlobalTheory.T.poisson_summation_adelic_tuples F N ψ lam ν a hC _ dFΨ dFFΨ, GlobalTheory.T.poisson_summation_adelic_tuples F N ψ lam ν a hC _ dΨ dFΨ]
+  rw [e2, _root_.GlobalTheory.SWQ.poisson_summation F N ψ lam ν a hC _ dFΨ dFFΨ, _root_.GlobalTheory.SWQ.poisson_summation F N ψ lam ν a hC _ dΨ dFΨ]
 
   have e3 : rho ψ a x y (Da (-1) Φ) = Da (-1) (rho ψ a (-x) (-y) Φ) := by
     have := iΦ.2.1 (-1) (-1) x y (by norm_num)

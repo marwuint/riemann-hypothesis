@@ -121,9 +121,4 @@ theorem exists_etale_coords [IsIntegral X] (h : IsArithVar p D) :
   refine ModelCharts.exists_etale_coords_of_opens p D j.opensRange ?_
   exact ⟨genericPoint _, genericPoint_eq_of_isOpenImmersion j⟩
 
-theorem exists_etale_coord_surface : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
-    [IsIntegral X], IsArithVar p 1 → ∃ (U : X.Opens) (x : Fin 1 → Γ(X, U)), IsAffineOpen U ∧
-      genericPoint X ∈ U ∧ (MvPolynomial.eval₂Hom (algX p U) x).Etale :=
-  fun _ _ _ _ _ h => exists_etale_coords h
-
 end GlobalTheory.GenericEtale

@@ -13,13 +13,6 @@ namespace GlobalTheory.FrameInv
 variable {l : ℕ} [Fact l.Prime] {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)}
   {χ : GQ l →* ℚ_[l]ˣ}
 
-theorem act_fix (ha : IsActC act) {F : IntermediateField ℚ_[l] (Om l)} {g : GQ l}
-    (hg : g ∈ F.fixingSubgroup) {y : PadicComplex l} (hy : y ∈ inC F) : act g y = y := by
-  obtain ⟨x, hx, rfl⟩ := hy
-  have h := ha.1 g x
-  rw [(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x hx] at h
-  exact h
-
 variable {r : ℕ} {U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)}
 
 open scoped Matrix in

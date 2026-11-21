@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.RadFin
 import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.Nak
 import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.SlotBasic
 import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.PartStable
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorEqTopOrLeKerFiniteLengthModulesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorEqTopOrLeKerFiniteLengthModules
 open scoped TensorProduct
 open UpperTheory.Lit.HoweDuality
 

@@ -10,8 +10,6 @@ open scoped Classical
 
 namespace UpperTheory.Gal.CertificateRingHomMap
 
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
-
 end UpperTheory.Gal.CertificateRingHomMap
 
 theorem UpperTheory.Gal.CertificateRingHomMap.pVecU_of :

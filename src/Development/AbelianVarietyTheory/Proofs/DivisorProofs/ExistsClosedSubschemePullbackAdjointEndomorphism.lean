@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToRingActOpOfRingAct
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyHomFixRepTrivial
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrivialLocusRigidifiedBundleClosedSeesawStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrivialLocusRigidifiedBundleClosedSeesaw
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleExternalTensorPowerGroupPower
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SqIsPowGrp
@@ -77,7 +77,7 @@ theorem GlobalTheory.EndLoc.exists_closed_adj : ∀ (S : Scheme.{0}) [IsLocallyN
   have hamp₀ : Out.RelAmple (A ⊗ A) L₀ :=
     GlobalTheory.relAmple_boxLB S _ A 2 (GlobalTheory.SquarePol.sqIsPowGrp A) _ (pull_isLB hQ _) hamp
   have hAA : IsAbelianScheme (A ⊗ A) := AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA
-  obtain ⟨Z, i, hi, hZ⟩ := GlobalTheory.T.trivial_locus_rigidified_bundle_closed_seesaw S (A ⊗ A) L₀ N hAA hL₀ hamp₀ hN hrig
+  obtain ⟨Z, i, hi, hZ⟩ := _root_.GlobalTheory.TrivLocus.trivLocus_closed_of_relAmple S (A ⊗ A) L₀ N hAA hL₀ hamp₀ hN hrig
   refine ⟨Z, i, hi, fun T t A' _ _ φ' φ₂' g g' hpb hsq hg hg' => ?_⟩
   have hpb₂ := GlobalTheory.WeilIntegral.isGrpPullback_prod hpb hpb hsq.1 hsq.2
   rw [← hZ T t (A' ⊗ A') φ₂' hpb₂, ← cls_eq_zero_iff (pull_isLB hN _), cls_pull hN, hc, map_sub, ← pull_comp,

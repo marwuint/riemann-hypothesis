@@ -15,94 +15,6 @@ open Laurent Filter Topology UniformSpace
 
 namespace TeichLift
 
-variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
-  [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
-  {ρ0 : Set.Ioo (0 : ℝ) 1} {σ0 : Set.Ioc (0 : ℝ) ρ0}
-
-def annNormR (x : T.Ann ρ0 σ0) (s : ℝ) : ℝ :=
-  if h : s ∈ Set.Icc (σ0 : ℝ) ρ0 then T.annNorm ρ0 σ0 ⟨s, h⟩ x else 0
-
-theorem annNormR_of_mem (x : T.Ann ρ0 σ0) (r : AnnRad ρ0 σ0) :
-    T.annNormR x r = T.annNorm ρ0 σ0 r x := by
-  rw [annNormR, dif_pos r.2]
-
-theorem continuousOn_gaussNorm_coreVal (b : T.AnnCore ρ0 σ0) :
-    ContinuousOn (gaussNorm (T.coeffB (T.coreVal ρ0 σ0 b))) (Set.Icc (σ0 : ℝ) ρ0) := by
-  by_cases hb : T.coeffB (T.coreVal ρ0 σ0 b) = 0
-  · rw [hb]
-    have : gaussNorm (0 : ℤ → L) = fun _ => 0 := by funext s; simp [gaussNorm]
-    rw [this]; exact continuousOn_const
-  exact continuousOn_gaussNorm σ0.2.1 (T.convergesAt_coreVal b (annIn ρ0 σ0))
-    (T.convergesAt_coreVal b (annOut ρ0 σ0)) hb
-
-theorem continuousOn_annNormR (x : T.Ann ρ0 σ0) :
-    ContinuousOn (T.annNormR x) (Set.Icc (σ0 : ℝ) ρ0) := by
-  intro s hs
-  rw [Metric.continuousWithinAt_iff]
-  intro ε hε
-  obtain ⟨b, hb⟩ := T.exists_coeAnn_near x (show 0 < ε / 3 by positivity)
-  have hc := T.continuousOn_gaussNorm_coreVal (T.coreOf ρ0 σ0 b) s hs
-  obtain ⟨δ, hδ, hδc⟩ := Metric.continuousWithinAt_iff.1 hc (ε / 3) (by positivity)
-  refine ⟨δ, hδ, fun {s'} hs' hd => ?_⟩
-  have key : ∀ r : AnnRad ρ0 σ0, |T.annNorm ρ0 σ0 r x -
-      gaussNorm (T.coeffB (T.coreVal ρ0 σ0 (T.coreOf ρ0 σ0 b))) r| < ε / 3 := by
-    intro r
-    rw [← annNorm_coe, ← coeAnn_apply]
-    have h1 := T.annNorm_sub_le r x (x - T.coeAnn b)
-    have h2 := T.annNorm_add_le r (x - T.coeAnn b) (T.coeAnn b)
-    rw [sub_sub_cancel] at h1
-    rw [sub_add_cancel] at h2
-    have h3 := hb r
-    rw [abs_sub_lt_iff]
-    constructor
-    · rcases le_max_iff.1 h2 with h | h
-      · linarith [T.annNorm_nonneg r (T.coeAnn b)]
-      · linarith [T.annNorm_nonneg r (x - T.coeAnn b)]
-    · rcases le_max_iff.1 h1 with h | h
-      · linarith [T.annNorm_nonneg r x]
-      · linarith [T.annNorm_nonneg r x]
-  have k1 := key ⟨s', hs'⟩
-  have k2 := key ⟨s, hs⟩
-  have k3 := hδc hs' hd
-  rw [Real.dist_eq] at k3 ⊢
-  rw [annNormR_of_mem T x ⟨s', hs'⟩, annNormR_of_mem T x ⟨s, hs⟩]
-  set A := T.annNorm ρ0 σ0 ⟨s', hs'⟩ x
-  set D := T.annNorm ρ0 σ0 ⟨s, hs⟩ x
-  set B := gaussNorm (T.coeffB (T.coreVal ρ0 σ0 (T.coreOf ρ0 σ0 b))) s'
-  set C := gaussNorm (T.coeffB (T.coreVal ρ0 σ0 (T.coreOf ρ0 σ0 b))) s
-  have e1 := abs_sub_le A B D
-  have e2 := abs_sub_le B C D
-  have e3 : |C - D| < ε / 3 := by rw [abs_sub_comm]; exact k2
-  linarith
-
-theorem annNorm_pos_of_annIn_pos {x : T.Ann ρ0 σ0} (hx : 0 < T.annNorm ρ0 σ0 (annIn ρ0 σ0) x)
-    (r : AnnRad ρ0 σ0) : 0 < T.annNorm ρ0 σ0 r x := by
-  refine lt_of_le_of_ne (T.annNorm_nonneg r x) fun h0 => ?_
-  rcases eq_or_lt_of_le r.2.1 with hr | hr
-  · have : r = annIn ρ0 σ0 := Subtype.ext hr.symm
-    rw [this] at h0; linarith
-
-  have hzero : ∀ s ∈ Set.Ioo (σ0 : ℝ) r, T.annNormR x s = 0 := by
-    intro s hs
-    have hsI : s ∈ Set.Icc (σ0 : ℝ) ρ0 := ⟨hs.1.le, hs.2.le.trans r.2.2⟩
-    obtain ⟨t, ht0, ht1, hst⟩ := exists_interp_exponent σ0.2.1 hs.1 hs.2
-    have := T.annNorm_interp_le (annIn ρ0 σ0) r ⟨s, hsI⟩ ht0.le ht1.le hst x
-    rw [← h0, Real.zero_rpow ht0.ne', mul_zero] at this
-    rw [annNormR_of_mem T x ⟨s, hsI⟩]
-    exact le_antisymm this (T.annNorm_nonneg _ x)
-
-  have hc : ContinuousWithinAt (T.annNormR x) (Set.Ioo (σ0 : ℝ) r) σ0 :=
-    (T.continuousOn_annNormR x σ0 ⟨le_rfl, σ0.2.2⟩).mono fun s hs => ⟨hs.1.le, hs.2.le.trans r.2.2⟩
-  have hmem : (σ0 : ℝ) ∈ closure (Set.Ioo (σ0 : ℝ) r) := by
-    rw [closure_Ioo hr.ne]; exact ⟨le_rfl, hr.le⟩
-  have hlim := hc.mem_closure_image hmem
-  have hsub : T.annNormR x '' Set.Ioo (σ0 : ℝ) r ⊆ {0} := by
-    rintro _ ⟨s, hs, rfl⟩; exact hzero s hs
-  have := closure_mono hsub hlim
-  have h' : T.annNormR x (σ0 : ℝ) = T.annNorm ρ0 σ0 (annIn ρ0 σ0) x := T.annNormR_of_mem x (annIn ρ0 σ0)
-  rw [closure_singleton, Set.mem_singleton_iff, h'] at this
-  linarith
-
 end TeichLift
 
 namespace WAFrac
@@ -124,24 +36,9 @@ theorem annNorm_awayToAnn (r : AnnRad ρ0 σ0) (z : 𝔸) :
     (𝓣).annNorm ρ0 σ0 r (awayToAnn ρ0 σ0 z) = gn ℂ_[p] p r z :=
   (𝓣).annNorm_coeAnn r _
 
-theorem awayToAnn_eq_toAnn (z : 𝔸) : awayToAnn ρ0 σ0 z = (𝓣).toAnn ρ0 σ0 (awayToExt p ρ0 z) :=
-  ((𝓣).toAnn_coe _).symm
-
 theorem rad_pos' (r : AnnRad ρ0 σ0) : (0 : ℝ) < r := σ0.2.1.trans_le r.2.1
 
 theorem rad_lt_one' (r : AnnRad ρ0 σ0) : (r : ℝ) < 1 := r.2.2.trans_lt ρ0.2.2
-
-theorem annNorm_awayToAnn_natCast_p (r : AnnRad ρ0 σ0) :
-    (𝓣).annNorm ρ0 σ0 r (p : (𝓣).Ann ρ0 σ0) = r := by
-  rw [← map_natCast (awayToAnn ρ0 σ0) p, annNorm_awayToAnn]
-  exact gn_natCast_p (rad_pos' r)
-
-theorem isUnit_natCast_p_ann : IsUnit (p : (𝓣).Ann ρ0 σ0) := by
-  have h : IsUnit (p : 𝔸) := by
-    have := IsLocalization.Away.algebraMap_isUnit (S := 𝔸) (p : AInf ℂ_[p] p)
-    rwa [map_natCast] at this
-  have := h.map (awayToAnn ρ0 σ0)
-  rwa [map_natCast] at this
 
 variable (hσ : (p : ℝ)⁻¹ ≤ σ0)
 include hσ
@@ -305,33 +202,6 @@ def acrisToAnn : ACris ℂ_[p] p →+* (𝓣).Ann ρ0 σ0 where
         exact (annNorm_acrisToAnnFun_sub_le hσ a (acrisApprox_spec a N) r).trans (rad_pow_le hσ r N)
 
 theorem acrisToAnn_apply (a : ACris ℂ_[p] p) : acrisToAnn hσ a = acrisToAnnFun hσ a := rfl
-
-theorem acrisToAnn_algebraMap (c : ACrisZero ℂ_[p] p) :
-    acrisToAnn hσ (algebraMap _ (ACris ℂ_[p] p) c) = awayToAnn ρ0 σ0 (c : 𝔸) :=
-  acrisToAnnFun_algebraMap hσ c
-
-theorem annNorm_acrisToAnn_sub_le (a : ACris ℂ_[p] p) {c : ACrisZero ℂ_[p] p} {N : ℕ}
-    (hc : a - algebraMap _ (ACris ℂ_[p] p) c ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ N})
-    (r : AnnRad ρ0 σ0) :
-    (𝓣).annNorm ρ0 σ0 r (acrisToAnn hσ a - awayToAnn ρ0 σ0 (c : 𝔸)) ≤ (r : ℝ) ^ N :=
-  annNorm_acrisToAnnFun_sub_le hσ a hc r
-
-theorem eq_acrisToAnn {a : ACris ℂ_[p] p} {x : (𝓣).Ann ρ0 σ0}
-    (h : ∀ N : ℕ, ∃ c : ACrisZero ℂ_[p] p,
-      a - algebraMap _ (ACris ℂ_[p] p) c ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ N} ∧
-      ∀ r : AnnRad ρ0 σ0, (𝓣).annNorm ρ0 σ0 r (x - awayToAnn ρ0 σ0 (c : 𝔸)) ≤ (ρ0 : ℝ) ^ N) :
-    x = acrisToAnn hσ a :=
-  eq_acrisToAnnFun hσ h
-
-theorem isUnit_acrisToAnn_p : IsUnit (acrisToAnn hσ (p : ACris ℂ_[p] p)) := by
-  rw [map_natCast]; exact isUnit_natCast_p_ann
-
-def bcrisToAnn : BCrisPlus ℂ_[p] p →+* (𝓣).Ann ρ0 σ0 :=
-  IsLocalization.Away.lift (p : ACris ℂ_[p] p) (isUnit_acrisToAnn_p hσ)
-
-theorem bcrisToAnn_algebraMap (a : ACris ℂ_[p] p) :
-    bcrisToAnn hσ (algebraMap _ (BCrisPlus ℂ_[p] p) a) = acrisToAnn hσ a :=
-  IsLocalization.Away.lift_eq _ _ a
 
 end WAFrac
 

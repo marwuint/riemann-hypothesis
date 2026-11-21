@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspRapidDecaySiegelGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartUnipotentFderivContinuousOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalSubBoundedInfiniteSmallFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalSubBoundedInfiniteSmallFinite
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 
 noncomputable section
@@ -24,7 +24,7 @@ theorem unip_eq_rat_mul_inf_mul_fin : ∀ (E : Type) [Field E] [NumberField E] [
   rw [nhds_pi, Filter.mem_pi] at hpre
   obtain ⟨I, -, t, ht, hsub⟩ := hpre
   have hU : (⋂ p, t p) ∈ nhds (0 : Af E) := Filter.iInter_mem.2 fun p => by simpa using ht p
-  obtain ⟨R, hR, hx⟩ := GlobalTheory.T.exists_rational_sub_bounded_infinite_small_finite E (⋂ p, t p) hU
+  obtain ⟨R, hR, hx⟩ := _root_.GlobalTheory.AdeleApprox.exists_rat_sub_bounded_small E (⋂ p, t p) hU
   refine ⟨R, hR, fun x => ?_⟩
   choose ξ hξ1 hξ2 using fun p => hx (x p)
   refine ⟨ξ, fun p => pInf E (x p - algebraMap E (Ad E) (ξ p)),

@@ -4,11 +4,12 @@ import Formalism.PeriodIntegrals.QuotInv
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
 import Formalism.LocalRingCardinality.DataCD
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBesselMapRankOneFactorisationTranslateSpanStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelProjectorOnLineStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralHsNormSqMatrixCoeffLeFormalDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBesselMapRankOneFactorisationTranslateSpan
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelProjectorOnLine
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralHsNormSqMatrixCoeffLeFormalDegree
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothVectorsDenseInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeEqAmpJAndBesselEqDoubleIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeEqAmpJAndBesselEqDoubleIntegral
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNonzeroFixedOfSquareIntegrableBesselStatement
 open MeasureTheory Matrix Filter Topology Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp
 open scoped InnerProductSpace ENNReal
@@ -81,7 +82,7 @@ theorem exists_isEll_smul (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerPr
     · intro v hv'
       refine (ENNReal.mul_left_inj hn0 hnt).1 ?_
       rw [h1 v hv', ← hLw]; ring
-  obtain ⟨l, hl⟩ := GlobalTheory.T.exists_besselMap_rankOne_factorisation_translateSpan k r σ w a μG d z c π μS hStd hz.1 hsm hm νS hq hnv
+  obtain ⟨l, hl⟩ := _root_.GlobalTheory.SgInf.exists_isEll_DD k r σ w a μG d z c π μS hStd hz.1 hsm hm νS hq hnv
   refine ⟨l, hl, ?_⟩
   have hs : ∃ s : ℂ, ∀ x ∈ smoothVecs (k := k) (r := r) σ, B x = s • l x := by
     obtain ⟨s, hs | hs⟩ := hm B l hB hl.1
@@ -102,7 +103,7 @@ theorem exists_isEll_smul (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerPr
   have hwD : w ∈ DD σ w := by
     have := mem_DD σ w hone
     rwa [hU.1.1] at this
-  have hlw := (GlobalTheory.T.besselModel_projector_on_line k r σ w a μG d z c π μS hStd hz.1 νS hq l hl).1 w hwD
+  have hlw := (_root_.GlobalTheory.SgInf.ProjLine.projector_line k r σ w a μG d z c π μS hStd hz.1 νS hq l hl).1 w hwD
   have hμS : IsHaarOn (Sset k r z) μS := hz.1.2.2.2.1
   have hae := Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 hμS.2.1 (measure_mono_null (by
     rintro x hx ⟨h, hh, m, hm', e⟩
@@ -128,8 +129,8 @@ theorem lintegral_hsNormSq_ampJ_le : ∀ (k r : ℕ) {H : Type} [NormedAddCommGr
   have hG : IsHaarOn (GG k r) μG := hS.1.2.2.2.2.1
   have hd : 0 < d := hS.1.2.2.2.2.2.1.1
   have hd' : (d : ℂ) ≠ 0 := by exact_mod_cast hd.ne'
-  have h5 := GlobalTheory.T.lintegral_hsNormSq_matrixCoeff_le_formalDegree k r σ w a μG d z c π μS z' c' π' μS' hS.1 hz.1 hz'.1 ν hν l l' hl hl'
-  have hJ := (GlobalTheory.T.amplitude_eq_ampJ_and_bessel_eq_doubleIntegral k r (H := H) (Wp := Wp) (Wq := Wq)).1 μG (fun x => l (σ x w)) (fun x => l' (σ x w)) hG
+  have h5 := _root_.GlobalTheory.SgInf.EllBound.lintegral_hsNormSq_ell_le k r σ w a μG d z c π μS z' c' π' μS' hS.1 hz.1 hz'.1 ν hν l l' hl hl'
+  have hJ := (_root_.GlobalTheory.SgInf.AmpJ.oo_eq_ampJ_and_besselJ_eq_Iint k r (H := H) (Wp := Wp) (Wq := Wq)).1 μG (fun x => l (σ x w)) (fun x => l' (σ x w)) hG
   have hD : (0 : ℝ) ≤ (Module.finrank ℂ Wp : ℝ) * Module.finrank ℂ Wq := by positivity
   rw [div_eq_mul_inv, ENNReal.ofReal_mul hD]
   refine le_trans (le_of_eq ?_) (mul_le_mul_right h5 _)

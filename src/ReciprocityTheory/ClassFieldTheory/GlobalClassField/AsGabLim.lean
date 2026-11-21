@@ -8,44 +8,6 @@ open scoped commutatorElement
 
 variable {F : Type*} [Field F] {L L' : IntermediateField F (AlgebraicClosure F)}
 
-def ResCompat (hle : L ≤ L') (τ' : L' ≃ₐ[F] L') (τ : L ≃ₐ[F] L) : Prop :=
-  ∀ x : L, τ' (IntermediateField.inclusion hle x) = IntermediateField.inclusion hle (τ x)
-
-theorem ResCompat.unique {hle : L ≤ L'} {τ' : L' ≃ₐ[F] L'} {τ₁ τ₂ : L ≃ₐ[F] L}
-    (h₁ : ResCompat hle τ' τ₁) (h₂ : ResCompat hle τ' τ₂) : τ₁ = τ₂ := by
-  ext x
-  have := (h₁ x).symm.trans (h₂ x)
-  exact congrArg Subtype.val ((IntermediateField.inclusion hle).toRingHom.injective this)
-
-theorem ResCompat.one (hle : L ≤ L') : ResCompat hle 1 1 := fun _ => rfl
-
-theorem ResCompat.mul {hle : L ≤ L'} {σ' τ' : L' ≃ₐ[F] L'} {σ τ : L ≃ₐ[F] L}
-    (h₁ : ResCompat hle σ' σ) (h₂ : ResCompat hle τ' τ) : ResCompat hle (σ' * τ') (σ * τ) := by
-  intro x
-  rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, h₂ x, h₁ (τ x)]
-
-theorem ResCompat.refl (τ : L ≃ₐ[F] L) : ResCompat (le_refl L) τ τ := by
-  intro x
-  rfl
-
-theorem ResCompat.trans {L'' : IntermediateField F (AlgebraicClosure F)} {h₁ : L ≤ L'} {h₂ : L' ≤ L''}
-    {τ'' : L'' ≃ₐ[F] L''} {τ' : L' ≃ₐ[F] L'} {τ : L ≃ₐ[F] L}
-    (c₂ : ResCompat h₂ τ'' τ') (c₁ : ResCompat h₁ τ' τ) : ResCompat (h₁.trans h₂) τ'' τ := by
-  intro x
-  have e : IntermediateField.inclusion (h₁.trans h₂) x =
-      IntermediateField.inclusion h₂ (IntermediateField.inclusion h₁ x) := rfl
-  rw [e, c₂, c₁]
-  rfl
-
-theorem ResCompat.inv {hle : L ≤ L'} {τ' : L' ≃ₐ[F] L'} {τ : L ≃ₐ[F] L}
-    (h : ResCompat hle τ' τ) : ResCompat hle τ'⁻¹ τ⁻¹ := by
-  intro x
-  apply τ'.injective
-  rw [h (τ⁻¹ x)]
-  show (τ' * τ'⁻¹) _ = IntermediateField.inclusion hle ((τ * τ⁻¹) x)
-  rw [mul_inv_cancel, mul_inv_cancel]
-  rfl
-
 theorem toAb_surjective : Surjective (toAb F) := QuotientGroup.mk'_surjective _
 
 theorem abRestrict_toAb_eq_one_iff (h : IsFiniteAbelian F L) (g : AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) :

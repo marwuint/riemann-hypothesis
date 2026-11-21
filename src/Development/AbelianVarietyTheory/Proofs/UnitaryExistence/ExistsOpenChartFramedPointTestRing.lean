@@ -4,10 +4,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMapStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EigenBasisIffTangentBasisStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LieBasisIffTangentBasisPullbackUniversalStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionGeneratesOfNowhereZeroStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFibreSectionNowhereZeroOfPullbackTripleStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EigenBasisIffTangentBasis
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LieBasisIffTangentBasisPullbackUniversal
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionGeneratesOfNowhereZero
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFibreSectionNowhereZeroOfPullbackTriple
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ReducedFiniteTypeIffTestRing
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsChartEigenframe
 
@@ -40,7 +40,7 @@ theorem exists_openChart_testRing : Out.SecBaseChangeSt → ∀ (E : Type) [Fiel
     GlobalTheory.ModuliChart.exists_chart_eigenframe hS E H Dw l Xo c _ _ (isTypeFn_of_enum Dw e) z
   let x : Sp R ⟶ Xo.X := jR ≫ pullback.fst _ _
   have hb : TanBasis x (fun i => (v i).left ≫ m.cm.F) :=
-    ((GlobalTheory.T.lieBasis_iff_tangentBasis_pullback_universal E H Dw l Xo R x o.t.G m.cm.F m.cart).2 _ v).1 hv
+    ((_root_.GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo R x o.t.G m.cm.F m.cart).2 _ v).1 hv
   let u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber R) ⟶ Xo.univ.t.G.left) :=
     fun τ i => (v (e.symm ⟨τ, i⟩)).left ≫ m.cm.F
   have htan : ∀ τ i, IsTanAt x (u τ i) := fun τ i => hb.1 _
@@ -58,9 +58,9 @@ theorem exists_openChart_testRing : Out.SecBaseChangeSt → ∀ (E : Type) [Fiel
       show (v (e.symm (e j))).left ≫ m.cm.F = _
       rw [Equiv.symm_apply_apply]
     rw [this]; exact hb
-  have hbasis := (GlobalTheory.T.eigenBasis_iff_tangentBasis E H Dw l Xo c R x u _ e htan heig).2 hb'
-  obtain ⟨s, hsn⟩ := GlobalTheory.T.exists_fibreSection_nowhereZero_of_pullbackTriple E H Dw l Xo R x o.t m.toSABMap th hth
-  have hgen := GlobalTheory.T.fibreSectionGenerates_of_nowhereZero hS E H Dw l Xo R x s hsn
+  have hbasis := (_root_.GlobalTheory.Frames.eigBasis_iff_tanBasis E H Dw l Xo c R x u _ e htan heig).2 hb'
+  obtain ⟨s, hsn⟩ := _root_.GlobalTheory.SecTransport.exists_sec_nonzero E H Dw l Xo R x o.t m.toSABMap th hth
+  have hgen := _root_.GlobalTheory.Frames.secGen_of_secNZ hS E H Dw l Xo R x s hsn
   have hx : x ≫ Xo.s = sOf c R := by
     have h1 : x ≫ Xo.s = (jR ≫ pullback.snd _ _) ≫ spMap (IntermediateField.inclusion c.le).toRingHom := by
       rw [Category.assoc, Category.assoc]

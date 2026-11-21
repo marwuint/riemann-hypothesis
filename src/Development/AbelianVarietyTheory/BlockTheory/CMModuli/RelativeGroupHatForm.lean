@@ -72,9 +72,6 @@ def trivAt (D : Datum H) (l : Level H) : Subgroup (Lhat D ≃ₗ[Zhat] Lhat D) :
 
 def relGroup (D : Datum H) (l l₂ : Level H) : Subgroup (Lhat D ≃ₗ[Zhat] Lhat D) := simGroup D l₂ ⊓ trivAt D l
 
-example (D : Datum H) (l : Level H) : LinearEquiv.neg Zhat ∈ simGroup D l :=
-  ⟨fun c x => by simp, 1, map_one _, fun x y => by simp⟩
-
 theorem zeta_pow_div {m n : ℕ} (hn : 0 < n) (h : m ∣ n) : zeta n ^ (n / m) = zeta m := by
   obtain ⟨k, rfl⟩ := h
   have hm : 0 < m := Nat.pos_of_mul_pos_right hn
@@ -154,25 +151,5 @@ def IsLevelCovering (h : l.Dvd l₂) {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {
         (∀ y : Sp k ⟶ Xo₂.XF c, y ≫ levelMapF h hπ c = x ≫ levelMapF h hπ c →
           ∃ g, x ≫ endF (ρ g).hom (hρ g) c = y) ∧
         ∀ g, x ≫ endF (ρ g).hom (hρ g) c = x ↔ g.1 ∈ trivAt D l₂
-
-def ModuliExists : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q →
-    ∀ l : Level H, Nonempty (Moduli D l)
-
-def LevelMapsAndAction : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q →
-    ∀ (l l₂ : Level H) (h : l.Dvd l₂) (Xo : Moduli D l) (Xo₂ : Moduli D l₂),
-      ∃ (π : Xo₂.X ⟶ Xo.X) (hπ : IsOver h Xo Xo₂ π), PullsBack Xo Xo₂ π ∧
-        (∀ π' : Xo₂.X ⟶ Xo.X, IsOver h Xo Xo₂ π' → PullsBack Xo Xo₂ π' → π' = π) ∧
-        IsLevelCovering h hπ
-
-def ModuliAndLevels : Prop := ModuliExists ∧ LevelMapsAndAction
-
-def WholeGroupActs : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q →
-    ∀ (l : Level H) (Xo : Moduli D l),
-      ∃ ρ : simGroup D l → (Xo.X ≅ Xo.X), (∀ g, (ρ g).hom ≫ Xo.s = Xo.s) ∧
-        ρ 1 = Iso.refl _ ∧ (∀ g g', ρ (g * g') = ρ g ≪≫ ρ g') ∧
-        (∀ g, ChangesLevelBy Xo g.1 (ρ g).hom) ∧ ∀ g, g.1 ∈ trivAt D l → ρ g = Iso.refl _
 
 end GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm

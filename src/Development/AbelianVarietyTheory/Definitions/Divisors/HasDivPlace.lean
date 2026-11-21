@@ -104,13 +104,6 @@ def MuSupp (r : ℕ) (δ : Gr G r) : Prop :=
     ‖Algebra.norm ℚ_[p] (δ.2 w).val.det‖ = (p : ℝ) ^ (r * Nat.card {i // L.w i = w})) ∧
   ∀ i, 1 < ‖mulKQ (G.Fw (L.w i)) r ((sigKQ p (G.Fw (L.w i)) r)^[r - 1] (δ.2 (L.w i)).val.det)‖
 
-def GoodSel (sel : Polynomial G.F → ℂ) : Prop :=
-  IsSel G sel ∧ ∀ (i : Fin D.a) (P : Polynomial G.F), P.Monic → P.natDegree = G.n →
-    (∃ mu, P.eval₂ (L.s i) mu = 0 ∧ 1 < ‖G.iotaP mu‖) →
-    ∃ mu, P.eval₂ (L.s i) mu = 0 ∧ 1 < ‖G.iotaP mu‖ ∧
-      sel P = if (InfinitePlace.mk (G.iotaC.comp (L.s i))).embedding = G.iotaC.comp (L.s i) then G.iotaC mu
-        else (starRingEnd ℂ) (G.iotaC mu)
-
 end Link
 
 section Points
@@ -133,10 +126,6 @@ abbrev TIso (o : Obj b N (spMap β)) : Type :=
 
 def Induces (o : Obj b N (spMap β)) (I : TIso o) : Prop := ∀ y, toUnit _ ≫ o.eta y = I.ev N y
 
-def IsoObj (o o' : Obj b N (spMap β)) : Prop := Nonempty (ObjMap o o' (𝟙 _))
-
-def Pts (b : Base D R) (β : R →+* k) (N : ℕ) : Type 1 := Quot (IsoObj (b := b) (β := β) (N := N))
-
 variable {G : HTGroup p} (L : Link D G)
 
 def Acts {o : Obj b N (spMap β)} {o' : Obj b N' (spMap β)} (I : TIso o) (I' : TIso o') (ψ : av o ⟶ av o') (m : ℤ)
@@ -147,20 +136,6 @@ def Acts {o : Obj b N (spMap β)} {o' : Obj b N' (spMap β)} (I : TIso o) (I' : 
 
 def ActsQ {o : Obj b N (spMap β)} (I : TIso o) (π : End0 (av o)) (g : G.GAf) : Prop :=
   ∀ (m : ℤ) (ψ : End (av o)), m • π = toEnd0 _ ψ → Acts L I I ψ m g
-
-def IsGamma (o : Obj b N (spMap β)) (π : End0 (av o)) (g : G.GAf) : Prop :=
-  ∃ I : TIso o, Induces o I ∧ ActsQ L I π g
-
-def Transl (o : Obj b N (spMap β)) (o' : Obj b N' (spMap β)) (g : G.GAf) : Prop :=
-  ∃ (I : TIso o) (I' : TIso o') (ψ : av o ⟶ av o') (ψ' : av o' ⟶ av o) (m d : ℕ), Induces o I ∧ Induces o' I' ∧
-    m.Coprime p ∧ d.Coprime p ∧ ψ ≫ ψ' = d • 𝟙 _ ∧ ψ' ≫ ψ = d • 𝟙 _ ∧ Acts L I I' ψ m g
-
-def Classifies (M : Model b N) (x : Sp k ⟶ M.X) (o : Obj b N (spMap β)) : Prop :=
-  x ≫ M.s = spMap β ∧ Nonempty (ObjMap o M.univ x)
-
-def IsHecke (β : R →+* k) (M' : Model b N') (M : Model b N) (q : M'.X ⟶ M.X) (g : G.GAf) : Prop :=
-  q ≫ M.s = M'.s ∧ ∀ (y : Sp k ⟶ M'.X) (o' : Obj b N' (spMap β)) (o : Obj b N (spMap β)),
-    Classifies M' y o' → Classifies M (y ≫ q) o → Transl L o' o g
 
 variable [CharP k p] [PerfectRing k p]
 
@@ -191,26 +166,6 @@ structure Frame (T : Theory p) (red : (Obar p).toSubring →+* k) (r : ℕ) (H :
     HMul.hMul (α := Matrix (Fin D.m) (Fin G.n) (KQ p (G.Fw w) r)) (β := Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) r))
       ((X.map (intKQ p (G.Fw w) r).subtype).map (sigKQ p (G.Fw w) r)) ((d w)⁻¹).val ∧ T.F H (B w X) = B w Y
 
-def IsDelta (T : Theory p) (red : (Obar p).toSubring →+* k) (r : ℕ) (o : Obj b N (spMap β)) (π : End0 (av o))
-    (d : (w : Fin G.m) → GL (Fin G.n) (KQ p (G.Fw w) r)) : Prop :=
-  ∃ (H : PDivGroup p k) (t : H.TorsionTower (av o).X),
-    Nonempty (Frame L T red r H (fun c => t.map t (actEnd o c).hom)
-      (fun m ψ => ∃ g : End (av o), m • π = toEnd0 _ g ∧ ψ = t.map t g.hom) d)
-
-def IsPair (T : Theory p) (red : (Obar p).toSubring →+* k) (r : ℕ) (o : Obj b N (spMap β)) (π : End0 (av o))
-    (ga : G.GAf) (δ : Gr G r) : Prop :=
-  IsGamma L o π ga⁻¹ ∧ IsDelta L T red r o π δ.2 ∧
-    ∃ c : ℚ, ((uSimR (AfP p) ga : (AfP p)ˣ) : AfP p) = algebraMap ℚ (AfP p) c ∧
-      (((GlobalTheory.LKLoc.nrm p (Q0 p) 1 r δ.1).val 0 0 : Qr p r) : PadicAlgCl p) = (c : PadicAlgCl p)
-
-def weight (T : Theory p) (red : (Obar p).toSubring →+* k) (r : ℕ) (f : G.GAf → ℂ) (φ : Gr G r → ℂ)
-    (o : Obj b N (spMap β)) (π : End0 (av o)) : ℂ :=
-  if h : ∃ x : G.GAf × Gr G r, IsPair L T red r o π x.1 x.2 then f h.choose.1 * φ h.choose.2 else 0
-
-def geomSum (T : Theory p) (b : Base D R) (β : R →+* k) (red : (Obar p).toSubring →+* k) (N r : ℕ) (f : G.GAf → ℂ)
-    (φ : Gr G r → ℂ) : ℂ :=
-  ∑ᶠ q : Pts b β N, ∑ᶠ π : End0 (av (Quot.out q)), weight L T red r f φ (Quot.out q) π
-
 end Points
 
 structure Setup {D : Datum p} {G : HTGroup p} (L : Link D G) {R : Type} [CommRing R] (b : Base D R)
@@ -228,24 +183,5 @@ structure Tests {D : Datum p} {G : HTGroup p} (L : Link D G) (N r : ℕ) (f : G.
   reg : ∀ ga, f ga ≠ 0 → RegAf G ga
   inv : ∀ k ∈ KHT p G.m G.n r G.Fw, ∀ δ, φ (k⁻¹ * δ * sigG G r k) = φ δ
   supp : ∀ δ, φ δ ≠ 0 → L.MuSupp r δ
-
-def GeoCount : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (D : Datum p) (G : HTGroup p) (L : Link D G) (R : Type) [CommRing R]
-    (b : Base D R) (β : R →+* AlgebraicClosure (ZMod p)) (red : (Obar p).toSubring →+* AlgebraicClosure (ZMod p))
-    (N r : ℕ), Setup L b β red N r → ∀ (f : G.GAf → ℂ) (φ : Gr G r → ℂ), Tests L N r f φ →
-    ∀ sel, L.GoodSel sel →
-      geomSum L T b β red N r f φ = markedSum G (fun _ => 1) sel (L.KN N) f r (KHT p G.m G.n r G.Fw) φ
-
-def FixBridge : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (D : Datum p) (G : HTGroup p) (L : Link D G) (R : Type) [CommRing R]
-    (b : Base D R) (β : R →+* AlgebraicClosure (ZMod p)) (red : (Obar p).toSubring →+* AlgebraicClosure (ZMod p))
-    (N N' r : ℕ), Setup L b β red N r → N ∣ N' → N'.Coprime p → ∀ (g : G.GAf),
-    (∀ k ∈ L.KN N', g * k * g⁻¹ ∈ L.KN N) →
-    ∀ (M : Model b N) (M' : Model b N') (q₁ q₂ : M'.X ⟶ M.X), IsHecke L β M' M q₁ 1 → IsHecke L β M' M q₂ g →
-    ∀ (y : Sp (AlgebraicClosure (ZMod p)) ⟶ M'.X) (o : Obj b N' (spMap β)), Classifies M' y o →
-      (y ≫ q₂ = spMap (iterateFrobenius (AlgebraicClosure (ZMod p)) p r) ≫ y ≫ q₁ ↔
-        ∃ π ga δ, IsPair L T red r o π ga δ ∧ L.MuSupp r δ ∧ ga * g⁻¹ ∈ L.KN N) ∧
-      ∀ π ga δ π' ga' δ', IsPair L T red r o π ga δ → L.MuSupp r δ → ga * g⁻¹ ∈ L.KN N →
-        IsPair L T red r o π' ga' δ' → L.MuSupp r δ' → ga' * g⁻¹ ∈ L.KN N → π = π'
 
 end GlobalTheory.LKGeo

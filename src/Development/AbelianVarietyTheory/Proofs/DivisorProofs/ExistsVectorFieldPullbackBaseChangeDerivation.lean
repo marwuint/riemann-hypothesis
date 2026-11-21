@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecVectorFieldOfDualNumberSection
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVectorFieldAffineOpenTransport
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationFibreProductAffineCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreProductAffineOpenClosureLegsEqTopStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VectorFieldsEqOnSubopensOfEqAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVectorFieldGluedOpenCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationFibreProductAffineCompatible
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreProductAffineOpenClosureLegsEqTop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VectorFieldsEqOnSubopensOfEqAffine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVectorFieldGluedOpenCover
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -88,10 +88,10 @@ theorem exists_field_pullback : ∀ (Z Z' X X' : Scheme.{0}) (p : Z ⟶ X) (p' :
   have hOp : ∀ O : A, O.1.1 ≤ p ⁻¹ᵁ U.1 := fun O => O.2.trans hW
   let O' : A → Z'.Opens := fun O => φ ⁻¹ᵁ O.1.1 ⊓ p' ⁻¹ᵁ U'.1
   have hO'aff : ∀ O : A, IsAffineOpen (O' O) := fun O =>
-    (GlobalTheory.T.fibreProduct_affineOpen_closure_legs_eq_top Z Z' X X' p p' φ g hpb U U' hU O.1 (hOp O)).1
+    (_root_.GlobalTheory.BaseChangeAffine.affine_and_closure_eq_top Z Z' X X' p p' φ g hpb U U' hU O.1 (hOp O)).1
   have hgen : ∀ O : A, Subring.closure (Set.range (φ.appLE O.1.1 (O' O) inf_le_left).hom ∪
       Set.range (p'.appLE U'.1 (O' O) inf_le_right).hom) = ⊤ := fun O =>
-    (GlobalTheory.T.fibreProduct_affineOpen_closure_legs_eq_top Z Z' X X' p p' φ g hpb U U' hU O.1 (hOp O)).2
+    (_root_.GlobalTheory.BaseChangeAffine.affine_and_closure_eq_top Z Z' X X' p p' φ g hpb U U' hU O.1 (hOp O)).2
   let δ : ∀ O : A, Derivation ℤ Γ(Z, O.1.1) Γ(Z, O.1.1) := fun O => derivOf hd O.1.1 O.2
   have hδ : ∀ (O : A) r, δ O ((p.appLE U.1 O.1.1 (hOp O)).hom r) =
       (p.appLE U.1 O.1.1 (hOp O)).hom (D r) := by
@@ -99,7 +99,7 @@ theorem exists_field_pullback : ∀ (Z Z' X X' : Scheme.{0}) (p : Z ⟶ X) (p' :
     show d O.1.1 _ = _
     rw [← appLE_res p U.1 W O.1.1 hW O.2, hd.2.2 W O.1.1 O.2 le_rfl, hdD, appLE_res]
   choose δ' hδ'1 hδ'2 using fun O : A =>
-    GlobalTheory.T.exists_derivation_fibreProduct_affine_compatible Z Z' X X' p p' φ g hpb U U' hU D D' hD' O.1 (hOp O) (δ O) (hδ O)
+    _root_.GlobalTheory.FibreDer.exists_der_fibre Z Z' X X' p p' φ g hpb U U' hU D D' hD' O.1 (hOp O) (δ O) (hδ O)
   choose e he1 he2 using fun O : A => exists_field_of_deriv (O' O) (hO'aff O) (δ' O)
 
   have hT : ∀ (O : A) (V : Z'.Opens) (hV : V ≤ O' O) (b : Γ(Z, O.1.1)),
@@ -122,7 +122,7 @@ theorem exists_field_pullback : ∀ (Z Z' X X' : Scheme.{0}) (p : Z ⟶ X) (p' :
       e O V f = e (bas O s) V f := by
     intro O s
     have hle : O' (bas O s) ≤ O' O := inf_le_inf_right _ (φ.preimage_mono (Z.basicOpen_le s))
-    refine GlobalTheory.T.vectorFields_eq_on_subopens_of_eq_affine Z' (O' (bas O s)) (hO'aff (bas O s)) (e O) (e (bas O s))
+    refine _root_.GlobalTheory.LogKS.isField_eq_of_affine Z' (O' (bas O s)) (hO'aff (bas O s)) (e O) (e (bas O s))
       (isField_mono (he1 O) hle) (he1 (bas O s)) ?_
     intro a
     rw [he2 (bas O s)]
@@ -167,7 +167,7 @@ theorem exists_field_pullback : ∀ (Z Z' X X' : Scheme.{0}) (p : Z ⟶ X) (p' :
     rw [← (he1 O₁).2.2 V _ inf_le_left h1, ← (he1 O₂).2.2 V _ inf_le_left h2,
       hKB O₁ f₁ _ hV1, hKB O₂ f₂ _ hV2]
     exact congrArg (fun B => e B (V ⊓ O' (bas O₁ f₁)) (resG Z' inf_le_left f)) hA
-  obtain ⟨d', hd'1, hd'2⟩ := GlobalTheory.T.exists_vectorField_glued_openCover Z' A O' e he1 hcomp
+  obtain ⟨d', hd'1, hd'2⟩ := _root_.GlobalTheory.LogKS.isField_glue Z' A O' e he1 hcomp
   have hcov : φ ⁻¹ᵁ W ⊓ p' ⁻¹ᵁ U'.1 ≤ ⨆ O : A, O' O := by
     intro x hx
     obtain ⟨O₀, hO₀, hx0, hle⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.mp Z.isBasis_affineOpens

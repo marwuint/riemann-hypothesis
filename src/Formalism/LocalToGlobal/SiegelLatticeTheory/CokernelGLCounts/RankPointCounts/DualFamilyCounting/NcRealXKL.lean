@@ -598,11 +598,6 @@ theorem cont_shG (i : WlocSk.NB.CI k r) :
       (continuous_apply b).comp ((continuous_apply a).comp cont_dlt)
     exact ((h1 _ _).sub (h1 _ _).star).div_const 2
 
-theorem cont_shH (a : Fin r) :
-    Continuous fun mc : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × (WlocSk.NB.CI k r → ℂ) =>
-      WlocSk.NB.shH mc.1 mc.2 a :=
-  Complex.continuous_im.comp ((continuous_apply a).comp ((continuous_apply a).comp cont_dlt))
-
 variable {ι : Type}
 
 theorem meas_chAt (T : ℝ) (v : ι) : Measurable (fun x : (∀ q : CBlk r, CSpc ι k q) => chAt T x v) := by

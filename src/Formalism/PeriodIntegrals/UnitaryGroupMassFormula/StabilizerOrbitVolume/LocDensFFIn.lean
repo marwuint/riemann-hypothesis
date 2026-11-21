@@ -34,43 +34,7 @@ theorem ffH_isHS (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin
     funext i
     exact σ.injective (by simpa using congrFun hinv i)
 
-theorem ffH_single {n : ℕ} (T : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
-    ffH σ T (Pi.single i 1) (Pi.single j 1) = T i j := by
-  have hs : ∀ i' : Fin n, σ ((Pi.single i 1 : Fin n → K) i') = (Pi.single i 1 : Fin n → K) i' := by
-    intro i'
-    by_cases h : i' = i
-    · subst h
-      simp
-    · simp [Pi.single_eq_of_ne h]
-  simp only [PI.VolStabSW.ffH, hs]
-  simp [Pi.single_apply]
-
 end matrix
-
-theorem card_isom {K : Type} [Field K] {σ : K →+* K} {U V : Type} [AddCommGroup U] [Module K U]
-    [AddCommGroup V] [Module K V] {hU : U → U → K} {hV : V → V → K} (hsU : IsSq σ hU)
-    (hsV : IsSq σ hV) {ι : Type} (b : Basis ι K U) :
-    Nat.card {φ : U →ₗ[K] V // ∀ x y, hV (φ x) (φ y) = hU x y} =
-      Nat.card {Y : ι → V // ∀ i j, hV (Y i) (Y j) = hU (b i) (b j)} := by
-  refine Nat.card_congr
-    { toFun := fun φ => ⟨fun i => φ.1 (b i), fun i j => φ.2 (b i) (b j)⟩
-      invFun := fun Y => ⟨b.constr K Y.1, fun x y => ?_⟩
-      left_inv := fun φ => ?_
-      right_inv := fun Y => ?_ }
-  · have hs1 : IsSq σ (fun x y => hV (b.constr K Y.1 x) (b.constr K Y.1 y)) :=
-      { add_right := fun x y z => by
-          simp only [map_add]
-          exact hsV.add_right _ _ _
-        smul_right := fun c x y => by
-          simp only [map_smul]
-          exact hsV.smul_right _ _ _
-        herm := fun x y => hsV.herm _ _ }
-    exact hs1.ext_basis hsU b (fun i j => by simpa only [Basis.constr_basis] using Y.2 i j) x y
-  · apply Subtype.ext
-    exact b.ext fun i => by simp [Basis.constr_basis]
-  · apply Subtype.ext
-    funext i
-    simp [Basis.constr_basis]
 
 section field
 
@@ -233,70 +197,5 @@ theorem card_norm_fiber (σ : K ≃ₐ[k] K) (hfrob : ∀ x, σ x = x ^ Fintype.
     omega
 
 end field
-
-theorem fFInert_holds : FFInert := by
-  unfold PI.VolStabSW.FFInert
-  intro k K _ _ _ _ σ hσ h2 hne h2k M a haM J hJ hdet T hT hTdet
-  classical
-  haveI : Fintype k := Fintype.ofFinite k
-  haveI : Module.Finite k K := Module.finite_of_finrank_pos (by omega)
-  haveI : Finite K := Module.finite_of_finite k
-  haveI : Fintype K := Fintype.ofFinite K
-  have hfrob := frob_of_ne σ h2 hne
-  have hσ' : ∀ x, (σ : K →+* K) ((σ : K →+* K) x) = x := fun x => hσ x
-  have h2K : (2 : K) ≠ 0 := by
-    have := (algebraMap k K).injective.ne h2k
-    rwa [map_ofNat, map_zero] at this
-  have hK' : Fintype.card K = Fintype.card k ^ Module.finrank k K := Module.card_eq_pow_finrank
-  have hK : Fintype.card K = Nat.card k ^ 2 := by
-    rw [hK', h2, Nat.card_eq_fintype_card]
-  have hN : ∀ d, (σ : K →+* K) d = d →
-      Nat.card {t : K // t * (σ : K →+* K) t = d} = if d = 0 then 1 else Nat.card k + 1 := by
-    intro d hd
-    rw [Nat.card_eq_fintype_card (α := k)]
-    exact card_norm_fiber σ hfrob h2 d hd
-  have hq0 : 0 < Nat.card k := Nat.card_pos
-  have hsV := ffH_isHS hσ' J hJ hdet
-  have hsU := ffH_isHS hσ' T hT hTdet
-  obtain ⟨f, horth, hnz⟩ := exists_orth h2K a (Fin a → K)
-    (PI.VolStabSW.ffH (σ : K →+* K) T) hsU (Module.finrank_fin_fun K)
-  have hli := linIndep_orth hsU.toIsSq f horth hnz
-  have hsp : Submodule.span K (Set.range f) = ⊤ := Submodule.eq_top_of_finrank_eq (by
-    rw [finrank_span_eq_card hli, Fintype.card_fin, Module.finrank_fin_fun])
-  let bf := Module.Basis.mk hli hsp.ge
-  have hbf : ∀ i, bf i = f i := fun i => Module.Basis.mk_apply hli hsp.ge i
-  have e1 : Nat.card {X : Fin a → Fin M → K // PI.VolStabSW.ffGram (σ : K →+* K) J X = T} =
-      Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) J (Y i) (Y j) =
-        PI.VolStabSW.ffH (σ : K →+* K) T (Pi.basisFun K (Fin a) i) (Pi.basisFun K (Fin a) j)} := by
-    refine Nat.card_congr (Equiv.subtypeEquivRight fun X => ?_)
-    simp only [Pi.basisFun_apply, ffH_single]
-    constructor
-    · intro h i j
-      exact congrFun (congrFun h i) j
-    · intro h
-      ext i j
-      exact h i j
-  have e2 := card_isom hsU.toIsSq
-    hsV.toIsSq (Pi.basisFun K (Fin a))
-  have e3 := card_isom hsU.toIsSq
-    hsV.toIsSq bf
-  have e4 : Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) J (Y i) (Y j) =
-        PI.VolStabSW.ffH (σ : K →+* K) T (bf i) (bf j)} =
-      Nat.card {Y : Fin a → Fin M → K // ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) J (Y i) (Y j) =
-        if i = j then PI.VolStabSW.ffH (σ : K →+* K) T (f i) (f i) else 0} := by
-    have hg : ∀ i j, PI.VolStabSW.ffH (σ : K →+* K) T (bf i) (bf j) =
-        if i = j then PI.VolStabSW.ffH (σ : K →+* K) T (f i) (f i) else 0 := by
-      intro i j
-      simp only [hbf]
-      split_ifs with hij
-      · rw [hij]
-      · exact horth i j hij
-    refine Nat.card_congr (Equiv.subtypeEquivRight fun Y => ?_)
-    simp only [hg]
-  rw [e1, ← e2, e3, e4]
-  exact card_diag (Nat.card k) hq0 hK hσ' h2K hN a M haM
-    (Fin M → K) (PI.VolStabSW.ffH (σ : K →+* K) J) hsV (Module.finrank_fin_fun K)
-    (fun i => PI.VolStabSW.ffH (σ : K →+* K) T (f i) (f i))
-    (fun i => hsU.toIsSq.self_fixed (f i)) hnz
 
 end PI.VolStabSW.FFHS

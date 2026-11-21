@@ -73,10 +73,4 @@ structure KP : Prop where
 
   rallisTowerUnitary : GlobalTheory.Published.RallisTowerUnitary
 
-example (h : KP) : GlobalTheory.Published.HoweDualityUnitary := h.howeDualityUnitary
-
-example (h : KP) : GlobalTheory.Published.MinguezThetaGL := h.minguezThetaGL
-
-example (h : KP) : GlobalTheory.Published.StoneVonNeumann := h.base.stoneVonNeumann
-
 end GlobalTheory.ThK

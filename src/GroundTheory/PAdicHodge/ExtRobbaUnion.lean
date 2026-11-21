@@ -90,9 +90,6 @@ theorem econToTilde_eq {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} {b : T.B} (h0 : b ∈ T.E
     ← T.econToTilde_incl (ρ1 := m) (min_le_right (ρ0 : ℝ) ρ1)]
   rfl
 
-theorem econToTilde_injective (ρ0 : Set.Ioo (0 : ℝ) 1) : Function.Injective (T.econToTilde ρ0) :=
-  (T.ofRad_injective ρ0).comp (T.coe_injective_Econ (ρ0 := ρ0))
-
 def edagRad (b : T.Edag) : Set.Ioo (0 : ℝ) 1 := Classical.choose (T.mem_Edag.1 b.2)
 
 theorem edagRad_spec (b : T.Edag) : (b : T.B) ∈ T.Econ (T.edagRad b) :=
@@ -133,15 +130,6 @@ theorem edagToTilde_apply {ρ0 : Set.Ioo (0 : ℝ) 1} {b : T.B} (hb : b ∈ T.Ec
     T.edagToTilde ⟨b, T.Econ_le_Edag ρ0 hb⟩ = T.econToTilde ρ0 ⟨b, hb⟩ :=
   T.econToTilde_eq _ _
 
-theorem edagToTilde_injective : Function.Injective T.edagToTilde := by
-  rw [injective_iff_map_eq_zero]
-  intro b h
-  have h' := h
-  change T.edagFun b = 0 at h'
-  rw [T.edagFun_eq b (T.edagRad_spec b)] at h'
-  have := T.econToTilde_injective _ (h'.trans (map_zero _).symm)
-  exact Subtype.ext (by simpa using congrArg Subtype.val this)
-
 namespace TeichFrob
 
 variable {T} (F : T.TeichFrob)
@@ -171,33 +159,6 @@ def econFrobSymm (τ : Set.Ioo (0 : ℝ) 1) : T.Econ τ →+* T.Econ (F.rootRadi
 theorem coe_econFrobSymm (τ : Set.Ioo (0 : ℝ) 1) (b : T.Econ τ) :
     (F.econFrobSymm τ b : T.B) = F.toB.symm b := rfl
 
-theorem uniformContinuous_econFrob (σ : Set.Ioo (0 : ℝ) 1) :
-    UniformContinuous (F.econFrob σ) := by
-  refine uniformContinuous_iInf_rng.2 fun τ => ?_
-  have hq : (0 : ℝ) < ((p ^ F.a : ℕ) : ℝ) := by exact_mod_cast F.q_pos
-  set s : ℝ := (τ : ℝ) ^ (((p ^ F.a : ℕ) : ℝ)⁻¹) with hs
-  have hs0 : 0 < s := Real.rpow_pos_of_pos τ.2.1 _
-  have hsτ : s ^ p ^ F.a = τ := Real.rpow_inv_natCast_pow τ.2.1.le F.q_pos.ne'
-  have hsσ : s ≤ σ := by
-    have h1 : s ≤ ((σ : ℝ) ^ p ^ F.a) ^ (((p ^ F.a : ℕ) : ℝ)⁻¹) :=
-      Real.rpow_le_rpow τ.2.1.le τ.2.2 (inv_pos.2 hq).le
-    rwa [Real.pow_rpow_inv_natCast σ.2.1.le F.q_pos.ne'] at h1
-  refine uniformContinuous_iInf_dom (i := (⟨s, hs0, hsσ⟩ : Set.Ioc (0 : ℝ) σ)) ?_
-  refine (@Metric.uniformContinuous_iff _ _
-    (T.gaussSeminorm σ ⟨s, hs0, hsσ⟩).toSeminormedRing.toPseudoMetricSpace
-    (T.gaussSeminorm (F.powRadius σ) τ).toSeminormedRing.toPseudoMetricSpace _).2
-    fun ε hε => ⟨min 1 ε, lt_min one_pos hε, ?_⟩
-  intro a b hab
-  rw [dist_uniformAt'] at hab ⊢
-  have hconv : ConvergesAt (T.coeffB ((a : T.B) - b)) s :=
-    convergesAt_of_le (T.coeffB_neg_exists _) ((T.Econ σ).sub_mem a.2 b.2) hs0 hsσ
-  rw [coe_econFrob, coe_econFrob, ← map_sub, ← hsτ,
-    F.gaussNorm_toB_pow hs0 (lt_of_le_of_lt hsσ σ.2.2) hconv]
-  have h1 : gaussNorm (T.coeffB ((a : T.B) - b)) s < 1 := lt_of_lt_of_le hab (min_le_left _ _)
-  calc gaussNorm (T.coeffB ((a : T.B) - b)) s ^ p ^ F.a ≤ gaussNorm (T.coeffB ((a : T.B) - b)) s :=
-        pow_le_of_le_one (gaussNorm_nonneg hs0) h1.le F.q_pos.ne'
-    _ < ε := lt_of_lt_of_le hab (min_le_right _ _)
-
 theorem uniformContinuous_econFrobSymm (τ : Set.Ioo (0 : ℝ) 1) :
     UniformContinuous (F.econFrobSymm τ) := by
   refine uniformContinuous_iInf_rng.2 fun s => ?_
@@ -225,35 +186,17 @@ theorem uniformContinuous_econFrobSymm (τ : Set.Ioo (0 : ℝ) 1) :
   rw [key] at hab
   exact lt_of_pow_lt_pow_left₀ _ hε.le hab
 
-def extFrob (σ : Set.Ioo (0 : ℝ) 1) : T.RobbaExt σ →+* T.RobbaExt (F.powRadius σ) :=
-  Completion.mapRingHom (F.econFrob σ) (F.uniformContinuous_econFrob σ).continuous
-
 def extFrobSymm (τ : Set.Ioo (0 : ℝ) 1) : T.RobbaExt τ →+* T.RobbaExt (F.rootRadius τ) :=
   Completion.mapRingHom (F.econFrobSymm τ) (F.uniformContinuous_econFrobSymm τ).continuous
-
-theorem extFrob_coe (σ : Set.Ioo (0 : ℝ) 1) (b : T.Econ σ) :
-    F.extFrob σ (b : T.RobbaExt σ) = ((F.econFrob σ b : T.Econ (F.powRadius σ)) : T.RobbaExt _) :=
-  Completion.mapRingHom_coe _ b
 
 theorem extFrobSymm_coe (τ : Set.Ioo (0 : ℝ) 1) (b : T.Econ τ) :
     F.extFrobSymm τ (b : T.RobbaExt τ) =
       ((F.econFrobSymm τ b : T.Econ (F.rootRadius τ)) : T.RobbaExt _) :=
   Completion.mapRingHom_coe _ b
 
-theorem powRadius_le {σ σ' : Set.Ioo (0 : ℝ) 1} (h : (σ' : ℝ) ≤ σ) :
-    ((F.powRadius σ' : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ F.powRadius σ :=
-  pow_le_pow_left₀ σ'.2.1.le h _
-
 theorem rootRadius_le {τ τ' : Set.Ioo (0 : ℝ) 1} (h : (τ' : ℝ) ≤ τ) :
     ((F.rootRadius τ' : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ F.rootRadius τ :=
   Real.rpow_le_rpow τ'.2.1.le h (inv_pos.2 (by exact_mod_cast F.q_pos)).le
-
-theorem res_extFrob {σ σ' : Set.Ioo (0 : ℝ) 1} (h : (σ' : ℝ) ≤ σ) (x : T.RobbaExt σ) :
-    T.res (F.powRadius_le h) (F.extFrob σ x) = F.extFrob σ' (T.res h x) :=
-  Completion.induction_on x
-    (isClosed_eq ((T.continuous_res _).comp Completion.continuous_map)
-      (Completion.continuous_map.comp (T.continuous_res _)))
-    fun b => by rw [extFrob_coe, res_coe, res_coe, extFrob_coe]; rfl
 
 theorem res_extFrobSymm {τ τ' : Set.Ioo (0 : ℝ) 1} (h : (τ' : ℝ) ≤ τ) (x : T.RobbaExt τ) :
     T.res (F.rootRadius_le h) (F.extFrobSymm τ x) = F.extFrobSymm τ' (T.res h x) :=
@@ -261,14 +204,6 @@ theorem res_extFrobSymm {τ τ' : Set.Ioo (0 : ℝ) 1} (h : (τ' : ℝ) ≤ τ) 
     (isClosed_eq ((T.continuous_res _).comp Completion.continuous_map)
       (Completion.continuous_map.comp (T.continuous_res _)))
     fun b => by rw [extFrobSymm_coe, res_coe, res_coe, extFrobSymm_coe]; rfl
-
-def tildeFrob : T.RobbaTilde →+* T.RobbaTilde :=
-  Ring.DirectLimit.lift (fun i : RadIdx => T.RobbaExt (OrderDual.ofDual i))
-    (fun i j h => T.resSys i j h) T.RobbaTilde
-    (fun i => (T.ofRad (F.powRadius (OrderDual.ofDual i))).comp (F.extFrob (OrderDual.ofDual i)))
-    fun i j hij x => by
-      simp only [RingHom.comp_apply, resSys]
-      rw [← F.res_extFrob, T.ofRad_res]
 
 def tildeFrobSymm : T.RobbaTilde →+* T.RobbaTilde :=
   Ring.DirectLimit.lift (fun i : RadIdx => T.RobbaExt (OrderDual.ofDual i))
@@ -278,57 +213,6 @@ def tildeFrobSymm : T.RobbaTilde →+* T.RobbaTilde :=
     fun i j hij x => by
       simp only [RingHom.comp_apply, resSys]
       rw [← F.res_extFrobSymm, T.ofRad_res]
-
-theorem tildeFrob_ofRad (σ : Set.Ioo (0 : ℝ) 1) (x : T.RobbaExt σ) :
-    F.tildeFrob (T.ofRad σ x) = T.ofRad (F.powRadius σ) (F.extFrob σ x) := by
-  exact Ring.DirectLimit.lift_of ..
-
-theorem tildeFrobSymm_ofRad (τ : Set.Ioo (0 : ℝ) 1) (x : T.RobbaExt τ) :
-    F.tildeFrobSymm (T.ofRad τ x) = T.ofRad (F.rootRadius τ) (F.extFrobSymm τ x) := by
-  exact Ring.DirectLimit.lift_of ..
-
-theorem rootRadius_powRadius (σ : Set.Ioo (0 : ℝ) 1) : F.rootRadius (F.powRadius σ) = σ :=
-  Subtype.ext (Real.pow_rpow_inv_natCast σ.2.1.le F.q_pos.ne')
-
-theorem tildeFrobSymm_tildeFrob (x : T.RobbaTilde) : F.tildeFrobSymm (F.tildeFrob x) = x := by
-  obtain ⟨σ, y, rfl⟩ := T.exists_ofRad x
-  rw [F.tildeFrob_ofRad, F.tildeFrobSymm_ofRad]
-  have hle : (σ : ℝ) ≤ F.rootRadius (F.powRadius σ) := by rw [F.rootRadius_powRadius]
-  rw [← T.ofRad_res hle]
-  congr 1
-  refine Completion.induction_on y (isClosed_eq ((T.continuous_res _).comp
-    (Completion.continuous_map.comp Completion.continuous_map)) continuous_id) fun b => ?_
-  rw [extFrob_coe, extFrobSymm_coe, res_coe]
-  congr 1
-  exact Subtype.ext (F.toB.symm_apply_apply (b : T.B))
-
-theorem tildeFrob_tildeFrobSymm (x : T.RobbaTilde) : F.tildeFrob (F.tildeFrobSymm x) = x := by
-  obtain ⟨τ, y, rfl⟩ := T.exists_ofRad x
-  rw [F.tildeFrobSymm_ofRad, F.tildeFrob_ofRad]
-  have hle : (τ : ℝ) ≤ F.powRadius (F.rootRadius τ) := by rw [F.powRadius_rootRadius]
-  rw [← T.ofRad_res hle]
-  congr 1
-  refine Completion.induction_on y (isClosed_eq ((T.continuous_res _).comp
-    (Completion.continuous_map.comp Completion.continuous_map)) continuous_id) fun b => ?_
-  rw [extFrobSymm_coe, extFrob_coe, res_coe]
-  congr 1
-  exact Subtype.ext (F.toB.apply_symm_apply (b : T.B))
-
-def tildeEquiv : T.RobbaTilde ≃+* T.RobbaTilde :=
-  RingEquiv.ofRingHom F.tildeFrob F.tildeFrobSymm (RingHom.ext F.tildeFrob_tildeFrobSymm)
-    (RingHom.ext F.tildeFrobSymm_tildeFrob)
-
-theorem tildeFrob_edagToTilde (b : T.Edag) :
-    F.tildeFrob (T.edagToTilde b) = T.edagToTilde (F.edagEquiv b) := by
-  obtain ⟨σ, hσ⟩ := T.mem_Edag.1 b.2
-  have hb : T.edagToTilde b = T.econToTilde σ ⟨b, hσ⟩ := T.edagFun_eq b hσ
-  rw [hb]
-  change _ = T.edagFun (F.edagEquiv b)
-  rw [T.edagFun_eq (F.edagEquiv b) (F.toB_mem_Econ_iff.2 hσ)]
-  simp only [econToTilde, RingHom.comp_apply]
-  rw [tildeFrob_ofRad]
-  congr 1
-  exact F.extFrob_coe σ ⟨b, hσ⟩
 
 end TeichFrob
 

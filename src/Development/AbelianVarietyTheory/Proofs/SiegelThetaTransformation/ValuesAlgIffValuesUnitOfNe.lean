@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.ClassSums.ReadingWithSpecialisation
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.DatEqZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ProdLevelOneThetaEqVacuumTheta
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructureProperties
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FgOfSmulLe
@@ -13,7 +13,7 @@ open AlgebraicGeometry CategoryTheory NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level
 open GlobalTheory.SW hiding Level
-open Formalism.L2.Pj GlobalTheory.Dict GlobalTheory.ClsVal GlobalTheory.IndefiniteRowSideFullHecke.ReadingWithSpecialisation
+open Formalism.L2.Pj GlobalTheory.Dict GlobalTheory.ClsVal
 open scoped Classical
 
 namespace GlobalTheory.ClsVal.Cmp
@@ -22,18 +22,6 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g q0 n : ℕ} {H : Host E} {Dw : Datum H}
   {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
-
-def FactorNorm (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (w : E)
-    (v : TF n g) (C : ℂ) : Prop :=
-  ∀ x ∈ X.dom, IsUnitFr X x → ∀ (θ : (Fin g → ℂ) → ℂ) (κ : ℂ), IsTheta1 X bas idx w x X.Λ θ →
-    MeanOne X bas idx x X.Λ θ → (∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z) → ‖κ‖ = ‖C‖
-
-theorem exists_ne_zero_of_meanOne {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r}
-    {x : Frame X.Ψ r} {L : Lt E r} {θ : (Fin g → ℂ) → ℂ} (h : MeanOne X bas idx x L θ) : ∃ z, θ z ≠ 0 := by
-  by_contra hz
-  have hz' : ∀ z, θ z = 0 := fun z => by_contra fun hne => hz ⟨z, hne⟩
-  obtain ⟨A, Fd, -, -, hI⟩ := h
-  simp [hz'] at hI
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (f' : B →+* C) :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
@@ -194,97 +182,6 @@ theorem coe_incl {S T : IntermediateField ℚ ℂ} (h : S ≤ T) (t : S) :
 theorem eq_incl {S T : IntermediateField ℚ ℂ} (h : S ≤ T) (j : S →+* T) (hj : ∀ t, ((j t : T) : ℂ) = (t : ℂ)) :
     j = (IntermediateField.inclusion h).toRingHom := by
   exact RingHom.ext fun t => Subtype.ext ((hj t).trans (coe_incl h t).symm)
-
-theorem isCover_iff (d : DeltaDat Xo c n) (hA : l.A = 1) (hA₂ : d.l₂.A = 1) :
-    IsCover d ↔ d.IsLev ∧ (Dw.p = Dw.q → OverBase d) ∧ ∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂ := by
-  have hle : KA l ≤ KA d.l₂ := by
-    show IntermediateField.adjoin ℚ {H.rt0, zeta l.A} ≤ IntermediateField.adjoin ℚ {H.rt0, zeta d.l₂.A}
-    rw [hA, hA₂]
-  constructor
-  · rintro ⟨hl, -, ⟨j, hj, hjr⟩, hnab⟩
-    refine ⟨hl, fun _ h => ?_, hnab⟩
-    rw [eq_incl h j hj] at hjr
-    exact hjr
-  · rintro ⟨hl, hob, hnab⟩
-    refine ⟨hl, by rw [hA]; exact Nat.coprime_one_right _,
-      ⟨(IntermediateField.inclusion hle).toRingHom, coe_incl hle, ?_⟩, hnab⟩
-    by_cases hpq : Dw.p = Dw.q
-    · exact hob hpq hle
-    · exact overBase_of_ne hpq hA d hle
-
-section Reads
-
-variable {σ : c.F →+* ℂ} (U : Formalism.L2.PjFree.Unf Xo c σ r) (W : UW U) (k : U.Comp) {a : (E →+* ℂ) × ℕ → ℕ}
-
-def ReadsAlg (G : DeltaDat Xo c n → Prop) (Dc : Dic Dw c σ (U.X k) W.g Dw.p n a) (v : TF n W.g) (C : ℂ) : Prop :=
-  ∀ (d : DeltaDat Xo c n) [Algebra d.c₂.F ℂ], (∀ t : c.F, algebraMap d.c₂.F ℂ (d.eF t) = σ t) → d.IsLev →
-    d.l₂.A = 1 → G d → (∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) →
-  ∀ cv : (Dw.La →ₗ[𝓞 E] (Fin r → E)) → ℂ, (∀ mk, ‖cv mk‖ = 1) → CvIs d (U.X k) Dc.bas Dc.idx W.e (U.X k).Λ cv →
-  ∀ mk₂ : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark d.l₂ (U.X k).Λ mk₂ → MarkOver l d.l₂ (U.X k).Λ (W.mark k) mk₂ →
-  ∀ (Cl : Type) [Fintype Cl] (w : Cl → (Fin n → LevQ Dw d.l₂) → c.F) (La : Cl → GenLat E n) (Nc gam : Cl → ℕ)
-    (vol : c.F) (ep : Cl → c.F) (Vs : Type) [AddCommGroup Vs] [Module c.F Vs]
-    (io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (xs : Cl → Vs), LatsOK d.l₂.M La Nc →
-    (∀ j, io (xs j) ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))) →
-  ∀ Y : Cl → (Fin n → LevQ Dw d.l₂) → Matrix (Fin n) (Fin r) E,
-    (∀ j, IsRoots d.l₂ (U.X k).Λ mk₂ (Nc j) (Y j)) →
-  ∀ f ∈ sec Xo c a n, IsThClsD Xo c d w La Nc gam vol ep io xs f → ∀ x ∈ (U.X k).dom,
-    Formalism.L2.PjFree.rdU U f k x = C * cv mk₂ *
-      clsSum σ (U.X k) Dc.hr Dc.bas Dc.idx Dc.eL w La Nc gam vol ep (fun j => io (xs j)) (U.X k).Λ v Y x
-
-def ReadsUnit (D : Dic Dw c σ (U.X k) g q0 n a) (v : TF n g) (κ : ℂ) : Prop :=
-  ∀ d : DeltaDat Xo c n, IsCover d → d.l₂.A = 1 →
-  ∀ σ₂ : d.c₂.F →+* ℂ, (∀ t : c.F, σ₂ (d.eF t) = σ t) →
-  ∀ cv : (Dw.La →ₗ[𝓞 E] (Fin r → E)) → ℂ, (∀ mk, ‖cv mk‖ = 1) →
-    @CvIs E _ _ _ r g n H Dw l Xo c d σ₂.toAlgebra (U.X k) D.bas D.idx D.e (U.X k).Λ cv →
-  ∀ mk₂ : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark d.l₂ (U.X k).Λ mk₂ →
-    MarkOver l d.l₂ (U.X k).Λ (W.mark k) mk₂ →
-  ∀ (Cl : Type) [Fintype Cl] (Vs : Type) [AddCommGroup Vs] [Module c.F Vs]
-    (w : Cl → (Fin n → LevQ Dw d.l₂) → c.F) (La : Cl → GenLat E n) (Nc gam : Cl → ℕ) (vol : c.F) (ep : Cl → c.F)
-    (io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (xs : Cl → Vs)
-    (Y : Cl → (Fin n → LevQ Dw d.l₂) → Matrix (Fin n) (Fin r) E),
-    LatsOK d.l₂.M La Nc → (∀ cl, 0 < gam cl) →
-    (∀ cl, io (xs cl) ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))) →
-    (∀ cl, IsRoots d.l₂ (U.X k).Λ mk₂ (Nc cl) (Y cl)) →
-  ∀ f ∈ sec Xo c a n, IsThClsD Xo c d w La Nc gam vol ep io xs f →
-  ∀ x ∈ (U.X k).dom,
-    Formalism.L2.PjFree.rdU U f k x = κ * cv mk₂ *
-      clsSum σ (U.X k) D.hr D.bas D.idx D.eL w La Nc gam vol ep (fun cl => io (xs cl)) (U.X k).Λ v Y x
-
-variable {U W k}
-
-theorem ReadsAlg.mono {G G' : DeltaDat Xo c n → Prop} (hG : ∀ d, G' d → G d) {Dc : Dic Dw c σ (U.X k) W.g Dw.p n a}
-    {v : TF n W.g} {C : ℂ} (h : ReadsAlg U W k G Dc v C) : ReadsAlg U W k G' Dc v C := by
-  intro d _ hσ hl hA hg
-  exact h d hσ hl hA (hG d hg)
-
-end Reads
-
-def ValuesAlg (S B : ℕ → ℕ → Prop) : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), S Dw.p Dw.q →
-    ∀ (l : Geo.Tor.Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r),
-    GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → 1 ≤ r → l.A = 1 →
-    ∀ (W : UW U) (k : U.Comp) (n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), Dom a n →
-    ∀ (Dc : Dic Dw c σ (U.X k) W.g Dw.p n a), Dc.e = W.e → ∀ v : TF n W.g,
-      IsVac (U.X k) Dc.bas (H.w0 : E) (tens (stdL E n) (U.X k).Λ) v →
-      ∃ C : ℂ, FactorNorm (U.X k) Dc.bas Dc.idx (H.w0 : E) v C ∧ C ≠ 0 ∧
-        ReadsAlg U W k (fun d => B Dw.p Dw.q → OverBase d) Dc v C
-
-def ValuesUnit (S : ℕ → ℕ → Prop) : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), S Dw.p Dw.q →
-    ∀ (l : Geo.Tor.Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r),
-    Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → 1 ≤ r → l.A = 1 →
-    ∀ (W : UW U) (k : U.Comp) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n →
-    ∀ (D : Dic Dw c σ (U.X k) W.g Dw.p n a), D.e = W.e → ∀ v : TF n W.g,
-      IsVac (U.X k) D.bas (H.w0 : E) (tens (stdLat E n) (U.X k).Λ) v →
-      ∃ κ : ℂ, κ ≠ 0 ∧ IsModulus (U.X k) D.bas D.idx (H.w0 : E) v ‖κ‖ ∧ ReadsUnit U W k D v κ
-
-theorem ValuesAlg.mono {S S' B B' : ℕ → ℕ → Prop} (hS : ∀ p q, S' p q → S p q)
-    (hB : ∀ p q, S' p q → B p q → B' p q) (h : ValuesAlg S B) : ValuesAlg S' B' := by
-  intro E _ _ _ H Dw hS' l Xo c σ r U hg hu hr hA W k n a hd Dc he v hv
-  obtain ⟨C, h1, h2, h3⟩ := h E H Dw (hS _ _ hS') l Xo c σ r U hg hu hr hA W k n a hd Dc he v hv
-  exact ⟨C, h1, h2, ReadsAlg.mono (fun d hd hb => hd (hB _ _ hS' hb)) h3⟩
 
 end
 

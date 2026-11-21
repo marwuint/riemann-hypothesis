@@ -8,38 +8,6 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
-theorem pows_subgroupOf_self_sPow (p : ℕ) {G : Type} [CommGroup G] (U : Subgroup G) :
-    (pows p U).subgroupOf U = pows p (⊤ : Subgroup U) := by
-  ext x
-  rw [Subgroup.mem_subgroupOf]
-  constructor
-  · rintro ⟨y, hy, h⟩
-    exact ⟨⟨y, hy⟩, Subgroup.mem_top _, Subtype.ext h⟩
-  · rintro ⟨y, -, h⟩
-    exact ⟨y.1, y.2, congrArg Subtype.val h⟩
-
-theorem pTor_sUnits (p : ℕ) (F : Type) [Field F] [NumberField F] (ζ : F)
-    (S : Finset (HeightOneSpectrum (𝓞 F))) (hp : p.Prime) (hζ : IsPrimitiveRoot ζ p) :
-    pTor p (sUnits F S) = p := by
-  haveI : NeZero p := ⟨hp.ne_zero⟩
-  have hmem : ∀ x : Fˣ, x ^ p = 1 → x ∈ sUnits F S := by
-    intro x hx
-    rw [mem_sUnits]
-    intro v _
-    have h1 : (v.valuation F (x : F)) ^ p = 1 := by
-      rw [← map_pow, ← Units.val_pow_eq_pow_val, hx]; simp
-    first
-      | exact (pow_eq_one_iff hp.ne_zero).mp h1
-      | exact (pow_eq_one_iff_left hp.ne_zero).mp h1
-      | exact (pow_eq_one_iff_of_nonneg zero_le' hp.ne_zero).mp h1
-  have e : {x : Fˣ // x ∈ sUnits F S ∧ x ^ p = 1} ≃ rootsOfUnity p F :=
-    Equiv.subtypeEquivRight (fun x => by
-      rw [mem_rootsOfUnity]; exact ⟨fun h => h.2, fun h => ⟨hmem x h, h⟩⟩)
-  rw [pTor, Nat.card_congr e]
-  first
-    | exact hζ.card_rootsOfUnity
-    | (rw [Nat.card_eq_fintype_card]; exact hζ.card_rootsOfUnity)
-
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
 

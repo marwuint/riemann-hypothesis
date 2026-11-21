@@ -120,6 +120,4 @@ open GlobalTheory.SqTop
 
 namespace GlobalTheory.SqTop.OneSqProof
 
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
 end GlobalTheory.SqTop.OneSqProof

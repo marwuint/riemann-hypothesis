@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DatumOfIsIntegersLa
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSqAddPrimeOddModThreeValuationOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableKerRepsAddSubStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSqAddPrimeOddModThreeValuationOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableKerRepsAddSub
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -27,7 +27,7 @@ theorem normSq_natCast_add_sub_sqrtNegNat (p a : ℕ) :
 
 theorem exists_stable_family_ker : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ), p.Prime → p % 4 = 3 → 3 < p → Datum p F L t → ∀ V : ValuationSubring ℂ, ∃ (N : ℕ) (ι : Type) (_ : Fintype ι) (T : ι → ℂ), Odd N ∧ N % 3 = 2 ∧ V.valuation (N : ℂ) = 1 ∧ Fintype.card ι = 2 * (N - 1) ∧ Stable L F T ∧ ∀ i, T i ∉ L.lattice ∧ (N : ℂ) * T i ∈ L.lattice := by
   intro p F L t hp _ h3 hD V
-  obtain ⟨a, N, hN, hodd, hmod, hv⟩ := GlobalTheory.T.exists_sq_add_prime_odd_mod_three_valuation_one p V hp h3
+  obtain ⟨a, N, hN, hodd, hmod, hv⟩ := _root_.GlobalTheory.CMModel.exists_sq_add_prime_odd_mod_three_unit p V hp h3
   obtain ⟨hs, hs'⟩ := mulStable_intCast_add_sub L (sqrtNegNat p) (a : ℤ) hD.mul
   obtain ⟨hn, hn'⟩ := normSq_natCast_add_sub_sqrtNegNat p a
   rw [← hN] at hn hn'
@@ -49,7 +49,7 @@ theorem exists_stable_family_ker : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ)
     rw [hN]; push_cast
     linear_combination this
   refine ⟨N, S ⊕ S', inferInstance, Sum.elim (fun t : S => (t : ℂ)) (fun t : S' => (t : ℂ)), hodd, hmod, hv,
-    ?_, GlobalTheory.T.stable_sum_elim_of_isKerReps_add_sub_sqrtNegNat p F L a S S' hD.g₂_mem hD.g₃_mem hD.mul hS hS', ?_⟩
+    ?_, _root_.GlobalTheory.CMModel.stable_kerReps_add_sub p F L a S S' hD.g₂_mem hD.g₃_mem hD.mul hS hS', ?_⟩
   · rw [Fintype.card_sum, Fintype.card_coe, Fintype.card_coe]; omega
   · rintro (⟨x, hx⟩ | ⟨x, hx⟩)
     · refine ⟨(hS.1 x hx).2, ?_⟩

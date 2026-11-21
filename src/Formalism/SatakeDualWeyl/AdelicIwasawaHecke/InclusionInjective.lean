@@ -42,11 +42,4 @@ theorem UG_inclusion_injective : Formalism.UG.InclInj := by
   ext i j
   exact inclE_injective F E R (congrFun (congrFun h1 i) j)
 
-private lemma sigR_tmul_adelic_iwasawa_hecke (F E : Type) [Field F] [CommRing E] [Algebra F E] (σ : E →ₐ[F] E)
-    (x : E) (c : F) : Formalism.UG.sigR σ F (x ⊗ₜ[F] c) = σ x ⊗ₜ[F] c := by
-  first
-  | rfl
-  | simp [Formalism.UG.sigR]
-  | (unfold Formalism.UG.sigR; simp)
-
 end Formalism.UG.P

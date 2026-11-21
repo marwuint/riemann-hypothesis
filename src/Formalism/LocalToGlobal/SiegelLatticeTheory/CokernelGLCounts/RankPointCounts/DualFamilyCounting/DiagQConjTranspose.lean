@@ -64,15 +64,6 @@ theorem form_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
         rw [hW, h1, ← hPY]
         simp only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]
 
-theorem eq_shift {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
-    (P W Z Z' : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)) :
-    W + Pᴴ * (Z + Z') + (Z + Z')ᴴ * P + (Z + Z')ᴴ * diagQ K 𝔭 k a * (Z + Z') =
-      (W + Pᴴ * Z + Zᴴ * P + Zᴴ * diagQ K 𝔭 k a * Z) + (P + diagQ K 𝔭 k a * Z)ᴴ * Z' +
-        Z'ᴴ * (P + diagQ K 𝔭 k a * Z) + Z'ᴴ * diagQ K 𝔭 k a * Z' := by
-  simp only [conjTranspose_add, conjTranspose_mul, diagQ_conjTranspose, Matrix.mul_add,
-    Matrix.add_mul, Matrix.mul_assoc]
-  abel
-
 theorem mem_skSet_of_solve {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     {Y P W Z : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)}
     (hPY : P * diagQ K 𝔭 k a = diagQ K 𝔭 k a * Y)

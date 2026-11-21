@@ -1,15 +1,22 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularPotentialLogGrowthPshStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedAtlasSmoothPotentialLocalStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFubiniStudyPositiveStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularPotentialLogGrowthPsh
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.CompRightEqZero
+import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedAtlasSmoothPotentialLocal
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFubiniStudyPositive
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapPullbackThirdStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FubiniStudyMetricSmoothStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapHolomorphicPullbackFirstStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapHolomorphicPullbackSecondStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FubiniStudyMetricSmooth
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SelM
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapHolomorphicPullbackFirst
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapHolomorphicPullbackSecond
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapHolomorphicPullbackThirdStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapHolomorphicPullbackFourthStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapPullbackFirstStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapPullbackFirst
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapPullbackSecondStatement
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.StepW GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
@@ -21,20 +28,20 @@ theorem stepWeight_exists : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k,
   have hyp : IsStepHyp M BM p κ v R pr := ⟨hb, hr, hp, h1⟩
   have hc := GlobalTheory.T.flag_gap_pullback_third K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hyp
   have hfs : IsPotential R.A (potOf R (fsHerm ιk fun k => M.dy p (κ k))) :=
-    (GlobalTheory.T.log_resolution_fubini_study_positive Kk ιk _ e R).1 _ (GlobalTheory.T.fubini_study_metric_smooth Kk ιk _)
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.fs_pos_potential Kk ιk _ e R).1 _ (_root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.fsHerm_isSmoothHerm Kk ιk _)
   have hnorm : ∀ x, logNormSec (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) x ≤ 0 :=
     fun x => BM.norm_le (pr x)
-  have hsm := GlobalTheory.T.flag_gap_holomorphic_pullback_first K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hp hc hfs
-  have hps := GlobalTheory.T.flag_gap_holomorphic_pullback_second K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hp hc
+  have hsm := _root_.GlobalTheory.CompanionTheory.Ar.PB.CWeight.smoothOn_stepPh K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hp hc hfs
+  have hps := _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.PshW.isPshOn_stepPot K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hp hc
   obtain ⟨C₁, hC₁⟩ := GlobalTheory.T.flag_gap_holomorphic_pullback_third K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hp hc hfs
   have hgr := GlobalTheory.T.flag_gap_holomorphic_pullback_fourth K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hp hc hfs
-  obtain ⟨C₂, hC₂⟩ := GlobalTheory.T.singular_potential_log_growth_psh e R.X R.A (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) BM.nb BM.m
+  obtain ⟨C₂, hC₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.isSingWeight_of_logGrowth e R.X R.A (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) BM.nb BM.m
     (fun k => pr ⁻¹' BM.W k) hpot hsec hsnc hnorm _ (stepPh M BM p v R pr) C₁ hfs hsm hps hC₁
-  obtain ⟨C₃, hC₃⟩ := GlobalTheory.T.adapted_atlas_smooth_potential_local e R.X R.A B (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) BM.nb BM.m
+  obtain ⟨C₃, hC₃⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.gradBound_of_local_bounds e R.X R.A B (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) BM.nb BM.m
     (fun k => pr ⁻¹' BM.W k) hpot hsec hsnc hnorm had (stepPh M BM p v R pr) hsm hgr
   refine ⟨stepPh M BM p v R pr, max C₂ C₃, ?_, ?_, ?_, hC₃ _ (le_max_right _ _)⟩
   · intro x hx z hz hzv
-    have := GlobalTheory.T.flag_gap_pullback_first K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hyp x x z (R.mem_U x) hx hz hzv
+    have := _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.Wgt.main K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hyp x x z (R.mem_U x) hx hz hzv
     rw [this, stepGap]
     ring
   · intro x x' hxx hk

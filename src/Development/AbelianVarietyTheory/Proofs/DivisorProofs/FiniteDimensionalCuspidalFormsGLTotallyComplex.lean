@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemBand
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfTotallyBoundedSupNormBallStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfTotallyBoundedSupNormBall
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormLeSupWiderBandGenCentralEigenformsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalHarishChandraFiniteFormBoundedDetNormBanStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalHarishChandraFiniteFormBoundedDetNormBan
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraFormsEquicontinuousOnBandStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsUniformlySmallOutsideCompactBandStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsUniformlySmallOutsideCompactBand
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotallyBoundedSupOfEquicontinuousInvariantTailsStatement
 
 noncomputable section
@@ -29,7 +29,7 @@ theorem finiteDimensional_cuspGL : ∀ (E : Type) [Field E] [NumberField E] [IsT
       rw [hx]
   let V' : Submodule ℂ (GA E a → ℂ) := V.map (Sm E a).subtype
   have hfin : FiniteDimensional ℂ V' := by
-    refine GlobalTheory.T.finiteDimensional_of_totallyBounded_supNormBall (GA E a) V' (band E a) ?_ ?_ ?_
+    refine _root_.GlobalTheory.finiteDimensional_of_totallyBounded_supBall (GA E a) V' (band E a) ?_ ?_ ?_
     · rintro _ ⟨φ, hφ, rfl⟩ h0
       funext g
       obtain ⟨C, hC⟩ := GlobalTheory.T.norm_le_sup_wider_band_genCentralEigenforms E a L hL W hW X hX N (max 1 (max (absDetA g) (absDetA g)⁻¹)) (le_max_left _ _)
@@ -44,7 +44,7 @@ theorem finiteDimensional_cuspGL : ∀ (E : Type) [Field E] [NumberField E] [IsT
       have := hC φ (hV hφ) 0 (fun h hh => by rw [show φ.1 h = 0 from h0 h hh, norm_zero]) g h1 h2
       simpa using this
     · rintro _ ⟨φ, hφ, rfl⟩
-      exact GlobalTheory.T.cuspidal_harishChandraFiniteForm_bounded_detNormBand E a L hL W hW X hX N φ (hV hφ) (hc φ hφ)
+      exact _root_.GlobalTheory.HCF.bounded_on_band_of_cuspidal E a L hL W hW X hX N φ (hV hφ) (hc φ hφ)
     · intro ε hε
       obtain ⟨F, hF⟩ := GlobalTheory.T.totallyBounded_sup_of_equicontinuous_invariant_tails (GA E a) (Set.range (ratGL E a)) (band E a)
         {f | ∃ φ ∈ V, φ.1 = f ∧ ∀ x ∈ band E a, ‖f x‖ ≤ 1}
@@ -58,7 +58,7 @@ theorem finiteDimensional_cuspGL : ∀ (E : Type) [Field E] [NumberField E] [IsT
           simpa using h φ (hV hφ) 1 hb g hg u hu hgu)
         (by
           intro ε hε
-          obtain ⟨C, hC, hCB, h⟩ := GlobalTheory.T.cuspForms_uniformly_small_outside_compact_band E a L hL W hW X hX N ε hε
+          obtain ⟨C, hC, hCB, h⟩ := _root_.GlobalTheory.HCF.Tail.tails E a L hL W hW X hX N ε hε
           refine ⟨C, hC, hCB, fun g hg => ?_⟩
           rcases h g hg with ⟨γ, hγ⟩ | h'
           · exact Or.inl ⟨_, ⟨γ, rfl⟩, hγ⟩

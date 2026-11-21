@@ -34,24 +34,7 @@ theorem ms_eq_singleton {Δ : Segment k} (h1 : Δ.len = 1) : Δ.ms = {Δ.first} 
     simp
   rw [hz, h3]
 
-open scoped Classical in
-
-noncomputable def valAt (ϖ : kˣ) (y : IrrGL k) : ℂˣ :=
-  if h : ∃ (μ : kˣ →* ℂˣ) (hμ : IsSmoothChar μ), y = IrrGL.ofChar μ hμ then h.choose ϖ else 1
-
 end Local
-
-section Sph
-
-variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
-
-end Sph
-
-section Glob
-
-variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
-
-end Glob
 
 end GlobalTheory.SphUnr
 

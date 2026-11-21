@@ -1,6 +1,19 @@
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LocWSOf
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.DoubleCosetBesselBoundOfBesselUniq
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselNonvanishingFromL2
+import Formalism.SharpRestriction.CuspSpanNormBounds.FamilyDoubleCosetBesselBoundOfGap
+import Formalism.SharpRestriction.CuspSpanNormBounds.NearParameterGap
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.BesselIntegrability.BesselFunctionBound
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.L2NormScaling
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbConvDDOfDecDD
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PhiRegOf
+import Mathlib
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ZeroOfAe
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ReproducingFormulaReduction
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.FdegOfSchur
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.AeSS
+import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.DecLowPf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.DecInfPf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.OneParameterDerivatives.Admissible
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.GgExistsAddCharNeOne
 
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal ComplexConjugate
@@ -219,23 +232,5 @@ theorem bow_core [FiniteDimensional ℂ Wp] {ε : Fin (2 * r + k + 1) → Bool} 
       (by rw [inner_conj_symm, inner_conj_symm]; ring)
     rw [div_mul_eq_mul_div, eq_div_iff hy]
     linear_combination hc
-
-variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
-
-theorem besselOfW_of_local_decomposition (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecInf) (hJ : PI.BesselMapUniq.BesselMapUniq) :
-    Formalism.L2.SG.LocWSOf.BesselOfW := by
-  intro k r z c u lam ε h H _ _ _ σ hlam hσ hgap hok hz hT hc Vp _ _ _ π hπ w hw μG μW μN ν hG hW hN hq W hWc hWeq
-    hRe hne hfin
-  have : CompleteSpace Vp := FiniteDimensional.complete ℂ Vp
-  have hS : Side k r ε lam h σ w z c u π μW μN μG ν := ⟨hlam, hσ, hgap, hok, hw, hz, hT, hc, hπ, hW, hN, hG, hq⟩
-  obtain ⟨l, hlB, hla, -⟩ := Formalism.FourierDecayAlt.P.discrete_series_form_one (Formalism.MainNotions.BridgeCS3dClosed.inputs_of hDI hJ)
-    k r ε lam h H σ w Vp z c u π μW μN μG ν hS
-  obtain ⟨κ, hκ⟩ := bow_core hS l hla hWc hWeq hRe
-  exact ⟨fun v => κ • l v, (Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).mpr (DDSmoothness.bessel_smul hlB κ), hκ⟩
-
-variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
-
-theorem besselOfW_of_jsz (hJ : PI.BesselMapUniq.BesselMapUniq) : Formalism.L2.SG.LocWSOf.BesselOfW :=
-  besselOfW_of_local_decomposition Formalism.L2.SG.BesselDiscreteSeries.decInf hJ
 
 end Formalism.MainNotions.BridgeCS3dBOW

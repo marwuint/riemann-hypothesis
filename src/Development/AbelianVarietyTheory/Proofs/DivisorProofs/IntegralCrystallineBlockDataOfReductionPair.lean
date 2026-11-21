@@ -2,10 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralBlock
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMaximalIdealIffNormLtOne
 import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocE
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonFiniteExtensionGaloisRepsCharactersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonFiniteExtensionGaloisRepsCharacters
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjIntegralGaloisRepStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankDdREqOfEquiv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormGaloisCharacterPadicAlgClosureEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormGaloisCharacterPadicAlgClosureEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftIntSpec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStableCharacterFlagOfCharpolyFactorStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFlagLiftOfResidue
@@ -21,7 +22,7 @@ namespace GlobalTheory.WachBlock
 theorem integralBlock_of_blockPair : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (n t : ℕ) (J : (E →+* PadicAlgCl l) → Fin n → ℤ) (bot : (E →+* PadicAlgCl l) → ℤ), BlockPair E Ω l n t J bot → GlobalTheory.WachBlock.IntegralBlock E Ω l n t J bot := by
   intro E Ω _ _ _ _ _ l _ n t J bot hB
   obtain ⟨r, a, ρ, χ, hat, hr, hρ, hχ, hcong⟩ := hB
-  obtain ⟨LL, hζ, hτ, hrL, hρL, hχL⟩ := GlobalTheory.T.exists_common_finiteExtension_galoisReps_characters E Ω l n a t r ρ χ hr.1 hρ (fun s => (hχ s).1)
+  obtain ⟨LL, hζ, hτ, hrL, hρL, hχL⟩ := _root_.GlobalTheory.RepFinExtJoint.finext_joint E Ω l n a t r ρ χ hr.1 hρ (fun s => (hχ s).1)
   obtain ⟨A, hA1, hA2, hAr⟩ := GlobalTheory.T.exists_conj_integral_galoisRep E Ω l n LL r hr.1 hrL
   obtain ⟨B, hB1, hB2, hBρ⟩ := GlobalTheory.T.exists_conj_integral_galoisRep E Ω l a LL ρ hρ hρL
   have memLL : ∀ {m : ℕ} (X Y Z : Matrix (Fin m) (Fin m) (PadicAlgCl l)), (∀ i j, X i j ∈ LL.1) →
@@ -42,7 +43,7 @@ theorem integralBlock_of_blockPair : ∀ (E Ω : Type) [Field E] [NumberField E]
     rw [MonoidHom.comp_apply, cj]
     refine ⟨?_, hBρ g i j⟩
     simpa [Units.val_mul] using memLL _ _ _ hB2 (hρL g) hB1 i j)
-  choose ψ hψ using fun s => (GlobalTheory.IntDescend.descend l LL (G E Ω)).2 (χ s) (fun g => ⟨hχL s g, GlobalTheory.T.norm_galoisCharacter_padicAlgClosure_eq_one E Ω l (χ s) (hχ s).1 g⟩)
+  choose ψ hψ using fun s => (GlobalTheory.IntDescend.descend l LL (G E Ω)).2 (χ s) (fun g => ⟨hχL s g, _root_.GlobalTheory.ExpFrame.CharUnit.norm_char_eq_one E Ω l (χ s) (hχ s).1 g⟩)
   haveI : IsDiscreteValuationRing ↥(OL LL) := Examples₂.LB.OL_dvr LL
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible ↥(OL LL)
   have hmat : ∀ g, (r' g : Matrix (Fin n) (Fin n) ↥(OL LL)).map (GlobalTheory.WachBlock.ofOL l LL) =

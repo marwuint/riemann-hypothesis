@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSubgroupEqRang
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEtaleLinearisation
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasQuotOfIsIsogT
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsQuotientByFiniteGroupOfSections
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsQuotientTripleFamilyReducedNoetherianStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsQuotientTripleFamilyReducedNoetherian
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeOfIsPullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDescentOfIsReduced
@@ -105,7 +105,7 @@ theorem hasQuot_of_linearisation {R : Type} [CommRing R] [IsNoetherianRing R] [_
     · rintro ⟨j, rfl⟩
       obtain ⟨c, hc⟩ := hσ j
       exact ⟨c, by rw [hc]⟩
-  obtain ⟨t', ψ', h₁, h₂, h₃, h₄, h₅⟩ := GlobalTheory.T.exists_quotient_triple_family_reduced_noetherian E H R o.t _ p B ψ M (isUnit_natCast s) hA.2.2.1.pos o.proper
+  obtain ⟨t', ψ', h₁, h₂, h₃, h₄, h₅⟩ := _root_.GlobalTheory.HkFam.exists_quotient_triple_family E H R o.t _ p B ψ M (isUnit_natCast s) hA.2.2.1.pos o.proper
     (pol o).smoothDim o.ample o.ktriv hB hM hψ hf het hs (fun k _ _ x => by
       obtain ⟨C₀, hC₀, hk⟩ := hH k x
       have hm : ∀ z : Over.mk x ⟶ o.t.G, z ≫ ψ = 1 ↔ z ∈ C₀ := fun z => (hker k x z).trans (hC₀ z).symm

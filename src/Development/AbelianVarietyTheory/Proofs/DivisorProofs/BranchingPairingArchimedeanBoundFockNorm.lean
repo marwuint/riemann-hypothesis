@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
 import Formalism.PieriBlockIdeals.StatementLA
 import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPairingMapExtendScalarsEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPairingMapExtendScalarsEmbedding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BilinearFockPairingSqLeHermitianNormsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingMapHermitianNormLeProdBoundsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFockNormAdjugateSubstSymmLeStatement
@@ -42,7 +42,7 @@ theorem inf_bound : ∀ {K ι : Type} [Field K] [CharZero K] [Fintype ι] (φ : 
         (GlobalTheory.CoefModel.mapVV φ _ v)).re := by
   intro K ι _ _ _ φ n N hN Λ σ hI hS u v
   refine ⟨pairK_one_re_nonneg _ _, pairK_one_re_nonneg _ _, ?_⟩
-  rw [GlobalTheory.T.branchingPairing_map_extendScalars_embedding φ hN Λ σ u v, GlobalTheory.BrPairF.brPairF_apply]
+  rw [_root_.GlobalTheory.BrPairF.brPairF_map_descent φ hN Λ σ u v, GlobalTheory.BrPairF.brPairF_apply]
   set u' := GlobalTheory.CoefModel.mapVV φ Λ u
   set v' := GlobalTheory.CoefModel.mapVV φ _ v
   have h1 := GlobalTheory.T.bilinearFockPairing_sq_le_hermitianNorms σ (Formalism.L2.Col.Br.brStd hN Λ σ u') ((GlobalTheory.FunObj.funEquiv σ).symm v')

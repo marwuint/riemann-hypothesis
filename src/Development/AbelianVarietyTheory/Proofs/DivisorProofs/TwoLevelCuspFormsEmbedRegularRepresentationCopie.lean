@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LactMemDomOfIsom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbedsInRegularRepresentationCopiesOfGroupDetermStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormIndependentTranslatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelCuspFormsPullMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelCuspFormsMulMemAddWeightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelCuspFormsPullMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelCuspFormsMulMemAddWeight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelCuspFormsRestrictHolInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCocyclePullbackRepresentationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialCHolInvariantMemNonZeroDivisorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialCHolInvariantMemNonZeroDivisors
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedPullbackPolynomialRightActionOfCocycleStatement
 
 set_option autoImplicit false
@@ -61,8 +61,8 @@ theorem mul_pb_mem_cusp (M : TwoLevels E r U C) (ka mu : Wt M.Ψ r) (u0 : C → 
     obtain ⟨F, hF, rfl⟩ := hf
     have e : M.res F * pb M k (M.res u0) * pb M h (M.res u0) = M.res (F * M.pull k u0 * M.pull h u0) := rfl
     rw [e, two_smul, ← add_assoc]
-    exact Submodule.subset_span ⟨_, GlobalTheory.T.twoLevelCuspForms_mul_mem_add_weight E r U C M _ _ _ _ (GlobalTheory.T.twoLevelCuspForms_mul_mem_add_weight E r U C M _ _ _ _ hF
-      (GlobalTheory.T.twoLevelCuspForms_pull_mem E r U C M mu u0 k hu0)) (GlobalTheory.T.twoLevelCuspForms_pull_mem E r U C M mu u0 h hu0), rfl⟩
+    exact Submodule.subset_span ⟨_, _root_.GlobalTheory.CuspEmb.twoLevels_mul_mem_SS E r U C M _ _ _ _ (_root_.GlobalTheory.CuspEmb.twoLevels_mul_mem_SS E r U C M _ _ _ _ hF
+      (_root_.GlobalTheory.CuspEmb.pull_mem_SS E r U C M mu u0 k hu0)) (_root_.GlobalTheory.CuspEmb.pull_mem_SS E r U C M mu u0 h hu0), rfl⟩
   | zero => simp
   | add f g _ _ hf hg => rw [add_mul, add_mul]; exact add_mem hf hg
   | smul z f _ hf => rw [smul_mul_assoc, smul_mul_assoc]; exact Submodule.smul_mem _ z hf
@@ -111,7 +111,7 @@ theorem GlobalTheory.CuspEmb.cusp_embReg : ∀ (E : Type) [Field E] [NumberField
       refine Matrix.ext fun h g => ?_
       simp only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply, hact, mul_inv_rev]
     rw [e, ← RingHom.map_det]
-    refine GlobalTheory.T.polynomialC_holInvariant_mem_nonZeroDivisors E r U C M _ fun c => ?_
+    refine _root_.GlobalTheory.CuspEmb.C_mem_nonZeroDivisors E r U C M _ fun c => ?_
     obtain ⟨x, hx, hne⟩ := hdet c
     refine ⟨⟨x, hx⟩, ?_⟩
     let φ : HA M →+* ℂ := ((Pi.evalRingHom _ (⟨x, hx⟩ : M.dom)).comp (Pi.evalRingHom _ c)).comp (HA M).val.toRingHom

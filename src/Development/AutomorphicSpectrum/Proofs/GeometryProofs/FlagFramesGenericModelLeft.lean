@@ -6,9 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorB
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkSpecializesBijective
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagBasisChangeIntegralStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MinorRatioRegularOfInvertibleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameChangeByUnitMatrixStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagChartGenericFieldStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoeffsRegularInChartStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameChangeByUnitMatrix
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagChartGenericField
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoeffsRegularInChart
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun
 
 noncomputable section
@@ -26,12 +26,12 @@ theorem pull_isFlagVB_genB : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : S
   intro X Ω _ ξ E _ _ κ _ x S _ r V L m n φ c X' ξ' f hx hgen hVB hTw hc hx' hgen' hd hch s p' _
   classical
   obtain ⟨⟨c₁, J⟩, hcJ⟩ := hx'.cover p'
-  obtain ⟨hx0, hchart, hmin⟩ := GlobalTheory.T.flag_chart_generic_field Ω E κ x S r n φ c X' ξ' p' c₁ J hcJ
+  obtain ⟨hx0, hchart, hmin⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.inChart_flagCoord_ratios Ω E κ x S r n φ c X' ξ' p' c₁ J hcJ
   obtain ⟨hfp, hreg, -⟩ := RegAtDom.regAt_dominates X Ω ξ X' _ ξ' f _ hd p'
   have hInC : InChart ξ x c₁ ⟨f p'.1, hfp⟩ := (hch p' c₁ hfp).2 hchart
   obtain ⟨U, hU, β₀, hspan, hfr⟩ := hVB s ⟨f p'.1, hfp⟩ trivial
   have hfr0 := hfr ⟨f p'.1, hfp⟩ trivial hU
-  obtain ⟨B₀, hBreg, hAreg, hBA⟩ := GlobalTheory.T.frame_coeffs_regular_in_chart X Ω ξ E κ x (L s) (m s) (n s) (r s) (φ s) (hTw s) _ c₁ hInC β₀ hfr0
+  obtain ⟨B₀, hBreg, hAreg, hBA⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.twist_left_inverse X Ω ξ E κ x (L s) (m s) (n s) (r s) (φ s) (hTw s) _ c₁ hInC β₀ hfr0
   have hxΩ : x c₁ ≠ 0 := hInC.1
   have hCex : ∀ l, ∃ C : Fin (r s) → Ω, c s l = ∑ a, C a • β₀ a := by
     intro l
@@ -106,6 +106,6 @@ theorem pull_isFlagVB_genB : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : S
     obtain ⟨hqf, -, -⟩ := RegAtDom.regAt_dominates X Ω ξ X' _ ξ' f _ hd q
     have hfq := hfr ⟨f q.1, hqf⟩ trivial hqU
     have hpull := FlagPull.pull_isFrameAt hd hext q hqf hfq
-    exact GlobalTheory.T.frame_change_by_unit_matrix X' _ ξ' _ _ _ β q P hpull (fun a b => hq₁ q hq1 (a, b)) (hq₂ q hq2)
+    exact _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.isFrameAt_matrix_comb X' _ ξ' _ _ _ β q P hpull (fun a b => hq₁ q hq1 (a, b)) (hq₂ q hq2)
 
 end GlobalTheory.CompanionTheory.Ar.FlagBun.Flags

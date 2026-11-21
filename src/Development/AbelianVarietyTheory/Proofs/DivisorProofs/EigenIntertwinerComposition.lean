@@ -1,8 +1,11 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictedProductMemSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenSubgroupsIntegersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateOpenSubgroupsFiniteStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictedProductMemSchwartz
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenSubgroupsIntegers
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslateOpenSubgroupsFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalingOpenSubgroupsFiniteStatement
 
 open scoped TensorProduct NNReal Matrix
@@ -18,14 +21,14 @@ theorem comp_mem_adm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hM hM₁ hev l hl g hg
   classical
   obtain ⟨ei, ev, -, hvac, hpure⟩ := hev.loc
-  obtain ⟨Bx, hBo, hBs, hBe, hinv⟩ := GlobalTheory.T.exists_open_subgroups_integers F _ g hg
+  obtain ⟨Bx, hBo, hBs, hBe, hinv⟩ := _root_.GlobalTheory.SBBox.exists_box_invariant F _ g hg
   obtain ⟨R, hR⟩ := GlobalTheory.T.scaling_open_subgroups_finite F _ Bx hBo hBs hBe g hg.2 hinv
   let φ : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ∀ v : HeightOneSpectrum (𝓞 F),
       (Fin n × Fin d → v.adicCompletion F) → ℂ :=
     fun r v => Set.indicator {x : Fin n × Fin d → v.adicCompletion F | ∀ i, x i - evalV F v (r i) ∈ Bx v} 1
-  have hφSB : ∀ r v, φ r v ∈ SB _ := fun r => (GlobalTheory.T.translate_open_subgroups_finite F _ Bx hBo hBs hBe r).1
+  have hφSB : ∀ r v, φ r v ∈ SB _ := fun r => (_root_.GlobalTheory.LocalBoxIndicator.indicator_box_translate F _ Bx hBo hBs hBe r).1
   have hφvac : ∀ r, ∀ᶠ v in cofinite, φ r v = M.vac v := fun r => by
-    filter_upwards [(GlobalTheory.T.translate_open_subgroups_finite F _ Bx hBo hBs hBe r).2, hM.std] with v h1 h2
+    filter_upwards [(_root_.GlobalTheory.LocalBoxIndicator.indicator_box_translate F _ Bx hBo hBs hBe r).2, hM.std] with v h1 h2
     exact h1.trans h2.symm
   let ψ : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ∀ v : HeightOneSpectrum (𝓞 F),
       (Fin n₁ × Fin d₁ → v.adicCompletion F) → ℂ :=
@@ -39,7 +42,7 @@ theorem comp_mem_adm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     rw [h1, (hvac v).1, h2]
   let g' : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → (Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F) → ℂ :=
     fun r y => ∏ᶠ v, ψ r v fun i => evalV F v (y i)
-  have hg'SB : ∀ r, g' r ∈ SB _ := fun r => GlobalTheory.T.restricted_product_mem_schwartz F _ (ψ r) (hψSB r) (hψint r)
+  have hg'SB : ∀ r, g' r ∈ SB _ := fun r => _root_.GlobalTheory.AdelicCoordSB.finprod_mem_SB F _ (ψ r) (hψSB r) (hψint r)
   have hT : ∀ r, ∃ T : SchwartzMap (Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] ℂ,
       ∀ f : SchwartzMap (Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F) ℂ, l (pureA F f (g' r)) = T f := fun r => hl (g' r) (hg'SB r)
   choose T hT using hT

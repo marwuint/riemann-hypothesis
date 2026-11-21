@@ -590,15 +590,6 @@ theorem dimLx_of_font (rX : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i
 
 end Main2
 
-section EvalU
-
-variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G : Type}
-  [Fintype d] [DecidableEq d] [Group G] {t : ℕ} {bl : d → Fin (t + 1)}
-  (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData O X d G t bl) {T : Subalgebra O (X → O)} {r₀ : G →* (X → Matrix d d O)}
-  {π₀ : X} {χ₁ ε : G →* Oˣ} {g₀ : G} {eB e₁ s : X → Matrix d d O}
-
-end EvalU
-
 section Ident
 
 open Formalism.MainNotions Formalism.MainNotions.N NumberField IsDedekindDomain Formalism.NG Classical

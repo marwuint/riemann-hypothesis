@@ -9,21 +9,6 @@ open MvPolynomial MeasureTheory NumberField
 
 noncomputable section
 
-def BaseChangeLogBound.Statement : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (n e δ : ℕ) (h : HermNorm n)
-    (I : Ideal (MvPolynomial (Fin n) K)) (f : MvPolynomial (Fin (e + 1) × Fin n) K) (u : Fin n → K)
-    (σ : K →+* ℂ),
-    IsProjPrime I → IsChowForm I (e + 1) f → IsMultiHomog δ f → linForm u ∉ I →
-      cycleIntegral h (fundCycle (I.map (MvPolynomial.map σ))) e (fsLog h fun j => σ (u j)) ≤
-        δ * Real.log (h.norm fun j => σ (u j))
-
-theorem BaseChangeLogBound.hypotheses_inhabited :
-    IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
-      IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) (0 + 1) (X (0, 0)) ∧
-      IsMultiHomog 1 (X (0, 0) : MvPolynomial (Fin (0 + 1) × Fin 1) ℚ) ∧
-      linForm (fun _ => (1 : ℚ)) ∉ (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) :=
-  ⟨isProjPrime_point ℚ, isChowForm_point ℚ, isMultiHomog_point ℚ, linForm_one_not_mem_point ℚ⟩
-
 section Lemmas
 
 variable {R : Type*} [CommRing R]
@@ -125,11 +110,6 @@ theorem isProjPrime_of_mem_support_fundCycle {J : Ideal (MvPolynomial (Fin n) R)
   rw [Ideal.IsHomogeneous.iff_eq]
   exact heq
 
-theorem isProjPrime_of_mem_support_divCycle {I : Ideal (MvPolynomial (Fin n) R)} (hI : IsProjPrime I)
-    (u : Fin n → R) {W : Ideal (MvPolynomial (Fin n) R)} (hW : W ∈ (divCycle I u).support) :
-    IsProjPrime W :=
-  isProjPrime_of_mem_support_fundCycle (isHomogIdeal_sup_span_linForm hI.isHomog u) hW
-
 end Components
 
 section Height
@@ -185,131 +165,7 @@ theorem chowHt_C_mul_prod (hMul : ChowHeightMul.Statement) (H : ArchData K n) {k
   rw [zero_add] at this
   rw [this, chowHeightConst K n k H c hc, zero_add, hprod s le_rfl]
 
-open Matrix in
-theorem HermNorm.norm_pos (h : HermNorm n) {v : Fin n → ℂ} (hv : v ≠ 0) : 0 < h.norm v := by
-  unfold HermNorm.norm
-  apply Real.sqrt_pos.mpr
-  have hAv : h.mat *ᵥ v ≠ 0 := by
-    intro h0
-    apply hv
-    have := congrArg (fun x => h.mat⁻¹ *ᵥ x) h0
-    simp only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h.isUnit_det, Matrix.one_mulVec,
-      Matrix.mulVec_zero] at this
-    exact this
-  obtain ⟨i, hi⟩ := Function.ne_iff.mp hAv
-  exact Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, by positivity⟩
-
-theorem vertTerm_nonneg (I : Ideal (MvPolynomial (Fin n) K)) (k : ℕ) (u : Fin n → 𝓞 K) :
-    0 ≤ vertTerm I k u := by
-  unfold vertTerm vertTermAt
-  refine finsum_nonneg fun v => finsum_nonneg fun W => finsum_nonneg fun _ => ?_
-  exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Real.log_natCast_nonneg _)
-
-omit [NumberField K] in
-
-theorem exists_mem_linForm_not_mem {I : Ideal (MvPolynomial (Fin n) K)} (hI : IsRelevant I)
-    {S : Set (Fin n → 𝓞 K)} (hS : Submodule.span (𝓞 K) S = ⊤) :
-    ∃ s ∈ S, linForm (fun j => (s j : K)) ∉ I := by
-  by_contra hcon
-  push Not at hcon
-  obtain ⟨j, hj⟩ := hI
-  apply hj
-  have hmem : Pi.single j 1 ∈ Submodule.span (𝓞 K) S := by rw [hS]; trivial
-  have key : ∀ v ∈ Submodule.span (𝓞 K) S, linForm (fun j => (v j : K)) ∈ I := by
-    intro v hv
-    induction hv using Submodule.span_induction with
-    | mem x hx => exact hcon x hx
-    | zero => simp [linForm]
-    | add x y _ _ hx hy =>
-      have : linForm (fun j => ((x + y) j : K)) = linForm (fun j => (x j : K)) + linForm (fun j => (y j : K)) := by
-        simp [linForm, Finset.sum_add_distrib, add_mul]
-      rw [this]
-      exact I.add_mem hx hy
-    | smul r x _ hx =>
-      have : linForm (fun j => ((r • x) j : K)) = C (r : K) * linForm (fun j => (x j : K)) := by
-        simp [linForm, Finset.mul_sum, mul_assoc]
-      rw [this]
-      exact I.mul_mem_left _ hx
-  have := key _ hmem
-  convert this using 1
-  simp [linForm, Pi.single_apply]
-
 end Height
-
-open Classical in
-
-theorem chowHeightLowerBound_of (hR : ChowHeightRecursion.Statement) (hS : ChowFormSection.Statement)
-    (hB : BaseChangeLogBound.Statement) (hMul : ChowHeightMul.Statement) :
-    ChowHeightLowerBound.Statement := by
-  intro K _ _ n e₀ δ₀ H I₀ f₀ S Λ hI₀ hf₀ hδ₀ hspan hΛ
-  set L : ℝ := (1 / Module.finrank ℚ K : ℝ) * ∑ σ : K →+* ℂ, Real.log (Λ σ) with hL
-  have hd : (0 : ℝ) ≤ 1 / Module.finrank ℚ K := by positivity
-
-  suffices claim : ∀ k : ℕ, ∀ (I : Ideal (MvPolynomial (Fin n) K)) (g : MvPolynomial (Fin k × Fin n) K)
-      (δ : ℕ), IsProjPrime I → IsChowForm I k g → IsMultiHomog δ g → -((k * δ : ℕ) : ℝ) * L ≤ chowHt H k δ g by
-    exact claim (e₀ + 1) I₀ f₀ δ₀ hI₀ hf₀ hδ₀
-  intro k
-  induction k with
-  | zero =>
-    intro I g δ _ hg _
-    rw [chowHt_zero_groups_eq_zero H δ hg.1]
-    simp
-  | succ e ih =>
-    intro I f δ hI hf hδ
-    obtain ⟨s, hsS, hs⟩ := exists_mem_linForm_not_mem hI.isRelevant hspan
-    have hrec := hR K n e δ H I f s hI hf hδ hs
-
-    have hsec : -((e * δ : ℕ) : ℝ) * L ≤ chowHt H e δ (specFirst f fun j => (s j : K)) := by
-      obtain ⟨c, hc, g, hg, heq⟩ := hS K n e I f (fun j => (s j : K)) hI hf hs
-      have hne : specFirst f (fun j => (s j : K)) ≠ 0 := by
-        rw [heq]
-        exact mul_ne_zero (C_ne_zero.mpr hc) (Finset.prod_ne_zero_iff.mpr fun W hW =>
-          pow_ne_zero _ (hg W hW).1)
-      rcases Nat.eq_zero_or_pos e with he | he
-      · subst he
-        rw [chowHt_zero_groups_eq_zero H δ hne]
-        simp
-      · have hδs := hδ.specFirst (fun j => (s j : K))
-        rw [heq] at hδs hne
-        obtain ⟨δW, hδW, hsum⟩ := exists_degrees_of_chowFormCycle he _ c g hg hδs hne
-        rw [heq, ← hsum, chowHt_C_mul_prod hMul H _ _ _ _ (fun W hW => (hg W hW).1) hc]
-        have hprime : ∀ W ∈ (divCycle I fun j => (s j : K)).support, IsProjPrime W := by
-          intro W hW
-          exact isProjPrime_of_mem_support_divCycle hI _ hW
-        calc -(((e * ∑ W ∈ (divCycle I fun j => (s j : K)).support,
-                (divCycle I fun j => (s j : K)) W * δW W : ℕ)) : ℝ) * L
-            = ∑ W ∈ (divCycle I fun j => (s j : K)).support,
-                ((divCycle I fun j => (s j : K)) W : ℝ) * (-((e * δW W : ℕ) : ℝ) * L) := by
-              push_cast
-              rw [Finset.mul_sum, ← Finset.sum_neg_distrib, Finset.sum_mul]
-              refine Finset.sum_congr rfl fun W _ => ?_
-              ring
-          _ ≤ _ := Finset.sum_le_sum fun W hW =>
-              mul_le_mul_of_nonneg_left (ih W (g W) (δW W) (hprime W hW) (hg W hW) (hδW W hW))
-                (Nat.cast_nonneg _)
-
-    have harch : ∑ σ : K →+* ℂ, cycleIntegral (H.normAt σ) (fundCycle (I.map (MvPolynomial.map σ))) e
-        (fsLog (H.normAt σ) fun j => σ (s j)) ≤ δ * ∑ σ : K →+* ℂ, Real.log (Λ σ) := by
-      rw [Finset.mul_sum]
-      refine Finset.sum_le_sum fun σ _ => ?_
-      refine (hB K n e δ (H.normAt σ) I f (fun j => (s j : K)) σ hI hf hδ hs).trans ?_
-      apply mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg _)
-      have hne : (fun j => σ (s j : K)) ≠ 0 := by
-        intro h0
-        apply hs
-        have : (fun j => (s j : K)) = 0 := funext fun j => σ.injective (by simpa using congrFun h0 j)
-        rw [this]
-        simp [linForm]
-      exact Real.log_le_log (HermNorm.norm_pos _ hne) (hΛ s hsS σ)
-    have hvert := vertTerm_nonneg I (e + 1) s
-    rw [hrec]
-    have : -(((e + 1) * δ : ℕ) : ℝ) * L = -((e * δ : ℕ) : ℝ) * L +
-        (1 / Module.finrank ℚ K : ℝ) * (0 - δ * ∑ σ : K →+* ℂ, Real.log (Λ σ)) := by
-      rw [hL]
-      push_cast
-      ring
-    rw [this]
-    gcongr
 
 end
 

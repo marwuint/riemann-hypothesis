@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalConditionOrderAboveLFiniteModulesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalConditionOrderAboveLFiniteModules
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GreenbergWilesPairStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalDualityPerfectPairFiniteModulesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PairingEquivariantStatement
@@ -160,7 +160,7 @@ theorem orderFormula : PoitouTateTotallyComplex → LocalFiniteness → LocalTat
       ring
     omega
   obtain ⟨hc, hc', hP, hU⟩ := GlobalTheory.T.pairing_equivariant_alt D N X bkP i s A κ Q ρ hS hK hD Y Y' β hβ.1
-  have hcount := GlobalTheory.T.localConditionOrder_aboveL_finiteModules D N X bkP i s A κ Q hS hK
+  have hcount := _root_.GlobalTheory.LocCountFinite.locCountFin D N X bkP i s A κ Q hS hK
     (GlobalTheory.LocalSaturation.main hLF hLD hLE h4 D N X bkP i s A κ Q hS)
     (GlobalTheory.LocalConditionCount.locCount hLF hLD hLE h4 D N X bkP i s A κ Q hS) Y
   have hko : IsOpen ((κ⁻¹).ker : Set (GE N)) := by

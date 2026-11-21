@@ -38,12 +38,6 @@ theorem continuous_nsq (M : ι → Matrix n n ℂ) : Continuous (nsq M) := by
   refine continuous_finset_sum _ fun τ _ => Complex.continuous_re.comp ?_
   exact ((continuous_apply τ).star).dotProduct (continuous_const.matrix_mulVec (continuous_apply τ))
 
-theorem nsq_conj (M T : ι → Matrix n n ℂ) (v : ι → n → ℂ) :
-    nsq (fun τ => (T τ)ᴴ * M τ * T τ) v = nsq M (fun τ => T τ *ᵥ v τ) := by
-  unfold nsq
-  refine Finset.sum_congr rfl fun τ _ => ?_
-  simp only [← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]
-
 theorem exists_bounds {M : ι → Matrix n n ℂ} (hM : ∀ τ, (M τ).PosDef) :
     ∃ a b : ℝ, 0 < a ∧ 0 < b ∧ ∀ v, a * ‖v‖ ^ 2 ≤ nsq M v ∧ nsq M v ≤ b * ‖v‖ ^ 2 := by
   have hc := continuous_nsq M
@@ -120,70 +114,6 @@ theorem eigLo_pos [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh0 :
   unfold eigLo eigUp
   exact ⟨lt_of_lt_of_le ha (le_csInf hne fun t ht => (hab t ht).1), csInf_le_csSup hne hbb hba⟩
 
-theorem le_eigLo_iff [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh0 : ∀ τ, (h0 τ).PosDef) (c : ℝ) :
-    c ≤ eigLo h h0 ↔ ∀ v, c * nsq h0 v ≤ nsq h v := by
-  obtain ⟨a, b, ha, hab⟩ := ratios_bounds hh hh0
-  have hne : (ratios h h0).Nonempty := ratios_nonempty
-  have hbb : BddBelow (ratios h h0) := ⟨a, fun t ht => (hab t ht).1⟩
-  unfold eigLo
-  rw [le_csInf_iff hbb hne]
-  constructor
-  · intro H v
-    rcases eq_or_ne v 0 with rfl | hv
-    · simp [nsq_zero]
-    · have h1 := H _ ⟨v, hv, rfl⟩
-      rwa [le_div_iff₀ (nsq_pos hh0 hv)] at h1
-  · rintro H t ⟨v, hv, rfl⟩
-    rw [le_div_iff₀ (nsq_pos hh0 hv)]
-    exact H v
-
-theorem eigUp_le_iff [Nonempty ι] [Nonempty n] (hh : ∀ τ, (h τ).PosDef) (hh0 : ∀ τ, (h0 τ).PosDef) (c : ℝ) :
-    eigUp h h0 ≤ c ↔ ∀ v, nsq h v ≤ c * nsq h0 v := by
-  obtain ⟨a, b, ha, hab⟩ := ratios_bounds hh hh0
-  have hne : (ratios h h0).Nonempty := ratios_nonempty
-  have hba : BddAbove (ratios h h0) := ⟨b, fun t ht => (hab t ht).2⟩
-  unfold eigUp
-  rw [csSup_le_iff hba hne]
-  constructor
-  · intro H v
-    rcases eq_or_ne v 0 with rfl | hv
-    · simp [nsq_zero]
-    · have h1 := H _ ⟨v, hv, rfl⟩
-      rwa [div_le_iff₀ (nsq_pos hh0 hv)] at h1
-  · rintro H t ⟨v, hv, rfl⟩
-    rw [div_le_iff₀ (nsq_pos hh0 hv)]
-    exact H v
-
-theorem ratios_conj [DecidableEq n] (h h0 T : ι → Matrix n n ℂ) (hT : ∀ τ, IsUnit (T τ).det) :
-    ratios (fun τ => (T τ)ᴴ * h τ * T τ) (fun τ => (T τ)ᴴ * h0 τ * T τ) = ratios h h0 := by
-  have inj : ∀ v : ι → n → ℂ, (fun τ => T τ *ᵥ v τ) = 0 → v = 0 := by
-    intro v hv
-    funext τ
-    show v τ = 0
-    have h1 : T τ *ᵥ v τ = 0 := congrFun hv τ
-    calc v τ = (T τ)⁻¹ *ᵥ (T τ *ᵥ v τ) := by
-          rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hT τ), Matrix.one_mulVec]
-      _ = 0 := by rw [h1, Matrix.mulVec_zero]
-  ext t
-  constructor
-  · rintro ⟨v, hv, rfl⟩
-    exact ⟨fun τ => T τ *ᵥ v τ, fun h' => hv (inj v h'), by rw [nsq_conj, nsq_conj]⟩
-  · rintro ⟨w, hw, rfl⟩
-    refine ⟨fun τ => (T τ)⁻¹ *ᵥ w τ, ?_, ?_⟩
-    · intro h'
-      apply hw
-      funext τ
-      show w τ = 0
-      have h1 : (T τ)⁻¹ *ᵥ w τ = 0 := congrFun h' τ
-      calc w τ = T τ *ᵥ ((T τ)⁻¹ *ᵥ w τ) := by
-            rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hT τ), Matrix.one_mulVec]
-        _ = 0 := by rw [h1, Matrix.mulVec_zero]
-    · have e : (fun τ => T τ *ᵥ (fun τ => (T τ)⁻¹ *ᵥ w τ) τ) = w := by
-        funext τ
-        show T τ *ᵥ ((T τ)⁻¹ *ᵥ w τ) = w τ
-        rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hT τ), Matrix.one_mulVec]
-      rw [nsq_conj, nsq_conj, e]
-
 end Norms
 
 section Calculus
@@ -218,46 +148,6 @@ def connNorm (h h0 : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt
 def curvNorm (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι p q → ℝ) (z : Pt ι p q) : ℝ :=
   sSup {t | ∃ ξ η v, β z ξ ≤ 1 ∧ β z η ≤ 1 ∧ nsq (h z) v ≤ 1 ∧
     t = Real.sqrt (nsq (h z) fun τ => curvMat h z ξ η τ *ᵥ v τ)}
-
-theorem connNorm_nonneg (h h0 : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι p q → ℝ) (z : Pt ι p q) :
-    0 ≤ connNorm h h0 β z := by
-  unfold connNorm
-  refine Real.sSup_nonneg ?_
-  rintro t ⟨ξ, v, -, -, rfl⟩
-  exact Real.sqrt_nonneg _
-
-theorem curvNorm_nonneg (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι p q → ℝ) (z : Pt ι p q) :
-    0 ≤ curvNorm h β z := by
-  unfold curvNorm
-  refine Real.sSup_nonneg ?_
-  rintro t ⟨ξ, η, v, -, -, -, rfl⟩
-  exact Real.sqrt_nonneg _
-
-theorem connNorm_self (h : Pt ι p q → ι → Matrix n n ℂ) (β : Pt ι p q → Pt ι p q → ℝ) (z : Pt ι p q) :
-    connNorm h h β z = 0 := by
-  refine le_antisymm ?_ (connNorm_nonneg h h β z)
-  unfold connNorm
-  refine Real.sSup_nonpos ?_
-  rintro t ⟨ξ, v, -, -, rfl⟩
-  simp [nsq]
-
-theorem ddc_const (c : ℝ) (z ξ : Pt ι p q) : ddc (fun _ => c) z ξ = 0 := by simp [ddc, dHol, dAnti, dR]
-
-theorem dHol_coord (τ : ι) (a : Fin p) (b : Fin q) (z ξ : Pt ι p q) :
-    dHol (fun w => w τ a b) z ξ = ξ τ a b ∧ dAnti (fun w => w τ a b) z ξ = 0 := by
-  have key : ∀ ζ : Pt ι p q, dR (fun w => w τ a b) z ζ = ζ τ a b := by
-    intro ζ
-    show fderiv ℝ (fun v : ι × Fin p × Fin q → ℂ => unflat v τ a b) (flat z) (flat ζ) = ζ τ a b
-    have e : (fun v : ι × Fin p × Fin q → ℂ => unflat v τ a b) = fun v => v (τ, a, b) := by
-      funext v
-      simp [unflat]
-    rw [e, (hasFDerivAt_apply (𝕜 := ℝ) (τ, a, b) (flat z)).fderiv]
-    simp [flat]
-  have hI : (Complex.I • ξ) τ a b = Complex.I * ξ τ a b := rfl
-  simp only [dHol, dAnti, key, hI]
-  constructor
-  · linear_combination (-(ξ τ a b) / 2) * Complex.I_mul_I
-  · linear_combination (ξ τ a b / 2) * Complex.I_mul_I
 
 end Calculus
 
@@ -313,16 +203,6 @@ def beta (z ξ : Pt ι p q) : ℝ := (B.kae z ξ ξ).re - B.cst * ∑ i, ddc (fu
 
 def met (z : Pt ι p q) (τ : ι) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := blkMet (B.metW z τ) (B.metOm z τ)
 
-def IsKaehler : Prop :=
-  ∀ z ∈ DomI ι p q, ∀ ξ ζ η, dHol (fun w => B.kae w ξ η) z ζ = dHol (fun w => B.kae w ζ η) z ξ
-
-theorem exp_le_ri (i : Fin B.m) {z : Pt ι p q} (hz : z ∈ DomI ι p q) : Real.exp 1 ≤ B.ri i z := by
-  unfold ri
-  have h1 := B.nrm_pos i z hz
-  have h2 := B.nrm_le i z hz
-  have h3 : Real.log (B.nrm i z ^ 2) ≤ 0 := Real.log_nonpos (by positivity) (pow_le_one₀ h1.le h2)
-  linarith
-
 theorem exp_le_r {z : Pt ι p q} (hz : z ∈ DomI ι p q) : Real.exp 1 ≤ B.r z := by
   unfold r
   have h0 : 0 ≤ ∏ i, B.nrm i z := Finset.prod_nonneg fun i _ => (B.nrm_pos i z hz).le
@@ -331,64 +211,16 @@ theorem exp_le_r {z : Pt ι p q} (hz : z ∈ DomI ι p q) : Real.exp 1 ≤ B.r z
   have h3 : Real.log ((∏ i, B.nrm i z) ^ 2) ≤ 0 := Real.log_nonpos (by positivity) (pow_le_one₀ h0 h1)
   linarith
 
-theorem r_eq {z : Pt ι p q} (hz : z ∈ DomI ι p q) : B.r z = ∑ i, B.ri i z - (B.m - 1) * Real.exp 1 := by
-  unfold r ri
-  rw [← Finset.prod_pow, Real.log_prod fun i _ => pow_ne_zero 2 (B.nrm_pos i z hz).ne',
-    Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  ring
-
-theorem r_moeb {γ : ι → GL (Fin p ⊕ Fin q) ℂ} (hγ : γ ∈ Γ) {z : Pt ι p q} (hz : z ∈ DomI ι p q) :
-    B.r (moebI γ z) = B.r z := by
-  have H : ∀ i, B.nrm i (moebI γ z) = B.nrm i z := fun i => B.nrm_inv i γ hγ z hz
-  unfold r
-  simp only [H]
-
 theorem met_posDef {z : Pt ι p q} (hz : z ∈ DomI ι p q) (τ : ι) : (B.met z τ).PosDef := by
   unfold met
   exact blkMet_posDef (B.metW_pos z hz τ) (B.metOm_pos z hz τ)
-
-theorem met_moeb {γ : ι → GL (Fin p ⊕ Fin q) ℂ} (hγ : γ ∈ Γ) {z : Pt ι p q} (hz : z ∈ DomI ι p q) (τ : ι) :
-    (autE (γ τ) (z τ))ᴴ * B.met (moebI γ z) τ * autE (γ τ) (z τ) = B.met z τ := by
-  unfold met
-  rw [autE_blkMet, B.metW_inv γ hγ z hz τ, B.metOm_inv γ hγ z hz τ]
-
-theorem ratios_moeb (hΓ : Γ ≤ UpqI ι p q) (c : ι → ℝ) {γ : ι → GL (Fin p ⊕ Fin q) ℂ} (hγ : γ ∈ Γ) {z : Pt ι p q}
-    (hz : z ∈ DomI ι p q) : ratios (hodgeI c (moebI γ z)) (B.met (moebI γ z)) = ratios (hodgeI c z) (B.met z) := by
-  have hg : ∀ τ, γ τ ∈ Upq p q := fun τ => (Subgroup.mem_pi _).mp (hΓ hγ) τ (Set.mem_univ τ)
-  have hT : ∀ τ, IsUnit (autE (γ τ) (z τ)).det := fun τ => autE_isUnit (hg τ) (hz τ)
-  rw [← ratios_conj (hodgeI c (moebI γ z)) (B.met (moebI γ z)) (fun τ => autE (γ τ) (z τ)) hT]
-  congr 1
-  · funext τ
-    exact hodge_moeb (c τ) (hg τ) (hz τ)
-  · funext τ
-    exact B.met_moeb hγ hz τ
 
 end BdData
 
 def detNorm (c : ι → ℝ) (s : ℂ) (z : Pt ι p q) (τ : ι) : ℝ := ‖s‖ * Real.sqrt (hodgeI c z τ).det.re
 
-theorem detNorm_eq (c : ι → ℝ) (s : ℂ) {z : Pt ι p q} (hz : z ∈ DomI ι p q) (τ : ι) :
-    detNorm c s z τ = ‖s‖ * Real.sqrt (c τ ^ (p + q)) := by
-  unfold detNorm hodgeI
-  rw [det_hodge (c τ) (hz τ), ← Complex.ofReal_pow, Complex.ofReal_re]
-
 def onQuot {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} (f : Pt ι p q → ℝ) (x : XCc ι p q Γ) : ℝ :=
   f (Quot.out x : DomI ι p q)
-
-theorem onQuot_mk {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} {f : Pt ι p q → ℝ}
-    (hf : ∀ γ ∈ Γ, ∀ z ∈ DomI ι p q, f (moebI γ z) = f z) (z : DomI ι p q) :
-    onQuot (Γ := Γ) f (Quot.mk _ z) = f z := by
-  have key : ∀ x y : DomI ι p q, Relation.EqvGen (orbR Γ) x y → f x = f y := by
-    intro x y H
-    induction H with
-    | rel x y hxy =>
-      obtain ⟨γ, hγ, hxy⟩ := hxy
-      rw [← hxy]
-      exact (hf γ hγ x x.2).symm
-    | refl => rfl
-    | symm x y _ ih => exact ih.symm
-    | trans x y w _ _ ih1 ih2 => exact ih1.trans ih2
-  exact key _ _ (Quot.eqvGen_exact (Quot.out_eq _))
 
 end Boundary
 

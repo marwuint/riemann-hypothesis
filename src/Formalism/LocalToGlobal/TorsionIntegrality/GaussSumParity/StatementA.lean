@@ -74,17 +74,6 @@ def MeanBiextensionHypothesesOfCocycle : Prop :=
     ∀ ζ : K, IsPrimitiveRoot ζ (l ^ d - 1) →
       BHyp l d ⊤ ζ (beMean l σ be0 om oms ζ)
 
-def TilInvariant : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l d : ℕ) [NeZero d]
-    (σ : K →+* K), UnrOK K l σ → 2 ≤ d → Even d →
-    ∀ F : MvPowerSeries (Fin 2) K, IsLawOfLog l F → ∀ be0 : MvPowerSeries (Fin 2) K, F1 F be0 →
-    F2 l σ be0 →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (om oms : ι → K), OwOK d σ om oms →
-      TrDual d σ om oms → ∀ u : K, u ^ (l ^ d - 1) = 1 →
-      Simeq (MvPowerSeries.subst (letLog (K := K) l)
-          (MvPowerSeries.subst (torus l u) (beTil (d := d) l σ be0 om oms)))
-        (MvPowerSeries.subst (letLog (K := K) l) (beTil (d := d) l σ be0 om oms))
-
 def MeanSimeq : Prop :=
   ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l d : ℕ) [NeZero d]
     (σ : K →+* K), UnrOK K l σ → 2 ≤ d → Even d →

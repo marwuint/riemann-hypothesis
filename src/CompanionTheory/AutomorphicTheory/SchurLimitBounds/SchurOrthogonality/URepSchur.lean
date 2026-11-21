@@ -104,28 +104,6 @@ theorem IsIrreducible.exists_eq_smul_one (hπ : π.IsIrreducible) {T : H →L[�
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, ← Complex.coe_smul,
     ← Complex.coe_smul, smul_smul, ← add_smul]
 
-theorem isIrreducible_iff :
-    π.IsIrreducible ↔
-      Nontrivial H ∧ ∀ T ∈ π.intertwiners π, ∃ c : ℂ, T = c • (1 : H →L[ℂ] H) := by
-  refine ⟨fun hπ => ⟨hπ.1, fun T hT => hπ.exists_eq_smul_one hT⟩, fun ⟨hnt, h⟩ => ⟨hnt, ?_⟩⟩
-  intro V hcl hinv
-  have : CompleteSpace V := hcl.completeSpace_coe
-  have hP : V.starProjection ∈ π.intertwiners π :=
-    mem_intertwiners_self_iff.mpr fun g => ((isInvariant_iff_commute_starProjection V).mp hinv g).symm
-  obtain ⟨c, hc⟩ := h _ hP
-  have hPv : ∀ v, V.starProjection v = c • v := fun v => by simp [hc]
-  by_cases hc0 : c = 0
-  · left
-    rw [eq_bot_iff]
-    intro v hv
-    rw [Submodule.mem_bot, ← Submodule.starProjection_eq_self_iff.mpr hv, hPv, hc0, zero_smul]
-  · right
-    rw [eq_top_iff]
-    intro v _
-    have hmem : V.starProjection v ∈ V := V.starProjection_apply_mem v
-    rw [hPv] at hmem
-    simpa [hc0] using V.smul_mem c⁻¹ hmem
-
 theorem IsIrreducible.isEquivalent_of_mem_intertwiners (hπ : π.IsIrreducible)
     (hσ : σ.IsIrreducible) {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) (hT0 : T ≠ 0) :
     π.IsEquivalent σ := by

@@ -11,9 +11,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGrowthUni
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteZSpanIntegralRepresentationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicRestrictionMeasureStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainIntegralCountBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactAdelicIntegralDenominatorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedArchimedeanCountStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactConjugateCentrePowerBoundedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactAdelicIntegralDenominator
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedArchimedeanCount
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactConjugateCentrePowerBounded
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactConjugateRationalEntriesBoundedStatement
 
 open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary GlobalTheory.DiscreteSum GlobalTheory.OpTrace GlobalTheory.UnitaryBC GlobalTheory.DiscSpec GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL
@@ -28,8 +28,8 @@ theorem count_rational (E : Type) [Field E] [NumberField E] (Q : Set (Af E)) (hQ
     ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ R : ℝ, 1 ≤ R →
       {x : E | algebraMap E (Af E) x ∈ Q ∧ ∀ w : InfinitePlace E, w x ≤ R}.Finite ∧
       ({x : E | algebraMap E (Af E) x ∈ Q ∧ ∀ w : InfinitePlace E, w x ≤ R}.ncard : ℝ) ≤ C * R ^ N := by
-  obtain ⟨D, hD, hden⟩ := GlobalTheory.T.compact_adelic_integral_denominator E Q hQ
-  obtain ⟨C, N, hC⟩ := GlobalTheory.T.integers_bounded_archimedean_count E
+  obtain ⟨D, hD, hden⟩ := _root_.GlobalTheory.CompanionTheory.AdeleDen.exists_common_denominator E Q hQ
+  obtain ⟨C, N, hC⟩ := _root_.GlobalTheory.CompanionTheory.IntCount.finite_and_ncard_le E
   have hD1 : (1 : ℝ) ≤ D := by exact_mod_cast Nat.one_le_iff_ne_zero.2 hD
   have hDE : (D : E) ≠ 0 := by exact_mod_cast hD
   refine ⟨|C| * (D : ℝ) ^ N, N, by positivity, fun R hR => ?_⟩
@@ -68,7 +68,7 @@ theorem count_lattice (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] 
     rw [h2] at this
     rw [pow_zero, mul_one]
     exact_mod_cast this
-  obtain ⟨n₀, hn₀⟩ := GlobalTheory.T.compact_conjugate_centre_power_bounded E a ha Q hQ
+  obtain ⟨n₀, hn₀⟩ := _root_.GlobalTheory.CompanionTheory.CuspGrowth.abs_le_of_conj_mem_compact E a ha Q hQ
   obtain ⟨Qf, C₁, hQf, hC₁, hent⟩ := GlobalTheory.T.compact_conjugate_rational_entries_bounded E a g₀ Q hQ n₀
   obtain ⟨C₂, N₂, hC₂, hcount⟩ := count_rational E Qf hQf
   obtain ⟨c₃, hc₃⟩ : ∃ c₃ : ℝ, c₃ = C₂ * (C₁ + 1) ^ N₂ := ⟨_, rfl⟩

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.NeBotOfNorm
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructurePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructureProperties
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelTestFunctionFiniteSumEquivariantStatement
 
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.SW GlobalTheory.ThFr ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
@@ -217,7 +217,7 @@ theorem phi_no_coinvariants : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   intro E _ _ _ r X g bas idx n hs hev D hn M hM0 hM v₀ hv₀ ξ hξ hiso L hL Λ hΛ
   obtain ⟨-, hvac, h3, -⟩ := GlobalTheory.T.levelTestFunction_finite_sum_equivariant E r X g bas idx n hs hev D hn M hM0 hM v₀ hv₀ L hL Λ hΛ
   obtain ⟨t, -, ht, hphi, -⟩ := h3 L hL
-  have hX := (GlobalTheory.T.level_structure_properties E r X g bas idx n hs hev D hn).1.1
+  have hX := (_root_.GlobalTheory.SW.level_laws E r X g bas idx n hs hev D hn).1.1
   rw [hphi]
   generalize unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L)) = φ at hvac
   have law := fun y => ((heisG_laws E r X g bas idx n hs hev).2.2.2 y φ hvac.1).2.2.1

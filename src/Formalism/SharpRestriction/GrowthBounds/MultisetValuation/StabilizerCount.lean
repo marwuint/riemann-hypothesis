@@ -27,10 +27,6 @@ private theorem foldY_eq_list_prod_yEnd_pow (G : GAtP p) (m : ℕ) (l : List (Fi
   | cons v l ih =>
     rw [foldY_cons, ih, List.map_cons, List.prod_cons, Module.End.mul_apply, yEnd_pow_apply]
 
-theorem foldY_lin (G : GAtP p) (m : ℕ) (l : List (Fin G.P.nV)) :
-    ∃ φ : Module.End G.O G.Fn, ∀ x, foldY G m l x = φ x := by
-  exact ⟨(l.map fun v => yEnd G v ^ m).prod, fun x => foldY_eq_list_prod_yEnd_pow G m l x⟩
-
 theorem iter_mem (G : GAtP p) (B : Submodule G.O G.Fn) (hB : ∀ v, ∀ F ∈ B, G.yv v F ∈ B) (v : Fin G.P.nV)
     (m : ℕ) : ∀ x ∈ B, (G.yv v)^[m] x ∈ B := by
   intro x hx
@@ -201,23 +197,6 @@ theorem core (D : Formalism.BasicNotions.D7) (G : GAtP p) (v0 : Fin G.P.nV) (e :
     calc (ℓ' : ℝ) ≤ ℓ := by exact_mod_cast hll
       _ ≤ _ := hb
       _ = _ := by push_cast; ring
-
-theorem lattice_service_of_place (D : Formalism.BasicNotions.D7) (G : GAtP p) (h0 : 0 < G.P.nV) (hA : Adm6 D G) : Conclusion6 D G := by
-  obtain ⟨h9, h10, h12, h13, h3⟩ := hA
-  obtain ⟨hs1, hs2⟩ := h10
-  obtain ⟨h12a, h12b⟩ := h12
-  intro VV t Sv Dd cStar S m κ V' hm hS hLP hsat hSig
-  exact core D G ⟨0, h0⟩ G.e hs1 hs2 h9 h12a h12b h13 VV t Sv Dd cStar S m κ V' hm hS hLP hsat hSig
-
-theorem stmt6Loc (D : Formalism.BasicNotions.D7) : LocalServiceStatement D := fun _ G h0 hA => lattice_service_of_place D G h0 hA
-
-theorem stmt6 (D : Formalism.BasicNotions.D7) : ShareFromInputs D := fun _ _ _ h0 hA => lattice_service_of_place D _ h0 hA
-
-theorem stmt6F {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : ShareFromInputsFamily Fm := fun _ _ => stmt6 _
-
-theorem foldY_prod (G : GAtP p) (m : ℕ) (l : List (Fin G.P.nV)) (x : G.Fn) :
-    foldY G m l x = ((l.map fun v => yEnd G v ^ m).prod) x := by
-  exact foldY_eq_list_prod_yEnd_pow G m l x
 
 theorem foldY_perm (G : GAtP p) (m : ℕ) {l l' : List (Fin G.P.nV)} (h : l.Perm l') (x : G.Fn) :
     foldY G m l x = foldY G m l' x := by

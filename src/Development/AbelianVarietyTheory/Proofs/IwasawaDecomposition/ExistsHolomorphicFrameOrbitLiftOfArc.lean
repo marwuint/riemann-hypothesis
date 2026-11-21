@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsGenericCo
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLevelBlockOfEq
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CongruenceActionMemFrameOrbit
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FamilyUnifFibreLatticeEqOfPullback
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArcOffBoundaryDescendsToModuliLocalizationStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArcOffBoundaryDescendsToModuliLocalization
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GermSectionsHalfPlaneGlobalSectionStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConstSubstitutionOfHolomorphicFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConstSubstitutionOfHolomorphicFamilies
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicFramesSamePeriodCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnipotentTriangularOfPeriodCoordinatesEqStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnipotentTriangularOfPeriodCoordinatesEq
 
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam GlobalTheory.ShFam.BdArc Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col dmin Wt)
@@ -163,7 +163,7 @@ theorem exists_adp_global (y : ℂ → FrPt Xo c (CAt σ)) (T : ℝ) (hper : ∀
       (∀ z ∈ U, Adp F (y z) k (s z) ∧ ∀ a, DifferentiableAt ℂ (fun b => s b a) z) →
       (∀ z ∈ U, Adp F (y z) k (s' z) ∧ ∀ a, DifferentiableAt ℂ (fun b => s' b a) z) →
       ∃ δ : Lev (F.Di k) l, ∀ w ∈ U, ∀ a, s' w a = s w (δ.1 a) := fun U s s' h1 h2 h3 h4 h5 =>
-    GlobalTheory.T.exists_const_substitution_of_holomorphic_families' _ (Lev (F.Di k) l) g (fun δ a => δ.1 a) U (fun w a => s w a) (fun w a => s' w a) h1 h2.isPreconnected h3
+    _root_.GlobalTheory.exists_const_substitution_of_holomorphic_families _ (Lev (F.Di k) l) g (fun δ a => δ.1 a) U (fun w a => s w a) (fun w a => s' w a) h1 h2.isPreconnected h3
       (fun a z hz => ((h4 z hz).2 a).differentiableWithinAt) (fun a z hz => ((h5 z hz).2 a).differentiableWithinAt)
       fun w hw => (h4 w hw).1.exists_lev (h5 w hw).1
   obtain ⟨P, hP⟩ := GlobalTheory.T.germSections_halfPlane_global_section _ (fun w (s : ℂ → ((F.Di k).La →+ (Fin g → ℂ))) =>
@@ -267,7 +267,7 @@ theorem exists_orbit_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   obtain ⟨k, x₀, t, hx₀⟩ := hcov (y (eTwoPi (((T + 1 : ℝ) : ℂ) * Complex.I)))
   obtain ⟨P₀, hP₀e, hP₀, hu₀, -⟩ := hpt k x₀
   obtain ⟨P, δ, hPd, hP⟩ := exists_adp_global F (fun w => y (eTwoPi w)) T (fun w => by rw [he1]) (fun w hw => by
-    obtain ⟨R, _, xR, vR, ev, V, hV, hwV, hev, hy⟩ := GlobalTheory.T.arc_off_boundary_descends_to_moduli_localization E H Dw l Xo c O β Z σ A φ x fr ψ r y harc hm
+    obtain ⟨R, _, xR, vR, ev, V, hV, hwV, hev, hy⟩ := _root_.GlobalTheory.ShFam.BdArc.arc_descends_to_moduli E H Dw l Xo c O β Z σ A φ x fr ψ r y harc hm
       (eTwoPi w) (hT w hw) (Complex.exp_ne_zero _)
     obtain ⟨B', k, P, hB', hb, hPd, hP⟩ := exists_adp_local F xR vR (m := 1) (fun b => ev (b 0))
       (B := (fun b => b 0) ⁻¹' V) (fun b => y (b 0)) (hV.preimage (continuous_apply 0))
@@ -309,7 +309,7 @@ theorem exists_orbit_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   refine ⟨k, T, M, γ, xx, hT, ⟨hM, hγ, hxd, fun w hw => (hxx w hw).1, fun w hw => ?_⟩,
     fun w hw => ⟨(hxx w hw).1, ?_⟩⟩
   · have hw' : T < (w + M).im := by simpa using hw
-    refine GlobalTheory.T.exists_unipotentTriangular_of_periodCoordinates_eq E N (U.X k) _ _ (dom_lact _ (hxx w hw).1 ((U.X k).Γ_stab γ hγ)) (hxx _ hw').1
+    refine _root_.GlobalTheory.PeriodUnipotent.exists_unipotent_of_pc_eq E N (U.X k) _ _ (dom_lact _ (hxx w hw).1 ((U.X k).Γ_stab γ hγ)) (hxx _ hw').1
       (hall fun a j => ?_)
     rw [hxP _ hw', hsh M w hw, ← hxP w hw, ← hper, ← hper,
       ← GlobalTheory.CongrOrbit.perFr_lact _ _ γ ((U.X k).Γ_stab γ hγ).1]

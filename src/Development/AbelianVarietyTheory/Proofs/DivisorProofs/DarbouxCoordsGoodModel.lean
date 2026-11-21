@@ -256,7 +256,7 @@ theorem GlobalTheory.SympChangeBij.change_of_coordinates_bij : ∀ (F E : Type) 
         Set.BijOn e (schA F (Fin n × Fin d) : Set _) (schA F (Fin n × Fin d) : Set _) := by
   intro F E _ _ _ _ _ σ B n d X W M r s r' s' hB _ _ hM co hco
   obtain ⟨G, hGs, hGe⟩ := GlobalTheory.T.rational_darboux_coordinates_compare F E σ n d X.J W.J M.co co hM.rat hco
-  obtain ⟨hunr, hnt⟩ := GlobalTheory.T.standard_character_almost_unramified F B.ψ hB.std
+  obtain ⟨hunr, hnt⟩ := _root_.GlobalTheory.PsiStdCond.psi_std_conductor F B.ψ hB.std
   have hgen : ∀ G ∈ gens (F := F) (κ := Fin n × Fin d), HasOpB B.ψ G := by
     rintro G ((⟨A, hA, rfl⟩ | ⟨S, hS, rfl⟩) | hG)
     · exact hasOpB_levi F B.ψ hB.std hunr hnt _ A hA
@@ -271,7 +271,7 @@ theorem GlobalTheory.SympChangeBij.change_of_coordinates_bij : ∀ (F E : Type) 
   · intro v
     obtain ⟨hvSB, hvne, θ, hθ, hγ⟩ := hM.vac v
     have hevSB : ev v (M.vac v) ∈ SB _ := by rw [← hSB v]; exact Submodule.mem_map_of_mem hvSB
-    obtain ⟨R, hR0, hR⟩ := GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (F := F) (Fin n × Fin d) v
+    obtain ⟨R, hR0, hR⟩ := _root_.GlobalTheory.RestWitness.exists_rest (F := F) (Fin n × Fin d) v
     refine ⟨hevSB, fun h0 => hvne (hinj v _ hvSB h0), θ, hθ, fun γ hγm => ?_⟩
     have hat : At (evFin F v) γ := (GlobalTheory.LatVac.latAtV_at_stable X W v).1 γ hγm
     have h1 := GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v γ hat (M.vac v)

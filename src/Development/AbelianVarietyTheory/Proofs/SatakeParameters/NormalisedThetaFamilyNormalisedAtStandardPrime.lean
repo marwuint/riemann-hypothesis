@@ -11,10 +11,11 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.Cayley
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.MatrixFormFourfoldBlock
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharactersFactTer
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.Th0CharMulOpUTh0HalfPeriodEq
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalNormalisationIntertwinerPrimeIndexStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CurveIdealBaseThetaVectorNormalisedEveryPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalNormalisationTensorPowersStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalNormalizationIntegralScalarStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalNormalisationIntertwinerPrimeIndex
+import Formalism.LocalToGlobal.AlgebraicTheory.StatementNorm
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CurveIdealBaseThetaVectorNormalisedEveryPlace
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalNormalisationTensorPowers
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalNormalizationIntegralScalar
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Col Classical
 open Formalism.L2.Th1.H (cmL CmOK matH IsIsom taylorMv)
 open Formalism.L2.Th1.GD (LocNorm InMul frameM thetaLin)
@@ -262,7 +263,7 @@ theorem latAt_std : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Taylor
       (alphaQ (Real.sqrt D.host.d / 2) (matH (hOne B'.L X.Tau))) (Formalism.L2.Ker.KS.lamM' s B') :=
     Formalism.L2.Ker.KS.th_pb (reixE s.iT) _ _ hH (fun x _ => alphaQ_reix s B'.L _ x)
       (B'.thMM_spec (B'.stdOK hcc hδ)).1
-  have hMM0 := GlobalTheory.T.curveIdeal_baseThetaVector_normalised_every_place D cc δ hcc hδ B' a₀ b₀ c₀ ha hd lam hlam hcm
+  have hMM0 := _root_.GlobalTheory.ThLoc.LocMM.locNormMM D cc δ hcc hδ B' a₀ b₀ c₀ ha hd lam hlam hcm
     (Formalism.L2.Ker.KS.cmBase_isCm B a₀ b₀ c₀ ha hd lam hlam hcm hl) p ι
   have hMM : LocNorm a₀ b₀ D.host.d ha hd lam hlam (hOne B'.L X.Tau) (Formalism.L2.Ker.KS.lamM' s B')
       (Formalism.L2.Ker.KS.thM' s B') p ι :=
@@ -276,7 +277,7 @@ theorem latAt_std : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Taylor
       simp only [TaylorLogMetric.lamC, dif_pos h1]
       rfl
     rw [← e, h2]
-  have key := Formalism.L2.Ker.KS.locNorm_thF_of s B' GlobalTheory.T.localNormalization_integral_scalar GlobalTheory.T.localNormalisation_tensorPowers GlobalTheory.T.localNormalisation_intertwiner_prime_index χ a₀ b₀ c₀ ha hd lam hlam p ι
+  have key := Formalism.L2.Ker.KS.locNorm_thF_of s B' _root_.GlobalTheory.locNormScale _root_.GlobalTheory.locNormPow_tensorPowers _root_.GlobalTheory.locNormInter χ a₀ b₀ c₀ ha hd lam hlam p ι
     hcc hδ hcm hSDM hStM hThM hMM (Formalism.L2.Ker.KS.Lat.posDef_hSc (Formalism.L2.Ker.KS.Lat.sc_pos B) N N')
     (fun L L' h => Formalism.L2.Ker.KS.Lat.isLat_laF s B' hcc hδ h)
     (fun L L' h x hx => Formalism.L2.Ker.KS.Lat.theta_laF s B' hb hx) hA hL hL' hχu

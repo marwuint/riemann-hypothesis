@@ -75,8 +75,6 @@ theorem iM_conjT (X : Matrix (Fin a) (Fin a) (Cinf E)) : (iM X)ᴴ = -iM Xᴴ :=
   ext p q w
   simp [iM, conjTranspose_apply]
 
-theorem iM_sub (X Y : Matrix (Fin a) (Fin a) (Cinf E)) : iM (X - Y) = iM X - iM Y := smul_sub _ _ _
-
 theorem iM_neg (X : Matrix (Fin a) (Fin a) (Cinf E)) : iM (-X) = -iM X := smul_neg _ _
 
 theorem iM_iM (X : Matrix (Fin a) (Fin a) (Cinf E)) : iM (iM X) = -X := by

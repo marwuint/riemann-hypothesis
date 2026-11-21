@@ -19,22 +19,3 @@ private theorem cardTors (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : n ≠ 0) :
   rw [Nat.card_congr (Equiv.subtypeEquivRight key)]
   exact (Nat.card_range_of_injective hι).trans (Nat.card_zmod _)
 
-private theorem cardZmod (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : n ≠ 0) :
-    Nat.card (ZMod n →+ QZ l) = l ^ n.factorization l := by
-  rw [← cardTors l n hn, ← Nat.card_congr (ZMod.lift n)]
-  exact (Nat.card_congr ((zmultiplesHom (QZ l)).subtypeEquiv fun x => by simp)).symm
-
-theorem UpperTheory.V.Kum.cardHomQZ :
-    ∀ (l : ℕ) [Fact l.Prime] (A : Type) [AddCommGroup A] [Finite A], Nat.card (A →+ QZ l) = l ^ (Nat.card A).factorization l := by
-  intro l _ A _ _
-  classical
-  obtain ⟨ι, _, n, hn, ⟨e⟩⟩ := AddCommGroup.equiv_directSum_zmod_of_finite' A
-  have hn0 : ∀ i, n i ≠ 0 := fun i => by have := hn i; omega
-  have h1 : Nat.card A = ∏ i, n i := by
-    rw [Nat.card_congr (e.toEquiv.trans DFinsupp.equivFunOnFintype), Nat.card_pi]
-    simp
-  have e2 : (A →+ QZ l) ≃ (∀ i, ZMod (n i) →+ QZ l) :=
-    (AddEquiv.addMonoidHomCongrLeftEquiv e).trans (DFinsupp.liftAddHom).toEquiv.symm
-  rw [Nat.card_congr e2, Nat.card_pi, h1, Nat.factorization_prod fun i _ => hn0 i, Finsupp.finset_sum_apply,
-    ← Finset.prod_pow_eq_pow_sum]
-  exact Finset.prod_congr rfl fun i _ => cardZmod l _ (hn0 i)

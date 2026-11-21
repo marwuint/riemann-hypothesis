@@ -314,15 +314,6 @@ def ExtInj : Prop := ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Alg
 def ExtDepth : Prop := ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (r rc : IrrGL (w.adicCompletion E) → WD h), CuspT a ha r → IsLExt r rc → ∀ x, Good x → DZ x → IsTameWD (rc x)
 
-def RecTTransport : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
-    (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w)
-    (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω')
-    (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (φ : Ω ≃+* Ω') (j : E →+* E')
-    (i : w.adicCompletion E ≃+* w'.adicCompletion E'), PlaceIso A w A' w' φ j i →
-    ∀ (rc : IrrGL (w.adicCompletion E) → WD h) (rc' : IrrGL (w'.adicCompletion E') → WD h'), IsRecT h rc → IsRecT h' rc' →
-      ∀ x x', RepRel i x x' → Good x → WDRel φ (rc x) (rc' x')
-
 end UpperTheory.Zero.LLC
 
 end

@@ -116,75 +116,10 @@ theorem exists_nat_mul_isIntegral_int (y : ι → Ω) (a : (Polynomial Ω)) (ha 
 
 end Int
 
-section SlopeTestRemainingChoices
-variable {ι : Type*}
-
-theorem sec_le_of_eq_ratMul (x x' : ι → Ω) (c : ι → ℚ) (hc : ∀ i, x' i = algebraMap ℚ Ω (c i) * x i)
-    (n : ℕ) : sec ℚ x' n ≤ sec ℚ x n := by
-
-  intro v hv
-  simp only [sec, Submodule.mem_map] at hv ⊢
-  obtain ⟨P, hP, rfl⟩ := hv
-  refine ⟨MvPolynomial.aeval (fun i => MvPolynomial.C (c i) * MvPolynomial.X i) P, ?_, ?_⟩
-  · rw [MvPolynomial.mem_homogeneousSubmodule] at hP ⊢
-    have h := hP.eval₂ MvPolynomial.C (fun i => MvPolynomial.C (c i) * MvPolynomial.X i)
-      (fun r => MvPolynomial.isHomogeneous_C _ r) (fun i => MvPolynomial.isHomogeneous_C_mul_X (c i) i)
-    rw [one_mul] at h
-    rw [MvPolynomial.aeval_def, MvPolynomial.algebraMap_eq]
-    exact h
-  · have hfun : (fun i => MvPolynomial.aeval x (MvPolynomial.C (c i) * MvPolynomial.X i)) = x' := by
-      funext i
-      simp [hc i]
-    simp only [AlgHom.toLinearMap_apply]
-    rw [← AlgHom.comp_apply, MvPolynomial.comp_aeval, hfun]
-
-theorem fnField_le_of_eq_ratMul (x x' : ι → Ω) (c : ι → ℚ) (hc : ∀ i, x' i = algebraMap ℚ Ω (c i) * x i) :
-    fnField x' ≤ fnField x := by
-
-  rw [fnField, IntermediateField.adjoin_le_iff]
-  rintro t ⟨i, j, rfl⟩
-  rw [hc i, hc j]
-  have e : algebraMap ℚ Ω (c i) * x i / (algebraMap ℚ Ω (c j) * x j) =
-      algebraMap ℚ Ω (c i / c j) * (x i / x j) := by
-    rw [map_div₀, mul_div_mul_comm]
-  rw [e]
-  exact mul_mem (IntermediateField.algebraMap_mem _ _) (IntermediateField.subset_adjoin _ _ ⟨i, j, rfl⟩)
-
-end SlopeTestRemainingChoices
-
-open Classical in
-theorem scaleOff_eq_ratMul (x : κ → Ω) (e : Fin (D + 1) → κ) (m : ℕ) (i : κ) :
-    scaleOff e m x i = algebraMap ℚ Ω (if i ∈ Set.range e then 1 else (m : ℚ)) * x i := by
-
-  simp only [scaleOff]
-  split_ifs <;> simp_all
-
-open Classical in
-theorem eq_ratMul_scaleOff (x : κ → Ω) (e : Fin (D + 1) → κ) {m : ℕ} (hm : 0 < m) (i : κ) :
-    x i = algebraMap ℚ Ω (if i ∈ Set.range e then 1 else (m : ℚ)⁻¹) * scaleOff e m x i := by
-
-  have hm' : (m : Ω) ≠ 0 := Nat.cast_ne_zero.2 hm.ne'
-  simp only [scaleOff]
-  split_ifs <;> simp_all
-
 theorem scaleOff_comp_self (x : κ → Ω) (e : Fin (D + 1) → κ) (m : ℕ) : scaleOff e m x ∘ e = x ∘ e := by
 
   funext j
   simp [scaleOff]
-
-theorem sec_rat_scaleOff (x : κ → Ω) (e : Fin (D + 1) → κ) {m : ℕ} (hm : 0 < m) (n : ℕ) :
-    sec ℚ (scaleOff e m x) n = sec ℚ x n := by
-  apply le_antisymm
-  · exact sec_le_of_eq_ratMul x (scaleOff e m x) _ (fun i => scaleOff_eq_ratMul x e m i) n
-  · exact sec_le_of_eq_ratMul (scaleOff e m x) x _ (fun i => eq_ratMul_scaleOff x e hm i) n
-
-theorem projDeg_scaleOff (x : κ → Ω) (e : Fin (D + 1) → κ) (he : Function.Injective e) {m : ℕ}
-    (hm : 0 < m) : projDeg (scaleOff e m x) e = projDeg x e := by
-
-  have h1 : fnField (scaleOff e m x) = fnField x := le_antisymm
-    (fnField_le_of_eq_ratMul x _ _ (fun i => scaleOff_eq_ratMul x e m i))
-    (fnField_le_of_eq_ratMul _ x _ (fun i => eq_ratMul_scaleOff x e hm i))
-  simp only [projDeg, scaleOff_comp_self, h1]
 
 private theorem isIntegral_natCast_mul_coneRing {ι : Type*} (y : ι → Ω) (k : ℕ) {a : Polynomial Ω}
     (ha : IsIntegral (coneRing ℤ y) a) : IsIntegral (coneRing ℤ y) ((k : Polynomial Ω) * a) := by

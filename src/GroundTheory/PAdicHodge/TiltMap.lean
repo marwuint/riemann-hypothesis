@@ -91,9 +91,6 @@ theorem preTiltMap_injective : Function.Injective (preTiltMap p φ hφ) := by
     map_eq_zero_iff φ φ.injective] at h1
   exact (IsPerfectoidField.untilt_eq_zero_iff p).1 (Subtype.ext h1)
 
-theorem norm_preTiltMap (x : 𝒪K♭) : ‖preTiltMap p φ hφ x‖ = ‖x‖ := by
-  rw [preTilt_norm_def, preTilt_norm_def, coe_untilt_preTiltMap, hφ]
-
 variable (p) in
 
 def tiltMap : K♭ →+* L♭ :=
@@ -118,9 +115,6 @@ theorem tiltSharp_tiltMap (x : K♭) : tiltSharp L p (tiltMap p φ hφ x) = φ (
 
 theorem norm_tiltMap (x : K♭) : ‖tiltMap p φ hφ x‖ = ‖x‖ := by
   rw [← norm_tiltSharp, tiltSharp_tiltMap, hφ, norm_tiltSharp]
-
-theorem tiltMap_injective : Function.Injective (tiltMap p φ hφ) :=
-  (tiltMap p φ hφ).injective
 
 theorem ringHom_ext_wittVector_preTilt {f g : WittVector p 𝒪K♭ →+* normInteger L}
     (h : ∀ a, f (WittVector.teichmuller p a) = g (WittVector.teichmuller p a)) : f = g := by

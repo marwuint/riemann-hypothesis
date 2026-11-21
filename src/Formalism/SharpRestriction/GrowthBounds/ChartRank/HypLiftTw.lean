@@ -70,25 +70,6 @@ theorem cmpLiftOf_of_raw (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hV
     CmpLiftOf S e :=
   cmpLiftOf_of_two S e hV (cmpInvOf_of_raw S e hR)
 
-theorem invLeOf_of_raw (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hV : ∀ β, EvValLe S β) (hR : CmpInvRawOf S e) :
-    InvLeOf S e :=
-  invLeOf_of_cmp S e (cmpLiftOf_of_raw S e hV hR)
-
 end Rec
-
-section Card
-
-variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
-  {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
-
-theorem cmpJHyp_of_raw (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
-    (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)
-    (twUnit : ∀ j hj β, (I.at' j hj).st.TwUnit w β) (valIntN : ∀ j hj, (I.at' j hj).st.ValIntN (c.embW u w h) w)
-    (iwF : ∀ j hj β, (I.at' j hj).st.IwF β) (hfin : ∀ j, j + 1 ≤ D.R.m → (gatJ Lv (j + 1)).FinClasses)
-    (X : ∀ j hj, KAat.ChX (I.at' j hj).st) (hV : ∀ j hj β, EvValLe (I.at' j hj).st β)
-    (hR : ∀ j hj, CmpInvRawOf (I.at' j hj).st (c.embW u w h)) : CmpJHyp c I :=
-  cmpJHyp_of_cmp c Gt hS core ok twUnit valIntN iwF hfin X fun j hj => cmpLiftOf_of_raw _ _ (hV j hj) (hR j hj)
-
-end Card
 
 end Formalism.MainNotions.G.CmpJ.PCmpLiftTw

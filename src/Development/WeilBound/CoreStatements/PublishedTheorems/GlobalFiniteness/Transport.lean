@@ -5,7 +5,9 @@ import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsi
 import GroundTheory.ProfiniteCohomology.RestrictedRamification.Finite
 import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NormalSubgroupLeUnramifiedFixingStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GaloisUnramifiedOutsideCohomologyStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GaloisUnramifiedOutsideCohomology
+import GroundTheory.ProfiniteCohomology.ContinuousCochains
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CohomologicalDimensionTopologicalIso
 
 noncomputable section
@@ -21,7 +23,7 @@ theorem gsEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω
   let φ : G F Ω →* Gal(E/F) := AlgEquiv.restrictNormalHom E
   have hφs : Function.Surjective φ := AlgEquiv.restrictNormalHom_surjective Ω
   have hNS : NS Ω S = (maxUnramifiedOutside F Ω S).fixingSubgroup :=
-    le_antisymm (GlobalTheory.T.normal_subgroup_le_unramified_fixing F Ω S) (GlobalTheory.T.galois_unramified_outside_cohomology F Ω S)
+    le_antisymm (GlobalTheory.T.normal_subgroup_le_unramified_fixing F Ω S) (_root_.GlobalTheory.CompanionTheory.Glob.InertiaLift.fixingSubgroup_le_NS F Ω S)
   have hker : φ.ker = NS Ω S := by
     rw [hNS]
     ext σ
@@ -46,31 +48,6 @@ theorem gsEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω
   exact ⟨{ q with
     continuous_toFun := hq
     continuous_invFun := Continuous.continuous_symm_of_equiv_compact_to_t2 (f := q.toEquiv) hq }⟩
-
-theorem gsTransportK (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (S : Finset (HeightOneSpectrum (𝓞 F))) :
-    ∃ (K : FiniteSubfield) (S' : Set (HeightOneSpectrum (𝓞 K.1))) (_ : Finite S')
-      (_ : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≃ₜ*
-        galUnramifiedOutside K.1 (AlgebraicClosure ℚ) S'),
-      ∀ n : ℕ, (∀ v : HeightOneSpectrum (𝓞 F), (n : 𝓞 F) ∈ v.asIdeal → v ∈ S) →
-        ∀ v' : HeightOneSpectrum (𝓞 K.1), (n : 𝓞 K.1) ∈ v'.asIdeal → v' ∈ S' := by
-  haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω
-  obtain ⟨K, ψ, e, he⟩ := GlobalTheory.CompanionTheory.GSCd.Transport.exists_embedded F Ω
-  classical
-  let T : Finset (HeightOneSpectrum (𝓞 K.1)) :=
-    S.map (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv (RingOfIntegers.mapRingEquiv ψ)).toEmbedding
-  have hC : GlobalTheory.CompanionTheory.GSCd.Transport.Corr ψ (S : Set (HeightOneSpectrum (𝓞 F)))
-      (T : Set (HeightOneSpectrum (𝓞 K.1))) := by
-    intro v
-    simp [T]
-  obtain ⟨θ⟩ := GlobalTheory.CompanionTheory.GSCd.Transport.nonempty_gal ψ e he hC
-  refine ⟨K, (T : Set (HeightOneSpectrum (𝓞 K.1))), inferInstance, θ, ?_⟩
-  intro n hn w hw
-  have hv : (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv (RingOfIntegers.mapRingEquiv ψ)).symm w ∈ S := by
-    apply hn
-    change RingOfIntegers.mapRingEquiv ψ (n : 𝓞 F) ∈ w.asIdeal
-    rw [map_natCast]
-    exact hw
-  exact Finset.mem_coe.2 (Finset.mem_map.2 ⟨_, hv, (GlobalTheory.CompanionTheory.GSCd.Transport.placeEquiv _).apply_symm_apply w⟩)
 
 theorem mapAlong_eq_id_of_eq_id {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G]
@@ -114,19 +91,6 @@ theorem finite_cohomology_transport {k G H : Type} [CommRing k] [Group G] [Topol
   refine Finite.of_surjective q.hom fun x => ⟨p.hom x, ?_⟩
   rw [← ModuleCat.comp_apply, hpq]
   rfl
-
-theorem subsingleton_cohomology_transport {k G H : Type} [CommRing k] [Group G] [TopologicalSpace G]
-    [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (θ : G ≃ₜ* H)
-    (A : Rep.{0} k G) [IsDiscreteRep A] (n : ℕ)
-    (h : haveI := IsDiscreteRep.res θ.symm.continuous (φ := (θ.symm : H ≃* G).toMonoidHom) A;
-      Subsingleton (cohomology (Rep.res (θ.symm : H ≃* G).toMonoidHom A) n)) :
-    Subsingleton (cohomology A n) := by
-  have := IsDiscreteRep.res θ.symm.continuous (φ := (θ.symm : H ≃* G).toMonoidHom) A
-  obtain ⟨p, q, hpq⟩ := mapAlong_transport_comp θ A n
-  refine ⟨fun x y => ?_⟩
-  have hx : q.hom (p.hom x) = x := by rw [← ModuleCat.comp_apply, hpq]; rfl
-  have hy : q.hom (p.hom y) = y := by rw [← ModuleCat.comp_apply, hpq]; rfl
-  rw [← hx, ← hy, Subsingleton.elim (p.hom x) (p.hom y)]
 
 theorem cohDict {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M]

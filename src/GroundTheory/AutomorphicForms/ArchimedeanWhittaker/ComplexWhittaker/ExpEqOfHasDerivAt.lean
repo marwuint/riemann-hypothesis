@@ -11,8 +11,6 @@ abbrev GL2C : Subgroup (GL (Fin 2) ℂ) := ⊤
 
 noncomputable abbrev gl2C : Submodule ℝ (Matrix (Fin 2) (Fin 2) ℂ) := ⊤
 
-theorem hGL2C : IsExpLieAlgebra GL2C gl2C := isExpLieAlgebra_top
-
 noncomputable def toGLC (A : Matrix (Fin 2) (Fin 2) ℂ) (hA : A.det ≠ 0) : GL2C :=
   ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A hA, Subgroup.mem_top _⟩
 

@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescentGradedFamilyNonzeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierMultipleGlobalSectionsEqSpanRegularLatticStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierMultipleGlobalSectionsChartEqSpanStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierSectionLocusOfAmpleSpanStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMapIntegralSchemeToGradedProjModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralSeparatedProjModelGradedFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionToGradedModelFlatBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierSectionsFlatBaseChangeLinearlyDisjointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDescentGradedFamilyNonzero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierMultipleGlobalSectionsEqSpanRegularLattic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierMultipleGlobalSectionsChartEqSpan
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierSectionLocusOfAmpleSpan
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMapIntegralSchemeToGradedProjModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralSeparatedProjModelGradedFunctions
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionToGradedModelFlatBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierSectionsFlatBaseChangeLinearlyDisjoint
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StalkGenerizationGermCompat
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -59,7 +59,7 @@ theorem linDisj_A (σ : Setup) : LinDisj σ.c₀ (Desc.cst σ.A.hom) (RingHom.id
   haveI := σ.ab.proper
   have hfl : (algebraMap σ.R (Localization.Away σ.f)).Flat := by
     rw [RingHom.flat_algebraMap_iff]; infer_instance
-  refine (GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R _ _ hfl σ.A.left σ.A.left σ.A.left (σ.A.hom ≫ awayMap σ.f) σ.A.hom (𝟙 _) (𝟙 _)
+  refine (_root_.GlobalTheory.SecFlatBC.sections_linDisj_flatBaseChange σ.R _ _ hfl σ.A.left σ.A.left σ.A.left (σ.A.hom ≫ awayMap σ.f) σ.A.hom (𝟙 _) (𝟙 _)
     (RingHom.id _) inferInstance inferInstance ?_ ⟨gp _, by simp, ?_⟩ σ.D σ.D ?_).1
   · rw [Category.id_comp]
     exact IsPullback.of_horiz_isIso_mono ⟨by simp⟩
@@ -70,7 +70,7 @@ theorem linDisj_A (σ : Setup) : LinDisj σ.c₀ (Desc.cst σ.A.hom) (RingHom.id
 
 theorem linDisj_C (σ : Setup) (x : Sp σ.R) : LinDisj σ.c₀ (Desc.cst (σ.C x).G.hom) (σ.θ x) := by
   haveI := σ.ab.proper
-  exact (GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R _ _ (σ.flat x) σ.A.left (σ.C x).G.left (σ.V x).toScheme (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom
+  exact (_root_.GlobalTheory.SecFlatBC.sections_linDisj_flatBaseChange σ.R _ _ (σ.flat x) σ.A.left (σ.C x).G.left (σ.V x).toScheme (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom
     (σ.V x).ι (σ.φ x) (σ.θ x) inferInstance inferInstance (σ.cart x) (σ.hθ x) σ.D (σ.D₁ x) (σ.pull x)).1
 
 theorem compact_A (σ : Setup) : CompactSpace σ.A.left := by
@@ -134,8 +134,8 @@ open GlobalTheory.Desc.EmbeddingLemmas in
 
 theorem nonempty_emb : ∀ σ : Setup, σ.Common → Nonempty (Emb σ) := by
   intro σ _
-  obtain ⟨hG, k₀, hk₀, b₀, hb₀, hb₀0⟩ := GlobalTheory.T.abelianSchemeDescent_gradedFamily_nonzero σ
-  obtain ⟨P, hPi, p, ψ, Dp, hM⟩ := GlobalTheory.T.exists_integral_separated_projModel_gradedFunctions σ.R _ σ.c₀ σ.N hG ⟨k₀, hk₀, b₀, hb₀, hb₀0⟩
+  obtain ⟨hG, k₀, hk₀, b₀, hb₀, hb₀0⟩ := _root_.GlobalTheory.DescGraded.gradedFam_and_ne_zero σ
+  obtain ⟨P, hPi, p, ψ, Dp, hM⟩ := _root_.GlobalTheory.Desc.exists_model σ.R _ σ.c₀ σ.N hG ⟨k₀, hk₀, b₀, hb₀, hb₀0⟩
   have hinj := baseIndexConstant_injective σ
 
   haveI : IsDomain (Localization.Away σ.f) :=
@@ -143,16 +143,16 @@ theorem nonempty_emb : ∀ σ : Setup, σ.Common → Nonempty (Emb σ) := by
   have hcA : (RingHom.id _).comp σ.c₀ = (cst σ.A.hom).comp (algebraMap σ.R (Localization.Away σ.f)) := by
     rw [RingHom.id_comp]; exact cst_comp σ.A.hom _
   have hspA : ∀ k, Sec σ.D k = spanBy (cst σ.A.hom) ((RingHom.id _) '' σ.N k) := by
-    intro k; rw [RingHom.coe_id, Set.image_id]; exact GlobalTheory.T.cartierMultipleGlobalSections_eq_span_regularLattice σ k
+    intro k; rw [RingHom.coe_id, Set.image_id]; exact _root_.GlobalTheory.Desc.sec_eq_spanBy_N σ k
   have hsecA : ∀ k, ∀ a ∈ σ.N k, (RingHom.id _) a ∈ Sec σ.D k := fun k a ha => ha.1
-  have hcovA := GlobalTheory.T.exists_cartierSectionLocus_of_ample_span _ _ σ.A.left σ.A.hom (RingHom.id _) σ.N σ.D σ.amp hspA
-  obtain ⟨m, hm, hmf, hml⟩ := GlobalTheory.T.exists_map_integral_scheme_to_graded_proj_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (Localization.Away σ.f)
+  have hcovA := _root_.GlobalTheory.Desc.exists_locus_of_span _ _ σ.A.left σ.A.hom (RingHom.id _) σ.N σ.D σ.amp hspA
+  obtain ⟨m, hm, hmf, hml⟩ := _root_.GlobalTheory.Desc.ToModel.exists_map_to_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (Localization.Away σ.f)
     (algebraMap σ.R (Localization.Away σ.f)) σ.A.left σ.A.hom (RingHom.id _) σ.D hcA hsecA hcovA
   haveI := compact_A σ
   haveI := qsep_A σ
   have hflA : (algebraMap σ.R (Localization.Away σ.f)).Flat := by
     rw [RingHom.flat_algebraMap_iff]; infer_instance
-  have hoA := GlobalTheory.T.isOpenImmersion_to_graded_model_flat_base_change σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (Localization.Away σ.f)
+  have hoA := _root_.GlobalTheory.Desc.openIn_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (Localization.Away σ.f)
     (algebraMap σ.R (Localization.Away σ.f)) hflA hinj σ.A.left σ.A.hom (RingHom.id _) σ.D hcA (linDisj_A σ) σ.amp hspA
     m hm hmf hml
   have hcart := cartA_of_openIn σ P p hM.sep m hoA
@@ -160,15 +160,15 @@ theorem nonempty_emb : ∀ σ : Setup, σ.Common → Nonempty (Emb σ) := by
   have hC : ∀ x, ∃ e : (σ.C x).G.left ⟶ P, e ≫ p = (σ.C x).G.hom ≫ spMap (σ.ρ x) ∧ PFF (𝟙 _) e ((σ.θ x).comp ψ) ∧
       OpenIn e (σ.C x).G.hom p (spMap (σ.ρ x)) := by
     intro x
-    have hsp := GlobalTheory.T.cartierMultipleGlobalSections_chart_eq_span σ x
+    have hsp := _root_.GlobalTheory.Desc.ChartSpan.sec_eq_spanBy σ x
     have hsec : ∀ k, ∀ a ∈ σ.N k, σ.θ x a ∈ Sec (σ.D₁ x) k := fun k a ha => by
       rw [hsp k]; exact subset_spanBy _ _ (Set.mem_image_of_mem _ ha)
-    have hcov := GlobalTheory.T.exists_cartierSectionLocus_of_ample_span _ _ (σ.C x).G.left (σ.C x).G.hom (σ.θ x) σ.N (σ.D₁ x) (σ.amp₁ x) hsp
-    obtain ⟨e, he, hef, hel⟩ := GlobalTheory.T.exists_map_integral_scheme_to_graded_proj_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (σ.C x).R (σ.ρ x) (σ.C x).G.left
+    have hcov := _root_.GlobalTheory.Desc.exists_locus_of_span _ _ (σ.C x).G.left (σ.C x).G.hom (σ.θ x) σ.N (σ.D₁ x) (σ.amp₁ x) hsp
+    obtain ⟨e, he, hef, hel⟩ := _root_.GlobalTheory.Desc.ToModel.exists_map_to_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (σ.C x).R (σ.ρ x) (σ.C x).G.left
       (σ.C x).G.hom (σ.θ x) (σ.D₁ x) (abelianSchemeDescent_chart_baseConstants_comp σ x) hsec hcov
     haveI := compact_C σ x
     haveI := qsep_C σ x
-    exact ⟨e, he, hef, GlobalTheory.T.isOpenImmersion_to_graded_model_flat_base_change σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (σ.C x).R (σ.ρ x) (σ.flat x) hinj (σ.C x).G.left
+    exact ⟨e, he, hef, _root_.GlobalTheory.Desc.openIn_model σ.R _ σ.c₀ σ.N hG P p ψ Dp hM (σ.C x).R (σ.ρ x) (σ.flat x) hinj (σ.C x).G.left
       (σ.C x).G.hom (σ.θ x) (σ.D₁ x) (abelianSchemeDescent_chart_baseConstants_comp σ x) (linDisj_C σ x) (σ.amp₁ x) hsp e he hef hel⟩
   choose e he hef heo using hC
   have hm' : m ≫ p = σ.A.hom ≫ awayMap σ.f := hm

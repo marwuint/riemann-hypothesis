@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAss
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SemiAbelianReductionAlongIsogenyStrictHenselianStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralExtIsAlgClosedResidueFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HenselianIUnionCompleteOfIntegralOverCompleteDvrStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HenselianIUnionCompleteOfIntegralOverCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsProjByBaseChange
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SmConnModelDescends
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsSemiAbelianOfProperGenericTorusExtensionSpecialFiber
@@ -109,7 +109,7 @@ theorem potModel_semiAbelian_of_isogeny : ∀ (V K : Type) [CommRing V] [IsDomai
   haveI : CharZero W := (RingHom.charZero_iff (IsFractionRing.injective W L)).2 inferInstance
   haveI : CharZero V := (RingHom.charZero_iff (IsFractionRing.injective V K)).2 inferInstance
   obtain ⟨R, _, _, _, _, hinj, hint, hac⟩ := GlobalTheory.T.exists_integral_ext_isAlgClosed_residueField' W
-  obtain ⟨-, hhen, -⟩ := GlobalTheory.T.henselian_iUnion_complete_of_integral_over_complete_dvr W R hinj hint
+  obtain ⟨-, hhen, -⟩ := _root_.GlobalTheory.henselian_and_union_of_isIntegral_complete W R hinj hint
   have hWK : Function.Injective ((algebraMap R (FractionRing R)).comp (algebraMap W R)) :=
     (IsFractionRing.injective R (FractionRing R)).comp hinj
   obtain ⟨b, hbW⟩ : ∃ b : L →+* FractionRing R,
@@ -142,7 +142,7 @@ theorem potModel_semiAbelian_of_isogeny : ∀ (V K : Type) [CommRing V] [IsDomai
     RingHom.IsIntegral.trans (f := algebraMap V W) (g := algebraMap W R)
       (fun x => Algebra.IsIntegral.isIntegral (R := V) x) (fun x => hint.isIntegral x)
   have hVRinj : Function.Injective (algebraMap V R) := hinj.comp hVW
-  obtain ⟨hlocVR, -, hdescV⟩ := GlobalTheory.T.henselian_iUnion_complete_of_integral_over_complete_dvr V R hVRinj ⟨fun x => hVRi x⟩
+  obtain ⟨hlocVR, -, hdescV⟩ := _root_.GlobalTheory.henselian_and_union_of_isIntegral_complete V R hVRinj ⟨fun x => hVRi x⟩
   obtain ⟨W', _, hsW, hcW, hfW, hlW⟩ := hdescV s
   obtain ⟨GW, _, _, ε, hscW, hε, hcompW, hmodW⟩ := hs W' inferInstance hsW hlW
   haveI := hε

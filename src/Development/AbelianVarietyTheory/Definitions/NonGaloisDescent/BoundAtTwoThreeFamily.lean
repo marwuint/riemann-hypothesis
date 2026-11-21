@@ -70,11 +70,6 @@ theorem starF_of (L : SizeData₂ D) (ρ : FamilyRepresentationConstants.RhoFam 
       · exact hS i hi hs h2 π hπ
       · exact h23 i hi (Or.inr ⟨hl.resolve_left hs, hs⟩) π hπ
 
-def At23 (L : SizeData₂ D) (C : ℝ) : Prop :=
-  TwistedPlaces.ShaFinOdd D → ∀ (r : FamilyRepresentationConstants.RFam D) (ρ : FamilyRepresentationConstants.RhoFam D), GlobalTheory.PtCore.PtFam D r ρ → KillingConditions.KillAt ρ → BoundAtTwoThree L ρ C
-
-def BoundAtTwoThreeFamily {eps : ℝ} (Fm : FamP eps) : Prop := ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, At23 (Fm.L x i) C
-
 def StarG (L : SizeData₂ D) (ρ : FamilyRepresentationConstants.RhoFam D) (C : ℝ) : Prop :=
   ∀ i, TwistedPlaces.TwLoc D i → (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) →
     ∀ π ∈ D.nd.Zgood i, Bd ρ i π (TwistedPlaces.midG L C (D.nd.l i))

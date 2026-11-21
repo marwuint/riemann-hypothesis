@@ -90,61 +90,6 @@ theorem coeff_heckePolyOf (n q : ℕ) (a : ℕ → L) (k : ℕ) :
   rw [Finset.sum_ite_eq]
   simp [Nat.lt_succ_iff]
 
-theorem tri_identity {n k : ℕ} (h : k ≤ n) :
-    k * (k - 1) / 2 + n * (n - 1) / 2 = (n - k) * (n - k - 1) / 2 + (n - 1) * k := by
-  obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le h
-  rw [Nat.add_sub_cancel_left]
-  have h2 : ∀ m : ℕ, 2 * (m * (m - 1) / 2) = m * (m - 1) := fun m =>
-    Nat.mul_div_cancel' (even_iff_two_dvd.1 (Nat.even_mul_pred_self m))
-  have a := h2 k
-  have b := h2 (k + j)
-  have c := h2 j
-  rcases k with _ | k
-  · simp
-  rcases j with _ | j
-  · simp at *; nlinarith
-  have e : k + 1 + (j + 1) - 1 = k + j + 1 := by omega
-  rw [e] at b ⊢
-  simp only [Nat.add_sub_cancel] at a c ⊢
-  nlinarith
-
-theorem coeff_dualPoly (s : L) (p : L[X]) (k : ℕ) :
-    (dualPoly s p).coeff k = if k ≤ p.natDegree then p.leadingCoeff⁻¹ * (p.coeff (p.natDegree - k) * s ^ k) else 0 := by
-  unfold dualPoly
-  rw [coeff_C_mul, comp_C_mul_X_coeff, coeff_reverse]
-  split_ifs with h
-  · rw [revAt_le h]
-  · rw [revAt_eq_self_of_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]; simp
-
-def CentralRel (r : ℕ) (a b : ℕ → L) : Prop := a 0 = 1 ∧ b 0 = 1 ∧ ∀ k, k ≤ r → b k = a (r - k) * b r
-
-theorem CentralRel.top {r : ℕ} {a b : ℕ → L} (h : CentralRel r a b) : a r * b r = 1 := by
-  have := h.2.2 0 (Nat.zero_le _)
-  rw [h.2.1, Nat.sub_zero] at this
-  exact this.symm
-
-theorem CentralRel.symm {r : ℕ} {a b : ℕ → L} (h : CentralRel r a b) : CentralRel r b a := by
-  refine ⟨h.2.1, h.1, fun k hk => ?_⟩
-  rw [h.2.2 (r - k) (Nat.sub_le _ _), show r - (r - k) = k by omega, mul_assoc, mul_comm (b r), h.top, mul_one]
-
-theorem CentralRel.key {r : ℕ} {a b : ℕ → L} (h : CentralRel r a b) (q : L) (N : ℕ) {k : ℕ} (hk : k ≤ r) :
-    (-1) ^ (r - k) * q ^ ((r - k) * (r - k - 1) / 2) * b (r - k) * (q ^ N) ^ (r - k) * (q ^ (r - 1 + N)) ^ k =
-      ((-1) ^ r * q ^ (r * (r - 1) / 2) * b r * (q ^ N) ^ r) * ((-1) ^ k * q ^ (k * (k - 1) / 2) * a k) := by
-  have e1 : q ^ (k * (k - 1) / 2) * q ^ (r * (r - 1) / 2) = q ^ ((r - k) * (r - k - 1) / 2) * (q ^ (r - 1)) ^ k := by
-    rw [← pow_add, tri_identity hk, pow_add, pow_mul]
-  have e2 : (q ^ N) ^ r = (q ^ N) ^ (r - k) * (q ^ N) ^ k := by rw [← pow_add, Nat.sub_add_cancel hk]
-  have e3 : (-1 : L) ^ (r - k) = (-1) ^ r * (-1) ^ k := by
-    rw [← pow_add, show r + k = r - k + 2 * k by omega, pow_add, pow_mul]; simp
-  rw [h.2.2 (r - k) (Nat.sub_le _ _), show r - (r - k) = k by omega, e3, e2, pow_add, mul_pow]
-  linear_combination (-((-1) ^ r * (-1) ^ k * a k * b r * (q ^ N) ^ (r - k) * (q ^ N) ^ k)) * e1
-
-theorem dualPoly_map {K : Type} [Field K] (σ : K →+* L) (s : K) (p : K[X]) :
-    (dualPoly s p).map σ = dualPoly (σ s) (p.map σ) := by
-  ext k
-  rw [coeff_map, coeff_dualPoly, coeff_dualPoly, natDegree_map_eq_of_injective σ.injective,
-    leadingCoeff_map_of_injective σ.injective]
-  split_ifs <;> simp
-
 end Poly
 
 section Local
@@ -199,21 +144,6 @@ theorem suppAt_inv (he : IsIdemAt e P) {α : GA D V} (h : SuppAt e V α) : SuppA
   obtain ⟨L, hL, -, -⟩ := exists_loc V he
   exact (hL _).1 (L.inv_mem ((hL α).2 h))
 
-theorem exists_unif (P : HeightOneSpectrum (𝓞 D.host.E)) : ∃ ϖ : 𝓞 D.host.E, ϖ ∈ P.asIdeal ∧ ϖ ∉ P.asIdeal ^ 2 := by
-  have := Ideal.pow_succ_lt_pow P.ne_bot 1
-  rw [pow_one] at this
-  exact SetLike.exists_of_lt this
-
-theorem SphAt.exists_op {J : Subgroup (GA D V)} {χ : GA D V → ℂ} (h : SphAt J χ P)
-    (hP : Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal ≠ P.asIdeal) {k : ℕ} (hk : k ≤ V.rank) :
-    ∃ α R, IsHeckeAt V P k α ∧ IsDC J α⁻¹ R := by
-  obtain ⟨e, he⟩ := GlobalTheory.MovedIdem.exists_isIdemAt P hP
-  obtain ⟨ϖ, h1, h2⟩ := exists_unif P
-  obtain ⟨-, hrep, hel⟩ := GlobalTheory.T.involution_spherical_hecke_anti V P e he
-  obtain ⟨α, hα⟩ := (hel ϖ h1 h2).1 k hk
-  obtain ⟨R, hR, hc⟩ := hrep α⁻¹ (suppAt_inv he hα.2.1)
-  exact ⟨α, R, ⟨e, ϖ, he, h1, h2, hα⟩, h.isDC he (suppAt_inv he hα.2.1) hR hc⟩
-
 variable {S : D.what₂.Tau → SPar} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {M : DSModel V S}
   {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} {c : Sys D}
 
@@ -235,27 +165,6 @@ theorem heckeOn_of_partFull {J J₀ : Subgroup (GA D V)} {χ χ₀ : GA D V → 
   rfl
 
 end Local
-
-theorem eq_zero_of_separated {W ι : Type} [AddCommGroup W] [Module ℂ W] (U : ι → Submodule ℂ W) (x : W)
-    (h : ∀ p, ∃ (f : W →ₗ[ℂ] W) (l : ι → ℂ) (m : ℂ), l p ≠ m ∧ f x = m • x ∧ ∀ p', ∀ y ∈ U p', f y = l p' • y)
-    (hx : x ∈ ⨆ p, U p) : x = 0 := by
-  classical
-  obtain ⟨s, hs⟩ := Submodule.mem_iSup_iff_exists_finset.1 hx
-  induction s using Finset.induction_on with
-  | empty => simpa using hs
-  | insert p s hp ih =>
-    apply ih
-    rw [Finset.iSup_insert] at hs
-    obtain ⟨y, hy, z, hz, e⟩ := Submodule.mem_sup.1 hs
-    obtain ⟨f, l, m, hne, hfx, hf⟩ := h p
-    have hst : (⨆ q ∈ s, U q) ≤ (⨆ q ∈ s, U q).comap f := by
-      refine iSup₂_le fun q hq w hw => ?_
-      rw [Submodule.mem_comap, hf q w hw]
-      exact Submodule.smul_mem _ _ (le_iSup₂_of_le (f := fun q (_ : q ∈ s) => U q) q hq le_rfl hw)
-    have e1 : (m - l p) • x = f z - l p • z := by
-      rw [sub_smul, ← hfx, ← e, map_add, hf p y hy, smul_add]; abel
-    rw [← Submodule.smul_mem_iff _ (sub_ne_zero.2 hne.symm), e1]
-    exact Submodule.sub_mem _ (hst hz) (Submodule.smul_mem _ _ hz)
 
 section Lev
 
@@ -327,26 +236,6 @@ theorem mem_hPart_of_partFull (hg : GoodPl V β Pg ok pl q Sb) (Q : LevelP Pg r 
   rw [heckeOn_lev hg Q hT hP hk hα hR, ← hSg P hP, coeff_heckePolyOf, if_pos hk, mul_div_cancel_left₀]
   simp [hq]
 
-theorem exists_label (hg : GoodPl V β Pg ok pl q Sb) {c : Sys D} {T : MMap M}
-    (hT : T ∈ partFull θ M (levS V β (datY _ r t 0 hr Pg ∅ (LevelP.triv Pg r ℂ) χ ξ Frm.B))
-      (levChi V β (datY _ r t 0 hr Pg ∅ (LevelP.triv Pg r ℂ) χ ξ Frm.B)) Sb c) (hT0 : T ≠ 0) {ι : Type}
-    {Sg : ι → Pl0 → ℂ[X]}
-    (hs : T ∈ ⨆ p, hPart M (levG V β (datY _ r t 0 hr Pg ∅ (LevelP.triv Pg r ℂ) χ ξ Frm.B)) ok pl q (Sg p)) :
-    ∃ p, ∀ P ∈ ok, ∀ k, k ≤ V.rank →
-      (Formalism.L2.Col.heckePolyOf V.rank (q P) (fun k => c (pl P) (splitLab V.rank k))).coeff k = (Sg p P).coeff k := by
-  by_contra hcon
-  push Not at hcon
-  refine hT0 (eq_zero_of_separated _ T (fun p => ?_) hs)
-  obtain ⟨P, hP, k, hk, hne⟩ := hcon p
-  obtain ⟨hq, -, hsp, h2⟩ := hg P hP
-  obtain ⟨α, R, hα, hR⟩ := (h2 (datY _ r t 0 hr Pg ∅ (LevelP.triv Pg r ℂ) χ ξ Frm.B) rfl rfl).exists_op hsp hk
-  refine ⟨heckeOn M R, fun p' => (Sg p' P).coeff k / ((-1) ^ k * (q P : ℂ) ^ (k * (k - 1) / 2)), _, ?_,
-    heckeOn_lev hg _ hT hP hk hα hR, fun p' y hy => mem_hPart_iff.1 hy P hP k hk α hα R hR⟩
-  intro e
-  apply hne
-  rw [coeff_heckePolyOf, if_pos hk, ← e, mul_div_cancel₀]
-  simp [hq]
-
 end Lev
 
 section Record
@@ -354,57 +243,12 @@ section Record
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
-def RowsSpan (R : RealDat D A Ks) : Prop := ⨆ p, R.EEp p = ⊤
-
-def LiftsSpan (R : RealDat D A Ks) : Prop :=
-  ∀ i : Fin D.R.m, ⨆ p, R.Wp i p = (R.Wat i (sg0 D A) R.triv).comap (R.HW i (sg0 D A)).e
-
-def SplitDetRow (R : RealDat D A Ks) (F : Face D A) : Prop := ∀ s : ℕ, A.fam.Ok s → R.Char F → SplitDet R
-
-def SpanRow (R : RealDat D A Ks) (F : Face D A) : Prop := ∀ s : ℕ, A.fam.Ok s → R.Char F → RowsSpan R ∧ LiftsSpan R
-
 variable {R : RealDat D A Ks} {F : Face D A} {s : ℕ}
 
 theorem rank_zeroth_component_eq (D : D7) : (Yc D 0).rank = D.R.r := by
   rw [D.sp.Y_rank _ (min_le_right _ _)]; simp [Ranks.rankY]
 
 theorem rank_weight_component_eq (i : Fin D.R.m) : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
-
-theorem ok_iff (hC : R.Char F) (P : Pl0) : P ∈ A.ok A.μ0 ↔ SplitOff (R.pl P) (R.Sb : Set (Pl D.host.E)) := by
-  obtain ⟨_, _, _, ht⟩ := hC.fam.tie
-  have hQ : R.Q A.μ0 = ∅ := by
-    rw [Finset.eq_empty_iff_forall_notMem]
-    intro PP hPP
-    refine (hC.lev.Q_ram A.μ0 PP).2 (Or.inl hPP) ?_
-    rw [hC.lev.xi_base]
-    intro x _
-    rfl
-  rw [ht.ok, hQ]
-  simp
-
-theorem goodPl (hok : A.fam.Ok s) (hC : R.Char F) {V : HSp D} {β : GL (Fin V.rank) (EAf D)}
-    {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {N : ℕ} (hβ : IsSDFrame V β Λ N)
-    (hN : N = 1 ∨ N = D.host.g 0 * D.host.g 1) : GoodPl V β R.Pg (A.ok A.μ0) R.pl A.q (badF R) := by
-  classical
-  intro P hP
-  have hs := (ok_iff hC P).1 hP
-  have hs' : SplitOff (R.pl P) (R.Pg : Set (Pl D.host.E)) :=
-    ⟨hs.1, fun h => hs.2.1 (hC.fam.Sb h), fun Q hQ => hs.2.2 Q (hC.fam.Sb hQ)⟩
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.splitOff_places R.C.P R.Pg (badF R) (R.pl P) hC.lev.Pg
-    (fun v hv => by simpa [badF] using hv) hs'
-  refine ⟨Nat.cast_ne_zero.2 ((hok.what₂ A.μ0).q_pos ⟨P, hP⟩).ne', h3, hs.1, fun L hL hQ e f hef => ?_⟩
-  obtain ⟨c, hc⟩ := hβ
-  refine (GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ _ L hc).2 (R.pl P) e f hef ?_ ?_
-  · intro h
-    rw [Nat.cast_pow] at h
-    have := (R.pl P).isPrime.mem_of_pow_mem _ h
-    rcases hN with rfl | rfl
-    · exact (R.pl P).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using this))
-    · exact h1 this
-  · rw [hL, hQ]
-    rintro PP (h | h)
-    · exact h2 PP h
-    · simp at h
 
 end Record
 

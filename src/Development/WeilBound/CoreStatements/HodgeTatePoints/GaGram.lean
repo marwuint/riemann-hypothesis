@@ -13,10 +13,6 @@ section
 
 variable {E : Type} [Field E] [NumberField E] {N : ℕ}
 
-def vb (E : Type) [Field E] [NumberField E] {N : ℕ}
-    (q : Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E)) : Fin N → 𝓞 E :=
-  Pi.single q.1 (RingOfIntegers.basis E q.2)
-
 theorem exists_left_inv {B : Type} [CommRing B] {n : ℕ} (φ : ZMod n →+* B) (c : 𝓞 E ≃+* 𝓞 E)
     (hc : ∀ a, c (c a) = a) (e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod n)
     (adj : ∀ (a : 𝓞 E) (x y : Fin N → 𝓞 E), e (a • x) y = e x (c a • y))

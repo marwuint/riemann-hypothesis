@@ -1,7 +1,9 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPreFamilyOfLatticeFamilyTwo
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagBound
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.TrivFlagOnHodge
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagBoundAllPlaces
+import Mathlib
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
 import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.QuotientByFiniteFlatStatement
@@ -9,11 +11,19 @@ import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.ZarhinStatem
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateDatumStatement
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.OrdinaryCurveStatement
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeTrivialFlagModStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TrivFlagModOfDvdStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TrivialFlagAtPrimeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeTrivialFlagMod
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TrivFlagModOfDvd
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TrivialFlagAtPrime
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TrivFlagMod
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.FlagMinor
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.PluckerCoord
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGenericSymm
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumsVanishAtPlaces
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PMinimalPrimeMultiHomog
+
 open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
@@ -121,7 +131,7 @@ theorem trivFlagOnHodge_of_fargues : GlobalTheory.CompanionTheory.Ar.HT.FarguesH
       haveI : CharZero Ω := ⟨fun a b hab => by
         have : Int.castRingHom Ω (a : ℤ) = Int.castRingHom Ω (b : ℤ) := by simpa using hab
         exact_mod_cast hint this⟩
-      have h1 := GlobalTheory.T.hodge_tate_free_trivial_flag_mod hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS hpos (zpLocSubalg Ω p)
+      have h1 := _root_.GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_rootLines_model hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS hpos (zpLocSubalg Ω p)
         (mem_range_zpLocSubalg Ω p) Fl x e hHT hRL τ
       have hr : ∀ a : zpLocSubalg Ω p, algebraMap (zpLocSubalg Ω p) Ω a ∈ (algebraMap O Ω).range := by
         intro a
@@ -141,12 +151,12 @@ theorem trivFlagOnHodge_of_fargues : GlobalTheory.CompanionTheory.Ar.HT.FarguesH
       have hR : 𝔐.R p - 2 ≠ 0 := by
         have := 𝔐.R_ge p hpS
         omega
-      exact GlobalTheory.T.triv_flag_mod_of_dvd O Ω K J y _ ϖ _ _ (dvd_pow hpO hR) h2
+      exact _root_.GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd O Ω K J y _ ϖ _ _ (dvd_pow hpO hR) h2
   have hJ := isMultiHomogIdeal_pointIdeal_sup_map_C (ι := J) (O := O) y (IsLocalRing.maximalIdeal O)
   have hWh := GroundTheory.Heights₂.Heights.NumbersDVR.MinimalPrimeMultiHomog.proof.{0} O K J _ W hJ hW.1
   have hCϖ : (C ϖ : GroundTheory.Heights₂.Heights.NumbersDVR.MRing J O) ∈ W :=
     hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_map_of_mem _
       ((IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit)))
-  exact GlobalTheory.T.trivial_flag_at_prime O Ω K J y ϖ hϖ _ _ hflag W ⟨hW.1.1.1, hWh, hW.2⟩ (le_sup_left.trans hW.1.1.2) hCϖ
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Num.TrivFlagAtRelay.main O Ω K J y ϖ hϖ _ _ hflag W ⟨hW.1.1.1, hWh, hW.2⟩ (le_sup_left.trans hW.1.1.2) hCϖ
 
 end GlobalTheory.CompanionTheory.Ar.Num

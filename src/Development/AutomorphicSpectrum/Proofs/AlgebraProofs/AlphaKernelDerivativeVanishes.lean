@@ -2,10 +2,11 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GermPointsNoConstantTermFirstZero
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalModuleActionLawsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobeniusStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalModuleActionLaws
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobenius
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobeniusStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobenius
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
@@ -380,7 +381,7 @@ theorem inter2 (B : FB R d O) (m : ℕ) :
     ev (n := 3) ![pt R d 0, pt R d 1] (pow1 B m) * ev (n := 3) ![pt R d 0, pt R d 2] (pow1 B m) *
         ev (n := 3) ![comp1 (B.A.act (m : O)) (pt R d 0), pt R d 1, pt R d 2] B.ph2 =
       B.ph2 ^ m * ev (n := 3) ![pt R d 0, B.G.add (pt R d 1) (pt R d 2)] (pow1 B m) := by
-  obtain ⟨h0, hs, -, -⟩ := GlobalTheory.T.formal_module_action_laws R d O B
+  obtain ⟨h0, hs, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.NatAct.act_nat_iterated R d O B
   have cadd : ∀ i, constantCoeff (B.G.add (pt R (n := 3) d 1) (pt R d 2) i) = 0 :=
     cc_addOf B.G.const (cc_pt 1) (cc_pt 2)
   induction m with
@@ -545,7 +546,7 @@ theorem identity {p : ℕ} [Fact p.Prime] [CharP R p] (B : FB R d O) (V : Pt R 1
       (ev (n := 3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] (MvPowerSeries.map (frobenius R p) B.ph2)) := by
     have n1 : NoConst (![pt R d 0, ptPow R d p 1, ptPow R d p 2] : Fin 3 → Pt R 3 d) :=
       noConst_three (cc_pt 0) (cc_ptPow hp 1) (cc_ptPow hp 2)
-    rw [GlobalTheory.T.power_series_pow_p_frobenius R p d 3 B.ph2, GlobalTheory.DerivEndo.ev_ev ns n1]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_eq_ev_frobenius R p d 3 B.ph2, GlobalTheory.DerivEndo.ev_ev ns n1]
     congr 1
     funext j i
     fin_cases j
@@ -637,7 +638,7 @@ theorem germKill : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R
   rw [alpha_apply] at hal
   have h1 : (hw B p).mulVec u = 0 := congrArg Prod.fst hal
   have h2 : (am B p).transpose.mulVec u = 0 := congrArg Prod.snd hal
-  obtain ⟨V, hV0, hVact, hVlin⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B
+  obtain ⟨V, hV0, hVact, hVlin⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B
   obtain ⟨g₀, hax, hg₀, hbil⟩ := GlobalTheory.T.pow_one_series_p_formula R p d O B
   obtain rfl : g = g₀ := inj2 hp (hg.symm.trans hg₀)
   have hid := identity B V g hV0 hVact hg

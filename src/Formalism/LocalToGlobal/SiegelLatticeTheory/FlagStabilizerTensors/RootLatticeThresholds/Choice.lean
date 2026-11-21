@@ -28,10 +28,6 @@ theorem measurable_mulF :
   simp only [Matrix.mul_apply, Matrix.of_apply]
   exact continuous_finset_sum _ fun l _ => by fun_prop
 
-theorem haarLie_eq_smul (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) (κ : ℝ≥0∞) :
-    Formalism.MainNotions.S.haarLie S κ = κ • Formalism.MainNotions.S.haarLie S 1 := by
-  simp only [Formalism.MainNotions.S.haarLie, one_smul]
-
 def aff (A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (m : Mt k r) : Mt k r := A * Matrix.of m * B
 
 theorem measurable_aff (A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -89,13 +85,6 @@ theorem uw_mul_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k
 theorem uw_inv_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : (h⁻¹)⁻¹ = h := by
   exact Matrix.inv_eq_left_inv (uw_mul_inv hh)
-
-theorem conj_haarLie {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (κ : ℝ≥0∞)
-    {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
-    (Formalism.MainNotions.S.haarLie (Nset k r) κ).map (conjM h) = Formalism.MainNotions.S.haarLie (Nset k r) κ := by
-  rw [haarLie_eq_smul, Measure.map_smul,
-    Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z (Formalism.MainNotions.S.haarLie (Nset k r) 1) hz hT
-      (Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 k r _ (Formalism.MainNotions.BridgeCSB.haarLieN k r 1 one_ne_zero ENNReal.one_ne_top)) h hh]
 
 theorem isHaarOn_muS_gen {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {μW : Measure (Mt k r)} (hW : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (hW1 : μW Set.univ = 1)

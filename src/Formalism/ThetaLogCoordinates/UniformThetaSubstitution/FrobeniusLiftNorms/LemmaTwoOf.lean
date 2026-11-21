@@ -164,36 +164,9 @@ theorem coeff_partial_coboundary {F : MvPowerSeries (Fin 2) K} (hF : MvPowerSeri
 
 end Slice
 
-section Norm
-
-variable {K : Type} [NormedField K] [IsUltrametricDist K]
-
-theorem integral_mul {ι : Type} {f g : MvPowerSeries ι K} (hf : Integral f) (hg : Integral g) :
-    Integral (f * g) := by
-  classical
-  intro n
-  rw [MvPowerSeries.coeff_mul]
-  exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one
-    (fun q _ => by rw [norm_mul]; exact mul_le_one₀ (hf _) (norm_nonneg _) (hg _))
-
-end Norm
-
-section Top
-
-variable {K : Type} [Field K]
-
-end Top
-
 section Additive
 
 variable {K : Type} [Field K]
-
-theorem cob_add {F : MvPowerSeries (Fin 2) K} (hF : MvPowerSeries.constantCoeff F = 0)
-    (f g : PowerSeries K) : cob F (f + g) = cob F f + cob F g := by
-  unfold cob at1
-  rw [PowerSeries.subst_add (PowerSeries.HasSubst.of_constantCoeff_zero hF),
-    PowerSeries.subst_add (PowerSeries.HasSubst.X 0), PowerSeries.subst_add (PowerSeries.HasSubst.X 1)]
-  ring
 
 theorem coeff_one_lgF {p : ℕ} (hp : 2 ≤ p) : PowerSeries.coeff 1 (lgF K p) = 1 := by
   rw [lgF, PowerSeries.coeff_mk, Finset.sum_range_succ, Finset.sum_range_one]
@@ -218,9 +191,6 @@ theorem coeff_swap2 (H : MvPowerSeries (Fin 2) K) (i k : ℕ) :
     simp only [Equiv.coe_toEmbedding, Equiv.swap_apply_left, Equiv.swap_apply_right]
     exact add_comm _ _
   rw [← hu, coeff_rename_map_lemma _ (Equiv.swap (0 : Fin 2) 1).toEmbedding.injective]
-
-def asm (R : ℕ → PowerSeries K) : MvPowerSeries (Fin 2) K :=
-  fun n => PowerSeries.coeff (n 0) (R (n 1))
 
 theorem pow_parity {p : ℕ} (hp : 2 ≤ p) (i j : ℕ) : p * (p ^ 2) ^ i ≠ (p ^ 2) ^ j := by
   intro h
@@ -253,23 +223,6 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 theorem norm_sub_le_one {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x - y‖ ≤ 1 := by
   rw [sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max x (-y)).trans (max_le hx (by rwa [norm_neg]))
-
-theorem eq_zero_of_div {p : ℕ} (hp : 2 ≤ p) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) {x : K}
-    (h : ∀ N : ℕ, ∃ i, N ≤ i ∧ ‖((p : K) ^ i)⁻¹ * x‖ ≤ 1) : x = 0 := by
-  by_contra hx
-  have hxpos : 0 < ‖x‖ := norm_pos_iff.2 hx
-  have hp1 : ((p : ℝ))⁻¹ < 1 := inv_lt_one_of_one_lt₀ (by exact_mod_cast (by omega : 1 < p))
-  obtain ⟨N, hN⟩ := exists_pow_lt_of_lt_one hxpos hp1
-  obtain ⟨i, hi, hle⟩ := h N
-  have hpos : (0 : ℝ) < (p : ℝ) ^ i := by positivity
-  rw [norm_mul, norm_inv, norm_pow, hnp, inv_pow, inv_inv] at hle
-  have h1 : ‖x‖ ≤ ((p : ℝ)⁻¹) ^ i := by
-    rw [inv_pow]
-    calc ‖x‖ = ((p : ℝ) ^ i)⁻¹ * ((p : ℝ) ^ i * ‖x‖) := by field_simp
-      _ ≤ ((p : ℝ) ^ i)⁻¹ * 1 := by gcongr
-      _ = ((p : ℝ) ^ i)⁻¹ := mul_one _
-  have h2 : ((p : ℝ)⁻¹) ^ i ≤ ((p : ℝ)⁻¹) ^ N := pow_le_pow_of_le_one (by positivity) hp1.le hi
-  linarith
 
 end Norm
 

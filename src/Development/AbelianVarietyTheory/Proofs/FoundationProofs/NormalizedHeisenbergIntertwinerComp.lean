@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsHeisTrivial
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormalizedIntertwinerCompOfAdjacentLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeisenbergIntertwiningSumCompOfIntermediateLattiStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdjacentSelfDualLatticesIndexSimpleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAdjacentSelfDualLatticeTowardStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormalizedIntertwinerCompOfAdjacentLattices
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeisenbergIntertwiningSumCompOfIntermediateLatti
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdjacentSelfDualLatticesIndexSimple
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAdjacentSelfDualLatticeToward
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumOpTransversalStatement
 
 open Classical GlobalTheory.FinWeil
@@ -23,9 +23,9 @@ theorem normOp_comp : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R
     have : normOp lam W A A v = v := by
       rw [normOp, h1, map_one, inv_one, one_smul, h2 v hv]
     rw [this]
-  · obtain ⟨A', hA', hadj, hbet⟩ := GlobalTheory.T.exists_adjacent_selfDual_lattice_toward h A B hA hB hAB hle
+  · obtain ⟨A', hA', hadj, hbet⟩ := _root_.GlobalTheory.FinWeil.exists_adj_selfDual_step h A B hA hB hAB hle
     obtain ⟨x, hx, P, hP, hfin, hann, hgen⟩ := id hadj
-    obtain ⟨e1, e2, -⟩ := GlobalTheory.T.adjacent_selfDual_lattices_index_simple h A A' hA hA' x hx P hP hfin hann hgen
+    obtain ⟨e1, e2, -⟩ := _root_.GlobalTheory.FinWeil.adjacent_selfDual_simple h A A' hA hA' x hx P hP hfin hann hgen
     have hcard : 1 < Nat.card (R ⧸ P) := by
       haveI : Nontrivial (R ⧸ P) := Ideal.Quotient.nontrivial_iff.2 hP.ne_top
       exact Finite.one_lt_card
@@ -33,15 +33,15 @@ theorem normOp_comp : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R
     have hA'A : idx A' A ≠ 0 := by omega
     have hA'B : idx A' B ≠ 0 := AddSubgroup.relIndex_ne_zero_trans hA'A hAB
     have hA'C : idx A' C ≠ 0 := AddSubgroup.relIndex_ne_zero_trans hA'A hAC
-    have hmul := (GlobalTheory.T.heisenbergIntertwiningSum_comp_of_intermediate_lattice h A A' B hA hA' hB hAA' hA'B hbet).1
+    have hmul := (_root_.GlobalTheory.FinWeil.sumOp_comp_of_between h A A' B hA hA' hB hAA' hA'B hbet).1
     have hlt : idx A' B < n := by
       rw [← hn, hmul, e1]
       exact lt_mul_of_one_lt_left (Nat.pos_of_ne_zero hA'B) hcard
     have hfix : Fixes W A' (normOp lam W A A' v) := by
       intro a ha
       rw [normOp, map_smul, ((GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le h A A' hA').2.1 hAA').2.1 v hv a ha]
-    rw [← GlobalTheory.T.normalizedIntertwiner_comp_of_adjacent_lattices h lam hlam A A' B hA hA' hB hadj hAB v hv,
+    rw [← _root_.GlobalTheory.FinWeil.normOp_comp_of_adj h lam hlam A A' B hA hA' hB hadj hAB v hv,
       ih _ hlt A' hA' hA'B hA'C _ hfix rfl,
-      GlobalTheory.T.normalizedIntertwiner_comp_of_adjacent_lattices h lam hlam A A' C hA hA' hC hadj hAC v hv]
+      _root_.GlobalTheory.FinWeil.normOp_comp_of_adj h lam hlam A A' C hA hA' hC hadj hAC v hv]
 
 end GlobalTheory.FinWeil

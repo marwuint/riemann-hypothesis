@@ -4,11 +4,17 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VacuumVectorDr
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentMulAddOneSubInverse
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardInversePrimeRepsIntegralRightMulHecke
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaVacuumHeckeIdentitySplitPlace
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumHeckeIndicatorIntegralEqPrimitiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceChartFiniteAdeleTensorLevelsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumUniversalDeterminantDatumCoeffEqPrimitiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumHeckeIndicatorIntegralEqPrimitive
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivOfNotLinearIndependent
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumCardSubspaces
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceChartFiniteAdeleTensorLevels
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdmissibleEmptyOfGood
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockVectorsKilledHeisenbergAverageIsotropic
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIdempotentMulNatPowOfMul
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumUniversalDeterminantDatumCoeffEqPrimitive
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardSubspacesSupEqTop
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ArtinMapSplitPlaceUniformiserEqFrobeniusInvStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ModulusUnramifiedCharDetHeckeDoubleCosetSplitStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ModulusUnramifiedCharDetHeckeDoubleCosetSplit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryGroupCharacterOfHeckeChar
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationCommFockPolynomialVectors
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VacuumVectorDropAuxiliaryPlacesStatement
@@ -18,7 +24,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideT
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffHeckePolyOfComplex
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjPlNeOfSplit
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChosenPlacesAdmissibleGoodSetup
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleConjugatePairPlacesEqSelfOfGoodCharsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleConjugatePairPlacesEqSelfOfGoodChars
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UniversalCharSpreadCommutesWithRestrictionStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnivCharWithUnivChar
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
@@ -170,8 +176,8 @@ theorem thURel_of_tie {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what
   have hclQ' := closed_erase hclQ hconj
   have hlQ : ∀ v ∈ Q, v ∉ placesOver D.host.E (X.l i) := fun v hv hl =>
     Finset.disjoint_left.1 hS0 hv (X.twistExcludedPlaces_contains_residueChar i hl)
-  have hA : admissibleConjugatePairPlaces X i Q M = Q := GlobalTheory.T.admissibleConjugatePairPlaces_eq_self_of_good_chars D N X i M Q d hsplit hclQ hgood (Or.inr hlQ)
-  have hA' : admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M = ((Q.erase P).erase Pb) := GlobalTheory.T.admissibleConjugatePairPlaces_eq_self_of_good_chars D N X i M ((Q.erase P).erase Pb) d (fun v hv => hsplit v (hQ'Q hv)) hclQ'
+  have hA : admissibleConjugatePairPlaces X i Q M = Q := _root_.GlobalTheory.AdmSelf.admissibleConjugatePairPlaces_eq_self_of_goodChar D N X i M Q d hsplit hclQ hgood (Or.inr hlQ)
+  have hA' : admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M = ((Q.erase P).erase Pb) := _root_.GlobalTheory.AdmSelf.admissibleConjugatePairPlaces_eq_self_of_goodChar D N X i M ((Q.erase P).erase Pb) d (fun v hv => hsplit v (hQ'Q hv)) hclQ'
     (fun v hv => hgood v (hQ'Q hv)) (Or.inr fun v hv => hlQ v (hQ'Q hv))
   have hPQ' : P ∉ ((Q.erase P).erase Pb) := fun h => Finset.ne_of_mem_erase (Finset.mem_of_mem_erase h) rfl
   have hPbQ' : Pb ∉ ((Q.erase P).erase Pb) := fun h => Finset.ne_of_mem_erase h rfl
@@ -254,7 +260,7 @@ theorem thURel_of_tie {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what
     have hk : Formalism.MainNotions.IntegralHeckeForms.HkIdx i n P :=
       ⟨(Finset.mem_Icc.1 hn).1, (Finset.mem_Icc.1 hn).2, hsplitP, fun h => Finset.disjoint_left.1 hS0 hP h⟩
     obtain ⟨hdc, h1⟩ := isDC_of_rep hρ J b hk he (hα n hn').1.2.1 (hα n hn').2.1 (hα n hn').2.2
-    have hmu := (GlobalTheory.T.modulus_unramifiedChar_det_heckeDoubleCoset_split D (Links.Wc D J) P (idemAt P) he ϖ hϖ1 hϖ2 x hx n (α n) (hα n hn').1 1 h1 1 h1
+    have hmu := (_root_.GlobalTheory.SplitDetValue.det_modulus_chi D (Links.Wc D J) P (idemAt P) he ϖ hϖ1 hϖ2 x hx n (α n) (hα n hn').1 1 h1 1 h1
       (GlobalTheory.VecInv.detAt (idemAt P) hee (Links.Wc D J) (α n)) (by
         rw [one_mul, mul_one]; exact GlobalTheory.VecInv.isDetAt_detAt _ hee _ _)).2 Circle ((ρ.B i J b).mu)
       (fun y h1 h2 h3 => mu_unram (ρ.B i J b) (hρ.base i J b) hadm hPH y h1 h2 h3)
@@ -365,15 +371,6 @@ theorem thURel_of_tie {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what
 end GlobalTheory.DistRel
 
 namespace GlobalTheory.DistRel
-open Classical
-
-theorem thURel_of_exportTie {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
-    {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-    {Rl : Links.RealDat3 D A3 Ks} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw} {YS : NX.NExpRealS Rl cG S}
-    {v₀ : (j : Fin D.R.m) → (σ : D.what₂.LL →+* ℂ) → (Rl.MW j σ).Vec} (Z : ExportTie YS v₀)
-    (hRat : ∀ i, D.ntw.NonzeroIndexPlace i → ∀ j b, RatUniv (Z.rd i j b)) (hRH : ∀ i j b, RatHecke (Z.rd i j b)) : GlobalTheory.TwSys.ThURel D.nexp :=
-  thURel_of_tie Z.good Z.rd Z.tie Z.univ (fun _ _ _ => Z.heckeRead (hRH _ _ _)) hRat
-
 end GlobalTheory.DistRel
 
 namespace GlobalTheory.DistRel

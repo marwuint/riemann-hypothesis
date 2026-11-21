@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Arth
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitaryTwistAbsPow
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QuadraticNormHeckeCharRamifiedBelowRamifiedPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalTwistRamifiedCharNeSelfStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.QuadraticNormHeckeCharRamifiedBelowRamifiedPrime
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalTwistRamifiedCharNeSelf
 
 noncomputable section
 open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V.Published GlobalTheory.Published
@@ -20,6 +20,6 @@ theorem quadLift : ArthurClozelStrongTC → JacquetShalikaRigidity → GlobalThe
     refine JacquetShalikaRigidity.strong_multiplicity_one hJS ha _ _ (hST.mono fun v ⟨hu, B', h1, h3⟩ => ⟨B', h1, ?_⟩)
     have := h1.twist hu
     rwa [h3] at this
-  exact GlobalTheory.T.cuspidal_twist_ramified_char_ne_self K a ha (CG.mk π) η _ B hB (GlobalTheory.T.quadratic_norm_hecke_char_ramified_below_ramified_prime K M h2 η hη w hw) hsm.symm
+  exact _root_.GlobalTheory.TwistRamified.twist_ne K a ha (CG.mk π) η _ B hB (_root_.GlobalTheory.QuadNormRam.not_unrAt_of_ramified K M h2 η hη w hw) hsm.symm
 
 end GlobalTheory.QuadLiftBridge

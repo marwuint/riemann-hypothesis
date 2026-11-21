@@ -6,8 +6,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoAF
 import ReciprocityTheory.GeneralLinearIntegers.AlgebraMapIntMemOint
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsNrm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLocalAtCompletionIntegersChosenUniformiserStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CardResidueRingCompletionChosenUniformiserStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHaarGLCompletionIntegersVolOneStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CardResidueRingCompletionChosenUniformiser
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHaarGLCompletionIntegersVolOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAddHaarCompletionIntegralMatricesVolOneStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CardGLFiniteFieldEqPowMulProdStatement
 
@@ -318,7 +319,7 @@ theorem absNorm_ne_zero₂ : qP P ≠ 0 := by
   rw [Ne, Ideal.absNorm_eq_zero_iff]
   exact P.ne_bot
 
-theorem finite_kF : Finite (kF (OP P) ((piP P : (P.adicCompletion L)ˣ) : P.adicCompletion L) (piP_mem P)) := Nat.finite_of_card_ne_zero (by rw [GlobalTheory.T.card_residueRing_completion_chosenUniformiser L P (piP_mem P)]; exact absNorm_ne_zero₂ P)
+theorem finite_kF : Finite (kF (OP P) ((piP P : (P.adicCompletion L)ˣ) : P.adicCompletion L) (piP_mem P)) := Nat.finite_of_card_ne_zero (by rw [_root_.GlobalTheory.ResidueCardUnif.card_kF_piP L P (piP_mem P)]; exact absNorm_ne_zero₂ P)
 
 theorem vol_Jset (r : ℕ) [MeasurableSpace (P.adicCompletion L)] [BorelSpace (P.adicCompletion L)]
     (ν₁ : Measure (Matrix (Fin r) (Fin r) (P.adicCompletion L))) [ν₁.IsAddLeftInvariant]
@@ -327,7 +328,7 @@ theorem vol_Jset (r : ℕ) [MeasurableSpace (P.adicCompletion L)] [BorelSpace (P
   haveI := isMaximal_span (piP_mem P) (GlobalTheory.T.isLocalAt_completionIntegers_chosenUniformiser L P)
   letI : Field (kF (OP P) _ (piP_mem P)) := Ideal.Quotient.field _
   letI : Fintype (kF (OP P) _ (piP_mem P)) := @Fintype.ofFinite _ (finite_kF P)
-  have hc : Nat.card (kF (OP P) _ (piP_mem P)) = qP P := GlobalTheory.T.card_residueRing_completion_chosenUniformiser L P (piP_mem P)
+  have hc : Nat.card (kF (OP P) _ (piP_mem P)) = qP P := _root_.GlobalTheory.ResidueCardUnif.card_kF_piP L P (piP_mem P)
   have h := Formalism.DoubleCosetMeasures.Final.volJadd (P.adicCompletion L) (OP P) (isOpen_OP P) _ (piP_mem P) (Units.ne_zero _)
     (GlobalTheory.T.isLocalAt_completionIntegers_chosenUniformiser L P) (finite_kF P) r ν₁ (GLint (OP P) r) (fun g hg => hg.1) le_rfl
   rw [Formalism.DoubleCosetMeasures.Final.glRed (P.adicCompletion L) (OP P) _ (piP_mem P) (Units.ne_zero _) (GlobalTheory.T.isLocalAt_completionIntegers_chosenUniformiser L P)
@@ -345,7 +346,7 @@ theorem vol_II (r t : ℕ) [MeasurableSpace (P.adicCompletion L)] [BorelSpace (P
     (ν₂ (IIset (OP P) ((piP P : (P.adicCompletion L)ˣ) : P.adicCompletion L))).toReal =
       (qP P : ℝ) ^ (-((t * r : ℕ) : ℤ)) := by
   have hq : (Nat.card (kF (OP P) _ (piP_mem P)) : ENNReal) = (qP P : ENNReal) := by
-    rw [GlobalTheory.T.card_residueRing_completion_chosenUniformiser L P (piP_mem P)]
+    rw [_root_.GlobalTheory.ResidueCardUnif.card_kF_piP L P (piP_mem P)]
   have h := Formalism.DoubleCosetMeasures.Final.volII (P.adicCompletion L) (OP P) (isOpen_OP P) _ (piP_mem P) (Units.ne_zero _)
     (finite_kF P) t r ν₂
   rw [h2, hq] at h
@@ -385,7 +386,7 @@ theorem stepAt_one : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpec
       Units.ne_zero _
     rw [MonoidHom.mul_apply, Units.val_mul, hν.unr _ hu, (hnrm _).1 hu, Real.one_rpow]
     simp [Units.val_inv_eq_inv_val, hd]
-  obtain ⟨μ, hμ, hμ1⟩ := GlobalTheory.T.exists_haar_GL_completion_integers_vol_one L P r
+  obtain ⟨μ, hμ, hμ1⟩ := _root_.GlobalTheory.haar_glInt_one L P r
   obtain ⟨ν₁, hν₁, hs₁, hν₁1⟩ := GlobalTheory.T.exists_addHaar_completionIntegralMatrices_vol_one L P r r
   obtain ⟨ν₂, hν₂, hs₂, hν₂1⟩ := GlobalTheory.T.exists_addHaar_completionIntegralMatrices_vol_one L P t r
   haveI := hν₁

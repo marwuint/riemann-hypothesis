@@ -4,8 +4,8 @@ import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdxEqRelIndex
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinsumNormNeg
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTraceOneIntegerConjDiffPrimeTo
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrameEmbeddingUniqueFixedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormCmPrimeInertPrimeSignStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrameEmbeddingUniqueFixed
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormCmPrimeInertPrimeSign
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumCompSurjective
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.RatEqui GlobalTheory.InertParity
 open scoped BigOperators Pointwise
@@ -352,7 +352,7 @@ theorem gauss_sum_sign : ∀ (D : D7) (M : Type) [AddCommGroup M] [Module (𝓞 
   intro D M _ _ _ φ β h0 h1 h2 h3 h4 h5
   obtain ⟨w, hw, -⟩ := GlobalTheory.TraceOne.exists_trace_one D 2 Nat.prime_two
   refine gauss_sign (GlobalTheory.InertSign.sgO D) (GlobalTheory.InertSign.sgO_sgO D) hw (sgn D) sgn_one sgn_mul_self
-    (fun A B _ _ _ _ _ _ => sgn_mul (GlobalTheory.T.finite_module_sign_eq_neg_one_pow_length D A).1 (GlobalTheory.T.finite_module_sign_eq_neg_one_pow_length D B).1 Nat.card_pos.ne'
+    (fun A B _ _ _ _ _ _ => sgn_mul (_root_.GlobalTheory.InertParity.FiniteOrder.ev_card_and_sgn_card D A).1 (_root_.GlobalTheory.InertParity.FiniteOrder.ev_card_and_sgn_card D B).1 Nat.card_pos.ne'
       Nat.card_pos.ne') (fun P hP hst => ?_) _ M φ β rfl ⟨h0, h1, h2, h3, h4, h5⟩
   have hfix : D.host.conj • P = P := by
     apply le_antisymm
@@ -360,7 +360,7 @@ theorem gauss_sum_sign : ∀ (D : D7) (M : Type) [AddCommGroup M] [Module (𝓞 
     · intro a ha
       have := Ideal.mem_map_of_mem (GlobalTheory.InertSign.sgO D) (hst a ha)
       rwa [GlobalTheory.InertSign.sgO_sgO] at this
-  obtain ⟨hs, q, -, hq, -, -, hqP, -⟩ := (GlobalTheory.T.absNorm_cmPrime_inertPrime_sign D P hP).2.1 hfix
+  obtain ⟨hs, q, -, hq, -, -, hqP, -⟩ := (_root_.GlobalTheory.InertResidue.norm_prime D P hP).2.1 hfix
   obtain ⟨v, -, hv⟩ := GlobalTheory.TraceOne.exists_trace_one D q hq
   refine ⟨?_, v, hv P hP.isPrime hqP⟩
   rwa [Ideal.absNorm_apply, Submodule.cardQuot_apply] at hs

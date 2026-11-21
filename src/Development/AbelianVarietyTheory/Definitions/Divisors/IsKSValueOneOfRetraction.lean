@@ -57,10 +57,6 @@ def AllPrim (A : Over S) [GrpObj A] : Prop := prim κ t A = ⊤
 
 abbrev Crys (A : Over S) [GrpObj A] : Type 1 := Module.Dual R (prim κ t A)
 
-def AllPrim.dualEquiv {A : Over S} [GrpObj A] (h : AllPrim κ t A) :
-    Module.Dual R (Cris.H1 κ (A.hom ≫ t)) ≃ₗ[R] Crys κ t A :=
-  (LinearEquiv.ofTop _ h).dualMap
-
 end Prim
 
 structure GrpMor (κ : DividedPowers I) (t : S ⟶ Sp R) (A : Over S) [GrpObj A]
@@ -680,19 +676,6 @@ theorem crysToDR_corr (h : IsGrpPullback A₀ A t i) {κ' : DividedPowers I'} {t
     ((IsMor.pullback1_comp n.isMor (liftMor κ' h').isMor H (fun _ ↦ rfl) rfl c.1).trans
       (IsMor.pullback1_comp (liftMor κ h).isMor m.isMor H (fun _ ↦ rfl) e.symm c.1).symm))
 
-def IsGM (h : IsGrpPullback A₀ A t i) (h' : IsGrpPullback A₀ A' t i') (x : HdR A) (x' : HdR A') : Prop :=
-  ∃ d : Crys κ t A₀, crysToDR κ h d = x ∧ crysToDR κ h' d = x'
-
-theorem IsGM.symm {h : IsGrpPullback A₀ A t i} {h' : IsGrpPullback A₀ A' t i'} {x : HdR A}
-    {x' : HdR A'} (e : IsGM κ h h' x x') : IsGM κ h' h x' x := by
-  obtain ⟨d, h₁, h₂⟩ := e
-  exact ⟨d, h₂, h₁⟩
-
-def gmEquiv {h : IsGrpPullback A₀ A t i} {h' : IsGrpPullback A₀ A' t i'}
-    (H : Function.Bijective (crysToDR κ h)) (H' : Function.Bijective (crysToDR κ h')) :
-    HdR A ≃ₗ[R] HdR A' :=
-  (LinearEquiv.ofBijective _ H).symm.trans (LinearEquiv.ofBijective _ H')
-
 end Lift
 
 section KS
@@ -761,13 +744,6 @@ variable (h) in
 def KSRegular : Prop := ∀ f ∈ Fil A, ∃! v, IsKSValue h f v
 
 variable [IsCommMonObj A] {O : Type} [CommRing O]
-
-def KSRegular.ks (H : KSRegular h) (a : OAct O A) : Fil A →ₗ[R] Serre.Lie a where
-  toFun f := Serre.Lie.mk a (H f.1 f.2).choose (H f.1 f.2).choose_spec.1.choose_spec.2.1
-  map_add' f g := Serre.Lie.ext ((H _ (f + g).2).unique (H _ (f + g).2).choose_spec.1
-    ((H f.1 f.2).choose_spec.1.add (H g.1 g.2).choose_spec.1))
-  map_smul' r f := Serre.Lie.ext ((H _ (r • f).2).unique (H _ (r • f).2).choose_spec.1
-    ((H f.1 f.2).choose_spec.1.smul r))
 
 end KS
 
@@ -870,72 +846,14 @@ theorem IsPolForm.pull {L : LB A.left} {ψ : LinearMap.BilinForm R (Crys κ t A)
     refine Finset.sum_congr rfl fun k _ ↦ ?_
     rw [hx (a k), hy (b k), hx (b k), hy (a k), map_sub, map_mul, map_mul]
 
-theorem isPolForm_zero (L : LB A.left) (h : ∀ i j, L.g i j = 1) : IsPolForm κ t A L 0 := by
-  unfold IsPolForm
-  refine ⟨0, Fin.elim0, Fin.elim0, ?_, ?_⟩
-  · simpa using Cris.isChern_zero κ (A.hom ≫ t) L h
-  · ext x y
-    simp [wedgeForm_apply]
-
 def eig {O : Type} [CommRing O] (κ : DividedPowers I) (t : S ⟶ Sp R) {A : Over S} [GrpObj A]
     (a : OAct O A) (τ : O →+* R) : Submodule R (Crys κ t A) :=
   ⨅ x : O, LinearMap.ker (act κ t a x - τ x • (1 : Module.End R (Crys κ t A)))
-
-theorem mem_eig {O : Type} [CommRing O] {a : OAct O A} {τ : O →+* R} {h : Crys κ t A} :
-    h ∈ eig κ t a τ ↔ ∀ x, act κ t a x h = τ x • h := by
-  simp only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
-    Module.End.one_apply, sub_eq_zero]
 
 def IsAdjointFor {O : Type} [CommRing O] (a : OAct O A) (c : O → O)
     (ψ : LinearMap.BilinForm R (Crys κ t A)) : Prop :=
   ∀ (z : O) x y, ψ (act κ t a z x) y = ψ x (act κ t a (c z) y)
 
-def LieExact.filToDual {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A] {O : Type} [CommRing O]
-    (H : LieExact A) (a : OAct O A) (ψ : LinearMap.BilinForm R (HdR A))
-    (hψ : ∀ f ∈ Fil A, ∀ g ∈ Fil A, ψ f g = 0) : Fil A →ₗ[R] Module.Dual R (Serre.Lie a) :=
-  (((Fil A).liftQ (ψ ∘ₗ (Fil A).subtype).flip fun g hg ↦ LinearMap.ext fun f ↦ hψ f.1 f.2 g hg) ∘ₗ
-    (H.quotEquiv a).symm.toLinearMap).flip
-
-theorem LieExact.filToDual_toLie {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A] {O : Type}
-    [CommRing O] (H : LieExact A) (a : OAct O A) (ψ : LinearMap.BilinForm R (HdR A))
-    (hψ : ∀ f ∈ Fil A, ∀ g ∈ Fil A, ψ f g = 0) (f : Fil A) (x : HdR A) :
-    H.filToDual a ψ hψ f (H.toLie a x) = ψ f x := by
-  rw [← H.quotEquiv_mk a x]
-  simp [LieExact.filToDual]
-  rfl
-
 end Pairing
-
-section Zero
-
-theorem primDR_unit (c : primDR (𝟙_ (Over (Sp R)))) : c = 0 := by
-  haveI : IsIso ((𝟙_ (Over (Sp R))).hom ≫ 𝟙 (Sp R)) := by
-    simp only [Over.tensorUnit_hom, Category.comp_id]; exact IsIso.id _
-  exact Subtype.ext (Cris.firstDeRham_base_eq_zero _ c.1)
-
-theorem HdR_unit (h : HdR (𝟙_ (Over (Sp R)))) : h = 0 := by
-  ext c
-  rw [primDR_unit c, map_zero]
-  rfl
-
-theorem lieExact_unit : LieExact (𝟙_ (Over (Sp R))) := by
-  have key : ∀ (h : HdR (𝟙_ (Over (Sp R)))) (v : epsR R ⟶ 𝟙_ (Over (Sp R))), IsLieImage h v := by
-    intro h v
-    have hv : v = 1 := toUnit_unique _ _
-    subst hv
-    rw [HdR_unit h, isLieImage_one_iff]
-    exact Submodule.zero_mem _
-  unfold LieExact
-  exact ⟨fun h ↦ ⟨1, key h 1, fun v _ ↦ toUnit_unique _ _⟩, fun v _ ↦ ⟨0, key 0 v⟩⟩
-
-theorem allPrim_unit : AllPrim (dp0 R) (𝟙 _) (𝟙_ (Over (Sp R))) := by
-  haveI : IsIso ((𝟙_ (Over (Sp R))).hom ≫ 𝟙 (Sp R)) := by
-    simp only [Over.tensorUnit_hom, Category.comp_id]; exact IsIso.id _
-  rw [AllPrim, eq_top_iff]
-  intro c _
-  rw [Cris.firstDeRham_base_eq_zero _ c]
-  exact Submodule.zero_mem _
-
-end Zero
 
 end GlobalTheory.DeRham

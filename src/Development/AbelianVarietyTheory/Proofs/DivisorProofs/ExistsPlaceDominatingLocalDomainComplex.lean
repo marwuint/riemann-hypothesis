@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Geometrica
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLocModelIsPrimeOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EssFiniteTypeOfLocalizationFiniteTypeComplex
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrLocalizationOfMinimalPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalFiniteTypeSubringLeValuationSubringAStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrLocalizationOfMinimalPrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalFiniteTypeSubringLeValuationSubringA
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
@@ -147,7 +147,7 @@ theorem exists_place_dominating : ∀ {κ : Type} [Field κ] [Algebra ℂ κ] (O
     field_simp at hfz
     linear_combination hfz
   have hcV : ∀ z : ℂ, algebraMap ℂ κ z ∈ V := fun z => hOV' _ (hO.const_mem z)
-  obtain ⟨R, hcR, hft, hTR, hRV, hRn, hRi, hRf⟩ := GlobalTheory.T.exists_normal_finiteType_subring_le_valuationSubring' V T hcV hTV hfracT
+  obtain ⟨R, hcR, hft, hTR, hRV, hRn, hRi, hRf⟩ := _root_.GlobalTheory.exists_normal_finiteType_subring_le_valuationSubring V T hcV hTV hfracT
   haveI := hRn
   haveI := hRi
   haveI := hRf
@@ -170,7 +170,7 @@ theorem exists_place_dominating : ∀ {κ : Type} [Field κ] [Algebra ℂ κ] (O
   have ha'P : a' ∈ P := hVnu a (hY ▸ Submodule.subset_span haY) _
   obtain ⟨Q, hQp, haQ, hQP, hQ0, hmin⟩ := exists_minimal_prime_le P a' ha'0 ha'P
   haveI := hQp
-  obtain ⟨W, hWd, hRW, hinvW, hninvW, hWfrac⟩ := GlobalTheory.T.exists_dvr_localization_of_minimal_prime' R Q hQ0 hmin
+  obtain ⟨W, hWd, hRW, hinvW, hninvW, hWfrac⟩ := _root_.GlobalTheory.exists_dvr_localization_of_minimal_prime R Q hQ0 hmin
 
   have hcW : ∀ z : ℂ, algebraMap ℂ κ z ∈ W := fun z => hRW ⟨_, hcR z⟩
   have hWft : ((algebraMap ℂ κ).codRestrict W hcW).EssFiniteType :=

@@ -102,16 +102,4 @@ theorem isProper_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
     (h : IsBlowupAlongIdealSheaf π I) : AlgebraicGeometry.IsProper π :=
   blowupIsProper X X' π I h
 
-theorem locallyOfFiniteType_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
-    [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}
-    (h : IsBlowupAlongIdealSheaf π I) : AlgebraicGeometry.LocallyOfFiniteType π := by
-  have := isProper_of_isBlowupAlongIdealSheaf h
-  infer_instance
-
-theorem quasiCompact_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
-    [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}
-    (h : IsBlowupAlongIdealSheaf π I) : AlgebraicGeometry.QuasiCompact π := by
-  have := isProper_of_isBlowupAlongIdealSheaf h
-  infer_instance
-
 end FunctorialResolution.Blowup

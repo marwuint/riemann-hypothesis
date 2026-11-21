@@ -44,14 +44,6 @@ def WpShape : Prop :=
     (∀ n : ℕ, Odd n → coeff n (wpReg W) = 0) ∧
     coeff 2 (wpReg W) = g₂ W / 20 ∧ coeff 4 (wpReg W) = g₃ W / 28
 
-def WpUnique : Prop :=
-  ∀ (K : Type u) [Field K] [CharZero K] (g2 g3 : K) (r r' : K⟦X⟧),
-    dL (uPow (-2) + toL r) ^ 2 = 4 * (uPow (-2) + toL r) ^ 3
-      - HahnSeries.C g2 * (uPow (-2) + toL r) - HahnSeries.C g3 →
-    dL (uPow (-2) + toL r') ^ 2 = 4 * (uPow (-2) + toL r') ^ 3
-      - HahnSeries.C g2 * (uPow (-2) + toL r') - HahnSeries.C g3 →
-    r = r'
-
 def WpRecursion : Prop :=
   ∀ (K : Type u) [Field K] [CharZero K] (W : WeierstrassCurve K) (k : ℕ), 3 ≤ k →
     ((k : K) - 2) * (2 * (k : K) + 3) * coeff (2 * k) (wpReg W) =

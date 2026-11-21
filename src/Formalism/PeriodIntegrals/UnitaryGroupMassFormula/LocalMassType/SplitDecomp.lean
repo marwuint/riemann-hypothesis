@@ -47,13 +47,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 theorem sc_mul (a b : Fv F v) : sc (E := E) v (a * b) = sc (E := E) v a * sc (E := E) v b := by
   simp only [sc, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
-theorem sc_add (a b : Fv F v) : sc (E := E) v (a + b) = sc (E := E) v a + sc (E := E) v b := by
-  simp only [sc, TensorProduct.add_tmul]
-
 theorem sc_one : sc (E := E) v (1 : Fv F v) = 1 := rfl
-
-theorem sc_zero : sc (E := E) v (0 : Fv F v) = 0 := by
-  simp only [sc, TensorProduct.zero_tmul]
 
 theorem split_decomp {e : Fv F v ⊗[F] E} {π₁ π₂ : Fv F v ⊗[F] E →+* Fv F v}
     (h1 : ∀ x, x * e = sc (E := E) v (π₁ x) * e) (h2 : ∀ x, x * (1 - e) = sc (E := E) v (π₂ x) * (1 - e))

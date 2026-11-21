@@ -14,102 +14,14 @@ section Adj
 variable {O OO M Q : Type*} [CommRing O] [Ring OO] [Algebra O OO] [AddCommGroup M] [Module OO M]
     [Module O M] [IsScalarTower O OO M] [AddCommGroup Q] [Module O Q] (ε : OO)
 
-def epsE : epsIdeal O ε := ⟨ε, LinearMap.mem_range.mpr ⟨1, by simp⟩⟩
-
 lemma dual_smul_apply (a : OO) (φ : EpsDual O OO Q ε) (x : epsIdeal O ε) :
     (a • φ) x = φ (rightMulEps O ε a x) := rfl
 
-lemma rightMulEps_algebraMap (c : O) (x : epsIdeal O ε) :
-    rightMulEps O ε (algebraMap O OO c) x = c • x := by
-  apply Subtype.ext
-  show x.1 * algebraMap O OO c = c • x.1
-  rw [Algebra.smul_def, Algebra.commutes]
-
 variable {ε}
-
-lemma eps_mul_of_mem (hε : IsIdempotentElem ε) (x : epsIdeal O ε) : ε * x.1 = x.1 := by
-  obtain ⟨y, hy⟩ := x.2
-  simp only [LinearMap.mulLeft_apply] at hy
-  rw [← hy, ← mul_assoc, hε.eq]
-
-lemma smul_mem_epsImg (x : epsIdeal O ε) (m : M) : x.1 • m ∈ epsImg O (M := M) ε := by
-  obtain ⟨y, hy⟩ := x.2
-  simp only [LinearMap.mulLeft_apply] at hy
-  refine ⟨y • m, ?_⟩
-  show ε • (y • m) = x.1 • m
-  rw [← hy, mul_smul]
-
-lemma eps_smul_of_mem (hε : IsIdempotentElem ε) (y : epsImg O (M := M) ε) : ε • y.1 = y.1 := by
-  obtain ⟨z, hz⟩ := y.2
-  rw [← hz]
-  show ε • ε • z = ε • z
-  rw [← mul_smul, hε.eq]
 
 variable (ε) [SMulCommClass OO O (EpsDual O OO Q ε)]
 
-def fwd : (M →ₗ[OO] EpsDual O OO Q ε) →ₗ[O] (epsImg O (M := M) ε →ₗ[O] Q) where
-  toFun Φ :=
-    { toFun := fun y => Φ y.1 (epsE ε)
-      map_add' := fun y z => by simp
-      map_smul' := fun c y => by
-        show Φ (c • y.1) (epsE ε) = c • Φ y.1 (epsE ε)
-        rw [← algebraMap_smul OO c y.1, Φ.map_smul, dual_smul_apply, rightMulEps_algebraMap,
-          map_smul] }
-  map_add' Φ Ψ := rfl
-  map_smul' c Φ := rfl
-
-def bwdInner (ψ : epsImg O (M := M) ε →ₗ[O] Q) (m : M) : EpsDual O OO Q ε where
-  toFun x := ψ ⟨x.1 • m, smul_mem_epsImg x m⟩
-  map_add' x z := by
-    rw [← map_add]; congr 1; apply Subtype.ext
-    show (x.1 + z.1) • m = x.1 • m + z.1 • m
-    rw [add_smul]
-  map_smul' c x := by
-    rw [← map_smul]; congr 1; apply Subtype.ext
-    show (c • x.1) • m = c • (x.1 • m)
-    rw [smul_assoc]
-
-def bwd : (epsImg O (M := M) ε →ₗ[O] Q) →ₗ[O] (M →ₗ[OO] EpsDual O OO Q ε) where
-  toFun ψ :=
-    { toFun := bwdInner ε ψ
-      map_add' := fun m m' => by
-        apply LinearMap.ext; intro x
-        show ψ ⟨x.1 • (m + m'), _⟩ = ψ ⟨x.1 • m, _⟩ + ψ ⟨x.1 • m', _⟩
-        rw [← map_add]; congr 1; apply Subtype.ext
-        show x.1 • (m + m') = x.1 • m + x.1 • m'
-        rw [smul_add]
-      map_smul' := fun a m => by
-        apply LinearMap.ext; intro x
-        show ψ ⟨x.1 • a • m, _⟩ = ψ ⟨(x.1 * a) • m, _⟩
-        congr 1; apply Subtype.ext
-        show x.1 • a • m = (x.1 * a) • m
-        rw [mul_smul] }
-  map_add' ψ ψ' := rfl
-  map_smul' c ψ := rfl
-
 variable {ε}
-
-lemma bwd_fwd (hε : IsIdempotentElem ε) (Φ : M →ₗ[OO] EpsDual O OO Q ε) :
-    bwd ε (fwd ε Φ) = Φ := by
-  apply LinearMap.ext
-  intro m
-  apply LinearMap.ext
-  intro x
-  show Φ (x.1 • m) (epsE ε) = Φ m x
-  rw [Φ.map_smul, dual_smul_apply]
-  congr 1
-  apply Subtype.ext
-  show ε * x.1 = x.1
-  exact eps_mul_of_mem hε x
-
-lemma fwd_bwd (hε : IsIdempotentElem ε) (ψ : epsImg O (M := M) ε →ₗ[O] Q) :
-    fwd ε (bwd ε ψ) = ψ := by
-  apply LinearMap.ext
-  intro y
-  show ψ ⟨ε • y.1, _⟩ = ψ y
-  congr 1
-  apply Subtype.ext
-  exact eps_smul_of_mem hε y
 
 end Adj
 

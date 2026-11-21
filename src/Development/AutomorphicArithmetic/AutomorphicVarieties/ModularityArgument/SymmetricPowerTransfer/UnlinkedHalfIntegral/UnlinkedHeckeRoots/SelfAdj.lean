@@ -2,21 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.CyclicCharacterEigen.CoefZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeProjectionEigenform
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftFourierCoefficients
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalRankinSelbergBasicFactsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalRankinSelbergBasicFacts
+import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupCosetDecompositionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeCosetRepresentativesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainDescriptionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainDescription
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainInvarianceOfDescriptionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainIntegralCentralInvarianceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterIntegralPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftExistenceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainIntegralCentralInvariance
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterIntegralProperties
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftExistence
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftConductorStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLevelStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLevelCharacterStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLocalTypeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftHeckeEigenvaluesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftWhittakerExpansionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftRapidDecayStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLevelCharacter
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLocalType
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftHeckeEigenvalues
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftWhittakerExpansion
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftRapidDecay
 
 noncomputable section
 
@@ -31,18 +33,18 @@ namespace UpperTheory.V.Z.Sym.Unl
 
 theorem selfAdj : SelfAdj := by
   intro k N _ hk χ hχ g p hp hpN
-  have hB := GlobalTheory.T.global_rankin_selberg_basic_facts
+  have hB := _root_.GlobalTheory.CompanionTheory.RankinQ.b0
   have hE := Ad3P.sEig k N hk χ g
   obtain ⟨hF, hEig⟩ := hE
-  obtain ⟨ω, hω⟩ := GlobalTheory.T.newform_lift_existence hB N χ
+  obtain ⟨ω, hω⟩ := _root_.GlobalTheory.CompanionTheory.RankinSelbergQ.f0 hB N χ
   obtain ⟨hsign, φ, hL⟩ := GlobalTheory.T.newform_lift_level hB k N χ g.f g.a hF hEig.2.1 ω hω
   have hOmL := GlobalTheory.T.newform_lift_conductor hB k N χ hχ hsign ω hω
-  have hHk := GlobalTheory.T.newform_lift_hecke_eigenvalues hB GlobalTheory.T.hecke_coset_representatives GlobalTheory.T.congruence_subgroup_coset_decomposition (GlobalTheory.T.newform_lift_conductor hB) (GlobalTheory.T.newform_lift_level hB)
-    (GlobalTheory.T.newform_lift_level_character hB) (GlobalTheory.T.newform_lift_local_type hB) k N hk χ hχ g.f g.a hF hEig ω φ hω hL
-  have hW := GlobalTheory.T.newform_lift_whittaker_expansion k N hk χ hχ g.f g.a hF hEig ω φ hω hL
-  have hb := GlobalTheory.T.newform_lift_rapid_decay hB k N hk χ hχ g.f g.a hF hEig ω φ hω hL
-  obtain ⟨μ, 𝓕, mK, 𝓓, hS⟩ := GlobalTheory.T.fundamental_domain_invariance_of_description GlobalTheory.T.fundamental_domain_description
-  have hG1 := GlobalTheory.T.central_character_integral_properties GlobalTheory.T.fundamental_domain_integral_central_invariance
+  have hHk := _root_.GlobalTheory.CompanionTheory.RankinHecke.hecke_types_of_lift hB GlobalTheory.T.hecke_coset_representatives GlobalTheory.T.congruence_subgroup_coset_decomposition (GlobalTheory.T.newform_lift_conductor hB) (GlobalTheory.T.newform_lift_level hB)
+    (_root_.GlobalTheory.CompanionTheory.RankinSelberg.LiftLevel.lift_local_invariance hB) (_root_.GlobalTheory.CompanionTheory.RSq.f3a hB) k N hk χ hχ g.f g.a hF hEig ω φ hω hL
+  have hW := _root_.GlobalTheory.CompanionTheory.RsWhittaker.whittaker_of_lift k N hk χ hχ g.f g.a hF hEig ω φ hω hL
+  have hb := _root_.GlobalTheory.CompanionTheory.NewformLiftDecay.main hB k N hk χ hχ g.f g.a hF hEig ω φ hω hL
+  obtain ⟨μ, 𝓕, mK, 𝓓, hS⟩ := GlobalTheory.T.fundamental_domain_invariance_of_description _root_.GlobalTheory.CompanionTheory.RankinSelberg.IdeleDomain.exists_idele_fundamentalDomain
+  have hG1 := _root_.GlobalTheory.CompanionTheory.FundamentalDomainCentralCharacter.fundamental_domain_integral_central_vanishing _root_.GlobalTheory.CompanionTheory.RS.rankinSelberg_measure_facts
   obtain ⟨v, hv⟩ := hB.2.2.1 p hp
   have hnd : ¬pOf v ∣ N := by rwa [hv]
   obtain ⟨C, hC⟩ := hb.1

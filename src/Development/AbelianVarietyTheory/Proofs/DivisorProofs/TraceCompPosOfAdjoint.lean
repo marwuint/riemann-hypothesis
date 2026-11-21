@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorOrderFaithfulLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorOrderFaithfulLattice
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT
 open scoped TensorProduct InnerProductSpace
@@ -117,7 +117,7 @@ theorem trace_mul_star_pos : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel
     have hz : ∀ y : D.La, (D.star x).unop • y = 0 := fun y => hinj _ (by
       have := LinearMap.congr_fun h0 ((1 : ℝ) ⊗ₜ y)
       rwa [hA, LinearMap.zero_apply] at this)
-    have h1 := GlobalTheory.T.harrisTaylor_order_faithful_lattice p D _ hz
+    have h1 := _root_.GlobalTheory.HTFaith.faithful p D _ hz
     rw [← D.star_star x, h1]
     simp
   have htr := trace_comp_pos_of_adjoint (D.EF.baseChange ℝ ∘ₗ J)

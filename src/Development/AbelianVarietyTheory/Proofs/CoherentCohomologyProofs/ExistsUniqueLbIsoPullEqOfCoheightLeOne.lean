@@ -73,13 +73,6 @@ theorem exists_germToFunctionField_eq_of_coheight_eq_one [IsIntegral X] [IsLocal
     exact_mod_cast e
   exact ⟨W, inferInstance, s, hxW, hWV, hs⟩
 
-theorem exists_germToFunctionField_eq_iff_coheight_eq_one [IsIntegral X] [IsLocallyNoetherian X]
-    [IsNormalScheme X] (V : X.Opens) [Nonempty V] (t : X.functionField) :
-    (∃ s : Γ(X, V), X.germToFunctionField V s = t) ↔ ∀ x ∈ V, Order.coheight x = 1 →
-      t ∈ (algebraMap (X.presheaf.stalk x) X.functionField).range :=
-  ⟨fun ⟨s, hs⟩ _ hx _ ↦ hs ▸ germToFunctionField_mem_range_stalk V s hx,
-    exists_germToFunctionField_eq_of_coheight_eq_one V t⟩
-
 theorem bijective_res_of_eq_bot {V W : X.Opens} (h : W ≤ V) (hV : V = ⊥) :
     Function.Bijective (X.presheaf.map (homOfLE h).op).hom := by
   obtain rfl : W = V := le_antisymm h (hV ▸ bot_le)
@@ -436,24 +429,6 @@ theorem existsUnique_secOn_of_coheight_le_one [IsLocallyNoetherian X] [GlobalThe
   · rw [ht, ht]
     exact hs i j
 
-theorem existsUnique_sec_res_eq_of_coheight_le_one [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
-    (L : LB X) {U : X.Opens} (hU : ∀ x : X, Order.coheight x ≤ 1 → x ∈ U)
-    {s : ∀ i, Γ(X, U ⊓ L.U i)} (hs : s ∈ secOn L U) :
-    ∃! t : L.Sec, ∀ i, resG X inf_le_right (t.f i) = s i := by
-  have hb (i) : Function.Bijective (resG X (inf_le_right : U ⊓ L.U i ≤ L.U i)) :=
-    bijective_resG_of_coheight_le_one _ fun x hx h1 ↦ ⟨hU x h1, hx⟩
-  choose t ht using fun i ↦ (hb i).2 (s i)
-  refine ⟨⟨t, fun i j ↦ ?_⟩, ht, fun t' ht' ↦ lbSec_ext fun i ↦
-    (hb i).1 ((ht' i).trans (ht i).symm)⟩
-  refine Eq.trans ?_ (congrArg (· * _) (resG_refl _))
-  refine resG_eq_mul_of_injective _ _ _ inf_le_right inf_le_right
-    (le_inf (inf_le_left.trans inf_le_right) inf_le_right : U ⊓ L.U i ⊓ L.U j ≤ _) inf_le_left
-    (le_inf (inf_le_left.trans inf_le_left) inf_le_right)
-    (bijective_resG_of_coheight_le_one _ fun x hx h1 ↦ ?_).1 ?_
-  · exact ⟨⟨hU x h1, hx.1⟩, hx.2⟩
-  · rw [ht, ht]
-    exact hs i j
-
 section Integral
 
 variable [IsIntegral X]
@@ -623,25 +598,6 @@ section Main
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
-theorem bijective_lbSecPull_of_coheight_le_one {X Y : Scheme.{u}} [IsLocallyNoetherian X]
-    [GlobalTheory.IsNormalScheme X] (f : Y ⟶ X) [IsOpenImmersion f]
-    (hf : ∀ x : X, Order.coheight x ≤ 1 → x ∈ Set.range f) (L : LB X) :
-    Function.Bijective fun s : L.Sec ↦ lbSecPull L s f :=
-  bijective_lbSecPull f (bijective_app_of_coheight_le_one f hf) L
-
-theorem existsUnique_genPull_eq_of_coheight_le_one {X Y : Scheme.{u}} [IsLocallyNoetherian X]
-    [GlobalTheory.IsNormalScheme X] (f : Y ⟶ X) [IsOpenImmersion f]
-    (hf : ∀ x : X, Order.coheight x ≤ 1 → x ∈ Set.range f) (L : LB X) (r : (L.pull f).Gen)
-    (hr : r.IsGen) : ∃! t : L.Gen, t.IsGen ∧ L.genPull t f = r :=
-  existsUnique_genPull_eq f (bijective_app_of_coheight_le_one f hf) L r hr
-
-theorem existsUnique_lbIsoPull_eq_of_coheight_le_one {X Y : Scheme.{u}} [IsLocallyNoetherian X]
-    [GlobalTheory.IsNormalScheme X] (f : Y ⟶ X) [IsOpenImmersion f]
-    (hf : ∀ x : X, Order.coheight x ≤ 1 → x ∈ Set.range f) (L M : LB X)
-    (w : LB.Iso (L.pull f) (M.pull f)) (hw : w.IsGen) :
-    ∃! v : LB.Iso L M, v.IsGen ∧ lbIsoPull v f = w :=
-  existsUnique_lbIsoPull_eq f (bijective_app_of_coheight_le_one f hf) L M w hw
-
 theorem lbIso_pull_iff {X Y : Scheme.{0}} (f : Y ⟶ X) (hf : ∀ V, Function.Bijective (f.app V).hom)
     (L M : LB X) : LBIso (L.pull f) (M.pull f) ↔ LBIso L M :=
   ⟨fun ⟨w, hw⟩ ↦ let ⟨v, hv, _⟩ := existsUnique_lbIsoPull_eq f hf L M w hw; ⟨v, hv.1⟩,
@@ -689,25 +645,6 @@ theorem extension_over_codim_two (X : Scheme.{0}) [IsLocallyNoetherian X]
   · rw [← exists_sec_res_eq_iff hL hs]
     exact ⟨ExistsUnique.exists, fun ⟨t, ht⟩ ↦ ⟨t, ht, fun t' ht' ↦
       lbSec_eq_of_res_eq W fun i ↦ (ht' i).trans (ht i).symm⟩⟩
-
-example : ∃ (X : Scheme.{0}) (_ : IsIntegral X) (_ : IsLocallyNoetherian X)
-    (_ : Geo.Tor.IsNormalScheme X) (U : X.Opens), U ≠ ⊤ ∧
-      ∀ x : X, ringKrullDim (X.presheaf.stalk x) ≤ 1 → x ∈ U := by
-  obtain ⟨m, hm, h1⟩ : ∃ m : Ideal (Polynomial ℤ), m.IsMaximal ∧ ¬ m.height ≤ 1 := by
-    by_contra! H
-    have h := (ringKrullDim_le_iff_isMaximal_height_le (R := Polynomial ℤ) 1).mpr
-      fun m hm ↦ by exact_mod_cast H m hm
-    rw [Polynomial.ringKrullDim_of_isNoetherianRing,
-      IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField] at h
-    exact absurd h (by decide)
-  let x : Spec (.of (Polynomial ℤ)) := ⟨m, hm.isPrime⟩
-  have hc : IsClosed {x} := (PrimeSpectrum.isClosed_singleton_iff_isMaximal x).mpr hm
-  refine ⟨Spec (.of (Polynomial ℤ)), inferInstance, inferInstance, GlobalTheory.IsNormalScheme.pred _,
-    ⟨{x}ᶜ, hc.isOpen_compl⟩, fun h ↦ ?_, fun y hy hyx ↦ h1 ?_⟩
-  · have : x ∈ (⟨{x}ᶜ, hc.isOpen_compl⟩ : (Spec (.of (Polynomial ℤ))).Opens) := h ▸ trivial
-    exact this rfl
-  · rw [show y = x from hyx, ringKrullDim_stalk_le_one_iff, ← idealHeight_eq_coheight] at hy
-    exact hy
 
 end Main
 

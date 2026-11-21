@@ -1,10 +1,35 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GeneralDiagonalMatrix
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeoActMemCusp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowGeneratorEqConstMulVacuumTheta
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeCongruenceEndomorphism
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingComponentUniqueFrameUniqueArithmeticGroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPinnedOfIsUnf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActLevOfLiftsOfEqOne
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevelActionMemCuspForms
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralFramedPointOfLevelMove
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevActMemMlat
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsGeneratorRatioEqOneOfUnitFrameMove
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueFramedPointMoveUniversalTriple
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointMoveCalculus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightTranslationLiftEqLevelMoveUnitConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodCoordinatesFrameRationalIsometry
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstMulReadingOfMovedSectionAtFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedSectionReadingEqMovedFrameReading
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelGroupLiftExists
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalLevelEqHalfMarkingStabilizer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameProductCharacterInverse
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetReducedBlockEqResidueDet
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterAtDetRootCongOneOddEqOne
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIntegralUnitRootNormOneAdele
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsAdeleRingTensorEquivInfiniteProdFinite
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePartPreservesFormDetNormOne
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsOpenCongruenceIdelesAndRealFiniteParts
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.MarkedIsometryHalf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatchingDeterminantRootOfUnity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTraceFormLattice
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceLatticeFractionalMultipleAgree
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLinearApproxTower
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingComponentUniqueFrameUniqueArithmeticGroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowGeneratorEqConstMulVacuumTheta
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartIndependenceUnconditional
 
 set_option autoImplicit false
@@ -69,59 +94,5 @@ theorem exists_sec_rdU_ne_zero (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Go
   exact fun h0 => h3 (hval.symm.trans ((dif_pos x.2).symm.trans h0))
 
 end NonZero
-
-section Scalar
-
-open NumberField AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-  ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.LevelCusp GlobalTheory.GeoLevel GlobalTheory.IndefiniteRowSideFullHecke.GeneralDiagonalMatrix
-open GlobalTheory.Dict (castFr IsUnitFr)
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-  {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
-
-end Scalar
-
-section Record
-
-open NumberField IsDedekindDomain CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.BasicNotions.TH
-  Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj GlobalTheory.IndefiniteRowSideFullHecke.LatticeBasisLifts GlobalTheory.IndefiniteRowSideFullHecke.GeneralDiagonalMatrix GlobalTheory.GeoLevel
-open GlobalTheory.Member (FinCong)
-open GlobalTheory.LevelCusp (IsMatch)
-open GlobalTheory.Dict (castFr)
-open scoped TensorProduct Matrix
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7}
-
-theorem finHom_mulVec_mul (V : HSp D) (κ κ' : GA D V) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
-    (finHom V (κ * κ')).1 *ᵥ z = (finHom V κ).1 *ᵥ ((finHom V κ').1 *ᵥ z) := by
-  rw [map_mul, Units.val_mul, Matrix.mulVec_mulVec]
-
-theorem finHom_mulVec_one (V : HSp D) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
-    (finHom V 1).1 *ᵥ z = z := by
-  rw [map_one, Units.val_one, Matrix.one_mulVec]
-
-def stabGrp (V : HSp D) : Subgroup (GA D V) where
-  carrier := {κ | StabLat V κ}
-  one_mem' := stabLat_one V
-  mul_mem' := by
-    rintro κ κ' ⟨a, h⟩ ⟨a', h'⟩
-    refine ⟨mul_mem a a', ?_⟩
-    unfold gLat at h h' ⊢
-    rw [show (finHom V (κ * κ')).1.mulVec = (finHom V κ).1.mulVec ∘ (finHom V κ').1.mulVec from
-      funext (finHom_mulVec_mul V κ κ'), Set.image_comp, h', h]
-  inv_mem' := by
-    rintro κ ⟨a, h⟩
-    refine ⟨inv_mem a, ?_⟩
-    unfold gLat at h ⊢
-    conv_lhs => rw [← h]
-    rw [← Set.image_comp, show (finHom V κ⁻¹).1.mulVec ∘ (finHom V κ).1.mulVec = id from funext fun z => by
-      rw [Function.comp_apply, ← finHom_mulVec_mul, inv_mul_cancel, finHom_mulVec_one, id], Set.image_id]
-
-variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
-  {ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)}
-
-end Record
 
 end GlobalTheory.DictLevel

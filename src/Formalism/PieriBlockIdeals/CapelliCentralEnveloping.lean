@@ -80,13 +80,6 @@ def RootOfUnityRemainder : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] (ζ : O), l ≠ 2 →
     IsPrimitiveRoot ζ l → ∀ b ∈ Finset.Ioo 0 l, (X - C (ζ ^ b - 1)) ∣ pi0 l O - C (l : O)
 
-def ConvergentSeriesEval : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [Algebra ℤ_[l] O]
-    [UniformSpace O] [IsUniformAddGroup O] [IsTopologicalRing O] [IsLinearTopology O O]
-    [T2Space O] [CompleteSpace O] (ζ : O), l ≠ 2 →
-    IsPrimitiveRoot ζ l → IsTopologicallyNilpotent (ζ - 1) → ∀ b ∈ Finset.Ioo 0 l,
-      PowerSeries.eval₂ (RingHom.id O) (ζ ^ b - 1) (pi0 l O) = (l : O)
-
 def R4 : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O], l ≠ 2 →
     ∀ (S : ℕ) (m y : O⟦X⟧), inc l O m = q l O ^ S * y → ∃ m' : O⟦X⟧, m = (X - C (l : O)) ^ S * m'
@@ -114,20 +107,6 @@ def ZpowCongGen : Prop :=
   ∀ (R : Type) [CommRing R] (x v : R) (U : Rˣ) (κ : ℤ), (U : R) = 1 + x * v →
     x ^ 2 ∣ ((U ^ κ : Rˣ) : R) - (1 + (κ : R) * (x * v))
 
-def ZpowCong : Prop :=
-  ∀ (R : Type) [CommRing R] (v : R⟦X⟧) (U : (R⟦X⟧)ˣ) (κ : ℤ), (U : R⟦X⟧) = 1 + v * X →
-    (X : R⟦X⟧) ^ 2 ∣ ((U ^ κ : (R⟦X⟧)ˣ) : R⟦X⟧) - (1 + C ((κ : R) * constantCoeff v) * X)
-
-def TwistCong : Prop :=
-  ∀ (k : Type) [Field k] (un g : k⟦X⟧) (κ : ℤ), ∃ r : k⟦X⟧,
-    (((X * (1 + un * X) : k⟦X⟧) : LaurentSeries k)) ^ κ * ((1 + X * g : k⟦X⟧) : LaurentSeries k) =
-      ((X : k⟦X⟧) : LaurentSeries k) ^ κ *
-        ((1 + C ((κ : k) * constantCoeff un + constantCoeff g) * X + X ^ 2 * r : k⟦X⟧) :
-          LaurentSeries k)
-
-def DbarCong : Prop :=
-  ∀ (R : Type) [CommRing R] (v y : R⟦X⟧), (X : R⟦X⟧) ^ 2 ∣ y.subst (X * (1 + v * X)) - y
-
 def ThetaCongPadic : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (u : ℤ_[l]ˣ) (c : ℤ_[l]) (m : ℤ), (u : ℤ_[l]) = 1 + (l : ℤ_[l]) * c →
     ∃ e : ℤ_[l], ((u ^ (-m) : ℤ_[l]ˣ) : ℤ_[l]) = 1 + (l : ℤ_[l]) * (-((m : ℤ_[l]) * c) + (l : ℤ_[l]) * e)
@@ -136,51 +115,19 @@ section Capelli
 
 variable {𝒰 : Type} [Ring 𝒰] {N : ℕ}
 
-def GlRel (E : Fin N → Fin N → 𝒰) : Prop :=
-  ∀ a b c d, E a b * E c d - E c d * E a b =
-    (if b = c then E a d else 0) - (if d = a then E c b else 0)
-
 def capA (E : Fin N → Fin N → 𝒰) (v : 𝒰) (i j : Fin N) : 𝒰 := E i j + if i = j then v else 0
 
 def capelli (E : Fin N → Fin N → 𝒰) (u : 𝒰) : 𝒰 :=
   ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) •
     (List.ofFn fun j : Fin N => capA E (u - ((j : ℕ) : 𝒰)) (σ j) j).prod
 
-def capelliRow (E : Fin N → Fin N → 𝒰) (u : 𝒰) : 𝒰 :=
-  ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤˣ) : ℤ) •
-    (List.ofFn fun i : Fin N => capA E (u - (((σ i : Fin N) : ℕ) : 𝒰)) i (σ i)).prod
-
 end Capelli
-
-def C1 : Prop :=
-  ∀ (𝒰 : Type) [Ring 𝒰] (N : ℕ) (E : Fin N → Fin N → 𝒰) (u : 𝒰), GlRel E →
-    (∀ i j, Commute u (E i j)) → ∀ k m, Commute (E k m) (capelli E u)
-
-def CapelliCentralPoly : Prop :=
-  ∀ (𝒰 : Type) [Ring 𝒰] (N : ℕ) (E : Fin N → Fin N → 𝒰), GlRel E → ∀ k m n,
-    Commute (E k m)
-      ((capelli (fun i j => Polynomial.C (E i j)) (Polynomial.X : Polynomial 𝒰)).coeff n)
-
-attribute [local instance 100] LieRing.ofAssociativeRing in
-
-def CapelliCentralEnveloping : Prop :=
-  ∀ (R : Type) [CommRing R] (N : ℕ)
-    (x : UniversalEnvelopingAlgebra R (Matrix (Fin N) (Fin N) R)) (n : ℕ),
-    Commute x
-      ((capelli (fun i j => Polynomial.C
-          (UniversalEnvelopingAlgebra.ι R (Matrix.single i j (1 : R))))
-        (Polynomial.X :
-          Polynomial (UniversalEnvelopingAlgebra R (Matrix (Fin N) (Fin N) R)))).coeff n)
 
 def C2 : Prop :=
   ∀ (k : Type) [CommRing k] (𝒰 : Type) [Ring 𝒰] [Algebra k 𝒰] (V : Type) [AddCommGroup V]
     [Module k V] [Module 𝒰 V] [IsScalarTower k 𝒰 V] (N : ℕ) (E : Fin N → Fin N → 𝒰) (u : k)
     (lam : Fin N → k) (v : V), (∀ i j, i < j → E i j • v = 0) → (∀ i, E i i • v = lam i • v) →
     capelli E (algebraMap k 𝒰 u) • v = (∏ i : Fin N, (u + lam i - ((i : ℕ) : k))) • v
-
-def RowDetNotCentral : Prop :=
-  ¬ ∀ (𝒰 : Type) [Ring 𝒰] (N : ℕ) (E : Fin N → Fin N → 𝒰) (u : 𝒰), GlRel E →
-    (∀ i j, Commute u (E i j)) → ∀ k m, Commute (E k m) (capelliRow E u)
 
 def MinorsDvd {R : Type} [CommRing R] {m p : ℕ} (x : R) (t : ℕ) (P : Matrix (Fin m) (Fin p) R) :
     Prop :=
@@ -191,53 +138,15 @@ def MinorsDvdAll : Prop :=
   ∀ (R : Type) [CommRing R] (m p t : ℕ) (x : R) (P : Matrix (Fin m) (Fin p) R),
     MinorsDvd x t P ↔ ∀ (f : Fin t → Fin m) (g : Fin t → Fin p), x ∣ (P.submatrix f g).det
 
-def MinorExpand : Prop :=
-  ∀ (R : Type) [CommRing R] (m n p t : ℕ) (G : Matrix (Fin m) (Fin n) R)
-    (P : Matrix (Fin n) (Fin p) R) (f : Fin t → Fin m) (g : Fin t → Fin p),
-    ((G * P).submatrix f g).det =
-      ∑ r : Fin t → Fin n, (∏ i, G (f i) (r i)) * (P.submatrix r g).det
-
 def MinorsDvdMul : Prop :=
   ∀ (R : Type) [CommRing R] (m n p r t : ℕ) (x : R) (G : Matrix (Fin m) (Fin n) R)
     (P : Matrix (Fin n) (Fin p) R) (H : Matrix (Fin p) (Fin r) R),
     MinorsDvd x t P → MinorsDvd x t (G * P * H)
 
-def MinorsBasisIndep : Prop :=
-  ∀ (R : Type) [CommRing R] (n t : ℕ) (x : R) (G P H : Matrix (Fin n) (Fin n) R),
-    IsUnit G → IsUnit H → (MinorsDvd x t (G * P * H) ↔ MinorsDvd x t P)
-
 def DiagMinors : Prop :=
   ∀ (R : Type) [CommRing R] (n t S : ℕ) (x : R) (a : Fin n → ℕ) (G H : Matrix (Fin n) (Fin n) R),
     (∀ J : Finset (Fin n), J.card = t → S ≤ ∑ j ∈ J, a j) →
     MinorsDvd (x ^ S) t (G * Matrix.diagonal (fun j => x ^ a j) * H)
-
-def MinorExists : Prop :=
-  ∀ (R : Type) [CommRing R] (n t h : ℕ) (x : R) (M M' : Matrix (Fin n) (Fin n) R), t ≤ n →
-    M * M' = (x ^ h) • (1 : Matrix (Fin n) (Fin n) R) → ¬ x ^ (t * h + 1) ∣ x ^ (t * h) →
-    ∃ (f g : Fin t → Fin n), StrictMono f ∧ StrictMono g ∧
-      ¬ x ^ (t * h + 1) ∣ (M.submatrix f g).det
-
-def BlockMinor : Prop :=
-  ∀ (R : Type) [CommRing R] [IsDomain R] (π : R) (n₁ n₂ t₁ t₂ v₁ v₂ : ℕ)
-    (A : Matrix (Fin n₁) (Fin n₁) R) (B : Matrix (Fin n₁) (Fin n₂) R)
-    (D : Matrix (Fin n₂) (Fin n₂) R) (f₁ g₁ : Fin t₁ → Fin n₁) (f₂ g₂ : Fin t₂ → Fin n₂), Prime π →
-    ¬ π ^ (v₁ + 1) ∣ (A.submatrix f₁ g₁).det → ¬ π ^ (v₂ + 1) ∣ (D.submatrix f₂ g₂).det →
-    ((Matrix.fromBlocks A B 0 D).submatrix (Sum.map f₁ f₂) (Sum.map g₁ g₂)).det =
-        (A.submatrix f₁ g₁).det * (D.submatrix f₂ g₂).det ∧
-      ¬ π ^ (v₁ + v₂ + 1) ∣
-        ((Matrix.fromBlocks A B 0 D).submatrix (Sum.map f₁ f₂) (Sum.map g₁ g₂)).det
-
-def MinorBoundExtra : Prop :=
-  ∀ (R : Type) [CommRing R] [IsDomain R] (π : R) (n h c : ℕ) (Φ : Matrix (Fin n) (Fin n) R)
-    (b : Fin n → ℕ) (ch : Finset ℕ) (al ν : ℕ → ℕ), Prime π → Φ.BlockTriangular b →
-    ch ⊆ Finset.univ.image b →
-    (∀ r ∈ ch, ∃ s, (∀ j, b j = r ↔ j = s) ∧ ∃ u : Rˣ, Φ s s = (u : R) * π ^ al r) →
-    (∀ r ∈ Finset.univ.image b \ ch,
-      (∃ M' : Matrix {j // b j = r} {j // b j = r} R,
-        Φ.toSquareBlock b r * M' = (π ^ h) • (1 : Matrix {j // b j = r} {j // b j = r} R)) ∧
-      ν r ≤ (Finset.univ.filter fun j => b j = r).card) →
-    MinorsDvd (π ^ c) (ch.card + ∑ r ∈ Finset.univ.image b \ ch, ν r) Φ →
-    c ≤ ∑ r ∈ ch, al r + (∑ r ∈ Finset.univ.image b \ ch, ν r) * h
 
 def CharpolyDiag : Prop :=
   ∀ (O L : Type) [CommRing O] [Field L] (ι : O →+* L) (n : ℕ) (Θ Γ : Matrix (Fin n) (Fin n) O)
@@ -246,12 +155,6 @@ def CharpolyDiag : Prop :=
     Γ.map ι * (G : Matrix (Fin n) (Fin n) L) =
       (G : Matrix (Fin n) (Fin n) L) * Matrix.diagonal (fun j => ι (1 + lam * r j)) →
     Θ.charpoly = ∏ j, (Polynomial.X - Polynomial.C (r j))
-
-def CharpolyRed : Prop :=
-  ∀ (O k : Type) [CommRing O] [CommRing k] (red : O →+* k) (n : ℕ) (Θ : Matrix (Fin n) (Fin n) O)
-    (r : Fin n → O) (a : k) (c : Fin n → ℤ),
-    Θ.charpoly = ∏ j, (Polynomial.X - Polynomial.C (r j)) → (∀ j, red (r j) = -a * (c j : k)) →
-    (Θ.map red).charpoly = ∏ j, (Polynomial.X - Polynomial.C (-a * (c j : k)))
 
 def MinorRed : Prop :=
   ∀ (O k : Type) [CommRing O] [CommRing k] (red : O →+* k) (lam : O) (n t S : ℕ)
@@ -287,12 +190,5 @@ def HeightDescent : Prop :=
     P.map (inc l O) * Q = (q l O ^ h) • (1 : Matrix (Fin n) (Fin n) O⟦X⟧) →
     ∃ Q' : Matrix (Fin n) (Fin n) O⟦X⟧,
       P * Q' = ((X - C (l : O)) ^ h) • (1 : Matrix (Fin n) (Fin n) O⟦X⟧)
-
-def DLeibniz : Prop :=
-  ∀ (A N : Type) [CommRing A] [AddCommGroup N] [Module A N] (p : A) (γA : A →+* A) (γ d : N → N)
-    (δ : A → A), (∀ x : N, p • x = 0 → x = 0) → (∀ y x, γ (y • x) = γA y • γ x) →
-    (∀ x, p • d x = γ x - x) → (∀ y, p * δ y = γA y - y) →
-    (∀ y x, d (y • x) = γA y • d x + δ y • x) ∧
-    (∀ q₀ un x, γA q₀ = (1 + p * un) * q₀ → d (q₀ • x) = q₀ • (d x + un • γ x))
 
 end Formalism.CohomologicalDescent.HeightDescentMinors

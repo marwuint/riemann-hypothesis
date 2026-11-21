@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRealThetaParameterPairThetaPartnerSignedParameStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRealThetaParameterPairThetaPartnerSignedParame
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CartFrSgn
 import Development.AbelianVarietyTheory.Definitions.Divisors.LeastSplitAuxiliaryPrimeThetaChainSpec
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open MeasureTheory Matrix GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.Grid
@@ -241,7 +242,7 @@ theorem pairPar_top : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.CuspAl
   have hgap : ∀ E : Finset ℚ, GapOver (plus E) (2 * (bigN D : ℚ) ^ 3) := by
     intro E x hx y hy hxy
     exact absurd ((mem_plus.1 hx).2.trans (mem_plus.1 hy).2.symm) hxy
-  have key := GlobalTheory.T.isRealThetaParameterPair_thetaPartnerSignedParameter (D.R.t + 1) true c c (G.parX j) (bigN D) (by omega) hne (isRegular_plus _) hcos hfar hcard hN
+  have key := _root_.GlobalTheory.PairLift.FromSigned.thetaPar_partner (D.R.t + 1) true c c (G.parX j) (bigN D) (by omega) hne (isRegular_plus _) hcos hfar hcard hN
     (hgap _) (by rw [hpart]; exact hgap _)
   rw [hpart] at key
   exact ⟨D.R.t + 1, parXp D (j + 1) τ, parXp D j τ, rfl, rfl, Or.inr key⟩

@@ -2,8 +2,8 @@ import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAddStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJumpStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAdd
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJump
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct
 
 namespace GlobalTheory
@@ -45,8 +45,8 @@ theorem negCycBlock_jumps : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : 
   | succ t ih =>
     intro ρ hρ
     obtain ⟨c1, d1, m1⟩ := ih (negPowBlock (cycLL (P.PD K) ↥LL.1) t) (fun _ _ _ => rfl)
-    obtain ⟨c2, d2, m2⟩ := GlobalTheory.T.cyc_zpow_crys_dR_jump_alt l P AI hT K LL (-(t : ℤ))
-    obtain ⟨hd, hc, hm⟩ := GlobalTheory.T.directSum_deRham_crystalline_jumps_add l P AI hT K LL _ ρ _
+    obtain ⟨c2, d2, m2⟩ := _root_.GlobalTheory.CycPow.cyc_zpow_crys_dR_jump l P AI hT K LL (-(t : ℤ))
+    obtain ⟨hd, hc, hm⟩ := _root_.GlobalTheory.Per.DirectSumHT.directSum_hodgeTate l P AI hT K LL _ ρ _
       (negPowBlock (cycLL (P.PD K) ↥LL.1) t) _ (charRep (cycLL (P.PD K) ↥LL.1 ^ (-(t : ℤ))))
       (snocSplit ↥LL.1 t) (by
         intro g v

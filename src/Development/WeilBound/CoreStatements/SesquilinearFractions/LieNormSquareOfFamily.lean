@@ -31,7 +31,7 @@ theorem lie_norm_square_of_family : ∀ (E : Type) [Field E] [NumberField E] [Is
   have hd0 : u0.IsDiff (K w) v' := by
     simpa using HodgeUniq.isDiff_comp u0 uC d20 (𝟙 P'.A) K hK hv'T hdw
   have hKH : ∀ z z', hermForm Hm0 (K z) (K z') = hermForm Hm z z' :=
-    (_root_.GlobalTheory.T.weilEq_iff_hermForm_eq_complex thetaUnifAV_all laws P' P' P' P' uC uC u0 uC Hm0 Hm χ0 χ hAH0 hAH (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _)
+    (_root_.GlobalTheory.CM.weilEq_iff_hermForm_eq thetaUnifAV_all laws P' P' P' P' uC uC u0 uC Hm0 Hm χ0 χ hAH0 hAH (𝟙 _) (𝟙 _) (𝟙 _) (𝟙 _)
       K K LinearMap.id LinearMap.id hK hK (fun z => by simp) (fun z => by simp)).1 (fun _ _ _ _ _ _ _ => Iff.rfl)
   have hkey : ∀ b b' : L, ∀ z z', hermForm HmT (F b z) (F b' z') = hermForm Hm0 (G (h b b') z) z' := by
     intro b b' z z'
@@ -40,7 +40,7 @@ theorem lie_norm_square_of_family : ∀ (E : Type) [Field E] [NumberField E] [Is
     have W1 := (PairingFibre.weilEq_iff hpb hpb hQpb hpb T.t.PP.isLB C.P.isLB Q.isLB P'.isLB (LBIso.symm hQLB)
       (LBIso.symm hLB) (hfc b) (hfc b') (hec (h b b'))
       (show (𝟙 P'.A : P'.A ⟶ P'.A).left ≫ φ = φ ≫ (𝟙 C.P.A : C.P.A ⟶ C.P.A).left by simp) (𝟙 (Sp ℂ))).2 (by rw [Category.id_comp]; exact W0)
-    have := (_root_.GlobalTheory.T.weilEq_iff_hermForm_eq_complex thetaUnifAV_all laws P' P' Q P' u0 u0 uT u0 HmT Hm0 χT χ0 hAHT hAH0 (f b) (f b')
+    have := (_root_.GlobalTheory.CM.weilEq_iff_hermForm_eq thetaUnifAV_all laws P' P' Q P' u0 u0 uT u0 HmT Hm0 χT χ0 hAHT hAH0 (f b) (f b')
       (e (h b b')) (𝟙 _) (F b) (F b') (G (h b b')) LinearMap.id (hFl b) (hFl b') (hGl _) (fun z => by simp)).1 W1 z z'
     simpa using this
   have hg1 : P'.g = 1 := hg'.trans C.dim

@@ -59,23 +59,4 @@ def LevAtG.lamGlob {Z : Type} [CommGroup Z] (X : LevAtG σE J gp splitG Lb Uloc 
       (χ i v ((mem_placesOver F (gp i) (hg i) v).1 hv)))
     Up (fun v hv => hUp i v ((mem_placesOver F (gp i) (hg i) v).1 hv))
 
-theorem LevAtG.lamGlob_apply {Z : Type} [CommGroup Z] (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i ≠ 0)
-    (ψ0 : ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp i : 𝓞 F) ∈ v.asIdeal → AddChar (resV F v) Z)
-    (χ : ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp i : 𝓞 F) ∈ v.asIdeal → ℕ → (resV F v)ˣ →* Z)
-    (Up : Subgroup (GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))
-    (hUp : ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp i : 𝓞 F) ∈ v.asIdeal →
-      Up ≤ (Uloc v).comap (bc (prV (E := E) v))) (x : Up) :
-    X.lamGlob hg ψ0 χ Up hUp x = ∏ i : Fin 2, ∏ v ∈ (placesOver F (gp i)).attach,
-      X.lamV i v.1 ((mem_placesOver F (gp i) (hg i) v.1).1 v.2) (ψ0 i v.1 ((mem_placesOver F (gp i) (hg i) v.1).1 v.2))
-        (χ i v.1 ((mem_placesOver F (gp i) (hg i) v.1).1 v.2))
-        ⟨bc (prV (E := E) v.1) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)),
-          hUp i v.1 ((mem_placesOver F (gp i) (hg i) v.1).1 v.2) x.2⟩ := by
-  unfold LevAtG.lamGlob
-  rw [MonoidHom.finset_prod_apply]
-  refine Finset.prod_congr rfl (fun i _ => ?_)
-  unfold prodChar
-  rw [MonoidHom.finset_prod_apply]
-  refine Finset.prod_congr rfl (fun v _ => ?_)
-  rfl
-
 end Formalism.L2.G

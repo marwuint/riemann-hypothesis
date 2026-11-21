@@ -2,14 +2,14 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubsingletonOfGiso
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicExtensionExactStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiPreservesIsomorphismStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PsiPreservesIsomorphismStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PsiPreservesIsomorphism
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiProductRankZeroTrivialStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiProductLeftRankZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiProductLeftRankZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionProductRankZeroLeftStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionProductRankZeroRightStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeTwistedIsoStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistProductDistributesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistTwistAddStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistTwistAdd
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiltrationStatement
 
 noncomputable section
@@ -27,13 +27,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 theorem ses_of_mext {n : ℕ} {A B C : MRep k n} (h : MExt A B C) : Ses A.ρ B.ρ C.ρ := GlobalTheory.T.mirabolic_extension_exact k n A B C h
 theorem miso_phiN (ψ : AddChar k Circle) {n : ℕ} {A B : MRep k (n + 1)} (h : MIso A B) : MIso (phiN ψ A) (phiN ψ B) :=
   GlobalTheory.T.phi_preserves_isomorphism k ψ n A B h
-theorem giso_psiN {n : ℕ} {A B : MRep k n} (h : MIso A B) : GIso (psiN A) (psiN B) := GlobalTheory.T.psi_preserves_isomorphism k n A B h
+theorem giso_psiN {n : ℕ} {A B : MRep k n} (h : MIso A B) : GIso (psiN A) (psiN B) := _root_.GlobalTheory.CompanionTheory.LeibOrd.PsiIso.giso_psiN k n A B h
 theorem phi_gp_zero (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {m : ℕ} (ρ : GRep k (m + 1)) (τ : MRep k 0)
     (h : (m + 1) + 0 = (m + 0) + 1) (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) :
     Subsingleton (phiN ψ (mcast h (prodGPn ρ τ))).V := GlobalTheory.T.phi_product_rank_zero_trivial k ψ hc h1 m ρ τ h hρ hτ
 theorem phi_product_trivial_right (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {i : ℕ} (τ : MRep k (i + 1)) (σ : GRep k 0)
     (h : (i + 1) + 0 = (i + 0) + 1) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) :
-    MIso (phiN ψ (mcast h (prodPGn τ σ))) (prodPGn (phiN ψ τ) σ) := GlobalTheory.T.phi_product_left_rank_zero k ψ hc h1 i τ σ h hτ hσ
+    MIso (phiN ψ (mcast h (prodPGn τ σ))) (prodPGn (phiN ψ τ) σ) := _root_.GlobalTheory.CompanionTheory.LeibOrd.GLZero.phiN_prodPGn_zero k ψ hc h1 i τ σ h hτ hσ
 theorem restriction_product_left_trivial {j n : ℕ} (π₁ : GRep k 0) (π₂ : GRep k (j + 1)) (h : 0 + (j + 1) = n + 1) (h' : 0 + j = n)
     (s₁ : IsSmooth π₁.ρ) (s₂ : IsSmooth π₂.ρ) :
     MIso (gres ((π₁.prod π₂).cast h)) (mcast h' (prodGPn π₁ (gres π₂))) := GlobalTheory.T.restriction_product_rank_zero_left k j n π₁ π₂ h h' s₁ s₂
@@ -44,7 +44,7 @@ theorem derivB_iso (ψ : AddChar k Circle) (j : ℕ) {n : ℕ} (π : GRep k (n +
     GIso (derivB ψ j π) ((dG ψ j π).tw ((j : ℝ) / 2)) := GlobalTheory.T.derivative_twisted_iso k ψ j n π
 theorem tw_prod {r t : ℕ} (A : GRep k r) (B : GRep k t) (s : ℝ) :
     GIso ((A.prod B).tw s) ((A.tw s).prod (B.tw s)) := GlobalTheory.T.twist_product_distributes k r t A B s
-theorem tw_tw {n : ℕ} (A : GRep k n) (s s' : ℝ) : GIso ((A.tw s).tw s') (A.tw (s + s')) := GlobalTheory.T.twist_twist_add k n A s s'
+theorem tw_tw {n : ℕ} (A : GRep k n) (s s' : ℝ) : GIso ((A.tw s).tw s') (A.tw (s + s')) := _root_.GlobalTheory.CompanionTheory.LeibOrd.giso_tw_tw k n A s s'
 theorem chain_filtration {n : ℕ} {R : ℕ → GRep k n → Prop} {Z : ℕ → Prop} {a b : ℕ} {X : GRep k n}
     (h : Chain R Z a b X) :
     ∃ F : ℕ → Subrepresentation X.ρ, Antitone F ∧ F a = ⊤ ∧ F b = ⊥ ∧ ∀ i, a ≤ i → i < b →
@@ -59,9 +59,6 @@ theorem isSmooth_iterN (ψ : AddChar k Circle) : ∀ (j : ℕ) {n : ℕ} {τ : M
     IsSmooth (iterN ψ j τ).ρ
   | 0, _, _, h => h
   | j + 1, _, _, h => isSmooth_iterN ψ j (isSmooth_phiN ψ h)
-
-theorem isSmooth_dN (ψ : AddChar k Circle) (j : ℕ) {n : ℕ} {τ : MRep k (n + j)} (h : IsSmooth τ.ρ) :
-    IsSmooth (dN ψ j τ).ρ := isSmooth_psiN (isSmooth_iterN ψ j h)
 
 theorem ses_iterN (ψ : AddChar k Circle) (hc : Continuous ψ) : ∀ (j : ℕ) {n : ℕ} {A B C : MRep k (n + j)},
     IsSmooth A.ρ → IsSmooth B.ρ → IsSmooth C.ρ → Ses A.ρ B.ρ C.ρ →

@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.LabesseWaldspurger
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConstantTermVanishing
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointRadical
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspidalNoRadicalFixed
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.StandardMaximalParabolic
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CentralizerTensorForms
@@ -22,45 +21,6 @@ noncomputable section
 open scoped TensorProduct
 
 namespace GlobalTheory.IwSplitFrame
-
-section Frame
-
-variable {D : D7} {V : HSp D} (Φ : WittFrame V)
-
-def cols {r : ℕ} (x : Fin r → V.V) : Matrix (Fin V.rank) (Fin r) D.host.E := Matrix.of fun k i => V.frame.repr (x i) k
-
-theorem gram_cols {r s : ℕ} (x : Fin r → V.V) (y : Fin s → V.V) (i : Fin r) (j : Fin s) :
-    (((cols x).map D.sp.cm.sig).transpose * V.gram * cols y) i j = V.hT (x i) (y j) := by
-  rw [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord V]
-  simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, cols, Matrix.of_apply, Finset.sum_mul]
-  rw [Finset.sum_comm]
-  rfl
-
-theorem fe : ((cols Φ.f).map D.sp.cm.sig).transpose * V.gram * cols Φ.e = 1 := by
-  ext j i
-  rw [gram_cols, Matrix.one_apply, ← HSpace.hD, Φ.ef]
-  simp only [eq_comm]
-
-theorem ee : ((cols Φ.e).map D.sp.cm.sig).transpose * V.gram * cols Φ.e = 0 := by
-  ext j i
-  rw [gram_cols, Matrix.zero_apply, ← HSpace.hD, Φ.ee]
-
-theorem ff : ((cols Φ.f).map D.sp.cm.sig).transpose * V.gram * cols Φ.f = 0 := by
-  ext j i
-  rw [gram_cols, Matrix.zero_apply, ← HSpace.hD, Φ.ff]
-
-theorem ef : ((cols Φ.e).map D.sp.cm.sig).transpose * V.gram * cols Φ.f = 1 := by
-  ext i j
-  have h1 : V.hT (Φ.e i) (Φ.f j) = star (V.hT (Φ.f j) (Φ.e i)) := GlobalTheory.IndefiniteRowSideFullHecke.BesselData.hT_swap rfl
-  rw [gram_cols, Matrix.one_apply, h1, ← HSpace.hD, Φ.ef]
-  split_ifs <;> simp
-
-theorem coordMat_eq (R : Type) [CommRing R] [Algebra D.host.F R] :
-    (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V R (Φ.e i) x) =
-      (cols Φ.e).map (inclR (F := D.host.F) R) := by
-  ext; rfl
-
-end Frame
 
 theorem exists_compl {K : Type} [Field K] [CharZero K] {n r : ℕ} (e e' : Matrix (Fin n) (Fin r) K)
     (p a : Matrix (Fin r) (Fin n) K) (hpe : p * e = 1) (hpe' : p * e' = 0) (hae : a * e = 0) (hae' : a * e' = 1) :
@@ -154,28 +114,5 @@ theorem keeps_of_split (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (g : GLoc 
   exact ⟨⟨_, _, mul_eq_one_comm.1 h3, h3⟩, hk⟩
 
 end Local
-
-theorem iwasawa_span_split : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (a : GL (Fin V.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E)), Φ.IsGood D.sp.cm L a → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ (g : GLoc D.sp.cm.sig V.gram v), ∃ q k : GLoc D.sp.cm.sig V.gram v, k ∈ stabLoc D.sp.cm.sig V.gram L v ∧ g = q * k ∧ ∃ β : GL (Fin (wittIndex V)) (TensorProduct D.host.F (Fv D.host.F v) D.host.E), (HA.mat (F := D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram q).1 * (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) = (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) * β.1 := by
-  intro D V Φ L a hG v ⟨P, P', hne, hP, hP'⟩ g
-  obtain ⟨τ, -⟩ := existsUnique_splitPrime_eq (isCMExt_host D) (v := v) hne (HeightOneSpectrum.ext hP)
-    (HeightOneSpectrum.ext hP')
-  haveI : Submodule.IsLattice D.host.E L := hG.1
-  obtain ⟨k, i, qq, hn, hsum⟩ := exists_compl (cols Φ.e) (cols Φ.f)
-    (((cols Φ.f).map D.sp.cm.sig).transpose * V.gram) (((cols Φ.e).map D.sp.cm.sig).transpose * V.gram)
-    (fe Φ) (ff Φ) (ee Φ) (ef Φ)
-  obtain ⟨B, lv, hB⟩ := GlobalTheory.Core.Rk.IwFlagSplit.exists_flag_basis (v := v) τ (GlobalTheory.Doubling.isHermND_gram V)
-    (e := cols Φ.e) (e' := cols Φ.f) (i := i) (p := ((cols Φ.f).map D.sp.cm.sig).transpose * V.gram) (q := qq)
-    (Fintype.equivOfCardEq (by simp only [Fintype.card_sum, Fintype.card_fin]; omega)) hsum (ef Φ)
-  have hQ : ∀ x : GLoc D.sp.cm.sig V.gram v, (B⁻¹ * splitHom D.sp.cm.sig V.gram τ x * B).1.BlockTriangular lv →
-      x ∈ keepGrp (σ := D.sp.cm.sig) (J := V.gram) (v := v) ((cols Φ.e).map (inclR (F := D.host.F) (Fv D.host.F v))) :=
-    fun x hx => by
-      obtain ⟨⟨b, hb⟩, b', hb'⟩ := hB x hx
-      exact keeps_of_split (isCMExt_host D) τ x (fe Φ) hb hb'
-  obtain ⟨q, k', hq, hk, rfl⟩ := GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_of_triangular (isCMExt_host D)
-    (GlobalTheory.Doubling.isHermND_gram V) τ L (hG.2.1 v) _ B lv hQ g
-  obtain ⟨β, hβ⟩ := hq
-  refine ⟨q, k', hk, rfl, β, ?_⟩
-  rw [coordMat_eq]
-  exact hβ
 
 end GlobalTheory.IwSplitFrame

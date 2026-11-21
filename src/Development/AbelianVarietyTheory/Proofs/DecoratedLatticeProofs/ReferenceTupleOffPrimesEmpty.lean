@@ -3,10 +3,32 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsRatDatum
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SameCosetOfMemCosetIn
-import Formalism.LocalToGlobal.Columns.ChainTwTop
+import Formalism.LocalToGlobal.Columns.ChainTwMain
+import Formalism.LocalToGlobal.Columns.WithTopLevGTop
 import Formalism.LocalToGlobal.Columns.ChainOneP
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StabilizerFormValueStepStatement
+import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.OffSmall
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.HermitianCodeWordWeilElementMemQuadraticField
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.TrueWtAddSSNonneg
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.KmapEq
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CevInjective
+import Formalism.LocalToGlobal.Columns.ToHLat
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HtPsiLeIffExists
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JetStepEqZeroExample
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KmapOfOkOfVecP
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueChainComplexFormsStabiliserLaw
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OrdSubConjEqNeg
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.XiEntryInvariant
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FirstCoupledKernelEquivariantCosets
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KAtTopEquiv
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DifferentiableSumU
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairKernelTermTargetStabiliserLaw
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairKernelLawOfFiniteDatumLaw
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ColumnFieldRamificationIdxInEqOne
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemberBadPrimesNoConjugatePair
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DetUnitaryStabiliserSelfDualLatticeNormOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianChartComplexRationalIntegralForms
 
 noncomputable section
@@ -42,21 +64,6 @@ open scoped Classical
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 variable {B : Base} {X : PreX B.toPre} {I : TC B X}
-
-theorem reference_tuple_off_primes_empty : twQOff (Pr := B.primes X) I.sel (I.tup I.mu0) = ∅ := by
-  have h := I.twistPrimes_reference_tuple_eq_empty
-  unfold ColIn.Q at h
-  unfold twQOff
-  rw [h]
-  exact Finset.empty_sdiff _
-
-theorem idx_eq (ht : I.IsTw) (i : ℕ) (b b' : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) i) : b = b' := by
-  by_cases hi : i < B.R.m
-  · have e : ∀ al al' : (I.idx I.mu0).β i, al = al' := by
-      rw [(ht I.mu0).2]
-      exact twSt_subsingleton reference_tuple_off_primes_empty i
-    rw [← b.of_get hi hi, ← b'.of_get hi hi, e (b.get hi) (b'.get hi)]
-  · rw [b.eq_top (not_lt.1 hi), b'.eq_top (not_lt.1 hi)]
 
 open GlobalTheory.GO.ChSrc (trueWt nuEnd sS sD polFn fnPol) in
 open Formalism.L2.Forms (fnOf shiftOf ValC) in
@@ -116,18 +123,6 @@ theorem kmap_val (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (hi
     (hf : f ∈ Formalism.L2.Forms.ValC (Gr B.fields.emb B.embLL (B.R.N i)) (lamT (B.hcW u) i)) :
     (I.chain l u a).Kmap i c c' f ∈ Formalism.L2.Forms.ValC (Gr B.fields.emb B.embLL (B.R.N (i + 1))) (lamT (B.hcW u) (i + 1)) :=
   kmap_mem_valC (X := B.fields) (I.chIn u a) B.embLL (l.ch u a) (B.hcW u) hi c c' _ rfl f hf
-
-theorem K_mem_Fi (I : TC B X) (h : I.Ok) (hP : TC.Pins B X) (ht : I.IsTw) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (i : ℕ)
-    (hi : i < B.R.m) : ∀ φ ∈ (I.stp u I.mu0 i).Fi B.fields.emb B.embLL (lamT (B.hcW u) i),
-      (I.chain l u I.mu0).K i φ ∈ (I.stp u I.mu0 (i + 1)).Fi B.fields.emb B.embLL (lamT (B.hcW u) (i + 1)) := by
-  intro φ hφ c'
-  let _ := (I.chain l u I.mu0).clsFin i
-  have hK : (I.chain l u I.mu0).K i φ c' = ∑ c, (I.chain l u I.mu0).wt i c • (I.chain l u I.mu0).Kmap i c c' (φ c) := rfl
-  rw [hK]
-  refine ⟨Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (kmap_val I l u I.mu0 i hi c c' _ (hφ c).1), fun g => ?_⟩
-  rw [map_sum]
-  refine Finset.sum_congr rfl fun c _ => ?_
-  rw [map_smul, GlobalTheory.T.stabilizer_form_value_step I h hP ht l Z u i hi c c' g _ (hφ c).1]
 
 end True
 

@@ -44,12 +44,6 @@ theorem exists_sortPerm {n : ℕ} (ε : Fin n → Bool) :
 
 variable {V : HSp D} {S : D.what₂.Tau → SPar}
 
-section Main
-
-variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D} {S S' : D.what₂.Tau → SPar}
-
-end Main
-
 end GlobalTheory.FockOrder
 
 end

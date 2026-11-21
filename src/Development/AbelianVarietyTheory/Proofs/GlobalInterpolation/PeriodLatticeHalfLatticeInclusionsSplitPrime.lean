@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StandardRankOneLatticeOfLocal
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HeisenbergCocycleFormIntegralSelfDual
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFactsStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFacts
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker Formalism.L2.Th1.H GlobalTheory.IndefiniteRowSideFullHecke.JetSumTable GlobalTheory.MomT
 
@@ -131,7 +131,7 @@ theorem half_inclusions : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finse
     obtain ⟨s, hs, h3⟩ := h2
     rw [h0, Submodule.mem_bot, Algebra.smul_def, mul_one, RingOfIntegers.coe_eq_zero_iff] at h3
     exact hs (h3 ▸ Q.asIdeal.zero_mem)
-  have hloc := fun P hP => (GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hfg hAA hN hN').2.2.2 P (hAS P hP)
+  have hloc := fun P hP => (_root_.GlobalTheory.MomT.LatFin.per_lattice_facts X A a b N N' hfg hAA hN hN').2.2.2 P (hAS P hP)
   have hhom : ∀ T : Finset (HeightOneSpectrum (𝓞 X.E)), (∀ P ∈ T, P ∈ S) → ∀ y : HomE X.E a b,
       y ∈ homAt T N N' ↔ ∀ P ∈ T, y ∈ localization₂ P.asIdeal (per A N N') := fun T hT y =>
     forall₂_congr fun P hP => (hloc P (hT P hP) y).symm

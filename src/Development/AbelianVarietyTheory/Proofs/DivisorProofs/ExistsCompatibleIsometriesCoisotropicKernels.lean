@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmHostUnitAddConjEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicSaturatedSubmoduleOfFinrankLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicSaturatedSubmoduleOfFinrankLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOppositeIsotropicPairStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOppositeTransversalIsotropicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsometryKernelCoisotropicModStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOppositeTransversalIsotropic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsometryKernelCoisotropicMod
 
 noncomputable section
 
@@ -60,8 +60,8 @@ theorem exists_step [Module.Free ℤ X] [Module.Finite ℤ X] {Z FinalForm : Sub
     (hd : N' ∣ n) (hc : Cois D f n) (hk : KerIs D f Z N') :
     ∃ h : D.La ≃ₗ[𝓞 E] D.La, (∀ a b, D.EF (h a) (h b) = D.EF a b) ∧ (∀ a, ∃ e, h a = a + N' • e) ∧
       KerIs D (f.comp h.toLinearMap) Z n := by
-  obtain ⟨Z'', hop'', hon⟩ := GlobalTheory.T.exists_opposite_transversal_isotropic D f n hn hc Z FinalForm hop hrk
-  obtain ⟨h, hi, hN, hk'⟩ := GlobalTheory.T.exists_isometry_kernel_coisotropic_mod D f n N' hn hd hc Z Z'' hop'' hrk hk hon
+  obtain ⟨Z'', hop'', hon⟩ := _root_.GlobalTheory.LowFilt.exists_opp_transv D f n hn hc Z FinalForm hop hrk
+  obtain ⟨h, hi, hN, hk'⟩ := _root_.GlobalTheory.LowFilt.exists_isometry_kerIs D f n N' hn hd hc Z Z'' hop'' hrk hk hon
   exact ⟨h, hi, hN, hk'⟩
 
 def levelSeq (N j : ℕ) : ℕ := N * (j + 1).factorial
@@ -94,10 +94,10 @@ theorem exists_compatible_isometries : ∀ {E : Type} [Field E] [NumberField E] 
         ∀ n, 0 < n → ∀ a, (∃ e, y n (g n a) = n • e) ↔ ∃ b ∈ perp D Z, ∃ e, a = b + n • e := by
   intro E _ _ _ H D X _ _ _ _ y hc hy hr N hN
   classical
-  obtain ⟨Z₀, hZ₀, hrk₀⟩ := GlobalTheory.T.exists_isotropicSaturatedSubmodule_of_finrank_le D _ hr
+  obtain ⟨Z₀, hZ₀, hrk₀⟩ := _root_.GlobalTheory.LowFilt.exists_isIsoSat_finrank D _ hr
   obtain ⟨Z₀', hop₀⟩ := GlobalTheory.T.exists_oppositeIsotropicPair D Z₀ hZ₀
-  obtain ⟨Z₁', hop₁, hon₁⟩ := GlobalTheory.T.exists_opposite_transversal_isotropic D (y N) N hN (hc N hN) Z₀ Z₀' hop₀ hrk₀
-  obtain ⟨g₀, hg₀, -, hk₀⟩ := GlobalTheory.T.exists_isometry_kernel_coisotropic_mod D (y N) N 1 hN (one_dvd N) (hc N hN) Z₀ Z₁' hop₁ hrk₀
+  obtain ⟨Z₁', hop₁, hon₁⟩ := _root_.GlobalTheory.LowFilt.exists_opp_transv D (y N) N hN (hc N hN) Z₀ Z₀' hop₀ hrk₀
+  obtain ⟨g₀, hg₀, -, hk₀⟩ := _root_.GlobalTheory.LowFilt.exists_isometry_kerIs D (y N) N 1 hN (one_dvd N) (hc N hN) Z₀ Z₁' hop₁ hrk₀
     (fun a => ⟨fun _ => ⟨0, zero_mem _, a, by simp⟩, fun _ => ⟨y N a, by simp⟩⟩) hon₁
   set Z := Z₀.map (g₀ : D.La →ₗ[𝓞 E] D.La) with hZdef
   have memZ : ∀ x, x ∈ Z ↔ g₀.symm x ∈ Z₀ := fun x => Submodule.mem_map_equiv Z₀

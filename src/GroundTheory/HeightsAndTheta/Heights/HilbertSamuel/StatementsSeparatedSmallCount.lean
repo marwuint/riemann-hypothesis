@@ -18,12 +18,6 @@ def SeparatedSmallCount.Statement : Prop :=
     smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLat y A.a) τ ≤
       (Module.finrank ℤ (chartLat y A.a τ) : ℝ) * (b + Real.log 3)
 
-section Inhabitant
-
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet
-
-end Inhabitant
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

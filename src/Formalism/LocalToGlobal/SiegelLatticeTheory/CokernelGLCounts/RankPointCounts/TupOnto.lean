@@ -399,11 +399,6 @@ theorem sE_herm (α : E) (hα : α + star α = 1) (y₀ : S.V) (v : Fin r → E)
   simp only [sE, star_neg, star_mul', star_star, hh]
   linear_combination (-(v c * star (v d) * S.hT y₀ y₀)) * hα
 
-theorem nilF_f' (e a f : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E)
-    (hef : ∀ c b, S.hT (e c) (f b) = if c = b then 1 else 0) (b : Fin r) (ha : ∀ c, S.hT (a c) (f b) = 0) :
-    nilF e a s (f b) = a b + ∑ c, s c b • e c := by
-  simp [nilF, hef, ha, ite_smul, add_smul, Finset.sum_add_distrib]
-
 theorem nilF_orth (e a : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E) (x : S.V) (hx : ∀ c, S.hT (e c) x = 0) :
     nilF e a s x = ∑ c, (-(S.hT (a c) x)) • e c := by
   simp [nilF, hx]

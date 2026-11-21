@@ -27,45 +27,6 @@ theorem _root_.GlobalTheory.PeriodicPartition.locallyFinite_support_translate (�
   have hmem := Set.sub_mem_sub (subset_tsupport φ (show z + (l : E) ∈ Function.support φ from hz)) hzb
   rwa [add_sub_cancel_left] at hmem
 
-theorem exists_periodic_bump (Λ : Submodule ℤ E) [DiscreteTopology Λ] {U : Set E}
-    (hU : IsOpen U) (hper : ∀ (l : Λ) z, z ∈ U → z + l ∈ U) {x : E} (hx : x ∈ U) :
-    ∃ ψ : E → ℝ, ContDiff ℝ ∞ ψ ∧ (∀ (l : Λ) z, ψ (z + l) = ψ z) ∧ tsupport ψ ⊆ U ∧
-      (∀ z, 0 ≤ ψ z) ∧ 0 < ψ x := by
-  obtain ⟨φ, hφU, hφc, hφs, hφr, hφx⟩ :=
-    exists_contDiff_tsupport_subset (n := ⊤) (hU.mem_nhds hx)
-  have h0 : ∀ z, 0 ≤ φ z := fun z => (hφr ⟨z, rfl⟩).1
-  have hlf := locallyFinite_support_translate Λ φ hφc
-  refine ⟨fun z => ∑ᶠ l : Λ, φ (z + l), ?_, ?_, ?_, ?_, ?_⟩
-  · rw [← contMDiff_iff_contDiff]
-    refine contMDiff_finsum (f := fun (l : Λ) (z : E) => φ (z + l)) (fun l => ?_) hlf
-    rw [contMDiff_iff_contDiff]
-    exact hφs.comp (contDiff_id.add contDiff_const)
-  · intro l z
-    show ∑ᶠ m : Λ, φ (z + l + m) = ∑ᶠ m : Λ, φ (z + m)
-    rw [← finsum_comp_equiv (Equiv.addLeft l) (f := fun m : Λ => φ (z + m))]
-    simp [add_assoc]
-  · have h1 : Function.support (fun z => ∑ᶠ l : Λ, φ (z + l)) ⊆
-        ⋃ l : Λ, Function.support fun z : E => φ (z + l) := by
-      intro z hz
-      by_contra hn
-      simp only [Set.mem_iUnion, Function.mem_support, not_exists, not_not] at hn
-      exact hz (by simp [hn])
-    refine (closure_mono h1).trans ?_
-    rw [hlf.closure_iUnion]
-    refine Set.iUnion_subset fun l => ?_
-    have h2 : closure (Function.support fun z : E => φ (z + l)) ⊆
-        (fun z : E => z + l) ⁻¹' tsupport φ :=
-      closure_minimal (fun z hz => subset_tsupport _ hz)
-        ((isClosed_tsupport φ).preimage (by fun_prop))
-    intro z hz
-    have := hper (-l) _ (hφU (h2 hz))
-    simpa using this
-  · exact fun z => finsum_nonneg fun l => h0 _
-  · have h1 := single_le_finsum (f := fun l : Λ => φ (x + l)) 0 (hlf.point_finite x)
-      (fun l => h0 _)
-    simp only [ZeroMemClass.coe_zero, add_zero, hφx] at h1
-    exact lt_of_lt_of_le one_pos h1
-
 open Complex Matrix in
 open scoped ContDiff BigOperators Real Topology Manifold in
 open scoped Pointwise in
@@ -87,42 +48,6 @@ theorem _root_.GlobalTheory.PeriodicPartition.exists_finite_subcover (Λ : Submo
     exact (b.ofZLatticeBasis_span ℝ Λ).le (ZSpan.floor b' z).2
   refine ⟨k, hk, ?_⟩
   simpa [ZSpan.fract_apply] using hper k ⟨_, hmem⟩ _ hz
-
-theorem exists_partition (Λ : Submodule ℤ E) [DiscreteTopology Λ] [IsZLattice ℝ Λ]
-    {ι : Type} (U : ι → Set E) (hU : ∀ i, IsOpen (U i))
-    (hper : ∀ i (l : Λ) z, z ∈ U i → z + l ∈ U i) (hcov : ∀ z, ∃ i, z ∈ U i) :
-    ∃ (s : Finset ι) (ρ : ι → E → ℝ), (∀ i, ContDiff ℝ ∞ (ρ i) ∧
-      (∀ (l : Λ) z, ρ i (z + l) = ρ i z) ∧ tsupport (ρ i) ⊆ U i) ∧
-      ∀ z, ∑ i ∈ s, ρ i z = 1 := by
-  classical
-  choose c hc using hcov
-  choose ψ hψs hψp hψU hψ0 hψx using fun x => exists_periodic_bump Λ (hU (c x)) (hper (c x)) (hc x)
-  obtain ⟨t, ht⟩ := exists_finite_subcover Λ (fun x => {z | 0 < ψ x z})
-    (fun x => isOpen_lt continuous_const (hψs x).continuous)
-    (fun x l z hz => by simpa [hψp] using hz) (fun z => ⟨z, hψx z⟩)
-  have hS : ∀ z, 0 < ∑ x ∈ t, ψ x z := fun z => by
-    obtain ⟨x, hx, hz⟩ := ht z
-    exact Finset.sum_pos' (fun x _ => hψ0 x z) ⟨x, hx, hz⟩
-  refine ⟨t.image c, fun i z => (∑ x ∈ t with c x = i, ψ x z) / ∑ x ∈ t, ψ x z,
-    fun i => ⟨?_, ?_, ?_⟩, fun z => ?_⟩
-  · exact (ContDiff.sum fun x _ => hψs x).div (ContDiff.sum fun x _ => hψs x) fun z => (hS z).ne'
-  · intro l z
-    simp only [hψp]
-  · have hcl : IsClosed (⋃ x ∈ t.filter (fun x => c x = i), tsupport (ψ x)) :=
-      isClosed_biUnion_finset fun x _ => isClosed_tsupport _
-    refine (closure_minimal ?_ hcl).trans ?_
-    · intro z hz
-      by_contra hn
-      refine hz ?_
-      have : ∑ x ∈ t with c x = i, ψ x z = 0 := Finset.sum_eq_zero fun x hx => by
-        by_contra h
-        exact hn (Set.mem_iUnion₂.2 ⟨x, hx, subset_tsupport _ h⟩)
-      simp only [this, zero_div]
-    · refine Set.iUnion₂_subset fun x hx => ?_
-      rw [← (Finset.mem_filter.1 hx).2]
-      exact hψU x
-  · rw [← Finset.sum_div, Finset.sum_fiberwise_of_maps_to (fun x hx => Finset.mem_image_of_mem c hx),
-      div_self (hS z).ne']
 
 end GlobalTheory.PeriodicPartition
 

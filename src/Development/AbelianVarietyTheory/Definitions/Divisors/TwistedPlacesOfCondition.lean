@@ -78,32 +78,12 @@ structure Hypotheses₂ : Prop where
   p25 : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm
   p26 : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent
 
-theorem Hypotheses₂.eisenstein (h : Hypotheses₂) : GlobalTheory.Published.SiegelEisensteinContinuation :=
-  GlobalTheory.Published.siegelEisensteinContinuation_of_doublingMethod h.p14
-
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m}
 
 def SerClause (D : D7) : Prop :=
   ∀ k : Fin 2, haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
     ∃ (C : Formalism.IrreducibleCountingLemmas.TYPES.LabelConv (ZMod (D.host.g k))) (O : Formalism.IrreducibleCountingLemmas.TYPES.LabelMap (ZMod (D.host.g k)) C),
       ∀ f, D.ntypes.eSer k f = Formalism.L2.NT.eSerO O D.R.r f
-
-structure TiesA {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) : Prop where
-  ok : A3.fam3.Ok3 1
-  char : R.WeakCharacterisation F
-  ex : R.toRealDat.ExAt
-  host : Formalism.IndefR.Links.HostHyp D
-  params : ∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)
-  ccK : D.host.ccK = ⊤
-  guard : QGuard R.toRealDat
-  types : GlobalTheory.IndefiniteRowSideFullHecke.CommutingLevelOperators.GoodTypes R.toRealDat
-  ser : SerClause D
-  junk : GlobalTheory.Hk3.InertJunk A3
-  trSem : (∃ tr, R.TrISem F tr ∧ GlobalTheory.Hk3.TrISepWith A3 tr) → R.TrISem F A3.trI ∧ A3.fam3.TrISep
-  std : IsStdChar D R.ψ (-1)
-  phs : ∀ i, R.phs i = 1
-  w1 : ∀ w, (R.toCx3 F).W1 F.cr (R.num F 0 0) w → w ∈ R.twPl
-  nV : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV
 
 structure TiesG (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat3 D A3 T.Q.c.F)
     (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.toRealDat.MW i σ).Vec)
@@ -121,52 +101,6 @@ structure Inputs {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.L
   rallis : GlobalTheory.RawLift.RallisConv D
   nonVan : ∀ i t, GlobalTheory.DownLift.NonVan R.toRealDat i t
   rowTest : Formalism.IndefR.Rat.RowTest (R.toCx3 F)
-
-section Real
-
-open Formalism.L2 Formalism.L2.Rows
-
-variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts} {Y : DivX D}
-  {cX : ExtraC} {ex : Extra D L hT Gi Gl K Y cX}
-  {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)}
-  {Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)} {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}
-  {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc}
-
-theorem serClause_of_rec (Rc : Formalism.L2.RecT ex) : SerClause D :=
-  fun k => ⟨_, Rc.T.n.types.O k, Rc.T.n.types.eSer_def k⟩
-
-theorem TiesA.of_real {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Q : RealT Rc P Dcf Spf Zscf S Ks)
-    (hP : RealPins Q) (ok : P.A3.fam3.Ok3 1) (hex : Q.Rl.toRealDat.ExAt) (par : Nonempty (ParameterChoice' D L))
-    (cc : D.host.ccK = ⊤) (ty : GlobalTheory.IndefiniteRowSideFullHecke.CommutingLevelOperators.GoodTypes Q.Rl.toRealDat) (junk : GlobalTheory.Hk3.InertJunk P.A3)
-    (w1 : ∀ w, (Q.Rl.toCx3 Q.F).W1 Q.F.cr (Q.Rl.num Q.F 0 0) w → w ∈ Q.Rl.twPl)
-    (nV : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV) : TiesA Q.Rl Q.F :=
-  ⟨ok, Q.charW, hex, Q.host, ⟨L, par⟩, cc, hP.qGuard, ty, serClause_of_rec Rc, junk, Q.trSem, Q.stdChar, hP.phsOne, w1, nV⟩
-
-theorem TiesG.of_real (B : RealTB Rc P Dcf Spf Zscf S) (hB : RowsB B) (hU : B.Q.Rl.toRealDat.LUnif)
-    (hC : GlobalTheory.TwistField.CoverField B.T B.Q.Rl.toRealDat) : TiesG B.T B.Q.Rl B.κ B.v₀ B.O :=
-  ⟨⟨B.fw, B.bar⟩, B.pins, B.phase, hU, hB.ioExt, hB.oneMap, hC⟩
-
-end Real
-
-section Api
-
-variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3}
-
-theorem TiesA.twistedPlaces_of_condition (h : TiesA R F) (C CH : ℝ) : ∀ w, (R.toCx3 F).W1 F.cr (R.num F C CH) w → w ∈ R.twPl := h.w1
-
-theorem TiesA.char3 (h : TiesA R F) : R.Char3 F := RealDat3.characterisation_of_weak h.char h.ex
-
-example (h : TiesA R F) : 4 ≤ D.R.nV := le_trans (Nat.le_add_left _ _) h.nV
-
-example (i : Fin D.R.m) (hi : R.phs i ≠ 1) : ¬ TiesA R F := fun h => hi (h.phs i)
-
-theorem TiesG.phaseTie {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat3 D A3 T.Q.c.F}
-    {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.toRealDat.MW i σ).Vec}
-    {O : ∀ i, OMDat T.toCore R.toRealDat i Unit (fun _ => A3.A.μ0)} (h : TiesG T R κ v₀ O) (i : Fin D.R.m) :
-    PhaseTie T R.toRealDat κ v₀ O (fun i => cj (twAt D.what₂.embLL A3.A.v0) (R.phs i)) i :=
-  h.phase i h.unif
-
-end Api
 
 end GlobalTheory.PrimIn
 

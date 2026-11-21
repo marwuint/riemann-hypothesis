@@ -1,18 +1,19 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GCauchyStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionCommPositiveUnitaryGroupStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionCommPositiveUnitaryGroup
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLattice
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteClsAndStab
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceAutomorphyLinearityStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsGoodSplitPrimeCmFieldStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SiegelWeilDifferenceAutomorphyLinearity
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsGoodSplitPrimeCmField
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.NeBotOfNorm
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ClassSumNbStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ClassSumNb
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TwistAdmissible
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TwistedSiegelWeilDifferenceBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeckeRelationAdmissibleFamilyPointwiseStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TwistedSiegelWeilDifferenceBounded
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeckeRelationAdmissibleFamilyPointwise
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real Classical
@@ -23,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+
 
 theorem isSB_of_adm (hΨ : IsType Ψ) (hn : Even n) {M R : ℕ} {φ : Fam E n N} (h : admitted M R φ)
     {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) : IsSB (φ Λ) := by
-  obtain ⟨R', C, -, H⟩ := GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n N hn 1 R one_pos h.pos.2
+  obtain ⟨R', C, -, H⟩ := _root_.GlobalTheory.SW.weil_level_and_sup E Ψ hΨ n N hn 1 R one_pos h.pos.2
   refine (H M Λ hΛ 1 Base.one_mem_UU (fun i j => ?_) (φ Λ) ⟨h.supp Λ hΛ, h.per Λ hΛ⟩).1
   by_cases e : i = j
   · subst e; simpa using isIntegral_one
@@ -37,12 +38,12 @@ theorem swd_sum (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {M : ℕ} (hM :
   induction s using Finset.induction_on with
   | empty =>
     refine ⟨fun _ _ => isSB_zero, ?_⟩
-    have := (GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M 0 hM (fun _ _ => isSB_zero) Z hZ).2.2.2.1 0
+    have := (_root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n N hn hN M 0 hM (fun _ _ => isSB_zero) Z hZ).2.2.2.1 0
     simpa using this
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih.2]
-    exact ⟨fun Λ hΛ => (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear E _ _ _ _ (h a Λ hΛ) (ih.1 Λ hΛ)).1,
-      (GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M (ψ a) hM (h a) Z hZ).2.2.1 _ ih.1⟩
+    exact ⟨fun Λ hΛ => (_root_.GlobalTheory.SW.isSB_algebra_haar_linear E _ _ _ _ (h a Λ hΛ) (ih.1 Λ hΛ)).1,
+      (_root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n N hn hN M (ψ a) hM (h a) Z hZ).2.2.1 _ ih.1⟩
 
 theorem classSum_sum {M : ℕ} (hM : 0 < M) {ι : Type} (s : Finset ι) (f : ι → Lt E n → ℂ) :
     classSum M (fun Λ => ∑ i ∈ s, f i Λ) = ∑ i ∈ s, classSum M (f i) := by
@@ -85,12 +86,12 @@ theorem swd_nb (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {M R q : ℕ} {P
     rw [(he Λ hΛ).2 fun Λ' => ψ Λ' x]
     simp only [Finset.sum_apply]
   refine ⟨fun Λ hΛ => (eq Λ hΛ) ▸ h1 Λ hΛ, ?_⟩
-  rw [(GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M _ hM h1 Z hZ).2.2.2.2 _ eq, h2]
-  have H := GlobalTheory.T.classSum_sum_nb_eq_of_moves_invariant E n M q P hM hP (fun Λ => thH Ψ (ψ Λ) Z 0 0 - eis Ψ (ψ Λ) Z 0 0) (by
+  rw [(_root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n N hn hN M _ hM h1 Z hZ).2.2.2.2 _ eq, h2]
+  have H := _root_.GlobalTheory.SW.classSum_nb E n M q P hM hP (fun Λ => thH Ψ (ψ Λ) Z 0 0 - eis Ψ (ψ Λ) Z 0 0) (by
     intro g hg Λ hΛ Λ' hΛ' m
     have e1 : (fun x : Matrix (Fin n) (Fin N) E => ψ Λ' (g * x)) = ψ Λ :=
       funext (h.equiv g hg Λ hΛ Λ' hΛ' m)
-    have := (GlobalTheory.T.hermitianWeilAction_comm_positiveUnitaryGroup E Ψ hΨ n N hn g hg.1 (ψ Λ') (isSB_of_adm hΨ hn h hΛ')).2.2 Z hZ
+    have := (_root_.GlobalTheory.SW.weil_comp_unitary E Ψ hΨ n N hn g hg.1 (ψ Λ') (isSB_of_adm hΨ hn h hΛ')).2.2 Z hZ
     exact congrArg₂ (· - ·) (this.1.symm.trans (congrArg (thH Ψ · Z 0 0) e1))
       (this.2.symm.trans (congrArg (eis Ψ · Z 0 0) e1)))
   refine Eq.trans ?_ H
@@ -124,7 +125,7 @@ theorem hecke_swd (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {M R q : ℕ}
           swd Ψ M (twist R 𝔛 φ) Z 0 0 =
         ((q : ℂ) - 1) * ((q : ℂ) ^ n * ∑ i, swd Ψ M (twist R (XA i) φ) Z 0 0 +
           ∑ i, ∑ j, swd Ψ M (twist R (XB i) φ) (fun τ => Z τ + (β i j).map τ.1) 0 0) := by
-  obtain ⟨A, XA, XB, β, hA, hX, hid⟩ := GlobalTheory.T.hecke_relation_admissibleFamily_pointwise E Ψ hΨ n N M R q P φ 𝔛 h h1 h2 hP
+  obtain ⟨A, XA, XB, β, hA, hX, hid⟩ := _root_.GlobalTheory.SW.hecke_relation_pointwise E Ψ hΨ n N M R q P φ 𝔛 h h1 h2 hP
   refine ⟨A, XA, XB, β, hA, hX, fun Z hZ => ?_⟩
   have hM := h.pos.1
   have hP' : GoodPrime M q P := ⟨hP.1, Nat.Coprime.coprime_mul_left_right hP.2.1, hP.2.2⟩
@@ -132,13 +133,13 @@ theorem hecke_swd (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {M R q : ℕ}
     fun Y a b => (twist_admissible E n N M R φ Y h a b).2.2.2.2.1
   have sb : ∀ Y : Lt E N, Y.FG → Agree (R * M) Y (stdL E N) → ∀ Λ ∈ Vset E n M,
       IsSB (twist R Y φ Λ) := fun Y a b Λ hΛ => isSB_of_adm hΨ hn (adm Y a b).choose_spec hΛ
-  have aut := fun (ψ : Fam E n N) hψ => GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M ψ hM hψ Z hZ
+  have aut := fun (ψ : Fam E n N) hψ => _root_.GlobalTheory.SW.swd_automorphy_linear E Ψ hΨ n N hn hN M ψ hM hψ Z hZ
   have sbs : ∀ (c : ℂ) (ψ : Fam E n N), (∀ Λ ∈ Vset E n M, IsSB (ψ Λ)) →
       ∀ Λ ∈ Vset E n M, IsSB ((c • ψ) Λ) := fun c ψ hψ Λ hΛ =>
-    (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear E _ _ _ _ (hψ Λ hΛ) (hψ Λ hΛ)).2.1 c
+    (_root_.GlobalTheory.SW.isSB_algebra_haar_linear E _ _ _ _ (hψ Λ hΛ) (hψ Λ hΛ)).2.1 c
   have sba : ∀ (ψ ψ' : Fam E n N), (∀ Λ ∈ Vset E n M, IsSB (ψ Λ)) →
       (∀ Λ ∈ Vset E n M, IsSB (ψ' Λ)) → ∀ Λ ∈ Vset E n M, IsSB ((ψ + ψ') Λ) :=
-    fun ψ ψ' hψ hψ' Λ hΛ => (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear E _ _ _ _ (hψ Λ hΛ) (hψ' Λ hΛ)).1
+    fun ψ ψ' hψ hψ' Λ hΛ => (_root_.GlobalTheory.SW.isSB_algebra_haar_linear E _ _ _ _ (hψ Λ hΛ) (hψ' Λ hΛ)).1
   obtain ⟨a1, a2⟩ := swd_sum hΨ hn hN hM hZ Finset.univ (fun i => twist R (XA i) φ)
     fun i => sb _ (hX i).1 (hX i).2.1
   have sbB : ∀ i, ∀ Λ ∈ Vset E n M, IsSB (twist R (XB i) φ Λ) :=
@@ -241,11 +242,11 @@ open GlobalTheory.SW.Step in
 
 theorem GlobalTheory.SW.swAt_succ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * (N + 1) < n → SWAt Ψ n N → SWAt Ψ n (N + 1) := by
   intro E _ _ _ Ψ hΨ n N hn hN hSW M R φ h Z hZ
-  obtain ⟨C, hC⟩ := GlobalTheory.T.twisted_siegelWeil_difference_bounded E Ψ hΨ n N hn hN hSW M R φ h
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.SW.twist_swd_bounded E Ψ hΨ n N hn hN hSW M R φ h
   obtain ⟨k, rfl⟩ := hn
   have ek : ((k + k : ℕ) : ℝ) / 2 = (k : ℝ) := by push_cast; ring
   simp only [ek, Real.rpow_natCast] at hC
-  obtain ⟨q, P, hP⟩ := GlobalTheory.T.exists_good_split_prime_cmField E (R * M) (Nat.mul_pos h.pos.2 h.pos.1)
+  obtain ⟨q, P, hP⟩ := _root_.GlobalTheory.SW.SplitPrime.exists_goodPrime E (R * M) (Nat.mul_pos h.pos.2 h.pos.1)
   have hq : (1 : ℝ) < q := by exact_mod_cast hP.1.one_lt
   set θ : ℝ := (q : ℝ) ^ k * (1 + (q : ℝ) ^ (N + 1)) / ((q : ℝ) ^ (k + k) + (q : ℝ) ^ (N + 1))
     with hθ

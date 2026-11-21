@@ -39,22 +39,8 @@ end Gen
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
   {x : St P} (L : LocAll (lay0 (Dof x)))
 
-theorem eig_hkDat_back (l : LC hL x) {i k Q α Rr} (h : HkDat (datL x L).R (sbD L l) i k Q α Rr) :
-    HkDat x.m.z.R l.rat.In.Sb ((i)) k ((Q)) ((α)) ((Rr)) :=
-  ⟨(by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.offS :)), (by with_unfolding_all exact (h.odd :)), (by with_unfolding_all exact (h.le :)), (by with_unfolding_all exact (h.elt :)), (by with_unfolding_all exact (h.reps :))⟩
-
 theorem eigVec_loc {i k Q Rr c v} (h : EigVec x.m.z.R i k Q Rr c v) :
     EigVec (datL x L).R ((i)) k ((Q)) ((Rr)) ((c)) ((v)) := (h)
-
-theorem eigVec_state (l : LC hL x) (i σ k Q α Rr) (hd : HkDat x.m.z.R l.rat.In.Sb i k Q α Rr) (hσ : (Dof x).nd.goodRow σ) (y)
-    (hy : y ∈ (Dof x).what₂.isot (i.1 + 1) σ) : EigVec x.m.z.R i k Q Rr (l.rat.In.eig (i.1 + 1) σ k Q) (x.r.Y.mj.eW i y) :=
-  (by with_unfolding_all exact (((eigAd_iff_eigVec _ _ _).1 l.rat.rat.eig i σ k Q α Rr hd hσ y hy) :))
-
-theorem eigAd_loc (l : LC hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0) (hY : YRel L Y) :
-    EigAd Y (sbD L l) (eigD L l) :=
-  (eigAd_iff_eigVec _ _ _).2 fun i σ k Q α Rr hd hσ y hy =>
-    (by with_unfolding_all exact ((EigVec.congr (v' := ((Y.mj.eW i y))) (eigVec_loc L (eigVec_state l ((i)) ((σ)) k ((Q)) ((α)) ((Rr)) (((eig_hkDat_back L l hd))) ((hσ)) ((y)) ((hy))))
-      (((hY.eW i y)))) : _))
 
 end GlobalTheory.HeightCounting.Fin3
 

@@ -44,26 +44,4 @@ theorem cutAt_of_leaves {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.
       nu_not_class_holds hDT (FCount.eligible_totally_positive u u' F0 what₂),
     hNR, hTS, ⟨LocModel.thTriv M, hU, hR⟩⟩
 
-def CutLeaves (D : Formalism.BasicNotions.D7) : Prop :=
-  (VS D).SigOK →
-  ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
-    (hA : ∀ p, Agree δ M p) (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),
-    (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2] → PrimeHyp D u (Tu D u') →
-    ∀ (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-      IsRowReps D F0 what₂ →
-      PairVal.NormRepExists D u u' F0 what₂ ∧ Formalism.L2.SG.Pf.NormRepMove D u u' ∧ PhaseLocG M δ u u' F0 what₂ ∧
-      VolIdxProd M δ u u' F0 what₂ ∧ PCount.ExistP ⟨δ, M, hA⟩ u u' F0 what₂ ∧ PCount.SumFrP ⟨δ, M, hA⟩ u u' F0 what₂ ∧
-      PCount.FrGlobP ⟨δ, M, hA⟩ u u' F0 what₂ ∧ PCount.IntGenP ⟨δ, M, hA⟩ ∧ PCount.TauOneReduction ⟨δ, M, hA⟩ u u' F0 what₂ ∧
-      PCount.PartnerIsomorphismCount ⟨δ, M, hA⟩ ∧ FCount.FibSum M δ u u' F0 what₂ ∧ FCount.DensTh M δ L u u'
-
-theorem rowsDatumP_of_leaves {D : Formalism.BasicNotions.D7} (h : CutLeaves D) : RowsDatumP D :=
-  rowsDatumP_of fun hsig δ M hA L u u' hc hP F0 what₂ hrows =>
-    have hl := h hsig δ M hA L u u' hc hP F0 what₂ hrows
-    cutAt_of_leaves hA hc hP hrows hl.1 hl.2.1 hl.2.2.1 hl.2.2.2.1 hl.2.2.2.2.1 hl.2.2.2.2.2.1 hl.2.2.2.2.2.2.1
-      hl.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.2.2.2
-
-theorem rowsInputP_of_leaves {D : Formalism.BasicNotions.D7} (hN : Formalism.L2.SG.SupportG.NormProd D) (h : CutLeaves D) :
-    RowsInputP D :=
-  rowsInputP_of_normProd hN (rowsDatumP_of_leaves h)
-
 end Formalism.L2.SG.Pf.Coef

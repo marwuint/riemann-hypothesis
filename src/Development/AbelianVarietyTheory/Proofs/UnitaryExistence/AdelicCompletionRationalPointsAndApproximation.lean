@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNatStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemAdelicCompletionPseudoBasisIffStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNat
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealProperties
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemAdelicCompletionPseudoBasisIff
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemOfMemSpanFraction
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsNatMulMem
 open NumberField IsDedekindDomain GlobalTheory.AdLat
@@ -96,7 +96,7 @@ theorem hat_rational_points_and_approx :
         (fun i => a ⊗ₜ[F] y i : Fin n → RA F E) - fv F x ∈ (hat F (L : Set (Fin n → E))) := by
       intro a y
       obtain ⟨d, hd, hy⟩ := cap_exists_denom L hsp y
-      obtain ⟨r, a', ha', rfl⟩ := (GlobalTheory.T.finiteAdele_strong_approximation_mod_nat F d hd).1 a
+      obtain ⟨r, a', ha', rfl⟩ := (_root_.GlobalTheory.AdLat.strong_approximation_mod_nat F d hd).1 a
       refine ⟨algebraMap F E r • y, ?_⟩
       rw [cap_split, add_sub_cancel_left, ← cap_tmul_nsmul]
       exact cap_gen_mem F _ a' ha' _ hy
@@ -129,13 +129,13 @@ theorem hat_rational_points_and_approx :
       simp only [fv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul,
         one_mul]
       rw [← TensorProduct.tmul_sum, h]
-    rw [hv, GlobalTheory.T.mem_adelicCompletion_pseudoBasis_iff F E n L e c hc, hc]
-    exact forall_congr' fun a => (GlobalTheory.T.adelicCompletion_fractionalIdeal_properties_alt F E).2.1 (c a) _
+    rw [hv, _root_.GlobalTheory.AdLat.mem_hat_pseudoBasis_iff F E n L e c hc, hc]
+    exact forall_congr' fun a => (_root_.GlobalTheory.AdLat.adelicCompletion_fractionalIdeal_properties F E).2.1 (c a) _
   · intro N hN z hz
     induction hz using AddSubgroup.closure_induction with
     | mem z hz =>
       obtain ⟨a, ha, x, hx, rfl⟩ := hz
-      obtain ⟨r, a', ha', rfl⟩ := (GlobalTheory.T.finiteAdele_strong_approximation_mod_nat F N hN).2 a ha
+      obtain ⟨r, a', ha', rfl⟩ := (_root_.GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).2 a ha
       refine ⟨algebraMap F E (r : F) • x, ?_, _, cap_gen_mem F _ a' ha' x hx, cap_split F _ _ _ _⟩
       exact L.smul_mem (algebraMap (𝓞 F) (𝓞 E) r) hx
     | zero => exact ⟨0, L.zero_mem, 0, zero_mem _, by simp [cap_fv_zero]⟩

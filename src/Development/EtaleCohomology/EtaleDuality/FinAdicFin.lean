@@ -33,7 +33,8 @@ import Development.EtaleCohomology.KummerTheory.RedPostPf
 import Development.EtaleCohomology.KummerTheory.BockCut
 import Development.EtaleCohomology.WeilConjectures.AdicFinPf
 import Development.EtaleCohomology.KummerTheory.AdicLimPfGlue
-import Development.EtaleCohomology.EtaleDuality.AdicFinCut
+import Development.EtaleCohomology.EtaleDuality.PointClasses
+import Development.EtaleCohomology.KummerTheory.AdicDegPf
 
 namespace LateralTheory.Fin.AdicFin
 theorem etale_torsion_cohomology_residue_basic : LateralTheory.EtaleFoundations.EtaleInjectiveResolutionBasicProperties := by
@@ -102,11 +103,4 @@ theorem etale_bockstein_reduction_postcomposition_compat : LateralTheory.KummerT
   apply LateralTheory.KummerTheory.RedPostPf.RedPost_of <;> first | exact etale_bockstein_connecting_map_unique_up_to_sign | exact etale_bockstein_twisted_extension | exact etale_bockstein_integer_hom_compat | exact etale_torsion_cohomology_operation_spec | exact etale_torsion_cohomology_operation_comp | exact etale_prime_power_twist_reduction_map_exists | exact etale_prime_power_twist_restriction_exists | exact etale_torsion_cohomology_primary_part_basic | exact etale_torsion_cohomology_residue_basic
 theorem etale_bockstein_sequence_adic_finiteness : LateralTheory.KummerTheory.Bock := by
   apply LateralTheory.KummerTheory.BockCut.goal_of <;> first | exact etale_bockstein_derived_category_dictionary | exact etale_bockstein_long_exact_sequence_natural | exact etale_bockstein_integer_hom_compat | exact etale_bockstein_reduction_exact | exact etale_bockstein_twisted_extension | exact etale_bockstein_reduction_surjective | exact etale_bockstein_reduction_kernel_eq_image | exact etale_bockstein_twisted_short_exact_sequence | exact etale_bockstein_restriction_of_resolution | exact etale_bockstein_connecting_map_unique_up_to_sign | exact etale_bockstein_reduction_postcomposition_compat | exact etale_torsion_cohomology_primary_part_basic | exact etale_torsion_cohomology_primary_localization | exact etale_torsion_cohomology_twist_section | exact etale_torsion_cohomology_mono_epi_of_exact | exact etale_sheaf_short_complex_exact_iff_locally_lifts | exact etale_torsion_cohomology_localization_basic | exact etale_torsion_cohomology_residue_basic | exact etale_torsion_cohomology_extension_hom_exists | exact etale_torsion_cohomology_operation_spec | exact etale_torsion_cohomology_operation_comp | exact etale_prime_power_twist_reduction_map_exists | exact etale_prime_power_twist_restriction_exists
-theorem etale_adic_cohomology_finiteness_holds : LateralTheory.KummerTheory.AdicFin := by
-  apply LateralTheory.EWeil.AdicFinPf.AdicFin_of
-theorem etale_adic_inverse_limit_comparison_holds : LateralTheory.KummerTheory.AdicLim := by
-  apply LateralTheory.KummerTheory.AdicLim_of_fin <;> first | exact etale_adic_cohomology_finiteness_holds
-theorem adic_finiteness_dual : LateralTheory.EDual.AdicFin := by
-  apply LateralTheory.EDual.adicFin_of <;> first | exact etale_bockstein_sequence_adic_finiteness | exact etale_adic_inverse_limit_comparison_holds
-theorem intersectionNumber_baseChange : LateralTheory.EDual.AdicFin := adic_finiteness_dual
 end LateralTheory.Fin.AdicFin

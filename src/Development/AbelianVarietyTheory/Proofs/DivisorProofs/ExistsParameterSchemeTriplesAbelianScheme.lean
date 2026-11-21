@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrys
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.EqOfAgreeOnTorsion
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyIntegralOfIsOpenImmersionCompSurjecStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatesSurjectiveFibrewiseDenseOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyIntegralOfIsOpenImmersionCompSurjec
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatesSurjectiveFibrewiseDenseOpen
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.EndOnTorsion
 open scoped CategoryTheory.Obj
@@ -28,7 +28,7 @@ theorem exists_param : ∀ (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian 
   have hBsurj : Surjective (V.ι ≫ A.hom) := ⟨fun s => by
     obtain ⟨x, hx, rfl⟩ := hV s
     exact ⟨⟨x, hx⟩, rfl⟩⟩
-  have hBgi : GeometricallyIntegral B.hom := GlobalTheory.T.geometricallyIntegral_comp_of_isOpenImmersion_surjective _ _ _ V.ι A.hom hBsurj
+  have hBgi : GeometricallyIntegral B.hom := _root_.GlobalTheory.geometricallyIntegral_of_isOpenImmersion_comp_surjective _ _ _ V.ι A.hom hBsurj
   let P : Over S := (A ⊗ A) ⊗ B
   let X : P ⟶ A := fst _ _ ≫ fst A A
   let Aa : P ⟶ A := fst _ _ ≫ snd A A
@@ -36,7 +36,7 @@ theorem exists_param : ∀ (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian 
   let O : P.left.Opens := (X * Aa).left ⁻¹ᵁ V ⊓ (X * Aa⁻¹).left ⁻¹ᵁ V ⊓ (Vv * Aa).left ⁻¹ᵁ V ⊓
     (Vv * Aa⁻¹).left ⁻¹ᵁ V
   have hsurj : Surjective (O.ι ≫ X.left) :=
-    GlobalTheory.T.exists_translates_surjective_fibrewise_dense_open S A hA V B j (fun b => b.2) hBs hBgi
+    _root_.GlobalTheory.TranslateSurj.exists_translates_surjective S A hA V B j (fun b => b.2) hBs hBgi
   let Y : Over S := Over.mk (O.ι ≫ P.hom)
   let i : Y ⟶ P := Over.homMk O.ι
   have hmem : ∀ (f : P ⟶ A), O ≤ f.left ⁻¹ᵁ V → ∀ y, (i ≫ f).left y ∈ V := by
@@ -95,7 +95,7 @@ theorem exists_param : ∀ (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian 
   have : Nonempty O.toScheme := ⟨⟨s.left b0, hsO b0⟩⟩
   have hYi : IsIntegral O.toScheme := isIntegral_of_isOpenImmersion O.ι
   have hgi : GeometricallyIntegral (((x.left ⁻¹ᵁ V).ι ≫ O.ι) ≫ pullback.snd (A ⊗ A).hom B.hom) := by
-    refine GlobalTheory.T.geometricallyIntegral_comp_of_isOpenImmersion_surjective _ _ _ _ _ ?_
+    refine _root_.GlobalTheory.geometricallyIntegral_of_isOpenImmersion_comp_surjective _ _ _ _ _ ?_
     have : Surjective (e ≫ ((x.left ⁻¹ᵁ V).ι ≫ O.ι) ≫ pullback.snd (A ⊗ A).hom B.hom) := by
       rw [hsec]; infer_instance
     exact Surjective.of_comp e _

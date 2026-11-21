@@ -180,15 +180,6 @@ theorem locP_BLat_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : 
     Formalism.HermitianLatticesTheory.localization₂ P (BLat Λ F F₂) = Formalism.HermitianLatticesTheory.gmap n (Formalism.HermitianLatticesTheory.localization₂ P (BLat Λ F F₁)) := by
   rw [BLat_transport hF h₁ hn hm hfr hzt, locP_gmap]
 
-theorem offg_transport {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V}
-    (hF : IsLift Λ F) (h₁ : IsLift Λ F₁) (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F₁)
-    (hfr : ∀ a, frame F₂ a = n (m (frame F₁ a))) (hzt : F₂.zt = n (m F₁.zt))
-    (P : Ideal (𝓞 E)) [P.IsPrime] :
-    Formalism.HermitianLatticesTheory.localization₂ P (BLat Λ F F₂) = Formalism.HermitianLatticesTheory.localization₂ P (UU Λ F F₂) ↔
-      Formalism.HermitianLatticesTheory.localization₂ P (BLat Λ F F₁) = Formalism.HermitianLatticesTheory.localization₂ P (UU Λ F F₁) := by
-  rw [locP_BLat_transport hF h₁ hn hm hfr hzt, UU_transport hF h₁ hn hm hfr hzt, locP_gmap]
-  exact ⟨gmap_injective n, fun h => by rw [h]⟩
-
 end Gen
 
 end PI.TermAttrConst.UnitaryGroupMassFormula

@@ -8,8 +8,6 @@ namespace PositivityTheory.KB.SmoothPartitionUnityBasic
 
 namespace GeodesicCounting
 
-variable {L : Type} [Field L] [NumberField L] {N : ℕ}
-
 end GeodesicCounting
 
 private theorem re_star_dotProduct_mat_mulVec_nonneg_of_mem_Pos {L : Type} [Field L] [NumberField L] {N : ℕ} {h : HS L N}

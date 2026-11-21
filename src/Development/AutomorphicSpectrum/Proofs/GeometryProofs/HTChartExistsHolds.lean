@@ -1,11 +1,16 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HTChartExists
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalMulStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateLatticeBaseChangePairingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsHodgeTateFunctionalStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalEndomorphismStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalMul
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateLatticeBaseChangePairing
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsCompactUnitaryPointsAtPlaceFstMemCompact
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.HtExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalEndomorphism
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFunctionalUnique
 
 noncomputable section
 
@@ -133,16 +138,16 @@ theorem htChartExists : HTChartExists := by
   haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ (Fact.out : p.Prime).ne_zero⟩
   have hpn : ((p ^ n : ℕ) : R) ≠ 0 := Nat.cast_ne_zero.2 (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)
   haveI : Smooth G.hom := hSm
-  obtain ⟨hfin, hproj, -⟩ := GlobalTheory.T.lie_model_finite_base_change S G R x L M
+  obtain ⟨hfin, hproj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange S G R x L M
 
   have hex : ∀ χ : T →* Rˣ, ∃ w, Γ.IsHT i M (p ^ n) χ w := fun χ =>
-    GlobalTheory.T.exists_hodge_tate_functional R T Γ S G x (p ^ n) i hTor hSm L M χ
+    _root_.PositivityTheory.UnitarySelfGeneration.ht_exists R T Γ S G x (p ^ n) i hTor hSm L M χ
   have hadd : ∀ (χ χ' : T →* Rˣ) (w w' : Module.Dual R L), Γ.IsHT i M (p ^ n) χ w → Γ.IsHT i M (p ^ n) χ' w' →
       Γ.IsHT i M (p ^ n) (χ * χ') (w + w') := fun χ χ' w w' =>
-    GlobalTheory.T.hodge_tate_functional_mul R T Γ S G x (p ^ n) i hTor L M χ χ' w w'
+    _root_.GlobalTheory.CompanionTheory.Ar.BT.isHT_mul_add R T Γ S G x (p ^ n) i hTor L M χ χ' w w'
   have huniq : ∀ (χ : T →* Rˣ) (w w' : Module.Dual R L), Γ.IsHT i M (p ^ n) χ w →
       (Γ.IsHT i M (p ^ n) χ w' ↔ ∃ u : Module.Dual R L, w' = w + (p ^ n) • u) := fun χ w w' =>
-    GlobalTheory.T.hodge_tate_functional_unique_mod_smul R T Γ S G x (p ^ n) i hTor hSm hpn L M χ w w'
+    _root_.GlobalTheory.CompanionTheory.Ar.BT.HT.isHT_iff R T Γ S G x (p ^ n) i hTor hSm hpn L M χ w w'
   have hzero : Γ.IsHT i M (p ^ n) 1 0 := by
     obtain ⟨w, hw⟩ := hex 1
     have h2 := hadd 1 1 w w hw hw
@@ -198,12 +203,12 @@ theorem htChartExists : HTChartExists := by
     haveI := hmon (RingOfIntegers.mapRingEquiv c a)
     have h1 : Γ.IsHT i M (p ^ n) (χ (a • y)) (dualAct ρ (RingOfIntegers.mapRingEquiv c) a (h y)) := by
       rw [hαc, dualAct_apply]
-      exact GlobalTheory.T.hodge_tate_functional_endomorphism R T Γ S G x (p ^ n) i hTor L M (act (RingOfIntegers.mapRingEquiv c a)) _
+      exact _root_.GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo R T Γ S G x (p ^ n) i hTor L M (act (RingOfIntegers.mapRingEquiv c a)) _
         (ρ (RingOfIntegers.mapRingEquiv c a)) hαpt (hρ _) (χ y) (h y) (hh y)
     obtain ⟨u, hu⟩ := (huniq _ _ _ (hh (a • y))).1 h1
     refine ⟨-u, ?_⟩
     rw [hu, smul_neg, add_neg_cancel_right]
-  obtain ⟨D, hDom, hDe, hDh, hDρ⟩ := GlobalTheory.T.hodge_tate_lattice_base_change_pairing R K E c p n N (Module.Dual R L) Ω j hj
+  obtain ⟨D, hDom, hDe, hDh, hDρ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.htChart_of_projective_module R K E c p n N (Module.Dual R L) Ω j hj
     (dualAct ρ (RingOfIntegers.mapRingEquiv c)) e h halt hadj hsurj hinj hlin
   refine ⟨D, hDe, hDom, fun a w => ?_, fun y => ⟨χ y, h y, fun z => ?_, hDh y, hh y⟩⟩
   · rw [hDρ]; rfl

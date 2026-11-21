@@ -5,12 +5,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorsionFreePDThic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfSquareZeroFrameReflTransGenCyclicChain
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmBasisLiftPdThickening
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftQuasiLogarithmAlongPdThickening
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdaptedQuasiLogBasisPDivGroupLieDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithmStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdaptedQuasiLogBasisPDivGroupLieDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentOfQuasiLogarithm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupDualTangentLinearKillsIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisOfBlockLowerTriangularInvStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiLogarithmBasisTransitionMatricesInverseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorQuasiLogarithmOfCongruentCombinatioStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorQuasiLogarithmOfCongruentCombinatio
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
 namespace GlobalTheory.SmallSecondTangent
@@ -19,7 +19,7 @@ theorem tangent_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hμ k e he hadapt Θ hΘ
   have hF : IsFrame p C (RingHom.id O) := GlobalTheory.FrameIntegers.isFrame_integers p C v O hv
   have hμeq : (fun i => map F.θ (μ' i)) = c.μ := funext hμ
-  obtain ⟨k', es, lbs, hbs, -, hcobs, hlies⟩ := GlobalTheory.T.exists_adapted_quasiLog_basis_pDivGroup_lieDual p C v O hv G d c C hF
+  obtain ⟨k', es, lbs, hbs, -, hcobs, hlies⟩ := _root_.GlobalTheory.QLogBasis.adapted_basis p C v O hv G d c C hF
 
   have hlift1 : ∀ m, ∃ f : MvPowerSeries (Fin d) F.Q, QL μ' ⊤ f ∧ map Θ f = es m := by
     intro m
@@ -43,8 +43,8 @@ theorem tangent_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
   let Ls : Fin d ⊕ Fin k' → G.dual.Lie := Sum.elim 0 lbs
   have hLs : ∀ m, c.IsLie (es m) (Ls m) := by
     rintro (i | j)
-    · obtain ⟨l, hl, -⟩ := GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c C hF (es (Sum.inl i)) (hbs.1 _)
-      have := (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c C hF _ _ l l 0 hl hl).2.2 (hcobs i)
+    · obtain ⟨l, hl, -⟩ := _root_.GlobalTheory.QLogTangent.main p C v O hv G d c C hF (es (Sum.inl i)) (hbs.1 _)
+      have := (_root_.GlobalTheory.LieLin.main p C v O hv G d c C hF _ _ l l 0 hl hl).2.2 (hcobs i)
       subst this; exact hl
     · exact hlies j
   have hμc : ∀ i, constantCoeff (μ' i) = 0 := hlift.const
@@ -52,7 +52,7 @@ theorem tangent_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
     rw [← hμeq]; exact GlobalTheory.SmallSecond.ql_map hΘ μ' hμc (he.1 i)
   have hrow : ∀ i, c.IsLie (map Θ (e i)) (∑ m, F.θ (P i m) • Ls m) := by
     intro i
-    refine GlobalTheory.T.tangentVector_quasiLogarithm_of_congruent_combination p C v O hv G d c es (hbs.1) Ls hLs _ (hg i) _ ?_
+    refine _root_.GlobalTheory.TangentComb.main p C v O hv G d c es (hbs.1) Ls hLs _ (hg i) _ ?_
     intro α
     obtain ⟨b, -, hb⟩ := hP i α
     refine ⟨F.θ b, trivial, ?_⟩
@@ -64,7 +64,7 @@ theorem tangent_basis : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlg
     intro i
     have hc : cob1 (up C c.μ) (map Θ (e (Sum.inl i))) = 0 := by
       rw [← hμeq]; exact GlobalTheory.SmallSecond.formalGroupLawCoboundaryOne_map_eq_zero hΘ μ' hμc (hadapt i).1
-    have h0 := (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c C hF _ _ _ _ 0 (hrow (Sum.inl i)) (hrow (Sum.inl i))).2.2 hc
+    have h0 := (_root_.GlobalTheory.LieLin.main p C v O hv G d c C hF _ _ _ _ 0 (hrow (Sum.inl i)) (hrow (Sum.inl i))).2.2 hc
     simp only [Fintype.sum_sum_type, Ls, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, smul_zero,
       Finset.sum_const_zero, zero_add] at h0
     exact (Fintype.linearIndependent_iff.1 lbs.linearIndependent) _ h0

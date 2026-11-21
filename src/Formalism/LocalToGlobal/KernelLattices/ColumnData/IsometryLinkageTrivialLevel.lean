@@ -91,50 +91,9 @@ theorem herm : FS.Herm4 (cK D) (hK D) where
       map_ratCast _ a, map_ratCast _ b, map_ratCast _ c, map_ratCast _ d, ?_⟩
     rw [hKp, h4]; push_cast; ring
 
-theorem card_eq : Fintype.card D.what₂.Tau = Module.finrank D.host.K D.host.E := by
-  letI := FL.algKC D
-  rw [← AlgHom.card D.host.K D.host.E ℂ]
-  exact Fintype.card_of_bijective (FL.embA_bij D)
-
-theorem iso0 : Nonempty (IsoK D) := by
-  obtain ⟨g, hg⟩ := (herm D).iso (n := D.what₂.Tau) (card_eq D)
-  refine ⟨⟨g, fun x y => ?_⟩⟩
-  have h := hg x y
-  have h2 : (∑ a, Algebra.trace D.host.K D.host.E (x a * D.host.conj (y a))) = ∑ w, g x w * cK D (g y w) := h.symm
-  rw [h2, map_sum]
-  refine Finset.sum_congr rfl fun w _ => ?_
-  rw [map_mul]
-  rfl
-
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity.G0
 
 namespace Formalism.L2.Ker.Cd.IntegralLatticeDensity
-
-open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity hiding CMConjEmb CMTransitive DedekindFactor LinkChi LinkPer LinkThIndep LinkThU LinkThUFam ThetaNormIndependent theta_norm_independent_of_bounds th22U theta_norm_unitary_invariant_of_bounds
-
-open NumberField Formalism.BasicNotions Formalism.L2.Ker
-open Formalism.L2.Ker.Cd.TaylorLogMetric
-open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements AllSplit CoefIn DataIn DualB EqAt EqAway FamE Hf IdE InProd Iop IsChi IsComb IsCurveIdeal IsDiscriminantTwelfthRootOfIdealLattice IsFrobC IsIdem JetsInt La LocBasis LocBasisW Mono N1 NNBasis OrthoBasisW Orthonormal Pos Qd QdB Stmt TVar TVarB Th ThSp Tor TorsPrime U VC Wop XiF YYl adm1 al atLog chK chg chgB coordV der detId logDerivativeAtOne ellT embT embV eq22 fF fnConj hYY hh homL int22 jet kap lamOf letterOf liftY logOmVal meanLogNormSq meanLogOm mmM mom22 LargerSupportMomentCondition mono normSq pSer pairN per22 posEmb posG aux₃ pull qH sE sgm str22 tauEmb tauSg taylor th22 tor0 torConj vec22 vecN wPh zB
-
-def LinkIso0 : Prop := ∀ D : Car, Nonempty (IsoK D)
-
-def LinkBaseP : Prop := ∀ D : Car, IsoPExists D → BaseExists D
-
-def LinkTrivialLevelIsometry : Prop :=
-  ∀ (D : Car) (C : ℝ), AdmittedStatements D →
-    (∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ → per22 D (tor0 D cc δ)) →
-    DiscrNe D → IsoPExists D →
-    (∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
-      ∀ B : Base D cc δ, ∀ χ, IsChi D χ → EigenvectorPacketProperties B C χ) →
-    aux₃ D C
-
-theorem isometry_linkage_trivial_level : LinkIso0 := G0.iso0
-
-theorem base_linkage_at_prime : LinkBaseP :=
-  fun D hp => base_exists_link D (isometry_extension_link D (isometry_linkage_trivial_level D)) hp
-
-theorem eigen_linkage_at_prime : LinkTrivialLevelIsometry :=
-  fun D C hA hper hΔ hp h => provision_extension_link D C hA hper hΔ (isometry_linkage_trivial_level D) hp h
 
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity
 

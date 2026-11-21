@@ -23,8 +23,7 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Ipindep
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelv
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelvsplit
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.LinSubstIsHomogeneous
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Nabladual
+import Formalism.SatakeDualWeyl.Statement
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureExists
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Spherical
@@ -158,7 +157,6 @@ theorem SatakeInert : Formalism.UG.SatakeInert := Formalism.UG.P.satake_inert
 theorem SatMul : Formalism.UG.SatMul := Formalism.UG.P.satake_mul
 theorem SphericalExistsU : Formalism.UG.SphericalExistsU := Formalism.UG.P.exists_spherical_function_unitary
 theorem GLintComm : Formalism.UG.GLintComm := Formalism.UG.P.GL_integral_hecke_commute
-theorem LocInert : Formalism.UG.LocInert := Formalism.UG.P.local_algebra_inert_prime
 theorem DosetIndMem : Formalism.UG.DosetIndMem := by
   intro G _ K k _ g
   show (∀ a b : K, ∀ x : G, dosetInd k K g ((a : G) * x * b) = dosetInd k K g x) ∧
@@ -339,36 +337,6 @@ theorem InclInj : Formalism.UG.InclInj := by
   apply hinj
   exact congrArg (fun u : GL n (TensorProduct F E R) => (u : Matrix n n (TensorProduct F E R)) i j) hgh
 theorem SigExists : Formalism.UG.SigExists := Formalism.UG.P.signature_exists
-theorem SigConj : Formalism.UG.SigConj := by
-  intro n _ _ J p q e P hP g
-  have hmul : ∀ A B : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ,
-      cT (starRingEnd ℂ) (A * B) = cT (starRingEnd ℂ) B * cT (starRingEnd ℂ) A := by
-    intro A B
-    ext i j
-    simp [cT, Matrix.mul_apply, mul_comm]
-  have hone : cT (starRingEnd ℂ) (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1 := by
-    simp only [cT]
-    rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]
-  have hPPi : (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1 := Units.mul_inv P
-  have hCiC : cT (starRingEnd ℂ) ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1 := by
-    rw [← hmul, hPPi, hone]
-  show cT (starRingEnd ℂ) (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * J.reindex e e * (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = J.reindex e e ↔
-    cT (starRingEnd ℂ) ((P⁻¹ * g * P : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * Jpq p q *
-      ((P⁻¹ * g * P : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = Jpq p q
-  rw [← hP]
-  simp only [Units.val_mul, hmul, Matrix.mul_assoc]
-  rw [← Matrix.mul_assoc (cT (starRingEnd ℂ) ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)) (cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)),
-    hCiC, Matrix.one_mul, ← Matrix.mul_assoc (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ), hPPi, Matrix.one_mul]
-  constructor
-  · intro h
-    have h2 := congrArg (fun Z => cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * (Z * (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))) h
-    simpa only [Matrix.mul_assoc] using h2
-  · intro h
-    have h2 := congrArg (fun Z => cT (starRingEnd ℂ) ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * Z *
-      ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)) h
-    simp only [← Matrix.mul_assoc, hCiC, Matrix.one_mul] at h2
-    simp only [Matrix.mul_assoc, hPPi, Matrix.mul_one] at h2
-    exact h2
 theorem SphericalExists : Formalism.UG.SphericalExists := Formalism.UG.P.exists_spherical_function
 theorem SplitIso : Formalism.UG.SplitIso := Formalism.UG.P.split_unitary_group_iso
 theorem StabFinite : Formalism.UG.StabFinite := Formalism.UG.P.UG_stabilizer_finite
@@ -512,8 +480,6 @@ theorem UJTransport : Formalism.UG.UJTransport := by
     simp [bc]
   · apply Subtype.ext
     simp
-theorem SplitPts : Formalism.UG.SplitPts := Formalism.UG.P.split_group_points
-theorem KpqSubgroupCompact : Formalism.UG.KpqSubgroupCompact := Formalism.UG.P.maximal_compact_subgroup_compact
 theorem DwActMul : Formalism.UG.DwActMul := by
   intro R _ r n g h
   refine ⟨?_, ?_⟩

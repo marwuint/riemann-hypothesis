@@ -1,38 +1,14 @@
 import Mathlib
-import Lemmata.GeneralBFactSecondVariant.Imports
 
 namespace Formalism.HermitianLattices.Ext.L3.SplitPrimeIdeals
-
-theorem card_eq_sq_fixed {k : Type*} [Field k] (τ : k →+* k) (hτ : ∀ x, τ (τ x) = x) (θ : k)
-    (hθ : θ - τ θ ≠ 0) : Nat.card k = Nat.card {x : k // τ x = x} ^ 2 := by
-  first | exact Bl.general_b_fact_second_variant.goal1 .. | (apply Bl.general_b_fact_second_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_variant.goal1 <;> assumption)
 
 variable {A B : Type*} [CommRing A] [CommRing B] {ι : A →+* B} {σ : B →+* B}
 
 theorem surj_of_invol (hσ : ∀ x, σ (σ x) = x) : Function.Surjective σ := fun y => ⟨σ y, hσ y⟩
 
-theorem comap_comap_invol (hσ : ∀ x, σ (σ x) = x) (P : Ideal B) : (P.comap σ).comap σ = P := by
-  ext x
-  simp only [Ideal.mem_comap, hσ]
-
-theorem comap_eq_map_invol (hσ : ∀ x, σ (σ x) = x) (P : Ideal B) : P.comap σ = P.map σ := by
-  ext x
-  rw [Ideal.mem_comap, Ideal.mem_map_iff_of_surjective σ (surj_of_invol hσ)]
-  constructor
-  · exact fun hx => ⟨σ x, hx, hσ x⟩
-  · rintro ⟨y, hy, rfl⟩
-    rwa [hσ]
-
 theorem comap_isMaximal_invol (hσ : ∀ x, σ (σ x) = x) {P : Ideal B} (hP : P.IsMaximal) :
     (P.comap σ).IsMaximal :=
   Ideal.comap_isMaximal_of_surjective σ (surj_of_invol hσ)
-
-theorem card_quot_comap_invol (hσ : ∀ x, σ (σ x) = x) (P : Ideal B) :
-    Nat.card (B ⧸ P.comap σ) = Nat.card (B ⧸ P) := by
-  let e : B ≃+* B := RingEquiv.ofBijective σ
-    ⟨Function.Involutive.injective hσ, surj_of_invol hσ⟩
-  refine Nat.card_congr (Ideal.quotientEquiv (P.comap σ) P e ?_).toEquiv
-  exact (Ideal.map_comap_of_surjective σ (surj_of_invol hσ) P).symm
 
 theorem fix_ι (hfix : ∀ x, σ x = x ↔ x ∈ Set.range ι) (a : A) : σ (ι a) = ι a :=
   (hfix _).2 ⟨a, rfl⟩

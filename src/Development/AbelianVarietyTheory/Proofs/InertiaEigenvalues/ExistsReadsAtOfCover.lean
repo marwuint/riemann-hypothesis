@@ -126,14 +126,6 @@ theorem ReadsAt.conj (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w :
 theorem ReadsAt.of_overOne {i : D.ntw.Tw} {b : Bool} {w w' : D.what₂.places.Pl} (h : ReadsAt i b w) (h' : OverOne D w w') :
     ReadsAt i b w' := fun x => (h x).trans (h' x)
 
-theorem ReadsAt.overOnePair (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b b' : Bool} {w w' : D.what₂.places.Pl}
-    (h : ReadsAt i b w) (h' : ReadsAt i b' w') : OverOnePair D w w' := by
-  by_cases hb : b' = b
-  · subst hb
-    exact Or.inl fun x => (h x).symm.trans (h' x)
-  · obtain rfl : b' = !b := by revert hb; cases b <;> cases b' <;> simp
-    exact Or.inr fun x => (h.conj hG x).symm.trans (h' x)
-
 theorem l_mem_max (i : D.ntw.Tw) : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i) := fun hu =>
   D.ntw.O_l i (by simpa using hu.map (algebraMap (D.ntw.O0 i) (D.ntw.O i)))
 
@@ -142,71 +134,11 @@ theorem ReadsAt.l_eq {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : Re
   eq_resChar_of_pos D w (D.ntw.lPrime i).out
     (by simpa using (h (D.ntw.l i : 𝓞 ↥D.LL0)).1 ⟨_, l_mem_max i, by simp⟩)
 
-theorem ReadsAt.inW1 (hG : IsGalois ℚ ↥D.LL0) {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl} (h : ReadsAt i b w)
-    (hw : TwistedAt D w) : D.ntw.NonzeroIndexPlace i := by
-  cases b
-  · exact ⟨_, (twistedAt_conj D w).2 hw, h.conj hG⟩
-  · exact ⟨w, hw, h⟩
-
-def below (w : D.what₂.places.Pl) : HeightOneSpectrum (𝓞 ↥D.LL0) := (D.plEq w).under (𝓞 ↥D.LL0)
-
-theorem mem_below (w : D.what₂.places.Pl) (x : 𝓞 ↥D.LL0) :
-    x ∈ (below w).asIdeal ↔ 0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) := (val_pos_iff_mem D w x).symm
-
-theorem resChar_mem_below (w : D.what₂.places.Pl) : ((D.what₂.places.resChar w : ℕ) : 𝓞 ↥D.LL0) ∈ (below w).asIdeal :=
-  (mem_below w _).2 (by simpa using val_resChar_pos D w)
-
-theorem exists_readsAt_of_pair (hc : TwCoverPair D) {w : D.what₂.places.Pl} (hw : TwistedAt D w) :
-    ∃ i b, ReadsAt i b w := by
-  obtain ⟨i, -, h | h⟩ := hc _ (D.what₂.places.resChar_prime w) (below w) (resChar_mem_below w) ⟨w, hw, mem_below w⟩
-  · exact ⟨i, true, fun x => (h x).symm.trans (mem_below w x)⟩
-  · exact ⟨i, false, fun x => (h x).symm.trans (mem_below w x)⟩
-
-theorem exists_readsAt_of_cover (hc : D.ntw.TwCover) (w : D.what₂.places.Pl) : ∃ i b, ReadsAt i b w := by
-  obtain ⟨i, -, h⟩ := hc _ (D.what₂.places.resChar_prime w) (below w) (resChar_mem_below w)
-  exact ⟨i, true, fun x => (h x).symm.trans (mem_below w x)⟩
-
 theorem exists_orbitRep : ∃ o : D.what₂.places.Pl → D.what₂.places.Pl,
     ∀ w, (o w = w ∨ o w = D.what₂.places.conj w) ∧ o (D.what₂.places.conj w) = o w := by
   refine ⟨fun w => @Classical.epsilon _ ⟨w⟩ fun v => v = w ∨ v = D.what₂.places.conj w, fun w => ⟨?_, ?_⟩⟩
   · exact Classical.epsilon_spec (p := fun v => v = w ∨ v = D.what₂.places.conj w) ⟨w, Or.inl rfl⟩
   · simp only [D.what₂.places.conj_conj, or_comm]
-
-theorem exists_settings (hG : IsGalois ℚ ↥D.LL0) (hc : TwCoverPair D) (i₀ : D.ntw.Tw) :
-    ∃ (twI : D.what₂.places.Pl → D.ntw.Tw) (sd : D.what₂.places.Pl → Bool),
-      (∀ w, TwistedAt D w → ReadsAt (twI w) (sd w) w ∧
-        (D.what₂.places.conj w ≠ w → sd (D.what₂.places.conj w) = !sd w)) ∧
-      ∀ w w', OverOnePair D w w' → twI w' = twI w := by
-  classical
-  haveI : Nonempty D.ntw.Tw := ⟨i₀⟩
-  let twI : D.what₂.places.Pl → D.ntw.Tw := fun w => Classical.epsilon fun i => ∃ v b, OverOnePair D w v ∧ ReadsAt i b v
-  have h1 : ∀ w w', OverOnePair D w w' → twI w' = twI w := fun w w' h => by
-    refine congrArg Classical.epsilon (funext fun i => propext ⟨?_, ?_⟩)
-    · rintro ⟨v, b, hv, hb⟩
-      exact ⟨v, b, h.trans hG hv, hb⟩
-    · rintro ⟨v, b, hv, hb⟩
-      exact ⟨v, b, (h.symm hG).trans hG hv, hb⟩
-  have h2 : ∀ w, ∃ b, TwistedAt D w → ReadsAt (twI w) b w := fun w => by
-    by_cases hw : TwistedAt D w
-    · obtain ⟨i, b, hi⟩ := exists_readsAt_of_pair hc hw
-      obtain ⟨v, b', hv, hb⟩ := Classical.epsilon_spec (p := fun i => ∃ v b, OverOnePair D w v ∧ ReadsAt i b v)
-        ⟨i, w, b, overOnePair_refl w, hi⟩
-      rcases hv.symm hG with hv | hv
-      · exact ⟨b', fun _ => hb.of_overOne hv⟩
-      · exact ⟨!b', fun _ => (hb.conj hG).of_overOne hv⟩
-    · exact ⟨true, fun h => absurd h hw⟩
-  choose s hs using h2
-  obtain ⟨o, ho⟩ := exists_orbitRep (D := D)
-  refine ⟨twI, fun w => if o w = w then s w else !s (D.what₂.places.conj w), fun w hw => ⟨?_, fun hne => ?_⟩, h1⟩
-  · by_cases h : o w = w
-    · simpa only [h, if_true] using hs w hw
-    · have h3 := (hs _ ((twistedAt_conj D w).2 hw)).conj hG
-      rw [D.what₂.places.conj_conj, h1 w _ (overOnePair_conj w)] at h3
-      simpa only [h, if_false] using h3
-  · simp only [(ho w).2, D.what₂.places.conj_conj]
-    rcases (ho w).1 with h | h
-    · rw [if_neg (by rw [h]; exact hne.symm), if_pos h]
-    · rw [if_pos h, if_neg (by rw [h]; exact hne), Bool.not_not]
 
 theorem isLocalHom_phiK (i : D.ntw.Tw) (k : ℕ) : IsLocalHom (BlochKatoReduction.Gen.phiK D.ntw i k) := by
   haveI := D.ntw.Ok_fin i k

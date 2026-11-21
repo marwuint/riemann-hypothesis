@@ -51,7 +51,7 @@ theorem sq_pr_iff (x : IrrGL k) {a : ℕ} (z : Fin a → IrrGL k) (hd : ∑ i, (
 
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.two GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in
 theorem fl_pr (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {a N : ℕ} (z : Fin a → IrrGL k) (hd : ∑ i, (z i).1 = N) : FL (pr z hd) :=
-  GlobalTheory.T.product_irreducible_finite_length hA z hd
+  _root_.GlobalTheory.CompanionTheory.ProdFL.main hA z hd
 
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.two GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in
 theorem iso_one_pr (x : IrrGL k) (hd : ∑ _ : Fin 1, x.1 = x.1) : Iso (one x) (pr (fun _ : Fin 1 => x) hd) :=

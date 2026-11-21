@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasKIsSymmetricAndFormStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ReInnerLeOnImageOfIntertwiningStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasKIsSymmetricAndForm
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ReInnerLeOnImageOfIntertwining
 open Finset BranchingSupport Formalism.REAL Formalism.QuantumDeterminants
 open scoped InnerProductSpace
 
@@ -30,7 +30,7 @@ theorem quadForm_le_on_sup {M : Type} [NormedAddCommGroup M] [InnerProductSpace 
   have hA1 : ∀ z, ((A z).fst : M) = B z.fst := fun z => rfl
   have hA2 : ∀ z, ((A z).snd : M) = B z.snd := fun z => rfl
   have hΦ : ∀ z, Φ z = (z.fst : M) + (z.snd : M) := fun z => rfl
-  have key := GlobalTheory.T.re_inner_le_on_image_of_intertwining' (WithLp 2 (S₁ × S₂)) M Φ A B C
+  have key := _root_.GlobalTheory.re_inner_le_on_image_of_intertwining (WithLp 2 (S₁ × S₂)) M Φ A B C
     (by
       intro z w
       simp only [WithLp.prod_inner_apply, Submodule.coe_inner]
@@ -68,7 +68,7 @@ theorem casKLe_subspace_mono : ∀ (M : Type) [NormedAddCommGroup M] [InnerProdu
       obtain ⟨u, hu, v, hv, rfl⟩ := Submodule.mem_sup.1 hw
       rw [map_add]
       exact Submodule.add_mem_sup (s₁ a b hab u hu) (s₂ a b hab v hv)
-    · exact quadForm_le_on_sup _ (GlobalTheory.T.casK_isSymmetric_and_inner_re_eq M n ε E hU).1 _ S₁ S₂
+    · exact quadForm_le_on_sup _ (_root_.GlobalTheory.casK_isSymmetric_and_form M n ε E hU).1 _ S₁ S₂
         (casK_mem_of_compact_stable ε E S₁ s₁) (casK_mem_of_compact_stable ε E S₂ s₂) b₁ b₂
   · rintro c a x ⟨S, f, s, hx, b⟩
     exact ⟨S, f, s, S.smul_mem a hx, b⟩

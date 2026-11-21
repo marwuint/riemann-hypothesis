@@ -99,10 +99,4 @@ def UnrMaps : Prop :=
     (∀ h ∈ KO k (Fin (a + a')), pUnr a a' ϖ ν β (Set.indicator {X | ∀ i j, X i j ∈ 𝒪[k]} 1) h = 1) ∧
     (∀ h ∈ KO k (Fin (a + a')), pUnr' a a' ϖ ν α (Set.indicator {Y | ∀ i j, Y i j ∈ 𝒪[k]} 1) h = 1)
 
-def IndIrred : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    (a a' : ℕ) (α β : kˣ →* ℂˣ), (∀ x, ‖(α x : ℂ)‖ = 1) → (∀ x, ‖(β x : ℂ)‖ = 1) →
-    ∀ N : Submodule ℂ (GL (Fin (a + a')) k → ℂ), N ≤ indSp a a' α β → (∀ h₁, ∀ F ∈ N, rtr h₁ F ∈ N) →
-      N = ⊥ ∨ N = indSp a a' α β
-
 end PositivityTheory.ThK.SplitLoc

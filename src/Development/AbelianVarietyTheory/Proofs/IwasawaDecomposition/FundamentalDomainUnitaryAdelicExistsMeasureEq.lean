@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNhdsOneUnitaryGroupRationalPointEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNhdsOneUnitaryGroupRationalPointEqOne
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsIsFundamentalDomainAndQuotMeasureEq
 import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
@@ -43,7 +43,7 @@ theorem fundamentalDomain_adelicUnitary : ∀ (F E : Type) [Field F] [NumberFiel
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA σ J
   have := (GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F E σ M J).2.1
   let Γ : Subgroup (HA (AF F) σ J) := HFinIn (AF F) σ J
-  have : DiscreteTopology Γ := discreteTopology_subgroup_of_nhds_one Γ (GlobalTheory.T.exists_nhds_one_unitaryGroup_rationalPoint_eq_one F E σ M J)
+  have : DiscreteTopology Γ := discreteTopology_subgroup_of_nhds_one Γ (_root_.GlobalTheory.Mem.Vol.exists_nhds_one_rational_eq_one F E σ M J)
   exact fundamentalDomain_exists_measure_eq_of_discrete Γ μ
 
 end GlobalTheory.Mem.Vol

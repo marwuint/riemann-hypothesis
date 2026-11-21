@@ -190,9 +190,6 @@ theorem cuspForms_le_Sm : cuspForms E a ≤ Sm E a := fun _ h => (sm_eq E a).ge 
 
 theorem automorphicForms_le_Sm : automorphicForms E a ≤ Sm E a := fun _ h => (sm_eq E a).ge h.isSmooth.1
 
-theorem exists_isCuspForm {f : GA E a → ℂ} (hf : f ∈ cuspForms E a) : ∃ h : f ∈ Sm E a, GlobalTheory.CuspRep.IsCuspForm ⟨f, h⟩ :=
-  ⟨cuspForms_le_Sm hf, (isCuspForm_iff _).2 hf⟩
-
 theorem lie_val (X : Lie E a) (φ : Sm E a) (h : φ.1 ∈ archSmooth E a) :
     (lie E a X φ).1 = (uAction (UniversalEnvelopingAlgebra.ι ℝ (lieEq E a X)) ⟨φ.1, h⟩).1 :=
   (congrArg Subtype.val (uAction_ι_smEq X φ)).symm

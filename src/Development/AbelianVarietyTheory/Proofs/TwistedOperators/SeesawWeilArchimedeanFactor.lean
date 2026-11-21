@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawFramesWeilEquivalenceStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawFramesWeilEquivalence
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelProjectionFactorisation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartz
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalOperatorThetaQuotientFinitePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsDoublingFrameStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaResidueStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalOperatorThetaQuotientFinitePlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsDoublingFrame
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaResidue
 
 noncomputable section
 
@@ -92,9 +92,9 @@ theorem mapA_mapB_equivariant_fin : GlobalTheory.Published.HoweDualityReal → G
         (∀ g ∈ GfC X, ∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (1, g) Φ) = GlobalTheory.TripleAssembly.opFin ωA (algF ψ θ true A B) (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf) g (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ)) ∧
           ∀ g ∈ GfC X, ∀ Φ ∈ algF ψ θ false A₁ B, GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf (ωB (1, g) Φ) = GlobalTheory.TripleAssembly.opFin ωA (algF ψ θ true A B) (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf) g (GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ) := by
   intro hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM
-  obtain ⟨oA, -⟩ := GlobalTheory.T.algF_map_mapA_and_mapB_eq_top hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM
+  obtain ⟨oA, -⟩ := _root_.GlobalTheory.TripleAssembly.Onto.map_algF_eq_top hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM
   obtain ⟨⟨dA, rA⟩, ⟨dB, rB⟩⟩ :=
-    GlobalTheory.T.seesaw_weil_zeta_residue hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM
+    _root_.GlobalTheory.TripleAssembly.transport_eq hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM
   have gM : Γ.M.IsGood Bs.ψ := hM.triple.geo.hM
   have gM' : Γ.M'.IsGood Bs.ψ := hM.triple.geo.hM'
   have c1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 h.JW 1 = 1 := Subtype.ext ((congrArg _ (map_one (matHom W))).trans (map_one _))
@@ -111,8 +111,8 @@ theorem mapA_mapB_equivariant_fin : GlobalTheory.Published.HoweDualityReal → G
       ∀ Φ ∈ algF ψ θ false A₁ B, GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf (ωB (1, g) Φ) =
         T (GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ) := by
     intro g hg
-    obtain ⟨hv, hvU, fA, fB⟩ := GlobalTheory.T.matched_maps_doubling_frame hP D W W₁ X e Bs Γ Xc om om' R Rf hM h.JX g hg
-    choose a ha using fun v => GlobalTheory.T.exists_localOperator_thetaQuotient_finitePlace D.sp.cm.sig W.rank W₁.rank Bs Γ Xc om om' R Rf hM v (hv v) (hvU v)
+    obtain ⟨hv, hvU, fA, fB⟩ := _root_.GlobalTheory.PlacePureFin.placePure hP D W W₁ X e Bs Γ Xc om om' R Rf hM h.JX g hg
+    choose a ha using fun v => _root_.GlobalTheory.LocalDescent.exists_localOp D.sp.cm.sig W.rank W₁.rank Bs Γ Xc om om' R Rf hM v (hv v) (hvU v)
     obtain ⟨T₀, hT₀⟩ := GlobalTheory.TripleAssembly.exists_rtensOp (GlobalTheory.TripleAssembly.vacIm Γ Rf) a
     refine ⟨LinearMap.lTensor R.Pi T₀, ?_, ?_⟩
     · have st := GlobalTheory.TripleAssembly.EqFin.darbAlg_stable Γ.M Bs.ψ Bs.emb gM R.p Rf.p (GlobalTheory.TripleAssembly.vacIm Γ Rf) hsA

@@ -12,14 +12,6 @@ namespace GlobalTheory.NearLowerCompare
 
 open Formalism.MainNotions.S GlobalTheory.Count Formalism.HN
 
-section General
-
-variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] [AddCommGroup V] [Module K V]
-  [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V)
-  (X : InfinitePlace K → Matrix ι ι ℂ)
-
-end General
-
 variable (I : AutInst)
 
 theorem lamX_isLattice (x : I.GA) : Submodule.IsLattice I.E (lamX I x) := by

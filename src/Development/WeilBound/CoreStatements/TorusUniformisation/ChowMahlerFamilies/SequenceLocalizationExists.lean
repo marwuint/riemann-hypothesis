@@ -100,7 +100,7 @@ theorem PositivityTheory.Xgn.sequence_localization_exists : ∀ (E : Type) [Fiel
       ∃ v ∈ 𝔐.M.omLat q, w' = P.Dh.h z + (p ^ 𝔐.R p) • v := by
     intro z w'
     obtain ⟨χ, w₀, hχ, hh, hHT⟩ := P.isHT.2.2 z
-    refine GlobalTheory.CompanionTheory.HtLink.isHTAt_iff GlobalTheory.T.lie_model_finite_base_change GlobalTheory.T.section_eq_zero_of_values hξ 𝔐.t.PP.L hn (𝔐.tors p hpS) 𝔐.M P.x κ hx' P.Γ₂
+    refine GlobalTheory.CompanionTheory.HtLink.isHTAt_iff _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic hξ 𝔐.t.PP.L hn (𝔐.tors p hpS) 𝔐.M P.x κ hx' P.Γ₂
       P.i₂ P.tors₂ P.M P.toLi (by rw [hκ']; exact P.toLi_pt) _ χ w₀ _ (fun s k _ _ a xk gk u h1 h2 => ?_) hHT
       (fun b => by rw [hh, P.j_apply, hκ]) q hr (fun a => by rw [hκ]; exact hsub a) w'
     obtain ⟨z', rfl⟩ := hsurj s

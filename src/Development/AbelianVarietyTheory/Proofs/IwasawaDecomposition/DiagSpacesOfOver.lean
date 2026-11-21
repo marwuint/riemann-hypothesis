@@ -61,35 +61,9 @@ theorem unitFrame_X' (h : DiagSpaces S) : UnitFrame S.X' := by
   obtain ⟨hs, -, hX, -, -, -⟩ := h
   rw [hX]; exact unitFrame_stdSpace hs _ _ _
 
-theorem unitFrame_X (h : DiagSpaces S) (j : ℕ) : UnitFrame (S.X j) := by
-  obtain ⟨hs, hX, -, -, -, -⟩ := h
-  rw [hX]; exact unitFrame_stdSpace hs _ _ _
-
 theorem unitFrame_V (h : DiagSpaces S) {j : ℕ} (hn : S.Vneg j = false) : UnitFrame (S.V j) ∧ (S.V j).IsPosDef := by
   obtain ⟨hs, -, -, -, -, hV⟩ := h
   rw [hV, hn]; exact ⟨unitFrame_stdSpace hs _ _ _, fun _ => rfl⟩
-
-def setW0 (S : Spaces R F E) (Z : HSpace E) (hZ : Z.SigOK) : Spaces R F E :=
-  { S with
-    W := fun j => match j with
-      | 0 => Z
-      | j + 1 => S.W (j + 1)
-    W_sig := fun j => match j with
-      | 0 => hZ
-      | j + 1 => S.W_sig (j + 1)
-    W_rank := fun j h1 h2 => match j, h1, h2 with
-      | j + 1, h1, h2 => S.W_rank (j + 1) h1 h2
-    W_sigval := fun j h1 h2 => match j, h1, h2 with
-      | j + 1, h1, h2 => S.W_sigval (j + 1) h1 h2
-    baseSpace_isometric_graded := fun j h1 h2 => match j, h1, h2 with
-      | j + 1, h1, h2 => S.baseSpace_isometric_graded (j + 1) h1 h2 }
-
-theorem diagSpaces_setW0 (h : DiagSpaces S) (Z : HSpace E) (hZ : Z.SigOK) :
-    DiagSpaces (setW0 S Z hZ) ∧ (setW0 S Z hZ).W 0 = Z := by
-  obtain ⟨hs, h1, h2, h3, h4, h5⟩ := h
-  refine ⟨⟨hs, h1, h2, h3, fun j a b => ?_, h5⟩, rfl⟩
-  match j, a, b with
-  | j + 1, a, b => exact h4 (j + 1) a b
 
 end Diag
 
@@ -136,30 +110,6 @@ theorem size_le (eps c : ℝ) (A : ℕ) (he : 0 < eps) (he' : eps < 1 / 52) : �
     _ = s.x ^ (402 * (A : ℝ) + 2) := by rw [Real.rpow_add hx0, Real.rpow_two]; ring
     _ ≤ s.x ^ y := Real.rpow_le_rpow_of_exponent_le hx1 hy
     _ ≤ _ := Nat.le_ceil _
-
-theorem gaps_ev (c : ℝ) (A : ℕ) : Ev fun K => ∀ X : Stages, K.Over X.B.toPre → ∃ h Δ : ℕ,
-    c * K.s.L * (X.toD7.R.N X.toD7.R.m : ℝ) ^ A ≤ h ∧ c * K.s.L * (X.toD7.R.N X.toD7.R.m : ℝ) ^ A ≤ Δ ∧ 1 ≤ K.s.L ∧
-    ∀ u τ, (∀ j, (X.toD7.hcW u τ).e j - (X.toD7.hcW u τ).b j = h) ∧
-      (∀ (j : Fin X.toD7.R.m) (hj : j.1 + 1 < X.toD7.R.m), (X.toD7.hcW u τ).b ⟨j.1 + 1, hj⟩ - (X.toD7.hcW u τ).e j = h) ∧
-      ∀ i : Fin (X.toD7.R.k - 1), (X.toD7.hcW u τ).v i = ((X.toD7.R.k - 2 - i.1 : ℕ) : ℚ) * (4 * Δ) := by
-  refine ⟨1, one_pos, fun eps C8 he _ he' _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ =>
-    ⟨402 * A + 2, fun cD hcD => ⟨402 * A + 2, fun ch hch => ?_⟩⟩⟩⟩
-  obtain ⟨x0, h0⟩ := size_le eps c A he he'
-  refine ⟨x0, fun K _ k1 k2 k3 k4 X hX => ?_⟩
-  obtain ⟨hR, bT, hH⟩ := val_of_over hX
-  refine ⟨⌈K.s.x ^ K.ch⌉₊, Delv K.s K.cD, h0 _ _ _ k3 k4 hR (k2 ▸ hch), h0 _ _ _ k3 k4 hR (k1 ▸ hcD),
-    Real.one_le_rpow K.s.one_lt_alt.le K.s.eps_pos.le, fun u τ => ?_⟩
-  obtain ⟨hv, -, ⟨b1, hb, -⟩, -⟩ := hH u
-  refine ⟨fun j => ?_, fun j hj => ?_, hv τ⟩
-  · have := (hb τ j).2
-    show (X.B.hcW u τ).e j - (X.B.hcW u τ).b j = _
-    rw [this]
-    simp only [h0v]; push_cast; ring
-  · have e1 := (hb τ j).2
-    have e2 := (hb τ j).1
-    have e3 := (hb τ ⟨j.1 + 1, hj⟩).1
-    refine (congrArg₂ (· - ·) e3 (e1.trans (congrArg (· + _) e2))).trans ?_
-    simp only [h0v]; push_cast; ring
 
 end GlobalTheory.Mem.HostFrames
 

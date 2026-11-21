@@ -9,8 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalExtend
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLatticesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordinateLatticeUniqueTermAlmostAllPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationUnipotent
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordinateLatticeUniqueTermAlmostAllPlaces
 
 noncomputable section
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
@@ -156,7 +156,7 @@ theorem good_places (A : Places F E sig) (r k : ℕ) (G : GFrames A r k) (hk : 4
     (d : G.Dat) (Λ : G.Lt) (hT : G.IsTerm d Λ) :
     {p | ¬ (G.S p).IsTermW (d p) (A.lat p Λ) 1 1}.Finite := by
   obtain ⟨hL, hloc⟩ := hT
-  refine ((GlobalTheory.T.numberField_lattice_determined_by_local_lattices A (k + 2 * r + 1) Λ hL).2.2.union (GlobalTheory.T.coordinateLattice_unique_term_almost_all_places A r k G hk)).subset ?_
+  refine ((GlobalTheory.T.numberField_lattice_determined_by_local_lattices A (k + 2 * r + 1) Λ hL).2.2.union (_root_.GlobalTheory.HL.StdPlace.coordinate_lattice_standard A r k G hk)).subset ?_
   intro p hp
   by_contra hq
   rw [Set.mem_union, not_or] at hq
@@ -222,9 +222,9 @@ theorem global_witnesses : ∀ {F E : Type} [Field F] [NumberField F] [Field E] 
     refine ⟨1, ?_⟩
     rw [Units.val_mk0]
     simp [Frames.th, hg]
-  obtain ⟨g, hgN, hgP⟩ := (GlobalTheory.T.strong_approximation_unipotent_alt A r k G Λ hL (fun p => Units.mk0 (G.S p).th (th_ne (G.S p)))
+  obtain ⟨g, hgN, hgP⟩ := (_root_.GlobalTheory.HL.SAN.strong_approximation_unipotent A r k G Λ hL (fun p => Units.mk0 (G.S p).th (th_ne (G.S p)))
     hcfin (fun p => ((q p).1)⁻¹) hfinN).1 (fun p => inv_mem (hmem p).1)
-  obtain ⟨g', hg'N, hg'P⟩ := (GlobalTheory.T.strong_approximation_unipotent_alt A r k G Λ hL (fun p => Units.mk0 (G.S p).th (th_ne (G.S p)))
+  obtain ⟨g', hg'N, hg'P⟩ := (_root_.GlobalTheory.HL.SAN.strong_approximation_unipotent A r k G Λ hL (fun p => Units.mk0 (G.S p).th (th_ne (G.S p)))
     hcfin (fun p => ((q p).2)⁻¹) hfinN').2 (fun p => inv_mem (hmem p).2)
   refine ⟨⟨g⁻¹, inv_mem hgN, g'⁻¹, inv_mem hg'N, fun p m m' hm hm' => ?_⟩, fun m m' hmm => ?_⟩
   · haveI := (A.loc p).lf

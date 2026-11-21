@@ -18,10 +18,4 @@ def PullbackVanishingOfNullCycle.Statement : Prop :=
     volume {y : Fin n → ℂ | ∃ z' ∈ mcPts P', z' ∈ mcPts J' ∧
       (Ψ (segre fun p => z' (v p)) 0)⁻¹ • segre (fun p => z' (v p)) ∈ fibre (imageZ v P') Ψ y} = 0
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

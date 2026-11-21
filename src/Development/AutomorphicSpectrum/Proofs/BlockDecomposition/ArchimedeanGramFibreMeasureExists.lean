@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitHermOfDet
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanGramFibreMeasureFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanGramFibreMeasureFormula
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
@@ -383,7 +383,7 @@ theorem GlobalTheory.CompanionTheory.SiegelND.Coef.avgInfN_tendsto : ∀ (F E : 
       (Filter.Eventually.of_forall fun X => ?_)
     rw [norm_mul, Complex.norm_real]
     exact mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)
-  obtain ⟨-, hev, hcont⟩ := GlobalTheory.T.archimedean_gram_fibre_measure_formula F E σ hCM M J hJ n hM d b laminf hstd minf hm c hc φ hφ
+  obtain ⟨-, hev, hcont⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.FibN.fibre_schwartzN F E σ hCM M J hJ n hM d b laminf hstd minf hm c hc φ hφ
   refine ⟨fun k => ⟨(hcut k).measurable, hint k⟩, ?_⟩
   exact GlobalTheory.CompanionTheory.SiegelND.Coef.AvgInf.fibre_avg_tendsto (R := HermR (Ainf F) σ n) (ν := ν) hUo hBo hfam hqc.measurable
     (fun X hX => hX) hφc hc hev hcont ρ (fun k => ⟨(hρ k).1, (hρ k).2.2.1, (hρ k).2.2.2⟩) hsm hint

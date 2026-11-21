@@ -2,17 +2,17 @@ import Mathlib
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IrreducibleCharacterSeries.CharacterEqOfRepIso
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IrreducibleCharacterSeries.ConjugateCharacterFormula
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalOfUnipotentSumsVanishStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalOfUnipotentSumsVanish
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.MatrixTraceIffIsCharacterOverSubfieldComplexStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.MatrixTraceIffIsCharacterOverSubfieldComplex
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterCuspidalRootSumRegularStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.GeneralLinearFunctionExtendZeroEndPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExponentRegularOfNatDegreeMinpolyGeneratorPowStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExponentRegularOfNatDegreeMinpolyGeneratorPow
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FinsumUnipotentRadicalEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyOfIrreduciStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobiStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyOfIrreduci
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobi
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FrobeniusTorusMinpolyDegreeRootPowerSumStatement
 
 open ReciprocityTheory.Ty.Fin
@@ -73,11 +73,11 @@ theorem exists_cuspidal_label : ∀ (K : Type) [Field K] [Fintype K] [DecidableE
     rw [← C.gen_order d hd]; exact IsPrimitiveRoot.orderOf _
   haveI : NeZero (Fintype.card K ^ d - 1) := ⟨by omega⟩
   obtain ⟨k, -, hkx⟩ := hprim.eq_pow_of_pow_eq_one (hroot x₀ hx₀)
-  have hreg := GlobalTheory.T.exponent_regular_of_natDegree_minpoly_generator_pow K d k (C.gen d) hd (by rw [hcard]; exact C.gen_order d hd)
+  have hreg := _root_.GlobalTheory.CuspGL.exponent_regular_of_natDegree_minpoly_pow K d k (C.gen d) hd (by rw [hcard]; exact C.gen_order d hd)
     (by rw [hkx, hminP x₀ hx₀, hdeg])
   obtain ⟨hch, hip⟩ := GlobalTheory.T.isCharacter_cuspidal_rootSum_regular K C.ι C.ι_inj d k hd hreg
-  have hadd := (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow K C.ι k).1
-  obtain ⟨n, ρ, hρ⟩ := (GlobalTheory.T.matrixTrace_iff_isCharacterOverSubfield_complex _ _).2 hch
+  have hadd := (_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one K C.ι k).1
+  obtain ⟨n, ρ, hρ⟩ := (_root_.GlobalTheory.BI.matrixChar_iff_isChar _ _).2 hch
   have hchar : ∀ g : GL (Fin d) K, (PI.SerBridgeGLW.repOfGL ρ).character g = (-1) ^ (d - 1) *
       GlobalTheory.CuspGL.psi (GlobalTheory.CuspGL.rootSum C.ι k) (Fin d → K)
         (Matrix.toLin' (g : Matrix (Fin d) (Fin d) K)) := fun g => by
@@ -91,8 +91,8 @@ theorem exists_cuspidal_label : ∀ (K : Type) [Field K] [Fintype K] [DecidableE
       rw [← mul_pow]; simp
     rw [← PI.SerBridgeGLW.conjugate_character_formula _ (PI.SerBridgeGLW.repOfGL ρ) x, hchar, star_mul', star_pow,
       star_neg, star_one, mul_mul_mul_comm, h1, one_mul]
-  · refine GlobalTheory.T.cuspidal_of_unipotent_sums_vanish K d _ fun a ha had => ?_
-    have h := GlobalTheory.T.finsum_unipotent_radical_eq_zero_of_isPrimitive K d _ (GlobalTheory.T.isPrimitiveEndClassFunction_invariantSubspaceMobiusInverse K (Fin d → K) _ hadd) a ha had
+  · refine _root_.GlobalTheory.CompanionTheory.TyFin.CuspIff.isCuspidal_of_sum_char K d _ fun a ha had => ?_
+    have h := GlobalTheory.T.finsum_unipotent_radical_eq_zero_of_isPrimitive K d _ (_root_.GlobalTheory.CuspGL.isPrimitive_psi K (Fin d → K) _ hadd) a ha had
     rw [finsum_mem_def, finsum_eq_sum_of_fintype] at h
     have h2 := congrArg (fun z : ℂ => (-1 : ℂ) ^ (d - 1) * z) h
     simp only [mul_zero, Finset.mul_sum] at h2
@@ -110,7 +110,7 @@ theorem exists_cuspidal_label : ∀ (K : Type) [Field K] [Fintype K] [DecidableE
       rw [hQ, Matrix.charpoly_natDegree_eq_dim]; simp
     have hz1 : z ^ (Fintype.card K ^ d - 1) = 1 := by
       rw [← hm, ← pow_mul, mul_comm, pow_mul, ← C.gen_order d hd, pow_orderOf_eq_one, one_pow]
-    have hval := GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_of_irreducible K (Fin d → K) _ hadd
+    have hval := _root_.GlobalTheory.CuspGL.psi_of_irreducible_charpoly K (Fin d → K) _ hadd
       (Matrix.toLin' (γ : Matrix (Fin d) (Fin d) K)) (by rw [Matrix.charpoly_toLin']; exact hγ)
     rw [Matrix.charpoly_toLin'] at hval
     show (PI.SerBridgeGLW.repOfGL ρ).character γ = _

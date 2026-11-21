@@ -114,17 +114,6 @@ theorem maxCompact_le_normOneGL : maxCompact (K := K) (n := n) ≤ normOneGL K n
   · obtain ⟨m, hm⟩ := (tendsto_pow_atTop_atTop_of_one_lt hgt).eventually_gt_atTop M |>.exists
     exact absurd (hbound m).1 (not_le.2 hm)
 
-theorem exists_pos_le_height_of_subset {C : Set (AdelicGLn.AdelicGL K n)} (hC : IsCompact C) :
-    ∃ ε : ℝ, 0 < ε ∧ ∀ g ∈ (AdelicGLn.rationalGL K n : Set (AdelicGLn.AdelicGL K n)) * C,
-      ∀ x : Fin n → K, x ≠ 0 → ε ≤ height g x := by
-  obtain ⟨ε, hε, h⟩ := exists_pos_le_height hC
-  refine ⟨ε, hε, ?_⟩
-  rintro _ ⟨_, ⟨γ, rfl⟩, c, hc, rfl⟩ x hx
-  rw [height_diagonal_mul]
-  refine h c hc _ fun h0 => hx ?_
-  have := congrArg (fun y => y ᵥ* ((γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) h0
-  simpa [vecMul_vecMul, ← Units.val_mul] using this
-
 theorem ratVec_single_one (j : Fin n) :
     ratVec (Pi.single j (1 : K)) = (Pi.single j (1 : 𝔸[K]) : Fin n → 𝔸[K]) := by
   ext l
@@ -315,19 +304,6 @@ theorem exists_isCompact_forall_of_pos_le_height {ε : ℝ} (hε : 0 < ε) :
     dsimp only
     rw [← heq, inv_mul_cancel_left]
 
-theorem exists_isCompact_subset_iff {Y : Set (AdelicGLn.AdelicGL K n)}
-    (hY : Y ⊆ (normOneGL K n : Set (AdelicGLn.AdelicGL K n))) :
-    (∃ C : Set (AdelicGLn.AdelicGL K n), IsCompact C ∧
-      Y ⊆ (AdelicGLn.rationalGL K n : Set (AdelicGLn.AdelicGL K n)) * C) ↔
-    ∃ ε : ℝ, 0 < ε ∧ ∀ g ∈ Y, ∀ x : Fin n → K, x ≠ 0 → ε ≤ height g x := by
-  constructor
-  · rintro ⟨C, hC, hYC⟩
-    obtain ⟨ε, hε, h⟩ := exists_pos_le_height_of_subset hC
-    exact ⟨ε, hε, fun g hg => h g (hYC hg)⟩
-  · rintro ⟨ε, hε, h⟩
-    obtain ⟨C, hC, hC'⟩ := exists_isCompact_forall_of_pos_le_height (K := K) (n := n) hε
-    exact ⟨C, hC, fun g hg => hC' g (hY hg) (h g hg)⟩
-
 variable (K n) in
 
 abbrev rationalGLOne : Subgroup (normOneGL K n) :=
@@ -344,47 +320,6 @@ instance discreteTopology_rationalGLOne : DiscreteTopology (rationalGLOne K n) :
   · intro x y hxy
     have h1 := congrArg Subtype.val hxy
     exact Subtype.ext (Subtype.ext h1)
-
-theorem isCompact_closure_mk_image_iff {Y : Set (normOneGL K n)} :
-    IsCompact (closure (RightCosetSpace.mk (rationalGLOne K n) '' Y)) ↔
-      ∃ ε : ℝ, 0 < ε ∧ ∀ g ∈ Y, ∀ x : Fin n → K, x ≠ 0 →
-        ε ≤ height (g : AdelicGLn.AdelicGL K n) x := by
-  constructor
-  · intro hc
-    obtain ⟨D, hD, hKD⟩ := RightCosetSpace.exists_isCompact_subset_mk_image _ hc
-    obtain ⟨ε, hε, h⟩ := exists_pos_le_height_of_subset (hD.image continuous_subtype_val)
-    refine ⟨ε, hε, fun g hg x hx => h _ ?_ x hx⟩
-    obtain ⟨d, hdD, hd⟩ := hKD (subset_closure ⟨g, hg, rfl⟩)
-    obtain ⟨γ, hγ⟩ := (RightCosetSpace.mk_eq_mk_iff).1 hd
-    refine ⟨((γ⁻¹ : rationalGLOne K n) : normOneGL K n), (γ⁻¹ : rationalGLOne K n).2, d, ⟨d, hdD, rfl⟩, ?_⟩
-    rw [← hγ]
-    change (((γ : normOneGL K n) : AdelicGLn.AdelicGL K n))⁻¹ *
-      ((γ : normOneGL K n) * g : AdelicGLn.AdelicGL K n) = g
-    rw [inv_mul_cancel_left]
-  · rintro ⟨ε, hε, h⟩
-    obtain ⟨C, hC, hC'⟩ := exists_isCompact_forall_of_pos_le_height (K := K) (n := n) hε
-    set D : Set (normOneGL K n) := Subtype.val ⁻¹' C with hD
-    have hDc : IsCompact D := isClosed_normOneGL.isClosedEmbedding_subtypeVal.isCompact_preimage hC
-    have hsub : RightCosetSpace.mk (rationalGLOne K n) '' Y ⊆
-        RightCosetSpace.mk (rationalGLOne K n) '' D := by
-      rintro _ ⟨g, hg, rfl⟩
-      obtain ⟨_, ⟨γ, rfl⟩, c, hc, hgc⟩ := hC' g g.2 (h g hg)
-      have hγ1 : AdelicGLn.diagonal K n γ ∈ normOneGL K n := rationalGL_le_normOneGL ⟨γ, rfl⟩
-      have hc1 : c ∈ normOneGL K n := by
-        have : c = (AdelicGLn.diagonal K n γ)⁻¹ * g := by rw [← hgc, inv_mul_cancel_left]
-        rw [this]
-        exact mul_mem (inv_mem hγ1) g.2
-      refine ⟨⟨c, hc1⟩, hc, (RightCosetSpace.mk_eq_mk_iff).2
-        ⟨⟨⟨_, inv_mem hγ1⟩, ⟨γ⁻¹, map_inv _ _⟩⟩, ?_⟩⟩
-      refine Subtype.ext ?_
-      change (AdelicGLn.diagonal K n γ)⁻¹ * (g : AdelicGLn.AdelicGL K n) = c
-      rw [← hgc]
-      exact inv_mul_cancel_left _ _
-    have hT2 : T2Space (RightCosetSpace (rationalGLOne K n)) := RightCosetSpace.t2Space _
-    have hcl : IsClosed (RightCosetSpace.mk (rationalGLOne K n) '' D) :=
-      (hDc.image (RightCosetSpace.continuous_mk _)).isClosed
-    exact (hDc.image (RightCosetSpace.continuous_mk _)).of_isClosed_subset isClosed_closure
-      (closure_minimal hsub hcl)
 
 end Reduction
 

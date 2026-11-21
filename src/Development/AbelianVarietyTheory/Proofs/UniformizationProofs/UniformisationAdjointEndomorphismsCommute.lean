@@ -19,10 +19,10 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AdicBaseEmbe
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationEndomorphismsToCompleteDvrStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformizationEndomorphismCalculusStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsEndomorphismActionUniformizationDataStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionPointEndomorphismImageEqMovedGtPointStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionPointEndomorphismImageEqMovedGtPoint
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EndomorphismTorusExtensionPeriodOfAdjointStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkUInvariantUnderFieldEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionIdentificationWithPairingStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionIdentificationWithPairing
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 open scoped CategoryTheory.Obj
@@ -161,8 +161,8 @@ theorem keepsTors_up (H₁ : KeepsIota E h F) (H : KeepsTors E h F) : KeepsTors 
   have X := GlobalTheory.T.qkToAkU_iff_galois_equivariant hL R I hR D A G hG U F F' σ k hk
   obtain ⟨α, hα⟩ := exists_actHom hL hR hG E F
   obtain ⟨α', hα'⟩ := exists_actHom hL hR hG E F'
-  obtain ⟨f, hf, -⟩ := GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL R I hR D A G hG U F k hk
-  obtain ⟨f', hf', -, he', -⟩ := GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL R I hR D A G hG U F' k hk
+  obtain ⟨f, hf, -⟩ := _root_.GlobalTheory.TorsionIso.torsion_eq hL R I hR D A G hG U F k hk
+  obtain ⟨f', hf', -, he', -⟩ := _root_.GlobalTheory.TorsionIso.torsion_eq hL R I hR D A G hG U F' k hk
   obtain ⟨q, hq⟩ := exists_equiv_qkExt hL hR σ k hk p
   have hι : ∀ y, α (iota hB F y) = iota hB F (h y) := fun y =>
     (isIota_iff_eq hB _ _).1 (H₁ y _ _ (isIota_iota hB y) ((hα _ _).2 rfl))
@@ -216,7 +216,7 @@ theorem keeps_of_add (E : EndU U.toUnifPre) (h : D.toPre.X →+ D.toPre.X) (m : 
   · have := (isIota_iff_eq hB _ _).1 (H₁ y _ _ hy (sum g g' ha))
     rw [eh, map_add, map_nsmul, (isIota_iff_eq hB _ _).1 hy] at this
     exact (isIota_iff_eq hB _ _).2 (add_right_cancel this)
-  · obtain ⟨f, hf, -, -, hadd, -⟩ := GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL R I hR D A G hG U F k hk
+  · obtain ⟨f, hf, -, -, hadd, -⟩ := _root_.GlobalTheory.TorsionIso.torsion_eq hL R I hR D A G hG U F k hk
     let q : ℕ → QkPt D.toPre F k := fun n => qkMk hB (n • p.y) (n • p.g) (by
       rw [smul_comm, qk_nsmul hB, map_nsmul])
     have hq : ∀ n, f (q n) = f p ^ n := fun n => by
@@ -288,14 +288,14 @@ theorem exists_keeps (h₁ : TwistBCSpanStatement) (h₂ : TWM.VRatioGtStatement
     rwa [show (Iso.refl ((Over.pullback (specOf φ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf φ) =
       pullback.fst G.hom (specOf φ) from Category.id_comp _] at e
   have kid := GlobalTheory.T.endomorphism_torusExtension_period_of_adjoint hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D' Q hQ Ω v hv A' _ hG' U' E₁ E₁' (inj eh hE) (inj eh' hE') adj'
-  have key := GlobalTheory.T.torsionPoint_endomorphism_image_eq_moved_gtPoint hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D' Q hQ Ω v hv A' _ hG' U' E₁ (inj eh hE)
+  have key := _root_.GlobalTheory.UT.EndTors.main hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D' Q hQ Ω v hv A' _ hG' U' E₁ (inj eh hE)
   choose π hπ _ using ex
   refine ⟨Ω, inferInstance, inferInstance, inferInstance, fun y g g' hy ha => ?_, fun k hk p p' x _ ha hx => ?_⟩
   · obtain ⟨y, rfl⟩ := hD.xe.surjective y
     rw [← eh']
     exact (io _ _ _ (hπ g')).2 (kid y _ _ ((io _ _ _ (hπ g)).1 hy) ((ea Ω hF _ _ _ _ (hπ g) (hπ g')).1 ha))
-  · obtain ⟨f, hf, -⟩ := GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL R I hR D A G hG U Ω k hk
-    obtain ⟨f', hf', -⟩ := GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL V _ hR' D' A' _ hG' U' Ω k hk
+  · obtain ⟨f, hf, -⟩ := _root_.GlobalTheory.TorsionIso.torsion_eq hL R I hR D A G hG U Ω k hk
+    obtain ⟨f', hf', -⟩ := _root_.GlobalTheory.TorsionIso.torsion_eq hL V _ hR' D' A' _ hG' U' Ω k hk
     let ρ : QkPt D.toPre Ω k → QkPt D'.toPre Ω k := fun p => ⟨hD.xe.symm p.y, π p.g, by
       obtain ⟨s, a, b⟩ := p.eq
       exact ⟨π s, (ns k _ _ _ _ (hπ _) (hπ _)).1 a, (io _ _ _ (hπ _)).1 (by rwa [AddEquiv.apply_symm_apply])⟩⟩

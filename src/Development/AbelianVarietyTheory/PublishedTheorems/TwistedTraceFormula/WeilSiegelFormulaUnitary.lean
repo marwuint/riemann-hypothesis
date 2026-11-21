@@ -91,45 +91,6 @@ theorem leftInv_thetaKO {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT 
   simp only [thetaKO, e, Module.End.mul_apply]
   exact hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ f hf)
 
-theorem mem_range_lagr (A B : HSp D) (x : WO (dblSp A) B) : x ∈ Set.range (lagr A B) ↔
-    ∀ v, (x : Matrix _ _ (AE D)) *ᵥ pairVec finSumFinEquiv v v = 0 := by
-  have key : ∀ (r : Fin (A.rank + A.rank) → AE D) (v : Fin A.rank → AE D), r ⬝ᵥ pairVec finSumFinEquiv v v =
-      ∑ j, (r (finSumFinEquiv (.inl j)) + r (finSumFinEquiv (.inr j))) * v j := fun r v => by
-    rw [dotProduct, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, ← Finset.sum_add_distrib]
-    simp only [pairVec_inl, pairVec_inr, add_mul]
-  constructor
-  · rintro ⟨y, rfl⟩ v
-    funext i
-    refine (key _ v).trans ?_
-    simp [lagr, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]
-  · intro h
-    refine ⟨fun i j => x i (finSumFinEquiv (.inl j)), Matrix.ext fun i k => ?_⟩
-    rw [← pairVec_eta finSumFinEquiv (x i)]
-    refine congrFun (congrArg (pairVec finSumFinEquiv _) (funext fun j => ?_)) k
-    have := (key (x i) (Pi.single j 1)).symm.trans (congrFun (h (Pi.single j 1)) i)
-    simp only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this
-    exact neg_eq_of_add_eq_zero_right this
-
-theorem actO_lagr_mem (A B : HSp D) {p : GA D (dblSp A)} (hp : p ∈ siegel A) (h : GA D B) (y : Mx D B.rank A.rank) :
-    actO (dblSp A) B p h (lagr A B y) ∈ Set.range (lagr A B) := by
-  refine (mem_range_lagr A B _).2 fun v => ?_
-  have h1 := (mem_siegelOf.1 (inv_mem hp)).mulVec_diag v
-  have h2 := (mem_range_lagr A B _).1 ⟨y, rfl⟩
-  unfold actO
-  rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-  erw [h1, h2, Matrix.mulVec_zero]
-
-theorem symplO_lagr (A B : HSp D) (y y' : Mx D B.rank A.rank) : symplO (dblSp A) B (lagr A B y) (lagr A B y') = 0 := by
-  have hu : IsUnit A.gram.det := (isHermND_gram A).2.isUnit
-  have h1 : (dblSp A).gram⁻¹ = blkMat finSumFinEquiv A.gram⁻¹ (-A.gram⁻¹) := Matrix.inv_eq_right_inv (by
-    rw [gram_hdbl, dblGram, blkMat_mul, neg_mul_neg, Matrix.mul_nonsing_inv _ hu, blkMat_one])
-  have h2 : hO (dblSp A) B (lagr A B y) (lagr A B y') = 0 := by
-    unfold hO
-    rw [h1, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]
-    simp only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]
-    simp [lagr, blkMat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]
-  rw [symplO, h2, mul_zero, map_zero]
-
 theorem om_rat_apply {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hω : IsWeilDatumO ψ S T χS χT ω) {f : WO S T → ℂ}
     {γ : GA D S} (hγ : γ ∈ GQ S) {δ : GA D T} (hδ : δ ∈ GQ T) (w : WO S T)

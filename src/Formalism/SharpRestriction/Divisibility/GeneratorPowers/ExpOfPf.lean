@@ -230,9 +230,6 @@ end ExpOf
 
 namespace ExpOf
 
-variable {S : Type} [CommRing S] [Algebra ℚ S]
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {d : ℕ}
-
 end ExpOf
 
 theorem isExpOf_expPhi {S : Type} [CommRing S] [Algebra ℚ S] {E : Type} [Field E] [NumberField E] [IsCMField E]

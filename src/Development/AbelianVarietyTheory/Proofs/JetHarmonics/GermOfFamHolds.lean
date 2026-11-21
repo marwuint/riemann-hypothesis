@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValCongr
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CoeffOfJet
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StarRingExtOfStar
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FrameNStHolds
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatementStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalJetsPowerProductStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalJetsPowerProduct
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ValFinProdGen
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ConstBFMul
 
@@ -26,7 +26,7 @@ theorem germOfFam_holds : Laws → Laws2 → Laws4 → TwistBaseChangeStatement 
   obtain rfl := starSt E H inst hstar
   let := H.starRing
   intro T io y C htr P ϖ hϖ Q hQ n _ D' A' G' _ _ pD pA pG U' PU F _ _ _ _ v hv q hq
-  have hu := GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n _ pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)
+  have hu := _root_.GlobalTheory.PowGerm.univPow T.V C.I.G.G G' n _ pG C.xT (_root_.GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y C)
   obtain ⟨τ, hτ, ht, hiff⟩ := frameNSt_holds E H T.V C.I.G P _ C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT
     C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU
   refine ⟨fun σ' => ?_, fun s σ' hE hs g hg => ?_⟩

@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLambdaGeneratorZpowWithPeriods
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvTranspose
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsFactorNontrivial
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyFiniteNormalising

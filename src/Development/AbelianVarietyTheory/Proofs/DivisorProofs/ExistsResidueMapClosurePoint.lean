@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlac
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocModelLocRingAndExistsTrBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecializesOfPointLocalRingLeSeparatedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasRationalResidueFieldPointLocalRingClosedPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasRationalResidueFieldPointLocalRingClosedPoint
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -138,6 +138,6 @@ theorem residueMap : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
           exact i.isClosedEmbedding.injective.eq_iff
         rw [← hpre]
         exact hx.preimage i.continuous
-      exact GlobalTheory.T.hasRationalResidueField_pointLocalRing_closedPoint Z q y hy
+      exact _root_.GlobalTheory.FieldPair.ratRes_locRing_of_isClosed Z q y hy
 
 end GlobalTheory.ResMap

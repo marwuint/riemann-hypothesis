@@ -2,12 +2,13 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
 import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverDegreeOneRealisationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticDataFubiniStudyStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyArithmeticStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyModelBaseMetricStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverRealisationPullbackStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticDataUniformisedStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverDegreeOneRealisation
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCFlAn
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyArithmetic
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyModelBaseMetric
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentSwapSquareSystem
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCSqsys
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticDataUniformised
 
 noncomputable section
 
@@ -20,8 +21,8 @@ theorem flagVarieties_flagSys : Inputs → ∀ (Ψ : Type) [Fintype Ψ] [Decidab
       Re.deg = 1 ∧ (∀ p, Re.ref p = yLineFl Ψ N p) ∧ (∀ p t, Re.line p t = yLineFl Ψ N p) ∧
       Nonempty (FlagSys Re N) := by
   intro hIn Ψ _ _ _ N hN
-  obtain ⟨M, BM, hhom, hdy, hbd⟩ := GlobalTheory.T.flag_variety_model_base_metric Ψ N hN
-  have hA := GlobalTheory.T.flag_variety_arithmetic Ψ N hN
+  obtain ⟨M, BM, hhom, hdy, hbd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.flagModel_over_point Ψ N hN
+  have hA := _root_.GlobalTheory.CompanionTheory.Ar.PB.pFl_isArithVar Ψ N hN
   have hpos : 0 < antisymDegree Ψ N := by
     have h1 : 0 < Fintype.card Ψ := Fintype.card_pos
     have h2 : 0 < N.choose 2 := Nat.choose_pos hN
@@ -36,9 +37,9 @@ theorem flagVarieties_flagSys : Inputs → ∀ (Ψ : Type) [Fintype Ψ] [Decidab
     rw [h0, add_zero, zero_add]
     exact hd1
   have hhom' : ∀ p : Ψ × Fin N, BM.hom p = fsHerm (FlIdx Ψ N) (M.dy p) := fun p => (hhom p).trans (hdy p).symm
-  obtain ⟨FA, hFAline⟩ := GlobalTheory.T.flag_analytic_data_fubini_study _ _ _ _ Ψ N N M 0 d BM hAr hdeg hbd hhom'
-  obtain ⟨Cv, CR, hCv, hCRref, hCRline⟩ := GlobalTheory.T.flag_cover_degree_one_realisation _ _ _ _ Ψ N N M 0 d BM FA
-  have hunif := GlobalTheory.T.flag_analytic_data_uniformised _ _ _ _ Ψ N N M 0 d BM FA (by simp) hd1
+  obtain ⟨FA, hFAline⟩ := _root_.PositivityTheory.Xgp.t_c_fl_an _ _ _ _ Ψ N N M 0 d BM hAr hdeg hbd hhom'
+  obtain ⟨Cv, CR, hCv, hCRref, hCRline⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.identity_cover _ _ _ _ Ψ N N M 0 d BM FA
+  have hunif := _root_.GlobalTheory.CompanionTheory.Relay.flag_analytic_data_uniformised _ _ _ _ Ψ N N M 0 d BM FA (by simp) hd1
   refine ⟨d, FA.S.comap some, CR.Re, hd1, ?_, ?_, ?_, ?_⟩
   · rw [CR.deg_eq, hCv]
   · intro p
@@ -46,6 +47,6 @@ theorem flagVarieties_flagSys : Inputs → ∀ (Ψ : Type) [Fintype Ψ] [Decidab
   · intro p t
     rw [hCRline, hFAline, hdy]
   · exact ⟨FlagSys.mk le_rfl hd1 hunif (fun τ a b hab hor =>
-      (GlobalTheory.T.flag_cover_realisation_pullback hIn _ _ _ _ Ψ N N M 0 d BM FA _ _ _ _ M Cv CR hAr τ a b hab hor).some)⟩
+      (_root_.PositivityTheory.Xgp.t_c_sqsys hIn _ _ _ _ Ψ N N M 0 d BM FA _ _ _ _ M Cv CR hAr τ a b hab hor).some)⟩
 
 end GlobalTheory.CompanionTheory.Ar.PB

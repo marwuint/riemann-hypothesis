@@ -42,10 +42,6 @@ theorem gNpow_inCC (hNI : NormInv) (b : ℝ) (hb : b ≠ 0) :
 def invP (p : B.SS k r) : B.SS k r :=
   ((B2.invM p.1.1, B2.invM p.1.2), (B2.invM p.2.1, B2.invM p.2.2))
 
-theorem measurable_componentwiseInv : Measurable (invP (k := k) (r := r)) := by
-  have h := B2x1.invM_meas (k := k) (r := r)
-  exact (h.prodMap h).prodMap (h.prodMap h)
-
 theorem map_invM_eq {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup U) {μ : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hμ : B.IsHaarOn U μ) : μ.map B2.invM = μ := Formalism.FourierDecayAlt.P.haar_measure_inversion k r U μ hU hμ
 

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsKMeas
+import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
 
 namespace GlobalTheory.HCXi
 

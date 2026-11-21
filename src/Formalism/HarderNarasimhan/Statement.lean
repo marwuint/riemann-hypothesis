@@ -116,14 +116,6 @@ def dualZ {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (L : Subm
     ⨅ x ∈ L, ((Int.castAddHom ℝ).range.toIntSubmodule).comap
       ((innerSL ℝ x : E →L[ℝ] ℝ).toLinearMap.restrictScalars ℤ)
 
-def Duality : Prop :=
-  ∀ (E : Type*) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    (L : Submodule ℤ E), DiscreteTopology L →
-    DiscreteTopology (dualZ L) ∧ Formalism.F.rk (dualZ L) = Formalism.F.rk L ∧
-    Formalism.F.deg (dualZ L) = - Formalism.F.deg L ∧ dualZ (dualZ L) = L ∧
-    (L ≠ ⊥ → muMax (AddMonoidHom.id E) (dualZ L) = - muMin (AddMonoidHom.id E) L ∧
-      muMin (AddMonoidHom.id E) (dualZ L) = - muMax (AddMonoidHom.id E) L)
-
 def Example : Prop :=
   let e₀ : EuclideanSpace ℝ (Fin 2) := EuclideanSpace.single 0 1
   let e₁ : EuclideanSpace ℝ (Fin 2) := EuclideanSpace.single 1 1
@@ -150,17 +142,5 @@ def piReal {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ i, AddCommGroup (V 
     (ρ : ∀ i, V i →+ E i) : (∀ i, V i) →+ PiLp 2 E :=
   (WithLp.linearEquiv 2 ℝ (∀ i, E i)).symm.toLinearMap.toAddMonoidHom.comp
     (AddMonoidHom.pi fun i => (ρ i).comp (Pi.evalAddMonoidHom V i))
-
-def PiSum : Prop :=
-  ∀ (R ι : Type*) [Ring R] [Fintype ι] [DecidableEq ι] (V E : ι → Type*)
-    [∀ i, AddCommGroup (V i)] [∀ i, Module R (V i)] [∀ i, NormedAddCommGroup (E i)]
-    [∀ i, InnerProductSpace ℝ (E i)] [∀ i, FiniteDimensional ℝ (E i)]
-    (ρ : ∀ i, V i →+ E i) (L : ∀ i, Submodule R (V i)), (∀ i, IsLat (ρ i) (L i)) →
-    IsLat (piReal ρ) (Submodule.pi Set.univ L) ∧
-    rk (piReal ρ) (Submodule.pi Set.univ L) = ∑ i, rk (ρ i) (L i) ∧
-    deg (piReal ρ) (Submodule.pi Set.univ L) = ∑ i, deg (ρ i) (L i) ∧
-    ((∃ i, L i ≠ ⊥) → ∀ θ : ℝ,
-      (muMax (piReal ρ) (Submodule.pi Set.univ L) ≤ θ ↔ ∀ i, L i ≠ ⊥ → muMax (ρ i) (L i) ≤ θ) ∧
-      (θ ≤ muMin (piReal ρ) (Submodule.pi Set.univ L) ↔ ∀ i, L i ≠ ⊥ → θ ≤ muMin (ρ i) (L i)))
 
 end Formalism.HN

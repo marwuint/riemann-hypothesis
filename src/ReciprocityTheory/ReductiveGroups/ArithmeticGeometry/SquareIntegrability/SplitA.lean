@@ -23,10 +23,6 @@ theorem Hf_conj (v w : EuclideanSpace ℂ ι) : Hf w v = (starRingEnd ℂ) (Hf v
   rw [Hf_eq_inner_swap_complex, Hf_eq_inner_swap_complex]
   exact (inner_conj_symm _ _).symm
 
-theorem Hf_smul_right (c : ℂ) (v w : EuclideanSpace ℂ ι) :
-    Hf v (c • w) = (starRingEnd ℂ) c * Hf v w := by
-  rw [Hf_eq_inner_swap_complex, Hf_eq_inner_swap_complex, inner_smul_left]
-
 theorem real_inner_eq_Hf (x y : EuclideanSpace ℂ ι) : ⟪x, y⟫_ℝ = (Hf y x).re := by
   rw [Hf_eq_inner_swap_complex, real_inner_eq_re_inner']
 

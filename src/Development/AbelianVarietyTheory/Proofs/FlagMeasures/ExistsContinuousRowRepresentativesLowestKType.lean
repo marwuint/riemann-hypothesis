@@ -7,8 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryC
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CompletedTensorDiscreteSeriesIrreducibleFormalDe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousRepresentativeProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousConv
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasDerivAtConvolutionArchimedeanUnitaryLieAlgebrStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmoothAverageLowestKTypeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasDerivAtConvolutionArchimedeanUnitaryLieAlgebr
+import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.OrthonormalPlaceBasis
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmoothAverageLowestKType
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasDerivAtCompletedTensorOrbitSmoothAverage
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.Deep
@@ -102,9 +103,9 @@ theorem repsExist : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ), IsDSDat
     rw [this]
     exact huniq _ _ _ h.choose_spec hf
   refine ⟨Fr, fun P u hu => ?_⟩
-  obtain ⟨A, hA, hAs, hfix⟩ := GlobalTheory.T.exists_smooth_average_lowest_KType B d hd h1 P u hu
+  obtain ⟨A, hA, hAs, hfix⟩ := _root_.GlobalTheory.StepAverage.exists_smooth_average_of_isKTypeOf B d hd h1 P u hu
   let ψ : B.I.GA → ℂ := fun y => A (fun v i j => uMat (y.1 v) i j) * χ y.2
-  have hder := fun E => GlobalTheory.T.hasDerivAt_convolution_archimedeanUnitaryLieAlgebra B A χ ψ E hA hAs hχc hχs (fun _ => rfl)
+  have hder := fun E => _root_.GlobalTheory.ConvDeriv.convolution_hasDerivAt B A χ ψ E hA hAs hχc hχs (fun _ => rfl)
   have hψ : ∫ y, ψ y • B.R y (T (B.tens B.w)) ∂(B.I.muA B.μf) = T u := by
     rw [hfix]
     exact conv_avg B T hT hk (fun g => A (fun v i j => uMat (g v) i j)) χ hχK hχ1 _

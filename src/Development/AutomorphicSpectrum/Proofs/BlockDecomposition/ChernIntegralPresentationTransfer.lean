@@ -11,7 +11,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace MeasureTheory Set Filter 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.L2DbarEstimates (V cHess)
-open GlobalTheory GlobalTheory.Points GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.Published.ArDegreeModel GlobalTheory.ChartGlue GlobalTheory.ProjVar.Var
+open GlobalTheory GlobalTheory.Points GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.ProjVar.Var
 
 namespace GlobalTheory.CompanionTheory.ChernTransport
 

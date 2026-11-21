@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeInIsotypicSup
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 
 set_option synthInstance.maxHeartbeats 200000
@@ -23,7 +23,7 @@ theorem goodPart_le_iSup_eigen_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.hos
   obtain ⟨Φ, hc, hf, hw⟩ := descend_exists D T S In i j b hj1 hj2
   have ha := descend_actL D T S In i j b hj1 hj2 Φ hc hf
   have he := descend_eSum D T S In i j b Φ hc ha
-  refine (GlobalTheory.T.V0T_le_span_image_goodL D S In T i j b hj1 hj2 (eIdem_all D) Φ hc ha he hw).trans (Submodule.span_le.mpr ?_)
+  refine (_root_.GlobalTheory.HeightCounting.FormsStep.goodTwistSideForms_le_span_goodLiftForms D S In T i j b hj1 hj2 (eIdem_all D) Φ hc ha he hw).trans (Submodule.span_le.mpr ?_)
   intro y hy
   obtain ⟨x, hx, rfl⟩ := hy
   rw [SetLike.mem_coe]

@@ -86,7 +86,4 @@ theorem pushCont_of (hY : FrameIndependentAtInfinity) (hPr : ProperOrb) : PushCo
       exact (ENNReal.continuous_ofReal.comp (f.continuous.comp ((continuous_smul_tupI X g).comp
         (continuous_rmulT X (Y0 X u'))))).continuousAt.comp hac
 
-theorem constTest_of_polar_proper (hP : PolarLoc) (hY : FrameIndependentAtInfinity) (hPr : ProperOrb) : ConstTest :=
-  constTest_of_polar hP (pushCont_of hY hPr)
-
 end PI.AprimeInfW

@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinear
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaFunctionSpaceHeisenbergLawsStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalUnitaryGroupStructureStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicZakThetaExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelTestFunctionMapLinearInjectiveEquivarStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeakWeilRepCarriesDerivativesVacuaFockVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelTestFunctionMapLinearInjectiveEquivar
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeakWeilRepCarriesDerivativesVacuaFockVectors
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.L2.Pj MeasureTheory IsDedekindDomain NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Ker
@@ -62,13 +62,13 @@ theorem om_rat : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S × GA
     intro x hx
     funext w
     rw [om_subst C om H 1 (one_mem _) γ hγ _ (GlobalTheory.T.adelicZakTheta_exists_unique D S T C x hx φ hφ).1.1 w, inv_one]
-    exact ((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx φ hφ).2.2.2 ga γ hr w).symm
+    exact ((_root_.GlobalTheory.Ker.Ctx.th_laws D S T C x hx φ hφ).2.2.2 ga γ hr w).symm
   refine ⟨key, ?_⟩
   intro B hB Q
-  have hJ := (GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB
+  have hJ := (_root_.GlobalTheory.Ker.onBasis_frame_period D S T C).2 B hB
   have hx := hJ.2.1
   have hm : C.xB (C.mvB γ B) = lact ga (C.xB B) := (hJ.2.2.2.2.2 γ).2.2.2.2.2 ga hr
-  have h5 := ((GlobalTheory.T.weakWeilRep_carries_derivatives_vacua_fockVectors D S T C om H 1 γ _ (GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx φ hφ).1.1).2 B hB).2 Q
+  have h5 := ((_root_.GlobalTheory.Ker.WeakMove.om_move D S T C om H 1 γ _ (GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx φ hφ).1.1).2 B hB).2 Q
   rw [h5, key _ hx, hm]
   simp only [compAt_one']
   rfl

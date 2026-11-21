@@ -19,13 +19,6 @@ namespace GlobalTheory.GO
 open NumberField IsDedekindDomain Formalism.L2.Col Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Forms Formalism.L2.Ker GlobalTheory.TopStep
 open GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound (JetsRatDeg)
 
-section Dat
-
-variable {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (𝓞 X.E))) {cA cB : ℕ}
-  {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)}
-
-end Dat
-
 section Range
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
@@ -128,115 +121,17 @@ def twThPt (i j : ℕ) (e : j = i + 1) (β : (twFam W Ch sel mu cst L u m2 b hY 
     VCx X.Tau (R.N i) (R.N j) → ℂ :=
   A.thDat (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) (levPt i β d).deco.1.N (levPt j β' d').deco.1.N (twXi i j e β β' d d')
 
-section Pt
-
-variable (i j : ℕ) (e : j = i + 1) (β : (twFam W Ch sel mu cst L u m2 b hY P c i).β) (β' : (twFam W Ch sel mu cst L u m2 b hY P c j).β)
-  (d : (twFam W Ch sel mu cst L u m2 b hY P c i).D β) (d' : (twFam W Ch sel mu cst L u m2 b hY P c j).D β')
-
-end Pt
-
 theorem twThPt_top (e : R.m = m2 + 1 + 1) (h : m2 + 1 = m2 + 1) (h' : R.m = R.m) (d : (ybCpl W sel mu cst L u m2 b hY).Pts)
     (p' : TopPt R sel mu u) :
     twThPt (Ch := Ch) (P := P) (c := c) A (m2 + 1) R.m e (.cpl h) (.top h') d p' =
       A.thDat (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) d.1.1.deco.1.N p'.deco.1.N
         (XiTop Ch sel mu cst m2 d.1.1 d.1.2 p') := rfl
 
-section Vec
-
-variable (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (h0 : A.AA ≠ ⊥)
-include hPr hL h0
-
-end Vec
-
-abbrev twSec (i : ℕ) (x : (twFam W Ch sel mu cst L u m2 b hY P c i).Cl) : (twFam W Ch sel mu cst L u m2 b hY P c i).D x.1 :=
-  ((twFam W Ch sel mu cst L u m2 b hY P c i).mem x.1).outSec.rep x.2
-
-section Def
-
-variable (chi : ∀ n : ℕ, Submodule (𝓞 X.E) (Sp X.E n) → ℂ) (hX : X.Ok) (hm : R.m = m2 + 2) (hF : ∀ j, (chF W sel mu L u j).Ok)
-  (hK : TwEquiv W Ch sel mu cst L A u m2 b hY P c) (hρ : RhoUnit Ch sel mu cst A.σ₀ chi)
-
-def twTh : (twSrc chi hX hm hF hK hρ).ThFam := fun i x x' => twThPt A i (i + 1) rfl x.1 x'.1 (twSec i x) (twSec (i + 1) x')
-
-def twChain : ColumnChain R X.Tau (W.hc u) := (twSrc chi hX hm hF hK hρ).chainTh A.σ₀ (W.hc u) A.cD (twTh chi hX hm hF hK hρ)
-
-end Def
-
-def twChainOf {D : D7} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
-    {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel)
-    (hS : ∀ i, Pr.g i ∈ S) (ht : Ch.Tied s.σ₀ e G.mu0 eta) (hL : L.Ok Ch sel mu cst G m2) (hG : G.σ₀ = s.σ₀) (hs : s.Ok)
-    (hχ : TaylorLogMetric.IsChi D χ) (hF : ∀ j, (chF W sel mu L u j).Ok) (hK : TwEquiv W Ch sel mu cst L (ambOf s B χ cD) u m2 b hY P c) :
-    ColumnChain R X.Tau (W.hc u) :=
-  twChain (chiLat s χ) hX hL.hm hF hK (rhoUnit_of hX hPr hsel hS ht hL hG hs hχ)
-
 variable (W sel mu cst A u) in
 
 def TwJets : Prop :=
   ∀ i < R.m, JetsRatDeg A (R.N i) (R.N (i + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) fun τ => ∑ a, (W.nuW u (i + 1) τ).w a
 
-section Laws
-
-variable {chi : ∀ n : ℕ, Submodule (𝓞 X.E) (Sp X.E n) → ℂ} {hX : X.Ok} {hm : R.m = m2 + 2} {hF : ∀ j, (chF W sel mu L u j).Ok}
-  {hK : TwEquiv W Ch sel mu cst L A u m2 b hY P c} {hρ : RhoUnit Ch sel mu cst A.σ₀ chi}
-
-theorem twChain_unf (i : ℕ) (x : (twFam W Ch sel mu cst L u m2 b hY P c i).Cl) (x' : (twFam W Ch sel mu cst L u m2 b hY P c (i + 1)).Cl)
-    (Q : Formalism.L2.DIV.Pol ℂ X.Tau (R.N i)) (y' : ChSrc.Fr X A.σ₀ (R.N (i + 1))) :
-    (twChain chi hX hm hF hK hρ).unf i x x' (fun y : ChSrc.Fr X A.σ₀ (R.N i) => MvPolynomial.eval (fun v => y.1 v.1 v.2.1 v.2.2) Q) y' =
-      ∑ q ∈ (derPol A.cD Q y'.1).support, MvPolynomial.coeff q (derPol A.cD Q y'.1) * derivAt0 (twTh chi hX hm hF hK hρ i x x') q :=
-  (twSrc chi hX hm hF hK hρ).chainTh_unf A.σ₀ (W.hc u) A.cD _ i x x' Q y'
-
-variable (hT : 0 < Pr.T u) (hχ : ChiSplit chi A) (hs : ∀ i < R.m, A.ESmooth (R.N i) (R.N (i + 1))) (hJ : TwJets W sel mu cst A u)
-include hT hχ hs hJ
-
-end Laws
-
-section Same
-
-variable {chi : ∀ n : ℕ, Submodule (𝓞 X.E) (Sp X.E n) → ℂ} {hX : X.Ok} {hm : R.m = m2 + 2} {hF : ∀ j, (chF W sel mu L u j).Ok}
-  {hK : TwEquiv W Ch sel mu cst L A u m2 b hY P c} {hρ : RhoUnit Ch sel mu cst A.σ₀ chi}
-
-end Same
-
-section Of
-
-variable {D : D7} {s : Seam D X} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {B : Base D cc δ} {χ : TaylorLogMetric.IdE D → ℂ} {cD : D.what₂.Tau → ℂ}
-  {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} {hX : X.Ok} {hPr : Pr.Ok} {hsel : IsSel X sel}
-  {hS : ∀ i, Pr.g i ∈ S} {ht : Ch.Tied s.σ₀ e G.mu0 eta} {hL : L.Ok Ch sel mu cst G m2} {hG : G.σ₀ = s.σ₀} {hs : s.Ok}
-  {hχ : TaylorLogMetric.IsChi D χ} {hF : ∀ j, (chF W sel mu L u j).Ok} {hK : TwEquiv W Ch sel mu cst L (ambOf s B χ cD) u m2 b hY P c}
-
-end Of
-
-example {chi : ∀ n : ℕ, Submodule (𝓞 X.E) (Sp X.E n) → ℂ} {hX : X.Ok} {hm : R.m = m2 + 2} {hF : ∀ j, (chF W sel mu L u j).Ok}
-    {hK : TwEquiv W Ch sel mu cst L A u m2 b hY P c} {hρ : RhoUnit Ch sel mu cst A.σ₀ chi} (i : ℕ)
-    (x : (twFam W Ch sel mu cst L u m2 b hY P c i).Cl) (x' : (twFam W Ch sel mu cst L u m2 b hY P c (i + 1)).Cl)
-    (y' : ChSrc.Fr X A.σ₀ (R.N (i + 1))) :
-    (twChain chi hX hm hF hK hρ).unf i x x' (fun _ => 1) y' = twTh chi hX hm hF hK hρ i x x' 0 := by
-  have h := twChain_unf (chi := chi) (hX := hX) (hm := hm) (hF := hF) (hK := hK) (hρ := hρ) i x x' 1 y'
-  simp only [map_one, derPol] at h
-  refine h.trans ?_
-  rw [MvPolynomial.support_one, Finset.sum_singleton, MvPolynomial.coeff_zero_one, one_mul, derivAt0]
-  have h0 : ∀ n, n = 0 → ∀ v, iteratedFDeriv ℂ n (twTh chi hX hm hF hK hρ i x x') 0 v = twTh chi hX hm hF hK hρ i x x' 0 := by
-    rintro _ rfl v
-    exact iteratedFDeriv_zero_apply v
-  exact h0 _ (by simp) _
-
-example [IsEmpty (rowSG Pr sel mu)] (e : R.m = m2 + 1 + 1) (d : (ybCpl W sel mu cst L u m2 b hY).Pts) (p' : TopPt R sel mu u) :
-    twThPt (Ch := Ch) (P := P) (c := c) A (m2 + 1) R.m e (.cpl rfl) (.top rfl) d p' =
-      A.thDat (Sall sel mu u) 1 (Pr.T u) d.1.1.deco.1.N p'.deco.1.N (phiT X.K d.1.1.deco.1 p'.deco.1) := by
-  rw [twThPt_top, cAof, cBof, Fintype.prod_empty, one_pow, one_pow, mul_one]
-  congr 1
-  funext x
-  unfold XiTop
-  rw [Fintype.prod_empty, mul_one]
-
-example (hm : R.m = m2 + 2) (i : ℕ) (hi : R.m ≤ i) : IsEmpty (twFam W Ch sel mu cst L u m2 b hY P c (i + 1)).Cl :=
-  ⟨fun x => (SpIdx.isEmpty_of_lt (by omega) (by omega)).false x.1⟩
-
 end Chain
-
-example {D : D7} {EX : ErrX D} (sel : HeightOneSpectrum (𝓞 D.host.F) → HeightOneSpectrum (𝓞 D.host.E))
-    (A : Amb (GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.recFields D)) (ξ : GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.Twist D)
-    (cst : LocCst (GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.recFields D) (rowSG (GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.recPrimes EX) sel ξ)) (u : D.what₂.Word) :
-    TwJets (GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.recWts EX) sel ξ cst A u ↔ GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.FieldTie sel A ξ cst u := Iff.rfl
 
 end GlobalTheory.GO

@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsLatFamilyCongr
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateChartDualActionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateChartDualAction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExtendLin
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateFreeCmTypeWeight
 open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
@@ -89,11 +90,6 @@ theorem mem_range_iff (x : Ω) : x ∈ (algebraMap R Ω).range ↔ x ∈ R :=
 
 theorem mem_lat {V : Submodule Ω Li} {e : Li} :
     e ∈ HTL.latOn D V (algebraMap R Ω 1) (algebraMap R Ω).range ↔ e ∈ V ∧ ∀ u ∈ D.om', u e ∈ R :=
-  ⟨fun h => ⟨h.1, fun u hu => by simpa [mem_range_iff] using h.2 u hu⟩,
-    fun h => ⟨h.1, fun u hu => by simpa [mem_range_iff] using h.2 u hu⟩⟩
-
-theorem mem_lat' {V : Submodule Ω Li} {e : Li} :
-    e ∈ HTL.latOn D V 1 (algebraMap R Ω).range ↔ e ∈ V ∧ ∀ u ∈ D.om', u e ∈ R :=
   ⟨fun h => ⟨h.1, fun u hu => by simpa [mem_range_iff] using h.2 u hu⟩,
     fun h => ⟨h.1, fun u hu => by simpa [mem_range_iff] using h.2 u hu⟩⟩
 
@@ -289,7 +285,7 @@ theorem seqHyp_chart : ∀ (o Ω Li : Type) [CommRing o] [Field Ω] [CharZero Ω
   have hσσ : (σ.comp c.toRingHom).comp c.toRingHom = σ := by
     ext x
     simp [hc]
-  obtain ⟨J, Rr', hJ1, hJ2, hJ3⟩ := GlobalTheory.T.hodge_tate_chart_dual_action R Ω E c hc p Rr N Li D ρ hact σ 1 m i₀ (by simp) hex
+  obtain ⟨J, Rr', hJ1, hJ2, hJ3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.HTL.exists_lift_retract R Ω E c hc p Rr N Li D ρ hact σ 1 m i₀ (by simp) hex
   obtain ⟨hVv, hSv, hIv⟩ := frame hv hvs
   obtain ⟨hVv', hSv', hIv'⟩ := frame hv' hvs'
   have hLat : ∀ e, e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap R Ω 1) (algebraMap R Ω).range ↔

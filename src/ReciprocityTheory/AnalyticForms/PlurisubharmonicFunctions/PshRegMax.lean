@@ -12,7 +12,6 @@ variable {ι : Type*} [Fintype ι] [Nonempty ι]
 
 lemma succ_le_inf (m : ℕ) : (m : WithTop ℕ∞) + 1 ≤ ∞ := by exact_mod_cast le_top
 lemma one_add_one_le_inf : (1 : WithTop ℕ∞) + 1 ≤ ∞ := by exact_mod_cast succ_le_inf 1
-lemma one_le_inf : (1 : WithTop ℕ∞) ≤ ∞ := by exact_mod_cast le_top
 lemma two_le_inf : (2 : WithTop ℕ∞) ≤ ∞ := by exact_mod_cast succ_le_inf 1
 
 lemma regMax_fderiv_sum [DecidableEq ι] {η : ℝ} (hη : 0 < η) (t : ι → ℝ) :
@@ -160,49 +159,6 @@ lemma abs_regMax_le {η : ℝ} (hη : 0 ≤ η) (v : ι → ℝ) : |regMax η v|
   rw [tmax_zero, sub_zero, sub_zero] at h3
   rw [abs_le] at h3 ⊢; constructor <;> linarith
 
-lemma regMax_usc {X : Type*} [TopologicalSpace X] {U : Set X} (η : ℝ) {u : ι → X → ℝ}
-    (hu : ∀ j, UpperSemicontinuousOn (u j) U) :
-    UpperSemicontinuousOn (fun z => regMax η (fun j => u j z)) U := by
-  intro z hz y hy
-  have he : 0 < (y - regMax η (fun j => u j z)) / 2 := by linarith
-  have hev : ∀ᶠ x in 𝓝[U] z, ∀ j, u j x < u j z + (y - regMax η (fun j => u j z)) / 2 :=
-    Filter.eventually_all.2 fun j => hu j z hz _ (by linarith)
-  filter_upwards [hev] with x hx
-  calc regMax η (fun j => u j x)
-      ≤ regMax η (fun j => u j z + (y - regMax η (fun j => u j z)) / 2) :=
-        regMax_mono η fun j => (hx j).le
-    _ = regMax η (fun j => u j z) + (y - regMax η (fun j => u j z)) / 2 := regMax_add_const η _ _
-    _ < y := by linarith
-
-lemma regMax_circle {η : ℝ} (hη : 0 < η) (f : ℂ → ι → ℝ) (c : ℂ) (R : ℝ)
-    (hf : ∀ j, CircleIntegrable (fun ζ => f ζ j) c R) :
-    CircleIntegrable (fun ζ => regMax η (f ζ)) c R ∧
-      regMax η (fun j => Real.circleAverage (fun ζ => f ζ j) c R) ≤
-        Real.circleAverage (fun ζ => regMax η (f ζ)) c R := by
-  have hμ : volume (Ι (0:ℝ) (2 * Real.pi)) = ENNReal.ofReal (2 * Real.pi) := by
-    rw [Set.uIoc_of_le (by positivity), Real.volume_Ioc, sub_zero]
-  have : IsFiniteMeasure (volume.restrict (Ι (0:ℝ) (2 * Real.pi))) :=
-    isFiniteMeasure_restrict.2 (by rw [hμ]; exact ENNReal.ofReal_ne_top)
-  have : NeZero (volume.restrict (Ι (0:ℝ) (2 * Real.pi))) := ⟨fun h => by
-    have := Measure.restrict_eq_zero.1 h
-    rw [hμ, ENNReal.ofReal_eq_zero] at this; linarith [Real.pi_pos]⟩
-  have hg : Integrable (fun θ => f (circleMap c R θ)) (volume.restrict (Ι (0:ℝ) (2 * Real.pi))) :=
-    integrable_pi_iff.2 fun j => intervalIntegrable_iff.1 (hf j)
-  have hF : Continuous (regMax (ι := ι) η) := (regMax_contDiff hη).continuous
-  have hFg : Integrable (fun θ => regMax η (f (circleMap c R θ)))
-      (volume.restrict (Ι (0:ℝ) (2 * Real.pi))) := by
-    refine Integrable.mono' (hg.norm.add (integrable_const (η / 2)))
-      (hF.comp_aestronglyMeasurable hg.aestronglyMeasurable) (Eventually.of_forall fun θ => ?_)
-    rw [Real.norm_eq_abs]; exact abs_regMax_le hη.le _
-  have hci : CircleIntegrable f c R := intervalIntegrable_iff.2 hg
-  refine ⟨intervalIntegrable_iff.2 hFg, ?_⟩
-  have e : (fun j => Real.circleAverage (fun ζ => f ζ j) c R) = Real.circleAverage f c R := by
-    funext j
-    exact (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => ℝ) j).circleAverage_comp_comm hci
-  rw [e, Real.circleAverage_eq_intervalAverage, Real.circleAverage_eq_intervalAverage]
-  exact (regMax_convex η).map_average_le hF.continuousOn isClosed_univ
-    (Eventually.of_forall fun _ => trivial) hg hFg
-
 end Psh
 
 section Levi
@@ -327,13 +283,6 @@ lemma clm_apply_eq_sum [DecidableEq ι] (L : (ι → ℝ) →L[ℝ] ℝ) (c : ι
   rw [this, map_smul, smul_eq_mul]
 
 end Levi
-
-theorem regMaxPsh_thm : RegMaxPshStatement := by
-  intro D ι _ _ η U u hU hη hu
-  refine ⟨regMax_usc η fun j => (hu j).1, fun z w hzw => ?_⟩
-  have h := fun j => (hu j).2 z w hzw
-  have hc := regMax_circle hη (fun ζ j => u j (z + ζ • w)) 0 1 fun j => (h j).1
-  exact ⟨hc.1, le_trans (regMax_mono η fun j => (h j).2) hc.2⟩
 
 theorem regMaxLevi_thm : RegMaxLeviStatement := by
   intro D ι _ _ η U u hU hη hu z hz w g hg

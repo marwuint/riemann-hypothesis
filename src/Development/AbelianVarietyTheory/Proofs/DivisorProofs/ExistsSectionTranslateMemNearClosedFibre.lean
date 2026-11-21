@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothGroupSectionsDenseInFibresStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothGroupSectionsDenseInFibres
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -80,7 +81,7 @@ theorem exists_section_translate_mem : ∀ (R : Type) [CommRing R] [IsDomain R] 
     refine (irreducibleSpace_def _).2 ⟨⟨w, trivial⟩, ?_⟩
     have := (IrreducibleSpace.isIrreducible_univ T).2.preimage k.isOpenEmbedding
     simpa using this
-  obtain ⟨a, aΩ, ha, haf, has, hao⟩ := GlobalTheory.T.smoothGroup_sections_dense_in_fibres R hR.2.2.2 N.U N.smooth e he Ω xR hs hirr O ⟨w, hwO⟩
+  obtain ⟨a, aΩ, ha, haf, has, hao⟩ := _root_.GlobalTheory.DenseSec.dense_sections R hR.2.2.2 N.U N.smooth e he Ω xR hs hirr O ⟨w, hwO⟩
   let x : Over.mk (𝟙 S) ⟶ G' := Over.homMk
     (pullback.lift (π ≫ a) (𝟙 S) (by rw [Category.assoc, ha, Category.comp_id]; exact (Category.id_comp π).symm) ≫ N.u)
     (by rw [Category.assoc, N.u_over, pullback.lift_snd]; rfl)

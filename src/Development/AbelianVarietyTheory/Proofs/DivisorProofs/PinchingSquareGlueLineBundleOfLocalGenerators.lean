@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Glues
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Matched
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitEqOfGermsPinchingSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitOfPinchingSquareGluedUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRatioUnitOfLineBundleGeneratorsOnOpensStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitEqOfGermsPinchingSquare
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitOfPinchingSquareGluedUnits
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRatioUnitOfLineBundleGeneratorsOnOpens
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoPullbackOfLocalUnitGeneratorsStatement
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
@@ -27,13 +27,13 @@ theorem assemble : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i'
   have hc : i' ≫ p = p' ≫ i := hsq.w
   have hpt : ∀ z : Z', i (p' z) = p (i' z) := fun z => (congrArg (fun q => q z) hc).symm
   choose W s' sZ hxW hs' hsZ hM using hloc
-  have r'e := fun x y => GlobalTheory.T.exists_ratio_unit_of_lineBundle_generators_on_opens _ L' hL' _ _ (s' y) (s' x) (hs' y) (hs' x)
+  have r'e := fun x y => _root_.GlobalTheory.PinchLift.exists_ratio_unit _ L' hL' _ _ (s' y) (s' x) (hs' y) (hs' x)
   choose r' hr' using r'e
-  have rZe := fun x y => GlobalTheory.T.exists_ratio_unit_of_lineBundle_generators_on_opens _ LZ hLZ _ _ (sZ y) (sZ x) (hsZ y) (hsZ x)
+  have rZe := fun x y => _root_.GlobalTheory.PinchLift.exists_ratio_unit _ LZ hLZ _ _ (sZ y) (sZ x) (hsZ y) (hsZ x)
   choose rZ hrZ using rZe
   have le' : ∀ x y : X, p ⁻¹ᵁ (W x ⊓ W y) ≤ p ⁻¹ᵁ W y ⊓ p ⁻¹ᵁ W x := fun x y _ h => ⟨h.2, h.1⟩
   have leZ : ∀ x y : X, i ⁻¹ᵁ (W x ⊓ W y) ≤ i ⁻¹ᵁ W y ⊓ i ⁻¹ᵁ W x := fun x y _ h => ⟨h.2, h.1⟩
-  have ge := fun x y => GlobalTheory.T.exists_unit_of_pinchingSquare_glued_units _ _ _ _ p i i' p' hc hG (W x ⊓ W y) (res (le' x y) (r' x y)) (res (leZ x y) (rZ x y)) (by
+  have ge := fun x y => _root_.GlobalTheory.PinchLift.exists_unit_of_glues _ _ _ _ p i i' p' hc hG (W x ⊓ W y) (res (le' x y) (r' x y)) (res (leZ x y) (rZ x y)) (by
     intro z hz
     have hz' : i (p' z) ∈ W x ⊓ W y := (hpt z).symm ▸ hz
     obtain ⟨k, hk⟩ := exists_chart hL' (i' z)
@@ -53,14 +53,14 @@ theorem assemble : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i'
   let E : LB X := ⟨X, W, g⟩
   have hE : E.IsLB := by
     refine ⟨eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxW x⟩, fun x => ?_, fun x y z => ?_⟩
-    · refine GlobalTheory.T.unit_eq_of_germs_pinching_square _ _ _ _ p i i' p' hc hG _ _ _ (fun t ht => ?_) (fun t ht => ?_)
+    · refine _root_.GlobalTheory.PinchLift.unit_eq_of_germs_glues _ _ _ _ p i i' p' hc hG _ _ _ (fun t ht => ?_) (fun t ht => ?_)
       · obtain ⟨k, hk⟩ := exists_chart hL' t
         rw [map_one, gm_res _ t _ ht]
         exact (Gp x x t k ht ht hk).trans (mul_inv_cancel _)
       · obtain ⟨k, hk⟩ := exists_chart hLZ t
         rw [map_one, gm_res _ t _ ht]
         exact (Gi x x t k ht ht hk).trans (mul_inv_cancel _)
-    · refine GlobalTheory.T.unit_eq_of_germs_pinching_square _ _ _ _ p i i' p' hc hG _ _ _ (fun t ht => ?_) (fun t ht => ?_)
+    · refine _root_.GlobalTheory.PinchLift.unit_eq_of_germs_glues _ _ _ _ p i i' p' hc hG _ _ _ (fun t ht => ?_) (fun t ht => ?_)
       · obtain ⟨k, hk⟩ := exists_chart hL' t
         rw [map_mul, gm_res _ t _ ht, gm_res _ t _ ht, gm_res _ t _ ht]
         show gm p t (W x ⊓ W y) (g x y) * gm p t (W y ⊓ W z) (g y z) = gm p t (W x ⊓ W z) (g x z)

@@ -66,14 +66,6 @@ include hff in
 theorem pX_pY (v : S.V) : pX e f (pY e f v) = 0 := by
   rw [pX_apply]; simp [hT_f_pY hff]
 
-include hee in
-theorem pY_pX (v : S.V) : pY e f (pX e f v) = 0 := by
-  rw [pY_apply]; simp [hT_e_pX hee]
-
-include hef in
-theorem pX_pX (v : S.V) : pX e f (pX e f v) = pX e f v := by
-  rw [pX_apply e f (pX e f v)]; simp only [hT_f_pX hef]; rw [pX_apply]
-
 include hef in
 theorem pY_pY (v : S.V) : pY e f (pY e f v) = pY e f v := by
   rw [pY_apply e f (pY e f v)]; simp only [hT_e_pY hef]; rw [pY_apply]
@@ -81,14 +73,6 @@ theorem pY_pY (v : S.V) : pY e f (pY e f v) = pY e f v := by
 include hff hef in
 theorem pX_pj (v : S.V) : pX e f (pj e f v) = 0 := by
   rw [pX_apply]; simp [hT_f_pj hff hef]
-
-include hee hef in
-theorem pY_pj (v : S.V) : pY e f (pj e f v) = 0 := by
-  rw [pY_apply]; simp [hT_e_pj hee hef]
-
-include hee hef in
-theorem pj_pX (v : S.V) : pj e f (pX e f v) = 0 := by
-  rw [pj_eq, pX_pX hef, pY_pX hee]; abel
 
 include hff hef in
 theorem pj_pY (v : S.V) : pj e f (pY e f v) = 0 := by

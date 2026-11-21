@@ -4,8 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsAtSmul
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFrameProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramDetChangeOfBasisStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFrameProjection
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeRegularAtLocalPoint
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramDetChangeOfBasis
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights
@@ -138,13 +139,13 @@ theorem gram_val : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X
     funext fun l => by rw [hβ, hbB]
   have e4 : (fun l : Fin i => B (Fin.castLE i.2.le l)) = fun l => MR.pt (β l.castSucc) :=
     funext fun l => by rw [hβ, hbB]; rfl
-  have hind := GlobalTheory.T.gramAt_det_ne_zero_of_dual_frame X Ω ξ K J y G Li M h z hz r b π B hξ hd hreg hB (i + 1) (Fin.castLE i.2)
+  have hind := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.gramAt_det_ne_zero X Ω ξ K J y G Li M h z hz r b π B hξ hd hreg hB (i + 1) (Fin.castLE i.2)
     (Fin.castLE_injective _)
   change (gramAt h z fun l : Fin (i + 1) => B (Fin.castLE i.2 l)).det ≠ 0 at hind
   rw [e3, gr] at hind
   rw [e1, gr] at hdet
   rw [e2, e3, e4, e1, gr, gr, gr, gr]
-  exact GlobalTheory.T.gram_det_change_of_basis Vz core i β x xe (Matrix.of fun j l => C j (Fin.castLE hi l))
+  exact _root_.GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.gram_quot Vz core i β x xe (Matrix.of fun j l => C j (Fin.castLE hi l))
     (fun l => D (Fin.castLE hi l)) s hsum hsume hs0 hdet hind
 
 end GlobalTheory.CompanionTheory.Ar.RootHt.ArchB

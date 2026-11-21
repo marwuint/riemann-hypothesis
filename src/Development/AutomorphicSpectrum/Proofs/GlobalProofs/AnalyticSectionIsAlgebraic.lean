@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SerreHolomorphicSectionsHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactSpacePts
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HolomorphicSectionModerateGrowthStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HolomorphicSectionModerateGrowth
 open CategoryTheory AlgebraicGeometry TopologicalSpace Set
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts
@@ -21,7 +21,7 @@ theorem holomorphicSections_algebraic_of_isProper : ∀ (Y : Scheme.{0}) (p : Y 
     have hi := hV.trans inf_le_right
     have hd := hU V (hV.trans inf_le_left) hx
     have hh := (hsec.2 i).mono (ptsIn_mono hi)
-    obtain ⟨n, u, C, m, hC⟩ := GlobalTheory.T.holomorphic_section_moderate_growth Y p hp B hB s hsec.1 hcont i V ha hi
+    obtain ⟨n, u, C, m, hC⟩ := _root_.GlobalTheory.CompanionTheory.Gaga.continuous_section_polynomial_growth_of_isProper Y p hp B hB s hsec.1 hcont i V ha hi
     obtain ⟨a, b, hb, e⟩ := SerreSections.exists_mul_eq_of_polynomial_growth Y p D hs R V ha hd _ hh n u C m hC
     exact ⟨V, hx, hi, GlobalTheory.exists_ev_eq_of_continuousOn_quotient Y p D hs V ha hd _ (hh.continuousOn (isOpen_ptsIn _)) a b hb e⟩
   choose V hx hV c hc using loc

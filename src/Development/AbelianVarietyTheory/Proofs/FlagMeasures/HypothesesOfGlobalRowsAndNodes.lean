@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SecondLabelsNonempty
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ToGlob0
 import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsRankClausesFirstHalfStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsRootDiscriminantClausesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsSizeComparisonsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsGapsExceedStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsRankClausesFirstHalf
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsRootDiscriminantClauses
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsSizeComparisons
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoundsGapsExceed
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S GlobalTheory.Diag.PG
 
 namespace GlobalTheory.Diag.PG
@@ -16,11 +16,11 @@ theorem standingHypotheses_of_glob0_nodes_Tr_bounds : ∀ eps CD : ℝ, 0 < eps 
       (∀ u, large₂.sc.b ^ (cT * (D.R.m : ℝ)) ≤ Tr D u ∧ Tr D u ≤ large₂.sc.b ^ (CT * (D.R.m : ℝ))) →
       StandingHypotheses D large₂ C' Cl Cg (1 / 4) 3 cT CT := by
   intro eps CD he he52 hCD C' Cl Cg hCl hClD
-  obtain ⟨x1, h1⟩ := GlobalTheory.T.eventually_rankNums_imp_parameter_lower_bounds eps CD he he52 hCD C'
-  obtain ⟨x2, h2⟩ := GlobalTheory.T.eventually_rankNums_imp_parameter_lower_bounds eps CD he he52 hCD Cl
-  obtain ⟨x3, h3⟩ := GlobalTheory.T.globalRankNumberBounds_rootDiscriminant_clauses eps CD he he52 hCD Cl hCl
-  obtain ⟨x4, h4⟩ := GlobalTheory.T.globalRankNumberBounds_size_comparisons eps CD he he52 hCD Cl hCl
-  obtain ⟨x5, h5⟩ := GlobalTheory.T.globalRankNumberBounds_gaps_exceed eps CD he he52 hCD Cl hCl
+  obtain ⟨x1, h1⟩ := _root_.GlobalTheory.Diag.PG.rankNums_first_half eps CD he he52 hCD C'
+  obtain ⟨x2, h2⟩ := _root_.GlobalTheory.Diag.PG.rankNums_first_half eps CD he he52 hCD Cl
+  obtain ⟨x3, h3⟩ := _root_.GlobalTheory.Diag.PG.rankNums_rootDisc eps CD he he52 hCD Cl hCl
+  obtain ⟨x4, h4⟩ := _root_.GlobalTheory.Diag.PG.SqrtBound.rankNums_sizes eps CD he he52 hCD Cl hCl
+  obtain ⟨x5, h5⟩ := _root_.GlobalTheory.Diag.PG.gaps_exceed eps CD he he52 hCD Cl hCl
   refine ⟨max x1 (max x2 (max x3 (max x4 x5))), fun x hx D large₂ cT CT hL h8 G N hT => ?_⟩
   have hx1 : x1 ≤ x := le_trans (le_max_left _ _) hx
   have hx2 : x2 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx

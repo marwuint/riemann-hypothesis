@@ -77,13 +77,6 @@ theorem arith_ma (m RR As a : ℝ) (hm : 0 ≤ m) (hR : m + 3 ≤ RR) (hAs : 1 �
     nlinarith
   linarith
 
-theorem arith_auser (RR As X a : ℝ) (hR1 : 1 ≤ RR) (hX0 : 0 ≤ X) (hX : 11 * X + 5 ≤ As)
-    (ha : 128 * RR ^ 3 * As ≤ a) : 127 * RR ^ 3 * X + 1 ≤ a := by
-  have hR3 : 1 ≤ RR ^ 3 := one_le_pow₀ hR1
-  have h1 : 128 * RR ^ 3 * (11 * X + 5) ≤ 128 * RR ^ 3 * As :=
-    mul_le_mul_of_nonneg_left hX (by positivity)
-  nlinarith
-
 theorem cccoef_congr {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] {Bs : B.RealPlaceData k ρ Wp Wq} {A : ℝ} {mm : ℕ} {ε : ℝ}
     {F F' : B.Mat k ρ → (Wq →L[ℂ] Wp)} (h : ∀ g ∈ B.GV k ρ, F g = F' g) (hF : JC.CCCoefM Bs A mm ε F) :

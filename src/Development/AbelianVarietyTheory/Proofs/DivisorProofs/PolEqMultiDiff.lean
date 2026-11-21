@@ -16,17 +16,6 @@ open Classical in
 
 def pol (φ : (ι → ℤ) → ℝ) : ℝ := ∑ S : Finset ι, (-1 : ℝ) ^ S.card * φ fun i => if i ∈ S then -1 else 0
 
-theorem pol_eq_multiDiff [DecidableEq ι] (φ : (ι → ℤ) → ℝ) :
-    pol φ = multiDiff (fun i => (Pi.single i 1 : ι → ℤ)) φ 0 := by
-  rw [pol, multiDiff_apply]
-  refine Finset.sum_congr rfl fun S _ => ?_
-  rw [zsmul_eq_mul]
-  push_cast
-  congr 2
-  funext i
-  simp only [zero_sub, Pi.neg_apply, Finset.sum_apply, Pi.single_apply, Finset.sum_ite_eq]
-  split_ifs <;> simp
-
 set_option autoImplicit false in
 open MvPolynomial in
 variable {ι : Type} [Fintype ι] in
@@ -38,15 +27,6 @@ theorem _root_.GlobalTheory.FibreProj.pol_sum {J : Type} (T : Finset J)
   unfold _root_.GlobalTheory.FibreProj.pol
   simp_rw [Finset.mul_sum]
   exact Finset.sum_comm
-
-theorem pol_sub (φ ψ : (ι → ℤ) → ℝ) : pol (fun n => φ n - ψ n) = pol φ - pol ψ := by
-  simp only [pol, mul_sub, Finset.sum_sub_distrib]
-
-theorem pol_const_mul (a : ℝ) (φ : (ι → ℤ) → ℝ) : pol (fun n => a * φ n) = a * pol φ := by
-  simp only [pol, Finset.mul_sum, mul_left_comm]
-
-theorem pol_mul_const (a : ℝ) (φ : (ι → ℤ) → ℝ) : pol (fun n => φ n * a) = pol φ * a := by
-  simp only [pol, Finset.sum_mul, mul_assoc]
 
 set_option autoImplicit false in
 open MvPolynomial in
@@ -187,16 +167,5 @@ theorem _root_.GlobalTheory.FibreProj.pol_pow {R : Type} [CommRing R]
     _ = Φ ((-1 : R) ^ D * D.factorial * ∏ i, -z i) :=
         congrArg Φ (sum_neg_one_pow_card_mul_sum_pow_eq_factorial_prod hD fun i => -z i)
     _ = _ := hfinal
-
-theorem pol_lin_pow (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) {D : ℕ} (hD : Fintype.card ι = D) :
-    pol (fun n : ι → ℤ => Φ (lin (fun i => (n i : ℝ)) ^ D)) = D.factorial * Φ (∏ i, X i) := by
-  simpa only [lin, smul_eq_C_mul] using pol_pow (fun i => (X i : MvPolynomial ι ℝ)) Φ hD
-
-theorem pol_mix (Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ) {D : ℕ} (hD : Fintype.card ι = D) :
-    pol (fun n : ι → ℤ => Φ (X none * rename some (lin fun i => (n i : ℝ)) ^ D)) =
-      D.factorial * Φ (∏ o, X o) := by
-  have := pol_lin_pow (Φ ∘ₗ LinearMap.mulLeft ℝ (X none) ∘ₗ
-    (rename some : MvPolynomial ι ℝ →ₐ[ℝ] MvPolynomial (Option ι) ℝ).toLinearMap) hD
-  simpa [Fintype.prod_option] using this
 
 end GlobalTheory.FibreProj

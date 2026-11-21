@@ -41,9 +41,6 @@ structure HypH : Prop where
 
 end
 
-@[reducible] def prm1 (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ) : Prm hL :=
-  prmR (GlobalTheory.HeightCounting.Up.NEl hL cDep) SExt.none (geoCl anyGeometry)
-
 end GlobalTheory.Mem.Top.Bl
 
 end

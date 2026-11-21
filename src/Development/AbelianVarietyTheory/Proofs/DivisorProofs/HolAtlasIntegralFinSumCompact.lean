@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralSubOfIsFormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralSubOfIsForm
 
 set_option autoImplicit false
 
@@ -13,37 +13,6 @@ open scoped ComplexOrder
 namespace GlobalTheory.CxForm.IntegralSum
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
-
-theorem loc_finset_sum {κ : Type} (s : Finset κ) (α : κ → A.Fld) (i : A.ι) (v : ReciprocityTheory.L2DbarEstimates.V n) :
-    A.loc (∑ j ∈ s, α j) i v = ∑ j ∈ s, A.loc (α j) i v := by
-  unfold HolAtlas.loc
-  split_ifs
-  · exact Finset.sum_apply _ _ _
-  · exact Finset.sum_const_zero.symm
-
-theorem isForm_finset_sum {κ : Type} (s : Finset κ) (α : κ → A.Fld) (h : ∀ j ∈ s, A.IsForm (α j)) :
-    A.IsForm (∑ j ∈ s, α j) := by
-  refine ⟨fun i S => ?_, fun x x' e => ?_⟩
-  · simp only [loc_finset_sum, map_sum, Finsupp.finsetSum_apply]
-    exact ContDiffOn.sum fun j hj => (h j hj).smooth i S
-  · rw [Finset.sum_apply, Finset.sum_apply, map_sum]
-    exact Finset.sum_congr rfl fun j hj => (h j hj).compat x x' e
-
-theorem integral_finset_sum [CompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M]
-    {κ : Type} (s : Finset κ) (α : κ → A.Fld) (h : ∀ j ∈ s, A.IsForm (α j)) :
-    A.integral (∑ j ∈ s, α j) = ∑ j ∈ s, A.integral (α j) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-    have h0 := isForm_finset_sum A ∅ α h
-    have := GlobalTheory.T.integral_sub_of_isForm' A _ _ h0 h0
-    rw [sub_self, sub_self] at this
-    simpa using this
-  | insert a s ha ih =>
-    have := GlobalTheory.T.integral_sub_of_isForm' A _ _ (isForm_finset_sum A _ α h) (h a (Finset.mem_insert_self a s))
-    rw [Finset.sum_insert ha, add_sub_cancel_left, ih fun j hj => h j (Finset.mem_insert_of_mem hj)] at this
-    rw [Finset.sum_insert ha, Finset.sum_insert ha]
-    linarith
 
 set_option autoImplicit false in
 open Set Matrix MeasureTheory in

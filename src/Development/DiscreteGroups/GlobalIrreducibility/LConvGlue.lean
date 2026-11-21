@@ -28,7 +28,7 @@ theorem theta_apply {n : ℕ} (g : GL (Fin n) k) :
   simp [theta, MulAut.conj_apply, inv_eq_of_mul_eq_one_right (longElt_mul_self (k := k) n)]
 
 theorem theta_theta {n : ℕ} (g : GL (Fin n) k) : theta k n (theta k n g) = g := by
-  rw [theta_apply, theta_apply, GlobalTheory.T.long_element_conj_involutive]
+  rw [theta_apply, theta_apply, _root_.GlobalTheory.longElt_invT_involution]
 
 theorem tilde_eq {n : ℕ} (g : GL (Fin n) k) : tilde g = theta k n g * longElt n k := by
   rw [theta_apply, mul_assoc, longElt_mul_self, mul_one]
@@ -45,7 +45,7 @@ variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 theorem isFunctional_theta {ψ : AddChar k Circle} {ρ : Representation ℂ (GL (Fin n) k) V} {l : Module.Dual ℂ V}
     (hl : IsFunctional ψ ρ l) : IsFunctional ψ⁻¹ (ρ.comp (theta k n)) l := by
   intro u hu x
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.long_element_conj_unipotent_borel k n u hu
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.UnipFlip.longElt_invT_conj_unipB k n u hu
   show l (ρ (theta k n u) x) = _
   rw [theta_apply, hl _ h1, h2, AddChar.inv_apply]
 
@@ -112,7 +112,7 @@ theorem isWhitTest_tilde {ψ : AddChar k Circle} (hψc : Continuous ψ) (hψ1 : 
       ∀ x : π.V, x ∈ twKer π.ρ (unipRad k (stdBlocks ![a, b] h)) 1 := by
     intro a b h ha hb x
     have := Submodule.Quotient.subsingleton_iff.1
-      (hcusp.2 2 ![a, b] (stdBlocks ![a, b] h) (GlobalTheory.T.unipRad_stdBlocks_two_ne_bot' k (m + 1) a b h ha hb))
+      (hcusp.2 2 ![a, b] (stdBlocks ![a, b] h) (_root_.GlobalTheory.unipRad_stdBlocks_two_ne_bot k (m + 1) a b h ha hb))
     rw [this]
     exact Submodule.mem_top
   have hJ2 : ∀ (a b : ℕ) (h : ∑ i, ![a, b] i = m + 1), 0 < a → 0 < b →
@@ -125,7 +125,7 @@ theorem isWhitTest_tilde {ψ : AddChar k Circle} (hψc : Continuous ψ) (hψ1 : 
     rintro _ ⟨n, y, rfl⟩
     refine Submodule.subset_span ⟨⟨theta k (m + 1) n, ?_⟩, y, ?_⟩
     · rw [theta_apply]
-      exact GlobalTheory.T.long_element_conj_unipotent_radical k (m + 1) b a h' h n n.2
+      exact _root_.GlobalTheory.ThetaRad.longElt_invT_conj_mem_unipRad k (m + 1) b a h' h n n.2
     · simp only [MonoidHom.one_apply, Units.val_one, one_smul, MonoidHom.comp_apply]
       rw [theta_theta]
   have hψ'1 : (ψ⁻¹ : AddChar k Circle) ≠ 1 := fun h => hψ1 (inv_eq_one.1 h)
@@ -138,7 +138,7 @@ theorem isWhitTest_tilde {ψ : AddChar k Circle} (hψc : Continuous ψ) (hψ1 : 
     rfl
   rw [key]
   refine ⟨fun u hu g => ?_, ?_, C2, hC2, hsupp2⟩
-  · obtain ⟨h1, h2⟩ := GlobalTheory.T.glCornerEmbedding_upperUnitriangular_superDiagonalSum k m u hu
+  · obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CornerUnip.corner_unipB_superDiag k m u hu
     beta_reduce
     rw [corner_mul, map_mul, Module.End.mul_apply, hl2 _ h1, h2]
   · exact ((isLocallyConstant_orbit hs2 _).comp_continuous (continuous_corner m)).comp l

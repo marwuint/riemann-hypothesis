@@ -212,14 +212,6 @@ theorem lowerMap_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → 
   rw [hS.eW _ c s ⟨s.1, s.2⟩ rfl, hs', h4, ← h5, ← h3]
   rfl
 
-theorem chi_top_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)),
-    ∀ (u : B.Word) (Ch : ℕ → Type) (chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i) (F : FormsTiedSym (I.rec7 l Z) u Ch chOf),
-    I.StdF l Z u F → ∃ n : ℕ, 0 < n ∧ ∀ x : (F.cls (I.rec7 l Z).R.m le_rfl (Or.inr rfl)).lev.U,
-      (((F.cls (I.rec7 l Z).R.m le_rfl (Or.inr rfl)).lev.chi x : ℂˣ) : ℂ) ^ n = 1 ∧
-        ∃ r : (I.rec7 l Z).what₂.LL, (I.rec7 l Z).what₂.embLL r = (((F.cls (I.rec7 l Z).R.m le_rfl (Or.inr rfl)).lev.chi x : ℂˣ) : ℂ) :=
-  fun {B} {_} I hO hP l Z u _ _ F hS =>
-    ChiFinTop.chi_top_root_rat I hO hP l Z u (F.cls B.R.m le_rfl (Or.inr rfl)) (hS.ends B.R.m le_rfl (Or.inr rfl))
-
 end GlobalTheory.Mem.Col2.LowerTie
 
 end

@@ -3,8 +3,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.KerScheme
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyHeckeCorrespondenceSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeKernelSchemeGeometricPointsEqKernelsStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyHeckeCorrespondenceScheme
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeKernelSchemeGeometricPointsEqKernels
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDualIsogeny
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardEqMapMulKer
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsogenyPullbackHeckeModuliObject
@@ -161,7 +161,7 @@ open Swap
 theorem second_projection_finite_etale : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (Z : Corr Xo 𝔓 p i), 1 ≤ D.p + D.q → admitted l 𝔓 p → IsFinite Z.π₂ ∧ Etale Z.π₂ ∧ (i ≤ D.p + D.q → Surjective Z.π₂) := by
   intro E _ _ _ H D l Xo P p i Z hpq h
   have h' : admitted l (P.map (H.bar : 𝓞 E →+* 𝓞 E)) p := isAdmissibleSplitHeckePrime_conj h
-  obtain ⟨Z'⟩ := GlobalTheory.T.nonempty_heckeCorrespondenceScheme E H D l Xo (P.map (H.bar : 𝓞 E →+* 𝓞 E)) p i hpq h'
+  obtain ⟨Z'⟩ := _root_.GlobalTheory.HkFam.corr_nonempty E H D l Xo (P.map (H.bar : 𝓞 E →+* 𝓞 E)) p i hpq h'
   obtain ⟨χ, hχ1, hχ2, hχ3⟩ := exists_dual Z h
   obtain ⟨χ', hχ'1, hχ'2, hχ'3⟩ := exists_dual Z' h'
   rw [GlobalTheory.HeckeDual.map_bar_map_bar] at hχ'3
@@ -172,7 +172,7 @@ theorem second_projection_finite_etale : ∀ (E : Type) [Field E] [NumberField E
   have := Z'.et₁
   rw [← Exch.comp_π₁ ha]
   refine ⟨inferInstance, inferInstance, fun hi => ?_⟩
-  have := (GlobalTheory.T.heckeKernelScheme_geometric_points_eq_kernels E H D l Xo _ p i Z'.toKerScheme h').2 hi
+  have := (_root_.GlobalTheory.kerScheme_points E H D l Xo _ p i Z'.toKerScheme h').2 hi
   infer_instance
 
 end GlobalTheory.HkFam

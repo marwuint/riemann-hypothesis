@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedSpaceVecPairAsAdeles
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IteratedLineDerivMemWeylAlg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivedActionIntertwinesOfGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousOfLieIntertwineL2Statement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharArchimedeanExpRealLinearStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealTraceArchimedeanEmbeddingsNondegenerateStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousOfLieIntertwineL2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharArchimedeanExpRealLinear
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealTraceArchimedeanEmbeddingsNondegenerate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralSqCompContinuousLinearEquivMixedSpaceStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearModelArchimedeanSchroedingerStandardStatement
 
@@ -28,12 +28,12 @@ theorem realcont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ
       Continuous A := by
   intro D ps hψ κ _ L A C hC hA hI
   obtain ⟨θ, hθ⟩ := hψ.2.1
-  obtain ⟨β, hβ1, hβ2⟩ := GlobalTheory.T.standardAddChar_archimedean_exp_realLinear D ps θ hψ hθ
+  obtain ⟨β, hβ1, hβ2⟩ := _root_.GlobalTheory.StdCharLin.stdChar_mixed_linear D ps θ hψ hθ
   have hnd : ∀ a, a ≠ 0 → ∃ b, β (a * b) ≠ 0 := by
     intro a ha
     have ha' : (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm a ≠ 0 := by
       simpa using ha
-    obtain ⟨b, hb⟩ := GlobalTheory.T.realTrace_archimedeanEmbeddings_nondegenerate D θ hθ _ ha'
+    obtain ⟨b, hb⟩ := _root_.GlobalTheory.InfTraceNondeg.realTrace_nondeg D θ hθ _ ha'
     refine ⟨InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F b, ?_⟩
     rw [hβ2, map_mul, RingEquiv.symm_apply_apply]
     simpa using hb
@@ -77,7 +77,7 @@ theorem realcont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ
       _ = GlobalTheory.RealWeil.rhoFun (L' w) (⇑(A (CQi g)) ∘ ⇑Q) := hQP _ _
       _ = GlobalTheory.RealWeil.rhoFun (L' w) ⇑(A' g) := congrArg (GlobalTheory.RealWeil.rhoFun (L' w)) (hCQ _).symm
   have hcont : Continuous A' :=
-    GlobalTheory.T.continuous_of_lie_intertwine_l2 (Fin n) L' A' C hC hbound (GlobalTheory.T.derived_action_intertwines_of_group (Fin n) L'.toLinearMap A' C hC hbound hint)
+    _root_.GlobalTheory.RealWeil.continuous_of_dRho_intertwine_of_L2_bound (Fin n) L' A' C hC hbound (GlobalTheory.T.derived_action_intertwines_of_group (Fin n) L'.toLinearMap A' C hC hbound hint)
   have hAeq : ⇑A = fun f => CQi (A' (CQ f)) := by
     funext f
     rw [hA'apply, hQQ, hQQ]

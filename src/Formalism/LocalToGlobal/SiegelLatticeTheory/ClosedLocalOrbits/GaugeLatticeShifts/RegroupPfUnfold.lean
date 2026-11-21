@@ -11,19 +11,6 @@ section OrbitUnfold
 
 variable {H : Type*} [Group H] [MeasurableSpace H] [MeasurableMul H]
 
-def stabSub (N : Subgroup H) {C : Type*} (act : N → C → C) (h1 : ∀ c, act 1 c = c)
-    (hmul : ∀ n m c, act (n * m) c = act n (act m c)) (r : C) : Subgroup H where
-  carrier := {h | ∃ n : N, (n : H) = h ∧ act n r = r}
-  one_mem' := ⟨1, rfl, h1 r⟩
-  mul_mem' := by
-    rintro _ _ ⟨a, rfl, ha⟩ ⟨b, rfl, hb⟩
-    exact ⟨a * b, rfl, by rw [hmul, hb, ha]⟩
-  inv_mem' := by
-    rintro _ ⟨a, rfl, ha⟩
-    refine ⟨a⁻¹, rfl, ?_⟩
-    calc act a⁻¹ r = act a⁻¹ (act a r) := by rw [ha]
-      _ = r := by rw [← hmul, inv_mul_cancel, h1]
-
 theorem isFund_of_exact (μ : Measure H) (R : Subgroup H) (W : Set H) (hm : MeasurableSet W)
     (hc : ∀ x, ∃ g ∈ R, g * x ∈ W) (hu : ∀ x ∈ W, ∀ g ∈ R, g * x ∈ W → g = 1) :
     IsFundamentalDomain R W μ := by

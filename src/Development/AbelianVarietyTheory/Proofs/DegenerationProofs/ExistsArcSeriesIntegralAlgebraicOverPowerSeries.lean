@@ -3,20 +3,22 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBase
 import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSums
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPointsCorrespondValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamiliesValuesCorrespondStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FamiliesValuesCorrespond
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionPairingValuesOfFamiliesValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesOfExpansionLawsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcTorsionValuesNormsIntegralPositiveStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesTorsionPairingSeparationIntegraStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsArcIsometryTorsionIntegralGaugeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IntegralGaugeValuesAreValuationUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteDimensionalFieldDegenerationValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionClassesDescendFiniteAlgebraStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsValuationSubringIntegralClosureCompleteDVRStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsValuedFieldValuationCentreLePowStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxCosetNormGeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsArcLiftExtensionLargerClosedFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LabelledTorsionValuesAdditiveKernelSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesOfExpansionLaws
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcTorsionValuesNormsIntegralPositive
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianPartValuesTorsionPairingSeparationIntegra
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsArcIsometryTorsionIntegralGauge
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IntegralGaugeValuesAreValuationUnits
+import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteDimensionalFieldDegenerationValues
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorsionClassesDescendFiniteAlgebra
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsValuationSubringIntegralClosureCompleteDVR
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsValuedFieldValuationCentreLePow
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxCosetNormGe
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsArcLiftExtensionLargerClosedField
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LabelledTorsionValuesAdditiveKernelSurjective
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj BigOperators
@@ -95,23 +97,23 @@ theorem exists_series : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
   have hL : Laws := hHV.1.1
   have hL2 : Laws2 := hHV.1.2.1
   have gt := GlobalTheory.T.torus_torsion_points_correspond_values
-  have wp := GlobalTheory.T.torsionPairing_values_of_familiesValues gt (GlobalTheory.T.families_values_correspond hL hL2)
+  have wp := GlobalTheory.T.torsionPairing_values_of_familiesValues gt (_root_.GlobalTheory.Ex.brFam hL hL2)
   obtain ⟨_, _⟩ := base_local hB
   let F := AlgebraicClosure (FractionRing O')
-  obtain ⟨S₀, hS₀⟩ := GlobalTheory.T.exists_valuationSubring_integral_closure_completeDVR O' ϖ hB F
+  obtain ⟨S₀, hS₀⟩ := _root_.GlobalTheory.LN.exists_valuationSubring_isIntegral O' ϖ hB F
   have hin : ∀ r : O', algebraMap (FractionRing O') F (algebraMap O' _ r) ∈ S₀ := fun r =>
     (hS₀ _).2 (by rw [← IsScalarTower.algebraMap_apply]; exact isIntegral_algebraMap)
-  obtain ⟨A₀, hA₀⟩ := GlobalTheory.T.exists_arcIsometry_torsion_integralGauge hL gt E H D l Xo c W₀ Y O' b ϖ a hB F S₀ hin
+  obtain ⟨A₀, hA₀⟩ := _root_.GlobalTheory.Ex.ArcLift.exists_lift hL gt E H D l Xo c W₀ Y O' b ϖ a hB F S₀ hin
   let io : F →+* K := (IsAlgClosed.lift : F →ₐ[FractionRing O'] K).toRingHom
   have hio : io.comp (algebraMap (FractionRing O') F) = algebraMap (FractionRing O') K :=
     (IsAlgClosed.lift : F →ₐ[FractionRing O'] K).comp_algebraMap
   obtain ⟨A, -, I₀, l₀, -, -, x₀, q₀⟩ :=
-    GlobalTheory.T.exists_arcLift_extension_larger_closed_field hL gt wp E H D l Xo c W₀ Y O' b ϖ a hB F K io hio ⊤ (fun _ => trivial) A₀
+    _root_.GlobalTheory.LiftExt.exists_lift_ext hL gt wp E H D l Xo c W₀ Y O' b ϖ a hB F K io hio ⊤ (fun _ => trivial) A₀
   have hinj := FaithfulSMul.algebraMap_injective (PowerSeries O') K
   have hX : algebraMap (PowerSeries O') K PowerSeries.X ≠ 0 := (map_ne_zero_iff _ hinj).2 PowerSeries.X_ne_zero
   obtain ⟨r, hr⟩ := exists_root_system (Units.mk0 _ hX)
   have hr1 : (r 1 : K) = algebraMap (PowerSeries O') K PowerSeries.X := by rw [hr.1]; rfl
-  obtain ⟨iθ, iσ, ith, iψ⟩ := GlobalTheory.T.integralGauge_values_are_valuationUnits O' a.D₀ F S₀ hin A₀.N A₀.ν hA₀
+  obtain ⟨iθ, iσ, ith, iψ⟩ := _root_.GlobalTheory.Ex.UnitVal.integral_values O' a.D₀ F S₀ hin A₀.N A₀.ν hA₀
   have level : ∀ (m j : ℕ) (z : D.La), ∃ (R₁ : Subalgebra (PowerSeries O') K) (v w : D.La → K), Odd m → 0 < j →
       Module.Finite (PowerSeries O') R₁ ∧ (∀ x, v x ∈ R₁) ∧
       Sums (PowerSeries.X : PowerSeries O') io A₀.N A₀.be.be m j (A₀.q (m ^ 2)) (A₀.q j z) (r (m ^ 2 * j)) v w := by
@@ -127,8 +129,8 @@ theorem exists_series : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
       | none => A₀.q j z
       | some i => A₀.q (m ^ 2) (t i)
     obtain ⟨K₁, A₁, f1, f2, f3, f4, f5, f6, f7⟩ :=
-      GlobalTheory.T.exists_finiteDimensional_field_degenerationValues O' a.D₀ F A₀.N A₀.ν (Set.range fun i => (p i).1.2.b) (Set.finite_range _)
-    obtain ⟨O₁, _, N₀, I, hI, hp⟩ := GlobalTheory.T.torsionClasses_descend_finite_algebra O' F S₀ hS₀ A₀.N K₁ A₁ f1 f3 f4 f5 f6 f7 iθ iσ ith (iψ a.gen) (Option Ix) k p
+      _root_.GlobalTheory.FiniteValues.exists_finite_field_of_values O' a.D₀ F A₀.N A₀.ν (Set.range fun i => (p i).1.2.b) (Set.finite_range _)
+    obtain ⟨O₁, _, N₀, I, hI, hp⟩ := _root_.GlobalTheory.Ex.TorsDesc.descend O' F S₀ hS₀ A₀.N K₁ A₁ f1 f3 f4 f5 f6 f7 iθ iσ ith (iψ a.gen) (Option Ix) k p
       (fun i => by cases i; exacts [hj, hm2]) fun i => f2 _ ⟨i, rfl⟩
     have : FaithfulSMul O' F := (faithfulSMul_iff_algebraMap_injective _ _).2 (by
       rw [IsScalarTower.algebraMap_eq O' (FractionRing O') F]
@@ -139,7 +141,7 @@ theorem exists_series : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
       (by rw [← Units.val_pow_eq_pow_val, hr.pow (Nat.mul_pos hm2 hj)]; rfl) I hI
       (fun x => by
         obtain ⟨i, e, he⟩ := ht x
-        exact hp (some i) _ (((GlobalTheory.T.labelledTorsionValues_additive_kernel_surjective gt E H D O' F A₀.arc _ hm2).2.1 _ _).2 ⟨e, he⟩))
+        exact hp (some i) _ (((_root_.GlobalTheory.Ex.arcF_values_add_ker_onto gt E H D O' F A₀.arc _ hm2).2.1 _ _).2 ⟨e, he⟩))
       (hp none _ ((A₀.N.qEq_equivalence _).refl _))
     exact ⟨R₁, v, w, fun _ _ => h⟩
   choose R₁ v w hlev using level
@@ -151,7 +153,7 @@ theorem exists_series : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
           ∀ n x, (A'.q n x).1.1.toAdd = I.e (A₀.q n x).1.1.toAdd ∧ I.Rel (A₀.q n x).1.2 (A'.q n x).1.2 := by
     intro C _ _ _ _ gam h1 h2
     obtain ⟨S, hS⟩ := exists_ball C
-    obtain ⟨A', hA', I₁, l₁, r₁, z₁, x₁, q₁⟩ := GlobalTheory.T.exists_arcLift_extension_larger_closed_field hL gt wp E H D l Xo c W₀ Y O' b ϖ a hB K C gam
+    obtain ⟨A', hA', I₁, l₁, r₁, z₁, x₁, q₁⟩ := _root_.GlobalTheory.LiftExt.exists_lift_ext hL gt wp E H D l Xo c W₀ Y O' b ϖ a hB K C gam
       (IsLocalization.ringHom_ext (nonZeroDivisors O') (RingHom.ext fun x => (congrArg gam (hK x)).trans (h1 x).symm))
       S (fun x => (hS _).2 (by rw [h1]; exact h2 _)) A
     refine ⟨A', ⟨S, hS, hA'⟩, ⟨I₁, r₁, z₁, fun s y => A'.ν.eX.injective ?_, fun n x _ =>
@@ -179,7 +181,7 @@ theorem exists_series : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
         (∃ x, 1 ≤ ‖gam (v (n ^ j) 1 0 x)‖) ∧ ∀ x, ∃ h, u ^ (A₀.be.be (A₀.q ((n ^ j) ^ 2) x).1.1.toAdd
           (A₀.q ((n ^ j) ^ 2) x).1.1.toAdd).toNat ≤ ‖gam (v (n ^ j) 1 0 (x + n ^ (j - 1) • h))‖ := by
       intro e
-      obtain ⟨C, _, _, _, _, gam, g1, g2, g3⟩ := GlobalTheory.T.exists_valuedField_valuationCentre_le_pow (PowerSeries O') K PowerSeries.X
+      obtain ⟨C, _, _, _, _, gam, g1, g2, g3⟩ := _root_.GlobalTheory.exists_valuedField_centre_le_pow (PowerSeries O') K PowerSeries.X
         (fun h => not_isUnit_zero (by simpa using h.map PowerSeries.constantCoeff : IsUnit (0 : O')))
         PowerSeries.X_ne_zero _ hfin S hS e
       letI : Algebra (FractionRing O') C := (gam.comp (algebraMap _ K)).toAlgebra
@@ -200,11 +202,11 @@ theorem exists_series : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory
         have a3 := congrArg (fun x => ‖algebraMap (FractionRing O') C (algebraMap O' _ x)‖) hy
         simp only [map_mul, map_natCast, map_one, norm_mul, norm_one] at a1 a3
         nlinarith [norm_nonneg (n : C)]
-      obtain ⟨qf, hq1, hq2⟩ := (GlobalTheory.T.arcTorsionValues_norms_integral_positive E H D l Xo c W₀ Y O' b ϖ a hB C hce A' hN).2.2 (r' 1) hu1
+      obtain ⟨qf, hq1, hq2⟩ := (_root_.GlobalTheory.Ex.UnitNorm.norms_of_arc_input E H D l Xo c W₀ Y O' b ϖ a hB C hce A' hN).2.2 (r' 1) hu1
       choose p hp' using fun x => (existsUnique_twRel A'.be (r' 1) _ hpow (A'.q _ x)).exists
-      obtain ⟨t1, t2, t3⟩ := GlobalTheory.T.labelledTorsionValues_additive_kernel_surjective gt E H D O' C A'.arc _ (pow_pos hm.pos 2)
-      obtain ⟨c1, c2⟩ := GlobalTheory.T.twist_tx_coset_norm_ge_alt C A'.N _ A'.be (r' 1) _ qf n _ j hp ho hn hj hu1 hpow hq1 hq2
-        (GlobalTheory.T.abelianPartValues_torsion_pairing_separation_integral hL hL2 (GlobalTheory.T.abelianPartValues_of_expansionLaws hL) O' a.D₀ a.even a.bimult C hce A'.N A'.ν hN n hp ho hn)
+      obtain ⟨t1, t2, t3⟩ := _root_.GlobalTheory.Ex.arcF_values_add_ker_onto gt E H D O' C A'.arc _ (pow_pos hm.pos 2)
+      obtain ⟨c1, c2⟩ := _root_.GlobalTheory.twist_tx_coset_norm_ge C A'.N _ A'.be (r' 1) _ qf n _ j hp ho hn hj hu1 hpow hq1 hq2
+        (_root_.GlobalTheory.ValuesTorsion.tors_of_integral hL hL2 (_root_.GlobalTheory.ThetaInValues.brUth_of_laws hL) O' a.D₀ a.even a.bimult C hce A'.N A'.ν hN n hp ho hn)
         D.La (A'.q _) (eq_zero_of_nsmul D hp.ne_zero) t1 t2 t3 p hp'
       have hv := (hsum C gam g1 g2 A'.N I _ A'.be hI hβ (r' 1) (r' ((n ^ j) ^ 2)) (r' 1) hu'
         (by rw [← (hrm _ 1 hm one_pos).1]; rfl) (by rw [← (hrm _ 1 hm one_pos).2]; rfl) (A'.q _) p (hq _) hp').1

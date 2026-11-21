@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalBundlePairing
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AppellHumbertUnifTangentWeilPairing
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NonDegAtOfSabMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CubicalTripleTrivialStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CubicalTripleTrivial
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open GlobalTheory.UU
@@ -163,7 +163,7 @@ theorem cubWeil_of_lbIso : ∀ (G : Over (Sp ℂ)) [GrpObj G] [IsCommMonObj G], 
   intro G _ _ hs te L₁ L₂ c₁ c₂ hiso N x y ζ h
   obtain ⟨w, hw⟩ := hiso
   obtain ⟨v, hv⟩ := exists_cube_ratio hw c₁ c₂
-  have hone := GlobalTheory.T.cubical_triple_trivial ℂ G hs te v (cube_ratio_faces c₁ c₂ hv)
+  have hone := _root_.GlobalTheory.CompanionTheory.Ar.CubeUnit.eq_one_at_rational_points ℂ G hs te v (cube_ratio_faces c₁ c₂ hv)
   refine ⟨h.1, h.2.1, fun z J₂ h₂ => ?_⟩
   obtain ⟨J₁, h₁⟩ := exists_good_pt L₁.isLB z
   let W : (𝟙_ (Over (Sp ℂ)) ⟶ G) → _ := fun a => isoGerm w a.left z (J₂ a.left) (J₁ a.left)

@@ -30,13 +30,6 @@ structure AdTied (D : D7) (H : HermCols D) (aT : ∀ u, AtT D u (H.vT u) (H.Fv u
   dil0 : ∀ u v a c, Ad0 D H u c ((D.fm u).dil 0 v a c) ((aT u).dilG 0 v a c) v
   dilI : ∀ u i h1 hm v a c, AdI D H u i h1 hm c ((D.fm u).dil i v a c) ((aT u).dilG i v a c) v
 
-theorem HermTied.cls_nonempty {D : D7} (H : HermTied D) (u : D.what₂.Word) (i : ℕ) (hm : i ≤ D.R.m) :
-    Nonempty ((D.mem u).C.cls i) := by
-  rcases Nat.eq_zero_or_pos i with rfl | h1
-  · obtain ⟨c, _⟩ := (H.lev0 u).y_bij.2 (Quotient.mk'' 1)
-    exact ⟨c⟩
-  · exact (H.cls u i h1 hm).nonempty
-
 end Formalism.L2.Herm
 
 end

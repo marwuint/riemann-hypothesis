@@ -78,24 +78,6 @@ theorem isZero_groupCohomology_galois {n : ℕ} (hn : n ≠ 0) :
     IsZero (groupCohomology (Rep.ofDistribMulAction K Gal(L/K) L) n) :=
   isZero_groupCohomology K K L hn
 
-theorem subsingleton_groupCohomology_galois {n : ℕ} (hn : n ≠ 0) :
-    Subsingleton (groupCohomology (Rep.ofDistribMulAction K Gal(L/K) L) n) :=
-  ModuleCat.subsingleton_of_isZero (isZero_groupCohomology_galois K L hn)
-
-theorem isCoboundary₁_of_isCocycle₁_galois (f : Gal(L/K) → L) (hf : IsCocycle₁ f) :
-    IsCoboundary₁ f := by
-  have := subsingleton_groupCohomology_galois K L one_ne_zero
-  have h0 : H1π (Rep.ofDistribMulAction K Gal(L/K) L) (cocyclesOfIsCocycle₁ hf) = 0 :=
-    Subsingleton.elim _ _
-  rw [H1π_eq_zero_iff] at h0
-  exact isCoboundary₁_of_mem_coboundaries₁ f h0
-
 end Vanishing
-
-section Integral
-
-variable (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-
-end Integral
 
 end GroundTheory.ProfCoh

@@ -113,18 +113,6 @@ variable (Z) (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
 
 def divP : Z.VDivZ := Z.div p (natCast_ne_zero O p)
 
-omit [CharP (ResidueField O) p] in
-
-theorem divisorOfPrime_eq_ramificationIdx_smul {ϖ : O} (hϖ : Irreducible ϖ) : Z.divP p = ramIdx O p • Z.div ϖ hϖ.ne_zero :=
-  Z.div_eq_addVal_smul hϖ _
-
-theorem toQ_div (g : O) (hg : g ≠ 0) : toQ (Z.div g hg) =
-    (((IsDiscreteValuationRing.addVal O g).toNat : ℚ) / ramIdx O p) • toQ (Z.divP p) := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  rw [Z.divisorOfPrime_eq_ramificationIdx_smul p hϖ, Z.div_eq_addVal_smul hϖ, map_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℚ,
-    ← Nat.cast_smul_eq_nsmul ℚ, smul_smul,
-    div_mul_cancel₀ _ (Nat.cast_ne_zero.2 (ramIdx_ne_zero O p))]
-
 set_option linter.overlappingInstances false in
 
 @[reducible] def toITh [CharP (ResidueField O) p] : ITh where
@@ -156,8 +144,6 @@ def FlagPair.toFPair (P : FlagPair φ N) : FPair (Z.toITh p) N where
   hx i := by
     change firstChernPic (cls _ _) = firstChernPic (cls _ _) - Z.cDQ _
     rw [P.cls_root', map_sub, cDQ_toQ]
-
-def FlagModel.toFPair (M : FlagModel φ N) : FPair (M.B.toITh p) N := M.pair.toFPair p
 
 theorem FlagPair.toFPair_ofSMul_Dv (fl : Flag E N) (i : Fin N) :
     ((FlagPair.ofSMul fl p (natCast_ne_zero O p)).toFPair p).Dv i = (Z.toITh p).divP :=
@@ -287,86 +273,7 @@ theorem capDeg_divP_line : ((projSpace O 1).toITh p).capDeg ((projSpace O 1).toI
   rw [← pow_one (c1 _ _)]
   exact capDeg_divP_projSpace O 0 p
 
-omit [CharZero O] in
-
-theorem fibreDeg_line : (projSpace O 1).toBase.fibreDeg (c1 (formalTwistingSheaf O 1) (O1_isLB O 1)) = 1 := by
-  have h := (projSpace O 1).toBase.fibreDeg_prod (L := ![formalTwistingSheaf O 1]) (isLB_vecOne (O1_isLB O 1))
-  rw [Fin.prod_univ_one, if_pos (by simp)] at h
-  refine h.trans ?_
-  let k := (projSpace O 1).toBase.fnField
-  let φ : O →+* k := (Spec.preimage ((base O).X.fromSpecResidueField (genericPoint _))).hom
-  have H := isPullback_baseChange 1 φ
-  rw [show spMap φ = _ from Spec.map_preimage _] at H
-  let e : PSpace k 1 ≅ (projSpace O 1).toBase.genFibre :=
-    H.isoIsPullback _ _ (projSpace O 1).toBase.isPullback_genFibre
-  have he : e.hom ≫ (projSpace O 1).toBase.genFibreι = baseChange 1 φ :=
-    IsPullback.isoIsPullback_hom_fst ..
-  have he' : e.hom ≫ (projSpace O 1).toBase.genFibreStr = PSpace.str k 1 :=
-    IsPullback.isoIsPullback_hom_snd ..
-  have hL := Semi.LB.isLB_pull (O1_isLB O 1) (projSpace O 1).toBase.genFibreι
-  rw [interNum_congr k (asIso (unitToPush e.hom)), interNum_pushforward_of_isAffineHom
-    (f := e.hom) (fun r => by rw [algebraMap_top_eq, ← he', Scheme.Hom.comp_appTop]; rfl) _
-      (by intro i; fin_cases i; exact hL),
-    interNum_congr_cls k _ (by intro i; fin_cases i; exact Semi.LB.isLB_pull hL _)
-      (isLB_vecOne (On_isLB k 1 1)) fun i => ?_,
-    ← (VB.isSmoothProjCurve_line k).toIsProjCurve.degLB_eq_interNum (On_isLB k 1 1), VB.degLB_On]
-  · rfl
-  · fin_cases i
-    change pull e.hom (pull _ (cls _ (O1_isLB O 1))) = cls (lbZPow (O1 k 1) 1) _
-    rw [← pull_comp, he, cls_lbZPow (O1_isLB k 1), one_zsmul]
-    exact (cls_eq_iff _ _).2 (lbIso_pull_O1 1 φ)
-
-example : ((projSpace O 1).toITh p).capDeg (-((projSpace O 1).toITh p).divP)
-      (c1 (formalTwistingSheaf O 1) (O1_isLB O 1)) = -1 ∧
-    ((projSpace O 1).toITh p).capDeg ((projSpace O 1).toITh p).divP 1 = 0 :=
-  ⟨by rw [map_neg, LinearMap.neg_apply, capDeg_divP_line],
-    toITh_capDeg_eq_zero p _ (n := 0) (by simp) (Submodule.subset_span ⟨finZeroElim, by simp⟩)⟩
-
-example (h : IsVB (toMod (formalTwistingSheaf O 1)) 1) :
-    Formalism.BasicNotions.DV.ck ((FlagPair.ofSMul (Flag.ofBiprod h h) p (natCast_ne_zero O p)).toFPair p) 1
-      (c1 (formalTwistingSheaf O 1) (O1_isLB O 1)) = 2 ∧
-    Formalism.BasicNotions.DV.ck ((FlagPair.ofSMul (Flag.ofBiprod h h) p (natCast_ne_zero O p)).toFPair p) 2 1
-      = 4 := by
-  have hx (i : Fin 2) : smallCls _ ((Flag.ofBiprod h h).isLB_root i) =
-      smallCls (formalTwistingSheaf O 1) (O1_isLB O 1) := by
-    have e : Nonempty ((Flag.ofBiprod h h).gr i ≅ toMod (formalTwistingSheaf O 1)) := by
-      fin_cases i
-      exacts [(Flag.nonempty_gr_ofBiprod h h).1, (Flag.nonempty_gr_ofBiprod h h).2]
-    exact (smallCls_eq_iff _ h.isLB_det).2 (((Flag.ofBiprod h h).isVB_gr i).lbIso_det_of_iso e.some)
-      |>.trans ((smallCls_eq_iff _ _).2 (VB.lbIso_det_toMod (O1_isLB O 1))).symm
-  have hx₁ (i) : ((FlagPair.ofSMul (Flag.ofBiprod h h) p (natCast_ne_zero O p)).toFPair p).x i =
-    smallCls (formalTwistingSheaf O 1) (O1_isLB O 1) := hx i
-  have hx₂ (i) : ((FlagPair.ofSMul (Flag.ofBiprod h h) p (natCast_ne_zero O p)).toFPair p).x' i =
-    smallCls (formalTwistingSheaf O 1) (O1_isLB O 1) := hx i
-  simp only [Formalism.BasicNotions.DV.ck, Formalism.BasicNotions.DV.Gk, FlagPair.toFPair_ofSMul_Dv, hx₁, hx₂,
-    Finset.sum_range_succ, Finset.sum_range_zero]
-  have h₁ := capDeg_divP_line O p
-  have h₂ : ((projSpace O 1).toITh p).capDeg ((projSpace O 1).toITh p).divP
-    (symOf (smallCls (formalTwistingSheaf O 1) (O1_isLB O 1))) = 1 := h₁
-  simp only [pow_zero, pow_one, one_mul, mul_one, zero_add, Nat.sub_self, Nat.reduceSub, map_add,
-    h₁, h₂]
-  norm_num
-
-example : ¬ (VertDiv.const (projSpace O 1) p (natCast_ne_zero O p)).IsIsom (.zero _) := fun h => by
-  have := capDeg_divP_line O p
-  rw [capDeg_vp_toQ, divP, ← VertDiv.cls_const, h.cls_eq, VertDiv.cls_zero] at this
-  simp at this
-
-omit [CharP (ResidueField O) p] in
-
-example : (FlagModel.ofBiprod (VB.isVB_structureModule _) (VB.isVB_structureModule _)
-    (projSpace O 1).toBase p (natCast_ne_zero O p)).relDim = 1 :=
-  (relDim_toBase (Z := projSpace O 1)).trans (relDim_projSpace 1)
-
 end Proj
-
-example (p : ℕ) [Fact p.Prime] : haveI := charP_residueField_padicInt p
-    ((projSpace ℤ_[p] 1).toITh p).dim = 2 ∧ ((projSpace ℤ_[p] 1).toITh p).divP ≠ 0 :=
-  haveI := charP_residueField_padicInt p
-  ⟨by simp, fun h => by
-    have := capDeg_divP_line ℤ_[p] p
-    rw [h, map_zero] at this
-    exact zero_ne_one this⟩
 
 end Model
 

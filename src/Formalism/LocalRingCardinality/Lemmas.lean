@@ -88,16 +88,6 @@ theorem RRFull.D_eq (h : D.RRFull) : (D.div.RR.rank : ℝ) = (1 - D.div.delP) * 
   rw [this, D.delP_eq, D.Dall_eq]
   exact D.what₂.D_eq
 
-variable {D} in
-theorem RRFull.good (h : D.RRFull) : D.div.RR.Good := ⟨D.div_good.1, h.1, h.2⟩
-
-theorem RR_span_of_rank (h : D.div.Drows = D.what₂.Drows) :
-    Submodule.span D.what₂.LL (D.div.RR.L : Set D.div.RR.V) = ⊤ := by
-  have : Module.Finite D.what₂.LL D.div.RR.V := Module.Finite.of_basis D.div.RR.b
-  apply Submodule.eq_top_of_finrank_eq
-  rw [D.RRV_finrank]
-  exact h
-
 theorem NuV_finrank (u : D.what₂.Word) : finrank D.what₂.LL (D.div.Nu u).V = (D.mem u).A.du := by
   have h1 : finrank D.what₂.LL (D.div.Nu u).V = Fintype.card (D.div.Nu u).ι := finrank_eq_card_basis (D.div.Nu u).b
   have h2 : finrank ℂ (D.what₂.Mu u) = Fintype.card (D.div.Nu u).ι :=
@@ -111,24 +101,6 @@ theorem NuFull.rank (h : D.NuFull) (u : D.what₂.Word) : D.div.d u = (D.mem u).
   unfold DivData.d dU HLat.rank Formalism.HN.rkK
   rw [(h u).2, finrank_top]
   exact D.NuV_finrank u
-
-variable {D} in
-theorem NuFull.good (h : D.NuFull) (u : D.what₂.Word) : (D.div.Nu u).Good := ⟨D.div_good.2 u, (h u).1, (h u).2⟩
-
-variable {D} in
-
-theorem NuFull.R_eq (h : D.NuFull) : D.div.R = ∑ u, (D.mem u).A.du :=
-  Finset.sum_congr rfl (fun u _ => h.rank u)
-
-theorem Nu_span_of_rank (u : D.what₂.Word) (h : D.div.d u = (D.mem u).A.du) :
-    Submodule.span D.what₂.LL ((D.div.Nu u).L : Set (D.div.Nu u).V) = ⊤ := by
-  have : Module.Finite D.what₂.LL (D.div.Nu u).V := Module.Finite.of_basis (D.div.Nu u).b
-  apply Submodule.eq_top_of_finrank_eq
-  rw [D.NuV_finrank u]
-  exact h
-
-variable {D} in
-theorem allGood (h1 : D.RRFull) (h2 : D.NuFull) : D.div.AllGood := ⟨h1.good, h2.good⟩
 
 end D7
 
@@ -149,40 +121,6 @@ theorem normAt_nonneg {K V ι : Type*} [Field K] [NumberField K] [StarRing K] [A
   Real.sqrt_nonneg _
 
 namespace D7
-
-variable (D : D7)
-
-theorem jN_norm (u : D.what₂.Word) (x : (D.div.Nu u).V) :
-    Formalism.HermitianLatticesTheory.normAt (D.div.Nu u).b (D.div.Nu u).X (InfinitePlace.mk D.what₂.embLL) x = ‖D.jN u x‖ := by
-  have h : Formalism.HermitianLatticesTheory.normAt (D.div.Nu u).b (D.div.Nu u).X (InfinitePlace.mk D.what₂.embLL) x ^ 2 =
-      ‖D.jN u x‖ ^ 2 := by
-    rw [D.nuIn_norm, normAt_sq_eq_majAt, (D.fm u).emb_norm, ← D.nuIn_jN]
-    rw [← @inner_self_eq_norm_sq ℂ, D.eMu_isom]
-    rfl
-  exact (sq_eq_sq₀ (normAt_nonneg _ _ _ _) (norm_nonneg _)).1 h
-
-theorem Drows_le_Dall (h : 0 < D.what₂.Dall) : D.what₂.Drows ≤ D.what₂.Dall := by
-  have : Module.Finite ℂ D.s.HH := Module.finite_of_finrank_pos (by rw [D.s_HH]; exact h)
-  have hli : LinearIndependent ℂ (D.sEE.toLinearMap.toAddMonoidHom ∘ D.what₂.onb) :=
-    D.what₂.onb.orthonormal.linearIndependent.map_of_surjective_injectiveₛ (starRingEnd ℂ)
-      D.sEE.toLinearMap.toAddMonoidHom (fun z => ⟨starRingEnd ℂ z, Complex.conj_conj z⟩) D.sEE.injective
-      (fun r m => D.sEE.map_smulₛₗ r m)
-  have := hli.fintype_card_le_finrank
-  rwa [Fintype.card_fin, D.s_HH] at this
-
-theorem delpNonneg (h : 0 < D.what₂.Dall) : Rows.DelpNonneg D.what₂ := by
-  unfold Rows.DelpNonneg
-  have h1 : (D.what₂.Drows : ℝ) ≤ (D.what₂.Dall : ℝ) := by exact_mod_cast D.Drows_le_Dall h
-  have h2 : (0 : ℝ) < (D.what₂.Dall : ℝ) := by exact_mod_cast h
-  rw [D.what₂.D_eq] at h1
-  by_contra hc
-  have hc' : D.what₂.delp < 0 := not_le.1 hc
-  nlinarith
-
-theorem delPNonneg (h : 0 < D.div.Dall) : D.div.DelPNonneg := by
-  unfold DivData.DelPNonneg
-  rw [D.delP_eq]
-  exact D.delpNonneg (by rw [← D.Dall_eq]; exact h)
 
 end D7
 
@@ -1242,18 +1180,6 @@ theorem sizeDataLat_of_latDefs {L : SizeData₂ D} (hT : GatTies D) (X : Inst D 
     (fun u w hg _ => haveI := frac_of_ties hT u w hg; c.length_quotient_ne_top₂ X Y K hl.vram u w hg) w
 
 end LatCmp
-
-theorem DV.lamPDef_of {D : D7} (h : DV.LamDef D) (hs : DV.LamScalar D) : Rows.LamPDef D.what₂ := by
-  intro μ j h1 h2 π x hx
-  obtain ⟨c, hc⟩ := hs μ j h1 h2 π
-  by_cases h0 : D.what₂.isot j π = ⊥
-  · rw [h0, Submodule.mem_bot] at hx
-    simp [hx]
-  · rw [h μ j h1 h2 π h0, DV.lamTr_of_scalar D μ j π c h0 hc]
-    exact hc x hx
-
-theorem DV.lamDef_of_lamPDef {D : D7} (h : Rows.LamPDef D.what₂) : DV.LamDef D :=
-  fun μ j h1 h2 π h0 => (DV.lamTr_of_scalar D μ j π _ h0 (h μ j h1 h2 π)).symm
 
 namespace D7
 

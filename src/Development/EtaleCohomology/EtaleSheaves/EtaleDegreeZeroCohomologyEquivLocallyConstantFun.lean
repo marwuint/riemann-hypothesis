@@ -1,4 +1,4 @@
-import Development.EtaleCohomology.EtaleSheaves.EtaleChapterEOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
@@ -112,49 +112,6 @@ theorem arr_w {P P' Q Q' : PSh} {f : P ⟶ P'} {g : Q ⟶ Q'} (e : Arrow.mk f �
 
 theorem unit_spec {A : Type} [CommRing A] {q : ℕ} (h : IsUnit (q : A)) : IsUnit (q : Γ(Spec (CommRingCat.of A), ⊤)) := by
   simpa using h.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom
-
-theorem goal_of (hC : Cover) (hH : HensIdem) (hE : EqvQA) (hD : DescStep) (hL : CechLevels) : LateralTheory.E.EtaleChapterEOne := by
-  intro a1 _ _ _ _ _ _ a9 _ _ b1 b2 _ b4 _ _ _ _ _ _ _ _ _ _ q A _ I _ hq i
-  rcases Nat.eq_zero_or_pos q with rfl | hpos
-  · have : Subsingleton A := subsingleton_of_zero_eq_one (isUnit_zero_iff.1 (by simpa using hq))
-    have hb : Function.Bijective (Ideal.Quotient.mk I) := ⟨fun _ _ _ => Subsingleton.elim _ _, Ideal.Quotient.mk_surjective⟩
-    have : IsIso (CommRingCat.ofHom (Ideal.Quotient.mk I)) := (RingEquiv.ofBijective _ hb).toCommRingCatIso.isIso_hom
-    exact eqv_iso _ _ _
-  have : NeZero q := ⟨hpos.ne'⟩
-  have key : ∀ (m : ℕ) (B : Type) [CommRing B] (J : Ideal B),
-      (∀ (C : Type) [CommRing C] (φ : B →+* C), φ.IsIntegral → Good C (J.map φ)) → IsUnit (q : B) →
-      Conn _ (spMap (Ideal.Quotient.mk J)) (tw q i) ((m : ℤ) - 1) := by
-    intro m
-    induction m with
-    | zero =>
-      intro B _ J _ _
-      have hs := (a9 _ (tw q i)).1
-      refine ⟨fun j hj => ?_, ?_⟩
-      · have := hs (sp B) j (by omega)
-        have := hs (sp (B ⧸ J)) j (by omega)
-        exact ⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨0, Subsingleton.elim _ _⟩⟩
-      · have := hs (sp B) (((0 : ℕ) : ℤ) - 1) (by omega)
-        exact Function.injective_of_subsingleton _
-    | succ m ih =>
-      intro B _ J hG hu
-      obtain ⟨B', _, φ, hi, hs, hqa⟩ := hC B
-      obtain ⟨⟨i1, i2, i3, i4⟩, ψ, w, hp, ⟨e0⟩⟩ := hL B B' φ J hi hs
-      have d1 := b4 q (Spec.map (CommRingCat.ofHom φ)) (unit_spec hu) i
-      have d2 := b4 q (Spec.map (CommRingCat.ofHom (Ideal.quotientMap (J.map φ) φ Ideal.le_comap_map)))
-        (unit_spec (by simpa using hu.map (Ideal.Quotient.mk J))) i
-      rw [show ((m + 1 : ℕ) : ℤ) - 1 = (m : ℤ) - 1 + 1 by push_cast; ring]
-      refine (conn_sq _ w d2 d1 _).1 (hD a1 _ _ ψ _ (fun p => ?_) ?_)
-      · obtain ⟨C, _, χ, hχ, ⟨e⟩⟩ := hp p
-        obtain ⟨a, b, _, _, w'⟩ := arr_w e
-        refine (conn_sq _ w' (eqv_iso _ _ _) (eqv_iso _ _ _) _).2 (ih C (J.map χ) (fun D _ θ hθ => ?_) (by simpa using hu.map χ))
-        rw [Ideal.map_map]
-        exact hG D _ (hχ.trans _ _ hθ)
-      · obtain ⟨a, b, _, _, w'⟩ := arr_w e0
-        intro n
-        exact (sq _ w' (eqv_iso _ _ _) (eqv_iso _ _ _) n).1.2
-          (hE a1 a9 b1 b2 q B' (J.map φ) hqa (hG B' φ hi) (by simpa using hu.map φ) i n)
-  intro n
-  exact (key (n.toNat + 2) A I (fun C _ φ h => hH A I C φ h) hq).1 n (by omega)
 
 end LateralTheory.E.t_E1Cut
 

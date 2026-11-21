@@ -18,9 +18,6 @@ lemma cc_mul (a b : E) : cc (a * b) = cc a * cc b := by
 lemma cc_add (a b : E) : cc (a + b) = cc a + cc b := by
   exact map_add (IsCMField.complexConj E) a b
 
-lemma cc_zero : cc (0 : E) = 0 := by
-  exact map_zero (IsCMField.complexConj E)
-
 lemma cc_sum {ι : Type*} (s : Finset ι) (f : ι → E) : cc (∑ i ∈ s, f i) = ∑ i ∈ s, cc (f i) := by
   exact map_sum (IsCMField.complexConj E) f s
 
@@ -36,11 +33,6 @@ lemma herm_smul_left {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin
 lemma herm_sub_left {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
     herm G (x - x') y = herm G x y - herm G x' y := by
   simp only [herm, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
-
-lemma herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
-    herm G x (a • y) = cc a * herm G x y := by
-  simp only [herm, Pi.smul_apply, smul_eq_mul, cc_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 lemma herm_symm {r : ℕ} {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a)
     (x y : Fin r → E) : cc (herm G x y) = herm G y x := by

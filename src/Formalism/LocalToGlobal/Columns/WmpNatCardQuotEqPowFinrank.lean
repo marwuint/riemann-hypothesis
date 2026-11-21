@@ -105,9 +105,6 @@ theorem wmp_isHeckeNbr_symm {P : HeightOneSpectrum (𝓞 E)} {i : ℕ} {N N₁ :
   · rw [wmp_card_quot, ← wmp_relIndex_inf_eq hN hN₁ hu hu₁ hB, ← wmp_card_quot, inf_comm,
       Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin i), Fintype.card_fin, card_quot_conjP]
 
-def WmpInt (Q : HeightOneSpectrum (𝓞 E)) (y : E) : Prop :=
-  ∃ s : 𝓞 E, s ∉ Q.asIdeal ∧ ∃ r : 𝓞 E, algebraMap (𝓞 E) E s * y = algebraMap (𝓞 E) E r
-
 theorem wmp_hStd_osmul_right (u z : Sp E n) (s : 𝓞 E) :
     hStd E n u (s • z) = algebraMap (𝓞 E) E s * hStd E n u z := by
   rw [← algebraMap_smul E s z, map_smul, smul_eq_mul]
@@ -117,13 +114,6 @@ theorem wmp_hStd_osmul_left (u z : Sp E n) (s : 𝓞 E) :
   rw [← algebraMap_smul E s u, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, algebraMap_cO]
   rfl
 
-theorem localization_le_of_le_localization₃ {Q : HeightOneSpectrum (𝓞 E)} {M L : Submodule (𝓞 E) (Sp E n)} (h : M ≤ localization₂ Q.asIdeal L) :
-    localization₂ Q.asIdeal M ≤ localization₂ Q.asIdeal L := by
-  intro x hx
-  obtain ⟨s, hs, hsx⟩ := (mem_locP Q M x).1 hx
-  obtain ⟨t, ht, htx⟩ := (mem_locP Q L _).1 (h hsx)
-  exact (mem_locP Q L x).2 ⟨t * s, fun hm => (Q.isPrime.mem_or_mem hm).elim ht hs, by rw [mul_smul]; exact htx⟩
-
 theorem wmp_exists_unif (P : HeightOneSpectrum (𝓞 E)) :
     ∃ a ∈ P.asIdeal, ∃ c : 𝓞 E, c ∉ P.asIdeal ∧ ∀ p ∈ P.asIdeal, ∃ t : 𝓞 E, c * p = a * t := by
   first | exact Bl.general_b_fact_right_more.goal1 .. | (apply Bl.general_b_fact_right_more.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_more.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_more.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right_more.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_more.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_right_more.goal1 E ‹_› ‹_› ‹_› P | exact @Bl.general_b_fact_right_more.goal1 E ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_right_more.goal1 E ‹_› ‹_› | exact @Bl.general_b_fact_right_more.goal1 E ‹_› | exact @Bl.general_b_fact_right_more.goal1 E
@@ -131,14 +121,6 @@ theorem wmp_exists_unif (P : HeightOneSpectrum (𝓞 E)) :
 end WmPSym
 
 open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Module Pointwise
-
-section WmPUp
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-def wmpC (P : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E) (N N₁ : Submodule (𝓞 E) (Sp E n)) : Submodule (𝓞 E) (Sp E n) :=
-  Ideal.span {a} • N₁ ⊔ P.asIdeal • N
-
-end WmPUp
 
 open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Module Pointwise
 
@@ -163,73 +145,10 @@ theorem card_wmpToK (p : Submodule (𝓞 E) V) : Nat.card (wmpToK P p) = Nat.car
 
 end WmPK
 
-section WmPSub
-variable {k V : Type} [Field k] [Fintype k] [AddCommGroup V] [Module k V] [Finite V]
-
-end WmPSub
-
-section WmPCountUp
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-end WmPCountUp
-
 open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Module Pointwise
 
-section WmPCountDown
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-end WmPCountDown
-
 open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Module Pointwise
-
-section WmPMain
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-end WmPMain
 
 open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Module
-
-section LemU
-
-variable {κ K : Type} [CommRing κ] [Field K]
-
-def wmpkTop {r n : ℕ} (h : r ≤ n) (bl : List ℕ) (g : GL (Fin n) κ) (hg : g ∈ blockUT n κ r bl) : GL (Fin r) κ where
-  val := restr h g
-  inv := restr h (g⁻¹ : GL (Fin n) κ)
-  val_inv := by
-    rw [← restr_mul h bl _ (Subgroup.inv_mem _ hg), ← Units.val_mul, mul_inv_cancel, Units.val_one, restr_one]
-  inv_val := by
-    rw [← restr_mul h bl _ hg, ← Units.val_mul, inv_mul_cancel, Units.val_one, restr_one]
-
-end LemU
-
-section Det
-
-variable {κ : Type} [CommRing κ]
-
-end Det
-
-section Red
-
-variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {a b : ℕ}
-  {SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-end Red
-
-section Main
-
-variable {X : Fields} {Pr : Primes X} {R : Formalism.BasicNotions.Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Formalism.L2.DIV.Tup X.F X.E X.K S)
-
-end Main
-
-section Final
-
-open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
-
-variable {X : Fields} {Pr : Primes X} {R : Formalism.BasicNotions.Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
-
-end Final
 
 end Formalism.L2.Col

@@ -73,8 +73,6 @@ def stabL (M : Submodule (𝓞 E) (Sp E n)) : Subgroup (Sp E n ≃ₗ[E] Sp E n)
 
 def stdAt (P : HeightOneSpectrum (𝓞 E)) : Submodule (𝓞 E) (Sp E n) := localization₂ P.asIdeal (stdLat E n)
 
-def GLint (P : HeightOneSpectrum (𝓞 E)) : Subgroup (Sp E n ≃ₗ[E] Sp E n) := stabL E n (stdAt E n P)
-
 end Frames
 
 namespace Loc
@@ -150,23 +148,6 @@ def Cbe (J : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) (h : 
     Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) :=
   R1 k n c ⊓ J.comap (MulAut.conj h⁻¹).toMonoidHom
 
-def prX (C : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) : Subgroup ((Fin n → k) ≃ₗ[k] (Fin n → k)) where
-  carrier := {g | ∃ r ∈ C, ∀ x, r (inX k n c x) = inX k n c (g x)}
-  one_mem' := ⟨1, C.one_mem, fun _ => rfl⟩
-  mul_mem' := by
-    rintro a b ⟨r, hr, h1⟩ ⟨s, hs, h2⟩
-    refine ⟨r * s, C.mul_mem hr hs, fun x => ?_⟩
-    show r (s _) = _
-    rw [h2, h1]
-    rfl
-  inv_mem' := by
-    rintro a ⟨r, hr, h1⟩
-    refine ⟨r⁻¹, C.inv_mem hr, fun x => ?_⟩
-    show r.symm _ = _
-    rw [LinearEquiv.symm_apply_eq, h1]
-    show _ = inX k n c (a (a.symm x))
-    rw [LinearEquiv.apply_symm_apply]
-
 def volN (K : Type) [Field K] (C N1O : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) : K :=
   ((N1O.relIndex (C ⊓ N1 k n c) : ℕ) : K) / (((C ⊓ N1 k n c).relIndex N1O : ℕ) : K)
 
@@ -182,28 +163,14 @@ open Loc
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ)
 
-def vP (a : E) : ℤ := Classical.epsilon fun z : ℤ => IsUnit (redP P (a / (q : E) ^ z))
-
 variable {P} in
 open Classical in
 
 def unitV (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) : K := if h : IsUnit (redP P a) then ((χ h.unit : Kˣ) : K) else 0
 
-variable {P} in
-
-def locChar (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) : K := cq ^ vP P q a * unitV χ (a / (q : E) ^ vP P q a)
-
 def sclLat (N : ℕ) (e : ℕ → ℤ) : Submodule (𝓞 E) (Sp E N) :=
   (stdAt E N P).comap
     ((LinearMap.pi fun l : Fin N => ((q : E) ^ e l.1)⁻¹ • (LinearMap.proj l : Sp E N →ₗ[E] E)).restrictScalars (𝓞 E))
-
-def fIdx (k₀ c n s : ℕ) : ℕ := if s < k₀ then s else if s < k₀ + c then n + (s - k₀) else s - c
-
-def fPos (k₀ c n l : ℕ) : ℕ := if l < k₀ then l else if l < n then l + c else k₀ + (l - n)
-
-def scE (n : ℕ) (ex : ℕ → ℕ) (l : ℕ) : ℤ := if l < n then 0 else (ex (l - n) : ℤ)
-
-def lamY (n c : ℕ) (ex : ℕ → ℕ) : Submodule (𝓞 E) (Sp E (n + c)) := sclLat P q (n + c) (scE n ex)
 
 section AtQ
 

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationI
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesL2SpaceStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitUnitaryWeilRepresentationIsSmoothStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryCharacterAbsScalarBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadExtTopologyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadExtTopology
 
 open MeasureTheory Matrix GlobalTheory.KSp GlobalTheory.SplitUnitary
 open GlobalTheory.WeilM (UG IsQuad IsHerm ResEtaPow)
@@ -18,7 +18,7 @@ theorem kudlaSplittingSplitUnitary : GlobalTheory.Published.KudlaSplittingSplitU
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α ν _ _ _ _ Q hQ ψ hψ hψ1 hψne χ hχ hres
   letI : MeasurableSpace (Matrix α ν E) := borel _
   haveI : BorelSpace (Matrix α ν E) := ⟨rfl⟩
-  obtain ⟨-, -, -, -, -, -, -, hmat⟩ := GlobalTheory.T.quadExt_topological_properties F E c δ hE
+  obtain ⟨-, -, -, -, -, -, -, hmat⟩ := _root_.GlobalTheory.quadExt_topology F E c δ hE
   obtain ⟨-, hG⟩ := hmat α ν
   haveI := hG.grp
   haveI := hG.t2

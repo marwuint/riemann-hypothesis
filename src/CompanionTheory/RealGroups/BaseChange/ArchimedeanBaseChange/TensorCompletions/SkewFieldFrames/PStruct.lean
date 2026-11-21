@@ -1,4 +1,5 @@
-import CompanionTheory.RealGroups.BaseChange.ArchimedeanBaseChange.TensorCompletions.SkewFieldFrames.TensorCompl
+import Mathlib
+import CompanionTheory.RealGroups.BaseChange.ArchimedeanBaseChange.TensorCompletions.SkewFieldFrames.Imports
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTwistedClassesCharpoly
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaConstantMulOfCoprimeEllipticPolynomials
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeftMulMatrixTransfer
@@ -48,14 +49,6 @@ theorem prod_fac {P : E[X]} (hm : P.Monic) (hP : P.Separable) : ∏ Q : Fac P, Q
     simpa using Polynomial.monic_multiset_prod_of_monic (UniqueFactorizationMonoid.normalizedFactors P) (fun Q => Q)
       (fun Q hQ => fac_monic (⟨Q, Multiset.mem_toFinset.2 hQ⟩ : Fac P))
   exact Polynomial.eq_of_monic_of_associated hmon hm (UniqueFactorizationMonoid.prod_normalizedFactors hP.ne_zero)
-
-theorem card_fac {P : E[X]} (hP : P.Separable) : Fintype.card (Fac P) = nfac P := by
-  rw [Fintype.card_coe, Multiset.toFinset_card_of_nodup (nodup_fac hP)]
-  rfl
-
-theorem fac_roots {P : E[X]} (hm : P.Monic) (hr : ∀ τ : E →+* ℂ, ∀ z ∈ (P.map τ).roots, ‖z‖ = 1) (Q : Fac P) :
-    ∀ τ : E →+* ℂ, ∀ z ∈ (Q.1.map τ).roots, ‖z‖ = 1 := fun τ z hz =>
-  hr τ z (Multiset.mem_of_le (Polynomial.roots.le_of_dvd (hm.map τ).ne_zero (Polynomial.map_dvd τ (fac_dvd Q))) hz)
 
 theorem exists_rep (P : E[X]) (z : ∀ Q : Fac P, AdjoinRoot Q.1) :
     ∃ f : E[X], ∀ Q : Fac P, AdjoinRoot.mk Q.1 f = z Q := by
@@ -133,34 +126,6 @@ variable (hs : N.charpoly.Separable)
 
 theorem rho_apply (a : ∀ Q, K Q) : rho N j hs hj a = aeval N (repOf N j a) := rfl
 
-theorem rho_injective : Function.Injective (rho N j hs hj) := by
-  intro a b hab
-  rw [rho_apply, rho_apply] at hab
-  have h := (aeval_eq_iff N hs _ _).1 hab
-  funext Q
-  apply (j Q).injective
-  rw [← repOf_spec N j a Q, ← repOf_spec N j b Q]
-  exact h Q
-
-theorem rho_comm (a : ∀ Q, K Q) : rho N j hs hj a * N = N * rho N j hs hj a := by
-  rw [rho_apply]
-  have h : aeval N (repOf N j a * X) = aeval N (X * repOf N j a) := by rw [mul_comm]
-  rwa [map_mul, map_mul, aeval_X] at h
-
-theorem rho_span (s : E)
-    (hspan : ∀ (Q : Fac N.charpoly) (z : AdjoinRoot Q.1), ∃ (a b : K Q), z = j Q a + AdjoinRoot.of Q.1 s * j Q b)
-    (x : Matrix (Fin n) (Fin n) E) (hx : x * N = N * x) :
-    ∃ a b, x = rho N j hs hj a + s • (rho N j hs hj b : Matrix (Fin n) (Fin n) E) := by
-  obtain ⟨f, rfl⟩ := GlobalTheory.BCT.ClsFin.exists_aeval_of_comm N x hs hx.symm
-  choose a b hab using fun Q => hspan Q (AdjoinRoot.mk Q.1 f)
-  refine ⟨a, b, ?_⟩
-  rw [rho_apply, rho_apply]
-  have h : s • aeval N (repOf N j b) = aeval N (C s * repOf N j b) := by
-    rw [map_mul, aeval_C, Algebra.algebraMap_eq_smul_one (A := Matrix (Fin n) (Fin n) E) s, smul_mul_assoc, one_mul]
-  rw [h, ← map_add]
-  refine (aeval_eq_iff N hs _ _).2 fun Q => ?_
-  rw [hab Q, map_add, map_mul, repOf_spec, repOf_spec, AdjoinRoot.mk_C]
-
 theorem rho_adj (c : E →+* E) (hc : ∀ x, c (c x) = x) (δ : GL (Fin n) E) (hN : N = (δ * thetaGL n c δ).val)
     (σ : ∀ Q : Fac N.charpoly, AdjoinRoot Q.1 →+* AdjoinRoot Q.1)
     (hσ : ∀ Q x, σ Q (AdjoinRoot.of Q.1 x) = AdjoinRoot.of Q.1 (c x))
@@ -223,34 +188,5 @@ theorem rho_adj (c : E →+* E) (hc : ∀ x, c (c x) = x) (δ : GL (Fin n) E) (h
 end Ev
 
 end CompanionTheory.Rg.BcB.G3.StructP
-
-open CompanionTheory.Rg.BcB.G3.StructP in
-theorem CompanionTheory.Rg.BcB.G3.struct_pf (h1 : FactorField) : Struct := by
-  intro E _ _ _ s d hs0 hcs hd n δ hP
-  obtain ⟨hPm, hPn, hPs, hPr⟩ := hP
-  have hdata : ∀ Q : Fac (δ * thE E n δ).val.charpoly, ∃ (K : Type) (_ : Field K) (_ : NumberField K)
-      (_ : Algebra (maximalRealSubfield E) K) (j : K →+* AdjoinRoot Q.1) (σ : AdjoinRoot Q.1 →+* AdjoinRoot Q.1),
-      NumberField.IsTotallyReal K ∧ Module.finrank (maximalRealSubfield E) K = Q.1.natDegree ∧
-      (∀ x : (maximalRealSubfield E), j (algebraMap (maximalRealSubfield E) K x) =
-        AdjoinRoot.of Q.1 (algebraMap (maximalRealSubfield E) E x)) ∧
-      (∀ x : E, σ (AdjoinRoot.of Q.1 x) = AdjoinRoot.of Q.1 (IsCMField.complexConj E x)) ∧
-      σ (AdjoinRoot.root Q.1) * AdjoinRoot.root Q.1 = 1 ∧ (∀ a, σ (j a) = j a) ∧
-      ∀ z, ∃ a b, z = j a + AdjoinRoot.of Q.1 s * j b :=
-    fun Q => h1 E s d hs0 hcs hd Q.1 (fac_monic Q) (fac_roots hPm hPr Q)
-  choose K hKf hKn hKa j σ hKr hKdeg hj hσ hσr hσj hspan using hdata
-  refine ⟨Fac (δ * thE E n δ).val.charpoly, inferInstance, K, hKf, hKn, hKa, rho _ j hPs hj, card_fac hPs, hKr, ?_, ?_⟩
-  · simp_rw [hKdeg]
-    rw [← Polynomial.natDegree_prod_of_monic _ _ (fun Q _ => fac_monic Q), prod_fac hPm hPs, hPn]
-  · refine ⟨rho_injective _ j hPs hj, ?_, ?_, ?_, ?_⟩
-    · show rho _ j hPs hj (algebraMap _ _ d) = _
-      rw [AlgHom.commutes, IsScalarTower.algebraMap_apply (maximalRealSubfield E) E (Matrix (Fin n) (Fin n) E), hd,
-        Algebra.algebraMap_eq_smul_one]
-    · intro a
-      exact rho_adj _ j hPs hj (IsCMField.complexConj E).toRingEquiv.toRingHom
-        (fun x => IsCMField.complexConj_apply_apply E x) δ rfl σ hσ hσr hσj a
-    · intro a
-      exact rho_comm _ j hPs hj a
-    · intro x hx
-      exact rho_span _ j hPs hj s hspan x hx
 
 end

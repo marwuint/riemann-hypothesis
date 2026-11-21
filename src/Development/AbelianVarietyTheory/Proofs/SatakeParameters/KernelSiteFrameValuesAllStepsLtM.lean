@@ -2,14 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RealAt
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RkLe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EquivFrameBTheta
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OperatorOnFrameAndClassSummandPolynomialStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OperatorOnFrameAndClassSummandPolynomial
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OperatorPolynomialCoeffsWeightExtendedByZero
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleReadingEqOfRealisingPolynomialStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeTupleReadingEqOfRealisingPolynomial
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitMulSourceScalarEqNextLevelScalarStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MovedFormsOperatorDegreesAtKernelSourceStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TransportedFramePolynomialComplexValuesAtPointStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepDeterminantConstantUnitIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAdelicLatticeTupleDecompositionStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepDeterminantConstantUnitIndependent
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAdelicLatticeTupleDecomposition
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Reframe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteContractionIdentityOperatorHalfStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SiteFramesAndChangedFramesInvertible
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SiteSystemRanksEqDatumRanks
@@ -31,13 +32,13 @@ theorem tieDel_all_steps : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv 
     intro La _ x c' L' _
     exact absurd ⟨⟨La.1⟩, ⟨c'⟩⟩ hne
   obtain ⟨⟨a⟩, ⟨a'⟩⟩ := hne
-  obtain ⟨hn1, -, hsame⟩ := GlobalTheory.T.stepDeterminantConstant_unit_independent S hPos ι hι j hj1 a a'
+  obtain ⟨hn1, -, hsame⟩ := _root_.GlobalTheory.TwV.DelA.cKs_unit_indep S hPos ι hι j hj1 a a'
   set cK := cKs S ι j hj1 a a' with hcK
   refine ⟨cK, hn1, ?_⟩
   obtain ⟨-, -, hrk, hRT⟩ := GlobalTheory.TwV.DelB.sysS_ranks S
   have hN := hRT j
   have h1 : ((sysS H X std).Pj (j + 1)).m + 1 = D.R.N (j + 1) := hrk (j + 1)
-  obtain ⟨d0⟩ := GlobalTheory.T.exists_adelic_latticeTuple_decomposition S hDict
+  obtain ⟨d0⟩ := _root_.GlobalTheory.TwV.DelB.dec_exists S hDict
   intro La hLa x c' L' hL'
 
   have hQ : K2.SharpQ t ex.tw u μ j x (K2.qOf t ex.tw u μ j x) := by
@@ -57,7 +58,7 @@ theorem tieDel_all_steps : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv 
   set φ := K2.entRec t ex.tw u μ j cc x with hφ
   have hφκ : ∀ y, φ κ y = (∏ τ, (D.chTw u μ).de (j + 1) y τ ^ (D.chTw u μ).sDiv j τ)⁻¹ * frPoly (t.O u μ) (j + 1) P y := by
     intro y
-    have e := (GlobalTheory.T.operatorOnFrame_and_classSummand_polynomial).2 D L hT Gi Gl Kc Dx cX ex t u μ j cc (Q cc) κ y
+    have e := (_root_.GlobalTheory.TwV.DelA.applyFrame_and_entQFrame).2 D L hT Gi Gl Kc Dx cX ex t u μ j cc (Q cc) κ y
     have e2 : φ κ y = entQ t u μ j cc (Q cc) κ y := rfl
     rw [e2, e, hP, map_smul, Pi.smul_apply, smul_eq_mul]
     ring
@@ -90,7 +91,7 @@ theorem tieDel_all_steps : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv 
     obtain ⟨V, hV, hm⟩ := hR d
     have : V = V0 := MvPolynomial.map_injective ι ι.injective (hm.trans hm0.symm)
     exact this ▸ hV
-  have hrd := GlobalTheory.T.latticeTupleReading_eq_of_realising_polynomial S hDict ι j hj1 h1 (c', L') hL' φ V0 hall
+  have hrd := _root_.GlobalTheory.TwV.DelA.rdJ_eq_of_realAt S hDict ι j hj1 h1 (c', L') hL' φ V0 hall
   exact hrd.trans hm0
 
 end GlobalTheory.TwV.DelA

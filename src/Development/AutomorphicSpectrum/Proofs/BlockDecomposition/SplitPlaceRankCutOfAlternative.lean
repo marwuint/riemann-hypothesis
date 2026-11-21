@@ -1,18 +1,18 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KvFintype
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FiniteDimensionalMram
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BijectiveLocalUnitaryToGLStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BijectiveLocalUnitaryToGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemMaximalCompactIffIntegralImageStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusUpperParabolicLocalStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormalizedValuationUniformizerStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalImageOfUnipotentElementStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SurjectiveReductionMaximalCompactStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGlobalHermitianLocalApproximationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterPairingLocalHermitianStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumCharacterOrthogonalityMatricesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankResidueLeRankGenericStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOfCharacterTrivialOnLatticeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsResidueCharacterOfConductorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterPairingLocalHermitian
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumCharacterOrthogonalityMatrices
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankResidueLeRankGeneric
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOfCharacterTrivialOnLattice
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsResidueCharacterOfConductor
 
 noncomputable section
 
@@ -33,13 +33,13 @@ theorem hU_thU (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv 
     hU D n v τ (thU D n v τ g) = GlobalTheory.LocIntw.hgtUp _ D.sp.cm.sig (Jst D n) (absEv D.host.F D.host.E v)
       (GlobalTheory.LocIntw.KUpFin D.sp.cm.sig (Jst D n) v) g := by
   unfold hU
-  rw [Function.leftInverse_invFun (GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).1 g]
+  rw [Function.leftInverse_invFun (_root_.GlobalTheory.CompanionTheory.Jp.thU_bijective D n v τ).1 g]
 
 theorem hU_isHgt (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     IsHgt (O := Ov D v) (nvL D v) (hU D n v τ) := by
   intro a d b κ
-  obtain ⟨y, hy⟩ := (GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).2 (pM a d b)
-  obtain ⟨k, hk⟩ := (GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).2 (inL κ)
+  obtain ⟨y, hy⟩ := (_root_.GlobalTheory.CompanionTheory.Jp.thU_bijective D n v τ).2 (pM a d b)
+  obtain ⟨k, hk⟩ := (_root_.GlobalTheory.CompanionTheory.Jp.thU_bijective D n v τ).2 (inL κ)
   have hkK : k ∈ GlobalTheory.LocIntw.KUpFin D.sp.cm.sig (Jst D n) v := (GlobalTheory.T.mem_maximal_compact_iff_integral_image D n v τ k).2 ⟨κ, hk.symm⟩
   obtain ⟨hyP, hab⟩ := GlobalTheory.T.modulus_upper_parabolic_local D n v τ y a d b hy
   rw [← hy, ← hk, ← map_mul, hU_thU]
@@ -77,7 +77,7 @@ theorem split_place_rank_cut_of_local_computation : JpCondition → SplitPlaceRa
     rw [Ne, map_eq_zero_iff _ (IsFractionRing.injective (Ov D v) (Lv D v))]
     exact hϖ.ne_zero
   obtain ⟨w, hw⟩ : ∃ w : (Lv D v)ˣ, (w : Lv D v) = algebraMap (Ov D v) (Lv D v) ϖ := ⟨Units.mk0 _ hϖ0, rfl⟩
-  obtain ⟨ψ₀, hψ₀, hψ₀c⟩ := GlobalTheory.T.exists_residue_character_of_conductor D ψ v hgood ϖ hϖ w hw
+  obtain ⟨ψ₀, hψ₀, hψ₀c⟩ := _root_.GlobalTheory.CompanionTheory.Jp.ResChar.main D ψ v hgood ϖ hϖ w hw
   have hok := GlobalTheory.T.normalized_valuation_uniformizer D v ϖ hϖ w hw
   choose ℓ hℓ using fun a : kv D v => IsLocalRing.residue_surjective (R := Ov D v) a
   have hβ : (Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : kv D v) else 0).rank = r := rank_beta0 hrt
@@ -109,10 +109,10 @@ theorem split_place_rank_cut_of_local_computation : JpCondition → SplitPlaceRa
     (Function.invFun f x), hsinf, hsoff⟩, c, ?_, hcd, hct, ?_⟩
   · intro β' hβ' hint
     have hTint : ∀ i j, (β'.1.map τ) i j ∈ HeightOneSpectrum.adicCompletionIntegers D.host.F v := by
-      apply GlobalTheory.T.integral_of_character_trivial_on_lattice D ψ v hgood n
+      apply _root_.GlobalTheory.CompanionTheory.Jp.DualInt.mem_of_dual_integral D ψ v hgood n
       intro X hX
       obtain ⟨x, hinf', hoff', htx, hint'⟩ := GlobalTheory.T.exists_global_hermitian_local_approximation D n v τ X
-      rw [← htx, ← GlobalTheory.T.character_pairing_local_hermitian D n v τ ψ x hinf' hoff' β']
+      rw [← htx, ← _root_.GlobalTheory.CompanionTheory.Jp.SplitPair.pch_rat_split D n v τ ψ x hinf' hoff' β']
       apply hint
       unfold PositivityTheory.Rg.Rsw.L.IntAt
       exact ⟨hinf', hoff', hint' hX⟩
@@ -121,7 +121,7 @@ theorem split_place_rank_cut_of_local_computation : JpCondition → SplitPlaceRa
     have hne : T₀.map (IsLocalRing.residue (Ov D v)) ≠
         Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : kv D v) else 0 := by
       intro heq
-      have h1 := GlobalTheory.T.rank_residue_le_rank_generic (Ov D v) (Lv D v) n T₀
+      have h1 := _root_.GlobalTheory.CompanionTheory.Jp.rank_residue_map_le_rank_fraction_map (Ov D v) (Lv D v) n T₀
       have h2 := GlobalTheory.Core.Rk.rank_map_field (τ : D.host.E →+* Fv D.host.F v) β'.1
       rw [heq, hβ] at h1
       have h3 : (T₀.map (algebraMap (Ov D v) (Lv D v))).rank = (β'.1.map τ).rank := by rw [← hT]
@@ -129,7 +129,7 @@ theorem split_place_rank_cut_of_local_computation : JpCondition → SplitPlaceRa
     have hpch : ∀ Y, PositivityTheory.Rg.Rsw.L.pch ψ (f Y).1 (GlobalTheory.MixModel.rat β'.1) =
         ψ₀ (Matrix.trace (Y * T₀.map (IsLocalRing.residue (Ov D v)))) := by
       intro Y
-      rw [GlobalTheory.T.character_pairing_local_hermitian D n v τ ψ (f Y) (hinf Y) (hoff Y) β', hfX Y, hT]
+      rw [_root_.GlobalTheory.CompanionTheory.Jp.SplitPair.pch_rat_split D n v τ ψ (f Y) (hinf Y) (hoff Y) β', hfX Y, hT]
       exact psiV_lift D ψ v w ψ₀ hψ₀c ℓ hℓ Y T₀
     show ∑ x ∈ Finset.univ.image f, coY ψ₀ (Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : kv D v) else 0)
       (Function.invFun f x) * PositivityTheory.Rg.Rsw.L.pch ψ x.1 (GlobalTheory.MixModel.rat β'.1) = 0
@@ -138,7 +138,7 @@ theorem split_place_rank_cut_of_local_computation : JpCondition → SplitPlaceRa
           ψ₀ (Matrix.trace (Y * T₀.map (IsLocalRing.residue (Ov D v)))) := by
             refine Finset.sum_congr rfl fun Y _ => ?_
             rw [Function.leftInverse_invFun hfinj Y, hpch Y]
-      _ = 0 := GlobalTheory.T.sum_character_orthogonality_matrices (kv D v) n ψ₀ hψ₀ _ _ hne
+      _ = 0 := _root_.GlobalTheory.CompanionTheory.Jp.coY_sum_mul_eq_zero (kv D v) n ψ₀ hψ₀ _ _ hne
   · intro νv hH hP z
     have e1 : ∀ g, GlobalTheory.CompanionTheory.Jp.sphV D n v z g =
         GlobalTheory.Doubling.npow (hU D n v τ (thU D n v τ g)) (z + (n : ℂ) / 2) := by

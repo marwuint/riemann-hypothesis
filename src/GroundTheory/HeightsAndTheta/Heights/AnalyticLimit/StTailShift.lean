@@ -2,7 +2,8 @@ import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.UIObjects
 import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.EnergySum
+import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.AnalyticLimit
@@ -17,12 +18,5 @@ def TailShift.Statement : Prop :=
     (∀ x ∈ Yo, |r x - r' x| ≤ B) →
     (∀ j, ∀ y ∈ (A.chart j).target, (A.chart j).symm y ∈ Yo → 0 ≤ locDens A T j y) →
     TailLogBound A Yo r' T CE → TailLogBound A Yo r T CE'
-
-section Inhabitants
-
-open ReciprocityTheory.AnForm (fsDens fsDens_pos)
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLine_locDens_first_chart projectiveLine_locDens_second_chart projectiveLine_fubiniStudy_mass_one)
-
-end Inhabitants
 
 end GroundTheory.Heights₂.Heights.AnalyticLimit

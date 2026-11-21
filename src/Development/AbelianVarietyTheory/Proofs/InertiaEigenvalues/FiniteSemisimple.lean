@@ -3,12 +3,12 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPsCharOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLinearExtension
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CayleyHamilton
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PseudoCharacterApplyIdempotentNatLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PseudoCharacterApplyIdempotentNatLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PseudoCharacterEqZeroOfIsNilpotentStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteAndIsSemisimpleRingOfNoNilIdealsBoundedIdeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemisimpleRepOfIsSemisimpleRingRangeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralLinearFormPiMatrixEqSumTraceStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgHomTraceEqSumMultTraceStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteAndIsSemisimpleRingOfNoNilIdealsBoundedIde
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemisimpleRepOfIsSemisimpleRingRange
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralLinearFormPiMatrixEqSumTrace
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgHomTraceEqSumMultTrace
 open Formalism.MainNotions.N GlobalTheory.PsChar
 
 namespace GlobalTheory.PsChar
@@ -17,18 +17,18 @@ theorem finite_semisimple (k R : Type) [Field k] [CharZero k] [IsAlgClosed k] [R
     (d : ℕ) (T : R →ₗ[k] k) (h : IsPsChar d (fun x => T x))
     (hnd : ∀ x, (∀ y, T (x * y) = 0) → x = 0) :
     Module.Finite k R ∧ IsSemisimpleRing R := by
-  refine GlobalTheory.T.finite_and_isSemisimpleRing_of_no_nil_ideals_bounded_idempotents k R d (fun x => ?_) (fun x hx => ?_) (fun m e he hne => ?_)
+  refine _root_.GlobalTheory.AlgRing.finite_and_isSemisimpleRing k R d (fun x => ?_) (fun x hx => ?_) (fun m e he hne => ?_)
   · obtain ⟨p, hp, -, hT⟩ := cayleyHamilton k R d T h x
     exact ⟨p, hp, hnd _ hT⟩
   · refine hnd x fun y => ?_
     rw [show T (x * y) = T (y * x) from h.comm x y]
     exact GlobalTheory.T.pseudoCharacter_eq_zero_of_isNilpotent k R d T h _ (hx y)
   · have hv : ∀ i, ∃ a : ℕ, 1 ≤ a ∧ T (e i) = a := fun i => by
-      obtain ⟨⟨a, -, ha⟩, h0⟩ := GlobalTheory.T.pseudoCharacter_apply_idempotent_nat_le k R d T h (e i) (he.idem i)
+      obtain ⟨⟨a, -, ha⟩, h0⟩ := _root_.GlobalTheory.PsChar.isPsChar_idempotent k R d T h (e i) (he.idem i)
       refine ⟨a, Nat.one_le_iff_ne_zero.2 fun h' => hne i (hnd _ (h0 ?_)), ha⟩
       rw [ha, h', Nat.cast_zero]
     choose a ha1 ha using hv
-    obtain ⟨⟨s, hs, hsT⟩, -⟩ := GlobalTheory.T.pseudoCharacter_apply_idempotent_nat_le k R d T h (∑ i, e i) he.isIdempotentElem_sum
+    obtain ⟨⟨s, hs, hsT⟩, -⟩ := _root_.GlobalTheory.PsChar.isPsChar_idempotent k R d T h (∑ i, e i) he.isIdempotentElem_sum
     have h1 : ((∑ i, a i : ℕ) : k) = s := by
       rw [← hsT, map_sum]; push_cast; exact Finset.sum_congr rfl fun i _ => (ha i).symm
     have h2 : ∑ i, a i = s := by exact_mod_cast h1
@@ -101,7 +101,7 @@ theorem exists_ssRep (Γ k : Type) [Group Γ] [Field k] [CharZero k] [IsAlgClose
   obtain ⟨N, n, hn, ⟨e⟩⟩ := IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed k I.ringCon.Quotient
   let τ : (Π i, Matrix (Fin (n i)) (Fin (n i)) k) →ₗ[k] k := S ∘ₗ e.symm.toLinearMap
   have hτ : ∀ x, τ x = S (e.symm x) := fun x => rfl
-  obtain ⟨c, hcτ⟩ := GlobalTheory.T.exists_eq_sum_trace_of_trace_like_pi_matrix k N n τ fun x y => by
+  obtain ⟨c, hcτ⟩ := _root_.GlobalTheory.centralLinearForm_pi_matrix_eq_sum_trace k N n τ fun x y => by
     rw [hτ, hτ, map_mul e.symm, map_mul e.symm]; exact hS'.comm _ _
   have hcn : ∀ i, ∃ m : ℕ, c i = m := by
     intro i
@@ -118,7 +118,7 @@ theorem exists_ssRep (Γ k : Type) [Group Γ] [Field k] [CharZero k] [IsAlgClose
       · simp [E, Matrix.trace_single_eq_same]
       · intro j _ hj; simp [E, hj]
       · simp
-    obtain ⟨⟨m, -, hm⟩, -⟩ := GlobalTheory.T.pseudoCharacter_apply_idempotent_nat_le k _ d S hS' (e.symm E) (hE.map e.symm)
+    obtain ⟨⟨m, -, hm⟩, -⟩ := _root_.GlobalTheory.PsChar.isPsChar_idempotent k _ d S hS' (e.symm E) (hE.map e.symm)
     exact ⟨m, hτE.symm.trans hm⟩
   choose m hm using hcn
   have hsum : ∑ i, m i * n i = d := by
@@ -126,7 +126,7 @@ theorem exists_ssRep (Γ k : Type) [Group Γ] [Field k] [CharZero k] [IsAlgClose
     rw [hcτ] at h1
     simp only [Pi.one_apply, Matrix.trace_one, Fintype.card_fin, hm] at h1
     exact_mod_cast h1
-  obtain ⟨ρ₀, hρ₀⟩ := GlobalTheory.T.exists_algHom_trace_eq_sum_mul_trace k N n m d hsum
+  obtain ⟨ρ₀, hρ₀⟩ := _root_.GlobalTheory.exists_algHom_trace_eq_sum_mult_trace k N n m d hsum
   let g : I.ringCon.Quotient →ₐ[k] Matrix (Fin d) (Fin d) k := ρ₀.comp e.toAlgHom
   let ρ : MonoidAlgebra k Γ →ₐ[k] Matrix (Fin d) (Fin d) k := g.comp f
   have htr : ∀ a, (ρ a).trace = T' a := fun a => by
@@ -139,7 +139,7 @@ theorem exists_ssRep (Γ k : Type) [Group Γ] [Field k] [CharZero k] [IsAlgClose
     rw [this]
     exact RingHom.isSemisimpleRing_of_surjective g.rangeRestrict.toRingHom
       (AlgHom.rangeRestrict_surjective _)
-  refine ⟨(ρ.toMonoidHom.comp (MonoidAlgebra.of k Γ)).toHomUnits, GlobalTheory.T.isSemisimpleRep_of_isSemisimpleRing_range Γ k d ρ hrange,
+  refine ⟨(ρ.toMonoidHom.comp (MonoidAlgebra.of k Γ)).toHomUnits, _root_.GlobalTheory.isSSRep_of_isSemisimpleRing_range Γ k d ρ hrange,
     fun x => ?_⟩
   show (ρ (MonoidAlgebra.of k Γ x)).trace = T x
   rw [htr, hT'g]

@@ -5,7 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.Ideal
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsArcGenericFibrePointsBaseChangeStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.PointFamiliesEqOfValuesLevelsUniversalFamilyStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsFormalConvergence
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThetaSumShiftStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThetaSumShift
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ArcDictExpZeroSection
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFShiftZeroIff
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueFactorOfIsAlgClosed
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -26,7 +28,7 @@ theorem fsum_mem (j : ℕ) [NeZero j] (α : A.X) (th : (Fin A.gB → ℂ) → �
 theorem exists_shift_mem (k : ℕ) [NeZero k] (la : A.La) (hla : ∀ α, (k : ℤ) ∣ A.be la.y α) :
     ∃ ψ : (Σ α : A.X, A.Theta k α) → A.V → ℂ⸨X⸩,
       ∀ i z, IsFShift A k i.1 i.2 la z (ψ i z) ∧ ψ i z ∈ Conv.convLaurent := by
-  obtain ⟨cz, -, h⟩ := GlobalTheory.T.theta_sum_shift_eq_single_mul_fSum O A k la hla
+  obtain ⟨cz, -, h⟩ := _root_.GlobalTheory.ArcPts.theta_sum_shift O A k la hla
   choose th' hth' _ h' using h
   refine ⟨fun i z => HahnSeries.single (A.be la.y i.1 / k) (cz z) *
     A.FSum k (i.1 + la.y) (th' i.1 i.2 i.2.2) z, fun i z => ⟨((h' i.1 i.2 i.2.2 z).1 _).2 rfl, ?_⟩⟩

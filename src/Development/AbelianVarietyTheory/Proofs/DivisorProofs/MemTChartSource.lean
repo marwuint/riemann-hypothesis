@@ -25,17 +25,4 @@ def tChart (I : ManIs M Y) {a : Fin (M.n + 1)} (c : AlgChart Y.str (I.ε a) e) :
 theorem tChart_apply (I : ManIs M Y) {a : Fin (M.n + 1)} (c : AlgChart Y.str (I.ε a) e) (x : M.X a) :
     tChart I c x = c.e (I.pt a x) := rfl
 
-theorem mem_tChart_source (I : ManIs M Y) {a : Fin (M.n + 1)} (c : AlgChart Y.str (I.ε a) e) {x : M.X a} :
-    x ∈ (tChart I c).source ↔ I.pt a x ∈ c.e.source := by
-  simp [tChart]
-
-def potDens (I : ManIs M Y) {a : Fin (M.n + 1)} (P : LocPot (M.X a)) (c : AlgChart Y.str (I.ε a) e)
-    (x : M.X a) : ℝ :=
-  e.factorial / Real.pi ^ e * (ReciprocityTheory.L2DbarEstimates.cHess e
-    (fun v => ((2 * P.φ x ((I.pt a).symm (c.e.symm v)) : ℝ) : ℂ)) (c.e (I.pt a x))).det.re
-
-def potMeas (I : ManIs M Y) {a : Fin (M.n + 1)} (P : LocPot (M.X a)) (s : ℤˣ) : Measure (M.X a) :=
-  glueMeas (fun c : AlgChart Y.str (I.ε a) e => tChart I c)
-    fun c x => ENNReal.ofReal ((s : ℤ) * potDens I P c x)
-
 end GlobalTheory.Mean4O.CoverInt

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionOfChg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDerivAt0CompLinear
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexPointsComponentSamePeriodSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexPointsComponentSamePeriodSpace
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmModuliConsequenceOfAbelianSchemeLaws
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
 
@@ -163,7 +163,7 @@ theorem hasTransport_of_goodEmb : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     rw [Category.assoc, pullback.condition, ← Category.assoc, hx, DetExtendZero.spMap_comp]
   obtain ⟨i, P, hP, hu⟩ := Fu.onto _ (ov y hy)
   obtain ⟨i', P', hP', hu'⟩ := Fu.onto _ (ov y' hy')
-  obtain rfl : i = i' := GlobalTheory.T.complexPoints_component_same_periodSpace E H D l Xo c O β Y U e _ _ Fu i i' P P' y y' B io hU hio hr hs hy hy' hyU hyU'
+  obtain rfl : i = i' := _root_.GlobalTheory.DetLine.SameIndex.index_eq E H D l Xo c O β Y U e _ _ Fu i i' P P' y y' B io hU hio hr hs hy hy' hyU hyU'
     hP hP' hu.symm hu'.symm
   exact exists_transport Fu i hP hP' hu.symm hu'.symm m m' u u' hAH hAH'
 

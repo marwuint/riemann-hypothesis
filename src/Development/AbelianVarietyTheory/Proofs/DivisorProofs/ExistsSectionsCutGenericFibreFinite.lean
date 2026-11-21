@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimDropAndFiniteOfDimZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmplePowerSectionNonvanishingOnFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimDropAndFiniteOfDimZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAmplePowerSectionNonvanishingOnFinite
 
 set_option autoImplicit false
 
@@ -23,7 +23,7 @@ theorem exists_finite_drop {T : Type} [TopologicalSpace T] [NoetherianSpace T] (
   have : Finite (irreducibleComponents Y) := hfin.to_subtype
   refine ⟨Set.range fun C => (y C : T), Set.finite_range _, fun U hU hS => ?_⟩
   have hC : IsClosed ((Subtype.val : Y → T) ⁻¹' Uᶜ) := hU.isClosed_compl.preimage continuous_subtype_val
-  have h := (GlobalTheory.T.topologicalKrullDim_drop_and_finite_of_dim_zero Y).1 _ (d + 1) hC hY fun Z hZ _ hsub =>
+  have h := (_root_.GlobalTheory.DimDrop.dim_drop Y).1 _ (d + 1) hC hY fun Z hZ _ hsub =>
     hsub (hy ⟨Z, hZ⟩) (hS ⟨⟨Z, hZ⟩, rfl⟩)
   let f : ↥(Y \ U) → ↥((Subtype.val : Y → T) ⁻¹' Uᶜ) := fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩
   have hf : IsInducing f := by
@@ -39,14 +39,14 @@ theorem exists_sections_finite : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [I
   induction d with
   | zero =>
     intro Z _ hd
-    have hf : Finite ↥(Z ∩ fib X 0) := (GlobalTheory.T.topologicalKrullDim_drop_and_finite_of_dim_zero ↥(Z ∩ fib X 0)).2 inferInstance (by simpa using hd)
+    have hf : Finite ↥(Z ∩ fib X 0) := (_root_.GlobalTheory.DimDrop.dim_drop ↥(Z ∩ fib X 0)).2 inferInstance (by simpa using hd)
     refine ⟨Fin.elim0, Fin.elim0, fun j => j.elim0, ?_⟩
     exact (Set.toFinite (Z ∩ fib X 0)).subset (Set.inter_subset_inter_left _ Set.sdiff_subset)
   | succ d ih =>
     intro Z hZ hd
     obtain ⟨S, hS, hdrop⟩ := exists_finite_drop (Z ∩ fib X 0) d hd
-    obtain ⟨e₀, he₀, f, hf, hSf⟩ := GlobalTheory.T.exists_ample_power_section_nonvanishing_on_finite k X p D hp P hA S hS
-    have hU : IsOpen (NV P e₀ 0 f) := (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e₀ 0 f hf).1
+    obtain ⟨e₀, he₀, f, hf, hSf⟩ := _root_.GlobalTheory.HSAmp.exists_sec_nonvanishing_finite k X p D hp P hA S hS
+    have hU : IsOpen (NV P e₀ 0 f) := (_root_.GlobalTheory.HSAmp.nv_rules k X p P e₀ 0 f hf).1
     have h := hdrop _ hU hSf
     rw [show (Z ∩ fib X 0) \ NV P e₀ 0 f = (Z \ NV P e₀ 0 f) ∩ fib X 0 from by
       ext x; simp only [Set.mem_sdiff, Set.mem_inter_iff]; tauto] at h

@@ -62,7 +62,7 @@ theorem isItW_lastStep_transfer (k : Fin D.R.m) (hk : (k : ℕ) + 1 = D.R.m) (a 
     (hω : IsStepWeil k ψ V W ω) (hf : IsVacVec ψ θ M M' f) (hω₁ : IsStepWeil k ψ V W ω₁) (hf₁ : IsVacVec ψ θ M M' f₁)
     (hIt : IsItW θ M M' ω (ptOf ψ θ M M' f) It) : IsItW θ M M' ω₁ (ptOf ψ θ M M' f₁) It := by
   subst ha
-  have hp := fun τ => GlobalTheory.T.lastStep_parameters_partition_extended_by_zeros D k τ V.rank W.rank (M.lam τ) (M.ε τ) (M'.lam τ) (M'.ε τ) hk rV rW (M.enum τ) (M'.enum τ)
+  have hp := fun τ => _root_.GlobalTheory.LastStepParam.lastStep_param D k τ V.rank W.rank (M.lam τ) (M.ε τ) (M'.lam τ) (M'.ε τ) hk rV rW (M.enum τ) (M'.enum τ)
   have hε := fun τ => (hp τ).1
   have hε' := fun τ => (hp τ).2.1
   choose x₁ x₃ h1 h3 _ using fun τ => (hp τ).2.2
@@ -85,8 +85,8 @@ theorem isItW_lastStep_transfer (k : Fin D.R.m) (hk : (k : ℕ) + 1 = D.R.m) (a 
     (fun _ _ _ => totalDegree_polAct _ _ _ _ _ _ _) (fun _ _ _ => totalDegree_polAct _ _ _ _ _ _ _) ω ω₁
     (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f)
     (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f₁)
-    (GlobalTheory.T.fockVectorsOfThetaDatum_injective D V W _ _ ψ θ M M' f hω.choose_spec.choose_spec.1.std hθ hf)
-    (GlobalTheory.T.fockVectorsOfThetaDatum_injective D V W _ _ ψ θ M M' f₁ hω₁.choose_spec.choose_spec.1.std hθ hf₁)
+    (_root_.GlobalTheory.FockInj.ptOf_injective D V W _ _ ψ θ M M' f hω.choose_spec.choose_spec.1.std hθ hf)
+    (_root_.GlobalTheory.FockInj.ptOf_injective D V W _ _ ψ θ M M' f₁ hω₁.choose_spec.choose_spec.1.std hθ hf₁)
     a0.1 a0.2 a1.1 a1.2 It hIt
 
 theorem pItX_of_one : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsModels → R.chain_ωX → R.chain_vX → ∀ (t₀ : T) (y : PolF D D.sp.X'.rank (Yc D (D.R.m - 1)).rank →ₗ[ℂ] SmT R.MX →ₗ[ℂ] SmT (R.MY (D.R.m - 1))), IsItW R.θ (R.MY (D.R.m - 1)) R.MX (R.ωX t₀) (R.ptX t₀) y → R.PItX y := by
@@ -94,7 +94,7 @@ theorem pItX_of_one : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Typ
   have hm := D.R.two_le_m
   let k : Fin D.R.m := ⟨D.R.m - 1, by omega⟩
   have hk : (k : ℕ) = D.R.m - 1 := rfl
-  have hS := fun t => GlobalTheory.T.lastThetaChainStep_exponents_and_nonzero_vacuum D G Pl0 T A Ks R hL hM.inf hω hv t k hk
+  have hS := fun t => _root_.GlobalTheory.LastStepVac.last_step D G Pl0 T A Ks R hL hM.inf hω hv t k hk
   have rV : (Yc D (D.R.m - 1)).rank = D.R.r + k * D.R.t := by
     rw [D.sp.Y_rank _ (min_le_right _ _), min_eq_left (Nat.sub_le _ _)]; rfl
   have rW : D.sp.X'.rank = (Yc D (D.R.m - 1)).rank + D.R.t := by

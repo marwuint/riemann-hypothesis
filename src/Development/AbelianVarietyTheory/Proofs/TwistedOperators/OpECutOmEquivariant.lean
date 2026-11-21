@@ -11,8 +11,6 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 
 namespace GlobalTheory.RootEx.CutRow
 
-variable {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] {c p : ℕ}
-
 end GlobalTheory.RootEx.CutRow
 
 open MeasureTheory ValuativeRel Matrix in

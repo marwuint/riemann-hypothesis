@@ -1,6 +1,7 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalWeilOperators.IsLocOpOfOk
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.FockSpaces.ContinuousLoc
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzFourierTransformMatrixStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzFourierTransformMatrix
 
 noncomputable section
 
@@ -55,12 +56,6 @@ theorem insL_supp (v : Fin d.m → Fin d.n → ℂ) : Supp w (insL R w v) := by
     simp only [SD.cw, insL, Matrix.map_apply, insW_ne d w hw', Matrix.zero_apply]
   · ext i j
     simp only [insL, Matrix.smul_apply, Matrix.map_apply, insW_fin, Matrix.zero_apply]
-
-theorem loc_insL (v : Fin d.m → Fin d.n → ℂ) : R.loc w (insL R w v) = v := by
-  unfold RD.loc
-  rw [cw_insL, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
-  ext i j
-  simp
 
 theorem insL_add (v v' : Fin d.m → Fin d.n → ℂ) : insL R w (v + v') = insL R w v + insL R w v' := by
   have e : (R.fr w).1 * (Matrix.of (v + v')).map star =
@@ -230,7 +225,7 @@ theorem locFT_sw {m n : ℕ} (C s : ℂ) (hs : s ≠ 0) (f : (Fin m → Fin n �
     IsSw (fun u => C * ∫ v : Fin m → Fin n → ℂ,
       Complex.exp (2 * Real.pi * Complex.I * ((s * Matrix.trace ((Matrix.of u)ᴴ * Matrix.of v)).re : ℂ)) * f v) := by
   obtain ⟨φ, rfl⟩ := hf
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.schwartz_fourier_transform_matrix m n C s hs φ
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.CompanionTheory.FourierMatrix.exists_schwartz_trace_transform m n C s hs φ
   exact ⟨ψ, hψ⟩
 
 end PositivityTheory.SiegelWeilFormula.KW

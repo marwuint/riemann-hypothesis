@@ -112,18 +112,6 @@ theorem DatLoc.const_mul {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : 
     DatLoc D cc SS cl N N' fun x => k * Ξ x :=
   h.comp fun y => k * y
 
-theorem DatLoc.add {Ξ Ξ' : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ) (h' : DatLoc D cc SS cl N N' Ξ') :
-    DatLoc D cc SS cl N N' fun x => Ξ x + Ξ' x :=
-  fun x x' hx => by
-    show Ξ x + Ξ' x = Ξ x' + Ξ' x'
-    rw [h x x' hx, h' x x' hx]
-
-theorem DatLoc.mul {Ξ Ξ' : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ) (h' : DatLoc D cc SS cl N N' Ξ') :
-    DatLoc D cc SS cl N N' fun x => Ξ x * Ξ' x :=
-  fun x x' hx => by
-    show Ξ x * Ξ' x = Ξ x' * Ξ' x'
-    rw [h x x' hx, h' x x' hx]
-
 theorem DatLoc.of_locP_eq {M : Submodule (𝓞 D.host.E) (Fin a → D.host.E)} {M' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)}
     {Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ} (h : DatLoc D cc SS cl N N' Ξ)
     (hM : ∀ P ∈ SS, Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (aaOf D cc) M M') = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (aaOf D cc) N N')) :
@@ -159,14 +147,6 @@ end DatLocApi
 section LawApi
 
 variable {p : ℕ} [Fact p.Prime] {X : Sys p} {Kc : Type} [Field Kc] [Algebra (FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc]
-
-theorem KapLawLt.congr {Th Th' : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) Kc} (h : KapLawLt X Kc Th)
-    (he : ∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 →
-      Th' j La La' = Th j La La') : KapLawLt X Kc Th' := by
-  intro j hj c L La' γ hL hL'
-  have hγ : (X.Pj j).IsLatTup ((X.Lv.lev j c).smul γ L) := (Formalism.MainNotions.FormalGroupSystem.Pf.latTup_smul _ _ γ L).2 hL
-  rw [he j hj (c, (X.Lv.lev j c).smul γ L) La' hγ hL', he j hj (c, L) La' hL hL']
-  exact h j hj c L La' γ hL hL'
 
 theorem KapLawLt.stab {Th : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) Kc} (h : KapLawLt X Kc Th) {j : ℕ} (hj : j < X.mm)
     (c : X.Lv.comp j) (L : (X.Pj j).Tup) (La' : X.Lt (j + 1)) (ε : (X.Lv.lev j c).Γ) (hL : (X.Pj j).IsLatTup L)
@@ -219,34 +199,6 @@ theorem LamPos.even (h : LamPos X E pos lam ρ) (v : X.Pl) (s : Fin (X.G.P.n' v)
 theorem LamPos.odd (h : LamPos X E pos lam ρ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : IsOddPos s) (x : D.host.E) :
     TaylorLogMetric.lamC lam (TaylorLogMetric.embT D (pos ⟨v, s⟩) x) = twG X E v s (ρ v (D.host.conj x)) := by
   rw [h v s x, if_pos hs]
-
-example (j : ℕ) (c : X.Lv.comp j) (L : (X.Pj j).Tup) (La' : X.Lt (j + 1)) :
-    letI := wittFractionAlgebraCp p
-    letI := algKfC E
-    (∀ v, fd.frM j (c, (X.Lv.lev j c).smul 1 L) v * (gamAt X j c 1 v : Matrix _ _ _) =
-      (1 : Matrix _ _ D.host.E).map (ρ v) * fd.frM j (c, L) v) ∧
-    pPow X j (c, (X.Lv.lev j c).smul 1 L) La' * TaylorLogMetric.lamC lam (scal0 X fd χ muT j (c, (X.Lv.lev j c).smul 1 L) La' *
-        (Base.chiFac χ _ _ (fd.kerN j (c, (X.Lv.lev j c).smul 1 L)) (fd.kerN (j + 1) La'))⁻¹ * 1) =
-      (kapG X ℂ_[p] j c 1)⁻¹ * (pPow X j (c, L) La' * TaylorLogMetric.lamC lam (scal0 X fd χ muT j (c, L) La' *
-        (Base.chiFac χ _ _ (fd.kerN j (c, L)) (fd.kerN (j + 1) La'))⁻¹)) := by
-  let _ := wittFractionAlgebraCp p
-  let _ := algKfC E
-  have hp : (p : ℂ_[p]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero
-  rw [lsmul_one, kapG_one X ℂ_[p] hp, gamAt_one]
-  refine ⟨fun v => ?_, by rw [mul_one, inv_one, one_mul]⟩
-  rw [Matrix.map_one _ (map_zero _) (map_one _)]
-  simp
-
-example {a b : ℕ} (e : Matrix (Fin a) (Fin a) D.host.E) (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E))
-    (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (x : Formalism.L2.Col.HomE D.host.E a b) :
-    x ∈ homO (SDLat.smulLat e N) N' ↔ x ∘ₗ Matrix.toLin' e ∈ homO N N' :=
-  ⟨fun h y hy => h _ ⟨y, hy, rfl⟩, fun h _ ⟨y, hy, hy'⟩ => hy' ▸ h y hy⟩
-
-example (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (h : fd.trG j La = LinearEquiv.refl _ _)
-    (h' : fd.trG (j + 1) La' = LinearEquiv.refl _ _) : xiM X fd Ξ₀ j La La' = Ξ₀ j La La' := by
-  unfold xiM
-  rw [h, h']
-  rfl
 
 end DataApi
 

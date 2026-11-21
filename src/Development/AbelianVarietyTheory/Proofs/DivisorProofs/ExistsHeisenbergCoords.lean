@@ -2,14 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EisAtMinusRho
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreConcl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvApply
+
 open scoped TensorProduct NNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.EisRes
 open GlobalTheory.Doubling (absE)
-open GlobalTheory.PoleFactor
-
 noncomputable section
 
 namespace GlobalTheory.HeisCoords
@@ -35,18 +32,9 @@ def hfL (a : Fin n → ℂ) : (Fin n → ℂ) →ₗ[ℝ] ℂ where
 
 @[simp] theorem hfL_apply (a b : Fin n → ℂ) : hfL J a b = hf J a b := rfl
 
-def Heisenberg₂ (x w : Fin n → ℂ) (z : ℂ) : Matrix (Fin n) (Fin n) ℂ :=
-  1 + vecMulVec w (star x ᵥ* J) - vecMulVec x (star w ᵥ* J) + z • vecMulVec x (star x ᵥ* J)
-
 variable {J}
 
 end Cplx
-
-section Coords
-
-variable {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ}
-
-end Coords
 
 section Transfer
 

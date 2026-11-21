@@ -46,10 +46,6 @@ theorem X_mem_orbitCenter (x : Cone n (AlgebraicClosure ℚ)) (v : FinitePlace (
     (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, i⟩), ?_⟩
   simpa [evalCone, coordDeg, Pi.single_apply, pow_ite] using hi
 
-example : (1 / 2 : AlgebraicClosure ℚ) ∈ ratioField samplePoint := by
-  convert div_mem_ratioField samplePoint () 0 1 using 1
-  simp [samplePoint]
-
 end
 
 end GroundTheory.Heights₂.Heights

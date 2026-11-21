@@ -9,8 +9,6 @@ section Additive
 variable {O Y M : Type*} [CommRing O] [StarRing O] [AddCommGroup Y] [Module O Y]
   [AddCommGroup M]
 
-def addRefine (τ : Y →+ Y →+ M) (w : O) (y : Y) : M := τ y (w • y)
-
 variable {τ : Y →+ Y →+ M} {w : O}
 
 def subHom {ψ ψ' : Y → M} (hψ : ∀ y y', ψ (y + y') = ψ y + ψ y' + τ y y')
@@ -33,44 +31,6 @@ def mulRefine (τ : Y →+ Y →+ Additive A) (w : O) (y : Y) : A := (τ y (w �
 variable {τ : Y →+ Y →+ Additive A} {w : O}
 
 end Multiplicative
-
-section HalfElement
-
-variable {K : Type*} [Field K] [CharZero K] [StarRing K] {d : ℤ} {s : K}
-
-omit [StarRing K] in
-
-theorem isIntegral_half (hd : d % 4 = 3) (hs : s ^ 2 = -(d : K)) :
-    IsIntegral ℤ ((1 + s) / 2) := by
-  obtain ⟨k, hk⟩ : ∃ k : ℤ, d = 4 * k - 1 := ⟨(1 + d) / 4, by omega⟩
-  refine ⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C k, by monicity!, ?_⟩
-  rw [hk] at hs
-  push_cast at hs
-  simp only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow,
-    Polynomial.eval₂_X, Polynomial.eval₂_C]
-  rw [eq_intCast]
-  linear_combination (1 / 4 : K) * hs
-
-end HalfElement
-
-section Example
-
-open QuadraticAlgebra
-
-def traceFormSeven :
-    QuadraticAlgebra ℤ (-2) 1 →+ QuadraticAlgebra ℤ (-2) 1 →+ Additive (Multiplicative ℤ) :=
-  AddMonoidHom.mk'
-    (fun y => AddMonoidHom.mk'
-      (fun y' => Additive.ofMul (Multiplicative.ofAdd
-        (2 * y.re * y'.re + y.re * y'.im + y.im * y'.re + 4 * y.im * y'.im)))
-      fun a b => by
-        rw [← ofMul_mul, ← ofAdd_add]; congr 2; simp only [re_add, im_add]; ring)
-    fun a b => by
-      ext y'
-      simp only [AddMonoidHom.mk'_apply, AddMonoidHom.add_apply]
-      rw [← ofMul_mul, ← ofAdd_add]; simp only [re_add, im_add]; ring_nf
-
-end Example
 
 end QuadRefinement
 

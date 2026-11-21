@@ -79,8 +79,6 @@ def T5 : Prop := ∀ (k N M ν d : ℕ) [NeZero N] [NeZero M] (hM : N ∣ M) (χ
 def IsWt (L : ℕ) (β : ℍ → ℝ) : Prop := Measurable β ∧ (∀ z, 0 ≤ β z ∧ β z ≤ 1) ∧
   ∀ z, HasSum (fun γ : Gamma0 L => β ((γ : SL(2, ℤ)) • z)) 2
 
-def U0 : Prop := ∀ L : ℕ, 0 < L → ∃ β, IsWt L β ∧ ∃ T : Finset SL(2, ℤ), ∀ z, β z ≠ 0 → ∃ σ ∈ T, σ⁻¹ • z ∈ 𝒟
-
 def U1 : Prop := ∀ L : ℕ, 2 ≤ L → ∀ β, IsWt L β → ∀ γ : Idx L → SL(2, ℤ),
   (∀ p, γ p 1 0 = L * p.1.2 ∧ γ p 1 1 = p.1.1) → ∀ F : ℍ → ℂ, Measurable F → (∀ z, F ((1 : ℝ) +ᵥ z) = F z) →
   IntegrableOn F strip → ∫ z in strip, F z = ∫ z, (β z : ℂ) * ∑' p, F (γ p • z)
@@ -164,11 +162,6 @@ def E0 : Prop := ∀ (M k ν : ℕ) [NeZero M], 2 ∣ M → ∀ c : DirichletCha
   ∀ b : ℝ, ∃ (C : ℝ) (A : ℕ), ∀ s v : ℂ, 1 / 4 < s.re → s.re ≤ b → 0 < v.im →
     ‖Es s v‖ ≤ C * Real.exp (C * s.im ^ 2) * (v.im ^ A + v.im⁻¹ ^ A)
 
-def PR : Prop := ∀ L k ν : ℕ, 0 < L → (∀ z, Differentiable ℂ fun s => pref L k ν s z) ∧ (∀ s, Measurable (pref L k ν s)) ∧
-  (∀ b : ℝ, ∃ (C : ℝ) (A : ℕ), ∀ (s : ℂ) (z : ℍ), 0 ≤ s.re → s.re ≤ b → ‖pref L k ν s z‖ ≤ C * Real.exp (C * s.im ^ 2) * Ht z ^ A) ∧
-  ∀ z : ℍ, 1 ≤ Ht z ∧ z.im⁻¹ ≤ Ht z ∧ 0 < (-1 / (z : ℂ) / (L : ℂ)).im ∧ (-1 / (z : ℂ) / (L : ℂ)).im ≤ Ht z ∧
-    (-1 / (z : ℂ) / (L : ℂ)).im⁻¹ ≤ L * Ht z
-
 def G0 : Prop := ∀ a b : ℝ, ∃ C : ℝ, ∀ z : ℂ, a ≤ z.re → z.re ≤ b → ‖(Gamma z)⁻¹‖ ≤ C * Real.exp (C * z.im ^ 2)
 
 def HI : Prop := ∀ (X : Type) [MeasurableSpace X] (m : Measure X) (U : Set ℂ) (F : ℂ → X → ℂ), IsOpen U →
@@ -186,24 +179,6 @@ def S1 : Prop := ∀ (k N M ν : ℕ) [NeZero N] [NeZero M] (hM : N ∣ M), 4 �
 
 def E1 : Prop := ∀ c : HeckeCharacter ℚ, IsOfFinOrder c → ∀ M₀ : ℕ, 0 < M₀ → ∃ (M : ℕ) (_ : NeZero M) (c' : DirichletCharacter ℂ M),
   M₀ ∣ M ∧ ∀ v : Pl, ¬ pOf v ∣ M → c' (pOf v : ZMod M) = (localChar c v (unifUnit (Qv v)) : ℂ)
-
-def faceMap_comp_succAbove_castSucc : Prop := (∃ e : Pl ≃ Nat.Primes, ∀ v, (e v : ℕ) = pOf v) ∧
-  ∀ (v : Pl) (μ' : (Qv v)ˣ →* ℂˣ), IsUnramifiedChar μ' → ∀ s : ℂ,
-    localLFactor μ' s = (1 - (μ' (unifUnit (Qv v)) : ℂ) * (pOf v : ℂ) ^ (-s))⁻¹
-
-def E2a : Prop := ∀ (k N : ℕ) (χ : DirichletCharacter ℂ N) (a : ℕ → ℂ), IsEig k N χ a →
-  (∀ m n, Nat.Coprime m n → a (m * n) = a m * a n) ∧ ∀ p : ℕ, p.Prime → ∀ α β : ℂ, α + β = a p →
-    α * β = χ p * (p : ℂ) ^ (k - 1) → ∀ j, a (p ^ j) = ∑ i ∈ Finset.range (j + 1), α ^ i * β ^ (j - i)
-
-def E2b : Prop := ∀ r X : ℂ, ‖r‖ = 1 → ‖X‖ < 1 →
-  HasSum (fun j : ℕ => (∑ i ∈ Finset.range (2 * j + 1), r ^ i) * (r⁻¹ * X) ^ j)
-    ((1 - X ^ 2) * ((1 - r * X)⁻¹ * (1 - X)⁻¹ * (1 - r⁻¹ * X)⁻¹))
-
-def E2 : Prop := ∀ (N M : ℕ) [NeZero N] [NeZero M] (hM : N ∣ M) (χ : DirichletCharacter ℂ N) (D : Dat) (a : ℕ → ℂ),
-  IsEig D.k N χ a → SatOf N χ a D → ∀ c δ T, admitted D c δ T → (∀ v, v ∈ T ↔ pOf v ∣ M) → ∀ c' : DirichletCharacter ℂ M,
-  (∀ v : Pl, ¬ pOf v ∣ M → c' (pOf v : ZMod M) = (localChar c v (unifUnit (Qv v)) : ℂ)) → ∀ s : ℂ, 2 < s.re →
-    eul D c T s = DirichletCharacter.LFunction (c' ^ 2) (2 * s) *
-      LSeries (fun n => (c' * DirichletCharacter.changeLevel hM χ⁻¹) n * a (n ^ 2)) (s + D.k - 1)
 
 open Classical in
 

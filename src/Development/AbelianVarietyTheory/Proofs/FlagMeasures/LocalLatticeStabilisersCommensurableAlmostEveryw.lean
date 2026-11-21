@@ -4,9 +4,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemH0sub
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTermStabilizerCommensurableStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTermStabilizerCommensurable
+import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DatumStabilizerPreservesTermLatticeGoodPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinitePlacesNotPrimeToBaseFrameInvariantsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinitePlacesNotPrimeToBaseFrameInvariants
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
 open scoped Classical ENNReal
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.Unfold
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -48,7 +50,7 @@ theorem local_stabilisers : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' 
   have hle : ∀ p (d : LocNG.Datum (FP p)), LocNG.Datum.Stab d ≤ (FP p).UW0 :=
     fun p d => Subgroup.closure_le _ |>.2 fun g hg => hg.1
   choose τ0 hτ0 hτ0L using hLO.2
-  have hc := fun p => GlobalTheory.T.hermitianTerm_stabilizer_commensurable (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p)
+  have hc := fun p => _root_.GlobalTheory.HL.LocComm.stab_commensurable (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p)
     (hRel p) (d0 p) (τ0 p) (hτ0 p)
   have hA : ∀ p, (LocNG.Aut (lattice₂ D Z.M p Λ₀)).comap (FP p).UW0.subtype =
       ((FP p).UW0 ⊓ LocNG.Aut (τ0 p).abelian₂).comap (FP p).UW0.subtype := by
@@ -63,14 +65,14 @@ theorem local_stabilisers : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' 
   · have hAt : ∀ p, GlobalTheory.LocOver.AtBase Z p F F' (Tu D u) (Tu D u') (FP p) := fun p => by
       obtain ⟨h1, h2, h3, h4⟩ := hB p
       exact ⟨h1, h2, h3, h4⟩
-    refine (GlobalTheory.T.finite_places_not_primeTo_baseFrameInvariants D Z u u' F F' hG FP hAt).subset fun p hp hpr => hp ?_
+    refine (_root_.GlobalTheory.PrimeAlmostAll.primeTo_finite D Z u u' F F' hG FP hAt).subset fun p hp hpr => hp ?_
     have h2 := GlobalTheory.T.datumStabilizer_preserves_termLattice_goodPlace (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p)
       (hRel p) hpr (d0 p) (τ0 p) (hτ0 p)
     rw [hA p, hstab p]
     exact congrArg _ (le_antisymm (hc p).1 (le_inf (hle p (d0 p)) h2))
   · obtain ⟨τ, hτ⟩ := hd p
     have h3 := (hc p).2.2
-    have hτc := GlobalTheory.T.hermitianTerm_stabilizer_commensurable (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p)
+    have hτc := _root_.GlobalTheory.HL.LocComm.stab_commensurable (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq D p)
       (hRel p) (d p) τ hτ
     rw [hstab p, hstab p, relIndex_comap_subtype _ _ _ (hle p (d p)),
       relIndex_comap_subtype _ _ _ (hle p (d0 p))]

@@ -111,14 +111,6 @@ theorem ker_reciprocity_le_commutator :
   rw [hv1, map_one, range_galRestrict_fixedOpen] at hmap
   exact Sylow.not_dvd_index P (hpd.trans (orderOf_dvd_of_pow_eq_one hmap.symm))
 
-theorem ker_reciprocity_eq_commutator :
-    (D.reciprocity hLK hax).ker = commutator ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) := by
-  refine le_antisymm (ker_reciprocity_le_commutator hLK hax) ?_
-  rw [← Abelianization.ker_of]
-  intro σ hσ
-  rw [MonoidHom.mem_ker] at hσ ⊢
-  rw [← Abelianization.lift_apply_of (D.reciprocity hLK hax), hσ, map_one]
-
 variable (D) in
 
 noncomputable def reciprocityAb :
@@ -150,13 +142,6 @@ theorem reciprocityAbEquiv_apply (z : Abelianization ((K : Subgroup G) ⧸ (L : 
 theorem reciprocityAbEquiv_of (q : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) :
     D.reciprocityAbEquiv hLK hax (Abelianization.of q) = D.reciprocity hLK hax q :=
   reciprocityAb_of hLK hax q
-
-include hLK hax in
-
-theorem card_tateZero (D : ClassFieldData G A) :
-    Nat.card (tateZero A (K : Subgroup G) (L : Subgroup G)) =
-      Nat.card (Abelianization ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) :=
-  (Nat.card_congr (D.reciprocityAbEquiv hLK hax).toEquiv).symm
 
 theorem reciprocity_bijective_of_isMulCommutative
     [IsMulCommutative ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)] :
@@ -197,36 +182,6 @@ theorem reciprocityAbEquiv_symm_normTateZero {K L K' L' : OpenSubgroup G} (hLK :
   obtain ⟨z, rfl⟩ := (D.reciprocityAbEquiv hL'K' hax).surjective x
   rw [MulEquiv.symm_apply_apply, reciprocityAbEquiv_apply, reciprocityAbEquiv_apply,
     reciprocityAb_map_galRestrict]
-
-theorem reciprocityAbEquiv_symm_tateZeroConj (σ : G) {K L : OpenSubgroup G} (hLK : L ≤ K)
-    [((L : Subgroup G).subgroupOf K).Normal] (x : tateZero A (K : Subgroup G) (L : Subgroup G)) :
-    (D.reciprocityAbEquiv (conjOpen_mono σ hLK) hax).symm (tateZeroConj σ K L x) =
-      Abelianization.map (galConj σ K L) ((D.reciprocityAbEquiv hLK hax).symm x) := by
-  rw [MulEquiv.symm_apply_eq]
-  obtain ⟨z, rfl⟩ := (D.reciprocityAbEquiv hLK hax).surjective x
-  rw [MulEquiv.symm_apply_apply]
-  induction z using QuotientGroup.induction_on with
-  | H q =>
-    show tateZeroConj σ K L (D.reciprocityAbEquiv hLK hax (Abelianization.of q)) =
-      D.reciprocityAbEquiv (conjOpen_mono σ hLK) hax
-        (Abelianization.map (galConj σ K L) (Abelianization.of q))
-    rw [Abelianization.map_of, reciprocityAbEquiv_of, reciprocityAbEquiv_of,
-      D.reciprocity_galConj hax σ hLK q]
-
-theorem reciprocityAbEquiv_symm_tateZeroIncl {K K' L : OpenSubgroup G}
-    [((L : Subgroup G).subgroupOf K).Normal] [((L : Subgroup G).subgroupOf K').Normal]
-    (hLK' : L ≤ K') (hK'K : K' ≤ K) (x : tateZero A (K : Subgroup G) (L : Subgroup G)) :
-    (D.reciprocityAbEquiv hLK' hax).symm (tateZeroIncl hLK' hK'K x) =
-      Abelianization.lift (verlagerung hK'K) ((D.reciprocityAbEquiv (hLK'.trans hK'K) hax).symm x) := by
-  rw [MulEquiv.symm_apply_eq]
-  obtain ⟨z, rfl⟩ := (D.reciprocityAbEquiv (hLK'.trans hK'K) hax).surjective x
-  rw [MulEquiv.symm_apply_apply]
-  induction z using QuotientGroup.induction_on with
-  | H q =>
-    show tateZeroIncl hLK' hK'K (D.reciprocityAbEquiv (hLK'.trans hK'K) hax (Abelianization.of q)) =
-      D.reciprocityAbEquiv hLK' hax (Abelianization.lift (verlagerung hK'K) (Abelianization.of q))
-    rw [Abelianization.lift_apply_of, reciprocityAbEquiv_of, reciprocityAbEquiv_apply, reciprocityAb,
-      D.reciprocity_verlagerung hax hLK' hK'K q]
 
 end Squares
 

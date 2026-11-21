@@ -172,44 +172,10 @@ theorem idelesCohomologyEquiv_apply {n : ℕ} (hn : 1 ≤ n)
     idelesCohomologyEquiv hn ξ = idelesCohomologySum L n ξ :=
   rfl
 
-variable (L) in
-
-noncomputable def chosenPlace : ∀ v : Place K,
-    match v with
-    | .inl v => v.placesOver L
-    | .inr v => PlacesOver L v
-  | .inl v => Classical.choice (InfinitePlace.nonempty_placesOver L v)
-  | .inr v => Classical.choice (nonempty_placesOver L v)
-
-variable (L) in
-
-noncomputable def localCohomology (n : ℕ) : Place K → ModuleCat ℤ
-  | .inl v => cohomology (Rep.ofMulDistribMulAction
-      (MulAction.stabilizer Gal(L/K) (chosenPlace L (.inl v)).1)
-      ((chosenPlace L (.inl v)).1.Completion)ˣ) n
-  | .inr v => cohomology (Rep.ofMulDistribMulAction
-      (MulAction.stabilizer Gal(L/K) (chosenPlace L (.inr v)).1.asIdeal)
-      ((chosenPlace L (.inr v)).1.adicCompletion L)ˣ) n
-
-noncomputable def placeShapiro (n : ℕ) :
-    ∀ v : Place K, cohomology (placeRep L v) n ≃+ localCohomology L n v
-  | .inl v => (infiniteShapiroIso v (chosenPlace L (.inl v)) n).toLinearEquiv.toAddEquiv
-  | .inr v => (finiteShapiroIso v (chosenPlace L (.inr v)) n).toLinearEquiv.toAddEquiv
-
-noncomputable def idelesCohomologyLocalEquiv {n : ℕ} (hn : 1 ≤ n) :
-    cohomology (ideleRep K L) n ≃+ ⨁ v : Place K, localCohomology L n v :=
-  (idelesCohomologyEquiv hn).symm.trans (DFinsupp.mapRange.addEquiv (placeShapiro n))
-
 theorem idelesCohomologyEquiv_symm_apply {n : ℕ} (hn : 1 ≤ n) (x : cohomology (ideleRep K L) n)
     (v : Place K) :
     (idelesCohomologyEquiv hn).symm x v = (cohomologyMap (placeProj v) n).hom x := by
   conv_rhs => rw [← (idelesCohomologyEquiv hn).apply_symm_apply x, idelesCohomologyEquiv_apply]
   exact (placeProj_idelesCohomologySum n _ v).symm
-
-theorem idelesCohomologyLocalEquiv_apply {n : ℕ} (hn : 1 ≤ n) (x : cohomology (ideleRep K L) n)
-    (v : Place K) :
-    idelesCohomologyLocalEquiv hn x v = placeShapiro n v ((cohomologyMap (placeProj v) n).hom x) := by
-  rw [idelesCohomologyLocalEquiv, AddEquiv.trans_apply, DFinsupp.mapRange.addEquiv_apply,
-    DFinsupp.mapRange_apply, idelesCohomologyEquiv_symm_apply]
 
 end GroundTheory.ProfCoh

@@ -27,10 +27,6 @@ theorem isHolTo_mono {a : E → (Sp ℂ ⟶ Z)} {W W' : Set E} (h : IsHolTo W a)
   ext w
   exact ⟨fun hw => ⟨hw.1, hs hw.1, hw.2⟩, fun hw => ⟨hw.1, hw.2.2⟩⟩
 
-theorem HolAt.const (x : Sp ℂ ⟶ Z) (w₀ : E) : HolAt (fun _ => x) w₀ := by
-  refine ⟨Set.univ, isOpen_univ, trivial, fun U f => ⟨?_, differentiableOn_const _⟩⟩
-  by_cases h : ⊤ ≤ x ⁻¹ᵁ U <;> simp [h]
-
 namespace HolAt
 
 variable {a a' : E → (Sp ℂ ⟶ Z)} {w₀ : E}

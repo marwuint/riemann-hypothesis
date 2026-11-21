@@ -67,11 +67,6 @@ section D7
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-example (D : D7) (a : 𝓞 D.host.F) :
-    ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) = ((a : D.host.F) : D.host.E) := rfl
-
-example (D : D7) (a : D.host.E) : star a = a ↔ a ∈ (algebraMap D.host.F D.host.E).range := D.sp.cm.fixed a
-
 theorem trace_reduction : TrStep := by
   intro D
   obtain ⟨x, y, hy, hxy⟩ := PI.CMT.main D.host.E D.sp.cm.cmUnram 1 (by simp)

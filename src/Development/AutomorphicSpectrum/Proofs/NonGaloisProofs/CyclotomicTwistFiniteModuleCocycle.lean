@@ -1,12 +1,17 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCocyclesMulInvariantsDiscrete
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousFixingSubgroupEquiv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualZmodModuleEqCard
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.OrthogonalFreeOfPerfectAltZmod
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 noncomputable section
@@ -173,132 +178,5 @@ theorem exists_equiv_dual {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M] [Modu
   have hb : Function.Bijective f :=
     hf.bijective_of_nat_card_le (by rw [GlobalTheory.ZModDual.card_dual_eq]; exact c2)
   exact ⟨AddEquiv.ofBijective f hb, fun y x => rfl⟩
-
-theorem double_annihilator : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (n : ℕ) (χ : ↥(GK K) →* (ZMod (l ^ n))ˣ), 0 < n → (∀ g, ∃ u : ℤ_[l], (u : ℚ_[l]) = ((((D.loc l).PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧ PadicInt.toZModPow n u = (χ g : ZMod (l ^ n))) → ∀ (W : Type) [AddCommGroup W] [Finite W] (a : ↥(GK K) → W →+ W), (∀ m, a 1 m = m) → (∀ g h m, a (g * h) m = a g (a h m)) → (∀ m, IsLocallyConstant fun g => a g m) → ∀ (W' : Type) [AddCommGroup W'] [Finite W'] (a' : ↥(GK K) → W' →+ W'), (∀ m, a' 1 m = m) → (∀ g h m, a' (g * h) m = a' g (a' h m)) → (∀ m, IsLocallyConstant fun g => a' g m) → ∀ P : W →+ W' →+ ZMod (l ^ n), (∀ x, (∀ y, P x y = 0) → x = 0) → (∀ y, (∀ x, P x y = 0) → y = 0) → (∀ g x y, P (a g x) (a' g y) = (χ g : ZMod (l ^ n)) * P x y) → ∀ S : AddSubgroup (↥(GK K) → W), (∀ m : W, (fun g => a g m - m) ∈ S) → (∀ s ∈ S, (IsLocallyConstant s ∧ ∀ g h, s (g * h) = s g + a g (s h))) → ∀ c : ↥(GK K) → W, (IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)) → (∀ c' : ↥(GK K) → W', (IsLocallyConstant c' ∧ ∀ g h, c' (g * h) = c' g + a' g (c' h)) → (∀ s ∈ S, (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (s g) (a' g (c' h)))) → (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (c g) (a' g (c' h)))) → c ∈ S := by
-  intro hT D l _ K n χ hn hχ W _ _ a h1 hmul hlc W' _ _ a' h1' hmul' hlc' P hP1 hP2 hP S hBS hS c hc H
-  have hne : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
-  have mW : Module (ZMod (l ^ n)) W := AddCommGroup.zmodModule fun x => hP1 _ fun y => by
-    rw [map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul, ZMod.natCast_self, zero_mul]
-  have mW' : Module (ZMod (l ^ n)) W' := AddCommGroup.zmodModule fun y => hP2 _ fun x => by
-    rw [map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]
-  letI tW' : TopologicalSpace W' := ⊥
-  haveI dW' : DiscreteTopology W' := ⟨rfl⟩
-  haveI hK : FiniteDimensional ℚ_[l] ↥K.1 := K.2
-  let φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1 := IntermediateField.fixingSubgroupEquiv K.1
-  have hφ : Continuous φ ∧ Continuous φ.symm :=
-    GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1
-  let rho : Representation (ZMod (l ^ n)) (Formalism.GaloisCohomology.GK l K.1) W' :=
-    GlobalTheory.CocycleCount.repOfAction _ (fun g => a' (φ.symm g)) (fun m => by rw [map_one, h1'])
-      (fun g h m => by rw [map_mul, hmul'])
-  have hrho_apply : ∀ (g : Formalism.GaloisCohomology.GK l K.1) (m : W'), rho g m = a' (φ.symm g) m := fun _ _ => rfl
-  have hrho : ReciprocityTheory.Gal.ContAction rho :=
-    continuous_prod_of_discrete_right.2 fun m => (hlc' m).continuous.comp hφ.2
-  obtain ⟨⟨e⟩, -, -, hb, -⟩ := hT l K.1 K.2 n W' rho hn hrho
-  let ψ := Formalism.GaloisCohomology.cycK l K.1 n
-  have hψ : ∀ g : ↥(GK K), ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) = (χ g : ZMod (l ^ n)) := by
-    intro g
-    obtain ⟨u, hu1, hu2⟩ := hχ g
-    have hcyc : (D.loc l).χQ = GlobalTheory.Cyc.cycChar l :=
-      GlobalTheory.Cyc.TwistLift.isCyc_unique (D.loc l).χQ_cyc (GlobalTheory.Cyc.isCyc_cycChar l)
-    rw [(D.loc l).PD_χ K g, hcyc] at hu1
-    have hu : u = ((cyclotomicCharacter (PadicAlgCl l) l
-        (MulSemiringAction.toRingAut (GQ l) (PadicAlgCl l) g.1) : ℤ_[l]ˣ) : ℤ_[l]) := Subtype.ext hu1
-    rw [← hu2, hu]
-    rfl
-  obtain ⟨E, hE⟩ := exists_equiv_dual (n := l ^ n) P.flip hP2 hP1
-  have hE' : ∀ x y, E x y = P x y := fun x y => hE x y
-  let τ : Representation (ZMod (l ^ n)) (Formalism.GaloisCohomology.GK l K.1) (ReciprocityTheory.Gal.TDual (ZMod (l ^ n)) W') :=
-    (ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id _)
-  have hEq : ∀ (g : ↥(GK K)) (x : W), E (a g x) = τ (φ g) (E x) := by
-    intro g x
-    apply ReciprocityTheory.Gal.TDual.ext
-    intro y
-    change E (a g x) y = ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * E x (rho (φ g)⁻¹ y)
-    have hy : a' g (a' g⁻¹ y) = y := by rw [← hmul', mul_inv_cancel, h1']
-    have hinv : rho (φ g)⁻¹ y = a' g⁻¹ y := by
-      rw [hrho_apply, map_inv, MulEquiv.symm_apply_apply]
-    rw [hE', hE', hψ, hinv, ← hP, hy]
-  have ev : ∀ (g : Formalism.GaloisCohomology.GK l K.1) (t : ReciprocityTheory.Gal.TDual (ZMod (l ^ n)) W') (y : W'),
-      t y = P (E.symm t) y := fun g t y => by rw [← hE', E.apply_symm_apply]
-  let toS : ReciprocityTheory.Gal.Z1 τ →+ (↥(GK K) → W) :=
-    AddMonoidHom.mk' (fun z g => E.symm (z.1 (φ g))) (fun z z' => by funext g; simp)
-  have toS_apply : ∀ z g, toS z g = E.symm (z.1 (φ g)) := fun _ _ => rfl
-  let A : AddSubgroup (ReciprocityTheory.Gal.Z1 τ) := S.comap toS
-  have lift : ∀ s : ↥(GK K) → W, (IsLocallyConstant s ∧ ∀ g h, s (g * h) = s g + a g (s h)) →
-      ∃ z : ReciprocityTheory.Gal.Z1 τ, toS z = s := by
-    intro s hs
-    refine ⟨⟨fun g => E (s (φ.symm g)), ((hs.1.comp E).continuous).comp hφ.2, fun g h => ?_⟩,
-      funext fun g => ?_⟩
-    · have := hEq (φ.symm g) (s (φ.symm h))
-      rw [MulEquiv.apply_symm_apply] at this
-      change E (s (φ.symm (g * h))) = E (s (φ.symm g)) + τ g (E (s (φ.symm h)))
-      rw [map_mul, hs.2, map_add, this]
-    · rw [toS_apply, AddEquiv.symm_apply_eq]
-      change E (s (φ.symm (φ g))) = _
-      rw [MulEquiv.symm_apply_apply]
-  obtain ⟨zc, hcz⟩ := lift c hc
-  have hBA : ∀ z : ReciprocityTheory.Gal.Z1 τ, z.1 ∈ ReciprocityTheory.Gal.B1 τ → z ∈ A := by
-    intro z hz
-    obtain ⟨t, ht⟩ := (ReciprocityTheory.Gal.mem_coboundaries1 _ _).1 hz
-    change toS z ∈ S
-    have : toS z = fun g => a g (E.symm t) - E.symm t := by
-      funext g
-      rw [toS_apply, ht, AddEquiv.symm_apply_eq, map_sub, hEq, AddEquiv.apply_symm_apply]
-    rw [this]
-    exact hBS _
-  have key : ∀ (x : ReciprocityTheory.Gal.Z1 τ) (y : ReciprocityTheory.Gal.Z1 (rho.comp (MonoidHom.id _))),
-      ReciprocityTheory.Gal.cupH1H1TwistedDual ψ rho (MonoidHom.id _) (hrho.comp' continuous_id)
-        (Submodule.Quotient.mk x) (Submodule.Quotient.mk y) = 0 ↔
-      ∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h,
-        (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (toS x g) (a' g (y.1 (φ h))) := by
-    intro x y
-    constructor
-    · intro h0
-      obtain ⟨f, hf, hd⟩ := (ReciprocityTheory.Gal.separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 h0)
-      refine ⟨fun g => f (φ g), (IsLocallyConstant.iff_continuous _).2 (hf.comp hφ.1), fun g h => ?_⟩
-      have h2 := congrFun hd (φ g, φ h)
-      have h3 : ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * f (φ h) - f (φ g * φ h) + f (φ g) =
-          (x.1 (φ g)) (rho (φ g) (y.1 (φ h))) := h2
-      rw [hψ, ← map_mul, hrho_apply, MulEquiv.symm_apply_apply, ev (φ g)] at h3
-      exact h3
-    · rintro ⟨f, hf, hd⟩
-      refine (Submodule.Quotient.mk_eq_zero _).2 ((ReciprocityTheory.Gal.separated_dvr_second_cohomology_mem _ _).2
-        ⟨fun g => f (φ.symm g), hf.continuous.comp hφ.2, funext fun p => ?_⟩)
-      obtain ⟨g, h⟩ := p
-      have h3 := hd (φ.symm g) (φ.symm h)
-      rw [← hψ, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply, ← map_mul] at h3
-      change ((ψ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * f (φ.symm h) - f (φ.symm (g * h)) + f (φ.symm g) =
-          (x.1 g) (rho g (y.1 h))
-      rw [ev g, hrho_apply]
-      have := toS_apply x (φ.symm g)
-      rw [MulEquiv.apply_symm_apply] at this
-      rw [← this]
-      exact h3
-  have hmain : zc ∈ A := by
-    refine mem_of_cup_flip ψ rho (hrho.comp' continuous_id) e hb.2 A hBA zc fun y hy => ?_
-    induction y using Submodule.Quotient.induction_on with | H y =>
-    have hc' : IsLocallyConstant (fun g => y.1 (φ g)) ∧
-        ∀ g h, y.1 (φ (g * h)) = y.1 (φ g) + a' g (y.1 (φ h)) := by
-      refine ⟨(IsLocallyConstant.iff_continuous _).2 (y.2.1.comp hφ.1), fun g h => ?_⟩
-      have := y.2.2 (φ g) (φ h)
-      rw [map_mul]
-      refine this.trans ?_
-      change _ + rho (φ g) _ = _
-      rw [hrho_apply, MulEquiv.symm_apply_apply]
-    have hz := H (fun g => y.1 (φ g)) hc' (fun s hs => ?_)
-    · refine (key zc y).2 ?_
-      rw [hcz]
-      obtain ⟨f, hf, hd⟩ := hz
-      exact ⟨f, hf, hd⟩
-    · obtain ⟨zs, hzs⟩ := lift s (hS s hs)
-      have hA : zs ∈ A := by
-        change toS zs ∈ S
-        rw [hzs]
-        exact hs
-      obtain ⟨f, hf, hd⟩ := (key zs y).1 (hy zs hA)
-      rw [hzs] at hd
-      exact ⟨f, hf, hd⟩
-  have hmem : toS zc ∈ S := hmain
-  rwa [hcz] at hmem
 
 end GlobalTheory.CompanionTheory.LocDual.Pair

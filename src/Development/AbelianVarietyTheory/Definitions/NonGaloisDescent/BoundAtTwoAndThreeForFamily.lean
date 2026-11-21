@@ -48,20 +48,6 @@ structure Setup (L : SizeData₂ D) (nch : NChoice D) (HW : HWOf D.loc) (X : Kil
   kill : KillingConditions.KillAt X.ρ
   sha : TwistedPlaces.ShaFinOdd D
 
-def Extra (D : D7) (C : ℝ) (CT : ℕ) : Prop := KillingConditions.CommutingEndomorphismCondition D ∧ PairedCharacterCondition.aux₃ (D := D) C CT
-
-def FactsF {eps : ℝ} (Fm : FamP eps) (C : ℝ) (CT : ℕ) : Prop :=
-  ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), GlobalTheory.NFacts.Facts (Fm.D x i) (Fm.ex x hx i).nch ∧ Extra (Fm.D x i) C CT
-
-def BoundAtTwoAndThreeForFamily {eps : ℝ} (Fm : FamP eps) : Prop := ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x)
-    (HW : HWOf (Fm.D x i).loc) (F : FonOf (Fm.D x i).loc (Fm.D x i).locA HW)
-    (_ : CmpOf (Fm.D x i).loc (Fm.D x i).locA HW F) (X : KillingConditions.HubData (Fm.D x i)) (C₂ : ℝ),
-    Setup (Fm.L x i) (Fm.ex x hx i).nch HW X C₂ → BoundAtTwoThree (Fm.L x i) X.ρ C
-
-theorem BoundAtTwoAndThreeForFamily.of_all {eps : ℝ} {Fm : FamP eps} (h : BoundAtTwoThreeFamily Fm) : BoundAtTwoAndThreeForFamily Fm := by
-  obtain ⟨C, x0, h⟩ := h
-  exact ⟨C, x0, fun x hx0 _ i _ _ _ X _ S => h x hx0 i S.sha X.r X.ρ S.canon.fam S.kill⟩
-
 end GlobalTheory.NLink
 
 end

@@ -44,8 +44,4 @@ def RowLevelMatchAt (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.Hid
   ∃ (σ : G0g D.nd ≃* G') (red : X.B.I.Gf → G0g D.nd),
     LevelMatchA R F X h t ∧ LevelMatchB R F X h t σ red ∧ LevelMatchC R σ
 
-def RowLevelMatch (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
-    (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) : Prop :=
-  ∃ t : GA D (D.sp.Y 0), RowLevelMatchAt R F X h t
-
 end Formalism.L2.SG.RowLevelMatch

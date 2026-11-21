@@ -9,10 +9,6 @@ open scoped Classical
 
 namespace UpperTheory.Gal.W2.RootSumScaling
 
-open UpperTheory.Gal.Schur
-
-variable {F : Type} [Field F] [NumberField F]
-
 end UpperTheory.Gal.W2.RootSumScaling
 
 private theorem sch_comp_perm {n : ℕ} (lam : Fin n → ℕ) (g : Fin n → ℂ) (e : Equiv.Perm (Fin n)) :

@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionOfChg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigFrameMatch
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAffineStableLieEigenspaceFrameStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAffineStableLieEigenspaceFrame
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TriIff
+import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 
 set_option autoImplicit false
 
@@ -14,7 +17,7 @@ namespace GlobalTheory.DetLine
 
 theorem frameCover_gen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (V : (gen Y).Opens) (τ : E →+* ℂ), τ (H.rt : E) = H.rt0 → FrameCover Y.t (genι Y) (genStr Y) V (HermitianCompactForm.chi c τ) D.p D.q := by
   intro E _ _ _ H D l Xo c O _ β Y V τ hτ z hz
-  obtain ⟨U, hU, φ, f, hzU, hs, -⟩ := GlobalTheory.T.exists_affine_stable_lie_eigenspace_frame E H D l Xo c O β Y z
+  obtain ⟨U, hU, φ, f, hzU, hs, -⟩ := _root_.GlobalTheory.ShFam.EigSpread.exists_stable_eigFrame E H D l Xo c O β Y z
   obtain ⟨⟨v, w, hfr, -⟩, -⟩ := GlobalTheory.DetLine.EigParts.eigFrame_match E H D l Xo c O β Y τ hτ Set.univ
     Γ(gen Y, U) φ hU.fromSpec hs (Set.subset_univ _) f
   obtain ⟨r, hrV, hzr⟩ := hU.exists_basicOpen_le (V := V) ⟨z, hz⟩ hzU

@@ -186,32 +186,6 @@ theorem rel_iff {k : ℕ} (p p' : QPair D F k) :
 
 variable (D F)
 
-def qkEquiv (k : ℕ) : Qk D F k ≃ Quot (QkPt.Equiv D F (k := k)) :=
-  Quot.congr (pairEquiv D F k) fun p p' => (rel_iff p p').symm
-
-theorem isDatumIso_iff (E : SplitExt (Spec (CommRingCat.of F))) (β : E.B ≅ baseF D F)
-    (ξ : E.X ≃+ D.X) :
-    IsDatumIso D F E β ξ ↔ ∃ h : SplitExtIsD D F E, h.e = β ∧ h.chi = ξ.symm := by
-  constructor
-  · rintro ⟨hm, ht⟩
-    refine ⟨⟨β, hm, ξ.symm, fun χ => ?_⟩, rfl, rfl⟩
-    have := LBIso.symm (ht (ξ.symm χ))
-    rwa [AddEquiv.apply_symm_apply] at this
-  · rintro ⟨⟨e, hm, chi, ht⟩, rfl, rfl⟩
-    refine ⟨hm, fun χ => ?_⟩
-    have := LBIso.symm (ht (ξ χ))
-    rwa [AddEquiv.symm_apply_apply] at this
-
-def datumEquiv (E : SplitExt (Spec (CommRingCat.of F))) :
-    {p : (E.B ≅ baseF D F) × (E.X ≃+ D.X) // IsDatumIso D F E p.1 p.2} ≃ SplitExtIsD D F E where
-  toFun p := ⟨p.1.1, p.2.1, p.1.2.symm, by
-    obtain ⟨h, h₁, h₂⟩ := (isDatumIso_iff D F E _ _).1 p.2
-    have := h.oIso
-    rwa [h₁, h₂] at this⟩
-  invFun h := ⟨(h.e, h.chi.symm), (isDatumIso_iff D F E _ _).2 ⟨h, rfl, rfl⟩⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 variable {D F}
 
 variable (D F)

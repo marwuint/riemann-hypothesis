@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvRFrMapOfIsReduced
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeSpectrumDualNumberEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetEqProdDiagOfHeight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivativeAlongKodairaSpencerDeformationLiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivativeAlongKodairaSpencerDeformationLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivativeAlongVerticalDeformationLiftStatement
 
 set_option autoImplicit false
@@ -138,7 +138,7 @@ theorem det_der_frBor : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
   have hlw : ∀ k, zv k ≫ toFlag M = X.ptY (w k) := fun k => by
     obtain ⟨_, h⟩ := hb k
     rw [hl, X.ptY_frBor h]
-  choose C hC using fun k => GlobalTheory.T.derivative_along_kodairaSpencer_deformation_lift M z ho (hKS K Q) hz hv' hl' (hM k).1 (hM k).2 (hlw (.inl k))
+  choose C hC using fun k => _root_.GlobalTheory.CompHS.der_fun_hor M z ho (hKS K Q) hz hv' hl' (hM k).1 (hM k).2 (hlw (.inl k))
   have hV := fun k => GlobalTheory.T.derivative_along_vertical_deformation_lift M z ho hz (v := fun j => v' (.inr j)) (fun j => hv'.2 j)
     (zv := fun j => zv' (.inr j)) (fun j => hl' _) (hN k) (hlw (.inr k))
   let T : Matrix (TIx Dw (psiSet H)) (TIx Dw (psiSet H)) K :=

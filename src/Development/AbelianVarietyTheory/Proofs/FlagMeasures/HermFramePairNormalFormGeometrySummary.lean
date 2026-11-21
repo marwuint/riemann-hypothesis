@@ -16,8 +16,6 @@ namespace GlobalTheory.DegCnt.NFGeom
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : HermSpace K V} {r : ℕ} (N : NF H r)
 
-theorem c_ne : N.c ≠ 0 := fun h => by simpa [h] using N.c_norm
-
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
@@ -47,10 +45,6 @@ theorem _root_.GlobalTheory.DegCnt.NFGeom.e_eq (a : Fin (r + 1))
   have hc : N.c ≠ 0 := left_ne_zero_of_mul_eq_one N.c_norm
   rw [N.same a h, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
-theorem z'_eq : N.F'.z = N.c • N.F.z := N.same (Fin.last r) (by simpa using N.j_le)
-
-theorem z_eq : N.F.z = N.c⁻¹ • N.F'.z := e_eq N (Fin.last r) (by simpa using N.j_le)
-
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
@@ -62,16 +56,6 @@ theorem _root_.GlobalTheory.DegCnt.NFGeom.e_mem_II (a : Fin r)
   refine Submodule.mem_inf.2 ⟨_root_.Formalism.HermitianLatticeCounting.P.e_mem_X _ a, ?_⟩
   rw [_root_.GlobalTheory.DegCnt.NFGeom.e_eq N a.castSucc h]
   exact Submodule.smul_mem _ _ (_root_.Formalism.HermitianLatticeCounting.P.e_mem_X _ a)
-
-open NumberField in
-open scoped Pointwise ENNReal Classical in
-variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
-  {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
-theorem _root_.GlobalTheory.DegCnt.NFGeom.e'_mem_II (a : Fin r)
-    (h : N.j ≤ a.val) :
-    N.F'.e a.castSucc ∈ _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F' := by
-  rw [N.same a.castSucc h]
-  exact Submodule.smul_mem _ _ (_root_.GlobalTheory.DegCnt.NFGeom.e_mem_II N a h)
 
 def proj : V →ₗ[K] V :=
   ∑ b ∈ Finset.univ.filter (fun b : Fin r => N.j ≤ b.val),
@@ -493,12 +477,6 @@ theorem _root_.GlobalTheory.DegCnt.NFGeom.mem_perp_sup (S T : Submodule K V) (y 
   intro x hx
   exact _root_.Formalism.HermitianLatticeCounting.P.perp_sup H h.1 h.2 x hx
 
-omit [NumberField K] in
-theorem perp_perp [FiniteDimensional K V] (S : Submodule K V) : perp H (perp H S) = S := by
-  refine le_antisymm (fun w hw => memOfOrthogonalOrthogonal K V H S w fun v hv => ?_) fun s hs => ?_
-  · exact (mem_perp_iff H _ _).1 hw v ((mem_perp' S v).2 hv)
-  · exact (mem_perp_iff H _ _).2 fun x hx => (mem_perp' S x).1 hx s hs
-
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
@@ -530,13 +508,6 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 theorem _root_.GlobalTheory.DegCnt.NFGeom.sub_proj_perp (y : V) :
     y - _root_.GlobalTheory.DegCnt.NFGeom.proj N y ∈ _root_.GlobalTheory.HermLat.perp H N.Ist :=
   sub_proj_mem_perp_Ist N y
-
-theorem wSp_eq : wSp N.F N.F' = N.Wt ⊔ II N.F N.F' := by
-  refine le_antisymm (fun w hw => ?_)
-    (sup_le (fun w hw => ((mem_perp_sup _ _ _).1 hw).1) (II_le_wSp N))
-  have h : w - proj N w ∈ N.Wt := (mem_perp_sup _ _ _).2
-    ⟨Submodule.sub_mem _ hw (II_le_wSp N (proj_mem N w)), sub_proj_perp N w⟩
-  simpa using Submodule.add_mem_sup h (proj_mem N w)
 
 open NumberField in
 open scoped Pointwise ENNReal Classical in

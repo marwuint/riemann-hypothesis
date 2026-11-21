@@ -2,7 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.WithISelf
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFullZetaEq
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModuliModelUltrametricPoints
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPointStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPoint
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
+import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -50,7 +52,7 @@ theorem exists_mdl_ext : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheor
     refine ⟨p₁, fun n hn => ?_, ψ, p₃, p₄, p₅, fun n v hn => p₆ n (g.f n v) hn⟩
     change ((o'.I.ζ n ^ g.ν n : Cˣ) : C) = gam.comp e ((o.I.ζ n ^ g.ν n : Kˣ) : K)
     rw [Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_zpow₀, p₂ n hn]
-  obtain ⟨q₁, -, q₃⟩ := GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K bF
+  obtain ⟨q₁, -, q₃⟩ := _root_.GlobalTheory.FullPoint.fullAt_existsUnique_exists_ext h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K bF
   obtain ⟨y, ⟨hy, hyo⟩, -⟩ := q₁ o₁ (fun r hr => by
       have hm : r ∈ c.V W₀ := mem_of_pow_mem _ two_pos (by
         have : r ^ 2 = -(H.d : c.F) := Subtype.ext (by simpa [hr] using H.sqrt_neg_disc_sq)

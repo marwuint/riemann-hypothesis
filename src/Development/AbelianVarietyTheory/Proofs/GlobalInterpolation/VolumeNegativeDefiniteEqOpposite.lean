@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.NegGram
 import Formalism.LocalToGlobal.GlobalTheory.GL5.PClassDecomp
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryGroupNegFormCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NegDefiniteSelfDualStabilizerVolumeOneStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianSpaceOppositeFormSignatureConditionStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeStabilizerDoubleCosetsClassRestMassStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryGroupNegFormCompatible
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NegDefiniteSelfDualStabilizerVolumeOne
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianSpaceOppositeFormSignatureCondition
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeStabilizerDoubleCosetsClassRestMass
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -56,7 +56,7 @@ theorem vol_neg_eq : ∀ D : D7, VolTie D → ∀ (W : HSpace D.host.E) (n : ℕ
     D.vol W = D.vol (GlobalTheory.NegSpace.neg W) := by
   intro D hT W n hW hsig
   set W' := GlobalTheory.NegSpace.neg W with hW'def
-  have hW' : W'.SigOK := GlobalTheory.T.hermitianSpaceOppositeForm_signatureCondition _ W hW
+  have hW' : W'.SigOK := _root_.GlobalTheory.NegSpace.sigOK_neg _ W hW
   have hn : n = W.rank := by
     have := Formalism.BasicNotions.sig_sum W hW D.host.φ₀
     rw [hsig] at this; simpa using this
@@ -69,9 +69,9 @@ theorem vol_neg_eq : ∀ D : D7, VolTie D → ∀ (W : HSpace D.host.E) (n : ℕ
   obtain ⟨⟨μ', hμ'⟩, hall'⟩ := hT W' W'.rank 0 hW' hsig'
   obtain ⟨⟨𝓕', h𝓕'⟩, hF'⟩ := hall' μ' hμ'
 
-  obtain ⟨φ, -, hΓ, hS⟩ := GlobalTheory.T.unitaryGroup_neg_form_compatible D.host.F D.host.E D.sp.cm.sig W.rank W.gram (-W.gram) rfl
+  obtain ⟨φ, -, hΓ, hS⟩ := _root_.GlobalTheory.unitary_neg_same D.host.F D.host.E D.sp.cm.sig W.rank W.gram (-W.gram) rfl
 
-  obtain ⟨m, g', hcov', hdisj', -⟩ := GlobalTheory.T.lattice_stabilizer_doubleCosets_classRest_mass D W' hW' hsig'
+  obtain ⟨m, g', hcov', hdisj', -⟩ := _root_.GlobalTheory.ClassRestObj.defClassRest D W' hW' hsig'
   have hfin' : ∀ i, (Unfold.stab (GamA D W') (StabFin.SFin D.sp.cm.sig W'.gram (L0c D W')) (g' i)).Finite :=
     fun i => StabFin.stab_finite W' D.sp.cm.sig (fun _ => rfl) (fun τ => D.sp.cm.cmUnram.2.1 τ) hW' hsig' _
       (fun k hk y hy => (hk y).mp hy) (g' i)
@@ -80,7 +80,7 @@ theorem vol_neg_eq : ∀ D : D7, VolTie D → ∀ (W : HSpace D.host.E) (n : ℕ
     (Γ' := (GamA D W' : Subgroup (HA (AF D.host.F) D.sp.cm.sig (-W.gram))))
     (K' := (StabFin.SFin D.sp.cm.sig W'.gram (L0c D W') : Subgroup (HA (AF D.host.F) D.sp.cm.sig (-W.gram)))) hΓ (hS _) g' hcov' hdisj' hfin'
 
-  have hK1 : μ (StabFin.SFin D.sp.cm.sig W.gram (L0c D W) : Set _) = 1 := GlobalTheory.T.negDefinite_selfDualStabilizer_volume_one D W n hW hsig μ hμ
+  have hK1 : μ (StabFin.SFin D.sp.cm.sig W.gram (L0c D W) : Set _) = 1 := _root_.GlobalTheory.NegDefStab.measure_SFin_negDef D W n hW hsig μ hμ
   obtain ⟨θ, hθ⟩ := hμ'.2.1
   obtain ⟨A, hA⟩ := (hμ'.2.2 θ hθ).1
   have hK1' : μ' (StabFin.SFin D.sp.cm.sig W'.gram (L0c D W') : Set _) = 1 := by

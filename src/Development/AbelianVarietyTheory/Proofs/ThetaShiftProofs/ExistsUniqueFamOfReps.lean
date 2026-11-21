@@ -154,6 +154,4 @@ end GlobalTheory.FamFree
 
 namespace GlobalTheory
 
-open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
-
 end GlobalTheory

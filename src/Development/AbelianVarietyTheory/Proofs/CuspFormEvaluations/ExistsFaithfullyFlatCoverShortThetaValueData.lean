@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ModuliUnivEta
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsPowMulCoprimeLe
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHom
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsTranslationSectionsUniversalObject
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatRootsStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InZhGeoInjStableStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatSplitIsotropicGroupStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatRoots
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InZhGeoInjStable
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatSplitIsotropicGroup
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -52,7 +52,7 @@ theorem exists_cover_shortVal_data :
     rw [hk, pow_mul, hpowM, one_pow]
   have : Finite (LevQ Dw l) := finite_levQ Dw l
   let _ : Fintype ((Fin n → LevQ Dw l) × Fin n) := Fintype.ofFinite _
-  obtain ⟨B1, _, φ1, w, hφ1, hw⟩ := GlobalTheory.T.exists_faithfullyFlat_nthRoots_of_torsion hL E H Dw l Xo S y.x N l.M hN0
+  obtain ⟨B1, _, φ1, w, hφ1, hw⟩ := _root_.GlobalTheory.exists_faithfullyFlat_roots hL E H Dw l Xo S y.x N l.M hN0
     (by have := l.three_le; omega) ((Fin n → LevQ Dw l) × Fin n)
     (fun j => levPt Xo y.x (levRep (j.1 j.2))) (fun j => hpowM _ _)
   have hw' : ∀ j, w j ^ N = levPt Xo (spMap φ1 ≫ y.x) (levRep (j.1 j.2)) := by
@@ -63,7 +63,7 @@ theorem exists_cover_shortVal_data :
   have hroot := fun j => (exists_root_killedBy_pow E H Dw l Xo (ptO Xo (spMap φ1 ≫ y.x))
     (levPt Xo (spMap φ1 ≫ y.x) (levRep (j.1 j.2))) (w j) N hN0 (hkill _ _) (hw' j)).1
   choose tp1 htp1 htp1k using hroot
-  obtain ⟨B2, _, φ2, z, hφ2, hz, hzg⟩ := GlobalTheory.T.exists_faithfullyFlat_split_isotropicGroup hL E H Dw l Xo B1 (spMap φ1 ≫ y.x) n Λ N hU hN0 hle
+  obtain ⟨B2, _, φ2, z, hφ2, hz, hzg⟩ := _root_.GlobalTheory.exists_faithfullyFlat_split_Zh hL E H Dw l Xo B1 (spMap φ1 ≫ y.x) n Λ N hU hN0 hle
   let _ : Algebra c.F B2 := ((φ2.comp φ1).comp (algebraMap c.F S)).toAlgebra
   let φA : S →ₐ[c.F] B2 := { toRingHom := φ2.comp φ1, commutes' := fun _ => rfl }
   obtain ⟨y', hy'⟩ := FramedBaseChange.exists_frMap hL E H Dw l Xo c S B2 φA y
@@ -72,7 +72,7 @@ theorem exists_cover_shortVal_data :
   let hA : ptO Xo y'.x ⟶ ptO Xo (spMap φ1 ≫ y.x) := Over.homMk (spMap φ2) hyx.symm
   let hB : ptO Xo y'.x ⟶ ptO Xo (spMap φ2 ≫ spMap φ1 ≫ y.x) :=
     Over.homMk (𝟙 _) (by rw [Category.id_comp]; exact hyx.symm)
-  have hI := GlobalTheory.T.inZh_geoInj_stable_alt E H Dw l Xo n Λ N
+  have hI := _root_.GlobalTheory.inZh_geoInj_stable E H Dw l Xo n Λ N
   have hz' : ∀ i, InZh Xo Λ N (fun b => hB ≫ z i b) := fun i => hI.1 _ _ hB (z i) (hz i)
   have htpN : ∀ q b, (hA ≫ tp1 (q, b)) ^ N = levPt Xo y'.x (levRep (q b)) := by
     intro q b

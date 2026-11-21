@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffEqZeroOfStable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisLinearDisjointStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemMaxUnramifiedOfCrystallineRatioStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisLinearDisjoint
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemMaxUnramifiedOfCrystallineRatio
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvFilD
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
@@ -33,7 +33,7 @@ private theorem indep_of_frac {k Ω B D : Type} [Field k] [Field Ω] [CommRing B
     have : Subring.closure (Set.range ι) = ι.range := by
       rw [← RingHom.coe_range, Subring.closure_eq]
     rw [this]; rfl
-  have key := GlobalTheory.T.eq_zero_of_sum_map_mul_eq_zero_of_linearIndependent k Ω D o (Subfield.closure (Set.range ι)) (by
+  have key := _root_.GlobalTheory.GalDisj.galois_linearDisjoint k Ω D o (Subfield.closure (Set.range ι)) (by
     intro y
     constructor
     · intro hy
@@ -63,7 +63,7 @@ private theorem tied_tensor_inj : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) 
   refine indep_of_frac (k := ↥(MaximalUnramifiedExtension l)) hD (algebraMap (Om l) P.R.BdR) (P.ιB : P.R.B →+* P.R.BdR) hι
     (fun c => ⟨algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c, ιB_algebraMap_Kur P c⟩) ?_ m x hx b hb
   intro a c y hc h
-  exact ⟨⟨y, GlobalTheory.T.mem_maxUnramified_of_crystallineRatio l P AI T a c y hc h⟩, rfl⟩
+  exact ⟨⟨y, _root_.GlobalTheory.FracAlg.mem_Kur_of_ratio l P AI T a c y hc h⟩, rfl⟩
 
 end GlobalTheory.LocTensorK
 

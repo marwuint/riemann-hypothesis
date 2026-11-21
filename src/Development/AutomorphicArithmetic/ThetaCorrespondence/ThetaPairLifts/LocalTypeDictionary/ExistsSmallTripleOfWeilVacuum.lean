@@ -1,5 +1,13 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedFamilyTripleExists
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfUnit
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfIsStd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFits
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaneSplit
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfDefinite
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 
 section
@@ -45,7 +53,7 @@ private theorem exists_vacuum_vector (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
   have : BorelSpace (WO S T) := ⟨rfl⟩
   have h1 := (hf 1).1
   simp only [one_mul] at h1
-  obtain ⟨⟨μ, 𝓕, hμ⟩, c, hc⟩ := GlobalTheory.T.exists_normalise_meanSquare_of_cocompact' (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by
+  obtain ⟨⟨μ, 𝓕, hμ⟩, c, hc⟩ := _root_.GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by
     rintro _ ⟨g, rfl⟩ w
     have e := h1.quasi g w
     have e' := congrArg norm e
@@ -75,7 +83,7 @@ theorem exists_small_triple : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀
   obtain ⟨vac', hv'⟩ := exists_vacuum_vector ψ θ hψ hθ B' WW₁ rB.s rW.s
     (fun τ => (hB.2.2 τ).1) (fun τ => (hW.2.2 τ).1) rB.Λ rW.Λ hB.1 hW.1
   have hν : ∀ t, IsHeckeChar D (α t / β t) := fun t => (hX.weil' t).hecT
-  choose f hf _ using fun t => GlobalTheory.T.first_standard_pair_member_has_theta_function D ψ θ A WW₁ X.rA rW _ _ _ _ _ hA hW (hν t) (hX.idem t)
+  choose f hf _ using fun t => _root_.GlobalTheory.Adopt.first_standard_pair_member_has_theta_function D ψ θ A WW₁ X.rA rW _ _ _ _ _ hA hW (hν t) (hX.idem t)
     (GlobalTheory.ConstRatio.ideal_ne_bot X S t) hv
   choose f' hf' _ using fun t => GlobalTheory.T.exists_thetaFunction_standardPairSecond D ψ θ B' WW₁ rB rW _ _ _ _ A.rank _ hB hW (hν t) (hX.idem t)
     (GlobalTheory.ConstRatio.ideal_ne_bot X S t) hv'

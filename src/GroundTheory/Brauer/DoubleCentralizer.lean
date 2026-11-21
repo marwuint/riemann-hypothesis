@@ -203,10 +203,6 @@ theorem tensorCentralizerAlgEquiv_tmul (b : B) (c : Subalgebra.centralizer K (B 
   simp only [tensorCentralizerAlgEquiv, tensorCentralizerHom, AlgEquiv.ofBijective_apply]
   rfl
 
-theorem nonempty_algEquiv_tensor_centralizer :
-    Nonempty (A ≃ₐ[K] B ⊗[K] Subalgebra.centralizer K (B : Set A)) :=
-  ⟨(tensorCentralizerAlgEquiv B).symm⟩
-
 end Centralizer
 
 end GroundTheory.Brauer

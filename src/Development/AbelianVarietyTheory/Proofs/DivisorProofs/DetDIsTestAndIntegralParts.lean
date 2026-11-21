@@ -1,5 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.LocPoly
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RealCusp
+import GroundTheory.AutomorphicForms.ReductionSplitting
+import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaPair
+
 open NumberField IsDedekindDomain MeasureTheory Matrix Polynomial GroundTheory.Automorphic UpperTheory.V
 open GlobalTheory.CuspRep (GA Af Ad ratGL finGL locGL pFin)
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf toL rmul invSet CuspSub)
@@ -16,9 +19,6 @@ section General
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
   [MeasurableSpace E] [BorelSpace E]
-
-def wD (w : List E) (g : E → ℂ) : E → ℂ :=
-  List.foldr (fun (u : E) (f : E → ℂ) (x : E) => fderiv ℝ f x u) g w
 
 theorem top_add_one_le : (((⊤ : ℕ∞) : WithTop ℕ∞) + 1) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := le_of_eq rfl
 
@@ -66,31 +66,5 @@ theorem integral_partial_mul {U : Set E} (hU : IsOpen U) {Ψ g : E → ℂ}
     (fun x hx => (hg1.contDiffAt (hU.mem_nhds (hs hx))).differentiableAt one_ne_zero)
 
 end General
-
-section Specific
-
-variable {K : Type} [Field K] [NumberField K] {n : ℕ}
-
-open Classical in
-
-def wordOf (v : InfinitePlace K) (p : Equiv.Perm (Fin n)) (l : List (Fin n)) : List (Lie K n) :=
-  l.map fun j => toL (Matrix.single (p j) j (Pi.single v 1))
-
-theorem foldr_pdL_eq (v : InfinitePlace K) (p : Equiv.Perm (Fin n)) (F : Lie K n → ℂ) (l : List (Fin n)) :
-    l.foldr (fun j G => pdL v (p j) j G) F = wD (wordOf v p l) F := by
-  induction l with
-  | nil => rfl
-  | cons a l ih =>
-    simp only [List.foldr_cons, wordOf, List.map_cons]
-    rw [ih]
-    rfl
-
-theorem detD_eq (v : InfinitePlace K) (G : Lie K n → ℂ) :
-    detD v G = fun x => ∑ p : Equiv.Perm (Fin n),
-      (((Equiv.Perm.sign p : ℤˣ) : ℤ) : ℂ) * wD (wordOf v p (List.finRange n)) G x := by
-  funext x
-  simp only [detD, foldr_pdL_eq]
-
-end Specific
 
 end GlobalTheory.HenQ.DetDParts

@@ -30,7 +30,4 @@ theorem IdealSheafData.ideal_comap_affineOpen_of_isAffine {X Y : Scheme.{0}} [Is
     rintro V rfl h; exact h
   exact key _ hW h2
 
-example : ∀ {X Y : Scheme.{0}} [IsAffine Y] (f : X ⟶ Y) (K : Y.IdealSheafData) (W : X.affineOpens), (K.comap f).ideal W = Ideal.map (f.appLE ⊤ W (by simp)).hom (K.ideal ⟨⊤, isAffineOpen_top Y⟩) :=
-  fun f K W => IdealSheafData.ideal_comap_affineOpen_of_isAffine f K W
-
 end GlobalTheory

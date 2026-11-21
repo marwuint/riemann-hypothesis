@@ -3,7 +3,12 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedPlaces
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.SphericalVectorFixedAtAlmostAllPlaces
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.RestrictedTensorSphericalUniquenessOffFinite
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedPlacesFiniteSetStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolMatchFiniteSetVacuum
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -34,10 +39,10 @@ theorem spherical_fixes_pure_vacuum_vectors : _root_.GlobalTheory.FunPr.ThetaLoc
   obtain ⟨S₁, h₁⟩ := _root_.GlobalTheory.T.spherical_vector_fixed_at_almost_all_places P F E σ B a a' G X om om' hT
   obtain ⟨S₂, h₂⟩ := _root_.GlobalTheory.T.restricted_tensor_spherical_uniqueness_off_finite P F E σ B a a' G X om om' hT
   refine ⟨S₁ ∪ S₂, fun S hS k hinf hSk hl hl' => ⟨fun f φ hφ hv => ?_, fun f φ hφ hv => ?_⟩⟩
-  · exact GlobalTheory.T.latticeStabilizers_fix_vacua_fixes_pureTensor F E σ a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om S (Nat.zero_lt_of_lt hT.geo.lt)
+  · exact _root_.GlobalTheory.SphGlob.fixes_pure F E σ a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om S (Nat.zero_lt_of_lt hT.geo.lt)
       hT.geo.hV.lat hT.geo.hW.lat hT.geo.hM hT.weil
       (fun v hv k hk => h₁ v (fun h => hv (hS (Finset.mem_union_left _ h))) k hk) k hinf hSk hl f φ hφ hv
-  · exact GlobalTheory.T.latticeStabilizers_fix_vacua_fixes_pureTensor F E σ a' (a + a') G.V' G.W G.M' B.ψ X.α (X.α / X.β) om' S
+  · exact _root_.GlobalTheory.SphGlob.fixes_pure F E σ a' (a + a') G.V' G.W G.M' B.ψ X.α (X.α / X.β) om' S
       (lt_of_le_of_lt (Nat.zero_le _) hT.geo.aBig) hT.geo.hV'.lat hT.geo.hW.lat hT.geo.hM' hT.weil'
       (fun v hv k hk => h₂ v (fun h => hv (hS (Finset.mem_union_right _ h))) k hk) k hinf hSk hl' f φ hφ hv
 end GlobalTheory.SphFix

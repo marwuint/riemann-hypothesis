@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRing
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluingImageCardPowLeDefectGroupCard
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasicInequality
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassDefectOrderLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetMassLeAndFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassDefectOrderLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetMassLeAndFinite
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -75,7 +75,7 @@ theorem first_type_bound : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologica
         rw [hi, h3, hβ, ← pow_succ'] at h4
         have := (Nat.pow_le_pow_iff_right (by omega)).1 h4
         exact ⟨i, Finset.mem_range.2 (by omega), hi⟩
-      · refine (Finset.sum_le_sum fun i _ => (GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite L r (e + 1) S hk1 d).1 (S.q ^ i)).trans ?_
+      · refine (Finset.sum_le_sum fun i _ => (_root_.GlobalTheory.HL.MassGlue.mass_le_and_finite L r (e + 1) S hk1 d).1 (S.q ^ i)).trans ?_
         rw [← ENNReal.ofReal_sum_of_nonneg (fun i _ => by positivity)]
         refine ENNReal.ofReal_le_ofReal ?_
         rw [← Finset.mul_sum]
@@ -91,7 +91,7 @@ theorem first_type_bound : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologica
       refine ENNReal.tsum_le_tsum fun o => ?_
       gcongr
       exact mass_mono S _ _ _ fun Λ h => h.2.2
-    have h3 := GlobalTheory.T.sumData_mass_be_eq_le L r (e + 1) S hk β (by rw [hβ]; exact Nat.one_le_pow _ _ (by omega))
+    have h3 := _root_.GlobalTheory.DefectShare.mass_defect_order_le L r (e + 1) S hk β (by rw [hβ]; exact Nat.one_le_pow _ _ (by omega))
     refine h1.trans ((mul_le_mul_right (h2.trans h3) _).trans (le_of_eq ?_))
     rw [← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]
     congr 2

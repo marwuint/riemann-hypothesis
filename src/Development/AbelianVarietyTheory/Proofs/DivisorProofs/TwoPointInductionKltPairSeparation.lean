@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Geometrica
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PointSeparationPair
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QWeilZeroCartier
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopologicalKrullDimClosurePointLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopologicalKrullDimClosurePointLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoPointInductionStepLogCanonicalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LcCutTwoClosedPointsOneCentreStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace
@@ -58,7 +58,7 @@ theorem two_point_induction : GlobalTheory.Published.Principalisation → Global
       IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph, hdim]
 
   have hn : 1 ≤ n := by
-    obtain ⟨e, -, he, he1⟩ := GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n (genericPoint X) hdim
+    obtain ⟨e, -, he, he1⟩ := _root_.GlobalTheory.closure_point_topologicalKrullDim X n (genericPoint X) hdim
     have hen : e = n := by
       rw [hdimξ] at he; exact_mod_cast he.symm
     subst hen

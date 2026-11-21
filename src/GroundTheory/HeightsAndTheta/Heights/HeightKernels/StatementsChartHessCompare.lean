@@ -14,10 +14,6 @@ def ChartHessCompare.Statement : Prop :=
     ∃ C : ℝ, ∀ y : Fin e → ℂ, (cxHessian (hermChartPot M) y).PosDef ∧
       ((C : ℂ) • cxHessian (hermChartPot N) y - cxHessian (hermChartPot M) y).PosSemidef
 
-example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
-    (1 : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef :=
-  ⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one⟩
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -3,14 +3,17 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IntMIffInt
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsBaseClassLevelAdapted
 import Development.AbelianVarietyTheory.BlockTheory.JetGauges.ThetaSpanAdjoint
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndexStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeVacuaExistUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ComplexPhaseCalculusRootOfUnityStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsCosetQuadraticPhaseTestFunctionConjCharacterMuStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatIntegralGaussianShapeRootOfUnityPhStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeVacuaExistUnique
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ComplexPhaseCalculusRootOfUnity
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsCosetQuadraticPhaseTestFunctionConjCharacterMu
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatIntegralGaussianShapeRootOfUnityPh
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SelfDualVacuumGaussianShapeRootOfUnityPhasesStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.VacuumTensorLatticeFixedRationalHeisenbergStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.VacuumTensorLatticeFixedRationalHeisenberg
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -29,9 +32,9 @@ variable {α β : Type} [Fintype α] [Fintype β]
 
 theorem ip_smul_smul {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ) (a b : ℂ) :
     ip (a • φ) (b • ψ) = a * conj b * ip φ ψ := by
-  have hψc : IsSB (fun x => conj (ψ x)) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β ψ ψ hψ hψ).2.2.2.1
-  have hpr : IsSB (φ * fun x => conj (ψ x)) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β φ _ hφ hψc).2.2.1
-  have hlin := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β _ _ hpr hpr).2.2.2.2.2.1 (a * conj b)
+  have hψc : IsSB (fun x => conj (ψ x)) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ α β ψ ψ hψ hψ).2.2.2.1
+  have hpr : IsSB (φ * fun x => conj (ψ x)) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ α β φ _ hφ hψc).2.2.1
+  have hlin := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ α β _ _ hpr hpr).2.2.2.2.2.1 (a * conj b)
   have hfun : (fun x => (a • φ) x * conj ((b • ψ) x)) = (a * conj b) • (φ * fun x => conj (ψ x)) := by
     funext x
     simp only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul, map_mul]
@@ -41,9 +44,9 @@ theorem ip_smul_smul {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : I
 
 theorem ip_conj {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ) :
     ip ψ φ = conj (ip φ ψ) := by
-  have hψc : IsSB (fun x => conj (ψ x)) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β ψ ψ hψ hψ).2.2.2.1
-  have hpr : IsSB (φ * fun x => conj (ψ x)) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β φ _ hφ hψc).2.2.1
-  have hc := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β _ _ hpr hpr).2.2.2.2.2.2.1
+  have hψc : IsSB (fun x => conj (ψ x)) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ α β ψ ψ hψ hψ).2.2.2.1
+  have hpr : IsSB (φ * fun x => conj (ψ x)) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ α β φ _ hφ hψc).2.2.1
+  have hc := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ α β _ _ hpr hpr).2.2.2.2.2.2.1
   have hfun : (fun x => ψ x * conj (φ x)) = fun x => conj ((φ * fun x => conj (ψ x)) x) := by
     funext x
     simp only [Pi.mul_apply, map_mul, Complex.conj_conj]
@@ -54,9 +57,9 @@ theorem ip_conj {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : IsSB �
 theorem ph_ip [DecidableEq β] {φ ψ : Matrix α β ℚ → ℂ} (hφ : PV φ) (hψ : PV ψ) : Ph (ip φ ψ) := by
   have sφ : Shape φ := (GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases α β φ).2.1 hφ
   have sψ : Shape ψ := (GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases α β ψ).2.1 hψ
-  have sψc : Shape (fun x => conj (ψ x)) := (GlobalTheory.T.isCosetQuadraticPhaseTestFunction_conj_character_mul α β ψ sψ).1
-  have spr : Shape (fun x => φ x * conj (ψ x)) := (GlobalTheory.T.isCosetQuadraticPhaseTestFunction_conj_character_mul α β φ sφ).2.2 _ sψc
-  exact GlobalTheory.T.schwartzBruhatIntegral_gaussianShape_rootOfUnityPhase α β _ spr
+  have sψc : Shape (fun x => conj (ψ x)) := (_root_.GlobalTheory.Phase.shape_conj_chr_mul α β ψ sψ).1
+  have spr : Shape (fun x => φ x * conj (ψ x)) := (_root_.GlobalTheory.Phase.shape_conj_chr_mul α β φ sφ).2.2 _ sψc
+  exact _root_.GlobalTheory.Phase.ph_haar_of_shape α β _ spr
 
 end General
 
@@ -69,7 +72,7 @@ theorem isVac_smul {w : E} {A : AddSubgroup (Matrix (Fin n) (Fin r) E)} {v : TF 
   unfold IsVac at hv'
   obtain ⟨hsb, hip, hfix⟩ := hv'
   unfold IsVac
-  refine ⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) v v hsb hsb).2.1 u, ?_, ?_⟩
+  refine ⟨(_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ (Fin n) (Fin g) v v hsb hsb).2.1 u, ?_, ?_⟩
   · rw [ip_smul_smul hsb hsb, hip, _root_.mul_one, Complex.mul_conj, Complex.normSq_eq_norm_sq, hu]
     simp
   · intro y hy
@@ -91,10 +94,10 @@ theorem proj_phases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r 
   have hstd : stdL E n ∈ Vset E n 1 := GlobalTheory.SW.Base.stdL_mem_Vset n 1
   have hv' := hv
   unfold IsVac at hv'
-  obtain ⟨A, ε, hA⟩ := GlobalTheory.T.vacuum_tensorLattice_fixed_rational_heisenberg E r X g bas idx n hs hn w hw hw1 L hL (stdL E n) hstd v hv
+  obtain ⟨A, ε, hA⟩ := _root_.GlobalTheory.Phase.vacS_of_isVac E r X g bas idx n hs hn w hw hw1 L hL (stdL E n) hstd v hv
   obtain ⟨u, hu1, hupv⟩ := (GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases (Fin n) (Fin g) v).2.2.1 A ε hA
   refine ⟨u, hu1, fun Λ hΛ => ?_⟩
-  have H := GlobalTheory.T.tensorLattice_vacua_exist_unique E r X g bas idx n hs hn w hw hw1 L hL 1 Λ hΛ
+  have H := _root_.GlobalTheory.SW.TensVac.vacua E r X g bas idx n hs hn w hw hw1 L hL 1 Λ hΛ
   obtain ⟨vΛ, hvΛ⟩ := H.1
   have hvΛ' := hvΛ
   unfold IsVac at hvΛ'
@@ -116,7 +119,7 @@ theorem proj_phases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r 
   refine ⟨?_, ?_, ?_⟩
   · rw [hunit]
     exact isVac_smul hvΛ he
-  · obtain ⟨A', ε', hA'⟩ := GlobalTheory.T.vacuum_tensorLattice_fixed_rational_heisenberg E r X g bas idx n hs hn w hw hw1 L hL Λ hΛ vΛ hvΛ
+  · obtain ⟨A', ε', hA'⟩ := _root_.GlobalTheory.Phase.vacS_of_isVac E r X g bas idx n hs hn w hw hw1 L hL Λ hΛ vΛ hvΛ
     obtain ⟨u', hu'1, hu'pv⟩ := (GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases (Fin n) (Fin g) vΛ).2.2.1 A' ε' hA'
     have hph : Ph (ip (u • v) (u' • vΛ)) := ph_ip hupv hu'pv
     have hu'u : conj u' * u' = 1 := by
@@ -129,7 +132,7 @@ theorem proj_phases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r 
       linear_combination (-(u * ip v vΛ * ((‖ip v vΛ‖ : ℝ) : ℂ)⁻¹)) * hu'u
     rw [heq]
     exact (GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases (Fin n) (Fin g) (u' • vΛ)).2.2.2.1 hu'pv _
-      (Ph.mul hph (Ph.inv ((GlobalTheory.T.complex_phase_calculus_rootOfUnity).2.2.1 ‖ip v vΛ‖)))
+      (Ph.mul hph (Ph.inv ((_root_.GlobalTheory.Phase.Calc.calculus).2.2.1 ‖ip v vΛ‖)))
   · have hC : ((Real.sqrt (((stdL E n).toAddSubgroup.relIndex Λ.toAddSubgroup ^ r : ℕ) : ℝ) : ℝ) : ℂ) *
         ((‖ip v vΛ‖ : ℝ) : ℂ) = 1 := by
       rw [← Complex.ofReal_mul, hsq, Complex.ofReal_one]

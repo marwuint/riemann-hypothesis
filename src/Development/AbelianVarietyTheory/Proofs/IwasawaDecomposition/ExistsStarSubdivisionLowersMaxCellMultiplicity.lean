@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultCellsAmong
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMultCellsAmongOfIsPolyFanStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionRemovesMaxMultiplicityCellsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMultCellsAmongOfIsPolyFan
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionRemovesMaxMultiplicityCells
 
 noncomputable section
 
@@ -44,7 +44,7 @@ theorem exists_round_lt_maxMult : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   set M := (maxMult H.bar q φ).toNat with hMdef
   have hMe : maxMult H.bar q φ = M := (ENat.coe_toNat hfin.ne).symm
   have hM2 : 2 ≤ M := by rw [hMe] at h2; exact_mod_cast h2
-  obtain ⟨n, hn⟩ := GlobalTheory.T.exists_multCellsAmong_of_isPolyFan E H q φ hP M
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.PolFan.CellClass.multCellsAmong_of_isPolyFan E H q φ hP M
   have key : ∀ (n : ℕ) (φ lab : InvFun (𝓞 E)), IsPolyFan H.bar q φ → IsTwInv H φ → IsTwInv H lab →
       SimpLab H.bar q φ lab → maxMult H.bar q φ ≤ M → MultCellsAmong H.bar q φ M n →
       ∃ φ' lab' : InvFun (𝓞 E), IsPolyFan H.bar q φ' ∧ IsTwInv H φ' ∧ IsTwInv H lab' ∧ SimpLab H.bar q φ' lab' ∧
@@ -56,7 +56,7 @@ theorem exists_round_lt_maxMult : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       exact ⟨φ, lab, hP, hT, hL, hS, Subordinate.refl φ, maxMult_lt_of_among_zero (by omega) hle h0⟩
     | succ n ih =>
       intro φ lab hP hT hL hS hle h0
-      obtain ⟨φ₁, lab₁, hP₁, hT₁, hL₁, hS₁, hs₁, hle₁, h₁⟩ := GlobalTheory.T.exists_starSubdivision_removes_maxMultiplicity_cells E H q φ lab hD hP hT hL hS M n hM2 hle h0
+      obtain ⟨φ₁, lab₁, hP₁, hT₁, hL₁, hS₁, hs₁, hle₁, h₁⟩ := _root_.GlobalTheory.PolFan.exists_star_drop_multCells E H q φ lab hD hP hT hL hS M n hM2 hle h0
       obtain ⟨φ', lab', hP', hT', hL', hS', hs', hlt⟩ := ih φ₁ lab₁ hP₁ hT₁ hL₁ hS₁ hle₁ h₁
       exact ⟨φ', lab', hP', hT', hL', hS', hs'.trans hs₁, hlt⟩
   obtain ⟨φ', lab', hP', hT', hL', hS', hs', hlt⟩ := key n φ lab hP hT hL hS hMe.le hn

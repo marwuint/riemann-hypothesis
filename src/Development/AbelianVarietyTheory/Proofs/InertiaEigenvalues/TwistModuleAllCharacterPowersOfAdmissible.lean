@@ -54,13 +54,4 @@ theorem twistModule_all_character_powers_of_admissible (bkP : BKPh X) (E : ExpDa
 
 end GlobalTheory.ExportFromInputs
 
-open GlobalTheory.TwAll in
-
-theorem GlobalTheory.exportAll_of_inputs :
-    ∀ (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochKatoReduction.BK D) (E : Formalism.MainNotions.IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ),
-      Formalism.MainNotions.IntegralHeckeForms.admitted D bkP E N0 → admissibleIndexBoundAllPowers D.nexp (Formalism.MainNotions.BlochKatoReduction.pin bkP) N0 →
-      ∀ i, D.ntw.NonzeroIndexPlace i → goodTwistExistsAllCoprimePowers D.nexp (Formalism.MainNotions.BlochKatoReduction.pin bkP) E N0 i := by
-  rintro D bkP E N0 ⟨-, -, h3, -, h5, h7, -, -, h10, h11⟩ h2 i hi
-  exact GlobalTheory.ExportFromInputs.twistModule_all_character_powers_of_admissible D.nexp _ E N0 h2 h3 h5 h7 h10 h11 i hi
-
 end

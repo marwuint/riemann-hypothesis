@@ -89,22 +89,4 @@ theorem slTwoCommutator_holds : SlTwo := by
       map_one, map_zero, map_natCast]
   ring
 
-section Gen2
-
-variable {K : Type} [Field K] {k : ℕ}
-
-end Gen2
-
-section Fis
-
-variable {K : Type} [Field K] {k : ℕ}
-
-end Fis
-
-section Can
-
-variable {K : Type} [Field K] {k : ℕ}
-
-end Can
-
 end Formalism.CountingSumsFrames

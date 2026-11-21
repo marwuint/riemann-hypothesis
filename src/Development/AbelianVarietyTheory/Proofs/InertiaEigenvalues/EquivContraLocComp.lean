@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.PolarizedGaloisRepPublished
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiAboveLHyp
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GaloisRepOfPolarizedCuspidal
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.IsTemperedGLOfIsUnitaryLSeg
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualIsConjByOne
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTheRecOfIsRec
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.WignerVanishingGL
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiLocalGlobalDual
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
@@ -13,6 +16,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EquivOfISupRange
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PairingEquivContra
+
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -79,16 +83,5 @@ theorem exists_comp_ne_zero (V : Submodule ℂ (Sm E a)) (hs : IsStable V) (hi :
   obtain ⟨ψ, h1, h2⟩ := hle φ.2
   obtain rfl : ψ = φ := Subtype.ext h2
   exact h1
-
-theorem equiv_contra_locComp : IrreducibleAdmissibleGL → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (V : Submodule ℂ (Sm E a)), IsStable V → (∀ W ≤ V, IsStable W → W = ⊥ ∨ W = V) → ∀ (w : HeightOneSpectrum (𝓞 E)) (σ σ' : SmIrr (GL (Fin a) (w.adicCompletion E))), GlobalTheory.UnitaryBC.IsLocCompGL V w σ → ∀ β : V →ₗ[ℂ] σ'.V →ₗ[ℂ] ℂ, β ≠ 0 → (∀ (g : GL (Fin a) (w.adicCompletion E)) (φ ψ : V) (v : σ'.V), ψ.1 = finRep E a (locGL E a w g) φ.1 → β ψ (σ'.ρ g v) = β φ v) → Nonempty (σ'.ρ.Equiv (GlobalTheory.SmGL.contra σ.ρ)) := by
-  intro hadm E _ _ _ a V hs hi w σ σ' h β hβ hinv
-  obtain ⟨f, hf⟩ := exists_comp_ne_zero V hs hi w σ h β hβ
-  have hB : ∀ g u v, (β ∘ₗ f.1.codRestrict V f.2.1) (σ.ρ g u) (σ'.ρ g v) = (β ∘ₗ f.1.codRestrict V f.2.1) u v :=
-    fun g u v => hinv g _ _ v (f.2.2 g u)
-  have hirr : (GlobalTheory.SmGL.contra σ.ρ).IsIrreducible :=
-    GlobalTheory.ContraRefl.contra_isIrreducible (GlobalTheory.SqIntUnit.compactOpen_basis _ a)
-      (hadm _ a σ.V σ.ρ σ.smooth σ.irred) σ.irred
-  exact ⟨(GlobalTheory.InvPairing.pairMap σ.ρ σ'.smooth _ hB).ofBijective
-    (GlobalTheory.InvPairing.pairMap_bijective σ.ρ σ'.smooth _ hB hf σ'.irred hirr)⟩
 
 end GlobalTheory.LocDual

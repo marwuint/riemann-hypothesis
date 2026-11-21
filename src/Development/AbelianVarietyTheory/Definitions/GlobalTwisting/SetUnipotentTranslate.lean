@@ -176,8 +176,6 @@ abbrev lev : LevelData D := O.ex.lev
 
 abbrev th : ThetaX D := O.ex.th
 
-abbrev cmp : LatCmp D := O.ex.cmp
-
 abbrev tw : TwForms D := O.ex.tw
 
 abbrev errX : ErrX D := O.ex.errX
@@ -412,10 +410,6 @@ theorem pt_val {cD ch : ℝ} (H : Val C cD ch p.L) : Val C cD ch p.pt.L := { H w
 
 theorem pt_canon (H : CanonInst p.ta.Gx) : CanonInst p.pt.ta.Gx := H
 
-theorem pt_has {s : Scale} {cD : ℝ} {Q : PtProp} (hR : RecOK s C cD D) (hT : LocalQuadraticParts.TWAt D Y.nch Y.xd) (h0 : DC.GlobalTwistingFacts p.L)
-    (hQ : p.pt.Has Q) : p.pt.Has (DC.withObj Q) :=
-  ⟨⟨hQ, h0⟩, hR.tame, hR.mink, twAt_tr (nPrime p.L) p.ht hT⟩
-
 end LedPart
 
 def RecEx (QO : ∀ D : D7, Obj D → Prop) : Prop :=
@@ -431,22 +425,6 @@ def RecEx (QO : ∀ D : D7, Obj D → Prop) : Prop :=
               ∀ p : LedPart C Y, p.L.sc = s → WtEq p.L a b → Val C cD ch p.L → CanonInst p.ta.Gx →
                 QO p.pt.D (Obj.ofPt p.pt)
 
-theorem RecEx.imp {QO QO' : ∀ D : D7, Obj D → Prop} (h : RecEx QO) (hQ : ∀ D O, QO D O → QO' D O) : RecEx QO' := by
-  obtain ⟨ε0, h0, h⟩ := h
-  refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
-  obtain ⟨K0, h⟩ := h eps C8 C5 c6 Cb a1 a2 a3 a4
-  refine ⟨K0, fun C b1 b2 b3 => ?_⟩
-  obtain ⟨c1, h⟩ := h C b1 b2 b3
-  refine ⟨c1, fun cD hcD => ?_⟩
-  obtain ⟨c2, h⟩ := h cD hcD
-  refine ⟨c2, fun ch hch => ?_⟩
-  obtain ⟨cs, x0, hcs, h⟩ := h ch hch
-  refine ⟨cs, x0, hcs, fun s P a b c d1 d2 d3 => ?_⟩
-  obtain ⟨du, Ds, e1, e2, e3, h⟩ := h s P a b c d1 d2 d3
-  refine ⟨du, Ds, e1, e2, e3, fun Lv f1 f2 f3 => ?_⟩
-  obtain ⟨D, Y, g1, g2, g3, g4, g5⟩ := h Lv f1 f2 f3
-  exact ⟨D, Y, g1, g2, g3, g4, fun p k1 k2 k3 k4 => hQ _ _ (g5 p k1 k2 k3 k4)⟩
-
 def Lay.ofPt {C : FC} (p : Pt C) : Lay p.D :=
   { p.xa.ex with
     gatT := p.gatT, ties := p.xa.ties, X := p.xa.X, rrDef := p.xa.rrDef, Gy := p.ta.Gy, vram := p.xa.ex.lat.vram,
@@ -457,15 +435,6 @@ def LedPart.ofPt {C : FC} (p : Pt C) : LedPart C (Lay.ofPt p) :=
   { p.xa.ex with L := p.L, ta := p.ta, Gy_eq := rfl, nuDef := p.xa.nuDef }
 
 theorem obj_ofPt {C : FC} (p : Pt C) : (Lay.ofPt p).obj (LedPart.ofPt p) = Obj.ofPt p := rfl
-
-theorem pt_ofPt {C : FC} (p : Pt C) :
-    (LedPart.ofPt p).pt.D.div.Nu = p.D.div.Nu ∧ (LedPart.ofPt p).pt.D.div.h = p.D.div.h := by
-  refine ⟨funext fun u => ?_, funext fun u => (p.xa.h_eq u).symm⟩
-  show ({ p.D.div.Nu u with L := nPrime p.L u } : HLat _) = p.D.div.Nu u
-  rw [show nPrime p.L u = (p.D.div.Nu u).L from (p.xa.nprimeDef u).symm]
-
-theorem nonempty_ledPart_iff (C : FC) : (∃ (D : D7) (Y : Lay D), Nonempty (LedPart C Y)) ↔ Nonempty (Pt C) :=
-  ⟨fun ⟨_, _, ⟨p⟩⟩ => ⟨p.pt⟩, fun ⟨p⟩ => ⟨_, _, ⟨LedPart.ofPt p⟩⟩⟩
 
 theorem leastOff_eq_rPrH {R : Ranks} (H : Host R) (hc : H.ccK = ⊤) :
     leastOff (H.QS * H.q * H.d * (H.pde - 1) * (H.pde' - 1)) = DC.rPrH H := by
@@ -543,55 +512,6 @@ theorem chGood_of_host (eps C5 c6 Cb cD ch : ℝ) (C : FC) (he : 0 < eps) (he1 :
     · exact Or.inr (h ▸ hpX')
     · exact Or.inr (h ▸ hq0X)
 
-theorem exists_chGoodW {la : ℝ} {Q : HostReq} (hH : DC.HostExQW la Q) (eps : ℝ) (he : 0 < eps) (he1 : eps < 1 / 52) :
-    ∃ CT2 C8 C5 c6 Cb : ℝ, 1 ≤ C8 ∧ 0 < C5 ∧ 0 < c6 ∧ 0 < Cb ∧ ∃ S : Scales la,
-      ∀ C : FC, Std C → C.CT2 = CT2 → C.P.Cpde = C8 →
-      ∀ cD ≥ (0 : ℝ), ∀ ch ≥ (402 : ℝ), ∃ x0 : ℝ, ∀ s : Scale, s.eps = eps → x0 ≤ s.x → S.Mem s → ∀ u0 : ℕ,
-        ∃ (P : PreCh) (a b : P.R.A → ℤ) (c : P.Word → Fin (P.R.k - 2) → Bool),
-          ChGood s C C5 c6 Cb cD ch P a b c ∧ P.H.u0 = P.R.ofNat u0 ∧
-            ∃ v : P.R.A, Q C5 s P.R { P.H with u0 := v } (DC.q0H P.H) := by
-  obtain ⟨CT2, C8, C5, c6, Cb, xH, h8, h5, h6, hb, S, hH⟩ := hH eps he he1
-  refine ⟨CT2, C8, C5, c6, Cb, h8, h5, h6, hb, S, fun C hC hT hP cD hcD ch hch => ?_⟩
-  have hmid := hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
-  obtain ⟨xw, hw⟩ := exists_weights_in_windows eps C he he1 hC
-  obtain ⟨xc, hc⟩ := exists_injective_words eps C.CGam C.P.CF he he1
-    (zero_le_one.trans (hmid _ (by simp [FC.cMid]))) (zero_le_one.trans (hmid _ (by simp [FC.cMid])))
-  obtain ⟨xg, hg⟩ := chGood_of_host eps C5 c6 Cb cD ch C he he1 hC hcD hch
-  refine ⟨max xH (max xw (max xc xg)), fun s hs hx hS u0 => ?_⟩
-  simp only [max_le_iff] at hx
-  obtain ⟨R, H, q0, hRV, hHT, hHG, rfl, hQ⟩ := hH s hs hx.1 hS
-  obtain ⟨a, b, hab⟩ := hw s R H hs hx.2.1 hRV
-  obtain ⟨c, hci, -⟩ := hc s R hs hx.2.2.1 hRV
-  obtain ⟨hcW, w0, h1, h2, h3, h4, h5, h6, h7, h8, h⟩ :=
-    hg s R H a b _ c u0 hs hx.2.2.2 hRV (hHT.trans hT.symm) (hP ▸ hHG) hab rfl hci
-  exact ⟨@PreCh.mk R (setUnipotentTranslate H u0) h1 h2 h3 _ _ w0 hcW h4 h5 h6 h7 h8, a, b, c, h, rfl, H.u0, hQ⟩
-
-theorem exists_chGood (hH : DC.HostExQ) (eps : ℝ) (he : 0 < eps) (he1 : eps < 1 / 52) :
-    ∃ CT2 C8 C5 c6 Cb : ℝ, 1 ≤ C8 ∧ 0 < C5 ∧ 0 < c6 ∧ 0 < Cb ∧ ∃ la : ℝ, 1 < la ∧ ∃ S : Scales la,
-      ∀ C : FC, Std C → C.CT2 = CT2 → C.P.Cpde = C8 →
-      ∀ cD ≥ (0 : ℝ), ∀ ch ≥ (402 : ℝ), ∃ x0 : ℝ, ∀ s : Scale, s.eps = eps → x0 ≤ s.x → S.Mem s → ∀ u0 : ℕ,
-        ∃ (P : PreCh) (a b : P.R.A → ℤ) (c : P.Word → Fin (P.R.k - 2) → Bool),
-          ChGood s C C5 c6 Cb cD ch P a b c ∧ P.H.u0 = P.R.ofNat u0 := by
-  obtain ⟨la, hla, hH⟩ := hH
-  obtain ⟨CT2, C8, C5, c6, Cb, h8, h5, h6, hb, S, h⟩ :=
-    exists_chGoodW (Q := fun _ _ _ _ _ => True) (HostExW.imp hH fun _ _ _ _ _ h => ⟨h, trivial⟩) eps he he1
-  refine ⟨CT2, C8, C5, c6, Cb, h8, h5, h6, hb, la, hla, S, fun C hC hT hP cD hcD ch hch => ?_⟩
-  obtain ⟨x0, h⟩ := h C hC hT hP cD hcD ch hch
-  refine ⟨x0, fun s hs hx hS u0 => ?_⟩
-  obtain ⟨P, a, b, c, h1, h2, -⟩ := h s hs hx hS u0
-  exact ⟨P, a, b, c, h1, h2⟩
-
-theorem exists_chGood_unb (hH : DC.HostExQ) (eps : ℝ) (he : 0 < eps) (he1 : eps < 1 / 52) :
-    ∃ CT2 C8 C5 c6 Cb : ℝ, 1 ≤ C8 ∧ 0 < C5 ∧ 0 < c6 ∧ 0 < Cb ∧ ∀ C : FC, Std C → C.CT2 = CT2 → C.P.Cpde = C8 →
-      ∀ cD ≥ (0 : ℝ), ∀ ch ≥ (402 : ℝ), ∀ y : ℝ, ∃ s : Scale, s.eps = eps ∧ y ≤ s.x ∧ ∀ u0 : ℕ,
-        ∃ (P : PreCh) (a b : P.R.A → ℤ) (c : P.Word → Fin (P.R.k - 2) → Bool),
-          ChGood s C C5 c6 Cb cD ch P a b c ∧ P.H.u0 = P.R.ofNat u0 := by
-  obtain ⟨CT2, C8, C5, c6, Cb, h8, h5, h6, hb, la, hla, S, h⟩ := exists_chGood hH eps he he1
-  refine ⟨CT2, C8, C5, c6, Cb, h8, h5, h6, hb, fun C hC hT hP cD hcD ch hch y => ?_⟩
-  obtain ⟨x0, h⟩ := h C hC hT hP cD hcD ch hch
-  obtain ⟨s, hs, hx, hS⟩ := S.exists_mem hla.le he he1 (max x0 y)
-  exact ⟨s, hs, le_of_max_le_right hx, h s hs (le_of_max_le_left hx) hS⟩
-
 theorem ChGood.level {s : Scale} {C : FC} {C5 c6 Cb cD ch : ℝ} {P : PreCh} {a b : P.R.A → ℤ}
     {c : P.Word → Fin (P.R.k - 2) → Bool} (h : ChGood s C C5 c6 Cb cD ch P a b c) :
     P.H.levelPrimes = {P.H.g 0, P.H.g 1, P.H.pde, P.H.pde', DC.q0H P.H} ∧
@@ -599,21 +519,6 @@ theorem ChGood.level {s : Scale} {C : FC} {C5 c6 Cb cD ch : ℝ} {P : PreCh} {a 
       QDq s.x s.eps C5 P.H.q P.H.d := by
   obtain ⟨-, -, -, -, h1, h2, -, -, -, -, -, -, ⟨-, -, h3, -⟩, h4⟩ := h.host
   exact ⟨h4, h3, h2, h1⟩
-
-example (D : D7) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ) : 1 ≤ (setDiv D N h).div.HH :=
-  le_max_left _ _
-
-example {C : FC} (p : Pt C) (A : ∀ D : D7, LevelData D → DivX D → Scale → Prop) :
-    p.Has (ptO fun D O => A D O.lev O.X O.L.sc) ↔ A p.D p.xa.ex.lev p.xa.X p.L.sc := Iff.rfl
-
-example : leastOff 6 = 5 := by
-  apply le_antisymm
-  · exact Nat.sInf_le ⟨by norm_num, by norm_num⟩
-  · refine le_csInf ⟨5, by norm_num, by norm_num⟩ ?_
-    rintro r ⟨h1, h2⟩
-    by_contra h
-    have : r < 5 := by omega
-    interval_cases r <;> simp_all (config := {decide := true})
 
 end GlobalTheory.EX.OB
 

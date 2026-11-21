@@ -17,15 +17,6 @@ def EmbeddingWeight.Statement : Prop :=
     ∃ B : HermLine ι, B.a = 0 ∧ IsSmoothHerm B ∧ IsConjInvariantH B ∧
       ∀ z ∈ mcPts (mCoordIdeal y), ∀ sg : F →+* ℂ, LiesOver y sg z → B.h =ᶠ[𝓝 z] fun _ => Λ sg
 
-section Inhabitants
-
-open ProjLine
-
-def trivialWeight (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] : HermLine ι :=
-  HermLine.ofWeight (fun _ => 0) (fun _ _ _ => rfl)
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

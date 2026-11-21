@@ -337,15 +337,6 @@ def JacquetShalikaStrongMultOne : Prop :=
 def TemperedCuspidal : Prop :=
   ∀ (a : ℕ) (π : A.CG a), 1 ≤ a → A.csd π → A.ralg π → ∀ w, A.tempered (A.locG π w)
 
-def IrreducibilityParameter : Prop :=
-  ∀ i σ, what₂.isot (N.j i) σ ≠ ⊥ → N.goodRow σ → ∀ Sig, HasParamW N A i σ Sig →
-    ∀ ρ, IsRepOfSig N A i Sig ρ →
-      Formalism.CyclotomicNorms.IrredOn (mapRep ((A.kFbar i).comp (IsLocalRing.residue (N.O i))) ρ) ⊤ ∧
-      ∀ k, N.l i ≠ H.g k → ∀ v : N.PlG k, TameGen N (N.plOm.1 (A.plGw k v)) (N.gam0 i (A.plGw k v)) →
-        ¬ (((mapRep ((A.kFbar i).comp (IsLocalRing.residue (N.O i))) ρ (N.gam0 i (A.plGw k v)) :
-            GL _ _) : Matrix (Fin R.r) (Fin R.r) _).charpoly).IsRoot
-          ((A.kFbar i) (IsLocalRing.residue (N.O i) (chi1 N i (N.gam0 i (A.plGw k v)))))
-
 def ResidualIrreducibility : Prop :=
   ∀ i, HG N A i → ∀ rb : Formalism.ConjugateSelfDual.G H.E N.Om →* GL (Fin R.r) (IsLocalRing.ResidueField (N.O i)), IsRhoBar N i rb →
     Formalism.CyclotomicNorms.IrredOn (mapRep (A.kFbar i) rb) ⊤ ∧
@@ -398,11 +389,6 @@ def AdmA (D : D7) : Prop := tie0 D ∧ hypO D ∧ adm1 D ∧ adm2 D ∧ adm3 D �
 def AdmAt (D : D7) : Prop := AdmA D ∧ adm7 D
 
 def admitted (D : D7) : Prop := AdmAt D ∧ adm6 D ∧ adm8 D
-
-def IntegralityFromMetric (D : D7) : Prop := AdmAt D → Conclusion1 D
-def HodgeTateFromSandwich (D : D7) : Prop := admitted D → Conclusion2 D
-
-def Stmt (D : D7) : Prop := IntegralityFromMetric D ∧ HodgeTateFromSandwich D
 
 end Formalism.MainNotions.SumRepresentations
 

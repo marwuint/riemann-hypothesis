@@ -108,14 +108,6 @@ def ColumnsExtraCompatible {D : D7} {C : ColsTied D} (Fu : ColsFull C) {L : Size
     (ex : Extra D L hT Gi Gl K Y cX) : Prop :=
   Formalism.L2.Herm.ExtraTied Fu.full ex
 
-theorem ColsTied.chi_all {D : D7} (C : ColsTied D) (u : D.what₂.Word) : CharacterCompatible (C.forms u).gl D.R.m := by
-  rw [C.gl_const u D.u₀]
-  exact C.chi
-
-theorem FormsTied.chi_unit {D : D7} {u : D.what₂.Word} (T : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m)
-    (x : (T.cls i hi).lev.U) : ‖(((T.cls i hi).lev.chi x : ℂˣ) : ℂ)‖ = 1 :=
-  (T.glev i hi).chi_unit x
-
 end Formalism.L2.Forms
 
 end

@@ -86,49 +86,6 @@ theorem eq_of_reps {V : HSp D} {S : D.what₂.Tau → SPar} {θ} {M : DSModel V 
     (GlobalTheory.PhaseRational.mult_leftInv (hr.le (LinearMap.mem_range_self e _)) v) (fun q => ?_) g
   simpa [map_sum, Finset.sum_apply] using h q
 
-theorem base_identity : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → ∀ (fw : FWTie T R κw v₀) (i : Fin D.R.m), fw.Evaluates → EvInj T R v₀ → ∀ (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : ℂ), OMPins T R κw v₀ O i → (O i).OneMapOf (κw i) (v₀ i (sg0 D A)) (T.cE ((i : ℕ) + 1) (O i).s0) ph → ∀ h, RepsAt (O i) (v₀ i (sg0 D A)) h → ∃ z ∈ Subgroup.center G, ∃ ze : D.what₂.LL, (∃ m : ℕ, 0 < m ∧ ze ^ m = 1) ∧ ∀ x₀, ∃ (n : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → Cu T κw i), IsClassSum (O i) κw h x₀ a f ∧ ∀ f₁ : Fin n → Cu T κw i, (∀ k, (f₁ k : T.R ((i : ℕ) + 1)) = actG (O i) z (f k : T.R ((i : ℕ) + 1))) → ph • R.thG i A.μ0 (R.jV i A.μ0 x₀) = ∑ g, RealDat.eC (A := A) (sg0 D A) g • R.gW i (sg0 D A) g (∑ k, D.what₂.embLL (ze * a k) • fw.jK i (sg0 D A) (f₁ k)) := by
-  intro D G _ _ Pl0 T0 A T _ R F κw v₀ hch fw i hev hinj O ph hpins hone h hreps
-  have hrk : (Vc D i).rank = (κw i).n :=
-    (D.sp.V_rank _ (Nat.le_add_left _ _) i.2).trans (fw.kap i (D.eTau.symm 1)).2.2.symm
-  have hs : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0
-  have hpf : T.Q.PinField := fw.laws.toLawsM.pins.2.2.1
-  have hres : res T (sg0 D A) = (O i).s0 :=
-    (congrArg (res T) hs).trans ((res_embLL T fw.alg_eq hpf).trans (sOv_eq T.toCore (O i).c' (O i).hle).symm)
-  have hgood : GoodEmb T.Q.c (res T (sg0 D A)) := base_embedding_good T R fw.alg_eq hpf
-  have hV : T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i := (congrArg (T.V ((i : ℕ) + 1)) hres).trans (O i).hV
-  have hfield : ∀ b, inC (O i).c' ((O i).jL b) = D.what₂.embLL b := fun b => RingHom.congr_fun hpins.2.lift.field b
-  refine (tie_baseChange (O i).hle (T.U ((i : ℕ) + 1)) (inC (O i).c') (Wc D i) (O i).dict (O i).mu
-    (xiR D) (wtA (κw i)) hone.2.1 ()).imp fun z hz => ⟨hz.1, hz.2.elim fun ze hze => hze.1.elim fun ze' hze' => ?_⟩
-  have hze'' : D.what₂.embLL ze' = ze := hze'
-  refine ⟨ze', hze.2.1.imp fun m hm => ⟨hm.1, D.what₂.embLL.injective
-    ((map_pow _ _ _).trans ((congrArg (· ^ m) hze'').trans (hm.2.trans (map_one _).symm)))⟩, fun x₀ => ?_⟩
-  refine hreps.elim fun J' hJ => (hJ.2.1 x₀).elim fun x hx => ?_
-  refine (hze.2.2 x ((hJ.2.2.2 x).2 ⟨x₀, hx⟩)).elim fun f' h1 => h1.elim fun m h1 => h1.elim fun as h1 => h1.elim fun fs h1 => ?_
-  have has : ∀ k, ∃ b : D.what₂.LL, D.what₂.embLL b = inC (O i).c' (as k) := fun k => hpins.1.le (as k).2
-  have has' : (fun k => (O i).jL (has k).choose) = as := funext fun k =>
-    (inC (O i).c').injective ((hfield _).trans (has k).choose_spec)
-  have hfs : ∀ k, fs k ∈ T.cuspA ((i : ℕ) + 1) (wtA (κw i)) (κw i).n := fun k => hrk ▸ h1.2.2.1 k
-  refine ⟨m, fun k => (has k).choose, fun k => ⟨fs k, hfs k⟩, ⟨x, f', hx, h1.1, h1.2.1, ?_⟩, fun f₁ hf₁ => ?_⟩
-  · exact (congrArg (fun b => IsBC (O i).hle f' b fs) has').mpr h1.2.2.2.1
-  have hHW := hch.models.HW i (sg0 D A)
-  have hy : R.thF i A.μ0 (jVx R i A.μ0 x₀) ∈ LinearMap.range (R.HW i (sg0 D A)).e :=
-    hHW.2.1.ge (hch.thP.thF_mem i A.μ0 _)
-  refine hy.elim fun y hy => ?_
-  refine proj_model (R.MW i (sg0 D A)) (R.HW i (sg0 D A)).e hHW.1
-    (fun g => Links.actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)) _ (fun g => R.gW i (sg0 D A) g)
-    (hch.models.gW i (sg0 D A)) ph y _ _
-    ((hch.thP.thG i A.μ0 (jVx R i A.μ0 x₀)).trans (congrArg (postOn _ (R.eWf i (sg0 D A))) hy.symm)) ?_
-  refine eq_of_reps (R.HW i (sg0 D A)).e hHW.2.1 (v₀ i (sg0 D A)) (hinj i _ hgood) ph y _ _ fun q => ?_
-  have h2 : (R.HW i (sg0 D A)).e y (v₀ i (sg0 D A)) q.out = (O i).thAd () x q :=
-    (congrArg (fun S : MMap (R.MW i (sg0 D A)) => S (v₀ i (sg0 D A)) q.out) hy).trans
-      (congrFun (hJ.2.2.1 _ x hx) q).symm
-  refine (congrArg (ph * ·) h2).trans ((h1.2.2.2.2 q).trans (Finset.sum_congr rfl fun k _ => congrArg₂ (· * ·) ?_ ?_))
-  · exact (congrArg₂ (· * ·) hze'' (has k).choose_spec).symm.trans (map_mul D.what₂.embLL _ _).symm
-  · refine (phi_cE T R O i (wtA (κw i)) (actG (O i) z (fs k)) q.out).trans ?_
-    refine Eq.symm ((congrFun (hev i _ hgood hV (f₁ k)) q.out).trans ?_)
-    exact congrFun ((phiC_congr T hres hV (O i).hV _ _).trans
-      (congrArg (phiC T (O i).hV (wtA (κw i))) (hf₁ k))) q.out
-
 end GlobalTheory.GalLift.BaseId
 
 end

@@ -16,9 +16,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DiscreteSeriesUpqExistsIffDsExists
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LinearIndependentOfIsParamFunV
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspMultiplicitySpaceSpanSphericalEigenPartsEqToStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenRankChainEigenPartHasParametersStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspMultiplicityMemSphericalEigenPartOfValueParaStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspMultiplicitySpaceSpanSphericalEigenPartsEqTo
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvenRankChainEigenPartHasParameters
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CuspMultiplicityMemSphericalEigenPartOfValuePara
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open scoped TensorProduct InnerProductSpace ComplexConjugate
@@ -76,8 +76,8 @@ theorem eig_parOfVal_indep : GlobalTheory.Published.CuspRapidDecay → ∀ D : D
   intro hC D hF hM
   refine ⟨?_, ?_, parIndep_even D⟩
   · intro c hc j hj s hs
-    have hspan := GlobalTheory.T.cuspMultiplicitySpace_span_sphericalEigenParts_eq_top hC D hF c hc j hj s hs
-    have hpar := GlobalTheory.T.evenRankChain_eigenPart_has_parameters hC D c hc j hj s hs
+    have hspan := _root_.GlobalTheory.EvenOntoDecomp.cc_span_partFull hC D hF c hc j hj s hs
+    have hpar := _root_.GlobalTheory.EvenOnto.partPar hC D c hc j hj s hs
     rw [eq_top_iff, ← hspan]
     refine Submodule.span_le.2 ?_
     rintro u ⟨e, he⟩
@@ -85,7 +85,7 @@ theorem eig_parOfVal_indep : GlobalTheory.Published.CuspRapidDecay → ∀ D : D
     · rw [h0]; exact Submodule.zero_mem _
     · exact Submodule.subset_span ((hpar u e he).1 h0)
   · intro c hc j hj s hs x w B hv hf
-    obtain ⟨e, he⟩ := GlobalTheory.T.cuspMultiplicity_mem_sphericalEigenPart_of_value_params hC D hM c hc j hj s hs x w B hv hf
-    exact (GlobalTheory.T.evenRankChain_eigenPart_has_parameters hC D c hc j hj s hs x e he).2 w B hv hf
+    obtain ⟨e, he⟩ := _root_.GlobalTheory.EvenOnto.ValPart.valPart_mem hC D hM c hc j hj s hs x w B hv hf
+    exact (_root_.GlobalTheory.EvenOnto.partPar hC D c hc j hj s hs x e he).2 w B hv hf
 
 end GlobalTheory.EvenOnto

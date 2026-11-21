@@ -1,6 +1,11 @@
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrModelOfNumberFieldPlace
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteTypeOverIntegersModelStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUniqueStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteTypeOverIntegersModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsPullWedge
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
@@ -112,9 +117,9 @@ end PtExt
 theorem exists_integral_point_with_coordinates : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), CharZero Ω → (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ Small.ptsOver L (mCoordIdeal y), ∃ z : Sp (𝓞 L) ⟶ X, CoordsAt ξ y (spMap (algebraMap (𝓞 L) L) ≫ z) w := by
   classical
   intro X Ω _ K _ J _ y ξ _ hall tie L _ _ w hw
-  obtain ⟨zL, ⟨-, hz⟩, -⟩ := (GlobalTheory.T.local_ring_points_existsUnique X Ω ξ K J y tie L).1 w
+  obtain ⟨zL, ⟨-, hz⟩, -⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.tie_points X Ω ξ K J y tie L).1 w
     (fun k => (hw.1 k).imp fun _ h => isUnit_iff_ne_zero.mpr h) hw.2
-  obtain ⟨s, h1, h2, -⟩ := GlobalTheory.T.finite_type_over_integers_model X Ω ξ _ _ hall tie
+  obtain ⟨s, h1, h2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ChartFType.main X Ω ξ _ _ hall tie
   have := GlobalTheory.CompanionTheory.Ar.Flat.LocModel.isProper_of_coordTie hall tie s
   obtain ⟨z, hz'⟩ := PtExt.ext_dedekind (R := 𝓞 L) s zL
   exact ⟨z, hz' ▸ hz⟩

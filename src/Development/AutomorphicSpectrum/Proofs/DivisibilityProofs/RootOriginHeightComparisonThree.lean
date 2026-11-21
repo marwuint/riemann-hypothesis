@@ -6,12 +6,19 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitComps
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArMonoReline
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareSecondStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareFirstStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginPointCompareStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareSecond
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplierLine
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareFirst
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginPointCompare
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootModelFlagCompareStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProjectStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsDenseNonvanishingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsDenseNonvanishing
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsPowSubMemSpanOfIsUnitModOfIsAlgClosed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsUnitValues
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BadExists
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
@@ -369,7 +376,7 @@ theorem side [CharZero M.Ω] (o : RootOrigin Y S M Fx) (o₀ : RootOrigin Y S₀
             Small.HasVal (Ht.joinOf M R i) (Ht.joinDeg M R (some r)) (i (o₀.e r) / o.e r) w v →
             ‖v‖ * (o₀.sing r).h (fun p => w (Cmp.joinInr M.ι R.ι p)) =
               (o.sing r).h (fun p => w (Cmp.joinInl M.ι R.ι p)) := by
-  obtain ⟨f, hf, hfp⟩ := GlobalTheory.T.root_origin_compare_second E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi hJ hJ₀
+  obtain ⟨f, hf, hfp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.JoinPts.join_points E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi hJ hJ₀
   obtain ⟨cc, hcc, hne⟩ := exists_scale (Ht.joinOf M R i) hf
   refine ⟨scaleForm cc f, hne, fun w hw hwF => ?_⟩
   have hwF' := hwF
@@ -388,7 +395,7 @@ theorem side [CharZero M.Ω] (o : RootOrigin Y S M Fx) (o₀ : RootOrigin Y S₀
   refine ⟨x, x', orbit_trans ho₁ ⟨fun k => (cc (Sum.inl k) : ℂ), fun k => hc _, rfl⟩,
     orbit_trans ho₂ ⟨fun k => (cc (Sum.inr k) : ℂ), fun k => hc _, rfl⟩, hπ, hop, ?_⟩
   intro r v hv
-  have h1 := GlobalTheory.T.root_origin_compare_first E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ _ hw' hc₁ hc₂ hi₁ hi₂ r _
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.SingCmp.sing_agree E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ _ hw' hc₁ hc₂ hi₁ hi₂ r _
     (hasVal_smul hv (c := fun k => (cc k : ℂ)) hc)
   have e₁ : (fun p => (cc (Cmp.joinInl M.ι R.ι p).1 : ℂ) * w (Cmp.joinInl M.ι R.ι p)) =
       fun p => (fun k => (cc (Sum.inl k) : ℂ)) p.1 * w (Cmp.joinInl M.ι R.ι p) := rfl
@@ -485,10 +492,10 @@ theorem side_pt {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {
         rw [o.g_flag, o₀.g_flag, hd, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]
     have hex := fun r => hunit r ℂ _ hw
     choose val hval0 hval using hex
-    obtain ⟨hw₁, hw₂⟩ := (GlobalTheory.T.join_model_points_project _ _ M R i).2.2.1 ℂ _ hw
+    obtain ⟨hw₁, hw₂⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Ht.JoinFacts.main _ _ M R i).2.2.1 ℂ _ hw
     rw [Small.LineModel.ptsOver_complex] at hw₁ hw₂
     refine ⟨x', val, ho₂, hval0, hval, fun t ht0 ht τ p => ?_⟩
-    have hid := GlobalTheory.T.root_origin_point_compare E H D l Xo c Y S S₀ M R Sys Fx o o₀ x x' _ _ (fun r => ‖val r‖) t ht0 ht hw₁ hw₂ ho₁ ho₂
+    have hid := _root_.GlobalTheory.CompanionTheory.Ar.OrArch.defect_eq_regWeight_add_bracket E H D l Xo c Y S S₀ M R Sys Fx o o₀ x x' _ _ (fun r => ‖val r‖) t ht0 ht hw₁ hw₂ ho₁ ho₂
       hπ hop (fun r => ⟨norm_pos_iff.2 (hval0 r), hs r _ (hval r)⟩) τ p
     rw [hπ] at hid
     exact hid
@@ -647,7 +654,7 @@ theorem root_isometric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     have := aeval_zero_of_mem y h
     rw [map_mul] at this
     exact (mul_ne_zero hF₀ hF₁) this
-  have hzc := GlobalTheory.T.complex_points_dense_nonvanishing K J (mCoordIdeal y) _ (F₀ * F₁) hA hFne hz
+  have hzc := _root_.GlobalTheory.CompanionTheory.Ar.Flat.nonvanishing_dense K J (mCoordIdeal y) _ (F₀ * F₁) hA hFne hz
   haveI hnb := mem_closure_iff_nhdsWithin_neBot.1 hzc
   have cont : ∀ {K₁ : Type} [Fintype K₁] {ι : K₁ → Type} [∀ k, Fintype (ι k)] (A : HermLine ι) (_ : IsSmoothHerm A)
       (u : (Σ k, ι k) → Σ k, J k), (∀ k, ∃ a, z (u ⟨k, a⟩) ≠ 0) →

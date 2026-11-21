@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoDetectedSubgroupTowerRatProofStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ApproxComplexPadicCoboundaryAlgebraicIntegerStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NoDetectedSubgroupTowerRatProof
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ApproxComplexPadicCoboundaryAlgebraicInteger
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory.LocalField GlobalTheory.PMon.Ram
@@ -37,7 +37,7 @@ theorem noTower : NoTower := by
   have hGK : IsOpen ((GK K : Subgroup (GQ l)) : Set (GQ l)) := IntermediateField.fixingSubgroup_isOpen _
   have hmem : ∀ k (σ : ↥(GK K)), (σ : GQ l) ∈ (N k).map (GK K).subtype ↔ σ ∈ N k := fun k σ =>
     Subgroup.mem_map_iff_mem (GK K).subtype_injective
-  obtain ⟨k, hk⟩ := GlobalTheory.T.noDetectedSubgroupTowerRat_proof l (fun k => (N k).map (GK K).subtype)
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.PMon.Ram.noTowerQ_holds l (fun k => (N k).map (GK K).subtype)
     (fun i j hij => Subgroup.map_mono (hanti hij))
     (fun k => hGK.isOpenMap_subtype_val _ (hopen k))
     (by
@@ -51,7 +51,7 @@ theorem noTower : NoTower := by
       obtain ⟨k₀, hk₀⟩ := hchar r
       refine ⟨k₀, fun k hk => ?_⟩
       obtain ⟨ι, hι, x, a, h1, h2⟩ := hk₀ k hk
-      have key := fun i => GlobalTheory.T.approx_complexPadic_coboundary_algebraic_integer l r ((N k).map (GK K).subtype : Subgroup (GQ l)) (x i)
+      have key := fun i => _root_.GlobalTheory.PMon.Ram.approx_algebraic_integer l r ((N k).map (GK K).subtype : Subgroup (GQ l)) (x i)
         (fun σ => if h : σ ∈ GK K then a i ⟨σ, h⟩ else 0) (by
           rintro _ ⟨σ, hσ, rfl⟩
           have := h1 i σ hσ

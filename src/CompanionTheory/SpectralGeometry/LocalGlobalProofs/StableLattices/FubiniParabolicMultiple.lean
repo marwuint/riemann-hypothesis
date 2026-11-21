@@ -86,7 +86,7 @@ theorem fub2 : Fub2 := by
   intro n ε A hA
   have hW : IsIsoFlag ε (fun _ : Fin 1 => rk A) (W A) := GlobalTheory.CompanionTheory.PSubFlag.isoFlag hA
   have hj : ∀ i : Fin 1, 1 ≤ (fun _ : Fin 1 => rk A) i := fun _ => (GlobalTheory.CompanionTheory.GradFlag.flagFacts n ε A hA).1
-  obtain ⟨⟨μN, sN, hN⟩, ⟨μM, sM, hM⟩, μK, hK0, hK1, hKi⟩ := GlobalTheory.T.exists_gauge_measures_isotropicFlag_parabolic n ε 1 _ (W A) hj hW
+  obtain ⟨⟨μN, sN, hN⟩, ⟨μM, sM, hM⟩, μK, hK0, hK1, hKi⟩ := _root_.GlobalTheory.FlagMeas.gaugeSubEx n ε 1 _ (W A) hj hW
   have hmod := GlobalTheory.T.isotropicFlag_levi_conj_haar_modulus n ε 1 _ (W A) hj hW μN hN
   refine ⟨μN, μM, inferInstance, inferInstance, hM.1, ?_, ?_, ?_⟩
   · intro a ha hc
@@ -94,7 +94,7 @@ theorem fub2 : Fub2 := by
       Measure.map_congr (Filter.Eventually.mono (mem_ae_iff.2 hM.1 : ∀ᵐ m ∂μM, m ∈ flagM ε (W A)) fun m hm => hc m hm)
     rw [e]
     exact hM.2.1 a ha
-  · obtain ⟨κ, k0, k1, hκ⟩ := GlobalTheory.T.iwasawa_integration_formula_up_to_constant n ε _ _ rfl rfl 1 _ hj (W A) hW μN μM μK hN hM hK0 hK1 hKi
+  · obtain ⟨κ, k0, k1, hκ⟩ := _root_.GlobalTheory.IwasawaShape.iwasawa_shape n ε _ _ rfl rfl 1 _ hj (W A) hW μN μM μK hN hM hK0 hK1 hKi
     refine ⟨κ, k0, k1, fun F hF hinv => ?_⟩
     rw [hκ F hF]
     congr 1

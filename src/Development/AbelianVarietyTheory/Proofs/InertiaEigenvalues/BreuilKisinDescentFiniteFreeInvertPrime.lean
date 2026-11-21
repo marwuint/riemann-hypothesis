@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomialAction
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeierstrassDivisionEisensteinPowIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeierstrassDivisionEisensteinPowIntegral
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NormPowLeNormFactorial
 open PowerSeries GlobalTheory.BK
 open scoped NormedField Valued
 
@@ -47,7 +48,7 @@ theorem exists_eq_add_E_pow_mul (O K : Type) [CommRing O] [NormedField K] [IsUlt
     [NeZero e] (n : ℕ) (f : K⟦X⟧) (hf : f ∈ A O K) :
     ∃ (c : Fin (e * n) → O) (g : K⟦X⟧), g ∈ A O K ∧
       f = ∑ k : Fin (e * n), C (algebraMap O K (c k)) * X ^ (k : ℕ) + E K l e ^ n * g :=
-  GlobalTheory.T.weierstrass_division_eisensteinPow_integral O K l e n f hf
+  _root_.GlobalTheory.weierstrassDiv_E_pow O K l e n f hf
 
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K]
   [IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]

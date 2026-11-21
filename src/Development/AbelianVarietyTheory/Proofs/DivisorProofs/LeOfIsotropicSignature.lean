@@ -69,42 +69,4 @@ theorem le_of_isotropic_signature {n p q k : ℕ} (J : Matrix (Fin n) (Fin n) �
           rw [hN, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h]
           rfl
 
-theorem wittIdx_le_signature : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E), S.SigOK → ∀ τ : E →+* ℂ, (∀ a : E, τ (star a) = starRingEnd ℂ (τ a)) → wittIdx S ≤ (S.sig τ).1 ∧ wittIdx S ≤ (S.sig τ).2 := by
-  intro E _ _ _ S hS τ hτ
-  have main : ∀ W : Submodule E S.V, (∀ x ∈ W, ∀ y ∈ W, S.hT x y = 0) →
-      Module.finrank E W ≤ (S.sig τ).1 ∧ Module.finrank E W ≤ (S.sig τ).2 := by
-    intro W hW
-    let b := Module.finBasis E W
-    obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective W.subtype W.ker_subtype
-    let M := LinearMap.toMatrix b S.frame W.subtype
-    let L := LinearMap.toMatrix S.frame b g
-    have hL : L * M = 1 := by
-      rw [← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id]
-    have hb : ∀ i, (b i : S.V) = ∑ a, M a i • S.frame a := by
-      intro i
-      simp only [M, LinearMap.toMatrix_apply, Submodule.subtype_apply]
-      exact (S.frame.sum_repr _).symm
-    have h : Mᴴ * S.gram * M = 0 := by
-      ext i j
-      have h0 := hW _ (b i).2 _ (b j).2
-      rw [hb i, hb j] at h0
-      simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply,
-        starRingEnd_apply] at h0
-      simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, HSpace.gram, Matrix.zero_apply]
-      rw [← h0]
-      exact Finset.sum_congr rfl fun a _ => mul_comm _ _
-    refine le_of_isotropic_signature _ (hS τ) (M.map τ) (L.map τ) ?_ ?_
-    · rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero τ) (map_one τ)]
-    · have : (M.map τ)ᴴ = (Mᴴ).map τ := by
-        ext i j
-        simp [Matrix.conjTranspose_apply, hτ]
-      rw [this, ← Matrix.map_mul, ← Matrix.map_mul, h, Matrix.map_zero _ (map_zero τ)]
-  constructor
-  · refine csSup_le' ?_
-    rintro k ⟨W, rfl, hW⟩
-    exact (main W hW).1
-  · refine csSup_le' ?_
-    rintro k ⟨W, rfl, hW⟩
-    exact (main W hW).2
-
 end GlobalTheory.WittSignature

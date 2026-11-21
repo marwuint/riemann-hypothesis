@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementRe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesFirstTypeAmpSqBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetSecondTypeFamilyAmpSqLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmpSqLeOfHermitianTermTypesCauchySchwarzStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetSecondTypeFamilyAmpSqLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmpSqLeOfHermitianTermTypesCauchySchwarz
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -57,12 +57,12 @@ theorem ampSq_nonzero_defect : ∀ {F : Type} [Field F] [ValuativeRel F] [Topolo
     have hH : (2 : ℝ) ≤ S.Hp := hq.trans hqH
     have hH0 : (0 : ℝ) ≤ S.Hp := by linarith
     have hq0 : (0 : ℝ) < (S.q : ℝ) := by linarith
-    have key := GlobalTheory.T.ampSq_le_of_hermitianTermTypes_cauchySchwarz L r k S hk
+    have key := _root_.GlobalTheory.HL.TypesCS.ampSq_le_of_types L r k S hk
       (ENNReal.ofReal (98 * S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (4 * S.Hp ^ (4 * (r + 1))) *
         (S.q : ℝ) ^ (-((k : ℤ) - 2 * r - 5))) * S.nn)
       (fun β => (GlobalTheory.T.hermitianFrames_firstType_ampSq_bound L r k S hk β).trans
         (mul_le_mul_left (ENNReal.ofReal_le_ofReal (num_first _ _ hq hH0 r k)) _))
-      (fun β J βJ => (GlobalTheory.T.hermitianDoubleCoset_secondType_family_ampSq_le L r k S hk β J βJ).trans
+      (fun β J βJ => (_root_.GlobalTheory.HL.FamilyBound.family_bound L r k S hk β J βJ).trans
         (mul_le_mul_left (ENNReal.ofReal_le_ofReal (num_second _ _ hq hH0 r k hk)) _))
     refine key.trans ?_
     rw [← mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← mul_assoc]

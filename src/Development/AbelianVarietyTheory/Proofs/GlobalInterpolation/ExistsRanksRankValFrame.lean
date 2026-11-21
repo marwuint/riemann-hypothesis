@@ -14,13 +14,6 @@ theorem exists_even_between (A : ℝ) (hA : 2 ≤ A) : ∃ m : ℕ, Even m ∧ A
   · have := Nat.ceil_lt_add_one (a := A / 2) (by linarith)
     push_cast; linarith
 
-theorem exists_two_pow_between (A : ℝ) (hA : 1 ≤ A) :
-    ∃ e : ℕ, A ≤ ((2 ^ e : ℕ) : ℝ) ∧ ((2 ^ e : ℕ) : ℝ) ≤ 2 * A := by
-  obtain ⟨n, h1, h2⟩ := exists_nat_pow_near hA (by norm_num : (1 : ℝ) < 2)
-  refine ⟨n + 1, ?_, ?_⟩
-  · push_cast; exact h2.le
-  · push_cast; rw [pow_succ]; linarith
-
 theorem exists_ranks_of_frame (φ : Formalism.HC.Frame) (k m T W : ℕ) (hk : Even k) (hm : Even m) (h2 : 2 ≤ m) (h3 : m + 3 ≤ k)
     (hmf : m ≤ 2 * φ.ord) (hfk : 2 * φ.ord ≤ k) :
     ∃ R : Ranks, R.toFrame = φ ∧ R.k = k ∧ R.m = m ∧ R.r + R.t = 8 * R.f * R.r + 4 + T * (8 * W) := by
@@ -97,27 +90,5 @@ theorem exists_ranks_rankVal_frame : ∀ eps : ℝ, 0 < eps → eps < 1 / 52 →
     ⌈10 * ((k + m - 1 : ℕ) : ℝ) * (((2 * φ.ord : ℕ) : ℝ) +
       ((2 * φ.ord : ℕ) : ℝ) ^ 2 * ((k : ℝ) - 1) ^ 3 * s.L ^ 2 / m) / 8⌉₊ hk hm a1 a2 a3 a4
   exact ⟨R, rfl, ⟨he1, hp2⟩, ⟨hm1, hm2⟩, ⟨hk1, hk2⟩, hR⟩
-
-theorem exists_ranks_cyclic_frame : ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ s : Scale, s.eps = eps → x0 ≤ s.x →
-    ∃ R : Ranks, RankVal s R ∧ 2 ≤ R.e ∧ R.toFrame = Formalism.HC.cyclicFrame R.e := by
-  intro eps h0 h1
-  obtain ⟨x0, h⟩ := exists_ranks_rankVal_frame eps h0 h1
-  refine ⟨max x0 2, fun s hs hx => ?_⟩
-  have hx2 : (2 : ℝ) ≤ s.x := (le_max_right _ _).trans hx
-  have hH1 : s.x ^ 2 ≤ s.x ^ (2 + 8 * s.eps) := by
-    rw [← Real.rpow_natCast]
-    exact Real.rpow_le_rpow_of_exponent_le (by linarith) (by push_cast; linarith)
-  have p2 : 4 ≤ s.x ^ 2 := by nlinarith
-  obtain ⟨e, he1, he2⟩ := exists_two_pow_between (s.x ^ (2 + 8 * s.eps)) (by linarith)
-  have a5 : 2 ≤ e := by
-    have : ((4 : ℕ) : ℝ) ≤ ((2 ^ e : ℕ) : ℝ) := by
-      have : ((4 : ℕ) : ℝ) = 4 := by norm_num
-      linarith
-    have h4 : 2 ^ 2 ≤ 2 ^ e := by exact_mod_cast this
-    exact (Nat.pow_le_pow_iff_right (by norm_num)).1 h4
-  obtain ⟨R, hφ, hR⟩ := h s hs ((le_max_left _ _).trans hx) (Formalism.HC.cyclicFrame e)
-    he1 he2
-  have hRe : R.e = e := congrArg Formalism.HC.Frame.e hφ
-  exact ⟨R, hR, hRe ▸ a5, hRe ▸ hφ⟩
 
 end GlobalTheory.EX

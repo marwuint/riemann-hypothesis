@@ -28,15 +28,4 @@ theorem omVBadT_of_iso (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X
   omVBadT_of_red X u' ψ hStd hLat hGram
     (fun v hv => extP_of _ _ _ _ _ _ _ (a_succ_le_n X) (hIso v hv)) hLI hRed hFI hFS
 
-theorem omVBadT_of_isoX (hStd : Formalism.L2.SG.Pf.NcX.OmVSt.OmVStd X ψ) (hLat : Formalism.L2.SG.Pf.NcX.OmVSt.OmVLat X)
-    (hGram : Formalism.L2.SG.Pf.NcX.OmVSt.OmVGram X u')
-    (hIso : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →
-      IsoExt X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) (D.R.rS + 1 + D.R.rS) (yTup X u' v))
-    (hLI : ∀ v : PlX X, LeftInvO X.B.I.cm.sig X.B.I.J ψ v (n := X.B.I.n) (D.R.rS + 1 + D.R.rS))
-    (hRed : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →
-      RedP X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) (D.R.rS + 1 + D.R.rS) (yTup X u' v))
-    (hFI : FFInertB) (hFS : FFSplitB) :
-    Formalism.L2.SG.Pf.NcX.OmVSt.OmVBadT X u' ψ :=
-  omVBadT_of_iso X u' ψ hStd hLat hGram hIso hLI hRed hFI hFS
-
 end PI.OmVd

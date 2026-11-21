@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameBaseC
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIsoOfIsProperOfExistsUniqueFieldPointOfIsInteg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsTrans
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingHomExtValuationSubring
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CorrespondenceDiagonalStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CorrespondenceDiagonal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MultiplicationLatticeSecond
 
 set_option autoImplicit false
 
@@ -50,19 +51,6 @@ theorem exists_lift_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.
   rw [Scheme.Hom.comp_apply]
   refine Z.cover.le (Set.mem_iUnion.2 ⟨a, ?_⟩)
   exact (Z.U a).2.range_fromSpec.le ⟨spMap φ x, by rw [← h]; exact (Scheme.Hom.comp_apply _ _ _).symm⟩
-
-theorem flagAt_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a : Fin Z.m}
-    {φ : Γ(Z.X, (Z.U a).1) →+* k} (h : spMap φ ≫ Z.chart a = w) : Z.FlagAt w ((Z.fr a).bc φ) := by
-  have hf := isFrame_bc E H Dw _ _ _ _ _ _ _ φ _ _ (Z.frame a)
-  rw [← Category.assoc, h] at hf
-  exact ⟨a, φ, h, hf, SameFlag.refl fun τ i => (hf.1 τ i).1⟩
-
-theorem natImg_refl (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} (hw : Set.range w ⊆ Z.opn) :
-    NatImg Z Z w w := by
-  obtain ⟨mu, hmu, ht⟩ := exists_isTrans_id (Y := Y) Z.i
-  obtain ⟨a, φ, h⟩ := Z.exists_chart w hw
-  refine ⟨𝟙 _, mu, (Z.fr a).bc φ, ht, by simp, flagAt_chart Z h, ?_⟩
-  simpa only [hmu, Category.comp_id] using flagAt_chart Z h
 
 theorem flagAt_push {Z₁ Z₂ : Mdl Y i₀} (hty : ∀ σ, Z₂.ty σ ⊆ Z₁.ty σ) {k : Type} [Field k] {w₁ : Sp k ⟶ Z₁.X}
     {w₂ : Sp k ⟶ Z₂.X} {τ : (Y Z₁.i).X ⟶ (Y Z₂.i).X} (mu : SABMap (Y Z₁.i).t (Y Z₂.i).t τ)
@@ -109,33 +97,6 @@ theorem comp_π_eq {M Z : Mdl Y i₀} {f : M.X ⟶ Z.X} (hf : IsMap M Z f) {τ :
     exact (Scheme.fromSpecResidueField_apply x a).symm ▸ hx)
   obtain ⟨rfl, -⟩ := TransUniq.trans_unique E H Dw Xo p W Y _ _ τ τ' mu mu' hf.1.2.1 t t'
   exact (Category.assoc _ _ _).symm.trans e
-
-theorem map_mem_opn {M Z : Mdl Y i₀} {f : M.X ⟶ Z.X} (hf : IsMap M Z f) {x : M.X} (hx : x ∈ M.opn) : f x ∈ Z.opn := by
-  obtain ⟨_, _, _, -, -, -, h⟩ := hf.2 (M.X.residueField x) (M.X.fromSpecResidueField x) (by
-    rintro _ ⟨a, rfl⟩
-    exact (Scheme.fromSpecResidueField_apply x a).symm ▸ hx)
-  let a : Sp (M.X.residueField x) := IsLocalRing.closedPoint _
-  refine range_subset_opn Z h ⟨a, (Scheme.Hom.comp_apply _ _ a).trans ?_⟩
-  exact congrArg f (Scheme.fromSpecResidueField_apply x a)
-
-theorem mem_genO_of_mem_opn (hp : p ≠ 0) (Z : Mdl Y i₀) {x : Z.X} (hx : x ∈ Z.opn) : x ∈ Z.genO := by
-  obtain ⟨a, ha⟩ := Set.mem_iUnion.1 (Z.cover.ge hx)
-  have hu : IsUnit ((p : ℕ) : Γ(Z.X, (Z.U a).1)) := by
-    have := (IsUnit.mk0 ((p : ℕ) : Z.i.c.F) (Nat.cast_ne_zero.2 hp)).map (Z.alg a)
-    rwa [map_natCast] at this
-  have h := Z.X.basicOpen_res ((p : ℕ) : Γ(Z.X, ⊤)) (homOfLE (le_top : (Z.U a).1 ≤ ⊤)).op
-  rw [map_natCast, Scheme.basicOpen_of_isUnit _ hu] at h
-  exact (h.le ha).2
-
-theorem preimage_genO {M Z : Mdl Y i₀} (f : M.X ⟶ Z.X) : f ⁻¹ᵁ Z.genO = M.genO := by
-  rw [Mdl.genO, Scheme.preimage_basicOpen_top, map_natCast]
-  rfl
-
-def genMap {M Z : Mdl Y i₀} (f : M.X ⟶ Z.X) : M.genO.toScheme ⟶ Z.genO.toScheme :=
-  f.resLE Z.genO M.genO (preimage_genO f).ge
-
-@[reassoc] theorem genMap_ι {M Z : Mdl Y i₀} (f : M.X ⟶ Z.X) : genMap f ≫ Z.genO.ι = M.genO.ι ≫ f :=
-  Scheme.Hom.resLE_comp_ι _ _
 
 end Free
 

@@ -4,9 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EventuallyMeasu
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeGramScalarAlmostAll
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteAlgebrasOverHenselianAndComplete
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicPairUnitaryTransitiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitQuadraticOrderPrincipalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticOrderPrincipalStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicPairUnitaryTransitive
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitQuadraticOrderPrincipal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuadraticOrderPrincipal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalOrderQuadraticAlmostAllStatement
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -133,7 +133,7 @@ theorem mem_primV_of (O : Subring (Fv F v ⊗[F] E))
     simp only [Subring.coe_mul, HO, HiO]
     rw [this]
     by_cases h : i = j <;> simp [Matrix.one_apply, h]
-  obtain ⟨g0, hg0, hgx⟩ := GlobalTheory.T.hyperbolic_pair_unitary_transitive O τ (fun z => Subtype.ext (hss z)) h2
+  obtain ⟨g0, hg0, hgx⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.PrimCarry.exists_unitary_carry_primitive O τ (fun z => Subtype.ext (hss z)) h2
     (fun p β hβ hf => by
       obtain ⟨ε, z, h1, h3⟩ := hgood p β hβ (congrArg Subtype.val hf)
       exact ⟨ε, z, Subtype.ext h1, Subtype.ext h3⟩)
@@ -239,8 +239,8 @@ theorem eventually_primV_decomposition : ∀ (F E : Type) [Field F] [NumberField
     haveI : HenselianLocalRing (v.adicCompletionIntegers F) := GlobalTheory.henselianLocalRing_of_isAdicComplete _
     by_cases hsq : ∃ e, D = e * e
     · obtain ⟨e, rfl⟩ := hsq
-      exact GlobalTheory.T.split_quadratic_order_principal _ O ι' δ e h1 h3 h4 (isUnit_of_mul_isUnit_left h5) h6
-    · exact GlobalTheory.T.unramified_quadratic_order_principal _ O ι' δ D h1 h3 h4 h5 h6 hsq
+      exact _root_.GlobalTheory.CompanionTheory.SplitQuadratic.isPrincipalIdealRing_of_sq_eq_sq _ O ι' δ e h1 h3 h4 (isUnit_of_mul_isUnit_left h5) h6
+    · exact _root_.GlobalTheory.CompanionTheory.QuadraticUnit.isPrincipalIdealRing_of_nonsquare_unit _ O ι' δ D h1 h3 h4 h5 h6 hsq
   haveI : Module.Finite (Fv F v) (Fv F v ⊗[F] E) := by
     haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)
     infer_instance

@@ -1,6 +1,19 @@
 import Formalism.WachLatticeTwists.CharacterSplitJumps.CharacterJumpProofs.MemAnnih
-import Formalism.WachLatticeTwists.HodgeTateChains.CorrectedHypothesisWConsequences
-import Formalism.WachLatticeTwists.LatticeDualFibres.PropLocContOfLattices
+import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.MinimalExponentAttained
+import Formalism.WachLatticeTwists.HodgeTateChains.XiAdicFiltrationData
+import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.Imports
+import Formalism.WachLatticeTwists.HodgeTateChains.Statement
+import Formalism.WachLatticeTwists.TorsionLengthCounts.SubmoduleLengthBoundStatement
+import Formalism.WachLatticeTwists.HodgeTateChains.H2KilledByTateDuality
+import Formalism.WachLatticeTwists.HodgeTateChains.GammaIterateMatrixCongruence
+import Formalism.WindowSums.AnnihilatorPolynomials.ZpowVal
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.LocDualOrth
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.QuotLen
+import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
+import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
+import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
+import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.ExistsBasisOfLattice
 
 open Classical
 
@@ -83,43 +96,8 @@ theorem bkbConv : StatBKbConv := by
     have hz := h4 (q a - x) (fun t => by rw [map_sub, LinearMap.sub_apply, hpr t, sub_self])
     exact sub_eq_zero.1 hz
 
-theorem bkbBoth : StatBKbBoth := by
-  intro O _ _ _ A HV HT' HV' _ _ _ _ _ _ _ _ _ _ _ _ _ q j' pr pair HfV HfV' h1 h1' h2 h3 h4
-  refine ⟨?_, bkbConv O A HV HT' HV' q j' pr pair HfV HfV' h1 h2 h3 h4⟩
-  ext t
-  rw [mem_annih]
-  constructor
-  · intro ht y hy
-    obtain ⟨a, ha, rfl⟩ := hy
-    rw [LinearMap.flip_apply, h3, (h1 a).1 ha _ ht, Submodule.Quotient.mk_zero]
-  · intro ht
-    show j' t ∈ HfV'
-    rw [h1' (j' t)]
-    intro a ha
-    by_contra hne
-    obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-    have hmem : ((algebraMap O (FractionRing O) ϖ)⁻¹ * (pair a (j' t))⁻¹) • a ∈ HfV :=
-      HfV.smul_mem _ ha
-    have h0 := ht _ ⟨_, hmem, rfl⟩
-    rw [LinearMap.flip_apply, h3, map_smul, LinearMap.smul_apply, smul_eq_mul, mul_assoc,
-      inv_mul_cancel₀ hne, mul_one, Submodule.Quotient.mk_eq_zero, Submodule.mem_one] at h0
-    obtain ⟨y, hy⟩ := h0
-    have hϖ0 : algebraMap O (FractionRing O) ϖ ≠ 0 :=
-      (map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).2 hϖ.ne_zero
-    have h5 : algebraMap O (FractionRing O) (ϖ * y) = algebraMap O (FractionRing O) 1 := by
-      rw [map_mul, hy, mul_inv_cancel₀ hϖ0, map_one]
-    have h6 : ϖ * y = 1 := IsFractionRing.injective O _ h5
-    exact hϖ.not_isUnit ⟨⟨ϖ, y, h6, by rw [mul_comm]; exact h6⟩, rfl⟩
-
 theorem rowBK : StatRowBK := by
   intro O _ _ _ X _ _ Hc HV Cs HV' _ _ _ _ _ _ _ _ _ _ _ q j' pr pair HfV HfV' F Fs h1 h2 h3 h4 hF hFs
   rw [hF, hFs, bkbConv O Hc HV Cs HV' q j' pr pair HfV HfV' h1 h2 h3 h4]
-
-theorem propLocBK : StatPropLocBK := by
-  intro O A HV HT' HV' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ q j' pr pair HfV HfV' ℓ e' d N δ ι₁ ι₂ P Q hA hP
-    hC hN hδ h1 h2
-  have : Module.IsTorsionFree O HV' := Module.IsTorsionFree.trans (R := FractionRing O)
-  exact LOC.propLoc O A HV HT' HV' q j' pr (HfV.restrictScalars O) (HfV'.restrictScalars O) ℓ e' d
-    N δ ι₁ ι₂ P Q (bkbConv O A HV HT' HV' q j' pr pair HfV HfV' hA hP hC hN) hδ h1 h2
 
 end Formalism.RepresentationBoundsCohomology.JT

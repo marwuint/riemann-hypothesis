@@ -220,24 +220,6 @@ theorem curvDe_nonneg (X : Data E r) {x0 : Frame X.Ψ r} {z : V (nd X)} (hz : cp
   simp only [de2, sgn]
   split_ifs <;> first | omega | norm_num
 
-section Weights
-
-variable {X : Data E r} (w : Weights X)
-
-theorem second_degree_eq_on_gap {a b : Fin r} (h : IsGap X a b) (τ : X.Ψ) : de2 X τ a = de2 X τ b := by
-  obtain ⟨h1, h2⟩ := h
-  simp only [de2]
-  split_ifs <;> first | rfl | omega
-
-theorem gap_rem (τ : X.Ψ) (a b : Fin r) (h : IsGap X a b) : w.rem τ b ≤ w.rem τ a := by
-  have h2 := (w.gap_div τ a b h).1
-  have e : ((b : ℕ) : ℤ) = (a : ℕ) + 1 := by have := h.1; omega
-  simp only [Weights.rem, Weights.Fp, Weights.L, frameWt, kapW, Pi.add_apply, Pi.sub_apply,
-    Pi.smul_apply, smul_eq_mul, second_degree_eq_on_gap h τ, e]
-  linarith
-
-end Weights
-
 theorem isInv_iff (X : Data E r) (u : Frame X.Ψ r → ℝ) : IsInv X u ↔ IsInvFn X u := by
   constructor
   · rintro ⟨h1, h2⟩ γ hγ x hx b hb
@@ -327,32 +309,10 @@ theorem T_pos (w : Weights X) : (0 : ℝ) < w.T := by
   have := w.T_forty
   exact_mod_cast (by omega : 0 < w.T)
 
-theorem dp_pos (w : Weights X) : 0 < dp X := by
-  have h1 : (0 : ℝ) < X.Ψ.card := by exact_mod_cast card_pos w.shape.D_ge
-  have h2 : (0 : ℝ) < X.p0 := by exact_mod_cast w.shape.p0_pos
-  unfold dp; positivity
-
-theorem one_le_RR (X : Data E r) : 1 ≤ RR X := one_le_pow₀ (one_le_rd X)
-
-theorem frame_theta_const_pos (w : Weights X) : 0 < w.c1 := by
-  have h1 := T_pos w
-  have h2 := dp_pos w
-  have h3 : (0 : ℝ) < X.p0 := by exact_mod_cast w.shape.p0_pos
-  have h4 := w.c_pos
-  have h5 := one_le_RR X
-  unfold Weights.c1; positivity
-
 theorem frame_theta_weight_pos (w : Weights X) : 0 < a1 X := by
   have h1 : (0 : ℝ) < X.Ψ.card := by exact_mod_cast card_pos w.shape.D_ge
   have h5 := one_le_rd X
   unfold a1; positivity
-
-theorem w_nz (x : Frame X.Ψ r) (hx : x ∈ X.dom) : ∃ k, I.w k x ≠ 0 := by
-  by_contra h
-  push Not at h
-  obtain ⟨C, hC⟩ := I.w_lower
-  have := (Real.exp_pos _).trans_le (hC x hx)
-  simp [famNorm, Data.pnorm, h] at this
 
 theorem base_psi_weighted_cf : cfwM X I.ps0 (a1 X) := by
   obtain ⟨C, hC⟩ := I.potential_bounded
@@ -360,12 +320,6 @@ theorem base_psi_weighted_cf : cfwM X I.ps0 (a1 X) := by
   refine ⟨⟨C, 0, fun x hx => by simpa using hC x hx⟩, fun η hη _ => ?_⟩
   obtain ⟨C', h⟩ := hA η hη
   exact ⟨C', A, fun x hx ξ hξ ht => h x hx ξ hξ fun τ => (depth_iff X hx hξ τ).2 (ht τ)⟩
-
-theorem base_psi_levi_lower_bound (x0 : Frame X.Ψ r) (z : V (nd X)) (hz : cpt X x0 z ∈ X.dom) (ξ : Fin (nd X) → ℂ) :
-    -(r * curvDe X x0 z ξ) ≤ lev X x0 I.ps0 z ξ := by
-  obtain ⟨x1, D, ho, -, h1, -, h2⟩ := transfer X x0 z hz
-  rw [h2 _ I.potential_invariant.1 I.potential_smooth, curvDe, h1]
-  exact I.curvature_lower_bound x1 ho 0 (IW.zero_mem_OmF X x1 ho) _
 
 theorem posL (x0 : Frame X.Ψ r) (z : V (nd X)) (hz : cpt X x0 z ∈ X.dom) (ξ : Fin (nd X) → ℂ)
     (hξ : ξ ≠ 0) : 0 < curv X x0 I.toWeights.L z ξ := by

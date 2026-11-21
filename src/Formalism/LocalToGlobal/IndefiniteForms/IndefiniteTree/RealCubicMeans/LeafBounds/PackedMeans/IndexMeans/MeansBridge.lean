@@ -23,12 +23,4 @@ structure RecTie (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) 
   hcc : J.cc j = P.cc
   hQ : J.Qcc j = P.Qcc
 
-theorem leafMeans_of_pack (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : SlopeArithmeticParameters R.toRealDat)
-    (hd : NeZero D.host.d) (j : Fin D.R.m) {Tau : Type} [Fintype Tau] (P : MeansPack Tau (J.ι j))
-    (t : RecTie R F I J hd j P) (h : Rows P) (ha : P.IntermediateScaleBounds) (hdd : P.HeightGapBound) (he : P.SpreadBoundVariant) (h6 : P.I6)
-    (hp : P.PrimeSum) (h7 : P.I7) {Ca Cb : ℝ} (hCa : P.indexMeanConstant ≤ Ca) (hCb : Ce + 105 ≤ Cb) :
-    Formalism.L2.Indef.Tree.LeafMeans Ca Cb (faceLiftFactor R F I J hd j) := by
-  rw [Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts.leafMeans_iff, t.hX, t.hsl, t.hT, t.hLL, t.hU, t.hE, t.hcc, t.hQ]
-  exact P.means h ha hdd he h6 hp h7 hCa hCb
-
 end IxMeans

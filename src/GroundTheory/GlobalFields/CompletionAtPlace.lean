@@ -68,16 +68,6 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [ContinuousSMul (v.adicCompletion K) (w.adicCompletion L)]
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
-theorem algebraMap_adicCompletion_eq [w.asIdeal.LiesOver v.asIdeal] :
-    algebraMap (v.adicCompletion K) (w.adicCompletion L) = adicCompletionMap v w := by
-  have h := (denseRange_algebraMap (R := 𝓞 K) (K := K) v).equalizer
-    (continuous_algebraMap (v.adicCompletion K) (w.adicCompletion L))
-    (continuous_adicCompletionMap v w) (funext fun x ↦ ?_)
-  · exact RingHom.ext (congrFun h)
-  · simp only [Function.comp_apply]
-    rw [adicCompletionMap_algebraMap, ← IsScalarTower.algebraMap_apply,
-      IsScalarTower.algebraMap_apply K L (w.adicCompletion L)]
-
 theorem valued_algebraMap_adicCompletion' [w.asIdeal.LiesOver v.asIdeal]
     (x : v.adicCompletion K) :
     Valued.v (algebraMap (v.adicCompletion K) (w.adicCompletion L) x) =
@@ -121,17 +111,5 @@ theorem finite_adicCompletion : Module.Finite (v.adicCompletion K) (w.adicComple
   inferInstance
 
 end Extension
-
-section Check
-
-open AdicLiesOver
-
-variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
-  (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
-
-example : ValuativeExtension (v.adicCompletion K) (w.adicCompletion L) := inferInstance
-example : Module.Finite (v.adicCompletion K) (w.adicCompletion L) := inferInstance
-
-end Check
 
 end GroundTheory.Global

@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FirstHalfLocalCohomologyVanishingOfLocalDualityT
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOneOfMemProKer
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroup
 
 noncomputable section
 
@@ -41,7 +41,7 @@ theorem frob_scalar (bkP : BKPh X) (h : GalHyp bkP i s) {z : GE N} {L : Subgroup
     (hS : ∀ σ : GE N, IsFrob (N.plOm.1 P) (normV P) σ → ∃ g : GE N, g * σ * g⁻¹ * z⁻¹ ∈ L)
     {v : PlE D.host} (hv : Over P v) {σ : GE N}
     (hσ : IsFrob (N.plOm.1 v) (normV v) σ) : ∃ c : ResidueField (X.O0 i), c ≠ 0 ∧ c ≠ 1 ∧ resT i s σ = c • 1 := by
-  obtain ⟨e, he, -, hu, -⟩ := GlobalTheory.T.tameInertiaElement_acts_by_scalar D N X bkP i s z h.1 hz
+  obtain ⟨e, he, -, hu, -⟩ := _root_.GlobalTheory.TwSys.TameScalar.exists_scalar_tmat_of_tame_inertia D N X bkP i s z h.1 hz
   have c0 : residue (X.O0 i) e ≠ 0 := (residue_ne_zero_iff_isUnit _).2 e.isUnit
   have c1 : residue (X.O0 i) e ≠ 1 := by
     rw [← residue_ne_zero_iff_isUnit, map_sub, map_one, sub_ne_zero] at hu
@@ -119,9 +119,9 @@ theorem firstHalf : TameLocal → ∀ (D : Formalism.BasicNotions.D7) (N : NData
       intro σ hσ m
       have hσL := (hP.2.1 b).1 v hv B hB hσ
       rcases hρ with rfl | hρ
-      · rw [(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z hM hL A κ _ hK (isDual_dualRep i s) Y σ hσL).1, hκB σ hσ, Units.val_one,
+      · rw [(_root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl2 M L z hM hL A κ _ hK (isDual_dualRep i s) Y σ hσL).1, hκB σ hσ, Units.val_one,
           one_smul]
-      · rw [(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z hM hL A κ _ hK hρ Y σ hσL).2.1, hκB σ hσ, Units.val_one, one_smul]
+      · rw [(_root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl2 M L z hM hL A κ _ hK hρ Y σ hσL).2.1, hκB σ hσ, Units.val_one, one_smul]
     obtain ⟨h4, h5⟩ := hγ A _ (repOn ρ κ Y) (nu X i + 1) h1 h2 h3 f
     obtain ⟨φ, hφ⟩ := exists_isFrob (F := D.host.E) hB
     exact h4 (fix v hv B hB φ hφ _ (h5 φ hφ))

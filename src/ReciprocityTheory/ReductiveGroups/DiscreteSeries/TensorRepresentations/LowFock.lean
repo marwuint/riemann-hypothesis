@@ -40,8 +40,4 @@ theorem lowFock_exists (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End
   rw [← hwt]
   exact lfLift_isKHWVec ε hxw hxh
 
-def sVec (ε : Fin n → Bool) : Fock n :=
-  (((univ.filter fun x : Fin n × Fin n => ε x.1 = true ∧ ε x.2 = false ∧ x.2 < x.1).toList).map
-    fun x => ExteriorAlgebra.ι ℂ (Pi.single x (1 : ℂ))).prod
-
 end ReciprocityTheory.ChartRestriction.DS

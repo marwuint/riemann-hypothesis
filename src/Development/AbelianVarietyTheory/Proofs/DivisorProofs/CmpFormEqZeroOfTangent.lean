@@ -4,14 +4,15 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveC
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechDeRhamComparisonBijectiveCupSmooth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullOverOneEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeOfCrystallineComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafComparisonInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeOfCrystallineComparison
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafComparisonInjective
+import Development.AbelianVarietyTheory.Definitions.Divisors.ComparisonMemCechHodgeFiltration
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormValueOnTangentVectorEqZeroOfGlobalFormZeroStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieBasisSmoothCommGroupSchemeFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieBasisSmoothCommGroupSchemeField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineFormTangentValueMulAbelianSchemeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackFormVanishesTangentsOfLieBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmpFormEqZeroOfPullbackVanishingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmpFormEqZeroOfPullbackVanishing
 
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham
 open MonObj
@@ -36,7 +37,7 @@ theorem cmpForm_surjective (hC : GlobalTheory.Published.CrystallineSmoothLift) (
   have hF : clForm _ ω ∈ CechHodgeFiltration (A.hom ≫ 𝟙 (Sp R)) := by rw [cechHodgeFiltration_eq_range]; exact ⟨ω, rfl⟩
   have h1 : c ∈ F1 (A.hom ≫ 𝟙 (Sp R)) := by
     change toH1O _ c = 0
-    apply GlobalTheory.T.structure_sheaf_comparison_injective R A.left _
+    apply _root_.GlobalTheory.CechDR.cmpO_injective R A.left _
     rw [← structureSheaf_comparison_comm, map_zero, hc]
     exact hF
   rw [hodgeFiltration_eq_range] at h1
@@ -51,8 +52,8 @@ theorem cmpForm_eq_zero_of_tangent (hC : GlobalTheory.Published.CrystallineSmoot
     GlobalTheory.CechDR.cmpForm (B.hom ≫ 𝟙 (Sp K)) f = 0 := by
   haveI := hab.comm
   have hsm : Smooth B.hom := hab.smooth
-  obtain ⟨y, hy⟩ := GlobalTheory.T.exists_lieBasis_smooth_commGroupScheme_field K B g hdim
-  refine GlobalTheory.T.cmpForm_eq_zero_of_pullback_vanishing K B hsm f fun L _ σ ↦ ?_
+  obtain ⟨y, hy⟩ := _root_.GlobalTheory.LieField.exists_isLieBasis_field K B g hdim
+  refine _root_.GlobalTheory.PtVanish.cmpForm_eq_zero_of_tanVal K B hsm f fun L _ σ ↦ ?_
   letI : GrpObj ((Over.pullback (spMap σ)).obj B) := Functor.grpObjObj
   have hG := isGrpPullback_pullback B (spMap σ)
   have hab' := GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hG
@@ -84,7 +85,7 @@ theorem lieVal_apply (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] [IsCommMo
 theorem eq_of_tanVal_eq : GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.AbelianHodgeDeRham → ∀ (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∀ v w : epsR K ⟶ B, IsTangent v → IsTangent w → (∀ f : Form (B.hom ≫ 𝟙 (Sp K)), tanVal v f = tanVal w f) → v = w := by
   intro hC hH K _ B _ g hab hdim v w hv hw h
   haveI := hab.comm
-  obtain ⟨y, hy⟩ := GlobalTheory.T.exists_lieBasis_smooth_commGroupScheme_field K B g hdim
+  obtain ⟨y, hy⟩ := _root_.GlobalTheory.LieField.exists_isLieBasis_field K B g hdim
   let b := Serre.Lie.basis (Serre.intAct B) hy
   haveI := Module.Finite.of_basis b
   have hL : Module.finrank K (Serre.Lie (Serre.intAct B)) = g := by

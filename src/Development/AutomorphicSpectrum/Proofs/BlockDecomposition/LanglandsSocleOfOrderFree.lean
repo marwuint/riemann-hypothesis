@@ -2,12 +2,13 @@ import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.GKLocal
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TransposeInverseInvolutionApplyStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandKazhdanContragredientStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandKazhdanContragredient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductTransposeInverseDualReverseStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosocleContragredientSocleStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosocleContragredientSocle
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContragredientProductIrreducibleStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualClassInvolutiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleFiniteLengthStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleFiniteLength
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.LUnlinkedComm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportKeepsProductsCosocles
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Cos
 
@@ -75,7 +76,7 @@ theorem isCosocle_comp_thetaW {N : ℕ} {V W : Type} [AddCommGroup V] [Module �
 theorem equiv_contra_comp_thetaW (hGK : GKLocal k) {N : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ (GL (Fin N) k) W) (hs : IsSmooth (σ.comp (thetaW k N)))
     (hi : Representation.IsIrreducible (σ.comp (thetaW k N))) : Nonempty (σ.Equiv (contra (σ.comp (thetaW k N)))) := by
-  have E := GlobalTheory.T.gelfand_kazhdan_contragredient hGK N (σ.comp (thetaW k N)) hs hi
+  have E := _root_.GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra hGK N (σ.comp (thetaW k N)) hs hi
   rwa [comp_thetaW_thetaW σ] at E
 
 theorem prodIrr_congr {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : ∑ a, (x a).1 = N)
@@ -98,8 +99,8 @@ theorem isSocle_rev_of_isCosocle (hA : GlobalTheory.Published.IrreducibleAdmissi
   have hs : IsSmooth (π.comp (thetaW k N)) := by
     obtain ⟨-, f, hf, -⟩ := hc2
     exact isSmooth_of_surjective (isSmooth_prodIrr y hdy) f hf
-  have hsoc := GlobalTheory.T.cosocle_contragredient_socle hA (π.comp (thetaW k N)) (prodIrr y hdy) (isSmooth_prodIrr y hdy)
-    (GlobalTheory.T.product_irreducible_finite_length hA y hdy) hc2
+  have hsoc := _root_.GlobalTheory.CompanionTheory.SocleContra.isSocle_contra_of_isCosocle hA (π.comp (thetaW k N)) (prodIrr y hdy) (isSmooth_prodIrr y hdy)
+    (_root_.GlobalTheory.CompanionTheory.ProdFL.main hA y hdy) hc2
   obtain ⟨E4⟩ := equiv_contra_comp_thetaW hGK π hs hc2.1
   obtain ⟨hd5, ⟨E5⟩⟩ := GlobalTheory.T.contragredient_product_irreducible hA y hdy
   obtain ⟨E6⟩ := prodIrr_congr e6 hd5 hd

@@ -110,13 +110,6 @@ theorem residueFieldMap_constRes {T : Scheme.{0}} (t : T ⟶ Spec (CommRingCat.o
     Category.assoc]
   rfl
 
-theorem existsUnique_valHom [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} : Set S)) :
-    (∃! φ : S.residueField x →+* ℂ, φ.comp (constRes s x) = RingHom.id ℂ) ∧
-      Function.Bijective (valHom s x) := by
-  refine ⟨⟨_, valHom_spec s x hx, fun ψ hψ => valHom_unique s x hx ψ hψ⟩, ?_⟩
-  rw [valHom_eq s x hx]
-  exact (residueFieldIsoBase s x hx).commRingCatIsoToRingEquiv.bijective
-
 theorem val_ringHom [LocallyOfFiniteType s] (U : S.Opens) (x : S) (hx : x ∈ U)
     (hc : IsClosed ({x} : Set S)) :
     ∃ φ : Γ(S, U) →+* ℂ, ∀ f, φ f = val s f x hx := by

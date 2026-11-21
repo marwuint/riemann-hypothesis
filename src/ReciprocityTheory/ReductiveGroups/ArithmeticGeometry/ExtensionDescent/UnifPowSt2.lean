@@ -35,12 +35,4 @@ structure UnifPowOf2 {j : ℕ} {D D' : DegData R I}
             ((Over.pullback (thick R I e)).map (pG.pr i)).left _ Oinvε _ (hψ i)
             ((U.gt e).t (pD.xe x i))))
 
-def UnifPowSt2 : Prop :=
-  ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R))))
-    (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Unif I D A G) (j : ℕ)
-    (D' : DegData R I) (A' : PolAV (Spec (CommRingCat.of (FractionRing R))))
-    (G' : Over (Spec (CommRingCat.of R))) [GrpObj G'] [IsCommMonObj G']
-    (pD : IsPowDeg D'.toPre D.toPre j) (pA : IsPowPolAV A' A j) (pG : IsPowGrp G' G j),
-    ∃ U' : Unif I D' A' G', Nonempty (UnifPowOf2 pD pA pG U' U)
-
 end ReciprocityTheory.ChartRestriction.G.Out

@@ -148,11 +148,6 @@ theorem columnWeight_spread_eq (u : D.what₂.Word) (τ : D.what₂.Tau) :
   push_cast at this ⊢
   linarith
 
-theorem columnWeight_spread_nonneg (u : D.what₂.Word) (τ : D.what₂.Tau) :
-    0 ≤ ((D.fm u).lam 0 τ).w (lamFst D) - ((D.fm u).lam 0 τ).w (lamLst D) := by
-  have := ((D.fm u).lam 0 τ).anti (show lamFst D ≤ lamLst D from Nat.zero_le _)
-  omega
-
 variable {L : SizeData₂ D}
 
 theorem columnWeight_spread_at_top (L : SizeData₂ D) (u : D.what₂.Word) (τ : D.what₂.Tau) (t : D.host.TT)

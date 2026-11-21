@@ -1211,9 +1211,6 @@ theorem herm_rsmul_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (a : ℝ) (u
   rw [show (a • w) = ((a : ℂ) • w) by ext i; simp [Complex.real_smul], this]
   all_goals simp only [Complex.star_def, Complex.conj_ofReal]
 
-theorem inWb_smul {w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) (c : ℂ) : inWb k r (c • w) := by
-  intro i hi; simp [hw i hi]
-
 theorem herm_zν (hνz : herm (Hpk k r) ν' z' = 0) : herm (Hpk k r) z' ν' = 0 := by
   rw [herm_symm', hνz]; simp
 
@@ -2119,8 +2116,6 @@ def Ut0 (x1 : U.RC k 1 (j + ρ)) : Matrix (Fin (j + 1)) (Fin (j + 1)) ℂ :=
 
 def TX (x1 : U.RC k 1 (j + ρ)) (x : U.RC k j ρ) : U.RC k (j + 1) ρ :=
   (fun v b => Cm x1 x v b, (fun p => Sm x1 x p.1.1 p.1.2, fun a => (Sm x1 x a a).im))
-
-def TU (x1 : U.RC k 1 (j + ρ)) : G.UT (j + 1) → ℂ := fun p => Um x1 p.1.1 p.1.2
 
 theorem skew_diag_re (q : (G.UT j → ℂ) × (Fin j → ℝ)) (a : Fin j) : (U.skewOf q a a).re = 0 := by
   rw [Ux2.skewOf_diag]; simp
@@ -3397,13 +3392,6 @@ theorem split_all : ∀ j ρ : ℕ, D.muN k (j + ρ) =
 end Formalism.FourierDecayAlt.P.Dx2.SplitF
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem unipotent_measure_splitting : Formalism.FourierDecayAlt.D.MuNSplit := by
-  intro k r j hj
-  have h := Dx2.SplitF.split_all (k := k) j (r - j)
-  rw [Dx2.SplitF.muN_cast (show j + (r - j) = r by omega), h,
-    Measure.map_map (Dx2.MN.castMt_cont _).measurable (Dx2.SplitF.psi_meas j (r - j))]
-  rfl
 
 end Formalism.FourierDecayAlt.P
 

@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalComponentMeasureIdentity
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TrueW
@@ -47,7 +47,7 @@ theorem exists_shape_integral_in_normal_frames_alt : ∀ {D : D7} {L : SizeData�
     intro j
     by_cases hj : j < D.R.m
     · obtain ⟨L₀, hL₀⟩ := _root_.GlobalTheory.T.exists_selfDual_lattice W hP j hj
-      obtain ⟨N', hsd, hint⟩ := GlobalTheory.T.exists_move_selfDual_lattice_split_frames D (Yc D j) L₀ hL₀ I (fun i => (l i.1 i.2).k) (fun i => (l i.1 i.2).q)
+      obtain ⟨N', hsd, hint⟩ := _root_.GlobalTheory.SplitLat.exists_selfDual_frames D (Yc D j) L₀ hL₀ I (fun i => (l i.1 i.2).k) (fun i => (l i.1 i.2).q)
         (fun _ => XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (D.R.m - 1 - j))
         (fun i => FY i.1 i.2 j (D.R.m - 1 - j) (by have := (l i.1 i.2).hs; omega)) hinj
       refine ⟨N', fun _ => hsd, fun PP h c hc => ?_⟩
@@ -72,7 +72,7 @@ theorem exists_shape_integral_in_normal_frames_alt : ∀ {D : D7} {L : SizeData�
       exact ((@GlobalTheory.LocMod.normalFrames_and_basePoint_exist D (l i.1 i.2).k _ _ _ _ (ofSplit (l i.1 i.2).q)
         (hxi i.1 i.2)).1 _ ρ _ _ _ (hsc i.1 i.2 j)).1
     choose F hF using hex
-    obtain ⟨M', hsd, hint⟩ := GlobalTheory.T.exists_move_selfDual_lattice_split_frames D (y.bes j ρ h).V₀ L₀ hL₀ I (fun i => (l i.1 i.2).k) (fun i => (l i.1 i.2).q)
+    obtain ⟨M', hsd, hint⟩ := _root_.GlobalTheory.SplitLat.exists_selfDual_frames D (y.bes j ρ h).V₀ L₀ hL₀ I (fun i => (l i.1 i.2).k) (fun i => (l i.1 i.2).q)
       (fun _ => XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Unit) F hinj
     refine ⟨M', hsd, fun PP hP hj' F₀ hF₀ => ?_⟩
     have e := coreFrame_beta_eq _ _ _ _ (hF ⟨PP, hP⟩) hF₀
@@ -95,7 +95,7 @@ theorem exists_shape_integral_in_normal_frames_alt : ∀ {D : D7} {L : SizeData�
     rcases hPP with hg | hq
     · exact Finset.disjoint_left.1 hdisj ((hgP _).2 ⟨PP, hg, rfl⟩) hxT
     · exact hoffT PP hq hxT
-  obtain ⟨N, dT, M, β₀, hN, -, hC, hS⟩ := GlobalTheory.T.seeSawLatticeShapeExists_proof D (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m b₀)) { v with gP := G', N := N₁ } k ι
+  obtain ⟨N, dT, M, β₀, hN, -, hC, hS⟩ := _root_.GlobalTheory.SeeSaw.ShapeExProof.shapeEx D (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m b₀)) { v with gP := G', N := N₁ } k ι
     { o with M := M₁ } hc hdisj' (by show IsSelfDualC D.sp.X' v.NT; rw [hvNT]; exact hLT)
     ⟨hPre.nodup, hPre.all, hPre.inj, hPre.tP, hPre.char, hPre.latT, hPre.line, hPre.tau, hPre.lam, hPre.normT, hPre.topT⟩
     hN₁sd (fun x hx => by

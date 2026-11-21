@@ -15,8 +15,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselRootMeasureInd
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UniformBesselConstant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BlockProjectionBessel
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DegreeNearParameterBound
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplifierOfHypothesesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CellConvStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplifierOfHypotheses
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.OnePlaceKF
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CellConv
 
 noncomputable section
 
@@ -333,140 +334,6 @@ theorem isOrbQuot_smul {L : LocBessel k r} {g : MatKR k r} {μR : Measure (Mt k 
   exact lintegral_congr fun x => lintegral_smul_measure _ _
 
 end coefficient
-
-open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotions in
-
-theorem exists_coef (hH : Hyps) {Cg cb Cu cT CT C0 Cn : ℝ} (D : D7) (large₂ : SizeData₂ D) {C' Cl : ℝ} (hCl : 1000 ≤ Cl)
-    (hm₀ : Cn ≤ D.R.m) (hZ : HypZ D large₂ C' Cl Cg cb Cu cT CT C0) τ w w' (hTT : HypTT D w w') {θ : ℝ} (hθ : 0 < θ)
-    (W : LocW D.R.k D.R.rS) (hW : GoodW D τ w w' θ W) (lam' : Fin (2 * D.R.rS + D.R.k + 1) → ℝ)
-    (hl : l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3) (A : LocS W) (hA : GoodS D lam' A)
-    (hT : 0 < Tr D w) (hT' : 0 < Tr D w') :
-    ∃ f, IsKFinCoefH (toBessel D τ w w' θ W lam' A hW hA hT hT').σ f ∧
-      ∀ γ μR νR ν, CellData (toBessel D τ w w' θ W lam' A hW hA hT hT') W.μG γ μR νR ν →
-        νR {x | Matrix.of x ∉ UH (Hpk D.R.k D.R.rS)} = 0 →
-        A.J νR γ = OrbInt (toBessel D τ w w' θ W lam' A hW hA hT hT') f γ ν := by
-  haveI := FiniteDimensional.complete ℂ W.Wp
-  haveI := FiniteDimensional.complete ℂ W.Wq
-  have hv1 : 1 ≤ D.host.v := hZ.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
-  have hv : 0 < D.host.v := by linarith
-  have hka : 0 < D.host.ka := div_pos Real.pi_pos hv
-  have hg0 : (0 : ℝ) < D.host.g 0 := by exact_mod_cast (D.host.g_prime 0).pos
-  have hg1 : (0 : ℝ) < D.host.g 1 := by exact_mod_cast (D.host.g_prime 1).pos
-  have hkg : 0 < D.host.ka / gg D := div_pos hka (mul_pos hg0 hg1)
-  have hc : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0 :=
-    Complex.ofReal_ne_zero.2 (by positivity)
-  obtain ⟨hU, -, -, o1, -⟩ := GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W lam' A hθ hv hTT hW hA
-  have hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN := o1.2.2.2.2.2.2.2.2.1
-  have hW' := hW
-  obtain ⟨c1, c2, z1, z2, t1, t2, hG, w1, -, w2, -, hN, q1, q2⟩ := hW'
-  let sq : (Fin D.R.k → ℝ) → ℕ → ℝ := fun u n => if h : n - 1 < D.R.k then u ⟨n - 1, h⟩ else 0
-  have hsq : ∀ u (i : Fin D.R.k), sq u (i.val + 1) = u i := fun u i => by simp [sq]
-  have s1 : SideG D.R.k D.R.rS W.z W.π (sq (uS D w τ)) W.μW W.μN W.μG W.νS :=
-    ⟨z1, t1 ▸ hT, ⟨_, c1⟩, GlobalTheory.ThA.capParam_of_isHCTypeW _ _ _ _ _ _ _ z1 (t1 ▸ hT) c1 (hsq _), w1, hNH, hG, q1⟩
-  have s2 : SideG D.R.k D.R.rS W.z' W.π' (sq (uS D w' τ)) W.μW' W.μN W.μG W.νS' :=
-    ⟨z2, t2 ▸ hT', ⟨_, c2⟩, GlobalTheory.ThA.capParam_of_isHCTypeW _ _ _ _ _ _ _ z2 (t2 ▸ hT') c2 (hsq _), w2, hNH, hG, q2⟩
-  obtain ⟨hNum, hcell, heps⟩ := GlobalTheory.T.momentPieriNumerics_of_sizeHyps D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w _ (hsq _)
-  obtain ⟨⟨-, -, -, -, hok⟩, hν⟩ := GlobalTheory.NumFam.num_fam _ _ _ _ _ _ _ _ _ hNum
-  obtain ⟨ν, hlam, hn1, -⟩ := GlobalTheory.hcParam_sub_integral _ (lamD D τ) lam' hNum.2.1 hA.1
-  have hq : n1 ν ≤ D.R.k * D.R.m ^ 5 := by
-    have hm : (1 : ℝ) ≤ D.R.m := by have := D.R.two_le_m; exact_mod_cast (by omega : 1 ≤ D.R.m)
-    have h1 : Cn ≤ (D.R.m : ℝ) ^ 2 := by nlinarith
-    have h2 : ((n1 ν : ℕ) : ℝ) ≤ D.R.k * (D.R.m : ℝ) ^ 5 := by
-      rw [hn1]
-      calc _ ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 := hl
-        _ ≤ (D.R.m : ℝ) ^ 2 * D.R.k * (D.R.m : ℝ) ^ 3 := by gcongr
-        _ = _ := by ring
-    exact_mod_cast h2
-  have hgap : GapAtLeast (epsSH D.R) lam' ((D.R.r : ℝ) ^ 19 / 2) := by
-    rw [hlam, ← heps]; exact (hν ν hq).2.2.1
-  have hDS : (⟨A.H, A.σ⟩ : Rep D.R.k D.R.rS).IsDS (epsSH D.R) lam' := ⟨hA.1, hA.2.1⟩
-  obtain ⟨l, b1, e1⟩ := OpenCellNorm.exists_bessel_scale hH hc s1 ⟨A.H, A.σ⟩ hDS hU hgap hok
-  obtain ⟨l', b2, e2⟩ := OpenCellNorm.exists_bessel_scale hH hc s2 ⟨A.H, A.σ⟩ hDS hU hgap hok
-  obtain ⟨⟨v, k1, n1⟩, ⟨v', k2, n2⟩, w0, η, hw0, -, hJ⟩ :=
-    GlobalTheory.T.bessel_period_positivity hH D τ w w' θ W lam' A _ l l' hθ hkg hT hT' hW hA hgap hok b1 b2 e1 e2
-  have hw0' : w0 ≠ 0 := by
-    obtain ⟨P, -, h1, -⟩ := hw0
-    rintro rfl
-    simp at h1
-  obtain ⟨c, hc0, hc1⟩ := GlobalTheory.BesselDegree.schur_fdeg hH _ _ (epsSH D.R) W.μG hG
-  have hd : (PI.BesselPeriodGGP.fdegH W.μG A.σ w0 : ℂ) ≠ 0 := by
-    have := (hc1 lam' ⟨A.H, A.σ⟩ hDS).1 w0 hw0'
-    rw [show PI.BesselPeriodGGP.fdegH W.μG A.σ w0 = _ from this]
-    exact Complex.ofReal_ne_zero.mpr (mul_pos hc0 (GlobalTheory.CellPieri.fdegHC_pos hA.1.1)).ne'
-  rw [hN] at e1 e2
-  set d : ℂ := (PI.BesselPeriodGGP.fdegH W.μG A.σ w0 : ℂ) with hd'
-  have i1 : ⟪l v, l v⟫_ℂ ≠ 0 := inner_self_ne_zero.2 n1
-  have i2 : ⟪l' v', l' v'⟫_ℂ ≠ 0 := inner_self_ne_zero.2 n2
-  refine ⟨coefF (toBessel D τ w w' θ W lam' A hW hA hT hT') v v' ((η / (d * (⟪l v, l v⟫_ℂ * ⟪l' v', l' v'⟫_ℂ))) • l v)
-    (l' v'), isKFinCoefH_coefF (toBessel D τ w w' θ W lam' A hW hA hT hT') k1 k2 _ _, fun γ μR νR ν hD h0 => ?_⟩
-  have key := (GlobalTheory.CellPieri.amp_eq_orb hH (GlobalTheory.T.amplifier_of_hypotheses hH) GlobalTheory.T.cellConv' (toBessel D τ w w' θ W lam' A hW hA hT hT')
-    ⟨A.H, A.σ⟩ lam' _ W.μG l l' w0 hDS hgap hok hcell hc ENNReal.ofReal_ne_top hG e1 e2 hw0 γ μR νR ν hD v v' k1 k2
-    ((η / (d * (⟪l v, l v⟫_ℂ * ⟪l' v', l' v'⟫_ℂ))) • l v) (l' v')).2
-  rw [hJ νR γ hD.1 h0]
-  refine Eq.trans ?_ key
-  congr 1
-  show η = d * (⟪l v, (η / (d * (⟪l v, l v⟫_ℂ * ⟪l' v', l' v'⟫_ℂ))) • l v⟫_ℂ * ⟪l' v', l' v'⟫_ℂ)
-  rw [inner_smul_right]
-  field_simp
-
-open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Amp in
-
-theorem ampIsBessel : BranchingSupport.Hyps → ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ Ca : ℝ, 0 ≤ Ca ∧ ∀ Cn : ℝ, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), 1000 ≤ Cl → D.host.rdE ≤ large₂.sc.b → m₀ ≤ D.R.m → cdScaleTie D → Bridge.AmpIsBessel D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 Ca := by
-  intro hH Cg cb Cu cT CT C0 C1
-  refine ⟨2 * |C1|, by positivity, fun Cn => ?_⟩
-  obtain ⟨m₁, hm₁⟩ := OpenCellNorm.norm_eq_const_div_deg hH (GlobalTheory.T.amplifier_of_hypotheses hH) GlobalTheory.T.cellConv' Cg cb Cu cT CT C0 C1 Cn
-  refine ⟨max Cn m₁, fun D large₂ C' Cl hCl hb hm hcd hZ τ w w' hTT θ hθw W hW lam' hl A hA hT hT' => ?_⟩
-  have hb0 : 0 < large₂.sc.b := Real.exp_pos _
-  have hθ : 0 < θ := lt_of_lt_of_le (Real.rpow_pos_of_pos hb0 _) hθw.1
-  have hm1 : (1 : ℝ) ≤ D.R.m := by have := D.R.two_le_m; exact_mod_cast (by omega : 1 ≤ D.R.m)
-  have hk : 1 ≤ D.R.k := by have := D.R.m_add_three_le_k; omega
-  have hb1 : 1 ≤ large₂.sc.b := by
-    have hv1 : 1 ≤ D.host.v := hZ.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
-    unfold Host.v at hv1
-    linarith
-  have hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG := hW.2.2.2.2.2.2.1
-  obtain ⟨f, hf, hJ⟩ := exists_coef hH D large₂ hCl ((le_max_left _ _).trans hm) hZ τ w w' hTT hθ W hW lam' hl A hA hT hT'
-  refine ⟨f, 1, one_pos, hf, fun μsec hsec => ?_, fun γ p hp θ' hθ'w νR hν => ?_⟩
-  · have e : ThB.jNorm2 (toBessel D τ w w' θ W lam' A hW hA hT hT') f μsec = MMv D w w' A μsec := by
-      unfold ThB.jNorm2 jNormSq MMv
-      rw [← hW.2.2.2.2.1, ← hW.2.2.2.2.2.1]
-      refine lintegral_congr_ae ?_
-      filter_upwards [ae_cellData hk (toBessel D τ w w' θ W lam' A hW hA hT hT') W.μG hsec] with q hq
-      rcases hq with hq | hq
-      · have hq' : bcWeight _ _ (Tz _ _ W.z) (Tz _ _ W.z') q = 0 := hq
-        rw [hq, hq', zero_mul, zero_mul]
-      · rw [hJ _ _ _ _ hq hG.2.2.1, Real.norm_of_nonneg (Real.sqrt_nonneg _),
-          Real.sq_sqrt (hs_nonneg _)]
-        rfl
-    obtain ⟨K, hK, hM⟩ := hm₁ D large₂ C' Cl hCl ⟨hb, by nlinarith, (le_max_right _ _).trans hm⟩ hcd hZ τ w w' hTT θ hθw W hW
-      μsec hsec
-    rw [e, ENNReal.ofReal_one, one_mul, hM lam' hl A hA]
-    refine ⟨(ENNReal.ofReal_pos.2 (div_pos hK ?_)).ne', le_rfl⟩
-    obtain ⟨κ, -, hdeg⟩ := GlobalTheory.T.formal_degree_proportional hH D τ w w' θ W hcd hW
-    exact (hdeg lam' A hA A.v0 hA.2.2.2.2.2.1).2
-  · have hθ' : 0 < θ' := lt_of_lt_of_le (Real.rpow_pos_of_pos hb0 _) hθ'w.1
-    obtain ⟨g, μR, ν₀, ν, s, hD, h0, hrep, hroot, hs, hA'⟩ := amp_at_root D τ w w' θ W hW lam' A hA hT hT' hp hθ' hν
-    have hle : ENNReal.ofReal (hsNormSq (OrbInt (toBessel D τ w w' θ W lam' A hW hA hT hT') f g (ENNReal.ofReal θ' • ν))) ≤
-        Bridge.orbSqO (toBessel D τ w w' θ W lam' A hW hA hT hT') f p :=
-      le_iSup_of_le g (le_iSup_of_le μR (le_iSup_of_le _
-        (le_iSup_of_le ⟨hrep, hD.2.2.2.1, hroot, isOrbQuot_smul hD.2.2.2.2.2.1⟩ le_rfl)))
-    have e : OrbInt (toBessel D τ w w' θ W lam' A hW hA hT hT') f g (ENNReal.ofReal θ' • ν) =
-        (θ' : ℂ) • OrbInt (toBessel D τ w w' θ W lam' A hW hA hT hT') f g ν := by
-      unfold OrbInt
-      rw [integral_smul_measure, ENNReal.toReal_ofReal hθ'.le, Complex.coe_smul]
-    refine le_trans ?_ (mul_le_mul_right hle _)
-    rw [hA', GlobalTheory.AmpNorm.hsNormSq_smul, hJ _ _ _ _ hD h0, e, GlobalTheory.AmpNorm.hsNormSq_smul, hs,
-      ← ENNReal.ofReal_mul (by positivity), Complex.norm_real, Real.norm_of_nonneg hθ'.le, one_mul, ← mul_assoc]
-    refine ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right ?_ (hs_nonneg _))
-    have h1 : 1 ≤ large₂.sc.b ^ (|C1| * (D.R.m : ℝ) ^ 2) * θ' := by
-      calc (1 : ℝ) ≤ large₂.sc.b ^ (|C1| * (D.R.m : ℝ) ^ 2 + -(C1 * (D.R.m : ℝ) ^ 2)) :=
-            Real.one_le_rpow hb1 (by nlinarith [le_abs_self C1, sq_nonneg (D.R.m : ℝ)])
-        _ ≤ _ := by
-            rw [Real.rpow_add hb0]
-            exact mul_le_mul_of_nonneg_left hθ'w.1 (by positivity)
-    rw [show 2 * |C1| * (D.R.m : ℝ) ^ 2 = |C1| * (D.R.m : ℝ) ^ 2 * (2 : ℕ) by push_cast; ring, Real.rpow_mul_natCast hb0.le,
-      ← mul_pow]
-    exact pow_le_pow_left₀ zero_le_one h1 2
 
 end GlobalTheory.AmpBessel
 

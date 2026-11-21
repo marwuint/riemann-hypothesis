@@ -1,12 +1,12 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.HodgeWedgeFields.H1CommutesBaseChange
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SquareZeroNeighbourhoodAffineStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SquareZeroNeighbourhoodProductZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealSquareLeKernelOfSquareZeroMapStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedImmersionUniversalSquareZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VectorBundleOfLocalFreenessStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CotangentLocalOpenChartExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsLocalChartAtPrimeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SquareZeroNeighbourhoodAffine
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SquareZeroNeighbourhoodProductZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdealSquareLeKernelOfSquareZeroMap
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedImmersionUniversalSquareZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VectorBundleOfLocalFreeness
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CotangentLocalOpenChartExists
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsLocalChartAtPrime
 
 set_option autoImplicit false
 
@@ -36,7 +36,7 @@ theorem exists_nbhd : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp
   have he' : e' ≫ U.ι = e := e.liftCoborder_ι
   let t : (U : Scheme.{0}) ⟶ Sp R := U.ι ≫ s
   have het : e' ≫ t = 𝟙 _ := by simp only [t]; rw [← Category.assoc, he', he]
-  have hE : IsAffine (e'.ker ^ 2).subscheme := GlobalTheory.T.square_zero_neighbourhood_affine R U t e' het
+  have hE : IsAffine (e'.ker ^ 2).subscheme := _root_.GlobalTheory.CompanionTheory.SectionNbhd.isAffine_subscheme_ker_sq R U t e' het
   let c := (e'.ker ^ 2).subschemeι
   have hle : c.ker ≤ e'.ker := by
     simp only [c, Scheme.IdealSheafData.ker_subschemeι]
@@ -74,7 +74,7 @@ theorem exists_nbhd : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp
         simpa [ha] using this.symm
       exact (map_eq_zero_iff _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of R)).hom).1).1 h3
     intro a b ha hb
-    exact GlobalTheory.T.square_zero_neighbourhood_product_zero R U e' i' hi' a b (hk a ha) (hk b hb)
+    exact _root_.GlobalTheory.CompanionTheory.FirstOrderNbhd.ideal_sq_zero R U e' i' hi' a b (hk a ha) (hk b hb)
   · intro Q B _ _ q ρ y hq hsq hy
     have hsurj : Function.Surjective (spMap q) := by
       intro x
@@ -97,7 +97,7 @@ theorem exists_nbhd : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp
       rw [← cancel_mono U.ι, Category.assoc, hy', hy, Category.assoc, he']
     have hk : c.ker ≤ y'.ker := by
       simp only [c, Scheme.IdealSheafData.ker_subschemeι]
-      exact GlobalTheory.T.ideal_square_le_kernel_of_square_zero_map R Q B U e' q ρ y' hq hsq hy2
+      exact _root_.GlobalTheory.CompanionTheory.CotKer.ker_sq_le_ker R Q B U e' q ρ y' hq hsq hy2
     let w : Sp Q ⟶ E := IsClosedImmersion.lift c y' hk
     have hw : w ≫ c = y' := IsClosedImmersion.lift_fac _ _ _
     refine ⟨(Spec.preimage (w ≫ iso.hom)).hom, ?_⟩
@@ -109,10 +109,10 @@ theorem exists_nbhd : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp
 theorem cotSt : CotSt := by
   intro R _ X s e g he hs
   obtain ⟨P, _, α, ε, j, h1, h2, h3, h4, h5, h6⟩ := exists_nbhd R X s e he
-  obtain ⟨W, i1, i2, i3, i4, y₀, hy⟩ := GlobalTheory.T.closed_immersion_universal_square_zero R X s e P α ε j h1 h2 h3 h4 h5 h6
-  refine ⟨W, i1, i2, i3, i4, y₀, GlobalTheory.T.vector_bundle_of_local_freeness R W g fun p ↦ ?_, hy⟩
-  obtain ⟨r, A, C, _, _, _, _, j, k, hr, _, _, hjs, hε, f1, f2, f3⟩ := GlobalTheory.T.exists_local_chart_at_prime R X s e g he hs p
-  obtain ⟨E⟩ := GlobalTheory.T.cotangent_local_open_chart_exists R X s e he W y₀ hy r A C j k hjs hε
+  obtain ⟨W, i1, i2, i3, i4, y₀, hy⟩ := _root_.GlobalTheory.CompanionTheory.CotLift.isCot_of_lifting R X s e P α ε j h1 h2 h3 h4 h5 h6
+  refine ⟨W, i1, i2, i3, i4, y₀, _root_.GlobalTheory.CompanionTheory.Cot.vb_of_free_on_basicOpens R W g fun p ↦ ?_, hy⟩
+  obtain ⟨r, A, C, _, _, _, _, j, k, hr, _, _, hjs, hε, f1, f2, f3⟩ := _root_.GlobalTheory.CompanionTheory.CotChart.exists_smooth_chart R X s e g he hs p
+  obtain ⟨E⟩ := _root_.GlobalTheory.CompanionTheory.CotLoc.cotangent_away R X s e he W y₀ hy r A C j k hjs hε
   have : Nontrivial (Localization.Away r) := by
     refine ⟨⟨algebraMap R _ 1, algebraMap R _ 0, fun h ↦ ?_⟩⟩
     obtain ⟨⟨_, n, rfl⟩, hc⟩ := (IsLocalization.eq_iff_exists (Submonoid.powers r) _).1 h

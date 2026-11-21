@@ -6,12 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeAndR
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeTorusCompare
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SplitsAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureCohomologyResidueFieldFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeSpecialFibreCohomologyLiftArtinianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalFunctionsConstantAfterBaseChangeOfAbelianSStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WedgePropertyFromFibresStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupSelfZeroAbelianH1Statement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyStructureSheafCohomologyAnyFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureCohomologyResidueFieldFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeSpecialFibreCohomologyLiftArtinian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalFunctionsConstantAfterBaseChangeOfAbelianS
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WedgePropertyFromFibres
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupSelfZeroAbelianH1
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyStructureSheafCohomologyAnyField
+import Development.AbelianVarietyTheory.Definitions.Divisors.PreUMono
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -58,10 +59,10 @@ theorem fp_and_bc (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R))
       (Module.Finite R (HO2 A.hom) ∧ Module.Projective R (HO2 A.hom)) ∧ StructureSheafH1BaseChange A.hom ∧ StructureSheafH2BaseChange A.hom := by
   have := hA.proper
   have := hA.smooth
-  refine GlobalTheory.T.structure_cohomology_residue_field_fibre R A.left A.hom inferInstance inferInstance (GlobalTheory.T.globalFunctionsConstantAfterBaseChange_of_abelianScheme R A hA) ?_
+  refine _root_.GlobalTheory.AbCoh.CohBaseChange.main R A.left A.hom inferInstance inferInstance (_root_.GlobalTheory.AbCoh.uConst_of_isAbelianScheme R A hA) ?_
   intro R' _ _ _ _ k _ _ α hα X' s' φ X₀ s₀ ψ hφ w
   obtain ⟨_, hA', hg'⟩ := exists_grpObj_of_isPullback (algebraMap R R') A g s' φ hφ hA hg
-  exact GlobalTheory.T.abelianSchemeSpecialFibre_cohomology_lift_artinian R' (Over.mk s') g hA' hg' k α hα X₀ s₀ ψ w
+  exact _root_.GlobalTheory.AbCoh.artinian_pullHO_surjective R' (Over.mk s') g hA' hg' k α hα X₀ s₀ ψ w
 
 theorem rankAtStalk_HO1 (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) [Module.Finite R (HO1 A.hom)]
@@ -71,7 +72,7 @@ theorem rankAtStalk_HO1 (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g 
   have hpb := IsPullback.of_hasPullback A.hom (spMap (algebraMap R κ))
   obtain ⟨e, -⟩ := hb κ _ _ _ hpb
   obtain ⟨_, hA', hg'⟩ := exists_grpObj_of_isPullback (algebraMap R κ) A g _ _ hpb hA hg
-  have hκ := (GlobalTheory.T.abelianVariety_structureSheaf_cohomology_anyField κ _ g hA' hg').2.1
+  have hκ := (_root_.GlobalTheory.AbCoh.abelian_HO_field_any κ _ g hA' hg').2.1
   rw [rankAtStalk_eq_finrank_residueField, ← hκ]
   exact e.finrank_eq
 
@@ -81,9 +82,9 @@ theorem oStr_noetherian : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : 
   intro R _ _ A _ g hA hg
   obtain ⟨⟨h1f, h1p⟩, ⟨h2f, h2p⟩, hb1, hb2⟩ := fp_and_bc R A g hA hg
   refine ⟨⟨h1f, h1p, rankAtStalk_HO1 R A g hA hg hb1⟩, ?_, hb1, hb2⟩
-  refine GlobalTheory.T.wedge_property_from_fibres R A.left A.hom h1f h1p h2f h2p hb1 hb2 (GlobalTheory.T.cup_self_zero_abelian_h1 R A g hA hg) ?_
+  refine _root_.GlobalTheory.AbCoh.Wedge.wedgeO_of_fibres R A.left A.hom h1f h1p h2f h2p hb1 hb2 (_root_.GlobalTheory.AbCoh.cup_self_eq_zero_of_isAbelianScheme R A g hA hg) ?_
   intro k _ _ X' s' φ h
   obtain ⟨_, hA', hg'⟩ := exists_grpObj_of_isPullback (algebraMap R k) A g s' φ h hA hg
-  exact (GlobalTheory.T.abelianVariety_structureSheaf_cohomology_anyField k (Over.mk s') g hA' hg').2.2.1
+  exact (_root_.GlobalTheory.AbCoh.abelian_HO_field_any k (Over.mk s') g hA' hg').2.2.1
 
 end GlobalTheory.AbCohRing

@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveCharDoubleSumPrimePowEvalStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveCharDoubleSumPrimePowEval
+import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
 
 open GlobalTheory.KummerEisensteinGalois Finset
 open scoped Classical
@@ -27,32 +28,6 @@ theorem coefPos_eq (j M : ℕ) (ζ : K) (a₁ a₂ : ℤ) (n : ℕ) :
   congr 1
   · split_ifs <;> simp [-Nat.cast_div_charZero, -Int.natCast_div, -Int.natCast_ediv]
   · split_ifs <;> simp [neg_div, -Nat.cast_div_charZero, -Int.natCast_div, -Int.natCast_ediv]
-
-theorem ffPos_eq (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ : K) (n : ℕ) :
-    ffPos N p m k ψ x t ζ false n = ∑ q ∈ (n : ℤ).divisorsAntidiag,
-      if ¬ (p : ℤ) ∣ q.1 ∧ ¬ (p : ℤ) ∣ q.2 then
-        (q.2.sign : K) * (ψ (q.1 : ZMod (p ^ m)) * (q.1 : K) ^ (k - 2) * (ζ ^ (p ^ m)) ^ (x * t * q.2)) else 0 := by
-  rw [sum_antidiag n (fun A d => if ¬ (p : ℤ) ∣ A ∧ ¬ (p : ℤ) ∣ d then
-        (d.sign : K) * (ψ (A : ZMod (p ^ m)) * (A : K) ^ (k - 2) * (ζ ^ (p ^ m)) ^ (x * t * d)) else 0)]
-  unfold ffPos
-  refine sum_congr rfl fun d hd => ?_
-  have hd0 : (0 : ℤ) < d := by exact_mod_cast Nat.pos_of_mem_divisors hd
-  rw [Int.sign_neg, Int.sign_eq_one_of_pos hd0]
-  simp only [dvd_neg, Int.natCast_dvd_natCast, Int.cast_neg, Int.cast_natCast, Int.cast_one, mul_neg]
-  by_cases h1 : p ∣ d <;> by_cases h2 : p ∣ n / d <;> simp [h1, h2, sub_eq_add_neg]
-
-theorem eePos_eq (N p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) (t : ℤ) (ζ : K) (n : ℕ) :
-    eePos N p m ψ t ζ false n = ∑ q ∈ (n : ℤ).divisorsAntidiag,
-      if ¬ (p : ℤ) ∣ q.1 ∧ ¬ (p : ℤ) ∣ q.2 then
-        (q.2.sign : K) * (ψ⁻¹ (q.2 : ZMod (p ^ m)) * (ζ ^ (p ^ m)) ^ (t * q.2)) else 0 := by
-  rw [sum_antidiag n (fun A d => if ¬ (p : ℤ) ∣ A ∧ ¬ (p : ℤ) ∣ d then
-        (d.sign : K) * (ψ⁻¹ (d : ZMod (p ^ m)) * (ζ ^ (p ^ m)) ^ (t * d)) else 0)]
-  unfold eePos
-  refine sum_congr rfl fun d hd => ?_
-  have hd0 : (0 : ℤ) < d := by exact_mod_cast Nat.pos_of_mem_divisors hd
-  rw [Int.sign_neg, Int.sign_eq_one_of_pos hd0]
-  simp only [dvd_neg, Int.natCast_dvd_natCast, Int.cast_neg, Int.cast_natCast, Int.cast_one, mul_neg]
-  by_cases h1 : p ∣ d <;> by_cases h2 : p ∣ n / d <;> simp [h1, h2, sub_eq_add_neg]
 
 def primeTo (p m : ℕ) [NeZero p] : Finset (ZMod (p ^ m)) := univ.filter fun c => ¬ p ∣ c.val
 
@@ -99,64 +74,6 @@ theorem dvd_val_iff (p m : ℕ) [NeZero p] (hm : 1 ≤ m) (z : ℤ) :
   rw [Int.emod_def]
   exact dvd_sub_left (h.mul_right _)
 
-theorem row_sum (p m N j : ℕ) [NeZero p] (hm : 1 ≤ m) (hN : 0 < N) (ζ : K) (s : ZMod (p ^ m) → ℤ)
-    (Φ : ZMod (p ^ m) → ZMod (p ^ m) → K) (n : ℕ) :
-    ∑ u ∈ primeTo p m, ∑ a : ZMod (p ^ m), Φ u a * coefPos j (N * p ^ m) ζ (N * u.val) (s a) (N * n) =
-    ∑ q ∈ (n : ℤ).divisorsAntidiag, if ¬ (p : ℤ) ∣ q.1 then
-      (q.2.sign : K) * ((q.1 : K) / (p : K) ^ m) ^ (j - 1) *
-        ∑ a : ZMod (p ^ m), Φ (q.1 : ZMod (p ^ m)) a * ζ ^ (s a * q.2) else 0 := by
-  have hN' : (N : ℤ) ≠ 0 := by exact_mod_cast hN.ne'
-  have hNK : (N : K) ≠ 0 := by exact_mod_cast hN.ne'
-  have e : ∀ u : ZMod (p ^ m),
-      ∑ a : ZMod (p ^ m), Φ u a * coefPos j (N * p ^ m) ζ (N * u.val) (s a) (N * n) =
-      ∑ q ∈ ((N * n : ℕ) : ℤ).divisorsAntidiag, if q.1 ≡ N * u.val [ZMOD (N * p ^ m : ℕ)] then
-        (q.2.sign : K) * ((q.1 : K) / (N * p ^ m : ℕ)) ^ (j - 1) *
-          ∑ a : ZMod (p ^ m), Φ u a * ζ ^ (s a * q.2) else 0 := by
-    intro u
-    simp_rw [coefPos_eq, mul_sum]
-    rw [sum_comm]
-    refine sum_congr rfl fun q _ => ?_
-    split_ifs
-    · exact sum_congr rfl fun a _ => by ring
-    · simp
-  rw [sum_congr rfl fun u _ => e u, ← sum_product', ← sum_filter, ← sum_filter]
-  symm
-  refine sum_bij (fun q _ => ((q.1 : ZMod (p ^ m)), ((N : ℤ) * q.1, q.2))) ?_ ?_ ?_ ?_
-  · intro q hq
-    obtain ⟨hq, hp⟩ := mem_filter.mp hq
-    obtain ⟨h1, h2⟩ := Int.mem_divisorsAntidiag.mp hq
-    refine mem_filter.mpr ⟨mem_product.mpr ⟨?_, Int.mem_divisorsAntidiag.mpr ⟨?_, ?_⟩⟩, ?_⟩
-    · simpa [primeTo, dvd_val_iff p m hm] using hp
-    · push_cast; rw [← h1]; ring
-    · push_cast; exact mul_ne_zero hN' h2
-    · simp only [ZMod.val_intCast]
-      rw [Nat.cast_mul]
-      exact (Int.mod_modEq _ _).symm.mul_left'
-  · intro q _ q' _ h
-    simp only [Prod.mk.injEq] at h
-    exact Prod.ext (mul_left_cancel₀ hN' h.2.1) h.2.2
-  · rintro ⟨u, A, d⟩ hw
-    obtain ⟨hw, hA⟩ := mem_filter.mp hw
-    obtain ⟨hu, hq⟩ := mem_product.mp hw
-    obtain ⟨h1, h2⟩ := Int.mem_divisorsAntidiag.mp hq
-    simp only at h1 hA hu
-    obtain ⟨c, hc⟩ := hA.dvd
-    have hA' : A = N * (u.val - (p ^ m : ℕ) * c) := by push_cast at hc ⊢; linear_combination -hc
-    have hcast : (((u.val : ℤ) - (p ^ m : ℕ) * c : ℤ) : ZMod (p ^ m)) = u := by
-      rw [Int.cast_sub, Int.cast_mul, Int.cast_natCast, Int.cast_natCast, ZMod.natCast_self, ZMod.natCast_zmod_val]; ring
-    refine ⟨((u.val : ℤ) - (p ^ m : ℕ) * c, d), mem_filter.mpr ⟨Int.mem_divisorsAntidiag.mpr ⟨?_, ?_⟩, ?_⟩, ?_⟩
-    · apply mul_left_cancel₀ hN'
-      rw [← mul_assoc, ← hA', h1]; push_cast; ring
-    · intro h; apply h2; push_cast; rw [h, mul_zero]
-    · rw [← dvd_val_iff p m hm, hcast]
-      exact (mem_filter.mp hu).2
-    · simp only [hcast, ← hA']
-  · intro q _
-    simp only
-    congr 3
-    push_cast
-    field_simp
-
 theorem col_sum (p m N : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hN : 0 < N) (ψ : DirichletCharacter K (p ^ m))
     (hψ : ψ.IsPrimitive) (ζ : K) (hζ : IsPrimitiveRoot ζ (N * p ^ m)) (y₁ y₂ n₁ n₂ d d' : ℤ)
     (h₁ : ¬ (p : ℤ) ∣ n₁) (h₂ : ¬ (p : ℤ) ∣ n₂) :
@@ -177,7 +94,7 @@ theorem col_sum (p m N : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hN : 0 < N) (ψ : D
       Nat.coprime_pow_right_iff (by omega), Nat.coprime_comm, hp.coprime_iff_not_dvd, ZMod.natCast_zmod_val]
   have hdvd : ∀ z : ℤ, (p : ℤ) ^ m ∣ z ↔ (z : ZMod (p ^ m)) = 0 := by
     intro z; rw [ZMod.intCast_zmod_eq_zero_iff_dvd]; push_cast; rfl
-  obtain ⟨c1, c2⟩ := GlobalTheory.T.primitiveChar_doubleSum_primePow_eval p m K ψ (ζ ^ N) hm hψ hζN n₁ n₂ d d' (fun h => h₁ h.1)
+  obtain ⟨c1, c2⟩ := _root_.GlobalTheory.KummerEisensteinGalois.ChSum.charSum p m K ψ (ζ ^ N) hm hψ hζN n₁ n₂ d d' (fun h => h₁ h.1)
   have e : ∑ a : ZMod (p ^ m), (∑ b : ZMod (p ^ m), ψ ((n₁ : ZMod (p ^ m)) * b - a * (n₂ : ZMod (p ^ m))) *
         ζ ^ (((N : ℤ) * b.val + (p : ℤ) ^ m * y₂) * d')) * ζ ^ (((N : ℤ) * a.val + (p : ℤ) ^ m * y₁) * d) =
       (∑ a : ZMod (p ^ m), ∑ b : ZMod (p ^ m), ψ ((n₁ : ZMod (p ^ m)) * b - (n₂ : ZMod (p ^ m)) * a) *
@@ -215,59 +132,6 @@ theorem col_sum (p m N : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hN : 0 < N) (ψ : D
     · rw [hdvd]; push_cast; rw [hd, hd']; ring
     · rw [← hunit, hd]; exact u.isUnit.mul ((hunit n₂).mpr h₂).neg
     · rw [← hunit, hd']; exact u.isUnit.mul ((hunit n₁).mpr h₁)
-
-theorem entry_sum (p m N k : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hN : 0 < N) (ψ : DirichletCharacter K (p ^ m))
-    (hψ : ψ.IsPrimitive) (ζ : K) (hζ : IsPrimitiveRoot ζ (N * p ^ m)) (x t : ℤ) (i j : ℕ) :
-    ∑ u ∈ primeTo p m, ∑ a : ZMod (p ^ m), ∑ v ∈ primeTo p m, ∑ b : ZMod (p ^ m), ψ (u * b - a * v) *
-      (coefPos (k - 1) (N * p ^ m) ζ (N * u.val) (N * a.val + (p : ℤ) ^ m * (x * t)) (N * i) *
-        coefPos 1 (N * p ^ m) ζ (N * v.val) (N * b.val + (p : ℤ) ^ m * t) (N * j)) =
-    if p ^ m ∣ i + j then (p : K) ^ m * gaussS p m ψ (ζ ^ N) * (((p : K) ^ m) ^ (k - 2))⁻¹ *
-      (ffPos N p m k ψ x t ζ false i * eePos N p m ψ t ζ false j) else 0 := by
-  have e1 : ∀ u a : ZMod (p ^ m), ∑ v ∈ primeTo p m, ∑ b : ZMod (p ^ m), ψ (u * b - a * v) *
-      (coefPos (k - 1) (N * p ^ m) ζ (N * u.val) (N * a.val + (p : ℤ) ^ m * (x * t)) (N * i) *
-        coefPos 1 (N * p ^ m) ζ (N * v.val) (N * b.val + (p : ℤ) ^ m * t) (N * j)) =
-      (∑ q ∈ (j : ℤ).divisorsAntidiag, if ¬ (p : ℤ) ∣ q.1 then (q.2.sign : K) *
-        ∑ b : ZMod (p ^ m), ψ (u * b - a * (q.1 : ZMod (p ^ m))) *
-          ζ ^ (((N : ℤ) * b.val + (p : ℤ) ^ m * t) * q.2) else 0) *
-      coefPos (k - 1) (N * p ^ m) ζ (N * u.val) (N * a.val + (p : ℤ) ^ m * (x * t)) (N * i) := by
-    intro u a
-    have := row_sum p m N 1 hm hN ζ (fun b => (N : ℤ) * b.val + (p : ℤ) ^ m * t) (fun v b => ψ (u * b - a * v)) j
-    simp only [Nat.sub_self, pow_zero, mul_one] at this
-    rw [← this]
-    simp only [sum_mul]
-    exact sum_congr rfl fun v _ => sum_congr rfl fun b _ => by ring
-  simp only [e1]
-  rw [row_sum p m N (k - 1) hm hN ζ (fun a => (N : ℤ) * a.val + (p : ℤ) ^ m * (x * t))
-    (fun u a => ∑ q ∈ (j : ℤ).divisorsAntidiag, if ¬ (p : ℤ) ∣ q.1 then (q.2.sign : K) *
-        ∑ b : ZMod (p ^ m), ψ (u * b - a * (q.1 : ZMod (p ^ m))) *
-          ζ ^ (((N : ℤ) * b.val + (p : ℤ) ^ m * t) * q.2) else 0) i]
-  have e2 : ∀ (c : Prop) [Decidable c] (C : K) (A B : ℤ × ℤ → K),
-      (if c then C * ((∑ q ∈ (i : ℤ).divisorsAntidiag, A q) * ∑ q ∈ (j : ℤ).divisorsAntidiag, B q) else 0) =
-      ∑ q ∈ (i : ℤ).divisorsAntidiag, ∑ q' ∈ (j : ℤ).divisorsAntidiag, if c then C * (A q * B q') else 0 := by
-    intro c _ C A B
-    split_ifs
-    · rw [sum_mul_sum]; simp only [mul_sum]
-    · simp
-  rw [ffPos_eq, eePos_eq, e2]
-  refine sum_congr rfl fun q hq => ?_
-  by_cases h₁ : (p : ℤ) ∣ q.1
-  · simp [h₁]
-  rw [if_pos h₁]
-  simp only [sum_mul (j : ℤ).divisorsAntidiag]
-  rw [sum_comm, mul_sum]
-  refine sum_congr rfl fun q' hq' => ?_
-  by_cases h₂ : (p : ℤ) ∣ q'.1
-  · simp [h₂]
-  simp only [if_pos h₂, mul_assoc (q'.2.sign : K)]
-  rw [← mul_sum, col_sum p m N hm hN ψ hψ ζ hζ (x * t) t q.1 q'.1 q.2 q'.2 h₁ h₂,
-    (Int.mem_divisorsAntidiag.mp hq).1, (Int.mem_divisorsAntidiag.mp hq').1]
-  have hc : (p : ℤ) ^ m ∣ (i : ℤ) + j ↔ p ^ m ∣ i + j := by norm_cast
-  simp only [hc]
-  rw [show k - 1 - 1 = k - 2 from rfl, div_pow, div_eq_mul_inv]
-  by_cases a1 : p ^ m ∣ i + j <;> by_cases a2 : (p : ℤ) ∣ q.2 <;> by_cases a3 : (p : ℤ) ∣ q'.2 <;>
-    simp only [a1, a2, a3, h₁, h₂, not_true, not_false_iff, and_true, and_false, and_self, if_true, if_false,
-      mul_zero, zero_mul, false_and]
-  ring
 
 omit [CharZero K] in
 
@@ -311,34 +175,5 @@ theorem sum_zero_right (p m : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (ψ : Dirichlet
   refine sum_eq_zero fun u hu => sum_eq_zero fun a _ => sum_eq_zero fun v _ => ?_
   rw [← sum_mul, ← zero_mul (f u a * g v), ← sum_affine p m hm ψ hψ u (-(a * v)) (isUnit_of_mem p m hu)]
   simp only [sub_eq_add_neg]
-
-theorem drop_const (p m N k : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hN : 0 < N) (hk : 3 ≤ k)
-    (ψ : DirichletCharacter K (p ^ m)) (hψ : ψ.IsPrimitive) (ζ : K) (y₁ y₂ : ℤ) (i j : ℕ) :
-    ∑ u ∈ primeTo p m, ∑ a : ZMod (p ^ m), ∑ v ∈ primeTo p m, ∑ b : ZMod (p ^ m), ψ (u * b - a * v) *
-      (eisF (k - 1) (N * p ^ m) ζ (N * u.val) (N * a.val + (p : ℤ) ^ m * y₁) i *
-        eisF 1 (N * p ^ m) ζ (N * v.val) (N * b.val + (p : ℤ) ^ m * y₂) j) =
-    ∑ u ∈ primeTo p m, ∑ a : ZMod (p ^ m), ∑ v ∈ primeTo p m, ∑ b : ZMod (p ^ m), ψ (u * b - a * v) *
-      (coefPos (k - 1) (N * p ^ m) ζ (N * u.val) (N * a.val + (p : ℤ) ^ m * y₁) i *
-        coefPos 1 (N * p ^ m) ζ (N * v.val) (N * b.val + (p : ℤ) ^ m * y₂) j) := by
-  by_cases hi : i = 0
-  · subst hi
-    have hk1 : k - 1 ≠ 1 := by omega
-    simp only [eisF, const0, if_true, if_neg hk1]
-    rw [sum_zero_left p m hm ψ hψ]
-    simp [coefPos]
-  by_cases hj : j = 0
-  · subst hj
-    have e : ∀ v ∈ primeTo p m, ∀ z : ℤ, eisF 1 (N * p ^ m) ζ (N * v.val) z 0 =
-        ((1 / 2 - frc (N * p ^ m) (N * v.val) : ℚ) : K) := by
-      intro v hv z
-      have : ¬ ((N * p ^ m : ℕ) : ℤ) ∣ N * v.val := by
-        intro h
-        have h' : N * p ^ m ∣ N * v.val := by exact_mod_cast h
-        exact (mem_filter.mp hv).2 ((dvd_pow_self p (by omega)).trans (Nat.dvd_of_mul_dvd_mul_left hN h'))
-      simp only [eisF, const0, if_true, if_neg this]
-    rw [sum_congr rfl fun u _ => sum_congr rfl fun a _ => sum_congr rfl fun v hv => sum_congr rfl fun b _ => by
-      rw [e v hv], sum_zero_right p m hm ψ hψ]
-    simp [coefPos]
-  simp only [eisF, if_neg hi, if_neg hj]
 
 end GlobalTheory.KummerEisensteinGalois.UnitPiece

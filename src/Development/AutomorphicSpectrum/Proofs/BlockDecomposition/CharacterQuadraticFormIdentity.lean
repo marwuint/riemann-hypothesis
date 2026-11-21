@@ -3,10 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftEisenstein
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResEtaOfIsWeilSch
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzExistsRealMajorantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableSchwartzRestrictionColumnsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilRepresentationThetaIntegralStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilRepresentationThetaIntegral
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeilRepresentationFourierCoefficientStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaFourierCoefficientWeylIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousThetaKernelComponentsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaFourierCoefficientWeylIntegral
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousThetaKernelComponents
 
 noncomputable section
 
@@ -186,7 +187,7 @@ theorem core (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas D r t) (V 
   haveI := hfib.fin
   haveI := hμt.choose_spec.1
   haveI := m.hμ.1
-  obtain ⟨hc1, hc2, hc3, hc4, hn1, hn2⟩ := GlobalTheory.T.continuous_theta_kernel_components (t := t) hψ V b₀ b
+  obtain ⟨hc1, hc2, hc3, hc4, hn1, hn2⟩ := _root_.GlobalTheory.CompanionTheory.RCellCont.continuity_characters_projection (t := t) hψ V b₀ b
   have hcΦ : Continuous fun z : Mx D V.rank r × Mx D V.rank t => Φ.1 (jn hn z.1 z.2) :=
     (GlobalTheory.RegSch.CentreWeilComm.continuous_of_mem hθ Φ).comp (c_jn_cont hn)
   have hcP : Continuous fun z : Mx D V.rank r × Mx D V.rank t => pch ψ b.1 (ip V z.2 z.2) * Φ.1 (jn hn z.1 z.2) := hc1.mul hcΦ
@@ -202,7 +203,7 @@ theorem core (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas D r t) (V 
   have hW : ∀ y, Wz M m ψ b₀ (fun g => (ω g Φ).1 0) (M.sh y * M.emb (w * nb b) * 1) =
       ∫ z, pch ψ b.1 (ip V z.2 z.2) * Φ.1 (jn hn z.1 z.2) * ψ (trA (Matrix.trace (pr b₀ y (yv V b₀ z)))) ∂(fib.prod μt) := by
     intro y
-    rw [GlobalTheory.T.weil_representation_theta_integral hP M m V hψ hχ hη hθ hμ hω hμr hμt b₀ hfib Φ, integral_prod _ (hIPe y)]
+    rw [_root_.GlobalTheory.CompanionTheory.WzFib.wz_eq_fib hP M m V hψ hχ hη hθ hμ hω hμr hμt b₀ hfib Φ, integral_prod _ (hIPe y)]
     refine integral_congr_ae (ae_of_all _ fun x => ?_)
     beta_reduce
     rw [GlobalTheory.T.weil_representation_fourier_coefficient hP M V hψ hχ hη hθ hμ hω hμr hμt Φ hnb hw b y x]
@@ -214,7 +215,7 @@ theorem core (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas D r t) (V 
   rw [hsw]
   refine integral_congr_ae (ae_of_all _ fun z => ?_)
   beta_reduce
-  rw [GlobalTheory.T.theta_fourier_coefficient_weyl_integral hψ hχ hΩ hnb hw b (yv V b₀ z), map_mul, ← character_quadratic_form_identity V hψ b₀ b z]
+  rw [_root_.GlobalTheory.CompanionTheory.RCellInv.fourier_inv hψ hχ hΩ hnb hw b (yv V b₀ z), map_mul, ← character_quadratic_form_identity V hψ b₀ b z]
   ring
 
 theorem rcell : WMaj → PartFT → RCell := by

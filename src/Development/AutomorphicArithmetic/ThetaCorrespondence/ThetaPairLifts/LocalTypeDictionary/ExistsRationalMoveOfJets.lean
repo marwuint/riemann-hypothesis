@@ -5,7 +5,8 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TwistFockJetThetaRational
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TwistedMovedSeriesDecomposition
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TwistPairingRationalPullbackEq
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JetScalarRationalTranslateStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitOff
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
@@ -34,8 +35,8 @@ theorem exists_rational_move_of_jets : _root_.GlobalTheory.FunPr.ThetaLocalInput
   obtain ⟨hns, hnb⟩ := hp.nodes
   obtain ⟨U, hU⟩ := GlobalTheory.T.exists_unitaryCoordinate_of_rationalPoint_definiteVertex ch.S.toGridChoice _ hns r hr
   obtain ⟨U', hU'⟩ := GlobalTheory.T.exists_unitaryCoordinate_of_rationalPoint_definiteVertex ch.S.toGridChoice _ hnb r' hr'
-  have hlx := GlobalTheory.T.vertexLatticeCoords_rationalPoint_mul_eq_coordMatrix ch.S.toGridChoice _ r U hU x
-  have hly := GlobalTheory.T.vertexLatticeCoords_rationalPoint_mul_eq_coordMatrix ch.S.toGridChoice _ r' U' hU' y
+  have hlx := _root_.GlobalTheory.RatMoveLat.latAt_rat ch.S.toGridChoice _ r U hU x
+  have hly := _root_.GlobalTheory.RatMoveLat.latAt_rat ch.S.toGridChoice _ r' U' hU' y
   have hd := _root_.GlobalTheory.MovedDict.Entire.differentiable_moved_operator_eval hP hI ch hch p hp x y
   obtain ⟨ε, hm, hu, hj⟩ := _root_.GlobalTheory.T.twist_fock_jetTheta_rational hP hI ch hch p hp x y _ (hd.const_mul κ) ((jetKap_iff ch p x y κ).1 hJ) r r' U U' hU hU'
   obtain ⟨hsd, hsd'⟩ := _root_.GlobalTheory.MovedSD.moved_series_decomposition hP hI ch hch p hp x y

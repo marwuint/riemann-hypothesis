@@ -2,8 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReadsHecke
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceHeckeOperatorScalarOnSpherical
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryFiniteAdelesSplitPlaceDecomposition
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RelIndexStabilizerEqLocalRelIndexStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RelIndexLevelUnipotentCoprimePrimeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RelIndexStabilizerEqLocalRelIndex
+import Formalism.LocalToGlobal.GaloisLevelStructure.DefsLevel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RelIndexLevelUnipotentCoprimePrime
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 open Formalism.AUTREP (GAf)
 open Neutral.B1 (Ideles)
@@ -131,8 +132,8 @@ theorem idx {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : Sp
     · rintro ⟨κ', ⟨hκ'J, hκ'T⟩, he⟩
       have : κ' = κ := (hlift (s.loc n κ)).unique ⟨hκ'T, he⟩ ⟨hκT, rfl⟩
       exact this ▸ hκ'J
-  rw [GlobalTheory.T.relIndex_stabilizer_eq_local_relIndex L n s J H hJH]
-  exact GlobalTheory.T.relIndex_levelUnipotent_coprime_prime L n s r p H hp hsp hrn hmemH
+  rw [_root_.GlobalTheory.LocRelIndex.main L n s J H hJH]
+  exact _root_.GlobalTheory.UniLevelIndex.relIndex_coprime L n s r p H hp hsp hrn hmemH
 
 end GlobalTheory.PsiCmp
 

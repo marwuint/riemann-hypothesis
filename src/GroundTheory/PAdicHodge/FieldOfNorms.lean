@@ -47,28 +47,11 @@ theorem equivFam_sub (x y : FieldOfNorms K Ω L) :
 theorem equivFam_zero : equivFam K Ω L (0 : FieldOfNorms K Ω L) = 0 :=
   (equivFam K Ω L).apply_symm_apply _
 
-theorem equivFam_one : equivFam K Ω L (1 : FieldOfNorms K Ω L) = 1 :=
-  (equivFam K Ω L).apply_symm_apply _
-
 theorem equivFam_natCast (n : ℕ) : equivFam K Ω L (n : FieldOfNorms K Ω L) = n :=
   (equivFam K Ω L).apply_symm_apply _
 
-variable (K Ω L) in
-
-def ringEquivFam : FieldOfNorms K Ω L ≃+* (tower K Ω L).Fam where
-  __ := equivFam K Ω L
-  map_mul' := equivFam_mul
-  map_add' := equivFam_add
-
 theorem equivFam_val (x : FieldOfNorms K Ω L) (n : ℕ) :
     (equivFam K Ω L x).1 n = x.1 (isTowerFor.finSub n) := rfl
-
-theorem mul_val (x y : FieldOfNorms K Ω L) (E : FinSub K Ω L) : (x * y).1 E = x.1 E * y.1 E := by
-  obtain ⟨n, hn⟩ := (isTowerFor (L := L)).exists_le E
-  have hx : ∀ z : FieldOfNorms K Ω L, z.1 E = relNorm hn ((equivFam K Ω L z).1 n) := fun z ↦ by
-    rw [equivFam_val]; exact (z.2.2 E _ hn).symm
-  rw [hx, hx x, hx y, equivFam_mul, NormTower.Fam.mul_val]
-  exact relNorm_mul hn ((equivFam K Ω L x).2 n).1 ((equivFam K Ω L y).2 n).1
 
 instance charP : CharP (FieldOfNorms K Ω L) (ringChar 𝓀[K]) :=
   (CharP.charP_iff_prime_eq_zero (APFData.fact_prime (K := K)).out).mpr (by
@@ -141,16 +124,6 @@ instance instIsNonarchimedeanLocalField : IsNonarchimedeanLocalField (FieldOfNor
   toIsNontrivial := inferInstance
 
 end FieldOfNorms
-
-section Limit
-
-variable {K' : Type*} [Field K'] [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K']
-  {Ω' : Type*} [Field Ω'] [ValuativeRel Ω'] [TopologicalSpace Ω'] [IsValuativeTopology Ω']
-  [Algebra K' Ω'] [ValuativeExtension K' Ω'] [Algebra.IsAlgebraic K' Ω']
-
-variable {p : ℕ} {t : NormTower K' Ω' p}
-
-end Limit
 
 namespace FieldOfNorms
 

@@ -11,9 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjecti
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescent
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianLocalRingOfIsAdicComplete
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpEighthPowerRelativeDimensionEqEightMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerProjectionsBaseChangeIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SharpEighthPowerRelativeDimensionEqEightMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerProjectionsBaseChangeIso
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -67,15 +67,15 @@ theorem fibre_exists : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ) (gQ : ℕ) (V V₁ :
     rw [← hiφ, ← Category.assoc, ← Over.comp_left, i.inv_hom_id, Over.id_left, Category.id_comp]
 
   have hQP : IsPPFib Q.B Q.g Q.M := ⟨Q.isAb, Q.smoothDim, ⟨Q.cub⟩, Q.ample, Q.ktriv⟩
-  obtain ⟨M₁, hM₁, hP₁⟩ := GlobalTheory.T.principallyPolarisedFibre_baseChange (spMap ρ) Q.B Q.g Q.M hQP
-  obtain ⟨M, hM, hP⟩ := GlobalTheory.T.principallyPolarisedFibre_baseChange (spMap ev) _ Q.g M₁ hP₁
+  obtain ⟨M₁, hM₁, hP₁⟩ := _root_.GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange (spMap ρ) Q.B Q.g Q.M hQP
+  obtain ⟨M, hM, hP⟩ := _root_.GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange (spMap ev) _ Q.g M₁ hP₁
   let B₁ := (Over.pullback (spMap ρ)).obj Q.B
   let pr : Fin 8 → (P'.A ⟶ (Over.pullback (spMap ev)).obj B₁) :=
     fun a => i.inv ≫ (Over.pullback (spMap ev)).map (pr₀ a)
-  have hpr : IsProd pr := GlobalTheory.T.eighthPowerProjections_baseChange_iso (spMap ev) pr₀ ⟨hmon, huniv⟩ P'.A i hi
+  have hpr : IsProd pr := _root_.GlobalTheory.Poinc.Sep.E8Fibration.isProd_pullback_iso (spMap ev) pr₀ ⟨hmon, huniv⟩ P'.A i hi
   refine ⟨P', i.hom.left, (Over.pullback (spMap ev)).obj B₁, inferInstance, M, pr, ?_, isGrpPullback_of_iso i, ?_,
     hQ ▸ hP, hpr, ?_, ?_⟩
-  · rw [hg, GlobalTheory.T.sharpEighthPower_relative_dimension_eq_eight_mul W V V₁ Q ρ D e hS, hQ]
+  · rw [hg, _root_.GlobalTheory.Poinc.Sep.sharpRef_relDim W V V₁ Q ρ D e hS, hQ]
   · have ht' : LBIso (D.P.L.pull φ) P'.L := ⟨t, ht⟩
     exact LBIso.trans (pull_isLB D.P.isLB _) (pull_isLB (pull_isLB D.P.isLB _) _) (pull_isLB P'.isLB _)
       (GlobalTheory.GenSpread.lbIso_pull_pull D.P.isLB i.hom.left hiφ.symm) (GlobalTheory.GenSpread.lbIso_pullback ht' i.hom.left)

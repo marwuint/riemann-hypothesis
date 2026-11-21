@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfCo
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsUnitIffCharpolyCoeffZeroNe
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteMonicNatDegree
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EqZeroOfNotPrimaryStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.EqZeroOfNotPrimary
 
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
@@ -20,7 +20,7 @@ theorem ipGL_rootSum_eq_sum_torus : ∀ (F : Type) [Field F] [Finite F] (V : Typ
   refine finsum_eq_zero_of_forall_eq_zero fun g => ?_
   by_cases hg : LinearMap.charpoly g = P
   · rw [Set.indicator_of_mem (show g ∈ {g : Module.End F V | LinearMap.charpoly g = P} from hg)]
-    exact GlobalTheory.T.classFn_eq_zero_of_charpoly_not_irreducible_pow F V φ hcl hprim hpos g (hg ▸ hP)
+    exact _root_.GlobalTheory.CuspGL.eq_zero_of_not_primary F V φ hcl hprim hpos g (hg ▸ hP)
   · exact Set.indicator_of_notMem (show g ∉ {g : Module.End F V | LinearMap.charpoly g = P} from hg) _
 
 end GlobalTheory.CuspGL

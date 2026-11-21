@@ -12,37 +12,6 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
-theorem is_diamond_one (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
-    (hv : (T : 𝓞 F) ∈ v.asIdeal) : IsDia S v hv 1 1 := by
-  refine ⟨fun v' _ => ?_, ?_, ?_⟩
-  · simp
-  · simp only [OneMemClass.coe_one, map_one]; exact (levelVL σ J v S.Lb).one_mem
-  · refine ⟨by simp only [OneMemClass.coe_one, map_one]; exact (stabGL _).one_mem, fun x => ?_⟩
-    rw [one_smul]
-    congr 1
-    apply Subtype.ext
-    simp
-
-theorem is_diamond_mul (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
-    (hv : (T : 𝓞 F) ∈ v.asIdeal) {k k' : ℤ} {δ δ' : UPts σ J (FiniteAdeleRing (𝓞 F) F)}
-    (h : IsDia S v hv k δ) (h' : IsDia S v hv k' δ') : IsDia S v hv (k * k') (δ * δ') := by
-  obtain ⟨h1, h2, hg, h3⟩ := h
-  obtain ⟨h1', h2', hg', h3'⟩ := h'
-  refine ⟨fun v' hv' => ?_, ?_, ?_⟩
-  · simp [Subgroup.coe_mul, map_mul, h1 v' hv', h1' v' hv']
-  · simpa [Subgroup.coe_mul, map_mul] using (levelVL σ J v S.Lb).mul_mem h2 h2'
-  · have hgg : bc (prV (E := E) v) (δ * δ').1 ∈ stabGL (latS (F := F) (v.adicCompletion F) (intV E v)
-        (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) := by
-      simpa [Subgroup.coe_mul, map_mul] using (stabGL _).mul_mem hg hg'
-    refine ⟨hgg, fun x => ?_⟩
-    have e : (⟨(bc (prV (E := E) v) (δ * δ').1).1 *ᵥ x.1, (hgg x.1).1 x.2⟩ :
-        latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) =
-        ⟨(bc (prV (E := E) v) δ.1).1 *ᵥ ((bc (prV (E := E) v) δ'.1).1 *ᵥ x.1),
-          (hg _).1 ((hg' x.1).1 x.2)⟩ := by
-      apply Subtype.ext
-      simp [Subgroup.coe_mul, map_mul, Matrix.mulVec_mulVec]
-    rw [e, mul_comm, mul_smul, h3 ⟨_, (hg' x.1).1 x.2⟩, h3' x]
-
 theorem diamond_conj_mem_level (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) {k : ℤ} {δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)}
     (h : IsDia S v hv k δ) (κ : S.U) : δ.1⁻¹ * κ.1 * δ.1 ∈ S.U := by
@@ -115,44 +84,6 @@ def DiamondElementsExist (Tf : Forms0 D u) : Prop :=
   ∀ i (hi : i ≤ D.R.m) (h0 : i = 0) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ), ∃ k : ℤ, (k : (D.mem u).A.Fv v) = a ∧
     ∃ δ, IsDia (Tf.cls i hi h0).lev (Tf.atT.eV v).1 (Tf.atT.eV v).2 k δ
 
-def DiaMul0 (D : D7) (u : D.what₂.Word) : Prop :=
-  ∀ i, i ≤ D.R.m → i = 0 → ∀ v, ∀ φ ∈ (D.fm u).Fi i,
-    Formalism.MainNotions.product_first_zeroth_parts.dia D u i v 1 φ = φ ∧ ∀ a b, Formalism.MainNotions.product_first_zeroth_parts.dia D u i v (a * b) φ = Formalism.MainNotions.product_first_zeroth_parts.dia D u i v a (Formalism.MainNotions.product_first_zeroth_parts.dia D u i v b φ)
-
-theorem diamond_mul_of_elements_prime_to_bad (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (hb : ∀ v, (Tf.atT.eV v).1 ∉ badG D) :
-    DiaMul0 D u := by
-  intro i hi h0 v φ hφ
-  obtain ⟨g, hg, hgφ⟩ := ((Tf.val i hi h0).Fi φ).1 hφ
-  have hval : ∀ c, φ c = fun z => g ((Tf.cls i hi h0).y c) ((Tf.val i hi h0).eY z) := by
-    intro c; funext z
-    have := congrFun (congrFun hgφ c) ((Tf.val i hi h0).eY z)
-    simp only [Equiv.symm_apply_apply] at this
-    exact this.symm
-  have hgA : g ∈ AdFun (Tf.cls i hi h0).lev (embT D) := (Submodule.mem_inf.1 hg).1
-  have hdia : ∀ a c, Formalism.MainNotions.product_first_zeroth_parts.dia D u i v a φ c = (D.fm u).dilT i v a c (φ ((D.fm u).dil i v a c)) :=
-    fun a c => rfl
-  refine ⟨?_, fun a b => ?_⟩
-  · funext c
-    rw [hdia, hval ((D.fm u).dil i v 1 c),
-      (Tf.val i hi h0).dilT v 1 1 (by simp) c 1 (is_diamond_one _ _ _) g hgA, mul_one, hval c]
-  · funext c
-    obtain ⟨ka, hka, δa, hδa⟩ := hE i hi h0 v a
-    obtain ⟨kb, hkb, δb, hδb⟩ := hE i hi h0 v b
-    have hab : ((ka * kb : ℤ) : (D.mem u).A.Fv v) = ((a * b : ((D.mem u).A.Fv v)ˣ) : (D.mem u).A.Fv v) := by
-      rw [Int.cast_mul, hka, hkb, Units.val_mul]
-    have h1 : Formalism.MainNotions.product_first_zeroth_parts.dia D u i v b φ ((D.fm u).dil i v a c) =
-        fun z => g ((Tf.cls i hi h0).y ((D.fm u).dil i v a c) * δb) ((Tf.val i hi h0).eY z) := by
-      rw [hdia, hval, (Tf.val i hi h0).dilT v b kb hkb _ δb hδb g hgA]
-    have hg' := adelic_function_right_translate_diamond (Tf.cls i hi h0).lev (embT D) _ _ (hb v) hδb hgA
-    have h2 := (Tf.val i hi h0).dilT v a ka hka c δa hδa _ hg'
-    rw [hdia (a * b) c, hval ((D.fm u).dil i v (a * b) c),
-      (Tf.val i hi h0).dilT v (a * b) (ka * kb) hab c (δa * δb) (is_diamond_mul _ _ _ hδa hδb) g hgA,
-]
-    show _ = (D.fm u).dilT i v a c (Formalism.MainNotions.product_first_zeroth_parts.dia D u i v b φ ((D.fm u).dil i v a c))
-    rw [h1, h2]
-    funext z
-    simp only [mul_assoc]
-
 theorem level_prime_ne_type_prime (A : AtTTied u) (j : Fin 2) : (D.mem u).A.T ≠ D.host.g j := by
   intro hTg
   obtain ⟨r, hr⟩ := Ideal.mem_span_singleton'.1 A.piU_cong
@@ -216,9 +147,6 @@ theorem level_places_not_bad (A : AtTTied u) (v : (D.mem u).A.vT) : (A.eV v).1 �
   rintro (h | h)
   · exact key 0 h
   · exact key 1 h
-
-theorem diamond_mul_of_diamond_elements (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) : DiaMul0 D u :=
-  diamond_mul_of_elements_prime_to_bad Tf hE (level_places_not_bad Tf.atT)
 
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0
 

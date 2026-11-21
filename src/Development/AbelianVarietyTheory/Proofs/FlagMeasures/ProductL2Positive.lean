@@ -5,11 +5,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AmpWinLoc
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NinfGClosed
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBruhatFunctionLocalBesselIntegralEqL2MassStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentHaarEqConstSmulPiLocalMeasuresStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SubgroupHaarEqConstSmulPiLocalMeasuresStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentSubgroupHaarProductEqPiLocalImageStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeilFormulaBesselNormSqBruhatProductStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PiPulledBackUnipotentMeasureEqBesselImageStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentHaarEqConstSmulPiLocalMeasures
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SubgroupHaarEqConstSmulPiLocalMeasures
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentSubgroupHaarProductEqPiLocalImage
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeilFormulaBesselNormSqBruhatProduct
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PiPulledBackUnipotentMeasureEqBesselImage
 open scoped Classical ENNReal
 open Matrix MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.PackageTie2 Formalism.L2.SG.LocWSOf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -70,10 +70,10 @@ theorem l2prod : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (θ : ℝ) (C : C
       exact ⟨β, h1, h2, h3, (invOn_mulMap C u τ).1⟩
     exact h (X.pl v) v (X.pl.symm_apply_apply v)
   choose β hβm hβ1 hβl hsf using key
-  obtain ⟨κN, hN0, hNt, hN⟩ := GlobalTheory.T.unipotentHaar_eq_const_smul_pi_localMeasures D X θ C u
-  obtain ⟨κH, hH0, hHt, hH⟩ := GlobalTheory.T.subgroupHaar_eq_const_smul_pi_localMeasures D X θ C u
-  have hS := GlobalTheory.T.unipotentSubgroupHaarProduct_eq_pi_localImage D X θ C u κN κH hN hH
-  have hW := GlobalTheory.T.weil_formula_besselNormSq_bruhatProduct D X u (κN * κH) _ hsf hS β hβm hβ1
+  obtain ⟨κN, hN0, hNt, hN⟩ := _root_.GlobalTheory.MuNPi.muN_eq_pi_muNl D X θ C u
+  obtain ⟨κH, hH0, hHt, hH⟩ := _root_.GlobalTheory.MuHPi.muH_eq_pi D X θ C u
+  have hS := _root_.GlobalTheory.MuSPi.muNH_prod_pi D X θ C u κN κH hN hH
+  have hW := _root_.GlobalTheory.weil_bruhatProd_normSq D X u (κN * κH) _ hsf hS β hβm hβ1
   rw [prod_lint D X u β hβm] at hW
   simp only [hβl] at hW
   have hP : ∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ) = κN * κH := by
@@ -88,7 +88,7 @@ theorem l2prod : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (θ : ℝ) (C : C
     rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), ht]
     exact ENNReal.top_mul (Finset.prod_ne_zero_iff.2 fun τ' _ => hne0 τ')
   refine ⟨fun τ => ENNReal.toReal_pos (hne0 τ) (hnet τ), ?_⟩
-  rw [← ENNReal.toReal_prod, hP, ← GlobalTheory.T.pi_pulledBack_unipotentMeasure_eq_besselImage D X θ C (Y.FN u) hθ (Y.FN_fund u).1, hN, hH,
+  rw [← ENNReal.toReal_prod, hP, ← _root_.GlobalTheory.pi_muNl_eq_dnB_image D X θ C (Y.FN u) hθ (Y.FN_fund u).1, hN, hH,
     Measure.smul_apply, Measure.smul_apply, muH_univ D X θ C u]
   simp only [smul_eq_mul, mul_one, ENNReal.toReal_mul]
   ring

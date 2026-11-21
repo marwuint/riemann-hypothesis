@@ -192,11 +192,6 @@ theorem avg_colEl (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) �
     ring
   rw [avg_eq h π ψ hpw, avg_eq h π ψ hp, Finset.sum_congr rfl (fun t _ => e t), ← Finset.smul_sum, hs, smul_comm]
 
-theorem colEl_avg (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
-    (hA : IsLat A) {a : Fin (m + 1) → k} (ha : a ∈ A) (v : V) :
-    π (colEl k m N h a) (avg ψ h π ξ A v) = ((ψ (ξ ⬝ᵥ a) : Circle) : ℂ) • avg ψ h π ξ A v := by
-  rw [colEl_comm_avg' h π ψ hψ hπ ξ hA a v, avg_colEl h π ψ hψ hπ ξ hA ha v]
-
 open Classical in
 theorem char_sum {ξ η : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)} {v : V}
     {p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)} (hp : AvgData ψ h π ξ A v p)
@@ -233,21 +228,6 @@ theorem char_sum {ξ η : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k
         rw [sub_dotProduct, AddChar.map_sub_eq_div] at H2
         exact (div_eq_one.mp H2).symm
     rw [hz, mul_zero]
-
-open Classical in
-
-theorem avg_eigen (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ η : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
-    (hA : IsLat A) (v : V) (hv : ∀ a ∈ A, π (colEl k m N h a) v = ((ψ (η ⬝ᵥ a) : Circle) : ℂ) • v) :
-    avg ψ h π ξ A v = if ∀ a ∈ A, ψ (ξ ⬝ᵥ a) = ψ (η ⬝ᵥ a) then v else 0 := by
-  obtain ⟨p, hp, hpU⟩ := exists_avgData h π ψ hψ hπ ξ hA v (charSub k ψ η) (isOpen_charSub ψ hψ η)
-  have hs := char_sum h π ψ hp (fun a ha => hpU ha)
-  rw [avg_eq h π ψ hp]
-  have e : ∀ t ∈ p.2, (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v =
-      ((starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) * ((ψ (η ⬝ᵥ t) : Circle) : ℂ)) • v := by
-    intro t ht
-    rw [hv t (hp.2.2.2.2.1 t ht), smul_smul]
-  rw [Finset.sum_congr rfl e, ← Finset.sum_smul, smul_smul, hs]
-  split_ifs <;> simp
 
 theorem avg_zero' (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) : avg ψ h π ξ A 0 = 0 := by

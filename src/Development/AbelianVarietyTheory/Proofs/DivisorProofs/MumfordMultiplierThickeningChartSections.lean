@@ -1,15 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonzeroAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralThetaExpansionOfSectionPowerGeThreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralThetaExpansionOfSectionPowerGeThre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordMultiplierExponentNonzeroSectionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordMultiplierOfSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClosedFibreChartPointMumfordMultiplierNonzStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClosedFibreChartPointMumfordMultiplierNonz
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartExpOn
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsLeadOfUnif
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecRatioEqRefl
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -24,8 +25,8 @@ theorem chart_main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], B
   intro R _ _ _ hB D A G _ _ hG U a a' h h' hE b hb
   obtain ⟨N, hN, hpos, σ₀, x, hx, hσ⟩ := GlobalTheory.T.exists_mumfordMultiplier_exponent_nonzero_section R hB D a a' h h' hE
   obtain ⟨m, hAct, hLead⟩ := GlobalTheory.T.exists_mumfordMultiplier_of_section R hB D A G hG U a a' h h' hE b hb N hN hpos σ₀ x hx hσ
-  refine ⟨N, hN, m, fun k hk s => ?_, GlobalTheory.T.exists_closedFibre_chart_point_mumfordMultiplier_nonzero R D A G U b m hLead⟩
-  obtain ⟨f, hf⟩ := GlobalTheory.T.exists_integralThetaExpansion_of_section_power_ge_three R hB D A G hG U k hk s
+  refine ⟨N, hN, m, fun k hk s => ?_, _root_.GlobalTheory.MumMult.exists_pt_chart_of_leadPt R D A G U b m hLead⟩
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.Mum.SecExp.exists_intFam R hB D A G hG U k hk s
   exact hAct k hk f s hf
 
 end GlobalTheory.MumMult

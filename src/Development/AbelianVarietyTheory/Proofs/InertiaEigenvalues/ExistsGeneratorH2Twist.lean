@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicCoboundaryO
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FactorMemCocyclesPowQuot
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteCocyclesQuotientPowSmulModuleStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAdicCompleteOfPadicCoeffStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PadicIntRingHomContinuousOfPadicCoeffStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycEqImageStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PadicIntRingHomContinuousOfPadicCoeff
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycEqImage
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwoCocycleMemCoboundariesOfModUniformizerPowStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwoCocycleFundamentalMultipleModPowStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FundamentalTwoCocycleMultipleNotCoboundaryStatement
@@ -59,7 +59,7 @@ theorem exists_free_H2_twist : ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateFie
       rw [← PadicInt.zmod_cast_comp_toZModPow m n hle, ← RingHom.comp_assoc, ← RingHom.comp_assoc]
       congr 1
       exact RingHom.ext_zmod _ _)
-  have hφ : Continuous φ := GlobalTheory.T.padicInt_ringHom_continuous_of_padicCoeff' hO φ
+  have hφ : Continuous φ := _root_.GlobalTheory.padicInt_ringHom_continuous_of_padicCoeff hO φ
   let χZ : Formalism.GaloisCohomology.GK p K →* ℤ_[p]ˣ := (cyclotomicCharacter (PadicAlgCl p) p).comp
     (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK p K) (PadicAlgCl p))
   have hχc : Continuous fun g => (χZ g : ℤ_[p]) :=
@@ -77,7 +77,7 @@ theorem exists_free_H2_twist : ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateFie
   let χ : G →* ℤ_[p]ˣ := χZ.comp e.toMonoidHom
   let cG : G × G → ℤ_[p] := fun q => c (e q.1, e q.2)
   have hcG : ∀ r, GlobalTheory.TateTop.Gen χ r cG := fun r => (hc r).transport e he he'
-  have hεφ : ∀ g, ((ε g : Oˣ) : O) = φ (χ g : ℤ_[p]) := fun g => GlobalTheory.T.eq_cyclotomicCharacter_of_isCyc hO φ i hε g
+  have hεφ : ∀ g, ((ε g : Oˣ) : O) = φ (χ g : ℤ_[p]) := fun g => _root_.GlobalTheory.CycImage.cyc_eq_image hO φ i hε g
   have hχGc : Continuous fun g => (χ g : ℤ_[p]) := hχc.comp he
   have hεc : Continuous fun g => ((ε g : Oˣ) : O) := by
     simp_rw [hεφ]

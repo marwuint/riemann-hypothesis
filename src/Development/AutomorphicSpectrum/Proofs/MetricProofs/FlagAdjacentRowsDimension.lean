@@ -1,20 +1,22 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartFlagPt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsClosedSectionBoundaryStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsClosedSectionBoundary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SelM
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFunctorialHolomorphic
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagDimensionComplementEquivStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagDimensionComplementEquiv
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerUnipotentFamilyAnalyticStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticSpaceNonemptyStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionThirdStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticProjectionBijectiveStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerUnipotentOrbitEqualityStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionFifthStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticSpaceNonempty
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionThird
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticProjectionBijective
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorProperties
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerUnipotentOrbitEquality
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionFifth
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticPluckerColumnSwapStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionFourthStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.NullSetImageUnderHoloMapStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticBadLocusNullStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionSeventhStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.NullSetImageUnderHoloMap
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticBadLocusNull
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionSeventh
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
@@ -33,12 +35,12 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
   have hblk : ((cb : ℕ) < N - j ↔ (ca : ℕ) < N - j) := by
     unfold lastCol at hca
     split_ifs at hca <;> omega
-  obtain ⟨e⟩ := GlobalTheory.T.flag_dimension_complement_equiv Ψ N j n d τ ca cb hj hlt hblk hdim
+  obtain ⟨e⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.Coord.nonempty_equiv_cIdx Ψ N j n d τ ca cb hj hlt hblk hdim
   obtain ⟨lc1, lc2, lc3, lc4, lc5⟩ := GlobalTheory.T.lower_unipotent_family_analytic Ψ N j τ ca cb hlt hblk
-  haveI hSne := GlobalTheory.T.flag_analytic_space_nonempty K ι Φ y Ψ N j M n d BM FA
-  haveI hWne := GlobalTheory.T.flag_adjacent_twisted_resolution_third K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW
-  have hpi := GlobalTheory.T.flag_analytic_projection_bijective K ι Φ y Ψ N j M n d BM FA
-  have hgood := GlobalTheory.T.base_vector_properties K ι Φ y Ψ N j M n BM
+  haveI hSne := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty K ι Φ y Ψ N j M n d BM FA
+  haveI hWne := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.anLogRes_W_nonempty K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW
+  have hpi := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.re_pi_bijective K ι Φ y Ψ N j M n d BM FA
+  have hgood := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec_good K ι Φ y Ψ N j M n BM
   have hnot : ∀ z : (Σ k, ι k) → ℂ, z ∉ mcPts FA.Re.J := fun z => by
     rw [FA.J_top]; exact GlobalTheory.CompanionTheory.Ar.PB.Proj.not_mem_mcPts_top _
   have hRinj : ∀ x x', SameOrbit (FA.Re.R.lift x x) (FA.Re.R.lift x' x') → x = x' := fun x x' h =>
@@ -58,7 +60,7 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
   have cc_an : AnalyticOnNhd ℂ cc Set.univ := fun w _ =>
     AnalyticAt.pi fun i => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin d => ℂ) (e.symm (Sum.inr i))).analyticAt w
   let Hh : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ := fun τ' w => FC.Lc τ ca cb (cc w) τ'
-  have hclosed : IsClosed (bdry BM.s) := GlobalTheory.T.isClosed_section_boundary _ _ BM.Rb.A BM.L BM.s BM.sec
+  have hclosed : IsClosed (bdry BM.s) := _root_.GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection _ _ BM.Rb.A BM.L BM.s BM.sec
   have hOd : ∀ l, IsOpen (BM.O l \ bdry BM.s) := fun l => (BM.O_open l).sdiff hclosed
   let Ut : Fin BM.Rb.A.n → Fin BM.q → Set (Fin d → ℂ) := fun kb l =>
     {w | base w ∈ (BM.Rb.A.chart kb).target ∧ (BM.Rb.A.chart kb).symm (base w) ∈ BM.O l \ bdry BM.s}
@@ -72,7 +74,7 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     fun kb l k w hw => AnalyticAt.comp (g := BM.Rb.A.chart k ∘ (BM.Rb.A.chart kb).symm) (f := base)
       (BM.Rb.A.holo kb k _ ⟨hw.1.1, hw.2⟩) (base_an w trivial)
   have hfam := fun (kb : Fin BM.Rb.A.n) (l : Fin BM.q) =>
-    GlobalTheory.T.flag_adjacent_twisted_resolution_fifth K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj l (Ut kb l) Hh (bpt kb) (hUo kb l)
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FamCh.charts K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj l (Ut kb l) Hh (bpt kb) (hUo kb l)
       (fun τ' r s w _ => AnalyticAt.comp (g := fun c => FC.Lc τ ca cb c τ' r s) (f := cc) (lc2 τ' r s _ trivial) (cc_an w trivial))
       (hbpc kb l) (hbpa kb l) (fun w hw => ⟨hw.2, fun τ' => lc1 _ τ'⟩)
   choose ΦYt ΦWt hYc hYa hWc hWa hYs hWs using hfam
@@ -137,7 +139,7 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     have o1 := (hYs _ _ z hz).2 x₀ hx₀
     have o2 := (hYs _ _ z' hz').2 x₀ (hx₀.trans heq)
     rw [← e1] at o2
-    have e3 := GlobalTheory.T.lower_unipotent_orbit_equality K ι Φ y Ψ N j M n BM (tm m).2 (bpt (tm m).1 (Fin.tail z)) hz.2.1
+    have e3 := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.flag_uniq K ι Φ y Ψ N j M n BM (tm m).2 (bpt (tm m).1 (Fin.tail z)) hz.2.1
       (FC.Lca τ ca cb (cc (Fin.tail z)) (z 0)) (FC.Lca τ ca cb (cc (Fin.tail z')) (z' 0))
       (lc4 _ _) (lc4 _ _) (orbit_trans (orbit_symm o1) o2)
     obtain ⟨e4, e5⟩ := lc5 _ _ _ _ e3
@@ -172,8 +174,8 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     rcases lt_or_gt_of_ne hne with h | h
     · exact hdisY m m' h
     · exact (hdisY m' m h).symm
-  · refine hnull_mono _ ?_ (GlobalTheory.T.null_set_image_under_holoMap (d + 1) FA.S.X FA.Re.R.X FA.S.A FA.Re.R.A FA.Re.π _ FA.Re.holo
-      (hnull_un _ _ (GlobalTheory.T.flag_analytic_bad_locus_null K ι Φ y Ψ N j M n d BM FA)))
+  · refine hnull_mono _ ?_ (_root_.GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap (d + 1) FA.S.X FA.Re.R.X FA.S.A FA.Re.R.A FA.Re.π _ FA.Re.holo
+      (hnull_un _ _ (_root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.null_off_bigCell_resolution K ι Φ y Ψ N j M n d BM FA)))
     intro x hx
     obtain ⟨x₀, rfl⟩ := hpi.2 x
     obtain ⟨m, hm⟩ := hpc_cov (FA.pr (FA.Re.π x₀))
@@ -244,7 +246,7 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     rcases lt_or_gt_of_ne hne with h | h
     · exact key m m' h
     · exact (key m' m h).symm
-  · refine hnull_mono _ ?_ (hnull_un _ _ (GlobalTheory.T.flag_adjacent_twisted_resolution_seventh K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj))
+  · refine hnull_mono _ ?_ (hnull_un _ _ (_root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.null_w K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj))
     intro x hx
     obtain ⟨m, hm⟩ := hpc_cov (FA.pr (q 0 x))
     refine Set.mem_iUnion.2 ⟨(tm m).2, hm.1.2, ?_⟩

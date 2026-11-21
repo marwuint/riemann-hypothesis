@@ -5,12 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Idempotent
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixSupportedAtPlaceOfIsHalfSplitPoint
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationTwoVariableModelAndLineExte
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmPureTensorOOfFinite
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationEqOnVacuaOfEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ParahoricTestFunctionIntegralAdelicReductionStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceFrameMovedBackIsLatticeBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationEqOnVacuaOfEqOne
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ParahoricTestFunctionIntegralAdelicReduction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockDetBlockTriangular
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceFrameMovedBackIsLatticeBasis
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralFrameMatrixIffMemSplitHalfHomLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ListConvolutionDistinctPlacesSupportedAndComposiStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseEqOfSameIdempotentPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ListConvolutionDistinctPlacesSupportedAndComposi
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseEqOfSameIdempotentPrime
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.L2.Forms MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.StepData GlobalTheory.SeeSaw GlobalTheory.LocMod GlobalTheory.QPl GlobalTheory.QTw GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.AdForm ValuativeRel
 open scoped TensorProduct Classical
@@ -61,7 +62,7 @@ theorem model (q : GlobalTheory.FinPl.SplitPt D k) (FS : Frame k S.rank Y') (FT 
       exact ⟨K, hK, fun t ht => h t (GlobalTheory.PlaceDatum.infPart_of_half hinf' ht)⟩) (P.erase w) W hW
   refine ⟨_, isModel_extend (ofSplit q) FS FT hqe hTm
     (GlobalTheory.DiagLiftFix.isTheta_placeModel hψ hS hT hee he.2 hinf hf₀ Tm hTm) _
-    (GlobalTheory.T.isSchwartzBruhatHalf_splitPlace_product D k q Y Y' S T FS FT ΛS ΛT hS hT e hee hqe _ hΩ), fun om Φ₀ h0 h1 Φ hΦ => ?_⟩
+    (_root_.GlobalTheory.SplitSBProd.isSBHalf_splitProd D k q Y Y' S T FS FT ΛS ΛT hS hT e hee hqe _ hΩ), fun om Φ₀ h0 h1 Φ hΦ => ?_⟩
   refine congrArg Tm (funext fun x => ?_)
   rw [extend_apply, hΦ]
   have h3 : ∀ i j, frMapO S T βS βT ((1 - q.e) • x) i j = (1 - toEAf D q.e) * frMapO S T βS βT x i j :=
@@ -108,10 +109,10 @@ theorem puts (q : GlobalTheory.FinPl.SplitPt D k) {ψ : AddChar (AF D.host.F) �
     {c : WO S T →₀ ℂ} (hc : (ofSplit q).IsCombAt ψ GS GT c Ξ) :
     Puts ψ (om (g, h) ∘ₗ Tm) e βS βT P w loc c := by
   intro W hW
-  obtain ⟨π', hπ, hred, hint, hres⟩ := GlobalTheory.T.exists_finiteAdele_projection_integral_reduction D k q w hq
+  obtain ⟨π', hπ, hred, hint, hres⟩ := _root_.GlobalTheory.FinPl.SplitPt.exists_lift_isRed D k q w hq
   obtain ⟨T₁, hT₁, hT'⟩ := model q (moved (ofSplit q) GS g⁻¹) (moved (ofSplit q) GT h⁻¹) hom.std hS hT βS βT he hw hq hint hres W hW
     hf₀ hTm
-  obtain ⟨T₂, hT₂, hT''⟩ := GlobalTheory.T.isLocalModel_creation_weilAction_moved_frames D k (ofSplit q) Y Y' S T _ GS _ GT ψ θ _ _ om hθ hom g h
+  obtain ⟨T₂, hT₂, hT''⟩ := _root_.GlobalTheory.LocModMove.isModel_move D k (ofSplit q) Y Y' S T _ GS _ GT ψ θ _ _ om hθ hom g h
     (β_eq_moved _ GS g) (β_eq_moved _ GT h) 0 0 0 0 1 T₁ hT₁
   simp only [GlobalTheory.FiniteFock.pureTensorO_one] at hT''
   have hco := coords_down (ofSplit q) (moved (ofSplit q) GS g⁻¹) (moved (ofSplit q) GT h⁻¹) hπ
@@ -207,8 +208,8 @@ theorem gen {r : ℕ} {k : Fin r → Type} [∀ i, Field (k i)] [∀ i, Valuativ
     om (g, h) (comb ψ S T d f) = comb ψ S T (aconv (List.ofFn c)) (om (g, h) f) := by
   obtain ⟨hvac, e, he, ⟨Tm, hTm⟩, hall⟩ := hst
   rw [hL, Finset.empty_union] at he
-  have hpl : Function.Injective pl := fun i i' H => hv (GlobalTheory.T.splitPlace_baseEq_of_same_idempotentPrime D _ _ (q i) (q i') _ (hq i) (H ▸ hq i'))
-  have hcv := GlobalTheory.T.listConvolution_distinctPlaces_supported_and_composition D ψ S T (Fin r) (fun i => (q i).v) c hv
+  have hpl : Function.Injective pl := fun i i' H => hv (_root_.GlobalTheory.FinPl.SplitPlace.v_eq_of_isIdemAt D _ _ (q i) (q i') _ (hq i) (H ▸ hq i'))
+  have hcv := _root_.GlobalTheory.ConvDistinct.main D ψ S T (Fin r) (fun i => (q i).v) c hv
     (fun i u hu => GlobalTheory.FinPl.SplitHalfSupp.mxAt_of_isHalf_above D _ (q i) _ _ u (hc i u hu)) (List.finRange r) (List.nodup_finRange r)
   rw [← List.ofFn_eq_map] at hcv
   have hcP : GlobalTheory.FinPl.CombAt P (aconv (List.ofFn c)) := by
@@ -232,7 +233,7 @@ theorem gen {r : ℕ} {k : Fin r → Type} [∀ i, Field (k i)] [∀ i, Valuativ
     Module.End.one_apply] at e3
   have hle : latO S T (ΛS : Set _) (ΛT : Set _) P ≤ latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True :=
     AddSubgroup.closure_mono fun w ⟨α, hα, _, hw⟩ => ⟨α, hα, fun _ h => absurd trivial h, hw⟩
-  rw [GlobalTheory.T.heisenbergCombination_eq_on_vacua_of_eq_one D r k q P hv hP ψ hom.std S T ΛS ΛT hS hT d _ hd (combAt_mapDomain hcP g⁻¹ h⁻¹) vac
+  rw [_root_.GlobalTheory.FinPl.Transfer.comb_eq_on_vacua D r k q P hv hP ψ hom.std S T ΛS ΛT hS hT d _ hd (combAt_mapDomain hcP g⁻¹ h⁻¹) vac
     ⟨hvac.2.theta, fun u hu => hvac.2.lat.1 u (hle hu), fun e he u hu hh => hvac.2.lat.2 e he u (hle hu) hh⟩ h0 e3 f hf,
     om_comb hom g h _ hf.1]
 
@@ -244,7 +245,7 @@ theorem lat_of_movedTo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
     (π' : EAf D →+* k) (hπ : ∀ a, π' (toEAf D a) = q.pr a) (y : Fin S.rank → k) :
     (∀ a, y a ∈ 𝒪[k]) ↔ (fun a => q.sec ((β.val.map π' *ᵥ y) a)) ∈ GlobalTheory.FinPl.latV S Λ (· = q.v) := by
   have h1 := map_eq_of_movedTo (ofSplit q) F hπ 1 σ (by rw [Matrix.mul_one]; exact hβ)
-  have h2 := GlobalTheory.T.splitPlaceFrame_movedBack_isLatticeBasis D k q S g Λ N P hP hΛ hN hm Y _ _ (β_eq_moved (ofSplit q) F g) hF (y ∘ σ.symm)
+  have h2 := _root_.GlobalTheory.FinPl.FrameBack.frame_back D k q S g Λ N P hP hΛ hN hm Y _ _ (β_eq_moved (ofSplit q) F g) hF (y ∘ σ.symm)
   rw [h1, Matrix.mul_one, Matrix.submatrix_mulVec_equiv]
   refine Iff.trans ⟨fun H i => H _, fun H a => ?_⟩ h2
   simpa using H (σ a)
@@ -259,29 +260,6 @@ theorem int_of_parPhi {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   · exact h2 i j
   · exact h1.intM i j
   · exact h3 i j
-
-theorem main : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.Base c) (χ : ℕ → (AE D)ˣ →* Circle), c.Is → v.Is → ∀ (r : ℕ) (pl : Fin r → Formalism.L2.DIV.Pl D.host.E) (G : ∀ i, QGeo v B (pl i)) (E : ∀ i, QExt (G i) χ) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (S : GlobalTheory.FinPl.Pl D → Prop), Function.Injective (fun i => (G i).q.v) → (∀ PP, PP ∈ Q ↔ ∃ i, pl i = PP) → (∀ p, S p ↔ ∃ i, (G i).q.v = p) → (∀ i, (G i).Res (E i).δ (ξ (pl i))) → (∀ i, D.R.r = D.R.k + ((G i).s + 1)) → ∀ j, j + 1 < D.R.m → GlobalTheory.FinPl.Moves (c.V j) (B.b j) (B.Λ j) (v.N j) S → GlobalTheory.FinPl.Moves (c.V (j + 1)) (B.b (j + 1)) (B.Λ (j + 1)) (v.N (j + 1)) S → B.b j ∈ GfC (c.V j) → B.b (j + 1) ∈ GfC (c.V (j + 1)) → IsSelfDualC _ (B.Λ j) → IsSelfDualC _ (B.Λ (j + 1)) → ∀ sS sT (LS : Formalism.L2.DIV.LevDat D.host.E ℂ (c.V j).rank) χj vac (d : WO (c.V j) (c.V (j + 1)) →₀ ℂ), LS.Pg = ∅ → LS.r = D.R.r → vac ≠ 0 → GlobalTheory.FinPl.CombAt S d → IsStepVecOf c.ψ c.θ (c.V j) (c.V (j + 1)) sS sT (B.Λ j : Set _) (B.Λ (j + 1) : Set _) (B.β j) (B.β (j + 1)) LS χj Q ξ vac (comb c.ψ _ _ d vac) → ∀ χS χT om, IsWeilDatumO c.ψ (c.V j) (c.V (j + 1)) χS χT om → ∀ g, GlobalTheory.FinPl.Vac c.ψ _ _ (B.Λ j) (B.Λ (j + 1)) S g → om (B.b j, B.b (j + 1)) (comb c.ψ _ _ d g) = comb c.ψ _ _ (aconv (List.ofFn fun i => (E i).eL j)) (om (B.b j, B.b (j + 1)) g) := by
-  intro D c v B χ hc hv r pl G E ξ Q S hinj hQ hS hres hrk j hj hmv hmv' hb hb' hsd hsd' sS sT LS χj vac d hPg hLr hvac hd hstep
-    χS χT om hom g hg
-  have hn : ∀ i, ∃ n, j + n = (G i).s := fun i => ⟨(G i).s - j, by have := (G i).hs; omega⟩
-  refine gen (fun i => (G i).q) pl (fun i => (G i).idem) (fun i => (G i).unit) hinj hQ hS hom hsd hsd' _ _ hPg hvac hd hstep
-    (fun i => (E i).eL j) (fun i => ?_) (fun i π' hπ => ?_) (fun e he Tm hTm i => ?_) g hg
-  · obtain ⟨n, hn⟩ := hn i
-    exact ((E i).eL_at j n hn).1
-  · obtain ⟨n, hn⟩ := hn i
-    obtain ⟨ea, -, mS⟩ := (G i).frame j (n + 1) (by omega)
-    obtain ⟨eb, -, mT⟩ := (G i).frame (j + 1) n (by omega)
-    exact ⟨lat_of_movedTo (G i).q ((hS _).2 ⟨i, rfl⟩) hsd (hv.sd j (by omega)) hmv _ (ea.symm.trans (stdOrd _ _ j (n + 1) (by omega))) mS
-        ((G i).latY j (n + 1) _) π' hπ,
-      lat_of_movedTo (G i).q ((hS _).2 ⟨i, rfl⟩) hsd' (hv.sd (j + 1) hj) hmv' _ (eb.symm.trans (stdOrd _ _ (j + 1) n (by omega))) mT
-        ((G i).latY (j + 1) n _) π' hπ⟩
-  · obtain ⟨n, hn⟩ := hn i
-    obtain ⟨ea, ha, mS⟩ := (G i).frame j (n + 1) (by omega)
-    obtain ⟨eb, hb, mT⟩ := (G i).frame (j + 1) n (by omega)
-    exact puts (G i).q hstep.1.2.inf hom hsd.1 hsd'.1 _ _ he ((hQ _).2 ⟨i, rfl⟩) (G i).idem hstep.1.2.theta hTm ea eb
-      (parPhi (E i).δ) (int_of_parPhi _) _
-      (fun π' hπ hred N => GlobalTheory.T.parahoricTestFunction_integralAdelic_reduction D _ (G i).q (pl i) π' hπ hred _ (E i).tame _ (hres i) _ _ _ _ _ _ _ _
-        (hLr.trans (hrk i)) ea eb ha hb N) _ _ _ _ _ _ mS mT ((E i).reg.1 j n hn) rfl ((E i).eL_at j n hn)
 
 end GlobalTheory.QVec
 end

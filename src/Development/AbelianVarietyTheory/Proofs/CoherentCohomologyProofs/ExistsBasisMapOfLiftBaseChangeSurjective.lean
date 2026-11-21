@@ -7,10 +7,6 @@ namespace GlobalTheory
 
 namespace Avoid
 
-section Union
-
-end Union
-
 section Pick
 
 open Module Function in
@@ -59,56 +55,6 @@ section Minor
 
 open exteriorPower
 
-theorem pairingDual_ιMulti_comp {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
-    [AddCommGroup N] [Module R N] {r : ℕ} (φ : M →ₗ[R] N) (f : Fin r → Dual R N)
-    (x : ⋀[R]^r M) :
-    pairingDual R M r (ιMulti R r fun k => f k ∘ₗ φ) x =
-      pairingDual R N r (ιMulti R r f) (exteriorPower.map r φ x) := by
-  have : pairingDual R M r (ιMulti R r fun k => f k ∘ₗ φ) =
-      pairingDual R N r (ιMulti R r f) ∘ₗ exteriorPower.map r φ := by
-    apply exteriorPower.linearMap_ext
-    ext v
-    simp [pairingDual_ιMulti_ιMulti]
-  rw [this, LinearMap.comp_apply]
-
-theorem exists_minor_ne_zero_of_separating {K V ι : Type*} [Field K] [AddCommGroup V]
-    [Module K V] [Finite ι] [LinearOrder ι] (c : ι → Dual K V)
-    (hc : ∀ v : V, (∀ j, c j v = 0) → v = 0) {r : ℕ} (x : ⋀[K]^r V) (hx : x ≠ 0) :
-    ∃ J : Set.powersetCard ι r, pairingDual K V r (ιMulti_family K r c J) x ≠ 0 := by
-  let φ : V →ₗ[K] (ι → K) := LinearMap.pi c
-  have hφ : Injective φ := by
-    rw [injective_iff_map_eq_zero]
-    intro v hv
-    exact hc v fun j => congrFun hv j
-  have hinj : Injective (exteriorPower.map r φ) := map_injective_field hφ
-  by_contra! h
-  apply hx
-  apply hinj
-  rw [map_zero]
-  apply ((Pi.basisFun K ι).exteriorPower r).repr.injective
-  ext J
-  rw [basis_repr_apply, ιMultiDual, ιMulti_family, ← pairingDual_ιMulti_comp, map_zero,
-    Finsupp.zero_apply, ← h J, ιMulti_family]
-  congr 3
-
-theorem exists_minor_ne_zero_of_span {K V ι : Type*} [Field K] [AddCommGroup V]
-    [Module K V] [Finite ι] [LinearOrder ι] (c : ι → Dual K V)
-    (hc : Submodule.span K (Set.range c) = ⊤) {r : ℕ} (x : ⋀[K]^r V) (hx : x ≠ 0) :
-    ∃ J : Set.powersetCard ι r, pairingDual K V r (ιMulti_family K r c J) x ≠ 0 := by
-  refine exists_minor_ne_zero_of_separating c (fun v hv => ?_) x hx
-  rw [← forall_dual_apply_eq_zero_iff K v]
-  have : Dual.eval K V v = 0 := by
-    apply LinearMap.ext_on_range hc
-    simpa using hv
-  intro f
-  simpa using DFunLike.congr_fun this f
-
-theorem exists_minor_ne_zero {K V ι : Type*} [Field K] [AddCommGroup V]
-    [Module K V] [Finite ι] [LinearOrder ι] (c : Basis ι K (Dual K V))
-    {r : ℕ} (x : ⋀[K]^r V) (hx : x ≠ 0) :
-    ∃ J : Set.powersetCard ι r, pairingDual K V r (ιMulti_family K r c J) x ≠ 0 :=
-  exists_minor_ne_zero_of_span c c.span_eq x hx
-
 open Module Function in
 open scoped TensorProduct Pointwise in
 open exteriorPower in
@@ -145,12 +91,6 @@ theorem _root_.GlobalTheory.Avoid.exists_orderEmbedding_minor_ne_zero {K V ι : 
   refine B.ext_elem fun s => ?_
   rw [map_zero, Finsupp.zero_apply, ← B.coord_apply, hcoord]
   exact hall _
-
-theorem minor_ιMulti {R V ι : Type*} [CommRing R] [AddCommGroup V] [Module R V] [LinearOrder ι]
-    (c : ι → Dual R V) {r : ℕ} (J : Set.powersetCard ι r) (v : Fin r → V) :
-    pairingDual R V r (ιMulti_family R r c J) (ιMulti R r v) =
-      (Matrix.of fun i j => c (Set.powersetCard.ofFinEmbEquiv.symm J j) (v i)).det := by
-  simp [ιMulti_family, pairingDual_ιMulti_ιMulti]
 
 end Minor
 

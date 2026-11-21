@@ -48,16 +48,6 @@ theorem ι_mul_incA (x : k) (b : D.host.E) : p.ι x * incA D b = p.ι (x * p.pr 
 theorem incA_mul_ι (x : k) (b : D.host.E) : incA D b * p.ι x = p.ι (p.pr b * x) := by
   rw [mul_comm, ι_mul_incA, mul_comm]
 
-theorem map_ι_mul_rat {a b c : Type} [Fintype b] (M : Matrix a b k) (N : Matrix b c D.host.E) :
-    M.map p.ι * N.map (incA D) = (M * N.map p.pr).map p.ι := by
-  ext i j
-  simp [Matrix.mul_apply, ι_mul_incA, map_sum]
-
-theorem rat_mul_map_ι {a b c : Type} [Fintype b] (N : Matrix a b D.host.E) (M : Matrix b c k) :
-    N.map (incA D) * M.map p.ι = (N.map p.pr * M).map p.ι := by
-  ext i j
-  simp [Matrix.mul_apply, incA_mul_ι, map_sum]
-
 theorem infPart_e : infPart D p.e = 0 := by
   obtain ⟨h1, h2, v, ε, ⟨α, hα, -⟩, h3⟩ := p.split
   have h4 : p.e = p.e * (algebraMap (AF D.host.F) (AE D) ε) := by

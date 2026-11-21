@@ -39,20 +39,6 @@ def DefiniteSpaceClassStatement (D : D7) (_Lv : LevelData D) (_u : D.what₂.Wor
 def ClassesAsDoubleCosets : Prop :=
   General ∧ ∀ (D : D7) (Lv : LevelData D) (u : D.what₂.Word), DefiniteSpaceClassStatement D Lv u
 
-theorem CosetMass.unique {G : Type} [Group G] {Γ K : Subgroup G} {m m' : ℝ}
-    (h : CosetMass Γ K m) (h' : CosetMass Γ K m') : m = m' := by
-  haveI := h.1
-  letI := Fintype.ofFinite (ClassSet Γ K)
-  have hs : ∀ c : ClassSet Γ K, DoubleCoset.mk Γ K (Quotient.out c) = c := fun c => Quotient.out_eq' c
-  rw [← h.2.2 _ hs, ← h'.2.2 _ hs]
-
-example {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
-    (hc : CMData F E) (W : HSpace E) (N : Submodule (𝓞 E) W.V) :
-    stabHat hc W N = (levelAfL hc.sig W.gram (crdLat W N)).subgroupOf (UAf hc W) := by
-  ext x
-  simp only [stabHat, Subgroup.mem_subgroupOf, levelAfL, level, Subgroup.mem_inf]
-  exact ⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ClassesDoubleCosets
 
 end

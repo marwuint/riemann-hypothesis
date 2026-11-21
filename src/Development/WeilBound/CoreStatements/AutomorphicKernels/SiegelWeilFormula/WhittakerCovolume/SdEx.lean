@@ -1,11 +1,16 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhittakerCovolume.RelAlg
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfdualMeasureHermitianAdelesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfdualMeasureHermitianTuplesStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfdualMeasureHermitianAdeles
+import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsSelfDualForm
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfdualMeasureHermitianTuples
 
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 
 theorem sdEx : SdEx := by
   intro F E _ _ _ _ _ σ hcm M J hJ ψ hψ n
-  exact ⟨GlobalTheory.T.exists_selfdual_measure_hermitian_tuples F E σ hcm M J hJ ψ hψ n, GlobalTheory.T.exists_selfdual_measure_hermitian_adeles F E σ hcm ψ hψ n⟩
+  exact ⟨_root_.GlobalTheory.CompanionTheory.Hypotheses₂.SdExistN.exists_sdW_tuples F E σ hcm M J hJ ψ hψ n, _root_.GlobalTheory.CompanionTheory.SW.HermCoord.exists_sdHerm F E σ hcm ψ hψ n⟩
 
 end PositivityTheory.SiegelWeilFormula.KWhit

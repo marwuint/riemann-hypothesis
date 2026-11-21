@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompPowPts
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToRepFam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorObjectMapsComposeCancel
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyIso
 
@@ -171,11 +171,6 @@ def Obj.resim {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (
 theorem Obj.resim_eta {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) (hK : 0 < K)
     (hKp : K.Coprime p) (t : SimSys D N K) (y : D.La) : (o.resim hK hKp t).eta y = o.eta (t.g K y) := rfl
 
-def ObjMap.resim {b : Base D R} {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' : Obj b K s'}
-    {o : Obj b K s} {f : S' ⟶ S} (hK : 0 < K) (hKp : K.Coprime p) (t : SimSys D N K) (m : ObjMap o' o f) :
-    ObjMap (o'.resim hK hKp t) (o.resim hK hKp t) f :=
-  { m with eta := fun y => m.eta (t.g K y) }
-
 variable (D K) in
 
 def multSub : AddSubgroup D.La where
@@ -191,31 +186,6 @@ def multSub : AddSubgroup D.La where
 variable (D K) in
 
 abbrev LQ := D.La ⧸ multSub D K
-
-theorem LQ.mk_eq_mk {x y : D.La} : (QuotientAddGroup.mk x : LQ D K) = QuotientAddGroup.mk y ↔ ∃ z, x = y + K • z := by
-  rw [QuotientAddGroup.eq]
-  constructor
-  · rintro ⟨z, hz⟩
-    exact ⟨-z, by rw [smul_neg, ← hz]; abel⟩
-  · rintro ⟨z, rfl⟩
-    exact ⟨-z, by rw [smul_neg]; abel⟩
-
-theorem LQ.finite (hK : 0 < K) : Finite (LQ D K) := by
-  have := D.finLa
-  have : Module.Finite ℤ (LQ D K) :=
-    Module.Finite.of_surjective (QuotientAddGroup.mk' (multSub D K)).toIntLinearMap
-      (QuotientAddGroup.mk'_surjective _)
-  refine Module.finite_of_fg_torsion _ fun x => ?_
-  refine ⟨⟨(K : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hK.ne')⟩, ?_⟩
-  induction x using QuotientAddGroup.induction_on with
-  | H y =>
-    show ((K : ℤ)) • (QuotientAddGroup.mk y : LQ D K) = 0
-    rw [natCast_zsmul, ← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]
-    exact ⟨y, rfl⟩
-
-theorem LQ.finite_aut (hK : 0 < K) : Finite (Equiv.Perm (LQ D K)) := by
-  have := LQ.finite (D := D) hK
-  infer_instance
 
 def SimSys.Lifts (t : SimSys D N K) (a : Equiv.Perm (LQ D K)) : Prop :=
   ∀ y, a (QuotientAddGroup.mk y) = QuotientAddGroup.mk (t.g K y)
@@ -239,88 +209,5 @@ def levelGrp : Subgroup (Equiv.Perm (LQ D K)) where
 
 theorem mem_levelGrp {a : Equiv.Perm (LQ D K)} :
     a ∈ levelGrp D N K ↔ (∃ t : SimSys D N K, t.Lifts a) ∧ ∃ t : SimSys D N K, t.Lifts a⁻¹ := Iff.rfl
-
-theorem mem_levelGrp_of_lifts (hK : 0 < K) {a : Equiv.Perm (LQ D K)} {t : SimSys D N K} (ht : t.Lifts a) :
-    a ∈ levelGrp D N K := by
-  refine ⟨⟨t, ht⟩, ?_⟩
-  have hpow : ∀ j : ℕ, ∃ s : SimSys D N K, s.Lifts (a ^ j) := by
-    intro j
-    induction j with
-    | zero => exact ⟨SimSys.id, SimSys.lifts_one⟩
-    | succ j ih =>
-      obtain ⟨s, hs⟩ := ih
-      rw [pow_succ]
-      exact ⟨s.comp t, hs.comp ht⟩
-  have := LQ.finite_aut (D := D) hK
-  have ho := (isOfFinOrder_of_finite a).orderOf_pos
-  have e : a⁻¹ = a ^ (orderOf a - 1) := by
-    refine (eq_inv_of_mul_eq_one_left ?_).symm
-    rw [← pow_succ, Nat.sub_add_cancel ho, pow_orderOf_eq_one]
-  rw [e]
-  exact hpow _
-
-theorem levelGrp.finite (hK : 0 < K) : Finite (levelGrp D N K) := by
-  have := LQ.finite_aut (D := D) hK
-  infer_instance
-
-def levelGrp.sys (a : levelGrp D N K) : SimSys D N K := Classical.choose (mem_levelGrp.1 a.2).1
-
-theorem levelGrp.sys_lifts (a : levelGrp D N K) : (levelGrp.sys a).Lifts a :=
-  Classical.choose_spec (mem_levelGrp.1 a.2).1
-
-theorem Obj.eta_congr {b : Base D R} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b K s) {x y : D.La}
-    (h : (QuotientAddGroup.mk x : LQ D K) = QuotientAddGroup.mk y) : o.eta x = o.eta y := by
-  obtain ⟨z, rfl⟩ := LQ.mk_eq_mk.1 h
-  exact o.eta_add_nsmul _ _
-
-def ObjMap.congrLift {b : Base D R} {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' : Obj b K s'}
-    {o : Obj b K s} {f : S' ⟶ S} (hK : 0 < K) (hKp : K.Coprime p) {t t' : SimSys D N K}
-    {a : Equiv.Perm (LQ D K)} (ht : t.Lifts a) (ht' : t'.Lifts a) (m : ObjMap (o'.resim hK hKp t) o f) :
-    ObjMap (o'.resim hK hKp t') o f :=
-  { m with
-    eta := fun y => by
-      have h := m.eta y
-      rwa [Obj.resim_eta, o'.eta_congr (show (QuotientAddGroup.mk (t.g K y) : LQ D K) =
-        QuotientAddGroup.mk (t'.g K y) by rw [← ht, ← ht'])] at h }
-
-def relMap {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a : levelGrp D N K) : F.X ⟶ F.X :=
-  Classical.choose (F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).exists
-
-theorem relMap_spec {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a : levelGrp D N K) :
-    relMap hK hKp F a ≫ F.s = F.s ∧
-      Nonempty (ObjMap (F.univ.resim hK hKp (levelGrp.sys a)) F.univ (relMap hK hKp F a)) :=
-  Classical.choose_spec (F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).exists
-
-theorem relMap_eq {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a : levelGrp D N K)
-    (t : SimSys D N K) (ht : t.Lifts a) (f : F.X ⟶ F.X) (hf : f ≫ F.s = F.s)
-    (m : ObjMap (F.univ.resim hK hKp t) F.univ f) : f = relMap hK hKp F a :=
-  (F.rep F.X F.s (F.univ.resim hK hKp (levelGrp.sys a))).unique
-    ⟨hf, ⟨m.congrLift hK hKp ht (levelGrp.sys_lifts a)⟩⟩ (relMap_spec hK hKp F a)
-
-theorem relMap_one {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) :
-    relMap hK hKp F (1 : levelGrp D N K) = 𝟙 _ :=
-  (relMap_eq hK hKp F 1 SimSys.id SimSys.lifts_one (𝟙 _) (by simp)
-    (Classical.choice (RepFamModel.objMap_refl F.univ))).symm
-
-theorem relMap_mul {b : Base D R} (hK : 0 < K) (hKp : K.Coprime p) (F : RepFam b K) (a c : levelGrp D N K) :
-    relMap hK hKp F (a * c) = relMap hK hKp F a ≫ relMap hK hKp F c := by
-  obtain ⟨ha, ⟨ma⟩⟩ := relMap_spec hK hKp F a
-  obtain ⟨hc, ⟨mc⟩⟩ := relMap_spec hK hKp F c
-  exact (relMap_eq hK hKp F (a * c) ((levelGrp.sys a).comp (levelGrp.sys c))
-    ((levelGrp.sys_lifts a).comp (levelGrp.sys_lifts c)) _ (by rw [Category.assoc, hc, ha])
-    (MapComp.comp (ma.resim hK hKp (levelGrp.sys c)) mc)).symm
-
-theorem relMap_lower {b : Base D R} {M₁ : ℕ} (hN : 0 < N) (hM : 0 < M₁) (hc : (N * M₁).Coprime p)
-    (F : RepFam b (N * M₁)) (a : levelGrp D N (N * M₁)) :
-    Nonempty (ObjMap (F.univ.lower hN hM hc) (F.univ.lower hN hM hc) (relMap (Nat.mul_pos hN hM) hc F a)) := by
-  obtain ⟨-, ⟨m⟩⟩ := relMap_spec (Nat.mul_pos hN hM) hc F a
-  refine ⟨{ m with eta := fun y => ?_ }⟩
-  obtain ⟨z, hz⟩ := (levelGrp.sys a).one y
-  have e : F.univ.eta ((levelGrp.sys a).g (N * M₁) (M₁ • y)) = F.univ.eta (M₁ • y) := by
-    refine F.univ.eta_congr (LQ.mk_eq_mk.2 ⟨z, ?_⟩)
-    rw [map_nsmul, hz, smul_add, smul_smul, Nat.mul_comm M₁ N]
-  have h := m.eta (M₁ • y)
-  rw [Obj.resim_eta, e] at h
-  exact h
 
 end GlobalTheory.UPel.HT

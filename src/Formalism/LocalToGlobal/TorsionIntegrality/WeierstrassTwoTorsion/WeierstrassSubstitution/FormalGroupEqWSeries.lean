@@ -373,9 +373,6 @@ theorem fgl_map : MvPowerSeries.map φ (fgl W) = fgl (W.map φ) := by
   rw [map_mul, mv_map_invOfUnit φ _ (-1) (-1) (by simpa using dd_cc W) (by simp)]
   simp [map_add, map_mul, uThird_map, wThird_map]
 
-theorem wSer_univ : wSer W = PowerSeries.map (Univ.φ_of W) (wSer Univ.W₀) := by
-  rw [wSer_map, Univ.map_eq]
-
 theorem fgl_univ : fgl W = MvPowerSeries.map (Univ.φ_of W) (fgl Univ.W₀) := by
   rw [fgl_map, Univ.map_eq]
 

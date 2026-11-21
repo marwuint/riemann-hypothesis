@@ -5,20 +5,62 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolynomialRouteS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNatDatumSquareFlip
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleFormConvergentThetaIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDistributionRationalPointsInvariantTripleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityTensorModelVWStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleFormConvergentThetaIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDistributionRationalPointsInvariantTriple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityTensorModelVW
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrongApproximationSplitPlaceSkewHermitianUnitarStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDetOneMulBlockUnitaryDecompositionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaTripleOfSquareGridLatticeCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigRouteKernelEqConstMulThetaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralConjugateScaledUnitaryGroupEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaTripleOfSquareGridLatticeCompatible
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigRouteKernelEqConstMulTheta
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralConjugateScaledUnitaryGroupEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaussianDatumFlippedFiniteTensorBigRouteStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealPolynomialVectorReachedByRealDatumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareFlipReachesLocalQuotientClassesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareCommutativityProjection
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepresentationsForTripleStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilConvergenceOfSiegelSetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareFlipReachesLocalQuotientClasses
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfUnit
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfIsStd
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.AuxiliaryPrimeNeTypePrime
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsReading
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ExistsNeZeroOfIsMatch
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TripleFrameBaseExists
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockAlgebraicThetaVectorsStableFiniteAdelesLie
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawFramesWeilEquivalence
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilIntertwiningValueStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilLocalFactorEq
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilArchimedeanFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilUnramifiedFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilGlobalFactor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpDiv
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsStableComplementOfIrreducibleSpanIntertwin
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleQuotientsIsoOfIntertwinedSemisimple
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrientedPairFockMapsLieEquivariant
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsPairReading
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelRationalStructure
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTransformDarbouxModelLinearInjective
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieActionFockOperatorsScalarsTrace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineGoodModel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelHermitianScaling
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ComplementaryAdelicSchwartzArchimedeanReplace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelCharacterMatch
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelFiniteExponent
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelArchimedeanExponent
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilModelOfExponents
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DixmierCommutantScalar
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LsumMapDomainSome
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinFLin
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaIntegralsOfMinguez
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HypothesesAbsDet
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilConvergenceOfSiegelSet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TripleMatchExistence
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsFundamentalDomain
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameOfHeisDer
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsFinNormComparison
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj
@@ -90,19 +132,19 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
       ∃ g g₁, ∫ u in M.fd _, kerBig W (tensT W a τ) g g₁ u ∂M.ν _ ≠ 0 := by
   classical
   obtain ⟨M, hM⟩ := exists_vol G hL t
-  obtain ⟨e, Bs, Γ, X, om, om', h, hT, hti⟩ := GlobalTheory.T.exists_thetaTripleOfSquareGrid_latticeCompatible hL W t i j hst M hM
+  obtain ⟨e, Bs, Γ, X, om, om', h, hT, hti⟩ := _root_.GlobalTheory.BigNZ.Tied.squareTriple_tied hL W t i j hst M hM
   obtain ⟨R, Rf, hm⟩ := hLM _ _ _ Bs _ _ Γ X om om' hT
   obtain ⟨dec, hk⟩ := hK.1 _ _ _ Bs _ _ Γ X om om' hT
   obtain ⟨hc, hco⟩ := hk R Rf hm
-  obtain ⟨l, hla, hl⟩ := GlobalTheory.T.exists_adm_eq_thetaIntegral_of_conv Γ.M Bs.ψ _ _ om hT.weil dec.1
+  obtain ⟨l, hla, hl⟩ := _root_.GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral Γ.M Bs.ψ _ _ om hT.weil dec.1
   have hw0 : G.pl.w G.pl.v0 ∈ locPl G t :=
     Finset.mem_union_left _ (by
       have : G.pl.v0 ∈ G.pl.S0 := by unfold Places.S0; convert Finset.mem_insert_self _ _
       unfold Places.W0; convert Finset.mem_image_of_mem _ this)
   have hv0 := (hti.2.2.1 _).2 ⟨_, hw0, rfl⟩
   have hd : 0 < (spW G i j).rank + (spW₁ G i j).rank := by have := hT.geo.aBig; omega
-  obtain ⟨f, hf, h0⟩ := exists_I_ne_zero_at hm hc hco hla hl (GlobalTheory.T.theta_distribution_rational_points_invariant_triple Bs Γ X om om' hT 1 (one_mem _)) hv0
-    (GlobalTheory.T.weilRepresentationLocality_tensorModelVW Bs Γ X om om' hT _) (GlobalTheory.T.strongApproximation_splitPlace_skewHermitian_unitary hSA Bs Γ X om om' hT ⟨_, hT.chars.sub hv0⟩)
+  obtain ⟨f, hf, h0⟩ := exists_I_ne_zero_at hm hc hco hla hl (_root_.GlobalTheory.RatInvTheta.thetaSum_rat_inv Bs Γ X om om' hT 1 (one_mem _)) hv0
+    (_root_.GlobalTheory.WeilLocalityVW.locality Bs Γ X om om' hT _) (GlobalTheory.T.strongApproximation_splitPlace_skewHermitian_unitary hSA Bs Γ X om om' hT ⟨_, hT.chars.sub hv0⟩)
     (H := Set.range (blkU _ _ e h.JWW)) fun x => by
       obtain ⟨s, g, h1, h2⟩ := GlobalTheory.T.exists_detOne_mul_blockUnitary_decomposition _ _ e h.JWW hd x
       exact ⟨s, _, ⟨g, rfl⟩, h1, h2⟩
@@ -112,7 +154,7 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
       IsLocFn W B t e Γ w v (flipAt W t i j w n Φ) χ)
     (fun v hv φ₀ hφ₀ => by
       obtain ⟨w, hw, ew⟩ := (hti.2.2.1 v).1 hv
-      obtain ⟨n, Φ, φ₂, k, φ₃, h1, h2, h3, h4, h5, h6⟩ := GlobalTheory.T.squareFlip_reaches_localQuotient_classes hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ew φ₀ hφ₀
+      obtain ⟨n, Φ, φ₂, k, φ₃, h1, h2, h3, h4, h5, h6⟩ := _root_.GlobalTheory.SquareFlipReach.flip_reach hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ew φ₀ hφ₀
       refine ⟨φ₂, h3.1, fun w' hw' ew' => ?_, _, ⟨k, rfl⟩, φ₃, h4, h5, h6⟩
       obtain rfl : w = w' := (hti.2.2.2 ⟨v, hT.chars.sub hv⟩ w hw ew).symm.trans (hti.2.2.2 ⟨v, hT.chars.sub hv⟩ w' hw' ew')
       exact ⟨n, Φ, h1, h2, h3⟩) hf h0
@@ -134,18 +176,18 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
   obtain ⟨b', hb'⟩ := ρ.onto_big i j (toTens a)
   obtain ⟨b, rfl⟩ := toTens_surjective b'
   have hΘ : IsMatched B t ρ i j (tensT W a τ) (tensT W b τ') := ⟨a, b, τ, τ', n, Φ, hb', hnat, hF, rfl, rfl⟩
-  obtain ⟨ξ, hξ, hker⟩ := GlobalTheory.T.big_route_kernel_eq_const_mul_theta hL W B ρ t i j M _ _ hΘ e Bs Γ X om om' h hT _ ha g.1 g.2
+  obtain ⟨ξ, hξ, hker⟩ := _root_.GlobalTheory.BigKernel.kerBig_eq_theta hL W B ρ t i j M _ _ hΘ e Bs Γ X om om' h hT _ ha g.1 g.2
   refine ⟨M, hM, a, τ, τ', n, Φ, hnat, hF, g.1, g.2, ?_⟩
   have hfd := (hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).haar_fund
   simp only [hker]
-  rw [integral_const_mul, GlobalTheory.T.setIntegral_conjugate_scaled_unitaryGroup_eq _ 1 one_ne_zero h.JW _ _ hfd.1 hfd.2 Γ.M.dom (h.μW ▸ hT.geo.hM.dom)
+  rw [integral_const_mul, _root_.GlobalTheory.ConjUIntegral.setIntegral_conjU_eq _ 1 one_ne_zero h.JW _ _ hfd.1 hfd.2 Γ.M.dom (h.μW ▸ hT.geo.hM.dom)
     (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om _ x _) fun γ hγ x => ?_, ← h.μW]
   · exact mul_ne_zero hξ hne
   · have e3 : ((γ * x, blkU _ _ e h.JWW (g.1, g.2)) : UB Γ.V.J × UB Γ.W.J) = (γ, 1) * (x, blkU _ _ e h.JWW (g.1, g.2)) := by
       simp
     simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta]
     rw [e3, map_mul, Module.End.mul_apply,
-      GlobalTheory.T.theta_distribution_rational_points_invariant_triple Bs Γ X om om' hT γ hγ 1 (one_mem _) _ (hT.weil.isUSplitting.pres _ _ ha.1)]
+      _root_.GlobalTheory.RatInvTheta.thetaSum_rat_inv Bs Γ X om om' hT γ hγ 1 (one_mem _) _ (hT.weil.isUSplitting.pres _ _ ha.1)]
 
 end Nonzero
 
@@ -190,14 +232,14 @@ theorem exists_read {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsIn
       rw [thO, h2, rho_zero, ← eF] at h1
       exact h1.symm
     simp only [thetaInt, key]
-    rw [GlobalTheory.T.setIntegral_conjugate_scaled_unitaryGroup_eq _ 1 one_ne_zero hR.JW _ _ hν.1 hν.2 Γ.M.dom (hμ ▸ hg.hM.dom)
+    rw [_root_.GlobalTheory.ConjUIntegral.setIntegral_conjU_eq _ 1 one_ne_zero hR.JW _ _ hν.1 hν.2 Γ.M.dom (hμ ▸ hg.hM.dom)
       (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om Φ x (toUX X e hR.JX h)) fun γ hγ x => ?_, ← hμ]
     · rfl
     · have e3 : ((γ * x, toUX X e hR.JX h) : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB Γ.V.J × GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB Γ.W.J) =
           (γ, 1) * (x, toUX X e hR.JX h) := by simp
       simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta]
       rw [e3, map_mul, Module.End.mul_apply,
-        GlobalTheory.T.theta_distribution_rational_points_invariant_triple Bs Γ Xc om om' hT γ hγ 1 (one_mem _) _ (hT.weil.isUSplitting.pres _ _ hF.1)]
+        _root_.GlobalTheory.RatInvTheta.thetaSum_rat_inv Bs Γ Xc om om' hT γ hγ 1 (one_mem _) _ (hT.weil.isUSplitting.pres _ _ hF.1)]
   obtain ⟨a1, a2, -⟩ := fock_datum hθ true A B e.symm Bs hT₀.base hR.JW hR.JX hg.hV hg.hW
     (fun w => by
       obtain ⟨τ, a, b, -, d⟩ := hR.cart w
@@ -265,7 +307,7 @@ theorem thetaInt_eq_zero (hSA : GlobalTheory.Published.StrongApproxSU) (hK : Glo
   obtain ⟨R, Rf, hm⟩ := hLM _ _ _ Bs _ _ Γ X om om' hT
   obtain ⟨dec, hk⟩ := hK.1 _ _ _ Bs _ _ Γ X om om' hT
   obtain ⟨hc, hco⟩ := hk R Rf hm
-  obtain ⟨l, hla, hl⟩ := GlobalTheory.T.exists_adm_eq_thetaIntegral_of_conv Γ.M Bs.ψ _ _ om hT.weil dec.1
+  obtain ⟨l, hla, hl⟩ := _root_.GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral Γ.M Bs.ψ _ _ om hT.weil dec.1
   obtain ⟨f₀, f₀', ⟨f1, f2⟩, -, f3⟩ := GlobalTheory.FlipMatch.finite_match hL W B ρ t i j M hst h hm htb
   obtain ⟨φ₀, -, p₀, -, d₀, -⟩ := f3 n₀ Φ₀ τ₀ τ₀' hn₀ hF₀
   obtain ⟨f, hf, hPf⟩ := hFock f₀ f2 P
@@ -278,8 +320,8 @@ theorem thetaInt_eq_zero (hSA : GlobalTheory.Published.StrongApproxSU) (hK : Glo
   funext y
   have k₀ := hI _ _ (hPf 1 φ₀ one_ne_zero p₀ _ (by rw [one_smul]; exact isDatum_of_isDatumA d₀)) y
   rw [inv_one, one_smul] at k₀
-  refine k₀.trans (I_eq_zero hT hla hl (GlobalTheory.T.theta_distribution_rational_points_invariant_triple Bs Γ X om om' hT 1 (one_mem _)) hv0
-    (GlobalTheory.T.weilRepresentationLocality_tensorModelVW Bs Γ X om om' hT _) (GlobalTheory.T.strongApproximation_splitPlace_skewHermitian_unitary hSA Bs Γ X om om' hT ⟨_, hT.chars.sub hv0⟩)
+  refine k₀.trans (I_eq_zero hT hla hl (_root_.GlobalTheory.RatInvTheta.thetaSum_rat_inv Bs Γ X om om' hT 1 (one_mem _)) hv0
+    (_root_.GlobalTheory.WeilLocalityVW.locality Bs Γ X om om' hT _) (GlobalTheory.T.strongApproximation_splitPlace_skewHermitian_unitary hSA Bs Γ X om om' hT ⟨_, hT.chars.sub hv0⟩)
     (H := Set.range (blkU _ _ e h.JWW)) (fun x => by
       obtain ⟨s, g, h1, h2⟩ := GlobalTheory.T.exists_detOne_mul_blockUnitary_decomposition _ _ e h.JWW hd x
       exact ⟨s, _, ⟨g, rfl⟩, h1, h2⟩) (fun φ₁ p₁ g₀ hg₀ => ?_) p₀ _)
@@ -290,7 +332,7 @@ theorem thetaInt_eq_zero (hSA : GlobalTheory.Published.StrongApproxSU) (hK : Glo
       IsLocFn W B t e Γ w v (flipAt W t i j w n Φ) χ)
     (fun v hv φ₀ hφ₀ => by
       obtain ⟨w, hw, ew⟩ := (hti.2.2.1 v).1 hv
-      obtain ⟨n, Φ, φ₂, k, φ₃, h1, h2, h3, h4, h5, h6⟩ := GlobalTheory.T.squareFlip_reaches_localQuotient_classes hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ew φ₀ hφ₀
+      obtain ⟨n, Φ, φ₂, k, φ₃, h1, h2, h3, h4, h5, h6⟩ := _root_.GlobalTheory.SquareFlipReach.flip_reach hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ew φ₀ hφ₀
       refine ⟨φ₂, h3.1, fun w' hw' ew' => ?_, _, ⟨k, rfl⟩, φ₃, h4, h5, h6⟩
       obtain rfl : w = w' := (hti.2.2.2 ⟨v, hT.chars.sub hv⟩ w hw ew).symm.trans (hti.2.2.2 ⟨v, hT.chars.sub hv⟩ w' hw' ew')
       exact ⟨n, Φ, h1, h2, h3⟩) hf ⟨φ₁, p₁, g₀, hg₀, hne₁⟩
@@ -308,7 +350,7 @@ theorem thetaInt_eq_zero (hSA : GlobalTheory.Published.StrongApproxSU) (hK : Glo
     rw [e]; exact Ideal.mul_mem_left _ _ hmem)) n Φ hnat
   obtain ⟨f', h1, h2, h3⟩ := GlobalTheory.T.exists_gaussianDatum_flippedFiniteTensor_bigRoute hL W B ρ t i j M hst e Bs Γ X om om' h hT hti n Φ τ τ' hnat hF φ hφ
     fun w hw => (H w hw).2.2
-  obtain ⟨s, rfl⟩ := GlobalTheory.T.fockVacua_triple_proportional_to_nonzero Bs Γ X om om' hT f₀ f1 f2 f' h2
+  obtain ⟨s, rfl⟩ := _root_.GlobalTheory.GaussLine.gauss_eq_smul Bs Γ X om om' hT f₀ f1 f2 f' h2
   have hs : s ≠ 0 := by rintro rfl; exact h1 (zero_smul _ _)
   have k := hI _ _ (hPf s φ hs hφ _ (isDatum_of_isDatumA h3)) (blk _ _ g)
   rw [toUX_blk _ _ e h.JWW, GlobalTheory.RegCompare.thetaInt_smul, ← hP n Φ τ τ' hF] at k
@@ -338,137 +380,10 @@ theorem exists_not_isNull (hSA : GlobalTheory.Published.StrongApproxSU) (hK : Gl
   obtain ⟨M, hM, a, τ, τ', n, Φ, hn, hF, g, g₁, h⟩ := exists_integral_ne_zero hSA hK hLM hL W B ρ t i j hst
   exact ⟨toTens a, fun h0 => h (h0 M hM a rfl n Φ τ τ' hn hF g g₁)⟩
 
-set_option maxHeartbeats 1000000 in
-
-theorem exists_nullSpace (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
-    (hLM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (hst : ∀ t, SquareStanding G t)
-    (i j : Fin D.R.m) {A : Fr (spW G i j)} {AV : Fr (spV G i j)} {AV₁ : Fr (spV₁ G i j)} (hA : IsGridFr W _ A)
-    (hV : IsGridFr W _ AV) (hV₁ : IsGridFr W _ AV₁)
-    (ι : PolRoute G (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid (i + 1) j) →ₗ[ℂ]
-      PolF D (GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)).rank (spW G i j).rank)
-    (hι : ∀ (t : T) (B : Frames G) (ρ : RealMatch W) n Φ (τ : TotT G (routeBig t i j)) τ', HasFlip B t ρ i j n Φ τ τ' →
-      ∀ a : PolT G (routeBig t i j) →₀ ℂ,
-        datumA W (tensT W a τ) = fockF W.ψ W.θ true A (frSum AV AV₁) (datumA W τ) (ι (toTens a))) :
-    ∃ K : Submodule ℂ (PolRoute G (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid (i + 1) j)),
-      (∀ B ρ t x, IsNull W B ρ t i j x ↔ x ∈ K) ∧
-      (∀ x ∈ K, ∀ t ν 𝓕, IsHaarFD (spW G i j) ν 𝓕 → ∀ ωA : GlobalTheory.Grid.WRep (spW G i j) (GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)),
-        GlobalTheory.Grid.IsWeil W.ψ true _ _ (beta G i j) (beta G i j / alpha G t i j) ωA →
-        ∀ f, IsFinF W.ψ W.θ true A (frSum AV AV₁) f → thetaInt ωA ν 𝓕 (fockF W.ψ W.θ true A (frSum AV AV₁) f (ι x)) = 0) ∧
-      ∀ B (ρ : RealMatch W) t (M : Vol G), M.Is t → ∀ n Φ τ τ', (∀ w ∈ locPl G t, depthAt G w ≤ n w ∧ IsNatDatum (unifAt w) (n w) (Φ w)) →
-        HasFlip B t ρ i j n Φ τ τ' → ∀ g g₁, ∃ l : PolRoute G (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid (i + 1) j) →ₗ[ℂ] ℂ,
-          ∀ a, ∫ u in M.fd _, kerBig W (tensT W a τ) g g₁ u ∂M.ν _ = l (toTens a) := by
-  obtain ⟨A₁, hA₁⟩ := exists_isGridFr W (X := .grid i j) ⟨i.2.le, j.2.le⟩
-  have hD := fun t => dict hL W t i j A A₁ AV AV₁ hA hA₁ hV hV₁
-  have hT := fun t => (hD t).1 (hst t) _ (exists_vol G hL t).choose_spec
-  choose a b ha hb _ using (hT μ₀).gap
-  obtain ⟨Pr, q, H⟩ := GlobalTheory.T.exists_square_commutativity_projection hP hK hLM D W.ψ W.θ W.ψ_std W.θ_is _ _ _ A A₁ (frSum AV AV₁) a b
-  replace H := fun t => H _ _ (hT t) fun τ => ⟨GlobalTheory.SquareRel.hasInfExp_alpha G i j hL μ₀ t τ (ha τ), hb τ⟩
-  choose ωA ωB hωA hωB using fun t => GlobalTheory.T.weil_representations_for_triple hP D W.ψ W.ψ_std _ _ _ _ _ (hT t)
-  have hbig : Node.InRange D.R.m (.grid (i + 1) (j + 1)) := ⟨i.2, j.2⟩
-  have form : ∀ B (ρ : RealMatch W) t (M : Vol G), M.Is t → ∀ n Φ τ τ',
-      (∀ w ∈ locPl G t, depthAt G w ≤ n w ∧ IsNatDatum (unifAt w) (n w) (Φ w)) → HasFlip B t ρ i j n Φ τ τ' →
-      ∃ (Pf : ModuleCat.{0} ℂ) (y : Pf) (J : Pr ⊗[ℂ] Pf →ₗ[ℂ] (GA D (GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)) → ℂ))
-        (κ : _ → ℂ), (J = 0 ∨ Function.Injective J) ∧
-        (∀ P, thetaInt (ωA t) (M.ν _) (M.fd _) (fockF W.ψ W.θ true A (frSum AV AV₁) (datumA W τ) P) = J (q P ⊗ₜ y)) ∧
-        ∀ g g₁ a, ∫ u in M.fd _, kerBig W (tensT W a τ) g g₁ u ∂M.ν _ = κ (g, g₁) * J (q (ι (toTens a)) ⊗ₜ y) (blk _ _ (g, g₁)) := by
-    intro B ρ t M hM n Φ τ τ' hn hF
-    obtain ⟨_, _, _, _, _, -, hc⟩ := core hP.howeDualityReal hP hLM hL W i j A A₁ AV AV₁ hA hA₁ hV hV₁ t B ρ M (hst t) hM (hT t)
-      _ _ (hωA t) (hωB t)
-    obtain ⟨_, hc⟩ := hc 0
-    obtain ⟨Pf, y, J, h1, h2⟩ := H t _ _ (hM.vtx _ hbig).haar_fund _ (hωA t) _ (hc n Φ τ τ' hn hF).1
-    obtain ⟨κ, hκ⟩ := (hD t).2 _ _ (hωA t) (hωB t)
-    refine ⟨Pf, y, J, κ, h1, h2, fun g g₁ a => ?_⟩
-    obtain ⟨b', hb'⟩ := ρ.onto_big i j (toTens a)
-    obtain ⟨b, rfl⟩ := toTens_surjective b'
-    rw [(hκ B ρ _ _ ⟨a, b, τ, τ', n, Φ, hb', hn, hF, rfl, rfl⟩).2.2.2.2.1 M g g₁, hι t B ρ n Φ τ τ' hF, h2]
-  refine ⟨LinearMap.ker (q ∘ₗ ι), fun B ρ t x => ⟨fun h0 => ?_, fun hx M hM a ha n Φ τ τ' hn hF g g₁ => ?_⟩,
-    fun x hx t ν 𝓕 hν ω hω f hf => ?_, fun B ρ t M hM n Φ τ τ' hn hF g g₁ => ?_⟩
-  · obtain ⟨a, rfl⟩ := toTens_surjective x
-    obtain ⟨M, hM, a₀, τ, τ', n, Φ, hn, hF, g, g₁, hne⟩ :=
-      exists_integral_ne_zero hP.strongApproxSU hK hLM hL W B ρ t i j (hst t)
-    obtain ⟨Pf, y, J, κ, h1, h2, h3⟩ := form B ρ t M hM n Φ τ τ' hn hF
-    rw [h3] at hne
-    have hy : y ≠ 0 := by rintro rfl; simp at hne
-    have hJ : Function.Injective J := h1.resolve_left (by rintro rfl; simp at hne)
-    have h4 := thetaInt_eq_zero hP.strongApproxSU hK hLM hL W B ρ t i j (hst t) hA hA₁ hV hV₁ (hωA t)
-      (fun n Φ τ τ' hF => hι t B ρ n Φ τ τ' hF a) h0 hM hn hF
-    rw [h2, ← map_zero J] at h4
-    obtain ⟨c, hc⟩ := exists_scalar (Q := Pr) hy 0
-    have h5 := congrArg (TensorProduct.comm ℂ Pr Pf) (hJ h4)
-    rw [TensorProduct.comm_tmul, map_zero] at h5
-    exact (hc _ 0 (h5.trans (TensorProduct.zero_tmul _ _).symm)).trans (smul_zero c)
-  · obtain ⟨Pf, y, J, κ, -, -, h3⟩ := form B ρ t M hM n Φ τ τ' hn hF
-    rw [h3, ha, show q (ι x) = 0 from hx, TensorProduct.zero_tmul, map_zero, Pi.zero_apply, mul_zero]
-  · obtain ⟨Pf, y, J, -, h2⟩ := H t ν 𝓕 hν ω hω f hf
-    rw [h2, show q (ι x) = 0 from hx, TensorProduct.zero_tmul, map_zero]
-  · obtain ⟨Pf, y, J, κ, -, -, h3⟩ := form B ρ t M hM n Φ τ τ' hn hF
-    exact ⟨κ (g, g₁) • (LinearMap.proj (blk _ _ (g, g₁)) ∘ₗ J ∘ₗ (TensorProduct.mk ℂ Pr Pf).flip y ∘ₗ q ∘ₗ ι), fun a => h3 g g₁ a⟩
-
 theorem hasFlip_congr {W : G.Weil} {B : Frames G} {ρ ρ₀ : RealMatch W} (h1 : ρ₀.vX = ρ.vX) (h2 : ρ₀.vT = ρ.vT) {t : T}
     {i j : Fin D.R.m} {n Φ τ τ'} (h : HasFlip B t ρ i j n Φ τ τ') : HasFlip B t ρ₀ i j n Φ τ τ' := by
   unfold HasFlip at h ⊢
   rwa [h1, h2]
-
-theorem exists_scalar_of_standing (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
-    (hLM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (hst : ∀ t, SquareStanding G t)
-    (B : Frames G) (ρ ρ₀ : RealMatch W) (h1 : ρ₀.vX = ρ.vX) (h2 : ρ₀.vT = ρ.vT) (i j : Fin D.R.m) :
-    ∃ lam : ℂ, lam ≠ 0 ∧ ∀ t c' c₀, IsSquareConst W B ρ t i j c' → GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀ → c₀ ≠ 0 ∧ c' = lam * c₀ ∧
-      ∀ a a₀ b, (a, b) ∈ ρ.rel i j → (a₀, b) ∈ ρ₀.rel i j → ∀ t', IsNull W B ρ t' i j (a - lam • a₀) := by
-  obtain ⟨A, hA⟩ := exists_isGridFr W (X := .grid (i + 1) (j + 1)) ⟨i.2, j.2⟩
-  obtain ⟨AV, hV⟩ := exists_isGridFr W (X := .grid i (j + 1)) ⟨i.2.le, j.2⟩
-  obtain ⟨AV₁, hV₁⟩ := exists_isGridFr W (X := .grid (i + 1) j) ⟨i.2, j.2.le⟩
-  obtain ⟨ι, -, hι⟩ := realA hL W i j A AV AV₁ hA hV hV₁
-  obtain ⟨K, hN, -, hl⟩ := exists_nullSpace hP hK hLM hL W hst i j hA hV hV₁ ι hι
-  obtain ⟨x, hx⟩ := exists_not_isNull hP.strongApproxSU hK hLM hL W B ρ μ₀ i j (hst μ₀)
-  rw [hN] at hx
-  have key : ∀ t c' c₀, IsSquareConst W B ρ t i j c' → GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀ →
-      ∀ a a₀ b, (a, b) ∈ ρ.rel i j → (a₀, b) ∈ ρ₀.rel i j → (c₀ • a - c' • a₀ ∈ K) ∧ (c' = 0 → a ∈ K) ∧ (c₀ = 0 → a₀ ∈ K) := by
-    intro t c' c₀ hc hc₀ a a₀ b hab hab₀
-    obtain ⟨a, rfl⟩ := toTens_surjective a
-    obtain ⟨a₀, rfl⟩ := toTens_surjective a₀
-    obtain ⟨b, rfl⟩ := toTens_surjective b
-    have H : ∀ M : Vol G, M.Is t → ∀ n Φ τ τ', (∀ w ∈ locPl G t, depthAt G w ≤ n w ∧ IsNatDatum (unifAt w) (n w) (Φ w)) →
-        HasFlip B t ρ i j n Φ τ τ' → ∀ g g₁,
-        ∃ (l : PolRoute G (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid (i + 1) j) →ₗ[ℂ] ℂ) (r : ℂ),
-          (∀ a, ∫ u in M.fd _, kerBig W (tensT W a τ) g g₁ u ∂M.ν _ = l (toTens a)) ∧ l (toTens a) = c' * r ∧
-            l (toTens a₀) = c₀ * r := by
-      intro M hM n Φ τ τ' hn hF g g₁
-      obtain ⟨l, e⟩ := hl B ρ t M hM n Φ τ τ' hn hF g g₁
-      have hΘ : IsMatched B t ρ i j (tensT W a τ) (tensT W b τ') := ⟨a, b, τ, τ', n, Φ, hab, hn, hF, rfl, rfl⟩
-      obtain ⟨z, z0, z1, z2⟩ := hc₀ M hM _ _ ⟨a₀, b, τ, τ', n, Φ, hab₀, hn, hasFlip_congr h1 h2 hF, rfl, rfl⟩ g g₁
-      have z3 := hc M hM _ _ hΘ z g g₁ ⟨GlobalTheory.T.bigRoute_kernel_integrableOn_unitary_quotient (GlobalTheory.T.weil_convergence_of_siegel_set hP.siegelSetUnitary hP) hL W B ρ t i j
-        (GlobalTheory.T.squareThetaTripleHypotheses_of_standing hL W t i j (hst t)) M hM _ _ hΘ g₁ g, z1.2⟩
-      replace z2 := (congrArg (zdeg z * ·) (e a₀)).symm.trans z2
-      replace z3 := (congrArg (zdeg z * ·) (e a)).symm.trans z3
-      exact ⟨l, _ / zdeg z, e, by rw [← mul_div_assoc, ← z3, mul_div_cancel_left₀ _ z0],
-        by rw [← mul_div_assoc, ← z2, mul_div_cancel_left₀ _ z0]⟩
-    refine ⟨(hN B ρ t _).1 ?_, fun h => (hN B ρ t _).1 ?_, fun h => (hN B ρ t _).1 ?_⟩ <;>
-    · intro M hM a' ha' n Φ τ τ' hn hF g g₁
-      obtain ⟨l, r, e1, e2, e3⟩ := H M hM n Φ τ τ' hn hF g g₁
-      rw [e1, ha']
-      first
-        | rw [map_sub, map_smul, map_smul, e2, e3, smul_eq_mul, smul_eq_mul]; ring
-        | rw [e2, h, zero_mul]
-        | rw [e3, h, zero_mul]
-  obtain ⟨b, hb⟩ := ρ.onto_big i j x
-  obtain ⟨x₀, hx₀⟩ := ρ₀.onto_small i j b
-  obtain ⟨b₁, hb₁⟩ := ρ₀.onto_big i j x
-  obtain ⟨x₁, hx₁⟩ := ρ.onto_small i j b₁
-  by_cases hex : ∃ t c' c₀, IsSquareConst W B ρ t i j c' ∧ GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀
-  swap
-  · exact ⟨1, one_ne_zero, fun t c' c₀ h h₀ => absurd ⟨t, c', c₀, h, h₀⟩ hex⟩
-  obtain ⟨s, d', d₀, hd, hd₀⟩ := hex
-  have n₀ : ∀ t c' c₀, IsSquareConst W B ρ t i j c' → GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀ → c₀ ≠ 0 := fun t c' c₀ h h₀ e =>
-    hx ((key t c' c₀ h h₀ _ _ _ hx₁ hb₁).2.2 e)
-  have k : ∀ a a₀ b, (a, b) ∈ ρ.rel i j → (a₀, b) ∈ ρ₀.rel i j → a - (d' / d₀) • a₀ ∈ K := fun a a₀ b h h₀ => by
-    have := K.smul_mem d₀⁻¹ (key s d' d₀ hd hd₀ a a₀ b h h₀).1
-    rwa [smul_sub, smul_smul, smul_smul, inv_mul_cancel₀ (n₀ _ _ _ hd hd₀), one_smul, ← div_eq_inv_mul] at this
-  refine ⟨d' / d₀, div_ne_zero (fun e => hx ((key s d' d₀ hd hd₀ _ _ _ hb hx₀).2.1 e)) (n₀ _ _ _ hd hd₀),
-    fun t c' c₀ h h₀ => ⟨n₀ t c' c₀ h h₀, ?_, fun a a₀ b h h₀ t' => (hN B ρ t' _).2 (k a a₀ b h h₀)⟩⟩
-  by_contra hne
-  have e := K.sub_mem (key t c' c₀ h h₀ _ _ _ hx₁ hb₁).1 (K.smul_mem c₀ (k _ _ _ hx₁ hb₁))
-  rw [smul_sub, sub_sub_sub_cancel_left, smul_smul, ← sub_smul] at e
-  exact hx ((K.smul_mem_iff (sub_ne_zero.2 fun e => hne (by rw [← e, mul_comm]))).1 e)
 
 end Null
 
@@ -526,16 +441,6 @@ theorem standing {large₂ : SizeData₂ D} (hS : GlobalTheory.IndefiniteRowSide
     apply (hL.Q_off t w hw).1
     rw [Nat.cast_mul]
     exact Ideal.mul_mem_right _ _ hmem
-
-theorem real_matching : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
-    GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (B : Frames G) (ρ ρ₀ : RealMatch W), ρ₀.vX = ρ.vX → ρ₀.vT = ρ.vT →
-      ∀ i j : Fin D.R.m, ∃ lam : ℂ, lam ≠ 0 ∧ ∀ (t : T) (c' c₀ : ℂ), IsSquareConst W B ρ t i j c' →
-        GlobalTheory.SqTower.RegConst W B ρ₀ t i j c₀ → c₀ ≠ 0 ∧ c' = lam * c₀ := by
-  intro hP hK hLM
-  refine ⟨0, fun ε CF _ => ⟨0, (12 : ℝ) ^ (5 / ε), fun C _ D large₂ he hx hR T Lc μ₀ hL G W B ρ ρ₀ h1 h2 i j => ?_⟩⟩
-  have hst := standing hR.size hL hR.size.2.1.eleven_le G
-  obtain ⟨lam, h0, H⟩ := exists_scalar_of_standing hP hK hLM hL W hst B ρ ρ₀ h1 h2 i j
-  exact ⟨lam, h0, fun t c' c₀ hc hc₀ => ⟨(H t c' c₀ hc hc₀).1, (H t c' c₀ hc hc₀).2.1⟩⟩
 
 end Main
 

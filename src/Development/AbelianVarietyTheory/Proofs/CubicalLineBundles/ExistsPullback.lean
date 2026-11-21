@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOfCmTriplePullbackStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOfCmTriplePullback
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 
@@ -15,7 +15,7 @@ theorem PAT.exists_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     (S S' : Scheme.{0}) (f : S' ⟶ S) (T : PAT H S), ∃ (T' : PAT H S') (_ : SABMap T'.t T.t f), T'.g = T.g := by
   intro E _ _ _ H S S' f T
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull f T.t
-  obtain ⟨⟨T', ht, hg⟩, -⟩ := GlobalTheory.T.exists_of_cmTriple_pullback E H S S' f T _ m
+  obtain ⟨⟨T', ht, hg⟩, -⟩ := _root_.GlobalTheory.CM.PAT.exists_of_sabMap E H S S' f T _ m
   exact ⟨T', ht ▸ m, hg⟩
 
 end GlobalTheory.CM

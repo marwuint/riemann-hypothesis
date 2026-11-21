@@ -1,8 +1,18 @@
 import Mathlib
 import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AdmissibleSmoothVectors.AdmissibleOfIwasawa
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumDeterminantEigenvalue
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.CasimirScalarOfCapelliDeterminantEigenvalueImpor
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasimirScalarOfCapelliDeterminantEigenvalue
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+import Formalism.RealPlaceAnalysis.StatementE
+import Formalism.RealPlaceAnalysis.StatementKT
 import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.IsSimpleFam
+
 open CompanionTheory.Zuck BranchingSupport Matrix Finset
 open scoped InnerProductSpace Kronecker
 
@@ -22,8 +32,8 @@ theorem qdet_smooth (hC : PI.DSInfCharCap.DSInfCharCap) (k r : ℕ) (ε : Fin (2
   have hK : PI.KFinSmooth := CompanionTheory.D.gk.admitted.k_finite_smooth
   obtain ⟨hmu, Q0, hQ0, hDS⟩ := id hR
   have hU0 : IsUnit Q0 := hQ0.1.1
-  obtain ⟨E0, hE0, hgl⟩ := GlobalTheory.T.smoothVectors_discreteSeries_glModule hK k r ε mu R hR Q0 hU0
-  obtain ⟨hsm, hd⟩ := GlobalTheory.T.smoothVectors_complexDerivedAction_cayleyTransport k r ε R Q0 hQ0
+  obtain ⟨E0, hE0, hgl⟩ := _root_.GlobalTheory.smooth_gl_module hK k r ε mu R hR Q0 hU0
+  obtain ⟨hsm, hd⟩ := _root_.GlobalTheory.CayleyTransport.smooth_and_dsigC_transport k r ε R Q0 hQ0
   obtain ⟨-, hexp, -⟩ := GlobalTheory.T.derivedAction_expand_matrixUnits hK k r ε mu R hR Q0 E0 hU0 hE0
   have hdQ : IsUnit Q.det := (Matrix.isUnit_iff_isUnit_det Q).1 hQ
   have hdQ0 : IsUnit Q0.det := (Matrix.isUnit_iff_isUnit_det Q0).1 hU0
@@ -43,7 +53,7 @@ theorem qdet_smooth (hC : PI.DSInfCharCap.DSInfCharCap) (k r : ℕ) (ε : Fin (2
     rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hdQ, Matrix.mul_nonsing_inv _ hdQ0]
   rw [hEE, covariant_det_of_lin covariant_linear _ _ E0 _ _ hgl h2 h3]
   apply Subtype.ext
-  have h4 := GlobalTheory.T.freeAlgebraAction_capelliDeterminant_eq_operator _ ε R.H (fun g => R.σ (Q0⁻¹ * g * Q0)) R.smSub E0
+  have h4 := _root_.GlobalTheory.CapelliFreeAction.actU_qdet _ ε R.H (fun g => R.σ (Q0⁻¹ * g * Q0)) R.smSub E0
     (fun a b v => by rw [hd, hE0 a b v]; rfl) (Y + ((((2 * r + k + 1) : ℕ) : ℂ) - 1) / 2) w
   rw [← h4, hC _ ε mu R.H _ hmu hDS w (hsm w w.2) Y]
   rfl
@@ -61,7 +71,7 @@ theorem isE_one (U : URep k r) : U.R.IsE 1 (fun a b => U.dC (Matrix.single a b 1
 theorem cas_smooth (hC : PI.DSInfCharCap.DSInfCharCap) {ε : Fin (2 * r + k + 1) → Bool}
     {μ : Fin (2 * r + k + 1) → ℝ} (U : URep k r) (hk : 1 ≤ k) (hU : U.R.IsDS ε μ) (w : U.R.smSub) :
     (∑ a, ∑ b, U.dC (Matrix.single a b 1) * U.dC (Matrix.single b a 1)) w = (casG μ : ℂ) • w :=
-  GlobalTheory.T.casimir_scalar_of_capelliDeterminant_eigenvalue U.R.smSub (2 * r + k + 1) (fun a b => U.dC (Matrix.single a b 1)) μ (by omega)
+  _root_.GlobalTheory.CapelliCasimir.cas_of_capelli U.R.smSub (2 * r + k + 1) (fun a b => U.dC (Matrix.single a b 1)) μ (by omega)
     (GlobalTheory.T.derivedAction_expand_matrixUnits CompanionTheory.D.gk.admitted.k_finite_smooth k r ε μ U.R hU 1 _ isUnit_one (isE_one U)).1
     (qdet_smooth hC k r ε μ U.R hU 1 _ isUnit_one (isE_one U)) w
 

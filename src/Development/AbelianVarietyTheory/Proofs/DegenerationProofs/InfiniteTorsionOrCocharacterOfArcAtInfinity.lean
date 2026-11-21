@@ -6,16 +6,16 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AlgOverHomSurjective
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAffineUnitChartSmoothGroupSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsBasicOpenFactorFieldPointAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAffineUnitChartSmoothGroupScheme
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsBasicOpenFactorFieldPointAffineOpen
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsArcQuotientTwoVariableCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SubstTwoVariablesIdentitiesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLeadingQuotientWeightedArcsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.InfinitePowCharEqOneOfAdditiveFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsOneParameterSubgroupOfRationalFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcExtendsOfRegularSecondAxisStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PowerSeriesGenericRelationChainStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.WeightedOrderSlopeComparisonStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SubstTwoVariablesIdentities
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsLeadingQuotientWeightedArcs
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.InfinitePowCharEqOneOfAdditiveFamily
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsOneParameterSubgroupOfRationalFamily
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcExtendsOfRegularSecondAxis
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PowerSeriesGenericRelationChain
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.WeightedOrderSlopeComparison
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -126,8 +126,8 @@ theorem TwoVar.arc (ht : TwoVar j f a h d) {z w : PowerSeries k} (hz : PowerSeri
     rw [AlgHom.comp_apply, MvPowerSeries.coe_substAlgHom]
   obtain ⟨χ, h1, h2⟩ := ht _ ((toK k).comp (MvPowerSeries.substAlgHom hs)) (sig z) (sig w)
     (by rw [hτ]; exact fun e => hd (toK_injective (e.trans (map_zero _).symm)))
-    (fun x => by rw [hτ, sig_apply hz hz0, ((GlobalTheory.T.subst_two_variables_identities_alt k).2 x z w hz hw).1])
-    (fun x => by rw [hτ, sig_apply hw hw0, ((GlobalTheory.T.subst_two_variables_identities_alt k).2 x z w hz hw).2])
+    (fun x => by rw [hτ, sig_apply hz hz0, ((_root_.GlobalTheory.subst_two_variables_identities k).2 x z w hz hw).1])
+    (fun x => by rw [hτ, sig_apply hw hw0, ((_root_.GlobalTheory.subst_two_variables_identities k).2 x z w hz hw).2])
   exact ⟨χ, fun i => by rw [← hτ, ← hτ]; exact h1 i, by rw [h2, mul_inv_cancel_right]⟩
 
 theorem TwoVar.rel (hc : IsChart G j ε f) (ht : TwoVar j f a h d) {z w : PowerSeries k}
@@ -166,7 +166,7 @@ theorem TwoVar.of_rel_one (hc : IsChart G j ε f) (ht : TwoVar j f a h d) {z w :
       MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) (h i) := by
   obtain ⟨χ, h1, h2⟩ := ht.arc hz hw hz0 hw0 hd
   obtain ⟨b, hb1, hb2⟩ := hr
-  obtain ⟨e, he, hl⟩ := GlobalTheory.T.exists_basicOpen_factor_fieldPoint_affineOpen k G A (PowerSeries k) k j b (ev0 k) ε hc.1 (hb2.trans hc.2.1.symm)
+  obtain ⟨e, he, hl⟩ := _root_.GlobalTheory.SS.ArcInf.exists_basicOpen_factor k G A (PowerSeries k) k j b (ev0 k) ε hc.1 (hb2.trans hc.2.1.symm)
   obtain ⟨χ₀, h0⟩ := hl (PowerSeries k) (AlgHom.id k _)
     (PowerSeries.isUnit_iff_constantCoeff.2 (IsUnit.mk0 _ he))
   rw [algOverHom_id, Category.id_comp] at h0
@@ -214,8 +214,8 @@ theorem TwoVar.lt_of_rel (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : d
     intro e
     rw [e, MvPowerSeries.weightedOrder_zero, top_le_iff, MvPowerSeries.weightedOrder_eq_top_iff] at hle
     exact hd hle
-  obtain ⟨P₁, Q₁, hP₁, -, h₁⟩ := GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn 1 (fun _ => d) (h i) hi (fun _ => hle)
-  obtain ⟨P₂, Q₂, hP₂, -, h₂⟩ := GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn 0 Fin.elim0 d hd (fun i => i.elim0)
+  obtain ⟨P₁, Q₁, hP₁, -, h₁⟩ := _root_.GlobalTheory.SS.exists_polynomial_leading_quotient_subst k m n hm hn 1 (fun _ => d) (h i) hi (fun _ => hle)
+  obtain ⟨P₂, Q₂, hP₂, -, h₂⟩ := _root_.GlobalTheory.SS.exists_polynomial_leading_quotient_subst k m n hm hn 0 Fin.elim0 d hd (fun i => i.elim0)
   obtain ⟨t, ht0⟩ := Polynomial.exists_eval_ne_zero_of_natDegree_lt_card (Polynomial.X * P₁ * P₂)
     (mul_ne_zero (mul_ne_zero Polynomial.X_ne_zero hP₁) hP₂)
     (lt_of_lt_of_le Cardinal.natCast_lt_aleph0 (Cardinal.aleph0_le_mk k))
@@ -240,7 +240,7 @@ theorem TwoVar.gen_of_lt (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : d
     (hn : 1 ≤ n) (hq : ∀ i, MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) d < MvPowerSeries.weightedOrder (![m, n] : Fin 2 → ℕ) (h i))
     (z : PowerSeries k) (hz : z.order = m) :
     ∃ S : Set k, S.Finite ∧ ∀ t, t ∉ S → Rel a z (PowerSeries.C t * PowerSeries.X ^ n) 1 := by
-  obtain ⟨Pd, P, hPd, hP, hg⟩ := GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn r h d hd (fun i => (hq i).le)
+  obtain ⟨Pd, P, hPd, hP, hg⟩ := _root_.GlobalTheory.SS.exists_polynomial_leading_quotient_subst k m n hm hn r h d hd (fun i => (hq i).le)
   have hz0 := coeff_ne_of_order hz
   obtain ⟨s, hs⟩ := IsAlgClosed.exists_pow_nat_eq (PowerSeries.coeff m z) (n := m) hm
   have hs0 : s ≠ 0 := by
@@ -269,7 +269,7 @@ theorem TwoVar.shear (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : (MvPo
         PowerSeries.coeff m z = s ^ m → PowerSeries.coeff n (w - z) = s ^ n * t → Pd.eval t ≠ 0 → w ≠ 0 →
         (∀ i, ψ t (f i) * Pd.eval t = (P i).eval t) ∧ Rel a z w (algOverHom (ψ t) ≫ j) := by
   classical
-  obtain ⟨Pd, P, hPd, hP, hg⟩ := GlobalTheory.T.exists_leading_quotient_weighted_arcs k m n hm hn r _ _ hd hq
+  obtain ⟨Pd, P, hPd, hP, hg⟩ := _root_.GlobalTheory.SS.exists_polynomial_leading_quotient_subst k m n hm hn r _ _ hd hq
   refine ⟨Pd, P, fun t => if e : ∃ χ : A →ₐ[k] k, ∀ i, χ (f i) * Pd.eval t = (P i).eval t then e.choose else ε,
     hPd, hP, fun s t z w hs hz hw cz cw hp hw0 => ?_⟩
   obtain ⟨hD, y, hy⟩ := hg s t z (w - z) hs hz hw cz cw hp
@@ -277,7 +277,7 @@ theorem TwoVar.shear (hc : IsChart G j ε f) (ht : TwoVar j f a h d) (hd : (MvPo
   have w0 := const_of_le hn hw
   have key : ∀ x : MvPowerSeries (Fin 2) k, MvPowerSeries.subst (![z, w - z] : Fin 2 → PowerSeries k) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) x) =
       MvPowerSeries.subst (![z, w] : Fin 2 → PowerSeries k) x := fun x => by
-    rw [((GlobalTheory.T.subst_two_variables_identities_alt k).1 x).2 z (w - z) z0 w0, add_sub_cancel]
+    rw [((_root_.GlobalTheory.subst_two_variables_identities k).1 x).2 z (w - z) z0 w0, add_sub_cancel]
   simp only [key] at hD hy
   obtain ⟨χ, h1, h2⟩ := ht.rel hc z0 (by rwa [map_sub, z0, sub_zero] at w0)
     (ne_zero_of_coeff (n := m) (by rw [cz]; exact pow_ne_zero _ hs)) hw0 hD y (fun i => (hy i).1)
@@ -339,11 +339,11 @@ theorem comp_sub_one_eq_zero {q : Polynomial k} : q.comp (Polynomial.X - Polynom
 theorem dichotomy_alg (p : ℕ) [CharP k p] (hG : SmConn G)
     (hna : ¬ ∃ b : algOver k (PowerSeries k) ⟶ G, algOverHom (toK k) ≫ b = a) :
     Infinite {x : (algOver k k ⟶ G) // x ^ p = 1} ∨ ∃ f : Gm (Sp k) ⟶ G, IsMonHom f ∧ f ≠ 1 := by
-  obtain ⟨A, _, _, j, ε, r, f, hc⟩ := GlobalTheory.T.exists_affineUnitChart_smoothGroupScheme k G hG
+  obtain ⟨A, _, _, j, ε, r, f, hc⟩ := _root_.GlobalTheory.SS.ArcInf.exists_isChart k G hG
   obtain ⟨h, d, hd1, hh1, ht⟩ := GlobalTheory.T.exists_arcQuotient_twoVariable_coords k G A j ε r f hc a
   have hsep := hG.2.2.1
-  have hXd := mt ((GlobalTheory.T.subst_two_variables_identities_alt k).1 d).1.1 hd1
-  have hXh := fun i => ((GlobalTheory.T.subst_two_variables_identities_alt k).1 (h i)).1.2 (hh1 i)
+  have hXd := mt ((_root_.GlobalTheory.subst_two_variables_identities k).1 d).1.1 hd1
+  have hXh := fun i => ((_root_.GlobalTheory.subst_two_variables_identities k).1 (h i)).1.2 (hh1 i)
   have hd' : (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) ≠ 0 := fun e => hXd (e ▸ dvd_zero _)
   have hd : d ≠ 0 := by
     rintro rfl
@@ -353,7 +353,7 @@ theorem dichotomy_alg (p : ℕ) [CharP k p] (hG : SmConn G)
   by_cases hQ : ∀ i, MvPowerSeries.weightedOrder (![1, 1] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) d) < MvPowerSeries.weightedOrder (![1, 1] : Fin 2 → ℕ) (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))
   · exfalso
     obtain ⟨Pd, P, ψ, hPd, hP, hg⟩ := ht.shear hc hd' le_rfl le_rfl (fun i => (hQ i).le)
-    obtain ⟨ch1, ch2⟩ := GlobalTheory.T.relation_of_gen_of_order_eq k (fun z w => Rel a z w 1)
+    obtain ⟨ch1, ch2⟩ := _root_.GlobalTheory.powerSeries_generic_relation_chain k (fun z w => Rel a z w 1)
       (fun m n => ∀ z : PowerSeries k, z.order = (m : ℕ∞) →
         ∃ S : Set k, S.Finite ∧ ∀ t, t ∉ S → Rel a z (PowerSeries.C t * PowerSeries.X ^ n) 1)
       (fun z w h => by simpa using h.symm) (fun x y z h h' => by simpa using h.trans h') (fun _ _ h => h)
@@ -371,21 +371,21 @@ theorem dichotomy_alg (p : ℕ) [CharP k p] (hG : SmConn G)
         rw [(hP i).2 (hQ i), Polynomial.eval_zero, mul_eq_zero] at this
         rw [hc.2.2.2, this.resolve_right hp]
       rwa [this, hc.2.1, e] at h2)
-    obtain ⟨-, s2, s3, s4⟩ := GlobalTheory.T.weightedOrder_slope_comparison_alt k r h d hd _ (fun _ _ => Iff.rfl)
+    obtain ⟨-, s2, s3, s4⟩ := _root_.GlobalTheory.SS.weightedOrder_slope_comparison k r h d hd _ (fun _ _ => Iff.rfl)
     obtain ⟨m₀, hm₀⟩ := s2 (ht.lt_of_rel hc hd le_rfl le_rfl g11)
     have all := ch2 (m₀ + 1) fun m hm =>
       ht.gen_of_lt hc hd (m := m) (n := m + 1) (by omega) (by omega) (hm₀ m (by omega))
-    refine hna (GlobalTheory.T.arc_extends_of_regular_second_axis k G A j ε r f hc a h d hd ht (s4 fun n hn => ?_))
+    refine hna (_root_.GlobalTheory.SS.ArcInf.extends_of_regular_second_axis k G A j ε r f hc a h d hd ht (s4 fun n hn => ?_))
     refine (s3 1 n (m₀ + 1) (by omega)).1 (ht.lt_of_rel hc hd (by omega) (Nat.mul_pos (by omega) hn) ?_)
     intro z w hz hw
     exact all _ _ z w (by omega) (Nat.le_mul_of_pos_right _ hn) hz hw
-  · obtain ⟨m, n, hm, hmn, hle, i, hi⟩ := (GlobalTheory.T.weightedOrder_slope_comparison_alt k r (fun i => (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))) _ hd' _
+  · obtain ⟨m, n, hm, hmn, hle, i, hi⟩ := (_root_.GlobalTheory.SS.weightedOrder_slope_comparison k r (fun i => (MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 0 + MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) k) (h i))) _ hd' _
       (fun _ _ => Iff.rfl)).1 hXh hXd ⟨1, 1, le_rfl, le_rfl, hQ⟩
     obtain ⟨Pd, P, ψ, hPd, hP, hg⟩ := ht.shear hc hd' hm (hm.trans hmn) hle
     have hPi : P i ≠ 0 := fun e => ((hP i).1 e).ne hi
     rcases hmn.lt_or_eq with hlt | rfl
     · left
-      refine GlobalTheory.T.infinite_pth_roots_of_additive_family k p _ A r f ε (fun χ => algOverHom χ ≫ j) Pd P ψ hc.2.2.1 hc.2.2.2
+      refine _root_.GlobalTheory.infinite_pow_char_eq_one_of_additive_family k p _ A r f ε (fun χ => algOverHom χ ≫ j) Pd P ψ hc.2.2.1 hc.2.2.2
         (fun _ _ e => eq_of_comp_eq hc.1 e) hc.2.1 hPd ⟨i, hPi⟩ (fun t ht => (add_step hlt hg 0 t ht).1)
         fun t t' h1 h2 h3 => ?_
       have e1 := (add_step hlt hg 0 t' h2).2
@@ -396,7 +396,7 @@ theorem dichotomy_alg (p : ℕ) [CharP k p] (hG : SmConn G)
     · right
       have ev : ∀ (q : Polynomial k) (t : k), (q.comp (Polynomial.X - Polynomial.C 1)).eval t = q.eval (t - 1) :=
         fun q t => by simp
-      refine GlobalTheory.T.exists_oneParameterSubgroup_of_rational_family k G A j ε r f (Pd.comp (Polynomial.X - Polynomial.C 1))
+      refine _root_.GlobalTheory.SS.ArcInf.exists_oneParameter_of_rational_family k G A j ε r f (Pd.comp (Polynomial.X - Polynomial.C 1))
         (fun i => (P i).comp (Polynomial.X - Polynomial.C 1)) (fun t => ψ (t - 1)) hG hc
         (mt comp_sub_one_eq_zero.1 hPd) ⟨i, mt comp_sub_one_eq_zero.1 hPi⟩ (fun t h0 h1 => ?_)
         fun t t' h0 h0' h1 h2 h3 => ?_

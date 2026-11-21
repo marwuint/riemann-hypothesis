@@ -122,33 +122,12 @@ theorem gl_gtφT_famφB : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R
   · change (toUnit T ≫ η[D.P.A]).left = b.left ≫ (toUnit D.P.A ≫ η[D.P.A]).left
     rw [← Over.comp_left]; congr 1; simp
 
-theorem gl_prB : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (C : Type) [Field C] [Algebra (FractionRing R) C]
-    (α : D.X) (i : Fin 4),
-    DegPre.famφ D C α i = (DegPre.prB D C).left ≫ D.famφB α i := by
-  intro R _ _ D C _ _ α i
-  fin_cases i
-  · exact (Category.comp_id _).symm
-  · change (padd D.P.A (DegPre.prB D C) (toUnit _ ≫ D.c α)).left =
-      (DegPre.prB D C).left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α)).left
-    rw [← Over.comp_left]; congr 1; simp [padd, comp_lift_assoc]
-  · change (toUnit _ ≫ D.c α).left = (DegPre.prB D C).left ≫ (toUnit D.P.A ≫ D.c α).left
-    rw [← Over.comp_left]; congr 1; simp
-  · change (toUnit _ ≫ η[D.P.A]).left = (DegPre.prB D C).left ≫ (toUnit D.P.A ≫ η[D.P.A]).left
-    rw [← Over.comp_left]; congr 1; simp
-
 theorem gl_prB' : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (C : Type) [Field C] [Algebra (FractionRing R) C]
     (b : TE R C ⟶ D.P.A),
     (lift (Over.homMk (spMap (algebraMap C (DualNumber C))) rfl : TE R C ⟶ TF (R := R) C) b).left ≫ (DegPre.prB D C).left =
       b.left := by
   intro R _ _ D C _ _ b
   rw [← Over.comp_left, lift_snd]
-
-theorem gl_famφ : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (C : Type) [Field C] [Algebra (FractionRing R) C]
-    (b : TE R C ⟶ D.P.A) (α : D.X) (i : Fin 4),
-    (lift (Over.homMk (spMap (algebraMap C (DualNumber C))) rfl : TE R C ⟶ TF (R := R) C) b).left ≫ DegPre.famφ D C α i =
-      b.left ≫ D.famφB α i := by
-  intro R _ _ D C _ _ b α i
-  rw [gl_prB D C α i, ← Category.assoc, gl_prB' D C b]
 
 theorem gl_scal : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (C : Type) [Field C] [Algebra (FractionRing R) C]
     (b : TE R C ⟶ D.P.A) (c : C),

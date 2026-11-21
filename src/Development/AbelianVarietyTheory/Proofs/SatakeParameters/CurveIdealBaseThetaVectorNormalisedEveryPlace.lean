@@ -7,8 +7,8 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.Quadra
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharactersFactTer
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdOK
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PFamily
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KappaNormAtSplitPrimesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KappaOnNonsplitPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KappaNormAtSplitPrimes
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KappaOnNonsplitPrimes
 
 noncomputable section
 open scoped BigOperators
@@ -108,8 +108,8 @@ end Base
 theorem kappaAt {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc)
     (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) : B.KappaAt p ι := by
   by_cases hs : SplitK D p
-  · exact GlobalTheory.T.kappa_norm_at_splitPrimes D cc δ B hcc hδ p ι hs
-  · exact GlobalTheory.T.kappa_on_nonsplit_primes D cc δ B hcc hδ p ι hs
+  · exact _root_.GlobalTheory.kappaSplit_all D cc δ B hcc hδ p ι hs
+  · exact _root_.GlobalTheory.ThLoc.kappaNonSplit D cc δ B hcc hδ p ι hs
 
 theorem locNormMM : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
     ∀ (B : Base D cc δ) (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0),

@@ -85,84 +85,6 @@ structure Ext (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt
       HEq (z'.R.B.jL i' (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' Wt'))) ((by with_unfolding_all exact ((Formalism.L2.Col.mtKGSD (Pr := B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' Wt'))).1 ((i' : ℕ) + 1)).res ok' φ' :))))
         (z.R.B.jL i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))) ((by with_unfolding_all exact ((Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((i : ℕ) + 1)).res ok φ :))))
 
-set_option maxHeartbeats 4000000 in
-
-example (z : Dat (w.st Z) w.I hX T Wt) : Ext z z where
-  H := HEq.refl _
-  l := HEq.refl _
-  c := HEq.refl _
-  Dw := HEq.refl _
-  Xo := HEq.refl _
-  U := HEq.refl _
-  V := HEq.refl _
-  dict := HEq.refl _
-  mu := HEq.refl _
-  Kf := HEq.refl _
-  cE := HEq.refl _
-  chiW := HEq.refl _
-  x₀ := HEq.refl _
-  iota := HEq.refl _
-  ψ := HEq.refl _
-  θ := HEq.refl _
-  βW := HEq.refl _
-  βY := HEq.refl _
-  nW := HEq.refl _
-  βV := HEq.refl _
-  ΛV := HEq.refl _
-  ΛW := HEq.refl _
-  Pg := HEq.refl _
-  eG := HEq.refl _
-  Sb := HEq.refl _
-  BV i i' h := by
-    have e0 : i = i' := Fin.ext h
-    subst e0
-    exact ⟨HEq.refl _, HEq.refl _, HEq.refl _, HEq.refl _, HEq.refl _, HEq.refl _⟩
-  MW i i' h := by
-    have e0 : i = i' := Fin.ext h
-    subst e0
-    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, fun φ φ' e => ?_⟩
-    iterate 10 (with_reducible exact HEq.refl _)
-    have e1 := eq_of_heq e
-    subst e1
-    with_reducible exact HEq.refl _
-  forms i i' h φ φ' e k k' hk := by
-    have e0 : i = i' := Fin.ext h
-    subst e0
-    have e1 := eq_of_heq e
-    subst e1
-    have e2 : k = k' := Fin.ext hk
-    subst e2
-    rfl
-  W1 v v' h := by
-    have e0 : v = v' := by
-      apply (w.D Z).plEq.injective
-      ext x
-      exact h x x rfl
-    subst e0
-    exact Iff.rfl
-  cV i i' h := by
-    have e0 : i = i' := Fin.ext h
-    subst e0
-    exact ⟨HEq.refl _, HEq.refl _⟩
-  pb := HEq.refl _
-  ΛY := HEq.refl _
-  κ i i' h := by
-    have e0 : i = i' := Fin.ext h
-    subst e0
-    exact ⟨HEq.refl _, HEq.refl _, rfl⟩
-  ref i i' h := by
-    have e0 : i = i' := Fin.ext h
-    subst e0
-    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-    iterate 8 (with_reducible exact HEq.refl _)
-  jL i i' h ok ok' φ φ' e := by
-    have e0 : i = i' := Fin.ext h
-    subst e0
-    have e1 : φ' = φ := Subtype.ext (funext fun d => Subtype.ext
-      (MvPolynomial.map_injective _ (RingHom.injective _) (eq_of_heq (e d d HEq.rfl))))
-    subst e1
-    with_reducible exact HEq.refl _
-
 def Fine (z : Dat (w.st Z) w.I hX T Wt) : Prop := z.R.toRealDat.ExAt ∧ GlobalTheory.RealGeo.InGeo z.geo ∧ CoreP z ∧ z.Std
 
 def DatExS : Prop := StepW Pinned fun _ B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok), GrpTrue Z.N f → GrpAt (w.st Z) w.I →
@@ -173,8 +95,6 @@ def DatExt : Prop := StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →
     ∀ (Z' : w'.Lt) (hX' : B'.fields.Ok), GrpTrue Z'.N f' → GrpAt (w'.st Z') w'.I → VolTieG (w'.D Z') →
       ∃ z' : Dat (w'.st Z') w'.I hX' T' {v | B'.places.resChar v ∈ T'.pl}, Fine z' ∧ Ext z z'
-
-example (z : Dat (w.st Z) w.I hX T Wt) (h : Fine z) : z.core.pb = f.P.pb ∧ z.Std := ⟨h.2.2.1.2.2.2, h.2.2.2⟩
 
 end GlobalTheory.Mem.R3.Rw
 

@@ -67,31 +67,7 @@ theorem Cht.genEx (ct : At S κ p) : Cht.GenEx ct :=
 
 def chtTrue (ct : At S κ p) : ChtSt ct := Cht.chtOf ct (Cht.goodIff ct) (Cht.genEx ct)
 
-theorem chtTrue_genK (ct : At S κ p) {Z : ct.Mdl} (η : ct.Gen Z) : Cht.IsGenK η ((chtTrue ct).genK η) :=
-  (Cht.genEx ct Z η).choose_spec
-
 theorem chtTrue_yEta (ct : At S κ p) {Z : ct.Mdl} (η : ct.Gen Z) :
     (chtTrue ct).yEta η = (chtTrue ct).ptK Z ((chtTrue ct).genK η) := rfl
-
-theorem Cht.nonempty_dvp (ct : At S κ p) {Z : ct.Mdl} (η : ct.Gen Z) : ∃ y : Cht.DVP ct, Nonempty (Cht.Ext y) :=
-  ⟨(chtTrue ct).genK η, Cht.nonempty_ext _⟩
-
-example {ct : At S κ p} {y : Cht.DVP ct} (e : Cht.Ext y) (h : e.π = p) : Cht.vpi e = 1 := by
-  have h1 : ((e.π : ↥e.L) : ↥y.C.S) = p := by rw [h]; simp
-  have hp : (1 : ℝ) < p := by exact_mod_cast ct.hp.one_lt
-  rw [Cht.vpi, h1, y.C.norm_p, Real.logb_inv, neg_neg, Real.logb_self_eq_one hp]
-
-example {ct : At S κ p} {y : Cht.DVP ct} {e : Cht.Ext y} {Z : ct.Mdl} (χ : Cht.Chart Z y e) (F : ct.Sh Z)
-    (f : ct.Sec F) : Cht.ordGe χ F f 0 :=
-  fun _ _ _ _ _ _ _ n hn => absurd hn (not_lt.2 n.cast_nonneg)
-
-example {ct : At S κ p} {y : Cht.DVP ct} {e : Cht.Ext y} {Z : ct.Mdl} (χ : Cht.Chart Z y e) (h : Cht.chAt χ)
-    (h' : Cht.chAbExact χ) : 0 < Cht.dvRho y := by
-  rw [Cht.dvRho_pos_iff (Cht.goodIff ct) Z, ← Cht.chAt_imgM χ h]
-  intro hab
-  refine (h' (closedPoint e.R)).1 hab ?_
-  change PowerSeries.X ∈ maximalIdeal e.R
-  rw [mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]
-  simp
 
 end GlobalTheory.LocM

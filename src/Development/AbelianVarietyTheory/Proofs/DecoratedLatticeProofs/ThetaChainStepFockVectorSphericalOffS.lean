@@ -10,7 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensor
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfPderivStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorFockVacuum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStepVectorExistsNonzeroVacuumStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStepVectorExistsNonzeroVacuum
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open scoped TensorProduct InnerProductSpace ComplexConjugate
@@ -218,7 +220,7 @@ theorem GlobalTheory.ChainOnto.fock_sph : ∀ D : D7, ForStep D fun c k s s' p =
   classical
   intro D _ c hc k hk s s' hs hs' p hp
   obtain ⟨ξ, f₀, hvec⟩ := hp.vec
-  obtain ⟨hfθ, -, hfv, hpt⟩ := (GlobalTheory.T.thetaChainStep_vector_exists_nonzero_vacuum D c hc ⟨k, hk⟩ s s' hs hs').2 ξ f₀ p.f hvec
+  obtain ⟨hfθ, -, hfv, hpt⟩ := (_root_.GlobalTheory.ChainOnto.StepVecOK.stepVec_exists_vac D c hc ⟨k, hk⟩ s s' hs hs').2 ξ f₀ p.f hvec
   obtain ⟨hvac, e, he, hth⟩ := hvec
   have hψ : IsStdChar D c.ψ (-1) := hc.std
   have hθ : IsInfFam c.θ := hc.inf

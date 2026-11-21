@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharValMultiplicativeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharValMultiplicative
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CompactCentralizerTranslate
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsSurjectiveZmodOfNeZero
 
@@ -77,7 +77,7 @@ theorem exists_ringHom_of_point {A : Type} [CommRing A] (g : k →+* A) {a : Sp 
     (t : Over.mk a ⟶ splitTorus S X) :
     ∃ ρ : AddMonoidAlgebra k X →+* A, ρ.comp (algebraMap k (AddMonoidAlgebra k X)) = g ∧
       ∀ χ, ρ (AddMonoidAlgebra.single χ 1) = charVal t χ := by
-  obtain ⟨h0, hadd⟩ := (GlobalTheory.T.charVal_multiplicative S X A a).2.2.2.1 t
+  obtain ⟨h0, hadd⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X A a).2.2.2.1 t
   letI : Algebra k A := g.toAlgebra
   let w : Multiplicative X →* A :=
     { toFun := fun x => charVal t x.toAdd
@@ -91,7 +91,7 @@ theorem exists_ringHom_of_point {A : Type} [CommRing A] (g : k →+* A) {a : Sp 
 theorem exists_universal_point (b : Sp k ⟶ S) :
     ∃ t₀ : Over.mk (spMap (algebraMap k (AddMonoidAlgebra k X)) ≫ b) ⟶ splitTorus S X,
       ∀ χ, charVal t₀ χ = AddMonoidAlgebra.single χ 1 := by
-  obtain ⟨t, ht⟩ := (GlobalTheory.T.charVal_multiplicative S X (AddMonoidAlgebra k X)
+  obtain ⟨t, ht⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X (AddMonoidAlgebra k X)
     (spMap (algebraMap k (AddMonoidAlgebra k X)) ≫ b)).2.2.2.2.1 (AddMonoidAlgebra.of k X)
   exact ⟨t, fun χ => by simpa using ht χ⟩
 
@@ -114,8 +114,8 @@ theorem exists_killing_ideal [IsSeparated G.hom] (u : splitTorus S X ⟶ G) [IsM
   let h : Over.mk (spMap ρ ≫ spMap (algebraMap k (AddMonoidAlgebra k X)) ≫ b) ⟶
       Over.mk (spMap (algebraMap k (AddMonoidAlgebra k X)) ≫ b) := Over.homMk (spMap ρ)
   have e : t = h ≫ t₀ := by
-    refine (GlobalTheory.T.charVal_multiplicative S X A _).1 _ _ fun χ => ?_
-    rw [ht, (GlobalTheory.T.charVal_multiplicative S X _ _).2.2.2.2.2 A ρ t₀ (h ≫ t₀) rfl χ, ht₀]
+    refine (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X A _).1 _ _ fun χ => ?_
+    rw [ht, (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X _ _).2.2.2.2.2 A ρ t₀ (h ≫ t₀) rfl χ, ht₀]
   have e1 : (1 : Over.mk (spMap ρ ≫ spMap (algebraMap k (AddMonoidAlgebra k X)) ≫ b) ⟶ G) = h ≫ 1 :=
     (MonObj.comp_one h).symm
   rw [e, Category.assoc, e1]
@@ -150,7 +150,7 @@ theorem killing_ideal_coideal (b : Sp k ⟶ S) (u : splitTorus S X ⟶ G) [IsMon
     · intro f hf
       exact hk hf
     · intro χ
-      rw [(GlobalTheory.T.charVal_multiplicative S X k b).2.2.1 χ]
+      rw [(_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X k b).2.2.1 χ]
       simp [ε]
   · let Q := AddMonoidAlgebra k X ⧸ J
     let mkQ : AddMonoidAlgebra k X →ₐ[k] Q := Ideal.Quotient.mkₐ k J
@@ -167,7 +167,7 @@ theorem killing_ideal_coideal (b : Sp k ⟶ S) (u : splitTorus S X ⟶ G) [IsMon
     have hpt : ∀ φ : AddMonoidAlgebra k X →ₐ[k] A, ∃ t : Over.mk a ⟶ splitTorus S X,
         ∀ χ, charVal t χ = φ (AddMonoidAlgebra.single χ 1) := by
       intro φ
-      obtain ⟨t, ht⟩ := (GlobalTheory.T.charVal_multiplicative S X A a).2.2.2.2.1
+      obtain ⟨t, ht⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X A a).2.2.2.2.1
         (((φ : AddMonoidAlgebra k X →+* A) : AddMonoidAlgebra k X →* A).comp (AddMonoidAlgebra.of k X))
       exact ⟨t, fun χ => by simpa using ht χ⟩
     obtain ⟨t₁, ht₁⟩ := hpt i₁
@@ -180,7 +180,7 @@ theorem killing_ideal_coideal (b : Sp k ⟶ S) (u : splitTorus S X ⟶ G) [IsMon
       simp [RingHom.mem_ker, i₂, this]
     have hc : ∀ χ, charVal (t₁ * t₂) χ = (c : AddMonoidAlgebra k X →+* A) (AddMonoidAlgebra.single χ 1) := by
       intro χ
-      rw [(GlobalTheory.T.charVal_multiplicative S X A a).2.1 t₁ t₂ χ, ht₁, ht₂]
+      rw [(_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X A a).2.1 t₁ t₂ χ, ht₁, ht₂]
       have e : (c : AddMonoidAlgebra k X →+* A) (AddMonoidAlgebra.single χ 1) = mkQ (AddMonoidAlgebra.single χ 1) ⊗ₜ mkQ (AddMonoidAlgebra.single χ 1) := by
         simp [c, AddMonoidAlgebra.comul_single, CommSemiring.comul_apply]
       rw [e]

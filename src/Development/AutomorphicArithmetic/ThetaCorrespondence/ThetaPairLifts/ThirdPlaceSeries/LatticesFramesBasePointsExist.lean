@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalComponentVectorRelation
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TrueW
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
@@ -45,7 +45,7 @@ theorem lattices_frames_basePoints_exist_alt : ∀ {D : D7} {L : SizeData₂ D} 
     exact hPg PP hPP ((htP _).1 hp')
   have hU := _root_.GlobalTheory.levelPrime_not_mem_places_alt W u hW hPg
   have hA : ∀ PP h, ∃ (FY : FYFam (l PP h)) (sc : ℕ → (l PP h).k), IsNormalFr (l PP h) y FY sc :=
-    fun PP h => GlobalTheory.T.exists_normalFrames_rationalDecompositions_over_local a y (l PP h) _ hTau hT0 (hU PP h)
+    fun PP h => _root_.GlobalTheory.Fam.FramesY.normalFrames_exist a y (l PP h) _ hTau hT0 (hU PP h)
   choose FY sc hFY using hA
   obtain ⟨N, dT, M, β₀, hShape, hdT, hSD, hInt⟩ :=
     _root_.GlobalTheory.T.local_component_measure_identity_alt_bis W u hW a y m b₀ k ι v o l bas hIs hTau hT0 hτ hNT hζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY

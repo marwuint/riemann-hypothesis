@@ -1,17 +1,21 @@
 import Mathlib
 import Formalism.GL3MeanSquares.PrimePairOfPrimeNumberTheoremInProgressions
-import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.MSqFinal
-import Formalism.GL3MeanSquares.HookFormulaTorsion.PrimePairOfBoxAndWeakMeanSquareHypotheses
-import Formalism.GL3MeanSquares.HookFormulaTorsion.BoxCountOfZeroDensity
-import Formalism.GL3MeanSquares.HookFormulaTorsion.BoxCountAllStatement
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.MSqMain
+import Formalism.GL3MeanSquares.SecondEstimateOfIntervalHypothesis
+import Formalism.GL3MeanSquares.HookFormulaTorsion.WeightedVonMangoldtSumIdentity
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailContour
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailDiff
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailMertens
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.TailNum
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.CountSt
+import Formalism.GL3MeanSquares.HookFormulaTorsion.TwistIsPrimitiveCharacter
+import Formalism.GL3MeanSquares.BoxCountAll
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.CountZAll
 
 noncomputable section
 
 namespace Formalism.HermitianLattices.PrimeNumberTheoremConsequences
 
 theorem PNTAPRelW_iff_ext : PNTAPRelW ↔ Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.PNTAPRelW := Iff.rfl
-
-theorem mean_square_of_prime_number_theorem : MeanSquareFromPNT := fun hP =>
-  Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.mean_square_of_pnt_progressions (PNTAPRelW_iff_ext.1 hP)
 
 end Formalism.HermitianLattices.PrimeNumberTheoremConsequences

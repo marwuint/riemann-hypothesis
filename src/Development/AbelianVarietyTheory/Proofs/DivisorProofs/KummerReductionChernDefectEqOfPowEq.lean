@@ -6,7 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKummerTorsorSplit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistReductionResolutionMapGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveRootPowUnitSubProdPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPrimitiveRootAndRootsOfUnityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
 namespace GlobalTheory.EtC.RedChern
@@ -47,7 +49,7 @@ namespace GlobalTheory.EtC.RedChern
 
 theorem defect_eq_of_pow_eq (Q q : ℕ) [NeZero Q] (hqQ : q ∣ Q) (U : Scheme.{0}) (v w : (Γ(U, ⊤))ˣ)
     (hQ : IsUnit (Q : Γ(U, ⊤))) (hvw : v ^ Q = w ^ Q) : defect Q q U v = defect Q q U w := by
-  refine (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) ((res _ (tw q 1)).X 0) U).1 _ _ ?_
+  refine (_root_.GlobalTheory.EtC.sec_ext_glue (ZMod q) ((res _ (tw q 1)).X 0) U).1 _ _ ?_
   refine loc_bind ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity Q U).1 hQ) fun V g hV => ?_
   obtain ⟨ζ⟩ := hV
   set v' : (Γ(V, ⊤))ˣ := Units.map g.appTop.hom.toMonoidHom v

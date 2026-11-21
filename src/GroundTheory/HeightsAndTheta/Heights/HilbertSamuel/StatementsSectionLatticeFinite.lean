@@ -13,12 +13,6 @@ def SectionLatticeFinite.Statement : Prop :=
     (y : (Σ k, ι k) → Ω) (a : K → ℤ) (n : ℕ),
     (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → (chartLat y a n).FG
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

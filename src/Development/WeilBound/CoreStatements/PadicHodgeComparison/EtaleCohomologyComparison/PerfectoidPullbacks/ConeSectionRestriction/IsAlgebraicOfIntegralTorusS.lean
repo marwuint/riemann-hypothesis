@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AlgebraicallyIn
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusCoordinateIsUnitStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusMonomialMemRangeStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NoetherNormalizationFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AlgebraicOverTorusOfIntegralStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AlgebraicOverTorusOfIntegral
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -57,7 +57,7 @@ theorem isAlgebraic_of_integral_torusS {R : Type} [CommRing R] [IsDomain R] [Alg
     (h : ∀ r : R, IsIntegral (torusS K t Finset.univ) r) :
     Algebra.IsAlgebraic (Algebra.adjoin K (Set.range fun k => (t k : R))) R := by
   first
-    | exact GlobalTheory.T.algebraic_over_torus_of_integral ..
-    | (intros; apply GlobalTheory.T.algebraic_over_torus_of_integral <;> assumption)
+    | exact _root_.GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS ..
+    | (intros; apply _root_.GlobalTheory.CompanionTheory.GeoTorus.isAlgebraic_of_integral_torusS <;> assumption)
 
 end CrystallineSemistableComparison.Pb

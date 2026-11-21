@@ -3,8 +3,8 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalWeilPairingPullbackExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SqDvdSumAlternatingFormsOfKilledLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalWeilPairingPullbackExistsUnique
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SqDvdSumAlternatingFormsOfKilledLattice
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -58,7 +58,7 @@ theorem unit_eq_one (hL : Laws) (N : ℕ) (hN : 0 < N) (u : Γ((ptO Xo x0).left,
   have hU : IsUnit ((N ^ 2 : ℕ) : B) := by
     have := ((baseKA l).unit (N ^ 2) (pow_pos hN 2)).map (Spec.preimage (x0 ≫ Xo.s)).hom
     rwa [map_natCast] at this
-  have key := (T.universal_weilPairing_pullback_exists_unique hL E H Dw l Xo N hN).2.2 B (i₀.hom u.val) (N ^ 2) hU
+  have key := (_root_.GlobalTheory.UnivPairing.weilIs_univ_pull_exists_unique hL E H Dw l Xo N hN).2.2 B (i₀.hom u.val) (N ^ 2) hU
     (by rw [← map_pow, ← Units.val_pow_eq_pow_val, hu, Units.val_one, map_one]) (fun K _ _ χ => by
       have nat := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom χ)
       have e := congrArg (fun φ => φ.hom u.val) nat
@@ -78,7 +78,7 @@ theorem exists_tate (hL : Laws) (N : ℕ) (hN : 0 < N) (K : Type) [Field K] [IsA
   obtain ⟨-, I, -⟩ := Xo.univ.geom K (spMap χ ≫ x0) (Spec.preimage ((spMap χ ≫ x0) ≫ Xo.s)).hom
     (Spec.map_preimage _).symm
   refine ⟨I, fun x y e hx hy he a b ha hb => ?_⟩
-  obtain ⟨W₁, W₂, -⟩ := T.universal_weilPairing_pullback_exists_unique hL E H Dw l Xo N hN
+  obtain ⟨W₁, W₂, -⟩ := _root_.GlobalTheory.UnivPairing.weilIs_univ_pull_exists_unique hL E H Dw l Xo N hN
   have h₁ := W₁ _ _ (bc Xo x0 χ) x y e hx hy he
   have h₂ := I.isom (N ^ 2) (pow_pos hN 2) a b
   rw [ha, hb, Nat.cast_pow] at h₂
@@ -109,7 +109,7 @@ open ThetaIsotropy in
 theorem zh_isotropic_and_half_isotropic : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (B : Type) [CommRing B] (x0 : Sp B ⟶ Xo.X) (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → 0 < N → Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La → (∀ (a a' : Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)) (e : Fin n → Γ((ptO Xo x0).left, ⊤)ˣ), InZh Xo Λ N a → InZh Xo Λ N a' → (∀ b, WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (a b) (a' b) (e b)) → ∏ b, e b = 1) ∧ ∀ (x y : ptO Xo x0 ⟶ Xo.univ.t.G) (j : ℕ), x ^ (N ^ 2) = 1 → y ^ (N ^ 2) = 1 → KilledBy Xo (l.Mb ^ j) x → KilledBy Xo (l.Mb ^ j) y → WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) x y 1 := by
   intro hL E _ _ _ H Dw l Xo B _ x0 n Λ N hΛ hN hle
   have hN2 : 0 < N ^ 2 := pow_pos hN 2
-  obtain ⟨-, W₂, -⟩ := T.universal_weilPairing_pullback_exists_unique hL E H Dw l Xo N hN
+  obtain ⟨-, W₂, -⟩ := _root_.GlobalTheory.UnivPairing.weilIs_univ_pull_exists_unique hL E H Dw l Xo N hN
   have tors : ∀ {K : Type} [CommRing K] (χ : B →+* K) {x : ptO Xo x0 ⟶ Xo.univ.t.G}, x ^ (N ^ 2) = 1 →
       (bc Xo x0 χ ≫ x) ^ (N ^ 2) = 1 := fun χ x hx => by rw [← MonObj.comp_pow, hx, MonObj.comp_one]
   refine ⟨fun a a' e ha ha' he => ?_, fun x y j hx hy kx ky => ?_⟩
@@ -133,7 +133,7 @@ theorem zh_isotropic_and_half_isotropic : Laws → ∀ (E : Type) [Field E] [Num
         rw [ev_sum I _ hN2, ← h₁]
         refine Finset.prod_congr rfl fun j _ => ?_
         rw [I.lin, hv, Category.assoc]
-      have hd := T.sq_dvd_sum_alternating_forms_of_killed_lattice E H Dw n Λ N hΛ hN hle v v' (lat ha hv) (lat ha' hv')
+      have hd := _root_.GlobalTheory.sq_dvd_sum_EF_of_killed E H Dw n Λ N hΛ hN hle v v' (lat ha hv) (lat ha' hv')
       rw [map_prod, Finset.prod_congr rfl fun b _ => hI _ _ _ (ha.1 b) (ha'.1 b) (he b) _ _ (hv b) (hv' b)]
       refine (unitOn_prod _).trans ?_
       rw [prod_zpow_eq,

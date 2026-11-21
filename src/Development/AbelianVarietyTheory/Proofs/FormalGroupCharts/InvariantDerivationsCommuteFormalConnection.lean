@@ -44,16 +44,9 @@ end VF
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
-theorem liftX_hs : HasSubst (fun p : Fin 1 × Fin d => (X (Sum.inl p.2) : AA k d)) :=
-  hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
-
-def liftHom : PS k 1 d →+* AA k d := (substAlgHom (liftX_hs (d := d) k)).toRingHom
-
 def cf (B : FB R d O) (h : PS k 2 d) (u φ : Fin d → k) : Fin d ⊕ Fin d → AA k d :=
   Sum.elim (fun j => liftX k (∑ i : Fin d, C (u i) * ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) (B.FK k j))))
     (fun i => liftX k (Dof (B.FK k) u (sgOf k h i)) + C (φ i))
-
-def fm (h : PS k 2 d) (u : Fin d → k) : AA k d := ∑ i : Fin d, (X (Sum.inr i) - liftX k (sgOf k h i)) * C (u i)
 
 end Part1
 
@@ -228,10 +221,6 @@ theorem map_ev {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {d m n : 
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
-theorem map_pt {n : ℕ} (j : Fin n) (i : Fin d) :
-    MvPowerSeries.map (algebraMap R k) (pt R d j i) = pt k d j i := by
-  simp [pt_apply]
-
 def lawK (B : FB R d O) : FGLaw k d where
   F := B.FK k
   const i := by
@@ -295,27 +284,5 @@ theorem invariantDerivations_commute_formal_connection : GE.DofCommSt := by
 end Transfer
 
 end Part2
-
-section Part3
-
-variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
-variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
-
-end Part3
-
-section Part4
-
-variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
-variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
-
-def bE (h : PS k 2 d) : Fin d ⊕ Fin d → PS k 1 d := Sum.elim (fun j => X ((0 : Fin 1), j)) (fun i => sgOf k h i)
-
-section Inter
-
-variable {k}
-
-end Inter
-
-end Part4
 
 end GlobalTheory.FormalConnection

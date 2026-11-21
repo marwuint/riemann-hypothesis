@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PrOfMulEqZero
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatHalfTensorOrthogonalIdempotentsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsPlaceModelCompIdempotentSplitTensorStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatHalfTensorOrthogonalIdempotents
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsPlaceModelCompIdempotentSplitTensor
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlaceModelRestrictedTensorFixedHalfStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DatumListConsEqIdempotentTensorStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPointIdempotentsOrthogonalSumPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DatumListConsEqIdempotentTensor
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPointIdempotentsOrthogonalSumPlaces
 
 noncomputable section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Forms Formalism.L2.Ker
@@ -79,8 +79,8 @@ theorem datJ_SB (p : ι → SplitPt D k) {S T : HSp D} (α : ∀ i, Frame (p i) 
     intro hJ hSB
     rw [List.nodup_cons] at hJ
     have hort : ∀ j ∈ J, (p i).e * (p j).e = 0 := fun j hj => horth i j fun h => hJ.1 (h ▸ hj)
-    rw [GlobalTheory.T.datum_list_cons_eq_idempotent_tensor D k ι p n n' S T α β Ψ i J hJ.1 hort, eSum_cons, add_comm]
-    refine GlobalTheory.T.schwartzBruhat_half_tensor_orthogonal_idempotents D S T _ _ _ _ _ (eSum_mul p _ J fun j hj => by rw [mul_comm]; exact hort j hj) (p i).split.1
+    rw [_root_.GlobalTheory.FinPl.PutIn.datJ_cons D k ι p n n' S T α β Ψ i J hJ.1 hort, eSum_cons, add_comm]
+    refine _root_.GlobalTheory.FinPl.PutIn.isSBHalf_tens D S T _ _ _ _ _ (eSum_mul p _ J fun j hj => by rw [mul_comm]; exact hort j hj) (p i).split.1
       (fun u hu => GlobalTheory.PlaceModelSum.idem_smul_latO (p i).split.1 hu) (ih hJ.2 fun j hj => hSB j (List.mem_cons_of_mem _ hj)) ?_
     exact isSBHalf_of_half_iff _ _ _ _ (fun t ht => mem_latO_at_iff (p i) _ _ t ht)
       (SBHalfAt.isSBHalf_extFun_latO D k (p i) S T n n' (α i) (β i) LS LT hSD hTD (Ψ i) (hSB i List.mem_cons_self))
@@ -107,7 +107,7 @@ theorem overAll_eq (ψ : AddChar (AF D.host.F) ℂ) (p : ι → SplitPt D k) {S 
     have hstab : ∀ u ∈ (latO S T (LS : Set _) (LT : Set _) fun _ => True), (p i).e • u ∈ (latO S T (LS : Set _) (LT : Set _) fun _ => True) :=
       fun u hu => GlobalTheory.PlaceModelSum.idem_smul_latO (p i).split.1 hu
     rw [eSum_cons, add_comm] at hTm
-    have hA := GlobalTheory.T.isPlaceModel_comp_idempotentSplitTensor D ψ S T (eSum p J) (p i).e _ f Tm hmul (p i).split.1 hstab hTm
+    have hA := _root_.GlobalTheory.FinPl.PutIn.isPlaceModel_tensHalf D ψ S T (eSum p J) (p i).e _ f Tm hmul (p i).split.1 hstab hTm
     have hg' : g = Tm (tens (p i).e (datJ p α β Ψ J) (halfInd (p i).e (latO S T (LS : Set _) (LT : Set _) fun _ => True))) :=
       ih hJ'.2 g _ hA hg
     have hSBJ := datJ_SB p α β Ψ LS LT hSD hTD horth J hJ'.2
@@ -119,7 +119,7 @@ theorem overAll_eq (ψ : AddChar (AF D.host.F) ℂ) (p : ι → SplitPt D k) {S 
       (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = (p i).v)) (datJ p α β Ψ J) f Tm
       hmul (p i).split.1 hstab hcmp hSBJ hTm
     rw [← hg'] at hB
-    rw [hO.2.2.2.2.2 _ hB, LinearMap.comp_apply, tensR_apply, GlobalTheory.T.datum_list_cons_eq_idempotent_tensor D k ι p n n' S T α β Ψ i J hJ'.1 hort]
+    rw [hO.2.2.2.2.2 _ hB, LinearMap.comp_apply, tensR_apply, _root_.GlobalTheory.FinPl.PutIn.datJ_cons D k ι p n n' S T α β Ψ i J hJ'.1 hort]
 
 theorem ratDatum_of_overAll : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt D k) (J : List ι), Places p J (fun v => ∃ i, v = (p i).v) →
@@ -132,7 +132,7 @@ theorem ratDatum_of_overAll : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k]
     OverAll ψ α β LS LT Ψ J f f' →
     IsRatDatum ψ S T e (fun γ => (J.map fun i => Ψ i (rd (α i) (β i) (γ.map (incA D)))).prod) f f' := by
   intro D k _ _ _ _ ι p J hPl n n' _ _ _ _ ψ hψ S T α β LS LT hSD hTD hLS hLT Pset e hIdem hEq Ψ f f' hθf hvac hOver
-  obtain ⟨horth, rfl⟩ := GlobalTheory.T.split_point_idempotents_orthogonal_sum_places D k ι p J _ hPl Pset e hIdem hEq
+  obtain ⟨horth, rfl⟩ := _root_.GlobalTheory.FinPl.PutIn.orth_and_eq_eSum D k ι p J _ hPl Pset e hIdem hEq
   have hΛ : stdHom S T = latO S T (LS : Set _) (LT : Set _) (fun _ => True) := by
     have h1 : (LS : Set (Fin S.rank → D.host.E)) = intVec D S.rank := Set.ext hLS
     have h2 : (LT : Set (Fin T.rank → D.host.E)) = intVec D T.rank := Set.ext hLT

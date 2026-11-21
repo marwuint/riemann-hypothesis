@@ -93,19 +93,6 @@ theorem eq_orthogonalProjectionOnto_comp (T : V →L[ℂ] V) :
   rw [← ContinuousLinearMap.comp_assoc, orthogonalProjectionOnto_comp_subtypeL,
     ContinuousLinearMap.id_comp]
 
-theorem isTraceClass_subtypeL_comp_comp {A B : V →L[ℂ] V} (hA : IsHilbertSchmidt A)
-    (hB : IsHilbertSchmidt B) :
-    IsTraceClass (V.subtypeL ∘L (A ∘L B) ∘L V.orthogonalProjectionOnto) := by
-  have heq : V.subtypeL ∘L (A ∘L B) ∘L V.orthogonalProjectionOnto =
-      (V.subtypeL ∘L A ∘L V.orthogonalProjectionOnto) ∘L
-        (V.subtypeL ∘L B ∘L V.orthogonalProjectionOnto) := by
-    conv_lhs => rw [show A ∘L B = A ∘L (V.orthogonalProjectionOnto ∘L V.subtypeL) ∘L B by
-      rw [orthogonalProjectionOnto_comp_subtypeL, ContinuousLinearMap.id_comp]]
-    simp only [ContinuousLinearMap.comp_assoc]
-  rw [heq]
-  exact isTraceClass_comp ((hA.comp_right V.orthogonalProjectionOnto).comp_left V.subtypeL)
-    ((hB.comp_right V.orthogonalProjectionOnto).comp_left V.subtypeL)
-
 end Subspace
 
 open Reduction AutomorphicForm CuspidalSpectrum RightCosetSpace
@@ -155,34 +142,6 @@ theorem isHilbertSchmidt_cuspRep_of_bound (f : CompactlySupportedContinuousMap (
   show IsHilbertSchmidt T
   rw [hTT]
   exact hHS.comp_left _
-
-theorem isHilbertSchmidt_cuspRep (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure]
-    {β : ArchMatrix K n → ℝ} (hβ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β) (hβc : HasCompactSupport β)
-    (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
-    (U : Subgroup (AdelicGLn.integralFiniteGL K n))
-    (hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)))
-    (g : CompactlySupportedContinuousMap (normOneGL K n) ℂ) :
-    IsHilbertSchmidt ((cuspRep μ).integrated μ
-      (UnitaryRep.ccToL1 μ (archConv ν hβ.continuous hβc hβu (finAvg U hU g)))) :=
-  Exists.elim (exists_norm_rconv_le_uniform μ ν hβ hβc hβu U hU g) fun B hB =>
-    isHilbertSchmidt_cuspRep_of_bound μ _ B hB
-
-theorem isTraceClass_cuspRep_conv (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure]
-    {β₁ β₂ : ArchMatrix K n → ℝ} (hβ₁ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β₁)
-    (hβ₂ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β₂) (hβc₁ : HasCompactSupport β₁)
-    (hβc₂ : HasCompactSupport β₂)
-    (hβu₁ : tsupport β₁ ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
-    (hβu₂ : tsupport β₂ ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
-    (U₁ U₂ : Subgroup (AdelicGLn.integralFiniteGL K n))
-    (hU₁ : IsOpen (U₁ : Set (AdelicGLn.integralFiniteGL K n)))
-    (hU₂ : IsOpen (U₂ : Set (AdelicGLn.integralFiniteGL K n)))
-    (g₁ g₂ : CompactlySupportedContinuousMap (normOneGL K n) ℂ) :
-    IsTraceClass ((cuspRep μ).integrated μ (UnitaryRep.ccToL1 μ
-      (conv μ (archConv ν hβ₁.continuous hβc₁ hβu₁ (finAvg U₁ hU₁ g₁))
-        (archConv ν hβ₂.continuous hβc₂ hβu₂ (finAvg U₂ hU₂ g₂))))) := by
-  rw [integrated_conv]
-  exact isTraceClass_comp (isHilbertSchmidt_cuspRep μ ν hβ₁ hβc₁ hβu₁ U₁ hU₁ g₁)
-    (isHilbertSchmidt_cuspRep μ ν hβ₂ hβc₂ hβu₂ U₂ hU₂ g₂)
 
 end CuspidalProjection
 

@@ -6,9 +6,14 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CarrierEnergyPfLoc
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.PiMeasureScaling
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.RootPatterns
-import CompanionTheory.AutomorphicTheory.UniformLocalFormulas.UniformLocalSums.IntegralEqOfQuotientMeasuresBesselUnitaryImports
-import CompanionTheory.AutomorphicTheory.UniformLocalFormulas.UniformLocalSums.UnipotentRadicalInterConjugateClosedUnimodularIm
-import CompanionTheory.AutomorphicTheory.UniformLocalFormulas.UniformLocalSums.BesselRootMeasureIndependentOfChoicesImports
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralEqOfQuotientMeasuresBesselUnitary
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NCoords
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalInterConjugateClosedUnimodularStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselRootMeasureIndependentOfChoicesStatement
 
 noncomputable section
 
@@ -248,7 +253,7 @@ theorem use₇ (hB : WuBessel C) (u u' : D.what₂.Word)
     refine (hFS (s * z)).trans ?_
     rw [rank_one_term_invariant u u' hok _ hs z]
     exact (hFS z).symm
-  have hI := (GlobalTheory.T.integral_eq_of_quotientMeasures_besselUnitary D.R.k D.R.rS _ _ _ _ _ hcl (haarTr C τ) hHaar (hun _ hHaar) hq1 hq2 _ F hFc hFi).2
+  have hI := (_root_.GlobalTheory.SnMass.QuotUniq.quot_uniq D.R.k D.R.rS _ _ _ _ _ hcl (haarTr C τ) hHaar (hun _ hHaar) hq1 hq2 _ F hFc hFi).2
   exact congrArg (fun A => hsNormSq (((cOf hB u τ : ℝ) : ℂ)⁻¹ • A)) hI
 
 end Formalism.MainStatements.RowRest

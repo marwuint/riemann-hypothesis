@@ -1,6 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.GoodCoverEigenspaces.CubeCechEquivalences.CechCubeBaseChange.BcSumSingle
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverRestrictionBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverRestrictionBaseChange
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SortSign
 
 set_option autoImplicit false
 
@@ -41,7 +42,7 @@ theorem cechHEquivCohOn_cechCubeMapOver {X Y : Scheme.{0}} (g : Y ⟶ X) (ι : T
     rfl
   refine Eq.trans ?_ (congrArg (cechHEquivCohOn S hc' hG n)
     ((cechCubeMapOver V U hσ φ).homology_cechClass n z)).symm
-  refine (GlobalTheory.T.cover_restriction_base_change g ι ι R S σ hσ V (g ⁻¹ᵁ V) U (fun i ↦ g ⁻¹ᵁ U i) hc hc' le_rfl id hτ F G φ
+  refine (_root_.GlobalTheory.CompanionTheory.AltCech.cechHEquivCohOn_altPull g ι ι R S σ hσ V (g ⁻¹ᵁ V) U (fun i ↦ g ⁻¹ᵁ U i) hc hc' le_rfl id hτ F G φ
     hF hG n z ((cechCubeMapOver V U hσ φ).cocycle (n + 1) z) (fun t ht ↦ ?_) (fun t ht ↦ ?_)).symm
   · rw [sortSign_id', one_smul]
     exact key t _ ht (hτ t.1) Finset.image_id

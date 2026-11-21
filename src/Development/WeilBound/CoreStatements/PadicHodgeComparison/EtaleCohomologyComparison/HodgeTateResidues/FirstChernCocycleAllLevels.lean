@@ -117,16 +117,4 @@ theorem etP_eFam (H : RIn l) (r : Roots l) (K : IntermediateField ℚ_[l] (Padic
 theorem etP (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : ∃ e : E.EtFam l K, EtP e :=
   (rootsEx l).elim fun r => ⟨_, etP_eFam (CrystallineSemistableComparison.R.forE l) r K⟩
 
-theorem EtP.isFirstChern_of_etale_class {e : E.EtFam l K} (h : EtP e) (M : Model l K) (D : LineData M.X) (r : Roots l) (v : M.T 2) (hv : IsEtaleFirstChernUntwisted r D v) :
-    E.IsFirstChernClassOfLineBundle M.p (okToOC l K) D (e.tMul M v) :=
-  isFirstChern_of_cocycle fun C _ G Λ n => (h.c1 M D r v hv C G Λ n).elim fun z a => a.elim fun hz b =>
-    Exists.intro (tCo G n 2 z) (And.intro b.1 (tCo_cls M G n e v z hz b.2.symm))
-
-theorem etMapP (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (ζ : E.Roots l) : ∃ e : E.EtFam l K, e.Good ∧
-    (∀ (M : Model l K) n, e M n 0 (GlobalTheory.EtC.one (l ^ n) _) = CH.oneH _) ∧
-    (∀ (M : Model l K) D v, HT.IsEtaleFirstChernUntwisted ζ D v → E.IsFirstChernClassOfLineBundle M.p (okToOC l K) D (e.tMul M v)) ∧
-    (∀ (M : Model l K) (D : LineData M.X), ∃ v, HT.IsEtaleFirstChernUntwisted ζ D v) ∧
-    ∀ M : Model l K, ∃ v : M.T 0, ∀ k, v.lev k = GlobalTheory.EtC.one _ _ :=
-  (etP l K).elim fun e h => ⟨e, h.good, h.one, fun M D v hv => h.isFirstChern_of_etale_class M D ζ v hv, fun M D => h.first_chern_class_exists M D ζ, h.one_ex⟩
-
 end CrystallineSemistableComparison.HT

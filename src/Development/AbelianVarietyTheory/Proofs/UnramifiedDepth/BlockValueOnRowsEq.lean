@@ -12,42 +12,6 @@ variable {C : Type} [Field C] {σ κ : Type}
 def OnlyIn (S : σ → Prop) (f : MvPowerSeries σ C) : Prop :=
   ∀ m : σ →₀ ℕ, MvPowerSeries.coeff m f ≠ 0 → ∀ x ∈ m.support, S x
 
-lemma OnlyIn.one (S : σ → Prop) : OnlyIn S (1 : MvPowerSeries σ C) := by
-  classical
-  intro m hm x hx
-  rw [MvPowerSeries.coeff_one] at hm
-  have : m = 0 := by by_contra h; simp [h] at hm
-  simp [this] at hx
-
-lemma OnlyIn.mul {S : σ → Prop} {f g : MvPowerSeries σ C} (hf : OnlyIn S f) (hg : OnlyIn S g) :
-    OnlyIn S (f * g) := by
-  classical
-  intro m hm x hx
-  rw [MvPowerSeries.coeff_mul] at hm
-  obtain ⟨p, hp, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hm
-  rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
-  rw [← hp] at hx
-  rcases Finset.mem_union.mp (Finsupp.support_add hx) with h | h
-  · exact hf _ (left_ne_zero_of_mul hne) x h
-  · exact hg _ (right_ne_zero_of_mul hne) x h
-
-lemma OnlyIn.pow {S : σ → Prop} {f : MvPowerSeries σ C} (hf : OnlyIn S f) (k : ℕ) :
-    OnlyIn S (f ^ k) := by
-  induction k with
-  | zero => simpa using OnlyIn.one S
-  | succ k ih => rw [pow_succ]; exact ih.mul hf
-
-lemma OnlyIn.exp {S : σ → Prop} {f : MvPowerSeries σ C} (hf : OnlyIn S f) :
-    OnlyIn S (mvExp f) := by
-  intro m hm
-  change ∑ k ∈ Finset.range (m.degree + 1), _ ≠ _ at hm
-  obtain ⟨k, _, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hm
-  exact hf.pow k m (fun h => hne (by rw [h, zero_div]))
-
-lemma OnlyIn.prod {S : σ → Prop} {ι : Type} (s : Finset ι) {f : ι → MvPowerSeries σ C}
-    (hf : ∀ i ∈ s, OnlyIn S (f i)) : OnlyIn S (∏ i ∈ s, f i) :=
-  Finset.prod_induction _ _ (fun _ _ => OnlyIn.mul) (OnlyIn.one S) hf
-
 def Lead (π : σ → κ) (d : σ →₀ ℕ) (f : MvPowerSeries σ C) : Prop :=
   (∀ m : σ →₀ ℕ, MvPowerSeries.coeff m f ≠ 0 →
     d.mapDomain π ≤ m.mapDomain π ∧ (m.mapDomain π ≤ d.mapDomain π → m = d)) ∧
@@ -106,17 +70,6 @@ lemma Lead.pow {π : σ → κ} {d : σ →₀ ℕ} {f : MvPowerSeries σ C} (hf
   induction k with
   | zero => simpa using Lead.of_coeff_zero π (by simp)
   | succ k ih => rw [pow_succ, succ_nsmul]; exact ih.mul hf
-
-lemma Lead.prod {π : σ → κ} {ι : Type} (s : Finset ι) {d : ι → σ →₀ ℕ}
-    {f : ι → MvPowerSeries σ C} (hf : ∀ i ∈ s, Lead π (d i) (f i)) :
-    Lead π (∑ i ∈ s, d i) (∏ i ∈ s, f i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using Lead.of_coeff_zero π (by simp)
-  | insert i s hi ih =>
-    rw [Finset.sum_insert hi, Finset.prod_insert hi]
-    exact (hf i (Finset.mem_insert_self _ _)).mul
-      (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))
 
 def sideRow (n : ℕ) : PVar n → Fin n ⊕ Fin n := Sum.map Prod.fst Prod.fst
 

@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.ResidueCharacters.ConclusionSplitOfHub
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BoundAtTwoThreeFamilyFon
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormChoiceFacts
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.DeRhamFamilyAway
@@ -48,7 +48,7 @@ theorem conclusion_split_alt (Pr : Hypotheses₂) (D : D7) (L : SizeData₂ D) (
   have hG2 := _root_.GlobalTheory.T.admG2_of_setup_jumps Pr D L P nch HW F Cm X C₂ S ep hep i
   have hG5 := _root_.GlobalTheory.T.admG5_of_setup Pr D L P nch HW F Cm X C₂ S i hg π hπ
   have hcr := _root_.GlobalTheory.T.decomposition_fontaine_at_places_over_l D i (X.r i) (X.ρ i) π fa.Conclusion1.1 font (hfam.good i) hρ dec hg0 hg1
-  have hjp := GlobalTheory.T.decomposition_local_above D L ep hep hJb hJc hJe hJf i (X.r i) (X.ρ i) π (hfam.good i) hZ dec
+  have hjp := _root_.GlobalTheory.jumps_WpO_T2O_window D L ep hep hJb hJc hJe hJf i (X.r i) (X.ρ i) π (hfam.good i) hZ dec
   have hW : JumpsNoZero i (WpO D.nd i (X.ρ i) π) (GlobalTheory.HubX.hOf L) :=
     fun w hw C => ⟨(hcr w hw C).2.2.1, fun τ => hjp w hw C τ _ (Or.inl rfl)⟩
   have hT2 : JumpsNoZero i (T2O D.nd i (X.ρ i) π) (GlobalTheory.HubX.hOf L) :=
@@ -56,7 +56,7 @@ theorem conclusion_split_alt (Pr : Hypotheses₂) (D : D7) (L : SizeData₂ D) (
   obtain ⟨lc, lr⟩ := lift_exponent_admissible_cols_rows_of_crystalline L i N hK.1 hC X dc hfam.good ep hep hJe font
     (fun w hw C x => (hG2 hg0 hg1 w hw C).2.1 x) (fun w hw C x => (hcr w hw C).2.1 x)
   have hH0 := invariants_length_admissible_of_nonzero_jumps i N hK.2.1 hC (X.ρ i) π dc _ hρ hT2
-  obtain ⟨ht, hWin⟩ := GlobalTheory.T.hodgeTateJumpWindow_of_jumpSets D L hJ S.par67
+  obtain ⟨ht, hWin⟩ := _root_.GlobalTheory.BlockWindow.jumpWindow_of_jumpSets D L hJ S.par67
   have tb9 := block_condition_at_places_of_jump_window i N hK.2.2 hC (X.r i) π _ ht (hWin i (X.r i) (hfam.good i) π)
   have tb : EmbeddingTypes.admTB i (X.r i) π dc _ := fun w hw _ C hC' => tb9 w hw C hC'
   obtain ⟨l51, l52, _⟩ := GlobalTheory.charpoly_span_and_hom_relations_of_admissible D i (X.r i) (X.ρ i) π g1
@@ -72,12 +72,12 @@ theorem conclusion_split_alt (Pr : Hypotheses₂) (D : D7) (L : SizeData₂ D) (
   have h1f := hCl.2.2.2 i π
   rw [withDc_dc] at dual h1f
   have a51 := GlobalTheory.T.admissibleAtGoodPoints_of_coefRing_taken_at_live GlobalTheory.Published.cheb_holds D X fa.large.2.2 (GlobalTheory.PtCore.residualAbsIrredGoodPoint_of_residualIrred D fa.rhoBar) hfam i π hπ
-  have bka : LargeLevelLemmas.BlochKatoAnnihilators i := GlobalTheory.T.blochKatoAnnihilator_all_of_tateDuality_eulerChar Pr.bk Pr.tate Pr.euler D i
-  have fin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i := GlobalTheory.T.tateFinitenessAll_of_localTateDuality Pr.tate D i
+  have bka : LargeLevelLemmas.BlochKatoAnnihilators i := _root_.GlobalTheory.BKaRows.bkaAll_of_hypotheses Pr.bk Pr.tate Pr.euler D i
+  have fin : LargeLevelLemmas.tateH1FinitenessAtPlacesOver i := _root_.GlobalTheory.finAll_of_localTateDuality Pr.tate D i
   have hA : EmbeddingTypes.admitted i (X.r i) (X.ρ i) π dc ep _ _ _ :=
     ⟨g1, hG2, g3, g4, hG5, g5x, g6, a56, a51, l51, l52, ⟨bk, bka⟩, lc, lr, hH0, tb, GlobalTheory.T.unramifiedTrivialH1f_of_decl D i dc, cont, ss, dec, eps,
       tie, shape, font, hH2, fin, cft, h78.2.2.2, dual, h78.1, h78.2.1, h78.2.2.1, h1f, sub, acont, hType⟩
-  obtain ⟨-, -, hB⟩ := GlobalTheory.T.splitCase_bound_at_point_of_admitted_items_alt Pr.artin Pr.tate Pr.euler D i (X.r i) (X.ρ i) π dc ep _ _ _ hA (fun _ _ _ => g2) hL hdc hZ
+  obtain ⟨-, -, hB⟩ := _root_.GlobalTheory.splitCase_bound_at_point_of_admitted_items Pr.artin Pr.tate Pr.euler D i (X.r i) (X.ρ i) π dc ep _ _ _ hA (fun _ _ _ => g2) hL hdc hZ
   exact ⟨hB, fun u hu => length_invariants_Wprime_divisible_le_of_nonzero_jumps i N hK.2.1 hC (X.ρ i) π _ (GlobalTheory.NLink.AmbSub.WpO_cont i (X.ρ i) π hρ) hW u
     ((dc.cover u).1 (Or.inr hu)), fun v hv => (g5x v (Or.inr hv)).2.2.1 hv⟩
 end UpperTheory.N

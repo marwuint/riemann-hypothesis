@@ -333,10 +333,6 @@ section Symbolic
 
 variable {R : Type*} [CommRing R]
 
-noncomputable def symbolicPower (P : Ideal R) [P.IsPrime] (m : ℕ) : Ideal R :=
-  (IsLocalRing.maximalIdeal (Localization.AtPrime P) ^ m).comap
-    (algebraMap R (Localization.AtPrime P))
-
 open IsLocalRing in
 
 theorem exists_sup_maximalIdeal_pow_stable [IsNoetherianRing R] [IsLocalRing R]
@@ -423,34 +419,6 @@ theorem exists_le_maximalIdeal_pow_of_iInf_eq_bot [IsNoetherianRing R] [IsLocalR
   simpa using (𝔪 ^ k).add_mem h3 h2
 
 end Symbolic
-
-section Extension
-
-variable {R : Type*} [CommRing R] {Γ₀ : Type*} [LinearOrderedCommMonoidWithZero Γ₀]
-
-variable (v : Valuation R Γ₀) (I : Ideal R) {π : Γ₀}
-
-end Extension
-
-section LocalExtension
-
-open IsLocalRing
-
-variable {R : Type*} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
-
-section Multiplicative
-
-variable {Γ₀ : Type*} [LinearOrderedCommMonoidWithZero Γ₀]
-
-end Multiplicative
-
-section Additive
-
-variable {Γ : Type*} [LinearOrderedAddCommMonoidWithTop Γ]
-
-end Additive
-
-end LocalExtension
 
 universe u v w
 

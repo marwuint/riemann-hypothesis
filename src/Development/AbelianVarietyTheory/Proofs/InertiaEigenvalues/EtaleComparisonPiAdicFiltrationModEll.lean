@@ -4,8 +4,8 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffZeroEqZeroIff
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleEmbeddingFrobeniusGaloisCompatStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemPiPowEllOfNearPiStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleEmbeddingFrobeniusGaloisCompat
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemPiPowEllOfNearPi
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.Decompl
 open scoped TensorProduct
 
@@ -89,8 +89,8 @@ theorem near_ioE : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l
   have hs := W.EE_sat
   rw [P.PD_p K] at hd hs
   exact near_abstract l (algebraMap _ W.EE) (E.tie.ioE : W.EE →+* RW LL)
-    (inclR LL : RA LL →+* RW LL) (piR AI LL s) _ rfl (GlobalTheory.T.etaleEmbedding_frobenius_galois_compat l P AI K s LL h W E).2.2.1
+    (inclR LL : RA LL →+* RW LL) (piR AI LL s) _ rfl (_root_.GlobalTheory.Decompl.ioE_compat l P AI K s LL h W E).2.2.1
     W.EE_π (fun x => hd x 1) (fun a => hs a 1)
-    (fun m a ha => GlobalTheory.T.mem_pi_pow_ell_of_nearPi l P AI K s LL h W E m a (E.tie.ioE_ext a ▸ ha))
+    (fun m a ha => _root_.GlobalTheory.Decompl.mem_pow_pi_of_nearPi l P AI K s LL h W E m a (E.tie.ioE_ext a ▸ ha))
 
 end GlobalTheory.Decompl

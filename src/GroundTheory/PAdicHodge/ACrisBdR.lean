@@ -107,10 +107,6 @@ theorem subring_pow_dvd_iff {S : Subring Q} (n : ℕ) (x : S) :
   · rintro ⟨s, hs, h⟩
     exact ⟨⟨s, hs⟩, Subtype.ext (by simpa using h)⟩
 
-private theorem mem_span_singleton_pow_smul_top {R : Type*} [CommRing R] (x y : R) (n : ℕ) :
-    y ∈ (Ideal.span {x} ^ n • ⊤ : Submodule R R) ↔ x ^ n ∣ y := by
-  rw [Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
-
 theorem isPrecomplete_of_surjective {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Surjective f) (a : A) [IsPrecomplete (Ideal.span {a}) A] :
     IsPrecomplete (Ideal.span {f a}) B := by

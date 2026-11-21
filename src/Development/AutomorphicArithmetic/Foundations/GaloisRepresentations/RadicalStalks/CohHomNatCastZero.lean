@@ -4,8 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Radic
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RadicalStalks.TmulPMul
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RadicalStalks.FinrankWPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusEquivariantDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusKernelPrimitiveDeRhamHodgeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeRelativeFrobeniusPrimitiveDeRhamEqConjugateStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusKernelPrimitiveDeRhamHodge
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ConjugateFiltration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIffAlt
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorsionTowersOfDivisibleGroup
+import Development.AbelianVarietyTheory.Definitions.Divisors.ComparisonMemCechHodgeFiltration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeRelativeFrobeniusPrimitiveDeRhamEqConjugate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRelativeFrobeniusGrpSchemeCharPStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructure
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstDeRhamHomologyProjectiveOverTensorIntegers
@@ -74,7 +79,7 @@ private theorem frob_of_mem (hk : (p : k) = 0) (A : Over (Sp k)) [GrpObj A] (hA 
   obtain ⟨g, hg⟩ := GlobalTheory.AbVarRelDim.exists_relDim k A hA
   have hπ := isGrpPullback_pullback A (spMap (frobR p k hk))
   obtain ⟨F, hFm, hF⟩ := GlobalTheory.T.exists_relativeFrobenius_grpScheme_charP p k hk A _ _ hπ
-  have hker := (GlobalTheory.T.range_relativeFrobenius_primitiveDeRham_eq_conjugate GlobalTheory.abelianDeRham.2.2.1 p k hk A _ _ hπ F hF g hA hg).2
+  have hker := (_root_.GlobalTheory.ConjSeq.range_primPull_relFrob GlobalTheory.abelianDeRham.2.2.1 p k hk A _ _ hπ F hF g hA hg).2
   let m := GlobalTheory.Published.AbelianDeRham.bcMor hπ
   have e : primPull (dp0 k) (𝟙 _) F (m.pull c) = frobDR p k hk A c :=
     GrpMor.pull_pull m (homMor (dp0 k) (𝟙 _) F) (frobMor p k hk A (cast_left p k hk A))
@@ -152,7 +157,7 @@ theorem UpperTheory.Gal.Ord.lin :
       ker := hw
       semi := fun l x ↦ ?_
       comm := fun c x ↦ ?_
-      kerΦ := fun x ↦ ⟨fun h ↦ GlobalTheory.T.frobenius_kernel_primitive_de_rham_hodge p k hk o.A o.ab x h, fun h ↦ frob_of_mem hk o.A o.ab x h⟩
+      kerΦ := fun x ↦ ⟨fun h ↦ _root_.GlobalTheory.frobDR_eq_zero_mem_F1prim p k hk o.A o.ab x h, fun h ↦ frob_of_mem hk o.A o.ab x h⟩
       stab := fun c x hx ↦ ?_
       eig := fun c x hx ↦ ?_
       line := ?_

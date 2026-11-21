@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PrimOfIsUnitDet
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsPrimitiveAddCharInvolutionInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NcardDependentVectorsAffineGramLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrimitiveTupleOfLinearIndependentFiniteRingStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrimitiveTupleOfLinearIndependentFiniteRing
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardHermitianQuadricAffineSubspaceResidueRingStatement
 
 open GlobalTheory.GramCount
@@ -26,7 +26,7 @@ theorem ncard_extend_prim_one : ∀ {B : Type} [CommRing B] [Fintype B] (c : B �
     · right
       have hne : ¬ ∀ s : Fin (k + 1) → B,
           ∑ a, s a • (Fin.cons y x : Fin (k + 1) → Fin n → B) a = 0 → s = 0 :=
-        fun h => hp (GlobalTheory.T.isPrimitiveTuple_of_linearIndependent_finite_ring c hc χ hχ (k + 1) n _ h)
+        fun h => hp (_root_.GlobalTheory.GramCount.prim_of_indep_of_isPrimitive c hc χ hχ (k + 1) n _ h)
       push Not at hne
       obtain ⟨s, hs, hs0⟩ := hne
       rw [Fin.sum_univ_succ] at hs

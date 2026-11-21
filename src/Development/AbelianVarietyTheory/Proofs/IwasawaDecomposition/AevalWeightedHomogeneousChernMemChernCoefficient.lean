@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SumSumEqSumPair
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TracePowerProductRealSpanMulMemStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TracePowerProductRealSpanMulMem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffCharpolyRevMemTracePowerProductRealSpanStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TracePowerListProductMemChernCoefficientRealSpanStatement
 
@@ -22,7 +22,7 @@ theorem pow_mem_trSpan {ι : Type} (m : ι → ℕ) (S : Type) [CommRing S] [Alg
   | zero => simpa using one_mem_trSpan_zero m S
   | succ k ih =>
     rw [pow_succ, Nat.succ_mul]
-    exact GlobalTheory.T.tracePowerProductRealSpan_mul_mem m S (k * w) w _ _ ih hf
+    exact _root_.GlobalTheory.GoodMetric.ChernSpan.trSpan_mul m S (k * w) w _ _ ih hf
 
 theorem prod_mem_trSpan {ι κ : Type} (m : ι → ℕ) (S : Type) [CommRing S] [Algebra ℝ S] (s : Finset κ)
     (w : κ → ℕ) (f : κ → Mat m S → S) (hf : ∀ x ∈ s, f x ∈ TrSpan m (w x) S) :
@@ -34,7 +34,7 @@ theorem prod_mem_trSpan {ι κ : Type} (m : ι → ℕ) (S : Type) [CommRing S] 
     simpa using one_mem_trSpan_zero m S
   · intro a t ha ih hf
     rw [Finset.prod_insert ha, Finset.sum_insert ha]
-    exact GlobalTheory.T.tracePowerProductRealSpan_mul_mem m S _ _ _ _ (hf a (Finset.mem_insert_self a t))
+    exact _root_.GlobalTheory.GoodMetric.ChernSpan.trSpan_mul m S _ _ _ _ (hf a (Finset.mem_insert_self a t))
       (ih fun x hx => hf x (Finset.mem_insert_of_mem hx))
 
 theorem trSpan_le_reach {ι : Type} [Fintype ι] (m : ι → ℕ) (n : ℕ) (S : Type) [CommRing S] [Algebra ℝ S] :

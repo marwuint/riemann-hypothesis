@@ -18,14 +18,6 @@ section Smooth
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
-lemma sl_congr (hD : IsOpen D) {f f' : Mx k r → E} (hf : SmoothLev k r i D f)
-    (h : ∀ x ∈ Glev k r i ∩ D, f x = f' x) : SmoothLev k r i D f' := by
-  intro g₀ hg₀
-  obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g₀ hg₀
-  refine ⟨U ∩ D, F, hU.inter hD, ⟨hgU, hg₀.2⟩, hF.mono Set.inter_subset_left, fun g hg hgG => ?_⟩
-  rw [← h g ⟨hgG, hg.2⟩]
-  exact hfF g hg.1 hgG
-
 lemma sl_add {f f' : Mx k r → E} (hf : SmoothLev k r i D f) (hf' : SmoothLev k r i D f') :
     SmoothLev k r i D (f + f') := by
   intro g₀ hg₀

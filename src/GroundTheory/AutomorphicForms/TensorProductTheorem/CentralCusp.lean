@@ -79,12 +79,6 @@ theorem finRepCusp_mem_centralCuspForms (h : AdelicGLn.FiniteAdelicGL K n) {φ :
   rw [mul_assoc]
   exact hφ s _
 
-variable (K n) in
-
-abbrev centralCusp : AdelicGKModule K n (centralCuspForms K n) :=
-  cuspSubmodule K n (centralCuspForms K n) (fun X _ hφ => ρ_mem_centralCuspForms X hφ)
-    (fun k _ hφ => σ_mem_centralCuspForms k hφ) (fun h _ hφ => finRepCusp_mem_centralCuspForms h hφ)
-
 theorem exists_norm_le_of_mem_centralCuspForms {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n) :
     ∃ C : ℝ, ∀ x, ‖(φ : AdelicGLn.AdelicGL K n → ℂ) x‖ ≤ C := by
   obtain ⟨C, hC⟩ := exists_norm_le_of_mem_cuspForms φ.2

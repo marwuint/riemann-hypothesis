@@ -168,10 +168,6 @@ theorem nb_zero {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : I
   rw [h, inFrame_one]
   exact nM_zero
 
-theorem nb_comm {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y} (h : IsNMap b nb) (β γ : nA σ Y b) :
-    nb β * nb γ = nb γ * nb β := by
-  rw [← nb_add h, ← nb_add h, add_comm]
-
 theorem continuous_nM : Continuous (nM (F := F) (E := E) (n := n)) :=
   continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const
 

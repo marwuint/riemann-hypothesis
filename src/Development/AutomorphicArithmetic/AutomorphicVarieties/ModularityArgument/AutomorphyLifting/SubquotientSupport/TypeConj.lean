@@ -364,33 +364,3 @@ end Gal
 
 end UpperTheory.V.Z.Win.T2.TypeConj
 
-open UpperTheory.V.Z.Win.T2.TypeConj in
-theorem UpperTheory.V.Z.Win.T2.typeConj :
-    type_of% @UpperTheory.V.Hi.typeConj := by
-  intro P L Ω _ _ _ _ _ n w A h rc hrc γ σ σ' f hf1 hf2 χ _ ⟨b, hb, hN, hρ⟩
-  obtain ⟨a, ha, ε, H⟩ := UpperTheory.V.Z.Win.toV hrc
-  haveI : CharZero (w.adicCompletion L) := algebraRat.charZero _
-  obtain ⟨B₀, ξ, hξ, hB₀⟩ := exists_chars b χ hρ
-  choose ω₀ hω₀ e using fun j => ha.factor (ξ j) (hξ j)
-  obtain ⟨p, ho⟩ := exists_order ω₀
-  let ω := fun j => ω₀ (p j)
-  have hω : ∀ j, IsSmoothChar (ω j) := fun j => hω₀ _
-  let B := B₀.reindex p.symm
-  have hB : ∀ j g, b.ρ g (B j) = ((ω j).comp a g : ℂ) • B j := fun j g => by
-    simp only [B, ω, Module.Basis.reindex_apply, Equiv.symm_symm, hB₀, e]
-  have e0 : ((n : ℂ) - 1) / 2 + (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) = 0 := by push_cast; ring
-  let tw : SmIrr (GLw n w) → IrrRep (GL (Fin n) (w.adicCompletion L)) := fun τ =>
-    ⟨_, twist τ.ρ (detChar (Fin n) (absPow _ (((1 - (n : ℝ)) / 2 : ℝ) : ℂ))),
-      isSmooth_twist τ.smooth (isSmoothChar_absPow _).detChar, isIrreducible_twist τ.irred _⟩
-  have htw : ∀ τ, algNorm τ = cls (tw τ) := fun τ => IrrGL.tw_of _ _ _ _ (isSmoothChar_absPow _)
-  obtain ⟨𝔪, h𝔪⟩ := lfactors ω hω ho
-  obtain ⟨π, hπ⟩ := P.loc.cos _ 𝔪 n n _ (sum_deg ω hω) h𝔪
-  have h1 : rc (cls π) = rc (cls (tw σ)) := by
-    rw [rc_cosocle hrc H ω hω ho π hπ, ← htw, ← hb]
-    exact (WD.sound ⟨B.equivFun, equivFun_ρ b B _ hB, fun v => by simp [hN]⟩).symm
-  have hG : UpperTheory.Zero.LLC.Good (cls π) := good_cosocle ω hω π hπ
-  obtain ⟨φ⟩ := (IrrGL.of_eq_of (π := π.ρ) (σ := (tw σ).ρ) (hs := π.smooth) (hi := π.irr) (hs' := (tw σ).smooth)
-    (hi' := (tw σ).irr)).1 (H.inj _ _ hG h1.symm).symm
-  have h2 := cosocle_main γ ⟨hf1, hf2⟩ σ'.irred ω hω e0 (hπ.of_equiv φ (.refl _))
-  rw [htw, rc_cosocle hrc H _ _ (fun i j hij e => ho i j hij (order_cj γ e)) (tw σ') h2]
-  exact type_conj γ b B _ hB _ hρ _

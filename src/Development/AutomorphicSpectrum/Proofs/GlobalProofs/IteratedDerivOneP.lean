@@ -2,11 +2,11 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IoInjective
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SkewOfCommute
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivativeSkewAdjointCuspFormsStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieAlgebraSpannedByCompactAndFrameStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteCoefficientSpaceAnnihilatingPolynomialStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieAlgebraSpannedByCompactAndFrame
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteCoefficientSpaceAnnihilatingPolynomial
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SkewOperatorBoundedByPolynomialRootsStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CuspTranslateBoundedByDerivativeStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ArchimedeanNeighbourhoodExpSurjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CuspTranslateBoundedByDerivative
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ArchimedeanNeighbourhoodExpSurjective
 import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta MeasureTheory Matrix
 open scoped TensorProduct Topology InnerProductSpace
@@ -199,7 +199,7 @@ theorem bd_ktype (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) 
     Bd μ hθ {φ | HasTypeAt θ V τ e P ρ φ.1} (der hθ τ hY) := by
   classical
   obtain ⟨s, hc, h0, ha, hs⟩ := exists_oneParam hy
-  obtain ⟨m, hm0, hm⟩ := GlobalTheory.T.finite_coefficient_space_annihilating_polynomial (Formalism.REAL.KG e) W ρ hρ s hc h0 ha
+  obtain ⟨m, hm0, hm⟩ := _root_.GlobalTheory.CompanionTheory.HcFinite.OneParam.coeff_ode (Formalism.REAL.KG e) W ρ hρ s hc h0 ha
   have hκ0 : 0 ≤ ∑ r ∈ m.roots.toFinset, ‖r‖ := Finset.sum_nonneg fun _ _ => norm_nonneg _
   refine ⟨_, hκ0, fun φ hφ => GlobalTheory.T.skew_operator_bounded_by_polynomial_roots _ _ (io μ hθ) (io_injective μ hθ) (der hθ τ hY)
     (fun a b => GlobalTheory.T.derivative_skew_adjoint_cusp_forms D θ hθ V μ τ _ hY a b) m hm0 _ hκ0
@@ -312,7 +312,7 @@ theorem half_of_bound (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightI
   have e : Rcusp V μ (expInf θ V X * k) (io μ hθ φ) = Rcusp V μ (expInf θ V X) (io μ hθ φ) :=
     (Rcusp_mul_apply μ _ _ _).trans (congrArg _ (Rcusp_io_of_fixed μ hθ φ k hk))
   rw [e]
-  exact half_le_re_inner ((GlobalTheory.Cusp.isUnitaryRep_Rcusp V μ).1 _ _) ((GlobalTheory.T.cusp_translate_bounded_by_derivative D θ hθ V μ X φ).trans hb)
+  exact half_le_re_inner ((GlobalTheory.Cusp.isUnitaryRep_Rcusp V μ).1 _ _) ((_root_.GlobalTheory.CompanionTheory.HCCusp.norm_Rcusp_expInf_sub_le D θ hθ V μ X φ).trans hb)
 
 theorem finite_of_bound (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (hθ : IsInfFam θ)
     (U : Subgroup (GA D V)) (hU : IsOpen (U : Set (GA D V))) (E : Submodule ℂ (Mc θ V))
@@ -320,7 +320,7 @@ theorem finite_of_bound (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRigh
     (hC : ∀ X : LieN V, ∀ φ ∈ E, ‖io μ hθ (derInf hθ X φ)‖ ≤ C * ‖X‖ * ‖io μ hθ φ‖) :
     FiniteDimensional ℂ E := by
   have hδ : (0 : ℝ) < 1 / (C + 1) := by positivity
-  obtain ⟨N, hN, hlog⟩ := GlobalTheory.T.archimedean_neighbourhood_exp_surjective D θ hθ V _ hδ
+  obtain ⟨N, hN, hlog⟩ := _root_.GlobalTheory.CompanionTheory.HCCusp.RealLog.exists_small_log D θ hθ V _ hδ
   have hM := GlobalTheory.CompanionTheory.CuspNbhd.real_mul_level_mem_nhds D V U hU N hN
   have hfd : FiniteDimensional ℂ (E.map (io μ hθ)) := by
     refine GlobalTheory.CompanionTheory.CuspFin.finiteDimensional_of_coercive GlobalTheory.CuspGeo.cuspDecayBound μ _ hM ?_
@@ -370,7 +370,7 @@ theorem cuspFinite : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.h
       Bd μ hθ (E : Set (Mc θ V)) (der hθ τ hZ) := by
     intro τ Z hZ
     obtain ⟨hPu, hPg⟩ := hfr τ
-    obtain ⟨n₁, n₂, X, y, hX, hy, hspan, hg⟩ := GlobalTheory.T.lie_algebra_spanned_by_compact_and_frame D θ hθ V τ (ε τ) (fr τ) hPu hPg
+    obtain ⟨n₁, n₂, X, y, hX, hy, hspan, hg⟩ := _root_.GlobalTheory.CompanionTheory.HCCusp.quadGelf_frame D θ hθ V τ (ε τ) (fr τ) hPu hPg
     have hYl : ∀ b, (fr τ)⁻¹ * y b * fr τ ∈ lieAt V τ := fun b => lie_conj hPu hPg (hy b)
     have bK : ∀ b, Bd μ hθ (E : Set (Mc θ V)) (der hθ τ (hYl b)) := fun b =>
       (bd_ktype μ hθ hPu (ρ τ) (hρ τ) (hy b) (hYl b)).mono fun φ hφ => hφ.2.2.1 τ

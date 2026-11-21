@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetProjectionHeckeHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetVectorLiftDominantStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetProjectionHeckeHolds
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetVectorLiftDominant
 
 open GlobalTheory.PRep PositivityTheory.SphericalProduct
 
@@ -9,8 +9,8 @@ namespace GlobalTheory.CompanionTheory.Cass
 
 theorem jacquet_projection_surjective : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (D : PositivityTheory.SphericalProduct.CassData G), ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsAdmissible π → ∀ t : D.T, D.IsStrDom t → ∀ U : Module.End ℂ (fixed π D.J), PositivityTheory.Lbc.IsHeckeOpG π D.J (t : G) U → ∀ w ∈ fixed (D.piN π) D.JT, ∃ v : fixed π D.J, D.proj π (v : V) = w := by
   intro G _ _ _ D V _ _ π hadm t ht U hU w hw
-  have hA2 := GlobalTheory.T.jacquet_projection_hecke_holds G D V π hadm.1 t ht.1 U hU
-  obtain ⟨j, v₀, hv₀⟩ := GlobalTheory.T.jacquet_vector_lift_dominant G D V π hadm.1 t ht w hw
+  have hA2 := _root_.GlobalTheory.CompanionTheory.Cass.jacquet_projection_hecke_intertwines G D V π hadm.1 t ht.1 U hU
+  obtain ⟨j, v₀, hv₀⟩ := _root_.GlobalTheory.CompanionTheory.CassPush.exists_fixed_proj_eq_piN_pow G D V π hadm.1 t ht w hw
   haveI : FiniteDimensional ℂ (fixed π D.J) := hadm.2 D.J D.isOpen_J D.isCompact_J
   let L : fixed π D.J →ₗ[ℂ] Jacquet π D.N := (Submodule.mkQ _).comp (Submodule.subtype _)
   have hL : ∀ v : fixed π D.J, L v = D.proj π (v : V) := fun _ => rfl

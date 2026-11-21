@@ -10,6 +10,4 @@ theorem admissible_standardPath_basis (D : Formalism.BasicNotions.D7) : Formalis
 
 theorem admissible_polynomial_basis (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.PathColumnBasis D := Formalism.MainNotions.CovariantDegrees.path_basis_of_field_basis D (admissible_standardPath_basis D)
 
-theorem admissible_polynomial_basis_prov (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D := admissible_polynomial_basis D
-
 end Formalism.MainNotions.G.ColumnFamilies

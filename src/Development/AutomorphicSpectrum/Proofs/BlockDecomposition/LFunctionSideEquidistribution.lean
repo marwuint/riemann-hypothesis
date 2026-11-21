@@ -1,16 +1,27 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfE
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolumeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteCovolumeUnimodularStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArithmeticUnitaryGroupDiscreteStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteCovolumeUnimodular
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArithmeticUnitaryGroupDiscrete
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleClassCompactRayDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaTestFunctionBoundedLargeNormStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneThetaIntegralRayFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSeriesInvariantRationalUnitsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneThetaIntegralRayLimitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneSiegelWeilThetaAverageStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryScalarHasNormOneStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RayNormAndModuleFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaTestFunctionBoundedLargeNorm
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleEqNormModule
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleConjugationInvariant
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleBaseChangeSq
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleModuleBoundedOnCompact
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneThetaIntegralRayFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaTestFunctionRayAsymptotic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RayNormAndModuleFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSeriesInvariantRationalUnits
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneThetaIntegralRayLimit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHaarScalingByUnitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteAdeleHaarScalingTotallyReal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHaarScalingTensorUnits
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticePreservedCofinitelyByUnit
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardLatticeMeasureEqOne
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankOneSiegelWeilThetaAverage
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryScalarHasNormOne
 
 noncomputable section
 
@@ -55,11 +66,11 @@ theorem bound : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F] [Nu
     ∃ C : ℝ≥0, ∀ (y : (AF F ⊗[F] E)ˣ) (n : (AF F)ˣ), IsNm σ y n → ENNReal.ofReal (md n) * Th φ A y ≤ C := by
   intro hEq F E _ _ _ _ _ σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT
   obtain ⟨K, hK, hdec⟩ := GlobalTheory.T.idele_class_compact_ray_decomposition F E σ hcm θ hθ r hr
-  obtain ⟨R, hR⟩ := GlobalTheory.T.theta_test_function_bounded_large_norm F E σ hcm J hJ d b S φ A hT
-  obtain ⟨C, hC⟩ := GlobalTheory.T.rank_one_theta_integral_ray_formula hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT K hK (max 1 R)
+  obtain ⟨R, hR⟩ := _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.Vanish.th_eq_zero_of_large_module F E σ hcm J hJ d b S φ A hT
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.UnitBd.unit_bound hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT K hK (max 1 R)
   refine ⟨C, fun y n hn => ?_⟩
   obtain ⟨q, k, ε, hk, hε, rfl, hm⟩ := hdec y n hn
-  rw [GlobalTheory.T.theta_series_invariant_rational_units]
+  rw [_root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.Th_ofE_mul]
   by_cases h : ε ≤ max 1 R
   · rw [hm]
     exact hC k hk ε hε h
@@ -70,32 +81,32 @@ theorem bound : PositivityTheory.Rg.Mass.Equi → ∀ (F E : Type) [Field F] [Nu
       omega
     have h4 : ε ≤ ε ^ (2 * Module.finrank ℚ F) := le_self_pow₀ h1.le h3
     have h5 := hR _ n hn (by rw [hm]; linarith)
-    rw [GlobalTheory.T.theta_series_invariant_rational_units] at h5
+    rw [_root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.Th_ofE_mul] at h5
     rw [h5, mul_zero]
     exact bot_le
 
 theorem lside : PositivityTheory.Rg.Mass.Equi → LSide := by
   intro hEq F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm θ hθ r hr S φ A hT
-  obtain ⟨⟨_, _, _⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F
-  obtain ⟨_, _, _, _, -, -, -, hB, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)
-  have hG := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm 1 J hJ (AF F)
+  obtain ⟨⟨_, _, _⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F
+  obtain ⟨_, _, _, _, -, -, -, hB, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (AF F)
+  have hG := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hcm 1 J hJ (AF F)
   haveI : IsTopologicalGroup (HA (AF F) σ J) := hG.1
   haveI : LocallyCompactSpace (HA (AF F) σ J) := hG.2.1
   haveI : SecondCountableTopology (HA (AF F) σ J) := hG.2.2.1
   haveI : T2Space (HA (AF F) σ J) := hG.2.2.2.1
   haveI : BorelSpace (HA (AF F) σ J) := hG.2.2.2.2.1
-  have hfin : μ 𝓕 < ⊤ := ((GlobalTheory.T.unitary_group_finite_volume F E σ hcm 1 J hJ).2 μ hμ).2 𝓕 h𝓕
+  have hfin : μ 𝓕 < ⊤ := ((_root_.GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hcm 1 J hJ).2 μ hμ).2 𝓕 h𝓕
   have : μ.IsHaarMeasure := hμ
   let Γ : Subgroup (HA (AF F) σ J) := HFinIn (AF F) σ J
-  have : Countable Γ := (GlobalTheory.T.arithmetic_unitary_group_discrete F E σ hcm 1 J hJ).1
+  have : Countable Γ := (_root_.GlobalTheory.CompanionTheory.SW.rational_countable_discrete F E σ hcm 1 J hJ).1
   have h𝓕' : IsFundamentalDomain Γ 𝓕 μ := h𝓕
-  have h0 : μ 𝓕 ≠ 0 := (GlobalTheory.T.finite_covolume_unimodular (HA (AF F) σ J) Γ μ 𝓕 h𝓕' hfin).1
+  have h0 : μ 𝓕 ≠ 0 := (_root_.GlobalTheory.CompanionTheory.SW.LatticeUnimod.unimodular_of_isFundamentalDomain (HA (AF F) σ J) Γ μ 𝓕 h𝓕' hfin).1
   have hft : μ 𝓕 ≠ ⊤ := hfin.ne
   obtain ⟨C, hC⟩ := bound hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT
-  obtain ⟨R, hR⟩ := GlobalTheory.T.theta_test_function_bounded_large_norm F E σ hcm J hJ d b S φ A hT
-  have hM := fun x => GlobalTheory.T.rank_one_siegel_weil_theta_average F E σ hcm J hJ μ 𝓕 hμ h𝓕 d b S φ A hT x
+  obtain ⟨R, hR⟩ := _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.Vanish.th_eq_zero_of_large_module F E σ hcm J hJ d b S φ A hT
+  have hM := fun x => _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.mean_eq_lint F E σ hcm J hJ μ 𝓕 hμ h𝓕 d b S φ A hT x
   have hnm : ∀ (x : (AF F ⊗[F] E)ˣ) (n : (AF F)ˣ) (h : HA (AF F) σ J), IsNm σ x n → IsNm σ (x * ue (AF F) σ J h⁻¹) n :=
-    fun x n h hn => by simpa using nm_mul hn (GlobalTheory.T.unitary_scalar_has_norm_one F E σ hcm J hJ h⁻¹)
+    fun x n h hn => by simpa using nm_mul hn (_root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.isNm_ue_one F E σ hcm J hJ h⁻¹)
   have hcan : (μ 𝓕)⁻¹ * μ 𝓕 = 1 := ENNReal.inv_mul_cancel h0 hft
   refine ⟨⟨C, fun x n hn => ?_⟩, ⟨R, fun x n hn hRn => ?_⟩, fun x n hn => ?_⟩
   · rw [(hM x).1, mul_left_comm, ← lintegral_const_mul _ (hM x).2]
@@ -108,7 +119,7 @@ theorem lside : PositivityTheory.Rg.Mass.Equi → LSide := by
     have : ∀ h : HA (AF F) σ J, Th φ A (x * ue (AF F) σ J h⁻¹) = 0 := fun h => hR _ n (hnm x n h hn) hRn
     simp [this]
   · set m := 2 * Module.finrank ℚ F with hmdef
-    have hmr := (GlobalTheory.T.ray_norm_and_module_formula F hcm.1 θ hθ r hr).2
+    have hmr := (_root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.MdRay.norm_md_ray F hcm.1 θ hθ r hr).2
     have hmd : ∀ ε : ℝ, 0 < ε → md (n * r (ε ^ 2)) = md n * ε ^ m := fun ε hε => by
       rw [md_mul, hmr _ (by positivity), hmdef, pow_mul]
     have hne : ∀ ε : ℝ, 0 < ε → IsNm σ (x * ofF (r ε)) (n * r (ε ^ 2)) := fun ε hε => by
@@ -130,7 +141,7 @@ theorem lside : PositivityTheory.Rg.Mass.Equi → LSide := by
         simp only [hf, e0, h3] at h4
         rw [ENNReal.mul_top (by simpa using md_pos _)] at h4
         exact absurd h4 (not_le.2 ENNReal.coe_lt_top)
-      have hL := GlobalTheory.T.rank_one_theta_integral_ray_limit hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT _ n hy hT1
+      have hL := _root_.GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil.FixedUnit.equi_unit hEq F E σ hcm J hJ d b li lam hli hlam θ hθ r hr S φ A hT _ n hy hT1
       have hmn : ENNReal.ofReal (md n) ≠ 0 := by simpa using md_pos n
       have h2 := ENNReal.Tendsto.const_mul hL (Or.inr (ENNReal.ofReal_ne_top (r := md n)))
       rw [← mul_assoc, ENNReal.mul_inv_cancel hmn ENNReal.ofReal_ne_top, one_mul] at h2

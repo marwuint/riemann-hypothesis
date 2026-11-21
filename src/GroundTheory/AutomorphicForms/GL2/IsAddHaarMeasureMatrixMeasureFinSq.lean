@@ -328,9 +328,6 @@ theorem detModulusPow_eq_leftModulus (g : GL (Fin m) F) :
   rw [Measures.glChart_leftModulus, LocalField.distribHaarChar_eq_modulus,
     Matrix.GeneralLinearGroup.val_det_apply, detModulusPow]
 
-theorem detModulusPow_pos (g : GL (Fin m) F) : 0 < detModulusPow g := by
-  rw [detModulusPow_eq_leftModulus]; exact Measures.LinearChart.leftModulus_pos _ g
-
 theorem continuous_detModulusPow : Continuous (detModulusPow (F := F) (m := m)) := by
   have : (detModulusPow (F := F) (m := m)) = fun g => (Measures.glChart F m).leftModulus g :=
     funext detModulusPow_eq_leftModulus

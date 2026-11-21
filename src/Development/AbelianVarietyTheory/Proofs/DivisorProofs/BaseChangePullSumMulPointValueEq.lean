@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PtAlgSpOver
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDeRhamDuality
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnTrivialThickeningsPullbackChStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnTrivialThickeningsAdditiveLiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnTrivialThickeningsPullbackCh
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnTrivialThickeningsAdditiveLi
 
 set_option autoImplicit false
 
@@ -31,7 +31,7 @@ theorem GlobalTheory.PtExt.bcPull_sumMul_fv : ∀ (R D : Type) [CommRing R] [Com
   intro R D _ _ _ B B' q w π hfst hsnd mB J _ d β
   have w' : π ≫ B.hom = B'.hom ≫ spMap (algebraMap R D) := by
     rw [← hsnd, Category.assoc, Over.w (snd (SpAlg R D) B), w]
-  obtain ⟨hadd, hsmul, -⟩ := GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear D B'
+  obtain ⟨hadd, hsmul, -⟩ := _root_.GlobalTheory.PtExt.fv_linear D B'
   funext E i1 i2 E' i3 i4 ψ y
   have hzero : fv (0 : Z1 (O (dp0 D) (B'.hom ≫ 𝟙 _))) E E' ψ y = 0 := by
     have h := congrArg (fun u : Fn1 B' ↦ u E E' ψ y) (hadd 0 0)
@@ -50,7 +50,7 @@ theorem GlobalTheory.PtExt.bcPull_sumMul_fv : ∀ (R D : Type) [CommRing R] [Com
   rw [hsum]
   simp only [bcPull, sumMul]
   refine Finset.sum_congr rfl fun i _ ↦ ?_
-  rw [GlobalTheory.T.crystallineCocycleOnTrivialThickenings_pullback_changeOfBase R D (algebraMap R D) B B' π w' mB (β i)]
+  rw [_root_.GlobalTheory.PtExt.fv_pullbackOneCocycle_eq_bcPull_of_changeOfBase R D (algebraMap R D) B B' π w' mB (β i)]
   congr 1
   · letI : Algebra R E := algVia (algebraMap R D) E
     have hl : (ptVia w y ≫ fst (SpAlg R D) B).left = spMap (algebraMap D E) := by

@@ -1,14 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionThetaValuesAbelianPartDefinedOverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerThetaCoefficientEqConstMulMonomialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkElementsApproxLeadingTermQuotientsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareApproxValuesAtPointOfElementsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFourierTermSystemRegularTraitsGivenChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionThetaValuesAbelianPartDefinedOver
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EighthPowerThetaCoefficientEqConstMulMonomial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkElementsApproxLeadingTermQuotients
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMemberP
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareApproxValuesAtPointOfElements
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFourierTermSystemRegularTraitsGivenChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonModule
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDefMapIntOfPos
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsConePullOfSurjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonomialTauFirstCoordsOfUnitLastCoordsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonomialTauFirstCoordsOfUnitLastCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPosMulExtendIntLinearFormStatement
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
@@ -25,7 +26,7 @@ theorem monoTau_inl {V : Type} [CommRing V] [IsDomain V] (Q : Data V) (τ₀ : G
     (ε : Fin m ⊕ Fin N → LinearMap.BilinForm ℤ Q.X) (hs : ∀ k, IsUnit (s (.inr k)))
     (h : TauIn Q τ₀ (fun k => s (finSumFinEquiv.symm k)) (fun k => ε (finSumFinEquiv.symm k))) :
     Q.IsMonomialTau (fun k => s (.inl k)) (fun k => ε (.inl k)) :=
-  GlobalTheory.T.isMonomialTau_first_coords_of_unit_last_coords V Q τ₀ m N s ε hs h
+  _root_.GlobalTheory.Poinc.Sep.isMonomialTau_inl_of_tauIn V Q τ₀ m N s ε hs h
 
 theorem unifOver_comp {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) {S Z : Scheme.{0}} (j : F.X ⟶ S)
     (π : S ⟶ Z) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (ξ : Sp V ⟶ S) (Q : Data V)
@@ -165,13 +166,13 @@ theorem GlobalTheory.Poinc.Sep.sepSt : SepSt := by
   have hlodd : Odd l := Odd.of_dvd_nat hodd hldvd
   have hl3 : 3 ≤ l := by
     have := hl.two_le; obtain ⟨r, hr⟩ := hlodd; omega
-  obtain ⟨j₁, hj₁⟩ := GlobalTheory.T.torsion_theta_values_abelianPart_defined_over Q.g l hl hlodd W hE8
-  obtain ⟨j₂, hj₂⟩ := GlobalTheory.T.eighthPower_thetaCoefficient_eq_const_mul_monomial Q.g l hl hlodd W hE8
-  obtain ⟨jj, X₁, z₁, Φ, y, ρ, e, h, hjj, hTr, hCM⟩ := GlobalTheory.T.exists_fourierTermSystem_regular_traits_given_chart g hg n hn hodd F Z z i hproj ((GlobalTheory.isNormalScheme_iff Z).1 hnorm) hiz hdense W hE8 hTI
+  obtain ⟨j₁, hj₁⟩ := _root_.GlobalTheory.Poinc.Sep.torsion_theta_points_defOver Q.g l hl hlodd W hE8
+  obtain ⟨j₂, hj₂⟩ := _root_.GlobalTheory.Poinc.Sep.Coef.coef_monomial Q.g l hl hlodd W hE8
+  obtain ⟨jj, X₁, z₁, Φ, y, ρ, e, h, hjj, hTr, hCM⟩ := _root_.GlobalTheory.Poinc.Sep.exists_chartMember_traitsR g hg n hn hodd F Z z i hproj ((GlobalTheory.isNormalScheme_iff Z).1 hnorm) hiz hdense W hE8 hTI
     V Q m t δ hrk hsl hsymm hpsd hposd hmono (ξ ≫ π) hUi l hl hldvd (max (max j₁ j₂) 1)
   let e' : Φ.X y ≃ₗ[ℤ] Q.X := e.toIntLinearEquiv
   let ga' : Fin (Φ.m y) → LinearMap.BilinForm ℤ (Φ.X y) := fun k => (LinearMap.BilinForm.congr e'.symm) (ga (h k))
-  obtain ⟨ev₁, hev₁, hEl⟩ := GlobalTheory.T.exists_stalk_elements_approx_leadingTerm_quotients g hg n hn hodd F Z z i hproj ((GlobalTheory.isNormalScheme_iff Z).1 hnorm) hiz hdense W hE8 φ d J S π j hJ hval hbl hji
+  obtain ⟨ev₁, hev₁, hEl⟩ := _root_.GlobalTheory.CoverElements.exists_elements g hg n hn hodd F Z z i hproj ((GlobalTheory.isNormalScheme_iff Z).1 hnorm) hiz hdense W hE8 φ d J S π j hJ hval hbl hji
     hpol V Q m t δ hrk hsl hsymm hpsd hposd hmono ga n (by omega) hcone (fun k => rfl) ξ hU ((l ^ jj) ^ 2) X₁ z₁ Φ y ρ e h
     hTr hCM K ev k₀ hk₀ hcen hdefo ga' (fun k a b => by simp [ga', e'])
   obtain ⟨d₀, hd₀, hsup⟩ := exists_hasSupports_int g φ hpol
@@ -188,7 +189,7 @@ theorem GlobalTheory.Poinc.Sep.sepSt : SepSt := by
     ext a b
     rw [(hCM.2.2.2.1 k).2 a b]
     simp [ga', e', δ, ga]
-  have hV := GlobalTheory.T.poincareApprox_values_at_point_of_elements ℤ id g φ hpol hnsi d₀ d hd₀ hd hsup 7 W hE8.1 ((l ^ jj) ^ 2) hN₁ _ Φ y ga' n (by omega)
+  have hV := _root_.GlobalTheory.Poinc.Sep.values_of_elements ℤ id g φ hpol hnsi d₀ d hd₀ hd hsup 7 W hE8.1 ((l ^ jj) ^ 2) hN₁ _ Φ y ga' n (by omega)
     (isCone_inst (AddCommGroup.toIntModule _) (Φ.mod y) ga' (isCone_equiv hFΦ ga hcone e' h)) hδ' K ev₁ k₀ hEl
   obtain ⟨hinj, -, -, htd, D, e₈, hSharp, hTheta⟩ := hCM
   have hA1 : ∀ i, ev (s (.inl i)) = 0 := fun i => by

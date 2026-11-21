@@ -15,14 +15,6 @@ private theorem sumSplitEquiv_apply_lemma (Kf : Type) [Field Kf] (r t : ℕ) (z 
   | rfl
   | (refine Prod.ext (funext fun i => ?_) (funext fun j => ?_) <;> simp [splitRT])
 
-theorem splitRT_diag (Kf : Type) [Field Kf] (r t : ℕ) (c : Kf) (z : Fin (r + t) → Kf) :
-    splitRT Kf r t ((Matrix.diagonal (fun k : Fin (r + t) => if (k : ℕ) < r then 1 else c)).mulVec z) =
-      ((splitRT Kf r t z).1, c • (splitRT Kf r t z).2) := by
-  simp only [sumSplitEquiv_apply_lemma]
-  refine Prod.ext (funext fun i => ?_) (funext fun j => ?_)
-  · simp [Matrix.mulVec_diagonal]
-  · simp [Matrix.mulVec_diagonal]
-
 section Block
 
 variable {Γ k : Type} [Group Γ] [Field k] {a b : ℕ}

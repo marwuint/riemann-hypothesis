@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConnK
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectionClosedFibreEqDerivationIdentificationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectionClosedFibreEqDerivationIdentification
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorConnectionClosedFibreStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LogDerivativePrincipalPolarisationIndependent
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ConstThickeningFieldStructure
@@ -113,8 +113,6 @@ theorem gm_pull_g {X X' Y : Scheme.{0}} {L : LB X} (F : X' ⟶ X) (f : Y ⟶ X')
   show gm f y _ (∏ _k : PUnit, (res _ (pullU F _ (L.g j j'))) ^ (1 : ℤ)) = _
   rw [Fintype.prod_unique, zpow_one]
   exact (gm_res f y _ hp _).trans (gm_pull f F y (L.U j ⊓ L.U j') ⟨hj, hj'⟩ _)
-
-example {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) : (f ≫ g) z = g (f z) := rfl
 
 end GlobalTheory.HeatUConn
 
@@ -335,7 +333,7 @@ theorem uconn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
     by_cases he : 1 ≤ e
     · obtain ⟨V, ed, pb, hconn, -, hF⟩ := GlobalTheory.T.heatOperator_connection_closedFibre E H k m d t P gam hmon hlin hab Y n' v' dd hdd D q hq h hB
         hdef hΘ ρ hρ e he A₀ m₀ hA₀
-      obtain ⟨hA, κ, hκ⟩ := GlobalTheory.T.connection_closedFibre_eq_derivation_identification k (ChartRing k m d) P.D.toPre.P ρ B' π₁ π₂ hπ₁ hπ₂ hcl A₀ m₀ hA₀ pr hpr
+      obtain ⟨hA, κ, hκ⟩ := _root_.GlobalTheory.HeatConn.connK_eq_ident k (ChartRing k m d) P.D.toPre.P ρ B' π₁ π₂ hπ₁ hπ₂ hcl A₀ m₀ hA₀ pr hpr
         hpr' V h.j ed pb hconn w hw
       obtain ⟨c, hc⟩ := hF B' π₁ π₂ c' hπ₁ hπ₂ hcl hc' pr hpr hpr' hA
       refine ⟨κ ^ e, -c, fun _ α σ σ' hTA Z x xs hxs z J hJ => ?_⟩

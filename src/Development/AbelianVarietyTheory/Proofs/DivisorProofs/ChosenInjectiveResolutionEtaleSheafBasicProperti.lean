@@ -4,17 +4,6 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.ResBasic
 
-variable {C : Type*} [Category C] [Abelian C] {X : C} (I : InjectiveResolution X)
-
-theorem aug_comm : ((HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 X).inv ≫ I.ι'.f 0) ≫
-    (I.cochainComplexXIso 0 0 rfl).hom =
-    (HomologicalComplex.singleObjXSelf (ComplexShape.up ℕ) 0 X).inv ≫ I.ι.f 0 := by
-  rw [InjectiveResolution.ι'_f_zero]
-  simp only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]
-  erw [Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  dsimp [HomologicalComplex.singleObjXSelf, HomologicalComplex.singleObjXIsoOfEq]
-  erw [Category.id_comp]
-
 end GlobalTheory.EtC.ResBasic
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in

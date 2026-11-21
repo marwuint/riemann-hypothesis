@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ToSTiesRPin
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LayerTwoFamilyClass
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesFixedValues
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesKernelFrame
@@ -28,8 +28,6 @@ def SRest.toRealSpectralMatching (Rc : _root_.Formalism.L2.RecTAlt ex) {P : SPac
   G := P.G
   rowTie := fun _ => S.rowTie
   locTied := S.locTied
-section
-end
 end GlobalTheory.Mem.SRe
 end
 end

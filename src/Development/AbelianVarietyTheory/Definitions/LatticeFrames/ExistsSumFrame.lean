@@ -75,63 +75,6 @@ end Frames
 
 attribute [local instance] GlobalTheory.FinPl.Model.relAt GlobalTheory.FinPl.Model.locAt
 
-theorem exists_pairDat {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) {S A L : HSp D} (o : OrthDec S A L)
-    {ζ : Fin L.rank → D.host.E} (hζ : IsLineVec L ζ) (hA : 0 < A.rank) :
-    ∃ a : PairDat (fun _ : Unit => Model.splitPt τ) A S (Fin A.rank), IsSumFrame o ζ (a.α ()) (a.α₀ ()) :=
-  let ⟨β₀, h⟩ := exists_sumFrame o hζ (Model.frame τ A 1) (Model.frame τ S 1)
-  ⟨⟨fun _ => Model.frame τ A 1, fun _ => β₀, fun _ => stdPair _ ⟨0, hA⟩⟩, h⟩
-
-def midDat {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (S : HSp D) (hS : 0 < S.rank) :
-    MidDat (fun _ : Unit => Model.splitPt τ) S (Fin S.rank) :=
-  ⟨fun _ => Model.frame τ S 1, fun _ => stdPair _ ⟨0, hS⟩⟩
-
-def stdLat {σ : ℕ} (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) : DblLat B J B' :=
-  ⟨PlaceModel.latFrame _, PlaceModel.latFrame _, PlaceModel.latFrame _, PlaceModel.latFrame _, PlaceModel.latFrame _,
-    PlaceModel.latFrame _⟩
-
-theorem exists_data {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) :
-    ∃ (v : Pl D) (p : Unit → SplitPt D (Fv D.host.F v)) (B : BesLev D 1) (J : JacLev D 1) (B' : BesLev D 0)
-      (_ : StepBF ψ B J) (_ : StepFB ψ J B') (_ : Link B B'.L B'.ζ) (Λ : DblLat B J B')
-      (a : PairDat p B.A B.V₀ (Fin B.A.rank)) (_ : MidDat p J.W₀ (Fin J.W₀.rank)) (a' : PairDat p B'.A B'.V₀ (Fin B'.A.rank)),
-      0 < B.A.rank ∧ 0 < J.W₀.rank ∧ 0 < B'.A.rank ∧ IsSelfDualC _ Λ.L₀ ∧ IsSelfDualC _ Λ.M₀ ∧ IsSelfDualC _ Λ.L₁ ∧
-      IsSelfDualC _ Λ.M₁ ∧ IsSelfDualC _ Λ.L₂ ∧ IsSelfDualC _ Λ.M₂ ∧ IsSumFrame B.o B.ζ (a.α ()) (a.α₀ ()) ∧
-      IsSumFrame B'.o B'.ζ (a'.α ()) (a'.α₀ ()) := by
-  obtain ⟨T, B, c, hB, -, hc, -⟩ := GlobalTheory.Unf.Inhab.exists_chain_of_isStdChar hψ
-  obtain ⟨v, ⟨τ⟩⟩ := GlobalTheory.AdelicU.exists_split_place (GlobalTheory.AdelicU.isCMExt_host D)
-  cases c with
-  | step J B' s₁ s₂ l vL c =>
-    obtain ⟨a, ha⟩ := exists_pairDat τ B.o B.line hB
-    obtain ⟨a', ha'⟩ := exists_pairDat τ B'.o B'.line hc.2.1
-    have h := fun S : HSp D => PlaceModel.isSelfDualC_latFrame S
-    exact ⟨v, _, B, J, B', s₁, s₂, l, stdLat B J B', a, midDat τ _ hc.1, a', hB, hc.1, hc.2.1, h _, h _, h _, h _, h _, h _,
-      ha, ha'⟩
-
-theorem collapse_hyp (A B : Type) [Group A] [Group B] [TopologicalSpace A] [TopologicalSpace B] [IsTopologicalGroup A]
-    [IsTopologicalGroup B] [T2Space A] [T2Space B] [CompactSpace B] (R₁ : Subgroup A) (R₂ : Subgroup B)
-    (h₁ : IsClosed (R₁ : Set A)) (h₂ : IsClosed (R₂ : Set B)) :
-    let G₁ : Subgroup (A × B) := (⊤ : Subgroup A).prod ⊥
-    let G₂ : Subgroup (A × B) := (⊥ : Subgroup A).prod ⊤
-    IsClosed (G₁ : Set (A × B)) ∧ IsClosed (G₂ : Set (A × B)) ∧ IsClosed (R₁.prod R₂ : Set (A × B)) ∧
-      (∀ x ∈ G₁, ∀ y ∈ G₂, x * y = y * x) ∧ IsHomeomorph (fun x : G₁ × G₂ => (x.1 : A × B) * x.2) ∧
-      (∀ r ∈ R₁.prod R₂, ∃ x ∈ R₁.prod R₂ ⊓ G₁, ∃ y ∈ R₁.prod R₂ ⊓ G₂, r = x * y) ∧ IsCompact (G₂ : Set (A × B)) ∧
-      IsOpen ((G₂.subgroupOf G₂ : Subgroup G₂) : Set G₂) := by
-  intro G₁ G₂
-  have h1 : ∀ x ∈ G₁, x.2 = 1 := fun x hx => hx.2
-  have h2 : ∀ x ∈ G₂, x.1 = 1 := fun x hx => hx.1
-  refine ⟨isClosed_univ.prod isClosed_singleton, isClosed_singleton.prod isClosed_univ, h₁.prod h₂, fun x hx y hy => ?_, ?_,
-    fun r hr => ⟨(r.1, 1), ⟨⟨hr.1, one_mem _⟩, trivial, rfl⟩, (1, r.2), ⟨⟨one_mem _, hr.2⟩, rfl, trivial⟩, by simp⟩,
-    isCompact_singleton.prod isCompact_univ, by simp⟩
-  · ext
-    · simp [h2 y hy]
-    · simp [h1 x hx]
-  · refine isHomeomorph_iff_exists_inverse.2 ⟨by fun_prop,
-      fun g => (⟨(g.1, 1), ⟨trivial, rfl⟩⟩, ⟨(1, g.2), ⟨rfl, trivial⟩⟩), ?_, ?_, ?_⟩
-    · rintro ⟨x, y⟩
-      ext <;> simp [h1 x x.2, h2 y y.2]
-    · intro g
-      simp
-    · fun_prop
-
 end GlobalTheory.FinPl.DblInh
 
 end

@@ -9,18 +9,8 @@ def altE (L : PeriodPair) (x y : ℂ) : ℝ := (herm L x y).im
 
 def AreaPos : Prop := ∀ L : PeriodPair, 0 < area L
 
-def AreaCovolume : Prop := ∀ L : PeriodPair, ZLattice.covolume L.lattice MeasureTheory.volume = area L
-
 def EtaSplit : Prop :=
   ∀ (L : PeriodPair) (x : ℂ), wEta L x = s2 L * x + ((Real.pi : ℂ) / (area L : ℂ)) * conj x
-
-def QuasiPeriodConstUnique : Prop :=
-  ∀ (L : PeriodPair) (s : ℂ),
-    (∀ ω ∈ L.lattice, wEta L ω = s * ω + ((Real.pi : ℂ) / (area L : ℂ)) * conj ω) → s = s2 L
-
-def LegendreInv : Prop :=
-  ∀ (L : PeriodPair) (x y : ℂ),
-    wEta L x * y - wEta L y * x = ((Real.pi : ℂ) / (area L : ℂ)) * (conj x * y - conj y * x)
 
 def AltEInt : Prop :=
   ∀ (L : PeriodPair) (x y : ℂ), x ∈ L.lattice → y ∈ L.lattice → ∃ k : ℤ, altE L x y = k
@@ -46,11 +36,6 @@ def SgStarBasic : Prop :=
     (∀ z, sgStar L z = 0 ↔ z ∈ L.lattice) ∧
     deriv (sgStar L) 0 = 1 ∧ iteratedDeriv 3 (sgStar L) 0 = -3 * s2 L
 
-def SgStarNormPeriodic : Prop :=
-  ∀ (L : PeriodPair) (ω z : ℂ), ω ∈ L.lattice →
-    ‖sgStar L (z + ω)‖ ^ 2 * Real.exp (-Real.pi * ‖z + ω‖ ^ 2 / area L)
-      = ‖sgStar L z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2 / area L)
-
 def OpUMul : Prop :=
   ∀ (L : PeriodPair) (x y : ℂ) (F : ℂ → ℂ) (z : ℂ),
     opU L x (opU L y F) z
@@ -60,11 +45,6 @@ def OpUComm : Prop :=
   ∀ (L : PeriodPair) (F : ℂ → ℂ) (z : ℂ), opU L 0 F z = F z ∧ ∀ x y : ℂ,
     opU L x (opU L y F) z
       = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE L x y : ℂ)) * opU L y (opU L x F) z
-
-def OpUNorm : Prop :=
-  ∀ (L : PeriodPair) (x : ℂ) (F : ℂ → ℂ) (z : ℂ),
-    ‖opU L x F z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2 / area L)
-      = ‖F (z + x)‖ ^ 2 * Real.exp (-Real.pi * ‖z + x‖ ^ 2 / area L)
 
 def ThetaZeroConstant : Prop :=
   ∀ (L : PeriodPair) (t : ℂ), opU L t (sgStar L) 0

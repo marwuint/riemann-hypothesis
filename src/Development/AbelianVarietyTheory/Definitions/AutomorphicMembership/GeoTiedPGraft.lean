@@ -23,8 +23,6 @@ def graft (Xg X₀ : DivX D) (iM : ∀ j (c : Xg.Comp j), (X₀.MjH j).V →ₗ[
 
 def Keeps (X X₀ : DivX D) : Prop := ∃ Xg iM hiM, X = graft Xg X₀ iM hiM
 
-theorem Keeps.refl (X : DivX D) : Keeps X X := ⟨X, X.iMj, X.iMj_mem, rfl⟩
-
 theorem Keeps.trans {X Y Z : DivX D} (h : Keeps X Y) (h' : Keeps Y Z) : Keeps X Z := by
   obtain ⟨Zg, i, hi, rfl⟩ := h'
   obtain ⟨Yg, i', hi', rfl⟩ := h
@@ -34,18 +32,7 @@ theorem Keeps.symm {X Y : DivX D} (h : Keeps X Y) : Keeps Y X := by
   obtain ⟨Yg, i', hi', rfl⟩ := h
   exact ⟨Y, Y.iMj, Y.iMj_mem, rfl⟩
 
-theorem Keeps.mjH {X X₀ : DivX D} (h : Keeps X X₀) : X.MjH = X₀.MjH ∧ HEq X.jM X₀.jM := by
-  obtain ⟨_, _, _, rfl⟩ := h; exact ⟨rfl, HEq.rfl⟩
-
-theorem Keeps.num {X X₀ : DivX D} (h : Keeps X X₀) :
-    X.kapR = X₀.kapR ∧ X.logLam = X₀.logLam ∧ X.Qp = X₀.Qp ∧ X.QPl = X₀.QPl ∧ HEq X.qv X₀.qv ∧ HEq X.nu X₀.nu ∧
-      HEq X.ZQ X₀.ZQ ∧ HEq X.quotientLocalValueFirst X₀.quotientLocalValueFirst ∧ HEq X.typeDim X₀.typeDim := by
-  obtain ⟨_, _, _, rfl⟩ := h; exact ⟨rfl, rfl, rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
-
 def GeoOver (Q : DivX D → Prop) (X₀ : DivX D) : Prop :=
   ∃ (X : DivX D) (inK : X.Lev → ℕ → Prop), Keeps X X₀ ∧ GeoTiedP X inK ∧ Q X
-
-theorem GeoOver.mono {Q Q' : DivX D → Prop} (h : ∀ X, Q X → Q' X) {X₀ : DivX D} (g : GeoOver Q X₀) : GeoOver Q' X₀ :=
-  let ⟨X, k, a, b, c⟩ := g; ⟨X, k, a, b, h X c⟩
 
 end GlobalTheory.GeoGraft

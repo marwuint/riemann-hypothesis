@@ -1,7 +1,14 @@
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RegularisedSiegelWeilFirstTerm
 import Development.AbelianVarietyTheory.Definitions.Divisors.Hypotheses2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeChoiceClausesOfWeakCharacterisationAtFaceAl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftsOfRationalFormsRationalOfClausesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftsOfRationalFormsRationalOfClauses
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
+import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
+import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
+import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
+import Formalism.LocalToGlobal.IndefiniteReal.FWExist
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TupPrimeEmpty
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LiftTestBOfRatG
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EvInjOfIsModelsOfTie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MLat3OfTie
@@ -23,7 +30,7 @@ theorem liftTests_and_mLat_of_ties : ∀ {D : D7} {G : Type} [Group G] [Fintype 
   have hM : R.toRealDat.IsModels := hB.char.base.models
   have hEv : EvInj T R.toRealDat v₀ := GlobalTheory.EvalAtUnitVectorFinal.evInj_of_isModels_of_tie T R.toRealDat κ v₀ hM fw
   have hRat : GlobalTheory.TwistField.RatG R.toRealDat (fun i => cj (twAt D.what₂.embLL A3.A.v0) (R.phs i)) :=
-    GlobalTheory.T.thetaLifts_of_rationalForms_rational_of_clauses D G Pl0 T0 A3.A T R.toRealDat F.lv2 κ v₀ O _ hB.nV hCore hOff hUsed ⟨fw⟩ hG.pins
+    _root_.GlobalTheory.TwistField.ratG_of_clauses D G Pl0 T0 A3.A T R.toRealDat F.lv2 κ v₀ O _ hB.nV hCore hOff hUsed ⟨fw⟩ hG.pins
       (fun i => hG.phase i hG.unif) hG.ioExt (fun i => (hG.oneMap i).1) hB.guard hG.unif hEv hG.cover
   have hLB : Formalism.IndefR.Rat.LiftTestB (R.toCx3 F) false :=
     GlobalTheory.TwistField.liftTestB_of_ratG D G Pl0 I0 T0 A3 _ R F false hG.unif hRat

@@ -345,12 +345,6 @@ def dataLocalUnit (t : sInvariantSubgroup (F := K.1) ℚ̄ S) (v : S)
       (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) :=
   localUnitsAlgHom S v a + sInvLocalHom S ιs v (Additive.ofMul t)
 
-theorem dataLocalUnit_add (t t' : sInvariantSubgroup (F := K.1) ℚ̄ S) (v : S)
-    (a a' : Additive ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ) :
-    dataLocalUnit S ιs (t * t') v (a + a') = dataLocalUnit S ιs t v a + dataLocalUnit S ιs t' v a' :=
-  (congrArg₂ (· + ·) (map_add (localUnitsAlgHom S v) a a') (map_add (sInvLocalHom S ιs v) _ _)).trans
-    (add_add_add_comm _ _ _ _)
-
 theorem galUnits_ρ_algebraMap (v : S)
     (σ : Gal(AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) /
       (v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))

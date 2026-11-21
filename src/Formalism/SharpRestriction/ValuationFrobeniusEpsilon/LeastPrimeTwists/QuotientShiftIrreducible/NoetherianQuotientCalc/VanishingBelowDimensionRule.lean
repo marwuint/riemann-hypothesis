@@ -132,11 +132,6 @@ theorem admissible_tail_of_cons_mem [IsLocalRing B] {d : Deg k} {s : R} {ts : Li
 
 variable [GradedAlgebra 𝒜]
 
-theorem dimLT_mono {p : ℕ} {J J' : Ideal R} (h : J ≤ J') (hD : DimLT 𝒜 p J) : DimLT 𝒜 p J' := by
-  cases p with
-  | zero => exact fun 𝔮 hq hJ => hD 𝔮 hq (h.trans hJ)
-  | succ p => exact fun 𝔮 hq hJ => hD 𝔮 hq (h.trans hJ)
-
 theorem self_isGr : (GMod.self 𝒜).IsGr 𝒜 where
   smul_mem := fun ha hx => SetLike.mul_mem_graded (A := 𝒜) ha hx
   internal := DirectSum.Decomposition.isInternal 𝒜
@@ -334,41 +329,6 @@ theorem prime_step (hGr : RuleGr) (hIso : RuleIso) (hNzd : RuleNzd) (hE1 : Euler
     ring
   · refine ⟨s, hs, hsq, admissible_tail_of_cons_mem X.𝒜 hA, Eventually.of_forall fun m => ?_⟩
     exact hNzd k X ts _ d s (nzd_on_quo X.𝒜 hq.prime hsq) m
-
-theorem core (hGr : RuleGr) (hIrr : RuleIrr) (hIso : RuleIso) (hShift : RuleShift)
-    (hNzd : RuleNzd) (hE1 : EulerAdditivityExactSequence) (hDev : RuleDev) {P : ℤ → Prop} (h0 : P 0)
-    (hadd : ∀ a b, P a → P b → P (a + b)) (c : ℕ)
-    (hbase : ∀ (k : ℕ) (X : HidaSetting k) (𝔮 : Ideal X.R), IsRel X.𝒜 𝔮 → DimLT X.𝒜 c 𝔮 →
-      ∀ m, P (chi [] ((GMod.self X.𝒜).quo 𝔮) m))
-    (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) : ∀ (F : X.Mod), Valid X.𝒜 ts →
-    F.IsGr X.𝒜 → admitted X.𝒜 ts F.Ann → DimLT X.𝒜 (ts.length + c) F.Ann →
-    ∀ᶠ m in atTop, P (chi ts F m) := by
-  induction ts with
-  | nil =>
-    intro F hv hF hA hD
-    refine dev_reduce hGr hIrr hIso hShift hE1 hDev h0 hadd X [] F hv hF hA fun 𝔮 hq hle => ?_
-    have hD' : DimLT X.𝒜 c F.Ann := by simpa using hD
-    exact Eventually.of_forall (hbase k X 𝔮 hq (dimLT_mono X.𝒜 hle hD'))
-  | cons p ts ih =>
-    obtain ⟨d, s⟩ := p
-    intro F hv hF hA hD
-    refine dev_reduce hGr hIrr hIso hShift hE1 hDev h0 hadd X _ F hv hF hA fun 𝔮 hq hle => ?_
-    obtain ⟨σ, hσ, hn, hAσ, hev⟩ :=
-      prime_step hGr hIso hNzd hE1 X 𝔮 hq d s ts hv (admissible_mono_ideal X.𝒜 hle hA)
-    have hD' : DimLT X.𝒜 (ts.length + c + 1) F.Ann := by
-      have : ((d, s) :: ts).length + c = ts.length + c + 1 := by
-        rw [List.length_cons]; omega
-      rwa [this] at hD
-    have hDσ : DimLT X.𝒜 (ts.length + c) (𝔮 ⊔ Ideal.span {σ}) := hD' 𝔮 hq hle d σ hσ hn
-    have g0 : ((GMod.self X.𝒜).quo 𝔮).IsGr X.𝒜 :=
-      ((hGr k X _ (self_isGr X.𝒜)).1 𝔮 (isHomSub_of_hom X.𝒜 hq.hom)).2
-    have hle' : 𝔮 ⊔ Ideal.span {σ} ≤ (((GMod.self X.𝒜).quo 𝔮).quot σ).Ann :=
-      (sup_le_sup_right (le_ann_quo X.𝒜 𝔮) _).trans (ann_sup_le_quot _ σ)
-    have := ih (((GMod.self X.𝒜).quo 𝔮).quot σ) (fun p hp => hv p (List.mem_cons_of_mem _ hp))
-      ((hGr k X _ g0).2.2 d σ hσ).1 (admissible_mono_ideal X.𝒜 hle' hAσ) (dimLT_mono X.𝒜 hle' hDσ)
-    filter_upwards [hev, this] with m a b
-    rw [a]
-    exact b
 
 end Main
 

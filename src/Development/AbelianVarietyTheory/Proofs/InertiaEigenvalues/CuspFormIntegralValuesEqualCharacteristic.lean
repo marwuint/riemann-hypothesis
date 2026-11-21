@@ -7,7 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupSetFinitely
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SubsingletonOfScalar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SectionIntegralEqualCharAbelianLocusStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspFormIntegralArcSectionEqualCharStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsComplexEmbeddingFractionFieldFiniteOverCdvStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsComplexEmbeddingFractionFieldFiniteOverCdv
+import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsComplexEmbeddingFractionFieldCdvr
 
 set_option autoImplicit false
 
@@ -73,7 +75,7 @@ theorem integral_of_eqChar : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     (fun x _ => hv x)
   let _ := (i.comp io).toAlgebra
   have e₁ : (algebraMap T'.V T'.Fr).comp g = i.comp (algebraMap T.V T.Fr) := RingHom.ext fun x => (hi x).symm
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.exists_complex_embedding_fractionField_finite_over_cdvr c.F c.F.val.toRingHom T T' g hg₁ hg₂ hcnt (i.comp io)
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.ComplexEmbedding.exists_embedding_fractionField_of_finite c.F c.F.val.toRingHom T T' g hg₁ hg₂ hcnt (i.comp io)
   have hint' : ∀ k : c.F, (i.comp io) k ∈ (algebraMap T'.V T'.Fr).range := fun k => by
     obtain ⟨v, hv'⟩ := hint k
     exact ⟨g v, by rw [RingHom.comp_apply, ← hv', hi]⟩

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowMulMemAdd
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CohomologyKernelModPrimePowerKilledByFixedPowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CohomologyKernelModPrimePowerKilledByFixedPow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoboundaryInertiaIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemIntegersOfNormLeOneStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemIntegersOfNormLeOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormLeOneOfMem
 
 noncomputable section
@@ -33,7 +33,7 @@ theorem lpow_ne_zero (n : ℕ) : ((l : ℕ) : Qbar l) ^ n ≠ 0 :=
 
 theorem inv_mul_sub_mem (c : Coef l) (n : ℕ) {a b : Qbar l} (ha : a ∈ c.O) (hb : b ∈ c.O) (h : Cg n a b) :
     (((l : ℕ) : Qbar l) ^ n)⁻¹ * (a - b) ∈ c.O := by
-  refine GlobalTheory.T.mem_integers_of_norm_le_one l c _ ⟨n, ?_⟩ ?_
+  refine _root_.GlobalTheory.Ord2.mem_coefO_of_memE_norm_le_one l c _ ⟨n, ?_⟩ ?_
   · rw [← mul_assoc, mul_inv_cancel₀ (lpow_ne_zero n), one_mul]
     exact c.O.sub_mem ha hb
   · rw [norm_mul, norm_inv]
@@ -53,7 +53,7 @@ theorem divSel_unbounded : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [
       ¬ Cob1 c n W ⊤ (fun s => ((l : ℕ) : Qbar l) ^ m • z s)) →
     ∀ m : ℕ, ∃ x : DivSel c W S A, l ^ m • x ≠ 0 := by
   intro l _ Ω _ _ _ S A W c hW hg H m
-  obtain ⟨r, hr⟩ := GlobalTheory.T.cohomologyKernel_modPrimePower_killed_by_fixed_pow l Ω W c hW hg
+  obtain ⟨r, hr⟩ := _root_.GlobalTheory.Ord2.exists_pow_smul_cob1_of_cv_mod_pow l Ω W c hW hg
   obtain ⟨n, z, hcoc, hker, hine, hdec, hnot⟩ := H (m + r)
   have hz : ∀ s i, z s i ∈ c.O := hcoc.2.1
   have hL0 : ((l : ℕ) : Qbar l) ^ n ≠ 0 := lpow_ne_zero n

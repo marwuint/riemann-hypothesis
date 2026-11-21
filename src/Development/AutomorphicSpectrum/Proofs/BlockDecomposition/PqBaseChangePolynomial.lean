@@ -1,6 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.WittExactSequences.IsCompl
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectTensorGeneratedLiftStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectTensorGeneratedLift
 open TensorProduct CrystallineSemistableComparison.D
 open scoped LaurentPolynomial
 
@@ -52,7 +52,7 @@ theorem pq_baseChange_polynomial : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [Comm
       = (Polynomial.mapRingHom (algebraMap A K)).comp (algebraMap A (Polynomial A)) := by
     ext a
     simp [Polynomial.algebraMap_apply]
-  have key := GlobalTheory.T.perfect_tensor_generated_lift p A (Polynomial A) B K (Polynomial K) i (Ideal.span {h})
+  have key := _root_.GlobalTheory.CompanionTheory.PerfectRing.pq_baseChange p A (Polynomial A) B K (Polynomial K) i (Ideal.span {h})
     Polynomial.C (Polynomial.mapRingHom (algebraMap A K)) i₁ hA hK hPQ hcomp hcl hC hj
   refine ⟨i₁, ?_, hC, hX⟩
   rw [Ideal.map_span, Set.image_singleton] at key

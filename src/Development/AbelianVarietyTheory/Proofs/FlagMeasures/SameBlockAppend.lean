@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
-import Development.AbelianVarietyTheory.Definitions.Foundations.RowRawRange
-open ValuativeRel MeasureTheory ComplexConjugate Formalism.MainNotions.S.Loc GlobalTheory.SgLoc
+
+open ValuativeRel MeasureTheory ComplexConjugate Formalism.MainNotions.S.Loc
 open scoped ComplexOrder
 
 namespace GlobalTheory.SgLoc.PtAlg

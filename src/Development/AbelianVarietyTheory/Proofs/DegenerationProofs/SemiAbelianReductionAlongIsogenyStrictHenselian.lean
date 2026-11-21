@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeutralGroupModelStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueHomExtensionSmoothConnSemiAbelianDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusExtensionPointsDivisibleStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusExtensionOfSurjectiveOfDimEqStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsNeutralGroupModel
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueHomExtensionSmoothConnSemiAbelianDvr
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusExtensionPointsDivisible
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusExtensionOfSurjectiveOfDimEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCompletionPointClosedPointMemOfSmooth
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLiftOfSchemeTheoreticallyDominant
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SmoothOfRelativeDimensionOfGeneric
@@ -127,10 +127,10 @@ theorem semiAbelian_reduction_of_isogeny : ∀ (R K : Type) [CommRing R] [IsDoma
   obtain ⟨a1, a2, a3, a4, a5, a6⟩ := id hG'
   have hSG' : SmConn G' := ⟨a1, a2, a3, a4, a5⟩
   have : IsCommMonObj A := hA.1
-  obtain ⟨M, hMg, hM, he, c, hc, hext⟩ := GlobalTheory.T.exists_neutral_group_model' R K hSH A hA hP
+  obtain ⟨M, hMg, hM, he, c, hc, hext⟩ := _root_.GlobalTheory.SS.exists_neutral_group_model R K hSH A hA hP
   obtain ⟨hdvr, hhens, hac, hfr⟩ := hSH
   refine ⟨M.Y, hMg, M.e, hM, he, ?_⟩
-  obtain ⟨F, ⟨hF, hFe⟩, -⟩ := GlobalTheory.T.existsUnique_hom_extension_smoothConn_semiAbelian_dvr R K M.Y G' hM hG' (M.e.hom ≫ i) inferInstance
+  obtain ⟨F, ⟨hF, hFe⟩, -⟩ := _root_.GlobalTheory.existsUnique_hom_extension_smConn_semiAbelian_dvr R K M.Y G' hM hG' (M.e.hom ≫ i) inferInstance
   have hgM : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap R K))).obj M.Y).hom := by
     have : MorphismProperty.IsStableUnderBaseChange (@SmoothOfRelativeDimension.{0} g) :=
       smoothOfRelativeDimension_isStableUnderBaseChange g
@@ -138,12 +138,12 @@ theorem semiAbelian_reduction_of_isogeny : ∀ (R K : Type) [CommRing R] [IsDoma
     exact (MorphismProperty.cancel_left_of_respectsIso (@SmoothOfRelativeDimension.{0} g)
       (hP := @MorphismProperty.IsStableUnderBaseChange.respectsIso _ _ _
         (smoothOfRelativeDimension_isStableUnderBaseChange g)) ((Over.forget _).mapIso M.e).hom A.hom).mpr hgA
-  refine GlobalTheory.T.torusExtension_of_surjective_of_dim_eq' (IsLocalRing.ResidueField R) (spFibre M.Y) (spFibre G') g
+  refine _root_.GlobalTheory.torusExtension_of_surjective_of_dim_eq (IsLocalRing.ResidueField R) (spFibre M.Y) (spFibre G') g
     (smConn_baseChange _ _ hM) (smConn_baseChange _ _ hSG')
     (relDim_spFibre M.Y hM g hgM) (relDim_spFibre G' hSG' g hgG')
     (a6 _ _) ((Over.pullback (spMap (IsLocalRing.residue R))).map F) inferInstance ?_
   intro y
-  obtain ⟨w, hw⟩ := GlobalTheory.T.torusExtension_points_divisible' (IsLocalRing.ResidueField R) (spFibre G') (a6 _ _) (m * c)
+  obtain ⟨w, hw⟩ := _root_.GlobalTheory.SS.torusExtension_points_divisible (IsLocalRing.ResidueField R) (spFibre G') (a6 _ _) (m * c)
     (by simpa using Nat.mul_le_mul hm hc) y
   obtain ⟨z, hz⟩ := sec_residue_surjective G' w
   have : IsSchemeTheoreticallyDominant (spMap (algebraMap R K)) :=

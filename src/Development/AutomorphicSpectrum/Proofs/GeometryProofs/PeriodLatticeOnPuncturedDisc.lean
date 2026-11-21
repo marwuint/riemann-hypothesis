@@ -14,8 +14,8 @@ import GroundTheory.HeightsAndTheta.Heights.Regularisation.PosSemidefOfIntQuadNo
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PLogCoverDescent
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SectionTensorPullbackRingHomBijective
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsConstAddEquivOfRangeEq
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGermStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCountStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGerm
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCount
 
 noncomputable section
 
@@ -119,7 +119,7 @@ lemma coiso_of_count {Λ M : Type} [AddCommGroup Λ] [Module.Free ℤ Λ] [Modul
         N ^ Module.finrank ℤ Λ ∧
       ∀ x y : M, Submodule.Quotient.mk x ∈ T → (N : ℤ) ∣ E (l x) (l y)) :
     ∀ x, (∀ y ∈ LinearMap.range l, E x y = 0) → x ∈ LinearMap.range l := by
-  refine GlobalTheory.T.saturated_lattice_quotient_count Λ E hbij halt (LinearMap.range l) hsat fun N hN => ?_
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.mem_of_forall_card_mul_eq_pow Λ E hbij halt (LinearMap.range l) hsat fun N hN => ?_
   obtain ⟨T, hcard, hdvd⟩ := hcount N hN
   let e : M ≃ₗ[ℤ] LinearMap.range l := LinearEquiv.ofInjective l hinj
   have hmap : (LinearMap.range ((N : ℤ) • (LinearMap.id : M →ₗ[ℤ] M))).map (e : M →ₗ[ℤ] _) =
@@ -161,7 +161,7 @@ theorem exists_logPeriods_range_eq : ∀ (n a g : ℕ) (_h : a ≤ n) (Λ : Type
   have hdiff : DifferentiableOn ℂ (expCover (n := n) a) (logCover h) :=
     differentiable_expCover.differentiableOn
 
-  obtain ⟨P, hPhol, hP0⟩ := GlobalTheory.T.holomorphic_lattice_family_local n g Λ (logCover h) hBo hBc
+  obtain ⟨P, hPhol, hP0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_global_marking_of_local n g Λ (logCover h) hBo hBc
     (fun w => Γ (expCover a w)) (fun w u v => (u ⬝ᵥ Hf (expCover a w) *ᵥ star v).im)
     (fun x y => (E x y : ℝ)) (by
       intro w₀ hw₀

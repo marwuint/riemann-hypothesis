@@ -3,8 +3,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFullLevelAt
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TateIsoBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TateIsoPullbackEquivStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TateIsoBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TateIsoPullbackEquiv
 
 noncomputable section
 
@@ -169,7 +169,7 @@ theorem exists_of_tateIso {D : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli D l} 
   obtain ⟨i', hi'⟩ : ∃ i' : L →+* k, ∀ x : Ω, i' (algebraMap Ω L x) = i x := exists_extend i
   have hcomp : i'.comp (algebraMap Ω L) = i := RingHom.ext hi'
   have hprop : IsProper (pullback.snd Y.oF.t.G.hom (spMap (algebraMap K L) ≫ y)) := inferInstance
-  obtain ⟨I', hI'⟩ := GlobalTheory.T.tate_iso_base_change E H D (Xo.XF c) Y.oF.t L k i' _ hprop I
+  obtain ⟨I', hI'⟩ := _root_.GlobalTheory.CompanionTheory.Relay.tate_iso_base_change E H D (Xo.XF c) Y.oF.t L k i' _ hprop I
   have hx : spMap i ≫ spMap (algebraMap K Ω) ≫ y ≫ Y.j =
       (spMap i' ≫ spMap (algebraMap K L) ≫ y) ≫ (Y.jQ ≫ pullback.fst _ _) := by
     have h1 : spMap i ≫ spMap (algebraMap K Ω) = spMap i' ≫ spMap (algebraMap K L) := by
@@ -178,7 +178,7 @@ theorem exists_of_tateIso {D : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli D l} 
     rw [← Category.assoc, h1]
     simp only [Category.assoc]
     rfl
-  obtain ⟨I'', hζ, hev⟩ := (GlobalTheory.T.tate_iso_pullback_equiv E H D Y.X (Xo.XF c) Y.t Y.oF.t _ Y.m k _ _ hx).2 I'
+  obtain ⟨I'', hζ, hev⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.XR.tateIsoAt_move E H D Y.X (Xo.XF c) Y.t Y.oF.t _ Y.m k _ _ hx).2 I'
   refine ⟨I'', ?_, fun a => ?_⟩
   · rw [← hζ]
     rw [(hI' N hN0).1]

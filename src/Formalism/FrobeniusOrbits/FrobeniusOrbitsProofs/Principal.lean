@@ -249,88 +249,6 @@ theorem diff_smul_eq (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (σ : (
 
 end Invariance
 
-theorem pairing {S : Type*} [CommRing S] [IsDedekindDomain S] (D : Ideal S) (hD0 : D ≠ ⊥)
-    (f : Ideal S ≃* Ideal S) (hfD : f D = D) (hff : ∀ I, f (f I) = I)
-    (hfix : ∀ P ∈ UniqueFactorizationMonoid.normalizedFactors D, f P ≠ P) :
-    ∃ B : Ideal S, D = B * f B ∧ B ⊔ f B = ⊤ := by
-  classical
-  let r : Ideal S → Ideal S → Prop := WellOrderingRel
-  set F := UniqueFactorizationMonoid.normalizedFactors D with hF
-  have hprime : ∀ P ∈ F, Prime P := fun P hP =>
-    UniqueFactorizationMonoid.prime_of_normalized_factor P hP
-  have hprod : F.prod = D :=
-    associated_iff_eq.mp (UniqueFactorizationMonoid.prod_normalizedFactors hD0)
-  have hprimeMap : ∀ P ∈ F.map f, Prime P := by
-    intro P hP
-    obtain ⟨P', hP', rfl⟩ := Multiset.mem_map.mp hP
-    first
-    | exact (MulEquiv.prime_iff f).mpr (hprime P' hP')
-    | exact (hprime P' hP').map_mulEquiv f
-  have hmapF : F.map f = F := by
-    have h1 : (F.map f).prod = D := by rw [← map_multiset_prod, hprod, hfD]
-    have h2 := UniqueFactorizationMonoid.normalizedFactors_prod_of_prime hprimeMap
-    rw [h1] at h2
-    exact h2.symm
-  let p : Ideal S → Prop := fun P => r P (f P)
-  let G := F.filter p
-  have hq : F.filter (fun Q => r (f Q) Q) = G.map f := by
-    calc F.filter (fun Q => r (f Q) Q) = (F.map f).filter (fun Q => r (f Q) Q) := by rw [hmapF]
-      _ = (F.filter ((fun Q => r (f Q) Q) ∘ f)).map f := Multiset.filter_map _ _ _
-      _ = G.map f := by
-        congr 1
-        apply Multiset.filter_congr
-        intro P _
-        simp only [Function.comp_apply, hff, p]
-  have hnot : F.filter (fun Q => r (f Q) Q) = F.filter (fun P => ¬ p P) := by
-    apply Multiset.filter_congr
-    intro P hP
-    have hne : P ≠ f P := fun h => hfix P hP h.symm
-    constructor
-    · intro h1 h2
-      exact asymm h1 h2
-    · intro h1
-      rcases trichotomous_of r P (f P) with h | h | h
-      · exact absurd h h1
-      · exact absurd h hne
-      · exact h
-  have hsplit : F = G + G.map f := by
-    rw [← hq, hnot]
-    exact (Multiset.filter_add_not p F).symm
-  refine ⟨G.prod, ?_, ?_⟩
-  · rw [map_multiset_prod, ← Multiset.prod_add, ← hsplit, hprod]
-  · by_contra hne
-    obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal _ hne
-    have hB : G.prod ≤ M := le_trans le_sup_left hle
-    have hfB : (G.map f).prod ≤ M := by
-      rw [← map_multiset_prod]
-      exact le_trans le_sup_right hle
-    have hmaxOf : ∀ P ∈ F, P ≤ M → P = M := by
-      intro P hPF hPM
-      have hP := hprime P hPF
-      have hPp : P.IsPrime := Ideal.isPrime_of_prime hP
-      exact (hPp.isMaximal hP.ne_zero).eq_of_le hM.ne_top hPM
-    obtain ⟨P, hPG, hPM⟩ := (Ideal.IsPrime.multiset_prod_le hM.isPrime).mp hB
-    obtain ⟨Q, hQG, hQM⟩ := (Ideal.IsPrime.multiset_prod_le hM.isPrime).mp hfB
-    obtain ⟨P', hP'G, rfl⟩ := Multiset.mem_map.mp hQG
-    have hPF := (Multiset.mem_filter.mp hPG).1
-    have hpP : p P := (Multiset.mem_filter.mp hPG).2
-    have hP'F := (Multiset.mem_filter.mp hP'G).1
-    have hpP' : p P' := (Multiset.mem_filter.mp hP'G).2
-    have hfP'F : f P' ∈ F := by
-      rw [← hmapF]
-      exact Multiset.mem_map_of_mem f hP'F
-    have e : f P' = P := (hmaxOf _ hfP'F hQM).trans (hmaxOf P hPF hPM).symm
-    have h1 : r P' P := by
-      have := hpP'
-      simp only [p, e] at this
-      exact this
-    have h2 : r P P' := by
-      have := hpP
-      simp only [p, ← e, hff] at this
-      rw [← e]
-      exact this
-    exact asymm h1 h2
-
 end Principal
 
 theorem liesOver_span_of_natCast_mem_frobenius_orbits {M : Type} [Field M] [NumberField M] (P : Ideal (𝓞 M)) [P.IsPrime]
@@ -340,40 +258,5 @@ theorem liesOver_span_of_natCast_mem_frobenius_orbits {M : Type} [Field M] [Numb
     rw [Ideal.span_singleton_le_iff_mem]
     exact Ideal.mem_comap.mpr (by simpa using hm)
   exact ⟨(Int.ideal_span_isMaximal_of_prime p).eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle⟩
-
-theorem hostPrincipal : HostPrincipal := by
-  intro e q d hH L _ _ ζ a b h σ hσ
-  have hqd := hH.toHypOdd
-  let f := MulSemiringAction.toRingEquiv (hostE ζ a b ≃ₐ[ℚ] hostE ζ a b)
-    (Ideal (𝓞 (hostE ζ a b))) σ
-  have hf : ∀ I, f I = σ • I := fun I => rfl
-  have hσσ : σ * σ = 1 := by
-    apply galE_injective (e := e) hqd h
-    rw [galE_mul hqd h, hσ, galE_one hqd h]
-    exact Prod.ext (show c0 * c0 = (1 : G0) by decide) (mul_one _)
-  have hD0 : differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) ≠ ⊥ := by
-    have := differentIdeal_ne_bot (A := 𝓞 (KinE ζ a b)) (B := 𝓞 (hostE ζ a b))
-    exact this
-  obtain ⟨B, hB1, hB2⟩ := Principal.pairing _ hD0 f.toMulEquiv
-    (by show f _ = _; rw [hf]; exact Principal.diff_smul_eq hqd h σ)
-    (fun I => by show f (f I) = I; rw [hf, hf, smul_smul, hσσ, one_smul])
-    (by
-      intro P hP
-      show f P ≠ P
-      rw [hf]
-      rw [Ideal.mem_normalizedFactors_iff hD0] at hP
-      obtain ⟨hPp, hle⟩ := hP
-      have hdvd : P ∣ differentIdeal (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)) := Ideal.dvd_iff_le.mpr hle
-      intro hfix
-      have hst : σ ∈ MulAction.stabilizer _ P := hfix
-      rcases hostDiffSupport e q d hH L ζ a b h P hPp hdvd with h2 | hq
-      · have : P.LiesOver (span {((2 : ℕ) : ℤ)}) :=
-          liesOver_span_of_natCast_mem_frobenius_orbits P 2 Nat.prime_two (by exact_mod_cast h2)
-        exact hostDecompConj e q d hH L ζ a b h σ hσ 2 (Or.inl rfl) P hst
-      · have : P.LiesOver (span {(q : ℤ)}) := liesOver_span_of_natCast_mem_frobenius_orbits P q hH.1 hq
-        exact hostDecompConj e q d hH L ζ a b h σ hσ q (Or.inr (Or.inl rfl)) P hst)
-  exact ⟨B, hB1, hB2⟩
-
-theorem hostPrincipalBoth : HostDiffSupport ∧ HostPrincipal := ⟨hostDiffSupport, hostPrincipal⟩
 
 end Formalism.FrobeniusOrbits

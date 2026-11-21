@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotallyRealDegreeAndChartDimensionEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormIndependentTranslatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowerRankCuspFormsDetWeightOneComponentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonzeroBoundedSectionShiftedWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardIndependentBoundedSectionsShiftedWeightLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoBinomialRatioBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowerRankCuspFormsDetWeightOneComponent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonzeroBoundedSectionShiftedWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardIndependentBoundedSectionsShiftedWeightLe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoBinomialRatioBounds
 
 open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 
@@ -172,16 +172,16 @@ theorem compX (X : DataX E r) (Xa : ArchInM X.toData) (Fl : FlatM X.toData Xa) (
       (∀ a : Fin m → ℂ, (∀ x ∈ X.dom, ∑ q, a q * f q x = 0) → a = 0) →
       m ≤ Fl.δ * (Xa.T + 2 * nd X.toData + 6).choose (nd X.toData) := fun m f hf hi =>
     GlobalTheory.UpperModel.upper E r X.toData Xa Fl m f (fun q => (hf q).1) hi
-  refine ⟨hup, ?_, ?_, GlobalTheory.T.lowerRank_cuspForms_detWeight_oneComponent E r X Xa Fl hm h0 h1 hg1 hg2 hg3 hg4 s hs hsT u hu hu0⟩
+  refine ⟨hup, ?_, ?_, _root_.GlobalTheory.ShareOn.lowerRank_oneComponent E r X Xa Fl hm h0 h1 hg1 hg2 hg3 hg4 s hs hsT u hu hu0⟩
   · intro m f hf hi
     have hmem : ∀ q, f q * u ∈ X.SS (Xa.Fp + Xa.T • Xa.L) := fun q =>
       mul_mem X.toData (hf q) hu.1 (sub_add_cancel _ _)
     exact hup m _ hmem (indep_mul X.toData hu.1.1.1 hu0 (fun q => (hf q).1) hi)
   · intro m f hf hi
-    obtain ⟨w, hw, hw0⟩ := GlobalTheory.T.exists_nonzero_boundedSection_shiftedWeight E r X Xa Fl hm h0 h1 hg1 hg2 hg3 hg4 s hs hsT u hu hu0
+    obtain ⟨w, hw, hw0⟩ := _root_.GlobalTheory.ShareSection.exists_bddSec_shift E r X Xa Fl hm h0 h1 hg1 hg2 hg3 hg4 s hs hsT u hu hu0
     have hmem : ∀ q, X.IsBddSec (Xa.Fp + (Xa.T + (nd X.toData + 4)) • Xa.L) (f q * w) := fun q =>
       (mul_mem X.toData (hf q) hw (by simp only [add_smul]; abel)).1
-    exact GlobalTheory.T.card_independent_boundedSections_shiftedWeight_le E r X.toData Xa Fl m _ hmem (indep_mul X.toData hw.1.1 hw0 (fun q => (hf q).1) hi)
+    exact _root_.GlobalTheory.UpperShift.upper_shift E r X.toData Xa Fl m _ hmem (indep_mul X.toData hw.1.1 hw0 (fun q => (hf q).1) hi)
 
 theorem compT (X : DataX E r) {Ψ : Finset (E →+* ℂ)} (hΨ : X.Ψ = Ψ) (G : Matrix (Fin r) (Fin r) E) (p0 : ℕ)
     (hG : X.Gm = G) (hp : X.p0 = p0) (L Fp : Wt Ψ r) (T s : ℕ)
@@ -332,7 +332,7 @@ theorem ranks : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
   set n := M.dimY with hn_def
   have hb : ∀ c, (T + 3 * n + 10).choose n ≤ 2 * (T + n).choose n ∧
       (1 - (n : ℝ) * (n + 6) / T) * ((T + 2 * n + 6).choose n : ℕ) ≤ ((T + n).choose n : ℕ) :=
-    fun c => GlobalTheory.T.two_binomial_ratio_bounds T n (hn c).1 (hn c).2
+    fun c => _root_.GlobalTheory.BinomRatio.two_binom_ratios T n (hn c).1 (hn c).2
   refine ⟨f0, f2, ?_, ?_, fm⟩
   · by_cases hε : 1 - (n : ℝ) * (n + 6) / T ≤ 0
     · exact le_trans (mul_nonpos_of_nonpos_of_nonneg hε (Nat.cast_nonneg _)) (Nat.cast_nonneg _)

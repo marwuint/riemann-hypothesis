@@ -108,56 +108,6 @@ theorem weightZ_zero_eq_two_smul_sub_self : wtZ ((0, 0) : WtR E).1 ((0, 0) : WtR
   rw [sub_self, smul_zero]
   ext <;> simp [wtZ]
 
-theorem height_definite_law_data [Nonempty (HeightOneSpectrum (𝓞 c.F))]
-    (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c))
-    (cls : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → Prop) (PY : HeightOneSpectrum (𝓞 c.F) → Type)
-    (lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop)
-    (hgt : GenFromTest Xo c h)
-    (hT : OrdTie h δ cls PY lies) (hTQ : OrdTieQ h δ) (hR1 : RegularityR1ValuedPoints Xo c C cls PY lies) (hR1Q : RegularityR1Quotient Xo c C)
-    (hwS : ∀ k, wR k ∈ sec Xo c uL.1 uL.2) (hwC : ∀ k, wR k ∈ C uL.1 uL.2) (hwI : ∀ k, IntAlg (wR k))
-    (hpS : ∀ k, thpR k ∈ sec Xo c uF.1 uF.2) (hpC : ∀ k, thpR k ∈ C uF.1 uF.2) (hpI : ∀ k, IntAlg (thpR k))
-    (heS : etR ∈ sec Xo c uL.1 uL.2) (heC : etR ∈ C uL.1 uL.2) (heI : IntAlg etR) (heN : NZAt h etR)
-    (h2S : ta2R ∈ sec Xo c uta2.1 uta2.2) (h2C : ta2R ∈ C uta2.1 uta2.2) (h2I : IntAlg ta2R) (h2N : NZAt h ta2R)
-    (huta2 : wtZ uta2.1 uta2.2 = (Dd + 4 : ℕ) • wtZ uL.1 uL.2 - wtZ uF.1 uF.2) :
-    A2RegularityOrders (dat h δ fn yP Dd N uL uF uta2 wR jc np thpR etR ta2R nu wsize DF PN PP0' Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO) := by
-  have cases' : ∀ {Z : Comp Xo c} {v : AddValuation (Om Z) (WithTop ℤ)},
-      (dat h δ fn yP Dd N uL uF uta2 wR jc np thpR etR ta2R nu wsize DF PN PP0' Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO).admitted Z v →
-      IsNormDiscrete v ∧ ((∃ la, IsOver (K := c.F) v la) ∨ IsTrivOn c.F v) := by
-    intro Z v hA
-    obtain ⟨hd, hc⟩ := hA
-    exact ⟨hd, hc.imp (fun h' => let ⟨la, ho, _⟩ := h'; ⟨la, ho⟩) (fun h' => h'.1)⟩
-  refine ⟨fun Z v hA x hx hx0 => ?_, fun Z v hA x hx hx0 => ?_, fun Z v hA => ?_, fun Z v hA => ?_,
-    fun Z v hA => ?_⟩
-  · obtain ⟨hd, hc⟩ := cases' hA
-    obtain ⟨F, hF, rfl⟩ := exists_of_mem_span_valG h hx
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q
-      (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwC) hF)
-      (intAlg_span (Set.forall_mem_range.2 hwI) hF) hd hc (evC_ne_zero_of_valC hx0)
-    exact h0
-  · obtain ⟨hd, hc⟩ := cases' hA
-    obtain ⟨F, hF, rfl⟩ := exists_of_mem_span_valG h hx
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q
-      (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpC) hF)
-      (intAlg_span (Set.forall_mem_range.2 hpI) hF) hd hc (evC_ne_zero_of_valC hx0)
-    exact h0
-  · obtain ⟨hd, hc⟩ := cases' hA
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q heS heC heI hd hc (heN Z)
-    show 0 ≤ ordC (δ Z v) v ((1 * 1 : ℕ) • wtZ uL.1 uL.2) (valC h uL.1 uL.2 etR Z)
-    rw [← wt_et]
-    exact h0
-  · show 0 ≤ ordC (δ Z v) v ((2 : ℕ) • (wtZ uL.1 uL.2 - wtZ uL.1 uL.2)) (valC h 0 0 1 Z)
-    have hz : frW (δ Z v) (0 : WTZ E) = 0 := by
-      simp only [frW]
-      exact Finset.sum_eq_zero fun i _ => by cases i <;> simp [exZ]
-    rw [sub_self, smul_zero]
-    simp only [valC, wtZ_zero, evC_one hgt, ordC, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same, hz,
-      AddValuation.map_one, add_zero]
-    exact le_rfl
-  · obtain ⟨hd, hc⟩ := cases' hA
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q h2S h2C h2I hd hc (h2N Z)
-    rw [huta2] at h0
-    exact h0
-
 theorem htSup_dat (hgt : GenFromTest Xo c h) (hfn : FnNe Xo c fn) (hfg : FnFG Xo c) (hcx : ValAtCx h yP)
     (huta2 : wtZ uta2.1 uta2.2 = (Dd + 4 : ℕ) • wtZ uL.1 uL.2 - wtZ uF.1 uF.2)
     (hwS : ∀ k, wR k ∈ sec Xo c uL.1 uL.2) (hwB : ∀ k, SupBdd Xo c fn uL.1 uL.2 (wR k))

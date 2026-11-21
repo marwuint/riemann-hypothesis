@@ -20,24 +20,6 @@ namespace GlobalTheory.PairingOfForm
 
 open ReciprocityTheory.ChartRestriction.G.Out CommutatorPairing DescentPairing PrimNorm AdjointOfPairing
 
-def chartUnflat {X Y Z : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K'] (L : LB X) (φ : K → (Y ⟶ X))
-    (ε : K → ℤ) (ψ : K' → (Z ⟶ Y)) (δ : K' → ℤ) :
-    ChartPull (LB.LinComb L (fun p : K' × K => ψ p.1 ≫ φ p.2) (fun p => ε p.2 * δ p.1))
-      (LB.LinComb (LB.LinComb L φ ε) ψ δ) (𝟙 Z) :=
-  have le : ∀ j : K' × K → L.ι, LB.wchart L (fun p : K' × K => ψ p.1 ≫ φ p.2) j ≤
-      LB.wchart (LB.LinComb L φ ε) ψ (fun a b => j (a, b)) := fun j y hy =>
-    Set.mem_iInter.2 fun a => Set.mem_iInter.2 fun b => Set.mem_iInter.1 hy (a, b)
-  { idx := fun j a b => j (a, b)
-    le := le
-    g := fun y p q hp hq => by
-      refine (gm_linComb L _ _ (𝟙 Z) y p q hp hq).trans (Eq.trans ?_
-        (gm_linComb (LB.LinComb L φ ε) ψ δ (𝟙 Z) y _ _ (le p hp) (le q hq)).symm)
-      rw [Fintype.prod_prod_type]
-      refine Finset.prod_congr rfl fun k _ => Eq.symm ?_
-      refine (congrArg (· ^ δ k) (gm_linComb L φ ε (𝟙 Z ≫ ψ k) y (fun b => p (k, b)) (fun b => q (k, b))
-        (Set.mem_iInter.1 (le p hp) k) (Set.mem_iInter.1 (le q hq) k))).trans ?_
-      simp only [← Finset.prod_zpow, zpow_mul, Category.assoc] }
-
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 theorem weilIs_swap {L : LB A.left} (hL : L.IsLB) {k : ℤ} {T : Over S} {x y : T ⟶ A} {c : Γ(T.left, ⊤)ˣ}

@@ -101,44 +101,6 @@ def SuppSecond (D : D7) : Prop :=
         ∀ g ∈ grpOff B.V P, ∀ φ, a.Ram φ → ∀ h₂, Chain.hand s₁ s₂ l vL Φ₁ Φ₂ φ g h₁ h₂ ≠ 0 →
           InBig B'.V (besGrp B'.d B'.o) Λ.L₂ P h₂
 
-def ValueDouble (D : D7) : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
-    (p : ι → SplitPt D k) (q : Unif k) (ψ : AddChar (AF D.host.F) ℂ) (χ : ι → AddChar k Circle)
-    (hχ : ∀ i, HasConductor (χ i) 1), (∀ i, (p i).IsChar ψ (χ i)) → ∃ ε : ι → 𝓀[k]ˣ, (∀ i, ε i = 1 ∨ ε i = -1) ∧
-    ∀ (n n' n'' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n'']
-      (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B')
-      (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) (Λ : DblLat B J B') (P : Pl D → Prop)
-      (a : PairDat p B.A B.V₀ n') (b : MidDat p J.W₀ n) (a' : PairDat p B'.A B'.V₀ n''), DblShape s₁ s₂ Λ P q a b a' →
-      ∀ I : List ι, I.Nodup → (∀ i, i ∈ I) → ∃ c c' : ℂ, ∀ Ξ₁ Ξ₂, Vac ψ B.V₀ J.W₀ Λ.M₀ Λ.M₁ P Ξ₁ → Vac ψ J.W₀ B'.V₀ Λ.M₁ Λ.M₂ P Ξ₂ →
-        (∃ Ξ₁', OverAll ψ a.α₀ b.β Λ.M₀ Λ.M₁ (fun i => tensCol (phiOne (a.P i) (b.Q i)) (vecInd (b.Q i).lat)) I Ξ₁ Ξ₁') ∧
-        (∃ Ξ₂', OverAll ψ b.β a'.α₀ Λ.M₁ Λ.M₂ (fun i => tensRow (phiOne (b.Q i) (a'.P i)) (dualInd (b.Q i).lat)) I Ξ₂ Ξ₂') ∧
-        ∀ Ξ₁' Ξ₂',
-          OverAll ψ a.α₀ b.β Λ.M₀ Λ.M₁ (fun i => tensCol (phiOne (a.P i) (b.Q i)) (vecInd (b.Q i).lat)) I Ξ₁ Ξ₁' →
-          OverAll ψ b.β a'.α₀ Λ.M₁ Λ.M₂ (fun i => tensRow (phiOne (b.Q i) (a'.P i)) (dualInd (b.Q i).lat)) I Ξ₂ Ξ₂' →
-          ∀ φ, a.Ram φ →
-            hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂ = c • hand0 s₁ s₂ l vL (a.sAll q (fun i => resChar (χ i) (hχ i) q) ε I φ) Ξ₁' Ξ₂' ∧
-            hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂ = c' • a'.sAll q (fun i => resChar (χ i) (hχ i) q) ε I (hand0 s₁ s₂ l vL φ Ξ₁' Ξ₂') ∧
-            a'.Ram (hand0 s₁ s₂ l vL φ Ξ₁' Ξ₂') ∧ a'.Ram (hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂)
-
-def ValueLast (D : D7) : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
-    (p : ι → SplitPt D k) (q : Unif k) (χ : ι → AddChar k Circle) (hχ : ∀ i, HasConductor (χ i) 1)
-    (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ψ : AddChar (AF D.host.F) ℂ) (T : HSp D)
-    (B : BesLev D 0) (t : Last ψ T B) (o : OrthDec B.V B.A B.L), (∀ x, o.emb (x, 1) = embA B.d B.o x) →
-    ∀ (a : PairDat p B.A B.V n') (b : MidDat p t.J.W n) (L₁ : Lat B.V) (L₂ : Lat t.J.W) (L₃ : Lat T),
-      Function.Injective (fun i => (p i).v) → IsSelfDualC B.V L₁ → IsSelfDualC t.J.W L₂ → IsSelfDualC T L₃ →
-      (∀ i, (p i).UnitAA ∧ ExtUnramAt D (p i).v ∧ UnrAt t.s (p i).v ∧ CharUnramAt D t.χS (p i).v ∧
-        CharUnramAt D t.χT (p i).v ∧ IsSumFrame o B.ζ (a.α i) (a.α₀ i) ∧
-        (a.α₀ i).IsLat L₁ (gluedS q 1 (a.P i).ker (a.P i).vec) ∧ (b.β i).IsLat L₂ (b.Q i).lat) →
-      ∀ I : List ι, I.Nodup → (∀ i, i ∈ I) → ∃ c : ℂ, ∀ Φ₁ Φ₂, Vac ψ B.V t.J.W L₁ L₂ (fun v => ∃ i, v = (p i).v) Φ₁ →
-        Vac ψ t.J.W T L₂ L₃ (fun v => ∃ i, v = (p i).v) Φ₂ →
-        (∃ Φ₁', OverAll ψ a.α₀ b.β L₁ L₂
-          (fun i => tensCol (phiOne (a.P i) (b.Q i)) (charInd (resChar (χ i) (hχ i) q) (b.Q i))) I Φ₁ Φ₁') ∧
-        ∀ Φ₁', OverAll ψ a.α₀ b.β L₁ L₂
-            (fun i => tensCol (phiOne (a.P i) (b.Q i)) (charInd (resChar (χ i) (hχ i) q) (b.Q i))) I Φ₁ Φ₁' →
-          ∀ φ, a.Ram φ → ∀ F, IsContAut T F →
-            t.Q φ Φ₁ Φ₂ F = c * t.Q (a.sAll q (fun i => resChar (χ i) (hχ i) q) (fun _ => 1) I φ) Φ₁' Φ₂ F
-
 def AllBijective (D : D7) : Prop :=
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt D k) (q : Unif k) (χ : ι → AddChar k Circle) (hχ : ∀ i, HasConductor (χ i) 1) (ε : ι → 𝓀[k]ˣ)
@@ -148,28 +110,6 @@ def AllBijective (D : D7) : Prop :=
         (∀ φ, a.sAll q (fun i => resChar (χ i) (hχ i) q) ε I φ = c.sum fun g x => x • rTrans g φ) ∧
         ∀ φ, a.Ram φ → a.Ram (c'.sum fun g x => x • rTrans g φ) ∧
           a.sAll q (fun i => resChar (χ i) (hχ i) q) ε I (c'.sum fun g x => x • rTrans g φ) = φ
-
-def CollapseInt : Prop :=
-  ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
-    [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (G₁ G₂ R J : Subgroup G),
-    IsClosed (G₁ : Set G) → IsClosed (G₂ : Set G) → IsClosed (R : Set G) → (∀ x ∈ G₁, ∀ y ∈ G₂, x * y = y * x) →
-    IsHomeomorph (fun x : G₁ × G₂ => (x.1 : G) * x.2) → (∀ r ∈ R, ∃ x ∈ R ⊓ G₁, ∃ y ∈ R ⊓ G₂, r = x * y) →
-    J ≤ G₂ → IsCompact (J : Set G) → IsOpen ((J.subgroupOf G₂ : Subgroup G₂) : Set G₂) →
-    ∀ (μG : Measure G) (μR : Measure R) (μ₁ : Measure G₁) (ν₁ : Measure (R.subgroupOf G₁)), μG.IsHaarMeasure →
-      μR.IsHaarMeasure → μR.IsMulRightInvariant → μ₁.IsHaarMeasure → ν₁.IsHaarMeasure →
-      ∃ c : ℝ, 0 < c ∧ ∀ (f : G → ℂ) (z : ℂ), IsQuotIntL1 μR μG f z → (∀ g, ∀ j ∈ J, f (g * j) = f g) →
-        (∀ g, f g ≠ 0 → ∃ r ∈ R, ∃ x ∈ G₁, ∃ j ∈ J, g = r * x * j) →
-        ∃ z₁, IsQuotIntL1 ν₁ μ₁ (fun x : G₁ => f x) z₁ ∧ z = c * z₁
-
-def ClassSumReal (D : D7) : Prop :=
-  ∀ V : HSp D, GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsDefiniteSpace V → ∀ K : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)),
-    GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsOpenCompactLevel V K → ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), Formalism.IndefR.Links.IsMeasDef V K μ 𝓕 →
-    ∀ (I : Type) [Fintype I] (y : I → Formalism.IndefR.Bridge.Gf V),
-      Formalism.IndefR.Bridge.IsReps (Formalism.IndefR.Bridge.ratF V) (GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.levelFin V K) y →
-    ∀ z : I → GA D V, (∀ i, (finHom V).rangeRestrict (z i) = y i) →
-    ∀ ν : Measure (GinfC V), ν.IsHaarMeasure → ν Set.univ = 1 →
-    ∀ Φ : GA D V → ℂ, IsContAut V Φ → (∀ κ ∈ Formalism.IndefR.Lev.levA V K, ∀ h, Φ (h * κ) = Φ h) →
-      ∫ h in 𝓕, Φ h ∂μ = ∑ i, ((Nat.card (GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.classGroupAt V K (y i)) : ℂ))⁻¹ * ∫ x : GinfC V, Φ (z i * x) ∂ν
 
 theorem SplitPt.sec_mul (p : SplitPt D k) (a b : k) : p.sec (a * b) = p.sec a * p.sec b := by
   have h : ∀ a, p.e * p.sec a = p.sec a := fun a => by rw [← p.sec_pr, p.pr_sec]
@@ -192,129 +132,9 @@ theorem SplitPt.idele_val (p : SplitPt D k) (a : kˣ) : (p.idele a : AE D) = 1 -
   rw [map_sub, p.sec_one]
   ring
 
-theorem SplitPt.pr_idele (p : SplitPt D k) (a : kˣ) : p.pr (p.idele a) = a := by
-  change p.pr (1 + p.sec (a - 1)) = _
-  rw [map_add, map_one, p.pr_sec, add_sub_cancel]
-
-def IsGlueConst (p : ι → SplitPt D k) (q : Unif k) (I : List ι) (N : ℕ) {r : ℕ} (μ : Fin r → ((AE D)ˣ →* Circle)) (c : ℂ) : Prop :=
-  ∃ (a : ℤ) (m : Fin r → ℤ), c = (I.map fun i => ((resCard k : ℂ) ^ N - 1) * ((√(resCard k : ℝ) : ℝ) : ℂ) ^ a *
-    ∏ j, ((μ j ((p i).idele (Units.mk0 _ q.ne_zero)) ^ m j : Circle) : ℂ)).prod
-
-theorem IsGlueConst.norm {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → ((AE D)ˣ →* Circle)} {c : ℂ}
-    (h : IsGlueConst p q I N μ c) :
-    ∃ a : ℤ, ‖c‖ = (‖(resCard k : ℂ) ^ N - 1‖ * √(resCard k : ℝ) ^ a) ^ I.length := by
-  obtain ⟨a, m, rfl⟩ := h
-  refine ⟨a, ?_⟩
-  induction I with
-  | nil => simp
-  | cons i I ih =>
-    rw [List.map_cons, List.prod_cons, norm_mul, ih, List.length_cons, pow_succ', norm_mul, norm_mul, norm_prod]
-    simp only [Circle.norm_coe, Finset.prod_const_one, mul_one, norm_zpow, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_nonneg (Real.sqrt_nonneg _)]
-
-theorem IsGlueConst.ne_zero {q : Unif k} {I : List ι} {N r : ℕ} {μ : Fin r → ((AE D)ˣ →* Circle)} {c : ℂ}
-    (h : IsGlueConst p q I N μ c) (hN : 0 < N) : c ≠ 0 := by
-  obtain ⟨a, ha⟩ := h.norm
-  have h1 : 1 < resCard k := Finite.one_lt_card
-  have h2 : (resCard k : ℂ) ^ N - 1 ≠ 0 := by
-    rw [sub_ne_zero]
-    exact_mod_cast (Nat.one_lt_pow hN.ne' h1).ne'
-  have h3 : 0 < √(resCard k : ℝ) := Real.sqrt_pos.2 (by exact_mod_cast one_pos.trans h1)
-  rw [← norm_pos_iff, ha]
-  exact pow_pos (mul_pos (norm_pos_iff.2 h2) (zpow_pos h3 a)) _
-
 variable (k) in
 
 def sgnRes (s : ℤˣ) : 𝓀[k]ˣ := Units.map (Int.castRingHom 𝓀[k]).toMonoidHom s
-
-theorem sgnRes_eq (s : ℤˣ) : sgnRes k s = 1 ∨ sgnRes k s = -1 := by
-  rcases Int.units_eq_one_or s with rfl | rfl
-  · exact Or.inl (map_one _)
-  · exact Or.inr (Units.ext (by simp [sgnRes]))
-
-def ValueDoubleExact (D : D7) : Prop :=
-  ∃ s : ℤˣ, ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
-    (p : ι → SplitPt D k) (q : Unif k) (ψ : AddChar (AF D.host.F) ℂ) (χ : ι → AddChar k Circle)
-    (hχ : ∀ i, HasConductor (χ i) 1), (∀ i, (p i).IsChar ψ (χ i)) →
-    ∀ (n n' n'' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n'']
-      (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B')
-      (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) (Λ : DblLat B J B') (P : Pl D → Prop)
-      (a : PairDat p B.A B.V₀ n') (b : MidDat p J.W₀ n) (a' : PairDat p B'.A B'.V₀ n''), DblShape s₁ s₂ Λ P q a b a' →
-      ∀ I : List ι, I.Nodup → (∀ i, i ∈ I) → ∃ c c' : ℂ, c ≠ 0 ∧ c' ≠ 0 ∧
-        IsGlueConst p q I (Fintype.card n) ![s₁.χV, s₁.χW, s₂.χV, s₂.χW] c ∧
-        IsGlueConst p q I (Fintype.card n) ![s₁.χV, s₁.χW, s₂.χV, s₂.χW] c' ∧
-        ∀ Ξ₁ Ξ₂, Vac ψ B.V₀ J.W₀ Λ.M₀ Λ.M₁ P Ξ₁ → Vac ψ J.W₀ B'.V₀ Λ.M₁ Λ.M₂ P Ξ₂ →
-        (∃ Ξ₁', OverAll ψ a.α₀ b.β Λ.M₀ Λ.M₁ (fun i => tensCol (phiOne (a.P i) (b.Q i)) (vecInd (b.Q i).lat)) I Ξ₁ Ξ₁') ∧
-        (∃ Ξ₂', OverAll ψ b.β a'.α₀ Λ.M₁ Λ.M₂ (fun i => tensRow (phiOne (b.Q i) (a'.P i)) (dualInd (b.Q i).lat)) I Ξ₂ Ξ₂') ∧
-        ∀ Ξ₁' Ξ₂',
-          OverAll ψ a.α₀ b.β Λ.M₀ Λ.M₁ (fun i => tensCol (phiOne (a.P i) (b.Q i)) (vecInd (b.Q i).lat)) I Ξ₁ Ξ₁' →
-          OverAll ψ b.β a'.α₀ Λ.M₁ Λ.M₂ (fun i => tensRow (phiOne (b.Q i) (a'.P i)) (dualInd (b.Q i).lat)) I Ξ₂ Ξ₂' →
-          ∀ φ, a.Ram φ →
-            hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂ =
-              c • hand0 s₁ s₂ l vL (a.sAll q (fun i => resChar (χ i) (hχ i) q) (fun _ => sgnRes k s) I φ) Ξ₁' Ξ₂' ∧
-            hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂ =
-              c' • a'.sAll q (fun i => resChar (χ i) (hχ i) q) (fun _ => sgnRes k s) I (hand0 s₁ s₂ l vL φ Ξ₁' Ξ₂') ∧
-            a'.Ram (hand0 s₁ s₂ l vL φ Ξ₁' Ξ₂') ∧ a'.Ram (hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂)
-
-def ValueLastExact (D : D7) : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
-    (p : ι → SplitPt D k) (q : Unif k) (χ : ι → AddChar k Circle) (hχ : ∀ i, HasConductor (χ i) 1)
-    (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ψ : AddChar (AF D.host.F) ℂ) (T : HSp D)
-    (B : BesLev D 0) (t : Last ψ T B) (o : OrthDec B.V B.A B.L), (∀ x, o.emb (x, 1) = embA B.d B.o x) →
-    ∀ (a : PairDat p B.A B.V n') (b : MidDat p t.J.W n) (L₁ : Lat B.V) (L₂ : Lat t.J.W) (L₃ : Lat T),
-      Function.Injective (fun i => (p i).v) → IsSelfDualC B.V L₁ → IsSelfDualC t.J.W L₂ → IsSelfDualC T L₃ →
-      (∀ i, (p i).UnitAA ∧ ExtUnramAt D (p i).v ∧ UnrAt t.s (p i).v ∧ CharUnramAt D t.χS (p i).v ∧
-        CharUnramAt D t.χT (p i).v ∧ IsSumFrame o B.ζ (a.α i) (a.α₀ i) ∧
-        (a.α₀ i).IsLat L₁ (gluedS q 1 (a.P i).ker (a.P i).vec) ∧ (b.β i).IsLat L₂ (b.Q i).lat) →
-      ∀ I : List ι, I.Nodup → (∀ i, i ∈ I) → ∃ c : ℂ, c ≠ 0 ∧ IsGlueConst p q I (Fintype.card n) ![t.s.χV, t.s.χW] c ∧
-        ∀ Φ₁ Φ₂, Vac ψ B.V t.J.W L₁ L₂ (fun v => ∃ i, v = (p i).v) Φ₁ →
-        Vac ψ t.J.W T L₂ L₃ (fun v => ∃ i, v = (p i).v) Φ₂ →
-        (∃ Φ₁', OverAll ψ a.α₀ b.β L₁ L₂
-          (fun i => tensCol (phiOne (a.P i) (b.Q i)) (charInd (resChar (χ i) (hχ i) q) (b.Q i))) I Φ₁ Φ₁') ∧
-        ∀ Φ₁', OverAll ψ a.α₀ b.β L₁ L₂
-            (fun i => tensCol (phiOne (a.P i) (b.Q i)) (charInd (resChar (χ i) (hχ i) q) (b.Q i))) I Φ₁ Φ₁' →
-          ∀ φ, a.Ram φ → ∀ F, IsContAut T F →
-            t.Q φ Φ₁ Φ₂ F = c * t.Q (a.sAll q (fun i => resChar (χ i) (hχ i) q) (fun _ => 1) I φ) Φ₁' Φ₂ F
-
-theorem ValueDoubleExact.valueDouble (h : ValueDoubleExact D) : ValueDouble D := by
-  obtain ⟨s, h⟩ := h
-  intro k _ _ _ _ ι p q ψ χ hχ hp
-  refine ⟨fun _ => sgnRes k s, fun _ => sgnRes_eq s, ?_⟩
-  intro n n' n'' _ _ _ _ _ _ σ B J B' s₁ s₂ l vL Λ P a b a' hS I hI hI'
-  obtain ⟨c, c', -, -, -, -, h'⟩ := h k ι p q ψ χ hχ hp n n' n'' σ B J B' s₁ s₂ l vL Λ P a b a' hS I hI hI'
-  exact ⟨c, c', h'⟩
-
-theorem ValueLastExact.valueLast (h : ValueLastExact D) : ValueLast D := by
-  intro k _ _ _ _ ι p q χ hχ n n' _ _ _ _ ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'
-  obtain ⟨c, -, -, h'⟩ := h k ι p q χ hχ n n' ψ T B t o ho a b L₁ L₂ L₃ h1 h2 h3 h4 h5 I hI hI'
-  exact ⟨c, h'⟩
-
-def UnitLaw {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (s : Step ψ V V₀ W W₀ ρ σ) (dV : HypDec V V₀ ρ)
-    (dW : HypDec W W₀ σ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ) (LV : Lat V) (LV₀ : Lat V₀) (LW : Lat W) (LW₀ : Lat W₀)
-    (P : Pl D → Prop) : Prop :=
-  ∀ Φ, Vac ψ V W LV LW P Φ → ∀ u' : UX D ρ, (∀ i j, (u'.1.1 - 1) i j ∈ idOff D P) →
-    IsLatVac (heisO ψ V₀ W₀) (latO V₀ W₀ (LV₀ : Set _) (LW₀ : Set _) P)
-      (fun w => flatFun ψ dV dW s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 x y Φ w u') ∧
-    ∀ u : UX D ρ, MxAt P (u.1.1 - 1) → ∀ w,
-      (InK V LV P (dV.levi u.1) → flatFun ψ dV dW s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 x y Φ w (u * u') =
-        flatFun ψ dV dW s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 x y Φ w u') ∧
-      (¬ InK V LV P (dV.levi u.1) → flatFun ψ dV dW s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 x y Φ w (u * u') = 0)
-
-def FlatUnit (D : D7) : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (P : Pl D → Prop),
-    (∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (LV : Lat B.V) (LV₀ : Lat B.V₀) (LW : Lat J.W)
-      (LW₀ : Lat J.W₀), (∀ v, P v → GoodBF ψ B J LV LV₀ LW LW₀ v) →
-      UnitLaw s B.d J.d (xZero J.d) (yZero B.V₀ ρ (vecB B.o B.ζ)) LV LV₀ LW LW₀ P) ∧
-    ∀ (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B) (LV : Lat J.W) (LV₀ : Lat J.W₀) (LW : Lat B.V)
-      (LW₀ : Lat B.V₀), (∀ v, P v → AdaptFB ψ J B LV LV₀ LW LW₀ v) →
-      UnitLaw s J.d B.d (xLast B.d (vecB B.o B.ζ)) 0 LV LV₀ LW LW₀ P
-
-example {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B) (Φ w) :
-    flatFB s Φ w = ∫ u, flatFun ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (xLast B.d (vecB B.o B.ζ)) 0 Φ w u ∂s.vU.ν := rfl
-
-example (q : Unif k) (i : ι) : IsGlueConst p q [i] 1 ![] ((resCard k : ℂ) - 1) := ⟨0, ![], by simp⟩
-
-example (q : Unif k) (I : List ι) : ¬ IsGlueConst p q I 1 ![] 0 := fun h => h.ne_zero one_pos rfl
 
 end GlobalTheory.FinPl
 

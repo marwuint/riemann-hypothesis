@@ -67,18 +67,6 @@ theorem trunc_jIn (m : ℕ) : (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[
     rw [AlgHom.comp_apply, AlgHom.comp_apply, jet_inclusion_z]
     exact (jet_inclusion_z m j).symm
 
-theorem copy_jIn {n : ℕ} (m : ℕ) (i : Fin n) : (jetCopy (S := S) d m i).comp (jIn S d m) = jetIn i :=
-  jext fun j => by
-    rw [AlgHom.comp_apply, jet_inclusion_z]
-    exact (jetMap_z m _ _ _).trans (jetMap_z m (fun l => X (i, l)) _ j).symm
-
-theorem subst_jIn {n : ℕ} (m : ℕ) (F : Fin d → MvPowerSeries (Fin n × Fin d) S) :
-    (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (F p.2)).comp (jIn S d m) = jetSubstPS F :=
-  jext fun j => by
-    rw [AlgHom.comp_apply, jet_inclusion_z]
-    exact (jetMap_z m _ _ _).trans (jetMap_z m
-      (fun i => psTrunc m (F i) - C (MvPolynomial.constantCoeff (psTrunc m (F i)))) _ j).symm
-
 theorem tan_jIn (j : Fin d) :
     (jetTan ((0 : Fin 1), j) : Jet S (Fin 1 × Fin d) (0 + 1) →ₐ[S] DualNumber S).comp (jIn S d 1) =
       jetVec (Pi.single j 1) :=
@@ -225,39 +213,6 @@ section Param
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {G : Over X0} [GrpObj G] [IsCommMonObj G] {d : ℕ}
   {j : JetPts G x0 d}
 
-theorem dif_bijective_of_param (h : IsFormalParam G x0 j) : Function.Bijective (dif x0 (j 1) (h.2.1 1)) := by
-  have hmk : ∀ W : TanM x0 G,
-      algMap x0 (Ideal.Quotient.mkₐ S (RingHom.ker (Chart.fstD S))) ≫ tv W = 1 := fun W => by
-    refine tan_pull x0 _ ?_ _ (tv_zero' W)
-    rw [algMap_eq, homAt_comp]
-    congr 1
-    refine AlgHom.ext fun r => Ideal.Quotient.eq.2 ?_
-    simp [RingHom.mem_ker]
-  have hfst : ∀ W : TanM x0 G, homAt x0 (Chart.fstD S) ≫ tv W = 1 := fun W => by
-    refine tan_pull x0 _ ?_ _ (tv_zero' W)
-    rw [homAt_comp]
-    congr 1
-    exact AlgHom.ext fun r => by simp
-  constructor
-  · intro c c' hc
-    have e := (h.2.2 1 (DualNumber S) _ Chart.kerD_sq _ (hmk (dif x0 (j 1) (h.2.1 1) c'))).unique
-      (congrArg tv hc : algMap x0 (jetVec c) ≫ j 1 = _) (rfl : algMap x0 (jetVec c') ≫ j 1 = _)
-    funext i
-    have := congrArg TrivSqZeroExt.snd (AlgHom.congr_fun e (z 1 i))
-    rwa [jetVec_z_one, jetVec_z_one, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_inr] at this
-  · intro W
-    obtain ⟨f, hf, -⟩ := h.2.2 1 (DualNumber S) _ Chart.kerD_sq _ (hmk W)
-    have e : (Chart.fstD S).comp f = jetAug :=
-      (h.2.2 1 S ⊥ (Ideal.bot_pow (by omega)) 1 (MonObj.comp_one _)).unique
-        (by rw [algMap_eq, ← hcomp, ← algMap_eq x0 f, hf, hfst]) (h.2.1 1)
-    refine ⟨fun i => (f (z 1 i)).snd, tv_injective ?_⟩
-    refine (tv_dif x0 _ _ _).trans ?_
-    rw [← hf, algMap_eq]
-    congr 2
-    refine jext fun i => ?_
-    rw [jetVec_z_one]
-    exact TrivSqZeroExt.ext ((AlgHom.congr_fun e (z 1 i)).trans (jetAug_z 1 i)).symm rfl
-
 set_option maxHeartbeats 800000 in
 
 theorem param_of_dif_bijective (hG : Smooth G.hom)
@@ -347,10 +302,6 @@ def IsTanBasisG (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) : Prop :=
 
 variable (j : JetPts t.G x0 d)
 
-theorem jptG_eq {n : ℕ} (m : ℕ) (i : Fin n) :
-    jptG t x0 d (famEquiv x0 t.G d j) m i = algMap x0 (jetIn i) ≫ j m := by
-  rw [jptG, famEquiv_apply, hcomp, copy_jIn, algMap_eq]
-
 theorem zero_iff (m : ℕ) :
     homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ famEquiv x0 t.G d j m = 1 ↔
       algMap x0 (jetAug : Jet S (Fin d) m →ₐ[S] S) ≫ j m = 1 := by
@@ -362,22 +313,6 @@ theorem trunc_iff (m : ℕ) :
       algMap x0 (jetTrunc : Jet S (Fin d) (m + 1) →ₐ[S] Jet S (Fin d) m) ≫ j (m + 1) = j m := by
   rw [famEquiv_apply, famEquiv_apply, hcomp, trunc_jIn, ← hcomp, algMap_eq]
   exact ⟨jIn_cancel x0, fun h => by rw [h]⟩
-
-theorem law_iff (F : Fin d → Germ.PS S 2 d) :
-    LawIs t.G x0 j F ↔ (∀ i, MvPowerSeries.constantCoeff (F i) = 0) ∧
-      ∀ m, homAt x0 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (F p.2)) ≫ famEquiv x0 t.G d j m =
-        jptG t x0 d (famEquiv x0 t.G d j) m (0 : Fin 2) * jptG t x0 d (famEquiv x0 t.G d j) m (1 : Fin 2) := by
-  refine and_congr_right fun _ => forall_congr' fun m => ?_
-  rw [jptG_eq, jptG_eq, famEquiv_apply, hcomp, subst_jIn]
-  exact eq_comm
-
-theorem end_iff (α : t.G ⟶ t.G) (φ : Germ.Pt S 1 d) :
-    EndIs t.G x0 j α φ ↔ (∀ i, MvPowerSeries.constantCoeff (φ i) = 0) ∧
-      ∀ m, famEquiv x0 t.G d j m ≫ α =
-        homAt x0 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (φ p.2)) ≫ famEquiv x0 t.G d j m := by
-  refine and_congr_right fun _ => forall_congr' fun m => ?_
-  rw [famEquiv_apply, hcomp, subst_jIn, Category.assoc]
-  rfl
 
 theorem comb_iff_sum {σ : Type} [Fintype σ] {n : ℕ} (e : Fin n ≃ σ) (U : σ → TanM x0 t.G) (a : σ → S)
     (w : Sp (DualNumber S) ⟶ t.G.left) :
@@ -402,79 +337,6 @@ theorem tan_iff (h0 : algMap x0 (jetAug : Jet S (Fin d) 1 →ₐ[S] S) ≫ j 1 =
   rw [e₂]
   exact eq_comm
 
-theorem basis_iff (c : κ → Fin d → S) :
-    (LinearIndependent S c ∧ Submodule.span S (Set.range c) = ⊤) ↔ Function.Bijective (Fintype.linearCombination S c) := by
-  rw [← Fintype.range_linearCombination, LinearMap.range_eq_top, Fintype.linearIndependent_iff]
-  refine and_congr_left fun _ => ?_
-  rw [injective_iff_map_eq_zero]
-  simp only [Fintype.linearCombination_apply, funext_iff (g := (0 : κ → S)), Pi.zero_apply]
-
-theorem basis_iff' (c : κ → Fin d → S) :
-    (∀ v : Fin d → S, ∃! a : κ → S, ∀ i, ∑ ℓ, a ℓ * c ℓ i = v i) ↔ Function.Bijective (Fintype.linearCombination S c) := by
-  rw [Function.bijective_iff_existsUnique]
-  refine forall_congr' fun v => existsUnique_congr fun a => ?_
-  simp [Fintype.linearCombination_apply, funext_iff]
-
-theorem tanBasis_iff (h0 : algMap x0 (jetAug : Jet S (Fin d) 1 →ₐ[S] S) ≫ j 1 = 1)
-    (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (c : κ → Fin d → S) (h : ∀ ℓ, TanIs t.G x0 j (tg ℓ) (c ℓ))
-    (hc : Function.Bijective (Fintype.linearCombination S c)) :
-    IsTanBasisG t x0 tg ↔ Function.Bijective (dif x0 (j 1) h0) := by
-  obtain rfl : tg = fun ℓ => (tv (dif x0 (j 1) h0 (c ℓ))).left := funext h
-  have key : ∀ (W : TanM x0 t.G) (a : κ → S), IsCombAtG t x0 (m := Fintype.card κ)
-      (fun i => (tv (dif x0 (j 1) h0 (c ((Fintype.equivFin κ).symm i)))).left)
-      (fun i => a ((Fintype.equivFin κ).symm i)) (tv W).left ↔
-        dif x0 (j 1) h0 (Fintype.linearCombination S c a) = W := fun W a => by
-    rw [comb_iff_sum t x0 (Fintype.equivFin κ).symm (fun ℓ => dif x0 (j 1) h0 (c ℓ)) a,
-      Fintype.linearCombination_apply, map_sum]
-    simp only [map_smul]
-    exact ⟨fun h => tv_injective (Over.OverMorphism.ext h), fun h => by rw [h]⟩
-  rw [← Function.Bijective.of_comp_iff _ hc, Function.bijective_iff_existsUnique]
-  constructor
-  · intro hb W
-    exact (existsUnique_congr (key W)).1 (hb.2 _ (isTanAtG_of _ (tv_zero' W)))
-  · intro hb
-    exact ⟨fun ℓ => isTanAtG_of _ (tv_zero' _), fun w hw =>
-      (existsUnique_congr (key (mkT (ovT hw) (smT_zero_ovT hw)))).2 (hb _)⟩
-
-theorem isChart_iff_isChartG (F : Fin d → Germ.PS S 2 d) (A : 𝓞 E → Germ.Pt S 1 d)
-    (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (c : κ → Fin d → S) :
-    IndefiniteRowSideFullHecke.JetChartLaws.IsChart t x0 j F A tg c ↔
-      IsChartG t x0 d F A tg c (famEquiv x0 t.G d j) ∧ IsTanBasisG t x0 tg ∧
-        (∀ i, MvPowerSeries.constantCoeff (F i) = 0) ∧ ∀ a i, MvPowerSeries.constantCoeff (A a i) = 0 := by
-  constructor
-  · rintro ⟨hP, hF, hA, hT, hc⟩
-    have hc' := (basis_iff c).1 hc
-    exact ⟨⟨fun m => (zero_iff t x0 j m).2 (hP.2.1 m), fun m => (trunc_iff t x0 j m).2 (hP.1 m),
-      ((law_iff t x0 j F).1 hF).2, fun m a => ((end_iff t x0 j _ _).1 (hA a)).2 m,
-      fun ℓ => (tan_iff t x0 j (hP.2.1 1) _ _).1 (hT ℓ), (basis_iff' c).2 hc'⟩,
-      (tanBasis_iff t x0 j (hP.2.1 1) tg c hT hc').2 (dif_bijective_of_param hP), hF.1, fun a => (hA a).1⟩
-  · rintro ⟨h, hb, hF, hA⟩
-    have h0 := fun m => (zero_iff t x0 j m).1 (h.zero m)
-    have hT := fun ℓ => (tan_iff t x0 j (h0 1) _ _).2 (h.tan ℓ)
-    have hc' := (basis_iff' c).1 h.basis
-    exact ⟨param_of_dif_bijective t.semi.smooth (fun m => (trunc_iff t x0 j m).1 (h.trunc m)) h0
-      ((tanBasis_iff t x0 j (h0 1) tg c hT hc').1 hb), (law_iff t x0 j F).2 ⟨hF, h.law⟩,
-      fun a => (end_iff t x0 j _ _).2 ⟨hA a, fun m => h.act m a⟩, hT, (basis_iff c).2 hc'⟩
-
-theorem isChartOf_iff (GG : Germ.FGLaw S d) (A : Germ.OAct (𝓞 E) GG)
-    (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (htg : IsTanBasisG t x0 tg) (c : κ → Fin d → S) :
-    IsChartOf t x0 j GG A tg c ↔ IsChartG t x0 d GG.F A.act tg c (famEquiv x0 t.G d j) :=
-  (isChart_iff_isChartG t x0 j GG.F A.act tg c).trans ⟨fun h => h.1, fun h => ⟨h, htg, GG.const, A.const⟩⟩
-
 end Main
-
-section Framed
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-variable {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {d : ℕ}
-
-theorem isChartOf_iff_framed (j : JetPts Xo.univ.t.G y.x d) (GG : Germ.FGLaw S d) (A : Germ.OAct (𝓞 E) GG)
-    (uvec : Lt1 Dw → Fin d → S) :
-    IsChartOf Xo.univ.t y.x j GG A (fun ℓ : Lt1 Dw => y.u ℓ.1 ℓ.2) uvec ↔
-      IsChartG Xo.univ.t y.x d GG.F A.act (fun ℓ => y.u ℓ.1 ℓ.2) uvec (famEquiv y.x _ d j) :=
-  isChartOf_iff Xo.univ.t y.x j GG A (fun ℓ : Lt1 Dw => y.u ℓ.1 ℓ.2)
-    ⟨fun ℓ => y.tan ℓ.1 ℓ.2, fun w hw => frame_tangent_basis E H Dw l Xo c S y w hw⟩ uvec
-
-end Framed
 
 end GlobalTheory.ChartCompare

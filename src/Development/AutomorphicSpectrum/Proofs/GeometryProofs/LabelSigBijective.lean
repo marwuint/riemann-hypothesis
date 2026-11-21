@@ -1,26 +1,44 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CInfGood
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BcMapBcVec
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.FlatChernWeightEqOfIndependence
+import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.OnbMat
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.RegularFormsIsBundleProjectiveCover
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TwistedDualRegularFormsFiniteCover
-import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CuspOnto
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.AdelicGLLastRowAndDetModuleUnderLeftMultiplicati
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.InterpolationModelInequalities
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspidalExponentialDecay
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.QuotientIsHausdorff
+import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.TorusAt
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.LamLevel
+import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.UnitaryHaarVolume
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NonvanishingNearMaximum
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.OneLeAbsNormOfLeOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ProdMulLeDetIdeal
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ValuationLeOfEqAlgebraMap
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.AbsNormSpanGalois
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.DetValuationLeOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ExistsEvalNeZeroOfTotalDegreeLt
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ExistsMonicIrreducibleCardGt
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.FiniteDetAddSmulOneEqZero
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.LargeResidueExtensionLemma
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.HermitianFormGramBlockBasis
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+import Formalism.LocalToGlobal.ProjectiveLattices.PartitionExtendByZeroAntitone
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
+import Formalism.LocalToGlobal.Divisibility.Frames
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.ThmFlatA
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
-import Development.AutomorphicSpectrum.Statements.MetricStatements.SmallOnTower
-import Development.AutomorphicSpectrum.Statements.MetricStatements.RankBound
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.VolumeInputs
+import Formalism.MeanHeightDescent.CombinedAverageDegreeBound
+import Formalism.MonomialMeanResidues.FilteredDegree
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GoodOver
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.HSClaim
-import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.ShareLow
-import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.LineDegreeClosedFormula
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.SpecFirstDetFormNeZero
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.ExistsAlgPtOff
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.IsHomogeneousGrL
+
 open NumberField IsDedekindDomain MeasureTheory Filter Topology
 open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
@@ -286,41 +304,6 @@ theorem tOf_pos {p : ℕ} [hp : Fact p.Prime] (la : HeightOneSpectrum (𝓞 c.F)
   unfold tOf absT
   rw [if_neg (t j).ne_zero]
   exact inv_pos.2 (Real.rpow_pos_of_pos (by exact_mod_cast hp.out.pos) _)
-
-theorem val_indicator {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h : GenFrEx Xo c} {e : Comp Xo c → Rul Xo c}
-    (hL : CompLaws U h e) {Fr : Small.GenFrame Or} {Z : Comp Xo c} (Rd : Reading Fr h Z) {p : ℕ} [hp : Fact p.Prime]
-    {z : (Σ k, RM.ι k) → PadicAlgCl p} (hz : z ∈ Small.ptsOver (PadicAlgCl p) (mCoordIdeal RM.y))
-    {la : HeightOneSpectrum (𝓞 c.F)} (hra : 0 < ramOverZ la) (y : (Ref.pjSys Xo c).Pt la) {t : Ix Dw → ℝ}
-    (hS : ReadsZ Fr z y t) : (Ref.pjSys Xo c).val y (e Z) = 0 := by
-  have he0 : e Z ∈ secZ Xo c 0 := by
-    have h1 := hL.e_sec Z
-    rw [← secZ_nat] at h1
-    exact h1
-  have hex : ∀ i, exZ Dw (0 : WZ E) i = 0 := fun i => by cases i <;> rfl
-  have hrd : Fr.rd (e Z) = 1 := by
-    rw [Rd.rd_eq 0 (e Z) he0, (hL.e_val Z).1, map_one]
-    simp [hex]
-  obtain ⟨v, hv, htop, hs⟩ := hS 0 (e Z) he0
-  rw [hrd] at hv
-  have hv1 : v = 1 := hasVal_unique hz hv hv_one
-  subst hv1
-  have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt
-  have hra' : (0 : ℝ) < ramOverZ la := by exact_mod_cast hra
-  induction hval : (Ref.pjSys Xo c).val y (e Z) with
-  | bot => exact absurd hval ((Ref.pjSys Xo c).val_ne_bot y _)
-  | top => exact absurd (htop hval) one_ne_zero
-  | coe m =>
-    have h2 := hs (m / ramOverZ la) (by rw [hval]; congr 1; field_simp)
-    simp only [hex, zpow_zero, Finset.prod_const_one, mul_one, norm_one] at h2
-    have h3 : -(m / ramOverZ la) = 0 := by
-      have h5 := congrArg Real.log h2
-      rw [Real.log_one, Real.log_rpow (by linarith)] at h5
-      exact (mul_eq_zero.1 h5.symm).resolve_right (Real.log_pos hp1).ne'
-    have h4 : m = 0 := by
-      field_simp at h3
-      linarith
-    rw [h4]
-    rfl
 
 theorem read_of_reads {Fr : Small.GenFrame Or} {p : ℕ} [hp : Fact p.Prime]
     {z : (Σ k, RM.ι k) → PadicAlgCl p} (hz : z ∈ Small.ptsOver (PadicAlgCl p) (mCoordIdeal RM.y))

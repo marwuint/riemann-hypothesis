@@ -121,6 +121,4 @@ end Formalism.FourierDecayAlt.P.RealInputsCompactSupport
 
 namespace Formalism.FourierDecayAlt.P
 
-open Formalism.FourierDecayAlt
-
 end Formalism.FourierDecayAlt.P

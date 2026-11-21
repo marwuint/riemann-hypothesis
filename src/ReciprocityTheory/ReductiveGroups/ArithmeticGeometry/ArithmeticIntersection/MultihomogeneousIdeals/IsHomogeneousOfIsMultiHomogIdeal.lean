@@ -34,10 +34,4 @@ instance finiteDimensional_formsDeg (d : K → ℕ) : FiniteDimensional F (forms
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
-section SupSpan
-
-variable [DecidableEq K]
-
-end SupSpan
-
 end ReciprocityTheory.ChartRestriction.G.AI.I1

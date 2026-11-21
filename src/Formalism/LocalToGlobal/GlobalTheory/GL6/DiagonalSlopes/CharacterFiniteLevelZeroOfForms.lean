@@ -22,11 +22,6 @@ theorem Forms0.dn {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (i : ℕ) (hi :
   show DnTie T.lv0 T.cls0 T.val0
   exact DnNatTie.dnTie T.down_natural_level_zero
 
-theorem Forms0.chi_unit {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0)
-    (x : (T.cls i hi h).lev.U) : ‖((T.cls i hi h).lev.chi x : ℂ)‖ = 1 := by
-  subst h
-  exact T.glev0.chi_unit x
-
 end Formalism.L2.Forms
 
 namespace Formalism.L2.GlobalTheoryTheory.LocalLatticeBases

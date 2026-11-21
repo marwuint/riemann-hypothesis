@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StabilizerEqCentralizer
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumOrbitRelFibredEquivariantStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumOrbitRelFibredEquivariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumOrbitsInvStabilizerCardMassStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSupportStabilizerWeightedPairTermStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSupportStabilizerWeightedPairTerm
 open GlobalTheory.OrbitUnfold GlobalTheory.OrbitUnfold.ConjSelf
 
 noncomputable section
@@ -34,7 +34,7 @@ theorem finsum_conjClasses_centralizer_orbits {Γ Y : Type} [Group Γ] [MulActio
       ((Nat.card (MulAction.stabilizer Γ (Quotient.out o) ⊓ Subgroup.centralizer {Quotient.out c} :
         Subgroup Γ) : ℕ) : ℂ)⁻¹ * F (Quotient.out o) (Quotient.out c) = pairSum F := by
   set e := conjClassesEquivOrbits Γ
-  have key := GlobalTheory.T.finsum_orbitRel_fibred_equivariant (H := Γ) (X := Y × ConjSelf Γ) (B := ConjSelf Γ) (E := Y)
+  have key := _root_.GlobalTheory.finsum_orbitRel_fibred (H := Γ) (X := Y × ConjSelf Γ) (B := ConjSelf Γ) (E := Y)
     Prod.snd (fun _ _ => rfl) (fun b => Subgroup.centralizer {val b})
     (fun b => by rw [stabilizer_eq_centralizer])
     (fun b y => (y, b)) (fun b y y' h => congrArg Prod.fst h) (fun _ _ => rfl)
@@ -51,7 +51,7 @@ theorem finsum_conjClasses_centralizer_orbits {Γ Y : Type} [Group Γ] [MulActio
         fun c => Quotient.out_eq c
       rw [← conjClassesEquivOrbits_mk, hout, Equiv.apply_symm_apply])
     (fun o => pairTerm F (Quotient.out o))
-    (GlobalTheory.T.finite_support_stabilizerWeightedPairTerm F hF hsupp hfin)
+    (_root_.GlobalTheory.OrbitUnfold.finite_support_pairTerm F hF hsupp hfin)
   unfold pairSum
   rw [key, ← finsum_comp_equiv e]
   refine finsum_congr (fun c => ?_)

@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocSecZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.MinSt2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreSectionExtendsNonzeroOfIntegralThetaConstanStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreSectionExtendsNonzeroOfIntegralThetaConstan
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedFibreIffOfGrpPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaConstantListOfFibrePullbackFieldExtension
 
@@ -48,7 +48,7 @@ theorem ext_any_frac : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   rw [e₁] at hP'
   obtain ⟨pt', hT'⟩ := thList_pull_of_eq t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen i e₁ hT
   simp only [hi] at hT'
-  obtain ⟨σ, hσ, hz⟩ := GlobalTheory.T.fibreSection_extends_nonzero_of_integral_thetaConstants E H S t g m N R χ _ pt' c hm h3 hu hP' hT' hc
+  obtain ⟨σ, hσ, hz⟩ := _root_.GlobalTheory.UMin.OmExt.om_ext E H S t g m N R χ _ pt' c hm h3 hu hP' hT' hc
   refine ⟨σ, ?_, hz⟩
   let β : Over.mk (spMap (algebraMap R K) ≫ χ) ⟶ Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) :=
     Over.homMk (spMap j) e₂

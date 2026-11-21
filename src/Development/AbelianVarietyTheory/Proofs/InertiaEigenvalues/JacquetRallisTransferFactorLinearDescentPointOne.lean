@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeftMulTau
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDetStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNormStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDet
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNorm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFactsStatement
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
@@ -65,7 +66,7 @@ theorem omega_pt_one : ∀ (F E : Type) [NontriviallyNormedField F] [Nontriviall
     ∃ κ₀ : ℂ, ∀ a : A.K, IsUnit a → ∀ g : GL (Fin r) F,
       omega (act g (LinDesc.pt A hG lam 1 a)) = κ₀ * eta ((g : Matrix (Fin r) (Fin r) F).det) * A.etaK a := by
   intro F E _ _ _ _ _ A r τ p hG lam
-  obtain ⟨hmul, -, -, -⟩ := GlobalTheory.T.unramifiedValuationParitySign_character_kernel_norms F E
+  obtain ⟨hmul, -, -, -⟩ := _root_.GlobalTheory.EtaChar.main F E
   have hnd := (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.1
   have hT : (Algebra.traceMatrix F (bas A hG)).det ≠ 0 := by
     rw [LinearMap.BilinForm.nondegenerate_iff_det_ne_zero (bas A hG)] at hnd
@@ -73,7 +74,7 @@ theorem omega_pt_one : ∀ (F E : Type) [NontriviallyNormedField F] [Nontriviall
     ext i j
     rw [Algebra.traceForm_toMatrix, Algebra.traceMatrix_apply, Algebra.traceForm_apply]
   refine ⟨eta (Algebra.traceMatrix F (bas A hG)).det, fun a ha g => ?_⟩
-  have hL := GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det F r
+  have hL := _root_.GlobalTheory.JR.transfer_factor_lemma F r
   have hdet : (g : Matrix (Fin r) (Fin r) F).det * ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det = 1 := by
     rw [← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]
   have hg : (g : Matrix (Fin r) (Fin r) F).det ≠ 0 := left_ne_zero_of_mul_eq_one hdet

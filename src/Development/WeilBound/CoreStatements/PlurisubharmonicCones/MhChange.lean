@@ -1,8 +1,15 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LevelFree
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataIntersectionBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionSystemHodgeDegree
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TensorWedgeDetChangeStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalHodgeMetricLogFormulaStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TensorWedgeDetChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalHodgeMetricLogFormula
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PositionPot
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorPos
 
 open AlgebraicGeometry CategoryTheory NumberField Matrix
@@ -114,7 +121,7 @@ theorem mh_change (Or : CptOrigin Y S₀ Dc Hd) {bb : ∀ τ, Fin Dc.N → W τ}
     show s τ k - ∑ a, t τ k a • s' τ a ∈ _
     rw [e]
     exact add_mem (sub_mem h1 (hs τ k).2) (sum_mem fun a _ => Submodule.smul_mem _ _ (hs' τ a).2)
-  · exact GlobalTheory.T.tensor_wedge_det_change (CMType H) Ω (fun τ => W τ ⧸ Hd.F τ) (Dc.N - Dc.j)
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.TopWedge.eq_mul_prod_det (CMType H) Ω (fun τ => W τ ⧸ Hd.F τ) (Dc.N - Dc.j)
       (fun τ a => (Hd.F τ).mkQ (d.b τ (tailIdx Dc.j_le_N a)))
       (fun τ a => (Hd.F τ).mkQ (bb τ (tailIdx Dc.j_le_N a))) (fun τ => Matrix.of fun a k => t τ k a) _ _
       (fun τ => (hq' τ).1) (fun τ => (hq' τ).2) (fun τ k => (ht τ k).symm) (d.eq.symm.trans hΛ)
@@ -133,13 +140,13 @@ theorem muHodge : MuHodge := by
   have : CharZero Ω := algebraRat.charZero Ω
   have htie : CoordTie ℤ Or.𝔐.ξ (fun c' : (k : K) → J k => ∏ k, Dc.y ⟨k, c' k⟩) := Or.𝔐.tie
   have hS : ∀ p ∈ Dc.SB B, p ∈ Dc.S := fun p hp => (Finset.mem_filter.1 hp).1
-  have hmc : w ∈ mcPts (mCoordIdeal Dc.y) := (GlobalTheory.T.complex_points_iff_centres Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie w).2 ⟨z, h, hw⟩
-  obtain ⟨d⟩ := GlobalTheory.T.component_data_hodge_first E H D l (Xo l) c Y II K J Ω W Dc Hd S₀ Or z w hw
+  have hmc : w ∈ mcPts (mCoordIdeal Dc.y) := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie w).2 ⟨z, h, hw⟩
+  obtain ⟨d⟩ := _root_.GlobalTheory.CompanionTheory.Ar.MuFrame.nonempty_muFrameAt E H D l (Xo l) c Y II K J Ω W Dc Hd S₀ Or z w hw
   obtain ⟨s', hs'⟩ := PhMuFree.exists_smallPart Or d
   obtain ⟨Γ, hΓ, hpd, -⟩ := PhMuFree.norm_eq Or hw hi d hs'
   have hph := PhMuFree.phMu_eq Or hw hi d hs' hΓ
   obtain ⟨T, hT, hΩ⟩ := mh_change Or hs hΛ d hs'
-  have hu := GlobalTheory.T.unit_value_frame_domain Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w d.c d.f d.u htie h hw d.inDom d.unit
+  have hu := _root_.GlobalTheory.CompanionTheory.Ar.UnitValue.valAt_ne_zero_of_isUnitOn Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w d.c d.f d.u htie h hw d.inDom d.unit
   have hy : ∀ k, Dc.y ⟨k, d.c k⟩ ≠ 0 := fun k => (hw.2 k _ (IsUnit.mk0 _ (d.inDom.1 k))).1
   have hm : chartMono Dc.y d.c Hd.aMu ≠ 0 := Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)
   have n₀ : lam * ∏ τ, (T τ).det ≠ 0 := hΩ ▸ mul_ne_zero d.unit.1 hm
@@ -156,7 +163,7 @@ theorem muHodge : MuHodge := by
     · obtain ⟨bf, bg, hf, hg, -⟩ := hv.degrees
       exact div_ne_zero (fun h0 => hv.num_not_mem ((VertFactorPos.mem_mCoordIdeal_iff_of_homog _ hf).2 h0))
         fun h0 => hv.den_not_mem ((VertFactorPos.mem_mCoordIdeal_iff_of_homog _ hg).2 h0)
-    · have h1 := (GlobalTheory.T.valAt_iff_value_at Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie z w h hw _ _).2 hv1
+    · have h1 := (_root_.GlobalTheory.CompanionTheory.Ar.valAt_iff_isValueAt_coords Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie z w h hw _ _).2 hv1
       simp only [chartMono, Pi.neg_apply, _root_.zpow_neg, Finset.prod_inv_distrib] at h1
       rwa [← div_eq_mul_inv] at h1
     · rw [ComponentData.vertFactor, dif_pos hex, valAt_eq hmc hv1, zMono, norm_prod]
@@ -178,7 +185,7 @@ theorem muHodge : MuHodge := by
   have hh : (muVert Hd B).h w = (‖valAt Dc.y d.u w‖ * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k) *
       (∏ p ∈ Dc.SB B, Dc.vertFactor p w) * ∏ τ, Real.sqrt (Γ τ).det.re := by
     refine Real.log_injOn_pos ((muVert Hd B).pos w hmc.1) (mul_pos (mul_pos hA hvp') hsq') ?_
-    rw [GlobalTheory.T.vertical_hodge_metric_log_formula K J II _ Ω W Dc Hd B w hmc, Real.log_mul (mul_pos hA hvp').ne' hsq'.ne', Real.log_mul hA.ne' hvp'.ne',
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Cusp.log_muVert_h_of_mem K J II _ Ω W Dc Hd B w hmc, Real.log_mul (mul_pos hA hvp').ne' hsq'.ne', Real.log_mul hA.ne' hvp'.ne',
       Real.log_prod fun p hp => (hvp p hp).ne', Real.log_prod fun τ _ => (hsq τ).ne']
     have e : ∑ τ, Real.log (Real.sqrt (Γ τ).det.re) = (∑ τ, Real.log (Γ τ).det.re) / 2 := by
       rw [Finset.sum_div]

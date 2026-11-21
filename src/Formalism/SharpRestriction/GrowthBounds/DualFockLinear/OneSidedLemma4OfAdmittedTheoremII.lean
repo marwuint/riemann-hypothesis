@@ -29,14 +29,6 @@ def OneSidedLemma4 (_D : Formalism.BasicNotions.D7) (CLa CD Csz : ℝ) : Prop :=
   ∀ o : ℕ, (∀ m ∈ (monPh O K p Fr mon xi).support, normDeg r m = o) →
     Realisable p n' S.w n' r g c' o (MvPolynomial.map (algebraMap O (KK O)) (monPh O K p Fr mon xi))
 
-theorem lemma4_of_one_sided (D : Formalism.BasicNotions.D7) (CLa CD Csz : ℝ) (h : OneSidedLemma4 D CLa CD Csz) : Conclusion6 D CLa CD Csz := by
-  intro p n' r K _ _ _ _ O _ _ _ _ S hO hH Fr L₁ N₁ G' hV hT deg a Y c0 c'' cStar Dd hII c' g hg n obd xi dd hxi hdd
-    mon hmon hmonT o ho
-  refine h p n' r K O S hO hH Fr L₁ N₁ G' hV hT deg a Y c0 c'' cStar Dd hII g hg n obd xi dd hxi ?_ mon hmon hmonT o ho
-  intro j hj x hx hw
-  have := (abs_le.1 (hdd j hj x hx hw)).2
-  linarith
-
 def RestGeomU : Prop :=
   ∀ (p n' r : ℕ) [NeZero n'] (F : Frames n' r) (L₁ N₁ : ℕ), 13 ≤ p → 2 ≤ r → Even n' → F.Valid L₁ N₁ →
   ∀ (deg : Fin n' → ℕ) (a : ℕ), (∀ s ∈ F.TT, (a : ℝ) ≤ deg s ∧ (deg s : ℝ) ≤ 2 * a) →

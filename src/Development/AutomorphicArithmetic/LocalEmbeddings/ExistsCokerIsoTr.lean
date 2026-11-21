@@ -5,9 +5,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppInjectiveOfFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsometryPullIdComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonoPullbackOfIsOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.InverseBundleGeneratorPointOfChartUnitsSections
-import Development.AutomorphicArithmetic.DivisorFrames.FrameExtendsFromPullback
-import Development.AutomorphicArithmetic.DivisorFrames.QuotientFrameFromPermutation
-import Development.AutomorphicArithmetic.DivisorFrames.ExistsSubbundleCokernelFrame
 import Development.AutomorphicArithmetic.DivisorFrames.CokernelFrameCompatMono
 
 set_option autoImplicit false
@@ -56,10 +53,6 @@ theorem isVB_of_same {u : A ⟶ F} {v : A' ⟶ F} (h : Same u v) {m r : ℕ} (h�
   have ⟨e, _⟩ := h
   have ⟨ψ, _⟩ := exists_cokerIso h
   ⟨h₁.of_iso e.symm, h₂.of_iso ψ.symm⟩
-
-theorem mono_of_same {u : A ⟶ F} {v : A' ⟶ F} (h : Same u v) [Mono v] : Mono u := by
-  obtain ⟨e, rfl⟩ := h
-  infer_instance
 
 end Basic
 
@@ -179,67 +172,8 @@ def fct : Scheme.{0}ᵒᵖ ⥤ Type where
 
 theorem fct_map (a : Z' ⟶ Z) (x : Pt E m r Z) : (fct E m r).map a.op x = x.map a := rfl
 
-theorem tr_rfl (a : Z' ⟶ Z) {g : Z ⟶ B} {A : Z.Modules} (u : A ⟶ (Scheme.Modules.pullback g).obj E) :
-    tr a rfl u = (Scheme.Modules.pullback a).map u ≫ (Scheme.Modules.pullbackComp a g).hom.app E :=
-  congrArg (_ ≫ ·) (Category.comp_id _)
-
-theorem tr_inv_comp (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {A : Z'.Modules}
-    (u : A ⟶ (Scheme.Modules.pullback k).obj E) (p : Z'' ⟶ Z') {c : Z'' ⟶ Z} (w₁ : p ≫ a = c) {l : Z'' ⟶ B}
-    (w₃ : c ≫ g = l) (w₂ : p ≫ k = l) :
-    tr p w₁ (u ≫ (cmp a g w).inv.app E) ≫ (cmp c g w₃).hom.app E = tr p w₂ u := by
-  simp only [tr, Functor.map_comp, Category.assoc]
-  rw [← cmp_assoc p a g w w₂ w₁ w₃, ← Functor.map_comp_assoc _ ((cmp a g w).inv.app E), Iso.inv_hom_id_app]
-  simp
-
-theorem isSheaf_fct : Presieve.IsSheaf Scheme.zariskiTopology (fct E m r) := by
-  rw [Precoverage.isSheaf_toGrothendieck_iff_of_isStableUnderBaseChange]
-  rintro Y S hS
-  obtain ⟨(𝒰 : Scheme.OpenCover Y), rfl⟩ := Scheme.exists_cover_of_mem_pretopology hS
-  rw [Presieve.isSheafFor_arrows_iff]
-  intro (x : ∀ j, Pt E m r (𝒰.X j)) hx
-  replace hx : ∀ i j (Z : Scheme.{0}) (a : Z ⟶ 𝒰.X i) (a' : Z ⟶ 𝒰.X j),
-      a ≫ 𝒰.f i = a' ≫ 𝒰.f j → Pt.map a (x i) = Pt.map a' (x j) := hx
-  let b : Y ⟶ B := 𝒰.glueMorphisms (fun j => (x j).g) fun i j =>
-    congrArg Pt.g (hx i j _ _ _ pullback.condition)
-  have hb : ∀ j, 𝒰.f j ≫ b = (x j).g := fun j => 𝒰.ι_glueMorphisms _ _ j
-  clear_value b
-  have hc : ∀ y : Y, ∃ i z, 𝒰.f i z = y := fun y => 𝒰.exists_eq y
-  let v (j) : (x j).N.toMod ⟶ (Scheme.Modules.pullback (𝒰.f j)).obj ((Scheme.Modules.pullback b).obj E) :=
-    (x j).N.incl ≫ (cmp (𝒰.f j) b (hb j)).inv.app E
-  have hmono (j) : Mono (v j) := inferInstanceAs (Mono (_ ≫ _))
-  have hv : Compat 𝒰.f v := by
-    intro i j S p q w
-    obtain ⟨w₂, h₂⟩ := map_eq_iff.1 (hx i j S p q w)
-    obtain ⟨w₂', h₂'⟩ := R_map q (x j)
-    have w₃ : (q ≫ 𝒰.f j) ≫ b = (Pt.map q (x j)).g := by rw [Category.assoc, hb, w₂']
-    rw [← same_comp_iff ((cmp (q ≫ 𝒰.f j) b w₃).hom.app E)]
-    have e₁ := tr_inv_comp (𝒰.f i) (hb i) (x i).N.incl p w w₃ w₂
-    have e₂ := tr_inv_comp (𝒰.f j) (hb j) (x j).N.incl q rfl w₃ w₂'
-    rw [← e₁] at h₂
-    rw [← e₂, tr_rfl] at h₂'
-    exact h₂.trans h₂'.symm
-  have hs (j) : Same (tr (𝒰.f j) (hb j) (glueSub 𝒰.f v).incl) (x j).N.incl := by
-    simpa [v, tr] using (same_glueSub 𝒰.f v hv j).comp ((cmp (𝒰.f j) b (hb j)).hom.app E)
-  let y : Pt E m r Y := ⟨b, glueSub 𝒰.f v,
-    isVB_of_openImmersions 𝒰.f hc fun j => (isVB_of_same (hs j) (x j).vbN (x j).vb).1,
-    isVB_of_openImmersions 𝒰.f hc fun j =>
-      have ⟨ψ, _⟩ := exists_cokerIso_tr (𝒰.f j) (hb j) (glueSub 𝒰.f v).incl
-      (isVB_of_same (hs j) (x j).vbN (x j).vb).2.of_iso ψ.symm⟩
-  refine ⟨y, fun j => map_eq_iff.2 ⟨hb j, hs j⟩, fun (y' : Pt E m r Y) hy' => ?_⟩
-  replace hy' : ∀ j, R (𝒰.f j) y' (x j) := fun j => map_eq_iff.1 (hy' j)
-  obtain ⟨b', N', _, _⟩ := y'
-  obtain rfl : b' = b := 𝒰.hom_ext _ _ fun j => (hy' j).1.trans (hb j).symm
-  obtain rfl : N' = glueSub 𝒰.f v := sub_ext (same_of_cover 𝒰.f hc fun j =>
-    (same_comp_iff ((cmp (𝒰.f j) b' (hb j)).hom.app E)).1 ((hy' j).2.trans (hs j).symm))
-  rfl
-
 def qs (y : Pt E m r Z) {U : B.Opens} (s : Γ(E, U)) {V : Z.Opens} (h : V ≤ y.g ⁻¹ᵁ U) : Γ(cokernel y.N.incl, V) :=
   (cokernel.π y.N.incl).app V (pullbackSections y.g E h s)
-
-theorem resM_qs (y : Pt E m r Z) {U : B.Opens} (s : Γ(E, U)) {V V' : Z.Opens} (h : V ≤ y.g ⁻¹ᵁ U) (h' : V' ≤ V) :
-    resM _ h' (qs y s h) = qs y s (h'.trans h) := by
-  rw [qs, ← app_resM]
-  exact congrArg _ (res_pullbackSections _ _ _ _ _)
 
 theorem R.exists_iso {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x y) :
     ∃ ψ : (Scheme.Modules.pullback a).obj (cokernel x.N.incl) ≅ cokernel y.N.incl,
@@ -264,48 +198,8 @@ structure Chart : Type where
 
 variable (c : Chart E m r)
 
-def FrAt (y : Pt E m r Z) (z : Z) : Prop :=
-  ∃ (V : Z.Opens) (h : V ≤ y.g ⁻¹ᵁ c.U), z ∈ V ∧ IsFrame fun k => qs y (c.e (.inr k)) h
-
-def locus (y : Pt E m r Z) : Z.Opens :=
-  ⟨{z | FrAt c y z}, isOpen_iff_forall_mem_open.2 fun _ ⟨V, h, hz, hf⟩ => ⟨V, fun _ hz' => ⟨V, h, hz', hf⟩, V.2, hz⟩⟩
-
-theorem R.frAt_iff {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x y) (z : Z') :
-    FrAt c y z ↔ FrAt c x (a z) := by
-  obtain ⟨ψ, hψ⟩ := H.exists_iso
-  have w : y.g ⁻¹ᵁ c.U = a ⁻¹ᵁ x.g ⁻¹ᵁ c.U := by rw [← H.1, Scheme.Hom.comp_preimage]
-  have := x.vb.isQuasicoherent
-  constructor
-  · rintro ⟨V, h, hz, hf⟩
-    obtain ⟨W, hW, hzW, hf'⟩ := UpperTheory.frame_extends_from_pullback Z Z' a _ r _ (fun k => qs x (c.e (.inr k)) le_rfl) V (h.trans w.le) z
-      x.vb hz (by
-        convert hf.map_iso ψ.inv using 2 with k
-        rw [← hψ _ _ _ le_rfl _ (h.trans w.le), QCoh.app_app, Iso.hom_inv_id]
-        rfl)
-    exact ⟨W, hW, hzW, by simpa only [resM_qs] using hf'⟩
-  · rintro ⟨V, h, hz, hf⟩
-    refine ⟨a ⁻¹ᵁ V, (a.preimage_mono h).trans w.ge, hz, ?_⟩
-    convert (hf.pullback a).map_iso ψ.hom using 2 with k
-    rw [hψ]
-
 def Gr (y : Pt E m r Z) (h : ⊤ ≤ y.g ⁻¹ᵁ c.U) (α : Fin m → Fin r → Γ(Z, ⊤)) : Prop :=
   IsFrame (fun k => qs y (c.e (.inr k)) h) ∧ ∀ i, qs y (c.e (.inl i)) h = ∑ k, α i k • qs y (c.e (.inr k)) h
-
-theorem forall_frAt_iff (y : Pt E m r Z) : (∀ z, FrAt c y z) ↔ ∃ h α, Gr c y h α := by
-  refine ⟨fun H => ?_, fun ⟨h, _, hf, _⟩ z => ⟨⊤, h, trivial, hf⟩⟩
-  have h : ⊤ ≤ y.g ⁻¹ᵁ c.U := fun z _ => have ⟨_, h, hz, _⟩ := H z; h hz
-  have hf : IsFrame fun k => qs y (c.e (.inr k)) h := isFrame_of_forall_exists fun V _ z hz => by
-    obtain ⟨V', h', hz', hf⟩ := H z
-    refine ⟨V ⊓ V', inf_le_left, ⟨hz, hz'⟩, ?_⟩
-    simpa only [resM_qs] using hf (V ⊓ V') inf_le_right
-  refine ⟨h, fun i k => (hf.basis le_rfl).repr (qs y (c.e (.inl i)) h) k, hf, fun i => ?_⟩
-  simpa only [IsFrame.basis_apply, resM_self] using ((hf.basis le_rfl).sum_repr (qs y (c.e (.inl i)) h)).symm
-
-theorem Gr.matrix_eq {y : Pt E m r Z} {h h' : ⊤ ≤ y.g ⁻¹ᵁ c.U} {α β : Fin m → Fin r → Γ(Z, ⊤)} (H : Gr c y h α)
-    (H' : Gr c y h' β) : α = β := by
-  funext i
-  apply (H.1 ⊤ le_rfl).1
-  simpa only [Fintype.linearCombination_apply, resM_self] using (H.2 i).symm.trans (H'.2 i)
 
 theorem R.gr {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x y) {h : ⊤ ≤ x.g ⁻¹ᵁ c.U}
     {α : Fin m → Fin r → Γ(Z, ⊤)} (G : Gr c x h α) : ∃ h', Gr c y h' fun i k => a.appTop (α i k) := by
@@ -334,79 +228,5 @@ theorem Gr.eq [E.IsQuasicoherent] {y y' : Pt E m r Z} (w : y.g = y'.g) {h : ⊤ 
   obtain rfl : N = N' := sub_ext (UpperTheory.cokernel_frame_compat_mono Z _ _ _ N.incl N'.incl m r _ α inferInstance inferInstance
     (isFrame_pull c g h) H.1 H.2 H'.1 H'.2)
   rfl
-
-theorem exists_gr (hE : IsVB E (m + r)) (g : Z ⟶ B) (h : ⊤ ≤ g ⁻¹ᵁ c.U) (α : Fin m → Fin r → Γ(Z, ⊤)) :
-    ∃ (x : Pt E m r Z) (_ : x.g = g) (h' : ⊤ ≤ x.g ⁻¹ᵁ c.U), Gr c x h' α := by
-  have := hE.isQuasicoherent
-  obtain ⟨N, h₁, h₂⟩ := UpperTheory.exists_subbundle_cokernel_frame Z _ m r _ α (isFrame_pull c g h)
-  have hQ : IsVB (cokernel N.incl) r := by simpa using h₁.isVB
-  exact ⟨⟨g, N, isVB_X₁_of_shortExact Z (.mk N.incl (cokernel.π _) (cokernel.condition _)) m r
-    { exact := ShortComplex.exact_cokernel _ } (hE.pullback g) hQ, hQ⟩, rfl, h, h₁, h₂⟩
-
-theorem exists_frAt (hE : IsVB E (m + r)) (y : Pt E m r Z) (z : Z) : ∃ c : Chart E m r, FrAt c y z := by
-  have := hE.isQuasicoherent
-  obtain ⟨U, e, hz, he⟩ := hE (y.g z)
-  let c : Chart E m r := ⟨U, _, he.comp_equiv finSumFinEquiv⟩
-  obtain ⟨σ, W, hW, hzW, hf⟩ := UpperTheory.quotient_frame_from_permutation Z _ _ (cokernel.π y.N.incl) m r _ _ z inferInstance
-    (isFrame_pull c y.g le_rfl) y.vb hz
-  refine ⟨⟨U, _, c.he.comp_equiv σ⟩, W, hW, hzW, ?_⟩
-  convert hf using 2 with k
-  exact (resM_qs y _ le_rfl hW).symm
-
-theorem isRepresentable (hE : IsVB E (m + r)) : (fct E m r).IsRepresentable := by
-  have := hE.isQuasicoherent
-  choose x hx h hG using fun c : Chart E m r =>
-    exists_gr c hE (𝔸(Fin m × Fin r; c.U.toScheme) ↘ c.U.toScheme ≫ c.U.ι)
-      (by rw [Scheme.Hom.comp_preimage]; simp) fun i k => AffineSpace.coord _ (i, k)
-  refine GeneratorFunctor.isRepresentable_of_charts _ isSheaf_fct (fun c : Chart E m r => 𝔸(Fin m × Fin r; c.U.toScheme)) x
-    (fun c _ y => locus c y) (fun c Z y Z' a => ?_) (fun c Z g g' e => ?_) fun Z y z => exists_frAt hE y z
-  · change _ ↔ ∃ g, Pt.map g (x c) = Pt.map a y
-    have h₁ : Set.range a ⊆ (locus c y : Set Z) ↔ ∀ z, FrAt c (Pt.map a y) z := by
-      simp only [Set.range_subset_iff, (R_map a y).frAt_iff c]
-      rfl
-    rw [h₁, forall_frAt_iff]
-    generalize Pt.map a y = y'
-    constructor
-    · rintro ⟨h', α, H⟩
-      let l := IsOpenImmersion.lift c.U.ι y'.g (by
-        rw [Scheme.Opens.range_ι]; rintro _ ⟨z, rfl⟩; exact h' trivial)
-      have hl : l ≫ c.U.ι = y'.g := IsOpenImmersion.lift_fac _ _ _
-      refine ⟨AffineSpace.homOfVector l fun p => α p.1 p.2, ?_⟩
-      obtain ⟨h'', H'⟩ := (R_map (AffineSpace.homOfVector l fun p : Fin m × Fin r => α p.1 p.2) (x c)).gr c (hG c)
-      simp only [AffineSpace.homOfVector_appTop_coord] at H'
-      refine Gr.eq c ?_ H' H
-      change _ ≫ (x c).g = _
-      rw [hx, AffineSpace.homOfVector_over_assoc, hl]
-    · rintro ⟨g, rfl⟩
-      obtain ⟨h'', H'⟩ := (R_map g (x c)).gr c (hG c)
-      exact ⟨h'', _, H'⟩
-  · change Pt.map g (x c) = Pt.map g' (x c) at e
-    obtain ⟨_, H⟩ := (map_eq_iff.1 e).gr c (hG c)
-    obtain ⟨_, H'⟩ := (R_map g' (x c)).gr c (hG c)
-    have w : g ≫ (x c).g = g' ≫ (x c).g := congrArg Pt.g e
-    rw [hx] at w
-    refine AffineSpace.hom_ext ?_ fun p => congrFun (congrFun (H.matrix_eq c H') p.1) p.2
-    rw [← cancel_mono c.U.ι, Category.assoc, Category.assoc, w]
-
-theorem exists_grass : ∀ (B : Scheme.{0}) (E : B.Modules) (m r : ℕ), GlobalTheory.VB.IsVB E (m + r) →
-      ∃ (G : Scheme.{0}) (γ : G ⟶ B) (P : G.Modules) (j : P ⟶ (Scheme.Modules.pullback γ).obj E),
-        GlobalTheory.VB.IsVB P m ∧ Mono j ∧ GlobalTheory.VB.IsVB (Limits.cokernel j) r ∧
-        ∀ (T : Scheme.{0}) (g : T ⟶ B) (P' : T.Modules) (j' : P' ⟶ (Scheme.Modules.pullback g).obj E),
-          Mono j' → GlobalTheory.VB.IsVB (Limits.cokernel j') r →
-          ∃! g' : T ⟶ G, ∃ w : g' ≫ γ = g, ∃ φ : (Scheme.Modules.pullback g').obj P ≅ P',
-            φ.hom ≫ j' = (Scheme.Modules.pullback g').map j ≫ (Scheme.Modules.pullbackComp g' γ).hom.app E ≫
-              (Scheme.Modules.pullbackCongr w).hom.app E := by
-  intro B E m r hE
-  have := isRepresentable hE
-  let ρ := (fct E m r).representableBy
-  let x : Pt E m r _ := ρ.homEquiv (𝟙 _)
-  refine ⟨_, x.g, _, x.N.incl, x.vbN, inferInstance, x.vb, fun T g P' j' _ hQ => ?_⟩
-  have hP : IsVB P' m := isVB_X₁_of_shortExact T (.mk j' (cokernel.π _) (cokernel.condition _)) m r
-    { exact := ShortComplex.exact_cokernel _ } (hE.pullback g) hQ
-  have key (g' : T ⟶ _) : ρ.homEquiv g' = Pt.ofMono g j' hP hQ ↔ ∃ w : g' ≫ x.g = g, Same (tr g' w x.N.incl) j' := by
-    rw [ρ.homEquiv_eq]
-    exact map_eq_iff.trans (exists_congr fun w => ⟨fun h => h.trans (same_img j'), fun h => h.trans (same_img j').symm⟩)
-  exact ⟨ρ.homEquiv.symm (Pt.ofMono g j' hP hQ), (key _).1 (ρ.homEquiv.apply_symm_apply _),
-    fun g' hg' => ρ.homEquiv.eq_symm_apply.2 ((key g').2 hg')⟩
 
 end UpperTheory.Grass

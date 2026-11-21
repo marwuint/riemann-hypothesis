@@ -75,32 +75,4 @@ theorem ind_mem (S : Finset (HeightOneSpectrum (𝓞 F))) : ind S ∈ intAd F :=
   · exact one_mem _
   · exact zero_mem _
 
-theorem ind_mul_self (S : Finset (HeightOneSpectrum (𝓞 F))) : ind S * ind S = ind S := by
-  apply Subtype.ext
-  funext v
-  show ind S v * ind S v = ind S v
-  rw [ind_apply]
-  split_ifs <;> simp
-
-theorem exists_idem (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (S : Finset (HeightOneSpectrum (𝓞 F))) :
-    ∃ ε : Formalism.L2.Herm.intAf F E, ε * ε = ε ∧ ∀ (w : Pl E) (v : HeightOneSpectrum (𝓞 F)),
-      w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal →
-        (v ∈ S → resS F w ε = 1) ∧ (v ∉ S → resS F w ε = 0) := by
-  refine ⟨⟨_, one_tmul_mem (ind_mem S)⟩, ?_, fun w v hw => ⟨fun hv => ?_, fun hv => ?_⟩⟩
-  · apply Subtype.ext
-    show ((1 : E) ⊗ₜ[F] ind S) * ((1 : E) ⊗ₜ[F] ind S) = (1 : E) ⊗ₜ[F] ind S
-    rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, ind_mul_self]
-  · have hb : 1 - ind S ∈ intAd F := sub_mem (one_mem _) (ind_mem S)
-    have h0 := resS_eq_zero w v hw hb (by
-      show 1 - ind S v = 0
-      rw [ind_apply, if_pos hv, sub_self])
-    have e : (⟨_, one_tmul_mem hb⟩ : Formalism.L2.Herm.intAf F E) = 1 - ⟨_, one_tmul_mem (ind_mem S)⟩ := by
-      apply Subtype.ext
-      show (1 : E) ⊗ₜ[F] (1 - ind S) = 1 - (1 : E) ⊗ₜ[F] ind S
-      rw [TensorProduct.tmul_sub]; rfl
-    rw [e, map_sub, map_one, sub_eq_zero] at h0
-    exact h0.symm
-  · exact resS_eq_zero w v hw (ind_mem S) (by rw [ind_apply, if_neg hv])
-
 end GlobalTheory.AdeleIdem

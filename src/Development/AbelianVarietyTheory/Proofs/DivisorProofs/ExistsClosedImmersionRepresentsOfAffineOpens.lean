@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhiskerLeftLeftIsPullbackSndStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorClosedImmersionOfLocallyOnSourceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlueClosedImmersionsOpenCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFlatSurjectiveClosedSubschemeOfOpenCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFactorClosedImmersionOfLocallyOnSource
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlueClosedImmersionsOpenCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFlatSurjectiveClosedSubschemeOfOpenCover
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 attribute [local instance] Over.cartesianMonoidalCategory
 
@@ -66,9 +66,9 @@ theorem exists_closedImmersion_represents_of_affineOpens : ∀ (S : Scheme.{0}) 
     have k' := key V' Y' e'
     rw [reassoc_of% hm, reassoc_of% hm] at k
     exact k.symm.trans k'
-  obtain ⟨B, b, hb, hbrep⟩ := _root_.GlobalTheory.T.exists_glue_closedImmersions_open_cover (U ⊗ T).left T.left.affineOpens _ _ hoi hcov
+  obtain ⟨B, b, hb, hbrep⟩ := _root_.GlobalTheory.GlueClosed.exists_glue_isClosedImmersion (U ⊗ T).left T.left.affineOpens _ _ hoi hcov
     (fun V => (H V).left) (fun V => (h V).left) hci compat
-  have hprops := _root_.GlobalTheory.T.finite_flat_surjective_closedSubscheme_of_openCover (U ⊗ T).left T.left (snd U T).left T.left.affineOpens
+  have hprops := _root_.GlobalTheory.finite_flat_surjective_of_openCover (U ⊗ T).left T.left (snd U T).left T.left.affineOpens
     (fun V => V.1) hsup _ _ _ hpb B b hb _ _ hci hbrep
     (fun V => ⟨hfin V, hflat V, hsurj V⟩)
   refine ⟨Over.mk (b ≫ (U ⊗ T).hom), Over.homMk b rfl, hb, hprops.1, hprops.2.1, hprops.2.2, ?_⟩
@@ -100,7 +100,7 @@ theorem exists_closedImmersion_represents_of_affineOpens : ∀ (S : Scheme.{0}) 
     rfl
   constructor
   · intro hP
-    obtain ⟨z, hz⟩ := _root_.GlobalTheory.T.exists_factor_closedImmersion_of_locally_on_source _ _ _ b hb (lift u t).left (fun y => by
+    obtain ⟨z, hz⟩ := _root_.GlobalTheory.exists_factor_closedImmersion_of_locally _ _ _ b hb (lift u t).left (fun y => by
       obtain ⟨V, hV⟩ := hmem (t.left y)
       exact ⟨t.left ⁻¹ᵁ V.1, hV, (hW V).mp (hres _ _ _ u t hP)⟩)
     refine ⟨Over.homMk z ?_, ?_⟩

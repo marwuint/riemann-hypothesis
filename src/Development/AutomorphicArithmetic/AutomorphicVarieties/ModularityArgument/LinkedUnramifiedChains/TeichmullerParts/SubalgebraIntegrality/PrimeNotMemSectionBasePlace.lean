@@ -127,7 +127,7 @@ private theorem loc_adm (hU : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) {σ : Submo
 
 private theorem loc_one (hU : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) {σ : Submodule ℂ (UA E n → ℂ)} (hσ : IsAutRepU σ) (w : Plc E)
     (τ : SmIrr (UL n w)) (hτ : IsCompU σ w τ) (h : IsUnramU σ w) : Module.finrank ℂ (fixed τ.ρ (KL n w)) = 1 := by
-  obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (GlobalTheory.T.unramifiedVector_gives_localComponent_sphericalVector E hU n σ hσ w τ hτ h)
+  obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (_root_.GlobalTheory.BCT.LocUnr.fixed_KL_ne_bot E hU n σ hσ w τ hτ h)
   obtain ⟨θ, h1, h2, h3⟩ := GlobalTheory.BCT.SphLine.exists_gelfand_anti E hU n w
   obtain ⟨hKo, hKc⟩ := GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w
   rw [GlobalTheory.fixed_eq_span_of_gelfandPair (UL n w) (KL n w) hKo hKc θ h1 h2 h3 τ.V τ.ρ τ.irred

@@ -45,7 +45,4 @@ theorem isNef_tens : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing 
       H.point Z i hc hd r₁ hr₁, H'.point Z i hc hd r₂ hr₂]
     exact add_nonneg h1 h2
 
-example : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
-    IsArithVar p D → ∀ L M : HermLB p, L.IsNef D → M.IsNef D → (L.tens M).IsNef D := isNef_tens
-
 end GlobalTheory.NefTens

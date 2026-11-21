@@ -31,10 +31,10 @@ theorem exists_rat_finCong_of_marks (l : Level H) (V : HSp D) (io : Dw.La →ₗ
     ∃ γ ∈ GQ V, ∃ u : GA D V, gLat V u = latHat V ∧ FinCong V l.M u ∧ g' = γ * g * u := by
   subst hΛ hΛ'
   obtain ⟨r1, -, r3, -, r5⟩ := GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V
-  obtain ⟨δ, hδ1, hδ2, hδ3⟩ := exists_unitary_of_trace_eq _ _ (GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.1 (GlobalTheory.T.adelicElementLattice_full_and_completion D V g').2.1
+  obtain ⟨δ, hδ1, hδ2, hδ3⟩ := exists_unitary_of_trace_eq _ _ (_root_.GlobalTheory.Member.latG_lattice_and_completion D V g).2.1 (_root_.GlobalTheory.Member.latG_lattice_and_completion D V g').2.1
     φ φ' _ ξ hξ htr
   obtain ⟨γ, hγ⟩ := r3 δ hδ3
-  obtain ⟨m1, m2⟩ := (GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).1 γ δ g hγ
+  obtain ⟨m1, m2⟩ := (_root_.GlobalTheory.Member.latG_move D V).1 γ δ g hγ
   have hlat : latG V (γ * g) = latG V g' := by
     ext v
     have hv : (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ
@@ -54,10 +54,10 @@ theorem exists_rat_finCong_of_marks (l : Level H) (V : HSp D) (io : Dw.La →ₗ
     rw [(r5 _ δ hγ).1, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, hδ1] at e2
     exact e2
   have hu : gLat V ((γ * g)⁻¹ * g') = latHat V := by
-    refine gLat_eq_of_finCong V _ ((GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.2.2 _ _ hlat) ?_
+    refine gLat_eq_of_finCong V _ ((_root_.GlobalTheory.Member.latG_move D V).2.2.2 _ _ hlat) ?_
     have e0 : ((γ * g)⁻¹ * g')⁻¹ = g'⁻¹ * (γ * g) := by group
     rw [e0]
-    exact (GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.2.2 _ _ hlat.symm
+    exact (_root_.GlobalTheory.Member.latG_move D V).2.2.2 _ _ hlat.symm
   exact ⟨γ, (r1 γ).2 ⟨δ, hγ⟩, _, hu, hc, (mul_inv_cancel_left _ _).symm⟩
 
 theorem exists_rat_finCong_of_index {l : Level H} {Xo : Moduli Dw l} {s : KA l →+* ℂ} {n : ℕ}
@@ -80,39 +80,5 @@ theorem exists_rat_finCong_of_index {l : Level H} {Xo : Moduli Dw l} {s : KA l �
   subst hi
   exact exists_rat_finCong_of_marks l V io hio (F.t i) g g' Λ Λ' hΛ hΛ' φ φ' ξ hξ
     (fun a b => (htr a b).symm.trans (htr' a b)) hM hM'
-
-set_option maxHeartbeats 1000000 in
-
-theorem exists_sec_rdU_eq : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (hr : V.rank = r) (U : Unf Xo c σ r) (dict : GA D V → Σ k, Frame (U.X k).Ψ r) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (g : ℕ) (e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (ik : U.Comp → Fin F.n) (φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (U.X k).Λ) (th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ), IotaOK Dw V io → 1 ≤ Dw.p + Dw.q → l.A = 1 → GoodEmb c σ → (∀ k, ModelW V hr (U.X k)) → DictLat U V hr dict io e F ik φ th x₀ → (∀ h, (dict h).2 ∈ (U.X (dict h).1).dom) → FnAlgClosed Xo c → ∀ w : GA D V → c.F, (∀ h h' : GA D V, finHom V h = finHom V h' → w h = w h') → (∀ γ ∈ GQ V, ∀ h, w (γ * h) = w h) → (∀ u : GA D V, gLat V u = latHat V → FinCong V l.M u → ∀ h, w (h * u) = w h) → ∃ f ∈ sec Xo c 0 0, ∀ h : GA D V, rdU U f (dict h).1 (dict h).2 = σ (w h) := by
-  intro D H Dw l Xo c σ V r hr U dict io g e F ik φ th x₀ hio hpos hA hgood hW hD hdom hcl w _ h2 h3
-  subst hr
-  have hG : ∀ k, (U.X k).Gm = -V.gramᵀ := fun k => (hW k).1
-  have htr : ∀ k a b, (((F.Di (ik k)).EF a b : ℤ) : ℚ) = Algebra.trace ℚ D.host.E
-      (-(-D.host.xi0) * herm (-V.gramᵀ) (φ k a : Fin V.rank → D.host.E) (φ k b)) := fun k a b => by
-    rw [hD.1.1 k a b, hG k, (hW k).2]
-  have key : ∀ h h', ik (dict h).1 = ik (dict h').1 → w h = w h' := by
-    intro h h' hi
-    obtain ⟨γ, hγ, hΛ, hm, -⟩ := hD.2 h
-    obtain ⟨γ', hγ', hΛ', hm', -⟩ := hD.2 h'
-    have hξ : -(-D.host.xi0) ≠ 0 := by
-      rw [← (hW (dict h).1).2]
-      exact neg_ne_zero.2 (U.X _).ξ0_ne
-    obtain ⟨δ, hδ, u, hu, hc, eu⟩ := exists_rat_finCong_of_index F V io hio.emb _ _ hi _ _ _ _
-      (SetLike.ext' (hΛ.trans (Set.image_id _))) (SetLike.ext' (hΛ'.trans (Set.image_id _))) (φ _) (φ _) _ hξ
-      (htr _) (htr _) hm hm'
-    rw [← h2 γ' hγ' h', eu, h3 u hu hc, h2 δ hδ, h2 γ hγ]
-  have hv : ∀ i : Fin F.n, ∃ a : c.F, ∀ h, ik (dict h).1 = i → a = w h := by
-    intro i
-    by_cases hex : ∃ h, ik (dict h).1 = i
-    · obtain ⟨h, hi⟩ := hex
-      exact ⟨w h, fun h' hi' => key h h' (hi.trans hi'.symm)⟩
-    · exact ⟨0, fun h hi => absurd ⟨h, hi⟩ hex⟩
-  choose v hv using hv
-  obtain ⟨f, hf, -, hf2⟩ := GlobalTheory.T.exists_weightZero_section_of_periodSpace_function D.host.E H Dw l Xo c σ g _ F hpos hgood
-    ((GlobalTheory.T.relabelEmbeddings_good_bijective_conj_compat _ H l c σ hgood).2.2.2 Dw g e) hA hcl v
-  refine ⟨f, hf, fun h => ?_⟩
-  obtain ⟨Pm, -, hP, hx, -⟩ := hD.1.2 (dict h).1 ⟨(dict h).2, hdom h⟩
-  rw [← hv _ h rfl, ← hf2 _ _ Pm hP hx]
-  exact dif_pos (hdom h)
 
 end GlobalTheory.CompRead

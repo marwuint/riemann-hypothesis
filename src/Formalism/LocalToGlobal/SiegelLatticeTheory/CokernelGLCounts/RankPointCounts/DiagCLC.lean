@@ -1,5 +1,7 @@
 import Mathlib
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DiagCL
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RowsConc
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KloostermanDiagonalOfConditions
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MainEqCut
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.FullExistsTiedHolds
 
 noncomputable section
@@ -23,12 +25,5 @@ theorem normExpSatTied_holds : NormExpSatTied := by
 theorem idOneC_holds : IdOneC :=
   idOneC_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.FundExistsC_holds
     Formalism.L2.SG.Closed.OOIntAllC_outright Formalism.L2.SG.Closed.IdCellDiagC_holds
-
-theorem diagonal_contribution_of_equal_words (hNG : RowNGC) (hM : RowMainEqC) : DiagCL := by
-  exact diagCL_of_rows Formalism.FourierDecayAlt.P.pair_bound_abstract Formalism.FourierDecayAlt.P.price_of_index
-    Formalism.FourierDecayAlt.P.equal_index Formalism.FourierDecayAlt.P.pair_split_alt Formalism.FourierDecayAlt.P.subfamilyAlt
-    Formalism.L2.SG.Closed.TermsGGBound_holds normExpSatTied_holds
-    (fun D X Y u u' _ => Formalism.L2.SG.Pf.SatGram.corankPos_tO (X := X) (Y := Y) u u') idOneC_holds hNG hM
-    Formalism.L2.SG.Pf.diagNumC_holds
 
 end Formalism.L2.SG.RowsConc

@@ -27,22 +27,6 @@ open Finset Matrix MeasureTheory Filter Topology
 namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ} {ε : Fin n → Bool}
 
-section General
-
-section Smooth
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-end Smooth
-
-end General
-
-section KMap
-
-variable {Λ : Fin n → ℝ}
-
-end KMap
-
 section Psi
 
 variable {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}

@@ -132,6 +132,4 @@ theorem stLatFin_of (h : LDense) : StLatFin := by
     rw [hyeq, hleq, iv_add_smul, smul_add]
     abel
 
-theorem stKFin_of_dense (h : LDense) : StKFin := stKFin_of (stLatFin_of h)
-
 end PIW.AdelClassFin

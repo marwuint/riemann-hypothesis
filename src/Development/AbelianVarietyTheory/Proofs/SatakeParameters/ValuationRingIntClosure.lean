@@ -1,8 +1,10 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.ShapeDegreeParity
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.TeichmullerFactorisation
+import Formalism.LocalRingCardinality.DataKerI
+import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
+import Formalism.LocalToGlobal.KernelLattices.LateralTheory
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TauPlBijective
+
 set_option synthInstance.maxHeartbeats 400000
 
 noncomputable section
@@ -175,26 +177,6 @@ instance valuationRing_intClosure : ValuationRing (intClosure ρ) := by
     exact ⟨c, Or.inl hc⟩
 
 variable {E : Type} [Field E] [NumberField E] [Algebra K E] {ι : Type} [Fintype ι] (σ : ι → E →+* ℂ_[l])
-
-def embAll : 𝓞 E →+ (ι → ℂ_[l]) where
-  toFun a := fun s => σ s (a : E)
-  map_zero' := by funext s; simp
-  map_add' a b := by funext s; simp
-
-def closureMod (h : ∀ s x, σ s (algebraMap K E x) = ρ x) : Submodule (intClosure ρ) (ι → ℂ_[l]) where
-  carrier := closure (Set.range (embAll σ))
-  add_mem' := fun ha hb => (embAll σ).range.topologicalClosure.add_mem ha hb
-  zero_mem' := (embAll σ).range.topologicalClosure.zero_mem
-  smul_mem' := by
-    intro c x hx
-    refine map_mem_closure₂ (f := fun (c : ℂ_[l]) (x : ι → ℂ_[l]) => c • x) continuous_smul
-      (show (c : ℂ_[l]) ∈ closure (Set.range fun a : 𝓞 K => ρ (a : K)) from c.2) hx ?_
-    rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩
-    refine ⟨algebraMap (𝓞 K) (𝓞 E) a * b, ?_⟩
-    funext s
-    have e : ((algebraMap (𝓞 K) (𝓞 E) a * b : 𝓞 E) : E) = algebraMap K E (a : K) * (b : E) := rfl
-    change σ s ((algebraMap (𝓞 K) (𝓞 E) a * b : 𝓞 E) : E) = ρ (a : K) * σ s (b : E)
-    rw [e, map_mul, h]
 
 end General
 

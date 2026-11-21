@@ -44,8 +44,6 @@ theorem EEp3_bot {R : RealDat3 D A3 Ks} {p : A3.fam3.base3.Ix} (h : ∀ c, ¬ R.
   unfold RealDat3.EEp3
   simp [h]
 
-example (R : RealDat3 D A3 Ks) c : R.EEc c = GlobalTheory.Hk3.EEc R.toRealDat R.SF c := rfl
-
 end GlobalTheory.PosAtBase
 
 namespace GlobalTheory.PosAtBase

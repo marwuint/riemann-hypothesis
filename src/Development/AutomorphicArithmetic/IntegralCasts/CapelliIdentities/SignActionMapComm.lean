@@ -3,11 +3,6 @@ import Formalism.LocalRingCardinality.DataSpaces
 import Formalism.SatakeDualWeyl.Statement
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 
-theorem UpperTheory.Reformulated.B.Qk24.aux2 :
-    ∀ (I : Formalism.MainNotions.S.AutInst), IsFractionRing (NumberField.RingOfIntegers I.F) I.F := by
-  intro I
-  infer_instance
-
 @[reducible] noncomputable def UpperTheory.Reformulated.B.Qk24.VA :
     Formalism.MainNotions.S.AutInst → Type :=
     fun (I : Formalism.MainNotions.S.AutInst) ↦ Fin I.n → TensorProduct I.F I.E (Formalism.MainNotions.S.Af I.F)

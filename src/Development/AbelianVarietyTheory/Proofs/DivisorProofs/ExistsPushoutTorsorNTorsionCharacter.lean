@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjective
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPushoutTorsorSectionEveryPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionDifferenceOneCochainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionAdditionTwoPointFunctionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionDifferenceOneCochain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionAdditionTwoPointFunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCocOfIsSecDiff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAddOfIsSecDiffIsSecAdd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiEqOfTorsion
@@ -25,8 +25,8 @@ theorem exists_pushout_torsor : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [G
   let S : SecFam A := fun D _ _ x ↦ Classical.choose (GlobalTheory.T.exists_pushoutTorsorSection_every_point R A n hR b hb D x)
   have hS : ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), IsSec n b x (S D x) :=
     fun D _ _ x ↦ Classical.choose_spec (GlobalTheory.T.exists_pushoutTorsorSection_every_point R A n hR b hb D x)
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_sectionDifference_one_cochain R A n hR b hb S hS
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_sectionAddition_two_point_function R A n hR b hb S hS
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.PtExt.exists_isSecDiff R A n hR b hb S hS
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.PtExt.exists_isSecAdd R A n hR b hb S hS
   exact ⟨u, g, isCoc_of_isSecDiff R A n hR b hb S hS u hu,
     isAdd_of_isSecDiff_isSecAdd R A n hR b hb S hS u g hu hg,
     chi_eq_of_torsion R A n hn hR b hb S hS g hg⟩

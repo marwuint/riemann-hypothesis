@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CoordsLeftMulMatrixConstBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRationalCoordPolynomialBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RestrictScalarsMatrixOfBasisHomInjectiveIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CoordsLeftMulMatrixConstBaseChange
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRationalCoordPolynomialBaseChange
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RestrictScalarsMatrixOfBasisHomInjectiveIsUnit
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -57,7 +57,7 @@ end
 
 theorem exists_equations : ∀ (F β : Type) [Field F] [Algebra ℚ F] [Fintype β] [DecidableEq β] (ω : Module.Basis β ℚ F) (n : ℕ) (S : Set (MvPolynomial (Fin n × Fin n) F)), ∃ S' : Set (MvPolynomial (((Fin n × β) ⊕ Unit) × ((Fin n × β) ⊕ Unit)) ℚ), ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra ℚ R] [Algebra R A] [Algebra F A] (b : Module.Basis β R A), (∀ i, b i = algebraMap F A (ω i)) → ∀ y : Matrix ((Fin n × β) ⊕ Unit) ((Fin n × β) ⊕ Unit) R, (∀ f ∈ S', ev f y = 0) ↔ ∃ g : GL (Fin n) A, (∀ P ∈ S, MvPolynomial.aeval (fun ij : Fin n × Fin n => (g : Matrix (Fin n) (Fin n) A) ij.1 ij.2) P = 0) ∧ y = emb b g := by
   intro F β _ _ _ _ ω n S
-  choose Q hQ using fun P : MvPolynomial (Fin n × Fin n) F => GlobalTheory.T.exists_rational_coord_polynomial_baseChange F β ω (Fin n × Fin n) P
+  choose Q hQ using fun P : MvPolynomial (Fin n × Fin n) F => _root_.GlobalTheory.ClassFin.exists_coord_polynomial F β ω (Fin n × Fin n) P
   let c : β → ℚ := fun l => ω.repr 1 l
   let X := gen ((Fin n × β) ⊕ Unit)
   refine ⟨{f | (∃ p u, f = X (Sum.inl p) (Sum.inr u)) ∨ (∃ p u, f = X (Sum.inr u) (Sum.inl p)) ∨
@@ -67,8 +67,8 @@ theorem exists_equations : ∀ (F β : Type) [Field F] [Algebra ℚ F] [Fintype 
     ∃ P ∈ S, ∃ k, f = MvPolynomial.aeval
       (fun p : (Fin n × Fin n) × β => coordOf c X p.1.1 p.1.2 p.2) (Q P k)}, ?_⟩
   intro R A _ _ _ _ _ b hb y
-  have hm := GlobalTheory.T.coords_leftMulMatrix_const_baseChange F β ω R A b hb
-  obtain ⟨h1, hmul, -, hunit⟩ := GlobalTheory.T.restrictScalarsMatrixOfBasis_hom_injective_isUnit R A β (Fin n) b
+  have hm := _root_.GlobalTheory.ClassFin.coords_const_baseChange F β ω R A b hb
+  obtain ⟨h1, hmul, -, hunit⟩ := _root_.GlobalTheory.ClassFin.res_one_mul_injective_isUnit R A β (Fin n) b
   have hc : ∀ l, algebraMap ℚ R (c l) = b.repr 1 l := fun l => by
     have := (hm 1).1 l
     rw [map_one] at this

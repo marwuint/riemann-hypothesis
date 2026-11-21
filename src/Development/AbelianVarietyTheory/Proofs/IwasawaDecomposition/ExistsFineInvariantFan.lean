@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEqAddOfRedVEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasPolyhedralCoverBalancedFormsCMFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominatesLinearFormsOnBalancedFormsCmStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolarisationBaseFunctionPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteRationalPolyhedralCellsUptoAutStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInvariantSmoothProjectiveRefinementPolyFanStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFanExtensionConeTransferStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominatesLinearFormsOnBalancedFormsCm
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolarisationBaseFunctionProperties
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteRationalPolyhedralCellsUptoAut
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInvariantSmoothProjectiveRefinementPolyFan
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFanExtensionConeTransfer
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinearOnIsFineOfLinearOnPolarisationBaseFunctionStatement
 
 noncomputable section
@@ -25,17 +25,17 @@ theorem exists_fine_invariant_fan {E : Type} [Field E] [NumberField E] [IsCMFiel
 
   have hpoly : IsPolyFan H.bar q (baseFun (𝓞 E) (fineDen g (𝒩.image (· - 1))) φs (𝒩.image (· - 1))) := by
     intro X _ _ _ _ hX
-    obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.polarisationBaseFunction_properties E H g q φs (𝒩.image (· - 1)) X hφ hq hX
-    exact ⟨h1, h2, h3, h4, GlobalTheory.T.exists_finite_rational_polyhedral_cells_upto_aut E H g q φs (𝒩.image (· - 1)) X hφ hq hX (GlobalTheory.T.hasPolyhedralCover_balancedForms_CMField E H X)⟩
+    obtain ⟨h1, h2, h3, h4⟩ := _root_.GlobalTheory.PolFan.baseFun_props E H g q φs (𝒩.image (· - 1)) X hφ hq hX
+    exact ⟨h1, h2, h3, h4, _root_.GlobalTheory.PolCell.exists_cells E H g q φs (𝒩.image (· - 1)) X hφ hq hX (GlobalTheory.T.hasPolyhedralCover_balancedForms_CMField E H X)⟩
   have htw : IsTwInv H (baseFun (𝓞 E) (fineDen g (𝒩.image (· - 1))) φs (𝒩.image (· - 1))) := by
     intro σ _ n B
     exact baseFun_twist _ _ _ σ n B
   have hdom : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X],
       Dominates H.bar X := by
     intro X _ _ _ _
-    exact GlobalTheory.T.dominatesLinearFormsOnBalancedForms_cm E H X
-  obtain ⟨φ', h1, h2, h3, hlin⟩ := GlobalTheory.T.exists_invariant_smoothProjective_refinement_polyFan E H q _ hdom hpoly htw
-  obtain ⟨φ'', k1, k2, k3, k4, k5, kcone⟩ := GlobalTheory.T.exists_homogeneous_positive_polFan_extension E H q φ' h1 h2 h3
+    exact _root_.GlobalTheory.DomBal.dominates E H X
+  obtain ⟨φ', h1, h2, h3, hlin⟩ := _root_.GlobalTheory.PolFan.exists_smooth_refinement E H q _ hdom hpoly htw
+  obtain ⟨φ'', k1, k2, k3, k4, k5, kcone⟩ := _root_.GlobalTheory.PolFan.OffDom.exists_extension E H q φ' h1 h2 h3
   refine ⟨φ'', k1, k2, k3, k4, k5, ?_⟩
   intro X _ _ _ _ hX m γ hγ
   have hc : IsCone H.bar φ' γ := kcone X hX m γ hγ

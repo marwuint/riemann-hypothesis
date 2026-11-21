@@ -1,12 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CuspValueComparison
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TameCharacterTorusValues
+import Formalism.CyclotomicNorms.StatementT
+import Formalism.LocalToGlobal.Divisibility.DefGroup
+import Formalism.LocalToGlobal.Divisibility.GoodPartHermitianSpec
+import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
+import Development.AbelianVarietyTheory.Definitions.Divisors.SplitDoublingNBlock
 
 noncomputable section
 
 namespace GlobalTheory.GoodCharsCompare
 
-open Polynomial Formalism.CyclotomicNorms GlobalTheory.IndefiniteRowSideFullHecke.CuspValueComparison GlobalTheory.IndefiniteRowSideFullHecke.TameCharacterTorusValues
+open Polynomial Formalism.CyclotomicNorms GlobalTheory.IndefiniteRowSideFullHecke.CuspValueComparison
 
 variable {g : ℕ} [Fact g.Prime]
 
@@ -205,28 +209,12 @@ theorem _root_.GlobalTheory.GoodCharsCompare.pow_dg {y : _root_.Formalism.Cyclot
     y ^ (g ^ _root_.GlobalTheory.GoodCharsCompare.dg y - 1) = 1 :=
   pow_sub_one_eq_one_of_pow_pow_eq hy (_root_.GlobalTheory.GoodCharsCompare.frobenius_orbit_degreeOverPrimeFieldFbar y).1
 
-theorem exists_prim {d : ℕ} (hd : 0 < d) :
-    ∃ (φ : GaloisField g d →ₐ[ZMod g] Fbar g) (u : GaloisField g d), IsPrimitiveRoot (φ u) (g ^ d - 1) := by
-  let φ : GaloisField g d →ₐ[ZMod g] Fbar g := IsAlgClosed.lift
-  obtain ⟨u, hu⟩ := IsCyclic.exists_ofOrder_eq_natCard (α := (GaloisField g d)ˣ)
-  refine ⟨φ, u, IsPrimitiveRoot.map_of_injective ?_ φ.injective⟩
-  rw [Nat.card_units, GaloisField.card g d hd.ne'] at hu
-  rw [← hu, ← orderOf_units]
-  exact IsPrimitiveRoot.orderOf _
-
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 theorem _root_.GlobalTheory.GoodCharsCompare.rootC_prim {d : ℕ} (hd : 0 < d) :
     IsPrimitiveRoot (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CuspValueComparison.rootC (g ^ d - 1)) (g ^ d - 1) := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.CuspValueComparison.rootC
   exact Complex.isPrimitiveRoot_exp _ (_root_.GlobalTheory.GoodCharsCompare.g_pow_sub_pos hd).ne'
-
-theorem rootOfOne_eq (d m : ℕ) : rootOfOne g d m = rootC (g ^ d - 1) ^ m := by
-  have : 1 ≤ g ^ d := Nat.one_le_pow _ _ (Fact.out : g.Prime).pos
-  rw [rootOfOne, rootC, ← Complex.exp_nat_mul, Nat.cast_sub this]
-  congr 1
-  push_cast
-  ring
 
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
@@ -237,12 +225,6 @@ theorem _root_.GlobalTheory.GoodCharsCompare.exists_log (ω : _root_.Formalism.C
   obtain ⟨i, -, hi⟩ := (_root_.GlobalTheory.GoodCharsCompare.rootC_prim (g := g) hd).eq_pow_of_pow_eq_one
     (ξ := ω y) (by rw [← map_pow, hy, map_one])
   exact ⟨i, hi.symm⟩
-
-theorem pow_eq_of_rootC {d : ℕ} (hd : 0 < d) {z : ℂ} (hz : z ^ (g ^ d - 1) = 1) {a b : ℕ}
-    (h : rootC (g ^ d - 1) ^ a = rootC (g ^ d - 1) ^ b) : z ^ a = z ^ b := by
-  haveI : NeZero (g ^ d - 1) := ⟨(g_pow_sub_pos hd).ne'⟩
-  obtain ⟨m, -, rfl⟩ := (rootC_prim (g := g) hd).eq_pow_of_pow_eq_one hz
-  rw [← pow_mul, mul_comm, pow_mul, h, ← pow_mul, ← pow_mul, mul_comm]
 
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
@@ -303,140 +285,11 @@ theorem _root_.GlobalTheory.GoodCharsCompare.exists_preimage {ω : _root_.Formal
   rw [Multiset.mem_toFinset, mem_nthRoots npos] at hy
   exact ⟨y, hy, rfl⟩
 
-theorem exists_matrix {ι : Type} [Fintype ι] [DecidableEq ι] (hd : 0 < Fintype.card ι) {y : Fbar g}
-    (hy : y ^ (g ^ Fintype.card ι - 1) = 1) :
-    ∃ M : Matrix ι ι (ZMod g), minpoly (ZMod g) M = minpoly (ZMod g) y := by
-  haveI : NeZero (g ^ Fintype.card ι - 1) := ⟨(g_pow_sub_pos hd).ne'⟩
-  obtain ⟨φ, u, hu⟩ := exists_prim (g := g) hd
-  obtain ⟨m, -, hm⟩ := hu.eq_pow_of_pow_eq_one hy
-  let B : Module.Basis ι (ZMod g) (GaloisField g (Fintype.card ι)) :=
-    (Module.finBasisOfFinrankEq _ _ (GaloisField.finrank g hd.ne')).reindex (Fintype.equivFin ι).symm
-  refine ⟨Algebra.leftMulMatrix B (u ^ m), ?_⟩
-  rw [minpoly.algHom_eq _ (Algebra.leftMulMatrix_injective B), ← hm, ← map_pow, minpoly.algHom_eq _ φ.injective]
-
-theorem charpoly_eq_pow {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι (ZMod g)) {y : Fbar g}
-    (h : minpoly (ZMod g) M = minpoly (ZMod g) y) : ∃ k, M.charpoly = minpoly (ZMod g) y ^ k := by
-  have hm : aeval (Matrix.toLin' (M.map (algebraMap (ZMod g) (Fbar g))))
-      ((minpoly (ZMod g) y).map (algebraMap (ZMod g) (Fbar g))) = 0 := by
-    have h1 := minpoly.aeval (ZMod g) M
-    rw [h] at h1
-    have h2 : aeval (M.map (algebraMap (ZMod g) (Fbar g))) (minpoly (ZMod g) y) = 0 := by
-      have := aeval_algHom_apply (Algebra.ofId (ZMod g) (Fbar g)).mapMatrix M (minpoly (ZMod g) y)
-      rw [h1, map_zero] at this
-      exact this
-    have h3 := aeval_algHom_apply (Matrix.toLinAlgEquiv' (R := Fbar g) (n := ι)) (M.map (algebraMap (ZMod g) (Fbar g)))
-      ((minpoly (ZMod g) y).map (algebraMap (ZMod g) (Fbar g)))
-    rw [aeval_map_algebraMap (Fbar g) (M.map (algebraMap (ZMod g) (Fbar g))), h2, map_zero] at h3
-    exact h3
-  have key : ∀ q : (ZMod g)[X], q.Monic → Irreducible q → q ∣ M.charpoly → q = minpoly (ZMod g) y := by
-    intro q hq hi hd
-    obtain ⟨z, rfl⟩ := exists_minpoly hq hi
-    have hz : aeval z M.charpoly = 0 := aeval_eq_zero_of_dvd_aeval_eq_zero hd (minpoly.aeval _ _)
-    have hev : Module.End.HasEigenvalue (Matrix.toLin' (M.map (algebraMap (ZMod g) (Fbar g)))) z := by
-      rw [Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', Matrix.charpoly_map, IsRoot,
-        eval_map_algebraMap]
-      exact hz
-    rw [Module.End.hasEigenvalue_iff_isRoot] at hev
-    have h3 := hev.dvd (minpoly.dvd _ _ hm)
-    rw [IsRoot, eval_map_algebraMap] at h3
-    exact (minpoly.eq_of_irreducible_of_monic (minpoly.irreducible (isInt y)) h3 (minpoly.monic (isInt y))).symm
-  have gen : ∀ n, ∀ f : (ZMod g)[X], f.Monic → f.natDegree = n → f ∣ M.charpoly →
-      ∃ k, f = minpoly (ZMod g) y ^ k := by
-    intro n
-    induction n using Nat.strong_induction_on with
-    | _ n ih =>
-      intro f hf hn hd
-      by_cases h1 : f = 1
-      · exact ⟨0, by simp [h1]⟩
-      · have hu : ¬ IsUnit f := fun hu => h1 (hf.isUnit_iff.1 hu)
-        obtain ⟨P, hPm, hP, t, rfl⟩ := exists_monic_irreducible_factor f hu
-        have hh : t.Monic := hPm.of_mul_monic_left hf
-        have hlt : t.natDegree < n := by
-          rw [← hn, hPm.natDegree_mul hh]
-          have := hP.natDegree_pos
-          omega
-        obtain ⟨k, hk⟩ := ih _ hlt t hh rfl (dvd_of_mul_left_dvd hd)
-        exact ⟨k + 1, by rw [pow_succ', ← hk, ← key P hPm hP (dvd_of_mul_right_dvd hd)]⟩
-  exact gen _ _ M.charpoly_monic rfl dvd_rfl
-
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 theorem _root_.GlobalTheory.GoodCharsCompare.rootsBar_pow (f : (ZMod g)[X]) (k : ℕ) : _root_.Formalism.CyclotomicNorms.rootsBar (f ^ k) = k • _root_.Formalism.CyclotomicNorms.rootsBar f := by
   unfold _root_.Formalism.CyclotomicNorms.rootsBar
   rw [Polynomial.map_pow, roots_pow]
-
-theorem finrank_eig {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι (ZMod g)) {y : Fbar g}
-    (h : minpoly (ZMod g) M = minpoly (ZMod g) y) {k : ℕ} (hk : M.charpoly = minpoly (ZMod g) y ^ k)
-    {z : Fbar g} (hz : z ∈ rootsBar (minpoly (ZMod g) y)) :
-    Module.finrank (Fbar g) (Module.End.eigenspace (Matrix.toLin' (M.map (algebraMap (ZMod g) (Fbar g)))) z) = k := by
-  classical
-  haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
-  have hm : aeval (Matrix.toLin' (M.map (algebraMap (ZMod g) (Fbar g))))
-      ((minpoly (ZMod g) y).map (algebraMap (ZMod g) (Fbar g))) = 0 := by
-    have h1 := minpoly.aeval (ZMod g) M
-    rw [h] at h1
-    have h2 : aeval (M.map (algebraMap (ZMod g) (Fbar g))) (minpoly (ZMod g) y) = 0 := by
-      have := aeval_algHom_apply (Algebra.ofId (ZMod g) (Fbar g)).mapMatrix M (minpoly (ZMod g) y)
-      rw [h1, map_zero] at this
-      exact this
-    have h3 := aeval_algHom_apply (Matrix.toLinAlgEquiv' (R := Fbar g) (n := ι)) (M.map (algebraMap (ZMod g) (Fbar g)))
-      ((minpoly (ZMod g) y).map (algebraMap (ZMod g) (Fbar g)))
-    rw [aeval_map_algebraMap (Fbar g) (M.map (algebraMap (ZMod g) (Fbar g))), h2, map_zero] at h3
-    exact h3
-  have hss := Module.End.isSemisimple_of_squarefree_aeval_eq_zero
-    (PerfectField.separable_of_irreducible (minpoly.irreducible (isInt y))).map.squarefree hm
-  rw [← hss.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace, LinearMap.finrank_maxGenEigenspace_eq,
-    Matrix.charpoly_toLin', Matrix.charpoly_map, ← count_roots]
-  change Multiset.count z (rootsBar M.charpoly) = k
-  rw [hk, rootsBar_pow, Multiset.count_nsmul, Multiset.count_eq_one_of_mem (nodup_minpoly y) hz, mul_one]
-
-theorem cuspVal_eq_torusValue (ω : Fbar g →*₀ ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (hd : 0 < Fintype.card ι)
-    (M : Matrix ι ι (ZMod g)) {x y : Fbar g} (hx : x ^ (g ^ Fintype.card ι - 1) = 1)
-    (h : minpoly (ZMod g) M = minpoly (ZMod g) y) {m : ℕ} (hm : ω y = rootC (g ^ Fintype.card ι - 1) ^ m) :
-    cuspVal ω x M = torusValue g (Fintype.card ι) (dg y) (ω x) m := by
-  classical
-  obtain ⟨k, hk⟩ := charpoly_eq_pow M h
-  have hdk : Fintype.card ι = dg y * k := by
-    rw [← M.charpoly_natDegree_eq_dim, hk, (minpoly.monic (isInt y)).natDegree_pow, mul_comm]
-  have hk0 : 0 < k := Nat.pos_of_mul_pos_left (hdk ▸ hd)
-  have hq : Fintype.card ι / dg y = k := by rw [hdk, Nat.mul_div_cancel_left _ (dg_pos y)]
-  have hR : (rootsBar M.charpoly).toFinset = (rootsBar (minpoly (ZMod g) y)).toFinset := by
-    rw [hk, rootsBar_pow, Multiset.toFinset_nsmul _ _ hk0.ne']
-  have hcard : (rootsBar (minpoly (ZMod g) y)).toFinset.card = dg y := by
-    rw [Multiset.toFinset_card_of_nodup (nodup_minpoly y), card_rootsBar]
-  rw [cuspVal, if_pos ⟨_, k, minpoly.irreducible (isInt y), hk⟩, torusValue, hq]
-  have e1 : ∀ z ∈ (rootsBar (minpoly (ZMod g) y)).toFinset,
-      labelChar ω (Fintype.card ι) x z * ∏ i ∈ Finset.Ico 1 (Module.finrank (Fbar g)
-            (Module.End.eigenspace (Matrix.toLin' (M.map (algebraMap (ZMod g) (Fbar g)))) z)),
-          (1 - (g : ℂ) ^ (dg y * i)) =
-      labelChar ω (Fintype.card ι) x z * ∏ i ∈ Finset.Ico 1 k, (1 - (g : ℂ) ^ (dg y * i)) := by
-    intro z hz
-    rw [finrank_eig M h hk (Multiset.mem_toFinset.1 hz)]
-  have e2 : ∑ z ∈ (rootsBar (minpoly (ZMod g) y)).toFinset, labelChar ω (Fintype.card ι) x z =
-      ∑ i ∈ Finset.range (dg y), ω x ^ (m * g ^ i) := by
-    rw [roots_minpoly, Finset.sum_image]
-    · refine Finset.sum_congr rfl fun i _ => labelChar_eq ω hd hx ?_
-      rw [map_pow, hm, ← pow_mul]
-    · intro i hi j hj h
-      exact (frobenius_orbit_degreeOverPrimeFieldFbar y).2 i (by simpa using hi) j (by simpa using hj) h
-  have e3 : ∏ i ∈ Finset.Ico 1 k, (1 - (g : ℂ) ^ (dg y * i)) =
-      (-1) ^ (k - 1) * ∏ i ∈ Finset.Ico 1 k, ((g : ℂ) ^ (dg y * i) - 1) := by
-    rw [← Nat.card_Ico, ← Finset.prod_const, ← Finset.prod_mul_distrib]
-    exact Finset.prod_congr rfl fun i _ => by ring
-  have e4 : (-1 : ℂ) ^ (Fintype.card ι - 1) * (-1) ^ (k - 1) = (-1) ^ (Fintype.card ι - k) := by
-    have hle : k ≤ Fintype.card ι := hdk ▸ Nat.le_mul_of_pos_left _ (dg_pos y)
-    rw [← pow_add, show Fintype.card ι - 1 + (k - 1) = Fintype.card ι - k + 2 * (k - 1) by omega, pow_add, pow_mul]
-    simp
-  have e5 := Finset.sum_congr rfl e1
-  rw [← Finset.sum_mul, e2, e3] at e5
-  have := hR
-  convert_to (-1) ^ (Fintype.card ι - 1) * (∑ z ∈ (rootsBar (minpoly (ZMod g) y)).toFinset,
-      labelChar ω (Fintype.card ι) x z * ∏ i ∈ Finset.Ico 1 (Module.finrank (Fbar g)
-            (Module.End.eigenspace (Matrix.toLin' (M.map (algebraMap (ZMod g) (Fbar g)))) z)),
-          (1 - (g : ℂ) ^ (dg y * i))) = _
-  · rw [← hcard, ← hR]
-  rw [e5, ← e4]
-  ring
 
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
@@ -468,63 +321,5 @@ theorem _root_.GlobalTheory.GoodCharsCompare.sum_shift {z : ℂ} {m e : ℕ} (h 
   rw [← pow_mul]
   congr 1
   ring
-
-theorem sum_period {z : ℂ} {m e : ℕ} (h : z ^ (m * g ^ e) = z ^ m) (k : ℕ) :
-    ∑ i ∈ Finset.range (e * k), z ^ (m * g ^ i) = k * ∑ i ∈ Finset.range e, z ^ (m * g ^ i) := by
-  induction k with
-  | zero => simp
-  | succ k ih =>
-    rw [Nat.mul_succ, Finset.sum_range_add, ih, Nat.cast_succ, add_mul, one_mul, ← sum_shift h (e * k)]
-    congr 1
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [← pow_mul]
-    congr 1
-    ring
-
-theorem period_of (ω : Fbar g →*₀ ℂ) {d : ℕ} (hd : 0 < d) {x y : Fbar g} (hx : x ^ (g ^ d - 1) = 1) {m : ℕ}
-    (hm : ω y = rootC (g ^ d - 1) ^ m) : ω x ^ (m * g ^ dg y) = ω x ^ m := by
-  refine pow_eq_of_rootC (g := g) hd (by rw [← map_pow, hx, map_one]) ?_
-  rw [pow_mul, ← hm, ← map_pow, (frobenius_orbit_degreeOverPrimeFieldFbar y).1]
-
-theorem mem_orbit_of_sums {z w : ℂ} {d : ℕ} (hd : 0 < d)
-    (h : ∀ m : ℕ, ∑ i ∈ Finset.range d, z ^ (m * g ^ i) = ∑ i ∈ Finset.range d, w ^ (m * g ^ i)) :
-    ∃ j, w = z ^ g ^ j := by
-  classical
-  by_contra hn
-  push Not at hn
-  have hQ : ∀ Q : ℂ[X], ∑ i ∈ Finset.range d, Q.eval (z ^ g ^ i) = ∑ i ∈ Finset.range d, Q.eval (w ^ g ^ i) := by
-    intro Q
-    induction Q using Polynomial.induction_on' with
-    | add p q hp hq => simp only [eval_add, Finset.sum_add_distrib, hp, hq]
-    | monomial n a =>
-      simp only [eval_monomial, ← Finset.mul_sum, ← pow_mul]
-      have := h n
-      simp only [mul_comm n] at this
-      rw [this]
-  let S : Finset ℂ := (((Finset.range d).image fun i => z ^ g ^ i) ∪ (Finset.range d).image fun i => w ^ g ^ i).erase w
-  let Q : ℂ[X] := ∏ a ∈ S, (X - C a)
-  have hz : ∀ a ∈ S, Q.eval a = 0 := by
-    intro a ha
-    rw [eval_prod]
-    exact Finset.prod_eq_zero ha (by simp)
-  have hw : Q.eval w ≠ 0 := by
-    rw [eval_prod]
-    refine Finset.prod_ne_zero_iff.2 fun a ha => ?_
-    simpa [sub_eq_zero] using (Finset.ne_of_mem_erase ha).symm
-  have h1 := hQ Q
-  rw [Finset.sum_eq_zero (fun i hi => hz _ (Finset.mem_erase.2 ⟨(hn i).symm,
-    Finset.mem_union_left _ (Finset.mem_image_of_mem _ hi)⟩))] at h1
-  have h2 : ∑ i ∈ Finset.range d, Q.eval (w ^ g ^ i) =
-      ∑ i ∈ (Finset.range d).filter (fun i => w ^ g ^ i = w), Q.eval w := by
-    rw [Finset.sum_filter]
-    refine Finset.sum_congr rfl fun i hi => ?_
-    split_ifs with hh
-    · rw [hh]
-    · exact hz _ (Finset.mem_erase.2 ⟨hh, Finset.mem_union_right _ (Finset.mem_image_of_mem _ hi)⟩)
-  rw [h2, Finset.sum_const, nsmul_eq_mul] at h1
-  rcases mul_eq_zero.1 h1.symm with h3 | h3
-  · have : 0 ∈ (Finset.range d).filter (fun i => w ^ g ^ i = w) := by simp [hd]
-    exact Finset.card_ne_zero_of_mem this (by exact_mod_cast h3)
-  · exact hw h3
 
 end GlobalTheory.GoodCharsCompare

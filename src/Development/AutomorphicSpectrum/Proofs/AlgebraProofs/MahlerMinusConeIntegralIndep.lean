@@ -1,11 +1,25 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IntegralFubiniStudySumConeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SphereMeanNormalizedGroupsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AePolynomialNonvanishingRowsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChowFormFibreSpecializationStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AeFibrePointsCardEqDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IntegralFubiniStudySumCone
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CroftonFormulaFibreSum
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CroftonFormulaOpenCone
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionConeCoarea
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsScaleStable
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionBallIndicatorStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XXgzChowMahlerFibreavg
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreCountRotationInvariant
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MeasurableFibreCountOverStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.TXgzChowMahlerE0reduce
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AeFibrePointsCardEqDegree
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFinite
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RandomSetSumExpectationStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LogGapMeasurableScaleStableStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FubiniStudyLogLeLogNorm
+import Development.WeilBound.CoreStatements.CommonZeroEvaluation.ConeBallLogGapIntegral
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SphereMeanNormalizedGroups
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AePolynomialNonvanishingRows
+import Development.WeilBound.CoreStatements.CommonZeroEvaluation.EvalEqZeroOfCommonZero
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XXgzChowMahlerFibrefactor
 set_option maxSynthPendingDepth 1
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalTheory.CompanionTheory.Ar.Short.Crofton
 open scoped ENNReal
@@ -48,28 +62,28 @@ theorem defect_eq_of_linForm_notMem : ∀ (n e δ : ℕ) (h : HermNorm n) (W : I
   have hq' := SpecFirstNe.full ℂ n e W g u' hW hg hu'
   have hh := SpecFirstHomog.proof n e δ g u hδ
   have hh' := SpecFirstHomog.proof n e δ g u' hδ
-  obtain ⟨hΓ0, hΓ⟩ := GlobalTheory.T.gaussian_matrix_measure_pos_finite (e + 1) n
+  obtain ⟨hΓ0, hΓ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.gaussM_univ_pos_lt_top (e + 1) n
   have hΓr : (gaussM (e + 1) n Set.univ).toReal ≠ 0 := (ENNReal.toReal_pos hΓ0.ne' hΓ.ne).ne'
   have hae : ∀ᵐ π : Fin (e + 1) → Fin n → ℂ,
       Real.log ‖eval (nrmGroups h e (coefRows h π)) (specFirst g u)‖ - fsSum h u (coneSet h W) π =
         Real.log ‖eval (nrmGroups h e (coefRows h π)) (specFirst g u')‖ -
           fsSum h u' (coneSet h W) π := by
-    filter_upwards [GlobalTheory.T.ae_fibre_points_card_eq_degree n e δ h W g hW hg hδ, GlobalTheory.T.ae_polynomial_nonvanishing_rows n e δ h _ hq hh,
-      GlobalTheory.T.ae_polynomial_nonvanishing_rows n e δ h _ hq' hh'] with π hcount h1 h2
+    filter_upwards [_root_.GlobalTheory.CompanionTheory.Relay.ae_fibre_points_card_eq_degree n e δ h W g hW hg hδ, _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.ae_eval_nrmGroups_coefRows_ne_zero n e δ h _ hq hh,
+      _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.ae_eval_nrmGroups_coefRows_ne_zero n e δ h _ hq' hh'] with π hcount h1 h2
     rw [EvalSpecFirst.proof] at h1 h2 ⊢
     rw [EvalSpecFirst.proof]
-    obtain ⟨c, hc, hfac⟩ := GlobalTheory.T.chow_form_fibre_specialization n e δ h W g π u hW hg hδ hcount h1
+    obtain ⟨c, hc, hfac⟩ := _root_.PositivityTheory.Xgn.t_xgz_chow_mahler_fibrefactor n e δ h W g π u hW hg hδ hcount h1
     have hfin : (fibrePts (coneSet h W) π).Finite := Set.finite_of_encard_eq_coe hcount
     rw [log_norm_sub_fsSum_eq h u _ π c _ hfin hc (hfac u) h1,
       log_norm_sub_fsSum_eq h u' _ π c _ hfin hc (hfac u') h2]
   have haeG := (withDensity_absolutelyContinuous (volume : Measure (Fin (e + 1) → Fin n → ℂ))
     matGauss).ae_le hae
-  obtain ⟨i1, e1⟩ := GlobalTheory.T.sphere_mean_normalized_groups n e h (fun w => Real.log ‖eval w (specFirst g u)‖)
+  obtain ⟨i1, e1⟩ := _root_.GlobalTheory.CompanionTheory.Relay.sphere_mean_normalized_groups n e h (fun w => Real.log ‖eval w (specFirst g u)‖)
     (MahlerIntegrand.proof n e δ h _ hq hh)
-  obtain ⟨i1', e1'⟩ := GlobalTheory.T.sphere_mean_normalized_groups n e h (fun w => Real.log ‖eval w (specFirst g u')‖)
+  obtain ⟨i1', e1'⟩ := _root_.GlobalTheory.CompanionTheory.Relay.sphere_mean_normalized_groups n e h (fun w => Real.log ‖eval w (specFirst g u')‖)
     (MahlerIntegrand.proof n e δ h _ hq' hh')
-  obtain ⟨i2, e2⟩ := GlobalTheory.T.integral_fubini_study_sum_cone n e δ h W g u hW hg hδ hu
-  obtain ⟨i2', e2'⟩ := GlobalTheory.T.integral_fubini_study_sum_cone n e δ h W g u' hW hg hδ hu'
+  obtain ⟨i2, e2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsSum_crofton n e δ h W g u hW hg hδ hu
+  obtain ⟨i2', e2'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsSum_crofton n e δ h W g u' hW hg hδ hu'
   have hint := integral_congr_ae (μ := gaussM (e + 1) n) haeG
   rw [integral_sub i1 i2, integral_sub i1' i2', e1, e2, e1', e2'] at hint
   apply mul_left_cancel₀ hΓr

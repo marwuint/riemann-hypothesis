@@ -52,13 +52,6 @@ theorem sum_filter_restrictNormalHom_eq {β : Type*} [AddCommMonoid β] [Fintype
 
 end Fiber
 
-section QuotientMap
-
-variable {K L : Type*} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-  (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
-
-end QuotientMap
-
 variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
@@ -219,11 +212,5 @@ theorem map_upperRamificationGroup (v : ℝ) :
   rw [upperRamificationGroup, map_lowerRamificationGroupReal, ← herbrandPsi_comp M,
     herbrandPhi_herbrandPsi]
   rfl
-
-section Quotient
-
-variable (H : Subgroup (L ≃ₐ[K] L)) [H.Normal]
-
-end Quotient
 
 end GroundTheory.LocalField

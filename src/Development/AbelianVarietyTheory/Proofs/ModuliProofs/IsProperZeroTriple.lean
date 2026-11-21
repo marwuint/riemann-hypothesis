@@ -39,9 +39,6 @@ def zeroTriple (H : Host E) (S : Scheme.{0}) : SAB H S where
   prim := ⟨⟨fun _ => 1⟩, ZJ.isGen_one_of_g_eq_one _
     (ZJ.div_g_eq_one _ _ (Out.Inh.linComb_triv_g _ _) fun _ _ => rfl)⟩
 
-theorem abLocus_eq_univ {S : Scheme.{0}} (G : Over S) [IsProper G.hom] : abLocus G = Set.univ :=
-  Set.eq_univ_of_forall fun _ _ _ _ _ _ => inferInstance
-
 instance isProper_zeroTriple (H : Host E) (S : Scheme.{0}) : IsProper (zeroTriple H S).G.hom :=
   (Out.Inh.zeroPolAV S).isAb.proper
 

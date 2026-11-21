@@ -44,9 +44,4 @@ instance compactSpace_adeleQuotient : CompactSpace (AdeleQuotient K) := by
 
 instance t2Space_adeleQuotient : T2Space (AdeleQuotient K) := inferInstance
 
-theorem compactSpace_and_t2Space_adeleQuotient :
-    CompactSpace (𝔸[K] ⧸ AdeleRing.principalSubgroup (𝓞 K) K) ∧
-      T2Space (𝔸[K] ⧸ AdeleRing.principalSubgroup (𝓞 K) K) :=
-  ⟨compactSpace_adeleQuotient K, t2Space_adeleQuotient K⟩
-
 end GroundTheory.Global

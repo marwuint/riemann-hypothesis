@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeLevelFamilyIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfLocalLevelsUnitaryIsOpenIsCompactIsLeve
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonicCoeffNatDegreeSubEqMulCmConjStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonicCoeffNatDegreeSubEqMulCmConj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonDenominatorOfValuationLeCofiniteStatement
 
 open NumberField IsDedekindDomain Polynomial Filter
@@ -45,7 +45,7 @@ theorem valuation_coeff_le {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {γ : P
   split_ifs with hw
   · exact (hv w hw).1 i
   obtain ⟨hm, hd, -, hr⟩ := hP
-  have hrec := GlobalTheory.T.monic_coeff_natDegree_sub_eq_mul_cmConj E n P hm hd hr
+  have hrec := _root_.GlobalTheory.monic_coeff_natDegree_sub_eq_mul_complexConj E n P hm hd hr
   obtain ⟨u, ⟨hu, huw⟩, -⟩ := hS w
   rcases GlobLev.eq_or_eq_conjSrc huw with rfl | rfl
   · exact absurd hu hw

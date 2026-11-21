@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalRingCardinality.DataBu
 import Formalism.SharpRestriction.Divisibility.WeightDegreeSizes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanRangeInfKerLeOfBasis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalOrthogonalProjectionSemilinearStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalOrthogonalProjectionSemilinear
 open Formalism.BasicNotions Formalism.MainNotions Matrix
 open scoped InnerProductSpace
 
@@ -24,7 +24,7 @@ theorem buRat_of_coordinates : ∀ (D : D7) (μ : D.what₂.Tup), μ = D.what₂
       ((LinearMap.ker Pq.mulVecLin : Submodule D.what₂.LL (Fin nV → D.what₂.LL)) : Set (Fin nV → D.what₂.LL))) := by
     rw [← hset, ← key, Formalism.BasicNotions.Rows.Data.Usp, hV]
     rfl
-  obtain ⟨G', hG', hperp⟩ := GlobalTheory.T.exists_rational_orthogonal_projection_semilinear D.what₂.LL D.what₂.embLL (D.what₂.Amb D.what₂.mu0) nV (jA.comp V.mulVecLin)
+  obtain ⟨G', hG', hperp⟩ := _root_.GlobalTheory.exists_mem_sub_mem_orthogonal_span_of_inner_mem_range D.what₂.LL D.what₂.embLL (D.what₂.Amb D.what₂.mu0) nV (jA.comp V.mulVecLin)
     (fun x y => hinner _ _) (LinearMap.ker Pq.mulVecLin) G
   have hG'0 : Pq.mulVec G' = 0 := hG'
   set q : D.what₂.Amb D.what₂.mu0 := jA (V.mulVec (G - G')) with hq

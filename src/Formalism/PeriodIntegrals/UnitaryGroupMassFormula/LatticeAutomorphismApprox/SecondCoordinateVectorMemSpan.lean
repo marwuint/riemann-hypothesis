@@ -18,9 +18,6 @@ theorem gp_int (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p
   | exact hp.2.2.2.1
   | exact hp.2.2.2
 
-theorem gp_lin (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p1 : RV I v →+* KV I v)
-    (hp : IsAdaptedFirstProjection I v ε p1) : ∀ c : KV I v, p1 (algebraMap (KV I v) (RV I v) c) = c := hp.1
-
 def hl (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (X Y : Fin I.n → RV I v) : RV I v :=
   Formalism.UG.hform (sigV I v) (I.J.map (inclV I v)) X Y
 

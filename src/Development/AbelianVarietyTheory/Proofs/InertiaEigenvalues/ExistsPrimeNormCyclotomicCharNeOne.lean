@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IdealCharacterLContinuationNeZeroOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InfinitelyManyPrimesInRayClass
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotForallExistsTwoLiesOverAbsNormEqStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NcardPrimesOverEqFinrankOfTrivialFrobeniusStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotForallExistsTwoLiesOverAbsNormEq
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NcardPrimesOverEqFinrankOfTrivialFrobenius
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asymptotics Polynomial
 open scoped ContDiff Classical
 
@@ -14,8 +14,8 @@ theorem split_trivial (K M : Type) [Field K] [NumberField K] [Field M] [NumberFi
       x ^ Ideal.absNorm v.asIdeal - x ∈ P) : Module.finrank K M = 1 := by
   by_contra h1
   have h2 : 1 < Module.finrank K M := by have := Module.finrank_pos (R := K) (M := M); omega
-  obtain ⟨T, hT, hc⟩ := GlobalTheory.T.ncard_primesOver_eq_finrank_of_trivial_frobenius K M
-  refine GlobalTheory.T.not_forall_exists_two_degree_one_primes_over K M (S ∪ T) (hS.union hT) fun v hv => ?_
+  obtain ⟨T, hT, hc⟩ := _root_.GlobalTheory.exists_finite_ncard_primesOver_eq_finrank_of_pow_absNorm_sub_mem K M
+  refine _root_.GlobalTheory.not_forall_exists_two_liesOver_absNorm_eq K M (S ∪ T) (hS.union hT) fun v hv => ?_
   simp only [Set.mem_union, not_or] at hv
   obtain ⟨hn, hN⟩ := hc v hv.2 (h v hv.1)
   rw [← hn] at h2

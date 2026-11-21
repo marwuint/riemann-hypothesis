@@ -65,17 +65,4 @@ theorem le_mul_norm_flat_of_selfDual (X : PT E) (Λ' : Submodule (𝓞 E) (Fin n
   have hr : 0 ≤ rdE E := Real.rpow_nonneg (abs_nonneg _) _
   exact le_mul_norm_flat X Λ' v hv (span_eq_top_of_rat hspan) (by positivity) hlen hlam hγ h0
 
-example (X : PT E) (x : Vsp X.dim) (hx : x ∈ X.L) (k : Fin n) :
-    Pi.single k x ∈ tensorLat X (ReciprocityTheory.GeometryOfNumbersTheory.stdLat E n) ∧
-      ‖flat (Pi.single k x : Fin n → Vsp X.dim)‖ ^ 2 = ‖x‖ ^ 2 := by
-  constructor
-  · refine mem_tensorLat_stdLat.2 fun j => ?_
-    by_cases h : j = k
-    · subst h; simpa using hx
-    · simp [h]
-  · rw [norm_sq_flat, Finset.sum_eq_single k]
-    · simp
-    · intro j _ h; simp [h]
-    · simp
-
 end GlobalTheory.TensorLat

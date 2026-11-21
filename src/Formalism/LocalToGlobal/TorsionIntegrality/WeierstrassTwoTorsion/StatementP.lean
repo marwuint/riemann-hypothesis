@@ -31,10 +31,6 @@ def PlusLogDeriv : Prop :=
     DL W (toL (tS W xP) * DL W (xL W))
       = 2 * xL W - toL (xPlus W xP yP) - toL (xPlus W xP (W.toAffine.negY xP yP))
 
-def PlusNeg : Prop :=
-  ∀ (R : Type u) [CommRing R] (W : WeierstrassCurve R) (xP yP : R), W.toAffine.Equation xP yP →
-    (xPlus W xP yP).subst (iSer W) = xPlus W xP (W.toAffine.negY xP yP)
-
 def PlusMap : Prop :=
   ∀ (R : Type u) (S : Type v) [CommRing R] [CommRing S] (φ : R →+* S) (W : WeierstrassCurve R)
     (xP yP : R),

@@ -11,14 +11,8 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 noncomputable section
 namespace GlobalTheory.WeilTwistF
-open MeasureTheory
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
-variable {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 end GlobalTheory.WeilTwistF
 namespace GlobalTheory.WeilTwistF
-open MeasureTheory
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
-variable {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 end GlobalTheory.WeilTwistF
 namespace GlobalTheory.WeilTwistF
 open MeasureTheory

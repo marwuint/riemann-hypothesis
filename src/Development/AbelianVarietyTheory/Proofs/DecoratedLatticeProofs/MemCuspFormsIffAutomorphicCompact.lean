@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PrinInf
-import Development.AbelianVarietyTheory.BlockTheory.SiegelEisenstein.SplitPrincipalSets
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ExistsPlacesSingleton
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsFinCombSingleZero
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
@@ -25,14 +25,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (FinPl RealMat 
 open GlobalTheory.Core.Rk.IP (WRep up wcoef rcoef)
 open GlobalTheory.Mem.Th (CptF)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-section Lattices
-
-open Formalism.L2.DIV
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
-
-end Lattices
 
 variable {D : D7}
 
@@ -76,32 +68,6 @@ theorem frameLat_reset (V : HSp D) (L : Lat V) (h : IsSelfDualC V L) (s : (D.hos
     frameLat (reset V L h s) = L := by
   ext x
   exact (mem_latIn (V := V) (L := L) (x := V.frame.equivFun.symm x)).trans (by rw [V.frame.equivFun.apply_symm_apply x]; rfl)
-
-section Transport
-
-variable {ψ : AddChar (AF D.host.F) ℂ} {A W : HSp D} {LA : Lat A} {LW : Lat W} (hA : IsSelfDualC A LA) (hW : IsSelfDualC W LW)
-  (sA sW : (D.host.E →+* ℂ) → ℕ × ℕ)
-
-end Transport
-
-def OwnLat (D : D7) : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A W : HSp D) (t : ℕ), IsInfFam θ → A.SigOK → A.IsPosDef → W.SigOK →
-    A.rank = W.rank + t → 1 ≤ W.rank → W.rank + 5 ≤ t →
-  ∀ (χA χW : (AE D)ˣ →* Circle) (om : WRep A W), IsWeilDatumO ψ A W χA χW om →
-  ∀ Z : Finset (IndefiniteRowSideFullHecke.SplitPrincipalSets.FinPlE D), IndefiniteRowSideFullHecke.SplitPrincipalSets.IsSplitSet Z →
-    (∀ v : FinPl D, (2 : 𝓞 D.host.F) ∈ v.asIdeal → Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v) →
-    LFun.UnrOff χW (IndefiniteRowSideFullHecke.SplitPrincipalSets.below Z : Set (FinPl D)) →
-  ∀ u : GA D A → ℂ, IsAutFunDef A u → (∀ k ∈ IndefiniteRowSideFullHecke.SplitPrincipalSets.prin A (frameLat A) Z, ∀ g, u (g * k) = u g) →
-  ∀ c : LFun.Fam D.host.E, IndefiniteRowSideFullHecke.SplitPrincipalSets.IsSmallFam (IndefiniteRowSideFullHecke.SplitPrincipalSets.below Z) W.rank c →
-    LFun.IsParamFun D.sp.cm.sig A.gram (frameLat A) (IndefiniteRowSideFullHecke.SplitPrincipalSets.below Z : Set (FinPl D)) u (c + LFun.segFam (LFun.val χW) t) →
-  ∀ (m : Measure (GA D A)) (mInf : Measure (GinfC A)), m.IsHaarMeasure → mInf.IsHaarMeasure →
-  ∀ (ν : Measure (WO A W)) (𝓕 : Set (WO A W)), IsCovolOne (ratL W A) ν 𝓕 →
-  ∀ sW : RealMat W, (∀ τ, IsCartanInv (gramAt D W τ) (sW τ)) →
-  ∀ Φ : WO A W → ℂ, IsFockVec ψ θ A W (fun _ => 1) sW Φ →
-    IsSphOff ψ A W (frameLat A) (frameLat W) (IndefiniteRowSideFullHecke.SplitPrincipalSets.below Z) Φ →
-    (∀ k ∈ IndefiniteRowSideFullHecke.SplitPrincipalSets.prin A (frameLat A) Z, om (k, 1) Φ = Φ) →
-    ∫ b : GinfC A, wcoef om ν 𝓕 Φ Φ b * rcoef m u u b ∂mInf ≠ 0 →
-    ∃ f, IsThetaFunO ψ A W f ∧ ∃ h, up om m f u h ≠ 0
 
 end GlobalTheory.Core.Rk.DownCompare
 

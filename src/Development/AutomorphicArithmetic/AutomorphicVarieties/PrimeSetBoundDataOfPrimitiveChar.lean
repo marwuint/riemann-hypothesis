@@ -48,14 +48,6 @@ def BShape (K : BConst) (Ct : ℝ)
 
 def ThmBab (K : BConst) (Ct : ℝ) : Prop := BShape K Ct (IsBWindow K Ct)
 
-def ThmBa (K : BConst) (Ct : ℝ) : Prop :=
-  BShape K Ct fun eps M B' L e t q d X Y =>
-    InRange (K.J Ct eps M B' L) X Y ∧ ∀ x : ℝ, Y ≤ x → x ≤ Y ^ (2 : ℝ) → BaAt M eps e t q d x
-
-def ThmBb (K : BConst) (Ct : ℝ) : Prop :=
-  BShape K Ct fun eps M B' L _ t _ _ X Y =>
-    InRange (K.J Ct eps M B' L) X Y ∧ ∀ x : ℝ, Y ≤ x → x ≤ Y ^ (2 : ℝ) → BbAt K B' L eps t x
-
 def ThmBc (Ct : ℝ) : Prop :=
   ∃ C : ℝ, ∀ (M : AbF) (A1 : ℝ) (e t : ℝ → ℕ), admitted A1 Ct e t → ∀ x ≥ (2 : ℝ), ∀ q d : ℕ, PrimePair M.m q d →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], IsCompField M (e x) q d E →
@@ -65,8 +57,6 @@ def ThmBcFree : Prop :=
   ∃ C : ℝ, ∀ (M : AbF) (e t q d : ℕ), 2 ≤ e → 2 ≤ t → PrimePair M.m q d →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], IsCompField M e q d E →
       VVminusLe E t (minusBound C M.deg (Module.finrank ℚ E) (condF E) t)
-
-def ThmB (K : BConst) (Ct : ℝ) : Prop := ThmBab K Ct ∧ ThmBc Ct
 
 def Lchi (ψ : PChar) (l : ℕ) : AbF := AbF.cyc (l * ψ.N)
 
@@ -92,22 +82,6 @@ def JointWin (Ct : ℝ) : Prop :=
       Real.log ((q : ℝ) * d) ≤ X ^ (eps / (4 * J)) →
       ∃ Y : ℝ, InRange J X Y ∧ ∀ x : ℝ, Y ≤ x → x ≤ Y ^ (2 : ℝ) →
         BaAt (AbF.ofChar ψ) eps e t q d x ∧ HVAt ψ C eps e t q d x
-
-theorem BShape.mono {K : BConst} {Ct : ℝ}
-    {P Q : ℝ → AbF → Finset ℕ → (ℕ → AbF) → (ℝ → ℕ) → (ℝ → ℕ) → ℕ → ℕ → ℝ → ℝ → Prop}
-    (h : ∀ eps M B' L e t q d X Y, P eps M B' L e t q d X Y → Q eps M B' L e t q d X Y) (hP : BShape K Ct P) :
-    BShape K Ct Q := by
-  intro M B' L hB eps A1 h0 h1
-  obtain ⟨X0, H⟩ := hP M B' L hB eps A1 h0 h1
-  refine ⟨X0, fun e t ha X hX q d hp hl => ?_⟩
-  obtain ⟨Y, hY⟩ := H e t ha X hX q d hp hl
-  exact ⟨Y, h _ _ _ _ _ _ _ _ _ _ hY⟩
-
-theorem ThmBab.a {K : BConst} {Ct : ℝ} (h : ThmBab K Ct) : ThmBa K Ct :=
-  BShape.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨h.1, fun x a b => (h.2 x a b).1⟩) h
-
-theorem ThmBab.b {K : BConst} {Ct : ℝ} (h : ThmBab K Ct) : ThmBb K Ct :=
-  BShape.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨h.1, fun x a b => (h.2 x a b).2⟩) h
 
 theorem thmBc_iff {Ct : ℝ} (hC : 1 ≤ Ct) : ThmBc Ct ↔ ThmBcFree := by
   classical

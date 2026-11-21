@@ -15,16 +15,8 @@ namespace HermitianBundle
 
 def deg (M : HermitianBundle K) : ℝ := M.arithDegree / Module.finrank ℚ K
 
-def normAt (M : HermitianBundle K) (σ : K →+* ℂ) (e : M.carrier) : ℝ := ‖fibreVec M.metric σ e‖
-
 def sub (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) : HermitianBundle K :=
   ⟨F, M.metric.comap F.subtype F.injective_subtype⟩
-
-theorem Saturated.comap_subtype {M : HermitianBundle K} {G : Submodule (𝓞 K) M.carrier}
-    (hG : M.Saturated G) (F : Submodule (𝓞 K) M.carrier) :
-    (M.sub F).Saturated (G.comap F.subtype) := by
-  intro a x ha hx
-  exact hG a ((show F from x) : M.carrier) ha hx
 
 variable {M : HermitianBundle K} {F : Submodule (𝓞 K) M.carrier}
 
@@ -177,55 +169,6 @@ def quot : HermitianBundle K :=
 end HermitianBundle
 
 namespace HermitianBundle
-
-variable (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) (hF : M.Saturated F)
-
-theorem quot_norm_eq (σ : K →+* ℂ) (ξ : Fibre σ (M.carrier ⧸ F)) :
-    ‖FibreSpace.equiv (M.quot F hF).metric σ ξ‖ = ‖quotFibreMap M F hF σ ξ‖ := by
-  have h1 := norm_sq_eq_re_inner (𝕜 := ℂ) (FibreSpace.equiv (M.quot F hF).metric σ ξ)
-  have h2 := norm_sq_eq_re_inner (𝕜 := ℂ) (quotFibreMap M F hF σ ξ)
-  have h3 : ‖FibreSpace.equiv (M.quot F hF).metric σ ξ‖ ^ 2 = ‖quotFibreMap M F hF σ ξ‖ ^ 2 := by
-    rw [h1, h2]
-    rfl
-  rw [← Real.sqrt_sq (norm_nonneg (FibreSpace.equiv (M.quot F hF).metric σ ξ)), h3,
-    Real.sqrt_sq (norm_nonneg _)]
-
-theorem quot_norm_eq_iInf (σ : K →+* ℂ) (ξ : Fibre σ (M.carrier ⧸ F)) :
-    ‖FibreSpace.equiv (M.quot F hF).metric σ ξ‖ =
-      ⨅ x : {x : Fibre σ M.carrier // F.mkQ.lTensor (ComplexAt σ) x = ξ},
-        ‖FibreSpace.equiv M.metric σ x.1‖ := by
-  have := quot_projective hF
-  rw [quot_norm_eq]
-  set V := subFibre M.metric σ F
-  set x₀ : FibreSpace M.metric σ :=
-    FibreSpace.equiv M.metric σ (fibreMap σ (quotSection M F hF) ξ) with hx₀
-  have hq : quotFibreMap M F hF σ ξ = x₀ - V.starProjection x₀ := by
-    change Vᗮ.starProjection x₀ = _
-    rw [Submodule.starProjection_orthogonal']
-    rfl
-  rw [hq, Submodule.starProjection_minimal]
-  have hlift : F.mkQ.lTensor (ComplexAt σ) ((FibreSpace.equiv M.metric σ).symm x₀) = ξ := by
-    change fibreMap σ F.mkQ (fibreMap σ _ ξ) = ξ
-    rw [fibreMap_fibreMap, mkQ_comp_quotSection]
-    simp [fibreMap]
-  have hex := lTensor_exact (ComplexAt σ) (LinearMap.exact_subtype_mkQ F) F.mkQ_surjective
-  have hV : ∀ w : FibreSpace M.metric σ, w ∈ V ↔
-      F.mkQ.lTensor (ComplexAt σ) ((FibreSpace.equiv M.metric σ).symm w) = 0 := by
-    intro w
-    rw [hex]
-    rfl
-  let e : V ≃ {x : Fibre σ M.carrier // F.mkQ.lTensor (ComplexAt σ) x = ξ} :=
-    { toFun := fun w ↦ ⟨(FibreSpace.equiv M.metric σ).symm (x₀ - w), by
-        rw [map_sub, map_sub, hlift, (hV w).mp w.2, sub_zero]⟩
-      invFun := fun x ↦ ⟨x₀ - FibreSpace.equiv M.metric σ x.1, by
-        rw [hV, map_sub, map_sub, hlift, LinearEquiv.symm_apply_apply, x.2, sub_self]⟩
-      left_inv := fun w ↦ by
-        apply Subtype.ext
-        simp
-      right_inv := fun x ↦ by
-        apply Subtype.ext
-        simp }
-  exact Equiv.iInf_congr e fun w ↦ by simp [e]
 
 end HermitianBundle
 

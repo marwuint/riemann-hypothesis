@@ -6,8 +6,6 @@ open GlobalTheory.LKCount
 
 namespace GlobalTheory.ConjugateFold
 
-variable {G : Type} [Group G]
-
 end GlobalTheory.ConjugateFold
 
 namespace GlobalTheory.ConjugateFold
@@ -28,8 +26,6 @@ noncomputable def foldMap (Γ' T K : Subgroup G) (hΓT : Γ' ≤ T) (y : G)
 end GlobalTheory.ConjugateFold
 
 namespace GlobalTheory.ConjugateFold
-
-variable {G : Type} [Group G]
 
 end GlobalTheory.ConjugateFold
 

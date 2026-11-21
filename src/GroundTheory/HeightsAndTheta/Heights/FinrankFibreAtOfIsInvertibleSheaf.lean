@@ -24,26 +24,6 @@ def ofComplex : ℂ ≃+* Via φ := RingEquiv.refl ℂ
 
 lemma algebraMap_apply (r : R) : algebraMap R (Via φ) r = ofComplex φ (φ r) := rfl
 
-def conj : Via φ →ₗ[R] Via ((starRingEnd ℂ).comp φ) where
-  toFun z := starRingEnd ℂ (show ℂ from z)
-  map_add' a b := map_add (starRingEnd ℂ) (show ℂ from a) (show ℂ from b)
-  map_smul' r z := by
-    change starRingEnd ℂ (φ r * (show ℂ from z)) = (starRingEnd ℂ) (φ r) * starRingEnd ℂ (show ℂ from z)
-    rw [map_mul]
-
-def conjInv : Via ((starRingEnd ℂ).comp φ) →ₗ[R] Via φ where
-  toFun z := starRingEnd ℂ (show ℂ from z)
-  map_add' a b := map_add (starRingEnd ℂ) (show ℂ from a) (show ℂ from b)
-  map_smul' r z := by
-    change starRingEnd ℂ (starRingEnd ℂ (φ r) * (show ℂ from z)) =
-      φ r * starRingEnd ℂ (show ℂ from z)
-    rw [map_mul, Complex.conj_conj]
-
-lemma conjInv_conj (z : Via φ) : conjInv φ (conj φ z) = z := Complex.conj_conj (show ℂ from z)
-
-lemma conj_conjInv (z : Via ((starRingEnd ℂ).comp φ)) : conj φ (conjInv φ z) = z :=
-  Complex.conj_conj (show ℂ from z)
-
 end Via
 
 variable {X : Scheme.{u}} (L : X.Modules)
@@ -192,29 +172,6 @@ lemma value_ne_zero {U : X.Opens} (hp : p ∈ U) {e : ((preMod X).obj L).obj (op
   have := fibreEquiv_value (φ := φ) hp he
   rw [h, map_zero] at this
   exact zero_ne_one this
-
-variable (φ) in
-
-def fibreConj : fibreAt L p φ ≃+ fibreAt L p ((starRingEnd ℂ).comp φ) where
-  toFun s := TensorProduct.map (Via.conj φ) LinearMap.id
-    (show TensorProduct (locRing X p) (Via φ) (modStalk L p) from s)
-  invFun s := TensorProduct.map (Via.conjInv φ) LinearMap.id
-    (show TensorProduct (locRing X p) (Via ((starRingEnd ℂ).comp φ)) (modStalk L p) from s)
-  left_inv s := by
-    change TensorProduct.map (Via.conjInv φ) LinearMap.id
-      (TensorProduct.map (Via.conj φ) LinearMap.id
-        (show TensorProduct (locRing X p) (Via φ) (modStalk L p) from s)) = s
-    rw [← LinearMap.comp_apply, ← TensorProduct.map_comp]
-    have : (Via.conjInv φ).comp (Via.conj φ) = LinearMap.id := LinearMap.ext (Via.conjInv_conj φ)
-    rw [this, LinearMap.id_comp, TensorProduct.map_id, LinearMap.id_apply]
-  right_inv s := by
-    change TensorProduct.map (Via.conj φ) LinearMap.id
-      (TensorProduct.map (Via.conjInv φ) LinearMap.id
-        (show TensorProduct (locRing X p) (Via ((starRingEnd ℂ).comp φ)) (modStalk L p) from s)) = s
-    rw [← LinearMap.comp_apply, ← TensorProduct.map_comp]
-    have : (Via.conj φ).comp (Via.conjInv φ) = LinearMap.id := LinearMap.ext (Via.conj_conjInv φ)
-    rw [this, LinearMap.id_comp, TensorProduct.map_id, LinearMap.id_apply]
-  map_add' a b := map_add _ _ _
 
 end Fibre
 

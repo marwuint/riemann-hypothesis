@@ -32,10 +32,6 @@ def GrothendieckGroup (P : ℕ → Prop) : Type (u + 1) :=
 instance (P : ℕ → Prop) : AddCommGroup (GrothendieckGroup k G P) :=
   inferInstanceAs (AddCommGroup (_ ⧸ grothendieckRelations k G P))
 
-def GrothendieckGroup.mk {P : ℕ → Prop} (A : Rep.{u} k G) (hA : finiteDiscreteRep k G P A) :
-    GrothendieckGroup k G P :=
-  QuotientAddGroup.mk (s := grothendieckRelations k G P) (FreeAbelianGroup.of ⟨A, hA⟩)
-
 variable [IsTopologicalGroup G]
 
 variable (k G) in

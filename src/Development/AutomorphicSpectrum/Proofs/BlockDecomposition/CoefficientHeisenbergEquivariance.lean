@@ -3,10 +3,10 @@ import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.ThetaI
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftEisensteinLevelSubgroup
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TsumMeas
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterPropertiesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterProperties
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentreCharacterCommutatorStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionInvariantHeisenbergWeylStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentAdditiveLawStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentAdditiveLaw
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftConjHeisenbergStatement
 
 noncomputable section
@@ -27,10 +27,10 @@ theorem Wz_sh_nzx : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn
     Wz M m ψ b₀ f (M.sh η * (M.nzx z x * h)) =
       chz ψ b₀ z * GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x η * Wz M m ψ b₀ f (M.sh η * h) := by
   intro D n ρ p hn M m ψ hψ b₀ χ s f hf η z x h
-  obtain ⟨hadd, hnorm, -, -⟩ := GlobalTheory.T.centre_character_properties ψ hψ b₀
+  obtain ⟨hadd, hnorm, -, -⟩ := _root_.GlobalTheory.CompanionTheory.FJE.CentralChar.chz_facts ψ hψ b₀
   have hjc := GlobalTheory.T.centre_character_commutator ψ b₀ η x
   have hsh := GlobalTheory.T.shift_conj_heisenberg M η z x
-  have hmul := GlobalTheory.T.unipotent_heisenberg_mul M
+  have hmul := _root_.GlobalTheory.CompanionTheory.NzxAdd.nzx_add M
   have hw := GlobalTheory.T.section_invariant_heisenberg_weyl M χ s f hf
   have e1 : M.sh η * (M.nzx z x * h) = M.nzx (z + jc η x) x * (M.sh η * h) := by
     rw [← mul_assoc, hsh, mul_assoc]

@@ -19,47 +19,6 @@ theorem continuous_invT {R : Type} [CommRing R] [TopologicalSpace R] : Continuou
 theorem invT_invT {R : Type} [CommRing R] (g : GL (Fin a) R) : invT a R (invT a R g) = g :=
   Units.ext (transpose_transpose _)
 
-theorem decays_invT_smoothInf {F : GA E a → ℂ} (hF : Decays fun g => F (invT a (Ad E) g)) {f : Lie E a → ℂ}
-    (hf : IsTest (invSet E a) f) : Decays fun g => GlobalTheory.JSW.smoothInf f F (invT a (Ad E) g) := by
-  intro L hL C₀ hC₀ N
-  have hK : IsCompact ((fun y : GL (Fin a) (Cinf E) => toL y.val) ⁻¹' tsupport f) :=
-    isOpenEmbedding_val.isInducing.isCompact_preimage' hf.2.1 fun x hx => hf.2.2 hx
-  obtain ⟨C, h⟩ := hF L hL _ (hC₀.mul ((hK.image continuous_infGL).image continuous_invT)) N
-  have hi : Integrable f := hf.1.continuous.integrable_of_hasCompactSupport hf.2.1
-  refine ⟨(∫ x, ‖f x‖) * C, fun g c hcC ξ hξ hm => ?_⟩
-  rw [mul_assoc, ← integral_mul_const]
-  refine norm_integral_le_of_norm_le (hi.norm.mul_const _) (.of_forall fun x => ?_)
-  by_cases hx : x ∈ tsupport f
-  · obtain ⟨u, hu⟩ := hf.2.2 hx
-    obtain rfl : x = toL u.val := hu.symm
-    rw [norm_mul, chart_val]
-    refine mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)
-    have h1 := h g _ (Set.mul_mem_mul hcC ⟨_, ⟨u, hx, rfl⟩, rfl⟩) ξ hξ hm
-    simpa only [map_mul, invT_invT, mul_assoc] using h1
-  · simp [image_eq_zero_of_notMem_tsupport hx]
-
-theorem decays_invT {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ : φ ∈ withSmoothings π) :
-    Decays fun g => φ.1 (invT a (Ad E) g) := by
-  let D : Submodule ℂ (Sm E a) :=
-    { carrier := {φ | Decays fun g => φ.1 (invT a (Ad E) g)}
-      add_mem' := fun {φ ψ} h h' => Decays.add (F := fun g => φ.1 (invT a (Ad E) g)) (G := fun g => ψ.1 (invT a (Ad E) g)) h h'
-      zero_mem' := Decays.zero
-      smul_mem' := fun z φ h => Decays.smul (F := fun g => φ.1 (invT a (Ad E) g)) h z }
-  have h0 : π.V ≤ D := fun ψ hψ =>
-    decays_of_mem (CuspSub.IsUnitary.contra hπ) (φ := UpperTheory.V.TC.dualFn E a ψ) ⟨ψ, hψ, rfl⟩
-  refine (sup_le h0 (Submodule.span_le.2 ?_) : withSmoothings π ≤ D) hφ
-  rintro F ⟨f, ψ, hf, hψ, e⟩
-  change Decays fun g => F.1 (invT a (Ad E) g)
-  rw [e]
-  exact decays_invT_smoothInf (h0 hψ) hf
-
-theorem continuous_bounded {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ : φ ∈ withSmoothings π) :
-    Continuous φ.1 ∧ ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C := by
-  obtain ⟨χ, hω, h⟩ := hπ
-  have := mem_bddForms_of_withSmoothings (GlobalTheory.CuspBoundSiegel.cuspFormsBounded_of_rapidDecay
-    (GlobalTheory.cuspRapidDecaySiegelGL_of_finite GlobalTheory.automorphicFormsFiniteGL)) hω (CuspSub.hasCentral_iff.1 h) hφ
-  exact ⟨this.1, this.2.2.2⟩
-
 omit [IsTotallyComplex E] in
 
 def rowInv (ℓ : Fin a) (y : Fin a → Cinf E) : Lie E a := invL (toL (rowMat ℓ y))

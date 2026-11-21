@@ -3,16 +3,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 
 namespace GlobalTheory
 
-theorem exists_algHom_isAlgebraic_of_finiteType (F A L : Type*) [Field F] [CommRing A]
-    [Nontrivial A] [Algebra F A] [Algebra.FiniteType F A] [Field L] [IsAlgClosed L] [Algebra F L] :
-    ∃ φ : A →ₐ[F] L, ∀ x, IsAlgebraic F (φ x) := by
-  obtain ⟨m, hm⟩ := Ideal.exists_maximal A
-  letI : Field (A ⧸ m) := Ideal.Quotient.field m
-  have : Module.Finite F (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing F (A ⧸ m)
-  refine ⟨(IsAlgClosed.lift : (A ⧸ m) →ₐ[F] L).comp (Ideal.Quotient.mkₐ F m), fun x => ?_⟩
-  exact (Algebra.IsAlgebraic.isAlgebraic (R := F) (Ideal.Quotient.mkₐ F m x)).algHom
-    (IsAlgClosed.lift : (A ⧸ m) →ₐ[F] L)
-
 theorem _root_.GlobalTheory.exists_ringHom_extend_of_finiteType (F A L : Type*) [Field F] [CommRing A]
     [Nontrivial A] [Algebra F A] [Algebra.FiniteType F A] [Field L] [IsAlgClosed L]
     (σ : F →+* L) : ∃ φ : A →+* L, ∀ x, φ (algebraMap F A x) = σ x := by
@@ -25,19 +15,6 @@ theorem _root_.GlobalTheory.exists_ringHom_extend_of_finiteType (F A L : Type*) 
   have h1 : Ideal.Quotient.mk m (algebraMap F A x) = algebraMap F (A ⧸ m) x := rfl
   simp only [RingHom.comp_apply, h1, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]
   rfl
-
-theorem exists_fg_subalgebra_over {k L : Type*} [Field k] [Field L] [Algebra k L]
-    (F : IntermediateField k L) (R : Subalgebra k L) (hR : R.FG) (u : L) :
-    ∃ A : Subalgebra F L, Algebra.FiniteType F A ∧ R ≤ A.restrictScalars k ∧ u ∈ A := by
-  classical
-  obtain ⟨s, rfl⟩ := hR
-  refine ⟨Algebra.adjoin F (↑(insert u s) : Set L), ?_, ?_, ?_⟩
-  · exact (Subalgebra.fg_iff_finiteType _).1 ⟨_, rfl⟩
-  · refine Algebra.adjoin_le fun x hx => ?_
-    have : x ∈ Algebra.adjoin F (↑(insert u s) : Set L) :=
-      Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_insert_of_mem (Finset.mem_coe.1 hx)))
-    exact this
-  · exact Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_insert_self _ _))
 
 private lemma exists_algHom_extend_of_fg_ne_zero {k L M : Type*} [Field k] [Field L] [Algebra k L]
     [Field M] [IsAlgClosed M] [Algebra k M] (F : IntermediateField k L) (σ : F →ₐ[k] M)
@@ -120,27 +97,6 @@ theorem _root_.GlobalTheory.exists_specialisation_finite {k L : Type*} [Field k]
     show ((ρ₁ c : algebraicClosure k L) : L) = c
     rw [hfix c hcL]
     rfl
-
-theorem exists_algHom_apply_eq_of_transcendental {k L : Type*} [Field k] [Field L] [Algebra k L]
-    [IsAlgClosed L] (R : Subalgebra k L) (hR : R.FG) (c : R) (hc : Transcendental k (c : L))
-    (t : L) (ht : Transcendental k t) : ∃ ρ : R →ₐ[k] L, ρ c = t := by
-  let F : IntermediateField k L := IntermediateField.adjoin k {(c : L)}
-  let σ : F →ₐ[k] L := (IntermediateField.val _).comp
-    ((RatFunc.algEquivOfTranscendental t ht).toAlgHom.comp
-      (RatFunc.algEquivOfTranscendental (c : L) hc).symm.toAlgHom)
-  have hσ : σ (IntermediateField.AdjoinSimple.gen k (c : L)) = t := by
-    change ((RatFunc.algEquivOfTranscendental t ht)
-      ((RatFunc.algEquivOfTranscendental (c : L) hc).symm
-        (IntermediateField.AdjoinSimple.gen k (c : L))) : L) = t
-    rw [RatFunc.algEquivOfTranscendental_symm_gen, RatFunc.algEquivOfTranscendental_X]
-  obtain ⟨A, hA, hRA, -⟩ := exists_fg_subalgebra_over F R hR 0
-  obtain ⟨φ, hφ⟩ := exists_ringHom_extend_of_finiteType F A L σ.toRingHom
-  let ι : R →+* A :=
-    { toFun := fun x => ⟨x.1, hRA x.2⟩
-      map_one' := rfl, map_mul' := fun _ _ => rfl, map_zero' := rfl, map_add' := fun _ _ => rfl }
-  refine ⟨{ φ.comp ι with commutes' := fun a => ?_ }, ?_⟩
-  · exact (hφ (algebraMap k F a)).trans (σ.commutes a)
-  · exact (hφ (IntermediateField.AdjoinSimple.gen k (c : L))).trans hσ
 
 theorem _root_.GlobalTheory.specialisation_numberField_and_countable_values :
     ∀ (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k] (R : Subalgebra k ℂ), R.FG →

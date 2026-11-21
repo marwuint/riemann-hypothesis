@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralUnitBallRayAverageLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralUnitBallRayAverageLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormLeLintegralRayIteratedFDerivStatement
 open MeasureTheory Filter Topology Set Module
 open scoped ENNReal
@@ -124,7 +124,7 @@ theorem weighted_lintegral_sobolev_pointwise : ∀ {E : Type} [NormedAddCommGrou
           exact inter_subset_left
       _ ≤ ENNReal.ofReal (1 / (m.factorial : ℝ)) * (ENNReal.ofReal (1 / ((m : ℝ) + 1)) * ∫⁻ y, Ψ y ∂μ) := by
           gcongr
-          exact GlobalTheory.T.lintegral_unit_ball_ray_average_le μ Ψ m hΨm hdim
+          exact _root_.GlobalTheory.rayAvg_bound μ Ψ m hΨm hdim
       _ = c * ∫⁻ z, ENNReal.ofReal (‖z‖ ^ k * ‖iteratedFDeriv ℝ (m + 1) G z‖) ∂μ := by
           rw [hI, hc, mul_assoc]
   have h2 : a * β ≤ 2 * (c * ∫⁻ z, ENNReal.ofReal (‖z‖ ^ k * ‖iteratedFDeriv ℝ (m + 1) G z‖) ∂μ) := by

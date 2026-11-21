@@ -105,8 +105,6 @@ def Iso (X X' : GMod n) : Prop := ∃ e : X.V ≃ₗ[ℂ] X'.V, ∀ a b x, e (X.
 
 def triv (n : ℕ) : GMod n := ⟨ℂ, 0, fun a b c d => by simp⟩
 
-theorem isSimple_triv : IsSimple (triv n) := ⟨inferInstanceAs (Nontrivial ℂ), fun S _ => eq_bot_or_eq_top (α := Submodule ℂ ℂ) S⟩
-
 def StepChar : Prop :=
   ∀ (n : ℕ) (X : GMod n) (χ : Fin n → ℂ) (s : Fin n), HasChar X χ → HasChar (step X (χ s)) (χ + Pi.single s 1)
 

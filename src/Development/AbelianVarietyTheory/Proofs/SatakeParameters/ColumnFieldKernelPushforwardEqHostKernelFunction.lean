@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelThetaAdmissibleLattices
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HostHomToColumnFieldHomMemPeriodLatticeIffStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HostHomToColumnFieldHomMemTwistedLatticeIffStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PrimeSetExponentTransportFieldIsomorphismStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HostHomToColumnFieldHomMemPeriodLatticeIff
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HostHomToColumnFieldHomMemTwistedLatticeIff
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PrimeSetExponentTransportFieldIsomorphism
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComplexCoordinatesColumnFieldIdentificationStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RepsOfEqImageStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RepsOfEqImage
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.UG Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV Formalism.L2.Forms Formalism.L2.PairingIndexBounds.F Formalism.MainNotions.G.KAat GlobalTheory.TwU GlobalTheory.TwV
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -43,14 +43,14 @@ theorem seam_kerTh : ∀ {D : D7} {X : Fields} (s : Seam D X), s.Ok → ∀ {cc 
   have hθ := KerMove.eNat_fixed (s.lat N) (s.lat N') B χ hcc hδ hVec hA
   have := KerMove.tau_nonempty D
   have hΦ := hDat.invOn (fun τ => TaylorLogMetric.embT D τ) δ (embH_inj _ hδ0)
-  have hper := GlobalTheory.T.hostHomToColumnFieldHom_mem_periodLattice_iff s hs B χ cD SS cl N N'
+  have hper := _root_.GlobalTheory.TwV.SeamPer.seamHom_mem_perO s hs B χ cD SS cl N N'
   have hemb := GlobalTheory.T.complexCoordinates_columnFieldIdentification s hs δ (a := a) (b := b)
-  have hexp := GlobalTheory.T.primeSetExponent_transport_fieldIsomorphism s hs SS
+  have hexp := _root_.GlobalTheory.TwU.SeamExp.expS_seam s hs SS
   have hΛ := hemb.2.2.1 _ _ hper
-  have hAh := hemb.2.2.1 _ _ (GlobalTheory.T.hostHomToColumnFieldHom_mem_twistedLattice_iff s _ _ hper cl (fun Q => -expS SS Q)
+  have hAh := hemb.2.2.1 _ _ (_root_.GlobalTheory.SeamTwist.seamHom_mem_twO s _ _ hper cl (fun Q => -expS SS Q)
     (fun Q => -expS (SS.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding) Q)
     (fun P => by simp only [hexp]))
-  have hBh := hemb.2.2.1 _ _ (GlobalTheory.T.hostHomToColumnFieldHom_mem_twistedLattice_iff s _ _ hper cl (expS SS)
+  have hBh := hemb.2.2.1 _ _ (_root_.GlobalTheory.SeamTwist.seamHom_mem_twO s _ _ hper cl (expS SS)
     (expS (SS.map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv s.iE)).toEmbedding)) hexp)
   have hdat : onV (fun τ => TaylorLogMetric.embT D τ) δ (fun x => Ξ (seamHom s x)) = fun v => onV (X.embC s.σ₀) δ Ξ (seamT s a b v) :=
     funext fun v => (hemb.2.2.2 hδ0 Ξ v).symm
@@ -63,7 +63,7 @@ theorem seam_kerTh : ∀ {D : D7} {X : Fields} (s : Seam D X), s.Ok → ∀ {cc 
   funext z
   unfold Seam.push kerTh thC xiV
   rw [hdat, hvec]
-  exact GlobalTheory.T.xiL_two_alt _ _ _ _ (seamT s a b) (HV_seamT s _) (alV_seamT s _ _) _ _ _ _ _ _ hyp hΛ hAh hBh
+  exact _root_.GlobalTheory.TwU.XiTwo.xiL_two _ _ _ _ (seamT s a b) (HV_seamT s _) (alV_seamT s _ _) _ _ _ _ _ _ hyp hΛ hAh hBh
     ⟨_, repsOf_spec _ _ hI.1⟩ ⟨_, repsOf_spec _ _ hI.2.1⟩ ⟨_, repsOf_spec _ _ hI.2.2⟩ 1 _ _ hθ' hΦ' z
 
 end GlobalTheory.TwU.SeamKer

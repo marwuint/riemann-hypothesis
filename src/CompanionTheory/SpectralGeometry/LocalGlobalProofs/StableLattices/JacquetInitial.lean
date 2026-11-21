@@ -256,7 +256,7 @@ theorem nil_key (F : Filt X A) (B : GradBasis A) (W' : Submodule ℂ (Module.Dua
     have := hX a b c d
     simp only [E']
     split_ifs at this ⊢ <;> simpa using this)
-  have key := GlobalTheory.T.capelliDet_block_levi_congr_mod_upperBlockIdeal ↥(stabD W') (dims n B.j) B.hj E' hE' Y
+  have key := _root_.GlobalTheory.CapHC.qdet_blocks_congr ↥(stabD W') (dims n B.j) B.hj E' hE' Y
   set D := qdet (Eb X B) (Y + ((n : ℂ) - 1) / 2) with hD
   set b := (List.ofFn fun i : Fin 3 => Qb X B i Y).prod with hb
   have hval : ∀ y ∈ Submodule.span ℂ {y : ↥(stabD W') | ∃ (p q : Fin n) (w : ↥(stabD W')),

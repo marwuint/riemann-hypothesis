@@ -1,9 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMeromorphicRootOfMemModularFunctionTowerUnStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneCodiscreteGermIdentityAndUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TendstoMobCodiscreteWithinStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusUpperHalfPlanePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMeromorphicRootOfMemModularFunctionTowerUn
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneCodiscreteGermIdentityAndUnits
+import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
+import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
+import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
+import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TendstoMobCodiscreteWithin
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusUpperHalfPlaneProperties
 
 noncomputable section
 
@@ -83,7 +87,7 @@ theorem exists_both_ne_zero {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs)
 
 theorem comp_eventually {φ ψ : ℂ → ℂ} (γ : SL(2, ℤ)) (h : ∀ᶠ z in codiscreteWithin Hs, φ z = ψ z) :
     ∀ᶠ z in codiscreteWithin Hs, φ (mob (ofSL γ) z) = ψ (mob (ofSL γ) z) :=
-  (GlobalTheory.T.tendsto_mob_codiscreteWithin_codiscreteWithin (ofSL γ)).eventually h
+  (_root_.GlobalTheory.FN.tendsto_mob_codiscreteWithin (ofSL γ)).eventually h
 
 theorem const_of_pow_eq {u v : ℂ → ℂ} (hu : DifferentiableOn ℂ u Hs) (hv : DifferentiableOn ℂ v Hs) {m : ℕ}
     (hm : 0 < m) (h : ∀ z ∈ Hs, u z ^ m = v z ^ m) {z₀ : ℂ} (hz₀ : z₀ ∈ Hs) (hv0 : v z₀ ≠ 0) :
@@ -279,7 +283,7 @@ theorem finite_mod_powers : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgCl
   let Sset := {f : X.Kˣ // f ∈ X.Un m ∧ ∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) (f : X.K) = f}
   have hroot : ∀ f : Sset, ∃ a b : ℂ → ℂ, DifferentiableOn ℂ a Hs ∧ DifferentiableOn ℂ b Hs ∧ (b : Mero) ≠ 0 ∧
       X.an (f.1 : X.K) * (b : Mero) ^ m = (a : Mero) ^ m :=
-    fun f => GlobalTheory.T.exists_meromorphic_root_of_mem_modularFunctionTower_Un ε X hε hj m hm f.1 f.2.1
+    fun f => _root_.GlobalTheory.KZ.MeroRoot.exists_mero_root ε X hε hj m hm f.1 f.2.1
   choose A B hA hB hB0 hAB using hroot
   have hAnz : ∀ f : Sset, ∃ z ∈ Hs, A f z ≠ 0 := by
     intro f

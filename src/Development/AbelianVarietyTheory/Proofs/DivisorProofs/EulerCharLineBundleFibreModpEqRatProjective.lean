@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyHomologyEquiv
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsLocalizedModuleResBasicOpenOfQcqs
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHomologyModPrimeUniversalCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankZmodTensorHomologyZeroOfNoPTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHomologyModPrimeUniversalCoefficients
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankZmodTensorHomologyZeroOfNoPTorsion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRatHomologyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechComplexLineBundleTermTorsionFreeCharZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechComplexLineBundleTermTorsionFreeCharZero
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CechPic GlobalTheory.ProjVar GlobalTheory.TrueGeo
 open GlobalTheory.LB (toMod)
@@ -81,7 +81,7 @@ theorem altSum (C : CochainComplex (ModuleCat.{0} ℤ) ℕ) (p : ℕ) [Fact p.Pr
   have h1 : ∀ n ∈ Finset.range m, (-1 : ℤ) ^ n * (Module.finrank (ZMod p) ((((ModuleCat.extendScalars
       (Int.castRingHom (ZMod p))).mapHomologicalComplex (ComplexShape.up ℕ)).obj C).homology n) : ℤ) =
       (-1 : ℤ) ^ n * (a n + a (n + 1) - r (n + 1)) := fun n _ => by
-    rw [GlobalTheory.T.finrank_homology_mod_prime_universal_coefficients C p hinj hfin n]
+    rw [_root_.GlobalTheory.uct_mod_p C p hinj hfin n]
   have h2 : ∀ n ∈ Finset.range m, (-1 : ℤ) ^ n * (Module.finrank ℚ ((((ModuleCat.extendScalars
       (Int.castRingHom ℚ)).mapHomologicalComplex (ComplexShape.up ℕ)).obj C).homology n) : ℤ) =
       (-1 : ℤ) ^ n * r n := fun n _ => by
@@ -89,7 +89,7 @@ theorem altSum (C : CochainComplex (ModuleCat.{0} ℤ) ℕ) (p : ℕ) [Fact p.Pr
   rw [Finset.sum_congr rfl h1, Finset.sum_congr rfl h2, alternating_sum_range_telescoping_identity]
   have h0 : a 0 = r 0 := by
     simp only [a, r]
-    exact_mod_cast GlobalTheory.T.finrank_zmod_tensor_homology_zero_of_noPTorsion C p (hinj 0) (hfin 0)
+    exact_mod_cast _root_.GlobalTheory.finrank_zmod_tensor_homology_zero C p (hinj 0) (hfin 0)
   rw [h0, hr0 m le_rfl, ha0 m le_rfl]
   ring
 
@@ -127,7 +127,7 @@ theorem chi_fibres_LB {X Xp Xq : Scheme.{0}} [IsIntegral X] [CompactSpace X]
   obtain ⟨m, Dc, hD, hc⟩ := exists_fin_affine_cover (X := X) (V := ⊤) isCompact_univ
   have hD' := isAffineOpen_finset_biInf hD
   have hinj : ∀ (n : ℕ) (x : (cechLB f M Dc).X n), (p : ℤ) • x = 0 → x = 0 :=
-    fun n x => GlobalTheory.T.cechComplexLineBundle_term_torsionFree_charZero hX f M Dc n (p : ℤ) (by exact_mod_cast (Fact.out : p.Prime).ne_zero) x
+    fun n x => _root_.GlobalTheory.CechPic.cechLB_X_noZSMulDivisors hX f M Dc n (p : ℤ) (by exact_mod_cast (Fact.out : p.Prime).ne_zero) x
   have hz : ∀ n, m ≤ n → IsZero ((cechLB f M Dc).X n) :=
     fun n hn => isZero_cechLB_X f M Dc (by simpa using hn)
   have hfin' : ∀ n, Module.Finite ℤ ((cechLB f M Dc).homology n) := by

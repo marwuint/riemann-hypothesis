@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsOrthFull
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.NormalizedDegreeOrthogonalSumStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.NormalizedDegreeFullRankSublatticeStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.NormalizedDegreeFullRankSublattice
 
 open GroundTheory.Heights₂.Heights NumberField TensorProduct ComplexAt GlobalTheory.CompanionTheory.Ar Matrix
 open scoped BigOperators ComplexOrder
@@ -38,7 +38,7 @@ theorem two_sum_neg_degree_W : ∀ (K : Type) [Field K] [NumberField K] (E : Her
             Module.finrank (𝓞 K) E.carrier * Real.log |(d : ℝ)| := by
   intro K _ _ E Ψ _ j k A h
   obtain ⟨hdeg, hrk⟩ := iSup_part_degree_rank A h
-  obtain ⟨hle, hge⟩ := GlobalTheory.T.normalized_degree_full_rank_sublattice K E (⨆ a, A.part a) hrk
+  obtain ⟨hle, hge⟩ := _root_.GlobalTheory.CompanionTheory.Ar.IndexBound.full_sublattice_normDegree_bounds K E (⨆ a, A.part a) hrk
   have hflat : ∑ τ, A.flatDeg τ =
       ∑ τ, E.normDegree (A.W τ).top - ∑ τ, E.normDegree (A.S τ).top := by
     simp only [GlobalTheory.CompanionTheory.Ar.FlagPair.flatDeg, Finset.sum_sub_distrib]

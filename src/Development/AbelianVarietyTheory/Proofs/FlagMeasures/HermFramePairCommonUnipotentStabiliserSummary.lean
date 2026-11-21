@@ -67,14 +67,6 @@ theorem _root_.GlobalTheory.UnipStab.orth_X {y : V}
 
 variable {F}
 
-theorem step {g : V →ₗ[K] V} (hg : F.InN g) (a : ℕ) {x : V} (hx : x ∈ F.Xa (a + 1)) :
-    g x - x ∈ F.Xa a := by
-  have : F.Xa (a + 1) ≤ (F.Xa a).comap (g - LinearMap.id) := by
-    refine Submodule.span_le.2 ?_
-    rintro _ ⟨b, hb, rfl⟩
-    exact Xa_mono F (Nat.lt_succ_iff.1 hb) (hg.2.2.1 b)
-  exact this hx
-
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
@@ -159,17 +151,6 @@ theorem _root_.GlobalTheory.UnipStab.inN_mul {s t : V ≃ₗ[K] V} (hs : F.InN (
     have h2 : s y - y ∈ F.X := hsy y hy
     have := add_mem h1 h2
     rwa [map_sub, sub_add_sub_cancel] at this
-
-theorem symm_mem [FiniteDimensional K V] (s : V ≃ₗ[K] V) (S : Submodule K V)
-    (h : ∀ x ∈ S, s x ∈ S) {x : V} (hx : x ∈ S) : s.symm x ∈ S := by
-  have h1 : S.map (s : V →ₗ[K] V) = S := by
-    apply Submodule.eq_of_le_of_finrank_eq
-    · rintro _ ⟨y, hy, rfl⟩
-      exact h y hy
-    · exact LinearEquiv.finrank_map_eq s S
-  rw [← h1] at hx
-  obtain ⟨y, hy, rfl⟩ := hx
-  simpa using hy
 
 open NumberField in
 open scoped Pointwise ENNReal Classical in

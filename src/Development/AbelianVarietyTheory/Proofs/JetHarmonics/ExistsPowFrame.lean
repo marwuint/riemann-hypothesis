@@ -7,8 +7,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.Leve
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermFunPf
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ProdSumReindex
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGenOfTop
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GermExistsUniqueLinearBis
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalJetsReindexFinStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValCongr
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalJetsReindexFin
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
@@ -92,7 +92,7 @@ theorem jetCoef_smul {V F κ : Type} [CommRing V] [CommRing F] (φ : V →+* F) 
 theorem jets : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → AJetSt := by
   intro hL _ _ hT V _ _ _ _ ϖ hϖ D A G _ _ U κ _ _ z hz τ hτ hτT Q hQ Φ M0 r b hΦ0 hM0 hb hbw F _ _ _ _ _ v hv q n hq hn f
   have hLB := U.LG.isLB
-  obtain ⟨x, hx, hM⟩ := GlobalTheory.T.universalJets_reindex_fin V G κ z hz _ (Fintype.equivFin κ).symm
+  obtain ⟨x, hx, hM⟩ := _root_.GlobalTheory.PowGerm.univConv V G κ z hz _ (Fintype.equivFin κ).symm
   obtain ⟨ψ, -, hψ⟩ := hM n
   obtain ⟨τ', hτ', hvτ⟩ := exists_pow_frame hLB (ψ : Chart.JetR V (Fin (Fintype.card κ)) n →+* Jet V κ n)
     (ψ.symm : Jet V κ n →+* Chart.JetR V (Fin (Fintype.card κ)) n) (RingHom.ext fun a => ψ.apply_symm_apply a)
@@ -122,7 +122,7 @@ theorem jets : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → AJetSt 
     (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left (UnifPre.gFK (R := V) (G := G) F)
     (fun _ => UnifPre.gFK (R := V) (G := G) F) (fun _ => (Category.comp_id _).symm) σ
     (fun i => lam * algebraMap V F (c i))
-  obtain ⟨g, hg⟩ := (GlobalTheory.T.germ_existsUnique_linear V D A G U κ z hz τ hτ F q).2.2 hτT σ'
+  obtain ⟨g, hg⟩ := (_root_.GlobalTheory.GermBasic.main V D A G U κ z hz τ hτ F q).2.2 hτT σ'
   refine ⟨∑ i, (lam * algebraMap V F (c i)) • θ i, σ', g, lam, GermJets.nuGe_sum _ _ _ fun i _ => ?_,
     ⟨l, _, σ, fa, hexp, hσ', GermJets.secLin_comb _ hθ⟩, hg, hlam0, ⟨gm, hlam, hle⟩, ?_⟩
   · have hci : (0 : WithTop ℚ) ≤ v (algebraMap V F (c i)) := by

@@ -58,46 +58,6 @@ theorem toΓ_omSecIso_hom (s : X ⟶ Sp k) (q : ℕ) (U : AffOp X) (x : OmU s U.
     letI := algΓ s
     sectionsOn.toΓ (Omega s q) U.unop.1 (((omSecIso s q).hom.app U).hom x) = toOm s q U.unop.1 x := rfl
 
-section Pair
-
-variable {s : X ⟶ Sp k} {s' : X' ⟶ Sp k} {f : X' ⟶ X}
-
-def pairPtX' (hf : f ≫ s = s') : CoefMap (RingHom.id k) (OPt s) (OPair f s') :=
-  ptCoef (F := OPair f s') (fun p ↦ affPt s' p.unop.1.1 ≫ f)
-    (fun p ↦ (Category.assoc _ _ _).trans
-      ((congrArg (fun g ↦ affPt s' p.unop.1.1 ≫ g) hf).trans (affPt_w s' p.unop.1.1)))
-    (fun _ _ a ↦ (Category.assoc _ _ _).symm.trans
-      (congrArg (· ≫ f) (affPt_res s' (Pair.le_fst (leOfHom a.unop)))))
-
-def pairPtX (hf : f ≫ s = s') : CoefMap (RingHom.id k) (OPt s) (OPair f s') where
-  G := pairSnd f ⋙ (affCoef s).G
-  α p := (pairPull (over_id hf)).α p
-  naturality φ b := (pairPull (over_id hf)).naturality φ b
-  smul p r b := (pairPull (over_id hf)).smul p r b
-
-def secPullAlg (hf : f ≫ s = s') (p : Pair f) :
-    (OPt s).obj ((pairPtX hf).G.obj (op p)) ⟶ (OPt s).obj ((pairPtX' hf).G.obj (op p)) :=
-  CommAlgCat.ofHom
-    { toRingHom := secPull s s' p
-      commutes' := fun r ↦ by
-        have e := semiHom_secPull (over_id hf) p r 1
-        simp only [smul_eq_mul, mul_one, map_one] at e
-        rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]
-        exact e }
-
-def pairPtθ (hf : f ≫ s = s') : (pairPtX hf).G ⟶ (pairPtX' hf).G where
-  app p := ⟨secPullAlg hf p.unop, secPull_affPt s s' p.unop⟩
-  naturality p q a := AffPt.hom_ext (CommAlgCat.hom_ext (AlgHom.ext fun b ↦
-    ((pairPull (over_id hf)).naturality a b)))
-
-theorem pairPtθ_compat (hf : f ≫ s = s') (q : ℕ) (p : (Pair f)ᵒᵖ)
-    (x : (OmF (OPt s) q).obj ((pairPtX hf).G.obj p)) :
-    (omMor (pairPtX' hf) q).τ p (((OmF (OPt s) q).map ((pairPtθ hf).app p)).hom x) =
-      (omMor (pairPtX hf) q).τ p x :=
-  SemiHom.mOm_mOm _ _ _ (fun _ ↦ rfl) x
-
-end Pair
-
 section PairSec
 
 variable {s : X ⟶ Sp k} {s' : X' ⟶ Sp k} {f : X' ⟶ X}

@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LineSCShortExact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormsFrameIndependentClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormsFrameIndependentClosed
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
+open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.LineForm
 open scoped Classical
 
 set_option autoImplicit false
@@ -105,7 +106,7 @@ theorem c1F_isRealForm_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [Is
       ContDiffAt ℝ 2 (fun v => (L.φ σ).φ a (x.ch.symm v)) x.crd := by
     intro a x hx
     exact ((vInfAt_iff_cInfAt.2 (L.cInf σ a _ hx)).contDiffAt_chart x.1.1 x.2).of_le (by norm_cast)
-  obtain ⟨hfr, hP⟩ := GlobalTheory.T.chernForms_frame_independent_closed (hX.atlas σ) (ι := Unit) (fun a => ptsIn p σ (L.B.U a)) (fun _ => isOpen_ptsIn _)
+  obtain ⟨hfr, hP⟩ := _root_.GlobalTheory.ChernFrame.chern_frame_closed (hX.atlas σ) (ι := Unit) (fun a => ptsIn p σ (L.B.U a)) (fun _ => isOpen_ptsIn _)
     (fun y => ⟨_, mem_pick L.isLB y⟩) (fun a b y => Matrix.of fun _ _ => gv p σ L.B a b y)
     (fun a b _ _ c => (AlgChart.holo c _ _).mono fun _ hv => ⟨hv.1, mem_ptsIn_inf.2 ⟨hv.2.1, hv.2.2⟩⟩)
     (fun a y => Matrix.of fun _ _ => ((Real.exp (-(L.φ σ).φ a y) : ℝ) : ℂ))

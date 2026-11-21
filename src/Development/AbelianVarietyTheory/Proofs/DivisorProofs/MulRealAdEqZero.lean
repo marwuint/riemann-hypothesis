@@ -70,26 +70,6 @@ theorem isPairing_trP (κ : Type) [Fintype κ] : IsPairing (trP F κ) where
     have h := hy (Pi.single i b)
     simpa [trP, Pi.single_apply, ite_mul, Finset.sum_ite_eq', mul_comm] using h
 
-theorem omega_nondeg {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {P : V → V → ℝ} (h : IsPairing P)
-    (v : V × V) (hv : ∀ w, omega P v w = 0) : v = 0 := by
-  have h0L : ∀ y, P 0 y = 0 := fun y => by
-    have h3 := h.addL 0 0 y
-    simp only [add_zero] at h3
-    linarith
-  have h0R : ∀ x, P x 0 = 0 := fun x => by
-    have h3 := h.addR x 0 0
-    simp only [add_zero] at h3
-    linarith
-  have h1 : v.1 = 0 := h.nondegL _ fun y => by
-    have h3 : P v.1 y - P 0 v.2 = 0 := hv (0, y)
-    rw [h0L, sub_zero] at h3
-    exact h3
-  have h2 : v.2 = 0 := h.nondegR _ fun x => by
-    have h3 : P v.1 0 - P x v.2 = 0 := hv (x, 0)
-    rw [h0R, zero_sub, neg_eq_zero] at h3
-    exact h3
-  exact Prod.ext h1 h2
-
 variable (F) in
 
 def evH : AF F →+* mixedEmbedding.mixedSpace F :=
@@ -141,17 +121,6 @@ theorem lift_loc (x : κ → AF F) : liftV (locV x) = realAd F 1 • x := by
   simp only [liftV, locV, evI, RingEquiv.symm_apply_apply, realAd, LinearMap.inl_apply, map_one]
   exact Prod.ext (one_mul _).symm (zero_mul _).symm
 
-theorem mul_realAd_eq_zero (a : AF F) (ha : evI F a = 0) : a * realAd F 1 = 0 := by
-  have h1 : a.1 = 0 := by
-    have h2 := congrArg (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ha
-    simp only [evI, RingEquiv.symm_apply_apply, map_zero] at h2
-    exact h2
-  refine Prod.ext ?_ ?_
-  · show a.1 * (realAd F 1).1 = 0
-    rw [h1, zero_mul]
-  · show a.2 * (realAd F 1).2 = 0
-    simp only [realAd, LinearMap.inl_apply, mul_zero]
-
 end Trace
 
 section Gram
@@ -171,41 +140,12 @@ theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β
   refine Finset.sum_congr rfl fun j _ => ?_
   ring
 
-theorem hTens_mul (JA : Matrix α α E) (JB : Matrix β β E) (P : Matrix β p E) (Q : Matrix β q E)
-    (a : Matrix α p E) (b : Matrix α q E) :
-    hTens c JA JB (a * Pᵀ) (b * Qᵀ) = ∑ i, ∑ k, JA i k * (a * (Pᵀ * JB * Q.map c) * (b.map c)ᵀ) i k := by
-  rw [hTens_eq]
-  have hm : (b * Qᵀ).map c = b.map c * Qᵀ.map c := Matrix.map_mul (f := (c : E →+* E))
-  rw [hm, Matrix.transpose_mul, Matrix.transpose_map, Matrix.transpose_transpose]
-  simp only [Matrix.mul_assoc]
-
 end Gram
 
 section Model
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
-
-theorem incM_gram {p q k : Type} [Fintype k] (P : Matrix k p E) (J : Matrix k k E) (Q : Matrix k q E) :
-    (incM F P)ᵀ * incM F J * (incM F Q).map (cA σ) = incM F (Pᵀ * J * Q.map σ) := by
-  have hinc : ∀ {p q r : Type} [Fintype q] (A : Matrix p q E) (B : Matrix q r E),
-      incM F (A * B) = incM F A * incM F B := fun A B => Matrix.map_mul
-  have hincT : ∀ {p q : Type} (A : Matrix p q E), incM F Aᵀ = (incM F A)ᵀ := fun A => (Matrix.transpose_map).symm
-  have hQ : (incM F Q).map (cA σ) = incM F (Q.map σ) := by
-    ext i j
-    simp only [incM, Matrix.map_apply]
-    first
-      | simp [cA, inclR]
-      | rfl
-      | simp [cA]
-  rw [hQ, hinc, hinc, hincT]
-
-theorem gram_apply {p q : Type} {m : ℕ} (P : Matrix (Fin m) p E) (J : Matrix (Fin m) (Fin m) E)
-    (Q : Matrix (Fin m) q E) (i : p) (j : q) :
-    (Pᵀ * J * Q.map σ) i j = form σ J (fun a => P a i) (fun b => Q b j) := by
-  simp only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec,
-    Finset.sum_mul, Finset.mul_sum, mul_assoc]
-  exact Finset.sum_comm
 
 variable (M : Model σ X W)
 
@@ -247,28 +187,6 @@ theorem omega_coordI (u u' : Matrix (Fin n) (Fin d) (AE F E)) :
   rw [show sympM (σ := σ) X W u u' = _ from M.co.form u u']
   simp only [omega, trP, coordI, locV, dotProduct, map_sub, map_sum, map_mul, evI_eq]
 
-theorem sympM_add_right (M : Model σ X W) (u v v' : Matrix (Fin n) (Fin d) (AE F E)) :
-    sympM (σ := σ) X W u (v + v') = sympM (σ := σ) X W u v + sympM (σ := σ) X W u v' := by
-  simp only [sympM]
-  unfold symp hTens
-  simp only [Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]
-
-theorem sympM_anti (M : Model σ X W) (u v : Matrix (Fin n) (Fin d) (AE F E)) :
-    sympM (σ := σ) X W u v = -sympM (σ := σ) X W v u := by
-  have h1 := M.co.form u v
-  have h2 := M.co.form v u
-  simp only [sympM]
-  rw [h1, h2]
-  ring
-
-theorem sympM_eq_zero {p q : Type} [Fintype p] [Fintype q] (P : Matrix (Fin d) p E) (Q : Matrix (Fin d) q E)
-    (h : Pᵀ * W.J * Q.map σ = 0) (a : Matrix (Fin n) p (AE F E)) (b : Matrix (Fin n) q (AE F E)) :
-    sympM (σ := σ) X W (a * (incM F P)ᵀ) (b * (incM F Q)ᵀ) = 0 := by
-  simp only [sympM]
-  unfold symp
-  rw [hTens_mul, incM_gram, h]
-  simp [incM, Matrix.map_zero]
-
 end Model
 
 section Main
@@ -281,42 +199,7 @@ theorem incM_one' : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
     | exact Matrix.map_one _ (map_zero _) (map_one _)
     | (ext i j; simp [incM, Matrix.one_apply]; split_ifs <;> simp)
 
-theorem vecMulVec_eq_mul (y : Fin n → AE F E) (x : Fin d → E) :
-    Matrix.vecMulVec y (incV F x) = Matrix.replicateCol Unit y * (incM F (Matrix.replicateCol Unit x))ᵀ := by
-  ext i j
-  first
-    | simp [Matrix.vecMulVec_apply, Matrix.mul_apply, incM, incV]
-    | simp [Matrix.vecMulVec_apply, Matrix.mul_apply, incM]
-
 variable {B : Base F E} {r' s' i₀ i₁ : ℕ} {H' : Plane E d d₁}
-
-theorem gram_xx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
-    (Matrix.replicateCol Unit H'.x)ᵀ * W.J * (Matrix.replicateCol Unit H'.x).map σ = 0 := by
-  ext i j
-  rw [gram_apply, Matrix.zero_apply]
-  exact hA.xx
-
-theorem gram_yy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
-    (Matrix.replicateCol Unit H'.y)ᵀ * W.J * (Matrix.replicateCol Unit H'.y).map σ = 0 := by
-  ext i j
-  rw [gram_apply, Matrix.zero_apply]
-  exact hA.yy
-
-theorem gram_ιx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
-    H'.ιᵀ * W.J * (Matrix.replicateCol Unit H'.x).map σ = 0 := by
-  ext i j
-  rw [gram_apply, Matrix.zero_apply]
-  have h := (hA.orth (Pi.single i 1)).1
-  rw [Matrix.mulVec_single_one] at h
-  exact h
-
-theorem gram_ιy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
-    H'.ιᵀ * W.J * (Matrix.replicateCol Unit H'.y).map σ = 0 := by
-  ext i j
-  rw [gram_apply, Matrix.zero_apply]
-  have h := (hA.orth (Pi.single i 1)).2
-  rw [Matrix.mulVec_single_one] at h
-  exact h
 
 theorem span_plane (hS : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁) (z : Fin d → E) :
     ∃ (s t : E) (u : Fin d₁ → E), z = s • H'.x + H'.ι *ᵥ u + t • H'.y := by
@@ -371,8 +254,6 @@ theorem decomp (hS : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i�
   have hincT : ∀ {p q : Type} (A : Matrix p q E), incM F Aᵀ = (incM F A)ᵀ := fun A => (Matrix.transpose_map).symm
   have hincA : ∀ {p q : Type} (A B : Matrix p q E), incM F (A + B) = incM F A + incM F B := fun A B => Matrix.map_add _ (map_add _) A B
   simp only [Matrix.mul_assoc, ← hincT, ← hinc, ← Matrix.mul_add, ← hincA, ← hone, incM_one', Matrix.mul_one]
-
-abbrev trI (a : AF F) : ℝ := Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evH F a)
 
 end Final
 

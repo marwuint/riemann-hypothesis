@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ESmall
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumPrimeLogDivPredLeLogAdd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPrimesInvPredLeLoglogStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPrimesInvPredLeLoglog
 
 open GlobalTheory.RefSum GlobalTheory.CovTop GlobalTheory.BigTop
 
@@ -220,7 +220,7 @@ theorem primeSum_eOf : ∀ (F N k m M : ℕ) (Mb Sm : ℝ) (vd : ℕ → ℝ) (l
         have : (2:ℝ) ≤ q := by exact_mod_cast (mem_filter.1 hq).2.two_le
         have : (0:ℝ) < (q:ℝ) - 1 := by linarith
         positivity)
-      have h2 := GlobalTheory.T.sum_primes_inv_pred_le_loglog k hk3
+      have h2 := _root_.GlobalTheory.PrimeRecipSum.sum_inv_pred_le k hk3
       linarith
     · have : K = ∅ := by
         apply Finset.eq_empty_of_forall_notMem

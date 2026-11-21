@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
 import GroundTheory.AutomorphicForms.GeometricLemma
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementBlockOrderStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementParabolicStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementBlockOrder
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementParabolic
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEquivContinuousStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviDoubleCosetIntersectionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RefinedBlockOrderCompatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockCountReindexEquivsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviDoubleCosetIntersection
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RefinedBlockOrderCompat
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockCountReindexEquivs
 set_option maxSynthPendingDepth 1
 open GlobalTheory.SmGL
 open GroundTheory.Automorphic.Parabolic (levi parabolicInd jacquetRep JacquetModule sqrtModular leviIncl cellLeviSub normInducing unipotentRadical)
@@ -143,13 +143,13 @@ theorem cell_equiv (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) 
     simp only [Function.comp, ← hcell, Equiv.Perm.inv_def, Equiv.symm_apply_apply, hγ, blk_apply]
   have hP : ∀ p, p ∈ relParab k g ↔ φ' p ∈ cellLeviSub k β γ w := by
     intro p
-    rw [GlobalTheory.T.levi_refinement_block_order k e' g (β ∘ w) hδg p, Subgroup.mem_subgroupOf]
+    rw [_root_.GlobalTheory.CompanionTheory.CellCompare.mem_relParab_iff_leviEmb_mem_blockUpper k e' g (β ∘ w) hδg p, Subgroup.mem_subgroupOf]
     refine ⟨fun h => ⟨(φ' p).2, by rw [hφ']; exact h⟩, fun h => ?_⟩
     have := h.2
     rwa [hφ'] at this
   have hU : ∀ u, u ∈ relUnip k f ↔ φ u ∈ leviUnipotent k N β (γ ∘ ⇑w⁻¹) := by
     intro u
-    rw [GlobalTheory.T.levi_refinement_parabolic k e f (γ ∘ ⇑w⁻¹) hδf u, leviUnipotent, Subgroup.mem_subgroupOf, hφ]
+    rw [_root_.GlobalTheory.CompanionTheory.RelUnipBridge.mem_relUnip_iff_leviEmb_mem k e f (γ ∘ ⇑w⁻¹) hδf u, leviUnipotent, Subgroup.mem_subgroupOf, hφ]
   obtain ⟨hc, hc'⟩ := GlobalTheory.T.levi_equiv_continuous k e' γ φ' hφ'
   refine nonempty_indRep_comp_equiv φ' hc hc' (cellLeviSub k β γ w) (relParab k g) hP _ _
     (coinvEquiv ρ φ (relUnip k f) (leviUnipotent k N β (γ ∘ ⇑w⁻¹)) hU) ?_
@@ -165,14 +165,14 @@ theorem cell_equiv (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) 
   have hin : GroundTheory.Automorphic.Parabolic.leviInfIncl β (γ ∘ ⇑w⁻¹)
       (cellInnerHom β γ w (cellLeviSubIncl k β γ w b)) = φ (relEmb k f sq) := by
     apply Subtype.ext
-    rw [hφ, ← GlobalTheory.T.levi_double_coset_intersection k e β hβ e' f g w hcell p.1 p.2 hxm]
+    rw [hφ, ← _root_.GlobalTheory.CompanionTheory.GeomCell.innerMat k e β hβ e' f g w hcell p.1 p.2 hxm]
     show ((GroundTheory.Automorphic.Parabolic.leviProj k N β _ : levi k N β) : GL (Fin N) k) = _
     congr 2
     exact Subtype.ext (show permGL k w * (((b : levi k N γ)) : GL (Fin N) k) * (permGL k w)⁻¹ = _ by
       rw [hbG])
   have h4 : normLeviParSqrtModular k γ (β ∘ w) (cellLeviSubIncl k β γ w b) =
       ((relDeltaHalf k (fun j i => c i j) q : ℂˣ) : ℂ) :=
-    GlobalTheory.T.refined_block_order_compat k e' g γ (β ∘ w) hγ hδg (GlobalTheory.T.levi_refinement_block_order k e' g (β ∘ w) hδg) φ' hφ'
+    _root_.GlobalTheory.CompanionTheory.CellChar.normLeviParSqrtModular_eq_relDeltaHalf k e' g γ (β ∘ w) hγ hδg (_root_.GlobalTheory.CompanionTheory.CellCompare.mem_relParab_iff_leviEmb_mem_blockUpper k e' g (β ∘ w) hδg) φ' hφ'
       p.1 p.2 b.2
   have hmemh : ((φ (relEmb k f sq) : levi k N β) : GL (Fin N) k) ∈ leviPar k N β (γ ∘ ⇑w⁻¹) := by
     rw [← hin]
@@ -180,8 +180,8 @@ theorem cell_equiv (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) 
   have h5 : normLeviParInvSqrtModular k β (γ ∘ ⇑w⁻¹)
       (cellInnerHom β γ w (cellLeviSubIncl k β γ w b)) =
       (((relDeltaHalf k c sq)⁻¹ : ℂˣ) : ℂ) := by
-    have h6 := GlobalTheory.T.refined_block_order_compat k e f β (γ ∘ ⇑w⁻¹) hβ hδf
-      (GlobalTheory.T.levi_refinement_block_order k e f (γ ∘ ⇑w⁻¹) hδf) φ hφ (relEmb k f sq) (relEmb_mem_relParab k f sq)
+    have h6 := _root_.GlobalTheory.CompanionTheory.CellChar.normLeviParSqrtModular_eq_relDeltaHalf k e f β (γ ∘ ⇑w⁻¹) hβ hδf
+      (_root_.GlobalTheory.CompanionTheory.CellCompare.mem_relParab_iff_leviEmb_mem_blockUpper k e f (γ ∘ ⇑w⁻¹) hδf) φ hφ (relEmb k f sq) (relEmb_mem_relParab k f sq)
       hmemh
     rw [relProj_relEmb] at h6
     have h7 : cellInnerHom β γ w (cellLeviSubIncl k β γ w b) =
@@ -207,7 +207,7 @@ end
 
 theorem cell_iso : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α : Type} [Fintype α] [LinearOrder α] {N : ℕ} {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {β' : Type} [Fintype β'] [LinearOrder β'] {m' : β' → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)] (e : (Σ i, m i) ≃ Fin N) (β : Fin N → ℕ), (∀ x y, β x < β y ↔ blk e x < blk e y) → ∀ (φ : Levi k m ≃* levi k N β), (∀ g, ((φ g : levi k N β) : GL (Fin N) k) = leviEmb k e g) → ∀ (e' : (Σ j, m' j) ≃ Fin N) (γ : Fin N → ℕ), (∀ x y, γ x < γ y ↔ blk e' x < blk e' y) → ∀ (φ' : Levi k m' ≃* levi k N γ), (∀ g, ((φ' g : levi k N γ) : GL (Fin N) k) = leviEmb k e' g) → ∀ {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k m) W) (w : Equiv.Perm (Fin N)), ∃ (f : ∀ i, (Σ j, Fin ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card)) ≃ m i) (g : ∀ j, (Σ i, Fin ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card)) ≃ m' j), Nonempty (Representation.Equiv ((indRep (cellLeviSub k β γ w) (normInducing (ρ.comp φ.symm.toMonoidHom) γ w)).comp φ'.toMonoidHom) (cellFunctor f g ρ)) := by
   intro k _ _ _ _ α _ _ N m _ _ β' _ _ m' _ _ e β hβ φ hφ e' γ hγ φ' hφ' W _ _ ρ w
-  obtain ⟨f, g, hcell⟩ := GlobalTheory.T.block_count_reindex_equivs e e' w
+  obtain ⟨f, g, hcell⟩ := _root_.GlobalTheory.CompanionTheory.Cell.cell_row_column_partitions e e' w
   exact ⟨f, g, cell_equiv f g e β hβ φ hφ e' γ hγ φ' hφ' ρ w hcell⟩
 
 end GlobalTheory.CompanionTheory.GeomCell

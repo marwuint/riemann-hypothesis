@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.SatPowNonvan
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BcParamEqOfSatUEq
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryBorelSplittingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryBorelSplitting
 
 noncomputable section
 
@@ -115,7 +115,7 @@ theorem frobU_of_split (hsplit : BorelSplitU) : FrobU := by
     exact hinj (congrArg Subtype.val hab)
   · exact Subtype.ext (heq g v)
 
-theorem frobU : FrobU := frobU_of_split GlobalTheory.T.unitary_borel_splitting
+theorem frobU : FrobU := frobU_of_split _root_.GlobalTheory.CompanionTheory.BorelSplit.borelSplitU
 
 end GlobalTheory.CompanionTheory.FrobRec
 

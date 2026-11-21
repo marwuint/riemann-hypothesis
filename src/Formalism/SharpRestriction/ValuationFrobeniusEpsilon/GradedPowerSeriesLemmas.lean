@@ -18,8 +18,6 @@ def W : Fin a → Formalism.BasicNotions.V1.Wt 1 := fun v _ => wt v
 
 def cj (j : ℤ) : Formalism.BasicNotions.V1.Wt 1 := fun _ => j
 
-def mwt (n : Fin a →₀ ℕ) : ℤ := n.sum fun v k => (k : ℤ) * wt v
-
 abbrev Pring : Subalgebra O (MvPowerSeries (Fin a) O) := Formalism.MainNotions.UnusedSlot38.Psub O (W wt)
 
 abbrev PT : Type := ↥(Pring O wt)
@@ -198,22 +196,6 @@ variable {O : Type} [CommRing O] {a : ℕ} (wt : Fin a → ℤ) (Jh : Ideal (MvP
 
 def PofJ : Ideal (PT O wt) := Jh.comap (Pring O wt).val
 
-def toA : PT O wt →ₐ[O] Formalism.MainNotions.UnusedSlot38.Asub (W wt) Jh :=
-  ((Formalism.MainNotions.UnusedSlot38.mk Jh).comp (Pring O wt).val).codRestrict _ (fun f => ⟨f, f.2, rfl⟩)
-
-theorem toA_surj : Function.Surjective (toA wt Jh) := by
-  rintro ⟨y, f, hf, rfl⟩
-  exact ⟨⟨f, hf⟩, rfl⟩
-
-theorem ker_toA : RingHom.ker (toA wt Jh) = PofJ wt Jh := by
-  ext f
-  rw [RingHom.mem_ker, Subtype.ext_iff]
-  exact Ideal.Quotient.eq_zero_iff_mem
-
-def equivA : AT (PofJ wt Jh) ≃ₐ[O] Formalism.MainNotions.UnusedSlot38.Asub (W wt) Jh :=
-  (Ideal.quotientEquivAlgOfEq O (ker_toA wt Jh).symm).trans
-    (Ideal.quotientKerAlgEquivOfSurjective (toA_surj wt Jh))
-
 end Bridge
 
 def IsOl (O : Type) [CommRing O] (l : ℕ) : Prop := Formalism.MainNotions.UnusedSlot38.IsCoeff O l ∧ Irreducible (l : O)
@@ -247,52 +229,10 @@ def LemmaM' : Prop :=
         ∀ f : PT O wt, Ideal.Quotient.mk _ (Dt (mkA 𝔓 f)) = φ x (mkS 𝔓 F G E1 E2 Z f)) →
     Module.length O MM ≤ VPrime 𝔓 F
 
-def LemmaM'fg : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ), IsOl O l →
-  ∀ (a : ℕ) (wt : Fin a → ℤ) (𝔓 : Ideal (PT O wt)) (r s r' s' m : ℕ)
-    (F : Fin (r + 1) → PT O wt) (G : Fin s → PT O wt) (E1 : Fin r' → PT O wt)
-    (E2 : Fin s' → PT O wt) (Z : Fin m → PT O wt),
-  DataM 𝔓 F G E1 E2 Z →
-  ∀ (MM : Type) [AddCommGroup MM] [Module O MM] [Module.Finite O MM] (k₀ : ℕ), 1 ≤ k₀ →
-  ∀ φ : MM →+ (ST 𝔓 F G E1 E2 Z →ₗ[O] O ⧸ Ideal.span {(l : O) ^ k₀}),
-    Function.Injective φ →
-    (∀ x : MM, IsDerS 𝔓 F G E1 E2 Z (φ x) ∧
-      (∀ j : ℤ, j ≠ -1 → ∀ f, IsHom j f → φ x (mkS 𝔓 F G E1 E2 Z f) = 0) ∧
-      ∃ Dt : AT 𝔓 →ₗ[O] O, IsDerA 𝔓 Dt ∧
-        (∀ j : ℤ, j ≠ -1 → ∀ f, IsHom j f → Dt (mkA 𝔓 f) = 0) ∧
-        ∀ f : PT O wt, Ideal.Quotient.mk _ (Dt (mkA 𝔓 f)) = φ x (mkS 𝔓 F G E1 E2 Z f)) →
-    IsFiniteLength O MM ∧ Module.length O MM ≤ VPrime 𝔓 F
-
-set_option linter.unusedVariables false in
-
-def adm1 (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D) : Prop := Formalism.MainNotions.UnusedSlot38.FiniteTypeRingPart
-
-def admitted (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D) : Prop := adm1 D V
-
 set_option linter.unusedVariables false in
 
 def Conclusion1 (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D) : Prop := LemmaM
 set_option linter.unusedVariables false in
 
 def Conclusion2 (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D) : Prop := LemmaM'
-set_option linter.unusedVariables false in
-
-def LemmaMPrimeFinitelyGenerated (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D) : Prop := LemmaM'fg
-
-def Conclusion₂ (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D) : Prop := Conclusion1 D V ∧ Conclusion2 D V
-
-def Stmt (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D) : Prop := admitted D V → Conclusion₂ D V
-
-section Family
-
-variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (VF : ∀ x (i : Fm.Ix x), Formalism.BasicNotions.VData (Fm.D x i))
-
-def OrbitValuationBound : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Conclusion₂ (Fm.D x i) (VF x i)
-
-def AdmF : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, admitted (Fm.D x i) (VF x i)
-
-def KudlaFamilyStatement : Prop := AdmF Fm VF → OrbitValuationBound Fm VF
-
-end Family
-
 end Formalism.MainNotions.GradedPowerSeriesLemmas

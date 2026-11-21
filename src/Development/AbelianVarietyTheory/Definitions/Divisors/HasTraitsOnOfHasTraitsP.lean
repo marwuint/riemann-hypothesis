@@ -116,62 +116,7 @@ def LatTo {V' : Type} [CommRing V'] [IsDomain V'] [IsLocalRing V'] {ev' : X₁.M
 
 theorem LatTo.refl : 𝔪.LatTo 𝔪 := ⟨AddEquiv.refl _, fun _ _ => rfl, fun _ _ h => h⟩
 
-omit 𝔪 in
-
-theorem nonempty_of_regular (hact : IsAct X₁ act) (hz : X₁.S.R ≤ X₁.M.O z₁) (hV : IsCN V)
-    (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (hev : IsLocalHom ev) (L : Type) [AddCommGroup L] [Subsingleton L]
-    (hL : I → L → L) : Nonempty (GMem X₁ z₁ act V ev L (fun _ => 1) hL) := by
-  have sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁ := fun w => by
-    have : X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁) := ⟨w, rfl⟩
-    rwa [Scheme.range_fromSpecStalk] at this
-  let yV : X₁.S.R →+* V := (RatModel.valLoc (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) z₁ (sp _)).comp
-    (Subalgebra.inclusion hz).toRingHom
-  let P := StrictPull.polPull X₁.ρ.P (spMap yV)
-  letI := P.isAb.comm
-  obtain ⟨D, A, U, ψ, hX, hψ, hL', hE⟩ := Sep.exists_unif_good hV P
-  have r : LBIso P.L (X₁.ρ.P.L.pull (pullback.fst X₁.ρ.P.A.hom (spMap yV))) := PolBaseChange.lbIso_refl P.isLB
-  obtain ⟨wl, hwl⟩ := LBIso.trans A.isLB (pull_isLB P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hL' (lbIso_pull_comp r ψ)
-  haveI := hV.2.2.2
-  obtain ⟨r₀, hr₀, -, -, hu⟩ := (PsiCoordLocal.main V D hV.2.1 0).1
-  refine ⟨{
-    cn := hV
-    loc := hev
-    reg := fun a ha => RatModel.O_le_of_specializes (sp _) (hz ha)
-    yK := (algebraMap V (FractionRing V)).comp yV
-    yK_eq := fun a => (RatModel.val_spMap_comp (M := X₁.M) (algebraMap V (FractionRing V)) _ (sp _) ⟨a.1, hz a.2⟩).symm
-    D := D
-    e₈ := ⟨⟨fun _ => 0, fun _ => 0, fun _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩,
-      fun _ _ => Subsingleton.elim _ _⟩
-    G := P.A
-    semi := isSemiAbelian_of_isAbelianScheme _ P.isAb
-    A := A
-    U := U
-    φ := ψ ≫ pullback.fst X₁.ρ.P.A.hom (spMap yV)
-    cart := (hψ.comp (isGrpPullback_pullback X₁.ρ.P.A (spMap yV))).congr
-      (Spec.map_comp (CommRingCat.ofHom yV) (CommRingCat.ofHom (algebraMap V (FractionRing V)))).symm rfl
-    wl := wl
-    wl_gen := hwl
-    equiv := fun a => ?_
-    psi := fun mu => ⟨(hu rfl).unit, ?_⟩ }⟩
-  · have := hact a
-    obtain ⟨E, h⟩ := hE ((Over.pullback (spMap yV)).map (act a))
-      (inferInstanceAs (IsMonHom ((Over.pullback (spMap yV)).map (act a))))
-    refine ⟨E, ?_, fun _ => Subsingleton.elim _ _⟩
-    exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h).trans ((Category.assoc _ _ _).trans
-      ((congrArg (ψ ≫ ·) (pullback.lift_fst _ _ _)).trans (Category.assoc _ _ _).symm)))
-  · rw [_root_.mul_one]
-    exact hr₀
-
 end GMem
-
-theorem exists_gMem (X₁ : GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (h : IsAct X₁ act) :
-    ∃ (z₁ : X₁.M.Z) (ev : X₁.M.Z.presheaf.stalk z₁ →+* X₁.Ω₁),
-      Nonempty (GMem X₁ z₁ act X₁.Ω₁ ev PUnit (fun _ => 1) (fun _ x => x)) := by
-  refine ⟨_, (Scheme.stalkClosedPointTo (R := CommRingCat.of X₁.Ω₁) X₁.M.pt).hom,
-    GMem.nonempty_of_regular h ?_ ⟨inferInstance, inferInstance, ?_, X₁.ar.char⟩ _ inferInstance _ _⟩
-  · exact le_top.trans ((congrArg X₁.M.O (X₁.M.pt_apply _)).trans X₁.M.O_genericPoint).ge
-  · rw [IsLocalRing.maximalIdeal_eq_bot]
-    infer_instance
 
 def IsGeo {O : Type} [CommRing O] {bar : O → O} {q s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} (X₁ : GSet) (z₁ : X₁.M.Z)
     (act : O → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam) (Φ : VPre bar q W (X₁.M.Z.presheaf.stalk z₁))
@@ -230,42 +175,6 @@ def Tower.Ext {X₁ : GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : 
     (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') : Prop :=
   IsLocalHom ev₂ ∧ ∀ x x₂, 𝔗.X₂.M.stalkHom z₂ x₂ = algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁ (X₁.M.stalkHom z₁ x) → ev₂ x₂ = io (ev x)
 
-def Tower.self (X₁ : GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (h : IsAct X₁ act) : Tower X₁ act where
-  X₂ := X₁
-  act₂ := act
-  isAct := h
-  alg := Algebra.id _
-  fd := inferInstance
-  gal := inferInstance
-  d := 1
-  lev := by simp
-  om := RingHom.id _
-  om_eq _ := rfl
-  om_fin := RingHom.Finite.id _
-  sR _ := RingHom.id _
-  sR_eq σ a := (σ.commutes a).symm
-  p := 𝟙 _
-  p_fin := inferInstance
-  p_pt := by
-    rw [show spMap (algebraMap X₁.Ω₁ X₁.Ω₁) = 𝟙 _ from Spec.map_id _]; simp
-  φ := 𝟙 _
-  cart := by rw [show spMap (RingHom.id X₁.S.R) = 𝟙 _ from Spec.map_id _]; exact Wit.grpPullback_id _
-  lb := ⟨Wit.idPull _, Wit.idPull_isGen X₁.ρ.P.isLB⟩
-  act_eq _ := by simp
-  lam := AddMonoidHom.id _
-  lam_pt a := by
-    rw [show spMap (RingHom.id X₁.S.R) = 𝟙 _ from Spec.map_id _]; exact (Category.comp_id _).trans (Category.id_comp _).symm
-  lam_range a := ⟨a, by simp⟩
-  gl _ := AddMonoidHom.id _
-  gl_pt σ a := by
-    rw [show spMap (RingHom.id X₁.S.R) = 𝟙 _ from Spec.map_id _]; exact (Category.id_comp _).symm
-  gl_lam _ _ := rfl
-
-theorem Tower.self_ext {X₁ : GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (h : IsAct X₁ act) {z₁ : X₁.M.Z} {V : Type} [CommRing V]
-    (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (hev : IsLocalHom ev) :
-    (Tower.self X₁ act h).Ext (z₁ := z₁) (z₂ := z₁) ev (RingHom.id V) ev :=
-  ⟨hev, fun _ _ e => congrArg ev (X₁.M.stalkHom_injective z₁ e)⟩
-
 theorem Tower.d_pos {X₁ : GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (T : Tower X₁ act) : 0 < T.d := by
   rcases Nat.eq_zero_or_pos T.d with h | h
   · have h1 := T.lev
@@ -316,20 +225,6 @@ def ofUMem {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) 
   equiv := fun p => 𝔪.equiv p.1.1 p.1.2 p.2
   psi := 𝔪.psi
 
-theorem isAct_ofSetup {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
-    (h : GlobalTheory.Poinc.Sep.IsAct X₁ act) (k : I → Matrix (Fin 8) (Fin 8) ℤ) : IsAct (ofSetup X₁) (fun a => act (k a)) :=
-  fun a => h.isMonHom (k a)
-
-theorem exists_gMem_ofSetup (X₁ : Setup F W i) : ∃ act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A),
-    GlobalTheory.Poinc.Sep.IsAct X₁ act ∧ (∀ (I : Type) (k : I → Matrix (Fin 8) (Fin 8) ℤ), IsAct (ofSetup X₁) (fun a => act (k a))) ∧
-    ∃ (z₁ : X₁.M.Z) (ev : X₁.M.Z.presheaf.stalk z₁ →+* X₁.Ω₁), Nonempty
-      (GMem (I := {p : Matrix (Fin 8) (Fin 8) ℤ × Matrix (Fin 8) (Fin 8) ℤ //
-          (W + W.transpose) * p.2 = p.1.transpose * (W + W.transpose)})
-        (ofSetup X₁) z₁ (fun p => act p.1.1) X₁.Ω₁ ev (Fin 8 → PUnit) (mono W (m := 0) Fin.elim0 Fin.elim0)
-        (fun p mu u => ∑ v, p.1.2 u v • mu v)) :=
-  let ⟨act, h, z₁, ev, ⟨𝔪⟩⟩ := exists_uMem X₁
-  ⟨act, h, fun _ k => isAct_ofSetup h k, z₁, ev, ⟨ofUMem 𝔪⟩⟩
-
 def ofTower {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     (k : I → Matrix (Fin 8) (Fin 8) ℤ) (𝔗 : GlobalTheory.Poinc.Sep.Tower X₁ act) : Tower (ofSetup X₁) (fun a => act (k a)) where
   X₂ := ofSetup 𝔗.X₂
@@ -364,12 +259,6 @@ theorem ofTower_ext {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (
     [CommRing V] [CommRing V'] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (io : V →+* V')
     (ev₂ : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') :
     (ofTower k 𝔗).Ext (z₁ := z₁) (z₂ := z₂) ev io ev₂ ↔ 𝔗.Ext ev io ev₂ := Iff.rfl
-
-theorem deep_ofSetup {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
-    (k : I → Matrix (Fin 8) (Fin 8) ℤ) (h : ∀ N₀ : ℕ, ∃ 𝔗 : GlobalTheory.Poinc.Sep.Tower X₁ act, N₀ ≤ 𝔗.X₂.S.r * 𝔗.X₂.S.N) :
-    Deep (ofSetup X₁) (fun a => act (k a)) := fun N₀ =>
-  let ⟨𝔗, h𝔗⟩ := h N₀
-  ⟨ofTower k 𝔗, h𝔗⟩
 
 end Siegel
 
@@ -408,15 +297,6 @@ abbrev IsMemberP (N₁ : ℕ) {φ : InvFun (𝓞 E)} {V : Type} [CommRing V] [Is
     (Cm : GlobalTheory.UChart.MonoFam Xo c φ V) (ξ : Sp V ⟶ pullback C.z (spMap C.b)) (y : Φ.Y) (ρ : V →+* Φ.V y)
     (e : Φ.X y ≃ₗ[𝓞 E] Cm.P.D.toPre.X) (h : Fin (Φ.m y) ≃ Fin Cm.m) : Prop :=
   GlobalTheory.USep.IsMemberP ζ Φ N₁ Cm ξ y ρ e h
-
-theorem hasTraitsOn_of_hasTraitsP (h : GlobalTheory.USep.HasTraitsP ζ Φ) (U : M.Opens) : HasTraitsOn ζ Φ U :=
-  fun T ev h₁ h₂ _ => h T ev h₁ h₂
-
-theorem hasTraitsOn_top : HasTraitsOn ζ Φ ⊤ ↔ GlobalTheory.USep.HasTraitsP ζ Φ :=
-  ⟨fun h T ev h₁ h₂ => h T ev h₁ h₂ (Set.subset_univ _), fun h => hasTraitsOn_of_hasTraitsP ζ Φ h ⊤⟩
-
-theorem hasTraitsOn_of_hasTraits {N₁ : ℕ} {Ψ : VSys (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] N₁ (M.presheaf.stalk z₁)}
-    (h : GlobalTheory.USep.HasTraits ζ Ψ) (U : M.Opens) : HasTraitsOn ζ Ψ.pre U := fun T ev h₁ h₂ _ => h T ev h₁ h₂
 
 end Unitary
 

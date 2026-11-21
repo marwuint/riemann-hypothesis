@@ -1,15 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CmCurveGoodOutsidePrimePremises
 import Development.AbelianVarietyTheory.Definitions.Divisors.DatumOfIsIntegersLattice
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSqrtNegPrimeKernelDatumOfIntegersLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRescaledLatticeProdDerivWeierstrassPMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSqrtNegPrimeKernelDatumOfIntegersLattice
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRescaledLatticeProdDerivWeierstrassPMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralOfModelAtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationSubringComplexOverPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralJOfNonrealMultiplierStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegersLatticeInvariantsNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadraticTwistCmCurveModelDiscriminantNegPrimeCuStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMinimalOfDiscrEqUnitMulNegCubeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCastNotMemCubePrimeAdjoinJInvariantSqrtNegStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsValuationSubringComplexOverPrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralJOfNonrealMultiplier
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegersLatticeInvariantsNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuadraticTwistCmCurveModelDiscriminantNegPrimeCu
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMinimalOfDiscrEqUnitMulNegCube
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCastNotMemCubePrimeAdjoinJInvariantSqrtNeg
 
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField
@@ -47,17 +50,17 @@ namespace GlobalTheory.Published
 theorem cmCurveGoodOutsidePrime : CMCurveGoodOutsidePrimeSt := by
   intro p hp h4 h3
   obtain ⟨L₀, hL₀⟩ := exists_isIntegersLattice (p := p) hp.pos
-  obtain ⟨-, -, hms⟩ := GlobalTheory.T.integersLattice_g2_g3_ne_zero_and_mulStable p L₀ hp h3 hL₀
+  obtain ⟨-, -, hms⟩ := _root_.GlobalTheory.CMModel.integersLattice_invariants_ne_zero p L₀ hp h3 hL₀
   have him : (sqrtNegNat p).im ≠ 0 := by
     simp only [sqrtNegNat, Complex.mul_im, Complex.ofReal_re, Complex.I_im, Complex.ofReal_im,
       Complex.I_re, mul_one, mul_zero, add_zero]
     exact (Real.sqrt_pos.mpr (by exact_mod_cast hp.pos)).ne'
-  have hjint := GlobalTheory.T.isIntegral_j_of_nonreal_multiplier L₀ (sqrtNegNat p) hms him
+  have hjint := _root_.GlobalTheory.CMModel.LatticeJInt.main L₀ (sqrtNegNat p) hms him
   have hjQ : IsIntegral ℚ (latticeCurve L₀).j := hjint.tower_top
   haveI : FiniteDimensional ℚ ℚ⟮(latticeCurve L₀).j⟯ := IntermediateField.adjoin.finiteDimensional hjQ
   haveI hNF : NumberField ℚ⟮(latticeCurve L₀).j⟯ := NumberField.of_module_finite ℚ _
-  obtain ⟨L₁, t₁, hD₁, hj₁⟩ := GlobalTheory.T.exists_sqrtNegPrimeKernelDatum_of_integersLattice p L₀ hp h4 h3 hL₀
-  obtain ⟨L, t, hD, hj, hsq⟩ := GlobalTheory.T.exists_rescaled_lattice_prodDerivWeierstrassP_mem p _ L₁ t₁ hp h4 h3 hD₁
+  obtain ⟨L₁, t₁, hD₁, hj₁⟩ := _root_.GlobalTheory.CMModel.exists_datum_of_isIntegersLattice p L₀ hp h4 h3 hL₀
+  obtain ⟨L, t, hD, hj, hsq⟩ := _root_.GlobalTheory.CMModel.exists_datum_sqProd_mem p _ L₁ t₁ hp h4 h3 hD₁
   set F := ℚ⟮(latticeCurve L₀).j⟯ with hFdef
   have hg₂ : -L.g₂ / 4 ∈ F := div_mem (neg_mem hD.g₂_mem) (ofNat_mem _ 4)
   have hg₃ : -L.g₃ / 4 ∈ F := div_mem (neg_mem hD.g₃_mem) (ofNat_mem _ 4)
@@ -82,8 +85,8 @@ theorem cmCurveGoodOutsidePrime : CMCurveGoodOutsidePrimeSt := by
   haveI hE : A.IsElliptic := ⟨Ne.isUnit hΔA⟩
   have hmin : HasMinimalDiscriminant A (-(p : F) ^ 3) := by
     intro w
-    obtain ⟨V, hV⟩ := GlobalTheory.T.exists_valuationSubring_complex_restrict_eq_at_prime F w
-    have hloc := GlobalTheory.T.quadraticTwist_cmCurve_model_discriminant_negPrimeCube p F L t hp h4 h3 hD hsq V
+    obtain ⟨V, hV⟩ := _root_.GlobalTheory.CMModel.exists_valuationSubring_complex_over_prime F w
+    have hloc := _root_.GlobalTheory.CMModel.twist_modelAt_all p F L t hp h4 h3 hD hsq V
     have hD0 : (-(p : F) ^ 3) ≠ 0 :=
       neg_ne_zero.mpr (pow_ne_zero _ (by exact_mod_cast hp.ne_zero))
     have hmod : ModelAt V F (A.map (algebraMap F ℂ)) ((-(p : F) ^ 3 : F) : ℂ) := by
@@ -91,8 +94,8 @@ theorem cmCurveGoodOutsidePrime : CMCurveGoodOutsidePrimeSt := by
       convert hloc using 1
       push_cast; rfl
     obtain ⟨C, u, hI, hΔ⟩ := GlobalTheory.T.exists_variableChange_isIntegral_of_modelAt F w V A _ hV hD0 hmod
-    have hram := GlobalTheory.T.natCast_notMem_cube_prime_adjoin_jInvariant_sqrtNeg p L₀ w hp hL₀
-    exact ⟨C, u, GlobalTheory.T.isMinimal_of_discr_eq_unit_mul_neg_prime_cube p F w (C • A) u hram hI hΔ, hΔ⟩
+    have hram := _root_.GlobalTheory.CMModel.natCast_notMem_pow_three_adjoin_j p L₀ w hp hL₀
+    exact ⟨C, u, _root_.GlobalTheory.CMModel.isMinimal_of_discr_eq_unit_mul_neg_cube p F w (C • A) u hram hI hΔ, hΔ⟩
   refine ⟨F, hNF, A, ⟨hNF, hE, L₀, hL₀, rfl, ?_, hmin.hasGoodReductionOutside⟩, hmin⟩
   have e1 : ((A.j : F) : ℂ) = (A.map (algebraMap F ℂ)).j := (A.map_j (algebraMap F ℂ)).symm
   haveI : (shortTwist dC (-L.g₂ / 4) (-L.g₃ / 4)).IsElliptic := hmap ▸ inferInstance

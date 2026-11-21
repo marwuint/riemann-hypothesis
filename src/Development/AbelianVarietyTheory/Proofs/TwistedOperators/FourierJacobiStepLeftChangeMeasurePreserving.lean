@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StepLin
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PeriodStepInvMulPointShapeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ValuationDetStageVariablesEmbedGLEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PeriodStepInvMulPointShape
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ValuationDetStageVariablesEmbedGLEqOne
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix ValuativeRel GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.ExpansionInvariance GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.RootEx
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
@@ -138,7 +138,7 @@ theorem left_change : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
     exact (congrArg (·⁻¹) hκ).trans inv_one
   have hdet : valuation k M.det = 1 := by
     rw [hMdef, hg, mul_embX, det_mul, map_mul, det_unip _ (inv_mem hv), map_one, mul_one]
-    exact GlobalTheory.T.valuation_det_stageVariables_embedGL_eq_one (n' := n') (c := c) κ⁻¹ hκ'
+    exact _root_.GlobalTheory.StepLeft.valuation_det_stepLin_embX (n' := n') (c := c) κ⁻¹ hκ'
   have hM0 : IsUnit M.det := isUnit_iff_ne_zero.2 fun h => by rw [h, map_zero] at hdet; exact zero_ne_one hdet
   have hcont : ∀ (A : Matrix (StepVar n c n') (StepVar n c n') k) (w : StepVar n c n' → k),
       Continuous fun e : StepVar n c n' → k => A.mulVec e + w := fun A w =>
@@ -155,7 +155,7 @@ theorem left_change : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   refine ⟨φ, mp_affine ν M hdet b, fun e => ?_⟩
   change g * stepPt x₀ e = stepPt ((κ⁻¹).val * x₀) (M.mulVec e + b)
   rw [hMdef, hb, ← affine]
-  exact GlobalTheory.T.periodStep_inv_mul_point_shape v hv κ x₀ e
+  exact _root_.GlobalTheory.StepLeft.inv_mul_stepPt_shape v hv κ x₀ e
 
 end GlobalTheory.StepLeft
 

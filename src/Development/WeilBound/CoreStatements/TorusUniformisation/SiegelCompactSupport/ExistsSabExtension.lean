@@ -1,10 +1,24 @@
 import Mathlib
-import Development.WeilBound.CoreStatements.TorusUniformisation.SiegelCompactSupport.SiegProperSt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SiegelAtOfKnownTheorem
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSabExtension
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRigidifiedCubicalSymmetricExtensionNormalB
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabMapIdOfCommonGeneric
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalStructureAndSymmetricOfCubeGenStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HomExtensionSemiAbelianDiscreteValuationRingStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HomExtensionSemiAbelianDiscreteValuationRing
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigidSys
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Splits
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GtBaseChangeSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.TopAmpExists
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ArcFamSt
+import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
+import Development.AbelianVarietyTheory.PublishedTheorems.SemistableReduction₂.SemistableReductionSt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsPullCubicalId
 
 noncomputable section
@@ -23,7 +37,7 @@ theorem pic_ext {X U : Scheme.{0}} [IsLocallyNoetherian X] (hX : Geo.Tor.IsNorma
     α = β := by
   obtain ⟨N, hN, hc⟩ := cls_surj (α - β)
   refine sub_eq_zero.1 (hc ▸ (cls_eq_zero_iff hN).2 ?_)
-  refine GlobalTheory.T.exists_lineBundleGenerator_extending_densePart X U j hX inferInstance inferInstance inferInstance inferInstance P e N he hp hg hN
+  refine _root_.GlobalTheory.GenericExtend.exists_isGen_of_densePart X U j hX inferInstance inferInstance inferInstance inferInstance P e N he hp hg hN
     ((cls_eq_zero_iff (pull_isLB hN _)).1 ?_) ((cls_eq_zero_iff (pull_isLB hN _)).1 ?_)
   · rw [cls_pull hN, hc, map_sub, h₂, sub_self]
   · rw [cls_pull hN, hc, ← hj.isoPullback_inv_fst, pull_comp, map_sub, h₁, sub_self, map_zero]
@@ -174,46 +188,5 @@ theorem exists_sab_extension {X U : Scheme.{0}} [IsLocallyNoetherian X] (hX : Ge
 end PositivityTheory.Member.SiegelModularCharts.K6
 
 namespace PositivityTheory.Member.SiegelModularCharts
-
-theorem tripleExt : TripleExtSt := by
-  intro E _ _ _ H X U j z hX hz₁ hz₂ hz₃ hj₁ hj₂ hj₃ hj₄ hU G _ semi t₀ a a₂ P hp h hsq hP hL
-  have := semi.comm
-  have : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian z
-  obtain ⟨-, -, hdom, -⟩ := densePart_basic X U j hj₁ hj₂ hj₃ hj₄
-  have := hdom (K6.isReduced_of_normal hX)
-  obtain ⟨_, _⟩ := ExtUnique.flat_and_isSeparated_of_isSemiAbelian G semi
-  obtain ⟨act, hact, -⟩ := ExtUnique.existsUnique_oAct_of_isGrpPullback h t₀.act fun x => by
-    obtain ⟨e, he, hφ⟩ := grpPullback_iso h (isGrpPullback_pullback G j)
-    have := t₀.act.hom x
-    obtain ⟨F, ⟨-, hFf⟩, -⟩ := GlobalTheory.T.existsUnique_hom_extension_semiAbelian_normal_base_alt GlobalTheory.T.homExtension_semiAbelian_discreteValuationRing X U j ⟨hX, z, hz₁, hz₂⟩ hj₁ hj₂ hj₃ hj₄ G G semi semi
-      (e.inv ≫ t₀.act.act x ≫ e.hom) inferInstance
-    refine ⟨F, ?_⟩
-    rw [← hφ, Category.assoc, ← ExtUnique.pullback_map_left_fst j F, hFf, ← Category.assoc, ← Category.assoc,
-      ← Over.comp_left, ← Over.comp_left, e.hom_inv_id_assoc]
-  let d : G ⟶ G2 G := lift (𝟙 G) (act.act H.w0)
-  let d₀ : t₀.G ⟶ G2 t₀.G := lift (𝟙 t₀.G) (t₀.act.act H.w0)
-  have hd : a ≫ d.left = d₀.left ≫ a₂ := by
-    have e₁ : d.left ≫ (fst G G).left = 𝟙 _ := by rw [← Over.comp_left, lift_fst, Over.id_left]
-    have e₂ : d.left ≫ (snd G G).left = (act.act H.w0).left := by rw [← Over.comp_left, lift_snd]
-    have e₃ : d₀.left ≫ (fst t₀.G t₀.G).left = 𝟙 _ := by rw [← Over.comp_left, lift_fst, Over.id_left]
-    have e₄ : d₀.left ≫ (snd t₀.G t₀.G).left = (t₀.act.act H.w0).left := by rw [← Over.comp_left, lift_snd]
-    apply pullback.hom_ext
-    · show (a ≫ d.left) ≫ (fst G G).left = (d₀.left ≫ a₂) ≫ (fst G G).left
-      rw [Category.assoc, Category.assoc, hsq.1, e₁, reassoc_of% e₃, Category.comp_id]
-    · show (a ≫ d.left) ≫ (snd G G).left = (d₀.left ≫ a₂) ≫ (snd G G).left
-      rw [Category.assoc, Category.assoc, hsq.2, e₂, reassoc_of% e₄, hact]
-  obtain ⟨PP, cub, h₁, h₂, h₃, m, hm⟩ := K6.exists_sab_extension hX j H G semi act t₀ a h hact (P.pull d.left)
-    (pull_isLB hP _) (by
-      refine (cls_eq_iff (pull_isLB (pull_isLB hP _) _) t₀.PP.isLB).1 ?_
-      have h₀ := (cls_eq_iff t₀.PP.isLB (isLB_cube _ t₀.PP.isLB)).2 t₀.prim
-      have h₁ := (cls_eq_iff (isLB_cube (x2 t₀.G) t₀.PP.isLB) (pull_isLB hP _)).2 hL
-      rw [cls_cube _ t₀.PP.isLB] at h₀ h₁
-      rw [cls_pull (pull_isLB hP _), cls_pull hP, ← pull_comp, hd, pull_comp, ← cls_pull hP a₂ (pull_isLB hP _), ← h₁,
-        pull_cubeCls_pre]
-      refine Eq.trans ?_ h₀.symm
-      congr 1
-      funext i
-      fin_cases i <;> simp [d₀, x2])
-  exact ⟨_, 𝟙 _, m, ObjRebase.isGrpPullback_id G, (Category.comp_id _).trans hm⟩
 
 end PositivityTheory.Member.SiegelModularCharts

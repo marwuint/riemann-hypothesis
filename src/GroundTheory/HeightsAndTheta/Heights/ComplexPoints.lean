@@ -69,13 +69,6 @@ theorem mem_complexPoints_iff (ρ : A →+* ℂ) (v : CP N) :
   · intro h
     exact le_of_homogeneous _ _ h
 
-theorem mk_mem_complexPoints_iff (ρ : A →+* ℂ) (w : Fin (N + 1) → ℂ) (hw : w ≠ 0) :
-    Projectivization.mk ℂ w hw ∈ X.complexPoints ρ ↔
-      ∀ d, ∀ f ∈ ProjSpace.grading A N d, f ∈ X.ideal → evalAt ρ w f = 0 := by
-  rw [mem_complexPoints_iff]
-  exact forall_congr' fun d => forall₂_congr fun f hf => imp_congr_right fun _ =>
-    mem_projPoint ρ w hw hf
-
 theorem isClosed_complexPoints (ρ : A →+* ℂ) : IsClosed (X.complexPoints ρ) := by
   have : X.complexPoints ρ = ⋂ d, ⋂ f ∈ {f | f ∈ ProjSpace.grading A N d ∧ f ∈ X.ideal},
       {v : CP N | f ∈ (projPoint ρ v).asHomogeneousIdeal} := by
@@ -99,12 +92,6 @@ lemma conj_mem_complexPoints {ρ : A →+* ℂ} {v : CP N} (hv : v ∈ X.complex
 def conjPoint (ρ : A →+* ℂ) (x : X.complexPoints ρ) :
     X.complexPoints ((starRingEnd ℂ).comp ρ) :=
   ⟨CP.conj x.1, X.conj_mem_complexPoints x.2⟩
-
-lemma continuous_conjPoint (ρ : A →+* ℂ) : Continuous (X.conjPoint ρ) :=
-  (CP.continuous_conj.comp continuous_subtype_val).subtype_mk _
-
-lemma conjPoint_conjPoint (ρ : A →+* ℂ) (x : X.complexPoints ρ) :
-    ((X.conjPoint ((starRingEnd ℂ).comp ρ) (X.conjPoint ρ x)) : CP N) = x := CP.conj_conj x.1
 
 theorem complexPoints_self (ρ : A →+* ℂ) : (self A N).complexPoints ρ = Set.univ := by
   ext v

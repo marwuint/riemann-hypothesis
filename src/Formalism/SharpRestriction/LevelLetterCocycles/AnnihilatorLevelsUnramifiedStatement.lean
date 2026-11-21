@@ -461,12 +461,6 @@ theorem ps_mul_eq (hR : RingP W) (s : ℕ) (i : ZMod n) :
     map_mul, map_mul]
   ring
 
-theorem γA_comm_pow (δ g : W.Gam) (k : ℕ) (a : LetA O n) :
-    W.γA δ ((W.γA g ^ k) a) = (W.γA g ^ k) (W.γA δ a) := by
-  induction k generalizing a with
-  | zero => simp
-  | succ k ih => rw [pow_succ, AlgHom.mul_apply, AlgHom.mul_apply, ih, γA_comm]
-
 theorem levGrad_of {R : Type} [CommRing R] [BinomialRing R] [Algebra R O] (hR : RingP W) (z : R)
     (hz : ((W.χΓ W.gam : Oˣ) : O) = algebraMap R O z) (hz1 : ((PD.p : ℕ) : R) ∣ z - 1) :
     LevGrad W := by

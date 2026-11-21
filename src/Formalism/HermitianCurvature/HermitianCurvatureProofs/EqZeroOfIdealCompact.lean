@@ -298,34 +298,6 @@ theorem rootsSeparated : Formalism.FourierDecayAlt.A6.RootsSeparated := by
       exact (mul_inv_eq_one.1 h').symm
     · rw [← mul_pow, sub_mul, one_mul, ← Units.val_mul, inv_mul_cancel_right]
 
-theorem blockParametrisation : Formalism.FourierDecayAlt.A6.Param := by
-  intro K _ m t c u' a b hu w hw
-  have hdet : IsUnit ((t : K) • u').det := by
-    rw [Matrix.det_smul, isUpUni_det _ hu, mul_one]; exact (t.isUnit.pow _)
-  constructor
-  · rw [fromBlocks_multiply, fromBlocks_multiply]
-    have h1 : a * w * ((t : K) • u') * ((t : K) • u')⁻¹ * ((t : K) • b) = a * w * ((t : K) • b) := by
-      rw [Matrix.mul_assoc (a * w), Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]
-    rw [h1]
-    congr 1 <;> simp [Matrix.mul_assoc, add_comm]
-  · intro i hi
-    have hi0 : ∀ j : Fin m, j ≠ i → u' j i = 0 := by
-      intro j hj
-      apply hu.1
-      have : i.val < j.val := by
-        have : j.val ≠ i.val := fun h => hj (Fin.ext h)
-        omega
-      exact this
-    rw [Matrix.mul_apply, Finset.sum_eq_single i]
-    · rw [Matrix.smul_apply, hu.2 i, Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]
-      · subst hw; simp [mul_comm]
-      · intro k _ hk; subst hw
-        have : i ≠ Fin.rev k := fun h => hk (by rw [h, Fin.rev_rev])
-        simp [this]
-      · simp
-    · intro j _ hj; rw [Matrix.smul_apply, hi0 j hj]; simp
-    · simp
-
 theorem smallModules : Formalism.FourierDecayAlt.A6.SmallModules := by
   intro K _ _ _ R ψ hD hn V hV
   obtain ⟨ϖ, hϖR, hϖ⟩ := hD.unif

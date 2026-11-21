@@ -85,13 +85,8 @@ theorem gaussNorm_single (k : ℤ) (c : K) (hρ : 0 < ρ) :
 theorem convergesAt_single' (k : ℤ) (c : K) (ρ : ℝ) : ConvergesAt (single k c).coeff ρ :=
   convergesAt_single k c ρ
 
-theorem convergesAt_add (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
-    ConvergesAt (f + g).coeff ρ := hf.add hρ hg
-
 theorem convergesAt_sub (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
     ConvergesAt (f - g).coeff ρ := hf.sub hρ hg
-
-theorem convergesAt_neg (hf : ConvergesAt f.coeff ρ) : ConvergesAt (-f).coeff ρ := hf.neg
 
 theorem gaussNorm_add_le' (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : ConvergesAt g.coeff ρ) :
     gaussNorm (f + g).coeff ρ ≤ max (gaussNorm f.coeff ρ) (gaussNorm g.coeff ρ) :=
@@ -99,11 +94,6 @@ theorem gaussNorm_add_le' (hρ : 0 < ρ) (hf : ConvergesAt f.coeff ρ) (hg : Con
 
 theorem gaussNorm_neg' (f : Robba K) (ρ : ℝ) : gaussNorm (-f).coeff ρ = gaussNorm f.coeff ρ :=
   gaussNorm_neg _ _
-
-theorem single_pow (k : ℤ) (n : ℕ) : (single k (1 : K)) ^ n = single (k * n) 1 := by
-  induction n with
-  | zero => simp
-  | succ n ih => rw [pow_succ, ih, single_mul_single]; congr 1 <;> push_cast <;> ring
 
 theorem exists_Ico_of_eventually {P : ℝ → Prop} (h : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), P ρ) :
     ∃ r, 0 < r ∧ r < 1 ∧ ∀ ρ, r ≤ ρ → ρ < 1 → P ρ := by
@@ -197,8 +187,6 @@ theorem U_add (i k : ℤ) : F.U (i + k) = cmul (F.U i) (F.U k) := by
   simp only [U, zpow_add, Units.val_mul, Robba.coeff_mul]
 
 theorem U_zero : F.U 0 = Pi.single 0 1 := by simp [U]
-
-theorem U_one : F.U 1 = F.u.coeff := by simp [U]
 
 def δ (ρ : ℝ) : ℝ := gaussNorm F.c.coeff ρ / ρ ^ F.q
 
@@ -611,18 +599,6 @@ def phi : Robba K →+* Robba K where
 
 theorem coeff_phi (f : Robba K) : (F.phi f).coeff = F.phiSeq f.coeff := rfl
 
-theorem phi_single (k : ℤ) (c : K) :
-    F.phi (Robba.single k c) = Robba.single 0 (F.σ c) * ((F.uu ^ k : (Robba K)ˣ) : Robba K) := by
-  ext m
-  rw [coeff_phi, Robba.coeff_single, phiSeq_single, Robba.coeff_single_mul]
-  simp [U]
-
-theorem phi_const (c : K) : F.phi (Robba.single 0 c) = Robba.single 0 (F.σ c) := by
-  rw [phi_single, zpow_zero, Units.val_one, mul_one]
-
-theorem phi_T : F.phi Robba.T = F.u := by
-  rw [Robba.T, phi_single, zpow_one, map_one, Robba.single_zero_one, one_mul, coe_uu]
-
 variable (F) in
 
 def spreadSeq (f : ℤ → K) (m : ℤ) : K := ∑' n, F.σ (f n) * (Pi.single ((F.q : ℤ) * n) (1 : K) : ℤ → K) m
@@ -730,56 +706,6 @@ theorem gaussNorm_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
   rw [← this]
   exact le_ciSup ⟨_, Set.forall_mem_range.2 (phiSeq_weight_le h1 h2 hf)⟩ _
 
-theorem domSet_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
-    (hf : ConvergesAt f (ρ ^ F.q)) (hf0 : f ≠ 0) :
-    domSet (F.phiSeq f) ρ = (fun n => (F.q : ℤ) * n) '' domSet f (ρ ^ F.q) := by
-  ext m
-  simp only [domSet, Set.mem_ofPred_eq, Set.mem_image, gaussNorm_phiSeq h1 h2 hf]
-  rw [(weight_phiSeq h1 h2 hf hf0 m).1]
-  constructor
-  · rintro ⟨n, hn, rfl⟩; exact ⟨n, hn, rfl⟩
-  · rintro ⟨n, hn, rfl⟩; exact ⟨n, hn, rfl⟩
-
-theorem phiSeq_ne_zero (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
-    (hf : ConvergesAt f (ρ ^ F.q)) (hf0 : f ≠ 0) : F.phiSeq f ≠ 0 := by
-  have hρ : 0 < ρ := F.r₀_pos.trans_le h1
-  intro h
-  have := gaussNorm_phiSeq h1 h2 hf
-  rw [h, gaussNorm_zero] at this
-  exact (gaussNorm_pos (by positivity) hf hf0).ne' this.symm
-
-theorem lowIndex_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
-    (hf : ConvergesAt f (ρ ^ F.q)) (hφ : ConvergesAt (F.phiSeq f) ρ) (hf0 : f ≠ 0) :
-    lowIndex (F.phiSeq f) ρ = (F.q : ℤ) * lowIndex f (ρ ^ F.q) := by
-  have hρ : 0 < ρ := F.r₀_pos.trans_le h1
-  have hρq : 0 < ρ ^ F.q := by positivity
-  have hφ0 := phiSeq_ne_zero h1 h2 hf hf0
-  have hD := domSet_phiSeq h1 h2 hf hf0
-  have hq : (0 : ℤ) < F.q := by exact_mod_cast F.q_pos
-  refine le_antisymm (lowIndex_le hρ hφ hφ0 ?_) ?_
-  · rw [hD]; exact ⟨_, lowIndex_mem hρq hf hf0, rfl⟩
-  · have hm := lowIndex_mem hρ hφ hφ0
-    rw [hD] at hm
-    obtain ⟨n, hn, he⟩ := hm
-    rw [← he]
-    exact mul_le_mul_of_nonneg_left (lowIndex_le hρq hf hf0 hn) hq.le
-
-theorem highIndex_phiSeq (h1 : F.r₀ ≤ ρ) (h2 : ρ < 1) {f : ℤ → K}
-    (hf : ConvergesAt f (ρ ^ F.q)) (hφ : ConvergesAt (F.phiSeq f) ρ) (hf0 : f ≠ 0) :
-    highIndex (F.phiSeq f) ρ = (F.q : ℤ) * highIndex f (ρ ^ F.q) := by
-  have hρ : 0 < ρ := F.r₀_pos.trans_le h1
-  have hρq : 0 < ρ ^ F.q := by positivity
-  have hφ0 := phiSeq_ne_zero h1 h2 hf hf0
-  have hD := domSet_phiSeq h1 h2 hf hf0
-  have hq : (0 : ℤ) < F.q := by exact_mod_cast F.q_pos
-  refine le_antisymm ?_ (le_highIndex hρ hφ hφ0 ?_)
-  · have hm := highIndex_mem hρ hφ hφ0
-    rw [hD] at hm
-    obtain ⟨n, hn, he⟩ := hm
-    rw [← he]
-    exact mul_le_mul_of_nonneg_left (le_highIndex hρq hf hf0 hn) hq.le
-  · rw [hD]; exact ⟨_, highIndex_mem hρq hf hf0, rfl⟩
-
 theorem eventually_phi (f : Robba K) : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), F.r₀ ≤ ρ ∧ ρ < 1 ∧
     ConvergesAt f.coeff (ρ ^ F.q) ∧ ConvergesAt (F.phi f).coeff ρ :=
   eventually_r₀_le.and ((eventually_mem_nhdsWithin (s := Set.Iio 1)).and
@@ -788,21 +714,6 @@ theorem eventually_phi (f : Robba K) : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), F.r₀ �
 theorem eventually_gaussNorm_phi (f : Robba K) :
     ∀ᶠ ρ in 𝓝[<] (1 : ℝ), gaussNorm (F.phi f).coeff ρ = gaussNorm f.coeff (ρ ^ F.q) :=
   (eventually_phi f).mono fun _ h => gaussNorm_phiSeq h.1 h.2.1 h.2.2.1
-
-theorem eventually_lowIndex_phi {f : Robba K} (hf : f ≠ 0) :
-    ∀ᶠ ρ in 𝓝[<] (1 : ℝ), lowIndex (F.phi f).coeff ρ = (F.q : ℤ) * lowIndex f.coeff (ρ ^ F.q) ∧
-      highIndex (F.phi f).coeff ρ = (F.q : ℤ) * highIndex f.coeff (ρ ^ F.q) := by
-  have hf0 : f.coeff ≠ 0 := fun h => hf (Robba.ext h)
-  exact (eventually_phi f).mono fun _ h =>
-    ⟨lowIndex_phiSeq h.1 h.2.1 h.2.2.1 h.2.2.2 hf0, highIndex_phiSeq h.1 h.2.1 h.2.2.1 h.2.2.2 hf0⟩
-
-theorem phi_injective : Function.Injective F.phi := by
-  rw [injective_iff_map_eq_zero]
-  intro f hf
-  by_contra hne
-  have hf0 : f.coeff ≠ 0 := fun h => hne (Robba.ext h)
-  obtain ⟨ρ, h⟩ := (eventually_phi (F := F) f).exists
-  exact phiSeq_ne_zero h.1 h.2.1 h.2.2.1 hf0 (congrArg Robba.coeff hf)
 
 theorem norm_U_le_one (n m : ℤ) : ‖F.U n m‖ ≤ 1 := by
   have hc : ContinuousAt (fun ρ : ℝ => (ρ ^ F.q) ^ n * ρ ^ (-m)) 1 :=

@@ -1,6 +1,12 @@
 import Formalism.SharpRestriction.GrowthBounds.FlipOneThree
 import Formalism.MahlerMeasure.CoarseLevelSlackInequalities
-import Formalism.PolynomialDimension.FinalM
+import Formalism.MahlerMeasure.FinalT
+import Formalism.MahlerMeasure.MahlerMeasureProofs.WeightSpaceDimensionMonotone
+import Formalism.MahlerMeasure.MahlerMeasureProofs.SmithZp
+import Formalism.MahlerMeasure.MahlerMeasureProofs.TheoremM
+import Formalism.PolynomialDimension.MultinomialDepth.MonoCount
+import Formalism.PolynomialDimension.MultinomialDepth.PartnerM
+import Formalism.PolynomialDimension.MultinomialDepth.TieOps
 import Formalism.ThetaLogCoordinates.TraceIsometryWeights.DischargeHeightBound
 import Formalism.ThetaLogCoordinates.PartnerMeanCoordinates.LatticeTheoremEps28Valid
 import Formalism.SharpRestriction.GrowthBounds.GLWeightTheory
@@ -920,92 +926,6 @@ end Formalism.MainNotions.G.CountingStatementReduction
 
 namespace Formalism.MainNotions.G.CountingStatementReduction
 
-open Formalism.MainNotions.G
-
-theorem integral_form_exponent_le_ceil (p a r n : ℕ) (hn : n + 1 ≤ r) (l : ℕ) (hl : l ≤ 8 * a) :
-    N0 (n + 1) * deF p (n + 1) l ≤ ⌈Formalism.MainNotions.flipOneThree.kappaOneExponent p a r⌉₊ := by
-  have hN0 : N0 (n + 1) ≤ r ^ 2 := by
-    unfold N0
-    calc (n + 1) * (n + 1 - 1) / 2 ≤ (n + 1) * (n + 1 - 1) := Nat.div_le_self _ _
-      _ ≤ r * r := Nat.mul_le_mul hn (by omega)
-      _ = r ^ 2 := (sq r).symm
-  have hde : deF p (n + 1) l ≤ Nat.log p (8 * a + r) := by
-    unfold deF
-    exact Nat.log_mono_right (by omega)
-  have hlog : (Nat.log p (8 * a + r) : ℝ) ≤ Real.logb p (8 * (a : ℝ) + r) := by
-    have := Real.natLog_le_logb (8 * a + r) p
-    push_cast at this
-    exact this
-  have h1 : ((N0 (n + 1) * deF p (n + 1) l : ℕ) : ℝ) ≤ Formalism.MainNotions.flipOneThree.kappaOneExponent p a r := by
-    unfold Formalism.MainNotions.flipOneThree.kappaOneExponent Formalism.MainNotions.flipOneThree.lgA
-    have hA : ((N0 (n + 1) : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 := by exact_mod_cast hN0
-    have hB : ((deF p (n + 1) l : ℕ) : ℝ) ≤ Real.logb p (8 * (a : ℝ) + r) :=
-      (Nat.cast_le.mpr hde).trans hlog
-    have hB0 : (0 : ℝ) ≤ ((deF p (n + 1) l : ℕ) : ℝ) := Nat.cast_nonneg _
-    push_cast
-    nlinarith [sq_nonneg (r : ℝ)]
-  exact_mod_cast h1.trans (Nat.le_ceil _)
-
-theorem mq_top_of_irr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {n : ℕ} [NeZero n]
-    {V : Type} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
-    (E : GLOps n (KK O) V) (lam : Fin n → ℤ) (v : V) (hirr : IsIrrHW E lam v)
-    (M : Submodule O V) (hM : UZLattice (O := O) E M) (hv : v ∈ M) : MQ (K := KK O) M = ⊤ := by
-  have hE : ∀ a b, ∀ y ∈ MQ (K := KK O) M, E a b y ∈ MQ (K := KK O) M := by
-    intro a b y hy
-    induction hy using Submodule.span_induction with
-    | mem x hx =>
-      apply Submodule.subset_span
-      by_cases hab : a = b
-      · subst hab
-        have hg : binomE E a 1 ∈ UZgens E := Or.inr ⟨a, 1, rfl⟩
-        have := hM.1 _ hg x hx
-        simpa [binomE] using this
-      · have hg : divPowE E a b 1 ∈ UZgens E := Or.inl ⟨a, b, 1, hab, rfl⟩
-        have := hM.1 _ hg x hx
-        simpa [divPowE] using this
-    | zero => simp
-    | add x y _ _ hx hy => simpa using Submodule.add_mem _ hx hy
-    | smul c x _ hx => simpa using Submodule.smul_mem _ c hx
-  have hU : ∀ u ∈ Umon E, ∀ y ∈ MQ (K := KK O) M, u y ∈ MQ (K := KK O) M := by
-    intro u hu
-    induction hu using Submonoid.closure_induction with
-    | mem u hu =>
-      obtain ⟨⟨a, b⟩, rfl⟩ := hu
-      exact hE a b
-    | one => intro y hy; simpa using hy
-    | mul u w _ _ hu hw => intro y hy; simpa using hu _ (hw y hy)
-  rw [eq_top_iff, ← hirr.2.2.2]
-  apply Submodule.span_le.mpr
-  rintro x ⟨u, hu, rfl⟩
-  exact hU u hu v (Submodule.subset_span hv)
-
-theorem weight_condition_of_integral_form (D : Formalism.BasicNotions.D7) (X : Formalism.MainNotions.flipOneThree.Inst) (h : Formalism.MainNotions.CovariantDegrees.NablaDeltaComparisonField D) :
-    Formalism.MainNotions.flipOneThree.adm2 D X := by
-  intro n V _ _ _ _ E lam v hn _ hirr hl
-  obtain ⟨hA, hB⟩ := h X.p X.L.n' X.O X.setting X.instance_ring_standard (n + 1) lam V E v hirr
-  refine ⟨fun x hx => ?_, fun M hM hv hwt => ?_⟩
-  · have hx' := hA x hx
-    have hle := integral_form_exponent_le_ceil X.p X.L.a X.r n hn (ellWt lam) hl
-    obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le hle
-    have : ((X.p : KK X.O) ^ ⌈Formalism.MainNotions.flipOneThree.kappaOneExponent X.p X.L.a X.r⌉₊) • x =
-        ((X.p : X.O) ^ k) • (((X.p : X.O) ^ (N0 (n + 1) * deF X.p (n + 1) (ellWt lam))) • x) := by
-      rw [hk, smul_smul, ← pow_add, add_comm, ← algebraMap_smul (KK X.O) (((X.p : X.O)) ^ _ )]
-      simp
-    rw [this]
-    exact Submodule.smul_mem _ _ hx'
-  · apply hB M hM (mq_top_of_irr E lam v hirr M hM hv)
-    intro x
-    constructor
-    · rintro ⟨hxM, hxw⟩
-      exact hwt x hxM hxw
-    · rintro ⟨c, rfl⟩
-      refine ⟨M.smul_mem c hv, ?_⟩
-      rw [← algebraMap_smul (KK X.O) c v]
-      exact Submodule.smul_mem _ _ hirr.2.2.1.2.1
-
-theorem weight_condition_from_integral_form (D : Formalism.BasicNotions.D7) (X : Formalism.MainNotions.flipOneThree.Inst) : Formalism.MainNotions.flipOneThree.adm2 D X :=
-  weight_condition_of_integral_form D X (Formalism.MainNotions.G.GLWeightTheory.nabla_delta_comparison_field D)
-
 end Formalism.MainNotions.G.CountingStatementReduction
 
 namespace Formalism.MainNotions.G.CountingStatementReduction
@@ -1778,29 +1698,6 @@ theorem r_ge (C0 CYb Cde Ck CD Cb Cc : ℝ) (X : flipOneThree.Inst) (hH : flipOn
 
 theorem p_prime (X : flipOneThree.Inst) : X.p.Prime := X.std.1.prime
 
-theorem lat_facts (p n' : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (S0 : UniformizedDVR p O)
-    (hG : AdmissibleDVR p n' O) :
-    CharZero (KK O) ∧ ∀ (N r : ℕ) (Lt : Letters (Fin N)),
-      (∀ S : Set (Fin N), ∀ u ∈ UZgens (glOps (KK O) r Lt S),
-        (∀ F ∈ IntPol O (Fin N × Fin r), u F ∈ IntPol O (Fin N × Fin r)) ∧
-        ∀ F ∈ bbSpec O p (Fin N × Fin r) 1, u F ∈ bbSpec O p (Fin N × Fin r) 1) ∧
-      ∀ d : Fin N → ℕ, (latticeMultidegreePart (IntPol O (Fin N × Fin r)) d).FG ∧
-        MQ (K := KK O) (latticeMultidegreePart (IntPol O (Fin N × Fin r)) d) = ⊤ ∧
-        (latticeMultidegreePart (bbSpec O p (Fin N × Fin r) 1) d).FG ∧
-        MQ (K := KK O) (latticeMultidegreePart (bbSpec O p (Fin N × Fin r) 1) d) = ⊤ := by
-  obtain ⟨hc, h⟩ := integral_formula_lattice_holds p n' O S0 hG
-  refine ⟨hc, fun N r Lt => ?_⟩
-  obtain ⟨-, h2, BBs, hBB, h3⟩ := h r (Fin N) Lt
-  have hV := valuation_properties_hold hG.1 S0
-  have hEq : bbSpec O p (Fin N × Fin r) 1 = BBs := by
-    ext F
-    rw [mem_bbSpec_one_iff hV, hBB]
-  refine ⟨fun S u hu => ⟨(h2 S u hu).1, fun F hF => ?_⟩, fun d => ?_⟩
-  · rw [mem_bbSpec_one_iff hV] at hF ⊢
-    exact (h2 S u hu).2 F hF
-  · rw [hEq]
-    exact h3 d
-
 end Formalism.MainNotions.G.CountingStatementReduction
 
 namespace Formalism.MainNotions.G.CountingStatementReduction
@@ -2472,16 +2369,6 @@ def AdmNoK (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc 
 theorem admissible_without_key_of_admissible {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs : ℝ} {X : flipOneThree.Inst}
     (h : admitted D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X) : AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X :=
   ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.2.2.2.2.1, h.2.2.2.2.2.2.2.2.1, h.2.2.2.2.2.2.2.2.2.1, h.2.2.2.2.2.2.2.2.2.2⟩
-
-def BlockFormRemaining (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs C : ℝ) : Prop :=
-  ∀ X : flipOneThree.Inst, AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X → RemainingCountingStatement C0 CYb Cde Ck CD Cb CE1 CE2 Cc C X
-
-def BlockFormRemainingUniform (D : Formalism.BasicNotions.D7) : Prop :=
-  TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc => ∀ Ckap Cs : ℝ, ∃ C : ℝ, 0 < C ∧
-    BlockFormRemaining D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs C
-
-def RemainingCountingBound : Prop :=
-  TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc => ∃ C : ℝ, 0 < C ∧ ∀ X : flipOneThree.Inst, RemainingCountingStatement C0 CYb Cde Ck CD Cb CE1 CE2 Cc C X
 
 end Formalism.MainNotions.G.CountingStatementReduction
 

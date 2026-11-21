@@ -2,9 +2,14 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUniqueLeftBasisCoordsAdicCompletion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsOver
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeBaseChangeConjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyPeriodRiemannLatticeStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsRiemannLatticeOfPeriodStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeBaseChangeConj
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
+import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.ThreeLeLevel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyPeriodRiemannLattice
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsRiemannLatticeOfPeriod
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
+import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
+import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.NineStatements GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
@@ -146,15 +151,15 @@ theorem period_lattice_fibre_and_conj : ∀ (E : Type) [Field E] [NumberField E]
   intro E _ _ _ H D l Xo σ g ty FU i P hty hP
   have hty' : IsTypeFn H (FU.Di i).p (FU.Di i).q ty := by
     rw [(FU.sig i).1, (FU.sig i).2]; exact hty
-  obtain ⟨R, hRP, hRf, -, hrk⟩ := GlobalTheory.T.exists_riemann_lattice_of_period E H (FU.Di i) g ty P hty' hP
+  obtain ⟨R, hRP, hRf, -, hrk⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.riemLat_of_period E H (FU.Di i) g ty P hty' hP
   have hF : FibreLat Xo.univ.t (FU.u i P) R :=
-    GlobalTheory.T.family_period_riemann_lattice E H D l Xo σ g ty FU i R P 1 hP hRf (by simp) (fun x => by simp [hRP]) Empty
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.FibreAtPeriod.fibreLatVec_of_period E H D l Xo σ g ty FU i R P 1 hP hRf (by simp) (fun x => by simp [hRP]) Empty
       (fun e => e.elim) (fun e => e.elim) (fun e => e.elim)
   refine ⟨⟨R, hRf, hF, fun s => ?_⟩, ⟨conjLat R, ?_, ?_, fun s => ?_⟩⟩
   · rw [hrk s, (FU.sig i).1, (FU.sig i).2]
   · show -R.form = _
     rw [hRf]
-  · exact (GlobalTheory.T.fibre_lattice_base_change_conj E H Xo.X Xo.X Xo.univ.t Xo.univ.t (𝟙 _) g _ R (conjLat R) (FU.u i P)).2
+  · exact (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.FibreMove.fibreLat_move E H Xo.X Xo.X Xo.univ.t Xo.univ.t (𝟙 _) g _ R (conjLat R) (FU.u i P)).2
       (fun _ => rfl) rfl (fun _ _ => rfl) hF
   · have h1 : Module.finrank ℂ (eigSp (conjLat R).B (s.comp (algebraMap (𝓞 E) E))) =
         Module.finrank ℂ (eigSp R.B (((starRingEnd ℂ).comp s).comp (algebraMap (𝓞 E) E))) :=

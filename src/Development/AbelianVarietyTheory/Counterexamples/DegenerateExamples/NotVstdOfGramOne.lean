@@ -67,48 +67,4 @@ theorem vstd_iff (i : Fin D.R.m) : VStd D i ↔ (Vc D i).gram = 1 ∧
   · intro h
     exact ⟨⟨x a, h⟩, rfl⟩
 
-def withV (D : D7) (S : HSp D) (b : Bool) (hs : S.SigOK) (hr : S.rank = D.R.nV)
-    (ho : Formalism.HermitianLatticesTheory.IsOrthoLattice (if b then -S.hT else S.hT) S.L0 D.R.nV) : D7 :=
-  { D with sp := { D.sp with
-      V := fun _ => S, V_sig := fun _ => hs, V_rank := fun _ _ _ => hr, Vneg := fun _ => b, V_std := fun _ _ _ => ho } }
-
-theorem orthoSign {E : Type} [Field E] [NumberField E] [StarRing E] (N : ℕ) (b : Bool) : Formalism.HermitianLatticesTheory.IsOrthoLattice
-    (if b then -(diagForm (E := E) N (fun _ => b)) else diagForm (E := E) N (fun _ => b)) (Examples₂.stdLat N) N := by
-  refine ⟨Pi.basisFun E (Fin N), (Pi.basisFun E (Fin N)).linearIndependent,
-    (Pi.basisFun E (Fin N)).span_eq, rfl, fun i j => ?_⟩
-  rw [Pi.basisFun_apply, Pi.basisFun_apply]
-  cases b
-  · simp only [Bool.false_eq_true, if_false]
-    rw [diagForm_single]
-    simp [sgn]
-  · simp only [if_true, LinearMap.neg_apply]
-    rw [diagForm_single]
-    split_ifs <;> simp [sgn]
-
-def scaled {E : Type} [Field E] [NumberField E] [StarRing E] (N : ℕ) (u : Eˣ) : HSpace E :=
-  { posSpace (star_isIntegral (E := E)) N with frame := (Pi.basisFun E (Fin N)).unitsSMul fun _ => u }
-
-theorem scaled_gram {E : Type} [Field E] [NumberField E] [StarRing E] (N : ℕ) (u : Eˣ) (hu : star (u : E) * u = 1) :
-    (scaled N u).gram = 1 := by
-  refine Matrix.ext fun (i j : Fin N) => ?_
-  show diagForm N (fun _ => false) (((Pi.basisFun E (Fin N)).unitsSMul fun _ => u) i)
-    (((Pi.basisFun E (Fin N)).unitsSMul fun _ => u) j) = (1 : Matrix (Fin N) (Fin N) E) i j
-  rw [Module.Basis.unitsSMul_apply, Module.Basis.unitsSMul_apply, Units.smul_def, Units.smul_def, map_smul,
-    LinearMap.map_smulₛₗ, LinearMap.smul_apply, Pi.basisFun_apply, Pi.basisFun_apply, diagForm_single, Matrix.one_apply]
-  split_ifs
-  · simp only [sgn, starRingEnd_apply, smul_eq_mul]
-    simpa [mul_comm] using hu
-  · simp
-
-theorem scaled_sig {E : Type} [Field E] [NumberField E] [StarRing E] (N : ℕ) (u : Eˣ) (hu : star (u : E) * u = 1) :
-    (scaled N u).SigOK := by
-  intro τ
-  rw [scaled_gram N u hu, Matrix.map_one _ (map_zero τ) (map_one τ)]
-  have h := Formalism.UG.P.stdform_sig_one (n := Fin N)
-  rw [Fintype.card_fin] at h
-  exact h
-
-def withScaled (D : D7) (u : D.host.Eˣ) (hu : star (u : D.host.E) * u = 1) : D7 :=
-  withV D (scaled D.R.nV u) false (scaled_sig _ u hu) rfl (orthoSign _ false)
-
 end GlobalTheory.StdFrameCounterexample

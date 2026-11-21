@@ -47,17 +47,6 @@ theorem kumPres_empty (A : ValuationSubring Ω) {n r : ℕ} {ζ : Ω} (hζ : IsP
   rw [Cg, hZ s hs hc, Finset.sum_eq_zero (fun i _ => i.elim), sub_zero, norm_zero]
   exact norm_nonneg _
 
-example (A : ValuationSubring Ω) {n r : ℕ} {ζ : Ω} (Z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) (o : Unit → Qbar l) :
-    ¬ KumPres A n r ζ Z (fun _ : Unit => (0 : Ω)) o :=
-  fun h => (h.2.2.1 ()).2.1 rfl
-
-example (A : ValuationSubring Ω) {r : ℕ} (Z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) {ι : Type} [Fintype ι] (u : ι → Ω)
-    (o : ι → Qbar l) : ¬ KumPres A 1 r (1 : Ω) Z u o := by
-  rintro ⟨h, -⟩
-  have := h.eq_orderOf
-  rw [orderOf_one, pow_one] at this
-  exact (Fact.out : l.Prime).one_lt.ne this.symm
-
 theorem fix_of_cycMod [∀ i, HasEnoughRootsOfUnity Ω (l ^ i)] {n r : ℕ} (hnr : n ≤ r) {s : G ℚ Ω}
     (hs : cycMod ℚ Ω l r s = 1) {t : Ω} (ht : t ^ (l ^ n) = 1) : s t = t := by
   have ht' : t ^ (l ^ r) = 1 := by

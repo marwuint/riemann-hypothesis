@@ -1,7 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoeffRoots
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VectorValuedLiftFieldChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingFrameDeltaChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VectorValuedLiftFieldChange
+import Development.AbelianVarietyTheory.Definitions.ThetaValues.LeCovCoeff
+import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPinsRec
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingFrameDeltaChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CXiValIff
+import Formalism.LocalToGlobal.ProjectiveLattices.SpMapAlgHomId
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 200000
@@ -96,34 +100,6 @@ theorem repsR_map {K K' : Type} [Field K] [Field K'] (j : K →+* K') {t : T0} {
     {vol : K} (hr : RepsR R i t h bad J' Lh gam vol) : RepsR R i t h bad J' Lh gam (j vol) := by
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hr
   exact ⟨h1, h2, h3, h4, by rw [h5, map_inv₀, map_natCast], h6⟩
-
-set_option maxHeartbeats 1000000 in
-
-theorem pins_merge {F : Face D A} (hR : R.Char F) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {ι x₀}
-    (hsrc : ∀ j, (src j).Pins κ v₀ ι x₀)
-    (hlift : ThPinsR R i jL₃ (inC c₃) v₀ c0₃ ι C.Q.l.M (Mfr C.Q.l) lev)
-    (hact : ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) C.Q.c fun g => (lev g, LinearMap.id))
-    (hio : IoLFRec c₃ (fun τ => embF c₃ (tauE D τ)) (lamV D i) (wtA κ) io₃ hw₃)
-    (hh : ∀ j, ∃ J', RepsR R i (tup j) (h j) ((src j).bad ()) J' ((src j).Lh ()) ((src j).gam ()) ((src j).vol ()))
-    (c0 : ℂ) (hc0 : ∃ m : ℕ, 0 < m ∧ c0 ^ m = 1) (cs : J → ℂ) (hu : ∀ j, (u j : ℂ) * cs j = c0)
-    (hcs : ∀ j, CXiAt (Wc D i) (rank_Wc i) (inC (src j).c') ((src j).dδ ()) ((src j).U₂ ()) ((src j).dict₂ ()) ι x₀
-      ((src j).xi ()) (cs j)) :
-    (merge src c₃ h₃ hs jL₃ hV₃ c0₃ lev io₃ hw₃ u h v₀).Pins κ v₀ ι x₀ := by
-  have hu0 : ∀ j, u j ≠ 0 := fun j h0 => by
-    obtain ⟨m, hm, e⟩ := hc0
-    rw [← hu j, h0] at e
-    simp [hm.ne'] at e
-  refine ⟨hlift, fun j => ⟨?_, ((hsrc j).tuple ()).B, ((hsrc j).tuple ()).xi, ((hsrc j).tuple ()).phi, ((hsrc j).tuple ()).half⟩,
-    ⟨hact, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ h₃ _ _ hact).1⟩, fun j => (hsrc j).bad (), fun j => (hsrc j).reps (),
-    fun j => ⟨fun k => congrArg (incF _ c₃ (hs j)) (((hsrc j).ep ()).1 k), epIs_map (hs j) ((hsrc j).ep ()).2⟩, hio,
-    fun j k q => phiHat_covBC (hs j) _ (u j) _ _ q ((hsrc j).w () k q),
-    fun j => covPin_covBC (hs j) _ (hu0 j) ((hsrc j).cov ()), ?_, fun j => (hsrc j).model₂ ()⟩
-  · obtain ⟨J', hr⟩ := hh j
-    exact ⟨h j, J', repsR_map _ hr, GlobalTheory.RationalValues.placeEx_of_char R F hR i jL₃ (inC c₃) hlift (tup j) (h j),
-      thAdIs_thAdOf R i (tup j) (h j) c0₃ hR.models.HV hr.2.2.1 hr.2.2.2.2.2.1 v₀, fun _ => Iff.rfl⟩
-  · refine (cXiVal_iff _ _ _ _ _ _ _ _ _).2 ⟨c0, hc0, fun j => ?_⟩
-    rw [← hu j]
-    exact GlobalTheory.T.unfolding_frame_delta_change D _ _ _ _ _ _ _ _ (hs j) _ _ _ (u j) _ _ _ _ _ _ ((hsrc j).cov ()).1.2.2.2.2.2.2.2.1 (hcs j)
 
 end Merge
 

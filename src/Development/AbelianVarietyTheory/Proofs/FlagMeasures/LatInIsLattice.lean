@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsShortVectorIntegralHermitianLatticeRankOneStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardShortVectorsLeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardShortVectorsLe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsRest
 
 open NumberField Matrix GlobalTheory.Mass Formalism.HermitianLatticesTheory
@@ -84,7 +84,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
       refine Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 x.2) ?_
       rw [hU, finrank_span_singleton (by simpa using hx0)]
     have h1 := (Set.encard_le_encard hsub).trans (Set.encard_image_le _ _)
-    refine le_trans (by exact_mod_cast h1) ((GlobalTheory.T.encard_shortVectors_le' K V h hK hs hp L hL B hB0).trans ?_)
+    refine le_trans (by exact_mod_cast h1) ((_root_.GlobalTheory.Mass.encard_shortVectors_le K V h hK hs hp L hL B hB0).trans ?_)
     exact ENNReal.ofReal_le_ofReal (real_bound _ hrd n _ _ hn Fintype.card_pos)
   · rw [Set.encard_le_one_iff]
     rintro U W ⟨hU, -⟩ ⟨hW, -⟩

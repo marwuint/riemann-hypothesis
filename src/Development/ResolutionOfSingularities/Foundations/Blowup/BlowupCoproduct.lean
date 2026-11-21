@@ -23,10 +23,6 @@ theorem IsBlowupAlongIdealSheaf.of_isIso {X X' : Scheme.{u}} (f : X' ⟶ X) [IsI
 theorem isBlowupAlongIdealSheaf_id_top (X : Scheme.{u}) : IsBlowupAlongIdealSheaf (𝟙 X) (⊤ : X.IdealSheafData) :=
   IsBlowupAlongIdealSheaf.of_isIso (𝟙 X)
 
-theorem isBlowupAlongIdealSheaf_iso_hom_top {X X' : Scheme.{u}} (e : X' ≅ X) :
-    IsBlowupAlongIdealSheaf e.hom (⊤ : X.IdealSheafData) :=
-  IsBlowupAlongIdealSheaf.of_isIso e.hom
-
 theorem comap_eq_top_of_notMem_support {X X' : Scheme.{u}} (f : X' ⟶ X)
     (I : X.IdealSheafData) (h : ∀ x : X', f.base x ∉ I.support) :
     I.comap f = ⊤ := by

@@ -154,11 +154,6 @@ theorem unramifiedProportional_holds : UnramifiedMultiplicityOneProportional := 
     have := h2 1 (USub σ G.W v).one_mem
     rwa [show ((1 : UA σ G.V.J), (1 : UA σ G.W.J)) = 1 from rfl, L.one ψ h1] at this
 
-theorem unramifiedDeterminedBySpherical_holds : UnramifiedDeterminedBySpherical := fun F E _ _ _ _ _ σ B a a' a₁ a₁' G G₁ X om om' om₁ om₁' R Rf R₁ Rf₁ H' i₀ i₁ χ r hM hM₁ hs hH v hv
-    lam hl h0 => by
-  simpa using unramifiedProportional_holds F E σ B a a' a₁ a₁' G G₁ X om om' om₁ om₁' R Rf R₁ Rf₁ H' i₀ i₁ χ r hM hM₁ hs hH v hv lam lam hl hl 0
-    (by rw [h0, zero_smul])
-
 end PositivityTheory.ThKG.Loc
 
 end

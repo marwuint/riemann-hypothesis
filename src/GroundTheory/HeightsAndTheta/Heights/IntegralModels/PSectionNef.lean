@@ -182,9 +182,6 @@ theorem SectionNef.proof : SectionNef.Statement := by
     linarith
   · exact le_rfl
 
-theorem SectionNefGenerated.proof : SectionNefGenerated.Statement :=
-  SectionNefGenerated.of_sectionNef SectionNef.proof
-
 end
 
 end GroundTheory.Heights₂.Heights.Model

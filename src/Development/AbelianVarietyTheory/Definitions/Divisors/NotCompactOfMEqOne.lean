@@ -88,20 +88,6 @@ def Datum.IsSimple (D : Datum p) : Prop := D.a = 1 ∧ D.m = D.n ∧ D.IsDivisio
 def Datum.Compact (D : Datum p) : Prop :=
   2 * D.a < Module.finrank ℚ D.F ∨ (D.IsDivision ∧ D.n < 2 * D.m)
 
-theorem Datum.not_compact_of_m_eq_one (D : Datum p) (hm : D.m = 1) (hn : 2 ≤ D.n)
-    (ha : Module.finrank ℚ D.F ≤ 2 * D.a) : ¬ D.Compact := by
-  rintro (h | ⟨-, h⟩) <;> omega
-
-theorem Datum.compact_of_a_eq_zero (D : Datum p) (ha : D.a = 0) : D.Compact := by
-  left
-  rw [ha, mul_zero]
-  exact Module.finrank_pos
-
-theorem Datum.IsSimple.compact {D : Datum p} (h : D.IsSimple) : D.Compact := by
-  obtain ⟨-, hmn, hdiv⟩ := h
-  have hm := D.m_pos
-  exact Or.inr ⟨hdiv, by omega⟩
-
 structure Base (D : Datum p) (R : Type) [CommRing R] where
   unit : ∀ k : ℕ, k.Coprime p → IsUnit (k : R)
   ρ : R

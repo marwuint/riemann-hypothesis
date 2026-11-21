@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicAdmissibleSemistable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedOfFrobeniusIterateFixedFilZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsThetaDeRhamFilZeroSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedOfFrobeniusIterateFixedFilZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsThetaDeRhamFilZeroSurjective
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
 noncomputable section
@@ -44,7 +44,7 @@ theorem cont_σC {l : ℕ} [Fact l.Prime] (y : ℂ_[l]) : Continuous fun g : GQ 
 
 theorem cont_of_frame : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (N : ↥(GK K) → Matrix n n ↥(MaximalUnramifiedExtension l)) (W : GL n P.R.BdR) (k : n → ℤ), UnitM P W → (∀ g : ↥(GK K), (N g).map (kd P) = ((W⁻¹ : GL n P.R.BdR) : Matrix n n P.R.BdR) * Matrix.diagonal (fun j => algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ k j : ℚ_[l]ˣ) : ℚ_[l])) * (W : Matrix n n P.R.BdR).map (P.actQdR (g : GQ l))) → ∀ i j, Continuous fun g : ↥(GK K) => ((N g i j : ↥(MaximalUnramifiedExtension l)) : Om l) := by
   intro l _ P AI T n _ _ K N W k hW hN i j
-  obtain ⟨S, θ, hS, -, -, hθom, hθg⟩ := GlobalTheory.T.exists_theta_deRhamFilZero_surjective l P AI T
+  obtain ⟨S, θ, hS, -, -, hθom, hθg⟩ := _root_.GlobalTheory.PMon.exists_theta_deRhamFilZero_surjective_alt l P AI T
   have hemb : Topology.IsEmbedding (fun x : Om l => (x : ℂ_[l])) :=
     (UniformSpace.Completion.isUniformEmbedding_coe (Om l)).isEmbedding
   let a : n → ℂ_[l] := fun k' => θ ⟨((W⁻¹ : GL n P.R.BdR) : Matrix n n P.R.BdR) i k', (hS _).2 (hW.2 i k')⟩
@@ -191,7 +191,7 @@ theorem exists_rep_of_fixed_frame_change : ∀ (l : ℕ) [Fact l.Prime] (P : Loc
     refine Fil_sum fun k _ => ?_
     rw [Matrix.mul_diagonal, Matrix.map_apply]
     exact Fil_mul_left (Fil_mul_left ((hWu m).2 i k) (q_mem_Fil P _)) (Fil_act _ ((hWu m).1 k j))
-  have hpz := fun g i j => GlobalTheory.T.unramified_of_frobeniusIterate_fixed_filZero l P AI T r hρ.pos (X g i j) (hXfix g i j)
+  have hpz := fun g i j => _root_.GlobalTheory.PMon.unr_of_iterate_fixed l P AI T r hρ.pos (X g i j) (hXfix g i j)
     (fun k hk => hFil ⟨k, hk⟩ g i j)
   choose N hNfr hNeq using hpz
   have hNmap : ∀ g, (Matrix.of (N g)).map (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) = X g := fun g => by

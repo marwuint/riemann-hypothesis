@@ -80,30 +80,6 @@ def KerDat.lift (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) {S T : HSp D} (
     (P : PolF D T.rank S.rank) (φ : GA D S → ℂ) : GA D T → ℂ :=
   liftT k.om x.vol.μ x.vol.𝓕 φ (k.pt ψ θ x y P)
 
-def FockReduce (D : D7) : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (A S A' : HSp D) (x : DefSp A) (y : DefSp S) (z : DefSp A'),
-    x.Is → y.Is → z.Is → ∀ (k : KerDat A S) (k' : KerDat S A'), k.Is ψ θ x y → k'.Is ψ θ y z →
-    ∀ (χ : GA D A → ℂ) (C : WO A S → WO S A' → ℂ), IsBiVac ψ A S A' x.L y.L z.L C → JointSmooth C →
-      ∃ (n : ℕ) (P : Fin n → PolF D S.rank A.rank) (P' : Fin n → PolF D A'.rank S.rank),
-        ∀ φ, IsContAut A φ → HasCen A χ φ →
-          biLift k.om k'.om x.vol y.vol φ (biComb ψ A S A' k.c k'.c C) =
-            ∑ i, k'.lift ψ θ y z (P' i) (k.lift ψ θ x y (P i) φ)
-
-def VanStep (D : D7) : Prop :=
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ)
-    (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank)
-    (Φ₁ : WO B.V J.W → ℂ) (Φ₂ : WO J.W B'.V → ℂ) (φ : GA D B.A → ℂ) (G : GA D B'.V → ℂ) (g : GA D B.V)
-    (t' : GA D J.W) (t'' : GA D B'.V) (J₁ : Set (GA D J.W)) (J₂ : Set (GA D B'.V)),
-    IsThetaFunO ψ B.V J.W Φ₁ → IsThetaFunO ψ J.W B'.V Φ₂ → IsContAut B.A φ → RapidDec B'.V G →
-    RapidDec J.W (s₂.lift G Φ₂) →
-    (∀ k ∈ J₁, ∃ c : ℂ, c ≠ 0 ∧ s₁.om (1, k) Φ₁ = c⁻¹ • Φ₁ ∧ s₂.om (k, 1) Φ₂ = c • Φ₂) →
-    (∀ k ∈ J₂, ∃ c : ℂ, c ≠ 0 ∧ s₂.om (1, k) Φ₂ = c⁻¹ • Φ₂ ∧ rTrans k G = c • G) →
-    (∀ h₁, flatBF s₁ (s₁.om (g, h₁) Φ₁) ≠ 0 → InCell (jacGrp J.d) t' J₁ h₁) →
-    (∀ a ∈ GinfC J.W, ∀ h₂, Chain.hand s₁ s₂ l vL Φ₁ Φ₂ φ g (a * t') h₂ ≠ 0 → InCell (besGrp B'.d B'.o) t'' J₂ h₂) →
-    (∀ a ∈ GinfC J.W, ∀ a' ∈ GinfC B'.V,
-      B'.per ψ (Chain.hand s₁ s₂ l vL Φ₁ Φ₂ φ g (a * t') (a' * t'')) (rTrans (a' * t'') G) = 0) →
-    B.per ψ φ (rTrans g (s₁.lift (s₂.lift G Φ₂) Φ₁)) = 0
-
 structure BesAt (V A : HSp D) (ρ : ℕ) where
   V₀ : HSp D
   L : HSp D
@@ -256,10 +232,6 @@ def Stab : Prop :=
   (∀ j, j < D.R.m → ∀ ψ ∈ d.Ram j, (D.mem u).C.K j ψ ∈ d.Ram (j + 1)) ∧ (∀ j, j ≤ D.R.m → ∀ ψ ∈ d.Ram j, d.S j ψ ∈ d.Ram j) ∧
     (D.mem u).A.Mram ≤ d.Ram 0
 
-def Comm : Prop :=
-  (∀ j, j < D.R.m → ∃ c : ℂ, ∀ ψ ∈ d.Ram j, d.S (j + 1) ((D.mem u).C.K j ψ) = c • (D.mem u).C.K j (d.S j ψ)) ∧
-    (∀ ψ ∈ (D.mem u).A.Mram, d.S 0 ψ ∈ (D.mem u).A.Mram) ∧ ∀ ψ ∈ (D.mem u).A.Mram, d.S 0 ψ = 0 → ψ = 0
-
 def VanAt (j ρ : ℕ) (h : j + 2 * ρ + 2 = D.R.m) (ψ : Col D u j) (G : (d.st j).CC d.c) : Prop :=
   ∀ y (v : SmT (d.st j).M), (d.B j ρ h).per d.c.ψ (d.rd j ψ y) (rTrans (d.t j) (G.1 v)) = 0
 
@@ -267,27 +239,7 @@ def Bot : Prop :=
   ∃ V : (D.mem u).A.Mram →ₗ[ℂ] D.s.Cu u, Function.Injective V ∧ ∀ φ : (D.mem u).A.Mram,
     (∀ ρ h G, d.VanAt 0 ρ h φ.1 G) → D.s.Pu u (V φ) = 0
 
-def StepVan : Prop :=
-  ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), ∀ ψ ∈ d.Ram j, ∀ G : (d.st (j + 1 + 1)).CC d.c,
-    d.VanAt (j + 1 + 1) σ (idx_step h) ((D.mem u).C.K (j + 1) ((D.mem u).C.K j (d.S j ψ))) G →
-      d.VanAt j (σ + 1) h ψ ((d.p j).io ((d.p (j + 1)).io G))
-
-def LastVan : Prop :=
-  ∀ j (h : j + 2 * 0 + 2 = D.R.m), ∀ ψ ∈ d.Ram j, ∀ F : (D.mem u).P.Mt,
-    (D.mem u).P.Ptil (Eq.rec (motive := fun n _ => Col D u n)
-        ((D.mem u).C.K (j + 1) ((D.mem u).C.K j (d.S j ψ))) (show j + 1 + 1 = D.R.m from h)) F = 0 →
-      d.VanAt j 0 h ψ ((d.p j).io ((d.pT j h).io (d.eT F)))
-
 end Dat
-
-example {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {f : WO A S → ℂ} {g : WO S A' → ℂ}
-    (hf : IsThetaFunO ψ A S f) (hg : IsThetaFunO ψ S A' g) : JointSmooth fun u v => f u * g v :=
-  fun n L L' c c' h h' u v => (hf.smooth n L c h u).mul (hg.smooth n L' c' h' v)
-
-example {V : HSp D} (R : Subgroup (GA D V)) (t : GA D V) : InCell R t {1} t := ⟨1, one_mem _, 1, one_mem _, 1, rfl, by simp⟩
-
-example (A : HSp D) : HasCen A (fun _ => 1) (fun _ => 1) ∧ ¬ HasCen A (fun _ => 2) (fun _ => 1) :=
-  ⟨fun _ _ _ _ => by simp, fun h => by simpa using h 1 (one_mem _) (one_mem _) 1⟩
 
 end GlobalTheory.SeeSaw
 

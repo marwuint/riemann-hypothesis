@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RelIndexSquaresLeTwoMulOfSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HigherUnitsLeSquaresHigherUnitsStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentativesStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RelIndexHigherUnitsSuccLeCardStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexSquaresLeTwoMulUnitsSquaresStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RelIndexSquaresLeTwoMulOfSubgroup
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HigherUnitsLeSquaresHigherUnits
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RelIndexHigherUnitsSuccLeCard
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IndexSquaresLeTwoMulUnitsSquares
 
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
@@ -26,7 +26,7 @@ theorem sqIdx_relIndex_hiUnits_add {K : Type} [Field K] (w : Valuation K ℤᵐ�
   induction k with
   | zero => simp
   | succ k ih =>
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.relIndex_higherUnits_succ_le_card K w π R (n + k) hπ hR
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.QNorm.relIndex_hiUnits_succ_le K w π R (n + k) hπ hR
     have := Subgroup.relIndex_mul_relIndex (hiUnits w (n + k + 1)) (hiUnits w (n + k))
       (hiUnits w n) (sqIdx_hiUnits_anti w (by omega)) (sqIdx_hiUnits_anti w (by omega))
     rw [← add_assoc, ← this]
@@ -54,10 +54,10 @@ theorem sqIdx_sqSub_eq_comap {F L : Type} [Field F] [Field L] (φ : F →+* L) :
 
 theorem index_sqSub_adicCompletion_le : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (e : ℕ), v.valuation F 2 = WithZero.exp (-(e : ℤ)) → (sqSub (algebraMap F (v.adicCompletion F))).index ≠ 0 ∧ (sqSub (algebraMap F (v.adicCompletion F))).index ≤ 4 * Ideal.absNorm v.asIdeal ^ e := by
   intro F _ _ v e he
-  obtain ⟨⟨π, -, hπ⟩, hval, -, R, hcard, -, hR⟩ := GlobalTheory.T.exists_global_uniformizer_residue_representatives F v
+  obtain ⟨⟨π, -, hπ⟩, hval, -, R, hcard, -, hR⟩ := _root_.GlobalTheory.QNorm.exists_uniformizer_and_residue_representatives F v
   have h2 : Valued.v (2 : v.adicCompletion F) = WithZero.exp (-(e : ℤ)) := by
     rw [← he, ← hval, map_ofNat (algebraMap F (v.adicCompletion F))]
-  have hsq := GlobalTheory.T.higherUnits_le_squares_higherUnits F v e h2
+  have hsq := _root_.GlobalTheory.QNorm.hiUnits_le_sqs_hiUnits F v e h2
   set w : Valuation (v.adicCompletion F) ℤᵐ⁰ := Valued.v with hw
   have hA := sqIdx_relIndex_hiUnits_add w _ R hπ hR (e + 1) e
   have hB := sqIdx_relIndex_hiUnits_add w _ R hπ hR 0 (e + 1)
@@ -67,14 +67,14 @@ theorem index_sqSub_adicCompletion_le : ∀ (F : Type) [Field F] [NumberField F]
     fun h => hA.1 (Subgroup.relIndex_eq_zero_of_le_left hsq h)
   have hC : (sqs (hiUnits w (e + 1))).relIndex (hiUnits w (e + 1)) ≤ R.card ^ e :=
     (Subgroup.relIndex_le_of_le_left hsq hA.1).trans hA.2
-  have hD := GlobalTheory.T.relIndex_squares_le_two_mul_of_subgroup (v.adicCompletion F)ˣ (hiUnits w 0) (hiUnits w (e + 1)) (-1)
+  have hD := _root_.GlobalTheory.QNorm.relIndex_sqs_le_two_mul (v.adicCompletion F)ˣ (hiUnits w 0) (hiUnits w (e + 1)) (-1)
     (sqIdx_hiUnits_anti w (by omega)) hB.1 (fun a ha => by
       have h : (a : v.adicCompletion F) ^ 2 = 1 := by
         rw [← Units.val_pow_eq_pow_val, ha, Units.val_one]
       rcases sq_eq_one_iff.mp h with h | h
       · left; exact Units.ext h
       · right; exact Units.ext (by simpa using h)) hC0
-  have hE := GlobalTheory.T.index_squares_le_two_mul_units_squares (v.adicCompletion F) w _ hπ hD.1
+  have hE := _root_.GlobalTheory.QNorm.index_sqs_top_le (v.adicCompletion F) w _ hπ hD.1
   rw [sqIdx_sqSub_eq_comap, Subgroup.index_comap]
   rw [← Subgroup.relIndex_top_right] at hE
   refine ⟨fun h => hE.1 (Subgroup.relIndex_eq_zero_of_le_right le_top h), ?_⟩

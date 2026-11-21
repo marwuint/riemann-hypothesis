@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingOpSub
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericPointAbelianVarietyThroughFormalPoiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreInvariantVectorFieldsAtGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationValueSpacesGenericPointDictionaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondOrderSymbolBracketRescaleByUnitPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VerticalSecondOrderSymbolVanishesOfPolarisationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericPointAbelianVarietyThroughFormalPoi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreInvariantVectorFieldsAtGenericPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationValueSpacesGenericPointDictionary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondOrderSymbolBracketRescaleByUnitPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VerticalSecondOrderSymbolVanishesOfPolarisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResV
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
@@ -32,11 +33,11 @@ theorem GlobalTheory.HeatSym.vertical_symbol_zero : ∀ (E : Type) [Field E] [Nu
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmon htt hloc n v' D Ω _ _ _ φ x' δ dd' hcomp hx' hinv hδ hval
     hsep g hg δL hδL δ₀ Λ hΛ hδ₀ hbr
 
-  obtain ⟨ψ, ξ, hψ, hξ, hξ', hξsep⟩ := GlobalTheory.T.exists_genericPoint_abelianVariety_through_formalPoint E H R t P m tt gam hmon htt hloc n v' D Ω φ x' δ dd'
+  obtain ⟨ψ, ξ, hψ, hξ, hξ', hξsep⟩ := _root_.GlobalTheory.UnifGenPoint.main E H R t P m tt gam hmon htt hloc n v' D Ω φ x' δ dd'
     hcomp hx' hinv hδ hval hsep g hg δL hδL
-  obtain ⟨v, dd, hinv₂, hval₂⟩ := GlobalTheory.T.generic_fibre_invariant_vectorFields_at_generic_point E H R t P m tt gam hmon htt hloc n v' D Ω φ x' δ dd'
+  obtain ⟨v, dd, hinv₂, hval₂⟩ := _root_.GlobalTheory.GenFields.main E H R t P m tt gam hmon htt hloc n v' D Ω φ x' δ dd'
     hcomp hx' hinv hδ hval hsep g hg δL hδL ψ ξ hψ hξ hξ' hξsep
-  obtain ⟨j₀, q, hj₀, hq, hVS⟩ := GlobalTheory.T.polarisation_value_spaces_generic_point_dictionary E H R t P m tt gam hmon htt hloc n v' D Ω φ x' δ dd'
+  obtain ⟨j₀, q, hj₀, hq, hVS⟩ := _root_.GlobalTheory.HeatSym.vs_iff_generic E H R t P m tt gam hmon htt hloc n v' D Ω φ x' δ dd'
     hcomp hx' hinv hδ hval hsep g hg δL hδL ψ ξ hψ hξ hξ' hξsep
 
   have hker : ∀ D' : Derivation ℤ (FractionRing Ω) (FractionRing Ω),
@@ -96,13 +97,13 @@ theorem GlobalTheory.HeatSym.vertical_symbol_zero : ∀ (E : Type) [Field E] [Nu
     rw [hδL']
     exact hval₂ a O f h
 
-  refine GlobalTheory.T.verticalSecondOrderSymbol_vanishes_of_polarisation (FractionRing R) P.A n v dd hinv₂ (FractionRing Ω) ψ ξ hξ hξsep δL' hval₃ j₀ hj₀ δ₁ Λ hΛ
+  refine _root_.GlobalTheory.Heat.gc_symbol_vanishes (FractionRing R) P.A n v dd hinv₂ (FractionRing Ω) ψ ξ hξ hξsep δL' hval₃ j₀ hj₀ δ₁ Λ hΛ
     hδ₁ψ ?_
   intro k hk σ τ
   have hb := (hVS k _ hk).2 ⟨σ, rfl⟩
   have hc := (hVS k _ hk).2 ⟨τ, rfl⟩
   have h3 := hbr k hk _ _ hb hc
-  rw [GlobalTheory.T.secondOrderSymbol_bracket_rescale_by_unit_pow Ω n δ₀ δL Λ q _ _ k hq] at h3
+  rw [_root_.GlobalTheory.Heat.bracket_symbol_rescale_twist Ω n δ₀ δL Λ q _ _ k hq] at h3
   obtain ⟨ρ, hρ⟩ := (hVS (3 * k) _ (by omega)).1 h3
   refine ⟨ρ, ?_⟩
   rintro b c rfl rfl

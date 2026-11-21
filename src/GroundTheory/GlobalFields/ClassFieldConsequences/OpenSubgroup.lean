@@ -94,12 +94,6 @@ theorem IdeleClassGroup.exists_map_congruenceSubgroup_le (H : Subgroup (IdeleCla
     (hH.preimage (IdeleClassGroup.continuous_mk K))
   exact ⟨𝔪, h𝔪, Subgroup.map_le_iff_le_comap.2 hle⟩
 
-theorem IdeleClassGroup.exists_map_congruenceSubgroup_le_of_finiteIndex
-    (H : Subgroup (IdeleClassGroup K)) (hH : IsOpen (H : Set (IdeleClassGroup K)))
-    (_ : H.FiniteIndex) :
-    ∃ 𝔪 : Modulus K, 𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K) ≤ H :=
-  (IdeleClassGroup.exists_map_congruenceSubgroup_le H hH).imp fun _ h ↦ h.2
-
 theorem Modulus.isOpen_map_congruenceSubgroup (𝔪 : Modulus K) :
     IsOpen (𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K) : Set (IdeleClassGroup K)) := by
   rw [Subgroup.coe_map]

@@ -40,7 +40,4 @@ theorem stepAnalyticCGP_of_steps : StepPinExists → StepTermVanishG → StepLoc
     measureInputG_sc Y u s ν _ hsb ng,
     hB2 C' Cl hp1 hp2 D large₂ X Y u hTi hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν (sc s ν) ng⟩
 
-example : StepPinExists → StepTermVanishG → StepLocGenPinnedG → StepThmBGP → StepAnalyticCGP :=
-  stepAnalyticCGP_of_steps
-
 end GlobalTheory.SnPos

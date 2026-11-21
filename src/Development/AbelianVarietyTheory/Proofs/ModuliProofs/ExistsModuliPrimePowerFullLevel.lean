@@ -14,10 +14,10 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsQProjOverBaseChang
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothOfRelativeDimensionOfDimOfDirectionsLe
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsGrpPullbackOfIso
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ActOfGenerators
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeRingKrullDimThetaFamilyGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyThetaFamilyOverOpenClosureStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeRingKrullDimThetaFamilyGenericFibre
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyThetaFamilyOverOpenClosure
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueMapToThetaFamilyOpenPartStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaClosureOpenFamilyQprojFlatReducedExtStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaClosureOpenFamilyQprojFlatReducedExt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsGoodThetaComplexClassUnitaryFullLevelStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PelObjectFibreFromComplexCharZeroStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelShapePrimitivityPullbackDescent
@@ -167,7 +167,7 @@ theorem GlobalTheory.ZM.exists_moduli_prime_power_level : Out.Laws → Out.Laws2
   obtain ⟨J, hJ, a, w, w', hw, hw', hgen⟩ := exists_generating_family (E := E) H.w0 (H.bar H.w0)
   obtain ⟨Mat, κ, hGood⟩ := T.isGoodThetaComplexClass_unitaryFullLevel hL hL2 hth hU E H D _ J a w w' bas hpq hbas hw hw' hgen
   obtain ⟨j₁, hj₁⟩ := hGood n hn hodd
-  obtain ⟨j₂, hj₂⟩ := T.nonempty_thetaFamily_over_open_closure hL hL2 _ J Mat κ n w w' hn hodd
+  obtain ⟨j₂, hj₂⟩ := _root_.GlobalTheory.ZM.OpenFamily.nonempty_wFam hL hL2 _ J Mat κ n w w' hn hodd
   obtain ⟨j₃, hj₃⟩ := T.existsUnique_map_to_thetaFamily_openPart hL hL2 _ J Mat κ n w w' hn hodd
   refine ⟨max (max j₁ j₂) (max j₃ 1), ?_⟩
   intro l hM hA
@@ -194,7 +194,7 @@ theorem GlobalTheory.ZM.exists_moduli_prime_power_level : Out.Laws → Out.Laws2
   have hoddN : Odd (n ^ j) := hodd.pow
   have hGd := hj₁ j hj1 (n ^ j) rfl o b em ρ hemρ
   obtain ⟨F⟩ := hj₂ j hj2 o b em _ D.dim har hGd
-  obtain ⟨hqU, -, hredU, hinjU⟩ := T.thetaClosureOpenFamily_qproj_flat_reduced_ext hL hL2 o _ n (n ^ j) J b em _ Mat κ F hoddN
+  obtain ⟨hqU, -, hredU, hinjU⟩ := _root_.GlobalTheory.ZM.WFam.qproj_flat_reduced_ext hL hL2 o _ n (n ^ j) J b em _ Mat κ F hoddN
   have hqU' : IsQProjOver (F.U.ι ≫ F.Y.s) := hqU.resolve_right (not_not.mpr inferInstance)
   haveI := hredU
   haveI := lft_of_qproj hqU'
@@ -203,7 +203,7 @@ theorem GlobalTheory.ZM.exists_moduli_prime_power_level : Out.Laws → Out.Laws2
     (F.U.ι ≫ F.Y.s) F.univ hemρ har.2.2 F.dense
   refine moduli_of_family hL hL2 hth D a w w' bas hbas hw hw' hgen _
     (dvd_pow (dvd_pow_self n (by omega)) two_ne_zero) b ρ hρ hζ (F.U.ι ≫ F.Y.s) F.univ τU hqU' hτU
-    (T.le_ringKrullDim_thetaFamily_genericFibre hL hL2 _ n (n ^ j) J Mat κ w w' o b em _ D.dim F hN3 hoddN har hGd) hinjU ?_
+    (_root_.GlobalTheory.ZM.GenericDim.le_ringKrullDim_genericFibre hL hL2 _ n (n ^ j) J Mat κ w w' o b em _ D.dim F hN3 hoddN har hGd) hinjU ?_
   intro S s' t τ hS hP hch
   refine hj₃ j hj3 o b em _ D.dim har hGd F S s' t hS ?_ ?_
   · refine Dense.mono ?_ dense_univ

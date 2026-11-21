@@ -31,23 +31,6 @@ theorem ThmSUniform_of (hB : BetaIsG) (hK : CyclicPowerClassOfExpEquiv) (hM : Ma
 theorem theorem_s_uniform : ThmSUniform :=
   ThmSUniform_of Top.betaIsG Top.theorem_s_from_k_one Top.mapSimeq
 
-theorem log_coordinates : LogCoord := by
-  intro K _ p ϖ μ _ _ h0 h1
-  have e1 := LogarithmEquivalence.subst_lgF_scale p ϖ
-  have hμ : PowerSeries.HasSubst μ := PowerSeries.HasSubst.of_constantCoeff_zero' h0
-  have hX : PowerSeries.HasSubst (PowerSeries.C ϖ * PowerSeries.X : PowerSeries K) :=
-    PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)
-  have e2 := congrArg (fun f => (PowerSeries.subst μ f : PowerSeries K)) e1
-  rw [PowerSeries.subst_comp_subst_apply hX hμ] at e2
-  rw [← PowerSeries.coe_substAlgHom hμ, map_mul, map_mul, PowerSeries.coe_substAlgHom hμ, h1,
-    PowerSeries.subst_X hμ] at e2
-  have e3 : (PowerSeries.substAlgHom hμ) (PowerSeries.C ϖ : PowerSeries K) = PowerSeries.C ϖ := by
-    have : (PowerSeries.C ϖ : PowerSeries K) = algebraMap K _ ϖ := rfl
-    rw [this, AlgHom.commutes]
-  rw [PowerSeries.coe_substAlgHom hμ] at e3
-  rw [e3] at e2
-  exact e2
-
 theorem GcUnique_of (hD : DworkMv) (hFr : FrobExprG) : GcUnique := by
   intro K _ _ _ p σ hU c d hc hd hsim
   obtain ⟨hp, -, hnp, -, hσ⟩ := hU

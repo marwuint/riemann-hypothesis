@@ -196,33 +196,7 @@ theorem ambOf_eSmooth (hok : s.Ok) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (h�
   refine h.comp ?_
   exact contDiff_pi.2 fun τ => contDiff_apply ℂ _ (s.iT.symm τ)
 
-theorem ambOf_chiF_ne (hok : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) {a b : ℕ} (ha : Even a) (hb : Even b) {N : Submodule (𝓞 X.E) (Sp X.E a)}
-    {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hN : IsSdLat N) (hN' : IsSdLat N') : (ambOf s B χ cD : Amb X).chiF a b N N' ≠ 0 :=
-  Base.chiFac_ne_zero χ hχ (s.admissible_of_selfDual_lattices hok ha hb hN hN')
-
 end AmbE
-
-theorem isCurveIdeal_ccK (D : Car) : TaylorLogMetric.IsCurveIdeal D D.host.ccK :=
-  ⟨D.host.ccK_ne_bot, Nat.Coprime.mul_right (D.host.ccK_coprime 2 (by simp)) (D.host.ccK_coprime D.host.d (by simp))⟩
-
-theorem discr_lamOf_ne (D : Car) (cc : Ideal (𝓞 D.host.K)) (hcc : cc ≠ ⊥) : Formalism.MainNotions.TaylorLogMetric.discr (TaylorLogMetric.lamOf D cc 1) ≠ 0 := by
-  obtain ⟨L, hL⟩ := periodExists D cc 1 hcc one_ne_zero
-  have hL' : ∀ w : ℂ, w ∈ TaylorLogMetric.lamOf D cc 1 ↔ w ∈ L.lattice := by
-    intro w
-    rw [← hL]
-    rfl
-  have h4 := Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L hL' 2 (by norm_num)
-  have h6 := Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L hL' 3 (by norm_num)
-  have := Formalism.L2.Th1.F.discNeZero L
-  unfold Formalism.MainNotions.TaylorLogMetric.discr Formalism.MainNotions.TaylorLogMetric.g2 Formalism.MainNotions.TaylorLogMetric.g3
-  rw [h4, h6]
-  simpa [PeriodPair.g₂, PeriodPair.g₃] using this
-
-theorem twelfth_root_disc_ne_zero (D : Car) (cc : Ideal (𝓞 D.host.K)) (hcc : cc ≠ ⊥) {δ : ℂ} (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : δ ≠ 0 := by
-  intro e
-  apply discr_lamOf_ne D cc hcc
-  rw [← (show δ ^ 12 = Formalism.MainNotions.TaylorLogMetric.discr (TaylorLogMetric.lamOf D cc 1) from hδ), e]
-  norm_num
 
 end Formalism.L2.Ker.Cd
 
@@ -234,29 +208,9 @@ section OverColDat
 
 variable (d : ColDat)
 
-theorem seamD_ok (h : d.what₂.embLL.comp d.embE = d.host.φ₀) : (seamD d).Ok := by
-  refine ⟨fun τ x => ?_, fun x => Formalism.BasicNotions.Examples₂.star_eq_conj d.host x⟩
-  show d.what₂.embLL (d.embE (d.host.sigmaOf (d.eTau τ : d.R.GG) x)) = d.host.φ₀ (d.host.sigmaOf (d.eTau τ : d.R.GG) x)
-  rw [← h]
-  rfl
-
 variable {d} (I : AmbIn d)
 
-theorem AmbIn.ambient_isTwelfthRootDisc : Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (carD d) d.host.ccK I.K.δ := I.K.delta_pow_twelve_eq_discr
-
-theorem AmbIn.δ_ne : I.K.δ ≠ 0 := Cd.twelfth_root_disc_ne_zero (carD d) d.host.ccK d.host.ccK_ne_bot I.ambient_isTwelfthRootDisc
-
-theorem AmbIn.stdOK : I.B.StdOK := Cd.IntegralLatticeDensity.SO.stdOK I.B (Cd.isCurveIdeal_ccK (carD d)) I.ambient_isTwelfthRootDisc
-
 theorem AmbIn.amb_σ₀ : I.amb.σ₀ = d.σ₀ := rfl
-
-theorem AmbIn.eSmooth (h : d.what₂.embLL.comp d.embE = d.host.φ₀) (i j : ℕ) : I.amb.ESmooth (d.R.N i) (d.R.N j) :=
-  Cd.ambOf_eSmooth (seamD d) I.B I.χ I.cD (seamD_ok d h) (Cd.isCurveIdeal_ccK (carD d)) I.ambient_isTwelfthRootDisc I.δ_ne (factNEven d.R i) (factNEven d.R j)
-
-theorem AmbIn.chiF_ne (h : d.what₂.embLL.comp d.embE = d.host.φ₀) (hχ : Cd.TaylorLogMetric.IsChi (carD d) I.χ) (i j : ℕ)
-    {N : Submodule (𝓞 d.X.E) (Sp d.X.E (d.R.N i))} {N' : Submodule (𝓞 d.X.E) (Sp d.X.E (d.R.N j))} (hN : IsSdLat N) (hN' : IsSdLat N') :
-    I.amb.chiF (d.R.N i) (d.R.N j) N N' ≠ 0 :=
-  Cd.ambOf_chiF_ne (seamD d) I.B I.χ I.cD (seamD_ok d h) hχ (factNEven d.R i) (factNEven d.R j) hN hN'
 
 end OverColDat
 

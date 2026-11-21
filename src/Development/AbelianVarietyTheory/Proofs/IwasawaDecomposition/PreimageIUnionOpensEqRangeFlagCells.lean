@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameCover
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PreimageOpensEqRangeOfValuative
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagCellValuativeExistenceOverUnionOfOpensStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagCellValuativeExistenceOverUnionOfOpens
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.ShFam.Pad GlobalTheory.ProjSpace GlobalTheory.FlagEmb
 open Formalism.MainNotions.DIV.Cons (intO)
@@ -39,7 +39,7 @@ theorem preimage_iUnion_eq_range_cells : ∀ (O K : Type) [CommRing O] [Field K]
     have ha' : a' ≫ i b' w' = a := IsOpenImmersion.lift_fac _ _ _
     have h1 : a' ≫ cbase m (V b') = spMap (algebraMap A k) ≫ x := by
       rw [← hcb b' w', ← Category.assoc, ha', ← hax, hjf]
-    obtain ⟨b, w, l, hl, hl2⟩ := GlobalTheory.T.flagCell_valuativeExistence_over_union_of_opens O K β X s T m M B V α c D P p0 p h hC hP A k b' w' a' x hx h1
+    obtain ⟨b, w, l, hl, hl2⟩ := _root_.GlobalTheory.FlagEmb.Valu.exists_integral_cell O K β X s T m M B V α c D P p0 p h hC hP A k b' w' a' x hx h1
     haveI : Mono f := inferInstance
     refine ⟨l ≫ i b w, ?_, ?_⟩
     · rw [← cancel_mono f, Category.assoc, Category.assoc, hif, hl2, ← hif b' w', ← Category.assoc, ha']

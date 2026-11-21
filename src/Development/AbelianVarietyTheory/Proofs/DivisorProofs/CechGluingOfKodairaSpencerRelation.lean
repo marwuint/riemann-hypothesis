@@ -3,14 +3,14 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsChartPtChartPt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineHomOfField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingHomAddEpsMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeformationChartPointReductionEqSpecialFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeformationChartPointSpecMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTangentOfFibrePullbackTangentAtChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeformationChartPointReductionEqSpecialFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeformationChartPointSpecMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTangentOfFibrePullbackTangentAtChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenInfOfSeparatedOverAffineOpenStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearCombinationTangentVectorsAffineOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstOrderDeformationPointsDifferEpsAllOpensStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranslateOfTangentVectorFibreToGroupSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivativeTransitionUnitsIsoLineBundlesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstOrderDeformationPointsDifferEpsAllOpens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranslateOfTangentVectorFibreToGroupScheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivativeTransitionUnitsIsoLineBundles
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.CompHS
@@ -31,7 +31,7 @@ theorem chartPt_sub : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
     have : p ∈ t.G.hom ⁻¹ᵁ (U.1 ⊓ V) := hcov ▸ (le_iSup W₀ k) hp
     exact this.1
   have := t.semi.separated
-  have hut : ∀ a, IsTangent (u a) := GlobalTheory.T.isTangent_of_fibre_pullback_tangent_at_chart t U v hv x0 hU A m u hm hu
+  have hut : ∀ a, IsTangent (u a) := _root_.GlobalTheory.CechKS.isTangent_of_fibre t U v hv x0 hU A m u hm hu
   let Ω : t.G.left.affineOpens :=
     ⟨Ω₁.1 ⊓ Ω₂.1, GlobalTheory.T.isAffineOpen_inf_of_separated_over_affineOpen t.G.hom U Ω₁ Ω₂ (hΩ₁.trans (hW₀ _)) (hΩ₂.trans (hW₀ _))⟩
   have e₁ : Ω.1 ≤ Ω₁.1 := inf_le_left
@@ -63,17 +63,17 @@ theorem chartPt_sub : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
     intro b
     unfold dlogAt
     rw [hwt]
-    exact GlobalTheory.T.logDerivative_transitionUnits_isoLineBundles m t.PP.L M wg hwg (j i₁) (j i₂) p₁ p₂ x (w b) (hwx b) hx₁ hx₂
+    exact _root_.GlobalTheory.CechKS.dlog_transition_iso m t.PP.L M wg hwg (j i₁) (j i₂) p₁ p₂ x (w b) (hwx b) hx₁ hx₂
   have hxm : ⊤ ≤ (x ≫ m) ⁻¹ᵁ Ω.1 := hxΩ
   have hbase : (x ≫ m) ≫ t.G.hom = spMap ((baseMap K B).comp (ev x0 U.1 hU)) ≫ LogKS.chart U := by
     rw [Category.assoc, hm.1.w, ← Category.assoc, hx, GlobalTheory.Cris.spMap_comp (ev x0 U.1 hU), Category.assoc]
     exact congrArg _ (GlobalTheory.FlagMod.spMap_ev x0 U.2 hU).symm
-  rw [GlobalTheory.T.firstOrderDeformation_points_differ_eps_allOpens hi.1.w hm'.1 him U hU' Ω ((e₁.trans hΩ₁).trans (hW₀ _)) x hxΩ S hS hSx l₁' l₂' k₁.1 k₂.1 k₁.2.1 k₂.2.1
+  rw [_root_.GlobalTheory.CechKS.valR_sub_eq_eps_mul_of_affine hi.1.w hm'.1 him U hU' Ω ((e₁.trans hΩ₁).trans (hW₀ _)) x hxΩ S hS hSx l₁' l₂' k₁.1 k₂.1 k₁.2.1 k₂.2.1
     (fun f => ⟨_, k₂.2.2 f⟩) ?_ O hxO f, hSv _ hxO]
   · simp only [Finset.sum_mul]
   · intro f
     have hd := hdiff i₁ i₂ Ω.1 (le_inf (e₁.trans hΩ₁) (e₂.trans hΩ₂)) f B _ (x ≫ m) (fun a => w a ≫ m) hbase hxm
-      (fun a => GlobalTheory.T.isTranslateOfTangentVector_fibre_to_groupScheme t x0 A m hm _ (v a) (u a) (hu a) _ x hx (w a) (hw a))
+      (fun a => _root_.GlobalTheory.CechKS.IsTransl.isTranslate_comp t x0 A m hm _ (v a) (u a) (hu a) _ x hx (w a) (hw a))
     rw [valR_eq_ev _ _ hxm, map_sub, ← valR_eq_ev, ← valR_eq_ev] at hd
     rw [k₁.2.2, k₂.2.2, valR_comp_app S, hSv _ hxΩ]
     unfold chartVal
@@ -124,7 +124,7 @@ theorem isCechKS_of_isKS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   · intro k B _ _ x hx hxW
     have hxΩ : ⊤ ≤ x ⁻¹ᵁ (ι ⁻¹ᵁ k.2.1.1.1) := fun p hp => (hxW hp).1
     have hP := hex k B x hx hxΩ
-    refine ⟨hP.1, GlobalTheory.T.deformationChartPoint_reduction_eq_specialFibre hi hι'.1 hιι' hx hxΩ hP, fun B' _ _ ρ => ?_⟩
+    refine ⟨hP.1, _root_.GlobalTheory.CechKS.chartPt_red hi hι'.1 hιι' hx hxΩ hP, fun B' _ _ ρ => ?_⟩
     have hx' : (spMap (ρ : B →+* B') ≫ x) ≫ A.hom = spMap (baseMap K B') := by
       rw [Category.assoc, hx]
       show Spec.map _ ≫ Spec.map _ = Spec.map _
@@ -133,7 +133,7 @@ theorem isCechKS_of_isKS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
       fun p _ => hxΩ (Set.mem_univ ((spMap (ρ : B →+* B')).base p))
     have hxWo : ⊤ ≤ x ⁻¹ᵁ (M.U k.2.2 ⊓ (t.PP.L.pull ι).U (fun _ => j k.1)) :=
       fun p hp => ⟨(hxW hp).2, Set.mem_iInter.2 fun _ => hWj k.1 (k.2.1.2 (hxW hp).1)⟩
-    exact (GlobalTheory.T.isDeformationChartPoint_spec_map hx hxΩ hxWo (GlobalTheory.T.isTangent_of_fibre_pullback_tangent_at_chart t U v hv x0 hU A ι u hι hu) hP B' ρ).unique hι'.1 (hex k B' _ hx' hxΩ')
+    exact (_root_.GlobalTheory.CechKS.isChartPt_spMap hx hxΩ hxWo (_root_.GlobalTheory.CechKS.isTangent_of_fibre t U v hv x0 hU A ι u hι hu) hP B' ρ).unique hι'.1 (hex k B' _ hx' hxΩ')
   · intro k k' B _ _ x O f w hx hxW hxO hw
     have h₁ : ⊤ ≤ x ⁻¹ᵁ (ι ⁻¹ᵁ k.2.1.1.1) := fun p hp => (hxW hp).1.1
     have h₂ : ⊤ ≤ x ⁻¹ᵁ (ι ⁻¹ᵁ k'.2.1.1.1) := fun p hp => (hxW hp).2.1

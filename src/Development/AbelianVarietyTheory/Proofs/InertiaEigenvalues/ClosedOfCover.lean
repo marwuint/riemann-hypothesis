@@ -10,22 +10,22 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBreuilKi
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingCoreCrystallineDeRhamInvariants
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysOfCrystallineBreuilKisinFrameStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfBreuilKisinFrameIsDeRhamStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfBreuilKisinFrameIsDeRham
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdaptedBasisThetaGaloisFixedPolesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElemCyclotomicPeriodNotRootOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElemCyclotomicPeriodNotRootOfUnity
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBreuilKisinFrameSemistableBoundedJumpsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHodgeBasisDeRhamLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHodgeBasisAtEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsHodgeTateIffDiagonalAdaptedBasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HodgeTateOperatorPowEqSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MultisetEqOfPowerSumsZpowEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsHodgeTateIffDiagonalAdaptedBasis
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HodgeTateOperatorPowEqSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MultisetEqOfPowerSumsZpowEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaConjBoundedCompatibleBreuilKisinFramesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPreframeBoundedPolesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPreframeBoundedPoles
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDeRhamFrameLimitLatticeBreuilKisinTowerStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LayerDdRBoundsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamCrystallineOfLatticeReadsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemistableLatticeInMatrixAlgebraLayerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TracePowEqAlongLatticeTowerCoverStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemistableLatticeInMatrixAlgebraLayer
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TracePowEqAlongLatticeTowerCover
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc GlobalTheory.Pst GlobalTheory.BKLim GlobalTheory.Cong Matrix
 open scoped Formalism.Per NNReal
 
@@ -179,23 +179,23 @@ theorem closed_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : 
       (∀ g i j, (((r' g).val i j : ↥L.1) : Om l) = (ρ₁ g).val i j) → IsSst P R :=
     fun ρ₁ h L r' R h1 h2 h3 => (hCl ρ₁ h L r' R h1 h2 h3).1
   have hsst : ∀ m, IsSst P (qRep (Cv.tw.ρ' m)) := fun m =>
-    (GlobalTheory.T.isSemistable_latticeInMatrixAlgebraLayer l K L₀ P AI T a Cl _ (Cv.tw.ρ' m) (Cv.lay m)).1 hsstCl
+    (_root_.GlobalTheory.LayerSst.main l K L₀ P AI T a Cl _ (Cv.tw.ρ' m) (Cv.lay m)).1 hsstCl
   have hfr : ∀ m, ∃ F : Frame bk N (Cv.tw.d' m) (fun g => (Cv.tw.ρ' m g).val),
       F.IsDR ∧ (IsCrys (P.PD K) (qRep (Cv.tw.ρ' m)) → F.IsCr) := fun m =>
     GlobalTheory.T.exists_breuilKisinFrame_semistable_boundedJumps l K bk τp hτp P AI T N _ (Cv.tw.ρ' m) (Cv.cont' m) (hsst m)
       (GlobalTheory.T.layer_DdR_bounds_alt l K L₀ P AI T a Cl J N hL₀ hN _ (Cv.tw.ρ' m) (Cv.lay m) hCl)
   choose F hFdr hFcr using hfr
   obtain ⟨F₀, hF₀dr, hF₀cr, rr, hlink⟩ := GlobalTheory.T.exists_deRhamFrame_limitLattice_breuilKisinTower l K bk τp hτp Cv.d N Cv.ρ Cv.tw F hFdr
-  have hdr0 : Formalism.MainNotions.N.IsDR (P.PD K) (qRep Cv.ρ) := GlobalTheory.T.isDeRham_of_breuilKisinFrame_isDeRham l K bk τp hτp P AI T N Cv.d Cv.ρ F₀ hF₀dr
+  have hdr0 : Formalism.MainNotions.N.IsDR (P.PD K) (qRep Cv.ρ) := _root_.GlobalTheory.BKLim.isDR_of_frame_isDR l K bk τp hτp P AI T N Cv.d Cv.ρ F₀ hF₀dr
   have hread := GlobalTheory.T.deRham_crystalline_of_lattice_reads l K L₀ P AI T a Cv.d Cv.ρ r Cv.b Cv.e Cv.reads L r' R hL hR hr'
   have hdrR : Formalism.MainNotions.N.IsDR (P.PD K) R := hread.1 hdr0
   refine ⟨hdrR, ?_, fun hcr => hread.2 (GlobalTheory.T.isCrys_of_crystallineBreuilKisinFrame l K bk τp hτp P AI T N Cv.d Cv.ρ F₀
-    (hF₀cr fun m => hFcr m ((GlobalTheory.T.isSemistable_latticeInMatrixAlgebraLayer l K L₀ P AI T a Cl _ (Cv.tw.ρ' m) (Cv.lay m)).2 hcr)))⟩
+    (hF₀cr fun m => hFcr m ((_root_.GlobalTheory.LayerSst.main l K L₀ P AI T a Cl _ (Cv.tw.ρ' m) (Cv.lay m)).2 hcr)))⟩
 
   intro τK
   obtain ⟨σ, hσ⟩ := exists_gal_inv (L.1.val.comp τK)
   have hσ' : ∀ x : ↥K.1, σ ((τK x : ↥L.1) : Om l) = (x : Om l) := hσ
-  obtain ⟨g, z, hz, hzr⟩ := GlobalTheory.T.exists_galois_elem_cyclotomic_period_not_root_of_unity l K bk
+  obtain ⟨g, z, hz, hzr⟩ := _root_.GlobalTheory.BKLim.exists_isZ_not_root l K bk
   have hz0 : z ≠ 0 := by
     obtain ⟨w, -, hw⟩ := hz
     rintro rfl
@@ -210,12 +210,12 @@ theorem closed_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : 
     intro m
     obtain ⟨H, -⟩ := GlobalTheory.T.exists_hodge_basis_deRham_lattice l K P AI T C hC (bk.ev bk.E) hξ _ (Cv.tw.ρ' m)
       (GlobalTheory.sst_isDR l P AI T K _ (qRep (Cv.tw.ρ' m)) (hsst m))
-    obtain ⟨Y, -, hY, -⟩ := GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τp hτp N _ _ (F m).toPre
+    obtain ⟨Y, -, hY, -⟩ := _root_.GlobalTheory.BKLim.pre_bounded_poles l K bk τp hτp N _ _ (F m).toPre
     obtain ⟨U', h1, h2⟩ := (GlobalTheory.T.adaptedBasis_theta_galoisFixed_poles l K bk τp hτp C hCd N _ _ (F m) Y (hFdr m) hY H).1 g z hz
     exact ⟨H, Y, U', hY, h1, h2⟩
   choose Hm Ym U' hYm hU'Y hU'V using hex
   obtain ⟨H0, -⟩ := GlobalTheory.T.exists_hodge_basis_deRham_lattice l K P AI T C hC (bk.ev bk.E) hξ _ Cv.ρ hdr0
-  obtain ⟨Y0, -, hY0, -⟩ := GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τp hτp N _ _ F₀.toPre
+  obtain ⟨Y0, -, hY0, -⟩ := _root_.GlobalTheory.BKLim.pre_bounded_poles l K bk τp hτp N _ _ F₀.toPre
   obtain ⟨U, hUY, hUV⟩ := (GlobalTheory.T.adaptedBasis_theta_galoisFixed_poles l K bk τp hτp C hCd N _ _ F₀ Y0 hF₀dr hY0 H0).1 g z hz
   obtain ⟨Bd, hBd⟩ := GlobalTheory.T.theta_conj_bounded_compatible_breuilKisin_frames l K bk τp hτp N
   have hBdm := fun (m n : ℕ) => hBd N Cv.d (Cv.tw.d' m) n _ _ F₀ (F m) Y0 (Ym m) rfl hY0 (hYm m) g U (U' m) hUY (hU'Y m)
@@ -249,7 +249,7 @@ theorem closed_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : 
       map_eq_of_count _ _ fun n => by rw [hcard n, hmk τk n, hcτ]
     have hW : IsUnit (Hk.V.map (Per.θD l)) := Hk.unit.map (Per.θD l).mapMatrix
     obtain ⟨huW, htr⟩ := conj_diag _ hW fun i => z ^ ((Hk.p i : ℤ) - Hk.q)
-    have hHT := (GlobalTheory.T.isHodgeTate_iff_diagonal_adapted_basis l K K' C hCd (bk.ev bk.E) hξ a _ Hk z _ hKK').1 huW
+    have hHT := (_root_.GlobalTheory.BKLim.isHT_iff_diag l K K' C hCd (bk.ev bk.E) hξ a _ Hk z _ hKK').1 huW
     have hρ : (fun g => (rk g).val.map fun x => σ (x : Om l)) = fun g => ((Cv.lay m).rep k g).val.map σ := by
       funext g
       ext i j
@@ -259,7 +259,7 @@ theorem closed_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : 
     replace hHT := hmv _ hHT
     refine ⟨Hk.V.map (Per.θD l) * Matrix.diagonal (fun i => z ^ ((Hk.p i : ℤ) - Hk.q)) * (Hk.V.map (Per.θD l))⁻¹,
       fun n => ⟨?_, ?_⟩⟩
-    · exact (congrArg Matrix.trace (GlobalTheory.T.hodgeTateOperator_pow_eq_sum l K C (bk.ev bk.E) a _ (Cv.tw.ρ' m) ((Cv.lay m).rep k) (fun s => (Cv.lay m).b s k) (Cv.lay m).e
+    · exact (congrArg Matrix.trace (_root_.GlobalTheory.BKLim.htOp_pow_eq_sum l K C (bk.ev bk.E) a _ (Cv.tw.ρ' m) ((Cv.lay m).rep k) (fun s => (Cv.lay m).b s k) (Cv.lay m).e
         ((Cv.lay m).reads k) σ z (Hm m) (U' m) _ (hU'V m) hHT n)).symm
     · rw [htr n, sum_pow_eq (fun i => (Hk.p i : ℤ) - Hk.q) z n, hms]
   have hS0 : S 0 = a := by
@@ -270,12 +270,12 @@ theorem closed_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : 
     intro m k n
     obtain ⟨u, hu⟩ := hlay m k
     exact (hu n).1.trans (hu n).2
-  have hcov := GlobalTheory.T.trace_pow_eq_along_latticeTowerCover l (↥(GK K)) L₀ a ha r Cl Cv σ U U' Bd S hS0 hUb hU'b hcomp hlayS
+  have hcov := _root_.GlobalTheory.CoverTrace.trace_pow_eq l (↥(GK K)) L₀ a ha r Cl Cv σ U U' Bd S hS0 hUb hU'b hcomp hlayS
 
   obtain ⟨K', HR, hKK', hcard⟩ := GlobalTheory.T.exists_hodge_basis_at_embedding l K L P AI T C hC (bk.ev bk.E) hξ a r' R hR hdrR τK σ hσ'
   have hW : IsUnit (HR.V.map (Per.θD l)) := HR.unit.map (Per.θD l).mapMatrix
   obtain ⟨huW, htr⟩ := conj_diag _ hW fun i => z ^ ((HR.p i : ℤ) - HR.q)
-  have hHT := (GlobalTheory.T.isHodgeTate_iff_diagonal_adapted_basis l K K' C hCd (bk.ev bk.E) hξ a _ HR z _ hKK').1 huW
+  have hHT := (_root_.GlobalTheory.BKLim.isHT_iff_diag l K K' C hCd (bk.ev bk.E) hξ a _ HR z _ hKK').1 huW
   have hρ : (fun g => (r' g).val.map fun x => σ (x : Om l)) = fun g => (r g).val.map σ := by
     funext g
     ext i j
@@ -283,13 +283,13 @@ theorem closed_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : 
   have hmv : ∀ u, IsHT C (bk.ev bk.E) (fun g => (r' g).val.map fun x => σ (x : Om l)) z u →
       IsHT C (bk.ev bk.E) (fun g => (r g).val.map σ) z u := fun u h => hρ ▸ h
   replace hHT := hmv _ hHT
-  have hnat := GlobalTheory.T.hodgeTateOperator_pow_eq_sum l K C (bk.ev bk.E) a Cv.d Cv.ρ r Cv.b Cv.e Cv.reads σ z H0 U _ hUV hHT
+  have hnat := _root_.GlobalTheory.BKLim.htOp_pow_eq_sum l K C (bk.ev bk.E) a Cv.d Cv.ρ r Cv.b Cv.e Cv.reads σ z H0 U _ hUV hHT
   have hpow : ∀ n : ℕ, ((Finset.univ.val.map fun i => (HR.p i : ℤ) - HR.q).map fun h => (z ^ h) ^ n).sum =
       ((J (L.1.val.comp τK)).map fun h => (z ^ h) ^ n).sum := by
     intro n
     rw [← sum_pow_eq]
     exact (htr n).symm.trans ((congrArg Matrix.trace (hnat n)).trans (hcov n))
-  have hms := GlobalTheory.T.multiset_eq_of_power_sums_zpow_eq ℂ_[l] z hz0 hzr _ _ hpow
+  have hms := _root_.GlobalTheory.multiset_eq_of_powerSums_zpow_eq ℂ_[l] z hz0 hzr _ _ hpow
   intro n
   rw [← hcard n, ← hms, Multiset.count_map]
   have h1 : (Multiset.filter (fun i => n = (HR.p i : ℤ) - HR.q) Finset.univ.val).card =

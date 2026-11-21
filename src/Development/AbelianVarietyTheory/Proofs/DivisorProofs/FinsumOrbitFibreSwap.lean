@@ -38,30 +38,6 @@ theorem finsum_sigma_iter {ι : Type} {κ : ι → Type} (f : (Σ i, κ i) → �
 
 variable {Γ A B J : Type} [Group Γ] [MulAction Γ A] [MulAction Γ B]
 
-noncomputable def toOrbit (τ : J → B)
-    (p : Σ j : J, orbitRel.Quotient (stabilizer Γ (τ j)) A) : orbitRel.Quotient Γ (A × B) :=
-  Quotient.mk'' (Quotient.out p.2, τ p.1)
-
-def liftW (Ψ : A → B → ℂ) (hΨ : ∀ (g : Γ) a b, Ψ (g • a) (g • b) = Ψ a b) :
-    orbitRel.Quotient Γ (A × B) → ℂ :=
-  Quotient.lift (fun p => Ψ p.1 p.2) (by
-    rintro ⟨a, b⟩ ⟨a', b'⟩ h
-    have h' : (a, b) ∈ orbit Γ (a', b') := h
-    obtain ⟨g, hg⟩ := mem_orbit_iff.mp h'
-    rw [Prod.smul_mk, Prod.mk.injEq] at hg
-    obtain ⟨h1, h2⟩ := hg
-    simp only
-    rw [← h1, ← h2, hΨ])
-
-variable (Γ A B) in
-
-def swapQ : orbitRel.Quotient Γ (B × A) ≃ orbitRel.Quotient Γ (A × B) :=
-  Quotient.congr (Equiv.prodComm B A) (by
-    rintro ⟨b, a⟩ ⟨b', a'⟩
-    change (b, a) ∈ orbit Γ (b', a') ↔ (a, b) ∈ orbit Γ (a', b')
-    simp only [mem_orbit_iff, Prod.smul_mk, Prod.mk.injEq]
-    exact ⟨fun ⟨g, h1, h2⟩ => ⟨g, h2, h1⟩, fun ⟨g, h1, h2⟩ => ⟨g, h2, h1⟩⟩)
-
 end OrbitFibre
 
 end GlobalTheory

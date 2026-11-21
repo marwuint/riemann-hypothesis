@@ -36,17 +36,6 @@ def OnePlace {k r : ℕ} (L : LocBessel k r) (h : ℝ) (μG : Measure (Mt k r)) 
     (∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp L.σ w0, ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp L.σ w0,
       Formalism.FourierDecayAlt.ThreeDimData.be L.z' L.c L.π' L.σ L.μW' L.μN x v = (innerSL ℂ (l' v)).smulRight (l' x))
 
-def AmpDD : Prop :=
-  Formalism.FourierDecayAlt.ThreeDimData.Inputs →
-  ∀ (k r : ℕ) (L : LocBessel k r) (h : ℝ) (μG : Measure (Mt k r)) (w0 : L.Hs) (l : L.Hs → L.Wp) (l' : L.Hs → L.Wq),
-    OnePlace L h μG w0 l l' →
-    ∀ (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR νR : Measure (Mt k r))
-      (ν : Measure (PairSp k r)), CellData L μG γ μR νR ν →
-    ∀ b : ℝ, 0 ≤ b → Formalism.FourierDecayAlt.ThreeDimData.AG k r + 1 < Formalism.FourierDecayAlt.ThreeDimData.aOf r h - b → Integrable (pairMaj γ b) ν →
-    ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp L.σ w0, ∀ v' ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp L.σ w0, ∀ (ξ : L.Wp) (ξ' : L.Wq),
-      (⟪l v, ξ⟫_ℂ * ⟪ξ', l' v'⟫_ℂ) • ampJ νR 1 (fun g => l (L.σ g w0)) (fun g => l' (L.σ g w0)) γ =
-        ((PI.BesselPeriodGGP.fdegH μG L.σ w0 : ℂ)⁻¹) • OrbInt L (coefF L v v' ξ ξ') γ ν
-
 def RStabInv : Prop :=
   ∀ (k r : ℕ) (L : LocBessel k r) (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR : Measure (Mt k r)),
     1 ≤ k → γ ∈ UH (Hpk k r) → 0 < Gf k r L.z L.z' γ → IsRelStab L γ →
@@ -60,22 +49,6 @@ def OnePlaceKF {k r : ℕ} (L : LocBessel k r) (h : ℝ) (μG : Measure (Mt k r)
       Formalism.FourierDecayAlt.ThreeDimData.be L.z L.c L.π L.σ L.μW L.μN x v = (innerSL ℂ (l v)).smulRight (l x)) ∧
     (∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp L.σ w0, ∀ v : L.Hs, PI.UpqRep.IsKFinHpk (k := k) (r := r) L.σ v →
       Formalism.FourierDecayAlt.ThreeDimData.be L.z' L.c L.π' L.σ L.μW' L.μN x v = (innerSL ℂ (l' v)).smulRight (l' x))
-
-def AmpKF : Prop :=
-  Formalism.FourierDecayAlt.ThreeDimData.Inputs →
-  ∀ (k r : ℕ) (L : LocBessel k r) (h : ℝ) (μG : Measure (Mt k r)) (w0 : L.Hs) (l : L.Hs → L.Wp) (l' : L.Hs → L.Wq),
-    OnePlaceKF L h μG w0 l l' →
-    ∀ (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR νR : Measure (Mt k r))
-      (ν : Measure (PairSp k r)), CellData L μG γ μR νR ν →
-    ∀ b : ℝ, 0 ≤ b → Formalism.FourierDecayAlt.ThreeDimData.AG k r + 1 < Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1 - b → Integrable (pairMaj γ b) ν →
-    ∀ v v' : L.Hs, PI.UpqRep.IsKFinHpk (k := k) (r := r) L.σ v → PI.UpqRep.IsKFinHpk (k := k) (r := r) L.σ v' →
-    ∀ (ξ : L.Wp) (ξ' : L.Wq),
-      (⟪l v, ξ⟫_ℂ * ⟪ξ', l' v'⟫_ℂ) • ampJ νR 1 (fun g => l (L.σ g w0)) (fun g => l' (L.σ g w0)) γ =
-        ((PI.BesselPeriodGGP.fdegH μG L.σ w0 : ℂ)⁻¹) • OrbInt L (coefF L v v' ξ ξ') γ ν
-
-def AmpKFOfSteps : Prop :=
-  Formalism.FourierDecayAlt.ThreeDimData.SchurH → Formalism.FourierDecayAlt.ThreeDimData.NormInv → Formalism.FourierDecayAlt.ThreeDimData.GrowthG → Formalism.FourierDecayAlt.ThreeDimData.DecDD →
-    Formalism.FourierDecayAlt.ThreeDimData.BeConv → RStabInv → AmpKF
 
 def KDense : Prop :=
   ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ)
@@ -112,9 +85,6 @@ def CellConv : Prop :=
     Formalism.FourierDecayAlt.C2.IsMonomial (Formalism.QuantumDeterminants.Zhat k r L.z L.z' γ) →
     ∃ b : ℝ, 0 ≤ b ∧ Formalism.FourierDecayAlt.ThreeDimData.AG k r + 1 < Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1 - b ∧ Integrable (pairMaj γ b) ν
 
-def AmpDDOfSteps : Prop :=
-  Formalism.FourierDecayAlt.ThreeDimData.SchurH → Formalism.FourierDecayAlt.ThreeDimData.NormInv → Formalism.FourierDecayAlt.ThreeDimData.GrowthG → Formalism.FourierDecayAlt.ThreeDimData.DecDD → RStabInv → AmpDD
-
 def GapOfHyp0 (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ) : Prop :=
   Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 →
   ∀ (τ : D.what₂.Tau) (lam' : Fin (2 * D.R.rS + D.R.k + 1) → ℝ),
@@ -133,10 +103,5 @@ def NVHyp (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ)
       (∃ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ w0, ∃ y ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ w0,
         Formalism.FourierDecayAlt.ThreeDimData.be W.z' (toBessel D τ w w' θ W lam' A hW hA hT hT').c W.π' A.σ W.μW'
           (toBessel D τ w w' θ W lam' A hW hA hT hT').μN x y ≠ 0)
-
-def AmpOrbOfAmpDD (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ) : Prop :=
-  Formalism.FourierDecayAlt.ThreeDimData.Inputs → Formalism.FourierDecayAlt.ThreeDimData.DDFormOne → Formalism.FourierDecayAlt.ThreeDimData.AtFormAdmOne → KDense → NzKF → AmpKF → CellConv →
-    (1000 ≤ Cl → Cn ≤ Cl → GapOfHyp0 D large₂ C' Cl Cg cb Cu cT CT C0 Cn) → NVHyp D large₂ C' Cl Cg cb Cu cT CT C0 Cn →
-    Formalism.MainNotions.S.Pv.LemmaJ.AmpOrb D large₂ C' Cl Cg cb Cu cT CT C0 Cn
 
 end Formalism.MainNotions.S.Pv.AmpDD

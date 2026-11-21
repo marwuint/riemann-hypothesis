@@ -4,8 +4,9 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Transv
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousIsotropicSandwichMeanTranslation
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaFunctionsDenseContinuousThetaLawStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaFunctionOrthogonalSumApproxFiniteSumsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaFunctionsDenseContinuousThetaLaw
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaFunctionOrthogonalSumApproxFiniteSums
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow
 open scoped TensorProduct
@@ -18,7 +19,7 @@ namespace GlobalTheory.DenseSum
 
 theorem unifLimit_prodSpan : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B T : HSp D) (o : OrthDec S A B), ∀ f, IsThetaFunO ψ S T f → GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.UnifLimit (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.prodSpan (o.resS T) (IsThetaFunO ψ A T) (IsThetaFunO ψ B T)) f := by
   intro D ψ hψ S A B T o f hf ε hε
-  obtain ⟨n, P, g, hPc, hPl, hg, hfg⟩ := GlobalTheory.T.theta_function_orthogonal_sum_approx_finite_sums D ψ hψ S A B T o f hf (ε / 2) (by positivity)
+  obtain ⟨n, P, g, hPc, hPl, hg, hfg⟩ := _root_.GlobalTheory.ThetaSplitApprox.exists_approx D ψ hψ S A B T o f hf (ε / 2) (by positivity)
   have hb : ∀ i, ∃ C : ℝ, ∀ v, ‖g i v‖ ≤ C := fun i =>
     GlobalTheory.IsoMean.isThetaFunO_bounded B T ψ hψ (g i) (hg i)
   choose C hC using hb
@@ -28,7 +29,7 @@ theorem unifLimit_prodSpan : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsSt
     linarith
   have hδ : 0 < ε / (2 * M) := by positivity
   have hφ : ∀ i, ∃ φ : WO A T → ℂ, IsThetaFunO ψ A T φ ∧ ∀ u, ‖P i u - φ u‖ ≤ ε / (2 * M) := fun i =>
-    GlobalTheory.T.theta_functions_dense_continuous_theta_law D ψ hψ A T (P i) (hPc i) (hPl i) _ hδ
+    _root_.GlobalTheory.HeisSmoothing.exists_theta_near D ψ hψ A T (P i) (hPc i) (hPl i) _ hδ
   choose φ hφt hφa using hφ
   refine ⟨∑ i, fun w => φ i ((o.resS T) w).1 * g i ((o.resS T) w).2, ?_, ?_⟩
   · exact Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨φ i, g i, hφt i, hg i, rfl⟩

@@ -37,20 +37,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u)
   (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0))
 
-def PlacedPrim : Prop :=
-  ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k) (ι : Type)
-    (v : VCom f.c) (o : TDat f.c k ι) (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg),
-    f.c.Is ∧ v.Is ∧ VTie f v ∧ ShapeOff v o ∧ GPin G ∧ GRead f G pl ∧ BotTie f B v o G ∧ TopPrim v o
-
-def InPosition : Prop := PlacedPrim f B ∧ Framed B
-
 variable {f B}
-
-theorem PlacedPrim.placed (h : PlacedPrim f B) : Placed f B := by
-  obtain ⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7, -⟩ := h
-  exact ⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, h7⟩
-
-theorem InPosition.placed (h : InPosition f B) : Placed f B := h.1.placed
 
 end GlobalTheory.MiTop
 

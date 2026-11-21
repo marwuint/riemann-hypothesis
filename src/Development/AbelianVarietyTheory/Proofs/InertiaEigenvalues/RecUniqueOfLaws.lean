@@ -12,7 +12,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IrreducibleGL1IsCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IrreducibleGL1IsCharacter
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -54,7 +54,7 @@ theorem eq_of_isCusp (hLC : LocalConverseGL) (hBZ : BernsteinZelevinskyFinitenes
   rcases n with _ | m
   · exact absurd hn (lt_irrefl 0)
   rcases m with _ | m
-  · obtain ⟨χ, hχ, hx⟩ := GlobalTheory.T.irreducible_GL1_is_character hBZ _ ⟨1, c⟩ rfl
+  · obtain ⟨χ, hχ, hx⟩ := _root_.GlobalTheory.LocLanglands.DegreeOne.classOfDegreeOne_eq_ofChar hBZ _ ⟨1, c⟩ rfl
     rw [hx, H.one, H'.one]
   · obtain ⟨x', hx'⟩ := H'.bij.2 (rc ⟨m + 2, c⟩)
     have hd : x'.1 = m + 2 := by

@@ -912,8 +912,6 @@ end Formalism.FourierDecayAlt.P.WirtingerIntegrationByParts
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem wirtinger_integration_by_parts : Formalism.FourierDecayAlt.G.WirtingerIBP := WirtingerIntegrationByParts.wirtingerIBP
-
 theorem nonstationary_phase : Formalism.FourierDecayAlt.G.NonStatPhase := WirtingerIntegrationByParts.nonStatPhase
 
 end Formalism.FourierDecayAlt.P

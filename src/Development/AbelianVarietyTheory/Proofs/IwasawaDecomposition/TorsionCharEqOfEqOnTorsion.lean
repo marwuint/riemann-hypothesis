@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalFiniteTorsionSplittingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitTorsAlgClosedFractionFieldStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitTorsAlgClosedFractionField
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.IsFractionRingIntO
 
 set_option autoImplicit false
@@ -140,7 +140,7 @@ theorem exists_finPart_int [IsLocallyNoetherian X] (C : Type) [NontriviallyNorme
   haveI := GlobalTheory.IntegralPointCheck.isFractionRing_intO C
   haveI : IsAlgClosed (FractionRing ↥(intO C)) :=
     IsAlgClosed.of_ringEquiv C _ (FractionRing.algEquiv ↥(intO C) C).symm.toRingEquiv
-  exact exists_finPart_local t _ x q hq (GlobalTheory.T.splitTors_algClosed_fraction_field E H X t _ x q hq)
+  exact exists_finPart_local t _ x q hq (_root_.GlobalTheory.LineNorm.splitTors_of_isAlgClosed E H X t _ x q hq)
 
 theorem char_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] (x : Sp ↥(intO C) ⟶ X) (q : ℕ), q ≠ 0 → ∀ c c' : TorsChar t x q, (∀ w : Over.mk (spMap (algebraMap ↥(intO C) ↥(intO C)) ≫ x) ⟶ t.G, w ^ q = 1 → c.χ ↥(intO C) w = c'.χ ↥(intO C) w) → ∀ (B : Type) [CommRing B] [Algebra ↥(intO C) B] [Module.Finite ↥(intO C) B] (w : Over.mk (spMap (algebraMap ↥(intO C) B) ≫ x) ⟶ t.G), w ^ q = 1 → c.χ B w = c'.χ B w := by
   intro E _ _ _ H X _ t C _ _ _ _ x q hq c c' h B _ _ _ w hw

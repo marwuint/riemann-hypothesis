@@ -78,41 +78,4 @@ theorem prod_absNorm_pow {T : ℕ} (hT : 0 < T) :
 
 end Arith
 
-theorem etaF_cases (K F : Type) [Field K] [Field F] [Algebra F K] (𝔭 : Ideal (𝓞 F)) :
-    etaF K F 𝔭 = 1 ∨ etaF K F 𝔭 = -1 := by
-  unfold etaF
-  split_ifs <;> simp
-
-theorem factor_eq (q η x : ℝ) (hq : q ≠ 1) (hq0 : 0 ≤ q) (hη : η = 1 ∨ η = -1) (k v : ℕ) (hk : 1 ≤ k) :
-    q ^ ((k - 1) * v) * x / (1 - η * q⁻¹) * (q ^ v * (1 - η * q⁻¹)) = (q ^ v) ^ k * x := by
-  have hne : 1 - η * q⁻¹ ≠ 0 := by
-    rcases hη with rfl | rfl
-    · rw [one_mul, sub_ne_zero]
-      intro h
-      exact hq (inv_eq_one.mp h.symm)
-    · have : 0 ≤ q⁻¹ := inv_nonneg.2 hq0
-      have : 0 < 1 - (-1) * q⁻¹ := by linarith
-      exact this.ne'
-  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
-  rw [Nat.add_sub_cancel, div_mul_eq_mul_div, div_eq_iff hne]
-  ring
-
-theorem lamGlue : LamGlue := by
-  intro K F _ _ _ _ k T hk hT
-  have e1 := tprod_supT (F := F) hT (fun P => (Ideal.absNorm P : ℝ) ^ ((k - 1) * vT F T P) *
-    (1 - etaF K F P ^ k * (Ideal.absNorm P : ℝ) ^ (-(k : ℤ))) / (1 - etaF K F P * (Ideal.absNorm P : ℝ)⁻¹))
-  have e2 := tprod_supT (F := F) hT (fun P => (Ideal.absNorm P : ℝ) ^ vT F T P *
-    (1 - etaF K F P * (Ideal.absNorm P : ℝ)⁻¹))
-  have e3 := tprod_supT (F := F) hT (fun P => 1 - etaF K F P ^ k * (Ideal.absNorm P : ℝ) ^ (-(k : ℤ)))
-  beta_reduce at e1 e2 e3
-  unfold lamT glueT
-  rw [e1, e2, e3, ← Finset.prod_mul_distrib, pow_mul', ← prod_absNorm_pow hT, ← Finset.prod_pow,
-    ← Finset.prod_mul_distrib]
-  refine Finset.prod_congr rfl fun P hP => ?_
-  have hmax : P.IsMaximal := isMaximal_of_mem_nfT hT (Multiset.mem_toFinset.1 hP)
-  have hq : (Ideal.absNorm P : ℝ) ≠ 1 := by
-    rw [Ne, Nat.cast_eq_one, Ideal.absNorm_eq_one_iff]
-    exact hmax.ne_top
-  exact factor_eq _ _ _ hq (Nat.cast_nonneg _) (etaF_cases K F P) k _ hk
-
 end PI.UnitaryGroupMassFormula.CntFormula.RowsMassW

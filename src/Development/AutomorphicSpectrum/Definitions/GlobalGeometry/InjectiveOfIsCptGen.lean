@@ -34,25 +34,9 @@ theorem unitAt_iff (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p : Cpt ξ) (a : Ω) :
     refine ⟨(u.isUnit.map (genMap ξ p)).ne_zero, ⟨_, rfl⟩, ⟨(u⁻¹ : _ˣ), ?_⟩⟩
     exact (map_units_inv (genMap ξ p) u)
 
-theorem isDomain_stalk {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : IsCptGen ξ) (p : Cpt ξ) :
-    IsDomain (X.presheaf.stalk p.1) :=
-  Function.Injective.isDomain (genMap ξ p) (h.inj p)
-
 theorem regAt_self {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : IsCptGen ξ) : regAt ξ (self ξ) = ⊤ := by
   rw [regAt, RingHom.range_eq_top, genMap_self]
   exact h.bij.2
-
-theorem eq_of_specializes {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : IsCptGen ξ) {y : X}
-    (hy : y ⤳ genPt ξ) : y = genPt ξ := by
-  have hF : IsField (X.presheaf.stalk (genPt ξ)) :=
-    MulEquiv.isField (Field.toIsField Ω) (RingEquiv.ofBijective _ h.bij).toMulEquiv
-  have hr : y ∈ Set.range (X.fromSpecStalk (genPt ξ)) := by
-    rw [Scheme.range_fromSpecStalk]; exact hy
-  obtain ⟨z, rfl⟩ := hr
-  let _ := hF.toField
-  have : z = IsLocalRing.closedPoint (X.presheaf.stalk (genPt ξ)) :=
-    Subsingleton.elim (α := PrimeSpectrum (X.presheaf.stalk (genPt ξ))) _ _
-  rw [this, Scheme.fromSpecStalk_closedPoint]
 
 end General
 
@@ -145,56 +129,6 @@ theorem isCptGen_fractionRing [IsDomain R] [Algebra R K] [IsFractionRing R K] :
   rw [genPt_asIdeal]
   exact h0
 
-theorem injective_of_isCptGen [IsDomain R] (φ : R →+* K) (h : IsCptGen (pt φ)) :
-    Function.Injective φ := by
-  have hb : (⊥ : PrimeSpectrum R) ⤳ (genPt (pt φ) : PrimeSpectrum R) :=
-    (PrimeSpectrum.le_iff_specializes _ _).1 bot_le
-  have e := eq_of_specializes h hb
-  rw [RingHom.injective_iff_ker_eq_bot, ← genPt_asIdeal, ← e]
-  rfl
-
 end Affine
-
-section Int
-
-theorem isCptGen_int : IsCptGen (pt (algebraMap ℤ ℚ)) := isCptGen_fractionRing
-
-def two : Cpt (pt (algebraMap ℤ ℚ)) :=
-  ⟨(⟨Ideal.span {2}, (Ideal.span_singleton_prime two_ne_zero).2 Int.prime_two⟩ : PrimeSpectrum ℤ),
-    (PrimeSpectrum.le_iff_specializes _ _).1 (by
-      change (genPt (pt (algebraMap ℤ ℚ))).asIdeal ≤ _
-      rw [genPt_asIdeal, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective ℤ ℚ)]
-      exact bot_le)⟩
-
-theorem half_notMem : (2 : ℚ)⁻¹ ∉ regAt _ two := by
-  rw [mem_regAt_iff]
-  rintro ⟨a, s, hs, -, h⟩
-  apply hs
-  change s ∈ Ideal.span {(2 : ℤ)}
-  rw [Ideal.mem_span_singleton]
-  refine ⟨a, ?_⟩
-  simp only [algebraMap_int_eq, eq_intCast] at h
-  have : (s : ℚ) = 2 * a := by rw [← h]; ring
-  exact_mod_cast this
-
-theorem not_unitAt_two : ¬ unitAt _ two (2 : ℚ) := fun h => half_notMem h.2.2
-
-theorem unitAt_three : unitAt _ two (3 : ℚ) := by
-  have h : ∀ n : ℤ, ¬ (2 : ℤ) ∣ n → n ∉ two.1.asIdeal := fun n hn hm =>
-    hn (Ideal.mem_span_singleton.1 hm)
-  refine ⟨by norm_num, (mem_regAt_iff _ _ _).2 ⟨3, 1, h 1 (by decide), by simp, by simp⟩,
-    (mem_regAt_iff _ _ _).2 ⟨1, 3, h 3 (by decide), by simp, by simp⟩⟩
-
-theorem not_isCptGen_closed : ¬ IsCptGen (pt (Int.castRingHom (ZMod 2))) := fun h => by
-  have := injective_of_isCptGen _ h (a₁ := 2) (a₂ := 0) (by decide)
-  exact absurd this (by decide)
-
-theorem not_isCptGen_real : ¬ IsCptGen (pt (algebraMap ℤ ℝ)) := fun h => by
-  have h1 : Real.sqrt 2 ∈ regAt _ (self (pt (algebraMap ℤ ℝ))) := by rw [regAt_self h]; trivial
-  obtain ⟨a, s, -, h0, e⟩ := (mem_regAt_iff _ _ _).1 h1
-  simp only [algebraMap_int_eq, eq_intCast] at h0 e
-  exact irrational_sqrt_two ⟨(a : ℚ) / s, by push_cast; rw [← e, mul_div_cancel_right₀ _ h0]⟩
-
-end Int
 
 end GlobalTheory.CompanionTheory.Ar.CptModel

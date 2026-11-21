@@ -24,17 +24,6 @@ variable {p} in
 theorem Tilt.coeff_ofPerfect (f : k →+* R ⧸ span {(p : R)}) (n : ℕ) (a : k) :
     PreTilt.coeff n (Tilt.ofPerfect p f a) = f ((frobeniusEquiv k p).symm^[n] a) := rfl
 
-variable {p} in
-theorem Tilt.eq_ofPerfect (f : k →+* R ⧸ span {(p : R)}) (g : k →+* Tilt p R)
-    (h : ∀ a, PreTilt.coeff 0 (g a) = f a) : g = Tilt.ofPerfect p f :=
-  Perfection.hom_ext p (S := ModP R p) h
-
-variable {p} in
-theorem Tilt.map_ofPerfect (e : R →+* S) (f : k →+* R ⧸ span {(p : R)}) (a : k) :
-    Tilt.map p e (Tilt.ofPerfect p f a) =
-      Tilt.ofPerfect p ((Ideal.quotientMap _ e (span_natCast_le_comap p e)).comp f) a :=
-  Tilt.ext fun _ => rfl
-
 def Ainf.ofWitt (f : k →+* R ⧸ span {(p : R)}) : WittVector p k →+* Ainf p R :=
   WittVector.map (Tilt.ofPerfect p f)
 
@@ -42,21 +31,6 @@ variable {p} in
 @[simp] theorem Ainf.ofWitt_teichmuller (f : k →+* R ⧸ span {(p : R)}) (a : k) :
     Ainf.ofWitt p f (WittVector.teichmuller p a) = Ainf.teich p (Tilt.ofPerfect p f a) :=
   WittVector.map_teichmuller p _ a
-
-variable {p} in
-
-theorem Ainf.frob_ofWitt (f : k →+* R ⧸ span {(p : R)}) (x : WittVector p k) :
-    Ainf.frob p R (Ainf.ofWitt p f x) = Ainf.ofWitt p f (WittVector.frobenius x) := by
-  ext n
-  simp [Ainf.ofWitt, Ainf.frob_eq_map, WittVector.frobenius_eq_map_frobenius, frobenius_def]
-
-variable {p} in
-
-theorem Ainf.map_ofWitt (e : R →+* S) (f : k →+* R ⧸ span {(p : R)}) (x : WittVector p k) :
-    Ainf.map p e (Ainf.ofWitt p f x) =
-      Ainf.ofWitt p ((Ideal.quotientMap _ e (span_natCast_le_comap p e)).comp f) x := by
-  ext n
-  simp [Ainf.ofWitt, Ainf.map, Tilt.map_ofPerfect]
 
 omit [Fact ¬IsUnit (p : R)] in
 
@@ -76,17 +50,6 @@ theorem wittResidueMap_coeff_zero (g : WittVector p k →+* R) (x : WittVector p
 
 def Ainf.liftWitt (g : WittVector p k →+* R) : WittVector p k →+* Ainf p R :=
   Ainf.ofWitt p (wittResidueMap p g)
-
-variable {p} in
-theorem Ainf.map_liftWitt (e : R →+* S) (g : WittVector p k →+* R) (x : WittVector p k) :
-    Ainf.map p e (Ainf.liftWitt p g x) = Ainf.liftWitt p (e.comp g) x := by
-  rw [Ainf.liftWitt, Ainf.map_ofWitt, Ainf.liftWitt]
-  congr 2
-
-variable {p} in
-theorem Ainf.frob_liftWitt (g : WittVector p k →+* R) (x : WittVector p k) :
-    Ainf.frob p R (Ainf.liftWitt p g x) = Ainf.liftWitt p g (WittVector.frobenius x) :=
-  Ainf.frob_ofWitt _ x
 
 variable {p} in
 
@@ -149,13 +112,6 @@ variable {p} in
   fracWittLift_algebraMap p _ _ a
 
 variable {p} in
-theorem AinfInv.map_liftFracWitt (e : R →+* S) (g : WittVector p k →+* R)
-    (x : FractionRing (WittVector p k)) :
-    AinfInv.map p e (AinfInv.liftFracWitt p g x) = AinfInv.liftFracWitt p (e.comp g) x :=
-  RingHom.congr_fun (fracWitt_hom_ext (f := (AinfInv.map p e).comp (AinfInv.liftFracWitt p g))
-    (g := AinfInv.liftFracWitt p (e.comp g)) (by simp [Ainf.map_liftWitt])) x
-
-variable {p} in
 theorem AinfInv.theta_liftFracWitt [IsAdicComplete (span {(p : R)}) R] (g : WittVector p k →+* R)
     (a : WittVector p k) :
     AinfInv.theta p R (AinfInv.liftFracWitt p g (algebraMap _ _ a)) = algebraMap R _ (g a) := by
@@ -189,55 +145,11 @@ theorem AinfInv.theta_algebraMap_padic (g : ℤ_[p] →+* R) (j : ℚ_[p] →+* 
         IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p R) (AinfInv p R), AinfInv.theta_algebraMap,
         Ainf.theta_algebraMap_padicInt g, hj])) x
 
-theorem evalₐ_mem_map_of_evalOne {A : Type*} [CommRing A] (I : Ideal A) {y : AdicCompletion I A}
-    (hy : AdicCompletion.evalOneₐ I y = 0) (n : ℕ) :
-    AdicCompletion.evalₐ I n y ∈ I.map (Ideal.Quotient.mk (I ^ n)) := by
-  rcases n with _ | n
-  · rw [Subsingleton.elim
-      (h := Ideal.Quotient.subsingleton_iff.2 (by simp)) (AdicCompletion.evalₐ I 0 y) 0]
-    exact zero_mem _
-  obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I (n + 1) y)
-  have h1 := factorPow_evalₐ I (show 1 ≤ n + 1 by omega) y
-  rw [← AdicCompletion.factorₐ_evalₐ_one, ← h1, ← ha] at hy
-  simp only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk,
-    Ideal.Quotient.eq_zero_iff_mem] at hy
-  rw [← ha]
-  exact Ideal.mem_map_of_mem _ hy
-
 namespace BdRPlus
 
 variable {p}
 
-theorem eval_eq_zero_of_mem_ker_theta_pow {n : ℕ} {x : BdRPlus p R} (hx : x ∈ fil p R n) :
-    eval p R n x = 0 := by
-  have h1 : RingHom.ker (theta p R) ≤
-      ((AinfInv.kerTheta p R).map (Ideal.Quotient.mk (AinfInv.kerTheta p R ^ n))).comap
-        (eval p R n) := by
-    intro y hy
-    rw [RingHom.mem_ker, theta_eq_zero_iff] at hy
-    exact evalₐ_mem_map_of_evalOne _ hy n
-  have h2 := pow_le_comap_pow h1 n hx
-  rw [← Ideal.map_pow, Ideal.map_quotient_self, Ideal.mem_comap, Ideal.mem_bot] at h2
-  exact h2
-
-theorem iInf_ker_theta_pow : ⨅ n, fil p R n = ⊥ := by
-  rw [eq_bot_iff]
-  intro x hx
-  rw [Ideal.mem_iInf] at hx
-  exact ext_eval fun n => by rw [eval_eq_zero_of_mem_ker_theta_pow (hx n), map_zero]
-
 variable {F : Type v} {L : Type w} [CommRing F] [CommRing L] [Algebra F L]
-
-theorem hom_ext_of_formallyUnramified [Algebra.FormallyUnramified F L] {s₁ s₂ : L →+* BdRPlus p R}
-    (hF : ∀ a : F, s₁ (algebraMap F L a) = s₂ (algebraMap F L a))
-    (hθ : ∀ x, theta p R (s₁ x) = theta p R (s₂ x)) : s₁ = s₂ := by
-  letI : Algebra F (BdRPlus p R) := (s₁.comp (algebraMap F L)).toAlgebra
-  have := Algebra.FormallyUnramified.ext_of_iInf (R := F) (I := RingHom.ker (theta p R))
-    iInf_ker_theta_pow (g₁ := { s₁ with commutes' := fun _ => rfl })
-    (g₂ := { s₂ with commutes' := fun a => (hF a).symm }) (fun x => by
-      rw [Ideal.Quotient.eq, RingHom.mem_ker, map_sub, sub_eq_zero]
-      exact hθ x)
-  exact RingHom.ext fun x => AlgHom.congr_fun this x
 
 theorem exists_section [Algebra.FormallySmooth F L]
     (hθ : Function.Surjective (AinfInv.theta p R)) (ι : F →+* AinfInv p R)
@@ -278,16 +190,6 @@ theorem section_algebraMap [Algebra.FormallySmooth F L]
     (hj : ∀ a : F, j (algebraMap F L a) = AinfInv.theta p R (ι a)) (a : F) :
     «section» hθ ι j hj (algebraMap F L a) = algebraMap (AinfInv p R) _ (ι a) :=
   (exists_section hθ ι j hj).choose_spec.2 a
-
-theorem eq_section [Algebra.FormallyEtale F L]
-    (hθ : Function.Surjective (AinfInv.theta p R)) (ι : F →+* AinfInv p R)
-    (j : L →+* Localization.Away (p : R))
-    (hj : ∀ a : F, j (algebraMap F L a) = AinfInv.theta p R (ι a)) (s : L →+* BdRPlus p R)
-    (h₁ : ∀ x, theta p R (s x) = j x)
-    (h₂ : ∀ a : F, s (algebraMap F L a) = algebraMap (AinfInv p R) _ (ι a)) :
-    s = «section» hθ ι j hj :=
-  hom_ext_of_formallyUnramified (F := F) (fun a => by rw [h₂, section_algebraMap])
-    (fun x => by rw [h₁, theta_section])
 
 end BdRPlus
 

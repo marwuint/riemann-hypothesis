@@ -59,22 +59,4 @@ theorem mem_stdMaxParab {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) {g
   have e2 : stdSum h (Sum.inl ⟨j, hj⟩) = j := Fin.ext (by simp)
   rwa [e1, e2] at this
 
-example {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) :
-    ∃ P N : Subgroup (GL (Fin r) R), IsParabRad P N ∧ ∃ g₀, P ≤ conjBy g₀ (stdMaxParab R h) := by
-  have h' : ∑ i, ![a, b] i = r := by simpa using h
-  refine ⟨_, _, ⟨2, ![a, b], h', 1, rfl, rfl⟩, 1, fun g hg => ?_⟩
-  rw [mem_conjBy] at hg ⊢
-  rw [stdMaxParab, mem_parab_two]
-  intro j i
-  have := mem_parab_iff.1 hg 1 0 j i (by decide)
-  have e1 : stdBlocks ![a, b] h' ⟨1, j⟩ = stdSum h (Sum.inr j) :=
-    Fin.ext (((stdBlocks_val ![a, b] h' 1 j).trans (congrArg (· + (j : ℕ)) (Fin.sum_univ_one _))).trans
-      (stdSum_inr h j).symm)
-  have e2 : stdBlocks ![a, b] h' ⟨0, i⟩ = stdSum h (Sum.inl i) :=
-    Fin.ext (((stdBlocks_val ![a, b] h' 0 i).trans (zero_add _)).trans (stdSum_inl h i).symm)
-  exact e1 ▸ e2 ▸ this
-
-example {Q : Type} [Group Q] (H : Subgroup Q) : ¬ NoFixed (Representation.trivial ℂ Q ℂ) H :=
-  fun h => one_ne_zero (h 1 fun _ _ => rfl)
-
 end GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic

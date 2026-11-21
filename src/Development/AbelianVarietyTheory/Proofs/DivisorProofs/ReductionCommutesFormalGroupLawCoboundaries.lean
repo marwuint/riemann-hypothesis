@@ -8,19 +8,6 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Katz.RedCob
 
-variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ τ : Type} {d : ℕ}
-
-def Pt (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ τ : Type}
-    (u : σ → MvPowerSeries τ (Fr p k)) (u' : σ → MvPowerSeries τ k) : Prop :=
-  (∀ i, constantCoeff (u i) = 0) ∧ ∀ i, Red p (u i) (u' i)
-
-variable [PerfectRing k p]
-
-theorem red_subst [Finite σ] {u : σ → MvPowerSeries τ (Fr p k)} {u' : σ → MvPowerSeries τ k}
-    (h : Pt p u u') {f : MvPowerSeries σ (Fr p k)} {f' : MvPowerSeries σ k} (hf : Red p f f') :
-    Red p (subst u f) (subst u' f') :=
-  (GlobalTheory.Katz.red_subst p k σ τ u u' h.1 h.2).1 f f' hf
-
 end GlobalTheory.Katz.RedCob
 
 open MvPowerSeries in

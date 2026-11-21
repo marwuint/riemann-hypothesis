@@ -3,12 +3,12 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.SquareI
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.PropsCos
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.BernsteinUnitaryProductIrreducible
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnitPowTendstoZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterNormEqPowStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnitPowTendstoZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterNormEqPow
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPosOfSocleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLtOneOfPowTendstoZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLtOneOfPowTendstoZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentLtOfPrecedesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterExistsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralCharacterExists
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdLeRevEqProdGe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultisetAntitoneEnumeration
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeightedAntitoneLastNonpos
@@ -69,7 +69,7 @@ theorem card_eq_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   have hpos : ∀ Δ, 0 < (y Δ).1 := fun Δ => by
     rw [hdeg]
     exact Nat.mul_pos Δ.len_pos Δ.d_pos
-  choose s hs using fun Δ => GlobalTheory.T.central_character_norm_eq_pow k (y Δ) (hpos Δ)
+  choose s hs using fun Δ => _root_.GlobalTheory.CompanionTheory.CentralExp.norm_scalarBy_eq_nabs_rpow k (y Δ) (hpos Δ)
   obtain ⟨h, D, hD, hanti, hno⟩ := GlobalTheory.CompanionTheory.Multiset.exists_antitone_listing 𝔪 s Segment.Precedes
     fun a b hab => GlobalTheory.T.exponent_lt_of_precedes_of_isLSeg k a b (y a) (y b) (s a) (s b) (hy a) (hy b) (hs a) (hs b) hab
   let x : Fin h → IrrGL k := fun i => y (D i)
@@ -88,9 +88,9 @@ theorem card_eq_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   have hposrev : ∀ a, 0 < ((x ∘ Fin.rev) a).1 := fun a => hpos _
   have hjm := GlobalTheory.T.jacquet_multiplicity_pos_of_socle k h N (x ∘ Fin.rev) hsumrev π hsm hposrev hsoc
   have hex := hC N π hN hsm hirr hsq h (x ∘ Fin.rev) hsumrev hposrev hjm
-  obtain ⟨t, ht⟩ := GlobalTheory.T.exists_unit_pow_tendsto_zero' k
-  have hnabs := GlobalTheory.T.norm_lt_one_of_pow_tendsto_zero k t ht
-  choose c hc using fun i => GlobalTheory.T.central_character_exists k (x i) t
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.CompanionTheory.LocalFieldPow.exists_unit_pow_tendsto_zero k
+  have hnabs := _root_.GlobalTheory.CompanionTheory.NabsContract.nabs_lt_one_of_tendsto_pow k t ht
+  choose c hc using fun i => _root_.GlobalTheory.CompanionTheory.ScalarEx.exists_scalarBy k (x i) t
   obtain ⟨hpart, hfull⟩ := hex t ht (c ∘ Fin.rev) fun i => hc (Fin.rev i)
   have hle : h ≤ 1 := length_le_one_of_partial_products (fun i => ((x i).1 : ℝ)) (fun i => s (D i))
     (fun i => ‖c i‖) (nabs_pos' k t) hnabs (fun i => by exact_mod_cast hpos (D i)) hanti

@@ -138,10 +138,6 @@ def RowsInputP (D : D7) : Prop :=
       ∀ κ : Formalism.L2.SG.TermDef.Term D u u' F0 what₂ → ℕ, RowLabel κ →
         RowsPSD S δ M L u u' F0 what₂ ϖ (Formalism.L2.SG.PairVal.vRdef D u u' F0 what₂ δ M) κ nc α
 
-theorem rowsInputP_of {D : D7} (h : Formalism.L2.SG.DataInst.RowsInputAt D) : RowsInputP D := by
-  intro Wp Wq _ _ _ _ S δ M hA L u u' hT hC _ F0 what₂ hR ϖ hϖ nc hF α hα hB
-  exact h Wp Wq S δ M hA L u u' hT hC F0 what₂ hR ϖ hϖ nc hF α hα hB
-
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst in
 
 theorem theoremS_rec
@@ -255,8 +251,6 @@ structure STies (D : D7) where
   measCompat : Formalism.L2.SG.MassDataConc.MeasCompatψ X ψ
   locCompat : ∀ w, Formalism.L2.SG.LocVol.LocCompatX X ψ w
 
-def SConc2 (D : D7) : Prop := Nonempty (STies D)
-
 variable {D : D7}
 
 theorem STies.duC_eq (T : STies D) (hF : FinX T.Y) (u : D.what₂.Word) : Formalism.L2.SG.RowsConc.duC T.X T.Y u = (D.duS u : ℝ) := by
@@ -277,11 +271,6 @@ theorem STies.concTie (T : STies D) (hF : FinX T.Y) (hK : T.X.LevelSubgroupNorma
   unfold Formalism.L2.SG.RowsConc.ConcTie
   exact ⟨hK, hN, fun u => T.duC_eq hF u, T.dstC_eq, hW, hph,
     ⟨T.hb, T.ψ, T.measTie, T.ψ_char, T.ψ_std, T.measCompat, T.locCompat, hLT⟩, hTF⟩
-
-theorem STies.sConc (T : STies D) (hF : FinX T.Y) (hK : T.X.LevelSubgroupNormalized) (hCL : ∀ u, ColsLink T.X u T.Y.hK) (hW : Formalism.L2.SG.WuDecay.WuDecay T.X)
-    (hph : Integrable T.X.ph (Formalism.L2.SG.ProjRows.muInf T.X.B.I)) : SConc D := by
-  unfold SConc
-  exact ⟨T.X, T.hb, T.Y, hF, T.autTie, hK, hCL, T.measTie, ⟨T.ψ, T.ψ_char, T.ψ_std, T.measCompat⟩, hW, hph, ⟨T.hI hF⟩⟩
 
 end STies
 
@@ -317,105 +306,6 @@ def lOf (de de' : ℕ → ℝ) : ℕ :=
   if h : ∃ l, 1 ≤ l ∧ l + 2 ≤ D.R.k ∧ de l ≠ de' l then Nat.find h else 0
 
 end GlobOf
-
-open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst Formalism.L2.SG.RowsConc in
-
-theorem theoremS_recursion_fixed
-    (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)
-    (hNG : RowNGC)
-    (C₄ Cthr : ℝ) (h4 : 1 ≤ C₄) :
-    ∃ CA C : ℝ, Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧
-    ∀ (C0 CG CDel cT Cb : ℝ), 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb → 1 < cT * Cb →
-    ∃ k0 : ℕ, ∀ Cg cb Cw cTf CT C0f : ℝ, ∃ Cn C'₀ Cl₀ : ℝ, 0 ≤ Cn ∧ ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (L : SizeData₂ D) (T : STies D) (hF : FinX T.Y) (u u' : D.what₂.Word)
-      (G0 : Sz.Glob (InfinitePlace D.host.E)) (de de' : ℕ → ℝ) (l : ℕ)
-      (i0 i0' : ∀ _ : InfinitePlace T.X.B.I.F, Fin D.R.k) (νq : T.X.B.I.Ginf → Measure T.X.B.I.Ginf)
-      (X0 : Fin (2 * D.R.rS + 2) → Fin T.X.B.I.n → T.X.B.I.E)
-      (Lsp : LocSp D T.Y.M) (ϖ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, 𝒪[(D.s.atP p).Fp])
-      (κ : Formalism.L2.SG.TermDef.Term D u u' (T.X.Fu u) (T.Y.what₂ u) → ℕ)
-      (Q : Formalism.L2.SG.PairVal.PairSys D u u' (T.X.Fu u) (T.Y.what₂ u)) (nc Th Cp Cf : ℝ),
-      u ≠ u' → 0 ≤ L.sc.b →
-
-      CarrierFull T.X T.hb T.Y u u' X0 T.ψ (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-        (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q i0 i0' νq C₄ CA G0 de de' l →
-      Fintype.card (InfinitePlace T.X.B.I.F) = D.R.f →
-
-      k0 ≤ G0.k →
-      J.SzHyp G0 CA C0 CG CDel cT Cb L.sc.b Cp Th de de' (D.mem u).A.T (D.mem u').A.T (D.duS u) (D.duS u') l →
-      16 ≤ Sz.cExp CDel cT Cb * Cf → Cf * Real.log L.sc.b ≤ G0.f * Real.log G0.k →
-      2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k →
-      PB.SizeNumbers G0.k G0.r G0.f L.sc.b G0.g1 G0.g2 (1 / 3) Cn →
-      (G0.size de (D.mem u).A.T (D.duS u)).Dstar = D.what₂.Dstar →
-
-      (T.Y.tO u u').RowBig (epsL D) (ddC T.X T.Y u u') → (T.Y.tO u u').RowNotScalar (epsL D) (ddC T.X T.Y u u') →
-      Formalism.MainNotions.S.Cnt.Hyp0 D L C' Cl Cg cb Cw cTf CT C0f →
-      Formalism.MainNotions.S.Cnt.Stand D u u' → ConcTie T.X T.Y → (T.Y.tO u u').AbsConv →
-
-      (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Formalism.MainNotions.S.Lat.gS D) ^ 2] →
-      (∀ p, Irreducible (ϖ p)) → Formula T.Y.δ Lsp u u' (T.X.Fu u) (T.Y.what₂ u) nc → RowLabel κ →
-      RowsSum (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) κ (nc * ∏' p, alpD u u' p)
-        (Formalism.L2.SG.RealObj.VtPt T.X u u' 1 i0 i0' (T.Y.FN u) (T.Y.FN u') νq) →
-
-      Formalism.L2.SG.MassDataForm.RowFormC T.X T.hb T.Y u u' X0 T.ψ
-        (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-        (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q T.Y.M T.Y.δ i0 i0' νq κ nc →
-      PB.MassDataHyp (massDataY T.X T.hb T.Y u u' X0 T.ψ (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-          (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q i0 i0' νq) →
-      PB.Link (T.Y.tO u u') (massDataY T.X T.hb T.Y u u' X0 T.ψ (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-          (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q i0 i0' νq)
-        G0 de (D.mem u).A.T (D.duS u) (D.duS u') →
-      PB.SplitInputs (T.Y.tO u u') (massDataY T.X T.hb T.Y u u' X0 T.ψ (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p)
-          C Th (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q i0 i0' νq).tt →
-
-      Formalism.L2.SG.TermOp.KExpansion (T.X.Fu u) (T.X.Fu u') (T.Y.cs u) (T.Y.cs u') (T.Y.FN u) (T.Y.FN u') T.Y.hK
-        (T.Y.Dt u) (T.Y.Dt u') →
-      Formalism.L2.SG.TermOp.AbsConvT (T.X.Fu u) (T.X.Fu u') T.Y.TR (T.Y.cs u) (T.Y.cs u') (T.Y.FN u) (T.Y.FN u') →
-      (T.Y.tO u u').IdDegenerate → (T.Y.tO u u').part (T.Y.tO u u').degSet = 0 →
-      ‖(T.Y.tO u u').K0‖ ^ 2 ≤ (1 + (L.sc.b ^ 6)⁻¹) * ((D.duS u : ℝ) * (D.duS u') / D.what₂.Dstar) ∧
-      L.hsSq u u' ≤ (1 + L.sc.b ^ (-(6 : ℝ))) * (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar := by
-  obtain ⟨CA, C, h1, h2, h3, h5, hrest⟩ := theoremS_rec hLMA hDIA hRIA C₄ Cthr h4
-  refine ⟨CA, C, h1, h2, h3, h5, ?_⟩
-  intro C0 CG CDel cT Cb hC0 hCG hCDel hcT hCb hcTb
-  obtain ⟨k0, hk0⟩ := hrest C0 CG CDel cT Cb hC0 hCG hCDel hcT hCb hcTb
-  refine ⟨k0, ?_⟩
-  intro Cg cb Cw cTf CT C0f
-  obtain ⟨Cn, hCn, C'₀, Cl₀, hNG'⟩ := hNG Cg cb Cw cTf CT C0f
-  refine ⟨Cn, C'₀, Cl₀, hCn, ?_⟩
-  intro C' Cl hC' hCl D L T hF u u' G0 de de' l i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf huu hb hCar hcard hk hSz h16 hCf hk2
-    hSN hDst hRB hRNS hH0 hSt hCT hAC hmod hϖ hFo hRL hRS hRF hBI hLk hSI hKE hAT hID hpart
-  have hNGr := hNG' C' Cl hC' hCl D L T.X T.Y u u' hH0 hSt hCT hAC
-  have hCar' := hCar
-  obtain ⟨Wp, Wq, i1, i2, i3, i4, i5, S, Tw, fw, ν', m₀, τ, Qm, Qim, eP, eQ, _, hSG, _, _, _, hComp, _⟩ := hCar'
-  have hComp' := hComp
-  unfold Formalism.L2.SG.DataInst.Compat at hComp'
-  have hGr : G0.r = D.R.rS := by rw [← hSG]; exact hComp'.1
-  have hGk : G0.k = D.R.k := by rw [← hSG]; exact hComp'.2.1
-  have hGf : G0.f = D.R.f := by rw [← hSG]; exact glob_f_eq S hComp
-  have hCT' := hCT
-  unfold Formalism.L2.SG.RowsConc.ConcTie at hCT'
-  obtain ⟨_, _, hdu, hDs, _, _, ⟨_, _, _, _, _, _, _, hLT⟩, _⟩ := hCT'
-  have hPH : Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u') := by
-    first
-    | exact Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt
-    | exact Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' (by unfold Formalism.MainNotions.VanishingOnXAndXPlus.Stand; unfold Formalism.MainNotions.S.Cnt.Stand at hSt; exact hSt)
-  have hrat : (D.duS u : ℝ) * (D.duS u') / (G0.size de (D.mem u).A.T (D.duS u)).Dstar =
-      Formalism.L2.SG.RowsConc.ddC T.X T.Y u u' := by
-    rw [hDst]
-    unfold Formalism.L2.SG.RowsConc.ddC
-    rw [hdu u, hdu u', hDs]
-  have heL : Real.exp (-((1 / 3 : ℝ) * G0.k * G0.f * Real.log G0.k)) = Formalism.L2.SG.RowsConc.epsL D := by
-    unfold Formalism.L2.SG.RowsConc.epsL
-    rw [hGk, hGf]
-  have heN : ((2 : ℝ) ^ (G0.k - 2 * G0.r - 5))⁻¹ * Real.exp (Cn * ((2 * G0.r + 2 : ℕ) : ℝ) ^ 5 * G0.f * Real.log L.sc.b) =
-      Formalism.L2.SG.RowsConc.epsNG D L Cn := by
-    unfold Formalism.L2.SG.RowsConc.epsNG Formalism.L2.SG.RowsConc.mR
-    rw [hGk, hGr, hGf]
-  exact hk0 D L T.X T.hb T.Y hF u u' G0 de de' l i0 i0' νq X0 T.ψ Lsp ϖ κ Q nc Th Cp Cf (1 / 3) Cn huu ⟨T.hI hF⟩ hb hCar
-    hcard hk hSz h16 hCf hk2 hmod hPH hLT hϖ hFo hRL hRS hRF hBI hLk hSI hSN
-    (by first | (rw [heL, hrat]; exact hRB) | (convert hRB using 1 <;> first | exact heL | exact hrat))
-    (by first | (rw [heL, hrat]; exact hRNS) | (convert hRNS using 1 <;> first | exact heL | exact hrat))
-    (by first | (rw [heN, hrat]; exact hNGr) | (convert hNGr using 1 <;> first | exact heN | exact hrat))
-    hDst hKE hAT hID hpart
 
 section MassDataHypotheses
 
@@ -469,105 +359,5 @@ theorem massDataInputs_Y (hPos : MassDataPosY X hb Y u u' X0 ψ sd C Th vR Q i0 
       hVol hH ⟨ψ, hψ, hstd, hMC⟩ hdet
 
 end MassDataHypotheses
-
-open Formalism.L2.SG.AdBridge Formalism.L2.SG.DataInst Formalism.L2.SG.RealObj in
-
-def CarrierC : Prop :=
-  ∃ C₄ CA₀ : ℝ, 1 ≤ C₄ ∧ ∀ CA : ℝ, CA₀ ≤ CA → 1 ≤ CA →
-    ∀ C0 CG CDel cT Cb : ℝ, 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb → 1 < cT * Cb →
-    ∃ k0 : ℕ, ∀ Cg cb Cw cTf CT C0f : ℝ, ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (L : SizeData₂ D) (T : STies D) (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau)
-      (τ : D.what₂.Tau) (Cp Th' : ℝ)
-      (i0 i0' : ∀ _ : InfinitePlace T.X.B.I.F, Fin D.R.k) (νq : T.X.B.I.Ginf → Measure T.X.B.I.Ginf)
-      (X0 : Fin (2 * D.R.rS + 2) → Fin T.X.B.I.n → T.X.B.I.E) (sd C Th : ℝ)
-      {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
-      (vR : Formalism.L2.SG.TermDef.Term D u u' F0 what₂ → ℝ) (Q : Formalism.L2.SG.PairVal.PairSys D u u' F0 what₂),
-      u ≠ u' → k0 ≤ (gOf D e).k → Formalism.MainNotions.S.Cnt.Hyp0 D L C' Cl Cg cb Cw cTf CT C0f →
-      (∀ x : InfinitePlace D.host.E,
-        InfinitePlace.mk ((T.X.B.I.φ (T.X.pl.symm (e x))).comp T.X.ιE.symm.toRingHom) = x) →
-      J.SzHyp (gOf D e) CA C0 CG CDel cT Cb L.sc.b Cp Th' (deOf D τ u) (deOf D τ u')
-        (D.mem u).A.T (D.mem u').A.T (D.duS u) (D.duS u') (lOf D (deOf D τ u) (deOf D τ u')) →
-      (∀ v, i0 v = i0' v) → PtRepExists T.X u u' 1 i0 i0' → NuQPin T.X u u' νq →
-      CarrierFull T.X T.hb T.Y u u' X0 T.ψ sd C Th vR Q i0 i0' νq C₄ CA (gOf D e) (deOf D τ u) (deOf D τ u')
-        (lOf D (deOf D τ u) (deOf D τ u'))
-
-open Formalism.L2.SG.AdBridge Formalism.L2.SG.CntLocal Formalism.L2.SG.DataInst Formalism.L2.SG.RowsConc in
-
-theorem theoremS_recursion_constants
-    (hLMA : ∀ D : D7, LocalModelAt D) (hDIA : ∀ D : D7, Formalism.L2.SG.Pf.LocCP.LocTied D → DensInputAt D) (hRIA : ∀ D : D7, RowsInputP D)
-    (hNG : RowNGC) (hCar : CarrierC) (Cthr : ℝ) :
-    ∃ C₄ CA C : ℝ, 1 ≤ C₄ ∧ Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧
-    ∀ (C0 CG CDel cT Cb : ℝ), 1 ≤ C0 → 0 ≤ CG → 4 < CDel → 0 < cT → 0 < Cb → 1 < cT * Cb →
-    ∃ k0 : ℕ, ∀ Cg cb Cw cTf CT C0f : ℝ, ∃ Cn C'₀ Cl₀ : ℝ, 0 ≤ Cn ∧ ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (L : SizeData₂ D) (T : STies D) (hF : FinX T.Y) (u u' : D.what₂.Word)
-      (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (τ : D.what₂.Tau)
-      (i0 i0' : ∀ _ : InfinitePlace T.X.B.I.F, Fin D.R.k) (νq : T.X.B.I.Ginf → Measure T.X.B.I.Ginf)
-      (X0 : Fin (2 * D.R.rS + 2) → Fin T.X.B.I.n → T.X.B.I.E)
-      (Lsp : LocSp D T.Y.M) (ϖ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, 𝒪[(D.s.atP p).Fp])
-      (κ : Formalism.L2.SG.TermDef.Term D u u' (T.X.Fu u) (T.Y.what₂ u) → ℕ)
-      (Q : Formalism.L2.SG.PairVal.PairSys D u u' (T.X.Fu u) (T.Y.what₂ u)) (nc Th Cp Cf : ℝ),
-      u ≠ u' → 0 ≤ L.sc.b →
-
-      (∀ v, i0 v = i0' v) → Formalism.L2.SG.RealObj.PtRepExists T.X u u' 1 i0 i0' → Formalism.L2.SG.RealObj.NuQPin T.X u u' νq →
-      (∀ x : InfinitePlace D.host.E,
-        InfinitePlace.mk ((T.X.B.I.φ (T.X.pl.symm (e x))).comp T.X.ιE.symm.toRingHom) = x) →
-      Fintype.card (InfinitePlace T.X.B.I.F) = D.R.f →
-
-      k0 ≤ (gOf D e).k →
-      J.SzHyp (gOf D e) CA C0 CG CDel cT Cb L.sc.b Cp Th (deOf D τ u) (deOf D τ u') (D.mem u).A.T (D.mem u').A.T
-        (D.duS u) (D.duS u') (lOf D (deOf D τ u) (deOf D τ u')) →
-      16 ≤ Sz.cExp CDel cT Cb * Cf → Cf * Real.log L.sc.b ≤ (gOf D e).f * Real.log (gOf D e).k →
-      2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k →
-      PB.SizeNumbers (gOf D e).k (gOf D e).r (gOf D e).f L.sc.b (gOf D e).g1
-        (gOf D e).g2 (1 / 3) Cn →
-      ((gOf D e).size (deOf D τ u) (D.mem u).A.T (D.duS u)).Dstar = D.what₂.Dstar →
-
-      (T.Y.tO u u').RowBig (epsL D) (ddC T.X T.Y u u') → (T.Y.tO u u').RowNotScalar (epsL D) (ddC T.X T.Y u u') →
-      Formalism.MainNotions.S.Cnt.Hyp0 D L C' Cl Cg cb Cw cTf CT C0f →
-      Formalism.MainNotions.S.Cnt.Stand D u u' → ConcTie T.X T.Y → (T.Y.tO u u').AbsConv →
-
-      (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Formalism.MainNotions.S.Lat.gS D) ^ 2] →
-      (∀ p, Irreducible (ϖ p)) → Formula T.Y.δ Lsp u u' (T.X.Fu u) (T.Y.what₂ u) nc → RowLabel κ →
-      RowsSum (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) κ (nc * ∏' p, alpD u u' p)
-        (Formalism.L2.SG.RealObj.VtPt T.X u u' 1 i0 i0' (T.Y.FN u) (T.Y.FN u') νq) →
-
-      Formalism.L2.SG.MassDataForm.RowFormC T.X T.hb T.Y u u' X0 T.ψ
-        (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-        (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q T.Y.M T.Y.δ i0 i0' νq κ nc →
-      PB.MassDataHyp (massDataY T.X T.hb T.Y u u' X0 T.ψ (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p)
-          C Th (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q i0 i0' νq) →
-      PB.Link (T.Y.tO u u') (massDataY T.X T.hb T.Y u u' X0 T.ψ
-          (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-          (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q i0 i0' νq)
-        (gOf D e) (deOf D τ u) (D.mem u).A.T (D.duS u) (D.duS u') →
-      PB.SplitInputs (T.Y.tO u u') (massDataY T.X T.hb T.Y u u' X0 T.ψ
-          (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-          (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q i0 i0' νq).tt →
-
-      Formalism.L2.SG.TermOp.KExpansion (T.X.Fu u) (T.X.Fu u') (T.Y.cs u) (T.Y.cs u') (T.Y.FN u) (T.Y.FN u') T.Y.hK
-        (T.Y.Dt u) (T.Y.Dt u') →
-      Formalism.L2.SG.TermOp.AbsConvT (T.X.Fu u) (T.X.Fu u') T.Y.TR (T.Y.cs u) (T.Y.cs u') (T.Y.FN u) (T.Y.FN u') →
-      (T.Y.tO u u').IdDegenerate → (T.Y.tO u u').part (T.Y.tO u u').degSet = 0 →
-      ‖(T.Y.tO u u').K0‖ ^ 2 ≤ (1 + (L.sc.b ^ 6)⁻¹) * ((D.duS u : ℝ) * (D.duS u') / D.what₂.Dstar) ∧
-      L.hsSq u u' ≤ (1 + L.sc.b ^ (-(6 : ℝ))) * (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar := by
-  obtain ⟨C₄, CA₀, h4, hC⟩ := hCar
-  obtain ⟨CA, C, h1, h2, h3, h5, hrest⟩ := theoremS_recursion_fixed hLMA hDIA hRIA hNG C₄ (max Cthr CA₀) h4
-  refine ⟨C₄, CA, C, h4, le_trans (le_max_left _ _) h1, h2, h3, h5, fun C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6 => ?_⟩
-  obtain ⟨k0, hk⟩ := hrest C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6
-  obtain ⟨k0c, hCk⟩ := hC CA (le_trans (le_max_right _ _) h1) h2 C0 CG CDel cT Cb a1 a2 a3 a4 a5 a6
-  refine ⟨max k0 k0c, fun Cg cb Cw cTf CT C0f => ?_⟩
-  obtain ⟨Cn, C'₀, Cl₀, hCn, hrow⟩ := hk Cg cb Cw cTf CT C0f
-  obtain ⟨C'₁, Cl₁, hCc⟩ := hCk Cg cb Cw cTf CT C0f
-  refine ⟨Cn, max C'₀ C'₁, max Cl₀ Cl₁, hCn, fun C' Cl hC' hCl => ?_⟩
-  intro D L T hF u u' e τ i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf hne hb0 hii hPt hNu hPT hcard hk0 hSz h16 hCf hsize hSN
-    hDst hRB hRNS hHyp0 hStand hCT hAC hTT hϖ hFo hκ hSum hKVI hBI hLink hSplit hE hA hId hK2
-  have hCF := hCc C' Cl (le_trans (le_max_right _ _) hC') (le_trans (le_max_right _ _) hCl) D L T u u' e τ Cp Th i0 i0' νq X0
-    (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th
-    (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q hne (le_trans (le_max_right _ _) hk0) hHyp0 hPT
-    hSz hii hPt hNu
-  exact hrow C' Cl (le_trans (le_max_left _ _) hC') (le_trans (le_max_left _ _) hCl) D L T hF u u' (gOf D e) (deOf D τ u)
-    (deOf D τ u') (lOf D (deOf D τ u) (deOf D τ u')) i0 i0' νq X0 Lsp ϖ κ Q nc Th Cp Cf hne hb0 hCF hcard
-    (le_trans (le_max_left _ _) hk0) hSz h16 hCf hsize hSN hDst hRB hRNS hHyp0 hStand hCT hAC hTT hϖ hFo hκ hSum hKVI hBI
-    hLink hSplit hE hA hId hK2
 
 end Formalism.L2.SG.SpectralTiesReal

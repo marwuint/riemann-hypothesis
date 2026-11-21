@@ -27,25 +27,10 @@ theorem thrW_of (k r o : ℕ) (A : ℝ)
       mul_nonneg (mul_nonneg hr hr) hr, mul_nonneg hr hr, mul_nonneg (mul_nonneg hr hr) hk, mul_nonneg hr hk,
       mul_nonneg (mul_nonneg hr hr) ho, mul_nonneg hr ho]
 
-theorem inCC_pred {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {o : ℕ}
-    {F : Mat k r → E} (h : InCC A (o + 1) F) : InCC A o F := by
-  obtain ⟨c, hck, hb⟩ := h
-  refine ⟨c, ?_, fun u v hu hv hl g hg => hb u v hu hv (by omega) g hg⟩
-  intro g₀ hg₀
-  obtain ⟨U, f', hU, hgU, hf', hfe⟩ := hck g₀ hg₀
-  exact ⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast Nat.le_succ o), hfe⟩
-
 section
 
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-
-theorem bigPos_sub (D : RealPlaceData k r Wp Wq) : Formalism.FourierDecayAlt.C6.bigPos D ⊆ Om k r D.z D.z' := by
-  intro g hg
-  simp only [Formalism.FourierDecayAlt.C6.bigPos, Formalism.FourierDecayAlt.C6.domL, Set.mem_ofPred_eq] at hg
-  obtain ⟨hgv, hgf, hd⟩ := hg
-  show g ∈ GV k r ∩ Q.OmPlus k r D.z D.z'
-  exact ⟨hgv, fun l _ => hd l (Finset.mem_univ l), hgf⟩
 
 theorem glev0 {g : Mat k r} (hg : g ∈ GV k r) : g ∈ Q.Glev k r 0 := by
   refine ⟨hg, fun a ha => ?_⟩
@@ -107,26 +92,5 @@ end
 end Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities
 
 namespace Formalism.FourierDecayAlt.P
-
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-theorem orbital_integral_commutes_large : Formalism.FourierDecayAlt.C6.JCommuteBig := by
-  refine ⟨12, by norm_num, ?_⟩
-  intro k r Wp Wq _ _ _ _ _ _ D Θ A F _ hcomm hA hF
-  have hthr := Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.thrW_of k r (opOrder Θ) A hA
-  have hF' := Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.inCC_pred hF
-  obtain ⟨hck, -⟩ := Formalism.FourierDecayAlt.P.WeakDominationWordBounds.orbital_derivative_words_weak k r Wp Wq D A (opOrder Θ) F hthr hF'
-  refine ⟨?_, ?_, ?_⟩
-  · intro g₀ hg₀
-    have hO := Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.bigPos_sub D hg₀
-    obtain ⟨U, f', hU, hgU, hf', hfe⟩ := hck g₀ ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hO.1, hO.2⟩
-    exact ⟨U, f', hU, hgU, by exact_mod_cast hf', fun g hg hgv => hfe g hg (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hgv)⟩
-  · intro p hp g _
-    exact Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.jf_equiv D F p hp g
-  · intro g hg
-    exact (Formalism.FourierDecayAlt.P.orbital_commutes_on_open_set k r Wp Wq D A (opOrder Θ) F Θ _ (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.bigPos_sub D) le_rfl
-      hthr hF' hcomm g hg).symm
 
 end Formalism.FourierDecayAlt.P

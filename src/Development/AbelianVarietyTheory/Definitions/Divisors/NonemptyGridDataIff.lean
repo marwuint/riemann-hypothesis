@@ -169,101 +169,10 @@ theorem nonempty_gridData_iff {T : Type} (L : LevCh D T) (μ0 : T) (hL : L.Is μ
   obtain ⟨G, -⟩ := exists_gridData L sc P h (GlobalTheory.ChiGrid.colY_isV D T L μ0 hL 0 (Nat.zero_le _)).sd
   exact ⟨G⟩
 
-theorem isV_all {T : Type} {L : LevCh D T} {μ0 : T} (hL : L.Is μ0) {sc : Consts} (G : GridData L sc) {X : Node}
-    (h : X.InRange D.R.m) : (G.node X).IsV (X.rank D) (X.neg D.R.m) := by
-  by_cases h0 : ∀ j, X ≠ .grid 0 j
-  · exact G.isV h h0
-  · push Not at h0
-    obtain ⟨j, rfl⟩ := h0
-    exact GlobalTheory.ChiGrid.colY_isV D T L μ0 hL j h.2
-
-theorem chiH_ne_one {T : Type} {L : LevCh D T} {P : Places L} {C : ℝ} (X : Chars P C) {i : ℕ} (h : 1 ≤ i)
-    (h' : i ≤ D.R.m) : X.chiH i ≠ 1 := fun e =>
-  (X.lev0 i h h' _ (P.under_w (P.mem_S0_of_sum_eq.2 (Or.inl rfl)))).2 (by rw [e]; intro x _; rfl)
-
-theorem modul_ne_top {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) : P.modul sc ≠ ⊤ := by
-  intro e
-  have h : (P.w P.v0).asIdeal ∣ P.modul sc :=
-    (dvd_pow_self _ (P.depth_pos sc _).ne').trans (Finset.dvd_prod_of_mem _ (P.mem_S0_of_sum_eq.2 (Or.inl rfl)))
-  rw [e, Ideal.dvd_iff_le, top_le_iff] at h
-  exact (P.w P.v0).isPrime.ne_top h
-
 theorem nonempty_gridData {T : Type} (L : LevCh D T) (μ0 : T) (hL : L.Is μ0) (sc : Consts)
     (hg : ∀ k, D.host.g k % LevelStarExponents.condE D = 1) (h1 : D.host.pde % LevelStarExponents.condE D = 1) (h2 : D.host.pde' % LevelStarExponents.condE D = 1)
     (h3 : ∀ k, q0 D ≠ D.host.g k) (h4 : ∀ t, ∀ PP ∈ L.Q t, ((q0 D : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) :
     Nonempty (GridData L sc) :=
   (nonempty_gridData_iff L μ0 hL sc).2 (GlobalTheory.GridPlaces.exists_places D T L μ0 hL hg h1 h2 h3 h4)
-
-theorem exists_levCh_gridData (C : Formalism.L2.Host.CharFrame D) (sc : Consts)
-    (hg : ∀ k, D.host.g k % LevelStarExponents.condE D = 1) (h1 : D.host.pde % LevelStarExponents.condE D = 1) (h2 : D.host.pde' % LevelStarExponents.condE D = 1)
-    (h3 : ∀ k, q0 D ≠ D.host.g k) : ∃ L : LevCh D Unit, L.C = C ∧ L.Is () ∧ Nonempty (GridData L sc) := by
-  obtain ⟨L, hC, hL⟩ := GlobalTheory.LevelChoices.exists_levCh_unit D C
-  refine ⟨L, hC, hL, nonempty_gridData L () hL sc hg h1 h2 h3 fun t PP hP => ?_⟩
-  exact absurd (by rw [hL.xi_base]; intro x _; rfl) ((hL.Q_ram () PP).2 (Or.inl hP))
-
-theorem isEmpty_gridData {T : Type} (L : LevCh D T) (sc : Consts) (h : q0 D = D.host.g 0) : IsEmpty (GridData L sc) :=
-  ⟨fun G => G.ch.basePlace_not_mem_chiGridBadPlaces ((S1_mem_OmF D).2 (Or.inl (h ▸ G.pl.basePlace_over_qZero)))⟩
-
-theorem ratio_st {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) :
-    P.stA sc * P.stAbar sc * (P.modul sc : Ideal (𝓞 D.host.E)) * (P.modulBar sc : Ideal (𝓞 D.host.E)) =
-      D.host.AA * D.host.AAbar := by
-  have h1 : ((P.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0 :=
-    FractionalIdeal.coeIdeal_ne_zero.2 (P.modul_ne_bot sc)
-  have h2 : ((P.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0 := fun h =>
-    ((GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L P sc).1 (by rw [Places.stA, h]; simp)
-  unfold Places.stA Places.stAbar
-  field_simp
-
-open GlobalTheory.SignedHC in
-
-theorem par_core {T : Type} (C : ℝ) (τ : D.what₂.Tau) {i : ℕ} (h : (Pair.core i : Pair T).InRange D.R.m) :
-    Node.par D C (Pair.core i : Pair T).big τ =
-      lift (Pair.core i : Pair T).ori (Pair.centre D C (Pair.core i : Pair T) τ) (Pair.len D (Pair.core i : Pair T))
-        (Node.par D C (Pair.core i : Pair T).small τ) := by
-  change (num D C τ).parPi (i + 1) = liftMinus ((num D C τ).cen ((num D C τ).m - i)) ((num D C τ).s - 1) ((num D C τ).parPi i)
-  have hi : i + 1 ≤ (num D C τ).m := h
-  have hm := num_nearMid D C τ
-  have hs : 1 ≤ (num D C τ).s := (odd_sLen D).pos
-  have hs2 : 2 ≤ (num D C τ).s := by change 2 ≤ D.R.r + 6; omega
-  have hg : (num D C τ).s < (num D C τ).ga := sLen_lt_gap D C
-  generalize num D C τ = G at *
-  have hc := abs_le.1 (hm (G.m - i) (Finset.mem_Icc.2 ⟨by omega, by omega⟩))
-  rw [G.mid_eq (by omega)] at hc
-  have hga : (3 : ℚ) ≤ G.ga := by exact_mod_cast (by omega : 3 ≤ G.ga)
-  have hle : ∀ {a b : ℕ}, a ≤ b → G.a b ≤ G.a a := fun h => by
-    rcases h.eq_or_lt with rfl | h
-    · exact le_rfl
-    · linarith [a_add_le (G := G) h]
-  have up : ∀ l, l < G.m - i → (G.cen (G.m - i) : ℚ) < G.a l := fun l hl => by linarith [a_add_le (G := G) hl, hc.2]
-  have dn : ∀ l, G.m - i ≤ l → G.a l < (G.cen (G.m - i) : ℚ) := fun l hl => by linarith [hle hl, hc.1]
-  have cl : ∀ x ∈ G.cloudHalf, x < (G.cen (G.m - i) : ℚ) := fun x hx => (cloudHalf_lt hx).trans (dn _ (by omega))
-  have bl : ∀ l, G.m - i + 1 ≤ l → l ≤ G.m → ∀ x ∈ G.blockC' l, x < (G.cen (G.m - i) : ℚ) := fun l h1 h2 x hx => by
-    linarith [(blockC'_between hm hs hg (by omega) h2 hx).2, a_add_le (G := G) (show G.m - i < l by omega), dn _ le_rfl]
-  have sg1 : ∀ l, G.m - i ≤ l → decide (G.m - (i + 1) ≤ l ∨ Even (G.m - (i + 1) - l)) = decide (G.m - i ≤ l ∨ Even (G.m - i - l)) :=
-    fun l hl => by rw [decide_eq_true (Or.inl (by omega)), decide_eq_true (Or.inl hl)]
-  have sg2 : ∀ l, l < G.m - i → decide (G.m - (i + 1) ≤ l ∨ Even (G.m - (i + 1) - l)) = !decide (G.m - i ≤ l ∨ Even (G.m - i - l)) :=
-    fun l hl => by
-      rw [← decide_not, decide_eq_decide, Nat.even_iff, Nat.even_iff]; omega
-  ext ⟨x, s⟩
-  simp only [mem_liftMinus, GlobalTheory.SignedHC.GridData.mem_parPi, Prod.mk.injEq]
-  constructor
-  · rintro (⟨l, hl, rfl, rfl⟩ | ⟨hx, rfl⟩ | ⟨l, h1, h2, hx, rfl⟩)
-    · rcases lt_or_ge l (G.m - i) with h' | h'
-      · exact Or.inr (Or.inl ⟨up l h', Or.inl ⟨l, hl, rfl, by rw [sg2 l h', Bool.not_not]⟩⟩)
-      · exact Or.inl ⟨(dn l h').le, Or.inl ⟨l, hl, rfl, sg1 l h'⟩⟩
-    · exact Or.inl ⟨(cl x hx).le, Or.inr (Or.inl ⟨hx, rfl⟩)⟩
-    · by_cases e : l = G.m - i
-      · exact Or.inr (Or.inr ⟨e ▸ hx, rfl⟩)
-      · exact Or.inl ⟨(bl l (by omega) h2 x hx).le, Or.inr (Or.inr ⟨l, by omega, h2, hx, rfl⟩)⟩
-  · rintro (⟨h0, ⟨l, hl, rfl, rfl⟩ | ⟨hx, rfl⟩ | ⟨l, h1, h2, hx, rfl⟩⟩ | ⟨h0, ⟨l, hl, rfl, hs'⟩ | ⟨hx, -⟩ | ⟨l, h1, h2, hx, -⟩⟩ | ⟨hx, rfl⟩)
-    · have : G.m - i ≤ l := by by_contra h'; exact absurd (up l (by omega)) (not_lt.2 h0)
-      exact Or.inl ⟨l, hl, rfl, (sg1 l this).symm⟩
-    · exact Or.inr (Or.inl ⟨hx, rfl⟩)
-    · exact Or.inr (Or.inr ⟨l, by omega, h2, hx, rfl⟩)
-    · have : l < G.m - i := by by_contra h'; exact absurd (dn l (by omega)) (not_lt.2 h0.le)
-      exact Or.inl ⟨l, hl, rfl, by rw [sg2 l this, ← hs', Bool.not_not]⟩
-    · exact absurd (cl x hx) (not_lt.2 h0.le)
-    · exact absurd (bl l h1 h2 x hx) (not_lt.2 h0.le)
-    · exact Or.inr (Or.inr ⟨G.m - i, by omega, by omega, hx, rfl⟩)
 
 end GlobalTheory.ChiGridModel

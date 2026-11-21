@@ -30,12 +30,6 @@ def Ers (r s : Md n) : abelian₂ n →ₗ[ℂ] abelian₂ n :=
 
 def Dop (B : X n) : abelian₂ n →ₗ[ℂ] abelian₂ n := ∑ r, ∑ s, B r s • Ers r s
 
-theorem Dop_add (B B' : X n) : Dop (B + B') = Dop B + Dop B' := by
-  simp only [Dop, Pi.add_apply, add_smul, Finset.sum_add_distrib]
-
-theorem Dop_smul (c : ℂ) (B : X n) : Dop (c • B) = c • Dop B := by
-  simp only [Dop, Pi.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]
-
 theorem Dop_apply (B : X n) (x : abelian₂ n) : Dop B x = ∑ r, ∑ s, B r s •
     (ExteriorAlgebra.ι ℂ (Pi.single r 1) * CliffordAlgebra.contractLeft (Q := (0 : QuadraticForm ℂ (Md n → ℂ)))
       (dualOf (Pi.single s 1)) x) := by
@@ -90,11 +84,6 @@ theorem mvL_apply (m : Md n → ℂ) (g : X n) : mvL m g = mv g m := rfl
 
 theorem mv_one' (m : Md n → ℂ) : mv (one' n) m = m := by
   ext r; simp [mv, one']
-
-def dLin (y : abelian₂ n) : X n →ₗ[ℂ] (Finset (Md n) → ℂ) where
-  toFun B := (fb n).equivFun (Dop B y)
-  map_add' B B' := by rw [Dop_add, LinearMap.add_apply, map_add]
-  map_smul' c B := by rw [Dop_smul, LinearMap.smul_apply, map_smul]; rfl
 
 theorem F_one (y : abelian₂ n) : F y (one' n) = (fb n).equivFun y := by
   have h : Matrix.of (one' n) = 1 := by

@@ -42,40 +42,6 @@ theorem mem_nonunits_Aio {d l : ℕ} [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (x 
       simpa using congrArg (fun t => ‖ι t‖) hmul
     nlinarith [norm_nonneg (ι (x : ℂ)), mul_le_mul_of_nonneg_left hy (norm_nonneg (ι (x : ℂ)))]
 
-theorem inertiaEl_iff {E Ω : Type*} [Field E] [Field Ω] [Algebra E Ω] (A : ValuationSubring Ω) (g : Ω ≃ₐ[E] Ω) :
-    InertiaEl A g ↔ g ∈ (A.inertiaSubgroup E).map (A.decompositionSubgroup E).subtype := by
-  constructor
-  · rintro ⟨hd, hx⟩
-    refine Subgroup.mem_map.2 ⟨⟨g, hd⟩, ?_, rfl⟩
-    rw [ValuationSubring.inertiaSubgroup, MonoidHom.mem_ker]
-    refine RingEquiv.ext fun y => ?_
-    obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective y
-    change Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) ((⟨g, hd⟩ : A.decompositionSubgroup E) • a) =
-      Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) a
-    rw [Ideal.Quotient.eq]
-    obtain ⟨h1, h2⟩ := (ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := A)).1 (hx a a.2)
-    exact h2
-  · intro hg
-    obtain ⟨g', hg', rfl⟩ := Subgroup.mem_map.1 hg
-    refine ⟨g'.2, fun x hx => ?_⟩
-    have key : (g' • (⟨x, hx⟩ : A)) - ⟨x, hx⟩ ∈ IsLocalRing.maximalIdeal A := by
-      rw [ValuationSubring.inertiaSubgroup, MonoidHom.mem_ker] at hg'
-      have h3 := congrArg (fun f : RingAut (IsLocalRing.ResidueField A) =>
-        f (Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) ⟨x, hx⟩)) hg'
-      change Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) (g' • (⟨x, hx⟩ : A)) =
-        Ideal.Quotient.mk (IsLocalRing.maximalIdeal A) ⟨x, hx⟩ at h3
-      exact Ideal.Quotient.eq.1 h3
-    have e : ((A.decompositionSubgroup E).subtype g') x - x =
-        ((g' • (⟨x, hx⟩ : A) - (⟨x, hx⟩ : A) : A) : Ω) := rfl
-    rw [e, ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal (A := A)]
-    exact ⟨(g' • (⟨x, hx⟩ : A) - (⟨x, hx⟩ : A)).2, key⟩
-
-theorem inertiaEl_mem_hilbert {E Ω : Type*} [Field E] [Field Ω] [Algebra E Ω] {A : ValuationSubring Ω}
-    {g : Ω ≃ₐ[E] Ω} (h : InertiaEl A g) : g ∈ hilbertSubgroup E Ω := by
-  unfold hilbertSubgroup
-  exact Subgroup.le_topologicalClosure _
-    (Subgroup.subset_closure (Or.inl (Or.inr ⟨A, (inertiaEl_iff A g).1 h⟩)))
-
 theorem mem_of_isIntegral {Ω : Type*} [Field Ω] (A : ValuationSubring Ω) {x : Ω} (hx : IsIntegral ℤ x) : x ∈ A := by
   have h2 : IsIntegral A x := hx.tower_top
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.mp h2

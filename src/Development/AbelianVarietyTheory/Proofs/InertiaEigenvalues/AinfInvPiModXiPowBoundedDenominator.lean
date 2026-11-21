@@ -4,97 +4,9 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 
-section
-
-open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
-
 namespace GlobalTheory.CompanionTheory.InertiaEigenvalues.LPow
 
-open Polynomial in
-
-theorem geom_poly {l : ℕ} (hl : l.Prime) :
-    ∃ v : ℤ[X], ∑ i ∈ Finset.range l, (1 + (X : ℤ[X])) ^ i
-      = X ^ (l - 1) + (l : ℤ[X]) * (1 + X * v) := by
-  obtain ⟨r, hr⟩ := exists_add_pow_prime_eq hl (1 : ℤ[X]) X
-  have hl1 : l - 1 + 1 = l := Nat.sub_add_cancel hl.one_le
-  have hg := geom_sum_mul (1 + (X : ℤ[X])) l
-  have hs : ∑ i ∈ Finset.range l, (1 + (X : ℤ[X])) ^ i = X ^ (l - 1) + (l : ℤ[X]) * r := by
-    apply mul_right_cancel₀ (X_ne_zero (R := ℤ))
-    have e : (1 + (X : ℤ[X])) - 1 = X := by ring
-    rw [e, hr] at hg
-    rw [hg, add_mul, ← pow_succ, hl1]
-    ring
-  have r0 : r.coeff 0 = 1 := by
-    have h := congrArg (Polynomial.eval 0) hs
-    have hz : (0 : ℤ) ^ (l - 1) = 0 := zero_pow (by have := hl.two_le; omega)
-    simp [Polynomial.eval_finset_sum, hz] at h
-    have hl0 : (l : ℤ) ≠ 0 := by exact_mod_cast hl.ne_zero
-    rw [Polynomial.coeff_zero_eq_eval_zero]
-    have h' : (l : ℤ) * Polynomial.eval 0 r = (l : ℤ) * 1 := by linarith
-    exact mul_left_cancel₀ hl0 h'
-  obtain ⟨v, hv⟩ := X_dvd_sub_C (p := r)
-  refine ⟨v, ?_⟩
-  have : r = 1 + X * v := by
-    rw [← hv, r0]; simp
-  rw [hs, ← this]
-
-theorem geom_ring {R : Type*} [CommRing R] {l : ℕ} (hl : l.Prime) (y : R) :
-    ∃ v : R, ∑ i ∈ Finset.range l, (1 + y) ^ i = y ^ (l - 1) + (l : R) * (1 + y * v) := by
-  obtain ⟨v, hv⟩ := geom_poly hl
-  refine ⟨Polynomial.aeval y v, ?_⟩
-  have h := congrArg (Polynomial.aeval y) hv
-  simpa [map_sum] using h
-
-theorem pow_mem_span {R : Type*} [CommRing R] (y ξ c v : R) (a k n M : ℕ)
-    (hξ : ξ = y ^ a + c * (1 + y * v)) (hM : 1 ≤ M) (hk : k ≤ a * n) :
-    c ^ (n + M - 1) ∈ Ideal.span {y ^ k, ξ ^ M} := by
-  set I : Ideal R := Ideal.span {y ^ k, ξ ^ M} with hI
-  have hy : y ^ k ∈ I := Ideal.subset_span (by simp)
-  have hx : ξ ^ M ∈ I := Ideal.subset_span (by simp)
-  have hb : (-(y ^ a)) ^ n ∈ I := by
-    rw [neg_pow, ← pow_mul]
-    refine I.mul_mem_left _ ?_
-    have : y ^ (a * n) = y ^ (a * n - k) * y ^ k := by
-      rw [← pow_add, Nat.sub_add_cancel hk]
-    rw [this]
-    exact I.mul_mem_left _ hy
-  have h1 : (ξ + -(y ^ a)) ^ (n + M - 1) ∈ I :=
-    Ideal.add_pow_mem_of_pow_mem_of_le I hx hb (by omega)
-  have e1 : ξ + -(y ^ a) = c * (1 + y * v) := by rw [hξ]; ring
-  rw [e1, mul_pow] at h1
-
-  have hs := mul_neg_geom_sum (-(y * v)) k
-  have hu : (1 + y * v) * ∑ i ∈ Finset.range k, (-(y * v)) ^ i = 1 - (-(y * v)) ^ k := by
-    have := hs
-    simpa [sub_neg_eq_add] using this
-  have hyk : (-(y * v)) ^ k ∈ I := by
-    rw [neg_pow, mul_pow]
-    have : (-1 : R) ^ k * (y ^ k * v ^ k) = ((-1 : R) ^ k * v ^ k) * y ^ k := by ring
-    rw [this]
-    exact I.mul_mem_left _ hy
-  rw [← Ideal.Quotient.eq_zero_iff_mem] at h1 hyk ⊢
-  rw [map_mul, map_pow, map_pow] at h1
-  have hu' := congrArg (Ideal.Quotient.mk I) hu
-  rw [map_mul, map_sub, hyk, map_one, sub_zero] at hu'
-  have hunit : IsUnit (Ideal.Quotient.mk I (1 + y * v)) := IsUnit.of_mul_eq_one _ hu'
-  rw [map_pow]
-  exact (hunit.pow _).mul_left_eq_zero.mp h1
-
-theorem l_pow_mem (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (k n M : ℕ)
-    (hM : 1 ≤ M) (hk : k ≤ (l - 1) * n) :
-    ((l : ℕ) : Ainf l) ^ (n + M - 1) ∈ Ideal.span {AI.π₁ ^ k, AI.ξ ^ M} := by
-  obtain ⟨v, hv⟩ := geom_ring (Fact.out : l.Prime) AI.π₁
-  have e : 1 + AI.π₁ = WittVector.teichmuller l AI.ε1 := by
-    rw [LocAinf.π₁]; ring
-  rw [e] at hv
-  exact pow_mem_span AI.π₁ AI.ξ (l : Ainf l) v (l - 1) k n M hv hM hk
-
-theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (k n M : ℕ), 1 ≤ M → k ≤ (l - 1) * n → ((l : ℕ) : Ainf l) ^ (n + M - 1) ∈ Ideal.span {AI.π₁ ^ k, AI.ξ ^ M} :=
-  fun l _ P AI k n M hM hk => l_pow_mem l P AI k n M hM hk
-
 end GlobalTheory.CompanionTheory.InertiaEigenvalues.LPow
-
-end
 
 section
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc

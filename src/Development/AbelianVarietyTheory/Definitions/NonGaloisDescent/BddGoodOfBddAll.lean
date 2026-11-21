@@ -35,21 +35,9 @@ theorem inV_iff_nval (T : CDVR) {e : ℕ} (he : 0 < e) (x : T.Fr) : InV T x ↔ 
 
 variable {la : HeightOneSpectrum (𝓞 c.F)}
 
-theorem bddGood_of_bddAll {κ : c.F} {f : Rul Xo c} (h : BddAll Xo c la κ f) : BddGood Xo c la κ f := by
-  intro T io e ho y hy _
-  exact h T io e ho y hy
-
 theorem bddAll_iff_smul (κ : c.F) (f : Rul Xo c) : BddAll Xo c la κ f ↔ BddAll Xo c la 1 (κ • f) := by
   unfold BddAll
   simp only [map_one, one_mul, evI_smul]
-
-theorem bddGood_iff_smul (κ : c.F) (f : Rul Xo c) : BddGood Xo c la κ f ↔ BddGood Xo c la 1 (κ • f) := by
-  unfold BddGood
-  simp only [map_one, one_mul, evI_smul]
-
-theorem evI_one {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) : evI y 1 = 1 := by
-  letI := io.toAlgebra
-  exact evalAt_one _ _ _ y.2.1
 
 private theorem evI_add_non_galois_descent {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Rul Xo c) :
     evI y (f + g) = evI y f + evI y g := by
@@ -61,17 +49,6 @@ theorem bddAll_add {κ : c.F} {f g : Rul Xo c} (hf : BddAll Xo c la κ f) (hg : 
   intro T io e ho y hy
   rw [evI_add_non_galois_descent, mul_add]
   exact (algebraMap T.V T.Fr).range.add_mem (hf T io e ho y hy) (hg T io e ho y hy)
-
-private theorem evI_mul_non_galois_descent {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Rul Xo c) :
-    evI y (f * g) = evI y f * evI y g := by
-  letI := io.toAlgebra
-  exact evalAt_mul _ _ f g _
-
-theorem bddAll_mul {κ μ : c.F} {f g : Rul Xo c} (hf : BddAll Xo c la κ f) (hg : BddAll Xo c la μ g) :
-    BddAll Xo c la (κ * μ) (f * g) := by
-  intro T io e ho y hy
-  rw [evI_mul_non_galois_descent, map_mul, mul_mul_mul_comm]
-  exact (algebraMap T.V T.Fr).range.mul_mem (hf T io e ho y hy) (hg T io e ho y hy)
 
 theorem inV_io {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e) {a : c.F} (ha : a ≠ 0) :
     InV T (io a) ↔ 0 ≤ vLa la a := by
@@ -94,25 +71,6 @@ theorem smul_mem_supSet {W : Submodule c.F (Rul Xo c)} {a : c.F} (ha : 0 ≤ vLa
       exact (algebraMap T.V T.Fr).range.zero_mem
     · exact (inV_io ho ha0).mpr ha
   exact (algebraMap T.V T.Fr).range.mul_mem h2 h1
-
-theorem add_mem_supSet {W : Submodule c.F (Rul Xo c)} {f g : Rul Xo c}
-    (hf : f ∈ supSet Xo c la W) (hg : g ∈ supSet Xo c la W) : f + g ∈ supSet Xo c la W := by
-  obtain ⟨hfW, hfb⟩ := hf
-  obtain ⟨hgW, hgb⟩ := hg
-  show f + g ∈ W ∧ BddAll Xo c la 1 (f + g)
-  exact ⟨W.add_mem hfW hgW, bddAll_add hfb hgb⟩
-
-theorem bddAll_one_iff (hne : IntFrNe Xo c (fun _ _ y => y.IsAlg)) {κ : c.F} (hκ : κ ≠ 0) :
-    BddAll Xo c la κ 1 ↔ 0 ≤ vLa la κ := by
-  constructor
-  · intro h
-    obtain ⟨T, io, e, ho, y, hy⟩ := hne la
-    have h1 := h T io e ho y hy
-    rw [evI_one, mul_one] at h1
-    exact (inV_io ho hκ).mp h1
-  · intro h T io e ho y _
-    rw [evI_one, mul_one]
-    exact (inV_io ho hκ).mpr h
 
 private theorem vV_mul' (T : CDVR) {a b : T.Fr} (ha : a ≠ 0) (hb : b ≠ 0) :
     vV T.V (a * b) = vV T.V a + vV T.V b := by
@@ -146,45 +104,5 @@ theorem bddAll_iff_vAtV {κ : c.F} (hκ : κ ≠ 0) (f : Rul Xo c) :
     exact (inV_mul_iff_vLa_add_nval_nonneg ho hκ _).mp (h T io e ho y hy)
   · intro h T io e ho y hy
     exact (inV_mul_iff_vLa_add_nval_nonneg ho hκ _).mpr (h (Subtype.mk _ ⟨T, io, e, ho, y, hy, (), trivial, rfl⟩))
-
-theorem bddGood_iff_vAtV {κ : c.F} (hκ : κ ≠ 0) (f : Rul Xo c) :
-    BddGood Xo c la κ f ↔
-      ∀ y : PtV Xo c (fun _ _ y => y.IsAlg ∧ Good y) Unit (fun _ _ _ _ => True) la,
-        0 ≤ (((vLa la κ : ℤ) : ℝ) : EReal) + vAtV y f := by
-  constructor
-  · rintro h ⟨q, T, io, e, ho, y, ⟨hy, hg⟩, eta, -, rfl⟩
-    exact (inV_mul_iff_vLa_add_nval_nonneg ho hκ _).mp (h T io e ho y hy hg)
-  · intro h T io e ho y hy hg
-    exact (inV_mul_iff_vLa_add_nval_nonneg ho hκ _).mpr (h (Subtype.mk _ ⟨T, io, e, ho, y, ⟨hy, hg⟩, (), trivial, rfl⟩))
-
-theorem good_congr {T : CDVR} {io : c.F →+* T.Fr} {y y' : IntFr Xo c T io}
-    (h : (letI := io.toAlgebra; y.1.x) = (letI := io.toAlgebra; y'.1.x)) (hy : Good y) : Good y' := by
-  unfold Good at hy ⊢
-  obtain ⟨G, t', m₁, m₂, hp⟩ := hy
-  exact ⟨G, t', h ▸ m₁, m₂, hp⟩
-
-theorem good_iff_abelian {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) :
-    Good y ↔ ∃ (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr))
-      (_ : SABMap t' Xo.univ.t (letI := io.toAlgebra; y.1.x))
-      (_ : SABMap t' G (spMap (algebraMap T.V T.Fr))), IsAbelianScheme G.G := by
-  unfold Good
-  constructor
-  · rintro ⟨G, t', m₁, m₂, hp⟩
-    obtain ⟨hc, hs, -, -, hg, -⟩ := G.semi
-    exact ⟨G, t', m₁, m₂, ⟨hc, hs, hp, hg⟩⟩
-  · rintro ⟨G, t', m₁, m₂, ha⟩
-    exact ⟨G, t', m₁, m₂, ha.proper⟩
-
-theorem bddGood_one_iff (hne : IntFrNe Xo c (fun _ _ y => y.IsAlg ∧ Good y)) {κ : c.F} (hκ : κ ≠ 0) :
-    BddGood Xo c la κ 1 ↔ 0 ≤ vLa la κ := by
-  constructor
-  · intro h
-    obtain ⟨T, io, e, ho, y, hy⟩ := hne la
-    have h1 := h T io e ho y hy.1 hy.2
-    rw [evI_one, mul_one] at h1
-    exact (inV_io ho hκ).mp h1
-  · intro h T io e ho y _ _
-    rw [evI_one, mul_one]
-    exact (inV_io ho hκ).mpr h
 
 end GlobalTheory.GoodPtsModel

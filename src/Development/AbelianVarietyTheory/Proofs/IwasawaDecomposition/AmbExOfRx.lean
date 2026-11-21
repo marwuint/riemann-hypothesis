@@ -4,8 +4,9 @@ import Formalism.LocalToGlobal.Divisibility.FramesLemmas
 import Formalism.LocalToGlobal.Divisibility.ColumnFamilyPlaceCharacterComap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FrmOfPosDef
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PosDefMapEmbeddingOfPositiveAtPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FgSpanTopOfLatticeCompatibleSemilinearStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormAtStandardFrameEqNormComplexFormStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FgSpanTopOfLatticeCompatibleSemilinear
+import Formalism.LocalToGlobal.HilbertRowConditions.CenterIdempotentAction
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormAtStandardFrameEqNormComplexForm
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl
   NumberField IsDedekindDomain
@@ -65,7 +66,7 @@ theorem tie_level (D : D7) {EE : Type} [NormedAddCommGroup EE] [InnerProductSpac
   let Fm : AmbForm D S :=
     { MtH := fun μ => toHLat (frm (rH D A P ψ (tp μ))) (rNab D A P ψ (tp μ))
       jAmb := j
-      MtH_good := fun μ _ => ⟨frm_det _, GlobalTheory.T.fg_span_top_of_lattice_compatible_semilinear D.what₂.embLL (S.Mtilde μ) (j μ) _ (hF μ).li (hL μ)⟩
+      MtH_good := fun μ _ => ⟨frm_det _, _root_.GlobalTheory.oLatTie_fg_span_top D.what₂.embLL (S.Mtilde μ) (j μ) _ (hF μ).li (hL μ)⟩
       jAmb_basis := fun μ _ => by
         show LinearIndependent ℂ (fun i => j μ (Pi.basisFun D.what₂.LL _ i)) ∧
           Submodule.span ℂ (Set.range (fun i => j μ (Pi.basisFun D.what₂.LL _ i))) = ⊤
@@ -73,7 +74,7 @@ theorem tie_level (D : D7) {EE : Type} [NormedAddCommGroup EE] [InnerProductSpac
         exact ⟨(hF μ).li, (hF μ).span⟩
       jAmb_lat := fun μ _ x => (hL μ).2 x
       jAmb_gen := fun μ _ => (hL μ).1
-      jAmb_norm := fun μ _ x => GlobalTheory.T.normAt_standardFrame_eq_norm_complexForm D.what₂.embLL D.starLL_cx (j μ) _ _ _ (hF μ) x }
+      jAmb_norm := fun μ _ x => _root_.GlobalTheory.AmbNormTie.normAt_frm_mk D.what₂.embLL D.starLL_cx (j μ) _ _ _ (hF μ) x }
   let J : AmbIds D (A.comap f μ0') S Fm P ψ tup := ⟨fun s _ => rdx (hs s).1⟩
   refine ⟨Fm, J, ⟨fun s _ x => ?_, fun s _ => ?_, fun s _ v hv x y => ?_⟩⟩
   · refine (hs s).2 _ x fun a a' e => ?_

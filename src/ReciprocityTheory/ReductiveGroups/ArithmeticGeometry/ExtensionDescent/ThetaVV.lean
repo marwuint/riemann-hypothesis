@@ -63,20 +63,6 @@ def VVsub (P : PolAV S) (N m : ℕ) (T : Over S) :
     Submodule Γ(T.left, ⊤) (∀ j, Γ((T ⊗ P.A).left, (LPow P.A P.L N T).U j)) :=
   Submodule.span _ {f | ∃ h : f ∈ SecM P.A P.L N T, InVV P N m (SecM.toSec P.A ⟨f, h⟩)}
 
-def InVVw' (P : PolAV S) (N m : ℕ) {T : Over S} {I : Type} (h : I → (T ⟶ P.A))
-    (χ : I → Γ(T.left, ⊤)ˣ) (s : LB.Sec (LPow P.A P.L N T)) : Prop :=
-  Odd N ∧ IsUnit (N : Γ(T.left, ⊤)) ∧ (∀ i, h i ^ N = 1) ∧ InVV P N m s ∧
-    ∀ (V : T.left.Opens) (sV : LB.Sec (LPow P.A P.L N (overRes V))),
-      IsPullSec P.A P.L N (overResι V ▷ P.A) (whiskerRight_snd _ _) s sV →
-      ∀ (i : I) (U : ThetaGrp P.A P.L N (overRes V)) (s' : LB.Sec (LPow P.A P.L N (overRes V))),
-        SymLift P.A P.L N N (overResι V ≫ h i) U → IsActOf P.A P.L N U sV s' →
-          ∀ j, s'.f j = liftFun P.A _ (unitRes V (χ i) : Γ((overRes V).left, ⊤)) * sV.f j
-
-def VVwSub (P : PolAV S) (N m : ℕ) (T : Over S) {I : Type} (h : I → (T ⟶ P.A))
-    (χ : I → Γ(T.left, ⊤)ˣ) :
-    Submodule Γ(T.left, ⊤) (∀ j, Γ((T ⊗ P.A).left, (LPow P.A P.L N T).U j)) :=
-  Submodule.span _ {f | ∃ hf : f ∈ SecM P.A P.L N T, InVVw' P N m h χ (SecM.toSec P.A ⟨f, hf⟩)}
-
 abbrev de (P : PolAV S) (T : Over S) : Type := Module.Dual Γ(T.left, ⊤) (SecM P.A P.L 1 T)
 
 abbrev mulA (n : ℕ) : A ⟶ A := 𝟙 A ^ n
@@ -115,29 +101,6 @@ def IsTorsFrame (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A))) (n : ℕ) {T 
       α.IsGen ∧ IsNormMul P.A P.L rig n α ∧
       LB.Gen.Corr P.L _ _ _ _ (powFrame P.A P.L x τ ((n : ℤ) ^ 2))
         (LB.mulGen P.L _ _ _ _ (LB.pullGen P.L _ _ α x.left) (rigT P.A P.L rig T 1))
-
-def IsThetaFrame (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A))) (k : ℤ) {T : Over S}
-    (θ : ThetaGrp P.A P.L k T)
-    (τ : LB.Gen (LB.LinComb P.L (Y := T.left) (K := Fin 1) (fun _ => θ.pt.left) (fun _ => k))) :
-    Prop :=
-  τ.IsGen ∧
-    LB.Gen.Corr P.L _ _ _ _ (LB.mulGen P.L _ _ _ _ (LB.pullGen P.L _ _ θ.φ (ptSecT P.A 1).left) τ)
-      (rigT P.A P.L rig T k)
-
-def IsEvTFr (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A))) (n N : ℕ) {T : Over S} {I : Type}
-    (x : I → (T ⟶ P.A))
-    (e : ∀ i, LB.Gen (LB.LinComb P.L (Y := T.left) (K := Fin 1) (fun _ => (x i).left) (fun _ => 1)))
-    (s : LB.Sec (LPow P.A P.L N T)) (w : I → Γ(T.left, ⊤)) : Prop :=
-  (∀ i, IsTorsFrame P rig n (x i) (e i)) ∧
-    IsEvT P N x (fun i => powFrame P.A P.L (x i) (e i) N) s w
-
-open Classical in
-
-def evFun (P : PolAV S) (N : ℕ) {T : Over S} {I : Type} (x : I → (T ⟶ P.A))
-    (e : ∀ i, LB.Gen (LB.LinComb P.L (Y := T.left) (K := Fin 1) (fun _ => (x i).left) (fun _ => 1)))
-    (s : LB.Sec (LPow P.A P.L N T)) : I → Γ(T.left, ⊤) :=
-  fun i => if h : ∃ v, IsValueAt P.A P.L N s (x i) (powFrame P.A P.L (x i) (e i) N) v
-    then h.choose else 0
 
 def EvValSt : Prop :=
   ∀ (P : PolAV S) (N : ℕ) {T : Over S} (z : T ⟶ P.A)

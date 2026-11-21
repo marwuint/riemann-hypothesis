@@ -6,28 +6,6 @@ open NumberField IsDedekindDomain Polynomial
 
 namespace GlobalTheory.SplitPlace
 
-theorem exists_root {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
-    (t n : 𝓞 F) (hn : n ∈ v.asIdeal) (ht : t ∉ v.asIdeal) :
-    ∃ r : v.adicCompletion F, r ^ 2 + algebraMap F _ (t : F) * r + algebraMap F _ (n : F) = 0 := by
-  haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v
-  set O := v.adicCompletionIntegers F
-  obtain ⟨r, hr, -⟩ := HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal O)
-    (X ^ 2 + C (algebraMap (𝓞 F) O t) * X + C (algebraMap (𝓞 F) O n)) (by monicity!) 0
-    (by
-      simp only [eval_add, eval_pow, eval_X, eval_mul, eval_C, mul_zero, add_zero]
-      rw [zero_pow two_ne_zero, zero_add, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff,
-        GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff]
-      exact fun h => h hn)
-    (by
-      refine IsUnit.map _ ?_
-      have := (GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v t).2 ht
-      simpa using this)
-  refine ⟨r, ?_⟩
-  have := congrArg (fun x : O => (x : v.adicCompletion F)) hr
-  simp only [IsRoot.def, eval_add, eval_pow, eval_X, eval_mul, eval_C] at this
-  push_cast at this
-  exact this
-
 open scoped TensorProduct in
 open NumberField IsDedekindDomain Polynomial in
 private lemma isMaximal_and_algebraMap_mem_iff_of_mem_primesOver (F E : Type) [Field F] [NumberField F]

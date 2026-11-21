@@ -135,10 +135,6 @@ def flatE (A : WeightedAtlas n Y ι La) (w0 : ι → Y → ℂ) (s : Fin n → �
   ((De.totalDegree : ℝ) + 1) * Real.log (1 + ‖A.zmap w0 s y‖ ^ 2) -
     Real.log (‖MvPolynomial.eval (fun k => A.zmap w0 s y k) De‖ ^ 2)
 
-def maDens (A : WeightedAtlas n Y ι La) (la : La) (a : Y → ℝ) (y : Y) : ℝ≥0∞ :=
-  ENNReal.ofReal ((A.hessAt (A.pick y) (fun x => A.ph la (A.pick y) x + a x) y).det.re *
-    Real.exp (-A.ph A.kap (A.pick y) y))
-
 end WeightedAtlas
 
 def multiLe (n j : ℕ) : Finset (Fin n → ℕ) :=

@@ -13,18 +13,18 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.P
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIsQProjOver
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PeriodDatumSignCharactersMemEvalImage
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsLiftPrincipallyPolarisedAbelianSquareZeroStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsCharacterPairSerStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsLiftPrincipallyPolarisedAbelianSquareZero
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsCharacterPairSer
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AbelianFunctorNilChartOfNilpotentChartStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearPartPairingSeriesEqHeightStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.JacobianMulTangentChartMatrixIntertwinesStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsTangentChartMatrixOfBasisStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearPartPairingSeriesEqHeight
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.JacobianMulTangentChartMatrixIntertwines
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsTangentChartMatrixOfBasis
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPeriodTowerDatumOfAbelianSchemeSymmetricBuStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CardTorsionOfPolarisedAbelianSchemeLiftStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CubeTrivialAndFiniteFlatSurjectiveMulAbelianScheStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SmoothOfRelativeDimensionOfGrpPullbackLocalRingStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CubeTrivialAndFiniteFlatSurjectiveMulAbelianSche
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SmoothOfRelativeDimensionOfGrpPullbackLocalRing
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsGeneratorOfRosatiAdjointLambdaBundleStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HodgeTateDatumHypothesesPeriodTowerStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HodgeTateDatumHypothesesPeriodTower
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
@@ -81,19 +81,19 @@ private theorem htd_of_dat {R₀ : Type} [CommRing R₀] (p : ℕ) [Fact p.Prime
       ∀ i, ∃ u : PS (Tw.O : Type) 1 g, IsCh F.F u ∧ Sᵀ *ᵥ dl u = fun l => H.Ht l i := by
   have hinj : Function.Injective (algebraMap (Tw.O : Type) C) := hv.hom_inj
   have hdom : IsDomain (Tw.O : Type) := Function.Injective.isDomain (algebraMap (Tw.O : Type) C) hinj
-  obtain ⟨S, hSu, hS⟩ := GlobalTheory.T.exists_tangentChartMatrix_of_basis R₀ B Tw.O g F Y hY D.ch.gb
+  obtain ⟨S, hSu, hS⟩ := _root_.GlobalTheory.ChF.exists_tanMat R₀ B Tw.O g F Y hY D.ch.gb
   refine ⟨GlobalTheory.EvClose.htdOfDat D C v hdom hinj, S, h₁, h₂, hSu, ?_, ?_⟩
   · intro a
-    exact GlobalTheory.T.jacobian_mul_tangentChartMatrix_intertwines R₀ B Tw.O g F Y hY D.ch.gb S hS (A a) (α a) (D.H.ρL (1 ⊗ₜ[ℤ] a)) (hα a)
+    exact _root_.GlobalTheory.ChF.lin_mul_tanMat R₀ B Tw.O g F Y hY D.ch.gb S hS (A a) (α a) (D.H.ρL (1 ⊗ₜ[ℤ] a)) (hα a)
       (hA a) (h₃ a)
   · intro i
-    obtain ⟨u, hu, hpair⟩ := GlobalTheory.T.exists_character_pairSer_alt R₀ B Tw.O g F Y hY p hp hc (D.L.τ i) (D.L.τ_tors i)
+    obtain ⟨u, hu, hpair⟩ := _root_.GlobalTheory.ChF.exists_character_pairSer R₀ B Tw.O g F Y hY p hp hc (D.L.τ i) (D.L.τ_tors i)
       (D.L.τ_compat i)
     have hcc : MvPowerSeries.constantCoeff u = 1 := by
       unfold IsCh at hu
       exact hu.1
     refine ⟨u, hu, ?_⟩
-    rw [GlobalTheory.T.linear_part_pairing_series_eq_height R₀ B p Tw Dt g Y D.ch.gb S hS (D.L.τ i) u hcc hpair (D.L.ht i) (D.L.ht_spec i)]
+    rw [_root_.GlobalTheory.ChF.dl_pairSer_eq_height R₀ B p Tw Dt g Y D.ch.gb S hS (D.L.τ i) u hcc hpair (D.L.ht i) (D.L.ht_spec i)]
     funext l
     exact (D.L.Ht_eq l i).symm
 
@@ -128,14 +128,14 @@ private theorem htd_of_tower (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAl
     rw [Ideal.mem_bot]
     exact thetaBar_mul p O hv ε hε x y hx hy
   obtain ⟨G, _, _, Q, ψ, ψ₂, hGab, hQ, hQ1, hQ2, hQs, hQa, hQp, hψ, hsq, hlam⟩ :=
-    GlobalTheory.T.exists_lift_principally_polarised_abelian_square_zero p C v ((Ainf.ainfTowerL p O hv ε hε).O : Type) hv' T P₀ io P φ h₁ h₂ h₃ h₄
+    _root_.GlobalTheory.AbelianLift.exists_lift p C v ((Ainf.ainfTowerL p O hv ε hε).O : Type) hv' T P₀ io P φ h₁ h₂ h₃ h₄
       (Ainf.R0 p O ε) (algebraMap _ _) hπs hπk
   haveI : IsLocalRing (Ainf.R0 p O ε) :=
     Ainf.local_of_surj_sq _ hπs fun k hk => thetaBar_mul p O hv ε hε k k hk hk
   have hsm : SmoothOfRelativeDimension P.g G.hom :=
-    GlobalTheory.T.smoothOfRelativeDimension_of_grpPullback_localRing (Ainf.R0 p O ε) _ (algebraMap _ _) G P.A ψ P.g hGab hψ P.smoothDim
+    _root_.GlobalTheory.LiftDim.smoothOfRelativeDimension_of_isGrpPullback (Ainf.R0 p O ε) _ (algebraMap _ _) G P.A ψ P.g hGab hψ P.smoothDim
   have hM := LB.isLB_pull hQ (lift (𝟙 G) (𝟙 G)).left
-  obtain ⟨hθ, hmult⟩ := GlobalTheory.T.cube_trivial_and_finite_flat_surjective_mul_abelianScheme (Ainf.R0 p O ε) G _ Q hGab hM hQa hQ
+  obtain ⟨hθ, hmult⟩ := _root_.GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow (Ainf.R0 p O ε) G _ Q hGab hM hQa hQ
   have hfin := hmult p (Fact.out : p.Prime).one_le
   letI : Algebra (Ainf.R0 p O ε) C :=
     ((algebraMap ((Ainf.ainfTowerL p O hv ε hε).O : Type) C).comp
@@ -174,7 +174,7 @@ theorem exists_htd_chars : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [Is
   haveI : IsAdicComplete (Ideal.span {(p : ((Ainf.ainfTowerL p O hv ε hε).O : Type))})
       ((Ainf.ainfTowerL p O hv ε hε).O : Type) := ‹IsAdicComplete (Ideal.span {(p : O)}) O›
   letI : Algebra ℤ_[p] ((Ainf.ainfTowerL p O hv ε hε).O : Type) := ‹Algebra ℤ_[p] O›
-  refine ⟨(Ainf.ainfTowerL p O hv ε hε).c, GlobalTheory.T.hodgeTate_datum_hypotheses_period_tower p O hv ε hε OE, ?_⟩
+  refine ⟨(Ainf.ainfTowerL p O hv ε hε).c, _root_.GlobalTheory.ChF.hodgeTateSetting_ainfTower_of_isPrimitiveRoot p O hv ε hε OE, ?_⟩
   exact htd_of_tower p C v O hv ε hε (Ainf.ainfTowerL p O hv ε hε) rfl hv T P₀ io P φ h₁ h₂ h₃ h₄
     OE o F X hX α hα
 

@@ -87,95 +87,14 @@ theorem ellPolAV_L : (ellPolAV W).L = originLB W := rfl
 
 theorem eSec_ellPolAV : eSec (ellPolAV W).A = zero W := one_left W
 
-theorem isAddLawHom_ellPolAV : IsAddLawHom W μ[(ellPolAV W).A] := isAddLawHom_mul W
-
-theorem ptHom_ellPolAV_inv {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
-    (hP : IsUnimodularSol (W.map ρ) P) :
-    ∃ hN : IsUnimodularSol (W.map ρ) ((W.map ρ).toProjective.neg P),
-      ptHom W ρ P hP ≫ (GrpObj.inv : (ellPolAV W).A ⟶ (ellPolAV W).A).left = ptHom W ρ _ hN :=
-  ⟨hP.neg, (congrArg (_ ≫ ·) (inv_left W)).trans (ptHom_negHom W ρ P hP)⟩
-
 def ellTheta : (ellPolAV W).L.Sec := originSec W
 
 theorem ellTheta_eq : ellTheta W = originSec W := rfl
-
-theorem nonzeroLocus_ellTheta : Out.nonzeroLocus (ellTheta W) = coordOpen W 2 :=
-  nonzeroLocus_originSec W
-
-theorem secPull_ellTheta_eq_zero_iff {T : Scheme.{0}} (t : T ⟶ (ellPolAV W).A.left) :
-    (∀ j, (Cartier.secPull (ellTheta W) t).f j = 0) ↔
-      t = t ≫ (ellPolAV W).A.hom ≫ eSec (ellPolAV W).A := by
-  rw [eSec_ellPolAV]
-  exact secPull_originSec_eq_zero_iff W t
-
-theorem existsUnique_eq_const_mul_ellTheta (s : (ellPolAV W).L.Sec) :
-    ∃! c : R, ∀ i, s.f i = constFn (ellPolAV W).A.hom ((ellPolAV W).L.U i) c * (ellTheta W).f i :=
-  existsUnique_eq_const_mul_originSec W s
 
 theorem exists_isLieBasis_ellPolAV : ∃ v : epsR R ⟶ (ellPolAV W).A,
     (∃ h : IsUnimodularSol (W.map (algebraMap R (DualNumber R))) ![DualNumber.eps, -1, 0],
       v.left = ptHom W (algebraMap R (DualNumber R)) ![DualNumber.eps, -1, 0] h) ∧
     IsLieBasis ![v] :=
   WeierstrassLie.isLieBasis_eps R W (one_left W)
-
-section BaseChange
-
-variable {R' : Type} [CommRing R'] {W' : _root_.WeierstrassCurve R'} [W'.IsElliptic]
-  (f : R →+* R') (h : W.map f = W')
-
-theorem isGrpPullback_ellPolAV :
-    IsGrpPullback (ellPolAV W').A (ellPolAV W).A (spMap f) (mapHom W f h) :=
-  isGrpPullback_mapHom W f h
-
-theorem lbIso_ellPolAV : LBIso (ellPolAV W').L ((ellPolAV W).L.pull (mapHom W f h)) :=
-  lbIso_pull_originLB W f h
-
-theorem ellPolAV_baseChange : (ellPolAV W').g = (ellPolAV W).g ∧
-    IsGrpPullback (ellPolAV W').A (ellPolAV W).A (spMap f) (mapHom W f h) ∧
-    LBIso ((ellPolAV W).L.pull (mapHom W f h)) (ellPolAV W').L :=
-  ⟨rfl, isGrpPullback_ellPolAV W f h, (lbIso_ellPolAV W f h).symm⟩
-
-end BaseChange
-
-theorem not_isGen_ellPolAV [Nontrivial R] (t : (ellPolAV W).L.Gen) : ¬ t.IsGen :=
-  not_isGen_originLB W t
-
-theorem weierstrass_0_0_1_neg_one_0_isElliptic : (⟨0, 0, 1, -1, 0⟩ : _root_.WeierstrassCurve ℚ).IsElliptic :=
-  ⟨by
-    have : (⟨0, 0, 1, -1, 0⟩ : _root_.WeierstrassCurve ℚ).Δ = 37 := by
-      norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆,
-        WeierstrassCurve.b₈]
-    rw [this]
-    exact Ne.isUnit (by norm_num)⟩
-
-example : ∃ P : Out.PolAV (Spec (CommRingCat.of ℚ)), P.g = 1 ∧ ∀ t : P.L.Gen, ¬ t.IsGen :=
-  haveI := weierstrass_0_0_1_neg_one_0_isElliptic
-  ⟨ellPolAV ⟨0, 0, 1, -1, 0⟩, rfl, not_isGen_ellPolAV _⟩
-
-example :
-    let E : _root_.WeierstrassCurve ℚ := ⟨0, 0, 1, -1, 0⟩
-    haveI : E.IsElliptic := weierstrass_0_0_1_neg_one_0_isElliptic
-    ∃ x y z : specOver ℚ ℚ ⟶ (ellPolAV E).A,
-      (∃ h, x.left = pt E ![0, 0, 1] h) ∧ (∃ h, y.left = pt E ![0, -1, 1] h) ∧
-      (∃ h, z.left = pt E ![1, 0, 1] h) ∧ x⁻¹ = y ∧ x * x = z := by
-  intro E
-  have : E.IsElliptic := weierstrass_0_0_1_neg_one_0_isElliptic
-  have h : ∀ a b : ℚ, b ^ 2 + b = a ^ 3 - a → IsUnimodularSol (E.baseChange ℚ) ![a, b, 1] :=
-    fun a b e => isUnimodularSol_some (by
-      rw [WeierstrassCurve.Affine.equation_iff]
-      simp [E]
-      linear_combination e)
-  have h₀ := h 0 0 (by norm_num)
-  have h₁ := h 0 (-1) (by norm_num)
-  have h₂ := h 1 0 (by norm_num)
-  refine ⟨ptOver E _ h₀, ptOver E _ h₁, ptOver E _ h₂, ⟨h₀, rfl⟩, ⟨h₁, rfl⟩, ⟨h₂, rfl⟩, ?_, ?_⟩
-  · refine (ptOver_inv E h₀).trans (Over.OverMorphism.ext (pt_congr E _ h₀.neg ?_ h₁))
-    simp [E, WeierstrassCurve.Projective.neg, WeierstrassCurve.Projective.negY]
-  · refine ptOver_mul_ptOver E h₀ h₀ h₂ ⟨fun i j => ?_, fun i j => ?_⟩
-    · rw [WeierstrassCurve.Projective.addXYZ_self]
-      fin_cases i <;> fin_cases j <;> simp
-    · fin_cases i <;> fin_cases j <;>
-        simp [E, diagXYZ, diagX, diagY, diagZ, negDiagY, WeierstrassCurve.Projective.negY] <;>
-        norm_num
 
 end GlobalTheory.WeierstrassCurve

@@ -68,6 +68,4 @@ def ArchBridge : Prop :=
 
 def BridgeOf : Prop := HaarL → ArchBridge
 def ArchOf : Prop := ShiftL → FourD → TestEx → ArchBridge → ArchShift
-def SideCenOf : Prop := ExpAlg → LocDual → LocUnr → SatDict → CoefSm → ArchShift → SideCen
-
 end UpperTheory.V.Z.Inf

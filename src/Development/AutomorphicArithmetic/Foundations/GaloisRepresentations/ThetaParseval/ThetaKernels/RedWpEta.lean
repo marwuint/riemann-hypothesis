@@ -46,7 +46,7 @@ theorem key_k {σ : E →ₐ[F] E} {B : Base F E} (hB : _root_.UpperTheory.TP.W.
   obtain ⟨y, hy, w, hw, hyw⟩ := Subgroup.mem_sup.1 hV
   obtain ⟨_, ⟨k, rfl⟩, _, ⟨a, rfl⟩, rfl⟩ := Subgroup.mem_sup.1 hy
   have hk := fixed_of_mem hB.cm B.τ₁ hNk hx hw k a hyw
-  obtain ⟨f, hf⟩ := (GlobalTheory.T.cmExtension_conjugation_involutive_fixedField F E σ hB.cm).2 k hk
+  obtain ⟨f, hf⟩ := (_root_.GlobalTheory.CMConjInvol.cm_conj_invol_fixed F E σ hB.cm).2 k hk
   have hf0 : f ≠ 0 := by
     rintro rfl
     rw [map_zero] at hf

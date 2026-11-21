@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TwOrbMEqTwOrbUOfNormal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicTensorUnramifiedFrobTwistIterateDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicTensorUnramifiedFrobTwistIterateDegree
 open ReciprocityTheory.DiscreteGroups.LocalClassField Matrix GlobalTheory.LKRes
 
 namespace GlobalTheory.LKRes
@@ -20,6 +20,6 @@ theorem sigRes_iterate_eq_self : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateF
   apply Units.ext
   ext i j
   rw [sigRes_iterate_val]
-  exact GlobalTheory.T.padicTensorUnramifiedFrobTwist_iterate_degree p K r hr _
+  exact _root_.GlobalTheory.LKRes.sigKQ_iterate_self p K r hr _
 
 end GlobalTheory.LKRes

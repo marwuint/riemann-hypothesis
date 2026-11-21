@@ -340,11 +340,6 @@ theorem mem_SB_of_periodic {f : Matrix b a k → ℂ} (hs : ∀ x, f x ≠ 0 →
   exact IsOpen.preimage (f := fun x' : Matrix b a k => (x' - x) i j) (t := {z | valuation k z < 1}) (by fun_prop)
     (by simpa using (valuation k).isOpen_ball 1)
 
-omit [DecidableEq t] in
-theorem TypeDatum.Phi_mem_SB (P : TypeDatum k a) {μ : kˣ →* ℂˣ} (hμ : IsTame μ) :
-    P.Phi t μ ∈ SB (Matrix (a ⊕ t) a k) :=
-  mem_SB_of_periodic (fun _ => P.intM_of_Phi_ne_zero μ) fun x _ hy => P.Phi_add hμ x hy
-
 section Iter
 variable {r : Type*} [Fintype r] [DecidableEq r]
 
@@ -412,17 +407,6 @@ theorem parPhi_fromBlocks (δ : kˣ →* ℂˣ) {A : Matrix r r k} {B : Matrix r
     parPhi δ (fromBlocks A B C D) = ((δ (Matrix.GeneralLinearGroup.det g))⁻¹ : ℂˣ) :=
   parPhi_of_mem δ hg e h21 h12 h22
 
-omit [Fintype s] [DecidableEq s] in
-
-theorem parPhi_eq_Phi [IsEmpty s'] (δ : kˣ →* ℂˣ)
-    (x : Matrix (r ⊕ s) (r ⊕ s') k) : parPhi δ x = (TypeDatum.full k r).Phi s δ x.toCols₁ := by
-  have e4 : (δ.comp (Matrix.GeneralLinearGroup.det.comp (KO k r).subtype))⁻¹ = (TypeDatum.full k r).rho δ :=
-    (one_mul _).symm
-  by_cases h : MaxM x.toBlocks₂₁
-  · rw [parPhi, if_pos ⟨h, fun _ j => isEmptyElim j, fun _ j => isEmptyElim j⟩, TypeDatum.Phi,
-      if_pos (show MaxM x.toCols₁.toRows₂ from h), e4]; rfl
-  · rw [parPhi, if_neg fun H => h H.1, TypeDatum.Phi, if_neg (show ¬ MaxM x.toCols₁.toRows₂ from h)]
-
 omit [Fintype s] [DecidableEq s] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 theorem parPhi_ne_zero_iff (δ : kˣ →* ℂˣ) {x : Matrix (r ⊕ s) (r ⊕ s') k} :
     parPhi δ x ≠ 0 ↔ (∃ g ∈ KO k r, g.val = x.toBlocks₁₁) ∧ MaxM x.toBlocks₂₁ ∧ IntM x.toBlocks₁₂ ∧
@@ -455,18 +439,6 @@ theorem parPhi_mem_SB [Fintype s'] {δ : kˣ →* ℂˣ} (hδ : IsTame δ) :
     exact if_congr (and_congr e1 (and_congr e2 e3)) ((TypeDatum.full k r).extZ_add hδ x.toBlocks₁₁ y11) rfl
 
 end Parahoric
-
-example (P : TypeDatum k a) (μ : kˣ →* ℂˣ) : P.Phi t μ (fromRows 1 0) = 1 := by
-  rw [P.Phi_of_mem μ 1 (by simp) (by simpa using maxM_zero)]; simp
-
-example [Nonempty a] (P : TypeDatum k a) (μ : kˣ →* ℂˣ) : P.Phi t μ 0 = 0 := by
-  by_contra h
-  obtain ⟨⟨g, -, e⟩, -⟩ := (P.Phi_ne_zero_iff μ).1 h
-  exact g.ne_zero (e.trans (by ext; simp))
-
-example (μ : kˣ →* ℂˣ) (u : GL a k) (hu : u ∈ KO k a) :
-    (TypeDatum.full k a).Phi t μ (fromRows u.val 0) = ((μ (Matrix.GeneralLinearGroup.det u))⁻¹ : ℂˣ) := by
-  rw [TypeDatum.Phi_of_mem _ μ ⟨u, hu⟩ (by simp) (by simpa using maxM_zero)]; exact one_mul _
 
 end Local
 
@@ -561,9 +533,6 @@ def box (n : Type*) (c : kˣ) : Submodule 𝒪[k] (n → k) where
 theorem mem_box {n : Type*} {c : kˣ} {y : n → k} : y ∈ box n c ↔ ∀ i, valuation k (y i) ≤ valuation k (c : k) :=
   Iff.rfl
 
-theorem box_one : box Y (1 : kˣ) = latOf 1 := by
-  ext y; simp [mem_box, mem_latOf_one, Valuation.mem_integer_iff]
-
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 def stabLat (g : GL Y k) : Subgroup (GL Y k) := (KO k Y).comap (MulAut.conj g⁻¹).toMonoidHom
@@ -621,13 +590,6 @@ def plainFrame (ord : ι ≃ n ⊕ Fin c) : LatFrame k ι (n ⊕ Fin c) := ⟨or
 
 def normalBasis (ϖ : kˣ) (e : Fin c → ℤ) (z : n → k) : GL (n ⊕ Fin c) k :=
   colE c 1 z * embA n (SplitFlip.diagGL fun i => ϖ ^ e i)
-
-theorem normalBasis_val (ϖ : kˣ) (e : Fin c → ℤ) (z : n → k) : (normalBasis ϖ e z).val =
-    fromBlocks 1 (Matrix.of fun r i => if i.val = 0 then z r * (ϖ : k) ^ e i else 0) 0
-      (diagonal fun i => (ϖ : k) ^ e i) := by
-  change fromBlocks 1 _ 0 1 * fromBlocks 1 0 0 (diagonal _) = _
-  rw [fromBlocks_multiply]
-  ext (r | r) (i | i) <;> simp
 
 theorem mem_latOf_typeFrame [ValuativeRel k] (ϖ : kˣ) (ord : ι ≃ n ⊕ Fin c) (y : n ⊕ Fin c → k) :
     y ∈ latOf (typeFrame ϖ ord).bas ↔ (∀ i, y (.inl i) ∈ 𝒪[k]) ∧
@@ -701,12 +663,6 @@ def IsColChar (ψ : AddChar k Circle) (P : Level (GL (n ⊕ Fin c) k)) (h : GL (
   ∀ (g : prX (Cgrp P.J h)), ∀ u ∈ N k n c 1, ∀ hm : h⁻¹ * (u * embX c (g : GL n k)) * h ∈ P.J,
     (χ g : ℂ) = (ψ (simpleSum u) : ℂ) * ((P.lam ⟨_, hm⟩)⁻¹ : ℂˣ)
 
-theorem IsColChar.unique {ψ : AddChar k Circle} {P : Level (GL (n ⊕ Fin c) k)} {h : GL (n ⊕ Fin c) k}
-    {χ χ' : prX (Cgrp P.J h) →* ℂˣ} (H : IsColChar ψ P h χ) (H' : IsColChar ψ P h χ') : χ = χ' := by
-  ext g
-  obtain ⟨u, hu, hc⟩ := g.2
-  rw [H g u hu (mem_Cgrp.1 hc).2, H' g u hu (mem_Cgrp.1 hc).2]
-
 end Groups
 
 section Unfold
@@ -729,22 +685,11 @@ def xi (J : Subgroup (GL (n ⊕ Fin c) k)) (b : GL (n ⊕ Fin c) k) (h' : GL (n'
     (h : GL (n ⊕ Fin c) k) : Matrix n n' k → ℂ := fun x₀ =>
   (((volNat ν b (Cgrp J h))⁻¹ : ℝ) : ℂ) * flat ψ ν μ Φ h' h x₀
 
-omit [BorelSpace k] in
-
-theorem xi_eq_zero {J : Subgroup (GL (n ⊕ Fin c) k)} (b : GL (n ⊕ Fin c) k) {h' : GL (n' ⊕ Fin (c + 1)) k}
-    {h : GL (n ⊕ Fin c) k} (hh : DoubleCoset.mk (R k n c 1) J h ∉ idxAt ψ ν μ Φ J h') :
-    xi ψ ν μ Φ J b h' h = 0 := by
-  have : flat ψ ν μ Φ h' h = 0 := by_contra fun h0 => hh ⟨h, rfl, h0⟩
-  funext x; simp [xi, this]
-
 theorem volN_stabLat [ν.IsAddHaarMeasure] (b : GL (n ⊕ Fin c) k) :
     0 < (volN ν n c 1 ((stabLat b).subgroupOf (N k n c 1))).toReal := by
   obtain ⟨h1, h2⟩ := isOpen_isCompact_conj b SplitFlip.isOpen_KO SplitFlip.isCompact_KO
   obtain ⟨h3, h4⟩ := volN_ne_zero_ne_top ν 1 h1 h2
   exact ENNReal.toReal_pos h3 h4
-
-theorem volNat_stabLat [ν.IsAddHaarMeasure] (b : GL (n ⊕ Fin c) k) : volNat ν b (stabLat b) = 1 :=
-  div_self (volN_stabLat ν b).ne'
 
 theorem volN_Cgrp [ν.IsAddHaarMeasure] {J : Subgroup (GL (n ⊕ Fin c) k)} (ho : IsOpen (J : Set (GL (n ⊕ Fin c) k)))
     (hc : IsCompact (J : Set (GL (n ⊕ Fin c) k))) (h : GL (n ⊕ Fin c) k) :
@@ -776,14 +721,6 @@ variable {k : Type*} [Field k] {n n' : Type*}
 def withCol (x₀ : Matrix n n' k) (y : n → k) : Matrix (n ⊕ Fin 0) (n' ⊕ Fin (0 + 1)) k :=
   fromBlocks x₀ (Matrix.of fun r _ => y r) 0 0
 
-theorem withCol_blocks (x : Matrix (n ⊕ Fin 0) (n' ⊕ Fin (0 + 1)) k) :
-    withCol x.toBlocks₁₁ (fun r => x (.inl r) (.inr 0)) = x := by
-  ext (r | r) (s | s)
-  · rfl
-  · rw [Subsingleton.elim (α := Fin 1) s 0]; rfl
-  · exact r.elim0
-  · exact r.elim0
-
 variable [ValuativeRel k]
 
 def cosetInd (M : Submodule 𝒪[k] (n → k)) (yb : (n → k) ⧸ M) : (n → k) → ℂ :=
@@ -794,11 +731,6 @@ variable [Fintype n] [MeasurableSpace k] (ψ : AddChar k Circle) (ν : Measure k
 omit [ValuativeRel k] in
 
 def hat (f : (n → k) → ℂ) (η : n → k) : ℂ := ∫ y, f y * (ψ (ε * (η ⬝ᵥ y)) : ℂ) ∂(Measure.pi fun _ => ν)
-
-omit [ValuativeRel k] in
-
-def hatCol (Ψ : Matrix (n ⊕ Fin 0) (n' ⊕ Fin (0 + 1)) k → ℂ) (x₀ : Matrix n n' k) (η : n → k) : ℂ :=
-  hat ψ ν ε (fun y => Ψ (withCol x₀ y)) η
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k] [BorelSpace k]
 
@@ -824,16 +756,6 @@ theorem cosetInd_mem_SB (c : kˣ) (yb : (n → k) ⧸ box n c) : cosetInd (box n
   rw [e]
   exact ⟨(LocallyConstant.charFn ℂ ⟨hc'.isClosed, ho.preimage (Homeomorph.continuous _)⟩).isLocallyConstant,
     HasCompactSupport.intro hc' fun x hx => Set.indicator_of_notMem hx _⟩
-
-example (hν : IsUnitVol ν) : hat ψ ν ε (cosetInd (box n 1) 0) 0 = 1 := by
-  have := hν.1
-  have := secondCountable k
-  have e : {y : n → k | Submodule.Quotient.mk (p := box n 1) y = 0} = Set.pi Set.univ fun _ => (𝒪[k] : Set k) := by
-    ext y; simp [mem_box, Valuation.mem_integer_iff]
-  simp only [hat, cosetInd, e, zero_dotProduct, mul_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]
-  rw [integral_indicator_const _ (MeasurableSet.univ_pi fun _ => (isOpen_int k).measurableSet), Measure.real,
-    Measure.pi_pi]
-  simp [hν.2]
 
 end Couple
 
@@ -882,18 +804,12 @@ def Psi (h : GL (X s ⊕ Fin (0 + 1)) k) (x₀ : Matrix (X (s + 1)) (X s) k) (y 
 
 variable (A : RepFam k s X)
 
-def RepsInStab : Prop := ∀ j c h, ∀ g ∈ A j c h, g ∈ stabLat (T.bas j (c + 1) (by omega))
-
 def RepsMeet : Prop := ∀ j c h, ∀ g ∈ A j c h, ∀ y : X j → k,
   Sum.elim y 0 ∈ latOf (g * T.bas j (c + 1) (by omega)) ↔ ∀ i, y i ∈ 𝒪[k]
 
 def RepsNormal (ϖ : kˣ) : Prop := ∀ j c h, ∀ g ∈ A j c h, ∃ (e : Fin (c + 1) → ℤ) (z : X j → k),
   (∀ i, -(j : ℤ) ≤ e i ∧ e i ≤ 0) ∧ (∀ i, z i ∈ 𝒪[k]) ∧
     latOf (g * T.bas j (c + 1) (by omega)) = latOf (normalBasis ϖ e z)
-
-def RepsOne : Prop := ∀ j c h, ∀ g ∈ A j c h,
-  DoubleCoset.mk (R k (X j) (c + 1) 1) (T.lev j (c + 1) (by omega)).J g =
-    DoubleCoset.mk (R k (X j) (c + 1) 1) (T.lev j (c + 1) (by omega)).J 1 → g = 1
 
 variable (S M : Submodule 𝒪[k] (X (s + 1) → k))
 
@@ -938,14 +854,6 @@ structure IsRepSystem : Prop where
 def someReps : RepFam k s X := fun j =>
   Nat.rec (motive := fun j => ∀ c, j + c = s → Set (GL (X j ⊕ Fin (c + 1)) k)) (fun _ _ => {1})
     (fun j B c h => Quotient.out '' ⋃ g ∈ B (c + 1) (by omega), T.idx ψ ν j c h g) j
-
-omit [BorelSpace k] in
-theorem isRepSystem_someReps : T.IsRepSystem (T.someReps ψ ν) ψ ν := by
-  refine ⟨fun _ _ => rfl, fun j c h => ⟨?_, ?_, fun β hβ => ⟨_, ⟨β, hβ, rfl⟩, DoubleCoset.out_eq' _ _ β⟩⟩⟩
-  · rintro _ ⟨β, hβ, rfl⟩
-    exact (DoubleCoset.out_eq' _ _ β).symm ▸ hβ
-  · rintro _ ⟨β, -, rfl⟩ _ ⟨β', -, rfl⟩ e
-    exact congrArg _ ((DoubleCoset.out_eq' _ _ β).symm.trans (e.trans (DoubleCoset.out_eq' _ _ β')))
 
 end Chain
 
@@ -1002,10 +910,6 @@ end Chains
 section Laws
 variable {k : Type*} [Field k]
 variable {a b t : Type*} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype t] [DecidableEq t]
-
-theorem extZ_mul_right (J : Subgroup (GL a k)) (ρ : J →* ℂˣ) (g g' : J) :
-    extZ J ρ ((g : GL a k).val * (g' : GL a k).val) = extZ J ρ (g : GL a k).val * ρ g' := by
-  rw [extZ_coe, ← Units.val_mul, ← Subgroup.coe_mul, extZ_coe, map_mul, Units.val_mul]
 
 theorem eq_mul_of_support {G S : Type*} [Group G] (act : G → S → S) (hact : ∀ g x, act g⁻¹ (act g x) = x)
     {f : S → ℂ} {c : G → ℂˣ} (h : ∀ g x, f x ≠ 0 → f (act g x) = c g * f x) (g : G) (x : S) :
@@ -1182,101 +1086,5 @@ theorem Chain.ofTwist_laws (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (ν : ℕ →
   ⟨fun _ _ _ => (hasTypes_parPhi hδ (hν _)).transport _ _, (hasTypes_parPhi hδ (hν _)).transport _ _⟩
 
 end Laws
-
-section Nonempty
-variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-variable {n n' : Type*} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
-
-omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype n] [DecidableEq n] [Fintype n']
-  [DecidableEq n'] in
-theorem exists_affPt {p : ℕ} {x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k}
-    (h : ∀ r s, ¬ Free p (r, s) → x r s = basePt c x.toBlocks₁₁ r s) : ∃ e, affPt p x.toBlocks₁₁ e = x := by
-  refine ⟨fun rs => x rs.1.1 rs.1.2 - basePt c x.toBlocks₁₁ rs.1.1 rs.1.2, ?_⟩
-  ext r s
-  by_cases hf : Free p (r, s) <;> simp [affPt, hf, h]
-
-omit [DecidableEq n] [DecidableEq n'] in
-
-theorem opE_ne_zero [MeasurableSpace k] [BorelSpace k] {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (ν : Measure k)
-    [ν.IsAddHaarMeasure] (p : ℕ) {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} (hΦ : Φ ∈ SB _)
-    (h01 : ∀ x, Φ x ≠ 0 → Φ x = 1 ∧ IntM x) {x₀ : Matrix n n' k} {e₀} (he : Φ (affPt p x₀ e₀) ≠ 0) :
-    opE ψ ν p Φ x₀ ≠ 0 := by
-  classical
-  have := secondCountable k
-  have := t2Space k
-  have hc : Continuous (affPt (c := c) p x₀) := by
-    refine continuous_const.add (continuous_pi fun r => continuous_pi fun s => ?_)
-    by_cases hf : Free p (r, s)
-    · simp only [Matrix.of_apply, dif_pos hf]; exact continuous_apply _
-    · simp only [Matrix.of_apply, dif_neg hf]; exact continuous_const
-  have key : ∀ e, Φ (affPt p x₀ e) * (ψ (-ch (affPt p x₀ e)) : ℂ) = (‖Φ (affPt p x₀ e)‖ : ℝ) := fun e => by
-    by_cases h : Φ (affPt p x₀ e) = 0
-    · simp [h]
-    · obtain ⟨h1, h2⟩ := h01 _ h
-      have hi : -ch (affPt p x₀ e) ∈ 𝒪[k] := neg_mem (sum_mem fun i _ => h2 _ _)
-      rw [h1, hψ.eq_one (show _ ∈ cball (1 : kˣ) from hi)]; simp
-  unfold opE
-  simp only [key]
-  rw [integral_complex_ofReal, Complex.ofReal_ne_zero]
-  refine (Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (hΦ.1.continuous.comp hc).norm ?_
-    (fun _ => norm_nonneg _) (x := e₀) (norm_ne_zero_iff.2 he)).ne'
-  refine HasCompactSupport.intro (isCompact_univ_pi fun rs => (isCompact_int k).image
-    (continuous_sub_right (basePt c x₀ rs.1.1 rs.1.2))) fun e he' => norm_eq_zero.2 (by_contra fun h => he' ?_)
-  rintro ⟨⟨r, s⟩, hf⟩ -
-  exact ⟨_, (h01 _ h).2 r s, by simp [affPt, hf]⟩
-
-theorem twistChain_entry_ne_zero [MeasurableSpace k] [BorelSpace k] {ψ : AddChar k Circle} (hψ : HasConductor ψ 1)
-    (ν : Measure k) [ν.IsAddHaarMeasure] (κ t : Type*) [Fintype κ] [DecidableEq κ] [Fintype t] [DecidableEq t]
-    (s c : ℕ) (h : 0 + 1 + c = s) :
-    DoubleCoset.mk _ _ 1 ∈ (twistChain s t κ (1 : kˣ →* ℂˣ) (fun _ _ => rfl) fun _ => 1).idx ψ ν 0 c h 1 ∧
-      (twistChain s t κ (1 : kˣ →* ℂˣ) (fun _ _ => rfl) fun _ => 1).entry ψ ν 0 c h 1 1 ≠ 0 := by
-  set T := twistChain s t κ (1 : kˣ →* ℂˣ) (fun _ _ => rfl) fun _ => 1
-  have hT : T.Regular := Chain.ofTwist_regular _ _ _ _ _
-  let o := stdOrd κ t (l := s + 1) (0 + 1) (c + 1) (by omega)
-  let o' := stdOrd κ t (l := s + 1) 0 (c + 1 + 1) (by omega)
-  have hP : ∀ x, T.Phi 0 (c + 1) (by omega) x = parPhi 1 (x.submatrix o o') := fun x => by
-    change parPhi 1 ((plainFrame o).coords (plainFrame o') x) = _
-    simp [plainFrame, LatFrame.coords]
-  let x : Matrix _ _ k := (fromBlocks (1 : Matrix _ _ k) 0 0 0).submatrix o.symm o'.symm
-  have a1 : ∀ i, o.symm (.inr i) = .inl (.inr ⟨i.val, by omega⟩) := fun i =>
-    o.symm_apply_eq.2 (standardOrderExtendedBasis_apply_low_block κ t _ _ _ i).symm
-  have a2 : ∀ i, o'.symm (.inr i) = .inl (.inr ⟨i.val, by omega⟩) := fun i =>
-    o'.symm_apply_eq.2 (standardOrderExtendedBasis_apply_low_block κ t _ _ _ i).symm
-  have a3 : ∀ i, o.symm (.inl (.inl (.inr i))) = .inl (.inr ⟨c + 1 + i.val, by omega⟩) := fun i =>
-    o.symm_apply_eq.2 (stdOrd_f κ t _ _ _ i).symm
-  have a4 : ∀ i, o.symm (.inl (.inl (.inl i))) = .inl (.inl i) := fun i => o.symm_apply_eq.2 rfl
-  have a5 : ∀ i, o'.symm (.inl (.inl (.inl i))) = .inl (.inl i) := fun i => o'.symm_apply_eq.2 rfl
-  have a6 : ∀ i, o.symm (.inl (.inr i)) = .inr i := fun i => o.symm_apply_eq.2 rfl
-  obtain ⟨e, he⟩ := exists_affPt (p := 1) (x := x) (by
-    rintro (r | r) (i | i) hf
-    · rfl
-    · have hi : i.val = 0 := by simp only [Free] at hf; omega
-      rcases r with (r | r) | r
-      · simp [x, basePt, a2, a4]
-      · simp [x, basePt, a2, a3, hi]
-      · simp [x, basePt, a2, a6]
-    · rcases i with (i | i) | i
-      · simp [x, basePt, a1, a5]
-      · exact i.elim0
-      · exact i.1.elim0
-    · simp [x, basePt, a1, a2, Matrix.one_apply])
-  have hflat : flat ψ ν (T.mu (0 + 1)) (T.Phi 0 (c + 1) (by omega)) 1 1 ≠ 0 := by
-    rw [flat, om_one]
-    refine fun h0 => opE_ne_zero hψ ν 1 (hT.1 0 (c + 1) (by omega)) (fun y hy => ?_) (e₀ := e) ?_
-      (congrFun h0 x.toBlocks₁₁)
-    · rw [hP] at hy ⊢
-      obtain ⟨⟨g, hg, eg⟩, h21, h12, h22⟩ := (parPhi_ne_zero_iff 1).1 hy
-      refine ⟨by rw [parPhi_of_mem 1 hg eg h21 h12 h22]; simp, fun i j => ?_⟩
-      have : IntM (y.submatrix o o') := by
-        rw [← fromBlocks_toBlocks (y.submatrix o o'), ← eg]
-        exact intM_fromBlocks.2 ⟨intM_of_mem_KO hg, h12, h21.intM, h22⟩
-      simpa using this (o.symm i) (o'.symm j)
-    · rw [he, hP]
-      simp only [x, submatrix_submatrix, Equiv.symm_comp_self, submatrix_id_id]
-      rw [parPhi_fromBlocks 1 (one_mem _) Units.val_one maxM_zero intM_zero intM_zero]
-      exact Units.ne_zero _
-  exact ⟨⟨1, rfl, hflat⟩, fun h0 => hflat ((xi_eq_zero_iff ψ ν _ _ (hT.2.2 _ _ _).1 (hT.2.2 _ _ _).2.1 _ _ _).1 h0)⟩
-
-end Nonempty
 
 end GlobalTheory.StepData

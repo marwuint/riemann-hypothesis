@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.On
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerSubOneAinfPropertiesCompatibleRootsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeCoeffTensorAinfOfFrobeniusEqMatrixMulStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeCoeffTensorAinfOfFrobeniusEqMatrixMul
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 
@@ -19,7 +19,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] [M
 
 theorem integral_of_frob {n : Type} [Fintype n] (v : n → OW l O) (Y : Matrix n n (OA l O))
     (h : ∀ i, frobOW l O (v i) = (Y.map (inclO l O) *ᵥ v) i) : ∀ i, v i ∈ (inclO l O).range :=
-  GlobalTheory.T.mem_range_coeffTensorAinf_of_frobenius_eq_matrix_mul l O v Y h
+  _root_.GlobalTheory.FrobIntTensor.mem_range_inclO l O v Y h
 
 theorem integral_of_frob_row {n : Type} [Fintype n] (v : n → OW l O) (Y : Matrix n n (OA l O))
     (h : ∀ i, frobOW l O (v i) = (v ᵥ* Y.map (inclO l O)) i) : ∀ i, v i ∈ (inclO l O).range :=

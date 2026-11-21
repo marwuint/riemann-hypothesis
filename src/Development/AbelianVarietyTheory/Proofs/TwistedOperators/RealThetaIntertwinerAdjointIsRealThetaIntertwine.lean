@@ -2,8 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CartFrSgn
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesPureInnerProductsTensorProduct
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealIntertwinerContractionOnePlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsSubspaceStableSobolevFormDerivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsSubspaceStableSobolevFormDeriv
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 import Formalism.LocalToGlobal.IndefiniteReal.LinksW
 import Formalism.LocalToGlobal.IndefiniteReal.IsFDiagIffDiagonal
@@ -11,175 +12,9 @@ import Formalism.LocalToGlobal.Divisibility.RowSideTie
 import Formalism.LocalToGlobal.IndefiniteReal.GvPairOfOrbitDerivCont
 import Formalism.LocalToGlobal.IndefiniteReal.SchurOrthogonality
 
-section
-
-noncomputable section
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
-open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
-open scoped TensorProduct InnerProductSpace
-
 namespace GlobalTheory.CompanionTheory.Pins
 
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
-
-variable {D : D7}
-
-open Classical in
-
-def PrIsoV {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (c : CoefA V) (pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ) : Prop :=
-  ∀ (ι : D.what₂.Tau → Type) [∀ τ, Fintype (ι τ)] (b : ∀ τ, OrthonormalBasis (ι τ) ℂ (M.sm τ)) (w w' : c.W),
-    inner ℂ w w' = ∑ f : (∀ τ, ι τ),
-      starRingEnd ℂ (pr w (PiTensorProduct.tprod ℂ fun τ => b τ (f τ))) * pr w' (PiTensorProduct.tprod ℂ fun τ => b τ (f τ))
-
-def PrIsoF {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (c : CoefA V) (pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ) : Prop :=
-  (∀ τ, FiniteDimensional ℂ (M.sm τ)) ∧ PrIsoV M c pr
-
-theorem PrIsoF.injective {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {c : CoefA V} {pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ}
-    (h : PrIsoF M c pr) : Function.Injective pr := by
-  haveI := h.1
-  rw [injective_iff_map_eq_zero]
-  intro w hw
-  have e := h.2 _ (fun τ => stdOrthonormalBasis ℂ (M.sm τ)) w w
-  rw [hw] at e
-  simpa using e
-
-theorem PrIsoF.ne_zero {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {c : CoefA V} [Nontrivial c.W]
-    {pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ} (h : PrIsoF M c pr) : pr ≠ 0 := by
-  rintro rfl
-  obtain ⟨w, hw⟩ := exists_ne (0 : c.W)
-  exact hw (h.injective rfl)
-
-def QHalfL {T : Type} (L : LevCh D T) : Prop :=
-  ∀ t, ∀ PP ∈ L.Q t, ∀ PP' ∈ L.Q t, (∃ p : ℕ, p.Prime ∧ (p : 𝓞 D.host.E) ∈ PP.asIdeal ∧ (p : 𝓞 D.host.E) ∈ PP'.asIdeal) →
-    PP.asIdeal.comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = PP'.asIdeal.comap (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))
-
-def QGuardL {T : Type} (L : LevCh D T) : Prop :=
-  QHalfL L ∧ ∀ t, ∀ PP ∈ L.Q t, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal
-
-def QOffC {T : Type} (L : LevCh D T) : Prop :=
-  ∀ t, ∀ PP ∈ L.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal
-
-example {T : Type} (L : LevCh D T) (h : ∀ t, L.Q t = ∅) : QGuardL L :=
-  ⟨fun t PP hP => absurd (h t ▸ hP) (Finset.notMem_empty _), fun t PP hP => absurd (h t ▸ hP) (Finset.notMem_empty _)⟩
-
-def StdFrame (V : HSp D) : Prop :=
-  (∀ a b, V.hT (V.frame a) (V.frame b) = if a = b then 1 else 0) ∧ V.L0 = Submodule.span (𝓞 D.host.E) (Set.range V.frame)
-
-structure SameDesign {T : Type} (L L' : LevCh D T) : Prop where
-  C : L'.C = L.C
-  xiH : L'.xiH = L.xiH
-  mu0 : L'.mu0 = L.mu0
-  eta : L'.eta = L.eta
-  xi : L'.xi = L.xi
-  Pg : L'.Pg = L.Pg
-  chi : L'.chi = L.chi
-  ΛY : L'.ΛY = L.ΛY
-  βY : L'.βY = L.βY
-  ΛW : L'.ΛW = L.ΛW
-  βW : L'.βW = L.βW
-
-theorem SameDesign.symm' {T : Type} {L L' : LevCh D T} (h : SameDesign L L') : SameDesign L' L :=
-  ⟨h.C.symm, h.xiH.symm, h.mu0.symm, h.eta.symm, h.xi.symm, h.Pg.symm, h.chi.symm, h.ΛY.symm, h.βY.symm, h.ΛW.symm, h.βW.symm⟩
-
-example {T : Type} (L : LevCh D T) (Q : T → Finset (Pl D.host.E)) (β : GL (Fin D.sp.X'.rank) (Lev.EAf D)) :
-    SameDesign L { L with Q := Q, βX := β } := ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
-
-def ConjLev {V : HSp D} (s : GA D V) (J : Set (GA D V)) (χ : GA D V → ℂ) (J' : Set (GA D V)) (χ' : GA D V → ℂ) : Prop :=
-  ∀ k, (k ∈ J ↔ s⁻¹ * k * s ∈ J') ∧ (k ∈ J → χ' (s⁻¹ * k * s) = χ k)
-
-section Fam
-
-variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} (A : FamIn D.what₂.LL G Pl0 T D.R.m)
-
-def GrpPin (L : LevCh D T) (eG : G ≃* G0 L.Pg D.R.r) (cG : G0 L.Pg D.R.r ≃* G0g D.nd) : Prop :=
-  ∃ (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ L.Pg)
-      (iso : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ZMod (D.host.g kv.1) ≃+* kP (plg kv).1),
-    (∀ kv, ((plg kv : L.Pg) : Pl D.host.E) = D.naut.plGw kv.1 kv.2) ∧
-    (∀ g, D.what₂.embLL ((idemOf A.X).coeff g) = D.ntypes.e0.coeff ((eG.trans cG) g)) ∧
-    (∀ kv, L.C.P.Div kv.1 (plg kv).1) ∧
-    ∀ g kv, eG g (plg kv) = Formalism.UG.bc (iso kv : ZMod (D.host.g kv.1) →+* kP (plg kv).1) ((eG.trans cG) g kv)
-
-def LevelsAt (L : LevCh D T) (eG : G ≃* G0 L.Pg D.R.r) (F : Face D A) : Prop :=
-  ∃ ψ0 : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ, IsGenericPsi L.Pg ψ0 ∧
-    levPOf eG D.what₂.embLL (F.lvl false).P (F.lvl false).ψ = P0 L.Pg D.R.r ψ0 ∧
-    ∃ π : Equiv.Perm (Fin D.R.r), IsSymOrd D.R.rS D.R.k π ∧
-      (∀ g, g ∈ (levPOf eG D.what₂.embLL (F.lvl true).P (F.lvl true).ψ).H ↔ reord π g ∈ (PsharpSym L.Pg D.R.r D.R.rS D.R.k ψ0).H) ∧
-      ∀ g hg hg', (levPOf eG D.what₂.embLL (F.lvl true).P (F.lvl true).ψ).chi ⟨g, hg⟩ =
-        (PsharpSym L.Pg D.R.r D.R.rS D.R.k ψ0).chi ⟨reord π g, hg'⟩
-
-structure LevPins (L : LevCh D T) (cf : Formalism.L2.Host.CharFrame D) (Pk : Finset (Pl D.host.E)) (eG0 : G ≃* G0g D.nd)
-    (eG : G ≃* G0 L.Pg D.R.r) (cG : G0 L.Pg D.R.r ≃* G0g D.nd) : Prop where
-  cfEq : L.C = cf
-  qGuard : QGuardL L
-  hF : D.host.F = maximalRealSubfield D.host.E
-  grpRecPin : GrpPin A L eG cG
-  fdiag : ∀ i, IsFDiag (Wc D i) ∧ IsFDiag (Vc D i)
-  pgEq : L.Pg = Pk
-  eGtie : eG0 = eG.trans cG
-  betaStd : (∀ i, L.βV i = 1) ∧ L.βX = 1
-
-variable {A}
-
-variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
-
-def scaleP (R : RealDat D A Ks) (u : Fin D.R.m → ℂ) : RealDat D A Ks :=
-  { R with ioP := fun i => u i • R.ioP i, thF := fun i t => u i • R.thF i t, thG := fun i t => u i • R.thG i t }
-
-def PhaseAt (R : RealDat D A Ks) (phs : Fin D.R.m → ℂ) : Prop :=
-  ∀ i, ‖phs i‖ = 1 ∧ ((∃ c : ℂ, ‖c‖ = 1 ∧ ∀ x, ∃ y, (R.FW i).j (sg0 D A) y = c • R.thG i A.μ0 (R.jV i A.μ0 x)) →
-    ∀ x, ∃ y, (R.FW i).j (sg0 D A) y = cj (twAt D.what₂.embLL A.v0) (phs i) • R.thG i A.μ0 (R.jV i A.μ0 x))
-
-structure RealPinsR (R : RealDat D A Ks) (phs : Fin D.R.m → ℂ) (cf : Formalism.L2.Host.CharFrame D) (Pk : Finset (Pl D.host.E))
-    (eG0 : G ≃* G0g D.nd) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) : Prop where
-  lev : LevPins A R.toLevCh cf Pk eG0 R.eG cG
-  phsOne : ∀ i, phs i = 1
-  prXunit : PrIsoV R.MX R.cX R.prX
-
-structure RealPinsP (R : RealDat D A Ks) (phs : Fin D.R.m → ℂ) (cf : Formalism.L2.Host.CharFrame D) (Pk : Finset (Pl D.host.E))
-    (eG0 : G ≃* G0g D.nd) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) : Prop extends RealPinsR R phs cf Pk eG0 cG where
-  phase : PhaseAt R phs
-
-theorem RealPinsP.rational {R : RealDat D A Ks} {phs : Fin D.R.m → ℂ} {cf : Formalism.L2.Host.CharFrame D} {Pk : Finset (Pl D.host.E)}
-    {eG0 : G ≃* G0g D.nd} {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (h : RealPinsP R phs cf Pk eG0 cG) (i : Fin D.R.m)
-    (hc : ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ x, ∃ y, (R.FW i).j (sg0 D A) y = c • R.thG i A.μ0 (R.jV i A.μ0 x)) :
-    ∀ x, ∃ y, (R.FW i).j (sg0 D A) y = R.thG i A.μ0 (R.jV i A.μ0 x) := by
-  have aux : ∀ {Y H : Type} [AddCommGroup H] [Module ℂ H] (f : Y → H) (s : ℂ) (v : H), s = 1 → (∃ y, f y = s • v) → ∃ y, f y = v :=
-    fun f s v hs h => by rwa [hs, one_smul] at h
-  have e : cj (twAt D.what₂.embLL A.v0) (phs i) = 1 := (congrArg _ (h.phsOne i)).trans (map_one _)
-  exact fun x => aux (fun y => (R.FW i).j (sg0 D A) y) _ _ e ((h.phase i).2 hc x)
-
-end Fam
-
-open Classical in
-
-def LevPinsExist : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (F : Face D A)
-    (L0 : LevCh D T) (Pk : Finset (Pl D.host.E)) (eG0 : G ≃* G0g D.nd),
-    L0.Is A.μ0 → (∀ k v, L0.C.P.Div k (D.naut.plGw k v)) → (∀ i, StdFrame (Vc D i)) → StdFrame D.sp.X' →
-    (∀ i, IsFDiag (Wc D i)) → QOffC L0 → GrpTie D A F.P0 F.ψ0 F.P1 F.ψ1 eG0 →
-    (∀ PP, PP ∈ Pk ↔ ∃ k, PP ∈ Set.range (D.naut.plGw k)) →
-    ∃ (L : LevCh D T) (eG : G ≃* G0 L.Pg D.R.r) (cG : G0 L.Pg D.R.r ≃* G0g D.nd),
-      L.Is A.μ0 ∧ SameDesign L0 L ∧ LevelsAt A L eG F ∧ LevPins A L L0.C Pk eG0 eG cG
-
-open Classical in
-
-def LevPinsExistQ : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (F : Face D A)
-    (L0 : LevCh D T) (Pk : Finset (Pl D.host.E)) (eG0 : G ≃* G0g D.nd),
-    L0.Is A.μ0 → (∀ k v, L0.C.P.Div k (D.naut.plGw k v)) → (∀ i, StdFrame (Vc D i)) → StdFrame D.sp.X' →
-    (∀ i, IsFDiag (Wc D i)) → QOffC L0 → QHalfL L0 → GrpTie D A F.P0 F.ψ0 F.P1 F.ψ1 eG0 →
-    (∀ PP, PP ∈ Pk ↔ ∃ k, PP ∈ Set.range (D.naut.plGw k)) →
-    ∃ (L : LevCh D T) (eG : G ≃* G0 L.Pg D.R.r) (cG : G0 L.Pg D.R.r ≃* G0g D.nd),
-      L.Q = L0.Q ∧ L.Is A.μ0 ∧ SameDesign L0 L ∧ LevelsAt A L eG F ∧ LevPins A L L0.C Pk eG0 eG cG
-
 end GlobalTheory.CompanionTheory.Pins
-
-end
-
-end
 
 section
 
@@ -352,12 +187,12 @@ theorem incl_tprod (v : M.Vec) : inclT M (PiTensorProduct.tprod ℂ v) = PiTenso
 variable {M} in
 theorem rep_inner {τ : D.what₂.Tau} {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ))
     (a b : M.H τ) : ⟪M.rep τ g a, M.rep τ g b⟫_ℂ = ⟪a, b⟫_ℂ :=
-  (⟨(M.rep τ g : M.H τ →ₗ[ℂ] M.H τ), (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.1.2.1 g hg⟩ : M.H τ →ₗᵢ[ℂ] M.H τ).inner_map_map a b
+  (⟨(M.rep τ g : M.H τ →ₗ[ℂ] M.H τ), (_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1.2.1 g hg⟩ : M.H τ →ₗᵢ[ℂ] M.H τ).inner_map_map a b
 
 variable {M} in
 theorem rep_cancel {τ : D.what₂.Tau} {g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ))
     (hg' : g' ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (h : g * g' = 1) (a : M.H τ) : M.rep τ g (M.rep τ g' a) = a := by
-  have hU := (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.1
+  have hU := (_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1
   have e : M.rep τ (g * g') = (M.rep τ g).comp (M.rep τ g') := hU.1.2 g hg g' hg'
   rw [← ContinuousLinearMap.comp_apply, ← e, h, hU.1.1]
   rfl
@@ -377,9 +212,9 @@ theorem uh_inv (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (
 theorem smooth_facts (τ : D.what₂.Tau) {Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hY : Y ∈ lieAt V τ) {a : M.H τ}
     (ha : a ∈ M.sm τ) : dRep (M.rep τ) Y a ∈ M.sm τ ∧
       HasDerivAt (fun t : ℝ => M.rep τ (NormedSpace.exp (t • Y)) a) (dRep (M.rep τ) Y a) 0 := by
-  haveI := (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).1
-  have hsv := GlobalTheory.T.smoothVectors_subspace_stable_sobolevForm_deriv V.rank (gramAt D V τ) (M.H τ) (M.rep τ) (GlobalTheory.SmoothAutCheck.gramAt_herm V τ)
-    (GlobalTheory.SmoothAutCheck.gramAt_unit V τ).ne_zero (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.1
+  haveI := (_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).1
+  have hsv := _root_.GlobalTheory.UnitarySmVec.smoothVec_basic V.rank (gramAt D V τ) (M.H τ) (M.rep τ) (GlobalTheory.SmoothAutCheck.gramAt_herm V τ)
+    (GlobalTheory.SmoothAutCheck.gramAt_unit V τ).ne_zero (_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1
   have h := (hsv.2 a (hsv.1 a ha)).2.1 Y hY
   exact ⟨Submodule.subset_span h.1, h.2⟩
 
@@ -567,7 +402,7 @@ theorem clause_bdd (hI : GlobalTheory.Grid.IsIntw θ M' M ω' pt It) (hA : AdjRe
     · calc _ ≤ (∏ ρ, ‖(u ρ : M.H ρ)‖)⁻¹ * (c * ∏ ρ, ‖(u ρ : M.H ρ)‖) := by gcongr
         _ = c := by field_simp
         _ ≤ |c| := le_abs_self c
-  haveI : ∀ τ, CompleteSpace (M'.H τ) := fun τ => (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D W S' M' τ).1
+  haveI : ∀ τ, CompleteSpace (M'.H τ) := fun τ => (_root_.GlobalTheory.HolDict.ModelRep.model_rep D W S' M' τ).1
   obtain ⟨C, hC0, hC⟩ := multi_uniform _ hb
   have hb2 : ∀ (u : M.Vec) (v : M'.Vec), ‖ellT M (fun τ => u τ) (inclT M (Tp φ (PiTensorProduct.tprod ℂ v)))‖ ≤
       (C * ∏ τ, ‖(v τ : M'.H τ)‖) * ∏ τ, ‖(u τ : M.H τ)‖ := by

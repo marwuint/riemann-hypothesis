@@ -10,8 +10,8 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecia
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ReprMemOfBasisRational
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DcOpCommOfCommute
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivisorsAtInvDualLabelAndStabilizerMul
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVectorStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeCombinationsCommuteFixedVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVector
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeCombinationsCommuteFixedVectors
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalHeckeConjPlaceEqDualLabelStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -238,10 +238,10 @@ theorem opOf_comm {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π : G
       refine Commute.sum_left _ _ _ fun γ hγ => Commute.sum_right _ _ _ fun γ' hγ' => ?_
       exact (commute_of_suppF V h (supp_rep d hP γ hγ) (supp_rep d' hP' γ' hγ')).map π
     exact LinearMap.congr_fun this.eq u
-  · rw [h]; exact GlobalTheory.T.sphericalHeckeCombinations_commute_fixedVectors V P c c' M π u hu
+  · rw [h]; exact _root_.GlobalTheory.SphLabelComm.label_ops_comm V P c c' M π u hu
   · rw [eq_conj_of_isConjPl h, (GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 c' M π u hu,
-      (GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 c' M π _ ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.1 c M π u hu)]
-    exact GlobalTheory.T.sphericalHeckeCombinations_commute_fixedVectors V P c _ M π u hu
+      (GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 c' M π _ ((_root_.GlobalTheory.SphLabelOps.label_operators V P).2.1 c M π u hu)]
+    exact _root_.GlobalTheory.SphLabelComm.label_ops_comm V P c _ M π u hu
 
 theorem pairwise_dualLab {d : List ℤ} (h : d.Pairwise fun a b => b ≤ a) : (dualLab d).Pairwise fun a b => b ≤ a := by
   unfold dualLab
@@ -258,8 +258,8 @@ theorem exists_sphOp_pair {V : HSp D} {P : Pl D.host.E} {d : List ℤ} {e f : AE
   obtain ⟨he, hf⟩ := hu e' f' h1
   rw [hf] at h5 h6 h7 h10
   rw [he] at h8
-  obtain ⟨d', l1, -, l2⟩ := (GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.2.2.2 e f α hP h7
-  have l3 := rep_spec (((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.2.2.1 d').1.1 l1)
+  obtain ⟨d', l1, -, l2⟩ := (_root_.GlobalTheory.SphLabelOps.label_operators V P).2.2.2.2 e f α hP h7
+  have l3 := rep_spec (((_root_.GlobalTheory.SphLabelOps.label_operators V P).2.2.2.1 d').1.1 l1)
   have l4 := supp_of_sphOp hP l3
   obtain ⟨e'', f'', -, α', -, g1, -, -, -, -, -, -, -, -, g2⟩ := l3
   rw [(hu e'' f'' g1).2] at g2
@@ -332,7 +332,7 @@ theorem single_mem_adj (hρ : ∀ γ u u', inner ℂ (ρ γ u) (ρ γ u') = inne
   classical
   by_cases hd : IsLab V P d
   swap
-  · have hd' : ¬ IsLab V P (dualLab d) := fun h => hd (((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.2.2.1 d).1.2 h)
+  · have hd' : ¬ IsLab V P (dualLab d) := fun h => hd (((_root_.GlobalTheory.SphLabelOps.label_operators V P).2.2.2.1 d).1.2 h)
     exact zero_mem_adj _ _ y _ _ _ (opOf_nonlab _ hd) (opOf_nonlab _ hd') F
   refine ((supported_group_and_prime_idempotents V).2.1 P).elim fun e he => he.elim fun f hP => ?_
   have h0 := local_level V β Λ L hβ P hoff hP
@@ -359,11 +359,11 @@ theorem single_mem_adj (hρ : ∀ γ u u', inner ℂ (ρ γ u) (ρ γ u') = inne
   have i : ∀ R : Finset (GA D V), (∀ γ ∈ R, SuppF V f γ) → ∀ g ∈ R, ∀ g' ∈ R, fin V g = fin V g' → g = g' :=
     fun R hR g hg g' hg' => fin_inj V (hN _ (hR g hg)) (hN _ (hR g' hg'))
   have e1 : opOf (rtr (fin V) W) P (Finsupp.single d 1) F = Bridge.dcOp ((Hk3.rep V P d).image (fin V)) F :=
-    (((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).1 _ _ (rep_spec hd)).2 _ _ F (fixed_of_mem V β Λ L hβ P hoff ρ F hF)).symm.trans
+    (((_root_.GlobalTheory.SphLabelOps.label_operators V P).1 _ _ (rep_spec hd)).2 _ _ F (fixed_of_mem V β Λ L hβ P hoff ρ F hF)).symm.trans
       (dcOp_image _ _ (i _ s1) F).symm
   have e2 : ∀ F' ∈ Bridge.AdForms (Bridge.ratF V) ρ (levEnv V β L).J (levEnv V β L).χ,
       opOf (rtr (fin V) W) P (Finsupp.single (dualLab d) 1) F' = Bridge.dcOp (R'.image (fin V)) F' := fun F' hF' =>
-    (((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).1 _ R' a3).2 _ _ F' (fixed_of_mem V β Λ L hβ P hoff ρ F' hF')).symm.trans
+    (((_root_.GlobalTheory.SphLabelOps.label_operators V P).1 _ R' a3).2 _ _ F' (fixed_of_mem V β Λ L hβ P hoff ρ F' hF')).symm.trans
       (dcOp_image _ _ (i _ s2) F').symm
   exact mem_adj_congr (· ∈ Bridge.AdForms (Bridge.ratF V) ρ (levEnv V β L).J (levEnv V β L).χ)
     (Bridge.adInner (Bridge.ratF V) (levEnv V β L).J y) e1 e2 (dcOp_mem _ ρ _ _ _ _ _ h1 h2 (m _ s1) d1 F hF)

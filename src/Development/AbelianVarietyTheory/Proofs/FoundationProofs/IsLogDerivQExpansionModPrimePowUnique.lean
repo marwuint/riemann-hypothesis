@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesNotZeroDivisorModPrimePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesNotZeroDivisorModPrimePow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulOfIsPrimitiveIntegralHahnGaussStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponentsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaDerivationHahnSeriesLeibnizAddConstStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponents
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaDerivationHahnSeriesLeibnizAddConst
 open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 
@@ -79,7 +79,7 @@ theorem isDl_unique : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   intro Ω _ _ _ ε X _ l _ A hl n s f φ φ' h1 h2
   obtain ⟨hφA, a, b, κ, hκ, hab, hPa, hPb, hφ⟩ := h1
   obtain ⟨hφ'A, a2, b2, κ2, hκ2, hab2, hPa2, hPb2, hφ'⟩ := h2
-  have hth := fun P Q => (GlobalTheory.T.thetaDerivationHahnSeries_leibniz_add_const (Ω := Ω) s P Q)
+  have hth := fun P Q => (_root_.GlobalTheory.Glue.theta_leibniz_add_const (Ω := Ω) s P Q)
 
   have hK : algebraMap Ω X.K κ * a * b2 = algebraMap Ω X.K κ2 * a2 * b := by
     rw [← hab, ← hab2]; ring
@@ -96,7 +96,7 @@ theorem isDl_unique : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   have hPab2 := GlobalTheory.T.mul_of_isPrimitiveIntegral_hahn_gauss A _ _ hPa2 hPb2
   have hPP : Prim A P := GlobalTheory.T.mul_of_isPrimitiveIntegral_hahn_gauss A _ _ hPab hPab2
   obtain ⟨M, hM, hMK⟩ := mem_KT X (a * b * (a2 * b2))
-  have hsupp := (GlobalTheory.T.mem_translationInvariantSubfield_iff_exponents ε X M hM _).mp hMK
+  have hsupp := (_root_.GlobalTheory.Glue.KTExp.mem_KT_iff ε X M hM _).mp hMK
   have hsuppP : ∀ r : ℚ, P.coeff r ≠ 0 → (r * M).den = 1 := by
     simpa [hP, map_mul] using hsupp
   have hD1 := cg_mul A l n _ _ (cg_of A l n _ _ hφ) hPab2.1
@@ -109,7 +109,7 @@ theorem isDl_unique : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   rw [hid] at hdiff
   have hint : ∀ r, (φ - φ').coeff r ∈ A := fun r => by
     rw [HahnSeries.coeff_sub]; exact sub_mem (hφA r) (hφ'A r)
-  have hfin := GlobalTheory.T.primitiveHahnSeries_not_zeroDivisor_modPrimePow l A hl n M P (φ - φ') hM hPP hsuppP hint hdiff
+  have hfin := _root_.GlobalTheory.primCan l A hl n M P (φ - φ') hM hPP hsuppP hint hdiff
   intro r
   obtain ⟨z, hz, e⟩ := hfin r
   exact ⟨z, hz, by rw [← e, HahnSeries.coeff_sub, sub_zero]⟩

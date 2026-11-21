@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LambdaPrimeAllPoints
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
@@ -10,16 +10,10 @@ set_option autoImplicit false
 noncomputable section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj Formalism.IndefR Formalism.IndefR.Links GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie
 namespace GlobalTheory.LiftWeightForced
-open Formalism.IndefR.IndefiniteWeightData
-variable (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau)
 end GlobalTheory.LiftWeightForced
 namespace GlobalTheory.LiftWeightForced
-open Formalism.IndefR.IndefiniteWeightData
-variable (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau)
 end GlobalTheory.LiftWeightForced
 namespace GlobalTheory.LiftWeightForced
-open Formalism.IndefR.IndefiniteWeightData
-variable (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau)
 end GlobalTheory.LiftWeightForced
 theorem GlobalTheory.LiftWeightForced.atPts_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ (j : Fin (Fm.D x i).R.m) τ,
     Formalism.IndefR.Bridge.IsLamPrime (D := Fm.D x i)

@@ -41,19 +41,6 @@ theorem qr_one : qr (Matrix.of.symm (1 : Matrix (Fin n) (Fin n) ℂ)) = 0 := by
 
   simp [qr]
 
-theorem eq_one_of_qr (k : Fin n → Fin n → ℂ) (h : qr k = 0) : k = Matrix.of.symm (1 : Matrix (Fin n) (Fin n) ℂ) := by
-
-  unfold qr at h
-  funext a j
-  have h1 := (Finset.sum_eq_zero_iff_of_nonneg
-    (fun a _ => Finset.sum_nonneg fun j _ => sq_nonneg _)).1 h a (Finset.mem_univ a)
-  have h2 := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg _)).1 h1 j (Finset.mem_univ j)
-  have h3 : k a j = (1 : Matrix (Fin n) (Fin n) ℂ) a j := by
-    have h4 : ‖k a j - (1 : Matrix (Fin n) (Fin n) ℂ) a j‖ = 0 := by
-      rwa [sq_eq_zero_iff] at h2
-    exact sub_eq_zero.1 (norm_eq_zero.1 h4)
-  exact h3
-
 private theorem norm_sub_one_sq_le_qr (k : Fin n → Fin n → ℂ) (a j : Fin n) :
     ‖k a j - (1 : Matrix (Fin n) (Fin n) ℂ) a j‖ ^ 2 ≤ qr k := by
   unfold qr

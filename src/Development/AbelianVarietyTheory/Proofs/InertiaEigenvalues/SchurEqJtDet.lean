@@ -32,9 +32,4 @@ theorem mem_antiParts {m d : ℕ} {l : Fin m → ℕ} : l ∈ antiParts m d ↔ 
 theorem padTo_self {m : ℕ} (l : Fin m → ℕ) : padTo le_rfl l = l := by
   funext i; simp [padTo, i.2]
 
-example : alternant ℤ 2 (staircase 2) = MvPolynomial.X 0 - MvPolynomial.X 1 := by
-  simp [alternant, staircase, Matrix.det_fin_two]
-
-example : (antiParts 2 2).card = 2 := by decide
-
 end GlobalTheory.JSW

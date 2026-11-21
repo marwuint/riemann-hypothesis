@@ -1090,8 +1090,6 @@ theorem CopyTw.exists_rest {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {
     aeMu_isom, anuIn, anuIn_inj, anuIn_range, anuIn_jN, anuIn_norm, ajEE_norm, as_Cu_isom, asEE, acd, ajet, ajetU,
     ajetL, ajetL', ajetW, ajetW_l, ajetTau, ajetW1, ajetW1_l, ajetTau1, ajetU1, ajetL1, ajetL1', agx, agat, agat_d⟩, rfl⟩
 
-example (D : D7) : Nonempty (Rest D) := let ⟨r, _⟩ := (CopyTw.refl D).exists_rest; ⟨r⟩
-
 end GlobalTheory.TwInputs.Move
 
 end
@@ -1259,11 +1257,6 @@ theorem SameData.eq_up (r : Rest D) {ρ : Setup D.ntw} {ρ' : Setup (overD D r).
   · cases hi; cases Fin.ext hj
     exact (h.eG ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b).symm.trans
       (u.eG ((i)) i ((HEq.refl i)) ((j)) j ((@Eq.refl Nat (@Fin.val (overD D r).R.m j))) b)
-
-theorem CopyTw.exists_sameData {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) (ρ : Setup D.ntw) :
-    ∃ ρ' : Setup D'.ntw, SameData ρ ρ' := by
-  obtain ⟨r, rfl⟩ := h.exists_rest
-  exact ⟨setupUp r ρ, sameData_up r ρ⟩
 
 end GlobalTheory.TwInputs.Move
 

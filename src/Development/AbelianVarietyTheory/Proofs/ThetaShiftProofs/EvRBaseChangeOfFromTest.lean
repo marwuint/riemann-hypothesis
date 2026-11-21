@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcWitnessExistence.EnlargeCf
-import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcWitnessExistence.PolyFr
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
+import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcDatumIsArcPointBasis
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.FinitePlaceArcs.FrameCut
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
@@ -29,11 +30,11 @@ theorem evR_frBor_of_isReduced (hL : GlobalTheory.Reg.EvLaws Xo c) {a : (E →+*
   let φ : S →ₐ[c.F] S ⧸ P := Ideal.Quotient.mkₐ c.F P
   obtain ⟨z, hz⟩ := hL.bc _ _ φ y
   obtain ⟨z', hz'⟩ := hL.bc _ _ φ y'
-  obtain ⟨g, hg1, hg2, hg⟩ := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S).2.2.2 t y y').1 h
-  have hc := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S).2.2.1 _ φ g _ y y' z z' hg hz).1 hz'
+  obtain ⟨g, hg1, hg2, hg⟩ := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.2.2 t y y').1 h
+  have hc := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.2.1 _ φ g _ y y' z z' hg hz).1 hz'
   let t' : Ix Dw → (S ⧸ P)ˣ := fun i => Units.map (φ : S →* S ⧸ P) (t i)
   have hb : FrBor t' z z' :=
-    ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c (S ⧸ P)).2.2.2 t' z z').2
+    ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c (S ⧸ P)).2.2.2 t' z z').2
       ⟨fun τ => (g τ).map φ, fun τ i => by simp [t', hg1], fun τ i j hij => by simp [hg2 τ i j hij], hc⟩
   have hw := evR_frBor_of_isDomain hL hF t' z z' hb
   rw [GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n F hF S _ φ y z hz,
@@ -50,7 +51,7 @@ theorem evR_scale_of_isReduced (hL : GlobalTheory.Reg.EvLaws Xo c) {a : (E →+*
     (hm : FrMap φ y z) (hb : FrBor (fun i => i.elim g fun _ => 1) z z') :
     evR Xo c F z' = (g : T) ^ n * φ (evR Xo c F y) := by
   classical
-  obtain ⟨G, hG1, hG2, hG⟩ := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c T).2.2.2 _ z z').1 hb
+  obtain ⟨G, hG1, hG2, hG⟩ := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c T).2.2.2 _ z z').1 hb
   let ι := Option (Σ τ : E →+* ℂ, Fin (Dw.mult τ) × Fin (Dw.mult τ))
   let R := MvPolynomial ι A
   let B := Localization.Away (MvPolynomial.X none : R)
@@ -83,16 +84,16 @@ theorem evR_scale_of_isReduced (hL : GlobalTheory.Reg.EvLaws Xo c) {a : (E →+*
     rw [Matrix.det_of_isLowerTriangular (M τ) (fun i j hij => hM2 τ i j hij)]
     simp [hM1]
   obtain ⟨u₀, hu₀⟩ := hL.bc _ _ π y
-  obtain ⟨u, hchg⟩ := (GlobalTheory.T.frameChange_exists_unique_invertible E H Dw l Xo c B M _ u₀).1 hdet hu
+  obtain ⟨u, hchg⟩ := (_root_.GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c B M _ u₀).1 hdet hu
   have h0 : FrMap k u₀ z := frMap_cancel (Xo := Xo) (c := c) _ _ _ π k y u₀ z hu₀ (by rw [hπ]; exact hm)
   have h1 : FrMap k u z' := by
-    refine ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c B).2.2.1 _ k M _ u₀ u z z' hchg h0).2 ?_
+    refine ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c B).2.2.1 _ k M _ u₀ u z z' hchg h0).2 ?_
     have e : k (algebraMap R B (MvPolynomial.X none)) = (g : T) := by rw [hk]; simp [k₀, v, R]
     rw [e, show (fun τ => (M τ).map k) = G from funext hMk]
     exact hG
   let t : Ix Dw → Bˣ := fun i => i.elim hu.unit fun _ => 1
   have hbu : FrBor t u₀ u :=
-    ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c B).2.2.2 t u₀ u).2 ⟨M, fun τ i => by simp [t, hM1], hM2, hchg⟩
+    ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c B).2.2.2 t u₀ u).2 ⟨M, fun τ i => by simp [t, hM1], hM2, hchg⟩
   rw [GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n F hF B _ k u z' h1,
     evR_frBor_of_isReduced hL hF t u₀ u hbu,
     GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n F hF A _ π y u₀ hu₀, map_mul, ← hπ]

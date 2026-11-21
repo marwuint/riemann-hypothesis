@@ -16,8 +16,6 @@ open GlobalTheory.MumFam
 
 namespace GlobalTheory.MumFam
 
-open InhTate
-
 end GlobalTheory.MumFam
 
 namespace GlobalTheory.MumFam

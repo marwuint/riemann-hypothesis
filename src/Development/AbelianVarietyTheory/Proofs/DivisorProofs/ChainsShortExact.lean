@@ -15,12 +15,6 @@ open scoped TensorProduct
 
 namespace GlobalTheory.EtC.MVEtale
 
-theorem cpull_neg {R : Type} [CommRing R] {K L : Cx R} (g : K ⟶ L) (I : Cx R) (n : ℤ) (x : CohomologyClass L I n) :
-    cpull (-g) I n x = -cpull g I n x := by
-  have h := BiprodCls.cpull_add g (-g) I n x
-  rw [add_neg_cancel, BiprodCls.cpull_zero] at h
-  exact eq_neg_of_add_eq_zero_right h.symm
-
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped TensorProduct in
 theorem _root_.GlobalTheory.EtC.MVEtale.cpull_lift_neg {R : Type} [CommRing R] {K M N : _root_.GlobalTheory.EtC.Cx R} (a : K ⟶ M) (b : K ⟶ N) (I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ)

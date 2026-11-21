@@ -47,9 +47,6 @@ theorem colLatRepC (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word
 
 def MassAC : Prop := ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), MassA Y.TR (X.Fu u) (Y.cs u)
 
-theorem chiNIndepC_holds : ChiNIndepC := fun _ X Y u u' =>
-  chiNIndep_of_frameTie (cs := Y.cs u) (cs' := Y.cs u') (hTF := Full.frameTie (X := X) u u')
-
 theorem normExpSatC'_of (hCL : NeatC) (hO : LeviOntoC) (hM : MassAC) (hS : SatGramC') : NormExpSatC' := by
   intro D X Y u u' _ _ _ hAbs
   obtain ⟨hSg, hSn⟩ := hS D X Y u u' ‹_› ‹_› ‹_›

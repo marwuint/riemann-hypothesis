@@ -39,10 +39,6 @@ theorem lineRestr_mul (v : n → K) (S T : MvPowerSeries n K) :
 theorem lineRestr_one (v : n → K) : lineRestr v (1 : MvPowerSeries n K) = 1 := by
   simp only [← lineHom_apply, map_one]
 
-theorem lineRestr_prod {ι : Type*} (v : n → K) (s : Finset ι) (T : ι → MvPowerSeries n K) :
-    lineRestr v (∏ i ∈ s, T i) = ∏ i ∈ s, lineRestr v (T i) := by
-  simp only [← lineHom_apply, map_prod]
-
 theorem lineRestr_sum {ι : Type*} (v : n → K) (s : Finset ι) (T : ι → MvPowerSeries n K) :
     lineRestr v (∑ i ∈ s, T i) = ∑ i ∈ s, lineRestr v (T i) := by
   simp only [← lineHom_apply, map_sum]

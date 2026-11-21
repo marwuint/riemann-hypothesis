@@ -209,14 +209,6 @@ theorem primeIdealZetaSum_higherDegreePrimes_le :
   · rw [indicator_of_notMem hw]
     exact indicator_nonneg (fun _ _ => by positivity) w
 
-variable (K L) in
-
-theorem isBoundedUnder_primeIdealZetaSum_higherDegreePrimes :
-    IsBoundedUnder (· ≤ ·) (𝓝[>] 1) fun s => (higherDegreePrimes K L).primeIdealZetaSum s := by
-  obtain ⟨C, hC⟩ := primeIdealZetaSum_higherDegreePrimes_le K L
-  exact isBoundedUnder_of_eventually_le (a := C)
-    (eventually_nhdsWithin_of_forall fun s hs => hC s (le_of_lt hs))
-
 end relative
 
 end

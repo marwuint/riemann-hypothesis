@@ -1,5 +1,6 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL4.LowerSlopeInequalityFamily
-import Formalism.GL3MeanSquares.HookFormulaTorsion.ColumnParametrizationOffDiagonal
+import Mathlib
+import Formalism.GL3MeanSquares.ConcavityEquidistribution
 
 open NumberField
 

@@ -47,10 +47,6 @@ theorem TrivOn.inv {χ : HChar L} (h : χ.TrivOn F) : (χ⁻¹).TrivOn F :=
 theorem ResEta.mul {χ ξ : HChar L} (h : χ.ResEta F) (h' : ξ.TrivOn F) : (χ * ξ).ResEta F :=
   ⟨fun v k => by rw [resFin_mul, h.1, h'.1, mul_one], fun w k => by rw [resInf_mul, h.2, h'.2, mul_one]⟩
 
-theorem ResEta.div {χ χ' : HChar L} (h : χ.ResEta F) (h' : χ'.ResEta F) : (χ' * χ⁻¹).TrivOn F :=
-  ⟨fun v k => by rw [resFin_mul, resFin_inv, h.1, h'.1, mul_inv_cancel],
-    fun w k => by rw [resInf_mul, resInf_inv, h.2, h'.2, mul_inv_cancel]⟩
-
 theorem LevelLe.mul {χ χ' : HChar L} {v : HeightOneSpectrum (𝓞 L)} {n : ℕ} (h : χ.LevelLe v n) (h' : χ'.LevelLe v n) :
     (χ * χ').LevelLe v n := fun x hx hx' => by rw [loc_mul, h x hx hx', h' x hx hx', one_mul]
 
@@ -88,14 +84,6 @@ theorem HasInfQ.mul_triv {I : Type} [Fintype I] {φ : I → L →+* ℂ} {a : I 
   obtain ⟨n, hn, h⟩ := h
   exact ⟨n, hn, h.mul_triv h'⟩
 
-theorem HasInfQ.div {I : Type} [Fintype I] {φ : I → L →+* ℂ} {a : I → ℚ} {χ χ' : HChar L}
-    (h : χ.HasInfQ φ a) (h' : χ'.HasInfQ φ a) (k : Lˣ) : (χ' * χ⁻¹).inf k = 1 := by
-  obtain ⟨n, hn, h⟩ := h
-  obtain ⟨n', hn', h'⟩ := h'
-  have e : n' = n := funext fun i => by exact_mod_cast (hn' i).trans (hn i).symm
-  subst e
-  exact h.div h' k
-
 end HChar
 
 end General
@@ -109,12 +97,6 @@ theorem isClsF_one : IsClsF H (1 : HChar H.E) :=
 
 theorem IsEtaT.mul_cls {χ ξ : HChar H.E} (h : IsEtaT H χ) (hξ : IsClsF H ξ) : IsEtaT H (χ * ξ) :=
   ⟨h.unitary.mul hξ.unitary, fun v => (h.unr v).mul (hξ.unr v), h.res.mul hξ.triv, h.inf.mul_triv hξ.inf⟩
-
-theorem IsEtaT.div_cls {χ χ' : HChar H.E} (h : IsEtaT H χ) (h' : IsEtaT H χ') : IsClsF H (χ' * χ⁻¹) :=
-  ⟨h'.unitary.mul h.unitary.inv, fun v => (h'.unr v).mul (h.unr v).inv, h.inf.div h'.inf, h.res.div h'.res⟩
-
-theorem IsChiPsi.mul_cls {χ ξ : HChar H.E} (h : IsChiPsi H χ) (hξ : IsClsF H ξ) : IsChiPsi H (χ * ξ) :=
-  ⟨h.unitary.mul hξ.unitary, fun v => (h.unr v).mul (hξ.unr v), h.triv.mul hξ.triv, h.inf.mul_triv hξ.inf⟩
 
 theorem IsChiPsi.div_cls {χ χ' : HChar H.E} (h : IsChiPsi H χ) (h' : IsChiPsi H χ') : IsClsF H (χ' * χ⁻¹) :=
   ⟨h'.unitary.mul h.unitary.inv, fun v => (h'.unr v).mul (h.unr v).inv, h.inf.div h'.inf, h'.triv.mul h.triv.inv⟩
@@ -161,35 +143,6 @@ theorem isUnitAt_nat {p a : ℕ} {w : HeightOneSpectrum (𝓞 H.E)} (hw : OverP 
   show Valued.v (algebraMap H.E (w.adicCompletion H.E) (x : H.E)) = 1
   rw [hx]
   simpa using h
-
-theorem IsMu0.mul_cls {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ} {χ ξ : HChar H.E}
-    (h : IsMu0 P W e j χ) (hξ : IsClsF H ξ) : IsMu0 P W e j (χ * ξ) where
-  unitary := h.unitary.mul hξ.unitary
-  triv := h.triv.mul hξ.triv
-  inf := h.inf.mul_triv hξ.inf
-  unr v hv := (h.unr v hv).mul (hξ.unr v)
-  tame v := (h.tame v).mul ((hξ.unr v).levelLe 1)
-  atg k w hw a ha x hx := by
-    have h1 : ξ.locK w x = 1 := hξ.unr w _ (isUnitAt_nat (P.overP hw) ha hx)
-    show χ.locK w x * ξ.locK w x = _
-    rw [h1, mul_one, h.atg k w hw a ha x hx]
-
-theorem IsMu0.div_cls {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ} {χ χ' : HChar H.E}
-    (h : IsMu0 P W e j χ) (h' : IsMu0 P W e j χ')
-    (hg : ∀ k v, OverP H (H.g k) v → (χ' * χ⁻¹).UnrAt v) : IsClsF H (χ' * χ⁻¹) where
-  unitary := h'.unitary.mul h.unitary.inv
-  unr v := by
-    by_cases hv : ∀ k, ¬ OverP H (H.g k) v
-    · exact (h'.unr v hv).mul (h.unr v hv).inv
-    · push Not at hv
-      obtain ⟨k, hk⟩ := hv
-      exact hg k v hk
-  inf := h.inf.div h'.inf
-  triv := h'.triv.mul h.triv.inv
-
-def Mu0Unique (P : PiBar H) (W : Omg H) (e : R.Psi → ℚ) (j : ℕ) : Prop :=
-  (∀ k, {v : HeightOneSpectrum (𝓞 H.E) | OverP H (H.g k) v}.ncard = Module.finrank ℚ H.E) →
-    ∀ χ χ' : HChar H.E, IsMu0 P W e j χ → IsMu0 P W e j χ' → IsClsF H (χ' * χ⁻¹)
 
 theorem isPsi_one (l : ℕ) : IsPsi (H := H) l ∅ (1 : HChar H.E) where
   ord := ⟨0, one_pow _⟩

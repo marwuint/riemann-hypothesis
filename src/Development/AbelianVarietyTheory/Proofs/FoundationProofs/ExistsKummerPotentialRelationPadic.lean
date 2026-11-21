@@ -2,15 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLaws
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryMonomialDegreeSubstExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryFormCoeffOfGamma1CapGamma0InvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCharactersInvariantCompatibleFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelAddZeroCongrStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryMonomialDegreeSubstExpansion
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryFormCoeffOfGamma1CapGamma0Invariant
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCharactersInvariantCompatibleFamily
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelAddZeroCongr
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelPadicIntSmulStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPadicCocycleOfCompatiblePolyFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEichlerShimuraPotentialOfHomogeneousPolyCoStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraPotentialSubmoduleAndBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationLinearHeckeStableStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPadicCocycleOfCompatiblePolyFamily
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEichlerShimuraPotentialOfHomogeneousPolyCo
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraPotentialSubmoduleAndBaseChange
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerPotentialRelationLinearHeckeStable
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 
@@ -59,10 +60,10 @@ theorem kum_sum (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) {ι : Type}
     Kum X l n (∑ i ∈ s, x i) (∑ i ∈ s, χ i) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simpa using (GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).2.1
+  | empty => simpa using (_root_.GlobalTheory.KZ.H3.KumAdd.kum_add_zero_near Ω ε X l n).2.1
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
-    exact (GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).1 _ _ _ _ (h a (Finset.mem_insert_self a s))
+    exact (_root_.GlobalTheory.KZ.H3.KumAdd.kum_add_zero_near Ω ε X l n).1 _ _ _ _ (h a (Finset.mem_insert_self a s))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 end GlobalTheory.KZ.H3.KumPot
@@ -75,10 +76,10 @@ theorem bset_rel (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] [IsAlgClosed Ω] (hJ
     (hl2 : l ≠ 2) (hlN : ¬ l ∣ N) (hw : Odd w) (b : X.Fn l) (hb : b ∈ X.BSet N l w) :
     ∃ F ∈ Pot ℤ_[l] w (Gam N l), Rel X l b F := by
   obtain ⟨⟨c, hcA, hbc⟩, hinv⟩ := hb
-  have hcoef := fun γ hγ i => GlobalTheory.T.binaryForm_coeff_of_gamma1CapGamma0_invariant Ω ε X l N w b c hbc γ hγ (hinv γ hγ) i
-  obtain ⟨Φ, hΦ, hK⟩ := GlobalTheory.T.kummerCharacters_invariant_compatible_family Ω ε X l hJ N w c hcA hcoef
-  obtain ⟨z, hz, hzΦ⟩ := GlobalTheory.T.exists_padic_cocycle_of_compatible_poly_family N l w (by omega) hl2 hlN hw Φ hΦ
-  obtain ⟨F, hF, hFz⟩ := GlobalTheory.T.exists_eichlerShimuraPotential_of_homogeneousPolyCocycle ℤ_[l] w N l hN z hz
+  have hcoef := fun γ hγ i => _root_.GlobalTheory.KZ.H3.coef_of_inv Ω ε X l N w b c hbc γ hγ (hinv γ hγ) i
+  obtain ⟨Φ, hΦ, hK⟩ := _root_.GlobalTheory.KZ.H3.kum_family Ω ε X l hJ N w c hcA hcoef
+  obtain ⟨z, hz, hzΦ⟩ := _root_.GlobalTheory.KZ.H3.cocycle_lift_of_fam N l w (by omega) hl2 hlN hw Φ hΦ
+  obtain ⟨F, hF, hFz⟩ := _root_.GlobalTheory.KZ.H3.exists_pot_of_isCoc ℤ_[l] w N l hN z hz
   refine ⟨F, hF, fun u n => ⟨fun δ => MvPolynomial.eval (fun i => PadicInt.toZModPow n (u i)) (Φ n δ), ?_, ?_⟩⟩
   · have hsum := kum_sum X l n (Finset.univ : Finset (Fin (w + 1))) (fun (i : Fin (w + 1)) => (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • c i)
       (fun (i : Fin (w + 1)) δ => PadicInt.toZModPow n (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) *
@@ -88,7 +89,7 @@ theorem bset_rel (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] [IsAlgClosed Ω] (hJ
     convert hsum using 1
     funext δ
     rw [Finset.sum_apply]
-    have MX := GlobalTheory.T.binaryMonomialDegree_subst_expansion (ZMod (l ^ n)) w
+    have MX := _root_.GlobalTheory.KZ.H3.mon_expand (ZMod (l ^ n)) w
     conv_lhs => rw [MX.2.1 (Φ n δ) (hΦ.1 n δ)]
     simp only [map_sum, map_mul, MvPolynomial.eval_C, MX.2.2.2.1, map_pow]
     exact Finset.sum_congr rfl fun i _ => mul_comm _ _
@@ -112,8 +113,8 @@ theorem GlobalTheory.KZ.H3.exists_pot_rel : ∀ (Ω : Type) [Field Ω] [Algebra 
     [Fact l.Prime], [IsAlgClosed Ω] → JHol X → ∀ (N w : ℕ), 4 ≤ N → l ≠ 2 → ¬ l ∣ N → Odd w →
     ∀ b ∈ X.B N l w, ∃ F ∈ Pot ℤ_[l] w (Gam N l), Rel X l b F := by
   intro Ω _ _ ε X l _ _ hJ N w hN hl2 hlN hw b hb
-  have RO := GlobalTheory.T.kummerPotentialRelation_linear_hecke_stable Ω ε X l
-  have PL := GlobalTheory.T.eichlerShimuraPotential_submodule_and_base_change ℤ_[l] w (Gam N l)
+  have RO := _root_.GlobalTheory.KZ.H3.rel_ops Ω ε X l
+  have PL := _root_.GlobalTheory.KZ.pot_triv_lin ℤ_[l] w (Gam N l)
   induction hb using Submodule.span_induction with
   | mem b hb => exact KumPot.bset_rel X l hJ N w hN hl2 hlN hw b hb
   | zero => exact ⟨0, PL.2.1, RO.2.1⟩

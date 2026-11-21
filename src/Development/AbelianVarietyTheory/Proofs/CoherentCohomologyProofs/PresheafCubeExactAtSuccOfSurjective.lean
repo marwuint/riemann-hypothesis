@@ -10,16 +10,6 @@ noncomputable section
 
 namespace GlobalTheory
 
-section Presheaf
-
-variable {T : TopCat.{w}} {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
-  {P : (Opens T)ᵒᵖ ⥤ ModuleCat.{w} R} (hP : Presheaf.IsSheaf (Opens.grothendieckTopology T) P)
-  (hs : ∀ ⦃W W' : Opens T⦄ (h : W' ≤ W), Function.Surjective (presheafRes P h))
-
-include hP hs
-
-end Presheaf
-
 section Ab
 
 variable {T : TopCat.{w}} {ι : Type}
@@ -161,16 +151,5 @@ theorem _root_.GlobalTheory.subsingleton_cechAbH_succ_of_isFlasque (V : Opens T)
   exact ModuleCat.subsingleton_of_isZero hcech.isZero_homology
 
 end Ab
-
-section Modules
-
-variable {X : Scheme.{u}} {ι : Type} (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)]
-  (F : X.Modules) [hF : TopCat.Presheaf.IsFlasque (X := X.toPresheafedSpace.carrier) F.presheaf]
-
-include hF
-
-variable [LinearOrder ι] [Finite ι]
-
-end Modules
 
 end GlobalTheory

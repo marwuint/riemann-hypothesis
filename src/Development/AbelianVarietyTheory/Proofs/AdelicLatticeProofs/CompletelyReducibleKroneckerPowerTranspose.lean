@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationTprodChevalleyStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleToMatrixIffIsSemisimpleRepresStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGroupHomRangeEqOfAutStableStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationTprodChevalley
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleToMatrixIffIsSemisimpleRepres
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGroupHomRangeEqOfAutStable
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsCompletelyReducibleMatrixSetTransposeImageStatement
 
 open Matrix GlobalTheory.ClassFin
@@ -25,7 +25,7 @@ theorem exists_semisimple_rep_tpow {ι : Type} [Fintype ι] [DecidableEq ι] {G 
       rw [this, LinearMap.toMatrix_id]
     refine ⟨(Fin 0 → ι) → ℂ, inferInstance, inferInstance, Representation.trivial ℂ G _,
       Pi.basisFun ℂ _, ?_, ?_⟩
-    · rw [← GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation (Fin 0 → ι) G _ _ (Pi.basisFun ℂ _)]
+    · rw [← _root_.GlobalTheory.ClassFin.ss_range_toMatrix_iff_isSemisimpleRepresentation (Fin 0 → ι) G _ _ (Pi.basisFun ℂ _)]
       intro W _
       obtain ⟨W', hW'⟩ := Submodule.exists_isCompl W
       refine ⟨W', ?_, hW'⟩
@@ -46,13 +46,13 @@ theorem exists_semisimple_rep_tpow {ι : Type} [Fintype ι] [DecidableEq ι] {G 
       change LinearMap.toMatrix (Pi.basisFun ℂ ι) (Pi.basisFun ℂ ι) (Matrix.toLin' (ρ g)) = ρ g
       rw [LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']
     have hs₁ : r₁.IsSemisimpleRepresentation := by
-      rw [← GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation ι G _ _ (Pi.basisFun ℂ _)]
+      rw [← _root_.GlobalTheory.ClassFin.ss_range_toMatrix_iff_isSemisimpleRepresentation ι G _ _ (Pi.basisFun ℂ _)]
       simpa only [h₁] using h
     haveI : FiniteDimensional ℂ V := Module.Finite.of_basis b
     let e : ι × (Fin n → ι) ≃ (Fin (n + 1) → ι) := Fin.consEquiv fun _ => ι
     refine ⟨(ι → ℂ) ⊗[ℂ] V, inferInstance, inferInstance, r₁.tprod r,
       ((Pi.basisFun ℂ ι).tensorProduct b).reindex e,
-      GlobalTheory.T.isSemisimpleRepresentation_tprod_chevalley G _ r₁ V r hs₁ hr, ?_⟩
+      _root_.GlobalTheory.ClassFin.isSemisimpleRepresentation_tprod G _ r₁ V r hs₁ hr, ?_⟩
     intro g
     have ht : LinearMap.toMatrix ((Pi.basisFun ℂ ι).tensorProduct b) ((Pi.basisFun ℂ ι).tensorProduct b)
         ((r₁.tprod r) g) = ρ g ⊗ₖ tpow n (ρ g) := by
@@ -66,9 +66,9 @@ theorem exists_semisimple_rep_tpow {ι : Type} [Fintype ι] [DecidableEq ι] {G 
 theorem ss_tpow_transpose : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)),
     IsPre Γ → SS Γ → ∀ n : ℕ, SS ((fun g => (tpow n g)ᵀ) '' Γ) := by
   intro ι _ _ Γ hΓ hs n
-  obtain ⟨G, _, ρ, rfl⟩ := GlobalTheory.T.exists_group_hom_range_eq_of_isPre ι Γ hΓ
+  obtain ⟨G, _, ρ, rfl⟩ := _root_.GlobalTheory.ClassFin.IsPre.exists_group_range ι Γ hΓ
   obtain ⟨V, _, _, r, b, hr, hb⟩ := exists_semisimple_rep_tpow ρ hs n
-  have h := GlobalTheory.T.isCompletelyReducibleMatrixSet_transpose_image _ _ ((GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation _ G V r b).2 hr)
+  have h := GlobalTheory.T.isCompletelyReducibleMatrixSet_transpose_image _ _ ((_root_.GlobalTheory.ClassFin.ss_range_toMatrix_iff_isSemisimpleRepresentation _ G V r b).2 hr)
   simp only [hb] at h
   rw [← Set.range_comp] at h ⊢
   exact h

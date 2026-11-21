@@ -56,7 +56,7 @@ theorem stepM_gen (hT : TAll) : ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n)
     (((absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) ^ ((d.m : ℝ) / 2) : ℝ) : ℂ) with hc
   refine ⟨t, hA1, fun w' h => (hO1 w' h).1, hF1, fun f hf => ?_, fun Ψ hΨ => ⟨hΨ, fun f hf Φ hΦ hTΦ => ?_⟩⟩
   · obtain ⟨φ, rfl⟩ := hf
-    obtain ⟨ψ, hψ⟩ := GlobalTheory.T.schwartz_linear_change d.m d.n c a ha φ
+    obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.CompanionTheory.KlocopSw.exists_schwartz_rightMul d.m d.n c a ha φ
     exact ⟨ψ, hψ⟩
   · funext X
     rw [(hT.2.1 F E σ d Φ hΦ).2.1 (R.ι w y) t u hMtu X, hTΦ]

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.FormsStable
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemFormsIffExistsEquivariantExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemFormsIffExistsEquivariantExtension
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UopIsExtStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelChainTransitionIsExtKernelSum
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValueLatticeAddSubgroupSmulMoveLawsStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValBOfInc
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelPrimePowSmulMemValueLatticeEraseStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelPrimePowSmulMemValueLatticeErase
 open Formalism.BasicNotions Classical NumberField GlobalTheory.LvT
 open Formalism.MainNotions.product_first_zeroth_parts (Ow tops wsum ten blk nfAll CSpan IntSpan Nm_succ wSh cTw)
 
@@ -62,7 +62,7 @@ variable {Co}
 
 theorem extIn_of_valIn (hC : Co.Ok) {w} (hw : OverT X w) {V} {φ : Fn X i} (hφ : φ ∈ X.fm.Fi i)
     (h : M.ValIn (Co.valB w V) φ) : ExtIn Co w V φ := by
-  obtain ⟨Φ, hΦ⟩ := (GlobalTheory.T.mem_forms_iff_exists_equivariant_extension D u X i M φ).1 hφ
+  obtain ⟨Φ, hΦ⟩ := (_root_.GlobalTheory.LvT.PtModel.mem_Fi_iff_exists_isExt D u X i M φ).1 hφ
   refine ⟨Φ, hΦ, fun p => ?_⟩
   obtain ⟨c, g, rfl⟩ := M.rep_surj p
   obtain ⟨y, hy, hyc⟩ := h c
@@ -72,7 +72,7 @@ theorem extIn_of_valIn (hC : Co.Ok) {w} (hw : OverT X w) {V} {φ : Fn X i} (hφ 
 
 theorem ExtIn.mem_Fi {w V} {φ : Fn X i} (h : ExtIn Co w V φ) : φ ∈ X.fm.Fi i := by
   obtain ⟨Φ, hΦ, -⟩ := h
-  exact (GlobalTheory.T.mem_forms_iff_exists_equivariant_extension D u X i M φ).2 ⟨Φ, hΦ⟩
+  exact (_root_.GlobalTheory.LvT.PtModel.mem_Fi_iff_exists_isExt D u X i M φ).2 ⟨Φ, hΦ⟩
 
 theorem ExtIn.valIn {w V} {φ : Fn X i} (h : ExtIn Co w V φ) : M.ValIn (Co.valB w V) φ := by
   obtain ⟨Φ, hΦ, h⟩ := h
@@ -131,7 +131,7 @@ theorem ExtIn.drop (hC : Co.Ok) {w} (hw : OverT X w) (hs : X.fm.seenP w = true) 
     have e : (V \ A).erase v = V \ insert v A := by
       ext x; simp; tauto
     rw [Finset.sum_insert hv, zpow_add₀ hT, mul_smul, ← e]
-    exact ⟨_, isExt_smul hΦ _, fun p => GlobalTheory.T.levelPrime_pow_smul_mem_valueLattice_erase D u X i M Co hC w hw hs _ v
+    exact ⟨_, isExt_smul hΦ _, fun p => _root_.GlobalTheory.LvT.pow_smul_mem_valB_erase D u X i M Co hC w hw hs _ v
       (by simp [hv, hA (Finset.mem_insert_self _ _)]) p _ (h1 p)⟩
 
 end

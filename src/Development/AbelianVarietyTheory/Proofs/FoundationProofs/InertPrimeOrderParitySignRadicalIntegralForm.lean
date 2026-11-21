@@ -458,15 +458,4 @@ theorem exact_equivariance : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : 
     Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → Even (N * N') → oddE0 D cc δ t0 N N' e0 → oddEq D cc δ N N' e0 :=
   fun _ _ _ _ _ _ _ hc _ hN hv => oddEq_of_mem hc hN hv.1
 
-theorem poisson : ∀ D : D7, admissible_poisson D := by
-  intro D cc δ hc N N' hN e0 he W
-  have h : ∀ (ε n : ℤ) (k : ℕ), (ε = 1 ∨ ε = -1) → Even (n - k) →
-      (∃ a, 2 * a = ε * n + k) ∧ ∃ a, 2 * a = ε * n - k := by
-    rintro ε n k (rfl | rfl) ⟨j, hj⟩
-    · exact ⟨⟨j + k, by omega⟩, ⟨j, by omega⟩⟩
-    · exact ⟨⟨-j, by omega⟩, ⟨-j - k, by omega⟩⟩
-  choose a' ha' using fun τ => (h _ _ N W.ep_pm.1 (W.chV.par τ)).1
-  choose a ha using fun τ => (h _ _ N' W.ep_pm.2 (W.chV'.par τ)).2
-  exact ⟨a, a', fun g g' γ γ' hr hr' => oddEq_of_mem hc hN he W g g' γ γ' a a' hr hr' ha' ha⟩
-
 end GlobalTheory.OddRank

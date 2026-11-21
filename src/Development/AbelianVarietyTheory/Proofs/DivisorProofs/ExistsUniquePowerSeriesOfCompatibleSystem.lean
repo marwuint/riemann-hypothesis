@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomKillHighOrder
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMapStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMap
 
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
@@ -24,7 +24,7 @@ theorem existsUnique_evA_eq_of_presents (k : Type) [CommRing k] (σ : Type) [Fin
       (hasSubst_of_constantCoeff_nilpotent fun i => by simpa using hy n i) (X i)) = _
     rw [substAlgHom_X, constantCoeff_C]
   have hres : ∀ n f, r n (evA k (y (n + 1)) (hy (n + 1)) f) = evA k (y n) (hy n) f := fun n f =>
-    (GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k σ (B (n + 1))).2 (B n) (r n) _ _ _ _ (hr n) f
+    (_root_.GlobalTheory.evA_subst_and_map k σ (B (n + 1))).2 (B n) (r n) _ _ _ _ (hr n) f
   have hdown : ∀ n m, n ≤ m → ∀ f, evA k (y m) (hy m) f = b m → evA k (y n) (hy n) f = b n := by
     intro n m h
     induction m, h using Nat.le_induction with

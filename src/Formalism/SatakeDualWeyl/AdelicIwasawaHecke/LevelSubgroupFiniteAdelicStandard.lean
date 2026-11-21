@@ -9,25 +9,6 @@ namespace Formalism.UG.P
 
 open Formalism.UG
 
-def easyc_fstAdd : ↥(stdLat (n := Fin 2) (A := ℚ) ℤ) →+ ZMod 2 where
-  toFun x := (((x : Fin 2 → ℚ) 0).num : ZMod 2)
-  map_zero' := by simp
-  map_add' := by
-    intro x y
-    obtain ⟨a, ha⟩ := (mem_stdLat_iff' (R := ℤ) (x : Fin 2 → ℚ)).1 x.2 0
-    obtain ⟨b, hb⟩ := (mem_stdLat_iff' (R := ℤ) (y : Fin 2 → ℚ)).1 y.2 0
-    simp only [algebraMap_int_eq, eq_intCast] at ha hb
-    simp only [Submodule.coe_add, Pi.add_apply, ← ha, ← hb]
-    rw [← Int.cast_add, Rat.num_intCast, Rat.num_intCast, Rat.num_intCast]
-    push_cast; rfl
-
-def easyc_fst : ↥(stdLat (n := Fin 2) (A := ℚ) ℤ) →ₗ[ℤ] ZMod 2 := easyc_fstAdd.toIntLinearMap
-
-def easyc_swap : GL (Fin 2) ℚ :=
-  ⟨!![0, 1; 1, 0], !![0, 1; 1, 0], by
-    ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two], by
-    ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]⟩
-
 section Lattice
 
 variable {F E : Type} [Field F] [Field E] [NumberField E] [Algebra F E] {n : Type} [Fintype n]
@@ -80,11 +61,6 @@ end Lattice
 theorem level_subgroup_finite_adelic_standard : Formalism.UG.LevelAfLStd := by
   intro F E _ _ _ _ _ n _ _ σ J
   unfold levelAfL levelAf
-  rw [easyc_latS_std]
-
-theorem level_subgroup_local_standard : Formalism.UG.LevelVLStd := by
-  intro F E _ _ _ _ _ n _ _ σ J v
-  unfold levelVL levelV
   rw [easyc_latS_std]
 
 end Formalism.UG.P

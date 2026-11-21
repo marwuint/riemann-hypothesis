@@ -40,21 +40,4 @@ theorem range_j_subset_abLocus {O : Type} [CommRing O] {β : O →+* c.F} (Y : M
   have h : Y.jQ w ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G := by rw [Y.ab_gen]; exact ⟨w, rfl⟩
   exact h
 
-theorem exists_sab (Y : Model Xo c (RingHom.id c.F)) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
-    (ξ : Sp R ⟶ Y.X) (_ : IsCN R) (hr : Set.range ξ ⊆ Set.range Y.j) :
-    ∃ (t : SAB H (Sp R)) (_ : SABMap t Y.t ξ), PolAt t (jK R) ∧ ThetaNZ t.G t.PP.L ∧ ∀ x, x ∈ abLocus t.G := by
-  have hj := isOpenImmersion_j_id Y
-  have hab : Set.range ξ ⊆ abLocus Y.t.G := hr.trans (range_j_subset_abLocus Y)
-  obtain ⟨ξ', hξ'⟩ : ∃ ξ' : Sp R ⟶ Xo.XF c, ξ' ≫ Y.j = ξ := ⟨IsOpenImmersion.lift Y.j ξ hr, IsOpenImmersion.lift_fac _ _ _⟩
-  subst hξ'
-  obtain ⟨t, ⟨m⟩⟩ : ∃ t : SAB H (Sp R), Nonempty (SABMap t Y.t (ξ' ≫ Y.j)) := by
-    obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull (ξ' ≫ Y.j) Y.t
-    exact ⟨_, ⟨m⟩⟩
-  have m' : SABMap t Y.oF.t ξ' := (sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m m).choose
-  have hPI : PushInvertible Y.oF.t.G Y.oF.t.PP.L :=
-    PushInv.pushInvertible_any GlobalTheory.allSixLaws.2.1.secBaseChangeAny GlobalTheory.allSixLaws.1.globalSectionsRank _ (GlobalTheory.Obj.toPolAV Y.oF)
-  refine ⟨t, m, GoodTrait.polAt_of_point Y m (jK R) (jK R ≫ ξ') (Category.assoc _ _ _),
-    ThetaLocal.thetaNZ_of_pushInvertible E H _ Y.oF.t hPI R ξ' t m', fun x => ?_⟩
-  exact (abLocus_pullback abLocusOne Y.t.semi m.cart.1 x).1 (hab ⟨x, rfl⟩)
-
 end GlobalTheory.GenFan.Tri

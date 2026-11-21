@@ -6,16 +6,18 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.DataInst
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InVolumesAtOfSWS
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GlobSet
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassPairingClassBounds
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameDualUnipotentGroupActsUnitriangularOntoStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitriangularChangeRationalFlagIffRationalUnipotStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameDualUnipotentGroupActsUnitriangularOnto
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitriangularChangeRationalFlagIffRationalUnipot
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsRationalFramesPrescribedLocalClassesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeightedCountGluedLatticesEqMassMulLocalStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeightedCountGluedLatticesEqMassMulLocal
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassClassEqWeightCountStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlueUnimodularLatticeRepsMoveIsometryFramesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlueUnimodularLatticeRepsMoveIsometryFrames
 import Formalism.SharpRestriction.CuspSpanNormBounds.KappaEndpoints
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.NGDictPf
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalPairingClassStableUnitriangularChangeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairValueInvariantUnitriangularChangeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairValueInvariantUnitriangularChange
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.TermLoc Formalism.L2.SG.RowsConc Formalism.L2.SG.NGCut Formalism.L2.SG.NGAnalytic Formalism.FourierDecayAlt Formalism.L2.SG.NGData Formalism.L2.SG.NGLocModel Formalism.L2.SG.FamDefs GlobalTheory.Unfold GlobalTheory.LocOver GlobalTheory.GenMass
 open scoped Classical ENNReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -102,7 +104,7 @@ theorem frameN : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
     (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E), (∃ n ∈ Fr.N, g0 = fun b => n (Fr.f b)) → Uni A → Chg g0 A g →
     ∃ n ∈ Fr.N, g = fun b => n (Fr.f b) := by
   intro F _ _ _ E _ _ _ _ M hOK V _ _ H r Fr hT g0 g A hg0 hA hc
-  have u := GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto M hOK H r Fr hT
+  have u := _root_.GlobalTheory.LocOver.UnipOnto.unipotent_onto M hOK H r Fr hT
   obtain ⟨n, hn, rfl⟩ := hg0
   exact u.2.2 g (tri_trans E V (r + 1) _ _ _ (u.2.1 n hn) ⟨A, hA, hc⟩)
 
@@ -144,8 +146,8 @@ theorem genericMass_le_heightPow_mul_glueSum : ∀ (D : D7) (X : HidaSetting D) 
       Tri (D.s.atP p).Ep (scaled (zOf Y) p (frame F')) (f' p) := by
     intro p hp
     obtain ⟨-, -, ⟨n, hn, hfn, -⟩, ⟨n', hn', hfn', -⟩, -⟩ := htt p hp
-    have u1 := GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto ((zOf Y).M p) (hOK p) (locH (zOf Y) p) D.R.rS (Fm.FP p).A (hAT p)
-    have u2 := GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto ((zOf Y).M p) (hOK p) (locH (zOf Y) p) D.R.rS (Fm.FP p).B (hBT p)
+    have u1 := _root_.GlobalTheory.LocOver.UnipOnto.unipotent_onto ((zOf Y).M p) (hOK p) (locH (zOf Y) p) D.R.rS (Fm.FP p).A (hAT p)
+    have u2 := _root_.GlobalTheory.LocOver.UnipOnto.unipotent_onto ((zOf Y).M p) (hOK p) (locH (zOf Y) p) D.R.rS (Fm.FP p).B (hBT p)
     have e1 : f p = (tt p hp).f := dif_pos hp
     have e2 : f' p = (tt p hp).f' := dif_pos hp
     rw [e1, e2, ← hAf p, ← hBf p, hfn, hfn']
@@ -171,7 +173,7 @@ theorem genericMass_le_heightPow_mul_glueSum : ∀ (D : D7) (X : HidaSetting D) 
     exact ⟨wp, h0, h1, h2⟩
 
   have hTu : ((Tu D u : ℕ) : D.host.E) ≠ 0 := Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero
-  have fc := GlobalTheory.T.unitriangularChange_rationalFlag_iff_rationalUnipotent D (lf D (X.Fu u)) hTu
+  have fc := _root_.GlobalTheory.FlagChange.flag_change D (lf D (X.Fu u)) hTu
   have hTri1 : Tri D.host.E (frame (lf D (X.Fu u))) (frame F) := (fc.2 F).2 hFn
   obtain ⟨m, hm, hGm⟩ := (fc.2 G).1 (tri_trans _ _ _ _ _ _ hTri1 hStd.1)
   have hmI : m ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT := hm.1
@@ -195,7 +197,7 @@ theorem genericMass_le_heightPow_mul_glueSum : ∀ (D : D7) (X : HidaSetting D) 
       unfold Gval Formalism.MainNotions.S.Gflag Formalism.MainNotions.S.Dl
       rw [h']
       rfl
-    rw [e, GlobalTheory.T.flagPairValue_invariant_unitriangularChange D F G F' G'' A A' hA hA' hZG]
+    rw [e, _root_.GlobalTheory.LocOver.gval_uni_change D F G F' G'' A A' hA hA' hZG]
     exact hTP
   · rw [← hZiso, hZG]
     refine cell_chg _ _ _ w ?_ hA' hZw
@@ -205,9 +207,9 @@ theorem genericMass_le_heightPow_mul_glueSum : ∀ (D : D7) (X : HidaSetting D) 
     · subst hij
       simp [Matrix.map_apply, Matrix.transpose_apply, hA.2 i]
   · intro s hs
-    obtain ⟨s', hs', hsum⟩ := GlobalTheory.T.glueUnimodularLatticeReps_move_isometry_frames D _ _ (lf D (X.Fu u)) G (Formalism.L2.SG.TermOp.mapLF m⁻¹ G'') G'' m hmI hGm
+    obtain ⟨s', hs', hsum⟩ := _root_.GlobalTheory.GlueMove.glue_move D _ _ (lf D (X.Fu u)) G (Formalism.L2.SG.TermOp.mapLF m⁻¹ G'') G'' m hmI hGm
       hG''m s hs
-    have hcnt := GlobalTheory.T.weighted_count_glued_lattices_eq_mass_mul_local D (zOf Y) Fm.FP u u' F G F' G'' Fm.P Fm.d0 hk hBase hStd hTP Fm.R Fm.V0 hV0.le hML s' hs'
+    have hcnt := _root_.GlobalTheory.GlueCount.glue_count D (zOf Y) Fm.FP u u' F G F' G'' Fm.P Fm.d0 hk hBase hStd hTP Fm.R Fm.V0 hV0.le hML s' hs'
     choose! wp hwp0 hwpH hwpE using hlocw
     have hglue : glueSum G G'' s' = Fm.V0 * ∏ p ∈ Fm.P, (locSum G G'' p (Fm.R p) (Fm.d0 p)).toReal := by
       have hg0 : 0 ≤ glueSum G G'' s' := Finset.sum_nonneg fun _ _ => inv_nonneg.2 (Nat.cast_nonneg _)

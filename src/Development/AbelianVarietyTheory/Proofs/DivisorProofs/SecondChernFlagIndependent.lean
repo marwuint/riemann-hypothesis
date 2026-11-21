@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LineSCShortExact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormsFrameIndependentClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormsFrameIndependentClosed
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
+open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.LineForm
 open scoped Classical
 
 set_option autoImplicit false
@@ -61,7 +62,7 @@ theorem c2F_flag_indep : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegra
   have htr : ∀ a b, ∀ z ∈ U a ∩ U b, G b z = chg (g a b z) (G a z) := by
     intro a b z hz
     rw [hG a z hz.1, hG b z hz.2, chg_submatrix, ← (h.met σ).trans _ _ z hz.1]
-  have key := GlobalTheory.T.chernForms_frame_independent_closed (hX.atlas σ) U hUo hcov g hholo G hsm hpd htr 2
+  have key := _root_.GlobalTheory.ChernFrame.chern_frame_closed (hX.atlas σ) U hUo hcov g hholo G hsm hpd htr 2
   funext x
   exact key.1 (true, x.pt) (false, x.pt) x (mem_frameAt fl x.pt) (mem_frameAt fl' x.pt)
 

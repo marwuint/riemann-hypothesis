@@ -18,38 +18,6 @@ theorem mem_fixedSubmodule {v : V} : v ∈ fixedSubmodule K G V ↔ ∀ g : G, g
 
 end Fixed
 
-theorem isInternal_comap {K L N V ι : Type*} [CommRing K] [Ring L] [Algebra K L] [AddCommGroup N]
-    [Module K N] [AddCommGroup V] [Module K V] [Module L V] [IsScalarTower K L V] [DecidableEq ι]
-    (𝒱 : ι → Submodule L V) [DirectSum.Decomposition 𝒱] (f : N →ₗ[K] V)
-    (hf : Function.Injective f)
-    (h : ∀ n i, (DirectSum.decompose 𝒱 (f n) i : V) ∈ LinearMap.range f) :
-    DirectSum.IsInternal fun i => ((𝒱 i).restrictScalars K).comap f := by
-  classical
-  rw [DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
-  constructor
-  · intro i
-    rw [Submodule.disjoint_def]
-    intro x hx hx'
-    have hle : (⨆ j, ⨆ (_ : j ≠ i), ((𝒱 j).restrictScalars K).comap f) ≤
-        ((⨆ j, ⨆ (_ : j ≠ i), 𝒱 j).restrictScalars K).comap f :=
-      iSup₂_le fun j hj y hy => (le_iSup₂_of_le (f := fun j (_ : j ≠ i) => 𝒱 j) j hj le_rfl) hy
-    have := Submodule.disjoint_def.1
-      ((DirectSum.Decomposition.isInternal 𝒱).submodule_iSupIndep i) (f x) hx (hle hx')
-    exact hf (this.trans (map_zero f).symm)
-  · rw [eq_top_iff]
-    intro n _
-    choose c hc using h n
-    have : n = ∑ i ∈ (DirectSum.decompose 𝒱 (f n)).support, c i := by
-      apply hf
-      rw [map_sum]
-      simp only [hc]
-      exact (DirectSum.sum_support_decompose 𝒱 (f n)).symm
-    rw [this]
-    refine Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ?_
-    change f (c i) ∈ 𝒱 i
-    rw [hc]
-    exact Subtype.prop _
-
 section Semilinear
 
 variable {K L G V : Type*} [Field K] [Field L] [Algebra K L] [Group G] [MulSemiringAction G L]
@@ -152,38 +120,6 @@ omit [MulSemiringAction G L] [SMulDistribClass G L V] in
 theorem mem_fixedPart {W : Submodule L V} {v : fixedSubmodule K G V} :
     v ∈ fixedPart K G W ↔ (v : V) ∈ W := Iff.rfl
 
-omit [MulSemiringAction G L] [SMulDistribClass G L V] [DistribMulAction G V]
-  [SMulCommClass G K V] in
-
-theorem map_equiv_baseChange {N : Type*} [AddCommGroup N] [Module K N] {f : N →ₗ[K] V}
-    (hf : IsBaseChange L f) (P : Submodule K N) :
-    (P.baseChange L).map hf.equiv.toLinearMap = Submodule.span L (f '' P) := by
-  rw [baseChange_eq_span_image, Submodule.map_span, Set.image_image]
-  simp
-
-noncomputable def fixedMap {V' : Type*} [AddCommGroup V'] [Module K V'] [Module L V'] [IsScalarTower K L V']
-    [DistribMulAction G V'] [SMulCommClass G K V'] (F : V →ₗ[L] V')
-    (hF : ∀ (g : G) v, F (g • v) = g • F v) :
-    fixedSubmodule K G V →ₗ[K] fixedSubmodule K G V' :=
-  (F.restrictScalars K).restrict fun v hv g => by
-    change g • F v = F v
-    rw [← hF, mem_fixedSubmodule.1 hv g]
-
-section Graded
-
-variable {ι : Type*} [DecidableEq ι] (𝒱 : ι → Submodule L V) [DirectSum.Decomposition 𝒱]
-
-omit [MulSemiringAction G L] [SMulDistribClass G L V] [SMulCommClass G K V] in
-
-theorem smul_decompose_of_fixed (h : ∀ (g : G) i, ∀ v ∈ 𝒱 i, g • v ∈ 𝒱 i) {v : V}
-    (hv : ∀ g : G, g • v = v) (i : ι) (g : G) :
-    g • (DirectSum.decompose 𝒱 v i : V) = DirectSum.decompose 𝒱 v i := by
-  have := decompose_addMonoidHom 𝒱 𝒱 (DistribMulAction.toAddMonoidHom V g) (h g) v i
-  simp only [DistribMulAction.toAddMonoidHom_apply, hv] at this
-  exact this.symm
-
-end Graded
-
 end Semilinear
 
 section Algebra
@@ -240,30 +176,8 @@ instance fixedGrading_gradedMonoid : SetLike.GradedMonoid (fixedGrading K G 𝒜
   one_mem := SetLike.one_mem_graded 𝒜
   mul_mem _ _ _ _ ha hb := SetLike.mul_mem_graded (A := 𝒜) ha hb
 
-omit [MulSemiringAction G L] [SMulDistribClass G L A] in
-theorem isInternal_fixedGrading (h : ∀ (g : G) i, ∀ a ∈ 𝒜 i, g • a ∈ 𝒜 i) :
-    DirectSum.IsInternal (fixedGrading K G 𝒜) :=
-  isInternal_comap 𝒜 _ Subtype.val_injective fun n i =>
-    ⟨⟨_, smul_decompose_of_fixed 𝒜 h n.2 i⟩, rfl⟩
-
-variable (K) in
-
-noncomputable abbrev fixedGradedAlgebra (h : ∀ (g : G) i, ∀ a ∈ 𝒜 i, g • a ∈ 𝒜 i) :
-    GradedAlgebra (fixedGrading K G 𝒜) where
-  toGradedMonoid := inferInstance
-  toDecomposition := (isInternal_fixedGrading 𝒜 h).chooseDecomposition
-
 end Graded
 
 end Algebra
-
-section CommAlgebra
-
-variable (K L G A : Type*) [Field K] [Field L] [Algebra K L] [Group G] [MulSemiringAction G L]
-  [CommRing A] [Algebra K A] [Algebra L A] [IsScalarTower K L A]
-  [MulSemiringAction G A] [SMulDistribClass G L A] [SMulCommClass G K A]
-  [Finite G] [IsGaloisGroup G K L]
-
-end CommAlgebra
 
 end GlobalTheory.GaloisDescent

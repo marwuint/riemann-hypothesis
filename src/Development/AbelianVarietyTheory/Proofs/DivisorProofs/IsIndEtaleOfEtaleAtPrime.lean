@@ -92,9 +92,6 @@ theorem indEt_of_indEt_atPrime : ∀ (B O : Type) [CommRing B] [CommRing O] (P :
     ext x
     exact (IsScalarTower.algebraMap_apply B (Localization.AtPrime P) O x).symm
 
-example : ∀ (B O : Type) [CommRing B] [CommRing O] (P : Ideal B) [P.IsPrime] [Algebra (Localization.AtPrime P) O] [Algebra B O] [IsScalarTower B (Localization.AtPrime P) O], IndEt (Localization.AtPrime P) O → IndEt B O :=
-  indEt_of_indEt_atPrime
-
 end GlobalTheory.IndEtaleAtPrime
 
 end

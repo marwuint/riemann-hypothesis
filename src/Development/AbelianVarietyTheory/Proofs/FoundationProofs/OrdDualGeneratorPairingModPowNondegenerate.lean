@@ -46,5 +46,3 @@ theorem pair_nondeg (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ) (b : Qn c n)
 
 end GlobalTheory.Ord2.SelPerp
 
-example : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ) (b : Qn c n), (∀ a : Qn c n, GlobalTheory.Ord2.SelPerp.tbA c n (a * b) = 0) → b = 0 :=
-  GlobalTheory.Ord2.SelPerp.pair_nondeg

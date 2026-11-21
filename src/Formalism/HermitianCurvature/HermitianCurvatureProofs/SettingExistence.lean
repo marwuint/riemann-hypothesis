@@ -41,9 +41,6 @@ end IntegrationFormulaNormalisation
 theorem setting_with_prescribed_data_exists : Formalism.FourierDecayAlt.B2.RealPlaceDataExists :=
   Formalism.FourierDecayAlt.P.IntegrationFormulaNormalisation.exists_both.1
 
-theorem setting_nonempty : Formalism.FourierDecayAlt.B2.RealPlaceDataNonempty :=
-  Formalism.FourierDecayAlt.P.IntegrationFormulaNormalisation.exists_both.2
-
 theorem lemma_b_from_xi : Formalism.FourierDecayAlt.B2.LemmaBFromXi :=
   Formalism.FourierDecayAlt.P.BesselScaling.lemmaBFromXi_of conjugation_invariance_every_setting dilation_jacobian_every_setting matrix_coefficient_integrable_all normalisation_unique_every_setting
 

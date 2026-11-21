@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.Imports
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatedOrdinaryIdealCutsOutCrystallineLocusStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatedOrdinaryIdealCutsOutCrystallineLocus
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PtCont
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 
@@ -12,4 +12,4 @@ theorem GlobalTheory.OrdLoc.rtPoints : LocalPublishedTheorems → ∀ {l : ℕ} 
     (Ideal.le_radical.trans hle).trans hf
   have hC : ∀ a b, QCont l fun g => (push f U.r.hom g).mat a b := fun a b =>
     (ptCont (l := l) U.R B f).1 (GQ l) (fun g => (U.r.hom g).mat a b) (U.r.cont a b)
-  exact ⟨hC, (GlobalTheory.T.saturatedOrdinaryIdeal_cuts_out_crystalline_locus hP D U).1 B f hY⟩
+  exact ⟨hC, (_root_.GlobalTheory.OrdLoc.ideal_cuts_crystalline_locus hP D U).1 B f hY⟩

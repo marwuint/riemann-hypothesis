@@ -15,12 +15,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 variable {X : Data E r} {x0 x1 : Frame X.Ψ r}
 
-theorem dmin_cpt_eq (h0 : IsOrth X x0) (h1 : IsOrth X x1) (z : V (nd X)) (τ : X.Ψ) (i : Fin (r + 1)) :
-    dmin X.Gm (cpt X x1 z) τ i = dmin X.Gm (cpt X x0 z) τ i := by
-  have e : ∀ x : Frame X.Ψ r, mat (cpt X x z) τ = mat x τ * mat (nmat X z) τ := fun _ => rfl
-  unfold dmin
-  rw [e, e, FrameDegreeData.gram_mul, FrameDegreeData.gram_mul, h0 τ, h1 τ]
-
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
@@ -70,10 +64,6 @@ theorem _root_.GlobalTheory.Up.PoleValue.rhF_eq (h0 : _root_.ReciprocityTheory.C
   funext z
   unfold _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.rhF
   simp only [dmin_cpt_eq_of_isOrth h0 h1]
-
-theorem densF_eq (h0 : IsOrth X x0) (h1 : IsOrth X x1) : densF X x1 = densF X x0 := by
-  funext z
-  simp only [densF, dmin_cpt_eq h0 h1]
 
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in

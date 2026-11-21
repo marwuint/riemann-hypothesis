@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IwasawaExponentHnfGL
 import GroundTheory.AutomorphicForms.SphericalIntegral
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermiteReductionUnipotent
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardHermiteDataPowerQStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardHermiteDataPowerQ
 import Formalism.ArtinHasse.ArtinHasseProofs.SymmSeries
 
 open GroundTheory.Automorphic GLnLocal Iwasawa
@@ -21,7 +21,7 @@ instance finite_deg (k : ℕ) : Finite {l : Fin n → ℕ // ∑ i, l i = k} := 
 
 instance finite_hdata (l : Fin n → ℕ) : Finite (HData F n l) := by
   refine Nat.finite_of_card_ne_zero ?_
-  rw [GlobalTheory.T.card_hermite_data_power_q F n l]
+  rw [_root_.GlobalTheory.HermCount.card_hData F n l]
   exact pow_ne_zero _ (Spherical.qF_pos (F := F)).ne'
 
 instance finite_hdataDeg (k : ℕ) : Finite (HDataDeg F n k) := inferInstance

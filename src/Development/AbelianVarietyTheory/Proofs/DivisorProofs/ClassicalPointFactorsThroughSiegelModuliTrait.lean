@@ -1,7 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructureMapComp
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonUnitAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitExistsAfterFiniteExtensionOfCompleteDVRStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitExistsAfterFiniteExtensionOfCompleteDVR
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSiegPull
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemPadicAlgClValuationSubringIffNormLeOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.BoundedOnFramesIffIntegralOnFrames
@@ -63,7 +66,7 @@ theorem GlobalTheory.Poinc.exists_trait_of_classical_point : ∀ (g n : ℕ) (F 
     exact Scheme.Hom.comp_apply _ _ _
   let yK := IsOpenImmersion.lift i _ hrange
   obtain ⟨T, f, fK, hfinj, -, hffin, hfK, hTy⟩ :=
-    GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR g n (cycAway n) (zetaAway n) F (integralClosure ℤ_[p] K) hbase hdvr yK
+    _root_.GlobalTheory.Poinc.traitExtSt g n (cycAway n) (zetaAway n) F (integralClosure ℤ_[p] K) hbase hdvr yK
 
   letI : Algebra (integralClosure ℤ_[p] K) T.V := f.toAlgebra
   haveI : Module.Finite (integralClosure ℤ_[p] K) T.V := hffin

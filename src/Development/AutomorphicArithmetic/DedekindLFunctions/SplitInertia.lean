@@ -76,29 +76,6 @@ def BNBoundsU (Dd : Data U0 W Top m f) (T2 : Finset H) : Prop :=
   Dd.Nc ≤ (T2.card : ℝ) * Dd.k * Dd.b * Dd.x ^ Dd.ε
     / ((Fintype.card H : ℝ) * ((Fintype.card H : ℝ) * Dd.x ^ (-Dd.ε)))
 
-open Classical in
-
-def ReadsKept (T : DType) (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (Kp : Finset (AddChar (E0 × H) ℂ)) : Prop :=
-  ∃ rd : PC → AddChar (E0 × H) ℂ, Set.InjOn rd T.KEPT ∧ Kp = T.KEPT.image rd ∧
-    ∀ ξ ∈ T.KEPT, (∀ n : ℕ, n ≠ 0 → ξ.χ (n : ZMod ξ.N) = primVal D (rd ξ) n) ∧ (rd ξ = 0 ↔ ξ = PC.one) ∧
-      (ξ ≠ PC.one → ell (rd ξ) = ξ.kappa) ∧ (T.psK = some ξ ∨ ξ = PC.one ↔ rd ξ = psC ∨ rd ξ = 0)
-
-def ChainCoreH (T : DType) (eD eL K cHH eK M CE x : ℝ) : Prop :=
-  ∃ (H : Type) (_ : AddCommGroup H) (_ : Fintype H) (_ : DecidableEq H) (U0 : Type) (_ : Fintype U0) (tr : U0 → H)
-    (W : U0 → Type) (_ : ∀ u0, Fintype (W u0)) (_ : ∀ u0, Nonempty (W u0)) (Top : Type) (_ : Fintype Top)
-    (m f : ℕ) (Dd : Data U0 W Top m f) (C : Consts) (Xpp : ℝ)
-    (D : ArithData H) (S : Finset ℕ) (ell : AddChar (E0 × H) ℂ → ℂ) (N : ℕ) (TT T2 : Finset H) (a : H → ℝ)
-    (w : H → Fin m → E0 × H → ℝ) (eT : Top ≃ TT) (eP : Fin f ≃ PhiSet (H := H)) (η X' θ Ko : ℝ)
-    (A0 : AddSubgroup H) (Kp : Finset (AddChar (E0 × H) ℂ)),
-    Dd.x = x ∧ Dd.ε = T.eps ∧ C.eDiv ≤ eD ∧ C.eLoss ≤ eL ∧ C.cHH ≤ cHH ∧
-    HostFactsS D S ∧ (∀ s ∈ A0, ∃ u, tr u = s) ∧ IdentU Dd tr D N ell TT a w eT eP ∧
-    SizeData₂ Dd C Xpp ∧ ErrWindows Dd C Xpp eK K ∧ BNBoundsU Dd T2 ∧
-    SizesA A0 TT T2 a w N x Dd.b Dd.b' η X' θ ∧ ThinScales D ell X' θ ∧
-    CostWindows x (fPl H) Dd.b η θ ∧
-    RestSize T.eps x (Fintype.card H) TT.card T2.card m Dd.b Dd.k Dd.a ∧
-    (∀ s ∈ T2, s ∈ A0) ∧ CharsA ell A0 Kp TT T.aStar M Ko CE T.eps x ∧ ReadsKept T D ell Kp ∧
-    ∀ ψ ∈ PsiA A0, ψ ∉ Kp → ‖GPsi D ell ψ x‖ ≤ x ^ ((1 : ℝ) / 2 + T.eps)
-
 end Deduction.CH
 
 end

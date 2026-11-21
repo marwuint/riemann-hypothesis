@@ -13,8 +13,6 @@ def dw (c : ℂ) : ℝ := ((1 + ‖c‖) ^ 3)⁻¹
 theorem dw_cont : Continuous dw :=
   ((continuous_const.add continuous_norm).pow 3).inv₀ fun c => pow_ne_zero _ (add_pos_of_pos_of_nonneg one_pos (norm_nonneg c)).ne'
 
-theorem dw_nonneg (c : ℂ) : 0 ≤ dw c := by unfold dw; positivity
-
 theorem dw_integrable : Integrable dw := by
   have hi : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ))) :=
     integrable_one_add_norm (by rw [Complex.finrank_real_complex]; norm_num)

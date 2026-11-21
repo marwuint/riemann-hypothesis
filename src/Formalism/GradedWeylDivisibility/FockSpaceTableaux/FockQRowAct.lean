@@ -6,17 +6,6 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
-lemma leadj_star_ratCast (q : ℚ) : star ((q : ℂ)) = (q : ℂ) := by
-  exact map_ratCast (starRingEnd ℂ) q
-
-lemma leadj_fockF_map {σ : Type*} (f g : MvPolynomial σ ℚ) :
-    fockF (map (algebraMap ℚ ℂ) f) (map (algebraMap ℚ ℂ) g) = ((fockQ f g : ℚ) : ℂ) := by
-  unfold fockF fockQ
-  rw [MvPolynomial.support_map_of_injective _ (algebraMap ℚ ℂ).injective]
-  push_cast
-  refine Finset.sum_congr rfl (fun m _ => ?_)
-  simp only [coeff_map, eq_ratCast (algebraMap ℚ ℂ), leadj_star_ratCast]
-
 private lemma fockQ_eq_sum_coeff_mul_factorial_of_support_subset {σ : Type*} (f g : MvPolynomial σ ℚ) (S : Finset (σ →₀ ℕ))
     (hS : f.support ⊆ S) :
     fockQ f g = ∑ m ∈ S, f.coeff m * g.coeff m * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℚ) := by

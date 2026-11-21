@@ -1,4 +1,4 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CentralCharacters.QdetMemAdjSub
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CentralCharacters.CentralScalar
 
 noncomputable section
 

@@ -9,7 +9,7 @@ import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSection
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsUnitExtensionOfLogGrowth
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramPullbackIff
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramBoundNearBoundaryStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramBoundNearBoundary
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 
@@ -307,8 +307,8 @@ theorem exists_unit_extension_of_bdryChart : ∀ (E : Type) [Field E] [NumberFie
       Subtype.ext hτ.symm
     rw [RingHom.comp_apply, e]
     exact hσ
-  obtain ⟨ρ₁, K₁, N₁, hρ₁, hρ₁', b₁⟩ := GlobalTheory.T.hodge_gram_bound_near_boundary E H D l Xo _ n a C hpq hρ D.p u₁ h1
-  obtain ⟨ρ₂, K₂, N₂, hρ₂, hρ₂', b₂⟩ := GlobalTheory.T.hodge_gram_bound_near_boundary E H D l Xo _ n a C hpq hρ D.q u₂ h2
+  obtain ⟨ρ₁, K₁, N₁, hρ₁, hρ₁', b₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hodgeGram_det_log_bounds E H D l Xo _ n a C hpq hρ D.p u₁ h1
+  obtain ⟨ρ₂, K₂, N₂, hρ₂, hρ₂', b₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hodgeGram_det_log_bounds E H D l Xo _ n a C hpq hρ D.q u₂ h2
   have hρ0 : 0 < min ρ₁ ρ₂ := lt_min hρ₁ hρ₂
   have hρ1 : min ρ₁ ρ₂ ≤ 1 := (min_le_left _ _).trans hρ₁'
   have hset : ∀ z, z ∈ punct n a (min ρ₁ ρ₂) ↔ z ∈ ball (0 : Fin n → ℂ) (min ρ₁ ρ₂) ∧

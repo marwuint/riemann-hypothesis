@@ -167,18 +167,6 @@ def rho (l : ℕ) : ℝ := 1 / ((l : ℝ) ^ 2 - 1)
 def frobSum {d : ℕ} (l : ℕ) (p : ZMod d → ℕ) (τ : ZMod d) : ℝ :=
   ∑' k : ℕ, ((l : ℝ) ^ (k + 1))⁻¹ * (p (τ + ((k + 1 : ℕ) : ZMod d)) : ℝ)
 
-def CorDET {d : ℕ} (l : ℕ) (p : ZMod d → ℕ) (l1 l2 : ZMod d → ℝ) (τ : ZMod d) : Prop :=
-  l1 τ - l2 τ = (p τ : ℝ) / ((l : ℝ) - 1) - frobSum l p τ
-
-def ThmAi {d : ℕ} (l r rh : ℕ) (p : ZMod d → ℕ) (l2 : ZMod d → ℝ) (τ : ZMod d) : Prop :=
-  l2 τ ≤ ((r : ℝ) - rh - p τ) / ((l : ℝ) - 1)
-
-def ThmAiii {R : Type*} [CommRing R] (v : AddValuation R (WithTop ℝ)) {m h : ℕ}
-    (α : Matrix (Fin m) (Fin h) R) (l1 : ℝ) : Prop :=
-  lenCoker v α = (l1 : WithTop ℝ)
-
-def xInert (l r j' rh : ℕ) : ℝ := ((r : ℝ) - 2 * j') * gam l + ((j' : ℝ) - rh) / ((l : ℝ) - 1)
-
 theorem one_div_eq_gam_add_rho {l : ℕ} (hl : 1 < l) :
     1 / ((l : ℝ) - 1) = gam l + rho l := by
   have h1 : (1 : ℝ) < l := by exact_mod_cast hl
@@ -379,110 +367,6 @@ theorem ch_minor (v : AddValuation R (WithTop ℝ)) (hv : ∀ x, 0 ≤ v x) {n p
       exact WithTop.coe_le_coe.mp hvd
     rw [AddValuation.map_pow, ← ht, ← WithTop.coe_nsmul, WithTop.coe_le_coe, nsmul_eq_mul]
     exact mul_le_mul_of_nonneg_left htx (Nat.cast_nonneg y)
-
-theorem ch_inert (v : AddValuation R (WithTop ℝ)) (hv : ∀ x, 0 ≤ v x)
-    {d : ℕ} (hd : Even d) (l : ℕ) (hl : l.Prime) (hlodd : Odd l)
-    (r n j j' rh h : ℕ) (hr : r = n + j + j') (hh : h + rh = r) (hrh : rh ≤ j')
-    (big : ZMod d → Prop) (halt : ∀ b, big (b + 1) ↔ ¬ big b) (p : ZMod d → ℕ)
-    (hpb : ∀ b, big b → p b = n + j) (hps : ∀ b, ¬ big b → p b = j')
-    (a : ZMod d) (ha : big a) (α : Matrix (Fin (p a)) (Fin h) R)
-    (S : Matrix (Fin n) (Fin (p a)) R) (W : Matrix (Fin (p a)) (Fin n) R) (hSW : S * W = 1)
-    (l1 l2 : ZMod d → ℝ) (hDET : CorDET l p l1 l2 a) (hAi : ThmAi l r rh p l2 a)
-    (hAiii : ThmAiii v α (l1 a)) :
-    (lenCoker v α ≤ (xInert l r j' rh : WithTop ℝ) ∧
-      xInert l r j' rh = ((r : ℝ) - j' - rh) * gam l + ((j' : ℝ) - rh) * rho l ∧
-      xInert l r j' rh ≤ (n : ℝ) * gam l + ((j : ℝ) + j') / ((l : ℝ) - 1)) ∧
-    ∃ f : Fin n → Fin h, StrictMono f ∧
-      v (Matrix.of fun k c => (S * α) c (f k)).det ≤ lenCoker v α ∧
-      ∀ (F : Type) [CommRing F] [Algebra R F] (D : Fin n → Fin n → Derivation R F F)
-        (χ : Fin n → F) (ev : F →ₐ[R] R),
-        (∀ ρ c σ, D ρ c (χ σ) = (if σ = ρ then (S * α) c (f ρ) else 0) • χ σ) →
-        (∀ σ, ev (χ σ) = 1) →
-        ∀ y : ℕ,
-          ev (((detOp fun ρ c => (D ρ c : F →ₗ[R] F)) ^ y) (∏ σ, χ σ)) =
-              (Matrix.of fun k c => (S * α) c (f k)).det ^ y ∧
-            v ((Matrix.of fun k c => (S * α) c (f k)).det ^ y) ≤
-              (((y : ℝ) * xInert l r j' rh : ℝ) : WithTop ℝ) := by
-  subst hr
-  have hl1 : (1 : ℝ) < l := by exact_mod_cast hl.one_lt
-  have hu := one_div_eq_gam_add_rho hl.one_lt
-  have hg0 : 0 ≤ gam l := by
-    unfold gam
-    exact div_nonneg (by positivity) (by nlinarith)
-  have hr0 : 0 ≤ rho l := by
-    unfold rho
-    exact div_nonneg zero_le_one (by nlinarith)
-  have hpa : p a = n + j := hpb a ha
-  have hfs := frobSum_alt hl.one_lt n j j' big halt p hpb hps a ha
-  have hrhR : (rh : ℝ) ≤ j' := by exact_mod_cast hrh
-  have hD : l1 a - l2 a = (p a : ℝ) / ((l : ℝ) - 1) - frobSum l p a := hDET
-  have hA : l2 a ≤ ((n + j + j' : ℕ) - (rh : ℝ) - p a) / ((l : ℝ) - 1) := hAi
-  rw [hpa, hfs, div_eq_mul_one_div, hu] at hD
-  rw [hpa, div_eq_mul_one_div, hu] at hA
-  push_cast at hD hA
-  have hxi : xInert l (n + j + j') j' rh = (((n + j + j' : ℕ) : ℝ) - j' - rh) * gam l + ((j' : ℝ) - rh) * rho l := by
-    unfold xInert
-    rw [div_eq_mul_one_div, hu]
-    push_cast
-    ring
-  have hlen : lenCoker v α ≤ (xInert l (n + j + j') j' rh : WithTop ℝ) := by
-    have h3 : lenCoker v α = (l1 a : WithTop ℝ) := hAiii
-    rw [h3]
-    refine WithTop.coe_le_coe.mpr ?_
-    rw [hxi]
-    push_cast
-    nlinarith
-  refine ⟨⟨hlen, hxi, ?_⟩, ch_minor v hv S W hSW α _ hlen⟩
-  rw [hxi, div_eq_mul_one_div, hu]
-  push_cast
-  have e1 := mul_nonneg (Nat.cast_nonneg (α := ℝ) rh) hg0
-  have e2 := mul_nonneg (Nat.cast_nonneg (α := ℝ) j') hg0
-  have e3 := mul_nonneg (Nat.cast_nonneg (α := ℝ) j) hr0
-  have e4 := mul_nonneg (Nat.cast_nonneg (α := ℝ) rh) hr0
-  nlinarith
-
-theorem ch_split (v : AddValuation R (WithTop ℝ)) (hv : ∀ x, 0 ≤ v x)
-    {d : ℕ} (hd : d ≠ 0) (l : ℕ) (hl : l.Prime) (hlodd : Odd l)
-    (r n j j' rh h P : ℕ) (hP : P + j' = r) (hh : h + rh = r) (hrh : rh ≤ j')
-    (p : ZMod d → ℕ) (hp : ∀ τ, p τ = P)
-    (a : ZMod d) (α : Matrix (Fin (p a)) (Fin h) R)
-    (S : Matrix (Fin n) (Fin (p a)) R) (W : Matrix (Fin (p a)) (Fin n) R) (hSW : S * W = 1)
-    (l1 l2 : ZMod d → ℝ) (hDET : CorDET l p l1 l2 a) (hAi : ThmAi l r rh p l2 a)
-    (hAiii : ThmAiii v α (l1 a)) :
-    (lenCoker v α ≤ ((((j' : ℝ) - rh) / ((l : ℝ) - 1) : ℝ) : WithTop ℝ) ∧
-      ((j' : ℝ) - rh) / ((l : ℝ) - 1) ≤ ((j : ℝ) + j') / ((l : ℝ) - 1)) ∧
-    ∃ f : Fin n → Fin h, StrictMono f ∧
-      v (Matrix.of fun k c => (S * α) c (f k)).det ≤ lenCoker v α ∧
-      ∀ (F : Type) [CommRing F] [Algebra R F] (D : Fin n → Fin n → Derivation R F F)
-        (χ : Fin n → F) (ev : F →ₐ[R] R),
-        (∀ ρ c σ, D ρ c (χ σ) = (if σ = ρ then (S * α) c (f ρ) else 0) • χ σ) →
-        (∀ σ, ev (χ σ) = 1) →
-        ∀ y : ℕ,
-          ev (((detOp fun ρ c => (D ρ c : F →ₗ[R] F)) ^ y) (∏ σ, χ σ)) =
-              (Matrix.of fun k c => (S * α) c (f k)).det ^ y ∧
-            v ((Matrix.of fun k c => (S * α) c (f k)).det ^ y) ≤
-              (((y : ℝ) * (((j' : ℝ) - rh) / ((l : ℝ) - 1)) : ℝ) : WithTop ℝ) := by
-  have hl1 : (1 : ℝ) < l := by exact_mod_cast hl.one_lt
-  have hl0 : (0 : ℝ) < (l : ℝ) - 1 := by linarith
-  have hfs := frobSum_const hl.one_lt P p hp a
-  have hD : l1 a - l2 a = (p a : ℝ) / ((l : ℝ) - 1) - frobSum l p a := hDET
-  have hA : l2 a ≤ ((r : ℝ) - rh - p a) / ((l : ℝ) - 1) := hAi
-  rw [hp, hfs, sub_self] at hD
-  rw [hp] at hA
-  have hPR : (P : ℝ) + j' = r := by exact_mod_cast hP
-  have hb : l1 a ≤ ((j' : ℝ) - rh) / ((l : ℝ) - 1) := by
-    have : (r : ℝ) - rh - P = (j' : ℝ) - rh := by linarith
-    rw [this] at hA
-    linarith
-  have hlen : lenCoker v α ≤ ((((j' : ℝ) - rh) / ((l : ℝ) - 1) : ℝ) : WithTop ℝ) := by
-    have h3 : lenCoker v α = (l1 a : WithTop ℝ) := hAiii
-    rw [h3]
-    exact WithTop.coe_le_coe.mpr hb
-  refine ⟨⟨hlen, ?_⟩, ch_minor v hv S W hSW α _ hlen⟩
-  apply div_le_div_of_nonneg_right _ hl0.le
-  have : (0 : ℝ) ≤ rh := Nat.cast_nonneg rh
-  have : (0 : ℝ) ≤ j := Nat.cast_nonneg j
-  linarith
 
 end Main
 

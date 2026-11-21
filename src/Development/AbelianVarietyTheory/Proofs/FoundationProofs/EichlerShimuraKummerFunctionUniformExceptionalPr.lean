@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalPowerUnitsT
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OverAffineJLineComapSlGal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegrality
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KroneckerCongruenceModularFunctionTowerLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPowOfGaussValuationCongrOneAlmostAllPrimesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPowOfGaussValuationCongrOneAlmostAllPrimes
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemGammaOfMul
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDomGauss
 open scoped MatrixGroups TensorProduct
@@ -79,7 +79,7 @@ theorem GlobalTheory.KZ.ES.eichlerShimura_unit : ∀ {Ω : Type} [Field Ω] [Alg
   intro Ω _ _ _ ε X hhol l M₀ hl hM₀ hlM
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   obtain ⟨S₁, hS₁⟩ := GlobalTheory.T.kronecker_congruence_modularFunctionTower_level ε X hhol l M₀ hl hM₀
-  obtain ⟨S₂, hS₂⟩ := GlobalTheory.T.isPow_of_gauss_valuation_congr_one_almost_all_primes ε X hhol l M₀ hl hM₀ hlM
+  obtain ⟨S₂, hS₂⟩ := _root_.GlobalTheory.KZ.ES.pow_of_gauss_congr_one ε X hhol l M₀ hl hM₀ hlM
   refine ⟨S₁ ∪ S₂ ∪ M₀.primeFactors, ?_⟩
   intro q hq hqS V s hFrob n k f hf hlev γ hγ
   simp only [Finset.mem_union, not_or] at hqS

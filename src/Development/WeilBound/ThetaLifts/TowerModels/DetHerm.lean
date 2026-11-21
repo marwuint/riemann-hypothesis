@@ -32,12 +32,6 @@ theorem det_herm {n : ℕ} {X : Spc F E n} {r s : ℕ} (hX : X.IsHerm σ B r s) 
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det] at h
   exact fun h0 => h (by rw [h0, map_zero])
 
-theorem det_skew {n : ℕ} {X : Spc F E n} {r s : ℕ} (hX : X.IsSkew σ B r s) : X.J.det ≠ 0 := by
-  obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
-  have h := det_ne_zero_of_hasSig (hX.sig w)
-  rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det] at h
-  exact fun h0 => h (by rw [h0, map_zero, mul_zero])
-
 end PositivityTheory.ThKG.Tow
 
 end

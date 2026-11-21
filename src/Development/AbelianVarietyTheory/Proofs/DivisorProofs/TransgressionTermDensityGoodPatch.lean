@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EndValuedForm11Coeffs
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopFormIntegralOfSupportInHolomorphicChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionCorrectionIsTopDegreeFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionDensityHolomorphicChartEtaleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopFormIntegralOfSupportInHolomorphicChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionCorrectionIsTopDegreeForm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionDensityHolomorphicChartEtale
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionTopCoeffComplexEqZeroOfCutoffZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnChernTransgressionTermPoincareGrowthStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnChernTransgressionTermPoincareGrowth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentiableOnHolomorphicChartTransEtaleChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramMatrixSmoothIsUnitInHolomorphicChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtHolomorphicComplexChartOfSmoothAtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodPatchChartImagePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramMatrixSmoothIsUnitInHolomorphicChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtHolomorphicComplexChartOfSmoothAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodPatchChartImageProperties
 open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.GoodTop
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff Matrix
@@ -20,23 +20,23 @@ theorem GlobalTheory.GoodTop.hasInt_corrDens_of_goodPatch : ∀ {F : Type} [Fiel
   intro F _ σ X m E O H H₀ hH hH₀ e S A W c hP ρ hρ hsupp
   classical
   have := X.smooth_str
-  obtain ⟨hUo, hUeq, hK⟩ := GlobalTheory.T.goodPatch_chart_image_properties E O H hP
+  obtain ⟨hUo, hUeq, hK⟩ := _root_.GlobalTheory.GoodTop.goodPatch_image E O H hP
   set g : V X.dim → ℝ := corrTop (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ())
     with hg
   have hKc : IsCompact (e '' tsupport ρ) := hK _ (isClosed_tsupport ρ) hsupp
   have hint : IntegrableOn (corrC (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ()))
       (offHyp S (e '' W)) := by
-    refine GlobalTheory.T.integrableOn_chernTransgressionTerm_poincareGrowth S (e '' W) (e '' tsupport ρ) _ _ _ c hUo hKc (Set.image_mono hsupp) ?_ ?_ ?_ ?_ ?_ ?_ ?_
+    refine _root_.GlobalTheory.GoodTop.integrableOn_corrC S (e '' W) (e '' tsupport ρ) _ _ _ c hUo hKc (Set.image_mono hsupp) ?_ ?_ ?_ ?_ ?_ ?_ ?_
     · rintro _ ⟨z, hz, rfl⟩ a ha
       exact hP.small z hz a ha
     · rintro _ ⟨z, hz, rfl⟩
       have htop : z ∈ ptsIn X.str σ (⊤ : X.X.Opens) := by
         simp [ptsIn]
-      exact GlobalTheory.T.gramMatrix_smooth_isUnit_in_holomorphicChart E ⊤ H₀ hH₀ hP.holo htop (hP.sub hz) (hP.frame z hz)
+      exact _root_.GlobalTheory.GoodTop.gram_smooth_isUnit_holoChart E ⊤ H₀ hH₀ hP.holo htop (hP.sub hz) (hP.frame z hz)
     · intro v hv
       rw [← hUeq] at hv
       obtain ⟨z, ⟨hzO, hz⟩, rfl⟩ := hv
-      exact GlobalTheory.T.gramMatrix_smooth_isUnit_in_holomorphicChart E O H hH hP.holo hzO (hP.sub hz) (hP.frame z hz)
+      exact _root_.GlobalTheory.GoodTop.gram_smooth_isUnit_holoChart E O H hH hP.holo hzO (hP.sub hz) (hP.frame z hz)
     · intro v hv a i j
       rw [← hUeq] at hv
       obtain ⟨z, ⟨hzO, hz⟩, rfl⟩ := hv
@@ -46,7 +46,7 @@ theorem GlobalTheory.GoodTop.hasInt_corrDens_of_goodPatch : ∀ {F : Type} [Fiel
       obtain ⟨z, ⟨hzO, hz⟩, rfl⟩ := hv
       exact hP.dbar z hz hzO a b i j
     · rintro _ ⟨z, hz, rfl⟩
-      exact (GlobalTheory.T.contDiffAt_holomorphicComplexChart_of_smoothAt hP.holo (hP.sub hz) (hρ z)).contDiffWithinAt
+      exact (_root_.GlobalTheory.GoodTop.contDiffAt_holoChart hP.holo (hP.sub hz) (hρ z)).contDiffWithinAt
     · rintro _ ⟨z, hz, rfl⟩ hK'
       rw [e.left_inv (hP.sub hz)]
       by_contra h0
@@ -62,9 +62,9 @@ theorem GlobalTheory.GoodTop.hasInt_corrDens_of_goodPatch : ∀ {F : Type} [Fiel
     congr 1
     exact integral_re hint
   rw [← hval]
-  refine GlobalTheory.T.topFormIntegral_of_support_in_holomorphicChart (fun c : AlgChart X.str σ X.dim => c.e) (fun i j => i.holo_trans j)
+  refine _root_.GlobalTheory.GoodTop.hasInt_of_chart (fun c : AlgChart X.str σ X.dim => c.e) (fun i j => i.holo_trans j)
     (fun y => AlgChart.exists_mem_source y) (isOpen_ptsIn O).measurableSet e W g hP.isOpen hP.sub
-    (fun j => GlobalTheory.T.differentiableOn_holomorphicChart_trans_etaleChart hP.holo j) (GlobalTheory.T.transgression_correction_isTopDegreeForm E O H H₀ hH hH₀ hρ) ?_ ?_ hgi
+    (fun j => GlobalTheory.T.differentiableOn_holomorphicChart_trans_etaleChart hP.holo j) (_root_.GlobalTheory.GoodTop.isTopForm_corrDens E O H H₀ hH hH₀ hρ) ?_ ?_ hgi
   · intro i y _ hyW hyi
     have hy : y ∉ tsupport ρ := fun h => hyW (hsupp h)
     have h0 : ρ =ᶠ[𝓝 y] fun _ => 0 := notMem_tsupport_iff_eventuallyEq.1 hy
@@ -76,4 +76,4 @@ theorem GlobalTheory.GoodTop.hasInt_corrDens_of_goodPatch : ∀ {F : Type} [Fiel
     rw [GlobalTheory.T.transgressionTopCoeffComplex_eq_zero_of_cutoff_zero _ _ h1]
     simp
   · intro j y hyS hyW hyj
-    exact GlobalTheory.T.transgressionDensity_holomorphicChart_etale E O H H₀ hH hH₀ hρ hP.holo j hyS (hP.sub hyW) hyj (hP.frame y hyW)
+    exact _root_.GlobalTheory.GoodTop.corrTop_holoChart_trans E O H H₀ hH hH₀ hρ hP.holo j hyS (hP.sub hyW) hyj (hP.frame y hyW)

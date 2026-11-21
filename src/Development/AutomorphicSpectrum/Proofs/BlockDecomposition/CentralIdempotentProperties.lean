@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralIdempotentAction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SeparableIrreducibleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducibleStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducible
 
 open ReciprocityTheory.Ty.Fin CategoryTheory
 

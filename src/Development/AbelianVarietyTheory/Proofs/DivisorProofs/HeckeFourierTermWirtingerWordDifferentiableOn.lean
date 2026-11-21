@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KFacDifferentiable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HTransABTwoZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothHolomorphicInSigmaFamilyAdd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeHankelTransformABHasDerivAtYStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeHankelTransformABDifferentiableOnSigmaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivHeckePhiTransformHasDerivAtHoloStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeYDerivativeTermHasFDerivUpperHalfPlaneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeHankelTransformABHasDerivAtY
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeHankelTransformABDifferentiableOnSigma
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivHeckePhiTransformHasDerivAtHolo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeYDerivativeTermHasFDerivUpperHalfPlane
 open NumberField Complex
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.HeckeTwo
@@ -37,7 +37,7 @@ theorem wirtWord_eq_sum (F : Type) [Field F] [NumberField F] (b ν : F) (hb : b 
     rw [wirtWord_cons]
     rw [GlobalTheory.HeckeTwo.GoodAdd.wirt_congr hU (g := fun z => ∑ i, c i * termQ σ b ν (qf i) z)
       (fun z hz => h σ hσ z hz) _ _ hz]
-    have hd := fun i => GlobalTheory.T.heckeYDerivativeTerm_hasFDeriv_upperHalfPlane F b ν hb hJ σ hσ (qf i) z hz τ₀
+    have hd := fun i => _root_.GlobalTheory.HeckeTwo.termQ_fderiv F b ν hb hJ σ hσ (qf i) z hz τ₀
     have hF : HasFDerivAt (fun z => ∑ i, c i * termQ σ b ν (qf i) z)
         (∑ i, c i • fderiv ℝ (termQ σ b ν (qf i)) z) z :=
       HasFDerivAt.fun_sum fun i _ => ((hd i).1.hasFDerivAt.const_mul (c i))
@@ -54,7 +54,7 @@ open GlobalTheory.HeckeTwo.TermHol in
 theorem GlobalTheory.HeckeTwo.fTerm_wirtWord_differentiableOn : ∀ (F : Type) [Field F] [NumberField F] (b ν : F), b ≠ 0 → ∀ w : List (Emb F × Bool), ∀ z ∈ upperHalf F,
   DifferentiableOn ℂ (fun σ => wirtWord w (fun z : Emb F → ℂ => fTerm σ z b ν) z) halfPlane := by
   intro F _ _ b ν hb w z hz
-  have hJ := GlobalTheory.T.iteratedDeriv_heckePhiTransform_hasDerivAt_holo GlobalTheory.T.heckeHankelTransformAB_hasDerivAt_y GlobalTheory.T.heckeHankelTransformAB_differentiableOn_sigma
+  have hJ := _root_.GlobalTheory.HeckeTwo.iteratedDeriv_hTrans_jet _root_.GlobalTheory.HeckeTwo.hTransAB_hasDerivAt _root_.GlobalTheory.HeckeTwo.hTransAB_differentiableOn
   obtain ⟨ι, _, c, qf, h⟩ := wirtWord_eq_sum F b ν hb hJ w
   refine DifferentiableOn.congr ?_ (fun σ hσ => h σ hσ z hz)
   refine DifferentiableOn.fun_sum fun i _ => DifferentiableOn.const_mul ?_ _

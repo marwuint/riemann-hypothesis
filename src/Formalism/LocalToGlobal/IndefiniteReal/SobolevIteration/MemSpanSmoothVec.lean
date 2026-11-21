@@ -11,42 +11,6 @@ namespace Formalism.IndefR.Tow.OrbStPf
 variable {n : ℕ} {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
   (ρ : Matrix (Fin n) (Fin n) ℂ → (E →L[ℂ] E)) (Lie U : Set (Matrix (Fin n) (Fin n) ℂ))
 
-section SV
-
-variable {ρ Lie}
-
-lemma smoothVec_zero : SmoothVec Lie ρ 0 := by
-  intro k Xs _
-  simp only [map_zero]
-  exact contDiff_const
-
-lemma smoothVec_add {a b : E} (ha : SmoothVec Lie ρ a) (hb : SmoothVec Lie ρ b) : SmoothVec Lie ρ (a + b) := by
-  intro k Xs hXs
-  simp only [map_add]
-  exact (ha k Xs hXs).add (hb k Xs hXs)
-
-lemma smoothVec_smul (c : ℂ) {a : E} (ha : SmoothVec Lie ρ a) : SmoothVec Lie ρ (c • a) := by
-  intro k Xs hXs
-  simp only [map_smul]
-  exact (ha k Xs hXs).const_smul c
-
-lemma smoothVec_rsmul (c : ℝ) {a : E} (ha : SmoothVec Lie ρ a) : SmoothVec Lie ρ (c • a) := by
-  rw [← Complex.coe_smul]
-  exact smoothVec_smul (c : ℂ) ha
-
-lemma mem_span_smoothVec {a : E} : a ∈ Submodule.span ℂ {w | SmoothVec Lie ρ w} ↔ SmoothVec Lie ρ a := by
-  constructor
-  · intro h
-    induction h using Submodule.span_induction with
-    | mem x hx => exact hx
-    | zero => exact smoothVec_zero
-    | add x y _ _ hx hy => exact smoothVec_add hx hy
-    | smul c x _ hx => exact smoothVec_smul c hx
-  · intro h
-    exact Submodule.subset_span h
-
-end SV
-
 variable {ρ Lie U}
 variable (hU1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ U) (hUm : ∀ a ∈ U, ∀ b ∈ U, a * b ∈ U)
   (hρ : ∀ a ∈ U, ∀ b ∈ U, ρ (a * b) = (ρ a).comp (ρ b))
@@ -226,49 +190,6 @@ theorem word_pds {k : ℕ} (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : l.lengt
         rfl
       (rw [hfun, hZj]) <;> rfl
 
-lemma orb_zero_split {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (u : E) (r : Fin (k + 1) → ℝ) :
-    orb ρ Z u 0 r = ρ ((List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod *
-      NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))) u := by
-  simp only [orb, List.drop_zero]
-  rw [List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_singleton]
-
-include hU1 hUm hρ hexp in
-
-lemma pd_last_orb {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ i, Z i ∈ Lie) {u w : E}
-    (hu : SmoothVec Lie ρ u) (hd : HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • Z (Fin.last k))) u) w 0) :
-    pd (Fin.last k) (orb ρ Z u 0) = orb ρ Z w 0 := by
-  funext r
-  have hdiff : DifferentiableAt ℝ (orb ρ Z u 0) r :=
-    (contDiff_orb Z hZ hu 0).differentiable (by simp) r
-  rw [pd_eq_deriv _ r hdiff]
-  have hP : (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod ∈ U := by
-    refine list_prod_mem hU1 hUm _ (fun a ha => ?_)
-    simp only [List.mem_ofFn] at ha
-    obtain ⟨i, rfl⟩ := ha
-    exact hexp _ (hZ _) _
-  have hE : ∀ s : ℝ, NormedSpace.exp (s • Z (Fin.last k)) ∈ U := fun s => hexp _ (hZ _) _
-  have hfun : (fun t : ℝ => orb ρ Z u 0 (r + t • Pi.single (Fin.last k) 1)) =
-      fun t => ((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod).comp
-        (ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))))) (ρ (NormedSpace.exp (t • Z (Fin.last k))) u) := by
-    funext t
-    rw [orb_zero_split]
-    have hc : ∀ i : Fin k, (r + t • Pi.single (Fin.last k) (1 : ℝ) : Fin (k + 1) → ℝ) i.castSucc = r i.castSucc := by
-      intro i
-      simp [Pi.single_apply, Fin.castSucc_ne_last]
-    have hl : (r + t • Pi.single (Fin.last k) (1 : ℝ) : Fin (k + 1) → ℝ) (Fin.last k) = r (Fin.last k) + t := by simp
-    simp only [hc, hl]
-    rw [add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl (Z (Fin.last k))).smul_left _).smul_right _),
-      ← mul_assoc, hρ _ (hUm _ hP _ (hE _)) _ (hE _), hρ _ hP _ (hE _)]
-    rfl
-  rw [hfun]
-  have hD : HasDerivAt (fun t : ℝ => ((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod).comp
-        (ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))))) (ρ (NormedSpace.exp (t • Z (Fin.last k))) u))
-      (((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod).comp
-        (ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))))) w) 0 := ((((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod).comp
-        (ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))))).restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt
-        (0 : ℝ) hd
-  (rw [hD.deriv, orb_zero_split, hρ _ hP _ (hE _)]) <;> rfl
-
 include hU1 hUm hρ hexp in
 
 lemma word_eval (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈ Lie)
@@ -301,48 +222,6 @@ lemma word_eval (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈
   rw [List.drop_zero] at this
   rw [← this, orb_last]
   simp [Z]
-
-include hU1 hUm hρ hexp in
-
-theorem word_deriv (hρ1 : ρ 1 = 1) (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈ Lie)
-    {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ Lie) {u w : E} (hu : SmoothVec Lie ρ u) (hw : SmoothVec Lie ρ w)
-    (hd : HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • X)) u) w 0) :
-    HasDerivAt (fun t : ℝ => l.foldr (dRep ρ) (ρ (NormedSpace.exp (t • X)) u)) (l.foldr (dRep ρ) w) 0 := by
-  obtain ⟨Z, L, hZ, hZX, hL⟩ := word_eval hU1 hUm hρ hexp l hl hX
-  have hfun : (fun t : ℝ => l.foldr (dRep ρ) (ρ (NormedSpace.exp (t • X)) u)) =
-      fun t => pds L (orb ρ Z u 0) (0 + t • Pi.single (Fin.last _) 1) := by
-    funext t
-    rw [hL u hu t, zero_add]
-  rw [hfun]
-  have hF : ContDiff ℝ ∞ (pds L (orb ρ Z u 0)) := contDiff_pds L (contDiff_orb Z hZ hu 0)
-  have h1 := pd_hasDerivAt (Fin.last _) (0 : Fin (l.length + 1) → ℝ) (hF.differentiable (by simp) 0)
-  convert h1 using 1
-  have hd' : HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • Z (Fin.last _))) u) w 0 := by
-    rw [hZX]
-    exact hd
-  rw [pd_pds _ L (contDiff_orb Z hZ hu 0), pd_last_orb hU1 hUm hρ hexp Z hZ hu hd']
-  have := hL w hw 0
-  rw [zero_smul, zero_smul, NormedSpace.exp_zero, hρ1, ContinuousLinearMap.one_apply] at this
-  exact this
-
-include hU1 hUm hρ hexp in
-
-theorem word_lin (hρ1 : ρ 1 = 1) (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈ Lie)
-    {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ Lie) {a b : E} (ha : SmoothVec Lie ρ a) (hb : SmoothVec Lie ρ b)
-    (c : ℝ) : l.foldr (dRep ρ) (a + c • b) = l.foldr (dRep ρ) a + c • l.foldr (dRep ρ) b := by
-  obtain ⟨Z, L, hZ, -, hL⟩ := word_eval hU1 hUm hρ hexp l hl hX
-  have key : ∀ v, SmoothVec Lie ρ v → l.foldr (dRep ρ) v = pds L (orb ρ Z v 0) 0 := by
-    intro v hv
-    have := hL v hv 0
-    rw [zero_smul, zero_smul, NormedSpace.exp_zero, hρ1, ContinuousLinearMap.one_apply] at this
-    exact this
-  have hab : SmoothVec Lie ρ (a + c • b) := smoothVec_add ha (smoothVec_rsmul c hb)
-  rw [key _ hab, key _ ha, key _ hb]
-  have horb : orb ρ Z (a + c • b) 0 = fun r => orb ρ Z a 0 r + c • orb ρ Z b 0 r := by
-    funext r
-    simp only [orb, map_add, ContinuousLinearMap.map_smul_of_tower]
-  rw [horb, pds_add L (contDiff_orb Z hZ ha 0) ((contDiff_orb Z hZ hb 0).const_smul c),
-    pds_smul L c (contDiff_orb Z hZ hb 0)]
 
 end Formalism.IndefR.Tow.OrbStPf
 

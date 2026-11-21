@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Rr
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothTimeRightDerivativesCommuteStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothTimeRightDerivativesCommute
 
 noncomputable section
 
@@ -47,7 +47,7 @@ theorem sm_dens_inner {n : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductS
     (u : ℝ → Mat n → W) (hu : Sm u) :
     Sm (dens u) ∧ ∀ (X : Mat n) (v : ℝ → Mat n → W), Sm v →
       Sm fun s y => ⟪Rt X u s y, v s y⟫_ℝ := by
-  obtain ⟨hdt, hRt, -⟩ := GlobalTheory.T.smooth_time_right_derivatives_commute u hu
+  obtain ⟨hdt, hRt, -⟩ := _root_.GlobalTheory.CompanionTheory.WaveSpd.sm_calculus u hu
   refine ⟨?_, fun X v hv => (hRt X).inner hv⟩
   exact (hdt.normSq.add (Sm.const_mul _ (Sm.sum _ fun p _ => (hRt (hm p)).normSq))).add hu.normSq
 

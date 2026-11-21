@@ -23,45 +23,6 @@ def phT (W : WeierstrassCurve K) (x0 y0 s2 : K) : PowerSeries K :=
 
 end DefsT
 
-def ThetaZeroSquare : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (W : WeierstrassCurve K) (x0 y0 s2 : K),
-    W.toAffine.Equation x0 y0 → 2 * y0 + W.a₁ * x0 + W.a₃ = 0 →
-    PowerSeries.X ^ 2 * th0 W x0 y0 s2 ^ 2 =
-      sgStar (wpReg W) s2 ^ 2 * wpShift (wpReg W) (x0 + W.b₂ / 12)
-
-def ThetaZeroEven : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (W : WeierstrassCurve K) (x0 y0 s2 : K),
-    W.toAffine.Equation x0 y0 → 2 * y0 + W.a₁ * x0 + W.a₃ = 0 →
-    PowerSeries.constantCoeff (th0 W x0 y0 s2) = 1 ∧
-      ∀ n : ℕ, Odd n → PowerSeries.coeff n (th0 W x0 y0 s2) = 0
-
-def ShiftedSigmaConstantIntegralOfIsogenySum : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (s2 al albar b : K) (ι : Type)
-    [Fintype ι] (xP : ι → K),
-    al * albar = (Fintype.card ι : K) + 1 → ‖al * (al - albar)‖ = 1 → (∀ P, ‖xP P‖ ≤ 1) →
-    ‖(al ^ 2 - 1) * (b / 12)‖ ≤ 1 → al * (al - albar) * s2 = ∑ P, (xP P + b / 12) →
-    ‖s2 + b / 12‖ ≤ 1
-
-def ThetaZeroJetsTwo : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K),
-    CoeffIn (unitBall K) W → ∀ (x0 y0 s2 : K), W.toAffine.Equation x0 y0 →
-    2 * y0 + W.a₁ * x0 + W.a₃ = 0 → ‖x0‖ ≤ 1 → ‖y0‖ ≤ 1 → ‖x0 + W.b₂ / 12 + s2‖ ≤ 1 →
-    (∀ i : ℕ, 1 ≤ i → ‖jet (logSer W) (phT W x0 y0 s2) i‖ ≤ 1) ∧
-    JetsIn1 (unitBall K) (th0 W x0 y0 s2) ∧
-    ∀ i : ℕ, ‖jet (logSer W) (PowerSeries.subst (logSer W) (th0 W x0 y0 s2)) i‖ ≤ 1
-
-def ThetaZeroJetsCurve : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K),
-    CoeffIn (unitBall K) W →
-    ∀ (s2 al albar : K) (ι : Type) [Fintype ι] (neg : ι → ι) (xP yP : ι → K),
-    IsEndoCurve W neg xP yP al → (∀ P, ‖xP P‖ ≤ 1) → (∀ P, ‖yP P‖ ≤ 1) →
-    al * albar = (Fintype.card ι : K) + 1 → ‖al * (al - albar)‖ = 1 →
-    ‖(al ^ 2 - 1) * (W.b₂ / 12)‖ ≤ 1 → al * (al - albar) * s2 = ∑ P, (xP P + W.b₂ / 12) →
-    ∀ (x0 y0 : K), W.toAffine.Equation x0 y0 → 2 * y0 + W.a₁ * x0 + W.a₃ = 0 →
-    ‖x0‖ ≤ 1 → ‖y0‖ ≤ 1 →
-    JetsIn1 (unitBall K) (th0 W x0 y0 s2) ∧
-      ∀ i : ℕ, 1 ≤ i → ‖jet (logSer W) (phT W x0 y0 s2) i‖ ≤ 1
-
 def KernelTwo : Prop :=
   ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l linv ph : PowerSeries K),
     IsLogPair l linv → IsOneUnit (unitBall K) (PowerSeries.derivative K l) →
@@ -71,20 +32,6 @@ def KernelTwo : Prop :=
     JetsIntegral (toZ linv (mvExp (-(phSum c ph)) * G)) ∧
     ∀ P : MvPolynomial n K, (∀ m, ‖MvPolynomial.coeff m P‖ ≤ 1) →
       ‖jetPair P (toZ linv (mvExp (-(phSum c ph)) * G))‖ ≤ 1
-
-def CurveKernelTwo : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K),
-    CoeffIn (unitBall K) W →
-    ∀ (s2 al albar : K) (ι : Type) [Fintype ι] (neg : ι → ι) (xP yP : ι → K),
-    IsEndoCurve W neg xP yP al → (∀ P, ‖xP P‖ ≤ 1) → (∀ P, ‖yP P‖ ≤ 1) →
-    al * albar = (Fintype.card ι : K) + 1 → ‖al * (al - albar)‖ = 1 →
-    ‖(al ^ 2 - 1) * (W.b₂ / 12)‖ ≤ 1 → al * (al - albar) * s2 = ∑ P, (xP P + W.b₂ / 12) →
-    ∀ (x0 y0 : K), W.toAffine.Equation x0 y0 → 2 * y0 + W.a₁ * x0 + W.a₃ = 0 →
-    ‖x0‖ ≤ 1 → ‖y0‖ ≤ 1 →
-    ∀ (n : Type) [Fintype n] (c : n → K), (∀ i, ‖c i‖ ≤ 1) →
-    ∀ G : MvPowerSeries n K, IntMv (unitBall K) G →
-    ∀ P : MvPolynomial n K, (∀ m, ‖MvPolynomial.coeff m P‖ ≤ 1) →
-      ‖jetPair P (toZ (expSer W) (mvExp (-(phSum c (phT W x0 y0 s2))) * G))‖ ≤ 1
 
 def SplitVanishTwo : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] [TopologicalSpace K] [IsTopologicalRing K] (R : Subring K),

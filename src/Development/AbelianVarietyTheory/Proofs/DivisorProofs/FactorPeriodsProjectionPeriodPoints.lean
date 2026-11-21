@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TwistBaseCha
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsNsmulIffEq
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsAddInjective
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionPointActionPeriodValueFractionFielStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiGeneratorValueOneZeroFirstFactorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordBundleIsoTwoHomNormalisedAtOriginStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoValueOneZeroFirstFactorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordIsoEqRosatiGeneratorMulComparisonStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionPointActionPeriodValueFractionFiel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiGeneratorValueOneZeroFirstFactor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordBundleIsoTwoHomNormalisedAtOrigin
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleIsoValueOneZeroFirstFactor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordIsoEqRosatiGeneratorMulComparison
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 open scoped CategoryTheory.Obj
@@ -48,16 +48,16 @@ theorem GlobalTheory.Mum.Two.Fac.periods_of_factor : ∀ (R : Type) [CommRing R]
   haveI : IsMonHom (o.onB.act f) := o.onB.hom f
   haveI : IsMonHom (o.onB.act e) := o.onB.hom e
   haveI : IsMonHom (o.onB.act (star e)) := o.onB.hom (star e)
-  obtain ⟨w, hwg, hwn⟩ := GlobalTheory.T.exists_mumfordBundleIso_twoHom_normalisedAtOrigin D₀.P.A D'.P.A D₀.P.L D'.P.L D₀.P.isLB D'.P.isLB inc (inc ≫ o.onB.act f) hw
-  have hw1 := GlobalTheory.T.mumfordBundleIso_value_one_zero_first_factor D₀.P.A D'.P.A D₀.P.L D'.P.L D₀.P.isLB D'.P.isLB D₀.P.isAb inc (inc ≫ o.onB.act f)
+  obtain ⟨w, hwg, hwn⟩ := _root_.GlobalTheory.Mum.Two.exists_lamVal_origin_two D₀.P.A D'.P.A D₀.P.L D'.P.L D₀.P.isLB D'.P.isLB inc (inc ≫ o.onB.act f) hw
+  have hw1 := _root_.GlobalTheory.MumRigidZero.lamVal_one_left D₀.P.A D'.P.A D₀.P.L D'.P.L D₀.P.isLB D'.P.isLB D₀.P.isAb inc (inc ≫ o.onB.act f)
     w hwg hwn
   refine ⟨w, hwg, fun y y' z J J' hJ hJ' => ?_⟩
   obtain ⟨ur, hur, hur0⟩ := exists_ros hG D'.P.isAb D'.P.isLB (o.onB.act e) (o.onB.act (star e)) (o.onB.rosati e)
-  have hur1 := GlobalTheory.T.rosatiGenerator_value_one_zero_first_factor D'.P.A D'.P.L D'.P.isLB D'.P.isAb _ _ ur hur hur0
+  have hur1 := _root_.GlobalTheory.RosZeroLeft.val_lift_one_left D'.P.A D'.P.L D'.P.isLB D'.P.isAb _ _ ur hur hur0
   obtain ⟨JN₀, hJN, hl, hr⟩ := exists_good_join D'.P.isLB D₀.P.isLB hJ hJ'
   obtain ⟨u, hun⟩ := hu (φ y')
   obtain ⟨g', ha, hg'⟩ := hiota y _ (GlobalTheory.TorusExt.isIota_iota hB y)
-  have A := GlobalTheory.T.torusExtensionPointAction_period_value_fractionField R D₀ D' pr h F y (φ y) _ g' (GlobalTheory.TorusExt.isIota_iota hB y) hg' ha (φ y') u hun z JN₀ hJN
+  have A := _root_.GlobalTheory.Mum.Two.act_val_frac R D₀ D' pr h F y (φ y) _ g' (GlobalTheory.TorusExt.isIota_iota hB y) hg' ha (φ y') u hun z JN₀ hJN
   rw [hl, hr] at A
   have B := val_corr hJ (o.tau_bal e ur hur hur0 y (f • e • y')) (𝟙 _)
   beta_reduce at B
@@ -66,7 +66,7 @@ theorem GlobalTheory.Mum.Two.Fac.periods_of_factor : ∀ (R : Type) [CommRing R]
     rw [hc, o.c_lin, o.c_lin, ← hpi]; simp only [Category.assoc]
   have hq' : D'.c (h (φ y')) = D'.c (f • e • y') ≫ o.onB.act (star e) := by
     rw [hh y', o.c_lin]
-  have C := GlobalTheory.T.mumfordIso_eq_rosatiGenerator_mul_comparison R D₀ D' inc pr (o.onB.act e) (o.onB.act f) (o.onB.act (star e)) hpi w hwg hw1 ur hur hur1
+  have C := _root_.GlobalTheory.Mum.Two.lam_eq_ros_mul_cmp R D₀ D' inc pr (o.onB.act e) (o.onB.act f) (o.onB.act (star e)) hpi w hwg hw1 ur hur hur1
     (h (φ y')) (φ y') (D'.c (f • e • y')) hq hq' u hun (TK R) (toUnit (TK R) ≫ D'.c y) z JN₀ hJN
   rw [hl, hr, Category.assoc, ← hc] at C
   rw [A, ← B, C]

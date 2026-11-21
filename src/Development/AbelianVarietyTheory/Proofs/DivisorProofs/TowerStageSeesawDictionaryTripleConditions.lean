@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfIsStd
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartFrSgnFalseRigFr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeesawTripleFirstFiniteDatumRiggedFramesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeesawTripleFirstFiniteDatumRiggedFrames
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeesawTripleSecondFiniteDatumIsFiniteRigging
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridSquareInfinityExponentGapLargeGridsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridSquareInfinityExponentGapLargeGrids
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerStageFinitePlacesUnramifiedOrSplit
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Theta IsDedekindDomain NumberField Finset
@@ -50,7 +50,7 @@ theorem dictionary_at_stage : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G
       GlobalTheory.SquareComm.IsFinF W.ψ W.θ true FA FW (X.f t) ∧ GlobalTheory.SquareComm.IsFinF W.ψ W.θ false FA' FW (X.f' t) ∧
       (∀ P g h, thetaKO (X.ω t) g h (GlobalTheory.SquareComm.fockF W.ψ W.θ true FA FW (X.f t) P) = X.ker W.ψ W.θ t P h g) ∧
       ∀ P g h, thetaKO (X.ω' t) g h (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P) = X.ker' W.ψ W.θ t P h g := by
-  refine gBig_two GlobalTheory.T.gridSquare_infinityExponent_gap_largeGrids GlobalTheory.T.towerStage_finitePlaces_unramified_or_split ?_
+  refine gBig_two _root_.GlobalTheory.SquareInfGap.square_infExp_gap GlobalTheory.T.towerStage_finitePlaces_unramified_or_split ?_
   intro D T Lc sc G μ₀ C x b hinf hram W i j p q A A' WW X hX
   obtain ⟨hp, hq, hrA, hrA', hnA, hnA', hnW, hXi⟩ := hX
   obtain ⟨a, b, hab⟩ := hinf W i j
@@ -61,7 +61,7 @@ theorem dictionary_at_stage : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G
   have e2 : ∀ τ, (rigFr X.rW hXi.rigW).cart τ = X.rW.s τ := cart_rigFr X.rW hXi.rigW
   refine ⟨rigFr X.rA hXi.rigA, rigFr X.rA' hXi.rigA', rigFr X.rW hXi.rigW, a, b, fun t => ⟨?_,
     fun τ => ⟨(hab t τ).1, (hab t τ).2.1⟩,
-    GlobalTheory.T.seesawTriple_firstFiniteDatum_riggedFrames X _ _ _ _ _ _ _ _ e1 e2 hXi t, GlobalTheory.T.seesawTriple_secondFiniteDatum_isFinite_rigging X _ _ _ _ _ _ _ _ e1' e2 hXi t, ?_, ?_⟩⟩
+    _root_.GlobalTheory.FrDict.fst_isFinF X _ _ _ _ _ _ _ _ e1 e2 hXi t, GlobalTheory.T.seesawTriple_secondFiniteDatum_isFinite_rigging X _ _ _ _ _ _ _ _ e1' e2 hXi t, ?_, ?_⟩⟩
   · refine
       { hecA := (hXi.weil' t).hecS
         hecB := (hXi.weil t).hecS

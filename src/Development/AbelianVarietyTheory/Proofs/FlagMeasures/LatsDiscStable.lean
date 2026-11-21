@@ -102,16 +102,6 @@ theorem _root_.GlobalTheory.Mass.Transp.dual_img (e : V ≃ₗ[K] V') (he : ∀ 
     have := hy _ hz
     rwa [_root_.GlobalTheory.Mass.Transp.symm_isom e he] at this
 
-theorem discN_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (L : Submodule R V) :
-    discN h' (img e L) = discN h L := by
-  unfold discN idxN
-  rw [dual_img e he]
-  have h1 : ∀ M : Submodule R V, (img e M).toAddSubgroup
-      = M.toAddSubgroup.map (e.toAddEquiv : V →+ V') := by
-    intro M; ext y; simp [img]
-  rw [h1, h1]
-  exact AddSubgroup.relIndex_map_map_of_injective _ _ e.injective
-
 open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
@@ -140,10 +130,6 @@ theorem _root_.GlobalTheory.Mass.Transp.intLat_img (e : V ≃ₗ[K] V') (he : �
   rw [_root_.GlobalTheory.Mass.Transp.mem_img] at hx hy
   rw [← _root_.GlobalTheory.Mass.Transp.symm_isom e he]
   exact hL.2 _ hx _ hy
-
-theorem latsDisc_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (n : ℕ)
-    (L : Submodule R V) (hL : L ∈ latsDisc (R := R) h n) : img e L ∈ latsDisc (R := R) h' n :=
-  ⟨intLat_img e he L hL.1, (discN_img e he L).trans hL.2⟩
 
 def conj (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) : isom h ≃* isom h' where
   toFun g := ⟨(e.symm.trans g.1).trans e, fun x y => by
@@ -268,31 +254,6 @@ theorem _root_.GlobalTheory.Mass.Transp.genus_stable (L : Submodule R V) : _root
       (mem_isom_iff_preserves_form _).1 hg']
   · rw [loc_img_eq_img_loc, img_trans_eq_img_img, heq]
 
-theorem latsDisc_stable (n : ℕ) : Stable (isom h) (latsDisc (R := R) h n) :=
-  fun g M hM => latsDisc_img g.1 g.2 n M hM
-
-theorem mass_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y)
-    (X : Set (Submodule R V)) (Y : Set (Submodule R V'))
-    (hX : Stable (isom h) X) (hY : Stable (isom h') Y)
-    (h1 : ∀ M ∈ X, img e M ∈ Y) (h2 : ∀ M ∈ Y, img e.symm M ∈ X) :
-    orbMass (isom h) X = orbMass (isom h') Y := by
-  refine GlobalTheory.Mass.OrbTransport.main _ _ _ _ (conj e he) (img e) X Y (fun _ => 1) hX hY ?_
-    (fun g x _ => img_smul e he g x) (fun _ _ => rfl)
-  refine ⟨h1, fun a _ b _ hab => ?_, fun M hM => ⟨_, h2 M hM, img_img_symm e M⟩⟩
-  rw [← img_symm_img e a, hab, img_symm_img]
-
 end General
-
-theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → ∀ (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (h' : V' →ₗ⋆[K] V' →ₗ[K] K), h'.IsSymm → ∀ e : V ≃ₗ[K] V', (∀ x y, h' (e x) (e y) = h x y) → (∀ n : ℕ, orbMass (isom h) (latsDisc (R := 𝓞 K) h n) = orbMass (isom h') (latsDisc (R := 𝓞 K) h' n)) ∧ ∀ L : Submodule (𝓞 K) V, orbMass (isom h) (genus h L) = orbMass (isom h') (genus h' (L.map (e.toLinearMap.restrictScalars (𝓞 K)))) ∧ discN h' (L.map (e.toLinearMap.restrictScalars (𝓞 K))) = discN h L ∧ (IsIntLat h' (L.map (e.toLinearMap.restrictScalars (𝓞 K))) ↔ IsIntLat h L) := by
-  intro K V _ _ _ _ _ _ _ _ h _ _ V' _ _ _ _ _ h' _ e he
-  refine ⟨fun n => mass_img e he _ _ (latsDisc_stable n) (latsDisc_stable n)
-    (latsDisc_img e he n) (latsDisc_img e.symm (symm_isom e he) n), fun L => ⟨?_, discN_img e he L, ?_, intLat_img e he L⟩⟩
-  · refine mass_img e he _ (genus h' (img e L)) (genus_stable _) (genus_stable _)
-      (genus_img e he L) (fun M hM => ?_)
-    have := genus_img e.symm (symm_isom e he) _ M hM
-    rwa [img_symm_img] at this
-  · intro hL
-    have := intLat_img e.symm (symm_isom e he) (img e L) hL
-    rwa [img_symm_img] at this
 
 end GlobalTheory.Mass.Transp

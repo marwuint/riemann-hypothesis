@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableEmbeddingOfInjectiveProperStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypOneZeroZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTamagawaMeasureNormalization
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureAddRankOneBlock
@@ -50,7 +50,7 @@ theorem exists_scale_cover {F E : Type} [Field F] [NumberField F] [Field E] [Num
   let U : ℕ → Set (Fin n → Fin M → Fv F v ⊗[F] E) :=
     fun k => latV (scaleB b (π ^ k) (pow_ne_zero k hπ0)) v
   have hUo : ∀ k, IsOpen (U k) := fun k =>
-    (((GlobalTheory.T.adelic_tuple_projections F E σ hcm d (scaleB b (π ^ k) (pow_ne_zero k hπ0)) n M).2.2.2.1 v).2)
+    (((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d (scaleB b (π ^ k) (pow_ne_zero k hπ0)) n M).2.2.2.1 v).2)
   have hcov : C ⊆ ⋃ k, U k := by
     intro X _
     have h1 : ∀ a i l, ∀ᶠ k : ℕ in Filter.atTop,
@@ -82,18 +82,18 @@ theorem fibre_compact_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field
   classical
   obtain ⟨c, hc, hCc⟩ := exists_scale_cover σ hcm b n M v C hC
   set b' := scaleB b c hc with hb'
-  have hrV : ∀ w, IsLocR (Fv F w) := GlobalTheory.T.completion_is_local_ring F
+  have hrV : ∀ w, IsLocR (Fv F w) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   haveI : ∀ w, BorelSpace (Fv F w) := fun _ => ⟨rfl⟩
   obtain ⟨k, hk0, hk⟩ := coord_rescale σ hcm J (Fv F v) (hrV v) b b' (lam v) (hv v).1 n m hm
   have hBi : BorelSpace (Ainf F) := ⟨rfl⟩
-  obtain ⟨-, hWi, hHi⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hcm (Ainf F) _ b' laminf hinf.1
-  obtain ⟨minf, hminf⟩ := GlobalTheory.T.exists_fibreMeasures_archimedeanGramMap F E σ hcm M n J hJ (coordW (Ainf F) b' laminf n M)
+  obtain ⟨-, hWi, hHi⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Ainf F) _ b' laminf hinf.1
+  obtain ⟨minf, hminf⟩ := _root_.GlobalTheory.ArchGramFibre.exists_fibreFamily F E σ hcm M n J hJ (coordW (Ainf F) b' laminf n M)
     (coordHerm (Ainf F) σ b' laminf n) (hWi n M) (hHi n)
   have hfV : ∀ w : HeightOneSpectrum (𝓞 F), ∃ fib : HermR (Fv F w) σ n → Measure (Fin n → Fin M → Fv F w ⊗[F] E),
       IsGramFibFree (Fv F w) σ J n (coordW (Fv F w) b' (lam w) n M) (coordHerm (Fv F w) σ b' (lam w) n) fib := fun w => by
     have := PI.VolStabS.secondCountable_Fv F w
     have := PI.VolStabS.locallyCompact_Fv F w
-    obtain ⟨-, hWv, hHv⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F w) _ b' (lam w) (hv w).1
+    obtain ⟨-, hWv, hHv⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Fv F w) _ b' (lam w) (hv w).1
     exact PI.OmFibreUniq.W.gram_map_fibre_existence σ J w n hcm hJ _ _ (hWv n M) (hHv n)
   choose m₀ hm₀ using hfV
   let m₂ : ∀ w : HeightOneSpectrum (𝓞 F), HermR (Fv F w) σ n → Measure (Fin n → Fin M → Fv F w ⊗[F] E) :=
@@ -108,7 +108,7 @@ theorem fibre_compact_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field
     · have : m₂ w = m₀ w := Function.update_of_ne h _ _
       rw [this]
       exact hm₀ w
-  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := GlobalTheory.T.unitary_group_finite_volume F E σ hcm M J hJ
+  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := _root_.GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hcm M J hJ
   obtain ⟨⟨𝓕₁, h𝓕₁⟩, -⟩ := hFV μ₁ hμ₁
   have hE := hSW d b' laminf lam hinf hv μ₁ 𝓕₁ hμ₁ h𝓕₁ minf m₂ hminf hm₂
   have h1 : (k • m (hermOf (Fv F v) σ T hT)) (latV b' v) < ⊤ := by

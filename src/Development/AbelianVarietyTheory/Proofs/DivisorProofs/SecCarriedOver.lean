@@ -28,17 +28,4 @@ def SecCarriedOver {X : Scheme.{0}} (L : LB X) (W : X.Opens) (s : ∀ k, Γ(X, W
   ∀ (z : X) (j k : L.ι), z ∈ W → f z ∈ W → z ∈ L.U k → f z ∈ L.U j →
     gs f z (W ⊓ L.U j) (s j) = (gw w (𝟙 X) z j k : X.presheaf.stalk z) * gs (𝟙 X) z (W ⊓ L.U k) (s k)
 
-example {X : Scheme.{0}} (L : LB X) (W : X.Opens) (T : ∀ k, Γ(X, W ⊓ L.U k)ˣ) (hT : IsFrameOver L W T) :
-    IsSecOver L W (fun k => (T k).val) := by
-  intro z k k' hz hk hk'
-  have hm : z ∈ W ⊓ L.U k ⊓ (W ⊓ L.U k') := ⟨⟨hz, hk⟩, hz, hk'⟩
-  have e := congrArg (fun u => (gm (𝟙 X) z _ u : X.presheaf.stalk z)) (hT k k')
-  simp only [map_mul, Units.val_mul] at e
-  rw [gm_res _ z _ hm, gm_res _ z _ hm, gm_res _ z _ hm] at e
-  have h1 : (𝟙 X) z ∈ W ⊓ L.U k := ⟨hz, hk⟩
-  have h2 : (𝟙 X) z ∈ W ⊓ L.U k' := ⟨hz, hk'⟩
-  show gs (𝟙 X) z _ (T k).val = _ * gs (𝟙 X) z _ (T k').val
-  rw [gs_unit _ z _ h1, gs_unit _ z _ h2]
-  exact e
-
 end GlobalTheory.Mum

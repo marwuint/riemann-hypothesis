@@ -2,9 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.BasicLiftAll
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsRadialPartPolyDiffOperatorClosedStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIsMulGOfSmoothLog
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordOperatorRadialPointwiseBoundStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RadialPictureSmulCutoffGMultiplierStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellVectorNormEqRadialValueNormStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordOperatorRadialPointwiseBound
+import Development.AbelianVarietyTheory.Definitions.Jets.SameFns
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RadialPictureSmulCutoffGMultiplier
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellVectorNormEqRadialValueNorm
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TLPlanAsm
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadJFExists
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactSupportFacts
@@ -34,7 +35,7 @@ theorem wordBound_cptCoef : ∀ a : ℕ → ℕ, BasicLiftAll a → ∀ (Wp Wq :
   have hok := Formalism.FourierDecayAlt.P.JCTx5.wordOK_of P _ _ _ _ st p.l0 hD.1.1 p.hl.1 p.hl.2.1 hD.2.2.2.2.1 hD.2.2.2.2.2.1 w
     hw.1 hw.2
   have hl : (D.positionted w).length = w.length := by simp [D.positionted]
-  obtain ⟨C, J, Ts, hC, hTs, hB⟩ := GlobalTheory.T.wordOperator_radial_pointwise_bound Wp Wq P p.T.base X μ L st p.l0 d hD hNF (Fin w.length) _ (a P.r)
+  obtain ⟨C, J, Ts, hC, hTs, hB⟩ := _root_.GlobalTheory.HatNF.RadBound.word_bound Wp Wq P p.T.base X μ L st p.l0 d hD hNF (Fin w.length) _ (a P.r)
     (ha Wp Wq P p.T.base X μ L st p.l0 d hD hNF) (D.positionted w) hok.1
   rw [hl] at hTs hB
   have hlift : ∀ H : List (RA P p.T.base), ∃ Θ : B.DiffOp P.k P.r Wp Wq, H ∈ Ts →
@@ -53,7 +54,7 @@ theorem wordBound_cptCoef : ∀ a : ℕ → ℕ, BasicLiftAll a → ∀ (Wp Wq :
     obtain ⟨H, hH, rfl⟩ := List.mem_map.1 hΘ
     exact (hlf H hH).1
   · rintro φ f ⟨hφ, hf⟩ e c hc hG
-    obtain ⟨hm1, hm2⟩ := GlobalTheory.T.radial_picture_smul_cutoff_G_multiplier Wp Wq P p.T.base φ f
+    obtain ⟨hm1, hm2⟩ := _root_.GlobalTheory.HatNF.radial_mulG Wp Wq P p.T.base φ f
     obtain ⟨hsl, hcpt⟩ := hm1 hφ
     obtain ⟨W, hW⟩ := mulG_exists Wp Wq P p.T.base X μ L st p.l0 d hD hNF φ hsl
     obtain ⟨⟨ε, hε, hN⟩, -⟩ := Formalism.FourierDecayAlt.P.compact_support_facts P.k P.r Wp Wq p.T.base f hf
@@ -62,7 +63,7 @@ theorem wordBound_cptCoef : ∀ a : ℕ → ℕ, BasicLiftAll a → ∀ (Wp Wq :
     have hΦ' : Top.IsRadOf P p.T.base Φ f := hΦ
     have hrad := hL w hw _ (hcpt hf) _ (hm2 W Φ hW hΦ') e
     rw [TL.act_e1Vec] at hrad
-    obtain ⟨x, hx, hg, hdd, lam, hlam, hV⟩ := GlobalTheory.T.bigCellVector_norm_eq_radialValue_norm Wp Wq P p c hc hG
+    obtain ⟨x, hx, hg, hdd, lam, hlam, hV⟩ := _root_.GlobalTheory.HatNF.vec_bigPt_eq_radial Wp Wq P p c hc hG
     have hb := hB φ W hsl hW Φ e x hx
     rw [hg, hdd] at hb
     have hs : ((Ts.map lf).map fun Θ => ‖B.hsVec (p.V (B.opApply Θ f) (TBB.bigPt P.r c))‖).sum =

@@ -156,9 +156,4 @@ theorem powXR_holds : PowXR := by
     rw [gdelta_pow_succ_apply κ (n + 1), ih, map_add, map_nsmul, gdelta_X_inr, gdelta_dR_apply,
       ← gdelta_pow_succ_apply, ← gdelta_pow_succ_apply, add_assoc, ← succ_nsmul']
 
-section
-variable {K I J : Type} [CommRing K] [Algebra ℚ K] [Fintype I] [Fintype J]
-
-end
-
 end PI.DivPowInteg.Gen

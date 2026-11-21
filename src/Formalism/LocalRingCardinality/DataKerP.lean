@@ -66,19 +66,4 @@ structure LocalToGlobal₂ (D : D7) (Gt : GatTies D) (c : LatCmp D) (Tw : TwForm
     (Tw.fm u (D.what₂.muAt w)).emb (j + 1) y = (D.chTw u (D.what₂.muAt w)).K j ((Tw.fm u (D.what₂.muAt w)).emb j x) →
     cmp (j + 1) y = Ch.Kz j (cmp j x)
 
-def LocalToGlobal₂.CmpIntAll {D : D7} {Gt : GatTies D} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word}
-    {w : D.what₂.places.Pl} [Fact (D.what₂.places.resChar w).Prime]
-    {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
-    {Ch : Chain Lv} (Kp : LocalToGlobal₂ D Gt c Tw u w h Ch) : Prop :=
-  ∀ j, j ≤ D.R.m → Submodule.span (D.gat u w h).O
-    (Kp.cmp j '' (((Tw.fm u (D.what₂.muAt w)).lat j).L : Set ((Tw.fm u (D.what₂.muAt w)).lat j).V)) = Lv.Int j
-
-theorem LocalToGlobal₂.cmp_KL {D : D7} {Gt : GatTies D} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word}
-    {w : D.what₂.places.Pl} [Fact (D.what₂.places.resChar w).Prime]
-    {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
-    {Ch : Chain Lv} (Kp : LocalToGlobal₂ D Gt c Tw u w h Ch) (j : ℕ) (hj : j < D.R.m)
-    (hK : (Tw.fm u (D.what₂.muAt w)).KRat j) (x : ((Tw.fm u (D.what₂.muAt w)).lat j).V) :
-    Kp.cmp (j + 1) ((Tw.fm u (D.what₂.muAt w)).KL j hK x) = Ch.Kz j (Kp.cmp j x) :=
-  Kp.cmp_K j hj x _ ((Tw.fm u (D.what₂.muAt w)).KL_spec j hK x)
-
 end Formalism.BasicNotions

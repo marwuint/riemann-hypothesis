@@ -17,15 +17,6 @@ variable {C : Type} [Field C]
 def absDifferent (v : Valuation C ℝ≥0) {E : Type} [Field E] [NumberField E] (τ : E →+* C) : ℝ≥0 :=
   sSup {r | ∃ x ∈ differentIdeal ℤ (𝓞 E), v (τ x) = r}
 
-def valDifferent_vp (p : ℕ) (v : Valuation C ℝ≥0) {E : Type} [Field E] [NumberField E]
-    (τ : E →+* C) : ℝ :=
-  Real.log (absDifferent v τ) / Real.log (v (p : C))
-
-def IsPowMul_vp (p : ℕ) (v : Valuation C ℝ≥0) {O : Type} [CommRing O] [Algebra O C] {U : Type}
-    [AddCommGroup U] [Module C U] [Module O U] [IsScalarTower O C U] (t : ℝ)
-    (La La' : Submodule O U) : Prop :=
-  ∃ u : C, (v u : ℝ) = (v (p : C) : ℝ) ^ t ∧ La' = scaleLat u La
-
 set_option autoImplicit false in
 open scoped NNReal NumberField Classical in
 variable {C : Type} [Field C] in
@@ -89,63 +80,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedDifferentComparison
   · rw [habs, ← hemb]
     exact hv.map_le_one _
 
-example (p : ℕ) (v : Valuation C ℝ≥0) {O : Type} [CommRing O] [Algebra O C] {U : Type}
-    [AddCommGroup U] [Module C U] [Module O U] [IsScalarTower O C U] (La : Submodule O U) :
-    IsPowMul_vp p v 1 La (scaleLat (p : C) La) := ⟨p, (Real.rpow_one _).symm, rfl⟩
-
 end Valuations
-
-section AtAPoint
-
-variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
-  [Algebra O C] [Algebra ℤ_[p] C] [Algebra ℤ_[p] O] [IsScalarTower ℤ_[p] O C] [IsAlgClosed C]
-  [CharZero C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
-  {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E))
-
-abbrev Flags (Ψ : Finset (E →+* C)) (N j : ℕ) : Type :=
-  ∀ τ : Ψ, P.Frame (embO P.integers τ.1) N j
-
-abbrev wHT (τ : E →+* C) : Submodule O P.V :=
-  P.wHT (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) τ
-
-abbrev omHT (τ : E →+* C) : Submodule O P.OmC :=
-  P.omHT (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) τ
-
-abbrev wRec (τ : E →+* C) : Submodule O P.V := P.wRec (embO P.integers τ)
-
-abbrev omRec (τ : E →+* C) : Submodule O P.OmC :=
-  P.omRec (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) τ
-
-variable {P} {Ψ : Finset (E →+* C)} {N j : ℕ}
-
-def phiDiff_vp (F : Flags P Ψ N j) (lam : Ψ → Fin N → ℝ) : ℝ :=
-  Point.phiHT_vp (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) Ψ F lam -
-    Point.phiRec_vp (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) Ψ F lam
-
-def GradedComparison (F : Flags P Ψ N j) : Prop :=
-  ∃ a : Ψ → Fin N → ℝ,
-    (∀ τ i, 0 ≤ a τ i ∧ a τ i ≤ 1 / ((p : ℝ) - 1)) ∧
-    (∀ (τ : Ψ) (i : Fin N), (i : ℕ) < j →
-      IsPowMul_vp p v (-a τ i - valDifferent_vp p v τ.1)
-        (grAt C (wRec P τ.1) (F τ).f i) (grAt C (wHT P τ.1) (F τ).f i)) ∧
-    (∀ (τ : Ψ) (i : Fin N), j ≤ (i : ℕ) →
-      IsPowMul_vp p v (a τ i)
-        (grAt C (omRec P τ.1) (P.alC ∘ (F τ).f) i) (grAt C (omHT P τ.1) (P.alC ∘ (F τ).f) i)) ∧
-    (∀ lam : Ψ → Fin N → ℝ, phiDiff_vp F lam = -Real.log p * ∑ τ : Ψ,
-      ((∑ i : Fin N with i.val < j, lam τ i * (valDifferent_vp p v τ.1 + a τ i)) -
-        ∑ i : Fin N with j ≤ i.val, lam τ i * a τ i)) ∧
-    ∀ lam : Ψ → Fin N → ℝ, |phiDiff_vp F lam| ≤ Real.log p * ∑ τ : Ψ,
-      (1 / ((p : ℝ) - 1) * ∑ i, |lam τ i| +
-        valDifferent_vp p v τ.1 * |∑ i : Fin N with i.val < j, lam τ i|)
-
-end AtAPoint
-
-def PointwiseGeneral : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O]
-    [Algebra O C] [Algebra ℤ_[p] C] [Algebra ℤ_[p] O] [IsScalarTower ℤ_[p] O C] [IsAlgClosed C]
-    [CharZero C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
-    (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E))
-    (Ψ : Finset (E →+* C)) (N j : ℕ) (F : Flags P Ψ N j), GradedComparison F
 
 section PadicComplex
 
@@ -165,13 +100,6 @@ theorem fact_not_isUnit (p : ℕ) [Fact p.Prime] : Fact ¬IsUnit (p : 𝓞_ℂ_[
 
 attribute [local instance] tower fact_not_isUnit PadicComplexHost.isAdicComplete
 
-abbrev PointCp (p : ℕ) [Fact p.Prime] (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] : Type 1 :=
-  Point p (Valued.v : Valuation ℂ_[p] ℝ≥0) 𝓞_ℂ_[p] (𝓞 E)
-
-def Pointwise : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (P : PointCp p E)
-    (Ψ : Finset (E →+* ℂ_[p])) (N j : ℕ) (F : Flags P Ψ N j), GradedComparison F
-
 def ramifiedOrLevel (E : Type) [Field E] [NumberField E] (level : ℕ) : Finset ℕ :=
   (2 * (NumberField.discr E).natAbs * level).primeFactors
 
@@ -182,23 +110,6 @@ instance factPrime {E : Type} [Field E] [NumberField E] {level : ℕ} {B : ℝ}
     (p : badPrimes E level B) : Fact (p : ℕ).Prime :=
   ⟨(Finset.mem_union.1 p.2).elim (fun h => (Finset.mem_filter.1 h).2) Nat.prime_of_mem_primeFactors⟩
 
-def SumOverBadPrimes : Prop :=
-  ∃ K : ℝ, ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] [StarRing (𝓞 E)]
-    (level : ℕ) (B : ℝ), 1 ≤ level → 2 ≤ B → ((ramifiedOrLevel E level).card : ℝ) ≤ B →
-    ∀ (I : Type) [Fintype I] (N j : ℕ) (lam : I → Fin N → ℝ)
-      (P : ∀ p : badPrimes E level B, PointCp p E)
-      (Ψ : ∀ p : badPrimes E level B, Finset (E →+* ℂ_[p])) (e : ∀ p, Ψ p ≃ I)
-      (F : ∀ p, Flags (P p) (Ψ p) N j),
-      let lhs := ∑ p : badPrimes E level B, |phiDiff_vp (F p) fun τ => lam (e p τ)|
-      let size := ∑ τ, ∑ i, |lam τ i|
-      let first := (3 * Real.log B + 1) * size +
-        Real.log (NumberField.rootDiscr E) * ∑ τ, |∑ i : Fin N with i.val < j, lam τ i|
-      let second := (3 * Real.log B + 1 + Real.log (NumberField.rootDiscr E)) * size
-      lhs ≤ first ∧ first ≤ K * Real.log (B * NumberField.rootDiscr E) * size ∧ first ≤ second ∧
-        (3 ≤ B → second ≤ 4 * Real.log (B * NumberField.rootDiscr E) * size)
-
 end PadicComplex
-
-def Statement : Prop := Pointwise ∧ SumOverBadPrimes
 
 end GlobalTheory.IndefiniteRowSideFullHecke.GradedDifferentComparison

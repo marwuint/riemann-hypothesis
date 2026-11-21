@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowProperties
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 
@@ -30,10 +30,10 @@ theorem khat_l_smul_eq_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →
     intro n
     rw [← AdicCompletion.eval_apply, ← AdicCompletion.eval_apply, hn, map_zero]
   intro n
-  obtain ⟨hsurj, -, -, -, -, -, -⟩ := GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l (n + 1)
-  obtain ⟨-, hker, hmul, hone, -, -, -⟩ := GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l (n + 1)
-  obtain ⟨-, hker0, -, hone0, -, -, -⟩ := GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l n
-  obtain ⟨-, -, -, -, -, -, hred⟩ := GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l n
+  obtain ⟨hsurj, -, -, -, -, -, -⟩ := _root_.GlobalTheory.KZ.H3.cls_props Ω ε X l (n + 1)
+  obtain ⟨-, hker, hmul, hone, -, -, -⟩ := _root_.GlobalTheory.KZ.H3.cls_props Ω ε X l (n + 1)
+  obtain ⟨-, hker0, -, hone0, -, -, -⟩ := _root_.GlobalTheory.KZ.H3.cls_props Ω ε X l n
+  obtain ⟨-, -, -, -, -, -, hred⟩ := _root_.GlobalTheory.KZ.H3.cls_props Ω ε X l n
   obtain ⟨f, hf⟩ := hsurj (AdicCompletion.eval (idl l) (X.Kl l) (n + 1) x)
   have hpow : ∀ k : ℕ, X.cls l (n + 1) (f ^ k) = k • X.cls l (n + 1) f := by
     intro k

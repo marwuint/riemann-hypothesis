@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PrimOfIsUnitDet
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardPrimitiveTupleExtensionsLeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardPrimitiveTupleExtensionsLe
 
 open GlobalTheory.GramCount
 open scoped Classical
@@ -116,7 +116,7 @@ theorem ncard_sols_eta [Fintype B] (c : B →+* B) (hc : ∀ u, c (c u) = u) (ω
             (Fin.cons y x : Fin (m + 1) → Fin n → B) ∈ sols c n G} : ℝ) ≤ (1 + 3 * η) * R := by
       intro x hx
       rw [Set.mem_toFinset] at hx
-      have := GlobalTheory.T.card_primitiveTuple_extensions_le c hc ω hω hf q hq hB m n (by omega) x hx.1 (fun i => G i.succ 0)
+      have := _root_.GlobalTheory.GramCount.ncard_extend_prim_one c hc ω hω hf q hq hB m n (by omega) x hx.1 (fun i => G i.succ 0)
         (G 0 0) (hG 0 0)
       simp only [cons_mem_sols c hc G hG x hx]
       rw [abs_le] at this

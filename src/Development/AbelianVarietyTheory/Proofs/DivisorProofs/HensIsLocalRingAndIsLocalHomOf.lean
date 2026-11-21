@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InstPreorder
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointedEtaleNeighbourhoodLocalRingIsDirectedStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleNbhdLocalRingTransitionMapIsLocalHomInjectiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointedEtaleNbhdTransitionMapDirectedSystemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointedEtaleNbhdTransitionMapDirectedSystem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveResidueCompEtaleHenselian
 
 open IsLocalRing
 
@@ -16,8 +17,8 @@ variable {R : Type} [CommRing R] [IsLocalRing R]
 
 theorem directedSystem_trans :
     DirectedSystem (fun i : EtNbhd R => i.B) (fun i j h => ⇑(EtNbhd.trans h : i.B →+* j.B)) where
-  map_self := fun i x => (GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem R).1 i x
-  map_map := fun {k j i} hij hjk x => (GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem R).2 i j k hij hjk x
+  map_self := fun i x => (_root_.GlobalTheory.Henselisation.trans_system R).1 i x
+  map_map := fun {k j i} hij hjk x => (_root_.GlobalTheory.Henselisation.trans_system R).2 i j k hij hjk x
 
 theorem directed : IsDirected (EtNbhd R) (· ≤ ·) := GlobalTheory.T.pointedEtaleNeighbourhoodLocalRing_isDirected R
 

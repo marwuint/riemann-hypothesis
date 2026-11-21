@@ -11,10 +11,6 @@ def TrdegAdjoinLe.Statement : Prop :=
       Algebra.trdeg K (Algebra.adjoin K (Set.range w)) ≤
         Algebra.trdeg K (Algebra.adjoin K s) + Fintype.card ι
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

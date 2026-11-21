@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EmbeddingSectionsSpanGeometricFibre
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ProjCoordRepresentationGeometricFibreSpanningStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsVeryAmpleSectionSystemOfProjectiveCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsVeryAmpleSectionSystemOfProjectiveCoordinates
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ThetaGrpActIterateEqOfPowEqOne
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.TwistedPowTranslate
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleIdentityIso
@@ -74,7 +74,7 @@ theorem embSec_veryAmple_periodic : Out.Laws → Out.Laws2 → ∀ (o : Type) [C
   refine ⟨?_, LB.isLB_linComb t.isLB _ _, ?_, lbIso_pow t.isLB _ _ _ (by push_cast; rfl), ?_, ⟨Nat.pos_of_neZero _, t.torsion, hbij⟩, ?_⟩
   · show IsIso (pullback.snd (𝟙 (Sp K)) t.A.hom)
     infer_instance
-  · refine GlobalTheory.T.isVeryAmpleSectionSystem_of_projectiveCoordinates K _ _ _ _ _ _ (GlobalTheory.T.projCoordRepresentation_geometric_fibre_spanning hL hL2 _ t.pol K (𝟙 _) _ _ σ (by nlinarith) ?_)
+  · refine _root_.GlobalTheory.ZV.CoordEmbed.vAmp_of_projRep K _ _ _ _ _ _ (GlobalTheory.T.projCoordRepresentation_geometric_fibre_spanning hL hL2 _ t.pol K (𝟙 _) _ _ σ (by nlinarith) ?_)
     exact GlobalTheory.EmbSpan.emb_span_eq_top hL hL2 o g N' J b _ _ t m K (𝟙 _) σ hN hm h2 hE
   · intro a a' haa j
     obtain ⟨th, s1, α, U, -, -, -, hU, hact⟩ := hE

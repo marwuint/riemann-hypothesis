@@ -58,34 +58,6 @@ theorem anal_loc {P : Frame X.Ψ r → ℂ} (hP : DifferentiableOn ℂ P X.dom) 
   refine DivLA.analyticAt_of_diffOn hU ?_ (by simpa [cpt_zero'] using hx)
   exact hP.comp (hc.differentiable (by simp)).differentiableOn (fun z hz => hz)
 
-theorem leadM_succ {n δ : ℕ} (s : Fin n → Frame X.Ψ r → ℂ) (w0 : Frame X.Ψ r → ℂ)
-    (t : Fin δ → Frame X.Ψ r → ℂ) (T d : ℕ) (cc cc' cnew : (Fin n → ℕ) → Fin δ → ℂ)
-    (h1 : ∀ α ∈ Finset.Nat.antidiagonalTuple n d, cc' α = cnew α)
-    (h2 : ∀ α, α ∉ Finset.Nat.antidiagonalTuple n d → cc' α = cc α) (y : Frame X.Ψ r) :
-    leadM X s w0 t T (d + 1) cc' y =
-      leadM X s w0 t T d cc y + ∑ α ∈ Finset.Nat.antidiagonalTuple n d,
-        ∑ k, cnew α k * monoM X s α y * w0 y ^ (T - d) * t k y := by
-  have hU : ReciprocityTheory.ChartRestriction.G.AR.multiLt n (d + 1) =
-      ReciprocityTheory.ChartRestriction.G.AR.multiLt n d ∪ Finset.Nat.antidiagonalTuple n d := by
-    unfold ReciprocityTheory.ChartRestriction.G.AR.multiLt
-    rw [Finset.range_add_one, Finset.biUnion_insert, Finset.union_comm]
-  have hD : Disjoint (ReciprocityTheory.ChartRestriction.G.AR.multiLt n d) (Finset.Nat.antidiagonalTuple n d) := by
-    rw [Finset.disjoint_left]
-    intro α h1 h2
-    simp only [ReciprocityTheory.ChartRestriction.G.AR.multiLt, Finset.mem_biUnion, Finset.mem_range,
-      Finset.Nat.mem_antidiagonalTuple] at h1 h2
-    obtain ⟨e, he, he'⟩ := h1
-    omega
-  unfold leadM
-  rw [hU, Finset.sum_union hD]
-  congr 1
-  · apply Finset.sum_congr rfl
-    intro α hα
-    rw [h2 α (Finset.disjoint_left.mp hD hα)]
-  · apply Finset.sum_congr rfl
-    intro α hα
-    rw [h1 α hα, Finset.Nat.mem_antidiagonalTuple.mp hα]
-
 end
 
 end ReciprocityTheory.ChartRestriction.G.AR.Up.DivLC

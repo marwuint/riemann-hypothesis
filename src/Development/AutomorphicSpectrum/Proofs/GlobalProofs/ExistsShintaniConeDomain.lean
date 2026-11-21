@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlin
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CongSubgroup
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SimplicialConeTilingStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniConeDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UniqueReducedOrbitRepresentativeStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PlaceApplyStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsTotallyPositiveBasisPositiveCoordsStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyPositiveBasisRatioBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteUnitsBoundedEmbeddingRatioStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniConeDecomposition
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UniqueReducedOrbitRepresentative
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PlaceApply
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsTotallyPositiveBasisPositiveCoords
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyPositiveBasisRatioBound
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteUnitsBoundedEmbeddingRatio
 
 set_option autoImplicit false
 
@@ -22,9 +22,9 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     ∃ (ι : Type) (_ : Fintype ι) (r : ι → ℕ) (v : ∀ c, Fin (r c) → F), IsConeDomain 𝔣 r v := by
   intro F _ _ _ 𝔣 h𝔣
   classical
-  obtain ⟨M, hM⟩ := GlobalTheory.T.exists_congruence_unit_balancing_embeddings F 𝔣 h𝔣
-  obtain ⟨κ, _, b, hbpos, hbcov⟩ := GlobalTheory.T.exists_totally_positive_basis_positive_coords F M
-  obtain ⟨R, hR0, hR⟩ := GlobalTheory.T.totally_positive_basis_ratio_bound F b hbpos
+  obtain ⟨M, hM⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Balance.balance F 𝔣 h𝔣
+  obtain ⟨κ, _, b, hbpos, hbcov⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Gens.exists_totPos_basis F M
+  obtain ⟨R, hR0, hR⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones.bounded_ratio_on_basis_cone F b hbpos
 
   obtain ⟨σ₁⟩ : Nonempty (F →+* ℝ) := by
     have w : InfinitePlace F := Classical.choice inferInstance
@@ -53,7 +53,7 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     rw [Rat.smul_def, map_mul, map_ratCast]
     exact mul_pos (by exact_mod_cast hx i) (hbpos i σ)
   have hfin : {g : G | ∃ x ∈ D, φ g * x ∈ D}.Finite := by
-    have hfin0 := GlobalTheory.T.finite_units_bounded_embedding_ratio F (R * R)
+    have hfin0 := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.finite_totPos_units_bounded_ratio F (R * R)
     refine Set.Finite.of_finite_image (f := fun g : G => (g : (𝓞 F)ˣ)) (hfin0.subset ?_) (Subtype.val_injective.injOn)
     rintro _ ⟨g, ⟨x, hx, hgx⟩, rfl⟩
     refine ⟨hgpos g, fun σ τ => ?_⟩
@@ -89,7 +89,7 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     intro h
     have := hDpos 0 h.1 σ₁
     simp at this
-  obtain ⟨ι, hι, r, v, hr, hli, hvP, hsub, hun⟩ := GlobalTheory.T.shintani_cone_decomposition _ _ E htile h0
+  obtain ⟨ι, hι, r, v, hr, hli, hvP, hsub, hun⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones.tile_family_closed _ _ E htile h0
   refine ⟨ι, hι, r, v, hr, hli, hvP, ?_⟩
   intro x hx
 
@@ -99,7 +99,7 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     intro σ
     rw [map_mul]
     exact mul_pos (hu.2 σ) (hx σ)
-  obtain ⟨g, hg, hguniq⟩ := GlobalTheory.T.unique_reduced_orbit_representative φ f hfpos hfinj D hfin x hxD
+  obtain ⟨g, hg, hguniq⟩ := _root_.GlobalTheory.CompanionTheory.SiegelKlingen.exists_unique_minimal_translate φ f hfpos hfinj D hfin x hxD
   obtain ⟨c, hc, hcuniq⟩ := hun _ hg
   refine ⟨(⟨g.1, g.2⟩, c), hc, ?_⟩
   rintro ⟨⟨u', hu'⟩, c'⟩ hp

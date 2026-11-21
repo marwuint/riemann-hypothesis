@@ -8,15 +8,15 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GaussianBinomialClosedForm
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TransferOn
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedHeckeVacuumLargerEqSmallerStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedHeckeVacuumLargerEqSmaller
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeckeOperatorMoveAcrossInvariantBilinear
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumInertPlaceStandardCayleyPairStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.InertUnitaryCosetSymmetryHeckeEvenStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumInertPlaceStandardCayleyPair
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.InertUnitaryCosetSymmetryHeckeEven
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitarySatakeTransformEqOfBaseChangeSatakeParame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SetIntegralFundamentalDomainRightTranslateInvari
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHyperspecialSubgroupAtPlaceIffLocalStabilizer
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BaseChangeThetaLiftSatakeParameterEqAddSegmentStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeTransformEqAtThetaLiftOfVacuumEqStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeTransformEqAtThetaLiftOfVacuumEq
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedLocalDualPairSwapHermitianAdjoint
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperspecialFixesAllChainVacuaAtInertPrime
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftGoodProjectorIntertwinesMatchedHecke
@@ -88,8 +88,8 @@ theorem howe_down [CharZero L] (hH : GlobalTheory.Hk3.HoweUnram) {δ : L} {ψ : 
       rw [GlobalTheory.SphTheta.mul_antiJ_apply, GlobalTheory.SphTheta.antiJ_mul_apply]
       simp [hσ]
     rwa [hu'] at this
-  obtain ⟨h', hh', e⟩ := GlobalTheory.T.unramified_hecke_vacuum_larger_eq_smaller hH L ϖ σ q (-δ) ψ n' n M _ _ s hS' h hh
-  exact ⟨h', hh', e.symm, GlobalTheory.T.satakeTransform_eq_at_thetaLift_of_vacuum_eq L ϖ σ q (-δ) ψ n' n M _ _ s hS' (fun e he => hC' e (key e he))
+  obtain ⟨h', hh', e⟩ := _root_.GlobalTheory.ChainOnto.heckeVec_howe hH L ϖ σ q (-δ) ψ n' n M _ _ s hS' h hh
+  exact ⟨h', hh', e.symm, _root_.GlobalTheory.SphTheta.satU_eq_satU_liftPar_of_heckeVec_eq L ϖ σ q (-δ) ψ n' n M _ _ s hS' (fun e he => hC' e (key e he))
     (fun e he => hC e (key e he)) hn h' hh' h hh e qu hq⟩
 
 end Local
@@ -127,8 +127,8 @@ theorem hecke_down (hH : GlobalTheory.Hk3.HoweUnram) {ψ : AddChar (AF D.host.F)
     charZero_of_injective_algebraMap (algebraMap D.host.E (w.adicCompletion D.host.E)).injective
   set RS : Representation ℂ (GU c S.rank) (WO S T → ℂ) := (om.comp (MonoidHom.inl _ _)).comp ((embV S v).comp eS.symm.toMonoidHom)
   set RT : Representation ℂ (GU c T.rank) (WO S T → ℂ) := (om.comp (MonoidHom.inr _ _)).comp ((embV T v).comp eT.symm.toMonoidHom)
-  have hcS := (GlobalTheory.T.inert_unitary_coset_symmetry_hecke_even _ ϖ c _ hU S.rank).1
-  have hcT := (GlobalTheory.T.inert_unitary_coset_symmetry_hecke_even _ ϖ c _ hU T.rank).1
+  have hcS := (_root_.GlobalTheory.ChainOnto.inert_cosetSym_heckeEven _ ϖ c _ hU S.rank).1
+  have hcT := (_root_.GlobalTheory.ChainOnto.inert_cosetSym_heckeEven _ ϖ c _ hU T.rank).1
 
   have step : ∀ f, VacFin ψ S T v f → f ≠ 0 → ∃ hT ∈ Hecke ℂ (KU c T.rank),
       (∀ α : Fin (T.rank / 2) → ℂˣ, SatU ϖ (qV D.host.F v) hT (fun i => (α i : ℂ)) =
@@ -136,7 +136,7 @@ theorem hecke_down (hH : GlobalTheory.Hk3.HoweUnram) {ψ : AddChar (AF D.host.F)
       heckeVec RS (KU c S.rank) hS f = heckeVec RT (KU c T.rank) hT f := by
     intro f hf hf0
     obtain ⟨δ, ψ', M, ρ0, ω, s, hstd, hsf, hωom, hcT', hcS'⟩ :=
-      GlobalTheory.T.weilDatum_inertPlace_standard_cayley_pair D ψ S T χS χT om hW v w h hin uS uT c ϖ eS eT hU heS heT f hf hf0
+      _root_.GlobalTheory.ChainOnto.std_cayley_of_inert D ψ S T χS χT om hW v w h hin uS uT c ϖ eS eT hU heS heT f hf hf0
     obtain ⟨hT, hhT, e1, e2⟩ := howe_down hH hstd hcT' hcS' hle hq hh
     have m1 := map_heckeVec hcS hh M.subtype (ρ := ω.comp (MonoidHom.inl _ _)) (ρ' := RS)
       (fun g m => by simp only [Submodule.subtype_apply, MonoidHom.comp_apply, MonoidHom.inl_apply, hωom]; simp [RS]) s
@@ -220,8 +220,8 @@ theorem param_down (hH : GlobalTheory.Hk3.HoweUnram) {ψ : AddChar (AF D.host.F)
     show om (1, embV T v (eT.symm g)) u ∈ U; rw [← e0S]; exact hUs _ _ u hu
   have hπS : ∀ g (u : U), ((πS g u : U) : WO S T → ℂ) = RS g u := fun _ _ => rfl
   have hπT : ∀ g (u : U), ((πT g u : U) : WO S T → ℂ) = RT g u := fun _ _ => rfl
-  have hcS := GlobalTheory.T.inert_unitary_coset_symmetry_hecke_even _ ϖ c _ hUI S.rank
-  have hcT := GlobalTheory.T.inert_unitary_coset_symmetry_hecke_even _ ϖ c _ hUI T.rank
+  have hcS := _root_.GlobalTheory.ChainOnto.inert_cosetSym_heckeEven _ ϖ c _ hUI S.rank
+  have hcT := _root_.GlobalTheory.ChainOnto.inert_cosetSym_heckeEven _ ϖ c _ hUI T.rank
   have hρ1 : ∀ y, ρ 1 y = y := fun y => by rw [map_one]; rfl
   have hbT : ∀ g (u : U) y, b (πT g u) y = ρT g (b u y) := fun g u y => by
     have e2 := hb 1 (eT.symm g) u y
@@ -240,7 +240,7 @@ theorem param_down (hH : GlobalTheory.Hk3.HoweUnram) {ψ : AddChar (AF D.host.F)
     by_cases h0 : (f j : WO S T → ℂ) = 0
     · rw [show f j = 0 from Subtype.ext h0]; exact zero_mem _
     obtain ⟨δ, ψ', M, ρ0, ω, s, hstd, hsf, hωom, -, -⟩ :=
-      GlobalTheory.T.weilDatum_inertPlace_standard_cayley_pair D ψ S T χS χT om hW v w h hin uS uT c ϖ eS eT hUI heS heT (f j) (hf j) h0
+      _root_.GlobalTheory.ChainOnto.std_cayley_of_inert D ψ S T χS χT om hW v w h hin uS uT c ϖ eS eT hUI heS heT (f j) (hf j) h0
     refine GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext ?_
     have a4 := hstd.1.fix k 1 (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hk)).2 (one_mem _) s hstd.2.2.1
     have e3 := hωom k 1 s
@@ -585,7 +585,7 @@ theorem unrCorr_inert : GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [
       ∫ g in R.fdV i t, thetaKO (R.ωP i t) g (x * embV _ _ a') (u : WO (Vc D i) (Wc D i) → ℂ) *
         (z : GA D (Vc D i) → ℂ) g ∂(R.νV i t)
     simp_rw [GlobalTheory.ChainOnto.thetaKO_om_apply]
-    exact GlobalTheory.T.setIntegral_fundamentalDomain_right_translate_invariant D (Vc D i) _ _ hν.1.1 hν.2
+    exact _root_.GlobalTheory.ChainOnto.setIntegral_fd_mul_right D (Vc D i) _ _ hν.1.1 hν.2
       (fun g => thetaKO (R.ωP i t) g (x * embV _ _ a') (u : WO (Vc D i) (Wc D i) → ℂ) * (z : GA D (Vc D i) → ℂ) g)
       (fun γ hγ g => by simp only [GlobalTheory.ChainOnto.thetaKO_left hW u.2 γ hγ, z.2.2 γ hγ]) _
 

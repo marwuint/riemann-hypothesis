@@ -120,19 +120,6 @@ theorem principal_zeroSieg (k : ℕ) {B : Type} [CommRing B] (ζ : B) (s : S ⟶
     obtain ⟨a, rfl⟩ := surj_appLE ((𝟙_ (Over S)).hom ∣_ U) _ hD le_top p
     exact ⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩
 
-def zeroBas (H : Host E) : (Fin (2 * 0) → ℤ) ≃ₗ[ℤ] (Test.zeroDatum H).La :=
-  haveI : Subsingleton (Fin (2 * 0) → ℤ) := ⟨fun _ _ => funext fun i => i.elim0⟩
-  haveI : Subsingleton (Test.zeroDatum H).La := inferInstanceAs (Subsingleton PUnit)
-  LinearEquiv.ofSubsingleton _ _
-
-theorem pelRep_zero [_root_.IsReduced o] (D : Datum H) (a : J → 𝓞 E) (bas : (Fin (2 * 0) → ℤ) ≃ₗ[ℤ] D.La) (ρ : o)
-    (b : TBase o k) : PELRep D a bas ρ (zeroObj J b (𝟙 (Sp o))) where
-  qproj := OnePoint.isQProjOver_id o
-  flat := inferInstance
-  red := inferInstance
-  rep := fun _ _ _ _ β t' _ _ _ => ⟨spMap β, Category.comp_id _, tmap_zero _ t' _⟩
-  inj := fun _ _ _ _ _ _ _ h _ _ => by simpa using h
-
 end DimZero
 
 end GlobalTheory.ZM

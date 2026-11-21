@@ -17,35 +17,6 @@ theorem _root_.GlobalTheory.Published.GreenModel.isIrr_hom {G : Type} [Group G] 
   simp only [hV, ← map_mul, mul_inv_cancel, map_one, Finset.sum_const, Finset.card_univ,
     nsmul_eq_mul, mul_one, Nat.card_eq_fintype_card]
 
-theorem hom_of_isIrr {G : Type} [Group G] [Fintype G] (hG : ∀ x y : G, x * y = y * x) {χ : G → ℂ}
-    (h : IsIrr χ) : ∃ φ : G →* ℂ, ∀ x, χ x = φ x := by
-  obtain ⟨V, hV, hχ⟩ := h
-  have h1 : ∀ y : G, ∃ c : ℂ, V.ρ y = c • (1 : Module.End ℂ V) := fun y =>
-    PI.CharIdemW.schur_scalar V _ fun x => by rw [← map_mul, ← map_mul, hG]
-  choose c hc using h1
-  have hne := PI.CharIdemW.end_one_ne_zero V
-  have inj : ∀ a b : ℂ, a • (1 : Module.End ℂ V) = b • 1 → a = b := fun a b hab =>
-    smul_left_injective ℂ hne hab
-  have c1 : c 1 = 1 := inj _ _ (by rw [← hc, map_one, one_smul])
-  have cm : ∀ x y, c (x * y) = c x * c y := fun x y => inj _ _ (by
-    rw [← hc, map_mul, hc x, hc y, smul_mul_smul_comm, one_mul])
-  have hch : ∀ x, V.character x = c x * (Module.finrank ℂ V : ℂ) := fun x => by
-    change LinearMap.trace ℂ V (V.ρ x) = _
-    rw [hc x, map_smul, LinearMap.trace_one, smul_eq_mul]
-  have hn := (FDRep.simple_iff_char_is_norm_one V).1 hV
-  have e : ∀ x, V.character x * V.character x⁻¹ = (Module.finrank ℂ V : ℂ) ^ 2 := fun x => by
-    rw [hch, hch]
-    have : c x * c x⁻¹ = 1 := by rw [← cm, mul_inv_cancel, c1]
-    linear_combination (Module.finrank ℂ V : ℂ) ^ 2 * this
-  simp only [e, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card] at hn
-  have hcard : (Fintype.card G : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
-  have h2 : (Module.finrank ℂ V : ℂ) ^ 2 = 1 := mul_left_cancel₀ hcard (by rw [hn, mul_one])
-  have h3 : Module.finrank ℂ V = 1 := by
-    have : Module.finrank ℂ V ^ 2 = 1 := by exact_mod_cast h2
-    exact (Nat.pow_eq_one.1 this).resolve_right (by norm_num)
-  refine ⟨⟨⟨c, c1⟩, cm⟩, fun x => ?_⟩
-  rw [← hχ, hch, h3]; simp
-
 variable {g : ℕ} [hg : Fact g.Prime]
 
 def ev : Gn g 1 →* Fbar g where
@@ -69,25 +40,6 @@ variable {g : ℕ} [hg : Fact g.Prime] in
 theorem _root_.GlobalTheory.Published.GreenModel.alg_pow {b : ZMod g} (hb : b ≠ 0) :
     algebraMap (ZMod g) (_root_.Formalism.CyclotomicNorms.Fbar g) b ^ (g ^ 1 - 1) = 1 := by
   rw [← map_pow, pow_one, ZMod.pow_card_sub_one_eq_one hb, map_one]
-
-theorem ev_pow (y : Gn g 1) : ev y ^ (g ^ 1 - 1) = 1 :=
-  alg_pow (by simpa [Matrix.det_fin_one] using y.det_ne_zero)
-
-theorem exists_pre {x : Fbar g} (hx : x ^ (g ^ 1 - 1) = 1) :
-    ∃ b : ZMod g, b ≠ 0 ∧ algebraMap (ZMod g) (Fbar g) b = x := by
-  obtain ⟨r, hr⟩ := IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod g)ˣ)
-  have h0 : IsPrimitiveRoot r (g ^ 1 - 1) := by
-    have : g ^ 1 - 1 = orderOf r := by
-      rw [hr, Nat.card_eq_fintype_card, ZMod.card_units, pow_one]
-    rw [this]; exact IsPrimitiveRoot.orderOf r
-  have h1 : IsPrimitiveRoot (algebraMap (ZMod g) (Fbar g) r) (g ^ 1 - 1) :=
-    (IsPrimitiveRoot.coe_units_iff.2 h0).map_of_injective (algebraMap (ZMod g) (Fbar g)).injective
-  haveI : NeZero (g ^ 1 - 1) := ⟨(N_pos g one_pos).ne'⟩
-  obtain ⟨k, -, rfl⟩ := h1.eq_pow_of_pow_eq_one hx
-  exact ⟨(r : ZMod g) ^ k, pow_ne_zero _ r.ne_zero, map_pow _ _ _⟩
-
-theorem gen_prim' (L : LabelDatum g) : IsPrimitiveRoot (L.gen 1) (g ^ 1 - 1) :=
-  L.gen_order 1 one_pos ▸ IsPrimitiveRoot.orderOf _
 
 open Polynomial CategoryTheory in
 variable {g : ℕ} [hg : Fact g.Prime] in
@@ -120,10 +72,6 @@ theorem _root_.GlobalTheory.Published.GreenModel.ev_eq (L : _root_.GlobalTheory.
   obtain ⟨i, -, hi⟩ := (isPrimitiveRoot_gen_one L).eq_pow_of_pow_eq_one
     (_root_.GlobalTheory.Published.GreenModel.alg_pow (gn_one_entry_zero_zero_ne_zero y))
   exact ⟨i, hi.symm⟩
-
-theorem exists_eigenvalueGLOne_eq_cuspidalLabel_gen (L : LabelDatum g) : ∃ y : Gn g 1, ev y = L.gen 1 := by
-  obtain ⟨b, hb, h⟩ := exists_pre (gen_prim' L).pow_eq_one
-  exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.of fun _ _ => b) (by rw [Matrix.det_fin_one]; exact hb), h⟩
 
 def th (L : LabelDatum g) {b : ZMod g} (hb : b ≠ 0) : Gn g 1 →* ℂ where
   toFun y := thetaOf L 1 (algebraMap (ZMod g) (Fbar g) b) (ev y)
@@ -311,31 +259,5 @@ theorem _root_.GlobalTheory.Published.GreenModel.green_one (L : _root_.GlobalThe
       rw [coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub, neg_neg]
     rw [hcoef, map_pow, hcg, map_pow, hk, hy]
     exact map_pow ψ y0 n
-
-theorem unip_two (x : Mt g 2) :
-    (InPar 1 x ∧ tl 1 x = ((1 : Gn g 1) : Mt g 1) ∧ br 1 1 x = ((1 : Gn g 1) : Mt g 1)) ↔
-      x 1 0 = 0 ∧ x 0 0 = 1 ∧ x 1 1 = 1 := by
-  refine and_congr ⟨fun h => h 1 0 (by simp) (by simp), fun h i j hj hi => ?_⟩ (and_congr ⟨fun h => ?_, fun h => ?_⟩
-    ⟨fun h => ?_, fun h => ?_⟩)
-  · have h1 : i = 1 := Fin.ext (by have := i.2; simp; omega)
-    have h2 : j = 0 := Fin.ext (by simp; omega)
-    rw [h1, h2, h]
-  · simpa [tl, Formalism.MainNotions.ArithmeticCylinders.entN] using congrFun (congrFun h 0) 0
-  · ext i j; rw [Subsingleton.elim i 0, Subsingleton.elim j 0]; simpa [tl, Formalism.MainNotions.ArithmeticCylinders.entN] using h
-  · simpa [br, Formalism.MainNotions.ArithmeticCylinders.entN] using congrFun (congrFun h 0) 0
-  · ext i j; rw [Subsingleton.elim i 0, Subsingleton.elim j 0]; simpa [br, Formalism.MainNotions.ArithmeticCylinders.entN] using h
-
-theorem not_isCusp_one_two : ¬ IsCusp (fun _ : Gn g 2 => (1 : ℂ)) := by
-  classical
-  intro h
-  have h1 := h.2.2 1 one_pos (by norm_num)
-  unfold res at h1
-  have hg0 : ((g : ℂ) ^ (1 * (2 - 1)))⁻¹ ≠ 0 :=
-    inv_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 hg.out.ne_zero))
-  have h2 := (mul_eq_zero.1 h1).resolve_left hg0
-  rw [Finset.sum_boole, Nat.cast_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_iff] at h2
-  exact h2 (Finset.mem_univ 1) ((unip_two _).2 (by simp))
-
-theorem datum_nonempty : Nonempty (LabelDatum g) := ⟨datum g⟩
 
 end GlobalTheory.Published.GreenModel

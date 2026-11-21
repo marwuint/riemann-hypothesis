@@ -1,13 +1,34 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsGroupHomog
-import Development.AutomorphicSpectrum.Definitions.MetricPeriods.SectionInputs
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IntStable
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.ValNeBot
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.SpecFirstDetFormNeZero
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.DefiniteFormStabilizerFiniteAwayFromP
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MahlerMinusConeIntegralIndepStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MahlerMeasureOfProductStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MahlerMinusConeIntegralIndep
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IntegralFubiniStudySumCone
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CroftonFormulaFibreSum
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CroftonFormulaOpenCone
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionConeCoarea
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsScaleStable
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianProjectionBallIndicatorStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XXgzChowMahlerFibreavg
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreCountRotationInvariant
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MeasurableFibreCountOverStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.TXgzChowMahlerE0reduce
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AeFibrePointsCardEqDegree
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GaussianMatrixMeasurePosFinite
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RandomSetSumExpectationStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LogGapMeasurableScaleStableStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FubiniStudyLogLeLogNorm
+import Development.WeilBound.CoreStatements.CommonZeroEvaluation.ConeBallLogGapIntegral
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SphereMeanNormalizedGroups
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AePolynomialNonvanishingRows
+import Development.WeilBound.CoreStatements.CommonZeroEvaluation.EvalEqZeroOfCommonZero
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.XXgzChowMahlerFibrefactor
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MahlerMeasureOfProduct
+
 set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.Ar.Short
@@ -35,7 +56,7 @@ theorem mahlerDefect_eq_sum {n e δ : ℕ} (h : HermNorm n) {Z : ProjCycle ℂ n
   have hq : ∀ W ∈ Z.support, specFirst (g W) u ≠ 0 ∧ IsMultiHomog (d W) (specFirst (g W) u) :=
     fun W hW => ⟨SpecFirstNe.full ℂ n e W (g W) u (hd.prime W hW) (hg W hW) (hu W hW),
       SpecFirstHomog.proof n e (d W) (g W) u (hdW W hW)⟩
-  rw [mahlerDefect, hspec, GlobalTheory.T.mahler_measure_of_product n e h Z.support (fun W => specFirst (g W) u) d (fun W => Z W) c hc hq,
+  rw [mahlerDefect, hspec, _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.mahler_C_mul_prod_pow n e h Z.support (fun W => specFirst (g W) u) d (fun W => Z W) c hc hq,
     cycleIntegral]
   simp only [mul_sub, Finset.sum_sub_distrib]
   ring
@@ -45,7 +66,7 @@ theorem defectConstDim (e : ℕ) : DefectConstDim e := by
   obtain ⟨c, g, d, hg, hsum⟩ := mahlerDefect_eq_sum h hd
   have hW : ∀ W ∈ Z.support, (Z W : ℝ) * (mahler h e (specFirst (g W) u) - coneIntegral h W e (fsLog h u)) =
       (Z W : ℝ) * (mahler h e (specFirst (g W) u') - coneIntegral h W e (fsLog h u')) := fun W hW => by
-    have := GlobalTheory.T.mahler_minus_cone_integral_indep n e (d W) h W (g W) u u' (hd.prime W hW) (hg W hW).1 (hg W hW).2 (hu W hW)
+    have := _root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.defect_eq_of_linForm_notMem n e (d W) h W (g W) u u' (hd.prime W hW) (hg W hW).1 (hg W hW).2 (hu W hW)
       (hu' W hW)
     rw [this]
   rw [hsum u hu, hsum u' hu', Finset.sum_congr rfl hW]

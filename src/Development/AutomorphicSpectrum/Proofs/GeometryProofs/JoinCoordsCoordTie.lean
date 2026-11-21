@@ -4,9 +4,9 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ZarhinBundleKernelFirstCoordEquations
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsJoinModelDominatesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsJoinModelDominates
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueDominatingMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalization
 
 noncomputable section
 
@@ -89,7 +89,7 @@ theorem dominates_id_iff {X Y : Scheme.{0}} {Ω : Type} [Field Ω] {ξ' : Spec (
 theorem mem_ctrSet_self {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ]
     {x : κ → Ω} (M : PModel o x) (p : Cpt M.ξ) : p ∈ ctrSet o x (RingHom.id Ω) M.ξ := by
   obtain ⟨c, hc⟩ := M.tie.cover p
-  exact ⟨c, hc.1, fun a ha => (GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hc).1 a ha⟩
+  exact ⟨c, hc.1, fun a ha => (_root_.GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation o Ω κ x M c p hc).1 a ha⟩
 
 theorem mem_ctrSet_join {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ]
     {x : κ → Ω} (M : PModel o x) {κ' : Type} {w : κ' → Ω} (p : Cpt M.ξ) (hw : ∃ l, InChart M.ξ w l p) :
@@ -109,7 +109,7 @@ theorem mem_ctrSet_join {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra 
     rw [e]
     exact mul_mem (hc.2 j) (hl.2 m)
   | algebraMap r =>
-    exact (GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hc).1 _ (Subalgebra.algebraMap_mem _ r)
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation o Ω κ x M c p hc).1 _ (Subalgebra.algebraMap_mem _ r)
   | add y z _ _ hy hz => exact add_mem hy hz
   | mul y z _ _ hy hz => exact mul_mem hy hz
 
@@ -120,7 +120,7 @@ theorem coordTie_join_of_charts : ∀ (o : Type) [CommRing o] (Ω : Type) [Field
   have hl : ∃ l, w l ≠ 0 := by
     obtain ⟨l, h⟩ := hw ⟨genPt M.ξ, specializes_rfl⟩
     exact ⟨l, h.1⟩
-  obtain ⟨M', f, hf⟩ := GlobalTheory.T.exists_join_model_dominates o Ω κ x M Ω (RingHom.id Ω) κ' w (fun _ => rfl) hl
+  obtain ⟨M', f, hf⟩ := _root_.GlobalTheory.CompanionTheory.Ar.join_exists o Ω κ x M Ω (RingHom.id Ω) κ' w (fun _ => rfl) hl
     (eq_top_iff.2 fun a _ => Subfield.subset_closure (Or.inl ⟨a, rfl⟩))
   obtain ⟨g, hg, -⟩ := GlobalTheory.T.existsUnique_dominating_map o Ω (κ × κ') _ M' o Ω κ x M (RingHom.id Ω)
     (fun p => mem_ctrSet_join M p (hw p))

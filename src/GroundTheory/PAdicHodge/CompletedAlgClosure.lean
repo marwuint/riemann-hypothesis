@@ -51,22 +51,6 @@ instance [CharZero K] : IsAlgClosed (CompletedAlgClosure K) := by
 
 variable (L : Type*) [NormedField L] [NormedAlgebra K L] [Algebra.IsAlgebraic K L]
 
-def embedding : L →ₐ[K] CompletedAlgClosure K :=
-  (IsScalarTower.toAlgHom K (SpectralAlgClosure K) (CompletedAlgClosure K)).comp
-    (IsAlgClosed.lift : L →ₐ[K] SpectralAlgClosure K)
-
-theorem norm_embedding (x : L) : ‖embedding K L x‖ = ‖x‖ := by
-  set ι : L →ₐ[K] SpectralAlgClosure K := IsAlgClosed.lift
-  have h1 : ‖embedding K L x‖ = ‖ι x‖ := by
-    change ‖((ι x : SpectralAlgClosure K) : CompletedAlgClosure K)‖ = _
-    exact UniformSpace.Completion.norm_coe _
-  rw [h1, SpectralAlgClosure.norm_eq_spectralNorm]
-  have h2 : spectralNorm K (SpectralAlgClosure K) (ι x) = spectralNorm K L x := by
-    simp only [spectralNorm, minpoly.algHom_eq ι ι.injective x]
-  rw [h2]
-  exact (spectralNorm_unique_field_norm_ext (f := NormedField.toAbsoluteValue L)
-    (fun k => norm_algebraMap' L k) x).symm
-
 end CompletedAlgClosure
 
 end GroundTheory.PAdicHodge

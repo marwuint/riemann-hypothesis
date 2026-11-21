@@ -32,38 +32,6 @@ private theorem mem_pull_of_lemma_2 (M : LB X) (a : Y ⟶ X) (p : PUnit.{1} → 
   show y ∈ (⋂ k, a.base ⁻¹' (M.U (p k) : Set X)) from
     Set.mem_iInter.mpr (fun k => by cases k; exact h)
 
-theorem gen_div_pull (M N : LB X) (a : Y ⟶ X) (h : ∃ t : LB.Gen (LB.div M N), t.IsGen) :
-    ∃ t : LB.Gen (LB.div (M.pull a) (N.pull a)), t.IsGen := by
-  obtain ⟨t, ht⟩ := h
-  have hU : ∀ p : (LB.div (M.pull a) (N.pull a)).ι,
-      (LB.div (M.pull a) (N.pull a)).U p ≤
-        ((LB.div M N).pull a).U (fun u => (p.1 u, p.2 u)) := by
-    intro p y hy
-    obtain ⟨h1, h2⟩ := hy
-    exact mem_pull_of_lemma_2 (LB.div M N) a (fun u => (p.1 u, p.2 u)) y
-      (And.intro (mem_pull_lemma M a p.1 y h1) (mem_pull_lemma N a p.2 y h2))
-  refine exists_gen_transfer (L := (LB.div M N).pull a) (L' := LB.div (M.pull a) (N.pull a))
-    (fun p u => (p.1 u, p.2 u)) hU ?_ ⟨LB.genPull _ t a, LB.isGen_genPull _ t ht a⟩
-  intro i j y hy
-  obtain ⟨⟨hMi, hNi⟩, ⟨hMj, hNj⟩⟩ := id hy
-  have hMi' := mem_pull_lemma M a i.1 y hMi
-  have hNi' := mem_pull_lemma N a i.2 y hNi
-  have hMj' := mem_pull_lemma M a j.1 y hMj
-  have hNj' := mem_pull_lemma N a j.2 y hNj
-  have hM : y ∈ a ⁻¹ᵁ (M.U (i.1 PUnit.unit) ⊓ M.U (j.1 PUnit.unit)) := And.intro hMi' hMj'
-  have hN : y ∈ a ⁻¹ᵁ (N.U (i.2 PUnit.unit) ⊓ N.U (j.2 PUnit.unit)) := And.intro hNi' hNj'
-  have hD : y ∈ a ⁻¹ᵁ ((LB.div M N).U (i.1 PUnit.unit, i.2 PUnit.unit) ⊓
-      (LB.div M N).U (j.1 PUnit.unit, j.2 PUnit.unit)) :=
-    And.intro (And.intro hMi' hNi') (And.intro hMj' hNj')
-  refine (germ_div _ _ i j y hy).trans ?_
-  refine Eq.trans (congrArg₂ (fun u v => u * v⁻¹)
-    ((germ_pull M a i.1 j.1 y (And.intro hMi hMj) hM).trans (gU_pullU a _ y hM _))
-    ((germ_pull N a i.2 j.2 y (And.intro hNi hNj) hN).trans (gU_pullU a _ y hN _))) ?_
-  refine Eq.trans ?_ ((germ_pull (LB.div M N) a (fun u => (i.1 u, i.2 u))
-    (fun u => (j.1 u, j.2 u)) y _ hD).trans (gU_pullU a _ y hD _)).symm
-  refine Eq.trans ?_ (congrArg (Units.map _) (germ_div M N _ _ _ hD)).symm
-  simp only [map_mul, map_inv]
-
 end Div
 
 section Div2

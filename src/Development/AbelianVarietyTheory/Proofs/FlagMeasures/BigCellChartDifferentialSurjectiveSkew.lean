@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Dchart
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieAlgebraBesselModelMiddleUnitaryEntriesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieEntriesUnipotentBesselNCharacterizationStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieAlgebraBesselModelMiddleUnitaryEntries
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LieEntriesUnipotentBesselNCharacterization
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 
 open MeasureTheory Matrix Filter Topology Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp GlobalTheory.CellDens
@@ -56,7 +56,7 @@ lemma exists_N (k r : ℕ) (M : Mat k r) (h : Mᴴ * Hpk k r + Hpk k r * M = 0) 
     ∃ X : lieE (Nset k r), um X = Matrix.of fun i j => if lev k r i < lev k r j then M i j else 0 := by
   refine ⟨⟨(WithLp.equiv 2 _).symm (realifyFun
     (Matrix.of fun i j => if lev k r i < lev k r j then M i j else 0)), ?_⟩, unre _⟩
-  rw [(GlobalTheory.T.lieEntries_unipotentBesselN_characterization k r _).1, unre]
+  rw [(_root_.GlobalTheory.CellDens.LieN.lieE_Nset k r _).1, unre]
   refine ⟨?_, fun i j hij => by simp [not_lt.2 hij]⟩
   rw [skew_iff] at h ⊢
   intro i j
@@ -72,7 +72,7 @@ lemma exists_lieElement_middleBlockPart (k r : ℕ) (M : Mat k r) (h : Mᴴ * Hp
       if (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) then M i j else 0 := by
   refine ⟨⟨(WithLp.equiv 2 _).symm (realifyFun (Matrix.of fun i j =>
       if (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) then M i j else 0)), ?_⟩, unre _⟩
-  rw [(GlobalTheory.T.lieAlgebra_besselModel_middleUnitary_entries k r _).2.1, unre]
+  rw [(_root_.GlobalTheory.CellLieAlg.lie_entries k r _).2.1, unre]
   refine ⟨?_, fun i j hij => by simp only [Matrix.of_apply, if_neg hij]⟩
   rw [skew_iff] at h ⊢
   intro i j

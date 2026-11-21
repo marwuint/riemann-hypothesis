@@ -16,15 +16,6 @@ def LSmallSt : Prop :=
     ∀ (N : ℕ) i μ, ∃ n0 : ℕ, ∀ n ≥ n0,
       V.Ge N (MvPowerSeries.coeff μ (Y.B.A.act (x n) i) - MvPowerSeries.coeff μ (Y.B.A.act (x' n) i))
 
-def ProjLieSt : Prop :=
-  ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
-    (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I)
-    (g : Fin 2) (ε : O), (∃ y, ε * ε - ε = (V.l : O) * y) → (∀ a, V.MM (p.em g a ε - 1)) →
-    (∀ x : O, (∀ a, V.MM (p.em g a x)) → ∃ y, ε * x = (V.l : O) * y) →
-    ∀ e : Pt C 1 dd, (∀ (N : ℕ) i μ, ∃ n0 : ℕ, ∀ n ≥ n0,
-      V.Ge N (MvPowerSeries.coeff μ (e i) - MvPowerSeries.coeff μ (Y.B.A.act (ε ^ V.l ^ n) i))) →
-    ∀ v : Fin dd → C, ∃ b : I g → C, linAct e v = ∑ c, b c • p.u g c
-
 section Alg
 
 variable {O : Type} [CommRing O]
@@ -217,114 +208,6 @@ theorem linAct_tends {φ : ℕ → Pt C 1 dd} {Φ : Pt C 1 dd} (hφ : ∀ i, Ten
   show Tends V (fun n => ∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ n i) * v j)
     (∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (Φ i) * v j)
   exact tends_fintype_sum fun j => tends_mul_const (hφ i _) (v j)
-
-theorem proj_one (hL : LSmallSt) (hLie : ProjLieSt) (Y : FBChart C V O dd) {d : ℕ} [NeZero d]
-    {I : Fin 2 → Type} [∀ g, Fintype (I g)] (p : PairData Y d I) (g : Fin 2) (ε : O)
-    (hε : ∃ y, ε * ε - ε = (V.l : O) * y) (hε1 : ∀ a, V.MM (p.em g a ε - 1))
-    (hεx : ∀ x : O, (∀ a, V.MM (p.em g a x)) → ∃ y, ε * x = (V.l : O) * y) (e : Pt C 1 dd)
-    (he : ∀ (N : ℕ) i μ, ∃ n0 : ℕ, ∀ n ≥ n0,
-      V.Ge N (MvPowerSeries.coeff μ (e i) - MvPowerSeries.coeff μ (Y.B.A.act (ε ^ V.l ^ n) i))) :
-    (∀ i, MvPowerSeries.constantCoeff (e i) = 0) ∧ comp1 e e = e ∧
-      (∀ a, comp1 e (Y.B.A.act a) = comp1 (Y.B.A.act a) e) ∧
-      (∀ c, linAct e (p.u g c) = p.u g c) ∧
-      (∀ v : Fin dd → C, ∃ b : I g → C, linAct e v = ∑ c, b c • p.u g c) := by
-  have hT := tends_of_endomorphism_limit Y he
-  have e0 : ∀ i, constantCoeff (e i) = 0 := const_of_lim Y hT
-  have act0 : ∀ x i, constantCoeff (Y.B.A.act x i) = 0 := Y.B.A.const
-  refine ⟨e0, ?_, ?_, ?_, hLie _ V O dd Y d I p g ε hε hε1 hεx e he⟩
-  ·
-    funext i
-    have L := TendsS.comp1 (φ := fun n => Y.B.A.act (ε ^ V.l ^ n)) (b := fun n => Y.B.A.act (ε ^ V.l ^ n))
-      (fun n => act0 _) e0 hT hT i
-    have R := tendsS_of_small hL Y (x := fun n => ε ^ V.l ^ n * ε ^ V.l ^ n) (sq_cong hε) hT i
-    have eq : (fun n => comp1 (Y.B.A.act (ε ^ V.l ^ n)) (Y.B.A.act (ε ^ V.l ^ n)) i) =
-        fun n => Y.B.A.act (ε ^ V.l ^ n * ε ^ V.l ^ n) i := funext fun n => by rw [Y.B.A.mul_act]
-    rw [eq] at L
-    exact L.unique R
-  ·
-    intro a
-    funext i
-    have L := TendsS.comp1 (φ := fun n => Y.B.A.act (ε ^ V.l ^ n)) (b := fun _ => Y.B.A.act a)
-      (fun _ => act0 a) (act0 a) hT (fun _ => TendsS.const _) i
-    have R := TendsS.comp1 (φ := fun _ => Y.B.A.act a) (b := fun n => Y.B.A.act (ε ^ V.l ^ n))
-      (fun n => act0 _) e0 (fun _ => TendsS.const _) hT i
-    have eq : (fun n => comp1 (Y.B.A.act (ε ^ V.l ^ n)) (Y.B.A.act a) i) =
-        fun n => comp1 (Y.B.A.act a) (Y.B.A.act (ε ^ V.l ^ n)) i := funext fun n => by
-      rw [← Y.B.A.mul_act, ← Y.B.A.mul_act, mul_comm]
-    rw [eq] at L
-    exact L.unique R
-  ·
-    intro c
-    funext i
-    have L := linAct_tends hT (p.u g c) i
-    have eq : (fun n => linAct (Y.B.A.act (ε ^ V.l ^ n)) (p.u g c) i) =
-        fun n => (p.em g (p.ty g c) ε) ^ V.l ^ n * p.u g c i := funext fun n => by
-      rw [p.u_eig, map_pow]; rfl
-    rw [eq] at L
-    have R := (tends_pow_one (hε1 (p.ty g c))).mul (tends_const (V := V) (p.u g c i))
-    rw [one_mul] at R
-    exact L.unique R
-
-theorem projFB_of (hL : LSmallSt) (hLie : ProjLieSt) : ProjFBSt := by
-  intro C _ _ V O _ _ dd Y d _ I _ p hE0
-  obtain ⟨ε, hε, hε1, hεx⟩ := p.em_unr 0
-  have hl2 : 2 ≤ V.l := V.l_prime.two_le
-  have hεs := star_rel hε
-
-  have hεs1 : ∀ a, V.MM (p.em 1 a (star ε) - 1) := fun a => by rw [p.em_conj, star_star]; exact hε1 a
-  have hεsx : ∀ x : O, (∀ a, V.MM (p.em 1 a x)) → ∃ y, star ε * x = (V.l : O) * y := by
-    intro x hx
-    obtain ⟨y, hy⟩ := hεx (star x) fun a => by rw [← p.em_conj]; exact hx a
-    refine ⟨star y, ?_⟩
-    have h := congrArg star hy
-    simp only [star_mul, star_star, star_natCast] at h
-    rw [mul_comm, h, mul_comm]
-
-  have cvA : ActCv Y (fun n => ε ^ V.l ^ n) := fun N i μ => by
-    obtain ⟨n0, h⟩ := hL C V O dd Y (fun n => ε ^ V.l ^ (n + 1)) (fun n => ε ^ V.l ^ n) (pow_cong hl2 hε) N i μ
-    exact ⟨n0, h⟩
-  have cvB : ActCv Y (fun n => star ε ^ V.l ^ n) := fun N i μ => by
-    obtain ⟨n0, h⟩ := hL C V O dd Y (fun n => star ε ^ V.l ^ (n + 1)) (fun n => star ε ^ V.l ^ n)
-      (pow_cong hl2 hεs) N i μ
-    exact ⟨n0, h⟩
-  have sA : (fun n => star (ε ^ V.l ^ n)) = fun n => star ε ^ V.l ^ n := funext fun n => star_pow _ _
-  have sB : (fun n => star (star ε ^ V.l ^ n)) = fun n => ε ^ V.l ^ n := funext fun n => by
-    rw [star_pow, star_star]
-  obtain ⟨e, eb, -, -, he, heb, hhom, hexp⟩ := hE0 (fun n => ε ^ V.l ^ n) cvA (by rw [sA]; exact cvB)
-  obtain ⟨e', eb', -, -, he', heb', hhom', hexp'⟩ := hE0 (fun n => star ε ^ V.l ^ n) cvB (by rw [sB]; exact cvA)
-  simp only [star_pow, star_star] at heb heb'
-  have hee : e' = eb := funext fun i => (tends_of_endomorphism_limit Y he' i).unique (tends_of_endomorphism_limit Y heb i)
-  have hee' : eb' = e := funext fun i => (tends_of_endomorphism_limit Y heb' i).unique (tends_of_endomorphism_limit Y he i)
-  subst hee hee'
-  obtain ⟨c0, i0, cm0, fx0, sp0⟩ := proj_one hL hLie Y p 0 ε hε hε1 hεx eb' he
-  obtain ⟨c1, i1, cm1, fx1, sp1⟩ := proj_one hL hLie Y p 1 (star ε) hεs hεs1 hεsx e' he'
-  have hint0 : ∀ i, IntS V (eb' i) := fun i => (tends_of_endomorphism_limit Y he i).intS fun n => Y.intAct _ i
-  have hint1 : ∀ i, IntS V (e' i) := fun i => (tends_of_endomorphism_limit Y he' i).intS fun n => Y.intAct _ i
-  refine ⟨![eb', e'], ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro g i; fin_cases g
-    · exact hint0 i
-    · exact hint1 i
-  · intro g i; fin_cases g
-    · exact c0 i
-    · exact c1 i
-  · intro g; fin_cases g
-    · exact hhom
-    · exact hhom'
-  · intro g; fin_cases g
-    · exact i0
-    · exact i1
-  · intro g a; fin_cases g
-    · exact cm0 a
-    · exact cm1 a
-  · intro g c; fin_cases g
-    · exact fx0 c
-    · exact fx1 c
-  · intro g v; fin_cases g
-    · exact sp0 v
-    · exact sp1 v
-  · intro g; fin_cases g
-    · exact hexp
-    · exact hexp'
 
 end Main
 

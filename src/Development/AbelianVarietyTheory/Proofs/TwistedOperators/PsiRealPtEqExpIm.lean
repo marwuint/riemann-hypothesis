@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaAtEqProdAhG
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaFunctionOrientedModelEqOfRealAdelicPointsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StdCharSymplecticRealAdelicPointsModelFormStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColumnsMemPeriodLatticeIffFinitePartMovedLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaFunctionOrientedModelEqOfRealAdelicPoints
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StdCharSymplecticRealAdelicPointsModelForm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColumnsMemPeriodLatticeIffFinitePartMovedLattice
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Datum ReciprocityTheory.ChartRestriction.G.PullbackSections ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -53,7 +53,7 @@ theorem heis_law_of_periods : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0
   set Θ := R.ωP i A.μ0 (1, γ * g) (R.vacP i) with hΘdef
   have hΘ : IsThetaFunO R.ψ (Vc D i) (Wc D i) Θ := hW.om_pres _ _ hf
   choose α hα using hcol
-  refine GlobalTheory.T.thetaFunction_orientedModel_eq_of_realAdelicPoints D R.ψ hψ (Vc D i) (Wc D i) _ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hΘ _)
+  refine _root_.GlobalTheory.ThetaUniqReal.eq_of_eq_realPt D R.ψ hψ (Vc D i) (Wc D i) _ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hΘ _)
     (theta_smul _ hΘ) fun X => ?_
   have hth : ∀ w, thetaAt R.ψ (R.ωP i A.μ0) (R.vacP i) (γ * g) w = Θ w := fun w => thetaAt_eq _ _ _ _ _
   have e1 := theta_realPt_add hΘ X Yr
@@ -80,7 +80,7 @@ theorem heis_law_of_periods : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0
       Complex.exp (Real.pi * Complex.I * ∑ a, ((Algebra.trace ℚ D.host.E
         (-((T.U ((i : ℕ) + 1) σ).X (dictW T i σ hV g).1).ξ0 *
         ReciprocityTheory.ChartRestriction.G.FD.herm ((T.U ((i : ℕ) + 1) σ).X (dictW T i σ hV g).1).Gm (colB b X a) (colB b Yr a)) : ℚ) : ℂ)) :=
-    GlobalTheory.T.stdChar_symplectic_realAdelicPoints_modelForm D R.ψ hψ (Vc D i) (Wc D i) b hb D.R.r (rank_Wc i) _ (hM (dictW T i σ hV g).1) X Yr
+    _root_.GlobalTheory.ArchPhase.psi_symplOH_realPt D R.ψ hψ (Vc D i) (Wc D i) b hb D.R.r (rank_Wc i) _ (hM (dictW T i σ hV g).1) X Yr
   have hs : R.ψ (symplOH (Vc D i) (Wc D i) (realPt (Vc D i) (Wc D i) X) (realPt (Vc D i) (Wc D i) Yr)) ≠ 0 := by
     intro h0
     have := AddChar.map_add_eq_mul R.ψ (symplOH (Vc D i) (Wc D i) (realPt (Vc D i) (Wc D i) X) (realPt (Vc D i) (Wc D i) Yr))
@@ -114,7 +114,7 @@ theorem psi_realPt_eq_exp_im : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl
           ∑ a, ((hermForm Y.Hm (perVec Wt (colB b X a)) (perVec Wt (colB b Yr a))).im : ℂ)) := by
   intro D G _ _ Pl0 T0 A T _ R hT i σ hV b hb hM g hx Wt Y X Yr
   have hψ : IsStdChar D R.ψ (-1) := (hT.ωP i A.μ0).std
-  rw [GlobalTheory.T.stdChar_symplectic_realAdelicPoints_modelForm D R.ψ hψ (Vc D i) (Wc D i) b hb D.R.r (rank_Wc i) _ (hM (dictW T i σ hV g).1) X Yr]
+  rw [_root_.GlobalTheory.ArchPhase.psi_symplOH_realPt D R.ψ hψ (Vc D i) (Wc D i) b hb D.R.r (rank_Wc i) _ (hM (dictW T i σ hV g).1) X Yr]
   refine congrArg Complex.exp (congrArg (fun t => (Real.pi : ℂ) * Complex.I * t) (Finset.sum_congr rfl fun a _ => ?_))
   have h := im_hermForm_pv Wt Y (colB b X a) (colB b Yr a)
   change _ = (((hermForm Y.Hm (pv Wt (colB b X a)) (pv Wt (colB b Yr a))).im : ℝ) : ℂ)
@@ -148,7 +148,7 @@ theorem frame_phase : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.Heck
             ∑ a, ((hermForm Y.Hm (perVec Wt (colB b X a)) (perVec Wt (colB b Yr a))).im : ℂ)) := by
   intro D hHP hSL hVF G _ _ Pl0 T0 A T _ R F κ v₀ hL hGr hFa hMo hT hTie i σ hσ hV ph b hph hb γ hγ g hFr hx Wt Y hp Yr
   have hM := modelW_of_tieIn hTie i σ hσ hV
-  exact ⟨GlobalTheory.T.columns_mem_periodLattice_iff_finitePart_movedLattice D hHP hSL hVF G Pl0 T0 A T R F κ v₀ hL hGr hFa hMo hT hTie i σ hσ hV ph b hph hb γ hγ g hFr hx Wt Y
+  exact ⟨_root_.GlobalTheory.AHPhase.cols_per_iff_latO D hHP hSL hVF G Pl0 T0 A T R F κ v₀ hL hGr hFa hMo hT hTie i σ hσ hV ph b hph hb γ hγ g hFr hx Wt Y
       hp Yr,
     heis_law_of_periods D G Pl0 T0 A T R hT i σ hV ph b hb hM γ g hx Wt Y hp Yr,
     fun X => psi_realPt_eq_exp_im D G Pl0 T0 A T R hT i σ hV b hb hM g hx Wt Y X Yr⟩

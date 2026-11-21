@@ -132,14 +132,4 @@ theorem tSet_same (s s' : SplitPlace L) (hv : s'.v = s.v) {ϖ' : s'.v.adicComple
 
 end Same
 
-section Int
-
-variable {R : Type} [CommRing R] [Algebra R ℂ]
-
-theorem integral_of_module [Module R W] [IsScalarTower R ℂ W] [IsNoetherianRing R] (N : Submodule R W) (hN : N ≠ ⊥)
-    (hfg : N.FG) (ν : ℂ) (hν : ∀ w ∈ N, ν • w ∈ N) : IsIntegral R ν :=
-  isIntegral_of_smul_mem_submodule N hN hfg ν hν
-
-end Int
-
 end CompanionTheory.L3H

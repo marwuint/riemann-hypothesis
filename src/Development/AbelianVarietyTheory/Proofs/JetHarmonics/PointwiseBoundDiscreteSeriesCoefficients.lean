@@ -6,7 +6,9 @@ import Formalism.HermitianCurvature.HerGenC
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularityAtPlaceOfSubadditive
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesKFiniteCoeffCapelliEigenDecayStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointwiseBoundCapelliEigenfunctionStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointwiseBoundCapelliEigenfunction
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.Cut_BPEq
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutLimENF
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesCoefficientExpansionBoundBallStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HcParamSubIntegral
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InterlaceHalf
@@ -28,7 +30,7 @@ theorem thmBpAt_mono {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPr
 theorem pointwise_bound_discreteSeries : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → ThmBpDS := by
   intro hXi hP Ch C₀ hC₀
   have hC : 0 ≤ 2 * |Ch| := by positivity
-  obtain ⟨C₄, Cc, heig⟩ := GlobalTheory.T.pointwiseBound_capelli_eigenfunction hXi hP (2 * |Ch|) (2 * |Ch| / 2 + 6) C₀ hC (by positivity) hC₀
+  obtain ⟨C₄, Cc, heig⟩ := _root_.GlobalTheory.BpEigen.pointwise_bound_eigenfunction hXi hP (2 * |Ch|) (2 * |Ch| / 2 + 6) C₀ hC (by positivity) hC₀
   obtain ⟨G₁, hnum⟩ := GlobalTheory.BpStdNum.num_of_stdHyp (C₀ + 10) (by positivity)
   obtain ⟨G₂, hgrid⟩ := GlobalTheory.StdGrid.std_grid
   obtain ⟨G₃, -, hmar⟩ := GlobalTheory.margin_arith_closing Cc C₀ hC₀

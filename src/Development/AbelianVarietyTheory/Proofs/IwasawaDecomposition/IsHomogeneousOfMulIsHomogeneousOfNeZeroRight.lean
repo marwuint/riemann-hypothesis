@@ -43,7 +43,4 @@ theorem isHomogeneous_of_mul_isHomogeneous_right {σ : Type} (P Q : MvPolynomial
   · subst hk; exact homogeneousComponent_isHomogeneous k P
   · rw [hzero k hk]; exact isHomogeneous_zero _ _ _
 
-example : ∀ {σ : Type} (P Q : MvPolynomial σ ℝ) (a b : ℕ), Q ≠ 0 → Q.IsHomogeneous b → (P * Q).IsHomogeneous (a + b) → P.IsHomogeneous a :=
-  fun P Q a b => isHomogeneous_of_mul_isHomogeneous_right P Q a b
-
 end GlobalTheory.GrassTop

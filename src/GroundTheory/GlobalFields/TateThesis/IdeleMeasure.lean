@@ -468,26 +468,11 @@ theorem measurePreserving_prodEquiv :
   funext x
   exact (IdeleGroup.prodEquiv K).apply_symm_apply x
 
-theorem ideleMeasure_preimage_prod {A : Set (InfiniteAdeleRing K)ˣ}
-    {B : Set (FiniteAdeleRing (𝓞 K) K)ˣ} (hA : MeasurableSet A) (hB : MeasurableSet B) :
-    ideleMeasure K (IdeleGroup.prodEquiv K ⁻¹' (A ×ˢ B)) =
-      infiniteIdeleMeasure K A * finiteIdeleMeasure K B := by
-  rw [(measurePreserving_prodEquiv K).measure_preimage (hA.prod hB).nullMeasurableSet,
-    Measure.prod_prod]
-
 theorem integral_ideleMeasure {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : IdeleGroup K → E) :
     ∫ x, f x ∂ideleMeasure K = ∫ p, f ((IdeleGroup.prodEquiv K).symm p)
       ∂(infiniteIdeleMeasure K).prod (finiteIdeleMeasure K) := by
   exact integral_map_equiv (IdeleGroup.prodEquiv K).symm.toHomeomorph.toMeasurableEquiv f
-
-theorem standardOpenSubgroup_eq_preimage :
-    (IdeleGroup.standardOpenSubgroup K : Set (IdeleGroup K)) =
-      IdeleGroup.prodEquiv K ⁻¹' (Set.univ ×ˢ (finiteIntegralUnits K : Set _)) := by
-  ext x
-  simp only [SetLike.mem_coe, Set.mem_preimage, Set.mem_prod, Set.mem_univ, true_and]
-  rw [mem_finiteIntegralUnits, IdeleGroup.mem_standardOpenSubgroup]
-  rfl
 
 end Preserving
 

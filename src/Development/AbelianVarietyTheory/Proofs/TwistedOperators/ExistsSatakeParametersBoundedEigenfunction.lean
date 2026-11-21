@@ -3,9 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsParamFunVIffIsSysParamDOfLevel
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitPlOfTwoMem
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdelicSphericalEigenfunctionLocalHeckeAlgebraEigStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParamTrivialBoundUnitaryGLStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParameterTrivialBoundUnramifiedUnitaStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BoundedAutomorphicRightTranslationUnitarisableBoStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParamTrivialBoundUnitaryGL
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParameterTrivialBoundUnramifiedUnita
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TrivialParameterBound
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BoundedAutomorphicRightTranslationUnitarisableBo
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteVolumeAdelicUnitaryQuotient
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum GlobalTheory.LFun GlobalTheory.AdelicU GlobalTheory.PRep GlobalTheory.FinZeta GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.LiftRows
 open Formalism.IndefR.Lev (levG levChi IsBaseFrame)
@@ -98,7 +100,7 @@ theorem exists_param_at (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V →
     refine ⟨a, Subtype.val_injective ?_⟩
     have := heckeVec_map_of_injective (K := Kv V v) (bddAut V).subtype Subtype.val_injective hint hh x
     exact this.trans ha
-  have hρU : IsUnitarisable ρ := isUnitarisable_comp (GlobalTheory.T.boundedAutomorphicRightTranslation_unitarisable_bounded D V).1 _
+  have hρU : IsUnitarisable ρ := isUnitarisable_comp (_root_.GlobalTheory.FinZeta.bddRep_unitarisable_and_bounded D V).1 _
   have hH := (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V
   have hL := GlobalTheory.HeckeDual.isLattice_frameLat V
   have hd := GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D V v
@@ -108,7 +110,7 @@ theorem exists_param_at (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V →
   rcases (exists_isInertChart _ (isCMExt_host D) v).1 hun with hs | ⟨w', hw'⟩
   · obtain ⟨e, he, -, -⟩ := SplitChart.exists_isSplitChart (isCMExt_host D) hH hL.fg hL.span_eq_top h hs hd
     have hfix' := (mem_fixed_comp_symm (ρ := ρ) e he.2).2 hxfix
-    obtain ⟨B, hB, hbd⟩ := GlobalTheory.T.exists_satakeParam_trivialBound_unitaryGL D.host.E w V.rank (bddAut V) (ρ.comp e.symm.toMonoidHom)
+    obtain ⟨B, hB, hbd⟩ := _root_.GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound D.host.E w V.rank (bddAut V) (ρ.comp e.symm.toMonoidHom)
       (isUnitarisable_comp hρU _) x hx0 hfix' fun h' hh' => by
         rw [heckeVec_comp_symm e he.2 hh'.1 hxfix]
         exact hxeig _ (comp_mem_hecke e he.2 hh')
@@ -121,7 +123,7 @@ theorem exists_param_at (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V →
     obtain ⟨⟨ϖ, hϖ⟩, hch⟩ := hconj τ hτ
     obtain ⟨e, he, -, -⟩ := hch V.rank V.gram (frameLat V) hH hL.fg hL.span_eq_top hd
     have hfix' := (mem_fixed_comp_symm (ρ := ρ) e he.2.2).2 hxfix
-    obtain ⟨α, hα, hbd⟩ := GlobalTheory.T.exists_satakeParameter_trivialBound_unramifiedUnitary (w.adicCompletion D.host.E) ϖ τ (qV D.host.F v) V.rank hϖ (bddAut V)
+    obtain ⟨α, hα, hbd⟩ := _root_.GlobalTheory.Twist.satParam_exists_trivialBound (w.adicCompletion D.host.E) ϖ τ (qV D.host.F v) V.rank hϖ (bddAut V)
       (ρ.comp e.symm.toMonoidHom) (isUnitarisable_comp hρU _) x hx0 hfix' fun h'' hh'' => by
         rw [heckeVec_comp_symm e he.2.2 hh''.1 hxfix]
         exact hxeig _ (comp_mem_hecke e he.2.2 hh'')

@@ -78,21 +78,6 @@ theorem inRCone_self {X : Type} [AddCommGroup X] {m : ℕ} (γ : Fin m → Linea
     rw [Finset.sum_eq_single j (fun i _ hi => by simp [Pi.single_apply, hi]) (by simp)]
     simp⟩
 
-example : InRCone ![mulForm] ((2 : ℤ) • mulForm) ∧ ¬ InRCone ![mulForm] (-mulForm) := by
-  refine ⟨⟨![2], fun i => by fin_cases i; norm_num, LinearMap.ext₂ fun a b => by simp⟩, ?_⟩
-  rintro ⟨c, hc, h⟩
-  have := LinearMap.congr_fun₂ h 1 1
-  simp at this
-  linarith [hc 0]
-
-example (ψ : InvFun O) : IsCentreSet bar q ψ (zeroFun O) := fun X _ _ _ _ _ =>
-  ⟨fun β _ _ => Or.inl (zeroFun_evalZ β), fun β _ _ h => by simp at h, fun _ _ _ β _ _ _ _ _ h => by simp at h⟩
-
-example : IsFaceCut ![mulForm] (Function.Embedding.ofIsEmpty : Fin 0 ↪ Fin 1)
-    (LinearMap.applyₗ 1 ∘ₗ LinearMap.applyₗ 1) := by
-  refine ⟨fun j => by simp, fun j => ?_⟩
-  simp
-
 theorem isBaryStage_start {ψ lab : InvFun O} (hψ : IsPolyFan bar q ψ) {N : ℕ}
     (hN : ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q →
       ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → lab.evalZ β ≤ N) :
@@ -103,9 +88,6 @@ theorem isBaryStage_start {ψ lab : InvFun O} (hψ : IsPolyFan bar q ψ) {N : �
   refine ⟨m, 0, γ, Fin.elim0, by rw [e]; exact hγ, hγ, fun j => by rw [e]; exact inRCone_self γ j,
     fun i => i.elim0, fun i => i.elim0, fun β hβ hp _ => hN X hX β hβ hp, fun β _ _ h h' => (h' (e ▸ h)).elim,
     fun d c _ => funext fun i => i.elim0⟩
-
-example : IsBaryStage id 1 (InvFun.minVal ℤ) (zeroFun ℤ) (InvFun.minVal ℤ) 0 :=
-  isBaryStage_start isPolyFan_minVal_one fun _ _ _ _ _ _ β _ _ => by simp
 
 end Basic
 

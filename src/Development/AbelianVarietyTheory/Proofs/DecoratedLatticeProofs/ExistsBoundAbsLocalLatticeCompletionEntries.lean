@@ -18,6 +18,4 @@ theorem absFin_latLoc_le : ∀ {F E : Type} [Field F] [NumberField F] [Field E] 
   | (intros; apply @_root_.GlobalTheory.LocalLatticeBound.exists_bound_latLoc <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.LocalLatticeBound.exists_bound_latLoc ..)
 
-example : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F)), ∃ C : ℝ≥0, ∀ y ∈ latLoc F L v, ∀ i, absFin F v (y i) ≤ C := @absFin_latLoc_le
-
 end GlobalTheory

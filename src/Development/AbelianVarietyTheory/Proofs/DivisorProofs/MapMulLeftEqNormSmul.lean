@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLinearEquivAddHaarLocalFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLinearEquivAddHaarLocalField
 
 open MeasureTheory Matrix GlobalTheory.KSp GlobalTheory.SplitUnitary
 open GlobalTheory.WeilM (UG IsQuad IsHerm ResEtaPow)
@@ -24,6 +24,6 @@ theorem map_mul_left_eq_norm_smul (F : Type) [Field F] [CharZero F] [ValuativeRe
     rw [LinearEquiv.coe_det, Units.coe_map, Algebra.norm_apply]
     rfl
   rw [← hT]
-  exact GlobalTheory.T.map_linearEquiv_addHaar_localField F E μ T
+  exact _root_.GlobalTheory.KSp.map_linearEquiv_haar F E μ T
 
 end GlobalTheory.KSp

@@ -164,30 +164,6 @@ private theorem spl_int {B : Type} [CommRing B] [Algebra B K] (X : M4 B) (u : (M
 
 end Fld
 
-private theorem spl_local (R S : Type) [CommRing R] [HenselianLocalRing R] [CommRing S] [IsDomain S] [Algebra R S]
-    [Module.Finite R S] : IsLocalRing S := by
-  obtain ⟨q, hq⟩ := Ideal.exists_maximal S
-  obtain ⟨e, he, h⟩ := GlobalTheory.exists_idempotent_notMem_iff_of_henselian R q
-  refine IsLocalRing.of_unique_max_ideal ⟨q, hq, fun n hn => (h n hn).1 ?_⟩
-  rcases IsIdempotentElem.iff_eq_zero_or_one.1 he with rfl | rfl
-  · exact absurd q.zero_mem ((h q hq).2 rfl)
-  · exact (Ideal.ne_top_iff_one n).1 hn.ne_top
-
-private theorem spl_intOf {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : ‖x‖ ≤ 1) : IsIntegral ℤ_[l] x := by
-  have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
-  rw [h0, spectralValue_le_one_iff (minpoly.monic hi)] at h
-  have hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l]) :=
-    (Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩
-  obtain ⟨q, hq, -, hqm⟩ := Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)
-  exact ⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
-
-open Polynomial in
-private theorem spl_norm_lt {l : ℕ} [Fact l.Prime] {O R : Type} [CommRing O] [Algebra ℤ_[l] O]
-    [Algebra O (PadicAlgCl l)] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] [CommRing R] [IsLocalRing R] [Algebra O R]
-    (y : R →ₐ[O] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
-  _root_.UpperTheory.Reformulated.B.NormLtOne.norm_lt_one y a ha
-
 private theorem spl_near {l : ℕ} [Fact l.Prime] {O B : Type} [CommRing O] [Algebra ℤ_[l] O]
     [Algebra O (PadicAlgCl l)] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] [CommRing B] [IsDomain B] [HenselianLocalRing B]
     [Algebra O B] (x y : B →ₐ[O] PadicAlgCl l) (d : O) (hd : algebraMap O (PadicAlgCl l) d ≠ 0) (t : B) (ht : x t = 0)

@@ -1,6 +1,7 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsDiagFormDiv
+import GroundTheory.HeightsAndTheta.Heights.Intersections.PDiagOrd
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFFibreSum
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter
@@ -71,101 +72,7 @@ theorem length_eq_one_of_sat (J W : Ideal A) [W.IsPrime] (hJ : J ≤ W) (hs : �
 
 end Length
 
-section Graded
-
-variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
-
-theorem isWeightedHomogeneous_multiConeMap (c : (Σ k, ι k) → Φ) {p : MRing ι} {m : K → ℕ}
-    (hp : IsWeightedHomogeneous (fun q : Σ k, ι k => (Pi.single q.1 1 : K → ℕ)) p m) :
-    IsWeightedHomogeneous (fun k : K => (Pi.single k 1 : K → ℕ)) (T.multiConeMap c p) m := by
-  rw [DiagRAux.multiConeMap_of_homog c p m ((isMultiHomog_iff_weighted p m).2 hp)]
-  have := (isWeightedHomogeneous_C (fun k : K => (Pi.single k 1 : K → ℕ)) (aeval c p)).mul
-    (IsWeightedHomogeneous.prod Finset.univ (fun k => (X k : MvPolynomial K Φ) ^ m k)
-      (fun k => m k • (Pi.single k 1 : K → ℕ)) (fun k _ => (isWeightedHomogeneous_X Φ _ k).pow (m k)))
-  convert this using 1
-  funext k
-  simp [Finset.sum_apply, Pi.single_apply]
-
-theorem component_mem_ker (c : (Σ k, ι k) → Φ) {f : MRing ι} (hf : f ∈ RingHom.ker (T.multiConeMap c))
-    (m : K → ℕ) :
-    weightedHomogeneousComponent (fun q : Σ k, ι k => (Pi.single q.1 1 : K → ℕ)) m f ∈
-      RingHom.ker (T.multiConeMap c) := by
-  rw [RingHom.mem_ker] at hf ⊢
-  have hsum := congrArg (weightedHomogeneousComponent (fun k : K => (Pi.single k 1 : K → ℕ)) m) hf
-  rw [← sum_weightedHomogeneousComponent (fun q : Σ k, ι k => (Pi.single q.1 1 : K → ℕ)) f,
-    finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f), map_sum, map_sum, map_zero] at hsum
-  rw [← (isWeightedHomogeneous_multiConeMap c
-    (weightedHomogeneousComponent_isWeightedHomogeneous m f)).weightedHomogeneousComponent_same, ← hsum]
-  by_cases hm : weightedHomogeneousComponent (fun q : Σ k, ι k => (Pi.single q.1 1 : K → ℕ)) m f = 0
-  · rw [hm, map_zero, map_zero]
-    symm
-    refine Finset.sum_eq_zero fun b _ => ?_
-    by_cases hb : b = m
-    · rw [hb, hm, map_zero, map_zero]
-    · exact (isWeightedHomogeneous_multiConeMap c
-        (weightedHomogeneousComponent_isWeightedHomogeneous b f)).weightedHomogeneousComponent_ne m (Ne.symm hb)
-  · rw [Finset.sum_eq_single m]
-    · intro b _ hb
-      exact (isWeightedHomogeneous_multiConeMap c
-        (weightedHomogeneousComponent_isWeightedHomogeneous b f)).weightedHomogeneousComponent_ne m (Ne.symm hb)
-    · intro h
-      exact absurd ((Set.Finite.mem_toFinset _).2 hm) h
-
-end Graded
-
 end DiagonalOrderOne
-
-open DiagonalOrderOne in
-
-theorem DiagOrdOne.proof (hF : DiagFormDiv.Statement) : DiagOrdOne.Statement := by
-  intro Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hS hG hD hx a ha n g h hg hh hP hq
-  set P := T.wwIdeal x δ e φ (a 0) (a 1) with hPdef
-  set Δ := T.wwIdeal x δ e φ (a 0) (a 0) with hΔdef
-  have hΔp : Δ.IsPrime := RingHom.ker_isPrime _
-  have hPΔ : P ≤ Δ := DiagonalOrder.wwIdeal_le_diag x δ e φ a ha
-  have hhΔ : h ∉ Δ := by
-    refine (DiagRAux.not_mem_ker_iff_aeval_ne _ h _ hh).2 ?_
-    rw [DiagonalOrder.aeval_diag_eq x δ e φ (a 0) (a 1) hh]
-    exact (DiagRAux.not_mem_ker_iff_aeval_ne _ h _ hh).1 hP
-  have hJ : P ⊔ Ideal.span {g} ≤ Δ := sup_le hPΔ
-    ((Ideal.span_singleton_le_iff_mem _).2 (DiagFormDiv.mem_diag_of_quot x δ e φ a ha hg hh hq))
-  have hhom : ∀ (α : T.WBlk → ℕ) (d : MRing (T.wwIdx ι ν κ)), IsMultiHomog d α → d ∈ Δ →
-      ∃ u ∉ Δ, u * d ∈ P ⊔ Ideal.span {g} := by
-    intro α d hd hdΔ
-    obtain ⟨γ, β, s, r, hs, hr, hdeg, hsΔ, hv⟩ := hF Ω ι ν κ E Φ x B e φ δ hS hG hD hx a ha α d hd hdΔ
-    refine ⟨s * h, fun hm => (hΔp.mem_or_mem hm).elim hsΔ hhΔ, ?_⟩
-    have hdeg' : β + T.wwDeg n 1 = γ + T.wwDeg (n + 3) 0 + α := by
-      funext k
-      have := hdeg k
-      cases k <;> simp only [T.wwDeg, Pi.add_apply] at this ⊢ <;> omega
-    have hm : IsMultiHomog (s * h * d - r * g) (γ + T.wwDeg (n + 3) 0 + α) :=
-      exHomog_sub (exHomog_mul (exHomog_mul hs hh) hd) (hdeg' ▸ exHomog_mul hr hg)
-    have hmP : s * h * d - r * g ∈ P := by
-      by_contra hn
-      apply (DiagRAux.not_mem_ker_iff_aeval_ne _ _ _ hm).1 hn
-      rw [map_sub, map_mul, map_mul, map_mul, hq]
-      linear_combination (aeval (T.wwCoord x δ e φ (a 0) (a 1)) h) * hv
-    have e' : s * h * d = (s * h * d - r * g) + r * g := by ring
-    rw [e']
-    exact Ideal.add_mem _ (Ideal.mem_sup_left hmP)
-      (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self g)))
-  have hsat : ∀ d ∈ Δ, ∃ u ∉ Δ, u * d ∈ P ⊔ Ideal.span {g} := by
-    intro d hd
-    rw [← sum_weightedHomogeneousComponent (fun q : Σ k, T.wwIdx ι ν κ k => (Pi.single q.1 1 : T.WBlk → ℕ)) d,
-      finsum_eq_sum _ (weightedHomogeneousComponent_finsupp d)]
-    refine Finset.sum_induction _ (fun y => ∃ u ∉ Δ, u * y ∈ P ⊔ Ideal.span {g}) ?_ ⟨1, ?_, by simp⟩ ?_
-    · rintro y z ⟨u, hu, huy⟩ ⟨v, hv, hvz⟩
-      refine ⟨u * v, fun hm => (hΔp.mem_or_mem hm).elim hu hv, ?_⟩
-      have e' : u * v * (y + z) = v * (u * y) + u * (v * z) := by ring
-      rw [e']
-      exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ huy) (Ideal.mul_mem_left _ _ hvz)
-    · exact fun h1 => hΔp.ne_top ((Ideal.eq_top_iff_one Δ).2 h1)
-    · intro m _
-      exact hhom m _ ((isMultiHomog_iff_weighted _ m).2 (weightedHomogeneousComponent_isWeightedHomogeneous m d))
-        (component_mem_ker _ hd m)
-  unfold multAt
-  rw [dif_pos hΔp, length_eq_one_of_sat _ Δ hJ hsat]
-  rfl
 
 end
 

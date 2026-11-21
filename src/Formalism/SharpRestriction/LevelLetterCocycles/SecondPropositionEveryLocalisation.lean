@@ -9,13 +9,6 @@ open Formalism.BasicNotions
 
 namespace Formalism.MainNotions.LargeLevelLemmas
 
-theorem second_proposition_every_localisation {D : D7} (i : D.nd.Loc) : Conclusion2 i :=
-  endomorphism_bound_at_good_points (Formalism.MainNotions.TruncatedSeriesCountingIdentities.second_statement D) i
-
-theorem second_statement (D : D7) : HodgeTateFromSandwich D := by
-  show ∀ i, Conclusion2 i
-  exact fun i => second_proposition_every_localisation i
-
 namespace Br
 
 open Formalism.NG Matrix Module Kronecker

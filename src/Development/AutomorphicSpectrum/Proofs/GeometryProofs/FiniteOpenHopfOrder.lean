@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.Models
+import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDenominatorRegularStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionIffSectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValuesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionIffSection
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
+
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
@@ -345,7 +346,7 @@ theorem hopfOrder_of_finOpenSub : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIn
   have hinj : Function.Injective Φ := by
     rw [injective_iff_map_eq_zero]
     intro s hs
-    refine GlobalTheory.T.section_eq_zero_of_values R T Γ U s fun t h => ?_
+    refine _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic R T Γ U s fun t h => ?_
     have := hΦ s ⟨t, h⟩ h
     rw [hs] at this
     simpa using this
@@ -358,7 +359,7 @@ theorem hopfOrder_of_finOpenSub : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIn
     have h1 : ∀ h : subH Γ hF, ∃ d : R, d ≠ 0 ∧ d • (Pi.single h 1 : subH Γ hF → R) ∈ Φ.range := by
       intro h
       obtain ⟨d, hd, hreg⟩ := exists_den Γ hc (fun t => if t = (h : T) then 1 else 0)
-      obtain ⟨s, hs⟩ := (GlobalTheory.T.regular_function_iff_section R T Γ U _).1 hreg
+      obtain ⟨s, hs⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.BT.regularAt_forall_iff_exists_section R T Γ U _).1 hreg
       refine ⟨d, hd, (hA _).2 ⟨s, fun t ht => ?_⟩⟩
       rw [hs t ht]
       by_cases e : t = h

@@ -15,25 +15,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 
 theorem inUse (p : PtAt ex Csz) (t : Tup p) : InUse p t := p.charW.tup.mu_used t
 
-theorem mu_eq (p : PtAt ex Csz) : (p.S false).μ = p.R.mu ∧ p.P.A3.fam3.base3.μ0 = p.P.A3.A.μ0 := ⟨rfl, rfl⟩
-
 theorem toR_eq (p : PtAt ex Csz) (t : Tup p) (x) :
     p.F.cr.toR (p.R.toCx3 p.F).zs false t x =
       eV0 p t (((p.P.A3.A.fam.R t).zE (p.P.A3.A.fam.lvl p.P.P0 p.P.ψ0) ((p.R.toCx3 p.F).zs.Z t)).mulVec x) := rfl
-
-theorem mem_goodPart_iff (p : PtAt ex Csz) (t : Tup p) (W : Submodule D.what₂.LL (p.P.A3.A.fam.R t).S.Forms) (x) :
-    x ∈ (p.P.A3.A.fam.R t).inV0 (p.P.A3.A.fam.lvl p.P.P0 p.P.ψ0) W ↔ eV0 p t x ∈ W := by
-  constructor
-  · rintro ⟨y, hy, e⟩
-    have : eV0 p t x = y := (p.P.A3.A.fam.R t).S.basis.equivFun.symm_apply_eq.2 e.symm
-    exact this ▸ hy
-  · intro h
-    exact ⟨_, h, (p.P.A3.A.fam.R t).S.basis.equivFun.apply_symm_apply _⟩
-
-theorem hd_eq (ij : Sq D) : sqRank D ij / 2 = SqNum.halfRank D ij.1 ij.2 := by
-  unfold sqRank SqNum.halfRank
-  congr 1
-  simp only [rankV]; ring
 
 theorem isIntExp_mono {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} {C C' : ℝ} {dl}
     (hb : 0 ≤ Real.log sc.b) (h : SqNum.IsIntExp G C dl) (hC : C ≤ C') : SqNum.IsIntExp G C' dl := by
@@ -66,10 +50,6 @@ theorem mulVec_eq_of_basis {G : Grid p CF} {W : G.Weil} {n : ℕ} (a : SlopeTest
     rw [e, map_smul, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul]
     refine Eq.trans ?_ (vK_smul a.ch t c _ i).symm
     rw [← h]; simp
-
-theorem entry {d : FunIn p CF} {a : SlopeTestRemainingChoices p d.G d.W d.n} (h : TieV d a) (t : Tup p) (i k) :
-    D.what₂.embLL (d.V t i k) = vK a.ch t (eV0 p t (Pi.single k 1)) i := by
-  rw [← h t (inUse p t)]; simp
 
 theorem ratio_eq {d : FunIn p CF} {a : SlopeTestRemainingChoices p d.G d.W d.n} (h : TieAt d a) (t : Tup p) :
     cTot a.ch p.P.A3.A.μ0 ≠ 0 ∧ D.what₂.embLL (∏ ij, d.rq t ij) = ratio a.ch t := by
@@ -109,26 +89,6 @@ theorem exists_tie {G : Grid p CF} {W : G.Weil} (hW : W.Over p.R.toRealDat) {n :
   exact ⟨⟨G, W, hW, n, X', M, fun t => Matrix.of fun i k => v t (eV0 p t (Pi.single k 1)) i, fun t ij => r ij.1 ij.2 t, dl, Sd, Se,
     N0, zA, zA', zT, zTd, gT, ch, Bw⟩, rfl, a, ha, hM,
     fun t _ x i => mulVec_eq_of_basis a t (hS t) _ (fun i k => hv _ _ _) x i, hq⟩
-
-theorem pos_of_tie (d : FunIn p CF) (h : Comparison₂ p CF d) : 0 < d.n := by
-  obtain ⟨a, -⟩ := h
-  obtain ⟨i⟩ := GlobalTheory.TestLat.SlopeModel.nonempty_idx (LaP d.G)
-  exact (a.e.symm (⟨fun _ => default, Quotient.mk'' 1⟩, i)).pos
-
-theorem matrix_unique {G : Grid p CF} {W : G.Weil} {n : ℕ} (a : SlopeTestRemainingChoices p G W n) (t : Tup p)
-    (V V' : Matrix (Fin n) (Fin ((Df p).nV t)) D.what₂.LL)
-    (h : ∀ x i, D.what₂.embLL (V.mulVec x i) = vK a.ch t (eV0 p t x) i)
-    (h' : ∀ x i, D.what₂.embLL (V'.mulVec x i) = vK a.ch t (eV0 p t x) i) : V = V' := by
-  ext i k
-  simpa using D.what₂.embLL.injective ((h (Pi.single k 1) i).trans (h' (Pi.single k 1) i).symm)
-
-theorem ofGrid_tie {G : Grid p CF} {W : G.Weil} {hW n V} (h : Comparison₂ p CF (.ofGrid G W hW n V)) :
-    (∀ w : PlL D, ((D.host.pde : ℕ) : 𝓞 D.what₂.LL) ∈ w.asIdeal) ∧
-      ∃ (S : Finset ℕ) (del : ℕ → ℝ), 1 ≤ del 2 ∧ Formalism.PairingDivisionLocalBalance.wt (K := D.what₂.LL) S del = 0 := by
-  obtain ⟨a, h⟩ := h
-  obtain ⟨S, del, -, h2, -, h4⟩ := h.sq.int
-  have hN : 1 ≤ bigN D := by have := D.R.m_add_three_le_k; unfold bigN; omega
-  exact ⟨fun w => (h.sq.choice w).1 rfl, S, del, h2.one_le_two hN (Nat.cast_nonneg _), h4.symm⟩
 
 end GlobalTheory.BigTop.Fun.TieModel
 

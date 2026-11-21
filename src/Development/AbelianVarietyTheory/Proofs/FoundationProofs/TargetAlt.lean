@@ -43,14 +43,6 @@ private theorem isIrrSub_of_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (H
     intro w _
     exact (hback w).mp (htop ▸ Submodule.mem_top)
 
-theorem main {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (H H' : Subgroup Γ) (hHH : ∀ s ∈ H, s ∈ H')
-    (r r' : Γ →* GL (Fin n) k) (g : GL (Fin n) k)
-    (hconj : ∀ s : Γ, (r' : Γ → GL (Fin n) k) s = g * (r : Γ → GL (Fin n) k) s * g⁻¹)
-    (hirr : IsIrrSub (MonoidHom.comp r (Subgroup.subtype H)) ⊤) :
-    IsIrrSub (MonoidHom.comp r' (Subgroup.subtype H')) ⊤ := by
-  obtain ⟨hne, -, hmin⟩ := hirr
-  exact isIrrSub_of_conj H H' hHH r r' g hconj hne hmin
-
 theorem target : ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] {n : ℕ} (H H' : Subgroup Γ), (∀ s ∈ H, s ∈ H') → ∀ (r r' : Γ →* GL (Fin n) k) (g : GL (Fin n) k), (∀ (s : Γ), (r' : Γ → GL (Fin n) k) s = g * (r : Γ → GL (Fin n) k) s * g⁻¹) → Formalism.MainNotions.N.IsIrrSub (MonoidHom.comp r (Subgroup.subtype H)) ⊤ → Formalism.MainNotions.N.IsIrrSub (MonoidHom.comp r' (Subgroup.subtype H')) ⊤ := by
   intro Γ k _ _ n H H' hHH r r' g hconj hirr
   obtain ⟨hne, -, hmin⟩ := hirr

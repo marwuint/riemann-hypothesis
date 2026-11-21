@@ -131,48 +131,6 @@ theorem nsq_rho_split (ε : Fin n → Bool) : nsq (rho n) = nsq (rhoC ε) + nsq 
     exact (Equiv.ofBijective σ hbij).sum_comp (fun b => rho n b * rho n b)
   rw [← hs, carU_nsq_add, dot_rhoC_rhoHol]; ring
 
-section Unitary
-variable {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
-
-theorem inner_dOp_left {ε : Fin n → Bool} {E cp cm : Fin n → Fin n → Module.End ℂ W}
-    (hU : IsInfUnitary ε E) (hEC : CommutesCAR E cp cm)
-    (hadj : ∀ (i a : Fin n) (x y : W), inner ℂ (cp i a x) y = inner ℂ x (cm i a y)) (x y : W) :
-    inner ℂ (dOp ε E cp x) y = inner ℂ x (dOp' ε E cm y) := by
-  unfold dOp dOp'
-  simp only [LinearMap.sum_apply, LinearMap.neg_apply, sum_inner, inner_neg_right, inner_sum,
-    ← sum_neg_distrib]
-  refine sum_congr rfl fun i hi => sum_congr rfl fun a ha => ?_
-  simp only [plusIdx, minusIdx, mem_filter, mem_univ, true_and] at hi ha
-  have hc := LinearMap.congr_fun (hEC i a i a).2 y
-  simp only [Module.End.mul_apply] at hc ⊢
-  rw [hU, hadj, ← hc]
-  simp [adjSign, hi, ha]
-
-theorem inner_dOp'_left {ε : Fin n → Bool} {E cp cm : Fin n → Fin n → Module.End ℂ W}
-    (hU : IsInfUnitary ε E) (hEC : CommutesCAR E cp cm)
-    (hadj : ∀ (i a : Fin n) (x y : W), inner ℂ (cp i a x) y = inner ℂ x (cm i a y)) (x y : W) :
-    inner ℂ (dOp' ε E cm x) y = inner ℂ x (dOp ε E cp y) := by
-  have hadj' : ∀ (i a : Fin n) (u v : W), inner ℂ (cm i a u) v = inner ℂ u (cp i a v) := by
-    intro i a u v
-    rw [← inner_conj_symm, ← hadj i a v u, inner_conj_symm]
-  unfold dOp dOp'
-  simp only [LinearMap.sum_apply, LinearMap.neg_apply, sum_inner, inner_neg_left, inner_sum,
-    ← sum_neg_distrib]
-  refine sum_congr rfl fun i hi => sum_congr rfl fun a ha => ?_
-  simp only [plusIdx, minusIdx, mem_filter, mem_univ, true_and] at hi ha
-  have hc := LinearMap.congr_fun (hEC a i i a).1 y
-  simp only [Module.End.mul_apply] at hc ⊢
-  rw [hU, hadj', hc]
-  simp [adjSign, hi, ha]
-
-theorem D_symm {ε : Fin n → Bool} {E cp cm : Fin n → Fin n → Module.End ℂ W} (hU : IsInfUnitary ε E)
-    (hEC : CommutesCAR E cp cm) (hadj : ∀ (i a : Fin n) (x y : W), inner ℂ (cp i a x) y = inner ℂ x (cm i a y)) (x y : W) :
-    inner ℂ ((dOp ε E cp + dOp' ε E cm) x) y = inner ℂ x ((dOp ε E cp + dOp' ε E cm) y) := by
-  rw [LinearMap.add_apply, LinearMap.add_apply, inner_add_left, inner_add_right,
-    inner_dOp_left hU hEC hadj, inner_dOp'_left hU hEC hadj, add_comm]
-
-end Unitary
-
 section Value
 variable {W : Type*} [AddCommGroup W] [Module ℂ W]
 

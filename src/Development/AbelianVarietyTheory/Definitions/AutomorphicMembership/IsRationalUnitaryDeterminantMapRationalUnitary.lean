@@ -347,20 +347,4 @@ theorem toDtT_e1Q : letI := H.cmStar
   obtain ⟨k, hk⟩ := exists_eq_div_conj H z
   rw [← isUnitaryPointsMap_unitaryRationalPointsFiner H SQ k z hk, toDtT_mk, isRationalUnitaryDeterminantMap_rationalUnitary H k z hk]
 
-example (v : HeightOneSpectrum (𝓞 H.E)) (hv : v ∈ SQ) (x : (v.adicCompletion H.E)ˣ)
-    (hx : Valued.v ((x : v.adicCompletion H.E) - 1) = 1) : localIdele H.E v x ∉ congQ H SQ := fun h => by
-  have h1 : Valued.v (compAt v (localIdele H.E v x) - 1) < 1 := h.2.2 v (Or.inl hv)
-  rw [compAt_localIdele_self, hx] at h1
-  exact lt_irrefl _ h1
-
-example (χ : HChar H.E) (h : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker) : letI := H.cmStar
-    ∀ (k : (H.E)ˣ) (z : unitary H.E), (z : H.E) * H.conj (k : H.E) = k →
-      tildeQ H SQ χ (e1Q H SQ z) = χ.1 (finPartI H.E (diagUnits H.E k)) := by
-  intro k z hk
-  rw [← isUnitaryPointsMap_unitaryRationalPointsFiner H SQ k z hk, tildeQ_mk H SQ h]
-
-example (mu : Fin R.m → HChar H.E) : muTilQ H SQ mu 0 = 1 := by
-  unfold muTilQ
-  rw [dif_neg (by omega)]
-
 end GlobalTheory.Mem.Col2

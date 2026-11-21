@@ -56,14 +56,6 @@ def RenameMultiProjPrime.Statement : Prop :=
     (ι' : K' → Type) (E : S ≃ K') (σ : (Σ s, κ s) ≃ (Σ k', ι' k')), (∀ v, (σ v).1 = E v.1) →
     ∀ P : Ideal (MRing ι' R), IsMultiProjPrime P → IsMultiProjPrime (P.comap (rename σ))
 
-def SplitRelDeg.Statement : Prop :=
-  ∀ (F : Type u) [Field F] (K K' : Type) [DecidableEq K] [DecidableEq K'] (j : K ↪ K')
-    (ι' : K' → Type) (P' : Ideal (MRing ι' F)) [P'.IsPrime],
-      relDeg j P' = relDeg (Function.Embedding.inl : K ↪ K ⊕ blockCompl j) (splitPrime j P')
-
-abbrev swapVar : (Σ _ : Bool, Fin 2) ≃ (Σ _ : Bool, Fin 2) :=
-  Equiv.sigmaCongrLeft (β := fun _ : Bool => Fin 2) (Equiv.swap true false)
-
 end
 
 end GroundTheory.Heights₂.Heights.FieldNumbers

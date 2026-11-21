@@ -71,38 +71,9 @@ def LinkQ : Prop :=
     IsSecQ bk N k A Q Q' → IsSecQ bk N k A₁ Q₁ Q₁' → (∀ i j, (l : bk.S) ^ n ∣ (R * A₁ - A * R.map (frobS l bk.a)) i j) →
     ∀ i j, (l : Per.Acris l) ^ M ∣ (R.map (fA bk) * Q₁ - Q * R.map (f0 bk)) i j
 
-def LinkOp : Prop :=
-  ∀ (R : Type) [CommRing R] (φ : R →+* R) (π s : R), φ π = π → ∀ (d d' : ℕ) (Z Zs : Matrix (Fin d) (Fin d) R)
-    (Z₁ Zs₁ : Matrix (Fin d') (Fin d') R) (Pm R₀ : Matrix (Fin d) (Fin d') R), Pm.map φ = Pm → R₀.map φ = R₀ →
-    Zs * Z = s • (1 : Matrix (Fin d) (Fin d) R) → Z₁ * Zs₁ = s • (1 : Matrix (Fin d') (Fin d') R) →
-    (∀ i j, π ∣ (Pm * Z₁ - Z * R₀) i j) →
-    ∀ i j, π ∣ ((s • (Z.map φ * Zs)) * Pm - Pm * (s • (Z₁.map φ * Zs₁))) i j
-
 def FixW : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P : LocPrime l) (AI : LocAinf l P) (_ : LocTied l P AI) (n : ℕ), FixUr K n →
     ∀ s : bk.S, (phiA l ^ n) (f0 bk s) = f0 bk s
-
-def OpOne : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (τ₁ : Per.Acris l), IsUnit (iB l τ₁) → ∀ (K : FinExt l) (N k n d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l])
-    (y y' Q Q' : Matrix (Fin d) (Fin d) (Per.Acris l)) (U : Matrix (Fin d) (Fin d) (Per.Bcris l)),
-    y * y' = τ₁ ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) →
-    Q * Q' = (l : Per.Acris l) ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) →
-    IsPerU ρ U → iB l τ₁ ^ N • U = (y * Q).map (iB l) →
-    (y * Q) * (Q' * y') = (τ₁ ^ (2 * N) * (l : Per.Acris l) ^ (2 * k)) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) ∧
-    (Q' * y') * (y * Q) = (τ₁ ^ (2 * N) * (l : Per.Acris l) ^ (2 * k)) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) ∧
-    IsUnit (iB l (τ₁ ^ (3 * N) * (l : Per.Acris l) ^ (4 * k) * (phiA l ^ n) τ₁ ^ N)) ∧
-    IsOp ρ n (iB l (τ₁ ^ (3 * N) * (l : Per.Acris l) ^ (4 * k) * (phiA l ^ n) τ₁ ^ N))
-      (((τ₁ ^ (2 * N) * (l : Per.Acris l) ^ (2 * k)) • ((y * Q).map ⇑(phiA l ^ n) * (Q' * y'))).map (iB l))
-
-def OpEx : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ →
-    ∀ (P : LocPrime l) (AI : LocAinf l P) (_ : LocTied l P AI) (n : ℕ), FixUr K n →
-    ∀ (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ m, Frame bk N (tw.d' m) fun g => (tw.ρ' m g).val)
-      (F₀ : Frame bk N d fun g => (ρ g).val) (r : ℕ), (∀ m, (F m).IsCr) → F₀.IsCr →
-      (∀ n', ∃ m, n' ≤ m ∧ Link bk F₀.T (F m).T (tw.Pi m) n' r) →
-    ∃ (s : Per.Acris l) (V : Matrix (Fin d) (Fin d) (Per.Acris l)) (V' : ∀ m, Matrix (Fin (tw.d' m)) (Fin (tw.d' m)) (Per.Acris l)),
-      IsUnit (iB l s) ∧ IsOp ρ n (iB l s) (V.map (iB l)) ∧ (∀ m, IsOp (tw.ρ' m) n (iB l s) ((V' m).map (iB l))) ∧
-      ∀ M, ∃ m, M ≤ m ∧ ∀ i j, (l : Per.Acris l) ^ M ∣ (V * (tw.Pi m).map (zC l) - (tw.Pi m).map (zC l) * V' m) i j
 
 def FrEx : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (bk : BK K) (τp : Ainf l), bk.IsPer τp →
@@ -181,40 +152,10 @@ def ColInv : Prop :=
       (phiV P ↥L.1 (Fin a → ↥L.1) ^ n) (∑ i, v i ⊗ₜ[ℚ_[l]] (Polynomial.C (T.eB.symm (U i j)) : Bst P)) =
         ∑ i, v i ⊗ₜ[ℚ_[l]] (Polynomial.C (T.eB.symm ((Per.φB l ^ n) (U i j))) : Bst P)
 
-def WeilPhi : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
-    [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O), Induces Bw → ∀ (g : ↥(Weil h)) (n : ℕ), alpha l g = -(n : ℤ) →
-    FixUr Bw.Kw n ∧ ∀ (L : FinExt l) (a : ℕ) (R : Representation ↥L.1 ↥(GK Bw.Kw) (Fin a → ↥L.1))
-      [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P R)] (x : ↥(Dpst P R)), (x : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P) ∈ Dst P R →
-      ((weilD Bw h P R g x : ↥(Dpst P R)) : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P) = (phiV P ↥L.1 (Fin a → ↥L.1) ^ n) x
-
 def TestTr : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (d : ℕ) (s : Per.Bcris l) (v v₀ : Fin d → Per.Bcris l)
     (t : Fin d → Om l) (p : Om l), v = s • v₀ →
     (∑ i, t i ⊗ₜ (Polynomial.C (T.eB.symm (v₀ i)) : Bst P) : OB P) = p ⊗ₜ 1 → IsTr (uB T) s v t p
-
-def TieRep : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (ι : Om l ≃+* ℂ) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
-    (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
-    [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Induces Bw) (g : ↥(Weil h)) (n : ℕ), alpha l g = -(n : ℤ) →
-    ∀ (L : FinExt l) (a d : ℕ) (R : Representation ↥L.1 ↥(GK Bw.Kw) (Fin a → ↥L.1)) [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P R)],
-    Module.finrank ℂ (WDSpace P ι R) = a → ∀ (ρ : ↥(GK Bw.Kw) →* GL (Fin d) ℤ_[l]) (b : Fin d → Matrix (Fin a) (Fin a) ↥L.1)
-      (e : Fin d → ℤ_[l]), (∀ g j (k : Fin a), R g (fun i => b j i k) = ∑ i, ((ρ g).val i j : ℚ_[l]) • fun i' => b i i' k) →
-      ∑ i, (e i : ℚ_[l]) • b i = 1 → ∀ (s : Per.Bcris l) (V : Matrix (Fin d) (Fin d) (Per.Bcris l)), IsOp ρ n s V →
-      IsTr (uB T) s (V *ᵥ fun i => Per.zB l (e i)) (fun i => (((b i).trace : ↥L.1) : Om l))
-        (ι.symm (LinearMap.trace ℂ (WDSpace P ι R) (wdRho P ι Bw h hj R g)))
-
-def Comparison₂ : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (ι : Om l ≃+* ℂ) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
-    (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
-    [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Induces Bw) (g : ↥(Weil h)) (n : ℕ), alpha l g = -(n : ℤ) →
-    ∀ (a d : ℕ) (r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)), IsCrysAt P Bw r →
-    ∀ (ρ : ↥(GK Bw.Kw) →* GL (Fin d) ℤ_[l]) (b : Fin d → Matrix (Fin a) (Fin a) (Om l)) (e : Fin d → ℤ_[l]),
-      Reads ρ (r.comp Bw.e.symm.toMonoidHom) b e → ∀ (s : Per.Bcris l) (V : Matrix (Fin d) (Fin d) (Per.Bcris l)), IsOp ρ n s V →
-      IsTr (uB T) s (V *ᵥ fun i => Per.zB l (e i)) (fun i => (b i).trace) (wdTr P ι Bw h hj r g)
 
 end UpperTheory.Gal.ClosedPhiFromClosedTrace
 

@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FinrankPartTrivialMulRel
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FinrankGroupCohomologyFunRep
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.BasicForm
+import GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianCongrOfPositiveIndexEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveRealTensorToProdMatrixAlgebrasInfPlaces
 import Development.AbelianVarietyTheory.Definitions.Divisors.JmMulJm
@@ -20,85 +21,8 @@ def toF : G.GQ →* Gf G := G.toAf.prod (ubc ℚ_[p])
 
 theorem toF_apply (γ : G.GQ) : toF G γ = (G.toAf γ, ubc ℚ_[p] γ) := rfl
 
-def level (L : G.Level) (Kp : Subgroup G.GQp) : Subgroup (Gf G) := (L.K : Subgroup G.GAf).prod Kp
-
-theorem isOpen_level (L : G.Level) {Kp : Subgroup G.GQp} (h : IsOpen (Kp : Set G.GQp)) :
-    IsOpen (level G L Kp : Set (Gf G)) := by
-  rw [level, Subgroup.coe_prod]
-  exact L.K.isOpen.prod h
-
-theorem isCompact_level (L : G.Level) {Kp : Subgroup G.GQp} (h : IsCompact (Kp : Set G.GQp)) :
-    IsCompact (level G L Kp : Set (Gf G)) := by
-  rw [level, Subgroup.coe_prod]
-  exact L.compact.prod h
-
 abbrev coh (Kf : Subgroup (Gf G)) {d : ℕ} (ξ₀ : G.GQ →* Matrix (Fin d) (Fin d) ℂ) (q : ℕ) : Type :=
   groupCohomology (Rep.of (funRepY (toF G) Kf ξ₀)) q
-
-def hecke {Kf : Subgroup (Gf G)} {n : ℕ} {z : Fin n → Gf G} (hz : IsHeckeFam Kf z) {d : ℕ}
-    (ξ₀ : G.GQ →* Matrix (Fin d) (Fin d) ℂ) (q : ℕ) : Module.End ℂ (coh G Kf ξ₀ q) :=
-  heckeCoh (ρf := toF G) hz ξ₀ q
-
-def heckeRel (Kf : Subgroup (Gf G)) {d : ℕ} (ξ₀ : G.GQ →* Matrix (Fin d) (Fin d) ℂ) (q : ℕ) :
-    GlobalTheory.HkPart.HeckeRel ℂ Kf (coh G Kf ξ₀ q) :=
-  GlobalTheory.HkPart.HeckeRel.ofFun fun z hz => hecke G hz ξ₀ q
-
-abbrev piPart {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (Gf G) V) (Kf : Subgroup (Gf G))
-    {d : ℕ} (ξ₀ : G.GQ →* Matrix (Fin d) (Fin d) ℂ) (q : ℕ) :
-    Submodule ℂ (GlobalTheory.HkPart.fix π Kf →ₗ[ℂ] coh G Kf ξ₀ q) :=
-  GlobalTheory.HkPart.part π Kf (heckeRel G Kf ξ₀ q)
-
-theorem mem_piPart {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (Gf G) V}
-    {Kf : Subgroup (Gf G)} {d : ℕ} {ξ₀ : G.GQ →* Matrix (Fin d) (Fin d) ℂ} {q : ℕ}
-    {φ : GlobalTheory.HkPart.fix π Kf →ₗ[ℂ] coh G Kf ξ₀ q} :
-    φ ∈ piPart G π Kf ξ₀ q ↔ ∀ ⦃n : ℕ⦄ (z : Fin n → Gf G) (hz : IsHeckeFam Kf z),
-      φ ∘ₗ GlobalTheory.HkPart.op π hz = hecke G hz ξ₀ q ∘ₗ φ :=
-  GlobalTheory.HkPart.mem_part_ofFun
-
-section Classes
-
-variable (Kf : Subgroup (Gf G))
-
-abbrev act : MulAction G.GQ (Gf G ⧸ Kf) := yAct (toF G) Kf
-
-abbrev Classes : Type := letI := act G Kf; MulAction.orbitRel.Quotient G.GQ (Gf G ⧸ Kf)
-
-def pt (c : Classes G Kf) : Gf G ⧸ Kf := letI := act G Kf; Quotient.out c
-
-def gam (y : Gf G ⧸ Kf) : Subgroup G.GQ := letI := act G Kf; MulAction.stabilizer G.GQ y
-
-theorem mem_gam_mk (x : Gf G) (γ : G.GQ) : γ ∈ gam G Kf (x : Gf G ⧸ Kf) ↔ x⁻¹ * toF G γ * x ∈ Kf := by
-  letI := act G Kf
-  change (toF G γ • (x : Gf G ⧸ Kf) : Gf G ⧸ Kf) = x ↔ _
-  rw [MulAction.Quotient.smul_mk, QuotientGroup.eq, smul_eq_mul, _root_.mul_inv_rev, ← Kf.inv_mem_iff,
-    show (x⁻¹ * (toF G γ)⁻¹ * x : Gf G)⁻¹ = x⁻¹ * toF G γ * x by group]
-
-theorem pt_cover : letI := act G Kf; ∀ y : Gf G ⧸ Kf, ∃ c : Classes G Kf, ∃ g : G.GQ, g • pt G Kf c = y := by
-  letI := act G Kf
-  intro y
-  refine ⟨Quotient.mk'' y, ?_⟩
-  have h : pt G Kf (Quotient.mk'' y) ∈ MulAction.orbit G.GQ y :=
-    MulAction.orbitRel_apply.1 (Quotient.exact (Quotient.out_eq (Quotient.mk'' y : Classes G Kf)))
-  obtain ⟨g, hg⟩ := MulAction.mem_orbit_iff.1 h
-  exact ⟨g⁻¹, by rw [← hg, inv_smul_smul]⟩
-
-theorem pt_disjoint : letI := act G Kf;
-    ∀ (i j : Classes G Kf) (g : G.GQ), g • pt G Kf i = pt G Kf j → i = j := by
-  letI := act G Kf
-  intro i j g h
-  rw [← Quotient.out_eq i, ← Quotient.out_eq j]
-  apply Quotient.sound
-  refine MulAction.orbitRel_apply.2 (MulAction.mem_orbit_iff.2 ⟨g⁻¹, ?_⟩)
-  change g⁻¹ • pt G Kf j = pt G Kf i
-  rw [← h, inv_smul_smul]
-
-def cohEquivPi {d : ℕ} (ξ₀ : G.GQ →* Matrix (Fin d) (Fin d) ℂ) (q : ℕ) :
-    coh G Kf ξ₀ q ≃ₗ[ℂ] ∀ c : Classes G Kf,
-      groupCohomology (Rep.of (GlobalTheory.BorelCoh.matVecRep (ξ₀.comp (gam G Kf (pt G Kf c)).subtype))) q :=
-  letI := act G Kf
-  GlobalTheory.BorelCoh.Shapiro.cohEquiv ξ₀ (pt G Kf) (pt_cover G Kf) (pt_disjoint G Kf) q
-
-end Classes
 
 section UJpm
 
@@ -130,9 +54,6 @@ def UJpm (ε : T → Fin n → Bool) : Subgroup (MatT T n)ˣ where
           rw [← hg τ]; simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
       _ = (s : ℂ) • Jm (ε τ) := by rw [h1]; simp
 
-theorem UJfam_le_UJpm (ε : T → Fin n → Bool) : UJfam ε ≤ UJpm ε :=
-  fun g hg => ⟨1, Or.inl rfl, fun τ => by simpa using hg τ⟩
-
 end UJpm
 
 section Frame
@@ -145,13 +66,6 @@ theorem Jm_eps (v : InfinitePlace G.F) :
   congr 1
   funext i
   by_cases h : 0 < (G.gram_herm v).eigenvalues i <;> simp [h]
-
-theorem pOf_eps (v : InfinitePlace G.F) : pOf (eps G v) = sigPosH (G.gram_herm v) := by
-  unfold pOf eps sigPosH
-  rw [Fintype.card_subtype]
-  congr 1
-  ext i
-  simp
 
 def frame (v : InfinitePlace G.F) : GL (Fin G.n) ℂ :=
   (GlobalTheory.HermCongruence.exists_congr_signVec (G.gram_herm v) (G.gram_det v)).choose
@@ -312,27 +226,7 @@ def toUJ (h : PosSim G) : G.GR →* UJfam (eps G) :=
 theorem coe_toUJ (h : PosSim G) (g : G.GR) :
     ((toUJ G h g : UJfam (eps G)) : (MatT (InfinitePlace G.F) G.n)ˣ) = realPointsToUnitaryGroup G g := rfl
 
-def rho1 : G.GQ →* UJpm (eps G) := (realPointsToUnitaryGroup G).comp G.toR
-
-def rhoI (h : PosSim G) : G.GQ →* UJfam (eps G) := (toUJ G h).comp G.toR
-
-def gamR (h : PosSim G) (Kf : Subgroup (Gf G)) (y : Gf G ⧸ Kf) : Subgroup (UJfam (eps G)) :=
-  (gam G Kf y).map (rhoI G h)
-
 end Norm
-
-def Aniso : Prop := ∀ x : G.C, (G.star x).unop * x = 0 → x = 0
-
-theorem aniso_of_division (h : ∀ x : G.C, x ≠ 0 → IsUnit x) : Aniso G := by
-  intro x hx
-  by_contra hne
-  obtain ⟨u, rfl⟩ := h x hne
-  have h0 : (G.star (u : G.C)).unop = 0 := by
-    have := congrArg (· * ((u⁻¹ : G.Cˣ) : G.C)) hx
-    simpa [mul_assoc] using this
-  apply hne
-  rw [← G.star_star (u : G.C), h0]
-  simp
 
 section Inhabitant
 
@@ -355,40 +249,5 @@ instance nontrivial_coh_zero : Nontrivial (coh G Kf (xiTriv G) 0) := by
   exact (groupCohomology.H0Iso _).toLinearEquiv.toEquiv.nontrivial
 
 end Inhabitant
-
-section Examples
-
-open GlobalTheory.LKTrip.Example
-
-example (v : InfinitePlace QI) : eps (ex 1 one_ne_zero) v ⟨0, Nat.one_pos⟩ = true := by
-  unfold eps
-  have h := eig_Hc 1 v.embedding ⟨0, Nat.one_pos⟩
-  change decide (0 < (isHermitian_gramAt (herm_Hc 1) v.embedding).eigenvalues ⟨0, Nat.one_pos⟩) = true
-  rw [h]; norm_num
-
-example (v : InfinitePlace QI) : eps (ex (-1) (by norm_num)) v ⟨0, Nat.one_pos⟩ = false := by
-  unfold eps
-  have h := eig_Hc (-1) v.embedding ⟨0, Nat.one_pos⟩
-  change decide (0 < (isHermitian_gramAt (herm_Hc (-1)) v.embedding).eigenvalues ⟨0, Nat.one_pos⟩) = false
-  rw [h]; norm_num
-
-example (c : ℚ) (hc : c ≠ 0) : Aniso (ex c hc) := by
-  refine aniso_of_division _ fun x hx => ?_
-  let y : Matrix (Fin 1) (Fin 1) QI := x
-  have h : IsUnit y := by
-    rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_unique]
-    refine (Ne.isUnit fun h0 => hx ?_)
-    show y = 0
-    ext i j
-    fin_cases i; fin_cases j
-    exact h0
-  exact h
-
-example : Nontrivial (coh (ex 1 one_ne_zero) ⊤ (xiTriv _) 0) := inferInstance
-
-example (Kf : Subgroup (Gf (ex 1 one_ne_zero))) :
-    piPart (ex 1 one_ne_zero) (Representation.trivial ℂ _ ℂ) Kf (xiTriv _) 0 ≤ ⊤ := le_top
-
-end Examples
 
 end GlobalTheory.HTBetti

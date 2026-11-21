@@ -21,12 +21,6 @@ def AmpleAffineGen.Statement : Prop :=
         ∃ (e : ℕ) (g : Fin p → Ω), (∀ t, g t * A.h j ^ e ∈ (H.pow (A.m * e)).sub I) ∧
           z = ∑ t, g t * s t
 
-section Hypotheses
-
-variable (k : Type u) [Field k]
-
-end Hypotheses
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

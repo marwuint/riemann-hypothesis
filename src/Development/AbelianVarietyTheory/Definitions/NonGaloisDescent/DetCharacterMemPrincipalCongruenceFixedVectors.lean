@@ -56,10 +56,6 @@ def LocType (D : D7) (S : ∀ k, Sys (D.host.g k)) : Prop :=
 
 def Sys.IsOf (S : Sys g) (L : LabelDatum g) : Prop := ∀ n f, S.e n f = eSerC L n f
 
-theorem Sys.IsOf.has_iff {S : Sys g} {L : LabelDatum g} (h : S.IsOf L) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
-    (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (f : (ZMod g)[X]) : Has S π f ↔ HasLab L π f := by
-  rw [Has, h]; rfl
-
 abbrev QRep (g : ℕ) [Fact g.Prime] (n : ℕ) : Type 1 := Rep.{0} ℂ (GL (Fin n) ℚ_[g])
 
 def IrrSm {n : ℕ} (π : QRep g n) : Prop := IsIrrRep π.ρ ∧ GlobalTheory.PRep.IsSmooth π.ρ
@@ -74,14 +70,6 @@ def ActsThrough {n : ℕ} (π : QRep g n) (r t : ℕ) (χ : (ZMod g)ˣ →* ℂ�
     ∀ a ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (Gn g r)), ∀ F : W,
       ∃ h : act a F ∈ W, ∀ j, ι ⟨act a F, h⟩ j = actTop π.ρ r t a (ι F j)
 
-def IsClassMap {LP : Type*} (dim : LP → ℕ) (rc : ∀ n, QRep g n → LP) : Prop :=
-  ∀ n (π : QRep g n), IrrSm π → dim (rc n π) = n ∧ ∀ π' : QRep g n, IrrSm π' → (rc n π = rc n π' ↔ Nonempty (π ≅ π'))
-
-def SerParam (e : ∀ n : ℕ, (ZMod g)[X] → MonoidAlgebra ℂ (Gn g n)) (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ)
-    (ine : ∀ n, QRep g n → ℂ[X]) : Prop :=
-  ∀ n (π : QRep g n), IrrSm π → ∀ f, (∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0) →
-    ine n π = ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (τ x)).prod
-
 abbrev Corr (D : D7) : Type 1 :=
   ∀ (k : Fin 2) (v : D.nd.PlG k) (n : ℕ), QRep (D.host.g k) n → D.naut.LP (D.naut.plGw k v)
 
@@ -89,17 +77,6 @@ def SysTie (D : D7) (S : ∀ k, Sys (D.host.g k)) : Prop := ∀ k f, D.ntypes.eS
 
 def LabTie (D : D7) (L : ∀ k, LabelDatum (D.host.g k)) : Prop :=
   ∀ k, (L k).teich = D.ntypes.teichC k ∧ ∀ f, D.ntypes.eSer k f = eSerC (L k) D.R.r f
-
-def LocComp (D : D7) (rc : Corr D) : Prop :=
-  (∀ k v, IsClassMap D.naut.lpDim (rc k v)) ∧
-  ∀ (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k), ∃ (μ : ℚ_[D.host.g k]ˣ →* ℂˣ) (χ : (ZMod (D.host.g k))ˣ →* ℂˣ),
-    TamePart μ χ ∧ D.naut.locG (D.naut.muC i) (D.naut.plGw k v) = rc k v 1 (Rep.of (Model.detRep 1 μ)) ∧
-    ∀ P : D.naut.AV i, ∃ π : QRep (D.host.g k) D.R.nV, IrrSm π ∧
-      D.naut.locV i P (D.naut.plGw k v) = rc k v D.R.nV π ∧
-      ActsThrough π D.R.r D.R.t χ (D.naut.typeV i P) fun a => D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (atPlace D k v a)
-
-def LabParam (D : D7) (L : ∀ k, LabelDatum (D.host.g k)) (rc : Corr D) : Prop :=
-  ∀ k v, SerParam (eSerC (L k)) (L k).teich fun n π => D.naut.inePol (rc k v n π) (D.ntypes.tg k v)
 
 theorem eSerTie_iff (D : D7) : ESerTie D ↔ ∃ L, LabTie D L :=
   ⟨fun h => ⟨fun k => (h k).choose, fun k => (h k).choose_spec⟩, fun ⟨L, h⟩ k => ⟨L k, h k⟩⟩
@@ -185,9 +162,6 @@ theorem charIn_pow (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) {h : (ZMod g)[X]} (h
     rwa [hm.natDegree_eq_zero.1 hd, ← pow_zero h] at hf
   | succ b ih => exact pow_succ h b ▸ charIn_mul S χ ih h1
 
-theorem tamePart_tame (χ : (ZMod g)ˣ →* ℂˣ) : TamePart (Model.tame χ) χ := fun u => by
-  rw [Model.tame, MonoidHom.comp_apply, MonoidHom.comp_apply, Model.unitPart_unit]
-
 section Det
 
 variable {μ : ℚ_[g]ˣ →* ℂˣ} {χ : (ZMod g)ˣ →* ℂˣ} (h : TamePart μ χ) {n : ℕ}
@@ -249,72 +223,12 @@ theorem irrSm_det : IrrSm (Rep.of (Model.detRep n μ)) := by
   simp only [Model.detRep, Model.chRep_apply, MonoidHom.comp_apply]
   rw [e1, h, e2]; simp
 
-theorem isParVec_det (r t : ℕ) (v : ℂ) : IsParVec (Model.detRep (r + t) μ) r t χ v :=
-  ⟨detCharacter_mem_principalCongruenceFixedVectors h v, fun u h0 h1 h2 => by rw [det_lift h, det_rad h0 h1 h2]; simp,
-    fun y => by rw [det_lift h, det_blocks]; simp⟩
-
-theorem actsThrough_det (r t : ℕ) :
-    ActsThrough (Rep.of (Model.detRep (r + t) μ)) r t χ (⊤ : Submodule ℂ ℂ) fun a => ev χ a • LinearMap.id := by
-  refine ⟨Unit, LinearMap.pi fun _ => (⊤ : Submodule ℂ ℂ).subtype, fun x y e => Subtype.ext (congrFun e ()),
-    fun F _ => isParVec_det h r t _, fun a _ F => ⟨trivial, fun _ => ?_⟩⟩
-  change ev χ a * F.1 = actTop (Model.detRep (r + t) μ) r t a F.1
-  simp [actTop, LinearMap.sum_apply, det_lift h, det_blocks, ev, Finset.sum_mul, mul_assoc]
-
-theorem act_eq_of_actsThrough_det {r t : ℕ} {χ' : (ZMod g)ˣ →* ℂˣ} {M : Type} [AddCommGroup M] [Module ℂ M]
-    {W : Submodule ℂ M} {act : MonoidAlgebra ℂ (Gn g r) → Module.End ℂ M}
-    (H : ActsThrough (Rep.of (Model.detRep (r + t) μ)) r t χ' W act) {a : MonoidAlgebra ℂ (Gn g r)}
-    (ha : a ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (Gn g r))) {F : M} (hF : F ∈ W) : act a F = ev χ a • F := by
-  obtain ⟨J, ι, hi, -, he⟩ := H
-  obtain ⟨hm, hj⟩ := he a ha ⟨F, hF⟩
-  refine congrArg Subtype.val (hi (a₁ := ⟨_, hm⟩) (a₂ := ev χ a • ⟨F, hF⟩) (funext fun j => ?_))
-  rw [hj, map_smul, Pi.smul_apply]
-  generalize ι ⟨F, hF⟩ j = z
-  change actTop (Model.detRep (r + t) μ) r t a (z : ℂ) = ev χ a * (z : ℂ)
-  simp [actTop, LinearMap.sum_apply, det_lift h, det_blocks, ev, Finset.sum_mul, mul_assoc]
-
 end Det
 
 theorem prod_linear (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ) (c : ZMod g) :
     ((Formalism.CyclotomicNorms.rootsBar (X - C c)).map fun x => X - C (τ x)).prod =
       X - C (τ (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c)) := by
   simp [Formalism.CyclotomicNorms.rootsBar]
-
-theorem exists_serParam (e : ∀ n : ℕ, (ZMod g)[X] → MonoidAlgebra ℂ (Gn g n)) (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ)
-    (h : ∀ n (π : QRep g n), IrrSm π → ∀ f f', (∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0) →
-      (∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f') v ≠ 0) → f = f') : ∃ ine, SerParam e τ ine :=
-  ⟨fun n π => ((Formalism.CyclotomicNorms.rootsBar (Classical.epsilon fun f => ∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0)).map
-      fun x => X - C (τ x)).prod,
-    fun n π hπ f hf => by
-      rw [h n π hπ f _ hf (Classical.epsilon_spec (p := fun f => ∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0) ⟨f, hf⟩)]⟩
-
-theorem isClassMap_mk : IsClassMap (LP := Σ n, Quotient (CategoryTheory.isIsomorphicSetoid (QRep g n))) Sigma.fst
-    fun n π => ⟨n, Quotient.mk _ π⟩ := fun n π _ =>
-  ⟨rfl, fun π' _ => by rw [Sigma.mk.inj_iff, heq_eq_eq, Quotient.eq]; exact and_iff_right rfl⟩
-
-def coarse (g : ℕ) [Fact g.Prime] : Sys g where
-  e n f := if f = (X - C 1) ^ n then 1 else 0
-  idem n f := by split_ifs <;> simp
-  central n f a := by split_ifs <;> simp
-  orth n f f' h := by
-    split_ifs with h1 h2
-    · exact absurd (h1.trans h2.symm) h
-    all_goals simp
-  label n f h := by
-    have hf : f = (X - C 1) ^ n := by by_contra hf; exact h (if_neg hf)
-    subst hf
-    refine ⟨(monic_X_sub_C _).pow n, by rw [natDegree_pow, natDegree_X_sub_C, mul_one], ?_⟩
-    rw [coeff_zero_eq_eval_zero]; simp
-  sum n := ⟨{(X - C 1) ^ n}, by simp⟩
-  mul a b n hn f f' V _ _ ρ v _ h1 h2 := by
-    by_cases e1 : f = (X - C 1) ^ a
-    · by_cases e2 : f' = (X - C 1) ^ b
-      · rw [if_pos (by rw [e1, e2, hn, pow_add])]; simp
-      · rw [if_neg e2] at h2
-        have : v = 0 := by simpa using h2.symm
-        simp [this]
-    · rw [if_neg e1] at h1
-      have : v = 0 := by simpa using h1.symm
-      simp [this]
 
 end Loc
 
@@ -326,56 +240,5 @@ theorem ActsThrough.exists_parVec {n r t : ℕ} {π : QRep g n} {χ : (ZMod g)ˣ
   obtain ⟨hm, hj⟩ := he a ha ⟨F, hF⟩
   obtain ⟨j, h1⟩ := Function.ne_iff.1 ((map_ne_zero_iff ι hi).2 (fun e => h0 (congrArg Subtype.val e) : (⟨_, hm⟩ : W) ≠ 0))
   exact ⟨_, hp _ j, hj j ▸ h1⟩
-
-theorem Sys.IsOf.charIn_one {S : Sys g} {L : LabelDatum g} (h : S.IsOf L) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g}
-    (hc : IsCharLab L χ c) (χ' : (ZMod g)ˣ →* ℂˣ) : CharIn S χ' 1 (X - C c) ↔ χ' = χ := by
-  rw [← Loc.has_det (Loc.tamePart_tame χ'), h.has_iff, Model.hasLab_tame L hc]
-
-theorem Sys.IsOf.charIn {S : Sys g} {L : LabelDatum g} (h : S.IsOf L) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g}
-    (hc : IsCharLab L χ c) (b : ℕ) : CharIn S χ b ((X - C c) ^ b) :=
-  Loc.charIn_pow S χ ((h.charIn_one hc χ).2 rfl) b
-
-theorem Loc.not_isOf_coarse (hg : g ≠ 2) (L : LabelDatum g) : ¬ (Loc.coarse g).IsOf L := by
-  intro h
-  obtain ⟨u, hu, ho⟩ := Model.exists_gen L
-  let T : (ZMod g)ˣ →* ℂ := L.teich.comp ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom.comp (Units.coeHom _))
-  have hc : IsCharLab L T.toHomUnits u := ⟨u.ne_zero, fun w hw => by rw [hu, ← hw]; rfl⟩
-  have h1 := (h.charIn_one hc _).2 rfl
-  have h2 : X - C (u : ZMod g) = (X - C 1) ^ 1 := by
-    by_contra e
-    apply h1
-    change ∑ y : Gn g 1, (if X - C (u : ZMod g) = (X - C 1) ^ 1 then (1 : MonoidAlgebra ℂ (Gn g 1)) else 0).coeff y * _ = 0
-    rw [if_neg e]; simp
-  rw [pow_one, sub_right_inj, C_inj, Units.val_eq_one] at h2
-  rw [h2, orderOf_one] at ho
-  have := (Fact.out : g.Prime).two_le
-  omega
-
-theorem LabParam.char {D : D7} {L : ∀ k, LabelDatum (D.host.g k)} {rc : Corr D} (h : LabParam D L rc) (k : Fin 2)
-    (v : D.nd.PlG k) (χ : (ZMod (D.host.g k))ˣ →* ℂˣ) (u : (ZMod (D.host.g k))ˣ)
-    (hu : algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) u = (L k).gen 1) :
-    D.naut.inePol (rc k v 1 (Rep.of (Model.detRep 1 (Model.tame χ)))) (D.ntypes.tg k v) = X - C ((χ u : ℂˣ) : ℂ) := by
-  obtain ⟨c, hc⟩ := Model.isCharLab_exists (L k) χ
-  rw [hc.2 u hu, ← Loc.prod_linear]
-  exact h k v 1 _ (Loc.irrSm_det (Loc.tamePart_tame χ)) _ ((Model.hasLab_tame (L k) hc χ).2 rfl)
-
-theorem locType_of_serParam {D : D7} {S : ∀ k, Sys (D.host.g k)} {rc : Corr D} (hC : LocComp D rc)
-    (hP : ∀ k v, SerParam (S k).e (D.ntypes.teichC k) fun n π => D.naut.inePol (rc k v n π) (D.ntypes.tg k v)) :
-    LocType D S := by
-  intro i P k v
-  obtain ⟨μ, χ, hμ, h1, h2⟩ := hC.2 i k v
-  obtain ⟨π, hπ, h3, h4⟩ := h2 P
-  obtain ⟨f, hf, hm, hd, -⟩ := Loc.exists_charIn (S k) χ 1
-  obtain ⟨c, rfl⟩ : ∃ c, f = X - C c := ⟨-f.coeff 0, by rw [C_neg, sub_neg_eq_add]; exact hm.eq_X_add_C hd⟩
-  refine ⟨π, χ, c, fun F hF a ha h0 => h4.exists_parVec hF ha h0, Loc.charIn_pow _ χ hf _, ?_,
-    fun f' hf' => h3 ▸ hP k v _ π hπ f' hf'⟩
-  rw [h1, ← Loc.prod_linear]
-  exact hP k v 1 _ (Loc.irrSm_det hμ) _ ((Loc.has_det hμ (S k) _).2 hf)
-
-theorem locType_of_ties {D : D7} {L : ∀ k, LabelDatum (D.host.g k)} {S : ∀ k, Sys (D.host.g k)} {rc : Corr D}
-    (hL : LabTie D L) (hS : ∀ k, (S k).IsOf (L k)) (hC : LocComp D rc) (hP : LabParam D L rc) : LocType D S :=
-  locType_of_serParam hC fun k v => by
-    rw [← (hL k).1, show (S k).e = eSerC (L k) from funext fun n => funext (hS k n)]
-    exact hP k v
 
 end GlobalTheory.SerSys

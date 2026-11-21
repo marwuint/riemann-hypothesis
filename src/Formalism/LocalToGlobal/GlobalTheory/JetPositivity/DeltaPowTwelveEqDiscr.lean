@@ -26,9 +26,6 @@ def mmMH (M : IntermediateField ℚ ℂ) [NumberField M] : Submodule (𝓞 M) (T
 def ellTH (M : IntermediateField ℚ ℂ) [NumberField M] (τ : Tau) : Submodule (𝓞 M) M :=
   (mmMH host eTau M).comap (LinearMap.single (𝓞 M) (fun _ : Tau => (M : Type)) τ)
 
-def conjOfH {M : IntermediateField ℚ ℂ} (e : LL ≃+* M) (s : LL →+* ℂ) : M →ₐ[ℚ] ℂ :=
-  (s.comp (e.symm : M →+* LL)).toRatAlgHom
-
 structure CurveDat where
   δ : ℂ
   delta_pow_twelve_eq_discr : δ ^ 12 = TaylorLogMetric.discr (lamOfH host host.ccK 1)
@@ -43,33 +40,6 @@ structure CurveDat where
 attribute [instance] CurveDat.nf
 
 variable {host embLL eTau}
-
-def lamS (K : CurveDat host embLL eTau) (s : LL →+* ℂ) : AddSubgroup ℂ :=
-  TaylorLogMetric.lamConj K.M (conjOfH K.eL s) (lamOfH host host.ccK K.δ)
-
-def th0S (K : CurveDat host embLL eTau) (s : LL →+* ℂ) : ℂ → ℂ :=
-  Classical.epsilon fun G => GlobalTheoryTheory.IsTheta0 host.d (lamS K s) G
-
-def omVal (K : CurveDat host embLL eTau) (τ : Tau) (s : LL →+* ℂ) : ℝ :=
-  (Real.pi * ‖conjOfH K.eL s (K.fr τ)‖ ^ 2 / TaylorLogMetric.area (lamS K s))⁻¹
-
-def thOneVal (K : CurveDat host embLL eTau) (s : LL →+* ℂ) : ℝ :=
-  Real.sqrt (GlobalTheoryTheory.normSq1 (lamS K s) (th0S K s))
-
-def guardPos (x : ℝ) : ℝ := if 0 < x then x else 1
-
-theorem guardPos_pos (x : ℝ) : 0 < guardPos x := by
-  unfold guardPos; split_ifs with h
-  · exact h
-  · exact one_pos
-
-theorem guardPos_of_pos {x : ℝ} (h : 0 < x) : guardPos x = x := if_pos h
-
-def gxOf (K : CurveDat host embLL eTau) : GlobalExtra LL Tau where
-  Om τ s := guardPos (omVal K τ s)
-  Om_pos _ _ := guardPos_pos _
-  thOne s := guardPos (thOneVal K s)
-  thOne_pos _ := guardPos_pos _
 
 end Pieces
 

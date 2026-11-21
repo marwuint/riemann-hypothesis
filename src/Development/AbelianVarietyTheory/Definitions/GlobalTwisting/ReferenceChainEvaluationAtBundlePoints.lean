@@ -47,14 +47,6 @@ structure All (𝒜 : FamClass) : Prop where
   aPerTw : H_aPerTw 𝒜
   tie : H_tie 𝒜
 
-theorem row_all {Bd : BdT} {Q : V4.Slot} {Lk : LkT Bd}
-    (aPt0 : ReferenceChainEvaluationAtBundlePoints Q Lk) (aPtTw : TwistedPointAtBundlePoints Q Lk) (aPer0 : PeriodAtZeroAtBundlePoints Q Lk) (aPerTw : TwistedPeriodAtBundlePoints Q Lk) (tie : Row_tie Q Lk) :
-    Row Q Lk fun 𝒜 _ => All 𝒜 :=
-  Row.imp (Row.and aPt0 (Row.and aPtTw (Row.and aPer0 (Row.and aPerTw tie))))
-    fun _ _ _ ⟨a0, a1, a2, a3, a4⟩ => ⟨a0, a1, a2, a3, a4⟩
-
-example (𝒜 : FamClass) : H_aPerTw 𝒜 ↔ EvC (fun D O => Formalism.L2.G.Adm2InU.TwistedPeriodAdmissible D O.X O.ex.tw) 𝒜 := Iff.rfl
-
 end GlobalTheory.Fc.PeriodEntriesOverColumns
 
 end

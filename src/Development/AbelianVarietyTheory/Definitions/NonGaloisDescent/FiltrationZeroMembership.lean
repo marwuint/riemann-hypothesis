@@ -128,20 +128,6 @@ theorem tz_one : tz P 1 = P.ιB P.tB := by simp [tz]
 theorem fund {b : P.R.B} (h : P.φB b = b) (h0 : P.ιB b ∈ Fil P 0) : ∃ c : ℚ_[l], algebraMap ℚ_[l] P.R.B c = b :=
   (P.PD (botExt l)).fund b (by rw [P.PD_φ, h]) (by rw [P.PD_ι]; exact h0)
 
-def resK {n : Type} [Fintype n] [DecidableEq n] {K K' : FinExt l} (hK : K.1 ≤ K'.1) (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) :
-    ↥(GK K') →* GL n ↥(MaximalUnramifiedExtension l) := ρ.comp (Subgroup.inclusion (GK_le hK))
-
-theorem IsRat.resK {n : Type} [Fintype n] [DecidableEq n] {K K' : FinExt l} (hK : K.1 ≤ K'.1) {r : ℕ}
-    {ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)} (h : IsRat r ρ) : IsRat r (resK hK ρ) where
-  pos := h.pos
-  le := fun c hc => hK (h.le c hc)
-  rat := fun g => h.rat _
-  cont := fun i j => (h.cont i j).comp (continuous_induced_rng.2 continuous_subtype_val)
-
-theorem AdmDR.resK {n : Type} [Fintype n] [DecidableEq n] {K K' : FinExt l} (hK : K.1 ≤ K'.1)
-    {ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)} (h : AdmDR P ρ) : AdmDR P (resK hK ρ) := fun m =>
-  (h m).imp fun _ hQ g => hQ ⟨g, GK_le hK g.2⟩
-
 end GlobalTheory.PMon
 
 end

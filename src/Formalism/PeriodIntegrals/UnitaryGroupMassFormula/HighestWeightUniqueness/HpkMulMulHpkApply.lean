@@ -57,16 +57,6 @@ lemma Hpk_mul_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
   · intro l hl
     rw [Hpk_apply, if_neg hl, zero_mul]
 
-lemma mul_Hpk_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
-    (X * Hpk k r) i j = X i (piI k r j) * epsI k r j := by
-  rw [Matrix.mul_apply, Fintype.sum_eq_single (piI k r j)]
-  · rw [Hpk_apply, if_pos (piI_piI j).symm, epsI_piI]
-  · intro l hl
-    rw [Hpk_apply, if_neg, mul_zero]
-    intro h
-    apply hl
-    rw [h, piI_piI]
-
 lemma Hpk_mulVec_apply (v : Fin (2 * r + k + 1) → ℂ) (i) :
     (Hpk k r *ᵥ v) i = epsI k r i * v (piI k r i) := by
   simp only [Matrix.mulVec, dotProduct]
@@ -112,10 +102,6 @@ lemma inv_mul_UH' {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (
   rw [inv_eq_UH hg]
   exact inv_mul_UH hg
 
-lemma one_mem_UH : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UH (Hpk k r) := by
-  show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * Hpk k r * 1 = Hpk k r
-  simp
-
 lemma mul_mem_UH {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r
@@ -147,9 +133,5 @@ lemma inv_mem_UH {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   calc Hpk k r * a * Hpk k r * Hpk k r * (Hpk k r * aᴴ * Hpk k r)
       = Hpk k r * (a * Hpk k r * aᴴ) * Hpk k r := by simp only [Matrix.mul_assoc, hh]
     _ = Hpk k r := by rw [h2, Hpk_mul_self, Matrix.one_mul]
-
-lemma Hpk_mul_mul_Hpk_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
-    (Hpk k r * X * Hpk k r) i j = epsI k r i * X (piI k r i) (piI k r j) * epsI k r j := by
-  rw [mul_Hpk_apply, Hpk_mul_apply]
 
 end PI.HwUniqW

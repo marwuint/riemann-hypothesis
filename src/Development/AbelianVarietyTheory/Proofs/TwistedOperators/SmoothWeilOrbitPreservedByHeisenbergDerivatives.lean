@@ -3,13 +3,15 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExistStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DOpDef
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorRightIntertwinesHeisenbergDerivativeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOrbitCoefficientSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOrbitCoefficientSmooth
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffOfContinuousOneParameter
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffHeisenbergArchimedeanDiffOperatorFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergArchimedeanDiffOperatorHasDerivAtFamilStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergArchimedeanDiffOperatorHasDerivAtFamil
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -37,7 +39,7 @@ theorem orbit_heis : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   have hstab : ∀ v : Matrix (Fin a) (Fin (a + a')) (AE F E), At (evI F) v → ∀ g ∈ G.M.Pol B.ψ B.emb,
       ∃ g₁ ∈ G.M.Pol B.ψ B.emb, ∀ y, g₁ y = dOp (archCo G.M.co v).1 (archCo G.M.co v).2 g y := by
     intro v hv g hg
-    obtain ⟨D, hD⟩ := GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin a) (Fin (a + a')) (Fin a × Fin (a + a')) B.ψ (incM F G.V.J) (incM F G.W.J)
+    obtain ⟨D, hD⟩ := _root_.GlobalTheory.HeisDer.derEx F E σ (Fin a) (Fin (a + a')) (Fin a × Fin (a + a')) B.ψ (incM F G.V.J) (incM F G.W.J)
       G.M.co hψ
     have h0 : ∀ t, G.M.heisLine B.ψ v t 0 = 0 := fun t => by
       funext x
@@ -50,7 +52,7 @@ theorem orbit_heis : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   have hrel : ∀ t y, T t f₁ y = dOp (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1
       (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).2 (T t f) y := fun t =>
     GlobalTheory.T.weil_operator_right_intertwines_heisenberg_derivative G.M B.ψ X.β (X.β / X.α) om hψ hT.weil (γ (Multiplicative.ofAdd t)) (T t) (hTa t) u hu f f₁ hf₁
-  obtain ⟨hφ, u', hu', hφd⟩ := GlobalTheory.T.heisenberg_orbit_coefficient_smooth G.M γ hγ u hu
+  obtain ⟨hφ, u', hu', hφd⟩ := _root_.GlobalTheory.HeisOrbitSmooth.archCo_orbit_smooth G.M γ hγ u hu
   have hfun : (fun p : ℝ × (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F) => T p.1 f₁ p.2) =
       fun p => dOp (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd p.1)))ᵀ)).1
         (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd p.1)))ᵀ)).2 (T p.1 f) p.2 :=
@@ -76,7 +78,7 @@ theorem orbit_heis : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   refine ⟨g₁ + g₂, add_mem hg₁P hg₂P, fun x => ?_⟩
   have hP := (hasFDerivAt_fst (𝕜 := ℝ)).comp_hasDerivAt (0 : ℝ) hφd
   have hQ := (hasFDerivAt_snd (𝕜 := ℝ)).comp_hasDerivAt (0 : ℝ) hφd
-  have h4 := GlobalTheory.T.heisenbergArchimedeanDiffOperator_hasDerivAt_family (fun t => T t f) (fun t => (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1)
+  have h4 := _root_.GlobalTheory.HeisOrbit.DOpDeriv.dOp_hasDerivAt (fun t => T t f) (fun t => (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1)
     (fun t => (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).2) f' _ _ hsm hf'd hP hQ x
   simp only [hφ0, hT0] at h4
   rw [SchwartzMap.add_apply, hg₁, hg₂]

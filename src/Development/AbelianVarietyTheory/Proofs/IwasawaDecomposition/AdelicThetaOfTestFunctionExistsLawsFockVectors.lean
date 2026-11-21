@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.FWTie
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateModelSameThetaFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateModelSameThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThBijFock
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FockPolynomialVectorLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
@@ -64,13 +64,13 @@ theorem zak_laws : ∀ (D : D7) (S T : HSp D) (r g : ℕ) (hr : T.rank = r) (ψ 
   intro D S T r g hr ψ θ X eT bas idx hS Z hZ
   have hq0 : X.p0 + (r - X.p0) = r := Nat.add_sub_cancel' X.p0_le
   obtain ⟨X', m, hq', bas', idx', hs, π, -, -, hheis, hZZ⟩ :=
-    GlobalTheory.T.exists_conjugateModel_same_thetaFunctions D S T r g hr ψ θ X eT bas idx hS (r - X.p0) hq0
+    _root_.GlobalTheory.OneMapRef.Flip.exists_flip_model D S T r g hr ψ θ X eT bas idx hS (r - X.p0) hq0
   obtain ⟨hB, hrest⟩ := hZZ Z
   obtain ⟨hsB, hzak, hthP⟩ := hrest hZ
   have hB := hB.1 hZ
   set C := ctxOf hS.1 hS.2.1 hS.2.2.2.1 X' m hq' bas' idx' hs with hC
   set B : C.Bas := fun ρ => (Z ρ).submatrix id π with hBdef
-  have hx : C.xB B ∈ C.X.dom := ((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1
+  have hx : C.xB B ∈ C.X.dom := ((_root_.GlobalTheory.Ker.onBasis_frame_period D S T C).2 B hB).2.1
   have key : ∀ φ : TF S.rank g, GlobalTheory.SW.IsSB φ → ∀ f,
       Zak ψ θ hr eT bas idx (frOf hr eT Z) φ f ↔ f = C.Th (C.xB B) φ := by
     intro φ hφ f
@@ -79,7 +79,7 @@ theorem zak_laws : ∀ (D : D7) (S T : HSp D) (r g : ℕ) (hr : T.rank = r) (ψ 
   refine ⟨fun φ hφ => ⟨⟨_, (key φ hφ _).2 rfl⟩, fun f hf => ?_⟩, fun f hf hF => ?_⟩
   · have hth : C.IsTh f := hf.1
     obtain rfl := (key φ hφ f).1 hf
-    obtain ⟨l1, l2, l3, -⟩ := GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C _ hx φ hφ
+    obtain ⟨l1, l2, l3, -⟩ := _root_.GlobalTheory.Ker.Ctx.th_laws D S T C _ hx φ hφ
     obtain ⟨f1, f2⟩ := (GlobalTheory.T.fockPolynomialVector_testTheta_zero_eq_thetaSeries D S T C).2 B hB φ hφ
     refine ⟨fun f' hf' => (key φ hφ f').1 hf', fun φ' hφ' h => ?_, fun a => ?_, fun φ' f' hφ' h => ?_,
       fun y => ?_, fun ρ => ?_, fun q0 hq Q => ?_⟩

@@ -161,12 +161,6 @@ theorem symEntB_join_col (q : ℕ) {k₀ n' c' n c : ℕ} (hc' : c' = 1) (hc : c
   have e3 : LocE.scE n' (fun i => i + 1) n' = 1 := by simp [LocE.scE]
   rw [e1, e2, e3, map_zero, Pi.zero_apply, zero_add, one_mul, sub_zero, zpow_one, mul_comm]
 
-def LamGBSChar (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
-    (k₀ rS r t j n c : ℕ) : Prop :=
-  ∀ κ ∈ LocE.JGsym P q k₀ rS r t n c, ∀ κ' ∈ LocE.JGsym P q k₀ rS r t n c,
-    LocE.lamGBS q ψ₀ χ k₀ r t j n c ((κ * κ' : Sp E (n + c) ≃ₗ[E] Sp E (n + c))).toLinearMap =
-      LocE.lamGBS q ψ₀ χ k₀ r t j n c κ.toLinearMap * LocE.lamGBS q ψ₀ χ k₀ r t j n c κ'.toLinearMap
-
 end Loc
 
 section Glob

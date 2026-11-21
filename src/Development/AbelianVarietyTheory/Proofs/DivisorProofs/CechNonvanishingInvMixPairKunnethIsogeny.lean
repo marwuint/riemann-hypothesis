@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiMapFst
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietySquareLinearEndomorphismFiniteLocaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackZpowEqMumfordFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackZpowMulMixedSplitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietySquareLinearEndomorphismFiniteLoca
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineFiniteProjectiveRankAtStalk
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackZpowEqMumfordFormula
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulPullOfRigOfSym
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackZpowMulMixedSplit
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FinrankCechLBHomologyExtProd
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyFiniteOfAffineCover
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechComplexAcyclicAdditiveLineBundleNoSections
@@ -72,9 +74,9 @@ theorem lbIso_pull_psiMap {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (hA 
   set c := cls L hL
   set x := fst A A
   set y := snd A A
-  have e₁ := GlobalTheory.T.cechPicardPullback_zpow_mul_mixed_split K A hA L hL _ x y a₁ b₁ a b
-  have e₂ := GlobalTheory.T.cechPicardPullback_zpow_mul_mixed_split K A hA L hL _ x y a₂ b₂ a b
-  have f (z : A ⊗ A ⟶ A) (n : ℤ) := GlobalTheory.T.cechPicardPullback_zpow_eq_mumford_formula K A hA L hL _ z n
+  have e₁ := _root_.GlobalTheory.CubeMixed.mixed_mul K A hA L hL _ x y a₁ b₁ a b
+  have e₂ := _root_.GlobalTheory.CubeMixed.mixed_mul K A hA L hL _ x y a₂ b₂ a b
+  have f (z : A ⊗ A ⟶ A) (n : ℤ) := _root_.GlobalTheory.PowPull.pull_zpow K A hA L hL _ z n
   have g (z : A ⊗ A ⟶ A) (n : ℤ) : pull ((z ^ n)⁻¹).left c = tri (-n) • pull z.left c + tri n • pull (z⁻¹).left c := by
     rw [← zpow_neg, f, neg_neg]
   rw [e₁, e₂, f x a₁, g x a₁, f x a₂, g x a₂, f y b₁, g y b₁, f y b₂, g y b₂]
@@ -125,7 +127,7 @@ theorem exists_nonvanishing_invMix_pair_isogeny (K : Type) [Field K] [IsAlgClose
   have hprojAA := GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme K (A ⊗ A) hAA
   haveI : CompactSpace (A ⊗ A).left := QuasiCompact.compactSpace_of_compactSpace (A ⊗ A).hom
   obtain ⟨k, E, hE, hEc⟩ := GlobalTheory.PicZeroVan.exists_fin_affine_cover (A ⊗ A).left
-  obtain ⟨hfin, hflat, hlfp, r, hr, hr0⟩ := GlobalTheory.T.abelianVarietySquareLinearEndomorphism_finiteLocallyFree K A hA a₁ b₁ a₂ b₂ hd
+  obtain ⟨hfin, hflat, hlfp, r, hr, hr0⟩ := _root_.GlobalTheory.AmpleGen.psiMap_finite_locallyFree K A hA a₁ b₁ a₂ b₂ hd
   set ψ := psiMap A a₁ b₁ a₂ b₂ with hψ
   set P := mix A L a b with hPdef
   have hP := hP' a b

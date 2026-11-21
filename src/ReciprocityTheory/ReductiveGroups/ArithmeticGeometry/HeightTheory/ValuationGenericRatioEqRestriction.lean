@@ -90,30 +90,6 @@ theorem exists_ne_zero_of_finsum_mem_ne_zero' {α M : Type*} [AddCommMonoid M] {
   push_neg at hne
   exact h (by rw [finsum_mem_congr rfl hne, finsum_mem_zero])
 
-theorem ratio_self_eq_one (hd : d.AxH 𝒜) (c : ι) :
-    ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := by
-  have hw := hd.w_base c
-  have hex : ∃ a : Ω c, d.w (d.jc c) c = a • d.w (d.jc c) c := ⟨1, (one_smul _ _).symm⟩
-  unfold ratio
-  rw [dif_pos hex]
-  have hs := hex.choose_spec
-  have h0 : (hex.choose - 1) • d.w (d.jc c) c = 0 := by
-    rw [sub_smul, one_smul, ← hs, sub_self]
-  rcases smul_eq_zero.1 h0 with h | h
-  · exact sub_eq_zero.1 h
-  · exact absurd h hw
-
-theorem good_place_admissible_unit (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
-    {w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)} (hw : w ∈ d.GoodP c p) :
-    d.admitted c (d.Wres c w) ∧ ∃ j0, d.w j0 c ≠ 0 ∧
-      (∀ j, 0 ≤ d.Wres c w (ratio (Ω := Ω c) (d.w j c) (d.w j0 c))) ∧
-        w (∑ j, d.sH c (MvPolynomial.X (0, j)) *
-          algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω := Ω c) (d.w j c) (d.w j0 c))) = 0 := by
-  obtain ⟨hov, a, ha0, hwa⟩ := hw
-  rcases d.PlaceTrivialOrPositive hd h c p hp w hov with htriv | ⟨hadm, -, hrest⟩
-  · exact absurd (htriv a ha0) hwa
-  · exact ⟨hadm, hrest⟩
-
 theorem multiplicity_split_finsum (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)}
     (hp : p ∈ d.HtOne) {f : A c} (hf : f ∈ 𝒜 c d.wL) (hf0 : f ≠ 0) :
     d.nPMM h c f p =

@@ -83,21 +83,6 @@ theorem BoxW.boxesW {s : Scale} {D : D7} (h : BoxW s D.host) : BoxesW D s :=
 
 theorem BoxW.qdRowsW {s : Scale} {D : D7} (h : BoxW s D.host) : QDRowsW D s := h.what₂
 
-theorem BoxH.real_ne_zero {H : Host R} {Y eps : ℝ} (h : BoxH H Y eps) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
-    (hχ : IsCharH H χ) (hr : GlobalTheoryTheory.IsRealChar χ) (hN : H.q ∣ N ∨ H.d ∣ N) (β : ℝ) (hβ : 1 - 1 / 400 < β) :
-    DirichletCharacter.LFunction χ β ≠ 0 := by
-  have key : ∀ Q : ℝ, GlobalTheoryTheory.GoodFor Q χ → DirichletCharacter.LFunction χ β ≠ 0 := fun Q hQ =>
-    hQ.2.2.2 β (by simpa using hβ) (by simpa using (Nat.cast_nonneg N).trans hQ.2.2.1)
-  by_cases hd : H.d ∣ N
-  · exact key _ ((h N χ hχ hr).1 hd)
-  · exact key _ ((h N χ hχ hr).2 (hN.resolve_right hd) hd)
-
-theorem BoxW.real_ne_zero {s : Scale} {H : Host R} (h : BoxW s H) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
-    (hχ : H.IsCharE χ) (hr : GlobalTheoryTheory.IsRealChar χ) (hN : H.q ∣ N ∨ H.d ∣ N) (β : ℝ) (hβ : 1 - 1 / 400 < β) :
-    DirichletCharacter.LFunction χ β ≠ 0 :=
-  let ⟨_, _, _, _, hB⟩ := h
-  hB.real_ne_zero χ ((isCharH_iff H χ).2 hχ) hr hN β hβ
-
 def HostGood (s : Scale) (C8 C5 c6 Cb : ℝ) (H : Host R) (q0 : ℕ) : Prop :=
   HostVal s C8 H ∧ HostArith H ∧ H.secondSet_card_lower_bound ∧ 4 * H.Lw * H.T2.card ≤ R.n0 ∧
   QDq s.x s.eps C5 H.q H.d ∧ BoxW s H ∧ |dlogH H| ≤ s.x ^ s.eps ∧ ThinOK s c6 H ∧ BadOK s Cb H ∧
@@ -108,13 +93,6 @@ def HostGood (s : Scale) (C8 C5 c6 Cb : ℝ) (H : Host R) (q0 : ℕ) : Prop :=
   (q0.Prime ∧ q0 % (H.QS * H.q * H.d) = 1 ∧ (q0 : ℝ) ≤ ((H.QS : ℝ) * H.q * H.d) ^ C8 ∧ q0 ≠ H.pde ∧ q0 ≠ H.pde') ∧
   H.levelPrimes = {H.g 0, H.g 1, H.pde, H.pde', q0}
 
-private theorem one_lt_modulus (H : Host R) : 1 < H.QS * H.q * H.d :=
-  lt_of_lt_of_le H.hyp.2.1.one_lt (Nat.le_mul_of_pos_left _ (Nat.mul_pos H.QS_pos H.hyp.1.pos))
-
-theorem HostGood.pde_mod {s : Scale} {C8 C5 c6 Cb : ℝ} {H : Host R} {q0 : ℕ} (h : HostGood s C8 C5 c6 Cb H q0) :
-    H.pde % (H.QS * H.q * H.d) = 1 ∧ H.pde' % (H.QS * H.q * H.d) = 1 :=
-  ⟨(mod_of_mod_lcm (one_lt_modulus H) h.2.2.2.2.2.2.2.2.2.2.2.1.1).2, (mod_of_mod_lcm (one_lt_modulus H) h.2.2.2.2.2.2.2.2.2.2.2.1.2).2⟩
-
 abbrev HostReq : Type 1 := ℝ → Scale → ∀ R : Ranks, Host R → ℕ → Prop
 
 def HostExW (la : ℝ) (P : HostReq) : Prop :=
@@ -123,22 +101,6 @@ def HostExW (la : ℝ) (P : HostReq) : Prop :=
       ∃ (R : Ranks) (H : Host R) (q0 : ℕ), RankVal s R ∧ H.CT2 = CT2 ∧ HostGood s C8 C5 c6 Cb H q0 ∧ P C5 s R H q0
 
 def HostExP (P : HostReq) : Prop := ∃ la : ℝ, 1 < la ∧ HostExW la P
-
-def HostEx : Prop := HostExP fun _ _ _ _ _ => True
-
-theorem HostExW.imp {la : ℝ} {P P' : HostReq} (h : HostExW la P) (hP : ∀ c s R H q0, P c s R H q0 → P' c s R H q0) :
-    HostExW la P' := by
-  intro eps h1 h2
-  obtain ⟨CT2, C8, C5, c6, Cb, x0, a1, a2, a3, a4, S, h⟩ := h eps h1 h2
-  refine ⟨CT2, C8, C5, c6, Cb, x0, a1, a2, a3, a4, S, fun s b1 b2 b3 => ?_⟩
-  obtain ⟨R, H, q0, c1, c2, c3, c4⟩ := h s b1 b2 b3
-  exact ⟨R, H, q0, c1, c2, c3, hP _ _ _ _ _ c4⟩
-
-theorem HostExP.imp {P P' : HostReq} (h : HostExP P) (hP : ∀ c s R H q0, P c s R H q0 → P' c s R H q0) : HostExP P' :=
-  let ⟨la, h1, h2⟩ := h
-  ⟨la, h1, h2.imp hP⟩
-
-theorem HostExP.hostEx {P : HostReq} (h : HostExP P) : HostEx := h.imp fun _ _ _ _ _ _ => trivial
 
 def WinOK (s : Scale) (K : G.Consts) (H : Host R) (a b : R.A → ℤ) : Prop :=
   ∀ t ∈ H.TT, (s.a ≤ (a t : ℝ) ∧ (a t : ℝ) ≤ s.a + s.a / ((R.k : ℝ) * s.x ^ (Scale.A / 2))) ∧
@@ -151,11 +113,6 @@ def WOK (s : Scale) (cD ch : ℝ) (K : G.Consts) (H : Host R) (a b : R.A → ℤ
   ∑ p ∈ (Finset.range ⌈s.X'⌉₊).filter (fun p => Arith.Loc.Cand B K (hPH H p) p), Real.log p / p *
       (2 * (if s.x ^ (-s.eps) < Arith.Loc.Sig B (Arith.ins B K 1) K a b (hPH H p) p then (1 : ℝ) else 0) +
         4 * Arith.Loc.Sig B (Arith.ins B K 1) K a b (hPH H p) p) ≤ s.x ^ (-9 : ℝ)
-
-def WeightEx : Prop :=
-  ∀ eps C8 : ℝ, 0 < eps → eps < 1 / 52 → ∃ K0 : TransportedAlt, ∀ C : FC, Std C → C.Large K0 C.P.CF → ∀ cD ch : ℝ, 0 ≤ cD → ∃ x0 : ℝ,
-    ∀ (s : Scale) (R : Ranks) (H : Host R), s.eps = eps → x0 ≤ s.x → RankVal s R → HostVal s C8 H →
-      ∃ a b : R.A → ℤ, (∀ t, t ∉ H.TT → a t = 0 ∧ b t = 0) ∧ WinOK s C.GK H a b ∧ WOK s cD ch C.GK H a b
 
 def Pt.From {C : FC} (p : Pt C) (H : Host R) (a b : R.A → ℤ) {M : ℕ} (c : Fin M → Fin (R.k - 2) → Bool)
     (u0 : ℕ) : Prop :=
@@ -198,9 +155,6 @@ theorem Pt.From.isCharED_iff (h : p.From H a b c u0) {N : ℕ} (χ : DirichletCh
   rw [← isCharH_iff_isCharED, isCharH_iff, isCharH_iff]
   exact iff_of_eq (h.congr_field fun _ X => X.IsCharE χ)
 
-theorem Pt.From.chThin (h : p.From H a b c u0) {s : Scale} {c6 : ℝ} (hT : ThinOK s c6 H) : ChThin_at p.D s.x s.eps c6 :=
-  fun N _ χ hχ => hT N χ ((h.isCharED_iff χ).1 hχ)
-
 theorem Pt.From.boxE (h : p.From H a b c u0) {Y eps : ℝ} (hB : BoxH H Y eps) : GlobalTheoryTheory.BoxE p.D Y eps := by
   intro N _ χ hχ hr
   have := hB N χ ((h.isCharED_iff χ).1 hχ) hr
@@ -229,17 +183,6 @@ def CanonInst {D : D7} {L : SizeData₂ D} (X : G.Inst D L) : Prop :=
   (∀ h t, X.bs h t = Arith.bsH h t) ∧
   ∀ j, j ∉ SizeData₂.lifts D → ∀ t : G.HH D,
     X.off j (false, t) = if t ∈ D.host.TT then L.sc.b' / L.sc.x else L.sc.w'' D.R.n
-
-def ObjEx (Q : PtProp) : Prop :=
-  ∃ ε0 : ℝ, 0 < ε0 ∧ ∀ eps C8 C5 c6 Cb : ℝ, 0 < eps → eps ≤ ε0 → eps < 1 / 52 → 1 ≤ C8 → ∃ K0 : TransportedAlt,
-    ∀ C : FC, Std C → C.P.Cpde = C8 → C.Large K0 C.P.CF → ∃ c1 : ℝ, ∀ cD ≥ c1, ∃ c2 : ℝ, ∀ ch ≥ c2, ∃ Cdg x0 : ℝ,
-      ∀ (s : Scale) (R : Ranks) (H : Host R) (q0 : ℕ) (a b : R.A → ℤ) (M : ℕ)
-        (c : Fin M → Fin (R.k - 2) → Bool) (u0 : ℕ), s.eps = eps → x0 ≤ s.x → RankVal s R → H.CT2 = C.CT2 →
-        HostGood s C8 C5 c6 Cb H q0 → WinOK s C.GK H a b →
-        M = ⌈3 * Real.exp (C.CGam * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ C.P.CF⌉₊ → Function.Injective c → u0 < R.n →
-        ∃ p : Pt C, p.L.sc = s ∧ Val C cD ch p.L ∧ HostArith p.D.host ∧ p.From H a b c u0 ∧ CanonInst p.ta.Gx ∧ p.Has Q ∧
-          ChProviso_at p.L 3 ∧ p.L.TuGe ∧ (∀ u, Real.log ((p.D.mem u).A.T : ℝ) ≤ C.CTu * p.D.R.m * p.L.sc.L) ∧
-          FactDGam p.D Cdg
 
 def withDuty (Q : PtProp) : PtProp := fun D L gatT Gx Gy K X cX ex =>
   Q D L gatT Gx Gy K X cX ex ∧ Formalism.MainNotions.AuxBlock8.WReq Gx K (G.aL L) (G.bL L) ∧

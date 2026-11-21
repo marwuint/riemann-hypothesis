@@ -89,10 +89,4 @@ theorem integrableOn_min_absDet : ∀ (E : Type) [Field E] [NumberField E] [IsTo
   · rw [setLIntegral_const]
     exact ENNReal.mul_lt_top hB.lt_top h1.lt_top
 
-example : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ), 0 < m →
-    ∀ (μ : Measure (GA E m)) [μ.IsHaarMeasure] (𝓕 : Set (GA E m)),
-      IsFundamentalDomain (ratGL E m).range 𝓕 μ →
-      IntegrableOn (fun h : GA E m => min (GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det h) : ℝ)
-        (GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det h) : ℝ)⁻¹) 𝓕 μ := integrableOn_min_absDet
-
 end GlobalTheory.FinVolGL

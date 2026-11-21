@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegerAddStar
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemIpowSmulOfSmulMem
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianUnipotentGeneratorMapIsometryStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianUnipotentGeneratorMapCompNegStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ReferenceLatticeMemOfMemInnerSpanStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ReferenceLatticeMemOfMemInnerSpan
 open NumberField MeasureTheory Matrix Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp GlobalTheory.DegVol
 open scoped Pointwise ENNReal Classical
 
@@ -452,7 +452,7 @@ theorem GlobalTheory.RowStab.middle_bottom_layers : ∀ (K V : Type) [Field K] [
         have := ref_coeff N L a ((mem_JJ N a).mp ha) _ h2
         rwa [map_smul, LinearMap.smul_apply, smul_eq_mul] at this
       have h4 : t • ρ ∈ N.Wn := N.Wn.smul_mem t hρW
-      exact ⟨GlobalTheory.T.referenceLattice_mem_of_mem_innerSpan K V H hK r N L hz _ h3 h4, h4⟩
+      exact ⟨_root_.GlobalTheory.DegCnt.NF.ref_mem_of_mem_Wn K V H hK r N L hz _ h3 h4, h4⟩
     · show d - ρ ∈ _
       rw [hρdef, sub_sub_cancel]
       exact Submodule.sum_mem _ fun a ha => Submodule.smul_mem _ _ (e_mem_II N a ((mem_JJ N a).mp ha))

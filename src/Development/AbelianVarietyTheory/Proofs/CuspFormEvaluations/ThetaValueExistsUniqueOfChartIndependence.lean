@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FaithfullyFlatPointsBaseChangeDescent
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaExpressionEqOfWitnessesStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatCoverLevelSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatCoverLevelSections
+import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
 import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndBC
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
@@ -60,7 +62,7 @@ private theorem thExpr_tmul_lemma (hL : Laws) (hC : ChartIndepSt2) {E : Type} [F
 theorem thValTot_of_chartIndep : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ThValTot Xo c nab := by
   intro hL hC E _ _ _ H Dw l Xo c _ nab hnab S _ _ y a n x P hP
 
-  obtain ⟨S', _, _, φ, y', F, hff, hy', hF⟩ := GlobalTheory.T.exists_faithfullyFlat_cover_level_sections hL E H Dw l Xo c S y n x
+  obtain ⟨S', _, _, φ, y', F, hff, hy', hF⟩ := _root_.GlobalTheory.exists_faithfullyFlat_isVtOver hL E H Dw l Xo c S y n x
   letI : Algebra S S' := φ.toRingHom.toAlgebra
   haveI : Module.FaithfullyFlat S S' := hff
   have hφ : ∀ s, φ s = algebraMap S S' s := fun _ => rfl

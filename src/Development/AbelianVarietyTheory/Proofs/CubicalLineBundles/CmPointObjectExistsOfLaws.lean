@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.ExistsPrincipalLattice
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodReductionModelCmPeriodFibreStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCmTensorLatticeCurvePrincipalTripleStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCmTensorLatticeCurvePrincipalTriple
+import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CubeLBPairingIsoIffWeilPairingCompatibleOverRing
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsIsExpPush
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsTensorProductHomOfCmCurveHomFamily
@@ -80,7 +81,7 @@ theorem exists_ten_exp (hT : ThetaUnifAV) (hL : Out.Laws) {R : Type} [CommRing R
       have := congrArg Complex.im b
       simp at this
       rw [show H.rt0.im = -(2 * ω'.im) by linarith]; linarith)
-  obtain ⟨T, ⟨t⟩, -⟩ := GlobalTheory.T.exists_cm_tensor_lattice_curve_principal_triple hL E H R ω C D ε _ hh hpos
+  obtain ⟨T, ⟨t⟩, -⟩ := _root_.GlobalTheory.CM.exists_isTen hL E H R ω C D ε _ hh hpos
   obtain ⟨T', m, -⟩ := PAT.exists_pullback E H _ _ (spMap σ) T
   obtain ⟨t', ht'⟩ := isTen_baseChange E H R ω C D _ T t ℂ ω' C' σ π T' m hm
   obtain ⟨g, ty, P, e', hty, he', htie, hF⟩ := TenExp.exists_isExp_of_isTen hT hL E H ω' C' u₀ c D ε _ T' t' hc hu hε hh hD

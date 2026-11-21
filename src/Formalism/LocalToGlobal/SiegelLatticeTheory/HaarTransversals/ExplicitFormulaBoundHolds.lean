@@ -1,5 +1,65 @@
-import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures
-import Formalism.FlagUnipotentLattices.FinalTr
+import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
+import Formalism.FlagUnipotentLattices.HalfDifferenceL1Bound
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.UnimodF
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrExistsMeasRep
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrgCountableField
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrsSecondCountableAbs
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RightRegularIsometricMultiplicative
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CovolumeIndependentOfFundamentalDomain
+import Mathlib
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrdStronglyMeasurable
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.UnitaryRepUnimodularOfFiniteVolume
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrkbLeOneAddSq
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyProjectorSectionLocal
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.KernelDiagonalOfAbsoluteConvergence
+import Formalism.LogSumExpBounds.CharacterSumPhase.NuclearNormBoundHolds
+import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.CoefficientLeOperatorNorm
+import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.ExtensionInterSubspace
+import Formalism.LatticeRigidity.HeightMinimum.PackingCountGeometricMean
+import Formalism.LatticeRigidity.HeightMinimum.PowFinrankEqZeroOfTracePow
+import Formalism.GelfandTransference.EnergyIdentity
+import Formalism.NormUnitaryBounds.Statement
+import Formalism.NormUnitaryBounds.DetPolynomialWeights.ShearCoefficients
+import Formalism.NormUnitaryBounds.DetPolynomialWeights.LtSuccOfMemWeightCompositions
+import Formalism.NormUnitaryBounds.DetPolynomialWeights.NormUnitary
+import Formalism.NormUnitaryBounds.DetPolynomialWeights.ShortIndependentVectorsOfDualMinimum
+import Formalism.LatticeTheta.ThetaShiftInversion
+import Formalism.LatticeRigidity.StatementA
+import Formalism.LatticeRigidity.StatementC
+import Formalism.LatticeRigidity.HeightMinimum.SqrtAbsNormLeProd
+import Formalism.LatticeRigidity.StatementD
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.KernelDiagonalOfTriangleInequality
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CNDefs
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CnDensNonneg
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CndTauSLeHalf
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CndHsLeDist
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CuspidalRangeOfReproUnipotent
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.CuCountOfPack
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.ProjectionStatementOfFinal
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalFunctionConvolutionIdentity
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.PjFdegAllPos
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.ProjectionStatementOfEnd
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.TraceConjMulEqHilbertSchmidt
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalL1StatementOfProjectors
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.ExistsTowerOfLocalSetting
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.OrderedAtRanksOfPositionChange
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.OrderedAtRanksOfPositionElement
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.BesselExistenceUniformOfFacts
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.IdempotentTranslateMeasurable
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.SigmaFiniteRestrictSubgroup
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
+import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.SmoothVectorsTranslateUnitary
+import Formalism.SharpRestriction.CuspSpanNormBounds.ThresholdCubicInequalitySignPattern
+import Formalism.FlagUnipotentLattices.CardSubmodulesAndLinearEquivBounds
+import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.SumComplexEmbeddingsEqSumInfinitePlace
+import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.LatticeSumBounds
+import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.SchurAverage
+import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.DedekindLFunctions
+import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TransferenceCover
+import Formalism.PeriodIntegrals.TransferenceCoverRad
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CoveringRadius.CoverRad
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ResidueLatticeCount.UnitMulDetNeZero
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ResidueLatticeCount.NnrealOfEnnreal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.FoldBound
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.GgExistsAddCharNeOne
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.RowsDef
@@ -38,67 +98,6 @@ theorem toC_Ds (B : RowsAut) (b h : ℝ) :
     (toC B b h).Ds = B.I.Dstar (fdegAll B.I B.σ B.w) B.μf B.fund B.e :=
   rfl
 
-theorem countData_of (B : RowsAut) (hDS : ∀ v, IsDS (B.I.ε v) (B.lam v) (B.σ v))
-    (hw : ∀ v, IsLowUnit (B.I.ε v) (B.lam v) (B.σ v) (B.w v)) :
-    CountData B.I B.lam B.σ B.w B.σs B.tens B.μf B.fund B.R B.e B.Re :=
-  ⟨hDS, hw, B.tens_spec, B.haar, B.fund_spec, B.R_spec, B.Re_spec⟩
-
-theorem hypB_of (B : RowsAut) {n₀ : ℕ} {A b h : ℝ} (hS : HidaSetting B.I n₀ A b B.lam B.μf B.g B.g₀ B.e)
-    (hDS : ∀ v, IsDS (B.I.ε v) (B.lam v) (B.σ v)) (hw : ∀ v, IsLowUnit (B.I.ε v) (B.lam v) (B.σ v) (B.w v))
-    (hG : ∀ v, Formalism.QuantumDeterminants.GapAtLeast (B.I.ε v) (B.lam v) h) : (toC B b h).HypB n₀ A :=
-  ⟨hS, countData_of B hDS hw, hG⟩
-
-theorem exists_pos_const_Lagrange_condition (D : Formalism.BasicNotions.D7) : adm5 D :=
-  (admitted_iff_cover_radius D).2 Formalism.HermitianLatticeCounting.Final.S7.coverRadius'
-
-theorem explicit_formula_bound_holds : ∃ C : ℝ, 1 ≤ C ∧ ∀ D : Formalism.BasicNotions.D7, adm7 D C :=
-  residue_admitted_of_known Formalism.HermitianLatticeCounting.Final.S7.residue_bound
-
-theorem points_bound_of_volumeCountGeometryConditions : ∃ c' cb : ℝ, 0 < c' ∧ 0 < cb ∧ ∀ Cd Cq Cv A Cb cε : ℝ, 1 ≤ Cd → 0 ≤ Cq → 16 * Cq ≤ Cd →
-    1 ≤ Cv → 1 ≤ A → 0 < cε → cε ≤ 1 / 90000 →
-    ∃ (n₁ : ℕ) (C₂ : ℝ), ∀ (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (C : ℝ), n₁ ≤ n₀ → C₂ ≤ C → adm2 D → DiscreteSeriesDecayBound D →
-      LocalProjectorRealPlace D → Conclusion2 D n₀ A Cb → DistTri → VolumeCountGeometryConditions n₀ A C cb cε Cv Cd Cq → PointsLemma D n₀ A C c' cb := by
-  obtain ⟨c', cb, hc', hcb, h⟩ := packet_bound_of_volume_count_geometry
-  obtain ⟨Cres, -, hres⟩ := explicit_formula_bound_holds
-  refine ⟨c', cb, hc', hcb, fun Cd Cq Cv A Cb cε hCd hCq hCC hCv hA hcε hcε2 => ?_⟩
-  obtain ⟨n₁, C₂, h⟩ := h Cd Cq Cv Cres A Cb cε hCd hCq hCC hCv hA hcε hcε2
-  exact ⟨n₁, C₂, fun D n₀ C hn hC h2 hdec hloc hb htri hS => h D n₀ C hn hC h2 (hres D) hdec hloc hb htri hS⟩
-
-def eta (X : CData) (c : ℝ) : ℝ := Real.exp (-c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))
-
-theorem dc_le_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) : X.Dc ≤ (1 + eta X c) * X.Ds := by
-  have h := (abs_le.1 hC).2
-  show X.Dc ≤ (1 + Real.exp (-c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) * X.Ds
-  linarith
-
-theorem le_dc_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) : (1 - eta X c) * X.Ds ≤ X.Dc := by
-  have h := (abs_le.1 hC).1
-  show (1 - Real.exp (-c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) * X.Ds ≤ X.Dc
-  linarith
-
-theorem finDim_of_conC (X : CData) {c : ℝ} (hC : X.ConC c) (hD : 0 < X.Ds) (hη : eta X c < 1) :
-    FiniteDimensional ℂ (X.I.eHom X.σs X.μf X.fund X.R X.Re) := by
-  by_contra hfin
-  have h0 : X.Dc = 0 := by
-    show ((Module.finrank ℂ (X.I.eHom X.σs X.μf X.fund X.R X.Re) : ℕ) : ℝ) = 0
-    rw [Module.finrank_of_not_finite hfin]
-    simp
-  have h1 := le_dc_of_conC X hC
-  rw [h0] at h1
-  nlinarith [mul_pos (sub_pos.2 hη) hD]
-
-def ProjCuspRows (B : RowsAut) (b h : ℝ) : Prop :=
-  (toC B b h).ProjStep ∧ (toC B b h).CountedStep ∧ (toC B b h).CuspStep
-
-theorem projCuspRows_of_stepsB (B : RowsAut) {n₀ : ℕ} {A C b h : ℝ} (hS : StepsB n₀ A C)
-    (hX : (toC B b h).HypB n₀ A) (t1 : (toC B b h).GapAboveThreeHalvesPower) (t2 : (toC B b h).GapAboveSquareRootThreshold C) : ProjCuspRows B b h :=
-  hS _ hX t1 t2
-
-theorem projCuspRows_of_end (D : Formalism.BasicNotions.D7) (B : RowsAut) {n₀ : ℕ} {A C b h : ℝ} (hn₀ : 1 ≤ n₀) (hC : 46 ≤ C)
-    (ha1 : adm1 D) (ha2 : adm2 D) (ha8 : adm8 D) (hdec : DiscreteSeriesDecayBound D) (hloc : LocalProjectorRealPlace D) (hE : cu_StepsEnd n₀ A C)
-    (hX : (toC B b h).HypB n₀ A) (t1 : (toC B b h).GapAboveThreeHalvesPower) (t2 : (toC B b h).GapAboveSquareRootThreshold C) : ProjCuspRows B b h :=
-  projCuspRows_of_stepsB B (projection_facts_of_schur D n₀ A C hn₀ hC ha1 ha2 ha8 hdec hloc hE) hX t1 t2
-
 section Lat
 
 variable (I : AutInst)
@@ -127,23 +126,6 @@ def FoldReady : Prop :=
     DiscreteTopology (rr_GF I)
 
 end Lat
-
-theorem allCount_of_latCount (X : CData) (hL : LatCount X.I) (hpos : ∀ x, 0 < LitS.Size.tau1 X.I x) :
-    AllCount X (2 * (X.I.n : ℝ) ^ 2) := by
-  refine Filter.Eventually.of_forall fun x => ?_
-  refine ⟨(3 * Real.sqrt (X.I.n : ℝ) / (LitS.Size.tau1 X.I x * LitS.Size.tau1 X.I x)) ^ (2 * X.I.n ^ 2 * X.I.f),
-    by have := hpos x; positivity, fun r hr S hS => ?_⟩
-  exact hL x x (hpos x) (hpos x) r hr S hS
-
-theorem finVol_of_hypB (hB : LitS.BorelFinVol) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) : X.FinVol :=
-  LitS.finVol_of_borel hB X hX.2.1.2.2.2.1 hX.2.1.2.2.2.2.1
-
-theorem geometric_count_of_borel (hB : LitS.BorelFinVol) (hL : ∀ I : AutInst, LatCount I) (hT : LitS.ReductionTau)
-    {n₀ : ℕ} (hn₀ : 1 ≤ n₀) {A C cb cε Cv Cd Cq : ℝ}
-    (hG : ∀ X : CData, X.HypC n₀ A C cb → GeoS X cε Cv Cd Cq) : VolumeCountGeometryConditions n₀ A C cb cε Cv Cd Cq := by
-  intro X hX
-  have hn : 1 ≤ X.I.n := le_trans hn₀ hX.1.1.1
-  exact ⟨finVol_of_hypB hB X hX.1, allCount_of_latCount X (hL X.I) fun x => ((hT X.I hn).2 x).1, hG X hX⟩
 
 section DistInv
 
@@ -330,32 +312,6 @@ theorem muA_isHaar (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsH
   unfold AutInst.muA
   exact Measure.prod.instIsHaarMeasure _ _
 
-theorem foldBound_GA (I : AutInst) (hR : FoldReady I) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] :
-    @FoldBound.FoldBound I.GA _ _ _ hR.1 hR.2.1 _ hR.2.2.2.1 (I.muA μf) (muA_isHaar I μf) := by
-  exact @FoldBound.foldBound_holds I.GA _ _ _ hR.1 hR.2.1 _ hR.2.2.2.1 (I.muA μf) (muA_isHaar I μf)
-
-theorem rows_D_le (B : RowsAut) {b h c : ℝ} (hC : (toC B b h).ConC c) :
-    (B.D : ℝ) ≤ (1 + eta (toC B b h) c) * B.I.Dstar (fdegAll B.I B.σ B.w) B.μf B.fund B.e := by
-  have h1 := dc_le_of_conC _ hC
-  rwa [toC_Dc, toC_Ds] at h1
-
-theorem finDim_HH_of_conC (hB : RowsDef.RowsBij) (B : RowsAut) (dv : InfinitePlace B.I.F → ℝ)
-    (hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (B.I.ε v)) (B.σ v))
-    (hF : ∀ v, IsFdeg (Formalism.REAL.muG (B.I.ε v)) (B.σ v) (dv v)) (hw : ∀ v, ‖B.w v‖ = 1)
-    (hint : ∀ v, Integrable (ProjRows.phLoc (ε := B.I.ε v) (B.σ v) (B.w v) (dv v)) (Formalism.REAL.muG (B.I.ε v)))
-    (T : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund)
-    (hT : ProjRows.IsOpInt (ProjRows.muInf B.I) (fun g => B.R (g, 1)) (ProjRows.phInf B.I B.σ B.w dv) T)
-    {b h c : ℝ} (hC : (toC B b h).ConC c) (hD : 0 < (toC B b h).Ds) (hη : eta (toC B b h) c < 1) :
-    FiniteDimensional ℂ (RowsDef.HHB B T) := by
-  obtain ⟨hinj, hran⟩ := hB B.I B.μf B.fund B.fund_spec B.R B.R_spec B.e B.Re B.Re_spec B.H B.σ dv B.w
-    hU hIrr hF hw hint T hT B.Hs B.σs B.tens B.tens_spec
-  have : FiniteDimensional ℂ (B.I.eHom B.σs B.μf B.fund B.R B.Re) := finDim_of_conC (toC B b h) hC hD hη
-  exact RowsDef.finiteDimensional_HH_of_eHom hinj hran
-
-theorem countData_setting {D : Formalism.BasicNotions.D7} (X : HidaSetting.HidaSetting D) :
-    CountData X.B.I X.B.lam X.B.σ X.B.w X.B.σs X.B.tens X.B.μf X.B.fund X.B.R X.B.e X.B.Re :=
-  countData_of X.B X.ds X.low
-
 theorem level_set_le_compact {D : Formalism.BasicNotions.D7} (X : HidaSetting.HidaSetting D) : X.K2 ⊆ X.B.I.Kset :=
   fun _ hx => hx.1
 
@@ -364,9 +320,5 @@ def levelSubgroupOfCharacter {D : Formalism.BasicNotions.D7} (X : HidaSetting.Hi
   one_mem' := hG.1
   mul_mem' := fun ha hb => hG.2.1 _ ha _ hb
   inv_mem' := fun ha => hG.2.2.1 _ ha
-
-theorem level_subgroup_le_compact {D : Formalism.BasicNotions.D7} (X : HidaSetting.HidaSetting D) (hG : X.LevelSubgroupCharacter) :
-    ((levelSubgroupOfCharacter X hG : Subgroup X.B.I.Gf) : Set X.B.I.Gf) ⊆ X.B.I.Kset :=
-  level_set_le_compact X
 
 end Formalism.L2.SG.Count

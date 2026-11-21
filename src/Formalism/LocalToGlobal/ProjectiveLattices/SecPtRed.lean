@@ -120,9 +120,4 @@ theorem fromW_of {ζ : PtsG G la} [IsDVRAt ζ] {y : E.Pt' la}
            unr := hunr
            evW := hevW }⟩
 
-theorem secPtSt_of
-    (hR : ∀ ζ : PtsG G la, ∃ y : E.Pt' la, Nonempty (FromW ζ y)) :
-    SecPtSt G la :=
-  fun ζ => (hR ζ).imp fun _ ⟨f⟩ => ⟨f.toSecPt⟩
-
 end Formalism.L2.Pj

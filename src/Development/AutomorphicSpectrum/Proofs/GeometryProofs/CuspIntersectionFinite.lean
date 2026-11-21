@@ -5,8 +5,11 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspIntersectionComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspIntersectionComparison
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ComponentHeightLowerBound
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
@@ -15,10 +18,10 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.CompanionTheory.Relay.cusp_intersection_finite : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (U : ((Σ k, J k) → ℂ) → ℝ) (M : XModel Dc) (S' : BoundedRegularisationSetting M Dc.Xo Hd.aMu (corrW Hd U)) (z : Sp ℂ ⟶ Or.𝔐.X) (w : (Σ k, J k) → ℂ) (x : ℝ), Or.𝔐.IsCuspWeight Or.sm U → CoordsAt Or.𝔐.ξ Dc.y z w → Or.PhiWeight z w x → x ≤ S'.B.ph (M.proj w) + Real.log (S'.ref.h w) := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or U M S' z w x hU hz hx
   have hw : w ∈ mcPts (mCoordIdeal Dc.y) :=
-    (GlobalTheory.T.complex_points_iff_centres _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie w).2 ⟨z, Or.𝔐.all _, hz⟩
+    (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie w).2 ⟨z, Or.𝔐.all _, hz⟩
   haveI := LevelTowerAlt.Xo_dense Dc hw
   refine le_of_forall_pos_le_add fun ε hε => ?_
-  obtain ⟨δ, hδ, h⟩ := GlobalTheory.T.cusp_intersection_comparison hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U z w x hU hz hx (ε / 3) (by linarith)
+  obtain ⟨δ, hδ, h⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.GVal.corrW_lower_near hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U z w x hU hz hx (ε / 3) (by linarith)
   have hsub : Dc.Xo ⊆ mcPts (mCoordIdeal Dc.y) := fun _ h => h.1
   have h1 : ∀ᶠ w' in 𝓝[Dc.Xo] w, S'.B.ph (M.proj w') < S'.B.ph (M.proj w) + ε / 3 :=
     ((M.cont w hw).mono hsub).tendsto.eventually (LevelTowerAlt.ph_usc S'.B _ _ (by linarith))

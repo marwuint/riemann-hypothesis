@@ -68,15 +68,6 @@ def keepSideB (Bs : SideB D cf Rw low Pq S hL eig θ) :
     exp := keepExp D Dat th lev thPsi h1 thU thP MtLat h2 h3 nth' hU Bs.exp
     pq := fun i j b k Q ψ hj hj' hA => Bs.pq i j b k Q ψ hj hj' hA }
 
-section Same
-variable (Bs : SideB D cf Rw low Pq S hL eig θ)
-
-end Same
-
-end Keep
-
-section Keep
-
 end Keep
 
 end GlobalTheory.TwInputs

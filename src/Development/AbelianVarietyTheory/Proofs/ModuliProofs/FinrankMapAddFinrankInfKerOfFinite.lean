@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPolynomialFinrankHomogeneousSubmoduleStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPolynomialFinrankHomogeneousSubmodule
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
@@ -74,8 +74,8 @@ theorem regularity_comap_rename_of_surjective :
   intro σ σ₀ _ _ _ r Q₀ hr
   obtain ⟨s, hs⟩ := hr.hasRightInverse
   haveI : Nonempty σ := ⟨s (Classical.arbitrary _)⟩
-  obtain ⟨P, hP⟩ := GlobalTheory.T.exists_polynomial_eval_eq_finrank_homogeneousSubmodule σ
-  obtain ⟨P₀, hP₀⟩ := GlobalTheory.T.exists_polynomial_eval_eq_finrank_homogeneousSubmodule σ₀
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.exists_polynomial_finrank_homogeneousSubmodule σ
+  obtain ⟨P₀, hP₀⟩ := _root_.GlobalTheory.exists_polynomial_finrank_homogeneousSubmodule σ₀
   refine ⟨Q₀ + P - P₀, ?_⟩
   intro K _ I₀ I d hI hd e he
   have hrs : ∀ G : MvPolynomial σ₀ K, rename r (rename s G) = G := by

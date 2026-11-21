@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PderivSubstChainRuleStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSubstRestrictSumVariablesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffsInIdealSolutionOfUnipotentSeriesMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffsInIdealSolutionOfUnipotentSeriesMatrix
 
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
@@ -149,7 +149,7 @@ theorem dIn_of_QL : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [Co
       by_cases h0 : α = 0
       · exact ⟨b, hb, by rw [h0, coeff_zero_C, e]⟩
       · exact ⟨0, N.zero_mem, by rw [coeff_C, if_neg h0, map_zero]⟩
-  have hv := GlobalTheory.T.coeffsInIdeal_solution_of_unipotent_series_matrix N M hM (fun j => pderiv Q j f) g hvg hg
+  have hv := _root_.GlobalTheory.InvSolve.solve N M hM (fun j => pderiv Q j f) g hvg hg
   intro α i
   by_cases hi : α i = 0
   · exact ⟨0, N.zero_mem, by rw [hi, Nat.cast_zero, zero_mul, map_zero]⟩

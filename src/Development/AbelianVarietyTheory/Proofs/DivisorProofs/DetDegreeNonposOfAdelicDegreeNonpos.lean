@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFunctionFieldOfOneVariableOfGenericPointOfCurvStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurveClosedPointIsCentreOfPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundlePowSectionVanishingDegreePosStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetPowSectionRationalGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFunctionFieldOfOneVariableOfGenericPointOfCurv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurveClosedPointIsCentreOfPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundlePowSectionVanishingDegreePos
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetPowSectionRationalGenericPoint
 
 set_option autoImplicit false
 
@@ -73,10 +74,10 @@ theorem interNum_det_nonpos_of_deg_nonpos : ∀ (k K : Type) [Field k] [IsAlgClo
   by_contra hpos
   have := LieSemineg.isIntegral_curve hx.1.1 hx.1.2.2
   have := hx.2.1.1
-  obtain ⟨m, σ, c, -, hσ, hc⟩ := GlobalTheory.T.exists_lineBundle_pow_section_vanishing_degree_pos k C hx.1 (det W r) hW.isLB_det (not_le.1 hpos)
-  obtain ⟨w, b, hb, hbc⟩ := GlobalTheory.T.curve_closedPoint_isCentreOfPlace k K C x hx c fun e => hc (e ▸ closedPoint_mem_nonzeroLocus x hσ)
-  obtain ⟨f, hf, H⟩ := GlobalTheory.T.detPowSection_rational_genericPoint k K C x hx W r hW V₀ s hV hs m σ hσ
-  obtain ⟨hfin, hsum⟩ := GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k K (GlobalTheory.T.isFunctionFieldOfOneVariable_of_genericPointOfCurve k K C x hx) f hf
+  obtain ⟨m, σ, c, -, hσ, hc⟩ := _root_.GlobalTheory.Nef.exists_sec_lbPow_vanishing_of_degree_pos k C hx.1 (det W r) hW.isLB_det (not_le.1 hpos)
+  obtain ⟨w, b, hb, hbc⟩ := _root_.GlobalTheory.Nef.centre_place k K C x hx c fun e => hc (e ▸ closedPoint_mem_nonzeroLocus x hσ)
+  obtain ⟨f, hf, H⟩ := _root_.GlobalTheory.Nef.sec_detPow_rational k K C x hx W r hW V₀ s hV hs m σ hσ
+  obtain ⟨hfin, hsum⟩ := _root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k K (_root_.GlobalTheory.Nef.CurveFF.isFF_of_isGenOver k K C x hx) f hf
   exact (deg_pos_of_integral hg hf hfin hsum (fun v => (H v _ (hloc v)).1)
     ((H w _ (hloc w)).2 b hb (hbc ▸ hc))).not_ge hdeg
 

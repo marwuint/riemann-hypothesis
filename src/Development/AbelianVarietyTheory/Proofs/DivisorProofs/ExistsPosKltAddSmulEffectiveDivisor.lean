@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTestDivisorsKltLcPencilBoundariesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTestDivisorsKltLcPencilBoundaries
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisor
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsFiniteLengthOfIsArtinianRingAnnihilator
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
@@ -30,7 +30,7 @@ theorem exists_pos_kltAt_add_smul : GlobalTheory.Published.Principalisation → 
   haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hproj).1
   obtain ⟨η, hη, hGη⟩ := hG
   obtain ⟨m', D₀, hm', -, rfl⟩ := hB
-  obtain ⟨S, hS, hSt⟩ := GlobalTheory.T.finite_test_divisors_klt_lc_pencil_boundaries hP X p n hproj hn η m G D₀ hη hm
+  obtain ⟨S, hS, hSt⟩ := _root_.GlobalTheory.PairStep.finite_test_divisors hP X p n hproj hn η m G D₀ hη hm
   have hloc : ∀ x : X, ∃ (U : X.Opens) (g f : X.functionFieldˣ), x ∈ U ∧
       ∀ y ∈ U, G.IsEqn y g ∧ D₀.IsEqn y f := by
     intro x
@@ -60,7 +60,7 @@ theorem exists_pos_kltAt_add_smul : GlobalTheory.Published.Principalisation → 
       qWeil D₀ m' z = (E.ord (f x₀) : ℚ) / m' := by
     intro z hz E hE
     rw [qWeil, (hUeq x₀ z (hz.mem_open (U x₀).isOpen hy)).2.mult_eq, hE.ord_eq]
-  obtain ⟨m'', g'', hm'', hlog'', hdisc⟩ := GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Δ (qWeil D₀ m') η y m m' (g x₀)
+  obtain ⟨m'', g'', hm'', hlog'', hdisc⟩ := _root_.GlobalTheory.PairStep.isLogEqn_add_smul X p n Δ (qWeil D₀ m') η y m m' (g x₀)
     (f x₀) (c * m') hm hm' hlog hD
   refine (hlog''.kltAt_iff hn hη hm'').2 fun E hE => ?_
   rw [hdisc]

@@ -1,11 +1,16 @@
 import Mathlib
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.Imports
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasic
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.BesselCharacterUnipotentRadicalPropertiesImports
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.BesselSubgroupParameterMeasurePreservingImports
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.DecayThresholdsOfSpectralGapConditionImports
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselPeriodAdjointPairStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselCharacterUnipotentRadicalProperties
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSubgroupParameterMeasurePreserving
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DecayThresholdsOfSpectralGapCondition
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselPeriodAdjointPair
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LUFactorOrbitBounds
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
@@ -39,9 +44,9 @@ theorem besselInner_integral {k r : ℕ} (R : Rep k r) {Wp : Type} [NormedAddCom
     ∫ b, JF.integrand D (fun g => ⟪x, R.σ g y⟫_ℂ • X) γ (a, b) ∂(D.μW'.prod D.μN) =
       Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd (Matrix.of a.2) • (D.π (Matrix.of a.1)).comp (X.comp
         (be D.z' Formalism.QuantumDeterminants.cStd D.π' R.σ D.μW' D.μN y (R.σ (γ⁻¹ * Matrix.of a.2 * Matrix.of a.1) x))) := by
-  obtain ⟨-, -, -, hT, -, hae⟩ := GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z' D.μW' D.μN D.k_pos D.z'_mem D.T'_pos
+  obtain ⟨-, -, -, hT, -, hae⟩ := _root_.GlobalTheory.sParam_measurePreserving k r D.z' D.μW' D.μN D.k_pos D.z'_mem D.T'_pos
     (besselInner_haar D.haarW') (besselInner_haar D.haarN)
-  obtain ⟨-, -, -, hconj, hW, hN⟩ := GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z' Formalism.QuantumDeterminants.cStd D.z'_mem
+  obtain ⟨-, -, -, hconj, hW, hN⟩ := _root_.GlobalTheory.BesselPsi.psi_character k r D.z' Formalism.QuantumDeterminants.cStd D.z'_mem
   set v := R.σ (γ⁻¹ * Matrix.of a.2 * Matrix.of a.1) x with hv
   set G := beInt D.z' Formalism.QuantumDeterminants.cStd D.π' R.σ y v with hG
   set T : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r := fun p =>
@@ -107,8 +112,8 @@ theorem besselJ_coef_through_right : HypsG → ∀ (k r : ℕ) (ε : Fin (2 * r 
   intro x hx y hy X c
   have hcoef : IsCoef R l l' (fun g => ⟪x, R.σ g y⟫_ℂ • X) ⟪l x, X (l' y)⟫_ℂ :=
     ⟨1, fun _ => x, fun _ => y, fun _ => X, fun _ => ⟨hx, hy⟩, fun g _ => by simp, by simp⟩
-  have hcc := (GlobalTheory.T.smooth_and_inCC_of_isCoef_of_gap hH k r ε mu h R Wp Wq l l' _ _ hDS hgap hOK hcoef).2 0
-  have hI := (Formalism.FourierDecayAlt.P.bessel_integral_converges k r Wp Wq D _ _ (GlobalTheory.T.decayThresholds_of_spectralGapCondition k r h hOK).1 hcc).1 γ hγ
+  have hcc := (_root_.Gp91.GlobalTheory.isCoef_ckOn_inCC hH k r ε mu h R Wp Wq l l' _ _ hDS hgap hOK hcoef).2 0
+  have hI := (Formalism.FourierDecayAlt.P.bessel_integral_converges k r Wp Wq D _ _ (_root_.GlobalTheory.thresholds_of_gapOK k r h hOK).1 hcc).1 γ hγ
   haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW
   haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN
   haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW'
@@ -117,9 +122,9 @@ theorem besselJ_coef_through_right : HypsG → ∀ (k r : ℕ) (ε : Fin (2 * r 
   have hI' : Integrable (JF.integrand D (fun g => ⟪x, R.σ g y⟫_ℂ • X) γ)
       ((D.μW.prod D.μN).prod (D.μW'.prod D.μN)) := hI
   rw [hJ, integral_prod _ hI', ContinuousLinearMap.integral_apply hI'.integral_prod_left]
-  obtain ⟨-, -, -, -, -, hae⟩ := GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z D.μW D.μN D.k_pos D.z_mem D.T_pos
+  obtain ⟨-, -, -, -, -, hae⟩ := _root_.GlobalTheory.sParam_measurePreserving k r D.z D.μW D.μN D.k_pos D.z_mem D.T_pos
     (besselInner_haar D.haarW) (besselInner_haar D.haarN)
-  obtain ⟨-, -, -, -, hW, hN⟩ := GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z Formalism.QuantumDeterminants.cStd D.z_mem
+  obtain ⟨-, -, -, -, hW, hN⟩ := _root_.GlobalTheory.BesselPsi.psi_character k r D.z Formalism.QuantumDeterminants.cStd D.z_mem
   refine integral_congr_ae ?_
   filter_upwards [hae] with a ha
   have ha1 : Matrix.of a.1 ∈ GG k r := (hW _ ha.1 _ ha.1).2.2

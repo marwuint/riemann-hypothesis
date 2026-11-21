@@ -269,7 +269,4 @@ theorem lHatDual_of (h₁ : DInter) (h₂ : LDenom) (h₃ : LDense) (h₄ : LHat
   rw [hz']
   exact I.Lf.add_mem (DictLat.iv_mem I hv) hy'
 
-theorem lHatDual_of_D (h₁ : DInter) (h₂ : DDenom) (h₃ : DDense) : LHatDual := by
-  exact lHatDual_of h₁ (lDenom_of h₂) (lDense_of h₃) dual_hat_integral
-
 end PIW.AdelClassFin

@@ -127,9 +127,6 @@ def dualQuotIso : dual (eigenQuot ρ σ) ≅ eigen (dualAct ρ) σ := asIso (dua
     (dualQuotIso ρ σ).hom ≫ eigenι _ _ = dualMap (eigenπ ρ σ) := by
   simp only [dualQuotIso, asIso_hom, dualQuotHom, eigenLift_ι]
 
-theorem isEquivariant_toBidual : IsEquivariant ρ (dualAct (dualAct ρ)) (cartierDualToBidual F) := fun a =>
-  toBidual_naturality_dualSheafTranspose (act ρ a)
-
 def pullbackQuotIso (f : Y ⟶ X) : eigenQuot (pullAct ρ f) (f.appTop.hom.comp σ) ≅
     (Scheme.Modules.pullback f).obj (eigenQuot ρ σ) where
   hom := eigenDesc ((Scheme.Modules.pullback f).map (eigenπ ρ σ)) fun a => by

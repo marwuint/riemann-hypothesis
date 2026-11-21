@@ -171,15 +171,6 @@ def nrmOf (v : EReal) : ℝ :=
 lemma one_lt_absNorm_real : (1 : ℝ) < (Ideal.absNorm la.asIdeal : ℝ) := by
   exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm la
 
-lemma nrmOf_le_one_iff {v : EReal} (hv : v ≠ ⊥) : nrmOf la v ≤ 1 ↔ 0 ≤ v := by
-  by_cases ht : v = ⊤
-  · subst ht; simp [nrmOf]
-  lift v to ℝ using ⟨ht, hv⟩
-  simp only [nrmOf, EReal.coe_ne_top, if_false, EReal.toReal_coe, EReal.coe_nonneg]
-  rw [← Real.rpow_zero (Ideal.absNorm la.asIdeal : ℝ),
-    Real.rpow_le_rpow_left_iff (one_lt_absNorm_real la)]
-  constructor <;> intro h <;> linarith
-
 lemma nrmOf_smul {a : K} (ha : a ≠ 0) {v : EReal} (hv : v ≠ ⊥) :
     nrmOf la ((((vLa la a : ℤ) : ℝ) : EReal) + v) = FinitePlace.mk la a * nrmOf la v := by
   rw [finitePlace_eq_zpow la ha]

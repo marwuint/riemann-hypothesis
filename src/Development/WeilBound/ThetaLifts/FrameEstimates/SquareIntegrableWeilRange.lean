@@ -134,9 +134,6 @@ def ConeExp : Prop :=
 def PosWt : Prop :=
   ∀ (n d q y : ℕ) (s : Fin q → ℝ) (t : Fin y → ℝ), s ∈ Cone q → t ∈ Cone y → posWt n d s t ≤ d * ∑ i, s i + n * ∑ j, t j ∧ 0 ≤ viol s t ∧ ∀ i ≤ q, psum s i ≤ psum t i + viol s t
 
-def Major : Prop :=
-  ∀ (q : ℕ) (s t : Fin q → ℝ), s ∈ Cone q → t ∈ Cone q → (∀ i ≤ q, psum s i ≤ psum t i) → ∑ i, ∑ j, min (s i) (s j) - ∑ i, ∑ j, min (s i) (t j) ≤ ∑ j : Fin q, ((q : ℝ) - 1 - j.val) * t j
-
 def ExpSo : Prop :=
   ∀ (n d q y Y : ℕ), q ≤ Y → y ≤ Y → 2 * Y + 1 < n → 2 * n ≤ d → ∃ m : ℝ, ∀ s ∈ Cone q, ∀ t ∈ Cone y, posWt n d s t / 2 - rho2 n s - m * viol s t ≤ rho2 d t / 2 - (∑ j, t j) / 4 - (∑ i, s i) / (4 * (q + 1))
 

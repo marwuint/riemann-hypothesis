@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProporti
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.BigLineBundleKodairaOfIsProjOver
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivisorPullbackSupportAndEffectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivisorPullbackSupportAndEffective
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ExistsSmoothProjectiveModel
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ExistsEmbeddedResolutionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullTopInjective
@@ -68,14 +68,14 @@ theorem exists_logRes_smul_eq_ample_add_eff :
     rw [Closeds.coe_sup]
     exact h
   refine ⟨Y, inferInstance, t ≫ s₀, inferInstance, K, B, hres, ?_, c * a₀, E + c • pullCart t D₀, A₁, hA₁,
-    Nat.mul_pos hc ha₀, hE.add (eff_nsmul ((GlobalTheory.T.cartierDivisorPullback_support_and_effective Y₀ Y t D₀).2 hD₀) c), ?_, ?_⟩
+    Nat.mul_pos hc ha₀, hE.add (eff_nsmul ((_root_.GlobalTheory.Discrepancy.pullCart_supp_and_eff Y₀ Y t D₀).2 hD₀) c), ?_, ?_⟩
   · intro y hy
     refine hmem y (Or.inl ?_)
     show s₀ (t y) ∈ (Z : Set X)
     simpa using hy
   · refine (CartierDiv.supp_add_le _ _).trans (sup_le hEB ((supp_nsmul_le _ c).trans ?_))
     intro y hy
-    exact hmem y (Or.inr ((GlobalTheory.T.cartierDivisorPullback_support_and_effective Y₀ Y t D₀).1 y hy))
+    exact hmem y (Or.inr ((_root_.GlobalTheory.Discrepancy.pullCart_supp_and_eff Y₀ Y t D₀).1 y hy))
   · have e₀' : a₀ • CechPic.pull s₀ (cls M hM) = cls A hA.isLB + toPic D₀ := e₀
     rw [map_add, map_nsmul, toPic_pullCart, GlobalTheory.CechPic.pull_comp, mul_smul,
       ← map_nsmul (CechPic.pull t) a₀, e₀', map_add, smul_add, e₁, add_assoc]

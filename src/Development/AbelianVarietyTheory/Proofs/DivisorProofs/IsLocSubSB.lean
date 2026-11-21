@@ -37,16 +37,4 @@ theorem mem_UAtGrp {R : Type} [Zero R] (ev : AF F → R) (g : UA σ X.J) : g ∈
 
 end Adelic
 
-section Local
-
-variable {Y G H : Type} [Group G] [Group H] [TopologicalSpace Y]
-
-def locAug (om : G × H →* Module.End ℂ (Y → ℂ)) : Submodule ℂ (Y → ℂ) :=
-  Submodule.span ℂ {z | ∃ g, ∃ φ ∈ SB Y, z = om (g, 1) φ - φ}
-
-def IsLocSub (om : G × H →* Module.End ℂ (Y → ℂ)) (N : Submodule ℂ (Y → ℂ)) : Prop :=
-  locAug om ≤ N ∧ N ≤ SB Y ∧ ∀ h, ∀ φ ∈ N, om (1, h) φ ∈ N
-
-end Local
-
 end GlobalTheory.HoweAdelic

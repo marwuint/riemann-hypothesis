@@ -2,15 +2,15 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualLatticeDegreeNeg
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusLatticeDegreeMulP
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupActionRingHomStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairingStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupActionRingHom
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaAdjointExactStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobeniusStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BetaEquivariantFrobeniusStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalDataBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransportStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransportStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobenius
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BetaEquivariantFrobenius
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalDataBaseChange
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransport
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecomposition
 
 noncomputable section
 
@@ -407,8 +407,8 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
     LocSplit C i (alpha (F.BK i) p) (beta (F.BK i) p) := by
   haveI : CharP (C.v i).valuationSubring p :=
     (RingHom.charP_iff (C.v i).valuationSubring.subtype Subtype.val_injective p).2 inferInstance
-  have mK := GlobalTheory.T.formal_data_base_change _ _ (C.v i).valuationSubring.subtype d O (F.Bi i) (F.BK i) (F.mapK i)
-  have mk := GlobalTheory.T.formal_data_base_change _ _ (IsLocalRing.residue _) d O (F.Bi i) (F.Bk i) (F.mapk i)
+  have mK := _root_.GlobalTheory.CompanionTheory.Ar.Conj.map_mats_baseChange _ _ (C.v i).valuationSubring.subtype d O (F.Bi i) (F.BK i) (F.mapK i)
+  have mk := _root_.GlobalTheory.CompanionTheory.Ar.Conj.map_mats_baseChange _ _ (IsLocalRing.residue _) d O (F.Bi i) (F.Bk i) (F.mapk i)
   have iz : am (F.Bi i) p * hw (F.Bi i) p -
       (hw (F.Bi i) p).transpose * bil (F.Bi i).sy 1 1 * hw (F.Bi i) p -
       (hw (F.Bi i) p).transpose * (am (F.Bi i) p).transpose = 0 := by
@@ -426,7 +426,7 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
     apply F.inj i
     rw [map_zero, alpha_apply, (mk.2.2 p).1, (mk.2.2 p).2, ← Matrix.transpose_map, h1, h2]
     rfl
-  obtain ⟨r₁, r₂, s₁, s₂, e₁, e₂, e₃, e₄, e₅, e₆⟩ := GlobalTheory.T.local_matrix_coprime_decomposition _ d _ _ _ iz inj
+  obtain ⟨r₁, r₂, s₁, s₂, e₁, e₂, e₃, e₄, e₅, e₆⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Split.isotropic_residue_injective_splits _ d _ _ _ iz inj
   let Φ := (C.v i).valuationSubring.subtype.mapMatrix (m := Fin d)
   have hT : ∀ M, Φ M.transpose = (Φ M).transpose := fun M => rfl
   have hh : hw (F.BK i) p = Φ (hw (F.Bi i) p) := (mK.2.2 p).1
@@ -451,7 +451,7 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
 theorem rhoH_mem_stdH (i : C.I) (B₀ : FB (C.v i).valuationSubring d O) (B : FB K d O)
     (h : IsMapOf (C.v i).valuationSubring.subtype B₀ B) (a : O) {w : VV K d}
     (hw : w ∈ stdH C d i) : rhoH B a w ∈ stdH C d i := by
-  obtain ⟨hm, -⟩ := GlobalTheory.T.formal_data_base_change _ _ (C.v i).valuationSubring.subtype d O B₀ B h
+  obtain ⟨hm, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.map_mats_baseChange _ _ (C.v i).valuationSubring.subtype d O B₀ B h
   have hr : ∀ b, IntM C i (rho B b) := fun b => by rw [(hm b).1]; exact intM_map C i _
   have ha : IntM C i (bil (B.ad a) 1 1) := by rw [(hm a).2]; exact intM_map C i _
   rw [mem_stdH] at hw ⊢
@@ -464,9 +464,9 @@ theorem family_conj : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
     ∃ D : ConjData C p O d, (∀ a, D.ρ a = rho F.B a) ∧
       ∀ i u, u ∈ D.lie i ↔ ∀ j, C.v i ((lin (F.ψ i) 1).mulVec u j) ≤ 1 := by
   intro K _ C p _ _ d O _ _ F hI
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.formal_group_action_ring_hom K d O F.B
-  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := GlobalTheory.T.formal_hermitian_action_pairing K d O F.B
-  have iso := fun i => GlobalTheory.T.formal_isomorphism_transport K d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rho_hom K d O F.B
+  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint K d O F.B
+  have iso := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing K d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
   have h₁ := fun i => (iso i).1
   have h₂ := fun i => (iso i).2.1
   have hT := fun i => (iso i).2.2.1
@@ -475,7 +475,7 @@ theorem family_conj : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
       C.v i (bil (F.lam i) 1 1 a b) ≤ 1) → IntM C i (lin (F.φ i) 1) ∧ IntM C i (lin (F.ψ i) 1) ∧
         IntM C i (bil (F.lam i) 1 1) := fun i h =>
     ⟨fun a b => (h a b).1, fun a b => (h a b).2.1, fun a b => (h a b).2.2⟩
-  have hiso := fun i => GlobalTheory.T.alpha_beta_isomorphism_transport K p d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
+  have hiso := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Conj.alpha_beta_of_isIso K p d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
   refine ⟨{ lie := fun i => colLat C i (lin (F.φ i) 1)
             H := fun i => imLat C i (transH (F.φ i) (F.ψ i) (F.lam i))
             lie_bun := isBun_colLat C _ _ h₁ h₂ (F.ae.subset fun i hi h => hi ?_)
@@ -502,8 +502,8 @@ theorem family_conj : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
   · rw [hρH, rhoH_fst, hρ]
   · rw [hρH, rhoH_inr, hρ]
   · rw [hρ, hρH]
-    exact GlobalTheory.T.alpha_equivariant_frobenius K p d O F.B a u
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.AlphaAct.alpha_comm_act K p d O F.B a u
   · rw [hρ, hρH]
-    exact GlobalTheory.T.beta_equivariant_frobenius K p d O F.B a y
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq K p d O F.B a y
 
 end GlobalTheory.CompanionTheory.Ar.Conj.Fam

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatSurjectiveGeomFibre
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsogenyCompIffAndDegreeMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrankStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyFiniteHomKernelKilledByNatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsogenyCompIffAndDegreeMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenyFlatFinrank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyFiniteHomKernelKilledByNat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyIntCastSmulIsogenyDegree
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -16,8 +16,8 @@ namespace GlobalTheory.AV.AbVar
 theorem exists_quasiInverse_isogeny : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), IsIsogeny f →
     ∃ (n : ℕ) (g : B ⟶ A), 0 < n ∧ IsIsogeny g ∧ f ≫ g = n • 𝟙 A ∧ g ≫ f = n • 𝟙 B := by
   intro K _ A B f hf
-  obtain ⟨hdim, -, -, -⟩ := GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f hf
-  obtain ⟨n, hn, hker⟩ := GlobalTheory.T.abelianVariety_finiteHom_kernel_killed_by_nat K A B f hf.1
+  obtain ⟨hdim, -, -, -⟩ := _root_.GlobalTheory.AV.AbVar.isogeny_flat_finrank K A B f hf
+  obtain ⟨n, hn, hker⟩ := _root_.GlobalTheory.AV.KerKill.kernel_killed K A B f hf.1
   have hB := B.smooth
   have hA := A.smooth
   rw [hdim] at hA
@@ -27,8 +27,8 @@ theorem exists_quasiInverse_isogeny : ∀ (K : Type) [Field K] (A B : AbVar K) (
   have e1 : f ≫ g = n • 𝟙 A := hom_ext (by simp [g, hfh])
   have e2 : g ≫ f = n • 𝟙 B := hom_ext (by simp [g, hhf])
   refine ⟨n, g, hn, ?_, e1, e2⟩
-  have hm : IsIsogeny ((n : ℤ) • 𝟙 B) := (GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K B n (by exact_mod_cast hn.ne')).1
+  have hm : IsIsogeny ((n : ℤ) • 𝟙 B) := (_root_.GlobalTheory.MulIsogeny.mul_isogeny K B n (by exact_mod_cast hn.ne')).1
   rw [natCast_zsmul, ← e2] at hm
-  exact (((GlobalTheory.T.isIsogeny_comp_iff_and_degree_mul K B A B g f hdim.symm hdim).1).mp hm).1
+  exact (((_root_.GlobalTheory.AV.AbVar.isIsogeny_comp_iff_and_deg_comp K B A B g f hdim.symm hdim).1).mp hm).1
 
 end GlobalTheory.AV.AbVar

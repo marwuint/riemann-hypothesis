@@ -8,8 +8,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInter
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArcZeroZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFramePointEigenframe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEigenFrameChartVectorsCompactFlagSpaceAffiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValueWeightSectionFlagSpaceEqRuleAtFramedPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEigenFrameChartVectorsCompactFlagSpaceAffi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieEigenspaceFrameFlagCoverChartDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValueWeightSectionFlagSpaceEqRuleAtFramedPoint
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -39,7 +40,7 @@ theorem arc_bridge : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   have hz : ⊤ ≤ ((show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U (i PUnit.unit) := fun s _ => by
     have h1 : (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) s ∈ W := hW.range_fromSpec.le ⟨s, rfl⟩
     exact ReciprocityTheory.ChartRestriction.G.Geo.Tor.mem_pull.1 (hWi h1)
-  obtain ⟨fr, hfr⟩ := GlobalTheory.T.exists_eigenFrame_chartVectors_compactFlagSpace_affine TF Z W hW φ hφ (i PUnit.unit) hz _ hx
+  obtain ⟨fr, hfr⟩ := _root_.GlobalTheory.CompHS.exists_eigFrame_vecAt₀ TF Z W hW φ hφ (i PUnit.unit) hz _ hx
   have hφu : ∀ u ∈ Metric.ball (0 : ℂ) r, (ψ u).comp φ = σ := fun u hu => by
     have h1 := hs u hu
     rw [hφ, spMap_comp'] at h1
@@ -71,6 +72,6 @@ theorem arc_bridge : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   haveI : Nonempty (FrPt Xo c (CAt σ)) := ⟨(hy' _ hr).choose⟩
   choose! yy hyy using hy'
   refine ⟨φ, x, fr, yy, hb, fun u hu h => hyy u ⟨hu, h⟩, fun g u hu h hO hi => ?_⟩
-  exact GlobalTheory.T.value_weightSection_flagSpace_eq_rule_at_framedPoint TF Z la σ W hW i φ x hx hz fr hfr (ψ u) (yy u) (hφu u hu) (hyy u ⟨hu, h⟩) g hO hi
+  exact _root_.GlobalTheory.CompHS.BridgeValue.val_sec₀_eq_evR TF Z la σ W hW i φ x hx hz fr hfr (ψ u) (yy u) (hφu u hu) (hyy u ⟨hu, h⟩) g hO hi
 
 end GlobalTheory.CompHS.ArcBridge

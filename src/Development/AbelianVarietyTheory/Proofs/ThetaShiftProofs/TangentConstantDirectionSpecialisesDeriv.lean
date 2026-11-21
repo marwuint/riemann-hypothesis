@@ -10,8 +10,8 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CoordsDetermineF
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsEvLePreimage
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.SecScalOfIsPullSec
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.GermMemConvLaurent
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyProjCoordsConvergentCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueLiftCoordsLocalSubringStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyProjCoordsConvergentCoefficients
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueLiftCoordsLocalSubring
 
 noncomputable section
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -158,7 +158,7 @@ theorem exists_coords_tan {N : ℕ} [NeZero N] (C : Coords Φ N) {z₀ : A.V}
 
 theorem spec_tangent : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (B : Type) [CommRing B] (bb : Base l B) (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp B) (o : Obj D l bb s) (A : AnArc (𝓞 E)) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A o.t y) (Γ : Germs) (Ψ : SpecPts Φ Γ), AnFin A → Φ.Rational → ∀ (z₀ : A.V) (ν : Sp (DualNumber ℂ⸨X⸩) ⟶ pullback o.t.G.hom y), Φ.IsTan z₀ ν → ∃ T' ≥ Ψ.T, ∀ (w : ℂ) (hw : Ψ.T < w.im), T' < w.im → ∃ νt : Sp (DualNumber (Γ.R w)) ⟶ o.t.G.left, νt ≫ o.t.G.hom = spMap (algebraMap (Γ.R w) (DualNumber (Γ.R w))) ≫ spMap (Subalgebra.inclusion (Γ.le Ψ.T w hw)).toRingHom ≫ Ψ.yT ∧ (∀ ρ : DualNumber (Γ.R w) →+* DualNumber ℂ⸨X⸩, (∀ r, ρ (TrivSqZeroExt.inl r) = TrivSqZeroExt.inl (r : ℂ⸨X⸩)) → ρ DualNumber.eps = DualNumber.eps → spMap ρ ≫ νt = ν ≫ pullback.fst _ _) ∧ ∀ ρ : DualNumber (Γ.R w) →+* DualNumber ℂ, (∀ r, ρ (TrivSqZeroExt.inl r) = TrivSqZeroExt.inl (Γ.ev w r)) → ρ DualNumber.eps = DualNumber.eps → spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap ρ ≫ νt = (Ψ.pi w 0).left ∧ ∀ (W : o.t.G.left.Opens) (f : Γ(o.t.G.left, W)), ⊤ ≤ (Ψ.pi w 0).left ⁻¹ᵁ W → TrivSqZeroExt.snd (valR (spMap ρ ≫ νt) W f) = fderiv ℂ (fun v => valAt' (Ψ.pi w v).left W f) 0 z₀ := by
   intro hL hL₂ E _ _ _ H _ D l B _ bb S _ s o A y Φ Γ Ψ hA hΦ z₀ ν hν
-  obtain ⟨C⟩ := T.nonempty_projCoords_convergent_coefficients hL hL₂ E H D l B bb S s o A y Φ hA hΦ 4 le_rfl
+  obtain ⟨C⟩ := _root_.GlobalTheory.SpanFrame.nonempty_coords hL hL₂ E H D l B bb S s o A y Φ hA hΦ 4 le_rfl
   obtain ⟨T₁, hT₁, d, ν', eν, hc, hd⟩ := exists_coords_tan C hν
   obtain ⟨T₂, hT₂, hT₃, hs⟩ := SpecCoord.spec_coords E H D l B bb S s o A y Φ Γ Ψ 4 C
   refine ⟨max T₁ T₂, le_max_of_le_right hT₂, fun w hw hw' => ?_⟩
@@ -173,7 +173,7 @@ theorem spec_tangent : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [Numb
   obtain ⟨j, hj⟩ := ArcSectionValue.exists_chart_local (ν ≫ pullback.fst o.t.G.hom y) o.t.PP.isLB
   obtain ⟨u, hu⟩ := hc j hj
   obtain ⟨i₀, hi₀⟩ := C.bpf w hwC 0
-  obtain ⟨x, ⟨x1, x2, x3⟩, -⟩ := T.existsUnique_lift_coords_localSubring S o.t.G o.t.PP.L C.U 4 C.n C.b (DualNumber (Γ.R w)) (DualNumber ℂ⸨X⸩)
+  obtain ⟨x, ⟨x1, x2, x3⟩, -⟩ := _root_.GlobalTheory.LiftPoint.existsUnique_lift S o.t.G o.t.PP.L C.U 4 C.n C.b (DualNumber (Γ.R w)) (DualNumber ℂ⸨X⸩)
     (dualMapR (Γ.R w).val.toRingHom)
     (spMap (algebraMap (Γ.R w) (DualNumber (Γ.R w))) ≫
       spMap (Subalgebra.inclusion (Γ.le Ψ.T w hw)).toRingHom ≫ Ψ.yT) ν'

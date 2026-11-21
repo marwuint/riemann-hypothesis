@@ -12,55 +12,8 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 section Laurent
 
-variable (K) in
-
-def qpowUnit (s : ℂ) : ℂˣ := Units.mk0 ((residueCard K : ℂ) ^ (-s)) (qpow_ne_zero s)
-
-variable (K) in
-
-def evalQpow (P : LaurentPolynomial ℂ) (s : ℂ) : ℂ :=
-  LaurentPolynomial.eval₂ (RingHom.id ℂ) (qpowUnit K s) P
-
-theorem evalQpow_C_mul_T (a : ℂ) (n : ℤ) (s : ℂ) :
-    evalQpow K (LaurentPolynomial.C a * LaurentPolynomial.T n) s =
-      a * ((residueCard K : ℂ) ^ (-s)) ^ n := by
-  rw [evalQpow, LaurentPolynomial.eval₂_C_mul_T, Units.val_zpow_eq_zpow_val]
-  rfl
-
-theorem evalQpow_add (P Q : LaurentPolynomial ℂ) (s : ℂ) :
-    evalQpow K (P + Q) s = evalQpow K P s + evalQpow K Q s := map_add _ _ _
-
-theorem evalQpow_mul (P Q : LaurentPolynomial ℂ) (s : ℂ) :
-    evalQpow K (P * Q) s = evalQpow K P s * evalQpow K Q s := map_mul _ _ _
-
-theorem evalQpow_sub (P Q : LaurentPolynomial ℂ) (s : ℂ) :
-    evalQpow K (P - Q) s = evalQpow K P s - evalQpow K Q s := map_sub _ _ _
-
-theorem evalQpow_one (s : ℂ) : evalQpow K 1 s = 1 := map_one _
-
-theorem evalQpow_C (a : ℂ) (s : ℂ) : evalQpow K (LaurentPolynomial.C a) s = a := by
-  rw [evalQpow, LaurentPolynomial.eval₂_C]
-  rfl
-
-theorem evalQpow_sum {ι : Type*} (t : Finset ι) (P : ι → LaurentPolynomial ℂ) (s : ℂ) :
-    evalQpow K (∑ i ∈ t, P i) s = ∑ i ∈ t, evalQpow K (P i) s := map_sum _ _ _
-
 theorem differentiable_qpow : Differentiable ℂ fun s : ℂ => (residueCard K : ℂ) ^ (-s) :=
   differentiable_neg.const_cpow (Or.inl residueCard_ne_zero_complex)
-
-theorem differentiable_evalQpow (P : LaurentPolynomial ℂ) : Differentiable ℂ (evalQpow K P) := by
-  induction P using LaurentPolynomial.induction_on' with
-  | add p q hp hq =>
-    have : evalQpow K (p + q) = fun s => evalQpow K p s + evalQpow K q s :=
-      funext fun s => evalQpow_add p q s
-    rw [this]
-    exact hp.add hq
-  | C_mul_T n a =>
-    have : evalQpow K (LaurentPolynomial.C a * LaurentPolynomial.T n) =
-        fun s => a * ((residueCard K : ℂ) ^ (-s)) ^ n :=
-      funext fun s => evalQpow_C_mul_T a n s
-    rw [this]
-    exact (differentiable_qpow.zpow (Or.inl fun s => qpow_ne_zero s)).const_mul a
 
 end Laurent
 
@@ -281,89 +234,6 @@ theorem localZeta_eq_sum (hf : f ∈ schwartzBruhat K) (hχ : Continuous χ) {M 
     split_ifs <;> simp
   rw [e] at h12
   exact hsum.unique h12
-
-theorem exists_localZeta_eq_mul_evalQpow (hf : f ∈ schwartzBruhat K) (hχ : Continuous χ) :
-    ∃ P : LaurentPolynomial ℂ, ∀ s : ℂ, -quasiCharExponent χ < s.re →
-      localZeta f χ s = localLFactor χ s * evalQpow K P s := by
-  obtain ⟨N₀, M, hN₀, hM⟩ := exists_invariant_of_mem_schwartzBruhat hf
-  set N := max N₀ M
-  have hMN : M ≤ N := le_max_right _ _
-  have hN : ∀ x ∈ valBall K N, f x = f 0 := fun x hx => by
-    have := hN₀ 0 x (valBall_antitone (le_max_left _ _) hx)
-    rwa [zero_add] at this
-  let Z : ℤ → ℂ := fun k => ∫ u in ordShell K k, f u * ((χ u : ℂˣ) : ℂ) ∂multHaar K
-  let Q : LaurentPolynomial ℂ :=
-    ∑ k ∈ Finset.Ico M N, LaurentPolynomial.C (Z k) * LaurentPolynomial.T k
-  have hQ : ∀ s, evalQpow K Q s = ∑ k ∈ Finset.Ico M N, Z k * ((residueCard K : ℂ) ^ (-s)) ^ k :=
-    fun s => by simp only [Q, evalQpow_sum, evalQpow_C_mul_T]
-  by_cases hu : IsUnramifiedChar χ
-  · set α := ((χ (unifUnit K) : ℂˣ) : ℂ)
-    refine ⟨(1 - LaurentPolynomial.C α * LaurentPolynomial.T 1) * Q +
-      LaurentPolynomial.C (f 0 * α ^ N) * LaurentPolynomial.T N, fun s hs => ?_⟩
-    rw [localZeta_eq_sum hf hχ hMN hM hN hs, if_pos hu, localLFactor_of_isUnramified hu,
-      evalQpow_add, evalQpow_mul, evalQpow_sub, evalQpow_one, evalQpow_C_mul_T, evalQpow_C_mul_T,
-      hQ, zpow_one]
-    have hne := one_sub_quasiChar_unifUnit_mul_qpow_ne_zero hχ hs
-    rw [mul_add, ← mul_assoc, inv_mul_cancel₀ hne, one_mul, mul_zpow]
-    ring
-  · refine ⟨Q, fun s hs => ?_⟩
-    rw [localZeta_eq_sum hf hχ hMN hM hN hs, if_neg hu, localLFactor_of_not_isUnramified hu, hQ,
-      add_zero, one_mul]
-
-open Classical in
-
-def localZetaRatio (f : K → ℂ) (χ : Kˣ →* ℂˣ) (s : ℂ) : ℂ :=
-  if h : ∃ P : LaurentPolynomial ℂ, ∀ s : ℂ, -quasiCharExponent χ < s.re →
-      localZeta f χ s = localLFactor χ s * evalQpow K P s then
-    evalQpow K h.choose s
-  else 0
-
-theorem exists_localZetaRatio_eq (hf : f ∈ schwartzBruhat K) (hχ : Continuous χ) :
-    ∃ P : LaurentPolynomial ℂ, (∀ s : ℂ, localZetaRatio f χ s = evalQpow K P s) ∧
-      ∀ s : ℂ, -quasiCharExponent χ < s.re →
-        localZeta f χ s = localLFactor χ s * evalQpow K P s := by
-  have h := exists_localZeta_eq_mul_evalQpow hf hχ
-  exact ⟨h.choose, fun s => by rw [localZetaRatio, dif_pos h], h.choose_spec⟩
-
-theorem localZeta_eq_localLFactor_mul (hf : f ∈ schwartzBruhat K) (hχ : Continuous χ) {s : ℂ}
-    (hs : -quasiCharExponent χ < s.re) :
-    localZeta f χ s = localLFactor χ s * localZetaRatio f χ s := by
-  obtain ⟨P, hP, hZ⟩ := exists_localZetaRatio_eq hf hχ
-  rw [hP, hZ s hs]
-
-theorem localZetaRatio_eq_div (hf : f ∈ schwartzBruhat K) (hχ : Continuous χ) {s : ℂ}
-    (hs : -quasiCharExponent χ < s.re) :
-    localZetaRatio f χ s = localZeta f χ s / localLFactor χ s := by
-  rw [localZeta_eq_localLFactor_mul hf hχ hs, mul_div_cancel_left₀ _ (localLFactor_ne_zero hχ hs)]
-
-theorem differentiable_localZetaRatio (hf : f ∈ schwartzBruhat K) (hχ : Continuous χ) :
-    Differentiable ℂ (localZetaRatio f χ) := by
-  obtain ⟨P, hP, -⟩ := exists_localZetaRatio_eq hf hχ
-  have : localZetaRatio f χ = evalQpow K P := funext hP
-  rw [this]
-  exact differentiable_evalQpow P
-
-omit [MeasurableSpace K] [BorelSpace K] in
-theorem meromorphicOn_localLFactor (χ : Kˣ →* ℂˣ) : MeromorphicOn (localLFactor χ) Set.univ := by
-  intro s _
-  by_cases h : IsUnramifiedChar χ
-  · have e : localLFactor χ = fun s =>
-        (1 - ((χ (unifUnit K) : ℂˣ) : ℂ) * (residueCard K : ℂ) ^ (-s))⁻¹ :=
-      funext fun s => localLFactor_of_isUnramified h s
-    rw [e]
-    exact ((((differentiable_qpow (K := K)).const_mul _).const_sub 1).analyticAt s).meromorphicAt.inv
-  · have e : localLFactor χ = fun _ => (1 : ℂ) :=
-      funext fun s => localLFactor_of_not_isUnramified h s
-    rw [e]
-    exact analyticAt_const.meromorphicAt
-
-theorem meromorphicOn_localZetaContinuation (hf : f ∈ schwartzBruhat K) (hχ : Continuous χ) :
-    MeromorphicOn (fun s => localLFactor χ s * localZetaRatio f χ s) Set.univ ∧
-      ∀ s : ℂ, -quasiCharExponent χ < s.re →
-        localZeta f χ s = localLFactor χ s * localZetaRatio f χ s := by
-  refine ⟨fun s hs => ?_, fun s hs => localZeta_eq_localLFactor_mul hf hχ hs⟩
-  exact (meromorphicOn_localLFactor χ s hs).mul
-    ((differentiable_localZetaRatio hf hχ).analyticAt s).meromorphicAt
 
 end ZetaNonvanishing₂
 

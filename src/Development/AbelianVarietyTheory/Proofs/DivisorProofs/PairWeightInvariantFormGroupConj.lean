@@ -1,10 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.MinpolyIrreducibleNatDegreeOfRankOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToVInjective
 import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnitaryRankOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.MarkedSumIrr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToVInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FixLineConjIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianPositivityInvariant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithIntersectionDivisorSupport
+
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
 

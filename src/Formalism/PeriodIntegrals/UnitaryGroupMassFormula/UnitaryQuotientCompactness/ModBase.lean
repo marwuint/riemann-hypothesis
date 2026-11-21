@@ -124,10 +124,6 @@ theorem continuous_lmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (lmulQ (m
   unfold lmulQ
   exact continuous_const.matrix_mul continuous_id
 
-theorem continuous_rmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (rmulQ (m := m) a) := by
-  unfold rmulQ
-  exact continuous_id.matrix_mul continuous_const
-
 def onG (hG : IsMatGroup G) (μ : Measure (MtM m)) : Measure (MG G hG) := μ.comap val
 
 theorem map_onG (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : (onG hG μ).map val = μ := by
@@ -151,15 +147,5 @@ theorem onG_left (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : Measure.IsMulLe
         rw [Measure.map_map measEmb.measurable hmul, hcomp, ← Measure.map_map hmeasL measEmb.measurable]
     _ = Measure.comap val μ := by rw [map_onG μ hμ, hμ.2.2.2 _ g.toM_mem]
     _ = onG hG μ := rfl
-
-theorem onG_sigmaFinite (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : SigmaFinite (onG hG μ) := by
-  haveI := hμ.1
-  exact SigmaFinite.of_map _ (measEmb (hG := hG)).measurable.aemeasurable (by rw [map_onG μ hμ]; exact hμ.1)
-
-theorem onG_ne_zero (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) : onG hG μ ≠ 0 := by
-  intro h
-  have e := map_onG (hG := hG) μ hμ
-  rw [h, Measure.map_zero] at e
-  exact hμ.2.1 e.symm
 
 end PI.QuotSetU.UnitaryGroupMassFormula.ModW

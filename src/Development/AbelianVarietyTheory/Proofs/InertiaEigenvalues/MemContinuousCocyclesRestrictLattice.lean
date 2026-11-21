@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoboundaryMemBlo
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrystallineCyclotomicLevelOfFinrankInvariants
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.WeakIdealLattices
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RestrictCrystallineDeRhamFiniteExt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoRightExactStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoRightExact
 
 noncomputable section
 
@@ -138,7 +138,7 @@ theorem lift_rational (P : LocPrime l) (AI : LocAinf l P) (hP : LocTied l P AI) 
     refine ⟨⟨hc₂.1.comp ha, fun g h => hc₂.2 (a g) (a h)⟩, x₂, fun g => ?_⟩
     exact (hx₂ (a g)).trans (congrArg (fun f : T₂.V ⊗[ℚ_[l]] P.R.B →ₗ[↥LL.1] T₂.V ⊗[ℚ_[l]] P.R.B => f x₂ - x₂)
       (GlobalTheory.Cyc.actVB_inclusion P K E LL hle T₂ g).symm)
-  obtain ⟨c, ⟨hc, x, hx⟩, v, hv⟩ := GlobalTheory.T.bloch_kato_right_exact l P AI hP E ↥LL.1 ↥(OL LL)
+  obtain ⟨c, ⟨hc, x, hx⟩, v, hv⟩ := _root_.GlobalTheory.BKRightExact.bkARightExact_of_tied l P AI hP E ↥LL.1 ↥(OL LL)
     (GlobalTheory.LocalIntegers.good_integers l LL).1 (resRep E hle T₁) (resRep E hle T₂) π.f
     (fun g y => π.equiv _ y) hπ (hres T₁ h₁) (hres T₂ h₂) _ hc'
   refine ⟨c ∘ b, ⟨hc.1.comp hb, fun g h => hc.2 (b g) (b h)⟩, ⟨x, fun g => ?_⟩, v, fun g => ?_⟩

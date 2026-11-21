@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyExistsAmpleClassStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianVarietyAmpleClassAddStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianVarietyAmpleClassPullbackOfIsFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyExistsAmpleClass
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianVarietyAmpleClassAdd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianVarietyAmpleClassPullbackOfIsFinite
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -21,13 +21,13 @@ theorem neg_one_left_comp_self {K : Type} [Field K] (A : AbVar K) :
 theorem exists_symm_ample :
     ∀ (K : Type) [Field K] (A : AbVar K), ∃ c : Pic A.X.left, IsAmpleCls c ∧ CechPic.pull (Hom.hom (-(𝟙 A))).left c = c := by
   intro K _ A
-  obtain ⟨c₀, hc₀⟩ := GlobalTheory.T.abelianVariety_exists_ampleClass K A
+  obtain ⟨c₀, hc₀⟩ := _root_.GlobalTheory.AV.exists_isAmpleCls K A
   set f : A.X.left ⟶ A.X.left := (Hom.hom (-(𝟙 A))).left with hf
   have hff : f ≫ f = 𝟙 A.X.left := neg_one_left_comp_self A
   have hiso : IsIso f := ⟨⟨f, hff, hff⟩⟩
   have hfin : IsFinite (Hom.hom (-(𝟙 A))).left := by
     rw [← hf]; infer_instance
-  refine ⟨c₀ + CechPic.pull f c₀, GlobalTheory.T.isAbelianVarietyAmpleClass_add K A _ _ hc₀ (GlobalTheory.T.isAbelianVarietyAmpleClass_pullback_of_isFinite K A A (-(𝟙 A)) c₀ hfin hc₀), ?_⟩
+  refine ⟨c₀ + CechPic.pull f c₀, _root_.GlobalTheory.AV.isAmpleCls_add K A _ _ hc₀ (_root_.GlobalTheory.AV.AbVar.isAmpleCls_pull_of_isFinite K A A (-(𝟙 A)) c₀ hfin hc₀), ?_⟩
   rw [map_add, ← CechPic.pull_comp, hff, CechPic.pull_id, add_comm]
 
 end GlobalTheory.AV.AbVar

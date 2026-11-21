@@ -10,12 +10,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 
 namespace GlobalTheory.LowRow.SignedPerm
 
-section General
-
-variable {K : Type} [Field K] [NumberField K]
-
-end General
-
 section Host
 
 theorem finite_and_ncard_le : ∀ (D : D7) (n : ℕ),

@@ -40,19 +40,6 @@ theorem weylSum_card_split {n : ℕ} (ε : Fin n → Bool) :
   simp only [Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_univ, Fintype.card_fin] at h
   linarith
 
-theorem weylSum_pIdx {n : ℕ} (ε : Fin n → Bool) (β : Bool) (F G : Fin n → ℝ) :
-    ∑ p : pIdx ε β, F p.1.1 * G p.1.2 =
-      (∑ i ∈ univ.filter (fun i => ε i = β), F i) * ∑ j ∈ univ.filter (fun j => ε j = !β), G j := by
-  rw [Finset.sum_mul_sum, ← Finset.sum_product', ← Finset.filter_product, Finset.univ_product_univ]
-  exact (Finset.sum_subtype _ (by simp) (fun q : Fin n × Fin n => F q.1 * G q.2)).symm
-
-theorem weylSum_card_pIdx {n : ℕ} (ε : Fin n → Bool) (β : Bool) :
-    (Nat.card (pIdx ε β) : ℝ) = ((univ.filter (fun i => ε i = β)).card : ℝ) *
-      ((univ.filter (fun j => ε j = !β)).card : ℝ) := by
-  have h := weylSum_pIdx ε β (fun _ => (1 : ℝ)) (fun _ => (1 : ℝ))
-  simp only [mul_one, Finset.sum_const, nsmul_eq_mul, Finset.card_univ] at h
-  rw [Nat.card_eq_fintype_card, ← h]
-
 theorem weylSum_shift {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) (c : ℝ)
     (hc : ∀ β : Bool, ∑ s ∈ univ.filter (fun s => ε s = β), ∏ b ∈ univ.filter (fun b => b ≠ s ∧ ε b = ε s),
       ((Λ + rhoC ε) s - (Λ + rhoC ε) b + c) / ((Λ + rhoC ε) s - (Λ + rhoC ε) b) =
@@ -75,26 +62,5 @@ theorem weylSumDual : WeylSumDualStatement := by
     rw [← blockSum_minus ε β _ (weylSum_inj hΛ β)]
     refine Finset.sum_congr rfl fun s _ => Finset.prod_congr rfl fun b _ => by ring
   simpa only [neg_one_smul, dualWt] using h
-
-theorem weylSumP : WeylSumPStatement := by
-  intro n ε β Λ hint hΛ
-  refine ⟨?_, fun p hp => weylK_p_vanish ε β Λ hint hΛ p hp⟩
-  have hr : ∀ p : pIdx ε β, weylK ε (Λ + pWt ε β p) = weylK ε Λ *
-      ((∏ b ∈ univ.filter (fun b => b ≠ p.1.1 ∧ ε b = ε p.1.1),
-        ((Λ + rhoC ε) p.1.1 - (Λ + rhoC ε) b + 1) / ((Λ + rhoC ε) p.1.1 - (Λ + rhoC ε) b)) *
-      (∏ b ∈ univ.filter (fun b => b ≠ p.1.2 ∧ ε b = ε p.1.2),
-        ((Λ + rhoC ε) p.1.2 - (Λ + rhoC ε) b - 1) / ((Λ + rhoC ε) p.1.2 - (Λ + rhoC ε) b))) := by
-    intro p
-    have hij : ε p.1.1 ≠ ε p.1.2 := by rw [p.2.1, p.2.2]; cases β <;> decide
-    rw [← mul_assoc]
-    exact weylK_add_single_sub_single ε Λ hΛ p.1.1 p.1.2 hij
-  rw [Finset.sum_congr rfl fun p _ => hr p, ← Finset.mul_sum, weylSum_pIdx ε β
-    (fun i => ∏ b ∈ univ.filter (fun b => b ≠ i ∧ ε b = ε i),
-      ((Λ + rhoC ε) i - (Λ + rhoC ε) b + 1) / ((Λ + rhoC ε) i - (Λ + rhoC ε) b))
-    (fun j => ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j),
-      ((Λ + rhoC ε) j - (Λ + rhoC ε) b - 1) / ((Λ + rhoC ε) j - (Λ + rhoC ε) b)),
-    blockSum_plus ε β _ (weylSum_inj hΛ β), blockSum_minus ε (!β) _ (weylSum_inj hΛ (!β)),
-    weylSum_card_pIdx]
-  ring
 
 end ReciprocityTheory.ChartRestriction.DS.HW

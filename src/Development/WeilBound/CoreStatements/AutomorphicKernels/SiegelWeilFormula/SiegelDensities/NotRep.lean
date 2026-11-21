@@ -44,11 +44,11 @@ theorem notRepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : Mass
   have hdet1 : T1.det ≠ 0 := by
     rw [Matrix.det_fin_one]; exact htE
   have hsw := PositivityTheory.PfSWUS.HMass.one_vec_sw hE1 F E σ hCM (M + 1) J hJ (by omega) (Or.inr hA) T1 hT1 hdet1
-  obtain ⟨minf1, hminf1⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM (M + 1) J hJ (Ainf F) hLinf 1 _ _
+  obtain ⟨minf1, hminf1⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM (M + 1) J hJ (Ainf F) hLinf 1 _ _
     ((haarOf _ hLinf laminf hinf.1).1 1 (M + 1)) ((haarOf _ hLinf laminf hinf.1).2 1)
   have hex : ∀ v : HeightOneSpectrum (𝓞 F), ∃ m' : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin (M + 1) → Fv F v ⊗[F] E),
       IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 (M + 1)) (coordHerm (Fv F v) σ b (lam v) 1) m' :=
-    fun v => GlobalTheory.T.exists_gram_fiber_measures F E σ hCM (M + 1) J hJ (Fv F v) (hLv v) 1 _ _
+    fun v => _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM (M + 1) J hJ (Fv F v) (hLv v) 1 _ _
       ((haarOf _ (hLv v) (lam v) (hv v).1).1 1 (M + 1)) ((haarOf _ (hLv v) (lam v) (hv v).1).2 1)
   choose m1 hm1 using hex
   have hEul := hsw d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf1 m1 hminf1 hm1
@@ -63,7 +63,7 @@ theorem notRepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : Mass
     intro hX
     apply hne (X 0)
     simpa [gramE, blockOne] using congrFun (congrFun hX 0) 0
-  have hz := ((GlobalTheory.T.euler_product_measure_zero F E σ hCM d b 1 (M + 1) _ 1 _ _).1 hEul
+  have hz := ((_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b 1 (M + 1) _ 1 _ _).1 hEul
     (SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS1))
   have hvan : minf (hermOf (Ainf F) σ (blockOne (algebraMap F E t) T) hT') = 0 ∨
       ∃ v, cfac E v • m v (hermOf (Fv F v) σ (blockOne (algebraMap F E t) T) hT') = 0 := by
@@ -80,7 +80,7 @@ theorem notRepC_of (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hM : Mass
   obtain ⟨hfin, hsum⟩ := hM F E σ hCM (M + 1) (by omega) J hJ (blockOne (algebraMap F E t) T) hT' hdetB d b lam
     (fun v => hv v) m hm
   rw [SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS]
-  exact (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b (M + 1) (M + 1) 0 (halfLam F E) _ _).2.2 hfin hsum hvan
+  exact (_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b (M + 1) (M + 1) 0 (halfLam F E) _ _).2.2 hfin hsum hvan
 
 end PositivityTheory.SiegelWeilFormula.Densx
 

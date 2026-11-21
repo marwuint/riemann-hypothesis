@@ -2,11 +2,14 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocRatio
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinearStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GradedSandwichDegreeBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeRegularAtLocalPointStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GradedSandwichDegreeBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeRegularAtLocalPoint
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights
@@ -184,7 +187,7 @@ theorem exists_phi : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶
     obtain ⟨r', hr, -⟩ := (hw.2 k (c₀ k) (hunit k)).2 (c' k)
     exact reg_of_val hr hp
   obtain ⟨b, π, κ, hflag, -, hmb, hπ, hreg, hκ0, hκ, hκi, hcls⟩ :=
-    GlobalTheory.T.exists_graded_sandwich_coordinates X Ω ξ K J y G Li M V r b₀ m i a e₀ hb₀ hS hD ⟨centre zL, hp⟩ c₀ hIC
+    _root_.GlobalTheory.CompanionTheory.Ar.RootHt.cls_frame X Ω ξ K J y G Li M V r b₀ m i a e₀ hb₀ hS hD ⟨centre zL, hp⟩ c₀ hIC
   obtain ⟨hmi, hm0⟩ := inv_nat_reg (ξ := ξ) hp hm
   have hbl : ∀ l, b l ∈ M.lat ⟨centre zL, hp⟩ := fun l => by
     have h1 := (M.lat ⟨centre zL, hp⟩).smul_mem (⟨(m : Ω)⁻¹, hmi⟩ : regAt ξ ⟨centre zL, hp⟩) (hmb l)
@@ -199,14 +202,14 @@ theorem exists_phi : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶
   letI : Module (𝓞 L) T := Module.compHom T (algebraMap (𝓞 L) L)
   haveI : IsScalarTower (𝓞 L) L T := IsScalarTower.of_algebraMap_smul fun _ _ => rfl
   subst hzL
-  obtain ⟨j₀, hj₀, -⟩ := GlobalTheory.T.lie_model_existsUnique_semilinear X G (𝓞 L) L (algebraMap (𝓞 L) L) z B.carrier T MB MT
+  obtain ⟨j₀, hj₀, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieBaseChange.existsUnique_semilinear_lifts X G (𝓞 L) L (algebraMap (𝓞 L) L) z B.carrier T MB MT
   let j : B.carrier →ₗ[𝓞 L] T :=
     { toFun := j₀, map_add' := j₀.map_add, map_smul' := fun c x => j₀.map_smulₛₗ c x }
   have hjj : ∀ x, MB.Lifts (algebraMap (𝓞 L) L) (𝟙 G.left) x (MT.pt (j x)) := hj₀
-  have hbc : IsBaseChange L j := GlobalTheory.T.lie_model_isBaseChange X G (𝓞 L) L z B.carrier T MB MT j hjj
+  have hbc : IsBaseChange L j := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_isBaseChange X G (𝓞 L) L z B.carrier T MB MT j hjj
   obtain ⟨hinj, hclr⟩ := clear_int j hbc
   obtain ⟨ev, hev, hevs, -⟩ := GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ Li M L _ hp T MT hξ inferInstance
-  obtain ⟨g, hg⟩ := GlobalTheory.T.lattice_regular_at_local_point X G Ω ξ Li M L _ hp T MT (π i) hξ (hπr i)
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.exists_lieFunctional X G Ω ξ Li M L _ hp T MT (π i) hξ (hπr i)
   obtain ⟨uκ, huκ⟩ := val_exists hp hκ
   obtain ⟨uκi, huκi⟩ := val_exists hp hκi
   have huκ0 : uκ ≠ 0 := by

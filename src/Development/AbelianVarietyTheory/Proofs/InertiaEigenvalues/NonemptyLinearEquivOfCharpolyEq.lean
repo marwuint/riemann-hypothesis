@@ -30,8 +30,6 @@ theorem tr_prod [FiniteDimensional k V] [FiniteDimensional k W] (a : A) :
   rw [tr, h, LinearMap.trace_prodMap']
   rfl
 
-theorem tr_one [FiniteDimensional k V] : tr k V (1 : A) = finrank k V := by rw [tr, map_one, LinearMap.trace_one]
-
 theorem finiteDimensional_sub [FiniteDimensional k V] (P : Submodule A V) : FiniteDimensional k P := inferInstanceAs (FiniteDimensional k (P.restrictScalars k))
 
 theorem finrank_eq_zero_of_hom [CharZero k] [FiniteDimensional k V] [FiniteDimensional k W]

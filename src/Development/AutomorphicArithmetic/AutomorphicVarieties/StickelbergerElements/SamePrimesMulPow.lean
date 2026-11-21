@@ -20,13 +20,9 @@ def Eone (M a : ℕ) (b : ZMod M) : ℤ := ((a : ℤ) - 1) / 2 - jv M a b
 
 def dk (k : ℕ) : ℕ := 2 * k * primorial (k + 1)
 
-def ck (l k : ℕ) : ℕ := padicValNat l (dk k)
-
 theorem dk_pos {k : ℕ} (hk : 0 < k) : 0 < dk k := by
   unfold dk
   exact Nat.mul_pos (by omega) (primorial_pos _)
-
-def SamePrimes (N M : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ M → p ∣ N
 
 section Elements
 
@@ -62,20 +58,7 @@ theorem sumEl_add {R : Type} [CommRing R] {M : ℕ} [NeZero M] (φ : (ZMod M)ˣ 
     sumEl φ (fun b => f b + g b) = sumEl φ f + sumEl φ g := by
   simp only [sumEl, MonoidAlgebra.single_add, Finset.sum_add_distrib]
 
-def twHom {R : Type} [CommRing R] (κ : G →* Rˣ) (π : G →* Γ) (e : ℕ) : G →* MonoidAlgebra R Γ where
-  toFun g := MonoidAlgebra.single (π g) (((κ g)⁻¹ ^ e : Rˣ) : R)
-  map_one' := by simp [MonoidAlgebra.one_def]
-  map_mul' g h := by simp [MonoidAlgebra.single_mul_single, mul_pow, mul_comm]
-
-def tw {R : Type} [CommRing R] (κ : G →* Rˣ) (π : G →* Γ) (e : ℕ) : MonoidAlgebra ℤ G →+* MonoidAlgebra R Γ :=
-  (MonoidAlgebra.lift ℤ (MonoidAlgebra R Γ) G (twHom κ π e)).toRingHom
-
 end Maps
-
-example : Eone 7 5 1 = 0 := by
-  have h : ((5 : ℕ) : ZMod 7)⁻¹ = 3 := ZMod.inv_eq_of_mul_eq_one 7 _ _ (by decide)
-  rw [Eone, jv, yCl, h]
-  decide
 
 end UpperTheory.V.Stk
 

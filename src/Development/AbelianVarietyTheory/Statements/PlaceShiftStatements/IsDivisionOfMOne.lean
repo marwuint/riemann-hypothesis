@@ -1,7 +1,9 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.IwSemistable
+import Development.AbelianVarietyTheory.Definitions.Divisors.Subsingleton
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsStrictlySemistableAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDatumAOne
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.IsStrictlySemistableBase
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GaloisRepOfPolarizedCuspidal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 
 noncomputable section
 open CategoryTheory AlgebraicGeometry
@@ -45,39 +47,5 @@ abbrev RG : Type := Localization.AtPrime wG
 
 instance : IsDiscreteValuationRing RG :=
   IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain _ wG_ne_bot _
-
-def ϖG : RG := Classical.choose (IsDiscreteValuationRing.exists_irreducible RG)
-
-theorem ϖG_irr : Irreducible ϖG := Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible RG)
-
-theorem natCast_not_mem (k : ℕ) (hk : k.Coprime 5) : ((k : ℕ) : 𝓞 gaussOneDatum.F) ∉ wG := by
-  intro hkw
-  obtain ⟨u, v, huv⟩ := (Nat.isCoprime_iff_coprime.2 hk)
-  have h1 : ((u * (k : ℤ) + v * ((5 : ℕ) : ℤ) : ℤ) : 𝓞 gaussOneDatum.F) = 1 := by rw [huv]; simp
-  have : (1 : 𝓞 gaussOneDatum.F) ∈ wG := by
-    rw [← h1]; push_cast
-    exact wG.add_mem (wG.mul_mem_left _ (by exact_mod_cast hkw)) (wG.mul_mem_left _ (by exact_mod_cast five_mem))
-  exact wG_max.ne_top ((Ideal.eq_top_iff_one _).2 this)
-
-def bG : Base gaussOneDatum RG where
-  unit k hk := by
-    rw [← map_natCast (algebraMap (𝓞 gaussOneDatum.F) RG), IsLocalization.AtPrime.isUnit_to_map_iff RG wG]
-    exact natCast_not_mem k hk
-  ρ := algebraMap (𝓞 gaussOneDatum.F) RG gaussOneDatum.ω
-  ρ_root := by
-    have h : gaussOneDatum.ω ^ 2 - (gaussOneDatum.tr : 𝓞 gaussOneDatum.F) * gaussOneDatum.ω +
-        (gaussOneDatum.nm : 𝓞 gaussOneDatum.F) = 0 := by
-      rw [← gaussOneDatum.tr_eq, ← gaussOneDatum.nm_eq]; ring
-    have h' := congrArg (algebraMap (𝓞 gaussOneDatum.F) RG) h
-    simpa only [map_sub, map_add, map_mul, map_pow, map_intCast, map_zero] using h'
-  t _ := algebraMap (𝓞 gaussOneDatum.F) RG
-  t_ω _ := rfl
-  comax i j h := (h (Fin.ext (by have hi := i.isLt; have hj := j.isLt; change _ < 1 at hi hj; omega))).elim
-  apart i j h := (h (Fin.ext (by have hi := i.isLt; have hj := j.isLt; change _ < 1 at hi hj; omega))).elim
-
-def i0 : Fin gaussOneDatum.a := ⟨0, Nat.one_pos⟩
-
-example : GlobalTheory.Et.IsStrictlySemistable ϖG (𝟙 (Spec (CommRingCat.of RG))) :=
-  GlobalTheory.SemistableModel.isStrictlySemistable_base RG ϖG
 
 end GlobalTheory.IwLevel.IwInhab

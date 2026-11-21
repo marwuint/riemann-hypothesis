@@ -78,10 +78,6 @@ def swapEquiv {S T : HSp D} (A : Fr S) (B : Fr T) : PolF D T.rank S.rank ≃ₐ[
       simp only [Algebra.algebraMap_eq_smul_one, ← mul_assoc]
       rw [← MvPolynomial.C_eq_smul_one, ← map_mul, sgv_mul_self, map_one, one_mul])
 
-example {S T : HSp D} (ω : GlobalTheory.Grid.WRep S T) (p : GA D S × GA D T) (F : WO S T → ℂ) :
-    conjRep (conjRep ω) p F = ω p F := by
-  rw [conjRep_apply, conjRep_apply, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj_cj id id (fun _ => rfl), GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj_cj id id (fun _ => rfl)]
-
 end GlobalTheory.AdjTr
 
 end

@@ -141,12 +141,6 @@ theorem hypTJ_stepLevelQ (hLb : Lb = S.Lb) (hUl : Uloc = S.Uloc) (hgp : ∀ a, �
 
 end Q
 
-section Mem
-
-variable {gp : Fin 2 → ℕ} {f : ℕ} (S : Formalism.L2.Herm.StepLevel D.sp.cm (D.sp.X (i + 1)) gp (D.mem u).A.T f)
-
-end Mem
-
 end GlobalTheory.Port
 end
 section
@@ -374,13 +368,6 @@ theorem oneHyp_rec (K : CmpTied D X T Gt c) (hJ : Joint0 X.lev0 u (T u)) :
   oneHyp_locAt X T u (sameUloc_of_joint X T u hJ) w hg K.B (K.fr_B u w hg) (hypT_rec X u w hg) (hypTC_rec X u w hg)
 
 end Rec
-
-section Top
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Dx : DivX D} {cX : ExtraC}
-  {ex : Extra D L hT Gi Gl K Dx cX}
-
-end Top
 
 end GlobalTheory.Port
 

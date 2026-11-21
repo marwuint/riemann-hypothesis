@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPoi
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.RealPtExHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousKapSymm
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ArchimedeanUnitaryElementLiftStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UnitaryElementPrescribedBlocksStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UnitaryElementPrescribedBlocks
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExtendByZeroApplyOfNeStatement
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsOrthogonalHermitianSubspaceStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Matrix
@@ -79,7 +79,7 @@ theorem iwasawa_adapted : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F �
     rw [hmap, hW.xy]; exact Matrix.map_one _ (map_zero _) (map_one _)
   choose u w hu hw hux hN hJ using fun τ =>
     eichler_frame (ε τ) (gramAt D V τ) (Q τ) (x τ) (y τ) (upTo T) (hQ τ).1 (hQ τ).2 (hxx τ) (hxy τ)
-  obtain ⟨g, hg, U, W, hU, hW', hUX, hgM⟩ := GlobalTheory.T.archimedean_unitary_element_lift D θ hθ V X u w hN
+  obtain ⟨g, hg, U, W, hU, hW', hUX, hgM⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.exists_adelic_of_real_comps D θ hθ V X u w hN
   have hgu : g ∈ unip D.sp.cm.sig V.gram X T :=
     GlobalTheory.T.unitary_adelic_unipotent_lift D.sp.cm.sig V.gram X T g U W hW.xx (fun i v hi => hU i v fun τ => hu τ i v hi)
       (fun v i hi => hW' v i fun τ => hw τ v i hi) (fun i j hj => hUX i j fun τ => hux τ i j hj) hgM

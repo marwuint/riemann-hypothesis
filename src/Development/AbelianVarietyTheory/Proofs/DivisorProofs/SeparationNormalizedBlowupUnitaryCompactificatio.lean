@@ -2,17 +2,21 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBaseAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepAtBIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryFourierSystemTraitsFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisedBlowupFiniteNormalCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealAlongMonomialFamilyEqSpanMonomialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApproximatingElementsNormalCoverUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianPartDescendsOfThetaTermsRatiosStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendsAbelianPartOfIsPullDegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodsInCoordinatesFromBasePullDegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTermCoefficientSqEqMonomialSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareApproxValuesAtPointOfElementsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryFourierSystemTraitsFamily
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisedBlowupFiniteNormalCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealAlongMonomialFamilyEqSpanMonomial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApproximatingElementsNormalCoverUnitary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianPartDescendsOfThetaTermsRatios
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendsAbelianPartOfIsPullDeg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodsInCoordinatesFromBasePullDeg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTermCoefficientSqEqMonomialSubfield
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareApproxValuesAtPointOfElements
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonModule
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSupportingTupleSmoothConeCmFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSupportingTupleSmoothConeCmField
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValEqOfAppInjective
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TauBimultOfIsPullDeg
@@ -98,15 +102,15 @@ theorem GlobalTheory.USep.sepB_of_normBl : ∀ (E : Type) [Field E] [NumberField
   intro E _ _ _ H Dw hpq φ hpol hnsi l Xo c C d J hd hJ hval S π j hbl hprop hjπ hj hpre
   intro V _ _ _ Cm hV ξ hξ N s ε τ₀ h1 h2 h3 hτ K _ _ ev k₀ hk hc hdef
   have hξ' : Cm.y ≫ C.iF = jK V ≫ ξ ≫ π := by rw [← hjπ, ← Category.assoc, hξ, Category.assoc]
-  obtain ⟨j₀, hdesc⟩ := GlobalTheory.T.abelianPart_descends_of_thetaTerms_ratios Cm.P.D.toPre.P.g 3 Nat.prime_three (by decide)
+  obtain ⟨j₀, hdesc⟩ := _root_.GlobalTheory.USep.descAt_of_thetaTerms Cm.P.D.toPre.P.g 3 Nat.prime_three (by decide)
   obtain ⟨jj, M, _, g, z₁, ζ, Φ, y, ρ, e, h, U, hUne, hjj, hcov, htr, hmem⟩ :=
-    GlobalTheory.T.exists_unitary_fourier_system_traits_family E H Dw hpq l Xo c C φ V Cm hV (ξ ≫ π) hξ' 3 Nat.prime_three (by decide) (max j₀ 1)
+    _root_.GlobalTheory.USep.exists_system_with_traits_and_family E H Dw hpq l Xo c C φ V Cm hV (ξ ≫ π) hξ' 3 Nat.prime_three (by decide) (max j₀ 1)
   let ga : Fin (Φ.m y) → LinearMap.BilinForm ℤ (Φ.X y) := fun k => GlobalTheory.PolFan.pull e.toLinearMap (Cm.δ (h k))
-  obtain ⟨ev₁, hev₁, hEl⟩ := GlobalTheory.T.exists_approximating_elements_normalCover_unitary E H Dw hpq l Xo c C φ hpol d J hJ hval S π hbl V Cm hV ξ hξ' _ M g z₁ ζ Φ y ρ e h U hUne
+  obtain ⟨ev₁, hev₁, hEl⟩ := _root_.GlobalTheory.USep.exists_elements_cover E H Dw hpq l Xo c C φ hpol d J hJ hval S π hbl V Cm hV ξ hξ' _ M g z₁ ζ Φ y ρ e h U hUne
     hcov htr hmem K ev k₀ hk hc hdef ga (fun k a b => rfl)
   obtain ⟨d₀, hd₀, hsup⟩ : ∃ d₀, 1 ≤ d₀ ∧ HasSupports (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) φ d₀ :=
     exists_hasSupports (𝓞 E) H.bar (min Dw.p Dw.q) φ hpol fun X _ _ _ _ hX r γ hγ =>
-      GlobalTheory.T.exists_supportingTuple_smoothCone_cmField E H φ X (hpol X hX) r γ hγ
+      _root_.GlobalTheory.Poinc.exists_supports_cm E H φ X (hpol X hX) r γ hγ
   have hM' : 1 ≤ l.M' := Nat.one_le_iff_ne_zero.2 (Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne')
   have hmem4 := hmem.2.2.2.1
   have hδ : ∀ k, Φ.δ y k = (l.M' : ℤ) • ga k := fun k => LinearMap.ext₂ fun a b => by
@@ -116,7 +120,7 @@ theorem GlobalTheory.USep.sepB_of_normBl : ∀ (E : Type) [Field E] [NumberField
       calc 3 = 3 ^ 1 := by norm_num
         _ ≤ 3 ^ jj := Nat.pow_le_pow_right (by norm_num) (le_of_max_le_right hjj)
     nlinarith
-  obtain ⟨V1, V2, V3⟩ := GlobalTheory.T.poincareApprox_values_at_point_of_elements (𝓞 E) (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) φ hpol hnsi d₀ (2 * d) hd₀ (by omega) hsup 0
+  obtain ⟨V1, V2, V3⟩ := _root_.GlobalTheory.Poinc.Sep.values_of_elements (𝓞 E) (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) φ hpol hnsi d₀ (2 * d) hd₀ (by omega) hsup 0
     !![(1 : ℤ)] Φ.posW _ hN3 _ Φ y ga l.M' hM' ((Cm.cone.pull_equiv e).reindex h) hδ K ev₁ k₀ hEl
   have hρinj : Function.Injective ρ := hmem.1
   obtain ⟨-, -, -, -, D, p, hth⟩ := hmem
@@ -126,7 +130,7 @@ theorem GlobalTheory.USep.sepB_of_normBl : ∀ (E : Type) [Field E] [NumberField
   have hmo : ∀ mu : Cm.P.D.toPre.X, mono !![(1 : ℤ)] (Φ.t y) (Φ.δ y) (fun _ => e.symm mu) ≠ 0 ∧
       ∃ cc, IsUnit (Φ.u y (fun _ => e.symm mu) cc) := fun mu =>
     ⟨Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (Φ.t_mem y i).2, Φ.u_unit y _⟩
-  obtain ⟨hg, htr'⟩ := GlobalTheory.T.descendsAbelianPart_of_isPullDeg V (Φ.V y) ρ Cm.P.D.toPre D p
+  obtain ⟨hg, htr'⟩ := _root_.GlobalTheory.USep.descAt_of_isPullDeg V (Φ.V y) ρ Cm.P.D.toPre D p
   refine (sepAtB_iff _ _ _ _ _).2 ⟨fun i => ?_, ?_, ?_⟩
   · rw [h1 i, ← hev₁, RingHom.comp_apply]
     have := (hmem4 (h.symm i)).1
@@ -142,7 +146,7 @@ theorem GlobalTheory.USep.sepB_of_normBl : ∀ (E : Type) [Field E] [NumberField
       fun β => β.compl₁₂ p.xe.toAddMonoidHom.toIntLinearMap p.xe.toAddMonoidHom.toIntLinearMap
     let ε₁ : Fin Cm.m ⊕ Fin N → LinearMap.BilinForm ℤ D.X :=
       fun x => P ((l.M' : ℤ) • (ε x : LinearMap.BilinForm ℤ Cm.P.D.toPre.X))
-    obtain ⟨τ₁, hT1, hF1⟩ := GlobalTheory.T.periodsInCoordinates_fromBase_pullDeg V (Φ.V y) ρ hρinj Cm.P.D.toPre D p τ₀ (Cm.m + N)
+    obtain ⟨τ₁, hT1, hF1⟩ := _root_.GlobalTheory.USep.tauIn_fromBase_pull V (Φ.V y) ρ hρinj Cm.P.D.toPre D p τ₀ (Cm.m + N)
       (fun k => s (finSumFinEquiv.symm k))
       (fun k => (l.M' : ℤ) • (ε (finSumFinEquiv.symm k) : LinearMap.BilinForm ℤ Cm.P.D.toPre.X))
       (fun k => ε₁ (finSumFinEquiv.symm k)) (fun k a b => rfl) hτ W₀ ιb hFB
@@ -167,7 +171,7 @@ theorem GlobalTheory.USep.sepB_of_normBl : ∀ (E : Type) [Field E] [NumberField
         _ = ∏ k, algebraMap (Φ.V y) (FractionRing (Φ.V y)) (ρ (Cm.s k)) ^ ((l.M' : ℤ) * Cm.δ k mu mu).toNat :=
             Fintype.prod_equiv h _ _ (fun _ => rfl)
         _ = _ := Finset.prod_congr rfl fun k _ => by rw [← zpow_natCast, Int.toNat_of_nonneg (hnn k)]
-    have hcoef := GlobalTheory.T.thetaTerm_coefficient_sq_eq_monomial_subfield ((3 ^ jj) ^ 2) (by omega) (Φ.V y) (Φ.cn y) hU D hPE hTB Cm.P.D.toPre.X Φ.Q p.xe.symm
+    have hcoef := _root_.GlobalTheory.USep.Coef.coef_sq_mem_monomial ((3 ^ jj) ^ 2) (by omega) (Φ.V y) (Φ.cn y) hU D hPE hTB Cm.P.D.toPre.X Φ.Q p.xe.symm
       (fun mu cc => Φ.u y (fun _ => e.symm mu) cc) (fun mu => mono !![(1 : ℤ)] (Φ.t y) (Φ.δ y) (fun _ => e.symm mu))
       hmo hth K ev₁ k₀ hk τ₁ Cm.m N (fun x => ρ (s x)) ε₁ (fun k => (h3 k).map ρ) hT1 hmo2 W₀ (ρ.comp ιb) hF1
       (fun a => by rw [RingHom.comp_apply, ← RingHom.comp_apply ev₁, hev₁]; exact hkb a)

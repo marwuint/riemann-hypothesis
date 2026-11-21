@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUnitOfPowEqOne
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsTorsionFieldExtStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsTorsionFieldExt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open scoped CategoryTheory.Obj
@@ -70,8 +70,8 @@ theorem cmTorsionIsometry_transport_geometricPoint (hL : Out.Laws) {E : Type} [F
     have h : ∀ y, r y = (Over.homMk (spMap l) rfl : Over.mk (spMap l ≫ x) ⟶ Over.mk x) ≫ y :=
       fun y => Over.OverMorphism.ext (hr y)
     exact ⟨fun c y => by rw [h, h, Category.assoc], fun s => by rw [h, ← Category.assoc, comp_toUnit]⟩
-  obtain ⟨r, hr, rinj, ronto, rw'⟩ := GlobalTheory.T.exists_torsion_injective_weil_compatible hL S P F Ω i x
-  obtain ⟨q, hq, qinj, qonto, qw⟩ := GlobalTheory.T.exists_torsion_injective_weil_compatible hL S P F k j x
+  obtain ⟨r, hr, rinj, ronto, rw'⟩ := _root_.GlobalTheory.exists_torsion_fieldExt hL S P F Ω i x
+  obtain ⟨q, hq, qinj, qonto, qw⟩ := _root_.GlobalTheory.exists_torsion_fieldExt hL S P F k j x
   obtain ⟨I₀, h₀⟩ := TateIsoFieldExt.down D i r (act := fun c y => y ≫ act c)
     (e := OnTors fun n y y' c => Out.WeilIs P.A P.L n y y' (unitOn c)) rinj (onto_tors r rinj ronto)
     (key Ω i r hr).1 (fun c => by haveI := hm c; exact MonObj.one_comp (act c))
@@ -85,15 +85,5 @@ theorem cmTorsionIsometry_transport_geometricPoint (hL : Out.Laws) {E : Type} [F
   · have h1 : toUnit _ ≫ s = I₀.ev n a :=
       rinj (((key Ω i r hr).2 s).trans (hs.trans ((h₀ n hn).2 a)))
     exact ((key k j q hq).2 s).symm.trans ((congrArg q h1).trans ((h' n hn).2 a).symm)
-
-theorem tateIso_move : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (T : PAT H (Sp K)) (I : TateIso D ℂ (Over.mk (spMap σ) ⟶ T.t.G) (fun a x => x ≫ T.t.act.act a) (fun n x x' c => Out.WeilIs T.t.G T.t.PP.L n x x' (unitOn c))) (k : Type) [Field k] [IsAlgClosed k] (β : K →+* k), ∃ I' : TateIso D k (Over.mk (spMap β) ⟶ T.t.G) (fun a x => x ≫ T.t.act.act a) (fun n x x' c => Out.WeilIs T.t.G T.t.PP.L n x x' (unitOn c)), (∀ (n : ℕ) (z : K), 0 < n → (I.ζ n : ℂ) = σ z → (I'.ζ n : k) = β z) ∧ ∀ (n : ℕ) a (s : 𝟙_ (Over (Sp K)) ⟶ T.t.G), 0 < n → toUnit _ ≫ s = I.ev n a → toUnit _ ≫ s = I'.ev n a := by
-  intro hL E _ _ _ H D K _ _ σ T I k _ _ β
-  obtain ⟨i, hi⟩ := exists_algClosure_lift σ
-  obtain ⟨j, hj⟩ := exists_algClosure_lift β
-  obtain ⟨I', h1, h2⟩ := cmTorsionIsometry_transport_geometricPoint hL D T.pol (fun a => T.t.act.act a) T.t.act.hom i j
-    (spMap (algebraMap K (AlgebraicClosure K))) (spMap σ) (spMap β)
-    (by rw [← spMap_comp_eq, hi]) (by rw [← spMap_comp_eq, hj]) I
-  refine ⟨I', fun n z hn hz => ?_, h2⟩
-  rw [h1 n (algebraMap K _ z) hn (by rw [hz, ← hi]; rfl), ← hj]; rfl
 
 end GlobalTheory.CM

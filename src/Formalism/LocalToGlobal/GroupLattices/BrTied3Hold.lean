@@ -11,16 +11,6 @@ namespace Formalism.L2.G.ServJointF
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl K Y cX}
 
-def brOf3 (P : Formalism.L2.Rows.RowSideFamily ex) : ColBrF D where
-  Bs := P.A3.fam3.base3
-  Df1 := P.A3.side3 P.Ps P.ψs P.Zs
-  Dc := P.Dc
-  wU := P.I.wU
-  eNu := fun u x => P.I.eNu u x
-  tup := P.I.tup
-  eV := fun t F => P.I.jA t ((rV0 D P.A3.A P.Ps P.ψs t).mulVec F)
-  tz := (P.A3.indefDown P.S0).μ
-
 section Gen
 
 variable {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ} {A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m}

@@ -3,15 +3,15 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.HodgeWe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsPullForm
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbelianSchemeGerms
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.USt
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteSemilatticeSystemStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothSectionsAffineFlatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbelianSchemeBaseChangeExistsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteSemilatticeSystem
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothSectionsAffineFlat
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbelianSchemeBaseChangeExists
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUniqueConstantOfCompatibleFamilyStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductFirstCohomologyComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullOWOverCompStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullOWOverComp
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatCocycleTensorRepresentationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleTensorCoboundaryClassZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClassZeroCocycleTensorCoboundaryStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClassZeroCocycleTensorCoboundary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleOnProductFromSecondFactorStatement
 
 set_option autoImplicit false
@@ -102,7 +102,7 @@ theorem kunneth (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [
   obtain ⟨z, rfl⟩ := H1.mk_surjective F x
   have hg : ∀ b : C, ∃ g : ∀ T : C, F.obj T ⊗[R] F.obj b, ∀ (T T' : C) (φ : T ⟶ T'),
       (evZ F φ).rTensor _ (z ⊗ₜ[R] (1 : F.obj b) - t b) = g T' - (mp F φ).toLinearMap.rTensor _ (g T) := fun b ↦
-    GlobalTheory.T.class_zero_cocycle_tensor_coboundary R C F (F.obj b) _ (by
+    _root_.GlobalTheory.CompanionTheory.Axis.rTensor_cocycle_eq_coboundary_of_class_eq_zero R C F (F.obj b) _ (by
       rw [map_sub, LinearMap.rTensor_tmul, hx b, sub_self])
   choose g hg using hg
   let G : C0 (box F) := fun T ↦ g T.2 T.1
@@ -142,7 +142,7 @@ theorem ust_abelian : DescentSt → LowSt → SysBCSt → SteinSt → ∀ (R : T
   intro hD hL hB hS R _ A _ g hA hg P _ S M _ _ z hz
   letI : Module Rᵐᵒᵖ M := Module.compHom M ((RingEquiv.toOpposite R).symm.toRingHom)
   haveI : IsCentralScalar R M := ⟨fun r m ↦ rfl⟩
-  obtain ⟨A', _, φ, hA', hg', hpb⟩ := GlobalTheory.T.abelian_scheme_base_change_exists R (TrivSqZeroExt R M) A g hA hg
+  obtain ⟨A', _, φ, hA', hg', hpb⟩ := _root_.GlobalTheory.CompanionTheory.Axis.exists_abelianScheme_baseChange_ringHom R (TrivSqZeroExt R M) A g hA hg
   have := hA.proper
   have := hA'.proper
   obtain ⟨S', m, -⟩ := hB R (TrivSqZeroExt R M) A.left A'.left A.hom A'.hom φ hpb inferInstance P S
@@ -153,7 +153,7 @@ theorem ust_abelian : DescentSt → LowSt → SysBCSt → SteinSt → ∀ (R : T
 theorem isPullO_comp (R : Type) [CommRing R] {X Y Z : Over (Sp R)} (f : X ⟶ Y) (g : Y ⟶ Z)
     (a : HO1 Z.hom) (b : HO1 Y.hom) (c : HO1 X.hom) (h1 : IsPullO (wOver g) a b) (h2 : IsPullO (wOver f) b c) :
     IsPullO (wOver (f ≫ g)) a c :=
-  GlobalTheory.T.isPullO_comp_block_decomposition R X Y Z f g a b c h1 h2
+  _root_.GlobalTheory.CompanionTheory.Axis.PullO.isPullO_wOver_comp R X Y Z f g a b c h1 h2
 
 theorem isPullO_add {R : Type} [CommRing R] {X Y : Over (Sp R)} (f : X ⟶ Y) {a a' : HO1 Y.hom} {b b' : HO1 X.hom}
     (h : IsPullO (wOver f) a b) (h' : IsPullO (wOver f) a' b') : IsPullO (wOver f) (a + a') (b + b') := by
@@ -176,14 +176,14 @@ theorem axOSt : DescentSt → LowSt → SysBCSt → SteinSt → AxOSt := by
   have := hA.proper
   have := hA2.proper
   have := hA.smooth
-  obtain ⟨P, _, _, ⟨S⟩⟩ := GlobalTheory.T.exists_finite_semilattice_system R A.left A.hom inferInstance inferInstance
+  obtain ⟨P, _, _, ⟨S⟩⟩ := _root_.GlobalTheory.CompanionTheory.Axis.exists_finite_sys_of_separated_quasiCompact R A.left A.hom inferInstance inferInstance
   obtain ⟨Q, _, S', m, hm, hfst, hsnd⟩ := GlobalTheory.T.product_first_cohomology_comparison R A P S
   have hU := ust_abelian hD hL hB hS R A g hA hg P S
   have hb := (hL _ _ _ _ _ (resSys A.hom S) (hD R _ A.hom inferInstance P S)).1
   have hb' := (hL _ _ _ _ _ (resSys (A ⊗ A).hom S') (hD R _ (A ⊗ A).hom inferInstance Q S')).1
   haveI : Finite Pᵒᵖ := Finite.of_injective Opposite.unop Opposite.unop_injective
   obtain ⟨w, hw⟩ := hm ((resSys (A ⊗ A).hom S').pull1 c)
-  obtain ⟨x, y, rfl⟩ := kunneth R Pᵒᵖ (OSys A.hom S) (fun T ↦ GlobalTheory.T.smooth_sections_affine_flat R _ A.hom inferInstance _) hU w
+  obtain ⟨x, y, rfl⟩ := kunneth R Pᵒᵖ (OSys A.hom S) (fun T ↦ _root_.GlobalTheory.CompanionTheory.Axis.flat_sec_of_smooth R _ A.hom inferInstance _) hU w
   obtain ⟨x₀, rfl⟩ := hb.2 x
   obtain ⟨y₀, rfl⟩ := hb.2 y
   have e1 := isPullO_pullHO1 (wOver (fst A A)) x₀

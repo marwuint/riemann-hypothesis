@@ -3,11 +3,14 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NotSymEOfNe
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecializesIsLocalization
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSymmetricFunctionsDegreeFactorialPrimitiveUStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSymmetricFunctionsDegreeFactorialPrimitiveU
+import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
+import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveFamiliesThetaSymmetricMinMemberCompare
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfDvdInAllCompleteDVRNormalNoetherianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfDvdInAllCompleteDVRNormalNoetherian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCdvrDominating
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonScaleThetaConstantsAtTraitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonScaleThetaConstantsAtTrait
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.SiegTh Classical
@@ -91,7 +94,7 @@ theorem scale_of_prim {V K : Type} [CommRing V] [IsDomain V] [IsLocalRing V] [Is
       funext b
       rw [div_eq_inv_mul]
     rw [e2, GlobalTheory.UMin.PrimCmp.symTup_mul, inv_pow, inv_mul_eq_div]
-  exact GlobalTheory.T.thetaSymmetricFunctionsDegreeFactorial_primitive_unit V K io N (fun b => c b / io (th i)) (fun j => e j / th i ^ N.factorial) hPt hsym
+  exact _root_.GlobalTheory.UMin.symTup_unit_of_prim V K io N (fun b => c b / io (th i)) (fun j => e j / th i ^ N.factorial) hPt hsym
 
 end GlobalTheory.SiegRev
 
@@ -131,7 +134,7 @@ theorem GlobalTheory.SiegTh.sameScale_theta_symE : ∀ (g n : ℕ), 1 ≤ g → 
     have ho : ∀ a : o, emb (algebraMap o Ω a) ∈ Set.range (algebraMap V (FractionRing V)) := fun a =>
       hmemO _ ((M.O z).algebraMap_mem a)
     obtain ⟨K, _, io, N', c, c', a, ha, hP, hP', he, h1, h2⟩ :=
-      GlobalTheory.T.exists_common_scale_thetaConstants_at_trait o Ω S ρ m (N + 1) e hmo hm3 hmo' hNe hSym V hV emb ho
+      _root_.GlobalTheory.SiegTh.TraitScale.exists_scale o Ω S ρ m (N + 1) e hmo hm3 hmo' hNe hSym V hV emb ho
     have hr : ∀ b, emb (S.th b) / emb (S.th i) ∈ Set.range (algebraMap V (FractionRing V)) := fun b => by
       rw [← map_div₀]
       exact hmemO _ (hi.2 b)
@@ -143,7 +146,7 @@ theorem GlobalTheory.SiegTh.sameScale_theta_symE : ∀ (g n : ℕ), 1 ≤ g → 
     intro j
     obtain ⟨x, s, hs, hx⟩ := IsFractionRing.div_surjective (A := M.O z) (e j / S.th i ^ (N + 1).factorial)
     have hs0 : s ≠ 0 := nonZeroDivisors.ne_zero hs
-    have hdvd : s ∣ x := GlobalTheory.T.dvd_of_dvd_in_all_completeDVR_normal_noetherian (M.O z) x s hs0 (fun V _ _ _ hV φ hφ => by
+    have hdvd : s ∣ x := _root_.GlobalTheory.DvrDiv.dvd_of_forall_cDvr (M.O z) x s hs0 (fun V _ _ _ hV φ hφ => by
       obtain ⟨emb, hemb, e', he', -⟩ := key V hV φ hφ
       have hv := he' j
       rw [← hx, map_div₀, hemb, hemb] at hv

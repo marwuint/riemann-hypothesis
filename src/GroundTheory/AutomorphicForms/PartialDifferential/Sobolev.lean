@@ -333,12 +333,6 @@ theorem norm_multiplier_apply_le (hm : m.HasTemperateGrowth)
 
 end SobolevSpace
 
-theorem Lp_two_norm_sq_eq_integral (f : Lp F 2 (volume : Measure E)) :
-    ‖f‖ ^ 2 = ∫ x, ‖f x‖ ^ 2 := by
-  rw [@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def,
-    ← integral_re (MeasureTheory.L2.integrable_inner (𝕜 := ℂ) f f)]
-  simp_rw [inner_self_eq_norm_sq]
-
 def fourierFun {s : ℝ} (u : SobolevSpace E F s) (ξ : E) : F :=
   weight (-s) ξ • (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E)) ξ
 
@@ -376,14 +370,6 @@ theorem weight_smul_fourierFun {s : ℝ} (u : SobolevSpace E F s) (ξ : E) :
     weight s ξ • fourierFun u ξ = (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E)) ξ := by
   rw [fourierFun, smul_smul, weight_mul_weight]; simp [weight]
 
-theorem norm_sq_eq_integral {s : ℝ} (u : SobolevSpace E F s) :
-    ‖u‖ ^ 2 = ∫ ξ, (1 + ‖ξ‖ ^ 2) ^ s * ‖fourierFun u ξ‖ ^ 2 := by
-  rw [SobolevSpace.norm_def, ← Lp.norm_fourier_eq, Lp_two_norm_sq_eq_integral]
-  congr 1; ext ξ
-  rw [← weight_smul_fourierFun, norm_smul, norm_weight, mul_pow, ← Real.rpow_natCast,
-    ← Real.rpow_mul (by positivity)]
-  norm_num
-
 theorem memSobolev_iff_fourier {s : ℝ} (u : 𝓢'(E, F)) :
     MemSobolev s 2 u ↔ ∃ g : E → F, MemLp (fun ξ ↦ weight s ξ • g ξ) 2 (volume : Measure E) ∧
       ∀ φ : 𝓢(E, ℂ), 𝓕 u φ = ∫ ξ, φ ξ • g ξ := by
@@ -406,36 +392,6 @@ theorem memSobolev_iff_fourier {s : ℝ} (u : 𝓢'(E, F)) :
     rw [hξ]
     simp only [smul_smul, smul_eq_mul, mul_comm]
 
-theorem norm_sq_eq_integral_of_fourier {s : ℝ} (u : SobolevSpace E F s) (g : E → F)
-    (hg : MemLp (fun ξ ↦ weight s ξ • g ξ) 2 (volume : Measure E))
-    (hφ : ∀ φ : 𝓢(E, ℂ), 𝓕 (SobolevSpace.toDistribution u) φ = ∫ ξ, φ ξ • g ξ) :
-    g =ᵐ[volume] fourierFun u ∧ ‖u‖ ^ 2 = ∫ ξ, (1 + ‖ξ‖ ^ 2) ^ s * ‖g ξ‖ ^ 2 := by
-  have hL : hg.toLp _ = (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E)) := by
-    apply toTemperedDistribution_injective
-    simp only
-    rw [← smulLeftCLM_weight_fourier]
-    ext φ
-    rw [smulLeftCLM_apply_apply, hφ, Lp.toTemperedDistribution_apply]
-    apply integral_congr_ae
-    filter_upwards [hg.coeFn_toLp] with ξ hξ
-    rw [hξ, SchwartzMap.smulLeftCLM_apply_apply (weight_hasTemperateGrowth s)]
-    simp only [smul_smul, smul_eq_mul, mul_comm]
-  have hae : (fun ξ ↦ weight s ξ • g ξ) =ᵐ[volume] fun ξ ↦ weight s ξ • fourierFun u ξ := by
-    have h2 : ⇑(hg.toLp _) =ᵐ[volume] ⇑(𝓕 (SobolevSpace.bessel s u) :
-        Lp F 2 (volume : Measure E)) := by rw [hL]
-    filter_upwards [hg.coeFn_toLp, h2] with ξ h1 h2
-    rw [← h1, h2, weight_smul_fourierFun]
-  have hg' : g =ᵐ[volume] fourierFun u := by
-    filter_upwards [hae] with ξ h
-    have hw : weight s ξ ≠ 0 := by
-      unfold weight; exact_mod_cast (weight_pos s ξ).ne'
-    exact smul_right_injective F hw h
-  refine ⟨hg', ?_⟩
-  rw [norm_sq_eq_integral]
-  apply integral_congr_ae
-  filter_upwards [hg'] with ξ h
-  rw [h]
-
 theorem ae_eq_of_integral_schwartz_smul_eq {g₁ g₂ : E → F}
     (h₁ : LocallyIntegrable g₁ (volume : Measure E)) (h₂ : LocallyIntegrable g₂ (volume : Measure E))
     (h : ∀ φ : 𝓢(E, ℂ), HasCompactSupport φ → ∫ x, φ x • g₁ x = ∫ x, φ x • g₂ x) :
@@ -456,12 +412,6 @@ theorem ae_eq_of_integral_schwartz_smul_eq {g₁ g₂ : E → F}
     rw [integral_sub i₁ i₂, h φ hφc, sub_self]
   filter_upwards [this] with x hx
   exact sub_eq_zero.1 hx
-
-theorem integral_fourier_smul_eq_of_integrable (φ : 𝓢(E, ℂ)) {g : E → F}
-    (hg : Integrable g (volume : Measure E)) :
-    ∫ ξ, 𝓕 φ ξ • g ξ = ∫ x, φ x • 𝓕 g x := by
-  simpa using! VectorFourier.integral_fourierIntegral_smul_eq_flip (L := innerₗ E)
-    Real.continuous_fourierChar continuous_inner φ.integrable hg
 
 namespace SobolevSpace
 

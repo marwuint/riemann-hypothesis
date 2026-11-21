@@ -1,8 +1,11 @@
-import Development.AbelianVarietyTheory.Definitions.Divisors.OneSubOfIsIrreducible
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsParahoricVec
+import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilTensorLiftConclusion
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalizedAbsCharacterization
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
-open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.TypeTwo
+
+open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 open scoped TensorProduct
 
 namespace GlobalTheory.TypeTwo

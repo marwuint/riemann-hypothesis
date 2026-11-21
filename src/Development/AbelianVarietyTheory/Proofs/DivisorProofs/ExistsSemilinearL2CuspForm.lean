@@ -23,15 +23,6 @@ noncomputable section
 namespace GlobalTheory.CovTop.PetRep
 open MeasureTheory
 
-section Gen
-
-open ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions.TH
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-  {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {D : D7}
-
-end Gen
-
 set_option maxHeartbeats 2000000 in
 
 theorem adelMeas_one_of_good {D : D7} {T : Core D} {j : ℕ} (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o)

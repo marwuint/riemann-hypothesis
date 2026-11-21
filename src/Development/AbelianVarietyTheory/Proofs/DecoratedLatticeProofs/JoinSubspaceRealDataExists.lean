@@ -2,13 +2,21 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwArgs
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.See
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ToSTiesRPin
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JoinSIOnV0
-import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SeeExJoinPin
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodOperatorSpectrum
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelJoinOnV0Three
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.JoinSI
 import Formalism.LocalToGlobal.IndefiniteReal.RealPins
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ConcreteLevelAdelicSubset
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeqIotaIffEqTransCastAdelicGroup
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelJoinOnV0Three
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.GoodPartHasComplexCoordinates
+import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
+import Formalism.LocalToGlobal.IndefiniteReal.EvTieP
+import Formalism.LocalToGlobal.Divisibility.DivisionCompatibleToSub2Indef2
+import Formalism.LocalToGlobal.IndefiniteReal.SpOfRwRange
+import Formalism.LocalToGlobal.IndefiniteReal.EvalTieTOne
+import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowsJoinPinned
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowLevelMatch
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodOperatorSpectrum
 
 noncomputable section
 
@@ -139,37 +147,6 @@ theorem core_latTie {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : Fam
   exact ⟨Rd, M, hw, h1, h2, h3, h4, hon, fun j v₀ a hj => hT St h Gd hK pw wdD bR hwdD (eq_of_heq hSp) hbR t c hEv
     sEE sEEc κS hsE hκ hsee eE (fun y => hRead y y HEq.rfl) j v₀ a hj⟩
 
-theorem join_subspace_lattice_condition (Q : RealT R P Dcf Spf Zscf S Ks) (hPin : RealPins Q) (hSee : SeeEx Q) (n : ℕ)
-    (hOk : P.A3.fam3.Ok3 n) (hSep : P.A3.fam3.TypesSep3) (hPrim : PrimRows3 Q.Rl Q.F)
-    (hLat : HLatTie (Formalism.BasicNotions.RowSide.sharp D).RR (P.A3.indefDown P.S1).RR (P.A3.indefDown P.S1).XE P.I.eRR)
-    (hDc : RowsHoldDcPt3 P) (hSchur : SchurAll D) (hSig : (D.sp.Y 0).SigOK) (hJ : GlobalTheory.Mem.JTop.JoinPin Q) :
-    Nonempty (Formalism.L2.SG.JoinSI.JoinSI R S Q) ∧ (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) = ⊤ := by
-  obtain ⟨eE, hRead, hRow⟩ := hJ
-  have hι : Q.ιS = (Formalism.L2.SG.RowsJoinPinned.iotaX S.X S.inst).toMulEquiv :=
-    (GlobalTheory.Mem.JIota.heq_iota_iff D S.X S.inst Q.ιS).1 Q.ιS_eq
-  have hEv := Q.seeEval (by obtain ⟨-, c', hc'⟩ := hSee; exact ⟨c', hc'⟩)
-  rw [hι] at hEv
-  have hκ : Q.uS * (Q.κS : ℂ) ≠ 0 := by
-    refine mul_ne_zero ?_ ?_
-    · intro h0
-      have := Q.uS_norm
-      rw [h0, norm_zero] at this
-      exact zero_ne_one this
-    · exact_mod_cast Q.seeK.1.ne'
-  obtain ⟨Rd, M, hw, h1, h2, h3, h4, hon, hT⟩ :=
-    core_latTie Q.Rl Q.F n hOk hSep Q.charW hPrim hSchur hSig P.Zs Q.zs P.S0 P.S1 Q.s1 P.Dc Q.dc P.Sp Q.sp ex.p0 P.C P.NuC
-      P.I P.tied.div hLat (fun u x y => hDc u P.A3.A.μ0 x y) S.X S.inst S.G S.Y.hK (pwOf S Q.hin) Q.wdD Q.bR Q.wdD_wU
-      Q.spPin (GlobalTheory.Mem.JTop.bR_heq Q hPin) Q.tS Q.cS hEv Q.sEE Q.sEEc _ Q.sEEj hκ
-      (fun x hx => (Q.seeDef x hx).trans (by rw [hι])) eE hRead
-  refine ⟨⟨⟨Rd.wU, hw, M.cφ, M.cF, M.eR, h1, h2, h3, h4, fun hF => ?_⟩⟩, hon⟩
-  obtain ⟨v₀, -, a, -, hj⟩ := hRow hF
-  exact hT (Formalism.L2.SG.JoinSI.jOf S hF) v₀ a hj
-
 end
-
-theorem join_subspace_real_data_lattice : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Yd cX) (x : TwIn ex) (Rc : Formalism.L2.RecT ex) (P : SPack D fun u => (Rc.T.cols.forms u).to0) (S : SRest P) (y : RealIn x Rc (S.toSTiesR Rc)) (c : ℝ), ∀ n : ℕ, SchurAll D → RealPins (realTOf y) → Holds x.R x.F → x.A3.fam3.Ok3 n → x.A3.fam3.TypesSep3 → HLatTie (Formalism.BasicNotions.RowSide.sharp D).RR (x.A3.indefDown (divisionPairOfAdelicFormsFaceColumnsData x).S1).RR (x.A3.indefDown (divisionPairOfAdelicFormsFaceColumnsData x).S1).XE (divisionPairOfAdelicFormsFaceColumnsData x).I.eRR → RowsHoldDcPt3 (divisionPairOfAdelicFormsFaceColumnsData x) → SeeAt x.R.toRealDat x.F.lv2 P.X P.inst y.tS → EvalTieT (MP x.R.toRealDat) x.R.toRealDat.ν0 x.R.toRealDat.fd0 (EP x.R.toRealDat x.F.lv2) P.X P.G (iotaX P.X P.inst).toMulEquiv y.tS c → RowJ x.R.toRealDat x.Y.eE P.X P.inst P.G y.tS S.j → Nonempty (Formalism.L2.SG.JoinSI.JoinSI Rc (S.toSTiesR Rc) (realTOf y)) ∧ (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) = ⊤ := by
-  intro D L hT Gi Gl K Yd cX ex x Rc P S y c n hSchur hPins hH hOk hSep hLat hDc hSee hEv hRow
-  obtain ⟨hSx, hJ⟩ := GlobalTheory.Mem.JPin.seeEx_joinPin D L hT Gi Gl K Yd cX ex x Rc P S y c hH hSee hEv hRow
-  exact join_subspace_lattice_condition (realTOf y) hPins hSx n hOk hSep (Holds.prim hH) hLat hDc hSchur (D.sp.Y_sig 0) hJ
 
 end GlobalTheory.Mem.KJoinLat

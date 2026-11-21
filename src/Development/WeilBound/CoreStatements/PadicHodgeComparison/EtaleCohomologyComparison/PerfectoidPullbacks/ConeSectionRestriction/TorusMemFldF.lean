@@ -1,6 +1,6 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.RaTpowSinglePow
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivationCommutesWithTraceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivationCommutesWithTrace
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.ResidFinPf
 
 set_option autoImplicit false
@@ -100,7 +100,7 @@ theorem trace_deriv [CharZero K] (t : Fin (n + 1) → Rˣ) [FiniteDimensional (f
       rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul])
   have hD0 : ∀ x : fldF K t, Dl (algebraMap (fldF K t) (FractionRing R) x) =
       algebraMap (fldF K t) (FractionRing R) (D0 x) := fun _ => rfl
-  have key := GlobalTheory.T.derivation_commutes_with_trace K (fldF K t) (FractionRing R) Dl D0 hD0 (algebraMap R (FractionRing R) y)
+  have key := _root_.GlobalTheory.CompanionTheory.TraceDerivation.trace_map_derivation K (fldF K t) (FractionRing R) Dl D0 hD0 (algebraMap R (FractionRing R) y)
   rw [← hDl, ← key, ← hD0, hy, hDl]
 
 end CrystallineSemistableComparison.Pb

@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Formalism.LocalToGlobal.ProjectiveLattices.HostSize
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SupBoundPageRows
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.EtaProductFormValuationBoundStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.EtaProductFormValuationBound
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsProductCuspFormNeZeroArchSupNormBoundsStatement
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.EtaForm GlobalTheory.EtaAn
 
@@ -51,7 +51,7 @@ theorem exists_form_four_clauses (D : D7) (T : Top D) (h : LawsP T) (DF q : ℕ)
       have e2 := incG_inj deg (cutR T.C j) _ (e1.trans (map_zero _).symm)
       exact congrArg Subtype.val e2
     exact Subtype.ext (hnzd _ _ _ (dom_wtA w') (cusp_le_sec _ _ _ _ _ hGc) hval)
-  · exact GlobalTheory.T.etaProductForm_valuation_bound D T h j h1 h2 i ⟨f, hmem⟩ J D.R.r cf xs hcard hsp hrule
+  · exact _root_.GlobalTheory.EtaVal.etVal_of_isEtaRule D T h j h1 h2 i ⟨f, hmem⟩ J D.R.r cf xs hcard hsp hrule
   · intro σ
     have e : (recB h.toLawsCore).supN j _ σ ⟨f, hmem⟩ =
         supC (T.Q.Xo j) T.Q.c (T.U j) (xiR D) (goodOf T.Q.c σ) 0 (2 * 5 ^ 4 * D.R.r * i) f := by

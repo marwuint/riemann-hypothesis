@@ -26,10 +26,4 @@ def ChartNormCount.Statement : Prop :=
         ∀ z' ∈ mcPts P', (∀ p, z' (v p) = w p) → (∀ k : FibreBlock κ, z' ⟨k.1, j k⟩ = 1) →
           ∀ q : Σ k : FibreBlock κ, ι' k.1, G.x' ⟨q.1.1, q.2⟩ ≠ 0 → z' ⟨q.1.1, q.2⟩ ≠ 0
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

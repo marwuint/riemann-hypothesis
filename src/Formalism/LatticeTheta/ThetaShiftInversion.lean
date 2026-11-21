@@ -25,16 +25,6 @@ theorem dualDual : DualDual V := by
   rw [← he, dualLattice_dual_span_eq e, dualLattice_dual_span_eq,
     LinearMap.BilinForm.dualBasis_dualBasis _ innerₗ_isSymm]
 
-theorem thetaSummable : ThetaSummable V := by
-  let _ : MeasurableSpace V := borel V
-  have : BorelSpace V := ⟨rfl⟩
-  exact thetaSummable_of (poisson_periodization V) (gaussian_fourier_transform V)
-
-theorem thetaPos : ThetaPos V := by
-  let _ : MeasurableSpace V := borel V
-  have : BorelSpace V := ⟨rfl⟩
-  exact thetaPos_of (thetaSummable V)
-
 variable [MeasurableSpace V] [BorelSpace V]
 
 theorem covolumeDual : CovolumeDual V := by
@@ -64,10 +54,6 @@ theorem poissonDecay : PoissonDecay V := poissonDecay_of (dualIsLattice V) (latt
   (unfolding_fourier_coefficient V) (lattice_fourier_series V)
 
 theorem poissonSchwartz : PoissonSchwartz V := poissonSchwartz_of (poissonDecay V) (schwartz_decay_gaussian V)
-
-theorem thetaShiftInversion : ThetaShiftInversion V := thetaShiftInversion_of (poissonDecay V) (poisson_periodization V) (gaussian_fourier_transform V)
-
-theorem thetaInversion : ThetaInversion V := thetaInversion_of (thetaShiftInversion V)
 
 end
 

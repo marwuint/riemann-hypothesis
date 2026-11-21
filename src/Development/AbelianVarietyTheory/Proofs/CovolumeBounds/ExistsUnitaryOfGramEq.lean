@@ -1,6 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsKMeas
-open Matrix MeasureTheory Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 GlobalTheory.HCXi
+import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+
+open Matrix MeasureTheory Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 open scoped ENNReal ComplexOrder
 
 namespace GlobalTheory.UnitaryExtension
@@ -61,33 +62,5 @@ theorem exists_unitary_mul_eq {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι
       simp [Matrix.toLpLin_apply, Matrix.mulVec_mulVec]
     rw [e, LinearEquiv.apply_symm_apply]
     exact hu x
-
-theorem exists_unitary_of_gram_eq : ∀ (n m : ℕ) (E : Matrix (Fin n) (Fin n) ℂ) (A B : Matrix (Fin n) (Fin m) ℂ), Eᴴ = E → E * E = E → E * A = A → E * B = B → Aᴴ * A = Bᴴ * B → ∃ U : Matrix (Fin n) (Fin n) ℂ, Uᴴ * U = 1 ∧ U * E = E * U ∧ U * (1 - E) = 1 - E ∧ U * A = B := by
-  intro n m E A B hE hEE hA hB hG
-  have hP : (1 - E)ᴴ = 1 - E := by rw [conjTranspose_sub, conjTranspose_one, hE]
-  have hPA : (1 - E) * A = 0 := by rw [Matrix.sub_mul, Matrix.one_mul, hA, sub_self]
-  have hPB : (1 - E) * B = 0 := by rw [Matrix.sub_mul, Matrix.one_mul, hB, sub_self]
-  have hAP : Aᴴ * (1 - E) = 0 := by
-    rw [← hP, ← conjTranspose_mul, hPA, conjTranspose_zero]
-  have hBP : Bᴴ * (1 - E) = 0 := by
-    rw [← hP, ← conjTranspose_mul, hPB, conjTranspose_zero]
-  obtain ⟨U, hU, hUA⟩ := exists_unitary_mul_eq (Matrix.fromCols A (1 - E))
-    (Matrix.fromCols B (1 - E)) (by
-      rw [conjTranspose_fromCols_eq_fromRows_conjTranspose,
-        conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols,
-        fromRows_mul_fromCols, hP, hG, hPA, hPB, hAP, hBP])
-  rw [mul_fromCols, fromCols_ext_iff] at hUA
-  obtain ⟨h1, h2⟩ := hUA
-  refine ⟨U, hU, ?_, h2, h1⟩
-  have hU' : U * Uᴴ = 1 := mul_eq_one_comm.mp hU
-  have h3 : (1 - E) * Uᴴ = 1 - E := by
-    have := congrArg conjTranspose h2
-    rwa [conjTranspose_mul, hP] at this
-  have h4 : (1 - E) * U = 1 - E := by
-    calc (1 - E) * U = (1 - E) * Uᴴ * U := by rw [h3]
-      _ = 1 - E := by rw [Matrix.mul_assoc, hU, Matrix.mul_one]
-  have h5 : U * (1 - E) = (1 - E) * U := by rw [h2, h4]
-  rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul] at h5
-  exact sub_right_injective h5
 
 end GlobalTheory.UnitaryExtension

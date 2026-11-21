@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RestrictsSelf
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormVZpowDegEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.AdTransfer
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdTransfer
 
 noncomputable section
 

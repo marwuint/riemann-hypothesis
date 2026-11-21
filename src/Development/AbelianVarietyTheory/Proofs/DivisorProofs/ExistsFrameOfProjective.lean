@@ -73,24 +73,3 @@ theorem exists_frame_of_projective [G.IsQuasicoherent] (hU : IsAffineOpen U)
 
 end GlobalTheory.VB.Summand
 
-theorem GlobalTheory.VB.isVB_of_retract : ∀ (X : Scheme.{0}) [IsIntegral X] (F G : X.Modules) (i : G ⟶ F)
-    (q : F ⟶ G) (r : ℕ), i ≫ q = 𝟙 G → IsVB F r → IsVB G (genRank G) := by
-  intro X _ F G i q r hiq hF x
-  have := hF.isQuasicoherent
-  have hs : ∑ _ : Unit, i ≫ q = 𝟙 G := by simpa using hiq
-  have : G.IsQuasicoherent :=
-    QCoh.isQuasicoherent_of_sum_eq_id (A := fun _ : Unit => F) (fun _ => i) (fun _ => q) hs
-  obtain ⟨U, e, hU, hx, -, he⟩ := hF.exists_affine (V := ⊤) (x := x) trivial
-  have := Module.Free.of_basis (he.basis le_rfl)
-  have := Module.Finite.of_basis (he.basis le_rfl)
-  have hc : QCoh.appLinear q U ∘ₗ QCoh.appLinear i U = LinearMap.id := LinearMap.ext fun s => by
-    simpa using QCoh.sum_app_app (A := fun _ : Unit => F) (fun _ => i) (fun _ => q) hs s
-  have : Module.Projective Γ(X, U) Γ(G, U) := .of_split _ _ hc
-  have : Module.Finite Γ(X, U) Γ(G, U) :=
-    .of_surjective (QCoh.appLinear q U) fun s => ⟨_, LinearMap.congr_fun hc s⟩
-  obtain ⟨V, n, e', hxV, he'⟩ := Summand.exists_frame_of_projective (G := G) hU ⟨x, hx⟩
-  have hn : genRank G = n :=
-    (Module.finrank_eq_card_basis (he'.stalkBasis _ (genericPoint_mem hxV))).trans
-      (Fintype.card_fin n)
-  subst hn
-  exact ⟨V, e', hxV, he'⟩

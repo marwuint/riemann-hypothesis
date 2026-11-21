@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenSmoo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFrameChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeBundlePullbackGenOfFrameIsGenStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeFrameGeneratorValuePullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitPullbackSemiAbelianModelIdentificationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitPullbackSemiAbelianModelIdentification
 
 set_option autoImplicit false
 noncomputable section
@@ -63,7 +63,7 @@ theorem exists_integral_hodgeGen : ∀ (S' : Scheme.{0}) (g : ℕ) (G : Over S')
   refine ⟨gen hα ha, GlobalTheory.T.hodgeBundlePullbackGenOfFrame_isGen hα ha, ?_⟩
   intro W _ _ _ hW φ gam hgam χ' hχ
   haveI : IsDiscreteValuationRing W := hW.1
-  obtain ⟨ρ', ψ', hρ', hψ', e₁, e₂⟩ := GlobalTheory.T.traitPullback_semiAbelianModel_identification hG hG₁ hα φ gam hgam χ' hχ
+  obtain ⟨ρ', ψ', hρ', hψ', e₁, e₂⟩ := _root_.GlobalTheory.HodgeFrameGen.traitPullback_identification hG hG₁ hα φ gam hgam χ' hχ
   have pW := isGrpPullback_pullback G₁ (spMap φ)
   have ha' : IsFrame fun i => (omegaBase pW).app ⊤ (pullbackSections (spMap φ) _ le_top (ε i)) :=
     (GlobalTheory.BadPt.Fibre.frame_pb (spMap φ) hε le_top).map_iso _

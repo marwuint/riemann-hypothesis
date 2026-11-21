@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingOpSub
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubOfScaledSectionValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulOfScaledSectionValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VerticalSymbolZeroOfBracketPreservingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubOfScaledSectionValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulOfScaledSectionValues
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VerticalSymbolZeroOfBracketPreserving
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
@@ -27,16 +27,16 @@ theorem symbol_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam hmon htt hab n v' D Ω _ _ _ φ x' δ dd' hcomp hx hinv hδ hval hinj g hg δL hδL
     Λ₁ Λ₂ d₁ d₂ u₁ u₂ p₁ p₁' p₂ p₂' hΛ₁ hΛ₂ hd h₁ h₂
   have sub := fun j s s' (hs : GlobalTheory.HeatSym.VS φ t.PP.L x' g j s) (hs' : GlobalTheory.HeatSym.VS φ t.PP.L x' g j s') =>
-    GlobalTheory.T.sub_of_scaled_section_values φ t.G.hom t.PP.L x' g hx j s s' hs hs'
+    _root_.GlobalTheory.HeatSym.VS.sub φ t.G.hom t.PP.L x' g hx j s s' hs hs'
   have mul := fun j j' s s' (hs : GlobalTheory.HeatSym.VS φ t.PP.L x' g j s) (hs' : GlobalTheory.HeatSym.VS φ t.PP.L x' g j' s') =>
-    GlobalTheory.T.mul_of_scaled_section_values φ t.PP.L t.PP.isLB x' g j j' s s' hs hs'
+    _root_.GlobalTheory.HeatSym.VS.mul φ t.PP.L t.PP.isLB x' g j j' s s' hs hs'
   have hQ : ∀ (j : ℕ), 1 ≤ j → ∀ s, GlobalTheory.HeatSym.VS φ t.PP.L x' g j s →
       GlobalTheory.HeatSym.VS φ t.PP.L x' g j (ringOp ⇑d₁ (fun a => ⇑(δL a)) Λ₁ u₁ p₁ p₁' j s -
         ringOp ⇑d₂ (fun a => ⇑(δL a)) Λ₂ u₂ p₂ p₂' j s) :=
     fun j hj s hs => sub j _ _ (h₁ j hj s hs) (h₂ j hj s hs)
   have hsym : (Λ₁ - Λ₂)ᵀ = Λ₁ - Λ₂ := by rw [Matrix.transpose_sub, hΛ₁, hΛ₂]
   have hcoe : (fun y => d₁ y - d₂ y) = ⇑(d₁ - d₂) := rfl
-  refine sub_eq_zero.mp (GlobalTheory.T.verticalSymbol_zero_of_bracket_preserving E H R t P m tt gam hmon htt hab n v' D Ω φ x' δ dd' hcomp hx hinv hδ hval hinj g hg δL hδL
+  refine sub_eq_zero.mp (_root_.GlobalTheory.HeatSym.vertical_symbol_zero E H R t P m tt gam hmon htt hab n v' D Ω φ x' δ dd' hcomp hx hinv hδ hval hinj g hg δL hδL
     (d₁ - d₂) (Λ₁ - Λ₂) hsym (fun r => by rw [Derivation.sub_apply, hd, sub_self]) ?_)
   intro k hk b c hb hc
   have hk2 : 1 ≤ k + k := le_add_right hk

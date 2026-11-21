@@ -51,7 +51,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 theorem art_inj {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art) :
     Function.Injective fun x : (w.adicCompletion E)ˣ => art (localIdele E w x) :=
-  GlobalTheory.T.globalArtin_localIdele_injective GlobalTheory.Published.chevalleyUnits' E Ω art ha w
+  _root_.GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' E Ω art ha w
 
 theorem exists_inverse (h : IsPlaceOver A w) {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art) :
     ∃ a : Weil h →* (w.adicCompletion E)ˣ, Function.Surjective a ∧
@@ -90,7 +90,7 @@ theorem mem_of_toAb_eq_one (h : IsPlaceOver A w) (H : Subgroup (Weil h)) (hfin :
   set L := IntermediateField.adjoin Kw (Set.range fun x : K => ι (algebraMap K Ω x)) with hL
 
   have hHN : H ≤ (normGroup Kw L).comap a := fun s hs => by
-    obtain ⟨τ, hτ⟩ := GlobalTheory.T.exists_weil_of_fixes' E K Ω A w W h h' s ((hHK s).1 hs)
+    obtain ⟨τ, hτ⟩ := _root_.GlobalTheory.WeilSurj.exists_weil_of_fixes E K Ω A w W h h' s ((hHK s).1 hs)
     obtain ⟨y, hy⟩ := h1 τ
     rw [Subgroup.mem_comap, hN]
     exact ⟨y, art_inj hart ((key y τ s hτ hy).trans (ha s).symm)⟩

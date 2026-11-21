@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermDef
-import Formalism.LocalToGlobal.SiegelLatticeTheory.SiegelMassRatios.IdCell
+import Formalism.SharpRestriction.CuspSpanNormBounds.BlockEnds
 
 noncomputable section
 
@@ -157,16 +157,6 @@ theorem termInS_of_termIsId {t : Term D u u' F0 what₂} (h : termIsId t) : term
 
 variable (D u u' F0 what₂)
 
-def relSet : Set (Term D u u' F0 what₂) := {t | t.relevant}
-
-def idSet : Set (Term D u u' F0 what₂) := {t | t.relevant ∧ termInS t}
-
-def degSet : Set (Term D u u' F0 what₂) := {t | t.relevant ∧ t.G = 0 ∧ ¬ termInS t}
-
-def ngSet : Set (Term D u u' F0 what₂) := {t | t.relevant ∧ t.G ≠ 0 ∧ ¬ t.generic}
-
-def genSet : Set (Term D u u' F0 what₂) := {t | t.relevant ∧ t.G ≠ 0 ∧ t.generic}
-
 variable {D u u' F0 what₂}
 
 theorem G_eq_zero_of_termInS {t : Term D u u' F0 what₂} (hG : GFun t.lam (lf D F0) (PD D t.lam (lf D F0) u'))
@@ -175,19 +165,6 @@ theorem G_eq_zero_of_termInS {t : Term D u u' F0 what₂} (hG : GFun t.lam (lf D
   exact star_natCast _
 
 variable (D)
-
-def FourParts (u u' : D.what₂.Word) : Prop :=
-  ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-    IsRowReps D F0 what₂ →
-      idSet D u u' F0 what₂ ∪ degSet D u u' F0 what₂ ∪ ngSet D u u' F0 what₂ ∪ genSet D u u' F0 what₂ =
-        relSet D u u' F0 what₂ ∧
-      Disjoint (idSet D u u' F0 what₂) (degSet D u u' F0 what₂) ∧
-      Disjoint (idSet D u u' F0 what₂) (ngSet D u u' F0 what₂) ∧
-      Disjoint (idSet D u u' F0 what₂) (genSet D u u' F0 what₂) ∧
-      Disjoint (degSet D u u' F0 what₂) (ngSet D u u' F0 what₂) ∧
-      Disjoint (degSet D u u' F0 what₂) (genSet D u u' F0 what₂) ∧
-      Disjoint (ngSet D u u' F0 what₂) (genSet D u u' F0 what₂) ∧
-      idSet D u u' F0 what₂ ⊆ {t | t.G = 0}
 
 def TermInSFun (u u' : D.what₂.Word) : Prop :=
   ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V),
@@ -202,22 +179,6 @@ def TermInSRel (u u' : D.what₂.Word) : Prop :=
     IsRowLat D F0 Λ → InSRel (lf D F0) (PD D Λ (lf D F0) u') D.host.F
 
 variable {D}
-
-theorem fourParts_of_termFun {u u' : D.what₂.Word} (hF : TermFun D u u') : FourParts D u u' := by
-  intro F0 what₂ hrows
-  have hG : ∀ t : Term D u u' F0 what₂, termInS t → t.G = 0 := fun t h =>
-    G_eq_zero_of_termInS (hF F0 t.lam (hrows.1 t.lam t.mem)).1 h
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · ext t
-    simp only [idSet, degSet, ngSet, genSet, relSet, Set.mem_union, Set.mem_ofPred_eq]
-    by_cases h1 : termInS t <;> by_cases h2 : t.G = 0 <;> by_cases h3 : t.generic <;> tauto
-  · exact Set.disjoint_left.2 fun t h1 h2 => h2.2.2 h1.2
-  · exact Set.disjoint_left.2 fun t h1 h2 => h2.2.1 (hG t h1.2)
-  · exact Set.disjoint_left.2 fun t h1 h2 => h2.2.1 (hG t h1.2)
-  · exact Set.disjoint_left.2 fun t h1 h2 => h2.2.1 h1.2.1
-  · exact Set.disjoint_left.2 fun t h1 h2 => h2.2.1 h1.2.1
-  · exact Set.disjoint_left.2 fun t h1 h2 => h1.2.2 h2.2.2
-  · exact fun t h => hG t h.2
 
 end D7
 

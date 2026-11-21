@@ -16,9 +16,4 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestricti
 theorem Contract.pulledBackForms_topDensity_vanish : pointForm_holds.Statement :=
   pointForm_holds.proof (pointFormRank_holds.proof RatioAlgDep.proof) pointFormEuler_holds.proof
 
-theorem Contract.of_found (hIm : ReciprocityTheory.ChartRestriction.G.AI.I4.ImageArithStatement)
-    (hV : GroundTheory.Heights₂.Heights.Inter.ProjectivePointVertical.Statement) :
-    ReciprocityTheory.ChartRestriction.G.AI.I4.ContractStatement :=
-  contract_of hIm Contract.pulledBackForms_topDensity_vanish hV
-
 end GroundTheory.Heights₂.Heights.Targets

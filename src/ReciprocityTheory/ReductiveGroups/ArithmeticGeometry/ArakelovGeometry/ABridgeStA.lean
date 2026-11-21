@@ -102,28 +102,4 @@ theorem conj_bGram {m : ConeMetric ℂ J} {μ : Measure (J → ℂ)} (hm : IsCon
   simp [he, secFun_conjPt, wgt_conjPt hm]
   try ring
 
-theorem realGram_eq (m : ConeMetric ℂ J) (μ : Measure (J → ℂ)) (n : ℕ) {r : ℕ}
-    (b : Fin r → MvPolynomial J ℚ) (k l : Fin r) :
-    realGram (K := ℚ) (fun _ => m) (fun _ => μ) n b k l =
-      (bGram μ (fun k => secFun (b k)) (wgt m n) k l).re := by
-  have hsub : ∀ w₁ w₂ : NumberField.InfinitePlace ℚ, w₁ = w₂ := by
-    rintro ⟨_, φ₁, rfl⟩ ⟨_, φ₂, rfl⟩
-    exact Subtype.ext (by rw [RingHom.ext_rat φ₁ φ₂])
-  let w₀ : NumberField.InfinitePlace ℚ := NumberField.InfinitePlace.mk (algebraMap ℚ ℂ)
-  have hemb : w₀.embedding = algebraMap ℚ ℂ := RingHom.ext_rat _ _
-  have hmult : (w₀.mult : ℝ) = 1 := by
-    have hr : w₀.IsReal := NumberField.InfinitePlace.isReal_iff.mpr
-      (NumberField.ComplexEmbedding.isReal_iff.mpr (RingHom.ext_rat _ _))
-    simp [NumberField.InfinitePlace.mult, hr]
-  simp only [realGram]
-  rw [Fintype.sum_eq_single w₀ (fun w hw => absurd (hsub w w₀) hw), hmult, one_mul, hemb,
-    ← Complex.conj_re (bGram μ (fun k => secFun (b k)) (wgt m n) k l)]
-  congr 1
-  simp only [bGram, Matrix.of_apply]
-  rw [← integral_conj]
-  congr 1
-  funext z
-  simp [secFun, wgt, div_eq_mul_inv]
-  try ring
-
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry

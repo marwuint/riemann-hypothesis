@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyPurePeriodsSpanStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodsSpanPureDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FamilyPurePeriodsSpan
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodsSpanPureDecomposition
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodReductionModelCmPeriodFibre
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmExistsClosed
 
@@ -37,7 +38,7 @@ theorem exists_desc (hU : ThetaUnifAV) (hL : Out.Laws) {D : Datum H} {l : Level 
           ∀ a (z : ℂ), ((u.ex fun _ => c * z).left ≫ φ₃ ≫ (ψ a).left) ≫ m.φ = (FU.ex i P (z • P a)).left := by
   subst hρ
   obtain ⟨ψ', hψ', hex⟩ := GlobalTheory.T.exists_cmCurve_homFamily_to_fibre_at_period hU hL E H D l Xo g ty FU i P hP _ C' u c T' n ε _ hu hc hΛ hε hh
-  obtain ⟨k₁, hk₁, hle, hdesc⟩ := GlobalTheory.T.cmFamily_descends_to_numberField hU hL E H k₀ _ C₀ (FU.Di i) _ T _ _ C' φ T' mT ψ' c' hψ'
+  obtain ⟨k₁, hk₁, hle, hdesc⟩ := _root_.GlobalTheory.CM.isFam_descends_to_numberField hU hL E H k₀ _ C₀ (FU.Di i) _ T _ _ C' φ T' mT ψ' c' hψ'
   refine ⟨k₁, hk₁, hle, fun K e eK ω₂ C₂ φ₂ φ₃ T₂ m₂ m₃ f m c₂ c₃ hφ hm hn => ?_⟩
   obtain ⟨ψ₂, hψ₂, hsq⟩ := hdesc K e eK _ C₂ φ₂ φ₃ T₂ m₂ m₃ c₂ c₃ hφ hm
   refine ⟨ψ₂, hψ₂, fun a z => ?_⟩
@@ -76,8 +77,8 @@ theorem exists_pack_given : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   have hX : HomExtDvr := GlobalTheory.CM.homExtDvr_of_card_torsion GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional
   have hK : Published.KernelFiniteFlatSt := GlobalTheory.kernelFiniteFlat_holds
   have hB := hL.polBaseChange
-  obtain ⟨K₀, hK₀, y₀, _, hy₀, hy₀'⟩ := GlobalTheory.T.family_pure_periods_span E H D l Xo c g ty FU i P hP n hn hy
-  obtain ⟨hg0, bb0, a0, hspan0⟩ := GlobalTheory.T.periods_span_pure_decomposition E H (FU.Di i) g ty P hP n hn hy
+  obtain ⟨K₀, hK₀, y₀, _, hy₀, hy₀'⟩ := _root_.GlobalTheory.CompanionTheory.Ggeo.point_numberField_of_finiteIndex E H D l Xo c g ty FU i P hP n hn hy
+  obtain ⟨hg0, bb0, a0, hspan0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_pure_vectors_periods_span_of_finite_index E H (FU.Di i) g ty P hP n hn hy
 
   obtain ⟨k₀, _, e₁, e₂, e₃, e₆⟩ : ∃ k₀ : IntermediateField ℚ ℂ, FiniteDimensional ℚ k₀ ∧ K₀ ≤ k₀ ∧
       (∀ b, (Z b).M ≤ k₀) ∧ k ≤ k₀ ∧ c.F ≤ k₀ :=
@@ -159,7 +160,7 @@ theorem exists_pack_given : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
         rw [← hΨe (bb j) (a j) z]
         simp only [Category.assoc]
         exact Category.assoc _ _ _⟩)
-  choose ψ hψ hsq' using fun b => GlobalTheory.T.cmFamily_extends_over_dedekindDomain hL hX E H (𝓞 K₁) K₁ _ (C₁ b) (FU.Di i) _ B _ _ (C₂ b) (φ₁₂ b)
+  choose ψ hψ hsq' using fun b => _root_.GlobalTheory.isFam_extends_dedekind hL hX E H (𝓞 K₁) K₁ _ (C₁ b) (FU.Di i) _ B _ _ (C₂ b) (φ₁₂ b)
     T₂ m' (ψ₂ b) (c₁₂ b) (hψ₂ b)
   have hcF : c.F ≤ K₁ := e₆.trans e₅
   let yK : Sp K₁ ⟶ Xo.XF c := pullback.lift (spMap (IntermediateField.inclusion (e₁.trans e₅)).toRingHom ≫ y₀)

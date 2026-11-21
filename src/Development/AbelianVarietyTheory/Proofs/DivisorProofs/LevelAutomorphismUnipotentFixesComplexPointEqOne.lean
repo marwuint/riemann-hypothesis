@@ -1,15 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallTorsionSetForEndomorphismStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallTorsionSetForEndomorphism
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelStructureChangeFramedGeometricPointUnique
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrMoveTransfer
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteOrderLevelMoveUniversalSemiAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCardQuotSmulTopLePowFinrankStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateIsometryTorsionEqLevelSmulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnipotentModIdealLiftLaInvStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteOrderLevelMoveUniversalSemiAbelian
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointMoveCalculusStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCardQuotSmulTopLePowFinrank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateIsometryTorsionEqLevelSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnipotentModIdealLiftLaInv
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -70,7 +71,7 @@ theorem free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Recip
         _ = (α ≫ act0.act a).left ≫ pullback.fst G.hom x := by rw [Over.comp_left, Category.assoc]
     · have h1 : ∀ f : G0 ⟶ G0, f.left ≫ pullback.snd G.hom x = pullback.snd G.hom x := fun f => Over.w f
       simp only [Over.comp_left, Category.assoc, h1]
-  obtain ⟨n, hn, hνn⟩ := GlobalTheory.T.exists_finite_order_levelMove_universalSemiAbelian E H Dw l Xo c «γ» ρ ν hpq hA1 hiso hm'
+  obtain ⟨n, hn, hνn⟩ := _root_.GlobalTheory.MoveOrder.finite_order E H Dw l Xo c «γ» ρ ν hpq hA1 hiso hm'
   have hαn : (fun f => f ≫ α)^[n] (𝟙 G0) = 𝟙 G0 := by
     have key : ∀ j, ((fun f => f ≫ α)^[j] (𝟙 G0)).left ≫ pullback.fst G.hom x =
         pullback.fst G.hom x ≫ (fun f : G.left ⟶ G.left => f ≫ ν.φ)^[j] (𝟙 _) := by
@@ -131,12 +132,12 @@ theorem free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Recip
       rw [add_zero] at h0
       simpa using h0
     | succ k ih => rw [Nat.cast_succ, hadd, ih, hone, pow_succ]
-  obtain ⟨t, ht, htor⟩ := GlobalTheory.T.tateIsometry_torsion_eq_level_smul E H Dw l ℂ (Over.mk x ⟶ G) (fun a z => z ≫ Xo.univ.t.act.act a) _ TI et I g
+  obtain ⟨t, ht, htor⟩ := _root_.GlobalTheory.TateTorsion.torsion_eq_level_smul E H Dw l ℂ (Over.mk x ⟶ G) (fun a z => z ≫ Xo.univ.t.act.act a) _ TI et I g
     hadd hone hnat (fun a ha => hTI a ha) hg hnorm hsq hMb
 
   have tor_B : ∀ u : 𝟙_ (Over (Sp ℂ)) ⟶ G0, (∀ a ∈ I, u ≫ act0.act a = 1) → ∃ c' : Dw.La, B u = et (t • c') :=
     fun u hu => htor (B u) fun a ha => by rw [← B_act, hu a ha, B_one]
-  obtain ⟨hfin, hcard⟩ := GlobalTheory.T.natCard_quot_smul_le_pow_finrank E Dw.La Dw.fin Dw.proj I g hg hnorm
+  obtain ⟨hfin, hcard⟩ := _root_.GlobalTheory.natCard_quot_smul_top_le_pow_finrank E Dw.La Dw.fin Dw.proj I g hg hnorm
   classical
   haveI : Fintype (Dw.La ⧸ I • (⊤ : Submodule (𝓞 E) Dw.La)) := Fintype.ofFinite _
   let rep := Function.surjInv (Submodule.Quotient.mk_surjective (I • (⊤ : Submodule (𝓞 E) Dw.La)))
@@ -163,7 +164,7 @@ theorem free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Recip
     obtain ⟨c', hc'⟩ := tor_B u hu
     exact Finset.mem_preimage.2 (hc' ▸ et_t c')
 
-  obtain ⟨m, hmU⟩ := GlobalTheory.T.isUnipotentModIdeal_liftLa_inv E H Dw l I «γ» hMb hU
+  obtain ⟨m, hmU⟩ := _root_.GlobalTheory.OrbitSep.unipAt_inv_liftLa E H Dw l I «γ» hMb hU
   have hδ : ∀ b, et (liftLa «γ» (liftLa «γ»⁻¹ b)) = et b := fun b => by
     have e1 := GlobalTheory.LevelActionLaws.liftLa_mul_sub «γ» «γ»⁻¹ b
     have e2 := GlobalTheory.LevelActionLaws.liftLa_one_sub (D := Dw) (l := l) b
@@ -201,7 +202,7 @@ theorem free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Recip
     apply B_inj
     rw [B_iter m u _ hc', B_one, map_smul]
     exact et_ker _ (ht _ (hmU c'))
-  have hαid : α = 𝟙 G0 := GlobalTheory.T.exists_small_torsion_set_for_endomorphism E ℂ G0 act0 α n m g (Dw.p + Dw.q) I
+  have hαid : α = 𝟙 G0 := _root_.GlobalTheory.NeatUnip.finite_order_unipotent_eq_id E ℂ G0 act0 α n m g (Dw.p + Dw.q) I
     (IsSemiAbelian.pullback x G Xo.univ.t.semi) hαm hact hn hαn hg hnorm hsq hr ⟨T0, hT0, hmemT⟩ hunip
 
   have hαl : α.left = 𝟙 _ := by rw [hαid]; rfl

@@ -1,10 +1,11 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConePolar
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceDim
-import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeChartGram
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChartGram
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLinearNoetherNormalization
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChartGramMA
 import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeLogBound
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -49,21 +50,6 @@ theorem maDens_log_dualNorm_sheet {n e : ℕ} (h : HermNorm n) (J : Ideal (MvPol
     funext k y'
     simp only [Function.comp_apply, hdual]
   rw [hF, anForm_maDens_eq_geo_maDensity, key, hsx, ← hdual]
-
-theorem ConePolar.proof (h₁ : SliceDim.Statement) (h₂ : LinearNoetherNormalization.Statement)
-    (h₃ : ConeChartGram.Statement) : ConePolar.Statement := by
-  intro e
-  refine ⟨1, fun n h J ℓ g hJ hdim hℓ hg hgc => ?_⟩
-  have hex : ∃ A : Matrix (Fin e) (Fin n) ℂ, IsFiniteProjection (J ⊔ Ideal.span {linForm ℓ - 1}) A :=
-    h₂ n e _ (h₁ n e J ℓ hJ hdim hℓ)
-  rw [one_mul, varInt, dif_pos hex, h₃ n e h J ℓ g hex.choose hJ hdim hℓ hg hgc hex.choose_spec,
-    chartInt]
-  refine integral_congr_ae (Eventually.of_forall fun y => ?_)
-  simp only [chartDens, sheetSum]
-  refine finsum_congr fun x => finsum_congr fun hx => ?_
-  split_ifs with hs
-  · rw [maDens_log_dualNorm_sheet h J ℓ _ y x _ hx hs.choose_spec]
-  · rfl
 
 end
 

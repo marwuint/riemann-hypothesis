@@ -55,15 +55,6 @@ theorem HomG.sign {φ : (σ →₀ ℕ) →+ ℕ} {d : ℕ} {P : MvPolynomial σ
   rw [hc, MvPolynomial.mem_support_iff, MvPolynomial.coeff_C_mul] at hm
   exact MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hm)
 
-theorem HomG.prod {φ : (σ →₀ ℕ) →+ ℕ} {κ : Type} (s : Finset κ) (d : κ → ℕ) (P : κ → MvPolynomial σ R)
-    (h : ∀ a ∈ s, HomG φ (d a) (P a)) : HomG φ (∑ a ∈ s, d a) (∏ a ∈ s, P a) := by
-  classical
-  revert h
-  refine Finset.induction_on s (fun _ => by simpa using HomG.one (σ := σ) (R := R) φ) ?_
-  intro a s ha ih h
-  rw [Finset.prod_insert ha, Finset.sum_insert ha]
-  exact HomG.mul (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
-
 theorem KG_hom {n : ℕ} (φ : (σ →₀ ℕ) →+ ℕ) (c : ℤ) (hs : ℕ → ℕ) (x : ℕ → Fin n → MvPolynomial σ R) (ω : ℕ → ℕ)
     (hx : ∀ j b, HomG φ (ω j) (x j b)) :
     ∀ (t : ℕ) (J : Finset (Fin n)), HomG φ (∑ j ∈ range t, if hs j = hs (j + 1) then 0 else ω j) (KG c hs x t J)

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenRatios
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Definitions.Divisors.P22
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalOfGrowthOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormGrowthLeImageDegreeLowerWeightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormGrowthLeImageDegreeLowerWeight
 
 set_option autoImplicit false
 
@@ -18,7 +18,7 @@ theorem GlobalTheory.DegVal.compDeg_between : ∀ (E : Type) [Field E] [NumberFi
   have h2 : ∀ la, topDeg U Z' la = topDeg U Z la := fun la => by rw [topDeg, topDeg, hV Z' Z]
   constructor
   · rw [delPrime, h2]
-    have hlow := GlobalTheory.T.cuspFormGrowth_le_imageDegree_lowerWeight E H Dw l Xo c r U hU Z (wtOf Dw u 0) (wtOf Dw (uPrime Dw u) 0) (even_wtOf u 0)
+    have hlow := _root_.GlobalTheory.DegVal.growthOn_le_compDeg E H Dw l Xo c r U hU Z (wtOf Dw u 0) (wtOf Dw (uPrime Dw u) 0) (even_wtOf u 0)
       (even_wtOf _ 0) (by rw [hP Z u hu]; exact ENNReal.ofReal_ne_top) (hB Z) (hM Z)
     rw [hP Z _ hu', ← ENNReal.ofReal_natCast] at hlow
     exact (ENNReal.ofReal_le_ofReal_iff (Nat.cast_nonneg _)).1 hlow

@@ -24,8 +24,8 @@ private theorem rc_tw_of_segments {a : Weil h →* (w.adicCompletion E)ˣ} (ha :
     (hr : ∀ Δ ∈ l, r (Δ.first.tw χ hχ) = (r Δ.first).lpTwist (χ.comp a) (ha.smooth hχ)) :
     rc (x.tw χ hχ) = (rc x).lpTwist (χ.comp a) (ha.smooth hχ) := by
   haveI : CharZero (w.adicCompletion E) := algebraRat.charZero _
-  obtain ⟨-, hs, ht, -⟩ := GlobalTheory.T.weil_deligne_sum_twist_compat E Ω A w h
-  have h2 := GlobalTheory.T.isLanglandsClassification_twist_multisegment _ (l : Multiset (Segment (w.adicCompletion E))) x χ hχ hx
+  obtain ⟨-, hs, ht, -⟩ := _root_.GlobalTheory.sumList_laws E Ω A w h
+  have h2 := _root_.GlobalTheory.LocGL.isL_map_tw_of_isL _ (l : Multiset (Segment (w.adicCompletion E))) x χ hχ hx
   rw [hL l x hx, hL (l.map fun Δ : Segment _ => Δ.tw χ hχ) (x.tw χ hχ) h2, segSum, segSum, hs, List.map_map, List.map_map]
   refine congrArg sumList (List.map_congr_left fun Δ hΔ => ?_)
   show ((r (Δ.first.tw χ hχ)).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len) = WD.lpTwist _ _ _

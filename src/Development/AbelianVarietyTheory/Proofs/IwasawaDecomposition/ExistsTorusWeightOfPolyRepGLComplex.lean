@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoCharOfMulPolyDivPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LaurentPolyEvalOfLaurentStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LaurentMonomialOfMultiplicativeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LaurentPolyEvalOfLaurent
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LaurentMonomialOfMultiplicative
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DvdTraceOfBalancedTensor
 open Matrix GlobalTheory.AlgWtHW
 
@@ -109,7 +109,7 @@ theorem exists_isWt_of_isPolyRep : ∀ (n : ℕ) (ι : Type) [Fintype ι] [Decid
           · simp [Pi.mulSingle_eq_of_ne hj]
         simp only [g, Sum.elim_inr, diagGLOfNeZero_inv_val, hinv]
     let g2 : ι → ℂ → ℂ := fun c t => MvPolynomial.eval (fun s => g s t) (Q a c)
-    obtain ⟨N, p, hp⟩ := GlobalTheory.T.exists_pow_mul_mvEval_eq_eval_of_laurent ι g2 (fun c => GlobalTheory.T.exists_pow_mul_mvEval_eq_eval_of_laurent _ g hg (Q a c))
+    obtain ⟨N, p, hp⟩ := _root_.GlobalTheory.laurent_poly_eval_of_laurent ι g2 (fun c => _root_.GlobalTheory.laurent_poly_eval_of_laurent _ g hg (Q a c))
       (∑ c, MvPolynomial.C (v c) * MvPolynomial.X c)
     refine GlobalTheory.T.exists_zpow_of_multiplicative_of_pow_mul_eq_eval (fun t => χ (Pi.mulSingle i t)) ?_ ?_ N (Polynomial.C (v a)⁻¹ * p) ?_
     · intro s t hs ht
@@ -128,7 +128,7 @@ theorem exists_isWt_of_isPolyRep : ∀ (n : ℕ) (ι : Type) [Fintype ι] [Decid
       rw [e3] at e2
       simp only [Polynomial.eval_mul, Polynomial.eval_C, ← e2]
       field_simp
-  obtain ⟨μ, hμ⟩ := GlobalTheory.T.exists_monomial_of_multiplicative_of_single_eq_zpow n χ h1 hmul hline
+  obtain ⟨μ, hμ⟩ := _root_.GlobalTheory.laurentMonomial_of_multiplicative n χ h1 hmul hline
   refine ⟨μ, v, hv0, fun D hD => ?_⟩
   have hd : ∀ i, D.val i i ≠ 0 := by
     intro i h0

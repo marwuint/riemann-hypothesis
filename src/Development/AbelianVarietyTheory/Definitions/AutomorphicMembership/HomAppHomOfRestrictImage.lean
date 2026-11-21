@@ -134,11 +134,6 @@ theorem homApp_homOfRestrict (φ : F.restrict U.ι ⟶ G.restrict U.ι) (h : W �
     homApp (homOfRestrict φ) h s =
       resM G (image_preimage_ι h).ge (appIm φ (U.ι ⁻¹ᵁ W) (resM F (image_preimage_ι h).le s)) := rfl
 
-theorem homApp_homOfRestrict_image (φ : F.restrict U.ι ⟶ G.restrict U.ι) (T : U.toScheme.Opens)
-    (h : U.ι ''ᵁ T ≤ U) (s : Γ(F, U.ι ''ᵁ T)) : homApp (homOfRestrict φ) h s = appIm φ T s := by
-  have hT : U.ι ⁻¹ᵁ U.ι ''ᵁ T ≤ T := (U.ι.preimage_image_eq T).le
-  rw [homApp_homOfRestrict, appIm_res φ hT, resM_resM, resM_self]
-
 theorem homOfRestrict_comp (φ : F.restrict U.ι ⟶ G.restrict U.ι) (ψ : G.restrict U.ι ⟶ H.restrict U.ι)
     (h : W ≤ U) (s : Γ(F, W)) :
     homApp (homOfRestrict ψ) h (homApp (homOfRestrict φ) h s) = homApp (homOfRestrict (φ ≫ ψ)) h s := by

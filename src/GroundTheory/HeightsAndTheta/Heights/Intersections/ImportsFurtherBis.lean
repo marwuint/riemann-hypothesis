@@ -20,10 +20,4 @@ def IntersectionWithSection.Statement : Prop :=
     ptsIntegral P' (pot L') (logNorm A' (rename v s)) =
       (J (fibreIdeal κ G) 0 Fin.elim0 : ℝ) * ptsIntegral (imageZ v P') (pot L) (logNorm A s)
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

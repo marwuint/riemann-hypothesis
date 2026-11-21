@@ -72,10 +72,6 @@ def preTiltRangeEquiv : 𝒪♭ ≃+* (algebraMap 𝒪♭ C♭).range :=
 def fpbarToPreTilt : Fpbar p →+* 𝒪♭ :=
   (preTiltRangeEquiv (p := p)).symm.toRingHom.comp fpbarToRange
 
-theorem algebraMap_fpbarToPreTilt (a : Fpbar p) :
-    algebraMap 𝒪♭ C♭ (fpbarToPreTilt a) = fpbarToTilt a :=
-  congrArg Subtype.val ((preTiltRangeEquiv (p := p)).apply_symm_apply (fpbarToRange a))
-
 theorem fpbarToPreTilt_injective : Function.Injective (fpbarToPreTilt (p := p)) :=
   fpbarToPreTilt.injective
 
@@ -129,9 +125,6 @@ theorem fpbarToPreTilt_galFpbar (σ : Gal(PadicAlgCl p/K)) (a : Fpbar p) :
     ((((galFlat σ).comp fpbarToPreTilt).codRestrict _ (galFlat_mem_range σ)) a))
 
 def wittToAInf : WittVector p (Fpbar p) →+* AInf ℂ_[p] p := WittVector.map fpbarToPreTilt
-
-theorem wittToAInf_injective : Function.Injective (wittToAInf (p := p)) :=
-  WittVector.map_injective _ fpbarToPreTilt_injective
 
 theorem gal_smul_wittToAInf (σ : Gal(PadicAlgCl p/K)) (x : WittVector p (Fpbar p)) :
     σ • wittToAInf x = wittToAInf (WittVector.map (galFpbar σ) x) := by

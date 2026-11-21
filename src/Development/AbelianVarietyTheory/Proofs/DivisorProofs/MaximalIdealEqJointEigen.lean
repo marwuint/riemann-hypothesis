@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DvdTraceOfBalancedTensor
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormEigenvalueLeOneOfIntegralMatrixUltrametricStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormEigenvalueLeOneOfIntegralMatrixUltrametric
 
 open MvPolynomial Matrix
 
@@ -102,7 +102,7 @@ theorem maximal_ideal_eq_joint_eigen : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [
   have hfin : Θ.Finite := finite_joint_eigen T
   have hint : ∀ θ ∈ Θ, ∀ p, ‖eval₂ emb θ p‖ ≤ 1 := by
     rintro θ ⟨c, hc0, hc⟩ p
-    exact GlobalTheory.T.norm_eigenvalue_le_one_of_integral_matrix_ultrametric O K emb h1 n (ρ p) _ c hc0 (mulVec_eval₂ emb ρ θ c hc p)
+    exact _root_.GlobalTheory.eigenvalue_integral_matrix_norm_le_one O K emb h1 n (ρ p) _ c hc0 (mulVec_eval₂ emb ρ θ c hc p)
 
   let J : (I → K) → Ideal (MvPolynomial I O) := fun θ =>
     { carrier := {p | ∀ r, ‖eval₂ emb θ (r * p)‖ < 1}

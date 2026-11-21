@@ -210,37 +210,6 @@ theorem formallyUnramified_ringOfIntegers [Algebra (𝓞 K) k] :
     .of_equiv (Algebra.IsPushout.equiv (𝓞 K) K (𝓞 E) E).symm
   exact .of_equiv (Algebra.TensorProduct.cancelBaseChange (𝓞 K) K k k (𝓞 E))
 
-omit [CharZero k] [NumberField K] in
-
-theorem finrank_fractionalIdeal {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : I ≠ 0) :
-    Module.finrank (𝓞 E) I = 1 := by
-  have h₁ : Module.finrank (𝓞 E) E = 1 := by
-    rw [← IsFractionRing.finrank_right_eq (𝓞 E) E E, Module.finrank_self]
-  have : Module.Finite (𝓞 E) I :=
-    Module.Finite.iff_fg.mpr (FractionalIdeal.fg_of_isNoetherianRing le_rfl I)
-  have : Nontrivial I :=
-    Submodule.nontrivial_iff_ne_bot.mpr (FractionalIdeal.coeToSubmodule_ne_bot.mpr hI)
-  refine le_antisymm ?_ Module.finrank_pos
-  refine Module.finrank_le_of_rank_le ((Submodule.rank_le (I : Submodule (𝓞 E) E)).trans ?_)
-  rw [← IsFractionRing.rank_right_eq (𝓞 E) E E, Module.rank_self, Nat.cast_one]
-
-omit [CharZero k] in
-
-theorem finrank_fractionalIdeal_restrict {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E}
-    (hI : I ≠ 0) : Module.finrank (𝓞 K) I = Module.finrank K E := by
-  have : Module.Finite (𝓞 E) I :=
-    Module.Finite.iff_fg.mpr (FractionalIdeal.fg_of_isNoetherianRing le_rfl I)
-  have : Module.Finite (𝓞 K) I := Module.Finite.trans (𝓞 E) I
-  have : Nontrivial I :=
-    Submodule.nontrivial_iff_ne_bot.mpr (FractionalIdeal.coeToSubmodule_ne_bot.mpr hI)
-  obtain ⟨x, hx⟩ := exists_ne (0 : (I : Submodule (𝓞 E) E))
-  refine le_antisymm (Module.finrank_le_of_rank_le ?_) ?_
-  · rw [Module.finrank_eq_rank, IsFractionRing.rank_right_eq (𝓞 K) K E]
-    exact Submodule.rank_le ((I : Submodule (𝓞 E) E).restrictScalars (𝓞 K))
-  · rw [IsFractionRing.finrank_eq (𝓞 K) K (𝓞 E) E]
-    exact LinearMap.finrank_le_finrank_of_injective
-      (f := (LinearMap.toSpanSingleton (𝓞 E) I x).restrictScalars (𝓞 K)) (smul_left_injective _ hx)
-
 end Integers
 
 theorem iSupIndep_eigen {k V I : Type*} [Field k] [AddCommGroup V] [Module k V]

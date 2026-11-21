@@ -4,15 +4,15 @@ import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocG
 import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocE
 import Formalism.LocalToGlobal.GlobalTheory.GL3.CubicFields.ComplexMultiplication.ExtEmbEquivComp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPadicAlgClRingEquivComplexCompEqOfCountabl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdeleEmbeddingExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDoubleClassesRationalLiftFormsLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfAtSmallPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaAtSmallPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterAtSmallPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameAtSmallPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PermutationAtSmallPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutationAtSmallPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadsAtSmallPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdeleEmbeddingExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDoubleClassesRationalLiftFormsLevel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfAtSmallPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaAtSmallPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterAtSmallPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameAtSmallPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PermutationAtSmallPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutationAtSmallPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadsAtSmallPlace
 
 set_option autoImplicit false
 
@@ -147,26 +147,6 @@ end GlobalTheory.FrameOf
 
 namespace GlobalTheory.FrameOf
 
-theorem inRange_and {Q1 Q2 : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (_ : Pt Fm x hx i)
-      (_ : Fin (Fm.D x i).R.m) (_ : Par) (_ : Wts (Fm.D x i).what₂.Tau), HeightOneSpectrum (𝓞 (Fm.D x i).what₂.LL) → Prop}
-    (h1 : InRange Q1) (h2 : InRange Q2) :
-    InRange fun Fm x hx i p j P W w => Q1 Fm x hx i p j P W w ∧ Q2 Fm x hx i p j P W w := by
-  unfold InRange GlobalTheory.BigOn.AtPts at h1 h2 ⊢
-  refine Closed.imp (Closed.and h1 h2) fun Fm CH _ h => ?_
-  obtain ⟨x0, hx0⟩ := EvPt.and h.1 h.2
-  exact ⟨x0, fun x hx hle i p hp hM j P W hD hN w hw hR =>
-    ⟨(hx0 x hx hle i p hp).1 hM j P W hD hN w hw hR, (hx0 x hx hle i p hp).2 hM j P W hD hN w hw hR⟩⟩
-
-theorem inRange_imp {Q1 Q2 : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (_ : Pt Fm x hx i)
-      (_ : Fin (Fm.D x i).R.m) (_ : Par) (_ : Wts (Fm.D x i).what₂.Tau), HeightOneSpectrum (𝓞 (Fm.D x i).what₂.LL) → Prop}
-    (h1 : InRange Q1) (f : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i)
-      (j : Fin (Fm.D x i).R.m) (P : Par) (W : Wts (Fm.D x i).what₂.Tau) (w : HeightOneSpectrum (𝓞 (Fm.D x i).what₂.LL)),
-      Dict (Fm.L x i) j P W → Q1 Fm x hx i p j P W w → Q2 Fm x hx i p j P W w) : InRange Q2 := by
-  unfold InRange GlobalTheory.BigOn.AtPts at h1 ⊢
-  refine Closed.imp h1 fun Fm CH _ h => ?_
-  obtain ⟨x0, hx0⟩ := h
-  exact ⟨x0, fun x hx hle i p hp hM j P W hD hN w hw hR => f Fm x hx i p j P W w hD (hx0 x hx hle i p hp hM j P W hD hN w hw hR)⟩
-
 theorem plc_mem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     ((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 K) ∈ w.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
@@ -215,7 +195,7 @@ theorem frameAt_of (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what�
   obtain ⟨io, hio⟩ := g_io D.what₂.LL (Formalism.EigenvalueLevelCeiling.plc w) e0 D.what₂.embLL
   obtain ⟨b, sh, hR⟩ := hr
   have hev0 : ∀ τ, ∃ ev : (FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗[D.host.F] D.host.E →+* PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w),
-      EvOk (incOf D e0 b τ) ev := fun τ => GlobalTheory.T.exists_finiteAdeleEmbeddingExtension D.host.F D.host.E (Formalism.EigenvalueLevelCeiling.plc w) (incOf D e0 b τ)
+      EvOk (incOf D e0 b τ) ev := fun τ => _root_.GlobalTheory.EvExtend.exists_evOk D.host.F D.host.E (Formalism.EigenvalueLevelCeiling.plc w) (incOf D e0 b τ)
   choose ev hev using hev0
   let rk : Fin P.Nr ≃o Fin (Vc D j).rank := Fin.castOrderIso hD
   obtain ⟨bs, hb1, hbs⟩ := hk e0 b ev rk he0 hev
@@ -238,7 +218,7 @@ theorem frameAt_of (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what�
     ⟨he0, fun x => hLf (IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩), hio, hev, hkap, hchi⟩
   obtain ⟨R, hRe, hRix⟩ := hR e0 io ev bs rk Lf kap chi hC hb1
   refine ⟨frameOf p j (p.R.mu w) (Formalism.EigenvalueLevelCeiling.plc w) P.Nr Lf kap chi, R, incOf D e0 b,
-    ⟨⟨hring.1, Lf, inferInstance, hring.2⟩, GlobalTheory.T.finiteDoubleClasses_rational_liftFormsLevel p j (p.R.mu w), ht, hp e0 b io ev bs rk sh Lf kap chi hC,
+    ⟨⟨hring.1, Lf, inferInstance, hring.2⟩, _root_.GlobalTheory.FrameOf.classesAt p j (p.R.mu w), ht, hp e0 b io ev bs rk sh Lf kap chi hC,
       hcm e0 b io ev bs rk sh Lf kap chi hC⟩, ⟨?_⟩⟩
   rw [hRe, hRix]
   exact
@@ -263,14 +243,6 @@ theorem frameAt_of (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what�
       cst := fun _ => rfl }
 
 end Point
-
-theorem frameSt_of_smallSt : SmallSt → FrameSt := by
-  intro hS
-  have h := inRange_and hS (inRange_and GlobalTheory.T.half_at_small_place (inRange_and GlobalTheory.T.kappa_at_small_place (inRange_and GlobalTheory.T.character_at_small_place (inRange_and GlobalTheory.T.tame_at_small_place
-    (inRange_and GlobalTheory.T.permutation_at_small_place (inRange_and GlobalTheory.T.commutation_at_small_place GlobalTheory.T.reads_at_small_place))))))
-  refine inRange_imp h fun Fm x hx i p j P W w hD hq => ?_
-  obtain ⟨hs, hh, hk, hc, ht, hp, hcm, hr⟩ := hq
-  exact frameAt_of p j P W w hD.Nr (hh hs) (hk hs) (hc hs) (ht hs) (hp hs) (hcm hs) (hr hs)
 
 end GlobalTheory.FrameOf
 

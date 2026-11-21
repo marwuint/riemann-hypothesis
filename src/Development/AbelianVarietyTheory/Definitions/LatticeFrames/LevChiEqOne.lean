@@ -100,30 +100,6 @@ structure PinX (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (ψ : AddCh
   mv : ∀ j (hj : j + 1 ≤ B.R.m), c₀ j ≠ 0 ∧ ∀ (a : I.ι) μ om, ChrEq μ (I.C.mu0 ⟨j, hj⟩ * I.xi a) → IsWeilDatumO ψ _ _ μ μ om →
     VacT I l Z θ j hj (c₀ j) μ om (vac j)
 
-structure PinColT (A : TwDat I l Z u a Ch) (ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ) (θ : InfFam (I.rec7 l Z))
-    (x : ∀ j, DefSp ((I.rec7 l Z).sp.X j)) (vac : ∀ j, WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) → ℂ) (c₀ : ℕ → ℂ)
-    (kom : ∀ j, Om ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)))
-    (dd : ∀ j, Ch j → Ch (j + 1) → WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) →₀ ℂ)
-    (w : ∀ j, Ch j → Ch (j + 1) → ℂ) (Ram : ∀ j, Set (ColT I l u a j))
-    (rd : ∀ j, Ch j → ColT I l u a j → (I.chain l u a).Y j → GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j) → ℂ) (cK : ℕ → ℂ) : Prop where
-  is : A.Is
-  om : ∀ j, j < B.R.m → IsWeilDatumO ψ _ _ (A.chr (j + 1)) (A.chr (j + 1)) (kom j)
-  dat : ∀ j (hj : j + 1 ≤ B.R.m) α γ, GlobalTheory.SeeSaw.IsFinComb (dd j α γ) ∧
-    IsRatDatum ψ _ _ A.e (fun z => w j α γ * A.xi j hj α γ z) (vac j) (comb ψ _ _ (dd j α γ) (vac j))
-  cst : ∀ j, j < B.R.m → ∀ α γ, cK j = (volLev (x j).vol (A.U j α) : ℂ) * w j α γ * c₀ j *
-    (A.chr (j + 1) (A.xr j α) : ℂ) * (A.chr (j + 1) (A.xr (j + 1) γ) : ℂ)⁻¹
-  ram : ∀ j, j ≤ B.R.m → ∀ φ, φ ∈ Ram j ↔ RamT j φ
-  rdq : ∀ j (hj : j ≤ B.R.m) β φ y, rd j β φ y = A.rd θ j hj β φ y
-
-structure PinColN (A : TwDat I l Z u a Ch) (ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ) (θ : InfFam (I.rec7 l Z))
-    (x : ∀ j, DefSp ((I.rec7 l Z).sp.X j)) (vac : ∀ j, WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) → ℂ) (c₀ : ℕ → ℂ)
-    (kom : ∀ j, Om ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)))
-    (dd : ∀ j, Ch j → Ch (j + 1) → WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) →₀ ℂ)
-    (w : ∀ j, Ch j → Ch (j + 1) → ℂ) (Ram : ∀ j, Set (ColT I l u a j))
-    (rd : ∀ j, Ch j → ColT I l u a j → (I.chain l u a).Y j → GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j) → ℂ) (cK : ℕ → ℂ) : Prop
-    extends PinColT A ψ θ x vac c₀ kom dd w Ram rd cK where
-  ne : ∀ j, j < B.R.m → cK j ≠ 0
-
 namespace TwDat.Is
 variable {A : TwDat I l Z u a Ch}
 
@@ -155,25 +131,5 @@ theorem lev_chi_eq_one (hA : A.Is) (i : ℕ) (hi : i ≤ B.R.m) (β : Ch i) (κ 
   (A.K i hi β).lev.chi_triv κ fun v hv => h v (hA.bad_le i hi v hv)
 
 end TwDat.Is
-
-section Pin
-variable {A : TwDat I l Z u a Ch} {ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ} {θ : InfFam (I.rec7 l Z)}
-    {x : ∀ j, DefSp ((I.rec7 l Z).sp.X j)} {vac : ∀ j, WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) → ℂ} {c₀ : ℕ → ℂ}
-    {kom : ∀ j, Om ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1))}
-    {dd : ∀ j, Ch j → Ch (j + 1) → WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) →₀ ℂ}
-    {w : ∀ j, Ch j → Ch (j + 1) → ℂ} {Ram : ∀ j, Set (ColT I l u a j)}
-    {rd : ∀ j, Ch j → ColT I l u a j → (I.chain l u a).Y j → GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j) → ℂ} {cK : ℕ → ℂ}
-
-theorem PinColN.w_ne (h : PinColN A ψ θ x vac c₀ kom dd w Ram rd cK) (j : ℕ) (hj : j < B.R.m) (α : Ch j) (γ : Ch (j + 1)) :
-    w j α γ ≠ 0 ∧ volLev (x j).vol (A.U j α) ≠ 0 ∧ c₀ j ≠ 0 := by
-  have hc := h.ne j hj
-  rw [h.cst j hj α γ] at hc
-  refine ⟨fun h0 => hc ?_, fun h0 => hc ?_, fun h0 => hc ?_⟩ <;> simp [h0]
-
-theorem PinColT.vacT (hX : PinX I l Z ψ θ x vac c₀) (h : PinColT A ψ θ x vac c₀ kom dd w Ram rd cK) (j : ℕ) (hj : j + 1 ≤ B.R.m) :
-    VacT I l Z θ j hj (c₀ j) (A.chr (j + 1)) (kom j) (vac j) :=
-  (hX.mv j hj).2 a _ _ (h.is.chr ⟨j, hj⟩) (h.om j hj)
-
-end Pin
 
 end GlobalTheory.AdForm

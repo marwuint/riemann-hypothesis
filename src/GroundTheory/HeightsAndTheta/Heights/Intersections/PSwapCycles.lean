@@ -1,9 +1,10 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsSwapCyclesArith
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsArith
 import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsSwap
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.NotRelevantOfDimZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.MemMinimalPrimesOfMemDivSuppDivSupp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter
@@ -109,33 +110,6 @@ theorem mem_minimalPrimes_of_mem_divSupp_divSupp {P W U : Ideal (MRing ι)} [P.I
   haveI := hQ'.1.1
   haveI := hU.1.1.1
   exact DivisorCycleSwap.not_lt_of_dim_eq (hQ'Q.trans_lt hlt) h2 hUd
-
-theorem component_dims {P U : Ideal (MRing ι)} [P.IsPrime] {s s' : MRing ι} {m : ℕ}
-    (hP : ringKrullDim (MRing ι ⧸ P) = ((m + 2 : ℕ) : WithBot ℕ∞)) (hs : s ∉ P) (hs' : s' ∉ P)
-    (hnc : ∀ W, W ∈ divSupp P s → W ∉ divSupp P s') (hUr : IsRelevant U)
-    (hU : U ∈ (P ⊔ Ideal.span {s} ⊔ Ideal.span {s'}).minimalPrimes) :
-    ringKrullDim (MRing ι ⧸ U) = (m : WithBot ℕ∞) ∧
-      (U.map (Ideal.Quotient.mk P)).IsPrime ∧
-      ∀ [(U.map (Ideal.Quotient.mk P)).IsPrime],
-        ringKrullDim (Localization.AtPrime (U.map (Ideal.Quotient.mk P))) = 2 := by
-  haveI : U.IsPrime := hU.1.1
-  obtain ⟨W, hW, hWU⟩ :=
-    Ideal.exists_minimalPrimes_le (le_sup_left.trans hU.1.2 : P ⊔ Ideal.span {s} ≤ U)
-  have hWd : W ∈ divSupp P s := ⟨hW, isRelevant_of_le hUr hWU⟩
-  haveI := hW.1.1
-  have h1 := dim_of_mem_minimalPrimes (m := m + 1) hP hs hW
-  have h2 := dim_of_mem_minimalPrimes h1 (not_mem_of_mem_divSupp hs' hnc hWd)
-    (mem_minimalPrimes_sup hU hW hWU)
-  have hPU : P ≤ U := le_sup_left.trans (le_sup_left.trans hU.1.2)
-  refine ⟨h2, Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective
-    (by rw [Ideal.mk_ker]; exact hPU), fun {_} => ?_⟩
-  have h := isLocData_atPrime_quot P U hPU
-  have hex : ∀ Q : Ideal (MRing ι), Q.IsPrime → P ≤ Q → Q ≤ U →
-      ∃ p : Ideal (Localization.AtPrime (U.map (Ideal.Quotient.mk P))), p.IsPrime ∧
-        p.comap (algebraMap (MRing ι) _) = Q :=
-    fun Q hQ hVQ hQZ => exists_prime_comap_atPrime_quot P U Q hQ hVQ hQZ
-  exact h.ringKrullDim_eq_two hPU hex hs hU
-    (fun W hW hWU => not_mem_of_mem_divSupp hs' hnc ⟨hW, isRelevant_of_le hUr hWU⟩)
 
 theorem divCycle_of_mem {V W : Ideal (MRing ι)} {f : MRing ι} (hW : W ∈ divSupp V f) :
     divCycle V f W = multAt (V ⊔ Ideal.span {f}) W := by
@@ -297,30 +271,6 @@ theorem divCycle_eq_zero_of_lt_two {P W : Ideal (MRing ι)} [P.IsPrime] {b b' : 
 end SwapCyclesAlt
 
 open SwapCyclesAlt
-
-theorem SwapCyclesArith.proof (hlen2 : LocalLengthMultiplicativity.{0}) : SwapCyclesArith.Statement := by
-  intro K _ ι _ P n A A' s s' hP hsA hsA' hnc
-  obtain ⟨-, ⟨hPp, -, -⟩, -, hPdim⟩ := hP
-  haveI := hPp
-  have hPd : ringKrullDim (MRing ι ⧸ P) = ((n + Fintype.card K + 2 : ℕ) : WithBot ℕ∞) := by
-    rw [hPdim, show n + 2 + Fintype.card K = n + Fintype.card K + 2 by omega]
-  obtain ⟨-, -, -, hs⟩ := hsA
-  obtain ⟨-, -, -, hs'⟩ := hsA'
-  have hcyc : ((divCycle P s).sum fun W m => m • divCycle W s') =
-      (divCycle P s').sum fun W m => m • divCycle W s := by
-    ext U
-    rw [sum_apply_eq, sum_apply_eq]
-    exact coeff_eq hlen2 hPd hs hs' hnc
-  refine ⟨fun U hUr hU => component_dims hPd hs hs' hnc hUr hU,
-    fun W hW U hU => mem_minimalPrimes_of_mem_divSupp_divSupp hPd hs hs' hnc hW hU, hcyc, ?_, ?_⟩
-  · classical
-    simp only [horCycle]
-    rw [sum_filter, sum_filter, hcyc]
-  · classical
-    simp only [vertCycle]
-    rw [sum_filter, sum_filter, hcyc]
-
-theorem SwapCyclesArith.full : SwapCyclesArith.Statement := SwapCyclesArith.proof length_two_generator_quotient
 
 theorem SwapCycles.proof (hlen2 : LocalLengthMultiplicativity.{0}) : SwapCycles.Statement := by
   intro K _ ι _ P d a a' s s' hP ha ha' hs hs' hnc

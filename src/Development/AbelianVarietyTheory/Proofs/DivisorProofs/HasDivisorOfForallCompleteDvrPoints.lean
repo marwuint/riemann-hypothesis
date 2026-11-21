@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.MinSt2
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecializesIsLocalization
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfDvdInAllCompleteDVRNormalNoetherianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfDvdInAllCompleteDVRNormalNoetherian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCdvrDominating
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.UPoinc GlobalTheory.Ex.OneGen
@@ -61,7 +62,7 @@ theorem hasDiv_of_forall_cDvr : ∀ (k Ω : Type) [CommRing k] [IsNoetherianRing
     intro b
     obtain ⟨a, s, hs, hx⟩ := IsFractionRing.div_surjective (A := M.O z) (th b ^ D / e j₀)
     have hs0 : s ≠ 0 := nonZeroDivisors.ne_zero hs
-    have hdvd : s ∣ a := GlobalTheory.T.dvd_of_dvd_in_all_completeDVR_normal_noetherian (M.O z) a s hs0 (fun V _ _ _ hV φ hφ => by
+    have hdvd : s ∣ a := _root_.GlobalTheory.DvrDiv.dvd_of_forall_cDvr (M.O z) a s hs0 (fun V _ _ _ hV φ hφ => by
       obtain ⟨emb, hemb, h1, -⟩ := key V hV φ hφ
       obtain ⟨v, hv⟩ := h1 b
       rw [← hx, map_div₀, hemb, hemb] at hv

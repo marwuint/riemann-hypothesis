@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ZerosDisc
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ZeroFreePrincipal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LogFactorialEqSumVonMangoldtMulDiv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DirichletLZerosInWindowFiniteAndPosOrder
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DirichletLFewZerosSmallDiscStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsLargeVonMangoldtLogPowerSeriesNearZeroStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LargeMeanOfLargeDerivativeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimeMeanValueCharactersTwistIntegralLeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DirichletLFewZerosSmallDisc
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsLargeVonMangoldtLogPowerSeriesNearZero
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LargeMeanOfLargeDerivative
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimeMeanValueCharactersTwistIntegralLe
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology GlobalTheory.Lin
 open scoped Classical
 
@@ -159,7 +159,7 @@ theorem mean_le : ∃ C CM : ℝ, 0 < C ∧ 0 ≤ CM ∧ ∀ (q : ℕ) [NeZero q
     (2 * q * T) ^ 2 ≤ N →
     ∑ χ : DirichletCharacter ℂ q, (∫ τ in (-T)..T, ∫ y in N..M, ‖primeSum χ N y τ‖ ^ 2 / y) ≤
       C * (Real.log M + CM) * Real.log M := by
-  obtain ⟨C, hC, H⟩ := GlobalTheory.T.primeMeanValue_characters_twist_integral_le
+  obtain ⟨C, hC, H⟩ := _root_.GlobalTheory.PrimeMeanValue.prime_mean_value
   obtain ⟨CM, hCM, HM⟩ := sum_log_div_le
   refine ⟨C, CM, hC, hCM, fun q _ T N M hT hN hNM hq => ?_⟩
   have hT' : -T ≤ T := by linarith
@@ -215,8 +215,8 @@ theorem detect : ∃ a b C C' r₀ K₀ : ℝ, 0 < a ∧ a < b ∧ 0 < C ∧ 0 <
       LFunction χ ρ = 0 → ‖ρ - (1 + τ * I)‖ ≤ r →
       Real.exp (-(C * K)) / r ^ 3 ≤ ∫ y in (Real.exp (a * K / r))..(Real.exp (b * K / r)),
         ‖primeSum χ (Real.exp (a * K / r)) y τ‖ ^ 2 / y := by
-  obtain ⟨A, C3, r3, hA, hC3, hr3, H3⟩ := GlobalTheory.T.exists_large_vonMangoldtLogPowerSeries_near_zero
-  obtain ⟨a, b, C4, r4, K0, ha, hab, hC4, hr4, H4⟩ := GlobalTheory.T.integral_prime_sum_sq_ge_of_derSeries_large A hA
+  obtain ⟨A, C3, r3, hA, hC3, hr3, H3⟩ := _root_.GlobalTheory.NearZeroDeriv.exists_large_derSeries
+  obtain ⟨a, b, C4, r4, K0, ha, hab, hC4, hr4, H4⟩ := _root_.GlobalTheory.Lin.LargeMean.large_mean_of_large_derivative A hA
   refine ⟨a, b, C4, C3, min r3 r4, K0, ha, hab, hC4, hC3, lt_min hr3 hr4, ?_⟩
   intro q _ χ τ r L K ρ h1 h2 h3 h4 h5 h6 h7 h8 h9
   obtain ⟨k, k1, k2, k3⟩ := H3 q χ τ r L K ρ h1 h2 h4 (h5.trans (min_le_left _ _)) h6 h8 h9
@@ -247,7 +247,7 @@ theorem count_param : ∃ a D C C' r₀ K₀ η : ℝ, 0 < a ∧ 0 < D ∧ 0 < C
       ∑ χ : DirichletCharacter ℂ q, (∑ᶠ ρ ∈ zerosBox χ σ T, (ord χ ρ : ℝ)) ≤
         D * (1 + r * L) * Real.exp (C * K) * (K : ℝ) ^ 2 := by
   obtain ⟨η, hη, H1⟩ := principal_height
-  obtain ⟨C2, hC2, H2⟩ := GlobalTheory.T.dirichletL_few_zeros_small_disc
+  obtain ⟨C2, hC2, H2⟩ := _root_.GlobalTheory.SmallDiscZeros.few_zeros
   obtain ⟨a, b, C4, C3, r0, K0, ha, hab, hC4, hC3, hr0, H3⟩ := detect
   obtain ⟨C5, CM, hC5, hCM, H5⟩ := mean_le
   have hb : 0 < b := ha.trans hab

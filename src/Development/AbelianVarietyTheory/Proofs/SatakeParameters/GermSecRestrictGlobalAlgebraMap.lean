@@ -63,7 +63,4 @@ def formGermI (j : ℕ) {V : X.Opens} (hV : IsAffineOpen V) (hη : genericPoint 
 theorem formGermI_ffAlg (j : ℕ) {V : X.Opens} (hV : IsAffineOpen V) (hη : genericPoint X ∈ V) :
     formGermI (inst := ffAlg s) s j hV hη rfl = formGerm s j hV hη := rfl
 
-example (j : ℕ) {V : X.Opens} (hV : IsAffineOpen V) (hη : genericPoint X ∈ V) :
-    letI := algΓ s; formGerm s j hV hη 0 = 0 := map_zero _
-
 end GlobalTheory.HodgeCoh

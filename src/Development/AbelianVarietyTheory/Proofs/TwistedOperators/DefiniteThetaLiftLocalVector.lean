@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitProjAdeleCo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitIdempotentPrimeProjectionCorrespondence
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DegreeOnePrimeReductionSplitPlaceDictionary
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitIdempotentBaseFunctionIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaFunctionSplitProductDatumIsPureTensorStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaFunctionSplitProductDatumIsPureTensor
 
 noncomputable section
 
@@ -379,7 +379,7 @@ theorem thetaVecLocal : ∀ D : D7, ThetaVecLocal D := by
       exact key w φ e he PP (Finset.mem_union_right _ h) hP
   · obtain ⟨⟨b1, b2⟩, hx⟩ := hx
     have hcs : cA D (∑ PP ∈ Pg ∪ Q, es PP) = ∑ PP ∈ Pg ∪ Q, cA D (es PP) := map_sum _ _ _
-    refine GlobalTheory.T.thetaFunction_splitProductDatum_isPureTensor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ _ (Pg ∪ Q) v (fun PP => cA D (es PP)) ha hinj _ hSB x f _
+    refine _root_.GlobalTheory.PlaceTensor.SplitProduct.thetaAt_sum_isPure D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ _ (Pg ∪ Q) v (fun PP => cA D (es PP)) ha hinj _ hSB x f _
       (fun PP h => ?_) (fun p hp => ?_) (fun y hy => ?_) (fun y hy => ?_) (hcs ▸ hf)
     · obtain ⟨φ, h1, h2⟩ := hφ PP h
       rcases Finset.mem_union.1 h with h | h

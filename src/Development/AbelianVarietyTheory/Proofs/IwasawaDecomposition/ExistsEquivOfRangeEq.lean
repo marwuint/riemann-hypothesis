@@ -17,29 +17,6 @@ section Semi
 
 variable {K : Type} [Field K] {σ : K →+* ℂ} {U V W : Type} [AddCommGroup U] [Module K U] [AddCommGroup W] [Module ℂ W]
 
-theorem exists_semi_lift [AddCommGroup V] [Module ℂ V] (e : V →ₗ[ℂ] W) (he : Function.Injective e) (g : U →ₛₗ[σ] W)
-    (hg : ∀ u, g u ∈ LinearMap.range e) : ∃ j : U →ₛₗ[σ] V, ∀ u, e (j u) = g u := by
-  choose j hj using hg
-  refine ⟨{ toFun := j, map_add' := fun x y => he ?_, map_smul' := fun a x => he ?_ }, hj⟩
-  · rw [map_add, hj, hj, hj, map_add]
-  · rw [map_smul, hj, hj, map_smulₛₗ]
-
-theorem exists_equiv_of_range_eq [AddCommGroup V] [Module K V] (f : U →ₛₗ[σ] W) (g : V →ₛₗ[σ] W)
-    (hf : Function.Injective f) (hg : Function.Injective g) (h : Set.range g = Set.range f) :
-    ∃ e : U ≃ₗ[K] V, ∀ u, g (e u) = f u := by
-  have h1 : ∀ u, ∃ v, g v = f u := fun u => by
-    have : f u ∈ Set.range g := h ▸ ⟨u, rfl⟩
-    exact this
-  choose j hj using h1
-  let jl : U →ₗ[K] V :=
-    { toFun := j
-      map_add' := fun x y => hg (by rw [map_add, hj, hj, hj, map_add])
-      map_smul' := fun a x => hg (by rw [RingHom.id_apply, map_smulₛₗ, hj, hj, map_smulₛₗ]) }
-  refine ⟨LinearEquiv.ofBijective jl ⟨fun x y hxy => hf ?_, fun v => ?_⟩, hj⟩
-  · rw [← hj, ← hj]; exact congrArg g hxy
-  · obtain ⟨u, hu⟩ : g v ∈ Set.range f := h ▸ ⟨v, rfl⟩
-    exact ⟨u, hg ((hj u).trans hu)⟩
-
 theorem semi_injective_of_basis {ι : Type} [Fintype ι] (b : Basis ι K U) (g : U →ₛₗ[σ] W)
     (h : LinearIndependent ℂ fun i => g (b i)) : Function.Injective g := by
   rw [injective_iff_map_eq_zero]
@@ -49,32 +26,6 @@ theorem semi_injective_of_basis {ι : Type} [Fintype ι] (b : Basis ι K U) (g :
   have := Fintype.linearIndependent_iff.1 h (fun i => σ (b.repr x i)) hx
   refine b.repr.injective (Finsupp.ext fun i => σ.injective ?_)
   simpa using this i
-
-theorem eq_top_of_span_image {ι : Type} [Fintype ι] (b : Basis ι K U) (g : U →ₛₗ[σ] W)
-    (h : LinearIndependent ℂ fun i => g (b i)) (N : Submodule K U)
-    (hN : ∀ u, g u ∈ Submodule.span ℂ (g '' (N : Set U))) : N = ⊤ := by
-  by_contra hne
-  obtain ⟨φ, hφ0, hφ⟩ := Submodule.exists_le_ker_of_lt_top N (lt_top_iff_ne_top.2 hne)
-  obtain ⟨ψ, hψ⟩ : ∃ ψ : W →ₗ[ℂ] ℂ, ∀ i, ψ (g (b i)) = σ (φ (b i)) := by
-    obtain ⟨ψ, hψ⟩ := ((Basis.span h).constr ℂ fun i => σ (φ (b i))).exists_extend
-    refine ⟨ψ, fun i => ?_⟩
-    have := LinearMap.congr_fun hψ (Basis.span h i)
-    rw [Basis.constr_basis, LinearMap.comp_apply, Submodule.subtype_apply, Basis.span_apply] at this
-    exact this
-  have hall : ∀ u, ψ (g u) = σ (φ u) := fun u => by
-    conv_lhs => rw [← b.sum_repr u]
-    conv_rhs => rw [← b.sum_repr u]
-    simp only [map_sum, map_smulₛₗ, hψ, RingHom.id_apply, smul_eq_mul, map_mul]
-  apply hφ0
-  ext u
-  have h1 : Submodule.span ℂ (g '' (N : Set U)) ≤ LinearMap.ker ψ := by
-    rw [Submodule.span_le]
-    rintro _ ⟨n, hn, rfl⟩
-    have : φ n = 0 := hφ hn
-    simp [hall, this]
-  have h2 : ψ (g u) = 0 := h1 (hN u)
-  rw [hall] at h2
-  simpa using h2
 
 end Semi
 
@@ -137,128 +88,7 @@ def goodForm : (Fin (B.nV ℓ) → K) →ₗ[K] B.S.Forms :=
 
 theorem goodForm_apply (u : Fin (B.nV ℓ) → K) : goodForm B ℓ u = B.S.basis.equivFun.symm ((B.vE ℓ).mulVec u) := rfl
 
-theorem mem_lvlForms_iff (f : B.S.Forms) :
-    f ∈ lvlForms B.S B.r ℓ.P ℓ.ψ ↔ B.S.basis.equivFun f ∈ B.S.lvlPart B.r ℓ.P ℓ.ψ := by
-  refine forall_congr' fun h => ?_
-  rw [← B.equivFun_act, ← map_smul, B.S.basis.equivFun.injective.eq_iff]
-
-theorem goodForm_range (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ) (f : B.S.Forms) :
-    (∃ u, goodForm B ℓ u = f) ↔ f ∈ lvlForms B.S B.r ℓ.P ℓ.ψ ∧ B.S.gaOp B.r (idemOf ℓ.X) f = f := by
-  have h1 := good_part_spec K B.S G B.r ℓ.X hX ℓ.P ℓ.ψ
-  have hid : idemOf ℓ.X * idemOf ℓ.X = idemOf ℓ.X := (idempotent_central K G ℓ.X hX).1
-  rw [mem_lvlForms_iff]
-  constructor
-  · rintro ⟨u, rfl⟩
-    have hm : (B.vE ℓ).mulVec u ∈ LinearMap.range (B.S.V0E B.r ℓ.X ℓ.P ℓ.ψ).mulVecLin := ⟨u, rfl⟩
-    rw [h1] at hm
-    obtain ⟨⟨z, hz⟩, hl⟩ := hm
-    refine ⟨by rw [goodForm_apply, LinearEquiv.apply_symm_apply]; exact hl, ?_⟩
-    apply B.S.basis.equivFun.injective
-    rw [← CSD.gaMat_mulVec_equivFun, goodForm_apply, LinearEquiv.apply_symm_apply, ← hz, Matrix.mulVecLin_apply,
-      Matrix.mulVec_mulVec, ← (group_action_matrix_hom K B.S G B.r).2, hid]
-  · rintro ⟨hl, he⟩
-    have hm : B.S.basis.equivFun f ∈ LinearMap.range (B.S.V0E B.r ℓ.X ℓ.P ℓ.ψ).mulVecLin := by
-      rw [h1]
-      exact ⟨⟨B.S.basis.equivFun f, by rw [Matrix.mulVecLin_apply, CSD.gaMat_mulVec_equivFun, he]⟩, hl⟩
-    obtain ⟨u, hu⟩ := hm
-    refine ⟨u, ?_⟩
-    rw [goodForm_apply, LinearEquiv.symm_apply_eq]
-    exact hu
-
-theorem goodForm_int (u : Fin (B.nV ℓ) → K) : goodForm B ℓ u ∈ intForms B.S ↔ u ∈ B.Mt ℓ := by
-  show _ ↔ (B.vE ℓ).mulVec u ∈ valLatF B.S.I B.S.Nab
-  rw [Formalism.L2.DIV.mem_valLatF]
-  rfl
-
-theorem goodForm_injective : Function.Injective (goodForm B ℓ) :=
-  B.S.basis.equivFun.symm.injective.comp (image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ))).1
-
-theorem csum_eq_dot (f g : B.S.Forms) :
-    B.S.csum f g = star (B.S.basis.equivFun f) ⬝ᵥ B.S.H.mulVec (B.S.basis.equivFun g) := by
-  have h := B.S.csum_sum (B.S.basis.equivFun f) (B.S.basis.equivFun g)
-  rw [CSD.I_apply, CSD.I_apply, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply] at h
-  rw [h]
-  simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]
-
 variable {B ℓ} {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s) (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ)
-
-include hv0 h hX in
-
-theorem csum_perp {Z : Submodule K B.S.Forms} (hZ : ∀ g, ∀ z ∈ Z, B.r g z ∈ Z) {z : B.S.Forms} (hz : z ∈ Z)
-    {u : Fin (B.nV ℓ) → K} (hu : (B.Pq ℓ Z).mulVec u = 0) : B.S.csum z (goodForm B ℓ u) = 0 := by
-  have hU : u ∈ B.U ℓ Z := by rw [← BlockDat.ker_Pq hv0 h hX]; exact hu
-  set a := goodAt ℓ.X ℓ.P ℓ.ψ with ha
-  have hp := good_at_spec K v0 hv0 G ℓ.X hX ℓ.P ℓ.ψ
-  have hez : B.S.gaOp B.r a z ∈ Z := by
-    unfold CSD.gaOp
-    rw [LinearMap.sum_apply]
-    exact Z.sum_mem fun t _ => Z.smul_mem _ (hZ t z hz)
-  obtain ⟨w, hw⟩ := B.exists_vE_of_fix ℓ (φ := B.S.gaOp B.r a z) (by rw [← B.gaOp_mul, hp.idem])
-  have hw0 : w ∈ B.Z0 ℓ Z := (B.mem_goodPart_iff ℓ Z w).2 (hw ▸ hez)
-  have h0 := hU w hw0
-  rw [RationalHermitianForm.hform_eq_dot] at h0
-  have hH : B.HV ℓ = (Nat.card ℓ.P : K)⁻¹ • ((B.vE ℓ)ᴴ * B.S.H * B.vE ℓ) := rfl
-  have hc : ((Nat.card ℓ.P : K)⁻¹) ≠ 0 := inv_ne_zero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')
-  rw [hH, Matrix.smul_mulVec, dotProduct_smul, smul_eq_zero, or_iff_right hc, ← Matrix.mulVec_mulVec,
-    ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec] at h0
-  have hfix := B.gaOp_fix ℓ hp.idem u
-  have hadj := group_action_matrix_adjoint K B.S G B.r h.act a
-  rw [hp.selfAdj] at hadj
-  have hw' : (B.vE ℓ).mulVec w = (B.S.gaMat B.r a).mulVec (B.S.basis.equivFun z) := by
-    rw [CSD.gaMat_mulVec_equivFun, ← hw, LinearEquiv.apply_symm_apply]
-  rw [csum_eq_dot, goodForm_apply, ← hfix, ← CSD.gaMat_mulVec_equivFun, LinearEquiv.apply_symm_apply, Matrix.mulVec_mulVec,
-    ← hadj, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, ← hw']
-  exact h0
-
-include hv0 h hX in
-
-theorem map_goodForm {Z : Submodule K B.S.Forms} (hZ : ∀ g, ∀ z ∈ Z, B.r g z ∈ Z) {σ : K →+* ℂ} {H E : Type}
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] [NormedAddCommGroup E] [InnerProductSpace ℂ E]
-    [FiniteDimensional ℂ E] (j : B.S.Forms →ₛₗ[σ] H) (hj : ∀ f g, ⟪j f, j g⟫_ℂ = σ (B.S.csum f g)) (Θ : H →ₗ[ℂ] E)
-    (hΘ : Submodule.span ℂ (j '' (Z : Set B.S.Forms)) = LinearMap.range (LinearMap.adjoint Θ)) (u : Fin (B.nV ℓ) → K) :
-    Θ (j (goodForm B ℓ u)) = Θ (j (B.toF ℓ Z ((B.Pq ℓ Z).mulVec u))) := by
-  set u' := u - (B.zE ℓ Z).mulVec ((B.Pq ℓ Z).mulVec u) with hu'
-  have hu0 : (B.Pq ℓ Z).mulVec u' = 0 := by
-    rw [hu', Matrix.mulVec_sub, Matrix.mulVec_mulVec _ (B.Pq ℓ Z), (BlockDat.Pq_orth hv0 h hX).1, Matrix.one_mulVec, sub_self]
-  have h0 : Θ (j (goodForm B ℓ u')) = 0 := by
-    have hm : LinearMap.adjoint Θ (Θ (j (goodForm B ℓ u'))) ∈ Submodule.span ℂ (j '' (Z : Set B.S.Forms)) := by
-      rw [hΘ]; exact ⟨_, rfl⟩
-    have hle : Submodule.span ℂ (j '' (Z : Set B.S.Forms)) ≤ (ℂ ∙ j (goodForm B ℓ u'))ᗮ := by
-      rw [Submodule.span_le]
-      rintro _ ⟨z, hz, rfl⟩
-      rw [SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_left, hj, csum_perp hv0 h hX hZ hz hu0, map_zero]
-    have := Submodule.mem_orthogonal_singleton_iff_inner_left.1 (hle hm)
-    rw [LinearMap.adjoint_inner_left] at this
-    exact inner_self_eq_zero.1 this
-  rw [hu', map_sub, map_sub, map_sub, sub_eq_zero] at h0
-  exact h0
-
-include hv0 h hX in
-
-theorem normAt_goodForm (v : InfinitePlace K) (u : Fin (B.nV ℓ) → K) :
-    Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K _) (stdFrame (B.HV ℓ)) v u ^ 2 =
-      (Nat.card ℓ.P : ℝ)⁻¹ * Formalism.HermitianLatticesTheory.normAt B.S.basis (stdFrame B.S.H) v (goodForm B ℓ u) ^ 2 := by
-  have h1 : Formalism.HermitianLatticesTheory.normAt B.S.basis (stdFrame B.S.H) v (goodForm B ℓ u) =
-      Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K _) (stdFrame B.S.H) v ((B.vE ℓ).mulVec u) := by
-    unfold Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt
-    congr 2
-    funext i
-    rw [goodForm_apply, ← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
-    rfl
-  have hH : B.HV ℓ = (Nat.card ℓ.P : K)⁻¹ • ((B.vE ℓ)ᴴ * B.S.H * B.vE ℓ) := rfl
-  have hE : ((B.vE ℓ)ᴴ).map v.embedding = ((B.vE ℓ).map v.embedding)ᴴ :=
-    map_conjTranspose' _ _ fun i a => isCMSub_cmMax' K _ _ (BlockDat.vE_rat hv0 h hX i a)
-  have hm : (B.HV ℓ).map v.embedding =
-      (((Nat.card ℓ.P : ℝ)⁻¹ : ℝ) : ℂ) • (((B.vE ℓ).map v.embedding)ᴴ * B.S.H.map v.embedding * (B.vE ℓ).map v.embedding) := by
-    rw [← hE, ← Matrix.map_mul, ← Matrix.map_mul, hH]
-    ext i k
-    simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀, map_natCast]
-    push_cast
-    rfl
-  rw [h1, normAt_sq_eq_majAt, normAt_sq_eq_majAt, Formalism.L2.DIV.majAt_eq, Formalism.L2.DIV.majAt_eq, stdFrame, stdFrame,
-    (frameOfSpec _ _ (BlockDat.HV_pos hv0 h hX v)).2, (frameOfSpec _ _ (h.hpos v)).2, hm, emb_mulVec, Matrix.smul_mulVec,
-    dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
-    Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]
 
 end Block
 

@@ -64,10 +64,6 @@ theorem stab_eq_stabilizer (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ :
   simp only [stab, Subgroup.mem_inf, Subgroup.mem_comap, LeftCosets.mem_map_conj, Subgroup.mem_prod,
     MonoidHom.prod_apply, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]
 
-def cosetTerm (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (θ : G₂ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (δ : G₂)
-    (f₁ : G₁ → ℂ) (φ : G₂ → ℂ) (y : LeftCosets (ι₁.prod ι₂) (K₁.prod K₂)) (γ : Γ) : ℂ :=
-  term ι₁ ι₂ θ δ f₁ φ (LeftCosets.rep _ _ y) γ
-
 end Terms
 
 end GlobalTheory.LKCount

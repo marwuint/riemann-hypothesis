@@ -25,10 +25,6 @@ theorem ra_tpow_single {d : ℕ} (t : Fin d → Rˣ) (k : Fin d) (z : ℤ) : tpo
   rw [Finset.prod_eq_single k (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]
   simp
 
-theorem ra_unit_pow_eq {d : ℕ} (t : Fin d → Rˣ) (k : Fin d) (N : ℕ) :
-    (t k : R) ^ N = tpow t (Pi.single k (N : ℤ)) := by
-  rw [ra_tpow_single, zpow_natCast, Units.val_pow_eq_pow_val]
-
 theorem ra_expS_add {d : ℕ} (S : Finset (Fin (d + 1))) (m m' : Fin d → ℤ) (hm : m ∈ expS S) (hm' : m' ∈ expS S) :
     m + m' ∈ expS S := by
   refine ⟨fun k hk => ?_, fun h0 => ?_⟩

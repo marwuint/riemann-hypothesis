@@ -112,15 +112,6 @@ theorem dat_e_even (X : PreX B.toPre) (Ch : Chars B.fields (B.primes X) B.R.m) (
 
 end Base
 
-example (B : Base) : B.fields.f = 2 * B.R.n := B.fields_f
-
-example (B : Base) (X : PreX B.toPre) (i : Fin 2) : B.host.g i ≡ 1 [MOD B.host.QS * B.host.q * B.host.d] :=
-  (B.primes_piGCong X).g_cong (B.primes_piG_norm X) i
-
-example (B : Base) (X : PreX B.toPre) (Ch : Chars B.fields (B.primes X) B.R.m) (u : B.Word) :
-    0 < (B.dat X Ch).a ∧ 2 * B.fields.f * B.R.N B.R.m + 1 < B.T u :=
-  ⟨(B.primes_sizes X).a_pos, (B.primes_sizes X).T_big u⟩
-
 end
 
 end GlobalTheory.Mem

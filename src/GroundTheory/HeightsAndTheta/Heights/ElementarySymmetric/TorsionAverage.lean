@@ -1,6 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ThetaKeyFormula.ZeroSetFinite
-import GroundTheory.HeightsAndTheta.Heights.ThetaKeyFormula.RigSymFormTauIIsBasisOf
+import GroundTheory.HeightsAndTheta.Heights.ThetaKeyFormula.RigSymFormTauINontrivial
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.KeyFormula
@@ -28,13 +29,6 @@ def torsAvg (N m : ℕ) (F : P.Fn) : P.Fn := fun z =>
 end RigSymForm
 
 open RigSymForm
-
-def PullbackMulMem.Statement : Prop :=
-  ∀ (P : RigSymForm ℂ) (m N : ℕ) (f : P.Fn), f ∈ P.S N → (fun z => f ((m : ℂ) • z)) ∈ P.S (N * m ^ 2)
-
-def TorsAvgDescends.Statement : Prop :=
-  ∀ (P : RigSymForm ℂ) (m : ℕ), 1 ≤ m → ∀ (N : ℕ) (F : P.Fn), F ∈ P.S (N * m ^ 2) →
-    ∃ f ∈ P.S N, ∀ z, P.torsAvg N m F z = f ((m : ℂ) • z)
 
 end
 

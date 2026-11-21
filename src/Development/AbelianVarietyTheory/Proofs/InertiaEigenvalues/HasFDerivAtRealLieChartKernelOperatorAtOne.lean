@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumLieCoord
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormFderivChartLeOfBoundedLieDerivativesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormFderivChartLeOfBoundedLieDerivatives
 
 noncomputable section
 
@@ -166,6 +166,6 @@ theorem hasFDerivAt_chart_kerOp : ∀ (E : Type) [Field E] [NumberField E] [IsTo
       HasFDerivAt (chart (kerOp ν k γ φ.1) g)
         (∫ x, k x • (fderiv ℝ (chart φ.1 g) (toL (γ x).val)).comp (rmul (toL (γ x).val)) ∂ν) (oneL E a) :=
   fun E _ _ _ a _ _ ν k γ hk φ hφ hL g =>
-    KerDeriv.hasFDerivAt_chart_kerOp_of_bound ν k γ hk φ hφ (GlobalTheory.T.norm_fderiv_chart_le_of_bounded_lieDerivatives E a φ hL) g
+    KerDeriv.hasFDerivAt_chart_kerOp_of_bound ν k γ hk φ hφ (_root_.GlobalTheory.JSW.norm_fderiv_chart_le E a φ hL) g
 
 end GlobalTheory.JSW

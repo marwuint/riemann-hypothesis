@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MayerVietorisSectionsSplitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MayerVietorisSectionsSplit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalFunctionMapsOfCartierTwistSectionsStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -26,7 +26,7 @@ theorem ratsec_split_of_H1 : ∀ (Y : Scheme.{0}) [IsIntegral Y] (D : CartierDiv
   · by_cases g2 : genericPoint Y ∈ W₂
     · have g12 : genericPoint Y ∈ W₁ ⊓ W₂ := ⟨g1, g2⟩
       obtain ⟨t, ht⟩ := hsurj (W₁ ⊓ W₂) f g12 hf
-      obtain ⟨a, b, hab⟩ := GlobalTheory.T.mayer_vietoris_sections_split Y _ W₁ W₂ hH t
+      obtain ⟨a, b, hab⟩ := _root_.GlobalTheory.TwoOpens.sections_inter_eq_sub_of_subsingleton_cohOn Y _ W₁ W₂ hH t
       refine ⟨ρ W₁ a, ρ W₂ b, ?_, fun y hy => hreg W₁ a y hy, fun y hy => hreg W₂ b y hy⟩
       rw [← ht, hab, map_sub, hres W₂ (W₁ ⊓ W₂) inf_le_right b g12,
         hres W₁ (W₁ ⊓ W₂) inf_le_left a g12]

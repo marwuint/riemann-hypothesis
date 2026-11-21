@@ -138,6 +138,4 @@ end GlobalTheory.DetRelCompare
 
 namespace GlobalTheory.DetRelCompare
 
-open GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference
-
 end GlobalTheory.DetRelCompare

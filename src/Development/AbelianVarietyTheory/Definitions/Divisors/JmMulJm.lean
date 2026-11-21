@@ -30,27 +30,6 @@ def UJfam (ε : T → Fin n → Bool) : Subgroup (MatT T n)ˣ where
           simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
       _ = Jm (ε τ) := by rw [h1]; simp
 
-def uJfam (ε : T → Fin n → Bool) : Submodule ℝ (MatT T n) where
-  carrier := {X | ∀ τ, (X τ)ᴴ * Jm (ε τ) + Jm (ε τ) * X τ = 0}
-  add_mem' {X Y} hX hY τ := by
-    simp only [Pi.add_apply, Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]
-    calc (X τ)ᴴ * Jm (ε τ) + (Y τ)ᴴ * Jm (ε τ) + (Jm (ε τ) * X τ + Jm (ε τ) * Y τ)
-        = ((X τ)ᴴ * Jm (ε τ) + Jm (ε τ) * X τ) + ((Y τ)ᴴ * Jm (ε τ) + Jm (ε τ) * Y τ) := by abel
-      _ = 0 := by rw [hX τ, hY τ, add_zero]
-  zero_mem' τ := by simp
-  smul_mem' c X hX τ := by
-    have h : ((c • X) τ) = (c : ℂ) • X τ := by ext; simp
-    rw [h, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul]
-    have hs : star (c : ℂ) = (c : ℂ) := Complex.conj_ofReal c
-    rw [hs, ← smul_add]
-    simp [hX τ]
-
-def reU (ε : T → Fin n → Bool) (τ : T) (a b : Fin n) : MatT T n :=
-  fun σ => if σ = τ then (1 / 2 : ℂ) • (Matrix.single a b 1 - Jm (ε τ) * (Matrix.single a b 1)ᴴ * Jm (ε τ)) else 0
-
-def imU (ε : T → Fin n → Bool) (τ : T) (a b : Fin n) : MatT T n :=
-  fun σ => if σ = τ then (-Complex.I / 2) • (Matrix.single a b 1 + Jm (ε τ) * (Matrix.single a b 1)ᴴ * Jm (ε τ)) else 0
-
 end GlobalTheory.Kg
 
 end

@@ -88,41 +88,4 @@ def IsBasisOf {t : Spec (CommRingCat.of k) ⟶ S} (W : Set (Lie G t)) {n : ℕ} 
 def HasEigenDim (ρ : OAct O G) (t : Spec (CommRingCat.of k) ⟶ S) (τ : O →+* k) (n : ℕ) : Prop :=
   ∃ v : Fin n → Lie G t, IsBasisOf (eigenspace ρ t τ) v
 
-def HasCharpoly (ρ : OAct O G) (t : Spec (CommRingCat.of k) ⟶ S) (P : O → k[X]) : Prop :=
-  ∃ (n : ℕ) (v : Fin n → Lie G t), IsBasisOf Set.univ v ∧
-    ∀ a : O, ∃ A : Matrix (Fin n) (Fin n) k,
-      (∀ j, actLie ρ t a (v j) = comb v fun i => A i j) ∧ A.charpoly = P a
-
-def IsRootPair (s : O) (δ : k) : Prop :=
-  ∃ d : ℕ, 0 < d ∧ s ^ 2 = -(d : O) ∧ δ ^ 2 = -(d : k)
-
-def HasMultiplicities [IsAlgClosed k] [CharZero k] (ρ : OAct O G) (t : Spec (CommRingCat.of k) ⟶ S)
-    (s : O) (δ : k) (p q : ℕ) : Prop :=
-  IsRootPair s δ ∧ ∀ τ : O →+* k, (τ s = δ → HasEigenDim ρ t τ p) ∧ (τ s = -δ → HasEigenDim ρ t τ q)
-
-def DetCond [IsAlgClosed k] [CharZero k] (ρ : OAct O G) (t : Spec (CommRingCat.of k) ⟶ S)
-    (s : O) (δ : k) (p q : ℕ) : Prop :=
-  IsRootPair s δ ∧ ∃ Ψ Ψ' : Finset (O →+* k),
-    (∀ τ, τ ∈ Ψ ↔ τ s = δ) ∧ (∀ τ, τ ∈ Ψ' ↔ τ s = -δ) ∧
-      HasCharpoly ρ t fun a => (∏ τ ∈ Ψ, (X - C (τ a)) ^ p) * ∏ τ ∈ Ψ', (X - C (τ a)) ^ q
-
-lemma IsRootPair.side [CharZero k] {s : O} {δ : k} (h : IsRootPair s δ) (τ : O →+* k) :
-    Xor' (τ s = δ) (τ s = -δ) := by
-  obtain ⟨d, hd, hs, hδ⟩ := h
-  have h0 : δ ≠ 0 := by
-    rintro rfl
-    have : (d : k) = 0 := by simpa using hδ
-    exact hd.ne' (by exact_mod_cast this)
-  have h1 : (τ s) ^ 2 = δ ^ 2 := by rw [← map_pow, hs, hδ]; simp
-  have h2 : δ ≠ -δ := fun h => h0 (by linear_combination h / 2)
-  rcases sq_eq_sq_iff_eq_or_eq_neg.mp h1 with h | h
-  · exact Or.inl ⟨h, fun h' => h2 (h.symm.trans h')⟩
-  · exact Or.inr ⟨h, fun h' => h2 (h'.symm.trans h)⟩
-
-lemma DetCond.swap [IsAlgClosed k] [CharZero k] {ρ : OAct O G} {t : Spec (CommRingCat.of k) ⟶ S}
-    {s : O} {δ : k} {p q : ℕ} (h : DetCond ρ t s δ p q) : DetCond ρ t s (-δ) q p := by
-  obtain ⟨⟨d, hd, hs, hδ⟩, Ψ, Ψ', h1, h2, h3⟩ := h
-  refine ⟨⟨d, hd, hs, by simpa using hδ⟩, Ψ', Ψ, h2, by simpa using h1, ?_⟩
-  simpa only [mul_comm] using h3
-
 end GlobalTheory.IndefiniteRowSideFullHecke.LieCharpolyRootPairs

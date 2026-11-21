@@ -246,12 +246,6 @@ theorem isQuasicoherent_iff_forall_affine :
     X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
   exact ⟨U, hU, hx, h U hU⟩
 
-theorem isQuasicoherent_iff_affineCover {ι : Type*} (𝒰 : ι → X.Opens) (hcov : IsOpenCover 𝒰)
-    (haff : ∀ i, IsAffineOpen (𝒰 i)) :
-    F.IsQuasicoherent ↔ ∀ i (f : Γ(X, 𝒰 i)), IsLocalizedModule.Away f (resBasicOpen F f) :=
-  ⟨fun _ i f ↦ isLocalizedModule_resBasicOpen F (haff i) f,
-    isQuasicoherent_of_affineCover F 𝒰 hcov haff⟩
-
 set_option backward.isDefEq.respectTransparency false in
 
 theorem isQuasicoherent_of_restrict {ι : Type*} {Y : ι → Scheme.{u}} (g : ∀ i, Y i ⟶ X)
@@ -299,25 +293,6 @@ theorem isLocalizedModule_resLinear (hU : IsAffineOpen U) (f : Γ(X, U)) (h : V 
     IsLocalizedModule.Away f (resLinear F h) := by
   subst hV
   exact isLocalizedModule_resBasicOpen F hU f
-
-theorem isLocalizedModule_of_ringHom (hU : IsAffineOpen U) {A : Type*} [CommRing A]
-    (φ : A →+* Γ(X, U)) (a : A) (h : V ≤ U) (hV : V = X.basicOpen (φ a))
-    [Module A Γ(F, U)] [Module A Γ(F, V)]
-    (hsU : ∀ (r : A) (s : Γ(F, U)), r • s = φ r • s)
-    (hsV : ∀ (r : A) (s : Γ(F, V)), r • s = X.presheaf.map (homOfLE h).op (φ r) • s)
-    (l : Γ(F, U) →ₗ[A] Γ(F, V)) (hl : ∀ s, l s = F.presheaf.map (homOfLE h).op s) :
-    IsLocalizedModule.Away a l := by
-  refine IsLocalizedModule.Away.mk_of_addCommGroup ?_ (fun s ↦ ?_) (fun t ht ↦ ?_)
-  · have := (isUnit_res_of_le_basicOpen (φ a) h hV.le).map
-      (algebraMap Γ(X, V) (Module.End Γ(X, V) Γ(F, V)))
-    rw [Module.End.isUnit_iff] at this ⊢
-    convert this using 1
-    ext s
-    exact hsV a s
-  · obtain ⟨n, t, ht⟩ := exists_pow_smul_eq_res F hU (φ a) h hV s
-    exact ⟨n, t, by rw [hsV, hl, map_pow, map_pow, ht]⟩
-  · obtain ⟨n, hn⟩ := exists_pow_smul_eq_zero F hU (φ a) h hV t (by rw [← hl, ht])
-    exact ⟨n, by rw [hsU, map_pow, hn]⟩
 
 end Elementwise
 
@@ -395,31 +370,6 @@ theorem isBaseChange_resLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (hV : I
     (fun b ↦ Γ(F, X.basicOpen b.1)) (fun b ↦ resBasicOpen F b.1)
   exact IsBaseChange.of_equiv (LinearEquiv.ofBijective _ hbij) fun t ↦ by simp
 
-theorem isBaseChange_of_eq_res [F.IsQuasicoherent] (hU : IsAffineOpen U) (hV : IsAffineOpen V)
-    (h : V ≤ U) [alg : Algebra Γ(X, U) Γ(X, V)] [mod : Module Γ(X, U) Γ(F, V)]
-    [IsScalarTower Γ(X, U) Γ(X, V) Γ(F, V)]
-    (halg : ∀ r, algebraMap Γ(X, U) Γ(X, V) r = X.presheaf.map (homOfLE h).op r)
-    (l : Γ(F, U) →ₗ[Γ(X, U)] Γ(F, V)) (hl : ∀ s, l s = F.presheaf.map (homOfLE h).op s) :
-    IsBaseChange Γ(X, V) l := by
-  obtain rfl : mod = resModule F h := Module.ext' _ _ fun r s ↦ by
-    rw [resModule_smul, ← halg, algebraMap_smul]
-  obtain rfl : alg = resAlgebra h := Algebra.algebra_ext _ _ halg
-  letI := resModule F h
-  obtain rfl : l = resLinear F h := LinearMap.ext hl
-  exact isBaseChange_resLinear F hU hV h
-
-theorem isQuasicoherent_iff_isBaseChange :
-    F.IsQuasicoherent ↔ ∀ (U V : X.Opens), IsAffineOpen U → IsAffineOpen V → ∀ h : V ≤ U,
-      letI := resAlgebra h
-      letI := resModule F h
-      haveI := res_isScalarTower F h
-      IsBaseChange Γ(X, V) (resLinear F h) := by
-  refine ⟨fun _ _ _ hU hV h ↦ isBaseChange_resLinear F hU hV h, fun H ↦ ?_⟩
-  refine (isQuasicoherent_iff_forall_affine F).mpr fun U hU f ↦ ?_
-  haveI := hU.isLocalization_basicOpen f
-  exact (isLocalizedModule_iff_isBaseChange (.powers f) Γ(X, X.basicOpen f) _).mpr
-    (H U _ hU (hU.basicOpen f) (X.basicOpen_le f))
-
 section Stalk
 
 instance stalkModule (x : X) : Module (X.presheaf.stalk x) (F.presheaf.stalk x :) :=
@@ -491,34 +441,5 @@ theorem isBaseChange_germLinear [F.IsQuasicoherent] (hU : IsAffineOpen U) (x : U
     (isLocalizedModule_germLinear F hU x)
 
 end Stalk
-
-theorem isQuasicoherent_tfae :
-    List.TFAE [F.IsQuasicoherent,
-      ∀ U : X.Opens, IsAffineOpen U →
-        ∀ f : Γ(X, U), IsLocalizedModule.Away f (resBasicOpen F f),
-      ∃ (ι : Type u) (𝒰 : ι → X.Opens), IsOpenCover 𝒰 ∧ (∀ i, IsAffineOpen (𝒰 i)) ∧
-        ∀ i (f : Γ(X, 𝒰 i)), IsLocalizedModule.Away f (resBasicOpen F f)] := by
-  tfae_have 1 ↔ 2 := isQuasicoherent_iff_forall_affine F
-  tfae_have 2 → 3 := fun h ↦
-    ⟨X.affineOpens, fun i ↦ i.1, iSup_affineOpens_eq_top X, fun i ↦ i.2, fun i ↦ h i.1 i.2⟩
-  tfae_have 3 → 1 := fun ⟨_, 𝒰, hcov, haff, h⟩ ↦ isQuasicoherent_of_affineCover F 𝒰 hcov haff h
-  tfae_finish
-
-theorem quasicoherent_local :
-    (F.IsQuasicoherent ↔ ∀ U : X.Opens, IsAffineOpen U →
-      ∀ f : Γ(X, U), IsLocalizedModule.Away f (resBasicOpen F f)) ∧
-    (∀ (ι : Type u) (𝒰 : ι → X.Opens), IsOpenCover 𝒰 → (∀ i, IsAffineOpen (𝒰 i)) →
-      (F.IsQuasicoherent ↔
-        ∀ i (f : Γ(X, 𝒰 i)), IsLocalizedModule.Away f (resBasicOpen F f))) ∧
-    (F.IsQuasicoherent → ∀ (U V : X.Opens), IsAffineOpen U → IsAffineOpen V → ∀ h : V ≤ U,
-      letI := resAlgebra h
-      letI := resModule F h
-      haveI := res_isScalarTower F h
-      IsBaseChange Γ(X, V) (resLinear F h)) ∧
-    (F.IsQuasicoherent → ∀ (U : X.Opens) (hU : IsAffineOpen U) (x : U),
-      IsLocalizedModule (hU.primeIdealOf x).asIdeal.primeCompl (germLinear F x)) :=
-  ⟨isQuasicoherent_iff_forall_affine F, fun _ ↦ isQuasicoherent_iff_affineCover F,
-    fun _ _ _ hU hV h ↦ isBaseChange_resLinear F hU hV h,
-    fun _ _ hU x ↦ isLocalizedModule_germLinear F hU x⟩
 
 end GlobalTheory.QCoh

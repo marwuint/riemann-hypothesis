@@ -93,15 +93,6 @@ open Classical in
 def rN : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)) :=
   Function.update r π (splitRep (t := D.R.t) (ρ π) (D.nd.chi i))
 
-def AdmR : Prop :=
-  TruncatedSeriesCountingIdentities.admG1 i r ∧ TruncatedSeriesCountingIdentities.admG2 i r ρ π ∧ TruncatedSeriesCountingIdentities.admG3 i r ρ π ∧ TruncatedSeriesCountingIdentities.admG4 i r ∧ TruncatedSeriesCountingIdentities.admG5 i r ∧ TruncatedSeriesCountingIdentities.TameGeneratorConditions i ∧
-    TruncatedSeriesCountingIdentities.admG6 i r ∧ TruncatedSeriesCountingIdentities.admBK i ∧ LargeLevelLemmas.BlochKatoAnnihilators i ∧ TruncatedSeriesCountingIdentities.FamilyContinuous i r ∧ TruncatedSeriesCountingIdentities.admSS i r ∧ TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π ∧
-    LargeLevelLemmas.CyclotomicInertiaHypothesis i ∧ TruncatedSeriesCountingIdentities.LocalCoefficientCompatibility i ∧ TruncatedSeriesCountingIdentities.CyclotomicCompletionAdmissible i ∧ TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i ∧ TruncatedSeriesCountingIdentities.admH2 i ∧ LargeLevelLemmas.tateH1FinitenessAtPlacesOver i ∧ TruncatedSeriesCountingIdentities.UnramifiedClassFieldBound i
-
-theorem admitted_items_of_adm (h : LargeLevelLemmas.admitted i r ρ π) : AdmR i r ρ π := by
-  obtain ⟨-, -, -, -, g1, g2, g3, g4, -, g5, g5x, g6, bk, bka, ct, ss, dcm, ep, tie, sh, fo, h2, fin, cft⟩ := h
-  exact ⟨g1, g2, g3, g4, g5, g5x, g6, bk, bka, ct, ss, dcm, ep, tie, sh, fo, h2, fin, cft⟩
-
 def RhoCont : Prop := Continuous (fun g => rhoO D.nd i ρ π g)
 
 end Rec
@@ -297,15 +288,6 @@ theorem admG1_rN (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition
   rw [e]
   exact h g k
 
-theorem admG3_rN_of_absIrrDistinct (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (h : TruncatedSeriesCountingIdentities.admG3 i r ρ π)
-    (habs : ∀ x, AbsIrrDistinct (repK D.nd i (rN i r ρ π) x)) : TruncatedSeriesCountingIdentities.admG3 i (rN i r ρ π) ρ π := by
-  obtain ⟨_, h2, h3⟩ := h
-  refine ⟨habs, fun x g => ?_, h3⟩
-  rw [← h2 x g]
-  exact (Matrix.charpoly_map (rO D.nd i (rN i r ρ π) x g) (IsLocalRing.residue (D.nd.O i))).trans
-    ((congrArg (Polynomial.map (IsLocalRing.residue (D.nd.O i))) (charpoly_rN i r ρ π hd x g)).trans
-      (Matrix.charpoly_map (rO D.nd i r x g) (IsLocalRing.residue (D.nd.O i))).symm)
-
 theorem admG4_rN (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (h : TruncatedSeriesCountingIdentities.admG4 i r) : TruncatedSeriesCountingIdentities.admG4 i (rN i r ρ π) := by
   intro x v h1 h2 h3 g hg
   have hr := h x v h1 h2 h3 g hg
@@ -329,12 +311,6 @@ theorem admG4_rN (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition
 theorem admG6_rN (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (h : TruncatedSeriesCountingIdentities.admG6 i r) : TruncatedSeriesCountingIdentities.admG6 i (rN i r ρ π) := by
   intro x hx
   exact h x ((conjK i r ρ π hd x).eigen (fun g => toK D.nd i ((chiU D.nd i 1 g : (D.nd.O i)ˣ) : D.nd.O i)) hx)
-
-theorem semisimple_normalized (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (h : TruncatedSeriesCountingIdentities.admSS i r) : TruncatedSeriesCountingIdentities.admSS i (rN i r ρ π) := by
-  intro x
-  obtain ⟨e, he⟩ := exists_equiv_of_conj (M := mapM (toK D.nd i) (rO D.nd i r x))
-    (M' := mapM (toK D.nd i) (rO D.nd i (rN i r ρ π) x)) (conjK i r ρ π hd x)
-  exact isSS_congr e he (h x)
 
 theorem eG_splitMat {K : Type} [CommRing K] {r t : ℕ} (A : Matrix (Fin r) (Fin r) K) (d : Fin t → K)
     (u : Fin (r + t) → K) :
@@ -430,19 +406,6 @@ theorem admG2_rN (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition
     exact g3 τ x a
   · rw [← (jd _ (ht x)).2.2]
     exact g5 τ x
-
-theorem trivial_bound_normalized (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (cB : ℕ) (h : TruncatedSeriesCountingIdentities.admTB i r π cB) :
-    TruncatedSeriesCountingIdentities.admTB i (rN i r ρ π) π cB := by
-  intro w hw C hC
-  have ht : IsConjM ⇑(TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r π)) ⇑(TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i (rN i r ρ π) π)) :=
-    conj_locC i C (conj_twistM _ (conjK i r ρ π hd π) _)
-  have hset : (fun τ => {a | IsJumpV (Br.PD D.loc D.nbr i w hw)
-      (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i (rN i r ρ π) π))) τ a}) =
-      (fun τ => {a | IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r π))) τ a}) :=
-    funext fun τ => Set.ext fun a => ((jd _ ht).2.2 τ a).symm
-  have := h w hw C hC
-  rw [← hset] at this
-  exact this
 
 theorem row_normalized (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (dc : TruncatedSeriesCountingIdentities.Decl D i)
     (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ) (h : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ π dc lenRow) :
@@ -597,39 +560,5 @@ theorem admG5_rN (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition
       exact h0
 
 end G5rec
-
-section Final
-
-variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-  (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
-
-theorem abs_irreducible_normalized (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (h : ∀ x, AbsIrrDistinct (repK D.nd i r x)) (x : D.nd.X i) :
-    AbsIrrDistinct (repK D.nd i (rN i r ρ π) x) := by
-  obtain ⟨e, he⟩ := exists_equiv_of_conj (M := mapM (toK D.nd i) (rO D.nd i r x))
-    (M' := mapM (toK D.nd i) (rO D.nd i (rN i r ρ π) x)) (conjK i r ρ π hd x)
-  exact absIrrDistinct_congr e he (h x)
-
-theorem admitted_items_normalized (hRho : RhoCont i ρ π) (hA : AdmR i r ρ π) : AdmR i (rN i r ρ π) ρ π := by
-  obtain ⟨g1, g2, g3, g4, g5, g5x, g6, bk, bka, ct, ss, dcm, ep, tie, sh, fo, h2, fin, cft⟩ := hA
-  exact ⟨admG1_rN i r ρ π dcm g1, admG2_rN i r ρ π dcm g2, admG3_rN_of_absIrrDistinct i r ρ π dcm g3 (abs_irreducible_normalized i r ρ π dcm g3.1),
-    admG4_rN i r ρ π dcm g4, admG5_rN i r ρ π dcm g5, g5x, admG6_rN i r ρ π dcm g6, bk, bka,
-    continuity_normalized i r ρ π hRho ct, semisimple_normalized i r ρ π dcm ss, decomposes_normalized i r ρ π, ep, tie, sh, fo, h2, fin, cft⟩
-
-theorem globalIndexTheoremPlaces_of_rN (dc : TruncatedSeriesCountingIdentities.Decl D i) (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
-    (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ) (hRho : RhoCont i ρ π)
-    (H : AdmR i (rN i r ρ π) ρ π → LargeLevelLemmas.GlobalIndexTheoremPlaces i (rN i r ρ π) ρ π dc lenRow e' cB)
-    (hA : AdmR i r ρ π) : LargeLevelLemmas.GlobalIndexTheoremPlaces i r ρ π dc lenRow e' cB := by
-  have dcm : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π := hA.2.2.2.2.2.2.2.2.2.2.2.1
-  intro hR hL hT
-  exact H (admitted_items_normalized i r ρ π hRho hA)
-    (row_normalized i r ρ π dcm dc lenRow hR) (lift_normalized i r ρ π dcm dc e' hL) (trivial_bound_normalized i r ρ π dcm cB hT)
-
-theorem globalIndexTheoremPlaces_of_rN_adm (dc : TruncatedSeriesCountingIdentities.Decl D i) (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
-    (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ) (hRho : RhoCont i ρ π)
-    (H : AdmR i (rN i r ρ π) ρ π → LargeLevelLemmas.GlobalIndexTheoremPlaces i (rN i r ρ π) ρ π dc lenRow e' cB)
-    (hA : LargeLevelLemmas.admitted i r ρ π) : LargeLevelLemmas.GlobalIndexTheoremPlaces i r ρ π dc lenRow e' cB :=
-  globalIndexTheoremPlaces_of_rN i r ρ π dc lenRow e' cB hRho H (admitted_items_of_adm i r ρ π hA)
-
-end Final
 
 end Formalism.MainNotions.N.K.Norm

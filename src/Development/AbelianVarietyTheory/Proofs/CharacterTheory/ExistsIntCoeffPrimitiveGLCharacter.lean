@@ -2,13 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldRestrictClassFunctionOne
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldRestrictClassFunctionOneStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.PrimitiveClassFunctionExpansionRootSumsStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.GeneralLinearFunctionExtendZeroEndPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharpolyMemVirtualCharactersGLStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharacterInnerEqIntMulCardStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharacterInnerEqIntMulCard
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseOneProdIcoStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow
 
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
@@ -22,13 +21,13 @@ theorem exists_int_coeff_of_isPrimitive (F : Type) [Field F] [Finite F] (θ : Al
       (d : ℂ) * χ 1 = (∑ k ∈ Finset.range (Nat.card F ^ d - 1), (a k : ℂ)) *
         ∏ i ∈ Finset.Ico 1 d, (1 - (Nat.card F : ℂ) ^ i) := by
   classical
-  obtain ⟨-, hconj, -⟩ := GlobalTheory.T.isCharacterOverSubfield_restrict_classFunction_one ℂ ℂ _ χ hχ
+  obtain ⟨-, hconj, -⟩ := _root_.GlobalTheory.isChar_restrict_conj_one ℂ ℂ _ χ hχ
   obtain ⟨hval, -, hip, hcls⟩ := GlobalTheory.T.generalLinearFunctionExtendZeroEnd_properties F d χ
   have hrank : Module.finrank F (Fin d → F) = d := Module.finrank_fin_fun F
   have hint : ∀ k : ℕ, ∃ m : ℤ, ipGL (extZero χ)
       (fun g : Module.End F (Fin d → F) => rootSum θ k (LinearMap.charpoly g)) = m * glCard F d := by
     intro k
-    obtain ⟨m, hm⟩ := GlobalTheory.T.virtualCharacter_inner_eq_int_mul_card (GL (Fin d) F) χ
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.BI.finsum_mul_star_virt_int (GL (Fin d) F) χ
       (fun x : GL (Fin d) F => rootSum θ k (Matrix.charpoly (x : Matrix (Fin d) (Fin d) F)))
       (AddSubgroup.subset_closure hχ) (GlobalTheory.T.rootPowerSum_charpoly_mem_virtualCharacters_GL F θ hθ d k)
     refine ⟨m, ?_⟩
@@ -43,7 +42,7 @@ theorem exists_int_coeff_of_isPrimitive (F : Type) [Field F] [Finite F] (θ : Al
   have hpsi : ∀ k : ℕ, psi (rootSum θ k) (Fin d → F) 1 =
       ∏ i ∈ Finset.Ico 1 d, (1 - (Nat.card F : ℂ) ^ i) := by
     intro k
-    have h := GlobalTheory.T.invariantSubspaceMobiusInverse_one_prod_Ico F (Fin d → F) (rootSum θ k) (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow F θ k).2 hdpos
+    have h := GlobalTheory.T.invariantSubspaceMobiusInverse_one_prod_Ico F (Fin d → F) (rootSum θ k) (_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one F θ k).2 hdpos
     rwa [hrank] at h
   have hone : extZero χ (1 : Module.End F (Fin d → F)) = χ 1 := by
     have h := hval 1

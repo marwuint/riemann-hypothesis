@@ -50,35 +50,6 @@ def SectionQuotLocal.Statement : Prop :=
         ∀ a b : curveRing y, b ∉ m → (b : K') * aeval y s = a * y ⟨(), t⟩ →
           locLen m (sectionQuot y (aeval y s)) = locLen m (curveRing y ⧸ Ideal.span {a})
 
-abbrev twoXPt : MRing (PBlk 1) := C 2 * X ⟨(), 0⟩
-
-abbrev twoIdealPt : Ideal (MRing (PBlk 1)) := Ideal.span {C 2}
-
-theorem exists_int_of_mem_curveRing_yPt (b : curveRing IndefiniteRowSideFullHecke.HeightsSet.yPt) : ∃ n : ℤ, (b : ℚ) = n := by
-  have h := mem_curveRing.mp b.2 (fun _ => 0) (fun _ => by simp [IndefiniteRowSideFullHecke.HeightsSet.yPt])
-  rw [chartRingZ_yPt, Algebra.mem_bot] at h
-  obtain ⟨n, hn⟩ := h
-  exact ⟨n, by rw [← hn]; simp⟩
-
-def evenIdealPt : Ideal (curveRing IndefiniteRowSideFullHecke.HeightsSet.yPt) where
-  carrier := {b | ∃ n : ℤ, (b : ℚ) = 2 * n}
-  add_mem' := by
-    rintro a b ⟨m, hm⟩ ⟨n, hn⟩
-    refine ⟨m + n, ?_⟩
-    show (a : ℚ) + b = _
-    rw [hm, hn]
-    push_cast
-    ring
-  zero_mem' := ⟨0, by simp⟩
-  smul_mem' := by
-    rintro c b ⟨n, hn⟩
-    obtain ⟨k, hk⟩ := exists_int_of_mem_curveRing_yPt c
-    refine ⟨k * n, ?_⟩
-    show (c : ℚ) * b = _
-    rw [hk, hn]
-    push_cast
-    ring
-
 end
 
 end GroundTheory.Heights₂.Heights

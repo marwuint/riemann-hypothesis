@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NmatEqLowMat
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnGramDeterminantUnitLowerThreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagGramDensityInequalityComplexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnGramDeterminantUnitLowerThree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagGramDensityInequalityComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralUpdateSubShearStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LintegralFintypeProdEqProd
 
@@ -47,7 +47,7 @@ theorem gB_eq_entries (p0 : ℕ) (pa pb pc : Low 4) (w : Low 4 → ℂ)
     (hc : (blkW (r := 4) p0 w : Matrix (Fin 3) (Fin 3) ℂ) 2 1 = w pc) :
     gB p0 w = ((1 + ‖w pa‖ ^ 2 + ‖w pb‖ ^ 2) ^ 2 *
       (1 + ‖w pc‖ ^ 2 + ‖w pa * w pc - w pb‖ ^ 2) ^ 2)⁻¹ := by
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.columnGramDeterminant_unitLower_three (blkW (r := 4) p0 w) (blkW_diag w p0) (blkW_upper w p0)
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.IntBall.colGram_three_unitLower (blkW (r := 4) p0 w) (blkW_diag w p0) (blkW_upper w p0)
   rw [gB_eq, h1, h2, ha, hb, hc]
 
 theorem lintegral_hB_lt_top_of_pos (p0 : ℕ) (pa pb pc : Low 4) (hab : pa ≠ pb) (hcb : pc ≠ pb)
@@ -111,7 +111,7 @@ theorem lintegral_hB_lt_top_of_pos (p0 : ℕ) (pa pb pc : Low 4) (hab : pa ≠ p
         ← ENNReal.ofReal_add (by positivity) (by positivity)]
       apply ENNReal.ofReal_le_ofReal
       rw [hg w]
-      have key := GlobalTheory.T.flagGram_density_inequality_complex (w pa) (w pb) (w pc)
+      have key := _root_.GlobalTheory.flagGram_density_ineq (w pa) (w pb) (w pc)
       have e : pw (w pb - w pa * w pc) = (1 + ‖w pa * w pc - w pb‖ ^ 2) ^ (-(4 / 3 : ℝ)) := by
         simp only [pw, norm_sub_rev (w pb)]
       rw [e]

@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTo
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProjOverOfIsProjOverBase
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsFiniteProjectiveComplexQuasiIso
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrderedCechFiniteAffineCoverModelsStructureSheafStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyStructureSheafCohomologyModelOfQuasiIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrderedCechFiniteAffineCoverModelsStructureSheaf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyStructureSheafCohomologyModelOfQuasiIso
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -37,7 +37,7 @@ theorem exists_finite_projective_model : ∀ (R : Type) [CommRing R] [IsNoetheri
         exact Module.Finite.equiv e.symm)
   have hsep : IsSeparated s := inferInstance
   have hDa : ∀ i, IsAffineOpen (D i) := fun i => hD i
-  obtain ⟨MC⟩ := GlobalTheory.T.orderedCech_finiteAffineCover_models_structureSheafCohomology R X s (Fin m) D hsep hDa hc
-  exact ⟨K, fun p => ⟨h2 p, h4 p⟩, ⟨m, h1⟩, GlobalTheory.T.nonempty_structureSheafCohomologyModel_of_quasiIso R X s K _ φ (fun S _ _ => h7 S) MC⟩
+  obtain ⟨MC⟩ := _root_.GlobalTheory.CechPoset.model_cechLB R X s (Fin m) D hsep hDa hc
+  exact ⟨K, fun p => ⟨h2 p, h4 p⟩, ⟨m, h1⟩, _root_.GlobalTheory.AbCoh.nonempty_model_of_quasiIso R X s K _ φ (fun S _ _ => h7 S) MC⟩
 
 end GlobalTheory.AbCoh

@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QAllQConjOfDvd
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusUpperHalfPlanePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmpPropsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusUpperHalfPlaneProperties
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmpProps
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatHermiteNormalFormMobiusStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatConjPrincipalCongruenceStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionAllCoeffsDeltaPowAffineSubstStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatConjPrincipalCongruence
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionAllCoeffsDeltaPowAffineSubst
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
@@ -32,9 +32,9 @@ theorem inR_cmp : ∀ (E : Subring ℂ) (g : GQ) (f : ℍ → ℂ), (∀ x : ℚ
     InR E f → InR E (GlobalTheory.FN.cmp g f) := by
   intro E g f hE ⟨N, w, hN, hinv, hexp⟩
   obtain ⟨n₁, hn₁, hH⟩ := GlobalTheory.T.glTwoPosRat_hermite_normal_form_mobius g
-  obtain ⟨n₂, hn₂, hC⟩ := GlobalTheory.T.glTwoPosRat_conj_principal_congruence g
-  obtain ⟨mob_hs, mob_mul, mob_one, mob_sl, mob_diff, mob_up⟩ := GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties
-  obtain ⟨cmp_one, cmp_mul, cmp_sl, cmp_up⟩ := GlobalTheory.T.cmp_mul_ofSL_and_up_cmp_eq_up_mob
+  obtain ⟨n₂, hn₂, hC⟩ := _root_.GlobalTheory.FN.exists_conj_principal_congruence g
+  obtain ⟨mob_hs, mob_mul, mob_one, mob_sl, mob_diff, mob_up⟩ := _root_.GlobalTheory.FN.mob_props
+  obtain ⟨cmp_one, cmp_mul, cmp_sl, cmp_up⟩ := _root_.GlobalTheory.FN.cmp_props
   refine ⟨N * n₁ * n₂, w * n₁, by positivity, ?_, ?_⟩
   · intro δ hδ τ
     have hδ' : δ ∈ CongruenceSubgroup.Gamma (N * n₂) := by
@@ -55,7 +55,7 @@ theorem inR_cmp : ∀ (E : Subring ℂ) (g : GQ) (f : ℍ → ℂ), (∀ x : ℚ
     obtain ⟨γ, a, d, b, had, hmob⟩ := hH γ₀
     have ha : 0 < a := Nat.pos_of_ne_zero (by rintro rfl; simp at had; omega)
     have hd : 0 < d := Nat.pos_of_ne_zero (by rintro rfl; simp at had; omega)
-    have key := GlobalTheory.T.qExpansionAllCoeffs_deltaPow_affineSubst E N w a d b (fun τ => f (γ • τ)) hE hN ha hd (hexp γ)
+    have key := _root_.GlobalTheory.FNPole.qAll_pole_affine E N w a d b (fun τ => f (γ • τ)) hE hN ha hd (hexp γ)
     rw [had] at key
     have hlift := QAll.of_dvd (N := N * n₁) (N' := N * n₁ * n₂) (by positivity) (dvd_mul_right _ _)
       (p := (· ∈ E)) (Subring.zero_mem E) key

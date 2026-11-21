@@ -3,7 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsMultiHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChowFormIntExistsAndChowFormExists
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.AlgebraMapBaseMemMaximalIdealIff
 import ReciprocityTheory.SemistableReduction.DetSubtypeCompAssociatedProd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertDegreeEqSumOverComponents
 
 open MvPolynomial GlobalTheory.ChowHt
 attribute [local instance] MvPolynomial.gradedAlgebra

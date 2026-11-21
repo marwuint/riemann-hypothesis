@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ExponentSeparation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasFiniteRankTraceOfOfRangeLeFiniteDimensionalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TraceMatrixPiOperatorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InjectiveSumOfLinIndepIntertwinersStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TraceMatrixPiOperator
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InjectiveSumOfLinIndepIntertwiners
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerMemISupRangeEqSumSmulStatement
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -30,7 +30,7 @@ theorem trace_mul_isotypic : ∀ (G : Type) [Group G] (N X : Type) [AddCommGroup
   let bS := Module.finBasis ℂ S
   let φ : Fin (Module.finrank ℂ S) → π.IntertwiningMap ρ := fun j => (bS j : π.IntertwiningMap ρ)
   have hli : LinearIndependent ℂ φ := bS.linearIndependent.map' S.subtype (Submodule.ker_subtype S)
-  have hinj := GlobalTheory.T.injective_sum_of_linIndep_intertwiners G N X π ρ hirr hschur _ φ hli
+  have hinj := _root_.GlobalTheory.intertwiners_indep_injective G N X π ρ hirr hschur _ φ hli
   have hY : LinearMap.range H ≤ ⨆ j, LinearMap.range (φ j).toLinearMap := by
     refine hs.trans (iSup₂_le fun ψ hψ => ?_)
     have hψS : ψ ∈ S := Submodule.subset_span hψ
@@ -108,7 +108,7 @@ theorem trace_mul_isotypic : ∀ (G : Type) [Group G] (N X : Type) [AddCommGroup
     rw [Finset.sum_comm]
   have key : LinearMap.trace ℂ Z ((H ∘ₗ B).restrict (p := Z) (q := Z)
       fun x _ => hrange (LinearMap.mem_range_self _ x)) = (∑ j, hc j j) * b := by
-    rw [hconj, LinearMap.trace_conj', GlobalTheory.T.trace_sum_single_comp_proj_eq R _ h A', ← htr]
+    rw [hconj, LinearMap.trace_conj', _root_.GlobalTheory.trace_matrix_pi_operator R _ h A', ← htr]
     simp [h, Matrix.trace, A', R]
   rw [← key]
   exact hT1

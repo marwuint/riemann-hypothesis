@@ -12,7 +12,8 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FamilySplitOpera
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RealizationFamilyNormalOperatorsStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSplitPrimeHeckeTransferCompositeLiftStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSphericalOperatorsRowsNormalEigenspacesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatchedSphericalPairsCommuteCompositeLiftStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatchedSphericalPairsCommuteCompositeLift
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 
 noncomputable section
 
@@ -163,7 +164,7 @@ theorem range_adjoint_le_span : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {P
     (fun P => (hC.fam.degR t P).2) (R.Th t) _ htop
     (fun P k => hX (R.pl P) (Finsupp.single (splitLab D.sp.X'.rank k) 1)) hsplit
     (fun c P k => ∑ j ∈ Finset.range ((Yc D 0).rank + 1), z P k j * a c P j) _ (fun c P => hp P (a c P))
-    fun c w hw P k hk => ((GlobalTheory.T.matched_spherical_pairs_commute_composite_lift R F hC hS _ hSF t (R.pl P)
+    fun c w hw P k hk => ((_root_.GlobalTheory.Hk3.SysE.matched_commute R F hC hS _ hSF t (R.pl P)
       ((GlobalTheory.GoodPrimes.good_primes R F hC.lev).2.2.2 hC.fam t P.1 P.2).1 _ _ (hm P k hk) hX hXo).2 c w hw).trans
         (congrArg (· • LinearMap.adjoint (R.Th t) w) (evC_splitC _ _ _ _))
 

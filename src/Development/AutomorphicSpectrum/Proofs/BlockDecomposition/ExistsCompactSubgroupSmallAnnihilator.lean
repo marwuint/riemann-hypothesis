@@ -1,10 +1,12 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.TwistedKernels.ExPhiPlusOnto
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicBetaCompactInduction
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousRowM
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductorAndHaarIntegersExist
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMirProj
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCharacterEqStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedKernelConjugation
 
-open Matrix GlobalTheory.PRep GlobalTheory.BZMir GlobalTheory.BZMir.Fun GlobalTheory.CompanionTheory.BZBeta GlobalTheory.CompanionTheory.BZOnto GlobalTheory.SplitWeil ValuativeRel
+open Matrix GlobalTheory.PRep GlobalTheory.BZMir GlobalTheory.BZMir.Fun GlobalTheory.SplitWeil ValuativeRel
 open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.BZOnto.PerpSmall

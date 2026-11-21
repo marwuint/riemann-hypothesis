@@ -1,6 +1,22 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ThetaArchimedeanDataDefiniteModelsNonemptyStatement
-import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.CuspReadingsSpanModelFormsShiftedWeightsStatement
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ThetaArchimedeanDataDefiniteModelsNonempty
+import Development.AbelianVarietyTheory.Definitions.ThetaValues.GamAt
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.CarchAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.NoCommonZeroSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SupBoundPageRows
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.InnerEuclideanEmbeddingEqAverage
+import Formalism.LocalToGlobal.ProjectiveLattices.CurveAsm
+import Formalism.LocalToGlobal.ProjectiveLattices.CurveLocInst
+import Formalism.LocalToGlobal.ProjectiveLattices.RealPtPf
+import Formalism.LocalToGlobal.ProjectiveLattices.TieInst
+import Formalism.LocalToGlobal.ProjectiveLattices.CombAlgOfCombBound
+import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie
+import Formalism.LocalToGlobal.ProjectiveLattices.FullExists
+import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
+import Formalism.LocalToGlobal.ProjectiveLattices.AxHLAM
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.CuspReadingsSpanModelFormsShiftedWeights
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.PointsInterpolationGenericSections
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CuspFormVanishingAtPointsMulPowMemSpan
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LeadingProductsIndependentModuloDeepProducts
@@ -253,8 +269,8 @@ set_option synthInstance.maxHeartbeats 400000 in
 
 theorem sharesDef : GlobalTheory.RunJoin.SharesDefSt := by
   intro D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC hL G₀ hNZ Sh hSh
-  obtain ⟨A⟩ := GlobalTheory.T.thetaArchimedeanData_definiteModels_nonempty D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC G₀.N G₀.w hNZ
-  obtain ⟨hOn, hM⟩ := GlobalTheory.T.cuspReadings_span_model_forms_shifted_weights D T h _ hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p hPar hPg
+  obtain ⟨A⟩ := _root_.GlobalTheory.ArchDefinite.archAt_nonempty_of_definite D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC G₀.N G₀.w hNZ
+  obtain ⟨hOn, hM⟩ := _root_.GlobalTheory.RunJoin.onto_of_page D T h _ hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p hPar hPg
   obtain ⟨hka, hT⟩ := weight_and_degree hPg.hyp
   have hp : ∀ k : (T.U D.R.m T.σ₀).Comp, ((T.U D.R.m T.σ₀).X k).p0 = 0 := fun k => by
     have h0 : WeightFamilies.rho D D.R.m = 0 := by

@@ -9,7 +9,7 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDVal
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointBaseChangeLaws
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHomStatement
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsVtOverIsUUOverBaseChange
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HarmonicValueBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HarmonicValueBaseChange
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
@@ -51,7 +51,7 @@ theorem exists_pull (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (
       congr 1
       exact CartesianMonoidalCategory.toUnit_unique _ _
     rwa [e] at hv
-  · have hv := GlobalTheory.T.harmonicValue_baseChange_alt hC E H Dw l Xo c nab hnab S T ψ y z hm h hh a n P hH l.M F F' hF'
+  · have hv := _root_.GlobalTheory.harmonicValue_baseChange hC E H Dw l Xo c nab hnab S T ψ y z hm h hh a n P hH l.M F F' hF'
     unfold thExpr
     rw [map_mul, AlgHom.commutes, hv]
 

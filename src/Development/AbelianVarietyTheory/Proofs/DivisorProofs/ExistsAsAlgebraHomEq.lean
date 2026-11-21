@@ -1,8 +1,10 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.OneSubOfIsIrreducible
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsParahoricVec
+import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilTensorLiftConclusion
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraMapIntertwiningMapBijectiveOfIsSmooth
-open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.TypeTwo
+
+open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 open scoped TensorProduct
 
 noncomputable section
@@ -175,16 +177,5 @@ def orderIso (hirr : T.IsIrreducible)
         | zero => rw [map_zero]; exact zero_mem (up X T U').toSubmodule
         | tmul u w => exact ⟨⟨u, h u.2⟩ ⊗ₜ w, by simp⟩
         | add x y hx hy => rw [map_add]; exact (up X T U').toSubmodule.add_mem hx hy }
-
-def upEquiv (U : Subrepresentation X) :
-    (extTensor U.toRepresentation T).Equiv (up X T U).toRepresentation :=
-  Representation.Equiv.mk (LinearEquiv.ofInjective (U.toSubmodule.subtype.rTensor W)
-      (Module.Flat.rTensor_preserves_injective_linearMap _ U.toSubmodule.injective_subtype)) (fun g => by
-    apply TensorProduct.ext'
-    intro u w
-    apply Subtype.ext
-    simp only [Subrepresentation.toRepresentation, MonoidHom.coe_mk, OneHom.coe_mk]
-    erw [LinearEquiv.ofInjective_apply]
-    exact Module.Flat.rTensor_preserves_injective_linearMap _ U.toSubmodule.injective_subtype)
 
 end GlobalTheory.ExtTensorSub

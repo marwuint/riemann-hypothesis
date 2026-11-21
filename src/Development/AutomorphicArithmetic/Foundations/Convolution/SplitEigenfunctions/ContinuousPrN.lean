@@ -50,12 +50,6 @@ private theorem pr_gl_mul (h : G1 E) (g : GL (Fin 2) (A E)) : pr (gl h * g) = h 
   have hm : gl (h * pr g) = gl h * gl (pr g) := map_mul _ h (pr g)
   rw [hm, gl_pr, gl_pr, dt_mul, dt_gl, one_mul, mul_assoc]
 
-private theorem pr_gl (h : G1 E) : pr (gl h) = h := by
-  apply M.gl_inj
-  rw [gl_pr, dt_gl]
-  have : dM (1 : (A E)ˣ) = 1 := M.dM_one
-  rw [this, inv_one, mul_one]
-
 private theorem gl_pr_mul (g : GL (Fin 2) (A E)) : gl (pr g) * dM (dt g) = g := by
   rw [gl_pr, inv_mul_cancel_right]
 

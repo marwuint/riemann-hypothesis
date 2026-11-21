@@ -38,19 +38,4 @@ theorem exists_compact_ratN : ∃ K : Set (BlockIx a r → Ad E), IsCompact K �
   rw [map_neg, neg_add_eq_sub]
   exact hy p
 
-theorem not_isCuspidal_oneFn : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
-    2 ≤ a → ¬ IsCuspidal (oneFn E a).1 := by
-  intro E _ _ _ a ha h
-  haveI : LocallyCompactSpace (Ad E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E
-  haveI : SecondCountableTopology (Ad E) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E
-  haveI : T2Space (Ad E) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E
-  letI : MeasurableSpace (BlockIx a 1 → Ad E) := borel _
-  haveI : BorelSpace (BlockIx a 1 → Ad E) := ⟨rfl⟩
-  haveI := discreteTopology_ratN E a 1
-  obtain ⟨K, hK, hcov⟩ := exists_compact_ratN E a 1
-  obtain ⟨⟨μ, F, hμ, hF, h1⟩, -⟩ :=
-    GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact _ (ratN E a 1) K hK hcov
-  have h2 : ∫ _ in F, (1 : ℂ) ∂μ = 0 := h 1 one_pos (by omega) μ F hμ hF 1
-  simp [Measure.real, h1] at h2
-
 end GlobalTheory.ConstNotCusp

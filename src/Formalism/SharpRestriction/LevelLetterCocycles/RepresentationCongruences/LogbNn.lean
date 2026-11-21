@@ -30,17 +30,4 @@ lemma sg_ge (l h w S η : ℕ) (hl : 11 ≤ l) (h1 : 1 ≤ h) :
   rw [sg_eq]
   refine ⟨a1, a2, a3, a4, hlg, by linarith, by linarith⟩
 
-lemma r3 {x H : ℝ} (hx : 11 ≤ x) (hH : 0 ≤ H) :
-    H * (2 * x - 1) / (x - 1) ^ 2 * (x - 1)⁻¹ ≤ 77 / 30 * H * x⁻¹ ^ 2 := by
-  have hx1 : 0 < x - 1 := by linarith
-  have hx0 : 0 < x := by linarith
-  have hy : 0 ≤ x - 11 := by linarith
-  have key : (2 * x - 1) / (x - 1) ^ 3 ≤ 77 / 30 * x⁻¹ ^ 2 := by
-    rw [inv_pow, ← div_eq_mul_inv, div_le_div_iff₀ (by positivity) (by positivity)]
-    nlinarith [mul_nonneg (mul_nonneg hy hy) hy, mul_nonneg hy hy]
-  calc H * (2 * x - 1) / (x - 1) ^ 2 * (x - 1)⁻¹ = H * ((2 * x - 1) / (x - 1) ^ 3) := by
-        field_simp
-    _ ≤ H * (77 / 30 * x⁻¹ ^ 2) := mul_le_mul_of_nonneg_left key hH
-    _ = 77 / 30 * H * x⁻¹ ^ 2 := by ring
-
 end Formalism.MainNotions.N.FrobeniusPowerSeries.CaseA

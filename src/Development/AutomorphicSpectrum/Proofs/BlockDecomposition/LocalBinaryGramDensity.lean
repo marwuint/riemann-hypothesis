@@ -1,16 +1,17 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.MeanVal
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberRankOneSetFormula
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ContinuousDensitiesEqOfIntegralsOnCompacts
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivityStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivity
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ContinuousHermScal
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalLatticeCompactOpenUnitVolumeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureNonunitsNull
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HaarMeasureNonunitsNull
 open PositivityTheory.Rg.Mass
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology Filter
 open scoped TensorProduct ENNReal NNReal
@@ -27,16 +28,16 @@ theorem fibre_masses_standard_lattice : ∀ (F E : Type) [Field F] [NumberField 
   ∫ s, (m (hermScal (Fv F v) σ s) (latV b v)).toReal ∂lam = 1 := by
   intro F E _ _ _ _ _ σ hCM J hJ d b v lam hlam m hm
   classical
-  have hloc : IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F v
+  have hloc : IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
   haveI : IsTopologicalRing (Fv F v) := hloc.1
   haveI : LocallyCompactSpace (Fv F v) := hloc.2.1
   haveI : SecondCountableTopology (Fv F v) := hloc.2.2.1
   haveI : T2Space (Fv F v) := hloc.2.2.2.1
   haveI := hlam.1
-  obtain ⟨-, -, -, hT2K, -, htr, -, hBorW, -, hgr⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)
+  obtain ⟨-, -, -, hT2K, -, htr, -, hBorW, -, hgr⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)
   haveI := hT2K
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b lam hlam.1
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b lam hlam.1
   obtain ⟨hLc, hLo, -, hL1⟩ := GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b 1 2 v
   obtain ⟨hSh, -, hSm⟩ := GlobalTheory.CompanionTheory.SW.hermScal_main F E σ hCM (Fv F v) d b
   haveI : BorelSpace (Fin 1 → Fin 2 → Fv F v ⊗[F] E) := hBorW 1 2
@@ -52,7 +53,7 @@ theorem fibre_masses_standard_lattice : ∀ (F E : Type) [Field F] [NumberField 
   have hφs : HasCompactSupport φ := by
     rw [hφ]
     exact HasCompactSupport.intro hLc (fun x hx => Set.indicator_of_notMem hx _)
-  obtain ⟨⟨hgc, -⟩, -⟩ := GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ hCM 2 J hJ (Fv F v) hloc 1
+  obtain ⟨⟨hgc, -⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramDensity.isContDensityOn_gram F E σ hCM 2 J hJ (Fv F v) hloc 1
     (coordW (Fv F v) b lam 1 2) (coordHerm (Fv F v) σ b lam 1) m (hW 1 2) (hH 1) hm φ hφc hφs
   have hval : ∀ T, ∫ X, φ X ∂(m T) = (((m T (latV b v)).toReal : ℝ) : ℂ) := fun T => by
     rw [hφ, integral_indicator_const (1 : ℂ) hLm]
@@ -71,9 +72,9 @@ theorem fibre_masses_standard_lattice : ∀ (F E : Type) [Field F] [NumberField 
     simp [hval]
   refine ⟨hcont, ?_⟩
   have hfin : ∀ S, m S (latV b v) < ⊤ := fun S => by
-    haveI := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM 2 J hJ (Fv F v) hloc 1 _ _ m (hW 1 2) (hH 1) hm S).1
+    haveI := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM 2 J hJ (Fv F v) hloc 1 _ _ m (hW 1 2) (hH 1) hm S).1
     exact hLc.measure_lt_top
-  obtain ⟨n1, n2⟩ := GlobalTheory.T.haar_measure_nonunits_null F E σ hCM 2 J hJ (by norm_num) v (coordW (Fv F v) b lam 1 2) lam (hW 1 2) hlam.1
+  obtain ⟨n1, n2⟩ := _root_.GlobalTheory.CompanionTheory.SW.NullV.null_nonunits F E σ hCM 2 J hJ (by norm_num) v (coordW (Fv F v) b lam 1 2) lam (hW 1 2) hlam.1
   have n1' : lam ({0}ᶜ : Set (Fv F v))ᶜ = 0 := by
     refine measure_mono_null (fun c hc => ?_) n1
     have : c = 0 := by simpa using hc

@@ -18,17 +18,6 @@ theorem minor_zero (A : Type) [CommRing A] (r n s : ℕ) (hs : s ≤ n) (I : Fin
   unfold initMinor
   exact Matrix.det_zero_of_row_eq hne (by funext q; simp only [Matrix.of_apply, hab])
 
-theorem unit_cols_det_zero (A : Type) [CommRing A] (n l : ℕ) (I : Fin (n - l) → Fin n)
-    (hI : ¬ Function.Injective I) (z : Fin n → ℕ → A) : (catM l (unitM A I) z).det = 0 := by
-  simp only [Function.Injective, not_forall] at hI
-  obtain ⟨a, b, hab, hne⟩ := hI
-  have hne' : Fin.castLE (Nat.sub_le n l) a ≠ Fin.castLE (Nat.sub_le n l) b := by
-    intro h
-    apply hne
-    exact Fin.ext (by simpa using congrArg Fin.val h)
-  refine Matrix.det_zero_of_column_eq hne' fun k => ?_
-  simp only [catM, if_true, unitM, Fin.val_castLE, a.isLt, b.isLt, dite_true, Fin.eta, hab]
-
 open Classical in
 theorem unit_cols (n l : ℕ) (hl : l ≤ n) (I : Fin (n - l) → Fin n) (hI : Function.Injective I) :
     ∃ (J : Fin l → Fin n) (ε : ℤ), Function.Injective J ∧ (∀ i q, J i ≠ I q) ∧ (ε = 1 ∨ ε = -1) ∧
@@ -146,9 +135,6 @@ end UnitColumnMinors
 open UnitColumnMinors
 
 theorem minor_zero_holds : MinorZero := fun A _ r n s hs I hI => minor_zero A r n s hs I hI
-
-theorem unit_columns_det_zero : UnitColsZero := fun n l _ I hI A _ =>
-  ⟨fun z => unit_cols_det_zero A n l I hI z, minor_zero A n n (n - l) (Nat.sub_le n l) I hI⟩
 
 theorem unit_columns_holds : UnitCols := fun n l hl I hI => unit_cols n l hl I hI
 

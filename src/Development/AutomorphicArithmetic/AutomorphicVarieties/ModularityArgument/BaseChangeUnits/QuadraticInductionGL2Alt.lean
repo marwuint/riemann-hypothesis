@@ -32,57 +32,15 @@ section Defs
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyReal E]
 
-def IndFin (P : TR.CuspSub ℚ (2 * 2)) (π : TR.CuspSub E 2) : Prop := IndSys π.HasSat P.HasSat
-
 def MixWt (π : TR.CuspSub E 2) : Prop :=
   ∃ (m m' : Fin 2 → ℤ) (v v' : InfinitePlace E), v ≠ v' ∧ π.HasInfChar v (infOf m) ∧ π.HasInfChar v' (infOf m') ∧
     Function.Injective ![m 0, m 1, m' 0, m' 1]
 
-def CentQ (π : TR.CuspSub E 2) : Prop :=
-  ∃ ω : HChar ℚ, ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ω.UnrAt (w.under (𝓞 ℚ)) ∧ ∀ f : ℕ,
-    normV w = normV (w.under (𝓞 ℚ)) ^ f → ∃ B, π.HasSat w B ∧ B.prod = ω.val (w.under (𝓞 ℚ)) ^ f
-
 end Defs
-
-def IndWeakQ : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E], Module.finrank ℚ E = 2 → ∀ π : TR.CuspSub E 2, MixWt π →
-    ∃ P : TR.CuspSub ℚ (2 * 2), IndFin P π
-
-def IndWeakQd : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E], Module.finrank ℚ E = 2 → ∀ π : TR.CuspSub E 2, MixWt π → CentQ π →
-    ∃ P : TR.CuspSub ℚ (2 * 2), IndFin P π
-
-theorem IndWeakQ.d (h : IndWeakQ) : IndWeakQd := fun E _ _ _ h2 π hm _ => h E h2 π hm
-
-def InfOfL : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E], Module.finrank ℚ E = 2 →
-    ∀ (P : TR.CuspSub ℚ (2 * 2)) (π : TR.CuspSub E 2), IndFin P π →
-    ∀ (v v' : InfinitePlace E) (u : InfinitePlace ℚ) (m m' M : Multiset ℂ), v ≠ v' → π.HasInfChar v m → π.HasInfChar v' m' →
-      P.HasInfChar u M → M = m + m'
-
-def InfOfLU : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E], Module.finrank ℚ E = 2 →
-    ∀ (P : TR.CuspSub ℚ (2 * 2)) (π : TR.CuspSub E 2), Lit.IsUnitaryR P → Lit.IsUnitaryR π → IndFin P π →
-    ∀ (v v' : InfinitePlace E) (u : InfinitePlace ℚ) (m m' M : Multiset ℂ), v ≠ v' → π.HasInfChar v m → π.HasInfChar v' m' →
-      P.HasInfChar u M → M = m + m'
-
-def QuadraticInductionGL2 : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E], Module.finrank ℚ E = 2 → ∀ π : TR.CuspSub E 2, MixWt π → CentQ π →
-    ∃ P : TR.CuspSub ℚ (2 * 2), IndFin P π ∧ ∀ (v v' : InfinitePlace E) (u : InfinitePlace ℚ) (m m' : Multiset ℂ), v ≠ v' →
-      π.HasInfChar v m → π.HasInfChar v' m' → P.HasInfChar u (m + m')
-
-def IndAutL : Prop := S2.AllInd fun T ι R _ => IsAutC ι (R.comp (resQ T.L))
 
 def MixWtC (K : Type) [Field K] {M : Type} [Field M] [NumberField M] [IsTotallyComplex M] [Algebra K M] (π : CuspSub M 2) : Prop :=
   ∀ φ : K →+* ℂ, ∃ (m m' : Fin 2 → ℤ) (τ τ' : M →+* ℂ), τ ≠ τ' ∧ τ.comp (algebraMap K M) = φ ∧ τ'.comp (algebraMap K M) = φ ∧
     π.HasInfChar τ (infOf m) ∧ π.HasInfChar τ' (infOf m') ∧ Function.Injective ![m 0, m 1, m' 0, m' 1]
-
-def IndC : Prop :=
-  ∀ (K M : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field M] [NumberField M] [IsTotallyComplex M] [Algebra K M],
-    Module.finrank K M = 2 → ∀ π : CuspSub M 2, MixWtC K π →
-    ∃ P : CuspSub K (2 * 2), IndSys (CG.mk π).HasSat (CG.mk P).HasSat ∧ ∀ (τ τ' : M →+* ℂ) (m m' : Multiset ℂ), τ ≠ τ' →
-      τ.comp (algebraMap K M) = τ'.comp (algebraMap K M) → π.HasInfChar τ m → π.HasInfChar τ' m' →
-      P.HasInfChar (τ.comp (algebraMap K M)) (m + m')
 
 def IndAutC : Prop :=
   ∀ (K M Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field M] [NumberField M] [IsTotallyComplex M] [Field Ω]

@@ -14,8 +14,6 @@ def raw : Gen.Raw D :=
   ⟨(layCut D c).eta, (layCut D c).eta_nonneg, (layCut D c).reEta _ (layCut D c).eta_nonneg, (layerCut_admissible D c).reEta _ _,
     (layCut D c).etaOk_reEta⟩
 
-@[reducible] def ledTr (L : SizeData₂ D) : SizeData₂ (cut D c) := Gen.ledTr (raw c) L
-
 theorem tiesTr (h : Ties D) : Ties (raw c).rec' := Gen.tiesTr (raw c) h h.tw_cover
 
 set_option maxHeartbeats 1600000 in

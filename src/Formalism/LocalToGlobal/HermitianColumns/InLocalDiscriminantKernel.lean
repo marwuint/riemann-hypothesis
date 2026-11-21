@@ -33,10 +33,6 @@ theorem hT_crd (hc : CMData F E) (S : HSpace E) (x y : S.V) :
 def UF (hc : CMData F E) (S : HSpace E) : Subgroup (GL (Fin S.rank) E) :=
   UJ (hc.sig : E →+* E) S.gram
 
-def Uv (hc : CMData F E) (S : HSpace E) (v : HeightOneSpectrum (𝓞 F)) :
-    Subgroup (GL (Fin S.rank) (E ⊗[F] v.adicCompletion F)) :=
-  UPts hc.sig S.gram (v.adicCompletion F)
-
 def UAf (hc : CMData F E) (S : HSpace E) : Subgroup (GL (Fin S.rank) (E ⊗[F] Af F)) :=
   UPts hc.sig S.gram (Af F)
 

@@ -85,40 +85,4 @@ theorem two_rho_sum {M : Type*} [AddCommGroup M] [Module ℂ M] (ε : Fin n → 
   · exact Finset.sum_congr rfl fun a ha => by rw [smul_smul, csq_two_rhoHol_plus ε ha]
   · exact Finset.sum_congr rfl fun a ha => by rw [smul_smul, csq_two_rhoHol_minus ε ha, neg_smul]
 
-theorem casimir_pm {E : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (ε : Fin n → Bool) :
-    casimir E = casimirK ε E + (2 : ℂ) • ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, E i a * E a i -
-      (2 : ℂ) • ∑ a, ((rhoHol ε a : ℝ) : ℂ) • E a a := by
-  have hsplit : casimir E = (∑ a ∈ plusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a +
-      ∑ a ∈ plusIdx ε, ∑ b ∈ minusIdx ε, E a b * E b a) +
-      (∑ a ∈ minusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a +
-      ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, E a b * E b a) := by
-    unfold casimir
-    rw [csq_sum_univ_pm ε]
-    congr 1
-    · rw [← Finset.sum_add_distrib]
-      exact Finset.sum_congr rfl fun a _ => csq_sum_univ_pm ε _
-    · rw [← Finset.sum_add_distrib]
-      exact Finset.sum_congr rfl fun a _ => csq_sum_univ_pm ε _
-
-  have h1 : ∀ i a : Fin n, E a i * E i a = E i a * E a i - E i i + E a a := by
-    intro i a
-    have h := hE i a a i
-    rw [if_pos rfl, if_pos rfl] at h
-    rw [sub_add, ← h]
-    abel
-  have hcross : ∑ a ∈ minusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a =
-      ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, E i a * E a i -
-        (qOf ε : ℂ) • ∑ i ∈ plusIdx ε, E i i + (pOf ε : ℂ) • ∑ a ∈ minusIdx ε, E a a := by
-    rw [Finset.sum_comm]
-    calc ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, E a i * E i a
-        = ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, (E i a * E a i - E i i + E a a) :=
-          Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a _ => h1 i a
-      _ = _ := by
-        simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const,
-          Finset.smul_sum, Nat.cast_smul_eq_nsmul]
-        rfl
-  have h2 := two_rho_sum ε (fun a => E a a)
-  rw [hsplit, casimirK_pm, hcross, h2, two_smul, ← Finset.smul_sum, ← Finset.smul_sum]
-  abel
-
 end ReciprocityTheory.ChartRestriction.DS

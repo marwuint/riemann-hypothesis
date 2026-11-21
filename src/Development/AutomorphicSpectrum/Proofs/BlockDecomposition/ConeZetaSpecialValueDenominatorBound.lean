@@ -2,10 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsAvoidOne
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeightedSumDecompositionDenominatorsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeSeriesSpecialValueRationalStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.WeightSumAsFiniteDifferencesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesSummableRightHalfPlaneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeightedSumDecompositionDenominators
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeSeriesSpecialValueRational
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.WeightSumAsFiniteDifferences
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniValuesNegativeIntegersRationalStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceConeTermEq
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SizePowerLeInverseSquareProductStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummableInverseSquareProduct
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HighDifferenceVanishesNegativeInteger
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesSummableRightHalfPlane
 
 set_option autoImplicit false
 noncomputable section
@@ -74,17 +80,17 @@ theorem abelValue_mem_zInv (ι : Type) [Fintype ι] (r l : ℕ) (a : ι → Fin 
     (hp : ∀ m : Fin r → ℕ, ∃ z : ℤ, ∏ j, (b j + ∑ i, a j i * (m i : ℝ)) ^ p = (z : ℝ)) :
     ∃ (q : ℚ) (K : ℕ) (z : ℤ), T (-(p : ℂ)) = (q : ℂ) ∧ (l : ℚ) ^ K * q = z := by
   obtain ⟨Q, _, cs, u, K, hu, hc, hK, hid⟩ :=
-    GlobalTheory.T.weighted_sum_decomposition_denominators r l (Fintype.card ι * (p + 1) + 2) w hl hw hz
+    _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.Integral.expansion_all_variables_int r l (Fintype.card ι * (p + 1) + 2) w hl hw hz
   set G : ℂ → ℂ := fun s => ∑ q, ∑' m, (u q m : ℂ) * DL (cs q) (coneTerm a b s) m with hGdef
   have hG : DifferentiableOn ℂ G {s | -((p + 1 : ℕ) : ℝ) < s.re} := by
     refine DifferentiableOn.fun_sum fun q _ => ?_
-    exact GlobalTheory.T.cone_series_differentiable_left_strip ι r a b ha hb (p + 1) _ (cs q) (u q) le_rfl (hu q) (hc q)
+    exact _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.differentiableOn_tsum_weighted_DL_halfplane ι r a b ha hb (p + 1) _ (cs q) (u q) le_rfl (hu q) (hc q)
   have hTG : ∀ s : ℂ, 1 < s.re → T s = G s := by
     intro s hs
     rw [← (hS s hs).tsum_eq]
-    exact hid _ (GlobalTheory.T.cone_series_summable_right_half_plane ι r a b hr ha hb s hs)
+    exact hid _ (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable ι r a b hr ha hb s hs)
   have hval := eq_at_neg_of_eq_right (p + 1) p (Nat.lt_succ_self p) T G hT hG hTG
-  choose ρ ζ hρ hζ using fun q => GlobalTheory.T.cone_series_special_value_rational ι r a b (u q) (cs q) p K l hl (hK q) hp
+  choose ρ ζ hρ hζ using fun q => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.value_neg_nat_mem ι r a b (u q) (cs q) p K l hl (hK q) hp
   refine ⟨∑ q, ρ q, K, ∑ q, ζ q, ?_, ?_⟩
   · rw [hval, hGdef]
     push_cast

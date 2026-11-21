@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithResidueCharFibreStructureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionLoweringFibreDimensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionLoweringFibreDimension
 
 set_option autoImplicit false
 
@@ -33,9 +33,9 @@ theorem exists_cover (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p 
     exact absurd h₁ (not_lt.2 (by simpa using h₂))
   | succ d ih =>
     intro Z hZ h
-    obtain ⟨e, he, f, hf, hlt⟩ := GlobalTheory.T.exists_section_lowering_fibre_dimension k X p D hX P hP d Z hZ fun ℓ =>
+    obtain ⟨e, he, f, hf, hlt⟩ := _root_.GlobalTheory.HSAmp.exists_sec_fibre_dim_lt k X p D hX P hP d Z hZ fun ℓ =>
       ENat.WithBot.lt_add_one_iff.1 (by simpa using h ℓ)
-    have hnf := GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 f hf
+    have hnf := _root_.GlobalTheory.HSAmp.nv_rules k X p P e 0 f hf
     obtain ⟨e', x, he', hx, hc⟩ := ih (Z \ NV P e 0 f) (hZ.sdiff hnf.1) hlt
     have c₁ : ((e' * e : ℕ) : ℤ) = (e' : ℤ) * (e : ℤ) := Nat.cast_mul _ _
     have c₂ : ((e' * e : ℕ) : ℤ) = (e : ℤ) * (e' : ℤ) := by rw [c₁, mul_comm]
@@ -55,7 +55,7 @@ theorem exists_cover (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p 
         exact hzf
       · obtain ⟨l, hl⟩ := hc z ⟨hz, hzf⟩
         refine ⟨l.succ, ?_⟩
-        have := (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e' 0 (x l) (hx l)).2.2.1 e he
+        have := (_root_.GlobalTheory.HSAmp.nv_rules k X p P e' 0 (x l) (hx l)).2.2.1 e he
         rw [mul_zero, ← c₂] at this
         rw [Fin.cons_succ, this]
         exact hl

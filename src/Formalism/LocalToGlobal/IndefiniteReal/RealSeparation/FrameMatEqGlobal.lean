@@ -1,7 +1,16 @@
-import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.ExistsLeftInvOfIndep
+import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.UnfDefs
+import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.BesPerSt
+import Formalism.LocalToGlobal.BesselHermitianTheta.TiedSmooth
+import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.SobSympl
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.SymplOHZeroRight
+import Mathlib
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.AdlEqZeroOfMemNbhd
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GrowthNorm
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GinfCSecondCountable
 import Formalism.LocalToGlobal.GlobalTheory.VolumeCarry.VolumeTheoremTwoOfRationalFrames
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GEqBase
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.GrowthMod
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.ContinuousPsiT
 
 noncomputable section
 
@@ -22,15 +31,6 @@ theorem frameMat_eq_global : frameMat T A ι = Formalism.L2.GlobalTheoryTheory.V
 
 def embP' (A T : HSp D) (ι : A.V →ₗ[D.host.E] T.V) : Matrix (Fin A.rank) (Fin T.rank) D.host.E :=
   A.gram⁻¹ * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram
-
-theorem embP'_mul (hι : HSpace.IsIsomEmb A T ι) : embP' A T ι * frameMat T A ι = 1 := by
-  have hG := Formalism.L2.GlobalTheoryTheory.VolumeCarry.gram_frameMat D T A ι hι
-  rw [← frameMat_eq_global] at hG
-  unfold embP'
-  rw [show A.gram⁻¹ * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram * frameMat T A ι =
-      A.gram⁻¹ * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram * frameMat T A ι) by
-      simp only [Matrix.mul_assoc], ← hG]
-  exact Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (Formalism.IndefR.Eqv.gram_det_ne' D A))
 
 theorem perp_of_embP' (hι : HSpace.IsIsomEmb A T ι) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram * (1 - frameMat T A ι * embP' A T ι) = 0 := by

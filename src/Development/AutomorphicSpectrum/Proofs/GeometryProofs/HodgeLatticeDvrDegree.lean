@@ -2,16 +2,18 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeSpanIndependentStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransportStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeSpanIndependent
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LinearIndependentEigProj
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitIffUnitAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSubMemEigW
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionHiddenSecondStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseConstantsRegularStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionHiddenSecond
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BaseConstantsRegular
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharpolySplitsOfEmbeddingsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeGermEigenStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreCurveGermPowersStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuationBoundedFrameStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeGermEigen
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreCurveGermPowers
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuationBoundedFrame
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
 open scoped CategoryTheory.Obj
@@ -28,7 +30,7 @@ theorem toH_rhoH {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {ρ : 𝓞 E →+* Module.End Ω (Fin d → Ω)} {𝓗 : HodgeLat M.lat ρ H.bar r} (hg : S.Gives 𝓗) (p : Cpt ξ) (a : 𝓞 E)
     (y : (Fin d → X.presheaf.stalk p.1) × (Fin d → X.presheaf.stalk p.1)) :
     toH S p (rhoH (S.g p).B a y) = 𝓗.ρH a (toH S p y) := by
-  have h1 := (GlobalTheory.T.formal_isomorphism_transport _ _ _ _ _ _ _ _ (S.iso p)).2.2.2.2.1 a
+  have h1 := (_root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing _ _ _ _ _ _ _ _ (S.iso p)).2.2.2.2.1 a
   have h2 := hg.1 a (transH (S.φ p) (S.ψ p) (S.lam p) (vmap (genMap ξ p) y))
   have h3 := LinearMap.congr_fun h1 (vmap (genMap ξ p) y)
   simp only [LinearMap.comp_apply] at h3
@@ -129,7 +131,7 @@ theorem germ_degZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     have h2 := congrArg (algebraMap O Ω) hc
     rw [map_natCast, map_mul, h0, zero_mul] at h2
     exact hp.ne_zero (by exact_mod_cast h2)
-  have hreg := GlobalTheory.T.base_constants_regular X Ω ξ O s hs
+  have hreg := _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.RegBase.algebraMap_mem_regAt_of_base X Ω ξ O s hs
   have hσ : ∀ (q : Cpt ξ) (a : 𝓞 E), σ (a : E) ∈ regAt ξ q := fun q a => by
     obtain ⟨o, ho⟩ := hrange σ a
     exact ho ▸ hreg q o
@@ -160,10 +162,10 @@ theorem germ_degZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     have h4 : v0 s0 = 0 := hs1
     rw [h4, zero_mul]
   haveI : CharP Γ.κ p := (CharP.charP_iff_prime_eq_zero hp).2 hpκ
-  obtain ⟨F, hF0, hFi⟩ := GlobalTheory.T.fibre_curve_germ_powers E H hstar X t Ω ξ d M S O s _ p Γ hξ hpow hfib
+  obtain ⟨F, hF0, hFi⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.GermFam.germ_family E H hstar X t Ω ξ d M S O s _ p Γ hξ hpow hfib
   choose hFB φ' ψ' lam' he hφ hψ hlam using hFi
-  choose xs A hxs hfr hpr using GlobalTheory.T.hodge_lattice_germ_eigen E H X t Ω ξ d r M S ρ 𝓗 σ u hξ hgive hσ hu hsp
-  have hdet := fun q => (GlobalTheory.T.hodge_lattice_span_independent X Ω ξ E (Fin d → Ω) M.lat ρ H.bar r 𝓗 σ u hσ hu hsp).2.2 q (A q) (hfr q)
+  choose xs A hxs hfr hpr using _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.Frame.exists_basis_frame E H X t Ω ξ d r M S ρ 𝓗 σ u hξ hgive hσ hu hsp
+  have hdet := fun q => (_root_.GlobalTheory.CompanionTheory.Ar.Flat.HodgeLat.quot_det_bundle X Ω ξ E (Fin d → Ω) M.lat ρ H.bar r 𝓗 σ u hσ hu hsp).2.2 q (A q) (hfr q)
   choose Mt hAM hMt using fun i => exists_trans S hgive σ (qi i) q0 (FibreCurve.generic_centre_specializes Γ i) (τ q0) (hτ q0)
     (he i) (hxs q0) hu (hpr (qi i)) (hpr q0)
   let χ : 𝓞 E →+* Γ.κ := v0.comp (τ q0)
@@ -187,8 +189,8 @@ theorem germ_degZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   let x : ∀ i : Γ.C.I, Fin r → (Fin d → (Γ.C.v i).valuationSubring) × (Fin d → (Γ.C.v i).valuationSubring) :=
     fun i j => vmap (vi i) (xs (qi i) j)
   let N : Γ.C.I → Matrix (Fin r) (Fin r) Γ.κ := fun i => (Mt i).map v0
-  have hx₀ : IsHBasis F.B x₀ := GlobalTheory.T.intersection_second E _ _ v0 d r _ _ _ hF0 (hxs q0)
-  have hx : ∀ i, IsHBasis (F.Bi i) (x i) := fun i => GlobalTheory.T.intersection_second E _ _ (vi i) d r _ _ _ (hFB i) (hxs (qi i))
+  have hx₀ : IsHBasis F.B x₀ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isHBasis_map E _ _ v0 d r _ _ _ hF0 (hxs q0)
+  have hx : ∀ i, IsHBasis (F.Bi i) (x i) := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isHBasis_map E _ _ (vi i) d r _ _ _ (hFB i) (hxs (qi i))
   have hrel : ∀ i j, transH (F.φ i) (F.ψ i) (F.lam i) (vmap (Γ.C.v i).valuationSubring.subtype (x i j)) -
       ∑ l, N i j l • x₀ l ∈ eigW F.B χ := fun i j => by
     have h1 := vmap_mem_eigW hF0 (τ q0) (hMt i j)
@@ -196,7 +198,7 @@ theorem germ_degZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       (xs (qi i) j) (Mt i j) (xs q0)
     rw [hφ i, hψ i, hlam i]
     exact h2 ▸ h1
-  obtain ⟨hne, hfin, hsum⟩ := GlobalTheory.T.valuation_bounded_frame E Γ.κ Γ.C p d r F χ
+  obtain ⟨hne, hfin, hsum⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegProd.curve_deg E Γ.κ Γ.C p d r F χ
     (GlobalTheory.T.charpoly_splits_of_embeddings E Ω O Γ.κ (v0.comp ((GlobalTheory.CompanionTheory.Ar.ValHom.stalkEquiv ξ hξ q0).symm.toRingHom.comp
       ((algebraMap O Ω).codRestrict (regAt ξ q0) (hreg q0)))) hinj hcard hrange) hχ x₀ x N hx₀ hx hrel
   have hNdet : ∀ i, (N i).det = v0 (Mt i).det := fun i => (RingHom.map_det v0 (Mt i)).symm

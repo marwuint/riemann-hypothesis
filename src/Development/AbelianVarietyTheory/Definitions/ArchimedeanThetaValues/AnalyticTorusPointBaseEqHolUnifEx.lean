@@ -138,14 +138,6 @@ def model : letI := H.starRing; GtAn (arcIn c ℂ bF) :=
 
 end Model
 
-example : letI := host.starRing
-    letI : Algebra (FractionRing ℂ) ℂ := (FractionRing.algEquiv ℂ ℂ).toRingHom.toAlgebra
-    Nonempty (GtAn (arcIn (coeff (level host 5 (by norm_num))) ℂ (coeff _).F.val.toRingHom)) := by
-  letI : Algebra (FractionRing ℂ) ℂ := (FractionRing.algEquiv ℂ ℂ).toRingHom.toAlgebra
-  haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ :=
-    IsScalarTower.of_algebraMap_eq fun x => ((FractionRing.algEquiv ℂ ℂ).commutes x).symm
-  exact ⟨model _ _⟩
-
 section General
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRing (𝓞 E)]
@@ -165,41 +157,6 @@ theorem isScalarTower : IsScalarTower ℂ (FractionRing ℂ) ℂ := by
 
 theorem ex_zero : Λ.u.ex 0 = η[a.D₀.P.A] := by
   rw [(Λ.u.ker 0).2 (zero_mem _), Hom.one_def, toUnit_unit, Category.id_comp]
-
-theorem isLift_fam (z : Fin Λ.A.gB → ℂ) (α : Λ.A.X) :
-    IsLift Λ.u (a.D₀.famφB (Λ.ε α)) (Λ.u.ex z).left ![z, z + Λ.A.ct α, Λ.A.ct α, 0] := fun k => by
-  have h : ∀ p : 𝟙_ (Over (Sp ℂ)) ⟶ a.D₀.P.A, Λ.u.ex z ≫ toUnit a.D₀.P.A ≫ p = p := fun p => by
-    rw [← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp]
-  fin_cases k
-  · exact Category.comp_id _
-  · change (Λ.u.ex z ≫ (𝟙 a.D₀.P.A * toUnit _ ≫ a.D₀.c (Λ.ε α))).left = (Λ.u.ex (z + Λ.A.ct α)).left
-    rw [MonObj.comp_mul, h, Category.comp_id, Λ.u.ex_add, Λ.ct]
-  · change (Λ.u.ex z ≫ toUnit _ ≫ a.D₀.c (Λ.ε α)).left = (Λ.u.ex (Λ.A.ct α)).left
-    rw [h, Λ.ct]
-  · change (Λ.u.ex z ≫ toUnit _ ≫ η[a.D₀.P.A]).left = (Λ.u.ex 0).left
-    rw [h, ex_zero]
-
-theorem fn_mem_Theta (j : ℕ) (α : Λ.A.X) (s : a.D₀.SecB j (Λ.ε α)) : Λ.fn j α s ∈ Λ.A.Theta j α := by
-  refine ⟨?_, fun m z => ?_⟩
-  · have := differentiable_secVal (u := Λ.u) a.D₀.P.isLB s (𝟙 _) (q := id) differentiable_id
-      (z := fun z => ![z, z + Λ.A.ct α, Λ.A.ct α, 0]) (fun k => by fin_cases k <;> simp <;> fun_prop)
-      (fun w => by rw [id, Category.comp_id]; exact isLift_fam Λ w α)
-    simp only [id, Category.comp_id] at this
-    exact this
-  · let m' : Λ.u.Λ := ⟨m, Λ.lam.ge m.2⟩
-    have e₁ : Λ.u.ex (z + m) = Λ.u.ex z := by rw [Λ.u.ex_add, (Λ.u.ker m).2 m'.2, _root_.mul_one]
-    have e₂ : ![z + m, z + m + Λ.A.ct α, Λ.A.ct α, 0] = fun k => ![z, z + Λ.A.ct α, Λ.A.ct α, 0] k +
-        ((![m', m', 0, 0] : Fin 4 → Λ.u.Λ) k : Fin Λ.A.gB → ℂ) := by
-      funext k
-      fin_cases k <;> simp [m'] <;> abel
-    rw [GtAn.fn, GtAn.fn, e₁, e₂, secVal_add_period _ Λ.ah s (isLift_fam Λ z α)]
-    congr 1
-    have n := Λ.A.ah_ne_zero m z
-    simp only [Fin.prod_univ_four, Out.DegPre.famε, Matrix.cons_val, ahFactor_zero a.D₀.P.isLB Λ.ah]
-    change Λ.A.ah m z ^ ((j : ℤ) - 1) * Λ.A.ah m (z + Λ.A.ct α) ^ (1 : ℤ) * _ * _ = _
-    rw [AnArc.ah_add, zpow_sub₀ n]
-    simp
-    field_simp
 
 theorem analyticTorusPoint_base_eq_holUnif_ex (v : Λ.A.V) : (Λ.ex0 v).b = toUnit _ ≫ Λ.u.ex v.2 := by
   haveI := isScalarTower Λ
@@ -465,13 +422,6 @@ theorem analyticTorusPoint_surjective : Function.Surjective Λ.ex0 := by
   exact corr_of_genVal (u := Λ.u) a.D₀.P.isLB ((Λ.ex0 _).isGen _) (g.isGen _) (isLift_gt Λ (w, z) x) (hl x)
     (fun _ => rfl) ((Λ.arcDict_expZero_section _ x).trans (congrArg Units.val (DFunLike.congr_fun hw (Multiplicative.ofAdd x))))
 
-theorem rep_iff (k : ℕ) (p : Out.QkPt a.D₀ (FractionRing ℂ) k) (la : Λ.A.La) :
-    Λ.Rep k p la ↔ ∃ q : Out.QkPt a.D₀ ℂ k, QkExt (algebraMap _ ℂ) p q ∧ q.y = Λ.ε la.y ∧
-      q.g = Λ.ex0 ((k : ℂ)⁻¹ • Λ.A.P0 la) := by
-  obtain ⟨q, hq, hu⟩ := TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ)
-    (RingHom.ext fun _ => rfl) p
-  exact ⟨fun h => ⟨q, hq, h q hq⟩, fun ⟨q', hq', h⟩ q'' hq'' => (hu _ hq'').trans (hu _ hq').symm ▸ h⟩
-
 end General
 
 section Bridge
@@ -538,60 +488,6 @@ def toDict (Λ : letI := H.starRing; GtAn a) : letI := H.starRing; GtDict a.D₀
     ker := isZero_iff Λ
     iota := isIota Λ }
 
-theorem exists_rep (Λ : letI := H.starRing; GtAn a) (k : ℕ) [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) :
-    letI := H.starRing; ∃ la, Λ.Rep k p la := by
-  letI := H.starRing
-  obtain ⟨q, hq, -⟩ := TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ)
-    (RingHom.ext fun _ => rfl) p
-  obtain ⟨la, rfl⟩ := (toDict Λ).qk_surjective k q
-  exact ⟨la, (rep_iff Λ k p la).2 ⟨_, hq, rfl, rfl⟩⟩
-
-theorem rep_unique (Λ : letI := H.starRing; GtAn a) (k : ℕ) [NeZero k] (p : Out.QkPt a.D₀ (FractionRing ℂ) k) :
-    letI := H.starRing; ∀ la la', Λ.Rep k p la → Λ.Rep k p la' → ∃ m, la' = la + k • m := by
-  letI := H.starRing
-  intro la la' h h'
-  obtain ⟨q, hq, hy, hg⟩ := (rep_iff Λ k p la).1 h
-  obtain ⟨hy', hg'⟩ := h' q hq
-  have e : (toDict Λ).qk k la' = (toDict Λ).qk k la := TorusExt.qk_ext (hy'.symm.trans hy) (hg'.symm.trans hg)
-  refine ((toDict Λ).qk_equiv_iff k la la').1 ?_
-  rw [e]
-  have := (toDict Λ).qk_equiv_add k la 0
-  rw [smul_zero] at this
-  erw [_root_.add_zero] at this
-  exact this
-
 end Bridge
-
-section Test
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
-  [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
-
-theorem rep_eta (v : HypLattice H) : letI := H.starRing
-    (model c c.F.val.toRingHom).Rep l.M ((arcIn c ℂ c.F.val.toRingHom).eta v)
-      (AnArc.La.mk (A := splitArc l) v.1 (ConjDual.toDual H v.2).toAddMonoidHom 0) := by
-  letI := H.starRing
-  let ζ : ℂˣ := Units.mk0 (zeta l.M) (Complex.exp_ne_zero _)
-  have h : (ζ : ℂ) = algebraMap (FractionRing ℂ) ℂ (arcRoot c ℂ c.F.val.toRingHom (Nat.dvd_lcm_left l.M l.A)) :=
-    IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ _
-  have hζ : ζ ^ l.M = 1 := Units.ext ((Units.val_pow_eq_pow_val _ _).trans
-    (isPrimitiveRoot_zeta (lt_of_lt_of_le three_pos l.three_le)).pow_eq_one)
-  intro q hq
-  obtain rfl := (qkExt_qkPt ℂ (isPrimitiveRoot_arcRoot c ℂ c.F.val.toRingHom (Nat.dvd_lcm_left l.M l.A)).pow_eq_one
-    (algebraMap (FractionRing ℂ) ℂ) (RingHom.ext fun _ => rfl) hζ h v q).1 hq
-  refine ⟨rfl, congrArg (pt _ ℂ) (MonoidHom.ext fun x => Units.ext ?_)⟩
-  change ((ζ ^ ConjDual.toDual H v.2 x.toAdd : ℂˣ) : ℂ) =
-    eTwoPi ((l.M : ℂ)⁻¹ * (0 + (ConjDual.toDual H v.2 x.toAdd : ℤ) - (splitArc l).H 0 0 / (2 * Complex.I)))
-  rw [Units.val_zpow_eq_zpow_val, AnArc.H_zero_left, zero_div, sub_zero, zero_add, AnArc.e_mul_intCast]
-  rfl
-
-example : letI := H.starRing
-    ¬ (model c c.F.val.toRingHom).Rep l.M ((arcIn c ℂ c.F.val.toRingHom).eta ((1, 0) : HypLattice H)) 0 := by
-  letI := H.starRing
-  intro h
-  obtain ⟨q, hq, hy, -⟩ := (rep_iff _ _ _ _).1 h
-  exact one_ne_zero (α := 𝓞 E) (hq.1.symm.trans hy)
-
-end Test
 
 end GlobalTheory.GtAnModel

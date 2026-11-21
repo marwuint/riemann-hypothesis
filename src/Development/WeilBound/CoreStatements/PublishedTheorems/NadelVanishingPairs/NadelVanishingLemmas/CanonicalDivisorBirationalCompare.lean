@@ -3,13 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProporti
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldMapBijectiveOfIsIsoRestrictStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverTargetBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirationalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldMapBijectiveOfIsIsoRestrict
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverTargetBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTopFormPullbackBijectiveBirational
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.FormOrderBirationalPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightAndMultiplicityPullbackIsIsoOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightAndMultiplicityPullbackIsIsoOpen
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.CartierDivisorMultCharacterize
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrdEqMultOfIsCartierDivisorOfRationalFormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrdEqMultOfIsCartierDivisorOfRationalForm
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -42,14 +42,14 @@ theorem not_mem_supp_sub_pullCart : ∀ (k : Type) [Field k] [CharZero k] (Y₀ 
   haveI : Smooth (t ≫ q) := SmoothOfRelativeDimension.smooth n (t ≫ q)
   haveI : GlobalTheory.IsNormalScheme Y₀ := isNormalScheme_of_smooth' q
   haveI : GlobalTheory.IsNormalScheme Y₁ := isNormalScheme_of_smooth' (t ≫ q)
-  have hbir := GlobalTheory.T.functionFieldMap_bijective_of_isIso_restrict' Y₀ Y₁ t U hU hiso
+  have hbir := _root_.GlobalTheory.Discrepancy.functionFieldMap_bijective_of_isIso_restrict Y₀ Y₁ t U hU hiso
   have hpull : EtaleKlt.ratPull q t n η ≠ 0 := fun h =>
-    hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k Y₀ Y₁ q t hbir n).1 (h.trans (map_zero _).symm))
+    hη ((_root_.GlobalTheory.EtaleKlt.ratPull_bijective_of_birational k Y₀ Y₁ q t hbir n).1 (h.trans (map_zero _).symm))
   rw [(GlobalTheory.T.cartier_divisor_mult_characterize Y₁ (K₁ - pullCart t K₀)).2.1 y]
   rintro ⟨z, hzy, hz⟩
   apply hz
   have htz : t z ∈ U := (hzy.map t.continuous).mem_open U.isOpen hy
-  obtain ⟨hc, hm⟩ := GlobalTheory.T.coheight_and_multiplicity_pullback_isIso_open Y₀ Y₁ t U hiso z htz
+  obtain ⟨hc, hm⟩ := _root_.GlobalTheory.Discrepancy.MultIso.coheight_eq_and_mult_pullCart Y₀ Y₁ t U hiso z htz
   have hsub : (K₁ - pullCart t K₀).mult z = K₁.mult z - (pullCart t K₀).mult z := by
     have := CartierDiv.mult_add (K₁ - pullCart t K₀) (pullCart t K₀) z
     rw [sub_add_cancel] at this
@@ -57,15 +57,15 @@ theorem not_mem_supp_sub_pullCart : ∀ (k : Type) [Field k] [CharZero k] (Y₀ 
   rw [hsub, hm K₀, sub_eq_zero]
   by_cases h1 : Order.coheight z = 1
   · obtain ⟨E', hE'⟩ := DivOver.exists_isAt_of_coheight_eq_one (p := t ≫ q) h1
-    obtain ⟨E, hO⟩ := GlobalTheory.T.exists_primeDivisor_over_target_birational k Y₀ Y₁ q t hbir E'
+    obtain ⟨E, hO⟩ := _root_.GlobalTheory.Discrepancy.DivOver.exists_over_of_bijective k Y₀ Y₁ q t hbir E'
     obtain ⟨F, hF⟩ := DivOver.exists_isAt_of_coheight_eq_one (p := q) (z := t z) (hc ▸ h1)
     have hthr : E.Through (t z) := by
       intro f hf
       obtain ⟨a, rfl⟩ := hf
       exact (hO _).2 ((hE' _).2 ⟨t.stalkMap z a, (GlobalTheory.functionFieldMap_algebraMap t z a).symm⟩)
     have hE : E.IsAt (t z) := isAt_of_through' hF hthr
-    rw [← GlobalTheory.T.formOrd_eq_mult_of_isCartierDivisorOfRationalForm k Y₁ (t ≫ q) n _ hpull K₁ h₁ E' z hE',
-      ← GlobalTheory.T.formOrd_eq_mult_of_isCartierDivisorOfRationalForm k Y₀ q n η hη K₀ h₀ E (t z) hE]
+    rw [← _root_.GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm k Y₁ (t ≫ q) n _ hpull K₁ h₁ E' z hE',
+      ← _root_.GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm k Y₀ q n η hη K₀ h₀ E (t z) hE]
     exact GlobalTheory.T.form_order_birational_pullback k Y₀ Y₁ q t hbir E' E hO n η hη
   · have a : K₁.mult z = 0 := by_contra fun h => h1 (CartierDiv.coheight_eq_one_of_mult_ne_zero h)
     have b : K₀.mult (t z) = 0 :=

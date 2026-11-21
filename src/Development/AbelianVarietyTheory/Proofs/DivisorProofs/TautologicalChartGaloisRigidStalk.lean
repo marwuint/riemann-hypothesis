@@ -5,7 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiffPow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubMemPowOfMemMaximalIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TautologicalChartEqOfSameGenericPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TautologicalChartEqOfSameGenericPoint
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExtId
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.SiegJoin GlobalTheory.Poinc GlobalTheory.TChart
@@ -86,7 +88,7 @@ theorem GlobalTheory.TChart.galRigid_stalk_of_isFam : ∀ {g n : ℕ} {φ : InvF
   have hyy := genPt_eq j ξ y hy _ _ hf κ₁ κ₂ hκ₁ hκ₂
   have hm : ∀ r, θ r - ((σ : R' →+* R').comp θ) r ∈ maximalIdeal R' := fun r => by
     rw [← neg_sub]; exact neg_mem (hres r)
-  obtain ⟨hu, hs'⟩ := GlobalTheory.T.tautologicalChart_eq_of_same_genericPoint hn F C G₁ y α₁ hF R' θ ((σ : R' →+* R').comp θ) hR' hθ (σ.injective.comp hθ)
+  obtain ⟨hu, hs'⟩ := _root_.GlobalTheory.TInj.tautChart_eq_of_genPt hn F C G₁ y α₁ hF R' θ ((σ : R' →+* R').comp θ) hR' hθ (σ.injective.comp hθ)
     inferInstance inferInstance κ₁ κ₂ hκ₁ hκ₂ hyy
   have hW := base_eq C θ ((σ : R' →+* R').comp θ) hu hm
   have e := eq_of_base_coord C θ ((σ : R' →+* R').comp θ) hW (hs' hW)

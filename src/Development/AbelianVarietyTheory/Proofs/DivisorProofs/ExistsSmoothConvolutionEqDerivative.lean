@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsExpLieAlgebraComplexUnits
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstFunctionalIntegralSmoothCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaplacePolynomialKernelDerivativeWordsFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstFunctionalIntegralSmoothCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaplacePolynomialKernelDerivativeWordsFamily
 import GroundTheory.AutomorphicForms.GKModules.Casimir
 import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar
 import GroundTheory.AutomorphicForms.HarishChandraInvariance.Compact
@@ -25,8 +25,8 @@ theorem foldr_rightDeriv_leftTranslate {𝔸 : Type} [NormedRing 𝔸] [NormedAl
 
 theorem exists_alpha_convolution : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) (P : Polynomial ℂ), P.Monic → ∀ [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure → ∀ l : List 𝔤, ∃ α : G → ℂ, h.IsSmoothFun α ∧ Continuous α ∧ HasCompactSupport α ∧ ∀ f : h.smoothFuns (F := ℂ), Polynomial.aeval (∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) P f = 0 → ∀ g, ∫ y, (f : G → ℂ) (g * y) * α y ∂μ = l.foldr h.rightDeriv (f : G → ℂ) g := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b P hP _ _ μ hμ l
-  obtain ⟨hcont, hinv, K, hK, hfam⟩ := GlobalTheory.T.laplacePolynomialKernel_derivativeWords_family 𝔸 G 𝔤 h d b P hP μ hμ
-  obtain ⟨α, hαs, hαc, hα⟩ := GlobalTheory.T.first_functional_integral_smooth_compact 𝔸 G 𝔤 h d b μ hμ (solG h b P) hcont hinv K hK _ (hfam l)
+  obtain ⟨hcont, hinv, K, hK, hfam⟩ := _root_.GlobalTheory.HCA.solG_smFn 𝔸 G 𝔤 h d b P hP μ hμ
+  obtain ⟨α, hαs, hαc, hα⟩ := _root_.GlobalTheory.HCA.smFn_nil_eq_integral_smooth 𝔸 G 𝔤 h d b μ hμ (solG h b P) hcont hinv K hK _ (hfam l)
   refine ⟨α, hαs, ?_, hαc, ?_⟩
   · letI := h.chartedSpace
     exact hαs.continuous

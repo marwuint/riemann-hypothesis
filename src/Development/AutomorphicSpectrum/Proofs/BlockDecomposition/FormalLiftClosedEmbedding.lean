@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubPairRight
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningAffinePreimageStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningAffinePreimage
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningCechCoverCompatible
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningCechRestrictionCommutesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningCechRestrictionCommutes
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningTwistedSectionTransition
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.AbLaw PositivityTheory.FormalThickening
 open GlobalTheory.ProjSpace GlobalTheory.QCoh.Qcqs GlobalTheory.Cartier GlobalTheory.CompanionTheory.FormalAlg GlobalTheory.CompanionTheory.FormalAlg.Lift
@@ -193,7 +193,7 @@ theorem form_step (i : ι) (e : ℕ)
     red I Y N D β hβ v hN (fun e S => (hDβ e S).ge) (d * n) e S
   have hred : ∀ n : ℤ, Function.Surjective (ρ n) ∧
       LinearMap.ker (ρ n) = I ^ (e + 1) • ⊤ := fun n =>
-    GlobalTheory.T.thickening_affine_preimage R I Y β hβ (fun e => pw (N e) (d * n)) (fun e => pullPow (v e) (d * n))
+    _root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.redL_surjective_ker R I Y β hβ (fun e => pw (N e) (d * n)) (fun e => pullPow (v e) (d * n))
       (fun e => ⟨isLB_pw (hN e).1 _, pullPow_isGen (v e) _ (hN e).2⟩) e (D (e + 1) S) (D e S)
       (hDβ e S) (hDa (e + 1))
   have hφ : ∀ (j : ι) (n : ℤ) (x : Tm I Y N D d (e + 1) n S),
@@ -205,7 +205,7 @@ theorem form_step (i : ι) (e : ℕ)
     rw [hshp e j] at this
     exact this
   have hone : ρ 0 (oneT I Y N D d (e + 1) S) = oneT I Y N D d e S :=
-    GlobalTheory.T.thickening_cech_restriction_commutes R I Y β hβ N v hN ι D (fun e S => (hDβ e S).ge) (d * 0) (mul_zero d) e S
+    _root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.red_oneOn R I Y β hβ N v hN ι D (fun e S => (hDβ e S).ge) (d * 0) (mul_zero d) e S
   obtain ⟨k, n, Q, w, hQ, hk, hw, he⟩ := ih t (ρ t a)
   obtain ⟨w', hw', rfl⟩ : ∃ w' ∈ I • (⊤ : Submodule R (Tm I Y N D d (e + 1) (n : ℤ) S)),
       ρ n w' = w := by

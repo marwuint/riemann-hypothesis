@@ -100,11 +100,6 @@ theorem intC_add {x y : E ⊗[F] Af} (hx : IntC b x) (hy : IntC b y) : IntC b (x
   rw [map_add]
   exact ohat_add (hx k) (hy k)
 
-theorem intC_nsmul {x : E ⊗[F] Af} (hx : IntC b x) (m : ℕ) : IntC b (m • x) := by
-  intro k
-  rw [map_nsmul]
-  exact ohat_nsmul (hx k) m
-
 theorem intC_sum {κ : Type*} (s : Finset κ) {f : κ → E ⊗[F] Af} (hf : ∀ i ∈ s, IntC b (f i)) :
     IntC b (∑ i ∈ s, f i) := by
   intro k
@@ -126,14 +121,6 @@ theorem exists_den_mul (b : Module.Basis ι F E) :
     simp
   rw [h1]
   exact ohat_mul (h (i, j, k)) (ohat_mul (hx i) (hy j))
-
-theorem intC_incl {e : E} (he : ∀ k, IntF (b.repr e k)) :
-    IntC b (Algebra.TensorProduct.includeLeftRingHom (R := F) (B := Af) e) := by
-  intro k
-  rw [Algebra.TensorProduct.includeLeftRingHom_apply]
-  simp only [coord, TensorProduct.lift.tmul, LinearMap.mk₂_apply]
-  rw [← Algebra.algebraMap_eq_smul_one]
-  exact he k
 
 end Coord
 

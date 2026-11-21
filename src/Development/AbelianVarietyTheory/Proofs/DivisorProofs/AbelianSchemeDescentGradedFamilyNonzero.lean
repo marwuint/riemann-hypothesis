@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemCodimOneRegularChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallMemRegularChartIffHeightOnePrimesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemCodimOneRegularChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallMemRegularChartIffHeightOnePrimes
 
 noncomputable section
 
@@ -91,9 +91,9 @@ theorem gradedFam_and_ne_zero : ∀ σ : Setup, GradedFam σ.c₀ σ.N ∧ ∃ k
     have hu0 : u ≠ 0 := by
       have : genericPoint σ.A.left ∈ locus σ.D k u := hU ▸ hx
       exact CartierDiv.GeneratesAt.ne_zero this
-    choose m hm using fun x => GlobalTheory.T.exists_pow_mul_mem_codimOne_regular_chart' σ x u
+    choose m hm using fun x => _root_.GlobalTheory.Desc.exists_pow_mul_mem_codimOne_regular_chart σ x u
     obtain ⟨M, hM⟩ := ((finite_height_one σ.hf).image m).bddAbove
-    refine ⟨k, hk, σ.c₀ σ.f ^ M * u, ⟨?_, (GlobalTheory.T.forall_mem_regularChart_iff_heightOne_primes σ _).2 fun p hp hfp => ?_⟩,
+    refine ⟨k, hk, σ.c₀ σ.f ^ M * u, ⟨?_, (_root_.GlobalTheory.Desc.Setup.forall_mem_W_iff σ _).2 fun p hp hfp => ?_⟩,
       mul_ne_zero (pow_ne_zero _ (c₀_f_ne_zero σ)) hu0⟩
     · rw [← map_pow]
       exact sec_mul_left _ _ (fun x => regAt_cst _ x _) hu

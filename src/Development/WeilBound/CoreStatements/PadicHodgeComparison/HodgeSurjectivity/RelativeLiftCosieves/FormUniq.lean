@@ -1,5 +1,15 @@
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.RelativeLiftCosieves.LiftsNonempty
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.Imports
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MemBoundariesZeroIff
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DoubleComplexMapMemTotal
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.FaceMapCompSuccAboveCastSucc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDesc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDifferentialOneInclusion
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TerminalRes
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousCochainFiltrationDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StCocycle
 
 set_option autoImplicit false
@@ -108,8 +118,6 @@ theorem tv_mem {m p r : ℕ} (s : ComposableArrows (inU q V).FullSubcategory m) 
 
 theorem InF.lev0 {n : ℕ} (x : Cn (modF (AF q V)) n) : InF q V 0 x := fun s => by
   rw [Thick.pdPow_zero]; trivial
-
-theorem InF.zero {n r : ℕ} : InF q V r (0 : Cn (modF (AF q V)) n) := fun s => Submodule.zero_mem _
 
 theorem InF.add {n r : ℕ} {x y : Cn (modF (AF q V)) n} (hx : InF q V r x) (hy : InF q V r y) : InF q V r (x + y) :=
   fun s => Submodule.add_mem _ (hx s) (hy s)

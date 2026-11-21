@@ -55,8 +55,6 @@ theorem actRep_piQ (D : LData E Ω l) (e : ℤ) {N : ℕ} (ρ : (ZMod N)ˣ →* 
 
 end Act
 
-example (Ω : Type) [Field Ω] [Algebra ℚ Ω] (N : ℕ) : IsCycAct (E := ℚ) Ω N 1 := fun _ σ _ x => by simp
-
 def UnrHom (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (l : ℕ) : Set (G K Ω → ZMod l) :=
   {φ | IsLocallyConstant φ ∧ (∀ a b, φ (a * b) = φ a + φ b) ∧
     ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ g ∈ Ine (F := K) A, φ g = 0}

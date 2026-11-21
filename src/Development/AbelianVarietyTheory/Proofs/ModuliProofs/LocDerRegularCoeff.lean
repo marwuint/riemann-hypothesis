@@ -6,9 +6,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueUniformisingVectorVerticalTangentStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFibreCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldAbelianVarietyAlgebraicStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueSectionOfLocallyRegularStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFibreCoords
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldAbelianVarietyAlgebraic
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueSectionOfLocallyRegular
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -214,7 +214,7 @@ theorem locDer_regular_coeff : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀
       ext j
       by_cases hj : j = i <;> simp [hj]
     rw [hs, map_smul, smul_eq_mul]
-  choose D _ hDv using fun i : Fin P₀.g => GlobalTheory.T.invariant_vectorField_abelianVariety_algebraic P₀ u Hm χ hG (Pi.single i 1)
+  choose D _ hDv using fun i : Fin P₀.g => _root_.GlobalTheory.KS.invariant_field_algebraic P₀ u Hm χ hG (Pi.single i 1)
   have hfn : ∀ (W : X.Opens) (f : Γ(X, W)),
       (fun z' => valAt' (u.ex z').left (m ⁻¹ᵁ W) ((m.app W).hom f)) = fn u m W f := fun W f => by
     funext z'
@@ -222,9 +222,9 @@ theorem locDer_regular_coeff : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀
   have hc : ∀ a, ∃ c : Γ(P₀.A.left, m ⁻¹ᵁ W₀), ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (m ⁻¹ᵁ W₀) →
       valAt' (u.ex z).left (m ⁻¹ᵁ W₀) c = wf z a := by
     intro a
-    refine (GlobalTheory.T.existsUnique_section_of_locally_given_values P₀ u Hm χ hG (m ⁻¹ᵁ W₀) (fun z => wf z a) ?_).exists
+    refine (_root_.GlobalTheory.existsUnique_section_of_locally_regular P₀ u Hm χ hG (m ⁻¹ᵁ W₀) (fun z => wf z a) ?_).exists
     intro z hz
-    obtain ⟨W, t, hzW, hdet⟩ := GlobalTheory.T.exists_fibre_coords_det_fderiv_ne_zero_of_smooth P₀ u Hm χ hG R x₀ X p m hsm hpb z
+    obtain ⟨W, t, hzW, hdet⟩ := _root_.GlobalTheory.KS.exists_fibre_coords P₀ u Hm χ hG R x₀ X p m hsm hpb z
     have hzW' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ ((𝟙 P₀.A.left) ⁻¹ᵁ (m ⁻¹ᵁ W)) := hzW
     let J : Matrix (Fin P₀.g) (Fin P₀.g) Γ(P₀.A.left, (𝟙 P₀.A.left) ⁻¹ᵁ (m ⁻¹ᵁ W)) :=
       fun i b => D i (m ⁻¹ᵁ W) ((m.app W).hom (t b))

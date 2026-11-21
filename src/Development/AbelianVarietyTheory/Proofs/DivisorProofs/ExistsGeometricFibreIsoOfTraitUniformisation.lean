@@ -1,15 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniTrait
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianVarietyDescendsOfRationalThetaPoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedAbelianVarietyDescendsOfRationalThetaPo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleSymmetryHypothesisBaseChangeStatement
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsWithoutCohomology
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaPtOfMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HypSOfBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreThetaConstantsAlgebraicOverCompleteAlgCloseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreThetaConstantsAlgebraicOverCompleteAlgClose
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -46,10 +47,10 @@ theorem exists_geomIso_of_unif : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
       IsThetaPt B (n ^ j) x fun i => (Scheme.ΓSpecIso (CommRingCat.of (Kb W))).inv.hom (e₀ (v i)) := by
     intro j hj
     obtain ⟨C, _, jC, Ix, x, v, hcov, htor, hC⟩ :=
-      GlobalTheory.T.fibre_thetaConstants_algebraic_over_completeAlgClosed R hR D n hn ho hu W hW φ hφ hloc D' G' A' hD hG hU e₀ he₀ B b hB.2.1 hB.2.2.symm j hj
+      _root_.GlobalTheory.Mum.FibreTheta.theta_consts_algebraic R hR D n hn ho hu W hW φ hφ hloc D' G' A' hD hG hU e₀ he₀ B b hB.2.1 hB.2.2.symm j hj
     exact ⟨Ix, x, v, hcov, GlobalTheory.Mum.ThetaDown.isThetaPt_of_map (Sp (Kb W)) B (Kb W) C jC (𝟙 _) (spMap jC) (Category.comp_id _) (n ^ j) Ix x
       (fun i => e₀ (v i)) htor hC⟩
-  obtain ⟨A₀, a, ha, hLa⟩ := GlobalTheory.T.polarisedAbelianVariety_descends_of_rational_thetaPoints (Kb R) (Kb W) e₀ B n hn ho hth
+  obtain ⟨A₀, a, ha, hLa⟩ := _root_.GlobalTheory.ThetaDescent.descends (Kb R) (Kb W) e₀ B n hn ho hth
   refine ⟨A₀, e₀, he₀, ?_, B, a, b, ha, hLa, hB.2.1, hB.2.2.symm⟩
   exact GlobalTheory.SymDescentAlgClosed.hypS_of_baseChange (Kb R) (Kb W) e₀ A₀ B a ha hLa (GlobalTheory.T.lineBundleSymmetryHypothesis_baseChange _ _ _ A' B b hB hS)
 

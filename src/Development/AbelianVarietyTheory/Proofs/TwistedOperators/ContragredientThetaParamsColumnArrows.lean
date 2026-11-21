@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRealThetaParameterPairThetaPartnerSignedParameStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRealThetaParameterPairThetaPartnerSignedParame
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CartFrSgn
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open MeasureTheory Matrix GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.Grid
 open scoped TensorProduct InnerProductSpace
@@ -279,7 +280,7 @@ theorem parPi_pairPar : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.Cusp
     far_parPi (grid D τ) hN hs1 hγq hi
   have hth : ThetaPar (sLen D - 1) (parP D i τ) (flip (parP D (i + 1) τ)) (cen D τ (D.R.m - i))
       (cen D τ (D.R.m - i)) := by
-    have h := GlobalTheory.T.isRealThetaParameterPair_thetaPartnerSignedParameter (sLen D - 1) false (cen D τ (D.R.m - i) : ℚ) (cen D τ (D.R.m - i) : ℚ) (parP D i τ) (bigN D)
+    have h := _root_.GlobalTheory.PairLift.FromSigned.thetaPar_partner (sLen D - 1) false (cen D τ (D.R.m - i) : ℚ) (cen D τ (D.R.m - i) : ℚ) (parP D i τ) (bigN D)
       (by omega) ⟨_, GridData.mem_parPi.2 (Or.inl ⟨0, Nat.zero_le _, rfl⟩)⟩
       (by
         intro x hx y hy e

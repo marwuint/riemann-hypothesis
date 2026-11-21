@@ -51,13 +51,4 @@ theorem intS_c2lin {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [Comm
     (μ.mapDomain (fun p : Fin 2 × Fin dd => (p.1.succ, p.2)) + Finsupp.single ((0 : Fin 3), i) 1) Y.B.ph2)
   exact VF.Ge.sum fun i _ => by simpa using (hu i).mul (Y.intPh2 _)
 
-theorem rank_maximal_first_step_of_halves (hP : FirstStepFirstHalfCondition) (hQ : FirstStepSecondHalfCondition) : RankMaximalInitialCoefficient := by
-  intro C _ _ V O _ _ dd Y d _ I _ p hrk Hc hAlt g a hbig w x hG hc0 γ lam hW
-  obtain ⟨A, hA, hlin, hfe⟩ := hP C V O dd Y d I p hrk Hc hAlt g a hbig w x hG hc0 γ lam hW
-  have hc := intS_c2lin Y (fun i => PowerSeries.coeff 1 (γ i)) fun i => (hW.1 i).2 1
-  exact hQ C V Y.algClosed dd Y.B.G Y.intF A _ hA hc hlin hfe
-
-theorem rank_maximal_of_halves (hP : FirstStepFirstHalfCondition) (hQ : FirstStepSecondHalfCondition) : RankMaximalOfNondegenerate :=
-  rank_maximal_of_nondegenerate (rank_maximal_first_step_of_halves hP hQ)
-
 end Formalism.L2.FormalSeriesBounds

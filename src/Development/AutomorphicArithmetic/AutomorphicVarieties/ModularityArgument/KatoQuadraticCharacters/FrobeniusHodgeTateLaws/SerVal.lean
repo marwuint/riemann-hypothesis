@@ -28,13 +28,6 @@ def AvgMF : Prop :=
     MF k (N * l) (ch χ) (frm l N m k θ (θ * χ) f) ∧
       2 * lam B c (frm l N m k θ (θ * χ) f) = (N.totient : ℂ) * α ^ m * mesMu k l (hat θ) (tw2 N (θ (-1))) α B c m f
 
-def SerVal : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N : ℕ) [NeZero N] (θ χ : DirichletCharacter ℂ N) (m k : ℕ)
-    (ψ : DirichletCharacter (PadicAlgCl l) (l ^ m)) (a b : ℤ) (t : ℕ → ℂ) (α : ℂ) (B : ℕ) (c : ℕ → ℂ), l ≠ 2 → ¬ l ∣ N → 1 ≤ m → 3 ≤ k → Odd k →
-    χ (-1) = -1 → IsCoprime a N → IsCoprime b N → α ≠ 0 → EigAll k N l χ t α B c → ι (ψ (-1)) = θ (-1) →
-    lam B c (fun i => ι (ser ι N θ m k ψ a b i)) =
-      θ (a : ZMod N) * (θ * χ)⁻¹ (b : ZMod N) * α ^ m * mesMu k l (hat θ) (tw2 N (θ (-1))) α B c m fun y => ι (ψ y)
-
 end UpperTheory.V.Z.Kato.Joint
 
 end

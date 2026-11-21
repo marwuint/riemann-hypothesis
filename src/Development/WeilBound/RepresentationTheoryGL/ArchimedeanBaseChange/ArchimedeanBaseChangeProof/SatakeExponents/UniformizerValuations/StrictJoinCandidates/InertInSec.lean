@@ -19,10 +19,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 def InertInSec : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (S : Set (Pl E)), IsSection S →
   ∀ w : Pl E, ¬ IsSplitAt w → w ∈ S
 
-def LoneId : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (σ : SmIrr (UL n w))
-  (K' : Subgroup (UL n w)), IsLevel (MonoidHom.id _) (KL n w) K' → ∀ y : fixed σ.ρ K',
-    PositivityTheory.Rg.BcB.F.Eig.locOp σ K' (U.lone K') y = y
-
 def gc (w : Pl E) (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ) (c : (Fin n → ℤ) →₀ ℂ) : UL n w → ℂ := fun y =>
   c.sum fun x t => t * (((iwU n w b).relIndex (KL n w) : ℕ) : ℂ) * fU n w b ϖ (lOf x) y
 

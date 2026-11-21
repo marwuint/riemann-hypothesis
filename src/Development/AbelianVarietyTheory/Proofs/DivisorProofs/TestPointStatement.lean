@@ -121,14 +121,6 @@ end GlobalTheory.DetHT.TestPt
 
 namespace GlobalTheory.DetHT
 
-theorem testPtSt : TestPtSt := by
-  intro E _ _ _ H Dw l Xo c Z p _ _ P hP
-  obtain ⟨K, _, k, z, hK, hz⟩ := hP
-  obtain ⟨T, kO, yT, hT, hkO, h⟩ :=
-    TestPt.exists_integral_point Z.s (projProper _ _ _ Z.proj) p k hK (z ≫ Z.j)
-  refine ⟨spMap kO ≫ yT, ?_, T, kO, yT, hT, hkO, rfl⟩
-  rw [h, hz, Category.assoc]
-
 end GlobalTheory.DetHT
 
 end

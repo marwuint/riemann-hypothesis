@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarize
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedCentralizerIsNormOneTorus
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
 import GroundTheory.GlobalFields.LocalAtPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormOneMulCompactOfTwistedNormCompactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormOneMulCompactOfTwistedNormCompact
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.BCT
 open scoped Classical TensorProduct
 
@@ -45,7 +45,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
       rw [h3]
     set C' : Set (GLw n w) := (fun c : GLw n w => y * c⁻¹) '' C
     have hC' : IsCompact C' := hC.image (by fun_prop)
-    obtain ⟨D, hD, hDp⟩ := GlobalTheory.T.exists_normOne_mul_compact_of_twistedNorm_compact K hnorm n y.val hReg C' hC'
+    obtain ⟨D, hD, hDp⟩ := _root_.GlobalTheory.Tw.NormOneCore.exists_normOne_mul_compact K hnorm n y.val hReg C' hC'
     refine ⟨D, hD, fun z hz hzC => ?_⟩
     have hzv : z.val * GlobalTheory.Tw.nrm y.val = GlobalTheory.Tw.nrm y.val * z.val := by
       rw [← hN, ← Units.val_mul, hz, Units.val_mul]

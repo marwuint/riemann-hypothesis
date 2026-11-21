@@ -71,30 +71,6 @@ def StdT {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) : Prop :=
 
 def dMu {n : ℕ} [NeZero n] (mu : Fin n → ℤ) : ℕ := Nat.card {I : TIdx mu // StdT I}
 
-def SMu {n : ℕ} [NeZero n] (mu : Fin n → ℤ) : Submodule ℤ (GLCoord ℤ n) :=
-  Submodule.span ℤ (Set.range (brk mu))
-
-def torusPt (n : ℕ) : GL (Fin n) (AddMonoidAlgebra ℤ (Fin n → ℤ)) where
-  val := Matrix.diagonal fun a => AddMonoidAlgebra.single (Pi.single a 1) 1
-  inv := Matrix.diagonal fun a => AddMonoidAlgebra.single (Pi.single a (-1)) 1
-  val_inv := by
-    rw [Matrix.diagonal_mul_diagonal]; convert Matrix.diagonal_one using 2
-    funext a; rw [AddMonoidAlgebra.single_mul_single, ← Pi.single_add]; simp [AddMonoidAlgebra.one_def]
-  inv_val := by
-    rw [Matrix.diagonal_mul_diagonal]; convert Matrix.diagonal_one using 2
-    funext a; rw [AddMonoidAlgebra.single_mul_single, ← Pi.single_add]; simp [AddMonoidAlgebra.one_def]
-
-def prMu {n : ℕ} (M : GLMod n) (mu : Fin n → ℤ) : Matrix M.ι M.ι ℤ :=
-  fun i j => (evGL (torusPt n) (M.A i j)).coeff mu
-
-def IsHighest {n : ℕ} (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → ℤ) (x : M.ι → R) : Prop :=
-  Matrix.mulVec ((prMu M mu).map (Int.castRingHom R)) x = x ∧
-  ∀ (R' : Type) [CommRing R'] [Algebra R R'] (u : GL (Fin n) R'), (∀ a, u.val a a = 1) →
-    (∀ a b, b < a → u.val a b = 0) → Matrix.mulVec (M.A.map (evGL u)) (fun i => algebraMap R R' (x i)) = fun i => algebraMap R R' (x i)
-
-def typeSum {n : ℕ} (M : GLMod n) (pi : Set (Fin n → ℤ)) : Submodule ℚ (M.ι → ℚ) :=
-  Submodule.span ℚ {y | ∃ mu ∈ pi, ∃ v, IsHighest M ℚ mu v ∧ ∃ g : GL (Fin n) ℚ, y = Matrix.mulVec (M.A.map (evGL g)) v}
-
 def DomLE {n : ℕ} (nu mu : Fin n → ℤ) : Prop :=
   (∀ a : Fin n, ∑ b ∈ univ.filter (· ≤ a), nu b ≤ ∑ b ∈ univ.filter (· ≤ a), mu b) ∧ ∑ b, nu b = ∑ b, mu b
 
@@ -120,47 +96,6 @@ attribute [instance] ColFam.fJ ColFam.dJ
 def ColFam.vec {n : ℕ} [NeZero n] {M : GLMod n} (CF : ColFam M) (j : CF.J) (I : TIdx (CF.mu j)) : M.ι → ℤ :=
   fun i => CF.ph j i I
 
-def ColFam.Mpi {n : ℕ} [NeZero n] {M : GLMod n} (CF : ColFam M) (pi : Set (Fin n → ℤ)) : Submodule ℤ (M.ι → ℤ) :=
-  Submodule.span ℤ {x | ∃ j, CF.mu j ∈ pi ∧ ∃ I : TIdx (CF.mu j), x = CF.vec j I}
-
-def ColFam.MM {n : ℕ} [NeZero n] {M : GLMod n} (CF : ColFam M) (mu : Fin n → ℤ) : Submodule ℤ (M.ι → ℤ) :=
-  Submodule.span ℤ {x | ∃ j, CF.mu j = mu ∧ x = CF.vec j (canT (CF.mu j))}
-
-abbrev SymIdx (n b : ℕ) := {α : Fin n → Fin (b + 1) // ∑ a, (α a : ℕ) = b}
-
-def symMono {n b : ℕ} (α : SymIdx n b) : Fin n →₀ ℕ := Finsupp.equivFunOnFinite.symm fun a => (α.1 a : ℕ)
-
-def SymMat (n b : ℕ) : Matrix (SymIdx n b) (SymIdx n b) (GLCoord ℤ n) :=
-  fun α β => MvPolynomial.coeff (symMono α)
-    (∏ m : Fin n, (∑ a : Fin n, MvPolynomial.C (algebraMap _ (GLCoord ℤ n) (genMat ℤ n a m)) * X a) ^ (β.1 m : ℕ))
-
-def ginvC (n : ℕ) (a b : Fin n) : GLCoord ℤ n :=
-  (((detU n)⁻¹ : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) * algebraMap _ (GLCoord ℤ n) ((genMat ℤ n).adjugate a b)
-
-def SymDMat (n b : ℕ) : Matrix (SymIdx n b) (SymIdx n b) (GLCoord ℤ n) :=
-  fun α β => MvPolynomial.coeff (symMono α)
-    (∏ m : Fin n, (∑ a : Fin n, MvPolynomial.C (ginvC n m a) * X a) ^ (β.1 m : ℕ))
-
-abbrev LamIdx (n b : ℕ) := {J : Finset (Fin n) // J.card = b}
-
-def LamMat (n b : ℕ) : Matrix (LamIdx n b) (LamIdx n b) (GLCoord ℤ n) :=
-  fun J I => minorC J.1 I.1 J.2 I.2
-
-def IsTensor {n : ℕ} (M M' : GLMod n) {κ : Type} (B : Matrix κ κ (GLCoord ℤ n)) (e : M'.ι ≃ M.ι × κ) : Prop :=
-  ∀ i j, M'.A i j = M.A (e i).1 (e j).1 * B (e i).2 (e j).2
-
-def IsSMu {n : ℕ} [NeZero n] (M : GLMod n) (mu : Fin n → ℤ) (β : M.ι → GLCoord ℤ n) : Prop :=
-  LinearIndependent ℤ β ∧ Submodule.span ℤ (Set.range β) = SMu mu ∧
-  ∀ (R : Type) [CommRing R] (x g : GL (Fin n) R) (i : M.ι),
-    evGL (x * g) (β i) = ∑ j, evGL g (M.A j i) * evGL x (β j)
-
-def Interl {m : ℕ} (lam : Fin (m + 1) → ℤ) (nu : Fin m → ℤ) : Prop :=
-  ∀ a : Fin m, nu a ≤ lam a.castSucc ∧ lam a.succ ≤ nu a
-
-def IsBlock {m : ℕ} {R : Type} [CommRing R] (h : GL (Fin (m + 1)) R) (g1 : GL (Fin m) R) (t : Rˣ) : Prop :=
-  (∀ a b : Fin m, h.val a.castSucc b.castSucc = g1.val a b) ∧ h.val (Fin.last m) (Fin.last m) = t ∧
-  ∀ a : Fin m, h.val a.castSucc (Fin.last m) = 0 ∧ h.val (Fin.last m) a.castSucc = 0
-
 lemma genMat_map_evalR {n : ℕ} {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (g : Matrix (Fin n) (Fin n) R') :
     (MvPolynomial.eval₂Hom (algebraMap R R') (fun ab : Fin n × Fin n => g ab.1 ab.2)).mapMatrix (genMat R n) = g := by
@@ -182,74 +117,6 @@ def brkPol {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) : MvPolynomia
   (genMat ℤ n).det ^ (mu (lastIdx n)).toNat *
     ∏ c : ↥(TCols mu), Matrix.det (Matrix.of fun a b : Fin (colH mu c) =>
       genMat ℤ n ((canT mu c).1.orderEmbOfFin (canT mu c).2 a) ((I c).1.orderEmbOfFin (I c).2 b))
-
-def PathPairCorrespondence (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (n : ℕ) [NeZero n] (mu : Fin n → ℤ), Dominant mu → ∀ (F : Type) [Field F],
-    LinearIndependent F (fun I : {I : TIdx mu // StdT I} => mapCoord (n := n) F (brk mu I.1))
-
-def admB2 (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (n : ℕ) [NeZero n] (mu : Fin n → ℤ), Dominant mu →
-    LinearIndependent ℤ (fun I : {I : TIdx mu // StdT I} => brk mu I.1) ∧
-    Submodule.span ℤ (Set.range fun I : {I : TIdx mu // StdT I} => brk mu I.1) = SMu mu
-
-def admB3 (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (n : ℕ) [NeZero n] (M : GLMod n) (CF : ColFam M),
-    (LinearIndependent ℤ (fun x : (Σ j, {I : TIdx (CF.mu j) // StdT I}) => CF.vec x.1 x.2.1) ∧
-      Submodule.span ℤ (Set.range fun x : (Σ j, {I : TIdx (CF.mu j) // StdT I}) => CF.vec x.1 x.2.1) = ⊤) ∧
-    ∀ (R : Type) [CommRing R],
-      LinearIndependent R (fun x : (Σ j, {I : TIdx (CF.mu j) // StdT I}) => fun i => (CF.vec x.1 x.2.1 i : R)) ∧
-      Submodule.span R (Set.range fun x : (Σ j, {I : TIdx (CF.mu j) // StdT I}) =>
-        fun i => (CF.vec x.1 x.2.1 i : R)) = ⊤
-
-def ColumnFamilyLowerSet (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (n : ℕ) [NeZero n] (M : GLMod n) (CF : ColFam M) (pi : Set (Fin n → ℤ)), DomLowerSet pi →
-    CF.Mpi pi = Submodule.span ℤ {x | ∃ j, CF.mu j ∈ pi ∧ ∃ I : TIdx (CF.mu j), StdT I ∧ x = CF.vec j I} ∧
-    (∀ x : M.ι → ℤ, x ∈ CF.Mpi pi ↔ (fun i => (x i : ℚ)) ∈ typeSum M pi) ∧
-    (∀ x ∈ CF.Mpi pi, ∀ ℓ : GLCoord ℤ n →ₗ[ℤ] ℤ,
-      (fun i => ℓ (Matrix.mulVec M.A (fun j => ((x j : ℤ) : GLCoord ℤ n)) i)) ∈ CF.Mpi pi) ∧
-    (∃ C : Submodule ℤ (M.ι → ℤ), IsCompl (CF.Mpi pi) C) ∧
-    ∀ mu ∈ pi, (∀ nu ∈ pi, DomLE mu nu → nu = mu) →
-      (∃ Φ : (↥(CF.Mpi pi) ⧸ (CF.Mpi (pi \ {mu})).comap (CF.Mpi pi).subtype) ≃ₗ[ℤ]
-          TensorProduct ℤ ↥(SMu mu) ↥(CF.MM mu),
-        ∀ (j : CF.J) (I : TIdx (CF.mu j)) (x : ↥(CF.Mpi pi)) (y : ↥(SMu mu)) (z : ↥(CF.MM mu)),
-          CF.mu j = mu → StdT I → x.1 = CF.vec j I → y.1 = brk (CF.mu j) I → z.1 = CF.vec j (canT (CF.mu j)) →
-          Φ (Submodule.Quotient.mk x) = y ⊗ₜ z) ∧
-      (CF.MM mu : Set (M.ι → ℤ)) = {x | IsHighest M ℤ mu x}
-
-def GenericProjectionCriterion (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (n : ℕ) [NeZero n] (M : GLMod n) (CF : ColFam M) (pi : Set (Fin n → ℤ)), DomLowerSet pi →
-    ∀ (F : Type) [Field F] (x : M.ι → F),
-      x ∈ Submodule.span F {y | ∃ j, CF.mu j ∈ pi ∧ ∃ I : TIdx (CF.mu j), StdT I ∧ y = fun i => (CF.vec j I i : F)} ↔
-      ∀ mu, Dominant mu → mu ∉ pi →
-        Matrix.mulVec ((prMu M mu).map (Int.castRingHom (GLCoord F n)))
-          (Matrix.mulVec (M.A.map (mapCoord F)) (fun i => algebraMap F (GLCoord F n) (x i))) = 0
-
-def ColumnFamilyClosure (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (n : ℕ) [NeZero n],
-    (∀ M : GLMod n, Fintype.card M.ι = 1 → (∀ i j, M.A i j = 1) → Nonempty (ColFam M)) ∧
-    (∀ (M : GLMod n) (mu : Fin n → ℤ) (β : M.ι → GLCoord ℤ n), Dominant mu → IsSMu M mu β → Nonempty (ColFam M)) ∧
-    ∀ (M M' : GLMod n) (ε : ℤ), (ε = 1 ∨ ε = -1) → ∀ e : M'.ι ≃ M.ι,
-      (∀ i j, M'.A i j = ((detU n ^ ε : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) * M.A (e i) (e j)) →
-      Nonempty (ColFam M) → Nonempty (ColFam M')
-
-def TensorColumnFamily (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (n : ℕ) [NeZero n] (M M' : GLMod n) (b : ℕ), Nonempty (ColFam M) →
-    (∀ e, IsTensor M M' (SymMat n b) e → Nonempty (ColFam M')) ∧
-    (∀ e, IsTensor M M' (SymDMat n b) e → Nonempty (ColFam M')) ∧
-    (∀ e, IsTensor M M' (LamMat n b) e → Nonempty (ColFam M'))
-
-def BranchingColumnFamily (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (m : ℕ) [NeZero m] (M : GLMod (m + 1)) (lam : Fin (m + 1) → ℤ) (β : M.ι → GLCoord ℤ (m + 1)),
-    Dominant lam → IsSMu M lam β →
-    ∃ (Sg : Finset (Fin m → ℤ)) (ph : (nu : ↥Sg) → Matrix M.ι (TIdx (nu : Fin m → ℤ)) ℤ),
-      (∀ nu : Fin m → ℤ, nu ∈ Sg ↔ Dominant nu ∧ Interl lam nu) ∧
-      (∀ (nu : ↥Sg) (R : Type) [CommRing R] (h : GL (Fin (m + 1)) R) (g1 : GL (Fin m) R) (t : Rˣ), IsBlock h g1 t →
-        M.A.map (evGL h) * (ph nu).map (Int.castRingHom R) =
-          (((t ^ (∑ a, lam a - ∑ a, (nu : Fin m → ℤ) a) : Rˣ) : R)) • ((ph nu).map (Int.castRingHom R) *
-            (TMat (nu : Fin m → ℤ)).map (evGL g1))) ∧
-      (∀ nu : ↥Sg, (∀ (p : ℕ), p.Prime → (fun i => ((ph nu i (canT _) : ℤ) : ZMod p)) ≠ 0) ∧
-        (fun i => ((ph nu i (canT _) : ℤ) : ℚ)) ≠ 0) ∧
-      Fintype.card M.ι = ∑ nu : ↥Sg, dMu (nu : Fin m → ℤ)
 
 def GlobalSectionsSchur (_D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (n : ℕ) [NeZero n] (mu : Fin n → ℤ) (R : Type) [CommRing R] [IsDomain R],
@@ -273,12 +140,6 @@ def GradedLatticeStable (_D : Formalism.BasicNotions.D7) : Prop :=
     (∀ x ∈ La, ∀ nu e, IsWtProj E nu e → e x ∈ La) →
     Submodule.span O {x | ∃ u ∈ UZmon E, ∃ y ∈ La, y ∈ weightSp E mu ∧ x = u y} ≤ La ∧
     ∀ y ∈ La, ∀ u ∈ UZmon E, ∀ e, IsWtProj E mu e → e (u y) ∈ La ∧ e (u y) ∈ weightSp E mu
-
-def NestedTypeBound (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (F : Type) [Field F] [CharZero F] (N n : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ) (P : PPath n N LL B)
-    (I : ℤ → Finset (Fin n)) (i : Fin (N + 1)),
-    Psi F P.mu I ∈ ⨆ lam ∈ {lam : Fin n → ℤ | Dominant lam ∧ DomLE lam (P.mu i)},
-      isoSub (glOps F n LL {j | j.val < i.val}) lam
 
 def TypeDecompositionsCommute (_D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (F : Type) [Field F] [CharZero F] (N n : ℕ) (LL : Letters (Fin N)) (i j : Fin (N + 1)) (lam lam' : Fin n → ℤ)
@@ -495,36 +356,5 @@ theorem path_basis_of_field_basis (D : Formalism.BasicNotions.D7) (h : PathBasis
   unfold PathColumnBasis HyperplaneRank
   intro O _ _ _ N n _ LL B
   exact h O N n LL B
-
-def AdmB (D : Formalism.BasicNotions.D7) : Prop :=
-  PathPairCorrespondence D ∧ admB2 D ∧ admB3 D ∧ ColumnFamilyLowerSet D ∧ GenericProjectionCriterion D ∧ ColumnFamilyClosure D ∧ TensorColumnFamily D ∧ BranchingColumnFamily D ∧ GlobalSectionsSchur D ∧ BracketPolynomialSpan D ∧
-    GradedLatticeStable D ∧ NestedTypeBound D ∧ TypeDecompositionsCommute D ∧ JointComponentsPaths D ∧ SaturatedLowerSetSpan D ∧ PairedPathIndependence D ∧ PathBasisOverRing D ∧ FirstLettersLowerSet D ∧ WeylDualityLattice D ∧ PathColumnBasis D
-
-def HodgeTateFromSandwich (D : Formalism.BasicNotions.D7) : Prop := admitted D → ValuationLemmaField D → AdmB D → Conclusion2 D
-
-def Stmt (D : Formalism.BasicNotions.D7) : Prop := admitted D → AdmB D → Conclusion1 D ∧ Conclusion2 D
-
-theorem statement_of_degree_and_bound (D : Formalism.BasicNotions.D7) (h1 : IntegralityFromMetric D) (h2 : HodgeTateFromSandwich D) : Stmt D := by
-  intro hA hB
-  have p1 := h1 hA
-  exact ⟨p1, h2 hA p1.2.1 hB⟩
-
-def SecondPartClosed (D : Formalism.BasicNotions.D7) : Prop := HodgeTateFromSandwich D
-
-def ClosedFormOfAdmitted (D : Formalism.BasicNotions.D7) : Prop := Stmt D
-
-def AdmBF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ (x : ℝ) (i : Fm.Ix x), AdmB (Fm.D x i)
-
-def ValuationLemmaFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∃ x0 : ℝ, ∀ x : ℝ, x0 ≤ x → ∀ i : Fm.Ix x, ValuationLemmaField (Fm.D x i)
-
-def Conclusion2Family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∃ x0 : ℝ, ∀ x : ℝ, x0 ≤ x → ∀ i : Fm.Ix x, Conclusion2 (Fm.D x i)
-
-def SecondPartFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := AdmF Fm → ValuationLemmaFamily Fm → AdmBF Fm → Conclusion2Family Fm
-
-def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := AdmF Fm → AdmBF Fm → Conclusion1Family Fm ∧ Conclusion2Family Fm
-
-def SecondPartFamilyClosed {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := SecondPartFamily Fm
-
-def FamilyClosedForm {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := KudlaFamilyStatement Fm
 
 end Formalism.MainNotions.CovariantDegrees

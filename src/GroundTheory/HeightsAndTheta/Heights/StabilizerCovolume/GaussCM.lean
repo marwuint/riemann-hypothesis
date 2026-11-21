@@ -101,10 +101,6 @@ theorem cc_ζ : cc ζ = -ζ := by
   apply φ₀.injective
   rw [IsCMField.complexEmbedding_complexConj, map_neg, conj_emb_ζ]
 
-theorem cc_ratCast (q : ℚ) : cc (q : Em) = q := map_ratCast cc q
-
-theorem cc_intCast (n : ℤ) : cc (n : Em) = n := map_intCast cc n
-
 theorem cmType (σ : Em →+* ℂ) :
     (∃ τ : Unit, (fun _ => φ₀) τ = σ) ↔ ¬ ∃ τ : Unit, (fun _ => φ₀) τ = (starRingEnd ℂ).comp σ := by
   simp only [exists_const]
@@ -124,10 +120,6 @@ theorem cmType (σ : Em →+* ℂ) :
 theorem finrank_Em : Module.finrank ℚ Em = 2 := by
   rw [IsCyclotomicExtension.finrank Em (cyclotomic.irreducible_rat (n := 4) (by norm_num))]
   decide
-
-theorem trace_one : Algebra.trace ℚ Em 1 = 2 := by
-  rw [← map_one (algebraMap ℚ Em), Algebra.trace_algebraMap, finrank_Em]
-  norm_num
 
 theorem trace_ζ : Algebra.trace ℚ Em ζ = 0 := by
   have h := Algebra.trace_eq_of_algEquiv (cc.restrictScalars ℚ) ζ

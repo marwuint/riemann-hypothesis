@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.LandherrSt
 import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.ExistsNormTensor
 import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FamilyUnifIndexEqOfMarkedLatticeIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardNonisometricCmTorusDataLeStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardNonisometricCmTorusDataLe
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFinsetSelfDualClassesHerm
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HostGeneratorPowFourTraceNormModEight
 
@@ -125,7 +125,7 @@ theorem familyUnif_card_le : GlobalTheory.Published.HasseNormSt → ThetaUnifAV 
   classical
   have hk : 0 < l.M' := Nat.lcm_pos (lt_of_lt_of_le (by norm_num) l.three_le) l.A_pos
   obtain ⟨m, rep, hrep, hcls⟩ := exists_representatives U.Di
-  have hm := GlobalTheory.T.card_nonisometric_cmTorusData_le hN E H D.p D.q r hr ξ AA hξ hξ0 hfg hA0 hAA m (fun c => U.Di (rep c))
+  have hm := _root_.GlobalTheory.card_nonisometric_data_le hN E H D.p D.q r hr ξ AA hξ hξ0 hfg hA0 hAA m (fun c => U.Di (rep c))
     (fun c => U.sig _) fun c d gam h => hrep c d ⟨gam, h⟩
   have hn : U.n ≤ m * l.M' ^ (2 * FD.fdeg E * r ^ 2) := by
     have h2 : (Finset.univ : Finset (Fin U.n)) ⊆ (Finset.univ : Finset (Fin m)).biUnion

@@ -66,12 +66,6 @@ theorem right_left [DecidableEq ι] (h : IsSymplecticFamily B e f d) (hB : B.IsA
   · subst hij; simp
   · simp [hij, Ne.symm hij]
 
-theorem swap (h : IsSymplecticFamily B e f d) (hB : B.IsAlt) : IsSymplecticFamily (-B) f e d where
-  left_left i j := by simp [h.right_right]
-  right_right i j := by simp [h.left_left]
-  left_right_self i := by simp [hB.neg_eq, h.left_right_self]
-  left_right_ne i j hij := by simp [hB.neg_eq, h.left_right_ne j i hij.symm]
-
 theorem apply_left_sum [Fintype ι] (h : IsSymplecticFamily B e f d) (c : ι ⊕ ι → R) (k : ι) :
     B (e k) (∑ i, c i • Sum.elim e f i) = c (Sum.inr k) * d k := by
   classical
@@ -310,10 +304,6 @@ theorem toMatrix_eq [Fintype ι] [DecidableEq ι] (h : IsSymplecticBasisOfType B
     split_ifs <;> simp
   · simpa using IsSymplecticFamily.right_right h i j
 
-theorem swap (h : IsSymplecticBasisOfType B b d) (hB : B.IsAlt) :
-    IsSymplecticBasisOfType (-B) (b.reindex (Equiv.sumComm ι ι)) d := by
-  simpa [IsSymplecticBasisOfType] using IsSymplecticFamily.swap h hB
-
 theorem reindex {κ : Type*} (h : IsSymplecticBasisOfType B b d) (σ : ι ≃ κ) :
     IsSymplecticBasisOfType B (b.reindex (σ.sumCongr σ)) fun k => d (σ.symm k) := by
   refine ⟨fun i j => ?_, fun i j => ?_, fun i => ?_, fun i j hij => ?_⟩
@@ -371,10 +361,6 @@ theorem toMatrix_eq [Fintype ι] [DecidableEq ι] (h : IsSymplecticBasis B b) (h
     LinearMap.BilinForm.toMatrix b B = -Matrix.J ι R := by
   rw [IsSymplecticBasisOfType.toMatrix_eq h hB, Matrix.J, Matrix.fromBlocks_neg]
   simp
-
-theorem swap (h : IsSymplecticBasis B b) (hB : B.IsAlt) :
-    IsSymplecticBasis (-B) (b.reindex (Equiv.sumComm ι ι)) :=
-  IsSymplecticBasisOfType.swap h hB
 
 theorem reindex {κ : Type*} (h : IsSymplecticBasis B b) (σ : ι ≃ κ) :
     IsSymplecticBasis B (b.reindex (σ.sumCongr σ)) :=

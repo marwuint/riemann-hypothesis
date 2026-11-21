@@ -4,7 +4,19 @@ import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ColTwoStep
 import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ArcExp
 import Formalism.WeaklyAdmissibleFiltrations.CrystallineStableLifts.Galois
 import Formalism.TruncatedSeriesCounting.EtaDeterminantPolynomialIdentities
-import Formalism.DistinguishedUnitIdeals.DescentLemmasAllHold
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.GroundTheory
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AevalApplySubEvalOneMem
+import Formalism.DistinguishedUnitIdeals.CoprimeProd
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.LevelsModConstIffOfNoDown
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.CutPlace
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.LemmaC
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.Rounding
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AprimeCuts
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.DescentEstimateDownUp
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.UnivPart
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.Descent
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.LinExtEqZeroOfMemExt
+import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.LevelsModConstIffOfDownDown
 
 noncomputable section
 
@@ -214,44 +226,6 @@ theorem colLeR_of_liftF (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat 
     (fun x hx => Submodule.mem_sup_right (cls_of_LiftF PD F hL x hx)) (by simp)
   simpa using h
 
-theorem colLeR_mono (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
-    (F : LatHom T₁.L T₂.L) {x y : ℝ} (hxy : x ≤ y) (h : Formalism.MainNotions.TruncatedSeriesCountingBounds.ColLeR PD F x) :
-    Formalism.MainNotions.TruncatedSeriesCountingBounds.ColLeR PD F y := by
-  obtain ⟨mm, k, h1, h2, h3⟩ := h
-  exact ⟨mm, k, h1, h2, le_trans h3 (mul_le_mul_of_nonneg_right hxy (Nat.cast_nonneg k))⟩
-
-def ArcAtCore (PD : PeriodData G Qp K₀ K B BdR) [Fintype (K →ₐ[Qp] LL)] (W : LocWach PD LL O v n)
-    (C : ℝ) : Prop :=
-  Formalism.MainNotions.LiftingTheory.CaseA W → 5 ≤ PD.p →
-  ∀ (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L), Formalism.MainNotions.LiftingTheory.Sur W F →
-  ∀ (G' S η m h j : ℕ) (ty : ZMod n → LT) (cuts : Finset (ZMod n)) (arcLen : ZMod n → ℕ)
-    (Mi hi : ZMod n → ℕ),
-    (∀ i, (ty i).ok η) →
-    (∀ i, Formalism.MainNotions.TruncatedSeriesCountingBounds.JumpsAt W T₁ i ((ty i).win G' S η)) →
-    (∀ i, (ty i).thick → Formalism.MainNotions.TruncatedSeriesCountingBounds.lowCount W T₂ i η ≤ m) →
-    (∀ τ a, IsJumpV PD T₁.ρ τ a → |a| ≤ h) → (∀ τ a, IsJumpV PD T₂.ρ τ a → |a| ≤ h) →
-    G' ≤ h → 1 ≤ h → (∀ i, (ty i).thick → (ty i).size + S ≤ h) →
-    Formalism.MainNotions.LiftingTheory.JumpsLet W T₁ Mi hi →
-    CutsOK n j ty cuts arcLen →
-    let l := PD.p
-    let M := 2 * h / (l - 1) + 1
-    let σ : ℕ := ⌈(((2 * G' : ℕ) : ℝ) + (M : ℝ) / (l : ℝ) ^ (j - 1)) * l / ((l : ℝ) - 1) ^ 2 + 1⌉₊
-    let roMax := cuts.sup (ro ty arcLen)
-    let ellMax := cuts.sup arcLen
-    ∀ rr : ℕ,
-      (∀ c ∈ cuts, Formalism.MainNotions.LiftingTheory.KillsΔ W F c (Formalism.MainNotions.LiftingTheory.lp W rr) ∧
-        ∀ (Y : LocLat G Qp LL O) (ι : LatHom T₂.L Y.L) (π : LatHom Y.L W.one.L),
-          IsSESLat (Qp := Qp) ι π → IsCrys PD Y.ρ →
-          Formalism.MainNotions.LiftingTheory.KillsΔ W π c (Formalism.MainNotions.LiftingTheory.lp W rr)) →
-      (∀ c ∈ cuts, WordOK W F S η G' σ ty arcLen c) →
-      ∃ (e κ : ℕ) (cls : Finset (LatticeCohomology T₂.L)),
-        (κ : ℝ) ≤ C * (((G' : ℝ) + roMax * S + 1) * (ellMax + 1) + (roMax + 1) * Real.logb l h) ∧
-        e ≤ 2 * rr + 6 * σ + 2 * κ + 2 * G' * ellMax + 1 ∧
-        (↑cls : Set (LatticeCohomology T₂.L)) ⊆ (latticeFiniteCohomology PD T₂.L : Set (LatticeCohomology T₂.L)) ∧
-        cls.card ≤ ∑ c ∈ cuts, m * ro ty arcLen c * (arcLen c + 1) ∧
-        (∀ x ∈ latticeFiniteCohomology PD T₂.L, (((l : ℕ) : O) ^ e) • x ∈
-          Submodule.span O (↑cls : Set (LatticeCohomology T₂.L)) ⊔ (latticeFiniteCohomology PD T₁.L).map F.H1map)
-
 end Core
 
 section Fin
@@ -308,48 +282,5 @@ theorem lenOl_finite (P : LocPrime l) (K LL : FinExt l) :
   exact len_finite_of_finite _ _
 
 end Fin
-
-def ArcTheoremLocal (LT : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (LT l)) (HW : HWOf LT) (F : FonOf LT A HW) (C : ℝ) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL), K.1 ≤ MaximalUnramifiedExtension l →
-    ∀ [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)],
-      ArcAtCore ((LT l).PD K) ((HW l).W K 1 LL hG) C
-
-def ArcTheoremGlobal (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) : Prop := ArcTheoremLocal D.loc D.locA HW F C
-
-def tyA {n : ℕ} (b η : ℕ) (up : ZMod n → Bool) (size : ZMod n → ℕ) (i : ZMod n) : LT :=
-  if Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i then (if up i then LT.up (size i) else LT.down (size i))
-  else LT.thin
-
-theorem tyA_thick {n : ℕ} (b η : ℕ) (up : ZMod n → Bool) (size : ZMod n → ℕ) (i : ZMod n) :
-    (tyA b η up size i).thick = true ↔ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i := by
-  unfold tyA
-  by_cases h : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i
-  · by_cases hu : up i = true <;> simp [h, hu, LT.thick]
-  · simp [h, LT.thick]
-
-theorem clusters_sep {n : ℕ} {j : ℕ} {thick : ZMod n → Prop} (h : Formalism.MainNotions.TruncatedSeriesCountingBounds.Clusters j thick) :
-    ∀ a : ZMod n, thick a → ∀ k : ℕ, 1 ≤ k → k ≤ j → thick (a - k) →
-      ∀ k' : ℕ, 1 ≤ k' → k' ≤ j → ¬ thick (a - k - k') := by
-  intro a ha k hk1 hkj hak k' hk'1 hk'j
-  rcases h a ha with h1 | ⟨d, hd1, hdj, _, h2⟩
-  · exact absurd hak (h1 k hk1 hkj)
-  · have hkd : k = d := by
-      by_contra hne
-      exact h2 k hk1 (by omega) hne hak
-    subst hkd
-    have := h2 (k + k') (by omega) (by omega) (by omega)
-    rwa [Nat.cast_add, ← sub_sub] at this
-
-section Words
-
-variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
-    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
-    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
-    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
-    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
-    {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
-    {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
-
-end Words
 
 end Formalism.MainNotions.LocalTheoryWindows

@@ -150,10 +150,6 @@ theorem fock_sum_left {ι : Type} (t : Finset ι) (F : ι → MvPolynomial σ �
   intro a s ha ih
   rw [Finset.sum_insert ha, Finset.sum_insert ha, fock_add_left, ih]
 
-theorem fock_add_right (F G G' : MvPolynomial σ ℚ_[p]) :
-    M.fock p F (G + G') = M.fock p F G + M.fock p F G' := by
-  rw [fock_comm p F (G + G'), fock_add_left, fock_comm p G F, fock_comm p G' F]
-
 theorem fock_smul_right (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) :
     M.fock p F (c • G) = c * M.fock p F G := by
   rw [fock_comm p F (c • G), fock_smul_left, fock_comm p G F]

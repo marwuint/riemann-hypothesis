@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoPowLeIndexLocalNormsSqrtExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsSupUnitsLocalNormsSqrtNeTopStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TwoPowLeIndexLocalNormsSqrtExtension
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SUnitsSupUnitsLocalNormsSqrtNeTop
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsAdmissibleSupersetFinitePlaces
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSupersetMemSUnits
 open NumberField IsDedekindDomain GlobalTheory.QNorm
@@ -38,7 +38,7 @@ theorem exists_not_mem_not_isSquare_completion :
     · haveI : CharZero (v.adicCompletion F) :=
         charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective
       exact normSub_eq_top_of_isSquare_image _ u hu (hcon v hv) x
-  have hidx := (GlobalTheory.T.two_pow_le_index_localNormsSqrtExtension F u S₀ hu).1
+  have hidx := (_root_.GlobalTheory.QNorm.two_pow_le_index_locNorm F u S₀ hu).1
   haveI : (locNorm F u S₀).FiniteIndex := ⟨hidx⟩
   haveI : Fintype (Fˣ ⧸ locNorm F u S₀) := Fintype.ofFinite _
   obtain ⟨S₁, -, hS₁⟩ := exists_superset_mem_sUnits F
@@ -46,7 +46,7 @@ theorem exists_not_mem_not_isSquare_completion :
       (Finset.univ.image (fun q : Fˣ ⧸ locNorm F u S₀ => q.out))) S₀
   obtain ⟨S, hS, hadm⟩ := exists_admissible_superset_finite_places F S₁
   have hX := hS₁ S hS
-  refine GlobalTheory.T.sUnits_sup_unitsLocalNormsSqrt_ne_top F (Units.mk0 u hu) S hadm (hX _ (Finset.mem_insert_self _ _)) hns ?_
+  refine _root_.GlobalTheory.QNorm.sUnits_sup_locNorm_ne_top F (Units.mk0 u hu) S hadm (hX _ (Finset.mem_insert_self _ _)) hns ?_
   rw [eq_top_iff]
   intro x _
   have hy : (QuotientGroup.mk x : Fˣ ⧸ locNorm F u S₀).out ∈ sUnits F S :=

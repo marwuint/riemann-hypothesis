@@ -89,14 +89,6 @@ def FreeAt (l : ℕ) [Fact l.Prime] {F Ω : Type} [Field F] [Field Ω] [Algebra 
   ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∃ g ∈ Dec (F := F) A, cycZ F Ω l g = 1 ∧
     ∃ α : Fin n → (Qbar l)ˣ, Pr.FreeRatios α ∧ (mat r g).charpoly = ∏ i, (X - C ((α i : (Qbar l)ˣ) : Qbar l))
 
-example {l : ℕ} [Fact l.Prime] {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] : FreeAt l (1 : G F Ω →* GL (Fin 1) (Qbar l)) :=
-  fun A _ => ⟨1, one_mem _, map_one _, 1, fun i j h => absurd (Subsingleton.elim i j) h, by
-    simp [Matrix.charpoly_one]⟩
-
-example {l : ℕ} [Fact l.Prime] {F : GFrame l} {K : Type} [Field K] {n : ℕ} {H : Type} [Group H] (I : Subgroup H) :
-    OrdAt I (1 : H →* GL (Fin n) K) 1 0 :=
-  ⟨1, 0, fun g => ⟨fun i j h => by simp [Matrix.one_apply_ne h.ne'], fun i => by simp, fun i j _ => by simp, fun _ i => by simp⟩⟩
-
 end UpperTheory.V.Th
 
 end

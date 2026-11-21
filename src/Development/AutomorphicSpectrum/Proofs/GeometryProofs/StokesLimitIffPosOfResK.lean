@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AutomorphicSpectrum.ParallelStatements.ParallelGeometry.StokesLimitBound
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.CpRegPhRegOfNonneg
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshRegMax
 import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCEqZeroOfEventuallyEqZero
@@ -12,8 +13,7 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHoloInjDerivInj
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHermExtend
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorSmooth
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorPos
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsMuHomMassIntegrable
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsMuHomCuspIntegrable
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPtsBddConv
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ArithSystem
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PMuHomDensityNonneg
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PMuSheetLeviNonneg
@@ -22,9 +22,19 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PRefAlongSheet
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasureLimitStatementHolds
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProjectionFormulaOfArithSystem
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeAndCoordinatesOfResolutionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChartStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DegreeAndCoordinatesOfResolution
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.ThmISt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.ContractMixedFieldStatement
+import Development.AutomorphicSpectrum.PublishedTheorems.Metrics₂.PoincareLelong
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChart
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsLocalOrbitChart
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesLimit
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesTelescope
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesStep
@@ -45,10 +55,13 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PNbarChartSemipos
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PNbarSemipos
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PModelLogIntegrable
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PBoundaryNull
-import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.PMUcChartSemipos
-import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.PMUcLeviChart
-import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.PAPrimeMarginCharts
-import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.PChartVelLiftCharts
+import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.HtBoundary
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StNbarLeviChart
+import GroundTheory.HeightsAndTheta.Heights.StabilizerCovolume.StMUcSmooth
+import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PNbarLeviChartReg
+import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PRefChartDisc
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PAPrimeChartMargin
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PChartVelLift
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PAPrimeChartLevi
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PAPrimeChartLeviLocal
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericDegreeEqGeometricDegree
@@ -61,55 +74,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.StokesCompare
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology MeasureTheory
-open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.IndefiniteRowSideFullHecke.StokesLimitBound
-
-section Clauses
-
-variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
-  {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
-  {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
-  {D : ComponentData II Ψ K ι Ω E} {O Lt : Type} [CommRing O] [AddCommGroup Lt] [Module O Lt]
-
-def localDataToSetting_of_scaleMove (H : HodgeData D) (Cd : CuspData D O Lt) (M : XModel D) (S : LogLogRegularisationSetting M D.Xo (muLine H))
-    (S' : BoundedRegularisationSetting M D.Xo H.aMu (cuspCorr H Cd)) (hS : S.IsTied) (hS' : S'.IsTied) : ComponentSetting D O Lt :=
-  ⟨H, Cd, M, S, hS, S', hS', 1, 0⟩
-
-end Clauses
-
-def StatementFull : Prop :=
-  ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (O Lt : Type) [CommRing O] [AddCommGroup Lt]
-    [Module O Lt] (X : ComponentSetting D O Lt) (B : ℕ) (a : ℝ),
-    IsFullIntersectionSystem II → 4 * D.f + 2 ≤ B → ArLimExists X.H X.S B → StokesLimit.Hyp X B a →
-      ((D.n + 1 : ℕ) : ℝ) * (a - meanU X.H X.Cd / 2) * degMu X.H ≤ arLim X.H X.S B
-
-def StatementDefined : Prop :=
-  ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (O Lt : Type) [CommRing O] [AddCommGroup Lt]
-    [Module O Lt] (X : ComponentSetting D O Lt) (B : ℕ) (a : ℝ),
-    IsFullIntersectionSystem II → MeanDefined X.H X.Cd → SmoothAtSmallScale X.H X.Cd X.S X.S' B →
-    4 * D.f + 2 ≤ B → ArLimExists X.H X.S B → StokesLimit.Hyp X B a →
-      ((D.n + 1 : ℕ) : ℝ) * (a - meanU X.H X.Cd / 2) * degMu X.H ≤ arLim X.H X.S B
-
-def StatementPos : Prop :=
-  ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (O Lt : Type) [CommRing O] [AddCommGroup Lt]
-    [Module O Lt] (X : ComponentSetting D O Lt) (B : ℕ) (a : ℝ),
-    IsIntersectionSystem II → 0 < degMu X.H →
-    4 * D.f + 2 ≤ B → ArLimExists X.H X.S B → StokesLimit.Hyp X B a →
-      ((D.n + 1 : ℕ) : ℝ) * (a - meanU X.H X.Cd / 2) * degMu X.H ≤ arLim X.H X.S B
-
-def StatementNonpos : Prop :=
-  ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (O Lt : Type) [CommRing O] [AddCommGroup Lt]
-    [Module O Lt] (X : ComponentSetting D O Lt) (B : ℕ) (a : ℝ),
-    IsIntersectionSystem II → degMu X.H ≤ 0 →
-    4 * D.f + 2 ≤ B → ArLimExists X.H X.S B → StokesLimit.Hyp X B a →
-      ((D.n + 1 : ℕ) : ℝ) * (a - meanU X.H X.Cd / 2) * degMu X.H ≤ arLim X.H X.S B
+open GroundTheory.Heights₂.Heights.LowerBoundFree
 
 section Mass
 
@@ -132,27 +97,5 @@ theorem degMu_nonneg (X : ComponentSetting D O Lt) : 0 ≤ degMu X.H := by
   · exact le_rfl
 
 end Mass
-
-def StatementZero : Prop :=
-  ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (O Lt : Type) [CommRing O] [AddCommGroup Lt]
-    [Module O Lt] (X : ComponentSetting D O Lt) (B : ℕ) (a : ℝ),
-    IsIntersectionSystem II → degMu X.H = 0 →
-    4 * D.f + 2 ≤ B → ArLimExists X.H X.S B → StokesLimit.Hyp X B a → 0 ≤ arLim X.H X.S B
-
-def StokesLimitMass : Prop :=
-  ∀ (II : IntersectionSystem), IsFullIntersectionSystem II →
-  ∀ (Ψ : Type) [Fintype Ψ] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
-    (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
-    (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D)
-    (O abelian₂ : Type) [CommRing O] [AddCommGroup abelian₂] [Module O abelian₂] (Cd : CuspData D O abelian₂)
-    (M : XModel D) (S : LogLogRegularisationSetting M D.Xo (muLine H)) (S' : BoundedRegularisationSetting M D.Xo H.aMu (cuspCorr H Cd)),
-    Ties H Cd S S' → CuspWeightDefined Cd →
-    PtsIntegrable (e := D.n) (mCoordIdeal D.y) (fun _ => phMu H) (fun _ => 1) →
-    PtsIntegrable (e := D.n) (mCoordIdeal D.y) (fun _ => phMu H) Cd.cuspWeight →
-    ∀ (B : ℕ) (a : ℝ), 4 * D.f + 2 ≤ B → SmoothAtSmallScale H Cd S S' B → ArLimExists H S B →
-      RegBound H Cd S' B a → ((D.n : ℝ) + 1) * (a * degMu H -
-        ptsIntegral (e := D.n) (mCoordIdeal D.y) (fun _ => phMu H) Cd.cuspWeight / 2) ≤ arLim H S B
 
 end GlobalTheory.CompanionTheory.StokesCompare

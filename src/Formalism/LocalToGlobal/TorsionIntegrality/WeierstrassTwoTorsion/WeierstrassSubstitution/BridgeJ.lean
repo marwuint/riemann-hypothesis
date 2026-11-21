@@ -114,35 +114,4 @@ theorem bridgeCurve_of (hM : CoeffMem.{0}) (hU : WpInU.{0}) (hC : CubeTwoR.{0}) 
     · simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]
       rw [PowerSeries.map_subst (HasSubst.X 1), MvPowerSeries.map_X, CurveSer.map_iSer, model_map]
 
-theorem bridgeTwo_of (hM : CoeffMem.{0}) (hT : TInZ.{0}) (hZ : TwoTorsionZ.{0}) : BridgeTwo := by
-  unfold BridgeTwo
-  intro K _ _ _ W xT yT heq h2y
-  obtain ⟨_, _, _, _, hdvd, h2c, _, hder, _, _, _⟩ := hZ K W xT yT heq h2y
-  have hT' := hT K W xT
-  have hD : constantCoeff (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2 : K⟦X⟧) ≠ 0 := by
-    simp
-  have h3 : (C (3 : K) : K⟦X⟧) = 3 := by
-    rw [show (3 : K) = ((3 : ℕ) : K) by norm_num, map_natCast]
-    norm_num
-  refine ⟨?_, ?_, ?_⟩
-  · unfold Formalism.L2.Th1.B.wOf
-    calc (tS W xT).subst (expSer W)
-        = (tS W xT).subst (expSer W) * ((1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2)
-          * (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2)⁻¹) := by
-          rw [PowerSeries.mul_inv_cancel _ hD, mul_one]
-      _ = ((tS W xT).subst (expSer W) * (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2))
-          * (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2)⁻¹ := by ring
-      _ = X ^ 2 * (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2)⁻¹ := by rw [hT']
-  · unfold Formalism.L2.Th1.B.IsW
-    obtain ⟨q, hq⟩ := hdvd
-    refine ⟨?_, h2c, ?_⟩
-    · rw [hq]
-      simp
-    · show (PowerSeries.derivative K ((tS W xT).subst (expSer W))) ^ 2 = _
-      rw [hder, map_mul, h3]
-      ring
-  · intro hI hx
-    apply Bridge.integral_of_coeff
-    exact (hM K W (Formalism.G.unitBall K) hI.1 hI.2.1 hI.2.2.1 hI.2.2.2.1 hI.2.2.2.2).2.2.2.2.2.2.2.2.2.1 xT hx
-
 end Formalism.L2.Th1.A

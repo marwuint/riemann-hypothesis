@@ -386,19 +386,4 @@ def Heights {G : GlobalFamilyData X ka wL wF} (Qf : ∀ la, LocalPointData G la)
       g0 D * (((WeightFamilies.dimY D j : ℝ) + 1) * G.del * (2 * Gc + 6 * PH) * wL.size +
         4 / 3 * (WeightFamilies.dimY D j : ℝ) * G.del * Prw * wL.size) + G.del * Pet)
 
-def Conclusion1Of2 : Prop :=
-  ∀ (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR CT : ℝ),
-    AdmW large₂ X K H Ch Ah Cq Aq → WeightFamilies.TransferenceTheoremCond →
-    (∀ j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T nP nW : ℕ) (h0 : ℝ)
-        (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ),
-      Hyp large₂ (X j h1 h2) H C2 A2 CR 0 CT S ka wL wF T nP nW h0 nus →
-      ∃ (G : GlobalFamilyData (X j h1 h2) ka wL wF) (Gc PH Prw Pet Pd : ℝ),
-        G.Tied large₂ S K.CRm T (cc D large₂ C2 A2 CR wL) Gc Prw Ch Ah K.Cf K.Af ∧
-        DeepIn (X j h1 h2) ka large₂ K.CG K.AG Pd ∧
-        Shares D wL G.del G.rz G.rq ((X j h1 h2).rk ka (B.Mlat j ka)) T K.CRm (cc D large₂ C2 A2 CR wL) ∧
-        PolyDom (j := j) D B large₂ K H C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd ka ∧
-        ∃ Qf : ∀ la, LocalPointData G la,
-          (∀ la, (Qf la).Ok S K.CRm T (cc D large₂ C2 A2 CR wL)) ∧ Heights Qf Gc PH Prw Pet) →
-    Conclusion1 large₂ X H C2 A2 CR CT
-
 end Formalism.MainNotions.Gaps.EtaleWeightGaps

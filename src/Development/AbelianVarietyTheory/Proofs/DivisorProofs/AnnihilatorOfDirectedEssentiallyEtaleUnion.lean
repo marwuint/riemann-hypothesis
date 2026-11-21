@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOfEssentiallyEtaleLocalAlgebrasStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOfEssentiallyEtaleLocalAlgebras
 open IsLocalRing
 
 namespace GlobalTheory
@@ -24,7 +24,7 @@ theorem ann_of_directed_essEtale : ∀ (R B : Type) [CommRing R] [CommRing B] [A
     simp only [g, Localization.localRingHom_to_map]
     congr 1
   haveI : Module.Flat (Localization.AtPrime Qi) (Localization.AtPrime Qk) :=
-    GlobalTheory.T.flat_of_essentiallyEtale_local_algebras R _ _ (hess i) (hess k)
+    _root_.GlobalTheory.flat_of_essEtale R _ _ (hess i) (hess k)
   haveI : IsLocalHom (algebraMap (Localization.AtPrime Qi) (Localization.AtPrime Qk)) :=
     (inferInstance : IsLocalHom g)
   haveI : Module.FaithfullyFlat (Localization.AtPrime Qi) (Localization.AtPrime Qk) :=

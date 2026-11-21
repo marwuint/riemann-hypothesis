@@ -6,7 +6,8 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinJoinVe
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinFlagPairJoinLeft
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPairNumJoinLeft
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinBirationalJoin
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullbackStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullback
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.FlagModelJoinLeft
 
@@ -15,7 +16,7 @@ theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelJoinLeftAlt.S
     GroundTheory.Heights₂.Heights.NumbersDVR.JoinVerticalDivisor.proof
     (GroundTheory.Heights₂.Heights.NumbersDVR.FlagPairJoinLeft.proof
       GroundTheory.Heights₂.Heights.NumbersDVR.JoinVerticalDivisorLeft.proof)
-    (GroundTheory.Heights₂.Heights.NumbersDVR.PairNumberJoinLeft.proof GlobalTheory.T.pair_number_pullback
+    (GroundTheory.Heights₂.Heights.NumbersDVR.PairNumberJoinLeft.proof _root_.GlobalTheory.CompanionTheory.Ar.Num.PairNumberPullback.main
       GroundTheory.Heights₂.Heights.NumbersDVR.JoinVerticalDivisorLeft.proof
       GroundTheory.Heights₂.Heights.NumbersDVR.BirationalJoin.proof)
 

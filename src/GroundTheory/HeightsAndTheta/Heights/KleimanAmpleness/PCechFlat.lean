@@ -108,111 +108,13 @@ end FlatBC
 
 namespace FlatBC
 
-section Hom
-
-variable {R : Type*} [CommRing R] {X Y Z : Type*} [AddCommGroup X] [Module R X] [AddCommGroup Y]
-  [Module R Y] [AddCommGroup Z] [Module R Z]
-
-abbrev HomAt (a : X →ₗ[R] Y) (b : Y →ₗ[R] Z) : Type _ :=
-  LinearMap.ker b ⧸ (LinearMap.range a).comap (LinearMap.ker b).subtype
-
-def aflat (a : X →ₗ[R] Y) (b : Y →ₗ[R] Z) : LinearMap.ker (b ∘ₗ a) →ₗ[R] LinearMap.ker b :=
-  (a ∘ₗ (LinearMap.ker (b ∘ₗ a)).subtype).codRestrict (LinearMap.ker b) (fun x => by
-    show b (a (x : X)) = 0
-    exact LinearMap.mem_ker.mp x.2)
-
-theorem comap_range_eq (a : X →ₗ[R] Y) (b : Y →ₗ[R] Z) :
-    (LinearMap.range a).comap (LinearMap.ker b).subtype = LinearMap.range (aflat a b) := by
-  ext z
-  simp only [Submodule.mem_comap, Submodule.coe_subtype, LinearMap.mem_range]
-  constructor
-  · rintro ⟨x, hx⟩
-    refine ⟨⟨x, ?_⟩, Subtype.ext hx⟩
-    rw [LinearMap.mem_ker, LinearMap.comp_apply, hx]
-    exact z.2
-  · rintro ⟨x, hx⟩
-    exact ⟨x.1, congrArg Subtype.val hx⟩
-
-end Hom
-
 end FlatBC
 
 namespace FlatBC
 
-variable {S S' : Type*} [CommRing S] [CommRing S'] [Algebra S S'] [Module.Flat S S']
-variable {X Y Z X' Y' Z' : Type*} [AddCommGroup X] [Module S X] [AddCommGroup Y] [Module S Y]
-  [AddCommGroup Z] [Module S Z] [AddCommGroup X'] [Module S' X'] [AddCommGroup Y'] [Module S' Y']
-  [AddCommGroup Z'] [Module S' Z']
-
-def homEquiv (a : X →ₗ[S] Y) (b : Y →ₗ[S] Z) (a' : X' →ₗ[S'] Y') (b' : Y' →ₗ[S'] Z')
-    (eX : S' ⊗[S] X ≃ₗ[S'] X') (eY : S' ⊗[S] Y ≃ₗ[S'] Y') (eZ : S' ⊗[S] Z ≃ₗ[S'] Z')
-    (ha : ∀ x, a' (eX (1 ⊗ₜ x)) = eY (1 ⊗ₜ a x)) (hb : ∀ y, b' (eY (1 ⊗ₜ y)) = eZ (1 ⊗ₜ b y)) :
-    HomAt a' b' ≃ₗ[S'] S' ⊗[S] HomAt a b :=
-  (Submodule.quotEquivOfEq _ _ (comap_range_eq a' b')).trans
-    ((cokerEquiv (aflat a b) (aflat a' b')
-      (kerEquiv (b ∘ₗ a) (b' ∘ₗ a') eX eZ (fun x => by simp [ha, hb]))
-      (kerEquiv b b' eY eZ hb)
-      (fun x => Subtype.ext (by simp [kerEquiv_one_tmul, aflat, ha]))).trans
-      (AlgebraTensorModule.congr (LinearEquiv.refl S' S')
-        (Submodule.quotEquivOfEq _ _ (comap_range_eq a b).symm)))
-
 end FlatBC
 
 namespace FlatBC
-
-section CechDeg
-
-open Cech
-
-variable {n : ℕ} {U : Finset (Fin n)} {R : Type*} [CommRing R] {G : Cell U → Type*}
-  [∀ I, AddCommGroup (G I)] [∀ I, Module R (G I)] {deg : ∀ I, Submodule R (G I)}
-  {ρ : ∀ I J : Cell U, I.1 ⊆ J.1 → G I →ₗ[R] G J}
-
-theorem d_mem_Cdeg (hρ : ∀ I J h x, x ∈ deg I → ρ I J h x ∈ deg J) (i : ℕ) (s : Cochain G i)
-    (hs : s ∈ Cdeg G deg i) : d G ρ i s ∈ Cdeg G deg (i + 1) := by
-  rw [Cdeg, Submodule.mem_pi] at hs ⊢
-  intro J _
-  rw [d_apply]
-  exact Submodule.sum_mem _ fun j _ => zsmul_mem (hρ _ _ _ _ (hs _ (Set.mem_univ _))) _
-
-def dd (hρ : ∀ I J h x, x ∈ deg I → ρ I J h x ∈ deg J) (i : ℕ) :
-    Cdeg G deg i →ₗ[R] Cdeg G deg (i + 1) :=
-  (d G ρ i).restrict (fun s hs => d_mem_Cdeg hρ i s hs)
-
-def cocyEquiv (hρ : ∀ I J h x, x ∈ deg I → ρ I J h x ∈ deg J) (i : ℕ) :
-    LinearMap.ker (dd hρ i) ≃ₗ[R] cocyDeg G deg ρ i where
-  toFun z := ⟨z.1.1, LinearMap.mem_ker.mpr (congrArg Subtype.val (LinearMap.mem_ker.mp z.2)), z.1.2⟩
-  invFun z := ⟨⟨z.1, z.2.2⟩, LinearMap.mem_ker.mpr (Subtype.ext (LinearMap.mem_ker.mp z.2.1))⟩
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-def hdegEquivSucc (hρ : ∀ I J h x, x ∈ deg I → ρ I J h x ∈ deg J) (i : ℕ) :
-    Hdeg G deg ρ (i + 1) ≃ₗ[R] HomAt (dd hρ i) (dd hρ (i + 1)) :=
-  Submodule.Quotient.equiv _ _ (cocyEquiv hρ (i + 1)).symm (by
-    ext z
-    rw [Submodule.map_equiv_eq_comap_symm, LinearEquiv.symm_symm]
-    simp only [Submodule.mem_comap]
-    change (z.1.1 : Cochain G (i + 1)) ∈ (Cdeg G deg i).map (d G ρ i) ↔
-      (z.1 : Cdeg G deg (i + 1)) ∈ LinearMap.range (dd hρ i)
-    constructor
-    · rintro ⟨y, hy, hyz⟩
-      exact ⟨⟨y, hy⟩, Subtype.ext hyz⟩
-    · rintro ⟨y, hy⟩
-      exact ⟨y.1, y.2, congrArg Subtype.val hy⟩)
-
-def hdegEquivZero (hρ : ∀ I J h x, x ∈ deg I → ρ I J h x ∈ deg J) :
-    Hdeg G deg ρ 0 ≃ₗ[R] HomAt (0 : Cdeg G deg 0 →ₗ[R] Cdeg G deg 0) (dd hρ 0) :=
-  Submodule.Quotient.equiv _ _ (cocyEquiv hρ 0).symm (by
-    ext z
-    rw [Submodule.map_equiv_eq_comap_symm, LinearEquiv.symm_symm, LinearMap.range_zero]
-    simp only [Submodule.mem_comap]
-    change (z.1.1 : Cochain G 0) ∈ (⊥ : Submodule R _) ↔ (z.1 : Cdeg G deg 0) ∈ (⊥ : Submodule R _)
-    rw [Submodule.mem_bot, Submodule.mem_bot]
-    exact ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩)
-
-end CechDeg
 
 section Poly
 
@@ -370,13 +272,6 @@ theorem gLoc_smul (I : Finset (Fin (N + 1))) (a : S) (x : LocMod S N M I) :
   rw [lmk_smul I a m s, gLoc_mk, gLoc_mk, lmk_smul I (algebraMap S S' a) (f m), algebraMap_smul,
     map_smul]
 
-theorem gLoc_locRes {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (x : LocMod S N M I) :
-    gLoc f hX J (locRes h x) = locRes h (gLoc f hX I x) := by
-  refine lmk_induction (fun m s => ?_) x
-  rw [gLoc_mk]
-  erw [locRes_mk, locRes_mk]
-  exact gLoc_mk f hX J m _
-
 theorem bij_of_tmul (hf : IsBaseChange S' f) (I : Finset (Fin (N + 1)))
     (L : S' ⊗[S] LocMod S N M I →+ LocMod S' N M' I) (hL : ∀ a x, L (a ⊗ₜ x) = a • gLoc f hX I x) :
     Function.Bijective L := by
@@ -514,18 +409,6 @@ end FlatBC
 
 namespace FlatBC
 
-theorem locResS_degLoc {S : Type u} [CommRing S] {N : ℕ} {M : Type v} [AddCommGroup M]
-    [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M] (𝓜 : GradedPMod S N M) (c : ℤ) :
-    ∀ (I J : StdCell N) (h : I.1 ⊆ J.1) (x : LocMod S N M I.1), x ∈ degLoc 𝓜 c I →
-      locResS I J h x ∈ degLoc 𝓜 c J := by
-  intro I J h x hx
-  have hle : (degLoc 𝓜 c I).map (locResS (M := M) I J h) ≤ degLoc 𝓜 c J := by
-    rw [degLoc, Submodule.map_span_le]
-    rintro _ ⟨m, s, a, e, hm, hs, hae, rfl⟩
-    refine Submodule.subset_span ⟨m, ⟨s, monos_mono h s.2⟩, a, e, hm, hs, hae, ?_⟩
-    exact locRes_mk h m s
-  exact hle ⟨x, hx, rfl⟩
-
 section Grade
 
 variable {S : Type u} [CommRing S] {N : ℕ}
@@ -636,16 +519,6 @@ theorem cochBC_one_tmul (i : ℕ) (x : Cech.Cochain (locSys S N M) i)
     cochBC f hX hf i (1 ⊗ₜ x) I = gLoc f hX I.1.1 (x I) := by
   simp [cochBC, locBC_one_tmul]
 
-theorem cochBC_d (i : ℕ) (x : Cech.Cochain (locSys S N M) i) :
-    Cech.d (locSys S' N M') locResS i (cochBC f hX hf i (1 ⊗ₜ x)) =
-      cochBC f hX hf (i + 1) (1 ⊗ₜ Cech.d (locSys S N M) locResS i x) := by
-  funext J
-  rw [Cech.d_apply, cochBC_one_tmul, Cech.d_apply, map_sum]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [cochBC_one_tmul, map_zsmul]
-  congr 1
-  exact (gLoc_locRes f hX (Cech.face_subset J j) _).symm
-
 end Grade
 
 end FlatBC
@@ -709,45 +582,9 @@ theorem cdegBC_one_tmul (i : ℕ) (x : Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) 
       cochBC f hX hf i (1 ⊗ₜ (x : Cech.Cochain (locSys S N M) i)) :=
   rfl
 
-theorem ddcomm (i : ℕ) (x : Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) i) :
-    dd (locResS_degLoc 𝓜' c) i (cdegBC f hX hf 𝓜 𝓜' hdeg c i (1 ⊗ₜ x)) =
-      cdegBC f hX hf 𝓜 𝓜' hdeg c (i + 1) (1 ⊗ₜ dd (locResS_degLoc 𝓜 c) i x) := by
-  apply Subtype.ext
-  change Cech.d _ _ i (cdegBC f hX hf 𝓜 𝓜' hdeg c i (1 ⊗ₜ x) : Cech.Cochain (locSys S' N M') i) =
-    (cdegBC f hX hf 𝓜 𝓜' hdeg c (i + 1) (1 ⊗ₜ dd (locResS_degLoc 𝓜 c) i x) :
-      Cech.Cochain (locSys S' N M') (i + 1))
-  rw [cdegBC_one_tmul, cdegBC_one_tmul]
-  exact cochBC_d f hX hf i x.1
-
-def cohomBC (i : ℕ) : cohom 𝓜' i c ≃ₗ[S'] S' ⊗[S] cohom 𝓜 i c := by
-  cases i with
-  | zero =>
-    exact (hdegEquivZero (locResS_degLoc 𝓜' c)).trans
-      ((homEquiv (0 : Cech.Cdeg (locSys S N M) (degLoc 𝓜 c) 0 →ₗ[S] _) (dd (locResS_degLoc 𝓜 c) 0)
-        (0 : Cech.Cdeg (locSys S' N M') (degLoc 𝓜' c) 0 →ₗ[S'] _) (dd (locResS_degLoc 𝓜' c) 0)
-        (cdegBC f hX hf 𝓜 𝓜' hdeg c 0) (cdegBC f hX hf 𝓜 𝓜' hdeg c 0)
-        (cdegBC f hX hf 𝓜 𝓜' hdeg c 1) (fun x => by simp)
-        (fun x => ddcomm f hX hf 𝓜 𝓜' hdeg c 0 x)).trans
-        (AlgebraTensorModule.congr (LinearEquiv.refl S' S')
-          (hdegEquivZero (locResS_degLoc 𝓜 c)).symm))
-  | succ i =>
-    exact (hdegEquivSucc (locResS_degLoc 𝓜' c) i).trans
-      ((homEquiv (dd (locResS_degLoc 𝓜 c) i) (dd (locResS_degLoc 𝓜 c) (i + 1))
-        (dd (locResS_degLoc 𝓜' c) i) (dd (locResS_degLoc 𝓜' c) (i + 1))
-        (cdegBC f hX hf 𝓜 𝓜' hdeg c i) (cdegBC f hX hf 𝓜 𝓜' hdeg c (i + 1))
-        (cdegBC f hX hf 𝓜 𝓜' hdeg c (i + 2))
-        (fun x => ddcomm f hX hf 𝓜 𝓜' hdeg c i x)
-        (fun x => ddcomm f hX hf 𝓜 𝓜' hdeg c (i + 1) x)).trans
-        (AlgebraTensorModule.congr (LinearEquiv.refl S' S')
-          (hdegEquivSucc (locResS_degLoc 𝓜 c) i).symm))
-
 end Final
 
 end FlatBC
-
-theorem CechFlat.proof : CechFlat.Statement.{u, v} := by
-  intro S _ _ N S' _ _ _ M M' _ _ _ _ _ _ _ _ _ _ 𝓜 𝓜' f hf hX hdeg i c
-  exact ⟨FlatBC.cohomBC f hX hf 𝓜 𝓜' hdeg c i⟩
 
 end
 

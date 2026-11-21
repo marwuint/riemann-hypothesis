@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableEmbeddingAdelicTupleLocalComponentsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNiceLocalFieldProductRingInfiniteAdelesCompletStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianQuadraticUnitaryLocalComponentsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNiceLocalFieldProductRingInfiniteAdelesComplet
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianQuadraticUnitaryLocalComponents
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralWittTheoremAlmostAllPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmExtensionLocalFieldProductRingExistsSmulEqStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmExtensionLocalFieldProductRingExistsSmulEq
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
@@ -122,9 +122,9 @@ theorem exists_HA {d : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) 
 theorem witt_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (x : Fin 1 → Fin M → E) (β : F), IsHermND σ J → β ≠ 0 → hE σ J (x 0) (x 0) = algebraMap F E β → ∀ y : (Fin 1 → Fin M → AF F ⊗[F] E), qR (AF F) σ J (y 0) = algebraMap F (AF F) β → ∃ g : HA (AF F) σ J, g • ratTup (F := F) (AF F) x = y := by
   intro F E _ _ _ _ _ σ hCM M J x β hJ hβ hx y hy
   let b : Module.Basis (Fin 2) F E := Module.finBasisOfFinrankEq F E hCM.2.2.1
-  obtain ⟨hyi, hyv⟩ := ((GlobalTheory.T.hermitianQuadratic_unitary_local_components F E σ M J).1 (y 0) β).1 hy
+  obtain ⟨hyi, hyv⟩ := ((_root_.GlobalTheory.GaugeEx.q_and_unitary_local_components F E σ M J).1 (y 0) β).1 hy
   have hu : IsUnit β := hβ.isUnit
-  obtain ⟨gi, hgi⟩ := GlobalTheory.T.cmExtension_localFieldProductRing_exists_smul_eq F E σ hCM (Ainf F) (GlobalTheory.T.isNiceLocalFieldProductRing_infiniteAdeles_completions F).1 M J hJ
+  obtain ⟨gi, hgi⟩ := _root_.GlobalTheory.GaugeWittLoc.exists_smul_eq F E σ hCM (Ainf F) (_root_.GlobalTheory.GaugeEx.nice_ainf_fv F).1 M J hJ
     (algebraMap F _ β) (ratTup (F := F) (Ainf F) x) (projInf y) (hu.map _)
     (qR_ratTup b _ σ J x β hx) hyi
   have hlat : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, projV v (projFin y) ∈ latV b v := by
@@ -143,7 +143,7 @@ theorem witt_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
         g' • ratTup (F := F) (Fv F v) x = projV v (projFin y) ∧ P v g'
     · obtain ⟨g, h1, h2⟩ := h
       exact ⟨g, h1, fun _ => h2⟩
-    · obtain ⟨g, hg⟩ := GlobalTheory.T.cmExtension_localFieldProductRing_exists_smul_eq F E σ hCM (Fv F v) ((GlobalTheory.T.isNiceLocalFieldProductRing_infiniteAdeles_completions F).2 v) M J hJ
+    · obtain ⟨g, hg⟩ := _root_.GlobalTheory.GaugeWittLoc.exists_smul_eq F E σ hCM (Fv F v) ((_root_.GlobalTheory.GaugeEx.nice_ainf_fv F).2 v) M J hJ
         (algebraMap F _ β) (ratTup (F := F) (Fv F v) x) (projV v (projFin y)) (hu.map _)
         (qR_ratTup b _ σ J x β hx) (hyv v)
       exact ⟨g, hg, fun h' => absurd h' h⟩

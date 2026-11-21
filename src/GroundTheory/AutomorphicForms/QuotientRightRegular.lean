@@ -75,10 +75,6 @@ theorem rightRegularUnitary_apply (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)
     (rightRegularUnitary Γ μ g : Lp ℂ 2 (quotientMeasure Γ μ) →L[ℂ] _) φ = rightRegular Γ μ g φ :=
   rfl
 
-theorem inner_rightRegular (g : G) (φ ψ : Lp ℂ 2 (quotientMeasure Γ μ)) :
-    inner ℂ (rightRegular Γ μ g φ) (rightRegular Γ μ g ψ) = inner ℂ φ ψ :=
-  (rightRegular Γ μ g).inner_map_map φ ψ
-
 section Continuity
 
 variable [IsFiniteMeasureOnCompacts μ]
@@ -178,23 +174,6 @@ theorem continuous_rightRegular_apply (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     _ < ε := by
         rw [dist_comm φ₀ φ]
         linarith
-
-theorem continuous_rightRegular_prod :
-    Continuous fun p : G × Lp ℂ 2 (quotientMeasure Γ μ) ↦ rightRegular Γ μ p.1 p.2 := by
-  refine continuous_iff_continuousAt.2 fun ⟨g₀, φ₀⟩ ↦ Metric.tendsto_nhds.2 fun ε hε ↦ ?_
-  have h1 := (continuous_rightRegular_apply Γ μ φ₀).tendsto g₀
-  have h2 : ∀ᶠ p : G × Lp ℂ 2 (quotientMeasure Γ μ) in 𝓝 (g₀, φ₀),
-      dist (rightRegular Γ μ p.1 φ₀) (rightRegular Γ μ g₀ φ₀) < ε / 2 :=
-    (Metric.tendsto_nhds.1 h1 (ε / 2) (by positivity)).prod_inl_nhds φ₀
-  have h3 : ∀ᶠ p : G × Lp ℂ 2 (quotientMeasure Γ μ) in 𝓝 (g₀, φ₀), dist p.2 φ₀ < ε / 2 :=
-    (Metric.tendsto_nhds.1 tendsto_id (ε / 2) (by positivity)).prod_inr_nhds g₀
-  filter_upwards [h2, h3] with p hp2 hp3
-  calc dist (rightRegular Γ μ p.1 p.2) (rightRegular Γ μ g₀ φ₀)
-      ≤ dist (rightRegular Γ μ p.1 p.2) (rightRegular Γ μ p.1 φ₀) +
-          dist (rightRegular Γ μ p.1 φ₀) (rightRegular Γ μ g₀ φ₀) := dist_triangle _ _ _
-    _ = dist p.2 φ₀ + dist (rightRegular Γ μ p.1 φ₀) (rightRegular Γ μ g₀ φ₀) := by
-        rw [LinearIsometryEquiv.dist_map]
-    _ < ε := by linarith
 
 end Continuity
 

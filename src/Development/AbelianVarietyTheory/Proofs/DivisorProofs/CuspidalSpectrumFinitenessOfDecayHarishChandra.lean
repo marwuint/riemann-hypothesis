@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ra
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalFixed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrrParIffCuspidalProduct
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsArchEquivEq
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspidalMultiplicityEqDiscreteSeriesModelMapsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspidalMultiplicityEqDiscreteSeriesModelMaps
 
 noncomputable section
 
@@ -159,7 +159,7 @@ theorem specFin : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Publish
   obtain ⟨θ, hθ⟩ := GlobalTheory.AdelicU.exists_isInfFam D
   have hm : ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), IsAdmissible σ →
       mCuspDS μ σ M = Module.rank ℂ (homInto σ (finRep M) (allMaps θ M)) := fun W _ _ σ h =>
-    (GlobalTheory.T.cuspidalMultiplicity_eq_discreteSeriesModel_maps hQ hP hDM D θ hθ V S M μ W σ h.1).symm
+    (_root_.GlobalTheory.AutMult.cuspMult_eq_mCuspDS hQ hP hDM D θ hθ V S M μ W σ h.1).symm
   refine ⟨fun W _ _ σ h1 h2 => ?_, fun K hK => ?_⟩
   · haveI := GlobalTheory.CuspFactor.nontrivial_of_irr σ h1
     obtain ⟨x, hx0⟩ := exists_ne (0 : W)

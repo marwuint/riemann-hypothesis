@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CTUnitsLeft
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramDetHermitianTotallyPositive
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramKernelSignNonsplitBaseChangeEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinprodNonsplitSignTotallyPositiveEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramKernelSignNonsplitBaseChangeEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinprodNonsplitSignTotallyPositiveEqOne
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.UnitaryClasses
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -64,13 +64,13 @@ theorem refSign_prod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], U
   intro E _ _ _ hU S hS n γ₀ _ H₀ _ _ _ hpos P₁ _ _
   obtain ⟨hd0, hdpos⟩ := gramOn_det_totallyPositive_of_posDef H₀ hpos
     (LinearMap.ker (Matrix.toLin' (aeval γ₀.val P₁)))
-  refine Eq.trans ?_ (GlobalTheory.T.finprod_nonsplit_sign_totallyPositive_eq_one E hU S hS _ hd0 hdpos)
+  refine Eq.trans ?_ (_root_.GlobalTheory.UnitaryClasses.signProd_totPos E hU S hS _ hd0 hdpos)
   apply finprod_mem_congr rfl
   intro w _
   split_ifs with hw
   · rfl
   · unfold sgnOn
     rw [aeval_map_mat]
-    exact GlobalTheory.T.gramKernelSign_nonsplit_baseChange_eq E hU w hw n H₀ (aeval γ₀.val P₁)
+    exact _root_.GlobalTheory.UnitaryClasses.BaseChangeSign.main E hU w hw n H₀ (aeval γ₀.val P₁)
 
 end GlobalTheory.UnitaryClasses

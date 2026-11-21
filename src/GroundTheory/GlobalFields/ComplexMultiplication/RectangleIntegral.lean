@@ -103,21 +103,6 @@ theorem rectIntegral_add (hf : ContinuousOn f (rectBoundary z w))
   simp only [smul_add]
   abel
 
-theorem rectIntegral_sub (hf : ContinuousOn f (rectBoundary z w))
-    (hg : ContinuousOn g (rectBoundary z w)) :
-    rectIntegral (fun u ↦ f u - g u) z w = rectIntegral f z w - rectIntegral g z w := by
-  simp only [rectIntegral]
-  rw [integral_sub (intervalIntegrable_bottom hf) (intervalIntegrable_bottom hg),
-    integral_sub (intervalIntegrable_top hf) (intervalIntegrable_top hg),
-    integral_sub (intervalIntegrable_right hf) (intervalIntegrable_right hg),
-    integral_sub (intervalIntegrable_left hf) (intervalIntegrable_left hg)]
-  simp only [smul_sub]
-  abel
-
-theorem rectIntegral_neg : rectIntegral (fun u ↦ -f u) z w = -rectIntegral f z w := by
-  simp only [rectIntegral, intervalIntegral.integral_neg, smul_neg]
-  abel
-
 theorem rectIntegral_smul (c : ℂ) : rectIntegral (fun u ↦ c • f u) z w = c • rectIntegral f z w := by
   simp only [rectIntegral, intervalIntegral.integral_smul, smul_sub, smul_add]
   rw [smul_comm I c, smul_comm I c]

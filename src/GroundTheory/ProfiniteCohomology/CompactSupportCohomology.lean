@@ -231,30 +231,6 @@ theorem compactCohomologyMap_comp (g' : B ⟶ C) (gᵥ' : ∀ v, Bᵥ v ⟶ Cᵥ
   exact (congrArg (HomologicalComplex.homologyMap · n) h).trans
     (HomologicalComplex.homologyMap_comp _ _ n)
 
-include hg in
-
-theorem cohomologyMap_globalToLocal (n : ℕ) :
-    cohomologyMap g n ≫ globalToLocal φ B Bᵥ b n =
-      globalToLocal φ A Aᵥ a n ≫ ModuleCat.ofHom (LinearMap.pi fun v =>
-        (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)) := by
-  have h := congrArg (fun F => HomologicalComplex.homologyMap F n ≫ (localCohomologyIso Bᵥ n).hom)
-    (localRes_naturality φ g gᵥ hg)
-  simp only [HomologicalComplex.homologyMap_comp, Category.assoc] at h
-  have e1 : HomologicalComplex.homologyMap (localRes φ A Aᵥ a) n ≫
-      HomologicalComplex.homologyMap (piMap fun v => cochainsMap (gᵥ v)) n ≫
-        (localCohomologyIso Bᵥ n).hom =
-      (HomologicalComplex.homologyMap (localRes φ A Aᵥ a) n ≫ (localCohomologyIso Aᵥ n).hom) ≫
-        ModuleCat.ofHom (LinearMap.pi fun v =>
-          (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)) := by
-    exact (congrArg (HomologicalComplex.homologyMap (localRes φ A Aᵥ a) n ≫ ·)
-      (homologyMap_piMap_piHomologyIso_hom (fun v => cochainsMap (gᵥ v)) n)).trans
-      (Category.assoc _ _ _).symm
-  exact (congrArg (cohomologyMap g n ≫ ·)
-    (homologyMap_localRes_localCohomologyIso_hom φ B Bᵥ b n).symm).trans (h.symm.trans (e1.trans
-      (congrArg (· ≫ ModuleCat.ofHom (LinearMap.pi fun v =>
-          (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)))
-        (homologyMap_localRes_localCohomologyIso_hom φ A Aᵥ a n))))
-
 theorem localToCompact_compactCohomologyMap (n : ℕ) :
     localToCompact φ A Aᵥ a n ≫ compactCohomologyMap φ g gᵥ hg (n + 1) =
       ModuleCat.ofHom (LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)) ≫
@@ -289,14 +265,6 @@ noncomputable def localResShortComplex :
   comm₁₂ := localRes_naturality φ S.f (fun v => (Sᵥ v).f) fun v => (s v).comm₁₂
   comm₂₃ := localRes_naturality φ S.g (fun v => (Sᵥ v).g) fun v => (s v).comm₂₃
 
-theorem compactCohomologyMap_f_g (n : ℕ) :
-    compactCohomologyMap φ S.f (fun v => (Sᵥ v).f) (fun v => (s v).comm₁₂) n ≫
-      compactCohomologyMap φ S.g (fun v => (Sᵥ v).g) (fun v => (s v).comm₂₃) n = 0 :=
-  (HomologicalComplex.homologyMap_comp _ _ n).symm.trans
-    ((congrArg (HomologicalComplex.homologyMap · n)
-      (mappingCoconeNat.mapShortComplex (localResShortComplex φ S Sᵥ s)).zero).trans
-      (HomologicalComplex.homologyMap_zero _ _ n))
-
 variable {S Sᵥ}
 
 theorem compactCochains_shortExact (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortExact) :
@@ -310,14 +278,6 @@ noncomputable def compactδ (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortEx
     compactCohomology φ S.X₃ (fun v => (Sᵥ v).X₃) (fun v => (s v).τ₃) n ⟶
       compactCohomology φ S.X₁ (fun v => (Sᵥ v).X₁) (fun v => (s v).τ₁) (n + 1) :=
   (compactCochains_shortExact φ s hS hSᵥ).δ n (n + 1) rfl
-
-include hS hSᵥ in
-
-theorem compactCohomology_exact₂ (n : ℕ) :
-    (ShortComplex.mk (compactCohomologyMap φ S.f (fun v => (Sᵥ v).f) (fun v => (s v).comm₁₂) n)
-      (compactCohomologyMap φ S.g (fun v => (Sᵥ v).g) (fun v => (s v).comm₂₃) n)
-      (compactCohomologyMap_f_g φ S Sᵥ s n)).Exact :=
-  (compactCochains_shortExact φ s hS hSᵥ).homology_exact₂ n
 
 theorem compactCohomology_exact₃ (n : ℕ) :
     (ShortComplex.mk (compactCohomologyMap φ S.g (fun v => (Sᵥ v).g) (fun v => (s v).comm₂₃) n)

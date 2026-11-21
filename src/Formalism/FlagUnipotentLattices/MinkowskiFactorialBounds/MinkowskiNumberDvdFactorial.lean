@@ -64,23 +64,6 @@ theorem exponential_identity : Formalism.HermitianLatticeCounting.S6.ExpIdentity
   congr 1
   ring
 
-lemma norm_det_le (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (β : ℝ) (hM : ∀ i j, ‖M i j‖ ≤ β) :
-    ‖M.det‖ ≤ (n.factorial : ℝ) * β ^ n := by
-  rw [Matrix.det_apply]
-  calc ‖∑ σ : Equiv.Perm (Fin n), Equiv.Perm.sign σ • ∏ i, M (σ i) i‖
-      ≤ ∑ σ : Equiv.Perm (Fin n), ‖Equiv.Perm.sign σ • ∏ i, M (σ i) i‖ := norm_sum_le _ _
-    _ ≤ ∑ _σ : Equiv.Perm (Fin n), β ^ n := by
-        apply Finset.sum_le_sum
-        intro σ _
-        have h1 : ‖Equiv.Perm.sign σ • ∏ i, M (σ i) i‖ = ‖∏ i, M (σ i) i‖ := by
-          rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
-        rw [h1, norm_prod]
-        calc ∏ i, ‖M (σ i) i‖ ≤ ∏ _i : Fin n, β :=
-              Finset.prod_le_prod (fun _ _ => norm_nonneg _) (fun i _ => hM _ _)
-          _ = β ^ n := by simp
-    _ = (n.factorial : ℝ) * β ^ n := by
-        simp [Fintype.card_perm]
-
 lemma prod_primepow_dvd (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) (e : ℕ → ℕ) (n : ℕ)
     (h : ∀ p ∈ s, p ^ e p ∣ n) : ∏ p ∈ s, p ^ e p ∣ n := by
   classical
@@ -128,15 +111,6 @@ theorem minkowski_number_dvd_factorial : Formalism.HermitianLatticeCounting.S6.M
   calc N / (p ^ i * (p - 1)) = (2 * N) / (2 * (p ^ i * (p - 1))) := by
         rw [Nat.mul_div_mul_left _ _ (by norm_num : 0 < 2)]
     _ ≤ (2 * N) / p ^ (1 + i) := Nat.div_le_div_left hle hpos
-
-theorem automorphism_bound_of_hyp : Formalism.HermitianLatticeCounting.S6.AutBoundAsm := by
-  intro hM hD s f G hG
-  have h1 := (hM (2 * s * f) G hG).trans (hD (2 * s * f))
-  have h2 := Nat.le_of_dvd (Nat.factorial_pos _) h1
-  have h3 := h2.trans (Nat.factorial_le_pow _)
-  have e : 2 * (2 * s * f) = 4 * s * f := by ring
-  rw [e] at h3
-  exact_mod_cast h3
 
 theorem exterior_power_bound : Formalism.HermitianLatticeCounting.S6.ExtPowerBound := by
   intro j m A A' Z hyp
@@ -617,8 +591,5 @@ theorem det_form_bound_field : Formalism.HermitianLatticeCounting.S6.DetBBoundK 
         ≤ ((2 ^ s) ^ 2 * ∏ a, (σ (h (g' a) (g' a))).re) * ∏ a, (σ (h (g a) (g a))).re :=
           mul_le_mul_of_nonneg_right hfin hP
       _ = _ := by ring
-
-theorem autBound_of_minkowskiBound (hM : Formalism.HermitianLatticeCounting.S6.MinkowskiBound) : Formalism.HermitianLatticeCounting.S6.AutBound :=
-  automorphism_bound_of_hyp hM minkowski_number_dvd_factorial
 
 end Formalism.HermitianLatticeCounting.P

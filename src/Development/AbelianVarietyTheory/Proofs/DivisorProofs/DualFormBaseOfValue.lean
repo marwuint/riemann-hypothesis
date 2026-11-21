@@ -34,7 +34,4 @@ theorem dualFormBase_of_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     · push_cast
       field_simp
 
-example (ε : ℤˣ) (η : ℤˣ) (hε : ε = 1) (hη : η = -1) : (((ε * η : ℤˣ) : ℤ) : ℂ) = -1 := by
-  subst hε hη; simp
-
 end GlobalTheory.DualBase

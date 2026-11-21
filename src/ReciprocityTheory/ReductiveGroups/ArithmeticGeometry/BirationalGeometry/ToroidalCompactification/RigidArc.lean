@@ -50,17 +50,4 @@ def ArcWit.Agree {k : Type} [Field k] {bF : c.F →+* k} {a : ArcIn D l (RingHom
               valR (v ≫ ψn) _ ((W'.P.U.w n).s (fun _ => jM', fun _ => jL')).val *
               valR (v ≫ (Out.fstG (Ideal.span {PowerSeries.X}) n W.t.G).left) _ (wL.s (fun _ => jL', jL)).val
 
-def RigidArc : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
-    (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF)
-    (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F) (Y : Model Xo c β) (Y' : Model Xo c β')
-    (χ : Sp (PowerSeries k) ⟶ Y.X) (χ' : Sp (PowerSeries k) ⟶ Y'.X)
-    (W : ArcWit Y (a.restrict β) (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ)
-    (W' : ArcWit Y' (a.restrict β') (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ')
-    (y y' : Sp (FractionRing (PowerSeries k)) ⟶ Xo.XF c),
-    y ≫ Y.j = Out.jK (PowerSeries k) ≫ χ → y' ≫ Y'.j = Out.jK (PowerSeries k) ≫ χ' →
-    y ≫ pullback.snd _ _ = Out.jK (PowerSeries k) ≫ spMap (PowerSeries.C (R := k)) ≫ spMap bF →
-    y' ≫ pullback.snd _ _ = Out.jK (PowerSeries k) ≫ spMap (PowerSeries.C (R := k)) ≫ spMap bF →
-    y = y' ∧ ∃ ψ : W.t.G ≅ W'.t.G, W.Agree W' ψ
-
 end ReciprocityTheory.ChartRestriction.G.Geo.Tor

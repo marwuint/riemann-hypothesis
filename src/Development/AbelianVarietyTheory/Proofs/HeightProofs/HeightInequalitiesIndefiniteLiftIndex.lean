@@ -17,7 +17,16 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameNormConjug
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NotGoodConj
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.SupBddAndSupREqSupN
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LawBddDataOf
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameNormsContinuousAlongEmbeddingFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameNormsContinuousAlongEmbeddingFamilies
+import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
+import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe
+import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
+import Formalism.LocalToGlobal.ProjectiveLattices.AxHSup
+import Formalism.LocalToGlobal.ProjectiveLattices.DivFinOfLawA3
+import Formalism.LocalToGlobal.ProjectiveLattices.FnTrdegOf
+import Formalism.LocalToGlobal.ProjectiveLattices.RegQFree
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MaxBoundPf
 import Formalism.LocalToGlobal.ProjectiveLattices.NrmContPf
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.RamOverZRealPos
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsUnitOfVVEqZero
@@ -320,7 +329,7 @@ theorem heights_indefinite :
   have ha3 : LawA3' d := lawA3'_dataOf hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.elim0 ∅ G.et.1 t1.1 t2.1 (nuOf T.Q.c fun la => nus la / (ramOverZ la : ℝ)) (fun _ _ _ => 0) wsize (WeightAlgebra.DF wL : ℝ) PN' 1 1 PP0' 1 Gc PI4' Pet tableLineDegreeFive tableLineDegreeTwo Prw POb 0 0 hDF' (hFr d hDF')
   have ha13 : A13Measurable d := lawA13_of_data hG δ fn yP (WeightFamilies.dimY D j) N 0 G.iet (WeightAlgebra.g0 D) c (wtA wL, wL.n) (wtA wF, wF.n) (wtA wL, wL.n) (0, 1) (wtA (wEt D j G.iet), (wEt D j G.iet).n) (wtA w1, w1.n) (wtA w2, w2.n) wR jc G.del (fun i => (G.th' i).1) 0 Fin.elim0 (wtA wL, wL.n) 0 Fin.elim0 ∅ G.et.1 t1.1 t2.1 (nuOf T.Q.c fun la => nus la / (ramOverZ la : ℝ)) (fun _ _ _ => 0) wsize (WeightAlgebra.DF wL : ℝ) PN' 1 1 PP0' 1 Gc PI4' Pet tableLineDegreeFive tableLineDegreeTwo Prw POb 0 0
     (nrmContOff_of hG fn yP _ _ _ _ _ hST
-      (GlobalTheory.T.frameNorms_continuous_along_embedding_families _ _ _ _ (T.Q.Xo j) T.Q.c D.R.r _ hU (xiR D) fn hx hpin hG yP hyP).1 hfn htr hfg hwb)
+      (_root_.GlobalTheory.FrameNorm.nrmAlong_of_fnPin _ _ _ _ (T.Q.Xo j) T.Q.c D.R.r _ hU (xiR D) fn hx hpin hG yP hyP).1 hfn htr hfg hwb)
   have hnum : NumOK d := by
     have hg0' : (1 : ℝ) ≤ WeightAlgebra.g0 D := by exact_mod_cast hg0
     refine ⟨hD3, hi, hg0, hc0, ?_, hcg, ?_, ?_, ?_, hnK, hrd, p1, le_rfl, le_rfl, p2, le_rfl, p3, p4, p5, p6, p7,

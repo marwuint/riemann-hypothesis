@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOrientedPrismUniformizerFrameBreuilKisinHomStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOrientedPrismUniformizerFrameBreuilKisinHom
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -36,8 +36,8 @@ theorem hf_E_pair : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (B :
     BK.hf f bk.E ∈ nonZeroDivisors B.A ∧ Associated (BK.hf f bk.E) (BK.hf g bk.E) ∧
       BK.hf f bk.E ∣ BK.hf g X - BK.hf f X := by
   intro l _ K bk B f g
-  obtain ⟨hfI, hfX⟩ := GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom l K bk B f
-  obtain ⟨hgI, hgX⟩ := GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom l K bk B g
+  obtain ⟨hfI, hfX⟩ := _root_.GlobalTheory.BSP.isFrame_hf l K bk B f
+  obtain ⟨hgI, hgX⟩ := _root_.GlobalTheory.BSP.isFrame_hf l K bk B g
   have hreg := mem_nonZeroDivisors_of_invertible_span B.inv hfI
   refine ⟨hreg, associated_of_span_eq hreg (hfI.symm.trans hgI), ?_⟩
   rw [← Ideal.mem_span_singleton, ← hfI]

@@ -25,12 +25,6 @@ def RadicalTorusModulus.Statement (h : HermitianForm F E W) (v : Basis ι E W) :
       Measurable f →
       ∫⁻ n, f (g * n * g⁻¹) ∂μ = (∏ w, ‖a w‖ₑ⁻¹ ^ (2 * (finrank E W - 1))) * ∫⁻ n, f n ∂μ
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

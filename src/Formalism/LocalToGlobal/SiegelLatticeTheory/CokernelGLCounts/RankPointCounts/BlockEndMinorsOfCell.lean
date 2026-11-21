@@ -97,13 +97,4 @@ theorem stepPoints_of
   stepPoints_of_ctx (fun _ _ _ _ _ _ _ _ D _ X Y u u' _ => hOV D X Y u u')
     (fun _ _ _ _ _ _ _ _ D _ X Y u u' _ => hAt D X Y u u')
 
-open Formalism.L2.SG.TermOp.Vanish in
-
-theorem stepPoints_of_leaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
-    (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)
-    (hAt : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word)
-      (t : Formalism.L2.SG.TermDef.Term D u u' (X.Fu u) (Y.what₂ u)), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w) :
-    StepPoints :=
-  stepPoints_of (fun _ _ Y _ _ t ht => ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht) hAt
-
 end Formalism.L2.SG.NGCut.PtPf

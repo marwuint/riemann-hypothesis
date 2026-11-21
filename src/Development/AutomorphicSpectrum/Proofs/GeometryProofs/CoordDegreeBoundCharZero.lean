@@ -2,9 +2,17 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocRatio
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GradedSandwichDegreeBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionalSpecializesStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelLocalizationAtPrimeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GradedSandwichDegreeBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionalSpecializes
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelIsBaseChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelLocalizationAtPrime
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeRegularAtLocalPoint
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordValuationBoundLocalStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -123,15 +131,15 @@ theorem core (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Typ
     simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
   obtain ⟨c, h, hcne, hmax, hin⟩ := GlobalTheory.T.coord_valuation_bound_local X Ω ξ K J y L w v A zA hgen hcoord hA₁ hA₂ (hzL ▸ hw)
   obtain ⟨b, π, κ, hfl, -, hmb, hdual, hreg, hκ0, hκ, hκi, hcls⟩ :=
-    GlobalTheory.T.exists_graded_sandwich_coordinates X Ω ξ K J y G Li M V r b₀ m i a e₀ hb₀ hS hdeg ⟨centre zA, h⟩ c hin
+    _root_.GlobalTheory.CompanionTheory.Ar.RootHt.cls_frame X Ω ξ K J y G Li M V r b₀ m i a e₀ hb₀ hS hdeg ⟨centre zA, h⟩ c hin
   set f : Module.Dual Ω Li := (m : Ω) • π i with hfdef
   have hfe : ∀ e, f e = (m : Ω) * π i e := fun e => rfl
   have hf : ∀ e ∈ M.lat ⟨_, h⟩, f e ∈ regAt ξ ⟨_, h⟩ := fun e he => hreg i e he
   have hLz : centre (spMap (algebraMap (𝓞 L) L) ≫ z) ⤳ centre zA := by
     rw [hzL]; exact LieTangent.centre_specializes (algebraMap A L) zA
   have hfL : ∀ h' : genPt ξ ⤳ centre (spMap (algebraMap (𝓞 L) L) ≫ z), ∀ e ∈ M.lat ⟨_, h'⟩, f e ∈ regAt ξ ⟨_, h'⟩ :=
-    fun h' => GlobalTheory.T.regular_functional_specializes X G Ω ξ Li M f ⟨_, h⟩ ⟨_, h'⟩ hξ hLz hf
-  obtain ⟨g, hg1, hg2⟩ := GlobalTheory.T.lie_model_localization_at_prime X G Ω ξ Li M L 𝔭 A z B MB f h hξ hf hfL
+    fun h' => _root_.GlobalTheory.CompanionTheory.Ar.RootHt.lat_form_regular_generizes X G Ω ξ Li M f ⟨_, h⟩ ⟨_, h'⟩ hξ hLz hf
+  obtain ⟨g, hg1, hg2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.FinLie.exists_integral_form X G Ω ξ Li M L 𝔭 A z B MB f h hξ hf hfL
   obtain ⟨kA, hkA⟩ := val_of_mem h hκ
   obtain ⟨kA', hkA'⟩ := val_of_mem h hκi
   have hkk : kA * kA' = 1 := by

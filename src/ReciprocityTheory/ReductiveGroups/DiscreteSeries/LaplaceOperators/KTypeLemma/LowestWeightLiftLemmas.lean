@@ -291,23 +291,6 @@ theorem TW_rel_word (a b c d : Fin n) : ∀ w : List (Fin n × Fin n),
     rw [e, ih, hl]
     split_ifs <;> simp <;> abel
 
-theorem TW_rel (a b c d : Fin n) (L : List (Fin n × Fin n) →₀ ℂ) :
-    TW a b (TW c d L) - TW c d (TW a b L) =
-      (if b = c then TW a d L else 0) - (if d = a then TW c b L else 0) := by
-  induction L using Finsupp.induction_linear with
-  | zero => simp
-  | add x y hx hy =>
-    simp only [map_add]
-    have e : ∀ x1 x2 y1 y2 : List (Fin n × Fin n) →₀ ℂ, x1 + y1 - (x2 + y2) = (x1 - x2) + (y1 - y2) := by
-      intros; abel
-    rw [e, hx, hy]
-    split_ifs <;> abel
-  | single w r =>
-    rw [← Finsupp.smul_single_one w r]
-    simp only [map_smul]
-    rw [← smul_sub, TW_rel_word]
-    split_ifs <;> simp [smul_sub]
-
 def Dm (a b : Fin n) : Module.End ℂ (KS (n := n) V) :=
   Finsupp.lsum ℂ fun p =>
     ∑ w' ∈ (adLW a b p.1).support, adLW a b p.1 w' • Finsupp.lsingle (R := ℂ) (M := V) (w', p.2)
@@ -333,13 +316,6 @@ theorem Gm_single (a b : Fin n) (w : List (Fin n × Fin n)) (c : Fin n) (v : V) 
     Gm V a b (Finsupp.single (w, c) v) = if c = b then Finsupp.single (w, a) v else 0 := by
   simp only [Gm, Finsupp.lsum_single]
   split_ifs <;> simp
-
-theorem Bc_smul_v (c : Fin n) (v : V) (r : ℂ) (L : List (Fin n × Fin n) →₀ ℂ) :
-    Bc V c (r • v) L = r • Bc V c v L := by
-  induction L using Finsupp.induction_linear with
-  | zero => simp
-  | add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]
-  | single w s => simp [Bc_single, Finsupp.smul_single, smul_smul, mul_comm]
 
 theorem Dm_Bc (a b c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     Dm V a b (Bc V c v L) = Bc V c v (TW a b L) := by

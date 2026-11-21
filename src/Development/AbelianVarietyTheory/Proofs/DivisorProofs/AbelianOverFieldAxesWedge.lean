@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyStructureSheafCohomologyAnyFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyStructureSheafCohomologyAnyField
+import Development.AbelianVarietyTheory.Definitions.Divisors.PreUMono
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
@@ -13,7 +14,7 @@ namespace GlobalTheory.AbCoh.FieldSq
 theorem axes_noPrim_wedge : (∀ (k : Type) [CommRing k], IsField k → ∀ (B : Over (Sp k)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → AxesVanishingStructureSheafDegOne B ∧ NoPrimitiveStructureSheafH2 B ∧ WedgeO (OAff B.hom)) := by
   intro k _ hk B _ g hab hsm
   letI : Field k := hk.toField
-  obtain ⟨-, -, hw, hn, ha⟩ := GlobalTheory.T.abelianVariety_structureSheaf_cohomology_anyField k B g hab hsm
+  obtain ⟨-, -, hw, hn, ha⟩ := _root_.GlobalTheory.AbCoh.abelian_HO_field_any k B g hab hsm
   exact ⟨ha, hn, hw⟩
 
 end GlobalTheory.AbCoh.FieldSq

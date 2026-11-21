@@ -10,10 +10,6 @@ open Polynomial CategoryTheory
 
 namespace GlobalTheory.CompanionTheory.TyFin.LabelUniq
 
-def orb (q d N s : ℕ) : Finset ℕ := (Finset.range d).image fun i => s * q ^ i % N
-
-def ind (S : Finset ℕ) (k : ℕ) : ℤ := if k ∈ S then 1 else 0
-
 section Field
 
 variable {K : Type} [Field K] [Fintype K]

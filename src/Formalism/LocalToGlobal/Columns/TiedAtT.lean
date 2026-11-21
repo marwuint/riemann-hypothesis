@@ -96,17 +96,6 @@ theorem att_tauOf (w : HeightOneSpectrum (𝓞 X.K)) (hw : (Pr.T u : 𝓞 X.K) �
   · rw [show pullW (tauOfC w P.1) w = P.1 from h]
   · rw [show pullW (tauOfC w P.1) w = conjPrime₂ P.1 from h, att_mem_conjP hc]
 
-include hX hPr in
-open Classical in
-
-theorem att_seenP (w : HeightOneSpectrum (𝓞 X.K)) (hw : (Pr.T u : 𝓞 X.K) ∈ w.asIdeal) (τ : X.Tau) :
-    X.embO τ (if decide (seenC Pr u w) = true then Pr.piT u else X.conjO (Pr.piT u)) ∈ w.asIdeal := by
-  by_cases h : seenC Pr u w
-  · rw [if_pos (decide_eq_true h)]
-    exact h τ
-  · rw [if_neg (by simpa using h)]
-    exact ((seenC_or_seenBarC hX hPr u w hw).resolve_left h) τ
-
 end Seen
 
 section Rec

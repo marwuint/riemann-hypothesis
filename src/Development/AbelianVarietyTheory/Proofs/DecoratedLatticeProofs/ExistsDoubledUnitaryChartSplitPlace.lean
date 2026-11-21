@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Pa
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOfBasis
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasIwasawaDecompositionDoubledSplitPlace
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsLatticeFrameAtPlaceDirectSumBlockDiagonalStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsLatticeFrameAtPlaceDirectSumBlockDiagonal
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.PRep
 open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke ordL)
@@ -79,7 +79,7 @@ theorem exists_dbl_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   obtain ⟨f₀, ⟨⟨b, hb, e0⟩, hK⟩, -⟩ := SplitChart.exists_isSplitChart hc hQ' hLL.fg hLL.span_eq_top h hv
     (isSelfDualAt_dbl hQ hL)
   obtain ⟨⟨a, ha, ea⟩, -⟩ := id he
-  have hk := hb.inv_mul_mem (GlobalTheory.T.isLatticeFrameAtPlace_directSum_blockDiagonal E w n L a ha)
+  have hk := hb.inv_mul_mem (_root_.GlobalTheory.LFun.isFrameAt_sumLat_blkGL E w n L a ha)
   have ef : ∀ g, f₀.trans (MulAut.conj (b⁻¹ * blkGL finSumFinEquiv (a, a))⁻¹) g =
       (blkGL finSumFinEquiv (a, a))⁻¹ * locMat σ Q h g * blkGL finSumFinEquiv (a, a) := fun g => by
     rw [MulEquiv.trans_apply, MulAut.conj_apply, e0]; group

@@ -1,10 +1,10 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliable
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalarStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalRankOneDensityUniformizerPowerStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAllStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolumeStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalRankOneDensityUniformizerPower
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAll
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolume
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -217,7 +217,7 @@ theorem eventually_half (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 3 ≤ 
     (hm : ∀ v, IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) (m v)) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ s : Fv F v, s ∈ v.adicCompletionIntegers F → s ≠ 0 →
       1 / 2 ≤ (m v (hermScal (Fv F v) σ s) (latV b v)).toReal := by
-  filter_upwards [GlobalTheory.T.rank_one_local_density_almost_all F E σ hσ M J hJ hM d b] with v hv s hs hs0
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.SW.LocGood.density_standard_lattice F E σ hσ M J hJ hM d b] with v hv s hs hs0
   have h := hv (lam v) (hlam v) (m v) (hm v) s hs hs0
   have hq : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := by exact_mod_cast two_le_norm v
   have hpow : (4 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) := by
@@ -239,12 +239,12 @@ theorem scal_fin (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 3 ≤ M) (hla
   have hdet : T.det ≠ 0 := by
     rw [Matrix.det_unique]
     exact (map_ne_zero (algebraMap F E)).2 hs
-  obtain ⟨s', hs', -, hh⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hσ T hT
+  obtain ⟨s', hs', -, hh⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hσ T hT
   have e : s' = s := by
     have := congrFun (congrFun hs' 0) 0
     exact ((algebraMap F E).injective this).symm
   subst e
-  have h := GlobalTheory.T.hermitian_rank_one_local_volume F E σ hσ M J hJ 1 rfl (by omega) T hT hdet d b lam hlam m hm
+  have h := _root_.GlobalTheory.CompanionTheory.SW.OneVector.mass_fibre_summable_one F E σ hσ M J hJ 1 rfl (by omega) T hT hdet d b lam hlam m hm
   simp only [hh] at h
   exact h
 
@@ -254,7 +254,7 @@ theorem dil_eq (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 3 ≤ M) (hlam 
     (h1 : Ideal.span {(a : 𝓞 F)} ≤ v.asIdeal ^ e) (h2 : ¬ Ideal.span {(a : 𝓞 F)} ≤ v.asIdeal ^ (e + 1)) :
     m v (hermScal (Fv F v) σ (algebraMap F _ t)) (dilSet b v a) =
       (Ideal.absNorm v.asIdeal : ℝ≥0∞) ^ (e * (2 * M - 2)) * mL σ b m ((a : F) ^ 2 * t) v := by
-  have h := GlobalTheory.T.local_rank_one_density_uniformizer_power F E σ hσ M J hJ d b v (lam v) (hlam v) (m v) (hm v) (by omega) a e ha h1 h2
+  have h := _root_.GlobalTheory.CompanionTheory.SW.Dil.dilation F E σ hσ M J hJ d b v (lam v) (hlam v) (m v) (hm v) (by omega) a e ha h1 h2
     (algebraMap F _ t) (latV b v) (measurable_latV b v)
   rw [show ((a : Fv F v) ^ 2 * algebraMap F _ t) = algebraMap F _ ((a : F) ^ 2 * t) by simp] at h
   exact h

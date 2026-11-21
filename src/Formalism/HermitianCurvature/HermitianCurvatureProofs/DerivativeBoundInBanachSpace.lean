@@ -36,21 +36,11 @@ theorem corollary_u2_germ_hypothesis : Formalism.FourierDecayAlt.U.GermExpansion
   corollary_u2_of_parts theorem_u corollary_u1_truncated_alt star_projection budget_second_corollary
     thresholds_second_corollary phi_support_level_function
 
-theorem derivative_bound_in_banach_space : Formalism.FourierDecayAlt.U.UseDerivBound :=
-  derivative_bound_use_of_parts corollary_u2_germ_hypothesis compactly_supported_banach_model compactly_supported_monotone seminorm_of_form
-    seminorm_completion derivative_bound_of_decay derivative_bound_composition
-
 theorem germ_expansion_applies : Formalism.FourierDecayAlt.U.UseGerm :=
   germ_expansion_of_parts germ_rate det_weyl_matrix corollary_u2_germ_hypothesis derivative_bound_of_decay
     power_matching scale_matching
 
 theorem germ_expansion_top_level : Formalism.FourierDecayAlt.U.UseGermTop :=
   germ_top_level_of_parts germ_rate det_weyl_matrix top_cells derivative_bound_of_decay
-
-theorem germ_expansion_top_count : Formalism.FourierDecayAlt.U.UseGermTopCount :=
-  germ_top_count_of_parts germ_expansion_top_level budget_top_convergence
-
-theorem germ_expansion_in_form_space : Formalism.FourierDecayAlt.U.GermInForm :=
-  germ_in_form_of_parts germ_rate det_weyl_matrix derivative_bound_in_banach_space scale_matching
 
 end Formalism.FourierDecayAlt.P

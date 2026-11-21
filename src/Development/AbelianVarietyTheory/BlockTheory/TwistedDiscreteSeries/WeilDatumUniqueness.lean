@@ -31,11 +31,6 @@ def WeilDatumTwist (D : D7) : Prop :=
 
 def WeilDatumDetermined (D : D7) : Prop := WeilDatumUnique D ∧ WeilDatumTwist D
 
-theorem IsTildeDet.unique {V : HSp D} {ξ : (AE D)ˣ →* Circle} {g : GA D V} {c c' : Circle}
-    (h : IsTildeDet V ξ g c) (h' : IsTildeDet V ξ g c') : c = c' := by
-  obtain ⟨x, hx⟩ := h.1
-  rw [← h.2 x hx, ← h'.2 x hx]
-
 theorem IsTildeDet.at_one {V : HSp D} {ξ : (AE D)ˣ →* Circle} {c : Circle} (h : IsTildeDet V ξ 1 c) : c = 1 := by
   have h1 : IsDetRoot V 1 1 := by simp [IsDetRoot]
   rw [← h.2 1 h1, map_one]

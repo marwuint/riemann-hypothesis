@@ -54,11 +54,6 @@ def LocExpand : Prop :=
         (∏ j ∈ range J, Del j ^ ((if j = 0 then 1 else 0) + Fintype.card ι * (Q j - 1) - S.card * (Q j - 1))) *
           ∏ I ∈ S, ∏ j ∈ range J, piI I j ^ (Q j - 1)
 
-def NormalMinor : Prop :=
-  ∀ (R : Type) [CommRing R] (I : Ideal R) (r k : ℕ) (h : r ≤ k) (M : Matrix (Fin r) (Fin k) R),
-    (∀ (i : Fin r) (c : Fin k), r ≤ c.val → M i c ∈ I) →
-      ∀ (i : Fin r) (c : Fin k), r ≤ c.val → (M.submatrix id (swapCol r k h i c)).det ∈ I
-
 def borderedMatrix {R : Type} [CommRing R] (r : ℕ) (ts : Fin r → R) (u : R) (T : Matrix (Fin r) (Fin r) R)
     (b : Fin r → R) : Matrix (Fin (r + 1)) (Fin (r + 1)) R :=
   Matrix.of (Fin.cons (α := fun _ => Fin (r + 1) → R) (Fin.snoc (α := fun _ => R) ts u)
@@ -118,37 +113,5 @@ def Lemma4Arith : Prop :=
 def Lemma4Count : Prop :=
   ∀ (N1 ntops m kQ c' al : ℕ), ntops ≤ N1 →
     ntops * (m + kQ + c') + (c' * al + 2 * c') ≤ (N1 + 1) * (m + kQ + c' * al + 3 * c')
-
-def factProd {σ : Type} [Fintype σ] (α : σ →₀ ℕ) : ℕ := ∏ i, (α i).factorial
-
-def vG {σ : Type} (p : ℕ) (F : MvPolynomial σ ℚ) : WithTop ℝ :=
-  F.support.inf fun α => (((padicValRat p (F.coeff α) : ℤ) : ℝ) : WithTop ℝ)
-
-def vBB {σ : Type} [Fintype σ] (p : ℕ) (F : MvPolynomial σ ℚ) : WithTop ℝ :=
-  F.support.inf fun α =>
-    ((((padicValRat p (F.coeff α) : ℤ) : ℝ) + (padicValNat p (factProd α) : ℝ) / 2 : ℝ) : WithTop ℝ)
-
-def IsLetterHom {σ Z : Type} [Fintype σ] [DecidableEq Z] (letter : σ → Z) (d : Z → ℕ)
-    (F : MvPolynomial σ ℚ) : Prop :=
-  ∀ α ∈ F.support, ∀ z, ∑ i ∈ univ.filter (fun i => letter i = z), α i = d z
-
-def FockGauss : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (σ Z : Type) [Fintype σ] [DecidableEq σ] [Fintype Z] [DecidableEq Z]
-    (letter : σ → Z) (d : Z → ℕ) (N k : ℕ) (a : ℝ), 0 ≤ a →
-    Fintype.card σ ≤ N * k → (∀ z, (d z : ℝ) ≤ 2 * a) →
-    ∀ F : MvPolynomial σ ℚ, IsLetterHom letter d F →
-      vG p F + (((padicValNat p (∏ z, (d z).factorial) : ℝ) / 2 -
-          (N * k * (Real.logb p (2 * a + k) + 1)) / 2 : ℝ) : WithTop ℝ) ≤ vBB p F ∧
-        vBB p F ≤ vG p F + (((padicValNat p (∏ z, (d z).factorial) : ℝ) / 2 : ℝ) : WithTop ℝ)
-
-def FrameSum : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (Z : Type) [Fintype Z] [DecidableEq Z] (Fr : Finset Z) (r N k : ℕ) (a : ℝ)
-    (d : Z → ℕ) (M : Z → Fin r → ℕ), 0 ≤ a →
-    Fr.card ≤ N → r + 1 ≤ k → (∀ z, (d z : ℝ) ≤ 2 * a) → (∀ z ∈ Fr, ∑ i, M z i ≤ d z) →
-      (∀ z ∈ Fr, (padicValNat p ((d z).factorial / ((d z - ∑ i, M z i).factorial * ∏ i, (M z i).factorial)) : ℝ) ≤
-          (r + 1) * (Real.logb p (2 * a + k) + 1)) ∧
-      2 * ((padicValNat p (∏ z, (d z).factorial) : ℝ) / 2) - N * k * (Real.logb p (2 * a + k) + 1) ≤
-        2 * ((padicValNat p (∏ z, (if z ∈ Fr then d z - ∑ i, M z i else d z).factorial) : ℝ) / 2) +
-          (padicValNat p (∏ z ∈ Fr, ∏ i, (M z i).factorial) : ℝ)
 
 end Formalism.CountingSumsFrames

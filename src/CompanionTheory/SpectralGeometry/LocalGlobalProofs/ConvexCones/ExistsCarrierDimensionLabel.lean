@@ -4,9 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageS
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonnegSumSmulIntBilinFormToRealMemPsdCone
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CellFaceOfFaceCutStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CellOfQuotientRadicalConeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CellOfQuotientCellStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierFunctionTwistedGaloisStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CellOfQuotientRadicalCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCellQuotientByRadicalOfMemCone
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullLinInjective
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CellOfQuotientCell
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellOfQuotientCellRadicalPullback
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CarrierFunctionTwistedGalois
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarrierDimInvFunHostFixingAutInvariant
 
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.CarDim GlobalTheory.CompanionTheory.Ar.Fan
 
@@ -29,7 +33,7 @@ theorem exists_cell {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [M
 
 theorem exists_isCarrierDim : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (ψ : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsTwG w0 ψ → ∃ lab : InvFun O, IsTwG w0 lab ∧ IsCarrierDim bar q ψ lab := by
   intro O _ _ _ _ bar w0 hb q ψ hD hψ htw
-  refine ⟨carFun bar ψ, GlobalTheory.T.carrier_function_twisted_galois O bar w0 hb ψ htw, ?_⟩
+  refine ⟨carFun bar ψ, _root_.GlobalTheory.CompanionTheory.Ar.Fan.TwistedCarrierFunction.isTwG_carFun O bar w0 hb ψ htw, ?_⟩
   intro X _ _ _ _ hX β hβ hp
   have hfan := hψ X hX
   have hface := GlobalTheory.T.cell_face_of_face_cut O bar hb ψ X hfan (hD X)
@@ -40,13 +44,13 @@ theorem exists_isCarrierDim : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [
       genRank γ = k}.Nonempty := ⟨_, m₀, γ₀, hγ₀, hin₀, rfl⟩
   apply le_antisymm
   · obtain ⟨m, γ, h1, h2, h3⟩ := Nat.sInf_mem hne
-    obtain ⟨m', δ, k1, k2, k3⟩ := GlobalTheory.T.cell_of_quotient_radical_cone O bar hb ψ X hface β hβ hp m γ h1 h2
+    obtain ⟨m', δ, k1, k2, k3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.QuotientCellRadical.exists_cell_quot_orad_of_inRCone O bar hb ψ X hface β hβ hp m γ h1 h2
     exact (Nat.sInf_le (show genRank δ ∈ cdimSet bar ψ X (orad β) β from ⟨m', δ, k1, k2, rfl⟩)).trans (k3.trans h3.le)
   · have hne' : (cdimSet bar ψ X (orad β) β).Nonempty := by
-      obtain ⟨m', δ, k1, k2, -⟩ := GlobalTheory.T.cell_of_quotient_radical_cone O bar hb ψ X hface β hβ hp m₀ γ₀ hγ₀ hin₀
+      obtain ⟨m', δ, k1, k2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.QuotientCellRadical.exists_cell_quot_orad_of_inRCone O bar hb ψ X hface β hβ hp m₀ γ₀ hγ₀ hin₀
       exact ⟨_, m', δ, k1, k2, rfl⟩
     obtain ⟨m', δ, h1, h2, h3⟩ := Nat.sInf_mem hne'
-    obtain ⟨m, γ, k1, k2, k3⟩ := GlobalTheory.T.cell_of_quotient_cell O bar hb ψ X hfan hface β hβ hp m' δ h1 h2
+    obtain ⟨m, γ, k1, k2, k3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.QuotientCell.cell_of_quot_cell O bar hb ψ X hfan hface β hβ hp m' δ h1 h2
     unfold cdimQ
     rw [← h3]
     exact (Nat.sInf_le (show genRank γ ∈ {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧

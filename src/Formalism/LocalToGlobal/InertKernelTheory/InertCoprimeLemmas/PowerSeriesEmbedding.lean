@@ -36,6 +36,4 @@ theorem power_series_embedding : PSerIota := by
 
 theorem lamExt : LamExt := lattice_extension
 theorem lamCIota : LamCIota := lattice_embedding
-theorem pSerIota : PSerIota := power_series_embedding
-
 end Formalism.L2.KerInert

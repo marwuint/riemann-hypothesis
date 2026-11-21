@@ -24,8 +24,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulByIntegralIsC
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FstMemClosureNatCast
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TorsionPointPadicAbscissaNormLeOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaOrderParameterSeriesBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslateProductSigmaStarPowLatticeLawStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TorsionPointLocalHeightEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslateProductSigmaStarPowLatticeLaw
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TorsionPointLocalHeightEqOne
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
 
@@ -118,7 +118,7 @@ theorem pull_back_split : ∀ (D : D7), Inp D → ∀ (p : ℕ) [Fact p.Prime] (
   intro D hI p _ cc δ g hg t0 ht0 y N hN hNy _ hsp
   have hθ := intSer_iff.1 ((GlobalTheory.ThetaParam.theta_param_integral D hI p cc δ g hg t0 ht0).2 hsp).1
   have hx0 := norm_padicWeierstrassModelAbscissa_twoTorsion_le_one D p cc δ g hg t0 ht0
-  have hht := GlobalTheory.T.torsionPoint_localHeight_eq_one D p cc δ g hg
+  have hht := _root_.GlobalTheory.TorsionHeight.height_one D p cc δ g hg
   obtain ⟨hcc, -, hδ, hΛ, hok⟩ := hg
   have hcrv : Crv D cc δ := ⟨hcc, hδ⟩
   have hG := (GlobalTheory.InducedType.induced_type D).1
@@ -182,7 +182,7 @@ theorem pull_back_split : ∀ (D : D7), Inp D → ∀ (p : ℕ) [Fact p.Prime] (
   have hFb : BddSer F := by
     obtain ⟨h1, h2'⟩ := atU_mul g hF hTa
     obtain ⟨B, hB, hBe⟩ := GlobalTheory.T.thetaOrder_parameterSeries_bounded p g hok hlat' h2 h3 hdisc hσ t0 ht0n (hwp t0 hq0 ht0n).1 (2 * N ^ 2) _ h1
-      (GlobalTheory.T.thetaTranslateProduct_sigmaStarPow_lattice_law g.abelian₂ hlat' t0 ht0.1 y N hNy)
+      (_root_.GlobalTheory.ThetaLaw.pull_law g.abelian₂ hlat' t0 ht0.1 y N hNy)
     rw [h2', pow_mul] at hBe
     have := ((IntSer.pow hE2 (N ^ 2)).bdd.mul hB).mul hTinv.bdd
     rwa [← hBe, mul_assoc, mul_comm T, hTi, mul_one] at this

@@ -70,22 +70,6 @@ theorem mem_range_map_fromSpec (p : X ⟶ S) (s : Sp C ⟶ S) {U : X.Opens} (hU 
   rw [PtsOver.range_map, range_comp_of_isOpenImmersion, IsAffineOpen.opensRange_fromSpec]
   exact (le_preimage_iff x.1 U).2 hx
 
-theorem Pts.locallyCompactSpace [T1Space C] [LocallyCompactSpace C] (p : X ⟶ Sp C) [LocallyOfFiniteType p] :
-    LocallyCompactSpace (Pts p) := by
-  refine ⟨fun x n hn => ?_⟩
-  obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_le x.1 (le_preimage_top _)
-  obtain ⟨y, rfl⟩ := mem_range_map_fromSpec p _ hU x ((le_preimage_iff _ _).1 hx)
-  obtain ⟨m, c, hc⟩ := exists_isClosedEmbedding_of_affine (hU.fromSpec ≫ p)
-  have := hc.locallyCompactSpace
-  have he := PtsOver.isOpenEmbedding_map (p := hU.fromSpec ≫ p) hU.fromSpec rfl (𝟙 (Sp C))
-  obtain ⟨K, hK, hKn, hKc⟩ := local_compact_nhds (he.continuous.continuousAt.preimage_mem_nhds hn)
-  exact ⟨_, he.isOpenMap.image_mem_nhds hK, Set.image_subset_iff.2 hKn, hKc.image he.continuous⟩
-
-theorem PtsOver.locallyCompactSpace [T1Space C] [LocallyCompactSpace C] (p : X ⟶ S) [LocallyOfFiniteType p]
-    (s : Sp C ⟶ S) : LocallyCompactSpace (PtsOver p s) :=
-  have := Pts.locallyCompactSpace (pullback.snd p s)
-  (PtsOver.baseChangeHomeomorph (IsPullback.of_hasPullback p s)).symm.isClosedEmbedding.locallyCompactSpace
-
 theorem Pts.secondCountableTopology_of_cover [T1Space C] [SecondCountableTopology C] (p : X ⟶ Sp C)
     [LocallyOfFiniteType p] {ι : Type*} [Countable ι] {U : ι → X.Opens} (hU : ∀ i, IsAffineOpen (U i))
     (hc : iSup U = ⊤) : SecondCountableTopology (Pts p) := by
@@ -150,12 +134,6 @@ omit [TopologicalSpace C] [IsTopologicalRing C] [IsOpenUnits C] in
 theorem projPt_surjective (c : R →+* C) : Function.Surjective (projPt (N := N) c) := fun x =>
   (exists_eq_pt c x.1 x.2).elim fun v h => h.elim fun hv e => ⟨⟨v, hv⟩, Subtype.ext e.symm⟩
 
-omit [TopologicalSpace C] [IsTopologicalRing C] [IsLocalRing C] [IsOpenUnits C] in
-
-theorem projPt_eq_iff (c : R →+* C) (v w : Unimodular C N) :
-    projPt c v = projPt c w ↔ ∃ u : Cˣ, w.1 = u • v.1 :=
-  Subtype.ext_iff.trans (pt_eq_pt_iff c v.2 w.2)
-
 theorem continuous_projPt (c : R →+* C) : Continuous (projPt (N := N) c) := by
   have hs : ∀ i, Subring.closure (Set.range (constFn (PSpace.str R N) (chart R N i)) ∪
       Set.range (ratio R N i)) = ⊤ := fun i => by
@@ -212,57 +190,5 @@ theorem PtsOver.compactSpace [ProperSpace F] {p : X ⟶ Sp R} (hp : IsProjOver p
   exact (PtsOver.isClosedEmbedding_map i hi (spMap c.hom)).compactSpace
 
 end Normed
-
-section Sphere
-
-variable {𝕜 : Type} [RCLike 𝕜] {R : Type} [CommRing R] {N : ℕ}
-
-theorem span_range_sphere (v : Metric.sphere (0 : EuclideanSpace 𝕜 (Fin (N + 1))) 1) :
-    Ideal.span (Set.range v.1.ofLp) = ⊤ :=
-  span_range_eq_top_iff_ne_zero.2 fun h => ne_zero_of_mem_unit_sphere v ((WithLp.ofLp_eq_zero 2).1 h)
-
-def spherePt (c : R →+* 𝕜) (N : ℕ) (v : Metric.sphere (0 : EuclideanSpace 𝕜 (Fin (N + 1))) 1) :
-    PtsOver (PSpace.str R N) (spMap c) :=
-  projPt c ⟨v.1.ofLp, span_range_sphere v⟩
-
-theorem continuous_spherePt (c : R →+* 𝕜) : Continuous (spherePt c N) :=
-  (continuous_projPt c).comp (((PiLp.continuous_ofLp 2 _).comp continuous_subtype_val).subtype_mk _)
-
-theorem spherePt_surjective (c : R →+* 𝕜) : Function.Surjective (spherePt c N) := by
-  intro x
-  obtain ⟨⟨v, hv⟩, rfl⟩ := projPt_surjective c x
-  have h0 : WithLp.toLp 2 v ≠ 0 := fun h => span_range_eq_top_iff_ne_zero.1 hv ((WithLp.toLp_eq_zero 2).1 h)
-  have hn : ((‖WithLp.toLp 2 v‖ : ℝ) : 𝕜) ≠ 0 := by simpa using h0
-  refine ⟨⟨((‖WithLp.toLp 2 v‖ : ℝ) : 𝕜)⁻¹ • WithLp.toLp 2 v, ?_⟩,
-    Subtype.ext (pt_units_smul c hv (Units.mk0 _ hn)⁻¹)⟩
-  rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, RCLike.norm_ofReal, abs_norm,
-    inv_mul_cancel₀ (norm_ne_zero_iff.2 h0)]
-
-end Sphere
-
-open scoped MonObj in
-
-theorem complex_points_topology :
-    (∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ),
-      (IsSeparated p → T2Space (Pts p)) ∧
-      (LocallyOfFiniteType p → LocallyCompactSpace (Pts p)) ∧
-      (LocallyOfFiniteType p → QuasiCompact p → SecondCountableTopology (Pts p)) ∧
-      (IsProjOver p → CompactSpace (Pts p))) ∧
-    (∀ N : ℕ, ∃ π : Metric.sphere (0 : EuclideanSpace ℂ (Fin (N + 1))) 1 → Pts (PSpace.str ℂ N),
-      (∀ v, (π v).1 = pt (RingHom.id ℂ) v.1.ofLp (span_range_sphere v)) ∧ Continuous π ∧ Function.Surjective π) ∧
-    ∀ (A : Over (Sp ℂ)) [GrpObj A], IsTopologicalGroup (𝟙_ (Over (Sp ℂ)) ⟶ A) := by
-  refine ⟨fun X p => ⟨fun _ => PtsOver.t2Space p _, fun _ => PtsOver.locallyCompactSpace p _,
-    fun _ _ => PtsOver.secondCountableTopology p _, fun h => PtsOver.compactSpace h _⟩, fun N => ?_,
-    fun A _ => isTopologicalGroup_over A⟩
-  unfold Pts
-  rw [id_eq_spMap_algebraMap ℂ]
-  exact ⟨spherePt (RingHom.id ℂ) N, fun _ => rfl, continuous_spherePt _, spherePt_surjective _⟩
-
-example : let P := PtsOver (PSpace.str ℂ 1) (spMap (RingHom.id ℂ))
-    CompactSpace P ∧ Nontrivial P := by
-  refine ⟨compactSpace_pSpace _ 1, projPt _ ⟨![1, 0], span_range_eq_top_iff_ne_zero.2 (by simp)⟩,
-    projPt _ ⟨![0, 1], span_range_eq_top_iff_ne_zero.2 (by simp)⟩, fun h => ?_⟩
-  obtain ⟨u, hu⟩ := (projPt_eq_iff _ _ _).1 h
-  simpa using congrFun hu 1
 
 end GlobalTheory.Points

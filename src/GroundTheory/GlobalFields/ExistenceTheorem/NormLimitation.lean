@@ -154,11 +154,6 @@ theorem range_ideleClassNorm_maxAbelian :
     exact this
   exact le_antisymm (Subgroup.relIndex_eq_one.1 h1) hle
 
-theorem index_range_ideleClassNorm_eq_card_abelianization :
-    (ideleClassNorm K M).range.index = Nat.card (Abelianization Gal(M/K)) := by
-  rw [← range_ideleClassNorm_maxAbelian, index_range_ideleClassNorm_eq_finrank_of_isMulCommutative,
-    finrank_maxAbelian]
-
 omit [IsGalois K M] in
 
 theorem exists_isAbelianGalois_range_ideleClassNorm_le (L : Type u) [Field L] [NumberField L]

@@ -125,12 +125,6 @@ theorem q_frame_degree (D : D7) : QFrameDeg D := by
 theorem class_map_archimedean (D : D7) : ClassMapT D :=
   classMapT_of (q_frame_degree D)
 
-theorem third_link_family : Link6F :=
-  Link6F_of_frameDeg q_frame_degree
-
-theorem packet_family : KudlaFamilyOfMinkowskiTransference :=
-  packet_of_third_proposition third_link_family
-
 end F
 
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality

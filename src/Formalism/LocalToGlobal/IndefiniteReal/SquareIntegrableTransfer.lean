@@ -1,4 +1,4 @@
-import Formalism.LocalToGlobal.IndefiniteReal.EvalTieOf
+import Formalism.LocalToGlobal.IndefiniteReal.AutomorphicEvaluation
 import Formalism.LocalToGlobal.IndefiniteReal.EvalTieTOne
 import Formalism.LocalToGlobal.IndefiniteReal.MeasurableMulGA
 
@@ -28,14 +28,6 @@ def SquareIntegrableTransfer : Prop :=
 def RphFix : Prop :=
   ∀ T ∈ E, ∀ hF : MemLp (fun x => ev M v₀ T (ι.symm x * t)) 2 (muX X),
     X.Rph (star (hF.toLp _)) = star (hF.toLp _)
-
-def ReFix : Prop :=
-  ∀ T ∈ E, ∀ hF : MemLp (fun x => ev M v₀ T (ι.symm x * t)) 2 (muX X),
-    X.B.Re (star (hF.toLp _)) = star (hF.toLp _)
-
-def RgFix : Prop :=
-  ∀ T ∈ E, ∀ hF : MemLp (fun x => ev M v₀ T (ι.symm x * t)) 2 (muX X),
-    G.Rg (star (hF.toLp _)) = star (hF.toLp _)
 
 def EvalIntoT : Prop :=
   ∀ T ∈ E, ∃ F : EEC X G, ((F : L2X X) =ᵐ[muX X] fun x => ev M v₀ T (ι.symm x * t)) ∧
@@ -137,52 +129,6 @@ theorem re_ipM_eq {T : MMap M} (hT : ∃ c', IsMultIP M μ 𝓕 T T c') (hv : �
   simp_rw [hpt]
   rw [integral_complex_ofReal]
   simp
-
-theorem evalIntoT_of (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (J : Set (GA D (D.sp.Y 0)))
-    (χ : GA D (D.sp.Y 0) → ℂ) (hE : E ≤ Mult θ M J χ)
-    (hL : SquareIntegrableTransfer μ 𝓕 X ι t c) (hRph : RphFix M E X ι t v₀) (hRe : ReFix M E X ι t v₀)
-    (hRg : RgFix M E X G ι t v₀) (hS : ∀ T ∈ E, ∃ c', IsMultIP M μ 𝓕 T T c')
-    (hL2 : ∀ T ∈ E, MemLp (T v₀) 2 (μ.restrict 𝓕)) (hv : ∀ τ, ‖(v₀ τ : M.H τ)‖ = 1) :
-    EvalIntoT M μ 𝓕 E X G ι t c v₀ := by
-  intro T hT
-  have hc := Formalism.IndefR.PeterssonHilbertSpace.mult_cont_left (θ := θ) (J := J) (χ := χ) (M := M) (hE hT) v₀
-  obtain ⟨hmem, hnorm⟩ := hL (T v₀) hc.1 hc.2 (hL2 T hT)
-  have hmem' : MemLp (fun x => ev M v₀ T (ι.symm x * t)) 2 (muX X) := hmem
-  have hstar : star (hmem'.toLp _) ∈ goodSub X G := by
-    refine Submodule.mem_inf.mpr ⟨LinearMap.mem_range.mpr ⟨star (hmem'.toLp _), ?_⟩, LinearMap.mem_ker.mpr ?_⟩
-    · simp only [ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply]
-      rw [hRph T hT hmem', hRe T hT hmem']
-    · simp only [LinearMap.sub_apply, ContinuousLinearMap.coe_coe, LinearMap.id_apply]
-      rw [hRg T hT hmem', sub_self]
-  refine ⟨⟨hmem'.toLp _, hstar⟩, hmem'.coeFn_toLp, ?_⟩
-  show ‖(hmem'.toLp _ : L2X X)‖ ^ 2 = _
-  rw [norm_sq_toLp hmem', re_ipM_eq (hS T hT) hv]
-  exact hnorm
-
-theorem evalInjT_of (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (J : Set (GA D (D.sp.Y 0)))
-    (χ : GA D (D.sp.Y 0) → ℂ) (hE : E ≤ Mult θ M J χ) (hH : μ.IsHaarMeasure)
-    (hF : IsFundamentalDomain (GQ (D.sp.Y 0)) 𝓕 μ) (hL : SquareIntegrableTransfer μ 𝓕 X ι t c) (hcpos : 0 < c)
-    (hR : ResInjVec M E) (hv0 : ∀ τ, (v₀ τ : M.H τ) ≠ 0) (hL2 : ∀ T ∈ E, MemLp (T v₀) 2 (μ.restrict 𝓕)) :
-    EvalInjT M E X ι t v₀ := by
-  intro T hT h0
-  have hc := Formalism.IndefR.PeterssonHilbertSpace.mult_cont_left (θ := θ) (J := J) (χ := χ) (M := M) (hE hT) v₀
-  obtain ⟨-, hnorm⟩ := hL (T v₀) hc.1 hc.2 (hL2 T hT)
-  have hz : ∫ x, ‖T v₀ (ι.symm x * t)‖ ^ 2 ∂(muX X) = 0 := by
-    refine (integral_congr_ae ?_).trans (integral_zero _ _)
-    filter_upwards [h0] with x hx
-    have : T v₀ (ι.symm x * t) = 0 := hx
-    simp [this]
-  rw [hz] at hnorm
-  have hI : ∫ x in 𝓕, ‖T v₀ x‖ ^ 2 ∂μ = 0 := by
-    rcases mul_eq_zero.mp hnorm.symm with h | h
-    · exact absurd h hcpos.ne'
-    · exact h
-  refine hR T hT v₀ hv0 ?_
-  by_contra hne
-  have hint : IntegrableOn (fun x => ‖T v₀ x‖ ^ 2) 𝓕 μ :=
-    (memLp_two_iff_integrable_sq_norm (hL2 T hT).1).1 (hL2 T hT)
-  have := Formalism.IndefR.PeterssonHilbertSpace.petPos (D.sp.Y 0) μ 𝓕 hH hF (T v₀) hc.1 hc.2 hne hint
-  linarith
 
 end Assembly
 

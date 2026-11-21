@@ -18,11 +18,6 @@ theorem ab_one_val {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt P a) : P.
   have := Valuation.map_one_add_of_lt (v := P.valuation E) h
   rwa [add_sub_cancel] at this
 
-theorem ab_one_one (P : HeightOneSpectrum (𝓞 E)) : OneAt P (1 : E) := by
-  unfold OneAt
-  rw [sub_self, map_zero]
-  exact zero_lt_one
-
 theorem ab_one_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (hb : OneAt P b) : OneAt P (a * b) := by
   unfold OneAt
   have e : a * b - 1 = a * (b - 1) + (a - 1) := by ring

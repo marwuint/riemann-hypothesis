@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowLatticeFinitelyGenerated
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
 set_option synthInstance.maxHeartbeats 200000
@@ -24,7 +24,7 @@ theorem GlobalTheory.CovTop.latAll_fg_at_alt : ∀ {D : D7} {L : SizeData₂ D} 
     rw [Ranks.nV]
     omega
   have hW := latW_fg p.T p.fw.laws _ hj (p.κ i) hn
-  obtain ⟨ι, -, -, himg⟩ := GlobalTheory.T.exists_semilinear_emb_supLattice_onto_realisation _ _ _ _ _ _ _ _ _ p.fw i
+  obtain ⟨ι, -, -, himg⟩ := _root_.GlobalTheory.CovTop.SupImage.exists_emb_image_latW _ _ _ _ _ _ _ _ _ p.fw i
   unfold latAll
   rw [← himg]
   exact fg_span_image ι _ hW

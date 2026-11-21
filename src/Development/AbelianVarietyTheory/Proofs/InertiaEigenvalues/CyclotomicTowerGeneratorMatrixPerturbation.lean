@@ -14,13 +14,6 @@ section Abstract
 
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
-theorem norm_mulVec_le {r : ℕ} (B : Matrix (Fin r) (Fin r) C) {c : ℝ} (hc : 0 ≤ c)
-    (hB : ∀ a b, ‖B a b‖ ≤ c) (v : Fin r → C) (a : Fin r) : ‖B.mulVec v a‖ ≤ c * ‖v‖ := by
-  simp only [Matrix.mulVec, dotProduct]
-  refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun b _ => ?_
-  rw [norm_mul]
-  exact mul_le_mul (hB a b) (norm_le_pi_norm v b) (norm_nonneg _) hc
-
 omit [IsUltrametricDist C] in
 theorem mulVec_mem {r : ℕ} (X : AddSubgroup C) (B : Matrix (Fin r) (Fin r) C)
     (hB : ∀ a b, ∀ x ∈ X, B a b * x ∈ X) (v : Fin r → C) (hv : ∀ a, v a ∈ X) (a : Fin r) :

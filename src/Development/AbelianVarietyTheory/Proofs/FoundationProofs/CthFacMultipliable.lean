@@ -8,8 +8,6 @@ noncomputable section
 
 namespace GlobalTheory.Sieg.CthMult
 
-def Good (f : ℕ → ℂ) : Prop := Summable (fun m => ‖f m - 1‖)
-
 end GlobalTheory.Sieg.CthMult
 
 open scoped UpperHalfPlane MatrixGroups Manifold in

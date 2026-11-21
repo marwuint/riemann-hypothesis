@@ -20,23 +20,15 @@ def Simeq {σ : Type*} {p : ℕ} [Fact p.Prime] (f g : MvPowerSeries σ ℂ_[p])
 
 abbrev Xv {p : ℕ} [Fact p.Prime] {σ : Type*} (i : σ) : MvPowerSeries σ ℂ_[p] := MvPowerSeries.X i
 
-def zc {p : ℕ} [Fact p.Prime] (a : ℤ_[p]) : ℂ_[p] := algebraMap ℚ_[p] ℂ_[p] (a : ℚ_[p])
-
 section Ops
 
 variable {p : ℕ} [Fact p.Prime] {σ : Type*}
-
-def add (l ex : PowerSeries ℂ_[p]) (a b : MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
-  PowerSeries.subst (PowerSeries.subst a l + PowerSeries.subst b l) ex
 
 def mulBy (l ex : PowerSeries ℂ_[p]) (c : ℂ_[p]) (a : MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
   PowerSeries.subst (MvPowerSeries.C c * PowerSeries.subst a l) ex
 
 def phAt (ph : PowerSeries ℂ_[p]) (a : MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
   PowerSeries.subst a ph
-
-def be (l ex ph : PowerSeries ℂ_[p]) (a b : MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
-  phAt ph (add l ex a b) - phAt ph a - phAt ph b
 
 end Ops
 

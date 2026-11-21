@@ -89,31 +89,6 @@ theorem coe_derivative_charpolyRev (M : Matrix n n R) :
 
 end MatrixJacobi
 
-section LogSeries
-
-variable {k : Type*} [Field k] [CharZero k]
-
-theorem mul_derivative_logOf (f : PowerSeries k) (hf : PowerSeries.constantCoeff f = 1) :
-    f * PowerSeries.derivative k (PowerSeries.logOf f) = PowerSeries.derivative k f := by
-  have h0 : PowerSeries.constantCoeff (f - 1) = 0 := by rw [map_sub, map_one, hf, sub_self]
-  have ha : PowerSeries.HasSubst (f - 1) := PowerSeries.HasSubst.of_constantCoeff_zero' h0
-  have hgeom : (1 + PowerSeries.X) * PowerSeries.derivative k (PowerSeries.log k) = 1 := by
-    rw [PowerSeries.deriv_log]
-    ext n
-    rcases n with _ | n
-    · simp
-    · simp [add_mul, PowerSeries.coeff_succ_X_mul, pow_succ]
-  have h1 : (1 : PowerSeries k).subst (f - 1) = 1 := by
-    rw [← PowerSeries.coe_substAlgHom ha, map_one]
-  have hs : f * (PowerSeries.derivative k (PowerSeries.log k)).subst (f - 1) = 1 := by
-    have := congrArg (PowerSeries.subst (f - 1)) hgeom
-    rwa [PowerSeries.subst_mul ha, PowerSeries.subst_add ha, PowerSeries.subst_X ha, h1,
-      add_sub_cancel] at this
-  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst ha, map_sub,
-    Derivation.map_one_eq_zero, sub_zero, ← mul_assoc, hs, one_mul]
-
-end LogSeries
-
 section Endomorphism
 
 variable {k W W' : Type*} [Field k] [AddCommGroup W] [Module k W] [FiniteDimensional k W]
@@ -139,34 +114,6 @@ theorem coe_derivative_reverse_charpoly (A : Module.End k W) :
   congr 2
   funext m
   rw [LinearMap.trace_eq_matrix_trace k b, LinearMap.toMatrix_pow]
-
-theorem logOf_inv_reverse_charpoly [CharZero k] (A : Module.End k W) :
-    PowerSeries.logOf ((A.charpoly.reverse : PowerSeries k)⁻¹) =
-      PowerSeries.mk fun m => if m = 0 then 0 else LinearMap.trace k W (A ^ m) / m := by
-  set P : PowerSeries k := ((A.charpoly.reverse : k[X]) : PowerSeries k) with hPdef
-  set D : PowerSeries k := PowerSeries.mk fun m => LinearMap.trace k W (A ^ (m + 1))
-  have hP : PowerSeries.constantCoeff P = 1 := constantCoeff_reverse_charpoly A
-  have hPinv : PowerSeries.constantCoeff P⁻¹ = 1 := by
-    rw [PowerSeries.constantCoeff_inv, hP, inv_one]
-  have hPP : P * P⁻¹ = 1 := PowerSeries.mul_inv_cancel P (by rw [hP]; exact one_ne_zero)
-  have hdP : PowerSeries.derivative k P = -P * D := by
-    rw [hPdef, PowerSeries.derivative_coe, coe_derivative_reverse_charpoly]
-  have key := mul_derivative_logOf P⁻¹ hPinv
-  rw [PowerSeries.derivative_inv', hdP] at key
-  apply PowerSeries.derivative.ext
-  · have hD : PowerSeries.derivative k (PowerSeries.mk fun m =>
-        if m = 0 then 0 else LinearMap.trace k W (A ^ m) / m) = D := by
-      ext n
-      rw [PowerSeries.coeff_derivative, PowerSeries.coeff_mk, PowerSeries.coeff_mk, if_neg n.succ_ne_zero,
-        Nat.cast_add_one, div_mul_cancel₀ _ (Nat.cast_add_one_ne_zero n)]
-    rw [hD]
-    calc PowerSeries.derivative k (PowerSeries.logOf P⁻¹)
-        = P * (P⁻¹ * PowerSeries.derivative k (PowerSeries.logOf P⁻¹)) := by
-          rw [← mul_assoc, hPP, one_mul]
-      _ = P * (P⁻¹ * D * (P * P⁻¹)) := by rw [key]; ring
-      _ = D := by rw [hPP, mul_one, ← mul_assoc, hPP, one_mul]
-  · rw [PowerSeries.constantCoeff_logOf hPinv, ← PowerSeries.coeff_zero_eq_constantCoeff_apply,
-      PowerSeries.coeff_mk, if_pos rfl]
 
 theorem reverse_charpoly_eq_of_trace_pow_eq [CharZero k] (A : Module.End k W)
     (B : Module.End k W')

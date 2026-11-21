@@ -20,8 +20,6 @@ theorem generalLinearGroupOne_eq_of_det_eq {R : Type} [CommRing R] {g h : GL (Fi
   fin_cases a; fin_cases b
   exact e'
 
-example : True := trivial
-
 section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 

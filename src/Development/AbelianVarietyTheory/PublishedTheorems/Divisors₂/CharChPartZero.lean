@@ -25,19 +25,6 @@ def hermMat (α : Alt n) : Matrix (Fin n) (Fin n) ℂ :=
 def eval₂ (α : Alt n) (ξ η : V n) : ℂ :=
   Complex.I * (HermFrame.form (hermMat α) ξ η - HermFrame.form (hermMat α) η ξ)
 
-theorem bas_pair (a b : Fin n) : bas n {a.castAdd n, b.natAdd n} = dz a * dzb b := by
-  have hlt : a.castAdd n < b.natAdd n := by
-    rw [Fin.lt_def]; simp only [Fin.val_castAdd, Fin.val_natAdd]; omega
-  have hc : ({a.castAdd n, b.natAdd n} : Finset (Fin (n + n))).card = 2 := Finset.card_pair hlt.ne
-  have e : ⇑(({a.castAdd n, b.natAdd n} : Finset (Fin (n + n))).orderEmbOfFin hc) = ![a.castAdd n, b.natAdd n] :=
-    (Finset.orderEmbOfFin_unique hc (fun i => by fin_cases i <;> simp)
-      (Fin.strictMono_iff_lt_succ.2 fun i => by fin_cases i; simpa using hlt)).symm
-  rw [bas, ExteriorAlgebra.basis_apply_ofCard _ hc, ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply]
-  simp [Set.powersetCard.ofFinEmbEquiv, Set.powersetCard.ofCard, e, dz, dzb, -Fin.natAdd_eq_addNat]
-
-theorem hermMat_sym (a b : Fin n) : hermMat (Complex.I • (dz a * dzb b)) a b = 1 := by
-  simp [hermMat, ← bas_pair, ← mul_assoc]
-
 end Values
 
 def chPart (r j : ℕ) : symmetricSubalgebra (Fin r) ℚ := ((j.factorial : ℚ)⁻¹) • ⟨psum (Fin r) ℚ j, psum_isSymmetric _ _ j⟩
@@ -65,29 +52,6 @@ def td : R.CH := ∑ j ∈ Finset.range (D + 2), R.char E (tdPart r j)
 
 def rForm : h.Fld :=
   ∑ m ∈ (Finset.range (D + 1)).filter Odd, (rCoeff m : ℂ) • h.coeFld (R.om (R.char E (chPart r m)))
-
-theorem char_esymm (j : ℕ) : R.char E ⟨esymm (Fin r) ℚ j, esymm_isSymmetric _ _ j⟩ = R.cl E j := by
-  rcases j with _ | j
-  · rw [R.cl_zero, ← map_one (R.char E)]
-    exact congrArg _ (Subtype.ext (esymm_zero (Fin r) ℚ))
-  by_cases hj : j < r
-  · exact (congrArg _ (esymmAlgEquiv_symm_apply ℚ (Fintype.card_fin r) ⟨j, hj⟩)).trans (aeval_X _ _)
-  · rw [R.cl_eq_zero E _ (by omega), ← map_zero (R.char E)]
-    refine congrArg _ (Subtype.ext ?_)
-    simp only [esymm, ZeroMemClass.coe_zero]
-    rw [Finset.powersetCard_eq_empty.2 (by simp; omega), Finset.sum_empty]
-
-theorem char_chPart_zero : R.char E (chPart r 0) = r := by
-  rw [← map_natCast (R.char E)]
-  exact congrArg _ (Subtype.ext (by simp [chPart, psum_zero]))
-
-theorem char_chPart_one : R.char E (chPart r 1) = R.cl E 1 := by
-  rw [← char_esymm]
-  exact congrArg _ (Subtype.ext (by simp [chPart, psum_one, esymm_one]))
-
-theorem char_tdPart_zero : R.char E (tdPart r 0) = 1 := by
-  rw [← map_one (R.char E)]
-  exact congrArg _ (Subtype.ext (by simp [tdPart]))
 
 theorem IsPull.char {h' : IsRegVar q D'} {R' : ArRing B h'} {π : Y ⟶ X} {hπ : π ≫ p = q} {f : R.CH →ₐ[ℚ] R'.CH}
     (H : R.IsPull R' π hπ f) (φ : symmetricSubalgebra (Fin r) ℚ) : f (R.char E φ) = R'.char (E.pull π hπ) φ := by
@@ -157,18 +121,10 @@ def dRel (π : Y ⟶ X) (W : Y.Opens) (f : Γ(Y, W)) : Γ(relCot π, W) :=
   Conormal.d (pullback.diagonal_fst π) (V := W) (W := pullback.snd π π ⁻¹ᵁ W)
     (by rw [← Scheme.Hom.comp_preimage, pullback.diagonal_snd]; exact le_rfl) ((pullback.snd π π).app W f)
 
-theorem isVB_relCot (π : Y ⟶ X) [QuasiSeparated π] (g : ℕ) [H : SmoothOfRelativeDimension g π] : IsVB (relCot π) g :=
-  have : SmoothOfRelativeDimension g (pullback.fst π π) :=
-    (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback π π).flip H
-  Conormal.isVB_conormal (pullback.diagonal_fst π) g
-
 variable (q) in
 
 def IsRelAcyclic (π : Y ⟶ X) (L : LB Y) : Prop :=
   ∀ U : X.Opens, IsAffineOpen U → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (W : κ → Y.Opens),
     (∀ i, IsAffineOpen (W i)) → ⨆ i, W i = π ⁻¹ᵁ U → ∀ n, (AbLaw.cechLB q L W).ExactAt (n + 1)
-
-example (L : LB Y) (W : Fin 1 → Y.Opens) (n : ℕ) : (AbLaw.cechLB q L W).ExactAt (n + 1) :=
-  .of_isZero (AbLaw.isZero_cechLB_X q L W (by simp))
 
 end GlobalTheory.CxForm

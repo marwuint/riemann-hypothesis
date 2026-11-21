@@ -15,10 +15,6 @@ def TwistedDualGensExist.Statement : Prop :=
     ∃ a₁ : K → ℤ, ∀ a : K → ℤ, a₁ ≤ a →
       ∃ (M : ℕ) (φ : Fin M → Module.Dual Ω E), IsTwistedDualGens y B a φ
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

@@ -103,13 +103,6 @@ def emptyLayer (B : Base) (C : Cols B) (W : RowsRest B C) (χ : Chi B.toPre)
   chiT := χ
   restN_card_levelGroup_eq := rfl
 
-theorem exists_emptyLayer : ∀ (B : Base) (C : Cols B) (W : RowsRest B C) (χ : Chi B.toPre), ShaOK B.toPre W.shaLen → ∃ nd : NData B.R B.host W.what₂, IsEmpty nd.Loc ∧ HasChi nd χ ∧ ∀ k σ v, nd.lab k σ v = (X - 1) ^ B.R.r := by
-  intro B C W χ hS
-  obtain ⟨ldat, h⟩ := hS
-  refine ⟨emptyLayer B C W χ ldat h, ?_, ?_, fun _ _ _ => rfl⟩
-  · exact inferInstanceAs (IsEmpty Empty)
-  · exact ⟨fun _ => Equiv.refl _, fun _ _ => rfl⟩
-
 end GlobalTheory.MemN
 
 end

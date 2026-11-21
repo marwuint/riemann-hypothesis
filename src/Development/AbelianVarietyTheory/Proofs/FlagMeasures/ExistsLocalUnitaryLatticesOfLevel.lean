@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
 import Formalism.LocalToGlobal.HermitianForms.TiedStep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitPlaceLatticeComponents
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualLatticeLocalCharacterizationStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsGLConjLatticePairsCovByDvrStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualLatticeLocalCharacterization
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsGLConjLatticePairsCovByDvr
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CmFieldSplitCompletelyPlaceStructure
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeLevelLocalDualQuotientLengthOneStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeLevelLocalDualQuotientLengthOne
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DualOfDualFrames
 
 open Formalism.BasicNotions Formalism.UG Formalism.L2.Forms NumberField IsDedekindDomain Matrix GlobalTheory.St.G
@@ -258,7 +258,7 @@ theorem mem_cmp₂_iff {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L)
     (u : Fin n → v.adicCompletion F) :
     u ∈ cmp (p₂ sp) L ↔
       ∀ w ∈ cmp (p₁ sp) (dualL cm.sig J L), pairing sp J u w ∈ v.adicCompletionIntegers F := by
-  have hD := (GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet L hL).2.1 v
+  have hD := (_root_.GlobalTheory.St.G.dualL_local_adelic F E cm n J hJ hdet L hL).2.1 v
   constructor
   · intro hu w hw
     obtain ⟨z, hz, rfl⟩ := (mem_cmp₂ hdiag _ _).1 hu
@@ -283,8 +283,8 @@ theorem mem_cmp₂_iff {L : Submodule (𝓞 E) (Fin n → E)} (hL : IsLat L)
 theorem cmp₁_covBy {T f : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (hT : T.Prime) (hs : SplitsIn E T)
     (hf : Module.finrank ℚ E = 2 * f) (hL : TLat cm.sig J T f L) (hv : (T : 𝓞 F) ∈ v.asIdeal) :
     cmp (p₁ sp) L ⋖ cmp (p₁ sp) (dualL cm.sig J L) := by
-  have hD := (GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet L hL.1).2.1 v
-  obtain ⟨-, d, hd, hcyc⟩ := GlobalTheory.T.hermitianLattice_level_local_dual_quotient_length_one F E cm n J hJ hdet T f L hT hs hf hL v hv
+  have hD := (_root_.GlobalTheory.St.G.dualL_local_adelic F E cm n J hJ hdet L hL.1).2.1 v
+  obtain ⟨-, d, hd, hcyc⟩ := _root_.GlobalTheory.St.G.tLat_local_index F E cm n J hJ hdet T f L hT hs hf hL v hv
   have hmax := ((SplitPrime.split_place F E cm T hT hs).2 v hv).2.1
   have hd' := (mem_cmp₁ hdiag _ _).2 ⟨d, hd, rfl⟩
   refine covBy_of_cyclic ?_ ?_ _ ?_ hd' ?_
@@ -331,9 +331,9 @@ theorem exists_unitary_of_TLat :
   obtain ⟨sp, hsig, hdiag⟩ := ((SplitPrime.split_place F E cm T hT hs).2 v hv).2.2
   have hint : ∀ t ∈ intV E v, p₁ sp t ∈ v.adicCompletionIntegers F :=
     fun t ht => ((int_iff hdiag t).1 ht).1
-  obtain ⟨g, hA, hB⟩ := GlobalTheory.T.exists_GL_conj_lattice_pairs_covBy_dvr (v.adicCompletionIntegers F) (v.adicCompletion F) n _ _ _ _
-    (cmp_fg hint (GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet L hL.1).1)
-    (cmp_fg hint (GlobalTheory.T.dual_lattice_local_characterization F E cm n J hJ hdet M hM.1).1) (cmp_span hL.1) (cmp_span hM.1)
+  obtain ⟨g, hA, hB⟩ := _root_.GlobalTheory.St.G.exists_conj_of_covBy (v.adicCompletionIntegers F) (v.adicCompletion F) n _ _ _ _
+    (cmp_fg hint (_root_.GlobalTheory.St.G.dualL_local_adelic F E cm n J hJ hdet L hL.1).1)
+    (cmp_fg hint (_root_.GlobalTheory.St.G.dualL_local_adelic F E cm n J hJ hdet M hM.1).1) (cmp_span hL.1) (cmp_span hM.1)
     (cmp₁_covBy hJ hdet hsig hdiag hT hs hf hL hv) (cmp₁_covBy hJ hdet hsig hdiag hT hs hf hM hv)
   obtain ⟨⟨h, hh⟩, hg, -⟩ := (split_components F E cm n J hJ hdet v sp hsig hdiag).2.1 g
   have hg' : ∀ x, (fun b => p₁ sp ((h.1 *ᵥ x) b)) = g.1 *ᵥ fun b => p₁ sp (x b) := by

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FactorialLeTwoMulCardPermWithFixedPointStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FactorialLeTwoMulCardPermWithFixedPoint
 open Polynomial Classical GlobalTheory.BadShare
 
 namespace GlobalTheory.StableSubset
@@ -43,8 +43,8 @@ theorem card_fix_ge {N : ℕ} (A : Finset (Fin N)) (h0 : 0 < A.card) (hN : A.car
         (∃ i ∈ A, σ i = i) ∧ ∃ j ∉ A, σ j = j).card := by
   have c1 : Fintype.card {x // x ∈ A} = A.card := by simp
   have c2 : Fintype.card {x // x ∉ A} = N - A.card := by simp [Fintype.card_subtype_compl]
-  have h1 := GlobalTheory.T.factorial_le_two_mul_card_perm_with_fixedPoint {x // x ∈ A} (Fintype.card_pos_iff.1 (by omega))
-  have h2 := GlobalTheory.T.factorial_le_two_mul_card_perm_with_fixedPoint {x // x ∉ A} (Fintype.card_pos_iff.1 (by omega))
+  have h1 := _root_.GlobalTheory.BadShare.factorial_le_two_mul_card_perm_fixed {x // x ∈ A} (Fintype.card_pos_iff.1 (by omega))
+  have h2 := _root_.GlobalTheory.BadShare.factorial_le_two_mul_card_perm_fixed {x // x ∉ A} (Fintype.card_pos_iff.1 (by omega))
   rw [c1] at h1
   rw [c2] at h2
   refine (Nat.mul_le_mul h1 h2).trans ?_

@@ -7,7 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 import Development.AbelianVarietyTheory.Definitions.Divisors.WellChosen
-import Development.AbelianVarietyTheory.Definitions.Divisors.MeanLogLeOfBounds
+import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsCoordAtPoints
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalizedPointHeightLatticeSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerConstantCoeffEqSpan
 import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNormLe
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomWeightHomWeight
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
@@ -15,23 +18,82 @@ import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.Log
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenRatios
 import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChooseMulOneSubLeChoose
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WtBigRun
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrongerPublishedHypothesesImplyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqualVolumeDeepLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodWeightAntitoneGapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankComponentWeightInvarianceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProportionalPositiveVolumesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightParameterStrictAntitoneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeBoundsForFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatConstantBoundedByNineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationMultiplicityWeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentImageDegreeBetweenOfProportionalityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirationalOnWeightParametersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeepModelWeightSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChoiceFreeSectionConstructionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnchoredWeightIndefiniteLiftGapsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunSizesQuotientGapsLarge
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToroidalFlagProportionalityOfGoodChernWeilStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
+import Formalism.LocalRingCardinality.DataParamsT
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffCartierCompl
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationComponentsCovolumeEq
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FirstIndexEqOfUnfolded
+import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformizationLawsOfGoodDeepCover
+import Development.AbelianVarietyTheory.Definitions.Divisors.P22
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FgIntOfForallIsIntegral
+import Development.AbelianVarietyTheory.Definitions.CMLattices.IntegralOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulNonnegOfPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulNonnegLargeAtThreeFive
+import Formalism.LocalToGlobal.ProjectiveLattices.RulInst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearL2Independent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulMemOfMemSpan
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodCmPtFrPolyNeZero
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPolyDivDet
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegrality
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TestPointValueEqConstMulReading
+import Formalism.LocalToGlobal.ProjectiveLattices.RosatiLatticeNorms.LinkFD
+import Formalism.LocalToGlobal.ProjectiveLattices.ChartWD
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCoverComponentExtendsToRankOneCuspData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationFrameReadingNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumberFieldFrameValueNeZeroOfComplex
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameDenominatorDominantWeightCm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowerCuspMultiplierGap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankComponentWeightInvariance
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightParameterStrictAntitone
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeBoundsForFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatConstantBoundedByNine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationMultiplicityWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentImageDegreeBetweenOfProportionality
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirationalOnWeightParameters
+import Development.AbelianVarietyTheory.Definitions.Divisors.HermSysHypOneLeLambdaZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RatField
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ToroidalChartsForFan
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerIsoFlagTangent
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyKodairaSpencerIdentificationOffBoundary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NeBotOfNotMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricallyConnectedStr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToroidalFlagNonempty
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentSmoothProjectiveConnected
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeOnOpenCuspIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsExtendVanishCompactifiedFlagSpace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToroidalIntegralWeightSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanBdLeSpace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivLeSubMulDiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqLastAddGaps
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommonRestrIsoTens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentSmoothProjectiveConnectedStatement
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeadWeightLineNef
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefPullLLStepEx
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusFlagUnitWeightBundlesNef
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmpleLineBundleWeightGap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NefIsPsEffAndBigTensNef
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemNonzeroLocusFormMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataViehwegVanishingNumberFieldTwist
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBigPull
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertSamuelMapBirationalOfCuspFormsGenerateStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormRatiosGenerateAtFlagSpaceGenericPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChooseMulComponentDegreeLeDimensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChooseMulComponentDegreeLeDimension
+import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyCuspFrame
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
 
 set_option autoImplicit false
 
@@ -98,112 +160,6 @@ theorem two_le_dimFlag (hp : 1 ≤ Dw.p) (hq : 1 ≤ Dw.q) (hf : 2 < Module.finr
   nlinarith
 
 end Weights
-
-theorem lower (hP : Hypotheses2) (hSI : GlobalTheory.Published.SiegelToroidalIntegral) (hKS : GlobalTheory.Published.ToroidalForFanKS)
-    (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted) (hSL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : CoreJ D}
-    (hT : LawsJ T) {j : ℕ} (hp : 1 ≤ (T.Q.Dw j).p) (hq : 1 ≤ (T.Q.Dw j).q) (hf : 2 < Module.finrank ℚ D.host.E / 2) (hj : InR D j)
-    (Y : Deep T.toCore j) {e : ℕ} {o : ℝ} (hY : Y.Good e o) (P : WtPar (T.Q.Dw j)) (hB : WtBig P)
-    (Z : Comp Y.d.Xo₂ Y.d.c₂) (hbir : BirOn Y.U Z (wtOf _ P.u₁ 0)) :
-    (((P.T - 1).choose (CompHt.dimFlag (T.Q.Dw j)) : ℕ) : ℝ) * Y.dg P.u₁ Z ≤ Y.rkC (P.wt P.T) Z := by
-  have hP1 := GlobalTheory.T.stronger_published_hypotheses_imply hP
-  obtain ⟨g1, g2, g3⟩ := gapGe_of_wtBig hB
-  have good : ∀ la, GapGe 1 la → _ := fun la h =>
-    GlobalTheory.T.good_weight_antitone_gap hP D T hT j hp hq hf hj Y e o hY la (antitone_of_gapGe hp hq h).1 (antitone_of_gapGe hp hq h).2
-  obtain ⟨TF, R, ω, h⟩ := GlobalTheory.T.deep_model_weight_section hP1 hG hQ hP.q15 hP.q16 hSI hKS.toroidalChartsForFan hSL D T.toCore j Y e o hY hf Z P hB fun i _ => (good _ (g3 i)).1
-  obtain ⟨f₁⟩ := nonempty_cuspFrame ((good _ g1).2 Z)
-  obtain ⟨f₂⟩ := nonempty_cuspFrame ((good _ g2).2 Z)
-  let k : CompHS.Consts := ⟨1, 1, 1, 1, 1, le_rfl, le_rfl, le_rfl⟩
-  let th : R.L.Sec := GlobalTheory.CompHS.toSec (R.Δ₁.lift 0)
-  have hA := GlobalTheory.T.choice_free_section_construction hP1 hQ.nef hSI hKS.toroidalChartsForFan hSL _ _ _ _ _ _ TF Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k hY.geo hB
-  have a3 := GlobalTheory.T.hilbertSamuel_map_birational_of_cuspForms_generate TF.X Z Y.U P R ω _ _ _ h f₁ f₂ th k (GlobalTheory.T.cuspForm_ratios_generate_at_flagSpace_genericPoint TF.X Z Y.U P.u₁ ⟨R.toModif⟩ hbir)
-  obtain ⟨a1, a2⟩ := hA
-  have key := GlobalTheory.T.choose_mul_componentDegree_le_dimension hQ _ _ _ _ _ _ _ _ Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k a1 a2 a3
-  have hr : rankOn Y.U Z (wtOf _ (P.wt P.T) 0) = Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf _ (P.wt P.T) 0)) := by
-    rw [rankOn, Formalism.HN.rkK, ((good _ (g3 P.T)).2 Z).2.2, finrank_top]
-  rw [← hr] at key
-  exact_mod_cast key
-
-theorem upper (hX : GlobalTheory.CovTop.HypothesesX) (hP : Hypotheses2) (hSI : GlobalTheory.Published.SiegelToroidalIntegral) (hKS : GlobalTheory.Published.ToroidalForFanKS) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
-    (hSL : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : CoreJ D}
-    (hT : LawsJ T) {j : ℕ} (hp : 1 ≤ (T.Q.Dw j).p) (hq : 1 ≤ (T.Q.Dw j).q) (hf : 2 < Module.finrank ℚ D.host.E / 2) (hj : InR D j)
-    (Y : Deep T.toCore j) {e : ℕ} {o : ℝ} (hY : Y.Good e o) (P : WtPar (T.Q.Dw j)) (hB : WtBig P)
-    (hs : ∀ τ, StrictAnti (P.u₁ τ) ∧ StrictAnti (CompHt.uPrime _ P.u₁ τ))
-    (hbir : ∀ Z, BirOn Y.U Z (wtOf _ P.u₁ 0))
-    (hV : ∀ Z, ValMult Y.U Z (wtOf _ P.u₁ 0) (wtOf _ (CompHt.uPrime _ P.u₁) 0))
-    (h0 : 0 ≤ CompHt.rhoB _ P.u₁) (h1 : CompHt.rhoB _ P.u₁ ≤ 1 / 2) (la : AllWt.Weight (T.Q.Dw j)) (hla : ∀ τ, Antitone (la τ))
-    (hd : ∀ τ, Antitone (((P.T + CompHt.dimFlag (T.Q.Dw j) + 3 : ℕ) : ℤ) • P.u₁ τ - la τ))
-    (Z : Comp Y.d.Xo₂ Y.d.c₂) (hδ : 0 < Y.dg P.u₁ Z) :
-    (1 - 7 * ((CompHt.dimFlag (T.Q.Dw j) : ℝ) ^ 2 / P.T + CompHt.dimFlag (T.Q.Dw j) * CompHt.rhoB _ P.u₁)) * Y.rkC la Z ≤
-      (((P.T - 1).choose (CompHt.dimFlag (T.Q.Dw j)) : ℕ) : ℝ) * Y.dg P.u₁ Z := by
-  have hD := GlobalTheory.CompHS.dimFlag_eq (T.Q.Dw j)
-  have hg := hB.gaps
-  have hT1 := hB.le_T
-  have hD2 := two_le_dimFlag hp hq hf
-  rw [← hD] at hg hT1 hD2
-  have hle := (GlobalTheory.T.componentImageDegree_between_of_proportionality _ _ _ _ _ _ _ Y.U hY.unf (GlobalTheory.T.proportional_positive_volumes hP hSI hKS hSL D T hT j hp hq hf hj Y e o hY).1
-    (GlobalTheory.T.equal_volume_deep_level hP hSI hKS hSL D T hT j hp hq hf hj Y e o hY) P.u₁ (fun τ => (hs τ).1) (fun τ => (hs τ).2) hbir hV Z Z).1
-  rw [CompHt.delPrime_eq _ _ (CompHt.vdm_pos fun τ => (hs τ).1).ne'] at hle
-  set ρ := CompHt.rhoB _ P.u₁ with hρ
-  set n := P.T + CompHt.dimFlag (T.Q.Dw j) + 3 with hn
-  have hρ1 : 0 < 1 - ρ := by linarith
-  have hn0 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-  have ha1 : ((⌊(n : ℝ) / (1 - ρ)⌋₊ : ℕ) : ℝ) ≤ n / (1 - ρ) := Nat.floor_le (by positivity)
-  have ha2 : (n : ℝ) / (1 - ρ) < (⌊(n : ℝ) / (1 - ρ)⌋₊ : ℕ) + 1 := Nat.lt_floor_add_one _
-  have ha3 : n ≤ ⌊(n : ℝ) / (1 - ρ)⌋₊ := Nat.le_floor (by rw [le_div_iff₀ hρ1]; nlinarith)
-  have hjet := GlobalTheory.T.rank_component_weight_invariance hX hP hSI hKS hG hQ hSL D T hT j hp hq hf hj Y e o hY Z P.u₁ la n ⌊(n : ℝ) / (1 - ρ)⌋₊ hg hla hd (by
-    have h2 : CompHt.topDeg Y.U Z P.u₁ ≤ Y.dg P.u₁ Z / (1 - ρ) := by
-      rw [le_div_iff₀ hρ1, mul_comm]; exact hle
-    calc (n : ℝ) * CompHt.topDeg Y.U Z P.u₁ ≤ n * (Y.dg P.u₁ Z / (1 - ρ)) := mul_le_mul_of_nonneg_left h2 hn0
-      _ = n / (1 - ρ) * Y.dg P.u₁ Z := by ring
-      _ < _ := mul_lt_mul_of_pos_right ha2 hδ)
-  refine GlobalTheory.share_bound_of_jet_count _ _ _ ρ _ _ hD2 hT1 h0 h1 ha3 ?_ hδ.le (Nat.cast_nonneg _) hjet
-  rw [hn] at ha1 ⊢
-  push_cast at ha1 ⊢
-  exact ha1
-
-theorem lifts_and {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
-    (_i : Fin (Fm.D x ι).R.m) (_PP _C : ℝ), Prop} (h : Lifts Q) (h' : Lifts Q') :
-    Lifts fun Fm x hx ι p i PP _ => (∃ C, Q Fm x hx ι p i PP C) ∧ ∃ C, Q' Fm x hx ι p i PP C :=
-  Closed.imp (Closed.and h h') fun _ _ _ ⟨⟨C, _, a⟩, C', _, b⟩ => ⟨0, le_rfl, (a.and b).imp fun _ h x hx hle ι p hp i =>
-    ⟨⟨C, (h x hx hle ι p hp).1 i⟩, C', (h x hx hle ι p hp).2 i⟩⟩
-
-theorem share : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS →
-    GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative →
-    DeepGood → Size → FlatDeg → Deg → Share := by
-  intro hX hP hSI hKS hG hQ hSL hDG hS hF hD
-  have h1 := hS
-  have h2 := hF
-  have h3 := hD
-  have h4 := GlobalTheory.T.size_bounds_for_family hS
-  have h5 := GlobalTheory.T.valuation_multiplicity_weight hP hG hQ hSI hKS hSL hDG hS hF
-  have h6 := GlobalTheory.T.birational_on_weight_parameters hX hG hQ hSI hP hS
-  unfold Size at h1
-  unfold FlatDeg Covers at h2
-  unfold Deg Covers at h3
-  unfold Covers at h4 h5 h6
-  have all := lifts_and (lifts_and (lifts_and (lifts_and h1 h2) (lifts_and h3 wtBig_run))
-    (lifts_and (GlobalTheory.T.weight_parameter_strict_antitone hS) h4)) (lifts_and h5 h6)
-  clear h1 h2 h3 h4 h5 h6
-  refine Closed.imp all fun Fm _ _ ⟨C, hC, x0, h⟩ => ⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY u1 hu Z => ?_⟩
-  obtain ⟨⟨_, ⟨_, ⟨_, ⟨_, hs⟩, _, hfl⟩, _, ⟨_, hdg⟩, _, hB⟩, _, ⟨_, hq⟩, _, hz⟩, _, ⟨_, hv⟩, _, hbi⟩ := h x hx hle ι p hp i
-  obtain ⟨hp1, hq1, hf, hqu, hsa, ⟨w, -, hw⟩, hdom⟩ := hq hi
-  obtain ⟨hT, hj, -⟩ := hz hi Y hY
-  obtain ⟨-, h0, -, hz1⟩ := (hs.2.2.2.2.2.2 hi).2 u1 hu
-  obtain ⟨δ, hδ, hδ2⟩ := hdg hi Y hY u1 hu
-  obtain rfl := hqu u1 hu
-  have htw := (GlobalTheory.T.flat_line_rank_shift_invariant hP _ p.T hT _ hp1 hq1 hf hj Y _ _ hY.1 _ (hfl hi Y hY)).1
-  refine ⟨?_, ?_⟩
-  · rw [hw, htw]
-    exact lower hP hSI hKS hG hQ hSL hT hp1 hq1 hf hj Y hY.1 _ (hB hi) Z (hbi hi Y hY Z).1
-  · have hD2 : (2 : ℝ) ≤ CompHt.dimFlag (dat p i) := by
-      rw [GlobalTheory.CompHS.dimFlag_eq]; exact_mod_cast two_le_dimFlag hp1 hq1 hf
-    refine upper hX hP hSI hKS hG hQ hSL hT hp1 hq1 hf hj Y hY.1 _ (hB hi) hsa (fun Z => (hbi hi Y hY Z).1) (hv hi Y hY) h0 ?_ (uM p i) (fun τ => ?_) (fun τ => ?_) Z
-      (hδ.trans_le (hδ2 Z).1)
-    · unfold zed at hz1
-      have : 0 ≤ (CompHt.dimFlag (dat p i) : ℝ) ^ 2 / lenT p i (Fm.parT x hx ι).PP := by positivity
-      nlinarith [mul_le_mul_of_nonneg_right hD2 h0]
-    · simpa using (hdom 0 (by norm_num) τ).1
-    · simpa using (hdom 0 (by norm_num) τ).2
 
 end GlobalTheory.CovTop.ShareRowsNef
 

@@ -28,7 +28,7 @@ theorem core (hc : CMData (maximalRealSubfield E) E) (V : HSpace E)
     (hg : Supp hc V e g) : ν g = 1 := by
   have hur := unramified hc
   obtain ⟨σ, π, hσE, hσ⟩ := GlobalTheory.FixedPrime.exists_isUnramInv v P hin
-  obtain ⟨ψ, hψE, hψσ, hψO⟩ := GlobalTheory.T.exists_ringEquiv_tensor_inert_adicCompletion E v P hin σ hσE hσ.2.1
+  obtain ⟨ψ, hψE, hψσ, hψO⟩ := _root_.GlobalTheory.InertCompletion.exists_ringEquiv_completion E v P hin σ hσE hσ.2.1
   obtain ⟨h, hfr, hon⟩ := exists_orthonormal hc V v
   obtain ⟨s1, s2, s3⟩ := GlobalTheory.T.adelicUnitary_supportedAtFinitePlace_eq_localUnitary _ E hc V v e he
   let ψ' : LocAlg v →+* P.adicCompletion E := ψ

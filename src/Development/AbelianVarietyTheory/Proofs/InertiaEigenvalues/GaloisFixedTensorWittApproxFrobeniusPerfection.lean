@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffZeroEqZeroIff
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleEmbeddingFrobeniusGaloisCompatStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleEmbeddingFrobeniusGaloisCompat
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltInvariantApproxByEpsilonRootsClosureStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerEpsilonRootsMemFrobeniusPerfectionModStatement
 
@@ -220,7 +220,7 @@ theorem fixSub_approx_perfection (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI :
     unfold fixSub at hy
     simp only [Subring.mem_iInf, RingHom.mem_eqLocus] at hy
     exact hy g hg
-  obtain ⟨hφE, -, hπ, -⟩ := GlobalTheory.T.etaleEmbedding_frobenius_galois_compat l P AI K s LL h W E
+  obtain ⟨hφE, -, hπ, -⟩ := _root_.GlobalTheory.Decompl.ioE_compat l P AI K s LL h W E
   have hφ : ∀ e, ∃ e', φRW LL (E.tie.ioE e) = E.tie.ioE e' := fun e => ⟨W.φE e, (hφE e).symm⟩
   have hcoef : ∀ i, ∀ g ∈ Hinf K, autCb l (AI.actT g) ((crd (basisO LL) i y).coeff 0) =
       (crd (basisO LL) i y).coeff 0 := by

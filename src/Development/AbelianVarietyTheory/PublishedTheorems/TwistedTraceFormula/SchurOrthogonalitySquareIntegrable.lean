@@ -186,25 +186,6 @@ theorem memLp_coef [CompleteSpace H] [MeasurableMul G] [MeasurableInv G] [μ.IsM
     exact inner_conj_symm _ _
   exact memLp_coef_right π hπ hirr hw₀ h2 v
 
-example [MeasurableSpace Circle] [BorelSpace Circle] : ∃ π : Circle →* (ℂ →L[ℂ] ℂ),
-    (∀ g, π g 1 = g) ∧ (∀ g v, ‖π g v‖ = ‖v‖) ∧ (∀ v, Continuous fun g => π g v) ∧
-    (∀ S : Submodule ℂ ℂ, IsClosed (S : Set ℂ) → (∀ g, ∀ v ∈ S, π g v ∈ S) → S = ⊥ ∨ S = ⊤) ∧
-    ∃ v₀ w₀ : ℂ, v₀ ≠ 0 ∧ w₀ ≠ 0 ∧
-      MemLp (fun g => ⟪w₀, π g v₀⟫_ℂ) 2 (Measure.haar : Measure Circle) := by
-  let π : Circle →* (ℂ →L[ℂ] ℂ) :=
-    { toFun := fun g => (g : ℂ) • (1 : ℂ →L[ℂ] ℂ)
-      map_one' := by simp
-      map_mul' := fun a b => by simp [smul_smul, mul_comm] }
-  have hπ : ∀ g v, π g v = (g : ℂ) * v := fun g v => rfl
-  have hc : ∀ v, Continuous fun g => π g v := fun v => by
-    simp only [hπ]
-    exact continuous_subtype_val.mul continuous_const
-  refine ⟨π, fun g => by simp [hπ], fun g v => by rw [hπ, norm_mul, Circle.norm_coe, one_mul], hc,
-    fun S _ _ => Ideal.eq_bot_or_top S, 1, 1, one_ne_zero, one_ne_zero, ?_⟩
-  refine MemLp.of_bound (continuous_const.inner (hc 1)).aestronglyMeasurable 1
-    (Filter.Eventually.of_forall fun g => ?_)
-  rw [hπ, mul_one, RCLike.inner_apply, map_one, mul_one, Circle.norm_coe]
-
 end SqIntRep
 
 theorem Published.schurOrthogonalitySquareIntegrable' : Published.SchurOrthogonalitySquareIntegrable := by

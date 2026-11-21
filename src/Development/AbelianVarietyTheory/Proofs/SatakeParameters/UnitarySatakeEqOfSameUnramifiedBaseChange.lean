@@ -69,14 +69,14 @@ theorem weyl_of_coeff (hswap : CoeffSwap) (hneg : CoeffNeg) (L : Type) [Field L]
     exact sum_neg S i (h3 i) α
 
 theorem coeff_symm : CoeffSwap ∧ CoeffNeg := by
-  have hr : RankOne := GlobalTheory.T.cellSumRankOneReflectionSymmetry_of_steps GlobalTheory.T.cell_sum_two_stage_descent_unipotent GlobalTheory.T.cell_sum_left_right_invariance_normaliser
-    (GlobalTheory.T.contractingAutChainCosetSumScaling_of_unimodularity (GlobalTheory.T.relIndexCosetSumUnimodularity_of_finiteIndex GlobalTheory.T.finite_index_left_right_coset_sums_eq) GlobalTheory.T.contracting_automorphism_subgroup_chain_index)
-  have hl : LeviStep := GlobalTheory.T.unitaryCellSumLeviReduction_of_steps hr GlobalTheory.T.exists_smaller_unitary_group_embedding GlobalTheory.T.smaller_unitary_embedding_preserves_integral_parts GlobalTheory.T.unitary_diagonal_factorization_along_embedding GlobalTheory.T.unitary_levi_normalizes_unipotent_radical
-    (GlobalTheory.T.unitaryUnipotentRadicalSplitting_of_leviPart GlobalTheory.T.unitary_block_triangular_levi_part_unitary) GlobalTheory.T.unitary_dominant_diagonal_conjugation_contracts GlobalTheory.T.unitary_levi_centre_diagonal_conjugation_eq
-  have hi : IntIndex := GlobalTheory.T.card_integers_mod_uniformizer_eq_q_sq
-  have ht : TraceZeroIndex := GlobalTheory.T.traceZeroIntegersModUniformizerCard_of_cardSq hi
+  have hr : RankOne := _root_.GlobalTheory.SatakeWeyl.rankOne_of_steps _root_.GlobalTheory.SatakeWeyl.descent _root_.GlobalTheory.SatakeWeyl.cellInv_holds
+    (_root_.GlobalTheory.SatakeWeyl.chainSum_of_unimod (_root_.GlobalTheory.SatakeWeyl.unimod_of_unimodFin _root_.GlobalTheory.SatakeWeyl.unimodFin) _root_.GlobalTheory.SatakeWeyl.chainIndex)
+  have hl : LeviStep := GlobalTheory.T.unitaryCellSumLeviReduction_of_steps hr _root_.GlobalTheory.SatakeWeyl.embExists _root_.GlobalTheory.SatakeWeyl.embMem _root_.GlobalTheory.SatakeWeyl.embTorus _root_.GlobalTheory.SatakeWeyl.leviRad
+    (GlobalTheory.T.unitaryUnipotentRadicalSplitting_of_leviPart _root_.GlobalTheory.SatakeWeyl.leviPart) GlobalTheory.T.unitary_dominant_diagonal_conjugation_contracts GlobalTheory.T.unitary_levi_centre_diagonal_conjugation_eq
+  have hi : IntIndex := _root_.GlobalTheory.SatakeWeyl.intIndex
+  have ht : TraceZeroIndex := _root_.GlobalTheory.SatakeWeyl.traceZeroIndex_of_intIndex hi
   exact ⟨GlobalTheory.T.unitarySatakeCoeff_adjacentSwap_of_leviReduction hl (GlobalTheory.T.unitaryFourLeviGL2RootIndex_of_cardSq hi) GlobalTheory.T.unitaryFourLeviGL2_cartan_doubleCosets,
-    GlobalTheory.T.unitarySatakeCoeff_lastSignChange_of_leviReduction hl (GlobalTheory.T.unitaryRankTwoRootIndex_of_traceZeroCard ht) (GlobalTheory.T.unitaryRankThreeRootIndex_of_cards hi ht)⟩
+    _root_.GlobalTheory.SatakeWeyl.coeffNeg_of_leviStep hl (GlobalTheory.T.unitaryRankTwoRootIndex_of_traceZeroCard ht) (GlobalTheory.T.unitaryRankThreeRootIndex_of_cards hi ht)⟩
 
 end Weyl
 

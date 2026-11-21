@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.Models
+import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteOpenLeClosedFibreStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteOpenLeClosedFibre
+
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
@@ -17,7 +18,7 @@ theorem mem_of_finite_of_closedFibre {R : Type} [CommRing R] [IsLocalRing R]
   haveI := hY
   haveI : IsIso (⊤ : Y.left.Opens).ι := by rw [← Scheme.topIso_hom]; infer_instance
   have hfin : IsFinite ((⊤ : Y.left.Opens).ι ≫ Y.hom) := inferInstance
-  have hle := GlobalTheory.T.finite_open_le_closed_fibre R Y.left Y.hom ⊤ (h.left ⁻¹ᵁ W) hfin (fun x hx => by
+  have hle := _root_.GlobalTheory.CompanionTheory.Ar.BT.isFinite_open_le_of_closedFibre_le R Y.left Y.hom ⊤ (h.left ⁻¹ᵁ W) hfin (fun x hx => by
     apply hW
     have hw : h.left ≫ X.hom = Y.hom := Over.w h
     have hc := Scheme.Hom.comp_apply h.left X.hom x

@@ -4,10 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DefectBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSmoothOfDefectZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSmoothFreeAwayStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UnramifiedIdealLocusCharacterizationStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DefectBounded
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSmoothOfDefectZero
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSmoothFreeAway
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UnramifiedIdealLocusCharacterization
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -279,7 +279,7 @@ theorem cov_zero (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] 
   haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing R B
   refine cov_of_generic π _ (fun R' _ _ a h => h.1) ?_
   rintro E hE ⟨R', _, _, a, ha⟩
-  obtain ⟨f, hf, hs⟩ := GlobalTheory.T.exists_smooth_of_defect_zero' R π hπ B hB R' a (hE R' a ha).1 (hE R' a ha).2
+  obtain ⟨f, hf, hs⟩ := _root_.GlobalTheory.SS.exists_smooth_of_defect_zero R π hπ B hB R' a (hE R' a ha).1 (hE R' a ha).2
   exact ⟨f, fun h => not_dvd_of_unit (hE R' a ha).1 hf (h R' a ha),
     Cov.single _ hs (genOpen_away f) fun R'' _ _ b hb => exists_lift f b hb.2⟩
 
@@ -310,7 +310,7 @@ theorem cov_succ (hk : PerfectField (IsLocalRing.ResidueField R)) (c : ℕ)
   letI : Algebra k (B ⧸ I) := (Ideal.Quotient.lift (IsLocalRing.maximalIdeal R) (algebraMap R (B ⧸ I)) hm).toAlgebra
   haveI : IsScalarTower R k (B ⧸ I) := IsScalarTower.of_algebraMap_eq fun _ => rfl
   haveI : Algebra.FiniteType k (B ⧸ I) := Algebra.FiniteType.of_restrictScalars_finiteType R k _
-  obtain ⟨g, hg, hs, hfree⟩ := GlobalTheory.T.exists_smooth_free_away' k (B ⧸ I) ((B ⧸ I) ⊗[B] KaehlerDifferential R B)
+  obtain ⟨g, hg, hs, hfree⟩ := _root_.GlobalTheory.SS.exists_smooth_free_away k (B ⧸ I) ((B ⧸ I) ⊗[B] KaehlerDifferential R B)
   obtain ⟨f, rfl⟩ := Ideal.Quotient.mk_surjective g
   refine ⟨f, fun h => hg (Ideal.Quotient.eq_zero_iff_mem.2 h), ?_⟩
   let L := Localization.Away f
@@ -332,7 +332,7 @@ theorem cov_succ (hk : PerfectField (IsLocalRing.ResidueField R)) (c : ℕ)
     exact Module.Free.of_equiv (kaehlerAway R f (L ⧸ J)).symm
   haveI : Algebra.FiniteType R L := Algebra.FiniteType.trans (S := B) inferInstance inferInstance
   haveI : Module.Flat R L := Module.Flat.trans R B L
-  obtain ⟨B', _, _, φ, _, _, hi, hsurj, hpt⟩ := GlobalTheory.T.unramified_ideal_locus_characterization R π hπ L (fun R' _ _ a => E R' (a.comp jf))
+  obtain ⟨B', _, _, φ, _, _, hi, hsurj, hpt⟩ := _root_.GlobalTheory.SS.dilatation_lowers_defect R π hπ L (fun R' _ _ a => E R' (a.comp jf))
     (fun R' _ _ a ha => hU R' _ ha) J (vanish_away π E hU f) k IsLocalRing.residue_surjective hs' hfree'
   refine Cov.trans (φ.comp jf) ((genOpen_away f).comp (genOpen_of_inj hπ.ne_zero φ hi hsurj))
     (ih B' (smooth_away_of_inj (smooth_away_away hB f) φ hi hsurj)) ?_
@@ -351,7 +351,7 @@ theorem smoothening : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValu
     induction c with
     | zero => exact cov_zero K hπ
     | succ c ih => exact cov_succ K hπ hk c ih
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_defect_bound_of_smooth_away R π hπ B hB
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.SS.defect_bounded R π hπ B hB
   obtain ⟨l, p, q⟩ := H c B hB
   refine ⟨l.length, fun i => (l.get i).1, inferInstance, inferInstance, fun i => (l.get i).2,
     fun i => p _ (List.get_mem l i), fun R' _ _ a hu => ?_⟩

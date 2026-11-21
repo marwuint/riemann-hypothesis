@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusH
 import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NcardGluedMiddleLatticesEqPowPrimeSubOneStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitRowLatticeMiddleIffGluedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameFixingIsometrySplitRowLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameFixingIsometrySplitRowLattice
 
 noncomputable section
 
@@ -188,7 +188,7 @@ theorem gluingNum : ∀ (D : D7) (u : D.what₂.Word), (Tu D u).Prime → 3 ≤ 
   rw [hz]
   constructor
   · rintro ⟨⟨Λ', hΛ', rfl⟩, hc⟩
-    obtain ⟨n, hn, hsp, hrow⟩ := GlobalTheory.T.exists_frameFixing_isometry_split_rowLattice D u F0 Λ' hB hΛ' h1
+    obtain ⟨n, hn, hsp, hrow⟩ := _root_.GlobalTheory.LoopC.RowSplit.main D u F0 Λ' hB hΛ' h1
     obtain ⟨hg, hL⟩ := (GlobalTheory.T.splitRowLattice_middle_iff_gluedLattice D u F0 _ h1 hB hrow).1 hsp
     have e : (Lsub Λ' (lf D F0)).comap (jz D (D.zmOf u)) =
         (Formalism.HermitianLatticesTheory.gmap n Λ' ⊓ toO (hS D) (Wb D)).comap (jz D (D.zmOf u)) := by

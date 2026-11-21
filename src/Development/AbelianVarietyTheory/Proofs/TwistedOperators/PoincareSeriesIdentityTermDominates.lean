@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.DepthPays
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryEmbeddingStabilizerStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LongElementEmbeddingNormStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeSumProdNormLeOfProdNormLowerBoundStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldTsumAlongSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousRealPlacesMatrixCoefficientProductStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsOpenCongruenceEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalImageRationalPointMulVecStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryEmbeddingStabilizer
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LongElementEmbeddingNorm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeSumProdNormLeOfProdNormLowerBound
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldTsumAlongSubgroup
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousRealPlacesMatrixCoefficientProduct
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsOpenCongruenceEmbedding
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalImageRationalPointMulVec
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeSumLongVectorsDecayWeightLeStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.L2.DIV
@@ -40,14 +40,14 @@ set_option maxHeartbeats 1600000 in
 theorem identity_dominates : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S') (M : DSModel V S) (p : Pack M₀ M) (Q : ℝ), p.Base d → ∀ (Λ : Lat Y) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC Y Λ → 𝔪 ≠ ⊥ → ∀ (v : GlobalTheory.Unf.Vol Y) (φ : GA D Y → ℂ) (c : ℂ) (b s : ℝ) (x : GA D Y), GlobalTheory.Unf.IsContAut Y φ → (∀ h, ‖φ h‖ ≤ b) → b / 2 < ‖φ x‖ → 0 ≤ s → s ≤ 1 → Long θ p.A Λ x s → p.AdelicAt θ d Q (d.lat Λ fun _ => 1) 𝔪 v.μ φ c → 2 * Real.exp (Q + (6 * (V.rank : ℝ) + 9) * Fintype.card D.what₂.Tau) ≤ s ^ Fintype.card D.what₂.Tau * Real.sqrt (Ideal.absNorm 𝔪) → 1 < s ^ Fintype.card D.what₂.Tau * Real.sqrt (Ideal.absNorm 𝔪) → ∫ h in v.𝓕, poin θ M (congLev D.sp.cm V.gram (d.lat Λ fun _ => 1) 𝔪) (p.v θ) (stabilizerEmbedding d x⁻¹) (p.v θ) (stabilizerEmbedding d h) * φ h ∂v.μ ≠ 0 := by
   intro D θ hθ Y V d S S' M₀ M p Q hbase Λ 𝔪 hΛ h𝔪 v φ c b s x hφ hbnd hx hs0 hs1 hlong had hR2 hR1
   classical
-  obtain ⟨ι, hι, hιc, hιi, hιQ, -, -, hιr, -, -⟩ := GlobalTheory.T.exists_unitary_embedding_stabilizer D θ hθ Y V 1 1 one_ne_zero d
+  obtain ⟨ι, hι, hιc, hιi, hιQ, -, -, hιr, -, -⟩ := _root_.GlobalTheory.UnitaryEmbeddingGroup.unitaryEmbedding_hom_properties D θ hθ Y V 1 1 one_ne_zero d
   haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram
   haveI := v.haar
   set K := congLev D.sp.cm V.gram (d.lat Λ fun _ => 1) 𝔪 with hK
   set f : GA D V → ℂ := fun g => coef θ M K (p.v θ) (p.v θ) (stabilizerEmbedding d x⁻¹ * g) with hf
   have hcoef : Measurable (coef θ M K (p.v θ) (p.v θ)) := by
-    have h1 := GlobalTheory.T.continuous_realPlacesMatrixCoefficientProduct D θ hθ V S M (p.v θ) (p.v θ)
-    have h2 := GlobalTheory.T.isOpen_congruence_embedding D Y V d Λ 𝔪 hΛ h𝔪
+    have h1 := _root_.GlobalTheory.SepPer.CoefCont.continuous_coefR D θ hθ V S M (p.v θ) (p.v θ)
+    have h2 := _root_.GlobalTheory.UnitaryEmbeddingOpenLevel.levOpen D Y V d Λ 𝔪 hΛ h𝔪
     unfold coef
     exact Measurable.ite h2.measurableSet h1.measurable measurable_const
   have hfm : ∀ γ : GA D V, Measurable fun h => f (γ * ι h) := fun γ =>
@@ -58,8 +58,8 @@ theorem identity_dominates : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (
     hφ.1 γ (by rw [← hcomap]; exact hγ) h
   have hb0 : 0 ≤ b := (norm_nonneg _).trans (hbnd x)
   have hV1 : 1 ≤ V.rank := by have := d.rank; omega
-  obtain ⟨hlongV, hz₀, hz1⟩ := GlobalTheory.T.long_element_embedding_norm D θ hθ Y V d p.A p.B hbase.adapted Λ x s hΛ hs0 hs1 hlong
-  choose z hz using fun q : GQ V ⧸ ι.range.subgroupOf (GQ V) => GlobalTheory.T.exists_rational_image_rationalPoint_mulVec D V _ (q.out).2 (zv d)
+  obtain ⟨hlongV, hz₀, hz1⟩ := _root_.GlobalTheory.SepPer.LongSum.long_sum D θ hθ Y V d p.A p.B hbase.adapted Λ x s hΛ hs0 hs1 hlong
+  choose z hz using fun q : GQ V ⧸ ι.range.subgroupOf (GQ V) => _root_.GlobalTheory.SepPer.ratPt_mulVec_ratV D V _ (q.out).2 (zv d)
   have hterm : ∀ q : GQ V ⧸ ι.range.subgroupOf (GQ V),
       Integrable (fun h => f ((q.out : GA D V) * ι h)) v.μ ∧
       (∫ h, ‖f ((q.out : GA D V) * ι h)‖ ∂v.μ) * (∏ τ, nrm θ p.B (stabilizerEmbedding d x) τ (z q)) ^ (2 * V.rank + 5) ≤
@@ -193,7 +193,7 @@ theorem identity_dominates : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (
         ∑' q, ENNReal.ofReal (β q) := ENNReal.tsum_le_tsum hLle
     have h2 : (∑' q, ENNReal.ofReal (β q)) = ENNReal.ofReal (∑' q, β q) := (ENNReal.ofReal_tsum_of_nonneg hβ0 hβs).symm
     exact ne_top_of_le_ne_top ENNReal.ofReal_ne_top (h1.trans h2.le)
-  have hU := GlobalTheory.T.integrableOn_and_hasSum_tsum_subgroup (GA D V) (GA D Y) v.μ ι hιi (GQ V) v.𝓕 hfund f φ hfm hφ.2.measurable hinv hfin
+  have hU := _root_.GlobalTheory.unfold_tsum_along_subgroup (GA D V) (GA D Y) v.μ ι hιi (GQ V) v.𝓕 hfund f φ hfm hφ.2.measurable hinv hfin
   have htarget : (∫ h in v.𝓕, poin θ M K (p.v θ) (stabilizerEmbedding d x⁻¹) (p.v θ) (stabilizerEmbedding d h) * φ h ∂v.μ) =
       ∫ h in v.𝓕, (∑' γ : GQ V, f (γ * ι h)) * φ h ∂v.μ := by
     congr 1; funext h; simp only [poin, hf, hι, mul_assoc]

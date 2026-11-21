@@ -102,24 +102,4 @@ def BetaIsG : Prop :=
     ∀ be : MvPowerSeries (Fin 2) K, BetaHyp p F be →
       ∃ c : K, ‖c‖ ≤ 1 ∧ σ (σ c) = c ∧ Simeq be (Gser p c (σ c))
 
-def ThmSFull : Prop :=
-  ∀ (K0 K : Type) [NormedField K0] [IsUltrametricDist K0] [CharZero K0] [CompleteSpace K0]
-    [NormedField K] [IsUltrametricDist K] [CharZero K] (j : K0 →+* K) (p ν r0 r1 : ℕ) [NeZero ν]
-    (σ : K0 →+* K0), (∀ a, ‖j a‖ = ‖a‖) → UnrOK K0 p σ →
-    (∃ ζ : K0, IsPrimitiveRoot ζ (p ^ 2 - 1)) →
-    ∀ F : MvPowerSeries (Fin 2) K0, IsLawOfLog p F →
-    ∀ be : MvPowerSeries (Fin 2) K0, BetaHyp p F be →
-    ∃ c : K0, ‖c‖ ≤ 1 ∧ σ (σ c) = c ∧
-    ∀ (om oms : Fin ν → ZMod (2 * ν) → K) (ϖ : K) (μ : PowerSeries K)
-      (U0 Φ : MvPowerSeries (Bool × EV ν r0 r1) K),
-      ϖ ^ (p ^ 2 - 1) = (p : K) → OmOK p ν om oms →
-      PowerSeries.constantCoeff μ = 0 →
-      (PowerSeries.subst μ (lamF p ϖ) : PowerSeries K) = PowerSeries.X → Integral U0 →
-      MvPowerSeries.constantCoeff Φ = 0 →
-      Simeq Φ (∑ e : EV ν r0 r1, MvPowerSeries.subst
-        (fun a : Fin 2 => (MvPowerSeries.X (if a = 0 then (false, e) else (true, e)) :
-          MvPowerSeries (Bool × EV ν r0 r1) K)) (MvPowerSeries.map j be)) →
-      InClass (p : K) (hhS p (uS (j c) (j (σ c))))
-        (MvPowerSeries.subst (fun x => MvPowerSeries.C ϖ * sSub om oms μ x) (mvExp (-Φ) * U0))
-
 end Formalism.InvariantFactorPaths.G7

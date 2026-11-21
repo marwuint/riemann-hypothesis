@@ -1,5 +1,5 @@
 import Development.AutomorphicArithmetic.QuadraticCharacters.FieldOf
-import Development.AutomorphicArithmetic.QuadraticCharacters.A0InfStabilizerTrivial
+import Development.AutomorphicArithmetic.QuadraticCharacters.ExceptionalCharacterCondition
 
 open NumberField IntermediateField
 
@@ -62,8 +62,6 @@ theorem ne_zero {K : Type} [Field K] [CharZero K] {d : ℕ} (hd : d.Prime) {b : 
 end SlopeTestRemainingChoices.GaussRoot
 
 namespace AbField
-variable (E : AbField)
-
 end AbField
 
 end HostParam

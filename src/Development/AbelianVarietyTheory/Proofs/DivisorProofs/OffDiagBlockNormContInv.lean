@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.RealPlaceAnalysis.SmoothOnGVIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OffDiagonalBlockSumSqNormBlockUnitaryInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OffDiagonalBlockSumSqNormBlockUnitaryInvariant
 open MeasureTheory Matrix
 open Formalism.REAL (UJ KG toM toMK muK expG inG Jm Kset)
 
@@ -18,7 +18,7 @@ theorem offDiagBlockNorm_cont_inv : ∀ (n : ℕ) (ε : Fin n → Bool), (Contin
     have hk' : toM (k' : UJ ε) ∈ Kset ε := k'.2
     have hmul : toM ((k : UJ ε) * g * (k' : UJ ε)) = toM (k : UJ ε) * toM g * toM (k' : UJ ε) := rfl
     rw [hmul]
-    refine GlobalTheory.T.offDiagonalBlock_sum_sq_norm_blockUnitary_invariant n ε _ _ _ ?_ hk.2 ?_ hk'.2
+    refine _root_.GlobalTheory.offDiag_sum_sq_norm_unitary_invariant n ε _ _ _ ?_ hk.2 ?_ hk'.2
     · exact Matrix.mem_unitaryGroup_iff'.mp hk.1
     · exact Matrix.mem_unitaryGroup_iff'.mp hk'.1
 

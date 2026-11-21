@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscCoefficientsTopologicallyFreeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemBreuilKisinIdealPowOfNormLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscCoefficientsTopologicallyFree
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemBreuilKisinIdealPowOfNormLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscGaugeCompletionBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinClosedDiscRestrictInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvdIffDvdCoeffBreuilKisinStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TopologicalBasisBasicFactsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinClosedDiscRestrictInjective
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvdIffDvdCoeffBreuilKisin
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TopologicalBasisBasicFacts
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -20,7 +20,7 @@ theorem toDisc_injective_of_topBasis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt 
       Function.Injective R := by
   intro l _ K bk A _ s ι TB ρ hρ hρ1
   have hH : IsHausdorff bk.J bk.S := bk.complete.toIsHausdorff
-  obtain ⟨-, -, -, -, h5⟩ := GlobalTheory.T.topologicalBasis_basic_facts bk.S A s bk.J ι TB hH
+  obtain ⟨-, -, -, -, h5⟩ := _root_.GlobalTheory.BSP.TopBasis.basic_facts bk.S A s bk.J ι TB hH
   have hlW : (l : Wq l bk.a) ≠ 0 := WittVector.p_nonzero l (Fq l bk.a)
   have hCl : (C (l : Wq l bk.a) : bk.S) = (l : bk.S) := map_natCast _ l
   have hlS0 : (l : bk.S) ≠ 0 := by
@@ -31,7 +31,7 @@ theorem toDisc_injective_of_topBasis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt 
     (mem_nonZeroDivisors_iff_right.1 hlA x) (by rw [mul_comm]; exact hx)
   have hdvd : ∀ (m : ℕ) (x y : A), (l : A) * x = s X ^ m * y → s X ^ m ∣ x := by
     intro m x y hxy
-    rw [← map_pow, GlobalTheory.T.dvd_iff_dvd_coeff_breuilKisin l K bk A s ι TB]
+    rw [← map_pow, _root_.GlobalTheory.BSP.TopBasis.dvd_iff_dvd_c l K bk A s ι TB]
     intro i
     have e := congrArg (TB.c i) hxy
     rw [← map_natCast s l, ← map_pow, TB.c_mul, TB.c_mul] at e
@@ -41,7 +41,7 @@ theorem toDisc_injective_of_topBasis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt 
     have := hd k hk
     rw [← hCl, coeff_C_mul] at this
     exact (mul_eq_zero.1 this).resolve_left hlW
-  have small := GlobalTheory.T.mem_breuilKisinIdeal_pow_of_norm_le l K bk A s htor hdvd ρ hρ hρ1
+  have small := _root_.GlobalTheory.BSP.mem_J_pow_of_norm_le l K bk A s htor hdvd ρ hρ hρ1
   refine ⟨?_, small, ?_⟩
   · refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
     have hmem : ∀ n : ℕ, x ∈ (bk.J.map s) ^ n := fun n => by
@@ -63,12 +63,12 @@ theorem toDisc_injective_of_topBasis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt 
       simp only [pow_one] at this
       exact this.trans (by exact_mod_cast hρ'ρ)
     obtain ⟨cD, hc1, -, hcn, -, -, hsup, -, -⟩ :=
-      GlobalTheory.T.closedDisc_coefficients_topologicallyFree l K bk A s ι TB ρ hρ hρ1 (Disc.map s h1) (isDiscMap_map s h1)
+      _root_.GlobalTheory.BSP.disc_coefficients l K bk A s ι TB ρ hρ hρ1 (Disc.map s h1) (isDiscMap_map s h1)
     obtain ⟨cD', hc1', -, hcn', -, -, -, -, -⟩ :=
-      GlobalTheory.T.closedDisc_coefficients_topologicallyFree l K bk A s ι TB ρ' hρ' hρ'1 (Disc.map s h1') (isDiscMap_map s h1')
+      _root_.GlobalTheory.BSP.disc_coefficients l K bk A s ι TB ρ' hρ' hρ'1 (Disc.map s h1') (isDiscMap_map s h1')
     set RS : bk.DS ρ →+* bk.DS ρ' := Disc.map (RingHom.id bk.S) h2 with hRS
     have hRSd : IsDiscMap (RingHom.id bk.S) RS := isDiscMap_map _ h2
-    have injS : Function.Injective RS := GlobalTheory.T.breuilKisin_closedDisc_restrict_injective l K bk ρ ρ' hρ' hρ'ρ hρ1 RS hRSd
+    have injS : Function.Injective RS := _root_.GlobalTheory.BSP.disc_restrict_injective l K bk ρ ρ' hρ' hρ'ρ hρ1 RS hRSd
     obtain ⟨-, hlnorm, -, -⟩ := GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l bk.S (X : bk.S) ρ'
     obtain ⟨-, -, hext, -⟩ := GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A (s X) ρ
     have hlpos : (0 : ℝ) < l := Nat.cast_pos.2 (Fact.out : l.Prime).pos

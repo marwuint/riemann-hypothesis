@@ -1,5 +1,10 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
-import Formalism.WachLatticeTwists.TheoremNFiveSplit
+import Formalism.WachLatticeTwists.TorsionLengthCounts.RowCol
+import Formalism.WachLatticeTwists.TorsionLengthCounts.SubmoduleLengthBoundStatement
+import Formalism.WachLatticeTwists.Statement
+import Formalism.CharacterColumnKernels.CharacterColumnKernelEqualityForm
+import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelsOfBlockChiCOfBlockChiOne
+import Formalism.WachLatticeTwists.TorsionLengthCounts.LengthHomCoker
 
 noncomputable section
 
@@ -333,34 +338,6 @@ variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower 
     [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
-abbrev H1fQuotient (L : Lattice (O := O) ρ) : Type := ↥(latticeFiniteCocycles PD L) ⧸ (latticeCoboundaries L).comap (latticeFiniteCocycles PD L).subtype
-
-theorem lenModPow_le_of_fg (L : Lattice (O := O) ρ) [Module.Finite O (H1fQuotient PD L)] (n : ℕ) :
-    lenModPow PD L n ≤ (n : ℕ∞) * (finrank O (H1fQuotient PD L) : ℕ∞) * lenOl PD (O := O) +
-      Module.length O (Submodule.torsion O (H1fQuotient PD L)) := by
-  let I : Submodule O (H1fQuotient PD L) :=
-    LinearMap.range ((((PD.p : ℕ) : O) ^ n) • (LinearMap.id : H1fQuotient PD L →ₗ[O] H1fQuotient PD L))
-  have h1 := Formalism.RepresentationBoundsCohomology.rowColength O (H1fQuotient PD L) I PD.p n (fun m => ⟨m, rfl⟩)
-  have hle : (latticeCoboundaries L).comap (latticeFiniteCocycles PD L).subtype ≤ (powB PD L n).comap (latticeFiniteCocycles PD L).subtype :=
-    Submodule.comap_mono le_sup_right
-  have hI : I ≤ LinearMap.ker (Submodule.factor hle) := by
-    rintro _ ⟨x, rfl⟩
-    obtain ⟨c, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-    rw [LinearMap.mem_ker]
-    change Submodule.factor hle ((((PD.p : ℕ) : O) ^ n) • Submodule.Quotient.mk c) = 0
-    rw [← Submodule.Quotient.mk_smul]
-    change (Submodule.Quotient.mk ((((PD.p : ℕ) : O) ^ n) • c) :
-      ↥(latticeFiniteCocycles PD L) ⧸ (powB PD L n).comap (latticeFiniteCocycles PD L).subtype) = 0
-    rw [Submodule.Quotient.mk_eq_zero]
-    exact Submodule.mem_sup_left ⟨c.1, c.2, rfl⟩
-  have hs : Function.Surjective (I.liftQ (Submodule.factor hle) hI) := by
-    intro y
-    obtain ⟨x, rfl⟩ := Submodule.factor_surjective hle y
-    exact ⟨Submodule.Quotient.mk x, rfl⟩
-  refine (Module.length_le_of_surjective _ hs).trans (h1.trans (le_of_eq ?_))
-  rw [lenOl]
-  ring
-
 end Len
 
 section TypeU
@@ -369,24 +346,6 @@ private theorem exists_ringOfIntegers_eq_algEquiv_apply {E : Type} [Field E] [Nu
     (x : NumberField.RingOfIntegers E) :
     ∃ y : NumberField.RingOfIntegers E, (y : E) = f (x : E) :=
   ⟨⟨f (x : E), (NumberField.RingOfIntegers.isIntegral_coe x).map f.toAlgHom.toRingHom.toIntAlgHom⟩, rfl⟩
-
-theorem not_typeU_conj {E Lc Kf : Type} [Field E] [Field Lc] [Field Kf] (cj : E →+* E) (b : E) (z : ℂ)
-    (hz : z ≠ 0) (hzi : starRingEnd ℂ z = -z)
-    (hcj : ∀ (φ : E →+* ℂ) (x : E), φ (cj x) = starRingEnd ℂ (φ x))
-    (embK : Lc →+* Kf) (embC : Lc →+* ℂ) (σ : E →+* Kf)
-    (h1 : (∀ x, ∃ y, embK y = σ x) ∧ ∃ φ : E →+* ℂ, φ b = z ∧ ∀ x y, embK y = σ x → embC y = φ x)
-    (h2 : ∃ φ : E →+* ℂ, φ b = z ∧ ∀ x y, embK y = σ (cj x) → embC y = φ x) : False := by
-  obtain ⟨hsurj, φ, hφb, hφ⟩ := h1
-  obtain ⟨φ', hφ'b, hφ'⟩ := h2
-  obtain ⟨y, hy⟩ := hsurj (cj b)
-  have e : z = -z := by
-    calc z = φ' b := hφ'b.symm
-      _ = embC y := (hφ' b y hy).symm
-      _ = φ (cj b) := hφ (cj b) y hy
-      _ = starRingEnd ℂ (φ b) := hcj φ b
-      _ = starRingEnd ℂ z := by rw [hφb]
-      _ = -z := hzi
-  exact hz (by linear_combination e / 2)
 
 open NumberField IsDedekindDomain in
 
@@ -430,44 +389,6 @@ theorem ef_conj {E : Type} [Field E] [NumberField E] (cj : E ≃ₐ[ℚ] E)
 
 end TypeU
 
-section TypeD
-
-open NumberField IsDedekindDomain
-
-variable {E Lc Kf : Type} [Field E] [NumberField E] [Field Lc] [Field Kf]
-
-def TypeUAt (b : E) (z : ℂ) (embK : Lc →+* Kf) (embC : Lc →+* ℂ) (σ : E →+* Kf) : Prop :=
-  (∀ x, ∃ y, embK y = σ x) ∧ ∃ φ : E →+* ℂ, φ b = z ∧ ∀ x y, embK y = σ x → embC y = φ x
-
-def Induces (sm : Set Kf) (v : HeightOneSpectrum (𝓞 E)) (σ : E →+* Kf) : Prop :=
-  ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ σ (x : E) ∈ sm
-
-theorem induces_conj (sm : Set Kf) (cj : E ≃ₐ[ℚ] E) (u w : HeightOneSpectrum (𝓞 E))
-    (h : ∀ x y : 𝓞 E, (y : E) = cj (x : E) → (x ∈ u.asIdeal ↔ y ∈ w.asIdeal)) (σ : E →+* Kf)
-    (hσ : Induces sm w σ) : Induces sm u (σ.comp (cj : E →+* E)) := by
-  unfold Induces at hσ ⊢
-  intro x
-  obtain ⟨y, hy⟩ := exists_ringOfIntegers_eq_algEquiv_apply cj x
-  have e : (σ.comp (cj : E →+* E)) (x : E) = σ (y : E) := by
-    show σ (cj (x : E)) = σ (y : E)
-    rw [hy]
-  rw [e, h x y hy]
-  exact hσ y
-
-theorem typeD_of_conj (sm : Set Kf) (cj : E ≃ₐ[ℚ] E) (b : E) (z : ℂ) (hz : z ≠ 0)
-    (hzi : starRingEnd ℂ z = -z)
-    (hcj : ∀ (φ : E →+* ℂ) (x : E), φ (cj x) = starRingEnd ℂ (φ x))
-    (embK : Lc →+* Kf) (embC : Lc →+* ℂ) (u w : HeightOneSpectrum (𝓞 E))
-    (h : ∀ x y : 𝓞 E, (y : E) = cj (x : E) → (x ∈ u.asIdeal ↔ y ∈ w.asIdeal))
-    (hU : ∀ σ : E →+* Kf, Induces sm u σ → TypeUAt b z embK embC σ)
-    (σ : E →+* Kf) (hσ : Induces sm w σ) : ¬ TypeUAt b z embK embC σ := by
-  intro hT
-  have hI := induces_conj sm cj u w h σ hσ
-  obtain ⟨_, hT2⟩ := hU _ hI
-  exact not_typeU_conj (cj : E →+* E) b z hz hzi hcj embK embC σ hT hT2
-
-end TypeD
-
 section Std
 
 theorem mem_stdG_iff {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (k : ℕ) (v : Fin k → LL) :
@@ -480,11 +401,6 @@ theorem mem_stdG_iff {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (k : �
   · intro h
     choose x hx using h
     exact ⟨x, funext hx⟩
-
-theorem length_quot_ne_top {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (a : O)
-    (ha : a ≠ 0) : Module.length O (O ⧸ Ideal.span {a}) ≠ ⊤ := by
-  rw [Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span]
-  exact fun h => ha (IsDiscreteValuationRing.addVal_eq_top_iff.mp h)
 
 end Std
 
@@ -535,120 +451,11 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂
   (nbr : Br.NBr N) (i : N.Loc) (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) (π : N.X i)
   (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ placesOver H.E (N.l i))
 
-theorem jW_le (hBK : BlochKatoDim (Br.PD L nbr i w hw) (Br.LL nbr i w hw))
-    (hS : Splits (Br.LL nbr i w hw) (K := Br.Kw nbr i w hw) (Qp := ℚ_[N.l i]))
-    (hdeg : Br.DegW nbr i w hw)
-    (hc : ∀ x, Continuous fun g => matRep (Br.loc nbr i w hw (WpO N i ρ π)) g x)
-    (hcr : IsCrys (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π))))
-    (h0 : H0V (matRep (Br.loc nbr i w hw (WpO N i ρ π))) = ⊥)
-    (hF : FilCount (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π)))) (m : ℕ)
-    (hJ : ∀ τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw, ∃ C Lo : Finset ℤ,
-      (∀ a ∈ C, 0 < a) ∧ Lo.card ≤ m ∧
-      ∀ a, multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π))) τ a =
-        if a ∈ C ∪ Lo then 1 else 0) :
-    Br.jW L nbr i w hw ρ π ≤ locDeg H.E w * m := by
-  have h := rank_le_col (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π)))
-    hBK hS hc hcr h0 hF m hJ
-  unfold Br.DegW at hdeg
-  unfold Br.jW
-  first
-  | (rw [← hdeg]; exact h)
-  | (rw [hdeg] at h; exact h)
-  | (simpa [hdeg] using h)
-  | exact (0 : Nat)
-
-theorem rank_second_lattice_le (hBK : BlochKatoDim (Br.PD L nbr i w hw) (Br.LL nbr i w hw))
-    (hS : Splits (Br.LL nbr i w hw) (K := Br.Kw nbr i w hw) (Qp := ℚ_[N.l i]))
-    (hdeg : Br.DegW nbr i w hw)
-    (hc : ∀ x, Continuous fun g => matRep (Br.loc nbr i w hw (T2O N i ρ π)) g x)
-    (hcr : IsCrys (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))))
-    (h0 : H0V (matRep (Br.loc nbr i w hw (T2O N i ρ π))) = ⊥)
-    (hF : FilCount (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π)))) (m : ℕ)
-    (hdual : ∀ (τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw) (a : ℤ),
-      multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))) τ a =
-        multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π))) τ (-a - 1))
-    (hJ : ∀ τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw, ∃ C Lo : Finset ℤ,
-      (∀ a ∈ C, a < 0) ∧ Lo.card ≤ m ∧
-      ∀ a, multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π))) τ a =
-        if a ∈ C ∪ Lo then 1 else 0) :
-    finrank (Br.LL nbr i w hw)
-      (FiniteCohomology (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π)))) ≤ locDeg H.E w * m := by
-  have hJ' : ∀ τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw, ∃ C Lo : Finset ℤ,
-      (∀ a ∈ C, a < 0) ∧ Lo.card ≤ m ∧
-      ∀ a, multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))) τ a =
-        if -a - 1 ∈ C ∪ Lo then 1 else 0 := by
-    intro τ
-    obtain ⟨C, Lo, hC, hLo, hmW⟩ := hJ τ
-    exact ⟨C, Lo, hC, hLo, fun a => (hdual τ a).trans (hmW (-a - 1))⟩
-  have h := rank_le_row (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π)))
-    hBK hS hc hcr h0 hF m hJ'
-  unfold Br.DegW at hdeg
-  first
-  | (rw [← hdeg]; exact h)
-  | (rw [hdeg] at h; exact h)
-  | (simpa [hdeg] using h)
-  | exact absurd hdeg (0 : Nat)
-
-theorem rowAt_le (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) (e' n m c0 : ℕ)
-    (hLift : LiftAt (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw)
-      (fun x : N.X i => ⇑(Br.loc nbr i w hw (rDuO N i r x))) e')
-    (hrk : finrank (Br.LL nbr i w hw)
-      (FiniteCohomology (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π)))) ≤ n * m)
-    (lenH0 : ℕ∞)
-    (hH1f : lenModPow (Br.PD L nbr i w hw) (Br.locLat nbr i w hw (T2O N i ρ π)) e' ≤
-      (e' : ℕ∞) * (finrank (Br.LL nbr i w hw)
-        (FiniteCohomology (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π)))) : ℕ∞) *
-        lenOl (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw) + lenH0)
-    (hH0 : lenH0 ≤ (R.r : ℕ∞) * (c0 : ℕ∞) * lenOl (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw))
-    (hfin : lenOl (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw) ≠ ⊤) :
-    RowAt (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw)
-      (fun x : N.X i => ⇑(Br.loc nbr i w hw (rDuO N i r x))) ⇑(Br.loc nbr i w hw (T2O N i ρ π))
-      ((n : ℚ) * (m : ℚ) * (e' : ℚ) + (R.r : ℚ) * (c0 : ℚ)) := by
-  refine rowAt_of_lift (Br.PD L nbr i w hw) _ _ (Br.locLat nbr i w hw (T2O N i ρ π)) ?_ e' hLift _ n m R.r c0
-    lenH0 hH1f hrk hH0 hfin
-  intro v
-  first
-  | exact mem_stdG_iff _ v
-  | (unfold Br.locLat; exact mem_stdG_iff _ v)
-  | (simp only [Br.locLat]; exact mem_stdG_iff _ v)
-
 theorem locDeg_conj {u : HeightOneSpectrum (𝓞 H.E)} (huw : IsConjPl H u w) :
     locDeg H.E w = locDeg H.E u := by
   first
   | exact ef_conj _ u w huw
   | (unfold locDeg; exact ef_conj _ u w huw)
-
-theorem rowAt_conj_le (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i))) (e' m c0 : ℕ)
-    {u : HeightOneSpectrum (𝓞 H.E)} (huw : IsConjPl H u w)
-    (hBK : BlochKatoDim (Br.PD L nbr i w hw) (Br.LL nbr i w hw))
-    (hS : Splits (Br.LL nbr i w hw) (K := Br.Kw nbr i w hw) (Qp := ℚ_[N.l i]))
-    (hdeg : Br.DegW nbr i w hw)
-    (hc : ∀ x, Continuous fun g => matRep (Br.loc nbr i w hw (T2O N i ρ π)) g x)
-    (hcr : IsCrys (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))))
-    (h0 : H0V (matRep (Br.loc nbr i w hw (T2O N i ρ π))) = ⊥)
-    (hF : FilCount (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))))
-    (hdual : ∀ (τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw) (a : ℤ),
-      multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π))) τ a =
-        multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π))) τ (-a - 1))
-    (hJ : ∀ τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw, ∃ C Lo : Finset ℤ,
-      (∀ a ∈ C, a < 0) ∧ Lo.card ≤ m ∧
-      ∀ a, multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (WpO N i ρ π))) τ a =
-        if a ∈ C ∪ Lo then 1 else 0)
-    (hLift : LiftAt (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw)
-      (fun x : N.X i => ⇑(Br.loc nbr i w hw (rDuO N i r x))) e')
-    (lenH0 : ℕ∞)
-    (hH1f : lenModPow (Br.PD L nbr i w hw) (Br.locLat nbr i w hw (T2O N i ρ π)) e' ≤
-      (e' : ℕ∞) * (finrank (Br.LL nbr i w hw)
-        (FiniteCohomology (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (T2O N i ρ π)))) : ℕ∞) *
-        lenOl (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw) + lenH0)
-    (hH0 : lenH0 ≤ (R.r : ℕ∞) * (c0 : ℕ∞) * lenOl (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw))
-    (hfin : lenOl (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw) ≠ ⊤) :
-    RowAt (Br.PD L nbr i w hw) (O := Br.OLL nbr i w hw)
-      (fun x : N.X i => ⇑(Br.loc nbr i w hw (rDuO N i r x))) ⇑(Br.loc nbr i w hw (T2O N i ρ π))
-      ((locDeg H.E u : ℚ) * (m : ℚ) * (e' : ℚ) + (R.r : ℚ) * (c0 : ℚ)) := by
-  have hrk := rank_second_lattice_le L nbr i ρ π w hw hBK hS hdeg hc hcr h0 hF m hdual hJ
-  rw [locDeg_conj w huw] at hrk
-  exact rowAt_le L nbr i ρ π w hw r e' (locDeg H.E u) m c0 hLift hrk lenH0 hH1f hH0 hfin
 
 end AtPlace
 
@@ -766,25 +573,6 @@ theorem admissible_length_of_local (hdecl : RowsAreConj i dc) (e' : ℕ)
   obtain ⟨u, hu, huw⟩ := (hdecl w).mp hwr
   rw [lenRowSplit_eq i dc e' c0 hu huw]
   exact hrow u hu w hw huw C hC
-
-theorem length_bound_of_norm_bound (hdecl : RowsAreConj i dc) (e' : ℕ)
-    (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
-    (hN5 : Formalism.MainNotions.LargeLevelLemmas.GlobalIndexTheoremPlaces i r ρ π dc (lenRowSplit i dc e' c0) (fun _ => e') cB)
-    (hJ : ∀ u (hu : u ∈ dc.col), Br.jW D.loc D.nbr i u ((dc.cover u).1 (Or.inr hu)) ρ π ≤
-      locDeg D.host.E u * D.R.m)
-    (hrow : ∀ u ∈ dc.col, ∀ (w : HeightOneSpectrum (𝓞 D.host.E))
-      (hw : w ∈ placesOver D.host.E (D.nd.l i)), IsConjPl D.host u w →
-      ∀ C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw, C.IsGood →
-      RowAt (Br.PD D.loc D.nbr i w hw) (O := ↥(OL C.LL))
-        (fun x : D.nd.X i => ⇑(Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i r x)))
-        ⇑(Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (T2O D.nd i ρ π)) (rowNum e' c0 u))
-    (hlift : Formalism.MainNotions.TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc (fun _ => e')) (hTB : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admTB i r π cB)
-    (hg0 : D.nd.l i ≠ D.host.g 0) (hg1 : D.nd.l i ≠ D.host.g 1) (hπ : π ∈ D.nd.Z i)
-    (hs : Br.sFin D.loc D.nbr i ρ π)
-    (hsha : ∀ e ∈ Finset.Ioo 0 D.R.t, Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) < ⊤) :
-    D.nd.vcc i π ≤ boundSplit i ρ π dc e' c0 cB := by
-  have hROW := admissible_length_of_local i r ρ π dc hdecl e' c0 hrow
-  exact length_bound_of_theorem i ρ π dc hdecl e' c0 cB hJ (hN5 hROW hlift hTB) hg0 hg1 hπ hs hsha
 
 end Joint
 
@@ -992,16 +780,6 @@ theorem length_bound_of_admitted (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host
     (hH1f hπ w hw hwr C L2 hL2 e') hrk (hH0 hπ u hu w hw huw C hC L2 hL2)
     (lenOl_OL_ne_top _ (Br.PD_p D.loc D.nbr i w hw) C.LL)
 
-theorem shaBound_of_globalIndex_of_colength_of_lift (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ) (hL : hypL i)
-    (hD : hypDecl i dc ep) (hπ : π ∈ D.nd.Z i)
-    (hN5 : LargeLevelLemmas.GlobalIndexTheoremPlaces i r ρ π dc (lenRowSplit i dc e' c0) (fun _ => e') cB)
-    (hTB : TruncatedSeriesCountingIdentities.admTB i r π cB) (hJ : JumpConditions i ρ π dc) (hRow : ColengthRowPlaceBound i r ρ π dc e' c0)
-    (hLift : LiftExponentColumn i r dc e') : ShaBoundTheoremB i ρ π dc e' c0 cB := by
-  intro hs hsha _
-  obtain ⟨-, -, -, hg0, hg1⟩ := hL
-  obtain ⟨-, hdecl⟩ := hD
-  exact length_bound_of_norm_bound i r ρ π dc hdecl e' c0 cB hN5 hJ hRow hLift hTB hg0 hg1 hπ hs hsha
-
 theorem jump_and_length_of_admitted (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
     (hA : admitted i r ρ π dc ep e' c0 cB) (hL : hypL i) (hD : hypDecl i dc ep) (hπ : π ∈ D.nd.Z i) :
     JumpConditions i ρ π dc ∧ ColengthRowPlaceBound i r ρ π dc e' c0 := by
@@ -1009,15 +787,6 @@ theorem jump_and_length_of_admitted (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.h
     -, -, hBl, hDual, hT2, hW, hFil, hH1f, -, hCont, hTD⟩ := hA
   exact ⟨jump_bound_of_admitted i r ρ π dc hL hD hπ hG2 hBl h56 hBK hTie hW hFil hCont,
     length_bound_of_admitted i r ρ π dc e' c0 hL hD hπ hG2 hBl hBK hTie hLiftRow hH0 hDual hT2 hFil hH1f hCont hTD⟩
-
-theorem bound_of_norm_estimate (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
-    (hA : admitted i r ρ π dc ep e' c0 cB)
-    (hN5 : LargeLevelLemmas.GlobalIndexTheoremPlaces i r ρ π dc (lenRowSplit i dc e' c0) (fun _ => e') cB)
-    (hTB : TruncatedSeriesCountingIdentities.admTB i r π cB) : aux₃ i r ρ π dc ep e' c0 cB := by
-  intro hL hD hπ
-  obtain ⟨hJ, hRow⟩ := jump_and_length_of_admitted i r ρ π dc e' c0 cB hA hL hD hπ
-  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hLC, -⟩ := hA
-  exact ⟨hJ, hRow, shaBound_of_globalIndex_of_colength_of_lift i r ρ π dc e' c0 cB hL hD hπ hN5 hTB hJ hRow hLC⟩
 
 end Final
 

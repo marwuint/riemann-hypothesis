@@ -35,19 +35,6 @@ theorem _root_.GlobalTheory.RegCoverExists.isProjOver_of_comp_spMap {R R' : Type
     rw [hP.lift_fst]; exact hi
   exact IsClosedImmersion.of_comp _ (_root_.GlobalTheory.ProjSpace.baseChange N c)
 
-theorem isArithVar_of_toSpZ {k : Type} [CommRing k] (hd : IsDomain k) (hf : Module.Finite ℤ k) {Y : Scheme.{0}}
-    (f : Y ⟶ Sp k) {s : Y ⟶ Sp ℤ} {D : ℕ} (h : IsArithVar s D) : IsArithVar f D :=
-  ⟨hd, hf, h.isIntegral,
-    isProjOver_of_comp_spMap (Int.castRingHom k)
-      (specZIsTerminal.hom_ext s (f ≫ spMap (Int.castRingHom k)) ▸ h.isProjOver),
-    specZIsTerminal.hom_ext (s ≫ spMap (Int.castRingHom ℤ)) (f ≫ spMap (Int.castRingHom k)) ▸ h.flat, h.dim_eq⟩
-
-theorem nonempty_regCover : Published.RegularAlteration → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k)
-    [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q) := by
-  intro H k _ Y q _ h
-  obtain ⟨Z, _, ρ, hZ, hr, hg, hd⟩ := H Y _ 1 (ShFam.Pad.isArithVar_toSpZ h)
-  exact ⟨⟨Z, ρ, ⟨isArithVar_of_toSpZ h.isDomain h.finite _ hZ, hr⟩, hg, hd⟩⟩
-
 end GlobalTheory.RegCoverExists
 
 end

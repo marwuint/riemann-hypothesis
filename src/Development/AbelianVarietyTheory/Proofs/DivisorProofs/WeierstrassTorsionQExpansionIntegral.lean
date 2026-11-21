@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.TranslateProduct
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassTorsionQCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassDivisionValueQExpansionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionNormalizedDerivWeierstrassPTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralWeierstrassTorsionQCoefficients
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassDivisionValueQExpansion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionNormalizedDerivWeierstrassPTorsion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastBasicPropertiesStatement
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate
@@ -20,11 +20,11 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+
   have hpos : 0 < M := Nat.pos_of_ne_zero fun h => hM (h ▸ dvd_zero l)
   have hpow : ∀ e : ℕ, ¬ l ∣ M ^ e := fun e h => hM (hl.out.dvd_of_dvd_pow h)
   have hsz := (GlobalTheory.T.algebraicValuationAtLeast_basic_properties l lam).1
-  refine ⟨⟨cB N x, GlobalTheory.T.weierstrass_division_value_q_expansion N x hx0, fun k => hsz (M ^ 2) _ (hpow 2) ?_⟩,
-    ⟨cD N x, GlobalTheory.T.hasQExpansion_normalizedDerivWeierstrassPTorsion N x, fun k => hsz (M ^ 3) _ (hpow 3) ?_⟩⟩
+  refine ⟨⟨cB N x, _root_.GlobalTheory.WpFam.ExpansionB.main N x hx0, fun k => hsz (M ^ 2) _ (hpow 2) ?_⟩,
+    ⟨cD N x, _root_.GlobalTheory.WpFam.DerivExpansion.main N x, fun k => hsz (M ^ 3) _ (hpow 3) ?_⟩⟩
   · rw [Nat.cast_pow]
-    exact (GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N M x k hpos hx).1
+    exact (_root_.GlobalTheory.WpFam.isIntegral_coefficients N M x k hpos hx).1
   · rw [Nat.cast_pow]
-    exact (GlobalTheory.T.isIntegral_weierstrassTorsion_qCoefficients N M x k hpos hx).2.1
+    exact (_root_.GlobalTheory.WpFam.isIntegral_coefficients N M x k hpos hx).2.1
 
 end GlobalTheory.WpFam.ExpansionIntegral

@@ -71,8 +71,6 @@ def evenF {G : Type} [Group G] (J : G) : AddSubgroup (G → ZMod 2) where
   add_mem' {a b} ha hb g := by simp [ha g, hb g]
   neg_mem' {a} ha g := by simp [ha g]
 
-example : gc 7 3 1 = 1 := by decide +kernel
-
 end UpperTheory.V.FW
 
 end

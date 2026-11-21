@@ -1,6 +1,7 @@
 import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 import Formalism.LocalToGlobal.IndefiniteReal.ConjLemmas
-import Formalism.LocalToGlobal.IndefiniteReal.MultGood
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.HeckeThetaElements.DefsWt
 import Formalism.LocalToGlobal.ProjectiveLattices.MuValFix
 import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConvention
 import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
@@ -19,66 +20,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section Loc
-
-variable {D : D7}
-
-variable (D) in
-
-def PlIdemEx : Prop := ∀ P : HeightOneSpectrum (𝓞 D.host.E), ∃ e, IsPlIdem D e P
-
-end Loc
-
-section Frame
-
-open ReciprocityTheory.ChartRestriction.G.FD
-
-theorem arr_inj {n q : ℕ} (_hq : q ≤ n) : Function.Injective (arr (n := n) q) := by
-  intro c c' h
-  have h1 := congrArg Fin.val h
-  have h2 := c.2
-  have h3 := c'.2
-  unfold arr at h1
-  apply Fin.ext
-  split_ifs at h1 <;> simp only at h1 <;> omega
-
-def arrE {n q : ℕ} (hq : q ≤ n) : Fin n ≃ Fin n :=
-  Equiv.ofBijective (arr q) (Finite.injective_iff_bijective.1 (arr_inj hq))
-
-variable {D : D7}
-
-variable {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
-
-def Shape (q : ℕ) : Prop := q ≤ V.rank ∧ ∀ ρ a, M.ε ρ a = decide ((a : ℕ) < V.rank - q)
-
-variable {M}
-
-variable (M) in
-
-abbrev reframe (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hu : ∀ τ, IsUnit (fr τ))
-    (hg : ∀ τ, (fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * fr τ = gramAt D V τ) : DSModel V S :=
-  { M with fr := fr, fr_unit := hu, fr_gram := hg }
-
-end Frame
-
-section Cut
-
-variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
-  (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
-
-omit [Algebra T.Q.c.F D.what₂.LL] in
-
-def ChiRec (C : Formalism.L2.Host.CharFrame D) : Prop :=
-  ∀ i : Fin D.R.m, ChrEq (T.chiW ((i : ℕ) + 1) T.toCore.σ₀) (C.mu0 i)
-
-def ChiAlg : Prop :=
-  ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GoodEmb T.Q.c (res T σ) → IsHeckeChar D (T.chiW ((i : ℕ) + 1) (res T σ)) ∧
-    (∀ ρ, HasInfExp D (T.chiW ((i : ℕ) + 1) (res T σ)) ρ (-(D.hc (lab σ ρ)).e i)) ∧
-    ∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 → ∃ y : T.Q.c.F,
-      ((T.chiW ((i : ℕ) + 1) T.toCore.σ₀ x : Circle) : ℂ) = T.toCore.σ₀ y ∧ ((T.chiW ((i : ℕ) + 1) (res T σ) x : Circle) : ℂ) = res T σ y
-
-end Cut
-
 section Central
 
 variable {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
@@ -87,34 +28,9 @@ variable {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] 
   {W : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)]
   {G0 : Type} [Group G0] [Fintype G0] (A : FormsL LL Ks WL W G0)
 
-def IsRootU (ζ : LLˣ) : Prop := ∃ n : ℕ, 0 < n ∧ ζ ^ n = 1
-
-theorem IsRootU.int {ζ : LLˣ} (h : IsRootU ζ) : ∃ a : 𝓞 LL, (a : LL) = ζ := by
-  obtain ⟨n, hn, h⟩ := h
-  have h1 : (ζ : LL) ^ n = 1 := by rw [← Units.val_pow_eq_pow_val, h, Units.val_one]
-  exact ⟨⟨ζ, IsIntegral.of_pow hn (h1 ▸ isIntegral_one)⟩, rfl⟩
-
-theorem IsRootU.norm {ζ : LLˣ} (h : IsRootU ζ) (σ : LL →+* ℂ) : ‖σ ζ‖ = 1 := by
-  obtain ⟨n, hn, h⟩ := h
-  refine Complex.norm_eq_one_of_pow_eq_one ?_ hn.ne'
-  rw [← map_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, map_one]
-
 def cen (ζ : LLˣ) (z : G0) : WL →ₗ[LL] WL := (ζ : LL) • A.ρ z
 
 theorem cen_apply (ζ : LLˣ) (z : G0) (x : WL) : cen A ζ z x = (ζ : LL) • A.ρ z x := rfl
-
-theorem cen_cen (ζ ζ' : LLˣ) (z z' : G0) (x : WL) : cen A ζ z (cen A ζ' z' x) = cen A (ζ * ζ') (z * z') x := by
-  rw [cen_apply, cen_apply, cen_apply, LinearMap.map_smul, smul_smul, map_mul, Units.val_mul]
-  rfl
-
-theorem cen_one (x : WL) : cen A 1 1 x = x := by
-  rw [cen_apply, map_one, Units.val_one, one_smul]
-  rfl
-
-def cenE (ζ : LLˣ) (z : G0) : WL ≃ₗ[LL] WL :=
-  LinearEquiv.ofLinearMap (cen A ζ z) (cen A ζ⁻¹ z⁻¹)
-    (LinearMap.ext fun x => by rw [LinearMap.comp_apply, cen_cen, mul_inv_cancel, mul_inv_cancel, cen_one]; rfl)
-    (LinearMap.ext fun x => by rw [LinearMap.comp_apply, cen_cen, inv_mul_cancel, inv_mul_cancel, cen_one]; rfl)
 
 variable {ζ : LLˣ} {z : G0}
 
@@ -145,88 +61,7 @@ theorem principal_form_tensor_expansion (c : Fin (finrank D.what₂.LL (R.toReal
     (R.FW i).j (sg0 D A3.A) (R.toRealDat.bL F.lv2 b i l) = _
   rw [smul_smul, Complex.ofReal_inv, mul_inv_cancel₀ hnP, one_smul]
 
-abbrev zVec (t : T0) (k : Fin ((lv (F.fc (R.toCx3 F).zs) b).dZ i t)) : A3.A.fam.amb.FL i t :=
-  F.cr.toL (R.toCx3 F).zs b i t (Pi.single k 1)
-
 end Mat
-
-section CC
-
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
-  {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} {Vs : Type} [AddCommGroup Vs] [Module c.F Vs]
-  {D : D7} {V : HSp D} {σ0 : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ0 r} {dict : GA D V → Σ k, Frame (U.X k).Ψ r}
-  {mu : GA D V → ℂ} {xr : ℝ} {a : (E →+* ℂ) × ℕ → ℕ} {G : Type} [Group G] {act : G → Rul Xo c →ₗ[c.F] Rul Xo c} {Tup : Type}
-  {dδ : Tup → DeltaDat Xo c n} {Cl' : Tup → Type} [∀ t, Fintype (Cl' t)]
-  {w : ∀ t, Cl' t → (Fin n → LevQ Dw (dδ t).l₂) → c.F} {La : ∀ t, Cl' t → GenLat E n} {Nc gam : ∀ t, Cl' t → ℕ}
-  {vol : Tup → c.F} {ep : ∀ t, Cl' t → c.F} {io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F}
-  {thAd : ∀ t, (Cl' t → Vs) → (AutQ V → ℂ)} {Pl : ∀ t, (Cl' t → Vs) → Prop} {LL : IntermediateField ℚ ℂ}
-  {Cu : Submodule c.F (Rul Xo c)} {cc cc' : U.Comp → ℂ} {ph ph' : ℂ}
-
-def RootC (ζ : ℂ) : Prop := ∃ m : ℕ, 0 < m ∧ ζ ^ m = 1
-
-theorem RootC.mul {x y : ℂ} (hx : RootC x) (hy : RootC y) : RootC (x * y) := by
-  obtain ⟨m, hm, h⟩ := hx
-  obtain ⟨k, hk, h'⟩ := hy
-  exact ⟨m * k, Nat.mul_pos hm hk, by rw [mul_pow, pow_mul, h, one_pow, mul_comm m, pow_mul, h', one_pow, one_mul]⟩
-
-theorem RootC.ne_zero {x : ℂ} (hx : RootC x) : x ≠ 0 := by
-  obtain ⟨m, hm, h⟩ := hx
-  rintro rfl
-  rw [zero_pow hm.ne'] at h
-  exact zero_ne_one h
-
-variable (U dict mu a act dδ Cl' w La Nc gam vol ep io Pl) in
-
-def EigOn (k : U.Comp) : Prop :=
-  ∃ t x, Pl t x ∧ ∃ f ∈ sec Xo c a n, IsThClsD Xo c (dδ t) (w t) (La t) (Nc t) (gam t) (vol t) (ep t) io x f ∧
-    (∀ z ∈ Subgroup.center G, ∃ om : c.F, RootC (σ0 om) ∧ act z f = om • f) ∧
-    ∃ q : AutQ V, (dict q.out).1 = k ∧ jFn V σ0 (rdU U) dict mu f q ≠ 0
-
-variable (U dict mu a dδ Cl' w La Nc gam vol ep io Pl) in
-
-def ThOn (k : U.Comp) : Prop :=
-  ∃ t x, Pl t x ∧ ∃ f ∈ sec Xo c a n, IsThClsD Xo c (dδ t) (w t) (La t) (Nc t) (gam t) (vol t) (ep t) io x f ∧
-    ∃ q : AutQ V, (dict q.out).1 = k ∧ jFn V σ0 (rdU U) dict mu f q ≠ 0
-
-variable (U dict mu a act dδ Cl' w La Nc gam vol ep io Pl) in
-
-def CenSplit : Prop :=
-  ∀ k, ThOn U dict mu a dδ Cl' w La Nc gam vol ep io Pl k → EigOn U dict mu a act dδ Cl' w La Nc gam vol ep io Pl k
-
-end CC
-
-section CCTie
-
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
-  {Xo : Moduli Dw l} {c c' : Coeff l} {hle : c.F ≤ c'.F} {n r : ℕ} {Vs : Type} [AddCommGroup Vs] [Module c'.F Vs]
-  {LL : IntermediateField ℚ ℂ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ0' : c'.F →+* ℂ} {D : D7} {V : HSp D}
-  {dict : GA D V → Σ k, Frame ((unfBC hle U σ0').X k).Ψ r} {mu : GA D V → ℂ} {xr : ℝ} {a : (E →+* ℂ) × ℕ → ℕ}
-  {G : Type} [Group G] {act : G → Rul Xo c →ₗ[c.F] Rul Xo c} {act' : G → Rul Xo c' →ₗ[c'.F] Rul Xo c'} {Tup : Type}
-  {dδ : Tup → DeltaDat Xo c' n} {Cl' : Tup → Type} [∀ t, Fintype (Cl' t)]
-  {w : ∀ t, Cl' t → (Fin n → LevQ Dw (dδ t).l₂) → c'.F} {La : ∀ t, Cl' t → GenLat E n} {Nc gam : ∀ t, Cl' t → ℕ}
-  {vol : Tup → c'.F} {ep : ∀ t, Cl' t → c'.F} {io : Vs →ₗ[c'.F] MvPolynomial (LtN Dw n) c'.F}
-  {thAd : ∀ t, (Cl' t → Vs) → (AutQ V → ℂ)} {Pl : ∀ t, (Cl' t → Vs) → Prop} {cc cc' : (unfBC hle U σ0').Comp → ℂ} {ph ph' : ℂ}
-
-end CCTie
-
-section CCDat
-
-variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
-  {C : Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
-  (O : OMDat C R i Tp tup) (κ : WeightFamilies.Wt D ((i : ℕ) + 1))
-
-def OMDat.ThOn (k : (C.U ((i : ℕ) + 1) O.s0).Comp) : Prop :=
-  FWT.ThOn (unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c')) O.dict O.mu (wtA κ) O.dδ O.Cl' O.w O.La O.Nc O.gam O.vol O.ep O.io O.Plc k
-
-def OMDat.CenSplit : Prop :=
-  FWT.CenSplit (unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c')) O.dict O.mu (wtA κ) (actLev O.c' O.lev2) O.dδ O.Cl' O.w O.La O.Nc O.gam
-    O.vol O.ep O.io O.Plc
-
-end CCDat
 
 section Phase
 

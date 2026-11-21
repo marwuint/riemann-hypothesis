@@ -58,19 +58,10 @@ variable {k} in
 
 @[simp] theorem Irr.ofIrrRep_π {n : ℕ} (σ : IrrRep (GL (Fin n) k)) : (Irr.ofIrrRep σ).π = σ.ρ := rfl
 
-def Irr.equivIrrRep (n : ℕ) : Irr k n ≃ IrrRep (GL (Fin n) k) where
-  toFun := Irr.toIrrRep
-  invFun := Irr.ofIrrRep
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 variable {k} in
 
 theorem Irr.toIrrRep_equiv_iff {n : ℕ} (π π' : Irr k n) :
     π.toIrrRep ≈ π'.toIrrRep ↔ Nonempty (π.π.Equiv π'.π) := Iff.rfl
-
-example (n : ℕ) (χ : kˣ →* ℂˣ) (h : IsSmoothChar χ) :
-    (Irr.ofDet n χ h).toIrrRep = IrrRep.ofChar (detChar (Fin n) χ) h.detChar := rfl
 
 def TameSplit : Prop := ∀ (r t : ℕ) (χ : kˣ →* ℂˣ) (π : Irr k (r + t)) (v : π.V), IsSmoothChar χ → IsTame χ →
   ¬ IsUnram χ → v ≠ 0 → IsParahoricVec χ π.π v →
@@ -82,12 +73,6 @@ variable {k} {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [
 
 def speh (a : WD h) (d : ℕ) : WD h :=
   (List.range d).foldr (fun j acc => (a.lpTw (((d : ℝ) - 1) / 2 - j)).lpSum acc) (WD.lpZero h)
-
-example (a : WD h) : speh a 0 = WD.lpZero h := rfl
-
-example (a : WD h) : speh a 2 = (a.lpTw (1 / 2)).lpSum ((a.lpTw (-1 / 2)).lpSum (WD.lpZero h)) := by
-  simp only [speh, List.range_succ, List.range_zero, List.nil_append, List.cons_append, List.foldr]
-  norm_num
 
 structure RecLaws (rc : ∀ n, Irr k n → WD h) : Prop where
   dim : ∀ n π, (rc n π).lpDim = n
@@ -127,68 +112,11 @@ structure ReadAt (T : WDTie N A) (i : N.Loc) (w : PlE H) : Type 1 where
   locEta : ∀ c : Irr (w.adicCompletion H.E) 1, Nonempty (c.π.Equiv (detRep (Fin 1) eta⁻¹)) →
     T.e w (A.locG A.etaTinv w) = rc 1 c
 
-theorem exists_readAt (T : WDTie N A) (i : N.Loc) (w : PlE H)
-    (rc : ∀ n, Irr (w.adicCompletion H.E) n → WD (E := H.E) (A := N.plOm.1 w) (w := w) (N.plOm.2 w))
-    (hrc : RecLaws rc) (hs : ∀ n a, WD.lpDim a = n → ∃ π, rc n π = a)
-    (hW : ∀ σ, what₂.isot (N.j i) σ ≠ ⊥ → A.lpDim (A.locW i σ w) = R.r)
-    (hV : ∀ P, A.lpDim (A.locV i P w) = R.r + R.t)
-    (hmu : ∃ (χ : _) (h : IsSmoothChar χ), IsUnitaryChar χ ∧
-      rc 1 (Irr.ofDet 1 χ h) = T.e w (A.locG (A.muC i) w))
-    (heta : ∃ (χ : _) (h : IsSmoothChar χ), rc 1 (Irr.ofDet 1 χ h) = T.e w (A.locG A.etaTinv w)) :
-    ∃ S : ReadAt T i w, S.rc = rc := by
-  classical
-  obtain ⟨μ, hμ, hu, eμ⟩ := hmu
-  obtain ⟨η, hη, eη⟩ := heta
-  have hun : IsUnram η := by
-    have := (hrc.sph 1 (Irr.ofDet 1 η hη)).1 (by rw [eη]; exact (T.unr w _).1 (A.etaTinv_def w).1)
-    intro x hx
-    obtain ⟨v, hv, hv0⟩ := (Submodule.ne_bot_iff _).1 this
-    have hI : (fun _ : Fin 1 => x) ∈ torusO (w.adicCompletion H.E) (Fin 1) := fun _ => hx
-    have h2 := hv ⟨_, iwahori_le_KO _ _ (diagT_mem_iwahori hI)⟩
-    have h3 : Matrix.GeneralLinearGroup.det (diagT (w.adicCompletion H.E) (Fin 1) fun _ => x) = x := by
-      ext; simp [val_diagT]
-    have h4 : (η x : ℂ) * (show ℂ from v) = (show ℂ from v) := by
-      have h5 : detRep (Fin 1) η (diagT (w.adicCompletion H.E) (Fin 1) fun _ => x) v = (show ℂ from v) := by
-        exact h2.trans (by simp)
-      have h6 := (ofChar_apply (detChar (Fin 1) η) (diagT (w.adicCompletion H.E) (Fin 1) fun _ => x)
-        (show ℂ from v)).symm.trans h5
-      rw [detChar_apply, h3] at h6
-      exact h6
-    ext
-    exact (mul_eq_right₀ hv0).1 h4
-  choose rep hrep using fun P => hs _ (T.e w (A.locV i P w)) ((T.dim w _).trans (hV P))
-  have hrow : ∀ σ, ∃ π, what₂.isot (N.j i) σ ≠ ⊥ → T.e w (A.locW i σ w) = rc R.r π := fun σ => by
-    by_cases hσ : what₂.isot (N.j i) σ ≠ ⊥
-    · obtain ⟨π, hπ⟩ := hs _ (T.e w (A.locW i σ w)) ((T.dim w _).trans (hW σ hσ))
-      exact ⟨π, fun _ => hπ.symm⟩
-    · exact ⟨default, fun h => absurd h hσ⟩
-  choose row hrow using hrow
-  refine ⟨⟨rc, row, rep, μ, η⁻¹, ⟨hμ, hu⟩, ⟨hη.inv, fun x hx => by simp [hun x hx]⟩, hrow,
-    fun P => (hrep P).symm, fun c hc => ?_, fun c hc => ?_⟩, rfl⟩
-  · rw [← eμ]; exact ((hrc.iso 1 c (Irr.ofDet 1 μ hμ)).2 hc).symm
-  · rw [← eη]; rw [inv_inv] at hc; exact ((hrc.iso 1 c (Irr.ofDet 1 η hη)).2 hc).symm
-
 abbrev Reading (T : WDTie N A) : Type 1 := ∀ (i : N.Loc) (w : PlE H), IsSplitPl H w → ReadAt T i w
 
 variable {T : WDTie N A} (S : Reading T)
 
 def Laws : Prop := ∀ i w hw, RecLaws (S i w hw).rc
-
-theorem exists_reading_laws (T : WDTie N A)
-    (rc : ∀ (w : PlE H) n, Irr (w.adicCompletion H.E) n →
-      WD (E := H.E) (A := N.plOm.1 w) (w := w) (N.plOm.2 w))
-    (hrc : ∀ w, IsSplitPl H w → RecLaws (rc w))
-    (hs : ∀ w, IsSplitPl H w → ∀ n a, WD.lpDim a = n → ∃ π, rc w n π = a)
-    (hW : ∀ i w, IsSplitPl H w → ∀ σ, what₂.isot (N.j i) σ ≠ ⊥ → A.lpDim (A.locW i σ w) = R.r)
-    (hV : ∀ i w, IsSplitPl H w → ∀ P, A.lpDim (A.locV i P w) = R.r + R.t)
-    (hmu : ∀ i w, IsSplitPl H w → ∃ (χ : _) (h : IsSmoothChar χ), IsUnitaryChar χ ∧
-      rc w 1 (Irr.ofDet 1 χ h) = T.e w (A.locG (A.muC i) w))
-    (heta : ∀ w, IsSplitPl H w → ∃ (χ : _) (h : IsSmoothChar χ),
-      rc w 1 (Irr.ofDet 1 χ h) = T.e w (A.locG A.etaTinv w)) :
-    ∃ S : Reading T, Laws S ∧ ∀ i w hw, (S i w hw).rc = rc w := by
-  choose S hS using fun i w hw =>
-    exists_readAt T i w (rc w) (hrc w hw) (hs w hw) (hW i w hw) (hV i w hw) (hmu i w hw) (heta w hw)
-  exact ⟨S, fun i w hw => by rw [hS]; exact hrc w hw, hS⟩
 
 def RowUnit : Prop := ∀ i w hw σ, what₂.isot (N.j i) σ ≠ ⊥ → IsUnitarisable ((S i w hw).row σ).π
 

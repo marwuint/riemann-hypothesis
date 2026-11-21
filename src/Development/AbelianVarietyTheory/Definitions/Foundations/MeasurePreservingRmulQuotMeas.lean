@@ -36,24 +36,9 @@ theorem IsQuotMeasure.quotMeas {ν : Measure (Quot T)} (h : IsQuotMeasure T dt d
   rw [Orb.quotMeas, dif_pos h']
   exact h'.choose_spec
 
-omit [MeasurableSpace H] in
-
-theorem exists_out_eq (x : H) : ∃ t : T, (mk T x).out = t * x := by
-  obtain ⟨t, ht⟩ := mk_eq_iff.1 (Quotient.out_eq (mk T x)).symm
-  exact ⟨t, ht.symm⟩
-
 theorem measurable_descend {X : Type*} [MeasurableSpace X] {φ : H → X} (h : LeftInv T φ) (hm : Measurable φ) :
     Measurable (descend T φ) :=
   measurable_from_quotient.2 (by rwa [show descend T φ ∘ Quotient.mk'' = φ from h.lift_descend])
-
-theorem IsQuotMeasure.smul_left {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν) (c : ℝ≥0∞) :
-    IsQuotMeasure T dt (c • dh) (c • ν) := fun f hf => by
-  rw [lintegral_smul_measure, lintegral_smul_measure, h f hf]
-
-theorem IsQuotMeasure.smul_right {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν) {c : ℝ≥0∞} (h0 : c ≠ 0)
-    (ht : c ≠ ∞) : IsQuotMeasure T (c • dt) dh (c⁻¹ • ν) := fun f hf => by
-  simp only [lintegral_smul_measure, smul_eq_mul]
-  rw [lintegral_const_mul' _ _ ht, ← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul, h f hf]
 
 variable [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H] [BorelSpace H]
 
@@ -112,15 +97,6 @@ theorem isQuotMeasure_quotMeas [SFinite dh] [dh.IsMulLeftInvariant] : IsQuotMeas
   exact IsQuotMeasure.quotMeas hν
 
 variable [SFinite dh] [dh.IsMulLeftInvariant]
-
-theorem quotMeas_smul_left (c : ℝ≥0∞) : quotMeas T dt (c • dh) = c • quotMeas T dt dh :=
-  (((isQuotMeasure_quotMeas dt dh hT).smul_left c).eq_quotMeas hT).symm
-
-theorem quotMeas_smul_right {c : ℝ≥0} (h0 : c ≠ 0) : quotMeas T (c • dt) dh = c⁻¹ • quotMeas T dt dh := by
-  haveI := Measure.IsHaarMeasure.nnreal_smul dt h0
-  have := (isQuotMeasure_quotMeas dt dh hT).smul_right (c := c) (by simpa using h0) ENNReal.coe_ne_top
-  rw [← ENNReal.coe_inv h0] at this
-  exact (IsQuotMeasure.eq_quotMeas (dt := c • dt) hT this).symm
 
 theorem measurePreserving_rmul_quotMeas [dh.IsMulRightInvariant] (g : H) :
     MeasurePreserving (rmul T g) (quotMeas T dt dh) (quotMeas T dt dh) := by
@@ -219,12 +195,6 @@ theorem integrable_descend [IsFiniteMeasureOnCompacts dh] {φ : H → ℂ} (hi :
   obtain ⟨x, hx, rfl⟩ := hs hq
   rw [hi.descend_mk]
   exact hM x hx
-
-theorem quotMeas_of_finite [IsFiniteMeasure dt] : quotMeas T dt dh = (dt univ)⁻¹ • dh.map (mk T) := by
-  have h0 : dt univ ≠ 0 := (isOpen_univ.measure_pos dt univ_nonempty).ne'
-  rw [(isQuotMeasure_quotMeas dt dh hT).eq_map (b := fun _ => (dt univ)⁻¹) measurable_const
-    fun x => by rw [lintegral_const, ENNReal.inv_mul_cancel h0 (measure_ne_top _ _)], withDensity_const,
-    Measure.map_smul]
 
 theorem hasQuotInt_of_finite [IsFiniteMeasure dt] {φ : H → ℂ} (hi : LeftInv T φ) (hφ : Integrable φ dh) :
     HasQuotInt T dt dh φ ((∫ g, φ g ∂dh) / dt.real univ) := by
@@ -424,10 +394,6 @@ theorem hasOrbInt_of_finite [IsFiniteMeasure dt] (hf : Integrable (conjFn γ f) 
     HasOrbInt dh γ dt f ((∫ x, f (x⁻¹ * γ * x) ∂dh) / dt.real univ) :=
   hasQuotInt_of_finite (isClosed_cent γ) (leftInv_conjFn le_rfl f) hf
 
-theorem orbInt_smul_left (a : ℝ≥0) : orbInt (a • dh) γ dt f = a * orbInt dh γ dt f := by
-  rw [orbInt_def, show a • dh = (a : ℝ≥0∞) • dh from rfl, quotMeas_smul_left (isClosed_cent γ), integral_smul_measure]
-  simp [orbInt_def]
-
 omit [MeasurableSpace H] [IsTopologicalGroup H] [T2Space H] [LocallyCompactSpace H] [SecondCountableTopology H]
   [BorelSpace H] in
 
@@ -481,10 +447,6 @@ theorem hasOrbInt_conj [dh.IsMulRightInvariant] (g : H) {γ' : H} (h : g * γ * 
   refine ⟨h1.1.trans (and_congr ?_ (by rw [← orbInt, h4, orbInt])), h1.2⟩
   rw [h3]
   exact hr.integrable_comp_emb r.measurableEmbedding
-
-example [CompactSpace H] : HasOrbInt dh γ dt 1 (dh.real univ / dt.real univ) := by
-  haveI : CompactSpace (cent γ) := isCompact_iff_compactSpace.1 (isClosed_cent γ).isCompact
-  simpa using hasOrbInt_of_finite (dh := dh) (dt := dt) (f := 1) (integrable_const (1 : ℂ))
 
 end Orbital
 

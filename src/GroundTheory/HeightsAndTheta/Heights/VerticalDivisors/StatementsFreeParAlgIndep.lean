@@ -22,10 +22,6 @@ def FreeParAlgIndep.Statement : Prop :=
         (fun p : Fin e × {j : Fin n // j ≠ j₀} =>
           algebraMap (GenParField k e n) L (genPar k e n (.inl (p.1, p.2.1))))
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.Vertical

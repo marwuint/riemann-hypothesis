@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ReadsMove
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
 import Formalism.LocalToGlobal.GroupLattices.Joint0
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartsRebasedOneOffLevelPrimeKilledStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartsRebasedOneOffLevelPrimeKilled
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupleChainMiddleStageChartsJoinedMemberStatement
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix GlobalTheory.TwU GlobalTheory.TwU.AtTrue
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
@@ -16,7 +16,7 @@ theorem goodCharts_mid : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
   have h2' : i + 1 ≤ B.R.m := h2
   obtain ⟨Ch, hCh, chOf, K, g, hK, hKb⟩ :=
     GlobalTheory.T.tupleChain_middleStage_charts_joined_member I hI hP l Z u a Q i hi (Ch0 i) (chOf0 i) (F.ch i h1 h2') h1 h2 hQ (hF.mid i h1 h2')
-  obtain ⟨Kc, hR, hKc⟩ := GlobalTheory.T.charts_rebased_one_off_levelPrime_killed I hI hP l Z u a i hi (badQ (I.rec7 l Z) Q) Ch chOf K hK
+  obtain ⟨Kc, hR, hKc⟩ := _root_.GlobalTheory.TwU.AtTrue.charts_funKilled_one I hI hP l Z u a i hi (badQ (I.rec7 l Z) Q) Ch chOf K hK
     (fun β => (hKb β).2.1)
   exact ⟨Ch, hCh, chOf, Kc, hR, hKc⟩
 

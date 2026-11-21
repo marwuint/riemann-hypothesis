@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.EmbeddedFrames.PfD
 import Formalism.RealPlaceAnalysis.Complexify
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialFractionDiagonalIdentityStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialFractionOffDiagonalIdentityStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialFractionOffDiagonalIdentity
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialFractionSquareIdentityStatement
 
 open Finset Matrix PositivityTheory.RgHe.Frame
@@ -110,7 +110,7 @@ lemma gram {ε : Fin (n + 1) → Bool} {d : Fin (n + 1) → ℝ} {ε' : Fin n �
       rw [sq]
     rw [h3]
     linear_combination (cc d d' i * cc d d' i) * h1 + h2
-  · have h1 := GlobalTheory.T.partial_fraction_off_diagonal_identity d d' hinj i k hik
+  · have h1 := _root_.GlobalTheory.CompanionTheory.RgHeFrame.pfOrth d d' hinj i k hik
     simp only [hik, if_false]
     linear_combination (cc d d' i * cc d d' k) * h1
 

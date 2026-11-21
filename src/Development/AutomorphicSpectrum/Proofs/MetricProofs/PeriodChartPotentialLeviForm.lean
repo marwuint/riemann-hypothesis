@@ -6,10 +6,11 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
 import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 import ReciprocityTheory.AnalyticForms.LeviForms.HomDens
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsOpenFlagDomainNondegenerateMinorsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsOpenFlagDomainNondegenerateMinors
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.InFlagDomainOne
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetComparableGramBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramLogUnitaryTriangularInvarianceStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalBruhatCellAnalyticCoordinatesStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramLogUnitaryTriangularInvariance
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalBruhatCellAnalyticCoordinates
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPotentialLeviFormCellStatement
 
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights
@@ -102,7 +103,7 @@ theorem stepPot_unitary_mul {j : ℕ} {u : Matrix (Fin N) (Fin N) ℂ}
 theorem stepPot_mul_triangular {j : ℕ} (hj : j ≤ N) {c b : Matrix (Fin N) (Fin N) ℂ}
     (hc : InFlagDomain N j c) (hb : b.BlockTriangular id) (hu : IsUnit b.det) (i : Fin N) :
     stepPot N j i (c * b) = stepPot N j i c + stepCorr N j i b := by
-  have h k := (GlobalTheory.T.gram_log_unitary_triangular_invariance N (sigForm N j) k c 1 b).2 hb hu ((GlobalTheory.T.isOpen_flag_domain_nondegenerate_minors N j hj).2 c hc k)
+  have h k := (GlobalTheory.T.gram_log_unitary_triangular_invariance N (sigForm N j) k c 1 b).2 hb hu ((_root_.GlobalTheory.CompanionTheory.Ar.PB.flagDomain_open_and_minors N j hj).2 c hc k)
   unfold stepPot stepCorr diagLog
   split_ifs <;> simp only [h] <;> ring
 
@@ -135,7 +136,7 @@ theorem exists_cell_coords {j : ℕ} (hj : j ≤ N) (gc : (Fin e → ℂ) → Ma
       (∀ i, PlurRe z0 fun w => stepPot N j i (gc w) - stepPot N j i (cellMat N (z w))) ∧
       ∀ v, fderiv ℂ z z0 v = 0 ↔
         ((gc z0)⁻¹ * Matrix.of fun a b => fderiv ℂ (fun w => gc w a b) z0 v).BlockTriangular id := by
-  obtain ⟨u, b₀, hu, hb₀, hdet, hub⟩ := GlobalTheory.T.flag_domain_unitary_triangular N j hj (gc z0) hdom.self_of_nhds
+  obtain ⟨u, b₀, hu, hb₀, hdet, hub⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.exists_unitary_translate_flag N j hj (gc z0) hdom.self_of_nhds
   have hgu : IsUnit (gc z0).det := hdom.self_of_nhds.1
   have huu : IsUnit u.det := by
     have : u.det * (gc z0).det = b₀.det := by rw [← Matrix.det_mul, hub]
@@ -145,7 +146,7 @@ theorem exists_cell_coords {j : ℕ} (hj : j ≤ N) (gc : (Fin e → ℂ) → Ma
     intro a b
     simp only [Matrix.mul_apply]
     exact Finset.analyticAt_fun_sum _ fun c _ => analyticAt_const.fun_mul (han c b)
-  obtain ⟨z, b, hz, hb, hz0, hev, hiff⟩ := GlobalTheory.T.local_bruhat_cell_analytic_coordinates e N (fun w => u * gc w) z0 han'
+  obtain ⟨z, b, hz, hb, hz0, hev, hiff⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.holomorphic_factor_big_cell e N (fun w => u * gc w) z0 han'
     (by simpa only [hub] using hb₀) (by simpa only [hub] using hdet)
   refine ⟨z, hz, hz0, fun i => ?_, fun v => ?_⟩
   · have hcell : ∀ᶠ w in 𝓝 z0, InFlagDomain N j (cellMat N (z w)) := by
@@ -153,7 +154,7 @@ theorem exists_cell_coords {j : ℕ} (hj : j ≤ N) (gc : (Fin e → ℂ) → Ma
         (continuous_cellMat N).continuousAt.comp hz.continuousAt
       have hm : {g : Matrix (Fin N) (Fin N) ℂ | InFlagDomain N j g} ∈ 𝓝 (cellMat N (z z0)) := by
         rw [hz0, cellMat_zero N]
-        exact (GlobalTheory.T.isOpen_flag_domain_nondegenerate_minors N j hj).1.mem_nhds inFlagDomain_base
+        exact (_root_.GlobalTheory.CompanionTheory.Ar.PB.flagDomain_open_and_minors N j hj).1.mem_nhds inFlagDomain_base
       exact hc hm
     obtain ⟨ht, hdb, -⟩ := hev.self_of_nhds
     have hd0 : ∀ a, b z0 a a ≠ 0 := by

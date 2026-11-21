@@ -88,9 +88,6 @@ section n0
 
 variable {k r : ℕ}
 
-lemma eB_ll' (a : Fin r) : eB k r 0 (Sum.inl (Sum.inl a)) = eI k r a := by
-  ext; rw [eB_ll]; rfl
-
 lemma mulVec_eB (M : B.Mat k (r + 0)) (y : Fin (2 * r + k + 1) → ℂ) (p : Ix k r 0) :
     (M *ᵥ y) (eB k r 0 p) = ∑ q : Ix k r 0, M (eB k r 0 p) (eB k r 0 q) * y (eB k r 0 q) := by
   simp only [Matrix.mulVec, dotProduct]
@@ -474,9 +471,6 @@ theorem Rd_Et (z : Fin (2 * r + k + 1) → ℂ) (x : X0 k r) : Rd (Et z x) = x :
   funext i a; rw [hc]; simp [extC]
 
 def mu0 (z : Fin (2 * r + k + 1) → ℂ) : Measure (Mt k r) := (volume : Measure (X0 k r)).map (Et z)
-
-theorem Et_mul (z : Fin (2 * r + k + 1) → ℂ) (x1 x2 : X0 k r) :
-    Matrix.of (Et z x1) * Matrix.of (Et z x2) = Matrix.of (Et z (mulX z x1 x2)) := E_mul z x1 x2
 
 theorem isHaar_stabilizer_measure {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) : B.IsHaarOn (C2.N0set k r z) (mu0 z) := by
   have hm : Measurable (Et (k := k) (r := r) z) := (cont_Et z).measurable

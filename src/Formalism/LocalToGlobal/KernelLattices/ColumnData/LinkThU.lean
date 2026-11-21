@@ -26,84 +26,8 @@ private def sS (z w : VC D N N') : ℂ := ∑ τ, ∑ i, ∑ j, z τ i j * (star
 
 private theorem Hf_eq (T : Tor D) (z w : VC D N N') : Formalism.L2.Ker.Cd.TaylorLogMetric.Hf D T z w = sS z w / (area T.abelian₂ : ℂ) := rfl
 
-private theorem sS_swap (z w : VC D N N') : sS w z = (starRingEnd ℂ) (sS z w) := by
-  simp only [sS, map_sum, map_mul, Complex.conj_conj]
-  refine Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ =>
-    Finset.sum_congr rfl fun j _ => mul_comm _ _
-
-private theorem sS_add (z x : VC D N N') :
-    sS (z + x) (z + x) = sS z z + sS z x + sS x z + sS x x := by
-  simp only [sS, Pi.add_apply, map_add, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ =>
-    Finset.sum_congr rfl fun j _ => by ring
-
-private theorem re_Hf_add (T : Tor D) (z x : VC D N N') :
-    (Formalism.L2.Ker.Cd.TaylorLogMetric.Hf D T (z + x) (z + x)).re =
-      (Formalism.L2.Ker.Cd.TaylorLogMetric.Hf D T z z).re + 2 * (Formalism.L2.Ker.Cd.TaylorLogMetric.Hf D T z x).re + (Formalism.L2.Ker.Cd.TaylorLogMetric.Hf D T x x).re := by
-  simp only [Hf_eq, Complex.div_ofReal_re, sS_add, Complex.add_re, sS_swap x z, Complex.conj_re]
-  ring
-
 def dens (D : Car) (T : Tor D) {N N' : ℕ} (G : VC D N N' → ℂ) (z : VC D N N') : ℝ :=
   ‖G z‖ ^ 2 * Real.exp (-Real.pi * (Formalism.L2.Ker.Cd.TaylorLogMetric.Hf D T z z).re)
-
-theorem dens_U (T : Tor D) (G : VC D N N' → ℂ) (x z : VC D N N') :
-    dens D T (U D T x G) z = dens D T G (z + x) := by
-  simp only [dens, U, norm_mul, Complex.norm_exp, mul_pow]
-  rw [mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add, re_Hf_add]
-  congr 2
-  simp only [Complex.sub_re, Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
-    Complex.div_re, Complex.normSq_ofNat]
-  norm_num
-  ring
-
-theorem norm_al (T : Tor D) (x : VC D N N') : ‖al D T x‖ = 1 := by
-  simp [al, norm_zpow]
-
-theorem dens_periodic (T : Tor D) (La' : AddSubgroup (VC D N N')) (G : VC D N N' → ℂ)
-    (hG : G ∈ ThSp D T La') (y : VC D N N') (hy : y ∈ La') (z : VC D N N') :
-    dens D T G (z + y) = dens D T G z := by
-  rw [← dens_U]
-  have h := hG.2 y hy z
-  simp only [dens]
-  rw [← h, norm_mul, norm_al, one_mul]
-
-theorem normSq_U_of_fd (T : Tor D) (La' : AddSubgroup (VC D N N')) [Countable La']
-    (hfd : ∃ Fd : Set (VC D N N'), IsAddFundamentalDomain La' Fd volume)
-    (G : VC D N N' → ℂ) (hG : G ∈ ThSp D T La') (x : VC D N N') :
-    normSq D T La' (U D T x G) = normSq D T La' G := by
-  have hspec : IsAddFundamentalDomain La'
-      (Classical.epsilon (fun Fd => IsAddFundamentalDomain La' Fd volume)) volume :=
-    Classical.epsilon_spec hfd
-  set Fd := Classical.epsilon (fun Fd : Set (VC D N N') => IsAddFundamentalDomain La' Fd volume)
-  change ⨍ z in Fd, dens D T (U D T x G) z = ⨍ z in Fd, dens D T G z
-  simp only [dens_U]
-  have hFd' : IsAddFundamentalDomain La' (x +ᵥ Fd) volume := hspec.vadd_of_comm x
-  have hint : ∫ z in Fd, dens D T G (z + x) = ∫ z in Fd, dens D T G z := by
-    have h1 : ∫ z in Fd, dens D T G (z + x) = ∫ z in (fun z => x + z) '' Fd, dens D T G z := by
-      have e := (measurePreserving_add_left volume x).setIntegral_image_emb
-        (measurableEmbedding_addLeft x) (dens D T G) Fd
-      rw [e]
-      simp only [add_comm x]
-    have himg : (fun z => x + z) '' Fd = x +ᵥ Fd := by rw [← Set.image_vadd]; rfl
-    rw [h1, himg]
-    refine hFd'.setIntegral_eq hspec fun g z => ?_
-    rw [AddSubgroup.vadd_def, vadd_eq_add, add_comm]
-    exact dens_periodic T La' G hG g g.2 z
-  rw [setAverage_eq, setAverage_eq, hint]
-
-def FullLat {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] (La' : AddSubgroup V) : Prop :=
-  DiscreteTopology La' ∧ Submodule.span ℝ (La' : Set V) = ⊤
-
-theorem normSq_U_of_full (T : Tor D) (La' : AddSubgroup (VC D N N')) (hL : FullLat La')
-    (G : VC D N N' → ℂ) (hG : G ∈ ThSp D T La') (x : VC D N N') :
-    normSq D T La' (U D T x G) = normSq D T La' G := by
-  obtain ⟨hd, hs⟩ := hL
-  let L : Submodule ℤ (VC D N N') := La'.toIntSubmodule
-  haveI : DiscreteTopology L := hd
-  haveI : IsZLattice ℝ L := ⟨hs⟩
-  haveI : Countable La' := (inferInstance : Countable L)
-  refine normSq_U_of_fd T La' ?_ G hG x
-  exact ⟨_, ZLattice.isAddFundamentalDomain (Module.Free.chooseBasis ℤ L) volume⟩
 
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity
 
@@ -251,23 +175,6 @@ theorem span_embP :
   apply Submodule.span_mono
   rintro _ ⟨i, rfl⟩
   exact ⟨RingOfIntegers.basis D.host.E i, by simp [integralBasis_apply]⟩
-
-theorem finite_ball (r : ℝ) : {x : 𝓞 D.host.E | ∀ τ, ‖embT D τ (x : D.host.E)‖ ≤ r}.Finite := by
-  have hT := NumberField.Embeddings.finite_of_norm_le D.host.E ℂ r
-  refine (hT.preimage (Set.injOn_of_injective RingOfIntegers.coe_injective)).subset ?_
-  intro x hx
-  refine ⟨x.isIntegral_coe, fun φ => ?_⟩
-  obtain ⟨τ, hτ | hτ⟩ := emb_cases D φ
-  · rw [hτ]; exact hx τ
-  · rw [hτ, RingHom.comp_apply, Complex.norm_conj]; exact hx τ
-
-theorem finite_mat (N N' : ℕ) (r : ℝ) :
-    {A : Fin N' → Fin N → 𝓞 D.host.E | ∀ τ i j, ‖embT D τ (A i j : D.host.E)‖ ≤ r}.Finite := by
-  refine (Set.Finite.pi (t := fun _ : Fin N' => Set.pi Set.univ (fun _ : Fin N => _))
-    (fun _ => Set.Finite.pi (fun _ => finite_ball D r))).subset ?_
-  intro A hA
-  simp only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_ofPred_eq]
-  exact fun i j τ => hA τ i j
 
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity.FL
 
@@ -519,45 +426,6 @@ theorem La_upper {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E
     rw [map_mul, map_mul, map_intCast, embT_K D τ _ (c : D.host.K).2]
     field_simp
 
-theorem disc_of_finite {V : Type*} [NormedAddCommGroup V] (S : AddSubgroup V)
-    (h : ∀ r : ℝ, {x | x ∈ S ∧ ‖x‖ ≤ r}.Finite) : DiscreteTopology S := by
-  set F := {x | x ∈ S ∧ ‖x‖ ≤ 1} \ {0}
-  have hF : F.Finite := (h 1).subset Set.sdiff_subset
-  have h0 : (0 : V) ∉ F := fun h => h.2 rfl
-  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp hF.isClosed.isOpen_compl 0 h0
-  apply discreteTopology_of_isOpen_singleton_zero
-  rw [isOpen_induced_iff]
-  refine ⟨Metric.ball 0 (min ε 1), Metric.isOpen_ball, ?_⟩
-  ext ⟨x, hx⟩
-  simp only [Set.mem_preimage, Metric.mem_ball, dist_zero_right, Set.mem_singleton_iff]
-  constructor
-  · intro hxb
-    by_contra hne
-    have hne' : x ≠ 0 := fun h => hne (Subtype.ext h)
-    have hxF : x ∈ F := ⟨⟨hx, le_of_lt (lt_of_lt_of_le hxb (min_le_right _ _))⟩, hne'⟩
-    exact hball (by simpa using lt_of_lt_of_le hxb (min_le_left _ _)) hxF
-  · intro h
-    have : x = 0 := congrArg Subtype.val h
-    subst this
-    simp [hε]
-
-theorem La_finite {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
-    (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
-    (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hδ : δ ≠ 0) (r : ℝ) :
-    {x | x ∈ La D (tor0 D cc δ) L L' ∧ ‖x‖ ≤ r}.Finite := by
-  obtain ⟨M, hM, hle⟩ := La_upper D L L' hA cc δ
-  set u : ℂ := δ / M
-  have hu : u ≠ 0 := div_ne_zero hδ (by exact_mod_cast hM)
-  refine ((finite_mat D N N' (r / ‖u‖)).image (Phi D u)).subset ?_
-  rintro x ⟨hx, hxr⟩
-  obtain ⟨A, rfl⟩ := hle hx
-  refine ⟨A, fun τ i j => ?_, rfl⟩
-  have h1 : ‖(Phi D u A) τ i j‖ ≤ r :=
-    le_trans (norm_le_pi_norm _ j) (le_trans (norm_le_pi_norm _ i)
-      (le_trans (norm_le_pi_norm _ τ) hxr))
-  rw [le_div_iff₀ (norm_pos_iff.mpr hu)]
-  simpa [Phi, norm_mul, mul_comm] using h1
-
 def ins {N N' : ℕ} (i0 : Fin N') (j0 : Fin N) (w : D.what₂.Tau → ℂ) : VC D N N' :=
   fun τ i j => if i = i0 ∧ j = j0 then w τ else 0
 
@@ -614,103 +482,9 @@ theorem La_lower {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E
     ring
   · simp
 
-theorem span_La {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
-    (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
-    (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ) (hδ : δ ≠ 0) :
-    Submodule.span ℝ (La D (tor0 D cc δ) L L' : Set (VC D N N')) = ⊤ := by
-  classical
-  obtain ⟨n, hn, hlow⟩ := La_lower D L L' hA cc hcc δ
-  set u : ℂ := δ * n
-  have hu : u ≠ 0 := mul_ne_zero hδ (by exact_mod_cast hn)
-  have key : ∀ i0 j0 (w : D.what₂.Tau → ℂ),
-      ins D i0 j0 w ∈ Submodule.span ℝ (La D (tor0 D cc δ) L L' : Set (VC D N N')) := by
-    intro i0 j0 w
-    have hw : (u⁻¹ • w) ∈ Submodule.span ℝ
-        (Set.range (fun b : 𝓞 D.host.E => embP D (b : D.host.E))) := by
-      rw [span_embP]; trivial
-    have hP : ∀ v ∈ Submodule.span ℝ (Set.range (fun b : 𝓞 D.host.E => embP D (b : D.host.E))),
-        ins D i0 j0 (u • v) ∈ Submodule.span ℝ (La D (tor0 D cc δ) L L' : Set (VC D N N')) := by
-      intro v hv
-      induction hv using Submodule.span_induction with
-      | mem v hv =>
-        obtain ⟨b, rfl⟩ := hv
-        apply Submodule.subset_span
-        have e : ins D i0 j0 (u • embP D (b : D.host.E)) =
-            ins D i0 j0 (fun τ => u * embT D τ (b : D.host.E)) := by
-          funext τ i j; simp [ins, embP]
-        show ins D i0 j0 (u • embP D (b : D.host.E)) ∈ La D (tor0 D cc δ) L L'
-        rw [e]; exact hlow i0 j0 b
-      | zero =>
-        convert Submodule.zero_mem _ using 1
-        funext τ i j; simp [ins]
-      | add x y _ _ h1 h2 =>
-        convert Submodule.add_mem _ h1 h2 using 1
-        funext τ i j; simp only [ins, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-        split_ifs <;> simp [mul_add]
-      | smul r x _ h1 =>
-        convert Submodule.smul_mem _ r h1 using 1
-        funext τ i j; simp only [ins, Pi.smul_apply, smul_eq_mul]
-        split_ifs <;> simp [Complex.real_smul] <;> ring
-    convert hP _ hw using 1
-    funext τ i j
-    simp only [ins, Pi.smul_apply, smul_eq_mul]
-    split_ifs
-    · rw [← mul_assoc, mul_inv_cancel₀ hu, one_mul]
-    · rfl
-  rw [eq_top_iff]
-  intro x _
-  have hx : x = ∑ i0, ∑ j0, ins D i0 j0 (fun τ => x τ i0 j0) := by
-    funext τ i j
-    simp [ins, Finset.sum_apply, ite_and]
-  rw [hx]
-  exact Submodule.sum_mem _ fun i0 _ => Submodule.sum_mem _ fun j0 _ => key i0 j0 _
-
-theorem fullLat {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
-    (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
-    (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ) (hδ : δ ≠ 0) :
-    FullLat (La D (tor0 D cc δ) L L') :=
-  ⟨disc_of_finite _ (La_finite D L L' hA cc δ hδ), span_La D L L' hA cc hcc δ hδ⟩
-
-theorem La_zero {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
-    (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (cc : Ideal (𝓞 D.host.K)) :
-    La D (tor0 D cc 0) L L' = ⊥ := by
-  rw [eq_bot_iff]
-  unfold La
-  rw [AddSubgroup.closure_le]
-  rintro z ⟨w, hw, A, -, rfl⟩
-  obtain ⟨c, -, rfl⟩ := lam_mem D cc 0 w hw
-  simp
-
-theorem fd_bot {V : Type*} [AddGroup V] [MeasurableSpace V] (μ : Measure V) :
-    IsAddFundamentalDomain (⊥ : AddSubgroup V) Set.univ μ where
-  nullMeasurableSet := nullMeasurableSet_univ
-  ae_covers := Filter.Eventually.of_forall fun _ => ⟨0, Set.mem_univ _⟩
-  aedisjoint := fun a b hab => absurd (Subtype.ext ((AddSubgroup.mem_bot.mp a.2).trans
-    (AddSubgroup.mem_bot.mp b.2).symm)) hab
-
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity.FL
 
 namespace Formalism.L2.Ker.Cd.IntegralLatticeDensity
-
-open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity hiding CMConjEmb CMTransitive DedekindFactor LinkChi LinkPer LinkThIndep LinkThU LinkThUFam ThetaNormIndependent theta_norm_independent_of_bounds th22U theta_norm_unitary_invariant_of_bounds
-
-open NumberField Formalism.BasicNotions MeasureTheory
-open Formalism.L2.Ker.Cd.TaylorLogMetric
-open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements AllSplit CoefIn DataIn DualB EqAt EqAway FamE Hf IdE InProd Iop IsChi IsComb IsCurveIdeal IsDiscriminantTwelfthRootOfIdealLattice IsFrobC IsIdem JetsInt La LocBasis LocBasisW Mono N1 NNBasis OrthoBasisW Orthonormal Pos Qd QdB Stmt TVar TVarB Th ThSp Tor TorsPrime U VC Wop XiF YYl adm1 al atLog chK chg chgB coordV der detId logDerivativeAtOne ellT embT embV eq22 fF fnConj hYY hh homL int22 jet kap lamOf letterOf liftY logOmVal meanLogNormSq meanLogOm mmM mom22 LargerSupportMomentCondition mono normSq pSer pairN per22 posEmb posG aux₃ pull qH sE sgm str22 tauEmb tauSg taylor th22 tor0 torConj vec22 vecN wPh zB
-
-theorem theta_unitary_linkage : LinkThU := by
-  intro D cc hcc δ hδ N N' L L' hA G hG x
-  by_cases h0 : δ = 0
-  · subst h0
-    have hb := FL.La_zero D L L' cc
-    haveI : Countable (La D (tor0 D cc 0) L L') := by
-      rw [hb]
-      exact ⟨⟨fun _ => 0, fun a b _ => Subtype.ext ((AddSubgroup.mem_bot.mp a.2).trans
-        (AddSubgroup.mem_bot.mp b.2).symm)⟩⟩
-    refine normSq_U_of_fd _ _ ?_ G hG x
-    rw [hb]
-    exact ⟨Set.univ, FL.fd_bot _⟩
-  · exact normSq_U_of_full _ _ (FL.fullLat D L L' hA cc hcc δ h0) G hG x
 
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity
 

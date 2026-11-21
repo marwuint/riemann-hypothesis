@@ -41,12 +41,4 @@ structure HypothesesXH : Prop where
 
 instance : Coe HypothesesXH HypothesesX := ⟨HypothesesXH.toClassicalTheoremsX⟩
 
-theorem HypothesesXH.ks (h : HypothesesXH) : GlobalTheory.Published.ToroidalForFanKS := h.toClassicalTheoremsX.ks
-
-theorem HypothesesXH.lie (h : HypothesesXH) : GlobalTheory.Published.SemiAbelianLieSeminegative := h.toClassicalTheoremsX.lie
-
-theorem HypothesesXH.green (h : HypothesesXH) : GlobalTheory.Published.GreenCuspidal := h.toClassicalTheoremsX.green
-
-theorem HypothesesXH.sep (h : HypothesesXH) : GlobalTheory.Published.PointSeparationPair := h.toClassicalTheoremsX.sep
-
 end GlobalTheory.CovTop

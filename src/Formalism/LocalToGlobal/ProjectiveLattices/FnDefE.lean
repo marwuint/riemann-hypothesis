@@ -95,13 +95,6 @@ theorem continuousOn_pnorm (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r →
 
 end FD
 
-section Gen
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-  {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
-
-end Gen
-
 section Core
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps CompSplitPfB
@@ -119,19 +112,6 @@ def ptAt (hj : InR D j) (hA : AllTest (Tc.Q.Xo j) Tc.Q.c) (hB : ∀ σ, GoodEmb 
     (h : GenFrEx (Tc.Q.Xo j) Tc.Q.c) (hb : CBaseEx (Tc.Q.Xo j) Tc.Q.c h) (Z : Comp (Tc.Q.Xo j) Tc.Q.c)
     (P : Om Z →+* ℂ) (sg : Tc.Q.c.F →+* ℂ) (hP : sgOf P = sg) : SupPtAt j (goodOf Tc.Q.c sg) :=
   hP ▸ nrmTieDefPt hL j hj hA hB h hb Z P
-
-def FrDense (hj : InR D j) (hA : AllTest (Tc.Q.Xo j) Tc.Q.c)
-    (hB : ∀ σ, GoodEmb Tc.Q.c σ → BCEx (Tc.Q.Xo j) Tc.Q.c σ) (h : GenFrEx (Tc.Q.Xo j) Tc.Q.c)
-    (hb : CBaseEx (Tc.Q.Xo j) Tc.Q.c h) (cm : ∀ σ : Tc.Q.c.F →+* ℂ, (Tc.U j σ).Comp → Comp (Tc.Q.Xo j) Tc.Q.c) :
-    Prop :=
-  ∀ (sg : Tc.Q.c.F →+* ℂ) (Z : Comp (Tc.Q.Xo j) Tc.Q.c) (k : (Tc.U j (goodOf Tc.Q.c sg)).Comp),
-    cm _ k = Z → ∀ x ∈ ((Tc.U j (goodOf Tc.Q.c sg)).X k).dom,
-      x ∈ closure {x' | x' ∈ ((Tc.U j (goodOf Tc.Q.c sg)).X k).dom ∧
-        ∃ (P : Om Z →+* ℂ) (hP : sgOf P = sg) (x0 : Frame ((Tc.U j (goodOf Tc.Q.c sg)).X k).Ψ D.R.r)
-          (hx0 : x0 ∈ ((Tc.U j (goodOf Tc.Q.c sg)).X k).dom),
-          ptAt hL j hj hA hB h hb Z P sg hP = ⟨k, ⟨x0, hx0⟩⟩ ∧
-          ∃ γ ∈ ((Tc.U j (goodOf Tc.Q.c sg)).X k).Γ, lact γ x0 ∈ ((Tc.U j (goodOf Tc.Q.c sg)).X k).dom ∧
-            ∃ b ∈ Bor ((Tc.U j (goodOf Tc.Q.c sg)).X k).Ψ D.R.r, x' = rmul (lact γ x0) b}
 
 end Core
 

@@ -11,8 +11,6 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 noncomputable section
 namespace PositivityTheory.ThKW.LeviParabolicGL
-variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
-variable {n : ℕ}
 end PositivityTheory.ThKW.LeviParabolicGL
 set_option maxHeartbeats 800000 in
 open PositivityTheory.ThKW.LeviParabolicGL in

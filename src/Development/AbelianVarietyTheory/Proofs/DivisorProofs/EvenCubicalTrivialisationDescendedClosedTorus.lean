@@ -1,10 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreUniformisationDataIsEvenCubicalOnClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeHomEqOfKerLeOfNilpotentReductionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusHomEqOfNilpotentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenOnTorusDescendsAlongLocalHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreUniformisationDataIsEvenCubicalOnClosedFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeHomEqOfKerLeOfNilpotentReduction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusHomEqOfNilpotent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenOnTorusDescendsAlongLocalHom
+import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SplitTorusExtensionDescends
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClosedFibreSplitOfArcDataFiniteExtension
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDVRResidueGaloisAutomorphisms
@@ -176,7 +179,7 @@ theorem agree_artinian {A : Type} [CommRing A] [IsLocalRing A] [IsArtinianRing A
   have eb : ib.left ≫ pullback.fst G₀.hom s = bcMap (spMap b) X ≫ i.left ≫ φG := by
     rw [← gb₁, ← Category.assoc, ← ib₁, Category.assoc]
   have ei : ia = ib := by
-    refine GlobalTheory.T.splitTorus_hom_eq_of_bcMap_comp_eq A _ (residue A) residue_surjective hn X _ ia ib mia mib (pullback.hom_ext ?_ ?_)
+    refine _root_.GlobalTheory.splitTorus_hom_eq_of_nilpotent A _ (residue A) residue_surjective hn X _ ia ib mia mib (pullback.hom_ext ?_ ?_)
     · rw [Category.assoc, Category.assoc]
       erw [ea, eb]
       rw [← Category.assoc, ← bcMap_comp, ← Category.assoc (bcMap _ X) (bcMap _ X), ← bcMap_comp, rτ,
@@ -188,7 +191,7 @@ theorem agree_artinian {A : Type} [CommRing A] [IsLocalRing A] [IsArtinianRing A
   have fb : qb.left ≫ pullback.fst B₀.hom s = gb ≫ q.left ≫ φ := by
     rw [← bb₁, ← Category.assoc, ← qb₁.w, Category.assoc]
   have eq : qa = qb := by
-    refine GlobalTheory.T.abelianScheme_hom_eq_of_ker_le_of_nilpotent_reduction A _ (residue A) residue_surjective hn _ _ (GlobalTheory.isAbelianScheme_pullback_obj _ _ hB₀) qa qb mqa mqb
+    refine _root_.GlobalTheory.Mum.QuotEq.eq_of_ker_le_of_reduction A _ (residue A) residue_surjective hn _ _ (GlobalTheory.isAbelianScheme_pullback_obj _ _ hB₀) qa qb mqa mqb
       (MorphismProperty.of_isPullback (P := @Flat) qa₁ ‹_›)
       (MorphismProperty.of_isPullback (P := @Surjective) qa₁ ‹_›)
       (MorphismProperty.of_isPullback (P := @QuasiCompact) qa₁ ‹_›) (fun T x hx => ?_) (pullback.hom_ext ?_ ?_)
@@ -398,7 +401,7 @@ theorem evenOn_of_galAct : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
     exact e ▸ MorphismProperty.comp_mem @IsProper U'.gen.hom.left A'.A.hom inferInstance A'.isAb.proper
   obtain ⟨w, hw⟩ := U'.ext
   let U := GlobalTheory.ValueForm.toPreU U'.toUnifPre GlobalTheory.firstFiveLaws.1.globalFns hG' w hw
-  exact GlobalTheory.T.evenOnTorus_descends_along_localHom R R' ρ hloc G hG G' β hβ hp P U.P hP (GlobalTheory.T.preUniformisationData_isEvenCubicalOnClosedFibre R' _ _ _ U) _
+  exact _root_.GlobalTheory.Mum.evenOn_of_local R R' ρ hloc G hG G' β hβ hp P U.P hP (_root_.GlobalTheory.Mum.PreEven.evenOn_preU R' _ _ _ U) _
     (nonempty_tq hρ.2.2 hgal a hβ hinv)
 
 end GlobalTheory.Mum.EvenDesc

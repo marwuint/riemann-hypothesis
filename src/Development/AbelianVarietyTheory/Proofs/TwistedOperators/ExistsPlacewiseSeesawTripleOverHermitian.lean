@@ -2,12 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAddEquivSymplecticCoordsOrientedModelStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsThetaTripleBaseDataCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlacewiseTripleSpacesOfSeesawStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGoodRationalSchroedingerModelStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjugateUnitaryAdelicIsoMapHaarFundamentalDomaiStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AlgebraicVectorsCorrespondSchrodingerThetaMapStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilRepOrientedPairRationalSchrodingerStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsThetaTripleBaseDataCharacters
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlacewiseTripleSpacesOfSeesaw
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGoodRationalSchroedingerModel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjugateUnitaryAdelicIsoMapHaarFundamentalDomai
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AlgebraicVectorsCorrespondSchrodingerThetaMap
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilRepOrientedPairRationalSchrodinger
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -36,14 +36,14 @@ theorem GlobalTheory.SquareAgree.exists_isOver : ∀ (D : D7) (ψ : AddChar (AF 
   have hev := hT.even
   have hrk := hT.rank
   let e : Fin X.rank ≃ Fin (W.rank + W₁.rank) := finCongr hT.rank
-  obtain ⟨Bs, Xc, hψ, hα, hβ, hB, hXc, hemb, hκ⟩ := GlobalTheory.T.exists_thetaTriple_baseData_characters D ψ W W₁ X α β hT ωA hωA
-  obtain ⟨V, V', Ws, hJV, hJV', hJW, hV, hV', hWs, hcart⟩ := GlobalTheory.T.exists_placewise_triple_spaces_of_seesaw D W W₁ X A A₁ B α β hT p q hs e Bs hB hemb
+  obtain ⟨Bs, Xc, hψ, hα, hβ, hB, hXc, hemb, hκ⟩ := _root_.GlobalTheory.TripleBaseChars.exists_base_chars D ψ W W₁ X α β hT ωA hωA
+  obtain ⟨V, V', Ws, hJV, hJV', hJW, hV, hV', hWs, hcart⟩ := _root_.GlobalTheory.PlaceSpaces.spaces_of_triple D W W₁ X A A₁ B α β hT p q hs e Bs hB hemb
   obtain ⟨cA, hcA⟩ := GlobalTheory.T.exists_addEquiv_symplecticCoords_orientedModel D W X e (-1) (by norm_num)
   obtain ⟨cB, hcB⟩ := GlobalTheory.T.exists_addEquiv_symplecticCoords_orientedModel D W₁ X e 1 one_ne_zero
-  obtain ⟨hμ1, hd1⟩ := GlobalTheory.T.conjugateUnitaryAdelicIso_map_haar_fundamentalDomain D W 1 hJV one_ne_zero ν 𝓕 hν
-  obtain ⟨hμ2, hd2⟩ := GlobalTheory.T.conjugateUnitaryAdelicIso_map_haar_fundamentalDomain D W₁ (-1) hJV' (by norm_num) ν₁ 𝓕₁ hν₁
-  obtain ⟨M, hMμ, hMd, hM⟩ := GlobalTheory.T.exists_good_rational_schroedingerModel D Bs hB V Ws _ _ _ _ hV hWs _ _ hμ1 hd1
-  obtain ⟨M', hMμ', hMd', hM'⟩ := GlobalTheory.T.exists_good_rational_schroedingerModel D Bs hB V' Ws _ _ _ _ hV' hWs _ _ hμ2 hd2
+  obtain ⟨hμ1, hd1⟩ := _root_.GlobalTheory.HaarConjImage.map_isHaarFD D W 1 hJV one_ne_zero ν 𝓕 hν
+  obtain ⟨hμ2, hd2⟩ := _root_.GlobalTheory.HaarConjImage.map_isHaarFD D W₁ (-1) hJV' (by norm_num) ν₁ 𝓕₁ hν₁
+  obtain ⟨M, hMμ, hMd, hM⟩ := _root_.GlobalTheory.SquareAgree.exists_good_model D Bs hB V Ws _ _ _ _ hV hWs _ _ hμ1 hd1
+  obtain ⟨M', hMμ', hMd', hM'⟩ := _root_.GlobalTheory.SquareAgree.exists_good_model D Bs hB V' Ws _ _ _ _ hV' hWs _ _ hμ2 hd2
   have hJt : V.J = (if true then 1 else -1 : D.host.E) • W.gram := by simpa using hJV
   have hJf : V'.J = (if false then 1 else -1 : D.host.E) • W₁.gram := by simpa using hJV'
   have hct : ∀ w, ∃ τ, (∀ x, (Bs.emb w).1 x = starRingEnd ℂ (tauE D τ x)) ∧ V.θ w = (if true then 1 else -1 : ℂ) • A.cart τ ∧
@@ -58,10 +58,10 @@ theorem GlobalTheory.SquareAgree.exists_isOver : ∀ (D : D7) (ψ : AddChar (AF 
       Matrix (Fin X.rank) (Fin W.rank) (AE D)) := fun u => by simpa using hcA u
   have hcB' : ∀ u, cB u = (HMul.hMul (uᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if false then -1 else 1 : D.host.E) • W₁.gram)) :
       Matrix (Fin X.rank) (Fin W₁.rank) (AE D)) := fun u => by simpa using hcB u
-  obtain ⟨hA1, hA2⟩ := GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ true W X A B e Bs hB hψ V Ws _ _ _ _ hJt hJW hV hWs hct M hM cA hcA'
-  obtain ⟨hB1, hB2⟩ := GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ false W₁ X A₁ B e Bs hB hψ V' Ws _ _ _ _ hJf hJW hV' hWs hcf M' hM' cB hcB'
-  obtain ⟨om, hom, hwA⟩ := GlobalTheory.T.exists_weilRep_orientedPair_rationalSchrodinger D ψ θ hθ true W X A B e Bs hB hψ V Ws _ _ _ _ hJt hJW hV hWs hct M hM cA hcA' β (β / α) ωA hωA
-  obtain ⟨om', hom', hwB⟩ := GlobalTheory.T.exists_weilRep_orientedPair_rationalSchrodinger D ψ θ hθ false W₁ X A₁ B e Bs hB hψ V' Ws _ _ _ _ hJf hJW hV' hWs hcf M' hM' cB hcB' α (α / β) ωB hωB
+  obtain ⟨hA1, hA2⟩ := _root_.GlobalTheory.SquareAgree.algVec_correspond D ψ θ hθ true W X A B e Bs hB hψ V Ws _ _ _ _ hJt hJW hV hWs hct M hM cA hcA'
+  obtain ⟨hB1, hB2⟩ := _root_.GlobalTheory.SquareAgree.algVec_correspond D ψ θ hθ false W₁ X A₁ B e Bs hB hψ V' Ws _ _ _ _ hJf hJW hV' hWs hcf M' hM' cB hcB'
+  obtain ⟨om, hom, hwA⟩ := _root_.GlobalTheory.SquareAgree.exists_weil_of_oriented D ψ θ hθ true W X A B e Bs hB hψ V Ws _ _ _ _ hJt hJW hV hWs hct M hM cA hcA' β (β / α) ωA hωA
+  obtain ⟨om', hom', hwB⟩ := _root_.GlobalTheory.SquareAgree.exists_weil_of_oriented D ψ θ hθ false W₁ X A₁ B e Bs hB hψ V' Ws _ _ _ _ hJf hJW hV' hWs hcf M' hM' cB hcB' α (α / β) ωB hωB
   let Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig W.rank W₁.rank := ⟨p, q, V, V', Ws, M, M'⟩
   refine ⟨e, Bs, Γ, Xc, om, om', cA, cB, ?_, ?_⟩
   · exact

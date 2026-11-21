@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsFiniteClass
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsDeeperCongruenceConjIntoCongruenceStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DoubleCosetOperatorTranslateDeeperLevelEqSmulStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EquivariantIsoOfTranslationStableGraphStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsDeeperCongruenceConjIntoCongruence
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DoubleCosetOperatorTranslateDeeperLevelEqSmul
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EquivariantIsoOfTranslationStableGraph
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -158,7 +158,7 @@ theorem recon : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
   have hWG : W ≤ Good := by
     rw [Submodule.span_le]
     rintro _ ⟨h, f, hf, hfix, rfl⟩
-    obtain ⟨M, hM, hMc⟩ := GlobalTheory.T.exists_deeper_congruence_conj_into_congruence L n N h hN
+    obtain ⟨M, hM, hMc⟩ := _root_.GlobalTheory.ConjCong.exists_cong_conj L n N h hN
     refine ⟨M, hM, fun M' hM' hd => ?_⟩
     obtain ⟨k, rfl⟩ := hd
     have hconj : ∀ κ ∈ GlobalTheory.IsotOrth.congSub L n (N * (M * k)), h⁻¹ * κ * h ∈ J := by
@@ -166,7 +166,7 @@ theorem recon : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
       rw [← mul_assoc] at hκ
       exact hMc κ (NG.Cong.of_mul_left L n hκ)
     have hle : GlobalTheory.IsotOrth.congSub L n (N * (M * k)) ≤ J := fun κ hκ => NG.Cong.of_mul_left L n hκ
-    obtain ⟨m, -, hmE⟩ := GlobalTheory.T.doubleCosetOperator_translate_deeper_level_eq_smul L n J (GlobalTheory.IsotOrth.congSub L n (N * (M * k))) h hle hconj (hfinE _ hM')
+    obtain ⟨m, -, hmE⟩ := _root_.GlobalTheory.HeckeAverage.heckeD_rt_eq_smul L n J (GlobalTheory.IsotOrth.congSub L n (N * (M * k))) h hle hconj (hfinE _ hM')
     have hfixJ : ∀ κ ∈ J, NG.rt L n κ f = f := fun κ hκ => hfix κ hκ
     have hφfixJ : ∀ κ ∈ J, NG.rt L n κ (φ f) = φ f := fun κ hκ => (hφ f hf hfix).2 κ hκ
     show NG.heckeD _ _ (NG.rt L n h (φ f)) = φ (NG.heckeD _ _ (NG.rt L n h f))
@@ -186,7 +186,7 @@ theorem recon : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
       have hmem : φ f₀ ∈ K := hK ▸ (hφ f₀ hf₀S hf₀fix).1
       obtain ⟨M, hM, hMg⟩ := hWP _ (Submodule.mem_comap.1 hmem)
       have e := hMg M hM dvd_rfl
-      obtain ⟨m, hm, hmE⟩ := GlobalTheory.T.doubleCosetOperator_translate_deeper_level_eq_smul L n J (GlobalTheory.IsotOrth.congSub L n (N * M)) 1
+      obtain ⟨m, hm, hmE⟩ := _root_.GlobalTheory.HeckeAverage.heckeD_rt_eq_smul L n J (GlobalTheory.IsotOrth.congSub L n (N * M)) 1
         (fun κ hκ => NG.Cong.of_mul_left L n hκ)
         (fun κ hκ => by rw [inv_one, one_mul, mul_one]; exact NG.Cong.of_mul_left L n hκ) (hfinE M hM)
       have hφfixJ : ∀ κ ∈ J, NG.rt L n κ (φ f₀) = φ f₀ := fun κ hκ => (hφ f₀ hf₀S hf₀fix).2 κ hκ
@@ -215,7 +215,7 @@ theorem recon : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
       have h3 := W.sub_mem h2 h1
       simp only [Prod.mk_sub_mk, sub_self, sub_zero] at h3
       exact hf₀ne (hK2 _ h3)
-  refine GlobalTheory.T.equivariant_iso_of_translationStable_graph L n a.ρ b.ρ S₁ S₂ W hS₁ hS₂ hWS hWst hK2 hK1 ?_
+  refine _root_.GlobalTheory.isoRep_of_stable_graph L n a.ρ b.ρ S₁ S₂ W hS₁ hS₂ hWS hWst hK2 hK1 ?_
   intro hbot
   have := hgen 1 f₀ hf₀S hf₀fix
   rw [hbot, Submodule.mem_bot, rt_one, rt_one] at this

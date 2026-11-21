@@ -19,9 +19,13 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhittakerLowRank.WhitGenLowOf
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhittakerCovolume.GenDictXOf
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.LocFin2
-import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicFormCongruences.JointT
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicFormCongruences.GramExtendZeroEmbedded
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicFormCongruences.ProjectedBlockUpperSum
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicFormCongruences.CongUnip
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicDilations.NdZero
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SiegelSetUnitaryStatement
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SiegelSetUnitary
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.MollifiedIntegrability.Imports
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.MinorFormulas.SPrime
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.HolomorphicTheta.HolomorphicAverageUniform
@@ -36,9 +40,9 @@ namespace PositivityTheory.SiegelWeilFormula.Fin
 
 theorem tTheta : TTheta := Tpar.tTheta_of (tweyl.tthetaComm TBij.tBij)
 
-theorem tAll_of (hW : TWeyl) : TAll := ⟨TBij.tBij, Tpar.tPar, hW, tTheta, Tauto.thetaAuto GlobalTheory.T.siegel_set_unitary Tpar.tPar tTheta⟩
+theorem tAll_of (hW : TWeyl) : TAll := ⟨TBij.tBij, Tpar.tPar, hW, tTheta, Tauto.thetaAuto _root_.GlobalTheory.CompanionTheory.SiegelRed.siegelSetUnitary Tpar.tPar tTheta⟩
 
-theorem thetaCoef : ThetaCoef := Tauto.thetaCoef GlobalTheory.T.siegel_set_unitary TBij.tBij Tpar.tPar tTheta
+theorem thetaCoef : ThetaCoef := Tauto.thetaCoef _root_.GlobalTheory.CompanionTheory.SiegelRed.siegelSetUnitary TBij.tBij Tpar.tPar tTheta
 
 theorem whitGenLt : Gen.WhitGenLt :=
   Gen.whitGenLtOf SwLocFin.locFin2 Gunr.unrWhit (GReal.realWhit_of WR.wr) GFac.factorX PositivityTheory.PfSWUS.HMass.siegelDensitiesLowA

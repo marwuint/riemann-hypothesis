@@ -26,10 +26,4 @@ def mkUJ (y : Matrix (Fin n) (Fin n) ℂ) (hy : yᴴ * Formalism.REAL.Jm ε * y 
 
 end Pack
 
-section Adj
-
-variable {m : ℕ}
-
-end Adj
-
 end Formalism.L2.S.L6.UnitaryStandardVectors

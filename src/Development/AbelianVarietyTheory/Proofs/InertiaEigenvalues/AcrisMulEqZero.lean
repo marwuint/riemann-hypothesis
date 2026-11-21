@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaussGCTarget
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefiniteStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefinite
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
 open GlobalTheory.PMon.Gauss
 open scoped Formalism.Per
@@ -27,8 +27,8 @@ theorem acris_mul_eq_zero : ∀ (l : ℕ) [Fact l.Prime] (x y : Formalism.Per.Ac
     · linarith
   by_contra h
   push_neg at h
-  have hx := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x h.1 (l : ℝ)⁻¹ le_rfl hρ1
-  have hy := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l y h.2 (l : ℝ)⁻¹ le_rfl hρ1
+  have hx := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x h.1 (l : ℝ)⁻¹ le_rfl hρ1
+  have hy := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l y h.2 (l : ℝ)⁻¹ le_rfl hρ1
   have hm := hG.2.2.2.1 x y
   rw [hxy, h0] at hm
   have := mul_pos hx hy

@@ -32,10 +32,6 @@ theorem crd_neg (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) {x : 
   simp only [Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]
   exact L0.neg_mem hx
 
-theorem crd_sub (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) {x y : Fin M → E}
-    (hx : x ∈ crdOf b L0) (hy : y ∈ crdOf b L0) : x - y ∈ crdOf b L0 := by
-  rw [sub_eq_add_neg]; exact crd_add b L0 hx (crd_neg b L0 hy)
-
 theorem crd_sum (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) {ι : Type*} (s : Finset ι)
     (f : ι → Fin M → E) (hf : ∀ i ∈ s, f i ∈ crdOf b L0) : ∑ i ∈ s, f i ∈ crdOf b L0 := by
   classical

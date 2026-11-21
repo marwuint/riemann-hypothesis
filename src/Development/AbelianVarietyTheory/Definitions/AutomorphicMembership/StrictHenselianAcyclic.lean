@@ -76,10 +76,6 @@ def SB2 : Prop := AllSt fun _ _ _ _ _ P x => SeriesLevel hL x → ∃ x' : St P,
 
 def SC : Prop := AllSt fun _ _ _ T _ _ x => ∀ l : StrictHenselianAcyclic hL x, Nonempty (StC l.mt l.b T.k T.psi)
 
-def SEta : Prop := AllSt fun _ _ _ _ _ P x => ∀ l : LC hL x,
-  GlobalTheory.CoefDuty.BuiltEx l.a.A l.mt.M l.c.ch l.c.tp.tup → GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' =>
-    GlobalTheory.CoefDuty.Large D' ∧ ∀ j v, 1 ≤ j → j ≤ (Dof x).R.m → ∀ v' : D'.what₂.places.Pl, HEq v' v → D'.what₂.etaJ j v' = P.q.eta j v
-
 structure Kept {D D' : D7} (c : NChoice D) (c' : NChoice D') : Prop where
   gal : GlobalTheory.TwistChoice.SameGalois D.nd D'.nd
   set : GlobalTheory.TwistChoice.TwistDataAgreeAcrossCoefficients D.ntw D'.ntw
@@ -93,11 +89,6 @@ structure Kept {D D' : D7} (c : NChoice D) (c' : NChoice D') : Prop where
 
 def SFin : Prop := AllSt fun K _ _ _ w P x => ∀ (l : LC hL x) (S : SExt) (Γ : GeoP),
   ∃ (Z : w.Lt) (v : Lv3 (prmR (NEb hL) S Γ).s K w Z), v.Wt = P.Wt ∧ Kept l.c.ch v.nch
-
-def NEg : NExt hL := fun K B f T w Z Wt p0 t nch n xd c => NEb hL K B f T w Z Wt p0 t nch n xd c × PLift (GoodO (w.D Z) nch xd)
-
-def SecondN : Prop := ∀ (S : SExt) (Γ : GeoP), Pass KPx (IsBuiltE (prmR (NEb hL) S Γ).s) fun K B f T =>
-  ∃ w : ColW B f T, Start K B f T w ∧ Has3 (prmR (NEg hL) S Γ).s K B f T w
 
 end GlobalTheory.HeightCounting.Up
 

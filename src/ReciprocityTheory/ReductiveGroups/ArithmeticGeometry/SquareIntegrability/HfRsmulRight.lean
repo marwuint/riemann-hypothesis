@@ -14,13 +14,6 @@ lemma Hf_eq_inner {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : Hf v 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [RCLike.inner_apply, mul_comm]
 
-lemma re_Hf {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : (Hf v w).re = inner ℝ v w := by
-  unfold Hf
-  rw [PiLp.inner_apply, Complex.re_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  simp only [Complex.inner, Complex.mul_re, Complex.conj_re, Complex.conj_im]
-  ring
-
 lemma Hf_add_left {ι : Type} [Fintype ι] (v v' w : EuclideanSpace ℂ ι) :
     Hf (v + v') w = Hf v w + Hf v' w := by
   simp only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]

@@ -2,16 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLocModelIsPrimeOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceTopFormOrdersApiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueTopFormAlongPrimeDivisorAdjunctionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceTopFormOrdersApi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueTopFormAlongPrimeDivisorAdjunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoDimLocalModelPrimePlacesAlongParametersStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFreeModuleGeneratorKaehlerWedgeRegularPairConsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrdFreeTopFormEqZeroOfIsPrimeOfStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranscendenceBasisOfKaehlerWedgeFreeGeneratorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrdFreeTopFormEqZeroOfIsPrimeOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranscendenceBasisOfKaehlerWedgeFreeGenerator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResiduePlaceOfTwoDimLocalModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranscendenceBasisResidueFieldUniformiserConsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrdKaehlerWedgeUniformiserResidueIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResiduePlaceEvalNeZeroInvMemOfIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranscendenceBasisResidueFieldUniformiserCons
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOrdKaehlerWedgeUniformiserResidueIndependent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResiduePlaceEvalNeZeroInvMemOfIsUnit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqUnitMulZpowRegularLocalModelDimTwoStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdQMapDomainResiduePlaceTransportStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace
@@ -61,8 +61,8 @@ theorem disc_residue_eq : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L
     funext i
     refine Fin.cases rfl (fun j => ?_) i
     refine Fin.cases rfl (fun k => rfl) j
-  have hzT := GlobalTheory.T.isTranscendenceBasis_of_kaehlerWedge_freeGenerator cL Q hQ _ _ (by omega) hzG
-  have hzO := GlobalTheory.T.formOrd_freeTopForm_eq_zero_of_isPrimeOf cL Q hQ _ _ hzG
+  have hzT := _root_.GlobalTheory.FieldPair.trBasis_of_isFreeGen_dForm cL Q hQ _ _ (by omega) hzG
+  have hzO := _root_.GlobalTheory.formOrd_dForm_of_isPrimeOf cL Q hQ _ _ hzG
   rw [hxe] at hzT hzO
   obtain ⟨F, hFr, hFu⟩ := GlobalTheory.T.exists_residuePlace_of_twoDimLocalModel cL cK Q hQ t u hm hd S ψ hS hSt hψ hc
   have hQS : ∀ q : Q, (q : L) ∈ S.ring := fun q => hS.1 q q.2
@@ -70,10 +70,10 @@ theorem disc_residue_eq : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L
   let ts : S.ring := ⟨t, hQS t⟩
   let zs : Fin m → S.ring := fun i => ⟨z i, hQS (z i)⟩
   have hF1 : F.ord (ψ us) = 1 := hFu us rfl
-  have hB4 := GlobalTheory.T.residuePlace_eval_ne_zero_inv_mem_of_isUnit cL cK Q hQ S ψ F hS.1 hc hFr m z zs (fun _ => rfl) hzU
+  have hB4 := _root_.GlobalTheory.FieldPair.eval₂_residue_ne_zero_and_inv_mem_of_isUnit cL cK Q hQ S ψ F hS.1 hc hFr m z zs (fun _ => rfl) hzU
   have hzF : ∀ i, ψ (zs i) ∈ F.ring := fun i => (hFr _).2 ⟨zs i, (z i).2, rfl⟩
-  have hTK := GlobalTheory.T.isTranscendenceBasis_residueField_uniformiser_cons cL cK S ψ hψ hc F m (ψ us) (fun i => ψ (zs i)) ⟨_, hzT⟩ hF1 hzF hB4
-  have hFO := GlobalTheory.T.formOrd_kaehlerWedge_uniformiser_residueIndependent_eq_zero cK F m (ψ us) (fun i => ψ (zs i)) hF1 hzF hB4 hTK
+  have hTK := _root_.GlobalTheory.FieldPair.ResidueTrBasis.trBasis_cons cL cK S ψ hψ hc F m (ψ us) (fun i => ψ (zs i)) ⟨_, hzT⟩ hF1 hzF hB4
+  have hFO := _root_.GlobalTheory.formOrd_dForm_cons_of_ord_eq_one cK F m (ψ us) (fun i => ψ (zs i)) hF1 hzF hB4 hTK
   obtain rfl : n = m + 1 := by
     letI := cK.toAlgebra
     have h1 := IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hw
@@ -91,17 +91,17 @@ theorem disc_residue_eq : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L
     exact Fin.cases rfl (fun _ => rfl) j
   set Ω0 := (dForm cL (Fin.cons (t : L) (Fin.cons (u : L) (fun i => (z i : L)) : Fin (m + 1) → L) : Fin (m + 2) → L)) with hΩ0
   set η := dForm cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (m + 1 + 1) → L) with hη
-  have hfreeL := (GlobalTheory.T.dvrPlace_topForm_orders_api cL (m + 2) _ hzT).1
+  have hfreeL := (_root_.GlobalTheory.FieldPair.formOrd_api cL (m + 2) _ hzT).1
   obtain ⟨H, hH⟩ := hfreeL.2 η
   have ht_irr : Irreducible ts := irreducible_of_ord_one S ts hSt
-  obtain ⟨h, hhf, hhw⟩ := GlobalTheory.T.residue_topForm_along_primeDivisor_adjunction cL cK (m + 1) S ψ hψ hc ts f v w H ht_irr hf (hv ▸ hTK)
+  obtain ⟨h, hhf, hhw⟩ := _root_.GlobalTheory.Residue.residue_dForm cL cK (m + 1) S ψ hψ hc ts f v w H ht_irr hf (hv ▸ hTK)
     (htv ▸ hzT) (by rw [htv]; exact hH.symm)
   rw [hv] at hhw
   have hne : ∀ {A M : Type} [CommRing A] [Nontrivial A] [AddCommGroup M] [Module A M] {ω : M},
       IsFreeGen A ω → ω ≠ 0 := fun hω h0 => one_ne_zero (hω.1 (a₁ := 1) (a₂ := 0) (by simp [h0]))
-  have hIK := GlobalTheory.T.dvrPlace_topForm_orders_api cK (m + 1) _ hTK
-  have hIL := GlobalTheory.T.dvrPlace_topForm_orders_api cL (m + 2) _ hzT
-  have hwne := hne (GlobalTheory.T.dvrPlace_topForm_orders_api cK (m + 1) _ hw).1
+  have hIK := _root_.GlobalTheory.FieldPair.formOrd_api cK (m + 1) _ hTK
+  have hIL := _root_.GlobalTheory.FieldPair.formOrd_api cL (m + 2) _ hzT
+  have hwne := hne (_root_.GlobalTheory.FieldPair.formOrd_api cK (m + 1) _ hw).1
   have hvne := hne hIK.1
   have hΩne : Ω0 ≠ 0 := hne hfreeL
   have hψh : ψ h ≠ 0 := by

@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultCellsAmo
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarLabEvalZOfEqOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntLinearFormCuttingSubcell
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolyFanFaceCutByIntLinearFormIsCellStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolyFanFaceCutByIntLinearFormIsCell
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRealRel
 
 noncomputable section
 
@@ -24,7 +25,7 @@ theorem exists_isTwInv_simpLab_star : ∀ (E : Type) [Field E] [NumberField E] [
   · obtain ⟨m₁, δ, hδ, hli, hinj, hγδ⟩ := hSL.2 X hX m γ hγ
     obtain ⟨g, hg1, hg2, hg3⟩ := exists_cut_of_cell_le (𝓞 E) H.bar φ X m₁ m δ γ hδ hγ hγδ
     obtain ⟨m₂, s, hfs⟩ := exists_isFaceCut δ g hg1
-    have hδs : IsCell H.bar φ (fun j => δ (s j)) := GlobalTheory.T.polyFan_face_cut_by_intLinearForm_isCell E H q φ hφ X hX (hDom X) m₁ δ hδ m₂ s g hfs
+    have hδs : IsCell H.bar φ (fun j => δ (s j)) := _root_.GlobalTheory.PolFan.isCell_face_of_isFaceCut E H q φ hφ X hX (hDom X) m₁ δ hδ m₂ s g hfs
     have hfree' : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone (fun j => δ (s j)) β → w.evalZ β = 0 :=
       fun β hb hp hc => hfree β hb hp (hg3 β hb hp (inRCone_of_sub s hc) (IsFaceCut.apply_eq_zero hfs hc))
     have hcell' := hS.1 X hX m₂ _ hδs hfree'
@@ -38,7 +39,7 @@ theorem exists_isTwInv_simpLab_star : ∀ (E : Type) [Field E] [NumberField E] [
       exact s.injective (hinj (Real.exp_injective (by linarith)))
     · exact inRCone_trans (fun k => inRCone_face hfs (hγδ k) (hg2 k)) (hin j)
   · obtain ⟨m₁, δ, hδ, hli, hinj, hγδ⟩ := hSL.2 X hX m γ hγ
-    have hγs : IsCell H.bar φ (fun j => γ (s j)) := GlobalTheory.T.polyFan_face_cut_by_intLinearForm_isCell E H q φ hφ X hX (hDom X) m γ hγ m' s h hf
+    have hγs : IsCell H.bar φ (fun j => γ (s j)) := _root_.GlobalTheory.PolFan.isCell_face_of_isFaceCut E H q φ hφ X hX (hDom X) m γ hγ m' s h hf
     obtain ⟨g, hg1, hg2, hg3⟩ :=
       exists_cut_of_cell_le (𝓞 E) H.bar φ X m₁ m' δ (fun j => γ (s j)) hδ hγs (fun k => hγδ (s k))
     obtain ⟨m₂, s', hfs⟩ := exists_isFaceCut δ g hg1

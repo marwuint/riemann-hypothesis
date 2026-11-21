@@ -7,8 +7,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnsheet
 import Development.AutomorphicSpectrum.PublishedTheorems.Divisibility₂.PairingExists
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarInt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.WZIsCInfStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ToZIsArFunIffStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.WZIsCInf
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ToZIsArFunIff
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -23,9 +23,9 @@ theorem arFormExists_of_int :
   intro H k _ X _ p D hX ι _ L
   let t : X ⟶ Sp ℤ := specZIsTerminal.from X
   haveI : Module.Finite ℤ k := hX.finite
-  have hL : ∀ i τ, (wZ (L i) t τ).IsCInf := fun i τ => GlobalTheory.T.wZ_isCInf' k X p t (L i) τ
+  have hL : ∀ i τ, (wZ (L i) t τ).IsCInf := fun i τ => _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.wZ_isCInf k X p t (L i) τ
   obtain ⟨Φ, hΦ⟩ := H X t D (GlobalTheory.CompanionTheory.Ar.BaseZ.isArithVar_int k X p t D hX) ι
     (fun i => GlobalTheory.CompanionTheory.Ar.BaseZ.toZ (L i) t (hL i))
-  exact ⟨Φ, (GlobalTheory.T.toZ_isArFun_iff k X p t D hX ι L hL Φ).1 hΦ⟩
+  exact ⟨Φ, (_root_.GlobalTheory.CompanionTheory.Ar.BaseZ.isArFun_toZ_iff k X p t D hX ι L hL Φ).1 hΦ⟩
 
 end GlobalTheory.CompanionTheory.Ar.BaseZ

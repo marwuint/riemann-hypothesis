@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicChar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOrbitPadicComplex
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomicTowerLevelGeneratorPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateDecompositionCompletedCyclotomicIntegersStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTateOperatorLevelComplementStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTateOperatorLevelComplement
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicTateMaximalIdealKillsFirstCohomologyStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicTowerFixedIffMemCompletedIntegersStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormUnitPowSubOne
@@ -262,7 +263,7 @@ theorem exists_coeff {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ
   obtain ⟨y, hy, w, hw, hyw⟩ := T1a _ hO
   obtain ⟨ζ, hζ, hζK, -⟩ := exists_zeta K s hs.1
   have hζ0 : ζ - 1 ≠ 0 := sub_ne_zero.2 (hζ.ne_one hp.one_lt)
-  obtain ⟨S, hS, -⟩ := GlobalTheory.T.exists_tate_operator_levelComplement l act χ ha hχ K s hs γ hγ ζ hζ
+  obtain ⟨S, hS, -⟩ := _root_.GlobalTheory.Cyc.exists_tate_operator l act χ ha hχ K s hs γ hγ ζ hζ
   obtain ⟨hv, hv2, -⟩ := hS w hw
   have hvO := T1c _ hv
   have hz : ∀ g ∈ Gj K s, act g (S w / (ζ - 1)) = act g (S w) / (ζ - 1) := fun g hg => by

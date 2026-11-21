@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralConjSetLocalUnitaryEqDoubleCosetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalConjugationInvolutiveValuationPreservingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyIntegralLiftCoprimeDerivativeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralConjSetLocalUnitaryEqDoubleCoset
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalConjugationInvolutiveValuationPreserving
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyIntegralLiftCoprimeDerivative
 
 noncomputable section
 
@@ -41,7 +41,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
       algebraMap E (w.adicCompletion E) (((γ.1 : GL (Fin n) E)⁻¹).val i j) ∈ w.adicCompletionIntegers E :=
     eventually_all.2 fun i => eventually_all.2 fun j =>
       (eventually_mem_integers _).and (eventually_mem_integers _)
-  filter_upwards [hint, GlobalTheory.T.eventually_integral_lift_coprime_derivative E _ hsep] with w hw hP
+  filter_upwards [hint, _root_.GlobalTheory.IntCop.eventually_integral_coprime E _ hsep] with w hw hP
   obtain ⟨P₀, hP₀, hcop⟩ := hP
   intro g hg
   set y : GLw n w := Matrix.GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (γ.1 : GL (Fin n) E) with hy
@@ -57,12 +57,12 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
         exact (hw a b).2
     have hK : locPt w γ ∈ KL n w := by
       rw [KL, Subgroup.mem_subgroupOf, hloc]; exact hyK
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.localConjugation_involutive_valuation_preserving E w
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.BCT.cj_involutive_valuation E w
     have hcp : (locPt w γ).1.val.charpoly =
         P₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) := by
       rw [hloc, hP₀, hy]
       exact Matrix.charpoly_map _ _
-    obtain ⟨t, ht, k, hk, he⟩ := GlobalTheory.T.integral_conj_set_localUnitary_eq_doubleCoset E n w h1 h2 P₀ hcop (locPt w γ) hcp 1 g
+    obtain ⟨t, ht, k, hk, he⟩ := _root_.GlobalTheory.BCT.OrbitT.orbit_main E n w h1 h2 P₀ hcop (locPt w γ) hcp 1 g
       (by simpa using hK) hg
     refine ⟨t, ht, ?_⟩
     rw [he, mul_one, inv_mul_cancel_left]

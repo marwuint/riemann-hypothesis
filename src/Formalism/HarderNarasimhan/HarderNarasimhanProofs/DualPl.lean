@@ -600,13 +600,6 @@ theorem twist_torsionFree : IsAddTorsionFree W := ⟨fun n hn a c h => by
   have h' : (n : K) • a = (n : K) • c := by simpa [Nat.cast_smul_eq_nsmul] using h
   exact smul_right_injective W (Nat.cast_ne_zero.2 hn) h'⟩
 
-example (X : Submodule (𝓞 K) W) : Module.IsTorsionFree ℤ X := by
-  have := twist_torsionFree (K := K) (W := W)
-  infer_instance
-example (X : Submodule (𝓞 K) W) (hX : X.FG) : Module.Finite ℤ X := by
-  have : Module.Finite (𝓞 K) X := Module.Finite.iff_fg.mpr hX
-  exact Module.Finite.trans (𝓞 K) X
-
 end Twist
 
 section TwistInt

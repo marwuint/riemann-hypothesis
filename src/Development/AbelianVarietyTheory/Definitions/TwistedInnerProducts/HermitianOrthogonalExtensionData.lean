@@ -118,10 +118,6 @@ theorem hO_neg (S T : HSp D) (x y : WO S T) : hO (neg S) T x y = -hO S T x y := 
   rw [neg_gram_inv]
   simp [Finset.sum_neg_distrib]
 
-theorem symplO_neg (S T : HSp D) (x y : WO S T) : symplO (neg S) T x y = -symplO S T x y := by
-  unfold symplO
-  rw [hO_neg, mul_neg, map_neg]
-
 def sgnM (ε : Bool) {k : ℕ} (s : Matrix (Fin k) (Fin k) ℂ) : Matrix (Fin k) (Fin k) ℂ := cond ε (-s) s
 
 theorem isCartanInv_sgn (ε : Bool) (V : HSp D) (τ : D.what₂.Tau) {s : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -211,15 +207,8 @@ theorem multT_le_cusp (θ : InfFam D) (J : Set (GA D N.V)) (χ : GA D N.V → �
 def princ (I : Ideal (𝓞 D.host.E)) : Subgroup (GL (Fin N.V.rank) (Lev.EAf D)) :=
   UA D.sp.cm N.V.gram ⊓ princGL N.β I
 
-theorem mem_princ {I : Ideal (𝓞 D.host.E)} {x : GL (Fin N.V.rank) (Lev.EAf D)} :
-    x ∈ N.princ I ↔ x ∈ UA D.sp.cm N.V.gram ∧ ∃ y, frGL N.β y = x ∧ ∀ i j, (y.1 - 1) i j ∈ idS D.host.F I :=
-  and_congr_right fun _ => mem_princGL
-
 theorem princ_top : N.princ ⊤ = UA D.sp.cm N.V.gram ⊓ St N.β := by
   rw [princ, princGL_top]
-
-theorem princ_mono {I I' : Ideal (𝓞 D.host.E)} (h : I ≤ I') : N.princ I ≤ N.princ I' :=
-  inf_le_inf_left _ (princGL_mono _ h)
 
 structure MeasDat where
 
@@ -282,19 +271,6 @@ def IsCosetVec (e : AE D) (I : Ideal (𝓞 D.host.E)) (c : Coset S T I) (f₀ f 
     (cosetInd S T e I c) f
 
 variable {S T}
-
-theorem InCosetOf.unique {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) {c c' : Coset S T I} {x : WO S.V T.V}
-    (h : InCosetOf S T I c x) (h' : InCosetOf S T I c' x) : c = c' := by
-  ext i j
-  obtain ⟨_, h1⟩ := h i j
-  obtain ⟨_, h2⟩ := h' i j
-  exact cmpS_inj I hI (h1.symm.trans h2)
-
-theorem exists_inCosetOf {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) (x : WO S.V T.V) :
-    (∃ c, InCosetOf S T I c x) ↔ IsIntM (frMapO S.V T.V S.β T.β x) := by
-  refine ⟨fun ⟨c, h⟩ i j => (h i j).1, fun h => ?_⟩
-  choose c hc using fun i j => cmpS_surj (F := D.host.F) I hI (Ideal.Quotient.mk _ ⟨_, h i j⟩)
-  exact ⟨fun i j => c i j, fun i j => ⟨h i j, (hc i j).symm⟩⟩
 
 theorem finite_coset {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) : Finite (Coset S T I) := by
   have := Ideal.finiteQuotientOfFreeOfNeBot I hI
@@ -369,12 +345,6 @@ structure ArrT.Is (a : ArrT S T) (χS χT : (AE D)ˣ →* Circle) : Prop where
 
   intw : IsIntw θ T.M S.M a.ω.swap (fock ψ θ ε S T a.vac) a.It
 
-def ArrS.int (a : ArrS S T) (m : T.MeasDat) (Φ : WO S.V T.V → ℂ) (F : GA D T.V → ℂ) : GA D S.V → ℂ :=
-  Lift.liftInt m.ν m.fd (thetaKO a.ω) Φ F
-
-def ArrT.int (a : ArrT S T) (m : S.MeasDat) (Φ : WO S.V T.V → ℂ) (F : GA D S.V → ℂ) : GA D T.V → ℂ :=
-  Lift.liftInt m.ν m.fd (fun h g Φ => thetaKO a.ω g h Φ) Φ F
-
 def ArrS.IsLift (a : ArrS S T) (m : T.MeasDat) (f : WO S.V T.V → ℂ) (io : T.Cusp θ →ₗ[ℂ] S.Cusp θ) : Prop :=
   Lift.IsIo m.ν m.fd (thetaKO a.ω) (fock ψ θ ε S T f) a.It (T.Cusp θ) (S.Cusp θ) io
 
@@ -392,14 +362,6 @@ def ArrT.IsLiftConj (a : ArrT S T) (Tp : Pol S T →ₗ⋆[ℂ] SmT T.M →ₗ[�
 
 variable {ψ θ ε}
 
-theorem ArrS.IsLift.int_eq {a : ArrS S T} {m : T.MeasDat} {f : WO S.V T.V → ℂ} {io : T.Cusp θ →ₗ[ℂ] S.Cusp θ}
-    (h : a.IsLift ψ θ ε m f io) (F : T.Cusp θ) (P : Pol S T) (v : SmT T.M) :
-    a.int m (fock ψ θ ε S T f P) (F.1 v) = (io F).1 (a.It P v) := funext fun g => h.eq F P v g
-
-theorem ArrT.IsLift.int_eq {a : ArrT S T} {m : S.MeasDat} {f : WO S.V T.V → ℂ} {io : S.Cusp θ →ₗ[ℂ] T.Cusp θ}
-    (h : a.IsLift ψ θ ε m f io) (F : S.Cusp θ) (P : Pol S T) (v : SmT S.M) :
-    a.int m (fock ψ θ ε S T f P) (F.1 v) = (io F).1 (a.It P v) := funext fun g => h.eq F P v g
-
 end Arrows
 
 section Cast
@@ -410,35 +372,8 @@ def ArrS.cast (hS : S = S') (hT : T = T') (a : ArrS S T) : ArrS S' T' := hS ▸ 
 
 def Node.MeasDat.cast (h : S = S') (m : S.MeasDat) : S'.MeasDat := h ▸ m
 
-def castFun (hS : S = S') (hT : T = T') (f : WO S.V T.V → ℂ) : WO S'.V T'.V → ℂ := hS ▸ hT ▸ f
-
-def Node.castMaps (h : S = S') : S.Maps ≃ₗ[ℂ] S'.Maps := h ▸ LinearEquiv.refl ℂ S.Maps
-
-def Node.castCusp (θ : InfFam D) (h : S = S') : S.Cusp θ ≃ₗ[ℂ] S'.Cusp θ := h ▸ LinearEquiv.refl ℂ (S.Cusp θ)
-
-theorem Node.coe_castCusp (θ : InfFam D) (h : S = S') (F : S.Cusp θ) :
-    (Node.castCusp θ h F).1 = Node.castMaps h F.1 := by subst h; rfl
-
-theorem Node.castMaps_mem (θ : InfFam D) (h : S = S') (F : S.Maps) : Node.castMaps h F ∈ S'.Cusp θ ↔ F ∈ S.Cusp θ := by
-  subst h; rfl
-
 theorem ArrS.is_cast (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) (hS : S = S') (hT : T = T') (a : ArrS S T)
     (χS χT : (AE D)ˣ →* Circle) : (a.cast hS hT).Is ψ θ ε χS χT ↔ a.Is ψ θ ε χS χT := by subst hS hT; rfl
-
-theorem isFinVec_cast (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) (hS : S = S') (hT : T = T')
-    (f : WO S.V T.V → ℂ) : IsFinVec ψ θ ε S' T' (castFun hS hT f) ↔ IsFinVec ψ θ ε S T f := by subst hS hT; rfl
-
-theorem ArrS.isLift_cast (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) (hS : S = S') (hT : T = T') (a : ArrS S T)
-    (m : T.MeasDat) (f : WO S.V T.V → ℂ) (io : T'.Cusp θ →ₗ[ℂ] S'.Cusp θ) :
-    (a.cast hS hT).IsLift ψ θ ε (m.cast hT) (castFun hS hT f) io ↔
-      a.IsLift ψ θ ε m f ((Node.castCusp θ hS).symm.toLinearMap ∘ₗ io ∘ₗ (Node.castCusp θ hT).toLinearMap) := by
-  subst hS hT; rfl
-
-theorem ArrS.cast_vac (hS : S = S') (hT : T = T') (a : ArrS S T) : (a.cast hS hT).vac = castFun hS hT a.vac := by
-  subst hS hT; rfl
-
-theorem ArrS.cast_It_congr (hS : S = S') (hT : T = T') {a b : ArrS S T} (h : a.It = b.It) :
-    (a.cast hS hT).It = (b.cast hS hT).It := by subst hS hT; exact h
 
 end Cast
 
@@ -467,17 +402,6 @@ def antiDiagonalSignGramMatrix (K : Type) [Ring K] (c : ℕ) (p q : Fin c) : K :
 
 def staircaseExtensionIdeal (𝔰 : Ideal (𝓞 D.host.E)) (c : ℕ) (p : Fin c) : FrId D :=
   (D.host.AA * ((D.host.conj • 𝔰 : Ideal (𝓞 D.host.E)) : FrId D)⁻¹) ^ (c - p.1) * (D.host.AAbar⁻¹ * (𝔰 : FrId D)) ^ (p.1 + 1)
-
-example : antiDiagonalSignGramMatrix ℤ 1 0 0 = -1 := by decide
-
-example : (Matrix.of (antiDiagonalSignGramMatrix ℤ 2)) = !![0, 1; 1, 0] := by decide
-
-example : (Matrix.of (antiDiagonalSignGramMatrix ℤ 3)) = !![0, 0, 1; 0, -1, 0; 1, 0, 0] := by decide
-
-example : staircaseExtensionIdeal (D := D) ⊤ 1 0 = D.host.AA * D.host.AAbar⁻¹ := by
-  simp [staircaseExtensionIdeal, Ideal.pointwise_smul_def, Ideal.map_top]
-
-example (V : HSp D) (x y : V.V) : (neg (neg V)).hT x y = V.hT x y := by simp [neg_hT]
 
 end GlobalTheory.Grid
 

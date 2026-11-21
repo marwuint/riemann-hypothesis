@@ -1,9 +1,10 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorOnSmallerOpenOfNonvanishingSectioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNhdsNonzeroOfIsClosedMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecializationClosedInAffineNeighbourhoodStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFlatLocalBaseChangeOfProperPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionNonvanishingOverClosedPointFibreStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorOnSmallerOpenOfNonvanishingSectio
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNhdsNonzeroOfIsClosedMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecializationClosedInAffineNeighbourhood
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFlatLocalBaseChangeOfProperProperties
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionNonvanishingOverClosedPointFibre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonzeroSectionOfFiniteFreeBaseChangeStatement
 
 noncomputable section
@@ -20,12 +21,12 @@ theorem exists_gen_near_of_finFlat : ∀ (R : Type) [CommRing R] [IsDomain R] [I
   intro R _ _ _ hR R' _ _ _ ρ hfin hflat Z Y Z' Y' p p' y y' k k' hk hk' hp hY hbij L hL hloc x
   haveI : IsNoetherianRing R := hR.1
   obtain ⟨hkf, hqc, hqs, hsurj, hcl, hclp, hO, d, b, hb⟩ :=
-    GlobalTheory.T.finite_flat_local_baseChange_of_proper_properties R R' ρ hfin.2.1 hfin.2.2 hflat Z Y Z' Y' p p' y y' k k' hk hk' hp
-  obtain ⟨V, hV, y₀, hy₀, hxy, hE⟩ := GlobalTheory.T.exists_specialization_closed_in_affine_neighbourhood Y x
+    _root_.GlobalTheory.finiteFlat_proper_baseChange_facts R R' ρ hfin.2.1 hfin.2.2 hflat Z Y Z' Y' p p' y y' k k' hk hk' hp
+  obtain ⟨V, hV, y₀, hy₀, hxy, hE⟩ := _root_.GlobalTheory.ClosedPt.exists_closed_point Y x
   obtain ⟨hclV, -⟩ := hE V le_rfl hV hy₀
   have hL' : (L.pull k').IsLB := LB.isLB_pull hL _
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_section_nonvanishing_over_closed_point_fibre Y Y' Z' k hkf p' hqc hqs V hV y₀ hy₀ hclV (L.pull k') hL' (fun x' _ => hloc x')
-  obtain ⟨V₁, hy₁, hV₁V, hV₁⟩ := GlobalTheory.T.exists_nhds_subset_nonzeroLocus_of_isClosedMap Z' Y (p' ≫ k) hcl (L.pull k') V s y₀ hy₀ hs
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.Mum.exists_sec_nonzero_on_fibre Y Y' Z' k hkf p' hqc hqs V hV y₀ hy₀ hclV (L.pull k') hL' (fun x' _ => hloc x')
+  obtain ⟨V₁, hy₁, hV₁V, hV₁⟩ := _root_.GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap Z' Y (p' ≫ k) hcl (L.pull k') V s y₀ hy₀ hs
   obtain ⟨f, hf1, hf2⟩ := hV.exists_basicOpen_le ⟨y₀, hy₁⟩ hy₀
   have hV₂V : Y.basicOpen f ≤ V := Y.basicOpen_le f
   have hV₂ : IsAffineOpen (Y.basicOpen f) := hV.basicOpen f
@@ -36,7 +37,7 @@ theorem exists_gen_near_of_finFlat : ∀ (R : Type) [CommRing R] [IsDomain R] [I
     show k (p' z) ∈ V
     rw [← hcomm]
     exact hV₂V hz
-  obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_generator_on_smaller_open_of_nonvanishing_section Z' (L.pull k') hL' _ _ hle s (fun z₀ hz₀ => hV₁ z₀ (by
+  obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.GenRestrict.exists_gen_restrict Z' (L.pull k') hL' _ _ hle s (fun z₀ hz₀ => hV₁ z₀ (by
     rw [Scheme.Hom.comp_apply, ← hcomm]
     exact hf1 hz₀))
   have hsurjp : Function.Surjective (p.app (Y.basicOpen f)).hom := (hbij _).2
@@ -66,8 +67,8 @@ theorem exists_gen_near_of_finFlat : ∀ (R : Type) [CommRing R] [IsDomain R] [I
     have hmem' : p ((p ⁻¹ᵁ Y.basicOpen f).ι z₀) ∈ Y.basicOpen (e.symm a) := hmem
     rw [hz₀] at hmem'
     exact (hMiff _).1 ha₀ hmem'
-  obtain ⟨V₃, hy₃, hV₃, hV₃u⟩ := GlobalTheory.T.exists_nhds_subset_nonzeroLocus_of_isClosedMap Z Y p hclp L _ u y₀ hf2 hfib
-  obtain ⟨t, ht⟩ := GlobalTheory.T.exists_generator_on_smaller_open_of_nonvanishing_section Z L hL (p ⁻¹ᵁ V₃) (p ⁻¹ᵁ Y.basicOpen f) (fun z hz => hV₃ hz) u
+  obtain ⟨V₃, hy₃, hV₃, hV₃u⟩ := _root_.GlobalTheory.Mum.exists_nhds_nonzero_of_isClosedMap Z Y p hclp L _ u y₀ hf2 hfib
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.GenRestrict.exists_gen_restrict Z L hL (p ⁻¹ᵁ V₃) (p ⁻¹ᵁ Y.basicOpen f) (fun z hz => hV₃ hz) u
     (fun z hz => hV₃u z hz)
   exact ⟨V₃, hxy.mem_open V₃.isOpen hy₃, t, ht⟩
 

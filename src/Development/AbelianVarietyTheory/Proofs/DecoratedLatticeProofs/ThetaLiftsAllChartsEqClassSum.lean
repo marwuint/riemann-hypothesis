@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockSubstitutionIdentities
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsCompactGinfCOfOntoUni
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FrameValuesPolynomialDetStableHomogeneous
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeesawScalarFormsLawsOnClassDataStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteElementsActFockVectorsThroughDatumStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeesawScalarFormsLawsOnClassData
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteElementsActFockVectorsThroughDatum
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.KJInf Formalism.L2.Forms GlobalTheory.SeeSaw
@@ -112,7 +112,7 @@ variable {c : Comm D} {ρ : RealD c} {t : Tup c} {A : ClsK ρ t}
 theorem lev_pt (hc : c.Is) (ht : t.Is) (hA : A.Is) {j : ℕ} (hj : j + 1 ≤ D.R.m) (α γ P) (κ : A.U j α) (κ' : A.U (j + 1) γ) :
     t.kom j (κ.1, κ'.1) ((t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P) =
       (((A.chi j α κ : ℂˣ) : ℂ)⁻¹ * ((A.chi (j + 1) γ κ' : ℂˣ) : ℂ)) • (t.ker j α γ).pt c.ψ c.θ (c.x j) (c.x (j + 1)) P :=
-  (GlobalTheory.T.finiteElements_act_fockVectors_through_datum D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) (t.ker j α γ) (hc.x j (Nat.le_of_succ_le hj)) (hc.x _ hj)
+  (_root_.GlobalTheory.FockFin.pt_finite D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) (t.ker j α γ) (hc.x j (Nat.le_of_succ_le hj)) (hc.x _ hj)
     (ht.ker j hj α γ) P).2 _ ((hA.1.reps j (Nat.le_of_succ_le hj) α).le κ.2) _ ((hA.1.reps _ hj γ).le κ'.2) _
     (hA.2.2.1 j hj α γ κ κ')
 
@@ -167,9 +167,9 @@ theorem lift_eq (hc : c.Is) (hρ : ρ.Is) (ht : t.Is) (hA : A.Is) {j : ℕ} (hj 
           GlobalTheory.KJInf.evalAt (fun τ => ρ.r j (Nat.le_of_succ_le hj) k.1 τ * (ρ.fr j y).1 τ) (F a) ∂ν) := by
   obtain ⟨χS, χT, hw⟩ := (ht.ker j hj α γ).weil
   have hw' : IsWeilDatumO c.ψ _ _ χS χT (t.kom j) := hw
-  have hf := (GlobalTheory.T.finiteElements_act_fockVectors_through_datum D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) (t.ker j α γ) (hc.x j (Nat.le_of_succ_le hj)) (hc.x _ hj)
+  have hf := (_root_.GlobalTheory.FockFin.pt_finite D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) (t.ker j α γ) (hc.x j (Nat.le_of_succ_le hj)) (hc.x _ hj)
     (ht.ker j hj α γ) P).1
-  obtain ⟨hr1, hr2, -, -⟩ := GlobalTheory.T.seesaw_scalar_forms_laws_on_class_data D c t ρ A hc hρ hA.1 j (Nat.le_of_succ_le hj) ψ hψ α
+  obtain ⟨hr1, hr2, -, -⟩ := _root_.GlobalTheory.SeeSaw.scalarForm_laws D c t ρ A hc hρ hA.1 j (Nat.le_of_succ_le hj) ψ hψ α
   have hk' := lev_pt hc ht hA hj α γ P 1 κ'
   simp only [OneMemClass.coe_one, map_one, Units.val_one, inv_one, one_mul] at hk'
   have hI := fun a (k : GinfC (c.X j)) => integrand_eq hρ hA hj hab hψ α γ a a' y P (F a) (hF a) k k'

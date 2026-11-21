@@ -8,11 +8,11 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.FiniteEtaleSurj
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PChartNormPtsA
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Values
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorSumIdentityBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagValuationNormalizationStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorSumIdentityBaseChange
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagValuationNormalization
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ValuationRingExtensionSpecializationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.StepRowsInverseNonzeroEntryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericFlagAlgebraicallyIndependentStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.StepRowsInverseNonzeroEntry
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericFlagAlgebraicallyIndependent
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 
@@ -333,7 +333,7 @@ theorem frame_gen {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {S : Typ
         ∑ I, f (algebraMap M.Ω Φ (F.u ⟨k, m⟩ I)) * minorIJ G I (stepCols N j p.2) := by
   haveI : Infinite M.Ω := Infinite.of_injective (Nat.cast : ℕ → M.Ω) Nat.cast_injective
   letI : Algebra M.Ω S := (f.comp (algebraMap M.Ω Φ)).toAlgebra
-  have h1 := GlobalTheory.T.minor_sum_identity_base_change M.Ω N j (F.T p.1) _ _ (M.coef ⟨k, m⟩) (F.u ⟨k, m⟩) (stepCols N j p.2)
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.PB.MinorAny.minor_any M.Ω N j (F.T p.1) _ _ (M.coef ⟨k, m⟩) (F.u ⟨k, m⟩) (stepCols N j p.2)
     (hF.2.1 p k hp m) S G hG
   have e' : (F.T p.1).map (algebraMap M.Ω S) * G = (M.g p.1).map f * bb := e
   rw [e'] at h1
@@ -384,7 +384,7 @@ theorem flag_nonzero {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {z : 
       simp only [map_mul] at e'
       rw [e']
       split_ifs <;> simp
-    obtain ⟨m, hm, -⟩ := GlobalTheory.T.step_rows_inverse_nonzero_entry ℂ ⊤ N j p.2 (h p.1) (ι k) (fun m I => val (uA ⟨k, m⟩ I))
+    obtain ⟨m, hm, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.UnitComb.unit_comb ℂ ⊤ N j p.2 (h p.1) (ι k) (fun m I => val (uA ⟨k, m⟩ I))
       (fun I m => val (vA I ⟨k, m⟩)) M.j_le (H.2.1 p.1).1 (fun _ _ => ValuationSubring.mem_top _) (H.2.1 p.1).2
       (ValuationSubring.mem_top _) (fun _ _ => ValuationSubring.mem_top _) (fun _ _ => ValuationSubring.mem_top _) rel
     refine ⟨m, ?_⟩
@@ -401,7 +401,7 @@ theorem flag_back {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {z : (Σ
   let L := FractionRing S
   let G' : Ψ → Matrix (Fin N) (Fin N) S := fun τ =>
     ((F.T τ)⁻¹.map (algebraMap M.Ω S)) * ((M.g τ).map (C : Φ →+* S) * genUp Φ N j τ)
-  have indep := GlobalTheory.T.generic_flag_algebraically_independent M.Ω Φ Ψ N j M.g F.T M.g_block M.g_indep hF.1
+  have indep := _root_.GlobalTheory.CompanionTheory.Ar.PB.IsGenericFlag.indep_twist_mul_genUp M.Ω Φ Ψ N j M.g F.T M.g_block M.g_indep hF.1
   let iS : MvPolynomial (inertBlockIndex Ψ N j) A →+* S :=
     eval₂Hom ((algebraMap M.Ω S).comp A.subtype) fun q => G' q.1.1 q.1.2.1 q.1.2.2
   have eS : ∀ r, iS r = aeval (fun q : inertBlockIndex Ψ N j => G' q.1.1 q.1.2.1 q.1.2.2) (MvPolynomial.map A.subtype r) := by
@@ -525,7 +525,7 @@ theorem flag_fwd {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {z : (Σ 
   have hAgD : ∀ τ, (Ag τ).det ≠ 0 := fun τ => by
     rw [Matrix.det_mul]
     exact mul_ne_zero (hinvD τ) (M.isUnit_det_g τ).ne_zero
-  choose b hbB hbT hbd hbV hbdet hbinv using fun τ => GlobalTheory.T.block_diag_valuation_normalization Φ V N j (Ag τ) (hAgB τ) (hAgD τ)
+  choose b hbB hbT hbd hbV hbdet hbinv using fun τ => _root_.GlobalTheory.CompanionTheory.Ar.PB.IwBlock.main Φ V N j (Ag τ) (hAgB τ) (hAgD τ)
   let H : Ψ → Matrix (Fin N) (Fin N) Φ := fun τ => Ag τ * b τ
   have hHB : ∀ τ, IsBlockDiag j (H τ) := fun τ => (hAgB τ).mul (hbB τ)
   let wf : ∀ (p : Ψ × Fin N) (k : K), ι k → Φ := fun p k m =>
@@ -553,7 +553,7 @@ theorem flag_fwd {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {z : (Σ 
         ⟨am (detFac j p.2 (F.T p.1)) * (∏ c ∈ stepCols N j p.2, b p.1 c c) / am (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k'),
           div_ne_zero (mul_ne_zero hdet hB) hE, fun m => by
             rw [div_mul_eq_mul_div, rel m, mul_div_cancel_left₀ _ hE]⟩
-      obtain ⟨m₀, hm₀, hm₀i⟩ := GlobalTheory.T.step_rows_inverse_nonzero_entry Φ V N j p.2 (H p.1) (ι k) (fun m I => am (F.u ⟨k, m⟩ I))
+      obtain ⟨m₀, hm₀, hm₀i⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.UnitComb.unit_comb Φ V N j p.2 (H p.1) (ι k) (fun m I => am (F.u ⟨k, m⟩ I))
         (fun I m => am (F.u' I ⟨k, m⟩)) M.j_le (hHB p.1) (hbV p.1) (hbdet p.1) (hbinv p.1)
         (fun I m => hOV _ (hO (hG.2.1 _ I).2)) (fun m I => hOV _ (hO (hG.2.1 _ I).1)) (fun I I' hI hI' => by
           have := congrArg am (hF.2.2.1 p k hp I I' hI hI')

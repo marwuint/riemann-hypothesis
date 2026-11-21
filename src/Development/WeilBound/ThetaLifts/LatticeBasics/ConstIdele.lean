@@ -46,44 +46,6 @@ theorem splitsFully_of [IsGalois ℚ E] {w : Pl E} (he : w.asIdeal.ramificationI
   rw [SplitsFully, ← k]
   exact congrArg (fun p : Ideal ℤ => (p.primesOver (𝓞 E)).ncard) (Ideal.under_under (B := 𝓞 F) w.asIdeal)
 
-theorem conjPrime_ne (h : IsCMExt F E σ) {w : Pl E} (he : w.asIdeal.ramificationIdx ℤ = 1) (hw : (Ideal.absNorm w.asIdeal).Prime) :
-    cP h w ≠ w := fun e => by
-  have := w.isPrime
-  have : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩
-  have hf := ((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 w).1 hw
-  have k := Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (w.asIdeal.under (𝓞 F)) (𝓞 E) Gal(E/F)
-  rw [Ideal.ramificationIdx_tower (w.asIdeal.under (𝓞 F)) w.asIdeal] at he
-  rw [Ideal.inertiaDeg_tower (w.asIdeal.under (𝓞 F)) w.asIdeal] at hf
-  have s : (w.asIdeal.under (𝓞 F)).primesOver (𝓞 E) = {w.asIdeal} := by
-    refine Set.eq_singleton_iff_unique_mem.2 ⟨⟨w.isPrime, ⟨rfl⟩⟩, fun Q ⟨q1, q2⟩ => ?_⟩
-    have q3 : Q ≠ ⊥ := Ideal.ne_bot_of_liesOver_of_ne_bot (p := w.asIdeal.under (𝓞 F)) (w.under (𝓞 F)).ne_bot Q
-    rcases GlobalTheory.UnitaryHeckeBaseChange.eq_or_eq_cP h (P := w) (Q := ⟨Q, q1, q3⟩) (HeightOneSpectrum.ext q2.over.symm) with r | r
-    · exact congrArg HeightOneSpectrum.asIdeal r
-    · exact congrArg HeightOneSpectrum.asIdeal (r.trans e)
-  rw [Ideal.ramificationIdxIn_eq_ramificationIdx _ w.asIdeal Gal(E/F), Ideal.inertiaDegIn_eq_inertiaDeg _ w.asIdeal Gal(E/F),
-    Nat.eq_one_of_mul_eq_one_left he, Nat.eq_one_of_mul_eq_one_left hf, IsGalois.card_aut_eq_finrank, h.2.2.1, s,
-    Set.ncard_singleton] at k
-  omega
-
-theorem exists_split (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (h : IsCMExt F E σ) [IsGalois ℚ E] (T : Finset (Pl F)) :
-    ∃ v ∉ T, SplitsFully E v ∧ ∃ (ε : AF F) (e : AE F E), GlobalTheory.Published.IsPlacesIdem ∅ {v} ε ∧ e * e = e ∧
-      e * sigR (AF F) σ e = 0 ∧ e + sigR (AF F) σ e = algebraMap (AF F) (AE F E) ε := by
-  obtain ⟨w, hw, hp⟩ := exists_prime_norm H (finite_badSet (E := E) T)
-  have he : w.asIdeal.ramificationIdx ℤ = 1 := not_not.1 fun x => hw (Or.inr x)
-  obtain ⟨e, f, hi⟩ := GlobalTheory.UnitaryHeckeBaseChange.exists_isPrimeIdem h w
-  obtain ⟨i1, i2⟩ := GlobalTheory.UnitaryHeckeBaseChange.of_isPrimeIdem h hi
-  refine ⟨_, fun x => hw (Or.inl x), splitsFully_of he hp, ?_⟩
-  rcases hi with ⟨⟨⟨h1, h2, v, ε, hε, h3⟩, -⟩, rfl⟩ | ⟨rfl, -⟩
-  · have hv : w.under (𝓞 F) = v := by
-      by_contra hv
-      exact one_ne_zero ((i2.2.1 w rfl).symm.trans
-        ((congrArg (fun z => (toAdele F E z).2 w) h3).trans ((GlobalTheory.UnitaryHeckeBaseChange.place_comp hε).2.2 w hv)))
-    obtain ⟨j0, j1, j2⟩ := (GlobalTheory.UnitaryHeckeBaseChange.isPlaceIdem_iff v ε).1 hε
-    exact ⟨ε, e, ⟨fun _ x => absurd x (Finset.notMem_empty _), fun u _ => congrFun j0 u,
-      fun u x => j1 u ((Finset.mem_singleton.1 x).trans hv), fun u x => j2 u fun y => x (Finset.mem_singleton.2 (y.trans hv.symm))⟩,
-      h1, h2, h3⟩
-  · exact absurd ((i2.2.1 _ (GlobalTheory.UnitaryHeckeBaseChange.under_cP h w)).symm.trans (i1.2.2 _ (conjPrime_ne h he hp))) one_ne_zero
-
 theorem cA_eIdele (h : IsCMExt F E σ) [IsTotallyComplex E] {z : AE F E} (hz : toAdele F E z = GlobalTheory.IdeleCovolume.eIdele E) :
     cA σ z = z := by
   obtain ⟨_, rfl⟩ := (GlobalTheory.UnitaryHeckeBaseChange.isCMExt_iff σ).1 h

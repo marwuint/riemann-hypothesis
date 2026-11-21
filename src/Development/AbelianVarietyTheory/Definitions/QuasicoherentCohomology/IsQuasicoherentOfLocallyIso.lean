@@ -232,16 +232,6 @@ variable {C D : Type*} [Category C] [Category D] {P : C ⥤ D} {Q : D ⥤ C} (ad
 def mateHom (A : C) : P.obj (S.obj A) ⟶ T.obj (P.obj A) :=
   (adj.homEquiv _ _).symm (S.map (adj.unit.app A) ≫ e.hom.app (P.obj A))
 
-theorem mateHom_naturality {A B : C} (f : A ⟶ B) :
-    P.map (S.map f) ≫ mateHom adj S T e B = mateHom adj S T e A ≫ T.map (P.map f) := by
-  rw [mateHom, mateHom, ← Adjunction.homEquiv_naturality_left_symm,
-    ← Adjunction.homEquiv_naturality_right_symm, ← S.map_comp_assoc, Category.assoc]
-  congr 1
-  have h₁ := adj.unit.naturality f
-  have h₂ := e.hom.naturality (P.map f)
-  dsimp at h₁ h₂ ⊢
-  rw [h₁, S.map_comp_assoc, h₂]
-
 theorem isIso_mateHom [S.IsEquivalence] [T.IsEquivalence] (A : C) : IsIso (mateHom adj S T e A) := by
   have key (B : D) : Function.Bijective
       fun ψ : T.obj (P.obj A) ⟶ T.obj B => mateHom adj S T e A ≫ ψ := by

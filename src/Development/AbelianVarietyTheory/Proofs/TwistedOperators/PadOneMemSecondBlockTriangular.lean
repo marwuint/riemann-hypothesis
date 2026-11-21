@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.DiagonalPaddingLift
+import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepThetaDatumHalfEqSmul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerIntertwinerSchwartzBruhatIsTheta
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedHomLatticeIffFrameStabiliserAction
@@ -264,25 +265,6 @@ theorem isLattice_of_isFrame {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
   simp [hc0]
 
 end Frame
-
-section Mat
-
-open GlobalTheory.IndefiniteRowSideFullHecke.DiagonalPaddingLift GlobalTheory.StepLaw.TypeDatum
-
-variable {κ : Type} [CommRing κ] {r a b : ℕ}
-
-end Mat
-
-section Dat
-
-open GlobalTheory.StepLaw.TypeDatum
-
-variable {D : D7} {a b : ℕ} (L : LevDat D.host.E ℂ a) (hL : L.P = LevelP.triv L.Pg L.r ℂ)
-  (χj : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP))
-
-include hL
-
-end Dat
 
 section Dual
 

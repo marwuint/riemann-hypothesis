@@ -55,18 +55,6 @@ theorem UnipotentCentral.full {W : Type*} [AddCommGroup W] [Module E W] {ι : Ty
 
 variable {W : Type u} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
-theorem UnfoldingIntegral.full (h : HermitianForm F E W) (v : Basis ι E W) :
-    UnfoldingIntegral.Statement h v :=
-  UnfoldingIntegral.of_remaining.{u}
-    (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v)
-    (fun _ _ _ _ h _ v => TorusModulus.full h v) (fun _ _ _ _ _ _ _ => SemidirectHaar.proof _ _)
-    (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => UnipotentCoordProper.proof h v)
-    (fun _ _ _ _ h _ v => UnipotentHorizontal.full h v)
-    (fun _ _ _ _ h _ v => UnipotentCentral.full h v)
-    h v (TorusEmbedding.full h v) (LineEigenvalue.closed h v) (TorusModulus.full h v)
-    (SemidirectHaar.proof _ _) (UnipotentCoordProper.proof h v) (UnipotentHorizontal.full h v)
-    (UnipotentCentral.full h v)
-
 theorem ScalingLaw.full (h : HermitianForm F E W) (v : Basis ι E W) : ScalingLaw.Statement h v :=
   ScalingLaw.of_remaining.{u}
     (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v)
@@ -81,18 +69,6 @@ theorem ScalingLaw.full (h : HermitianForm F E W) (v : Basis ι E W) : ScalingLa
 theorem ArithmeticCovolumeFinite.full (h : HermitianForm F E W) (v : Basis ι E W) :
     ArithmeticCovolumeFinite.Statement h v :=
   ArithmeticCovolumeFinite.of_remaining.{u}
-    (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v)
-    (fun _ _ _ _ h _ v => TorusModulus.full h v) (fun _ _ _ _ _ _ _ => SemidirectHaar.proof _ _)
-    (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => UnipotentCoordProper.proof h v)
-    (fun _ _ _ _ h _ v => UnipotentHorizontal.full h v)
-    (fun _ _ _ _ h _ v => UnipotentCentral.full h v)
-    h v (TorusEmbedding.full h v) (LineEigenvalue.closed h v) (TorusModulus.full h v)
-    (SemidirectHaar.proof _ _) (UnipotentCoordProper.proof h v) (UnipotentHorizontal.full h v)
-    (UnipotentCentral.full h v)
-
-theorem AdelicCovolumeFinite.full (h : HermitianForm F E W) (v : Basis ι E W) :
-    AdelicCovolumeFinite.Statement h v :=
-  AdelicCovolumeFinite.of_remaining.{u}
     (fun _ _ _ _ h _ v => TorusEmbedding.full h v) (fun _ _ _ _ h _ v => LineEigenvalue.closed h v)
     (fun _ _ _ _ h _ v => TorusModulus.full h v) (fun _ _ _ _ _ _ _ => SemidirectHaar.proof _ _)
     (UnitsInvHaar.proof _) (fun _ _ _ _ h _ v => UnipotentCoordProper.proof h v)

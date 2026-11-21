@@ -33,13 +33,6 @@ def BeyondHE : Prop :=
     W.Ok P → ∀ l : ℕ, l.Prime → P.lJ < (l : ℝ) → P.h < (l : ℝ) →
     (∀ τ, W.ex P τ l = 0) ∧ W.JA P l = 0 ∧ W.JW P l = 0
 
-def RecIncl7E : Prop :=
-  ExIntervalLt → ExCut → LemmaDGraded → ∀ P : Par, P.Hyp → P.Large →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P →
-    ∀ X : ℕ → HidaSetting ι P.Nr W.lam, (∀ l : ℕ, l.Prime → ¬ IsUnit ((l : ℕ) : (X l).O)) →
-    (∀ l : ℕ, l.Prime → W.WRange P l → (X l).WInputs l (kc P) W.j W.T2 (W.iW P l)) →
-    ∀ l : ℕ, l.Prime → (X l).Incl l (W.Jrec7 P l) ∧ (X l).Jmin l ≤ W.Jrec7 P l
-
 def InputsRec7E : Prop :=
   ExIntervalLt → ExCut → ∀ P : Par, P.Hyp → P.Large →
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P → Fintype.card ι = P.f →
@@ -51,49 +44,6 @@ def RecSum7E : Prop :=
     W.Sp.card ≤ 5 → ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
       ∑ l ∈ Q, (W.Jrec7 P l : ℝ) * Real.log (l : ℝ) ≤
         totalBound P W.T2.card (30 * (P.m : ℝ) * P.b * P.L ^ 2)
-
-def CorollaryExceptionalStrict : Prop :=
-  ExIntervalLt → ExCut → LemmaDGraded → PrimeCountingBound → ∀ P : Par, P.Hyp → P.Large →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P → Fintype.card ι = P.f →
-    W.Sp.card ≤ 5 →
-    ∀ X : ℕ → HidaSetting ι P.Nr W.lam, (∀ l : ℕ, l.Prime → ¬ IsUnit ((l : ℕ) : (X l).O)) →
-    (∀ l : ℕ, l.Prime → W.WRange P l → (X l).WInputs l (kc P) W.j W.T2 (W.iW P l)) →
-    (∀ l : ℕ, l.Prime → (X l).Incl l (W.Jrec7 P l) ∧ (X l).Incl l ((X l).Jmin l) ∧
-      (X l).Jmin l ≤ W.Jrec7 P l) ∧
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (W.Jrec7 P l : ℝ) * Real.log (l : ℝ) ≤
-          totalBound P W.T2.card (30 * (P.m : ℝ) * P.b * P.L ^ 2) ∧
-      ∑ l ∈ Q, ((X l).Jmin l : ℝ) * Real.log (l : ℝ) ≤
-          totalBound P W.T2.card (30 * (P.m : ℝ) * P.b * P.L ^ 2)
-
-def Tail7E : Prop :=
-  ExIntervalLt → ExCut → PrimeCountingBound → ∀ (P : Par) (X' A : ℝ), P.Hyp → P.Large → LargeParameterEstimates.Rows P X' A → LargeParameterEstimates.Big P.L P.x X' A →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P → Fintype.card ι = P.f →
-    W.Sp.card ≤ 5 →
-    ∀ X : ℕ → HidaSetting ι P.Nr W.lam, (∀ l : ℕ, l.Prime → ¬ IsUnit ((l : ℕ) : (X l).O)) →
-    (∀ l : ℕ, l.Prime → W.WRange P l → (X l).WInputs l (kc P) W.j W.T2 (W.iW P l)) →
-    (∀ l : ℕ, l.Prime → (X l).Incl l (W.Jrec7 P l) ∧ (X l).Incl l ((X l).Jmin l) ∧
-      (X l).Jmin l ≤ W.Jrec7 P l) ∧
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (W.Jrec7 P l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2 + 2 * (P.m : ℝ) * P.b ∧
-      ∑ l ∈ Q, ((X l).Jmin l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2 + 2 * (P.m : ℝ) * P.b
-
-def Ev7E : Prop :=
-  ExIntervalLt → ExCut → PrimeCountingBound → ∀ ε C : ℝ, 0 < ε → ∃ x0 : ℝ, ∀ P : Par, P.Hyp → x0 ≤ P.x → P.L = P.x ^ ε →
-    LargeParameterEstimates.Rows P (Real.exp (P.x ^ (ε / 3))) (P.x ^ C) → P.b ^ ((4 : ℝ) / 5) ≤ P.w'' / P.S →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P → Fintype.card ι = P.f →
-    W.Sp.card ≤ 5 →
-    ∀ X : ℕ → HidaSetting ι P.Nr W.lam, (∀ l : ℕ, l.Prime → ¬ IsUnit ((l : ℕ) : (X l).O)) →
-    (∀ l : ℕ, l.Prime → W.WRange P l → (X l).WInputs l (kc P) W.j W.T2 (W.iW P l)) →
-    (∀ l : ℕ, l.Prime → (X l).Incl l (W.Jrec7 P l) ∧ (X l).Incl l ((X l).Jmin l) ∧
-      (X l).Jmin l ≤ W.Jrec7 P l) ∧
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (W.Jrec7 P l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.x ^ (2 * ε) + 2 * (P.m : ℝ) * P.b ∧
-      ∑ l ∈ Q, ((X l).Jmin l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.x ^ (2 * ε) + 2 * (P.m : ℝ) * P.b
 
 theorem res_anti_shift {N a : ℕ} {lam : ℕ → ℕ} (h : Antitone (res N lam)) :
     Antitone (res (N - a) (fun i => lam (a + i))) := by
@@ -364,47 +314,5 @@ theorem recursion_sum_exceptional : RecSum7E := by
   intro hI hC hRS P hH hL ι _ _ W hW hcard hSp Q hQ
   exact totalElementary_holds hRS P hH hL ι (W.sizeData₂ P (W.Jrec7 P))
     (recursion_inputs_exceptional hI hC P hH hL ι W hW hcard hSp) (places_real_holds P hH hL ι W hW _).2 Q hQ
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.ThinAReal = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ ThinAE = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.ThickAReal = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ ThickAE = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.CloudAReal = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ CloudAE = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.BeyondH = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ BeyondHE = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.RecIncl7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ RecIncl7E = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.InputsRec7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ InputsRec7E = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.RecSum7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ RecSum7E = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.CorollaryOfRecord7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ CorollaryExceptionalStrict = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.LargeParameterEstimates.CorollaryOfRecord7Tail = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ Tail7E = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.LargeParameterEstimates.CorollaryOfRecord7Ev = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ Ev7E = (ExIntervalLt → ExCut → B) :=
-  ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.Top.CorollaryOfRecord7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
-    CorollaryOfRecord7E = (ExInterval → ExCut → B) := ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.JD.JointRecord = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
-    JointRecordE = (ExInterval → ExCut → B) := ⟨_, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.Top.CorollaryOfRecord7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
-    CorollaryOfRecord7ELt = (ExIntervalLt → ExCut → B) ∧ CorollaryOfRecord7C = (ExCut → B) := ⟨_, rfl, rfl, rfl⟩
-
-example : ∃ B : Prop, Formalism.CohomologicalDescent.JD.JointRecord = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
-    JointRecordELt = (ExIntervalLt → ExCut → B) ∧ JointRecordC = (ExCut → B) := ⟨_, rfl, rfl, rfl⟩
 
 end Formalism.CohomologicalDescent.E

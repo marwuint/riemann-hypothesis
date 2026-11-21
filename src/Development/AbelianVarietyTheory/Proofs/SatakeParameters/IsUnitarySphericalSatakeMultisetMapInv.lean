@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymmCard
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegral
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorankStatement
 
 noncomputable section
@@ -12,7 +12,7 @@ open GlobalTheory.LatHecke GlobalTheory.RowSatakeBound Matrix
 
 theorem relIndex_eq_pow_rank : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ) (A : Matrix (Fin r) (Fin r) O) (g : GL (Fin r) K), (g : Matrix (Fin r) (Fin r) K) = A.map (algebraMap O K) → IsLocalRing.maximalIdeal O • (std O K r).1 ≤ glMap g (std O K r).1 → (glMap g (std O K r).1).toAddSubgroup.relIndex (std O K r).1.toAddSubgroup = qRes O ^ (r - (A.map (IsLocalRing.residue O)).rank) := by
   intro O K _ _ _ _ _ _ _ r A g hg h3
-  rw [(GlobalTheory.T.relIndex_glMap_standardLattice_of_integral O K r A g hg).1, GlobalTheory.T.card_quot_matrix_range_dvr_eq_residue_pow_corank O r A ((GlobalTheory.T.relIndex_glMap_standardLattice_of_integral O K r A g hg).2 h3)]
+  rw [(_root_.GlobalTheory.LatHecke.relIndex_glMap_std_of_integral O K r A g hg).1, GlobalTheory.T.card_quot_matrix_range_dvr_eq_residue_pow_corank O r A ((_root_.GlobalTheory.LatHecke.relIndex_glMap_std_of_integral O K r A g hg).2 h3)]
 
 theorem mem_std_iff {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] {r : ℕ} (x : Fin r → K) :
     x ∈ (std O K r).1 ↔ ∀ i, x i ∈ (algebraMap O K).range := by

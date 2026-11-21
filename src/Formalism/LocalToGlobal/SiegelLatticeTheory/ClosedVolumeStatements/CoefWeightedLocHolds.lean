@@ -41,28 +41,6 @@ end Formalism.L2.SG.Closed.ScPsi
 
 namespace Formalism.L2.SG.Closed.ScGap
 
-theorem chkScGapBig (h : PI.ScGapBig.ScGapBig) (D : Formalism.BasicNotions.D7) :
-    Formalism.L2.SG.SplitPrimeNormLemmas.GapBigOfGapHyp D := by
-  intro hm hG τ
-  obtain ⟨hn, hgap⟩ := hG
-  have h2 := D.R.two_le_m
-  have hr : D.R.r = 2 * D.R.rS + D.R.k + 1 := by
-    simp only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]; omega
-  show PI.ScGapBig.GapBig D.R.k D.R.rS (fun j => ((D.hc τ).b (Fin.cast hm.symm j) : ℝ))
-  refine h D.R.k D.R.rS _ (by show 1801 ≤ 2 * D.R.rS + D.R.k + 1; omega) ?_
-  intro j hj
-  have hg := hgap τ (Fin.cast hm.symm j) (by simp; omega)
-  have hr' : ((PI.ScGapBig.rk48 D.R.k D.R.rS : ℕ) : ℝ) = ((D.R.r : ℕ) : ℝ) := by
-    rw [hr]; rfl
-  rw [hr']
-  have e1 : (⟨(Fin.cast hm.symm j).1 + 1, by simp; omega⟩ : Fin D.R.m) = Fin.cast hm.symm ⟨j.1 + 1, hj⟩ := rfl
-  rw [e1] at hg
-  have : ((16 * (D.R.r : ℚ) ^ 19 : ℚ) : ℝ) ≤
-      (((D.hc τ).b (Fin.cast hm.symm ⟨j.1 + 1, hj⟩) - (D.hc τ).b (Fin.cast hm.symm j) : ℚ) : ℝ) := by
-    exact_mod_cast hg
-  push_cast at this
-  simpa using this
-
 end Formalism.L2.SG.Closed.ScGap
 
 namespace Formalism.L2.SG.Closed.ScMu
@@ -420,8 +398,6 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.SplitPrimeNo
 
 theorem PsiExists_holds (D : D7) : PsiExists D := ScPsi.chkScPsiExists sc_psi_exists D
 
-theorem GapBigOfGapHyp_holds (D : D7) : GapBigOfGapHyp D := ScGap.chkScGapBig scGapBig D
-
 theorem MuExists_holds (D : D7) : MuExists D := ScMu.ChkScMu.chkScMuExists PI.sc_mu_exists D
 
 theorem RefExists_holds (D : D7) : RefExists D :=
@@ -440,20 +416,9 @@ variable [Fact Formalism.MainNotions.DiscreteSeriesWeylDimension.DiscreteSeriesE
 theorem BunExists_holds (D : D7) : BunExists D :=
   Formalism.L2.SG.Pf.automorphic_bundle_exists Formalism.MainNotions.BridgeDS3.discrete_series_exists_gapped D
 
-theorem InstExists_holds (D : D7) : InstExists D := Formalism.L2.SG.InstExistsPf.instExists D
-
 theorem CoefWeightedLoc_holds [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] : CoefWeightedLoc := Fact.out
-
-variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
-theorem LatExists_of_primesInClasses (hPC : Formalism.L2.SG.Pf.LatEx.PrimesInClasses) (D : D7) : LatExists D :=
-  Formalism.L2.SG.Pf.latExists_of hPC D
-
-theorem MExists_holds (D : D7) : MExists D :=
-  Formalism.L2.SG.Pf.mExists_of_cuts D weil_measure_compat infinite_measure_transfer
 
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] in
 theorem BesselNVGap_holds : BesselNVGap := Formalism.L2.SG.BesselDiscreteSeries.besselNVGap
-
-theorem WlocExists_holds : WlocExists := scWlocExists Formalism.L2.SG.HCReprodM.hcReprodDSm
 
 end Formalism.L2.SG.Closed

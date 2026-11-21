@@ -185,12 +185,6 @@ theorem eq_zero_of_isHilbertSum {ι : Type} {W : ι → Submodule ℂ K}
   refine (inner_self_eq_zero (𝕜 := ℂ)).1 (h1.unique (hasSum_zero.congr_fun fun i => ?_))
   exact inner_eq_zero_symm.1 (h i _ (Subtype.prop _))
 
-theorem IsDiscreteSum.disc_eq_top (h : IsDiscreteSum ρ) : disc ρ = ⊤ := by
-  obtain ⟨ι, W, hW, hs⟩ := h.1
-  have := (isSubrep_disc (π := ρ)).completeSpace
-  rw [← Submodule.orthogonal_eq_bot_iff, eq_bot_iff]
-  exact fun x hx => eq_zero_of_isHilbertSum hs fun i y hy => hx y ((hW i).le_disc hy)
-
 theorem multIn_eq_ncard (hρ : IsUnitaryRep ρ) (hπ : IsIrrUnitary π) (hm : multIn π ρ ⊤ < Cardinal.aleph0) {ι : Type}
     {W : ι → Submodule ℂ K} (hW : ∀ i, IsIrredSubrep ρ (W i))
     (hs : IsHilbertSum ℂ (fun i => W i) fun i => (W i).subtypeₗᵢ) :

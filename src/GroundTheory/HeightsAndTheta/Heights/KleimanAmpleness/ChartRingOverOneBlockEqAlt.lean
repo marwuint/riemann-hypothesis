@@ -16,12 +16,6 @@ section OneBlock
 
 variable {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω]
 
-def unitSigmaEquiv (κ : Type) : (Σ _ : Unit, κ) ≃ κ where
-  toFun v := v.2
-  invFun i := ⟨(), i⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 variable {κ : Type} [Fintype κ]
 
 omit [Fintype κ] in

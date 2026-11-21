@@ -33,14 +33,8 @@ theorem nrmAbs_of_valuation_eq_exp {x : P.adicCompletion L} {n : ℤ} (h : Value
     exact WithZero.exp_ne_zero h.symm
   rw [nrmAbs_eq_zpow P hx, h, WithZero.log_exp]
 
-theorem nrmAbs_le_one_iff (x : P.adicCompletion L) : nrmAbs P x ≤ 1 ↔ Valued.v x ≤ 1 := by
-  rw [nrmAbs_eq_toNNReal, ← NNReal.coe_one, NNReal.coe_le_coe]
-  exact WithZeroMulInt.toNNReal_le_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal P)
-
 theorem nrmAbs_eq_one_iff (x : P.adicCompletion L) : nrmAbs P x = 1 ↔ Valued.v x = 1 := by
   rw [nrmAbs_eq_toNNReal, ← NNReal.coe_one, NNReal.coe_inj]
   exact WithZeroMulInt.toNNReal_eq_one_iff _ _ (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal P).ne'
-
-theorem continuous_nrmAbs : Continuous (nrmAbs P) := continuous_norm
 
 end GlobalTheory.Mem.NrmCompl

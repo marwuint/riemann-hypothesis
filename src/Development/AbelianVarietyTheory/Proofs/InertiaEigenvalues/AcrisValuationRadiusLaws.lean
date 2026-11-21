@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaussGCTarget
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ISupMonomialHolderLogConvexStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CocyclePartialSumIterateSuccStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefiniteStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefinite
 
 noncomputable section
 
@@ -44,7 +44,7 @@ theorem vr_laws : ∀ (l : ℕ) [Fact l.Prime] (r : ℝ), 0 < r → r ≤ 1 →
   obtain ⟨hρ0, hρ1⟩ := vrlaw_rad l r hr0 hr1
   set ρ : ℝ := (l : ℝ) ^ (-r) with hρ
   have hG := isGauss_gC_target l ρ hρ0 hρ1
-  have hpos : ∀ x : Formalism.Per.Acris l, x ≠ 0 → 0 < gC l ρ x := fun x hx => GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx ρ hρ0 hρ1
+  have hpos : ∀ x : Formalism.Per.Acris l, x ≠ 0 → 0 < gC l ρ x := fun x hx => _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x hx ρ hρ0 hρ1
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro x y hx hy
     simp only [vr]
@@ -62,7 +62,7 @@ theorem vr_laws : ∀ (l : ℕ) [Fact l.Prime] (r : ℝ), 0 < r → r ≤ 1 →
       ring
     have hF := GlobalTheory.T.gaussNormAcris_frobenius_eq_pow_root_radius l ρ hρ0 hρ1 x
     rw [he] at hF
-    have hxp : 0 < gC l ((l : ℝ) ^ (-(r / l))) x := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx _ hσ0 hσ1
+    have hxp : 0 < gC l ((l : ℝ) ^ (-(r / l))) x := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x hx _ hσ0 hσ1
     refine ⟨?_, ?_⟩
     · intro h0
       rw [h0, vrlaw_gC_zero l ρ hρ0 hρ1] at hF

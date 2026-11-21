@@ -123,10 +123,6 @@ theorem isRightAct_pullSec : IsRightAct (pullSec Xo c hpq hA) :=
   ⟨fun x => Subtype.ext ((isRightAct_pull (Xo := Xo) (c := c) hpq hA).1 x),
     fun h h' x => Subtype.ext ((isRightAct_pull (Xo := Xo) (c := c) hpq hA).2 h h' x)⟩
 
-variable (Xo c) in
-
-def pullSecEquiv (h : LevelAut Dw l) : secRing Xo c ≃ₐ[c.F] secRing Xo c := (isRightAct_pullSec hpq hA).equiv h
-
 end Action
 
 section Sub
@@ -148,8 +144,6 @@ def levDet (u : Rul Xo c) : Rul Xo c := (levMat Xo c S u).det
 def levTr (χ : S →* (c.F)ˣ) : Rul Xo c →ₗ[c.F] Rul Xo c := tr (pullOn Xo c S) χ
 
 def levPh (χ : S →* (c.F)ˣ) (u : Rul Xo c) : Rul Xo c →ₗ[c.F] (S → Rul Xo c) := ph (pullOn Xo c S) χ u
-
-def levPs (u : Rul Xo c) : (S → Rul Xo c) →ₗ[c.F] Rul Xo c := ps (pullOn Xo c S) u
 
 def levEigen (χ : S →* (c.F)ˣ) : Submodule c.F (Rul Xo c) := eigen (pullOn Xo c S) χ
 
@@ -204,22 +198,12 @@ theorem levTr_mem_levEigen (χ : S →* (c.F)ˣ) (F : Rul Xo c) : levTr Xo c S �
 
 end Laws
 
-example : levTr Xo c S 1 1 = (Fintype.card S : c.F) • (1 : Rul Xo c) :=
-  tr_of_mem_eigen _ fun h => by simp
-
 variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) (S)
 
 def chiLat (χ : S →* (c.F)ˣ) : Submodule (𝓞 c.F) (cuspW Xo c U G) := latCap (latW U G) (levEigen Xo c S χ)
 
 theorem mem_chiLat {χ : S →* (c.F)ˣ} {F : cuspW Xo c U G} : F ∈ chiLat S U G χ ↔
     F ∈ latW U G ∧ ∀ h : S, pull Xo c h (F : Rul Xo c) = ((χ h : (c.F)ˣ) : c.F) • (F : Rul Xo c) := Iff.rfl
-
-example (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (χ : (⊥ : Subgroup (LevelAut Dw l)) →* (c.F)ˣ) :
-    chiLat ⊥ U G χ = latW U G :=
-  Submodule.ext fun F => (mem_chiLat ⊥ U G).trans (and_iff_left fun h => by
-    obtain rfl : h = 1 := Subsingleton.elim _ _
-    rw [map_one, Units.val_one, one_smul]
-    exact (isRightAct_pull hpq hA).1 _)
 
 def KeepsCusp : Prop := ∀ h : LevelAut Dw l, ∀ f ∈ cuspW Xo c U G, pull Xo c h f ∈ cuspW Xo c U G
 
@@ -233,12 +217,6 @@ theorem coe_cuspRep (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (hC : Keeps
 
 variable {U G}
 
-def powLat (N : Submodule (𝓞 c.F) (cuspW Xo c U G)) : Submodule (𝓞 c.F) (S → cuspW Xo c U G) :=
-  Submodule.pi Set.univ fun _ => N
-
-def powNorm (nrm : (c.F →+* ℂ) → cuspW Xo c U G → ℝ) (σ : c.F →+* ℂ) (F : S → cuspW Xo c U G) : ℝ :=
-  Real.sqrt (∑ h, nrm σ (F h) ^ 2)
-
 def cuspPh {G' : WTZ E} (χ : S →* (c.F)ˣ) (u : Rul Xo c)
     (hm : ∀ f ∈ cuspW Xo c U G', ∀ h, levPh Xo c S χ u f h ∈ cuspW Xo c U G) :
     cuspW Xo c U G' →ₗ[c.F] (S → cuspW Xo c U G) :=
@@ -247,11 +225,6 @@ def cuspPh {G' : WTZ E} (χ : S →* (c.F)ˣ) (u : Rul Xo c)
 theorem coe_cuspPh {G' : WTZ E} (χ : S →* (c.F)ˣ) (u : Rul Xo c)
     (hm : ∀ f ∈ cuspW Xo c U G', ∀ h, levPh Xo c S χ u f h ∈ cuspW Xo c U G) (f : cuspW Xo c U G') (h : S) :
     (cuspPh S χ u hm f h : Rul Xo c) = levPh Xo c S χ u f h := rfl
-
-def cuspPs {G' : WTZ E} (u : Rul Xo c)
-    (hm : ∀ F : S → cuspW Xo c U G, levPs Xo c S u (fun h => F h) ∈ cuspW Xo c U G') :
-    (S → cuspW Xo c U G) →ₗ[c.F] cuspW Xo c U G' :=
-  (levPs Xo c S u ∘ₗ (cuspW Xo c U G).subtype.compLeft S).codRestrict _ hm
 
 end Sub
 
@@ -276,17 +249,6 @@ def typeOp (hl : IsTypeLevel l) (fr : TypeFrame Dw l) (e : MonoidAlgebra c.F (Le
 
 variable (hl : IsTypeLevel l) (fr : TypeFrame Dw l)
 
-theorem isRightAct_pullType (hpq : 1 ≤ Dw.p + Dw.q) : IsRightAct (pullType Xo c hl fr) :=
-  (isRightAct_pull hpq hl.coprime).comp (typeEmb hl fr)
-
-theorem typeOp_mul (hpq : 1 ≤ Dw.p + Dw.q) (e e' : MonoidAlgebra c.F (LevelGroup D.host)) :
-    typeOp Xo c hl fr (e * e') = typeOp Xo c hl fr e * typeOp Xo c hl fr e' :=
-  (isRightAct_pullType hl fr hpq).algOp_mul e e'
-
-theorem isIdempotentElem_typeOp (hpq : 1 ≤ Dw.p + Dw.q) {e : MonoidAlgebra c.F (LevelGroup D.host)}
-    (he : IsIdempotentElem e) : IsIdempotentElem (typeOp Xo c hl fr e) := by
-  rw [IsIdempotentElem, ← typeOp_mul hl fr hpq, he.eq]
-
 variable (Xo c) in
 
 def goodOp (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* (c.F)ˣ) (j : Fin D.R.m) : Module.End c.F (Rul Xo c) :=
@@ -302,28 +264,7 @@ def latCut (e : MonoidAlgebra c.F (LevelGroup D.host)) : Submodule (𝓞 c.F) (c
 
 variable (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* (c.F)ˣ) (j : Fin D.R.m)
 
-def latGood : Submodule (𝓞 c.F) (cuspW Xo c U G) := cutLat (latN fr U G ψ) (goodOp Xo c hl fr om j)
-
 def latBad : Submodule (𝓞 c.F) (cuspW Xo c U G) := cutLat (latN fr U G ψ) (1 - goodOp Xo c hl fr om j)
-
-def rankN : ℕ := Formalism.HN.rkK (latN fr U G ψ)
-
-def rankGood : ℕ := Formalism.HN.rkK (latGood hl fr U G ψ om j)
-
-def rankBad : ℕ := Formalism.HN.rkK (latBad hl fr U G ψ om j)
-
-theorem latN_le : latN fr U G ψ ≤ latW U G := latCap_le _ _
-
-theorem mem_latGood_iff (hpq : 1 ≤ Dw.p + Dw.q) (he : IsIdempotentElem (goodIdemTw om j)) {F : cuspW Xo c U G} :
-    F ∈ latGood hl fr U G ψ om j ↔ F ∈ latN fr U G ψ ∧ goodOp Xo c hl fr om j F = F :=
-  mem_cutLat_iff (isIdempotentElem_typeOp hl fr hpq he)
-
-theorem mem_latBad_iff (hpq : 1 ≤ Dw.p + Dw.q) (he : IsIdempotentElem (goodIdemTw om j)) {F : cuspW Xo c U G} :
-    F ∈ latBad hl fr U G ψ om j ↔ F ∈ latN fr U G ψ ∧ goodOp Xo c hl fr om j F = 0 :=
-  (mem_cutLat_iff (isIdempotentElem_typeOp hl fr hpq he).one_sub).trans (and_congr_right fun _ => sub_eq_self)
-
-example (hpq : 1 ≤ Dw.p + Dw.q) : latCut hl fr U G ψ 1 = latN fr U G ψ := by
-  rw [latCut, typeOp, (isRightAct_pullType hl fr hpq).algOp_eq, map_one, cutLat_one]
 
 end Types
 
@@ -346,17 +287,6 @@ def IsReduction (red : stabLat V →* LevelAut Dw l) : Prop :=
     ∀ k : stabLat V, ReducesTo V ι k (red k)
 
 variable {V ι}
-
-abbrev levelOver (red : stabLat V →* LevelAut Dw l) (S : Subgroup (LevelAut Dw l)) : Subgroup (stabLat V) := S.comap red
-
-theorem IsReduction.mem_ker {red : stabLat V →* LevelAut Dw l} (h : IsReduction V ι red) (k : stabLat V) :
-    k ∈ red.ker ↔ (k : GA D V) ∈ prinLev V l.M := h.2.1 k
-
-def levelQuot {red : stabLat V →* LevelAut Dw l} (h : IsReduction V ι red) (S : Subgroup (LevelAut Dw l)) :
-    levelOver red S ⧸ red.ker.subgroupOf (levelOver red S) ≃* S :=
-  (QuotientGroup.quotientMulEquivOfEq (Subgroup.ext fun k =>
-    (Subtype.ext_iff (a1 := red.subgroupComap S k) (a2 := 1)).symm)).trans
-    (QuotientGroup.quotientKerEquivOfSurjective (red.subgroupComap S) (red.subgroupComap_surjective_of_surjective S h.1))
 
 end Adelic
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardFixedByQuotientEqRelIndexOfPRegularStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardFixedByQuotientEqRelIndexOfPRegular
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CardFixedByPowPrimePowModEqStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCoprimeOrderOfPowPrimePowStatement
 import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsSylowOverSubgroupStatement
@@ -38,7 +38,7 @@ theorem exists_abelianByPrimePower_not_dvd_card_fixedBy₂ :
     exact ⟨j, by rw [Subgroup.mem_subgroupOf]; simpa using hj⟩
   · intro hd
     haveI : Finite (G ⧸ H) := inferInstance
-    have h1 := GlobalTheory.T.card_fixedBy_quotient_eq_relIndex_normalizer_of_coprime G (x ^ p ^ k) p H _ hk hCH hpow hN
+    have h1 := _root_.GlobalTheory.card_fixedBy_quotient_eq_relIndex_of_pRegular G (x ^ p ^ k) p H _ hk hCH hpow hN
     have h2 := GlobalTheory.T.card_fixedBy_pow_prime_pow_modEq_card_fixedBy G (G ⧸ H) x p k hp
     apply hidx _ hN
     rw [← h1]

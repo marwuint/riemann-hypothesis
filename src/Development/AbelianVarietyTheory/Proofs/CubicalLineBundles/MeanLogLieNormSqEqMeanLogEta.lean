@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MeanLogCovolum
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LogPiSubMeanLogLatticeNormDisc
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HomDerivBaseChange
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MultiplierIffExistsHom
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsIntegralDerivativeCurveHomGoodReductionStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsIntegralDerivativeCurveHomGoodReduction
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsLieNormSqIffEqPiDivCovolume
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -76,11 +76,11 @@ theorem mean_log_lieNormSq_eq_mean_log_eta :
       exact (EllipticHom.multiplier_iff_exists_hom hU hB _ P P v v _ _ _ _ hPg hPg hvt hvt (hPL _) (hPL _)).2
         (hom_deriv_baseChange _ P P v v _ _ P₀ P₀ φ φ v₀ v₀ f _ hφ hφ hv₀ hv₀ hf hc ℂ s))
     (fun C s => hδ C _) hβ
-    (fun C x hx => ⟨T.isIntegral_derivative_curve_hom_good_reduction hN hB M P (Q C) v (t C) _ hvt (hQ C).2.2.1 (h1 C x hx), fun s => by
+    (fun C x hx => ⟨_root_.GlobalTheory.isIntegral_of_hom_derivative hN hB M P (Q C) v (t C) _ hvt (hQ C).2.2.1 (h1 C x hx), fun s => by
       obtain ⟨f, hf, hc⟩ := h1 C x hx P₀ (Q₀ C) φ (ψ C) v₀ (t₀ C) hφ (hψ C) hv₀ (ht₀ C)
       exact (EllipticHom.multiplier_iff_exists_hom hU hB _ P (Q C) v (t C) _ _ _ _ hPg (hQ C).1 hvt (htt C) (hPL _) ((hQ C).2.2.2 _)).2
         (hom_deriv_baseChange _ P (Q C) v (t C) _ _ _ _ _ _ _ _ f _ hφ (hψ C) hv₀ (ht₀ C) hf hc ℂ s)⟩)
-    (fun C y hy => ⟨T.isIntegral_derivative_curve_hom_good_reduction hN hB M (Q C) P (t C) v _ (htt C) hvb (h2 C y hy), fun s => by
+    (fun C y hy => ⟨_root_.GlobalTheory.isIntegral_of_hom_derivative hN hB M (Q C) P (t C) v _ (htt C) hvb (h2 C y hy), fun s => by
       obtain ⟨f, hf, hc⟩ := h2 C y hy (Q₀ C) P₀ (ψ C) φ (t₀ C) v₀ (hψ C) hφ (ht₀ C) hv₀
       exact (EllipticHom.multiplier_iff_exists_hom hU hB _ (Q C) P (t C) v _ _ _ _ (hQ C).1 hPg (htt C) hvt ((hQ C).2.2.2 _) (hPL _)).2
         (hom_deriv_baseChange _ (Q C) P (t C) v _ _ _ _ _ _ _ _ f _ (hψ C) hφ (ht₀ C) hv₀ hf hc ℂ s)⟩)

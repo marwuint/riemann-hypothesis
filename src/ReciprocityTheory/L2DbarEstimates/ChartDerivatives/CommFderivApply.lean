@@ -61,32 +61,6 @@ theorem comm_wd_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2
     S (Complex.I • bas n k) (bas n j), S (Complex.I • bas n k) (Complex.I • bas n j)]
   ring
 
-theorem comm_wd_wd {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (j k : Fin n) :
-    wd n j (wd n k g) y = wd n k (wd n j g) y := by
-  have S := hg.isSymmSndFDerivAt (by simp)
-  have e1 : wd n j (wd n k g) y = (fderiv ℝ (wd n k g) y (bas n j)
-      - Complex.I * fderiv ℝ (wd n k g) y (Complex.I • bas n j)) / 2 := rfl
-  have e2 : wd n k (wd n j g) y = (fderiv ℝ (wd n j g) y (bas n k)
-      - Complex.I * fderiv ℝ (wd n j g) y (Complex.I • bas n k)) / 2 := rfl
-  rw [e1, e2, comm_fderiv_wd g y hg k (bas n j), comm_fderiv_wd g y hg k (Complex.I • bas n j),
-    comm_fderiv_wd g y hg j (bas n k), comm_fderiv_wd g y hg j (Complex.I • bas n k),
-    S (bas n k) (bas n j), S (bas n k) (Complex.I • bas n j),
-    S (Complex.I • bas n k) (bas n j), S (Complex.I • bas n k) (Complex.I • bas n j)]
-  ring
-
-theorem comm_wdb_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (j k : Fin n) :
-    wdb n j (wdb n k g) y = wdb n k (wdb n j g) y := by
-  have S := hg.isSymmSndFDerivAt (by simp)
-  have e1 : wdb n j (wdb n k g) y = (fderiv ℝ (wdb n k g) y (bas n j)
-      + Complex.I * fderiv ℝ (wdb n k g) y (Complex.I • bas n j)) / 2 := rfl
-  have e2 : wdb n k (wdb n j g) y = (fderiv ℝ (wdb n j g) y (bas n k)
-      + Complex.I * fderiv ℝ (wdb n j g) y (Complex.I • bas n k)) / 2 := rfl
-  rw [e1, e2, comm_fderiv_wdb g y hg k (bas n j), comm_fderiv_wdb g y hg k (Complex.I • bas n j),
-    comm_fderiv_wdb g y hg j (bas n k), comm_fderiv_wdb g y hg j (Complex.I • bas n k),
-    S (bas n k) (bas n j), S (bas n k) (Complex.I • bas n j),
-    S (Complex.I • bas n k) (bas n j), S (Complex.I • bas n k) (Complex.I • bas n j)]
-  ring
-
 private theorem chart_symm_eventuallyEq_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e e' : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (he' : IsChart n z e') (y : M)
     (hy : y ∈ e.source) (hy' : y ∈ e'.source) : (e'.symm : V n → M) =ᶠ[𝓝 (z y)] e.symm := by
@@ -185,31 +159,6 @@ theorem levi_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n
     intro j k; rw [h1 k]; exact d_const_mul n z _ _ (Ck.db n z 1 k _ hph) j x
   simp only [Levi, h2, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => ?_))
-  ring
-
-theorem levi_normSq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (g : M → ℂ) (hg : Holo n z g) (x : M) (ξ : Fin n → ℂ) :
-    Levi n z (fun y => ‖g y‖ ^ 2) x ξ = ((‖dDot n z g x ξ‖ ^ 2 : ℝ) : ℂ) := by
-  have hs : Smooth n z g := Holo.smooth n z g hg
-  have hC : ∀ k, Ck n z k g := fun k => Smooth.ck n z k g hs
-  have hconj : ∀ k, Ck n z k (fun y => (starRingEnd ℂ) (g y)) := fun k => Ck.conj n z k g (hC k)
-  have e0 : (fun y => ((‖g y‖ ^ 2 : ℝ) : ℂ)) = fun y => g y * (starRingEnd ℂ) (g y) := by
-    funext y; rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
-  have hdb : ∀ k, db n z k (fun y => ((‖g y‖ ^ 2 : ℝ) : ℂ)) =
-      fun y => g y * (starRingEnd ℂ) (d n z k g y) := by
-    intro k; funext y
-    rw [e0, db_mul n z _ _ (hC 1) (hconj 1) k y, Holo.db_eq_zero n z g hg k y, db_conj]
-    ring
-  have hdb0 : ∀ j, db n z j g = fun _ => 0 := fun j => funext (Holo.db_eq_zero n z g hg j)
-  have hd : ∀ j k, d n z j (db n z k (fun y => ((‖g y‖ ^ 2 : ℝ) : ℂ))) x =
-      d n z j g x * (starRingEnd ℂ) (d n z k g x) := by
-    intro j k
-    rw [hdb k, d_mul n z _ _ (hC 1) (Ck.conj n z 1 _ (Ck.d n z 1 k g (hC _))) j x, d_conj,
-      ← d_db_comm n z g (hC 2) k j x, hdb0 j, d_const]
-    simp
-  simp only [Levi, hd, dDot]
-  rw [← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, map_sum, Finset.sum_mul_sum]
-  refine Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => ?_))
-  simp only [map_mul]
   ring
 
 end

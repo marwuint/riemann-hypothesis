@@ -76,6 +76,4 @@ end GlobalTheory.BaseCosetPt
 
 namespace GlobalTheory.BaseCosetPt
 
-open Formalism.L2.Col Formalism.MainNotions Formalism.L2.DIV
-
 end GlobalTheory.BaseCosetPt

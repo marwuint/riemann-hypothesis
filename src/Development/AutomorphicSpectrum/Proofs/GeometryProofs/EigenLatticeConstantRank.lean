@@ -8,8 +8,12 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEqu
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtraSide
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -188,7 +192,7 @@ namespace GlobalTheory.CompanionTheory.Ar.EigRank
 theorem eig_finrank_label : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X) (f : X ⟶ Y.X) (y₀ : Sp Ω ⟶ Xo.XF c) (t : SAB H X) (m : SABMap t Y.t f) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel t.G ξ Li) (ρ : 𝓞 E →+* Module.End Ω Li) (cst : c.F →+* Ω), ξ ≫ f = y₀ ≫ Y.j → ξ ≫ f ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F)) → M.IsActOf t.act.act ρ → FiniteDimensional Ω Li ∧ ∀ s, Module.finrank Ω (eigSp ρ (cst.comp (labelEmb c s))) = labelRk D s := by
   intro E _ _ _ H D l Xo c Y X Ω _ _ ξ f y₀ t m Li _ _ M ρ cst hξ hs hact
   have : Smooth t.G.hom := t.semi.smooth
-  have hfin : Module.Finite Ω Li := (GlobalTheory.T.lie_model_finite_projective X t.G Ω ξ Li M).1
+  have hfin : Module.Finite Ω Li := (_root_.GlobalTheory.CompanionTheory.Ar.lieModel_finite_projective X t.G Ω ξ Li M).1
   refine ⟨hfin, fun s => ?_⟩
   have : Smooth Y.oF.t.G.hom := Y.oF.t.semi.smooth
   obtain ⟨M₂, hM₂⟩ := lieModel_transport Y.X X (Xo.XF c) Y.t.G t.G Y.oF.t.G f Y.j m.cm.F Y.m.cm.F m.cart Y.m.cart
@@ -198,7 +202,7 @@ theorem eig_finrank_label : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   obtain ⟨E', _, _, ⟨M₃⟩⟩ := lieModel_exists (Xo.XF c) Y.oF.t.G (AlgebraicClosure Ω) x
   obtain ⟨ρ', hρ', -⟩ := lieModel_exists_unique_act _ Y.oF.t.G (AlgebraicClosure Ω) x E' M₃ (𝓞 E)
     Y.oF.t.act.act Y.oF.t.act.hom Y.oF.t.act.one Y.oF.t.act.mul Y.oF.t.act.add
-  obtain ⟨j, hj, hjs, hjb⟩ := GlobalTheory.T.lie_model_base_change_map _ Y.oF.t.G Ω (AlgebraicClosure Ω) y₀ Li E' M₂ M₃
+  obtain ⟨j, hj, hjs, hjb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange _ Y.oF.t.G Ω (AlgebraicClosure Ω) y₀ Li E' M₂ M₃
   obtain ⟨hli, hsp⟩ := hjb inferInstance _ (Module.finBasis Ω Li)
   have hc : ∀ a e, ρ' a (j e) = j (ρ a e) := by
     intro a e

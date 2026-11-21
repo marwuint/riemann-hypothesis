@@ -6,19 +6,6 @@ namespace Formalism.MainNotions.DIV.Inh
 
 open Formalism.MainNotions.ModuliIntegralCharts
 
-def cfPadic (p : ℕ) [Fact p.Prime] : CF p where
-  C := PadicComplex p
-  norm_p := by
-    have h1 : ((p : ℕ) : PadicComplex p) = ((((p : ℕ) : PadicAlgCl p)) : PadicComplex p) := by
-      simp
-    have h2 : ((p : ℕ) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p]) := by
-      simp
-    rw [h1, PadicComplex.norm_extends, h2, PadicAlgCl.norm_extends, Padic.norm_p]
-
-theorem nonempty_coefficient_field_prime (p : ℕ) (hp : p.Prime) : Nonempty (CF p) :=
-  haveI : Fact p.Prime := ⟨hp⟩
-  ⟨cfPadic p⟩
-
 section Resc
 
 variable (K : Type) [NormedField K] [IsUltrametricDist K] (s : ℝ) (hs : 0 < s)

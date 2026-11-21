@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDifferentiableOnTransfer
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHolomorphicChart
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NotInjOnOfFderivEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothBaseDimEqPeriodSpaceDimStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationExpUniqueFullLevelMarkingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicMapLiftsLocallyToPeriodFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothBaseDimEqPeriodSpaceDim
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationExpUniqueFullLevelMarking
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicMapLiftsLocallyToPeriodFamilies
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PerCoordExistsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationAtTransportIsometryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationAtTransportIsometry
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
@@ -34,9 +34,9 @@ theorem isHolTo_point_and_exp : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ
       ∀ z, (show Sp ℂ ⟶ F.A.left from (u z).left) = (u' (k z)).left := by
     intro Q Q' x x' u u' h h' k hk z
     obtain rfl := uniq h h' k hk
-    have h2 := GlobalTheory.T.uniformisationAt_transport_isometry O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' D' t t Q Q' x u (LinearEquiv.refl O D'.La) k
+    have h2 := _root_.GlobalTheory.PELU.unifAt_transport O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' D' t t Q Q' x u (LinearEquiv.refl O D'.La) k
       hN0 h hrefl (fun a => hk a) h'.2.1
-    have h3 := congrFun (GlobalTheory.T.complexUniformisation_exp_unique_full_level_marking O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' t Q' x _ _ hN hfull h2 h') (k z)
+    have h3 := congrFun (_root_.GlobalTheory.PELU.unifAt_exp_unique O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' t Q' x _ _ hN hfull h2 h') (k z)
     simp only [LinearEquiv.symm_apply_apply] at h3
     rw [h3]
   have near : ∀ {n : ℕ} {C' : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → (D'.La →+ (Fin g → ℂ))}
@@ -52,7 +52,7 @@ theorem isHolTo_point_and_exp : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ
       IsHolTo (B' ×ˢ Set.univ) (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => (e bz.1 bz.2).left) := by
     intro b₀ hb₀
     obtain ⟨d', hd'⟩ := GlobalTheory.T.exists_perCoord O bar g ρ D'
-    have hdd : d = d' := GlobalTheory.T.smoothBase_dim_eq_periodSpace_dim O bar g ρ Λ F N C d d' D' t hN0 heta hsm hqc hfine hC ⟨_, hP.1 b₀ hb₀⟩ hd'
+    have hdd : d = d' := _root_.GlobalTheory.DimEq.dim_eq O bar g ρ Λ F N C d d' D' t hN0 heta hsm hqc hfine hC ⟨_, hP.1 b₀ hb₀⟩ hd'
     subst hdd
     obtain ⟨C₀, y₁, -, -, -, -, hC₀, h0, hy0, hover, hhol, hinj, -⟩ :=
       GlobalTheory.SubfieldChart.exists_holomorphic_chart ℂ (RingHom.id ℂ) F.X F.s d (y b₀) hsm (hU b₀ hb₀).1
@@ -60,7 +60,7 @@ theorem isHolTo_point_and_exp : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ
       rw [hy0]; exact ⟨_, hU b₀ hb₀⟩
     haveI : Smooth F.s := SmoothOfRelativeDimension.smooth d _
     obtain ⟨C₁, P₁, e₁, hC₁, h01, hsub, hP0, hP₁, he₁, hU₁⟩ :=
-      GlobalTheory.T.holomorphicMap_lifts_locally_to_periodFamilies O bar g ρ Λ F N D' t d C₀ y₁ 0 (P b₀) e₀ hN0 heta inferInstance hC₀ h0 hover hhol he₀
+      _root_.GlobalTheory.PELU.holomorphic_map_lifts_to_periods O bar g ρ Λ F N D' t d C₀ y₁ 0 (P b₀) e₀ hN0 heta inferInstance hC₀ h0 hover hhol he₀
     obtain ⟨Bq, Q, Z, s, ε, hBq, hε, hQ, hZ0, hQZ, hZQ, hnear, hinv, hZ⟩ := hd' (P b₀) (hP.1 b₀ hb₀)
     have zinj : ∀ R R' : D'.La →+ (Fin g → ℂ), IsPeriod D' ρ R → IsPeriod D' ρ R' →
         (∀ x ∈ s, ‖R x - P b₀ x‖ < ε) → (∀ x ∈ s, ‖R' x - P b₀ x‖ < ε) → Z R = Z R' →

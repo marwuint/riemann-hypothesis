@@ -3,19 +3,19 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRigidExtensionsEqHeightAndDimAddDual
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthCompositionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CotangentKernelEqCokerOmegaMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueKernelOrderPPowerDegreeIsogenyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasKernelOrderPPowerDegreeCompLeAddStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthComposition
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CotangentKernelEqCokerOmegaMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueKernelOrderPPowerDegreeIsogeny
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasKernelOrderPPowerDegreeCompLeAdd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupIsogenyBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoIsogenyOmegaAndDualSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupExistsFactorThroughIsogenyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientKernelSupFrobeniusKernelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoIsogenyOmegaAndDualSurjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupExistsFactorThroughIsogeny
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientKernelSupFrobeniusKernel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupIsogenyHeightEqDualSameDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientPDivGroupClosedSubgroupPTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelDegreeLeDieudonneColengthOfHeightOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenousPDivGroupFinrankOmegaDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientPDivGroupClosedSubgroupPTorsion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelDegreeLeDieudonneColengthOfHeightOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsogenousPDivGroupFinrankOmegaDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 
 set_option autoImplicit false
@@ -28,10 +28,10 @@ variable {p : ℕ} [Fact p.Prime] (T : Theory p) {k : Type} [Field k] [CharP k p
 
 theorem map_comp {X Y Z : PDivGroup p k} (f : X ⟶ Y) (g : Y ⟶ Z) :
     T.map (f ≫ g) = T.map f ∘ₗ T.map g :=
-  (GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k X Y Z trivial trivial trivial).2.1 f g
+  (_root_.GlobalTheory.Dieu.base_functor_props p (fun _ _ _ => True) T.base k X Y Z trivial trivial trivial).2.1 f g
 
 theorem map_id (X : PDivGroup p k) : T.map (𝟙 X) = LinearMap.id :=
-  (GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k X X X trivial trivial trivial).1
+  (_root_.GlobalTheory.Dieu.base_functor_props p (fun _ _ _ => True) T.base k X X X trivial trivial trivial).1
 
 theorem map_iso_bijective {X Y : PDivGroup p k} (i : X ≅ Y) : Function.Bijective (T.map i.hom) := by
   have e₁ : T.map i.inv ∘ₗ T.map i.hom = LinearMap.id := by rw [← map_comp, i.inv_hom_id, map_id]
@@ -47,7 +47,7 @@ theorem colen_comp {X Y Z : PDivGroup p k} (f : X ⟶ Y) (g : Y ⟶ Z) (hf : Fun
       Module.length (WittVector p k) (T.M X ⧸ LinearMap.range (T.map f)) +
         Module.length (WittVector p k) (T.M Y ⧸ LinearMap.range (T.map g)) := by
   rw [map_comp]
-  exact (GlobalTheory.T.witt_module_length_composition p k (T.M X) (T.M Y) (T.M Z)).1 _ _ hf
+  exact (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M X) (T.M Y) (T.M Z)).1 _ _ hf
 
 theorem colen_iso {X Y : PDivGroup p k} (i : X ≅ Y) :
     Module.length (WittVector p k) (T.M X ⧸ LinearMap.range (T.map i.hom)) = 0 := by
@@ -69,16 +69,16 @@ theorem exists_step {X Y : PDivGroup p k} (f : X ⟶ Y) (hω : ¬ Function.Surje
       q₁ ≫ q₁' = (p : ℤ_[p]) • 𝟙 X ∧ q₁' ≫ q₁ = (p : ℤ_[p]) • 𝟙 Q ∧
       frobKerIdeal p k (X.A 1) ≤ kerIdeal (q₁.app 1) ∧ q₁ ≫ r = f ∧
       ¬ Function.Surjective (omegaMap X Q q₁) := by
-  obtain ⟨C, _, _, _, _, π, hπs, hker, -, hfrob⟩ := GlobalTheory.T.exists_quotient_kernel_sup_frobeniusKernel p k X Y f
-  obtain ⟨Q, q₁, q₁', h1, h2, hk1⟩ := GlobalTheory.T.exists_quotient_pDivGroup_closedSubgroup_pTorsion p k X C π hπs
+  obtain ⟨C, _, _, _, _, π, hπs, hker, -, hfrob⟩ := _root_.GlobalTheory.PDiv.FrobKerInter.exists_quotient_kerIdeal_sup_frobKerIdeal p k X Y f
+  obtain ⟨Q, q₁, q₁', h1, h2, hk1⟩ := _root_.GlobalTheory.HTPair.exists_quot_field p k X C π hπs
   have hle : kerIdeal (f.app 1) ≤ kerIdeal (q₁.app 1) := by rw [hk1, hker]; exact le_sup_left
-  obtain ⟨r, hr⟩ := GlobalTheory.T.pDivisibleGroup_exists_factor_through_isogeny p k X Q Y 1 q₁ q₁' f (by rw [pow_one]; exact h1)
+  obtain ⟨r, hr⟩ := _root_.GlobalTheory.Dieu.exists_comp_eq_of_kerIdeal_le p k X Q Y 1 q₁ q₁' f (by rw [pow_one]; exact h1)
     (by rw [pow_one]; exact h2) hle
   refine ⟨Q, q₁, q₁', r, h1, h2, by rw [hk1, hker]; exact le_sup_right, hr, ?_⟩
   intro hs
   apply hω
-  have e1 := (GlobalTheory.T.cotangent_kernel_eq_coker_omegaMap p k X Q q₁ C π hπs).2.1 (by rw [hk1]; exact le_sup_left) (by rw [hk1])
-  have e2 := (GlobalTheory.T.cotangent_kernel_eq_coker_omegaMap p k X Y f C π hπs).2.1 (by rw [hker]; exact sup_le_sup_left hfrob _)
+  have e1 := (_root_.GlobalTheory.PDivGroup.cot_kernel_eq_coker_omegaMap p k X Q q₁ C π hπs).2.1 (by rw [hk1]; exact le_sup_left) (by rw [hk1])
+  have e2 := (_root_.GlobalTheory.PDivGroup.cot_kernel_eq_coker_omegaMap p k X Y f C π hπs).2.1 (by rw [hker]; exact sup_le_sup_left hfrob _)
     (by rw [hker]; exact le_sup_left)
   haveI := finite_omega_of_eq_zero (CharP.cast_eq_zero k p) X
   have h0 : Module.finrank k (X.omega ⧸ LinearMap.range (omegaMap X Q q₁)) = 0 := by
@@ -109,20 +109,20 @@ theorem kernelDegree_le_dieudonneColength_of_colength_eq (n : ℕ) : ∀ (G H : 
   intro G H q e hq he hn
   by_cases hA : Function.Surjective (omegaMap G H q)
   · by_cases hB : Function.Surjective (omegaMap H.dual G.dual (dualHom G H q))
-    · haveI := GlobalTheory.T.isIso_isogeny_omega_and_dual_surjective p k G H q hq hA hB
+    · haveI := _root_.GlobalTheory.Dieu.isIso_of_isIsog_of_omegaMap_surjective p k G H q hq hA hB
       have h0 : HasLogDeg q 0 := ((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).2.2.2 H q hq).2 inferInstance
-      have := (GlobalTheory.T.existsUnique_kernelOrder_pPowerDegree_isogeny p k G H q hq).unique he h0
+      have := (_root_.GlobalTheory.Dieu.existsUnique_hasLogDeg p k G H q hq).unique he h0
       omega
     · obtain ⟨Q, q₁, q₁', r, h1, h2, hfr, hr, hns⟩ := exists_step (dualHom G H q) hB
       have hg := GlobalTheory.T.pDivGroupIsogeny_height_eq_dual_sameDegree p k G H q hq
       have hq₁ : IsIsog q₁ := ⟨1, q₁', by rw [pow_one]; exact h1, by rw [pow_one]; exact h2⟩
       have hrI : IsIsog r := (GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k H.dual).2.2.1 Q G.dual q₁ r hq₁ (hr ▸ hg.2.1)
-      obtain ⟨e₁, he₁⟩ := (GlobalTheory.T.existsUnique_kernelOrder_pPowerDegree_isogeny p k H.dual Q q₁ hq₁).exists
-      obtain ⟨e₂, he₂⟩ := (GlobalTheory.T.existsUnique_kernelOrder_pPowerDegree_isogeny p k Q G.dual r hrI).exists
+      obtain ⟨e₁, he₁⟩ := (_root_.GlobalTheory.Dieu.existsUnique_hasLogDeg p k H.dual Q q₁ hq₁).exists
+      obtain ⟨e₂, he₂⟩ := (_root_.GlobalTheory.Dieu.existsUnique_hasLogDeg p k Q G.dual r hrI).exists
       have hle : e ≤ e₁ + e₂ :=
-        GlobalTheory.T.hasKernelOrderPPowerDegree_comp_le_add p k H.dual Q G.dual q₁ r e₁ e₂ e he₁ he₂ (hr ▸ hg.2.2 e he)
+        _root_.GlobalTheory.Dieu.hasLogDeg_comp_le p k H.dual Q G.dual q₁ r e₁ e₂ e he₁ he₂ (hr ▸ hg.2.2 e he)
       have h1e := one_le_deg q₁ q₁' h1 h2 hns e₁ he₁
-      have hL1 := (GlobalTheory.T.kernelDegree_le_dieudonneColength_of_heightOne p T k H.dual Q q₁ q₁' e₁ h1 h2 hfr he₁).2.1
+      have hL1 := (_root_.GlobalTheory.Dieu.le_colength_of_htOne p T k H.dual Q q₁ q₁' e₁ h1 h2 hfr he₁).2.1
       have hgr := GlobalTheory.T.pDivGroupIsogeny_height_eq_dual_sameDegree p k Q G.dual r hrI
       have hg₁ := GlobalTheory.T.pDivGroupIsogeny_height_eq_dual_sameDegree p k H.dual Q q₁ hq₁
       have hcomp : dualHom _ _ (dualHom G H q) = dualHom Q G.dual r ≫ dualHom H.dual Q q₁ := by
@@ -133,12 +133,12 @@ theorem kernelDegree_le_dieudonneColength_of_colength_eq (n : ℕ) : ∀ (G H : 
             Module.length (WittVector p k)
               (T.M Q.dual ⧸ LinearMap.range (T.map (dualHom H.dual Q q₁))) := by
         have a1 := colen_comp T G.bidual.hom (dualHom _ _ (dualHom G H q)) (map_iso_bijective T _).1
-        have a2 := colen_comp T q H.bidual.hom (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G H q hq).1
+        have a2 := colen_comp T q H.bidual.hom (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k G H q hq).1
         rw [bidual_hom_dualHom_dualHom q, a2] at a1
         simp only [colen_iso, add_zero, zero_add] at a1
-        rw [a1, hcomp, colen_comp T _ _ (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k _ _ _ hgr.2.1).1]
-      obtain ⟨a, ha⟩ := ENat.ne_top_iff_exists.1 (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k _ _ _ hgr.2.1).2.1
-      obtain ⟨b, hb⟩ := ENat.ne_top_iff_exists.1 (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k _ _ _ hg₁.2.1).2.1
+        rw [a1, hcomp, colen_comp T _ _ (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k _ _ _ hgr.2.1).1]
+      obtain ⟨a, ha⟩ := ENat.ne_top_iff_exists.1 (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k _ _ _ hgr.2.1).2.1
+      obtain ⟨b, hb⟩ := ENat.ne_top_iff_exists.1 (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k _ _ _ hg₁.2.1).2.1
       rw [← ha, ← hb] at hlen
       rw [← hb] at hL1
       rw [hlen] at hn
@@ -149,15 +149,15 @@ theorem kernelDegree_le_dieudonneColength_of_colength_eq (n : ℕ) : ∀ (G H : 
   · obtain ⟨Q, q₁, q₁', r, h1, h2, hfr, hr, hns⟩ := exists_step q hA
     have hq₁ : IsIsog q₁ := ⟨1, q₁', by rw [pow_one]; exact h1, by rw [pow_one]; exact h2⟩
     have hrI : IsIsog r := (GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).2.2.1 Q H q₁ r hq₁ (hr ▸ hq)
-    obtain ⟨e₁, he₁⟩ := (GlobalTheory.T.existsUnique_kernelOrder_pPowerDegree_isogeny p k G Q q₁ hq₁).exists
-    obtain ⟨e₂, he₂⟩ := (GlobalTheory.T.existsUnique_kernelOrder_pPowerDegree_isogeny p k Q H r hrI).exists
-    have hle : e ≤ e₁ + e₂ := GlobalTheory.T.hasKernelOrderPPowerDegree_comp_le_add p k G Q H q₁ r e₁ e₂ e he₁ he₂ (hr ▸ he)
+    obtain ⟨e₁, he₁⟩ := (_root_.GlobalTheory.Dieu.existsUnique_hasLogDeg p k G Q q₁ hq₁).exists
+    obtain ⟨e₂, he₂⟩ := (_root_.GlobalTheory.Dieu.existsUnique_hasLogDeg p k Q H r hrI).exists
+    have hle : e ≤ e₁ + e₂ := _root_.GlobalTheory.Dieu.hasLogDeg_comp_le p k G Q H q₁ r e₁ e₂ e he₁ he₂ (hr ▸ he)
     have h1e := one_le_deg q₁ q₁' h1 h2 hns e₁ he₁
-    have hL1 := (GlobalTheory.T.kernelDegree_le_dieudonneColength_of_heightOne p T k G Q q₁ q₁' e₁ h1 h2 hfr he₁).1
-    have hlen := colen_comp T q₁ r (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G Q q₁ hq₁).1
+    have hL1 := (_root_.GlobalTheory.Dieu.le_colength_of_htOne p T k G Q q₁ q₁' e₁ h1 h2 hfr he₁).1
+    have hlen := colen_comp T q₁ r (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k G Q q₁ hq₁).1
     rw [hr] at hlen
-    obtain ⟨a, ha⟩ := ENat.ne_top_iff_exists.1 (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G Q q₁ hq₁).2.1
-    obtain ⟨b, hb⟩ := ENat.ne_top_iff_exists.1 (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k Q H r hrI).2.1
+    obtain ⟨a, ha⟩ := ENat.ne_top_iff_exists.1 (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k G Q q₁ hq₁).2.1
+    obtain ⟨b, hb⟩ := ENat.ne_top_iff_exists.1 (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k Q H r hrI).2.1
     rw [← ha, ← hb] at hlen
     rw [← ha] at hL1
     rw [hlen] at hn
@@ -174,7 +174,7 @@ theorem le_length_coker_of_hasLogDeg : ∀ (p : ℕ) [Fact p.Prime] (T : Theory 
     [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (q : G ⟶ H) (e : ℕ), IsIsog q → HasLogDeg q e →
     (e : ℕ∞) ≤ Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map q)) := by
   intro p _ T k _ _ _ G H q e hq he
-  obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.1 (GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G H q hq).2.1
+  obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.1 (_root_.GlobalTheory.Dieu.isog_finrank_omega p T k G H q hq).2.1
   rw [← hn]
   exact_mod_cast ColengthDegree.kernelDegree_le_dieudonneColength_of_colength_eq T n G H q e hq he hn.symm
 

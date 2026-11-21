@@ -16,10 +16,6 @@ def AdjoinTrdegAdd.Statement : Prop :=
       Algebra.trdeg R (Algebra.adjoin R (s ∪ t)) =
         Algebra.trdeg R (Algebra.adjoin R s) + (Fintype.card ι : Cardinal)
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

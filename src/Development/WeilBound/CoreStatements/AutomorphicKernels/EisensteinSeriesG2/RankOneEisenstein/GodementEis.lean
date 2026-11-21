@@ -29,12 +29,6 @@ noncomputable def godementEis (χ₁ χ₂ : HeckeCharacter K) (s : ℂ) (Φ : (
     (g : GL (Fin 2) 𝔸[K]) : ℂ :=
   ∑' c : BCoset K, godementSection χ₁ χ₂ s Φ (AdelicGLn.diagonal K 2 c.out * g)
 
-noncomputable def tinv (g : GL (Fin 2) 𝔸[K]) : GL (Fin 2) 𝔸[K] where
-  val := ((g⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K])ᵀ
-  inv := (g : Matrix (Fin 2) (Fin 2) 𝔸[K])ᵀ
-  val_inv := by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]
-  inv_val := by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]
-
 structure IsEisCont (χ₁ χ₂ : HeckeCharacter K) (Φ : (Fin 2 → 𝔸[K]) → ℂ)
     (F : ℂ → GL (Fin 2) 𝔸[K] → ℂ) : Prop where
   entire : ∀ g, Differentiable ℂ fun s ↦ F s g
@@ -44,14 +38,5 @@ structure IsEisCont (χ₁ χ₂ : HeckeCharacter K) (Φ : (Fin 2 → 𝔸[K]) �
     ∃ C N : ℝ, ∀ s : ℂ, a ≤ s.re → s.re ≤ b → ∀ g ∈ Ω, ‖F s g‖ ≤ C * (1 + ‖s‖) ^ N
 
 variable (K)
-
-def RankOneEisensteinScalar : Prop :=
-  ∀ (χ₁ χ₂ : HeckeCharacter K), (χ₁ * χ₂⁻¹) * (χ₁ * χ₂⁻¹) = 1 →
-  ∀ {Φ : (Fin 2 → 𝔸[K]) → ℂ}, Φ ∈ schwartzBruhat2 K →
-    (∀ s : ℂ, 1 < s.re → ∀ g : GL (Fin 2) 𝔸[K],
-      Summable fun c : BCoset K ↦ ‖godementSection χ₁ χ₂ s Φ (AdelicGLn.diagonal K 2 c.out * g)‖) ∧
-    (∃ F, IsEisCont χ₁ χ₂ Φ F) ∧
-    (∀ F F', IsEisCont χ₁ χ₂ Φ F → IsEisCont χ₁⁻¹ χ₂⁻¹ (adelicFourier2 K Φ) F' →
-      ∀ s g, F s g = F' (1 - s) (tinv g))
 
 end PositivityTheory.EisRk1

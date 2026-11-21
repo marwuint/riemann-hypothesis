@@ -52,8 +52,6 @@ theorem star_eq_conj (x : H.E) : (letI := H.cmStar; star x) = H.conj x := by
   apply H.φ₀.injective
   rw [emb_star, emb_conj]
 
-theorem bridgeStar : Formalism.BasicNotions.bridge_star := fun _ H x => star_eq_conj H x
-
 theorem conj_aE : H.conj (H.sqq) = - H.sqq := by
   rw [H.gal_sqq]
   simp [Formalism.HC.HostRaw.conj, Formalism.HC.Frame.cc]
@@ -102,23 +100,9 @@ variable {R : Ranks} (H : Host R)
 theorem q_mod_four : ∃ k : ℕ, H.q = 4 * k + 3 := ⟨H.q / 4, by have := H.hyp.2.2.1; omega⟩
 theorem d_mod_four : ∃ k : ℕ, H.d = 4 * k + 3 := ⟨H.d / 4, by have := H.hyp.2.2.2.1; omega⟩
 
-theorem isIntegral_halfA : IsIntegral ℤ ((1 + H.sqq) / 2) := by
-  obtain ⟨k, hk⟩ := q_mod_four H
-  exact isIntegral_half H.sqq k (by rw [aE_sq H, hk]; push_cast; ring)
-
 theorem isIntegral_halfB : IsIntegral ℤ ((1 + H.sqd) / 2) := by
   obtain ⟨k, hk⟩ := d_mod_four H
   exact isIntegral_half H.sqd k (by rw [bE_sq H, hk]; push_cast; ring)
-
-theorem isIntegral_halfA' : IsIntegral ℤ ((1 - H.sqq) / 2) := by
-  obtain ⟨k, hk⟩ := q_mod_four H
-  have h := isIntegral_half (-H.sqq) k (by rw [neg_sq, aE_sq H, hk]; push_cast; ring)
-  rwa [← sub_eq_add_neg] at h
-
-theorem isIntegral_halfB' : IsIntegral ℤ ((1 - H.sqd) / 2) := by
-  obtain ⟨k, hk⟩ := d_mod_four H
-  have h := isIntegral_half (-H.sqd) k (by rw [neg_sq, bE_sq H, hk]; push_cast; ring)
-  rwa [← sub_eq_add_neg] at h
 
 theorem conj_half (x : H.E) : H.conj ((1 + x) / 2) = (1 + H.conj x) / 2 := by
   rw [map_div₀, map_add, map_one, map_ofNat]
@@ -177,13 +161,6 @@ theorem exampleCMType_nonempty : (cmType ζ0 a0 b0 599).Nonempty := by
   apply Set.nonempty_of_ncard_ne_zero
   rw [(Formalism.FrobeniusOrbits.Final.cmType 2 571 599 hostHyp0.toHypOdd L0 ζ0 a0 b0 layer0).2.1]
   positivity
-
-theorem exampleIdeal_principal_factor : ∃ 𝔟 : Ideal (𝓞 (hostE ζ0 a0 b0)),
-    differentIdeal (𝓞 (KinE ζ0 a0 b0)) (𝓞 (hostE ζ0 a0 b0)) =
-      𝔟 * (conjE (hypOdd_of_hostHyp hostHyp0) layer0 • 𝔟) ∧
-    𝔟 ⊔ conjE (hypOdd_of_hostHyp hostHyp0) layer0 • 𝔟 = ⊤ :=
-  Formalism.FrobeniusOrbits.hostPrincipal 2 571 599 hostHyp0 L0 ζ0 a0 b0 layer0 _
-    (galE_conjE (hypOdd_of_hostHyp hostHyp0) layer0)
 
 theorem top_primitive {K : Type} [Field K] [NumberField K] (m : ℕ) (hm : 1 < m) :
     ¬ (⊤ : Ideal (𝓞 K)) ≤ Ideal.span {(m : 𝓞 K)} := by
@@ -324,18 +301,5 @@ theorem π0_cong : π0O - 1 ∈ Ideal.span
   unfold e0
   push_cast
   ring
-
-theorem T_norm0 : ∃ π : 𝓞 H0.E, (π : H0.E) ∈ H0.K ∧
-    (π : H0.E) * H0.conj (π : H0.E) = (T0 : H0.E) ∧
-    (π - 1) ∈ Ideal.span {((H0.QS * H0.q * H0.d * (H0.g 0 * H0.g 1) ^ 2 : ℕ) : 𝓞 H0.E)} :=
-  ⟨π0O, π0_mem_K, π0_norm, π0_cong⟩
-
-theorem π0_star_norm : (letI := H0.cmStar; star π0 * π0) = (T0 : H0.E) := by
-  rw [star_eq_conj, mul_comm]
-  exact π0_norm
-
-theorem examplePrime_ge : 55 ≤ T0 := by
-  unfold T0
-  norm_num
 
 end Formalism.BasicNotions.Examples₂

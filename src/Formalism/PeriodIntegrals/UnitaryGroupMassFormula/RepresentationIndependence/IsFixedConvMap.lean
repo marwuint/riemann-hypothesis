@@ -136,15 +136,4 @@ theorem NLam_conj {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.Hermi
     refine ⟨n y - y, h3 y hy, ?_⟩
     simp [conj_apply, map_sub]
 
-theorem rel_map {T T' : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) {Λ : Submodule (𝓞 E) S.V}
-    {F : LFlag S r T} {F' F'' : LFlag S r T'}
-    (h : ∃ n ∈ NLam Λ F, (∀ a, n (frame F a) = frame F a) ∧ ∀ b, n (frame F' b) = frame F'' b) :
-    ∃ n ∈ NLam (Formalism.HermitianLatticesTheory.gmap γ Λ) (mapL γ hγ F),
-      (∀ a, n (frame (mapL γ hγ F) a) = frame (mapL γ hγ F) a) ∧
-        ∀ b, n (frame (mapL γ hγ F') b) = frame (mapL γ hγ F'') b := by
-  obtain ⟨n, hn, h1, h2⟩ := h
-  refine ⟨conj γ n, NLam_conj hγ hn, fun a => ?_, fun b => ?_⟩
-  · simp only [frame_mapL' hγ, conj_apply, LinearEquiv.symm_apply_apply, h1]
-  · simp only [frame_mapL' hγ, conj_apply, LinearEquiv.symm_apply_apply, h2]
-
 end PI.RepsIndep.Tr

@@ -1,1 +1,0 @@
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.WeylBridge

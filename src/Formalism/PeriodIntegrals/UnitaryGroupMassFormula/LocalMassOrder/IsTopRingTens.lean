@@ -19,7 +19,4 @@ instance isTopGroup_HA (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) {n 
 instance borel_HA (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) : BorelSpace (HA (Fv F v) σ J) := ⟨rfl⟩
 
-example (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
-    MeasurableMul (HA (Fv F v) σ J) := inferInstance
-
 end LocMassOrdW

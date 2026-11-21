@@ -86,10 +86,6 @@ theorem coreModels_of_upq (hDS : GlobalTheory.Published.DiscreteSeriesUpqExists)
     rfl
   · exact isHCParam_parPi D sc.cGap i τ lam ε hrank hE
 
-theorem coreModels : GlobalTheory.FunPr.Hypotheses₂ → CoreModels := by
-  intro hPr
-  exact coreModels_of_upq hPr.discreteSeriesUpqExists
-
 end GlobalTheory.SepRows
 
 end

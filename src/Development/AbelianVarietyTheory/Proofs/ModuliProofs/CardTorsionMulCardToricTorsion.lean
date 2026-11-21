@@ -6,7 +6,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GtBaseChangeSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AuxiliaryInertOddPrime
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardTorsionAbelianVarietyStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardTorsionAbelianVariety
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsSplitTorusPointsMulEquiv
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GeometricallyConnectedOfIsPullbackOfSurjective
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
@@ -149,7 +149,7 @@ theorem card_torsion_mul_card_toric_torsion : ∀ (k : Type) [Field k] [IsAlgClo
   have hg := dim_eq G E g g' dG dB
   obtain ⟨e⟩ := nonempty_torus_points_mulEquiv k E.X
   obtain ⟨hdiv, hcard⟩ := divisible_and_card e N hN
-  have hB := GlobalTheory.T.card_torsion_eq_pow_two_mul_dim k E.B g' N E.isAbelian dB hN
+  have hB := _root_.GlobalTheory.card_torsion_abelianVariety k E.B g' N E.isAbelian dB hN
   let i := IsMonHom.monoidHom E.i (𝟙_ (Over (Sp k)))
   have hi : Function.Injective i := fun a b h => hk.hom_ext h (toUnit_unique _ _)
   have h1 := card_pow_eq_one_of_extension i (IsMonHom.monoidHom E.q (𝟙_ (Over (Sp k)))) hi

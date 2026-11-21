@@ -452,43 +452,9 @@ theorem gaussMulti_of (hT : Takagi) (hG : GaussOneDamped) : GaussMulti := by
   refine tendsto_finsetProd _ fun k _ => ?_
   exact gaussOne_of_damped hG β _ hβ (div_ne_zero (by exact_mod_cast hσ0 k) ht)
 
-theorem hessDet : HessDet := by
-  intro m z
-  rw [Matrix.det_smul]
-  have h : (Matrix.of fun _ _ => (1:ℂ) : Matrix (Fin (m+1)) (Fin (m+1)) ℂ)
-      = Matrix.replicateCol Unit (fun _ : Fin (m+1) => (1:ℂ)) * Matrix.replicateRow Unit (fun _ : Fin (m+1) => (1:ℂ)) := by
-    ext i j; simp [Matrix.mul_apply]
-  rw [h, Matrix.det_one_add_replicateCol_mul_replicateRow]
-  simp [dotProduct]
-  ring
-
-theorem gaussHessOfMulti : GaussHessOfMulti := by
-  intro hG hD m β t z hβ ht hz
-  have hdet : (z⁻¹ • (1 + Matrix.of fun _ _ => (1 : ℂ)) : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ).det ≠ 0 := by
-    rw [hD m z]
-    have : ((m:ℂ)+2) ≠ 0 := by
-      have : ((m:ℂ)+2) = ((m+2 : ℕ) : ℂ) := by push_cast; ring
-      rw [this]; exact_mod_cast (Nat.succ_ne_zero (m+1))
-    exact mul_ne_zero this (pow_ne_zero _ (inv_ne_zero hz))
-  have hs : (z⁻¹ • (1 + Matrix.of fun _ _ => (1 : ℂ)) : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ).IsSymm := by
-    ext i j; simp [Matrix.transpose_apply, Matrix.one_apply, eq_comm, mul_add]
-  have h := hG (m+1) β t _ hβ ht hs hdet
-  rw [hD m z] at h
-  convert h using 3
-  have h2 : ‖(m:ℂ)+2‖ = (m:ℝ)+2 := by
-    have : ((m:ℂ)+2) = (((m:ℝ)+2 : ℝ):ℂ) := by push_cast; ring
-    rw [this, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
-  rw [norm_mul, norm_pow, norm_inv, h2]
-  have : 0 < ‖z‖ := norm_pos_iff.2 hz
-  field_simp
-  rw [← mul_pow]; simp [this.ne']
-
 end Formalism.FourierDecayAlt.P.G9
 
 theorem Formalism.FourierDecayAlt.P.gaussian_multi_integral : Formalism.FourierDecayAlt.G.GaussMulti :=
   Formalism.FourierDecayAlt.P.G9.gaussMulti_of Formalism.FourierDecayAlt.P.takagi_factorization Formalism.FourierDecayAlt.P.G9.gaussOneDamped
-
-theorem Formalism.FourierDecayAlt.P.gaussian_hessian_integral : Formalism.FourierDecayAlt.G.GaussHess :=
-  Formalism.FourierDecayAlt.P.G9.gaussHessOfMulti Formalism.FourierDecayAlt.P.gaussian_multi_integral Formalism.FourierDecayAlt.P.G9.hessDet
 
 end SeveralVariables

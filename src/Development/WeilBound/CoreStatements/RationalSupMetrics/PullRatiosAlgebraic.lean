@@ -35,8 +35,10 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullSectionIntegralIn
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PDehomNormPIntegral
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PChartPrimePowerInverse
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PFibreNormPullbackX
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackConeNullModPHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormFormGaussBoundHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackConeNullModPHolds
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsPullConeNullModP
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormFormGaussBoundHolds
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsNormFormGaussBound
 
 open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.HilbertSamuel
 
@@ -52,9 +54,9 @@ theorem fibre_pull_integral : FibreNormPullback.Statement :=
     (FibreNormDehomCharpoly.proof pull_forms_generic pull_ratios_algebraic PullSectionIntegral.proof
       DehomCharpolyForms.proof)
     (FibreNormDehomIntegral.proof FibreNormBadPrimesFinite.proof
-      (FibreNormGoodPrimeIntegral.proof GlobalTheory.T.pullback_cone_null_mod_p_holds PullConeDegreeInt.proof PullSectionIntegralInt.proof
+      (FibreNormGoodPrimeIntegral.proof _root_.GlobalTheory.CompanionTheory.Ar.Giv.pullConeNullModP PullConeDegreeInt.proof PullSectionIntegralInt.proof
         DehomNormPIntegral.proof)
-      (FibreNormPrimeBound.proof pull_forms_generic GlobalTheory.T.norm_form_gauss_bound_holds ChartPrimePowerInverse.proof))
+      (FibreNormPrimeBound.proof pull_forms_generic _root_.GlobalTheory.CompanionTheory.Ar.Giv.normFormGaussBound ChartPrimePowerInverse.proof))
     FibreNormDehomRoots.full
 
 theorem grid_separation : GridSeparation.Statement :=

@@ -41,12 +41,6 @@ theorem continuous_archP : Continuous (archP K n) :=
 
 variable (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure]
 
-def cuspBanachRep : BanachRep (Reduction.normOneGL K n) (cuspidalL2 μ) :=
-  BanachRep.ofUnitary (cuspRep μ)
-
-def archRep : BanachRep (archGroup K n) (cuspidalL2 μ) :=
-  BanachRep.comp (cuspBanachRep μ) (archP K n) continuous_archP
-
 end CuspidalSpectrum
 
 end

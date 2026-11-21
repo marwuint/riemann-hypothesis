@@ -4,12 +4,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhitMulLocGLDiagPowOfFixed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlobalSphericalVectorOfSatakeFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormEqZeroOfWhittakerVanishingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormEqZeroOfWhittakerVanishing
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Spherical
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAdelicGLMemIntegralCofinitePlacesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicGLAgreeOutsideTrivialOnFinsetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IwasawaDecompositionAdicCompletionGLDiagonalPoweStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAutomorphicFormFixedOfLocallyIntegralFixedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicGLAgreeOutsideTrivialOnFinset
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFixedOfMemISup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IwasawaDecompositionAdicCompletionGLDiagonalPowe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAutomorphicFormFixedOfLocallyIntegralFixed
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory.LFun Matrix
 open scoped ContDiff
@@ -26,20 +27,20 @@ theorem exists_outside (E : Type) [Field E] [NumberField E] (a : ℕ) (S : Finse
     (k : GL (Fin a) (Af E)) : ∃ k' : GL (Fin a) (Af E),
       (∀ w ∉ S, GeneralLinearGroup.map (pLoc E w) k' = GeneralLinearGroup.map (pLoc E w) k) ∧
       ∀ w ∈ S, GeneralLinearGroup.map (pLoc E w) k' = 1 :=
-  GlobalTheory.T.exists_finiteAdelicGL_agree_outside_trivial_on_finset E a S k
+  _root_.GlobalTheory.outsideS_elt E a S k
 
 theorem local_decomp (E : Type) [Field E] [NumberField E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifV E w (ϖ : w.adicCompletion E)) (g : GL (Fin a) (w.adicCompletion E)) :
     ∃ u ∈ GlobalTheory.SmGL.unipB (w.adicCompletion E) (Fin a), ∃ (N : ℕ) (l : Fin a → ℕ), ∃ k ∈ KGL w a,
       g = u * GlobalTheory.JSW.diagPow ϖ⁻¹ (fun _ => N) * GlobalTheory.JSW.diagPow ϖ l * k :=
-  GlobalTheory.T.iwasawa_decomposition_adicCompletionGL_diagonalPowers E a w ϖ hϖ g
+  _root_.GlobalTheory.IwasawaGL.iwasawa_diagPow E a w ϖ hϖ g
 
 theorem act_fin_eq_of_outside (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a)
     (hφ : IsAutForm φ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ w ∉ S, ∀ k ∈ KGL w a, act (.fin (locGL E a w k)) φ = φ) (k : GL (Fin a) (Af E))
     (hk : ∀ w ∉ S, GeneralLinearGroup.map (pLoc E w) k ∈ KGL w a)
     (hk1 : ∀ w ∈ S, GeneralLinearGroup.map (pLoc E w) k = 1) : act (.fin k) φ = φ :=
-  GlobalTheory.T.smoothAutomorphicForm_fixed_of_locally_integral_fixed E a φ hφ S hS k hk hk1
+  _root_.GlobalTheory.CuspRep.fixed_of_locFixed E a φ hφ S hS k hk hk1
 
 end GlobalTheory.JSW.NzSph
 
@@ -171,7 +172,7 @@ theorem exists_sph_whit_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTo
   obtain ⟨g, hg⟩ : ∃ g, whit φ₀.1 g ≠ 0 := by
     by_contra h
     push_neg at h
-    exact hφ₀0 (GlobalTheory.T.cusp_form_eq_zero_of_whittaker_vanishing E (m + 1) φ₀ (π.cusp φ₀ hφ₀V) h)
+    exact hφ₀0 (_root_.GlobalTheory.JSW.eq_zero_of_whit_eq_zero E (m + 1) φ₀ (π.cusp φ₀ hφ₀V) h)
   have hfin := finite_bad E (m + 1) (GeneralLinearGroup.map (pFin E) g)
   refine exists_whittaker_ne_zero_induction_bad_places S hψ π α hα hfin.toFinset φ₀ hφ₀V hφ₀K g (fun w _ hwT => ?_) hg
   by_contra h

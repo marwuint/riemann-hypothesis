@@ -19,14 +19,6 @@ namespace GlobalTheory.CycFr
 
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O]
 
-section Descent
-
-variable {Δ : Subgroup ℤ_[l]ˣ} {j : O⟦X⟧ →ₐ[O] O⟦X⟧} (hinj : Function.Injective j)
-  (hr : ∀ a, (∃ b, j b = a) ↔ ∀ δ ∈ Δ, act O (δ : ℤ_[l]) a = a)
-include hinj hr
-
-end Descent
-
 open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in
 omit [Algebra ℤ_[l] O] [IsDomain O] [CharZero O] [Fact l.Prime] in
@@ -76,15 +68,6 @@ theorem _root_.GlobalTheory.CycFr.prime_X_sub_C [IsLocalRing O]
   · have h := map_dvd σ hd
     rw [hXσ, hσC, X_dvd_iff, constantCoeff_C] at h
     exact h
-
-section Fields
-
-variable {Δ : Subgroup ℤ_[l]ˣ} {j : O⟦X⟧ →ₐ[O] O⟦X⟧} (hinj : Function.Injective j)
-  (hr : ∀ a, (∃ b, j b = a) ↔ ∀ δ ∈ Δ, act O (δ : ℤ_[l]) a = a) {s : ℕ}
-  (hξ : Associated (j X) (X ^ s)) {E : O⟦X⟧} (hE : Associated (j E) (lvl l O 0))
-include hinj hr hξ hE
-
-end Fields
 
 open PowerSeries in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] in

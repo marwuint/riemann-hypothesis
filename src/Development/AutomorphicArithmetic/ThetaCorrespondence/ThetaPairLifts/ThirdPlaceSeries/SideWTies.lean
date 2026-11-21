@@ -1,5 +1,10 @@
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.SideWeightCompatibleRayField
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.OntoAlong
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.WPtFrame
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CoreFrameCompatibleConstructedPoint
+import Development.AbelianVarietyTheory.Definitions.HeightFunctions.RunsAlong
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.TwDatPsiValuesInLL
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmallFrameAtColumn
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideWChrStatement
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SideWExportSmallStatement
@@ -13,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 theorem GlobalTheory.PlugPt.side_weight_ties_of_ray_field : GlobalTheory.NT.RayField → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (𝒮 : Slots) (ν : _root_.GlobalTheory.PlugPt.ExtensionReading hL 𝒮), CoreSlot 𝒮 → ∀ (K : Ctx) (p : WPt 𝒮 K), (_root_.GlobalTheory.PlugPt.sideOfWeightedPoint ν p).Ties p.O.ex.errX p.O.ex.xd := by
   intro hR hL 𝒮 ν hC K p
   obtain ⟨hRC, hTC, -⟩ := GlobalTheory.Plug.wPt_frame 𝒮 K p
-  have ht := GlobalTheory.T.coreFrameCompatible_constructed_point hR 𝒮 hC K p
+  have ht := _root_.GlobalTheory.Plug.tied_cfOf hR 𝒮 hC K p
   obtain ⟨hpsi, hval, htame⟩ := _root_.GlobalTheory.T.side_weight_psi_choice_tame_tie hL 𝒮 ν K p
   obtain ⟨hser, hlev, hdat, hsmall⟩ := _root_.GlobalTheory.T.side_weight_export_all_data_small_has hR hL 𝒮 ν K p
   refine ⟨?_, ?_, hser, hlev, hdat, hpsi, hval, hsmall, htame⟩

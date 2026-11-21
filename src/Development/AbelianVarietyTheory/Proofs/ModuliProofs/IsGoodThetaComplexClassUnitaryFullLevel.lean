@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GoodThetaClassOfLatticeFamiliesStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GoodThetaClassOfLatticeFamilies
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TransportThetaLevelUniformisationCoordinates
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ImAdjointOfSpan
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FiniteMarkedDataInGenus
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsPELObjectOfPrimitivePeriodMapUniformisedStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPeriodsComplexPELObjectStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPeriodsComplexPELObject
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PelObjectClassPrimAndIsoClosed
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsTypeFnOfRank
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPeriodDomainParam
@@ -77,7 +77,7 @@ theorem goodClass_pelClass : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P
     ext i₀
     simp [Mat, Finset.sum_apply, Pi.single_apply]
   refine ⟨Mat, κ, fun n hn hodd => ?_⟩
-  obtain ⟨j₀, hj₀⟩ := GlobalTheory.T.goodThetaClass_of_lattice_families L1 L2 hΘ hU g J Mat κ n w w' hn hodd
+  obtain ⟨j₀, hj₀⟩ := _root_.GlobalTheory.goodClass_of_lattice_families L1 L2 hΘ hU g J Mat κ n w w' hn hodd
   refine ⟨j₀, fun j hj N' hN o _ b em ρ hρ => ?_⟩
   have hk : 0 < N' ^ 2 := by rw [hN]; exact pow_pos (pow_pos hn.pos _) _
   obtain ⟨r, Di, fi, νi, hfam, hall⟩ := MarkedGenus.finite_marked_data_in_genus E H D (N' ^ 2) (em (b.ζ : o)) hk
@@ -112,7 +112,7 @@ theorem goodClass_pelClass : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P
     · exact GlobalTheory.T.isPELObject_of_primitive_periodMap_uniformised L1 L2 hΘ hU E H D o g _ J b em w w' a bas ρ ty t (Di i) (fi i) (νi i) (P i bb) (Hm i bb)
         hpq hw hρ hty (hfam i).1 (hfam i).2 ((hBh i).1 bb hb) (hHm i bb hb) hu hp
   · obtain ⟨D', f, ν, Q, Hm', hgen, hζ, hper, hpol, hu⟩ :=
-      GlobalTheory.T.exists_periods_complexPELObject L1 L2 hΘ hU E H D o g _ J b em w w' a bas ρ ty t hw hw' hρ hty ht
+      _root_.GlobalTheory.PELPeriod.exists_period L1 L2 hΘ hU E H D o g _ J b em w w' a bas ρ ty t hw hw' hρ hty ht
     obtain ⟨i, e, he, hef⟩ := hall D' f ν hgen hζ
     obtain ⟨bb, ⟨hb, h, hh⟩, -⟩ := hBu i _ (isPeriod_comp hper e he)
     refine ⟨i, bb, hb, ?_⟩

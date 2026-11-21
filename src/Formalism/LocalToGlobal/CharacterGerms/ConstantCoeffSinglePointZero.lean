@@ -18,65 +18,7 @@ section Pull
 
 variable (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o))
 
-theorem cc_expAll (x : Fin dd) : MvPowerSeries.constantCoeff (expAll Y p x) = 0 := by
-  have hu : ∀ f : PS C 1 dd, MvPowerSeries.constantCoeff (un1 f) = MvPowerSeries.constantCoeff f := fun f => by
-    rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-    change MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) 0) f = _
-    rw [Finsupp.mapDomain_zero]
-  unfold expAll
-  exact VP.cc_subst (fun _ => by simp [MvPowerSeries.smul_eq_C_mul]) (by rw [hu]; exact Y.ex_const x)
-
 theorem cc_X {σ : Type} (s : σ) : MvPowerSeries.constantCoeff (MvPowerSeries.X s : MvPowerSeries σ C) = 0 := MvPowerSeries.constantCoeff_X s
-
-theorem cc_rowOf {n : ℕ} (b : Fin n) {F : MvPowerSeries (WVO I) C} (hF : MvPowerSeries.constantCoeff F = 0) :
-    MvPowerSeries.constantCoeff (rowOf b F) = 0 := by
-  unfold rowOf
-  exact VP.cc_subst (fun _ => MvPowerSeries.constantCoeff_X _) hF
-
-theorem cc_pullPt {n : ℕ} (q : Fin n × Fin dd) :
-    MvPowerSeries.constantCoeff (rowOf q.1 (expAll Y p q.2)) = 0 := cc_rowOf q.1 (cc_expAll Y p q.2)
-
-theorem pullN_mul {n : ℕ} (F G : PS C n dd) : pullN Y p (F * G) = pullN Y p F * pullN Y p G := by
-  unfold pullN
-  exact VP.subst_mul (cc_pullPt Y p) F G
-
-theorem pullN_prod {n : ℕ} {ι : Type} (s : Finset ι) (F : ι → PS C n dd) :
-    pullN Y p (∏ i ∈ s, F i) = ∏ i ∈ s, pullN Y p (F i) := by
-  unfold pullN
-  exact VP.subst_prod (cc_pullPt Y p) s F
-
-theorem cc_pull1Pt (q : Fin 1 × Fin dd) : MvPowerSeries.constantCoeff (expAll Y p q.2) = 0 := cc_expAll Y p q.2
-
-theorem pullback_one_var_mul (F G : PS C 1 dd) : pull1 Y p (F * G) = pull1 Y p F * pull1 Y p G := by
-  unfold pull1
-  exact VP.subst_mul (cc_pull1Pt Y p) F G
-
-theorem pullback_one_var_prod {ι : Type} (s : Finset ι) (F : ι → PS C 1 dd) :
-    pull1 Y p (∏ i ∈ s, F i) = ∏ i ∈ s, pull1 Y p (F i) := by
-  unfold pull1
-  exact VP.subst_prod (cc_pull1Pt Y p) s F
-
-theorem pullback_one_var_one : pull1 Y p (1 : PS C 1 dd) = 1 := by
-  unfold pull1
-  exact VP.subst_one (cc_pull1Pt Y p)
-
-theorem constantCoeff_single_point_zero {n : ℕ} (b : Fin n) (q : Fin 1 × Fin dd) :
-    MvPowerSeries.constantCoeff ((![pt C dd b] : Fin 1 → Pt C n dd) q.1 q.2) = 0 := by
-  simp [pt]
-
-theorem pullN_ev {n : ℕ} (b : Fin n) (F : PS C 1 dd) :
-    pullN Y p (ev (n := n) ![pt C dd b] F) = rowOf b (pull1 Y p F) := by
-  unfold pullN ev pull1
-  rw [VP.subst_subst (constantCoeff_single_point_zero b) (cc_pullPt Y p)]
-  rw [show rowOf b (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) F) =
-      MvPowerSeries.subst (fun w : WVO I => (MvPowerSeries.X (b, w) : MvPowerSeries (Fin n × WVO I) C))
-        (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) F) from rfl]
-  rw [VP.subst_subst (fun q : Fin 1 × Fin dd => cc_expAll Y p q.2) (fun _ => MvPowerSeries.constantCoeff_X _)]
-  congr 1
-  funext q
-  rw [Matrix.cons_val_fin_one, show pt C dd b q.2 = (MvPowerSeries.X (b, q.2) : PS C n dd) from rfl,
-    VP.subst_X (cc_pullPt Y p)]
-  rfl
 
 end Pull
 

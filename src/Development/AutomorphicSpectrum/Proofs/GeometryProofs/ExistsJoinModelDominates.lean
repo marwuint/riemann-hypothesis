@@ -3,11 +3,11 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCentreChartStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCentreChart
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueDominatingMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonemptyStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLocalOrderFractionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonempty
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtLocalOrderFraction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalization
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar
@@ -45,13 +45,13 @@ theorem join_exists : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebr
     fun a ha => Subfield.subset_closure ha
   have hiF : ∀ a : Ω, i a ∈ Subfield.closure (chRing o (joinCo i x w) (c, l) : Set Ω') := by
     intro a
-    have h2 := (GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hc).2
+    have h2 := (_root_.GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation o Ω κ x M c p hc).2
     have key : ∀ b ∈ regAt M.ξ p, i b ∈ Subfield.closure (chRing o (joinCo i x w) (c, l) : Set Ω') := by
       intro b hb
       obtain ⟨s, hs, t, ht, -, rfl⟩ := (h2 b).1 hb
       rw [map_div₀]
       exact div_mem (hAF _ (hmap _ hs)) (hAF _ (hmap _ ht))
-    obtain ⟨u, hu, v, hv, -, rfl⟩ := (GlobalTheory.T.regAt_local_order_fraction M.X Ω M.ξ).2.2 M.tie.gen p a
+    obtain ⟨u, hu, v, hv, -, rfl⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_local_mono_frac M.X Ω M.ξ).2.2 M.tie.gen p a
     rw [map_div₀]
     exact div_mem (key u hu) (key v hv)
   have hw : ∀ l', w l' / w l ∈ chRing o (joinCo i x w) (c, l) := by
@@ -80,8 +80,8 @@ theorem join_exists : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebr
       Subring.closure_eq (chRing o (joinCo i x w) (c, l)).toSubring
     rw [hs] at hy hz
     exact ⟨y, hy, z, hz, rfl⟩
-  obtain ⟨M'⟩ := GlobalTheory.T.projective_model_nonempty o Ω' (κ × κ') (joinCo i x w) ⟨(c, l), hJ, hfrac⟩
-  have hctr : ∀ p', p' ∈ ctrSet o x i M'.ξ := fun p' => (GlobalTheory.T.join_coords_centre_chart o Ω κ κ' x Ω' i w M' hi p').1
+  obtain ⟨M'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.nonempty_pModel_of_chart o Ω' (κ × κ') (joinCo i x w) ⟨(c, l), hJ, hfrac⟩
+  have hctr : ∀ p', p' ∈ ctrSet o x i M'.ξ := fun p' => (_root_.GlobalTheory.CompanionTheory.Ar.join_points_charts o Ω κ κ' x Ω' i w M' hi p').1
   obtain ⟨f, hf, -⟩ := GlobalTheory.T.existsUnique_dominating_map o Ω κ x M o Ω' (κ × κ') (joinCo i x w) M' i hctr
   exact ⟨M', f, hf⟩
 

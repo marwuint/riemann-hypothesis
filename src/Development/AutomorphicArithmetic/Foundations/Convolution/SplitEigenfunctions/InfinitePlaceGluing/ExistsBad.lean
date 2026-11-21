@@ -1,9 +1,11 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunctions.Entire
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.Imports
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.RealStructures.Imports
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.ImportsBis
-import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.HeckeCharacterEqOfCofinite
+import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.FinrankAdjoinSqrtNegOne
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RealTransport.RealTransport
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
+import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.ImportsFurther
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 
 open NumberField IsDedekindDomain Filter
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global
@@ -26,7 +28,7 @@ private theorem exists_bad {S : Set (H.P ℚ)} (hS : S.Finite) : ∃ m : ℕ, 0 
     exact Ideal.absNorm_mem _
 
 private theorem quad_sq {E : Type} [Field E] [NumberField E] {η : HChar ℚ} (hq : IsQuadCharOf E η) : η ^ 2 = 1 := by
-  apply GlobalTheory.T.hecke_character_eq_of_cofinite ℚ (η ^ 2) 1
+  apply _root_.GlobalTheory.HeckeMultOne.main ℚ (η ^ 2) 1
   have hc : ∀ᶠ v : H.P ℚ in cofinite, ∃ w : H.P E, w.under (𝓞 ℚ) = v ∧
       η.UnrAt v ∧ η.val v = if normV w = normV v then 1 else -1 := by
     unfold IsQuadCharOf at hq

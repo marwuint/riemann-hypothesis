@@ -65,20 +65,4 @@ structure RowsB (B : RealTB Rc P Dcf Spf Zscf S) : Prop where
 
   oneMap : ∀ i, OneMapRowR B.T B.Q.Rl.toRealDat B.κ B.v₀ B.O (phEff B.Q.Rl) i
 
-structure InB (B : RealTB Rc P Dcf Spf Zscf S) : Prop where
-
-  jEvExists : JEvExists B.T B.Q.Rl.toRealDat B.κ B.v₀
-
-  jEvBar : JEvBar B.T B.Q.Rl.toRealDat B.κ
-
-  evInj : EvInj B.T B.Q.Rl.toRealDat B.v₀
-
-  jUnif : JUnif B.T B.Q.Rl.toRealDat B.κ B.v₀
-
-  geoAct : GeoAct B.T B.Q.Rl.toRealDat B.κ B.v₀
-
-  latFull : LatFull B.T B.κ
-
-  dimMatch : DimMatch B.T B.Q.Rl.toRealDat B.κ
-
 end Formalism.IndefR

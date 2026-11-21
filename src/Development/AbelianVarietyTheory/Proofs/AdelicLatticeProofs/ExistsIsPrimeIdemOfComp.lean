@@ -348,11 +348,4 @@ theorem exists_isUnifIdele (hσ : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E
     linear_combination e * e * hm + (2 - a - b) * he
   exact ⟨Units.mkOfMulEqOne _ _ hu, e, f, ϖ, h, h1, h2, rfl⟩
 
-theorem chiAt_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ P : HeightOneSpectrum (𝓞 E), chiAt σ (1 : (AE F E)ˣ →* Circle) P = 1 := by
-  intro F E _ _ _ _ _ σ hσ P
-  obtain ⟨e, f, -, h⟩ := exists_isPrimeIdem hσ P
-  unfold chiAt
-  rw [dif_pos ⟨⟨e, f, h, fun _ _ _ _ => rfl⟩, exists_isUnifIdele hσ P⟩]
-  rfl
-
 end GlobalTheory.CMPrimeIdele

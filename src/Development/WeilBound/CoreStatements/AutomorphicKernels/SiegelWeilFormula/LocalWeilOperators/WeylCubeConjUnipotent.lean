@@ -25,13 +25,6 @@ theorem wM_sq {R : Type} [CommRing R] (e : R) : wM n e * wM n e = e • (1 : Mat
 theorem wM_four {R : Type} [CommRing R] (e : R) (he : e * e = 1) : wM n e * wM n e * wM n e * wM n e = 1 := by
   rw [Matrix.mul_assoc (wM n e * wM n e), wM_sq, smul_mul_smul_comm, Matrix.one_mul, he, one_smul]
 
-theorem dZ_mul (a b : ℂ) : dZ n a * dZ n b = dZ n (a * b) := by
-  simp [dZ, Matrix.fromBlocks_multiply, smul_smul]
-  rw [mul_comm]
-
-theorem dZ_one : dZ n 1 = 1 := by
-  simp [dZ, Matrix.fromBlocks_one]
-
 theorem dZ_conj_nU {ζ : ℂ} (h : ζ ≠ 0) (x : Matrix (Fin n) (Fin n) ℂ) : dZ n ζ⁻¹ * nU x * dZ n ζ = nU (ζ • x) := by
   simp [dZ, nU, Matrix.fromBlocks_multiply, smul_smul, mul_inv_cancel₀ h]
 

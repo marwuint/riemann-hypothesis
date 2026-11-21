@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ActAtApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundedHighestWeightVectorQuadraticSubquotStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundedHighestWeightVectorQuadraticSubquot
 
 noncomputable section
 
@@ -53,7 +53,7 @@ theorem multi_place_step : ∀ (T : Type) [Fintype T] [DecidableEq T] (R S : T �
     (∀ w, Stab (a w) N) → (∀ w, Stab (a w) N') → (∀ w, QuadMod (a w) (α w) (β w) (α' w) (β' w) N N') →
     ∃ μ : ∀ w, Ix (R w) (S w) → ℚ, (∀ w c, |μ w c| ≤ B) ∧ ∃ v ∈ N', (∀ w, v ∈ hwSub (a w) (μ w)) ∧ v ∉ N := by
   intro T _ _ R S α β α' β'
-  have hk := fun w => GlobalTheory.T.exists_boundedHighestWeightVector_quadraticSubquotient (R w) (S w) (α w) (β w) (α' w) (β' w)
+  have hk := fun w => _root_.GlobalTheory.HoweR.exists_hwSub_of_quadMod (R w) (S w) (α w) (β w) (α' w) (β' w)
   choose Bw hBw using hk
   refine ⟨∑ w, |Bw w|, ?_⟩
   intro V _ _ a hG hc N N' hNN' hsN hsN' hQ

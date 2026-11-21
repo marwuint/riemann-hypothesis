@@ -8,13 +8,13 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFn
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingActionPullbackCartesianGroupSchemesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimitiveAnnihilatorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingActExtendsSemiAbelianDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankEqZeroOfDualKilledByTensorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieCoordinatesOnFieldFibresLocalRingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingActionPullbackCartesianGroupSchemes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimitiveAnnihilator
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingActExtendsSemiAbelianDvr
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankEqZeroOfDualKilledByTensor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieCoordinatesOnFieldFibresLocalRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackOfGroupSchemeModelBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyPotentialSemiAbelianSplitTorusStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyPotentialSemiAbelianSplitTorus
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeSemiAbelianDvrNoSpecialTorusStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricPartFibreLieAlgebraCharactersStatement
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -114,7 +114,7 @@ theorem finrank_zero (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRi
   haveI := E.free
   haveI := E.finite
   haveI : IsCommMonObj G := hG.comm
-  obtain ⟨n, M, -, hT⟩ := GlobalTheory.T.exists_lie_coordinates_on_field_fibres_local_ring W G hG.smooth
+  obtain ⟨n, M, -, hT⟩ := _root_.GlobalTheory.exists_lie_coordinates_fibres W G hG.smooth
   obtain ⟨T, Tinj, Trange, Tadd, Tsc, Tact⟩ := hT Ω f
   obtain ⟨Mr, hMr⟩ := exists_ringHom a M f hf T Tinj Tadd Tact
   have T0 : T 0 = 1 := by simpa using Tadd 0 0
@@ -125,13 +125,13 @@ theorem finrank_zero (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRi
       rw [Tact _ (a.hom x), ← hMr, hc, Tsc]
     exact Tinj ((eq_one_of_lieMult_zero a _ σ h0 _ hE).trans T0.symm)
   let b := Module.Free.chooseBasis ℤ (𝓞 F)
-  obtain ⟨w, ⟨i0, hu⟩, hsum⟩ := GlobalTheory.T.exists_primitive_annihilator' F W Ω f hf n Mr σ hno _ b
+  obtain ⟨w, ⟨i0, hu⟩, hsum⟩ := _root_.GlobalTheory.PrimAnnih.exists_primitive_annihilator F W Ω f hf n Mr σ hno _ b
   obtain ⟨ρ, U, Uinj, Ufst, Uadd, Usc, Uact⟩ := GlobalTheory.T.toric_part_fibre_lie_algebra_characters (Sp W) G (𝓞 F) a.act a.hom a.one a.mul a.add
     (ResidueField W) (spMap (residue W)) E
   obtain ⟨T', -, T'range, T'add, T'sc, T'act⟩ := hT (ResidueField W) (residue W)
   have T'0 : T' 0 = 1 := by simpa using T'add 0 0
   have U0 : U 0 = 1 := by simpa using Uadd 0 0
-  refine GlobalTheory.T.finrank_eq_zero_of_dual_killed_by_tensor F E.X ρ (ResidueField W) _ b (fun i => residue W (w i)) ?_ ?_
+  refine _root_.GlobalTheory.finrank_eq_zero_of_dual_killed F E.X ρ (ResidueField W) _ b (fun i => residue W (w i)) ?_ ?_
   · intro h
     exact (residue_ne_zero_iff_isUnit _).2 hu (congrFun h i0)
   · intro l χ
@@ -157,13 +157,13 @@ theorem finrank_zero (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRi
 theorem potGood_of_lieMult_zero : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (F : Type) [Field F] [NumberField F] (act : OAct (𝓞 F) A) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (g : K →+* Ω) (σ : 𝓞 F →+* Ω), LieMult act (spMap g) σ 0 → GlobalTheory.SS.PotModel V K A (fun _ _ _ G _ => IsAbelianScheme G) := by
   intro V K _ _ _ _ _ _ _ _ A _ hA F _ _ act Ω _ _ g σ hL
   obtain ⟨W, L, iW, iD, iDVR, iL, iVW, iWL, iKL, iFR, hc, hfin, hloc, hcpl, G, iG, hM, hsemi, ⟨E⟩⟩ :=
-    GlobalTheory.T.abelianVariety_potential_semiAbelian_splitTorus V K A hA
+    _root_.GlobalTheory.SS.potModel_semiAbelian_torusExtension V K A hA
   refine ⟨W, L, iW, iD, iDVR, iL, iVW, iWL, iKL, iFR, hc, hfin, hloc, hcpl, G, iG, hM, ?_⟩
   have hAL := isGrpPullback_pullback A (spMap (algebraMap K L))
-  obtain ⟨actL, ⟨h1, h2, h3, h4⟩, hLc⟩ := GlobalTheory.T.exists_ring_action_pullback_cartesian_group_schemes _ _ (spMap (algebraMap K L)) A
+  obtain ⟨actL, ⟨h1, h2, h3, h4⟩, hLc⟩ := _root_.GlobalTheory.ActPull.exists_act_pull _ _ (spMap (algebraMap K L)) A
     ((Over.pullback (spMap (algebraMap K L))).obj A) _ hAL (𝓞 F) act.act act.hom act.one act.mul act.add
   obtain ⟨φ, hφ⟩ := GlobalTheory.T.isGrpPullback_of_group_scheme_model_base_change K W L A G hM _ _ hAL
-  obtain ⟨actG, ⟨g1, g2, g3, g4⟩, hGc⟩ := GlobalTheory.T.exists_ring_action_extension_compatible W L G _ φ hsemi hφ (𝓞 F) actL h1 h2 h3 h4
+  obtain ⟨actG, ⟨g1, g2, g3, g4⟩, hGc⟩ := _root_.GlobalTheory.ringAct_extends_semiAbelian_dvr W L G _ φ hsemi hφ (𝓞 F) actL h1 h2 h3 h4
   let aL : OAct (𝓞 F) ((Over.pullback (spMap (algebraMap K L))).obj A) := ⟨actL, h1, h2, h3, h4⟩
   let aG : OAct (𝓞 F) G := ⟨actG, g1, g2, g3, g4⟩
   obtain ⟨g', hg'⟩ := lift_ext V K W L Ω hc hfin g

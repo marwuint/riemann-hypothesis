@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationTprodOfIsIrreducibleAlStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationOfISupRangeEquivariantStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationTprodOfIsIrreducibleAl
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationOfISupRangeEquivariant
+
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -57,29 +58,6 @@ theorem _root_.GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom (�
     rw [← h1, ← he, h2]
   haveI : Nontrivial (Subrepresentation σ.toRepresentation) := ⟨⟨⊥, ⊤, hne⟩⟩
   exact ⟨fun τ => (hF τ).imp (hbot τ) (htop τ)⟩
-
-theorem iSup_atoms_eq_top [FiniteDimensional ℂ V] (h : ρ.IsSemisimpleRepresentation) :
-    (⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule) = ⊤ := by
-  let S : Subrepresentation ρ :=
-    ⟨⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule, by
-      intro g v hv
-      have : (⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule) ≤
-          (⨆ σ : {σ : Subrepresentation ρ // IsAtom σ}, σ.1.toSubmodule).comap (ρ g) :=
-        iSup_le fun σ w hw =>
-          Submodule.mem_iSup_of_mem σ (σ.1.apply_mem_toSubmodule g hw)
-      exact this hv⟩
-  haveI : WellFoundedLT (Subrepresentation ρ) :=
-    StrictMono.wellFoundedLT (f := Subrepresentation.toSubmodule) (fun _ _ hab => hab)
-  haveI : IsAtomic (Subrepresentation ρ) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt
-  obtain ⟨T, hT⟩ := exists_isCompl S
-  rcases eq_bot_or_exists_atom_le T with h0 | ⟨a, ha, haT⟩
-  · subst h0
-    have : S = ⊤ := by simpa using hT.sup_eq_top
-    exact congrArg Subrepresentation.toSubmodule this
-  · exfalso
-    have haS : a ≤ S := fun w hw =>
-      Submodule.mem_iSup_of_mem (⟨a, ha⟩ : {σ : Subrepresentation ρ // IsAtom σ}) hw
-    exact ha.1 (hT.disjoint haS haT |> le_bot_iff.mp)
 
 end
 

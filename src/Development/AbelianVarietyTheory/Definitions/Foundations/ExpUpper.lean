@@ -105,17 +105,4 @@ structure Tower (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) wher
 
 attribute [instance] Tower.fld Tower.alg
 
-example (z : ℂ) : mob 1 z = z := by
-  simp [mob, ent]
-
-example : ent (ofSL 1) 0 1 = 0 := by
-  simp [ent]
-
-example (z : ℂ) : mob (toGQ !![1, 1; 0, 1]) z = z + 1 := by
-  have h : (0 : ℤ) < (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det := by simp [Matrix.det_fin_two]
-  simp [mob, ent, toGQ, h]
-
-example : (1 : ℂ) ∈ Hs ↔ False := by
-  simp [Hs]
-
 end GlobalTheory.KZ

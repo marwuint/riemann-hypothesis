@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaguerreSignedBinomCoeffMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaguerreSignedBinomCoeffMul
 open NumberField UpperHalfPlane GlobalTheory.HilbFam GlobalTheory.QFam
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM qPow upperHalf cK omegaFactor IsPartialZeta HasExpansion)
 open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (iterD partialD)
@@ -25,7 +25,7 @@ theorem lag_add : ∀ (k n : ℕ) (c s y : ℂ), lag k n (c + s) y =
     Finset.mul_sum, Finset.sum_mul]
   refine Finset.sum_congr rfl fun p hp ↦ ?_
   have hp' : p ≤ n - j := Nat.lt_succ_iff.mp (Finset.mem_range.mp hp)
-  have h := GlobalTheory.T.laguerreSignedBinomCoeff_mul k n (j + p) j (by omega) (by omega)
+  have h := _root_.GlobalTheory.HilbFam.rco_mul_rco k n (j + p) j (by omega) (by omega)
   have e1 : j + p - j = p := by omega
   have e2 : n - (j + p) = n - j - p := by omega
   rw [e1] at h

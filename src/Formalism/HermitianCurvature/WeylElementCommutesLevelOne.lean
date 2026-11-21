@@ -84,8 +84,6 @@ def HaarWbExists : Prop := ∀ k r : ℕ, ∃ μ : Measure (Mt k r), IsHaarOn (U
 def HaarWExists : Prop :=
   ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), inWb k r z → 0 < Tz k r z → ∃ μ : Measure (Mt k r), IsHaarOn (UWset k r z) μ
 
-def HaarWFromCompact : Prop := CompactHaarExists → ClosedW → CompactW → HaarWExists
-
 def ConjInvRaw : Prop :=
   ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μN : Measure (Mt k r)), inWb k r z → 0 < Tz k r z →
     IsHaarOn (Nset k r) μN → ∀ h ∈ UWset k r z, μN.map (conjM h) = μN
@@ -180,9 +178,6 @@ def DilJacAll : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq), DilJac D
 
-def AssembleDilJac : Prop :=
-  HaarUnique → ClosedN → NRecHaar → NBase → HaarNExists → DilLev → DilHeisMeas → KapRec → DilJacRaw ∧ DilJacAll
-
 def IntF (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (μG μW μN μW' : Measure (Mt k r)) : Prop :=
   ∀ f : Mt k r → ℝ≥0∞, Measurable f →
@@ -254,12 +249,6 @@ def OneStepInt : Prop :=
 def AssembleOneStep : Prop :=
   HaarUnique → HaarInv → ClosedG → HeisAct → HeisInv → OneStepMem → OneStepCoord → ConeInv → ConeFinite → StabDecomp →
     StabHaar → OneStepInt
-
-def OneStepNull : Prop :=
-  ∀ (k r' : ℕ) (μG : Measure (Mt k (1 + r'))), IsHaarOn (GV k (1 + r')) μG →
-    μG {g | herm (Hpk k (1 + r')) (Matrix.of g *ᵥ e0 k r') (e0 k r') = 0} = 0
-
-def OneStepNullFromInt : Prop := OneStepInt → HaarGExists → OneStepMem → OneStepNull
 
 def cWeight (k r : ℕ) (c : Fin r → ℂ) : ℝ := ∏ a : Fin r, ‖c a‖ ^ (2 * (Mdim k r a - 2))
 
@@ -335,9 +324,6 @@ def RankOneInt : Prop :=
       (∫⁻ m, f m ∂μb) = (C : ℝ≥0∞) * ∫⁻ ζ : ℂ, ENNReal.ofReal (zWeight k (Tz k r z) (Tz k r z') ζ) *
         ∫⁻ p : Mt k r × Mt k r, f ((Matrix.of p.1)⁻¹ * embWb k r (μsec ζ) * Matrix.of p.2) ∂(μW.prod μW')
 
-def WbFromDiag : Prop :=
-  Formalism.REAL.UJEmb → Formalism.REAL.Unimodular → Formalism.REAL.BallFinite → UWbFacts → HaarWbExists
-
 def AssembleRankOne : Prop :=
   HaarUnique → ClosedWb → ClosedW → CompactW → UWbFacts → RankOneMem → RankOneCoord → HypInv → RankOneInt
 
@@ -385,8 +371,6 @@ def VolSharp : Prop :=
   ∀ (k r : ℕ) (μG : Measure (Mt k r)), IsHaarOn (GV k r) μG →
     ∃ C : ℝ, ∀ R : ℝ, 1 ≤ R → μG {g | gN (Matrix.of g) ≤ R} ≤ ENNReal.ofReal (C * R ^ (2 * ((k : ℝ) + r) * ((r : ℝ) + 1)))
 
-def VolSharpFromExact : Prop := VolExact → VolSharp
-
 def VolCrude : Prop :=
   ∀ (k r : ℕ) (μG : Measure (Mt k r)), IsHaarOn (GV k r) μG →
     ∃ C : ℝ, ∀ R : ℝ, 1 ≤ R → μG {g | gN (Matrix.of g) ≤ R} ≤ ENNReal.ofReal (C * R ^ (2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2))
@@ -399,13 +383,7 @@ def GNIntSharp : Prop :=
   ∀ (k r : ℕ) (μG : Measure (Mt k r)) (A : ℝ), IsHaarOn (GV k r) μG → AB k r ≤ A →
     (∫⁻ g : Mt k r, ENNReal.ofReal (gN (Matrix.of g) ^ (-A)) ∂μG) < ∞
 
-def GNIntCrude : Prop :=
-  ∀ (k r : ℕ) (μG : Measure (Mt k r)) (A : ℝ), IsHaarOn (GV k r) μG → 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < A →
-    (∫⁻ g : Mt k r, ENNReal.ofReal (gN (Matrix.of g) ^ (-A)) ∂μG) < ∞
-
 def GNIntSharpFromVol : Prop := ShellInt → GNLower → VolSharp → GNIntSharp
-
-def GNIntCrudeFromVol : Prop := ShellInt → GNLower → VolCrude → GNIntCrude
 
 def CCFromGN : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
@@ -417,20 +395,7 @@ def CCIntAll : Prop :=
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) (A : ℝ),
     AB k r ≤ A → CCIntegrable D A
 
-def CCIntCrudeAll : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) (A : ℝ),
-    2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < A → CCIntegrable D A
-
-def CCIntDouble : Prop :=
-  XiExists →
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq) (A : ℝ),
-    2 * AB k r ≤ A → CCIntegrable D A
-
 def AssembleCCInt : Prop := CCFromGN → GNIntSharp → CCIntAll
-
-def AssembleCCIntCrude : Prop := CCFromGN → GNIntCrude → CCIntCrudeAll
 
 def ZExists : Prop :=
   ∀ k r : ℕ, inWb k r (bvec (wI k r (Fin.last k))) ∧ Tz k r (bvec (wI k r (Fin.last k))) = 1
@@ -471,22 +436,6 @@ def LemmaBAny : Prop :=
       PairingAdjointness D A ∧ AdjointnessPolynomialCoefficients D A
 
 def LemmaBAnyFromNorm : Prop := LemmaBNorm → IntNormB → LemmaBAny
-
-def LemmaBCrude : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq)
-    (A : ℝ), 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < A → IntFormula D →
-    PairingContinuityBound D A ∧ PairingEqLimitPairing D A ∧ PairingAdjointness D A ∧ AdjointnessPolynomialCoefficients D A
-
-def LemmaBCrudeFromParts : Prop := LemmaBClosed → ConjInvAll → DilJacAll → CCIntCrudeAll → LemmaBCrude
-
-def LemmaBDouble : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq)
-    (A : ℝ), 2 * AB k r ≤ A → IntFormula D → PairingContinuityBound D A ∧ PairingEqLimitPairing D A ∧ PairingAdjointness D A ∧ AdjointnessPolynomialCoefficients D A
-
-def LemmaBDoubleFromParts : Prop :=
-  (XiExists → LemmaBClosed) → ConjInvAll → DilJacAll → CCIntDouble → XiExists → LemmaBDouble
 
 def LemmaBFromXi : Prop := XiExists → LemmaBNorm ∧ LemmaBAny
 

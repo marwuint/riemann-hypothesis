@@ -195,58 +195,6 @@ theorem continuous_om_oriented (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S 
     ψ (symplOH S T (w₀ + iotaW σ T S (x q.2)) (u q.2)))) * n1 (symplOH S T w₀ (iotaW σ T S (x q.2))) +
     om q.1 f q.2 * n1 (symplOH S T (w₀ + iotaW σ T S (x q.2)) (u q.2))
 
-open GlobalTheory.Mem.Th in
-
-theorem continuous_om_pair (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' : IdC D}
-    {om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)} (ha : admitted V W χ χ') (hw : IsWeilOn ψ V W χ χ' om)
-    (Φ : ThS ψ V W) : Continuous fun q : (GA D V × GA D W) × WA V W => (om q.1 Φ).1 q.2 := by
-  have small : ∀ {V W : HSp D} {χ χ' : IdC D} {om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)}, admitted V W χ χ' →
-      V.rank < W.rank → IsWeilOn ψ V W χ χ' om → ∀ Φ : ThS ψ V W,
-      Continuous fun q : (GA D V × GA D W) × WA V W => (om q.1 Φ).1 q.2 := by
-    intro V W χ χ' om ha hr hw Φ
-    obtain ⟨omO, hO, e⟩ := GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO D ψ hψ V W χ χ' om ha hr hw
-    have h := (continuous_om_oriented hO ((GlobalTheory.OrientedCoord.isThetaFunO_coord V W hr.le ψ _).2 (mem_ThS.1 Φ.2))).comp
-      (continuous_fst.prodMk ((GlobalTheory.OrientedCoord.continuous_coord_symm V W).comp continuous_snd))
-    refine h.congr fun q => (congrFun (e q.1 Φ) _).trans ?_
-    exact congrArg (om q.1 Φ).1 ((GlobalTheory.OrientedCoord.coord V W).apply_symm_apply q.2)
-  rcases ha.1.lt_or_gt with hr | hr
-  · exact small ha hr hw Φ
-  · obtain ⟨om', hw', e⟩ := GlobalTheory.Mem.WeilSwap.exists_isWeilOn_swap D ψ hψ V W χ χ' om ha.1 hw
-    have h := (small ⟨ha.1.symm, ha.2.2.1, ha.2.1, ha.2.2.2.2, ha.2.2.2.1⟩ hr hw' (GlobalTheory.Mem.WeilSwap.trEquiv ψ ha.1 Φ)).comp
-      ((continuous_swap.comp continuous_fst).prodMk
-        (continuous_snd.matrix_transpose : Continuous fun q : (GA D V × GA D W) × WA V W => q.2.transpose))
-    exact h.congr fun q => e q.1.1 q.1.2 Φ _ (fun _ => rfl) q.2
-
-open GlobalTheory.Mem.Th in
-
-theorem continuous_evS_om : ∀ (D : D7) (X : ThetaX D) (T : ThetaTied D X) (Wl : WeilTied D X T) (V W : HSp D) (χ χ' : X.Chr), V.rank ≠ W.rank → ResEta D (T.eChr χ) V.rank → ResEta D (T.eChr χ') W.rank → ∀ Φ : X.Sch V W, Continuous fun q : (GA D V × GA D W) × WA V W => Wl.evS V W (Wl.om V W χ χ' q.1 Φ) q.2 := by
-  intro D X T Wl V W χ χ' hne h1 h2 Φ
-  have hc : ∀ χ, IsHC D (T.eChr χ) := fun χ => (Set.ext_iff.1 T.eChr_range _).1 ⟨χ, rfl⟩
-  have hm : ∀ Φ, Wl.evS V W Φ ∈ ThS Wl.ψ V W := fun Φ =>
-    mem_ThS.2 ((Set.ext_iff.1 (Wl.evS_range V W hne) _).1 ⟨Φ, rfl⟩)
-  let E : X.Sch V W ≃ₗ[ℂ] ThS Wl.ψ V W := LinearEquiv.ofBijective ((Wl.evS V W).codRestrict _ hm)
-    ⟨fun a b h => Wl.evS_inj V W (congrArg Subtype.val h), fun f => by
-      obtain ⟨a, ha⟩ := (Set.ext_iff.1 (Wl.evS_range V W hne) f.1).2 (mem_ThS.1 f.2)
-      exact ⟨a, Subtype.ext ha⟩⟩
-  have hE : ∀ f : ThS Wl.ψ V W, Wl.evS V W (E.symm f) = f.1 := fun f => congrArg Subtype.val (E.apply_symm_apply f)
-  let om : GA D V × GA D W →* Module.End ℂ (ThS Wl.ψ V W) := E.conjRingEquiv.toMonoidHom.comp (Wl.om V W χ χ')
-  have hom : ∀ p f, (om p f).1 = Wl.evS V W (Wl.om V W χ χ' p (E.symm f)) := fun _ _ => rfl
-  have hw : IsWeilOn Wl.ψ V W (T.eChr χ) (T.eChr χ') om := by
-    refine ⟨fun g h w₀ f f' e => ?_, fun γ hγ γ' hγ' f => ?_, fun f w => ?_, fun μ 𝓕 hμ h𝓕 p f => ?_,
-      fun e he g h hg hh x y hx hy => ?_⟩
-    · rw [hom, hom]
-      exact Wl.om_heis V W χ χ' hne h1 h2 g h w₀ _ _ (by rw [hE, hE, e])
-    · rw [hom, Wl.om_aut V W χ χ' hne h1 h2 γ hγ γ' hγ', hE]
-    · exact Wl.om_cont V W χ χ' hne h1 h2 _ w
-    · rw [hom, Wl.om_unit V W χ χ' hne h1 h2 μ 𝓕 hμ h𝓕, hE]
-    · obtain ⟨r, hr, k⟩ := Wl.om_split V W χ χ' hne h1 h2 e he g h hg hh x y hx hy
-      refine ⟨r, hr, fun ℓ hℓ f => ?_⟩
-      have := k (ℓ.comp E.toLinearMap) (fun u hu a a' e' => hℓ u hu (E a) (E a') e') (E.symm f)
-      simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this
-      exact this
-  have := continuous_om_pair Wl.ψ_std ⟨hne, hc χ, hc χ', h1, h2⟩ hw (E Φ)
-  simpa only [hom, E.symm_apply_apply] using this
-
 end GlobalTheory.ThetaJointCont
 
 end

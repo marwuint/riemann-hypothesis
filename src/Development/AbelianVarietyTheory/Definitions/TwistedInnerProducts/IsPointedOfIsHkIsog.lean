@@ -103,13 +103,6 @@ def IsThetaTrace (p : ℕ) (s : LB.Sec (LPow A L.L 1 (Over.mk x))) (s' : LB.Sec 
     IsRepsModTors (transKer A Ψ) p (fun i => (U i).pt) ∧ (∀ i, IsDescLift A L Ψ _ β (U i)) ∧
     (∀ i, IsActOf A L.L _ (U i) s₁ (F i)) ∧ ∀ j, t.f j = ∑ i, (F i).f j
 
-def IsThetaTraceSym [IsCommMonObj A] (p : ℕ) (s : LB.Sec (LPow A L.L 1 (Over.mk x)))
-    (s' : LB.Sec (LPow A L.L 1 (Over.mk x'))) : Prop :=
-  ∃ (β : LB.Gen (isoLB A L Ψ ((p : ℤ) ^ 2))) (t : LB.Sec (LPow A L.L ((p : ℤ) ^ 2) (Over.mk x)))
-    (n : ℕ) (r : Fin n → (Over.mk x ⟶ A)) (F : Fin n → LB.Sec (LPow A L.L ((p : ℤ) ^ 2) (Over.mk x))),
-    IsRigIso A L Ψ _ β ∧ IsCarried A L Ψ _ β s' t ∧ IsRepsModTors (transKer A Ψ) p r ∧
-    (∀ i, IsVtOver A L p (· = r i) s (r i ^ p) (F i)) ∧ ∀ j, t.f j = ∑ i, (F i).f j
-
 abbrev sv {a : ℤ} {T : Over S} (s : LB.Sec (LPow A L.L a T)) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z)
     (J : (Z ⟶ A.left) → L.L.ι) : Z.presheaf.stalk z :=
   sval (L := L.L) (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s r z J
@@ -141,10 +134,6 @@ omit [GrpObj A] in
 
 theorem sec_ext {X : Scheme.{0}} {M : LB X} {a b : LB.Sec M} (h : ∀ j, a.f j = b.f j) : a = b := by
   cases a; cases b; congr; exact funext h
-
-theorem IsCarried.unique (h : IsCarried A L Ψ k β s' t) (h' : IsCarried A L Ψ k β s' t') : t = t' :=
-  sec_ext (sec_ext_val (L := L.L) (φ := fun _ : Fin 1 => (snd (Over.mk x) A).left) L.isLB fun z _ hJ =>
-    (h.val _ z hJ).trans (h'.val _ z hJ).symm)
 
 theorem exists_isCarried (hβ : β.IsGen) (s' : LB.Sec (LPow A L.L 1 (Over.mk x'))) :
     ∃ t, IsCarried A L Ψ k β s' t := by
@@ -183,10 +172,6 @@ theorem exists_isDescLift (hβ : β.IsGen) {c : Over.mk x ⟶ A} (hc : c ∈ tra
     (LB.mulGen L.L _ _ _ _ β (LB.invGen L.L _ _ (LB.pullGen L.L _ _ β (translT A c).left)))
     (mulGen_isGen _ _ _ _ _ _ _ hβ (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hβ _)))
   exact ⟨⟨c, u, hu⟩, rfl, hc, corr_of_val L.isLB fun z J hJ => hv _ _ z J hJ⟩
-
-theorem IsDescLift.unique {U' : ThetaGrp A L.L k (Over.mk x)} (h : IsDescLift A L Ψ k β U)
-    (h' : IsDescLift A L Ψ k β U') (e : U.pt = U'.pt) : LB.Gen.Corr L.L _ _ _ _ U.φ U'.φ :=
-  corr_of_val L.isLB fun z J hJ => (h.val _ z hJ).trans (by rw [e]; exact (h'.val _ z hJ).symm)
 
 theorem act_val {T : Over S} {U : ThetaGrp A L.L k T} {a b : LB.Sec (LPow A L.L k T)} (h : IsActOf A L.L k U a b)
     {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L.L z J) :
@@ -343,15 +328,6 @@ theorem IsMulPull.exists_isRigIso {p : ℕ} {s : LB.Sec (LPow A L.L 1 (Over.mk x
   · rw [hv _ _ z J hJ, ← val_corr hJ cα]
     exact (twist_val tw _ z hJ).trans (mul_comm _ _)
 
-theorem isThetaTrace_mulT [IsCommMonObj A] {p : ℕ} {s : LB.Sec (LPow A L.L 1 (Over.mk x))}
-    {s₁ : LB.Sec (LPow A L.L ((p : ℤ) ^ 2) (Over.mk x))} (h : IsMulPull A L p s s₁) :
-    IsThetaTrace A L (mulT A (Over.mk x) p).left p s s := by
-  obtain ⟨β, hβ, hc⟩ := h.exists_isRigIso
-  refine isThetaTrace_iff.2 ⟨β, s₁, 1, fun _ => 1, hβ, h, ⟨fun _ => Subgroup.one_mem _, fun c hc =>
-    ⟨0, by simpa using (mem_transKer_mulT p c).1 hc, fun _ _ => Subsingleton.elim _ _⟩⟩, fun Z r z J hJ => ?_⟩
-  rw [Fin.sum_univ_one, hc.val _ z hJ, translT_one, Over.id_left, Category.comp_id, mul_comm,
-    Units.mul_inv_cancel_right]
-
 theorem IsRepsModTors.card {G : Type} [CommGroup G] {C : Subgroup G} {p n : ℕ} {r : Fin n → G}
     (h : IsRepsModTors C p r) : Nat.card C = Nat.card {c : G // c ∈ C ∧ c ^ p = 1} * n := by
   have : Function.Bijective fun q : {c : G // c ∈ C ∧ c ^ p = 1} × Fin n =>
@@ -448,18 +424,6 @@ theorem IsDescLift.symLift [IsCommMonObj A] (h : IsDescLift A L Ψ k β U) (hβ 
     simp only [ofMul_mul, ofMul_inv, ofMul_one]
     abel
 
-theorem IsThetaTrace.sv_eq_of_mulT [IsCommMonObj A] (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {p : ℕ}
-    {s u : LB.Sec (LPow A L.L 1 (Over.mk x))} (h : IsThetaTrace A L (mulT A (Over.mk x) p).left p s u)
-    {Z : Scheme.{0}} (r : Z ⟶ (Over.mk x ⊗ A).left) (z : Z) {J} (hJ : Good L.L z J) :
-    sv A L u (r ≫ (mulT A (Over.mk x) p).left) z J = sv A L s (r ≫ (mulT A (Over.mk x) p).left) z J := by
-  obtain ⟨β, s₁, n, c, hβ, hs, hr, hv⟩ := isThetaTrace_iff.1 h
-  obtain ⟨β', hβ', hc⟩ := hs.exists_isRigIso
-  obtain ⟨i, -, hi⟩ := hr.2 1 (Subgroup.one_mem _)
-  have hu : ∀ j, j = i := fun j => hi j (by simpa using (mem_transKer_mulT p _).1 (hr.1 j))
-  rw [hv _ r z J hJ, Finset.sum_eq_single i (fun j _ hj => absurd (hu j) hj) (fun h => absurd (Finset.mem_univ i) h),
-    hc.val _ z hJ, hβ.val_unique hG hA hβ' _ z hJ, Category.assoc, mem_transKer.1 (hr.1 i), mul_comm,
-    Units.mul_inv_cancel_right]
-
 end General
 
 section Hecke
@@ -475,10 +439,6 @@ def thetaTransport (p : ℕ) : Transport Xo c :=
 def hkTr (p : ℕ) (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y z : FrPt Xo c Ω)
     (ψ : pullback Xo.univ.t.G.hom y.x ⟶ pullback Xo.univ.t.G.hom z.x) : Prop :=
   IsThetaTrace Xo.univ.t.G Xo.univ.t.PP (conj y.x z.x ψ) p y.s z.s
-
-def hkTrSym (p : ℕ) (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y z : FrPt Xo c Ω)
-    (ψ : pullback Xo.univ.t.G.hom y.x ⟶ pullback Xo.univ.t.G.hom z.x) : Prop :=
-  IsThetaTraceSym Xo.univ.t.G Xo.univ.t.PP (conj y.x z.x ψ) p y.s z.s
 
 variable {Xo c}
 
@@ -570,15 +530,6 @@ theorem exists_isMulPull (p : ℕ) {T : Over Xo.X} (s : LB.Sec (LPow Xo.univ.t.G
     (pullMulSec (φ := fun _ : Fin 1 => (snd T Xo.univ.t.G).left) (ε := fun _ => 1) s (mulT Xo.univ.t.G T p).left α gα)
   exact ⟨b, α₀, α, g₀, n₀, cα, twist_of_val Xo.univ.t.PP.isLB gα fun z J hJ =>
     (hb _ _ z J hJ).trans ((sval_pullMulSec _ _ _ _ _ z hJ).trans (mul_comm _ _))⟩
-
-example : IsRepsModTors (⊤ : Subgroup ℤˣ) 3 ![1, -1] := by
-  refine ⟨fun _ => trivial, fun c _ => ?_⟩
-  rcases Int.units_eq_one_or c with rfl | rfl
-  · exact ⟨0, by decide, by decide⟩
-  · exact ⟨1, by decide, by decide⟩
-
-example (P : Ideal (𝓞 E)) (p i : ℕ) (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω)
-    (C : hkKer (Xo := Xo) P p i Ω y) (z : FrPt Xo c Ω) : Prop := hkRelFr P p i (hkTr Xo c p) Ω y C z
 
 end Hecke
 

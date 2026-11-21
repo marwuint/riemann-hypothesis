@@ -50,8 +50,4 @@ theorem LatTo.trans {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V
   simp only [AddEquiv.trans_apply]
   rw [e₀, e₁]
 
-example {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
-    {X : Type} [AddCommGroup X] {m : ℕ} {t : Fin m → V} {δ : Fin m → LinearMap.BilinForm ℤ X}
-    (𝔪 : UMem X₁ z₁ act V ev X t δ) : LatTo 𝔪 𝔪 := LatTo.refl 𝔪
-
 end GlobalTheory.Poinc.Sep.Cmp

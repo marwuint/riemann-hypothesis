@@ -13,8 +13,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalAddCharUnramifiedOfSplitsCompletelyAbovePla
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousSingleAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnipotentMapsForThetaTripleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneVonNeumannSchwartzBruhatTransverseLagrangiaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnipotentMapsForThetaTriple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneVonNeumannSchwartzBruhatTransverseLagrangia
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -70,7 +70,7 @@ theorem exists_isLinBar : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.Indefinit
     (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V' Γ.W) (hTr : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ X om om'),
     ∃ ι : ((Fin a' × Fin (a + a') → Fv D.host.F Bs.v₁) → ℂ) →ₗ[ℂ] (Matrix (Fin a') (Fin (a + a')) (Fv D.host.F Bs.v₁) → ℂ), Γ.M'.IsLinBar Bs.ψ Bs.τ₁ 1 1 ι := by
   intro D a a' Bs Γ X om om' hTr
-  obtain ⟨uT, uM, hT, hM, hspan, hsymp⟩ := GlobalTheory.T.exists_unipotent_maps_for_theta_triple Bs Γ X om om' hTr
+  obtain ⟨uT, uM, hT, hM, hspan, hsymp⟩ := _root_.GlobalTheory.LinCoords.coords Bs Γ X om om' hTr
   have hψc : Continuous (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) := GlobalTheory.VacAny.continuous_psiV hTr.base.std.1 Bs.v₁
   have hunr : PsiUnr Bs.ψ Bs.v₁ := GlobalTheory.BaseGoodPlace.psiUnr_of_not_le
     (GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D Bs.ψ hTr.base.std) Bs.v₁
@@ -85,7 +85,7 @@ theorem exists_isLinBar : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.Indefinit
     rw [(hM z).2.1]
     simp
   haveI : CharZero (Fv D.host.F Bs.v₁) := charZero_of_injective_algebraMap (algebraMap D.host.F _).injective
-  obtain ⟨ι, hbij, htr, hmu⟩ := GlobalTheory.T.stoneVonNeumann_schwartzBruhat_transverseLagrangians (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) hψc hunr'
+  obtain ⟨ι, hbij, htr, hmu⟩ := _root_.GlobalTheory.StoneVN.intertwiner_matrix (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) hψc hunr'
     ((GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁).comp uT) ((GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁).comp uM)
     (fun Y Y' => by
       simp only [AddMonoidHom.comp_apply]

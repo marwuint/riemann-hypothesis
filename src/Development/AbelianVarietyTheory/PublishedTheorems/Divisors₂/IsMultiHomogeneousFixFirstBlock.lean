@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IrreducibleOfIrreducibleMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallAevalLineVanishingIdealIff
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointHeight
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsIsHomogeneousOfEquivariant
+import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ProjPointIdealMemProjComponentsOfIsProjPureDim
 
 set_option autoImplicit false
@@ -36,17 +38,6 @@ theorem localLength_ne_top [IsNoetherianRing R] {J Q : Ideal R} [Q.IsPrime]
     Ideal.Quotient.mk_surjective]
   exact Module.length_ne_top
 
-theorem localLength_ne_zero {J Q : Ideal R} [Q.IsPrime] (h : J ≤ Q) : localLength J Q ≠ 0 := by
-  rw [localLength, Ne, Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff]
-  refine ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal _).ne_top ?_
-  rw [← Localization.AtPrime.map_eq_maximalIdeal]
-  exact Ideal.map_mono h
-
-theorem localLength_self (Q : Ideal R) [Q.IsPrime] : localLength Q Q = 1 := by
-  rw [localLength, Localization.AtPrime.map_eq_maximalIdeal, Module.length_eq_one_iff,
-    isSimpleModule_iff_isCoatom, ← Ideal.isMaximal_def]
-  exact IsLocalRing.maximalIdeal.isMaximal _
-
 end Mult
 
 variable {k : Type} [Field k] {N : ℕ}
@@ -72,18 +63,7 @@ theorem projCycle_apply_of_notMem {J Q : Ideal (MvPolynomial (Fin N) k)}
   rw [projCycle, Finsupp.ofSupportFinite_coe]
   exact dif_neg h
 
-theorem mem_support_projCycle {J Q : Ideal (MvPolynomial (Fin N) k)} :
-    Q ∈ (projCycle J).support ↔ Q ∈ projComponents J := by
-  rw [Finsupp.mem_support_iff]
-  refine ⟨fun h => by_contra fun h' => h (projCycle_apply_of_notMem h'), fun h h0 => ?_⟩
-  haveI : Q.IsPrime := h.1.1.1
-  refine localLength_ne_zero h.1.1.2 ?_
-  rw [← cast_projCycle_apply h, h0, Nat.cast_zero]
-
 def hyperplaneForm (u : Fin N → k) : MvPolynomial (Fin N) k := ∑ j, C (u j) * X j
-
-theorem isHomogeneous_hyperplaneForm (u : Fin N → k) : (hyperplaneForm u).IsHomogeneous 1 :=
-  IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X k j).C_mul _
 
 def hyperplaneSection (P : Ideal (MvPolynomial (Fin N) k)) (u : Fin N → k) :
     Ideal (MvPolynomial (Fin N) k) →₀ ℕ :=

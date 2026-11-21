@@ -133,45 +133,6 @@ omit [DecidableEq α] in
 theorem form_right_right (Q : Matrix α α E) (y y' : Matrix α ν E) : form c Q (fromCols 0 y) (fromCols 0 y') = 0 := by
   simp [form, hTens, stdJ, Fintype.sum_sum_type]
 
-theorem heisFun_heisFun [CharZero F] (hc : ∀ z, c (c z) = z) (ψ : AddChar F ℂ) {Q : Matrix α α E} (hQ : IsHerm c Q)
-    (w w' : Matrix α (ν ⊕ ν) E) (φ : Matrix α ν E → ℂ) :
-    heisFun c ψ Q w (heisFun c ψ Q w' φ) = ψ (2⁻¹ * form c Q w w') • heisFun c ψ Q (w + w') φ := by
-  have e1 : ∀ x x' : Matrix α ν E, fromCols (x + x') (0 : Matrix α ν E) = fromCols x 0 + fromCols x' 0 := fun x x' => by
-    ext i (j | j) <;> simp
-  have e2 : ∀ y y' : Matrix α ν E, fromCols (0 : Matrix α ν E) (y + y') = fromCols 0 y + fromCols 0 y' := fun x x' => by
-    ext i (j | j) <;> simp
-  have e3 : ∀ u : Matrix α (ν ⊕ ν) E, u = fromCols u.toCols₁ 0 + fromCols 0 u.toCols₂ := fun u => by
-    ext i (j | j) <;> simp
-  have e4 : form c Q w w' = form c Q (fromCols w.toCols₁ 0) (fromCols 0 w'.toCols₂) -
-      form c Q (fromCols w'.toCols₁ 0) (fromCols 0 w.toCols₂) := by
-    conv_lhs => rw [e3 w, e3 w']
-    rw [form_add_left, form_add_right, form_add_right, form_left_left, form_right_right,
-      form_swap c hc hQ (fromCols w'.toCols₁ 0)]
-    ring
-  funext x
-  rw [Pi.smul_apply, heisFun, heisFun, heisFun, show (w + w').toCols₁ = w.toCols₁ + w'.toCols₁ from rfl,
-    show (w + w').toCols₂ = w.toCols₂ + w'.toCols₂ from rfl, smul_eq_mul, ← mul_assoc, ← mul_assoc,
-    ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x, e4]
-  congr 2
-  simp only [e1, e2, form_add_left, form_add_right]
-  ring
-
-omit [DecidableEq α] in
-
-theorem heisFun_levi (hc : ∀ z, c (c z) = z) (ψ : AddChar F ℂ) (Q : Matrix α α E) (a : GL ν E) (w : Matrix α (ν ⊕ ν) E)
-    (φ : Matrix α ν E → ℂ) :
-    heisFun c ψ Q w (fun x => φ (x * (a : Matrix ν ν E))) =
-      fun x => heisFun c ψ Q (w * ((levi c hc a : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E)) φ (x * (a : Matrix ν ν E)) := by
-  have e : ∀ x y : Matrix α ν E, fromCols x y * ((levi c hc a : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) =
-      fromCols (x * (a : Matrix ν ν E)) (y * (((a⁻¹ : GL ν E) : Matrix ν ν E).map c)ᵀ) := fun x y => by
-    rw [levi_val, fromCols_mul_fromBlocks]; simp
-  have f : ∀ x y : Matrix α ν E, form c Q (fromCols (x * (a : Matrix ν ν E)) 0)
-      (fromCols 0 (y * (((a⁻¹ : GL ν E) : Matrix ν ν E).map c)ᵀ)) = form c Q (fromCols x 0) (fromCols 0 y) := fun x y => by
-    rw [← form_mul c Q (levi c hc a) (fromCols x 0), e, e, Matrix.zero_mul, Matrix.zero_mul]
-  funext x
-  conv_rhs => rw [← fromCols_toCols w, e]
-  simp only [heisFun, toCols₁_fromCols, toCols₂_fromCols, f, Matrix.add_mul]
-
 end Group
 
 section Local

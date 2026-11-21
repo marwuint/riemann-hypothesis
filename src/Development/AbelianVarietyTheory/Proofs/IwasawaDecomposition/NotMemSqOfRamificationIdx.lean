@@ -333,32 +333,6 @@ end Enlarge
 
 section Data
 
-def ofFamily (B : Base) (pl : Finset ℕ) {I : Type} (s : B.places.Pl → I) (Q : I → Finset (HeightOneSpectrum (𝓞 B.host.E)))
-    (k : I → ℕ) (χ : I → HChar B.host.E)
-    (h : ∀ w, B.places.resChar w ∈ pl → TwProp B.toPre (B.places.resChar w) (k (s w)) (Q (s w)) (χ (s w)))
-    (hs : ∀ w, B.places.resChar w ∈ pl → s (B.places.conj w) = s w) : TwDat B where
-  pl := pl
-  Q w := if B.places.resChar w ∈ pl then Q (s w) else ∅
-  k w := if B.places.resChar w ∈ pl then k (s w) else 0
-  psi w := if B.places.resChar w ∈ pl then χ (s w) else 1
-  psi_is w := by
-    split_ifs with hw
-    exacts [(h w hw).1, isPsi_one _]
-  psi_ord w := by
-    split_ifs with hw
-    exacts [(h w hw).2.1, one_pow _]
-  psi_tw w := by
-    split_ifs with hw
-    exacts [(h w hw).2.2.1, Chr.isTwist_one _ _]
-  Q_l w := by
-    split_ifs with hw
-    exacts [(h w hw).2.2.2, fun _ h => absurd h (Finset.notMem_empty _)]
-  off w hw := ⟨if_neg hw, if_neg hw⟩
-  conj w := by
-    rw [TwFin.resChar_conj]
-    split_ifs with hw
-    exacts [by rw [hs w hw]; exact ⟨rfl, rfl⟩, ⟨rfl, rfl⟩]
-
 open Classical in
 
 def avoidPlaces (P : Pre) (s : Finset ℕ) : Finset (HeightOneSpectrum (𝓞 P.host.E)) :=

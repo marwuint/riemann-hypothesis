@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousSingleAt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitChartUniformiserAndResidueCard
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsRingEquivPadicOfResidueCardUniformizerStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsRingEquivPadicOfResidueCardUniformizer
 
 noncomputable section
 
@@ -47,7 +47,7 @@ theorem exists_coord_padic : ∀ (D : D7) (T : ℕ) [Fact T.Prime] (w : Formalis
   have hc2 : Irreducible (T : 𝒪[Fv D.host.F v]) := by
     rw [← map_natCast (intEquiv D.host.F v) T]
     exact (MulEquiv.irreducible_iff (intEquiv D.host.F v).toMulEquiv).2 hirr
-  obtain ⟨φ, hφ, hφ', hφO⟩ := GlobalTheory.T.exists_ringEquiv_padic_of_residueCard_uniformizer (Fv D.host.F v) T hc1 hc2
+  obtain ⟨φ, hφ, hφ', hφO⟩ := _root_.GlobalTheory.QpChar.exists_ringEquiv_padic (Fv D.host.F v) T hc1 hc2
   obtain ⟨sp, hse, -⟩ := GlobalTheory.FinPl.SplitPoint.exists_splitPt D v e ε hs hε he
   refine ⟨v, φ.symm.toRingHom.comp sp.pr, sp.sec.comp φ.toRingHom.toAddMonoidHom, ⟨ε, hε, he⟩,
     fun a => ?_, fun x => ?_, hφ'.comp sp.cont_pr, sp.cont_sec.comp hφ, fun a => ?_⟩

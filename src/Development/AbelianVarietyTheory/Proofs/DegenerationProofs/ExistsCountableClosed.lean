@@ -1,13 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsPullDegOfVal
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolAVDescendsToCountableSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolarisedRingActionDescendOfGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AdditivePointsDescendFieldExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiEvenTauBimultDescendOfInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsOrderActionDescentFieldExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiRelationDescendsFieldExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationPreDataOverSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPullDegCancelTowerOfFieldsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolAVDescendsToCountableSubfield
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsQkPullEquiv
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsScalarFormTraceForm
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolarisedRingActionDescendOfGenerators
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AdditivePointsDescendFieldExtension
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiEvenTauBimultDescendOfInjective
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsOrderActionDescentFieldExtension
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiRelationDescendsFieldExtension
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegenerationPreDataOverSubfield
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPullDegCancelTowerOfFields
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRatioDescendsDegenerationPsiFamilyStatement
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open scoped CategoryTheory.Obj BigOperators
@@ -46,10 +48,10 @@ theorem exists_pre (hL : Laws) {K : Type} [Field K] [IsAlgClosed K] {O : Type} [
   have hb' : AddSubgroup.closure (Set.range b) = ⊤ := by
     rw [← Submodule.span_int_eq_addSubgroupClosure, hb]; rfl
   obtain ⟨K₀, P₀, Φ, a₀, x₀, hc, gp, hw, ha, hx⟩ :=
-    GlobalTheory.T.polAV_descends_to_countable_subfield' K D.P (Fin n) (Fin m) (fun j => o.act (gen j)) (fun k => D.c (b k))
-  obtain ⟨o₀, ho₀⟩ := GlobalTheory.T.polarisedRingAction_descend_of_generators O _ gen hgen' K₀ K _ P₀ D.P Φ gp hw o a₀ ha
-  obtain ⟨c₀, hc₀, hc₁⟩ := GlobalTheory.T.additive_points_descend_field_extension K₀ K _ P₀ D.P Φ gp D.X _ b hb' D.c D.c_add x₀ hx
-  obtain ⟨D₀, ψ, hψ, h₀, rfl, e⟩ := GlobalTheory.T.exists_degenerationPreData_over_subfield hL K₀ K _ D P₀ Φ gp hw c₀ hc₀ hc₁
+    _root_.GlobalTheory.PolCountableDescent.polAV_descends_to_countable_subfield K D.P (Fin n) (Fin m) (fun j => o.act (gen j)) (fun k => D.c (b k))
+  obtain ⟨o₀, ho₀⟩ := _root_.GlobalTheory.polOAct_descend_of_generators O _ gen hgen' K₀ K _ P₀ D.P Φ gp hw o a₀ ha
+  obtain ⟨c₀, hc₀, hc₁⟩ := _root_.GlobalTheory.PointDescent.additive_points_descend K₀ K _ P₀ D.P Φ gp D.X _ b hb' D.c D.c_add x₀ hx
+  obtain ⟨D₀, ψ, hψ, h₀, rfl, e⟩ := _root_.GlobalTheory.FieldPull.exists_pre_below hL K₀ K _ D P₀ Φ gp hw c₀ hc₀ hc₁
   obtain rfl := eq_of_heq e
   obtain ⟨a, Ha⟩ := GlobalTheory.T.exists_ratio_descends_degenerationPsiFamily K D ψ hψ
   have : Countable D.X := Finsupp.Countable.of_moduleFinite (R := ℤ)
@@ -57,7 +59,7 @@ theorem exists_pre (hL : Laws) {K : Type} [Field K] [IsAlgClosed K] {O : Type} [
   obtain ⟨D', h₁, -, -⟩ := DegPull.exists_isPullDeg hL.polBaseChange K₀ F₁ α D₀ ⊤ (nonempty_psiOn_field D₀) trivial
   generalize K₀.subtype = i at h₀ ho₀ hαβ
   subst hαβ
-  obtain ⟨h₂, e₂⟩ := GlobalTheory.T.exists_pullDeg_cancel_tower_of_fields K₀ F₁ K α β D₀ D' _ h₁ h₀
+  obtain ⟨h₂, e₂⟩ := _root_.GlobalTheory.FieldPull.exists_isPullDeg_cancel K₀ F₁ K α β D₀ D' _ h₁ h₀
   obtain ⟨ψ₁, hψ₁, hD, e₃⟩ := Ha F₁ β D' h₂ hβ
   obtain ⟨o₁, ho₁⟩ := polOActPull _ _ _ D₀.P D'.P _ (pull_grp h₁) (LBIso.symm ⟨h₁.w, h₁.w_gen⟩) O o₀
   refine ⟨F₁, inferInstance, inferInstance, inferInstance, β, _, hD, o₁, fun c => ?_⟩
@@ -80,10 +82,10 @@ theorem exists_data (hL : Laws) {K : Type} [Field K] [IsAlgClosed K] {O : Type} 
   have hx : ∀ (a : O) y, hD.xe (a • y) = a • hD.xe y := fun a y => by
     show _ = hD.xe (a • hD.xe.symm (hD.xe y))
     rw [AddEquiv.symm_apply_apply]
-  obtain ⟨oa₁, rfl⟩ := GlobalTheory.T.exists_orderAction_descent_field_extension hL.globalFns F₁ K β D₁ D hD O o₁ oa hx ho
-  obtain ⟨h₁, h₂⟩ := GlobalTheory.T.psiEven_tauBimult_descend_of_injective hL.globalFns F₁ K β β.injective D₁ D hD
+  obtain ⟨oa₁, rfl⟩ := _root_.GlobalTheory.exists_oAct_of_field_extension hL.globalFns F₁ K β D₁ D hD O o₁ oa hx ho
+  obtain ⟨h₁, h₂⟩ := _root_.GlobalTheory.psiEven_tauBimult_of_isPullDeg_injective hL.globalFns F₁ K β β.injective D₁ D hD
   exact ⟨F₁, inferInstance, inferInstance, inferInstance, β, D₁, hD, inferInstance, oa₁, hx, ho, h₁, h₂,
-    GlobalTheory.T.psi_relation_descends_field_extension hL.globalFns F₁ K β D₁ D hD O oa₁ oa hx ho⟩
+    _root_.GlobalTheory.psi_relation_descend_field hL.globalFns F₁ K β D₁ D hD O oa₁ oa hx ho⟩
 
 end GlobalTheory.FieldPull
 end

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAss
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsBasisAdaptedLatticeSubspace
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsNilpotentSubOneOfConjPow
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FinrankLeOfWeightsUnipotentSymplecticStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FinrankLeOfWeightsUnipotentSymplectic
 
 namespace GlobalTheory.SS.Weight
 open Module
@@ -169,7 +169,7 @@ theorem finrank_le_ker_add (l : ℕ) [Fact l.Prime] {T : Type} [AddCommGroup T]
     induction j with
     | zero => intro t; rfl
     | succ j ih => intro t; rw [Function.iterate_succ_apply, Function.iterate_succ_apply, h, ih]
-  have main := GlobalTheory.T.finrank_le_of_weights_unipotent_symplectic ℚ_[l] V B' ⟨hleft, fun y hy => hleft y fun x => by
+  have main := _root_.GlobalTheory.SS.LinCore.finrank_le_of_weights ℚ_[l] V B' ⟨hleft, fun y hy => hleft y fun x => by
       rw [hsk' x y, hy x, neg_zero]⟩ hsk' S' Φ' q hq ?_ ?_ ?_ ?_
     (W.localized' ℚ_[l] (ℤ_[l])⁰ ι) P hP ?_ ?_
   · have h1 : finrank ℚ_[l] V = finrank ℤ_[l] T := Module.finrank_baseChange

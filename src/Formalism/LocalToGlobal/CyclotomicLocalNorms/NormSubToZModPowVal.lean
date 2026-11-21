@@ -22,11 +22,6 @@ variable {l}
 
 theorem χQ_coe (g : GQ l) : ((χQ l g : ℚ_[l]ˣ) : ℚ_[l]) = (((χZ l g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) := rfl
 
-theorem χZ_continuous : Continuous (χZ l) := by
-  first
-    | exact cyclotomicCharacter.continuous l ℚ_[l] (Om l)
-    | (unfold χZ; exact cyclotomicCharacter.continuous l ℚ_[l] (Om l))
-
 theorem χZ_spec (g : GQ l) (m : ℕ) (ζ : Om l) (h : ζ ^ (l ^ m) = 1) :
     g ζ = ζ ^ (((χZ l g : ℤ_[l]ˣ) : ℤ_[l]).toZModPow m).val :=
   cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (GQ l) (Om l) g) ζ h

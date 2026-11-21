@@ -177,9 +177,6 @@ lemma affine_fromSpec_specializes_iff (q q' : Spec Γ(X, U)) :
   rw [hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff]
   exact (PrimeSpectrum.le_iff_specializes q q').symm
 
-lemma affine_fromSpec_injective : Function.Injective hU.fromSpec :=
-  hU.fromSpec.isOpenEmbedding.injective
-
 lemma affine_height_eq_one (Z : PrimeDivisor X) (q : Spec Γ(X, U))
     (hq : hU.fromSpec q = Z.point) : q.asIdeal.height = 1 := by
   obtain ⟨z, hz⟩ := Z

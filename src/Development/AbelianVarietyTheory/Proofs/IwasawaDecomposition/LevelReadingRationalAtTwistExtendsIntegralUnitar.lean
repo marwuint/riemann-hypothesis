@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RdLevOn
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemPrinCongOfSm
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenNsmulAdelicCompletionOfVectorSet
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CongruenceOneMatricesMemNhdsOneStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRationalAtPrimesUnitaryCongruentOneStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRationalAtPrimesUnitaryCongruentOne
 
 open scoped TensorProduct
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.UG GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TypeLev Matrix Formalism.L2.Forms GlobalTheory.SeeSaw.TwLev
@@ -102,7 +102,7 @@ theorem rd_all : ∀ {F E K : Type} [Field F] [NumberField F] [Field E] [NumberF
     rw [hk, Nat.cast_mul]
     exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)
   intro z _ hz hzU
-  obtain ⟨g, hgU, hgR, hc1, hc2⟩ := GlobalTheory.T.exists_rationalAtPrimes_unitary_congruentOne hc hQc m hmpos (fun P hP => hmw P (Finset.mem_union_right _ hP)) z hzU hz
+  obtain ⟨g, hgU, hgR, hc1, hc2⟩ := _root_.GlobalTheory.SeeSaw.TwLev.GlueApprox.exists_ratAt_congOne hc hQc m hmpos (fun P hP => hmw P (Finset.mem_union_right _ hP)) z hzU hz
   set u := z⁻¹ * g with hu
   have huU : u ∈ UAd hc n := mul_mem (inv_mem hzU) hgU
   have huN := hm₀N m (Dvd.intro _ rfl) hmpos u hc1 hc2

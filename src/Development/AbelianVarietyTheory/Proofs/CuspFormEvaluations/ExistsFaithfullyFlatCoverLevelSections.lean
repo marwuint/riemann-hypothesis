@@ -6,8 +6,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ModuliUnivEtaKilled
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsPowMulCoprimeLe
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHomStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatRootsStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsTranslationSectionsUniversalObjectStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFaithfullyFlatRoots
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsTranslationSectionsUniversalObject
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -25,7 +25,7 @@ theorem exists_faithfullyFlat_isVtOver :
       KilledBy Xo l.Mb (levPt Xo x0 a) := by
     intro R _ x0 a b hb
     rw [levPt, Category.assoc, (moduli_univ_eta_killed hL E H Dw l Xo a).1 b hb, MonObj.comp_one]
-  obtain ⟨B, _, φ, w, hφ, hw⟩ := GlobalTheory.T.exists_faithfullyFlat_nthRoots_of_torsion hL E H Dw l Xo S y.x l.M l.M hM hM (Fin n)
+  obtain ⟨B, _, φ, w, hφ, hw⟩ := _root_.GlobalTheory.exists_faithfullyFlat_roots hL E H Dw l Xo S y.x l.M l.M hM hM (Fin n)
     (fun b => levPt Xo y.x (x b)) (fun b => hpow _ _)
   letI : Algebra c.F B := (φ.comp (algebraMap c.F S)).toAlgebra
   let ψ : S →ₐ[c.F] B := { φ with commutes' := fun _ => rfl }
@@ -45,7 +45,7 @@ theorem exists_faithfullyFlat_isVtOver :
     intro b
     obtain ⟨v, hv⟩ := hroot _ hx b
     obtain ⟨t', ht', hk⟩ := (exists_root_killedBy_pow E H Dw l Xo _ _ v l.M hM (hkill _ _) hv).2 rfl
-    refine (GlobalTheory.T.exists_translation_sections_universal_object hL E H Dw l Xo l.M l.odd (ptO Xo y'.x) y'.s).1 _ _ t' ht' ?_ hk
+    refine (_root_.GlobalTheory.exists_isVtOver_and_existsUnique_isUUOver hL E H Dw l Xo l.M l.odd (ptO Xo y'.x) y'.s).1 _ _ t' ht' ?_ hk
     rw [pow_two, pow_mul, ht', hpow]
   choose F hF using hF
   exact ⟨B, inferInstance, inferInstance, ψ, y', F, hφ, hy', hF⟩

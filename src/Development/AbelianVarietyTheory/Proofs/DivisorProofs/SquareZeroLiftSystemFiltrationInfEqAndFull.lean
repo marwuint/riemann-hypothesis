@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SurjectiveOfIsPullb
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsNoetherianRingDualNumber
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdealCochainOfCoboundaryConstantsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyLocIsoSquareZeroSmoothLiftSystemsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocIsoTransportCochainsInIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdealCochainOfCoboundaryConstants
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyLocIsoSquareZeroSmoothLiftSystems
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocIsoTransportCochainsInIdeal
 open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.DeRham GlobalTheory.SqLift GlobalTheory.LiftSys GlobalTheory.Published
 attribute [local instance] Over.cartesianMonoidalCategory
 
@@ -30,26 +30,26 @@ theorem K_inf_eq_and_full : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I 
       S.K hI ⊓ I • (⊤ : Submodule R (Cr hI π s₀)) ≤ S'.K hI ⊓ I • (⊤ : Submodule R (Cr hI π s₀)) := by
     intro S S' c hc'
     obtain ⟨hcK, hcI⟩ := hc'
-    obtain ⟨Φ⟩ := GlobalTheory.T.nonempty_locIso_squareZeroSmoothLiftSystems R R₀ I hI π hπ hk X₀ s₀ S S'
-    obtain ⟨-, h2, h3⟩ := GlobalTheory.T.locIso_transport_cochains_in_ideal R R₀ I hI π hπ hk X₀ s₀ S S' Φ
+    obtain ⟨Φ⟩ := _root_.GlobalTheory.LiftSys.locIso_nonempty R R₀ I hI π hπ hk X₀ s₀ S S'
+    obtain ⟨-, h2, h3⟩ := _root_.GlobalTheory.LiftSys.locIso_transport R R₀ I hI π hπ hk X₀ s₀ S S' Φ
     obtain ⟨z, z', hz, hmk, hmk', hzz⟩ := h3 c hcI
     have h0 : H1.mk _ z = 0 := hmk.trans (LinearMap.mem_ker.1 hcK)
-    obtain ⟨g, hg, hdg⟩ := GlobalTheory.T.exists_ideal_cochain_of_coboundary_constants R R₀ I hI π hπ hk X₀ s₀ hc S z hz h0
+    obtain ⟨g, hg, hdg⟩ := _root_.GlobalTheory.LiftSys.cobound_I R R₀ I hI π hπ hk X₀ s₀ hc S z hz h0
     refine ⟨LinearMap.mem_ker.2 ?_, hcI⟩
     rw [← hmk']
     refine H1.mk_eq_zero.2 ⟨fun W ↦ Φ.φ W (g W), ?_⟩
     funext U V a
     rw [h2 g hg U V a, hdg, hzz]
   refine fun S S' ↦ ⟨le_antisymm (key S S') (key S' S), fun hF z₁' hz₁' ↦ ?_⟩
-  obtain ⟨Ψ⟩ := GlobalTheory.T.nonempty_locIso_squareZeroSmoothLiftSystems R R₀ I hI π hπ hk X₀ s₀ S' S
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.locIso_transport_cochains_in_ideal R R₀ I hI π hπ hk X₀ s₀ S' S Ψ
+  obtain ⟨Ψ⟩ := _root_.GlobalTheory.LiftSys.locIso_nonempty R R₀ I hI π hπ hk X₀ s₀ S' S
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.LiftSys.locIso_transport R R₀ I hI π hπ hk X₀ s₀ S' S Ψ
   obtain ⟨z₁, hz₁, hz₁e⟩ := h1 z₁' hz₁'
   obtain ⟨c, hcI, hc₁⟩ := hF z₁ hz₁
   obtain ⟨y', y, hy'I, hy', hy, hyy⟩ := h3 c hcI
   have hyI : S.IsIdealValuedLiftSystemCocycle y := fun U V a ↦ by
     rw [hyy]; exact mem_map_algebraMap_of_algHom (Ψ.φ V : S'.F.obj V →ₐ[R] S.F.obj V) (hy'I U V a)
   have hd : H1.mk _ (y - z₁) = 0 := by rw [map_sub, hy, hc₁, sub_self]
-  obtain ⟨g, hg, hdg⟩ := GlobalTheory.T.exists_ideal_cochain_of_coboundary_constants R R₀ I hI π hπ hk X₀ s₀ hc S (y - z₁)
+  obtain ⟨g, hg, hdg⟩ := _root_.GlobalTheory.LiftSys.cobound_I R R₀ I hI π hπ hk X₀ s₀ hc S (y - z₁)
     (fun U V a ↦ Ideal.sub_mem _ (hyI U V a) (hz₁ U V a)) hd
   let g' : C0 S'.F := fun W ↦ (Ψ.φ W).symm (g W)
   have hg' : S'.IsIdealValuedLiftSystemCochain g' := fun W ↦

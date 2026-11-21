@@ -421,32 +421,8 @@ def admitted (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
 def aux₃ (D : Formalism.BasicNotions.D7) (CLa' CD Csz : ℝ) : Prop :=
   Conclusion1 D ∧ Conclusion2 D ∧ PointsLemma D ∧ Conclusion4 D ∧ Conclusion5 D ∧ Conclusion6 D CLa' CD Csz
 
-def Stmt (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz : ℝ) : Prop :=
-  admitted D CLa Ck Crk Cdeg → aux₃ D CLa' CD Csz
-
 def ClosedFormOfAdmitted (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ CLa Ck Crk Cdeg : ℝ, admitted D CLa Ck Crk Cdeg →
     ∃ CLa' CD Csz : ℝ, 0 < CLa' ∧ 0 < CD ∧ 0 < Csz ∧ aux₃ D CLa' CD Csz
-
-def AdmF (CLa Ck Crk Cdeg : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  ∀ x (i : Fm.Ix x), admitted (Fm.D x i) CLa Ck Crk Cdeg
-
-def OrbitValuationBound (CLa' CD Csz : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ i : Fm.Ix x, aux₃ (Fm.D x i) CLa' CD Csz
-
-def KudlaFamilyStatement (CLa Ck Crk Cdeg CLa' CD Csz : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  AdmF CLa Ck Crk Cdeg Fm → OrbitValuationBound CLa' CD Csz Fm
-
-def DerivativeStatementDesign (CLa Ck Crk Cdeg CLa' CD Csz : ℝ) (Fm : Formalism.MainNotions.DFamP) : Prop :=
-  ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), KudlaFamilyStatement CLa Ck Crk Cdeg CLa' CD Csz (Fm ε h0 h1)
-
-def FamilyClosedForm {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  ∀ CLa Ck Crk Cdeg : ℝ, AdmF CLa Ck Crk Cdeg Fm →
-    ∃ CLa' CD Csz : ℝ, 0 < CLa' ∧ 0 < CD ∧ 0 < Csz ∧ OrbitValuationBound CLa' CD Csz Fm
-
-def DerivativeStatementClosedDesign (Fm : Formalism.MainNotions.DFamP) : Prop :=
-  ∀ CLa Ck Crk Cdeg : ℝ, (∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), AdmF CLa Ck Crk Cdeg (Fm ε h0 h1)) →
-    ∃ CLa' CD Csz : ℝ, 0 < CLa' ∧ 0 < CD ∧ 0 < Csz ∧
-      ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), OrbitValuationBound CLa' CD Csz (Fm ε h0 h1)
 
 end Formalism.MainNotions.SourceCleaning

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NeZeroTop
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPtOfMulJ0DecorationStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPtOfMulJ0Decoration
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC GlobalTheory.Mem.Col2.TopCh GlobalTheory.Mem.ColAd Matrix
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
@@ -43,7 +43,7 @@ theorem mem_topU_iff : ∀ (F E K : Type) [Field F] [NumberField F] [Field E] [N
   set z := (k * t)⁻¹ * x * (k * t) with hz
   have hgz : y * x * (k * t) = g * z := by rw [hg, hz]; group
   rw [hgz] at hp'
-  have step := fun h : GLG E n SG => ((GlobalTheory.T.isPtOf_mul_J0_decoration F E hc n ST SG Q g z p p' h).1 hp hp')
+  have step := fun h : GLG E n SG => ((_root_.GlobalTheory.Mem.Col2.TopCh.isPtOf_mul_J0 F E hc n ST SG Q g z p p' h).1 hp hp')
   have htU : t ∈ UAd hc n := principal_le_adelic_unitary hc n ST SG ht
   have hktU : k * t ∈ UAd hc n := mul_mem hk htU
   have hgU : g ∈ UAd hc n := hp.uni

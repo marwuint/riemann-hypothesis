@@ -51,10 +51,6 @@ omit [CharZero K] in
 theorem evalB_ext {x y : 𝔹} (h : ∀ n, evalB K p n x = evalB K p n y) : x = y :=
   AdicCompletion.ext_evalₐ h
 
-omit [CharZero K] in
-theorem surjective_evalB (n : ℕ) : Function.Surjective (evalB K p n) :=
-  AdicCompletion.surjective_evalₐ J n
-
 variable (K p) in
 
 theorem map_ker_fontaineThetaInvertP :
@@ -70,12 +66,6 @@ theorem ker_evalB (n : ℕ) : RingHom.ker (evalB K p n) = maximalIdeal 𝔹 ^ n 
   rw [← map_ker_fontaineThetaInvertP K p]
   exact h
 
-theorem exists_toBDeRhamPlus_sub_mem (x : 𝔹) (n : ℕ) :
-    ∃ a : 𝔸, x - toBDeRhamPlus 𝒪 p a ∈ maximalIdeal 𝔹 ^ n := by
-  obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (evalB K p n x)
-  refine ⟨a, ?_⟩
-  rw [← ker_evalB, RingHom.mem_ker, map_sub, evalB_toBDeRhamPlus, ha, sub_self]
-
 theorem map_mem_maximalIdeal_pow {F : 𝔹 →+* 𝔹} (hF : ∀ x ∈ maximalIdeal 𝔹, F x ∈ maximalIdeal 𝔹)
     {x : 𝔹} {n : ℕ} (hx : x ∈ maximalIdeal 𝔹 ^ n) : F x ∈ maximalIdeal 𝔹 ^ n := by
   have h1 : (maximalIdeal 𝔹).map F ≤ maximalIdeal 𝔹 := Ideal.map_le_iff_le_comap.2 hF
@@ -90,23 +80,6 @@ theorem eq_zero_of_forall_mem_maximalIdeal_pow {x : 𝔹} (h : ∀ n : ℕ, x �
   refine hc.toIsHausdorff.haus x fun n => ?_
   rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]
   exact h n
-
-theorem ringHom_ext_bDeRhamPlus {F G : 𝔹 →+* 𝔹}
-    (h : ∀ w : 𝕎𝒪♭, F (wittToBDeRhamPlus 𝒪 p w) = G (wittToBDeRhamPlus 𝒪 p w))
-    (hF : ∀ x ∈ maximalIdeal 𝔹, F x ∈ maximalIdeal 𝔹)
-    (hG : ∀ x ∈ maximalIdeal 𝔹, G x ∈ maximalIdeal 𝔹) : F = G := by
-  have hA : F.comp (toBDeRhamPlus 𝒪 p) = G.comp (toBDeRhamPlus 𝒪 p) :=
-    IsLocalization.ringHom_ext (Submonoid.powers (p : 𝕎𝒪♭)) (RingHom.ext fun w => h w)
-  ext x
-  rw [← sub_eq_zero]
-  refine eq_zero_of_forall_mem_maximalIdeal_pow fun n => ?_
-  obtain ⟨a, ha⟩ := exists_toBDeRhamPlus_sub_mem x n
-  have hFG : F (toBDeRhamPlus 𝒪 p a) = G (toBDeRhamPlus 𝒪 p a) := RingHom.congr_fun hA a
-  have e : F x - G x = F (x - toBDeRhamPlus 𝒪 p a) - G (x - toBDeRhamPlus 𝒪 p a) := by
-    rw [map_sub, map_sub, hFG]
-    ring
-  rw [e]
-  exact Ideal.sub_mem _ (map_mem_maximalIdeal_pow hF ha) (map_mem_maximalIdeal_pow hG ha)
 
 end IsPerfectoidField
 

@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LatticeConditions
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.TwistedTriples
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CrystallineCocycleTransportConjugation
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSSRepTraceNondegenerateStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSSRepOfTraceNondegenerateStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceFormSpanRepNondegenerateMapRepIffStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSSRepTraceNondegenerate
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSSRepOfTraceNondegenerate
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceFormSpanRepNondegenerateMapRepIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicEmbeddingsConjugate
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicAutomorphismUnique
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalCoefficientChangeCompare
@@ -21,8 +21,8 @@ namespace GlobalTheory.TwistedSelmerCompare
 
 theorem isSSRep_map_iff {Γ K L : Type} [Group Γ] [Field K] [Field L] [CharZero K] [CharZero L] (f : K →+* L)
     {a : ℕ} (ρ : Γ →* GL (Fin a) K) : IsSSRep (mapRep f ρ) ↔ IsSSRep ρ :=
-  ⟨fun h => GlobalTheory.T.isSSRep_of_trace_nondegenerate' Γ K a ρ ((GlobalTheory.T.traceForm_nondegenerate_span_mapRep_iff Γ K L f a ρ).1 (GlobalTheory.T.eq_zero_of_trace_mul_eq_zero_of_isSSRep Γ L a _ h)),
-    fun h => GlobalTheory.T.isSSRep_of_trace_nondegenerate' Γ L a _ ((GlobalTheory.T.traceForm_nondegenerate_span_mapRep_iff Γ K L f a ρ).2 (GlobalTheory.T.eq_zero_of_trace_mul_eq_zero_of_isSSRep Γ K a ρ h))⟩
+  ⟨fun h => _root_.GlobalTheory.TraceSemisimple.isSSRep_of_trace_nondegenerate Γ K a ρ ((_root_.GlobalTheory.traceForm_span_rep_nondegenerate_mapRep_iff Γ K L f a ρ).1 (_root_.GlobalTheory.isSSRep_trace_nondegenerate Γ L a _ h)),
+    fun h => _root_.GlobalTheory.TraceSemisimple.isSSRep_of_trace_nondegenerate Γ L a _ ((_root_.GlobalTheory.traceForm_span_rep_nondegenerate_mapRep_iff Γ K L f a ρ).2 (_root_.GlobalTheory.isSSRep_trace_nondegenerate Γ K a ρ h))⟩
 
 section Param
 
@@ -117,34 +117,8 @@ theorem triple_iff (a : D.nd.Loc) (σ : D.what₂.FT) (Sg : List (Part D.naut.CG
     rw [← h1, h.2.2 w hw, ← Polynomial.map_map, ← Matrix.charpoly_map _ (D.ntw.twist₂ a)]
     rfl
 
-def RowsHaveParam : Prop :=
-  ∀ (a : D.nd.Loc) (σ : D.what₂.FT), TwistedTriples.IsGoodRow D a σ → ∃ Sg, HasParamW D.nd D.naut a σ Sg
-
 theorem allTriples_of_tripAll (h : TwistedTriples.TripAll D) : AllTriples D := fun a σ Sg hg hp =>
   (h a σ hg.symm).imp fun s hs => (triple_iff D a σ Sg hp s).1 hs
-
-def LatticeIso : Prop :=
-  ∀ (a : D.nd.Loc) (π : D.nd.X a), π ∈ D.nd.Zgood a → ∀ s, Attached D a π s →
-    ∀ ρ : D.nd.X a → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O a)), IsRhoPt D a π (ρ π) →
-      ∃ P : GL (Fin D.R.r) (D.nd.O a), ∀ g,
-        WpO D.nd a ρ π g * (P : Matrix _ _ _) =
-          (P : Matrix _ _ _) * latTpsi D.ntw _ s (D.ntw.twist₂ a) (D.ntw.psiL a) g
-
-def ClosedAt (𝒞 : FamClass) (P : D7 → Prop) : Prop :=
-  Closed 𝒞 fun Fm _ => ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, P (Fm.D x i)
-
-theorem ClosedAt.mono {𝒞 : FamClass} {P Q : D7 → Prop} (h : ClosedAt 𝒞 P) (hPQ : ∀ D, P D → Q D) :
-    ClosedAt 𝒞 Q := by
-  obtain ⟨e, he, h⟩ := h
-  refine ⟨e, he, fun eps h1 h2 => (h eps h1 h2).imp fun K hK Fm CH c1 c2 => ?_⟩
-  exact (hK Fm CH c1 c2).imp fun x0 hx x h i => hPQ _ (hx x h i)
-
-theorem ClosedAt.and {𝒞 : FamClass} {P Q : D7 → Prop} (hP : ClosedAt 𝒞 P) (hQ : ClosedAt 𝒞 Q) :
-    ClosedAt 𝒞 fun D => P D ∧ Q D := by
-  obtain ⟨e, he, h⟩ := Closed.and hP hQ
-  refine ⟨e, he, fun eps h1 h2 => (h eps h1 h2).imp fun K hK Fm CH c1 c2 => ?_⟩
-  obtain ⟨⟨x1, a1⟩, x2, a2⟩ := hK Fm CH c1 c2
-  exact ⟨max x1 x2, fun x hx i => ⟨a1 x (le_of_max_le_left hx) i, a2 x (le_of_max_le_right hx) i⟩⟩
 
 end GlobalTheory.TwistedSelmerCompare
 

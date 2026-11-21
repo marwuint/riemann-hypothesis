@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapPreservesVacuumProofStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastSeeSawDatumOfVacuaIsVacuumBothStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmooth
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
 
 set_option genSizeOfSpec false
 set_option genInjectivity false
@@ -25,7 +26,7 @@ theorem vacOfShape : ∀ D : D7, GlobalTheory.SeeSaw.VacOfShape D := by
   intro D c v k _ _ _ _ ι o hc hv hs t
   obtain ⟨x₀⟩ := nonempty_pl D
   have hFV := GlobalTheory.T.flatMapPreservesVacuum_proof D c.ψ (· ∉ v.tP)
-  have hCC := GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D c.ψ hc.std
+  have hCC := _root_.GlobalTheory.ContrComb.contr_comb_main D c.ψ hc.std
   refine ⟨?_, ?_⟩
   · intro j σ h Ψ₁ Ψ₂ h₁ h₂
     have f₁ := hFV.1 (σ + 1) (c.B j (σ + 1) h) (c.J j (σ + 1) h) (t.sBF j (σ + 1) h) (v.N j) (o.M j (σ + 1) h)

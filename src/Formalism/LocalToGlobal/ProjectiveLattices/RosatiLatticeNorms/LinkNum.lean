@@ -1,5 +1,8 @@
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.WeightedPrimeSumBound
-import Formalism.LocalToGlobal.CMDeterminantIdeals.CmNumbersLink
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.OneLeAbsNormOfLeOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ProdMulLeDetIdeal
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ValuationLeOfEqAlgebraMap
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.AbsNormSpanGalois
 
 noncomputable section
 
@@ -37,14 +40,5 @@ theorem mean_restrict {K L : Type} [Field K] [NumberField K] [Field L] [NumberFi
   have hKL : (0 : ℝ) < Module.finrank K L := by exact_mod_cast Module.finrank_pos
   push_cast
   field_simp
-
-def LamCMAt (B : WeightFamilies.Prov D) (j : ℕ) (ka : WeightFamilies.Wt D j) (F : B.Cusp j ka) (La logOm Rr : ℝ)
-    (g n : ℕ) (V : Type) [Fintype V] (μ : V →₀ ℕ) : Prop :=
-  ∃ (K₁ : Type) (_ : Field K₁) (_ : NumberField K₁) (_ : Algebra B.KO K₁) (abelian₂ : MLine K₁) (ℓ : Fin g → MLine K₁)
-    (de : MLine K₁) (c : V → Fin g) (G : MvPolynomial V K₁),
-    CMNumbers0 abelian₂ ℓ de La logOm ∧ MvPolynomial.coeff μ G ≠ 0 ∧ MvPolynomial.coeff μ G ∈ (lineNN de ℓ c μ n).I ∧
-    ∀ (σ : K₁ →+* ℂ) (z : V → ℂ), (∀ v, ‖z v‖ * (ℓ (c v)).n σ ≤ 1) →
-      ‖MvPolynomial.eval z (MvPolynomial.map σ G)‖ * de.n σ ^ n ≤
-        B.supN j ka (σ.comp (algebraMap B.KO K₁)) F * Rr ^ (∑ v, μ v)
 
 end Formalism.L2.Pj.abelian₂

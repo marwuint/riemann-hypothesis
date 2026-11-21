@@ -1,26 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LowerUnipotentMinors
 import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.BottomMinor
 
 noncomputable section
 
 namespace GlobalTheory.JointHarm
 
-open MvPolynomial Matrix GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionPolynomials
-
-section Minors
-
-variable {R : Type*} [CommRing R]
-
-variable {n l : ℕ}
-
-end Minors
+open MvPolynomial Matrix
 
 variable {n p q : ℕ}
-
-section Killed
-
-end Killed
 
 section Fock
 

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToF
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EllEqOfInRCone
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RealConeCoveredByStarAtPoint
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalRStarDepthLeOfCentreBound
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCellStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCell
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntBilinFormToRealMemBalancedPsdCone
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFinRepsProjectiveFinrankLeNumberField
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolCell
@@ -87,7 +87,7 @@ theorem depth_eq_of_star {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCel
   have hBγ : toReal β ∈ rcone γ := by
     rw [hβt]; exact rcone_add (rcone_smul hvR' (ht 0)) hface
   have hlow : t 0 ≤ evalR (starDepth bar ψ w) (toReal β) :=
-    GlobalTheory.T.centreDepth_le_starDepth_of_cell O bar ψ w X m γ (toReal β) v (t 0) hγ hBγ hvb hvp hvw hvc hv0 huniq (ht 0)
+    _root_.GlobalTheory.PolFan.depth_le_starDepth O bar ψ w X m γ (toReal β) v (t 0) hγ hBγ hvb hvp hvw hvc hv0 huniq (ht 0)
       (by rw [hβt, add_sub_cancel_left]; exact hface)
   have hup : evalR (starDepth bar ψ w) (toReal β) ≤ t 0 := by
     refine GlobalTheory.PolFan.evalR_starDepth_le O bar ψ w X m γ (toReal β) (t 0) hγ hBγ (ht 0) ?_
@@ -241,8 +241,5 @@ theorem starDepth_den : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     evalZ_pull _ f.symm.surjective β
   rw [← hval]
   exact hall k _ ⟨_, pull_mem _ hβ, fun y => hp _, rfl⟩
-
-example (n : ℕ) (B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ) : (starDepth id (InvFun.minVal ℤ) (zeroFun ℤ)).toFun n B = 0 :=
-  starDepth_zeroFun n B
 
 end GlobalTheory.PolFan.StarDen

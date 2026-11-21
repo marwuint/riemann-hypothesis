@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BochnerTheorem.StepGelfand
 
 noncomputable section
 

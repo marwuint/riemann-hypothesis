@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDualPairSwapSymmetryStatement
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg MvPolynomial
@@ -94,7 +94,7 @@ theorem GlobalTheory.FockAlg.min_second : ∀ (p q r s : ℕ) (M1 : GKMod p q) (
     have := LinearMap.congr_fun h (e.symm P)
     rw [hg, e.apply_symm_apply, LinearMap.zero_apply] at this
     exact c.map_eq_zero_iff.mp this
-  obtain ⟨⟨μ, P, hP, hP1, hP2, hP0⟩, hB⟩ := GlobalTheory.T.exists_jointHarm_highestWeight_and_map_mem_genSub r s p q M2 M1 g hirr hadm hgI hg0 μ' hμ hmin
+  obtain ⟨⟨μ, P, hP, hP1, hP2, hP0⟩, hB⟩ := _root_.GlobalTheory.FockAlg.min_first r s p q M2 M1 g hirr hadm hgI hg0 μ' hμ hmin
   refine ⟨⟨μ, e P, hJ P hP, isHW_equiv e _ _ h2 _ _ hP2, isHW_equiv e _ _ h1 _ _ hP1, ?_⟩, ?_⟩
   · intro h
     apply hP0

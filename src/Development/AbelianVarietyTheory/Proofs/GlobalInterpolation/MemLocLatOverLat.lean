@@ -208,10 +208,6 @@ theorem sig_e₁ (hs : IsSplitting σ v s) : sigR σ (v.adicCompletion F) (e₁ 
   s.injective (Prod.ext ((prP_sig hs _).trans ((prPbar_e₁ hs).trans (prP_e₂ hs).symm))
     ((prPbar_sig hs _).trans ((prP_e₁ hs).trans (prPbar_e₂ hs).symm)))
 
-theorem sig_e₂ (hs : IsSplitting σ v s) : sigR σ (v.adicCompletion F) (e₂ hs) = e₁ hs :=
-  s.injective (Prod.ext ((prP_sig hs _).trans ((prPbar_e₂ hs).trans (prP_e₁ hs).symm))
-    ((prPbar_sig hs _).trans ((prP_e₂ hs).trans (prPbar_e₁ hs).symm)))
-
 theorem map_gram {A K : Type} [CommRing A] [CommRing K] (τ : A →+* A) (p q : A →+* K)
     (h : ∀ a, p (τ a) = q a) (X J Y Z : Matrix (Fin k) (Fin k) A) (H : cT τ X * J * Y = Z) :
     (X.map q)ᵀ * J.map p * Y.map p = Z.map p := by

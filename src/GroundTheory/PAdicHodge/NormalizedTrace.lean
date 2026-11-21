@@ -75,9 +75,6 @@ def normTraceₗ : Ω →ₗ[F] Ω := (Algebra.linearMap F Ω).comp (normTraceF�
 theorem normTrace_add (y z : Ω) : normTrace F (y + z) = normTrace F y + normTrace F z :=
   map_add (normTraceₗ F) y z
 
-theorem normTrace_sub (y z : Ω) : normTrace F (y - z) = normTrace F y - normTrace F z :=
-  map_sub (normTraceₗ F) y z
-
 @[simp] theorem normTrace_zero : normTrace F (0 : Ω) = 0 := map_zero (normTraceₗ F)
 
 theorem normTrace_smul (a : F) (y : Ω) : normTrace F (a • y) = a • normTrace F y :=

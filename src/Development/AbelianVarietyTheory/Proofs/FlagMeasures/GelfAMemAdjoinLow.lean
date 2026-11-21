@@ -187,23 +187,23 @@ theorem central_of_filt_low {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlR
   | succ d ih =>
     intro z hz hc
     obtain ⟨_, ⟨M, rfl⟩, y, hy, rfl⟩ := Submodule.mem_sup.1 (filt_succ d hz)
-    obtain ⟨M₀, h1, h2⟩ := GlobalTheory.T.commutant_lift_mod_stable_selfAdjoint _ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2)
+    obtain ⟨M₀, h1, h2⟩ := _root_.GlobalTheory.matrix_commutant_lift_mod_stable _ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2)
       ((filt E d).comap (wordMap E d))
       (by rintro _ ⟨p, rfl⟩; exact ⟨(p.2, p.1), (polar_conjTranspose d p.1 p.2).symm⟩)
       (by
         rintro _ ⟨p, rfl⟩ N hN
-        rw [Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]
+        rw [Submodule.mem_comap, ← _root_.GlobalTheory.SmoothForms.commutator_wordMap A n E hE]
         exact filt_ad hE d _ _ hN) M
       (by
         rintro _ ⟨p, rfl⟩
-        rw [Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]
+        rw [Submodule.mem_comap, ← _root_.GlobalTheory.SmoothForms.commutator_wordMap A n E hE]
         have h3 := neg_mem (filt_ad hE d p.1 p.2 hy)
         have h4 := hc p.1 p.2
         rw [mul_add, add_mul] at h4
         convert h3 using 1
         rw [neg_sub, sub_eq_sub_iff_add_eq_add, h4, add_comm])
     have h3 : M₀ ∈ Submodule.span ℂ (Set.range (permMat n d)) := by
-      refine GlobalTheory.T.bicommutant_tensorFactorPerm_mem_span n d M₀ fun T hT => ?_
+      refine _root_.GlobalTheory.SmoothForms.bicomm_permMat n d M₀ fun T hT => ?_
       have : Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) ≤
           Subalgebra.centralizer ℂ {M₀} := by
         refine Algebra.adjoin_le ?_
@@ -238,6 +238,6 @@ theorem GlobalTheory.SmoothForms.gelfA_mem_adjoin_low : ∀ (A : Type) [Ring A] 
     Formalism.REAL.GlRel E → ∀ m : ℕ, gelfA E m ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val) := by
   intro A _ _ n E hE m
   exact GlobalTheory.SmoothForms.GelfGen.central_of_filt_low hE (m + 2) _ (GlobalTheory.SmoothForms.GelfGen.gelfA_mem_filt E m)
-    (GlobalTheory.T.commute_gelfandInvariantMatrixUnits_of_glRel A n E hE m)
+    (_root_.GlobalTheory.SmoothForms.commute_gelfA A n E hE m)
 
 end

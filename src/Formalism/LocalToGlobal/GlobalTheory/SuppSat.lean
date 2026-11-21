@@ -6,19 +6,6 @@ namespace Formalism.L2.GlobalTheoryTheory.Loss
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.LFunctionChainParameters.DeficitSplitLemmas Formalism.LFunctionChainParameters.PrimeWindowSizeBounds
 
-def StPts : Prop :=
-  ∀ (eps : ℝ) (Fm : FamP eps) (Cb : ℝ), ChosenTT Fm → ChosenBad Fm Cb → LinkG Fm → Lnk.StatementsAtPointsLargeScales Fm
-
-def StCore : Prop :=
-  ∀ (eps : ℝ) (Fm : FamP eps) (Cb : ℝ), ChosenTT Fm → ChosenBad Fm Cb → LinkG Fm → Fm.CoverAll → Lnk.SmallOrderPrimes Fm
-
-def StLoss : Prop :=
-  ∀ (eps : ℝ) (Fm : FamP eps) (Cb : ℝ), ChosenTT Fm → ChosenBad Fm Cb → LinkG Fm → Fm.CoverAll → Lnk.LossF Fm 0
-
-def SlopeLoss : Prop :=
-  ∀ (eps : ℝ) (Fm : FamP eps) (Cb eL : ℝ), 0 ≤ eL → ChosenTT Fm → ChosenBad Fm Cb → LinkG Fm → Fm.CoverAll →
-    LocalQuadraticParts.SlopeLossFamily Fm eL
-
 section AtRecord
 
 variable {D : D7} {L : SizeData₂ D}
@@ -131,12 +118,6 @@ def par (C bo Cb Cord : ℝ) : Par where
   bo := bo
 
 variable {Fm x i0}
-
-def aO (o : Lnk.Wt Fm x i0) (t : G.HH (Fm.D x i0)) : ℤ := Lnk.avOf o t.val
-
-def bO (o : Lnk.Wt Fm x i0) (t : G.HH (Fm.D x i0)) : ℤ := Lnk.bvOf o t.val
-
-def SigO (p : ℕ) (o : Lnk.Wt Fm x i0) : ℝ := G.Sig (Fm.Gx x i0) Fm.GK (aO o) (bO o) p
 
 end Family
 

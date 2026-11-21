@@ -86,8 +86,4 @@ theorem baseRepGL3_normalised_of_psi_eq_one {G : Type*} [Group G] {R : Type*} [C
   · show Matrix.diagonal _ 1 0 - Matrix.diagonal _ 1 0 = (0 : R)
     simp
 
-example : Marks (G := ℤˣ × ℚˣ) (k := ℚ) (MonoidHom.fst _ _) (MonoidHom.snd _ _) (-1, 1)
-    (1, Units.mk0 2 two_ne_zero) :=
-  ⟨by simp, rfl, rfl, rfl, by norm_num⟩
-
 end UpperTheory.V.U3

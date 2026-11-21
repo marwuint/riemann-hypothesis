@@ -19,12 +19,6 @@ def UnipotentCentral.Statement (h : HermitianForm F E W) (v : Basis ι E W) : Pr
       ∃ δ : unipRadical h v x₀, (δ : archUnitary h v) ∈ vecStabGroup h v La x₀ ∧
         unipCoord h v x₀ w₀ (δ * n) ∈ K
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.GTScale
+import Formalism.PeriodIntegrals.GTDefs
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
 
 noncomputable section
@@ -33,45 +33,5 @@ theorem re_normFock_smul {N : ℕ} (lam : DomWeight N) (c : ℂ) (x : MvPolynomi
   have hc : c * star c = ((‖c‖ ^ 2 : ℝ) : ℂ) := by
     rw [show star c = (starRingEnd ℂ) c from rfl, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   rw [hc, Complex.re_ofReal_mul]
-
-theorem norm_units_zpow_sq (u : ℂˣ) (e : ℤ) :
-    ‖((u ^ e : ℂˣ) : ℂ)‖ ^ 2 = ‖(u : ℂ)‖ ^ (2 * e) := by
-  rw [Units.val_zpow_eq_zpow_val, norm_zpow, ← zpow_natCast, ← zpow_mul]
-  congr 1
-  push_cast
-  ring
-
-theorem sqAct_mem_delSq (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ)
-    (hf : f ∈ delSq ℂ N lam) : sqAct ℂ N lam g f ∈ delSq ℂ N lam := by
-  unfold sqAct delSq at *
-  refine Submodule.smul_mem _ _ ?_
-  exact Formalism.UG.P.wlocal_main le_rfl lam.natW N 0 (zero_add N) ((g : Matrix (Fin N) (Fin N) ℂ).transpose)
-    ((g⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ).transpose
-    (by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one])
-    (fun i j hj => absurd hj (Nat.not_lt_zero _)) f hf
-
-theorem gTScale : PI.GTScale := by
-  intro n N h lam sg io br hio hbr a
-  obtain ⟨-, -, -, -, hio5, hio6⟩ := hio
-  obtain ⟨-, -, -, -, hbr5, hbr6⟩ := hbr
-  have ha : ‖(a : ℂ)‖ ≠ 0 := norm_ne_zero_iff.mpr a.ne_zero
-  have hnn : 0 ≤ ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg)) := zpow_nonneg (norm_nonneg _) _
-  constructor
-  · intro s hs
-    have hk : ‖((a⁻¹ ^ degZ lam sg : ℂˣ) : ℂ)‖ ^ 2 = ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg)) := by
-      rw [norm_units_zpow_sq, Units.val_inv_eq_inv_val, norm_inv, inv_zpow']
-    rw [hio5 a⁻¹ s hs, re_normFock_smul, hk, mul_assoc]
-    exact mul_le_mul_of_nonneg_left (hio6 s hs) hnn
-  · intro f hf
-    have hf' := sqAct_mem_delSq N lam (lastGL ℂ N a) f hf
-    have h1 := hbr6 _ hf'
-    rw [hbr5 a f hf, re_normFock_smul, norm_units_zpow_sq] at h1
-    calc (normFock sg (br f) (br f)).re
-        = ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg)) * (‖(a : ℂ)‖ ^ (2 * degZ lam sg) * (normFock sg (br f) (br f)).re) := by
-          rw [← mul_assoc, ← zpow_add₀ ha]; simp
-      _ ≤ ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg)) * (brBd h lam sg ^ 2 *
-            (normFock lam (sqAct ℂ N lam (lastGL ℂ N a) f) (sqAct ℂ N lam (lastGL ℂ N a) f)).re) :=
-          mul_le_mul_of_nonneg_left h1 hnn
-      _ = _ := by ring
 
 end PI.GTS

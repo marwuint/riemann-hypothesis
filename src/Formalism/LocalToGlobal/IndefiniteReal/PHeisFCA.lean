@@ -19,18 +19,6 @@ theorem eM_apply (x : InfiniteAdeleRing F) :
       fun v : {w : InfinitePlace F // w.IsComplex} => InfinitePlace.Completion.extensionEmbedding v.1 (x v.1)) :=
   InfiniteAdeleRing.ringEquiv_mixedSpace_apply F x
 
-theorem continuous_eM : Continuous (eM F) := by
-  have h : ∀ x : InfiniteAdeleRing F, eM F x = ((fun v : {w : InfinitePlace F // w.IsReal} =>
-        InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v.1)),
-      fun v : {w : InfinitePlace F // w.IsComplex} => InfinitePlace.Completion.extensionEmbedding v.1 (x v.1)) :=
-    eM_apply F
-  refine Continuous.congr ?_ (fun x => (h x).symm)
-  first | apply Continuous.prodMk | apply Continuous.prod_mk
-  · exact continuous_pi fun v =>
-      (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply v.1)
-  · exact continuous_pi fun v =>
-      (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply v.1)
-
 def Pinf : Set (InfiniteAdeleRing F) := eM F ⁻¹' ZSpan.fundamentalDomain (mixedEmbedding.latticeBasis F)
 
 theorem eM_algebraMap (a : F) : eM F (algebraMap F (InfiniteAdeleRing F) a) = mixedEmbedding F a := by

@@ -210,18 +210,4 @@ end GlobalTheory.NormalApprox
 
 namespace GlobalTheory.NormalApprox
 
-theorem exists_noetherian_normal_local_approx :
-    ∀ (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], IsIntegrallyClosed T →
-    ∃ 𝒜 : Finset T → Subring T, Monotone 𝒜 ∧ (∀ (S : Finset T), ∀ x ∈ S, x ∈ 𝒜 S) ∧
-      ∀ S, IsNoetherianRing (𝒜 S) ∧ IsIntegrallyClosed (𝒜 S) ∧ IsLocalRing (𝒜 S) ∧
-        ∀ x : 𝒜 S, IsUnit (x : T) → IsUnit x := by
-  intro T _ _ _ hT
-  refine ⟨loc, loc_mono, fun S x hx => mem_loc_of_mem S hx, fun S => ⟨?_, ?_, loc_isLocalRing S,
-    isUnit_of_isUnit_coe S⟩⟩
-  · haveI := loc_isLocalization S
-    exact IsLocalization.isNoetherianRing (unitsIn S) _ (norm_isNoetherianRing S)
-  · haveI := loc_isLocalization S
-    haveI := norm_isIntegrallyClosed S
-    exact isIntegrallyClosed_of_isLocalization (loc S) (unitsIn S) (unitsIn_le S)
-
 end GlobalTheory.NormalApprox

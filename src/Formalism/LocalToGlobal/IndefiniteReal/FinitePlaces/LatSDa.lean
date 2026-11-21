@@ -76,41 +76,6 @@ theorem lsd_coordO : ∃ r : 𝓞 D.host.F, r ≠ 0 ∧ ∀ (x : 𝓞 D.host.E) 
   rw [map_zsmul, Finsupp.smul_apply, ← hy l, zsmul_eq_mul, zsmul_eq_mul]
   ring
 
-theorem lsd_denFG {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (hL : L.FG) :
-    ∃ d : 𝓞 D.host.E, d ≠ 0 ∧ ∀ t ∈ L, ∀ i, ∃ y : 𝓞 D.host.E, (d : D.host.E) * t i = y := by
-  classical
-  obtain ⟨g, hg⟩ := hL
-  obtain ⟨d, hd, h⟩ := lsd_den (D := D) (g.biUnion fun t => Finset.univ.image fun i => t i)
-  refine ⟨d, hd, fun t ht => ?_⟩
-  rw [← hg] at ht
-  induction ht using Submodule.span_induction with
-  | mem x hx =>
-    intro i
-    exact h _ (Finset.mem_biUnion.2 ⟨x, hx, Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩⟩)
-  | zero => intro i; exact ⟨0, by simp⟩
-  | add x y _ _ hx hy =>
-    intro i
-    obtain ⟨a, ha⟩ := hx i
-    obtain ⟨b, hb⟩ := hy i
-    exact ⟨a + b, by rw [Pi.add_apply, mul_add, ha, hb]; exact (map_add (algebraMap (𝓞 D.host.E) D.host.E) a b).symm⟩
-  | smul c x _ hx =>
-    intro i
-    obtain ⟨a, ha⟩ := hx i
-    refine ⟨c * a, ?_⟩
-    rw [Pi.smul_apply, Algebra.smul_def,
-      show ((c * a : 𝓞 D.host.E) : D.host.E) = (c : D.host.E) * (a : D.host.E) from
-        map_mul (algebraMap (𝓞 D.host.E) D.host.E) c a, ← ha]
-    show (d : D.host.E) * ((c : D.host.E) * x i) = (c : D.host.E) * ((d : D.host.E) * x i)
-    ring
-
-theorem lsd_denFrac (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :
-    ∃ d : 𝓞 D.host.E, d ≠ 0 ∧ ∀ x ∈ I, ∃ y : 𝓞 D.host.E, (d : D.host.E) * x = y := by
-  obtain ⟨a, ha, h⟩ := I.isFractional
-  refine ⟨a, nonZeroDivisors.ne_zero ha, fun x hx => ?_⟩
-  obtain ⟨y, hy⟩ := h x hx
-  exact ⟨y, by rw [show ((y : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E y from rfl, hy,
-    Algebra.smul_def]⟩
-
 theorem lsd_spanDen {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (hL : Submodule.span D.host.E (L : Set (Fin n → D.host.E)) = ⊤) (x : Fin n → D.host.E) :
     ∃ d : 𝓞 D.host.E, d ≠ 0 ∧ (d : D.host.E) • x ∈ L :=

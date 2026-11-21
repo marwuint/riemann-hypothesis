@@ -9,9 +9,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieAlgebraFunct
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CartanDecompositionLieAlgebraStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsMaximalAbelianHermitianStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutingHermitianSimultaneousDiagStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRegularElementAbelianStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRegularElementAbelian
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralizerRegularCommutesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AntitoneDiagonalConjugateStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AntitoneDiagonalConjugate
 open Matrix Topology Filter
 
 namespace GlobalTheory.CompanionTheory.IwaGen
@@ -30,7 +30,7 @@ theorem frame {n : ℕ} (𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) :
         (Uᴴ * Y * U).IsDiag := by
   obtain ⟨𝔞, hle, hH, hC, hM⟩ := GlobalTheory.T.exists_maximal_abelian_hermitian 𝔤
   obtain ⟨U₀, hU₀, hD⟩ := GlobalTheory.T.commuting_hermitian_simultaneous_diag (𝔞 : Set (Matrix (Fin n) (Fin n) ℂ)) hH hC
-  obtain ⟨H, hHa, hreg⟩ := GlobalTheory.T.exists_regular_element_abelian 𝔞 U₀
+  obtain ⟨H, hHa, hreg⟩ := _root_.GlobalTheory.CompanionTheory.IwaGen.exists_regular_point 𝔞 U₀
   have hU₀' : U₀ * U₀ᴴ = 1 := Matrix.mem_unitaryGroup_iff.1 hU₀
   have hU₀'' : U₀ᴴ * U₀ = 1 := Matrix.mem_unitaryGroup_iff'.1 hU₀
   let d : Fin n → ℝ := fun i => ((U₀ᴴ * H * U₀) i i).re
@@ -50,7 +50,7 @@ theorem frame {n : ℕ} (𝔤 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) :
     rw [hdd]
     calc U₀ * (U₀ᴴ * H * U₀) * U₀ᴴ = (U₀ * U₀ᴴ) * H * (U₀ * U₀ᴴ) := by simp only [Matrix.mul_assoc]
       _ = H := by rw [hU₀']; simp
-  obtain ⟨U, hU, h, hanti, heq, hdiag⟩ := GlobalTheory.T.antitone_diagonal_conjugate U₀ d hU₀
+  obtain ⟨U, hU, h, hanti, heq, hdiag⟩ := _root_.GlobalTheory.CompanionTheory.FrameSort.exists_antitone_reorder U₀ d hU₀
   refine ⟨U, hU, h, hanti, ?_, ?_⟩
   · rw [heq, hHd]; exact hle hHa
   · intro Y hY hYs hcomm

@@ -18,7 +18,18 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteTo
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPolAVGenericFibreOfTriple
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PelTrivialisationIsUnitOnAbelianLocus
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPelUniformisationCompleteDvrStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPelUniformisationCompleteDvr
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DataRigidSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaVV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.VRatioGtStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PeriodicValuation
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBC
+import Development.AbelianVarietyTheory.Definitions.Uniformization.WCompat
+import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -126,7 +137,7 @@ theorem isOpen_and_uniformised (W : Type) [CommRing W] [IsDomain W] [IsDiscreteV
     infer_instance
   have ho := isOpen_of_range_generic_subset W _ (abLocusOne _ _ t.semi _ _ hp.1)
   obtain ⟨A, -, gen, hg, hw, -⟩ := GlobalTheory.LN.exists_polAV_of_polAt L₁ L₂ E H W t hp
-  obtain ⟨P, -, -, hP⟩ := GlobalTheory.T.exists_pel_uniformisation_complete_dvr E H W hW t A gen hg hw hS
+  obtain ⟨P, -, -, hP⟩ := _root_.GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional E H W hW t A gen hg hw hS
   exact ⟨ho, P, GlobalTheory.psiUnitOn_abLocus_pel L₁ L₂ L₃ L₄ L₅ E H W _ hadm t P hP ho, hP⟩
 
 theorem exists_finite_ext_uniformised : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (T : Formalism.L2.Pj.CDVR) (t : SAB H (Sp T.V)) (tK : SAB H (Sp T.Fr)) (_ : SABMap tK t (jK T.V)) (x : Sp T.Fr ⟶ Xo.X) (_ : SABMap tK Xo.univ.t x), T.FinRes → ∃ (T' : Formalism.L2.Pj.CDVR) (φ : T.V →+* T'.V) (t' : SAB H (Sp T'.V)) (_ : SABMap t' t (spMap φ)), Function.Injective φ ∧ φ.Finite ∧ T'.FinRes ∧ IsOpen (abLocus t'.G) ∧ UniformisationConclusion t' (abLocus t'.G) := by

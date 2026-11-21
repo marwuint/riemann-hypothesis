@@ -8,8 +8,9 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsPhiNormSq
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspIntersectionPositive
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspIntersectionPositiveStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannFormLowerBoundNearCuspStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PshLogGrowthBoundedNearPunctureStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannFormLowerBoundNearCusp
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.PshLogGrowthBounded
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -145,7 +146,7 @@ theorem near_bdd (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k, J k
     have := Dc.j_le
     have := Dc.two_le_N
     omega
-  obtain ⟨ρ₁, C₁, hρ₁, hul⟩ := GlobalTheory.T.riemann_form_lower_bound_near_cusp E _ a₀ g Λ (CMType H) L σ _ b hσ hm hb
+  obtain ⟨ρ₁, C₁, hρ₁, hul⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.uLogBound E _ a₀ g Λ (CMType H) L σ _ b hσ hm hb
   obtain ⟨δ₂, hδ₂, C₂, hlow⟩ := lower_centre L σ b hσ hm hb
   have hGc : ContinuousAt (fun u => |(G u).re|) 0 :=
     (Complex.continuous_re.continuousAt.comp (hGd.continuousOn.continuousAt (ball_mem_nhds _ hr))).abs
@@ -176,7 +177,7 @@ theorem near_bdd (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k, J k
       (hGb _ (ball_subset_ball d4 hu'.1)).le⟩
   have hps : IsPsh (Flat.punct (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) a₀ δ) fun u => corrW Hd U ((Dc.chart a).γ (aff t₀ ρ π u)) :=
     isPsh_comp_aff t₀ ρ π (hP a) fun u h => (hu u (hsub u h).1).2.2 (hsub u h)
-  obtain ⟨C₃, hC₃⟩ := GlobalTheory.T.psh_log_growth_bounded_near_puncture _ a₀ δ (B + |C₁|) _ hδ (d1.trans hr1) hps fun u h => by
+  obtain ⟨C₃, hC₃⟩ := _root_.LevelTowerAlt.psh_log_growth_bounded _ a₀ δ (B + |C₁|) _ hδ (d1.trans hr1) hps fun u h => by
     obtain ⟨ld, cw, gr, ℓ, h0, h1, e1, e2, b1, b2, -, b4⟩ := key u h
     simp only [corrW, e1, e2, ← h0]
     nlinarith [(abs_le.1 b2).2, (abs_le.1 b4).2]

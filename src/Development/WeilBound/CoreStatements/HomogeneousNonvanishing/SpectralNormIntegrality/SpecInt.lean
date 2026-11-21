@@ -28,13 +28,4 @@ theorem specInt_isIntegral_iff_coeff {K L : Type*} [Field K] [Field L] [Algebra 
     refine ⟨q, hm, ?_⟩
     rw [← aeval_def, ← aeval_map_algebraMap K, hq, minpoly.aeval]
 
-theorem spectralNorm_le_one_iff_isIntegral (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
-    (y : AlgebraicClosure (v.adicCompletion F)) :
-    spectralNorm (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F)) y ≤ 1 ↔
-      IsIntegral (v.adicCompletionIntegers F) y := by
-  have hy : IsIntegral (v.adicCompletion F) y := Algebra.IsIntegral.isIntegral y
-  rw [specInt_isIntegral_iff_coeff (v.adicCompletionIntegers F) y hy, spectralNorm,
-    spectralValue_le_one_iff (minpoly.monic hy)]
-  simp only [specInt_norm_le_one_iff_mem]
-
 end PositivityTheory.UnitarySelfGeneration.Mend

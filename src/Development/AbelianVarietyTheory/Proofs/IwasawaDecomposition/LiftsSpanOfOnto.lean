@@ -51,20 +51,6 @@ def LiftsSpan {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] 
     (v : (R.MW i (sg0 D A)).Vec) : Prop :=
   ∀ (t : T0) (x : A.fam.amb.FL i t), liftQ R i v t x ∈ Submodule.span ℂ (Set.range (liftQ R i v A.μ0))
 
-theorem liftsSpan_of_onto {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
-    (v : (R.MW i (sg0 D A)).Vec) (hmem : R.thP_thF_mem)
-    (honto : R.Wall i (sg0 D A) ≤ Submodule.span ℂ (Set.range fun x => R.thF i A.μ0 (jVx R i A.μ0 x))) : LiftsSpan R i v := by
-  intro t x
-  have key : ∀ w ∈ Submodule.span ℂ (Set.range fun x => R.thF i A.μ0 (jVx R i A.μ0 x)),
-      onQ (Wc D i) (w v) ∈ Submodule.span ℂ (Set.range (liftQ R i v A.μ0)) := by
-    intro w hw
-    induction hw using Submodule.span_induction with
-    | mem w hw => obtain ⟨y, rfl⟩ := hw; exact Submodule.subset_span ⟨y, rfl⟩
-    | zero => exact Submodule.zero_mem _
-    | add a b _ _ ha hb => exact Submodule.add_mem _ ha hb
-    | smul c a _ ha => exact Submodule.smul_mem _ c ha
-  exact key _ (honto (hmem i t _))
-
 def PinsExist (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
     (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (i : Fin D.R.m) : Prop :=
   QGuard R → ∃ O' : OMDat T.toCore R i T0 id, D.what₂.embLL.toRatAlgHom.fieldRange ≤ O'.c'.F ∧

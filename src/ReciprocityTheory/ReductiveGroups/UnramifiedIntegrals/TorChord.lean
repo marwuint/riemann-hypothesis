@@ -76,12 +76,6 @@ theorem formalGroup_param_norm_lt_one (W : WeierstrassCurve C) (hW : IntegralMod
     have : 1 ≤ ‖-x / y‖ ^ 2 := one_le_pow₀ hcon
     nlinarith
 
-theorem formalGroup_param_sq_norm (W : WeierstrassCurve C) (hW : IntegralModel W) (P : W.toAffine.Point) (hP : InFormalGroupPoints P)
-    (h0 : P ≠ 0) : ‖uOf P‖ ^ 2 * ‖px W P‖ = 1 := by
-  rcases P with _ | @⟨x, y, h⟩
-  · exact absurd rfl h0
-  · exact chord_norm_u_sq W hW h.1 hP
-
 theorem chord_adjoin_le (W : WeierstrassCurve C) (hW : IntegralModel W) {c : C}
     (hc : c ∈ Algebra.adjoin ℤ ({W.a₁, W.a₂, W.a₃, W.a₄, W.a₆} : Set C)) : ‖c‖ ≤ 1 := by
   obtain ⟨h1, h2, h3, h4, h6⟩ := hW

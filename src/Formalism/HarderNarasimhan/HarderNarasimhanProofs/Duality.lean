@@ -190,15 +190,6 @@ theorem duality_basic (L : Submodule ℤ E) [DiscreteTopology L] :
     rw [hcw.2, hcv, hdet, Real.sqrt_inv, Real.log_inv]
   · rw [hdual, duality_dualZ_span w v hv' hwv, hL]
 
-theorem duality_ne_bot (L : Submodule ℤ E) [DiscreteTopology L] (hL : L ≠ ⊥) : dualZ L ≠ ⊥ := by
-  intro h
-  have h1 := (duality_basic L).2.1
-  have h2 := Formalism.F.att_rk_pos hL
-  rw [h] at h1
-  have h3 : Formalism.F.rk (⊥ : Submodule ℤ E) = 0 := by
-    simp [Formalism.F.rk]
-  omega
-
 private theorem starProjection_mem_and_sub_mem_orthogonal (K : Submodule ℝ E)
     [K.HasOrthogonalProjection] (x : E) :
     K.starProjection x ∈ K ∧ x - K.starProjection x ∈ Kᗮ := by
@@ -241,103 +232,8 @@ theorem duality_dualZ_quot_le (L T : Submodule ℤ E) (hT : T ≤ L) :
   rw [inner_sub_left, sub_eq_zero] at h0
   rw [hn, h0]
 
-private theorem discreteTopology_of_le_of_discreteTopology {L N : Submodule ℤ E} (h : N ≤ L)
-    [DiscreteTopology L] : DiscreteTopology N := by
-  exact Formalism.F.discreteTopology_of_le h
-
-theorem duality_compl (L S : Submodule ℤ E) [hL : DiscreteTopology L] (hS : S ≤ L) :
-    ∃ N : Submodule ℤ E, N ≤ dualZ L ∧ Formalism.F.rk N + Formalism.F.rk S = Formalism.F.rk L ∧
-      Formalism.F.deg S - Formalism.F.deg L ≤ Formalism.F.deg N := by
-  obtain ⟨hsat, hSS, hrkS⟩ := Formalism.F.saturProps E L S hL hS
-  obtain ⟨hQd, hrk, hdeg⟩ :=
-    Formalism.F.degQuot E L (Formalism.F.satur L S) hL hsat
-  have := hQd
-  obtain ⟨-, hr, hd, -⟩ :=
-    duality_basic (Formalism.F.quot L (Formalism.F.satur L S))
-  have hS'd : DiscreteTopology (Formalism.F.satur L S) :=
-    discreteTopology_of_le_of_discreteTopology hsat.1
-  have hcov := Formalism.F.covolAntiSameRank E S (Formalism.F.satur L S) hS'd
-    hSS hrkS.symm
-  have hpos := Formalism.F.covol_pos (Formalism.F.satur L S)
-  refine ⟨_, duality_dualZ_quot_le L _ hsat.1, ?_, ?_⟩
-  · rw [hr, ← hrkS]
-    omega
-  · rw [hd]
-    have hdS : Formalism.F.deg S ≤
-        Formalism.F.deg (Formalism.F.satur L S) := by
-      unfold Formalism.F.deg
-      exact neg_le_neg (Real.log_le_log hpos hcov)
-    linarith
-
-theorem duality_zl_id (N : Submodule ℤ E) : zl (AddMonoidHom.id E) N = N := by
-  ext y
-  rw [satR_mem_zl]
-  simp
-
 end Dual
 
 universe u
-
-theorem duality_muMax (h1 : MuChar.{0, u, u}) {E : Type u} [NormedAddCommGroup E]
-    [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L]
-    (hL : L ≠ ⊥) :
-    muMax (AddMonoidHom.id E) (dualZ L) = - muMin (AddMonoidHom.id E) L := by
-  obtain ⟨hDd, hDr, hDdeg, hDD⟩ := duality_basic L
-  have hD0 := duality_ne_bot L hL
-  have hlat : ∀ M : Submodule ℤ E, DiscreteTopology M → IsLat (AddMonoidHom.id E) M := by
-    intro M hM
-    unfold IsLat
-    refine ⟨fun x _ y _ h => by simpa using h, ?_⟩
-    rw [duality_zl_id]
-    exact hM
-  have hA := (h1 ℤ E E (AddMonoidHom.id E) (dualZ L) (hlat _ hDd) hD0).1
-  have hB := (h1 ℤ E E (AddMonoidHom.id E) L (hlat _ inferInstance) hL).2.1
-  have key : ∀ θ : ℝ, muMax (AddMonoidHom.id E) (dualZ L) ≤ θ ↔
-      -θ ≤ muMin (AddMonoidHom.id E) L := by
-    intro θ
-    rw [hA θ, hB (-θ)]
-    simp only [deg, rk, duality_zl_id]
-    have := hDd
-    constructor
-    · intro h N hN
-      obtain ⟨M, hM, hr, hd⟩ := duality_compl L N hN
-      have hMd := h M hM
-      have hr' : (Formalism.F.rk M : ℝ) + Formalism.F.rk N = Formalism.F.rk L := by
-        exact_mod_cast hr
-      have hc : (Formalism.F.rk M : ℝ) = Formalism.F.rk L - Formalism.F.rk N := by
-        linarith
-      rw [hc] at hMd
-      rw [neg_mul]
-      linarith
-    · intro h M hM
-      obtain ⟨N, hN, hr, hd⟩ := duality_compl (dualZ L) M hM
-      rw [hDD] at hN
-      have hNd := h N hN
-      have hr' : (Formalism.F.rk N : ℝ) + Formalism.F.rk M = Formalism.F.rk L := by
-        rw [← hDr]
-        exact_mod_cast hr
-      have hc : (Formalism.F.rk M : ℝ) = Formalism.F.rk L - Formalism.F.rk N := by
-        linarith
-      rw [hc]
-      rw [neg_mul] at hNd
-      linarith
-  apply le_antisymm
-  · exact (key _).mpr (neg_neg _).le
-  · have h2 := (key _).mp le_rfl
-    linarith
-
-theorem duality_of (h1 : MuChar.{0, u, u}) : Duality.{u} := by
-  intro E _ _ _ L hL
-  have := hL
-  obtain ⟨hDd, hDr, hDdeg, hDD⟩ := duality_basic L
-  refine ⟨hDd, hDr, hDdeg, hDD, fun hL0 => ⟨duality_muMax h1 L hL0, ?_⟩⟩
-  have := hDd
-  have h := duality_muMax h1 (dualZ L)
-    (duality_ne_bot L hL0)
-  rw [hDD] at h
-  linarith
-
-theorem slope_duality_formula : Duality :=
-  duality_of slope_characterization
 
 end Formalism.HN

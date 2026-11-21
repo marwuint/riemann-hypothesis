@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjMono
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableConjMonomialBargmannGaussianStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableConjMonomialBargmannGaussian
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open scoped TensorProduct ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -87,7 +87,7 @@ theorem integral_moment_span_eq_zero {c : ι → ℝ} (hc : ∀ τ, 0 < c τ) {F
   induction hP using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨m, rfl⟩ := hx
-    exact ⟨((GlobalTheory.T.integrable_conjMonomial_bargmann_gaussian ι a b c hc).1 m).mul_bdd hF.aestronglyMeasurable
+    exact ⟨((_root_.GlobalTheory.FockTransl.integrable_conjMono_bargmann_gauss ι a b c hc).1 m).mul_bdd hF.aestronglyMeasurable
       (Filter.Eventually.of_forall hM), hmom m⟩
   | zero => simp
   | add x y _ _ hx hy =>
@@ -133,7 +133,7 @@ theorem integral_bargmann_eq_zero_of_moments : ∀ (ι : Type) [Fintype ι] (a b
       rw [htsum]
       have hI : ∀ u : ℂ, Integrable fun z : VCx ι a b =>
           ‖Complex.exp (bk c (u • z₀) z) * (Real.exp (-gq c z / 2) : ℂ)‖ :=
-        fun u => ((GlobalTheory.T.integrable_conjMonomial_bargmann_gaussian ι a b c hc).2 (u • z₀)).norm
+        fun u => ((_root_.GlobalTheory.FockTransl.integrable_conjMono_bargmann_gauss ι a b c hc).2 (u • z₀)).norm
       have hM0 : 0 ≤ M := (norm_nonneg _).trans (hM 0)
       refine Integrable.mono' ((((hI (1 - Complex.I)).add (hI (1 + Complex.I))).add
         (hI (-1 - Complex.I))).add (hI (-1 + Complex.I)) |>.const_mul M)

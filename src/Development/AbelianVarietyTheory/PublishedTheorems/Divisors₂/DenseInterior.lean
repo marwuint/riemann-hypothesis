@@ -89,13 +89,6 @@ def IsKS (V : X.Opens) (U : X.affineOpens) {n : ℕ} (v : Fin n → (Sp (DualNum
           ((valR (w b) _ (t.PP.L.g (j i) (j i')).val).snd * valR g₀ _ (t.PP.L.g (j i) (j i'))⁻¹.val) *
           (valR (w a) O f).snd
 
-theorem isKS_zero (V : X.Opens) (U : X.affineOpens) {n : ℕ}
-    (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)) : IsKS t V U v (fun _ => 0) 0 := by
-  refine ⟨t.PP.L.ι, fun i => t.G.hom ⁻¹ᵁ (U.1 ⊓ V) ⊓ t.PP.L.U i, id, fun _ _ _ => 0, ?_, fun _ => inf_le_right,
-    fun _ => isField_zero _, fun _ _ _ => (map_zero _).symm, fun i i' O _ f S _ φ g₀ w _ h _ => ?_⟩
-  · rw [← inf_iSup_eq, t.PP.isLB.cover, inf_top_eq]
-  · simp [valR, h]
-
 def HasLogKS {K : Type} [CommRing K] (s : X ⟶ Sp K) (V : X.Opens) : Prop :=
   ∀ (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left))
     (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(X, U.1)),

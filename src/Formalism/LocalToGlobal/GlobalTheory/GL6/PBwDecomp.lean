@@ -404,9 +404,6 @@ theorem bwD_col_loc (w : D.what₂.places.Pl) (hw : OverT D u w) {n : ℕ} {L : 
     · exact ⟨1, map_one _⟩
     · exact ⟨0, map_zero _⟩
 
-def BwLcInt : Prop :=
-  ∀ i (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i), clsCrd D u i hi c ≤ Ld D u i hi c
-
 end Spec
 
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases

@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationExtendStalkOfIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkIdealVanishingIdealPreimageIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationExtensionCompletedEtaleChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricChartDerivationBoundaryParamMemSpanStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationExtendStalkOfIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkIdealVanishingIdealPreimageIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationExtensionCompletedEtaleChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricChartDerivationBoundaryParamMemSpan
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -22,7 +22,7 @@ theorem logDer_extend_chartRing : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   intro E _ _ _ H Dw l Xo c Y U D k _ m d ξ hx hE hI
   have hiso : IsIso (genι Y) := isIso_fst Y
   set x := ξ (closedPoint _) with hxdef
-  obtain ⟨δ, hδ⟩ := GlobalTheory.T.exists_derivation_stalk_extend_of_app _ _ (genι Y) U D.1 x hx
+  obtain ⟨δ, hδ⟩ := _root_.GlobalTheory.StalkDer.derivation_extend_stalk_of_iso _ _ (genι Y) U D.1 x hx
   set g := ((gen Y).presheaf.germ (genι Y ⁻¹ᵁ U.1) x hx).hom.comp ((genι Y).app U.1).hom with hg
   have hZ : ((genBd Y : TopologicalSpace.Closeds (gen Y)) : Set (gen Y)) = (genι Y) ⁻¹' ((interior Y).compl : Set Y.X) := by
     ext z
@@ -36,7 +36,7 @@ theorem logDer_extend_chartRing : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       exact h ⟨w, (genι Y).isOpenEmbedding.injective hw⟩
     · rintro h ⟨w, hw⟩
       exact h ⟨w, by rw [← hw]; rfl⟩
-  have hJ := GlobalTheory.T.stalkIdeal_vanishingIdeal_preimage_iso _ _ (genι Y) _ (genBd Y) hZ U x hx
+  have hJ := _root_.GlobalTheory.StalkVan.stalkId_vanishingIdeal_preimage _ _ (genι Y) _ (genBd Y) hZ U x hx
   have hstab : ∀ a ∈ ((Scheme.IdealSheafData.vanishingIdeal (interior Y).compl).ideal U).map g,
       δ a ∈ ((Scheme.IdealSheafData.vanishingIdeal (interior Y).compl).ideal U).map g := by
     intro a ha
@@ -55,8 +55,8 @@ theorem logDer_extend_chartRing : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   have hC : CharZero (ChartRing k m d) :=
     (Spec.preimage (ξ ≫ genStr Y)).hom.charZero_iff (RingHom.injective _) |>.1 inferInstance
   have hk : CharZero k := (RingHom.charZero_iff (MvPowerSeries.C_injective (σ := Fin m ⊕ Fin d) (R := k))).2 hC
-  obtain ⟨D', hD'⟩ := GlobalTheory.T.exists_derivation_extension_completedEtaleChart _ k m d (Scheme.stalkClosedPointTo ξ).hom hE δ
-  refine ⟨D', fun r => ?_, GlobalTheory.T.toricChart_derivation_boundaryParam_mem_span _ k m d _ δ D' _ hstab hD' (by rw [← hJ]; exact hI)⟩
+  obtain ⟨D', hD'⟩ := _root_.GlobalTheory.ChartDerivation.main _ k m d (Scheme.stalkClosedPointTo ξ).hom hE δ
+  refine ⟨D', fun r => ?_, _root_.GlobalTheory.ChartDerBd.deriv_bdParam_mem_span _ k m d _ δ D' _ hstab hD' (by rw [← hJ]; exact hI)⟩
   simp only [RingHom.comp_apply]
   rw [hD']
   exact congrArg _ (hδ r)

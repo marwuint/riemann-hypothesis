@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentTmulOneEqOfSmoothAlgebraStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeComapIncludeRightFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentTmulOneEqOfSmoothAlgebra
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeComapIncludeRightField
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
 
@@ -12,7 +12,7 @@ theorem GlobalTheory.closure_generic_fibre_clopen_split : ∀ (R A : Type) [Comm
   have hφc : Continuous φ := PrimeSpectrum.continuous_comap f
 
   have hF : {r : PrimeSpectrum A | r.asIdeal.comap (algebraMap R A) = ⊥} = Set.range φ := by
-    have h1 := GlobalTheory.T.range_comap_includeRight_eq_comap_eq_ker R A K
+    have h1 := _root_.GlobalTheory.range_comap_includeRight_field R A K
     have hker : RingHom.ker (algebraMap R K) = ⊥ :=
       (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R K)
     rw [hker] at h1
@@ -61,7 +61,7 @@ theorem GlobalTheory.closure_generic_fibre_clopen_split : ∀ (R A : Type) [Comm
   have hopen : IsOpen (φ ⁻¹' C) := by
     rw [← isClosed_compl_iff, hcompl.compl_eq]; exact hclosed'
   obtain ⟨ε, hε, hεS⟩ := PrimeSpectrum.isClopen_iff.1 ⟨hclosed, hopen⟩
-  obtain ⟨a, ha, haε⟩ := GlobalTheory.T.exists_idempotent_tmul_one_eq_of_smooth_algebra R A hsm ε hε
+  obtain ⟨a, ha, haε⟩ := _root_.GlobalTheory.exists_isIdempotentElem_tmul_one_eq_of_smooth R A hsm ε hε
   have hfa : f a = ε := by simp [f, haε]
   have hpre : φ ⁻¹' (PrimeSpectrum.basicOpen a : Set (PrimeSpectrum A)) = φ ⁻¹' C := by
     rw [hεS, ← hfa]

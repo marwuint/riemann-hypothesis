@@ -85,11 +85,4 @@ end GlobalTheory.CovTop.GoodWCore
 
 namespace GlobalTheory.CovTop
 
-theorem goodW_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
-    {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz),
-    p.Rows → RecTied D L → ∀ i : Fin D.R.m,
-      GoodW (p.T.U ((i : ℕ) + 1)) (xiR D) (p.T.V ((i : ℕ) + 1)) (p.T.dict ((i : ℕ) + 1)) (Gk p i) :=
-  fun p _ _ i => GoodWCore.goodW_core p.T p.fw.laws _ ⟨Nat.le_add_left _ _, i.2⟩ (p.κ i)
-    (GlobalTheory.GoodLat.Obj.latFull p.T p.fw.laws p.fw.kap i)
-
 end GlobalTheory.CovTop

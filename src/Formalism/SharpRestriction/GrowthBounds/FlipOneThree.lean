@@ -112,8 +112,6 @@ def HI (C0 CYb Cde Ck CD Cb Cc : ℝ) (X : Inst) : Prop :=
   X.L.k * X.L.Y ^ 2 * Real.log X.L.a ≤ X.L.a / X.L.b' ∧
   0 ≤ X.m ∧ X.m ≤ X.L.b' / (X.L.k * X.L.Q * X.L.Y)
 
-def Inst.Plain (X : Inst) : Prop := X.xa = 0 ∧ X.xb = 0
-
 def meanKapT (C0 CE1 CE2 : ℝ) (X : Inst) (D : ℝ) : ℝ :=
   (∑ aTop ∈ Fintype.piFinset (fun _ : Fin X.s => X.winA), ∑ aPlus ∈ X.winA,
       kapT X.O X.p X.r (X.S C0 CE1 CE2) X.m D aTop aPlus) /
@@ -315,30 +313,9 @@ def TransportedAlt (P : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → 
       ∃ T2 : ℝ, 0 < T2 ∧ ∀ CYb Cde Ck CD Cb : ℝ, T2 ≤ CYb → T2 ≤ Cde → T2 ≤ Ck → T2 ≤ CD → T2 ≤ Cb →
         P C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
-def LocalLiftingAinfEtale (D : Formalism.BasicNotions.D7) : Prop :=
-  TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc => ∃ C : ℝ, 0 < C ∧ ∀ X : Inst, Conclusion1 D C0 CYb Cde Ck CD Cb CE1 CE2 Cc C X
-
 def IntegralityFromMetricForLargeConstants (D : Formalism.BasicNotions.D7) : Prop :=
   TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc => ∀ Ckap Cs : ℝ, ∃ C : ℝ, 0 < C ∧
     IntegralityFromMetric D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs C
-
-open Classical in
-
-def DegreeDichotomy (_D : Formalism.BasicNotions.D7) : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : Type) [NormedField K] [NormedAlgebra ℚ_[p] K] [IsUltrametricDist K]
-    (n del₀ h : ℕ) (E : ℝ) (c : Fin n → Fin n → ℕ → K) (lead : K) (roots : Multiset K) (t₀ d : ℤ) (Y₀ : ℕ)
-    (La₀ : ℝ) (U V : ℤ → Matrix (Fin n) (Fin n) K) (dg : ℤ → Fin n → K),
-    IsCoprime d (p : ℤ) → 0 < Y₀ → Y₀ ≤ p ^ h → del₀ + 1 ≤ p ^ h → 1 ≤ E → lead ≠ 0 →
-    (∀ i j k, ‖c i j k‖ ≤ 1) →
-    (Formalism.GM.binMatK K del₀ c).det = Polynomial.C lead * (roots.map (fun ζ => Polynomial.X - Polynomial.C ζ)).prod →
-    (∀ j ∈ Finset.range Y₀, (∀ a b, ‖U (Formalism.GM.progr t₀ d j) a b‖ ≤ 1) ∧ (∀ a b, ‖V (Formalism.GM.progr t₀ d j) a b‖ ≤ 1) ∧
-      ‖(U (Formalism.GM.progr t₀ d j)).det‖ = 1 ∧ ‖(V (Formalism.GM.progr t₀ d j)).det‖ = 1 ∧
-      (Formalism.GM.binMatK K del₀ c).map (Polynomial.eval ((Formalism.GM.progr t₀ d j : ℤ) : K)) =
-        U (Formalism.GM.progr t₀ d j) * Matrix.diagonal (dg (Formalism.GM.progr t₀ d j)) * V (Formalism.GM.progr t₀ d j)) →
-    -Real.logb p ‖lead‖ + (roots.card : ℝ) / ((p : ℝ) - 1) ≤ (n : ℝ) * La₀ →
-    (∑ j ∈ Finset.range Y₀,
-        ((Finset.univ.filter (fun i => ‖dg (Formalism.GM.progr t₀ d j) i‖ ≤ (p : ℝ) ^ (-E))).card : ℝ)) / (Y₀ : ℝ) ≤
-      (n : ℝ) * ((del₀ : ℝ) / Y₀ + (La₀ + (del₀ : ℝ) * h / Y₀) / E)
 
 def lgR (p : ℕ) (a : ℝ) (r : ℕ) : ℝ := Real.logb p (8 * a + r) + 1
 
@@ -361,8 +338,6 @@ instance InstM.fact (X : InstM) : Fact X.p.Prime := ⟨X.hp⟩
 instance InstM.neZeroR (X : InstM) : NeZero X.r := ⟨X.hr⟩
 
 def InstM.lg (X : InstM) : ℝ := lgR X.p X.a X.r
-
-def InstM.κ₁ (X : InstM) : ℝ := (X.r : ℝ) ^ 2 * X.lg
 
 def InstM.κ (X : InstM) : ℝ := 3 * ((X.s : ℝ) + 2) * (X.r : ℝ) ^ 2 * X.lg
 
@@ -396,23 +371,6 @@ def InstM.Hyp (X : InstM) : Prop :=
   1 ≤ X.a ∧ 1 ≤ X.E ∧ (∀ i, 1 ≤ X.Yl i ∧ 0 < X.dd i ∧ IsCoprime (X.dd i : ℤ) X.p) ∧
   (∀ i, X.Si i ≤ X.n₀ i) ∧ X.Size
 
-def PolynomialHypothesis (_D : Formalism.BasicNotions.D7) (X : InstM) : Prop :=
-  X.Hyp → ∀ n ∈ X.prog, Formalism.GM.M.HypP X.p (X.LL.setTies X.T n) X.ρ ⌊X.κ₁⌋₊
-
-def WeightHypothesis (_D : Formalism.BasicNotions.D7) (X : InstM) : Prop :=
-  X.Hyp → ∀ n ∈ X.prog, Formalism.GM.M.HypW X.p (r := X.r) (X.LL.setTies X.T n) ⌊X.κ₁⌋₊
-
-def EvenHypothesis (_D : Formalism.BasicNotions.D7) (X : InstM) : Prop :=
-  X.Hyp → ∀ n ∈ X.prog, Formalism.GM.M.HypE X.p (X.LL.setTies X.T n) X.ρ ⌊X.κ₁⌋₊
-
-def AdmAlt (D : Formalism.BasicNotions.D7) (X : InstM) : Prop :=
-  PolynomialHypothesis D X ∧ WeightHypothesis D X ∧ EvenHypothesis D X ∧ ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm6 D ∧ adm7 D
-
-def OrderBoundDigits (_D : Formalism.BasicNotions.D7) (X : InstM) : Prop :=
-  X.Hyp → ∀ n ∈ X.prog, ∀ i,
-    Formalism.GM.M.GramDeterminantGradedHypothesis X.p ((X.LL.setTies X.T n).takeD (X.T.pos i + 1)) X.T.J (X.T.thrUpTo i) X.ρ
-      (((X.s : ℝ) + 4) * X.κ₁)
-
 def ModelLatticeRank (_D : Formalism.BasicNotions.D7) (X : InstM) : Prop :=
   X.Hyp →
     (∑ n ∈ X.prog,
@@ -423,33 +381,6 @@ def ModelLatticeRank (_D : Formalism.BasicNotions.D7) (X : InstM) : Prop :=
             (Module.finrank ℚ_[X.p]
               (Formalism.GM.M.Y X.p (r := X.r) (X.LL.setTies X.T (Function.update n i (X.top i))) X.T.J X.T.thr) : ℝ)) /
           X.prog.card)
-
-def DegreeDichotomyWithModelBounds (D : Formalism.BasicNotions.D7) : Prop :=
-  DegreeDichotomy D ∧ ∀ X : InstM, AdmAlt D X → OrderBoundDigits D X ∧ ModelLatticeRank D X
-
-def DichotomyAndModelBounds (D : Formalism.BasicNotions.D7) : Prop := DegreeDichotomyWithModelBounds D
-
-def Conclusion1Family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 CYb Cde Ck CD Cb CE1 CE2 Cc C : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x) (X : Inst), Conclusion1 (Fm.D x i) C0 CYb Cde Ck CD Cb CE1 CE2 Cc C X
-
-def FamilyGlobalDerivation {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs C : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), IntegralityFromMetric (Fm.D x i) C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs C
-
-def IntegralityFromMetricUniformOverFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc => ∀ Ckap Cs : ℝ, ∃ C : ℝ, 0 < C ∧
-    FamilyGlobalDerivation Fm C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs C
-
-def IntegralityFromMetricUniformInEpsilon (Fm : Formalism.MainNotions.DFamP) : Prop :=
-  TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc => ∀ Ckap Cs : ℝ, ∃ C : ℝ, 0 < C ∧
-    ∀ (ε : ℝ) (h0 : 0 < ε) (h1 : ε < 1 / 52), FamilyGlobalDerivation (Fm ε h0 h1) C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs C
-
-def ModelLatticeRankFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  ∀ x (i : Fm.Ix x) (X : InstM), ModelLatticeRank (Fm.D x i) X
-
-def DegreeDichotomyWithModelBoundsFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
-  ∀ x (i : Fm.Ix x), DegreeDichotomyWithModelBounds (Fm.D x i)
-
-def DichotomyAndModelBoundsFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := DegreeDichotomyWithModelBoundsFamily Fm
 
 end Formalism.MainNotions.flipOneThree
 

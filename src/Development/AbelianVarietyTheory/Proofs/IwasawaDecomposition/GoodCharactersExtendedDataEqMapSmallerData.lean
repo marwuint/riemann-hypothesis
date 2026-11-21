@@ -12,7 +12,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockBaseChange
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAbsIrrCharMapRingHomStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAbsIrrCharMapRingHom
+import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Cx Formalism.IndefR.RecTie
 open scoped TensorProduct InnerProductSpace ComplexOrder
@@ -79,7 +81,7 @@ theorem good_transport {K K' G G' : Type} [Field K] [Field K'] [CharZero K] [Cha
   have sup : ∀ χ ∈ X, (fun g => φ (χ (e.symm g))) ∈ X' := by
     intro χ hχ
     obtain ⟨hirr, hsum⟩ := (hX χ).1 hχ
-    refine (hX' _).2 ⟨isAbsIrrChar_comp e.symm (GlobalTheory.T.isAbsIrrChar_map_ringHom φ χ hirr), ?_⟩
+    refine (hX' _).2 ⟨isAbsIrrChar_comp e.symm (_root_.GlobalTheory.AbsIrrMap.isAbsIrrChar_map φ χ hirr), ?_⟩
     rw [← Equiv.sum_comp e.toEquiv]
     simp only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulEquiv.symm_apply_apply, hc, hφ, map_one]
     exact hsum

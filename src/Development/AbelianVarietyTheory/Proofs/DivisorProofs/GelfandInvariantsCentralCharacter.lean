@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.Tpr
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PosPartUnitaryMul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CapelliOfGelfand
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorPolyMap
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverseStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ScalarCapelliTruncatedPerelomovPopovStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminor
+import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverse
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ScalarCapelliTruncatedPerelomovPopov
 
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh GlobalTheory.WignerGL GlobalTheory.WigAlg Formalism.REAL
 open scoped TensorProduct
@@ -49,13 +50,13 @@ theorem main_succ (A : Type) [Ring A] [Algebra ℂ A] (m : ℕ) (F : Fin (m+1) �
   have hrec : ∀ w : ℂ, (w - m) ^ (N + 1) * (Q.eval (w + 1) - Q.eval w) * φ 1 + (-1) ^ N * Rp.eval w
       = Q.eval w * ∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * φ (etr F k) := by
     intro w
-    have h1 := congrArg φ (GlobalTheory.T.traced_qminor_comatrix_truncated_inverse A m F hF w N)
-    rw [← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor', hR] at h1
+    have h1 := congrArg φ (_root_.GlobalTheory.TracedComatrix.traced_comatrix A m F hF w N)
+    rw [← _root_.GlobalTheory.qdet_add_one_sub_eq_sum_qminor, hR] at h1
     simp only [hq, ← Algebra.smul_def, map_add, map_smul, smul_eq_mul, hRp] at h1
     simp only [mul_sum, map_sum, map_smul, map_sub, smul_eq_mul, hφa] at h1
     rw [mul_sum]
     linear_combination h1
-  obtain ⟨rs, hrs, hrsE⟩ := GlobalTheory.T.scalar_capelli_truncated_perelomov_popov m N χ
+  obtain ⟨rs, hrs, hrsE⟩ := _root_.GlobalTheory.ScalarNewton.scalar_newton m N χ
   let S : ℂ[X] := ∑ k ∈ range (N + 1),
     C ((-1) ^ k * (φ (etr F k) - gelfVal χ k * φ 1)) * (X - C (m : ℂ)) ^ (N - k)
   have hSe : ∀ w : ℂ, S.eval w = (∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * φ (etr F k))

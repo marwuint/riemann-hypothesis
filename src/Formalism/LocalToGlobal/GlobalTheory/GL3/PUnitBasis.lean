@@ -26,8 +26,6 @@ def Good (h : V → V → K) (L : AddSubgroup V) (p : ℕ) {ι : Type} (v : ι �
 
 variable {c : K →+* K} {h : V → V → K} {O : Subring K} {L : AddSubgroup V} {p : ℕ}
 
-theorem Herm4.zero_left (H : Herm4 c h) (y : V) : h 0 y = 0 := (H.hl y).map_zero
-
 theorem Herm4.add_right (H : Herm4 c h) (x y z : V) : h x (y + z) = h x y + h x z := by
   rw [H.symm (y + z) x, H.add_left, map_add, ← H.symm, ← H.symm]
 
@@ -206,81 +204,6 @@ theorem PLat.fam (P : PLat c h O L p) (m : ℕ) (hm : m ≤ finrank K V) :
       obtain ⟨nx, hnx⟩ := P.nat x' hx'L
       exact hx'0 (P.zero_of_div G hdiv nx x' hx'L hx'o hnx)
 
-theorem PLat.basis (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι] (hι : Fintype.card ι = finrank K V) :
-    ∃ (b : Basis ι K V) (n : ι → ℕ), Good h L p b n := by
-  have H := P.herm
-  obtain ⟨v, n, gL, gn, gp, go⟩ := P.fam (finrank K V) le_rfl
-  let e : ι ≃ Fin (finrank K V) := Fintype.equivFinOfCardEq hι
-  have hv0 : ∀ i, v i ≠ 0 := by
-    intro i e0
-    have h1 := gn i
-    rw [e0, H.zero_left] at h1
-    have : n i = 0 := by exact_mod_cast h1.symm
-    exact gp i (this ▸ dvd_zero p)
-  have hv' : ∀ i j : ι, i ≠ j → h (v (e i)) (v (e j)) = 0 := fun i j hij => go _ _ (fun e' => hij (e.injective e'))
-  have hli : LinearIndependent K (fun i => v (e i)) := H.linInd _ (fun i => hv0 _) hv'
-  have hsp := hli.span_eq_top_of_card_eq_finrank' hι
-  refine ⟨Basis.mk hli (le_of_eq hsp.symm), fun i => n (e i), ?_, ?_, fun i => gp _, ?_⟩
-  · intro i; rw [Basis.mk_apply]; exact gL _
-  · intro i; rw [Basis.mk_apply]; exact gn _
-  · intro i j hij; rw [Basis.mk_apply, Basis.mk_apply]; exact hv' i j hij
-
-theorem qM_mem (O : Subring K) {p q r s : K} (hp : p ∈ O) (hq : q ∈ O) (hr : r ∈ O) (hs : s ∈ O) (β a : Fin 4) :
-    qM p q r s β a ∈ O := by
-  fin_cases β <;> fin_cases a <;> simp [qM, hp, hq, hr, hs]
-
-theorem PLat.iso (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι] (hι : Fintype.card ι = finrank K V) :
-    ∃ g : (Fin 4 → V) ≃ₗ[K] (Fin 4 × ι → K), (∀ x y, ∑ w, g x w * c (g y w) = ∑ a, h (x a) (y a)) ∧
-      ∃ s : ℕ, Nat.Coprime s p ∧ (∀ x : Fin 4 → V, (∀ a, x a ∈ L) → ∀ w, (s : K) * g x w ∈ O) ∧
-        ∀ u : Fin 4 × ι → K, (∀ w, u w ∈ O) → ∀ a, (s : K) • g.symm u a ∈ L := by
-  have H := P.herm
-  obtain ⟨b, n, gL, gn, gp, go⟩ := P.basis hι
-  choose a1 a2 a3 a4 h4 using fun i => Nat.sum_four_squares (n i)
-  obtain ⟨g, hg, hform⟩ := H.iso_of b go (fun i => (a1 i : K)) (fun i => (a2 i : K)) (fun i => (a3 i : K))
-    (fun i => (a4 i : K)) (fun i => map_natCast c _) (fun i => map_natCast c _) (fun i => map_natCast c _)
-    (fun i => map_natCast c _) (fun i => by rw [gn i, ← h4 i]; push_cast; ring)
-  have hn0 : ∀ i, (n i : K) ≠ 0 := by
-    intro i e0
-    have : n i = 0 := by exact_mod_cast e0
-    exact gp i (this ▸ dvd_zero p)
-  have hcop : Nat.Coprime (∏ j, n j) p :=
-    Nat.Coprime.prod_left fun i _ => ((Nat.Prime.coprime_iff_not_dvd P.prime).2 (gp i)).symm
-  have h1 : ∀ x : Fin 4 → V, (∀ a, x a ∈ L) → ∀ w, ((∏ j, n j : ℕ) : K) * g x w ∈ O := by
-    intro x hx w
-    rw [hform, Finset.mul_sum]
-    refine O.sum_mem fun a _ => ?_
-    have e : ((∏ j, n j : ℕ) : K) * b.repr (x a) w.2
-        = ((∏ j ∈ Finset.univ.erase w.2, n j : ℕ) : K) * h (x a) (b w.2) := by
-      rw [H.coord b go, gn, ← Finset.mul_prod_erase Finset.univ n (Finset.mem_univ w.2)]
-      push_cast; ring
-    have e' : ((∏ j, n j : ℕ) : K) * (qM (a1 w.2 : K) (a2 w.2 : K) (a3 w.2 : K) (a4 w.2 : K) w.1 a * b.repr (x a) w.2)
-        = qM (a1 w.2 : K) (a2 w.2 : K) (a3 w.2 : K) (a4 w.2 : K) w.1 a *
-          (((∏ j ∈ Finset.univ.erase w.2, n j : ℕ) : K) * h (x a) (b w.2)) := by
-      rw [← e]; ring
-    rw [e']
-    exact O.mul_mem (qM_mem O (natCast_mem O _) (natCast_mem O _) (natCast_mem O _) (natCast_mem O _) _ _)
-      (O.mul_mem (natCast_mem O _) (P.int _ (hx a) _ (gL _)))
-  refine ⟨g, hg, ∏ j, n j, hcop, h1, ?_⟩
-  intro u hu a
-  refine P.unim _ fun y hy => ?_
-  have e := hg (g.symm u) (Pi.single a y)
-  rw [LinearEquiv.apply_symm_apply, Finset.sum_eq_single a] at e
-  · rw [Pi.single_eq_same] at e
-    rw [H.smul_left, ← e, Finset.mul_sum]
-    refine O.sum_mem fun w _ => ?_
-    have e2 : ((∏ j, n j : ℕ) : K) * (u w * c (g (Pi.single a y) w))
-        = u w * c (((∏ j, n j : ℕ) : K) * g (Pi.single a y) w) := by
-      rw [map_mul, map_natCast]; ring
-    rw [e2]
-    refine O.mul_mem (hu w) (P.cO _ (h1 _ ?_ w))
-    intro a'
-    by_cases ha : a' = a
-    · subst ha; rwa [Pi.single_eq_same]
-    · rw [Pi.single_eq_of_ne ha]; exact L.zero_mem
-  · intro a' _ ha'
-    rw [Pi.single_eq_of_ne ha', H.symm 0 _, H.zero_left, map_zero]
-  · intro ha; exact absurd (Finset.mem_univ a) ha
-
 namespace Test
 
 theorem herm : Herm4 (RingHom.id ℚ) (fun x y : ℚ => x * y) where
@@ -288,35 +211,6 @@ theorem herm : Herm4 (RingHom.id ℚ) (fun x y : ℚ => x * y) where
   smul_left k x y := by simp [mul_assoc]
   symm x y := mul_comm y x
   pos x hx := ⟨mul_self_ne_zero.2 hx, x, 0, 0, 0, rfl, rfl, rfl, rfl, by ring⟩
-
-theorem plat : PLat (RingHom.id ℚ) (fun x y : ℚ => x * y) (Int.castRingHom ℚ).range (Int.castAddHom ℚ).range 3 where
-  herm := herm
-  prime := Nat.prime_three
-  cO t ht := ht
-  smul := by
-    rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩
-    exact ⟨a * b, by simp⟩
-  int := by
-    rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩
-    exact ⟨a * b, by simp⟩
-  unim x h := by
-    obtain ⟨a, ha⟩ := h 1 ⟨1, by simp⟩
-    exact ⟨a, by simpa using ha⟩
-  full x := ⟨x.den, x.den_pos, ⟨x.num, by simp [Rat.den_mul_eq_num]⟩⟩
-  nat := by
-    rintro _ ⟨a, rfl⟩
-    refine ⟨a.natAbs * a.natAbs, ?_⟩
-    push_cast
-    rw [Nat.cast_natAbs]
-    push_cast
-    simp
-  crit := by
-    refine ⟨1, one_mem _, ?_⟩
-    rintro _ ⟨a, rfl⟩ ⟨k, hk⟩ -
-    refine ⟨((a - k : ℤ) : ℚ), ⟨a - k, rfl⟩, ?_⟩
-    simp only [eq_intCast, RingHom.id_apply, Nat.cast_ofNat] at hk ⊢
-    push_cast
-    linarith
 
 end Test
 

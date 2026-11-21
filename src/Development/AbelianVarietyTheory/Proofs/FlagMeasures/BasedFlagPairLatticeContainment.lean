@@ -4,8 +4,8 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeLocalGlobalPrinciple
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalOrbitLatticesInfFrameSpanEq
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotallyPositiveOrthogonalOfTwoFlagExtendedSpacesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalDecompositionLocalNondegenerateStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotallyPositiveOrthogonalOfTwoFlagExtendedSpaces
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalDecompositionLocalNondegenerate
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CompletionLatticeInfOrthEqOrthPartStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNatSmulMemOfMemSpan
 
@@ -264,12 +264,12 @@ theorem dual_part : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what
     simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
   have hdef : ∀ x ∈ orth (VS D) U, (VS D).hT x x = 0 → x = 0 := fun x hx h => by
     by_contra hne
-    have := GlobalTheory.T.totallyPositive_orthogonal_of_two_flagExtendedSpaces D X Y u u' F F' w hw hG x hx hne
+    have := _root_.GlobalTheory.ComplPos.complement_totPos D X Y u u' F F' w hw hG x hx hne
     rw [h, map_zero] at this; exact lt_irrefl _ this
   have hUW : U ⊓ orth (VS D) U = ⊥ := by
     rw [eq_bot_iff]; rintro x ⟨hxU, hxW⟩
     exact (Submodule.mem_bot _).2 (hdef x hxW ((memW x).1 hxW x hxU))
-  obtain ⟨hdec, hloc0⟩ := GlobalTheory.T.orthogonal_decomposition_local_nondegenerate D U hUW
+  obtain ⟨hdec, hloc0⟩ := _root_.GlobalTheory.decomp_orth_complement D U hUW
 
   obtain ⟨b, hbs, hbspan, hli⟩ := exists_linearIndependent D.host.E
     ((Λ₀ ⊓ toO (VS D) (orth (VS D) U) : LV D) : Set (VS D).V)

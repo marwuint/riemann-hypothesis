@@ -3,15 +3,15 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TamagawaSp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentHaarRealSUOfMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PhaseFrame
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixGroupChartDensityAtIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasStrictFDerivAtMulCurvesMatrixGroupIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecialUnitarySectionLowerUnitriangularChaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagonalTorusParametrisationOrthonormalFraStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarSpecialUnitaryProductChartFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecialUnitaryNearOneEqChartMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixGroupChartDensityAtIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasStrictFDerivAtMulCurvesMatrixGroupIdentity
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecialUnitarySectionLowerUnitriangularCha
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagonalTorusParametrisationOrthonormalFra
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarSpecialUnitaryProductChartFormula
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecialUnitaryNearOneEqChartMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianMeasureLieAlgebraEqSmulMapChartLebesguStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartDensityContinuousAtZeroEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotallyRealDegreeAndChartDimensionEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotallyRealDegreeAndChartDimensionEq
 
 open NumberField MeasureTheory Matrix Filter Topology GlobalTheory.SUVol GlobalTheory.RiemConst ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates
 open scoped ENNReal
@@ -29,9 +29,9 @@ theorem riemHaar_eq_smul (E : Type) [Field E] [NumberField E] [IsCMField E] (r :
     riemHaar X.Ψ X.Gm x = ENNReal.ofReal
       (((2 : ℝ) ^ (r * (r - 1) / 2) * (2 * Real.pi) ^ (r - 1) * Real.sqrt r) ^ fdeg E) • ν := by
   obtain ⟨hdc, hd0, hdet⟩ := GlobalTheory.T.chartDensity_continuousAt_zero_eq_one E r X x hx
-  obtain ⟨hf, hnd⟩ := GlobalTheory.T.totallyRealDegree_and_chartDimension_eq E r X
-  obtain ⟨σ, ρ, D₁, hρ, hσ0, hσc, hσB, hσD, hD₁⟩ := GlobalTheory.T.exists_specialUnitary_section_lowerUnitriangular_chart E r X x hx
-  obtain ⟨t, Dt, htx, htmul, htc, htD, hDt, hstab⟩ := GlobalTheory.T.exists_diagonalTorus_parametrisation_orthonormalFrame E r X x hx
+  obtain ⟨hf, hnd⟩ := _root_.GlobalTheory.ChartCount.fdeg_and_nd E r X
+  obtain ⟨σ, ρ, D₁, hρ, hσ0, hσc, hσB, hσD, hD₁⟩ := _root_.GlobalTheory.SUChartSection.exists_section E r X x hx
+  obtain ⟨t, Dt, htx, htmul, htc, htD, hDt, hstab⟩ := _root_.GlobalTheory.TorusFrame.torus_param E r X x hx
   have ht0 : t 0 = 1 := by
     have h := congrArg (fun g => (t 0)⁻¹ * g) (htmul 0 0)
     simp only [add_zero, inv_mul_cancel, inv_mul_cancel_left] at h
@@ -39,7 +39,7 @@ theorem riemHaar_eq_smul (E : Type) [Field E] [NumberField E] [IsCMField E] (r :
   let D : ChartSp X →L[ℝ] (X.Ψ → Fin r → Fin r → ℂ) :=
     D₁.comp (ContinuousLinearMap.fst ℝ (V (nd X)) (X.Ψ → Fin (r - 1) → ℝ)) +
       Dt.comp (ContinuousLinearMap.snd ℝ (V (nd X)) (X.Ψ → Fin (r - 1) → ℝ))
-  have hQD := GlobalTheory.T.hasStrictFDerivAt_mul_curves_matrixGroup_identity X.Ψ r (realSU X.Ψ X.Gm) (V (nd X)) (X.Ψ → Fin (r - 1) → ℝ) σ t D₁ Dt hσ0 ht0 hσD htD
+  have hQD := _root_.GlobalTheory.hasStrictFDerivAt_mul_curves_at_identity X.Ψ r (realSU X.Ψ X.Gm) (V (nd X)) (X.Ψ → Fin (r - 1) → ℝ) σ t D₁ Dt hσ0 ht0 hσD htD
   have hspec : ∀ w : ChartSp X, D w ∈ realLie X.Ψ X.Gm ∧
       (∀ τ a b, b < a → inFrame x (D w) τ a b = nmat X w.1 τ a b) ∧
         ∀ τ a, inFrame x (D w) τ a a = Complex.I * (angles (w.2 τ) a : ℂ) := by
@@ -57,8 +57,8 @@ theorem riemHaar_eq_smul (E : Type) [Field E] [NumberField E] [IsCMField E] (r :
     · rw [e, Matrix.add_apply, h2 τ a b hab, h5, if_neg (ne_of_gt hab), add_zero]
     · rw [e, Matrix.add_apply, h3, h5, if_pos rfl, zero_add]
   obtain ⟨hDinj, hriem⟩ := GlobalTheory.T.riemannianMeasure_lieAlgebra_eq_smul_map_chartLebesgue E r X x hr hx D hspec
-  have hform := GlobalTheory.T.haar_specialUnitary_product_chart_formula E r X x ν σ t ρ hr hx hν hfib hρ hσc hσB htx htmul htc hstab
-  have hsurj := GlobalTheory.T.specialUnitary_near_one_eq_chart_mul E r X x σ t ρ hx hρ hσ0 hσc hσB htx htmul htc hstab
+  have hform := _root_.GlobalTheory.FibreVol.haar_chart_formula E r X x ν σ t ρ hr hx hν hfib hρ hσc hσB htx htmul htc hstab
+  have hsurj := _root_.GlobalTheory.eq_chart_mul_of_near_one E r X x σ t ρ hx hρ hσ0 hσc hσB htx htmul htc hstab
   set m := (r - 1) * X.Ψ.card with hm
   set a : ℝ≥0∞ := ENNReal.ofReal (1 / (2 * Real.pi) ^ m) with ha
   have hpi : 0 < (2 * Real.pi) ^ m := by positivity
@@ -76,7 +76,7 @@ theorem riemHaar_eq_smul (E : Type) [Field E] [NumberField E] [IsCMField E] (r :
   haveI : (volume : Measure (X.Ψ → Fin (r - 1) → ℝ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   haveI : (volume : Measure (ChartSp X)).IsAddHaarMeasure :=
     Measure.prod.instIsAddHaarMeasure (volume : Measure (V (nd X))) (volume : Measure (X.Ψ → Fin (r - 1) → ℝ))
-  have hlim := GlobalTheory.T.matrixGroup_chart_density_at_identity X.Ψ r (realSU X.Ψ X.Gm) ν (ChartSp X) volume (fun w => σ w.1 * t w.2) D
+  have hlim := _root_.GlobalTheory.SUVol.DensChart.density_at_one X.Ψ r (realSU X.Ψ X.Gm) ν (ChartSp X) volume (fun w => σ w.1 * t w.2) D
     (fun w => ENNReal.ofReal (densF X x w.1 / (2 * Real.pi) ^ m)) a (min ρ Real.pi) hQD hQ0 hDinj hsurj htend
     ha0 hatop hρ' hform
   obtain ⟨hRH, hRdens⟩ := GlobalTheory.SUVol.DensOne.tangentHaar_riemLie X.Ψ X.Gm X.Gm_det x hdet

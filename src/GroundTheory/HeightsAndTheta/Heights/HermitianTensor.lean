@@ -77,45 +77,6 @@ theorem tensorCoord_tmul (hE : HermitianMetric K E) (hF : HermitianMetric K F) (
 
 variable (hE : HermitianMetric K E) (hF : HermitianMetric K F)
 
-theorem tensorCoord_inner_tmul (σ : K →+* ℂ) (z w : ComplexAt σ) (e e' : E) (f f' : F) :
-    inner ℂ (tensorCoord hE hF σ (z ⊗ₜ (e ⊗ₜ f))) (tensorCoord hE hF σ (w ⊗ₜ (e' ⊗ₜ f'))) =
-      (hE.form σ).inner (z ⊗ₜ e) (w ⊗ₜ e') * (hF.form σ).inner (1 ⊗ₜ f) (1 ⊗ₜ f') := by
-  rw [tensorCoord_tmul, tensorCoord_tmul, TensorProduct.inner_tmul]
-  rfl
-
-theorem tensorCoord_inner_conjMap (σ : K →+* ℂ) (x y : Fibre σ (E ⊗[𝓞 K] F)) :
-    inner ℂ (tensorCoord hE hF (conjugate σ) (conjMap σ _ x))
-        (tensorCoord hE hF (conjugate σ) (conjMap σ _ y)) =
-      starRingEnd ℂ (inner ℂ (tensorCoord hE hF σ x) (tensorCoord hE hF σ y)) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [map_zero, inner_zero_left]
-  | add x x' hx hx' => simp only [map_add, inner_add_left, hx, hx']
-  | tmul z t =>
-    induction t using TensorProduct.induction_on with
-    | zero => simp only [tmul_zero, map_zero, inner_zero_left]
-    | add t t' ht ht' => simp only [tmul_add, map_add, inner_add_left, ht, ht']
-    | tmul e f =>
-      induction y using TensorProduct.induction_on with
-      | zero => simp only [map_zero, inner_zero_right]
-      | add y y' hy hy' => simp only [map_add, inner_add_right, hy, hy']
-      | tmul w s =>
-        induction s using TensorProduct.induction_on with
-        | zero => simp only [tmul_zero, map_zero, inner_zero_right]
-        | add s s' hs hs' => simp only [tmul_add, map_add, inner_add_right, hs, hs']
-        | tmul e' f' =>
-          rw [conjMap_tmul, conjMap_tmul, tensorCoord_inner_tmul, tensorCoord_inner_tmul, map_mul,
-            ← hE.form_conj, ← hF.form_conj, conjMap_tmul, conjMap_tmul, conjMap_tmul,
-            conjMap_tmul, map_one]
-
-def HermitianMetric.tensor : HermitianMetric K (E ⊗[𝓞 K] F) where
-  form σ := coreOfInjective (tensorCoord hE hF σ).toLinearMap (tensorCoord hE hF σ).injective
-  form_conj σ x y := tensorCoord_inner_conjMap hE hF σ x y
-
-def HermitianBundle.tensor (A B : HermitianBundle K) : HermitianBundle K :=
-  ⟨A.carrier ⊗[𝓞 K] B.carrier, A.metric.tensor B.metric⟩
-
-example : HermitianBundle GaussianField := (gaussianStandard 2).tensor (gaussianStandard 3)
-
 end
 
 end GroundTheory.Heights₂.Heights

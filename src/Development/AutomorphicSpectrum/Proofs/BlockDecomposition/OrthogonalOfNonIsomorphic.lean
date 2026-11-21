@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareIntegrableSmoothSubmoduleGL
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleDiscreteSpaces
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarRightInvariantStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralEqL2InnerStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarRightInvariant
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralEqL2Inner
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightTranslateIsometryStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieSkewAdjointBisStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieSkewAdjointBis
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepresentationUnitaryAverageStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvariantProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteDimCompactStableStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteDimCompactStable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenCompactSubgroupLeStatement
 
 open scoped Classical InnerProductSpace ComplexConjugate
@@ -72,10 +72,10 @@ theorem exists_repr (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInv
     (fun k a ha b hb => hunit k hV' hV a ha.1 b hb.1)
     (fun k a ha b hb => hunit k hV' hV' a ha.1 b hb.1)
     (fun a ha => by
-      obtain ⟨A, h1, h2, h3, h4, h5⟩ := GlobalTheory.T.exists_finite_dim_compact_stable E N V hV L a ha.1 ha.2
+      obtain ⟨A, h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace E N V hV L a ha.1 ha.2
       exact ⟨A, h1, h2, fun b hb => h3 b hb, h4, h5⟩)
     (fun a ha => by
-      obtain ⟨A, h1, h2, h3, h4, h5⟩ := GlobalTheory.T.exists_finite_dim_compact_stable E N V' hV' L a ha.1 ha.2
+      obtain ⟨A, h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace E N V' hV' L a ha.1 ha.2
       exact ⟨A, h1, h2, fun b hb => h3 b hb, h4, h5⟩)
     (fun W hW => by
       haveI := GlobalTheory.CompanionTheory.AdmDiscFin.admissible_discrete_spaces E N L W hLo hW V' hV'
@@ -111,7 +111,7 @@ theorem exists_adj (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInva
     refine ⟨.lie (-X), fun {V W} hV hW x hx y hy => ?_⟩
     have hxX := hV.stable (.lie X) x hx
     have hyX := hW.stable (.lie X) y hy
-    have h := GlobalTheory.T.lie_skew_adjoint_l2' E N μ X x y (cont_of_mem hV hx) (cont_of_mem hW hy) (cont_of_mem hV hxX) (cont_of_mem hW hyX)
+    have h := _root_.GlobalTheory.CompanionTheory.FinDiscOrth.lie_skew_l2Map E N μ X x y (cont_of_mem hV hx) (cont_of_mem hW hy) (cont_of_mem hV hxX) (cont_of_mem hW hyX)
       (mem_l2_of_discrete μ hV hx) (mem_l2_of_discrete μ hW hy) (mem_l2_of_discrete μ hV hxX) (mem_l2_of_discrete μ hW hyX)
     have e : act (.lie (-X)) x = - lie E N X x := by
       change lie E N (-X) x = _
@@ -196,8 +196,8 @@ theorem GlobalTheory.CompanionTheory.FinDisc.integral_eq_zero_of_not_isoV :
     ∀ φ ∈ V, ∀ ψ ∈ V', ∫ x in F, φ.1 x * (starRingEnd ℂ) (ψ.1 x) ∂μ = 0 := by
   intro E _ _ _ N mG bG μ _ F hF V V' hV hV' hno φ hφ ψ hψ
   obtain rfl : mG = borel _ := bG.measurable_eq
-  haveI := GlobalTheory.T.haar_right_invariant E N μ
-  rw [GlobalTheory.T.integral_eq_l2_inner E N μ F hF φ ψ (mem_l2_of_discrete μ hV hφ) (mem_l2_of_discrete μ hV' hψ)]
+  haveI := _root_.GlobalTheory.CompanionTheory.AdelicUnimod.isMulRightInvariant_GA_CM E N μ
+  rw [_root_.GlobalTheory.CompanionTheory.FinDiscOrth.setIntegral_mul_conj_eq_inner E N μ F hF φ ψ (mem_l2_of_discrete μ hV hφ) (mem_l2_of_discrete μ hV' hψ)]
   by_contra hne
   exact hno (isoV_of_ne μ hV hV' hφ hψ hne)
 

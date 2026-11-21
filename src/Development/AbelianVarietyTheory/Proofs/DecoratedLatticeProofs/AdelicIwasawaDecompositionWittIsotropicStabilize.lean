@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HeckeLPartialContinuationHolds
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabiliserFinitePlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaDecompositionIsotropicStabilizerArchimedeStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaDecompositionIsotropicStabilizerArchimedean
 open scoped ComplexConjugate Matrix NNReal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cusp GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
@@ -51,7 +52,7 @@ theorem hasIw_Kmax : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ 
       exact not_not.1 fun h => hv (hS.mem_toFinset.2 h)
   set y := ofInf D.sp.cm.sig T.gram (projInf D.sp.cm.sig T.gram h') with hy
   have hyC : y ∈ GinfC T := mem_infPts.2 (projFin_ofInf _ _ _)
-  obtain ⟨q, hq, k₁, hk₁, -, hyq⟩ := GlobalTheory.T.iwasawa_decomposition_isotropicStabilizer_archimedean D T T₀ r d b hb y hyC
+  obtain ⟨q, hq, k₁, hk₁, -, hyq⟩ := _root_.GlobalTheory.Core.Rk.IwIso.iwasawa_stab_arch D T T₀ r d b hb y hyC
   have hz : y⁻¹ * h' ∈ Kmax T b := by
     refine mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩
     · rw [map_mul, map_inv, hy, proj_ofInf, inv_one, one_mul]

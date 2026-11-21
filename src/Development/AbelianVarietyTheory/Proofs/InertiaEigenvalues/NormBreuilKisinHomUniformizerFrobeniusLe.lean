@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinTwoHomsERegularAssociatedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinNormEisensteinLeRadiusStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinTwoHomsERegularAssociated
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinNormEisensteinLeRadius
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -16,8 +16,8 @@ theorem norm_toDisc_add_le_max (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : �
 
 theorem norm_hf_g_X_and_φ_le : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (B : Obj l ↥(OL K)) (f g : Hom bk.prism B), ‖toDisc l (BK.hf f X) bk.ρ₀ (BK.hf g X)‖ ≤ bk.ρ₀ ∧ ‖toDisc l (BK.hf f X) bk.ρ₀ (B.D.φ (BK.hf f X))‖ ≤ bk.ρ₀ := by
   intro l _ K bk B f g
-  obtain ⟨hρ0, hρ1, hlρ, hE⟩ := GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk B.A (BK.hf f)
-  have hd := (GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk B f g).2.2
+  obtain ⟨hρ0, hρ1, hlρ, hE⟩ := _root_.GlobalTheory.BSP.norm_E_le_radius l K bk B.A (BK.hf f)
+  have hd := (_root_.GlobalTheory.BSP.hf_E_pair l K bk B f g).2.2
   have h : ‖toDisc l (BK.hf f X) bk.ρ₀ (BK.hf f X ^ 1)‖ ≤ (bk.ρ₀ : ℝ) ^ 1 := norm_toDisc_pow_le 1 hρ0
   have hX : ‖toDisc l (BK.hf f X) bk.ρ₀ (BK.hf f X)‖ ≤ bk.ρ₀ := by simpa only [pow_one] using h
   have key : ∀ a b : B.A, ‖toDisc l (BK.hf f X) bk.ρ₀ (a + b)‖ ≤

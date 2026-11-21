@@ -5,13 +5,13 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceSingleMulS
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasDerivAtTwistHomotopyKernel
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IntegralConjInnerMulInnerOfIsEmptyEquiv
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveConeIsOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveConeIsOpen
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothCholeskyFactorStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceActionDeterminantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeasureCongruenceInvariantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeasureLocallyFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeasureDensityFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactGroupDisintegrationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeasureDensityFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactGroupDisintegration
 
 noncomputable section
 
@@ -27,7 +27,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
-theorem cone_open (n : ℕ) : IsOpen (cone n) := GlobalTheory.T.positive_cone_isOpen n
+theorem cone_open (n : ℕ) : IsOpen (cone n) := _root_.GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone n
 theorem cone_chol (n : ℕ) : ∃ σ₀ : Mat n → Mat n, ContDiffOn ℝ ∞ σ₀ {P | P.PosDef} ∧ ∀ P : Mat n, P.PosDef → σ₀ P * (σ₀ P)ᴴ = P :=
   GlobalTheory.T.smooth_positive_definite_sqrt n
 theorem cone_lin (n : ℕ) (g : Mat n) (hg : g.det ≠ 0) : ∃ T : (Fin n × Fin n → ℝ) →ₗ[ℝ] (Fin n × Fin n → ℝ),
@@ -38,9 +38,9 @@ theorem cone_meas (n : ℕ) (g : Mat n) (hg : g.det ≠ 0) (T : (Fin n × Fin n 
 theorem cone_fin (n : ℕ) (C : Set (Fin n × Fin n → ℝ)) (hC : IsCompact C) (hCc : C ⊆ cone n) : coneMeas n C < ⊤ :=
   (GlobalTheory.T.cone_measure_locally_finite n).2 C hC hCc
 theorem cone_ne (n : ℕ) : coneMeas n ≠ 0 := (GlobalTheory.T.cone_measure_locally_finite n).1
-theorem cone_ae (n : ℕ) : ∀ᵐ v ∂(coneMeas n), v ∈ cone n := (GlobalTheory.T.cone_measure_density_formula n).1
+theorem cone_ae (n : ℕ) : ∀ᵐ v ∂(coneMeas n), v ∈ cone n := (_root_.GlobalTheory.CompanionTheory.ConeHaar.cone_integral n).1
 theorem cone_int (n : ℕ) (f : (Fin n × Fin n → ℝ) → ℂ) :
-    ∫ v, f v ∂(coneMeas n) = ∫ v in cone n, f v * ((hOf v).det ^ n)⁻¹ := (GlobalTheory.T.cone_measure_density_formula n).2 f
+    ∫ v, f v ∂(coneMeas n) = ∫ v in cone n, f v * ((hOf v).det ^ n)⁻¹ := (_root_.GlobalTheory.CompanionTheory.ConeHaar.cone_integral n).2 f
 theorem cone_cpt (n : ℕ) (R : ℝ) : IsCompact {y : G n | lg y.val ≤ R} := GlobalTheory.CompanionTheory.LengthGL.isCompact_G R
 
 theorem hOf_isHermitian (v : Fin n × Fin n → ℝ) : (hOf v).IsHermitian := by
@@ -158,9 +158,6 @@ theorem continuous_emb : Continuous (emb : UK n → G n) := by
 theorem val_mem (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
-theorem isOpen_GLs : IsOpen (GLs n) :=
-  isOpen_ne.preimage (continuous_id.matrix_det)
-
 theorem contDiff_hOf : ContDiff ℝ ∞ (hOf (n := n)) := by
   unfold hOf
   refine ContDiff.sum fun p _ => ?_
@@ -275,7 +272,7 @@ theorem coneSt : ConeSt := by
     refine lt_of_le_of_lt (measure_mono_ae ?_) (cone_fin n _ hC hCc)
     filter_upwards [cone_ae n] with v hv hv'
     exact hsub ⟨hv', hv⟩
-  obtain ⟨c, hc, H⟩ := GlobalTheory.T.compact_group_disintegration (emb (n := n)) continuous_emb (coneMeas n) (sec σ₀ hσ) hms (cone_ne n) hact hfin μ
+  obtain ⟨c, hc, H⟩ := _root_.GlobalTheory.CompanionTheory.ConeHaar.leftInvariant_of_section (emb (n := n)) continuous_emb (coneMeas n) (sec σ₀ hσ) hms (cone_ne n) hact hfin μ
   refine ⟨c, hc, fun F hF ⟨R, hR⟩ hK => ?_⟩
   have h1 := H (fun y => F y.val) (hF.comp_continuous Units.continuous_val val_mem)
     (HasCompactSupport.intro (cone_cpt n R) fun y hy => hR _ (val_mem y) (not_le.1 hy))

@@ -14,10 +14,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
-theorem fibU'_of_onto (a : ℕ) (Y : TupV (E := E) v n a) (h : HensOnto σ J v Λ ψ a Y) :
-    FibU' σ J ψ v Λ a Y :=
-  fibU'_of_hens σ J ψ v Λ a Y (fibHens_of σ J v Λ ψ a Y h)
-
 theorem omLocU_of_onto (a : ℕ) (Y : TupV (E := E) v n a)
     (hSd : (StdHyp σ J ψ → (∃ μ, SdW F E σ n J (Fv F v) (psiV F ψ v) a μ) ∧ ∃ ν, SdHerm F E σ (Fv F v) (psiV F ψ v) a ν))
     (hOm : OmUnique σ J ψ v a) (h1 : OrbAll σ J ψ v Λ a Y) (hO : HensOnto σ J v Λ ψ a Y)

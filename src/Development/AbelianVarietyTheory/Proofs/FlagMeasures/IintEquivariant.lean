@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsFolnerUWset
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWNStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRepStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRep
 
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
 open scoped InnerProductSpace
@@ -44,8 +44,8 @@ theorem Iint_equivariant : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [In
   obtain ⟨hz', hT', hπ', hμ', -⟩ := hs'
   have hS := isClosedSub_Sset hz hT
   have hS' := isClosedSub_Sset hz' hT'
-  obtain ⟨-, ⟨⟨p1, pm⟩, -⟩, -⟩ := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ
-  obtain ⟨-, ⟨⟨q1, qm⟩, -⟩, qa, -⟩ := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z' c' π' hz' hT' hπ'
+  obtain ⟨-, ⟨⟨p1, pm⟩, -⟩, -⟩ := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z c π hz hT hπ
+  obtain ⟨-, ⟨⟨q1, qm⟩, -⟩, qa, -⟩ := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z' c' π' hz' hT' hπ'
   have u := ((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hμ).1 t ht
   have u' := ((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z' hz' hT' μS').1 hμ').1 t' ht'
   have dt := isUnit_det_of_mem_GG (hS.1 ht)

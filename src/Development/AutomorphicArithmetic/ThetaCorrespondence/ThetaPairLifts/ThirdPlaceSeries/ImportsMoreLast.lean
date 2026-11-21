@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftThroughCompletionIso
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -34,7 +34,7 @@ theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
     rw [map_inv_mul]
     by_cases hws : w = s.v
     · subst hws
-      rw [GlobalTheory.T.splitPlace_component_unitaryAdelic_determined s (L g) x hxe.symm]
+      rw [_root_.GlobalTheory.SplitCompat.compAt_map_eq_of_loc_eq s (L g) x hxe.symm]
       exact map_inv_mul_self _ x
     · have hwg : w ∉ PendOf.gPl D := by
         intro hwg; apply hw; simp [T, hws, hwg]
@@ -65,11 +65,11 @@ theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
     have hlift := (hLift g).2 kv s' hs'
     rw [hg2 kv hkvne, ← hloc, ← hpe] at hlift
     obtain ⟨ψ₀, ξ, hψ, -, hU⟩ := P.H.level.uni i j hj kv.1 kv.2 s' hs'
-    obtain ⟨hpJ, hpχ⟩ := GlobalTheory.T.blockLiftIdentity_mem_unipotentLevel_character_one (P.M.loc i).J (P.M.loc i).χ s' D.R.r (D.host.g kv.1) (D.host.g_prime kv.1).one_lt
+    obtain ⟨hpJ, hpχ⟩ := _root_.GlobalTheory.UniLevelLift.main (P.M.loc i).J (P.M.loc i).χ s' D.R.r (D.host.g kv.1) (D.host.g_prime kv.1).one_lt
       ψ₀ ξ hψ hU p hpT hlift
     refine ⟨p, ⟨⟨p, hpJ⟩, hpχ, rfl⟩, hs'v ▸ hpT, ?_⟩
     rw [← hs'v]
-    exact GlobalTheory.T.splitPlace_component_unitaryAdelic_determined s' p y hpe
+    exact _root_.GlobalTheory.SplitCompat.compAt_map_eq_of_loc_eq s' p y hpe
   obtain ⟨⟨y', hy'J⟩, hy'χ, hy'e⟩ := hyK
   have hTS : (P.M.loc i).real F ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ := by
     rw [← (P.M.loc i).real_range]; exact LinearMap.mem_range_self _ _

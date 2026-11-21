@@ -45,14 +45,6 @@ noncomputable def compactδRes (hS : S.ShortExact) (n : ℕ) :
 
 variable (hS : S.ShortExact)
 
-include hS in
-
-theorem compactRes_exact₂ (n : ℕ) :
-    (ShortComplex.mk (compactCohomologyResMap φ S.f n) (compactCohomologyResMap φ S.g n)
-      (by rw [← compactCohomologyResMap_comp, S.zero, compactCohomologyResMap_zero])).Exact :=
-  compactCohomology_exact₂ φ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom))
-    (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) n
-
 theorem compactRes_exact₃ (n : ℕ) :
     (ShortComplex.mk (compactCohomologyResMap φ S.g n) (compactδRes φ hS n)
       ((compactCochains_shortExact φ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom))

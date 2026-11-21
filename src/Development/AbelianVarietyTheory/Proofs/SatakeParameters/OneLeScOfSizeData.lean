@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NotDvdCondN
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualOrbitPageWordBoxStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualOrbitPageWordBox
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.SharpRestriction.ParConsts
@@ -37,10 +38,10 @@ theorem recWord_small_pos : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin 
     (g : ZMod n → D.R.GG) (ψ : D.R.GG), Roomy L C → IsOrbit g ψ →
     Small (recWord L j ε g) ∧ 1 ≤ (recWord L j ε g).S ∧ 1 ≤ (recWord L j ε g).η := by
   intro D L C j ε n g ψ hR _
-  have hB := GlobalTheory.T.twistedDualOrbitPageWord_box L C j ε (1 : D.R.GG) (1 : D.R.GG) hR
+  have hB := _root_.GlobalTheory.HTW.pageWord_box L C j ε (1 : D.R.GG) (1 : D.R.GG) hR
   obtain ⟨b1, w1, bw, bη, bS, hsz⟩ := hB
   refine ⟨⟨b1, w1, bw, bη, bS, fun a => ?_⟩, ?_, ?_⟩
-  · have hB' := GlobalTheory.T.twistedDualOrbitPageWord_box L C j ε (g a) (1 : D.R.GG) hR
+  · have hB' := _root_.GlobalTheory.HTW.pageWord_box L C j ε (g a) (1 : D.R.GG) hR
     have h := hB'.2.2.2.2.2 (0 : ZMod (orderOf (1 : D.R.GG)))
     simp only [pageWord, letter, one_pow, mul_one] at h
     show etaHat L < (szT (hcAt D (g a)) j (pos ε (g a))).toNat

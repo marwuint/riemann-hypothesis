@@ -5,14 +5,14 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInert
 import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SemisimpleMatrixRepIsInternalIrreducible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceNondegenerateOfIsSSRep
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsIrrSubOfIsIrrSubMapStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsIrrSubOfIsIrrSubMap
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MatrixSystemNonzeroSolutionDescendsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAbsolutelyIrreducibleSplitRepOfConstituentModeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConstituentImageStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAbsolutelyIrreducibleSplitRepOfConstituentMode
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConstituentImage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLeftInverseRestrictStableSubmoduleMatrixReStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousRingHomFiniteDvrToPadicAlgClosureStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyEqOfEqOnDenseStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftRepOfEntriesInImageStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyEqOfEqOnDense
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftRepOfEntriesInImage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImageFiniteMemSubringStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 
@@ -110,7 +110,7 @@ theorem exists_splitting_set : ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* �
   set ρ := mapRep (algebraMap O (FractionRing O)) r with hρ
   have hcp : ∀ g, ((mapRep iq ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly =
       ((ρ₀ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).charpoly :=
-    GlobalTheory.T.charpoly_eq_of_continuous_of_eq_on_dense _ _ hc' hc₀ U hU fun x hx =>
+    _root_.GlobalTheory.charpoly_eq_of_eqOn_dense _ _ hc' hc₀ U hU fun x hx =>
       Polynomial.map_injective _ ι.injective (by rw [hp' x hx, hp₀ x hx])
   obtain ⟨Pm, hPm⟩ := Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix (mapRep iq ρ) ρ₀ hss' hss₀ hcp
   have hint' : ∀ g, ((mapRep iq ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) *
@@ -119,11 +119,11 @@ theorem exists_splitting_set : ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* �
     intro g
     rw [hPm g]
     simp only [Units.val_mul, ← mul_assoc, Units.mul_inv, one_mul]
-  apply GlobalTheory.T.isAbsolutelyIrreducibleSplitRep_of_constituent_models iq ρ
+  apply _root_.GlobalTheory.SplitCrit.splitRep_of_models iq ρ
   intro V hV
-  obtain ⟨j, M, hM, hMV, hMd⟩ := GlobalTheory.T.exists_intertwiner_map_eq_of_irrSub (mapRep iq ρ) ρ₀ Pm hint' hss' Vs
+  obtain ⟨j, M, hM, hMV, hMd⟩ := _root_.GlobalTheory.ConstituentImage.exists_constituent_image (mapRep iq ρ) ρ₀ Pm hint' hss' Vs
     hint.submodule_iSup_eq_top hirr V hV
-  obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_rep_lift_of_entries_mem_range iq (σ₀ j) fun g i s => by
+  obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.lift_rep_of_entries_in_image iq (σ₀ j) fun g i s => by
     have : ((σ₀ j g : GL (Fin (b j)) (Qbar l)) : Matrix (Fin (b j)) (Fin (b j)) (Qbar l)) i s ∈ iq.range := by
       rw [(hσ₀ j g).1]
       exact mem_mul_of_mem _ _ _ (mem_mul_of_mem _ _ _ (hDR j) (hρ₀R g)) (hER j) i s

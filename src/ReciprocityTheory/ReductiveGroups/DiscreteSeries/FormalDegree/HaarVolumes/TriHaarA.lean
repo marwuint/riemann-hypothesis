@@ -190,17 +190,7 @@ theorem upMat_triCoOf_mul' (t t0 : TriCo N) :
   refine ⟨upMat_triCoOf_of hU fun a => by rw [hd]; simp, fun j => ?_⟩
   simp only [triCoOf]; rw [hd]; simp
 
-theorem volume_triCo_isAddHaar : (volume : Measure (TriCo N)).IsAddHaarMeasure := by
-  have : (volume : Measure ({ab : Fin N × Fin N // ab.1 < ab.2} → ℂ)).IsAddHaarMeasure :=
-    MeasureTheory.Measure.pi.isAddHaarMeasure _
-  exact Measure.prod.instIsAddHaarMeasure _ _
-
 theorem triDens_measurable : Measurable (triDens (N := N)) := by unfold triDens; fun_prop
-
-theorem triPos_measurableSet : MeasurableSet (triPos N) := by
-  have : triPos N = ⋂ j, {t : TriCo N | 0 < t.1 j} := by ext; simp [triPos]
-  rw [this]
-  exact MeasurableSet.iInter fun j => measurableSet_lt measurable_const (by fun_prop)
 
 theorem triDens_rmulL (t0 t : TriCo N) (h0 : t0 ∈ triPos N) :
     triDens t = ENNReal.ofReal (∏ j : Fin N, t0.1 j ^ (2 * (j : ℕ) + 1)) *

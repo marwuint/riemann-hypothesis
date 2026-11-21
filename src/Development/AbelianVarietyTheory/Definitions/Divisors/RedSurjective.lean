@@ -24,15 +24,6 @@ def HasLogDeg (f : G ⟶ H) (e : ℕ) : Prop :=
 
 end Isogeny
 
-structure IsDM {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p]
-    {N : Type} [AddCommGroup N] [Module (WittVector p k) N]
-    (F : N →ₛₗ[(WittVector.frobenius : WittVector p k →+* WittVector p k)] N)
-    (V : N →ₛₗ[((WittVector.frobeniusEquiv p k).symm : WittVector p k →+* WittVector p k)] N) : Prop where
-  free : Module.Free (WittVector p k) N
-  finite : Module.Finite (WittVector p k) N
-  F_V : ∀ x, F (V x) = p • x
-  V_F : ∀ x, V (F x) = p • x
-
 theorem p_eq_zero (p : ℕ) (k : Type) [Field k] [CharP k p] : (p : k) = 0 := CharP.cast_eq_zero k p
 
 structure Base (p : ℕ) [Fact p.Prime] (P : ∀ (k : Type) [CommRing k], PDivGroup p k → Prop) : Type 1 where
@@ -146,40 +137,6 @@ abbrev F (G : PDivGroup p k) :
 abbrev red (G : PDivGroup p k) :
     T.M G →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)] G.RigExt := T.base.red G trivial
 
-def IsLat {G : PDivGroup p k} (L : Submodule (WittVector p k) (T.M G)) : Prop :=
-  (∃ n : ℕ, ∀ m, p ^ n • m ∈ L) ∧ (∀ m ∈ L, T.F G m ∈ L) ∧ ∀ m ∈ L, T.V G m ∈ L
-
-def Duality : Prop :=
-  ∃ e : ∀ {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k),
-      T.M G ≃ₗ[WittVector p k] Module.Dual (WittVector p k) (T.M G.dual),
-    ∀ {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k),
-      (∀ x y, e G (T.F G x) (T.F G.dual y) = p * WittVector.frobenius (e G x y)) ∧
-      ∀ (H : PDivGroup p k) (f : G ⟶ H) x y, e G (T.map f x) y = e H x (T.map (dualHom G H f) y)
-
 end Theory
-
-section Examples
-
-example {p : ℕ} [Fact p.Prime] {k : Type} [Field k] (G : PDivGroup p k) : IsIsog (𝟙 G) :=
-  ⟨0, 𝟙 G, by simp, by simp⟩
-
-example (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
-    IsDM ((WittVector.frobenius : WittVector p k →+* WittVector p k).toSemilinearMap)
-      ((p : ℕ) • ((WittVector.frobeniusEquiv p k).symm : WittVector p k →+* WittVector p k).toSemilinearMap) where
-  free := inferInstance
-  finite := inferInstance
-  F_V x := by
-    change WittVector.frobenius ((p : ℕ) • (WittVector.frobeniusEquiv p k).symm x) = p • x
-    rw [nsmul_eq_mul, nsmul_eq_mul, map_mul, map_natCast]
-    congr 1
-    exact (WittVector.frobeniusEquiv p k).apply_symm_apply x
-  V_F x := by
-    change (p : ℕ) • (WittVector.frobeniusEquiv p k).symm (WittVector.frobenius x) = p • x
-    congr 1
-    exact (WittVector.frobeniusEquiv p k).symm_apply_apply x
-
-example : ((2 : ℕ) : ZMod 2) = 0 := p_eq_zero 2 (ZMod 2)
-
-end Examples
 
 end GlobalTheory.Dieu

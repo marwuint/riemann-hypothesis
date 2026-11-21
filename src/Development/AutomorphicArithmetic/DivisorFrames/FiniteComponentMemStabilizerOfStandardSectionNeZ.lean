@@ -95,23 +95,23 @@ theorem UpperTheory.finiteComponent_mem_stabilizer_of_standardSection_ne_zero :
   intro D S T ΛS βS βT ν e Z I hsd hfr hrk hZe g hg x hx hx'
   obtain ⟨hI, y, hy⟩ := UpperTheory.standard_section_integral_unit S T βS βT ν e I x hx
   obtain ⟨hI', y', hy'⟩ := UpperTheory.standard_section_integral_unit S T βS βT ν e I _ hx'
-  have hu' := GlobalTheory.T.frameMatrix_weilPairAction_left_inv D S T βS βT g x
+  have hu' := _root_.GlobalTheory.ChainOnto.FrameAct.frMapO_actO_left D S T βS βT g x
   rw [hu'] at hI' hy'
   obtain ⟨h1, h2⟩ := UpperTheory.integral_unit_det_both hZe _ (βS⁻¹ * Lev.finE S g * βS) hI hI' y y' hy hy'
   have hUA := GlobalTheory.LevSplit.finE_mem_UA S g
-  obtain ⟨h3, h4⟩ := GlobalTheory.T.selfDualFrame_conj_integral_smul_of_integral S ΛS βS hsd hfr _ hUA _ rfl e h1 h2
-  obtain ⟨hεε, hεc⟩ := GlobalTheory.T.idempotentSum_add_conj_idempotent_conj_fixed Z e hZe
-  obtain ⟨k, hk, hmt⟩ := GlobalTheory.T.exists_idempotent_component_of_group_element S (GlobalTheory.LevelNbhd.finPartG S g) (e + cA D e)
+  obtain ⟨h3, h4⟩ := _root_.GlobalTheory.ConjIntegral.conj_smul_isIntM S ΛS βS hsd hfr _ hUA _ rfl e h1 h2
+  obtain ⟨hεε, hεc⟩ := _root_.GlobalTheory.IdemConjSum.idemSum_add_conj_idem Z e hZe
+  obtain ⟨k, hk, hmt⟩ := _root_.GlobalTheory.GfCut.exists_cut S (GlobalTheory.LevelNbhd.finPartG S g) (e + cA D e)
     (GlobalTheory.LevelNbhd.finPartG_mem_GfC S g) hεε hεc
-  have hfk := GlobalTheory.T.finiteEmbedding_idempotent_patch_in_frame S βS _ k (e + cA D e) hmt
+  have hfk := _root_.GlobalTheory.FineCut.finE_cut S βS _ k (e + cA D e) hmt
   rw [GlobalTheory.SuppLevO.finE_finPartG] at hfk
-  obtain ⟨hSt, -⟩ := GlobalTheory.T.frameIdempotentCutMatrix_mem_stabiliser_reduction S.rank βS _ _ Z e hZe h1 h2 h3 h4 hfk
+  obtain ⟨hSt, -⟩ := _root_.GlobalTheory.FrameIdem.cut_mem_St_red S.rank βS _ _ Z e hZe h1 h2 h3 h4 hfk
   have hcomp : ∀ PP ∈ Z, GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) k =
       GlobalTheory.AdelicU.proj D.sp.cm.sig S.gram (PP.under (𝓞 D.host.F)) g := fun PP hP => by
     rw [← GlobalTheory.SuppLevO.proj_finPartG S g]
-    exact GlobalTheory.T.localProjection_eq_of_idempotent_patch S _ _ k _ (GlobalTheory.T.adeleTensorComponent_idempotentSum_add_conj_eq_one Z e hZe PP hP) hmt
-  have hkloc := (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hfr k).1 hSt
-  refine (GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D S βS ΛS hfr g).2 fun v => ?_
+    exact _root_.GlobalTheory.CompIdem.projV_eq_of_idem S _ _ k _ (GlobalTheory.T.adeleTensorComponent_idempotentSum_add_conj_eq_one Z e hZe PP hP) hmt
+  have hkloc := (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D S βS ΛS hfr k).1 hSt
+  refine (_root_.GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D S βS ΛS hfr g).2 fun v => ?_
   by_cases hv : ∃ PP ∈ Z, PP.under (𝓞 D.host.F) = v
   · obtain ⟨PP, hP, rfl⟩ := hv
     rw [← hcomp PP hP]

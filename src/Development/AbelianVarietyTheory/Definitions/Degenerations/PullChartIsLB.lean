@@ -131,25 +131,5 @@ theorem pullChart_isLB {X Y : Scheme.{0}} (f : Y ⟶ X) {L : LB X} (hL : L.IsLB)
 theorem FibPre.H_isLB {k : Type} [Field k] (Φ : FibPre k) (d : ℕ) : (Φ.H d).IsLB :=
   npw_isLB (pullChart_isLB Φ.D.q.left Φ.isLB) d
 
-theorem finite_forms {k J : Type} [Field k] [Finite J] (C : Set (J → k)) (d : ℕ) :
-    Module.Finite k ((MvPolynomial.homogeneousSubmodule J k d).map
-      (LinearMap.pi fun v : C => (MvPolynomial.aeval (R := k) v.1).toLinearMap)) :=
-  Module.Finite.iff_fg.2 ((MvPolynomial.homogeneousSubmodule_fg J k d).map _)
-
-example {R : Type} [CommRing R] (a : R) : valR (𝟙 (Sp R)) ⊤ (constFn (𝟙 (Sp R)) ⊤ a) = a := by
-  have e : ∀ (h : (⊤ : (Sp R).Opens) ≤ ⊤) (x : Γ(Sp R, ⊤)), ((Sp R).presheaf.map (homOfLE h).op).hom x = x :=
-    fun h x => congrArg (fun φ => CommRingCat.Hom.hom φ x) ((Sp R).presheaf.map_id _)
-  simp only [valR, constFn, Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp]
-  refine (dif_pos (fun _ _ => trivial)).trans ?_
-  erw [e, e]
-  exact (Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id_apply a
-
-example {k J : Type} [Field k] [Finite J] (d : ℕ) : hilb (∅ : Set (J → k)) d = 0 :=
-  Module.finrank_zero_of_subsingleton
-
-example {X : Type} [AddCommGroup X] (N : ℕ) (α : X) : Short (0 : QuadraticMap ℤ X ℝ) N α := fun _ => le_rfl
-
-example (g N' : ℕ) : ¬ Big g 3 N' := fun h => absurd h.four (by norm_num)
-
 end GlobalTheory.ZH
 end

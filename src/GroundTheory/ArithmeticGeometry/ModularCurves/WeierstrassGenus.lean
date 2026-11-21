@@ -42,14 +42,6 @@ end Restrict
 
 namespace Weierstrass
 
-open MvPolynomial HomogeneousLocalization
-
-variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
-
-section Scalars
-
-end Scalars
-
 end Weierstrass
 
 namespace Weierstrass
@@ -63,12 +55,6 @@ section CoverFacts
 noncomputable instance curveOver : (Curve W).Over (Spec (.of R)) := ⟨toSpec W⟩
 
 end CoverFacts
-
-section Genus
-
-variable {K : Type u} [Field K] (W : WeierstrassCurve K)
-
-end Genus
 
 end Weierstrass
 

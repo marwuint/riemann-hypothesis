@@ -179,34 +179,3 @@ private theorem isSubquotient_of_hasSupport (hZ : GlobalTheory.Published.Zelevin
   rw [h3] at h2
   exact absurd h2 (by norm_num)
 
-theorem UpperTheory.V.Z.Win.T2.psRec :
-    type_of% @UpperTheory.V.Hi.psRec := by
-  intro P L Ω _ _ _ _ _ n w A h a ha rc hrc σ ω hω
-  obtain ⟨a', ha', ε, H⟩ := UpperTheory.V.Z.Win.toV hrc
-  obtain rfl : a' = a := by
-    obtain ⟨art, hart⟩ := P.aut.art L Ω
-    have hinj := GlobalTheory.ArtinLocalInj.artin_localIdele_injective P.loc.chev L Ω art hart w
-    exact MonoidHom.ext fun σ => hinj ((ha'.glob art hart _).trans (ha.glob art hart _).symm)
-  haveI : CharZero (w.adicCompletion L) := algebraRat.charZero _
-  have hμ : ∀ i, IsSmoothChar (ω i * absPow (w.adicCompletion L) (((n : ℂ) - 1) / 2)) :=
-    fun i => (hω i).mul (isSmoothChar_absPow _)
-  have e0 : ((n : ℂ) - 1) / 2 + (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) = 0 := by push_cast; ring
-  have e1 : ∀ i, (IrrGL.ofChar (ω i) (hω i)).nu (((n : ℂ) - 1) / 2) = IrrGL.ofChar _ (hμ i) := fun i =>
-    IrrGL.tw_ofChar _ _ _ _
-  rw [← hasSupport_iff P.loc.zel H (algNorm σ) ω hω]
-  let τ : IrrRep (GL (Fin n) (w.adicCompletion L)) := ⟨_, σ.ρ, σ.smooth, σ.irred⟩
-  constructor
-  · intro hs
-    have h1 := (hasSupport_of_isSubquotient_prinSeries _ n _ hμ τ hs).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)
-    have h2 := SupportRing.hasSupport_nu h1 (((1 - (n : ℝ)) / 2 : ℝ) : ℂ)
-    simp only [Multiset.map_map, Function.comp_def, ← e1, IrrGL.nu_nu, e0, IrrGL.nu_zero] at h2
-    exact h2
-  · intro hs
-    have h2 := SupportRing.hasSupport_nu hs (((n : ℂ) - 1) / 2)
-    have e2 : (algNorm σ).nu (((n : ℂ) - 1) / 2) = IrrGL.of σ.ρ σ.smooth σ.irred := by
-      rw [algNorm, IrrGL.nu_nu, add_comm, e0, IrrGL.nu_zero]
-    have key : ∀ (x y : IrrGL (w.adicCompletion L)) s, x = y → HasSupport x.rep s → HasSupport y.rep s := by
-      rintro _ _ _ rfl h; exact h
-    have h3 := (key _ _ _ e2 h2).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm
-    simp only [Multiset.map_map, Function.comp_def, e1] at h3
-    exact isSubquotient_of_hasSupport P.loc.zel τ _ hμ h3

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentedBundleSectionsRationalFunctionsDictStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsHermitianLineBundlePowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentedBundleSectionsRationalFunctionsDict
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsHermitianLineBundlePow
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.VolGe
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
@@ -40,7 +40,7 @@ theorem nu_nonneg (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (
 theorem encard_eq_Bl (P : Pair p) {a b : ℤ} {N : HermLB p} (h : P.Rep a b N) (S : Set N.B.Sec) (R : ℝ) (hR : 0 ≤ R)
     (hS : ∀ u, u ∈ S ↔ ∀ σ (y : CxPts p σ), (N.φ σ).nsq (secVal p σ u) y ≤ R ^ 2) :
     S.encard = (P.Bl a b R).encard := by
-  obtain ⟨e, he, hr, hn, -⟩ := GlobalTheory.T.representedBundle_sections_rationalFunctions_dict k X p P a b N h
+  obtain ⟨e, he, hr, hn, -⟩ := _root_.GlobalTheory.VolBr.RepDict.rep_dict k X p P a b N h
   have hi : e '' S = P.Bl a b R := by
     ext f
     constructor
@@ -62,7 +62,7 @@ theorem encard_eq_Bl (P : Pair p) {a b : ℤ} {N : HermLB p} (h : P.Rep a b N) (
 
 theorem main : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b : ℤ) (M : HermLB p), P.Rep a b M → ∀ (t : ℝ) (m : ℕ), ((M.shift (fun _ => t) fun _ => rfl).pow m).smallSec.encard = (P.Bl (m * a) (m * b) (Real.exp (t * m))).encard ∧ (M.pow m).smallSec.encard = (P.Bl (m * a) (m * b) 1).encard ∧ (M.shift (fun _ => t) fun _ => rfl).smallSec.encard = (P.Bl a b (Real.exp t)).encard := by
   intro k _ X _ p P a b M hM t m
-  have hm := GlobalTheory.T.represents_hermitianLineBundle_pow k X p P a b M m hM
+  have hm := _root_.GlobalTheory.VolBr.Pair.rep_pow k X p P a b M m hM
   refine ⟨?_, ?_, ?_⟩
   · refine encard_eq_Bl P hm _ _ (Real.exp_pos _).le fun u => ?_
     simp only [HermLB.smallSec, Set.mem_setOf_eq]

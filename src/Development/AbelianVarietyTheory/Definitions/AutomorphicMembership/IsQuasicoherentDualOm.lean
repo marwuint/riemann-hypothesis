@@ -113,8 +113,6 @@ def embV (σ : E →+* ℂ) : 𝓞 E →+* c.V W := (embK c σ).codRestrict (c.V
 
 theorem coe_embV (σ : E →+* ℂ) (a : 𝓞 E) : (((embV c W σ a : c.V W) : c.F) : ℂ) = σ a := rfl
 
-theorem subtype_comp_embV (σ : E →+* ℂ) : (c.V W).subtype.comp (embV c W σ) = embK c σ := RingHom.ext fun _ => rfl
-
 theorem embV_injective : Function.Injective (embV c W) := fun σ σ' h =>
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a =>
     (coe_embV c W σ a).symm.trans ((congrArg (fun f : 𝓞 E →+* c.V W => ((f a : c.F) : ℂ)) h).trans (coe_embV c W σ' a)))
@@ -192,33 +190,14 @@ theorem mem_imHT (t : Dw.La) : h.1 t ∈ (imHT h).sec ⊤ := by
   rw [resM_self] at this
   exact zsmul_mem this _
 
-theorem imHT_le {U : Z.X.Opens} (hU : IsAffineOpen U) :
-    (imHT h).sec U = Submodule.span _ (Set.range fun t => resM _ le_top (h.1 t)) := by
-  refine le_antisymm (fun s hs => ?_) (Submodule.span_le.2 ?_)
-  · obtain ⟨a, rfl⟩ := (mem_spanSub_iff _ hU).1 hs
-    exact sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
-  · rintro _ ⟨t, rfl⟩
-    exact (imHT h).res_mem le_top (mem_imHT h t)
-
 def omP : Sub Z.om := preSub (red Z n) (imHT h)
 
 instance isQuasicoherent_omP : (omP h).toMod.IsQuasicoherent :=
   haveI : (imHT h).toMod.IsQuasicoherent := isQuasicoherent_spanSub _
   isQuasicoherent_preSub _ _
 
-theorem mem_omP_iff {U : Z.X.Opens} {s : Γ(Z.om, U)} : s ∈ (omP h).sec U ↔ (red Z n).app U s ∈ (imHT h).sec U :=
-  mem_preSub_iff _ _
-
-theorem pow_smul_mem_omP {U : Z.X.Opens} (s : Γ(Z.om, U)) : p ^ n • s ∈ (omP h).sec U := by
-  rw [mem_omP_iff, map_nsmul, nsmul_sec_modN]
-  exact zero_mem _
-
 def IsLift (t : Dw.La) {U : Z.X.Opens} (s : Γ((omP h).toMod, U)) : Prop :=
   (red Z n).app U ((omP h).incl.app U s) = resM _ le_top (h.1 t)
-
-theorem exists_isLift (t : Dw.La) {U : Z.X.Opens} (hU : IsAffineOpen U) : ∃ s : Γ((omP h).toMod, U), IsLift h t s :=
-  have ⟨s, hs⟩ := QCoh.surjective_cokernel_π_app (p ^ n • 𝟙 Z.om) hU (resM _ le_top (h.1 t))
-  ⟨(omP h).mkSec s ((mem_omP_iff h).2 (hs ▸ (imHT h).res_mem le_top (mem_imHT h t))), hs⟩
 
 section Pull
 
@@ -301,15 +280,6 @@ theorem eps_mem (σ : D.host.E →+* ℂ) : eps ct Z σ ∈ ann (embV Z.i.c ct.W
 
 def dif (σ : D.host.E →+* ℂ) : Z.i.c.V ct.W := EigenSplit.splitMap (embV Z.i.c ct.W) (eps ct Z σ) σ
 
-theorem dif_ne_zero (σ : D.host.E →+* ℂ) : dif ct Z σ ≠ 0 := (exists_eps ct Z σ).choose_spec.2
-
-open Classical in
-
-theorem map_eps (σ : D.host.E →+* ℂ) {R : Type} [CommRing R] (f : Z.i.c.V ct.W →+* R)
-    (hf : IsSplitting fun τ => f.comp (embV Z.i.c ct.W τ)) :
-    Algebra.TensorProduct.map f.toIntAlgHom (AlgHom.id ℤ _) (eps ct Z σ) = f (dif ct Z σ) • EigenSplit.idem hf σ :=
-  map_eq_smul_idem (embV_injective _ _) (eps_mem ct Z σ) f hf
-
 def epsHom (σ : D.host.E →+* ℂ) : Z.om ⟶ Z.om := act (tensAct (scal Z) (omAct Z)) (eps ct Z σ)
 
 variable {Z} {n : ℕ} (h : HTOn Z n) (σ : D.host.E →+* ℂ)
@@ -321,10 +291,6 @@ def toEps : (omP h).toMod ⟶ (epsOm ct h σ).toMod := toIm _
 instance isQuasicoherent_epsOm : (epsOm ct h σ).toMod.IsQuasicoherent := isQuasicoherent_imSub _
 
 instance epi_toEps : Epi (toEps ct h σ) := epi_toIm _
-
-theorem isFiniteQC_omP : IsFiniteQC (omP h).toMod :=
-  have := ct.isLocallyNoetherian Z
-  .of_mono (omP h).incl
 
 instance isFiniteQC_epsOm : IsFiniteQC (epsOm ct h σ).toMod :=
   have := ct.isLocallyNoetherian Z
@@ -347,9 +313,6 @@ def htIdl : ct.Idl Z :=
   if H : ∀ x ∈ (htIdeal ct h).support, x ∉ Z.opn then ⟨htIdeal ct h, H⟩ else ⟨⊤, fun x hx => by
     rw [Scheme.IdealSheafData.support_top] at hx
     exact hx.elim⟩
-
-theorem htIdl_val (H : ∀ x ∈ (htIdeal ct h).support, x ∉ Z.opn) : (htIdl ct h).1 = htIdeal ct h :=
-  congrArg Subtype.val (dif_pos H : htIdl ct h = _)
 
 variable (Z)
 
@@ -404,14 +367,6 @@ open Classical in
 
 def fstMap (m : ℕ) : modN (wSheaf ct h σ) m ⟶ modN (tSheaf ct Z σ) m :=
   if H : ∃ f, IsFst ct h σ (m := m) f then H.choose else 0
-
-theorem isSnd_sndMap {m : ℕ} (H : ∃ g, IsSnd ct h σ (m := m) g) : IsSnd ct h σ (sndMap ct h σ m) := by
-  rw [sndMap, dif_pos H]
-  exact H.choose_spec
-
-theorem isFst_fstMap {m : ℕ} (H : ∃ f, IsFst ct h σ (m := m) f) : IsFst ct h σ (fstMap ct h σ m) := by
-  rw [fstMap, dif_pos H]
-  exact H.choose_spec
 
 def ses : ct.SES Z where
   F₁ := Z.ofMod (wSheaf ct h σ)

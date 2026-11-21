@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicDescentPunctPolydiscLogCoverStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtensionAcrossCoordinateHyperplanesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtensionAcrossCoordinateHyperplanes
 open GlobalTheory.ShFam.Hor
 
 namespace GlobalTheory
@@ -123,7 +123,7 @@ theorem periodVec_extends : ∀ (n a g : ℕ) (ha : a ≤ n) (ρ₁ : ℝ) (τ :
           rw [mul_sub, Finset.mul_sum, Finset.sum_congr rfl (fun k _ => hcd _)]
           ring
       _ ≤ 1 := periodVec_norm_exp_le _ (hpos s hsD hb').2 v
-  obtain ⟨F, hFd, hFe⟩ := GlobalTheory.T.exists_holomorphic_extension_across_coordinate_hyperplanes n a ρ₁ H m' hρ0 hHd hbound
+  obtain ⟨F, hFd, hFe⟩ := _root_.GlobalTheory.HyperplaneExt.extension_across_coordinate_hyperplanes n a ρ₁ H m' hρ0 hHd hbound
   refine ⟨F, hFd, fun s hs hb => ?_⟩
   rw [hFe _ hb (fun k hk => by simp [logExp, hk, Complex.exp_ne_zero])]
   exact hHe s hs hb

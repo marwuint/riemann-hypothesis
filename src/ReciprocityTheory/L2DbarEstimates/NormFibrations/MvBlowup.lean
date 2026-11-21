@@ -1,5 +1,8 @@
 import ReciprocityTheory.L2DbarEstimates.JacobianInterpolationStatement
-import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.Imports
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.MeasurableEmbeddingRotAbout
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.MvDivIntegrand
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.ExtNull
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.ImportsAlt
 
 namespace ReciprocityTheory.L2DbarEstimates
 
@@ -47,9 +50,6 @@ theorem mv (n : ℕ) : MVStatement n := by
   simp_rw [hc]
   rw [← e1, ← e2]
   exact h
-
-theorem mvBlowup (n : ℕ) : MVBlowupStatement n :=
-  fun hn => C.mvDiv n hn
 
 theorem mvInt (n : ℕ) : MVIntStatement n := by
   intro hn s

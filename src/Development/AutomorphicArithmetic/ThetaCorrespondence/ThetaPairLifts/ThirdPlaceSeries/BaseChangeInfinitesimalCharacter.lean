@@ -1,5 +1,16 @@
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InfinityTypeOfLiftStatement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InfinityTypeOfLift
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenLocOfCenReal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroWild
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroSupport
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAboveL
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverRowsAndMono
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PublishedInputsThirdLayer
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtRows
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ParLaws
@@ -16,20 +27,10 @@ open ReciprocityTheory.Aut Formalism.AUTREP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 noncomputable section
 namespace GlobalTheory.LiftInfRef
-open Matrix Formalism.L2.NG GlobalTheory.AlgWtHW NumberField
-section Conj
-variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
-end Conj
 end GlobalTheory.LiftInfRef
 namespace GlobalTheory.LiftInfRef
-open Matrix Formalism.L2.NG GlobalTheory.AlgWtHW NumberField
-section Conj2
-variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
-end Conj2
 end GlobalTheory.LiftInfRef
 namespace GlobalTheory.LiftInfRef
-open GlobalTheory.LiftRef
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
 end GlobalTheory.LiftInfRef
 namespace GlobalTheory.LiftInfRef
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

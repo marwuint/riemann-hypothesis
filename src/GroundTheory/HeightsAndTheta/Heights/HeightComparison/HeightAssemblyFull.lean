@@ -1,9 +1,16 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.HeightComparison.HeightAssembly
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.Comparison
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.HeightOrbitCurve
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.HeightOrbitDegree
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.HeightRecR
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitCurve
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitDegree
+import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PHeightRecR
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitDivVertical
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitFiniteSum
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.POrbitArchSum
 import GroundTheory.HeightsAndTheta.Heights.HeightComparison.PPtsIntegralPoints
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -39,11 +46,5 @@ theorem OrbitArchSum.of_conjSum (hB : OrbitConjSum.Statement) : OrbitArchSum.Sta
   simp only [hterm] at hB'
   have hK : (0 : ℝ) < Module.finrank ℚ (coordField x) := Nat.cast_pos.mpr Module.finrank_pos
   rw [div_mul_eq_mul_div, hB', mul_div_cancel_left₀ _ hK.ne']
-
-theorem HeightAsIntersection.of_orbit_parts (hD : OrbitDegreeRatio.Statement)
-    (hL : OrbitLocalSum.Statement) (hZ : OrbitCenterZero.Statement)
-    (hB : OrbitConjSum.Statement) : HeightAsIntersection.Statement :=
-  HeightAsIntersection.of_parts OrbitDivVertical.proof (OrbitFiniteSum.proof hD hL hZ)
-    (OrbitArchSum.of_conjSum hB)
 
 end GroundTheory.Heights₂.Heights

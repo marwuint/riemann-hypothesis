@@ -19,10 +19,6 @@ theorem nontrivial (L : LocAt F E sig p) : Nontrivial L.Ep :=
 theorem finite (L : LocAt F E sig p) : Module.Finite L.Fp L.Ep :=
   Module.finite_of_finrank_pos (finrank_pos L)
 
-theorem ιE_injective (L : LocAt F E sig p) : Function.Injective L.ιE := by
-  have := nontrivial L
-  exact L.ιE.injective
-
 theorem isUnit_ιE (L : LocAt F E sig p) {x : E} (hx : x ≠ 0) : IsUnit (L.ιE x) :=
   (isUnit_iff_ne_zero.mpr hx).map L.ιE
 

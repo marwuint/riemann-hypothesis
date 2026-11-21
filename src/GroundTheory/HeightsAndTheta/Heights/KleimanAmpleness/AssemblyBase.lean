@@ -20,7 +20,7 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSerreTail
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PExtension
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PGenerated
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PTwistFinite
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PFiniteTwists
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PTwistSections
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PProjDegreePositive
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PHilbertPositive
@@ -42,13 +42,12 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepDataJProper
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSubvarDrop
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PNefRestrict
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PTwistVanish
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PConservationOfDegree
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PNefGeneric
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PFiniteSections
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PDomination
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSurjectiveClosed
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSectionCountDrop
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSectionCount
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Kleiman
@@ -59,7 +58,6 @@ theorem CechDSq.full : CechDSq.Statement.{u, v} := CechDSq.proof
 theorem DegLocExact.full : DegLocExact.Statement.{u, v} := DegLocExact.proof
 theorem CechExact.full : CechExact.Statement.{u, v} := CechExact.proof CechDSq.full DegLocExact.full
 theorem CechTop.full : CechTop.Statement.{u, v} := CechTop.proof
-theorem CechFlat.full : CechFlat.Statement.{u, v} := CechFlat.proof
 theorem Cech.Cone.full : Cech.Cone.Statement.{u, v} := Cech.Cone.proof
 theorem Cech.Transport.full : Cech.Transport.Statement.{u, v, w} := Cech.Transport.proof
 theorem SerrePoly.Laurent.full : SerrePoly.Laurent.Statement.{u} := SerrePoly.Laurent.proof
@@ -88,7 +86,6 @@ theorem SerreTail.full : SerreTail.Statement.{u, v} := SerreTail.proof SerreFini
 theorem Extension.full : Extension.Statement.{u, v, w} := Extension.proof
 theorem Generated.full : Generated.Statement.{u, w} := Generated.proof Extension.full
 theorem TwistFinite.full : TwistFinite.Statement.{u, w} := TwistFinite.proof Extension.full SerreFinite.full
-theorem FiniteTwists.full : FiniteTwists.Statement.{u, w} := FiniteTwists.proof TwistFinite.full
 theorem TwistSections.full : TwistSections.Statement.{u, w} := TwistSections.proof SerreOnto.full
 theorem ProjDegreePositive.full : ProjDegreePositive.Statement.{u} := ProjDegreePositive.proof
 theorem HilbertPositive.full : HilbertPositive.Statement.{u, w} :=
@@ -98,52 +95,21 @@ theorem PrimeFiltration.Exists.full : PrimeFiltration.Exists.Statement.{u, v, w}
   PrimeFiltration.Exists.proof
 theorem PrimeFiltration.full : PrimeFiltration.Statement.{u, v, w} :=
   PrimeFiltration.proof PrimeFiltration.Exists.full
-theorem PrimeFiltration.Irrelevant.full : PrimeFiltration.Irrelevant.Statement.{u} :=
-  PrimeFiltration.Irrelevant.proof
 theorem PrimeFiltration.Point.full : PrimeFiltration.Point.Statement.{u, w} := PrimeFiltration.Point.proof
 theorem PrimeFiltration.Restrict.full : PrimeFiltration.Restrict.Statement.{u, w} :=
   PrimeFiltration.Restrict.proof
 theorem Restriction.full : Restriction.Statement.{u, w} := Restriction.proof
 
-theorem VeryAmpleTwistGenerated.full : VeryAmpleTwistGenerated.Statement.{u, w} :=
-  VeryAmpleTwistGenerated.proof
-theorem AmpleCover.full : AmpleCover.Statement.{u, w} := AmpleCover.proof
 theorem StepThree.Away.full : StepThree.Away.Statement.{u, w} := StepThree.Away.proof
 theorem RestrictTwist.full : RestrictTwist.Statement.{u, w} := RestrictTwist.proof
 theorem StepData.JProper.full : StepData.JProper.Statement.{u, w} := StepData.JProper.proof
 theorem SubvarDrop.full : SubvarDrop.Statement.{u, w} := SubvarDrop.proof
-
-theorem AmpleTwistLocal.assembled (hA : AmpleAffineGen.Statement.{u, w}) :
-    AmpleTwistLocal.Statement.{u, w} :=
-  AmpleTwistLocal.proof hA
-
-theorem GeneratedAmple.assembled (hA : AmpleAffineGen.Statement.{u, w}) :
-    GeneratedAmple.Statement.{u, w} :=
-  GeneratedAmple.proof AmpleCover.full (AmpleTwistLocal.assembled hA)
 
 theorem TwistVanish.assembled (hS : TwistSplit.Statement.{u, w}) : TwistVanish.Statement.{u, w} :=
   TwistVanish.proof Extension.full SerreVanish.full hS
 
 theorem NefRestrict.assembled (hRL : RestrLenRestrict.Statement.{u, w}) : NefRestrict.Statement.{u, w} :=
   NefRestrict.proof RestrictTwist.full hRL
-
-theorem FiniteSections.assembled (hT : TildeTail.Statement.{u, w}) : FiniteSections.Statement.{u, w} :=
-  FiniteSections.proof Extension.full hT
-
-theorem Domination.assembled (hT : TildeTail.Statement.{w, w}) : Domination.Statement.{u, w} :=
-  Domination.proof (FiniteSections.assembled hT)
-
-theorem SurjectiveClosed.assembled (hFam : IdealTwistFamily.Statement.{u, w})
-    (hVan : TildeVanish.Statement.{u, w, w}) : SurjectiveClosed.Statement.{u, w} :=
-  SurjectiveClosed.proof Extension.full hFam hVan
-
-theorem ConservationOfDegree.assembled (hA : FibreHilbertFlat.Statement.{u, w})
-    (hB : FibreCycleDegree.Statement.{u, w}) : ConservationOfDegree.Statement.{u, w} :=
-  ConservationOfDegree.proof hA hB
-
-theorem NefGeneric.assembled (hA : FibreHilbertFlat.Statement.{u, w})
-    (hB : FibreCycleDegree.Statement.{u, w}) : NefGeneric.Statement.{u, w} :=
-  NefGeneric.proof (ConservationOfDegree.assembled hA hB)
 
 theorem SectionCount.Drop.assembled (hF : SectionCount.Drop.Filt.Statement.{u, w})
     (hT : SectionCount.Drop.Term.Statement.{u, w}) (hH : SectionCount.Drop.HilbW.Statement.{u, w})

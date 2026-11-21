@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEqKer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivHomDivisibleByPowOfKillsPowTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomSurjectiveIffFinrankKernelQuotientEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomSurjectiveIffFinrankKernelQuotientEqOne
 
 set_option autoImplicit false
 
@@ -82,7 +82,7 @@ theorem hasLogDeg_zero_iff_isIso {G H : PDivGroup p k} (f : G ⟶ H) (hf : IsIso
   · rintro ⟨N, hN⟩
     obtain ⟨a, f', h1, h2⟩ := hf
     have hs : Function.Surjective (f.app (N + a)) :=
-      (GlobalTheory.T.bialgHom_surjective_iff_finrank_kernelQuotient_eq_one k (G.A (N + a)) (H.A (N + a)) (f.app (N + a))).2
+      (_root_.GlobalTheory.Dieu.surjective_iff_finrank_quot_kerIdeal_eq_one k (G.A (N + a)) (H.A (N + a)) (f.app (N + a))).2
         ((hN (N + a) (Nat.le_add_right N a)).trans (pow_zero p))
     set f'' : H ⟶ G := (p : ℤ_[p]) ^ N • f' with hf''
     have e1 : f ≫ f'' = (p : ℤ_[p]) ^ (N + a) • 𝟙 G := by
@@ -105,7 +105,7 @@ theorem hasLogDeg_zero_iff_isIso {G H : PDivGroup p k} (f : G ⟶ H) (hf : IsIso
   · intro hi
     refine ⟨0, fun n _ => ?_⟩
     rw [pow_zero]
-    refine (GlobalTheory.T.bialgHom_surjective_iff_finrank_kernelQuotient_eq_one k (G.A n) (H.A n) (f.app n)).1 fun x => ⟨(inv f).app n x, ?_⟩
+    refine (_root_.GlobalTheory.Dieu.surjective_iff_finrank_quot_kerIdeal_eq_one k (G.A n) (H.A n) (f.app n)).1 fun x => ⟨(inv f).app n x, ?_⟩
     have h := congrArg (fun φ : G ⟶ G => φ.app n x) (IsIso.hom_inv_id f)
     exact h
 

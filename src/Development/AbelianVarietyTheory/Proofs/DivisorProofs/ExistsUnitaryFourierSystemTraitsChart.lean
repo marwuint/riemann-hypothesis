@@ -1,16 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
 import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierTermSystemClassSumsUnboundedLevelsOneIndeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierTermSystemExactOfGeometricUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberOfUnitaryMonomialUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberExistsIntegralTermsUnitShiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberTermsIsThetaTermsTorsionFramesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonemptyOpenThetaRingRegularStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinkedThetaSystemRegularMonomialFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtSqrtUniformiserCompleteDvrStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierTermSystemClassSumsUnboundedLevelsOneInde
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierTermSystemExactOfGeometricUniformisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberOfUnitaryMonomialUniformisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberExistsIntegralTermsUnitShift
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberTermsIsThetaTermsTorsionFrames
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonemptyOpenThetaRingRegular
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinkedThetaSystemRegularMonomialFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtSqrtUniformiserCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelStalkNormalNoetherianFractionRingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSystemUniversalUnitaryDeepTowersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSystemUniversalUnitaryDeepTowers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterGroupFinrankLeMinSignatureUnitaryTrait
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -102,7 +104,7 @@ theorem nonempty_gMem_trait (hpq : 1 ≤ Dw.p + Dw.q) (C : UCompact Xo c) (X₁ 
       _ = _ := by rw [hc]; simp only [Category.assoc]
   have hr : ∀ k : Fin 1, ![t] k ^ 2 = f (![T.ϖ] k) := fun k => by
     rw [Subsingleton.elim k 0]; exact ht
-  obtain ⟨𝔪, -⟩ := GlobalTheory.T.thetaMember_of_unitary_monomial_uniformisation E H Dw hpq l Xo c C X₁ act u π hlink z₁ T.V hcnT T.t T.y T.P T.gen 1 ![T.ϖ] ![T.be]
+  obtain ⟨𝔪, -⟩ := _root_.GlobalTheory.USep.member_of_monomial_unif E H Dw hpq l Xo c C X₁ act u π hlink z₁ T.V hcnT T.t T.y T.P T.gen 1 ![T.ϖ] ![T.be]
     T.mono V' f fK ![t] hcn hinj hf hfK hr (f.comp e) hloc hreg hcmp
   exact ⟨𝔪⟩
 
@@ -113,11 +115,11 @@ open GlobalTheory.GSep.UAssembly in
 theorem GlobalTheory.GSep.exists_vPre_traitsOn_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c), ∀ (φ : InvFun (𝓞 E)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (Cm : GlobalTheory.UChart.MonoFam Xo c φ V), GlobalTheory.Mum.Base V → ∀ ξ : Sp V ⟶ pullback C.z (spMap C.b), Cm.y ≫ C.iF = jK V ≫ ξ → ∀ n : ℕ, n.Prime → Odd n → ∀ j₀ : ℕ, ∃ (j : ℕ) (X₁ : GlobalTheory.GSep.GSet) (π : X₁.M.Z ⟶ C.Z) (z₁ : X₁.M.Z) (ζ : Sp (X₁.M.Z.presheaf.stalk z₁) ⟶ pullback C.z (spMap C.b)) (_ : IsDomain (X₁.M.Z.presheaf.stalk z₁)) (U : X₁.M.Z.Opens) (Φ : VPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] (X₁.M.Z.presheaf.stalk z₁)) (y : Φ.Y) (ρ : V →+* Φ.V y) (e : Φ.X y ≃ₗ[𝓞 E] Cm.P.D.toPre.X) (h : Fin (Φ.m y) ≃ Fin Cm.m) (c₀ : Φ.Q), j₀ ≤ j ∧ IsCov C π z₁ ζ ∧ (U : Set X₁.M.Z).Nonempty ∧ GlobalTheory.GSep.HasTraitsOn ζ Φ U ∧ GlobalTheory.GSep.IsMemberP ζ Φ ((n ^ j) ^ 2) Cm ξ y ρ e h ∧ (∀ y', IsUnit (Φ.u y' 0 c₀)) ∧ (∀ y', Φ.m y' ≠ 1 → y' = y) ∧ Φ.Exact ((n ^ j) ^ 2) ∧ Φ.ClassSums ((n ^ j) ^ 2) := by
   intro E _ _ _ H Dw hpq l Xo c C φ V _ _ _ Cm hB ξ hξ n hn hodd j₀
   obtain ⟨j, X₁, act, u, π, z₁, ζ, V₁, _, _, _, ρ₁, ev₁, r, hj, hN, hlink, hcov, hcn₁, hinj, hfin, hloc, hreg, hcomp, hr⟩ :=
-    GlobalTheory.T.exists_linked_thetaSystem_regular_monomialFamily E H Dw hpq l Xo c C φ V Cm hB ξ hξ n hn hodd j₀
-  obtain ⟨U, hUne, hU⟩ := GlobalTheory.T.exists_nonempty_open_thetaRing_regular X₁
+    _root_.GlobalTheory.GSep.exists_uLink_regAt_chart E H Dw hpq l Xo c C φ V Cm hB ξ hξ n hn hodd j₀
+  obtain ⟨U, hUne, hU⟩ := _root_.GlobalTheory.GSep.exists_opens_R_le_O X₁
   have hdom := (GlobalTheory.T.modelStalk_normal_noetherian_fractionRing X₁ z₁).1
   have hact : GlobalTheory.GSep.IsAct X₁ act := hlink.1
-  have hdeep := GlobalTheory.T.thetaSystem_universalUnitary_deep_towers E H Dw hpq l Xo c C X₁ act u π hlink
+  have hdeep := _root_.GlobalTheory.GSep.UTower.deep_of_uLink E H Dw hpq l Xo c C X₁ act u π hlink
   obtain ⟨x₀, hx₀⟩ := X₁.div z₁
   have hunit : ∀ m : ℕ, m ≠ 0 → IsUnit (m : X₁.M.Z.presheaf.stalk z₁) := fun m hm =>
     isUnit_natCast_of_spec (ζ ≫ pullback.snd C.z (spMap C.b)) m hm
@@ -132,7 +134,7 @@ theorem GlobalTheory.GSep.exists_vPre_traitsOn_chart : ∀ (E : Type) [Field E] 
   have hfK₁ : ∀ a, fK₁ (algebraMap V _ a) = algebraMap V₁ _ (ρ₁ a) := fun a => IsLocalization.map_eq _ a
   have key₀ := jK_spMap ρ₁ fK₁ hfK₁
   have hcov₃ : ζ ≫ pullback.fst _ _ = X₁.M.Z.fromSpecStalk z₁ ≫ π := hcov.2.2.1
-  obtain ⟨𝔪₀, p₀, hp₀⟩ := GlobalTheory.T.thetaMember_of_unitary_monomial_uniformisation E H Dw hpq l Xo c C X₁ act u π hlink z₁ V hcnV Cm.t Cm.y Cm.P Cm.gen Cm.m Cm.s
+  obtain ⟨𝔪₀, p₀, hp₀⟩ := _root_.GlobalTheory.USep.member_of_monomial_unif E H Dw hpq l Xo c C X₁ act u π hlink z₁ V hcnV Cm.t Cm.y Cm.P Cm.gen Cm.m Cm.s
     (fun i => (l.M' : ℤ) • Cm.δ i) Cm.mono V₁ ρ₁ fK₁ r hcn₁ hinj hρ hfK₁ hr ev₁ hloc hreg (by
       calc _ = (jK V₁ ≫ (spMap ev₁ ≫ ζ)) ≫ pullback.fst _ _ := by simp only [Category.assoc, hcov₃]
         _ = (jK V₁ ≫ spMap ρ₁) ≫ ξ ≫ pullback.fst _ _ := by rw [hcomp]; simp only [Category.assoc]
@@ -142,7 +144,7 @@ theorem GlobalTheory.GSep.exists_vPre_traitsOn_chart : ∀ (E : Type) [Field E] 
   have hcnT : ∀ T : UTrait Xo c, IsCN T.V := fun T => by
     haveI := T.cdvr.1
     exact ⟨inferInstance, inferInstance, T.cdvr.2.1, T.cdvr.2.2⟩
-  have hsq := fun T : UTrait Xo c => GlobalTheory.T.exists_finite_ext_sqrt_uniformiser_complete_dvr T.V (hcnT T) (by haveI := T.cdvr.1; infer_instance) T.ϖ T.irr
+  have hsq := fun T : UTrait Xo c => _root_.GlobalTheory.USep.exists_finite_ext_sq_eq_uniformiser T.V (hcnT T) (by haveI := T.cdvr.1; infer_instance) T.ϖ T.irr
   choose VT iRT iDT iLT fT tT hcnW hpirW hinjW hlocW hfinW htW using hsq
   let Tr : Type 1 := Σ T : UTrait Xo c, {e : X₁.M.Z.presheaf.stalk z₁ →+* T.V // IsLocalHom e ∧
     jK T.V ≫ spMap e ≫ ζ = T.y ≫ C.iF ∧ Set.range (jK T.V ≫ spMap e ≫ X₁.M.Z.fromSpecStalk z₁) ⊆ (U : Set X₁.M.Z)}
@@ -181,7 +183,7 @@ theorem GlobalTheory.GSep.exists_vPre_traitsOn_chart : ∀ (E : Type) [Field E] 
     | none => 𝔪₀
     | some T => (hmT T).some
   have hlab : Set.range (Subtype.val : X₁.S.HH X₁.M z₁ → X₁.S.Gam) = X₁.S.HH X₁.M z₁ := Subtype.range_val
-  choose uu hu₁ hu₂ hu₃ using fun y => GlobalTheory.T.thetaMember_exists_integral_terms_unit_shift (𝓞 E) X₁ z₁ act x₀ hx₀ (VV y) (EV y) (Fin 1 → XX y) _ _ (𝔪 y)
+  choose uu hu₁ hu₂ hu₃ using fun y => _root_.GlobalTheory.GSep.IntTerm.exists_terms (𝓞 E) X₁ z₁ act x₀ hx₀ (VV y) (EV y) (Fin 1 → XX y) _ _ (𝔪 y)
     (X₁.S.HH X₁.M z₁) Subtype.val hlab
   have ht₀ : ∀ k, r k ∈ maximalIdeal V₁ ∧ r k ≠ 0 := fun k => by
     refine ⟨(mem_maximalIdeal _).2 (mem_nonunits_iff.2 fun hu => ?_), fun h0 => ?_⟩
@@ -239,7 +241,7 @@ theorem GlobalTheory.GSep.exists_vPre_traitsOn_chart : ∀ (E : Type) [Field E] 
     rw [Subsingleton.elim k 0]
     exact ⟨htW T, fun _ _ => rfl⟩
   · refine ⟨hinj, hfin, hcomp, fun k => ⟨hr k, fun _ _ => rfl⟩, 𝔪₀.D.toPre, p₀, ?_⟩
-    have hth := GlobalTheory.T.thetaMember_terms_isThetaTerms_torsionFrames (𝓞 E) X₁ z₁ act x₀ hx₀ V₁ ev₁ (Fin 1 → Cm.P.D.toPre.X) _ _ 𝔪₀ _ Subtype.val hlab _ (hu₁ none)
+    have hth := _root_.GlobalTheory.GSep.ThetaTerms.isThetaTerms₀_of_terms (𝓞 E) X₁ z₁ act x₀ hx₀ V₁ ev₁ (Fin 1 → Cm.P.D.toPre.X) _ _ 𝔪₀ _ Subtype.val hlab _ (hu₁ none)
     rw [← hN]
     obtain ⟨th, g, b, w, h1, h2, h3, h4, h5⟩ := hth
     refine ⟨th, g, b, w, h1, h2, h3, h4, fun mu c => ?_⟩
@@ -250,6 +252,6 @@ theorem GlobalTheory.GSep.exists_vPre_traitsOn_chart : ∀ (E : Type) [Field E] 
     · rfl
     · exact absurd rfl h
   · rw [← hN]
-    exact GlobalTheory.T.fourierTermSystem_exact_of_geometric_uniformisation (𝓞 E) _ _ _ _ X₁ z₁ act x₀ Φ _ hgeo
+    exact _root_.GlobalTheory.GSep.ExactSums.exact_of_isGeo (𝓞 E) _ _ _ _ X₁ z₁ act x₀ Φ _ hgeo
   · rw [← hN]
-    exact GlobalTheory.T.fourierTermSystem_class_sums_unbounded_levels_one_index (𝓞 E) _ _ _ X₁ z₁ act hact hdeep hunit x₀ Φ _ hgeo
+    exact _root_.GlobalTheory.GSep.DeepSums.classSums_deeper (𝓞 E) _ _ _ X₁ z₁ act hact hdeep hunit x₀ Φ _ hgeo

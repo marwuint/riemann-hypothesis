@@ -25,27 +25,6 @@ def WtLac : SeedWtU := fun E _ _ _ l _ a ι w₀ v' U U' =>
   SameWtOff ι w₀ v' U U' ∧ ∃ τ₀ : E →+* ℂ, OverPl ι τ₀ v' ∧ ∀ lam, HasWeightAt U' τ₀ lam → ∀ J : Multiset ℤ,
     J.map (fun n : ℤ => (n : ℂ)) = (infOfWeight lam).map (fun z => ((a : ℂ) - 1) / 2 - z) → GapJ a J
 
-def FinitenessCondition : Prop := UnitaryWeightConditionWithWeights GlobalTheory.CongW.TyEll (GlobalTheory.CongW.GenOf DGen) WtLac
-
-def CongFin : Prop := CongUW3 GlobalTheory.CongW.TyEll (GlobalTheory.CongW.GenOf DGen) WtLac
-
-def LimFin : Prop := LimWU3
-
-def LimWPhi : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a → ∀ d : ℕ, ImQ E d → SqAt d l →
-    ∀ π : CuspSub E a, InScope .csd l π (quadChar E ^ a) →
-    ∀ w₀ v' : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ w₀.asIdeal → ((l : ℕ) : 𝓞 E) ∈ v'.asIdeal → Apart v' w₀ →
-    ∃ r : G E Ω →* GL (Fin a) (Qbar l), Continuous r ∧ IsSSRep r ∧
-      (∀ w, UsPl d w → ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ B, (CG.mk π).HasSat w B →
-        UpperTheory.V.Af.FrobEig ι r w (UpperTheory.V.Af.algSat a (normV w) B)) ∧
-      (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → Apart w v' → (∃ B, (CG.mk π).HasSat w B) →
-        ClauseAt .crys π ι r w ∧ ClauseAt .dR π ι r w) ∧
-      (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → Apart w v' → ∀ B, (CG.mk π).HasSat w B →
-        GlobalTheory.RoadU.SphAt .phi π ι r w B)
-
-example : GapJ 1 0 := fun i hi => absurd hi (by omega)
-
 end GlobalTheory.CongL
 
 end

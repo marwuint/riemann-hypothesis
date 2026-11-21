@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HInv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDimLtTopOfEssFiniteType
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfRingEquivStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfRingEquiv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvarianceCechDescentIntegralStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyProdRingProjectionsBijectiveStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
@@ -172,7 +172,7 @@ variable {A : Type} [CommRing A]
 
 theorem hinv_of_algEquiv {q : ℕ} [NeZero q] {X Y : Type} [CommRing X] [CommRing Y] [Algebra A X] [Algebra A Y]
     (e : X ≃ₐ[A] Y) (h : HInv q X) : HInv q Y :=
-  GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q X Y e.toRingEquiv h
+  _root_.GlobalTheory.EtC.hInv_of_ringEquiv q X Y e.toRingEquiv h
 
 def Good (I J L : Ideal A) : Prop := L = I ∨ L = J ∨ L = I ⊔ J
 

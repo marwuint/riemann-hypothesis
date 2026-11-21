@@ -21,9 +21,6 @@ theorem mem_eig {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K 
     (H : Subgroup Γ) (lam : H →* Kˣ) (v : V) : v ∈ eig ρ H lam ↔ ∀ h : H, ρ h v = ((lam h : Kˣ) : K) • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
-example {K Γ : Type} [Field K] [Group Γ] (H : Subgroup Γ) : EmbReg (1 : Representation K Γ (Fin 0 → K)) H 0 :=
-  ⟨0, fun _ _ _ => Subsingleton.elim _ _, fun _ _ i => i.elim0⟩
-
 variable (D : D7)
 
 open Classical in

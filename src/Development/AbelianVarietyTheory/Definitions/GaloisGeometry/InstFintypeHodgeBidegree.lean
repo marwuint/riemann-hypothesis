@@ -150,15 +150,6 @@ theorem dV_cupTerm {m n k q q' Q : ℕ} (h : m + n = k) (hq : q + q' = Q) (f : T
   exact congrArg₂ (· + ·) (congrArg (fun z ↦ wedgeF F _ _ z _) (dOm_ev s _ _ _ _ f))
     (congrArg (fun z ↦ (-1 : ℤ) ^ q • wedgeF F _ _ _ z) (dOm_ev s _ _ _ _ g))
 
-theorem ev_self {M : C ⥤ ModuleCat.{0} R} {m : ℕ} (s : ComposableArrows C m) (p : Fin (m + 1) → Fin (m + 1))
-    (hp : Monotone p) (e : ∀ a, (p a : ℕ) = a) (h : p (Fin.last m) ≤ Fin.last m) (f : Cn M m) :
-    ev s p hp (Fin.last m) h f = f s := by
-  rw [ev_congr s p id hp monotone_id e (Fin.last m) h le_rfl f, ev_apply]
-  have hid : s.map (homOfLE (le_rfl : (id (Fin.last m)) ≤ Fin.last m)) = 𝟙 _ := by
-    rw [show homOfLE (le_rfl : (id (Fin.last m)) ≤ Fin.last m) = 𝟙 _ from rfl, s.map_id]
-  rw [hid, M.map_id]
-  rfl
-
 variable (F) in
 
 def oneTerm : Term F 0 0 := fun s ↦ oneOm R (F.obj (s.obj (Fin.last 0)))
@@ -167,12 +158,6 @@ theorem coe_ev_oneTerm {k : ℕ} (s : ComposableArrows C k) (p : Fin 1 → Fin (
     (j : Fin (k + 1)) (h : p (Fin.last 0) ≤ j) :
     (ev s p hp j h (oneTerm F) : (OmF F 0).obj _).1 = 1 :=
   map_one (semiHom_mp F (s.map (homOfLE h))).mDR
-
-theorem oneTerm_cupTerm {a q : ℕ} (ha : 0 + a = a) (hq : 0 + q = q) (f : Term F a q) :
-    cupTerm F ha hq (oneTerm F) f = f := by
-  funext s
-  rw [cupTerm_apply, ev_self s (bk 0 a a ha.le) _ (fun _ ↦ by simp)]
-  exact Subtype.ext ((congrArg (· * (f s).1) (coe_ev_oneTerm s _ _ _ _)).trans (one_mul _))
 
 end Terms
 
@@ -291,14 +276,6 @@ variable (F) in
 
 def Tot.one : Tot F 0 := Tot.sg F rfl (oneTerm F)
 
-theorem Tot.one_cup {n : ℕ} (h : 0 + n = n) (x : Tot F n) : Tot.cup F h (Tot.one F) x = x := by
-  induction x using Tot.induction with
-  | h0 => simp
-  | ha x x' hx hx' => simp only [map_add, hx, hx']
-  | hs a q e f =>
-    rw [Tot.one, Tot.cup_sg h rfl e (zero_add a) (zero_add q) e, oneTerm_cupTerm, zero_mul, pow_zero,
-      one_smul]
-
 theorem Tot.one_mem : Tot.one F ∈ ZTot F 0 := by
   have h1 : dH F 0 0 (oneTerm F) = 0 := by
     funext s
@@ -360,54 +337,7 @@ variable (F) in
 
 def Hyp.one : Hyp F 0 := Hyp.mk F 0 ⟨Tot.one F, Tot.one_mem⟩
 
-theorem Hyp.one_cup {n : ℕ} (h : 0 + n = n) (x : Hyp F n) : Hyp.cup F h (Hyp.one F) x = x := by
-  obtain ⟨x, rfl⟩ := Hyp.mk_surjective F n x
-  exact congrArg (Hyp.mk F n) (Subtype.ext (Tot.one_cup h x.1))
-
-theorem Hyp.one_ne_zero (T : C) [Nontrivial (F.obj T)] : Hyp.one F ≠ 0 := fun h ↦ by
-  have h1 : Tot.one F = 0 := Hyp.mk_eq_zero.1 h
-  have h2 := (Tot.sg_same rfl (oneTerm F)).symm.trans (congrFun h1 ⟨(0, 0), rfl⟩)
-  exact _root_.one_ne_zero (α := DR R (F.obj T))
-    (congrArg Subtype.val (congrFun h2 (ComposableArrows.mk₀ T)))
-
 end Total
-
-section Pull
-
-variable {R R' : Type} [CommRing R] [CommRing R'] {C : Type u} [Category.{v} C] {C' : Type u'}
-  [Category.{v'} C'] {σ : R →+* R'} {F : C ⥤ CommAlgCat.{0} R} {F' : C' ⥤ CommAlgCat.{0} R'}
-  (μ : CoefMap σ F F')
-
-end Pull
-
-section Cone
-
-variable {R B : Type} [CommRing R] [CommRing B] [Algebra R B]
-
-def wedgeCl {m n N : ℕ} (h : m + n = N) (ω : LinearMap.ker (dOm R B m)) (η : LinearMap.ker (dOm R B n)) :
-    LinearMap.ker (dOm R B N) :=
-  ⟨wedgeOm R B h ω.1 η.1, by
-    rw [LinearMap.mem_ker, dOm_wedgeOm, show dOm R B m ω.1 = 0 from ω.2, show dOm R B n η.1 = 0 from η.2,
-      map_zero, LinearMap.zero_apply, map_zero, smul_zero, add_zero]⟩
-
-variable {C : Type u} [Category.{v} C] {F : C ⥤ CommAlgCat.{0} R}
-  (e : ∀ T : C, B →ₐ[R] F.obj T) (he : ∀ ⦃T T' : C⦄ (φ : T ⟶ T') (b : B), mp F φ (e T b) = e T' b)
-
-theorem cupTerm_coneTerm {m n N : ℕ} (h : m + n = N) (ω : Om R B m) (η : Om R B n) :
-    cupTerm F rfl h (coneTerm e m ω) (coneTerm e n η) = coneTerm e N (wedgeOm R B h ω η) := by
-  funext s
-  rw [cupTerm_apply, ev_self s (fr 0 0 le_rfl) _ (fun _ ↦ rfl), ev_self s (bk 0 0 0 le_rfl) _ (fun _ ↦ by simp)]
-  exact (mOm_wedgeOm _ h ω η).symm
-
-theorem coneCl_cup {m n N : ℕ} (h : m + n = N) (ω : LinearMap.ker (dOm R B m))
-    (η : LinearMap.ker (dOm R B n)) :
-    Hyp.cup F h (coneCl e he m ω) (coneCl e he n η) = coneCl e he N (wedgeCl h ω η) := by
-  refine congrArg (Hyp.mk F N) (Subtype.ext ?_)
-  refine (Tot.cup_sg h (zero_add m) (zero_add n) rfl h (zero_add N) _ _).trans ?_
-  rw [mul_zero, pow_zero, one_smul, cupTerm_coneTerm]
-  rfl
-
-end Cone
 
 section Scheme
 
@@ -420,42 +350,9 @@ def HdR.one (s : X ⟶ Sp k) : HdR s 0 := Hyp.one (OPt s)
 
 variable {s : X ⟶ Sp k} {a b n : ℕ}
 
-theorem HdR.one_cup (h : 0 + n = n) (x : HdR s n) : HdR.cup s h (HdR.one s) x = x := Hyp.one_cup h x
-
-theorem HdR.ofForm_cup {B : Type} [CommRing B] [Algebra k B] (h : a + b = n)
-    (ω : LinearMap.ker (dOm k B a)) (η : LinearMap.ker (dOm k B b)) :
-    HdR.cup (algStr k B) h (HdR.ofForm a ω) (HdR.ofForm b η) = HdR.ofForm n (wedgeCl h ω η) :=
-  coneCl_cup (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B)) (fun T ↦ toPt T)
-    (fun _ _ φ b ↦ toPt_comp φ b) h ω η
-
-theorem coe_functionsZero_symm {B : Type} [CommRing B] [Algebra k B] (x : B) :
-    (((fn0 (R := k) B).symm x : Om k B 0) : DR k B) = algebraMap B (DR k B) x :=
-  (coe_eq_algebraMap_zeroEquiv _).trans (congrArg _ ((fn0 (R := k) B).apply_symm_apply x))
-
 theorem HdR.pointEquiv_apply (x : k) :
     HdR.pointEquiv k x = HdR.ofForm 0 ⟨(fn0 k).symm x, dOm_zero_self k _⟩ := rfl
 
-theorem HdR.pointEquiv_cup (x y : k) :
-    HdR.cup (algStr k k) (zero_add 0) (HdR.pointEquiv k x) (HdR.pointEquiv k y) = HdR.pointEquiv k (x * y) := by
-  rw [HdR.pointEquiv_apply, HdR.pointEquiv_apply, HdR.pointEquiv_apply, HdR.ofForm_cup]
-  refine congrArg (HdR.ofForm 0) (Subtype.ext (Subtype.ext ?_))
-  exact (congrArg₂ (· * ·) (coe_functionsZero_symm x) (coe_functionsZero_symm y)).trans
-    ((map_mul _ _ _).symm.trans (coe_functionsZero_symm (x * y)).symm)
-
 end Scheme
-
-example : HdR.cup (algStr ℤ ℤ) rfl (HdR.pointEquiv ℤ 2) (HdR.pointEquiv ℤ 3) = HdR.pointEquiv ℤ 6 :=
-  HdR.pointEquiv_cup 2 3
-
-example : HdR.cup (algStr (ZMod 2) (Polynomial (ZMod 2))) rfl (HdR.one _)
-    (HdR.ofForm 1 (tdtForm (ZMod 2))) ≠ 0 := by
-  rw [HdR.one_cup]; exact HdR.ofForm_tdt_ne_zero rfl
-
-example {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
-    (ω : Term F 0 1) (g : Term F 1 0) :
-    Tot.cup F (show 1 + 1 = 2 from rfl) (Tot.sg F (zero_add 1) ω) (Tot.sg F (add_zero 1) g) ⟨(1, 1), rfl⟩ =
-      -cupTerm F rfl rfl ω g := by
-  rw [Tot.cup_sg (A := 1) (Q := 1) _ (zero_add 1) (add_zero 1) rfl rfl rfl, Pi.smul_apply, Tot.sg_same]
-  simp
 
 end GlobalTheory.HodgeCoh

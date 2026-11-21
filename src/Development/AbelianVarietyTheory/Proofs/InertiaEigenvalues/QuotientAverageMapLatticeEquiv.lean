@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFundamentalDomainMassOneCocompactLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetIntegralFundamentalDomainEqMassMulAverageStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFundamentalDomainMassOneCocompactLattice
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetIntegralFundamentalDomainEqMassMulAverage
 open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.CuspGeneric
 
 namespace GlobalTheory.CuspGeneric
@@ -12,7 +12,7 @@ theorem avg_equiv : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopo
   haveI : BorelSpace G := ⟨rfl⟩
   letI mG' : MeasurableSpace G' := borel G'
   haveI : BorelSpace G' := ⟨rfl⟩
-  obtain ⟨μ, 𝓕, hμ, h𝓕, h1⟩ := GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice G Γ hΓ
+  obtain ⟨μ, 𝓕, hμ, h𝓕, h1⟩ := _root_.GlobalTheory.CuspGeneric.exists_fundamentalDomain_mass_one G Γ hΓ
   let f : G ≃ᵐ G' := e.toHomeomorph.toMeasurableEquiv
   haveI := hμ
   have hμ' : (μ.map f).IsAddHaarMeasure := e.isAddHaarMeasure_map μ
@@ -31,8 +31,8 @@ theorem avg_equiv : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopo
     rw [MeasurableEquiv.map_apply, Set.preimage_image_eq _ f.injective, h1]
   have hΦ' : Per Γ (fun x => Φ (e x)) :=
     ⟨hΦ.1.comp e.continuous, fun γ hγ x => by show Φ (e (γ + x)) = Φ (e x); rw [map_add]; exact hΦ.2 _ ((he γ).2 hγ) _⟩
-  have A := (GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G' Γ' hΓ' (μ.map f) (f '' 𝓕) hμ' h𝓕' Φ hΦ).2.2.2
-  have B := (GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ 𝓕 hμ h𝓕 _ hΦ').2.2.2
+  have A := (_root_.GlobalTheory.CuspGeneric.setIntegral_eq_mass_mul_avg G' Γ' hΓ' (μ.map f) (f '' 𝓕) hμ' h𝓕' Φ hΦ).2.2.2
+  have B := (_root_.GlobalTheory.CuspGeneric.setIntegral_eq_mass_mul_avg G Γ hΓ μ 𝓕 hμ h𝓕 _ hΦ').2.2.2
   rw [hm] at A
   rw [h1] at B
   simp only [ENNReal.toReal_one, Complex.ofReal_one, one_mul] at A B

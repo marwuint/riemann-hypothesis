@@ -211,9 +211,6 @@ def Rel (V : HSp D) (τ : D.what₂.Tau) (A : Matrix (Fin (V.sig (tauE D τ)).1 
   Aᴴ * Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 * A = gramAt D V τ ∧
     Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 * A = A * thAt V τ s
 
-def Adapted (V : HSp D) (b : Module.Basis (Fin V.rank) D.host.E V.V) (s : InvFam V) : Prop :=
-  (∀ i j, i ≠ j → V.hT (b i) (b j) = 0) ∧ ∀ τ i, s τ (b i) = b i ∨ s τ (b i) = -b i
-
 end GlobalTheory.FockCompare
 
 end

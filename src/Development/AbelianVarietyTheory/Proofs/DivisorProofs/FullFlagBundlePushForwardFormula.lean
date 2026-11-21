@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordProportionality
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearFormEqOfWeylAntisymmetrizationEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceIntersectionNumberAdjacentSwapNegStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearFormEqOfWeylAntisymmetrizationEq
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsDominantOfSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceIntersectionNumberAdjacentSwapNeg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AntisymmChernRootsMulFibrePoint
 
 noncomputable section
@@ -12,8 +13,8 @@ namespace GlobalTheory.FlagPushProof
 
 theorem flagPushForward : GlobalTheory.Published.FlagPushForward := by
   intro F _ _ X Y ι _ m E E' φ f gr hf hg Q R hR
-  have hswap := GlobalTheory.T.flagSpace_intersectionNumber_adjacent_swap_neg F X Y ι m E E' φ f hf gr hg
-  refine GlobalTheory.T.linearForm_eq_of_weylAntisymmetrization_eq ι m (Y.interPoly gr) hswap Q (chernRoots m R * fibrePoint m) ?_
+  have hswap := _root_.GlobalTheory.FlagPush.interPoly_swap_adjacent F X Y ι m E E' φ f hf gr hg
+  refine _root_.GlobalTheory.FlagPush.linForm_eq_of_antisymm_eq ι m (Y.interPoly gr) hswap Q (chernRoots m R * fibrePoint m) ?_
   rw [hR, antisymm_chernRoots_mul_fibrePoint]
 
 end GlobalTheory.FlagPushProof

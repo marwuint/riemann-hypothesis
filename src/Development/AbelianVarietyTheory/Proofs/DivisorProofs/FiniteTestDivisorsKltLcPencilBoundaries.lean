@@ -4,15 +4,21 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Geometrica
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PointSeparationPair
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentialsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
+import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
+import Development.AbelianVarietyTheory.Definitions.Divisors.WellChosen
+import Development.AbelianVarietyTheory.Definitions.Divisors.P22
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffectiveCartierDivisorPullbackOfDominant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResolutionDivisorsTopFormNormalCrossingsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceOfBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverTargetOfBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirationalPrimeDivisorOrdersFunctionsTopFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCentreOfValuationSubringProperDominantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorOverOrdEqSumAdaptedMonomialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResolutionDivisorsTopFormNormalCrossings
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverSourceOfBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeDivisorOverTargetOfBirational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirationalPrimeDivisorOrdersFunctionsTopForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCentreOfValuationSubringProperDominant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeDivisorOverOrdEqSumAdaptedMonomial
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -31,7 +37,7 @@ theorem finite_test_divisors : GlobalTheory.Published.Principalisation → ∀ (
     obtain ⟨h1, -⟩ := (isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hproj
     infer_instance
   obtain ⟨Y, hYi, hYn, s, hsd, B, hsm, hprop, hbij, hfin, hη', hchart, hG, hD, hK⟩ :=
-    GlobalTheory.T.exists_resolution_divisors_topForm_normalCrossings hP X p n hproj hn η G D₀ hη
+    _root_.GlobalTheory.ResPairSupp.exists_resolution_supp hP X p n hproj hn η G D₀ hη
   haveI := SmoothOfRelativeDimension.smooth n (s ≫ p)
   haveI : GlobalTheory.IsNormalScheme Y := isNormalScheme_of_smooth (s ≫ p)
   have hnY : topologicalKrullDim Y = n := GlobalTheory.NadelApp.topologicalKrullDim_eq_of_smooth Y (s ≫ p) n
@@ -51,8 +57,8 @@ theorem finite_test_divisors : GlobalTheory.Published.Principalisation → ∀ (
       ((∃ j, t j ≠ 0) → ∑ j, (1 + (discrep (Es j) η m g - c * (Es j).ord f)) * (t j : ℚ) ≤
         1 + (discrep E η m g - c * E.ord f)) := by
     intro E hE
-    obtain ⟨E', hE'⟩ := GlobalTheory.T.exists_primeDivisor_over_source_of_birational p s hbij E
-    obtain ⟨y, hyx, hy⟩ := GlobalTheory.T.exists_centre_of_valuationSubring_proper_dominant s E'.ring x fun a ha => (hE' a).1 (hE a ha)
+    obtain ⟨E', hE'⟩ := _root_.GlobalTheory.Discrepancy.DivOver.exists_over_complex p s hbij E
+    obtain ⟨y, hyx, hy⟩ := _root_.GlobalTheory.ProperCentre.exists_regAt_centre s E'.ring x fun a ha => (hE' a).1 (hE a ha)
     obtain ⟨U, hyU, z, J, w, u, hc⟩ := hchart y
     have hgen := isFreeGen_formOf (gen_mem hyU) hc.frame
     set ω0 := formOf U (gen_mem hyU) (dOn (s ≫ p) z) with hω0
@@ -82,7 +88,7 @@ theorem finite_test_divisors : GlobalTheory.Published.Principalisation → ∀ (
       rw [hHη, F.formOrd_smul hnY h0, DivOver.formOrd_formOf_eq_zero (hv.mem_open U.isOpen hyU) hF hc.frame,
         add_zero, hF.ord_eq] at e1
       exact e1
-    have hM := fun φ hφ => GlobalTheory.T.primeDivisorOver_ord_eq_sum_adaptedMonomial E' y hy (ι := J) (fun j => w j) (fun j => u j)
+    have hM := fun φ hφ => _root_.GlobalTheory.Discrepancy.MonoOrd.ord_eq_sum_of_monomial E' y hy (ι := J) (fun j => w j) (fun j => u j)
       (fun a b e => Subtype.ext (hc.inj a.2 b.2 e)) (fun j => hc.spec j j.2) (fun j => hc.coheight j j.2)
       (fun j => hc.ord_self j j.2) (fun j v hv _ hne => hc.ord_other j j.2 v hv hne) φ hφ
     have hMH := hM H hHv
@@ -92,10 +98,10 @@ theorem finite_test_divisors : GlobalTheory.Published.Principalisation → ∀ (
     have hFj : ∀ j : J, ∃ F : DivOver (s ≫ p), F.IsAt (w j) := fun j =>
       DivOver.exists_isAt_of_coheight_eq_one (hc.coheight j j.2)
     choose F hF using hFj
-    have hEj : ∀ j : J, ∃ Ej : DivOver p, DivOver.Over s (F j) Ej := fun j => GlobalTheory.T.exists_primeDivisor_over_target_of_birational p s hbij (F j)
+    have hEj : ∀ j : J, ∃ Ej : DivOver p, DivOver.Over s (F j) Ej := fun j => _root_.GlobalTheory.Discrepancy.DivOver.exists_over_of_bijective_complex p s hbij (F j)
     choose Es hEs using hEj
-    have hA := GlobalTheory.T.birational_primeDivisor_orders_functions_topForms p n hn s hbij E E' hE'
-    have hAj := fun j => GlobalTheory.T.birational_primeDivisor_orders_functions_topForms p n hn s hbij (Es j) (F j) (hEs j)
+    have hA := _root_.GlobalTheory.BirOrd.ord_and_formOrd_of_over p n hn s hbij E E' hE'
+    have hAj := fun j => _root_.GlobalTheory.BirOrd.ord_and_formOrd_of_over p n hn s hbij (Es j) (F j) (hEs j)
 
     set t : J → ℤ := fun j => E'.ord (u j) with ht
     have htn : ∀ j, 0 ≤ t j := fun j => by
@@ -104,7 +110,7 @@ theorem finite_test_divisors : GlobalTheory.Published.Principalisation → ∀ (
       exact regAt_fnOf hyU _ _
     set Fo := E'.formOrd ω0 with hFo
     have hlog : ∑ j : J, t j - 1 ≤ Fo :=
-      GlobalTheory.T.sum_ord_sub_one_le_ord_wedgeDifferentials hnY E' hyU hy z h0 (J := J) Subtype.val Subtype.val_injective (fun j => u j)
+      _root_.GlobalTheory.Discrepancy.DivOver.sum_ord_sub_one_le_formOrd_dOn hnY E' hyU hy z h0 (J := J) Subtype.val Subtype.val_injective (fun j => u j)
         fun j => hc.val j j.2
     have hnn : 0 ≤ Fo := DivOver.formOrd_formOf_nonneg hnY hyU hy (dOn (s ≫ p) z) h0
     have eFE : E.formOrd η = ∑ j : J, Scheme.ord (H : Y.functionField) (w j) * t j + Fo := by

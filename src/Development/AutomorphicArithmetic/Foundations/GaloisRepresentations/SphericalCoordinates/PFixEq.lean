@@ -1,7 +1,9 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.HeckeFixedPointCMCycleClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiCompactOfQProj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationAtTransportIsometryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationExpUniqueFullLevelMarkingStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationAtTransportIsometry
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexUniformisationExpUniqueFullLevelMarking
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
@@ -56,7 +58,7 @@ theorem UpperTheory.Gal.W2.fixEq_of :
   have hPw' : ∀ x, P'' (w x) = (LinearEquiv.refl ℂ (Fin D.g → ℂ)) (P₂ x) := fun x => hPw x
   have hpt : x₂ ≫ c₁.q = x₁ ≫ c₂.q :=
     hFine.sep D' D'' t t'' P₂ P'' _ _ e₂' e'' hU₂' hU'' w (LinearEquiv.refl ℂ _) hwm hPw'
-  have hT := GlobalTheory.T.uniformisationAt_transport_isometry _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ w (LinearEquiv.refl ℂ _) (by omega) hU₂' hwm hPw' hU''.2.1
+  have hT := _root_.GlobalTheory.PELU.unifAt_transport _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ w (LinearEquiv.refl ℂ _) (by omega) hU₂' hwm hPw' hU''.2.1
   have key : ∀ (y₁ y₂ : Sp ℂ ⟶ (gfam X.univ hX hL).X) (hy : y₁ = y₂)
       (f₁ : (Fin D.g → ℂ) → (Over.mk y₁ ⟶ (gfam X.univ hX hL).A))
       (f₂ : (Fin D.g → ℂ) → (Over.mk y₂ ⟶ (gfam X.univ hX hL).A)),
@@ -65,7 +67,7 @@ theorem UpperTheory.Gal.W2.fixEq_of :
       ∀ z, Over.Hom.left (f₁ z) = Over.Hom.left (f₂ z) := by
     intro y₁ y₂ hy f₁ f₂ h₁ h₂ z
     subst hy
-    rw [GlobalTheory.T.complexUniformisation_exp_unique_full_level_marking _ _ _ _ _ _ _ _ _ _ _ _ _ f₁ f₂ hN3
+    rw [_root_.GlobalTheory.PELU.unifAt_exp_unique _ _ _ _ _ _ _ _ _ _ _ _ _ f₁ f₂ hN3
       (GlobalTheory.UPel.HT.Datum.Cls.fullMark D N (by omega) hNp D'' t'' hCls'') h₁ h₂]
   refine ⟨hpt.symm, fun z => ?_⟩
   rw [← he'' z, ← he₂' z]

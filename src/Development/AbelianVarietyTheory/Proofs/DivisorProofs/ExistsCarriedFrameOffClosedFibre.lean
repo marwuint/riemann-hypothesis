@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecCarriedOver
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationBundleRigidLinearisationsSameLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleFrameOfSectionUnitsOnClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCarriedSectionOffClosedFibreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleFrameOfSectionUnitsOnClosedFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCarriedSectionOffClosedFibre
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -19,8 +19,8 @@ theorem exists_carried_frame_off_closed : ∀ (R : Type) [CommRing R] [IsDomain 
     haveI : IsFinite (spMap ρ) := (IsFinite.SpecMap_iff _).2 hF.2.2
     haveI : IsFinite β := MorphismProperty.of_isPullback (P := @IsFinite) hβ.1.flip inferInstance
     exact β.isClosedMap
-  obtain ⟨V, hyV, s, hs, hun, hcar⟩ := GlobalTheory.T.exists_carried_section_off_closedFibre R hB R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hact y hy
-  obtain ⟨V', hyV', -, T, hT, htr⟩ := GlobalTheory.T.exists_lineBundleFrame_of_section_units_on_closedFibre _ _ β hβc U'.LG.L U'.LG.isLB V s hs y hyV hun
+  obtain ⟨V, hyV, s, hs, hun, hcar⟩ := _root_.GlobalTheory.Mum.exists_carried_sec_off_closed R hB R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hact y hy
+  obtain ⟨V', hyV', -, T, hT, htr⟩ := _root_.GlobalTheory.Mum.exists_frame_of_isUnit_on_fibre _ _ β hβc U'.LG.L U'.LG.isLB V s hs y hyV hun
   refine ⟨V', hyV', T, hT, ?_⟩
   intro σ h bc hbc hP hPO
   refine (hcar σ).elim fun h₀ hc => hc.elim fun bc₀ hc => ?_

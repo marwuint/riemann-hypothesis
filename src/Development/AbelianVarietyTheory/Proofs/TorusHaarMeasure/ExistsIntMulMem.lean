@@ -2,11 +2,6 @@ import Mathlib
 
 namespace GlobalTheory.IntegralMultiples
 
-theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
-    ∃ d : ℤ, d ≠ 0 ∧ ∃ y : NumberField.RingOfIntegers E, (d : E) * c = (y : E) := by
-  obtain ⟨y, hy0, hy⟩ := exists_integral_multiples ℤ ℚ ({c} : Finset E)
-  exact ⟨y, hy0, ⟨y • c, hy c (Finset.mem_singleton_self c)⟩, (zsmul_eq_mul c y).symm⟩
-
 theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {r : ℕ}
     (Λ : Submodule (NumberField.RingOfIntegers E) (Fin r → E))
     (hΛ : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) (v : Fin r → E) :

@@ -498,12 +498,6 @@ theorem exists_isKroneckerChar {d : ℕ} (hd0 : d ≠ 0) (hd : d % 4 = 0 ∨ d %
 
 variable {K : Type*} [Field K] [NumberField K] {d : ℕ}
 
-theorem exists_isKroneckerChar_of_discr (h2 : finrank ℚ K = 2) (hD : discr K = -d) :
-    ∃ χ : DirichletCharacter ℂ d, IsKroneckerChar χ := by
-  have := discr_mod_four h2
-  have := discr_ne_zero K
-  exact exists_isKroneckerChar (by omega) (by omega)
-
 theorem dedekindZeta_eq_mul_LFunction [NeZero d] (h2 : finrank ℚ K = 2) (hD : discr K = -d)
     {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) {s : ℂ} (hs : 1 < s.re) :
     dedekindZeta K s = riemannZeta s * χ.LFunction s := by

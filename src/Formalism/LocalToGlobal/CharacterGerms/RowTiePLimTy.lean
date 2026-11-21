@@ -186,14 +186,4 @@ theorem lim_mem {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type
 
 end LimTy
 
-theorem limTy_holds : LimTySt := by
-  unfold LimTySt AllFB
-  intro C _ _ V O _ _ dd Y d _ I _ p g x x' hx hlim
-  exact LimTy.lim_mem (Y.raw p) V.l_prime.two_le
-    (fun i => FBChart.chart_log_constantCoeff (Y := Y) (p := p) i)
-    (fun i => FBChart.chart_exp_constantCoeff (Y := Y) (p := p) i)
-    (fun i => FBChart.raw_lgex (Y := Y) (p := p) i)
-    (fun i => FBChart.raw_exlg (Y := Y) (p := p) i)
-    g x x' hx hlim
-
 end Formalism.L2.FormalSeriesBounds

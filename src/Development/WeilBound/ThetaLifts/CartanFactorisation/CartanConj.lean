@@ -53,30 +53,6 @@ def Unimod : Prop :=
       Countable (ratU σ J) ∧ (∃ (μ : Measure (UA σ J)) (𝓕 : Set (UA σ J)), μ.IsHaarMeasure ∧ IsFundamentalDomain (ratU σ J) 𝓕 μ) ∧
       ∀ μ : Measure (UA σ J), μ.IsHaarMeasure → μ.IsMulRightInvariant
 
-def MaxFin : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
-    (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
-    ∀ v : Pl F, ∀ N N', Maximal (fun P => GlobalTheory.Published.ThetaSub om v P ∧ P ≠ SB _) N →
-      Maximal (fun P => GlobalTheory.Published.ThetaSub om v P ∧ P ≠ SB _) N' → N = N'
-
-def AdmFin : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
-    (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
-    ∀ v : Pl F, ∀ U ∈ 𝓝 (1 : UA σ W.J), ∃ t : Finset (((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ),
-      ∀ l : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ, augAt om v ≤ LinearMap.ker l →
-        (∀ h ∈ U, h ∈ UAt σ W (evFin F v) → ∀ φ ∈ SB _, ∀ φ₁ ∈ SB _, Acts (evFin F v) (om (1, h)) φ φ₁ → l φ₁ = l φ) →
-        ∃ l' ∈ Submodule.span ℂ (t : Set (((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ)), ∀ φ ∈ SB _, l φ = l' φ
-
-def AdmInf : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
-    (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
-    (∀ f ∈ M.Pol B.ψ B.emb, ∃ t : Finset (SInf F (Fin n × Fin d)), ∀ k ∈ KInf σ W B.emb, ∀ f₁ : SInf F _,
-      Acts (evI F) (om (1, k)) f f₁ → f₁ ∈ Submodule.span ℂ (t : Set _) ⊔ augInf B M om) ∧
-    ∀ (m : ℕ) (ρ : UA σ W.J → Module.End ℂ (Fin m → ℂ)), ∃ t : Finset (SInf F (Fin n × Fin d) →ₗ[ℂ] (Fin m → ℂ)),
-      ∀ L : SInf F (Fin n × Fin d) →ₗ[ℂ] (Fin m → ℂ), augInf B M om ≤ LinearMap.ker L →
-        (∀ k ∈ KInf σ W B.emb, ∀ f ∈ M.Pol B.ψ B.emb, ∀ f₁ : SInf F _, Acts (evI F) (om (1, k)) f f₁ → L f₁ = ρ k (L f)) →
-        ∃ L' ∈ Submodule.span ℂ (t : Set (SInf F (Fin n × Fin d) →ₗ[ℂ] (Fin m → ℂ))), ∀ f ∈ M.Pol B.ψ B.emb, L f = L' f
-
 def SoCoinv : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) om om', IsTriple B G X om om' →
     ∀ φ ∈ Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁), φ ∈ augAt om' B.v₁ → φ ∈ augOn om' B.v₁ (G.M'.SoLoc B.ψ B.τ₁)
@@ -93,18 +69,6 @@ def CartanMove : Prop :=
 def CartanConj : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d : ℕ) (W W₂ : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s → (reS W W₂).IsSkew σ B r s →
     ∃ h ∈ UAt σ W (evI F), ∀ w, (mat h).map (piInf (B.emb w)) * W₂.θ w = W.θ w * (mat h).map (piInf (B.emb w))
-
-def AbsUnit : Prop :=
-  ∀ (Q : Type) [AddCommGroup Q] [Module ℂ Q] (β : Q →ₗ⋆[ℂ] Q →ₗ[ℂ] ℂ) (𝒪 : Set (Module.End ℂ Q)) (A₀ : Submodule ℂ Q),
-    (∀ x y, β x y = starRingEnd ℂ (β y x)) → (∀ x, 0 ≤ (β x x).re) → (∀ x ∈ A₀, β x x = 0) →
-    (∀ A ∈ 𝒪, ∃ A' ∈ 𝒪, ∃ c : ℂ, ∀ x y, β (A x) y = c * β x (A' y)) →
-    (∀ f, ∃ (K : Type) (_ : Group K) (κ : K →* Module.End ℂ Q), (∀ k, κ k ∈ 𝒪) ∧ (∀ k x y, β (κ k x) (κ k y) = β x y) ∧
-      (∀ x, ∃ t : Finset Q, ∀ k, κ k x ∈ Submodule.span ℂ (t : Set Q) ⊔ A₀) ∧
-      ∀ (m : ℕ) (ρ : K →* Module.End ℂ (Fin m → ℂ)), ((∀ k, κ k f = f) → ∀ k, ρ k = 1) →
-        ∃ t : Finset (Q →ₗ[ℂ] (Fin m → ℂ)), ∀ L : Q →ₗ[ℂ] (Fin m → ℂ), A₀ ≤ LinearMap.ker L →
-          (∀ k x, L (κ k x) = ρ k (L x)) → L ∈ Submodule.span ℂ (t : Set _)) →
-    ∀ N : Submodule ℂ Q, Maximal (fun P => (A₀ ≤ P ∧ ∀ A ∈ 𝒪, ∀ x ∈ P, A x ∈ P) ∧ P ≠ ⊤) N →
-      (∀ N', Maximal (fun P => (A₀ ≤ P ∧ ∀ A ∈ 𝒪, ∀ x ∈ P, A x ∈ P) ∧ P ≠ ⊤) N' → N' = N) → ∀ x ∈ N, β x x = 0
 
 def TensInj : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (vac : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, vac v ≠ 0) →

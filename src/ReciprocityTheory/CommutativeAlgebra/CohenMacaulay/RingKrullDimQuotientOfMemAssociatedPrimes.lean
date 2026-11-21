@@ -35,13 +35,6 @@ theorem IsCM.associatedPrimes_eq_minimalPrimes (h : IsCM R) :
     associatedPrimes R R = minimalPrimes R := by
   rw [(isCM_iff_isCMMod.mp h).associatedPrimes_eq_minimalPrimes, annihilator_self_eq_bot']
 
-theorem IsCM.quotient_span_singleton (h : IsCM R) {x : R} (hx : x ∈ maximalIdeal R)
-    (reg : x ∈ nonZeroDivisors R) [IsLocalRing (R ⧸ Ideal.span {x})] :
-    IsCM (R ⧸ Ideal.span {x}) := by
-  haveI : IsNoetherianRing R := h.1
-  exact (isCM_quotient_iff _).mpr ((isCMMod_congr (quotSMulTopEquivQuot' x)).mp
-    ((isCM_iff_isCMMod.mp h).quotSMulTop hx (isSMulRegular_of_mem_nonZeroDivisors' reg)))
-
 theorem isCM_of_quotient_span_singleton [IsNoetherianRing R] {x : R} (hx : x ∈ maximalIdeal R)
     (reg : x ∈ nonZeroDivisors R) [IsLocalRing (R ⧸ Ideal.span {x})]
     (h : IsCM (R ⧸ Ideal.span {x})) : IsCM R := by

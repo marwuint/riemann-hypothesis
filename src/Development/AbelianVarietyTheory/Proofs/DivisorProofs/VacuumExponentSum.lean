@@ -2,7 +2,9 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumRealPlacesFockVacuumCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnramifiedHeckeCharHalfExponentRestrictQuaStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnramifiedHeckeCharHalfExponentRestrictQua
+import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MapFinNeg
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
@@ -95,12 +97,6 @@ theorem trace_eq_zero {m : ℕ} {G s : Matrix ι ι ℂ} (hs : s * s = 1) (hpos 
   linear_combination 2 * b1
 
 end Lin
-
-theorem detPlus_one {m n : ℕ} (sS : Matrix (Fin n) (Fin n) ℂ) (sT : Matrix (Fin m) (Fin m) ℂ) :
-    GlobalTheory.WeilParts.detPlus sS sT ((1 : ℂ) • 1) ((1 : ℂ) • 1) = 1 := by
-  unfold GlobalTheory.WeilParts.detPlus
-  rw [one_smul, one_smul, Matrix.transpose_one, Matrix.one_kronecker_one, mul_one,
-    show (1 / 2 : ℂ) • (1 + sT ⊗ₖ sSᵀ) + (1 / 2 : ℂ) • (1 - sT ⊗ₖ sSᵀ) = 1 by module, Matrix.det_one]
 
 variable {D : D7} {θ : InfFam D}
 

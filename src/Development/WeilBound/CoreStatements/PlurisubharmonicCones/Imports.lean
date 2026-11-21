@@ -44,15 +44,15 @@ theorem exists_pull (A : HodgeCpt Y S y) (B : HodgeCpt Y S y') (h : B.X ⟶ A.X)
   have hgen := A.tie.gen
   have hgen' := B.tie.gen
   obtain ⟨mh, -⟩ := GlobalTheory.CompanionTheory.Ar.CoverLie.cancel hf A.m B.m
-  obtain ⟨j, hj⟩ := GlobalTheory.T.lie_model_pullback_map A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M hdom mh.cart
+  obtain ⟨j, hj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieJ.exists_map A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M hdom mh.cart
   have hsm : Smooth A.t.G.hom := A.t.semi.smooth
-  obtain ⟨hext, hspan, hlat⟩ := GlobalTheory.T.lie_lattice_dominant_compat A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M j hgen hgen' hdom
+  obtain ⟨hext, hspan, hlat⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LiePull.main A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M j hgen hgen' hdom
     mh.cart hsm hj
-  have hρj := GlobalTheory.T.lie_model_pullback_action A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M j (𝓞 E) A.t.act.act B.t.act.act A.ρ B.ρ
+  have hρj := _root_.GlobalTheory.CompanionTheory.Ar.LieBaseAct.baseChange_act A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M j (𝓞 E) A.t.act.act B.t.act.act A.ρ B.ρ
     hdom mh.cart hj A.act B.act (fun a => mh.act a)
-  obtain ⟨jd, hjd⟩ := GlobalTheory.T.dual_map_of_field_extension Ω Ω' i A.Li B.Li j hext hspan
+  obtain ⟨jd, hjd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.DualExt.dual_ext Ω Ω' i A.Li B.Li j hext hspan
   have hW : ∀ s, eigSp B.ρ ((i.comp A.cst).comp (labelEmb c s)) = Submodule.span Ω' (j '' (A.Vgen s : Set A.Li)) := fun s =>
-    GlobalTheory.T.eigenspace_field_extension E Ω Ω' i A.Li B.Li j A.ρ B.ρ (A.emb s) hext hspan hρj
+    _root_.GlobalTheory.CompanionTheory.Ar.EigExt.eigSp_ext E Ω Ω' i A.Li B.Li j A.ρ B.ρ (A.emb s) hext hspan hρj
   have hdm := GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates A.X Ω A.ξ B.X Ω' B.ξ h i hdom
   have hsp : ∀ p' : Cpt B.ξ, genPt A.ξ ⤳ h p'.1 := fun p' => (hdm p').choose
   have hreg : ∀ (p' : Cpt B.ξ), ∀ a ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩, i a ∈ regAt B.ξ p' := fun p' => (hdm p').choose_spec.1
@@ -72,24 +72,24 @@ theorem exists_pull (A : HodgeCpt Y S y) (B : HodgeCpt Y S y') (h : B.X ⟶ A.X)
   have hic : ∀ q : Cpt A.ξ, IsIntegrallyClosed (A.X.presheaf.stalk q.1) := fun q => (A.normal q.1).2
   have hic' : ∀ q : Cpt B.ξ, IsIntegrallyClosed (B.X.presheaf.stalk q.1) := fun q => (B.normal q.1).2
   have htors : ∀ p ∈ S, FullTorsion B.t.G B.ξ (p ^ A.R p) := fun p hp =>
-    GlobalTheory.T.full_torsion_pullback A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ _ hdom mh.cart (A.tors p hp)
+    _root_.GlobalTheory.CompanionTheory.Ar.HcptPull.fullTorsion_of_dominates A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ _ hdom mh.cart (A.tors p hp)
   have hint : ∀ (s) (q : Cpt A.ξ) (a : 𝓞 E), A.emb s a ∈ regAt A.ξ q := fun s q a =>
-    GlobalTheory.T.integral_element_regular A.X Ω A.ξ q hgen (hic q) _ ((Algebra.IsIntegral.isIntegral (R := ℤ) a).map (A.emb s).toIntAlgHom)
+    _root_.GlobalTheory.CompanionTheory.Ar.IntReg.mem_regAt_of_isIntegral_of_stalk A.X Ω A.ξ q hgen (hic q) _ ((Algebra.IsIntegral.isIntegral (R := ℤ) a).map (A.emb s).toIntAlgHom)
 
   have hω : ∀ p ∈ S, ∀ p' : Cpt B.ξ, 0 < D.p + D.q → B.M.htOm B.t.PP.L (p ^ A.R p) p' =
       Submodule.span (regAt B.ξ p') (jd '' (A.M.htOm A.t.PP.L (p ^ A.R p) ⟨h p'.1, hsp p'⟩ : Set _)) := by
     intro p hp p' hpos
     have hN : 0 < p ^ A.R p := pow_pos (A.S_prime p hp).pos _
-    obtain ⟨s0, o, ⟨m0⟩⟩ := GlobalTheory.T.abelian_scheme_point_object E H D l Xo c _ _ Y A.X A.f A.t A.m Ω A.ξ x hx
-    obtain ⟨s0', o', ⟨m0'⟩⟩ := GlobalTheory.T.abelian_scheme_point_object E H D l Xo c _ _ Y B.X B.f B.t B.m Ω' B.ξ (spMap i ≫ x) (by
+    obtain ⟨s0, o, ⟨m0⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ObjAt.exists_obj_at E H D l Xo c _ _ Y A.X A.f A.t A.m Ω A.ξ x hx
+    obtain ⟨s0', o', ⟨m0'⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ObjAt.exists_obj_at E H D l Xo c _ _ Y B.X B.f B.t B.m Ω' B.ξ (spMap i ≫ x) (by
       rw [hf, ← Category.assoc, hdom, Category.assoc, hx, Category.assoc])
     have hc1 : IsIntegrallyClosed (A.X.presheaf.stalk (h p'.1)) := hic ⟨h p'.1, hsp p'⟩
     have hn1 : IsNoetherianRing (A.X.presheaf.stalk (h p'.1)) := noeth_stalk hgen ⟨h p'.1, hsp p'⟩ (hnoeth _)
-    have h1 := GlobalTheory.T.full_torsion_integrally_closed E H D l (KA l) (baseKA l) A.X Ω A.ξ s0 o A.t m0 A.Li A.M (p ^ A.R p) ⟨h p'.1, hsp p'⟩ hgen hN
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.OmLink.htOm_eq_htLat E H D l (KA l) (baseKA l) A.X Ω A.ξ s0 o A.t m0 A.Li A.M (p ^ A.R p) ⟨h p'.1, hsp p'⟩ hgen hN
       (A.tors p hp) hc1 hn1
-    have h1' := GlobalTheory.T.full_torsion_integrally_closed E H D l (KA l) (baseKA l) B.X Ω' B.ξ s0' o' B.t m0' B.Li B.M (p ^ A.R p) p' hgen' hN
+    have h1' := _root_.GlobalTheory.CompanionTheory.Ar.OmLink.htOm_eq_htLat E H D l (KA l) (baseKA l) B.X Ω' B.ξ s0' o' B.t m0' B.Li B.M (p ^ A.R p) p' hgen' hN
       (htors p hp) (hic' _) (noeth_stalk hgen' _ (hnoeth' _))
-    have h2 := GlobalTheory.T.omega_lattice_dominant_compat A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M j hgen hgen' hdom mh.cart hsm hj jd hjd
+    have h2 := _root_.GlobalTheory.CompanionTheory.Ar.HTPull.main A.X B.X Ω Ω' A.ξ B.ξ h i A.t.G B.t.G mh.φ A.Li B.Li A.M B.M j hgen hgen' hdom mh.cart hsm hj jd hjd
       (p ^ A.R p) hN p' (hsp p') hc1 hn1 (h1.2.1 hpos) h1.1
     rw [h1'.2.2, h2, pull_eq B.ξ h _ jd p' (hsp p'), h1.2.2]
   have hpos : ∀ s, 0 < labelRk D s → 0 < D.p + D.q := by
@@ -106,7 +106,7 @@ theorem exists_pull (A : HodgeCpt Y S y) (B : HodgeCpt Y S y') (h : B.X ⟶ A.X)
     have hq := (hfib p p').1 hf
     obtain ⟨U, hU, b, hb, hfr⟩ := hvb p hp s ⟨h p'.1, hsp p'⟩ hq
     obtain ⟨hli, hbs⟩ := hfr ⟨h p'.1, hsp p'⟩ hq hU
-    exact GlobalTheory.T.dual_lattice_basis_extension Ω Ω' i (regAt A.ξ ⟨h p'.1, hsp p'⟩) (regAt B.ξ p') A.Li B.Li j jd (A.Vgen s) _
+    exact _root_.GlobalTheory.CompanionTheory.Ar.HcptPull.dual_pull Ω Ω' i (regAt A.ξ ⟨h p'.1, hsp p'⟩) (regAt B.ξ p') A.Li B.Li j jd (A.Vgen s) _
       (A.M.htOm A.t.PP.L (p ^ A.R p) ⟨h p'.1, hsp p'⟩) (B.M.htOm B.t.PP.L (p ^ A.R p) p') (labelRk D s) b hext (hreg p') hjd
       (hW s) (fun hr => hω p hp p' (hpos s hr)) hli hb hbs
   have hhtw : ∀ p ∈ S, ∀ s, ∀ p' : Cpt B.ξ, InFibre B.ξ p p' →
@@ -115,8 +115,8 @@ theorem exists_pull (A : HodgeCpt Y S y) (B : HodgeCpt Y S y') (h : B.X ⟶ A.X)
           (j '' (A.M.htW A.t.PP.L (p ^ A.R p) A.ρ (A.emb s) (differentIdeal ℤ (𝓞 E)) ⟨h p'.1, hsp p'⟩ : Set A.Li)) := by
     intro p hp s p' hf
     haveI := regAt_isLocalRing (ξ := A.ξ) ⟨h p'.1, hsp p'⟩
-    obtain ⟨d₀, hd₀, hne, hdv⟩ := GlobalTheory.T.different_ideal_local_generator E Ω (regAt A.ξ ⟨h p'.1, hsp p'⟩) (A.emb s) (hint s _)
-    exact GlobalTheory.T.different_scaled_lattice_extension Ω Ω' i (regAt A.ξ ⟨h p'.1, hsp p'⟩) (regAt B.ξ p') A.Li B.Li j (A.Vgen s) _ (𝓞 E) (A.emb s)
+    obtain ⟨d₀, hd₀, hne, hdv⟩ := _root_.GlobalTheory.CompanionTheory.Ar.differentIdeal_principal_in_localSubring E Ω (regAt A.ξ ⟨h p'.1, hsp p'⟩) (A.emb s) (hint s _)
+    exact _root_.GlobalTheory.CompanionTheory.Ar.scale_pull_ext Ω Ω' i (regAt A.ξ ⟨h p'.1, hsp p'⟩) (regAt B.ξ p') A.Li B.Li j (A.Vgen s) _ (𝓞 E) (A.emb s)
       (differentIdeal ℤ (𝓞 E)) d₀ (A.M.htDual A.t.PP.L (p ^ A.R p) A.ρ (A.emb s) ⟨h p'.1, hsp p'⟩)
       (B.M.htDual B.t.PP.L (p ^ A.R p) B.ρ ((i.comp A.cst).comp (labelEmb c s)) p') hext (hreg p') (hW s) hd₀ hne hdv
       (fun e he => LieModel.mem_eigSp_of_mem_htDual _ _ _ _ _ he) (hdual p hp s p' hf)
@@ -153,8 +153,8 @@ theorem exists_pull (A : HodgeCpt Y S y) (B : HodgeCpt Y S y') (h : B.X ⟶ A.X)
           simpa using (regAt A.ξ ⟨h p'.1, hsp p'⟩).neg_mem hu
       show B.M.lat p' ⊓ _ = _
       rw [hlat, pull_eq B.ξ h _ j p' (hsp p')]
-      exact GlobalTheory.T.lattice_eigen_field_extension E Ω Ω' i A.Li B.Li j A.ρ B.ρ (A.emb s) _ _ (A.M.lat ⟨h p'.1, hsp p'⟩) hext hρj (hreg p')
-        (fun a e he => GlobalTheory.T.lie_lattice_stable_under_action A.X Ω A.ξ A.t.G A.Li A.M (𝓞 E) A.t.act A.ρ A.act _ a e he) (hint s _) hdisc
+      exact _root_.GlobalTheory.CompanionTheory.Ar.EigLat.span_inf_eigSp E Ω Ω' i A.Li B.Li j A.ρ B.ρ (A.emb s) _ _ (A.M.lat ⟨h p'.1, hsp p'⟩) hext hρj (hreg p')
+        (fun a e he => _root_.GlobalTheory.CompanionTheory.Ar.LieStable.lat_stable A.X Ω A.ξ A.t.G A.Li A.M (𝓞 E) A.t.act A.ρ A.act _ a e he) (hint s _) hdisc
   refine ⟨j, hext, fun s => Eq.trans ?_ (hV s)⟩
   have he := emb_eq A B h i hdom hf
   show Lat.patch S (B.M.eigLat B.ρ (B.emb s)) (fun p => htLabel B.M B.t.PP.L (p ^ B.R p) B.ρ B.emb s) = _

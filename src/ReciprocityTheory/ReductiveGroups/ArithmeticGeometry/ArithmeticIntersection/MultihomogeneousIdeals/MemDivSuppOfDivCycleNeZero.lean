@@ -238,17 +238,10 @@ theorem ratDiv_eq_sub (V : Ideal (MRingOver F ι)) (f g : MRingOver F ι) :
     ratDiv V f g = ratDiv V f 1 - ratDiv V g 1 := by
   simp [ratDiv, divCycle_one]
 
-theorem ratDiv_swap (V : Ideal (MRingOver F ι)) (f g : MRingOver F ι) :
-    ratDiv V g f = -ratDiv V f g := by
-  simp [ratDiv]
-
 theorem cycEval_eq_liftAddHom (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J D = Finsupp.liftAddHom (fun W => AddMonoidHom.mulRight (J W)) D := by
   rw [Finsupp.liftAddHom_apply]
   rfl
-
-theorem cycEval_zero (J : Ideal (MRingOver F ι) → ℤ) : cycEval J 0 = 0 := by
-  simp [cycEval]
 
 theorem cycEval_add (J : Ideal (MRingOver F ι) → ℤ) (D E : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J (D + E) = cycEval J D + cycEval J E := by
@@ -257,10 +250,6 @@ theorem cycEval_add (J : Ideal (MRingOver F ι) → ℤ) (D E : Ideal (MRingOver
 theorem cycEval_sub (J : Ideal (MRingOver F ι) → ℤ) (D E : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J (D - E) = cycEval J D - cycEval J E := by
   simp only [cycEval_eq_liftAddHom, map_sub]
-
-theorem cycEval_neg (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ) :
-    cycEval J (-D) = -cycEval J D := by
-  simp only [cycEval_eq_liftAddHom, map_neg]
 
 theorem cycEval_congr {J J' : Ideal (MRingOver F ι) → ℤ} {D : Ideal (MRingOver F ι) →₀ ℤ}
     (h : ∀ W, D W ≠ 0 → J W = J' W) : cycEval J D = cycEval J' D := by
@@ -280,16 +269,6 @@ theorem cycEval_sum_smul (J : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingO
   refine Finsupp.sum_congr fun W _ => ?_
   rw [map_zsmul, smul_eq_mul, ← cycEval_eq_liftAddHom]
   rfl
-
-theorem ptDeg_eq_of_isChart {V : Ideal (MRingOver F ι)} (hV : IsProjVarF V 0) {i j : ∀ k, ι k}
-    (hi : IsChart V i) (hj : IsChart V j) : ptDeg V i = ptDeg V j := by
-  have hu : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V j) (X ⟨k, i k⟩)) := fun k =>
-    isUnit_mk_chartIdeal_X hV j _ (hi k)
-  have hv : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V i) (X ⟨k, j k⟩)) := fun k =>
-    isUnit_mk_chartIdeal_X hV i _ (hj k)
-  let e := AlgEquiv.ofAlgHom (chartSwap hV.1.2.1 i j hu) (chartSwap hV.1.2.1 j i hv)
-    (chartSwap_comp hV.1.2.1 j i hv hu) (chartSwap_comp hV.1.2.1 i j hu hv)
-  exact e.toLinearEquiv.finrank_eq
 
 theorem isProjVarF_of_mem_divSupp {V W : Ideal (MRingOver F ι)} {n : ℕ} {f : MRingOver F ι}
     {α : K → ℕ} (hV : IsProjVarF V (n + 1)) (hf : IsMultiHomog f α) (hfV : f ∉ V)

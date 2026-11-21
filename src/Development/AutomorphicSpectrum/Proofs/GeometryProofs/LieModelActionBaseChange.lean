@@ -2,7 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelBaseChange
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -98,7 +101,7 @@ theorem lieModel_coordinates_baseChange : ∀ (E : Type) [Field E] [NumberField 
   haveI := t.semi
   haveI : Smooth t.G.hom := ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian.smooth
   obtain ⟨V, _, _, ⟨M0⟩⟩ := GlobalTheory.CompanionTheory.Ar.lieModel_exists S t.G R x
-  obtain ⟨hfin, hproj⟩ := GlobalTheory.T.lie_model_finite_projective S t.G R x V M0
+  obtain ⟨hfin, hproj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_finite_projective S t.G R x V M0
   haveI : Module.Flat R V := inferInstance
   haveI : Module.Free R V := Module.free_of_flat_of_isLocalRing
   let b := Module.finBasis R V

@@ -6,17 +6,17 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeAlgebraMapOC
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceAlmostOntoOfLevels
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OcTensorCoeffActionMatrixMultiplicativeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompletionFrameOfMatrixFormStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompletionFrameOfMatrixForm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFontaineThetaFrobeniusInverseShiftStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KapIdemMemInCStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OcTensorCoeffBasisCoordsMemCyclotomicLevelOfPoweStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormLtRho1OfMemIdealPowerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IoEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankCountStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicLevelSubgroupMemWachSubgroupsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormLtRho1OfMemIdealPower
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IoEquivariant
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankCount
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicLevelSubgroupMemWachSubgroups
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimeEqMulPrimitiveRootSubOnePowStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAinfTensorLatticeSpecialisationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemilinearIteratePrimePowSubMemFiltrationStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemilinearIteratePrimePowSubMemFiltration
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GammaActionSubMemSpanPowSuccStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsContinuousGaloisLatticeMatrixIntegralStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeSandwichAinfStatement
@@ -117,7 +117,7 @@ theorem γD_pow_sub (l : ℕ) [Fact l.Prime] (g : S.W.Gam)
     | zero => rfl
     | succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]; rfl
   refine ⟨Y^[l ^ (j + 1)] y, by rw [hY, γD_iterate], ?_⟩
-  refine GlobalTheory.T.semilinear_iterate_prime_pow_sub_mem_filtration l (LetA S.O S.n) ↥N _ (S.W.γA g).toRingHom Y
+  refine _root_.GlobalTheory.semilinear_iterate_prime_pow_sub_mem l (LetA S.O S.n) ↥N _ (S.W.γA g).toRingHom Y
     (fun a x => Subtype.ext (γD_smulA S T g a x)) hA (fun x => ?_) (j + 1) (by omega) y
   rw [Submodule.mem_smul_top_iff]
   exact Submodule.smul_mono_left (Ideal.span_mono (by simp)) (hπ x x.2)
@@ -223,7 +223,7 @@ theorem assemble (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : G
       exact ⟨-w, fun i => by simpa using hw i, (Matrix.mulVec_neg _ _).symm⟩
   have hcol : ∀ σ j, (fun i => (M σ * D.map (act σ)) i j) =
       (M σ).mulVec (fun i => act σ (Ψ (y₀ j) i)) := fun σ j => rfl
-  obtain ⟨U, hU⟩ := GlobalTheory.T.decompletion_frame_of_matrix_form l act χ K m d M D g hact hgen hM1 hM2 hM3 (fun i j => hn _ _)
+  obtain ⟨U, hU⟩ := _root_.GlobalTheory.Cyc.Decomp.isDec_of_matrix l act χ K m d M D g hact hgen hM1 hM2 hM3 (fun i j => hn _ _)
     (by
       choose w hw hw' using fun j => hball _ (hl j)
       refine ⟨Matrix.of fun i j => (u • w j) i, fun i j => ?_, (cols _ _ fun j => ?_).symm⟩
@@ -331,7 +331,7 @@ theorem exists_decompletion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.l
   obtain ⟨-, -, N, hN⟩ := hW
   obtain ⟨hsw1, hsw2⟩ := GlobalTheory.T.wach_lattice_sandwich_Ainf D HW F l K s LL h T M0 h0 N hN
   obtain ⟨⟨ι, _, b, hli, hsp⟩, -, -, hW2, hW3, -⟩ := hN
-  obtain ⟨f, o, ⟨e⟩⟩ := GlobalTheory.T.exists_basis_and_equiv_fin_prod_of_basis l K LL T d M A ι _ hM hli hsp
+  obtain ⟨f, o, ⟨e⟩⟩ := _root_.GlobalTheory.Cyc.Decomp.rank_count l K LL T d M A ι _ hM hli hsp
   generalize hn : n0 l (M0 + h0) = n
   have hm : mN l s (M0 + h0) = s + (s + n + 1) := by rw [mN, hn]; ring
   generalize mN l s (M0 + h0) = m at hm ⊢
@@ -344,7 +344,7 @@ theorem exists_decompletion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.l
   obtain ⟨hl1, hA1, -, -⟩ := GlobalTheory.T.ocTensorCoeffActionMatrix_multiplicative l K LL T d f M A o hM
   obtain ⟨hM1, hM2, -, -⟩ := (GlobalTheory.T.exists_continuous_galoisLatticeMatrix_integral l K LL T).2 d M A hM
   obtain ⟨z, hz1, hz2, hz3⟩ := exists_lift S E T N (E.io S.W.X) M0 h0 (inclR_injective LL) hsw1 hsw2
-  have hgrp := GlobalTheory.T.cyclotomicLevelSubgroup_mem_wachSubgroups l (D.loc l) AI K s LL h ((HW l).W K s LL h) ((HW l).W_s K s LL h)
+  have hgrp := _root_.GlobalTheory.Cyc.Decomp.grp_GKs_H l (D.loc l) AI K s LL h ((HW l).W K s LL h) ((HW l).W_s K s LL h)
   have hGs : Gj K s ≤ GK K := IntermediateField.fixingSubgroup_antitone h.2.2.1
   have hms : Gj K m ≤ Gj K s :=
     IntermediateField.fixingSubgroup_antitone (AlmostTrace.Ks_mono K (by omega))
@@ -415,7 +415,7 @@ theorem exists_decompletion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.l
       change letE i * letE i = letE i
       rw [letE, ← Pi.single_mul, mul_one]
     have h2 := GlobalTheory.T.kap_mem_inC_of_invariant l AI.actC K LL f o (φ (letE i)) hact (h1.map φ) (fun σ hσ k => by
-      have h3 := GlobalTheory.T.io_equivariant_alt l (D.loc l) AI K s LL h _ ((F l).E K s LL h) ⟨σ, hσ⟩ (letE i)
+      have h3 := _root_.GlobalTheory.Cyc.Decomp.io_equivariant l (D.loc l) AI K s LL h _ ((F l).E K s LL h) ⟨σ, hσ⟩ (letE i)
       let r : RA LL := E.io (letE i)
       have h4 : gRA AI LL σ r = r := by
         apply inclR_injective LL
@@ -433,7 +433,7 @@ theorem exists_decompletion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.l
     (fun a y => ?_) (fun a => ?_)
     (GlobalTheory.T.ocTensorCoeffBasisCoords_mem_cyclotomicLevel_of_powerSeries l K LL m (Module.finrank ℚ_[l] ↥(K0 K)) f o φ _ hφa hφπ (norm_zeta_sub_one_lt AI _ (by omega))
       (zeta_sub_one_mem AI K (by omega)) hidem)
-    (GlobalTheory.T.norm_lt_rho1_of_mem_ideal_power l LL (s + n) _ f o φ _ (by omega) (zeta_prim AI _ (by omega)) hφπ)
+    (_root_.GlobalTheory.Cyc.Decomp.norm_kap_lt_rho1_of_mem_sq_sup_pow l LL (s + n) _ f o φ _ (by omega) (zeta_prim AI _ (by omega)) hφπ)
     (fun y i => hΦ2 _ i) (fun σ hσ y => ?_) (fun σ hσ y => ?_) (fun y => ?_)
     (c ^ (M0 + h0)) u hu hlu (fun j => ?_)
   · obtain ⟨b', hb', -⟩ := hM

@@ -1,17 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartPointsExistAndClassPointsRepresentativesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CouplingCosetEqChartPointCosetStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepCharacterLawsNormOneIdelesOfKernelChainStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteAdelicDatumRationalInvarianceOfKernelChainStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicDatumInvarianceSupportKernelChainStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicFiniteDatumIntegralOffBadPrimesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDatumDependsOnlyAtBadPlacesMatrixStepStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDatumLevelEquivarianceAtMatrixStepsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDatumDependsOnlyAtBadPlacesFirstCoupledSteStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicDatumLevelEquivarianceFirstCoupledStepStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartPointsExistAndClassPointsRepresentatives
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CouplingCosetEqChartPointCoset
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StepCharacterLawsNormOneIdelesOfKernelChain
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteAdelicDatumRationalInvarianceOfKernelChain
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicDatumInvarianceSupportKernelChain
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicFiniteDatumIntegralOffBadPrimes
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDatumDependsOnlyAtBadPlacesMatrixStep
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDatumLevelEquivarianceAtMatrixSteps
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDatumDependsOnlyAtBadPlacesFirstCoupledSte
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicDatumLevelEquivarianceFirstCoupledStep
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SymmTransSymm
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastStepAdelicDatumLevelEquivarianceStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastStepAdelicDatumLevelEquivariance
 import Formalism.LocalToGlobal.Divisibility.DivisibilityProofs.TuplesP
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocBases
 
@@ -61,27 +61,27 @@ end Pt
 
 theorem adLawAt_xiAd : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => AdLawAt A dtU a (xiAd A a) (muOf t u μ dtU)) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie
-  have hPt : PtEx A a ∧ ∀ i hi c, IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c) := GlobalTheory.T.chartPoints_exist_and_classPoints_representatives A dtU a hPin hTie
+  have hPt : PtEx A a ∧ ∀ i hi c, IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c) := _root_.GlobalTheory.TwV.ptEx_isPtAd A dtU a hPin hTie
   have hE := hPt.1
   have hCo : ∀ c, cosetOf A (t.m2 + 1) (cpl_lt t μ).le ((St _ (cpl_lt t μ).le).chOf c) (A.pt _ (cpl_lt t μ).le c) = A.yb c :=
-    GlobalTheory.T.couplingCoset_eq_chartPointCoset A dtU a hPin hTie
-  have hMu : MuLaw t u μ dtU := GlobalTheory.T.stepCharacterLaws_normOneIdeles_of_kernelChain A dtU a hPin hTie
+    _root_.GlobalTheory.TwV.cosetOf_eq_yb A dtU a hPin hTie
+  have hMu : MuLaw t u μ dtU := _root_.GlobalTheory.TwV.MuLawPf.muLaw_underTie A dtU a hPin hTie
   have hm := m_eq t μ
   have hW : ∀ i hi, PtAway A a i hi := by
     intro i hi
     rcases lt_trichotomy i t.m2 with h | h | h
-    · exact GlobalTheory.T.finiteDatum_dependsOnlyAtBadPlaces_matrixStep A dtU a hPin hTie i hi h
-    · exact GlobalTheory.T.finiteDatum_dependsOnlyAtBadPlaces_firstCoupledStep A dtU a hPin hTie i hi h
+    · exact _root_.GlobalTheory.AwayMat.ptAway_mat A dtU a hPin hTie i hi h
+    · exact _root_.GlobalTheory.TwV.AwayCpl.ptAway_cpl A dtU a hPin hTie i hi h
     · exact GlobalTheory.TwV.AwayTop.ptAway_top A dtU a hPin hTie i hi (by omega)
   have hLev : ∀ i hi, LevAt A dtU a i hi := by
     intro i hi
     rcases lt_trichotomy i t.m2 with h | h | h
-    · exact GlobalTheory.T.finiteDatum_levelEquivariance_at_matrixSteps A dtU a hPin hTie hE hMu i hi h (hW i hi)
-    · exact GlobalTheory.T.adelicDatum_level_equivariance_first_coupled_step A dtU a hPin hTie hE hMu i hi h (hW i hi)
-    · exact GlobalTheory.T.lastStep_adelicDatum_level_equivariance A dtU a hPin hTie hE hMu i hi (by omega) (hW i hi)
-  have hRat : RatLaw A a := GlobalTheory.T.finiteAdelicDatum_rationalInvariance_of_kernelChain A dtU a hPin hTie hE hW
-  have hSize : SizeLaw A a := GlobalTheory.T.adelicDatum_invariance_support_kernelChain A dtU a hPin hTie hE
-  have hInt : ∀ i hi β β' x x' z, IntOff (t.O u μ).S (xiAd A a i hi β β' x x' z) := GlobalTheory.T.adelicFiniteDatum_integralOffBadPrimes A dtU a hPin hTie hE
+    · exact _root_.GlobalTheory.TwV.levAt_mat A dtU a hPin hTie hE hMu i hi h (hW i hi)
+    · exact _root_.GlobalTheory.AdLevCpl.levAt_coupled A dtU a hPin hTie hE hMu i hi h (hW i hi)
+    · exact _root_.GlobalTheory.TwTop.levAt_top A dtU a hPin hTie hE hMu i hi (by omega) (hW i hi)
+  have hRat : RatLaw A a := _root_.GlobalTheory.RatPt.ratLaw_of_tie A dtU a hPin hTie hE hW
+  have hSize : SizeLaw A a := _root_.GlobalTheory.TwV.sizeLaw_of_tie A dtU a hPin hTie hE
+  have hInt : ∀ i hi β β' x x' z, IntOff (t.O u μ).S (xiAd A a i hi β β' x x' z) := _root_.GlobalTheory.TwV.xiAd_intOff A dtU a hPin hTie hE
   refine
     { read := ?_
       rat := hRat

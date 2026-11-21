@@ -1,6 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.IntegralJetsPairing
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.DualBasesOfSeries
+import Formalism.LocalRingCardinality.DataKerI
+import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
+import Formalism.LocalToGlobal.KernelLattices.LateralTheory
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsNormSubEqOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
 
@@ -9,13 +10,6 @@ open NumberField Filter Topology
 noncomputable section
 
 namespace GlobalTheory.Proof.IdempotentLatticeSequence
-
-theorem mem_int_iff {p : ℕ} [Fact p.Prime] (x : ℂ_[p]) : x ∈ PadicComplexInt p ↔ ‖x‖ ≤ 1 := by
-  show x ∈ (PadicComplex.valued p).v.valuationSubring ↔ _
-  rw [Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm, Valuation.norm_def,
-    ← map_one (PadicComplex.valued p).v, ← Valuation.restrict_le_iff]
-  simpa only [map_one, NNReal.coe_le_one] using
-    ((Valuation.RankOne.strictMono (PadicComplex.valued p).v).le_iff_le (b := 1)).symm
 
 theorem norm_int_le {p : ℕ} [Fact p.Prime] {M : Type} [Field M] (φ : M →+* ℂ_[p]) (a : 𝓞 M) : ‖φ (a : M)‖ ≤ 1 := by
   obtain ⟨P, hmon, hev⟩ := RingOfIntegers.isIntegral_coe a

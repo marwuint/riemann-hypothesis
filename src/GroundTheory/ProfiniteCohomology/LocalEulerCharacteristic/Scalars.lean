@@ -146,26 +146,6 @@ theorem cohomologyAddEquivOfEquiv_mapAlong {H : Type u} [Group H] [TopologicalSp
       ext x <;> exact Subtype.ext (funext fun _ => hf _))
   exact congrArg (fun f => f.hom x) key
 
-theorem cohomologyAddEquivOfEquiv_cohomologyRes (S : Subgroup G) (n : ℕ) (x : cohomology A n) :
-    cohomologyAddEquivOfEquiv (A := Rep.res S.subtype A) (A' := Rep.res S.subtype A') e
-        (fun s a => he s a) n ((cohomologyRes A S n).hom x) =
-      (cohomologyRes A' S n).hom (cohomologyAddEquivOfEquiv e he n x) := by
-  rw [cohomologyRes_eq, cohomologyRes_eq]
-  exact cohomologyAddEquivOfEquiv_mapAlong e he S.subtype (continuous_subgroup_subtype S)
-    (B := Rep.res S.subtype A) (B' := Rep.res S.subtype A') e (fun s a => he s a) (𝟙 _) (𝟙 _)
-    (fun _ => rfl) n x
-
-theorem cohomologyAddEquivOfEquiv_cohomologyMap {B : Rep.{u} k G} {B' : Rep.{u} k' G}
-    [IsDiscreteRep B] [IsDiscreteRep B'] (eB : B ≃+ B')
-    (heB : ∀ (g : G) (b : B), eB (B.ρ g b) = B'.ρ g (eB b))
-    (f : A ⟶ B) (f' : A' ⟶ B') (hf : ∀ a : A, eB (f.hom a) = f'.hom (e a)) (n : ℕ)
-    (x : cohomology A n) :
-    cohomologyAddEquivOfEquiv eB heB n ((cohomologyMap f n).hom x) =
-      (cohomologyMap f' n).hom (cohomologyAddEquivOfEquiv e he n x) := by
-  have key := cohomologyAddEquivOfEquiv_mapAlong e he (MonoidHom.id G) continuous_id eB heB f f'
-    hf n x
-  rwa [cohomologyMapAlong_id_eq_cohomologyMap, cohomologyMapAlong_id_eq_cohomologyMap] at key
-
 theorem cohomologyAddEquivOfEquiv_cohomologyConj (N : Subgroup G) [N.Normal] (n : ℕ) (g : G)
     (x : cohomology (Rep.res N.subtype A) n) :
     cohomologyAddEquivOfEquiv (A := Rep.res N.subtype A) (A' := Rep.res N.subtype A') e

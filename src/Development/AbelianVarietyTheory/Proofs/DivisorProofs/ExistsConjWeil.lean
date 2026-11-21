@@ -39,12 +39,4 @@ theorem even_im_hermitian_sub (R : Ranks) : 0 % 2 = R.nV % 2 ∧ (0 + 1) % 2 = R
   unfold Ranks.nV Ranks.r
   constructor <;> omega
 
-theorem exists_conj_weil : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ) (μ' η' : (AE D)ˣ →* Circle), ChiAt R i σ μ' → IsEtaConj σ R.eta η' → HypConj R i σ μ' η' → ∃ ω, IsWeilDatumO R.ψ (Vc D i) (Wc D i) μ' (μ' * η'⁻¹) ω := by
-  intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i σ μ' η' hμ hη hH
-  have hV : (Vc D i).rank = D.R.nV := D.sp.V_rank _ (Nat.le_add_left _ _) i.2
-  have hW : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
-  exact exists_of_datum (hR.thP.ωP i A.μ0) hμ.1 (hecke_mul_inv hμ.1 hη.1)
-    (resEta_parity hH.mu_res ((even_im_hermitian_sub D.R).1.trans (congrArg (· % 2) hV.symm)))
-    (resEta_parity (resEta_mul hH.mu_res (resEta_inv hH.eta_res)) ((even_im_hermitian_sub D.R).2.trans (congrArg (· % 2) hW.symm)))
-
 end GlobalTheory.GalLift.ConjWeil

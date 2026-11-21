@@ -86,12 +86,4 @@ theorem omVDdLoc_of (hT : OmVDdTr X) : OmVDdLoc X := by
 
 variable (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
-theorem omV_of_tr (hT : OmVDdTr X) (hScale : OmVScale X u' ψ) (hBad : OmVBadT X u' ψ) (hLocU : OmVLocU X ψ) :
-    Formalism.L2.SG.Pf.NcVal.OmV X u' ψ :=
-  omV_of_dd X u' ψ (omVDdLoc_of X hT) hScale hBad hLocU
-
-theorem omVPrim_of_tr (hT : OmVDdTr X) : OmVPrim X u' := omVPrim_of_dd X u' (omVDdLoc_of X hT)
-
-theorem omVPrim_of_trX (hT : OmVDdTr X) : Formalism.L2.SG.Pf.NcX.OmVSt.OmVPrim X u' := omVPrim_of_dd X u' (omVDdLoc_of X hT)
-
 end Formalism.L2.SG.Pf.NcVal.OmVSt.OmX

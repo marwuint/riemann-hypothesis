@@ -401,12 +401,6 @@ def chartIso (hL : L.IsLB) (i : L.ι) :
     unitMod (L.U i).toScheme ≅ (toMod L).restrict (L.U i).ι :=
   Descent.freeIso (Descent.bijective_smul_stalk (bijective_smul_chartSec hL i))
 
-theorem chartIso_hom_app (hL : L.IsLB) (i : L.ι) (W : (L.U i).toScheme.Opens)
-    (a : Γ(X, (L.U i).ι ''ᵁ W)) :
-    ((chartIso hL i).hom.app W a : Γ(toMod L, (L.U i).ι ''ᵁ W)) =
-      a • (toMod L).presheaf.map (homOfLE ((L.U i).ι_image_le W)).op (chartSec hL i) :=
-  Descent.sectionHom_app _ W a
-
 set_option backward.isDefEq.respectTransparency false in
 
 def chartOverIso (hL : L.IsLB) (i : L.ι) :
@@ -606,21 +600,6 @@ theorem nonempty_iso_of_lbIso (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) :
   let ⟨w, hw⟩ := h
   ⟨isoOfGen hL hM w hw⟩
 
-theorem isoOfGen_hom_app_genSec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen)
-    {a : LB.Gen L} {b : LB.Gen M} (ha : a.IsGen) (hb : b.IsGen) (h : LB.Gen.Maps w a b)
-    (V : X.Opens) :
-    (isoOfGen hL hM w hw).hom.app V (ofSec (DVR.genSec a ha) V) = ofSec (DVR.genSec b hb) V :=
-  sec_ext_of_cover hL.cover fun p q => by
-    have l : V ⊓ M.U p ⊓ L.U q ≤ M.U p ⊓ L.U q := inf_le_inf_right _ inf_le_right
-    rw [coord_isoOfGen_hom_app hL hM w hw _ p q _ (inf_le_inf_right _ inf_le_left) l]
-    have e : resG X inf_le_left ((b.s p : Γ(X, M.U p))) =
-        ((show Γ(X, M.U p ⊓ L.U q)ˣ from w.s (p, q)) : Γ(X, M.U p ⊓ L.U q)) *
-          resG X inf_le_right (a.s q : Γ(X, L.U q)) := congrArg Units.val (h (p, q))
-    have := congrArg (resG X l) e
-    simp only [map_mul, resG_resG] at this
-    simp only [coord_ofSec, resG_resG]
-    exact this.symm
-
 end Hom
 
 def unitHom (σ : LB.Sec L) : unitMod X ⟶ toMod L :=
@@ -776,11 +755,6 @@ def trivIso (X : Scheme.{0}) : unitMod X ≅ toMod (Out.Inh.trivLB X) :=
   unitIso (Out.Inh.trivLB_isLB X) ⟨fun _ => 1⟩ fun _ _ => by
     exact (one_mul _).symm
 
-theorem coord_trivIso_hom_app (V : X.Opens) (a : Γ(X, V)) (i : PUnit.{1}) :
-    coord (L := Out.Inh.trivLB X) ((trivIso X).hom.app V a) i = resG X inf_le_left a := by
-  change resG X _ a * resG X _ 1 = _
-  rw [map_one, mul_one]
-
 def twoChart (U₀ U₁ : X.Opens) (u : Γ(X, U₀ ⊓ U₁)ˣ) : LB X where
   ι := Bool
   U i := cond i U₀ U₁
@@ -807,73 +781,6 @@ theorem twoChart_isLB {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X,
     · exact ((mul_comm _ _).trans (aux _ _)).trans (map_one _).symm
     · exact (congrArg (· * _) (map_one _)).trans (one_mul _)
     · exact (congrArg (· * _) (map_one _)).trans (one_mul _)
-
-theorem mem_secOn_twoChart {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (V : X.Opens)
-    (a : Γ(X, V ⊓ U₀)) (b : Γ(X, V ⊓ U₁)) :
-    (fun i : Bool => match i with | true => a | false => b) ∈ secOn (twoChart U₀ U₁ u) V ↔
-      resG X (inf_le_left : V ⊓ U₀ ⊓ U₁ ≤ V ⊓ U₀) a =
-        resG X (inf_le_inf_right _ inf_le_right) (u : Γ(X, U₀ ⊓ U₁)) *
-          resG X (inf_le_inf_right _ inf_le_left) b := by
-  refine ⟨fun h => h true false, fun h => ?_⟩
-  rintro (_ | _) (_ | _)
-  · change resG X _ b = resG X _ 1 * resG X _ b
-    rw [map_one, one_mul]
-  · have l : V ⊓ U₁ ⊓ U₀ ≤ V ⊓ U₀ ⊓ U₁ := (inf_right_comm _ _ _).le
-    have e := congrArg (resG X l) h
-    simp only [map_mul, resG_resG] at e
-    change resG X (inf_le_left : V ⊓ U₁ ⊓ U₀ ≤ V ⊓ U₁) b =
-      (res (inf_le_inf_right _ inf_le_right : V ⊓ U₁ ⊓ U₀ ≤ U₁ ⊓ U₀)
-        (res (le_inf inf_le_right inf_le_left) u)⁻¹).val *
-          resG X (inf_le_inf_right _ inf_le_left : V ⊓ U₁ ⊓ U₀ ≤ V ⊓ U₀) a
-    rw [e, map_inv, Semi.LB.res_res, ← val_res, Units.inv_mul_cancel_left]
-  · exact h
-  · change resG X _ a = resG X _ 1 * resG X _ a
-    rw [map_one, one_mul]
-
-example (V : X.Opens) :
-    (fun i : Bool => match i with | true => -1 | false => 1) ∈
-      secOn (twoChart (X := X) ⊤ ⊤ (-1)) V :=
-  (mem_secOn_twoChart (-1) V (-1) 1).2 (by
-    simp only [map_one, Units.val_neg, Units.val_one, map_neg, mul_one]
-    exact congrArg Neg.neg (map_one _))
-
-example (V : X.Opens) :
-    (fun i : Bool => match i with | true => 1 | false => 1) ∈
-      secOn (twoChart (X := X) ⊤ ⊤ (-1)) V ↔ (2 : Γ(X, V ⊓ ⊤ ⊓ ⊤)) = 0 := by
-  refine (mem_secOn_twoChart (-1) V 1 1).trans ?_
-  simp only [map_one, Units.val_neg, Units.val_one, map_neg, mul_one]
-  rw [eq_neg_iff_add_eq_zero, one_add_one_eq_two]
-
-example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X, U₀ ⊓ U₁)ˣ) :
-    coord (chartSec (twoChart_isLB h u) false) true =
-      resG X (le_inf inf_le_right inf_le_left : U₁ ⊓ U₀ ≤ U₀ ⊓ U₁) (u : Γ(X, U₀ ⊓ U₁)) := rfl
-
-example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X, U₀ ⊓ U₁)ˣ) :
-    (toMod (twoChart U₀ U₁ u)).IsQuasicoherent :=
-  isQuasicoherent_toMod (twoChart_isLB h u)
-
-theorem twoChart_isGen {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (a : Γ(X, U₀)ˣ) (b : Γ(X, U₁)ˣ)
-    (h : res inf_le_left a = u * res inf_le_right b) :
-    LB.Gen.IsGen (L := twoChart U₀ U₁ u)
-      ⟨fun i : Bool => match i with | true => a | false => b⟩ := by
-  rintro (_ | _) (_ | _)
-  · exact (one_mul _).symm
-  · have e := congrArg (res (le_inf inf_le_right inf_le_left : U₁ ⊓ U₀ ≤ U₀ ⊓ U₁)) h
-    rw [map_mul, Semi.LB.res_res, Semi.LB.res_res] at e
-    exact eq_inv_mul_of_mul_eq e.symm
-  · exact h
-  · exact (one_mul _).symm
-
-example (a : Γ(X, ⊤)) : ∃ u : Γ(X, X.basicOpen a ⊓ X.basicOpen (1 - a))ˣ,
-    (u : Γ(X, X.basicOpen a ⊓ X.basicOpen (1 - a))) = resG X le_top a ∧
-      (twoChart _ _ u).IsLB ∧ Nonempty (unitMod X ≅ toMod (twoChart _ _ u)) := by
-  have h : X.basicOpen a ⊔ X.basicOpen (1 - a) = ⊤ := by
-    refine eq_top_iff.2 (le_trans ?_ (X.basicOpen_add_le a (1 - a)))
-    rw [add_sub_cancel, X.basicOpen_of_isUnit isUnit_one]
-  obtain ⟨v, hv⟩ : IsUnit (resG X (le_top : X.basicOpen a ≤ ⊤) a) :=
-    X.toRingedSpace.isUnit_res_basicOpen a
-  refine ⟨res inf_le_left v, by rw [val_res, hv, resG_resG], twoChart_isLB h _,
-    ⟨unitIso (twoChart_isLB h _) _ (twoChart_isGen _ v 1 (by rw [map_one, mul_one]))⟩⟩
 
 end LB
 

@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.WeilBound.CoreStatements.AbelianHeightsDuality.FubiniStudyChowHeight.FubiniStudyChowHeightOfArExists
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 
@@ -12,7 +12,6 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.ProjSpace ChowFormHeightComparison₂.CF
 attribute [local instance] MvPolynomial.gradedAlgebra
 namespace FubiniStudyChowHeightFormula₂.Fs
-variable (R : Type) [CommRing R] (N : ℕ)
 end FubiniStudyChowHeightFormula₂.Fs
 theorem FubiniStudyChowHeightFormula₂.fubiniStudy_chowHeight_formula (h : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) : GlobalTheory.Published.FubiniStudyChowHeight :=
   FubiniStudyChowHeightFormula₂.fubiniStudyChowHeight_of h.p4

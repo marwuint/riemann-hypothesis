@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalizationModelLieAlgebraStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalizationModelLieAlgebra
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
@@ -137,7 +137,7 @@ theorem lieLat_of_isLocalModel : HomExtDvr → ∀ (K : Type) [Field K] [NumberF
       rintro _ rfl
       exact y.basis
     exact this _ _
-  obtain ⟨h₁, h₂⟩ := GlobalTheory.T.lieLattice_localization_modelLieAlgebra K P F R 𝔭.asIdeal.primeCompl y.P.A (e.hom.left ≫ pullback.fst _ _) ψ _ v' M
+  obtain ⟨h₁, h₂⟩ := _root_.GlobalTheory.CM.LieLoc.lieLat_localization K P F R 𝔭.asIdeal.primeCompl y.P.A (e.hom.left ≫ pullback.fst _ _) ψ _ v' M
     (((isGrpPullback_of_iso e).comp hp).congr (Category.id_comp _) rfl) hψ
     ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.fst _ _) hψe).trans hψ')) hb (fun i => ⟨hv i, hM i⟩)
   refine ⟨h₁, fun c hc => ?_⟩

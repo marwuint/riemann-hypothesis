@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombIn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageEqOfSquareZeroThickeningStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageEqOfSquareZeroThickening
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartSpecMapCompStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineCombinationSquareZeroLiftsChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineCombinationSquareZeroLiftsChart
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 open GlobalTheory.SecGlue
@@ -148,19 +148,19 @@ theorem isCombIn_of_chart : ∀ (Y : Scheme.{0}) (V V' : Y.Opens), IsAffineOpen 
 
   have hqc : spMap q ≫ c = spMap q ≫ u := by
     have h1 := GlobalTheory.T.isAffineCombinationInChart_specMap_comp Y V S T q ι u c w a hcomb
-    refine GlobalTheory.T.isAffineCombinationInChart_unique Y V hV T ι (spMap q ≫ u) _ _ (fun i => spMap q ≫ w i) (fun i => q (a i)) h1 ?_
+    refine _root_.GlobalTheory.SecGlue.combIn_unique Y V hV T ι (spMap q ≫ u) _ _ (fun i => spMap q ≫ w i) (fun i => q (a i)) h1 ?_
     obtain ⟨hu1, _, hw1, _⟩ := h1
     refine ⟨hu1, hu1, hw1, fun x => ?_⟩
     have h0 : ∀ i, chartHom V (spMap q ≫ w i) (hw1 i) x - chartHom V (spMap q ≫ u) hu1 x = 0 :=
       fun i => by rw [chartHom_congr V (hw i) (hw1 i) hu1 x, sub_self]
     simp [h0]
 
-  have hc' : c ⁻¹ᵁ V' = ⊤ := by rw [← GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u c hqc.symm V']; exact hu'
+  have hc' : c ⁻¹ᵁ V' = ⊤ := by rw [← _root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u c hqc.symm V']; exact hu'
   have hw' : ∀ i, w i ⁻¹ᵁ V' = ⊤ := fun i => by
-    rw [← GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u (w i) (hw i).symm V']; exact hu'
+    rw [← _root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u (w i) (hw i).symm V']; exact hu'
   have hWsame : ∀ W : Y.Opens, c ⁻¹ᵁ W = u ⁻¹ᵁ W ∧ ∀ i, w i ⁻¹ᵁ W = u ⁻¹ᵁ W := fun W =>
-    ⟨(GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u c hqc.symm W).symm,
-      fun i => (GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u (w i) (hw i).symm W).symm⟩
+    ⟨(_root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u c hqc.symm W).symm,
+      fun i => (_root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u (w i) (hw i).symm W).symm⟩
   obtain ⟨hu, _, _, _⟩ := hcomb
   refine ⟨hu', hc', hw', fun x => ?_⟩
   rw [← sub_eq_zero]
@@ -192,11 +192,11 @@ theorem isCombIn_of_chart : ∀ (Y : Scheme.{0}) (V V' : Y.Opens), IsAffineOpen 
     exact locMap_alg q s y
   have hws : ∀ i, spMap qs ≫ (spMap g ≫ w i) = spMap qs ≫ (spMap g ≫ u) := fun i => by
     rw [← Category.assoc, hsq, Category.assoc, hw i, ← Category.assoc, ← hsq, Category.assoc]
-  obtain ⟨d, hd, -, -⟩ := GlobalTheory.T.exists_affineCombination_squareZero_lifts_chart Y W hWaff (Localization.Away s) _ qs (locMap_surj q s hq)
+  obtain ⟨d, hd, -, -⟩ := _root_.GlobalTheory.SecGlue.CombEx.exists_comb Y W hWaff (Localization.Away s) _ qs (locMap_surj q s hq)
     (locMap_ker q s hk) ι (spMap g ≫ u) (fun i => spMap g ≫ w i) (fun i => g (a i)) (landW u rfl) hws
   have hcs := GlobalTheory.T.isAffineCombinationInChart_specMap_comp Y V S (Localization.Away s) g ι u c w a ⟨hu, by assumption, by assumption, by assumption⟩
   have hdc : d = spMap g ≫ c :=
-    GlobalTheory.T.isAffineCombinationInChart_unique Y V hV _ ι _ _ _ _ _ (comb_mono (hWle.trans inf_le_left) _ _ _ _ hd) hcs
+    _root_.GlobalTheory.SecGlue.combIn_unique Y V hV _ ι _ _ _ _ _ (comb_mono (hWle.trans inf_le_left) _ _ _ _ hd) hcs
   have hV'd := comb_mono (hWle.trans inf_le_right) _ _ _ _ hd
   rw [hdc] at hV'd
   obtain ⟨h1, h2, h3, hx⟩ := hV'd

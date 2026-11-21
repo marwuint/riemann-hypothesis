@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameCover
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CauchyBinetPluckerAndCellCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsProjOverFiniteFibreProductStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsProjOverFiniteFibreProduct
 
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.ShFam.Pad GlobalTheory.ProjSpace GlobalTheory.FlagEmb
@@ -22,7 +22,7 @@ theorem exists_isPlk : ∀ (O K : Type) [CommRing O] [Field K] (β : O →+* K) 
     ∃ (P : Scheme.{0}) (p0 : P ⟶ X) (p : ∀ en : En m, P ⟶ PSpace O (plN M en.1))
       (h : ∀ b, Pm m → (Sp (CR m (V b)) ⟶ P)), IsPlk β s V α c p0 p h := by
   intro O K _ _ β X s T _ m M B V α c D hs hC
-  obtain ⟨P, p0, p, hP, hp, univ⟩ := GlobalTheory.T.exists_isProjOver_finite_fibreProduct O (En m) X s (fun en => PSpace O (plN M en.1))
+  obtain ⟨P, p0, p, hP, hp, univ⟩ := _root_.GlobalTheory.ProjFinProd.exists_isProjOver_finite_prod O (En m) X s (fun en => PSpace O (plN M en.1))
     (fun en => PSpace.str O _) hs fun en => ⟨_, 𝟙 _, inferInstance, Category.id_comp _⟩
   have hb : ∀ b, cbase m (V b) ≫ s =
       spMap ((MvPolynomial.C : _ →+* CR m (V b)).comp ((α b).comp β)) := fun b => by

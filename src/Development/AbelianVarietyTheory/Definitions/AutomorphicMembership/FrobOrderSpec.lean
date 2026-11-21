@@ -86,21 +86,6 @@ def packAll : ∀ u (w : D.what₂.places.Pl) (_h : GIdx D.host (D.mem u).A.T (D
 variable (hd : ∀ u w h, ((packAll D Lc I ψ u w h).gat (rSc sc D.R.k (D.what₂.places.resChar w))
     (epSc D.R sc Ce (D.what₂.places.resChar w))).d = Module.finrank ℂ (D.mem u).A.Mu0)
 
-abbrev record : D7 := recG D sc Ce Lc (packAll D Lc I ψ) hd
-
-abbrev recordTies : GatTies (record D sc Ce Lc I ψ hd) := gatTiesG D sc Ce Lc (packAll D Lc I ψ) hd
-
-example : (record D sc Ce Lc I ψ hd).host = D.host := rfl
-
-example : (record D sc Ce Lc I ψ hd).R = D.R := rfl
-
-example (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
-    ((record D sc Ce Lc I ψ hd).gat u w h).O = ORec D w (frobOrder D (D.what₂.places.resChar w)) := rfl
-
 end Record
-
-example (D : D7) {T p : ℕ} (hg : GIdx D.host T p) : frobOrder D p ≠ 1 ∧ frobOrder D p ≠ 3 := by
-  obtain ⟨h2, k, hk⟩ := frobOrder_spec D hg
-  omega
 
 end GlobalTheory.Mem.LocalPack

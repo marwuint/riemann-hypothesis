@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunction
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableSqTh
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralSeriesOfCommonDivisorLineProductsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesCoeffNormLeOneFunctionalEquationPadicStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesSupNormMulPadicComplexStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesSupNormMulPadicComplex
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicComplexIntegralBoundedSeriesLawsStatement
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.EvenTheta
 open scoped BigOperators
@@ -170,13 +170,13 @@ theorem intSer_of_isogeny_identities : ∀ (p : ℕ) [Fact p.Prime] (k : ℕ) (e
       ← Finset.mul_prod_erase (Finset.univ.erase j₁) _ (a := j₀) (by simp [hj]), hj₀, hj₁]
   have hGR : IntSer (lineSer e x₀ * R) := fun n => by
     obtain ⟨i, hi⟩ := exists_norm_coeff_lineSer he he0 x₁
-    have h3 := GlobalTheory.T.powerSeries_supNorm_mul_padicComplex p _ _ _ (hG x₁) (rB _ _ (hG x₀) hRb).2.2 (eP' ▸ hP'm) i n
+    have h3 := _root_.GlobalTheory.EvenTheta.sup_norm_mul_padicComplex p _ _ _ (hG x₁) (rB _ _ (hG x₀) hRb).2.2 (eP' ▸ hP'm) i n
     have hpos : (0 : ℝ) < max 1 ‖x₁‖ := lt_max_of_lt_left one_pos
     have h4 := mul_le_mul_of_nonneg_right hi
       (norm_nonneg (PowerSeries.coeff n (lineSer e x₀ * R)))
     exact le_of_mul_le_mul_left (by rw [mul_one]; exact h4.trans h3) hpos
   have hGi : IntSer (lineSer e x₀) := fun n => by
-    have h3 := GlobalTheory.T.powerSeries_supNorm_mul_padicComplex p _ _ _ (hG x₀) hRb hGR n 0
+    have h3 := _root_.GlobalTheory.EvenTheta.sup_norm_mul_padicComplex p _ _ _ (hG x₀) hRb hGR n 0
     rwa [PowerSeries.coeff_zero_eq_constantCoeff_apply, hR0, norm_one, mul_one] at h3
   have hx0 : ‖x₀‖ ≤ 1 := by
     obtain ⟨i, hi⟩ := exists_norm_coeff_lineSer he he0 x₀
@@ -185,7 +185,7 @@ theorem intSer_of_isogeny_identities : ∀ (p : ℕ) [Fact p.Prime] (k : ℕ) (e
     have hAi : IntSer A := rS _ h _ hGi hh h0
     have h2 : IntSer (P * P) := by
       rw [← sq, ← eA]; exact (rI _ _ hΨi hAi).2.2
-    have h3 := GlobalTheory.T.powerSeries_supNorm_mul_padicComplex p _ _ _ hPb hPb h2 n 0
+    have h3 := _root_.GlobalTheory.EvenTheta.sup_norm_mul_padicComplex p _ _ _ hPb hPb h2 n 0
     rwa [PowerSeries.coeff_zero_eq_constantCoeff_apply, hP0, norm_one, mul_one] at h3
   refine ⟨GlobalTheory.T.powerSeriesCoeffNormLeOne_functional_equation_padic p f h (lineSer e x₀ ^ k) P (2 * k) hf0 hh h0 h1 hk (int_pow hGi k)
     (by simp [hG0]) hPi hP0 ?_, hx0⟩

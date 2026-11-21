@@ -72,13 +72,6 @@ theorem splitSnd_includeRight (x : F × F) :
     splitSnd F R (Algebra.TensorProduct.includeRight x) = algebraMap F R x.2 := by
   simp [splitSnd_apply, Algebra.TensorProduct.includeRight_apply, Algebra.algebraMap_eq_smul_one]
 
-theorem splitFst_tensorMap {S : Type*} [CommRing S] [Algebra F S] (f : R →ₐ[F] S)
-    (z : R ⊗[F] (F × F)) : splitFst F S (tensorMap (F × F) f z) = f (splitFst F R z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul r x => simp [splitFst_apply]
-  | add x y hx hy => simp only [map_add, hx, hy]
-
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 omit [Fintype ι] [DecidableEq ι] in
@@ -212,45 +205,6 @@ theorem unitaryPointsSplitEquiv_apply (hH : IsHermitianFor (conjHom F (F × F)) 
     ((unitaryPointsSplitEquiv R H hH hdet g : GL ι R) : Matrix ι ι R) =
       ((g : GL ι (R ⊗[F] (F × F))) : Matrix ι ι (R ⊗[F] (F × F))).map (splitFst F R) := rfl
 
-theorem unitaryPointsSplitEquiv_natural {S : Type*} [CommRing S] [Algebra F S] (f : R →ₐ[F] S)
-    (hH : IsHermitianFor (conjHom F (F × F)) H) (hdet : IsUnit H.det)
-    (g : unitaryPoints F (F × F) H R) :
-    unitaryPointsSplitEquiv S H hH hdet (unitaryMap F (F × F) H f g) =
-      Matrix.GeneralLinearGroup.map (f : R →+* S) (unitaryPointsSplitEquiv R H hH hdet g) := by
-  apply Units.ext
-  rw [unitaryPointsSplitEquiv_apply, unitaryMap_apply]
-  ext i j
-  simp [unitaryPointsSplitEquiv_apply, Matrix.GeneralLinearGroup.map, splitFst_tensorMap]
-
 end Split
-
-section SplitFunctor
-
-open CategoryTheory
-
-universe u
-
-variable (F : Type u) [Field F] (ι : Type u) [Fintype ι] [DecidableEq ι]
-
-noncomputable def generalLinearFunctor : CommAlgCat.{u} F ⥤ GrpCat.{u} where
-  obj R := GrpCat.of (GL ι R)
-  map f := GrpCat.ofHom (Matrix.GeneralLinearGroup.map (f.hom : _ →+* _))
-  map_id R := by
-    rw [CommAlgCat.hom_id]
-    exact congrArg GrpCat.ofHom Matrix.GeneralLinearGroup.map_id
-  map_comp f g := by
-    rw [CommAlgCat.hom_comp]
-    exact congrArg GrpCat.ofHom (Matrix.GeneralLinearGroup.map_comp _ _)
-
-variable {F ι}
-
-noncomputable def unitaryFunctorSplitIso (H : Matrix ι ι (F × F))
-    (hH : IsHermitianFor (conjHom F (F × F)) H) (hdet : IsUnit H.det) :
-    unitaryFunctor F (F × F) H ≅ generalLinearFunctor F ι :=
-  NatIso.ofComponents (fun R => (unitaryPointsSplitEquiv R H hH hdet).toGrpIso) fun {R S} f => by
-    ext g : 2
-    exact unitaryPointsSplitEquiv_natural H f.hom hH hdet g
-
-end SplitFunctor
 
 end GroundTheory.Automorphic

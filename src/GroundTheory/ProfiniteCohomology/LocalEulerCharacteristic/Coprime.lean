@@ -432,22 +432,6 @@ theorem eulerChar_coprime (hl : (l : K) ≠ 0) (h : V ≤ U)
   congr 1
   linarith
 
-omit [ValuativeRel Ksep] [TopologicalSpace Ksep] [IsValuativeTopology Ksep]
-  [ValuativeExtension K Ksep] in
-
-theorem finite_cohomology_coprime_of_torsion (hl : (l : K) ≠ 0) (h : V ≤ U)
-    [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
-    (hcop : Nat.Coprime ((V : Subgroup Gal(Ksep/K)).relIndex U) l)
-    (hμ : ∀ ζ : Ksep, ζ ^ l = 1 → ζ ∈ fixedField (V : Subgroup Gal(Ksep/K)))
-    (M : Rep.{0} (ULift.{0} ℤ) (U : Subgroup Gal(Ksep/K))) [IsDiscreteRep M] [Finite M]
-    (hMl : ∀ m : M, l • m = 0)
-    (hM : ∀ g : (U : Subgroup Gal(Ksep/K)), (g : Gal(Ksep/K)) ∈ V → ∀ m : M, M.ρ g m = m)
-    (i : ℕ) (hi : i ≤ 2) : Finite (cohomology M i) := by
-  have : Finite (zmodRepOfTorsion l M hMl) := ‹Finite M›
-  have : Module.Finite (ZMod l) (zmodRepOfTorsion l M hMl) := Module.Finite.of_finite
-  have := finite_cohomology_coprime hl h hcop hμ (zmodRepOfTorsion l M hMl) hM i hi
-  exact Finite.of_equiv _ (cohomologyZModEquiv l M hMl i).symm.toEquiv
-
 end Main
 
 end GroundTheory.ProfCoh

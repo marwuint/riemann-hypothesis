@@ -11,6 +11,4 @@ def OrbitDegreeRatio.Statement : Prop :=
     (x : Cone n (AlgebraicClosure ℚ)), BlockNonzero x →
     Geo.degC (ι := blockIdx n) (orbitIdeal x) = Module.finrank ℚ (ratioField x)
 
-example : BlockNonzero samplePoint := samplePoint_blockNonzero
-
 end GroundTheory.Heights₂.Heights

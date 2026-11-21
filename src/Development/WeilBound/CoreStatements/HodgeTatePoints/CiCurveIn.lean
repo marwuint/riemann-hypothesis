@@ -4,9 +4,10 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.SeparableFo
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitIffUnitAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueCentreLocalHomStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuativeLiftExistsUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuativeLiftExistsUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
 import Development.WeilBound.CoreStatements.HodgeTatePoints.OfMem
 
 set_option backward.isDefEq.respectTransparency false
@@ -116,7 +117,7 @@ theorem exists_point {κ : Type} {x : κ → Ω} (tie : CoordTie ℤ ξ x) {c : 
     ∃ z : Spec (CommRingCat.of K) ⟶ X,
       ∀ a : Algebra.adjoin ℤ (Set.range fun j => x j / x c), ValAt ξ z (a : Ω) (ψ a) := by
   have hI : (RingHom.ker ψ).IsPrime := RingHom.ker_isPrime ψ
-  obtain ⟨p, ⟨hp, hu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x tie c hc _ hI
+  obtain ⟨p, ⟨hp, hu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ κ x tie c hc _ hI
   have hle : ∀ a : Algebra.adjoin ℤ (Set.range fun j => x j / x c), (a : Ω) ∈ regAt ξ p := fun a =>
     (tie.ring c hc a).1 a.2 p hp
   let ι : Algebra.adjoin ℤ (Set.range fun j => x j / x c) →+* regAt ξ p :=
@@ -124,7 +125,7 @@ theorem exists_point {κ : Type} {x : κ → Ω} (tie : CoordTie ℤ ξ x) {c : 
   let _ := ι.toAlgebra
   have hsurj : ∀ a : regAt ξ p, ∃ s t, s ∉ RingHom.ker ψ ∧ a * ι s = ι t := by
     intro a
-    obtain ⟨s, hs, h1, h2⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x tie c p hp a).1 a.2
+    obtain ⟨s, hs, h1, h2⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x tie c p hp a).1 a.2
     exact ⟨⟨s, hs⟩, ⟨_, h2⟩, (hu _).2 h1, Subtype.ext (mul_comm _ _)⟩
   have hloc : IsLocalization (RingHom.ker ψ).primeCompl (regAt ξ p) := by
     refine (isLocalization_iff _ _).2 ⟨fun s => isUnit_regAt ((hu s).1 s.2), fun a => ?_, fun {a b} hab => ?_⟩
@@ -184,7 +185,7 @@ theorem curve_in_cpt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (C
   have hmem : ∀ j, segre y j / segre y c ∈ Algebra.adjoin ℤ (Set.range fun j => segre y j / segre y c) :=
     fun j => Algebra.subset_adjoin ⟨j, rfl⟩
   have hch : InChart ξ (segre y) c ⟨centre z, h₀⟩ := ⟨hsc, fun j => Val.mem (hz ⟨_, hmem j⟩) h₀⟩
-  choose x hx using fun i => (GlobalTheory.T.valuative_lift_existsUnique X Ω ξ _ _ tie K (C.v i).valuationSubring z h₀).exists
+  choose x hx using fun i => (_root_.GlobalTheory.CompanionTheory.Ar.coord_point_extends X Ω ξ _ _ tie K (C.v i).valuationSubring z h₀).exists
   have hgen : ∀ i, Spec.map (CommRingCat.ofHom (C.v i).valuationSubring.subtype) ≫ x i = z := fun i => (hx i).2
   have hunit : ∀ i (a : Ω) (r : K), a ∈ regAt ξ ⟨centre (x i), (hx i).1⟩ → ValAt ξ z a r → C.v i r = 1 →
       unitAt ξ ⟨centre (x i), (hx i).1⟩ a := by

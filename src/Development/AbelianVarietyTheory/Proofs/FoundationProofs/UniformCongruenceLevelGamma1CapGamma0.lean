@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLawsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLaws
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
 
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups
@@ -26,7 +27,7 @@ theorem unif_level : ∀ (N l : ℕ) (R : Type) [CommRing R] (Φ : SL(2, ℤ) �
     ∃ M : ℕ, 0 < M ∧ ∀ γ ∈ Gam N l, ∀ δ ∈ CongruenceSubgroup.Gamma M,
       slP (γ : Matrix (Fin 2) (Fin 2) ℤ) (Φ (γ * δ * γ⁻¹)) = Φ δ := by
   intro N l R _ Φ hN hl _ hinv
-  obtain ⟨hmul, hone, -, -, -, -, -⟩ := GlobalTheory.T.twoVarPolySubstMatrix_basic_laws R
+  obtain ⟨hmul, hone, -, -, -, -, -⟩ := _root_.GlobalTheory.KZ.polySlash_laws R
 
   let H : ℕ → Subgroup SL(2, ℤ) := fun M =>
     { carrier := {γ | ∀ δ ∈ CongruenceSubgroup.Gamma M,

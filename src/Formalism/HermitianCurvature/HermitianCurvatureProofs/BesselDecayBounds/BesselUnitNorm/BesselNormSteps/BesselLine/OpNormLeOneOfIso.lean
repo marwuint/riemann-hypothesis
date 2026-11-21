@@ -46,15 +46,6 @@ def MeasF {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ
   MeasurePreserving tInv (μW.prod μN) (μW.prod μN) ∧
   AEStronglyMeasurable (fun x : Mt k r => π (Matrix.of x)⁻¹) μW
 
-def DecayAt {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (μW μN : Measure (Mt k r)) (σ : Mx k r → (H →L[ℂ] H)) : Prop :=
-  ∀ v : H, IsKFinHpk (k := k) (r := r) σ v → ∃ (C : ℝ) (Ws : List (List (Mx k r))),
-    (∀ W ∈ Ws, ∀ X ∈ W, InLieHpk k r X) ∧
-    ∀ w ∈ smoothVecs (k := k) (r := r) σ,
-      Integrable (fun p : Mt k r × Mt k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ) (μW.prod μN) ∧
-      ∫ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ‖ ∂(μW.prod μN) ≤
-        C * (Ws.map fun W => ‖dsigW σ W w‖).sum
-
 section Lemmas
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -119,40 +110,6 @@ theorem norm_beF_le (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r →
   unfold beF
   rw [norm_smul, norm_mul, norm_star, norm_psi, mul_one]
   exact mul_le_of_le_one_right (norm_nonneg _) hπn
-
-theorem conv_int (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
-    (hG : GrpF k r z) (hπ : PiU z π) (hM : MeasF z π μW μN) (hD : DecayAt μW μN σ) :
-    ∀ w ∈ smoothVecs (k := k) (r := r) σ, ∀ v : H, IsKFinHpk (k := k) (r := r) σ v →
-      Integrable (beF z c π σ w v) (μW.prod μN) := by
-  intro w hw v hv
-  obtain ⟨C, Ws, -, hb⟩ := hD v hv
-  have hint := (hb w hw).1
-  refine Integrable.mono' hint.norm (beF_aesm z c π μW μN σ w v hM.2.2.2 hint.aestronglyMeasurable) ?_
-  exact hM.1.mono (fun p hp => norm_beF_le z c π σ w v hG hπ p hp.1)
-
-theorem conv_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
-    (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
-    (hG : GrpF k r z) (hπ : PiU z π) (hM : MeasF z π μW μN) (hD : DecayAt μW μN σ) :
-    ∀ v : H, IsKFinHpk (k := k) (r := r) σ v → ∀ x : Wp,
-      IsCWCont (k := k) (r := r) σ (fun w => be z c π μW μN σ w v x) := by
-  intro v hv x
-  obtain ⟨C, Ws, hWs, hb⟩ := hD v hv
-  refine ⟨C * ‖x‖, Ws, hWs, fun w hw => ?_⟩
-  have hint := (hb w hw).1
-  have hF := conv_int z c π μW μN σ hG hπ hM hD w hw v hv
-  have h1 : ‖be z c π μW μN σ w v x‖ ≤ ‖be z c π μW μN σ w v‖ * ‖x‖ :=
-    ContinuousLinearMap.le_opNorm _ _
-  have h2 : ‖be z c π μW μN σ w v‖ ≤ ∫ p, ‖beF z c π σ w v p‖ ∂(μW.prod μN) :=
-    norm_integral_le_integral_norm _
-  have h3 : ∫ p, ‖beF z c π σ w v p‖ ∂(μW.prod μN) ≤
-      ∫ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ‖ ∂(μW.prod μN) :=
-    integral_mono_ae hF.norm hint.norm (hM.1.mono (fun p hp => norm_beF_le z c π σ w v hG hπ p hp.1))
-  have h4 := (hb w hw).2
-  calc ‖be z c π μW μN σ w v x‖ ≤ ‖be z c π μW μN σ w v‖ * ‖x‖ := h1
-    _ ≤ (C * (Ws.map fun W => ‖dsigW σ W w‖).sum) * ‖x‖ :=
-        mul_le_mul_of_nonneg_right (h2.trans (h3.trans h4)) (norm_nonneg _)
-    _ = C * ‖x‖ * (Ws.map fun W => ‖dsigW σ W w‖).sum := by ring
 
 end Lemmas
 

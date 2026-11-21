@@ -1,18 +1,18 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsIntZero
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIndicatorFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DetOrderBoundedHeckeSupportStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockIntegralIffStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockInverseIntegralIffStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetOrderAddStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermHeckeFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeIndicatorIntegralIndexStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIndicatorFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DetOrderBoundedHeckeSupport
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockIntegralIff
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockInverseIntegralIff
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetOrderAdd
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermHeckeFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeIndicatorIntegralIndex
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeIndexEqDiagonalStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalLatticeIndexPowStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedCharacterBlockValueStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusHalfBlockValueStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeVectorLinearCombinationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SatakeEigenvaluePairDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedCharacterBlockValue
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusHalfBlockValue
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeVectorLinearCombination
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SatakeEigenvaluePairDecomposition
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.ReadMod
 
 open NumberField IsDedekindDomain Matrix
@@ -37,9 +37,9 @@ theorem tj_blk (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) 
     Tj ℂ n (Ov E w) ϖ k (blk h w m X) =
       if IsInt w m.1.val ∧ IsInt w m.2.val ∧ IsInt w (m.1.val * X) ∧ IsInt w (ϖ • (m.1⁻¹).val) ∧ IsInt w (ϖ • (m.2⁻¹).val) ∧
         IsInt w (ϖ • (X * (m.2⁻¹).val)) ∧ ordL m.1.val.det + ordL m.2.val.det = (k : ℤ) then 1 else 0 := by
-  rw [GlobalTheory.T.hecke_indicator_formula E w n k ϖ hϖ hk]
+  rw [_root_.GlobalTheory.CompanionTheory.CtS.Tj_eq_ite E w n k ϖ hϖ hk]
   refine if_congr ?_ rfl rfl
-  rw [GlobalTheory.T.block_integral_iff E n a b h w m X, GlobalTheory.T.block_inverse_integral_iff E n a b h w ϖ m X, GlobalTheory.T.block_det_order_add E n a b h w m X]
+  rw [_root_.GlobalTheory.CompanionTheory.CtS.isInt_blk_iff E n a b h w m X, _root_.GlobalTheory.CompanionTheory.CtS.isInt_smul_blk_inv_iff E n a b h w ϖ m X, _root_.GlobalTheory.CompanionTheory.CtS.ordL_blk_det E n a b h w m X]
   tauto
 
 theorem hint_lat (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (ϖ : w.adicCompletion E)
@@ -53,7 +53,7 @@ theorem hint_lat (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) 
     have e : ϖ • (X * (m.2⁻¹).val) = X * (ϖ • (m.2⁻¹).val) := (Matrix.mul_smul _ _ _).symm
     rw [e]
     exact IsInt.mul hX j2
-  have := GlobalTheory.T.lattice_indicator_integral_index E a b w (latM ϖ m) hle
+  have := _root_.GlobalTheory.CompanionTheory.HintInd.hint_indicator_lattice E a b w (latM ϖ m) hle
   rw [GlobalTheory.T.lattice_index_eq_diagonal E a b w ϖ hϖ i j hi hj m t1 t2, GlobalTheory.T.diagonal_lattice_index_pow E a b w ϖ hϖ i j hi hj] at this
   rw [Nat.cast_pow] at this
   have e2 : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) =>
@@ -82,14 +82,14 @@ theorem ct_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (
     (ϖ : w.adicCompletion E) (hw : IsSplitAt w) (hϖ : IsUnifV E w ϖ) (k : ℕ) (hk : k ≤ n) (m : GLw a w × GLw b w) :
     ctT h w (GlobalTheory.SmGL.unrChar (w.adicCompletion E) c) ϖ k m =
       ∑ p ∈ pairs a b k, coef (qV E w) c a b p.1 p.2 * (Tj ℂ a (Ov E w) ϖ p.1 m.1 * Tj ℂ b (Ov E w) ϖ p.2 m.2) := by
-  rw [GlobalTheory.T.constant_term_hecke_formula E n a b h w _ ϖ hw hϖ k m]
+  rw [_root_.GlobalTheory.CompanionTheory.CtS.ctT_split_eq E n a b h w _ ϖ hw hϖ k m]
   by_cases hP : ∃ p ∈ pairs a b k, Tj ℂ a (Ov E w) ϖ p.1 m.1 ≠ 0 ∧ Tj ℂ b (Ov E w) ϖ p.2 m.2 ≠ 0
   · obtain ⟨⟨i, j⟩, hp, h1, h2⟩ := hP
     obtain ⟨hij, hi, hj⟩ : i + j = k ∧ i ≤ a ∧ j ≤ b := by
       exact mem_pairs.1 hp
     simp only at h1 h2
-    have c1 := GlobalTheory.T.hecke_indicator_formula E w a i ϖ hϖ hi m.1
-    have c2 := GlobalTheory.T.hecke_indicator_formula E w b j ϖ hϖ hj m.2
+    have c1 := _root_.GlobalTheory.CompanionTheory.CtS.Tj_eq_ite E w a i ϖ hϖ hi m.1
+    have c2 := _root_.GlobalTheory.CompanionTheory.CtS.Tj_eq_ite E w b j ϖ hϖ hj m.2
     rw [c1] at h1
     rw [c2] at h2
     obtain ⟨i1, i2, i3⟩ : IsInt w m.1.val ∧ IsInt w (ϖ • (m.1⁻¹).val) ∧ ordL m.1.val.det = (i : ℤ) := by
@@ -110,7 +110,7 @@ theorem ct_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (
     have u2 : Tj ℂ b (Ov E w) ϖ j m.2 = 1 := by rw [c2, if_pos ⟨j1, j2, j3⟩]
     have t1 : Tj ℂ a (Ov E w) ϖ i m.1 ≠ 0 := by rw [u1]; exact one_ne_zero
     have t2 : Tj ℂ b (Ov E w) ϖ j m.2 ≠ 0 := by rw [u2]; exact one_ne_zero
-    rw [hfun, hint_lat E a b w ϖ hϖ i j hi hj m i1 j2 t1 t2, GlobalTheory.T.unramified_character_block_value E a b w c i j m i3 j3, GlobalTheory.T.modulus_half_block_value E a b w i j m i3 j3,
+    rw [hfun, hint_lat E a b w ϖ hϖ i j hi hj m i1 j2 t1 t2, _root_.GlobalTheory.CompanionTheory.CtS.NuVal.unrChar_twist E a b w c i j m i3 j3, _root_.GlobalTheory.CompanionTheory.CtS.absHalf_blockDet_value E a b w i j m i3 j3,
       coef_eq _ (qV_ne_zero w) c a b i j hj, Finset.sum_eq_single_of_mem (⟨i, j⟩ : ℕ × ℕ) hp]
     · simp [u1, u2]
     · rintro ⟨i', j'⟩ hp' hne
@@ -118,7 +118,7 @@ theorem ct_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (
         exact mem_pairs.1 hp'
       have : i' ≠ i := fun e => hne (by subst e; congr; omega)
       have u : Tj ℂ a (Ov E w) ϖ i' m.1 = 0 := by
-        rw [GlobalTheory.T.hecke_indicator_formula E w a i' ϖ hϖ hi' m.1, if_neg]
+        rw [_root_.GlobalTheory.CompanionTheory.CtS.Tj_eq_ite E w a i' ϖ hϖ hi' m.1, if_neg]
         rintro ⟨-, -, e⟩
         exact this (by rw [i3] at e; exact_mod_cast e.symm)
       simp [u]
@@ -128,15 +128,15 @@ theorem ct_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (
       funext X
       rw [tj_blk E n a b h w ϖ hϖ k hk m, if_neg]
       rintro ⟨i1, j1, -, i2, j2, -, e⟩
-      obtain ⟨i, hi, i3⟩ := GlobalTheory.T.det_order_bounded_hecke_support E w a ϖ hϖ m.1 i1 i2
-      obtain ⟨j, hj, j3⟩ := GlobalTheory.T.det_order_bounded_hecke_support E w b ϖ hϖ m.2 j1 j2
+      obtain ⟨i, hi, i3⟩ := _root_.GlobalTheory.CompanionTheory.CtS.ordL_det_range E w a ϖ hϖ m.1 i1 i2
+      obtain ⟨j, hj, j3⟩ := _root_.GlobalTheory.CompanionTheory.CtS.ordL_det_range E w b ϖ hϖ m.2 j1 j2
       have hp : (⟨i, j⟩ : ℕ × ℕ) ∈ pairs a b k := by
         have : i + j = k := by rw [i3, j3] at e; exact_mod_cast e
         exact mem_pairs.2 ⟨this, hi, hj⟩
       have t1 : Tj ℂ a (Ov E w) ϖ i m.1 ≠ 0 := by
-        rw [GlobalTheory.T.hecke_indicator_formula E w a i ϖ hϖ hi m.1, if_pos ⟨i1, i2, i3⟩]; exact one_ne_zero
+        rw [_root_.GlobalTheory.CompanionTheory.CtS.Tj_eq_ite E w a i ϖ hϖ hi m.1, if_pos ⟨i1, i2, i3⟩]; exact one_ne_zero
       have t2 : Tj ℂ b (Ov E w) ϖ j m.2 ≠ 0 := by
-        rw [GlobalTheory.T.hecke_indicator_formula E w b j ϖ hϖ hj m.2, if_pos ⟨j1, j2, j3⟩]; exact one_ne_zero
+        rw [_root_.GlobalTheory.CompanionTheory.CtS.Tj_eq_ite E w b j ϖ hϖ hj m.2, if_pos ⟨j1, j2, j3⟩]; exact one_ne_zero
       exact t2 (hP (i, j) hp t1)
     have hs : ∑ p ∈ pairs a b k, coef (qV E w) c a b p.1 p.2 * (Tj ℂ a (Ov E w) ϖ p.1 m.1 * Tj ℂ b (Ov E w) ϖ p.2 m.2) = 0 := by
       refine Finset.sum_eq_zero fun p hp => ?_
@@ -151,7 +151,7 @@ theorem ctSat : CtSat := by
   have hF : ctT h w (GlobalTheory.SmGL.unrChar (w.adicCompletion E) c) ϖ k = fun m =>
       ∑ p ∈ pairs a b k, coef (qV E w) c a b p.1 p.2 * (Tj ℂ a (Ov E w) ϖ p.1 m.1 * Tj ℂ b (Ov E w) ϖ p.2 m.2) :=
     funext fun m => ct_eq E n a b h w c ϖ hw hϖ k hk m
-  rw [hF, GlobalTheory.T.hecke_vector_linear_combination E a b w ϖ hϖ, GlobalTheory.T.satake_eigenvalue_pair_decomposition _ n a b c Ba Bb (qV_ne_zero w) h hs.2.1 hs.2.2.1 k hk, Finset.sum_smul]
+  rw [hF, _root_.GlobalTheory.CompanionTheory.CtS.HeckeSum.heckeVec_Tj_sum E a b w ϖ hϖ, _root_.GlobalTheory.CompanionTheory.CtS.SatConv.satEig_join _ n a b c Ba Bb (qV_ne_zero w) h hs.2.1 hs.2.2.1 k hk, Finset.sum_smul]
   refine Finset.sum_congr rfl fun p hp => ?_
   obtain ⟨-, hi, hj⟩ : p.1 + p.2 = k ∧ p.1 ≤ a ∧ p.2 ≤ b := by
     exact mem_pairs.1 hp

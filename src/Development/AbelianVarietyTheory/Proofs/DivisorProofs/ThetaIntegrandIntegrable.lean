@@ -211,19 +211,6 @@ theorem integrableOn_form {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χ
   exact GlobalTheory.DefiniteQuotient.integrableOn_theta D ψ hom.std S T χS χT om hom hpos c.W (pt ∘ₗ io)
     (fun w => hpt _) _ (ext_continuous c hc β L hf) (ext_invariant c hf) μ 𝓕 hμ.1.1 hμ.2 g
 
-theorem thetaIntegrandIntegrable : GlobalTheory.IndefiniteRowSideFullHecke.PinnedIntegrability.ThetaIntegrandIntegrable := by
-  intro D G _ _ Pl0 T A Ks _ _ _ R hR i t f hf e g
-  obtain ⟨x, hf⟩ := hf
-  have hx : (R.HV i t).e x ∈ Bridge.AdForms (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ
-      (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ :=
-    (hR.HV i t).2.1.le (LinearMap.mem_range_self _ x)
-  have hf' : f = (R.cV i).ext ((R.HV i t).e x) := hf.symm
-  have key := integrableOn_form (hR.ωP i t) (D.sp.V_sig _) (hR.vpos i) (R.cV i) (hR.cV i) (R.βV i) (R.datVt i t) hx
-    (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A)))
-      (R.vP i t)) (hR.pt_theta i t) (R.ioP i e) (hR.νV i t) g
-  rw [← hf'] at key
-  exact key
-
 end GlobalTheory.ThetaIntegrand
 
 end

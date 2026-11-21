@@ -67,8 +67,6 @@ def po2 (D : D7) : ℕ := D.host.pde'
 
 def zOwnP (D : D7) (p : ℕ) (w : WeightFamilies.Wt D j) : ℕ := p ^ (WeightAlgebra.DF w + 2 * D.R.f * D.R.r * w.n)
 
-def zOwn (D : D7) (w : WeightFamilies.Wt D j) : ℕ := zOwnP D (po D) w
-
 def scalOfP (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ)
     (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) : WeightAlgebra.Scal B where
   sW := nnW B hinj EX wL * (pPow D (c2 D wL) (cHalf wL) (cHalf wL) : 𝓞 B.KO)
@@ -108,27 +106,6 @@ def nusOf (B : WeightFamilies.Prov D) {j : ℕ} (wL : WeightFamilies.Wt D j) (nu
         (padicValNat (ringChar (𝓞 B.KO ⧸ la.asIdeal)) D.host.QS : ℝ) * (c2 D wL : ℝ)
      else if ((D.host.q : ℕ) : 𝓞 B.KO) ∈ la.asIdeal ∨ ((D.host.d : ℕ) : 𝓞 B.KO) ∈ la.asIdeal then (cHalf wL : ℝ)
      else 0))
-
-def runOfP (T : ParamsT D L P) (hK : DV.KapDef D) (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL)
-    (EX : ErrX D) (p : ℕ) (nuWW : ℕ → HeightOneSpectrum (𝓞 B.KO) → ℝ) (j : ℕ) : LiftErrorLocal.Run D B j where
-  S := scalOfP B hinj EX p (kaR T hK j) (lR T hK j) (fR T hK j) T.TO
-  ka := kaR T hK j
-  wL := lR T hK j
-  wF := fR T hK j
-  nP := T.nP
-  nW := T.nWn
-  h0 := LevelStarExponents.h0 L - 4
-  n1 := D.R.r
-  n2 := T.nWn - D.R.r
-  nus := nusOf B (lR T hK j) (nuWW j)
-
-def runOf (T : ParamsT D L P) (hK : DV.KapDef D) (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL)
-    (EX : ErrX D) (nuWW : ℕ → HeightOneSpectrum (𝓞 B.KO) → ℝ) (j : ℕ) : LiftErrorLocal.Run D B j :=
-  runOfP T hK B hinj EX (po D) nuWW j
-
-def runOf2 (T : ParamsT D L P) (hK : DV.KapDef D) (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL)
-    (EX : ErrX D) (nuWW : ℕ → HeightOneSpectrum (𝓞 B.KO) → ℝ) (j : ℕ) : LiftErrorLocal.Run D B j :=
-  runOfP T hK B hinj EX (po2 D) nuWW j
 
 end Run
 

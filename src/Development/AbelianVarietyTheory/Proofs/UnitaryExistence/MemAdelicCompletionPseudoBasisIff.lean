@@ -16,11 +16,6 @@ def adCoord (e : Module.Basis (Fin n) E (Fin n → E)) (b : Fin n) : (Fin n → 
   map_zero' := by simp
   map_add' x y := by simp [add_mul, Finset.sum_add_distrib]
 
-theorem sum_mul_repr_single (e : Module.Basis (Fin n) E (Fin n → E)) (x : Fin n → E) (b : Fin n) :
-    ∑ i, x i * e.repr (Pi.single i 1) b = e.repr x b := by
-  conv_rhs => rw [pi_eq_sum_univ' x]
-  simp [map_sum]
-
 open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in

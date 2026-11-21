@@ -314,10 +314,4 @@ theorem budgetAt {PP A : ℝ} (h : HostNum D L PP A 1) (hw : WtNum p i PP) (hi :
 
 end Point
 
-theorem budget : (∀ M, HostN M) → WtN → Size → Budget := fun hH hW _ =>
-  Closed.imp (Closed.and (hH 1) hW) fun _ _ _ ⟨⟨_, _, h1⟩, ⟨_, _, h2⟩⟩ => by
-    obtain ⟨x0, h⟩ := h1.and h2
-    exact ⟨83400, by norm_num, x0, fun x hx hle ι p hp i hi Y hY u1 hq =>
-      budgetAt p i ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i) hi Y hY u1 hq⟩
-
 end GlobalTheory.CovHt.BudgetPf

@@ -24,16 +24,6 @@ theorem IsMul.left_eq {a b c : Z ⟶ G.left} (h : IsMul G a b c) {s : Z ⟶ B} (
   obtain rfl : s = s' := ((Over.w x).symm.trans (congrArg (· ≫ G.hom) (hx.trans hx'.symm))).trans (Over.w x')
   rw [(Over.OverMorphism.ext (hx.trans hx'.symm) : x = x'), (Over.OverMorphism.ext (hy.trans hy'.symm) : y = y'), hc]
 
-theorem IsMul.pre {a b c : Z ⟶ G.left} (h : IsMul G a b c) (k : Z' ⟶ Z) : IsMul G (k ≫ a) (k ≫ b) (k ≫ c) := by
-  obtain ⟨s, x, y, rfl, rfl, rfl⟩ := h
-  let D : Over.mk (k ≫ s) ⟶ Over.mk s := Over.homMk k rfl
-  exact ⟨k ≫ s, D ≫ x, D ≫ y, rfl, rfl, congrArg (·.left) (MonObj.comp_mul D x y).symm⟩
-
-theorem IsMul.push (hφ : IsGrpPullback G' G f φ) {a b c : Z ⟶ G'.left} (h : IsMul G' a b c) :
-    IsMul G (a ≫ φ) (b ≫ φ) (c ≫ φ) := by
-  obtain ⟨s, x, y, rfl, rfl, rfl⟩ := h
-  exact ⟨s ≫ f, pushPt hφ.1.w x, pushPt hφ.1.w y, rfl, rfl, hφ.2 _ x y _ _ rfl rfl⟩
-
 theorem IsMul.pull (hφ : IsGrpPullback G' G f φ) {a b c : Z ⟶ G'.left} (hb : b ≫ G'.hom = a ≫ G'.hom)
     (hc : c ≫ G'.hom = a ≫ G'.hom) (h : IsMul G (a ≫ φ) (b ≫ φ) (c ≫ φ)) : IsMul G' a b c := by
   let x : Over.mk (a ≫ G'.hom) ⟶ G' := Over.homMk a rfl
@@ -52,13 +42,6 @@ theorem fst_alg : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (Dua
 
 end Eps
 
-section Comb
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-  {Xo : Moduli Dw l} {S : Type} [CommRing S]
-
-end Comb
-
 section Gt
 
 open GlobalTheory.TorusModel
@@ -76,13 +59,5 @@ theorem isZero_of_isAdd {T : Over (Spec (CommRingCat.of A))} {g : Out.GtPt D₀ 
   exact (mul_eq_left.1 e.symm).trans (val_one _).symm
 
 end Gt
-
-section ThetaShiftProofs
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-  {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
-  {K₁ : Type} [Field K₁] [Algebra c.F K₁] {b : O →+* K₁} {a : ArcIn Dw l β K₁ b} {χ : Sp (PowerSeries K₁) ⟶ Y.X}
-
-end ThetaShiftProofs
 
 end GlobalTheory.ArcQ.TanPart

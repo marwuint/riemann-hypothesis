@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.RangeShape
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvConjTMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShapeIntegratedOperatorRangesPolynomialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShapeIntegratedOperatorRangesPolynomial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTraceSumInnerOfRangeLe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolyCoeffVectorsLieInFiniteDimensionalSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolyCoeffVectorsLieInFiniteDimensionalSmooth
 
 noncomputable section
 
@@ -41,7 +41,7 @@ theorem stTr_of_range_steps (hF : UFin) (hS : RangeShape) (hK : RangeK) (hT : Tr
       exact ⟨Q, hQ.trans hP, hQ'⟩
     rwa [sum_inner_integral_eq (muK ε) (fun k : KG ε => ev (toMK k) P) (fun k : KG ε => π k) _ _ hB] at this
 
-theorem stTr : StTr := stTr_of_range_steps GlobalTheory.T.polyCoeff_vectors_lie_in_finiteDimensional_smooth GlobalTheory.T.shapeIntegratedOperator_ranges_polynomial rangeK GlobalTheory.OpTrace.hasTrace_sum_inner_of_range_le
+theorem stTr : StTr := stTr_of_range_steps _root_.GlobalTheory.PsCo.Pc3.uFin _root_.GlobalTheory.PsCo.Pc3.rangeShape rangeK GlobalTheory.OpTrace.hasTrace_sum_inner_of_range_le
 
 end GlobalTheory.PsCo.Pc3
 

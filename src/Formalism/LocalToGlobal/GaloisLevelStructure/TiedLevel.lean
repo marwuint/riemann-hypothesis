@@ -17,34 +17,6 @@ def paraPl (D : D7) (tup : D.what₂.Tup → Fin D.R.m → Host.HChar D.host.E) 
     Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) :=
   qPl D (tup (D.nd.mu i) j)
 
-def recQPl (D : D7) (i : D.nd.Loc) : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) :=
-  {v | ∃ w : PlE D.host, NG.OverPl w v ∧ (w ∈ D.nd.Q i ∨
-    w ∈ placesOver D.host.E (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde))}
-
-def QJoint (D : D7) (tup : D.what₂.Tup → Fin D.R.m → Host.HChar D.host.E) : Prop :=
-  ∀ (i : D.nd.Loc) (j : Fin D.R.m), j.1 + 1 = D.nd.j i → paraPl D tup i j = recQPl D i
-
-theorem recQPl_sub_badPl (D : D7) (i : D.nd.Loc) : recQPl D i ⊆ badPl D i := by
-  rintro v ⟨w, hw, h | h⟩
-  · exact ⟨w, hw, Or.inl h⟩
-  · exact ⟨w, hw, Or.inr (Or.inr h)⟩
-
-theorem paraPl_sub_badPl_of_joint (D : D7) (tup : D.what₂.Tup → Fin D.R.m → Host.HChar D.host.E) (hJ : QJoint D tup)
-    (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i) : paraPl D tup i j ⊆ badPl D i := by
-  rw [hJ i j hj]
-  exact recQPl_sub_badPl D i
-
-theorem paraPl_congr (D : D7) (tup : D.what₂.Tup → Fin D.R.m → Host.HChar D.host.E) (i i' : D.nd.Loc) (j : Fin D.R.m)
-    (e : D.nd.mu i = D.nd.mu i') : paraPl D tup i j = paraPl D tup i' j := by
-  simp only [paraPl, e]
-
-theorem qPl_eq_empty (D : D7) (χ : Host.HChar D.host.E)
-    (h : ∀ w : PlE D.host, (∀ k, w ∉ placesOver D.host.E (D.host.g k)) → χ.UnrAt w) : qPl D χ = ∅ := by
-  ext v
-  simp only [Set.mem_empty_iff_false, iff_false]
-  rintro ⟨hg, w, hw, hu⟩
-  refine hu (h w fun k hk => hg ⟨w, hw, k, hk⟩)
-
 def embT (D : D7) (t : D.what₂.Tau) : D.host.E →+* ℂ :=
   D.host.emb ((D.eTau t : D.R.Psi) : D.R.GG)
 

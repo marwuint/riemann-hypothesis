@@ -2,10 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLaws
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLaws
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DehomogeniseBinaryPolyHomogeneousEquivSlashStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DehomogeniseBinaryPolyHomogeneousEquivSlash
+
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups
 
@@ -106,7 +107,7 @@ theorem dict_hk : ∀ (N l w : ℕ) (α : Matrix (Fin 2) (Fin 2) ℤ) (ι : Type
     rw [cocP, incr hdet hF γ hex.choose (fun i => (hex.choose_spec i).choose)
       (fun i => (hex.choose_spec i).choose_spec) _ hI, map_sum]
     refine Finset.sum_congr rfl fun i _ => ?_
-    rw [(GlobalTheory.T.dehomogeniseBinaryPoly_homogeneous_equiv_slash w).1 _ _ ((hslhom _ w _ (hF.1 _)).sub (hF.1 _))]
+    rw [(_root_.GlobalTheory.KZ.H3.deh_homog_iso w).1 _ _ ((hslhom _ w _ (hF.1 _)).sub (hF.1 _))]
     rfl
 
 end GlobalTheory.KZ.DictHk

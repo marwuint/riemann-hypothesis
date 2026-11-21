@@ -1,5 +1,12 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SeparatingAlgebras.StGlob
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalOperatorActsByLocalComponentScalarStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalOperatorActsByLocalComponentScalar
+import Development.AbelianVarietyTheory.Statements.EllipticCurveLevels.HasLevel
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RegPolOfRepOf
+import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.FinrankAdjoinSqrtNegOne
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.ArthurClozelStrongTC
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsComplementaryProductOfIsCuspidal
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParameterSphericalProductSpehQuotients
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGL
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
@@ -38,7 +45,7 @@ theorem UpperTheory.Gal.Gen.globOp_pf :
       rw [hzf]
       exact hact σ _ hz.choose_spec v hv
   obtain ⟨hKo, hKc⟩ := GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w a
-  obtain ⟨h', hsup, hU⟩ := GlobalTheory.T.localOperator_acts_by_localComponentScalar E a w hw (GlobalTheory.LFun.KGL w a) hKc hKo h zf hop
+  obtain ⟨h', hsup, hU⟩ := _root_.GlobalTheory.Cong.opOf_locU_eq_smul E a w hw (GlobalTheory.LFun.KGL w a) hKc hKo h zf hop
   obtain ⟨e, he⟩ := GlobalTheory.locU_equiv_GL E a w hw
   have hinj : ∀ g ∈ locU a w, ∀ g' ∈ locU a w, cLoc w g = cLoc w g' → g = g' := by
     intro g hg g' hg' hgg

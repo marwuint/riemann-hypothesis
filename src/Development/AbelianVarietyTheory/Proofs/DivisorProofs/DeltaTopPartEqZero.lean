@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsFlatLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechAndTotalDifferentialAdditiveSquareZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTotalCochainOfDegreeSuccOfDifferentialsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTotalCochainOfDegreeSuccOfDifferentials
 
 set_option autoImplicit false
 
@@ -59,7 +59,7 @@ theorem hypZero_of_cechZero : ∀ {ι : Type} [LinearOrder ι] {E : Type} [AddCo
         · obtain rfl : q' = q := by omega
           exact hy.2.1 s
         · rw [hy.2.2 s h]; exact (T q' s).zero_mem
-      have hDy : InTot T (n + 1) (Dtot d y) := (GlobalTheory.T.isTotalCochainOfDegree_succ_of_differentials d T hmono n y hyT).2 hdT
+      have hDy : InTot T (n + 1) (Dtot d y) := (_root_.GlobalTheory.DI.inTot_delta_Dtot d T hmono n y hyT).2 hdT
       have h1 : InTot T (n + 1) (c - Dtot d y) := by
         refine ⟨?_, fun q' s hs => (T q' s).sub_mem (hc.2.1 q' s hs) (hDy.2.1 q' s hs),
           fun s hs => ?_⟩

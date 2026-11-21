@@ -35,22 +35,4 @@ theorem res_pow_g (n : ℕ) (j j' : PUnit → B.ι) {W : Z.Opens} (h : W ≤ (lb
       (inf_le_right.trans (LB.wchart_le B (fun _ => 𝟙 Z) j' a))) (pullU (𝟙 Z) _ (B.g (j a) (j' a))) ^ (n : ℤ)
   rw [e, zpow_natCast, map_pow, res_res]
 
-variable (B) in
-
-def isoOne : LB.Iso B (lbPow B 1) :=
-  ⟨fun p => res (inf_le_inf_right _ (pow_le 1 p.1)) (B.g (p.1 PUnit.unit) p.2)⟩
-
-variable (B) in
-
-def isoSucc (n : ℕ) : LB.Iso (tens (lbPow B n) B) (lbPow B (n + 1)) :=
-  ⟨fun p => res (inf_le_inf (pow_le (n + 1) p.1) (inf_le_left.trans (pow_le n p.2.1)))
-      (B.g (p.1 PUnit.unit) (p.2.1 PUnit.unit)) ^ n *
-    res (inf_le_inf (pow_le (n + 1) p.1) inf_le_right) (B.g (p.1 PUnit.unit) p.2.2)⟩
-
-theorem ev_res_pow {k : Type} [CommRing k] {q : Z ⟶ Sp k} {σ : k →+* ℂ} {U W : Z.Opens} {y : CxPts q σ} (h : W ≤ U)
-    (hy : y ∈ ptsIn q σ W) (u : Γ(Z, U)ˣ) (n : ℕ) :
-    ev q σ W (res h u ^ n).val y = ev q σ U u.val y ^ (n : ℤ) := by
-  rw [zpow_natCast, ← ev_res h hy, ev_eq hy, ev_eq hy, Units.val_pow_eq_pow_val, map_pow]
-  rfl
-
 end GlobalTheory.CuspDim.IsoPow

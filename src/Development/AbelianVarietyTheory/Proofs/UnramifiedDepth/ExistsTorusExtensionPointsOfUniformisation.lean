@@ -8,10 +8,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.QRelExistsUniqueMulNat
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsStruct
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ThickeningQuotientImageOneIffExistsTorusImageStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ThickeningQuotientImageOneIffExistsTorusImage
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AbelianPartLiftSquareZeroUnitPointStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ThickMapCompFstG
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TorusPointRelationSuccThickeningStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TorusPointRelationSuccThickening
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AppTopCharUnitOfTorusEndOf
 
 set_option autoImplicit false
@@ -41,7 +41,7 @@ private theorem qRel_mono {k l : ℕ} (hkl : k ≤ l) {z y} (h : QRel (U.gt k) S
 private theorem iRel_mono {k l : ℕ} (hkl : k ≤ l) {χ z} (h : IRel (U.gt k) S χ z) : IRel (U.gt l) S χ z := by
   induction l, hkl using Nat.le_induction with
   | base => exact h
-  | succ n _ ih => exact GlobalTheory.T.torus_point_relation_succ_thickening R I D A G U n S χ z ih
+  | succ n _ ih => exact _root_.GlobalTheory.ChF.iRel_succ R I D A G U n S χ z ih
 
 private def qFun (h : ∃ k, Kills I k S) (z : sp (R₀ := R) S ⟶ G) : sp (R₀ := R) S ⟶ D.toPre.P.A :=
   (((qRel_existsUnique_mul_nat R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).1 z).exists.choose
@@ -87,7 +87,7 @@ private def ptExt {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.De
     exact ((GlobalTheory.irel_points R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).2.2 _ _ _
       (iFun_spec U S h χ) (e' ▸ iFun_spec U S h χ')
   exact S _ _ h z := by
-    have key := GlobalTheory.T.thickeningQuotientImage_one_iff_exists_torusImage R I _ h.choose G (U.gt h.choose) S h.choose_spec z
+    have key := _root_.GlobalTheory.ChF.qRel_one_iff_exists_iRel R I _ h.choose G (U.gt h.choose) S h.choose_spec z
     constructor
     · intro e
       have e' : qFun U S h z = 1 := e

@@ -1,7 +1,7 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HasCharSub
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantAntiHomomorphismStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CommutingLocallyNilpotentCommonKernelStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CommutingLocallyNilpotentCommonKernel
 
 noncomputable section
 
@@ -70,7 +70,7 @@ theorem exists_raised : StepChar → TensDecomp → ∀ {m : ℕ} (M : GMod m) (
     have h1 := hc Y
     rw [sub_neg_eq_add] at h1
     simp only [D, h1, ha Y, smul_sub, Finset.sum_sub_distrib, Finset.sum_smul, mul_smul]
-  obtain ⟨w, hw, hw0, hwD⟩ := GlobalTheory.T.commuting_locally_nilpotent_common_kernel _ hI D hcomm hst hnil (m + 1) _ hD
+  obtain ⟨w, hw, hw0, hwD⟩ := _root_.GlobalTheory.CompanionTheory.RgTransport.exists_joint_kernel_polynomial_family _ hI D hcomm hst hnil (m + 1) _ hD
   obtain ⟨x, rfl⟩ := hw
   refine ⟨r, f x, ⟨_, rfl⟩, hw0, fun Y => ?_⟩
   have h2 := hwD Y

@@ -65,9 +65,6 @@ variable (G : T.TeichIso)
 
 @[simp] theorem symm_g (c : L) : G.symm.g c = G.g.symm c := rfl
 
-theorem ψ_teich (c : L) : G.ψ (T.teich c) = T.teich (G.g c) :=
-  T.map_teich G.ψ.toRingHom G.g.toRingHom (fun x => G.red_ψ x) c
-
 theorem coeff_map (x : Γ) (n : ℕ) : T.coeff (G.ψ x) n = G.g (T.coeff x n) := by
   have hπ : G.ψ.toRingHom T.π = T.π * 1 := by rw [mul_one]; exact G.ψ_π
   have h1 := T.map_partialSum G.ψ.toRingHom G.g.toRingHom (fun y => G.red_ψ y) hπ x (n + 1)
@@ -83,17 +80,6 @@ theorem zcoeff_map (x : Γ) (n : ℤ) : T.zcoeff (G.ψ x) n = G.g (T.zcoeff x n)
   split_ifs
   · exact G.coeff_map x _
   · exact (map_zero G.g).symm
-
-theorem norm_zcoeff_map (x : Γ) (n : ℤ) : ‖T.zcoeff (G.ψ x) n‖ = ‖T.zcoeff x n‖ := by
-  rw [zcoeff_map, norm_g]
-
-theorem convergesAt_zcoeff_map_iff {x : Γ} {ρ : ℝ} :
-    ConvergesAt (T.zcoeff (G.ψ x)) ρ ↔ ConvergesAt (T.zcoeff x) ρ := by
-  simp only [ConvergesAt, G.norm_zcoeff_map]
-
-theorem gaussNorm_zcoeff_map (x : Γ) (ρ : ℝ) :
-    gaussNorm (T.zcoeff (G.ψ x)) ρ = gaussNorm (T.zcoeff x) ρ := by
-  simp only [gaussNorm, G.norm_zcoeff_map]
 
 theorem isUnit_map_π : IsUnit ((algebraMap Γ T.B).comp G.ψ.toRingHom T.π) := by
   rw [RingHom.comp_apply]
@@ -160,9 +146,6 @@ theorem toB_mem_Econ_iff {ρ : Set.Ioo (0 : ℝ) 1} {b : T.B} :
 theorem toB_mem_Edag_iff {b : T.B} : G.toB b ∈ T.Edag ↔ b ∈ T.Edag := by
   simp only [mem_Edag, G.toB_mem_Econ_iff]
 
-theorem ordB_toB (b : T.B) : T.ordB (G.toB b) = T.ordB b := by
-  simp only [ordB, coeffB_toB, ne_eq, EmbeddingLike.map_eq_zero_iff]
-
 def edagEquiv : T.Edag ≃+* T.Edag where
   toFun b := ⟨G.toB (b : T.B), G.toB_mem_Edag_iff.2 b.2⟩
   invFun b := ⟨G.toB.symm (b : T.B),
@@ -200,14 +183,6 @@ variable {ρ0}
 theorem extMap_coe (b : T.Econ ρ0) :
     G.extMap ρ0 (b : T.RobbaExt ρ0) = ((G.econMap ρ0 b : T.Econ ρ0) : T.RobbaExt ρ0) :=
   Completion.mapRingHom_coe _ b
-
-theorem continuous_extMap : Continuous (G.extMap ρ0) := Completion.continuous_map
-
-theorem extNorm_extMap (ρ : Set.Ioc (0 : ℝ) ρ0) (x : T.RobbaExt ρ0) :
-    T.extNorm ρ0 ρ (G.extMap ρ0 x) = T.extNorm ρ0 ρ x :=
-  Completion.induction_on x
-    (isClosed_eq ((T.continuous_extNorm ρ).comp G.continuous_extMap) (T.continuous_extNorm ρ))
-    fun b => by rw [extMap_coe, extNorm_coe, extNorm_coe, coe_econMap, gaussNorm_coeffB_toB]
 
 theorem res_extMap {ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) (x : T.RobbaExt ρ0) :
     T.res h (G.extMap ρ0 x) = G.extMap ρ1 (T.res h x) :=
@@ -252,9 +227,6 @@ theorem tildeMap_eq_self (h : ∀ x, G.ψ x = x) (x : T.RobbaTilde) : G.tildeMap
   obtain ⟨σ, y, rfl⟩ := T.exists_ofRad x
   rw [tildeMap_ofRad, G.extMap_eq_self h]
 
-theorem tildeMap_refl (x : T.RobbaTilde) : (refl : T.TeichIso).tildeMap x = x :=
-  tildeMap_eq_self _ (fun _ => rfl) x
-
 theorem tildeMap_symm_tildeMap (x : T.RobbaTilde) : G.symm.tildeMap (G.tildeMap x) = x := by
   rw [← tildeMap_comp]
   exact tildeMap_eq_self _ (fun y => by simp) x
@@ -269,56 +241,7 @@ def tildeEquiv : T.RobbaTilde ≃+* T.RobbaTilde :=
 
 theorem tildeEquiv_apply (x : T.RobbaTilde) : G.tildeEquiv x = G.tildeMap x := rfl
 
-theorem tildeMap_edagToTilde (b : T.Edag) :
-    G.tildeMap (T.edagToTilde b) = T.edagToTilde (G.edagEquiv b) := by
-  obtain ⟨σ, hσ⟩ := T.mem_Edag.1 b.2
-  have hb : T.edagToTilde b = T.econToTilde σ ⟨b, hσ⟩ := T.edagFun_eq b hσ
-  rw [hb]
-  change _ = T.edagFun (G.edagEquiv b)
-  rw [T.edagFun_eq (G.edagEquiv b) (G.toB_mem_Econ_iff.2 hσ)]
-  simp only [econToTilde, RingHom.comp_apply]
-  rw [tildeMap_ofRad]
-  congr 1
-  exact G.extMap_coe ⟨b, hσ⟩
-
-theorem tildeMap_econToTilde (σ : Set.Ioo (0 : ℝ) 1) (b : T.Econ σ) :
-    G.tildeMap (T.econToTilde σ b) = T.econToTilde σ (G.econMap σ b) := by
-  simp only [econToTilde, RingHom.comp_apply]
-  rw [tildeMap_ofRad]
-  congr 1
-  exact G.extMap_coe b
-
-theorem tildeOrd_map [CompleteSpace L] (x : T.RobbaTildeˣ) :
-    T.tildeOrd (Units.map (G.tildeMap : T.RobbaTilde →* T.RobbaTilde) x) = T.tildeOrd x := by
-  rw [T.tildeOrd_eq (b := G.edagEquiv (T.unitPre x)) (by
-    rw [← G.tildeMap_edagToTilde, T.unitPre_spec]; rfl), G.edagEquiv_apply, G.ordB_toB]
-  rfl
-
 variable (F : T.TeichFrob)
-
-theorem toB_frob_comm (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (b : T.B) :
-    G.toB (F.toB b) = F.toB (G.toB b) := by
-  have : (G.toB : T.B →+* T.B).comp (F.toB : T.B →+* T.B) =
-      (F.toB : T.B →+* T.B).comp (G.toB : T.B →+* T.B) :=
-    IsLocalization.ringHom_ext (Submonoid.powers T.π) (RingHom.ext fun x => by
-      simp [TeichIso.toB_algebraMap, TeichFrob.toB_algebraMap, h])
-  exact congrArg (fun f : T.B →+* T.B => f b) this
-
-theorem extMap_extFrob (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (σ : Set.Ioo (0 : ℝ) 1)
-    (x : T.RobbaExt σ) :
-    G.extMap (F.powRadius σ) (F.extFrob σ x) = F.extFrob σ (G.extMap σ x) :=
-  Completion.induction_on x
-    (isClosed_eq (Completion.continuous_map.comp Completion.continuous_map)
-      (Completion.continuous_map.comp Completion.continuous_map))
-    fun b => by
-      rw [TeichFrob.extFrob_coe, extMap_coe, extMap_coe, TeichFrob.extFrob_coe]
-      congr 1
-      exact Subtype.ext (G.toB_frob_comm F h (b : T.B))
-
-theorem tildeMap_tildeFrob (h : ∀ x, G.ψ (F.φ x) = F.φ (G.ψ x)) (x : T.RobbaTilde) :
-    G.tildeMap (F.tildeFrob x) = F.tildeFrob (G.tildeMap x) := by
-  obtain ⟨σ, y, rfl⟩ := T.exists_ofRad x
-  rw [F.tildeFrob_ofRad, tildeMap_ofRad, tildeMap_ofRad, F.tildeFrob_ofRad, G.extMap_extFrob F h]
 
 end TeichIso
 

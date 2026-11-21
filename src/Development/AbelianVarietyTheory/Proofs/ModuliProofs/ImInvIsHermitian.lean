@@ -213,14 +213,6 @@ theorem per_lattice (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
     infer_instance
   · rw [hrange, Submodule.span_span_of_tower, b.span_eq]
 
-def turn (h : ℕ) : (Fin h ⊕ Fin h → ℤ) ≃ₗ[ℤ] (Fin h ⊕ Fin h → ℤ) where
-  toFun x := Sum.elim (fun i => -x (.inr i)) (fun i => x (.inl i))
-  invFun x := Sum.elim (fun i => x (.inr i)) (fun i => -x (.inl i))
-  map_add' x y := by ext (i | i) <;> simp [add_comm]
-  map_smul' c x := by ext (i | i) <;> simp
-  left_inv x := by ext (i | i) <;> simp
-  right_inv x := by ext (i | i) <;> simp
-
 theorem exists_form (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
     ∃ Ef : LinearMap.BilinForm ℤ (LinearMap.range (per τ)),
       (∀ a b : LinearMap.range (per τ), (Ef a b : ℝ) = (hermForm (imInv τ) a b).im) ∧ Function.Bijective Ef := by

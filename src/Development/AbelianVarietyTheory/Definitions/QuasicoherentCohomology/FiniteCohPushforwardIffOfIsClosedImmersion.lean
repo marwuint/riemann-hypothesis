@@ -73,12 +73,6 @@ theorem of_linearEquiv [Algebra k Γ(Y, ⊤)] {H : Y.Modules} (h : FiniteCoh k F
 theorem of_iso (h : FiniteCoh k F) (e : F ≅ G) : FiniteCoh k G :=
   h.of_linearEquiv fun n ↦ cohOn.mapIso k ⊤ n e
 
-theorem of_subsingleton (h : ∀ n, Subsingleton (coh F n)) : FiniteCoh k F :=
-  ⟨fun n ↦ have := h n; inferInstance, 0, fun n _ ↦ h n⟩
-
-theorem of_isZero (h : IsZero F) : FiniteCoh k F :=
-  of_subsingleton fun n ↦ cohOn.subsingleton_of_isZero h ⊤ n
-
 theorem of_acyclic (h₀ : Module.Finite k (coh F 0)) (h : ∀ n, 0 < n → Subsingleton (coh F n)) :
     FiniteCoh k F where
   finite
@@ -86,23 +80,7 @@ theorem of_acyclic (h₀ : Module.Finite k (coh F 0)) (h : ∀ n, 0 < n → Subs
     | n + 1 => have := h (n + 1) n.succ_pos; inferInstance
   eventually_zero := ⟨1, h⟩
 
-theorem finite_support (h : FiniteCoh k F) :
-    (Function.support fun n ↦ (-1 : ℤ) ^ n * hdim k F n).Finite := by
-  obtain ⟨N, hN⟩ := h.eventually_zero
-  refine (Finset.range N).finite_toSet.subset fun n hn ↦ ?_
-  by_contra h'
-  have := hN n (by simpa using h')
-  exact hn (by simp [hdim_eq_zero_of_subsingleton])
-
 variable {S : ShortComplex X.Modules}
-
-theorem of_shortExact₂ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₃ : FiniteCoh k S.X₃) :
-    FiniteCoh k S.X₂ where
-  finite := cohOn.forall_finite₂ k hS ⊤ h₁.finite h₃.finite
-  eventually_zero :=
-    have ⟨N₁, h₁⟩ := h₁.eventually_zero
-    have ⟨N₃, h₃⟩ := h₃.eventually_zero
-    ⟨max N₁ N₃, fun n hn ↦ cohOn.subsingleton₂ hS ⊤ n (h₁ n (by omega)) (h₃ n (by omega))⟩
 
 theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₂ : FiniteCoh k S.X₂) :
     FiniteCoh k S.X₃ where
@@ -111,19 +89,6 @@ theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₂ :
     have ⟨N₁, h₁⟩ := h₁.eventually_zero
     have ⟨N₂, h₂⟩ := h₂.eventually_zero
     ⟨max N₁ N₂, fun n hn ↦ cohOn.subsingleton₃ hS ⊤ n (h₂ n (by omega)) (h₁ (n + 1) (by omega))⟩
-
-theorem of_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCoh k S.X₂) (h₃ : FiniteCoh k S.X₃) :
-    FiniteCoh k S.X₁ where
-  finite := cohOn.forall_finite₁ k hS ⊤ h₂.finite h₃.finite
-  eventually_zero := by
-    obtain ⟨N₂, h₂⟩ := h₂.eventually_zero
-    obtain ⟨N₃, h₃⟩ := h₃.eventually_zero
-    refine ⟨max N₂ N₃ + 1, fun n hn ↦ ?_⟩
-    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
-    exact cohOn.subsingleton₁ hS ⊤ m (h₃ m (by omega)) (h₂ (m + 1) (by omega))
-
-theorem biprod (hF : FiniteCoh k F) (hG : FiniteCoh k G) : FiniteCoh k (F ⊞ G) :=
-  of_shortExact₂ (ShortComplex.Splitting.ofHasBinaryBiproduct F G).shortExact hF hG
 
 end FiniteCoh
 
@@ -135,46 +100,7 @@ theorem chi_shortExact (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₃ : F
     chi k S.X₂ = chi k S.X₁ + chi k S.X₃ :=
   finsum_neg_one_pow_hdim_eq_add k hS h₁.finite h₃.finite h₁.eventually_zero h₃.eventually_zero
 
-theorem chi_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₂ : FiniteCoh k S.X₂) :
-    chi k S.X₃ = chi k S.X₂ - chi k S.X₁ := by
-  rw [chi_shortExact hS h₁ (h₁.of_shortExact₃ hS h₂)]; ring
-
-theorem chi_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCoh k S.X₂) (h₃ : FiniteCoh k S.X₃) :
-    chi k S.X₁ = chi k S.X₂ - chi k S.X₃ := by
-  rw [chi_shortExact hS (h₂.of_shortExact₁ hS h₃) h₃]; ring
-
 end ShortExact
-
-theorem chi_biprod (hF : FiniteCoh k F) (hG : FiniteCoh k G) :
-    chi k (F ⊞ G) = chi k F + chi k G :=
-  have := chi_shortExact (ShortComplex.Splitting.ofHasBinaryBiproduct F G).shortExact hF hG
-  this
-
-section Pi
-
-variable {ι : Type*} [Fintype ι] {E : ι → X.Modules}
-
-theorem exists_forall_subsingleton_coh (h : ∀ i, FiniteCoh k (E i)) :
-    ∃ N, ∀ i n, N ≤ n → Subsingleton (coh (E i) n) := by
-  choose N hN using fun i ↦ (h i).eventually_zero
-  exact ⟨Finset.univ.sup N, fun i n hn ↦ hN i n ((Finset.le_sup (Finset.mem_univ i)).trans hn)⟩
-
-theorem FiniteCoh.pi (h : ∀ i, FiniteCoh k (E i)) : FiniteCoh k (∏ᶜ E) where
-  finite n := have := fun i ↦ (h i).finite n; cohOn.finite_pi k E ⊤ n
-  eventually_zero :=
-    have ⟨N, hN⟩ := exists_forall_subsingleton_coh h
-    ⟨N, fun n hn ↦ have := fun i ↦ hN i n hn; (cohOn.piEquiv k ⊤ n E).injective.subsingleton⟩
-
-theorem chi_pi (h : ∀ i, FiniteCoh k (E i)) : chi k (∏ᶜ E) = ∑ i, chi k (E i) := by
-  obtain ⟨N, hN⟩ := exists_forall_subsingleton_coh h
-  rw [chi_eq_sum_range k N fun n hn ↦
-      have := fun i ↦ hN i n hn; (cohOn.piEquiv k ⊤ n E).injective.subsingleton,
-    Finset.sum_congr rfl fun i _ ↦ chi_eq_sum_range k N (hN i), Finset.sum_comm]
-  refine Finset.sum_congr rfl fun n _ ↦ ?_
-  have := fun i ↦ (h i).finite n
-  rw [hdim_pi, Nat.cast_sum, Finset.mul_sum]
-
-end Pi
 
 variable (k F) in
 
@@ -262,10 +188,6 @@ theorem chi_pushforward_of_bijective (h : ∀ n, Function.Bijective (cohPushMap 
 include hf
 
 variable (H)
-
-theorem finiteCoh_pushforward_iff_of_isClosedImmersion [IsClosedImmersion f] :
-    FiniteCoh k ((Scheme.Modules.pushforward f).obj H) ↔ FiniteCoh k H :=
-  finiteCoh_pushforward_iff_of_bijective hf (cohPushMap_bijective_of_isClosedImmersion k f hf H ⊤)
 
 theorem chi_pushforward_of_isClosedImmersion [IsClosedImmersion f] :
     chi k ((Scheme.Modules.pushforward f).obj H) = chi k H :=
@@ -479,22 +401,11 @@ theorem twist (h : FiniteCohTwists k F) (hM : M.IsLB) : FiniteCohTwists k (twist
   fun N hN ↦ (nonempty_twist_twist_iso_of_cls_eq F hM hN (isLB_tens hM hN) rfl).elim
     fun e ↦ (h _ (isLB_tens hM hN)).of_iso e.symm
 
-theorem of_isZero (h : IsZero F) : FiniteCohTwists k F :=
-  fun _ hM ↦ .of_isZero ((Twist.isZero_twist_iff hM).2 h)
-
 variable {S : ShortComplex X.Modules}
-
-theorem of_shortExact₂ (hS : S.ShortExact) (h₁ : FiniteCohTwists k S.X₁)
-    (h₃ : FiniteCohTwists k S.X₃) : FiniteCohTwists k S.X₂ :=
-  fun M hM ↦ FiniteCoh.of_shortExact₂ (Twist.shortExact_map hM hS) (h₁ M hM) (h₃ M hM)
 
 theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCohTwists k S.X₁)
     (h₂ : FiniteCohTwists k S.X₂) : FiniteCohTwists k S.X₃ :=
   fun M hM ↦ FiniteCoh.of_shortExact₃ (Twist.shortExact_map hM hS) (h₁ M hM) (h₂ M hM)
-
-theorem of_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCohTwists k S.X₂)
-    (h₃ : FiniteCohTwists k S.X₃) : FiniteCohTwists k S.X₁ :=
-  fun M hM ↦ FiniteCoh.of_shortExact₁ (Twist.shortExact_map hM hS) (h₂ M hM) (h₃ M hM)
 
 end FiniteCohTwists
 
@@ -547,11 +458,6 @@ theorem chiPic_pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent] :
   exact chi_twist_pushforward_of_isAffineHom hf H hM
 
 variable {H}
-
-theorem FiniteCohTwists.pushforward_of_isClosedImmersion [IsClosedImmersion f]
-    (h : FiniteCohTwists k H) : FiniteCohTwists k ((Scheme.Modules.pushforward f).obj H) :=
-  fun M hM ↦ ((finiteCoh_pushforward_iff_of_isClosedImmersion hf _).2
-    (h _ (pull_isLB hM f))).of_iso (Twist.projIso M f H)
 
 theorem FiniteCohTwists.pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent]
     (h : FiniteCohTwists k H) : FiniteCohTwists k ((Scheme.Modules.pushforward f).obj H) :=
@@ -744,30 +650,6 @@ theorem interNum_const_eq_sum (hM : M.IsLB) (d : ℕ) :
   rw [e]
   exact Finset.sum_congr rfl fun j _ ↦ by ring
 
-variable (F) in
-
-theorem interNum_lbZPow_of_polynomial (hM : M.IsLB) {d : ℕ} (p : Polynomial ℚ)
-    (hp : p.natDegree ≤ d) (h : ∀ n : ℤ, (chi k (twistZ F M n) : ℚ) = p.eval (n : ℚ))
-    (a : Fin d → ℤ) :
-    (interNum k F (fun i ↦ lbZPow M (a i)) : ℚ) = d.factorial * p.coeff d * ∏ i, (a i : ℚ) := by
-  have e₁ := congrFun (multiDiff_map (Int.castAddHom ℚ) a fun n ↦ chi k (twistZ F M n)) 0
-  have e₂ := congrFun (multiDiff_comap (Int.castAddHom ℚ) a fun t : ℚ ↦ p.eval t) 0
-  have e₃ : (Int.castAddHom ℚ ∘ fun n ↦ chi k (twistZ F M n)) =
-    (fun t : ℚ ↦ p.eval t) ∘ Int.castAddHom ℚ := funext h
-  rw [interNum_lbZPow_eq_multiDiff k F hM]
-  rw [e₃, e₂, Function.comp_apply, multiDiff_polynomial_eval _ p hp] at e₁
-  exact e₁.symm
-
-variable (F) in
-
-theorem interNum_const_of_polynomial (hM : M.IsLB) {d : ℕ} (p : Polynomial ℚ)
-    (hp : p.natDegree ≤ d) (h : ∀ n : ℤ, (chi k (twistZ F M n) : ℚ) = p.eval (n : ℚ)) :
-    (interNum k F (fun _ : Fin d ↦ M) : ℚ) = d.factorial * p.coeff d := by
-  rw [interNum_congr_cls k F (fun _ ↦ hM) (fun _ ↦ Twist.isLB_lbZPow hM 1)
-    fun _ ↦ by rw [cls_lbZPow hM, one_zsmul],
-    interNum_lbZPow_of_polynomial k F hM p hp h fun _ ↦ 1]
-  simp
-
 @[simp] theorem topSelf_zero (M : LB X) : topSelfIntersection k M 0 = chi k (structureModule X) :=
   interNum_of_isEmpty k _ _
 
@@ -814,11 +696,6 @@ theorem interNum_shortExact₃ (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
     (h₁ : FiniteCohTwists k S.X₁) (h₂ : FiniteCohTwists k S.X₂) :
     interNum k S.X₃ L = interNum k S.X₂ L - interNum k S.X₁ L := by
   rw [interNum_shortExact hS hL h₁ (h₁.of_shortExact₃ hS h₂)]; ring
-
-theorem interNum_shortExact₁ (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
-    (h₂ : FiniteCohTwists k S.X₂) (h₃ : FiniteCohTwists k S.X₃) :
-    interNum k S.X₁ L = interNum k S.X₂ L - interNum k S.X₃ L := by
-  rw [interNum_shortExact hS hL (h₂.of_shortExact₁ hS h₃) h₃]; ring
 
 end ShortExact
 
@@ -870,55 +747,5 @@ theorem interNumOn_comp [IsAffineHom f] (g : Y ⟶ Z) [QuasiCompact g] [QuasiSep
 end Push
 
 end Inter
-
-section FiniteAlgebra
-
-variable (k : Type v) [Field k] (A : CommRingCat.{0}) [Algebra k A] [Algebra k Γ(Spec A, ⊤)]
-  [IsScalarTower k A Γ(Spec A, ⊤)]
-
-theorem chi_structureModule_Spec : chi k (structureModule (Spec A)) = Module.finrank k A := by
-  rw [chi_eq_hdim_zero k fun _ hn ↦ coh.subsingleton_of_isAffine _ hn, hdim_def,
-    ((coh.zeroUnitSpecEquiv A).restrictScalars k).finrank_eq]
-
-omit [Algebra k Γ(Spec A, ⊤)] [IsScalarTower k A Γ(Spec A, ⊤)] in
-
-abbrev algebraΓSpecOf : Algebra k Γ(Spec A, ⊤) :=
-  ((algebraMap A Γ(Spec A, ⊤)).comp (algebraMap k A)).toAlgebra
-
-omit [Algebra k Γ(Spec A, ⊤)] [IsScalarTower k A Γ(Spec A, ⊤)] in
-
-theorem isScalarTower_algebraΓSpecOf :
-    letI := algebraΓSpecOf k A
-    IsScalarTower k A Γ(Spec A, ⊤) :=
-  letI := algebraΓSpecOf k A
-  .of_algebraMap_eq fun _ ↦ rfl
-
-end FiniteAlgebra
-
-section Examples
-
-example : letI := algebraΓSpecOf ℝ (.of (Polynomial ℝ))
-    interNumOn ℝ (Spec.map (CommRingCat.ofHom (Polynomial.aeval (R := ℝ) Complex.I).toRingHom))
-      (![] : Fin 0 → LB (Spec (.of (Polynomial ℝ)))) = 2 := by
-  letI := algebraΓSpecOf ℝ (.of (Polynomial ℝ))
-  letI := algebraΓSpecOf ℝ (.of ℂ)
-  have := isScalarTower_algebraΓSpecOf ℝ (.of ℂ)
-  rw [interNumOn_eq_interNum_pull ?_ isEmptyElim, interNum_of_isEmpty, chi_structureModule_Spec]
-  · exact congrArg _ Complex.finrank_real_complex
-  · intro r
-    have := ConcreteCategory.congr_hom (Scheme.ΓSpecIso_inv_naturality
-      (CommRingCat.ofHom (Polynomial.aeval (R := ℝ) Complex.I).toRingHom)) (algebraMap ℝ _ r)
-    refine this.symm.trans ?_
-    exact congrArg (Scheme.ΓSpecIso (.of ℂ)).inv ((Polynomial.aeval Complex.I).commutes r)
-
-example {X : Scheme.{0}} (k : Type) [Field k] [Algebra k Γ(X, ⊤)] (F : X.Modules) {M : LB X}
-    (hM : M.IsLB) (a b : ℤ) (h : ∀ n : ℤ, chi k (twistZ F M n) = a * n + b) :
-    interNum k F ![M] = a ∧ interNum k F (fun _ : Fin 1 ↦ lbZPow M (-1)) = -a := by
-  constructor
-  · rw [interNum_one k F hM, chi_congr k (Twist.twistZZeroIso F hM), h, h]; ring
-  · rw [interNum_lbZPow_eq_multiDiff k F hM, multiDiff_const]
-    simp [bwdDiff_apply, h]
-
-end Examples
 
 end GlobalTheory

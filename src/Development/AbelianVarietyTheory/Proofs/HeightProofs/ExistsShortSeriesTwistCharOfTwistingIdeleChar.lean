@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.Hilbert90FiniteIdelesCongruenceStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.Hilbert90FiniteIdelesCongruence
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.PowClassNumberIntegral
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsXiOKNotTwistCond
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGeneratingCharacters
@@ -93,7 +93,7 @@ theorem cong_div {D : D7} (N : ℕ) (y : (AfE D)ˣ) (hu : IntUnit y) (hy : CongO
 
 theorem exists_xiOK_xiTilde : ∀ (D : D7) (p : ℕ) (de : (AfE D)ˣ →* ℂˣ), (p = D.host.pde ∨ p = D.host.pde') → XiRec D p de → ∃ xi, XiOK D p xi ∧ XiTilde xi de := by
   intro D p de hp h
-  obtain ⟨h90, hfix, hcong⟩ := GlobalTheory.T.finiteIdeles_normOne_eq_div_conj_of_congOne D
+  obtain ⟨h90, hfix, hcong⟩ := _root_.GlobalTheory.IdeleNinety.finiteIdeles_normOne_eq_div_conj_with_congruence D
   have hpp : p.Prime ∧ p % 15 = 1 := by
     rcases hp with rfl | rfl
     · exact ⟨D.host.pde_prime, D.host.pde_mod.1⟩

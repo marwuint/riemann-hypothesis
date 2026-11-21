@@ -13,38 +13,14 @@ variable {R : Type*} [CommRing R] {τ : Type*} {ι : Type*}
 def PTAgree (k : ℕ) (A A' : ι → MvPowerSeries τ R) : Prop :=
   ∀ i (e : τ →₀ ℕ), e.degree < k → coeff e (A i) = coeff e (A' i)
 
-theorem PTAgree.mono {k l : ℕ} {A A' : ι → MvPowerSeries τ R} (h : PTAgree k A A') (hl : l ≤ k) :
-    PTAgree l A A' := fun i e he => h i e (lt_of_lt_of_le he hl)
-
 theorem PTAgree.trans {k : ℕ} {A B D : ι → MvPowerSeries τ R} (h : PTAgree k A B)
     (h' : PTAgree k B D) : PTAgree k A D := fun i e he => (h i e he).trans (h' i e he)
 
 theorem PTAgree.symm {k : ℕ} {A B : ι → MvPowerSeries τ R} (h : PTAgree k A B) :
     PTAgree k B A := fun i e he => (h i e he).symm
 
-theorem ptAgree_zero (A A' : ι → MvPowerSeries τ R) : PTAgree 0 A A' :=
-  fun _ _ he => absurd he (Nat.not_lt_zero _)
-
 theorem PTAgree.eq {A A' : ι → MvPowerSeries τ R} (h : ∀ k, PTAgree k A A') : A = A' :=
   funext fun i => MvPowerSeries.ext fun e => h (e.degree + 1) i e (Nat.lt_succ_self _)
-
-section Fixed
-
-variable (T : (ι → MvPowerSeries τ R) → (ι → MvPowerSeries τ R))
-  (P : (ι → MvPowerSeries τ R) → Prop)
-
-theorem pt_unique
-    (hT : ∀ k x y, P x → P y → PTAgree k x y → PTAgree (k + 1) (T x) (T y))
-    {x y : ι → MvPowerSeries τ R} (hx : P x) (hy : P y) (hTx : T x = x) (hTy : T y = y) :
-    x = y := by
-  refine ReciprocityTheory.ChartRestriction.G.Sh.PTAgree.eq fun k => ?_
-  induction k with
-  | zero => exact ptAgree_zero _ _
-  | succ k ih =>
-    have h := hT k x y hx hy ih
-    rwa [hTx, hTy] at h
-
-end Fixed
 
 section Order
 

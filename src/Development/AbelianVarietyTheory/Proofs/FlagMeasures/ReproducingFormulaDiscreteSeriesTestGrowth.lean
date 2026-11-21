@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.ConvolutionSmoothL2
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
 import Formalism.HarderNarasimhan.ShiftInvariance
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalConvolutionOrthogonalProjectorProofStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegrablePhStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCoefficientIntegrableMajorantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TruncatedLeastLatticeSizeLipschitzPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalConvolutionOrthogonalProjectorProof
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegrablePh
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCoefficientIntegrableMajorant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TruncatedLeastLatticeSizeLipschitzProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExtAeEqContRep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightConvolutionOperatorAeEqIntegralAdelic
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowsAutIdemElementary
@@ -41,7 +41,7 @@ theorem weight_condition (B : RowsAut) (h s : ℝ) (hn : 1 ≤ B.I.n) (hb : HBig
 theorem inv_tau_pow_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 ∈ I.Kset) :
     (tau1 I (x * g))⁻¹ ^ (2 * I.n ^ 2 * I.f) ≤
       (tau1 I x)⁻¹ ^ (2 * I.n ^ 2 * I.f) * Real.exp (2 * (I.n : ℝ) ^ 2 * dSum I g.1) := by
-  obtain ⟨hp, -, -, hl⟩ := GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties I hn
+  obtain ⟨hp, -, -, hl⟩ := _root_.GlobalTheory.TauLipschitz.tauLip I hn
   have hf : (0 : ℝ) < I.f := by
     have : 0 < I.f := Module.finrank_pos
     exact_mod_cast this
@@ -76,13 +76,13 @@ theorem reproducing_formula : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ
   obtain ⟨hl, -⟩ := GlobalTheory.AdelicUnimod.adelic_unimodular B.I B.μf
   have : BorelSpace B.I.GA := inferInstance
   have : (B.I.muA B.μf).IsMulLeftInvariant := ⟨hl⟩
-  obtain ⟨hp, htc, -, -⟩ := GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties B.I hn
-  obtain ⟨hphc, hphb, hphi⟩ := GlobalTheory.T.discrete_series_coefficient_integrable_majorant B d h hd hdec
+  obtain ⟨hp, htc, -, -⟩ := _root_.GlobalTheory.TauLipschitz.tauLip B.I hn
+  obtain ⟨hphc, hphb, hphi⟩ := _root_.GlobalTheory.Dec.PhMajProof.phMaj B d h hd hdec
   have hec : Continuous B.e := (GlobalTheory.rowsAut_idem_elementary B).2.2.2
   have hb' : HBig B 32 h := fun v => le_trans (by
     have : 0 ≤ (B.I.n : ℝ) ^ 2 * Real.sqrt (rkR (B.I.ε v)) := by positivity
     nlinarith) (hb v)
-  obtain ⟨u, F, -, hsp, hF, -, -, -, hbd⟩ := GlobalTheory.T.kernelB' B d h hd hn hdec hb' hfin T hT
+  obtain ⟨u, F, -, hsp, hF, -, -, -, hbd⟩ := _root_.GlobalTheory.KernelExpansion.kernelB B d h hd hn hdec hb' hfin T hT
   have hmem : T y ∈ Submodule.span ℂ (Set.range u) := by rw [hsp]; exact ⟨y, rfl⟩
   obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hmem
   obtain ⟨hext, huniq, -⟩ := GlobalTheory.ExtContRep.ext_ae_eq_contRep B (T y) f hf
@@ -133,7 +133,7 @@ theorem reproducing_formula : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ
       refine (hphi 0 le_rfl (weight_condition B h _ hn hb (by positivity))).mono' hphc.aestronglyMeasurable
         (Filter.Eventually.of_forall fun g => ?_)
       simpa using hphb g
-    have hproj := ((GlobalTheory.T.globalConvolutionOrthogonalProjector_proof B d hd hi).2.2.2 T hT).1
+    have hproj := ((_root_.GlobalTheory.GlobProj.globalProj_holds B d hd hi).2.2.2 T hT).1
     have hTT : T (T y) = T y := congrArg (fun A : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund => A y) hproj.1
     have h1 := (GlobalTheory.ConvKernel.rconv_eq_integral B _ T hT (T y)).2
     rw [hTT] at h1

@@ -31,9 +31,6 @@ theorem rm_neg (x : Matrix (Fin n) (Fin n) D.host.E) : rm (-x) = -rm x := by
 theorem rm_one : rm (1 : Matrix (Fin n) (Fin n) D.host.E) = 1 := by
   simp [rm]
 
-theorem rm_zero : rm (0 : Matrix (Fin n) (Fin n) D.host.E) = 0 := by
-  simp [rm]
-
 theorem blockMatrix_map (a b c d : Matrix (Fin n) (Fin n) D.host.E) :
     (blk4 a b c d).map (incA D) = blk4 (rm a) (rm b) (rm c) (rm d) := by
   ext i j

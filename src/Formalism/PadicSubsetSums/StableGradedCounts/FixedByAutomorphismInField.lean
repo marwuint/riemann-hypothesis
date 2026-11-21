@@ -34,20 +34,4 @@ theorem exists_algEquiv_extending {F E : Type} [Field F] [Field E] [Algebra F E]
     rfl
   rw [h1, hσ, AlgEquiv.commutes]
 
-theorem fixed_by_automorphism_in_field : FixedByAutInField := by
-  intro F z hz hfix
-  have hzF : IsAlgebraic F z := hz.tower_top F
-  have hzA : z ∈ algebraicClosure F ℂ := (mem_algebraicClosure_iff).2 hzF
-  have : IsGalois F (algebraicClosure F ℂ) := inferInstance
-  obtain ⟨r, hr⟩ := (InfiniteGalois.mem_range_algebraMap_iff_fixed
-    (k := F) (K := algebraicClosure F ℂ) ⟨z, hzA⟩).2 (by
-      intro σ₀
-      obtain ⟨σ, hσ⟩ := exists_algEquiv_extending σ₀
-      apply Subtype.ext
-      rw [← hσ]
-      exact hfix σ)
-  have : (r : ℂ) = z := congrArg Subtype.val hr
-  rw [← this]
-  exact r.2
-
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility

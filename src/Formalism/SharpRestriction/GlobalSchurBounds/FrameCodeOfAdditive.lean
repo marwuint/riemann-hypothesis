@@ -13,65 +13,6 @@ variable {eps : ℝ}
 def AskIsF (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, AskIs (Fm.L x i) (LocalQuadraticParts.ASK (Fm.L x i))
 
-theorem losses_family_of_division_side (Fm : FamP eps) (eL : ℝ) (h5 : LocalQuadraticParts.SlopeLossFamily Fm eL) (hAsk : AskIsF Fm) : LossF Fm eL := by
-  obtain ⟨C, x0, h5⟩ := h5
-  obtain ⟨x2, hAsk⟩ := hAsk
-  refine ⟨max C 0, max x0 x2, le_max_right _ _, fun x hx hW => ?_⟩
-  have e0 : x ≥ x0 := le_trans (le_max_left _ _) hx
-  have e2 : x ≥ x2 := le_trans (le_max_right _ _) hx
-  obtain ⟨i0, a, b, hadm, hall⟩ := h5 x e0 hW
-  refine ⟨i0, a, b, hadm, fun i hi => ?_⟩
-  obtain ⟨h1, h2⟩ := hall i (Fm.D x i).host.u0.val ⟨rfl, hi⟩
-  have key : (Fm.L x i).sc.x ^ (eL * (Fm.L x i).sc.eps) = (Fm.L x i).sc.x ^ (eL * eps) := by rw [Fm.L_eps x i]
-  have hU0 : 0 ≤ ((Fm.D x i).host.TT.card : ℝ) * ((Fm.D x i).R.m * ((Fm.L x i).sc.b *
-      (Fm.L x i).sc.x ^ (eL * eps))) :=
-    mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (Real.exp_pos _).le
-      (Real.rpow_nonneg (lt_trans one_pos (Fm.L x i).sc.one_lt_alt).le _)))
-  have u1 := mul_le_mul_of_nonneg_right (le_max_left C 0) hU0
-  unfold LocalQuadraticParts.nTT at h1 h2
-  constructor
-  · have h2' : IOsum (Fm.L x i) ≤ _ := h2
-    rw [key]
-    simp only [mul_assoc] at h2' u1 ⊢
-    linarith
-  · intro e m AD' N TT a' w hr hAD hcut
-    rw [hAsk x e2 i e m AD' N TT a' w hr hAD hcut, key]
-    simp only [mul_assoc] at h1 u1 ⊢
-    linarith
-
-def IoNonnegF (Fm : FamP eps) : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ IOsum (Fm.L x i)
-
-theorem slopes_family_of_division_side (Fm : FamP eps) (h4 : LocalQuadraticParts.SlopeLemmaFamily Fm) (hIo : IoNonnegF Fm) : SlopesNF Fm := by
-  obtain ⟨C, x0, h4⟩ := h4
-  obtain ⟨x1, hIo⟩ := hIo
-  refine ⟨max C 0, max (max x0 x1) (Fm.x1 + 1), le_max_right _ _, fun x hx i u => ?_⟩
-  have e0 : x ≥ x0 := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have e1 : x ≥ x1 := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have e2 : Fm.x1 < x := by have := le_trans (le_max_right (max x0 x1) (Fm.x1 + 1)) hx; linarith
-  obtain ⟨a1, a2⟩ := h4 x e0 i (LocalQuadraticParts.defs_fam Fm e2 i) u
-  have hle : C ≤ max C 0 := le_max_left _ _
-  have hT : 0 ≤ Real.log (((Fm.D x i).mem u).A.T : ℝ) :=
-    Real.log_natCast_nonneg _
-  have ha := (sc_a_pos (Fm.L x i).sc).le
-  have hb' := (sc_b'_pos (Fm.L x i).sc).le
-  have hsx : 0 < (Fm.L x i).sc.x := lt_trans one_pos (Fm.L x i).sc.one_lt_alt
-  have hX : 0 ≤ (Fm.L x i).sc.X'' (Fm.D x i).R.n := by
-    unfold Scale.X'' Scale.w''
-    exact div_nonneg ha (div_nonneg hb' (mul_nonneg hsx.le (Nat.cast_nonneg _)))
-  have b1 := up hle (mul_nonneg (Nat.cast_nonneg (Fm.D x i).R.m) (loss_bound_nonneg (Fm.L x i)))
-  have b2 := up hle (hIo x e1 i)
-  have b3 := up hle (mul_nonneg (Nat.cast_nonneg (Fm.D x i).host.TT.card) (mul_nonneg (Nat.cast_nonneg (Fm.D x i).R.m)
-    (mul_nonneg (add_nonneg (div_nonneg ha (Nat.cast_nonneg (Fm.D x i).R.k)) hb') hT)))
-  have b4 := up hle hX
-  unfold LocalQuadraticParts.LoU LocalQuadraticParts.nTT at a2
-  have a2' : _ - (C * IOsum (Fm.L x i) + _ + _ + 1) ≤ _ := a2
-  unfold LoU
-  constructor
-  · simp only [mul_assoc] at a1 b1 ⊢
-    linarith
-  · simp only [mul_assoc] at a2' b2 b3 b4 ⊢
-    linarith
-
 end Formalism.MainNotions.Lnk
 
 end
@@ -135,12 +76,6 @@ theorem IOsum_nonneg (X : G.Inst D L) (K : G.Consts) (hK : K.Nonneg) (hI : G.Kap
   exact mul_nonneg (mul_nonneg (logWeight_nonneg w) (by positivity)) (ioP_nonneg X K hK hI _ _ _)
 
 end Shares
-
-theorem ioNonnegF {eps : ℝ} (Fm : FamP eps) : IoNonnegF Fm :=
-  ⟨Fm.x1 + 1, fun x hx i => by
-    have hx1 : Fm.x1 < x := by linarith
-    exact IOsum_nonneg (Fm.Gx x i) Fm.GK Fm.GK_nonneg (Fm.ex x hx1 i).kapI_def
-      (fun w => (Fm.fills x hx1 i w).2.2.2.2.2.1)⟩
 
 theorem ev_le_rpow (θ : ℝ) (hθ : 0 < θ) (C : ℝ) : ∃ x0 : ℝ, 1 ≤ x0 ∧ ∀ x ≥ x0, C ≤ x ^ θ := by
   refine ⟨max 1 (|C| ^ θ⁻¹), le_max_left _ _, fun x hx => ?_⟩

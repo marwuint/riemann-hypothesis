@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantIwahoriCosetRepsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeOperatorCosetSumStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeOperatorCosetSum
 open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.Lbc
@@ -10,7 +10,7 @@ theorem jacquet_hecke_operator_compat : ∀ (k : Type) [Field k] [ValuativeRel k
     [IsNonarchimedeanLocalField k], PositivityTheory.Lbc.C2 k := by
   intro k _ _ _ _ N h d hd J hJo hJc hI hpos V _ _ π hπ t ht T hT v
   obtain ⟨r, hr, x, hx, hu⟩ := GlobalTheory.T.dominant_iwahori_coset_reps k N h d hd J hJo hJc hI hpos t ht
-  have key := GlobalTheory.T.hecke_operator_coset_sum k N J hJc V π hπ (leviEmb k (stdBlocks d hd) t) T hT r x hr
+  have key := _root_.GlobalTheory.CompanionTheory.HeckeAvg.hecke_eq_average k N J hJc V π hπ (leviEmb k (stdBlocks d hd) t) T hT r x hr
     (fun i => (hx i).1) hu v
   have hmk : ∀ i, (Submodule.Quotient.mk (π (x i * leviEmb k (stdBlocks d hd) t) (v : V)) :
       Jacquet π (unipRad k (stdBlocks d hd))) =

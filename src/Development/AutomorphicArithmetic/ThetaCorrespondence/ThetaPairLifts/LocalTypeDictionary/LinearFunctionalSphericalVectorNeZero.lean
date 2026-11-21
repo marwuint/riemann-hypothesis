@@ -2,7 +2,9 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitBasisWittModelLocal
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ExistsLinearFunctionalAtSplitPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitBasisWittModelLocalStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndicatorIntMMemSB
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 
 section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.KSplit
@@ -35,13 +37,13 @@ theorem linearFunctional_sphericalVector : _root_.GlobalTheory.FunPr.ThetaLocalI
   set S : Set (Matrix (Fin n) (Fin d) (Fv F v)) := {Y | ∀ i j, Y i j ∈ v.adicCompletionIntegers F} with hS
   have htr : ∀ A ∈ S, ∀ Y, f (Y + A) = f Y := by
     intro A hA Y
-    obtain ⟨γ, hγ, h0, hco⟩ := GlobalTheory.T.exists_tensorLattice_point_of_integral_splitPlace_coordinate hcm X W v t b c hb hc A hA
+    obtain ⟨γ, hγ, h0, hco⟩ := _root_.GlobalTheory.LatFill.exists_latAtV_coord hcm X W v t b c hb hc A hA
     have := hι.trans γ (hat γ hγ) h0 _ hSB _ hSB (hfix' γ hγ (Or.inl h0)) Y
     rw [hco] at this
     exact this.symm
   have hsupp : ∀ Y, f Y ≠ 0 → Y ∈ S := by
     intro Y hY
-    obtain ⟨x, hx, hx0, rfl⟩ := GlobalTheory.T.exists_supportedAdele_splitPlace_matrix_coordinate_eq hcm v t b c Y
+    obtain ⟨x, hx, hx0, rfl⟩ := _root_.GlobalTheory.VacLift.exists_lift hcm v t b c Y
     have hψ : ∀ u ∈ latAtV X W v, u.map (piW t) = 0 →
         B.ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x u) = 1 := by
       intro u hu hu0

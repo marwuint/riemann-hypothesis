@@ -143,30 +143,6 @@ theorem repro_setup (h : UnitaryGroupStructuralFacts) (D : RealPlaceData k r Wp 
   exact ⟨hCG k r, hCW k r D.z, hCN k r, hGL k r, ha, int_G hGI D.μG D.haarG hAB,
     stSInt h k r Wp D hD (X.a / 2) hAB⟩
 
-theorem stRepro_integrable (h : UnitaryGroupStructuralFacts) (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D)
-    (haM : aM k r ≤ X.a) {u v : X.Hs} (hu : u ∈ Vfl X) (hv : v ∈ Vfl X) :
-    Integrable (fun y : Mt k r => ⟪X.σ (Matrix.of y) X.w, u⟫_ℂ • beOp D X (X.σ (Matrix.of y) X.w) v) D.μG := by
-  obtain ⟨hCG, hCW, hCN, hL, ha, hIG, hIS⟩ := repro_setup h D X hD haM
-  have : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp
-  have : IsFiniteMeasureOnCompacts D.μW := ⟨fun _ hK => D.haarW.finite_compact _ hK⟩
-  have : IsFiniteMeasureOnCompacts D.μN := ⟨fun _ hK => D.haarN.finite_compact _ hK⟩
-  refine (first_joint_integrable D X hCG hCW hCN hL ha hIG hIS hu hv).integral_prod_left.congr
-    (Filter.Eventually.of_forall fun y => ?_)
-  simp only [beOp]
-  exact integral_smul _ _
-
-theorem stRepro_integrable₂ (h : UnitaryGroupStructuralFacts) (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D)
-    (haM : aM k r ≤ X.a) {u v : X.Hs} (hu : u ∈ Vfl X) (hv : v ∈ Vfl X) :
-    Integrable (fun y : Mt k r => ⟪v, X.σ (Matrix.of y) X.w⟫_ℂ • beOp D X u (X.σ (Matrix.of y) X.w)) D.μG := by
-  obtain ⟨hCG, hCW, hCN, hL, ha, hIG, hIS⟩ := repro_setup h D X hD haM
-  have : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp
-  have : IsFiniteMeasureOnCompacts D.μW := ⟨fun _ hK => D.haarW.finite_compact _ hK⟩
-  have : IsFiniteMeasureOnCompacts D.μN := ⟨fun _ hK => D.haarN.finite_compact _ hK⟩
-  refine (second_joint_integrable D X hCG hCW hCN hL ha hIG hIS hu hv).integral_prod_left.congr
-    (Filter.Eventually.of_forall fun y => ?_)
-  simp only [beOp]
-  exact integral_smul _ _
-
 end
 
 theorem stRepro (h : UnitaryGroupStructuralFacts) : StRepro := by

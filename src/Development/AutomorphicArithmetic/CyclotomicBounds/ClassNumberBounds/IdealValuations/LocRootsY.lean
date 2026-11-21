@@ -85,23 +85,6 @@ private theorem lr_field_pow {k : Type*} [Field k] [CharP k l] (φ : k →+* k) 
   rw [Nat.card_zmod] at h
   exact h
 
-private theorem lr_int_pow {k : Type*} [Field k] [CharP k l] [Algebra (ZMod l) k] {a : k}
-    (ha : IsIntegral (ZMod l) a) (h0 : a ≠ 0) : ∃ m : ℕ, ¬ l ∣ m ∧ a ^ m = 1 := by
-  have hl : l.Prime := Fact.out
-  let F := IntermediateField.adjoin (ZMod l) {a}
-  have : FiniteDimensional (ZMod l) F := IntermediateField.adjoin.finiteDimensional ha
-  have : Finite F := Module.finite_of_finite (ZMod l)
-  let : Fintype F := Fintype.ofFinite F
-  have : CharP F l := charP_of_injective_algebraMap (algebraMap (ZMod l) F).injective l
-  obtain ⟨n, -, hn⟩ := FiniteField.card F l
-  let b : F := ⟨a, IntermediateField.mem_adjoin_simple_self _ _⟩
-  have hb : b ≠ 0 := fun h => h0 (congrArg Subtype.val h)
-  refine ⟨Fintype.card F - 1, fun h => ?_,
-    congrArg Subtype.val (FiniteField.pow_card_sub_one_eq_one b hb)⟩
-  have h1 : l ∣ Fintype.card F := hn ▸ dvd_pow_self l n.ne_zero
-  have h2 := (Nat.dvd_sub_iff_right Fintype.card_pos h1).mp h
-  exact hl.one_lt.ne' (Nat.dvd_one.mp h2)
-
 theorem norm_aut_and_roots :
     (∀ (g : Gal(PadicAlgCl l/ℚ_[l])) (x : PadicAlgCl l), ‖g x‖ = ‖x‖) ∧
       ∀ (m : ℕ) (ζ ζ' : PadicAlgCl l), ¬ l ∣ m → ζ ^ m = 1 → ζ' ^ m = 1 → ‖ζ - ζ'‖ < 1 →
@@ -146,25 +129,5 @@ theorem exists_pow_of_aut (g : Gal(PadicAlgCl l/ℚ_[l])) {m : ℕ} (hm : ¬ l �
 theorem exists_root_congr {x : PadicAlgCl l} (hx : ‖x‖ = 1) :
     ∃ (m : ℕ) (ζ : PadicAlgCl l), ¬ l ∣ m ∧ ζ ^ m = 1 ∧ ‖x - ζ‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.ExistsRootCongruence.exists_root_congr hx
-
-theorem mem_locInertia_iff (g : Gal(PadicAlgCl l/ℚ_[l])) :
-    g ∈ locInertia l ↔ IsResTrivial l g := by
-  constructor
-  · intro hg x hx
-    rcases hx.lt_or_eq with hx | hx
-    · rw [sub_eq_add_neg]
-      refine (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)
-      · rwa [lr_aut]
-      · rwa [norm_neg]
-    · obtain ⟨m, ζ, hm, h, hlt⟩ := exists_root_congr hx
-      have h1 : g x - x = g (x - ζ) + -(x - ζ) := by
-        rw [map_sub, hg m ζ hm h]; ring
-      rw [h1]
-      refine (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)
-      · rwa [lr_aut]
-      · rwa [norm_neg]
-  · intro hg m ζ hm h
-    exact norm_aut_and_roots.2 m _ _ hm (by rw [← map_pow, h, map_one]) h
-      (hg ζ (lr_norm_root hm h).le)
 
 end KStar.IdealValuations

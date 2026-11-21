@@ -6,8 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedPlanePairRes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzConjMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjLocalOperator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialFourierPreservesSchwartzL2Statement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialRightPreservesL2NormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialFourierPreservesSchwartzL2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjLinApply
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialRightPreservesL2Norm
 
 open scoped TensorProduct NNReal Matrix ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -220,8 +221,8 @@ theorem hasDbl_of_loc {E' : Type} [CommRing E'] [Algebra (AF F) E'] (c : E' →�
         (partR_adm (conjLin e') (GlobalTheory.DblEval.ConjLoc.isLocOp_conjLin e' hL') _ (partL_adm e' hL' _ hl))
       simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, partLₗ_apply, partRₗ_apply]
       rw [← (hTeq' Φ hΦ).1, LinearEquiv.apply_symm_apply]
-  · obtain ⟨C₁, hC₁⟩ := GlobalTheory.T.partial_fourier_preserves_schwartz_L2 T.toLinearMap hunit hLmem μ hμ
-    obtain ⟨C₂, hC₂⟩ := GlobalTheory.T.partial_right_preserves_l2_norm (κ := κ) (conjE T).toLinearMap hunitS hRmem μ hμ
+  · obtain ⟨C₁, hC₁⟩ := _root_.GlobalTheory.DblEval.lintegral_partL_eq T.toLinearMap hunit hLmem μ hμ
+    obtain ⟨C₂, hC₂⟩ := _root_.GlobalTheory.DblEval.L2RightPartial.partR_lintegral_sq_eq_const_mul_of_mem_schA (κ := κ) (conjE T).toLinearMap hunitS hRmem μ hμ
     refine ⟨C₂ * C₁, fun φ hφ => ?_⟩
     rw [hTd_apply]
     have h2 := hC₂ _ (hLmem φ hφ)

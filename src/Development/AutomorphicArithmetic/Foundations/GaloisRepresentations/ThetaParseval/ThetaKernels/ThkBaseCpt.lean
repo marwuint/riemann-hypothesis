@@ -35,10 +35,6 @@ theorem cptAll_of_k (h1 : PositivityTheory.ThKEst.GrpTop) (h2 : _root_.Positivit
   refine ⟨a1, a2, a3, a4, ⟨Ω, hΩ, cov⟩, ⟨C, fun x => ?_⟩, u1, h4 F E σ hB.cm n Y.J e, u2⟩
   obtain ⟨γ, hγ, hx⟩ := cov x
   exact (ciInf_le (OrderBot.bddBelow _) (⟨γ, hγ⟩ : ratU σ Y.J)).trans (hC _ hx)
-section Gen
-variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {μ : Measure G}
-  [μ.IsHaarMeasure] {Γ : Subgroup G} [Countable Γ] {D : Set G}
-end Gen
 variable {J : Matrix (Fin n) (Fin n) E}
 end GlobalTheory.ThK.Dbl
 end

@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombIn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AwayMapEqOfRed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartSpecMapComp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationIndependentOfChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineCombinationSquareZeroLiftsChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationIndependentOfChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineCombinationSquareZeroLiftsChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartSpecMapCompStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageEqOfSquareZeroThickeningStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgHomEqMulPowOfEqLocalizationAwayStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageEqOfSquareZeroThickening
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgHomEqMulPowOfEqLocalizationAway
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 noncomputable section
@@ -42,7 +42,7 @@ theorem chartHom_pow_mul_eq {R : Type} [CommRing R] (X : Over (Sp R)) (hsm : Smo
       commutes' := fun r => by
         have := congrArg (fun φ : Γ(Sp R, ⊤) →+* S => φ r) ((hcomp u₂ h₂).trans (hu ▸ (hcomp u₁ h₁).symm))
         exact this }
-  exact GlobalTheory.T.exists_pow_mul_eq_of_algebraMap_localizationAway_eq _ _ _ χ₁ χ₂ g hg
+  exact _root_.GlobalTheory.algHom_eq_mul_pow_of_eq_localizationAway _ _ _ χ₁ χ₂ g hg
 
 end GlobalTheory.SecGlue.Red
 
@@ -130,9 +130,9 @@ theorem exists_comb_pow {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →
   have hq := Ideal.Quotient.mk_surjective (I := redI π S)
   have hq2 := ker_mk_sq π hsq S
   have land : ∀ u, IsRed π hπ g₀ S u → u ⁻¹ᵁ W = ⊤ := fun u hu =>
-    (GlobalTheory.T.preimage_eq_of_square_zero_thickening S _ _ hq hq2 X.left u _ (hu.eq rA) W).trans hA
+    (_root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S _ _ hq hq2 X.left u _ (hu.eq rA) W).trans hA
 
-  obtain ⟨c, hc, -, hcR⟩ := GlobalTheory.T.exists_affineCombination_squareZero_lifts_chart X.left W hW S _ _ hq hq2 (Fin 2) (spMap ρl ≫ el)
+  obtain ⟨c, hc, -, hcR⟩ := _root_.GlobalTheory.SecGlue.CombEx.exists_comb X.left W hW S _ _ hq hq2 (Fin 2) (spMap ρl ≫ el)
     ![spMap ρl ≫ tl, spMap ρj ≫ ej] ![1, 1 - fS ^ N] (land _ rEL)
     (Fin.forall_fin_two.2 ⟨rTL.eq rEL, rA.eq rEL⟩)
   have oEL := comp_overR X fl ρl hρl el hel
@@ -185,7 +185,7 @@ theorem exists_comb_pow {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →
       · funext i; fin_cases i
         simp only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_fin_one, map_pow]
         rw [← RingHom.comp_apply, hβ, ← hι, RingHom.comp_apply]
-    exact GlobalTheory.T.isAffineCombination_independent_of_chart X.left Va W hVa hW _ _ _ hq' hq2' (Fin 1) _ _ _ _
+    exact _root_.GlobalTheory.SecGlue.isCombIn_of_chart X.left Va W hVa hW _ _ _ hq' hq2' (Fin 1) _ _ _ _
       (Fin.forall_fin_one.2 (rEK.eq (isRed_comp π hπ g₀ ι hι (isRed_of_away π hπ g₀ fa ea rea S ρa hρa))))
       h1' (GlobalTheory.SecGlue.preimage_spMap_comp_eq_top ι hEa)
   have sj := side fj Vj hVj ej tj ρj hρj rej hA hcj
@@ -248,7 +248,7 @@ theorem affineCombination_squareZero_lifts_cocycle {R R₀ : Type} [CommRing R] 
   have hq := Ideal.Quotient.mk_surjective (I := redI π S)
   have hq2 := ker_mk_sq π hsq S
   have land : ∀ u, IsRed π hπ g₀ S u → u ⁻¹ᵁ W = ⊤ := fun u hu =>
-    (GlobalTheory.T.preimage_eq_of_square_zero_thickening S _ _ hq hq2 X.left u _ (hu.eq rA) W).trans hA
+    (_root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S _ _ hq hq2 X.left u _ (hu.eq rA) W).trans hA
   have move : ∀ (fa : R) (Va : X.left.Opens), IsAffineOpen Va →
       ∀ (ea ta t'a : Sp (Localization.Away fa) ⟶ X.left) (ρa : Localization.Away fa →+* S),
       ρa.comp (algebraMap R _) = algebraMap R S →
@@ -263,7 +263,7 @@ theorem affineCombination_squareZero_lifts_cocycle {R R₀ : Type} [CommRing R] 
       · funext i; fin_cases i
         simp only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_fin_one, map_pow]
         rw [← RingHom.comp_apply, hρa]
-    exact GlobalTheory.T.isAffineCombination_independent_of_chart X.left Va W hVa hW S _ _ hq hq2 (Fin 1) _ _ _ _
+    exact _root_.GlobalTheory.SecGlue.isCombIn_of_chart X.left Va W hVa hW S _ _ hq hq2 (Fin 1) _ _ _ _
       (Fin.forall_fin_one.2 (rT.eq rE)) a1' (land _ rE)
   obtain ⟨hA', hT'J, hTJ, k1⟩ := isCombIn_one (move fj Vj hVj ej tj t'j ρj hρj rA rTJ h'j)
   obtain ⟨hEL, hT'L, hTL, k2⟩ := isCombIn_one (move fl Vl hVl el tl t'l ρl hρl rEL rTL h'l)
@@ -332,7 +332,7 @@ theorem GlobalTheory.SecGlue.exists_pow_cocycle : ∀ (R R₀ : Type) [CommRing 
   have hMle : ∀ j l k i, M₀ j l k i ≤ M := fun j l k i =>
     Finset.le_sup (f := fun p : (j : κ) × (l : κ) × κ × Fin (n j l) =>
       M₀ p.1 p.2.1 p.2.2.1 p.2.2.2) (Finset.mem_univ ⟨j, l, k, i⟩)
-  have hT := fun k j => GlobalTheory.T.exists_affineCombination_squareZero_lifts_chart X.left (V j) (hV j) (Localization.Away (f j)) _
+  have hT := fun k j => _root_.GlobalTheory.SecGlue.CombEx.exists_comb X.left (V j) (hV j) (Localization.Away (f j)) _
     (Ideal.Quotient.mk (redI π (Localization.Away (f j)))) Ideal.Quotient.mk_surjective
     (ker_mk_sq π hsq _) (Fin 1) (e j) ![t k j] ![algebraMap R (Localization.Away (f j)) (f k) ^ M]
     (hev j) (Fin.forall_fin_one.2 ((isRed_self π hπ g₀ (f j) (t k j) (htred k j)).eq

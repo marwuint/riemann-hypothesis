@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.CompletionDVR
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfIrreducibleProperSpecialFibreCompleteDStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfIrreducibleProperSpecialFibreCompleteD
 
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing
 
@@ -39,7 +39,7 @@ theorem isProper_of_specialFibre : ∀ (W : Type) [CommRing W] [IsDomain W] [IsD
   have hex : ∃ x : ↥(pullback f g), (pullback.snd f g) x = IsLocalRing.closedPoint O :=
     (pullback.snd f g).surjective _
   have hp : IsProper (pullback.snd f g) :=
-    GlobalTheory.T.isProper_of_irreducible_properSpecialFibre_completeDvr O (pullback f g) (pullback.snd f g) inferInstance inferInstance inferInstance inferInstance hex hsp
+    _root_.GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre O (pullback f g) (pullback.snd f g) inferInstance inferInstance inferInstance inferInstance hex hsp
   have hu : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) g :=
     ⟨⟨gsurj, gfl⟩, inferInstance⟩
   have : UniversallyClosed f :=

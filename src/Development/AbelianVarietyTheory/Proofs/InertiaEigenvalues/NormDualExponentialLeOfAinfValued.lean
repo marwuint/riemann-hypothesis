@@ -14,7 +14,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicTwis
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H1BallCocycleLogCyclotomicStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyThetaOnBdRPlusPeriodData
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamFilQuotientXiPowerAinf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariantStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
@@ -164,7 +166,7 @@ theorem theta_onto (T : LocTied l P AI) (y : PadicComplex l) (hy : ‖y‖ ≤ 1
     ⟨y, (GlobalTheory.RingBasics.mem_OC _).2 hy⟩
   refine ⟨a, ?_⟩
   change GlobalTheory.ThetaTie.th T _ = _
-  rw [GlobalTheory.ThetaTie.th_eq T (GlobalTheory.ThetaTie.eD_ιA T a).symm, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.1]
+  rw [GlobalTheory.ThetaTie.th_eq T (GlobalTheory.ThetaTie.eD_ιA T a).symm, (_root_.GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]
   exact congrArg Subtype.val ha
 
 theorem graded (T : LocTied l P AI) (J : ThetaL P AI) (i : ℕ) {u : P.R.BdR}

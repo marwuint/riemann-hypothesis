@@ -8,7 +8,8 @@ import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamili
 import Development.WeilBound.CoreStatements.HodgeTatePoints.Weilreg
 import Development.WeilBound.CoreStatements.HodgeTatePoints.TwpairGeo
 import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtExistsBc
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHolds
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.NonemptyEquivOfCardHom
 open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
@@ -131,7 +132,7 @@ theorem kernel_mem [Fact p.Prime] (hpS : p ∈ S) [CharZero Ω] [IsLocallyNoethe
     refine (congrArg (Scheme.ΓSpecIso (CommRingCat.of (FractionRing RC))).hom.hom k1.symm).trans ?_
     exact PositivityTheory.HtPt.Weilreg.val_unitOn _
   have hmem := bichar_mem hvI Γ' bi _ hs
-  obtain ⟨ee, hee⟩ := (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
+  obtain ⟨ee, hee⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
     𝔐.t.semi.smooth).2.2.2.2.1 RC Γ' F hbc
   refine ⟨_, tens_of_bc (N := TestPt.NAdd E (D.p + D.q) p) (C := C) (RC := RC)
     ((algebraMap Ω C).comp (algebraMap (CR O y c') Ω)) (fun _ => rfl) ee hee (TestPt.testOrd P RC) rfl _ hmem,
@@ -159,7 +160,7 @@ theorem exists_der [Fact p.Prime] (hpS : p ∈ S) [CharZero Ω]
   haveI := FunctionFamilyIdempotent.frac_epi (CR O y c')
   have hφ : Function.Injective (toRC (CR O y c') RC hR) := fun a b h =>
     Subtype.ext ((algebraMap Ω C).injective (congrArg Subtype.val h))
-  have hBT := GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁ 𝔐.t.semi.smooth
+  have hBT := _root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁ 𝔐.t.semi.smooth
   obtain ⟨θ, ⟨hθs, -⟩, hθk, hθc⟩ := hBT.2.2.2.2.2 P.L P.M
   have hom : P.Dh.om = LinearMap.range P.j := P.isHT.1
   have hj : ∀ w, P.j w ∈ P.Dh.om := fun w => by rw [hom]; exact ⟨w, rfl⟩
@@ -205,7 +206,7 @@ theorem act_mem [Fact p.Prime]
   haveI := FunctionFamilyIdempotent.finite_tors (E := E) (D.p + D.q) hp.ne_zero
   haveI := FunctionFamilyIdempotent.frac_epi (CR O y c')
   haveI := 𝔐.t.act.hom a
-  have h4 := (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
+  have h4 := (_root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
     𝔐.t.semi.smooth).2.2.2.1 (𝔐.t.act.act a) (FunctionFamilyIdempotent.mulT _ p a) (by
       intro t
       obtain ⟨x, rfl⟩ := FunctionFamilyIdempotent.qmk_surj _ p t

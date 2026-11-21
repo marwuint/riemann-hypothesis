@@ -11,7 +11,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallDomainIffPosDefSt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetEqBallPotentialStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SymmetricMatrixInBallImageStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateEmbeddingsCriterionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelTransformCommutesActionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelTransformCommutesAction
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SpanStandardBasisEigenspaceStatement
 import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifUnivA
 import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifUnivB
@@ -215,7 +215,7 @@ theorem exists_univFam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     intro t
     by_cases ht : t ∈ ballDom q
     · obtain ⟨R, h1, h2, h3, h4⟩ := member R₁ (bigZe e q t) hHm (bigZe_symm e q t)
-        ((GlobalTheory.T.ball_domain_iff_pos_def e q t).1 ht) (GlobalTheory.T.siegel_transform_commutes_action σ e q t R₁.B hσ hB)
+        ((GlobalTheory.T.ball_domain_iff_pos_def e q t).1 ht) (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.tz_bigZe_comm σ e q t R₁.B hσ hB)
       exact ⟨R, h1.trans hform, fun _ => ⟨h2, h3, h4⟩⟩
     · exact ⟨R₁, hform, fun h => absurd h ht⟩
   choose R hRf hR using hmem

@@ -90,29 +90,4 @@ theorem cohomology_exact₃ (i j : ℕ) (hij : i + 1 = j) :
 
 end
 
-section Naturality
-
-variable {S₁ S₂ : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S₁.X₁] [IsDiscreteRep S₁.X₂]
-  [IsDiscreteRep S₁.X₃] [IsDiscreteRep S₂.X₁] [IsDiscreteRep S₂.X₂] [IsDiscreteRep S₂.X₃]
-
-noncomputable def cochainsShortComplexMap (φ : S₁ ⟶ S₂) :
-    cochainsShortComplex S₁ ⟶ cochainsShortComplex S₂ where
-  τ₁ := cochainsMap φ.τ₁
-  τ₂ := cochainsMap φ.τ₂
-  τ₃ := cochainsMap φ.τ₃
-  comm₁₂ := by
-    change cochainsMap φ.τ₁ ≫ cochainsMap S₂.f = cochainsMap S₁.f ≫ cochainsMap φ.τ₂
-    rw [← cochainsMap_comp, ← cochainsMap_comp, φ.comm₁₂]
-  comm₂₃ := by
-    change cochainsMap φ.τ₂ ≫ cochainsMap S₂.g = cochainsMap S₁.g ≫ cochainsMap φ.τ₃
-    rw [← cochainsMap_comp, ← cochainsMap_comp, φ.comm₂₃]
-
-theorem δ_naturality (hS₁ : S₁.ShortExact) (hS₂ : S₂.ShortExact) (φ : S₁ ⟶ S₂) (i j : ℕ)
-    (hij : i + 1 = j) :
-    δ hS₁ i j hij ≫ cohomologyMap φ.τ₁ j = cohomologyMap φ.τ₃ i ≫ δ hS₂ i j hij :=
-  HomologicalComplex.HomologySequence.δ_naturality (cochainsShortComplexMap φ)
-    (cochainsShortComplex_shortExact hS₁) (cochainsShortComplex_shortExact hS₂) i j hij
-
-end Naturality
-
 end GroundTheory.ProfCoh

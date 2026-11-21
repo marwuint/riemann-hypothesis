@@ -8,10 +8,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Map
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.SymplecticCharacters.OneEqSpTranslZero
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyViaIsPullback
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantFromIntersectionUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyInvariantAfterDvrExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsUnitKoszulInvariantOfFiniteClosedFibreZerosStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantBaseChange
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyInvariantFromIntersectionUnique
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyInvariantAfterDvrExtension
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsUnitKoszulInvariantOfFiniteClosedFibreZeros
 
 set_option autoImplicit false
 
@@ -384,7 +384,7 @@ theorem kaVal_eq_of_line : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] [I
     intro a r κ hr hκ
     obtain ⟨y, s, hy⟩ := exists_isLinePt s₀ s₁ (RingHom.id K) a
     obtain ⟨φ, w, hg, H, hs⟩ := IsLinePt.via (t := a) hy hr
-    refine ⟨y, s, ?_, GlobalTheory.T.keyInvariant_baseChange hL K K x y _ φ w n l l' al hg r s κ hA H hs hκ⟩
+    refine ⟨y, s, ?_, _root_.GlobalTheory.KaBaseChange.kaVal_baseChange hL K K x y _ φ w n l l' al hg r s κ hA H hs hκ⟩
     rw [hev, show evalRingHom a X = a from eval_X]
     exact hy
   refine eq_of_line V ?_ ?_ ?_ ?_ (hpt 0 s₀ κ₀ (fun i => onLine_zero x _ _) h₀)
@@ -392,12 +392,12 @@ theorem kaVal_eq_of_line : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] [I
   · rintro R R' _ _ _ _ _ ψ g κ ⟨y, s, hy, hκ⟩
     obtain ⟨y', s', hy'⟩ := exists_isLinePt s₀ s₁ (g.comp (ψ.comp C)) (g (ψ X))
     obtain ⟨φ, w, hg, H, hs⟩ := hy.cancel hy'
-    exact ⟨y', s', hy', GlobalTheory.T.keyInvariant_baseChange hL R R' y y' g φ w n l l' al hg s s' κ (adm hy) H hs hκ⟩
+    exact ⟨y', s', hy', _root_.GlobalTheory.KaBaseChange.kaVal_baseChange hL R R' y y' g φ w n l l' al hg s s' κ (adm hy) H hs hκ⟩
   · rintro L _ ψ κ κ' ⟨y, s, hy, hκ⟩ ⟨y', s', hy', hκ'⟩
     haveI : CharZero L := (RingHom.charZero_iff (ψ.comp C).injective).1 inferInstance
     obtain ⟨φ, w, hg, H, hs⟩ := hy.cancel (g := RingHom.id L) hy'
-    exact GlobalTheory.T.keyInvariantFromIntersection_unique hL L y' n l l' al s' _ _ (adm hy')
-      (GlobalTheory.T.keyInvariant_baseChange hL L L y y' _ φ w n l l' al hg s s' κ (adm hy) H hs hκ) hκ'
+    exact _root_.GlobalTheory.KaUnique.kaVal_unique hL L y' n l l' al s' _ _ (adm hy')
+      (_root_.GlobalTheory.KaBaseChange.kaVal_baseChange hL L L y y' _ φ w n l l' al hg s s' κ (adm hy) H hs hκ) hκ'
   · rintro O _ _ _ ψ r κ hr ⟨yk, sk, hyk, zk, chk, -, -, -, -, -, -, -, hE, -⟩
     obtain ⟨y, s, hy⟩ := exists_isLinePt s₀ s₁ (ψ.comp C) (ψ X)
     obtain ⟨φ, w, hg, H, hs⟩ := hy.cancel (g := r) hyk
@@ -409,7 +409,7 @@ theorem kaVal_eq_of_line : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] [I
       have := (Ne.isUnit (Nat.cast_ne_zero.2 hne : ((degProd y.P.g n l l' : ℕ) : K) ≠ 0)).map (ψ.comp C)
       rwa [map_natCast] at this
     obtain ⟨O', _, _, _, j, r', y', φ', w', hg', s', u, hj, -, hr', H', hs', hu'⟩ :=
-      GlobalTheory.T.exists_keyInvariant_after_dvr_extension hL O K r y yk φ w n l l' al _ hg s sk zk chk hr (adm hy) hu H hs hE
+      _root_.GlobalTheory.KaLift.exists_kaVal_extension hL O K r y yk φ w n l l' al _ hg s sk zk chk hr (adm hy) hu H hs hE
     exact ⟨O', inferInstance, inferInstance, inferInstance, j, r', u, hj, hr', y', s', hy.trans hg' H' hs', hu'⟩
   · rintro a O _ _ _ ψ r L _ g κ u e hψ hr hgi ⟨yL, sL, hyL, hκ⟩ hu he
     letI : Algebra ℚ O := ((ψ.comp C).comp (algebraMap ℚ K)).toAlgebra
@@ -422,7 +422,7 @@ theorem kaVal_eq_of_line : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] [I
     obtain ⟨φ₁, w₁, hg₁, H₁, hs₁⟩ := hy.cancel (g := r) (y' := yk) (s' := sk) (by
       rw [← RingHom.comp_assoc, hψ, hev, show r (ψ X) = a from (RingHom.congr_fun hψ X).trans eval_X]
       exact hyk)
-    exact GlobalTheory.T.isUnit_koszulInvariant_of_finite_closedFibre_zeros hL O L g y yL φ w n l l' al hg s sL κ u e hgi (adm hy) H hs
+    exact _root_.GlobalTheory.KaFiniteUnit.isUnit_of_finite_zeros hL O L g y yL φ w n l l' al hg s sL κ u e hgi (adm hy) H hs
       (finite_closedFibre hr hg₁ H₁ hs₁ hk) hκ hu he
 
 end GlobalTheory.KeyLine

@@ -4,10 +4,10 @@ import Formalism.LocalToGlobal.KernelLattices.LateralTheory
 import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.CokernelIndexFactors.StatementB
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdChar
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRangeEmb4EqTop
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CmBaseFieldIntegersAndCurveIdealFactsStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DiscOneScaleRatioIdealRingAlgebraicUnitStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EvenThetaFunctionCmLatticeIntegralSplitPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsPullback
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CmBaseFieldIntegersAndCurveIdealFacts
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DiscOneScaleRatioIdealRingAlgebraicUnit
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EvenThetaFunctionCmLatticeIntegralSplitPrime
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslatePrimeToOrderPreservesThetaIntegralityStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EvenThetaIteratedDerivZeroAlgebraicStatement
 
@@ -182,7 +182,7 @@ theorem eOne_algJets (hc : IsCurveIdeal D cc) (hδ : IsDiscriminantTwelfthRootOf
     have h1 : (s : ℂ) * ys j 0 ∈ lamOf D cc δ := by
       have := (GlobalTheory.FourthRootStd.mem_iff B _).1 hmem
       simpa using this
-    obtain ⟨x, -, hx⟩ := ((GlobalTheory.T.cmBaseField_integers_and_curveIdeal_facts D).2.2.2.2 cc δ hcc).2 _ |>.1 h1
+    obtain ⟨x, -, hx⟩ := ((_root_.GlobalTheory.MomDict.main D).2.2.2.2 cc δ hcc).2 _ |>.1 h1
     have hs0 : (s : ℂ) ≠ 0 := by exact_mod_cast hs.ne'
     have e : δ₀⁻¹ * ys j 0 = (δ / δ₀) * D.host.φ₀ ((x : D.host.K) : D.host.E) * (s : ℂ)⁻¹ := by
       have : ys j 0 = δ * D.host.φ₀ ((x : D.host.K) : D.host.E) * (s : ℂ)⁻¹ := by
@@ -204,9 +204,9 @@ theorem latInt_opU_of_coprime : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : 
     ∀ (ι : ℂ ≃+* ℂ_[q]) (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω : ℂ_[q]), Per D.host.d ι δ₀ θ Ω → ∀ (s : ℂ) (n : ℕ), Nat.Coprime n q →
     (n : ℂ) * s ∈ B.L.lattice → LatInt ι (Ω / ι δ₀) (lamOf D cc δ) (Formalism.L2.Th1.F.opU B.L s B.th0) := by
   intro D cc δ B hc hδ q _ hq2 hj hcop ι δ₀ θ Ω hPer s n hn hs
-  obtain ⟨hp, h16, -⟩ := GlobalTheory.T.cmBaseField_integers_and_curveIdeal_facts D
+  obtain ⟨hp, h16, -⟩ := _root_.GlobalTheory.MomDict.main D
   have hOk : (setupOne D.host.d B.L).Ok := setupOne_ok D.host.d B.L (GlobalTheory.FourthRootStd.hst B) hp h16
-  have hd0 : δ / δ₀ ∈ Qbar := (GlobalTheory.T.discOneScale_ratio_ideal_ring_algebraic_unit D cc δ δ₀ hc hδ hPer.2.1 q hq2 hcop).1
+  have hd0 : δ / δ₀ ∈ Qbar := (_root_.GlobalTheory.MomDelta.delta_ratio D cc δ δ₀ hc hδ hPer.2.1 q hq2 hcop).1
   have hnpos : 0 < n := by
     rcases Nat.eq_zero_or_pos n with h | h
     · subst h
@@ -217,10 +217,10 @@ theorem latInt_opU_of_coprime : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : 
   let p0 : (Fin 1 → ℂ) →L[ℂ] ℂ := ContinuousLinearMap.proj 0
   let c0 : ℂ →L[ℂ] (Fin 1 → ℂ) := ContinuousLinearMap.pi fun _ => ContinuousLinearMap.id ℂ ℂ
   have hLat : LatInt ι (Ω / ι δ₀) (setupOne D.host.d B.L).La.toAddSubgroup (eOne B) :=
-    GlobalTheory.T.latticeJetsAreBoundedMoments_pullback q ι ℂ (Fin 1 → ℂ) _ (lamOf D cc δ) _ p0 B.th0 (contDiff_base_even_theta_kernel B)
+    _root_.GlobalTheory.MomN.latInt_pull q ι ℂ (Fin 1 → ℂ) _ (lamOf D cc δ) _ p0 B.th0 (contDiff_base_even_theta_kernel B)
       (fun x hx => ⟨1, Nat.coprime_one_left q, by
         rw [one_smul]; exact (GlobalTheory.FourthRootStd.mem_iff B _).1 hx⟩)
-      (GlobalTheory.T.evenThetaFunction_cmLattice_integral_splitPrime D cc δ B hc hδ q hq2 hj hcop ι δ₀ θ Ω hPer)
+      (_root_.GlobalTheory.MomN.latInt_th0_of_split_prime D cc δ B hc hδ q hq2 hj hcop ι δ₀ θ Ω hPer)
   have hres := GlobalTheory.T.translate_primeToOrder_preserves_theta_integrality q ι δ₀ θ Ω 1 (setupOne D.host.d B.L) (eOne B) (fun _ => s) hPer hOk
     (Or.inr ⟨hq2, hj⟩) (eOne_theta B) (eOne_algJets B hc hδ hd0) hprime hLat
   have hU : JMB.opU (setupOne D.host.d B.L).Hm (fun _ => s) (eOne B)
@@ -229,7 +229,7 @@ theorem latInt_opU_of_coprime : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : 
   rw [hU] at hres
   have hcd : ContDiff ℂ ⊤ (fun z : Fin 1 → ℂ => Formalism.L2.Th1.F.opU B.L s B.th0 (z 0)) :=
     (opU_contDiff B.L s (contDiff_base_even_theta_kernel B)).comp (by fun_prop)
-  exact GlobalTheory.T.latticeJetsAreBoundedMoments_pullback q ι (Fin 1 → ℂ) ℂ _ _ (lamOf D cc δ) c0 _ hcd
+  exact _root_.GlobalTheory.MomN.latInt_pull q ι (Fin 1 → ℂ) ℂ _ _ (lamOf D cc δ) c0 _ hcd
     (fun x hx => ⟨1, Nat.coprime_one_left q, by
       rw [one_smul]
       show x ∈ B.L.lattice

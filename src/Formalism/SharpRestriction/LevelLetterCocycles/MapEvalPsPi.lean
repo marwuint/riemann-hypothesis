@@ -287,11 +287,6 @@ def LocInv (c : ZMod n) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) (κ : Pow
   ∀ (s : ℕ) (x : C.V) (hx : x ∈ (latOf C).N c),
     (levW W uZ ιZ s).Inv (D := Dc W T c) (locF Lb C κ s x hx)
 
-theorem locF_congr (κ : PowerSeries O) (s : ℕ) {x y : C.V} (hx : x ∈ (latOf C).N c)
-    (hy : y ∈ (latOf C).N c) (h : x = y) : locF Lb C κ s x hx = locF Lb C κ s y hy := by
-  subst h
-  rfl
-
 def locM (hΔ : DeltaRho hR uZ ιZ c) (ell : ℕ) (Λ κ : PowerSeries O)
     (hκ : ∀ w ∈ (latOf C).W c ell Λ, κ • w ∈ (latOf C).N c) (hS : ExpSemi Lb hR T c)
     (hI : LocInv Lb C c uZ ιZ κ) :

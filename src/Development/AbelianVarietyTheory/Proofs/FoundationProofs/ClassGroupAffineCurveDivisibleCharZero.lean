@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FunctionFieldClassGroupPowersStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassGroupNthPowerOfCongruentPointsModStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FunctionFieldClassGroupPowers
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ClassGroupNthPowerOfCongruentPointsMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegralNormNatDegreeModEqOne
 
 open Polynomial
@@ -27,6 +27,6 @@ theorem classGroup_ringOfIntegers_divisible : GlobalTheory.NeedB.ClDiv := by
   have hdim : Module.finrank k (A ⧸ Ideal.span {f}) % N = 1 % N := by
     rw [finrank_quotient_span_eq_natDegree_norm (Module.Free.chooseBasis k[X] A) hf0]
     exact hf
-  exact GlobalTheory.T.classGroup_nthPower_of_congruent_points_mod k A N hN (GlobalTheory.T.function_field_class_group_powers k A N h) ⟨f, hf0, hdim⟩ c
+  exact _root_.GlobalTheory.classGroup_nthPower_of_codim_one_mod k A N hN (_root_.GlobalTheory.exists_class_group_mk0_eq_mul_pow k A N h) ⟨f, hf0, hdim⟩ c
 
 end GlobalTheory

@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.BiextCoeffSecondLinear
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.SaturationChartsHolds
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCmTypeEmbeddingsIntoValuationRingStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCmTypeEmbeddingsIntoValuationRing
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralChartDirectionsIsEigenBasisStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsEigenBasisMapFlatBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsEigenBasisMapFlatBaseChange
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Formalism.L2.Pj
@@ -76,7 +76,7 @@ theorem GlobalTheory.CharDepth.isEigBasis_valExt : ∀ (E : Type) [Field E] [Num
   letI := H.starRing
   intro T io y Ch p _ X τO hτ τ
   constructor
-  · obtain ⟨τT, hT, hT', -⟩ := GlobalTheory.T.exists_cmType_embeddings_into_valuation_ring E H l c T io p X
+  · obtain ⟨τT, hT, hT', -⟩ := _root_.GlobalTheory.CharDepth.exists_types_valuationRing E H l c T io p X
     have he : τO τ = X.ι.comp (τT τ) := by
       ext a
       apply X.ints.hom_inj
@@ -85,7 +85,7 @@ theorem GlobalTheory.CharDepth.isEigBasis_valExt : ∀ (E : Type) [Field E] [Num
     letI := X.ι.toAlgebra
     haveI := flat X
     rw [he]
-    exact GlobalTheory.T.isEigenBasis_map_flat_baseChange T.V X.O (𝓞 E) _ _ Ch.actT (linPart_add Ch) (τT τ) _
+    exact _root_.GlobalTheory.EigBaseChange.isEigBasis_map T.V X.O (𝓞 E) _ _ Ch.actT (linPart_add Ch) (τT τ) _
       (GlobalTheory.T.integral_chart_directions_isEigenBasis E H Dw l Xo c T io y Ch τ (τT τ) (hT τ))
   · obtain ⟨⟨w, emb, hw, hb⟩, -⟩ := Formalism.L2.Pj.SaturatedCharts.saturation_charts_holds Xo c T io y Ch τ
     exact res_surjective_of_extends X.ι _ w emb hw hb

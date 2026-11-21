@@ -459,7 +459,7 @@ theorem detPlus_one_one {m n : ℕ} (s : Matrix (Fin n) (Fin n) ℂ) (t : Matrix
 
 theorem compactFockAll : ∀ D : D7, GlobalTheory.ChainFr.CompactFockAll D := by
   intro D V W A B θ ψ χS χT ω f τ aS aT hθ hW hS hT hf _
-  obtain ⟨η, e1, e2, e3, e4⟩ := GlobalTheory.T.exists_unramifiedHeckeChar_halfExponent_restrict_quadratic D
+  obtain ⟨η, e1, e2, e3, e4⟩ := _root_.GlobalTheory.Mem.EtaTilde.exists_etaTilde D
   obtain ⟨cS, hcS⟩ := exp_twist_int hθ V hW.resS e3 hS (e2 τ)
   obtain ⟨cT, hcT⟩ := exp_twist_int hθ V hW.resT e3 hT (e2 τ)
   refine ⟨fun e => -cT - ((Finset.univ.filter fun i => B.ε τ i = e).card : ℕ),

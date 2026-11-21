@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MarkValEqZeroOrOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarrierDimLeOfAddCellGenerators
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCellOfInFaceOfCellFormCMFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellLeastDimVanishesWhereFormVanishesDiagonalStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCellOfInFaceOfCellFormCMField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellLeastDimVanishesWhereFormVanishesDiagonal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InvFunEvalZAddOfLinearOnRealCone
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeSummandsOfEvalZAdditiveCell
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteBilinFormAbsLe
@@ -178,12 +178,12 @@ theorem inFace_iff (hψ : IsPolyFan H.bar q ψ) (hl : IsCarrierDim H.bar q ψ la
   have hβp := cone_nonneg hτ.nonneg hβ
   constructor
   · rintro ⟨hxb, hxp, -, hadd, hlab⟩
-    exact GlobalTheory.T.inRealCone_cell_of_inFace_of_cellForm_CMField E H q ψ lab hψ hl X hX hD m τ hτ β hβb hβp hβ x hxb hxp hadd hlab
+    exact _root_.GlobalTheory.PolFan.Mark.FaceIn.inRCone_of_add E H q ψ lab hψ hl X hX hD m τ hτ β hβb hβp hβ x hxb hxp hadd hlab
   · intro hx
     obtain ⟨c, hc, hcx⟩ := id hx
     have hbx := cone_add hβ hx
     refine ⟨cone_bal hτ.mem hx, cone_nonneg hτ.nonneg hx,
-      fun y hy => cone_vanish hx fun j => GlobalTheory.T.cell_leastDim_vanishes_where_form_vanishes_diagonal E H q ψ lab hψ hl X hX hD m τ hτ β hβb hβp hβ hr j y hy,
+      fun y hy => cone_vanish hx fun j => _root_.GlobalTheory.PolFan.Mark.vanish_of_inRCone_of_genRank_le E H q ψ lab hψ hl X hX hD m τ hτ β hβb hβp hβ hr j y hy,
       evalZ_add_of_linearOn_inRCone (𝓞 E) ψ X m τ hτ.linear β x hβ hx, ?_⟩
     have hup : lab.evalZ (β + x) ≤ genRank τ := lab_le hl hX hτ hbx
     have e : toReal (β + x) = (1 : ℝ) • toReal β + ∑ k, c k • toReal (τ k) := by
@@ -311,7 +311,7 @@ theorem exists_isMarked_inRCone (E : Type) [Field E] [NumberField E] [IsCMField 
   have hface := (F β₀).2 hβ₀τ
   unfold InFace at hface
   obtain ⟨-, -, -, hadd, hlabeq⟩ := hface
-  have hv₀ : InRCone v β₀ := GlobalTheory.T.inRealCone_cell_of_inFace_of_cellForm_CMField E H q ψ lab hψ hl X hX hD m v hv β hb hp hvβ β₀ hβ₀b hβ₀p hadd hlabeq
+  have hv₀ : InRCone v β₀ := _root_.GlobalTheory.PolFan.Mark.FaceIn.inRCone_of_add E H q ψ lab hψ hl X hX hD m v hv β hb hp hvβ β₀ hβ₀b hβ₀p hadd hlabeq
   refine ⟨β₀, ?_, hv₀⟩
   unfold IsMarked
   refine ⟨hβ₀b, hβ₀p, hprim, hlab0, S, fun x => ?_, g, hg, hgβ⟩

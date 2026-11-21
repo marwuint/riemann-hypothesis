@@ -841,9 +841,6 @@ theorem piIrrC_holds : PiIrrC := by
   intro D X u
   exact Formalism.L2.SG.Pf.IdBlocks2.Geo.piIrr X u
 
-theorem distinct_words_distinct_parameters (D : D7) (u u' : D.what₂.Word) (hu : u ≠ u') (τ : D.what₂.Tau) : uS D u τ ≠ uS D u' τ := by
-  exact Formalism.L2.SG.Pf.IdBlocks2.Geo.uS_ne hu τ
-
 theorem idMeetRO_of (hN : Formalism.L2.SG.TermOp.Vanish.NLamNinf) (D : D7) (X : HidaSetting D) (Y : Full X)
     (u : D.what₂.Word) : IdMeetRO (X.Fu u) (Y.cs u) := by
   intro _ t _ _
@@ -886,10 +883,6 @@ theorem idMeetC_of_steps3 (hL : Formalism.L2.SG.TermOp.Vanish.NLamNinf) (h1 : Id
     (h3 : IdMeetVolC) : IdMeetC := by
   intro D X Y u hC hFE
   exact ⟨h1 D X Y u hC hFE, h2 D X Y u hC hFE, idMeetRO_of hL D X Y u, h3 D X Y u hC hFE⟩
-
-theorem idCellDiagNeatC_of_steps3 (hL : Formalism.L2.SG.TermOp.Vanish.NLamNinf) (hV : VolPosC) (h1 : IdMeetOneC)
-    (h2 : IdMeetPhaseC) (h3 : IdMeetVolC) : IdCellDiagNeatC := by
-  exact idCellDiagNeatC_of hV piIrrC_holds (idMeetC_of_steps3 hL h1 h2 h3)
 
 theorem idCellDiagC_of_steps3 (hL : Formalism.L2.SG.TermOp.Vanish.NLamNinf) (hV : VolPosC) (h1 : IdMeetOneC)
     (h2 : IdMeetPhaseC) (h3 : IdMeetVolC) (hN : NeatC) : IdCellDiagC := by

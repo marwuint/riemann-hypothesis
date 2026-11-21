@@ -43,8 +43,6 @@ theorem exists_normal_index {H : Type*} [Group H] [Finite H] [Nontrivial H] (l :
   refine ⟨K, Subgroup.normal_of_index_eq_minFac_card ?_, hidx⟩
   rw [hidx, hk, Nat.Prime.pow_minFac hl.1 (Nat.succ_ne_zero j)]
 
-def tau (R : Type u) [CommRing R] (n : ℕ) : R := 1 + ∑ j : Fin (n + 1), (-1 : R) ^ ((j : ℕ) + 1)
-
 end
 
 end ReciprocityTheory.DiscreteGroups.LocalClassField.Deg2

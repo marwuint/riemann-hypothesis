@@ -5,11 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicLatticeStabili
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SecondCountableFiniteAdelicUnitaryPoints
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalPointsCountableDiscreteSubgroupAdelic
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsSatFlag
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdaptedBasisSaturatedIsotropicFlagStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdaptedBasisChangeModelsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagsConjugateOfSameAdaptedModelsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdaptedBasisSaturatedIsotropicFlag
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdaptedBasisChangeModels
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagsConjugateOfSameAdaptedModels
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolProdLeTsumSlices
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagClassMeasureBoundLatticeStabiliserStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagClassMeasureBoundLatticeStabiliser
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeEqMeasureInterFundamentalDom
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutomorphicInstanceExistsFundamentalDomain
 
@@ -237,24 +237,24 @@ theorem unfoldBound : UnfoldBound := by
       exact ⟨γ, by rwa [← SetLike.mem_coe, hΓ], h2, by rwa [← SetLike.mem_coe, hK]⟩)
     (fun y hy => by
       obtain ⟨R, hR, hRB⟩ := GlobalTheory.FlagSat.exists_isSatFlag I a j B y hy
-      obtain ⟨Λ, x₀, U, U', U₀, hU⟩ := GlobalTheory.T.exists_adaptedBasis_saturatedIsotropicFlag I I₀ e p q a j he hsig hp hq hsig₀ y.2 R hR
+      obtain ⟨Λ, x₀, U, U', U₀, hU⟩ := _root_.GlobalTheory.AdaptedExists.exists_isAdapted I I₀ e p q a j he hsig hp hq hsig₀ y.2 R hR
       let t : (∀ i, Quot (latRel I.E (j i))) × Quot (dcRel Γ₀ K₀) :=
         (fun i => Quot.mk _ ⟨Λ i, hU.2.2.1 i⟩, Quot.mk _ x₀)
-      obtain ⟨V, V', V₀, hV⟩ := GlobalTheory.T.exists_adapted_basis_change_models I I₀ e y.2 a j R Λ x₀ U U' U₀ hj hU
+      obtain ⟨V, V', V₀, hV⟩ := _root_.GlobalTheory.AdaptedMove.adapted_move I I₀ e y.2 a j R Λ x₀ U U' U₀ hj hU
         (fun i => (Quot.out (t.1 i)).1) (Quot.out t.2)
         (fun i => rel_out (latRel_equiv I.E (j i)) ⟨Λ i, hU.2.2.1 i⟩)
         (by
           obtain ⟨γ, h1, k, h2, h3⟩ := rel_out (dcRel_equiv Γ₀ K₀) x₀
           exact ⟨γ, hΓ₀ ▸ h1, k, hK₀ ▸ h2, h3⟩)
       let t' : {t // P t} := ⟨t, y.2, R, V, V', V₀, hV⟩
-      obtain ⟨γ, h1, k, h2, h3, h4⟩ := GlobalTheory.T.flags_conjugate_of_same_adapted_models I I₀ e y.2 a j R _ _ V V' V₀ hj hV (x t') (S t') (T t') (T' t')
+      obtain ⟨γ, h1, k, h2, h3, h4⟩ := _root_.GlobalTheory.FlagConj.conjugate_of_isAdapted I I₀ e y.2 a j R _ _ V V' V₀ hj hV (x t') (S t') (T t') (T' t')
         (T₀ t') (had t')
       refine ⟨t', γ, by rwa [← SetLike.mem_coe, hΓ], k, by rwa [← SetLike.mem_coe, hK], h3, ?_⟩
       show sizesAt I (x t') (S t') (γ.1 * y.1) ∈ B
       rwa [h4])
     (hK ▸ ht)
   rw [hΓ, hK] at key
-  have loc := fun t : {t // P t} => GlobalTheory.T.flagClass_measure_bound_lattice_stabiliser I I₀ e (x t) a j (S t) _ _ (T t) (T' t) (T₀ t) hj (had t)
+  have loc := fun t : {t // P t} => _root_.GlobalTheory.FlagBase.OneClass.bound I I₀ e (x t) a j (S t) _ _ (T t) (T' t) (T₀ t) hj (had t)
     p q hsig c c₀ hc hc₀ B hB hBs
   set C := ENNReal.ofReal (cIw p q j ^ I.f * (2 * Formalism.HermitianLatticesTheory.vInv I.E) ^ ((I.f : ℝ) * dimN I.n j / 2)) with hC
   set Z := ∫⁻ τ in B, ENNReal.ofReal (dens I.n I.f j τ) with hZ

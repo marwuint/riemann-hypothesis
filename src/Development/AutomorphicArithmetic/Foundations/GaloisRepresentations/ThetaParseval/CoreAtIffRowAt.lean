@@ -49,13 +49,6 @@ theorem sphG_iff_cl (hS : SatPol) {a : ℕ} (ι : Qbar l ≃+* ℂ) (r : G E Ω 
       rw [hS E Ω A w hA a B g]
       exact (h2 P AI hT A hA O Bw hj).2.2.2 g
 
-variable (E Ω) in
-
-def CoreAt (ι : Qbar l ≃+* ℂ) (m : ℕ) : Prop :=
-  ∀ U : Submodule ℂ (UA E m → ℂ), IsAutRepU U → ∀ lam : (E →+* ℂ) → DomWeight m, (∀ τ, HasWeightAt U τ (lam τ)) →
-    ∃ r : G E Ω →* GL (Fin m) (Qbar l), Continuous r ∧ IsSSRep r ∧
-      ∀ w B, GlobalTheory.Row9.SatU U w B → ∀ c, GlobalTheory.Row9.SphG c ι r w B fun τ => infOfWeight (lam τ)
-
 end UpperTheory.Gal.TP
 
 end

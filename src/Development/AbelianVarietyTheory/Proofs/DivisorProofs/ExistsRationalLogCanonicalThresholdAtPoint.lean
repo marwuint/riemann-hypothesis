@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgC
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PointSeparationPair
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalMultipleAddQWeil
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogCanonicalAtIffOfIsLogCanonicalLocalEquation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTestDivisorsKltLcPencilBoundariesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTestDivisorsKltLcPencilBoundaries
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -22,7 +22,7 @@ theorem exists_threshold_lcAt_not_kltAt : GlobalTheory.Published.Principalisatio
   obtain ⟨η, hη, hG₁⟩ := isLogCanonicalMultiple_add_qWeil X p n Δ m mD G D₀ hm hmD hG
   have hm₁ : 0 < m * mD := Nat.mul_pos hm hmD
   obtain ⟨S, hSf, hS⟩ :=
-    GlobalTheory.T.finite_test_divisors_klt_lc_pencil_boundaries hP X p n hp hn η (m * mD) (mD • G + m • D₀) B₀ hη hm₁
+    _root_.GlobalTheory.PairStep.finite_test_divisors hP X p n hp hn η (m * mD) (mD • G + m • D₀) B₀ hη hm₁
   obtain ⟨g, hg⟩ := (mD • G + m • D₀).exists_isEqn x
   obtain ⟨f, hf⟩ := B₀.exists_isEqn x
   have hL := hG₁ x g hg
@@ -40,7 +40,7 @@ theorem exists_threshold_lcAt_not_kltAt : GlobalTheory.Published.Principalisatio
       IsLogEqn p (Δ + qWeil D₀ mD + c • qWeil B₀ m') η x m'' g'' ∧
       ∀ E : DivOver p, discrep E η m'' g'' = a E - c * t E := by
     obtain ⟨m'', g'', h1, h2, h3⟩ :=
-      GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n (Δ + qWeil D₀ mD) (qWeil B₀ m') η x (m * mD) m' g f c hm₁ hm' hL hBf
+      _root_.GlobalTheory.PairStep.isLogEqn_add_smul X p n (Δ + qWeil D₀ mD) (qWeil B₀ m') η x (m * mD) m' g f c hm₁ hm' hL hBf
     exact ⟨m'', g'', h1, h2, fun E => by rw [h3, ha, ht]⟩
   have hka : ∀ E : DivOver p, E.Through x → -1 < a E := fun E hE => by
     rw [ha]; exact (hL.kltAt_iff hn hη hm₁).1 hk E hE

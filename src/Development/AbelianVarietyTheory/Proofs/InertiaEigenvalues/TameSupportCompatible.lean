@@ -99,21 +99,4 @@ theorem chain : GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (g : ℕ
 
 end Chain
 
-theorem supportCompat : GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (I : Ident D) (rc : GlobalTheory.SerSys.Corr D), IsRc hL T I rc → ∀ k v, TameGen.SupportCompat (fun a => D.naut.inePol a (D.ntypes.tg k v)) (fun π : Supp.GLRep _ => rc k v π.1 π.2) := by
-  intro hZ hL D T I rc hrc k v π hi hs
-  obtain ⟨L, y, hind, hsc, hsup, hf⟩ := chain hZ (D.host.g k) π hi hs
-  refine ⟨L, hind, fun ρ hρ => ?_, ?_⟩
-  · obtain ⟨h0, h1, -, -, h3⟩ := hsc ρ hρ
-    exact ⟨h0, h1, GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal ℚ_[D.host.g k] ρ.1 _ ρ.2.ρ h3⟩
-  show D.naut.inePol (rc k v π.1 π.2) (D.ntypes.tg k v) =
-    (L.map fun ρ => D.naut.inePol (rc k v ρ.1 ρ.2) (D.ntypes.tg k v)).prod
-  rw [GlobalTheory.SuppIne.suppIne hL D T I rc hrc k v π y hsup]
-  congr 1
-  clear hsup hind hsc
-  induction hf with
-  | nil => rfl
-  | cons h _ ih =>
-    obtain ⟨hs', hi', hin⟩ := h
-    rw [List.map_cons, List.map_cons, ih, GlobalTheory.TypeRec.TwistInert.inePol_inert hL D T I rc hrc k v _ hs' hi' _ hin]
-
 end GlobalTheory.SerSys.SuppTame

@@ -136,64 +136,11 @@ section Car
 
 variable {n : ℕ}
 
-theorem key_lt (p : Pos n) : CompanionTheory.D.LK.key p < n * n := by
-  unfold CompanionTheory.D.LK.key
-  have h1 := p.1.1.2
-  have h2 := p.1.2.2
-  nlinarith
-
-theorem keyR_inj {i j : Ix n} (h : keyR i = keyR j) : i = j := by
-  obtain ⟨b, p⟩ := i
-  obtain ⟨b', q⟩ := j
-  have hp := key_lt p
-  have hq := key_lt q
-  cases b <;> cases b' <;> simp only [keyR, if_true, Bool.false_eq_true, if_false] at h
-  · rw [CompanionTheory.D.LK.Car.key_inj (by omega : CompanionTheory.D.LK.key p = CompanionTheory.D.LK.key q)]
-  · omega
-  · omega
-  · rw [CompanionTheory.D.LK.Car.key_inj (by omega : CompanionTheory.D.LK.key p = CompanionTheory.D.LK.key q)]
-
-def tw (i j : Ix n) : ℂ := if keyR j < keyR i then -1 else 1
-
-theorem tw_self (i : Ix n) : tw i i = 1 := by simp [tw]
-
-theorem tw_mul_self (i j : Ix n) : tw i j * tw i j = 1 := by
-  unfold tw; split_ifs <;> simp
-
-theorem tw_swap {i j : Ix n} (h : i ≠ j) : tw j i = -tw i j := by
-  have hk : keyR i ≠ keyR j := fun e => h (keyR_inj e)
-  unfold tw
-  rcases lt_or_gt_of_ne hk with h1 | h1
-  · simp [h1, h1.not_gt]
-  · simp [h1, h1.not_gt]
-
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 theorem liftR_apply {V' : Type} [AddCommGroup V'] [Module ℂ V'] (T : V →ₗ[ℂ] V') (x : Cr n V)
     (A : Finset (Ix n)) : liftR n T x A = T (x A) := rfl
 
-theorem br_lift_lift (T S : Module.End ℂ V) :
-    br (liftR n T : Module.End ℂ (Cr n V)) (liftR n S) = liftR n (br T S) := by
-  refine LinearMap.ext fun x => funext fun A => ?_
-  simp [br, liftR_apply]
-
 end Car
-
-section Coefficients
-
-variable {n : ℕ}
-
-def bt (s a b : Bool) : ℂ :=
-  if s then (if a then (if b then 1 else -1) else 0) else (if b then 0 else 1)
-
-end Coefficients
-
-section Units
-
-variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
-
-variable {E1 E2 : Fin n → Fin n → Module.End ℂ V}
-
-end Units
 
 end GlobalTheory.CompanionTheory.RealMult.TorC

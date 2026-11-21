@@ -97,26 +97,6 @@ theorem mem_congruenceSubgroup {x : IdeleGroup K} :
   simp only [finiteComponent_toFinite]
   rfl
 
-theorem mem_congruenceSubgroup_iff {x : IdeleGroup K} :
-    x ∈ 𝔪.congruenceSubgroup ↔
-      (∀ v, v.asIdeal ∣ 𝔪.ideal →
-          Valued.v ((x : 𝔸[K]).2 v - 1) ≤ exp (-(𝔪.exponent v : ℤ))) ∧
-        (∀ v, ¬ v.asIdeal ∣ 𝔪.ideal → Valued.v ((x : 𝔸[K]).2 v) = 1) ∧
-        ∀ w ∈ 𝔪.real, 0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2
-          ((x : 𝔸[K]).1 w.1) := by
-  rw [mem_congruenceSubgroup]
-  constructor
-  · rintro ⟨hf, hi⟩
-    refine ⟨fun v hv ↦ (hf v).2, fun v hv ↦ (hf v).1, hi⟩
-  · rintro ⟨hd, hn, hi⟩
-    refine ⟨fun v ↦ ?_, hi⟩
-    by_cases hv : v.asIdeal ∣ 𝔪.ideal
-    · exact (mem_unitsLevel_of_one_le ((𝔪.one_le_exponent_iff v).2 hv)).2 (hd v hv)
-    · rw [(𝔪.exponent_eq_zero_iff v).2 hv, mem_unitsLevel]
-      refine ⟨hn v hv, ?_⟩
-      rw [Nat.cast_zero, neg_zero, exp_zero]
-      exact Valuation.map_sub_le _ (hn v hv).le (by simp)
-
 theorem isOpen_congruenceSubgroup : IsOpen (𝔪.congruenceSubgroup : Set (IdeleGroup K)) := by
   rw [congruenceSubgroup, Subgroup.coe_inf, Subgroup.coe_comap]
   refine IsOpen.inter ?_ (isOpen_positiveAt _)

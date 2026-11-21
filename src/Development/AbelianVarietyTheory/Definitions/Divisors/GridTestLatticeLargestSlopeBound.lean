@@ -152,27 +152,6 @@ theorem ClassReps.gridClassReps_delta_apply_rep (rp : ClassReps G) (hN : rp.Neat
     symm
     exact (DoubleCoset.eq _ _ _ _).2 ⟨⟨_, hγ⟩, ⟨γ.1, γ.2, rfl⟩, ⟨u, hu.1⟩, hu, Subtype.ext he⟩
 
-theorem testFunction_value_at_rep (rp : ClassReps G) (hN : rp.Neat) {n : ℕ} (e : Fin n ≃ TestIx G × VVIdx (LaP G)) (a : Fin n) (c : G.ClPlus) :
-    psi rp e a (rp.x c) = valAt (LaP G) e (datumOf e a, c) (Pi.single a 1) := by
-  classical
-  rw [psi, rp.gridClassReps_delta_apply_rep hN]
-  apply (bVV D.what₂.LL (LaP G)).equivFun.injective
-  funext i
-  have e1 : (bVV D.what₂.LL (LaP G)).equivFun (valAt (LaP G) e (datumOf e a, c) (Pi.single a 1)) i =
-      (Pi.single a 1 : Fin n → D.what₂.LL) (e.symm ((datumOf e a, c), i)) := by
-    exact congrFun ((bVV D.what₂.LL (LaP G)).equivFun.apply_symm_apply _) i
-  have e2 : e.symm ((datumOf e a, c), i) = a ↔ c = (e a).1.2 ∧ i = (e a).2 := by
-    rw [Equiv.symm_apply_eq]
-    simp [Prod.ext_iff, datumOf]
-  rw [e1, Pi.single_apply]
-  simp only [e2]
-  split_ifs with h1 h2 h2
-  · simp [h2.2]
-  · have : ¬ (e a).2 = i := fun h => h2 ⟨h1, h.symm⟩
-    simp [Finsupp.single_apply, this]
-  · exact absurd h2.1 h1
-  · simp
-
 variable (G)
 
 theorem posDef_Xp (φ : D.host.E →+* ℂ) : ((Xp G).gram.map φ).PosDef := by
@@ -223,11 +202,6 @@ theorem IsTestLat.gridTestLattice_largestSlope_bound (hS : SlopeE) {v₀ : Infin
   rw [h.2]
   exact (hS D.host.E D.what₂.LL v₀ hv _ (fun φ x => D.sp.cm.cmUnram.2.1 φ x) _ (emb D) star_emb _ (LaP G) R hR hLa
     _ (posDef_Xp G) (TestIx G) (fun c => rp.lat c.2) (fun c => isSelfDualE_latOf G _) n e X').2.2.1 h.1
-
-example : deltaForm (MonoidHom.id ℚˣ) ⊥ ((Algebra.lsmul ℚ ℚ ℚ).toMonoidHom.comp (Units.coeHom ℚ)) 1 (3 : ℚ) (-1) = -3 := by
-  have h := deltaForm_left (MonoidHom.id ℚˣ) ⊥ ((Algebra.lsmul ℚ ℚ ℚ).toMonoidHom.comp (Units.coeHom ℚ)) 1 (3 : ℚ) (-1) 1
-  rw [deltaForm_self _ _ _ _ _ (by simp)] at h
-  simpa using h
 
 end GlobalTheory.FunObj
 

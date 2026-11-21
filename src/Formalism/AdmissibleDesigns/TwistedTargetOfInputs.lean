@@ -260,23 +260,6 @@ theorem lineW_of (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition
 
 end RecL
 
-section RecT
-
-variable {D : D7} {i : D.nd.Loc} {dc : TruncatedSeriesCountingIdentities.Decl D i}
-  {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))} (π : D.nd.X i)
-  {Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (Formalism.MainNotions.N.RepresentationBoundsCohomology.blk D.R)}
-  (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
-
-theorem twisted_target_of_inputs (hfin : Module.Finite (D.nd.O i) Dd.R') (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π)
-    (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
-    (hE : EmbRW i dc r Dd hw) (hc : MsContW i r hw)
-    [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (Formalism.MainNotions.N.RepresentationBoundsCohomology.blk D.R) Dd.ρk k)] (c : Fin (D.R.t + 1)) :
-    YtTarget i dc r π Dd hw c := by
-  exact ytTarget_of (hfin := hfin) (hF := hF) (hG2 := hG2)
-    (hemb := ytEmbW_of i dc r Dd hw hE (lineW_of i r ρ π hD hw)) (hc := hc) (c := c)
-
-end RecT
-
 end Formalism.MainNotions.N.K.TBa
 
 end

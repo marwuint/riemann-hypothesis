@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SemistableReduction₂
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EEContainsStableWeightZero
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaSystemHasTestsOfRealPointStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaSystemHasTestsOfRealPoint
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ClassicalPointsAndLocalRegularity
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemSupIIffAndHHEqKer
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsoFreeOrthogonalSupportAndSupISpecializes
@@ -45,7 +45,7 @@ theorem basis_origin_values_regular_and_unit :
   haveI : Algebra.FiniteType ℤ o := ArithBase.ft Ω
   haveI : CharZero Ω := ArithBase.char o
   have hL := classical_points_and_local_regularity o Ω M U₀ hO.normal
-  have hT := exists_at_test_of_cen o Ω S M U₀ (GlobalTheory.T.thetaSystem_hasTests_of_real_point h₁ h₂ h₃ h₄ h₅ o Ω S ρ).1 hO
+  have hT := exists_at_test_of_cen o Ω S M U₀ (_root_.GlobalTheory.ZH.hasTests_of_real h₁ h₂ h₃ h₄ h₅ o Ω S ρ).1 hO
   have hS := ThetaSys.mem_supI_iff_and_HH_eq_ker o Ω S M U₀ hO
   have hI := isoFree_TT_and_supI_specializes o Ω S M U₀ hO hL hT hS
   obtain ⟨hreg, i, hne, hinv⟩ :=

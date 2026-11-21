@@ -24,7 +24,7 @@ theorem inner_coord {κ : Type} [Fintype κ] [DecidableEq κ] {Q s : Matrix κ �
     (hF : ∀ z, ∀ f ∈ S, f ∈ F → dH ρ z f - I • dH ρ (I • s *ᵥ z) f ∈ F) {v : B} (hvS : v ∈ S) (hvF : v ∈ F)
     (hv : ∀ z, dH ρ z v + I • dH ρ (I • s *ᵥ z) v = 0) {y : H} (hy : ∀ x ∈ F, inner ℂ y (Φ x) = 0) (w : κ → ℂ) :
     inner ℂ y (Φ (ρ w v)) = 0 := by
-  obtain ⟨E, J, hJ, hE, hom⟩ := GlobalTheory.T.exists_euclideanCoords_hermitian_cartanInvolution κ Q s hQ hs hp
+  obtain ⟨E, J, hJ, hE, hom⟩ := _root_.GlobalTheory.Twist.EuclidCoord.exists_coord κ Q s hQ hs hp
   have hρ : IsHeis (omJ J) fun v => ρ (E v) :=
     UnitaryOsc.isHeis_comp h (E : EuclideanSpace ℂ κ →L[ℝ] (κ → ℂ)) fun x y => hom x y
   have hm : ∀ G, G ∈ S ↔ Sm (fun v => ρ (E v)) G ∧ ∀ y, T y G = G :=

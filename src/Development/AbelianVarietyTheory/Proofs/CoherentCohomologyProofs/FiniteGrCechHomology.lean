@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.ExistsAwayFracOfMemHomLoc
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FiniteCechHomologyOfFiniteCubeHomology
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FinitePieceOfPolyGradedSMul
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FiniteHomologyCubeComplexGradedModuleStatement
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FiniteHomologyCubeComplexGradedModule
 
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct GlobalTheory
 
@@ -18,6 +18,6 @@ theorem finite_grCech_homology : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (
   have h₁ : Module.Finite R ((grCube ι ℳ n).obj ∅) :=
     Module.Finite.equiv (homLocEmptyEquiv ι ℳ n)
   exact finite_cechHomology_of_finite_cubeHomology ι R (grCube ι ℳ n) h₁
-    (GlobalTheory.T.finite_homology_cubeComplex_gradedModule ι R M ℳ hM n) p
+    (_root_.GlobalTheory.finite_cubeComplex_grCube_homology ι R M ℳ hM n) p
 
 end GlobalTheory

@@ -45,7 +45,7 @@ theorem exists_marked_of_component : ∀ (D : D7) (V : HSp D) (H : ReciprocityTh
       have := hef x y
       rw [hW.1, hW.2] at this
       exact this) f h1 h2 h3
-  obtain ⟨u, hu, hug⟩ := (GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)
+  obtain ⟨u, hu, hug⟩ := (_root_.GlobalTheory.UnitaryGlue.adelic_glue D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)
   have hc := (AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank X.Λ X.Λ_fg
     X.Λ_span).1
   refine ⟨u, ?_, fun a ha => ?_⟩

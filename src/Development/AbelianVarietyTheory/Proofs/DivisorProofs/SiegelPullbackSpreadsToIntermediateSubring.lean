@@ -3,10 +3,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelObjectPullbackExistsAndPrincipal
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPrincipalObjectDescendsLargeSubfield
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeIsoSpreadsToSubringStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackCompSpreadToSubringStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LbIsoSpreadStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelSectionsSpreadToSubringStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeIsoSpreadsToSubring
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackCompSpreadToSubring
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LbIsoSpread
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelSectionsSpreadToSubring
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -34,7 +34,7 @@ theorem siegPB_spread_subring : ∀ (g n : ℕ) (B : Type) [CommRing B] (ζ : B)
       e.A.hom (pullback.snd u.A.hom h₀) (spMap R₀.subtype) := by
     refine IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback u.A.hom h₀)
     rw [pullback.lift_fst]; exact hφu.1
-  obtain ⟨F₁, hF₁⟩ := GlobalTheory.T.baseChange_iso_spreads_to_subring S R₀ e.A.left d₀.A.left (pullback u.A.hom h₀) e.A.hom d₀.A.hom
+  obtain ⟨F₁, hF₁⟩ := _root_.GlobalTheory.iso_spreads_to_subring S R₀ e.A.left d₀.A.left (pullback u.A.hom h₀) e.A.hom d₀.A.hom
     (pullback.snd u.A.hom h₀) φd _ hφd.1 hZ
   let R' : Subring S := Subring.closure ((R₀ : Set S) ∪ (F₁ : Set S))
   have hR0 : R₀ ≤ R' := fun x hx => Subring.subset_closure (Or.inl hx)
@@ -79,10 +79,10 @@ theorem siegPB_spread_subring : ∀ (g n : ℕ) (B : Type) [CommRing B] (ζ : B)
       have a₂ : (d'.lev a).left ≫ d'.A.hom = 𝟙 _ := Over.w (d'.lev a)
       rw [Category.assoc, hj2, reassoc_of% a₁, Category.assoc, a₂]
       simp
-  obtain ⟨F₂, hF₂⟩ := GlobalTheory.T.exists_finset_isGrpPullback_comp_of_subring_le g n B ζ S R' _ d' Y sY u _ ψ sE e j hψ gj (by rw [eh, hjψ]; exact hφu)
-  obtain ⟨F₃, hF₃⟩ := GlobalTheory.T.lbIso_spread_alt g n B ζ S R' _ d' Y sY u _ ψ sE e j hψ j₂ φu₂ gj.1 hsj hwj
+  obtain ⟨F₂, hF₂⟩ := _root_.GlobalTheory.GrpMulSpread.isGrpPullback_comp_spread_to_subring g n B ζ S R' _ d' Y sY u _ ψ sE e j hψ gj (by rw [eh, hjψ]; exact hφu)
+  obtain ⟨F₃, hF₃⟩ := _root_.GlobalTheory.SiegBundleSpread.lbIso_spread g n B ζ S R' _ d' Y sY u _ ψ sE e j hψ j₂ φu₂ gj.1 hsj hwj
     (by rw [hjψ]; exact hsu) hwu
-  obtain ⟨F₄, hF₄⟩ := GlobalTheory.T.siegel_level_sections_spread_to_subring g n B ζ S R' _ d' Y sY u _ ψ sE e j hψ hlj
+  obtain ⟨F₄, hF₄⟩ := _root_.GlobalTheory.siegel_levels_spread_to_subring g n B ζ S R' _ d' Y sY u _ ψ sE e j hψ hlj
     (fun a => by rw [eh, hjψ]; exact hlu a)
   refine ⟨F₁ ∪ F₂ ∪ F₃ ∪ F₄, fun R₁ hle hF s₁ d₁ hd₁ => ?_⟩
   have hsub : ∀ G : Finset S, G ⊆ F₁ ∪ F₂ ∪ F₃ ∪ F₄ → (G : Set S) ⊆ R₁ :=

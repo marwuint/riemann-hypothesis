@@ -10,8 +10,8 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SharpRelations
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomLieEquivScalarTmul
 import Development.AbelianVarietyTheory.Statements.FundamentalDomains.ExistsIsAddFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.BiadditiveOfTrivAxes
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsKsMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FinrankSymmCommutantKroneckerLeStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsKsMatrix
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FinrankSymmCommutantKroneckerLe
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelAbelianSchemeConstOverDualNumbersStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelPullbackIdCompCancelStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullback
@@ -362,7 +362,7 @@ theorem main : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S
     ((spMap_comp _ _).symm.trans (congrArg spMap (RingHom.ext fun z => by simp)))
   letI := t₀.ab.comm
   obtain ⟨v, f₀, hv, hf₀, hF⟩ := exists_isLieBasis_kronecker (n := 7) hφ pr hpr hinj f hf t₀.dim
-  obtain ⟨Θ, hs, hcomm, hzero⟩ := GlobalTheory.T.exists_ksMatrix_alt L1 L2 hT K r t.pol t₀.pol φ₀ _ v hφ hL₀ hv
+  obtain ⟨Θ, hs, hcomm, hzero⟩ := _root_.GlobalTheory.KSField.exists_ksMatrix L1 L2 hT K r t.pol t₀.pol φ₀ _ v hφ hL₀ hv
   let Θ' := (Matrix.reindexLinearEquiv K K finProdFinEquiv.symm finProdFinEquiv.symm).toLinearMap ∘ₗ Θ
   have hΘ : Function.Injective Θ' := by
     refine (Matrix.reindexLinearEquiv K K finProdFinEquiv.symm finProdFinEquiv.symm).injective.comp
@@ -373,7 +373,7 @@ theorem main : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S
     rw [LinearMap.finrank_range_of_inj hΘ]
     simp
   rw [← hr]
-  refine GlobalTheory.T.finrank_symm_commutant_kronecker_le K h (W + W.transpose) (W + W.transpose)⁻¹ _ hsym (Matrix.nonsing_inv_mul _ hdet) ?_
+  refine _root_.GlobalTheory.ZM.finrank_symm_commutant_le K h (W + W.transpose) (W + W.transpose)⁻¹ _ hsym (Matrix.nonsing_inv_mul _ hdet) ?_
   rintro _ ⟨lam, rfl⟩
   refine ⟨(hs lam).submatrix _, fun u u' => ?_⟩
   have key := hcomm _ _ _ _ _ _ (isMonHom_of_matrix pr hpr hinj _ _ (hf _)) (isMonHom_of_matrix pr hpr hinj _ _ (hf _))

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CompleteIntegersPropertiesStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedLatticeTowerExistsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupFromTowerStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupTowerCompatibilityStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupTowerDualStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupTowerFreeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CompleteIntegersProperties
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedLatticeTowerExists
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupFromTower
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupTowerCompatibility
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupTowerDual
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DivisibleGroupTowerFree
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TateMapDualHomBidual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvEqOneOfForallPairing
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsBisRest
@@ -403,13 +403,13 @@ theorem exists_HTPoint : FarguesHodgeTate → ∀ (p : ℕ) [Fact p.Prime] (C : 
   haveI := hu.finite
   haveI : IsFractionRing O C := hv.isFractionRing
   haveI : IsIntegrallyClosed O := hv.isIntegrallyClosed
-  obtain ⟨alg⟩ := (GlobalTheory.T.complete_integers_properties p C v O hv hp hO).1
+  obtain ⟨alg⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.HT.padicComplete_integers_structure p C v O hv hp hO).1
   letI := alg
-  obtain ⟨ρ, T, e, h1, h2, h3, h4, h5, h6, h7, h8⟩ := GlobalTheory.T.polarised_lattice_tower_exists p C v O hv hp hO E c La EF N u hu
-  obtain ⟨G, ee, τ, hre, hheight, j, hj⟩ := GlobalTheory.T.divisible_group_from_tower p C v O hv hp hO La L X
-  obtain ⟨lam, hlam⟩ := GlobalTheory.T.divisible_group_tower_dual p C v O hv hp hO La L X G ee τ hre EF ζ hprim hcomp hpair
-  obtain ⟨jj, hder, hjj⟩ := GlobalTheory.T.divisible_group_tower_free p C v O hv hp hO La L X G ee τ hre
-  have hend := (GlobalTheory.T.divisible_group_tower_compatibility p C v O hv hp hO La L X G ee τ hre).1
+  obtain ⟨ρ, T, e, h1, h2, h3, h4, h5, h6, h7, h8⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.free_on_lift p C v O hv hp hO E c La EF N u hu
+  obtain ⟨G, ee, τ, hre, hheight, j, hj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.tower_pdiv_exists p C v O hv hp hO La L X
+  obtain ⟨lam, hlam⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.exists_hom_dual_of_pairingExtends p C v O hv hp hO La L X G ee τ hre EF ζ hprim hcomp hpair
+  obtain ⟨jj, hder, hjj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.tower_omega p C v O hv hp hO La L X G ee τ hre
+  have hend := (_root_.GlobalTheory.CompanionTheory.Ar.HT.tower_end_pdiv p C v O hv hp hO La L X G ee τ hre).1
   haveI : Module.Free O G.omega := Module.Free.of_equiv jj.symm
   haveI : Module.Finite O G.omega := Module.Finite.equiv jj.symm
 

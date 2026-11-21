@@ -333,15 +333,6 @@ def HasTuples (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.
         ∀ x, R'.ioP j (PiTensorProduct.tprod ℂ u') (c' x) = R.ioP j (PiTensorProduct.tprod ℂ u) (c x)) ∧
     ∃ t t', IsTupOf R' B ψ t ∧ IsTupOf R' B ψ' t'
 
-theorem hasTuples_self {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {F : Face D A}
-    {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
-    {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} {ph : Fin D.R.m → ℂ} {j : Fin D.R.m} {B : Base (Vc D j) (Wc D j)}
-    {ψ ψ' : Twist D Circle} (h1 : GlobalTheory.Hk3.Core R F) (h2 : Finite T0) (h3 : Nonempty (FWTie T R κ v₀)) (h4 : IoExt R) (h5 : QGuard R)
-    (h6 : OMPins T R κ v₀ O j) (h7 : PhaseTie T R κ v₀ O ph j) (h8 : BaseOf R j B) {t t' : T0} (ht : IsTupOf R B ψ t)
-    (ht' : IsTupOf R B ψ' t') : HasTuples T R κ v₀ O ph j B ψ ψ' :=
-  ⟨T0, A, R, F, v₀, O, h1, h2, h3, h4, h5, h6, h7, h8, fun _ h => h, fun _ _ _ _ h => h, fun c u hc hu => ⟨c, u, hc, hu, fun _ => rfl⟩,
-    t, t', ht, ht'⟩
-
 end Tuples
 
 theorem baseOf_of_realPin {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
@@ -366,43 +357,8 @@ theorem baseOf_of_realPin {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T
 abbrev phs {eps : ℝ} {Fm : FamP eps} {x : ℝ} {hx : Fm.x1 < x} {i : Fm.Ix x} (p : Pt Fm x hx i) (j : Fin (Fm.D x i).R.m) : ℂ :=
   cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) (p.R.phs j)
 
-def TwOne : Prop := AtTw fun _ _ _ _ p w j => OneAt p w j
-
 def TupAt : Prop := AtTw fun Fm x hx i p w j => ∀ ρ ρ' : Setup (Fm.D x i).ntw, ρ.Good → ρ'.Good → RealPin p.R p.cG ρ →
   SameBut ρ ρ' → (Adapted p w ρ ∨ Adapted p w ρ') →
   HasTuples p.T p.R.toRealDat p.κ p.v₀ p.O (phs p) j (baseW (Fm.ex x hx i) w j ρ) (twW (Fm.ex x hx i) w ρ) (twW (Fm.ex x hx i) w ρ')
-
-def FixAt : Prop := AtTw fun Fm x hx i p w j => ∀ ρ : Setup (Fm.D x i).ntw, ρ.Good → RealPin p.R p.cG ρ →
-  ρ.LevelOf (Fm.D x i).nexp → ∀ τ : ℂ ≃+* ℂ, (∀ z, τ (Formalism.L2.Host.embLL0 (Fm.D x i) z) = Formalism.L2.Host.embLL0 (Fm.D x i) z) →
-  FixBase p.T p.R.toRealDat j τ ∧ FixDat (baseW (Fm.ex x hx i) w j ρ) τ
-
-def CoefAt : Prop := AtTw fun Fm x hx i p w j => ∀ (ρ : Setup (Fm.D x i).ntw) (ν : ℂ), ρ.Good → RealPin p.R p.cG ρ →
-  IsNorm p.R p.v₀ (baseW (Fm.ex x hx i) w j ρ) ν →
-  ∃ (c : VsV (Fm.D x i) j ℂ →ₗ[ℂ] (p.R.cV j).W) (u : ∀ σ, lowT (p.R.MW j (sg0 (Fm.D x i) p.P.A3.A)) σ) (ξ : ℂ),
-    ExtC p.R.toRealDat j (inC (p.O j).c') (p.O j).c0' c ∧
-    (∀ σ, (u σ : (p.R.MW j (sg0 (Fm.D x i) p.P.A3.A)).sm σ) = p.v₀ j (sg0 (Fm.D x i) p.P.A3.A) σ) ∧ IsRoot1 ξ ∧
-    ∀ h₀, ∀ P ∈ ρ.lat ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) (smallInt (Fm.D x i)) h₀,
-      ∃ y : VsV (Fm.D x i) j ℂ, ν • P = (ξ * phs p j) • p.R.ioP j (PiTensorProduct.tprod ℂ u) (c y) ∧
-        ∀ τ : ℂ ≃+* ℂ, (∀ z, τ (Formalism.L2.Host.embLL0 (Fm.D x i) z) = Formalism.L2.Host.embLL0 (Fm.D x i) z) → ConjVec j τ y y
-
-def NormAt : Prop := AtTw fun Fm x _ i p _ j => ∀ (B : Base (Vc (Fm.D x i) j) (Wc (Fm.D x i) j)) (ν ν' : ℂ),
-  IsNorm p.R p.v₀ B ν → IsNorm p.R p.v₀ B ν' → ∃ n : ℕ, n ≠ 0 ∧ ν' ^ n = ν ^ n
-
-theorem conjTw_of_one (hA : TwAdm) (hG : LatSmallGen) (hN : NormAt) (hO : TwOne) : ConjTw := by
-  refine AtTw.imp (AtTw.and (AtTw.and hA hG) (AtTw.and hN hO)) fun Fm x hx i p hr hm w _ j H => ?_
-  obtain ⟨⟨a1, a2⟩, a3, a4⟩ := H
-  intro ρ ρ' hρ hρ' ν ν' hp hS hν hR hF
-  obtain ⟨Z⟩ := hm.2.2.series
-  have hU : p.R.toRealDat.LUnif := hr.prim.unif
-  have hW : p.R.toRealDat.models_HW := p.charW.base.models.HW
-  have hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm := GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)
-  have hL : ρ.LevelOf (Fm.D x i).nexp := levelOf_of_sameBut hm.2.2 hρ' hρ hF.pin hp hS.symm hF.level
-  have hν' := hF.norm
-  have hν'' := hν'
-  rw [hS.2.2.2.1] at hν''
-  exact le_antisymm
-    (twLat_le p w j hU hW (Z.vec j) hK a1.1 a2 a4 ρ ρ' hρ hρ' ν ν' hp hS hL (Or.inr hF.adapted) hν hν'.1 (a3 _ _ _ hν hν'') hR hF.rat)
-    (twLat_le p w j hU hW (Z.vec j) hK a1.1 a2 a4 ρ' ρ hρ' hρ ν' ν hF.pin hS.symm hF.level (Or.inl hF.adapted) hν' hν.1
-      (a3 _ _ _ hν'' hν) hF.rat hR)
 
 end GlobalTheory.BigOn.Exp.TwConj

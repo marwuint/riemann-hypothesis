@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.DiscreteSeriesCoefficientsCuspidal
+import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.EventuallyNotMem
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AutomorphicFormHyp
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.LitAut
@@ -94,7 +94,7 @@ theorem UpperTheory.GalN.V.conjP_alt :
   refine ⟨π', ⟨fun φ => ?_, ?_, hs.hasFixed hfix⟩, hsat⟩
   · have e : σ.toRingHom.comp (σ.symm.toRingHom.comp φ) = φ := RingHom.ext fun x => σ.apply_symm_apply _
     exact e ▸ h4 _ _ (hinf _)
-  obtain ⟨a, ha⟩ := GlobalTheory.T.isAlgebraicHeckeChar_of_regularAlgebraic_polarizedPair K n (by omega) π χ hreg hpol
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair K n (by omega) π χ hreg hpol
   have hF : Module.finrank ℚ (maximalRealSubfield K) = 1 := by
     have h1 := Module.finrank_mul_finrank ℚ (maximalRealSubfield K) K
     rw [Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield K) K] at h1

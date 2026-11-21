@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompatibleReductionSystemMapImmersionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupportStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompatibleReductionSystemMapImmersion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupport
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.FormalAlg
 
@@ -16,7 +16,7 @@ theorem alg_of_isClosedImmersion : ∀ (R : Type) [CommRing R] (I : Ideal R) (W 
     (f : W ⟶ Spec (CommRingCat.of R)) (i : W' ⟶ W), IsSeparated f → IsClosedImmersion i → Alg f I →
     Alg (i ≫ f) I := by
   intro R _ I W W' f i hf hi hA t ht hp
-  obtain ⟨hs, hsp, hc⟩ := GlobalTheory.T.compatibleReductionSystem_map_immersion R I W W' f i hf inferInstance t ht hp
+  obtain ⟨hs, hsp, hc⟩ := _root_.GlobalTheory.FormalAlg.mapSystem R I W W' f i hf inferInstance t ht hp
   obtain ⟨T, hT, hred⟩ := hA _ hs hsp
   refine ⟨T.comap i, ?_, fun e => ?_⟩
   · have h1 : (T.comap i).subschemeι ≫ i ≫ f =
@@ -24,7 +24,7 @@ theorem alg_of_isClosedImmersion : ∀ (R : Type) [CommRing R] (I : Ideal R) (W 
       rw [← T.comapIso_hom_fst_assoc i, pullback.condition_assoc]
     rw [h1]
     infer_instance
-  · rw [← (GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support).1 R W W' f i, ← Scheme.IdealSheafData.comap_sup, hred e]
+  · rw [← (_root_.GlobalTheory.FormalAlg.baseIdeal_calculus).1 R W W' f i, ← Scheme.IdealSheafData.comap_sup, hred e]
     exact hc e
 
 end GlobalTheory.FormalAlg

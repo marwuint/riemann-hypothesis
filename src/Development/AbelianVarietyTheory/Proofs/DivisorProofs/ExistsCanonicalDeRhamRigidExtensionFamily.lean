@@ -5,12 +5,12 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjective
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DeRhamVectorExtension
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearCanonicalMapPrimitiveDeRhamRigExtStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearCanonicalMapPrimitiveDeRhamRigExt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CanonicalRigidifiedExtensionPullbackNaturalityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamToRigidifiedExtensionBijectivePNilpotentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRelativeDimensionAbelianTorsionTowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamToRigidifiedExtensionBijectivePNilpotent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRelativeDimensionAbelianTorsionTower
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CanonicalIsoHodgeFiltrationEqRangeInvariantFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieImageIffLieCorrespondenceDeRhamExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieImageIffLieCorrespondenceDeRhamExtension
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct WithConv
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap epsR IsTangent IsGrpPullback)
 open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB CubicalStr Theta thφ thε thK x3)
@@ -23,12 +23,12 @@ namespace GlobalTheory.DeRhamExt
 
 def canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (hA : IsAbelianScheme A)
     {G : PDivGroup p R} (t : G.TorsionTower A) : primDR A →ₗ[R] G.RigExt :=
-  Classical.choose (GlobalTheory.T.exists_linear_canonical_map_primitiveDeRham_rigExt R A p G t hA)
+  Classical.choose (_root_.GlobalTheory.PtExt.exists_canMap R A p G t hA)
 
 theorem isCan_iff_canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
     (hA : IsAbelianScheme A) {G : PDivGroup p R} (t : G.TorsionTower A) (c : primDR A)
     (x : G.RigExt) : IsCan t c x ↔ canMap p hA t c = x :=
-  Classical.choose_spec (GlobalTheory.T.exists_linear_canonical_map_primitiveDeRham_rigExt R A p G t hA) c x
+  Classical.choose_spec (_root_.GlobalTheory.PtExt.exists_canMap R A p G t hA) c x
 
 theorem isCan_canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
     (hA : IsAbelianScheme A) {G : PDivGroup p R} (t : G.TorsionTower A) (c : primDR A) :
@@ -38,8 +38,8 @@ theorem isCan_canMap (p : ℕ) {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj
 theorem canMap_bijective (hP : GlobalTheory.Published.AbelianHodgeDeRham) (p : ℕ) [Fact p.Prime] {R : Type}
     [CommRing R] (hR : IsNilpotent (p : R)) {A : Over (Sp R)} [GrpObj A] (hA : IsAbelianScheme A)
     {G : PDivGroup p R} (t : G.TorsionTower A) : Function.Bijective (canMap p hA t) := by
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_relativeDimension_abelian_torsionTower hP p R hR A hA G t
-  exact GlobalTheory.T.deRham_to_rigidified_extension_bijective_p_nilpotent hP p R hR A g hA hg G t _ (isCan_canMap p hA t)
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham hP p R hR A hA G t
+  exact _root_.GlobalTheory.PtExt.bijective_of_isCan_of_isNilpotent_of_hodgeDeRham hP p R hR A g hA hg G t _ (isCan_canMap p hA t)
 
 def canFamily (hP : GlobalTheory.Published.AbelianHodgeDeRham) (p : ℕ) [Fact p.Prime] :
     GlobalTheory.Published.DeRhamVectorExtension.Family p :=
@@ -60,8 +60,8 @@ theorem exists_canonical_family : GlobalTheory.Published.AbelianHodgeDeRham → 
     exact GlobalTheory.T.canonical_iso_hodge_filtration_eq_range_invariant_forms p R N hN A hA G t (canMap p hA t)
       (canMap_bijective hP p ⟨N, hN⟩ hA t).2 (isCan_canMap p hA t)
   · intro R _ hR A _ hA G t h v
-    obtain ⟨g, hg⟩ := GlobalTheory.T.exists_relativeDimension_abelian_torsionTower hP p R hR A hA G t
-    exact GlobalTheory.T.lie_image_iff_lie_correspondence_deRham_extension hP p R hR A g hA hg G t (canFamily hP p hR hA t)
+    obtain ⟨g, hg⟩ := _root_.GlobalTheory.TowerDim.exists_smoothOfRelativeDimension_of_hodgeDeRham hP p R hR A hA G t
+    exact _root_.GlobalTheory.PtExt.isLieImage_iff_lieCorr hP p R hR A g hA hg G t (canFamily hP p hR hA t)
       (isCan_canMap p hA t) h v
   · intro R _ hR A _ hA G t c
     exact isCan_canMap p hA t c

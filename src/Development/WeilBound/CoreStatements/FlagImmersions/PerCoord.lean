@@ -126,7 +126,7 @@ theorem perCoord : PerCoord := by
       · rw [← (hfr t ht τ).2.2]
         exact Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨.inr (τ, i), rfl⟩)
     refine ⟨linearIndependent_of_top_le_span_of_card_eq_finrank hs.ge ?_, hs⟩
-    have hg := GlobalTheory.T.genus_eq_card_mul_signature E Ψ g q p (R t).B σ hσ (hrk t ht)
+    have hg := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.TangentDim.dim_eq_card_mul E Ψ g q p (R t).B σ hσ (hrk t ht)
     simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin, Module.finrank_fin_fun]
     rw [hg]
     ring

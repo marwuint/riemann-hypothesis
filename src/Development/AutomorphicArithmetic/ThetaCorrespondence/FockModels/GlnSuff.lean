@@ -66,7 +66,7 @@ theorem heckeWeak_of_maxExpWeak (k : Type) [Field k] [ValuativeRel k] [Topologic
     obtain ⟨r, hr⟩ := GlobalTheory.T.hecke_operator_jacquet_eigen_left k N V π hs m hm d hd hd0 hd1 T hT' w h0
     rw [hw.pow_apply r] at hr
     exact (smul_ne_zero (pow_ne_zero r hμ0) hw.2) hr
-  have hjac := GlobalTheory.T.hecke_operator_jacquet_eigen_right k N V π hs m hm d hd hd0 hd1 T hT' w
+  have hjac := _root_.GlobalTheory.CompanionTheory.HeckeJacquet.hecke_omega_jacquet k N V π hs m hm d hd hd0 hd1 T hT' w
   have heig : (Submodule.Quotient.mk (π (Zls.diagPow k N (Zls.omegaVec N (d 0))) (w : V)) :
       Jacquet π (unipRad k (stdBlocks d hd))) =
       μ • (Submodule.Quotient.mk (w : V) : Jacquet π (unipRad k (stdBlocks d hd))) := by
@@ -81,7 +81,7 @@ theorem heckeWeak_of_maxExpWeak (k : Type) [Field k] [ValuativeRel k] [Topologic
     · exact hd0
     · exact hd1
   have hE := hM x hx hpos hjm
-  have hc := (hE (Zls.unifU k) (GlobalTheory.T.uniformizer_pow_tendsto_zero k)
+  have hc := (hE (Zls.unifU k) (_root_.GlobalTheory.CompanionTheory.UnifPow.tendsto_unifU_pow k)
     ![μ * (Nat.card 𝓀[k] : ℂ) ^ (((d 0 * d 1 : ℕ) : ℂ) / 2), c1]
     (by
       intro i
@@ -223,7 +223,7 @@ theorem coeffLp_of_heckeWeak (p : ℝ) (hp : 2 < p) : ∀ (k : Type) [Field k] [
     intro z hz w
     rw [Matrix.GeneralLinearGroup.center_eq_range_scalar] at hz
     obtain ⟨t, rfl⟩ := hz
-    obtain ⟨c, hc⟩ := GlobalTheory.T.admissible_irreducible_central_scalar k N V π hs hi ha t
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.SchurCentre.scalar_acts_by_scalar k N V π hs hi ha t
     rw [hc, map_smul, norm_smul, hu t c hc, one_mul]
   have hF : ∀ g : GL (Fin N) k, ‖l (π (QuotientGroup.mk g : AdGL k N).out v)‖ = ‖l (π g v)‖ := by
     intro g
@@ -251,10 +251,10 @@ theorem coeffLp_of_heckeWeak (p : ℝ) (hp : 2 < p) : ∀ (k : Type) [Field k] [
   rw [← hmm] at hm
   have hv : v ∈ fixed π (Zls.Km k N m) := by
     rintro ⟨x, hx⟩
-    have : π x v = v := hK1 (GlobalTheory.T.congruence_subgroup_antitone k N m1 m (hmm ▸ le_max_left _ _) hx)
+    have : π x v = v := hK1 (_root_.GlobalTheory.CompanionTheory.CongruenceSubgroups.Km_antitone k N m1 m (hmm ▸ le_max_left _ _) hx)
     simpa using this
   have hlK : ∀ x ∈ Zls.Km k N m, l ∘ₗ π x = l := fun x hx =>
-    hK2 (GlobalTheory.T.congruence_subgroup_antitone k N m2 m (hmm ▸ le_max_right _ _) hx)
+    hK2 (_root_.GlobalTheory.CompanionTheory.CongruenceSubgroups.Km_antitone k N m2 m (hmm ▸ le_max_right _ _) hx)
   obtain ⟨s, hsK, hcov⟩ := GlobalTheory.T.cartan_decomposition_congruence k N m hm hN
   have key : ∀ u : s, ∃ (C : ℝ) (ρ : Fin (N - 1) → ℝ), 0 ≤ C ∧ (∀ j, 0 ≤ ρ j) ∧
       (∀ j : Fin (N - 1), (Nat.card 𝓀[k] : ℝ) ^ (((j : ℕ) + 1) * (N - ((j : ℕ) + 1))) * ρ j ^ p < 1) ∧
@@ -262,7 +262,7 @@ theorem coeffLp_of_heckeWeak (p : ℝ) (hp : 2 < p) : ∀ (k : Type) [Field k] [
         ‖l (π (u.1.1 * x * Zls.diagPow k N (Zls.lamOf g) * y * u.1.2) v)‖ ≤ C * ∏ j, ρ j ^ g j := by
     rintro ⟨u, hu'⟩
     obtain ⟨h1, h2⟩ := hsK u hu'
-    obtain ⟨hf, hli, heq⟩ := GlobalTheory.T.matrix_coefficient_cartan_translate k N V π m v hv l hlK u.1 u.2 h1 h2
+    obtain ⟨hf, hli, heq⟩ := _root_.GlobalTheory.CompanionTheory.CongruenceCoef.coef_const_translated_double_coset k N V π m v hv l hlK u.1 u.2 h1 h2
     obtain ⟨C, ρ, hρ0, hρ1, hb⟩ := coeff_bound_rpow p hp k N V π hs ha hH m hm (π u.2 v) hf (l ∘ₗ π u.1) hli
     have hC : 0 ≤ C := by simpa using (norm_nonneg _).trans (hb 0)
     refine ⟨C, ρ, hC, hρ0, hρ1, fun g x hx y hy => ?_⟩

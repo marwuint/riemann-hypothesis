@@ -100,13 +100,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def crd (W : Formalism.BasicNotions.HSpace E) : Set (Fin W.rank → E) := {x | ∑ i, x i • W.frame i ∈ W.L0}
 
-theorem int_smul_mem (W : Formalism.BasicNotions.HSpace E) {e : E} (he : IsIntegral ℤ e) {w : W.V} (hw : w ∈ W.L0) :
-    e • w ∈ W.L0 := by
-  let r : 𝓞 E := ⟨e, he⟩
-  have h := W.L0.smul_mem r hw
-  have h1 : r • w = e • w := (algebraMap_smul E r w).symm
-  rw [← h1]; exact h
-
 theorem crd_up (W : Formalism.BasicNotions.HSpace E) :
     ∃ c : 𝓞 F, c ≠ 0 ∧ ∀ x ∈ crd W, ∀ i, IsIntegral ℤ ((c : F) • x i) := by
   classical
@@ -132,10 +125,6 @@ theorem crd_up (W : Formalism.BasicNotions.HSpace E) :
   have hx' : ∑ k, x k • W.frame k ∈ Submodule.span (𝓞 E) (s : Set W.V) := by rw [hs]; exact hx
   rw [hxi]
   exact key _ hx' i
-
-theorem alg_mul (a b : 𝓞 F) :
-    algebraMap F E ((a * b : 𝓞 F) : F) = algebraMap F E (a : F) * algebraMap F E (b : F) := by
-  rw [show ((a * b : 𝓞 F) : F) = (a : F) * (b : F) from rfl, map_mul]
 
 theorem crd_low (W : Formalism.BasicNotions.HSpace E) :
     ∃ c : 𝓞 F, c ≠ 0 ∧ ∀ i, ∀ e : E, IsIntegral ℤ e → Pi.single i ((c : F) • e) ∈ crd W :=
@@ -646,15 +635,6 @@ open Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.Main
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem stab_KSub_finite (D : D7) (W : HSpace D.host.E) (hW : W.SigOK)
-    (hsig : ∀ τ, W.sig τ = (W.rank, 0))
-    (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
-    (A : D.what₂.Tau → Matrix (Fin W.rank ⊕ Fin 0) (Fin W.rank) ℂ)
-    (g : HA (AF D.host.F) D.sp.cm.sig W.gram) :
-    (Unfold.stab (GamA D W) (KSub D W W.rank 0 θ A) g).Finite :=
-  stab_finite W D.sp.cm.sig (fun _ => rfl) (fun τ => D.sp.cm.cmUnram.2.1 τ) hW hsig _
-    (fun k hk y hy => ((show k ∈ KSet D W W.rank 0 θ A from hk).1 y).mp hy) g
-
 theorem KSub_eq (D : D7) (W : HSpace D.host.E) (hW : W.SigOK) (hsig : ∀ τ, W.sig τ = (W.rank, 0))
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : ∀ ρ, IsInfEmb (embOf D ρ) (θ ρ))
     (A : D.what₂.Tau → Matrix (Fin W.rank ⊕ Fin 0) (Fin W.rank) ℂ)
@@ -668,15 +648,6 @@ theorem KSub_eq (D : D7) (W : HSpace D.host.E) (hW : W.SigOK) (hsig : ∀ τ, W.
     refine (show h ∈ KSet D W W.rank 0 θ A from ⟨hh, fun ρ => ?_⟩)
     exact inf_all D.sp.cm.sig (fun _ => rfl) (fun x => (D.sp.cm.fixed _).mpr ⟨x, rfl⟩) W hW (embOf D ρ)
       (D.sp.cm.cmUnram.2.1 _) (hsig _) (θ ρ) (hθ ρ) (A ρ) (hA ρ) h
-
-theorem measurableSet_KSub (D : D7) (W : HSpace D.host.E) (hW : W.SigOK) (hsig : ∀ τ, W.sig τ = (W.rank, 0))
-    (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : ∀ ρ, IsInfEmb (embOf D ρ) (θ ρ))
-    (A : D.what₂.Tau → Matrix (Fin W.rank ⊕ Fin 0) (Fin W.rank) ℂ)
-    (hA : ∀ ρ, (A ρ).conjTranspose * Formalism.UG.Jpq W.rank 0 * A ρ = W.gram.map (embOf D ρ)) :
-    MeasurableSet (KSub D W W.rank 0 θ A : Set (HA (AF D.host.F) D.sp.cm.sig W.gram)) := by
-  have := Unfold.borelHA D.sp.cm.sig W.gram
-  rw [KSub_eq D W hW hsig θ hθ A hA]
-  exact (isOpen_SFin W D.sp.cm.sig).measurableSet
 
 end Rec
 
@@ -700,24 +671,6 @@ def DefClassRest (D : D7) : Prop :=
       ∑ i, ((Nat.card (Unfold.stab (GamA D W) (StabFin.SFin D.sp.cm.sig W.gram (L0c D W)) (g i)) : ℝ))⁻¹ =
         Formalism.HermitianLatticesTheory.mass W.hT W.L0
 
-theorem defClassDecomp_of_rest (D : D7) (hR : DefClassRest D) : DefClassDecomp D := by
-  intro W hW hsig θ hθ A hA
-  have hK : KSub D W W.rank 0 θ A = StabFin.SFin D.sp.cm.sig W.gram (L0c D W) :=
-    SetLike.coe_injective (StabFin.KSub_eq D W hW hsig θ hθ A hA)
-  obtain ⟨n, g, hcov, hdisj, hsum⟩ := hR W hW hsig
-  have := Unfold.borelHA D.sp.cm.sig W.gram
-  rw [hK]
-  exact ⟨(StabFin.isOpen_SFin W D.sp.cm.sig).measurableSet, n, g, hcov, hdisj,
-    fun i => StabFin.stab_finite W D.sp.cm.sig (fun _ => rfl) (fun τ => D.sp.cm.cmUnram.2.1 τ) hW hsig _
-      (fun k hk y hy => (hk y).mp hy) (g i), hsum⟩
-
-theorem volume_mass_of_class_rest (D : D7) (hT : VolTie D) (hG : GenusMassStd D) (hR : DefClassRest D) : DefiniteVolumeEqMass D :=
-  mass_volume_identity_of_class_decomp D hT hG (defClassDecomp_of_rest D hR)
-
-theorem Link2_of_rest (hR : ∀ (eps : ℝ) (Fm : Formalism.MainNotions.FamP eps) x (i : Fm.Ix x), DefClassRest (Fm.D x i)) :
-    Link2 :=
-  Link2_of_decomp fun eps Fm x i => defClassDecomp_of_rest _ (hR eps Fm x i)
-
 def ClassFin (D : D7) : Prop :=
   ∀ W : HSpace D.host.E, W.SigOK → (∀ τ, W.sig τ = (W.rank, 0)) →
     ∃ (n : ℕ) (g : Fin n → HA (AF D.host.F) D.sp.cm.sig W.gram),
@@ -737,18 +690,5 @@ def ClassMass (D : D7) : Prop :=
           (γ' : HA (AF D.host.F) D.sp.cm.sig W.gram) * g j * k' → i = j) →
       ∑ i, ((Nat.card (Unfold.stab (GamA D W) (StabFin.SFin D.sp.cm.sig W.gram (L0c D W)) (g i)) : ℝ))⁻¹ =
         Formalism.HermitianLatticesTheory.mass W.hT W.L0
-
-theorem defClassRest_of (D : D7) (h2 : ClassFin D) (h4 : ClassMass D) : DefClassRest D := by
-  intro W hW hsig
-  obtain ⟨n, g, hcov, hdisj⟩ := h2 W hW hsig
-  exact ⟨n, g, hcov, hdisj, h4 W hW hsig n g hcov hdisj⟩
-
-theorem volume_mass_of_class_items (D : D7) (hT : VolTie D) (hG : GenusMassStd D) (h2 : ClassFin D)
-    (h4 : ClassMass D) : DefiniteVolumeEqMass D :=
-  volume_mass_of_class_rest D hT hG (defClassRest_of D h2 h4)
-
-theorem Link2_of_items (h2 : ∀ (eps : ℝ) (Fm : Formalism.MainNotions.FamP eps) x (i : Fm.Ix x), ClassFin (Fm.D x i))
-    (h4 : ∀ (eps : ℝ) (Fm : Formalism.MainNotions.FamP eps) x (i : Fm.Ix x), ClassMass (Fm.D x i)) : Link2 :=
-  Link2_of_rest fun eps Fm x i => defClassRest_of _ (h2 eps Fm x i) (h4 eps Fm x i)
 
 end Formalism.L2.GlobalTheoryTheory.GenusMassVolumes

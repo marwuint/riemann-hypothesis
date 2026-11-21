@@ -1,5 +1,6 @@
-import Development.AbelianVarietyTheory.Definitions.Divisors.IsSimplicial
-open NumberField GlobalTheory.Shintani MeasureTheory Filter Topology
+import Mathlib
+
+open NumberField MeasureTheory Filter Topology
 
 namespace GlobalTheory.Shintani
 

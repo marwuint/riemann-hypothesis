@@ -3,7 +3,7 @@ import Formalism.LogSumExpBounds.CharacterSumPhase.LogSumExpBoundHolds
 import Formalism.LogSumExpBounds.CharacterSumPhase.NuclearNormBoundHolds
 import Formalism.LogSumExpBounds.CharacterSumPhase.RankLeOfSupport
 import Formalism.LogSumExpBounds.CharacterSumPhase.WeightedOffDiagonalHolds
-import Formalism.LogSumExpBounds.CharacterSumPhase.KappaModulusHolds
+import Formalism.LogSumExpBounds.StatementC
 import Formalism.LogSumExpBounds.CharacterSumPhase.DetMulDiagonalMulEqSum
 import Formalism.LogSumExpBounds.CharacterSumPhase.DescEquivLiftEquiv
 import Formalism.LogSumExpBounds.CharacterSumPhase.LatSum
@@ -11,8 +11,6 @@ import Formalism.LogSumExpBounds.CharacterSumPhase.DecayAsm
 import Formalism.LogSumExpBounds.CharacterSumPhase.ZLiftAsm
 
 namespace Formalism.NuclearRankWeightBounds.Top
-
-theorem latSum : Formalism.NuclearRankWeightBounds.Z.LatSum := Formalism.NuclearRankWeightBounds.P.lattice_sum_holds
 
 theorem decay : Formalism.NuclearRankWeightBounds.D.Decay :=
   Formalism.NuclearRankWeightBounds.P.decay_of_facts Formalism.NuclearRankWeightBounds.P.cb_weights Formalism.NuclearRankWeightBounds.P.nuclear_norm_bound_holds

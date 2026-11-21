@@ -26,11 +26,6 @@ noncomputable def wedgeMul (a b : ℕ) : (⋀[R]^a H) ⊗[R] (⋀[R]^b H) →ₗ
 @[simp] theorem coe_wedgeMul_tmul {a b : ℕ} (x : ⋀[R]^a H) (y : ⋀[R]^b H) :
     (wedgeMul R H a b (x ⊗ₜ y) : ExteriorAlgebra R H) = (x : ExteriorAlgebra R H) * y := rfl
 
-theorem wedgeMul_ιMulti {a b : ℕ} (x : Fin a → H) (y : Fin b → H) :
-    wedgeMul R H a b (exteriorPower.ιMulti R a x ⊗ₜ exteriorPower.ιMulti R b y) =
-      exteriorPower.ιMulti R (a + b) (Fin.append x y) :=
-  Subtype.ext (by simp [ExteriorAlgebra.ιMulti_mul_ιMulti])
-
 theorem coe_map (n : ℕ) (i : F →ₗ[R] H) (x : ⋀[R]^n F) :
     (exteriorPower.map n i x : ExteriorAlgebra R H) =
       ExteriorAlgebra.map i (x : ExteriorAlgebra R F) := by
@@ -56,42 +51,6 @@ theorem range_pow_eq_map (i : F →ₗ[R] H) (n : ℕ) :
       (⋀[R]^n F).map (ExteriorAlgebra.map i).toLinearMap := by
   rw [ExteriorAlgebra.exteriorPower, Submodule.map_pow, ← LinearMap.range_comp,
     ExteriorAlgebra.map_comp_ι]
-
-theorem mul_ιMulti_congr (i : F →ₗ[R] H) {b : ℕ} (x : ExteriorAlgebra R H)
-    (hx : ∀ f, x * ExteriorAlgebra.ι R (i f) = 0) (h h' : Fin b → H)
-    (hh : ∀ k, h k - h' k ∈ LinearMap.range i) :
-    x * ExteriorAlgebra.ιMulti R b h = x * ExteriorAlgebra.ιMulti R b h' := by
-  induction b generalizing x with
-  | zero => simp
-  | succ b ih =>
-    obtain ⟨f, hf⟩ := hh 0
-    have h0 : x * ExteriorAlgebra.ι R (h 0) = x * ExteriorAlgebra.ι R (h' 0) := by
-      rw [← sub_eq_zero, ← mul_sub, ← map_sub, ← hf, hx]
-    rw [ExteriorAlgebra.ιMulti_succ_apply, ExteriorAlgebra.ιMulti_succ_apply, ← mul_assoc,
-      ← mul_assoc, h0]
-    refine ih _ (fun g => ?_) _ _ fun k => hh k.succ
-    rw [mul_assoc, eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap (h' 0) (i g)),
-      mul_neg, ← mul_assoc, hx, zero_mul, neg_zero]
-
-theorem ιMulti_eq_zero_of_mem_span {r n : ℕ} (hn : r < n) (v : Fin r → F) (w : Fin n → F)
-    (hw : ∀ k, w k ∈ Submodule.span R (Set.range v)) : exteriorPower.ιMulti R n w = 0 := by
-  simp only [Submodule.mem_span_range_iff_exists_fun] at hw
-  choose u hu using hw
-  have : IsEmpty (Set.powersetCard (Fin r) n) := ⟨fun s => by
-    have h1 := s.1.card_le_univ
-    have h2 : s.1.card = n := s.2
-    simp only [Fintype.card_fin] at h1
-    omega⟩
-  have h0 : exteriorPower.ιMulti R n u = 0 :=
-    ((Pi.basisFun R (Fin r)).exteriorPower n).ext_elem fun s => this.elim s
-  have hw : w = Fintype.linearCombination R v ∘ u := funext fun k => (hu k).symm
-  rw [hw, ← exteriorPower.map_apply_ιMulti, h0, map_zero]
-
-section Exact
-
-variable {i : F →ₗ[R] H} {π : H →ₗ[R] L}
-
-end Exact
 
 section Dual
 

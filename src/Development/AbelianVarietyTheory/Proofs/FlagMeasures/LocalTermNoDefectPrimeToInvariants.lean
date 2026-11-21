@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameStandardLattice
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsFamilyUnitriangularChangeOfMemFrameUnipotentStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairingLeadingMinorEqOfUnitriangularChangesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramDetJoinedFamilyEqPmNormDifferenceStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SaturatedSpanOfGramDetIsUnitIntegralLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SaturatedSpanOfGramDetIsUnitIntegralLattice
 
 noncomputable section
 
@@ -111,7 +111,7 @@ theorem noDefect_gen (H : HermSp M V) {r : ℕ} (P : FPair H r) (hR : P.RelG (th
     · rw [h]
       refine ⟨M.L.O.neg_mem h1, -y, M.L.O.neg_mem hy, ?_⟩
       rw [neg_mul_neg]; exact hxy
-  exact hvO (GlobalTheory.T.saturated_span_of_gramDet_isUnit_integralLattice H t.abelian₂ hint (Sum.elim t.f t.f') hmem hU v hvΛ hvE)
+  exact hvO (_root_.GlobalTheory.satur_of_gram_det_unit H t.abelian₂ hint (Sum.elim t.f t.f') hmem hU v hvΛ hvE)
 
 end Gen
 

@@ -27,14 +27,6 @@ theorem shift_sub (x y : ∀ p q, K.X p q) : shift B (x - y) = shift B x - shift
   funext p q
   rcases p with _ | p <;> rcases q with _ | q <;> simp [shift, smul_sub]
 
-theorem shift_zero : shift B (0 : ∀ p q, K.X p q) = 0 := by
-  funext p q
-  rcases p with _ | p <;> rcases q with _ | q <;> simp [shift]
-
-theorem shift_add (x y : ∀ p q, K.X p q) : shift B (x + y) = shift B x + shift B y := by
-  funext p q
-  rcases p with _ | p <;> rcases q with _ | q <;> simp [shift, smul_add]
-
 theorem shift_sgl (p q : ℕ) (x : K.X p q) :
     shift B (K.sgl p q x) = (-1 : ℤ) ^ q • K.sgl (p + 1) (q + 1) (B p q x) := by
   funext a b
@@ -51,16 +43,6 @@ theorem shift_sgl (p q : ℕ) (x : K.X p q) :
         simp only [shift]
         rw [K.sgl_ne _ (by omega)]
         simp
-
-theorem shift_mem (m : ℕ) (x : ∀ p q, K.X p q) (hx : x ∈ K.T m) : shift B x ∈ K.T (m + 2) := by
-  intro p q h
-  rcases p with _ | p
-  · rfl
-  · rcases q with _ | q
-    · rfl
-    · simp only [shift]
-      rw [hx p q (by omega)]
-      simp
 
 theorem D_shift (hh : ∀ p q x, K.dh (p + 1) (q + 1) (B p q x) = B (p + 1) q (K.dh p q x))
     (hv : ∀ p q x, K.dv (p + 1) (q + 1) (B p q x) = B p (q + 1) (K.dv p q x)) (x : ∀ p q, K.X p q) :

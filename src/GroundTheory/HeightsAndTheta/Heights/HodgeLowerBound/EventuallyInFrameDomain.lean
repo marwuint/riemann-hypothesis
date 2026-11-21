@@ -150,49 +150,6 @@ theorem valM_eq (hz : z ∈ mcPts (mCoordIdeal y)) {S : Matrix (Fin N) (Fin N) �
   ext p q
   exact IndefiniteRowSideFullHecke.LowerBoundFree.valAt_eq hz (hS p q)
 
-theorem regularAt_smul {a : Ω} (s : K → ℂ) (hs : ∀ k, s k ≠ 0)
-    (ha : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a z) :
-    IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a (fun p => s p.1 * z p) :=
-  ⟨_, ha.choose_spec.smul s hs⟩
-
-theorem regularAt_conj {a : Ω} (ha : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a z) :
-    IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a (fun p => starRingEnd ℂ (z p)) :=
-  ⟨_, ha.choose_spec.conj⟩
-
-theorem isLocSection_smul {W : ChartBundle ℤ (segreCoord y) N E} {e : E} (s : K → ℂ)
-    (hs : ∀ k, s k ≠ 0) {z' : (Σ k, ι k) → ℂ} (hz' : z' = fun p => s p.1 * z p)
-    (he : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z e) : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z' e := by
-  subst hz'
-  obtain ⟨c, hc, m, a, t, ht, ha, rfl⟩ := he
-  exact ⟨c, fun k => mul_ne_zero (hs k) (hc k), m, a, t, ht, fun l => regularAt_smul s hs (ha l), rfl⟩
-
-theorem isLocSection_conj {W : ChartBundle ℤ (segreCoord y) N E} {e : E}
-    (he : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z e) :
-    IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W (fun p => starRingEnd ℂ (z p)) e := by
-  obtain ⟨c, hc, m, a, t, ht, ha, rfl⟩ := he
-  exact ⟨c, fun k => (map_ne_zero _).2 (hc k), m, a, t, ht, fun l => regularAt_conj (ha l), rfl⟩
-
-theorem isFrameAt_smul {W : ChartBundle ℤ (segreCoord y) N E} {b : Fin N → E} (s : K → ℂ)
-    (hs : ∀ k, s k ≠ 0) (hb : IndefiniteRowSideFullHecke.LowerBoundFree.IsFrameAt y W z b) :
-    IndefiniteRowSideFullHecke.LowerBoundFree.IsFrameAt y W (fun p => s p.1 * z p) b := by
-  refine ⟨fun q => isLocSection_smul s hs rfl (hb.1 q), fun e he => ?_⟩
-  have he' : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z e :=
-    isLocSection_smul (fun k => (s k)⁻¹) (fun k => inv_ne_zero (hs k))
-      (funext fun p => (inv_mul_cancel_left₀ (hs p.1) (z p)).symm) he
-  obtain ⟨a, ha, hae⟩ := hb.2 e he'
-  exact ⟨a, fun q => regularAt_smul s hs (ha q), hae⟩
-
-theorem isFrameAt_conj {W : ChartBundle ℤ (segreCoord y) N E} {b : Fin N → E}
-    (hb : IndefiniteRowSideFullHecke.LowerBoundFree.IsFrameAt y W z b) :
-    IndefiniteRowSideFullHecke.LowerBoundFree.IsFrameAt y W (fun p => starRingEnd ℂ (z p)) b := by
-  refine ⟨fun q => isLocSection_conj (hb.1 q), fun e he => ?_⟩
-  have he' : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z e := by
-    have h := isLocSection_conj he
-    simp only [RCLike.conj_conj] at h
-    exact h
-  obtain ⟨a, ha, hae⟩ := hb.2 e he'
-  exact ⟨a, fun q => regularAt_conj (ha q), hae⟩
-
 theorem inFrameDomain_smul {c : (k : K) → ι k} {f : Ω} (s : K → ℂ) (hs : ∀ k, s k ≠ 0)
     (hd : InFrameDomain y c f z) : InFrameDomain y c f (fun p => s p.1 * z p) := by
   obtain ⟨hc, v, hv, hv0⟩ := hd

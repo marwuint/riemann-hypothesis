@@ -19,12 +19,6 @@ def LatticePointsBelowFinite.Statement (h : HermitianForm F E W) (v : Basis ι E
 
 end Spaces
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

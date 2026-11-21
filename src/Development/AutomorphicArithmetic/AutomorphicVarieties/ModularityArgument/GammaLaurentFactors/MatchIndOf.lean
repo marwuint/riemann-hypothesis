@@ -41,8 +41,6 @@ def SuppAt (π : CuspSub K n) (v : HeightOneSpectrum (𝓞 K)) (s : Multiset (Ir
 def TorAt (π : CuspSub K n) (v : HeightOneSpectrum (𝓞 K)) : Prop :=
   ∀ σ, π.IsLocComp v σ → Toral (IrrGL.of σ.ρ σ.smooth σ.irred)
 
-def AllTor (π : CuspSub K n) : Prop := ∀ v, TorAt π v
-
 omit [IsTotallyComplex K] in
 
 def ThruAt {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] [Algebra K L] (P : CuspSub L n)

@@ -95,12 +95,6 @@ theorem under_eq_iff {P : HeightOneSpectrum (𝓞 E)} {v : HeightOneSpectrum (�
     P.under (𝓞 F) = v ↔ P.asIdeal.under (𝓞 F) = v.asIdeal :=
   ⟨fun h => h ▸ rfl, fun h => HeightOneSpectrum.ext h⟩
 
-theorem exists_rep {P : HeightOneSpectrum (𝓞 E)} (a : (𝓞 E ⧸ P.asIdeal)ˣ) :
-    ∃ b : 𝓞 E, Ideal.Quotient.mk P.asIdeal b = a ∧ b ∉ P.asIdeal := by
-  obtain ⟨b, hb⟩ := Ideal.Quotient.mk_surjective (a : 𝓞 E ⧸ P.asIdeal)
-  have := P.isPrime
-  exact ⟨b, hb, fun h => a.ne_zero (hb ▸ Ideal.Quotient.eq_zero_iff_mem.2 h)⟩
-
 end Res
 
 section Datum
@@ -131,11 +125,6 @@ theorem exists_of_conj_eq (hX : X.Ok) {a : 𝓞 X.E} (ha : X.conjO a = a) :
     rw [← isIntegral_algebraMap_iff (algebraMap X.F X.E).injective, hx]
     exact RingOfIntegers.isIntegral_coe _
   exact ⟨⟨x, h3⟩, RingOfIntegers.ext hx⟩
-
-theorem conjO_conjO (a : 𝓞 X.E) : X.conjO (X.conjO a) = a := RingOfIntegers.ext (star_star (a : X.E))
-
-def qdatOf (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (ξ : Chr X.F X.E X.K) : QDat X :=
-  ⟨QE sel ξ, fun P => resChar ξ P.1⟩
 
 variable {S : Set ℕ} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
 

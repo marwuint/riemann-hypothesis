@@ -6,7 +6,10 @@ import Formalism.LocalToGlobal.Columns.AtTOwedC
 import Formalism.LocalToGlobal.Columns.LocWLemmas
 import Formalism.LocalToGlobal.Columns.ToHLatLemmas
 import Formalism.LocalToGlobal.Columns.Inputs
-import Formalism.GL3MeanSquares.PrimeOrderRamificationResults
+import Formalism.GL3MeanSquares.HookFormulaTorsion.ConditionIffDualEqFunctional
+import Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar
+import Formalism.GL3MeanSquares.HookFormulaTorsion.LengthQuotientBoundGeneral
+import Formalism.GL3MeanSquares.HookFormulaTorsion.LemmaCTwistRamified
 import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
@@ -17,39 +20,6 @@ noncomputable section
 namespace Formalism.L2.Col
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
-
-section Gen
-
-variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
-  {V' : Type} [AddCommGroup V'] [Module K V']
-
-end Gen
-
-section LemC
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-end LemC
-
-section Det
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-end Det
-
-section T5
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-variable [Nonempty X.Tau]
-
-end T5
-
-section Nab
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-end Nab
 
 section Col
 
@@ -77,47 +47,8 @@ theorem KernelArgumentHypothesisScalar.prod {u : Pr.Word} {kk : KerArg W Ch u} {
 
 end Col
 
-section NonDeg
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-theorem VVTc_nonempty (hPr : Pr.Ok) {u : Pr.Word} {w : HeightOneSpectrum (𝓞 X.K)} (hw : seenC Pr u w) (ht : W.tops.Nonempty) :
-    (VVTc W u w).Nonempty := by
-  obtain ⟨τ, hτ⟩ := ht
-  exact ⟨⟨pullW τ w, (seenC_iff hPr u w).1 hw τ⟩, (mem_VVTc W u w _).2 ⟨τ, by rw [topsP_of_seenC W hPr u w hw]; exact hτ, rfl⟩⟩
-
-end NonDeg
-
-section AutomorphicFormsHyp
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-end AutomorphicFormsHyp
-
-section Price
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-end Price
-
-section Vals
-
-variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
-
-variable [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
-
-end Vals
-
 namespace GSD
 
-variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K)
-
 end GSD
-
-section ValsCol
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-
-end ValsCol
 
 end Formalism.L2.Col

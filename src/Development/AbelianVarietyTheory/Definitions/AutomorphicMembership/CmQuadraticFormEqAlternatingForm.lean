@@ -118,22 +118,7 @@ def LgOn {Δ : Pre → Type} (Sm : ∀ B : Pre, Fr B → Δ B → IntermediateFi
       Has₂ B (S₁ B.toPre f δ B.KsC) (S₂ B.toPre f δ B.KsC B.fixedCoefficientFieldInComplex (T.set f)) → P₁ B.toPre f δ B.KsC B.fixedCoefficientFieldInComplex ⊆ T.pl →
       T.Avoids (A B.toPre f δ B.KsC B.fixedCoefficientFieldInComplex) → p B f δ T
 
-def RecFld (B : Pre) (f : Fr B) (D : Fld.FieldDat B) (F : IntermediateField ℚ ℂ) : Prop := Fld.listField D f ≤ F ∧ F ≤ D.Om
-
-def JointFld (B : Pre) (_f : Fr B) (_δ : Unit) (F : IntermediateField ℚ ℂ) : Prop :=
-  GlobalTheory.FieldSize.Rich B F ∧ ∀ L : ℝ, GlobalTheory.FieldSize.HostSz B.host L → GlobalTheory.FieldSize.Sz F (GlobalTheory.FieldSize.poR B.R L) (GlobalTheory.FieldSize.poR B.R L)
-
-def LgRec (K : Ctx) (p : ∀ B : Base, Fr B.toPre → Fld.FieldDat B.toPre → TwDat B → Prop) : Prop := LgOn RecFld K p
-
-def LgJoint (K : Ctx) (p : ∀ B : Base, Fr B.toPre → TwDat B → Prop) : Prop := LgOn JointFld K fun B f _ T => p B f T
-
-def EvLgOn {Δ : Pre → Type} (Sm : ∀ B : Pre, Fr B → Δ B → IntermediateField ℚ ℂ → Prop)
-    (p : Ctx → ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop) : Prop := Ev fun K => LgOn Sm K (p K)
-
 def EvLg (p : Ctx → ∀ B : Base, Fr B.toPre → TwDat B → Prop) : Prop := Ev fun K => large₂ K (p K)
-
-def EvLgOnG {Δ : Pre → Type} (Sm : ∀ B : Pre, Fr B → Δ B → IntermediateField ℚ ℂ → Prop)
-    (p : Ctx → ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop) : Prop := EvG fun K => LgOn Sm K (p K)
 
 def EvLgG (p : Ctx → ∀ B : Base, Fr B.toPre → TwDat B → Prop) : Prop := EvG fun K => large₂ K (p K)
 
@@ -158,10 +143,6 @@ def RecExL (QL : ∀ D : D7, Lay D → Prop) : Prop :=
           ∀ Lv : LevCh P, Lv.duStar = du → Lv.Dstar = Ds → Lv.GamP = GamS C s P.R →
             ∃ (D : D7) (Y : Lay D), Over D P Lv ∧ RecOK s C cD D ∧ LedOK s C cD ch Y a b ∧ LocalQuadraticParts.TWAt D Y.nch Y.xd ∧ QL D Y
 
-def RecAt (QL : ∀ D : D7, Lay D → Prop) : Prop :=
-  Ev fun K => ∃ (D : D7) (Y : Lay D), Over D K.P K.Lv ∧ RecOK K.s K.C K.cD D ∧ LedOK K.s K.C K.cD K.ch Y K.a K.b ∧
-    LocalQuadraticParts.TWAt D Y.nch Y.xd ∧ QL D Y
-
 abbrev LayProp : Type 1 :=
   ∀ (_ : Scale) (_ : FC) (_ _ : ℝ) (P : PreCh) (_ _ : P.R.A → ℤ) (D : D7), Lay D → Prop
 
@@ -181,13 +162,8 @@ def RecAtG (QL : ∀ (_ : Ctx) (D : D7), Lay D → Prop) : Prop :=
   EvG fun K => ∃ (D : D7) (Y : Lay D), Over D K.P K.Lv ∧ RecOK K.s K.C K.cD D ∧ LedOK K.s K.C K.cD K.ch Y K.a K.b ∧
     LocalQuadraticParts.TWAt D Y.nch Y.xd ∧ QL K D Y
 
-def LayProp.at (QL : LayProp) (K : Ctx) : ∀ D : D7, Lay D → Prop := QL K.s K.C K.cD K.ch K.P K.a K.b
-
 def AtLed (QO : ∀ D : D7, Obj D → Prop) : LayProp := fun s C cD ch _ a b _ Y =>
   ∀ p : LedPart C Y, p.L.sc = s → WtEq p.L a b → Val C cD ch p.L → CanonInst p.ta.Gx → QO p.pt.D (Obj.ofPt p.pt)
-
-theorem has₂_iff (B : Base) (S₁ S₂ : Finset ℂ) : Has₂ B S₁ S₂ ↔ Has B ∅ S₁ S₂ :=
-  ⟨fun h => ⟨by simp, h.1, h.2⟩, fun h => ⟨h.2.1, h.2.2⟩⟩
 
 theorem Enl.KsC_eq {B B' : Base} (h : Enl B B') : B'.KsC = B.KsC := SetLike.coe_injective h.2.1
 
@@ -214,36 +190,9 @@ theorem finite_offSet (B : Pre) : (offSet B).Finite := by
   exacts [.inl (.inl (Nat.mem_divisors.2 ⟨h, h0⟩)), .inr (B.host.g_level i), .inr B.host.pde_level.1, .inr B.host.pde_level.2,
     .inr (B.T_level u), .inl (.inr rfl), .inr h]
 
-theorem mem_offSet_of_dvd_condN (B : Pre) {p : ℕ} (h : p ∣ B.host.condN) : p ∈ offSet B := .inl (h.mul_left _)
-
-theorem mem_offSet_of_mem_avPrimes (X : Stages) {p : ℕ} (hp : p ∈ avPrimes X.toD7) : p ∈ offSet X.B.toPre := by
-  simp only [avPrimes, Finset.mem_filter, Finset.mem_union, Finset.mem_insert, Finset.mem_image, Finset.mem_univ,
-    true_and] at hp
-  obtain ⟨(rfl | rfl | rfl | rfl | rfl | rfl | rfl | ⟨u, rfl⟩) | hp, -⟩ := hp
-  · exact .inl (Dvd.dvd.mul_right (by norm_num) _)
-  · exact .inl (Dvd.dvd.mul_right (by norm_num) _)
-  · exact .inr (.inl ⟨0, rfl⟩)
-  · exact .inr (.inl ⟨1, rfl⟩)
-  · exact .inr (.inr (.inl rfl))
-  · exact .inr (.inr (.inr (.inl rfl)))
-  · exact .inr (.inr (.inr (.inr (.inr (.inl rfl)))))
-  · exact .inr (.inr (.inr (.inr (.inl ⟨u, X.C.A_T u⟩))))
-  · have h : X.toD7.host.ccK = ⊤ := X.B.ccK_top
-    rw [h, Ideal.absNorm_top] at hp
-    simp at hp
-
-theorem TwDat.notMem_avRec (X : Stages) (T : TwDat X.B) (w : X.B.places.Pl) {v : HeightOneSpectrum (𝓞 X.B.host.E)}
-    (hv : v ∈ T.Q w) : v ∉ AvRec X.toD7 := by
-  obtain ⟨-, h1, -, h2⟩ := (T.psi_tw w).2.2.2 v fun h => ((T.psi_is w).ram v).1 h hv
-  exact not_mem_avRec_of_over (D := X.toD7) h1 (fun h => h2 (mem_offSet_of_mem_avPrimes X h)) (Ideal.absNorm_mem _)
-
 section Filter
 
 variable {Δ : Pre → Type} {Sm : ∀ B : Pre, Fr B → Δ B → IntermediateField ℚ ℂ → Prop} {K : Ctx}
-
-theorem lgOn_self : LgOn Sm K fun B f δ _ => Sm B.toPre f δ B.KsC :=
-  ⟨fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ _ => ∅, fun _ _ _ _ _ _ => ∅, by simp, by simp,
-    fun _ _ _ _ _ h _ _ _ => h⟩
 
 theorem LgOn.imp {p q : ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop} (hp : LgOn Sm K p)
     (h : ∀ B f δ T, K.Over B.toPre → Sm B.toPre f δ B.KsC → p B f δ T → q B f δ T) : LgOn Sm K q := by
@@ -283,8 +232,6 @@ theorem large₂.imp {p q : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (hp :
     (h : ∀ B f T, K.Over B.toPre → p B f T → q B f T) : large₂ K q :=
   lg_iff_lgOn.2 ((lg_iff_lgOn.1 hp).imp fun B f _ T x _ => h B f T x)
 
-theorem lgRec_bounds : LgRec K fun B f D _ => Fld.listField D f ≤ B.KsC ∧ B.KsLeOm D := lgOn_self
-
 end Filter
 
 section Good
@@ -293,11 +240,6 @@ theorem recEx_iff_recExG (QO : ∀ D : D7, Obj D → Prop) : RecEx QO ↔ RecExG
 
 theorem Ctx.Good.level {K : Ctx} {C5 c6 Cb : ℝ} (h : K.Good C5 c6 Cb) :
     K.P.H.levelPrimes = {K.P.H.g 0, K.P.H.g 1, K.P.H.pde, K.P.H.pde', DC.q0H K.P.H} := (ChGood.level h).1
-
-theorem Ctx.Good.cmQuadraticForm_eq_alternatingForm {K : Ctx} {C5 c6 Cb : ℝ} (h : K.Good C5 c6 Cb) : K.q1 = DC.q0H K.P.H := by
-  obtain ⟨h1, h2, h3, h4, -⟩ := K.ok.small
-  rw [h.level] at h1
-  simpa [h2, h3, h4] using h1
 
 theorem evG_of_ev {p : Ctx → Prop} (h : Ev p) : EvG p := by
   obtain ⟨ε0, h0, h⟩ := h
@@ -310,19 +252,6 @@ theorem evG_of_ev {p : Ctx → Prop} (h : Ev p) : EvG p := by
   refine ⟨c2, fun ch hch => ?_⟩
   obtain ⟨x0, h⟩ := h ch hch
   exact ⟨x0, fun K d1 d2 d3 d4 d5 _ => h K d1 d2 d3 d4 d5⟩
-
-theorem ev_le_splitBound (n : ℕ) : Ev fun K => n ≤ K.P.H.splitBound := by
-  refine ⟨1, one_pos, fun eps C8 he _ _ h8 => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ hC _ =>
-    ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨(n : ℝ) ^ (5 * C8 / eps), fun K h1 _ _ h4 hx => ?_⟩⟩⟩⟩⟩
-  have hv : HostVal K.s C8 K.P.H := by rw [← hC, ← h1]; exact K.ok.val
-  have he' := hv.eps_div_le_ez
-  rw [h4] at he'
-  have h0 : 0 < C8 := by linarith
-  refine le_trans (Nat.le_floor ?_) hv.split_tie
-  calc (n : ℝ) = ((n : ℝ) ^ (5 * C8 / eps)) ^ (eps / C8 / 5) := by
-        rw [← Real.rpow_mul (Nat.cast_nonneg _), show 5 * C8 / eps * (eps / C8 / 5) = 1 by field_simp, Real.rpow_one]
-    _ ≤ K.s.x ^ (eps / C8 / 5) := Real.rpow_le_rpow (by positivity) hx (by positivity)
-    _ ≤ K.s.x ^ (K.s.ez / 5) := Real.rpow_le_rpow_of_exponent_le K.s.one_lt_alt.le (by linarith)
 
 theorem EvG.imp {p q : Ctx → Prop} (hp : EvG p) (hpq : ∀ (K : Ctx) (C5 c6 Cb : ℝ), K.Good C5 c6 Cb → p K → q K) : EvG q := by
   obtain ⟨ε0, h0, h⟩ := hp
@@ -360,40 +289,9 @@ theorem evG_good : EvG fun K => ∃ C5 c6 Cb : ℝ, K.Good C5 c6 Cb :=
   ⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ =>
     ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ _ _ _ _ h => ⟨_, _, _, h⟩⟩⟩⟩⟩⟩
 
-theorem evLgOnG_of_evLgOn {Δ : Pre → Type} {Sm : ∀ B : Pre, Fr B → Δ B → IntermediateField ℚ ℂ → Prop}
-    {p : Ctx → ∀ B : Base, Fr B.toPre → Δ B.toPre → TwDat B → Prop} (h : EvLgOn Sm p) : EvLgOnG Sm p := evG_of_ev h
-
 theorem evLgG_of_evLg {p : Ctx → ∀ B : Base, Fr B.toPre → TwDat B → Prop} (h : EvLg p) : EvLgG p := evG_of_ev h
 
-theorem recAtG_of_recAt {QL : ∀ D : D7, Lay D → Prop} (h : RecAt QL) : RecAtG fun _ => QL := evG_of_ev h
-
-theorem RecAtG.imp {QL QL' : ∀ (_ : Ctx) (D : D7), Lay D → Prop} (h : RecAtG QL)
-    (hQ : ∀ (K : Ctx) (C5 c6 Cb : ℝ) (D : D7) (Y : Lay D), K.Good C5 c6 Cb → Over D K.P K.Lv → RecOK K.s K.C K.cD D →
-      LedOK K.s K.C K.cD K.ch Y K.a K.b → LocalQuadraticParts.TWAt D Y.nch Y.xd → QL K D Y → QL' K D Y) : RecAtG QL' :=
-  EvG.imp h fun K C5 c6 Cb hK ⟨D, Y, g1, g2, g3, g4, g5⟩ => ⟨D, Y, g1, g2, g3, g4, hQ K C5 c6 Cb D Y hK g1 g2 g3 g4 g5⟩
-
-theorem recExG_of_recExL {QL : ∀ D : D7, Lay D → Prop} (h : RecExL QL) : RecExG fun _ _ _ _ _ _ _ => QL := by
-  obtain ⟨ε0, h0, h⟩ := h
-  refine ⟨ε0, h0, fun eps C8 C5 c6 Cb a1 a2 a3 a4 => ?_⟩
-  obtain ⟨K0, h⟩ := h eps C8 a1 a2 a3 a4
-  refine ⟨K0, fun C b1 b2 b3 => ?_⟩
-  obtain ⟨c1, h⟩ := h C b1 b2 b3
-  refine ⟨c1, fun cD hcD => ?_⟩
-  obtain ⟨c2, h⟩ := h cD hcD
-  refine ⟨c2, fun ch hch => ?_⟩
-  obtain ⟨cs, x0, hcs, h⟩ := h ch hch
-  exact ⟨cs, x0, hcs, fun s P a b c d1 d2 d3 => h s P _ a b c d1 d2 d3.ok⟩
-
 end Good
-
-example (K : Ctx) (D : D7) (Y : Lay D) : (AtLed fun _ O => O.L.sc = K.s).at K D Y := fun _ h _ _ _ => h
-
-example (B : Pre) : Fr B = Fld.Chars B := rfl
-
-example (B : Base) (D : Fld.FieldDat B.toPre) (f : Fr B.toPre) (c M : ℕ) (h : B.FieldsOK D f c M) : RecFld B.toPre f D B.KsC :=
-  ⟨h.listField_le, h.ksLeOm⟩
-
-example (B : Base) (f : Fr B.toPre) (T : TwDat B) : (1 : HChar B.host.E) ∈ T.set f := Or.inl (Or.inl rfl)
 
 end GlobalTheory.Mem.Top
 

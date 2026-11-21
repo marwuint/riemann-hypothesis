@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralAdaptedElement
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TrueW
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopReadAt
@@ -54,7 +54,7 @@ theorem exists_center_stab_at_of_transport_correction : ∀ {D : D7} {L : SizeDa
   rw [hb] at hC
   obtain ⟨M, c1, c2, c3, c4⟩ := hC
   obtain ⟨s1, s2, s3, -, -, s6⟩ := rows_shape hE hF
-  obtain ⟨-, z2, -⟩ := GlobalTheory.T.besselLevelLineVector_primitive_rowLattice_norm D W.S.X W.Q.instEq u W.Q.Rl.ψ _ B μ lam hE hF
+  obtain ⟨-, z2, -⟩ := _root_.GlobalTheory.Core.Mi.LatMatch.sz_tied D W.S.X W.Q.instEq u W.Q.Rl.ψ _ B μ lam hE hF
   have loc : ∀ p : GlobalTheory.FinPl.Pl D, ∃ (a : GA D (D.sp.X 0)) (c : AE D), CenAt (D.sp.X 0) p a ∧ NormOneAt p c ∧
       SMoves (D.sp.Y 0) c (embA B.d B.o (a₀ * a)) Lm (latS D) p := by
     intro p
@@ -91,18 +91,18 @@ theorem exists_center_stab_at_of_transport_correction : ∀ {D : D7} {L : SizeDa
           omega
         refine GlobalTheory.T.exists_central_element_homothetic_gluedCores D k (o.p i) _ _ _ B.o B.ζ _ (o.β 0 i) β₀ M _ μ _ o.q (o.Q 0 i) a₀ hr e1 d1 s2 e2 hF.ne (s6 _) z2
           (GlobalTheory.SeeSaw.LevelTest.unifT_of _ _ hTv) fun a ha => ?_
-        obtain ⟨y, hy, hU⟩ := GlobalTheory.T.columnLevel_iff_rowLattice_kept_at_place D W.S.X W.Q.instEq u W.Q.Rl.ψ (_root_.GlobalTheory.MiTop.formsAtZero W u) (W.S.tr u) W.S.Y.hK B a₀ hE hLM hBa ha₀ _ hg a ha
+        obtain ⟨y, hy, hU⟩ := _root_.GlobalTheory.Core.Mi.LevRow.levrow D W.S.X W.Q.instEq u W.Q.Rl.ψ (_root_.GlobalTheory.MiTop.formsAtZero W u) (W.S.tr u) W.S.Y.hK B a₀ hE hLM hBa ha₀ _ hg a ha
         have c5 : (y : GL _ _) ∈ (_root_.GlobalTheory.MiTop.formsAtZero W u).cls0.lev.U ↔ Moves (D.sp.Y 0) (embA B.d B.o a) (v.N 0) (v.N 0) (· = (o.p i).v) :=
           (hBT.trace a (mem_GfC_of_grpAt ha) y hy).1.trans
-            ((GlobalTheory.T.mem_chainLevel_iff_carriesLattice_offLevel D (_root_.GlobalTheory.BaseChain.com_z W) 0 (_root_.GlobalTheory.LevZero.levelZeroState W).st hbot.mem _ hpS _
+            ((_root_.GlobalTheory.Core.Mi.LevChain.mem_levS_iff_moves D (_root_.GlobalTheory.BaseChain.com_z W) 0 (_root_.GlobalTheory.LevZero.levelZeroState W).st hbot.mem _ hpS _
               (conj_mem_grpAt (S := D.sp.Y 0) (embA_mem_grpAt _ _ ha) _)).trans (moves_conj (S := D.sp.Y 0) hN _))
-        exact ((GlobalTheory.T.wittCoreEmbedding_stabilises_iff_core_stabilises D _ _ _ B.d _ _ _ _ d2).symm.trans (c5.symm.trans hU)).trans
-          (GlobalTheory.T.wittCoreEmbedding_stabilises_iff_core_stabilises D _ _ _ B.d _ _ _ _ (s3 _))
+        exact ((_root_.GlobalTheory.Core.Mi.LatMatch.moves_emb0_iff_moves_of_monoAt D _ _ _ B.d _ _ _ _ d2).symm.trans (c5.symm.trans hU)).trans
+          (_root_.GlobalTheory.Core.Mi.LatMatch.moves_emb0_iff_moves_of_monoAt D _ _ _ B.d _ _ _ _ (s3 _))
       · obtain ⟨LL, e1, e2⟩ := c2 p hpT
         have hTv : (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∉ p.asIdeal := fun h => hpT ((hVT.tP p).2 h)
-        exact GlobalTheory.T.orthogonalSumCores_homothetic_off_level D _ _ _ B.o B.ζ M _ (f.g.x 0).L LL μ _ p a₀ B.line e1 e2
+        exact _root_.GlobalTheory.Core.Mi.LatMatch.coreOff_homothetic D _ _ _ B.o B.ζ M _ (f.g.x 0).L LL μ _ p a₀ B.line e1 e2
           (rows_trace hE hF hLM hBa ha₀ p (hBT.lat p hpT))
-          (GlobalTheory.T.selfDualLattice_splitsOff_unitNormLine_at_place D _ _ _ B.o B.ζ _ μ _ p B.line s2 hF.ne (s6 p) z2 hTv) hF.ne (s6 p) z2 hTv
+          (_root_.GlobalTheory.Core.Mi.LatMatch.SplitOff.splitsAt D _ _ _ B.o B.ζ _ μ _ p B.line s2 hF.ne (s6 p) z2 hTv) hF.ne (s6 p) z2 hTv
   obtain ⟨a, haf, hac, z, hz, hmvz⟩ := GlobalTheory.T.exists_central_glue_localHomotheties D (D.sp.Y 0) (D.sp.X 0) (embA B.d B.o) (embA B.d B.o a₀) Lm
     (latS D) hLm s1 (fun v a ha => embA_mem_grpAt _ _ ha) (fun v => by simpa only [map_mul] using loc v)
   rw [← map_mul] at hmvz

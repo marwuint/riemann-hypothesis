@@ -33,14 +33,6 @@ def indL (M : AddSubgroup V) (t : V) : ℂ := if t ∈ M then 1 else 0
 def xiInd (H : Sesq V) (α : V → ℂ) (vol : ℝ) (M : AddSubgroup V) (SA SB : Finset V) (e : V → ℂ) (s : V) : V → ℂ :=
   fun z => α s * opU H (-s) (xiS H α vol SA SB (indL M) e) z
 
-def xiU (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V) (θ : V → ℂ) : Sch (cU H A B) (Λ.addSubgroupOf A) →ₗ[ℂ] (V → ℂ) :=
-  Classical.epsilon fun Xi => IsXi (cU H A B) (wA H α A) (wB H α B) (Λ.addSubgroupOf A) θ Xi
-
-def xiT (H : Sesq V) (α : V → ℂ) (vol : ℝ) (A B Λ : AddSubgroup V) (θ : V → ℂ) : Sch (cU H A B) (Λ.addSubgroupOf A) →ₗ[ℂ] (V → ℂ) :=
-  ((Real.sqrt vol : ℝ) : ℂ) • xiU H α A B Λ θ
-
-def resA (A : AddSubgroup V) (Φ : V → ℂ) : A → ℂ := fun t => Φ (t : V)
-
 def SplitHyp (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V) : Prop :=
   IsHerm H ∧ IsSemiChar H A α ∧ IsSemiChar H B α ∧ IsSelfDual H A ∧ IsSelfDual H B ∧ GoodLat H α A B Λ
 
@@ -61,45 +53,6 @@ def BrkComm : Prop :=
   ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V), IsHerm H →
     (∀ (y t : V) (F : V → ℂ) (z : V), opU H t (opU H y F) z = brk H y t * opU H y (opU H t F) z) ∧
     ∀ (A B : AddSubgroup V) (y : B) (t : A), cU H A B y t = brk H (y : V) (t : V)
-
-def XiUIs : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ θ ∈ fixedBy H α Λ, IsXi (cU H A B) (wA H α A) (wB H α B) (Λ.addSubgroupOf A) θ (xiU H α A B Λ θ)
-
-def XiTieS : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SA SB : Finset V, IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, 0 < vol → ∀ θ ∈ fixedBy H α Λ,
-    ∀ Φ : V → ℂ, InvOn A B Φ → (∀ t ∈ A, t ∉ Λ → Φ t = 0) →
-      ∃ h : resA A Φ ∈ Sch (cU H A B) (Λ.addSubgroupOf A), xiT H α vol A B Λ θ ⟨resA A Φ, h⟩ = xiS H α vol SA SB Φ θ
-
-def XiTieL : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SX SA SB : Finset V, IsReps Λ A SX → IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, 0 < vol → ∀ θ ∈ fixedBy H α Λ,
-    ∀ Φ : V → ℂ, InvOn A B Φ →
-      ∃ h : resA A Φ ∈ Sch (cU H A B) (Λ.addSubgroupOf A), xiT H α vol A B Λ θ ⟨resA A Φ, h⟩ = xiL H α vol SX SA SB Φ θ
-
-def XiTieInd : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SA SB : Finset V, IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, 0 < vol → ∀ θ ∈ fixedBy H α Λ, ∀ s ∈ A,
-      ∃ h : resA A (fun t => indL B (t - s)) ∈ Sch (cU H A B) (Λ.addSubgroupOf A),
-        xiT H α vol A B Λ θ ⟨resA A (fun t => indL B (t - s)), h⟩ = xiInd H α vol B SA SB θ s
-
-def XiVacuum : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SA SB : Finset V, IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, 0 < vol → ∀ θ ∈ fixedBy H α Λ, ∀ z,
-      xiS H α vol SA SB (fun _ => ((Real.sqrt vol : ℝ) : ℂ)⁻¹) θ z = θ z
-
-def XiTranslate : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SX SA SB : Finset V, IsReps Λ A SX → IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, ∀ θ ∈ fixedBy H α Λ,
-    ∀ Φ : V → ℂ, InvOn A B Φ → ∀ x ∈ A, ∀ z,
-      xiL H α vol SX SA SB (fun t => Φ (t + x)) θ z = α x * opU H x (xiL H α vol SX SA SB Φ θ) z
-
-def XiModulate : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SX SA SB : Finset V, IsReps Λ A SX → IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, ∀ θ ∈ fixedBy H α Λ,
-    ∀ Φ : V → ℂ, InvOn A B Φ → ∀ y ∈ B, ∀ z,
-      xiL H α vol SX SA SB (fun t => brk H y t * Φ t) θ z = α y * opU H y (xiL H α vol SX SA SB Φ θ) z
 
 def XiIndZero : Prop :=
   ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
@@ -127,17 +80,6 @@ def XiReps : Prop :=
     ∀ SX SA SB SX' SA' SB' : Finset V, IsReps Λ A SX → IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → IsReps Λ A SX' → IsReps B (Λ ⊓ A) SA' →
     IsReps Λ B SB' → ∀ vol : ℝ, ∀ θ ∈ fixedBy H α Λ, ∀ Φ : V → ℂ, InvOn A B Φ → ∀ z,
       xiL H α vol SX' SA' SB' Φ θ z = xiL H α vol SX SA SB Φ θ z
-
-def XiProject : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SA SB : Finset V, IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, ∀ θ ∈ fixedBy H α Λ, ∀ Φ : V → ℂ, ∀ y ∈ SB, ∀ z,
-      ∑ x ∈ SA, (brk H y x)⁻¹ * (α x * opU H x (xiS H α vol SA SB Φ θ) z)
-        = (SA.card : ℂ) * (hatS H vol SA Φ y * α y * opU H y θ z)
-
-def XiInjective : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ →
-    ∀ SA SB : Finset V, IsReps B (Λ ⊓ A) SA → IsReps Λ B SB → ∀ vol : ℝ, 0 < vol → ∀ θ ∈ fixedBy H α Λ, θ ≠ 0 →
-    ∀ Φ : V → ℂ, InvOn A B Φ → (∀ z, xiS H α vol SA SB Φ θ z = 0) → ∀ t ∈ Λ ⊓ A, Φ t = 0
 
 section Conc
 
@@ -200,13 +142,6 @@ def volS (SS : Finset (HeightOneSpectrum (𝓞 E))) (M₀ M : Submodule (𝓞 E)
   ∏ P ∈ SS, (((localization₂ P.asIdeal M₀).toAddSubgroup.relIndex (localization₂ P.asIdeal M).toAddSubgroup : ℕ) : ℝ) /
     (((localization₂ P.asIdeal M).toAddSubgroup.relIndex (localization₂ P.asIdeal M₀).toAddSubgroup : ℕ) : ℝ)
 
-def absP (P : HeightOneSpectrum (𝓞 E)) (x : E) : ℝ := NumberField.HeightOneSpectrum.adicAbv E P x
-
-def movedS (SS : Finset (HeightOneSpectrum (𝓞 E))) (g : SS → Sp E a ≃ₗ[E] Sp E a) (g' : SS → Sp E b ≃ₗ[E] Sp E b)
-    (Φ : SS → HomE E a b → ℂ) (t : HomE E a b) : ℂ :=
-  ∏ P : SS, (((absP P.1 (LinearEquiv.det (g P) : Eˣ) ^ ((b : ℝ) / 2) * absP P.1 (LinearEquiv.det (g' P) : Eˣ) ^ (-((a : ℝ) / 2)) : ℝ) : ℂ) *
-    Φ P (inFr (g P) (g' P) t))
-
 def onV (emb : ι → E →+* ℂ) (δ : ℂ) (Ξ : HomE E a b → ℂ) (v : VV ι a b) : ℂ := by
   classical exact if h : ∃ x, embH emb δ x = v then Ξ h.choose else 0
 
@@ -227,32 +162,13 @@ def xiV (vol : ℝ) (Ξ : HomE E a b → ℂ) (θ : VV ι a b → ℂ) : VV ι a
     (repsOf (BC emb δ AA0 SS N N' c) (LamC emb δ AA0 N N' ⊓ AC emb δ AA0 SS N N' c))
     (repsOf (LamC emb δ AA0 N N') (BC emb δ AA0 SS N N' c)) (onV emb δ Ξ) θ
 
-def xiIndV (vol : ℝ) (θ : VV ι a b → ℂ) (x : HomE E a b) : VV ι a b → ℂ :=
-  xiInd (HV sc) (alV d sc) vol (BC emb δ AA0 SS N N' c)
-    (repsOf (BC emb δ AA0 SS N N' c) (LamC emb δ AA0 N N' ⊓ AC emb δ AA0 SS N N' c))
-    (repsOf (LamC emb δ AA0 N N') (BC emb δ AA0 SS N N' c)) θ (embH emb δ (liftS SS (perO AA0 N N') c x))
-
 def xiC (Ξ : HomE E a b → ℂ) (θ : VV ι a b → ℂ) : VV ι a b → ℂ := xiV emb δ d sc AA0 SS N N' c (volC AA0 SS N N') Ξ θ
 
-def xiIndC (θ : VV ι a b → ℂ) (x : HomE E a b) : VV ι a b → ℂ := xiIndV emb δ d sc AA0 SS N N' c (volC AA0 SS N N') θ x
-
 def thC (Ξ : HomE E a b → ℂ) (θ : VV ι a b → ℂ) : VV ι a b → ℂ := xiV emb δ d sc AA0 SS N N' c 1 Ξ θ
-
-def thIndC (θ : VV ι a b → ℂ) (x : HomE E a b) : VV ι a b → ℂ := xiIndV emb δ d sc AA0 SS N N' c 1 θ x
 
 def LaFacts : Prop := IsSelfDual (HV sc) (LamC emb δ AA0 N N') ∧ IsSemiChar (HV sc) (LamC emb δ AA0 N N') (alV d sc)
 
 end Conc
-
-def MovedVol : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (AA0 : Submodule (𝓞 E) E) (SS : Finset (HeightOneSpectrum (𝓞 E)))
-    (N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)) (N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b))
-    (g : SS → Formalism.L2.Col.Sp E a ≃ₗ[E] Formalism.L2.Col.Sp E a) (g' : SS → Formalism.L2.Col.Sp E b ≃ₗ[E] Formalism.L2.Col.Sp E b),
-    (∀ P ∈ SS, Formalism.HermitianLatticesTheory.localization₂ P.asIdeal AA0 = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) →
-    (∀ (P : SS) (x : Formalism.L2.Col.Sp E a), g P x ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal N ↔ x ∈ Formalism.L2.Col.stdAt E a P.1) →
-    (∀ (P : SS) (x : Formalism.L2.Col.Sp E b), g' P x ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal N' ↔ x ∈ Formalism.L2.Col.stdAt E b P.1) →
-    ∏ P : SS, (absP P.1 (LinearEquiv.det (g P) : Eˣ) ^ ((b : ℝ) / 2) * absP P.1 (LinearEquiv.det (g' P) : Eˣ) ^ (-((a : ℝ) / 2)))
-      = (Real.sqrt (volC AA0 SS N N'))⁻¹
 
 def TwHom : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (AA0 : Submodule (𝓞 E) E)
@@ -274,18 +190,6 @@ def LiftExists : Prop :=
     (M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)) (c : ℕ), 0 < c → (∀ P ∈ SS, Formalism.L2.Col.conjPrime₂ P ∉ SS) →
     (∀ x : Formalism.L2.Col.HomE E a b, ∃ n : ℕ, 0 < n ∧ (n : E) • x ∈ M) →
     ∀ x : Formalism.L2.Col.HomE E a b, (∀ P ∈ SS, (c : E) • x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M) → IsLiftS SS M c x (liftS SS M c x)
-
-def XiIndCClass : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (ι : Type) [Fintype ι] [Nonempty ι] (a b : ℕ) (emb : ι → E →+* ℂ) (δ : ℂ) (d : ℕ) (sc : ℝ)
-    (AA0 : Submodule (𝓞 E) E) (SS : Finset (HeightOneSpectrum (𝓞 E)))
-    (N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)) (N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)) (c : ℕ),
-    SplitHyp (HV sc) (alV d sc) (AC emb δ AA0 SS N N' c) (BC emb δ AA0 SS N N' c) (LamC emb δ AA0 N N') →
-    relIdx (BC emb δ AA0 SS N N' c) (LamC emb δ AA0 N N' ⊓ AC emb δ AA0 SS N N' c) ≠ 0 →
-    relIdx (LamC emb δ AA0 N N') (BC emb δ AA0 SS N N' c) ≠ 0 →
-    ∀ θ ∈ fixedBy (HV sc) (alV d sc) (LamC emb δ AA0 N N'), ∀ x x' : Formalism.L2.Col.HomE E a b,
-    IsLiftS SS (perO AA0 N N') c x (liftS SS (perO AA0 N N') c x) → IsLiftS SS (perO AA0 N N') c x' (liftS SS (perO AA0 N N') c x') →
-    (∀ P ∈ SS, ((c : E)⁻¹ • (x - x')) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO AA0 N N')) →
-    ∀ vol : ℝ, xiIndV emb δ d sc AA0 SS N N' c vol θ x = xiIndV emb δ d sc AA0 SS N N' c vol θ x'
 
 def HalvesOfLa : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (ι : Type) [Fintype ι] [Nonempty ι] (a b : ℕ) (emb : ι → E →+* ℂ) (δ : ℂ) (d : ℕ) (sc : ℝ)
@@ -310,16 +214,6 @@ def VolCPos : Prop :=
     N.FG → N'.FG → Submodule.span E (N : Set (Formalism.L2.Col.Sp E a)) = ⊤ → Submodule.span E (N' : Set (Formalism.L2.Col.Sp E b)) = ⊤ → AA0.FG → AA0 ≠ ⊥ →
       0 < volC AA0 SS N N'
 
-def ThCMoved : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (ι : Type) [Fintype ι] (a b : ℕ) (emb : ι → E →+* ℂ) (δ : ℂ) (d : ℕ) (sc : ℝ)
-    (AA0 : Submodule (𝓞 E) E) (SS : Finset (HeightOneSpectrum (𝓞 E)))
-    (N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)) (N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)) (c : ℕ), 0 < volC AA0 SS N N' →
-    ∀ (θ : VV ι a b → ℂ),
-    (∀ Ξ : Formalism.L2.Col.HomE E a b → ℂ, thC emb δ d sc AA0 SS N N' c Ξ θ =
-      xiC emb δ d sc AA0 SS N N' c (fun x => ((Real.sqrt (volC AA0 SS N N') : ℝ) : ℂ)⁻¹ * Ξ x) θ) ∧
-    ∀ (x : Formalism.L2.Col.HomE E a b) (z : VV ι a b), thIndC emb δ d sc AA0 SS N N' c θ x z =
-      ((Real.sqrt (volC AA0 SS N N') : ℝ) : ℂ)⁻¹ * xiIndC emb δ d sc AA0 SS N N' c θ x z
-
 section Entries
 
 open Formalism.L2.Col Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
@@ -330,21 +224,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   {ι : Type} [Fintype ι] (emb : ι → X.E →+* ℂ) (σ : X.K →+* ℂ) (δ : ℂ) (d : ℕ) (sc : ℝ) (AA0 : Submodule (𝓞 X.E) X.E)
 
 def levC (u : Pr.Word) : ℕ := cAof sel mu cst * cBof sel mu cst u
-
-def thEntry {u : Pr.Word} (i : ℕ) (al : L.β i) (be : L.β (i + 1)) (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1))
-    (θ : VV ι (R.N i) (R.N (i + 1)) → ℂ) : VV ι (R.N i) (R.N (i + 1)) → ℂ :=
-  thC emb δ d sc AA0 (Sall sel mu u) p.deco.1.N p'.deco.1.N (levC sel mu cst u)
-    (fun x => σ (XiEntry Ch sel mu cst L i al be p p' x)) θ
-
-def thCpl1 {u : Pr.Word} (m2 : ℕ) (al : L.β m2) (p₀ : ChPt (R := R) sel mu u m2) (p : ChPt (R := R) sel mu u (m2 + 1))
-    (Y : Set (Sp X.E (R.N (m2 + 1)))) (θ : VV ι (R.N m2) (R.N (m2 + 1)) → ℂ) : VV ι (R.N m2) (R.N (m2 + 1)) → ℂ :=
-  thC emb δ d sc AA0 (Sall sel mu u) p₀.deco.1.N p.deco.1.N (levC sel mu cst u)
-    (fun x => σ (XiCpl1 Ch sel mu cst L m2 al p₀ p Y x)) θ
-
-def thCpl2 {u : Pr.Word} (m2 : ℕ) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (dd : RowPt Pr R sel mu)
-    (θ : VV ι (R.N (m2 + 1)) (R.N R.m) → ℂ) : VV ι (R.N (m2 + 1)) (R.N R.m) → ℂ :=
-  thC emb δ d sc AA0 (Sall sel mu u) p.deco.1.N (tilQ sel mu u dd).1.N (levC sel mu cst u)
-    (fun x => σ (XiCpl2 Ch sel mu cst m2 p Y dd x)) θ
 
 end Entries
 

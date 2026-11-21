@@ -3,8 +3,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricallyConnectedOfCommGroupNsmulSurjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianSchemeNsmulSurjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricallyConnectedOfCommGroupNsmulSurjective
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianSchemeNsmulSurjective
 open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -46,9 +46,9 @@ theorem geometricallyConnected_of_generic : ∀ (R K : Type) [CommRing R] [IsDom
       infer_instance
     · show IsProper (pullback.snd G.hom f)
       infer_instance
-  refine GlobalTheory.T.geometricallyConnected_of_commGroup_nsmul_surjective (Sp R) G inferInstance inferInstance ?_
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_of_surjective_pow (Sp R) G inferInstance inferInstance ?_
   intro n hn
-  have hK := GlobalTheory.T.abelianScheme_nsmul_surjective K GK hab n hn
+  have hK := _root_.GlobalTheory.CompanionTheory.Ar.Approx.surjective_pow_of_isAbelianScheme K GK hab n hn
   have hmap : F.map (𝟙 G ^ n) = 𝟙 GK ^ n := by
     rw [← F.map_id]
     exact (Functor.homMonoidHom F (X := G) (M := G)).map_pow _ n

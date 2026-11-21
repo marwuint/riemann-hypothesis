@@ -37,17 +37,6 @@ theorem intP_add {x y : D.host.E} (hx : IntP P x) (hy : IntP P y) : IntP P (x + 
   push_cast
   linear_combination (s2 : D.host.E) * h1 + (s1 : D.host.E) * h2
 
-theorem valuation_coeff_mul_nonneg {x y : D.host.E} (hx : IntP P x) (hy : IntP P y) : IntP P (x * y) := by
-  obtain ⟨s1, hs1, o1, h1⟩ := hx
-  obtain ⟨s2, hs2, o2, h2⟩ := hy
-  refine ⟨s1 * s2, mul_not_mem_P P hs1 hs2, o1 * o2, ?_⟩
-  push_cast
-  linear_combination ((s2 : D.host.E) * y) * h1 + (o1 : D.host.E) * h2
-
-theorem isIntegralAt_neg {x : D.host.E} (hx : IntP P x) : IntP P (-x) := by
-  have := valuation_coeff_mul_nonneg P (intP_O P (-1)) hx
-  simpa using this
-
 theorem intP_sum {ι : Type*} (s : Finset ι) (f : ι → D.host.E) (h : ∀ i ∈ s, IntP P (f i)) :
     IntP P (∑ i ∈ s, f i) := by
   induction s using Finset.induction_on with
@@ -91,9 +80,6 @@ theorem localization_mono₃ {L L' : Submodule (𝓞 D.host.E) (VS D).V} (hle : 
     x ∈ LP P L' := by
   obtain ⟨s, hs, h⟩ := (mem_LP P).mp hx
   exact (mem_LP P).mpr ⟨s, hs, hle h⟩
-
-theorem add_mem_localization {L : Submodule (𝓞 D.host.E) (VS D).V} {x y : (VS D).V} (hx : x ∈ LP P L) (hy : y ∈ LP P L) :
-    x + y ∈ LP P L := add_mem hx hy
 
 theorem sub_mem_localization {L : Submodule (𝓞 D.host.E) (VS D).V} {x y : (VS D).V} (hx : x ∈ LP P L) (hy : y ∈ LP P L) :
     x - y ∈ LP P L := sub_mem hx hy

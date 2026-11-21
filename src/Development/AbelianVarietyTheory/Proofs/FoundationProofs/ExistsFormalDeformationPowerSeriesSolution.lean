@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPowerSeriesCompletionEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DeformMultipleZerosLinearFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IterateDerivativeFunMulSubstLeibnizStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPowerSeriesCompletionEmbedding
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DeformMultipleZerosLinearFamily
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IterateDerivativeFunMulSubstLeibniz
 
 open Polynomial
 
@@ -73,8 +73,8 @@ theorem formal_deformation : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZer
     rw [h, Ideal.bot_pow (by omega), Ideal.mem_bot] at this
     exact hf₀ this
 
-  obtain ⟨σ₀, π₀, -, hσ₀inj, hσ₀pow, hσ₀surj⟩ := GlobalTheory.T.exists_power_series_completion_embedding k A P₀ hP₀ hP₀ne
-  have hcomp := fun i => GlobalTheory.T.exists_power_series_completion_embedding k A (Q i) (hQmax i) (hQne i)
+  obtain ⟨σ₀, π₀, -, hσ₀inj, hσ₀pow, hσ₀surj⟩ := _root_.GlobalTheory.CurveCompletion.exists_completion_embedding k A P₀ hP₀ hP₀ne
+  have hcomp := fun i => _root_.GlobalTheory.CurveCompletion.exists_completion_embedding k A (Q i) (hQmax i) (hQne i)
   choose σ π hσπ hσinj hσpow hσsurj using hcomp
   have hzero : ∀ (τ : A →ₐ[k] PowerSeries k) (R : Ideal A),
       (∀ (m : ℕ) (u : A), u ∈ R ^ m ↔ (PowerSeries.X : PowerSeries k) ^ m ∣ τ u) →
@@ -168,7 +168,7 @@ theorem formal_deformation : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZer
       rw [show PowerSeries.mk (e i) - σ i (u i) - (σ i v' - σ i (u i)) =
         PowerSeries.mk (e i) - σ i v' by ring, map_sub, PowerSeries.coeff_mk, sub_eq_zero] at h7
       exact h7.symm
-  obtain ⟨y, a, hy0, ha0, hyξ, hyΔ⟩ := GlobalTheory.T.deform_multiple_zeros_linear_family k (Fin m) I N (fun j => σ₀ (v j))
+  obtain ⟨y, a, hy0, ha0, hyξ, hyΔ⟩ := _root_.GlobalTheory.DeformZeros.deform k (Fin m) I N (fun j => σ₀ (v j))
     (fun i j => σ i (v j)) y₀ (by omega) h1 h2 h3 h4
   have hsub : ∀ i, PowerSeries.HasSubst (a i) :=
     fun i => PowerSeries.HasSubst.of_constantCoeff_zero' (ha0 i)
@@ -195,7 +195,7 @@ theorem formal_deformation : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZer
     rw [hΔ, Function.iterate_zero, id, map_one, ← PowerSeries.coe_substAlgHom (hsub i), map_one]
   · intro i l u w
     simp only [hΔ, map_mul]
-    exact GlobalTheory.T.iterate_derivativeFun_mul_subst_leibniz k (a i) _ _ l (ha0 i)
+    exact _root_.GlobalTheory.iterate_derivativeFun_mul_subst k (a i) _ _ l (ha0 i)
   · intro i
     refine ⟨π i, ?_⟩
     have hX : PowerSeries.derivativeFun (PowerSeries.X : PowerSeries k) = 1 :=

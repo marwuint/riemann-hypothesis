@@ -127,22 +127,6 @@ theorem congruence_iff_simeq : CongIffSimeq := by
   intro K _ _ _ R hR σ f g
   exact and_congr Iff.rfl (integral_iff hR _).symm
 
-theorem IntHyp_of (hP : ProdInt) (hS : SubstExpInt) (hC : CongIffSimeq)
-    (hH : Formalism.L2.Th1.C.HyperbolicSum) (_hPt : Formalism.L2.Th1.C.PtClosure) : IntHyp := by
-  intro K _ _ _ R hR l linv ph hFr O _ _ τ hEnd hBin hF1 hN hA n ι _ _ _ f f' hff hff' hd κ _ r V hr hV
-  obtain ⟨hlp, hFG, hph⟩ := hFr
-  have hpt : ∀ i, IsPt R (hypCoord l linv τ f f' i) := fun i =>
-    Formalism.L2.Th1.C.Pts.isPt_flin hlp hFG (by rintro (e | e) <;> exact hEnd _)
-      (by rintro (e | e) <;> exact isPt_X _)
-  obtain ⟨h1, h2⟩ := hP K κ n ph r V hph hr hV
-  obtain ⟨h3, h4, h5⟩ := hS K n (Bool × ι) (hypCoord l linv τ f f') (fun i => (hpt i).1)
-    (fun i => (integral_iff hR _).2 (hpt i).2) (phSum ph) (thetaProd r V) (cc_phSum hph) h2
-  refine ⟨_, _, h4, h5, (hC K R hR _ _ _).1 ?_, by rw [h1, h3]⟩
-  rw [subst_phSum ph fun i => (hpt i).1]
-  exact hH K R l linv ph ⟨hlp, hFG, hph⟩ O τ hEnd hBin hF1 hN hA n ι f f' hff hff' hd (Bool × ι)
-    (fun e => MvPowerSeries.X (false, e)) (fun e => MvPowerSeries.X (true, e))
-    (fun e => isPt_X _) (fun e => isPt_X _)
-
 theorem sum_series_analytic : SumEBridge := by
   intro K _ _ l linv hlp F hF hc ph ι _ N0 N1
   rw [Formalism.L2.Th1.C.Dict.law_eq hlp hF hc]
@@ -157,27 +141,5 @@ theorem sum_series_analytic : SumEBridge := by
 theorem map_coboundary : MapCob := by
   intro K0 K _ _ j F f hF
   exact Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_cob j F hF f
-
-theorem IntThetaZ_of (hB0 : Formalism.L2.Th1.D.B0) (hI : IntHyp) (hS : SumEBridge) (hM : MapCob) :
-    IntThetaZ := by
-  intro K0 K _ _ _ _ _ _ l d N0 N1 _ σ j hU hj hd2 hev F hF ph0 hph0 hF1 hF2 ι _ _ om oms hOw hTr ζ hζ
-    R hR hFr O _ _ τ hEnd hBin hCF1 hN hA n _ f f' hff hff' hdual κ _ r V hr hV
-  obtain ⟨U0, Φ, hU0, hΦ0, hΦ, hEq⟩ := hI K R hR (lgF K l) (Formalism.L2.Th1.D.expF K l)
-    (PowerSeries.map j ph0) hFr O τ hEnd hBin hCF1 hN hA n (ι × Fin N0 × Fin N1) f f' hff hff' hdual
-    κ r V hr hV
-  have hFj0 : MvPowerSeries.constantCoeff (MvPowerSeries.map j F) = 0 := by
-    rw [MvPowerSeries.constantCoeff_map, hF.1, map_zero]
-  have hcob : cob (MvPowerSeries.map j F) (lgF K l) = 0 := by
-    rw [← Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_lgF j l, ← hM K0 K j F (lgF K0 l) hF.1, hF.2.2, map_zero]
-  have hb : beSum (lgF K l) (Formalism.L2.Th1.D.expF K l) (PowerSeries.map j ph0) =
-      (Formalism.L2.Th1.D.sumE (MvPowerSeries.map j (cob F ph0)) :
-        MvPowerSeries (Bool × ι × Fin N0 × Fin N1) K) := by
-    rw [hM K0 K j F ph0 hF.1]
-    exact (hS K (lgF K l) (Formalism.L2.Th1.D.expF K l) hFr.1 (MvPowerSeries.map j F) hFj0 hcob
-      (PowerSeries.map j ph0) ι N0 N1).symm
-  rw [hb] at hΦ
-  obtain ⟨U, hUi, hg⟩ := hB0 K0 K l d N0 N1 σ j hU hj hd2 hev F hF (cob F ph0) hF1 hF2 ι om oms hOw hTr
-    ζ hζ U0 Φ hU0 hΦ0 hΦ
-  exact ⟨U, hUi, fun g h1 h2 => by rw [hEq]; exact hg g h1 h2⟩
 
 end Formalism.L2.Th1.E

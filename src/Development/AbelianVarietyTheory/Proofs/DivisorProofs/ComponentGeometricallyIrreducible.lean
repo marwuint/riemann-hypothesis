@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.MemRangeOfIsAlg
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LinearDisjointAlgebraicClosure
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleSpacePullbackAffineOpenOfIsDomainTensStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleSpacePullbackFieldOfIrreducibleCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleSpacePullbackFieldOfIrreducibleCover
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open NumberField IsDedekindDomain
 open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct NNReal
@@ -53,7 +54,7 @@ theorem irreducibleSpace_pullback_of_cover {F : Type} [Field F] {X : Scheme.{0}}
     (k : Type) [Field k] (f : F →+* k) (U : X.Opens) (hU : IsIrreducible (U : Set X))
     (hV : ∀ y ∈ U, ∃ V : X.Opens, V ≤ U ∧ y ∈ V ∧ IrreducibleSpace ↑(pullback (V.ι ≫ h) (spMap f))) :
     IrreducibleSpace ↑(pullback (U.ι ≫ h) (spMap f)) :=
-  GlobalTheory.T.irreducibleSpace_pullback_field_of_irreducible_cover h k f U hU hV
+  _root_.GlobalTheory.irreducibleSpace_pullback_of_cover h k f U hU hV
 
 theorem irreducibleSpace_pullback_affine {F : Type} [Field F] [CharZero F] {X : Scheme.{0}} [IsReduced X]
     (g : X ⟶ Sp F) [LocallyOfFiniteType g] (x : X)

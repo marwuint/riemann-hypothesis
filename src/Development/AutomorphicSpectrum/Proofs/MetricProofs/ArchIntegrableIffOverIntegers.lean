@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundleProductOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnsheet
 import Development.AutomorphicSpectrum.PublishedTheorems.Divisibility₂.PairingExists
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChernIntegrableOnIffSheetsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormSheetEqStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChernIntegrableOnIffSheets
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormSheetEq
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -33,12 +33,12 @@ theorem archInt_over_int : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
     haveI := hX.isDomain
     haveI := hX.finite
     have hS : MeasurableSet (offSupp t τ (M.div hr)) := (GlobalTheory.CxPts.isOpen_ptsIn _).measurableSet
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.chernIntegrableOn_iff_sheets k X p t τ hX.isProjOver e N.B N.φ ψ hψN N.cInf hψ _ hS (logNorm ν r)
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets k X p t τ hX.isProjOver e N.B N.φ ψ hψN N.cInf hψ _ hS (logNorm ν r)
     have hmeas : ∀ σ : k →+* ℂ, MeasurableSet (offSupp p σ (M.div hr)) :=
       fun σ => (GlobalTheory.CxPts.isOpen_ptsIn _).measurableSet
     have hEq : ∀ σ : k →+* ℂ, Set.EqOn (fun z => logNorm ν r (GlobalTheory.CompanionTheory.Ar.BaseZ.sheet t τ z))
         (logNorm (M.φ σ) r) (offSupp p σ (M.div hr)) :=
-      fun σ y hy => GlobalTheory.T.logNorm_sheet_eq k X p t τ M.B M.φ ν hνM r hr σ y hy
+      fun σ y hy => _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.logNorm_sheet k X p t τ M.B M.φ ν hνM r hr σ y hy
     have hiff : ψ.ChernIntegrableOn e (offSupp t τ (M.div hr)) (logNorm ν r) ↔ N.ArchIntegrable M e hr := by
       rw [h1]
       unfold GlobalTheory.HermLB.ArchIntegrable

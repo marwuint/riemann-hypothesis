@@ -10,10 +10,15 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StandardLatt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLtGrpTrue
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemLevelOfLocalDepth
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LargeCoefficientFieldContainsTwistValuesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LargeCoefficientFieldContainsTwistValues
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FieldValuesMemFixedField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CuspParamOfGreenParametrisationStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivariantLabelMapTwistCuspidalLabel
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GreenSeriesIdempotentEqClassFunctionIdempotentStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GreenSeriesIdempotentEqClassFunctionIdempotent
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeIdempotentCoeffAcrossLayers
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff
 
 noncomputable section
 
@@ -67,9 +72,6 @@ theorem ev_params : Ev fun K => ∀ X : Stages, K.Over X.B.toPre → X.V.div.eta
   obtain ⟨⟨M⟩, -, -⟩ := hN D L (by rw [e1]; exact hs) (by rw [e1]; exact (le_max_right _ _).trans hx) e4
     ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩
   exact ⟨L, e1, M.sizes, ⟨M.params⟩, M.parT.nV_ge⟩
-
-theorem stepW_ev {Q : Ctx → Prop} (h : Ev Q) : StepW Pinned fun K _ _ _ _ => Q K :=
-  Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)
 
 end GlobalTheory.PrimIn.AtData
 

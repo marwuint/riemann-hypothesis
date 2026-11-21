@@ -26,13 +26,4 @@ theorem siegAt_iff (g : ℕ) (φ : InvFun ℤ) (n : ℕ) :
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
-def IsSiegPull {g n : ℕ} {F : SFam g n (zetaAway n)} {S : Scheme.{0}} (s : S ⟶ Sp (cycAway n)) (j : F.X ⟶ S)
-    (G : Over S) [GrpObj G] (e : F.univ.A.left ⟶ G.left) {Xo : Moduli D l} {c : Coeff l} {R : Type} [CommRing R]
-    {ω : R →+* c.F} (κ : cycAway n →+* R) (C : Model Xo c ω) (π : C.X ⟶ S) : Prop :=
-  ∃ (μ : C.t.G.left ⟶ G.left) (y : Xo.XF c ⟶ F.X) (α : C.oF.t.G.left ⟶ F.univ.A.left)
-    (α₂ : (G2 C.oF.t.G).left ⟶ (G2 F.univ.A).left),
-    IsFinite π ∧ π ≫ s = C.s ≫ spMap κ ∧ IsGrpPullback C.t.G G π μ ∧
-    y ≫ j = C.j ≫ π ∧ IsGrpPullback C.oF.t.G F.univ.A y α ∧ IsSquare α α₂ ∧
-    LBIso (abelian₂ C.oF.t.G C.oF.t.PP.L) (F.univ.P.pull α₂) ∧ C.m.φ ≫ μ = α ≫ e
-
 end GlobalTheory.SiegLoc

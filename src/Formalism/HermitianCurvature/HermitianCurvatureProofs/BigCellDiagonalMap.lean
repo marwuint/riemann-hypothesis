@@ -175,6 +175,4 @@ theorem big_cell_decomposition : BigCellDecomposition.CellDecomp := by
 
 theorem psiOnto_true : Formalism.FourierDecayAlt.JF.PsiOnto := jf_psiOnto_of_cellDecomp BigCellDiagonalMap.cellDecomp
 
-theorem equiv_det : Formalism.FourierDecayAlt.JF.EquivDet := jf_equivDet_of_cellDecomp BigCellDiagonalMap.cellDecomp
-
 end Formalism.FourierDecayAlt.P

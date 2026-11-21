@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FromNAdd
 import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedFlagStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHolds
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.NonemptyEquivOfCardHom
 import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.IsIntegrallyClosedOfDenom
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderRetractRestrictionStatement
 import ReciprocityTheory.DualLattices.ExistsSmulMemOfMemSpan
@@ -177,7 +178,7 @@ theorem bt_mul [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] [
     ∀ f ∈ P.Γ₁.btOrder ⊤, (fun t => f (mulT _ p a t)) ∈ P.Γ₁.btOrder ⊤ := by
   haveI := 𝔐.t.act.hom a
   haveI := frac_epi (CR O y c')
-  refine (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
+  refine (_root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
     𝔐.t.semi.smooth).2.2.2.1 (𝔐.t.act.act a) (mulT _ p a) ?_
   intro t
   obtain ⟨x, rfl⟩ := qmk_surj _ p t
@@ -201,7 +202,7 @@ theorem ord_hopf [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')]
     ∃ AA : HopfOrder (C := C) RC (TestPt.NAdd E (D.p + D.q) p), AA.carrier = TestPt.testOrd P RC :=
   exists_hopf (RC := RC) ((algebraMap Ω C).comp (algebraMap (CR O y c') Ω))
     ((algebraMap Ω C).injective.comp Subtype.val_injective) (fun r => ⟨⟨_, hR r r.2⟩, rfl⟩)
-    (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁ 𝔐.t.semi.smooth).1
+    (_root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁ 𝔐.t.semi.smooth).1
 
 theorem ord_ret [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] [IsFractionRing (CR O y c') Ω]
     [Finite (TorsT E (D.p + D.q) p)] (P : ChartPack G O c') {C : Type} [Field C]

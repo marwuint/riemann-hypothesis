@@ -212,10 +212,6 @@ theorem exists_Sum_ne_zero_at (A : AnArc O) {T₀ : ℝ} (hT : A.IsConvLine T₀
   obtain ⟨a, ha, hv⟩ := exists_translates_ne_zero hT h hw h0 hj v
   exact exists_Sum_ne_zero_of_prod_ne_zero hT h hw (by omega) ha (Finset.prod_ne_zero_iff.2 fun i _ => hv i)
 
-example (τ₀ w : ℂ) (hw : -τ₀.im / 2 < w.im) (v : (tate τ₀).V) :
-    ∃ α, ∃ th ∈ (tate τ₀).Theta 2 α, (tate τ₀).Sum 2 α th w v ≠ 0 :=
-  exists_Sum_ne_zero_at _ ((tate_isConvLine_iff τ₀ _).2 le_rfl) (tate_one_mem_Theta τ₀ 1 _) one_ne_zero hw le_rfl v
-
 end AnArc
 
 end GlobalTheory

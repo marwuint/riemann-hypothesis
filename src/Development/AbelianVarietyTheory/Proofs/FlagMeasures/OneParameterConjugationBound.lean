@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.Eigenfunctio
 import Formalism.RealPlaceAnalysis.FinalF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormPosOfIsUnit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalBasis
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRepMatrixCoefficientBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarSubgroupBiInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalVolumeGrowthStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRepMatrixCoefficientBound
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarSubgroupBiInvariant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalVolumeGrowth
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.DSId
 open scoped InnerProductSpace ComplexOrder ContDiff
@@ -456,7 +456,7 @@ lemma norm_shift (hn : 1 ≤ n) {W : Submodule ℂ (Fin n → ℂ)} {ν : Measur
     have e : ⟪v₁, σ (umat g) v₁⟫_ℂ = ⟪v, σ (umat (x * g * x⁻¹)) v⟫_ℂ := by
       rw [hv₁, im, hmul (x * g) x⁻¹]; rfl
     rw [e]; exact this
-  obtain ⟨-, hI2, hI3⟩ := GlobalTheory.T.unitary_rep_matrix_coefficient_bound n ε W ν hW hν β hβ hβt hβ1 H σ d c u v₁ v₁ hσ hd hc hd1 hd1 hd2
+  obtain ⟨-, hI2, hI3⟩ := _root_.GlobalTheory.Dec.ConstTermNorm.constTerm_inner n ε W ν hW hν β hβ hβt hβ1 H σ d c u v₁ v₁ hσ hd hc hd1 hd1 hd2
   have hpt : ∀ g, ((β g).toReal : ℂ) * ((∫ m, ⟪v₁, σ (umat (m * g)) u⟫_ℂ ∂ν) *
       star (∫ m, ⟪v₁, σ (umat (m * g)) u⟫_ℂ ∂ν)) =
       (((β g).toReal * ‖∫ m, ⟪v₁, σ (umat (m * g)) u⟫_ℂ ∂ν‖ ^ 2 : ℝ) : ℂ) := by
@@ -512,16 +512,16 @@ theorem torus_lipschitz : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ
   have hnr : (0:ℝ) ≤ (n:ℝ) * (rkR ε : ℝ) := mul_nonneg (Nat.cast_nonneg n) (Nat.cast_nonneg _)
   have hc0 : 0 ≤ c := by nlinarith
   have hνint : Integrable (fun m : UJ ε => Real.exp (-(c * dOp (umat m)))) ν :=
-    (GlobalTheory.T.unipotentRadical_volume_growth n ε W ν hW hν).2 c (by nlinarith)
+    (_root_.GlobalTheory.RadVol.radical_volume_growth n ε W ν hW hν).2 c (by nlinarith)
   haveI : SigmaFinite ν := by
-    obtain ⟨C, hC⟩ := (GlobalTheory.T.unipotentRadical_volume_growth n ε W ν hW hν).1
+    obtain ⟨C, hC⟩ := (_root_.GlobalTheory.RadVol.radical_volume_growth n ε W ν hW hν).1
     exact ({ set := fun k : ℕ => {m : UJ ε | dOp (umat m) ≤ k}
              set_mem := fun _ => Set.mem_univ _
              finite := fun k => (hC k (Nat.cast_nonneg k)).trans_lt ENNReal.ofReal_lt_top
              spanning := Set.eq_univ_of_forall fun m =>
                Set.mem_iUnion.2 ⟨⌈dOp (umat m)⌉₊, show dOp (umat m) ≤ (⌈dOp (umat m)⌉₊ : ℝ) from Nat.le_ceil _⟩ } :
              ν.FiniteSpanningSetsIn Set.univ).sigmaFinite
-  have hNW := GlobalTheory.T.haar_subgroup_bi_invariant n ε W ν hW hν
+  have hNW := _root_.GlobalTheory.UnipUnimod.unimodular_NW n ε W ν hW hν
   obtain ⟨haC, -, -, hainv⟩ := onePar ha
   have hnorm : ∀ X, inG ε X → ((X * Xᴴ).trace).re = ∑ i, (((X * (E i)ᴴ).trace).re) ^ 2 := by
     intro X hX
@@ -543,7 +543,7 @@ theorem torus_lipschitz : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ
       ∫ m, ⟪v, σ (umat (m * (a p.1 * p.2))) (L (E i))⟫_ℂ ∂ν := by
     intro i
     have hu := hvL (E i) (hE1 i).1
-    have hc' := (GlobalTheory.T.unitary_rep_matrix_coefficient_bound n ε W ν hW hν β hβ hβt hβ1 H σ d c (L (E i)) v v hσ hd hc hu hu hvv).1
+    have hc' := (_root_.GlobalTheory.Dec.ConstTermNorm.constTerm_inner n ε W ν hW hν β hβ hβt hβ1 H σ d c (L (E i)) v v hσ hd hc hu hu hvv).1
     exact hc'.comp ((haC.comp continuous_fst).mul continuous_snd)
   have hB : ∀ i (t : ℝ), |t| ≤ 1 →
       Integrable (fun g => (β g).toReal * ‖∫ m, ⟪v, σ (umat (m * (a t * g))) (L (E i))⟫_ℂ ∂ν‖ ^ 2) (muG ε) ∧

@@ -37,7 +37,7 @@ theorem value_descends (hC : ChartIndepSt2) {E : Type} [Field E] [NumberField E]
   have hWD := (GlobalTheory.Frames.algebraic_laws hL.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂).2.2.1
   have hAT := GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂
   haveI : _root_.IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad
-  obtain ⟨hval, hnat⟩ := GlobalTheory.T.shortThetaValue_existsUnique_natural_of_laws hL hC E H Dw d.l₂ d.Xo₂ d.c₂ d.nab₂ hnab n Λ N hU hTr hLv a P hP
+  obtain ⟨hval, hnat⟩ := _root_.GlobalTheory.shortThetaValue_existsUnique_natural hL hC E H Dw d.l₂ d.Xo₂ d.c₂ d.nab₂ hnab n Λ N hU hTr hLv a P hP
     (fun q => d.eF (w q)) β
   have hinv := GlobalTheory.EquivariantLiftInvariance.cover_product_indep_of_lift hC E H Dw l Xo c n d hlev hA ⟨_, hnab⟩ ψ₀ hψ₀ w hw₀ Λ N hU hTr hLv a P hP β
   have hbc := GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c
@@ -50,7 +50,7 @@ theorem value_descends (hC : ChartIndepSt2) {E : Type} [Field E] [NumberField E]
     refine ⟨fun b => ?_, heA⟩
     have := he b
     rwa [hM, Nat.mul_div_cancel_left _ (by have := l.three_le; omega)] at this
-  obtain ⟨hov1, hov2, -⟩ := GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n { d with r := r, m := m }
+  obtain ⟨hov1, hov2, -⟩ := _root_.GlobalTheory.frames_lift_to_cover hL E H Dw l Xo c n { d with r := r, m := m }
   obtain ⟨S, _, φ, j, x₂, f1, f2, f3, hj, hx, hx'⟩ :=
     exists_cover_point d.hF.symm r rF h1 h2 p.R y.x y.x_over
   letI : Algebra p.R S := φ.toAlgebra
@@ -143,10 +143,10 @@ theorem exists_sec_oneClass : Formalism.MainNotions.ModuliIntegralCharts.H1.Char
   have hL : Laws := GlobalTheory.firstFiveLaws.1
   have hAll := GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l Xo c
   have hP₂ := (GlobalTheory.admissible_columns_le_and_harmonic_map_cover E H Dw l Xo c n d).2 a P hP
-  obtain ⟨hex, -⟩ := GlobalTheory.T.shortThetaValue_existsUnique_natural_of_laws hL hC E H Dw d.l₂ d.Xo₂ d.c₂ d.nab₂ hnab n Λ N hU hT hO a _ hP₂
+  obtain ⟨hex, -⟩ := _root_.GlobalTheory.shortThetaValue_existsUnique_natural hL hC E H Dw d.l₂ d.Xo₂ d.c₂ d.nab₂ hnab n Λ N hU hT hO a _ hP₂
     (fun q => d.eF (w₀ q)) 1
   have hd := value_descends hC d hLev hA hnab ψ hψ w₀ hw₀ Λ N hU hT hO a _ hP₂ 1
-  obtain ⟨hlift, -, hbor⟩ := GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n d
+  obtain ⟨hlift, -, hbor⟩ := _root_.GlobalTheory.frames_lift_to_cover hL E H Dw l Xo c n d
   refine ⟨fun p y => (hd p y).exists.choose, ⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩, ?_⟩
   · refine (hd q z).unique (hd q z).exists.choose_spec ?_
     intro k _ _ _ _ hk χ w w₂ hw ho v hv

@@ -21,12 +21,6 @@ end Index
 
 section Lattice
 
-omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
-theorem isAbelianGalois_sup (L L' : IntermediateField K Ω) [IsAbelianGalois K L]
-    [IsAbelianGalois K L'] : IsAbelianGalois K (L ⊔ L' : IntermediateField K Ω) :=
-  isAbelianGalois_of_le_maximalAbelianExtension _
-    (sup_le (le_maximalAbelianExtension L) (le_maximalAbelianExtension L'))
-
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
 theorem mul_comm_of_isAbelianGalois' (L : IntermediateField K Ω) [IsAbelianGalois K L]
     (σ τ : L ≃ₐ[K] L) : σ * τ = τ * σ :=

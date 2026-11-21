@@ -5,7 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevIsReadsTw
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevelCharacterEqOneOfDeepAtSplitBadPlace
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevelCharacterTrivialNearOneOfLocalBadPlaces
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EventuallyNhdsOneAdelicMatrixCongruentOneAtPrime
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ColsStdOfBWit
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PtRows
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BrgStdR
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBadPrimeOverBadPlaceOfChain
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinAfMemIntUIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SubOneMemMapOfEq
@@ -260,48 +262,6 @@ theorem levRead_twArgs (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre
   have hT' : Y.tup = t.r.Y.tup := eq_of_heq htup
   rw [← hT'] at h
   exact (h)
-
-set_option maxHeartbeats 1000000 in
-
-theorem levRead_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
-    (b : Bundle (q.w.D q.Z) q.O c) (hw : Bl.BWit q b) :
-    LevRead q.w.I q.w.l q.Z (pk (packB b)).toLevCh (lvP (packB b)) (packB b).P.I.tup := by
-  obtain ⟨x, a, ax, y, -⟩ := hw
-  have hx : a.x = x := eq_of_heq ax
-  have h0 := levRead_twArgs _ _ _ _ q.w q.Z _ _ _ _ _ _ _ _ _ _ a
-  have h1 : LevRead q.w.I q.w.l q.Z x.R.toLevCh (x.R.toRealDat.levR x.F.lv2 true) x.Y.tup := by
-    subst hx
-    exact h0
-  have h2 : (fun k : Bl.RPk b.R b.S => LevRead q.w.I q.w.l q.Z k.B.Q.Rl.toRealDat.toLevCh
-      (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true) k.P.I.tup) (Bl.rpkB b) := by
-    rw [y.eq]
-    exact h1
-  exact h2
-
-set_option maxHeartbeats 1000000 in
-
-theorem levIs_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
-    (b : Bundle (q.w.D q.Z) q.O c) (hw : Bl.BWit q b) (u : (q.w.D q.Z).what₂.Word) (t : (packB b).P.T)
-    (h : (packB b).P.I.tup t ≠ (q.w.D q.Z).what₂.mu0) :
-    LevIs ((packB b).R.T.tw.pt.cls u ((packB b).P.I.tup t) h).lev
-      (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t))
-      (levChi _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) := by
-  have hxi : b.R.T.n.tp.xi = q.w.I.xi := (congrArg (fun s => s.2.xi) hw.recPin.s.chr).trans q.x.n.xi
-  obtain ⟨l0, s, he, hs, -, -, hP⟩ := (colsStd_of_bWit q b hw).2.2.2.2
-  have key : ∀ (Tw : TwForms (q.w.D q.Z)) (s' : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes b.R.T.n.tp b.R.T.cols Tw), Tw = TC.tw q.w.I q.w.l l0 q.Z →
-      HEq s' s → LevIs (s'.pt.cls u ((packB b).P.I.tup t) h).lev
-        (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t))
-        (levChi _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) := by
-    rintro _ s' rfl rfl
-    refine levRead_of_bWit q b hw t h _ _ _ _ _ (fun v hv => hv.imp id fun hv => ?_) (s'.pt.chi_fin u _ h) (hP.what₂ u _ h)
-    have h1 := (s'.ch.Q_iff _ v).1 hv
-    unfold Formalism.L2.Host.TupTied.InQ' at h1
-    rw [hxi] at h1
-    exact underQ_of_ram q.w.ok _ v h1
-  exact key _ _ he hs
-
-theorem levChi_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ (u : (q.w.D q.Z).what₂.Word) (t : (packB b).P.T) (h : (packB b).P.I.tup t ≠ (q.w.D q.Z).what₂.mu0) (g : GA (q.w.D q.Z) (q.w.D q.Z).sp.X') (κ : ((packB b).R.T.tw.pt.cls u ((packB b).P.I.tup t) h).lev.U), GlobalTheory.Core.Rk.Top.HasMat g κ.1 → (levChi _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) g = star ((((packB b).R.T.tw.pt.cls u ((packB b).P.I.tup t) h).lev.chi κ : ℂˣ) : ℂ) :=
-  fun q _ b hw u t h g κ hm => (levIs_of_bWit q b hw u t h).2 g κ hm
 
 end Pack
 

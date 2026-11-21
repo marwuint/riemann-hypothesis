@@ -36,9 +36,6 @@ def compOf : X.XC → Comp := Sigma.fst
 
 def vol : ℝ := ∑ c, X.volC c
 
-theorem vol_pos [Nonempty Comp] : 0 < X.vol :=
-  Finset.sum_pos (fun c _ => X.volC_pos c) Finset.univ_nonempty
-
 def chern : MvPolynomial (DV.Rt Tau N) ℝ →ₗ[ℝ] ℝ := chernOf Tau N X.vol
 
 end CxPkg

@@ -99,21 +99,4 @@ theorem ker_law (hp0 : (p : Kc) ≠ 0) {Gd : ∀ j, (X.Pj j).Xsp → Prop} (hD :
 
 end Gen
 
-section Cp
-
-variable [IsFractionRing X.G.O X.G.Kf] (E : CEmb X.G)
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : FinStab X.Lv)
-    (be : MvPowerSeries (Fin 2) (K0 p))
-
-end Cp
-
-section Top
-
-variable [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G)
-    (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : FinStab X.Lv)
-    {g : Formalism.MainNotions.GL3Theta.G1 p} (hLT : LTIso g) {T : Type} (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ T)
-    (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p])
-
-end Top
-
 end Formalism.L2.G.Pend

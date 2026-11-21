@@ -251,22 +251,6 @@ theorem finrank_adjoin_le_of_isEisensteinAt {f : 𝒪[K][X]}
   rw [IntermediateField.adjoin.finrank hint, ← natDegree_map_eq_of_injective hinj f]
   exact natDegree_le_of_dvd (minpoly.dvd K α (by rw [aeval_map_algebraMap, hα])) hne
 
-theorem minpoly_eq_of_isEisensteinAt {f : 𝒪[K][X]}
-    (hf : f.IsEisensteinAt (IsLocalRing.maximalIdeal 𝒪[K])) (hn : 0 < f.natDegree) {α : L}
-    (hα : aeval α f = 0) :
-    minpoly K α = C (algebraMap 𝒪[K] K f.leadingCoeff)⁻¹ * f.map (algebraMap 𝒪[K] K) := by
-  have hinj : Function.Injective (algebraMap 𝒪[K] K) := IsFractionRing.injective 𝒪[K] K
-  have hc : algebraMap 𝒪[K] K f.leadingCoeff ≠ 0 := by
-    rw [Ne, map_eq_zero_iff _ hinj]
-    rintro h
-    exact hf.leading (by rw [h]; exact zero_mem _)
-  refine (minpoly.eq_of_irreducible_of_monic ?_ ?_ ?_).symm
-  · rw [irreducible_isUnit_mul (isUnit_C.mpr (IsUnit.mk0 _ (inv_ne_zero hc)))]
-    exact irreducible_map_of_isEisensteinAt hf hn
-  · rw [map_mul, aeval_map_algebraMap, hα, mul_zero]
-  · refine monic_C_mul_of_mul_leadingCoeff_eq_one ?_
-    rw [leadingCoeff_map_of_injective hinj, inv_mul_cancel₀ hc]
-
 end Eisenstein
 
 section Root
@@ -354,21 +338,6 @@ theorem irreducible_of_isEisensteinAt_root :
 end Generated
 
 end Root
-
-section AdjoinRoot
-
-variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
-  [IsNonarchimedeanLocalField K]
-  [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
-  [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
-  {f : 𝒪[K][X]} (hf : f.IsEisensteinAt (IsLocalRing.maximalIdeal 𝒪[K])) (hn : 0 < f.natDegree)
-  {α : L} (hα : aeval α f = 0)
-
-include hf hα
-
-include hn
-
-end AdjoinRoot
 
 section Converse
 

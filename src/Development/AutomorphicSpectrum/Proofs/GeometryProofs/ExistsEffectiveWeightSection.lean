@@ -4,12 +4,16 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatLineGenerator
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMulFinsumEqFinsumFibres
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.NefPolarizationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptBirationalArithVarStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeTensorPowerDegreeStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.NefPolarization
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptBirationalArithVar
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeTensorPowerDegree
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GapN
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalReferenceGapPositiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ReferenceGeometryMultihomogFormStatement
+import Development.WeilBound.CoreStatements.CentralCharts.GapPolynomialPositive
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ReferenceGeometryMultihomogForm
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.Exists
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBridgeFull
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -134,7 +138,7 @@ theorem isEff_of_data (G : RefGeo Y) (n : RootIx D → ℤ) (e : G.Ω) (b : G.Ω
         ¬ unitAt G.𝔐.ξ p (b * ∏ k, G.y ⟨k, cc k⟩ ^ (-((1 : ℕ) * (dβ k : ℤ))))) :
     G.IsEff n 1 (e * b * (∏ κ ∈ Finset.univ.erase G.k₀, G.y ⟨κ, i₀ κ⟩) * ∏ r, G.e r ^ (-n r)) := by
   classical
-  have hDeg := GlobalTheory.T.lattice_tensor_power_degree _ _ G.𝔐.ξ G.K G.J G.y _ G.Fl.rootLat Set.univ G.xdeg G.e G.lines (fun r => -n r)
+  have hDeg := _root_.GlobalTheory.CompanionTheory.Ar.Lat.tens_isDegOn _ _ G.𝔐.ξ G.K G.J G.y _ G.Fl.rootLat Set.univ G.xdeg G.e G.lines (fun r => -n r)
   intro p hp i t hi ht
   obtain ⟨c0, hc0⟩ := G.𝔐.tie.cover p
   have hc := chart_update hc0 G.k₀ i hi
@@ -213,9 +217,9 @@ theorem exists_eff : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsC
   classical
   have hIn : PB.Inputs := hG.2.2.2.2.2.2.2.2.2.1
   haveI : Nonempty G.K := ⟨G.k₀⟩
-  have hb : Birational G.y := (GlobalTheory.T.hodge_cpt_birational_arith_var E H D l (Xo l) c (𝓞 c.F) (algebraMap _ _) Y ∅ G.Ω G.K G.J G.y G.𝔐 G.Fl
+  have hb : Birational G.y := (_root_.GlobalTheory.CompanionTheory.Ar.flagged_model_dim E H D l (Xo l) c (𝓞 c.F) (algebraMap _ _) Y ∅ G.Ω G.K G.J G.y G.𝔐 G.Fl
     (RingOfIntegers.coe_injective)).1
-  obtain ⟨β, dβ, hβ, hβP, hb0, hβc, hbd⟩ := GlobalTheory.T.reference_geometry_multihomog_form E H D l (Xo l) c _ _ Y G
+  obtain ⟨β, dβ, hβ, hβP, hb0, hβc, hbd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ExRefEff.BdForm.bd_form E H D l (Xo l) c _ _ Y G
   let Fl : Set (Option (RootIx D)) := {a | ∃ (τ : CMType H) (i : Fin (D.p + D.q)), (i : ℕ) + 1 = D.p + D.q ∧ a = some (τ, i)}
   have hFl : ∀ a ∈ Fl, ∀ t, ReciprocityTheory.AnForm.M.IsPsh A.Sys.A ((A.Sys.potT a t).rsmul (-1)) ∧
       ReciprocityTheory.AnForm.M.IsPsh A.Sys.A (A.Sys.potT a t) := by
@@ -233,9 +237,9 @@ theorem exists_eff : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsC
       have := hν τ i ⟨i + 1, hi⟩ (by simp [Fin.lt_def])
       simp only [gapN, dif_pos hi]
       omega
-  obtain ⟨-, h2⟩ := GlobalTheory.T.nef_polarization hIn _ _ A.Sys Fl hFl G.K G.J G.Ω G.y A.Re A.J_top hb
+  obtain ⟨-, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.nefPol hIn _ _ A.Sys Fl hFl G.K G.J G.Ω G.y A.Re A.J_top hb
     (fun V _ L => GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ V L) (GroundTheory.Heights₂.Heights.NumbersDVR.IntNumIsFieldIntersection.full ℚ G.K G.J) (gapN ν) hn
-  obtain ⟨k, hk, e, he, he0⟩ := h2 (GlobalTheory.T.global_reference_gap_positive hG E H D Xo l c Y hgl hp hq G A ν hν) β dβ hβ hβP
+  obtain ⟨k, hk, e, he, he0⟩ := h2 (_root_.AnalyticReference.gap_polynomial_positive hG E H D Xo l c Y hgl hp hq G A ν hν) β dβ hβ hβP
   have hne0 : ∀ κ, ∃ i, G.y ⟨κ, i⟩ ≠ 0 := by
     obtain ⟨c0, hc0⟩ := G.𝔐.tie.cover ⟨genPt G.𝔐.ξ, specializes_rfl⟩
     exact fun κ => ⟨c0 κ, ne_of_chart hc0 κ⟩
@@ -256,7 +260,7 @@ theorem exists_eff : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsC
     exact he
   refine ⟨k, 1, _, by omega, one_pos, ?_, isEff_of_data G n e _ dβ i₀ hi₀ he' hβc hbd⟩
   refine mul_ne_zero (mul_ne_zero (mul_ne_zero he0 hb0) (Finset.prod_ne_zero_iff.2 fun κ _ => hi₀ κ)) ?_
-  have hDeg := GlobalTheory.T.lattice_tensor_power_degree _ _ G.𝔐.ξ G.K G.J G.y _ G.Fl.rootLat Set.univ G.xdeg G.e G.lines (fun r => -n r)
+  have hDeg := _root_.GlobalTheory.CompanionTheory.Ar.Lat.tens_isDegOn _ _ G.𝔐.ξ G.K G.J G.y _ G.Fl.rootLat Set.univ G.xdeg G.e G.lines (fun r => -n r)
   exact hDeg.1
 
 end GlobalTheory.CompanionTheory.Ar.ExRefEff

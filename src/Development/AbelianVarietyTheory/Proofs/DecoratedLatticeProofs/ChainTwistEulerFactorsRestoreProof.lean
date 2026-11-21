@@ -9,8 +9,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistEulerFactorsRestoreQuotientLValuesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistEulerFactorsRestoreNormalizingFactorStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistEulerFactorsRestoreQuotientLValues
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistEulerFactorsRestoreNormalizingFactor
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open scoped TensorProduct InnerProductSpace ComplexConjugate
@@ -31,8 +31,8 @@ theorem restore_holds : ∀ D : D7, Restore D := by
     rw [h]; simp only [Formalism.BasicNotions.Ranks.rankY]; ring
   have h3 : D.R.rankY k + D.R.t = D.R.r + (k + 1) * D.R.t := by
     simp only [Formalism.BasicNotions.Ranks.rankY]; ring
-  obtain ⟨hL, hL₀⟩ := GlobalTheory.T.twistEulerFactors_restore_quotientLValues D c w hw k hk
-  obtain ⟨hd0, hd⟩ := GlobalTheory.T.twistEulerFactors_restore_normalizingFactor D c w hw (D.R.rankY k)
+  obtain ⟨hL, hL₀⟩ := _root_.GlobalTheory.ChainTw.EulerAtTwist.restore_hval D c w hw k hk
+  obtain ⟨hd0, hd⟩ := _root_.GlobalTheory.ChainTw.dSfun_twist_restore D c w hw (D.R.rankY k)
   refine ⟨hL, hL₀, ?_, ?_⟩
   · unfold dS; rw [h1, h2]; exact hd0
   · unfold dS; rw [h1, h2, hd, h3]

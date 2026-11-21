@@ -9,10 +9,10 @@ import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.MuCardLeTwo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianLieMeasureFrameBoxGe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetNeZeroOfIsIdent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolumeCoordinateBoxLeHadamardStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRealLieIffTraceFreeSkewSignsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewHermitianBasisVectorTraceFreeSkewCondStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRealLieIffTraceFreeSkewSigns
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewHermitianBasisVectorTraceFreeSkewCond
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewHermitianCoordinateDualBasisVectorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormSkewHermitianBasisVectorEqSqrtTwoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormSkewHermitianBasisVectorEqSqrtTwo
 open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.AdLat GlobalTheory.UCls GlobalTheory.SUVol ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.CovTop.VolUp
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.StandardLattice Formalism.IndefR.Lev Formalism.IndefR.Datum GlobalTheory.AdelicScalar
 open scoped ENNReal
@@ -33,7 +33,7 @@ theorem riemLie_frameBox_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     simp only [d, sgnR]; split_ifs <;> simp
   have hinv := det_ne_zero_of_isIdent hI
   have hvW : ∀ k, boxVec d z k ∈ W := fun k =>
-    (GlobalTheory.T.mem_realLie_iff_traceFree_skew_signs E r κ p q Ψ G x σ A e hI _).2 (GlobalTheory.T.skewHermitianBasisVector_traceFreeSkewCond E r Ψ d z hd k)
+    (_root_.GlobalTheory.CovTop.VolUp.FrameBox.mem_comap_realLie_iff_skewCond E r κ p q Ψ G x σ A e hI _).2 (_root_.GlobalTheory.CovTop.VolUp.FrameBox.skewCond_boxVec E r Ψ d z hd k)
   let K := Ψ × {ab : Fin r × Fin r // ab ≠ (z, z)}
   let w : K → W := fun k => ⟨boxVec d z k, hvW k⟩
   have hdual := GlobalTheory.T.skewHermitianCoordinate_dual_basisVector E r Ψ d z hd
@@ -103,7 +103,7 @@ theorem riemLie_frameBox_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     · exact (Complex.abs_im_le_norm _).trans (hY' _ _ _).le
     · exact (Complex.abs_im_le_norm _).trans (hY' _ _ _).le
   refine (measure_mono hsub).trans ((GlobalTheory.T.volume_coordinateBox_le_hadamard W K w t ht.le hfin).trans (ENNReal.ofReal_le_ofReal ?_))
-  have hn : ∀ k, ‖w k‖ = √2 := fun k => GlobalTheory.T.norm_skewHermitianBasisVector_eq_sqrt_two E r Ψ d z hd k
+  have hn : ∀ k, ‖w k‖ = √2 := fun k => _root_.GlobalTheory.CovTop.VolUp.FrameBox.norm_boxVec E r Ψ d z hd k
   simp only [hn, Finset.prod_const, Finset.card_univ]
   rw [hcardK, ← mul_pow]
   have h2 : 2 * t * √2 ≤ 3 * t := by

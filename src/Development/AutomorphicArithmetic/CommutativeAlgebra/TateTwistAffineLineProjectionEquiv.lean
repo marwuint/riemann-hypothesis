@@ -2,7 +2,10 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.InjectiveComplexProd
 import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
 import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.HomotopyInvarianceEtale
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf
 
@@ -42,8 +45,8 @@ private theorem sec_surj {Y X : Scheme.{0}} (π : Y ⟶ X) (F : Shv R) (hE : Eqv
     (b : Sec ((res R F).X n) Y) (hb : Sec.map ((res R F).d n (n + 1)) b = 0) :
     ∃ (a : Sec ((res R F).X n) X) (c : Sec ((res R F).X (n - 1)) Y),
       Sec.map ((res R F).d n (n + 1)) a = 0 ∧ Sec.res π a = b + Sec.map ((res R F).d (n - 1) n) c := by
-  have hY := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R Y (res R F) (n - 1) n (n + 1) (by ring) rfl
-  have hX := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X (res R F) (n - 1) n (n + 1) (by ring) rfl
+  have hY := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec R Y (res R F) (n - 1) n (n + 1) (by ring) rfl
+  have hX := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec R X (res R F) (n - 1) n (n + 1) (by ring) rfl
   have hevY := GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj Y) (I := res R F) (n := n)
   obtain ⟨β, hβ, -⟩ := hY.1 b hb
   obtain ⟨x, hx⟩ := (hE n).2 (CohomologyClass.mk β)
@@ -65,8 +68,8 @@ private theorem sec_inj {Y X : Scheme.{0}} (π : Y ⟶ X) (F : Shv R) (hE : Eqv 
     (a : Sec ((res R F).X n) X) (ha : Sec.map ((res R F).d n (n + 1)) a = 0)
     (hc : ∃ c : Sec ((res R F).X (n - 1)) Y, Sec.res π a = Sec.map ((res R F).d (n - 1) n) c) :
     ∃ a' : Sec ((res R F).X (n - 1)) X, Sec.map ((res R F).d (n - 1) n) a' = a := by
-  have hY := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R Y (res R F) (n - 1) n (n + 1) (by ring) rfl
-  have hX := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X (res R F) (n - 1) n (n + 1) (by ring) rfl
+  have hY := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec R Y (res R F) (n - 1) n (n + 1) (by ring) rfl
+  have hX := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec R X (res R F) (n - 1) n (n + 1) (by ring) rfl
   obtain ⟨α, hα, -⟩ := hX.1 a ha
   obtain ⟨c, hc⟩ := hc
   have h0 : CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map (sch.map π))) α (zero_add n)) = 0 := by

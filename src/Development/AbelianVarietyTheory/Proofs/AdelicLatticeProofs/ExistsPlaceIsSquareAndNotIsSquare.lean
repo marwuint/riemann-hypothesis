@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsPlaceNotIsSquareAdicCompletionStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsPlaceNotIsSquareAdicCompletion
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRingHomAdicCompletionUnder
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareMulOfNonsquareUnits
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsQuadraticSqrtExtensionBasicFacts
@@ -28,7 +28,7 @@ theorem exists_place_isSquare_and_not_isSquare :
     fun v hv x hx => (mem_sUnits F S x).mp (hSunits S subset_rfl x hx) v hv
   obtain ⟨hover, -, -⟩ := places_over F E
   obtain ⟨SE, hSE⟩ := hover S
-  obtain ⟨w, hwS, hwu⟩ := GlobalTheory.T.exists_place_not_isSquare_adicCompletion E (algebraMap F E u) SE hu0E huE
+  obtain ⟨w, hwS, hwu⟩ := _root_.GlobalTheory.QNorm.exists_not_mem_not_isSquare_completion E (algebraMap F E u) SE hu0E huE
   have hvS : w.under (𝓞 F) ∉ S := fun h => hwS ((hSE w).mpr h)
   obtain ⟨φ, hφ⟩ := exists_ringHom_adicCompletion_under F E w
   have hθ : algebraMap E (w.adicCompletion E) θ ≠ 0 :=

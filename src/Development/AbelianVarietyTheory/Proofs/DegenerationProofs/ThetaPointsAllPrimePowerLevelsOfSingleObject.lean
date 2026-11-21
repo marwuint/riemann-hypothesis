@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFullAll
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteAlgClosedFieldPowerSeriesExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteAlgClosedFieldPowerSeriesExtension
+import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.QvalAddTowerStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxNestStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxNest
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPointsCorrespondValuesStatement
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
@@ -19,7 +20,7 @@ theorem ser_nested {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
     {a : ArcIn D l β O' b} {K : Type} [Field K] [IsAlgClosed K] [Algebra (FractionRing O') K] [Algebra (PowerSeries O') K]
     [FaithfulSMul (PowerSeries O') K] [Algebra.IsAlgebraic (PowerSeries O') K] (S : Ser a K (algebraMap _ K))
     (r m : ℕ) (hr : Odd r) (hm : Odd m) : ∃ c : Kˣ, ∀ x, S.v (r * m) (r • x) = c * S.v m x := by
-  obtain ⟨C, _, _, _, _, _, gam, u, h₁, h₂, h₃, h₄⟩ := GlobalTheory.T.exists_complete_algClosed_field_powerSeries_extension O' K
+  obtain ⟨C, _, _, _, _, _, gam, u, h₁, h₂, h₃, h₄⟩ := _root_.GlobalTheory.Ex.exists_complete_isAlgClosed_powerSeries O' K
   obtain ⟨A, ρ, -, -, hρ, hv⟩ := S.val C gam u h₁ h₂ h₃ h₄
   have hR : Roots u ρ := ⟨Units.ext ((hρ 1).trans ((congrArg gam S.r_one).trans h₃.symm)), fun n k hn hk => Units.ext (by
     rw [Units.val_pow_eq_pow_val, hρ, hρ, ← map_pow, ← Units.val_pow_eq_pow_val, S.roots.2 n k hn hk])⟩
@@ -32,7 +33,7 @@ theorem ser_nested {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   obtain ⟨s, hs⟩ := (hv m hm p hp).1
   obtain ⟨s', hs'⟩ := (hv _ hrm p' hp').1
   have key : ∀ x, gam (S.v (r * m) (r • x)) = (s' * s⁻¹ : Cˣ) * gam (S.v m x) := fun x => by
-    rw [hs, hs', GlobalTheory.T.twist_tx_nsmul_eq_of_odd C A.N D.La A.q q₁ q₂ _ A.be u ρ hR r m hr hm x _ _ (hp' _) (hp x), Units.val_mul,
+    rw [hs, hs', _root_.GlobalTheory.Ex.twist_tx_nest C A.N D.La A.q q₁ q₂ _ A.be u ρ hR r m hr hm x _ _ (hp' _) (hp x), Units.val_mul,
       _root_.mul_assoc, Units.inv_mul_cancel_left]
   by_cases h : ∃ x, S.v m x ≠ 0
   · obtain ⟨x₀, h₀⟩ := h

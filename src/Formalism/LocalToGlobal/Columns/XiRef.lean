@@ -39,11 +39,6 @@ def XiRef {u : Pr.Word} (m2 : ℕ) (al : ∀ j, j ≤ m2 + 1 → L.β j) (i : �
   else if i = m2 + 1 then XiTop Ch sel mu cst i p (p.deco.1.y0 R.k) p' x
   else 0
 
-def refK {u : Pr.Word} {m2 : ℕ} (T : ChTh W sel mu u m2) (al : ∀ j, j ≤ m2 + 1 → L.β j) (i : ℕ) (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1)) :
-    (colValF W sel mu u i).V →ₗ[X.K] (colValF W sel mu u (i + 1)).V :=
-  kerOf (T.th i) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.deco.1.N (frsF sel mu p)
-    p'.deco.1.N (frsF sel mu p') (XiRef Ch sel mu cst L m2 al i p p')
-
 end Ref
 
 end Formalism.L2.Col

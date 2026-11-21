@@ -21,15 +21,7 @@ variable (l) in
 
 def tA : Acris l := ACris.periodT (untilt_epsilon (p := l))
 
-variable (l) in
-
-def phiA : Acris l →+* Acris l := ACris.phi ℂ_[l] l
-
 def galA (g : K.fixingSubgroup) : Acris l →+* Acris l := ACris.galCris (IntermediateField.fixingSubgroupEquiv K g)
-
-variable (l) in
-
-def zA : ℤ_[l] →+* Acris l := (algebraMap (Ainf l) (Acris l)).comp (IsPerfectoidField.padicIntToWitt l)
 
 structure PBg (l : ℕ) [Fact l.Prime] {A Γ : Type} [CommRing A] (t : A) (φA : A →+* A) (σA : Γ → (A →+* A)) (z : ℤ_[l] →+* A) : Type 1 where
   C : Type
@@ -46,10 +38,6 @@ structure PBg (l : ℕ) [Fact l.Prime] {A Γ : Type} [CommRing A] (t : A) (φA :
   z_c : ∀ x : ℤ_[l], algebraMap ℚ_[l] C x = c (z x)
 
 attribute [instance] PBg.ring PBg.alg
-
-variable (l K) in
-
-abbrev PB : Type 1 := PBg l (tA l) (phiA l) (galA (K := K)) (zA l)
 
 abbrev MuMor (r : Res l K) (M : Model l K) (n : ℕ) :=
   CH.Mor (Wc.OM l (B.schFn M.p) r.ρ n) (B.Oc (B.schFn M.p) (okToOC l K) true n) r.w
@@ -76,9 +64,6 @@ def BIn (M : Model l K) (j : ℕ) : Prop :=
   ∀ g (x : Pb.HL M j) n, betaM M n j (levH (Pb.galL M j g x) n) =
     M.galMH (IntermediateField.fixingSubgroupEquiv K g) n j (betaM M n j (levH x n))
 
-def InvC (B₀ : PB l K) (r : Res l K) : Prop :=
-  (∀ (g : K.fixingSubgroup) w, galA g (r.w w) = r.w w) ∧ ∀ x : B₀.C, (∀ g, B₀.σ g x = x) → ∃ (a : ℕ) (w : WittVector l r.k), (l : B₀.C) ^ a * x = B₀.c (r.w w)
-
 def PinEx : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (r : Res l K)
   (f : ℕ), 0 < f → ∃ N : ℕ, f ∣ N ∧ Pb.Mid.TeichmullerCongruence r N ∧ ∃ F : Pb.Fac r N, ∀ M : Model l K, M.Sm → ∀ j, Pin F M j
 
@@ -89,10 +74,6 @@ def EndEx : Prop := EtSideS → ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateFi
   ∃ (Amp : ∀ M : Model l K, E.LineData M.X → Prop) (e : E.EtFam l K) (e' : EMap Model.Sm (dat Amp)), e.Good ∧ (per l K).Facts ∧
     EtSide (Model.Sm (l := l) (K := K)) ∧ (dat Amp).Laws Model.Sm ∧ Nonempty (BMap Model.Sm (dat Amp)) ∧ Nonempty (PMap Model.Sm (dat Amp)) ∧
     ∀ (M : Model l K) (a : (dat Amp).Ch M) (j : ℕ) (v : M.T j) (n : ℕ), (show (M.MS j).lim from e'.e a j v).1 n = e M n j (v.lev n)
-
-def InvEx : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (r : Res l K),
-  (∀ B₀ : PB l K, InvC B₀ r) ∧ ∃ (B₀ : PB l K) (ι : B₀.C →+* (per l K).B), Function.Injective ι ∧ (∀ a, ι (B₀.c a) = (per l K).i a) ∧
-    ∀ z, ι (algebraMap ℚ_[l] B₀.C z) = (per l K).q z
 
 end CrystallineSemistableComparison.crystallineComparison
 

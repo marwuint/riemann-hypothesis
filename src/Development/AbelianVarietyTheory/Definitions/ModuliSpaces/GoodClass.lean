@@ -118,32 +118,5 @@ def TBase.complex (k : ℕ) (hk : k ≠ 0) : TBase ℂ k where
 theorem TBase.complex_ζ (k : ℕ) (hk : k ≠ 0) :
     ((TBase.complex k hk).ζ : ℂ) = Complex.exp (2 * Real.pi * Complex.I / k) := rfl
 
-def TObj.zero (k : ℕ) (J : Type) (b : TBase o k) (s : S ⟶ Sp o) : TObj 0 k J b s where
-  A := (Out.Inh.zeroPolAV S).A
-  grp := (Out.Inh.zeroPolAV S).grp
-  ab := (Out.Inh.zeroPolAV S).isAb
-  dim := (Out.Inh.zeroPolAV S).smoothDim
-  L := (Out.Inh.zeroPolAV S).L
-  isLB := (Out.Inh.zeroPolAV S).isLB
-  rigid := (Out.Inh.zeroPolAV S).rigid
-  sym := (Out.Inh.zeroPolAV S).sym
-  ample := (Out.Inh.zeroPolAV S).ample
-  ktriv := (Out.Inh.zeroPolAV S).ktriv
-  pt := fun i => Fin.elim0 i
-  torsion := fun i => Fin.elim0 i
-  bij := fun _ _ _ _ _ _ => ⟨fun i => Fin.elim0 i, toUnit_unique _ _, fun _ _ => funext fun i => Fin.elim0 i⟩
-  pairing := fun i => Fin.elim0 i
-  act := fun _ => 𝟙 _
-  hom := fun _ => inferInstance
-
-example (k : ℕ) (J : Type) (b : TBase o k) (s : S ⟶ Sp o) : (TObj.zero k J b s).pol = Out.Inh.zeroPolAV S := rfl
-
-example (t : TObj g k J b s) (w w' : J) (h : t.Prim w w') : lift (t.act w) (t.act w') ≫ μ[t.A] = 𝟙 t.A := h.1
-
-example (n N' : ℕ) {R : Type} [CommRing R] (q : Ideal R) (hq : q ≠ ⊤) : Coset (g := g) n N' (fun _ => (1 : R)) q :=
-  fun _ => ⟨0, fun h => hq ((Ideal.eq_top_iff_one q).2 h)⟩
-
-example (n N' : ℕ) {R : Type} [CommRing R] (q : Ideal R) : ¬ Coset (g := g) n N' (fun _ => (0 : R)) q :=
-  fun h => (h 0).elim fun _ hc => hc q.zero_mem
 end GlobalTheory.ZM
 end

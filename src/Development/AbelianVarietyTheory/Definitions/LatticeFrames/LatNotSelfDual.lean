@@ -24,29 +24,6 @@ namespace GlobalTheory.SeeSaw.LevelTest
 variable {D : D7} {u : D.what₂.Word} {a : XPart D u} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   [IsNonarchimedeanLocalField k] {ι : Type} (o : OffX a k ι) (G : ∀ PP : a.c.Pg, GX a o.ζ₀ PP.1)
 
-theorem trace_iff {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP)
-    (g : GL (XIx (Fin D.R.k) (Fin D.R.t) 0) H.k) :
-    embX (H.s + 1) g ∈ H.lev0.J ↔ g ∈ colGroup H.k D.R.k (Fin D.R.t) := by
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.FirstVertexFrame.firstVertex_typeChain H.k H.S.ψ H.S.ϖ H.s (Fin D.R.t) D.R.k H.S.P
-    (GlobalTheory.SymShape.sym_shape _ _ _ _ _ _ _ H.S.sym) H.S.μ H.S.tame (H.s + 1) (Nat.zero_add _)
-  refine ⟨fun h => ?_, fun h => (h2 g h).1⟩
-  rw [← h1]
-  refine ⟨1, one_mem _, mem_Cgrp.2 ⟨?_, ?_⟩⟩
-  · rw [one_mul]
-    exact (le_sup_left : (embX (H.s + 1)).range ≤ R H.k _ (H.s + 1) 1) ⟨g, rfl⟩
-  · rw [inv_one, one_mul, mul_one, one_mul]
-    exact h
-
-theorem inLev0_iff_unip (κ : GA D (D.sp.X 0)) : InLev0 o G κ ↔
-    GlobalTheory.FinPl.Moves (D.sp.X 0) κ (a.x 0).L (a.x 0).L (fun _ => True) ∧ (∀ i, o.mat0 i κ • o.Q 0 i = o.Q 0 i) ∧
-      ∀ PP, (G PP).mat0 κ ∈ colGroup (G PP).k D.R.k (Fin D.R.t) := by
-  simp only [inLev0_iff, trace_iff]
-
-theorem under_auto {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP) :
-    H.q.v = PP.under (𝓞 D.host.F) := by
-  obtain ⟨ε, hε, he⟩ := H.q.above
-  exact (GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP _ ε H.idem hε he).symm
-
 theorem val_lt_one_iff {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (q : GlobalTheory.FinPl.SplitPt D K) {PP : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt q.e PP) (x : 𝓞 D.host.E) :
     valuation K (q.pr (incA D (x : D.host.E))) < 1 ↔ x ∈ PP.asIdeal := by
@@ -56,40 +33,6 @@ theorem val_lt_one_iff {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K
   rw [h.2 x hx, ← q.sec_pr, ← q.int_iff]
   change valuation K ((q.pr.comp (incA D)) x) < 1 ↔ ¬ valuation K ((q.pr.comp (incA D)) (x : D.host.E)⁻¹) ≤ 1
   rw [map_inv₀, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))]
-
-theorem oneG_iff {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP) (T : ℕ) :
-    valuation H.k (H.q.pr (incA D ((T : ℕ) : D.host.E)) - 1) < 1 ↔ ((T : 𝓞 D.host.E) - 1) ∈ PP.asIdeal := by
-  rw [← val_lt_one_iff H.q H.idem]
-  simp
-
-variable {o G} in
-
-theorem mem_of_arith (h : Arith o G) (PP : a.c.Pg) : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.1.asIdeal := by
-  rw [← val_lt_one_iff (G PP).q (G PP).idem]
-  have h1 := h.unifG PP
-  have h2 := ((G PP).S.unif _).2 le_rfl
-  rw [← h1] at h2
-  simpa using h2
-
-theorem T_sub_one (B : D7) (v : B.what₂.Word) (P : Ideal (𝓞 B.host.E)) (hP : ((B.host.g 0 * B.host.g 1 : ℕ) : 𝓞 B.host.E) ∈ P) :
-    (((B.mem v).A.T : ℕ) : 𝓞 B.host.E) - 1 ∈ P := by
-  obtain ⟨π, -, hn, hc⟩ := B.T_norm v
-  obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 hc
-  let σ : 𝓞 B.host.E →+* 𝓞 B.host.E := RingOfIntegers.mapRingHom (B.host.conj : B.host.E →+* B.host.E)
-  have h1 : π * σ π = ((B.mem v).A.T : ℕ) := by
-    apply RingOfIntegers.ext
-    simpa [σ] using hn
-  have h2 : π = 1 + c * ((B.host.QS * B.host.q * B.host.d * (B.host.g 0 * B.host.g 1) ^ 2 : ℕ) : 𝓞 B.host.E) := by
-    rw [hc]; ring
-  have hN : ((B.host.QS * B.host.q * B.host.d * (B.host.g 0 * B.host.g 1) ^ 2 : ℕ) : 𝓞 B.host.E) ∈ P := by
-    rw [Nat.cast_mul, Nat.cast_pow]
-    exact P.mul_mem_left _ (P.pow_mem_of_mem hP 2 two_pos)
-  generalize (B.host.QS * B.host.q * B.host.d * (B.host.g 0 * B.host.g 1) ^ 2 : ℕ) = N at h2 hN
-  have h3 : σ π = 1 + σ c * N := by rw [h2]; simp
-  have : (((B.mem v).A.T : ℕ) : 𝓞 B.host.E) - 1 = (c + σ c + c * σ c * N) * N := by
-    rw [← h1, h3, h2]; ring
-  rw [this]
-  exact P.mul_mem_left _ hN
 
 section Unif
 
@@ -160,14 +103,6 @@ theorem unif_val (ϖ : Unif K) {π : Kˣ} (h : GlobalTheory.IndefiniteRowSideFul
 
 end Unif
 
-theorem unifG_of {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP)
-    (h1 : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal)
-    (h2 : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal ^ 2) :
-    valuation H.k (H.q.pr (incA D ((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E))) = valuation H.k ((H.S.ϖ : H.kˣ) : H.k) := by
-  obtain ⟨ϖ⟩ : Nonempty (Unif H.k) := inferInstance
-  rw [← unif_val ϖ H.S.unif, ← val_eq_unif H.q H.idem ϖ h1 h2]
-  simp
-
 theorem exists_prime {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (q : GlobalTheory.FinPl.SplitPt D K) : ∃ PP : Formalism.L2.DIV.Pl D.host.E, Formalism.L2.NTheta.IsIdemAt q.e PP := by
   let φ : 𝓞 D.host.E →+* 𝒪[K] :=
@@ -220,14 +155,6 @@ theorem g_notMem_sq (P : HeightOneSpectrum (𝓞 D.host.E)) : ((D.host.g 0 * D.h
   · exact key 0 1 D.host.g_ne h0 h
   · exact key 1 0 D.host.g_ne.symm h1 (by rwa [mul_comm])
 
-theorem arith_iff (hT : ∀ i, (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ (o.p i).v.asIdeal)
-    (hG : ∀ PP ∈ a.c.Pg, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) :
-    Arith o G ↔ (∀ v, v ∉ a.c.S → CharUnramAt D a.c.η v ∧ ∀ j, 1 ≤ j → j ≤ D.R.m → CharUnramAt D (a.c.μ j) v) ∧
-      a.Lz.SigOK ∧ a.Lz.IsPosDef :=
-  ⟨fun h => ⟨h.unr, h.lz⟩, fun h => Arith.of_local o G (fun i => unifT_of _ _ (hT i))
-    (fun PP => (oneG_iff _ _).2 (T_sub_one D u _ (hG _ PP.2))) (fun PP => unifG_of _ (hG _ PP.2) (g_notMem_sq _))
-    (fun PP => under_auto _) h.1 h.2⟩
-
 theorem comp_map {F E : Type} [Field F] [Field E] [Algebra F E] {R R' R'' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     [CommRing R''] [Algebra F R''] (φ : R →ₐ[F] R') (ψ : R' →ₐ[F] R'') (z : R ⊗[F] E) :
     Algebra.TensorProduct.map (ψ.comp φ) (AlgHom.id F E) z =
@@ -267,47 +194,10 @@ theorem charUnramAt_of {χ : (AE D)ˣ →* Circle} {v : HeightOneSpectrum (𝓞 
   · rw [← map_inv]
     exact kin x⁻¹ h4
 
-theorem arith_of_pins (hc : a.c.Is) (hP : GlobalTheory.Core.Mi.IsTypePlaces a.c.Pg) (ho : PinOffX o) (hL : a.Lz.SigOK ∧ a.Lz.IsPosDef) :
-    Arith o G := by
-  refine (arith_iff o G (fun i => (ho.overT _).1 ⟨i, rfl⟩) hP.1).2 ⟨fun v hv => ⟨fun x h1 _ h3 h4 => hc.chars.2.1 x h1 h3 h4,
-    fun j h1 h2 => charUnramAt_of fun w hw => ?_⟩, hL⟩
-  have := hc.unr ⟨j - 1, by omega⟩ w (fun h => hv (hw ▸ h))
-  rwa [show j - 1 + 1 = j by omega] at this
-
 end GlobalTheory.SeeSaw.LevelTest
-
-section
-open Formalism.UG Formalism.L2.Forms
 
 namespace GlobalTheory.SeeSaw.BaseLatTest
 
-theorem lat_not_selfDual {D : D7} {u : D.what₂.Word} (F : Forms0 D u)
-    (L : Submodule (𝓞 D.host.E) (Fin (D.sp.X 0).rank → D.host.E)) (sd : IsSelfDualC (D.sp.X 0) L)
-    (lat : ∀ z : Fin (D.sp.X 0).rank → D.host.E, z ∈ L ↔
-      (fun i => z (Fin.cast (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)).symm i)) ∈ F.cls0.lev.Lb) : False := by
-  have hr := Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)
-  have hle : Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) F.cls0.lev.Lb)
-      ≤ F.cls0.lev.Lb := by
-    refine Submodule.span_le.2 fun y hy => ?_
-    have : (fun j => y (Fin.cast hr j)) ∈ L := by
-      refine (sd.2 _).2 fun x hx => ?_
-      obtain ⟨b, hb⟩ := hy _ ((lat x).1 hx)
-      refine ⟨b, ?_⟩
-      refine hb.trans ?_
-      simp only [hform, gramN, dotProduct, mulVec, Finset.mul_sum]
-      refine (Fintype.sum_equiv (finCongr hr) _ _ fun i => ?_).symm
-      refine Fintype.sum_equiv (finCongr hr) _ _ fun j => ?_
-      simp [mul_assoc]
-      exact Or.inl rfl
-    exact (lat _).1 this
-  have h1 := F.cls0.lev.Lb_index
-  rw [AddSubgroup.relIndex_eq_one.2 (by exact hle)] at h1
-  have hf : 0 < D.R.f := by unfold Ranks.f Ranks.n; positivity
-  have := Nat.one_lt_pow (n := 2 * D.R.f) (by omega) (D.mem u).A.T_prime.one_lt
-  omega
-
 end GlobalTheory.SeeSaw.BaseLatTest
-
-end
 
 end

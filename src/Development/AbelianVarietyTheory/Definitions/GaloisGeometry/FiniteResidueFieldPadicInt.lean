@@ -241,13 +241,6 @@ theorem subElem_eq_empty {k : ℕ} (hk : r < k)
   have := (Nat.pow_dvd_pow_iff_le_right (two_le_qRes (O := O))).1 hd
   omega
 
-theorem maxMul_ne (hr : 0 < r) (L : Lat O K r) : maxMul L ≠ L := by
-  intro h
-  have h1 := relIndex_maxMul L
-  rw [h, AddSubgroup.relIndex_self] at h1
-  have := Nat.one_lt_pow hr.ne' (two_le_qRes (O := O))
-  omega
-
 theorem smul_mem_subIdx_iff (g : GL (Fin r) K) (n : ℕ) (M L : Lat O K r) :
     g • M ∈ subIdx n (g • L) ↔ M ∈ subIdx n L := by
   simp only [subIdx, Set.mem_setOf_eq, smul_def, glLat_val, glMap_le_glMap_iff, relIndex_glMap]
@@ -278,19 +271,9 @@ theorem heckeAll_zero (φ : Lat O K r → E) : heckeAll 0 φ = φ := by
 theorem heckeElem_zero (φ : Lat O K r → E) : heckeElem 0 φ = φ := by
   funext L; simp [heckeElem, subElem_zero]
 
-theorem heckeElem_top (φ : Lat O K r → E) (L : Lat O K r) : heckeElem r φ L = φ (maxMul L) := by
-  simp [heckeElem, subElem_top]
-
 theorem heckeElem_eq_zero {k : ℕ} (hk : r < k) (φ : Lat O K r → E) (L : Lat O K r) :
     heckeElem k φ L = 0 := by
   simp [heckeElem, subElem_eq_empty hk]
-
-theorem heckeAll_smul (g : GL (Fin r) K) (n : ℕ) (φ : Lat O K r → E) (L : Lat O K r) :
-    heckeAll n φ (g • L) = heckeAll n (fun M => φ (g • M)) L := by
-  symm
-  refine finsum_mem_eq_of_bijOn (fun M => g • M) ⟨fun M hM => (smul_mem_subIdx_iff g n M L).2 hM,
-    (MulAction.injective g).injOn, fun M hM => ⟨g⁻¹ • M, ?_, smul_inv_smul g M⟩⟩ fun _ _ => rfl
-  rw [← smul_mem_subIdx_iff g, smul_inv_smul]; exact hM
 
 theorem heckeElem_smul (g : GL (Fin r) K) (k : ℕ) (φ : Lat O K r → E) (L : Lat O K r) :
     heckeElem k φ (g • L) = heckeElem k (fun M => φ (g • M)) L := by
@@ -298,29 +281,5 @@ theorem heckeElem_smul (g : GL (Fin r) K) (k : ℕ) (φ : Lat O K r → E) (L : 
   refine finsum_mem_eq_of_bijOn (fun M => g • M) ⟨fun M hM => (smul_mem_subElem_iff g k M L).2 hM,
     (MulAction.injective g).injOn, fun M hM => ⟨g⁻¹ • M, ?_, smul_inv_smul g M⟩⟩ fun _ _ => rfl
   rw [← smul_mem_subElem_iff g, smul_inv_smul]; exact hM
-
-theorem finite_residueField_padicInt (p : ℕ) [Fact p.Prime] :
-    Finite (IsLocalRing.ResidueField ℤ_[p]) :=
-  Finite.of_equiv _ (PadicInt.residueField (p := p)).toEquiv.symm
-
-theorem qRes_padicInt (p : ℕ) [Fact p.Prime] [Finite (IsLocalRing.ResidueField ℤ_[p])] :
-    qRes ℤ_[p] = p := by
-  unfold qRes
-  rw [Nat.card_congr (PadicInt.residueField (p := p)).toEquiv, Nat.card_zmod]
-
-example : haveI := finite_residueField_padicInt 2
-    (heckeElem 2 : (Lat ℤ_[2] ℚ_[2] 2 → ℕ) → Lat ℤ_[2] ℚ_[2] 2 → ℕ) ≠ id := by
-  classical
-  haveI := finite_residueField_padicInt 2
-  intro h
-  have h1 := congrFun (congrFun h fun M => if M = std ℤ_[2] ℚ_[2] 2 then 1 else 0) (std ℤ_[2] ℚ_[2] 2)
-  rw [heckeElem_top] at h1
-  simp [maxMul_ne] at h1
-
-example : haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
-    (maxMul (std ℤ_[3] ℚ_[3] 2)).1.toAddSubgroup.relIndex (std ℤ_[3] ℚ_[3] 2).1.toAddSubgroup = 9 := by
-  haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
-  haveI := finite_residueField_padicInt 3
-  rw [relIndex_maxMul, qRes_padicInt]; rfl
 
 end GlobalTheory.LatHecke

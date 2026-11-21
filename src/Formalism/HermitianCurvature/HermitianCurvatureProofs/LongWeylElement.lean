@@ -18,18 +18,6 @@ theorem conjM_cont {k r : ℕ} (a : Mat k r) : Continuous (conjM a : Mt k r → 
        exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)
     | (unfold conjM; fun_prop)
 
-theorem lmulM_cont {k r : ℕ} (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
-  first
-    | (show Continuous fun x : Mt k r => (a * Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
-       exact continuous_const.matrix_mul continuous_id)
-    | (unfold lmulM; fun_prop)
-
-theorem rmulF_cont {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : Continuous (rmulF a) := by
-  first
-    | (show Continuous fun x : Fin n → Fin n → ℂ => (Matrix.of x * a : Matrix (Fin n) (Fin n) ℂ)
-       exact continuous_id.matrix_mul continuous_const)
-    | (unfold rmulF; fun_prop)
-
 def mid (k r' : ℕ) (p : Fin (2 * (1 + r') + k + 1)) : Prop := 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1
 
 theorem mid_levPos (k r' : ℕ) (s : Fin (2 * r' + k + 1)) : mid k r' (levPos k 1 r' s) := by
@@ -83,16 +71,6 @@ theorem lev_mul (k r' : ℕ) (g h : Mat k r') : ιLev k 1 r' (g * h) = ιLev k 1
 
 def blk (k r' : ℕ) (x : Mt k (1 + r')) : Mt k r' := fun s t => x (levPos k 1 r' s) (levPos k 1 r' t)
 
-theorem blk_cont (k r' : ℕ) : Continuous (blk k r') := by
-  first
-    | (unfold blk; fun_prop)
-    | exact continuous_pi fun s => continuous_pi fun t =>
-        (continuous_apply (levPos k 1 r' t)).comp (continuous_apply (levPos k 1 r' s))
-
-theorem blk_lev (k r' : ℕ) (x : Mt k r') : blk k r' (levM k r' x) = x := by
-  funext s t
-  exact lev_mm k r' (Matrix.of x) s t
-
 theorem levM_cont (k r' : ℕ) : Continuous (levM k r') := by
   refine continuous_pi fun p => continuous_pi fun q => ?_
   show Continuous fun x : Mt k r' => ιLev k 1 r' (Matrix.of x) p q
@@ -112,14 +90,6 @@ variable {k r' : ℕ}
 
 def iZ (k r' : ℕ) : Fin (2 * (1 + r') + k + 1) := ⟨0, by omega⟩
 def iL (k r' : ℕ) : Fin (2 * (1 + r') + k + 1) := ⟨2 * (1 + r') + k, by omega⟩
-
-lemma weight_zero_not_pos_det (c : ℂ) (i q : Fin (2 * (1 + r') + k + 1)) (h1 : ¬(i.val = 0 ∧ q.val = 2 * (1 + r') + k))
-    (h2 : ¬(i.val = 2 * (1 + r') + k ∧ q.val = 0)) (h3 : ¬(i.val = q.val ∧ 0 < i.val ∧ i.val < 2 * (1 + r') + k)) :
-    w0 k r' c i q = 0 := by
-  simp only [w0]
-  rw [if_neg h1, if_neg h2, if_neg]
-  rintro ⟨h, h'⟩
-  exact h3 ⟨congrArg Fin.val h, h'⟩
 
 private lemma w0_apply_eq_ite_first_index (c : ℂ) (i m : Fin (2 * (1 + r') + k + 1)) :
     w0 k r' c i m = if i.val = 0 then (if m = iL k r' then (star c)⁻¹ else 0)
@@ -517,12 +487,6 @@ lemma bc_mid_row_out (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)
 lemma bc_out_col (c : Fin r → ℂ) (μ ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
     (hj : ¬ midW k r j) : bigCell k r c μ i j = bigCell k r c ν i j := by
   have hj' : ¬ (r ≤ j.val ∧ j.val ≤ r + k) := hj
-  simp only [bigCell]
-  split_ifs <;> first | rfl | (exfalso; omega)
-
-lemma bc_out_row (c : Fin r → ℂ) (μ ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
-    (hi : ¬ midW k r i) : bigCell k r c μ i j = bigCell k r c ν i j := by
-  have hi' : ¬ (r ≤ i.val ∧ i.val ≤ r + k) := hi
   simp only [bigCell]
   split_ifs <;> first | rfl | (exfalso; omega)
 

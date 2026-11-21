@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeomSumOneAddP
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgHomExtOfConstantCoeffZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersCompleteDVR
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvariantBasis
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicFrobeniusSystemContinuationOpenDiscStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicFrobeniusSystemContinuationOpenDisc
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemEurOfTeichmullerSeries
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegralCyclotomicChar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCoeAlgebraMap
 
@@ -318,9 +319,9 @@ theorem letterwise (s r n m m' : ℕ) [NeZero n] (hs : 1 ≤ s) (h2 : l = 2 → 
   obtain ⟨τ, hτ⟩ := exists_logS_div (LL := LL) s
   have hρ : (0 : ℝ) < (l : ℝ) ^ (-((s : ℝ) + 1 / ((l : ℝ) - 1))) :=
     Real.rpow_pos_of_pos (Nat.cast_pos.2 (Fact.out : l.Prime).pos) _
-  have c1 := GlobalTheory.T.cyclotomicFrobenius_system_continuation_open_disc l LL s r n (m + m') hs _ τ logS_const logS_deriv hτ U _ B _ hρ hB
+  have c1 := _root_.GlobalTheory.Cyc.continuation_to_open_disc l LL s r n (m + m') hs _ τ logS_const logS_deriv hτ U _ B _ hρ hB
     (fun k i j => (hconv k i j).1)
-  have c2 := GlobalTheory.T.cyclotomicFrobenius_system_continuation_open_disc l LL s r n (m + m') hs _ τ logS_const logS_deriv hτ (fun k => (V k).transpose)
+  have c2 := _root_.GlobalTheory.Cyc.continuation_to_open_disc l LL s r n (m + m') hs _ τ logS_const logS_deriv hτ (fun k => (V k).transpose)
     _ (fun k => (A k).transpose) _ hρ hV (fun k i j => (hconv k j i).2)
   refine ⟨Matrix.of fun i j k => U k i j, Matrix.of fun i j k => V k i j, ?_, fun i j k => ?_,
     fun i j k => ?_, fun g => ?_, Matrix.of fun i j k => A k i j, ?_⟩

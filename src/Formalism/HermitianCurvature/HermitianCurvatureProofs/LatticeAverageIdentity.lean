@@ -338,13 +338,6 @@ theorem isPP_of_int {g : Matrix (Fin n) (Fin n) K} (hg : IsUpUni g) (hi : IsInt 
   ⟨⟨hg, fun a b _ => hi a b⟩, ⟨isUpUni_inv K hg, fun a b _ =>
     isInt_inv R hi (isUpUni_det K hg) a b⟩⟩
 
-theorem isD_one : IsD R k (1 : Matrix (Fin n) (Fin n) K) := by
-  refine ⟨isUpUni_one K, fun a b => ?_, fun _ _ _ => rfl⟩
-  rw [Matrix.one_apply]
-  split_ifs
-  · exact R.one_mem
-  · exact R.zero_mem
-
 theorem isD_mul {D E : Matrix (Fin n) (Fin n) K} (hD : IsD R k D) (hE : IsD R k E) :
     IsD R k (D * E) := by
   refine ⟨isUpUni_mul K hD.1 hE.1, isInt_mul R hD.2.1 hE.2.1, fun a b ha => ?_⟩

@@ -8,7 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomain
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveTiltedRootOfUnityLocalPeriodRingsData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyLocalPeriodRingsData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffEqMkRootT
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRFiltrationLawsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRFiltrationLaws
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResEqIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineThetaEqZeroIffFontaineXiElementDvd
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdRStatement
@@ -18,8 +20,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootOfUnityP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalPeriodRingsDataUnramifiedLawsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAddValuationNormalised
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsFieldStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 
@@ -57,11 +59,11 @@ variable {l : ℕ} [Fact l.Prime]
 theorem alg_tower (a : Per.Ainf l) : algebraMap (Per.Ainf l) (Per.Acris l) a =
     algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) := GlobalTheory.RingIface.tower l a
 
-theorem dR_inj : Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) := (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.1
+theorem dR_inj : Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) := (_root_.GlobalTheory.MemLoc.BdRField.bdR_isField l).2.1
 
 theorem ev_zero (y : Per.BdRp l) : y ∈ Per.FilP l 0 := by
   obtain ⟨e, he⟩ := BdRField.exists_isEps l
-  exact ((GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he).1 0 y).2 (by rw [pow_zero]; exact one_dvd y)
+  exact ((_root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l e he).1 0 y).2 (by rw [pow_zero]; exact one_dvd y)
 
 theorem iota_aB (C : Core l) (a : Per.Ainf l) :
     C.ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a) := by
@@ -79,12 +81,12 @@ theorem aB_inj (C : Core l) : Function.Injective (Per.aB l) := by
 
 theorem fil0 (C : Core l) (a : Per.Ainf l) : C.ι (Per.aB l a) ∈ Per.FilD l 0 := by
   rw [iota_aB]
-  exact ((GlobalTheory.T.bdR_filtration_laws l).2.2.2.2.2.2 0 _).2 (ev_zero _)
+  exact ((_root_.GlobalTheory.MemLoc.filD_laws l).2.2.2.2.2.2 0 _).2 (ev_zero _)
 
 theorem fil1 (C : Core l) (a : Per.Ainf l) :
     C.ι (Per.aB l a) ∈ Per.FilD l 1 ↔ ∃ b : Per.Ainf l, a = xi C.ε * b := by
   rw [iota_aB]
-  refine ((GlobalTheory.T.bdR_filtration_laws l).2.2.2.2.2.2 1 _).trans ?_
+  refine ((_root_.GlobalTheory.MemLoc.filD_laws l).2.2.2.2.2.2 1 _).trans ?_
   rw [← (thetaD_props l).2.1, (thetaD_props l).2.2.2.1]
   refine Iff.trans ?_ (theta_eq_zero_iff_xi_dvd l C.ε (core_isEps l C) a)
   exact ⟨fun h => Subtype.ext h, fun h => by rw [h]; rfl⟩

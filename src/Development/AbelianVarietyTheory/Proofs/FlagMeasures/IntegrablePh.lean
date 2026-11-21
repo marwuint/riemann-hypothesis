@@ -4,11 +4,12 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpec
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExtAeEqContRep
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalConvolutionOrthogonalProjectorProofStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutomorphicKernelConvergencePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCoefficientIntegrableMajorantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsContRepKernelIntegralCompactSupportStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DenseCompactlySupportedL2Statement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalConvolutionOrthogonalProjectorProof
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutomorphicKernelConvergenceProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCoefficientIntegrableMajorant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsContRepKernelIntegralCompactSupport
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DenseCompactlySupportedL2
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoeFnSumSmulAeEq
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
@@ -149,7 +150,7 @@ theorem two_mul_rank_le {n : ℕ} (ε : Fin n → Bool) : 2 * rkR ε ≤ n := by
 
 theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d) (hdec : LocDec B h)
     (hb : HBig B 32 h) : Integrable (ph B d) (muInf B.I) := by
-  obtain ⟨hc, hle, hi⟩ := GlobalTheory.T.discrete_series_coefficient_integrable_majorant B d h hd hdec
+  obtain ⟨hc, hle, hi⟩ := _root_.GlobalTheory.Dec.PhMajProof.phMaj B d h hd hdec
   have h1 := hi 0 le_rfl fun v => by
     rcases Nat.eq_zero_or_pos (rkR (B.I.ε v)) with h0 | h0
     · exact Or.inl h0
@@ -169,20 +170,20 @@ theorem kernelB : KernelB := by
   have : BorelSpace B.I.GA := inferInstance
   have : (Measure.pi fun v => Formalism.REAL.muG (B.I.ε v)).IsHaarMeasure := Measure.pi.isHaarMeasure _
   have : (B.I.muA B.μf).IsHaarMeasure := Measure.prod.instIsHaarMeasure _ _
-  obtain ⟨-, -, -, hP⟩ := GlobalTheory.T.globalConvolutionOrthogonalProjector_proof B d hd (integrable_ph B d h hd hdec hb)
+  obtain ⟨-, -, -, hP⟩ := _root_.GlobalTheory.GlobProj.globalProj_holds B d hd (integrable_ph B d h hd hdec hb)
   obtain ⟨hproj, -, -, hfd, hD⟩ := hP T hT
   have := hfd hfin
-  obtain ⟨hbd, hKc, hKi, -⟩ := GlobalTheory.T.automorphicKernel_convergence_properties B d h hd hn hdec hb
+  obtain ⟨hbd, hKc, hKi, -⟩ := _root_.GlobalTheory.KernelConv.kernelA B d h hd hn hdec hb
   obtain ⟨y, hy, hspan, hfix, hexp⟩ := exists_orthonormal T hproj B.D hD
   have hrep : ∀ g ∈ compactSub ((B.I.muA B.μf).restrict B.fund), IsContRep B (T g)
       (fun x => ∫ z in B.fund, kern B.I (phe B d) x z * (g : B.I.GA → ℂ) z ∂(B.I.muA B.μf)) := by
     rintro g ⟨C, hC, hg⟩
-    exact GlobalTheory.T.isContRep_kernel_integral_compact_support B d h hd hn hdec hb T hT g C hC hg
+    exact _root_.GlobalTheory.KernelContRep.isContRep_integral_kernel B d h hd hn hdec hb T hT g C hC hg
   have huniq : ∀ (u : B.I.L2 B.μf B.fund) f f', IsContRep B u f → IsContRep B u f' → f' = f :=
     fun u f f' h1 h2 => (GlobalTheory.ExtContRep.ext_ae_eq_contRep B u f h1).2.1 f' h2
   have hF : ∀ i, ∃ F, IsContRep B (y i) F := by
     intro i
-    obtain ⟨g, hg, e⟩ := exists_mem_of_dense T (compactSub _) (GlobalTheory.T.dense_compactly_supported_L2 B) (y i)
+    obtain ⟨g, hg, e⟩ := exists_mem_of_dense T (compactSub _) (_root_.GlobalTheory.CompactDense.dense_compact_support B) (y i)
     exact ⟨_, hfix i ▸ e ▸ hrep g hg⟩
   choose F hF using hF
   have hK : ∀ x z, kern B.I (phe B d) x z = ∑ i, F i x * star (F i z) := by

@@ -158,9 +158,6 @@ theorem coperCx_actMat (y : Frame X.Ψ r) (α : 𝓞 E) (u : Fin g ⊕ Fin g →
   exact congrArg (· *ᵥ u) (cxMat_mul_actMat X bas idx (coperHom X y) α
     (fun p => conj (rowType X p α)) (coper_smul X y α))
 
-def secN (y : Frame X.Ψ r) : (Fin g → ℂ) →ₗ[ℂ] (Fin g ⊕ Fin g → ℂ) :=
-  (I / 2) • (fromRows (coMat X bas idx Sum.inr y)ᵀ (-(coMat X bas idx Sum.inl y)ᵀ)).mulVecLin
-
 def secLin (y : Frame X.Ψ r) : (Fin g → ℂ) →ₗ[ℂ] (Fin g ⊕ Fin g → ℂ) :=
   secL g ∘ₗ (hMat X bas idx y).mulVecLin
 
@@ -457,12 +454,6 @@ end Holo
 
 section Compl
 
-def headSpan (x : Frame X.Ψ r) (τ : X.Ψ) : Submodule ℂ (Fin r → ℂ) :=
-  Submodule.span ℂ (FD.col (mat x τ) '' {a | (a : ℕ) < X.p0})
-
-def tailSpan (y : Frame X.Ψ r) (τ : X.Ψ) : Submodule ℂ (Fin r → ℂ) :=
-  Submodule.span ℂ (FD.col (mat y τ) '' {a | X.p0 ≤ (a : ℕ)})
-
 def headProj : Matrix (Fin r) (Fin r) ℂ := diagonal fun a => if (a : ℕ) < X.p0 then 1 else 0
 
 def mix (x y : Frame X.Ψ r) : Frame X.Ψ r := fun τ i a =>
@@ -470,18 +461,6 @@ def mix (x y : Frame X.Ψ r) : Frame X.Ψ r := fun τ i a =>
 
 def unip (K : Frame X.Ψ r) : Frame X.Ψ r := fun τ a c =>
   if (a : ℕ) < X.p0 ∧ X.p0 ≤ (c : ℕ) then K τ a c else if a = c then 1 else 0
-
-def shear (x y : Frame X.Ψ r) : Frame X.Ψ r := fun τ a c =>
-  -((mat (mix X x y) τ)⁻¹ * mat x τ) a c
-
-def adapt (x y : Frame X.Ψ r) : Frame X.Ψ r := rmul x (unip X (shear X x y))
-
-def betaMat (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r)
-    (x y : Frame X.Ψ r) : Matrix (Fin g) (Fin g) ℂ := splitMat X bas idx (adapt X x y)
-
-def embCx (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (τ : E →+* ℂ) :
-    (Fin g ⊕ Fin g → ℂ) →ₗ[ℂ] (Fin r → ℂ) :=
-  (Matrix.of fun a s => Data.emb τ (bas (Pi.single s 1) : Fin r → E) a).mulVecLin
 
 theorem headProj_mul_self : headProj X * headProj X = headProj X := by
   rw [headProj, diagonal_mul_diagonal]
@@ -555,13 +534,6 @@ variable {bas} (hs : IsSympl X bas)
 include hs
 
 end Compl
-
-example (n : ℕ) :
-    DifferentiableOn ℂ (thFr HyperbolicCusp.flagData Gauss.hr Gauss.bas Gauss.idx n 0 0 1)
-      HyperbolicCusp.flagData.dom ∧
-    thFr HyperbolicCusp.flagData Gauss.hr Gauss.bas Gauss.idx n 0 0 1 Gauss.one ≠ 0 :=
-  ⟨differentiableOn_thFr _ Gauss.isSympl_bas _ n 0 0 (Harm.isHarmonic_C 1),
-    Gauss.thFr_one_ne_zero n⟩
 
 end
 

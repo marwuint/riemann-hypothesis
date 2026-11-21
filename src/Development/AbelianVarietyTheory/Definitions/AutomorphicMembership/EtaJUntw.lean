@@ -139,20 +139,6 @@ def useFace (R : RealDat D A Ks) (F : Face D A) : Face D (useFam R) where
     let Z := F.Zsc (extSub R F Zs)
     ⟨Z.F0, fun t => Z.J0 t.1, Z.E1u, Z.l3m, Z.l3u, Z.l6m, Z.l6u, Z.x, Z.b, Z.la, Z.de⟩
 
-theorem extSub_zs (R : RealDat D A Ks) (F : Face D A) :
-    extSub R F ((useReal R).toCx (useFace R F)).zs = (R.toCx F).zs := by
-  unfold extSub
-  show DefSub.mk _ _ = DefSub.mk _ _
-  congr 1
-  · funext t
-    by_cases h : InUse R t
-    · exact (dif_pos h).trans rfl
-    · exact (dif_neg h).trans rfl
-  · funext i t
-    by_cases h : InUse R t
-    · exact (dif_pos h).trans rfl
-    · exact (dif_neg h).trans rfl
-
 structure IsTupAll (R : RealDat D A Ks) (F : Face D A) : Prop where
   tw : R.tup_tw F
   mu_off : R.tup_mu_off
@@ -172,76 +158,6 @@ structure CharAll (R : RealDat D A Ks) (F : Face D A) : Prop where
   tup : IsTupAll R F
 
 variable {R : RealDat D A Ks} {F : Face D A}
-
-theorem restrictedFace_closedNumbers : ((useFace R F).Zsc ((useReal R).toCx (useFace R F)).zs).F0 = (F.Zsc (R.toCx F).zs).F0 :=
-  congrArg (fun Z => (F.Zsc Z).F0) (extSub_zs R F)
-
-theorem restrictedFace_eigenvalueMainTerm : ((useFace R F).Zsc ((useReal R).toCx (useFace R F)).zs).l6m = (F.Zsc (R.toCx F).zs).l6m :=
-  congrArg (fun Z => (F.Zsc Z).l6m) (extSub_zs R F)
-
-set_option maxHeartbeats 2000000 in
-
-theorem nonzeroIndexPlaces_iff (w : HeightOneSpectrum (𝓞 D.what₂.LL)) : (useReal R).NonzeroIndexPlace (useFace R F) w ↔ R.NonzeroIndexPlace F w := by
-  unfold RealDat.NonzeroIndexPlace
-  rw [restrictedFace_closedNumbers]
-  exact Iff.rfl
-
-set_option maxHeartbeats 2000000 in
-
-theorem partAt_use (b : Bool) (i : Fin D.R.m) (p : A.fam.base.Ix) (v : InfinitePlace D.what₂.LL) :
-    (useReal R).PartAt (useFace R F) b i p v ↔ R.PartAt F b i p v := by
-  cases b <;> exact Iff.rfl
-
-set_option maxHeartbeats 4000000 in
-
-theorem CharAll.use (h : CharAll R F) : (useReal R).Char (useFace R F) where
-  lev :=
-    { mu0 := h.lev.mu0, eta := h.lev.eta, xi := fun t => h.lev.xi t.1
-      xi_inj := fun _ _ e => Subtype.ext (h.lev.xi_inj e)
-      xi_base := h.lev.xi_base, xi_fin := fun t => h.lev.xi_fin t.1, xi_triv := fun t => h.lev.xi_triv t.1
-      xi_tame := fun t => h.lev.xi_tame t.1, Pg := h.lev.Pg, Q_pl := fun t => h.lev.Q_pl t.1, Q_off := fun t => h.lev.Q_off t.1
-      Q_de := fun p hp => (h.lev.Q_de p hp).imp fun _ h' t => h' t.1
-      Q_ram := fun t => h.lev.Q_ram t.1, chi := h.lev.chi, xiR := fun t => h.lev.xiR t.1
-      βY := h.lev.βY, βX := h.lev.βX, βV := h.lev.βV, βW := h.lev.βW }
-  grp := ⟨fun t => h.grp.red_R t.1, fun i t => h.grp.red_L i t.1, h.grp.levels, h.grp.record, h.grp.chiW⟩
-  fam :=
-    { tie := by
-        obtain ⟨g, c, c', H⟩ := h.fam.tie
-        exact ⟨g, c, c', H.ranks, H.v0, H.tauL_ok, H.pl_inj, H.q, H.S_fin, fun t => H.ok t.1, H.gramR_eq, H.mapR, H.mapL,
-          fun t => H.coefR t.1, fun i t => H.coefL i t.1⟩
-      Sb := h.fam.Sb, roots := fun t => h.fam.roots t.1, pl_onto := h.fam.pl_onto, degR := fun t => h.fam.degR t.1
-      degL := fun i t => h.fam.degL i t.1, muVal := fun i t => h.fam.muVal i t.1, etaVal := h.fam.etaVal }
-  models :=
-    { inf := h.models.inf, vpos := h.models.vpos, cX := h.models.cX, cV := h.models.cV, prX := h.models.prX
-      HX := fun t => h.models.HX t.1, HV := fun i t => h.models.HV i t.1, HE := h.models.HE, HW := h.models.HW
-      gE := h.models.gE, gW := h.models.gW, jX := fun t => h.models.jX t.1, jV := fun i t => h.models.jV i t.1
-      νY := fun t => h.models.νY t.1, νY' := fun t => h.models.νY' t.1, ν0 := h.models.ν0, νX := fun t => h.models.νX t.1
-      νV := fun i t => h.models.νV i t.1, νW := h.models.νW, BV := h.models.BV, order := h.models.order }
-  chain :=
-    { ωY := fun t => h.chain.ωY t.1, ωX := fun t => h.chain.ωX t.1, vY := fun t => h.chain.vY t.1, vX := fun t => h.chain.vX t.1
-      ptY := fun t => h.chain.ptY t.1, ptX := fun t => h.chain.ptX t.1, ItY := fun t => h.chain.ItY t.1
-      ItX := fun t => h.chain.ItX t.1, ioY := fun t => h.chain.ioY t.1, ioX := fun t => h.chain.ioX t.1
-      Th := fun t => h.chain.Th t.1 }
-  thP :=
-    { ωP := fun i t => h.thP.ωP i t.1, vP := fun i t => h.thP.vP i t.1, pt_theta := fun i t => h.thP.pt_theta i t.1
-      ioP := fun i t => h.thP.ioP i t.1, thF_mem := fun i t => h.thP.thF_mem i t.1, thF := fun i t => h.thP.thF i t.1
-      thG := fun i t => h.thP.thG i t.1 }
-  scal :=
-    { lam0 := fun i t => h.scal.lam0 i t.1, kap := h.kap_use
-      lam_off := fun b => by
-        cases b
-        · exact h.scal.lam_off false
-        · exact h.scal.lam_off true
-      zero_part_eigenvalue_abs := fun i t p hp => (h.scal.zero_part_eigenvalue_abs i t.1 p hp).trans (congrArg (fun l => Real.exp (l i)) restrictedFace_eigenvalueMainTerm.symm)
-      lam_abs := fun i p v hv hp => (h.scal.lam_abs i p v hv fun b hb => hp b ((partAt_use (R := R) (F := F) b i p v).2 hb)).trans (congrArg (fun l => Real.exp (l i)) restrictedFace_eigenvalueMainTerm.symm)
-      lam_tup := fun i t => h.scal.lam_tup i t.1 }
-  tup :=
-    { tw := fun w hw => h.tup.tw w ((nonzeroIndexPlaces_iff w).1 hw)
-      mu_off := fun w hw => Subtype.ext (h.tup.mu_off w hw)
-      mu_used := fun t => t.2.imp Subtype.ext fun ⟨w, hw⟩ => ⟨w, Subtype.ext hw⟩
-      mu_ne := fun w hw e => h.tup.mu_ne w hw (congrArg Subtype.val e)
-      mu_conj := fun w => Subtype.ext (h.tup.mu_conj w)
-      mu_on := h.tup.mu_on }
 
 set_option maxHeartbeats 2000000 in
 
@@ -285,26 +201,6 @@ def useTie {X0 : BaseLevelRowSide D} (Y : RowsTie R F X0) : RowsTie (useReal R) 
   isot_tie := Y.isot_tie
   lam_tie i t := Y.lam_tie i t.1
   etaJ_tie := Y.etaJ_tie
-
-theorem qGuard_use (h : QGuard R) : QGuard (useReal R) := ⟨fun t => h.1 t.1, fun t => h.2 t.1⟩
-
-set_option maxHeartbeats 2000000 in
-
-def useFW {core : CoreJ D} [Algebra core.Q.c.F D.what₂.LL] {R : RealDat D A core.Q.c.F}
-    {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
-    (t : FWTie core R κ v₀) : FWTie core (useReal R) κ v₀ where
-  alg_eq := t.alg_eq
-  e := t.e
-  ks := t.ks
-  kap := t.kap
-  pt := t.pt
-  nrm_eq := t.nrm_eq
-  laws := t.laws
-  chiR := t.chiR
-  hv₀ := t.hv₀
-  x0 := t.x0
-  ev0 := t.ev0
-  ev := t.ev
 
 end Sub
 
@@ -452,24 +348,6 @@ variable {D : D7} {fr : CharFrame D} {xi : D.what₂.Tup → HChar D.host.E} (r 
 
 abbrev A₀ : FamIn D.what₂.LL r.G r.Pl0 {t // InUse r.R t} D.R.m := useFam r.R
 
-abbrev R₀ : RealDat D r.A₀ r.core.Q.c.F := useReal r.R
-
-abbrev F₀ : Face D r.A₀ := useFace r.R r.F
-
-theorem char₀ : r.R₀.Char r.F₀ := r.char.use
-
-theorem guard₀ : QGuard r.R₀ := qGuard_use r.guard
-
-def tie₀ : RowsTie r.R₀ r.F₀ r.p0 := useTie r.tie
-
-def fw₀ : FWTie r.core r.R₀ (kapTop D) r.v₀ := useFW r.fw
-
-theorem rho₀ : RhoTie r.R₀ := r.rho
-
-theorem bar₀ : BarTie r.fw₀ := r.bar
-
-abbrev eig : EigIdx D r.X := eigOf r.tie r.X
-
 def tupEquiv : r.T ≃ D.what₂.Tup := Equiv.ofBijective r.tie.tup ⟨r.tie.tup_inj, r.tup_onto⟩
 
 include r in
@@ -487,13 +365,6 @@ theorem nonempty_QPl_iff (μ : D.what₂.Tup) : Nonempty (r.X.QPl μ) ↔ ∃ v,
     rcases (r.char.lev.Q_ram t v).1 hv with h | ⟨P, h, -⟩
     · exact ⟨⟨v, h⟩⟩
     · exact ⟨⟨P, h⟩⟩
-
-example (t : r.T) (x : r.p0.s.Amb (r.tupEquiv t)) :
-    r.tie.base.eE (r.p0.s.iota (r.tupEquiv t) x) = r.R.Th t (r.tie.base.eA t x) := r.tie.base.iota_tie t x
-
-example : IsEmpty (r.X.QPl D.what₂.mu0) := by
-  rw [← not_nonempty_iff, r.nonempty_QPl_iff, r.trueColumnChoices_heckeChar_reference_eq_one]
-  exact fun ⟨v, hv⟩ => hv fun _ _ => rfl
 
 end RowT
 

@@ -45,7 +45,4 @@ theorem coneExact : LateralTheory.E.GlueRelPf.ConeExact := by
   intro R _ K L φ F m x
   exact ⟨range_of_pre_zero R φ F m x, by rintro ⟨b, rfl⟩; exact pre_pull_zero R φ F m b⟩
 
-theorem GlueRel_of (hE : LateralTheory.E.GlueRelPf.EdgeInj) : LateralTheory.E.LocGlueEtPf.GlueRel :=
-  LateralTheory.E.GlueRelPf.GlueRel_of coneExact hE
-
 end LateralTheory.E.GlueRelPfCone

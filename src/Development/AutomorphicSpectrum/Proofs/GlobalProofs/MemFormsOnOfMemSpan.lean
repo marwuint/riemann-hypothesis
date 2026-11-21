@@ -108,11 +108,6 @@ theorem zero_mem_formsOn : (0 : GA D V → ℂ) ∈ formsOn θ V X Y S U ε fr �
   have := (GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) τ k).smul 0 0
   simpa using this
 
-theorem const_mem_formsOn (a : ℂ) :
-    (fun _ => a) ∈ formsOn θ V X Y S U ε fr (fun τ => Representation.trivial ℂ (Formalism.REAL.KG (ε τ)) ℂ) (fun _ _ => 0) :=
-  have h := const_mem_forms (θ := θ) (V := V) U ε fr a
-  ⟨isSmModOn_const _ _ _ a, h.2.1, h.2.2.1, h.2.2.2⟩
-
 theorem mem_formsOn_of_mem_span (hθ : IsInfFam θ) {f : GA D V → ℂ}
     (hf : f ∈ Submodule.span ℂ (formsOn θ V X Y S U ε fr ρ c)) : f ∈ formsOn θ V X Y S U ε fr ρ c := by
   induction hf using Submodule.span_induction with

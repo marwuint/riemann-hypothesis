@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIntegralFramesModelInvertiblePushforwardStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsModelPushInvertibleOverCompleteDVRStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIntegralFramesModelInvertiblePushforward
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsModelPushInvertibleOverCompleteDVR
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
 import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
@@ -30,8 +30,8 @@ theorem intFrExt_of_good : PartI → N1ab → Out.SecBaseChangeSt → Out.SecTwi
   intro hP hN hB hT E _ _ _ H Dw l Xo c hpq hgood T io hfin x hx
   have : Finite (IsLocalRing.ResidueField T.V) := hfin
   obtain ⟨p, hp, hpm⟩ := exists_prime_mem_maximalIdeal_of_finite_residue T.V
-  obtain ⟨O, _, β, Y, hPI, b, hb⟩ := GlobalTheory.T.exists_model_pushInvertible_over_completeDVR hP hN E H Dw l Xo c hpq T io p hp hpm (hgood p hp)
-  have hIF := GlobalTheory.T.exists_integralFrames_model_invertible_pushforward hB hT E H Dw l Xo c
+  obtain ⟨O, _, β, Y, hPI, b, hb⟩ := _root_.GlobalTheory.exists_model_pushInvertible_under_cdvr hP hN E H Dw l Xo c hpq T io p hp hpm (hgood p hp)
+  have hIF := _root_.GlobalTheory.intFrames_of_laws hB hT E H Dw l Xo c
   let _ := io.toAlgebra
   obtain ⟨y₀, -, h0, -, -⟩ := gfp_frPt_gen (Xo := Xo) (c := c) (L := T.Fr) (L' := T.Fr) hT (fun _ => rfl) x hx
     (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')

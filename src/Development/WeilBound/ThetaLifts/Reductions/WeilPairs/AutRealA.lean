@@ -5,16 +5,18 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionHeisen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StdCharHalfSymplecticFormRealCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHeisenbergOperatorBoundedThetaFunctionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormRealCoordinateMatrixHermitianDetNeZStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealCoordinateActionUnitaryPreservesHermitianForStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAdelicActionRealCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHomActionRealCoordinatesEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRealPointsFixFiniteAdelicHomsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicAddRealChartPointStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealCoordinateActionUnitaryPreservesHermitianFor
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTopologicalRingAE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAdelicActionRealCoordinates
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHomActionRealCoordinatesEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRealPointsFixFiniteAdelicHoms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicAddRealChartPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalvedSymplecticFormFiniteRealOrthogonalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionSmoothVectorRealHeisenbergStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaFunOfSmoothRealHeisenbergLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrientedModelThetaFunctionBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralEqOfHeisenbergInvariantNormsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionSmoothVectorRealHeisenberg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaFunOfSmoothRealHeisenbergLevel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrientedModelThetaFunctionBounded
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralEqOfHeisenbergInvariantNorms
 
 noncomputable section
 
@@ -85,11 +87,11 @@ theorem exists_inf_A (C : Ctx σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS
     · exact (GlobalTheory.T.continuous_heisenbergOperatorBoundedThetaFunctions F E σ nS nT JS JT ξ₀ B.ψ hc f).comp (continuous_iotaVF hchart)
   obtain ⟨Ω, hosc, hone1, hcont, hvac⟩ := GlobalTheory.T.exists_oscillatorAction_unitaryGroup_hermitian (IxF F nS nT) (HMF JS JT ξ₀ (tauB B)) hHh hHd
     (↥(BBF σ JS JT ξ₀ B.ψ)) (rhoVF σ JS JT ξ₀ B.ψ hc ι) hheis (GAF σ JS × GAF σ JT) (mMF σ JS JT θ)
-    (GlobalTheory.T.realCoordinateAction_unitary_preserves_hermitianForm F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart)
+    (_root_.GlobalTheory.RealWeilF.mMF_unitary F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart)
   obtain ⟨hadd, hsmul, hsmp, hone, hmul, hequiv, hcomm7, hnorm⟩ := hosc
   have hSmθ : ∀ x : ↥(BBF σ JS JT ξ₀ B.ψ), IsThetaFunOF σ JS JT ξ₀ B.ψ ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) →
       GlobalTheory.RealWeil.Sm (rhoVF σ JS JT ξ₀ B.ψ hc ι) x := fun x hx =>
-    GlobalTheory.T.thetaFunction_smoothVector_realHeisenberg F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart hc x hx
+    _root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart hc x hx
   have hcommA : ∀ u : WOF F E nS nT, Matrix.map u ⇑(infPartF F E) = 0 →
       ∀ (v : IxF F nS nT → ℂ) (z : ↥(BBF σ JS JT ξ₀ B.ψ)),
         rhoBF σ JS JT ξ₀ B.ψ hc u (rhoVF σ JS JT ξ₀ B.ψ hc ι v z) =
@@ -109,20 +111,20 @@ theorem exists_inf_A (C : Ctx σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS
     intro p x hx
     have hsm := hSmθ x hx
     obtain ⟨-, ⟨U, hU, hUx⟩, -, -⟩ := hx
-    refine GlobalTheory.T.isThetaFun_of_smooth_real_heisenberg_level F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart hc (Ω p x) (hsmp p x hsm)
+    refine _root_.GlobalTheory.ThetaOfSmF.theta_of_smF F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart hc (Ω p x) (hsmp p x hsm)
       ⟨U, hU, fun u hu hu0 => ?_⟩
     have hA : rhoBF σ JS JT ξ₀ B.ψ hc u x = x := hfix u x (hUx u hu hu0)
     have h7 := hcomm7 p (rhoBF σ JS JT ξ₀ B.ψ hc u) (fun v f => hcommA u hu0 v f) x hsm
     rw [hA] at h7
     rw [← coe_rhoBF hc u (Ω p x), ← h7]
-  obtain ⟨om, hom⟩ := GlobalTheory.RealWeilF.exists_homF (GlobalTheory.T.orientedModelThetaFunction_bounded F E σ nS nT JS JT ξ₀ B.ψ hc) Ω hth
+  obtain ⟨om, hom⟩ := GlobalTheory.RealWeilF.exists_homF (_root_.GlobalTheory.TowerFD.thetaFunOF_bounded F E σ nS nT JS JT ξ₀ B.ψ hc) Ω hth
     (fun p x x' hx hx' => hadd p x x' (hSmθ x hx) (hSmθ x' hx'))
     (fun p a x hx => hsmul p a x (hSmθ x hx))
     (fun x hx => hone x (hSmθ x hx))
     (fun p p' x hx => hmul p p' x (hSmθ x hx))
   have hx : ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → ∃ x : ↥(BBF σ JS JT ξ₀ B.ψ), ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) = f := by
     intro f hf
-    have hb := GlobalTheory.T.orientedModelThetaFunction_bounded F E σ nS nT JS JT ξ₀ B.ψ hc f hf
+    have hb := _root_.GlobalTheory.TowerFD.thetaFunOF_bounded F E σ nS nT JS JT ξ₀ B.ψ hc f hf
     obtain ⟨hq, -, hcf, -⟩ := hf
     exact ⟨GlobalTheory.RealWeilF.toBF f hcf hb hq, rfl⟩
   refine ⟨om, ⟨⟨fun p f hf => ?_, fun f hf w => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_⟩,
@@ -135,15 +137,15 @@ theorem exists_inf_A (C : Ctx σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS
       funext fun p => by rw [hom p x hf]
     rw [e]
     exact (BoundedContinuousFunction.evalCLM ℂ w).continuous.comp
-      (continuous_subtype_val.comp (hcont (GlobalTheory.T.continuous_adelicAction_realCoordinates F E σ B good nS nT JS JT θ hinf) x (hSmθ x hf)))
+      (continuous_subtype_val.comp (hcont (_root_.GlobalTheory.RealWeilF.MCont.continuous_mMF F E σ B good nS nT JS JT θ hinf) x (hSmθ x hf)))
   · obtain ⟨x, rfl⟩ := hx f hf
     rw [show om p ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) = ⇑((Ω p x) : BoundedContinuousFunction (WOF F E nS nT) ℂ) from hom p x hf]
-    exact GlobalTheory.T.lintegral_eq_of_heisenbergInvariant_norms F E σ nS nT JS JT ξ₀ B.ψ hc μ 𝓕 hμ h𝓕 x (Ω p x)
+    exact _root_.GlobalTheory.RealWeilF.lintegral_eq_of_normsF F E σ nS nT JS JT ξ₀ B.ψ hc μ 𝓕 hμ h𝓕 x (Ω p x)
       (fun Hs _ _ _ Φ hΦ => hnorm Hs Φ (fun v g => hΦ (iotaVF ι v) g) p x (hSmθ x hf))
   · obtain ⟨x, rfl⟩ := hx f hf
     rw [hom (g, h) x hf, hone1 (g, h) (mMF_fin θ hg hh) x (hSmθ x hf)]
   · obtain ⟨x, rfl⟩ := hx f hf
-    obtain ⟨u, v, hu, rfl⟩ := GlobalTheory.T.exists_finiteAdelic_add_realChartPoint F E nS nT θ ι hchart w₀
+    obtain ⟨u, v, hu, rfl⟩ := _root_.GlobalTheory.RealWeilF.exists_realZero_add_iotaVF F E nS nT θ ι hchart w₀
     have hθ0 := GlobalTheory.T.theta_function_heisenberg_invariant F E σ B good nS nT JS JT ξ₀ (u + iotaVF ι v) ⇑(x : BoundedContinuousFunction (WOF F E nS nT) ℂ) hf
     obtain ⟨y, hy⟩ := hx _ hθ0
     have hyθ : IsThetaFunOF σ JS JT ξ₀ B.ψ ⇑(y : BoundedContinuousFunction (WOF F E nS nT) ℂ) := by rw [hy]; exact hθ0
@@ -159,8 +161,8 @@ theorem exists_inf_A (C : Ctx σ B JS JT ξ₀ θ ι) : ∃ oi, IsInfWeilF σ JS
       rw [coe_rhoBF]
       exact GlobalTheory.T.theta_function_heisenberg_invariant F E σ B good nS nT JS JT ξ₀ (iotaVF ι v) _ hf
     rw [← hy, hom (g, h) y hyθ, hyx, hcomm7 (g, h) _ (hcommA u hu) _ hsmv, hequiv (g, h) v x (hSmθ x hf),
-      GlobalTheory.RealWeilF.actOF_add, GlobalTheory.T.unitaryRealPoints_fix_finiteAdelicHoms F E σ nS nT JS JT g h hg hh u hu,
-      GlobalTheory.T.adelicHomAction_realCoordinates_eq F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart g h v, hom (g, h) x hf]
+      GlobalTheory.RealWeilF.actOF_add, _root_.GlobalTheory.RealWeilFinFix.actOF_fin F E σ nS nT JS JT g h hg hh u hu,
+      _root_.GlobalTheory.RealWeilF.actOF_iotaVF F E σ B good nS nT JS JT hS hT ξ₀ h0 hξ θ hinf ι hchart g h v, hom (g, h) x hf]
     have hsym2 := GlobalTheory.T.halvedSymplecticForm_finite_real_orthogonal F E σ nS nT JS JT ξ₀ u
       (iotaVF ι ((mMF σ JS JT θ (g, h)).mulVec v)) hu (real_iotaVF hchart _)
     show ⇑((rhoBF σ JS JT ξ₀ B.ψ hc u (rhoBF σ JS JT ξ₀ B.ψ hc

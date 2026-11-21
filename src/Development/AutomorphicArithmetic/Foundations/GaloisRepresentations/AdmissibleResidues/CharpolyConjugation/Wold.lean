@@ -1,17 +1,21 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.CharpolyConjugation.CharpolyConjGlAlt
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.CharpolyConjugation.Wwd
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.IsAutomorphicOverImagQuad
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.SphericalOfHasSat
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Hypotheses2
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.GalUnitary
+import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaBound.JacquetShalikaBound
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsUnitaryTwistAbsPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SatakeParametersOfTwist
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDeligneParamMonodromyEqZeroIff
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.FixedDvd
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SatakeMatchBaseChange
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.IsoOfFrob
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.SatFrob
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.SatLoc
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LocCompC
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.IsAutomorphicOverImagQuad
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.CharpolyConjugation.Unlfrob
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.CharpolyConjugation.Unlres
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.CharpolyConjugation.Unliso
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.CharpolyConjugation.Unlwd
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RootsCharpolySmulMatrix
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDeligneParamMonodromyEqZeroIff
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory GlobalTheory.WeilDeligne GlobalTheory.CuspRep UpperTheory.V.Af UpperTheory.GalN.V
 
@@ -60,18 +64,3 @@ private theorem win {x : WD h} {t : ℝ} (ht : (x.lpTw t).tempered) (h0 : x.mono
 
 end
 
-theorem UpperTheory.GalN.V.L.wold :
-    Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (r : G F Ω →* GL (Fin n) (Qbar l)) (π : CuspSub F n), Continuous r → (CG.mk π).IsRegAlg → (∃ χ, GlobalTheory.ContraPair.PolarizedPair π χ) → AttC ι r π → Unlinked r := by
-  intro P F Ω _ _ _ _ _ _ l _ ι n hn r π hr hreg ⟨χ, hpol⟩ ha
-  obtain ⟨R, wt, HT, H⟩ := P.litN.aut.gal F Ω l ι n hn π χ hreg hpol
-  have hiso : RepIso r R := by
-    refine isoOfFrob P F Ω l ι n r R hr H.cont ha.1 H.ss ((ha.2.and (eventually_not_mem F l)).mono ?_)
-    rintro w ⟨⟨B, h1, h2⟩, hw⟩
-    obtain ⟨⟨σ, hσ⟩, hi⟩ := locCompC P F n π w
-    exact ⟨_, h2, satFrob P F Ω l ι n R H.cont w hw σ B (((satLoc P F n w σ).2 _ π.finPart (hi σ hσ) B).1 h1)
-      fun A h rc hrc => H.away w hw A h rc hrc σ hσ⟩
-  refine UpperTheory.GalN.V.L.wiso F Ω l n R r hiso.symm' ?_
-  intro w hl A hA hfin
-  refine UpperTheory.GalN.V.L.wwd F Ω l n R ι w A hA hl H.cont ?_
-  intro g hg α hα β hβ
-  exact win (H.tempered_wdOf hl hA) ((weilDeligneParam_monodromy_eq_zero_iff hl ι (Units.continuous_val.comp H.cont)).2 hfin) hg hα hβ

@@ -5,7 +5,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Geometr
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.BernsteinZelevinskyGL.TopAdm
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.WhittakerHeredity.Replay
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnlinkedLayersHoldStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSegmentRepresentationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSegmentRepresentation
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.FineJacquetModules.SegDefs
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SegmentGenericOfJacquetNuPairStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerHeredityGenericProductStatement
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSupportOfIsSubquotientProdIrr
@@ -27,7 +30,7 @@ theorem unlinkedRealize_of (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
     (hG : GlobalTheory.BZSeg.LSegGeneric k) (hP : GlobalTheory.BZMir.Leib.GenericProdIff k) : UnlinkedRealize k := by
   intro N s hs hN
   obtain ⟨h, Δ, hun, hbind⟩ := GlobalTheory.T.unlinked_layers_hold k s hs
-  choose π hπ using fun i => GlobalTheory.T.exists_segment_representation hA (Δ i)
+  choose π hπ using fun i => _root_.GlobalTheory.CompanionTheory.SegExists.exists_isLSeg hA (Δ i)
   let x : Fin h → IrrGL k := fun i => IrrGL.of (π i).ρ (π i).smooth (π i).irr
   have hx : ∀ i, IsLSeg (Δ i) (x i).rep := fun i => (hπ i).of_equiv (IrrGL.equivOf _ _ _)
   have hd : ∑ a, (x a).1 = N := by

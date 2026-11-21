@@ -34,9 +34,6 @@ theorem isInt_of {m : GL (Fin n) (AfE F E)} (h : ∀ z : Fin n → AfE F E, (∀
     exact h1 j) i
   simpa using this
 
-def LastOne (P : HeightOneSpectrum (𝓞 E)) (m : GL (Fin n) (AfE F E)) : Prop :=
-  ∀ r : Fin n, r.1 + 1 = n → ∀ j, HasRes P (adAt F P (m.1 r j)) (if j = r then 1 else 0)
-
 variable [StarRing E] {hc : CMData F E} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 end Pts
@@ -46,15 +43,6 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 end Columns
-
-section LocalField
-
-open ValuativeRel IsLocalRing Matrix GlobalTheory.LatPair
-open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (colGroup colPos Reduces)
-
-variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-
-end LocalField
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Forms
 open NumberField IsDedekindDomain Matrix MeasureTheory ValuativeRel GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Core.Rk GlobalTheory.AdForm GlobalTheory.SeeSaw
@@ -130,17 +118,7 @@ theorem moves_iff {V : HSp D} {L : GlobalTheory.FinPl.Lat V} (hL : ∀ z, z ∈ 
     have := PtExist.mulVec_int h.2 h' i
     rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
 
-section Split
-
-variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  (q : GlobalTheory.FinPl.SplitPt D K) {PP : Formalism.L2.DIV.Pl D.host.E}
-
-end Split
-
 variable {u : D.what₂.Word} {a : XPart D u}
-
-def ColAt {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Formalism.L2.DIV.Pl D.host.E} (H : GX a ζ₀ PP) (κ : GA D (D.sp.X 0)) : Prop :=
-  H.mat0 κ ∈ colGroup H.k D.R.k (Fin D.R.t)
 
 end Adelic
 

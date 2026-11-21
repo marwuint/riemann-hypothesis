@@ -33,10 +33,6 @@ theorem rr_muA_right (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.I
 theorem rr_muA_sigmaFinite (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] : SigmaFinite (I.muA μf) := by
   unfold AutInst.muA; infer_instance
 
-theorem UnimodA_of_UnimodF (X : CData) (h : UnimodF X) : UnimodA X := by
-  have : X.μf.IsMulRightInvariant := h
-  exact rr_muA_right X.I X.μf
-
 theorem rr_FD_of (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] (fund : Set I.GA)
     (h : I.IsFundDom (I.muA μf) fund) : rr_FD (I.muA μf) (rr_GF I) fund :=
   ⟨h.1, h.2.1, h.2.2⟩
@@ -50,9 +46,6 @@ def RepAlg (X : CData) : Prop :=
 
 def RegData (X : CData) : Prop :=
   X.μf.IsHaarMeasure ∧ X.I.IsFundDom (X.I.muA X.μf) X.fund ∧ X.I.IsRightReg X.μf X.fund X.R
-
-theorem RegData_of_HypB (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) : RegData X :=
-  ⟨hX.2.1.2.2.2.1, hX.2.1.2.2.2.2.1, hX.2.1.2.2.2.2.2.1⟩
 
 theorem rightRegular_isometric_multiplicative (X : CData) (hd : RegData X) (hu : UnimodA X) : RepAlg X := by
   obtain ⟨hH, hF, hR⟩ := hd
@@ -72,9 +65,6 @@ theorem regular_rep_coeff_measurable (X : CData) (hd : RegData X) (hu : UnimodA 
   have : (X.I.muA X.μf).IsMulRightInvariant := hu
   have : SigmaFinite (X.I.muA X.μf) := rr_muA_sigmaFinite X.I X.μf
   exact rr_weak_meas (rr_FD_of X.I X.μf X.fund hF) (rr_IsReg_of X.I X.μf X.fund X.R hR) x y
-
-theorem regularRep_isometric_weaklyMeasurable (X : CData) (hd : RegData X) (hu : UnimodA X) : X.RegRep :=
-  ⟨(rightRegular_isometric_multiplicative X hd hu).2.2, fun x y => (regular_rep_coeff_measurable X hd hu x y).aestronglyMeasurable⟩
 
 end Formalism.MainNotions.LeviCoordinates
 

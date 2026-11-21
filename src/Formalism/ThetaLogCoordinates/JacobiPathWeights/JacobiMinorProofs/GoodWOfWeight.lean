@@ -66,33 +66,6 @@ theorem vars_act {L : Type*} [CommRing L] [Nontrivial L] {n N : ℕ} (isVec : �
   rw [vars_actX isVec g gi x y hyx]
   exact hv x hx
 
-private lemma rename_actAll_eq_sharpHom {L : Type*} [CommRing L] {n N : ℕ} (isVec : ℕ → Bool)
-    (g gi : Matrix (Fin n) (Fin n) L) (P : MvPolynomial (ℕ × Fin n) L) (hv : ∀ x ∈ P.vars, x.1 < N) :
-    rename (Sum.inl : ℕ × Fin n → ℕ × Fin n ⊕ Empty) (actAll isVec g gi P) =
-      sharpHom (ζ := Empty) isVec {j : ℕ | j < N} g gi (rename Sum.inl P) := by
-  have h := MvPolynomial.hom_congr_vars
-    (f₁ := ((rename (Sum.inl : ℕ × Fin n → ℕ × Fin n ⊕ Empty)).comp (actAll isVec g gi)).toRingHom)
-    (f₂ := ((sharpHom (ζ := Empty) isVec {j : ℕ | j < N} g gi).comp
-      (rename (Sum.inl : ℕ × Fin n → ℕ × Fin n ⊕ Empty))).toRingHom) (p₁ := P) (p₂ := P) ?_ ?_ rfl
-  · simpa using h
-  · exact RingHom.ext fun a => by simp
-  · rintro ⟨i, a⟩ hi _
-    have hiN : i < N := hv _ hi
-    simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, rename_X, actAll_X]
-    simp only [sharpHom, aeval_X, Set.mem_setOf_eq, hiN, if_true]
-    split_ifs <;> simp [Matrix.vecMul, dotProduct]
-
-theorem bridge (k : Type) [Field k] {n N : ℕ} (isVec : ℕ → Bool) {G : MvPolynomial (ℕ × Fin n) k}
-    (hv : ∀ x ∈ G.vars, x.1 < N) :
-    rename Sum.inl (actAll isVec (genMat k n) (genMat k n)⁻¹ (map (algebraMap k (GenField k n)) G)) =
-      genPoint (ζ := Empty) isVec {j : ℕ | j < N} (rename Sum.inl G) := by
-  rw [GS.genPoint_eq]
-  have ha := GS.act_eq (ζ := Empty) (isVec := isVec) (S := {j : ℕ | j < N}) (genMat k n)
-    GS.genMat_isUnit (rename Sum.inl G)
-  refine Eq.trans ?_ ha
-  rw [map_rename]
-  exact rename_actAll_eq_sharpHom isVec _ _ _ (fun x hx => hv x (vars_map _ _ hx))
-
 end DominanceOrderLemmas
 
 end Formalism.InvariantFactorPaths.GelfandTsetlinBases

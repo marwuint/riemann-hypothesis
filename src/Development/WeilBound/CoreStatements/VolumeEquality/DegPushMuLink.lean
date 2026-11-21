@@ -1,6 +1,20 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.DegPushMuLinkA
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DetLatticeFlagTensorStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionDatumDegreeSumStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DeterminantLatticeGradedTensor
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DetLatticeTensorIsDegOnMuTwDeg
 
 noncomputable section
 
@@ -75,7 +89,7 @@ theorem mu_flag_side (hC : ChartVal) {x : CMType H × Fin (D.p + D.q) → K' →
     simp [(hg τ m ()).1]
   have v2 : ∀ τ, O.valuation (i (t τ)) = ∏ m, O.valuation (i (g τ m ())) := fun τ => by
     have h := ht τ
-    rw [GlobalTheory.T.det_lattice_flag_tensor _ _ _ _ _ _ _ (hb _) (Fl.sub _)] at h
+    rw [_root_.LevelTowerAlt.determinant_lattice_graded_tensor _ _ _ _ _ _ _ (hb _) (Fl.sub _)] at h
     rw [mu_gen_val hD h (mu_tens_gen _ fun m => hg τ m ())]
     simp only [zpow_one, map_prod]
     rfl
@@ -112,7 +126,7 @@ theorem muLink : ChartVal → Centre → CoordLat → MuLink := by
       (Or.i_range τ ▸ LinearMap.mem_range_self (Or.i τ) (bb τ (tailIdx Dc.j_le_N k)))
     exact ⟨z, hz, by rw [← h, add_sub_cancel_right]; exact ha⟩
   choose s hs using hs
-  obtain ⟨hsi, hdeg⟩ := GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or 0 bb s _ hs hΛ
+  obtain ⟨hsi, hdeg⟩ := _root_.LevelTowerAlt.det_lattice_tensor_isDegOn_muTwDeg E H D Xo l c Y II K J Ω W Dc Hd S₀ Or 0 bb s _ hs hΛ
   have hSB : Dc.SB 0 = ∅ := by simp [ComponentData.SB, hS]
   have hmu : muTwDeg Hd 0 = Hd.aMu := by simp [muTwDeg, hSB]
   rw [hmu, hSB, Finset.union_empty, hsm] at hdeg

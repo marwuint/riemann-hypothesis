@@ -337,20 +337,6 @@ theorem sum_ramificationIdx_mul_inertiaDeg :
   rw [ramificationIdx_primeOfPlace_eq, inertiaDeg_primeOfPlace_eq]
   rfl
 
-noncomputable def heightOneSpectrumEquiv :
-    {P : HeightOneSpectrum (integralClosure v.ring K') //
-        P.asIdeal.LiesOver (maximalIdeal v.ring)} ≃
-      (maximalIdeal v.ring).primesOver (integralClosure v.ring K') where
-  toFun P := ⟨P.1.asIdeal, P.1.isPrime, P.2⟩
-  invFun q := ⟨v.primeHS q, q.2.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-noncomputable def heightOneSpectrumEquivPlaces :
-    {P : HeightOneSpectrum (integralClosure v.ring K') //
-        P.asIdeal.LiesOver (maximalIdeal v.ring)} ≃ {w : Place k K' // w.LiesOver v} :=
-  v.heightOneSpectrumEquiv.trans v.primesOverEquiv
-
 end Sum
 
 end Place

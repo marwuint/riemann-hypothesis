@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartFixed
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFOfIsVacVec
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryQuotientHeightComparableWittDecompositionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryQuotientHeightComparableWittDecomposition
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselToJacobiFlatMapEquivariant
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralLeOfTsum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryAdelicHeightWittEmbeddingLeConstMul
@@ -229,7 +229,7 @@ theorem perAll_flBF_cont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : �
     (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol J.W₀ _ _ J.v0.haar J.v0.fund).ne
   haveI : IsFiniteMeasure (J.vN.ν.restrict J.vN.𝓝) := isFiniteMeasure_restrict.2 (by rw [J.vN.unit.2.2]; exact ENNReal.one_ne_top)
   obtain ⟨hIc, C, b, hC0, hI⟩ := inner_law s hφ hΦ
-  obtain ⟨C₁, a₁, h1⟩ := GlobalTheory.T.unitaryQuotientHeight_comparable_wittDecomposition D J.W J.W₀ ρ J.d
+  obtain ⟨C₁, a₁, h1⟩ := _root_.GlobalTheory.HtWitt.quotHeight_witt D J.W J.W₀ ρ J.d
   obtain ⟨C₃, h3⟩ := (GlobalTheory.RTransDecay.rapidDec_rTrans D J.W G hG).2 (a₁ * b)
   obtain ⟨F, hF⟩ : ∃ F : GA D J.W → GA D J.W₀ × flagN J.d → ℂ,
       F = fun h p => G (p.2.1 * J.d.emb0 p.1 * h) * inner s φ Φ (p.2.1 * J.d.emb0 p.1 * h) := ⟨_, rfl⟩

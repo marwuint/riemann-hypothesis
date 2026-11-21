@@ -66,32 +66,4 @@ def pmOf (M : ModelsOf F r) (k : Fin F.n) (x : Frame (M.X k).Ψ r) : (F.Di k).La
 theorem pmOf_apply (M : ModelsOf F r) (k : Fin F.n) (x : Frame (M.X k).Ψ r) (a : (F.Di k).La) (j : Fin g) :
     pmOf M k x a j = perFr (M.X k) x (M.φ k a : Fin r → E) (relab c σ (e j).1) (e j).2 := rfl
 
-def XiSign (M : ModelsOf F r) : Prop := ∀ k, ∀ τ ∈ (M.X k).Ψ, (τ (M.X k).ξ0).im < 0
-
-theorem xiSign_of_kappa (M : ModelsOf F r) (h : ∀ k, (M.X k).κ0 = 2 * (M.X k).ξ0) : XiSign M := by
-  intro k τ hτ
-  have h1 := (M.X k).κ0_sign ⟨τ, hτ⟩
-  rw [h k] at h1
-  have h2 : τ 2 = 2 := map_ofNat τ 2
-  simp [h2] at h1
-  linarith
-
-def PerDom (M : ModelsOf F r) : Prop :=
-  ∀ k, ∀ x ∈ (M.X k).dom, IsPeriod (F.Di k) (tyOf c σ e) (pmOf M k x)
-
-def PerOntoX (M : ModelsOf F r) : Prop :=
-  ∀ k (P : (F.Di k).La →+ (Fin g → ℂ)), IsPeriod (F.Di k) (tyOf c σ e) P → ∃ x ∈ (M.X k).dom, pmOf M k x = P
-
-def PerDomSt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
-    (F : FamAt Xo c σ e) (r : ℕ) (M : ModelsOf F r),
-    GoodEmb c σ → ModelBase M → XiSign M → PerDom M
-
-def PerOntoXSt : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
-    (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
-    (F : FamAt Xo c σ e) (r : ℕ) (M : ModelsOf F r),
-    GoodEmb c σ → ModelBase M → XiSign M → PerOntoX M
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ModelFamilies

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UValThruTopOfDisjoint
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolarizationTransferModels
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryNormDescentIdealToComponentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryTraitLiftsToThetaSetupModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationFunctionMulRamificationIndexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryNormDescentIdealToComponent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryTraitLiftsToThetaSetupModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationFunctionMulRamificationIndex
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
@@ -44,20 +44,20 @@ theorem map_eq_span_pow {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValua
 
 theorem idealDescent : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ φ : InvFun (𝓞 E), IsPolFan H.bar (min Dw.p Dw.q) φ → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (A : Set C.Z), IsClopen A → IsIrreducible A → (A ∩ Set.range C.i).Nonempty → ∀ (X₁ : USetup C) (ι : ℕ) (J₁ : X₁.M.Z.IdealSheafData), 1 ≤ ι → Set.range X₁.π = A → (∀ x ∈ J₁.support, X₁.π x ∉ Set.range C.i) → UValThru Xo c C.i X₁.π Set.univ φ J₁ ι → ∃ (d : ℕ) (J : C.Z.IdealSheafData), 1 ≤ d ∧ (∀ x ∈ J.support, x ∈ A ∧ x ∉ Set.range C.i) ∧ UValThru Xo c C.i (𝟙 C.Z) A φ J d := by
   intro E _ _ _ H Dw hpq φ hφ l Xo c C A hAc hAi hAn X₁ ι J₁ hι hπ hsupp hord
-  obtain ⟨k, J, hk, hJs, hJo⟩ := GlobalTheory.T.unitary_normDescent_ideal_to_component E H Dw hpq φ hφ l Xo c C A hAc hAi hAn X₁ ι J₁ hι hπ hsupp hord
+  obtain ⟨k, J, hk, hJs, hJo⟩ := _root_.GlobalTheory.UPoinc.UNormDown.normDescent E H Dw hpq φ hφ l Xo c C A hAc hAi hAn X₁ ι J₁ hι hπ hsupp hord
   refine ⟨k * ι, J, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)), hJs, ?_⟩
   intro W _ _ _ hW ϖ hϖ χ y hy hA t tK h1 h2 P be hbe hmono
   let T : UTrait Xo c := { V := W, cdvr := hW, ϖ := ϖ, irr := hϖ, y := y, t := t, gen := ⟨tK, h1, h2⟩, P := P, be := be, lev := hbe, mono := hmono }
   have hy' : T.y ≫ C.i = jK T.V ≫ χ := by simpa using hy
   have hc : IsClopen (Set.range X₁.π) := by rw [hπ]; exact hAc
-  obtain ⟨T', f, fK, ξ₁, hf, hfl, hfK, hyy, hsq, hgen⟩ := GlobalTheory.T.unitaryTrait_lifts_to_thetaSetup_model E H Dw l Xo c C X₁ hc T χ hy' (by rw [hπ]; exact hA)
+  obtain ⟨T', f, fK, ξ₁, hf, hfl, hfK, hyy, hsq, hgen⟩ := _root_.GlobalTheory.UPoinc.uTraitLift_setup E H Dw l Xo c C X₁ hc T χ hy' (by rw [hπ]; exact hA)
   obtain ⟨tK', g1, g2⟩ := T'.gen
   obtain ⟨a₁, ha₁, hJ₁⟩ := hord T'.V T'.cdvr T'.ϖ T'.irr ξ₁ T'.y hgen trivial T'.t tK' g1 g2 T'.P T'.be T'.lev T'.mono
   have hJ := hJo T' ξ₁ hgen
   haveI : IsDiscreteValuationRing T.V := T.cdvr.1
   haveI : IsDiscreteValuationRing T'.V := T'.cdvr.1
   obtain ⟨m, hm1, hm⟩ := exists_assoc_pow f hf T.irr T'.irr
-  have hφ' := GlobalTheory.T.polarisationFunction_mul_ramificationIndex E H Dw l Xo c hpq T T' f fK hf hfl hfK hyy m hm φ hφ
+  have hφ' := _root_.GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul E H Dw l Xo c hpq T T' f fK hf hfl hfK hyy m hm φ hφ
   have e1 : (idlAlong J χ).map f = Ideal.span {T'.ϖ ^ (a₁ * k)} := by
     rw [← GlobalTheory.TraitOrder.idlAlong_comp, hsq, hJ, hJ₁, Ideal.span_singleton_pow, ← pow_mul]
   obtain ⟨a, hb, ha⟩ := map_eq_span_pow f T.irr T'.irr hm e1

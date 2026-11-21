@@ -4,9 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TwistApply
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShortExactFirstTermBundle
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LinearIndependentMapVec
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenProjectorsSplitAction
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FilteredExactSequenceProjectorBundlesStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FilteredExactSequenceProjectorBundles
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ModuleBasisLatticeBundleFreeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgebraActionBundleFiltrationStepStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgebraActionBundleFiltrationStep
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IdealDescendingOneDimQuotientStatement
 
 noncomputable section
@@ -212,7 +212,7 @@ theorem hodge_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : Ten
     subDeg C D.H (LinearMap.range (act k D.ρH x)) =
       subDeg C (dotDual C D.lie) (LinearMap.range (act k (toEnd (conjT D.ρ)) x)) +
       subDeg C D.lie (LinearMap.range (act k (toEnd D.ρ) x)) := by
-  refine GlobalTheory.T.filtered_exact_sequence_projector_bundles K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.hodge (idem_apply _ hx) (idem_apply _ hx)
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegCurve.subDeg_range_shortExact K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.hodge (idem_apply _ hx) (idem_apply _ hx)
     (idem_apply _ hx) (fun y => ?_) (fun y => ?_) (act_isHom C D.H_bun hk _ D.ρH_hom x)
   · refine (act_comm (toEnd (conjT D.ρ)) D.ρH (LinearMap.inr K _ _) (fun a v => ?_) x y)
     simp [D.ρH_inr, toEnd_apply, conjT_apply]
@@ -225,7 +225,7 @@ theorem conj_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : Tens
       subDeg C (frobLat C p D.lie) (LinearMap.range (act k (toEnd (twist p D.ρ)) x)) +
       subDeg C (frobLat C p (dotDual C D.lie))
         (LinearMap.range (act k (toEnd (twist p (conjT D.ρ))) x)) := by
-  refine GlobalTheory.T.filtered_exact_sequence_projector_bundles K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.conj (idem_apply _ hx) (idem_apply _ hx)
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegCurve.subDeg_range_shortExact K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.conj (idem_apply _ hx) (idem_apply _ hx)
     (idem_apply _ hx) (fun y => ?_) (fun y => ?_) (act_isHom C D.H_bun hk _ D.ρH_hom x)
   · refine (act_comm (toEnd (twist p D.ρ)) D.ρH D.α (fun a v => ?_) x y)
     rw [toEnd_apply, twist_apply, D.α_act]
@@ -340,7 +340,7 @@ theorem deg_count (L : C.I → AddSubgroup V) (k A : Type) [Field k] [Algebra k 
           GlobalTheory.T.ideal_descending_one_dim_quotient k A χ e J he h1 hnil hJ h0
         obtain ⟨n, hn, -⟩ := ih J₁ hlt (hlt.le.trans hJ)
         refine ⟨n + 1, ?_, fun _ => Nat.succ_pos n⟩
-        rw [GlobalTheory.T.algebra_action_bundle_filtration_step K C V L k A τ r χ J₁ J t l hL hτ hτk hk hfree hlt.le ht hJt hm hl0 hl1, hn]
+        rw [_root_.GlobalTheory.CompanionTheory.Ar.Flat.DegCurve.FiltStep.subDeg_step K C V L k A τ r χ J₁ J t l hL hτ hτk hk hfree hlt.le ht hJt hm hl0 hl1, hn]
         push_cast; ring
   have he0 : Ideal.span {e} ≠ ⊥ := by
     intro h

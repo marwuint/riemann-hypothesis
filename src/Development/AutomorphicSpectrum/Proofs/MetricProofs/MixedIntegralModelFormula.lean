@@ -12,9 +12,9 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDensityNonnegOff
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocDensDivJacN
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.VolumeModelCritChartEqZeroStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartIntegralPotentialLocallyFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothLocalPotentialLiftStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothLocalPotentialLift
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FiniteFibresOfAnalyticLocalDiffeoStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasurableFibreCountOfLocalDiffeoStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasurableFibreCountOfLocalDiffeo
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegralFibreSumChangeOfVariablesStatement
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree
 
@@ -50,7 +50,7 @@ theorem push_chart_integrals : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀
     have : BorelSpace M.Xc := ⟨rfl⟩
     refine AEStronglyMeasurable.mul (hG j) ?_
     rw [MeasOff.restrict_target_eq M.atlas hYnull j]
-    exact ((GlobalTheory.T.smooth_local_potential_lift K ι P n M Y c B Φ j hY hΦs hΦt).aestronglyMeasurable
+    exact ((_root_.GlobalTheory.CompanionTheory.Ar.Giv.Push.DCont.locDens_continuousOn_of_sections K ι P n M Y c B Φ j hY hΦs hΦt).aestronglyMeasurable
       (MeasOff.isOpen_ov M.atlas hY j).measurableSet)
   have hae := GlobalTheory.T.chart_integral_potential_locally_finite K ι P n M Q Y Z N c B Φ g G₀ hP hQ hY hnull hN hΦs hΦt hg
   have e1 : ∀ᵐ y, ∑ᶠ w ∈ fibre P Q y, sheetDensity P Q (fun i z => c i * Real.log ((B i).h z)) g y w =
@@ -63,7 +63,7 @@ theorem push_chart_integrals : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀
     filter_upwards [hae] with y ⟨W, hW, hf, ht⟩
     rw [hf, finsum_mem_image hW]
     exact finsum_mem_congr rfl fun x hx => by rw [ht x hx]
-  refine ⟨(GlobalTheory.T.measurable_fibre_count_of_local_diffeo M.atlas Φ (modelQ M Q) _ G₀ hS hq hfin hsm hm).congr (e1.mono fun y hy => hy.symm),
+  refine ⟨(_root_.GlobalTheory.CompanionTheory.Ar.Giv.Push.aestronglyMeasurable_fibreSum_pushDens M.atlas Φ (modelQ M Q) _ G₀ hS hq hfin hsm hm).congr (e1.mono fun y hy => hy.symm),
     fun Pt => ?_, fun hI => ?_⟩
   · rw [lintegral_congr_ae (e2.mono fun y hy => congrArg ENNReal.ofReal hy)]
     exact GlobalTheory.T.finite_fibres_of_analytic_local_diffeo M.atlas Φ (modelQ M Q) _ G₀ hS hq hfin hsm hm Pt

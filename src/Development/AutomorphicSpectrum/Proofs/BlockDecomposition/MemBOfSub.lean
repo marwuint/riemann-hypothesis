@@ -1,7 +1,16 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.FormUniq
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.NLeA
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.Imports
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MemBoundariesZeroIff
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DoubleComplexMapMemTotal
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.FaceMapCompSuccAboveCastSucc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDesc
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDifferentialOneInclusion
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TerminalRes
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousCochainFiltrationDecomposition
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ChartGrConst
 
 set_option autoImplicit false
@@ -69,40 +78,6 @@ def AD.ofH (h : ∀ n, K.X n →ₗ[R] L.X n) : AD K L where
       (L.d (n + 1) (h (n + 1) (K.d n x)) - h (n + 2) (K.d (n + 1) (K.d n x))) = 0
     rw [map_sub, L.dd, K.dd, map_zero]
     abel
-
-def NH.ofH (h : ∀ n, K.X n →ₗ[R] L.X n) : NH (AD.ofH h) := ⟨h, fun n x => rfl⟩
-
-def altCx (R : Type) [CommRing R] : Cx.{0} R where
-  X _ := R
-  d n := if Even n then LinearMap.id else 0
-  dd n x := by
-    by_cases h : Even n
-    · have h' : ¬ Even (n + 1) := by rw [Nat.even_add_one]; exact not_not.2 h
-      simp [h, h']
-    · simp [h]
-
-def exH (R : Type) [CommRing R] : ∀ n, (altCx R).X n →ₗ[R] (altCx R).X n :=
-  fun n => if n = 0 then LinearMap.id else 0
-
-theorem exH_zero (R : Type) [CommRing R] (y : R) : (show R from exH R 0 y) = y := by
-  change (if (0 : ℕ) = 0 then LinearMap.id else 0 : R →ₗ[R] R) y = y
-  simp
-
-theorem exH_one (R : Type) [CommRing R] (y : R) : (show R from exH R 1 y) = 0 := by
-  change (if (1 : ℕ) = 0 then LinearMap.id else 0 : R →ₗ[R] R) y = 0
-  simp
-
-theorem alt_zero (R : Type) [CommRing R] (y : R) : (show R from (altCx R).d 0 y) = y := by
-  change (if Even 0 then LinearMap.id else 0 : R →ₗ[R] R) y = y
-  simp
-
-theorem exAD_ne (R : Type) [CommRing R] [Nontrivial R] : ∃ x : (altCx R).X 0, (AD.ofH (exH R)).r 0 x ≠ 0 := by
-  refine ⟨(1 : R), fun h0 => one_ne_zero (α := R) ?_⟩
-  have e : (show R from (altCx R).d 0 (show R from exH R 0 (1 : R))) - (show R from exH R 1 (show R from (altCx R).d 0 (1 : R))) = 0 := h0
-  rwa [exH_zero, alt_zero, exH_one, sub_zero] at e
-
-theorem exNH_ne (R : Type) [CommRing R] [Nontrivial R] : ∃ x : (altCx R).X 0, (NH.ofH (exH R)).h 0 x ≠ 0 :=
-  ⟨(1 : R), fun h0 => one_ne_zero (α := R) ((exH_zero R 1).symm.trans h0)⟩
 
 def cone (t : AD K L) : Cx.{w} R where
   X n := L.X n × K.X n
@@ -496,25 +471,6 @@ structure Dat (A B : Sy.{w} R ι) where
   ρ : ∀ S n, (A.K S).X n →ₗ[R] (B.K S).X (n + 2)
   hρ : ∀ S n x, (B.K S).d (n + 2) (ρ S n x) = ρ S (n + 1) ((A.K S).d n x)
   hn : ∀ {S T : Finset ι} (h : S ⊆ T) n x, ρ T n ((A.res h).f n x) = (B.res h).f _ (ρ S n x)
-
-def flatCx (R : Type) [CommRing R] : Cx.{0} R where
-  X _ := R
-  d _ := 0
-  dd _ _ := rfl
-
-def flatSy (R : Type) [CommRing R] (ι : Type) : Sy.{0} R ι where
-  K _ := flatCx R
-  res _ := ⟨fun _ => LinearMap.id, fun _ _ => rfl⟩
-  res_id _ _ _ _ := rfl
-  res_comp _ _ _ _ := rfl
-
-def exDat (R : Type) [CommRing R] (ι : Type) [DecidableEq ι] : Dat (flatSy R ι) (flatSy R ι) where
-  ρ _ _ := LinearMap.id
-  hρ _ _ _ := rfl
-  hn _ _ _ := rfl
-
-theorem exDat_ne (R : Type) [CommRing R] [Nontrivial R] (ι : Type) [DecidableEq ι] :
-    ∃ x : ((flatSy R ι).K ∅).X 0, (exDat R ι).ρ ∅ 0 x ≠ 0 := ⟨(1 : R), one_ne_zero (α := R)⟩
 
 variable {A B : Sy.{w} R ι}
 

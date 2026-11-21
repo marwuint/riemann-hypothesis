@@ -45,36 +45,6 @@ abbrev map1 : ∀ j, (seq1 j).V →ₛₗ[algebraMap ℚ ℂ] ℂ :=
 
 theorem embedding_one_apply_div_three (x : Fin 1 → ℚ) : map1 1 x = (x 0 : ℂ) / 3 := rfl
 
-theorem one_not_mem : (fun _ => 1 : Fin 1 → ℚ) ∉ (seq1 1).L := by
-  show (fun _ => 1 : Fin 1 → ℚ) ∉ twoLat
-  intro h
-  obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.1 h
-  have h1 : (a : ℚ) * 2 = 1 := congrFun ha 0
-  obtain ⟨z, rfl⟩ := Rat.ringOfIntegersEquiv.symm.surjective a
-  rw [Rat.ringOfIntegersEquiv_symm_apply_coe] at h1
-  have h2 : z * 2 = 1 := by exact_mod_cast h1
-  omega
-
-theorem metric_one (x : Fin 1 → ℚ) :
-    Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (seq1 1).b (seq1 1).X (InfinitePlace.mk (algebraMap ℚ ℂ)) x) = ‖map1 1 x‖ := by
-  rw [embedding_one_apply_div_three]
-  show Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun ℚ (Fin 1)) frame3 (InfinitePlace.mk (algebraMap ℚ ℂ)) x) = _
-  have h : (frame3 (InfinitePlace.mk (algebraMap ℚ ℂ)))⁻¹ = Matrix.diagonal fun _ => (3 : ℂ)⁻¹ := by
-    apply Matrix.inv_eq_left_inv
-    rw [frame3, Matrix.diagonal_mul_diagonal]
-    simp
-  rw [Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord, h, Fin.sum_univ_one, Real.sqrt_sq (norm_nonneg _), Matrix.mulVec_diagonal]
-  simp [Formalism.HermitianLatticesTheory.vecAt, div_eq_inv_mul]
-
-theorem good_one : (seq1 1).Good := by
-  refine ofCoord_good (L := twoLat) (X := frame3) ⟨Submodule.fg_span (Set.finite_singleton _), ?_⟩ fun v => by simp [frame3]
-  rw [twoLat, Submodule.span_span_of_tower, eq_top_iff]
-  intro x _
-  exact Submodule.mem_span_singleton.2 ⟨x 0 / 2, by funext i; rw [Subsingleton.elim i 0]; simp⟩
-
-theorem rank_off : Module.finrank ℚ (seq1 0).V = 1 ∧ Module.finrank ℚ (seq1 2).V = 1 :=
-  ⟨(Module.finrank_fin_fun ℚ).trans (Module.finrank_self ℂ), (Module.finrank_fin_fun ℚ).trans (Module.finrank_self ℂ)⟩
-
 section Record
 
 open Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie
@@ -90,13 +60,6 @@ theorem jM_metric_all (hH : Holds R F) (j : ℕ) (x : (mjH Z j).V) :
   mapSeq_ind_all _ _ D.what₂.Mj Z.jW
     (fun _ A g => ∀ x : A.V, Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord A.b A.X (InfinitePlace.mk D.what₂.embLL) x) = ‖g x‖)
     (fun i => MjCoord.jW_norm Z hH i) (fun _ => unitMap_norm _ _) j x
-
-theorem card_mjH (hH : Holds R F) (j : ℕ) : Fintype.card (mjH Z j).ι = Module.finrank ℂ (D.what₂.Mj j) :=
-  (Module.finrank_eq_card_basis (Module.Basis.mk (jM_basis Z hH j).1 (jM_basis Z hH j).2.ge)).symm
-
-theorem exists_tied {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (hP : Pins R F cG) (hH : Holds R F) (Xd : DivX D) :
-    ∃ X : DivX D, X.geo = Xd.geo ∧ X.MjH = mjH Z ∧ ∃ JM, MjHTie D A3.A X (A3.indefDown (s0Of R F)) Z.jW JM :=
-  ⟨withMj Z hP hH Xd (fun _ _ => 0) (fun _ _ _ => Submodule.zero_mem _), rfl, rfl, _, mjHTie_withMj Z hP hH Xd _ _⟩
 
 end Record
 

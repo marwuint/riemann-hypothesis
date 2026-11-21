@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundleProductOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenericPointAsIdeal
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnsheet
 import Development.AutomorphicSpectrum.PublishedTheorems.Divisibility₂.PairingExists
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchIntegrableIffOverIntegersStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumLogNormEqSumEmbeddingsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchIntegrableIffOverIntegers
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumLogNormEqSumEmbeddings
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.WOverRestrPow
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -26,7 +26,7 @@ theorem curveDeg_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k}
     (r : (L.restr i).B.ι → Z.functionFieldˣ) (hr : IsRatSec (L.restr i).B r) :
     HermLB.curveDeg ((toZ L t hL).restr i) (r := r) hr = HermLB.curveDeg (L.restr i) hr := by
   have hv : IsArithVar (i ≫ p) 0 := hX.of_isClosedImmersion i hc (by simpa using hd)
-  have e := GlobalTheory.T.sum_logNorm_eq_sum_embeddings k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) hv (L.restr i)
+  have e := _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) hv (L.restr i)
     (((toZ L t hL).restr i).φ (Int.castRingHom ℂ))
     (wOver_restr_pow k X Z p t i L hL _).1 r hr
   unfold HermLB.curveDeg
@@ -45,7 +45,7 @@ theorem arch_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (t 
         HermLB.archInt (L.restr i) ((L.restr i).pow m) e hr) := by
   have hv : IsArithVar (i ≫ p) e := hX.of_isClosedImmersion i hc hd
   have hw := wOver_restr_pow k X Z p t i L hL (Int.castRingHom ℂ)
-  obtain ⟨e₁, e₂⟩ := GlobalTheory.T.archIntegrable_iff_over_integers k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) e hv (L.restr i)
+  obtain ⟨e₁, e₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.archInt_over_int k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) e hv (L.restr i)
     ((L.restr i).pow m) (((toZ L t hL).restr i).φ (Int.castRingHom ℂ))
     ((((toZ L t hL).restr i).pow m).φ (Int.castRingHom ℂ)) hw.1 (hw.2 m)
     (((toZ L t hL).restr i).cInf _) e r hr

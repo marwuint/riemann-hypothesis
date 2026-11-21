@@ -11,61 +11,6 @@ namespace GlobalTheory.RealWeil.Vacuum
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] {J : V ≃ₗᵢ[ℝ] V} {ρ : V → B →L[ℂ] B}
 
-theorem differentiable_norm (f : B) (hf : Sm ρ f) : Differentiable ℝ fun u => (gau u)⁻¹ • ρ u f :=
-  ((contDiff_gau_inv (V := V)).smul hf).differentiable (by simp)
-
-theorem fderiv_norm (h : IsHeis (omJ J) ρ) (f : B) (hf : Sm ρ f) (u z : V) :
-    fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) u z =
-      (gau u)⁻¹ • ρ u (fderiv ℝ (fun v => ρ v f) 0 z) +
-        ((gau u)⁻¹ * (π * (⟪u, z⟫ : ℝ) - π * I * (⟪u, J z⟫ : ℝ))) • ρ u f := by
-  have hl : HasDerivAt (fun s : ℝ => u + s • z) z 0 := by
-    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const z).const_add u
-  have hl0 : HasDerivAt (fun s : ℝ => s • z) z 0 := by
-    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const z)
-  have h1 : HasDerivAt (fun s : ℝ => (gau (u + s • z))⁻¹ • ρ (u + s • z) f)
-      (fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) u z) 0 :=
-    (differentiable_norm f hf u).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)
-  have h2 : HasDerivAt (fun s : ℝ => ρ (s • z) f) (fderiv ℝ (fun v => ρ v f) 0 z) 0 :=
-    ((ContDiff.differentiable hf (by simp)) 0).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl0 (by simp)
-  have h3 : HasDerivAt (fun s : ℝ => ρ u (ρ (s • z) f)) (ρ u (fderiv ℝ (fun v => ρ v f) 0 z)) 0 :=
-    ((ρ u).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2
-  set c : ℂ := π * (⟪u, z⟫ : ℝ) - π * I * (⟪u, J z⟫ : ℝ) with hc
-  have h4 : HasDerivAt (fun s : ℂ => (gau u)⁻¹ * cexp (c * s + (π / 2 * ‖z‖ ^ 2) * s ^ 2)) ((gau u)⁻¹ * c) 0 := by
-    have := ((((hasDerivAt_id (0 : ℂ)).const_mul c).add
-      (((hasDerivAt_id (0 : ℂ)).pow 2).const_mul (π / 2 * ‖z‖ ^ 2 : ℂ))).cexp).const_mul (gau u)⁻¹
-    simpa using this
-  have h5 : HasDerivAt (fun s : ℝ => (gau u)⁻¹ * cexp (c * s + (π / 2 * ‖z‖ ^ 2) * s ^ 2)) ((gau u)⁻¹ * c) 0 :=
-    HasDerivAt.comp_ofReal (z := 0) (by rw [ofReal_zero]; exact h4)
-  have h6 := h5.smul h3
-  have e : (fun s : ℝ => (gau (u + s • z))⁻¹ • ρ (u + s • z) f) =
-      (fun s : ℝ => (gau u)⁻¹ * cexp (c * s + (π / 2 * ‖z‖ ^ 2) * s ^ 2)) • fun s : ℝ => ρ u (ρ (s • z) f) := by
-    funext s
-    simp only [Pi.smul_apply', h.2.1, smul_smul]
-    congr 1
-    have n : ((‖u + s • z‖ : ℝ) : ℂ) ^ 2 = (‖u‖ : ℂ) ^ 2 + 2 * s * (⟪u, z⟫ : ℝ) + s ^ 2 * ‖z‖ ^ 2 := by
-      have : ‖u + s • z‖ ^ 2 = ‖u‖ ^ 2 + 2 * s * ⟪u, z⟫ + s ^ 2 * ‖z‖ ^ 2 := by
-        rw [norm_add_sq_real, inner_smul_right, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]; ring
-      exact_mod_cast this
-    have o : omJ J u (s • z) = s * ⟪u, J z⟫ := by simp [omJ, inner_smul_right]
-    rw [gau, gau, n, o, ← Complex.exp_neg, ← Complex.exp_neg, ← Complex.exp_add, ← Complex.exp_add, hc]
-    congr 1
-    push_cast
-    ring
-  rw [← e] at h6
-  rw [h1.unique h6]
-  simp [h.1]
-
-theorem fderiv_norm_J (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (f : B) (hf : Sm ρ f)
-    (ha : ∀ z, fderiv ℝ (fun v => ρ v f) 0 z + I • fderiv ℝ (fun v => ρ v f) 0 (J z) = 0) (u z : V) :
-    fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) u (J z) = I • fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) u z := by
-  have e : fderiv ℝ (fun v => ρ v f) 0 (J z) = I • fderiv ℝ (fun v => ρ v f) 0 z := by
-    rw [eq_neg_of_add_eq_zero_left (ha z), smul_neg, smul_smul, I_mul_I]
-    simp
-  rw [fderiv_norm h f hf, fderiv_norm h f hf, e, map_smul, smul_add, smul_comm I, smul_smul I, hJ, inner_neg_right]
-  congr 2
-  push_cast
-  linear_combination (gau u)⁻¹ * π * (⟪u, J z⟫ : ℝ) * I_mul_I
-
 def line (J : V ≃ₗᵢ[ℝ] V) (u : V) : ℂ →L[ℝ] V := reCLM.smulRight u + imCLM.smulRight (J u)
 
 open MeasureTheory Complex Matrix in
@@ -75,24 +20,6 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 theorem _root_.GlobalTheory.RealWeil.Vacuum.line_apply (u : V) (ζ : ℂ) :
     _root_.GlobalTheory.RealWeil.Vacuum.line J u ζ = ζ.re • u + ζ.im • J u := by
   simp [_root_.GlobalTheory.RealWeil.Vacuum.line]
-
-theorem mean_value [CompleteSpace B] (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ) (f : B) (hf : Sm ρ f)
-    (ha : ∀ z, fderiv ℝ (fun v => ρ v f) 0 z + I • fderiv ℝ (fun v => ρ v f) 0 (J z) = 0) (u : V) :
-    ∫ θ in (0 : ℝ)..2 * π, (gau (line J u (circleMap 0 1 θ)))⁻¹ • ρ (line J u (circleMap 0 1 θ)) f =
-      (2 * π) • f := by
-  have hd : Differentiable ℂ fun ζ => (gau (line J u ζ))⁻¹ • ρ (line J u ζ) f := by
-    intro ζ
-    have h1 : HasFDerivAt (fun ζ => (gau (line J u ζ))⁻¹ • ρ (line J u ζ) f)
-        ((fderiv ℝ (fun u => (gau u)⁻¹ • ρ u f) (line J u ζ)).comp (line J u)) ζ :=
-      (differentiable_norm f hf _).hasFDerivAt.comp ζ (line J u).hasFDerivAt
-    refine differentiableAt_complex_iff_differentiableAt_real.2 ⟨h1.differentiableAt, ?_⟩
-    rw [h1.fderiv]
-    simpa [line_apply] using fderiv_norm_J hJ h f hf ha (line J u ζ) u
-  have := DiffContOnCl.circleAverage (c := 0) (R := 1) hd.diffContOnCl
-  rw [Real.circleAverage_def] at this
-  simp only [map_zero, gau_zero, h.1, inv_one, one_smul] at this
-  conv_rhs => rw [← this]
-  rw [smul_inv_smul₀ Real.two_pi_pos.ne']
 
 open MeasureTheory Complex Matrix in
 open scoped RealInnerProductSpace ContDiff Real ComplexOrder in

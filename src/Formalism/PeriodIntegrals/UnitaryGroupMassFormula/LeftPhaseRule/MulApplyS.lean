@@ -116,20 +116,6 @@ lemma ell_add (z : Fin (2 * r + k + 1) → ℂ) (A B : Mx k r) :
   refine Finset.sum_congr rfl fun a _ => ?_
   split_ifs <;> simp [Matrix.add_mulVec]
 
-lemma ell_smul (z : Fin (2 * r + k + 1) → ℂ) (s : ℂ) (A : Mx k r) :
-    ell k r z (s • A) = s * ell k r z A := by
-  unfold ell
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  split_ifs <;> simp [Matrix.smul_mulVec]
-
-lemma ell_sub (z : Fin (2 * r + k + 1) → ℂ) (A B : Mx k r) :
-    ell k r z (A - B) = ell k r z A - ell k r z B := by
-  unfold ell
-  rw [← Finset.sum_sub_distrib]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  split_ifs <;> simp [Matrix.sub_mulVec]
-
 lemma ell_one (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) : ell k r z 1 = 0 := by
   unfold ell
   apply Finset.sum_eq_zero
@@ -142,39 +128,5 @@ lemma ell_one (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) : ell k r z 1 
     omega
   · rw [Matrix.one_mulVec]
     exact hz _ (Or.inl a.isLt)
-
-lemma ell_S {l : Fin r} {M : Mx k r} (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
-    (hM : InS k r l M) : ell k r z M = (M *ᵥ fvec k r z l.succ) (eI k r l) := by
-  have hl := l.isLt
-  unfold ell
-  rw [Finset.sum_eq_single l]
-  · by_cases h : l.val + 1 < r
-    · have h' : (Fin.succ l).val < r := by simpa using h
-      rw [dif_pos h]
-      simp only [fvec, dif_pos h', mulVec_bvec_lemma_2]
-      rfl
-    · have h' : ¬ (Fin.succ l).val < r := by simpa using h
-      rw [dif_neg h]
-      simp only [fvec, dif_neg h']
-  · intro a _ hal
-    have hal' : a.val ≠ l.val := fun e => hal (Fin.ext e)
-    have ha := a.isLt
-    split_ifs with h
-    · apply hM
-      unfold SP
-      simp only [eI_val]
-      omega
-    · simp only [Matrix.mulVec, dotProduct]
-      apply Finset.sum_eq_zero
-      intro q _
-      by_cases hq : SP k r l (eI k r a) q
-      · have hq' : q.val = 2 * r + k - l.val := by
-          unfold SP at hq
-          simp only [eI_val] at hq
-          omega
-        rw [hz q (Or.inr (by omega)), mul_zero]
-      · rw [hM _ _ hq, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
 
 end Formalism.FourierDecayAlt.Q.LeftMultiplicationRule

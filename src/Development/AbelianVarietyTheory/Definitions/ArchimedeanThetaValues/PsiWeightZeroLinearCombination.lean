@@ -120,14 +120,6 @@ theorem unitOn_inv (u : Aˣ) : unitOn u⁻¹ = (unitOn u)⁻¹ := by
   unfold unitOn
   exact map_inv _ _
 
-theorem unitOn_zpow (u : Aˣ) (n : ℤ) : unitOn (u ^ n) = unitOn u ^ n := by
-  unfold unitOn
-  exact map_zpow _ _ _
-
-theorem unitOn_pow (u : Aˣ) (n : ℕ) : unitOn (u ^ n) = unitOn u ^ n := by
-  unfold unitOn
-  exact map_pow _ _ _
-
 theorem unitOn_bijective : Function.Bijective (unitOn : Aˣ → Γ(Sp A, ⊤)ˣ) := by
   have e : (unitOn : Aˣ → Γ(Sp A, ⊤)ˣ) =
       Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv.toMulEquiv := by
@@ -182,12 +174,6 @@ instance (q : X → (FractionRing K)ˣ) (O : Type) [Ring O] [Module O X] : Modul
   inferInstanceAs (Module O X)
 
 variable (q : X → (FractionRing K)ˣ)
-
-omit [Module.Free ℤ X] [Module.Finite ℤ X] in
-
-theorem polar_comm (a b : X) : polar q a b = polar q b a := by
-  simp only [polar, add_comm a b]
-  exact mul_right_comm _ _ _
 
 theorem psi_isConst (y : X) : IsConst ((toricPre K X q).psi y) (unitOn (q y)) := cg_isConst _ _ _
 
@@ -354,58 +340,5 @@ theorem psiIn_iff (y : X) (J : Ideal K) :
   erw [← Functor.map_comp] at e
   have e2 := eq_of_map_eq_of_eq_univ (by simp) _ e
   exact ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing K))).symm.commRingCatIsoToRingEquiv.injective e2).symm
-
-section Examples
-
-theorem polar_zpow_sq (u : (FractionRing K)ˣ) (a b : ℤ) :
-    polar (fun n : ℤ => u ^ (n ^ 2)) a b = u ^ (2 * a * b) := by
-  simp only [polar]
-  rw [← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add]
-  congr 1
-  ring
-
-theorem toricPre_tate : toricPre InhTate.R ℤ (fun n => piK ^ (n ^ 2)) = tatePre := by
-  unfold toricPre tatePre P0 pi0
-  congr 1
-  funext n
-  exact congrArg (cg _ _) (unitOn_zpow _ _)
-
-example (u : (FractionRing K)ˣ) :
-    (toricPre K ℤ (fun n => u ^ (n ^ 2))).PsiEven ∧ (toricPre K ℤ (fun n => u ^ (n ^ 2))).TauBimult ∧
-      Nonempty ((toricPre K ℤ (fun n => u ^ (n ^ 2))).OAct ℤ) :=
-  ⟨psiEven _ fun y => by rw [neg_sq],
-    tauBimult _ fun a a' b => by
-      rw [polar_zpow_sq, polar_zpow_sq, polar_zpow_sq, ← zpow_add]
-      congr 1
-      ring,
-    ⟨toricOAct _ ℤ fun a y z => by
-      rw [polar_zpow_sq, polar_zpow_sq, star_trivial, smul_eq_mul, smul_eq_mul]
-      congr 1
-      ring⟩⟩
-
-example (u : (FractionRing K)ˣ) (hu : u * u ≠ 1) : ¬ (toricPre K ℤ (fun n => u ^ n)).PsiEven := by
-  rw [psiEven_iff]
-  intro h
-  have h1 := h 1
-  rw [zpow_neg, zpow_one] at h1
-  exact hu (by nth_rw 1 [← h1]; exact inv_mul_cancel u)
-
-example (y : X) (J : Ideal K) (hJ : J ≠ ⊤) :
-    ¬ (toricPre K X q).PsiIn y ⊥ ∧ ¬ (toricPre K X (fun _ => 1)).PsiIn y J := by
-  constructor
-  · rw [psiIn_iff]
-    rintro ⟨r, hr, h⟩
-    rw [Ideal.mem_bot.1 hr, map_zero] at h
-    exact (q y).ne_zero h
-  · rw [psiIn_iff]
-    rintro ⟨r, hr, h⟩
-    have : r = 1 := IsFractionRing.injective K (FractionRing K) (by rw [← h, map_one, Units.val_one])
-    exact hJ ((Ideal.eq_top_iff_one J).2 (this ▸ hr))
-
-example (q : ℤ → (FractionRing K)ˣ) (u v : Fˣ) (h : u ≠ v) :
-    pt q F (zpowersHom Fˣ u) ≠ pt q F (zpowersHom Fˣ v) :=
-  fun e => h ((zpowersHom Fˣ).injective ((pt_bijective q F).1 e))
-
-end Examples
 
 end GlobalTheory.ToricData

@@ -148,60 +148,6 @@ def XiGam : Prop :=
     (∀ (X : ℤ → Submodule LL D) (f : Amb LL Ks D), f ∈ Xi Ks X → Lev.γ f ∈ Xi Ks X) ∧
     (∀ d : D, Lev.γ (cstD Ks d) = cstD Ks d) ∧ (∀ d : D, Lev.Inv (cstD Ks d))
 
-def KillingPolynomialFinite : Prop :=
-  ∀ (LL D : Type) [Field LL] [AddCommGroup D] [Module LL D] (X X' : ℤ → Submodule LL D),
-    IsGr X → IsGr X' → {i : ℤ | X i ≠ X' i}.Finite
-
-def CoeffIterateGamma : Prop :=
-  ∀ (LL Ks Δ D : Type) [Field LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
-    (Lev : Level LL Ks Δ) (ℓ s E : ℕ), Lev.FiniteOrderFixed ℓ s → s ≤ E → ∀ (f : Amb LL Ks D) (i : ℤ),
-      cf ((⇑(Lev.γ (D := D)))^[ℓ ^ E] f) i =
-        ((Lev.u ^ (i * ((ℓ ^ E : ℕ) : ℤ)) : LLˣ) : LL) • cf f i
-
-def K2ii : Prop :=
-  ∀ (LL Ks Δ D : Type) [Field LL] [CharZero LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D]
-    [Module LL D] (Lev : Level LL Ks Δ) (ℓ s : ℕ), 0 < ℓ → Lev.FiniteOrderFixed ℓ s → Lev.FactV →
-    ∀ (I : Finset ℤ) (X X' : ℤ → Submodule LL D), (∀ i, X i ≠ X' i → i ∈ I) →
-      (∏ i ∈ I, ((Polynomial.X : Polynomial LL) ^ (ℓ ^ s) -
-        Polynomial.C ((Lev.u ^ (i * ((ℓ ^ s : ℕ) : ℤ)) : LLˣ) : LL))).Separable ∧
-      ∀ f ∈ Xi Ks X, Lev.pAct (∏ i ∈ I, ((Polynomial.X : Polynomial LL) ^ (ℓ ^ s) -
-        Polynomial.C ((Lev.u ^ (i * ((ℓ ^ s : ℕ) : ℤ)) : LLˣ) : LL))) f ∈ Xi Ks X'
-
-def K2iii : Prop :=
-  ∀ (LL Ks Δ D : Type) [Field LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
-    (Lev : Level LL Ks Δ) (ℓ s : ℕ), 0 < ℓ → Lev.FiniteOrderFixed ℓ s → Lev.FactV →
-    ∀ (X X' : ℤ → Submodule LL D), (∀ i, X' i ≤ X i) → ∀ f ∈ Xi Ks X,
-      (∀ j, Lev.δ j f - f ∈ Xi Ks X') → Lev.γ f - f ∈ Xi Ks X' →
-      ∃ d ∈ X 0, f - cstD Ks d ∈ Xi Ks X'
-
-def KillingPolyConst : Prop :=
-  ∀ (LL Ks Δ D : Type) [Field LL] [CharZero LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D]
-    [Module LL D] (Lev : Level LL Ks Δ) (ℓ s E : ℕ), 0 < ℓ → Lev.FiniteOrderFixed ℓ s → Lev.PhiGammaCommute → s ≤ E →
-    ∀ (JS : Finset ℤ) (X X' : ℤ → Submodule LL D), (∀ i, X i ≠ X' i → i ∈ JS) →
-    ∀ f ∈ Xi Ks X,
-      (Lev.Inv f → ∃ d ∈ X 0,
-        (∑ k ∈ Finset.range (ℓ ^ E), (tD D Lev.σ ^ k) (cf f 0)) =
-          ((ℓ ^ E : ℕ) : LL) • ((1 : Ks) ⊗ₜ[LL] d) ∧
-        Lev.pAct (PPoly Lev.u ℓ E JS) f - cstD Ks ((PPoly Lev.u ℓ E JS).eval 1 • d) ∈ Xi Ks X') ∧
-      (X 0 = X' 0 → Lev.pAct (PPoly Lev.u ℓ E JS) f ∈ Xi Ks X')
-
-def PPeval : Prop :=
-  ∀ (R : Type) [CommRing R] (u : Rˣ) (ℓ E : ℕ) (JS : Finset ℤ),
-    (PPoly u ℓ E JS).eval 1 =
-      ((ℓ ^ E : ℕ) : R) * ∏ i ∈ JS.erase 0, (1 - ((u ^ (i * ((ℓ ^ E : ℕ) : ℤ)) : Rˣ) : R))
-
-def PActConst : Prop :=
-  ∀ (LL Ks Δ D : Type) [Field LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
-    (Lev : Level LL Ks Δ) (P : Polynomial LL) (d : D),
-      Lev.pAct P (cstD Ks d) = cstD Ks (P.eval 1 • d)
-
-def ExistsConstOfInvariantMod : Prop :=
-  ∀ (LL Ks Δ D : Type) [Field LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
-    (Lev : Level LL Ks Δ) (ℓ s : ℕ), 0 < ℓ → Lev.FiniteOrderFixed ℓ s → Lev.FactV →
-    ∀ (Fil : ℤ → Submodule LL D) (f : Amb LL Ks D),
-      (∀ j, Lev.δ j f - f ∈ Xi Ks (fun i => Fil (-i))) →
-      Lev.γ f - f ∈ Xi Ks (fun i => Fil (-i)) → ∃ d : D, f - cstD Ks d ∈ Xi Ks (fun i => Fil (-i))
-
 def KillingPolyShape : Prop :=
   ∀ (LL Ks Δ D : Type) [Field LL] [CommRing Ks] [Algebra LL Ks] [AddCommGroup D] [Module LL D]
     (Lev : Level LL Ks Δ) (ℓ s E : ℕ), Lev.FiniteOrderFixed ℓ s → s ≤ E →
@@ -228,10 +174,6 @@ def RDmod : Prop :=
     0 ≤ η → G ≤ g → S ≤ g → η ≤ g → (kind ≠ Kind.thin → g < b) → Jumps kind G S η b Fil →
     (∀ f ∈ Xi Ks (NbK kind b (UOf kind b η Fil)), tp Ks g • f ∈ Xi Ks (fun i => Fil (-i))) ∧
     (∀ f ∈ Xi Ks (fun i => Fil (-i)), tp Ks g • f ∈ Xi Ks (NbK kind b (UOf kind b η Fil)))
-
-def GradedModel : Prop :=
-  XiModule ∧ XiShift ∧ GrdSemi ∧ XiGam ∧ KillingPolynomialFinite ∧ CoeffIterateGamma ∧ K2ii ∧ K2iii ∧ KillingPolyConst ∧ PPeval ∧ PActConst ∧
-    ExistsConstOfInvariantMod ∧ KillingPolyShape ∧ KillingPolyFiltration ∧ RDmod
 
 section
 variable {O : Type} [CommRing O] {B : E.Base O} {n : ℕ} {V : Type} [AddCommGroup V]
@@ -320,7 +262,5 @@ def DcFixOf : Prop :=
     (S : E.LevelData L c ell Λ r) (LL : Type) [Field LL] [Algebra O LL]
     (Ks : ℕ → Type) [∀ s, CommRing (Ks s)] [∀ s, Algebra LL (Ks s)] (Δ D : Type)
     [AddCommGroup D] [Module LL D] (_R : LevelModel S LL Ks Δ D), S.DcFix
-
-def LevelHypsOf : Prop := RDOf ∧ KillingPolynomialDegreeBound ∧ KillingPolynomialValuationBound ∧ KillingPolynomialLeadingUnit ∧ DcFixOf
 
 end Formalism.ExponentWindows.G

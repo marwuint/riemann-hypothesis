@@ -18,10 +18,4 @@ def Wt (p : ℕ) (TT : ∀ v, Finset (Fin (Sh.n' v))) (v : Fin Sh.nV) (e : Fin (
 
 end Cong
 
-section Expand
-
-variable (Sh : Shape) {Kc : Type} [Field Kc]
-
-end Expand
-
 end PI.UnitaryGroupMassFormula.PadicGainBound

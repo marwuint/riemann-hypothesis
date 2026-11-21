@@ -5,12 +5,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelExte
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeEmbeddingIdealLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelsAtRecordCore
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LettersEqFockVarsCore
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameConstantsOfCharacterisationCoreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameConstantsOfCharacterisationCore
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormClassSumNormalisedData
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicLiftEqGeometricClassSumAllTuplesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockCoefficientMapExtremalEqPhaseSmulLettersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelOneClassEqClassicalShortSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelFinitePointMemSpanRationalFormLiftsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicLiftEqGeometricClassSumAllTuples
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockCoefficientMapExtremalEqPhaseSmulLetters
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelOneClassEqClassicalShortSeries
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelFinitePointMemSpanRationalFormLifts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesFourth
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRepsOfFiniteIndex
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClassPresExtMemExtBijIsom
 
 set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000
@@ -290,11 +295,11 @@ theorem classSumsSpan_of_pins_core (hR : GlobalTheory.Hk3.Core R F) (ht : TieIn 
   have hrk : (Vc D i).rank = D.R.nV := D.sp.V_rank _ (Nat.le_add_left _ _) i.2
   have hn : (κ i).n = (Vc D i).rank := (ht.kap i (D.eTau.symm 1)).2.2.trans hrk.symm
   have hV := hP.lift.std
-  obtain ⟨cc, hcc⟩ := GlobalTheory.T.exists_frameConstants_of_characterisationCore hCI D G Pl0 T0 A T R F κ v₀ hR ht i _ _ O hP
-  obtain ⟨u, hu, -, -, hser⟩ := GlobalTheory.T.exists_adelicLift_eq_geometric_classSum_all_tuples hCI D G Pl0 T0 A T R F κ v₀ hR ht hio i _ _ O hP cc hcc
+  obtain ⟨cc, hcc⟩ := _root_.GlobalTheory.AdTh.CcExCore.exists_ccIs_core hCI D G Pl0 T0 A T R F κ v₀ hR ht i _ _ O hP
+  obtain ⟨u, hu, -, -, hser⟩ := _root_.GlobalTheory.AdTh.SerCore.exists_serOf_core hCI D G Pl0 T0 A T R F κ v₀ hR ht hio i _ _ O hP cc hcc
   obtain ⟨h1', h2', -⟩ := GlobalTheory.PtId.dict_cast T hT _ (inR i) O.s0 (goodEmbedding_baseEmbedding_coreData O) (Wc D i) O.hV (rank_Wc i)
-  obtain ⟨δ, hδ⟩ := GlobalTheory.T.thetaKernel_oneClass_eq_classicalShortSeries D G Pl0 T0 A _ R F hR i hV _ _ (iotaW T i) h1' h2'
-  obtain ⟨ka, hka, hio'⟩ := GlobalTheory.T.fockCoefficientMap_extremal_eq_phase_smul_letters D G Pl0 T0 A T R F κ v₀ hR ht hio i _ _ O hP
+  obtain ⟨δ, hδ⟩ := _root_.GlobalTheory.AdTh.ShortSeriesCore.thetaKO_eq_short_series_core D G Pl0 T0 A _ R F hR i hV _ _ (iotaW T i) h1' h2'
+  obtain ⟨ka, hka, hio'⟩ := _root_.GlobalTheory.AdTh.PhaseMapCore.io_eq_phase_smul_core D G Pl0 T0 A T R F κ v₀ hR ht hio i _ _ O hP
   have hex := GlobalTheory.ClassSumRule.exists_cusp_isThClsD_core hCI D G Pl0 T0 A T R F κ v₀ hR ht i _ _ O hP ()
   obtain ⟨w₀, -, hw₀, -⟩ := (ht.hv₀ i (sg0 D A)).2 rfl (hio i)
   have hw₁ : (fun ρ => (w₀ ρ : (R.MW i (sg0 D A)).sm ρ)) = v₀ i (sg0 D A) := funext hw₀
@@ -335,7 +340,7 @@ theorem classSumsSpan_of_pins_core (hR : GlobalTheory.Hk3.Core R F) (ht : TieIn 
   have e : atDict O (rdU (unfO O) s) = inC O.c' z • t := funext fun g => (dif_pos (dict_mem hT O g)).trans (t2 g)
   rw [SetLike.mem_coe, e]
   refine Submodule.smul_mem _ _ (mem_of_mul ha (mul_ne_zero (mul_ne_zero hu0' (inv_ne_zero hl0)) ((map_ne_zero (inC O.c')).2 hep))
-    (GlobalTheory.T.thetaKernel_finitePoint_mem_span_rationalFormLifts D G Pl0 T0 A _ R F hR i A.μ0 hV h' d1.1 (O.c0' v) w₀) (fun x₀ => ?_) fun g => ?_)
+    (_root_.GlobalTheory.KernelSpanCore.kernel_mem_span_core D G Pl0 T0 A _ R F hR i A.μ0 hV h' d1.1 (O.c0' v) w₀) (fun x₀ => ?_) fun g => ?_)
   · obtain ⟨x, hx⟩ := hpe x₀
     obtain ⟨f', hf', hcl⟩ := hex x
     refine ⟨u • atDict O (rdU (unfO O) f'), Submodule.smul_mem _ _

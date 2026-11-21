@@ -7,13 +7,13 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAss
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsVectorFieldFrameSmoothCommGrpSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueModelHasJacobianOrderStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsVectorFieldFrameSmoothCommGrpScheme
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueModelHasJacobianOrder
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.JacobianOrderMonotoneSemistableModelStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianVarietyAutomorphismShiftsJacobianOrderStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ProdIrrAndWeakNeronStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.VectorFieldOrderAddOfProdStrictHenselianStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsModelMapDefinedWeakNeronFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsModelMapDefinedWeakNeronFamily
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModelMapGenericallyOpenImmersionCalculusStatement
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -46,7 +46,7 @@ theorem exists_genIso_of_max_ord (R K : Type) [CommRing R] [IsDomain R] [IsLocal
   have bound : ∀ (N : Model R A) (m : ℤ), N.Irr → HasOrd N D π m →
       m ≤ ρ ∧ (m = ρ → ∃ i', o i' = ρ ∧ GenIso N (M i') (𝟙 A)) := by
     intro N m hN hm
-    obtain ⟨j, hj⟩ := GlobalTheory.T.exists_modelMapDefined_weakNeronFamily R K A J M hW N hN
+    obtain ⟨j, hj⟩ := _root_.GlobalTheory.SS.exists_defAt_of_weakNeron R K A J M hW N hN
     obtain ⟨h₁, h₂⟩ := GlobalTheory.T.jacobian_order_monotone_semistableModel R K π hπ A I D hD N (M j) m (o j) hN (hI j) hm (ho j) hj
     have := hρ j
     exact ⟨h₁.trans this, fun e => ⟨j, by omega, h₂ (by omega)⟩⟩
@@ -56,7 +56,7 @@ theorem exists_genIso_of_max_ord (R K : Type) [CommRing R] [IsDomain R] [IsLocal
   have t₂ := hc' _ _ (ho i)
   have t₃ := hc' _ _ t₁
   rw [Model.twist_twist_symm] at t₃
-  have e₃ := (GlobalTheory.T.existsUnique_modelHasJacobianOrder R K π hπ A I D hD (M i) (hI i)).unique t₃ (ho i)
+  have e₃ := (_root_.GlobalTheory.SS.Ord.existsUnique_hasOrd R K π hπ A I D hD (M i) (hI i)).unique t₃ (ho i)
   have i₁ : ((M i).twist f).Irr := hI i
   have i₂ : ((M i).twist f.symm).Irr := hI i
   obtain ⟨b₁, b₁'⟩ := bound _ _ i₁ t₁
@@ -80,8 +80,8 @@ theorem exists_permuted_members : ∀ (R K : Type) [CommRing R] [IsDomain R] [Is
   have hfr := hSH.2.2.2
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R
   obtain ⟨g, hg⟩ := GlobalTheory.AbelianDim.exists_relDim K A hA
-  obtain ⟨D, hD⟩ := GlobalTheory.T.exists_vectorFieldFrame_smooth_commGrpScheme K A g hg
-  choose o ho using fun i => (GlobalTheory.T.existsUnique_modelHasJacobianOrder R K π hπ A (Fin g) D hD (M i) (hI i)).exists
+  obtain ⟨D, hD⟩ := _root_.GlobalTheory.SS.exists_isFrame K A g hg
+  choose o ho using fun i => (_root_.GlobalTheory.SS.Ord.existsUnique_hasOrd R K π hπ A (Fin g) D hD (M i) (hI i)).exists
   obtain ⟨i₀, hi₀⟩ := Finite.exists_max o
   refine ⟨Finset.univ.filter fun i => o i = o i₀, ⟨i₀, by simp⟩, ?_, ?_⟩
   · intro f i hi

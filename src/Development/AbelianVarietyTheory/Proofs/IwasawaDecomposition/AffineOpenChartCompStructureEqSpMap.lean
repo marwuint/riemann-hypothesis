@@ -59,42 +59,6 @@ def tr (α β : C.A) (z : Sp S ⟶ Z) (hα : ⊤ ≤ z ⁻¹ᵁ C.B α) (hβ : �
 
 theorem tr_self (α : C.A) (z : Sp S ⟶ Z) (h : ⊤ ≤ z ⁻¹ᵁ C.B α) : C.tr α α z h h = 1 := C.refl α S z h
 
-theorem tr_mul (α β γ : C.A) (z : Sp S ⟶ Z) (hα : ⊤ ≤ z ⁻¹ᵁ C.B α) (hβ : ⊤ ≤ z ⁻¹ᵁ C.B β) (hγ : ⊤ ≤ z ⁻¹ᵁ C.B γ) :
-    C.tr α β z hα hβ * C.tr β γ z hβ hγ = C.tr α γ z hα hγ := C.coc α β γ S z hα hβ hγ
-
-theorem tr_spMap (α β : C.A) (φ : S →+* S') (z : Sp S ⟶ Z) (hα : ⊤ ≤ z ⁻¹ᵁ C.B α) (hβ : ⊤ ≤ z ⁻¹ᵁ C.B β)
-    {z' : Sp S' ⟶ Z} (e : spMap φ ≫ z = z') (hα' : ⊤ ≤ z' ⁻¹ᵁ C.B α) (hβ' : ⊤ ≤ z' ⁻¹ᵁ C.B β) :
-    C.tr α β z' hα' hβ' = (C.tr α β z hα hβ).map φ := by
-  subst e
-  rw [tr, tr, ev_spMap φ z _ (le_preimage_inf hα hβ), Matrix.map_map]; rfl
-
-def refine {Γ : Type} (a : Γ → C.A) (D : Γ → Z.Opens) (aff : ∀ γ, IsAffineOpen (D γ)) (cover : ∀ x : Z, ∃ γ, x ∈ D γ)
-    (le : ∀ γ, D γ ≤ C.B (a γ)) : Coc Z where
-  A := Γ
-  B := D
-  aff := aff
-  cover := cover
-  n γ := C.n (a γ)
-  T γ δ := (C.T (a γ) (a δ)).map (resG Z (inf_le_inf (le γ) (le δ)))
-  refl γ S _ z h := by
-    rw [← C.refl (a γ) S z (le_preimage_mono (le γ) h), Matrix.map_map]
-    ext i j
-    exact ev_res z _ _ _ _
-  coc γ δ ε S _ z h₁ h₂ h₃ := by
-    have key : ∀ (γ δ : Γ) (h₁ : ⊤ ≤ z ⁻¹ᵁ D γ) (h₂ : ⊤ ≤ z ⁻¹ᵁ D δ),
-        ((C.T (a γ) (a δ)).map (resG Z (inf_le_inf (le γ) (le δ)))).map (ev z _ (le_preimage_inf h₁ h₂)) =
-        C.tr (a γ) (a δ) z (le_preimage_mono (le γ) h₁) (le_preimage_mono (le δ) h₂) := fun γ δ h₁ h₂ => by
-      ext i j
-      exact ev_res z _ _ _ _
-    rw [key γ δ h₁ h₂, key δ ε h₂ h₃, key γ ε h₁ h₃, tr_mul]
-
-theorem refine_tr {Γ : Type} (a : Γ → C.A) (D : Γ → Z.Opens) (aff : ∀ γ, IsAffineOpen (D γ))
-    (cover : ∀ x : Z, ∃ γ, x ∈ D γ) (le : ∀ γ, D γ ≤ C.B (a γ)) (γ δ : Γ) (z : Sp S ⟶ Z) (h₁ : ⊤ ≤ z ⁻¹ᵁ D γ)
-    (h₂ : ⊤ ≤ z ⁻¹ᵁ D δ) : (C.refine a D aff cover le).tr γ δ z h₁ h₂ =
-      C.tr (a γ) (a δ) z (le_preimage_mono (le γ) h₁) (le_preimage_mono (le δ) h₂) := by
-  ext i j
-  exact ev_res z _ _ _ _
-
 structure Emb (N : ℕ) : Type where
   A : ∀ α, Matrix (Fin (N + 1)) (Fin (C.n α)) Γ(Z, C.B α)
   linv : ∀ α, ∃ A' : Matrix (Fin (C.n α)) (Fin (N + 1)) Γ(Z, C.B α), A' * A α = 1
@@ -240,49 +204,11 @@ def basPull (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ 
     [Finite κ] (b : Module.Basis κ S (TanM x t.G)) : Module.Basis κ S' (TanM x' t.G) :=
   (exists_basis_tanPull φ e b).choose
 
-theorem basPull_apply (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') {κ : Type}
-    [Finite κ] (b : Module.Basis κ S (TanM x t.G)) (i : κ) : basPull φ e b i = tanPull φ e (b i) :=
-  (exists_basis_tanPull φ e b).choose_spec i
-
-theorem basPull_repr (φ : S →+* S') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') {κ : Type}
-    [Finite κ] (b : Module.Basis κ S (TanM x t.G)) (v : TanM x t.G) (i : κ) :
-    (basPull φ e b).repr (tanPull φ e v) i = φ (b.repr v i) := by
-  have := Fintype.ofFinite κ
-  conv_lhs => rw [← b.sum_repr v, map_sum]
-  simp only [map_smulₛₗ, ← basPull_apply]
-  exact congrFun ((basPull φ e b).repr_sum_self _) i
-
-theorem tanPull_tanPull {S'' : Type} [CommRing S''] (φ : S →+* S') (ψ : S' →+* S'') {x : Sp S ⟶ X} {x' : Sp S' ⟶ X}
-    {x'' : Sp S'' ⟶ X} (e : spMap φ ≫ x = x') (e' : spMap ψ ≫ x' = x'') (e'' : spMap (ψ.comp φ) ≫ x = x'')
-    (v : TanM x t.G) : tanPull ψ e' (tanPull φ e v) = tanPull (ψ.comp φ) e'' v := by
-  apply tan_ext
-  rw [FlagMod.tanPull_left, FlagMod.tanPull_left, FlagMod.tanPull_left, FlagMod.dualMap_comp, ← spMap_comp',
-    Category.assoc]
-
 variable {Z : Scheme.{0}} {π : Z ⟶ X} {U : Z.Opens} {hU : IsAffineOpen U} {κ : Type} [Finite κ]
 
 def basAt (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (w : Sp S ⟶ Z) (hw : ⊤ ≤ w ⁻¹ᵁ U) :
     Module.Basis κ S (TanM (w ≫ π) t.G) :=
   basPull (ev w U hw) (by rw [← Category.assoc, tau, spMap_ev]) b
-
-theorem basAt_left (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (w : Sp S ⟶ Z) (hw : ⊤ ≤ w ⁻¹ᵁ U) (i : κ) :
-    (tv (basAt b w hw i)).left = spMap (dualMap (ev w U hw)) ≫ (tv (b i)).left := by
-  rw [basAt, basPull_apply]; rfl
-
-theorem tanPull_basAt (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (φ : S →+* S') (w : Sp S ⟶ Z)
-    (hw : ⊤ ≤ w ⁻¹ᵁ U) {w' : Sp S' ⟶ Z} (e : spMap φ ≫ w = w') (hw' : ⊤ ≤ w' ⁻¹ᵁ U) (e' : spMap φ ≫ w ≫ π = w' ≫ π)
-    (i : κ) : tanPull φ e' (basAt b w hw i) = basAt b w' hw' i := by
-  subst e
-  apply tan_ext
-  rw [FlagMod.tanPull_left, basAt_left, basAt_left, ev_spMap φ w U hw, FlagMod.dualMap_comp, ← spMap_comp']
-  exact (Category.assoc _ _ _).symm
-
-theorem basAt_repr (b : Module.Basis κ Γ(Z, U) (TanM (tau hU ≫ π) t.G)) (φ : S →+* S') (w : Sp S ⟶ Z)
-    (hw : ⊤ ≤ w ⁻¹ᵁ U) {w' : Sp S' ⟶ Z} (e : spMap φ ≫ w = w') (hw' : ⊤ ≤ w' ⁻¹ᵁ U) (e' : spMap φ ≫ w ≫ π = w' ≫ π)
-    (v : TanM (w ≫ π) t.G) (i : κ) : (basAt b w' hw').repr (tanPull φ e' v) i = φ ((basAt b w hw).repr v i) := by
-  have : basAt b w' hw' = basPull φ e' (basAt b w hw) :=
-    Module.Basis.eq_of_apply_eq fun i => by rw [basPull_apply, tanPull_basAt b φ w hw e hw']
-  rw [this, basPull_repr]
 
 end Tan
 
@@ -332,19 +258,6 @@ theorem initSpan_eq_of_le {K N : Type} [Field K] [AddCommGroup N] [Module K N] {
   have : FiniteDimensional K (initSpan K u k) := FiniteDimensional.span_of_finite K (Set.toFinite _)
   exact Submodule.eq_of_le_of_finrank_eq h (by rw [key hu, key hu'])
 
-theorem Charts.exists_fac (ch : Charts X) {S : Type} [CommRing S] [IsLocalRing S] (w : Sp S ⟶ X)
-    (h : w (IsLocalRing.closedPoint S) ∈ ch.carrier) : ∃ (a : ch.ι) (φ : ch.R a →+* S), spMap φ ≫ ch.χ a = w := by
-  obtain ⟨a, ha⟩ := Set.mem_iUnion.1 h
-  have h1 : ⊤ ≤ w ⁻¹ᵁ (ch.χ a).opensRange :=
-    ((IsLocalRing.closed_point_mem_iff (U := w ⁻¹ᵁ (ch.χ a).opensRange)).1 ha).ge
-  have h' : Set.range w ⊆ Set.range (ch.χ a) := by
-    rintro _ ⟨x, rfl⟩
-    exact h1 (Set.mem_univ x)
-  refine ⟨a, (Spec.preimage (IsOpenImmersion.lift (ch.χ a) w h')).hom, ?_⟩
-  show Spec.map (Spec.preimage _) ≫ _ = _
-  rw [Spec.map_preimage]
-  exact IsOpenImmersion.lift_fac _ _ _
-
 theorem Charts.range_subset (ch : Charts X) {S : Type} [CommRing S] {a : ch.ι} {φ : ch.R a →+* S} {w : Sp S ⟶ X}
     (e : spMap φ ≫ ch.χ a = w) : Set.range w ⊆ ch.carrier := by
   rintro _ ⟨x, rfl⟩
@@ -370,15 +283,6 @@ theorem isFrame_bc {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : s
 
 theorem exists_up_fr {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
     ∃ u : TVecs Dw M.t (w ≫ π), up u = (A.fr a).bc φ := exists_up fun σ i => ((A.isFrame_bc e).1 σ i).1
-
-theorem flagAt_fr {a : A.ch.ι} {φ : A.ch.R a →+* K} {w : Sp K ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
-    A.FlagAt w ((A.fr a).bc φ) :=
-  ⟨a, φ, e, A.isFrame_bc e, SameFlag.refl fun σ i => ((A.isFrame_bc e).1 σ i).1⟩
-
-theorem FlagAt.exists_up {A : Atlas M π ty} {w : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u) :
-    ∃ U : TVecs Dw M.t (w ≫ π), up U = u := by
-  obtain ⟨a, φ, -, hf, -⟩ := h
-  exact DRFlag.exists_up fun σ i => (hf.1 σ i).1
 
 theorem flagAt_iff {a : A.ch.ι} {φ : A.ch.R a →+* K} {w : Sp K ⟶ X} (e : spMap φ ≫ A.ch.χ a = w)
     {u₀ : TVecs Dw M.t (w ≫ π)} (h₀ : up u₀ = (A.fr a).bc φ) (u : TVecs Dw M.t (w ≫ π)) :
@@ -407,53 +311,12 @@ end Atlas
 
 namespace Atlas
 
-variable (A : Atlas M π ty) {S : Type} [CommRing S] {K : Type} [Field K]
-
-theorem exists_xF {a : A.ch.ι} {φ : A.ch.R a →+* S} {w : Sp S ⟶ X} (e : spMap φ ≫ A.ch.χ a = w) :
-    ∃ y : Sp S ⟶ Xo.XF c, y ≫ M.j = w ≫ π ∧ y ≫ pullback.snd _ _ = spMap (φ.comp (A.alg a)) := by
-  have := M.jQ_open
-  have hp : IsPreimmersion (spMap V.subtype) := IsPreimmersion.of_isLocalization (R := V) (S := c.F) (nonZeroDivisors V)
-  have : IsPreimmersion (pullback.fst M.s (spMap V.subtype)) := inferInstance
-  let y' : Sp S ⟶ pullback M.s (spMap V.subtype) := pullback.lift (w ≫ π) (spMap (φ.comp (A.alg a)))
-    (by rw [Category.assoc, A.affineOpenChart_comp_structure_eq_spMap e, spMap_comp'])
-  have h1 : y' ≫ pullback.fst _ _ = w ≫ π := pullback.lift_fst _ _ _
-  have hr : Set.range y' ⊆ Set.range M.jQ := by
-    rintro _ ⟨x, rfl⟩
-    have hx := A.ch.range_subset e ⟨x, rfl⟩
-    rw [A.cover] at hx
-    obtain ⟨q, hq⟩ := hx
-    refine ⟨q, (pullback.fst M.s (spMap V.subtype)).isEmbedding.injective ?_⟩
-    rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, h1, Scheme.Hom.comp_apply w]
-    exact hq
-  refine ⟨IsOpenImmersion.lift M.jQ y' hr, ?_, ?_⟩
-  · rw [Model.j, IsOpenImmersion.lift_fac_assoc, h1]
-  · rw [← M.jQ_over, IsOpenImmersion.lift_fac_assoc]
-    exact pullback.lift_snd _ _ _
-
-theorem FlagAt.point_eq {A : Atlas M π ty} {w w' : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u) (h' : A.FlagAt w' u)
-    (e : w ≫ π = w' ≫ π) : w = w' := by
-  obtain ⟨a, φ, ea, hf, -⟩ := id h
-  obtain ⟨y, hy, hy'⟩ := A.exists_xF ea
-  exact (A.bij K _ y hy' u (hy ▸ hf)).unique ⟨hy.symm, h⟩ ⟨e.symm.trans hy.symm, h'⟩
-
-theorem FlagAt.exists_point {A : Atlas M π ty} {w : Sp K ⟶ X} {u : Vecs Dw M.t K} (h : A.FlagAt w u) {X' : Scheme.{0}}
-    {π' : X' ⟶ M.X} {ty' : (E →+* ℂ) → Finset ℕ} (A' : Atlas M π' ty') :
-    ∃ w' : Sp K ⟶ X', w' ≫ π' = w ≫ π ∧ A'.FlagAt w' u := by
-  obtain ⟨a, φ, ea, hf, -⟩ := h
-  obtain ⟨y, hy, hy'⟩ := A.exists_xF ea
-  obtain ⟨w', hw', -⟩ := A'.bij K _ y hy' u (hy ▸ hf)
-  exact ⟨w', hw'.1.trans hy, hw'.2⟩
-
 end Atlas
 
 def IntOn (A : Atlas M π ty) (σ : E →+* ℂ) (k : ℕ) {U : X.Opens} (hU : IsAffineOpen U) {m : ℕ}
     (b : Module.Basis (Fin k ⊕ Fin m) Γ(X, U) (TanM (tau hU ≫ π) M.t.G)) : Prop :=
   ∀ (K : Type) [Field K] (w : Sp K ⟶ X) (hw : ⊤ ≤ w ⁻¹ᵁ U) (u : TVecs Dw M.t (w ≫ π)), A.FlagAt w (up u) →
     ∀ j ≤ k, initSpan K (u σ) j = initSpan K (fun i : Fin k => basAt b w hw (.inl i)) j
-
-def IntStep (A : Atlas M π ty) (σ : E →+* ℂ) (k : ℕ) : Prop :=
-  ∀ x : X, ∃ (U : X.Opens) (hU : IsAffineOpen U) (m : ℕ)
-    (b : Module.Basis (Fin k ⊕ Fin m) Γ(X, U) (TanM (tau hU ≫ π) M.t.G)), x ∈ U ∧ IntOn A σ k hU b
 
 def crd {k m : ℕ} {U : X.Opens} {hU : IsAffineOpen U}
     (b : Module.Basis (Fin k ⊕ Fin m) Γ(X, U) (TanM (tau hU ≫ π) M.t.G)) {S : Type} [CommRing S] (z : Sp S ⟶ X)
@@ -467,16 +330,6 @@ structure Adapted (A : Atlas M π ty) (σ : E →+* ℂ) (k : ℕ) : Type 1 wher
     (v : TanM (z ≫ π) M.t.G), (C.tr α β z hα hβ).mulVec (crd (b β) z hβ v) = crd (b α) z hα v
 
 variable {A : Atlas M π ty} {σ : E →+* ℂ} {k r : ℕ}
-
-def IsFrSub (D : Adapted A σ k) (Sb : D.C.Sub A.ch r) (hj : k + r + 1 ≤ Dw.mult σ) : Prop :=
-  ∀ (a : A.ch.ι) (S : Type) [CommRing S] (φ : A.ch.R a →+* S) (z : Sp S ⟶ X), spMap φ ≫ A.ch.χ a = z →
-    ∀ (h : ⊤ ≤ z ⁻¹ᵁ D.C.B (Sb.α a)) (u : TVecs Dw M.t (z ≫ π)), up u = (A.fr a).bc φ →
-      ∀ i : Fin (r + 1), (fun j => φ (Sb.M a j i)) = crd (D.b (Sb.α a)) z h (u σ ⟨k + i, by omega⟩)
-
-def StepRel (D : Adapted A σ k) (hk : k < Dw.mult σ) {X' : Scheme.{0}} {f : X' ⟶ X} (L : D.C.Line f)
-    {ty' : (E →+* ℂ) → Finset ℕ} (A' : Atlas M (f ≫ π) ty') : Prop :=
-  ∀ (K : Type) [Field K] (w : Sp K ⟶ X') (u : TVecs Dw M.t ((w ≫ f) ≫ π)),
-    A'.FlagAt w (up u) ↔ A.FlagAt (w ≫ f) (up u) ∧ ∀ α h, L.Carries w α h (crd (D.b α) (w ≫ f) h (u σ ⟨k, hk⟩))
 
 end Atlas
 
@@ -500,12 +353,6 @@ def atlasOf (Z : Mdl Y i₀) : Atlas (Y Z.i) Z.π Z.ty where
 theorem atlasOf_flagAt (Z : Mdl Y i₀) {k : Type} [Field k] (w : Sp k ⟶ Z.X) (u : Vecs Dw (Y Z.i).t k) :
     (atlasOf Z).FlagAt w u ↔ Z.FlagAt w u := Iff.rfl
 
-theorem geoOf (Z : Mdl Y i₀) : Geo (Y Z.i) Z.π where
-  proj := ⟨Z.n, Z.I.subschemeι, inferInstance, Z.π_s.symm⟩
-  normal := have := Z.normal; GlobalTheory.IsNormalScheme.pred _
-  flat := by rw [Z.π_s]; exact Z.flat
-  dense := Z.dense
-
 variable {i : Idx H p} {X : Scheme.{0}} {π : X ⟶ (Y i).X} {ty : (E →+* ℂ) → Finset ℕ}
 
 def NatTo (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) {k : Type} [Field k] (w₁ : Sp k ⟶ Z.X) (w₂ : Sp k ⟶ X) : Prop :=
@@ -514,11 +361,6 @@ def NatTo (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) {k : Type} [Field k] (w₁ : 
 
 def MapsTo (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) (g : Z.X ⟶ X) : Prop :=
   ∀ (k : Type) [Field k] (w : Sp k ⟶ Z.X), Set.range w ⊆ Z.opn → NatTo Z A w (w ≫ g)
-
-def LocMaps (Z : Mdl Y i₀) (A : Atlas (Y i) π ty) : Prop :=
-  ∀ (K : Type) [Field K] (w : Sp K ⟶ Z.X), Set.range w ⊆ Z.opn → ∃ y : Sp K ⟶ X, NatTo Z A w y ∧
-    ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R] [Algebra R K] [IsFractionRing R K]
-      (z : Sp R ⟶ Z.X), spMap (algebraMap R K) ≫ z = w → ∃ z' : Sp R ⟶ X, spMap (algebraMap R K) ≫ z' = y
 
 theorem isMap_iff (Z₁ Z₂ : Mdl Y i₀) (g : Z₁.X ⟶ Z₂.X) : IsMap Z₁ Z₂ g ↔ LocM.Corr Z₁ Z₂ ∧ MapsTo Z₁ (atlasOf Z₂) g :=
   Iff.rfl

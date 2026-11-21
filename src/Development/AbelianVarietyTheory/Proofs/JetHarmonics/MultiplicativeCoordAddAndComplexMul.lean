@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorS
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UwEllipticFlow
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RingHomPointBijective
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesMultiplicativeShiftCompAndSubstStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesMultiplicativeChartStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesMultiplicativeChart
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralWeierstrassChartXyUnitSeriesStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallPointMultiplicativeCoordinateExistsUniqueStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesShiftEqTranslateStatement
@@ -119,14 +119,14 @@ theorem germ_mul (M : Mdl q) (ω : ℂ_[q]) (hM : M.MChart ω) (F : ℂ → ℂ)
     · exact (hE.1 (α * x)).comp_analyticAt (f := F) (g := fun z => α * z) (by fun_prop)
     · show F (α * (z + l)) = F (α * z)
       rw [mul_add, hE.2 _ (hL l hl)]
-  have hsub := (GlobalTheory.T.cpTransportedTaylorSeries_multiplicativeChart q M.ι ω F hF0).2.2.1 α a hα
+  have hsub := (_root_.GlobalTheory.MomOne.hat_multiplicative_chart q M.ι ω F hF0).2.2.1 α a hα
   have hm := (MulSeries.mulS_laws q).1 a
   have hBα : Bdd (hat M.ι (C ω * logS) (fun z => F (α * z))) := by
     rw [hsub]
     exact ⟨1, (sup_norm_laws q).2.1 _ _ _ hB hm.1 hm.2.1⟩
   obtain ⟨ψ, hψa, hψe, hψ⟩ := GlobalTheory.T.cpTransportedTaylorSeries_shift_eq_translate q M ω ζ p _ hM h hEα (hmul F hF0) hBα
   rw [hsub, ((GlobalTheory.T.cpSeriesMultiplicativeShift_comp_and_subst q).2 ζ n k a _ hζ hk ⟨1, hB⟩).2, ← hT _ t ht,
-    ← (GlobalTheory.T.cpTransportedTaylorSeries_multiplicativeChart q M.ι ω _ (han t ht.1)).2.2.1 α a hα] at hψ
+    ← (_root_.GlobalTheory.MomOne.hat_multiplicative_chart q M.ι ω _ (han t ht.1)).2.2.1 α a hα] at hψ
   have h1 := (GlobalTheory.T.integral_weierstrass_chart_xy_unit_series q M _ hM).1
   have he := ((TaylorRead.hat_laws q M.ι _ (const_ell ω)).1 _ _ hψa
     (hmul _ (han t ht.1))).2.2.2 h1 hψ

@@ -319,40 +319,4 @@ theorem doubleCoset_permGL_injective {σ τ : Equiv.Perm (Fin n)} {g : GL (Fin n
   rw [← e] at hmem
   exact eq_of_permGL_mem_doubleCoset hmem
 
-theorem bruhat_decomposition (g : GL (Fin n) k) :
-    ∃! σ : Equiv.Perm (Fin n), g ∈ doubleCoset (permGL k σ) (borel n k) (borel n k) := by
-  obtain ⟨σ, hσ⟩ := exists_mem_doubleCoset_permGL g
-  exact ⟨σ, hσ, fun τ hτ => (doubleCoset_permGL_injective hσ hτ).symm⟩
-
-theorem iUnion_doubleCoset_permGL :
-    ⋃ σ : Equiv.Perm (Fin n), doubleCoset (permGL k σ) (borel n k) (borel n k) = Set.univ :=
-  Set.eq_univ_of_forall fun g => Set.mem_iUnion.mpr (exists_mem_doubleCoset_permGL g)
-
-theorem pairwise_disjoint_doubleCoset_permGL :
-    Pairwise (Function.onFun Disjoint fun σ : Equiv.Perm (Fin n) =>
-      doubleCoset (permGL k σ) (borel n k) (borel n k)) := by
-  intro σ τ hστ
-  rw [Function.onFun, Set.disjoint_left]
-  intro g hσ hτ
-  exact hστ (doubleCoset_permGL_injective hσ hτ)
-
-theorem bijective_mk_permGL :
-    Function.Bijective fun σ : Equiv.Perm (Fin n) =>
-      DoubleCoset.mk (borel n k) (borel n k) (permGL k σ) := by
-  constructor
-  · intro σ τ hστ
-    obtain ⟨x, hx, y, hy, hxy⟩ := (DoubleCoset.eq _ _ _ _).mp hστ
-    exact eq_of_permGL_mem_doubleCoset (mem_doubleCoset.mpr ⟨x, hx, y, hy, hxy⟩)
-  · intro q
-    obtain ⟨σ, hσ⟩ := exists_mem_doubleCoset_permGL (k := k) q.out
-    refine ⟨σ, ?_⟩
-    simp only
-    rw [← mk_eq_of_doubleCoset_eq (doubleCoset_eq_of_mem hσ), out_eq']
-
-theorem permGL_injective : Function.Injective (permGL k : Equiv.Perm (Fin n) → GL (Fin n) k) := by
-  intro σ τ h
-  apply eq_of_permGL_mem_doubleCoset (k := k)
-  rw [← h]
-  exact mem_doubleCoset_self _ _ _
-
 end GroundTheory.Automorphic

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 import Development.AbelianVarietyTheory.Definitions.Uniformization.SeriesFrame
@@ -27,13 +27,10 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpBijFAndEx
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CrossIffOfIsActOf
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CoeffMapDomainMul
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CubNMul
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CrossRelationGivesConvolutionRelationStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValueAtOrigin
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecTwist
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionIdentificationWithPairing
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevelStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValuationsTorusPointsFramesFamilyTerms
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SmallTorusPointKeepingRatiosIsZeroStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDegenerationEndomorphismOfAdmissibleBase
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TwistBaseChangeAndValuationStatements
@@ -55,59 +52,18 @@ noncomputable section
 
 namespace GlobalTheory.DvrAnyChar
 
-def AnyDV (p : ∀ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (_ : Irreducible ϖ)
-    (D : DegData V (maximalIdeal V)) (_ : D.toPre.X → ℤ) {F : Type} [Field F] [Algebra (FractionRing V) F]
-    {v : AddValuation F (WithTop ℚ)} (_ : ValOver ϖ F v), Prop) : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V], IsAdicComplete (maximalIdeal V) V →
-    ∀ (ϖ : V) (hϖ : Irreducible ϖ) (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q →
-    ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)) (hv : ValOver ϖ F v),
-      p hϖ D Q hv
-
 end GlobalTheory.DvrAnyChar
 
 namespace GlobalTheory.DvrAnyChar
-open GlobalTheory.TorsionAnyChar
-
 end GlobalTheory.DvrAnyChar
 
 namespace GlobalTheory.DvrAnyChar
-open GlobalTheory.TorsionAnyChar
-
 end GlobalTheory.DvrAnyChar
 
 namespace GlobalTheory.DvrAnyChar
-open GlobalTheory.TorsionAnyChar
-section
-open GlobalTheory.UT.CoefUnit GlobalTheory.UT.CoefBasic
-
-end
-section
-open GlobalTheory.UT.SmallPoint GlobalTheory.UT.CoefBasic
-
-end
-section
-open GlobalTheory.UT.SmallZero GlobalTheory.UT.CoefBasic GlobalTheory.UT.SmallPoint
-
-end
 end GlobalTheory.DvrAnyChar
 
 namespace GlobalTheory.DvrAnyChar
-open GlobalTheory.TorsionAnyChar GlobalTheory.UT.MixedConv GlobalTheory.FieldBaseChange
-section CoreAny
-variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
-  {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
-  {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {U : UnifPre I D A G} (E : EndU U)
-  {F : Type} [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F]
-
-end CoreAny
-section FieldAny
-variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
-  {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
-  {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {U : UnifPre I D A G} (E : EndU U)
-  {F : Type} [Field F] [Algebra (FractionRing R) F]
-
-end FieldAny
-
 end GlobalTheory.DvrAnyChar
 
 namespace GlobalTheory.DvrAnyChar

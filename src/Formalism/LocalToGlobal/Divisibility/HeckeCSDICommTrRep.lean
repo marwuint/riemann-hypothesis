@@ -148,10 +148,6 @@ def colFam3 : DefFam3 X.K (Col.G0 X.E Pr.vGs R.r) (Col.LevOff ∅ Pr.vGs S0) (Co
     (Fin R.m) :=
   (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).fam3
 
-def colSide3 (P : Col.LevFam X.E X.K R.r Pr.vGs) (Zs : DefSub (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).amb3) :
-    DefSide (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).base3 :=
-  (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).side3 P.grp P.chr Zs
-
 structure ColHyp3 : Prop where
 
   base : ColHyp W Ch sel v0 TU Xg S0
@@ -176,24 +172,6 @@ theorem colFam3_ok (hH : ColHyp3 W Ch sel v0 TU Xg S0) : (colFam3 W Ch sel hX v0
       split := heckeCSDI_split _ _ _ _ _ (hH.splitIL j τ)
       opG := fun k g => heckeCSDI_comm_trRep _ _ _ _ _ _ _ k g
       plI_inj := Subtype.val_injective }
-
-theorem colFam3_typesSep (hc : Col.HeckeComm (rowPts W Ch sel (mu0 X.F X.E X.K S)) S0)
-    (hI : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep) :
-    (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TypesSep3 :=
-  (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).typesSep3_of' (fun P => Col.SplitOff.q_ne_zero P)
-    (fun P => heckeCSD_zero _ _ _ _ _ P) (heckeCSD_comm _ _ _ _ _ hc) hI
-
-theorem colFam3_typesSep' (hH : ColHyp3 W Ch sel v0 TU Xg S0)
-    (hI : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep) :
-    (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TypesSep3 :=
-  colFam3_typesSep W Ch sel hX v0 TU Xg S0 xiVal trIv (hH.base.commR (mu0F TU)) hI
-
-theorem colSide3_WF (hH : ColHyp3 W Ch sel v0 TU Xg S0)
-    (hI : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep) (P : Col.LevFam X.E X.K R.r Pr.vGs)
-    (Zs : DefSub (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).amb3) (hst : Zs.Stable) (hin : Zs.InBlock) :
-    (colSide3 W Ch sel hX v0 TU Xg S0 xiVal trIv P Zs).WF :=
-  (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).side_well_formed (colFam3_ok W Ch sel hX v0 TU Xg S0 xiVal trIv hH) P.grp P.chr Zs
-    hst hin (colFam3_typesSep' W Ch sel hX v0 TU Xg S0 xiVal trIv hH hI)
 
 end Inst
 

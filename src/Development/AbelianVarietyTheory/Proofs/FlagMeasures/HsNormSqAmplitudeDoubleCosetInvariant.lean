@@ -1,7 +1,11 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RootMeasureTransportDoubleCosetStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselAmplitudeIndependentOfQuotientMeasureStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselAmplitudeIndependentOfQuotientMeasure
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NCoords
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselRootMeasureIndependentOfChoicesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HcTypeWIrreducibleAndSchurAverage
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramesCharactersAgreeCommonStabiliser
@@ -243,7 +247,7 @@ theorem hsNormSq_amp_doubleCoset : ∀ (D : D7) τ w w' θ (W : LocW D.R.k D.R.r
     obtain ⟨n, hn, n', hn', g, e1, e2, -⟩ := hμ'
     rw [e1] at hγ' ⊢
     exact fun ρ hρ => psi_cell hz hz' _ hn hn' hγ' e2 hρ
-  have key := GlobalTheory.T.besselAmplitude_eq_smul_of_rescaled_stabilizerHaar _ _ W.Wp W.Wq W.z W.z' _ _ W.π W.π' A.Φ A.Φ' A.cN hz hz' hw hw' hπ hπ'
+  have key := _root_.GlobalTheory.SnMass.AmpUniq.amp_uniq _ _ W.Wp W.Wq W.z W.z' _ _ W.π W.π' A.Φ A.Φ' A.cN hz hz' hw hw' hπ hπ'
     (fun n _ => ⟨hψ n, hψ' n⟩) hΦ hΦ' cΦ cΦ' _ W.μG μ' _ ν' 1 hγ' hrel hG hH' one_pos hq hν'
   rw [Complex.ofReal_one, one_smul] at key
   obtain ⟨U, hU⟩ := exists_isometry hπ hψ hΦ ha

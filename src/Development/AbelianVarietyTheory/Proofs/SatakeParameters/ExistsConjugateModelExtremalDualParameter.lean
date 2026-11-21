@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalLatticeVacuumMemSpanFixedStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualLatticeEqUnitaryMulIntegralGLStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramClassTranslateSumMemSpanSelfDualLatticeVacuaStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalLatticeVacuumMemSpanFixed
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualLatticeEqUnitaryMulIntegralGL
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GramClassTranslateSumMemSpanSelfDualLatticeVacua
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatrixLatticeIndexLeOfIntegralKernelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntUnitaryOfGramClassStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntUnitaryOfGramClass
 
 noncomputable section
 
@@ -25,7 +25,7 @@ theorem gramClass_orbit_mod_lower : ∀ (L : Type) [Field L] [CharZero L] [Value
           v = ρ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x) s} ∧ v - u ≠ 0 := by
   intro L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hP s hs hvac hspan x hx
   classical
-  obtain ⟨C, c, hxC, hC, hpw, hsum⟩ := GlobalTheory.T.gram_class_translate_sum_mem_span_selfDual_lattice_vacua L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac x hx
+  obtain ⟨C, c, hxC, hC, hpw, hsum⟩ := _root_.GlobalTheory.Hk3.HoweG.gramClass_sum_mem_span_selfDual_vac L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac x hx
   have hψ0 : ∀ e : L, ψ e ≠ 0 := fun e h => by
     have h2 : ψ e * ψ (-e) = 1 := by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]
     rw [h, zero_mul] at h2; exact zero_ne_one h2
@@ -41,7 +41,7 @@ theorem gramClass_orbit_mod_lower : ∀ (L : Type) [Field L] [CharZero L] [Value
       Submodule.span ℂ (Set.range fun g : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) => ω (g, 1) s) := by
     rw [Submodule.span_le]
     rintro w ⟨a, ha, hw⟩
-    obtain ⟨g, k, hk, hak⟩ := GlobalTheory.T.selfDual_lattice_eq_unitary_mul_integralGL L ϖ σ q n JS hP.unr hP.odd hP.intS hP.hermS a ha
+    obtain ⟨g, k, hk, hak⟩ := _root_.GlobalTheory.Hk3.HoweG.selfDual_eq_unitary_mul_int L ϖ σ q n JS hP.unr hP.odd hP.intS hP.hermS a ha
     have hw' : GlobalTheory.Hk3.LocVac ρ (ω (g⁻¹, 1) w) := by
       intro u hu
       have h1 := hP.norm g⁻¹ 1 (u * (((g : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L))
@@ -58,7 +58,7 @@ theorem gramClass_orbit_mod_lower : ∀ (L : Type) [Field L] [CharZero L] [Value
           inv_mul_cancel, Units.val_one, Matrix.mul_one]
       rw [e] at h3
       exact h3.symm
-    obtain ⟨t, ht⟩ := Submodule.mem_span_singleton.1 (GlobalTheory.T.localLatticeVacuum_mem_span_fixed L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac hspan _ hw')
+    obtain ⟨t, ht⟩ := Submodule.mem_span_singleton.1 (_root_.GlobalTheory.Hk3.locVac_mem_span_vac L ϖ σ q δ n n' JS JT ψ M ρ ω hP s hvac hspan _ hw')
     have hww : w = t • ω (g, 1) s := by
       have e1 : ω (g, 1) (ω (g⁻¹, 1) w) = w := by
         rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_one, Prod.mk_one_one, map_one,
@@ -85,7 +85,7 @@ theorem gramClass_orbit_mod_lower : ∀ (L : Type) [Field L] [CharZero L] [Value
     exact h1
   refine ⟨Submodule.sum_mem _ fun y hy => ?_, ?_⟩
   · obtain ⟨hyC, heq⟩ := Finset.mem_filter.1 hy
-    obtain ⟨h, hh, hyl⟩ := GlobalTheory.T.exists_intUnitary_of_gramClass_alt L ϖ σ q n n' JS JT hP.unr hP.odd hP.intS hP.intT hP.hermS hP.hermT x y hx (hC y hyC).2.1 (hC y hyC).2.2 heq
+    obtain ⟨h, hh, hyl⟩ := _root_.GlobalTheory.Hk3.HoweG.exists_intUnitary_of_gramClass L ϖ σ q n n' JS JT hP.unr hP.odd hP.intS hP.intT hP.hermS hP.hermT x y hx (hC y hyC).2.1 (hC y hyC).2.2 heq
     obtain ⟨ζ, hζ, hζe⟩ := hshift y (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x) hyl
     have : ρ y s = ζ⁻¹ • ρ (((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * x) s := by
       rw [hζe, smul_smul, inv_mul_cancel₀ hζ, one_smul]

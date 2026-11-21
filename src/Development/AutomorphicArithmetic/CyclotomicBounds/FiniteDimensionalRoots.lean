@@ -56,64 +56,6 @@ theorem kw_le_roots {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) {Ω 
     B.Kw.1 ≤ IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ Nat.lcm l H.condN = 1} :=
   le_roots_of_dense H (B.j.comp (algebraMap H.E Ω)) B.Kw (lcm_ne_zero H) (Nat.dvd_lcm_right _ _) B.j_dense
 
-theorem fix_of_roots {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) {Ω : Type} [Field Ω] [IsAlgClosed Ω] (J : H.E →+* Ω)
-    (σ : Ω →+* Ω) (h : ∀ t : Ω, t ^ H.condN = 1 → σ t = t) (x : H.E) : σ (J x) = J x :=
-  H.image_mem_of_roots J (RingHom.eqLocusField σ (RingHom.id Ω)) h x
-
-theorem root_eq_of_congr {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) {m : ℕ}
-    (hm : ¬ l ∣ m) {u : Ω} (hu : u ^ m = 1) (h : A.valuation (u - 1) < 1) : u = 1 := by
-  by_contra hne
-  have hm0 : m ≠ 0 := fun e => hm (e ▸ dvd_zero l)
-  have hsum : ∑ i ∈ Finset.range m, u ^ i = 0 := by
-    have := mul_geom_sum u m
-    rw [hu, sub_self] at this
-    exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)
-  have hvu : A.valuation u = 1 := by
-    have : A.valuation u ^ m = 1 := by rw [← map_pow, hu, map_one]
-    rcases lt_trichotomy (A.valuation u) 1 with h' | h' | h'
-    · exact absurd this (pow_lt_one₀ zero_le h' hm0).ne
-    · exact h'
-    · exact absurd this (one_lt_pow₀ h' hm0).ne'
-  have hpow : ∀ i : ℕ, A.valuation (u ^ i - 1) < 1 := by
-    intro i
-    induction i with
-    | zero => simp
-    | succ i ih =>
-      have e : u ^ (i + 1) - 1 = u ^ i * (u - 1) + (u ^ i - 1) := by ring
-      rw [e]
-      refine Valuation.map_add_lt _ ?_ ih
-      rw [map_mul, map_pow, hvu, one_pow, one_mul]; exact h
-  have hmv : A.valuation (m : Ω) < 1 := by
-    have e : (m : Ω) = -∑ i ∈ Finset.range m, (u ^ i - 1) := by
-      rw [Finset.sum_sub_distrib, hsum]; simp
-    rw [e, Valuation.map_neg]
-    exact Valuation.map_sum_lt _ one_ne_zero fun i _ => hpow i
-  have hcop : Nat.Coprime l m := ((Fact.out : l.Prime).coprime_iff_not_dvd).2 hm
-  obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 hcop
-  have hint : ∀ z : ℤ, A.valuation (z : Ω) ≤ 1 := fun z => (A.valuation_le_one_iff _).2 (intCast_mem A z)
-  have e : (a : Ω) * l + b * m = 1 := by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hab
-  have : A.valuation ((a : Ω) * l + b * m) < 1 := by
-    refine Valuation.map_add_lt _ ?_ ?_ <;> rw [map_mul]
-    · exact mul_lt_one_of_nonneg_of_lt_one_right (hint a) zero_le hA
-    · exact mul_lt_one_of_nonneg_of_lt_one_right (hint b) zero_le hmv
-  rw [e, map_one] at this
-  exact lt_irrefl _ this
-
-theorem fix_mul {Ω : Type} [Field Ω] (σ : Ω →+* Ω) {a b : ℕ} (hab : Nat.Coprime a b)
-    (ha : ∀ t : Ω, t ^ a = 1 → σ t = t) (hb : ∀ t : Ω, t ^ b = 1 → σ t = t) (h0 : a * b ≠ 0) (t : Ω)
-    (ht : t ^ (a * b) = 1) : σ t = t := by
-  have ht0 : t ≠ 0 := by
-    rintro rfl
-    rw [zero_pow h0] at ht
-    exact zero_ne_one ht
-  obtain ⟨x, y, hxy⟩ := Nat.isCoprime_iff_coprime.2 hab
-  have h1 : σ (t ^ b) = t ^ b := ha _ (by rw [← pow_mul, mul_comm, ht])
-  have h2 : σ (t ^ a) = t ^ a := hb _ (by rw [← pow_mul, ht])
-  have e : t = (t ^ a) ^ x * (t ^ b) ^ y := by
-    rw [← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add₀ ht0, mul_comm (a : ℤ), mul_comm (b : ℤ), hxy,
-      zpow_one]
-  rw [e, map_mul, map_zpow₀, map_zpow₀, h1, h2]
-
 end UpperTheory.KStar.Cyc
 
 end

@@ -8,13 +8,6 @@ noncomputable section
 
 namespace Formalism.MainNotions.G
 
-def GAtP.SandwichE {p : ℕ} (G : GAtP p) (e : ℕ) : Prop :=
-  G.Mna.map (((p : G.O) ^ e) • LinearMap.id) ≤ G.M ∧ G.M ≤ G.Mna
-
-def epSet (D : D7) (p : ℕ) : Set ℕ :=
-  {e | ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
-    D.what₂.places.resChar w = p → (D.gat u w hg).SandwichE e}
-
 def EpDef {D : D7} {L : SizeData₂ D} (X : Inst D L) (Ce : ℝ) : Prop :=
   ∀ p, X.ep p = ⌈Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a⌉₊
 
@@ -32,8 +25,6 @@ theorem EpDef.le {D : D7} {L : SizeData₂ D} {X : Inst D L} {Ce : ℝ} (h : EpD
       _ = _ := by ring
   have h2 := h.lt p h0
   nlinarith [h2, h1]
-
-def EpLeast {D : D7} {L : SizeData₂ D} (X : Inst D L) : Prop := ∀ p, X.ep p = sInf (epSet D p)
 
 def kapISet {D : D7} (L : SizeData₂ D) (K : Consts) (p n' : ℕ) (TT : Finset (Fin n')) (a b : Fin n' → ℤ) : Set ℝ :=
   {κ | 0 ≤ κ ∧
@@ -116,11 +107,5 @@ theorem sInf_mem_kapISet {D : D7} (L : SizeData₂ D) (K : Consts) (p n' : ℕ) 
 theorem KapIDef.mem {D : D7} {L : SizeData₂ D} {X : Inst D L} {K : Consts} (h : KapIDef X K) (p n' : ℕ)
     (TT : Finset (Fin n')) (a b : Fin n' → ℤ) : X.kapI p n' TT a b ∈ kapISet L K p n' TT a b := by
   rw [h]; exact sInf_mem_kapISet L K p n' TT a b
-
-theorem exists_inst_defs {D : D7} {L : SizeData₂ D} (X : Inst D L) (K : Consts) (Ce : ℝ) :
-    ∃ X' : Inst D L, X'.bs = X.bs ∧ X'.off = X.off ∧ EpDef X' Ce ∧ KapIDef X' K :=
-  ⟨{ X with kapI := fun p n' TT a b => sInf (kapISet L K p n' TT a b),
-            ep := fun p => ⌈Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a⌉₊ },
-    rfl, rfl, fun _ => rfl, fun _ _ _ _ _ => rfl⟩
 
 end Formalism.MainNotions.G

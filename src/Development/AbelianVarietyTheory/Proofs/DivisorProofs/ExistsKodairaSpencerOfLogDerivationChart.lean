@@ -2,11 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantHeatOperatorCommutingPeriodsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantHeatOperatorCommutingPeriods
+import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerChangeOfTangentFrame
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MvPowerSeriesSubstConstTermsLocalAlgHomSpec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantTangentBasisRaynaudExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKodairaSpencerChartOfHeatOperatorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantTangentBasisRaynaudExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKodairaSpencerChartOfHeatOperators
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -37,17 +38,17 @@ theorem exists_isKS_of_logDer : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   haveI : IsAdicComplete (maximalIdeal (ChartRing k m d)) (ChartRing k m d) :=
     GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _
   obtain ⟨Y⟩ : Nonempty (Ray P.oD) := inferInstance
-  obtain ⟨n', vY, dd, hdd⟩ := GlobalTheory.T.exists_invariant_tangent_basis_raynaudExtension (ChartRing k m d) P.D.toPre (𝓞 E) P.oD Y
+  obtain ⟨n', vY, dd, hdd⟩ := _root_.GlobalTheory.RayTan.exists_basis_isInv (ChartRing k m d) P.D.toPre (𝓞 E) P.oD Y
   have hne : ∀ i, bdParam k m d i ≠ 0 := fun i h => by
     have := congrArg (MvPowerSeries.coeff (Finsupp.single (Sum.inl i) 1)) h
     simp [MvPowerSeries.coeff_X] at this
   obtain ⟨D', hD'⟩ := exists_derivation_intAlgebra _ D
-  obtain ⟨h, hb, hdef⟩ := GlobalTheory.T.exists_torusInvariant_heatOperator_commuting_periods (ChartRing k m d) P.D (𝓞 E) P.oD Y n' vY dd hdd m (bdParam k m d) gam hmon hne D'
+  obtain ⟨h, hb, hdef⟩ := _root_.GlobalTheory.heat_commuting_periods_exists (ChartRing k m d) P.D (𝓞 E) P.oD Y n' vY dd hdd m (bdParam k m d) gam hmon hne D'
     (by rw [hD']; exact hD)
   revert h
   rw [hD']
   intro h hb hdef
-  obtain ⟨v', hv', hks⟩ := GlobalTheory.T.exists_kodairaSpencer_chart_of_heat_operators E H k m d t P gam hmon hli hab (𝓞 E) P.oD Y n' vY dd hdd D hD h hb hdef
+  obtain ⟨v', hv', hks⟩ := _root_.GlobalTheory.ChartKSBracket.exists_isKS_of_heat E H k m d t P gam hmon hli hab (𝓞 E) P.oD Y n' vY dd hdd D hD h hb hdef
   choose B hB using fun a => (hcomb (v' a) (hv' a)).exists
   exact ⟨_, GlobalTheory.KSFrameChange.isKS_frame_change E H (Sp (ChartRing k m d)) t ((Sp (ChartRing k m d)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).inv.hom (∏ i, bdParam k m d i))) (⟨⊤, isAffineOpen_top _⟩ : (Sp (ChartRing k m d)).affineOpens) n' n v' v (Matrix.of B) (fun r => (Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).inv.hom (D ((Scheme.ΓSpecIso (CommRingCat.of (ChartRing k m d))).hom.hom r))) _ hv' hv hB hks⟩
 

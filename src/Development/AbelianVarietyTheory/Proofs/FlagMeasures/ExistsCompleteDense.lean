@@ -56,44 +56,4 @@ theorem exists_complete_dense {X K : Type} [NormedAddCommGroup K] [InnerProductS
     rw [Submodule.map_span, ← Set.range_comp] at hm
     exact hm
 
-theorem exists_extension {X L : Type} [NormedAddCommGroup L] [InnerProductSpace ℂ L] [CompleteSpace L]
-    (s : X → L) (hs : Dense (Submodule.span ℂ (Set.range s) : Set L)) (f : X → X)
-    (hf : ∀ x y, ⟪s (f x), s (f y)⟫_ℂ = ⟪s x, s y⟫_ℂ) :
-    ∃ T : L →L[ℂ] L, ∀ x, T (s x) = s (f x) := by
-  let S := Finsupp.linearCombination ℂ s
-  let A := Finsupp.linearCombination ℂ (s ∘ f)
-  have key : ∀ c : X →₀ ℂ, ⟪A c, A c⟫_ℂ = ⟪S c, S c⟫_ℂ := by
-    intro c
-    simp only [A, S, Finsupp.linearCombination_apply, Finsupp.sum_inner, Finsupp.inner_sum,
-      inner_smul_left, inner_smul_right, Function.comp_apply, hf]
-  have hn : ∀ c, ‖A c‖ ≤ 1 * ‖S c‖ := by
-    intro c
-    rw [one_mul, @norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, key]
-  have hd : DenseRange S := by
-    rw [DenseRange, ← LinearMap.coe_range, Finsupp.range_linearCombination]
-    exact hs
-  refine ⟨A.extendOfNorm S, fun x => ?_⟩
-  have h := LinearMap.extendOfNorm_eq hd ⟨1, hn⟩ (Finsupp.single x (1 : ℂ))
-  simp only [S, A, Finsupp.linearCombination_single, one_smul, Function.comp_apply] at h
-  exact h
-
-theorem exists_isHilbTensor (I : AutInst) (H : NumberField.InfinitePlace I.F → Type)
-    [∀ v, NormedAddCommGroup (H v)] [∀ v, InnerProductSpace ℂ (H v)]
-    (σ : ∀ v, Matrix (Fin I.n) (Fin I.n) ℂ → (H v →L[ℂ] H v))
-    (hσ : ∀ v (g : Formalism.REAL.UJ (I.ε v)) x y, ⟪σ v (uMat g) x, σ v (uMat g) y⟫_ℂ = ⟪x, y⟫_ℂ) :
-    ∃ (Hs : Type) (_ : NormedAddCommGroup Hs) (_ : InnerProductSpace ℂ Hs) (_ : CompleteSpace Hs)
-      (σs : I.Ginf → (Hs →L[ℂ] Hs)) (tens : (∀ v, H v) → Hs), I.IsHilbTensor σ σs tens := by
-  obtain ⟨K, iK, iK', t, ht⟩ := exists_pre H
-  obtain ⟨L, iL, iL', iL'', s, hs, hd⟩ := exists_complete_dense t
-  have hext : ∀ g : I.Ginf, ∃ T : L →L[ℂ] L,
-      ∀ x, T (s x) = s (fun v => σ v (uMat (g v)) (x v)) := by
-    intro g
-    refine exists_extension s hd (fun x v => σ v (uMat (g v)) (x v)) (fun x y => ?_)
-    simp only [hs, ht]
-    exact Finset.prod_congr rfl fun v _ => hσ v (g v) (x v) (y v)
-  choose σs hσs using hext
-  refine ⟨L, iL, iL', iL'', σs, s, ?_⟩
-  unfold Formalism.MainNotions.S.AutInst.IsHilbTensor
-  exact ⟨fun x y => by rw [hs, ht], hσs, hd⟩
-
 end GlobalTheory.HilbTensorExists

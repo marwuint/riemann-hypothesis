@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionFlatLocallyQuasiFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionFlatLocallyQuasiFinite
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.FormallyUnramifiedOfTangentMapInjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFieldOfValues
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResidueFieldMapFiniteOfQuasiFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCyclotomicSplittingExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCyclotomicSplittingExtension
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.Geo GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LocM GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar
@@ -26,7 +26,7 @@ theorem exists_poly_split_torsion {E : Type} [Field E] [NumberField E] [IsCMFiel
   have hsemi := t.semi
   have := hsemi.quasiCompact
   have := hsemi.separated
-  have hLQF : LocallyQuasiFinite (torsion t.G q).hom := (GlobalTheory.T.torsion_flat_locallyQuasiFinite X t.G t.semi q hq).2
+  have hLQF : LocallyQuasiFinite (torsion t.G q).hom := (_root_.GlobalTheory.FibreFlatGen.flat_and_locallyQuasiFinite_torsion X t.G t.semi q hq).2
   have hcl : IsClosedImmersion η[t.G].left := by
     have : IsClosedImmersion (η[t.G].left ≫ t.G.hom) := by
       rw [Over.w]; exact inferInstanceAs (IsClosedImmersion (𝟙 X))
@@ -129,7 +129,7 @@ theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] 
 theorem splitTors_finite_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [CharZero A] (x : Sp A ⟶ X) (q : ℕ), q ≠ 0 → ∃ (A' : Type) (_ : CommRing A') (_ : IsDomain A') (_ : Algebra A A'), Module.Finite A A' ∧ Function.Injective (algebraMap A A') ∧ IsIntegrallyClosed A' ∧ (∃ ζ : A', IsPrimitiveRoot ζ q) ∧ SplitTors t (spMap (algebraMap A A') ≫ x) q := by
   intro E _ _ _ H X _ t A _ _ _ _ _ x q hq
   obtain ⟨f, hf0, hf⟩ := exists_poly_split_torsion t (FractionRing A) (spMap (algebraMap A (FractionRing A)) ≫ x) q hq
-  obtain ⟨A', i1, i2, i3, σ, hfin, hinj, hic, hζ, hspl, hcomm⟩ := GlobalTheory.T.exists_cyclotomic_splitting_extension A f hf0 q hq
+  obtain ⟨A', i1, i2, i3, σ, hfin, hinj, hic, hζ, hspl, hcomm⟩ := _root_.GlobalTheory.splitExt_intClosure A f hf0 q hq
   refine ⟨A', i1, i2, i3, hfin, hinj, hic, hζ, ?_⟩
   intro Ω _ io w hw
   letI : Algebra (FractionRing A) (FractionRing A') := σ.toAlgebra

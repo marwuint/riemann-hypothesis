@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasDerivAtHeisen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceSecondPos
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockCreationPreservesFockVectorsTwoFrames
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFockPolynomialOperatorHeisenbergDerivative
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergDerivativeFockVectorsUniformOperatorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergDerivativeFockVectorsUniformOperator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtThetaTransformHeisenbergRealLine
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxPhaseMulBoxEqHeisenbergTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxPhaseMulBoxEqHeisenbergTranslates
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -93,7 +93,7 @@ theorem hasDerivAt_box : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {
           HasDerivAt (fun s : ℝ => heisO W.ψ V' W' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F s • w) (GlobalTheory.ChainFr.ptF W.ψ W.θ A' B' f Q) x)
             (GlobalTheory.ChainFr.ptF W.ψ W.θ A' B' f (Δ Q) x) 0 := by
     intro V' W' A' B' w hw
-    choose Δ hΔ using fun σ => GlobalTheory.T.heisenbergDerivative_fockVectors_uniform_operator A' B' W.ψ_std W.θ_is σ (compAt W.θ σ w)
+    choose Δ hΔ using fun σ => _root_.GlobalTheory.FockDerUnif.dRho_ptF_uniform A' B' W.ψ_std W.θ_is σ (compAt W.θ σ w)
     refine ⟨∑ σ, Δ σ, fun f hf Q x => ?_⟩
     have hth : IsThetaFunO W.ψ V' W' (GlobalTheory.ChainFr.ptF W.ψ W.θ A' B' f Q) :=
       GlobalTheory.FockIndep.pure_mem (P := IsThetaFunO W.ψ V' W') (fun _ _ => GlobalTheory.OrientedHeis.theta_add)
@@ -143,7 +143,7 @@ theorem hasDerivAt_box : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {
     rfl
   have hr0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F 0 = 0 := GlobalTheory.ThetaLineDeriv.realAd_zero
   simp only [hbox]
-  simp only [GlobalTheory.T.darbouxPhase_mul_box_eq_heisenbergTranslates e Γ h.JW h.JWW W.ψ, sx₁, sx₂]
+  simp only [_root_.GlobalTheory.BoxPhase.phase_box_heis e Γ h.JW h.JWW W.ψ, sx₁, sx₂]
   have hm := (hΔ₁ d.1.2 (w₁ d hd) P.1.2 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.mulG (negSp (spW G i j)) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.colV e v)ᵀ)).mul
     (hΔ₂ d.2 (w₂ d hd) P.2 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.adjV₁ e v))
   refine hm.congr_deriv (Eq.trans ?_ (sum_two _ _ _).symm)

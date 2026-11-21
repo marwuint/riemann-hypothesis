@@ -34,10 +34,6 @@ theorem SheafPull.pull_res (k : V' ⟶ V) (i : W ⟶ (Opens.map f).obj V') (x : 
     pull.{u, u} f φ n i (res F n k x) = pull.{u, u} f φ n (i ≫ (Opens.map f).map k) x :=
   sitePull_res _ _ n _ _ x
 
-theorem SheafPull.res_pull (k : W' ⟶ W) (i : W ⟶ (Opens.map f).obj V) (x : Sheaf.H'.{u} F n V) :
-    res G n k (pull.{u, u} f φ n i x) = pull.{u, u} f φ n (k ≫ i) x :=
-  res_sitePull _ _ n _ _ x
-
 theorem SheafPull.equivZero_pull (i : W ⟶ (Opens.map f).obj V) (x : Sheaf.H'.{u} F 0 V) :
     equivZero G W (pull.{u, u} f φ 0 i x) = G.obj.map i.op (φ.hom.app (op V) (equivZero F V x)) :=
   equivZero_sitePull _ _ _ x
@@ -129,12 +125,6 @@ theorem cohOn.pull_res (k : V' ≤ V) (h : W ≤ g ⁻¹ᵁ V') (x : cohOn F V n
   rw [cohOn.toH'_pull, cohOn.toH'_pull, cohOn.toH'_res]
   exact SheafPull.pull_res g.base (toAbSheafPush φ) n (homOfLE k) (homOfLE h) _
 
-theorem cohOn.res_pull (k : W' ≤ W) (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V n) :
-    cohOn.res S G k n (cohOn.pull hσ φ h n x) = cohOn.pull hσ φ (k.trans h) n x := by
-  apply (cohOn.toH' G W' n).injective
-  rw [cohOn.toH'_res, cohOn.toH'_pull, cohOn.toH'_pull]
-  exact SheafPull.res_pull g.base (toAbSheafPush φ) n (homOfLE k) (homOfLE h) _
-
 theorem cohOn.zeroEquiv_pull (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V 0) :
     cohOn.zeroEquiv S G W (cohOn.pull hσ φ h 0 x) =
       sectionsOn.res S G h (sectionsOn.mapOver hσ φ V (cohOn.zeroEquiv R F V x)) := by
@@ -142,16 +132,6 @@ theorem cohOn.zeroEquiv_pull (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V 0) :
   rw [cohOn.toΓ_zeroEquiv, cohOn.toH'_pull, sectionsOn.toΓ_res, sectionsOn.toΓ_mapOver,
     cohOn.toΓ_zeroEquiv]
   exact SheafPull.equivZero_pull g.base (toAbSheafPush φ) (homOfLE h) _
-
-theorem cohOn.pull_δ {A : ShortComplex X.Modules} {B : ShortComplex Y.Modules}
-    (hA : A.ShortExact) (hB : B.ShortExact) (ψ : A ⟶ B.map (Scheme.Modules.pushforward g))
-    (h : W ≤ g ⁻¹ᵁ V) (x : cohOn A.X₃ V n) :
-    cohOn.pull hσ (G := B.X₁) ψ.τ₁ h (n + 1) (cohOn.δ R hA V n x) =
-      cohOn.δ S hB W n (cohOn.pull hσ (G := B.X₃) ψ.τ₃ h n x) := by
-  apply (cohOn.toH' B.X₁ W (n + 1)).injective
-  refine (cohOn.toH'_pull hσ (G := B.X₁) ψ.τ₁ h _).trans (Eq.trans ?_ (cohOn.toH'_δ S hB W n _).symm)
-  exact SheafPull.pull_δ g.base n (shortExact_toAbSheaf hA) (shortExact_toAbSheaf hB)
-    ((toAbSheaf X).mapShortComplex.map ψ) (homOfLE h) (cohOn.toH' A.X₃ V n x)
 
 theorem cohOn.pull_bijective_of_toAbSheaf (h : W ≤ g ⁻¹ᵁ V)
     (H : Function.Bijective (SheafPull.pull.{u, u} g.base (toAbSheafPush φ) n (homOfLE h))) :

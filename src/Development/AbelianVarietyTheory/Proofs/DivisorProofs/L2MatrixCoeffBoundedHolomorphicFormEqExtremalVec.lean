@@ -67,16 +67,6 @@ lemma one_mem_UG : (1 : ι → Mt n) ∈ UG Hm := by
   change (1 : Mt n)ᴴ * Hm τ * 1 = Hm τ
   simp
 
-omit [Fintype ι] in
-lemma mul_mem_UG {u u' : ι → Mt n} (hu : u ∈ UG Hm) (hu' : u' ∈ UG Hm) : u * u' ∈ UG Hm := by
-  intro τ
-  have h1 : (u τ)ᴴ * Hm τ * u τ = Hm τ := hu τ
-  have h2 : (u' τ)ᴴ * Hm τ * u' τ = Hm τ := hu' τ
-  change (u τ * u' τ)ᴴ * Hm τ * (u τ * u' τ) = Hm τ
-  calc (u τ * u' τ)ᴴ * Hm τ * (u τ * u' τ) = (u' τ)ᴴ * ((u τ)ᴴ * Hm τ * u τ) * u' τ := by
-        rw [conjTranspose_mul]; simp only [Matrix.mul_assoc]
-    _ = Hm τ := by rw [h1, h2]
-
 lemma norm_prod_exp (w : Fin n → ℤ) (s : Fin n → ℝ) :
     ‖∏ a, Complex.exp ((s a : ℂ) * Complex.I) ^ w a‖ = 1 := by
   rw [norm_prod]

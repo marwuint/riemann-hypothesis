@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCharFinite
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfLintegralEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermCColMulVec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HxOfIsONFr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiHalfSymplecticOrthonormalFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiHalfSymplecticOrthonormalFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CplxOfFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThAHeisEntireLinearInjective
 
@@ -136,7 +136,7 @@ theorem dRho_eq (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hV : V.gram = 1
         (-(Real.pi * ∑ k, hx X bas idx x (u k) (zOf θ V W hr X idx x w k)) * Φ (zOf θ V W hr X idx x w) +
           fderiv ℝ Φ (zOf θ V W hr X idx x w) u) := by
   obtain ⟨-, hadd, hline, -⟩ := GlobalTheory.AdTh.RealCoord.zOf_coordinates D ψ θ V W r g hr X bas idx hψ hθ hV hn hM hS x
-  have hsym := GlobalTheory.T.psi_halfSymplectic_orthonormalFrame D ψ θ V W r g hr X bas idx hψ hθ hV hn hM hS x hx0
+  have hsym := _root_.GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr D ψ θ V W r g hr X bas idx hψ hθ hV hn hM hS x hx0
   have hs := (GlobalTheory.Dict.hx_laws _ _ X g bas idx V.rank hS hn _ hd).1
   rw [← (GlobalTheory.Ker.HeisDeriv.hasDerivAt_translate X bas idx x hs Φ hΦ (zOf θ V W hr X idx x w) u).deriv,
     Formalism.IndefR.Datum.dRho]

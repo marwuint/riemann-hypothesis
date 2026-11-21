@@ -38,20 +38,6 @@ theorem lab_fixed (ρ : D.what₂.Tau) : lab D.what₂.embLL ρ = ρ := by
     simp at a
     linarith
 
-theorem one_le_aPl_last (i : Fin D.R.m) (τ : D.what₂.Tau) :
-    1 ≤ aPl D i (D.R.k + i) τ (D.R.k + i - 1) := by
-  have hk := D.R.m_add_three_le_k
-  have hi := i.2
-  unfold aPl Formalism.L2.NTheta.lamAt
-  rw [if_pos (by omega), dif_neg (by omega), dif_pos (by omega)]
-  have e : (⟨D.R.k + i - 1 - (D.R.k - 1), by omega⟩ : Fin D.R.m) = i := Fin.ext (by simp; omega)
-  rw [e]
-  have g := (D.hc τ).gap_be i
-  have c : ((D.R.k + i - 1 : ℕ) : ℚ) = (D.R.k : ℚ) + i - 1 := by
-    rw [Nat.cast_sub (by omega)]; push_cast; ring
-  rw [c, Int.le_toNat (Int.floor_nonneg.2 (by push_cast; linarith)), Int.le_floor]
-  push_cast; linarith
-
 theorem parAt_fixed (W : HSp D) (ρ : D.what₂.Tau) :
     parAt W D.what₂.embLL ρ = Formalism.L2.NTheta.holPar _ _ (Formalism.L2.NTheta.wtOf D W ρ) := by
   unfold parAt kapAt

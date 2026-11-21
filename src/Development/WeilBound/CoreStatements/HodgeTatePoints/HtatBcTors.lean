@@ -13,11 +13,6 @@ open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Sem
 section
 variable {S Y : Scheme.{0}} {G : Over S} [GrpObj G]
 
-theorem pow_congr {a b : Y ⟶ S} (h : a = b) (g : Over.mk a ⟶ G) (g' : Over.mk b ⟶ G) (e : g.left = g'.left) (N : ℕ) :
-    g ^ N = 1 ↔ g' ^ N = 1 := by
-  subst h
-  rw [Over.OverMorphism.ext e]
-
 theorem mul_congr {a b : Y ⟶ S} (h : a = b) (g k : Over.mk a ⟶ G) (g' k' : Over.mk b ⟶ G) (e : g.left = g'.left)
     (e' : k.left = k'.left) : (g * k).left = (g' * k').left := by
   subst h

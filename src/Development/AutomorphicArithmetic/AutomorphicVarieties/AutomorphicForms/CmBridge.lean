@@ -42,12 +42,6 @@ theorem ofCusp_τ (k : GL (Fin a) (Af E)) (ψ : cuspForms E a) :
     ofCusp E a (finRepCusp E a k ψ) = act (.fin k) (ofCusp E a ψ) :=
   Subtype.ext (funext fun g => congrArg (fun f : GL (Fin a) (Af E) →* GA E a => ψ.1 (g * f k)) Fb.finEmb_eq)
 
-theorem exists_center_ofCusp {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
-    ∃ p ∈ (isExpLieAlgebra E a).centerU, ∃ q ∈ (isExpLieAlgebra E a).centerU, ∀ ψ : cuspForms E a,
-      z (ofCusp E a ψ) = ofCusp E a (uActionCusp E a p ψ + Complex.I • uActionCusp E a q ψ) := by
-  obtain ⟨p, hp, q, hq, rfl⟩ := mem_Zalg_iff.1 hz
-  exact ⟨p, hp, q, hq, fun ψ => by rw [map_add, map_smul, ofCusp_uAction, ofCusp_uAction]; rfl⟩
-
 theorem isStable_range : GlobalTheory.CuspRep.IsStable (LinearMap.range (ofCusp E a)) := by
   rintro o _ ⟨ψ, rfl⟩
   cases o with
@@ -64,8 +58,6 @@ def ofAut : automorphicForms E a →ₗ[ℂ] Sm E a := Submodule.inclusion autom
 
 @[simp] theorem coe_ofAut (ψ : automorphicForms E a) : (ofAut E a ψ).1 = ψ.1 := rfl
 
-theorem ofAut_injective : Function.Injective (ofAut E a) := Submodule.inclusion_injective _
-
 theorem mem_range_ofAut {φ : Sm E a} : φ ∈ LinearMap.range (ofAut E a) ↔ IsAutForm φ :=
   ⟨fun ⟨ψ, h⟩ => h ▸ (isAutForm_iff _).2 ψ.2, fun h => ⟨⟨φ.1, (isAutForm_iff φ).1 h⟩, rfl⟩⟩
 
@@ -74,19 +66,6 @@ variable (E a) in
 def ofKZ : smoothKZ E a →ₗ[ℂ] Sm E a := (smEq E a).symm.toLinearMap ∘ₗ toArchSmooth
 
 @[simp] theorem coe_ofKZ (ψ : smoothKZ E a) : (ofKZ E a ψ).1 = ψ.1 := rfl
-
-theorem ofKZ_ρ (X : Lie E a) (ψ : smoothKZ E a) :
-    ofKZ E a ((gkModule E a).ρ (lieEq E a X) ψ) = lie E a X (ofKZ E a ψ) := by
-  rw [← uTC_ι]
-  rfl
-
-theorem ofKZ_σ (k : Kinf E a) (ψ : smoothKZ E a) :
-    ofKZ E a ((gkModule E a).σ (cptEq E a k) ψ) = cptRep E a k (ofKZ E a ψ) :=
-  Subtype.ext (funext fun g => congrArg (fun x => ψ.1 (g * x)) (infEmb_cptEq k))
-
-theorem ofKZ_τ (k : GL (Fin a) (Af E)) (ψ : smoothKZ E a) :
-    ofKZ E a (finRepKZ E a k ψ) = GlobalTheory.CuspRep.finRep E a k (ofKZ E a ψ) :=
-  Subtype.ext (funext fun g => congrArg (fun f : GL (Fin a) (Af E) →* GA E a => ψ.1 (g * f k)) Fb.finEmb_eq)
 
 theorem isStable_map {U : Submodule ℂ (cuspForms E a)} (h : Stab U) : GlobalTheory.CuspRep.IsStable (U.map (ofCusp E a)) := by
   rintro o _ ⟨ψ, hψ, rfl⟩
@@ -214,9 +193,6 @@ def ofIrr (U : Submodule ℂ (cuspForms E a)) (h : Stab U) (hi : (cuspSubmodule 
 theorem carrier_ofIrr (U : Submodule ℂ (cuspForms E a)) (h : Stab U) (hi) : carrier (ofIrr U h hi) = U :=
   Submodule.comap_map_eq_of_injective ofCusp_injective U
 
-theorem ofIrr_carrier (π : CuspSub E a) : ofIrr _ (stab_carrier π) (isIrreducible_toModule π) = π :=
-  CuspSub.ext (map_carrier π)
-
 theorem centralZ_eq :
     UnitaryAdmissible.centralZ E a = UnitaryAdmissible.centralExp E a • lieEq E a (oneL E a) :=
   Subtype.ext (by rw [UnitaryAdmissible.coe_centralZ, Algebra.algebraMap_eq_smul_one, ← lieEq_oneL]; rfl)
@@ -231,16 +207,6 @@ theorem mem_centralCuspForms_of {ψ : cuspForms E a} (h : lie E a (oneL E a) (of
   rw [Reduction.centralSection_mul_comm, UnitaryAdmissible.apply_mul_centralSection h2 x s]
   simp
 
-theorem lie_oneL_eq_zero {ψ : cuspForms E a} (h : ψ ∈ centralCuspForms E a) :
-    lie E a (oneL E a) (ofCusp E a ψ) = 0 := by
-  rcases Nat.eq_zero_or_pos a with rfl | ha
-  · rw [Subsingleton.elim (oneL E 0) 0, map_zero, LinearMap.zero_apply]
-  · have h1 := ρ_centralZ_eq_zero h
-    have h2 : UnitaryAdmissible.centralExp E a ≠ 0 :=
-      inv_ne_zero (mul_ne_zero (Nat.cast_ne_zero.2 ha.ne') (Nat.cast_ne_zero.2 Module.finrank_pos.ne'))
-    rw [centralZ_eq, map_smul, LinearMap.smul_apply, smul_eq_zero_iff_right h2] at h1
-    exact (ofCusp_ρ _ ψ).symm.trans (by rw [h1, map_zero])
-
 def toRep (π : CuspSub E a) (h : carrier π ≤ centralCuspForms E a) : CuspidalAutomorphicRepresentation E a :=
   .ofIrreducible (carrier π) h _ _ _ (isIrreducible_toModule π)
 
@@ -249,17 +215,7 @@ def ofRep (π : CuspidalAutomorphicRepresentation E a) : CuspSub E a :=
 
 theorem carrier_toRep (π : CuspSub E a) (h) : (toRep π h).carrier = carrier π := rfl
 
-theorem carrier_ofRep (π : CuspidalAutomorphicRepresentation E a) : carrier (ofRep π) = π.carrier :=
-  carrier_ofIrr _ _ _
-
-theorem ofRep_toRep (π : CuspSub E a) (h) : ofRep (toRep π h) = π := ofIrr_carrier π
-
 theorem carrier_le_central (π : CuspSub E a) (h : ∀ φ ∈ π.V, lie E a (oneL E a) φ = 0) :
     carrier π ≤ centralCuspForms E a := fun _ hψ => mem_centralCuspForms_of (h _ hψ)
-
-def trivRep (ha : a ≤ 1) : CuspidalAutomorphicRepresentation E a :=
-  toRep (CuspSub.triv E ha) (carrier_le_central _ fun φ hφ => by
-    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ
-    rw [map_smul, lie_oneFn, smul_zero])
 
 end UpperTheory.V.Cm

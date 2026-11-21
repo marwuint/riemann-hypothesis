@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuationsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeMonoLatticeLeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuations
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeMonoLatticeLe
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundlesStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeNonposTrivialLatticeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubDegreeNonposTrivialLattice
 
 noncomputable section
 
@@ -59,8 +59,8 @@ theorem deg_scale [FiniteDimensional K V] {L : C.I → AddSubgroup V} (c : C.I �
     deg C (scale C L c) = deg C L +
       (Module.finrank K V : ℤ) * ∑ᶠ i, (C.w i : ℤ) * WithZero.log (C.v i (c i)) := by
   choose b hb using h.1
-  obtain ⟨hf, e⟩ := GlobalTheory.T.bundle_degree_eq_sum_valuations K C V L _ (Module.finBasis K V) b h hb
-  obtain ⟨-, e'⟩ := GlobalTheory.T.bundle_degree_eq_sum_valuations K C V (scale C L c) _ (Module.finBasis K V)
+  obtain ⟨hf, e⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C V L _ (Module.finBasis K V) b h hb
+  obtain ⟨-, e'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C V (scale C L c) _ (Module.finBasis K V)
     (fun i => (b i).unitsSMul fun _ => c i) (isBun_scale C c hc h)
     (fun i => isLatOf_scale C c (hb i))
   have hs1 : (Function.support fun i =>
@@ -156,10 +156,10 @@ theorem subDeg_bdd [FiniteDimensional K V] (L : C.I → AddSubgroup V) (h : IsBu
     simpa using this
   refine ⟨(Module.finrank K V : ℤ) * S, fun W => ?_⟩
   have hW := (GlobalTheory.T.sub_and_quotient_bundles K C V _ W h0).1
-  have e1 := GlobalTheory.T.degree_mono_lattice_le K C W (sub C L W) (scale C (sub C (fun i => latOf C i b) W) c)
+  have e1 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.deg_le_deg_of_le K C W (sub C L W) (scale C (sub C (fun i => latOf C i b) W) c)
     (GlobalTheory.T.sub_and_quotient_bundles K C V _ W h).1 (isBun_scale C c hc hW) (fun i x hx => hc3 i x hx)
   have e2 := deg_scale C c hc hW
-  have e3 := GlobalTheory.T.sub_degree_nonpos_trivial_lattice K C V _ b (fun i => latOf C i b) W (fun i => isLatOf_latOf C i b)
+  have e3 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.subDeg_le_zero_of_trivial K C V _ b (fun i => latOf C i b) W (fun i => isLatOf_latOf C i b)
   have e4 : (Module.finrank K W : ℤ) * S ≤ (Module.finrank K V : ℤ) * S :=
     mul_le_mul_of_nonneg_right (by exact_mod_cast W.finrank_le) hS0
   unfold subDeg at e3 ⊢

@@ -87,23 +87,11 @@ attribute [instance] DefQuat.ring DefQuat.alg
 
 variable {F}
 
-def IsOuter (lam : InfinitePlace F → DomWeight 2) {V : Type} [AddCommGroup V] [Module ℂ V]
-    (ρ : Representation ℂ (InfinitePlace F → GL (Fin 2) ℂ) V) : Prop :=
-  FiniteDimensional ℂ V ∧ ρ.IsIrreducible ∧ ∀ v, ∃ f : _ →ₗ[ℂ] V, f ≠ 0 ∧
-    ∀ g x, f (GlobalTheory.Branching.sqRep ℂ 2 (lam v) g x) = ρ (by classical exact Pi.mulSingle v g) (f x)
-
 namespace DefQuat
 
 variable (Q : DefQuat F)
 
 def toFin : Q.Dˣ →* GL (Fin 2) (Af F) := Units.map Q.jf.toRingHom.toMonoidHom
-
-def toInf : Q.Dˣ →* (InfinitePlace F → GL (Fin 2) ℂ) := Pi.monoidHom fun v => Units.map (Q.jc v).toMonoidHom
-
-def Occurs {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (InfinitePlace F → GL (Fin 2) ℂ) V)
-    (τ : SmIrr (GL (Fin 2) (Af F))) : Prop :=
-  ∃ Φ : τ.V →ₗ[ℂ] (GL (Fin 2) (Af F) → V), Φ ≠ 0 ∧ (∀ x γ g, Φ x (Q.toFin γ * g) = ρ (Q.toInf γ) (Φ x g)) ∧
-    ∀ h x g, Φ (τ.ρ h x) g = Φ x (g * h)
 
 end DefQuat
 

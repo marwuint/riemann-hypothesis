@@ -18,22 +18,4 @@ theorem repr_eq_zero_of_card_ne {R M I : Type*} [CommRing R] [AddCommGroup M] [M
     exact Finsupp.single_eq_of_ne' hs
   exact LinearMap.congr_fun h x
 
-theorem repr_map_eq_zero {R M N I J : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
-    [LinearOrder I] [LinearOrder J] [Fintype I] (b : Module.Basis I R M) (c : Module.Basis J R N) (f : M →ₗ[R] N)
-    {S : Finset J} (hS : Fintype.card I < S.card) (β : ExteriorAlgebra R M) :
-    c.ExteriorAlgebra.repr (ExteriorAlgebra.map f β) S = 0 := by
-  have h : (Finsupp.lapply S ∘ₗ c.ExteriorAlgebra.repr.toLinearMap ∘ₗ (ExteriorAlgebra.map f).toLinearMap) = 0 := by
-    refine b.ExteriorAlgebra.ext fun T => ?_
-    have hT : S.card ≠ T.card := ((Finset.card_le_univ T).trans_lt hS).ne'
-    simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearEquiv.coe_coe, Finsupp.lapply_apply,
-      LinearMap.zero_apply]
-    rw [ExteriorAlgebra.basis_apply b T, ExteriorAlgebra.map_apply_ιMulti,
-      ← exteriorPower.ιMulti_apply_coe]
-    exact repr_eq_zero_of_card_ne c _ hT
-  exact LinearMap.congr_fun h β
-
-theorem repr_pull_univ {n : ℕ} (L : ReciprocityTheory.L2DbarEstimates.V (n + 1) →L[ℂ] ReciprocityTheory.L2DbarEstimates.V n) (β : Alt n) :
-    (bas (n + 1)).repr (pull L β) Finset.univ = 0 :=
-  repr_map_eq_zero ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv) _ _ (by simp; omega) β
-
 end GlobalTheory.PullTop

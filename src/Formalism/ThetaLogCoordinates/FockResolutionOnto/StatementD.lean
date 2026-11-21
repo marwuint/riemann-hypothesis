@@ -50,12 +50,6 @@ def ResU : Prop :=
     (F : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]), a ≠ ρ →
     initPart (Fin.last K, ρ) 0 (Uop p LL c univ a F) = Uop p LL c (univ.erase ρ) a (initPart (Fin.last K, ρ) 0 F)
 
-def DKeepsX : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K r : ℕ) [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ)
-    (M : Fin q → WithTop ℤ) (ρ a : Fin r) (e1 o : ℕ),
-    2 ≤ r → (ρ : ℕ) = r - 1 → LL.vec (Fin.last K) = true → HypP p LL ρ e1 → a ≠ ρ →
-    ∀ x ∈ XSp p (setLast LL (o + 1)) J M ρ, dW p K a x ∈ XSp p (setLast LL o) J M ρ
-
 def Sl2Injective : Prop :=
   ∀ (k V : Type) [Field k] [CharZero k] [AddCommGroup V] [Module k V] (e f h : V →ₗ[k] V),
     (∀ x, h (e x) - e (h x) = (2 : k) • e x) → (∀ x, h (f x) - f (h x) = -((2 : k) • f x)) →
@@ -75,10 +69,5 @@ def OmegaInj : Prop :=
     ∀ x ∈ Pol p r (setLast LL (o + 1)) ⊓ FreeOf p (Fin.last K, ρ) ⊓
         TypesLE p LL (K + 1) (univ.erase ρ) ((c : ℤ) : WithTop ℤ),
       Omega p LL c ρ x = 0 → x = 0
-
-def ResOntoKThm : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K r : ℕ) [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ)
-    (M : Fin q → WithTop ℤ) (ρ : Fin r) (e1 : ℕ),
-    2 ≤ r → (ρ : ℕ) = r - 1 → LL.vec (Fin.last K) = true → HypP p LL ρ e1 → ResOntoK p LL J M ρ
 
 end Formalism.InvariantFactorPaths.L4

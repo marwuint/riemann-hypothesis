@@ -8,32 +8,6 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.GeomSurj
 
-theorem surjective_of_points {k K : Type} [Field k] [Field K] [IsAlgClosed K] (σ : k →+* K)
-    {P A : Scheme.{0}} (a : A ⟶ Sp k) [LocallyOfFiniteType a] (ψ : P ⟶ A)
-    (hψ : IsClosed (Set.range ψ))
-    (h : ∀ x : Sp K ⟶ A, x ≫ a = spMap σ → ∃ p : Sp K ⟶ P, x = p ≫ ψ) : Surjective ψ := by
-  have hs : Surjective (spMap σ) := ⟨fun y ↦ by
-    obtain ⟨z⟩ : Nonempty ↥(Sp K) := inferInstance
-    exact ⟨z, Subsingleton.elim _ _⟩⟩
-  have hJ : JacobsonSpace ↥(pullback a (spMap σ)) :=
-    LocallyOfFiniteType.jacobsonSpace (pullback.snd a (spMap σ))
-  have hZ : IsClosed ((pullback.fst a (spMap σ)) ⁻¹' Set.range ψ) :=
-    hψ.preimage (pullback.fst a (spMap σ)).continuous
-  have hsub : closedPoints ↥(pullback a (spMap σ)) ⊆
-      (pullback.fst a (spMap σ)) ⁻¹' Set.range ψ := by
-    intro z hz
-    replace hz : IsClosed {z} := hz
-    obtain ⟨p, hp⟩ := h (pointOfClosedPoint (pullback.snd a (spMap σ)) z hz ≫ pullback.fst _ _)
-      (by rw [Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc])
-    obtain ⟨w⟩ : Nonempty ↥(Sp K) := inferInstance
-    refine ⟨p w, ?_⟩
-    rw [← Scheme.Hom.comp_apply, ← hp, Scheme.Hom.comp_apply, pointOfClosedPoint_apply]
-  have hall := closure_minimal hsub hZ
-  rw [closure_closedPoints] at hall
-  refine ⟨fun y ↦ ?_⟩
-  obtain ⟨z, rfl⟩ := (pullback.fst a (spMap σ)).surjective y
-  exact hall (Set.mem_univ z)
-
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField in
 open scoped CategoryTheory.Obj in
 

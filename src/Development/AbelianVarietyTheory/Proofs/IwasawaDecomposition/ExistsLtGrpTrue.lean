@@ -25,10 +25,6 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.Rw
 
-theorem holdsLU_stepW (h : LowerUnitaryCaseCondition) : StepW Pinned fun K B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
-    (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo →
-    HoldsL z.R z.F := h
-
 theorem exists_lt_grpTrue (hG : GlobalTheory.Published.GreenCuspidal) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T)
     (hO : K.Over B.toPre) (hX : B.fields.Ok) (G : GJStage B w.C) :
     ∃ Z : w.Lt, Z.G = G ∧ GrpTrue Z.N f ∧ GrpAt (w.st Z) w.I ∧ DV.KapDef (w.D Z) := by

@@ -28,18 +28,6 @@ theorem _root_.GlobalTheory.DatumCoord.eq_of_trace_int {c d : E}
     show (y : E) = algebraMap ℚ E y by simp, Algebra.trace_algebraMap] at key
   simp [hy, Module.finrank_pos.ne'] at key
 
-theorem exists_coord (M : Type) [AddCommGroup M] [Module (𝓞 E) M] [Module.Finite (𝓞 E) M]
-    (r : ℕ) (hr : Module.finrank (𝓞 E) M = r) :
-    ∃ φ : M →ₗ[𝓞 E] (Fin r → E), IsBaseChange E φ := by
-  have hb := TensorProduct.isBaseChange (𝓞 E) M E
-  have hl := (isLocalizedModule_iff_isBaseChange (𝓞 E)⁰ E _).2 hb
-  have h1 : Module.finrank E (E ⊗[𝓞 E] M) = r := by
-    rw [IsLocalization.finrank_eq E (𝓞 E)⁰ le_rfl,
-      IsLocalizedModule.finrank_eq (𝓞 E)⁰ (TensorProduct.mk (𝓞 E) E M 1) le_rfl, hr]
-  let e := (Module.finBasisOfFinrankEq E (E ⊗[𝓞 E] M) h1).equivFun
-  exact ⟨e.toLinearMap.restrictScalars (𝓞 E) ∘ₗ TensorProduct.mk (𝓞 E) E M 1,
-    IsBaseChange.of_equiv e fun _ => rfl⟩
-
 variable [IsCMField E]
 
 end GlobalTheory.DatumCoord

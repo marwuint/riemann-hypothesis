@@ -212,20 +212,6 @@ variable {ϖ : O} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {ι A : T
 theorem logFun_In (C : SSAtlas ϖ X q ι A) (α : A) {B : CommRingCat.{0}} (y : (C.logFun κ).Pt.obj B) :
     (C.logFun κ).In α y ↔ ⊤ ≤ (show PtOver X q κ B from y).1.2 ⁻¹ᵁ C.U α := Iff.rfl
 
-theorem logFun_f (C : SSAtlas ϖ X q ι A) (α : A) (i : ι) {B : CommRingCat.{0}} (y : PtOver X q κ B)
-    (h : ⊤ ≤ y.1.2 ⁻¹ᵁ C.U α) : (C.logFun κ).f α i (B := B) y = GlobalTheory.Cris.evalAt y.1.2 (C.U α) h (C.F α i) :=
-  dif_pos h
-
-theorem logFun_g (C : SSAtlas ϖ X q ι A) (α β : A) (i : ι) {B : CommRingCat.{0}} (y : PtOver X q κ B)
-    (h : ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β)) :
-    ((C.logFun κ).g α β i (B := B) y : B) = GlobalTheory.Cris.evalAt y.1.2 (C.U α ⊓ C.U β) h (C.G α β i) := by
-  classical
-  change ((if h : ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) then
-      Units.map (GlobalTheory.Cris.evalAt (B := B) y.1.2 (C.U α ⊓ C.U β) h : Γ(X, C.U α ⊓ C.U β) →* B) (C.G α β i)
-      else 1 : Bˣ) : B) = _
-  rw [dif_pos h]
-  rfl
-
 end SSAtlas
 
 section Model
@@ -269,96 +255,6 @@ theorem _root_.GlobalTheory.LogCris.model_mul_eq_zero {m r : ℕ} (hϖ : ϖ ∈ 
   rw [MvPolynomial.coeff_C_mul, MvPolynomial.coeff_C_mul] at e
   exact (mul_cancel_left_mem_nonZeroDivisors hϖ).mp e
 
-theorem model_X_mem {m r : ℕ} (hϖ : ϖ ∈ nonZeroDivisors O) (j : Fin m) (hj : (j : ℕ) < r) :
-    Ideal.Quotient.mk _ (MvPolynomial.X j) ∈ nonZeroDivisors (GlobalTheory.Et.ssModel O ϖ m r) := by
-  classical
-  rw [mem_nonZeroDivisors_iff_left]
-  intro g hg
-  apply model_mul_eq_zero ϖ hϖ g
-  have hmem : j ∈ Finset.univ.filter (fun j : Fin m => (j : ℕ) < r) := Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩
-  have hP : algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ =
-      Ideal.Quotient.mk _ (MvPolynomial.X j) * Ideal.Quotient.mk _
-        (∏ l ∈ (Finset.univ.filter (fun j : Fin m => (j : ℕ) < r)).erase j, MvPolynomial.X l) := by
-    rw [← map_mul, Finset.mul_prod_erase _ _ hmem]
-    change Ideal.Quotient.mk _ (MvPolynomial.C ϖ) = _
-    symm
-    rw [Ideal.Quotient.mk_eq_mk_iff_sub_mem]
-    exact Ideal.mem_span_singleton_self _
-  rw [hP, mul_comm (Ideal.Quotient.mk _ _), mul_assoc, hg, mul_zero]
-
 end Model
-
-section ModelAtlas
-
-variable (ϖ : O) (r : ℕ)
-
-abbrev modelStr : Spec (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r)) ⟶ Spec (CommRingCat.of O) :=
-  Spec.map (CommRingCat.ofHom (algebraMap O (GlobalTheory.Et.ssModel O ϖ r r)))
-
-theorem model_appLE (a : O) :
-    ((modelStr ϖ r).appLE ⊤ ⊤ le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a) =
-      (Scheme.ΓSpecIso (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))).inv.hom (algebraMap O _ a) := by
-  have h : (modelStr ϖ r).appTop = (modelStr ϖ r).appLE ⊤ ⊤ le_top := Scheme.Hom.app_eq_appLE _
-  rw [← h]
-  have e := Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap O (GlobalTheory.Et.ssModel O ϖ r r)))
-  exact (congrArg (fun t => t.hom a) e).symm
-
-def modelAtlas (hr : 1 ≤ r) (hϖ : ϖ ∈ nonZeroDivisors O) :
-    SSAtlas ϖ (Spec (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))) (modelStr ϖ r) (Fin r) Unit where
-  U _ := ⊤
-  affine _ := isAffineOpen_top _
-  cover := by simp
-  F _ i := (Scheme.ΓSpecIso (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))).inv.hom (Ideal.Quotient.mk _ (MvPolynomial.X i))
-  G _ _ _ := 1
-  prod_F _ := by
-    rw [model_appLE, ← map_prod, ← map_prod]
-    congr 1
-    change _ = Ideal.Quotient.mk _ (MvPolynomial.C ϖ)
-    rw [Ideal.Quotient.mk_eq_mk_iff_sub_mem, Finset.filter_true_of_mem (fun j _ => j.isLt)]
-    exact Ideal.mem_span_singleton_self _
-  F_eq _ _ _ := by rw [Units.val_one, one_mul]
-  nzd _ i := by
-    rw [mem_nonZeroDivisors_iff_left]
-    intro x hx
-    have hx' := congrArg (Scheme.ΓSpecIso (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))).hom.hom hx
-    rw [map_mul, map_zero, ← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply] at hx'
-    have := (mem_nonZeroDivisors_iff_left.1 (model_X_mem ϖ hϖ i i.isLt)) _ hx'
-    have h2 := congrArg (Scheme.ΓSpecIso (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))).inv.hom this
-    rwa [← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply, map_zero] at h2
-  chart _ x _ := by
-    refine ⟨⊤, isAffineOpen_top _, trivial, le_rfl, r, r, hr, le_rfl, Function.Embedding.refl _,
-      (Scheme.ΓSpecIso (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))).inv.hom,
-      RingHom.Etale.of_bijective (ConcreteCategory.bijective_of_isIso _), ?_, fun j => ⟨1, ?_⟩,
-      fun i hi => absurd ⟨i, rfl⟩ hi⟩
-    · ext a
-      rw [RingHom.comp_apply, CommRingCat.hom_comp, RingHom.comp_apply, model_appLE]
-    · rw [Units.val_one, one_mul]
-      have e : homOfLE (le_rfl : (⊤ : (Spec (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))).Opens) ≤ ⊤) = 𝟙 _ := rfl
-      rw [e, op_id, CategoryTheory.Functor.map_id, CommRingCat.id_apply]
-      rfl
-  G_self _ _ := rfl
-  G_comp _ _ _ _ := by simp
-  prod_G _ _ := by simp
-
-abbrev modelFun (hr : 1 ≤ r) (hϖ : ϖ ∈ nonZeroDivisors O) {k : Type} [CommRing k] (κ : O →+* k) : LogFun k (κ ϖ) :=
-  (modelAtlas ϖ r hr hϖ).logFun κ
-
-theorem isSSFun_model (hr : 1 ≤ r) (hϖ : ϖ ∈ nonZeroDivisors O) {k : Type} [CommRing k] (κ : O →+* k) :
-    IsSSFun ϖ (Spec (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))) (modelStr ϖ r) κ (modelFun ϖ r hr hϖ κ) :=
-  (modelAtlas ϖ r hr hϖ).isSSFun_logFun κ
-
-end ModelAtlas
-
-example : IsSSFun (2 : ℤ) (Spec (CommRingCat.of (GlobalTheory.Et.ssModel ℤ 2 2 2))) (modelStr 2 2) (Int.castRingHom (ZMod 2))
-    (modelFun 2 2 (by norm_num) (mem_nonZeroDivisors_of_ne_zero (by norm_num)) (Int.castRingHom (ZMod 2))) :=
-  isSSFun_model 2 2 (by norm_num) _ _
-
-example : IsSSFun (2 : ℤ) (Spec (CommRingCat.of (GlobalTheory.Et.ssModel ℤ 2 1 1))) (modelStr 2 1) (RingHom.id ℤ)
-    (modelFun 2 1 le_rfl (mem_nonZeroDivisors_of_ne_zero (by norm_num)) (RingHom.id ℤ)) :=
-  isSSFun_model 2 1 le_rfl _ _
-
-example : Fintype.card (modelFun (2 : ℤ) 2 (by norm_num) (mem_nonZeroDivisors_of_ne_zero (by norm_num))
-    (RingHom.id ℤ)).ι = 2 := by
-  simp [modelFun, SSAtlas.logFun]
 
 end GlobalTheory.LogCris

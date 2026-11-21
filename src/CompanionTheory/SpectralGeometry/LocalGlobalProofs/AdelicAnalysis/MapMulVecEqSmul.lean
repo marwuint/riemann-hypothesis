@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.UnipotentAdelicQuotients.SWXSDefs
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.MatrixTransvectionDiagonalDecompositionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarInvariantUnderTransvectionStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarInvariantUnderTransvection
 open MeasureTheory Topology Matrix
 open scoped ENNReal NNReal
 
@@ -63,7 +63,7 @@ theorem map_transvections {ι : Type} [Fintype ι] [DecidableEq ι] (μ : Measur
       funext x
       simp [Matrix.mulVec_mulVec]
     rw [e, ← Measure.map_map (hm _) (hm _), ih]
-    exact GlobalTheory.T.haar_invariant_under_transvection K ι μ t
+    exact _root_.GlobalTheory.CompanionTheory.SW.transvection_map_addHaar K ι μ t
 
 theorem det_transvections {ι : Type} [Fintype ι] [DecidableEq ι]
     (L : List (Matrix.TransvectionStruct ι K)) :

@@ -1,20 +1,21 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.HighestVectorsRegularLine
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WtRInjective
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CliffordHighestWeightVectorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParthasarathyRaoVaradarajanStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CliffordHighestWeightVector
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParthasarathyRaoVaradarajan
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightAntitoneOfFiniteDimensionalStable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RangeStable
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsDualLieFamilyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsDualLieFamily
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantIntertwinesDualStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteWeightsInvariantHomStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvariantExtendingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualWeightsDominatedStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualWeightsDominated
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HarmonicOfNormBoundStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceFactorTensorDecompStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceFactorTensorDecomp
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualOperatorCommutesLieStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualWeightTraceFormulaStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HarmonicWeightsCoefficientStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HarmonicWeightsCoefficient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedTraceWeylCharacterStatement
 
 noncomputable section
@@ -37,9 +38,9 @@ theorem hw_harm {n : ℕ} (lam : Fin n → ℤ) (hl : Antitone lam)
   have hanti' : Antitone ν := fun a b hab => by
     have := hanti hab
     simpa [wtR] using this
-  obtain ⟨ι, i1, i2, c, hcl, hconds⟩ := GlobalTheory.T.parthasarathy_rao_varadarajan n
+  obtain ⟨ι, i1, i2, c, hcl, hconds⟩ := _root_.GlobalTheory.CompanionTheory.SpinPRV.spin_parthasarathy_rao_varadarajan n
   obtain ⟨w, hw, x, hx, hxh⟩ := hconds V (kF E1 E2) S ν v hGl hc.pair.unitK hfd hKS hvS hv hK
-  have hn := GlobalTheory.T.clifford_highest_weight_vector lam V E1 E2 σ A hc ι c hcl _ x hx hxh
+  have hn := _root_.GlobalTheory.CompanionTheory.DiracK.dirac_ineq lam V E1 E2 σ A hc ι c hcl _ x hx hxh
   exact GlobalTheory.T.harmonic_of_norm_bound lam hl ν hanti' hdom w hw hn
 
 theorem hw_stable' {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
@@ -102,7 +103,7 @@ theorem dualtr {n : ℕ} (lam : Fin n → ℤ) (hl : Antitone lam) (E : KMod n) 
     ∀ μ ∈ harmZ lam, trOn (hwOf G (wtR μ)) (dualT E T : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ)) = 2 ^ n := by
   obtain ⟨F, hF, -, hch⟩ := GlobalTheory.T.dual_weight_trace_formula E T hT.1 G hG
   intro μ hμ
-  refine (GlobalTheory.T.harmonic_weights_coefficient lam hl F hF (fun ν => trOn (hwOf G (wtR ν)) (dualT E T : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ)))
+  refine (_root_.GlobalTheory.CompanionTheory.CoefId.coef_harm lam hl F hF (fun ν => trOn (hwOf G (wtR ν)) (dualT E T : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ)))
     (fun z hz hinj => ?_) μ hμ).2
   have hzi : Function.Injective z := fun a b h => hinj (by simp only [h])
   have h1 := hch ⟨diagonal z, diagonal_mem_unitary z hz⟩ z rfl hzi
@@ -111,8 +112,8 @@ theorem dualtr {n : ℕ} (lam : Fin n → ℤ) (hl : Antitone lam) (E : KMod n) 
 
 theorem countG : CountG := by
   intro n lam hlam E T hT V _ _ E1 E2 σ A hc hfin
-  obtain ⟨hsp, htop⟩ := GlobalTheory.T.dual_weights_dominated lam hlam E T hT
-  obtain ⟨G, hG⟩ := GlobalTheory.T.exists_dual_lie_family E
+  obtain ⟨hsp, htop⟩ := _root_.GlobalTheory.CompanionTheory.RealCountG.TopeG.topeG lam hlam E T hT
+  obtain ⟨G, hG⟩ := _root_.GlobalTheory.CompanionTheory.RealCountG.dualFam_exists E
   have hint := GlobalTheory.T.invariant_intertwines_dual V σ (kF E1 E2) hc.der E G hG
   have hmaps : ∀ t ∈ invA σ E, ∀ (μ : Fin n → ℝ), ∀ ξ ∈ hwOf G μ, t ξ ∈ hwSp E1 E2 μ := by
     intro t ht μ ξ hξ
@@ -174,7 +175,7 @@ theorem countG : CountG := by
     ext ξ
     rfl
   haveI : FiniteDimensional ℂ (invA σ E) := hfin
-  obtain ⟨hfd, htrace⟩ := GlobalTheory.T.trace_factor_tensor_decomp ι (invA σ E) W H R Fl a b hcomp
+  obtain ⟨hfd, htrace⟩ := _root_.GlobalTheory.CompanionTheory.HomTrace.trace_of_block_sandwich ι (invA σ E) W H R Fl a b hcomp
   have hse : harmSet lam = (harmZ lam).image wtR := harmSet_eq lam
   refine ⟨fun μ hμ => ?_, fun hne => ?_, ?_⟩
   · rw [hse, Finset.mem_image] at hμ

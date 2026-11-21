@@ -1,4 +1,4 @@
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.PlaceIntegralUnramified
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
 import Formalism.LocalToGlobal.ProjectiveLattices.ChartDirectionsIntegral
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
@@ -15,13 +15,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 
 attribute [local instance] Over.cartesianMonoidalCategory
-
-def TruncatedIntegralChartExists : Prop :=
-  ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
-    (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →
-    ∀ (Tc : CDVR) (io : T.Q.c.F →+* Tc.Fr) (yI : IntFr (T.Q.Xo j) T.Q.c Tc io), yI.IsAlg →
-      ∃ C : IntegralChartA3 (T.Q.Xo j) T.Q.c Tc io yI,
-        Formalism.MainNotions.ModuliIntegralCharts.H1.FrTrunc C.I.G (𝟙 (Sp Tc.V)) (chD C.ch) C.xT C.eT
 
 def SecTie {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {Tc : CDVR} {io : c.F →+* Tc.Fr} {yI : IntFr Xo c Tc io}
@@ -74,60 +67,5 @@ def SplitModel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {
     (I : IntData Xo c Tc io yI.1) : Prop :=
   ∃ S : SplitExt (Sp (IsLocalRing.ResidueField Tc.V)),
     S.IsGt ((Over.pullback (spMap (IsLocalRing.residue Tc.V))).obj I.G.G)
-
-def RegTieSt : Prop :=
-  ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
-    (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →
-    ∀ (Tc : CDVR) (io : T.Q.c.F →+* Tc.Fr) (yI : IntFr (T.Q.Xo j) T.Q.c Tc io) (e : ℕ)
-      (la : HeightOneSpectrum (𝓞 T.Q.c.F)), OverLa la Tc.V io e → yI.IsAlg →
-      ((T.Q.l.M : 𝓞 T.Q.c.F) ∉ la.asIdeal) →
-    ∀ (I : IntData (T.Q.Xo j) T.Q.c Tc io yI.1), SplitModel I → ∀ (x : (T.Q.Dw j).La),
-      letI := io.toAlgebra
-      ∀ (F : LB.Sec (LPow (T.Q.Xo j).univ.t.G (T.Q.Xo j).univ.t.PP.L ((T.Q.l.M : ℤ) ^ 2)
-        (ptO (T.Q.Xo j) yI.1.x))),
-      IsVtOver (T.Q.Xo j).univ.t.G (T.Q.Xo j).univ.t.PP T.Q.l.M (KilledBy (T.Q.Xo j) (T.Q.l.Mb ^ 2)) yI.1.s
-        (levPt (T.Q.Xo j) yI.1.x x) F →
-      ∃ σ : LB.Sec (LB.LinComb I.G.PP.L (K := Fin 1) (fun _ => 𝟙 I.G.G.left)
-          (fun _ => ((T.Q.l.M ^ 2 : ℕ) : ℤ))),
-        SecTie I (T.Q.l.M ^ 2) (zCast (T.Q.Xo j).univ.t.G (natCast_sq T.Q.l.M) F) σ
-
-def GermTieSt : Prop :=
-  ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
-    (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →
-    ∀ (Tc : CDVR) (io : T.Q.c.F →+* Tc.Fr) (yI : IntFr (T.Q.Xo j) T.Q.c Tc io)
-      (C : IntegralChartA3 (T.Q.Xo j) T.Q.c Tc io yI),
-      Formalism.MainNotions.ModuliIntegralCharts.H1.FrTrunc C.I.G (𝟙 (Sp Tc.V)) (chD C.ch) C.xT C.eT →
-    ∀ (k : ℕ),
-      letI := io.toAlgebra
-      ∀ (F : LB.Sec (LPow (T.Q.Xo j).univ.t.G (T.Q.Xo j).univ.t.PP.L (k : ℤ) (ptO (T.Q.Xo j) yI.1.x)))
-        (σ : LB.Sec (LB.LinComb C.I.G.PP.L (K := Fin 1) (fun _ => 𝟙 C.I.G.G.left) (fun _ => (k : ℤ)))),
-        SecTie C.I k F σ →
-        ∃ g : Germ.PS Tc.Fr 1 (chD C.ch),
-          IsGerm yI.1 C.ch.d C.ch.x C.ch.B.A.act C.ch.e C.ch.wP k F g ∧ IsIntPS Tc g
-
-def GermChartSplitFibre : Prop :=
-  ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
-    (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →
-    ∀ (Tc : CDVR) (io : T.Q.c.F →+* Tc.Fr) (yI : IntFr (T.Q.Xo j) T.Q.c Tc io) (e : ℕ)
-      (la : HeightOneSpectrum (𝓞 T.Q.c.F)), OverLa la Tc.V io e → yI.IsAlg →
-      ((T.Q.l.M : 𝓞 T.Q.c.F) ∉ la.asIdeal) →
-      (∀ I : IntData (T.Q.Xo j) T.Q.c Tc io yI.1, SplitModel I) → ∀ {n : ℕ} (x : Fin n → (T.Q.Dw j).La),
-      letI := io.toAlgebra
-      ∀ (F : Fin n → LB.Sec (LPow (T.Q.Xo j).univ.t.G (T.Q.Xo j).univ.t.PP.L ((T.Q.l.M : ℤ) ^ 2)
-        (ptO (T.Q.Xo j) yI.1.x))),
-      (∀ b, IsVtOver (T.Q.Xo j).univ.t.G (T.Q.Xo j).univ.t.PP T.Q.l.M (KilledBy (T.Q.Xo j) (T.Q.l.Mb ^ 2)) yI.1.s
-        (levPt (T.Q.Xo j) yI.1.x (x b)) (F b)) →
-      ∃ (C : IntegralChartA3 (T.Q.Xo j) T.Q.c Tc io yI) (g : Fin n → Germ.PS Tc.Fr 1 (chD C.ch)),
-        (∀ b, IsGerm yI.1 C.ch.d C.ch.x C.ch.B.A.act C.ch.e C.ch.wP (T.Q.l.M ^ 2)
-          (zCast (T.Q.Xo j).univ.t.G (natCast_sq T.Q.l.M) (F b)) (g b)) ∧ ∀ b, IsIntPS Tc (g b)
-
-theorem germ_chart_split_fibre_exists (hT : TruncatedIntegralChartExists) (hR : RegTieSt) (hG : GermTieSt) : GermChartSplitFibre := by
-  intro D T h j hj _ hstar Tc io yI e la ho hy hM hsplit n x F hV
-  obtain ⟨C, hC⟩ := hT D T h j hj hstar Tc io yI hy
-  letI := io.toAlgebra
-  choose σ hσ using fun b => hR D T h j hj hstar Tc io yI e la ho hy hM C.I (hsplit C.I) (x b) (F b) (hV b)
-  choose g hg hgI using fun b => hG D T h j hj hstar Tc io yI C hC (T.Q.l.M ^ 2)
-    (zCast (T.Q.Xo j).univ.t.G (natCast_sq T.Q.l.M) (F b)) (σ b) (hσ b)
-  exact ⟨C, g, hg, hgI⟩
 
 end ReciprocityTheory.ChartRestriction.G.PullbackSections

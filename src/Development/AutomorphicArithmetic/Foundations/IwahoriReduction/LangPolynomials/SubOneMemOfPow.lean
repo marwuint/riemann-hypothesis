@@ -184,7 +184,7 @@ private theorem all_levels (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime]
     simpa using Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot J hx) 1
   have hNJ : ∀ x, x - 1 ∈ J → colNm R p x - 1 ∈ J := by
     intro x hx
-    obtain ⟨r, hr⟩ := GlobalTheory.T.normOp_eq_smap_add_mul R p σ hF x
+    obtain ⟨r, hr⟩ := _root_.GlobalTheory.Col.normOp_frob R p σ hF x
     have h1 : smap σ (x - 1) ∈ J := by
       rw [hJ, Ideal.mem_comap, Ideal.mem_span_singleton'] at hx ⊢
       obtain ⟨d, hd⟩ := hx

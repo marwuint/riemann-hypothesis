@@ -62,46 +62,6 @@ lemma exists_closest {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Fini
       rw [norm_sub_rev]; exact norm_sub_norm_le w' p
     linarith
 
-lemma cover (hNP : Ext.NearestPlane) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
-    [FiniteDimensional ℝ V] (G : Set V) (ℓ : ℝ) (hG : ∀ g ∈ G, ‖g‖ ≤ ℓ) (D : ℕ)
-    (hD : Module.finrank ℝ (Submodule.span ℝ G) ≤ D) {z : V} (hz : z ∈ Submodule.span ℝ G) :
-    ∃ g ∈ AddSubgroup.closure G, ‖z - g‖ ^ 2 ≤ D * ℓ ^ 2 / 4 := by
-  classical
-  obtain ⟨b, hbG, hbspan, hbli⟩ := exists_linearIndependent ℝ G
-  have hbfin : b.Finite := LinearIndependent.setFinite hbli
-  let _ : Fintype b := hbfin.fintype
-  let e := Fintype.equivFin b
-  let v : Fin (Fintype.card b) → V := fun i => (e.symm i : V)
-  have hv : LinearIndependent ℝ v := hbli.comp _ e.symm.injective
-  have hvG : ∀ i, v i ∈ G := fun i => hbG (e.symm i).2
-  have hrange : Set.range v = b := by
-    ext x
-    constructor
-    · rintro ⟨i, rfl⟩
-      exact (e.symm i).2
-    · intro hx
-      exact ⟨e ⟨x, hx⟩, by simp [v]⟩
-  have hn : Fintype.card b ≤ D := by
-    have h := finrank_span_set_eq_card (R := ℝ) hbli
-    rw [hbspan, Set.toFinset_card] at h
-    omega
-  have hz' : z ∈ Submodule.span ℝ (Set.range v) := by
-    rw [hrange, hbspan]; exact hz
-  obtain ⟨c, hc⟩ := hNP V (Fintype.card b) v hv z hz'
-  refine ⟨∑ i, (c i : ℝ) • v i, ?_, ?_⟩
-  · refine AddSubgroup.sum_mem _ (fun i _ => ?_)
-    rw [Int.cast_smul_eq_zsmul]
-    exact AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (hvG i)) _
-  · have hsum : ∑ i, ‖v i‖ ^ 2 ≤ (Fintype.card b : ℝ) * ℓ ^ 2 := by
-      calc ∑ i, ‖v i‖ ^ 2 ≤ ∑ _i : Fin (Fintype.card b), ℓ ^ 2 :=
-            Finset.sum_le_sum (fun i _ => by
-              have h1 := hG (v i) (hvG i)
-              gcongr)
-        _ = (Fintype.card b : ℝ) * ℓ ^ 2 := by simp
-    have hnD : (Fintype.card b : ℝ) ≤ D := by exact_mod_cast hn
-    have hl : 0 ≤ ℓ ^ 2 := sq_nonneg ℓ
-    nlinarith
-
 end ChA
 end
 end ReciprocityTheory.ChartRestriction.G.I2

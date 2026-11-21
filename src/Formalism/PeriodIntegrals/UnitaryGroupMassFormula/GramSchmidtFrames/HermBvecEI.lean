@@ -231,11 +231,6 @@ theorem xcof_N {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : 
   rw [regroup (n * y) _ _ _ _ (key_alg hU'adj hadj hV), ← mulVec_mulVec, mv_sum y]
   simp only [mulVec_smul]
 
-theorem satOm : SatOm := by
-  intro k r z z' hk hr hz hz' y hy hG n hn n' hn'
-  unfold omW
-  rw [xcof_N hz hz' hn hn' y, prW_N hn (xcof_esI z z' y)]
-
 end om
 
 end PI.UnitaryGroupMassFormula.GsFr

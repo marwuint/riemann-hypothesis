@@ -1,5 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExactOfTieLattice
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JSmul
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqTopOfSpanImage
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusSubOneWittTensorLatticeSurjectiveFixed
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAlgClosedTiltFieldAndValuationRing
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSubOfMemSpan
@@ -336,18 +338,6 @@ theorem exists_sub_of_tie [IsDomain O] [IsPrincipalIdealRing O]
     rw [hspan]
     exact Submodule.subset_span ⟨x, hx, rfl⟩
 
-include E in
-
-theorem map_injective_of_tie (hfl : Module.Flat O RW) {T' T : LocLat G Qp LL O}
-    (ι : LatHom T'.L T.L) (hι : Function.Injective ι.f) : Function.Injective (W.map ι) := by
-  have h1 : Function.Injective (latMap ι) := fun x y hxy =>
-    Subtype.ext (hι (congrArg Subtype.val hxy))
-  have h2 : Function.Injective ((latMap ι).baseChange RW) :=
-    Module.Flat.lTensor_preserves_injective_linearMap (M := RW) (latMap ι) h1
-  intro x y hxy
-  refine E.jD_inj T' (h2 ?_)
-  rw [← jD_map', ← jD_map', hxy]
-
 end Generic
 
 section Concrete
@@ -413,11 +403,5 @@ theorem flat_RW {l : ℕ} [Fact l.Prime] (LL : FinExt l) : Module.Flat ↥(OL LL
   haveI : Module.Flat ℤ_[l] (WCb l) :=
     flat_of_inj (GlobalTheory.WittTensorFixed.algebraMap_WCb_injective l)
   exact Module.Flat.baseChange ℤ_[l] ↥(OL LL) (WCb l)
-
-theorem map_injective {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {H : LocHW l P}
-    (E : LocFon l P AI H) (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL)
-    {T' T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (ι : LatHom T'.L T.L)
-    (hι : Function.Injective ι.f) : Function.Injective ((H.W K s LL h).map ι) :=
-  map_injective_of_tie (E.E K s LL h).tie (flat_RW LL) ι hι
 
 end GlobalTheory.EtaleSub

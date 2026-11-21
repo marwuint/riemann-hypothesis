@@ -47,10 +47,6 @@ def Subq {L G V W : Type} [Field L] [Group G] [AddCommGroup V] [Module L V] [Add
   ∃ (U : Type) (_ : AddCommGroup U) (_ : Module L U) (ρU : Representation L G U) (i : U →ₗ[L] V) (p : U →ₗ[L] W),
     Inter ρU ρ i ∧ Function.Injective i ∧ Inter ρU ρ' p ∧ Function.Surjective p
 
-theorem Subq.refl {L G V : Type} [Field L] [Group G] [AddCommGroup V] [Module L V] (ρ : Representation L G V) : Subq ρ ρ :=
-  ⟨V, inferInstance, inferInstance, ρ, LinearMap.id, LinearMap.id, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl,
-    Function.surjective_id⟩
-
 def extRep {F G V : Type} [Field F] [Group G] [AddCommGroup V] [Module F V] (L : Type) [Field L] [Algebra F L]
     (ρ : Representation F G V) : Representation L G (L ⊗[F] V) where
   toFun g := (ρ g).baseChange L
@@ -134,10 +130,5 @@ def JoinAbs : Prop :=
       (I : Type) [Finite I] (C : I → Type) [∀ a, AddCommGroup (C a)] [∀ a, Module L (C a)] (ρC : ∀ a, Representation L G (C a))
       (f : ∀ a, W →ₗ[L] C a), (∀ a, Subq ρU (ρC a)) → (∀ a, Inter ρW (ρC a) (f a)) → (∀ v, (∀ a, f a v = 0) → v = 0) →
       NilD σ ψ ρW (heckePol q n θ)
-
-def CharOfNil : Prop :=
-  ∀ (K : Type) [Field K] [IsAlgClosed K] (W : Type) [AddCommGroup W] [Module K W] [Module.Finite K W] (M : End K W) (s : Multiset K)
-    (u : K), u ≠ 0 → s.card = finrank K W → GenericMul s → IsNilpotent (Polynomial.aeval M (Polynomial.C u * rootPol s)) →
-    LinearMap.det M = s.prod → M.charpoly = rootPol s
 
 end UpperTheory.Gal.crystallineComparison

@@ -230,41 +230,6 @@ theorem nonempty_algHom_of_isRay_of_dvd {K L L' : Type} [Field K] [NumberField K
     Nonempty (L' →ₐ[K] L) :=
   rayClassFieldMaximalSt_holds K L L' 𝔫 hn h (GlobalTheory.RayMaximal.isModulus_of_isRay h' hd hn)
 
-theorem nonempty_algHom_iff_isModulus {K L L' : Type} [Field K] [NumberField K] [Field L]
-    [NumberField L] [Algebra K L] [IsAbelianGalois K L] [Field L'] [NumberField L'] [Algebra K L']
-    [IsAbelianGalois K L'] {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (h : IsRay L 𝔪) :
-    Nonempty (L' →ₐ[K] L) ↔ ∀ χ : (L' ≃ₐ[K] L') →* ℂˣ, IsModulus L' χ 𝔪 := by
-  refine ⟨fun ⟨f⟩ χ => ?_, rayClassFieldMaximalSt_holds K L L' 𝔪 hm h⟩
-  let _ := f.toRingHom.toAlgebra
-  have : IsScalarTower K L' L := IsScalarTower.of_algebraMap_eq fun x => (f.commutes x).symm
-  have hM := GlobalTheory.RayMaximal.isModulus_of_isRay h dvd_rfl hm (χ.comp (AlgEquiv.restrictNormalHom L'))
-  have hv : ∀ 𝔭 : HeightOneSpectrum (𝓞 K), ¬ 𝔭.asIdeal ∣ 𝔪 →
-      heckeVal L' χ 𝔭 = heckeVal L (χ.comp (AlgEquiv.restrictNormalHom L')) 𝔭 := fun 𝔭 hp => by
-    obtain ⟨σ, hσ⟩ := GlobalTheory.NT.exists_isFrob L 𝔭
-    rw [heckeVal_of_unramIn L _ (h.1 𝔭 hp) hσ,
-      heckeVal_of_unramIn L' χ (GlobalTheory.RayMaximal.unramIn_of_tower (h.1 𝔭 hp)) (GlobalTheory.RayMaximal.isFrob_restrictNormal hσ)]
-    rfl
-  have hi : ∀ I : Ideal (𝓞 K), I ≠ ⊥ → IsCoprime I 𝔪 →
-      heckeIdeal L' χ I = heckeIdeal L (χ.comp (AlgEquiv.restrictNormalHom L')) I := fun I hI hc => by
-    classical
-    refine finprod_congr fun 𝔭 => ?_
-    by_cases hp : 𝔭.asIdeal ∣ 𝔪
-    · have h0 : (Associates.mk 𝔭.asIdeal).count (Associates.mk I).factors = 0 := by
-        by_contra hne
-        exact 𝔭.prime.not_isUnit (hc.isUnit_of_dvd' ((Associates.count_ne_zero_iff_dvd hI 𝔭.irreducible).1 hne) hp)
-      simp only [h0, pow_zero]
-    · rw [hv 𝔭 hp]
-  refine ⟨hm, fun 𝔭 hp => hv 𝔭 hp ▸ hM.2.1 𝔭 hp, fun α β hr => ?_⟩
-  rw [hi _ (by simpa using hr.1) hr.2.2.1, hi _ (by simpa using hr.2.1) hr.2.2.2.1, hM.2.2 α β hr]
-
-theorem RayClassFieldSt.exists_maximal (H : RayClassFieldSt) (K : Type) [Field K]
-    [NumberField K] (𝔪 : Ideal (𝓞 K)) (hm : 𝔪 ≠ ⊥) :
-    ∃ (L : Type) (_ : Field L) (_ : NumberField L) (_ : Algebra K L) (_ : IsAbelianGalois K L), IsRay L 𝔪 ∧
-      ∀ (L' : Type) [Field L'] [NumberField L'] [Algebra K L'] [IsAbelianGalois K L'],
-        (∀ χ : (L' ≃ₐ[K] L') →* ℂˣ, IsModulus L' χ 𝔪) → Nonempty (L' →ₐ[K] L) := by
-  obtain ⟨L, _, _, _, _, h⟩ := H K 𝔪 hm
-  exact ⟨L, _, inferInstance, _, inferInstance, h, fun L' _ _ _ _ h' => rayClassFieldMaximalSt_holds K L L' 𝔪 hm h h'⟩
-
 end GlobalTheory.Published
 
 end

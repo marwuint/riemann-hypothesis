@@ -6,13 +6,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Uppe
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.DivCoreUpPf
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.FirstMinimumInvariantContinuousPosOnFrames
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QSPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralPotentialWeightChartLtTopStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralPotentialWeightChartLtTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarPoincareDetRatioPowerDifferentiableOnStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarPoincareDetRatioPowerRmulBorelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MetricScalarPoincareWeightEqTwoMulPotentialStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarPoincareDetRatioPowerRmulBorel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MetricScalarPoincareWeightEqTwoMulPotential
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormScalarPoincareDetRatioLactLeOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOneOfOrthonormalConjBlockUpperTriangularStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeTsumPowNeZeroOfSingleUnitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOneOfOrthonormalConjBlockUpperTriangular
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeTsumPowNeZeroOfSingleUnit
 open NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD
 
 namespace GlobalTheory.ScalarPoin
@@ -40,7 +40,7 @@ theorem GlobalTheory.ScalarPoin.exists_cusp_ne : ∀ (E : Type) [Field E] [Numbe
   have hx0 : x0 ∈ X.dom := KU.orth_dom X ho
   set bb : ℝ := 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1 with hbbdef
   have hbb : 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb := by linarith
-  obtain ⟨s0, hs0⟩ := GlobalTheory.T.lintegral_potentialWeight_chart_lt_top E r X x0 ho
+  obtain ⟨s0, hs0⟩ := _root_.GlobalTheory.ScalarPoin.lintegral_kaF_lt_top E r X x0 ho
   obtain ⟨k0, hk0⟩ := exists_nat_ge ((s0 + bb) / 2)
   have hla : ∀ k : ℕ, (fun (τ : X.Ψ) (j : Fin r) => if X.p0 ≤ (j : ℕ) then (((2 * k) / 2 : ℕ) : ℤ)
       else -(((2 * k) / 2 : ℕ) : ℤ)) = laS X k := by
@@ -59,7 +59,7 @@ theorem GlobalTheory.ScalarPoin.exists_cusp_ne : ∀ (E : Type) [Field E] [Numbe
     refine lt_of_le_of_lt (le_of_eq ?_) (hs0 _ hs)
     refine lintegral_congr_ae ?_
     filter_upwards [ExtFPf.ae_OmF (X := X) (x0 := x0)] with z hz
-    rw [GlobalTheory.T.metric_scalarPoincareWeight_eq_two_mul_potential E r X x0 ho k z hz]
+    rw [_root_.GlobalTheory.ScalarPoin.phla_laS_cpt E r X x0 ho k z hz]
     simp only [norm_one, one_pow, kaF]
     rw [← ENNReal.ofReal_mul (by positivity)]
     congr 1
@@ -67,7 +67,7 @@ theorem GlobalTheory.ScalarPoin.exists_cusp_ne : ∀ (E : Type) [Field E] [Numbe
     congr 1; ring
   have hpo := fun k (hk : k0 ≤ k) => poin_holds r X x0 ho hPD (laS X k) _ bb (DivUpPf.metricW_exp X _)
     (DivUpPf.wLower_exp X _) hbb (fun _ => (1 : ℂ)) (qS X x0 k) (differentiableOn_const _) (hIn k hk)
-    ⟨GlobalTheory.T.scalarPoincareDetRatioPower_differentiableOn E r X x0 ho k, fun x _ b hb => GlobalTheory.T.scalarPoincareDetRatioPower_rmul_borel E r X x0 k x b hb⟩ (fun z _ => qS_cpt X ho k z)
+    ⟨GlobalTheory.T.scalarPoincareDetRatioPower_differentiableOn E r X x0 ho k, fun x _ b hb => _root_.GlobalTheory.ScalarPoin.qS_rmul E r X x0 k x b hb⟩ (fun z _ => qS_cpt X ho k z)
   set a : X.Γ → ℂ := fun γ => qS X x0 1 (lact γ.1 x0) with ha
   have ha1 : a 1 = 1 := by
     simp only [ha, OneMemClass.coe_one, KU.lact_one]
@@ -83,8 +83,8 @@ theorem GlobalTheory.ScalarPoin.exists_cusp_ne : ∀ (E : Type) [Field E] [Numbe
   have hlt : ∀ γ : X.Γ, γ ≠ 1 → ‖a γ‖ < 1 := by
     intro γ hne
     refine lt_of_le_of_ne (hle γ) fun heq => hne (Subtype.ext ?_)
-    exact GlobalTheory.T.eq_one_of_orthonormal_conj_block_upper_triangular E r X x0 ho γ.1 γ.2 ((GlobalTheory.T.norm_scalarPoincareDetRatio_lact_le_one E r X x0 ho γ.1 γ.2).2 heq)
-  obtain ⟨k, hk, hne⟩ := GlobalTheory.T.exists_ge_tsum_pow_ne_zero_of_single_unit a 1 k0 ha1 hle hlt hsum (max N (k0 + 1))
+    exact _root_.GlobalTheory.ScalarPoin.BlockFree.eq_one_of_gm_toBlocks₁₂ E r X x0 ho γ.1 γ.2 ((GlobalTheory.T.norm_scalarPoincareDetRatio_lact_le_one E r X x0 ho γ.1 γ.2).2 heq)
+  obtain ⟨k, hk, hne⟩ := _root_.GlobalTheory.tsum_pow_eventually_ne_zero a 1 k0 ha1 hle hlt hsum (max N (k0 + 1))
   have hk0k : k0 ≤ k := le_trans (by omega) hk
   have hkpos : 0 < k := lt_of_lt_of_le (by omega) hk
   obtain ⟨τ0⟩ : Nonempty X.Ψ := by

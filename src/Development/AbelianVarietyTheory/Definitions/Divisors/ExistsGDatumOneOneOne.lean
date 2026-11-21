@@ -202,15 +202,4 @@ instance nonempty_gBase_complex (G : GDatum) : Nonempty (GBase G ℂ) := ⟨{
     exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨x, rfl⟩)
       (isUnit_iff_ne_zero.mpr (sub_ne_zero.mpr hx)) }⟩
 
-example {p : ℕ} [Fact p.Prime] {D : Datum p} (b : Base D R) : GBase D.toG R :=
-  ⟨b.ρ, b.ρ_root, b.t, b.t_ω, b.comax⟩
-
-example {p : ℕ} [Fact p.Prime] (D : Datum p) :
-    D.toG.La = D.La ∧ D.toG.EF = D.EF ∧ D.toG.a = D.a ∧ D.toG.m = D.m ∧ D.toG.n = D.n :=
-  ⟨rfl, rfl, rfl, rfl, rfl⟩
-
-example {k : Type} [Field k] {Q : Type} [Group Q] {act : G.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
-    (I : GTateIso G k Q act e) (x : G.La) : I.ev 1 x = 1 :=
-  (I.ker 1 one_pos x).2 ⟨x, (one_nsmul x).symm⟩
-
 end GlobalTheory.UPel.HT.Gen

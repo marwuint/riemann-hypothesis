@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.NormAdditiveCharacterTypePrimeEqOne
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalIsotropicFlagMovesStepIntoPrevStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalIsotropicFlagMovesStepIntoPrev
 open Formalism.MainNotions.S
 
 namespace GlobalTheory.LocCoef
@@ -43,7 +43,7 @@ theorem GlobalTheory.locCoef_integral : ∀ {F : Type} [Field F] [ValuativeRel F
   unfold Formalism.MainNotions.S.LocNG.img at hvimg
   obtain ⟨w, hw, hwv⟩ := Submodule.mem_map.mp hvimg
   have hwv' : n w = v := hwv
-  have hu := (GlobalTheory.T.unipotentRadical_isotropicFlag_moves_step_into_prev Fr n hn (a.val + 1) (Nat.succ_le_of_lt a.isLt) v hv).2
+  have hu := (_root_.GlobalTheory.unipRadical_moves_step_into_prev Fr n hn (a.val + 1) (Nat.succ_le_of_lt a.isLt) v hv).2
   simp only [Nat.add_sub_cancel] at hu
   have hsymm : n.symm v = w := by rw [← hwv']; exact n.symm_apply_apply w
   rw [hsymm] at hu

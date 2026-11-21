@@ -12,8 +12,11 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HcTypeWContinuousUni
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DerivedActionDiscreteSeriesProperties
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FrechetContinuousContinuousOnOrbitHasDerivAt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuotientMeasureRightInvariant
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGroupMatGroupUnimodularStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSubgroupProductMeasureIsHaarStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGroupMatGroupUnimodular
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Formalism.PeriodIntegrals.QuotSetU
+import Formalism.PeriodIntegrals.QuotInv
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSubgroupProductMeasureIsHaar
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
 
 noncomputable section
@@ -253,9 +256,9 @@ theorem quotientMass_right_translation_invariant {Wp : Type} [NormedAddCommGroup
     PI.BesselPeriodGGP.l2SG νq (fun x => Φ (x * g)) = PI.BesselPeriodGGP.l2SG νq Φ := by
   classical
   obtain ⟨hz, hT, -, -, hW, hN, hG, hq⟩ := hS
-  obtain ⟨hGG, hGH⟩ := GlobalTheory.T.isMatGroup_GG_and_haar_right_invariant k r
+  obtain ⟨hGG, hGH⟩ := _root_.GlobalTheory.unitaryGroup_matGroup_unimodular k r
   obtain ⟨hGH1, hGH2⟩ := hGH μG hG
-  obtain ⟨hSG, hsub, hS1, hS2⟩ := GlobalTheory.T.besselSubgroup_product_measure_isHaar k r z μW μN hz hT hW hN
+  obtain ⟨hSG, hsub, hS1, hS2⟩ := _root_.GlobalTheory.muSof_isHaar k r z μW μN hz hT hW hN
   have hset : PI.QuotientSetting (GG k r) (Formalism.QuantumDeterminants.Sset k r z) μG (muSof μW μN) νq :=
     ⟨hGG, hSG, hsub, hGH1, hS1, hGH2, hS2, hq⟩
   have hae := GlobalTheory.QuotRightInv.ae_mem_of_quot hset
@@ -344,7 +347,7 @@ theorem besselQuotientMass_eq_const_mul_norm_sq_translates : ∀ (k r : ℕ) (ε
     GlobalTheory.BesselMapOne.smoothOnH_iff_mem (Formalism.QuantumDeterminants.GBasic.Hpk_herm k r) (Formalism.QuantumDeterminants.GBasic.Hpk_sq k r) hσ
   have hGu : IsUnit (Hpk k r) := GlobalTheory.SmVec.gram_unit hP hG
   have hsm := PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε mu R.H R.σ hR.2
-  obtain ⟨hGG, -⟩ := GlobalTheory.T.isMatGroup_GG_and_haar_right_invariant k r
+  obtain ⟨hGG, -⟩ := _root_.GlobalTheory.unitaryGroup_matGroup_unimodular k r
   have hconj : ∀ g : Formalism.REAL.UJ ε, P⁻¹ * umat g * P ∈ BranchingSupport.GG k r := fun g => GlobalTheory.SmVec.conj_mem_UH hP hG g.2
   have hmul : ∀ g ∈ BranchingSupport.GG k r, ∀ h ∈ BranchingSupport.GG k r, ∀ v, R.σ g (R.σ h v) = R.σ (g * h) v := fun g hg h hh v =>
     (GlobalTheory.SmVec.rep_mul hσ hg hh v).symm
@@ -353,7 +356,7 @@ theorem besselQuotientMass_eq_const_mul_norm_sq_translates : ∀ (k r : ℕ) (ε
   obtain ⟨h0, h1⟩ := Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hN
   have hae : ∀ᵐ x ∂νq, Matrix.of x ∈ BranchingSupport.GG k r := Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hHG.2.2.1 h0 h1 hq
   haveI := hHG.1
-  haveI := (GlobalTheory.T.besselSubgroup_product_measure_isHaar k r z μW μN hz hT hW hN).2.2.1.1
+  haveI := (_root_.GlobalTheory.muSof_isHaar k r z μW μN hz hT hW hN).2.2.1.1
   haveI : SigmaFinite νq := sigmaFinite_of_quot h0 hq
   haveI : SecondCountableTopology Wp := by
     haveI : ProperSpace Wp := FiniteDimensional.proper ℂ Wp

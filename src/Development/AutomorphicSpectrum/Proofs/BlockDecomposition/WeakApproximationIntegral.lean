@@ -1,5 +1,5 @@
 import Mathlib
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PlaneSupports.PlaneSupp
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianPlaneStrongApprox
 import GroundTheory.GlobalFields.Adele.Compact
 import GroundTheory.AutomorphicForms.StrongApproximationSLDense
@@ -268,35 +268,5 @@ theorem exists_approx_core (s : Pl F) (T₁ : Finset (InfinitePlace F))
     rw [hcompF, hxN v hvT, heq, zero_sub]
     exact neg_mem ((hd v o ho).2 hvT)
 
-theorem exists_approx : ∀ {F : Type} [Field F] [NumberField F] (s : Pl F) (T : Finset (Pl F)), s ∉ T →
-    ∀ O : (u : Pl F) → Set (Kp u), (∀ u ∈ T, IsOpen (O u) ∧ (O u).Nonempty) →
-    ∃ t : F, (∀ u ∈ T, algebraMap F (Kp u) t ∈ O u) ∧
-      ∀ v : HeightOneSpectrum (𝓞 F), (Sum.inr v : Pl F) ∉ T → (Sum.inr v : Pl F) ≠ s →
-        algebraMap F (Kp (Sum.inr v : Pl F)) t ∈ Ov v := by
-  intro F _ _ s T hs O hO
-  classical
-  have hc : ∀ u : Pl F, ∃ c : Kp u, u ∈ T → c ∈ O u := fun u => by
-    by_cases h : u ∈ T
-    · obtain ⟨c, hc⟩ := (hO u h).2
-      exact ⟨c, fun _ => hc⟩
-    · exact ⟨0, fun h' => absurd h' h⟩
-  choose c hc using hc
-  obtain ⟨t, ht₁, ht₂, ht₃⟩ := exists_approx_core s T.toLeft T.toRight
-    (fun w hw h => hs (h ▸ Finset.mem_toLeft.1 hw)) (fun v hv h => hs (h ▸ Finset.mem_toRight.1 hv))
-    (fun w => c (Sum.inl w)) (fun w => O (Sum.inl w))
-    (fun w hw => (hO _ (Finset.mem_toLeft.1 hw)).1.mem_nhds (hc _ (Finset.mem_toLeft.1 hw)))
-    (fun v => c (Sum.inr v)) (fun v => O (Sum.inr v))
-    (fun v hv => ⟨(hO _ (Finset.mem_toRight.1 hv)).1, hc _ (Finset.mem_toRight.1 hv)⟩)
-  refine ⟨t, fun u hu => ?_, fun v hvT hvs => ht₃ v (fun h => hvT (Finset.mem_toRight.1 h)) hvs⟩
-  cases u with
-  | inl w => exact ht₁ w (Finset.mem_toLeft.2 hu)
-  | inr v => exact ht₂ v (Finset.mem_toRight.2 hu)
-
 end GlobalTheory.CompanionTheory.PlaneSA.Additive
 
-theorem GlobalTheory.CompanionTheory.PlaneSA.additive_strong_approx_away : ∀ {F : Type} [Field F] [NumberField F] (s : Pl F) (T : Finset (Pl F)), s ∉ T →
-  ∀ O : (u : Pl F) → Set (Kp u), (∀ u ∈ T, IsOpen (O u) ∧ (O u).Nonempty) →
-  ∃ t : F, (∀ u ∈ T, algebraMap F (Kp u) t ∈ O u) ∧
-    ∀ v : HeightOneSpectrum (𝓞 F), (Sum.inr v : Pl F) ∉ T → (Sum.inr v : Pl F) ≠ s →
-      algebraMap F (Kp (Sum.inr v : Pl F)) t ∈ Ov v :=
-  GlobalTheory.CompanionTheory.PlaneSA.Additive.exists_approx

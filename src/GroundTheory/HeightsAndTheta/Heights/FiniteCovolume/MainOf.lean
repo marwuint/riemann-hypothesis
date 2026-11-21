@@ -48,22 +48,6 @@ variable (hTE' : TorusEmbedding.Statement h v) (hLE' : LineEigenvalue.Statement 
 
 include hTE hLE hTM hSH hUI hCP hUH hUZ hTE' hLE' hTM' hSH' hCP' hUH' hUZ'
 
-theorem UnfoldingIntegral.of_remaining : UnfoldingIntegral.Statement h v :=
-  UnfoldingIntegral.of_open
-    (fun _ _ _ _ h _ v => ArchUnimodular.proof h v)
-    (fun _ _ _ _ h _ v => MajorantStabCompact.proof h v)
-    (fun W _ _ _ h n v => LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v)
-      (hTE W h n v) (hLE W h n v) (hTM W h n v) (hSH W h n v) hUI)
-    (fun _ _ _ _ _ _ _ _ _ _ _ _ => SemidirectCovering.proof _ _ _)
-    (fun _ _ _ _ h _ v => StabilizerLevi.proof h v)
-    (fun _ _ _ _ h _ v => UnipotentModulus.proof h v)
-    (fun W _ _ _ h n v => UnipotentCocompact.proof h v (hCP W h n v) (hUH W h n v) (hUZ W h n v))
-    (fun _ _ _ _ h => CongruenceLift.proof h)
-    h v (fun _ _ _ _ _ => SemidirectCovering.proof _ _ _) (StabilizerLevi.proof h v)
-    (UnipotentModulus.proof h v) (UnipotentCocompact.proof h v hCP' hUH' hUZ')
-    (ArchUnimodular.proof h v) (MajorantStabCompact.proof h v)
-    (LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) hTE' hLE' hTM' hSH' hUI)
-
 theorem ScalingLaw.of_remaining : ScalingLaw.Statement h v :=
   ScalingLaw.of_open
     (fun _ _ _ _ h _ v => ArchUnimodular.proof h v)

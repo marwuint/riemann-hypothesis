@@ -4,8 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PolyBetween
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaExponentsDominantLastEntryOneDegree
 import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
 import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramePointStalkStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramePointStalkCompatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramePointStalk
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramePointStalkCompat
+
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -71,45 +72,5 @@ theorem exists_zpow (s : TwSec U x Z (wtOf Dw 0 1)) (he : evI y' (idem Z) = 1)
     exact ⟨t.copy (by rw [mul_neg_one]), ht⟩
 
 end GlobalTheory.TwistVal
-
-set_option maxHeartbeats 2000000 in
-
-theorem GlobalTheory.TwistVal.twist_keeps_val : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (dat p i)) (w : AllWt.Psi p.T.Q.H → ℤ) (m : ℤ), 4 ∣ m → ∀ f ∈ AllWt.cuspOn Y.U Z (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m), ∀ (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' f ≠ 0 → ∃ f' : Cusp Z Y.U la, evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂)) ≠ 0 ∧ vV T.V (evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂))) = vV T.V (evI y' f) := by
-  intro hP hD hS hF
-  have A := GlobalTheory.T.integral_frame_point_stalk hP hD hS hF
-  have B := GlobalTheory.T.integral_frame_point_stalk_compat hP hD hS hF
-  unfold Covers Lifts at *
-  refine (A.and B).imp fun Fm CH _ h => ?_
-  obtain ⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩⟩ := h
-  refine ⟨C1, h1, ?_⟩
-  obtain ⟨x0, hx0⟩ := e1.and e2
-  refine ⟨x0, fun x hx hle ι p hp i hi Y hY Z TF la w m _ f hf y T io y' g hg hpt hf0 => ?_⟩
-  obtain ⟨hA, hB⟩ := hx0 x hx hle ι p hp
-  have hfi : GlobalTheory.FlatLine.idem Z * f = f :=
-    GlobalTheory.FlatLine.idem_mul_eq (e := exZ _ (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m))
-      ⟨AllWt.cuspW_le_secZ _ hf.1, hf.2⟩
-  have hid : evI y' (GlobalTheory.FlatLine.idem Z) ≠ 0 := fun h0 => hf0 (by rw [← hfi, evI_mul, h0, zero_mul])
-  have he := GlobalTheory.TwistVal.evI_idem_eq_one y' hid
-  obtain ⟨t1, ht1⟩ := hA i hi Y hY Z TF y T io y' g hg hpt hid
-  obtain ⟨t2, ht2⟩ := hB i hi Y hY Z TF y T io y' g hg hpt hid (-w)
-  obtain ⟨tk, htk⟩ := GlobalTheory.TwistVal.exists_zpow y' t1 he ht1 (-m)
-  let z := t2.mul tk
-  have hz := GlobalTheory.TwistVal.val_mul y' t2 tk he ht2 htk
-  have hw : AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m +
-      (AllWt.wtOf (dat p i) (GlobalTheory.FlatLine.parWt (dat p i) (-w)) 0 + AllWt.wtOf (dat p i) 0 (-m)) =
-      AllWt.wtOf (dat p i) la 0 := by
-    rw [← AllWt.wtOf_add, ← AllWt.wtOf_add]
-    congr 1
-    · funext τ j
-      simp [GlobalTheory.FlatLine.parWt]
-    · ring
-  have hmem := z.cusp_sig _ (AllWt.even_wtOf _ _) f hf
-  rw [hw] at hmem
-  refine ⟨⟨f * z.sig, hmem⟩, ?_, ?_⟩
-  · show evI y' (f * z.sig) ≠ 0
-    rw [evI_mul]
-    exact mul_ne_zero hf0 (GlobalTheory.TwistVal.val_inv y' z he).1
-  · show vV T.V (evI y' (f * z.sig)) = vV T.V (evI y' f)
-    rw [evI_mul, vV_mul hf0 (GlobalTheory.TwistVal.val_inv y' z he).1, hz, add_zero]
 
 end

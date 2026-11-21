@@ -36,23 +36,4 @@ inductive InInd : GLRep g → List (GLRep g) → Prop
   | cons (π σ ρ : GLRep g) (S : List (GLRep g)) : IsIrrRep π.2.ρ → IsIrrRep ρ.2.ρ → InInd σ S →
       MapsToProd π.2.ρ σ.2.ρ ρ.2.ρ → InInd π (ρ :: S)
 
-def tameRep (χ : (ZMod g)ˣ →* ℂˣ) : GLRep g := ⟨1, Rep.of (Model.detRep 1 (Model.tame χ))⟩
-
-def SuppAdds (σ π : GLRep g) (t : ℕ) {s : ℕ} (χ : Fin s → (ZMod g)ˣ →* ℂˣ) : Prop :=
-  ∃ S S' : List (GLRep g), InInd π S ∧ InInd σ S' ∧
-    S.Perm (S' ++ (List.ofFn fun i => List.replicate t (tameRep (χ i))).flatten)
-
-def chainVecs {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) ℚ_[g]) V)
-    (r t : ℕ) {s : ℕ} (χ : Fin s → (ZMod g)ˣ →* ℂˣ) : Submodule ℂ V where
-  carrier := {v | ∀ (h : GL (Fin n) ℤ_[g]) (y : Fin s → Gn g t), tl r (red g n h : Mt g n) = 1 →
-    (∀ i : Fin s, InPar (r + i * t) (red g n h : Mt g n)) →
-    (∀ i : Fin s, br (r + i * t) t (red g n h : Mt g n) = (y i : Mt g t)) →
-    π (inc g n h) v = ((∏ i, χ i (Matrix.GeneralLinearGroup.det (y i)) : ℂˣ) : ℂ) • v}
-  add_mem' := fun {a b} ha hb h y h1 h2 h3 => by rw [map_add, ha h y h1 h2 h3, hb h y h1 h2 h3, smul_add]
-  zero_mem' := fun h y _ _ _ => by rw [map_zero, smul_zero]
-  smul_mem' := fun c v hv h y h1 h2 h3 => by rw [map_smul, hv h y h1 h2 h3, smul_comm]
-
-theorem InInd.irr {π : GLRep g} {S : List (GLRep g)} (h : InInd π S) : IsIrrRep π.2.ρ := by
-  cases h <;> assumption
-
 end GlobalTheory.GLp.Supp

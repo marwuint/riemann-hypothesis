@@ -14,7 +14,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Arak
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.PoinStatementPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.KronHolPsiStatementHolds
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeBallCentreInterpolationDetWeightSmallSignatuStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeBallCentreInterpolationDetWeightSmallSignatu
 
 open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 
@@ -94,6 +94,6 @@ theorem orbit_interp_deMul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   intro E _ _ _ r X hχ G x0 hx0 hFB h0 h1 s hs hsb
   by_cases hq : 4 ≤ X.p0 * (r - X.p0)
   · exact large r X G x0 hx0 hFB h0 h1 hq s hs hsb
-  · exact GlobalTheory.T.freeBallCentre_interpolation_detWeight_smallSignature E r X hχ G x0 hx0 hFB h0 h1 (by omega) s hs hsb
+  · exact _root_.GlobalTheory.Up.OrbitInterpSmall.orbit_interp_small E r X hχ G x0 hx0 hFB h0 h1 (by omega) s hs hsb
 
 end GlobalTheory.OrbitInterpWeight

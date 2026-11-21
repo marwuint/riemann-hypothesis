@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinNormEisensteinLeRadiusStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinNormEisensteinLeRadius
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -12,7 +12,7 @@ theorem isUnit_toDisc_frobS_E : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk 
   intro l hl K bk
   have hl2 : (2 : ℝ) ≤ l := by exact_mod_cast hl.out.two_le
   have hl0 : (0 : ℝ) < l := by linarith
-  have hE : ‖toDisc l (X : bk.S) bk.ρ₀ bk.E‖ ≤ (l : ℝ)⁻¹ := (GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk bk.S (RingHom.id _)).2.2.2
+  have hE : ‖toDisc l (X : bk.S) bk.ρ₀ bk.E‖ ≤ (l : ℝ)⁻¹ := (_root_.GlobalTheory.BSP.norm_E_le_radius l K bk bk.S (RingHom.id _)).2.2.2
   obtain ⟨v, hv⟩ := bk.isUnit_δ
   have hφ : frobS l bk.a bk.E = bk.E ^ l + (l : bk.S) * (v : bk.S) := by
     rw [hv]; exact (deltaS l bk.a).φ_eq bk.E

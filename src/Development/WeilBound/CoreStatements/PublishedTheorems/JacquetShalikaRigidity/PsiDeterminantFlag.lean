@@ -30,7 +30,7 @@ theorem dt_fl (hG0 : jumpWindows.G0) (hD0 : D0) (w : Pl E)
   obtain ⟨_, hmul, _, _, hUU, _, _, _, _, htor, hint⟩ := hD0 E k
   obtain ⟨_, _, hci, hcl, hcl', -⟩ := hG0 E k
   have h1 : Dt (fl k w n) = 1 := by
-    obtain ⟨t1, t2, -⟩ := GlobalTheory.T.localUpperUnipotent_adelic_upperUnipotent E k w n (fun i j hij => hn.1 hij) hn.2
+    obtain ⟨t1, t2, -⟩ := _root_.GlobalTheory.CuspRep.locTri_adelic E k w n (fun i j hij => hn.1 hij) hn.2
     exact hUU 0 _ ⟨t1, t2, fun i c hc => absurd hc (Nat.not_lt_zero _)⟩
   have h2 : Dt (fl k w κ) = 1 := by
     refine hint _ (hci w κ) fun v => ?_

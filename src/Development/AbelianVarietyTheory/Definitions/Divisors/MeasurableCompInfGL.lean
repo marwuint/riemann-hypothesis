@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.MemMspan
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmoothSpanLeMspan
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRapidInf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableToGLEntry
@@ -146,13 +146,6 @@ theorem IsRapidInf.integrable {X : Type} [MeasurableSpace X] {ν : Measure X} {k
           mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)
       _ = C * (‖k x‖ * height (γ x) ^ N) := by ring
 
-theorem rspan_ne_bot (π : CuspSub E a) : rspan π ≠ ⊥ := by
-  obtain ⟨φ, hφ, h0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot
-  intro hb
-  have h := mem_rspan hφ
-  rw [hb, Submodule.mem_bot] at h
-  exact h0 (Subtype.ext h)
-
 theorem rspan_le_leftInv (π : CuspSub E a) : rspan π ≤ SpanModel.leftInv E a := by
   refine rspan_le (fun φ hφ => (π.cusp φ hφ).1.left) (fun F hF h γ g => ?_) fun F hF X _ ν _ k γ _ γ' g => ?_
   · change F (ratGL E a γ * g * h) = F (g * h)
@@ -175,56 +168,8 @@ theorem rspan_eq_mspanR (π : CuspSub E a) : rspan π = mspanR π := by
   · refine sInf_le ⟨fun φ hφ => mem_rspan hφ, fun F hF h => rt_mem_rspan hF h, fun F hF X _ ν _ k γ hk => ?_⟩
     exact kerInf_mem_rspan hF ν hk
 
-open Classical in
-
-def plS (w : InfinitePlace E) : ℂ →ₙ+* Cinf E where
-  toFun z := Pi.single w z
-  map_mul' z z' := by ext w'; by_cases h : w' = w <;> simp [Pi.single_apply, h]
-  map_zero' := by ext w'; simp [Pi.single_apply]
-  map_add' z z' := by ext w'; by_cases h : w' = w <;> simp [Pi.single_apply, h]
-
-def plGL (w : InfinitePlace E) : GL (Fin a) ℂ →* GL (Fin a) (Cinf E) := cornerGL a (plS w)
-
-open Classical in
-
-theorem plGL_apply (w : InfinitePlace E) (g : GL (Fin a) ℂ) (i j : Fin a) (w' : InfinitePlace E) :
-    (plGL w g : Matrix (Fin a) (Fin a) (Cinf E)) i j w' =
-      if w' = w then (g : Matrix (Fin a) (Fin a) ℂ) i j else (1 : Matrix (Fin a) (Fin a) ℂ) i j := by
-  change (1 : Matrix (Fin a) (Fin a) (Cinf E)) i j w' - (Pi.single w ((1 : Matrix (Fin a) (Fin a) ℂ) i j) : Cinf E) w' +
-    (Pi.single w ((g : Matrix (Fin a) (Fin a) ℂ) i j) : Cinf E) w' = _
-  simp only [Pi.single_apply, Matrix.one_apply]
-  split_ifs <;> simp_all
-
-open Classical in
-
-theorem map_plGL (w : InfinitePlace E) (g : GL (Fin a) ℂ) (w' : InfinitePlace E) :
-    Matrix.GeneralLinearGroup.map (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w') (plGL w g) =
-      if w' = w then g else 1 := by
-  classical
-  ext i j
-  change (plGL w g : Matrix (Fin a) (Fin a) (Cinf E)) i j w' = _
-  rw [plGL_apply]
-  split_ifs <;> rfl
-
 theorem isRapidInf_dirac (y : GL (Fin a) (Cinf E)) :
     IsRapidInf (Measure.dirac ()) (fun _ : Unit => (1 : ℂ)) (fun _ => y) :=
   ⟨measurable_const, measurable_const, fun _ => integrable_const _⟩
-
-theorem kerInf_dirac (y : GL (Fin a) (Cinf E)) (F : GA E a → ℂ) (g : GA E a) :
-    kerInf (Measure.dirac ()) (fun _ : Unit => (1 : ℂ)) (fun _ => y) F g = F (g * infGL E a y) := by
-  simp [kerInf]
-
-example (π : CuspSub E a) : 1 ≤ htInf (1 : GL (Fin a) (Cinf E)) ∧ rspan π ≠ ⊥ := ⟨one_le_htInf 1, rspan_ne_bot π⟩
-
-example (π : CuspSub E a) {F : GA E a → ℂ} (hF : F ∈ rspan π) (y : GL (Fin a) (Cinf E)) :
-    (fun g => F (g * infGL E a y)) ∈ rspan π := by
-  have h := kerInf_mem_rspan hF (Measure.dirac ()) (isRapidInf_dirac y)
-  rwa [show kerInf (Measure.dirac ()) (fun _ : Unit => (1 : ℂ)) (fun _ => y) F = fun g => F (g * infGL E a y) from
-    funext (kerInf_dirac y F)] at h
-
-example (w : InfinitePlace E) : htInf (plGL (a := a) w 1) = htGL (1 : GL (Fin a) ℂ) ^ Fintype.card (InfinitePlace E) := by
-  rw [map_one]
-  unfold htInf
-  simp
 
 end GlobalTheory.JSW

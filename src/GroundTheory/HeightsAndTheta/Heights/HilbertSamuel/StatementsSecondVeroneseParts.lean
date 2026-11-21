@@ -102,10 +102,6 @@ def VeroneseTop.Statement : Prop :=
 def VeroneseGenDeg.Statement : Prop :=
   ∀ D : ℕ, 1 ≤ D → genDeg (ι := GlobalTheory (Idx D)) (coordIdeal ℤ (Veronese.x D)) D 1 = 2 ^ D
 
-example : (1 : ℕ) ≤ 1 := le_rfl
-
-example (D : ℕ) : CharZero (Veronese.Fld D) := inferInstance
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

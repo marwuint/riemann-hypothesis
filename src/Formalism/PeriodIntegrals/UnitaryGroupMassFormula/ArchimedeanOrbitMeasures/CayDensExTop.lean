@@ -1,11 +1,10 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.CayDensExSk
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.MeasLie
 
 noncomputable section
 
 namespace HcInf
 
-open NumberField IsDedekindDomain HcS.BasicNotions HcS.MainNotions HcS.MainNotions.StandardLattice HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes HcS.L2.Fam.SG.Tau
-  HcS.L2.Fam.SG.Tau.InfCmpCut Matrix MeasureTheory Filter Topology
+open NumberField IsDedekindDomain HcS.BasicNotions HcS.MainNotions HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes HcS.L2.Fam.SG.Tau Matrix MeasureTheory Filter Topology
 open scoped TensorProduct ENNReal NNReal
 
 section Upq
@@ -116,46 +115,7 @@ instance : SigmaCompactSpace (UpqT P Q) := inferInstance
 
 end Upq
 
-theorem cd_haar_finite (cd : CDHaar) : CdFin cd := by
-  intro P Q
-  haveI := cd.haar P Q
-  infer_instance
-
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hc : CMData F E) (T : Type) [Fintype T] (cd : CDHaar)
-
-theorem haar_unique' : HaarUnique F E hc T cd := by
-  intro W P Q Φ hmul hΦ hΦs μ hμ
-  haveI : SigmaFinite (cd.cd P Q) := cd_haar_finite cd P Q
-  haveI : (cd.cd P Q).IsHaarMeasure := cd.haar P Q
-  haveI : (μ.map Φ).IsMulLeftInvariant := by
-    constructor
-    intro h
-    have hLg : (fun x => Φ.symm h * x) = Φ.symm ∘ (fun y => h * y) ∘ Φ := by
-      funext x
-      apply Φ.injective
-      simp [hmul]
-    have hLgm : Measurable (fun x => Φ.symm h * x) := by
-      rw [hLg]
-      exact Φ.symm.measurable.comp ((measurable_const_mul h).comp Φ.measurable)
-    have hc : (fun x => h * x) ∘ Φ = Φ ∘ (fun x => Φ.symm h * x) := by
-      funext x
-      simp [hmul]
-    rw [Measure.map_map (measurable_const_mul h) Φ.measurable, hc,
-      ← Measure.map_map Φ.measurable hLgm, map_mul_left_eq_self]
-  haveI : IsFiniteMeasureOnCompacts (μ.map Φ) := by
-    constructor
-    intro K hK
-    rw [MeasurableEquiv.map_apply]
-    have hpre : Φ ⁻¹' K = Φ.symm '' K := by
-      ext x
-      constructor
-      · intro hx
-        exact ⟨Φ x, hx, Φ.symm_apply_apply x⟩
-      · rintro ⟨y, hy, rfl⟩
-        simpa using hy
-    rw [hpre]
-    exact (hK.image hΦs).measure_lt_top
-  exact ⟨_, Measure.isMulLeftInvariant_eq_smul (μ.map Φ) (Measure.pi fun _ : T => cd.cd P Q)⟩
 
 end HcInf

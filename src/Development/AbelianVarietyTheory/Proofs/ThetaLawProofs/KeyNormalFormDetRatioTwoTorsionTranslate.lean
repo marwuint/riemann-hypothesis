@@ -11,7 +11,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasisBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormalAtScale
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DetNeZeroOfNormalAt
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaNormalFormTranslateHalfPeriodStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaNormalFormTranslateHalfPeriod
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -116,7 +116,7 @@ theorem val_of_isTrl : Out.Laws → ThetaUnifAV → ∀ (x x' : KeyIn ℂ) (p : 
   subst hz'
   choose a' ha' ka using fun i => exists_half (a i) (hab.1 i) (n i)
   choose b' hb' kb using fun i => exists_half (b i) (hab.2 i) (m i)
-  obtain ⟨h', u', -, c', -, -, hc', hΛ, q₄, q₅, q₆⟩ := GlobalTheory.T.thetaNormalForm_translate_halfPeriod hL hU
+  obtain ⟨h', u', -, c', -, -, hc', hΛ, q₄, q₅, q₆⟩ := _root_.GlobalTheory.HalfTranslate.normalForm_translate hL hU
     ⟨x.P, x.g_pos, x.rig, x.rig_gen, th₀, hth₀, v₀, hb₀⟩
     ⟨x'.P, x'.g_pos, x'.rig, x'.rig_gen, th₀', hth₀', _, hb₀'⟩ x.P.g rfl u τ a b a' b' m n ν hab ⟨ha', hb'⟩ hu ka kb
     ⟨φ, hg, w, mu, rp, hp, hφ, hw, hmu, hrp, fun i => by simp, fun z j k hj hk => by

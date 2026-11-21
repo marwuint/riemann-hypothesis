@@ -59,74 +59,7 @@ variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
 theorem toLL_injective : Function.Injective Bw.toLL :=
   Subtype.val_injective.comp Bw.eO.injective
 
-theorem mem_crysSpan_of_rational {O' : Type} [CommRing O'] [IsDomain O'] (ι : O₀ →+* O')
-    (hι : Function.Injective ι) (T : (Ω ≃ₐ[E] Ω) →* GL (Fin m) O₀)
-    (c : ↥(Loc.GK Bw.Kw) → Fin m → ↥Bw.LL.1)
-    (hc : c ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (P.PD Bw.Kw) (Bw.rep (T.comp Gw.subtype)))
-    (y : ↥Gw → Fin m → FractionRing O')
-    (hy : ∀ g a, ∃ n d : O₀, (d ≠ 0 ∧ Bw.toLL d * c (Bw.e g) a = Bw.toLL n) ∧
-      algebraMap O' (FractionRing O') (ι d) * y g a = algebraMap O' (FractionRing O') (ι n))
-    (z : ↥Gw → Fin m → KmodO O') (hz : ∀ g a, z g a = Submodule.Quotient.mk (y g a)) :
-    z ∈ crysSpan Bw P ι T := by
-  haveI := compactSpace_GK Bw.Kw
-  obtain ⟨N, hN⟩ := exists_pow_mul_mem_OL Bw.LL c hc.1.1
-  let f : ↥Gw → Fin m → O₀ := fun g j => Bw.eO.symm ⟨_, hN (Bw.e g) j⟩
-  have hf : ∀ g j, Bw.toLL (f g j) = (l : Bw.LL.1) ^ N * c (Bw.e g) j := by
-    intro g j
-    show ((Bw.eO (Bw.eO.symm _) : Loc.OL Bw.LL) : Bw.LL.1) = _
-    rw [RingEquiv.apply_symm_apply]
-  have hφ : Function.Injective ((algebraMap O' (FractionRing O')).comp ι) :=
-    (IsFractionRing.injective O' (FractionRing O')).comp hι
-  have hl0 : (l : O₀) ≠ 0 := by
-    intro h
-    have := congrArg Bw.toLL h
-    rw [map_natCast, map_zero] at this
-    exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast this)
-  have hl1 : (l : FractionRing O') ≠ 0 := by
-    intro h
-    apply hl0
-    apply hφ
-    rw [map_natCast, map_zero, h]
-  refine Submodule.subset_span ⟨((l : FractionRing O') ^ N)⁻¹, f, ?_, fun g j => ?_⟩
-  · have := (Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (P.PD Bw.Kw) (Bw.rep (T.comp Gw.subtype))).smul_mem ((l : Bw.LL.1) ^ N) hc
-    unfold IsCrysCocycle
-    convert this using 1
-    funext g j
-    rw [hf, MulEquiv.apply_symm_apply]
-    rfl
-  · rw [hz]
-    congr 1
-    obtain ⟨n, d, ⟨hd, h1⟩, h2⟩ := hy g j
-    have h3 : d * f g j = (l : O₀) ^ N * n := by
-      apply toLL_injective Bw
-      rw [map_mul, map_mul, hf, map_pow, map_natCast, ← h1]
-      ring
-    have h4 := congrArg ((algebraMap O' (FractionRing O')).comp ι) h3
-    rw [map_mul, map_mul, map_pow, map_natCast] at h4
-    simp only [RingHom.comp_apply] at h4
-    have hd' : algebraMap O' (FractionRing O') (ι d) ≠ 0 := fun h =>
-      hd (hφ (by rw [map_zero]; exact h))
-    rw [eq_inv_mul_iff_mul_eq₀ (pow_ne_zero _ hl1)]
-    apply mul_left_cancel₀ hd'
-    rw [h4, ← h2]
-    ring
-
 end Local
-
-theorem Trep_eq_actDiv (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (ψ : GE D →* (D.ntw.Ok i k)ˣ)
-    (g : GE D) (hg : ψ g = 1) (x : Fin D.R.r → KmodO (D.ntw.Ok i k)) :
-    Gen.Trep i s k ψ g x = actDiv (Formalism.MainNotions.N.mapRep (toOk D i k) (latT D i s)) g x := by
-  funext a
-  have h : ∀ b, ((Formalism.MainNotions.N.mapRep (toOk D i k) (latT D i s) g : GL _ _) : Matrix _ _ _) a b =
-      Gen.phiK D.ntw i k (Gen.Tmat i s g a b) := by
-    intro b
-    rw [← Gen.Tgl_coe]
-    rfl
-  simp only [actDiv, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply, h]
-  simp only [Gen.Trep, twRep, MonoidHom.coe_mk, OneHom.coe_mk, hg, inv_one, one_mul, LinearMap.smul_apply,
-    Pi.smul_apply, matAct, LinearMap.coe_mk, AddHom.coe_mk, Finset.smul_sum, smul_smul, Gen.Tmat,
-    Matrix.smul_apply, smul_eq_mul, map_mul, Matrix.map_apply]
-  rfl
 
 theorem mem_of_mk_mem_span {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G] [AddCommGroup M]
     [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
@@ -150,20 +83,5 @@ theorem mem_of_mk_mem_span {R G M : Type} [CommRing R] [Group G] [TopologicalSpa
     hle hw
   rw [Submodule.comap_map_mkQ, sup_eq_right.2 hB'] at h2
   exact h2
-
-theorem mem_bkAt_of_mem_bk : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (ψ : GE D →* (D.ntw.Ok i k)ˣ) (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i)), (∀ σ ∈ decAt D v, ψ σ = 1) → ∀ z : ReciprocityTheory.Gal.Z1 (Gen.Trep i s k ψ), ReciprocityTheory.Gal.resH1 (Gen.Trep i s k ψ) (decAt D v).subtype continuous_subtype_val (Submodule.Quotient.mk z) ∈ Gen.bk (bk0 D) i s k ψ v → (z : GE D → Fin D.R.r → KmodO (D.ntw.Ok i k)) ∈ bkAt (D.ntwbr i v hv) (D.loc (D.ntw.l i)) (toOk D i k) (latT D i s) := by
-  intro D i s k ψ v hv hψ z hz
-  replace hz := ((Gen.bk.eq_1 (bk0 D) i s k ψ v).trans (dif_pos hv)).le hz
-  refine mem_of_mk_mem_span ((Gen.Trep i s k ψ).comp (decAt D v).subtype)
-    (crysSpan (D.ntwbr i v hv) (D.loc (D.ntw.l i)) (toOk D i k) (latT D i s) ⊔
-      cobOn ((Formalism.MainNotions.N.mapRep (toOk D i k) (latT D i s)).comp (decAt D v).subtype) ⊤) ?_ _ ?_
-    (restrictCocycles1 (Gen.Trep i s k ψ) (decAt D v).subtype continuous_subtype_val z) hz
-  · intro x
-    refine Submodule.mem_sup_right ⟨x, fun g _ => ?_⟩
-    exact congrArg (· - x) (Trep_eq_actDiv D i s k ψ g (hψ g g.2) x)
-  · rintro x ⟨w, c, y, hc, hy, hw, hx⟩
-    refine ⟨w, Submodule.mem_sup_left ?_, hx⟩
-    exact mem_crysSpan_of_rational (D.ntwbr i v hv) (D.loc (D.ntw.l i))
-      (toOk D i k) ((D.ntw.Ok_inj i k).comp (D.ntw.O_inj i)) (latT D i s) c hc y hy _ hw
 
 end GlobalTheory.BlochKatoIntegralScalars

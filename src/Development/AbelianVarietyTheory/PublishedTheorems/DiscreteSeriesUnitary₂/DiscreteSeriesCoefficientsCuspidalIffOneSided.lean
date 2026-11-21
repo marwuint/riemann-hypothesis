@@ -23,16 +23,6 @@ theorem discreteSeriesCoefficientsCuspidal_iff : DiscreteSeriesCoefficientsCuspi
 
 namespace CoefficientsCuspidal
 
-variable {n : ℕ} {ε : Fin n → Bool}
-
-theorem herm_mulVec (g : UJ ε) (a b : Fin n → ℂ) :
-    herm (Jm ε) (umat g *ᵥ a) (umat g *ᵥ b) = herm (Jm ε) a b := by
-  have hg : (umat g)ᴴ * Jm ε * umat g = Jm ε := g.2
-  unfold herm
-  rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hg]
-
-def conjH (g : UJ ε) : UJ ε ≃ₜ UJ ε := (Homeomorph.mulLeft g).trans (Homeomorph.mulRight g⁻¹)
-
 end CoefficientsCuspidal
 
 end GlobalTheory.Published

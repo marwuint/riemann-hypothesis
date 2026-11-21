@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.PolarizedGaloisRepPublished
-import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiAboveLHyp
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GaloisRepOfPolarizedCuspidal
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.IsTemperedGLOfIsUnitaryLSeg
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualIsConjByOne
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTheRecOfIsRec
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.WignerVanishingGL
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiLocalGlobalDual
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
@@ -88,73 +91,12 @@ def barG : GL (Fin a) (Cinf E) →* GL (Fin a) (Cinf E) := GeneralLinearGroup.ma
 
 theorem barG_val (y : GL (Fin a) (Cinf E)) (i j : Fin a) : (barG y).val i j = star (y.val i j) := rfl
 
-theorem barG_barG (y : GL (Fin a) (Cinf E)) : barG (barG y) = y := by
-  ext i j : 2
-  simp [barG_val]
-
-theorem barG_det (y : GL (Fin a) (Cinf E)) : (barG y).val.det = star y.val.det :=
-  ((starRingEnd (Cinf E)).map_det y.val).symm
-
-def barH : Herm E a →ₗ[ℝ] Herm E a where
-  toFun X := ⟨X.1.map star, by
-    have h : star X.1 = X.1 := X.2
-    change star (X.1.map star) = X.1.map star
-    ext i j : 1
-    have := congrFun (congrFun h j) i
-    change star (star (X.1 j i)) = star (X.1 i j)
-    rw [star_star]
-    exact this.symm⟩
-  map_add' X Y := Subtype.ext (by ext i j; simp)
-  map_smul' c X := Subtype.ext (by ext i j; simp)
-
 variable [NumberField E] [IsTotallyComplex E]
-
-theorem coord_star (τ : E →+* ℂ) (x : Cinf E) : coord τ (star x) = coord (ComplexEmbedding.conjugate τ) x := by
-  have hne : ComplexEmbedding.conjugate τ ≠ τ := fun h =>
-    IsTotallyComplex.complexEmbedding_not_isReal τ (ComplexEmbedding.isReal_iff.2 h)
-  unfold coord
-  rw [InfinitePlace.mk_conjugate_eq]
-  rcases InfinitePlace.embedding_mk_eq τ with h | h
-  · rw [if_pos h, if_neg (by rw [h]; exact hne.symm)]
-    simp
-  · rw [if_neg (by rw [h]; exact hne), if_pos h]
-    simp
-
-theorem regFun_comp {f : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E a) : (fun y => f (barG y)) ∈ regFun E a := by
-  induction hf using Algebra.adjoin_induction with
-  | mem f hf =>
-    rcases hf with ⟨τ, i, j, rfl⟩ | ⟨τ, rfl⟩
-    · exact Algebra.subset_adjoin (Or.inl ⟨_, i, j, funext fun y => coord_star τ _⟩)
-    · exact Algebra.subset_adjoin (Or.inr ⟨ComplexEmbedding.conjugate τ, funext fun y => by
-        simp only [barG_det, coord_star]⟩)
-  | algebraMap c => exact Subalgebra.algebraMap_mem _ c
-  | add f g _ _ h1 h2 => exact add_mem h1 h2
-  | mul f g _ _ h1 h2 => exact mul_mem h1 h2
-
-abbrev barRep (Ξ : AlgRep E a) : AlgRep E a where
-  d := Ξ.d
-  mat := Ξ.mat.comp barG
-  reg i j := regFun_comp (Ξ.reg i j)
-  pos := Ξ.pos
-  irred W hW := Ξ.irred W fun y v hv => by
-    have := hW (barG y) v hv
-    rwa [MonoidHom.comp_apply, barG_barG] at this
-
-def barL : Lie E a →L[ℝ] Lie E a :=
-  LinearMap.toContinuousLinearMap
-    { toFun := fun X i j => star (X i j)
-      map_add' := fun X Y => by ext i j; simp
-      map_smul' := fun c X => by ext i j; simp }
 
 end GlobalTheory.ConjCoh
 
 end
 
 namespace GlobalTheory.ConjCoh
-
-open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
-open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp
-attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
-open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 
 end GlobalTheory.ConjCoh

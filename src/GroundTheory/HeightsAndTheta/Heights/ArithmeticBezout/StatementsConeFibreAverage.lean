@@ -22,17 +22,6 @@ def ConeFibreAverage.Statement : Prop :=
           K * Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ)
             {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ coneSet h J}
 
-theorem ConeFibreAverage.hypotheses_inhabited :
-    IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧
-      ∀ᵐ π : Fin 1 → Fin 1 → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 1),
-        fibreCount (HermNorm.std 1) ⊥ π w ≠ ⊤ := by
-  obtain ⟨hJ, hfib⟩ := ConeMassOfFibre.hypotheses_inhabited
-  refine ⟨hJ, ?_⟩
-  filter_upwards [hfib] with π hπ
-  filter_upwards [hπ] with w hw
-  rw [hw]
-  exact ENat.natCast_ne_top 1
-
 end
 
 end GroundTheory.Heights₂.Heights

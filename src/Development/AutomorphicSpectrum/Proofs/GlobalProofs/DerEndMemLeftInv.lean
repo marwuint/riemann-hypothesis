@@ -8,14 +8,14 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DiscreteSpectr
 import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCI
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliConstantTermVanishing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockEmbNormalises
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GlRelationsDerivativePreservedStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GelfandEigenvalueCasimirScalarStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AutomorphicFunctionRestrictBlockStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BlockEmbeddingAdaptedBasisStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedBasisBlockEntriesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedBasisConjugateZeroEntriesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConjugatedMatrixUnitEntriesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.OrthogonalSubspaceWittFrameExtensionStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GlRelationsDerivativePreserved
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GelfandEigenvalueCasimirScalar
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AutomorphicFunctionRestrictBlock
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BlockEmbeddingAdaptedBasis
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedBasisBlockEntries
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedBasisConjugateZeroEntries
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConjugatedMatrixUnitEntries
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.OrthogonalSubspaceWittFrameExtension
 
 noncomputable section
 
@@ -48,8 +48,8 @@ theorem resX (hW : IsWittFrame D.sp.cm.sig V.gram X Y) {l d : ℕ} (h : l + d �
   let q' : Fin V.rank := ⟨V.rank - 1 - (l + i.val), by omega⟩
   have hp' : p'.val + l + j.val + 1 = V.rank := by simp only [p']; omega
   have hq' : q'.val + l + i.val + 1 = V.rank := by simp only [q']; omega
-  have e1 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' 1 x
-  have e2 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' Complex.I x
+  have e1 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' 1 x
+  have e2 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' Complex.I x
   set Ex := C.1.map (tauE D τ) * Matrix.single p q 1 * (C.1.map (tauE D τ))⁻¹
   set Ey := C.1.map (tauE D τ) * Matrix.single p' q' 1 * (C.1.map (tauE D τ))⁻¹
   have v : ∀ (a b : ℂ), (derEnd hθ τ (a • Ex - b • Ey) F).1 (ι x) =
@@ -77,8 +77,8 @@ theorem resY (hW : IsWittFrame D.sp.cm.sig V.gram X Y) {l d : ℕ} (h : l + d �
   have hi := i.isLt
   let p : Fin V.rank := ⟨l + i.val, by omega⟩
   let q : Fin V.rank := ⟨l + j.val, by omega⟩
-  have e1 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' 1 x
-  have e2 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' (-Complex.I) x
+  have e1 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' 1 x
+  have e2 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' (-Complex.I) x
   set Ex := C.1.map (tauE D τ) * Matrix.single p q 1 * (C.1.map (tauE D τ))⁻¹
   set Ey := C.1.map (tauE D τ) * Matrix.single p' q' 1 * (C.1.map (tauE D τ))⁻¹
   have v : ∀ (a b : ℂ), (derEnd hθ τ (a • Ex - b • Ey) F).1 (ι x) =
@@ -154,7 +154,7 @@ theorem van (hθ : IsInfFam θ) (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (T : F
     (derEnd hθ τ (C.1.map (tauE D τ) * Matrix.single p q 1 * (C.1.map (tauE D τ))⁻¹) H).1 (ι x) = 0 := by
   have hcm := (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm).1
   have hJ := (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm).2 V
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   obtain ⟨hHer, hUn⟩ := R.1 τ
   set P := C.1.map (tauE D τ) with hP
   have hPu := isUnit_det_map C (tauE D τ)
@@ -169,7 +169,7 @@ theorem van (hθ : IsInfFam θ) (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (T : F
       ∃ e : ℕ, (e = l ∨ e = l + d ∨ e + l + d = V.rank ∨ e + l = V.rank) ∧ a.val < e ∧ e ≤ b.val) →
       Rder θ V τ A H.1 (ι x) = 0 := by
     intro A hA hs
-    have hu := GlobalTheory.T.adapted_basis_block_entries D θ hθ V m X Y hW T l d h hend hprev C hC τ A hA hs
+    have hu := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UnipOne.oneP_mem_unip D θ hθ V m X Y hW T l d h hend hprev C hC τ A hA hs
     have : (fun t : ℝ => H.1 (ι x * oneP θ V τ A t)) = fun _ => H.1 (ι x) := by
       funext t
       have e : ι x * oneP θ V τ A t = (ι x * oneP θ V τ A t * (ι x)⁻¹) * ι x := by group
@@ -188,7 +188,7 @@ theorem van (hθ : IsInfFam θ) (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (T : F
         by_contra hc
         exact h2 (Matrix.single_apply_of_ne _ _ _ _ _ (by tauto))
       exact hpq
-    · exact GlobalTheory.T.adapted_basis_conjugate_zero_entries D V m X Y hW l d h C hC τ p q a b hpq h1
+    · exact _root_.GlobalTheory.CompanionTheory.Hypotheses₂.ConjAdapted.conj_strict D V m X Y hW l d h C hC τ p q a b hpq h1
   have hA : (1 / 2 : ℂ) • (Z + conjAt V τ Z) ∈ lieAt V τ := by
     have e : Z + conjAt V τ Z = Z + (1 : ℂ) • -((gramAt D V τ)⁻¹ * Zᴴ * gramAt D V τ) := by rw [one_smul]; rfl
     change ((1 / 2 : ℂ) • (Z + conjAt V τ Z))ᴴ * gramAt D V τ + gramAt D V τ * ((1 / 2 : ℂ) • (Z + conjAt V τ Z)) = 0
@@ -331,11 +331,11 @@ theorem core [IsTotallyComplex D.host.E] (hθ : IsInfFam θ) {m : ℕ} {X : Matr
       map_smul' := fun _ _ => rfl }
   let U : Subgroup (GA D V) := unip D.sp.cm.sig V.gram X T
   let W₀ : Set (GlobalTheory.Mem.AutSpace.SmFun θ V) := {F | F ∈ leftInv θ U ∧ ∀ k, gelf θ V τ' k F.1 = ck k • F.1}
-  obtain ⟨q, hq, hq0⟩ := GlobalTheory.T.gl_relations_triangular_annihilation _ _ 5 V.rank (sizes l d V.rank) hS Xf (GlobalTheory.T.gl_relations_derivative_preserved D θ hθ V τ' M hM) (leftInv θ U)
+  obtain ⟨q, hq, hq0⟩ := _root_.GlobalTheory.CompanionTheory.Dblock.CentreManyBlocks.monic_relations_along_block _ _ 5 V.rank (sizes l d V.rank) hS Xf (_root_.GlobalTheory.CompanionTheory.DerGlRel.glRel_derEnd_family D θ hθ V τ' M hM) (leftInv θ U)
     (fun p q F hF => derEnd_mem_leftInv hθ U τ' _ F hF) L
     (fun p q hpq F hF => Subtype.ext (funext fun x => hvan p q (cut_of_blk hN hS p q hpq) F hF x)) W₀ (fun F hF => hF.1)
     (fun v => by
-      obtain ⟨s, hs⟩ := GlobalTheory.T.gelfand_eigenvalue_casimir_scalar D θ hθ V τ' M hM hsp ck v
+      obtain ⟨s, hs⟩ := _root_.GlobalTheory.CompanionTheory.CoreGL.qdet_scalar_of_gelf D θ hθ V τ' M hM hsp ck v
       exact ⟨s, fun F hF => hs F hF.2⟩) 1 (u + ((d : ℂ) - 1) / 2)
   refine ⟨q, hq, fun ψ hψ hg f hf => ?_⟩
   have e0 : f = L ψ := Subtype.ext (funext hf)
@@ -429,9 +429,9 @@ theorem monic_block : ∀ (D : D7) [IsTotallyComplex D.host.E] (θ : D.what₂.T
           (∀ x, f.1 x = φ (ι x * g₀)) → Polynomial.aeval (GlobalTheory.CuspRep.cap (a := d) τ u) q f = 0 := by
   intro D _ θ hθ V c m X Y hW T l d h ι hι hd hblk hend hprev τ u
   classical
-  obtain ⟨C, hC⟩ := GlobalTheory.T.exists_adapted_witt_basis D V m X Y hW
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.AdaptedBasis.exists_isAdapted D V m X Y hW
   have hN : 2 * (l + d) ≤ V.rank := by have := hC.le; omega
-  have hsm := GlobalTheory.T.automorphic_function_restrict_block D θ hθ V m X Y hW l d h ι hι
+  have hsm := _root_.GlobalTheory.CompanionTheory.CuspSmooth.mem_Sm_blockEmb_smFun D θ hθ V m X Y hW l d h ι hι
   obtain ⟨τ', hτ'⟩ := Formalism.L2.Fam.ThC.tauE_or (D := D) τ
   set P : Matrix (Fin V.rank) (Fin V.rank) ℂ := C.1.map (tauE D τ') with hP
   set Q : Matrix (Fin V.rank) (Fin V.rank) ℂ := P⁻¹ with hQ

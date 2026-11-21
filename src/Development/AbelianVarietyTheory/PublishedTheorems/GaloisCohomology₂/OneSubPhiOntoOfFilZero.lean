@@ -25,11 +25,7 @@ variable {l : ℕ} [Fact l.Prime]
 
 theorem tensorInj (h : FontaineBcris) (C : Core l) : C.TensorInj := (h l C).1
 
-theorem phiInj (h : FontaineBcris) (C : Core l) : C.PhiInj := (h l C).2.1
-
 theorem iotaInj (h : FontaineBcris) (C : Core l) : C.IotaInj := (h l C).2.2.1
-
-theorem fund (h : FontaineBcris) (C : Core l) : C.Fund := (h l C).2.2.2.1
 
 theorem ontoFilZero (h : FontaineBcris) (C : Core l) : PhiSubOneOntoFilZero C := (h l C).2.2.2.2.1
 
@@ -54,8 +50,6 @@ theorem of_rest (h : ∀ (l : ℕ) [Fact l.Prime] (C : Core l),
     C.TensorInj ∧ C.Fund ∧ C.FundOnto ∧ C.Regular) : FontaineBcris := fun l _ C =>
   ⟨(h l C).1, phiB_injective l, (ULaws.u_laws l C).2.2.2.1, (h l C).2.1,
     filZero_of_onto (one_sub_phi_onto l C) (h l C).2.2.1, (h l C).2.2.1, (h l C).2.2.2⟩
-
-example (l : ℕ) [Fact l.Prime] : Nonempty (Core l) := nonempty_core l
 
 end FontaineBcris
 

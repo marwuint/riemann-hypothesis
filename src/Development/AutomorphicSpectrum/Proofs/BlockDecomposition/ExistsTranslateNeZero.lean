@@ -1,6 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaBound.lift_levelP_alt₂
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSplitAdelicMatrixLocalComponentStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSplitAdelicMatrixLocalComponent
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
 
 noncomputable section
 
@@ -54,7 +55,7 @@ theorem lie_comm' (X : Lie E a) (k : GL (Fin a) (Af E)) :
 theorem fin_translate (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (k : GL (Fin a) (Af E))
     (g : GL (Fin a) (w.adicCompletion E)) {v : π.V} (hv : IsFix π w v) :
     finRep E a k (π.locRep w g v).1 ∈ sphSpan π w := by
-  obtain ⟨h, gw, e, hc⟩ := GlobalTheory.T.exists_split_adelicMatrix_localComponent E a w (finGL E a (k * locGL E a w g))
+  obtain ⟨h, gw, e, hc⟩ := _root_.GlobalTheory.CuspGeneric.exists_split_loc E a w (finGL E a (k * locGL E a w g))
   obtain ⟨h', hh'⟩ : ∃ h' : GL (Fin a) (Af E), h' = k * locGL E a w g * (locGL E a w gw)⁻¹ := ⟨_, rfl⟩
   have hh : h = finGL E a h' := by
     rw [hh', map_mul, map_inv, e, mul_inv_cancel_right]

@@ -85,11 +85,6 @@ theorem isRegularRing_of_smooth_field (k A : Type*) [Field k] [CommRing A] [Alge
     [Algebra.Smooth k A] : IsRegularRing A :=
   isRegularRing_of_smooth k A
 
-theorem isDomain_localization_of_smooth (k A : Type*) [Field k] [CommRing A] [Algebra k A]
-    [Algebra.Smooth k A] (q : Ideal A) [q.IsPrime] : IsDomain (Localization.AtPrime q) :=
-  have := isRegularLocalRing_localization_of_smooth k A q
-  IsRegularLocalRing.isDomain
-
 open AlgebraicGeometry CategoryTheory
 
 theorem isRegularLocalRing_stalk_of_smooth {X : Scheme.{u}} {R : CommRingCat.{u}} [IsRegularRing R]

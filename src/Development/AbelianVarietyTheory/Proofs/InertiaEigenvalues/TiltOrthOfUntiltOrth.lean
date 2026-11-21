@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltSumSubLeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltSumSubLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltFrobeniusLaurentSeriesHasSumBoundFrobenius
 open Formalism.Per GlobalTheory.PSer
 open scoped Formalism.Per
@@ -50,7 +50,7 @@ theorem tilt_orth_of_untilt_orth : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (m : F
     rw [Finset.sum_sigma]
     refine Finset.sum_congr rfl fun i _ => ?_
     simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, map_natCast]
-  obtain ⟨hd, -⟩ := GlobalTheory.T.norm_sh_sum_sub_sum_sh_le l ((_ : Fin h) × ℕ) ((Finset.univ : Finset (Fin h)).sigma (fun i => Finset.range (n i)))
+  obtain ⟨hd, -⟩ := _root_.GlobalTheory.untilt_sum_sub_le l ((_ : Fin h) × ℕ) ((Finset.univ : Finset (Fin h)).sigma (fun i => Finset.range (n i)))
     M (fun p => m p.1) hM0 (fun p _ => hMle p.1)
   rw [← hsum, hsum2] at hd
   have ho := horth (fun i => ((n i : ℕ) : ℚ_[l])) j

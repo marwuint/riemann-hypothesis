@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GlobSpecOfExi
 import Formalism.GradedWeylDivisibility.FinalD
 import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PosOkId
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCofactorTwistHighestWeightStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCofactorTwistHighestWeight
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CofactorTwistRelationRowDivSwapStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowDivRowWeightStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowDivRowWeight
 
 open MvPolynomial NumberField IsDedekindDomain Formalism.GradedWeylDivisibility Formalism.MainNotions.G Formalism.L2.Col Formalism.HermitianLatticesTheory Formalism.BasicNotions Formalism.L2.DIV GlobalTheory.GO GlobalTheory.ValCmp
 
@@ -16,14 +16,14 @@ theorem applyWord_hw_cofRel (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (ν :
     (∃ μ : Fin (m + 1) → ℕ, IsWeightedHomogeneous (rowW (m + 1) (m + 1)) (applyWord R w (hw R le_rfl ν)) μ) ∧
       ∃ g ∈ weyl R (m + 1) (m + 1) le_rfl (nuDual ν), CofRel R m ν (applyWord R w (hw R le_rfl ν)) g := by
   induction w with
-  | nil => exact ⟨⟨_, hwRowWeight R _ _ le_rfl ν hν⟩, GlobalTheory.T.exists_cofactorTwist_highestWeight R m ν hν h0⟩
+  | nil => exact ⟨⟨_, hwRowWeight R _ _ le_rfl ν hν⟩, _root_.GlobalTheory.ValCmp.exists_cofRel_hw R m ν hν h0⟩
   | cons x w ih =>
     obtain ⟨a, b, k⟩ := x
     obtain ⟨⟨μ, hμ⟩, g, hg, hrel⟩ := ih
     have hstep : applyWord R ((a, b, k) :: w) (hw R le_rfl ν) =
         rowDiv R a b k (applyWord R w (hw R le_rfl ν)) := rfl
     rw [hstep]
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.isWeightedHomogeneous_div_and_diag_eq_choose_smul R _ _ μ _ hμ
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.ValCmp.rowDiv_rowWeight R _ _ μ _ hμ
     refine ⟨h1 a b k, ?_⟩
     by_cases hab : a = b
     · subst hab

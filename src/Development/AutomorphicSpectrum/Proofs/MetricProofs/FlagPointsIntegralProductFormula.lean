@@ -7,7 +7,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.Mor
 import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 import GroundTheory.HeightsAndTheta.Heights.Intersections.NotLtLtOfMemMinimalPrimes
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreePolynomialEvalStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreePolynomialEval
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 noncomputable section
@@ -140,6 +142,6 @@ theorem borel_word : GlobalTheory.CompanionTheory.Ar.PB.Inputs → ReciprocityTh
   rintro hI ⟨II, hII⟩ Ψ _ _ _ N w hN
   refine ptsIntegral_word_eq _ ?_ rfl (fun l => ?_) w
   · simp [Top.dimFl, GroundTheory.Heights₂.Heights.LowerBoundFree.dimFl, GroundTheory.Heights₂.Heights.antisymDegree, Nat.choose_two_right]
-  · exact GlobalTheory.T.flag_degree_polynomial_eval hI II hII Ψ N (fun τ i => l (τ, i)) hN
+  · exact _root_.GlobalTheory.CompanionTheory.Relay.flag_degree_polynomial_eval hI II hII Ψ N (fun τ i => l (τ, i)) hN
 
 end GlobalTheory.CompanionTheory.Ar.Giv

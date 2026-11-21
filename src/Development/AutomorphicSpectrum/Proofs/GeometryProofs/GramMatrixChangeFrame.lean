@@ -2,7 +2,8 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeHermitianFormExistsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeHermitianFormExists
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 
 noncomputable section
 
@@ -20,7 +21,7 @@ theorem gramAt_unique_of_polarisedAt : ∀ (E : Type) [Field E] [NumberField E] 
   have hvv : v = v' := funext fun i => GlobalTheory.CompanionTheory.Ar.LieModel.ValAt.unique hgen (hv i) (hv' i)
   subst hvv
   obtain ⟨V, _, _, ⟨M'⟩⟩ := GlobalTheory.CompanionTheory.Ar.lieModel_exists 𝔐.X 𝔐.t.G ℂ z
-  obtain ⟨h, hh, -⟩ := GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z V M' hP
+  obtain ⟨h, hh, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_hodgeInnerProduct_form E H 𝔐.X 𝔐.t z V M' hP
   have hpre : ∀ i, ∃ e, M'.pt e = v i := by
     intro i
     have hT : GlobalTheory.CompanionTheory.Ar.IsTanAt 𝔐.t.G z (v i) := by

@@ -3,11 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TransferOn
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffDerivSnoc
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStageLatticeStabilizerParamsOffSetStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalParameterTransferAllFinitePlacesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaIntegralConjCuspFormParameterTransferStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStepCharsUnramifiedOffSStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockVectorsLatticeVacuaOffFiniteSetStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStageLatticeStabilizerParamsOffSet
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalParameterTransferAllFinitePlaces
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaIntegralConjCuspFormParameterTransfer
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStepCharsUnramifiedOffS
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockVectorsLatticeVacuaOffFiniteSet
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
@@ -45,8 +46,8 @@ theorem rankY_succ {D : D7} (k : ℕ) : D.R.rankY (k + 1) = D.R.rankY k + D.R.t 
 
 theorem upPar_of_transfer : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → ∀ D : D7, LevFacts D → UpPar D := by
   intro hRD hHowe D _ hND c hc k hk s s' hs hs' p hp u B φ hu v _ hne
-  have hlat' := (GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hc (k + 1) hk s' hs').2
-  have hlat := (GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hc k hk.le s hs).2
+  have hlat' := (_root_.GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat D c hc (k + 1) hk s' hs').2
+  have hlat := (_root_.GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat D c hc k hk.le s hs).2
   set y := PiLocalization₂.val u v with hy
   have hy0 : y ≠ 0 := by
     intro h; apply hne; funext x; simp [Step.up, h]
@@ -62,9 +63,9 @@ theorem upPar_of_transfer : GlobalTheory.Published.CuspRapidDecay → GlobalTheo
   rw [hlat', hconj]
   intro w0 hw0 w h
   have hw0' : w0 ∉ c.S := by simpa using hw0
-  exact GlobalTheory.T.thetaIntegral_conjCuspForm_parameterTransfer hRD D (GlobalTheory.T.sphericalParameterTransfer_all_finitePlaces hHowe D) c.ψ c.θ s.V s'.V _ _ p.ω hc.inf hp.weil D.R.t hrank s.ν s.fd
-    hs.haar hs.fund w0 (fun w' hw' => GlobalTheory.T.thetaChain_step_chars_unramified_off_S D c hc k hk w0 hw0' w' hw') w h (p.pt φ)
-    (GlobalTheory.T.fock_vectors_lattice_vacua_off_finite_set D hND c hc k hk s s' hs hs' p hp φ w0 hw0') y (B w) hYA.1 hYA.2 (hyB w0 hw0 w h) hne'
+  exact _root_.GlobalTheory.ChainOnto.thetaIntegral_param hRD D (_root_.GlobalTheory.ChainOnto.transferOn_all hHowe D) c.ψ c.θ s.V s'.V _ _ p.ω hc.inf hp.weil D.R.t hrank s.ν s.fd
+    hs.haar hs.fund w0 (fun w' hw' => _root_.GlobalTheory.ChainOnto.step_chars_unrAt D c hc k hk w0 hw0' w' hw') w h (p.pt φ)
+    (_root_.GlobalTheory.ChainOnto.fock_vacFin_off D hND c hc k hk s s' hs hs' p hp φ w0 hw0') y (B w) hYA.1 hYA.2 (hyB w0 hw0 w h) hne'
 
 end GlobalTheory.ChainOnto
 

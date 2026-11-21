@@ -8,9 +8,14 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ExistsIntegralM
 import Formalism.LocalRingCardinality.IntCastDvdOfDvdIntegers
 import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.LevelNeQ
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ColumnFieldRamificationIdxInEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemberBadPrimesNoConjugatePairStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DetUnitaryStabiliserSelfDualLatticeNormOneStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ColumnFieldRamificationIdxInEqOne
+import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
+import Formalism.LocalToGlobal.Columns.BaseHost
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemberBadPrimesNoConjugatePair
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DetUnitaryStabiliserSelfDualLatticeNormOne
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntegralDetOfStable
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmulLatMatOf
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelDatumPeriodIdealFgAndSelfDual
 
 noncomputable section
 
@@ -27,7 +32,7 @@ theorem termLaw_of_xi : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : 
   have hz0 : z ≠ 0 := Units.ne_zero _
   have hSD' : IsSDLat D.host.E _ (t.seam.lat ((t.rd u μ).N (i + 1) c')) :=
     t.O_lat u μ (i + 1) c' ▸ ((t.O u μ).lat (i + 1) c').2
-  obtain ⟨hzs, hzi, hprod1⟩ := GlobalTheory.T.det_unitaryStabiliser_selfDualLattice_normOne D t.X t.seam t.χ hok t.χ_ok _ _ hSD' γ hγ
+  obtain ⟨hzs, hzi, hprod1⟩ := _root_.GlobalTheory.DetFields.det_of_stab D t.X t.seam t.χ hok t.χ_ok _ _ hSD' γ hγ
   let eZ : Fin D.R.m → t.X.Tau → ℤ := fun j τ => (D.chTw u μ).sDiv j (t.seam.iT τ) + ((D.R.N j / 2 : ℕ) : ℤ)
   have heZ : ∀ j τ, ((eZ j τ : ℤ) : ℚ) = (D.hc (t.seam.iT τ)).e j := by
     intro j τ
@@ -43,7 +48,7 @@ theorem termLaw_of_xi : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : 
     have e : (fun j τ => ((eZ j τ : ℤ) : ℚ)) = (fun j τ => (D.hc (t.seam.iT τ)).e j) := funext fun j => funext fun τ => heZ j τ
     rw [e]; exact hTied
   have hP := GlobalTheory.NormOneUnit.prod_muAt t.Ch t.sel (t.tup μ) (t.cst μ) t.glob.σ₀ eZ t.glob.mu0 eta hX t.pr_ok hsel hgS
-    (GlobalTheory.T.columnField_ramificationIdxIn_eq_one D t.X t.seam hX hok) hTied' ⟨i, hi⟩ z hzs hzi
+    (_root_.GlobalTheory.ColumnField.ramificationIdxIn_eq_one D t.X t.seam hX hok) hTied' ⟨i, hi⟩ z hzs hzi
   rw [t.glob_σ] at hP
   set M := t.seam.σ₀ (∏ P : rowSG t.Pr t.sel (t.tup μ), muAt t.Ch t.sel (t.tup μ) (t.cst μ) i P z) with hMdef
   have hw0 : ∀ τ, t.X.embC t.seam.σ₀ τ z ≠ 0 := fun τ => (map_ne_zero _).2 hz0
@@ -61,7 +66,7 @@ theorem termLaw_of_xi : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : 
     exact ⟨rank_even _ _, rank_even _ _, ((t.O u μ).lat i c).2, ((t.O u μ).lat (i + 1) c').2⟩
   have hSSc : ∀ P ∈ (t.rd u μ).SS, conjPrime₂ P ∉ (t.rd u μ).SS := by
     rw [hSS]
-    exact GlobalTheory.T.memberBadPrimes_no_conjugatePair t.sel (t.tup μ) hX t.pr_ok hsel (t.word u) (hTS _) hgS
+    exact _root_.GlobalTheory.BadNoConj.sall_noConj_ok t.sel (t.tup μ) hX t.pr_ok hsel (t.word u) (hTS _) hgS
   have h2q : ∀ P ∈ (t.rd u μ).SS, ((D.host.QS : ℕ) : 𝓞 t.X.E) ∉ P.asIdeal ∧ ((D.host.q : ℕ) : 𝓞 t.X.E) ∉ P.asIdeal := by
     intro P hP
     rw [hSS] at hP

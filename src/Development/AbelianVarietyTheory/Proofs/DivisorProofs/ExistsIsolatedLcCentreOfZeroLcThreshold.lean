@@ -1,10 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogCanonicalMultipleOfGloballyKltStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogCanonicalMultipleOfGloballyKlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalMultipleAddQWeil
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogEqnAddSmulIffOfOff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilQDivisorAvoidsPointCartierIffNotMemSuppStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenKltOffIsolatedLcCentreStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilQDivisorAvoidsPointCartierIffNotMemSupp
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PointSeparationPair
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenKltOffIsolatedLcCentre
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffectiveQDivisorOffPointAmpleClassStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivToWeilQDivisorAddOfEffectiveStatement
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
@@ -40,9 +42,9 @@ theorem GlobalTheory.PairStep.exists_isolated_of_lcCut_zero : GlobalTheory.Publi
   intro hPr X _ _ _ p n hp hn hn1
   letI := algebraΓOfHom p
   intro Δ r N₀ x c hΔ hklt hr hN₀ hnef hbig hx hc hcZ hsum A lam μ m' D₀ hA hm' hD₀ hμ hlam hnum hcut
-  obtain ⟨m, G, hm, hG⟩ := GlobalTheory.T.exists_logCanonicalMultiple_of_globally_klt X p n hp hn Δ hΔ hklt
+  obtain ⟨m, G, hm, hG⟩ := _root_.GlobalTheory.Discrepancy.exists_isLogCanonicalMultiple_of_kltAt X p n hp hn Δ hΔ hklt
   have hG' := GlobalTheory.isLogCanonicalMultiple_add_qWeil X p n Δ m m' G D₀ hm hm' hG
-  obtain ⟨U, hxU, hlc, hkl⟩ := GlobalTheory.T.exists_open_klt_off_isolated_lcCentre hPr X p n hp hn (Δ + qWeil D₀ m') (m * m') (m' • G + m • D₀) x
+  obtain ⟨U, hxU, hlc, hkl⟩ := _root_.GlobalTheory.PairStep.exists_open_lc_klt_off_point hPr X p n hp hn (Δ + qWeil D₀ m') (m * m') (m' • G + m • D₀) x
     (Nat.mul_pos hm hm') hG' hx hcut
   have hlam1 : lam ≤ 1 := by
     have : (lam : ℝ) ≤ 1 := (hlam.trans_le hsum).le
@@ -50,7 +52,7 @@ theorem GlobalTheory.PairStep.exists_isolated_of_lcCut_zero : GlobalTheory.Publi
   obtain ⟨M, E, hM, hE, hxE, hEnum⟩ := GlobalTheory.T.exists_effective_QDivisor_offPoint_ampleClass X p hp N₀ A x r lam μ hN₀ hnef hA hr hlam1 hμ
   obtain ⟨hD, hqW, hDnum⟩ := GlobalTheory.T.cartierDivToWeilQDivisor_add_of_effective X p hp D₀ E m' M hm' hM hD₀ hE
   have hoff : ∀ y, y ∉ E.supp → Off (qWeil E M) y := fun y hy =>
-    (GlobalTheory.T.weilQDivisorAvoidsPoint_cartier_iff_notMem_supp X E M y hE hM).2 hy
+    (_root_.GlobalTheory.PairStep.off_qWeil_iff_notMem_supp X E M y hE hM).2 hy
   have heq : Δ + qWeil (M • D₀ + m' • E) (m' * M) = (Δ + qWeil D₀ m') + (1 : ℚ) • qWeil E M := by
     rw [hqW, one_smul, add_assoc]
   let V : X.Opens := ⟨(E.supp : Set X)ᶜ, E.supp.isClosed.isOpen_compl⟩

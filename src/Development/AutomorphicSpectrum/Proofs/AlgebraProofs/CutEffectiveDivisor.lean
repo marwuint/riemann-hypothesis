@@ -8,8 +8,10 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PBlowUpDivi
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AevalChartSubstMemOfMemBlowUpOf
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PHorizontalComponentModel
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyDimensionInequality
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BlowUpFibreSemilocalStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ProjectionFormulaDegreeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BlowUpFibreSemilocal
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBlowUpFibreDegreeCut
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ProjectionFormulaDegree
+import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
 
 set_option maxSynthPendingDepth 1
 
@@ -20,7 +22,7 @@ open GroundTheory.Heights₂.Heights.NumbersDVR GroundTheory.Heights₂.Heights.
 theorem verticalPush : BlowUpVerticalPush.Statement.{0} :=
   BlowUpVerticalPush.proof (BlowUpVerticalFibre.proof BlowUpModel.full
     (BlowUpFibreDegree.proof NumbersDVR_HomLocRingLocal NumbersDVR_DivCycleHomLoc
-      FiniteBirationalLength.full GlobalTheory.T.blow_up_fibre_semilocal) GlobalTheory.T.projection_formula_degree)
+      FiniteBirationalLength.full _root_.GlobalTheory.CompanionTheory.CommAlg.BlowUpFibre.main) _root_.GlobalTheory.CompanionTheory.FieldNumbers.projectionFormulaDegree)
 
 theorem main : CutByEffectiveDivisor.Statement.{0} :=
   CutByEffectiveDivisor.of_steps NumbersDVR_C3NoCommon

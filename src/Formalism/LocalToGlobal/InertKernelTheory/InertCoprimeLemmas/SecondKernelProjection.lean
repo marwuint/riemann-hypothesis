@@ -114,12 +114,6 @@ theorem trC_heq {C C' : ColumnChain D.R D.what₂.Tau (D.hcW u)} (hC : C = C') (
   subst hC
   exact eq_of_heq hφ
 
-theorem onChain_ofTw (st : ∀ j (hj : j + 1 ≤ D.R.m), StepIn (Tw.fm u μ) (j + 1) hj (gatJ Lv (j + 1))) :
-    OnChain (⟨fun j hj => StepAt.ofTw (st j hj)⟩ : CmpJIn Tw u μ w h Lv) := fun _ _ => rfl
-
-theorem onChain_ofMem (st : ∀ j (hj : j + 1 ≤ D.R.m), StepIn (D.fm u) (j + 1) hj (gatJ Lv (j + 1))) :
-    OnChain (⟨fun j hj => StepAt.ofMem (st j hj)⟩ : CmpJIn Tw u D.what₂.mu0 w h Lv) := fun _ _ => (D.memberColumns_twistedChain_base u).symm
-
 theorem rdJ_of_isValV (I : CmpJIn Tw u μ w h Lv) (hC : OnChain I) (H : CmpJHyp c I) (hS : BlockRationalityField) {Kc : Type} [Field Kc]
     (ι : ℂ →+* Kc) (j : ℕ) (hj : j + 1 ≤ D.R.m) (c' : Lv.comp (j + 1)) (L' : (Fl.Pj (j + 1)).Tup) (hL' : (Fl.Pj (j + 1)).IsLatTup L')
     (φ : (D.chTw u μ).cls (j + 1) → (D.chTw u μ).Y (j + 1) → ℂ) (Q : XR (Fl.Pj (j + 1)) ℂ)

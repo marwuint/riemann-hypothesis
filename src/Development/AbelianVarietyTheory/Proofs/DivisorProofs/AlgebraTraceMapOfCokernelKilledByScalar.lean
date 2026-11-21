@@ -44,7 +44,4 @@ theorem algebraTrace_map_of_cokernel_killed (S A B : Type) [CommRing S] [IsDomai
             smul_eq_mul]
   exact mul_left_cancel₀ hs key
 
-example : ∀ (S A B : Type) [CommRing S] [IsDomain S] [CommRing A] [Algebra S A] [Module.Free S A] [Module.Finite S A] [CommRing B] [Algebra S B] [Module.Free S B] [Module.Finite S B] (φ : A →ₐ[S] B), Function.Injective φ → ∀ s : S, s ≠ 0 → (∀ b : B, s • b ∈ φ.range) → ∀ x : A, Algebra.trace S B (φ x) = Algebra.trace S A x :=
-  algebraTrace_map_of_cokernel_killed
-
 end GlobalTheory

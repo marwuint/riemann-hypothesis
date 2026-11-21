@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CongSubgroup
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyRealFieldDenseEmbeddingsStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyRealFieldDenseEmbeddings
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CardRealEmbeddingsEqFinrankStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NearIdentityMatrixPositiveSolutionStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NearIdentityMatrixPositiveSolution
 
 open NumberField NumberField.Units NumberField.Units.dirichletUnitTheorem GlobalTheory.CompanionTheory.Hypotheses₂.Shintani GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones
 
@@ -23,10 +23,10 @@ theorem exists_totPos_basis : ∀ (F : Type) [Field F] [NumberField F] [IsTotall
   classical
   obtain ⟨hfin, hcard⟩ := GlobalTheory.T.card_real_embeddings_eq_finrank F
   letI : Fintype (F →+* ℝ) := Fintype.ofFinite _
-  obtain ⟨ε, hε, hW⟩ := GlobalTheory.T.near_identity_matrix_positive_solution (κ := F →+* ℝ) M
+  obtain ⟨ε, hε, hW⟩ := _root_.GlobalTheory.CompanionTheory.DiagDom.small_perturbation_injective_pos (κ := F →+* ℝ) M
   have hex : ∀ i : F →+* ℝ, ∃ v : F, ∀ σ : F →+* ℝ,
       |σ v - ((if σ = i then 1 else 0) + ε / 2)| < ε / 2 :=
-    fun i => GlobalTheory.T.totally_real_field_dense_embeddings F (fun σ => (if σ = i then 1 else 0) + ε / 2) (ε / 2) (by positivity)
+    fun i => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Density.exists_approx F (fun σ => (if σ = i then 1 else 0) + ε / 2) (ε / 2) (by positivity)
   choose v hv using hex
   have hclose : ∀ σ i : F →+* ℝ, |σ (v i) - if σ = i then 1 else 0| < ε := by
     intro σ i

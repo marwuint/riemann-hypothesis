@@ -317,17 +317,6 @@ theorem exists_siegelSet (n : ℕ) :
           rw [hdiag]; simp only [mul_assoc]
       _ = _ := by rw [hνu]
 
-open scoped Pointwise in
-
-theorem exists_rationalGL_mul_siegelSet_eq_univ (n : ℕ) :
-    ∃ ω : Set (AdelicGLn.AdelicGL K n), IsCompact ω ∧
-      ω ⊆ (adelicBorel (K := K) (n := n) : Set (AdelicGLn.AdelicGL K n)) ∧ ∃ t : ℝ, 0 < t ∧
-        (AdelicGLn.rationalGL K n : Set (AdelicGLn.AdelicGL K n)) * siegelSet n ω t = univ := by
-  obtain ⟨ω, hω, hωB, t, ht, h⟩ := exists_siegelSet (K := K) n
-  refine ⟨ω, hω, hωB, t, ht, Set.eq_univ_of_forall fun g => ?_⟩
-  obtain ⟨γ, hγ⟩ := h g
-  exact ⟨AdelicGLn.diagonal K n γ⁻¹, ⟨γ⁻¹, rfl⟩, _, hγ, by simp [map_inv]⟩
-
 end Reduction
 
 end

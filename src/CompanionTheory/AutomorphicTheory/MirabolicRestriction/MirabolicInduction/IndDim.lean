@@ -96,8 +96,4 @@ theorem finrank_mirabInducedSpace_eq_index (ψ₀ : AddChar k ℂ) :
   rw [e.finrank_eq, Module.finrank_fintype_fun_eq_card, Subgroup.index_eq_card, ← Nat.card_eq_fintype_card]
   exact Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel (uniSub k n))
 
-theorem finrank_mirabInducedSpace (ψ₀ : AddChar k ℂ) :
-    Module.finrank ℂ (MirabInducedSpace n ψ₀) = ∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card k ^ i - 1) := by
-  rw [finrank_mirabInducedSpace_eq_index, index_uniSub]
-
 end CompanionTheory.Mirab.Dim

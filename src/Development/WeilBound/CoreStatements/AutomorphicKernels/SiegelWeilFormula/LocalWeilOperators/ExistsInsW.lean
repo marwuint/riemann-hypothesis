@@ -28,18 +28,6 @@ theorem exists_insW (w : InfinitePlace F) : ∃ ins : ℂ →+ AE F E, (∀ z, p
   · simp [h1]
   · simp [h1, Pi.single_eq_of_ne hw']
 
-def restW (w : InfinitePlace F) : AddSubgroup (Mx F E d.m d.n) where
-  carrier := {Z | d.cw w Z = 0}
-  add_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_ofPred_eq, SD.cw] at *
-    rw [Matrix.map_add _ (map_add _), ha, hb, add_zero]
-  zero_mem' := by simp [SD.cw]
-  neg_mem' := by
-    intro a ha
-    simp only [Set.mem_ofPred_eq, SD.cw] at *
-    rw [Matrix.map_neg _ (map_neg _), ha, neg_zero]
-
 end SD
 
 end PositivityTheory.SiegelWeilFormula

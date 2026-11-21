@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AutomorphicArithmetic.IntegralCasts.Imports
+import Development.AutomorphicArithmetic.IntegralCasts.IsOpenStabOfMemNhds
+import Development.AutomorphicArithmetic.IntegralCasts.RegAlgFam
 import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
 
 noncomputable section
@@ -88,15 +89,5 @@ def Irr.twist (σ : Irr G) (χ : G →* ℂˣ) (hχ : IsOpen {g | χ g = 1}) : I
     exact congrArg _ (LinearMap.congr_fun (e.isIntertwining' g) v)⟩) σ
 
 def Irr.ofChar (χ : G →* ℂˣ) (hχ : IsOpen {g | χ g = 1}) : Irr G := Quotient.mk _ ((SmIrr.triv G).twist χ hχ)
-
-theorem Irr.ofChar_inj {χ χ' : G →* ℂˣ} {hχ : IsOpen {g | χ g = 1}} {hχ' : IsOpen {g | χ' g = 1}}
-    (h : Irr.ofChar χ hχ = Irr.ofChar χ' hχ') : χ = χ' := by
-  obtain ⟨e⟩ : Nonempty ((twRep (Representation.trivial ℂ G ℂ) χ).Equiv (twRep (Representation.trivial ℂ G ℂ) χ')) :=
-    Quotient.exact h
-  ext g
-  have h1 : e (((χ g : ℂˣ) : ℂ) • (1 : ℂ)) = ((χ' g : ℂˣ) : ℂ) • e (1 : ℂ) :=
-    LinearMap.congr_fun (e.isIntertwining' g) (1 : ℂ)
-  rw [map_smul] at h1
-  exact smul_left_injective ℂ ((map_ne_zero_iff e e.injective).2 (one_ne_zero (α := ℂ))) h1
 
 end GlobalTheory.CuspRep

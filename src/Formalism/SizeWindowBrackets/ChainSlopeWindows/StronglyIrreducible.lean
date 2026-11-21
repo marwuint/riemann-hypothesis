@@ -33,11 +33,6 @@ lemma inPhi_nsmul {x : E0 × H} (hx : InPhi x) (i : ℕ) : InPhi (i • x) := by
   | zero => rw [zero_smul]; exact (inPhi_iff _).2 rfl
   | succ n ih => rw [succ_nsmul]; exact inPhi_add ih hx
 
-lemma filter_notPhi_eq (t : H) :
-    (univ.filter (fun g : E0 × H => ¬ InPhi g)) = univ.filter (fun g : E0 × H => ¬ InPhi (g + topPl t)) := by
-  ext g
-  simp [inPhi_iff, topPl]
-
 private theorem partner_fst_lemma (t : H) (g : E0 × H) : (partner t g).1.1 = 1 + g.1.1 := by
   simp [partner, cconj, topPl]
 
@@ -150,24 +145,6 @@ open PB
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-theorem partner_bijection : PartnerBij (H := H) := by
-  intro t
-  refine ⟨?_, ?_, ?_⟩
-  · intro g hg
-    show InPhi (partner t g)
-    rw [inPhi_iff, partner_fst_lemma, (not_inPhi_iff g).1 hg]
-    decide
-  · intro x _ y _ hxy
-    simp only [partner] at hxy
-    exact add_left_cancel (add_right_cancel hxy)
-  · intro ρ hρ
-    refine ⟨ρ - topPl t - cconj, ?_, ?_⟩
-    · show ¬ InPhi (ρ - topPl t - cconj)
-      rw [not_inPhi_iff, sub_fst_lemma_2, (inPhi_iff ρ).1 hρ]
-      decide
-    · simp only [partner]
-      abel
-
 theorem colour_sum : ColourSum (H := H) := by
   intro ψ
   have hneg : ∀ F : E0 × H → ℂ, ∑ g : E0 × H, F (-g) = ∑ g : E0 × H, F g :=
@@ -228,36 +205,6 @@ theorem primitive_value_pow : PrimValPow (H := H) := by
       Finsupp.single_eq_same]
   | simp [Nat.primeFactors_prime_pow (by omega : i ≠ 0) hp, hp.factorization_pow]
 
-private theorem sgc0_fst_lemma_3 (x : E0 × H) : (x + sgc0).1.1 = x.1.1 + 1 := by
-  simp [sgc0]
-
-theorem double_coset_singleton : DCosetSingle (H := H) := by
-  intro D hD i
-  by_cases hf : InPhi (i • D.frob D.d)
-  · refine ⟨i • D.frob D.d + sgc0, ⟨?_, ?_⟩, ?_⟩
-    · rw [hD.inertia_d]
-      right
-      abel
-    · rw [not_inPhi_iff, sgc0_fst_lemma_3, (inPhi_iff _).1 hf]
-      decide
-    · rintro y ⟨hy1, hy2⟩
-      rcases (hD.inertia_d _).1 hy1 with h | h
-      · exact absurd (by rw [sub_eq_zero.1 h]; exact hf) hy2
-      · rw [sub_eq_iff_eq_add] at h
-        rw [h, add_comm]
-  · refine ⟨i • D.frob D.d, ⟨?_, hf⟩, ?_⟩
-    · rw [hD.inertia_d]
-      left
-      exact sub_self _
-    · rintro y ⟨hy1, hy2⟩
-      rcases (hD.inertia_d _).1 hy1 with h | h
-      · exact sub_eq_zero.1 h
-      · exfalso
-        apply hy2
-        rw [sub_eq_iff_eq_add] at h
-        rw [h, inPhi_iff, add_comm, sgc0_fst_lemma_3, (not_inPhi_iff _).1 hf]
-        decide
-
 end
 
 section
@@ -314,18 +261,6 @@ theorem orthogonality_ramified : OrthoRam (H := H) := by
     fun ψ => primitive_value_pow D ψ p i hp hi
   simp_rw [hv]
   convert ortho_coset (D.inertia p) (i • D.frob p) g
-
-theorem orthogonality_unramified : OrthoUnram (H := H) := by
-  intro D hD p i hp h2 hq hd hi g
-  refine (orthogonality_ramified D p i hp hi g).trans ?_
-  rw [hD.unram p hp h2 hq hd]
-  by_cases hc : i • D.frob p = g
-  · subst hc
-    simp
-  · rw [if_neg hc, if_neg]
-    intro hm
-    rw [AddSubgroup.mem_bot, sub_eq_zero] at hm
-    exact hc hm.symm
 
 end
 
@@ -409,35 +344,6 @@ lemma max_zero_of_gt {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ} (hw : ∀
     linarith [mul_comm m (w (partner t g))]
   exact max_eq_right (by linarith)
 
-lemma askD_zero_of_gt (D : ArithData H) (hD : HostFacts D) {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ}
-    (hw : ∀ ρ, InPhi ρ → 0 < w ρ) (hN : ∀ ρ, InPhi ρ → a / w ρ ≤ N) (hdN : N < D.d) :
-    askD D N a t w = 0 := by
-  classical
-  unfold askD
-  apply Finset.sum_eq_zero
-  intro i hi
-  apply Finset.sum_eq_zero
-  intro g hg
-  have hg' : ¬ InPhi g := (Finset.mem_filter.1 hg).2.2
-  have hi1 : 1 ≤ i := (Finset.mem_Icc.1 hi).1
-  apply max_zero_of_gt hw hN hg'
-  have h3 : D.d ≤ D.d ^ i := Nat.le_self_pow (by omega) _
-  exact_mod_cast lt_of_lt_of_le hdN h3
-
-lemma card_inertia_d (D : ArithData H) (hD : HostFacts D) : (Nat.card (D.inertia D.d) : ℂ) = 2 := by
-  classical
-  have h0 : (0 : E0 × H) ≠ sgc0 := by
-    intro h
-    have h' : (0 : E0 × H).1.1 = (sgc0 : E0 × H).1.1 := by rw [h]
-    simp [sgc0] at h'
-  have hs : (univ.filter (fun x : E0 × H => x ∈ D.inertia D.d)) = {0, sgc0} := by
-    ext x
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]
-    exact hD.inertia_d x
-  have hc : Nat.card (D.inertia D.d) = 2 := by
-    rw [natCard_eq_filter, hs, Finset.card_pair h0]
-  exact_mod_cast hc
-
 end
 
 section
@@ -448,161 +354,6 @@ def Kc (D : ArithData H) (n : ℕ) (g : E0 × H) : ℂ :=
 
 def Fc (a : ℝ) (t : H) (w : E0 × H → ℝ) (n : ℕ) (g : E0 × H) : ℂ :=
   ((max (a / (n : ℝ) - w (partner t g)) 0 : ℝ) : ℂ)
-
-lemma local_unram (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
-    {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) (hq : p ≠ D.q1) (hd : p ≠ D.d) :
-    ∑ i ∈ Icc 1 N, (Real.log p : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D (p ^ i) g * Fc a t w (p ^ i) g
-      = ((2 * Real.log p * askP D N a t w p : ℝ) : ℂ) := by
-  have hK : ∀ i, 1 ≤ i → ∀ g, Kc D (p ^ i) g = if i • D.frob p = g then 2 else 0 :=
-    fun i hi g => orthogonality_unramified D hD p i hp h2 hq hd hi g
-  have hin : ∀ i ∈ Icc 1 N, (Real.log p : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-        Kc D (p ^ i) g * Fc a t w (p ^ i) g
-      = (((if ¬ InPhi (i • D.frob p) then
-          2 * Real.log p * max (a / (p : ℝ) ^ i - w (partner t (i • D.frob p))) 0 else 0) : ℝ) : ℂ) := by
-    intro i hi
-    simp_rw [hK i (Finset.mem_Icc.1 hi).1, ite_mul, zero_mul]
-    simp only [Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]
-    split_ifs <;> first
-      | (simp; done)
-      | (simp only [Fc]; push_cast; ring)
-  rw [Finset.sum_congr rfl hin, ← Complex.ofReal_sum]
-  congr 1
-  unfold askP
-  rw [Finset.sum_filter, Finset.mul_sum]
-  refine Finset.sum_congr rfl (fun i _ => ?_)
-  split_ifs <;> ring
-
-lemma local_split (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
-    {p : ℕ} (hp : p.Prime) (h2 : p = 2 ∨ p = D.q1) :
-    ∑ i ∈ Icc 1 N, (Real.log p : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D (p ^ i) g * Fc a t w (p ^ i) g
-      = 0 := by
-  apply Finset.sum_eq_zero
-  intro i hi
-  have hi1 : 1 ≤ i := (Finset.mem_Icc.1 hi).1
-  rw [Finset.sum_eq_zero, mul_zero]
-  intro g hg
-  have hg' : ¬ InPhi g := (Finset.mem_filter.1 hg).2
-  have hK : Kc D (p ^ i) g = 0 := by
-    refine (orthogonality_ramified D p i hp hi1 g).trans ?_
-    rw [if_neg]
-    intro hm
-    apply hg'
-    have h1 := hD.split_inertia p h2 _ hm
-    have h3 := inPhi_nsmul (hD.split_frob p h2) i
-    have h4 := inPhi_add h1 h3
-    rwa [sub_add_cancel] at h4
-  rw [hK, zero_mul]
-
-lemma local_d (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ) :
-    ∑ i ∈ Icc 1 N, (Real.log D.d : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-        Kc D (D.d ^ i) g * Fc a t w (D.d ^ i) g
-      = ((Real.log D.d * askD D N a t w : ℝ) : ℂ) := by
-  classical
-  have hc := card_inertia_d D hD
-  have hK : ∀ i, 1 ≤ i → ∀ g, Kc D (D.d ^ i) g
-      = if g - i • D.frob D.d ∈ D.inertia D.d then 1 else 0 := by
-    intro i hi g
-    refine (orthogonality_ramified D D.d i hD.d_prime hi g).trans ?_
-    rw [hc]
-    split_ifs <;> norm_num
-  unfold askD
-  push_cast
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl (fun i hi => ?_)
-  congr 1
-  simp_rw [hK i (Finset.mem_Icc.1 hi).1, ite_mul, one_mul, zero_mul]
-  rw [Finset.sum_filter, Finset.sum_filter]
-  refine Finset.sum_congr rfl (fun g _ => ?_)
-  by_cases h1 : InPhi g <;> by_cases h2 : g - i • D.frob D.d ∈ D.inertia D.d <;> simp [h1, h2, Fc]
-
-end
-
-section
-variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
-
-theorem characterSum_expansion : AskExpansion (H := H) := by
-  classical
-  intro D hD a t w ha hw N hN
-  have step1 : (1 / ((PhiSet (H := H)).card : ℂ)) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-        ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ∑ n ∈ Icc 1 N,
-          (Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ)
-      = ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ n ∈ Icc 1 N,
-          (Λ n : ℂ) * (Kc D n g * Fc a t w n g) := by
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl (fun g _ => ?_)
-    simp only [Kc, Fc, Finset.mul_sum, Finset.sum_mul]
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl (fun n _ => Finset.sum_congr rfl (fun ψ _ => ?_))
-    ring
-  have step2 : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ n ∈ Icc 1 N,
-          (Λ n : ℂ) * (Kc D n g * Fc a t w n g)
-      = ∑ n ∈ Icc 1 N, (Λ n : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-          Kc D n g * Fc a t w n g := by
-    rw [Finset.sum_comm]
-    simp_rw [Finset.mul_sum]
-  have hX : ∀ p i, p.Prime → 1 ≤ i → N < p ^ i →
-      ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D (p ^ i) g * Fc a t w (p ^ i) g = 0 := by
-    intro p i _ _ hlt
-    apply Finset.sum_eq_zero
-    intro g hg
-    have hg' : ¬ InPhi g := (Finset.mem_filter.1 hg).2
-    have hF : Fc a t w (p ^ i) g = 0 := by
-      simp only [Fc]
-      rw [max_zero_of_gt (m := ((p ^ i : ℕ) : ℝ)) hw hN hg' (by exact_mod_cast hlt), Complex.ofReal_zero]
-    rw [hF, mul_zero]
-  rw [step1, step2, sum_vonMangoldt_primePow N
-    (fun n => ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), Kc D n g * Fc a t w n g) hX]
-  have hloc : ∀ p ∈ (range (N + 1)).filter Nat.Prime,
-      ∑ i ∈ Icc 1 N, (Real.log p : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-          Kc D (p ^ i) g * Fc a t w (p ^ i) g
-        = (((if IsInert D p then 2 * Real.log p * askP D N a t w p else 0)
-            + (if p = D.d then Real.log D.d * askD D N a t w else 0) : ℝ) : ℂ) := by
-    intro p hp
-    have hp' : p.Prime := (Finset.mem_filter.1 hp).2
-    by_cases hs : p = 2 ∨ p = D.q1
-    · rw [local_split D hD N a t w hp' hs]
-      have h1 : ¬ IsInert D p := fun h => hs.elim h.2.1 h.2.2.1
-      have h2 : p ≠ D.d := fun h => hs.elim (fun h2' => hD.d_ne_two (h.symm.trans h2'))
-        (fun hq' => hD.firstPrime_ne_secondPrime (h.symm.trans hq').symm)
-      simp [h1, h2]
-    · push_neg at hs
-      by_cases hdd : p = D.d
-      · subst hdd
-        rw [local_d D hD N a t w]
-        have h1 : ¬ IsInert D D.d := fun h => h.2.2.2.1 rfl
-        simp [h1]
-      · rw [local_unram D hD N a t w hp' hs.1 hs.2 hdd]
-        by_cases hin : IsInert D p
-        · simp [hin, hdd]
-        · have hphi : InPhi (D.frob p) := by
-            by_contra hc
-            exact hin ⟨hp', hs.1, hs.2, hdd, hc⟩
-          have h0 : askP D N a t w p = 0 := by
-            unfold askP
-            apply Finset.sum_eq_zero
-            intro i hi
-            exact absurd (inPhi_nsmul hphi i) (Finset.mem_filter.1 hi).2
-          simp [hin, hdd, h0]
-  rw [Finset.sum_congr rfl hloc, ← Complex.ofReal_sum]
-  unfold ASK
-  congr 1
-  rw [Finset.sum_add_distrib]
-  congr 1
-  · rw [← Finset.sum_filter, Finset.filter_filter]
-    refine Finset.sum_congr ?_ (fun _ _ => rfl)
-    ext p
-    simp only [Finset.mem_filter]
-    exact ⟨fun h => ⟨h.1, h.2.1, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩
-  · simp only [Finset.sum_ite_eq', Finset.sum_ite_eq]
-    by_cases hdm : D.d ∈ (range (N + 1)).filter Nat.Prime
-    · rw [if_pos hdm]
-    · rw [if_neg hdm]
-      have hdN : N < D.d := by
-        by_contra hc
-        apply hdm
-        rw [Finset.mem_filter, Finset.mem_range]
-        exact ⟨by omega, hD.d_prime⟩
-      rw [askD_zero_of_gt D hD hw hN hdN, mul_zero]
 
 end
 
@@ -686,83 +437,6 @@ lemma inner_eq (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : Add
       ring
     rw [Finset.sum_congr rfl hs, ← mul_assoc, hwa]
     ring
-
-end
-
-section
-variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
-
-theorem colour_balance : AskMainBalance (H := H) := by
-  classical
-  intro D hD ell a t w ha hw N hN
-  rw [characterSum_expansion D hD a t w ha hw N hN]
-  have hinner : ∀ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∀ ψ : AddChar (E0 × H) ℂ,
-      ∑ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ)
-        = ((w (partner t g) : ℝ) : ℂ) * GPsi D ell ψ (a / w (partner t g))
-          + (if ψ = 0 then ((a * Real.log a - a * Real.log (w (partner t g))
-              - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else -(a : ℂ) * ell ψ) := by
-    intro g hg ψ
-    have hg' : ¬ InPhi g := (Finset.mem_filter.1 hg).2
-    have hρ := partner_inPhi t hg'
-    rw [sum_cut D ψ N a (w (partner t g)) ha (hw _ hρ) (hN _ hρ),
-      inner_eq D ell ψ a (w (partner t g)) ha (hw _ hρ)]
-  have hsum : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ,
-        starRingEnd ℂ (ψ g) * ∑ n ∈ Icc 1 N,
-          (Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ)
-      = ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ,
-          starRingEnd ℂ (ψ g) * ((w (partner t g) : ℝ) : ℂ) * GPsi D ell ψ (a / w (partner t g))
-        + ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ,
-          starRingEnd ℂ (ψ g) * (if ψ = 0 then ((a * Real.log a - a * Real.log (w (partner t g))
-              - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else -(a : ℂ) * ell ψ) := by
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl (fun g hg => ?_)
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl (fun ψ _ => ?_)
-    rw [hinner g hg ψ]
-    ring
-  have hcorr : ∀ ψ : AddChar (E0 × H) ℂ, ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-        starRingEnd ℂ (ψ g) * (if ψ = 0 then ((a * Real.log a - a * Real.log (w (partner t g))
-              - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else -(a : ℂ) * ell ψ)
-      = (if ψ = 0 then ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-            ((a * Real.log a - a * Real.log (w (partner t g))
-              - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else 0)
-        + (if ψ = chC then (a : ℂ) * ell chC * ((PhiSet (H := H)).card : ℂ) else 0) := by
-    intro ψ
-    by_cases h0 : ψ = 0
-    · have h1 : ¬ ψ = chC := fun h => chC_ne_zero (h ▸ h0)
-      rw [if_pos h0, if_neg h1, add_zero]
-      refine Finset.sum_congr rfl (fun g _ => ?_)
-      rw [if_pos h0, h0, zero_apply_lemma, map_one, one_mul]
-    · rw [if_neg h0, zero_add]
-      simp only [if_neg h0]
-      rw [← Finset.sum_mul, colour_sum ψ, if_neg h0]
-      by_cases h1 : ψ = chC
-      · rw [if_pos h1, if_pos h1, h1]
-        ring
-      · rw [if_neg h1, if_neg h1, zero_mul]
-  have hB : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ,
-          starRingEnd ℂ (ψ g) * (if ψ = 0 then ((a * Real.log a - a * Real.log (w (partner t g))
-              - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else -(a : ℂ) * ell ψ)
-      = ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-            ((a * Real.log a - a * Real.log (w (partner t g))
-              - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ)
-        + (a : ℂ) * ell chC * ((PhiSet (H := H)).card : ℂ) := by
-    rw [Finset.sum_comm, Finset.sum_congr rfl (fun ψ _ => hcorr ψ), Finset.sum_add_distrib]
-    simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
-  have hC : ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
-        (a * Real.log a - a * Real.log (w (partner t g)) - (1 + Real.eulerMascheroniConstant) * a)
-      = ((PhiSet (H := H)).card : ℝ) * (a * Real.log a - (1 + Real.eulerMascheroniConstant) * a)
-        - a * ∑ ρ ∈ PhiSet (H := H), Real.log (w ρ) := by
-    rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.sum_const,
-      ← Finset.mul_sum, sum_partner t (fun ρ => Real.log (w ρ)), card_notPhi]
-    simp only [nsmul_eq_mul]
-    ring
-  rw [hsum, hB, ← Complex.ofReal_sum, hC]
-  have hΦ := phi_card_ne_zero (H := H)
-  unfold De MAIN
-  push_cast
-  field_simp
-  ring
 
 end
 

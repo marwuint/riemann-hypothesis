@@ -2,10 +2,10 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTracePatternIdempotentExchangeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceUnitriangularColumnVanishingIdempotentEqSumStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceUnitriangularColumnVanishingIdempotentEqSum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BernsteinZelevinskyDerivativeHarishChandraProducStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeFieldStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeField
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegree
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerDimensionCuspidalGreenDegreeEqOneStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelExistsUniqueGLnStatement
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
@@ -97,7 +97,7 @@ theorem wtC_eJ_le : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g →
     have : τ ∈ {χ : Gn g N → ℂ | IsIrr χ ∧ HasLabel L χ f} := by rw [hset]; rfl
     exact this.1
   have hcl := isClass_of_isIrr hirr
-  obtain ⟨d, hdpos, hd1⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g N) (eU g N ψ) τ).2.1 hirr
+  obtain ⟨d, hdpos, hd1⟩ := (_root_.GlobalTheory.GLq.trIdem (Gn g N) (eU g N ψ) τ).2.1 hirr
   have hL : ∀ p ∈ Q.map Prod.snd, IsCusp p.2 ∧ wh ψ p.2 = 1 := by
     intro p hp
     obtain ⟨q, hq, rfl⟩ := List.mem_map.1 hp
@@ -108,18 +108,18 @@ theorem wtC_eJ_le : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g →
   set TR : ℝ := (∑ i ∈ Finset.range k, (cnt (Q.map Prod.snd) i : ℝ) * ((g : ℝ) ^ (k - i) - (g : ℝ) ^ (k - i - 1)))
     + cnt (Q.map Prod.snd) k with hTR
   have hJ : tr (eJ g N k s ψ) τ = (TR : ℂ) := by
-    rw [GlobalTheory.T.groupAlgebraTrace_patternIdempotent_exchange g ψ hψ N k s hN τ hcl, GlobalTheory.T.trace_unitriangularColumnVanishingIdempotent_eq_sum_derivatives g ψ hψ N k hk hkN τ hcl, (hlb k hkN.le).1, hTR]
+    rw [GlobalTheory.T.groupAlgebraTrace_patternIdempotent_exchange g ψ hψ N k s hN τ hcl, _root_.GlobalTheory.GLq.ExactMult.tr_eJ'_eq_sum_wh_der g ψ hψ N k hk hkN τ hcl, (hlb k hkN.le).1, hTR]
     push_cast
     congr 1
     refine Finset.sum_congr rfl fun i hi => ?_
     rw [(hlb i (by simp at hi; omega)).1]
     rfl
-  obtain ⟨-, hU1, hJ', -⟩ := GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField g N k s ψ
+  obtain ⟨-, hU1, hJ', -⟩ := _root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField g N k s ψ
   obtain ⟨-, hJ1⟩ := hJ' hN
   have hb := comb_bound (Q.map Prod.snd) (by omega) (fun p hp => (hL p hp).1.1) k
   rw [hdeg] at hb
   unfold wtC
-  rw [hser, (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ (eJ g N k s ψ) τ).2.2, (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ (eU g N ψ) τ).2.2, hwhU, hJ, hJ1, hU1, hd1]
+  rw [hser, (_root_.GlobalTheory.GLq.trIdem _ (eJ g N k s ψ) τ).2.2, (_root_.GlobalTheory.GLq.trIdem _ (eU g N ψ) τ).2.2, hwhU, hJ, hJ1, hU1, hd1]
   set M := N * (N - 1) / 2
   set a : ℝ := (d : ℝ) / (Fintype.card (Gn g N) : ℝ) with ha
   set m : ℝ := ((g : ℝ) ^ M)⁻¹ with hm'

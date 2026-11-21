@@ -18,14 +18,6 @@ section PushForward
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
-theorem locDens_chart (A : FinHolAtlas e X) (Φ : Fin e → LocPot X)
-    (hΦ : ∀ i, IsPotential A (Φ i)) (j k : Fin A.n) (y : Fin e → ℂ)
-    (hy : y ∈ (A.chart j).target) (hk : (A.chart j).symm y ∈ (A.chart k).source) :
-    locDens A Φ j y = locDens A Φ k (A.chart k ((A.chart j).symm y)) *
-      ‖LinearMap.det (fderiv ℂ (A.chart k ∘ (A.chart j).symm) y :
-        (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ^ 2 :=
-  locDensChart A Φ hΦ j k y hy hk
-
 theorem pushForward_null [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (q : X → Fin e → ℂ) (S : Set X)
     (hS : ∀ j, volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' S) = 0)

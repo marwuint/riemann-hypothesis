@@ -45,11 +45,6 @@ theorem eq_dualLift {n : ℕ} (ψ : JetR R (Fin n) 1 →ₐ[R] DualNumber R) (h 
       exact this
     · rfl
 
-theorem dualLift_injective {n : ℕ} {c c' : Fin n → R} (h : dualLift (R := R) c = dualLift c') : c = c' := by
-  funext j
-  have := congrArg TrivSqZeroExt.snd (AlgHom.congr_fun h (zR 1 j))
-  rwa [dualLift_zR, dualLift_zR, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_inr] at this
-
 variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
 theorem comp_one' {T T' : Over (Spec (CommRingCat.of R))} (f : T' ⟶ T) : f ≫ (1 : T ⟶ G) = 1 := by

@@ -59,8 +59,4 @@ theorem szRow_exact : SzRow (fun C D L => (∀ τ (t : D.host.TT) (hm : 0 < D.R.
     simp only [Nat.cast_one, one_mul]
     exact_mod_cast this
 
-theorem szRow_mu : SzRow (fun _ D _ => ∀ j : Fin D.R.m, UpperTheory.MUQ (fun τ => D.host.emb (D.eTau τ : D.R.GG)) (fun τ => (D.hc τ).e j)) := by
-  intro eps _ _ C _
-  exact ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun D L _ _ hV => hV.hc.2.2.2⟩⟩⟩
-
 end GlobalTheory.EX

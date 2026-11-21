@@ -92,20 +92,6 @@ theorem compl_isoLocus (f : X ⟶ Y) [IsFinite f.left] [Flat f.left] :
   simp only [not_forall, Set.mem_image, Set.mem_setOf_eq]
   tauto
 
-theorem isIso_pullback_map_iff {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y)
-    [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
-    IsIso ((Over.pullback t).map f) ↔ Set.range t ⊆ isoLocus f := by
-  have := isFinite_left f
-  have := etale_left f
-  rw [isIso_pullback_map_iff_finrank]
-  constructor
-  · intro h s hs
-    rw [mem_isoLocus_iff]
-    rintro y rfl
-    exact h y hs
-  · intro h y hy
-    exact (mem_isoLocus_iff f _).mp (h hy) y rfl
-
 theorem isClopen_isoLocus (f : X ⟶ Y)
     [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] : IsClopen (isoLocus f) := by
   have := isFinite_left f
@@ -114,21 +100,6 @@ theorem isClopen_isoLocus (f : X ⟶ Y)
     (f.left.isLocallyConstant_finrank.isClopen_fiber 1).compl
   rw [← isClopen_compl_iff, compl_isoLocus]
   exact ⟨Y.hom.isClosedMap _ h.isClosed, Y.hom.isOpenMap _ h.isOpen⟩
-
-theorem isIso_iff_isoLocus_eq_univ (f : X ⟶ Y)
-    [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
-    IsIso f ↔ isoLocus f = Set.univ := by
-  have := isFinite_left f
-  have := etale_left f
-  rw [isIso_iff_isIso_left, Scheme.Hom.isIso_iff_finrank_eq, Set.eq_univ_iff_forall]
-  constructor
-  · intro h s
-    rw [mem_isoLocus_iff]
-    intro y _
-    rw [h, Pi.one_apply]
-  · intro h
-    funext y
-    exact (mem_isoLocus_iff f _).mp (h _) y rfl
 
 theorem isIso_iff_bijective_algClosed {X Y : Scheme.{u}} (f : X ⟶ Y) [IsFinite f] [Etale f] :
     IsIso f ↔ ∀ (k : Type u) [Field k] [IsAlgClosed k],
@@ -250,12 +221,6 @@ theorem compl_eqLocus (f g : X ⟶ Y) [LocallyOfFiniteType Y.hom] [FormallyUnram
   simp only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_image, Set.mem_compl_iff]
   tauto
 
-theorem pullback_map_eq_iff {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶ Y)
-    [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] :
-    (Over.pullback t).map f = (Over.pullback t).map g ↔ Set.range t ⊆ eqLocus f g := by
-  rw [pullback_map_eq_iff_preimage, ← Set.compl_subset_compl (s := eqLocus f g), compl_eqLocus,
-    Set.image_subset_iff, Set.preimage_compl, Set.compl_subset_compl]
-
 theorem isClopen_eqLocus (f g : X ⟶ Y) [UniversallyOpen X.hom] [UniversallyClosed X.hom]
     [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] [IsSeparated Y.hom] :
     IsClopen (eqLocus f g) := by
@@ -264,19 +229,6 @@ theorem isClopen_eqLocus (f g : X ⟶ Y) [UniversallyOpen X.hom] [UniversallyClo
       (agreeι f g).isOpenEmbedding.isOpen_range⟩
   rw [← isClopen_compl_iff, compl_eqLocus]
   exact ⟨X.hom.isClosedMap _ h.isClosed, X.hom.isOpenMap _ h.isOpen⟩
-
-theorem eq_iff_eqLocus_eq_univ (f g : X ⟶ Y)
-    [LocallyOfFiniteType Y.hom] [FormallyUnramified Y.hom] :
-    f = g ↔ eqLocus f g = Set.univ := by
-  constructor
-  · rintro rfl
-    exact Set.eq_univ_of_forall fun _ ↦ rfl
-  · intro h
-    have h1 := compl_eqLocus f g
-    rw [h, Set.compl_univ, eq_comm, Set.image_eq_empty, Set.compl_empty_iff] at h1
-    have := (comp_eq_comp_iff_range f g (𝟙 _)).mpr (by simp [h1])
-    ext1
-    simpa using this
 
 theorem range_subset_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (U : S.Opens) :
     Set.range t ⊆ U ↔ ∃ t' : T ⟶ U, t' ≫ U.ι = t := by
@@ -691,52 +643,5 @@ instance (f : X ⟶ Y) [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.
 instance (f g : X ⟶ Y) [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
     IsClosedImmersion (eqLocusOpen f g).ι := .of_isPreimmersion _ (by
   rw [Scheme.Opens.range_ι]; exact (isClopen_eqLocus f g).isClosed)
-
-theorem isIso_pullback_map_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (f : X ⟶ Y)
-    [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
-    IsIso ((Over.pullback t).map f) ↔ ∃ t' : T ⟶ isoLocusOpen f, t' ≫ (isoLocusOpen f).ι = t :=
-  (isIso_pullback_map_iff t f).trans (range_subset_iff_factors t (isoLocusOpen f))
-
-theorem pullback_map_eq_iff_factors {T : Scheme.{u}} (t : T ⟶ S) (f g : X ⟶ Y)
-    [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
-    (Over.pullback t).map f = (Over.pullback t).map g ↔
-      ∃ t' : T ⟶ eqLocusOpen f g, t' ≫ (eqLocusOpen f g).ι = t :=
-  (pullback_map_eq_iff t f g).trans (range_subset_iff_factors t (eqLocusOpen f g))
-
-theorem eq_of_mem_eqLocus [PreconnectedSpace S] (f g : X ⟶ Y)
-    [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] {s : S} (hs : s ∈ eqLocus f g) :
-    f = g :=
-  (eq_iff_eqLocus_eq_univ f g).mpr ((isClopen_eqLocus f g).eq_univ ⟨s, hs⟩)
-
-theorem isIso_of_mem_isoLocus [PreconnectedSpace S] (f : X ⟶ Y)
-    [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] {s : S} (hs : s ∈ isoLocus f) :
-    IsIso f :=
-  (isIso_iff_isoLocus_eq_univ f).mpr ((isClopen_isoLocus f).eq_univ ⟨s, hs⟩)
-
-theorem finiteEtale_open_closed_conditions {S : Scheme.{u}} (X Y : Over S)
-    [IsFinite X.hom] [Etale X.hom] [IsFinite Y.hom] [Etale Y.hom] :
-    (∀ f : X ⟶ Y, (IsFinite f.left ∧ Etale f.left) ∧ IsClopen (isoLocus f) ∧
-      (∀ {T : Scheme.{u}} (t : T ⟶ S), IsIso ((Over.pullback t).map f) ↔
-        ∃ t' : T ⟶ isoLocusOpen f, t' ≫ (isoLocusOpen f).ι = t) ∧
-      (IsIso f ↔ ∀ (k : Type u) [Field k] [IsAlgClosed k],
-        Function.Bijective fun x : Spec (.of k) ⟶ X.left ↦ x ≫ f.left)) ∧
-    (∀ f g : X ⟶ Y, IsClopen (eqLocus f g) ∧
-      ∀ {T : Scheme.{u}} (t : T ⟶ S), (Over.pullback t).map f = (Over.pullback t).map g ↔
-        ∃ t' : T ⟶ eqLocusOpen f g, t' ≫ (eqLocusOpen f g).ι = t) ∧
-    (∀ (k : Type u) [Field k] [IsSepClosed k], Nonempty (S ≅ Spec (.of k)) →
-      ∃ n, IsSplitOfRank X.hom n) ∧
-    (∀ n : ℕ, (∀ s, X.hom.finrank s = n) → ∃ (S' : Scheme.{u}) (t : S' ⟶ S),
-      IsFinite t ∧ Etale t ∧ Surjective t ∧ IsSplitOfRank (pullback.snd X.hom t) n) := by
-  refine ⟨fun f ↦ ⟨⟨isFinite_left f, etale_left f⟩, isClopen_isoLocus f,
-    fun t ↦ isIso_pullback_map_iff_factors t f, ?_⟩,
-    fun f g ↦ ⟨isClopen_eqLocus f g, fun t ↦ pullback_map_eq_iff_factors t f g⟩, ?_,
-    fun n hn ↦ exists_isSplitOfRank_pullback X.hom hn⟩
-  · have := isFinite_left f
-    have := etale_left f
-    rw [isIso_iff_isIso_left, isIso_iff_bijective_algClosed]
-  · rintro k _ _ ⟨e⟩
-    obtain ⟨s⟩ : Nonempty (Spec (.of k)) := inferInstance
-    exact ⟨_, (isSplitOfRank_of_isSepClosed (X.hom ≫ e.hom) s).of_isPullback (a := 𝟙 _)
-      (t := e.hom) (IsPullback.of_horiz_isIso ⟨by simp⟩)⟩
 
 end GlobalTheory.FinEt

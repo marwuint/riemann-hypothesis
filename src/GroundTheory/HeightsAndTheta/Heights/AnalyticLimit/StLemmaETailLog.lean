@@ -31,14 +31,6 @@ def LemmaETailLog.Statement : Prop :=
     ∃ CE : ℝ, ∀ u : Fin D → X → ℝ, (∀ i, IsLemmaEPot A Om L s C₁ (u i)) →
       TailLogBound A (secOpen s) (rSec L s) (fun i => potForm Om.pot (u i)) CE
 
-section Inhabitants
-
-open OnePoint
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLinePairSection projLine_isSmoothPotential projLine_isPlurisubharmonic projLine_isHolomorphicSection crd0 crd1 fsPot_φ_coe
-  projLineSection_infty projLineSection_coe)
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.AnalyticLimit

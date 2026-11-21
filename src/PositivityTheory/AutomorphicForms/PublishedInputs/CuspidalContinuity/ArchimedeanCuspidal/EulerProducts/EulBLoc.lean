@@ -12,26 +12,6 @@ set_option linter.unnecessarySeqFocus false
 
 namespace Ad3.GP
 
-section Mat
-
-variable {R : Type*} [CommRing R]
-
-end Mat
-
-section Loc
-
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
-  [MeasurableSpace F] [BorelSpace F]
-
-def kU (U : Fˣ) : GL (Fin 3) F :=
-  ⟨!![0, 1, 0; 1, 0, 0; ((U⁻¹ : Fˣ) : F), 0, 1], !![0, 1, 0; 1, 0, 0; 0, -((U⁻¹ : Fˣ) : F), 1],
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three],
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]⟩
-
-variable {ψ : AddChar F Circle} {ν : Fˣ →* ℂˣ} {V : Submodule ℂ (GL (Fin 3) F → ℂ)}
-
-end Loc
-
 section Real
 
 theorem val_measurableEmbedding_eulB : MeasurableEmbedding (Units.val : ℝˣ → ℝ) := by

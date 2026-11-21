@@ -10,8 +10,10 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.SatakeRigidity.LPermSub
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.FiniteDiscreteFamilies.PLevelFactorB
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.FiniteDiscreteFamilies.PFinFamOf
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalAlgebraHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiscreteSpectrumStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalAlgebraHolds
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SetupEig
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiscreteSpectrum
 
 noncomputable section
 
@@ -22,7 +24,7 @@ open PositivityTheory.Rg.BcB.One PositivityTheory.Rg.BcB.F PositivityTheory.Rg.B
 theorem bci_of (h1 : FrameEx) (h3 : FrameBound)
     (h4 : FrameRead) : PositivityTheory.Rg.BcN.BaseChangeIsobaricN :=
   PositivityTheory.Rg.BcB.F.Rig.fieldN_of_run
-    (runFin_chain (finFamOf_holds levelFactor GlobalTheory.T.finite_discrete_spectrum) PositivityTheory.Rg.BcB.F.Rig.weightEx PositivityTheory.Rg.BcB.F.Rig.permSat
-      GlobalTheory.T.diagonal_algebra_holds (genEx_of (PositivityTheory.Rg.BcB.F.Rd.P.readLimit_of_efinal PositivityTheory.Rg.BcB.SpectralAccumulation.eFinal_holds) GlobalTheory.T.diagonal_algebra_holds PositivityTheory.Rg.BcB.F.Ex0.frameEx0 h1 frameOk₀ h3 h4))
+    (runFin_chain (finFamOf_holds levelFactor _root_.GlobalTheory.CompanionTheory.FinDiscN.finDiscN) PositivityTheory.Rg.BcB.F.Rig.weightEx PositivityTheory.Rg.BcB.F.Rig.permSat
+      _root_.GlobalTheory.CompanionTheory.BlockScalars.diagAlg (genEx_of (PositivityTheory.Rg.BcB.F.Rd.P.readLimit_of_efinal PositivityTheory.Rg.BcB.SpectralAccumulation.eFinal_holds) _root_.GlobalTheory.CompanionTheory.BlockScalars.diagAlg PositivityTheory.Rg.BcB.F.Ex0.frameEx0 h1 frameOk₀ h3 h4))
 
 end PositivityTheory.Rg.BcB.Plug2

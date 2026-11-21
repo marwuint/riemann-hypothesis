@@ -86,12 +86,6 @@ def OrbitParametrisationsAgree : Prop :=
             (sLow (mk (PW sb) xy.1) + sUp (mk (PU s.sum) xy.2))
             ∂((Measure.pi fun _ => μ).prod (Measure.pi fun _ => μ))
 
-example {E : Type} [CommRing E] {n : ℕ} (x : Formalism.MainNotions.S.Loc.IL n → E) :
-    Formalism.MainNotions.S.Loc.uLow x = mk (PL n) x := rfl
-
-example {E : Type} [CommRing E] {n : ℕ} (w : Formalism.MainNotions.S.Loc.Pt E n) (y : Formalism.MainNotions.S.Loc.IN w → E) :
-    Formalism.MainNotions.S.Loc.uUp w y = mk (PN fun a b => Formalism.MainNotions.S.Loc.sameBlock w.blocks a b) y := rfl
-
 end Formalism.MainNotions.LocalOrbitGerms
 
 end
@@ -1546,77 +1540,13 @@ end
 
 set_option maxHeartbeats 400000
 
-noncomputable section
-
-open MeasureTheory Matrix Formalism.DoubleCosetMeasures
-open scoped Topology
-
 namespace Formalism.MainNotions.LocalOrbitGerms
 
 namespace Germ
 
-section Mk
-
-variable {K : Type} [CommRing K] {n : ℕ}
-
-theorem mk_diag (P : Fin n × Fin n → Prop) [DecidablePred P] (x : {p // P p} → K) (a : Fin n) :
-    mk P x a a = 1 := by
-  simp [mk]
-
-theorem mk_pos (P : Fin n × Fin n → Prop) [DecidablePred P] (x : {p // P p} → K) {a b : Fin n}
-    (hab : a ≠ b) (h : P (a, b)) : mk P x a b = x ⟨(a, b), h⟩ := by
-  simp [mk, hab, h]
-
-theorem mk_neg (P : Fin n × Fin n → Prop) [DecidablePred P] (x : {p // P p} → K) {a b : Fin n}
-    (hab : a ≠ b) (h : ¬ P (a, b)) : mk P x a b = 0 := by
-  simp [mk, hab, h]
-
-theorem mk_coords (P : Fin n × Fin n → Prop) [DecidablePred P] (A : Matrix (Fin n) (Fin n) K)
-    (h1 : ∀ a, A a a = 1) (h0 : ∀ a b, a ≠ b → ¬ P (a, b) → A a b = 0) :
-    mk P (fun p : {p // P p} => A p.1.1 p.1.2) = A := by
-  ext a b
-  by_cases hab : a = b
-  · subst hab
-    rw [mk_diag, h1]
-  · by_cases h : P (a, b)
-    · rw [mk_pos P _ hab h]
-    · rw [mk_neg P _ hab h, h0 a b hab h]
-
-theorem isLowUni_mk (P : Fin n × Fin n → Prop) [DecidablePred P] (hP : ∀ p, P p → p.2 < p.1)
-    (x : {p // P p} → K) : IsLowUni (mk P x) := by
-  refine ⟨fun i j hij => ?_, mk_diag P x⟩
-  have hij' : i < j := hij
-  exact mk_neg P x hij'.ne (fun hp => lt_asymm hij' (hP (i, j) hp))
-
-theorem isUpUni_mk (P : Fin n × Fin n → Prop) [DecidablePred P] (hP : ∀ p, P p → p.1 < p.2)
-    (x : {p // P p} → K) : IsUpUni (mk P x) := by
-  refine ⟨fun i j hij => ?_, mk_diag P x⟩
-  have hij' : j < i := hij
-  exact mk_neg P x hij'.ne' (fun hp => lt_asymm hij' (hP (i, j) hp))
-
-end Mk
-
-section Trans
-
-variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [SecondCountableTopology K]
-  [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [SigmaFinite μ] [μ.IsAddLeftInvariant] {n : ℕ}
-
-theorem continuous_mk (P : Fin n × Fin n → Prop) [DecidablePred P] :
-    Continuous (fun x : {p // P p} → K => mk P x) := by
-  refine continuous_pi fun a => continuous_pi fun b => ?_
-  simp only [mk]
-  split_ifs
-  · exact continuous_const
-  · exact continuous_apply _
-  · exact continuous_const
-
-end Trans
-
 end Germ
 
 end Formalism.MainNotions.LocalOrbitGerms
-
-end
 
 set_option maxHeartbeats 400000
 
@@ -1662,12 +1592,6 @@ variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [Sec
 def nu0 (n : ℕ) : Measure (({p // PL n p} → K) × ({p // PU n p} → K)) :=
   (Measure.pi fun _ => μ).prod (Measure.pi fun _ => μ)
 
-def SR (n : ℕ) : Set (({p // PL n p} → K) × ({p // PU n p} → K)) :=
-  {xy | (∀ p, xy.1 p ∈ R) ∧ ∀ p, xy.2 p ∈ R}
-
-def avg (Φ : Matrix (Fin n) (Fin n) K → ℂ) (Z : Matrix (Fin n) (Fin n) K) : ℂ :=
-  ∫ xy in SR R n, Φ (mk (PL n) xy.1 * Z * mk (PU n) xy.2) ∂(nu0 μ n)
-
 end Avg
 
 end Germ
@@ -1678,42 +1602,13 @@ end
 
 set_option maxHeartbeats 800000
 
-noncomputable section
-
-open MeasureTheory Matrix Formalism.DoubleCosetMeasures
-open scoped Topology
-
 namespace Formalism.MainNotions.LocalOrbitGerms
 
 namespace Germ
 
-section Orb
-
-variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [SecondCountableTopology K]
-  [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [SigmaFinite μ] [μ.IsAddLeftInvariant] (R : Subring K)
-  (ψ : AddChar K ℂ) (s : List ℕ) (t : ℕ → Kˣ) (sb : Fin s.sum → Fin s.sum → Bool)
-
-def I1 (H : Matrix (Fin s.sum) (Fin s.sum) K → ℂ) : ℂ :=
-  ∫ xy : ({p // PL s.sum p} → K) × ({p // PN sb p} → K),
-    H (mk (PL s.sum) xy.1 * pt s t * mk (PN sb) xy.2) *
-      ψ (sLow (mk (PL s.sum) xy.1) + sUp (mk (PN sb) xy.2))
-    ∂((Measure.pi fun _ => μ).prod (Measure.pi fun _ => μ))
-
-def I2 (H : Matrix (Fin s.sum) (Fin s.sum) K → ℂ) : ℂ :=
-  ∫ xy : ({p // PW sb p} → K) × ({p // PU s.sum p} → K),
-    H (mk (PW sb) xy.1 * pt s t * mk (PU s.sum) xy.2) *
-      ψ (sLow (mk (PW sb) xy.1) + sUp (mk (PU s.sum) xy.2))
-    ∂((Measure.pi fun _ => μ).prod (Measure.pi fun _ => μ))
-
-variable {sb}
-
-end Orb
-
 end Germ
 
 end Formalism.MainNotions.LocalOrbitGerms
-
-end
 
 set_option maxHeartbeats 800000
 
@@ -1749,181 +1644,53 @@ end
 
 set_option maxHeartbeats 400000
 
-noncomputable section
-
-open MeasureTheory Matrix Formalism.DoubleCosetMeasures Formalism.MainNotions.S.Loc Formalism.MainNotions.LocalModelPeriodLattices Formalism.FourierDecayAlt
-open scoped Topology
-
 namespace Formalism.MainNotions.LocalOrbitGerms
 
 namespace Germ
 
-section Core
-
-variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
-
-end Core
-
 end Germ
 
 end Formalism.MainNotions.LocalOrbitGerms
-
-end
 
 set_option maxHeartbeats 400000
 
-noncomputable section
-
-open MeasureTheory Matrix Formalism.DoubleCosetMeasures Formalism.MainNotions.S.Loc Formalism.MainNotions.LocalModelPeriodLattices Formalism.FourierDecayAlt
-open scoped Topology
-
 namespace Formalism.MainNotions.LocalOrbitGerms
 
 namespace Germ
 
-def fam {E : Type} {n : ℕ} (Φ : Matrix (Fin n) (Fin n) E → ℂ) : ∀ k : ℕ, Matrix (Fin k) (Fin k) E → ℂ :=
-  fun k Z => if h : k = n then Φ (Z.submatrix (finCongr h.symm) (finCongr h.symm)) else 0
-
-section Loc
-
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-
-end Loc
-
 end Germ
 
 end Formalism.MainNotions.LocalOrbitGerms
-
-end
 
 set_option maxHeartbeats 400000
 
-noncomputable section
-
-open MeasureTheory Matrix Formalism.DoubleCosetMeasures Formalism.MainNotions.S.Loc Formalism.MainNotions.LocalModelPeriodLattices Formalism.FourierDecayAlt
-open scoped Topology
-
 namespace Formalism.MainNotions.LocalOrbitGerms
 
 namespace Germ
 
-section Loc
-
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-
-def rhs (M : Model F E) (m : ℕ) (ga : Eˣ → ℂ) (Φ : Matrix (Fin (m + 2)) (Fin (m + 2)) E → ℂ) (t c : Eˣ) : ℂ :=
-  ((M.modK (t : E) ^ (-(((m : ℝ) + 1) ^ 2 / 2)) * M.modK ((m : E) + 2) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) *
-    ∑ᶠ (z : Eˣ) (_ : (z : E) ^ (m + 2) = (-1) ^ (m + 1) * ((c : E) * (t : E) ^ (m + 1))),
-      ((M.modK (z : E) ^ (((m : ℝ) + 1) ^ 2 / 2) : ℝ) : ℂ) * ga (z * t) *
-        M.psiR (((m : E) + 2) * (z : E) * ((t⁻¹ : Eˣ) : E)) * Formalism.MainNotions.ThinScalesBound.Om M Φ (Formalism.MainNotions.ThinScalesBound.ptZ m z)
-
-end Loc
-
 end Germ
 
 end Formalism.MainNotions.LocalOrbitGerms
-
-end
 
 set_option maxHeartbeats 400000
 
-noncomputable section
-
-open MeasureTheory Matrix Formalism.DoubleCosetMeasures Formalism.MainNotions.S.Loc Formalism.MainNotions.LocalModelPeriodLattices Formalism.FourierDecayAlt
-open scoped Topology
-
 namespace Formalism.MainNotions.LocalOrbitGerms
 
 namespace Germ
 
-section Loc
-
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-
-def AvgAt (M : Model F E) : Prop :=
-  ∀ (n : ℕ) (Φ : Matrix (Fin n) (Fin n) E → ℂ) (Ω : Set E) (L₀ Λ₀ : Submodule M.R E),
-    A6.IsLat L₀.toAddSubgroup → A6.IsLat Λ₀.toAddSubgroup →
-    (∀ Z, Φ Z ≠ 0 → ∀ i j, Z i j ∈ L₀) →
-    (∀ Z Y : Matrix (Fin n) (Fin n) E, (Z.det ∈ Ω ∨ -Z.det ∈ Ω) → (∀ i j, Y i j ∈ Λ₀) → Φ (Z + Y) = Φ Z) →
-    ∃ Φ' : Matrix (Fin n) (Fin n) E → ℂ,
-      (∀ Z a b : Matrix (Fin n) (Fin n) E, IsLowUni a → IsInt M.R a → IsUpUni b → IsInt M.R b →
-        Φ' (a * Z * b) = Φ' Z) ∧
-      (∀ Z, Φ' Z ≠ 0 → ∀ i j, Z i j ∈ L₀) ∧
-      (∀ Z Y : Matrix (Fin n) (Fin n) E, (Z.det ∈ Ω ∨ -Z.det ∈ Ω) → (∀ i j, Y i j ∈ Λ₀) → Φ' (Z + Y) = Φ' Z) ∧
-      ∀ w : Pt E n, (w.mat.det ∈ Ω ∨ -w.mat.det ∈ Ω) → Formalism.MainNotions.ThinScalesBound.Om M Φ' w = Formalism.MainNotions.ThinScalesBound.Om M Φ w
-
-end Loc
-
 end Germ
 
 end Formalism.MainNotions.LocalOrbitGerms
-
-end
 
 set_option maxHeartbeats 800000
 
-noncomputable section
-
-open MeasureTheory Matrix Formalism.DoubleCosetMeasures Formalism.MainNotions.S.Loc Formalism.MainNotions.LocalModelPeriodLattices Formalism.FourierDecayAlt
-open scoped Topology
-
 namespace Formalism.MainNotions.LocalOrbitGerms
 
 namespace Germ
 
-section Comb
-
-variable {E : Type} [CommRing E]
-
-theorem sameBlock_iff : ∀ (bs : List (Eˣ × ℕ+)) (a b : ℕ), a < (bs.map (fun b => (b.2 : ℕ))).sum →
-    b < (bs.map (fun b => (b.2 : ℕ))).sum →
-    (sameBlock bs a b = true ↔ blk (bs.map (fun b => (b.2 : ℕ))) a = blk (bs.map (fun b => (b.2 : ℕ))) b)
-  | [], a, b, h, _ => by simp at h
-  | (t, s) :: bs, a, b, ha, hb => by
-    simp only [List.map_cons, List.sum_cons] at ha hb
-    simp only [sameBlock, List.map_cons, blk, Bool.or_eq_true, Bool.and_eq_true, decide_eq_true_eq]
-    by_cases h1 : a < (s : ℕ)
-    · by_cases h2 : b < (s : ℕ)
-      · simp [h1, h2]
-      · have h3 : ¬ ((s : ℕ) ≤ a) := by omega
-        simp only [h1, h2, h3, and_false, false_and, or_self, if_true, if_false, false_iff]
-        omega
-    · by_cases h2 : b < (s : ℕ)
-      · have h3 : ¬ ((s : ℕ) ≤ b) := by omega
-        simp only [h1, h2, h3, and_false, false_and, or_self, if_true, if_false, false_iff]
-        omega
-      · have h3 : (s : ℕ) ≤ a := by omega
-        have h4 : (s : ℕ) ≤ b := by omega
-        have := sameBlock_iff bs (a - s) (b - s) (by omega) (by omega)
-        simp [h1, h2, h3, h4, this]
-
-theorem simpleLow_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) E) : simpleLow A = sLow A := by
-  exact Cls.simpleLow_eq A
-
-theorem simpleUp_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) E) : simpleUp A = sUp A := by
-  exact Cls.simpleUp_eq A
-
-end Comb
-
-section Loc
-
-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
-variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
-
-abbrev szL (bl : List (Eˣ × ℕ+)) : List ℕ := bl.map (fun b : Eˣ × ℕ+ => (b.2 : ℕ))
-
-abbrev scL (bl : List (Eˣ × ℕ+)) : ℕ → Eˣ := fun i => (bl.map Prod.fst).getD i 1
-
-end Loc
-
 end Germ
 
 end Formalism.MainNotions.LocalOrbitGerms
-
-end
 
 noncomputable section
 

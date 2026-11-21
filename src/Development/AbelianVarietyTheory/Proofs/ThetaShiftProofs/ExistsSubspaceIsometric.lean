@@ -1,21 +1,24 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TopLeWchartNsmul
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.HolArcNilpotent
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcModelWitnessExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcModelWitnessExtension
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsThetaL2NormSquared
+import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNeZeroIff
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsDerivAt0NotIsDerivAlong
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsBigOPowIffIteratedFDerivEqZero
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AppellHumbertTrivialOfNowhereVanishing
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCharacterRatioExpMulStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusCoordinateRatioDifferentiableAtOriginStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusCoordinateRatioDifferentiableAtOrigin
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TangentVectorPowScaleInvEqStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FderivTorusCoordinateRatioEqZeroOfTangentStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusCoordinateRatioEqTorusCoordOverOriginStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsLinearLiftAdditiveHolomorphicAbelianStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsEntireUnitAppellHumbertFrameRatioStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FactorCommutatorEqOfNonvanishingStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsLinearLiftAdditiveHolomorphicAbelian
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsEntireUnitAppellHumbertFrameRatio
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FactorCommutatorEqOfNonvanishing
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThetaCharOffNeZeroDifferentiableQuasiPeriodicStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.MemRealSpanPeriodsOfCharacterKernelStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.MemRealSpanPeriodsOfCharacterKernel
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames CategoryTheory.MonObj GlobalTheory.AbelianLetters
@@ -108,12 +111,12 @@ theorem exists_subspace_isometric : Out.Laws → Out.Laws2 → ∀ (E : Type) [F
     rw [← (Fu.sig Ha.i).1, ← (Fu.sig Ha.i).2]
     exact PeriodCompare.isTypeFn_of_isPeriod (Ha.period _ hT)
   obtain ⟨th, hth⟩ := (ThetaOverField.nonzero_generates hL hL2 ℂ a.D₀ ⟨fun _ => 0, fun _ _ => by simp⟩).2.2
-  obtain ⟨Θ⟩ := T.arc_model_witness_extension hL hL2 E H Dw l Xo c σ O β Y a χ W g ty Fu Ha hty th hth
+  obtain ⟨Θ⟩ := _root_.GlobalTheory.ArcTheta.nonempty_thetaDat hL hL2 E H Dw l Xo c σ O β Y a χ W g ty Fu Ha hty th hth
   obtain ⟨nn, hN, -, -, hnn, -, -⟩ := holArc_nilpotent E H Dw l Xo c σ O β Y a χ W g ty Fu Ha
   have hP : ∀ w v, Ha.y v = 0 → Ha.Pw w v = Ha.P₀ v := fun w v hv => by
     rw [Ha.Pw_eq, hN, hnn v hv, map_zero, smul_zero, add_zero]
   obtain ⟨u, hu, hu0, hum⟩ := T.exists_nonvanishing_multiplicative_ratio a.D₀ g n Ha.ex₀ sB hb hadd hpull Ha.add
-  have hud := T.torusCoordinateRatio_differentiableAt_origin a.D₀ g n Ha.ex₀ _ (hb _ _) Ha.add Ha.hol_b Ha.hol_chi u hu
+  have hud := _root_.GlobalTheory.AbelianLetters.IsRatio.differentiableAt_zero a.D₀ g n Ha.ex₀ _ (hb _ _) Ha.add Ha.hol_b Ha.hol_chi u hu
   have hu1 : ∀ x, u x 0 = 1 := fun x => mul_left_cancel₀ (hu0 x 0) (by simpa using (hum x 0 0).symm)
   have hue : ∀ x z, u x z = Complex.exp (fderiv ℂ (u x) 0 z) := fun x =>
     Doubling.eq_cexp_fderiv_of_map_add (hud x) (hu0 x 0) (hum x)
@@ -123,7 +126,7 @@ theorem exists_subspace_isometric : Out.Laws → Out.Laws2 → ∀ (E : Type) [F
   let V : Submodule ℂ (Fin g → ℂ) := ⨅ x, LinearMap.ker (fderiv ℂ (u x) 0).toLinearMap
   have hV : ∀ z ∈ V, z ∈ Submodule.span ℝ {p | ∃ v, Ha.y v = 0 ∧ p = Ha.P₀ v} := by
     intro z hz
-    refine Submodule.span_mono ?_ (T.mem_realSpan_periods_of_character_kernel g n Θ.S Θ.h (Θ.τ _) (p _)
+    refine Submodule.span_mono ?_ (_root_.GlobalTheory.PeriodSpan.mem_span_periods g n Θ.S Θ.h (Θ.τ _) (p _)
       (fun k => (fderiv ℂ (u (Ha.y (Θ.bas (Pi.single (.inr k) 1)))) 0).toLinearMap) hn (Θ.pos _ hT).2 (Θ.per _)
       (fun k hk k' hk' s => ?_) (fun v hv k hk => ?_) z fun k _ => (Submodule.mem_iInf _).1 hz _)
     · rintro _ ⟨v, hv, rfl⟩
@@ -161,11 +164,11 @@ theorem exists_subspace_isometric : Out.Laws → Out.Laws2 → ∀ (E : Type) [F
     exact (congrArg (· ≫ v.left) (Spec.map_id _)).trans (Category.id_comp _)
   have hid : (fun z => 𝟙 (Sp ℂ) ≫ (show Sp ℂ ⟶ _ from (Ha.ex₀ z).b.left)) = fun z => (show Sp ℂ ⟶ _ from (Ha.ex₀ z).b.left) :=
     funext fun z => Category.id_comp _
-  obtain ⟨F, hF, hFΛ, hFd⟩ := T.exists_linearLift_additiveHolomorphic_abelian a.D₀.P P' φ hφ uu g (Out.TF (R := ℂ) ℂ) (𝟙 (Sp ℂ))
+  obtain ⟨F, hF, hFΛ, hFd⟩ := _root_.GlobalTheory.AbelianLetters.exists_linear_lift_of_isGrpPullback a.D₀.P P' φ hφ uu g (Out.TF (R := ℂ) ℂ) (𝟙 (Sp ℂ))
     ((Category.id_comp _).trans tf_hom) (fun z => (Ha.ex₀ z).b) (b_add Ha.add) (hid ▸ Ha.hol_b)
   obtain rfl : z' = F z := hFd z z' η' (by rw [hη']; exact hid ▸ hd) hD
   obtain ⟨fr, f₁, f₂, f₃, -, f₅⟩ := Θ.onB w hw
-  obtain ⟨ρ, r₁, r₂, r₃⟩ := T.exists_entire_unit_appellHumbert_frame_ratio P'.A _ a.D₀.P.L P'.L a.D₀.P.isLB P'.isLB φ wL hwL g _ uu Hm' χ' hAH _ F
+  obtain ⟨ρ, r₁, r₂, r₃⟩ := _root_.GlobalTheory.FrameCompare.exists_entire_unit_automorphy P'.A _ a.D₀.P.L P'.L a.D₀.P.isLB P'.isLB φ wL hwL g _ uu Hm' χ' hAH _ F
     (fun z => (hF z).trans (Category.id_comp _)) fr th _ f₁ f₂ f₃ f₅
   obtain ⟨t₁, t₂, t₃⟩ := T.thetaCharOff_ne_zero_differentiable_quasiPeriodic' g Θ.S (Θ.τ w) Θ.c₁ Θ.c₂ (Θ.pos w hw).1 (Θ.pos w hw).2 Θ.half₁ Θ.half₂ Θ.c₁_S
   have hfac : ∀ v, Ha.y (Θ.bas v) = 0 → ∃ a₁ b₁ : ℂ, a₁ ≠ 0 ∧
@@ -198,7 +201,7 @@ theorem exists_subspace_isometric : Out.Laws → Out.Laws2 → ∀ (E : Type) [F
   obtain ⟨v₂, rfl⟩ := Θ.bas.surjective v₂
   obtain ⟨a₁, b₁, ha₁, e₁, e₁'⟩ := hfac v₁ h₁
   obtain ⟨a₂, b₂, ha₂, e₂, e₂'⟩ := hfac v₂ h₂
-  have hc := T.factor_exponent_commutator_eq_of_quasiPeriodic g _ ρ _ _ _ _ _ _ a₁ a₂ b₁ b₂ hθd hθ r₁ r₂ ha₁ ha₂ e₁ e₂ e₁' e₂'
+  have hc := _root_.GlobalTheory.factor_commutator_eq_of_nonvanishing g _ ρ _ _ _ _ _ _ a₁ a₂ b₁ b₂ hθd hθ r₁ r₂ ha₁ ha₂ e₁ e₂ e₁' e₂'
   simp only [piHerm, dotForm, LinearMap.coe_mk, AddHom.coe_mk, mulVec_period Θ.h (Θ.τ w) (p w) (Θ.per w)] at hc
   rw [hermForm_swap hAH.1] at hc
   rw [← hP w _ h₁, ← hP w _ h₂, hR.2.2, Θ.sympl]

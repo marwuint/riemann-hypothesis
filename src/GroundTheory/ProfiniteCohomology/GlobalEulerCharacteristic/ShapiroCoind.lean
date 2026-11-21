@@ -91,13 +91,6 @@ theorem quotientComapMap_mk (g : G) :
     quotientComapMap π D (QuotientGroup.mk g) = QuotientGroup.mk (π g) :=
   rfl
 
-theorem quotientComapMap_smul (g : G) (x : G ⧸ D.comap π) :
-    quotientComapMap π D (g • x) = π g • quotientComapMap π D x := by
-  induction x using QuotientGroup.induction_on with
-  | H y =>
-    rw [MulAction.Quotient.smul_mk, quotientComapMap_mk, quotientComapMap_mk, MulAction.Quotient.smul_mk,
-      smul_eq_mul, smul_eq_mul, map_mul]
-
 variable {π} (hπ : Function.Surjective π)
 
 include hπ in
@@ -121,24 +114,6 @@ noncomputable def quotientComapEquiv : G ⧸ D.comap π ≃ Γ ⧸ D :=
   Equiv.ofBijective _ (quotientComapMap_bijective D hπ)
 
 variable (X : Rep.{u} k Γ)
-
-noncomputable def resFunDiagEquiv :
-    (Rep.res π (funDiagRep (Γ ⧸ D) X)).ρ.Equiv (funDiagRep (G ⧸ D.comap π) (Rep.res π X)).ρ where
-  toLinearEquiv := LinearEquiv.funCongrLeft k X (quotientComapEquiv D hπ)
-  isIntertwining' g := by
-    refine LinearMap.ext fun F => funext fun y => ?_
-    change X.ρ (π g) (F ((π g)⁻¹ • quotientComapMap π D y)) =
-      X.ρ (π g) (F (quotientComapMap π D (g⁻¹ • y)))
-    rw [quotientComapMap_smul, map_inv]
-
-noncomputable def resFunDiagRepIso :
-    Rep.res π (funDiagRep (Γ ⧸ D) X) ≅ funDiagRep (G ⧸ D.comap π) (Rep.res π X) :=
-  Rep.mkIso (resFunDiagEquiv D hπ X)
-
-noncomputable def resFunDiagRepIsoCoindRes :
-    Rep.res π (funDiagRep (Γ ⧸ D) X) ≅
-      Rep.coind (D.comap π).subtype (Rep.res (D.comap π).subtype (Rep.res π X)) :=
-  resFunDiagRepIso D hπ X ≪≫ (coindResIsoFunDiagRep (D.comap π) (Rep.res π X)).symm
 
 end Inflation
 

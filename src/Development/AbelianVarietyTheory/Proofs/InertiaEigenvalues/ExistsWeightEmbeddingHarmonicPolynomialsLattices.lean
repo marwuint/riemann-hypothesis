@@ -8,11 +8,12 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleTwis
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousCoeffBlockAct
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TensorMapDescent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisConjDefiniteFormsSemilinearEquiv
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarmonicPolynomialEqZeroOfFunctionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarmonicPolynomialEqZeroOfFunction
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdmissibleEmptyOfGood
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockHarmonicValueSpaceMapEqDualWeylModuleFunctioStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffPolynomialEqZeroOfVanishingOnGLFamily
 import Formalism.LocalToGlobal.Columns.CoefModAt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameKeepsMatricesMatchesRationalPointsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameKeepsMatricesMatchesRationalPoints
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.StandardLattice Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.TwInputs GlobalTheory.SeriesTie GlobalTheory.ExportSeries NumberField IsDedekindDomain
 open Formalism.MainNotions.IntegralHeckeForms (TwOK)
 open Formalism.AUTREP (GAf)
@@ -75,7 +76,7 @@ theorem exists_psi {m n : ℕ} (w : Weight D n) (B : GLR D n) (hw : w.Good) (hm 
   let hf : H →ₗ[ℂ] (GLR D n → ℂ) := harmFn m w B ∘ₗ H.subtype
   have hinj : Function.Injective hf := by
     refine (injective_iff_map_eq_zero _).2 fun P hP => Subtype.ext ?_
-    exact GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D m n w B hw hm P P.2 hP
+    exact _root_.GlobalTheory.ExportSeries.HarmInj.harm_inj D m n w B hw hm P P.2 hP
   have hr : LinearMap.range hf = LinearMap.range (cfn w.lam) := by
     rw [LinearMap.range_comp, Submodule.range_subtype, GlobalTheory.T.fockHarmonicValueSpace_map_eq_dualWeylModuleFunctions D m n w B hw hm]
     have : {φ | ∃ F : VV ℂ w.lam, φ = coefFn (RingHom.id ℂ) w.lam (F : Pol ℂ D.what₂.Tau n)} =
@@ -106,7 +107,7 @@ theorem psi_rhoVr {m n : ℕ} {w : Weight D n} {B : GLR D n} (hw : w.Good) (hm :
     {Ψ : VV ℂ w.lam →ₗ[ℂ] PolF D m n} (h1 : ∀ F, Ψ F ∈ harm m w B) (h2 : ∀ F, harmFn m w B (Ψ F) = cfn w.lam F)
     (γ : GL (Fin n) D.host.E) (F : VV ℂ w.lam) :
     Ψ (rhoVr (tauE D) w.lam γ F) = fockGL m w B (embGL (tauE D) γ) (Ψ F) := by
-  refine sub_eq_zero.1 (GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D m n w B hw hm _ (sub_mem (h1 _) (fockGL_mem_harm w B _ (h1 _))) ?_)
+  refine sub_eq_zero.1 (_root_.GlobalTheory.ExportSeries.HarmInj.harm_inj D m n w B hw hm _ (sub_mem (h1 _) (fockGL_mem_harm w B _ (h1 _))) ?_)
   funext x
   rw [map_sub, Pi.sub_apply, h2, harmFn_fockGL, h2, Pi.zero_apply, sub_eq_zero, cfn_apply, cfn_apply,
     coefFn_rhoVr (RingHom.id ℂ) (fun τ => RingHom.id_comp _)]
@@ -196,7 +197,7 @@ theorem exists_wtMap : ∀ (D : D7) (S T : HSp D) (B : GlobalTheory.ExportSeries
     obtain ⟨γE, hγE⟩ : ∃ γE, Bridge.IsRatMat S γ' γE := by
       obtain ⟨y, -, hy⟩ := γ'.2
       exact ⟨y, hy.symm⟩
-    have hmγ := (GlobalTheory.T.frameKeepsMatrices_matches_rationalPoints D S S.rank hF P hP).2 rfl γ γ' γE hγγ' hγE
+    have hmγ := (_root_.GlobalTheory.MtRead.ratMatch_of_idFrame D S S.rank hF P hP).2 rfl γ γ' γE hγγ' hγE
     have hT := hT₀ γ γE (Matrix.ext fun a c => by simpa using hmγ a c)
     have hact : B.act (γ' : GA D S) = fockGL T.rank B.w B.F.BS (embGL (tauE D) γE) := by
       rw [Base.act, MonoidHom.comp_apply, realGL_rat hB.frame.vac.2.inf hγE]

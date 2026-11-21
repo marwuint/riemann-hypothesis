@@ -25,30 +25,6 @@ def IsJointSNC (B : FinHolAtlas n Y) (μ : Y → X) {q r : ℕ} (L : Fin q → L
           | some a => χ w a ^ e i k
           | none => 1)
 
-def RankDropAlong (A : FinHolAtlas d X) (μ : Y → X) (B : FinHolAtlas n Y) (V : Set Y) : Prop :=
-  ∀ w ∈ V, ∀ (χ : OpenPartialHomeomorph Y (Fin n → ℂ)) (a : Fin n), IsCompatChart B χ → w ∈ χ.source →
-    V ∩ χ.source = {w' ∈ χ.source | χ w' a = 0} →
-    Module.finrank ℂ (LinearMap.range
-      (((fderiv ℂ (fun z => A.chart (chartIdx A (μ w)) (μ (χ.symm z))) (χ w) :
-          (Fin n → ℂ) →L[ℂ] (Fin d → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin d → ℂ)).comp
-        (LinearMap.ker (LinearMap.proj a : (Fin n → ℂ) →ₗ[ℂ] ℂ)).subtype)) < n - 1
-
-def AnalyticLogResolution : Prop :=
-  ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas d X),
-    IsProjective A →
-  ∀ (Z : Set X) (n : ℕ), IsIrreducibleAnalytic A Z → (regularLocus A Z n).Nonempty →
-  ∀ (q : ℕ) (L : Fin q → LocPot X) (t : Fin q → X → X → ℂ),
-    (∀ i, IsPotential A (L i) ∧ IsSection A (L i) (t i) ∧ ∃ y ∈ Z, t i y y ≠ 0) →
-  ∃ (Y : Type) (_ : TopologicalSpace Y) (_ : CompactSpace Y) (_ : T2Space Y) (B : FinHolAtlas n Y)
-    (μ : Y → X) (_ : HoloMap B A μ) (S : Set X) (r : ℕ) (W : Fin r → Set Y) (e : Fin q → Fin r → ℕ)
-    (J : Finset (Fin r)),
-    IsProjective B ∧ Set.range μ = Z ∧ A.IsAnalyticSubset S ∧ Z \ S ⊆ regularLocus A Z n ∧
-    Z ⊆ closure (Z \ S) ∧ Set.InjOn μ (μ ⁻¹' S)ᶜ ∧
-    (∀ y, y ∉ μ ⁻¹' S → ∀ j, y ∈ (B.chart j).source → ∀ v : Fin n → ℂ,
-      fderiv ℂ (fun w => A.chart (chartIdx A (μ y)) (μ ((B.chart j).symm w))) (B.chart j y) v = 0 →
-        v = 0) ∧
-    μ ⁻¹' S = ⋃ k ∈ J, W k ∧ IsJointSNC B μ L t W e
-
 end
 
 end GlobalTheory.LogResInt

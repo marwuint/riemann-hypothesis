@@ -51,9 +51,4 @@ def ConjugationPermutesPeriods (F : FamilyUnif Xo σ ty) (τ : ℂ ≃+* ℂ) (�
   ∀ i P, IsPeriod (F.Di i) ty P →
     ∃ P', IsPeriod (F.Di (π i)) ty P' ∧ spMap (τ : ℂ →+* ℂ) ≫ F.u i P = F.u (π i) P'
 
-theorem permutes_refl (F : FamilyUnif Xo σ ty) : ConjugationPermutesPeriods F (RingEquiv.refl ℂ) id := fun i P hP =>
-  ⟨P, hP, by
-    have : spMap ((RingEquiv.refl ℂ : ℂ ≃+* ℂ) : ℂ →+* ℂ) = 𝟙 _ := Spec.map_id (CommRingCat.of ℂ)
-    rw [this, Category.id_comp]; rfl⟩
-
 end GlobalTheory.CompRat

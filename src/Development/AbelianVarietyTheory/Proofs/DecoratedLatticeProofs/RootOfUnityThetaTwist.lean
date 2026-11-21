@@ -1,7 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.QLev
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ProdDat
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDataDifferBySplittingFactorQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDataDifferBySplittingFactorQuotient
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SplitPart
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TopFormula
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SplitLastBlockActX
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeCharEqOneOfTrivialFinitePartOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdelicCharacterPowEqOneFiniteIdelesOfOrderDvd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OpenKernelIdeleCharacterTrivialFinitePartOne
@@ -45,7 +49,7 @@ theorem pow_eq_one_of_chrEq {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.H
       have := h.1.2 k
       simp only [MonoidHom.coe_comp, Function.comp_apply, powMonoidHom_apply]
       erw [this, one_pow]⟩
-    (fun y hy => by simpa using GlobalTheory.T.idelicCharacter_pow_eq_one_finiteIdeles_of_orderDvd D c χ h n hn y hy) x
+    (fun y hy => by simpa using _root_.GlobalTheory.CharOrderFin.char_pow_eq_one_of_orderDvd D c χ h n hn y hy) x
   simpa using this
 
 theorem eq_one_of_finPart {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ) {n : ℕ} (hn0 : 0 < n)
@@ -58,7 +62,7 @@ theorem twist_eq {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT ν : (A
     (hW' : IsWeilDatumO ψ S T (χS * ν) (χT * ν) om') {g : GA D S} {h : GA D T} {x y : (AE D)ˣ}
     (hx : IsDetRoot S g x) (hy : IsDetRoot T h y) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     om' (g, h) f = (((ν x)⁻¹ * ν y : Circle) : ℂ) • om (g, h) f := by
-  rw [GlobalTheory.T.weilData_differ_by_splittingFactorQuotient D ψ S T χS χT _ _ om om' hW hW' g h x y hx hy f hf]
+  rw [_root_.GlobalTheory.WeilChange.weilData_differ_by_splitFac D ψ S T χS χT _ _ om om' hW hW' g h x y hx hy f hf]
   congr 1
   have e : splitFacO (χS * ν) (χT * ν) x y = (ν x)⁻¹ * ν y * splitFacO χS χT x y := by
     simp only [splitFacO, MonoidHom.mul_apply]
@@ -74,61 +78,3 @@ theorem isWeil_rec {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Cir
 
 end GlobalTheory.TupRoot
 
-open GlobalTheory.TupRoot in
-
-theorem GlobalTheory.TupRoot.weil_tuple_root : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ t, ∃ ζ : ℕ → ℂ, (∀ j, ∃ n : ℕ, 0 < n ∧ ζ j ^ n = 1) ∧ (∀ j, j + 1 < D.R.m → f.g.b j ∈ GfC _ → f.g.b (j + 1) ∈ GfC _ → ∀ a ∈ GinfC _, ∀ a' ∈ GinfC _, ∀ g, IsThetaFunO (pk W).ψ _ _ g → (pk W).ωY t j (a * f.g.b j, a' * f.g.b (j + 1)) g = ζ j • (pk W).ωY W.P.A3.A.μ0 j (a * f.g.b j, a' * f.g.b (j + 1)) g) ∧ (∀ j h g, IsThetaFunO (pk W).ψ _ _ g → omT (pk W) t j h (f.g.b (j + 1), f.g.bT) g = ζ (j + 1) • omT (pk W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) g) ∧ ∀ j, ∃ n : ℕ, 0 < n ∧ (pk W).toLevCh.mu t j ^ n = (pk W).toLevCh.mu W.P.A3.A.μ0 j ^ n := by
-  intro D L hT Gi Gl Kc Yd cX ex W u f hP _hR t
-  have hc := hP.bot.hyp.2.2.2.1
-  have hL := hc.lev
-  obtain ⟨n, hn0, hn⟩ := hL.xi_fin t
-  have hxi : ChrEq ((pk W).xi t) ((pk W).xiH t) := hL.xi t
-  have hb : (pk W).xi W.P.A3.A.μ0 = 1 :=
-    MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi W.P.A3.A.μ0))
-  have hstep : ∀ k, Lift.chrStep ((pk W).toLevCh.mu t) (pk W).eta k =
-      ((Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta k).1 * (pk W).xi t,
-        (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta k).2 * (pk W).xi t) := by
-    intro k
-    unfold Lift.chrStep
-    split_ifs <;> simp [Formalism.IndefR.Links.LevCh.mu, Lift.tup, hb, mul_right_comm]
-  have hpow : ∀ x, (pk W).xi t x ^ n = 1 := pow_eq_one_of_chrEq hxi hn
-  have hinf : ∀ x : (AE D)ˣ, finPart D (x : AE D) = 1 → (pk W).xi t x = 1 := eq_one_of_finPart hxi hn0 hn
-  choose xr hxr using fun k => GlobalTheory.RecDict.exists_isDetRoot D (Yc D k) (f.g.b k)
-  obtain ⟨xT, hxT⟩ := GlobalTheory.RecDict.exists_isDetRoot D D.sp.X' f.g.bT
-  let w : ℕ → Circle := fun k => if k + 1 < D.R.m then ((pk W).xi t (xr k))⁻¹ * (pk W).xi t (xr (k + 1))
-    else ((pk W).xi t (xr k))⁻¹ * (pk W).xi t xT
-  refine ⟨fun k => (w k : ℂ), ?_, ?_, ?_, ?_⟩
-  · intro k
-    refine ⟨n, hn0, ?_⟩
-    have h1 : w k ^ n = 1 := by
-      simp only [w]
-      split_ifs <;> rw [mul_pow, inv_pow, hpow, hpow, inv_one, one_mul]
-    have := congrArg (fun z : Circle => (z : ℂ)) h1
-    simpa using this
-  · intro j hj _ _ a ha a' ha' g hg
-    have hW0 := hc.chain.ωY W.P.A3.A.μ0 j hj
-    have hWt := hc.chain.ωY t j hj
-    rw [hstep] at hWt
-    obtain ⟨z, hz⟩ := GlobalTheory.RecDict.exists_isDetRoot D (Yc D j) a
-    obtain ⟨y, hy1, hy⟩ := GlobalTheory.TwistFinPart.exists_isDetRoot_finPart_one _ a ha z hz
-    obtain ⟨z', hz'⟩ := GlobalTheory.RecDict.exists_isDetRoot D (Yc D (j + 1)) a'
-    obtain ⟨y', hy1', hy'⟩ := GlobalTheory.TwistFinPart.exists_isDetRoot_finPart_one _ a' ha' z' hz'
-    rw [twist_eq hW0 hWt (GlobalTheory.ExtCore.isDetRoot_mul _ _ _ _ _ hy (hxr j))
-      (GlobalTheory.ExtCore.isDetRoot_mul _ _ _ _ _ hy' (hxr (j + 1))) hg]
-    have e : ((pk W).xi t (y * xr j))⁻¹ * (pk W).xi t (y' * xr (j + 1)) = w j := by
-      simp only [w, if_pos hj, map_mul, hinf _ hy1, hinf _ hy1', one_mul]
-    rw [e]
-  · intro j h g hg
-    have hW0 := isWeil_rec (idx_top h) _ (hc.chain.ωX W.P.A3.A.μ0)
-    have hWt := isWeil_rec (idx_top h) _ (hc.chain.ωX t)
-    rw [hstep] at hWt
-    have e := twist_eq hW0 hWt (hxr (j + 1)) hxT hg
-    have hw : w (j + 1) = ((pk W).xi t (xr (j + 1)))⁻¹ * (pk W).xi t xT := by
-      simp only [w]
-      rw [if_neg (by omega)]
-    show _ = ((w (j + 1) : Circle) : ℂ) • _
-    rw [hw]
-    exact e
-  · intro j
-    refine ⟨n, hn0, ?_⟩
-    have hν : (pk W).xi t ^ n = 1 := MonoidHom.ext fun x => by simpa using hpow x
-    simp only [Formalism.IndefR.Links.LevCh.mu, Lift.tup, hb, mul_one, mul_pow, hν]

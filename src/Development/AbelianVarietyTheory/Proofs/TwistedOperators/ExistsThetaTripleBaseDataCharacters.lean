@@ -5,12 +5,18 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleCMBaseD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompletelyAuxiliaryPlaceOutsideFinset
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasArchimedeanCharExponentsConjOfHasInfExp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTauEOverRealPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadratiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadrati
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridHeckeCharactersExist
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUnramifiedAtCofinitelyManyPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUnramifiedPlaceOfUnramifiedOnePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyAlgHomCompletionOfSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUnramifiedAbovePlaceOfTrivialUnitsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUnramifiedAtCofinitelyManyPlaces
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsReading
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUnramifiedPlaceOfUnramifiedOnePrime
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyAlgHomCompletionOfSplitPlace
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUnramifiedAbovePlaceOfTrivialUnits
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -84,7 +90,7 @@ theorem exists_base_chars : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (W W�
       obtain ⟨k, hk⟩ := h
       omega)
   have hfin : {w : HeightOneSpectrum (𝓞 D.host.E) | ¬ GlobalTheory.LFun.UnrAt α w ∨ ¬ GlobalTheory.LFun.UnrAt β w}.Finite :=
-    ((GlobalTheory.T.heckeChar_unramified_at_cofinitely_many_places D α hT.hecA).union (GlobalTheory.T.heckeChar_unramified_at_cofinitely_many_places D β hT.hecB)).subset (fun w hw => hw)
+    ((_root_.GlobalTheory.HeckeFinRam.finite_ramified D α hT.hecA).union (_root_.GlobalTheory.HeckeFinRam.finite_ramified D β hT.hecB)).subset (fun w hw => hw)
   set S₀ : Finset (HeightOneSpectrum (𝓞 D.host.F)) := hfin.toFinset.image (fun w => w.under (𝓞 D.host.F)) with hS₀
   have hS : ∀ v ∈ S₀, ∃ ε, IsPlaceIdem D v ε ∧ ¬ GlobalTheory.WeilParts.NonSplitAt D v ε ∧
       ¬ GlobalTheory.WeilParts.UnramAt ε (α / β) ∧ ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F) := by
@@ -95,8 +101,8 @@ theorem exists_base_chars : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (W W�
     rcases hT.ram _ ε hε with ⟨h1, h2⟩ | ⟨h1, h2, h3⟩
     · exfalso
       rcases hw with hw | hw
-      · exact hw (GlobalTheory.T.heckeChar_unramified_above_place_of_trivial_units D α _ ε hε h1 w rfl)
-      · exact hw (GlobalTheory.T.heckeChar_unramified_above_place_of_trivial_units D β _ ε hε h2 w rfl)
+      · exact hw (_root_.GlobalTheory.UnrOverPlace.unrAt_of_unramAt D α _ ε hε h1 w rfl)
+      · exact hw (_root_.GlobalTheory.UnrOverPlace.unrAt_of_unramAt D β _ ε hε h2 w rfl)
     · exact ⟨ε, hε, h1, h2, h3⟩
   have hbad : ∀ w : HeightOneSpectrum (𝓞 D.host.E), (¬ GlobalTheory.LFun.UnrAt α w ∨ ¬ GlobalTheory.LFun.UnrAt β w) →
       w.under (𝓞 D.host.F) ∈ S₀ := fun w hw =>
@@ -104,7 +110,7 @@ theorem exists_base_chars : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (W W�
   obtain ⟨v₁, hv₁, hsp, ⟨τ₁⟩⟩ := exists_good_place D S₀
   have hemb : ∀ v : S₀, Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F v) := fun v => by
     obtain ⟨ε, hε, hns, -, -⟩ := hS v.1 v.2
-    exact GlobalTheory.T.nonempty_algHom_completion_of_split_place D v.1 ε hε hns
+    exact _root_.GlobalTheory.SplitPlaceEmb.nonempty_algHom_of_not_nonSplitAt D v.1 ε hε hns
   let Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E :=
     { ψ := ψ, emb := fun w => ⟨(starRingEnd ℂ).comp (tauE D (τf w)), hτf w⟩, mα := mα, mβ := mβ, P := S₀,
       τ := fun v => (hemb v).some, v₁ := v₁, τ₁ := τ₁ }
@@ -132,13 +138,13 @@ theorem exists_base_chars : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (W W�
     · intro v hv
       obtain ⟨ε, -, -, -, hd⟩ := hS v hv
       exact GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v (fun hle => hd (Ideal.dvd_iff_le.2 hle))
-  · refine ⟨hT.hecA, hT.hecB, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ D.sp.cm.deg2 _ _ hT.resA, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ D.sp.cm.deg2 _ _ hT.resB,
+  · refine ⟨hT.hecA, hT.hecB, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ D.sp.cm.deg2 _ _ hT.resA, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ D.sp.cm.deg2 _ _ hT.resB,
       hmα, hmβ, Finset.disjoint_empty_right _, ?_, ?_, ?_, ?_, ?_⟩
     · rw [hT']
     · intro w hw
       rw [hT'] at hw
       obtain ⟨ε, hε, -, hnu, -⟩ := hS _ hw
-      exact fun hu => hnu (GlobalTheory.T.heckeChar_unramified_place_of_unramified_one_prime D (α / β) hν hνr _ ε hε w rfl hu)
+      exact fun hu => hnu (_root_.GlobalTheory.UnramFromOnePrime.unramAt_of_unrAt_one D (α / β) hν hνr _ ε hε w rfl hu)
     · intro w hw
       by_contra h
       exact hw (show w.under (𝓞 D.host.F) ∈ ((Xc.T : Finset _) : Set _) by

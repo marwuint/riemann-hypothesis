@@ -5,15 +5,15 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.On
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLogAExtends
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KisinInfGaloisActsThroughDescentDatumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinBcrisComparisonFrobeniusNaturalityStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinMuPowSmulFrobeniusMemAinfStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KisinInfGaloisActsThroughDescentDatum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinBcrisComparisonFrobeniusNaturality
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinMuPowSmulFrobeniusMemAinf
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerSubOneAinfPropertiesCompatibleRootsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonodromyMemRangeOfInvariantVectorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisDecompTameCoverActionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorOneInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HorizEqXiRedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimePowSmulMemLocalLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisDecompTameCoverAction
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorOneInjective
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HorizEqXiRed
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimePowSmulMemLocalLattice
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 
@@ -136,8 +136,8 @@ theorem sub_mem_B1T {s : G →* GQ l} {T : LocLat G ℚ_[l] K O} {b b' ξ : TW (
     (x : ↥T.L.T) (hb : IsCobOf s T b c) (hb' : IsCobOf s T b' c') (hξ : ∀ g, actB s T g ξ = ξ)
     (h : b - b' = ξ - (1 : OB l O) ⊗ₜ[O] x) : c - c' ∈ latticeCoboundaries T.L := by
   refine ⟨-(x : T.V), neg_mem x.2, funext fun g => ?_⟩
-  obtain ⟨n₁, hn₁⟩ := GlobalTheory.T.exists_prime_pow_smul_mem_localLattice l O K G T (c g)
-  obtain ⟨n₂, hn₂⟩ := GlobalTheory.T.exists_prime_pow_smul_mem_localLattice l O K G T (c' g)
+  obtain ⟨n₁, hn₁⟩ := _root_.GlobalTheory.LatPow.pow_smul_mem l O K G T (c g)
+  obtain ⟨n₂, hn₂⟩ := _root_.GlobalTheory.LatPow.pow_smul_mem l O K G T (c' g)
   obtain ⟨x₁, hx₁⟩ := hn₁ (max n₁ n₂) (le_max_left _ _)
   obtain ⟨x₂, hx₂⟩ := hn₂ (max n₁ n₂) (le_max_right _ _)
   have e1 := hb g _ x₁ hx₁
@@ -151,7 +151,7 @@ theorem sub_mem_B1T {s : G →* GQ l} {T : LocLat G ℚ_[l] K O} {b b' ξ : TW (
       hbb, map_add, map_sub, hξ]
     congr 1
     abel
-  have e4 := congrArg (fun z : ↥T.L.T => (z : T.V)) (GlobalTheory.T.one_tmul_injective_locLat l O K G T e3)
+  have e4 := congrArg (fun z : ↥T.L.T => (z : T.V)) (_root_.GlobalTheory.TensorOneInj.tensor_one_injective l O K G T e3)
   simp only [Submodule.coe_sub, Submodule.coe_smul] at e4
   have eO : ∀ v : T.V, ((l : O) ^ max n₁ n₂) • v = (l : K) ^ max n₁ n₂ • v := fun v => by
     rw [← algebraMap_smul K ((l : O) ^ max n₁ n₂) v, map_pow, map_natCast]
@@ -175,7 +175,7 @@ theorem exists_isCrisVal (R : GalDat t ϖ (sQ l) D T) {y : Vec K a ι} (hyY : y 
     ∃ b₀, IsCrisVal t ϖ D.toPhiMod R.jB (phiW t ϖ D.toPhiMod m₀) b₀ := by
   obtain ⟨ε, hε⟩ := exists_isEps (l := l)
   obtain ⟨δ, hδ, -⟩ := hε.2
-  obtain ⟨c, hc⟩ := (GlobalTheory.T.breuilKisin_mu_pow_smul_frobenius_mem_ainf l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hε hδ ⟨y, hy⟩
+  obtain ⟨c, hc⟩ := (_root_.GlobalTheory.BKGal.LiftStep.mu_pow_smul_mem l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hε hδ ⟨y, hy⟩
     hyY.1 m₀ h).2
   obtain ⟨u, hu⟩ := isUnit_toB_muOf (O := O) hε (H + η)
   refine ⟨(↑u⁻¹ : OB l O) • R.jB (fun i => toB l O (c i)), (1 : O) ⊗ₜ[ℤ_[l]] (muOf ε ^ (H + η)), c,
@@ -185,13 +185,13 @@ theorem exists_isCrisVal (R : GalDat t ϖ (sQ l) D T) {y : Vec K a ι} (hyY : y 
 theorem fix_of_horiz (R : GalDat t ϖ (sQ l) D T) (σ : D.MMl) (hinv : σ.1 ∈ D.desc.inv)
     (hc : D.conn σ.1 = 0) (g : Gl l) :
     actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod σ)) = R.jB (toBcris t ϖ D.toPhiMod σ) := by
-  obtain ⟨h, k, rfl, hh, γ, hk⟩ := GlobalTheory.T.exists_galois_decomp_tameCover_action l a e O K t ϖ g
-  have hx := GlobalTheory.T.eq_xi_red_of_conn_eq_zero' O K l e a ι D.toPhiMod σ.1 hc
+  obtain ⟨h, k, rfl, hh, γ, hk⟩ := _root_.GlobalTheory.TameCoverGen.main l a e O K t ϖ g
+  have hx := _root_.GlobalTheory.horiz_eq_xi_red O K l e a ι D.toPhiMod σ.1 hc
   have hm : D.xi (red σ.1) ∈ D.MMl := by rw [← hx]; exact σ.2
   have hσ : (⟨D.xi (red σ.1), hm⟩ : D.MMl) = σ := Subtype.ext hx.symm
   have h2 := R.horiz h hh (red σ.1) hm
   rw [hσ] at h2
-  have h3 := GlobalTheory.T.kisinInfGalois_acts_through_descentDatum l a e O K t ϖ ι D.toPhiMod T R.I R.jB D.desc R.cmp R.desc k γ hk σ σ (hinv γ).symm
+  have h3 := _root_.GlobalTheory.TameAct.main l a e O K t ϖ ι D.toPhiMod T R.I R.jB D.desc R.cmp R.desc k γ hk σ σ (hinv γ).symm
   rw [actB_mul, h3, h2]
 
 end Ql
@@ -216,7 +216,7 @@ theorem potential_class : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [N
     have hphi : phiW t ϖ D.toPhiMod m₀' + R.I.ofT x = phiW t ϖ D.toPhiMod m₀ := by
       rw [hx, ← mem_Treal.1 hT, map_sub]
       abel
-    have hof := ((GlobalTheory.T.breuilKisin_bcris_comparison_frobenius_naturality l a e O K t ϖ ι D.toPhiMod T R.I).2 R.jB R.cmp).2.2.2.1 x
+    have hof := ((_root_.GlobalTheory.CrisComparison.main l a e O K t ϖ ι D.toPhiMod T R.I).2 R.jB R.cmp).2.2.2.1 x
     have hsum := isCrisVal_add h4' hof
     rw [hphi] at hsum
     have hb₀ : b₀ = b₀' + (1 : OB l O) ⊗ₜ[O] x := UnitModel.isCrisVal_unique t ϖ h4 hsum

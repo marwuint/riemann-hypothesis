@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreEmbeddingMulImageEqOfFieldPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreFieldPointsInjectiveProjectiveMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonFieldExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedFibreFieldPointsInjectiveProjectiveMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonFieldExtension
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpMapFieldExtCancelStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -21,7 +21,7 @@ theorem Near.closed_product_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [I
   obtain ⟨Ω₁, _, io₁, ca, cb, hca, hcb, hcc⟩ := GlobalTheory.T.closedFibre_embedding_mul_image_eq_of_field_point R M G' E N fU l hl1 hl2 Ω κ s a b c x y hs ha hb hc
   obtain ⟨Ω₂, _, io₂, ca', cb', hca', hcb', hcc'⟩ :=
     GlobalTheory.T.closedFibre_embedding_mul_image_eq_of_field_point R M G' E N fU l hl1 hl2 Ω κ s' a b c' x' y' hs' ha' hb' hc'
-  obtain ⟨Ω₃, _, j₁, j₂, hj⟩ := GlobalTheory.T.exists_common_field_extension' Ω Ω₁ Ω₂ io₁ io₂
+  obtain ⟨Ω₃, _, j₁, j₂, hj⟩ := _root_.GlobalTheory.exists_common_field_extension Ω Ω₁ Ω₂ io₁ io₂
   have : Mono E.j := by haveI := E.imm; infer_instance
 
   let g₁ : Over.mk (spMap ((j₁.comp io₁).comp κ)) ⟶ Over.mk (spMap (io₁.comp κ)) :=
@@ -58,7 +58,7 @@ theorem Near.closed_product_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [I
       (spMap (j₁.comp io₁) ≫ d) ≫ N.U.hom = spMap (((j₁.comp io₁).comp κ).comp (residue R)) := by
     intro d hd
     rw [Category.assoc, hd, specMap_contravariant_comp_ringHom]
-  have key := GlobalTheory.T.closedFibre_fieldPoints_injective_projective_map R M G' E N fU l hl1 hl2 hsurj Ω₃ ((j₁.comp io₁).comp κ) (spMap (j₁.comp io₁) ≫ c)
+  have key := _root_.GlobalTheory.Mum.ClosedFibreInj.closedFibre_inj R M G' E N fU l hl1 hl2 hsurj Ω₃ ((j₁.comp io₁).comp κ) (spMap (j₁.comp io₁) ≫ c)
     (spMap (j₁.comp io₁) ≫ c') (hco c (hlies s c _ hs hc)) (hco c' (hlies s' c' _ hs' hc'))
     (by simpa only [Category.assoc] using hfU)
   exact GlobalTheory.T.spMap_field_ext_cancel Ω Ω₃ (j₁.comp io₁) N.U.left c c' key

@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemilinearBaseChangeExistsBasisEqImageOfBasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FramedFCrystalExistsCoordsEveryPrismStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisinStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FramedFCrystalExistsCoordsEveryPrism
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisin
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StratifiedCrystalValueMapCommFrobeniusStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCoverStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStratifiedPhiModuleHomValueMapStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCover
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStratifiedPhiModuleHomValueMap
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
@@ -38,14 +38,14 @@ theorem exists_fHom_of_isStratHom : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) 
     Framed S M e → Framed S' M' e' → ∀ Y : Matrix (Fin d') (Fin d) bk.S, IsStratHom S S' Y →
     ∃ u : FHom M M', ∀ j, u.u bk.prism (e j) = ∑ i, bk.toP (Y i j) • e' i := by
   intro l _ K bk d d' S S' M M' e e' hF hF' Y hY
-  choose V hV using GlobalTheory.T.framedFCrystal_exists_coords_every_prism l K bk d S M e hF
-  choose V' hV' using GlobalTheory.T.framedFCrystal_exists_coords_every_prism l K bk d' S' M' e' hF'
-  choose w hw using fun B => GlobalTheory.T.exists_stratifiedPhiModuleHom_valueMap l K bk d d' S S' Y hY B (M.M B) (M'.M B) (V B) (V' B)
+  choose V hV using _root_.GlobalTheory.BSP.CoordEx.main l K bk d S M e hF
+  choose V' hV' using _root_.GlobalTheory.BSP.CoordEx.main l K bk d' S' M' e' hF'
+  choose w hw using fun B => _root_.GlobalTheory.BSP.evalHom l K bk d d' S S' Y hY B (M.M B) (M'.M B) (V B) (V' B)
   refine ⟨⟨w, fun {P P'} k x => ?_, fun P t x m k h =>
     GlobalTheory.T.stratifiedCrystalValueMap_comm_frobenius l K bk d d' S S' M e M' e' hF hF' Y hY P (V P) (V' P) (hV P) (hV' P) (w P) (hw P) t x m k h⟩,
     fun j => ?_⟩
-  · obtain ⟨C, h, ⟨f⟩, hc⟩ := GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk P'
-    apply (GlobalTheory.T.injective_and_range_of_prism_cover l K bk d' S' P' C (M'.M P') (V' P') h f hc).1
+  · obtain ⟨C, h, ⟨f⟩, hc⟩ := _root_.GlobalTheory.BSP.exists_cover_receiving_bk l K bk P'
+    apply (_root_.GlobalTheory.BSP.Eval.effective_of_cover l K bk d' S' P' C (M'.M P') (V' P') h f hc).1
     rw [hw, IsCoord.v_tr (hV P) (hV P'), IsCoord.v_tr (hV' P) (hV' P'), hw]
   · have h1 := hV' bk.prism (Hom.id _) (Hom.id _) (w bk.prism (e j))
     have h2 : (V bk.prism).v (Hom.id _) (Hom.id _) (e j) = Pi.single j 1 :=

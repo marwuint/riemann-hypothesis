@@ -47,7 +47,7 @@ theorem good_add {m : ℕ} {f f' : GA E a → ℂ} (hf : Good ψ m f) (hf' : Goo
   left γ hγ g := by simp only [hf.left γ hγ g, hf'.left γ hγ g]
   law k hk y g := by simp only [hf.law k hk y g, hf'.law k hk y g, mul_add]
   van r hr hrm g := by
-    have := GlobalTheory.T.quotientAverage_add_of_periodic _ (ratV E (UnipotentBlockColumnIndex a r m)) (isCoLat_ratV E _) _ _
+    have := _root_.GlobalTheory.CuspGeneric.avg_add_of_per _ (ratV E (UnipotentBlockColumnIndex a r m)) (isCoLat_ratV E _) _ _
       (per_blk hf.cont (fun c g => hf.left _ (isMir_blkU c) g) g)
       (per_blk hf'.cont (fun c g => hf'.left _ (isMir_blkU c) g) g)
     rw [this, hf.van r hr hrm g, hf'.van r hr hrm g, add_zero]

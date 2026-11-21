@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
-import Development.WeilBound.CoreStatements.SesquilinearFractions.PadicIntegralIffDenominator
+import Development.WeilBound.CoreStatements.SesquilinearFractions.ExistsUnitValueSkewHermitian
+import Development.WeilBound.CoreStatements.SesquilinearFractions.NIdeal
+
 open NumberField Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 private theorem norm_intCast_padicAlgCl_lt_one_iff_dvd (p : ℕ) [Fact p.Prime] (k : ℤ) :

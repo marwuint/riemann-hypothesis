@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterAverageTwistedSpanEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterEigenspaceIsComplPrincipalSeriesTwistedStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterAverageTwistedSpanEqZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterEigenspaceIsComplPrincipalSeriesTwisted
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 
@@ -26,9 +26,9 @@ theorem eig_eq_zero_of_mem_aug_of_not_intertwine : ∀ (G V : Type) [Group G] [T
     ∀ u ∈ aug π N (fun _ => 1), IsEig π J θ u → u = 0 := by
   intro G V _ _ _ _ _ π hπ J N θ hJ hN hy u hu he
   classical
-  obtain ⟨R, h1, hR, hs⟩ := GlobalTheory.T.character_average_twistedSpan_eq_zero G V π hπ N _ hN u hu
+  obtain ⟨R, h1, hR, hs⟩ := _root_.GlobalTheory.PsType.aug_avg_zero G V π hπ N _ hN u hu
   simp only [inv_one, one_smul] at hs
-  refine (GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan G V π hπ J θ hJ).1 u ?_ he
+  refine (_root_.GlobalTheory.PsType.eig_compl_aug G V π hπ J θ hJ).1 u ?_ he
   rw [← Finset.sum_filter_add_sum_filter_not R (fun y => y ∈ J ∧ θ y = 1)] at hs
   have hA : ∑ y ∈ R.filter (fun y => y ∈ J ∧ θ y = 1), π y u
       = ((R.filter (fun y => y ∈ J ∧ θ y = 1)).card : ℂ) • u := by

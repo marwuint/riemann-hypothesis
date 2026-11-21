@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFrameCover
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothBaseAndNormalCoordinateRing
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagCellIsClosedInLeadingMinorOpenStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagCellIsClosedInLeadingMinorOpen
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsImmersionOfClosedPieces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RangeInterCellOpenSubset
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AppLESpMapFromSpec
@@ -20,7 +20,7 @@ theorem GlobalTheory.FlagEmb.cells_glue : ∀ (O K : Type) [CommRing O] [IsNoeth
   have hW : ∀ b w, ∃ W, IsCellOpen p0 p (V b) (D b) w W := fun b w =>
     GlobalTheory.FlagEmb.CellOpen.exists_isCellOpen O X P T m M p0 p (V b) (D b) w
   choose W hW using hW
-  have hcl := fun b w => GlobalTheory.T.flagCell_isClosed_in_leadingMinor_open O K β X s T m M B V α c D P p0 p h hC hP inferInstance hs b w (W b w) (hW b w)
+  have hcl := fun b w => _root_.GlobalTheory.FlagEmb.CellClosed.cell_closed O K β X s T m M B V α c D P p0 p h hC hP inferInstance hs b w (W b w) (hW b w)
   choose h' hh' hci using hcl
   have hred : ∀ b, AlgebraicGeometry.IsReduced (Sp (CR m (V b))) := by
     intro b

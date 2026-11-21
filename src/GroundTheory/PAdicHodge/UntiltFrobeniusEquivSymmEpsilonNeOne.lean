@@ -57,16 +57,6 @@ theorem fontaineT_sub_sum_mem {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (n : 
       𝔪 ^ n :=
   logOnePlus_sub_sum_mem _ n
 
-theorem tendsto_fontaineT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) :
-    @Filter.Tendsto ℕ 𝔹
-      (fun n => ∑ i ∈ Finset.range n,
-        algebraMap ℚ 𝔹 (PowerSeries.coeff i (PowerSeries.log ℚ)) * muBdR p ε ^ i)
-      Filter.atTop (@nhds 𝔹 (Ideal.adicTopology (maximalIdeal (BDeRhamPlus (normInteger ℂ_[p]) p))) (fontaineT ε hε)) :=
-  tendsto_seriesEval _ _
-
-theorem fontaineT_mem {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) : fontaineT ε hε ∈ 𝔪 :=
-  logOnePlus_mem _
-
 theorem isUnit_of_sub_one_mem {u : 𝔹} (hu : u - 1 ∈ 𝔪) : IsUnit u := by
   by_contra h
   have h1 : u ∈ 𝔪 := (IsLocalRing.mem_maximalIdeal u).2 h

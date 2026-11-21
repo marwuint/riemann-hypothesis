@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryOfSameTrace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerMapMemUnipotentCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerMapMemUnipotentCharacter
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesDatumMovePropertiesStatement
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
@@ -192,9 +192,9 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF x x' u s hM
   obtain ⟨hs1, hs2, -, -, hc, hxx, -, hux, hux', -, hx'X⟩ := GlobalTheory.T.hermitianDoubleCosetFrames_datum_move_properties L r k S j β βJ d Λ hT hF x x' u s hM
   obtain ⟨hx, hx', hb, -, hu, hup, -, hss⟩ := hM
-  obtain ⟨n₀, hn₀, e₀, ei₀, -, -⟩ := GlobalTheory.T.eichler_map_mem_unipotent_character L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩) j x u s hx
+  obtain ⟨n₀, hn₀, e₀, ei₀, -, -⟩ := _root_.GlobalTheory.HL.EichlerUnip.eichler_mem_unip L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩) j x u s hx
     (fun y hy => hup y (Submodule.mem_sup_left hy)) hss
-  obtain ⟨n₀', hn₀', e₀', ei₀', -, -⟩ := GlobalTheory.T.eichler_map_mem_unipotent_character L r k S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) j x' u s hx'
+  obtain ⟨n₀', hn₀', e₀', ei₀', -, -⟩ := _root_.GlobalTheory.HL.EichlerUnip.eichler_mem_unip L r k S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) j x' u s hx'
     (fun y hy => hup y (Submodule.mem_sup_right hy)) hss
   obtain ⟨hSD, hW, -, -, hfr', -⟩ := GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT
   obtain ⟨hI, hI', hn, hn', hL, hL', had, hgr⟩ := hW

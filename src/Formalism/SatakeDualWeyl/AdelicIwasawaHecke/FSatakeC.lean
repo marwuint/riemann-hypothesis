@@ -360,55 +360,6 @@ theorem fSatake_cell_exists {ϖ : L} {q m : ℕ} (hU : IsUnramInv ϖ σ q) (hm :
   show ⟪t⟫ * ⟪t⁻¹ * b * D0⁻¹⟫ * ⟪D0 * k⟫ = _
   rw [ht]
 
-private lemma tMat_exponent_le_of_eq_unip_mul_KU {ϖ : L} {q m : ℕ} (hU : IsUnramInv ϖ σ q) (hm : 2 * m ≤ n)
-    {a a' : Fin m → ℤ} {u u' k k' : GU σ n} (hu : IsUnipU u) (hu' : IsUnipU u')
-    (hk : k ∈ KU σ n) (hk' : k' ∈ KU σ n)
-    (h : tMat ϖ n m a * ⟪u⟫ * ⟪k⟫ = tMat ϖ n m a' * ⟪u'⟫ * ⟪k'⟫) (i : Fin m) : a' i ≤ a i := by
-  have hϖ : Valued.v ϖ = ↑(Multiplicative.ofAdd (-1 : ℤ)) := by
-    obtain ⟨-, -, -, h, -⟩ := hU
-    exact h
-  have hϖ0 : ϖ ≠ 0 := fun h => by
-    rw [h, map_zero] at hϖ
-    exact WithZero.zero_ne_coe hϖ
-  obtain ⟨t, ht⟩ := fSatake_tMat_exists hU hm a
-  obtain ⟨t', ht'⟩ := fSatake_tMat_exists hU hm a'
-  obtain ⟨huB, hu1⟩ := hu
-  obtain ⟨huB', hu1'⟩ := hu'
-  have hgeq : t * u * k = t' * u' * k' := by
-    apply Subtype.ext
-    apply Units.ext
-    show ⟪t⟫ * ⟪u⟫ * ⟪k⟫ = ⟪t'⟫ * ⟪u'⟫ * ⟪k'⟫
-    rw [ht, ht']
-    exact h
-  have hq : (t' * u')⁻¹ * (t * u) = k' * k⁻¹ := by
-    calc (t' * u')⁻¹ * (t * u) = (t' * u')⁻¹ * (t * u * k) * k⁻¹ := by group
-      _ = (t' * u')⁻¹ * (t' * u' * k') * k⁻¹ := by rw [hgeq]
-      _ = k' * k⁻¹ := by group
-  have hK : k' * k⁻¹ ∈ KU σ n := (KU σ n).mul_mem hk' ((KU σ n).inv_mem hk)
-  have hi : (i : ℕ) < n := lt_of_lt_of_le i.isLt (by omega)
-  have hint := fSatake_K_int hK ⟨i, hi⟩ ⟨i, hi⟩
-  rw [← hq] at hint
-  have htB := fSatake_borel_tMat ht
-  have htB' := fSatake_borel_tMat ht'
-  have hB1 : IsBorelU (t * u) := isBorelU_mul htB huB
-  have hB2 : IsBorelU (t' * u') := isBorelU_mul htB' huB'
-  have hd1 : ⟪t * u⟫ ⟨i, hi⟩ ⟨i, hi⟩ = ϖ ^ (a i) := by
-    rw [isBorelU_mul_diag htB huB, hu1, mul_one, ht]
-    exact fSatake_tMat_apply_lt ϖ a i hi
-  have hd2 : ⟪t' * u'⟫ ⟨i, hi⟩ ⟨i, hi⟩ = ϖ ^ (a' i) := by
-    rw [isBorelU_mul_diag htB' huB', hu1', mul_one, ht']
-    exact fSatake_tMat_apply_lt ϖ a' i hi
-  have hd2i : ⟪(t' * u')⁻¹⟫ ⟨i, hi⟩ ⟨i, hi⟩ = (ϖ ^ (a' i))⁻¹ := by
-    have h1 := isBorelU_mul_diag (isBorelU_inv hB2) hB2 ⟨i, hi⟩
-    rw [inv_mul_cancel, hd2] at h1
-    have h0 : ⟪(1 : GU σ n)⟫ ⟨i, hi⟩ ⟨i, hi⟩ = 1 := by simp
-    rw [h0] at h1
-    exact eq_inv_of_mul_eq_one_left h1.symm
-  rw [isBorelU_mul_diag (isBorelU_inv hB2) hB1, hd2i, hd1, ← zpow_neg, ← zpow_add₀ hϖ0] at hint
-  rw [intL, Valuation.mem_integer_iff, valuation_zpow_uniformizer hϖ] at hint
-  rw [← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le] at hint
-  omega
-
 theorem fSatake_cell_unique {ϖ : L} {q m : ℕ} (hU : IsUnramInv ϖ σ q) (hm : 2 * m ≤ n)
     {a a' : Fin m → ℤ} {u u' k k' : GU σ n} (hu : IsUnipU u) (hu' : IsUnipU u')
     (hk : k ∈ KU σ n) (hk' : k' ∈ KU σ n)

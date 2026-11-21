@@ -18,7 +18,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GKModuleMapCuspF
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.KTypeExtension
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryUnimodularExistsFundamentalDomain
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HarishChandraFinite
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemSmoothVectorsDiscreteSeriesModelIffStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemSmoothVectorsDiscreteSeriesModelIff
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfInnerSmooth
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobNorm
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KFinAtZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsContRepLeftRep
@@ -30,21 +32,6 @@ open GlobalTheory.Grow GlobalTheory.Size
 noncomputable section
 
 namespace GlobalTheory.CuspKFinAvg
-
-open Formalism.REAL Matrix
-
-def leftReg {K : Type} [Group K] (F : Submodule ℂ (K → ℂ)) (hF : ∀ φ ∈ F, ∀ k₀ : K, (fun k => φ (k₀ * k)) ∈ F) :
-    Representation ℂ K F where
-  toFun k :=
-    { toFun := fun f => ⟨fun y => (f : K → ℂ) (k⁻¹ * y), hF _ f.2 k⁻¹⟩
-      map_add' := fun f g => rfl
-      map_smul' := fun c f => rfl }
-  map_one' := by
-    ext f y
-    simp
-  map_mul' := fun a b => by
-    ext f y
-    simp [mul_assoc]
 
 end GlobalTheory.CuspKFinAvg
 

@@ -88,33 +88,6 @@ theorem linearIndependent_of_diag {w b : Fin m → M} {d : Fin m → C} (li : Li
     exact Finset.sum_comm))
   exact congrFun (Matrix.eq_zero_of_vecMul_eq_zero hdet h1)
 
-omit [IsUltrametricDist C] in
-
-theorem mem_span_of_diag {w b : Fin m → M} (h : ∃ d : Fin m → C, Diag w b d) {i a : Fin m} (hi : i ≤ a) :
-    b i ∈ Submodule.span C (w '' Set.Iic a) :=
-  Submodule.span_mono (Set.image_mono (Set.Iic_subset_Iic.2 hi)) ((diag_iff_span w b).1 h i)
-
-omit [IsUltrametricDist C] in
-
-theorem finrank_span_Iic {w : Fin m → M} (li : LinearIndependent C w) (a : Fin m) :
-    Module.finrank C (Submodule.span C (w '' Set.Iic a)) = a + 1 := by
-  rw [Set.image_eq_range]
-  exact (finrank_span_eq_card (li.comp (fun b : Set.Iic a => (b : Fin m)) Subtype.val_injective)).trans (by simp)
-
-theorem mem_Ospan_of_coord {n : ℕ} {V : Fin n → M} (li : LinearIndependent C V) (e : Fin m ↪ Fin n) {w : Fin m → M}
-    (he : ∀ i, V (e i) = w i) {s : Set (Fin m)} {v : M} (hv : v ∈ Submodule.span C (w '' s)) {c : Fin n → C}
-    (hc : ∀ k, ‖c k‖ ≤ 1) (e' : v = ∑ k, c k • V k) : v ∈ Ospan (C := C) (w '' s) := by
-  obtain ⟨l, hl0, hl⟩ := (Finsupp.mem_span_image_iff_linearCombination C).1 hv
-  rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)] at hl
-  refine (mem_Ospan_image w s v).2 ⟨l, fun i => ?_, fun i hi => (Finsupp.mem_supported' _ l).1 hl0 i hi, hl.symm⟩
-  rw [← coeff_eq li e (cf := l) (c := c) (by simp only [he, hl, e']) i]
-  exact hc _
-
-omit [IsUltrametricDist C] in
-
-theorem Ospan_le {s : Set M} {Λ : AddSubgroup M} (h : ∀ a : C, ‖a‖ ≤ 1 → ∀ v ∈ s, a • v ∈ Λ) : Ospan (C := C) s ≤ Λ :=
-  (AddSubgroup.closure_le _).2 fun _ ⟨a, ha, v, hv, e⟩ => e ▸ h a ha v hv
-
 end Linear
 
 section Tangent
@@ -136,26 +109,6 @@ theorem left_bcTan (φ : S →+* T) (hx : spMap φ ≫ x = x') (v : TanM x t.G) 
 
 end Tangent
 
-theorem isGreatest_nrmSet_chart {X : Scheme.{0}} {p : ℕ} {C : SCF p} (z : Sp ↥(intO ↥C.S) ⟶ X) (hp : p ≠ 0) {L : LB X}
-    (hL : L.IsLB) {i : L.ι} (hU : IsAffineOpen (L.U i)) (h : ⊤ ≤ z ⁻¹ᵁ L.U i) (s : Γ(GlobalTheory.LB.toMod L, PtNorm.gen X p)) :
-    IsGreatest (PtNorm.nrmSet z _ s) ‖valR (PtNorm.zq z) _ (GlobalTheory.LB.coord s i)‖ := by
-  haveI := GlobalTheory.LB.isQuasicoherent_toMod hL
-  have hv : PtNorm.evq z hp h (GlobalTheory.LB.chartEquiv hL i inf_le_left (GlobalTheory.Twist.resM _ inf_le_right s)) =
-      valR (PtNorm.zq z) _ (GlobalTheory.LB.coord s i) := by
-    rw [← valR_res _ (inf_comm _ _).le (PtNorm.zq_le z hp h), valR_eq _ _ (PtNorm.zq_le z hp h)]
-    exact congrArg (PtNorm.evq z hp h) (GlobalTheory.LB.resG_resG _ _ _)
-  rw [PtNorm.nrmSet_eq z hp hU h]
-  refine ⟨⟨(PtNorm.evq z hp h).toSemilinearMap.comp (GlobalTheory.LB.chartEquiv hL i inf_le_left).toLinearMap, fun m => ?_,
-    (congrArg norm hv).symm⟩, ?_⟩
-  · refine le_of_eq_of_le (congrArg (fun t => ‖PtNorm.evq z hp h t‖)
-      (GlobalTheory.LB.chartEquiv_map hL i le_rfl inf_le_left m)) ?_
-    rw [PtNorm.evq_res]
-    exact (PtNorm.evz z h _).2
-  · rintro r ⟨ν, hν, rfl⟩
-    rw [← (GlobalTheory.LB.chartEquiv hL i inf_le_left).symm_apply_apply (GlobalTheory.Twist.resM _ _ _), GlobalTheory.LB.chartEquiv_symm_apply,
-      ν.map_smulₛₗ, smul_eq_mul, norm_mul, hv]
-    exact mul_le_of_le_one_right (norm_nonneg _) (hν _)
-
 section Free
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
@@ -170,34 +123,12 @@ instance instModuleLie : Module ↥y.C.S (Lie y) := inferInstanceAs (Module ↥y
 
 def act : 𝓞 E →+* Module.End ↥y.C.S (Lie y) := actR (Y Z.i).t.act
 
-def lieEquiv : TanM y.gen Z.t.G ≃ₗ[↥y.C.S] Lie y := pushE Z.tMap y.gen rfl
-
-abbrev LieInt : Type := TanM (y.z ≫ Z.π) (Y Z.i).t.G
-
 theorem gen_π : spMap (intO ↥y.C.S).subtype ≫ y.z ≫ Z.π = y.gen ≫ Z.π := (Category.assoc _ _ _).symm
-
-def toGen : LieInt y →ₛₗ[(intO ↥y.C.S).subtype] Lie y := bcTan _ (gen_π y)
-
-def lieL : AddSubgroup (Lie y) := (toGen y).toAddMonoidHom.range
 
 def eig (σ : E →+* ℂ) : Submodule ↥y.C.S (Lie y) :=
   ⨅ a : 𝓞 E, Module.End.eigenspace (act y a) (y.P.emb σ a)
 
-def Wst (σ : E →+* ℂ) (i : ℕ) : Submodule ↥y.C.S (Lie y) :=
-  Submodule.span ↥y.C.S
-    {v | ∃ u : Vecs Dw (Y Z.i).t ↥y.C.S, Z.FlagAt y.gen u ∧ ∃ b : Fin (Dw.mult σ), (b : ℕ) < i ∧ (tv v).left = u σ b}
-
-def taut (σ : E →+* ℂ) (i : ℕ) : AddSubgroup (Lie y) := (Wst y σ i).toAddSubgroup ⊓ lieL y
-
 variable {y}
-
-theorem mem_lieL {v : Lie y} : v ∈ lieL y ↔ ∃ w, IsTanAtG (Y Z.i).t (y.z ≫ Z.π) w ∧
-    (tv v).left = spMap (dualMap (intO ↥y.C.S).subtype) ≫ w :=
-  ⟨fun ⟨w, hw⟩ => ⟨_, isTan_tv w, hw ▸ rfl⟩, fun ⟨_, hw, e⟩ => ⟨tanOf hw, tan_ext e.symm⟩⟩
-
-theorem smul_mem_lieL {a : ↥y.C.S} (ha : ‖a‖ ≤ 1) {v : Lie y} (hv : v ∈ lieL y) : a • v ∈ lieL y := by
-  obtain ⟨w, rfl⟩ := hv
-  exact ⟨(⟨a, ha⟩ : ↥(intO ↥y.C.S)) • w, (toGen y).map_smulₛₗ _ w⟩
 
 theorem mem_eig {σ : E →+* ℂ} {v : Lie y} : v ∈ eig y σ ↔ ∀ a : 𝓞 E, act y a v = y.P.emb σ a • v := by
   simp only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]
@@ -248,73 +179,11 @@ theorem exists_diag_flagVec (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 
   exists_diag_of_flagAt Z hty h' h σ (fun a => ((isFrame_of_flagAt h').1 σ a).1)
     (fun a => ((isFrame_of_flagAt h).1 σ a).1) (linearIndependent_flagVec h σ)
 
-variable (y) in
-
-theorem Wst_le (σ : E →+* ℂ) (i : ℕ) : Wst y σ i ≤ eig y σ := by
-  refine Submodule.span_le.2 ?_
-  rintro v ⟨u, h, b, -, e⟩
-  exact (tan_ext e : v = flagVec h σ b) ▸ flagVec_mem_eig h σ b
-
-theorem Wst_succ (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {u : Vecs Dw (Y Z.i).t ↥y.C.S}
-    (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) (a : Fin (Dw.mult σ)) :
-    Wst y σ (a + 1) = Submodule.span ↥y.C.S (flagVec h σ '' Set.Iic a) := by
-  refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)
-  · rintro v ⟨u', h', b, hb, e⟩
-    obtain rfl : v = flagVec h' σ b := tan_ext e
-    exact mem_span_of_diag (exists_diag_flagVec hty h h' σ) (Nat.lt_succ_iff.1 hb)
-  · rintro _ ⟨b, hb, rfl⟩
-    exact ⟨u, h, b, Nat.lt_succ_iff.2 hb, rfl⟩
-
-theorem Wst_eq_eig {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) {i : ℕ} (hi : Dw.mult σ ≤ i) :
-    Wst y σ i = eig y σ := by
-  refine le_antisymm (Wst_le y σ i) fun v hv => ?_
-  obtain ⟨c, rfl⟩ := (existsUnique_flagVec h hv).exists
-  exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, h, a, a.2.trans_le hi, rfl⟩)
-
-theorem finrank_Wst_succ (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {u : Vecs Dw (Y Z.i).t ↥y.C.S}
-    (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) (a : Fin (Dw.mult σ)) :
-    Module.finrank ↥y.C.S (Wst y σ (a + 1)) = a + 1 := by
-  rw [Wst_succ hty h]
-  exact finrank_span_Iic (linearIndependent_flagVec h σ) a
-
 theorem flagAt_of_intFrame {U : Z.X.Opens} {hU : IsAffineOpen U} {w : Vecs Dw (Y Z.i).t Γ(Z.X, U)}
     (hw : IntFrame Z hU w) (h : ⊤ ≤ y.gen ⁻¹ᵁ U) : Z.FlagAt y.gen (w.bc (valMap y.gen U h).hom) := by
   have hx : spMap (valMap y.gen U h).hom ≫ hU.fromSpec = y.gen := specMap_valMap_fromSpec hU y.gen h
   have := hw.2 _ (valMap y.gen U h).hom (by rw [hx]; exact range_gen y)
   rwa [hx] at this
-
-theorem gen_le {U : Z.X.Opens} (h : ⊤ ≤ y.z ⁻¹ᵁ U) : ⊤ ≤ y.gen ⁻¹ᵁ U := fun _ _ => h trivial
-
-theorem adapted_taut (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {U : Z.X.Opens} {hU : IsAffineOpen U}
-    {w : Vecs Dw (Y Z.i).t Γ(Z.X, U)} (hw : IntFrame Z hU w) (h : ⊤ ≤ y.z ⁻¹ᵁ U) (σ : E →+* ℂ) :
-    Adapted ↥y.C.S (taut y σ) (flagVec (flagAt_of_intFrame hw (gen_le h)) σ) := by
-  intro a
-  have hz : spMap (valMap y.z U h).hom ≫ hU.fromSpec = y.z := specMap_valMap_fromSpec hU y.z h
-  have hc : (intO ↥y.C.S).subtype.comp (valMap y.z U h).hom = (valMap y.gen U (gen_le h)).hom :=
-    RingHom.ext fun f => by
-      rw [RingHom.comp_apply, ← valR_eq, ← valR_eq, ← valR_spMap_comp _ _ _ h]
-      rfl
-  refine le_antisymm (fun v hv => ?_) (Ospan_le ?_)
-  · obtain ⟨n, V, em, he, hV, hb⟩ := hw.1 σ
-    obtain ⟨u, hu, eu⟩ := mem_lieL.1 hv.2
-    have hz' : spMap (valMap y.z U h).hom ≫ hU.fromSpec ≫ Z.π = y.z ≫ Z.π := by rw [← Category.assoc, hz]
-    have hg' : spMap (valMap y.gen U (gen_le h)).hom ≫ hU.fromSpec ≫ Z.π = y.gen ≫ Z.π := by
-      rw [← Category.assoc]
-      exact congrArg (· ≫ Z.π) (specMap_valMap_fromSpec hU y.gen (gen_le h))
-    obtain ⟨cf, hcf⟩ := (basis_map _ hz' hV hb u hu).exists
-    have hk := comb_map (intO ↥y.C.S).subtype (gen_π y) hcf
-    simp only [dual_comp, hc, ← eu] at hk
-    have hVk := fun i => isTan_map _ hg' (hV i)
-    have h1 : v ∈ Wst y σ (a + 1) := hv.1
-    rw [Wst_succ hty (flagAt_of_intFrame hw (gen_le h))] at h1
-    exact mem_Ospan_of_coord (linInd_of_basis hVk (basis_map _ hg' hV hb)) em
-      (w := flagVec (flagAt_of_intFrame hw (gen_le h)) σ)
-      (fun i => tan_ext (congrArg (spMap (dualMap (valMap y.gen U (gen_le h)).hom) ≫ ·) (he i))) h1
-      (fun k => (cf k).2) ((LieMet.isComb_iff (fun i => tanOf (hVk i)) _ v).1 hk)
-  · rintro c hc1 _ ⟨i, hi, rfl⟩
-    exact ⟨(Wst y σ (a + 1)).smul_mem c (Submodule.subset_span ⟨_, flagAt_of_intFrame hw (gen_le h), i,
-        Nat.lt_succ_iff.2 hi, rfl⟩),
-      smul_mem_lieL hc1 (mem_lieL.2 ⟨_, tan_bc hw _ hz σ i, by rw [Vecs.bc, dual_comp, hc]; rfl⟩)⟩
 
 theorem gen_le_genO (hp : p ≠ 0) : ⊤ ≤ y.gen ⁻¹ᵁ Z.genO :=
   (le_preimage_basicOpen_iff y.gen (le_preimage_top _) _).2 (by
@@ -334,11 +203,6 @@ theorem secVal_change (hp : p ≠ 0) {F : Z.X.Modules} {L : LB Z.X} (e : F ≅ G
     (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right))
   rw [valR_mul _ _ hw] at this
   exact ((valR_res _ _ hw _).symm.trans this).trans (congrArg₂ (· * ·) (valR_res _ _ hw _) (valR_res _ _ hw _))
-
-theorem nrm_eq_secVal (hp : p ≠ 0) {F : Z.X.Modules} {L : LB Z.X} (hL : L.IsLB) (e : F ≅ GlobalTheory.LB.toMod L)
-    (f : Γ(F, Z.genO)) {i : L.ι} (hU : IsAffineOpen (L.U i)) (h : ⊤ ≤ y.z ⁻¹ᵁ L.U i) :
-    Mdl.nrm F f y = ‖secVal y e f i‖ :=
-  (congrArg sSup (PtNorm.nrmSet_iso y.z e f)).symm.trans (isGreatest_nrmSet_chart y.z hp hL hU h _).csSup_eq
 
 theorem exists_diag_transition (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {U U' : Z.X.Opens}
     {hU : IsAffineOpen U} {hU' : IsAffineOpen U'} {w : Vecs Dw (Y Z.i).t Γ(Z.X, U)} {w' : Vecs Dw (Y Z.i).t Γ(Z.X, U')}
@@ -441,9 +305,6 @@ def IsReading (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.
     (∀ s, Adapted ↥y.C.S (Λ s) (b s)) ∧ (∀ s, Diag (chartVec l y h (embOf s)) (b s) (d s)) ∧ (∀ s a, d s a ≠ 0) ∧
     r = ‖secVal y (grIso ct l) f i * ∏ s, ∏ a, d s a ^ expOf N l s a‖
 
-def nrmIn (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY)
-    (Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)) : ℝ := sSup {r | IsReading l f y Λ r}
-
 theorem exists_diag_chartVec (l : PsiT D → ℕ → ℤ) (y : ct.Pt ct.YY) {i i' : (grLB ct l).ι}
     (h : ⊤ ≤ y.gen ⁻¹ᵁ (grLB ct l).U i) (h' : ⊤ ≤ y.gen ⁻¹ᵁ (grLB ct l).U i') :
     ∃ d : ∀ σ : D.host.E →+* ℂ, Fin (S.Dw.mult σ) → ↥y.C.S, (∀ σ, Diag (chartVec l y h' σ) (chartVec l y h σ) (d σ)) ∧
@@ -487,120 +348,5 @@ theorem IsReading.unique {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y 
     r' = r := by
   obtain ⟨_, _, b, _, hb, -⟩ := id H
   simpa using H.eq_mul H' hb hb fun s => Diag.refl (b s)
-
-theorem IsReading.nrmIn_eq {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y : ct.Pt ct.YY}
-    {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {r : ℝ} (H : IsReading l f y Λ r) : nrmIn l f y Λ = r := by
-  rw [nrmIn, show {r | IsReading l f y Λ r} = {r} from Set.eq_singleton_iff_unique_mem.2 ⟨H, fun _ h => H.unique h⟩,
-    csSup_singleton]
-
-theorem exists_chart (l : PsiT D → ℕ → ℤ) (y : ct.Pt ct.YY) : ∃ i, ⊤ ≤ y.z ⁻¹ᵁ (grLB ct l).U i := by
-  haveI := PtNorm.isLocalRing_intO ↥y.C.S
-  have : y.z (IsLocalRing.closedPoint _) ∈ ⨆ i, (grLB ct l).U i := by rw [(isGrLB_grLB ct l).1.cover]; trivial
-  obtain ⟨i, hi⟩ := Opens.mem_iSup.1 this
-  exact ⟨i, (PtNorm.top_le_preimage_iff _).2 hi⟩
-
-theorem isReading_taut (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY) :
-    IsReading l f y (fun s => taut y (embOf s)) (ct.nrm (ct.Lb l) f y) := by
-  obtain ⟨i, h⟩ := exists_chart l y
-  refine ⟨i, gen_le h, fun s => chartVec l y (gen_le h) (embOf s), fun _ _ => 1,
-    fun s => adapted_taut (ty_YY ct) (intFrame_grFr ct l i) h _, fun s => Diag.refl _, fun _ _ => one_ne_zero, ?_⟩
-  simp only [one_zpow, Finset.prod_const_one]
-  rw [_root_.mul_one]
-  exact nrm_eq_secVal ct.hp.ne_zero (isGrLB_grLB ct l).1 (grIso ct l) f (grAff ct l i) h
-
-theorem nrm_eq_nrmIn (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY) :
-    ct.nrm (ct.Lb l) f y = nrmIn l f y fun s => taut y (embOf s) := (isReading_taut l f y).nrmIn_eq.symm
-
-variable (ct) in
-
-def _root_.GlobalTheory.LocM.frmTrue : FrmSt ct where
-  nrmRef l f y := nrmIn l f y fun s i => (Wst y (embOf s) i).toAddSubgroup ⊓ ((eig y (embOf s)).toAddSubgroup ⊓ lieL y)
-  LieV y := Lie y
-  lvAdd y := instAddCommGroupLie y
-  lvMod y := instModuleLie y
-  lieL y := lieL y
-  eig y s := eig y (embOf s)
-  Wst y s := Wst y (embOf s)
-  Wst_le y s := Wst_le y (embOf s)
-  taut y s := taut y (embOf s)
-  taut_eq _ _ _ := rfl
-  nrmIn := nrmIn
-  nrmRef_def _ _ _ := rfl
-  nrm_Lb_def := nrm_eq_nrmIn
-
-theorem IsReading.eq_nrm_mul {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y : ct.Pt ct.YY}
-    {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {r : ℝ} (H : IsReading l f y Λ r)
-    {u b : ∀ s : PsiT D × Bool, Fin (S.Dw.mult (embOf s)) → Lie y}
-    {c : ∀ s : PsiT D × Bool, Fin (S.Dw.mult (embOf s)) → ↥y.C.S}
-    (hu : ∀ s, Adapted ↥y.C.S (taut y (embOf s)) (u s)) (hb : ∀ s, Adapted ↥y.C.S (Λ s) (b s))
-    (hc : ∀ s, Diag (u s) (b s) (c s)) :
-    r = ct.nrm (ct.Lb l) f y * ∏ s, ∏ a, ‖c s a‖ ^ expOf N l s a :=
-  (isReading_taut l f y).eq_mul H hu hb hc
-
-theorem exists_flagAt_adapted (y : ct.Pt ct.YY) : ∃ (u : Vecs S.Dw (ct.Y ct.YY.i).t ↥y.C.S) (h : ct.YY.FlagAt y.gen u),
-    ∀ σ, Adapted ↥y.C.S (taut y σ) (flagVec h σ) := by
-  obtain ⟨i, h⟩ := exists_chart (fun _ _ => 0) y
-  exact ⟨_, _, adapted_taut (ty_YY ct) (intFrame_grFr ct _ i) h⟩
-
-theorem exists_isReading (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY)
-    {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {b : ∀ s : PsiT D × Bool, Fin (S.Dw.mult (embOf s)) → Lie y}
-    (hb : ∀ s, Adapted ↥y.C.S (Λ s) (b s)) (li : ∀ s, LinearIndependent ↥y.C.S (b s))
-    (hW : ∀ s (a : Fin (S.Dw.mult (embOf s))), b s a ∈ Wst y (embOf s) ((a : ℕ) + 1)) :
-    ∃ r, IsReading l f y Λ r := by
-  obtain ⟨i, h⟩ := exists_chart l y
-  have hf := flagAt_of_intFrame (intFrame_grFr ct l i) (gen_le h)
-  choose d hd using fun s => (diag_iff_span (k := ↥y.C.S) (flagVec hf (embOf s)) (b s)).2 fun a =>
-    Wst_succ (ty_YY ct) hf (embOf s) a ▸ hW s a
-  refine ⟨_, i, gen_le h, b, d, hb, hd, fun s a => ?_, rfl⟩
-  obtain ⟨d', hd'⟩ := (hd s).symm (li s)
-  exact left_ne_zero_of_mul_eq_one (congrFun ((hd'.trans (hd s)).unique (li s) (Diag.refl _)) a)
-
-theorem nrmIn_eq_nrm_mul (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY)
-    {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {u b : ∀ s : PsiT D × Bool, Fin (S.Dw.mult (embOf s)) → Lie y}
-    {c : ∀ s : PsiT D × Bool, Fin (S.Dw.mult (embOf s)) → ↥y.C.S}
-    (hu : ∀ s, Adapted ↥y.C.S (taut y (embOf s)) (u s)) (hb : ∀ s, Adapted ↥y.C.S (Λ s) (b s))
-    (li : ∀ s, LinearIndependent ↥y.C.S (b s)) (hc : ∀ s, Diag (u s) (b s) (c s)) :
-    nrmIn l f y Λ = ct.nrm (ct.Lb l) f y * ∏ s, ∏ a, ‖c s a‖ ^ expOf N l s a := by
-  obtain ⟨r, H⟩ := exists_isReading l f y hb li fun s a => by
-    have hu' : ∀ k : Fin _, k ≤ a → u s k ∈ Wst y (embOf s) ((a : ℕ) + 1) := fun k hk =>
-      (show u s k ∈ taut y (embOf s) ((a : ℕ) + 1) from hu s a ▸
-        AddSubgroup.subset_closure ⟨1, by simp, _, ⟨k, hk, rfl⟩, (one_smul _ _).symm⟩).1
-    refine Submodule.span_le.2 ?_ (mem_span_of_diag ⟨_, hc s⟩ (le_refl a))
-    rintro _ ⟨k, hk, rfl⟩
-    exact hu' k hk
-  rw [H.nrmIn_eq, H.eq_nrm_mul hu hb hc]
-
-example (y : ct.Pt ct.YY) (σ : D.host.E →+* ℂ) :
-    (∀ a : Fin (S.Dw.mult σ), Module.finrank ↥y.C.S (Wst y σ (a + 1)) = a + 1) ∧ Wst y σ (S.Dw.mult σ) = eig y σ := by
-  obtain ⟨u, h, -⟩ := exists_flagAt_adapted y
-  exact ⟨finrank_Wst_succ (ty_YY ct) h σ, Wst_eq_eig h σ le_rfl⟩
-
-example (y : ct.Pt ct.YY) (σ : D.host.E →+* ℂ) (hσ : 0 < S.Dw.mult σ) :
-    ∃ v ∈ lieL y, (p : ↥y.C.S)⁻¹ • v ∉ lieL y := by
-  obtain ⟨u, h, ha⟩ := exists_flagAt_adapted y
-  have hv : flagVec h σ ⟨0, hσ⟩ ∈ taut y σ (((⟨0, hσ⟩ : Fin _) : ℕ) + 1) := ha σ ⟨0, hσ⟩ ▸
-    AddSubgroup.subset_closure ⟨1, by simp, _, ⟨_, Set.mem_Iic.2 le_rfl, rfl⟩, (one_smul _ _).symm⟩
-  refine ⟨_, hv.2, fun h' => ?_⟩
-  have h2 : (p : ↥y.C.S)⁻¹ • flagVec h σ ⟨0, hσ⟩ ∈ taut y σ (((⟨0, hσ⟩ : Fin _) : ℕ) + 1) :=
-    ⟨Submodule.smul_mem _ _ hv.1, h'⟩
-  rw [ha σ ⟨0, hσ⟩, mem_Ospan_image] at h2
-  obtain ⟨c, h1, -, e⟩ := h2
-  have := Fintype.linearIndependent_iffₛ.1 (linearIndependent_flagVec h σ) (Pi.single ⟨0, hσ⟩ (p : ↥y.C.S)⁻¹) c
-    (by simpa [Pi.single_apply, ite_smul] using e) ⟨0, hσ⟩
-  have h3 := h1 ⟨0, hσ⟩
-  rw [← this, Pi.single_eq_same, norm_inv, y.C.norm_p, inv_inv] at h3
-  exact absurd h3 (not_le.2 (by exact_mod_cast ct.hp.one_lt))
-
-example (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY) {u : Vecs S.Dw (ct.Y ct.YY.i).t ↥y.C.S}
-    (h : ct.YY.FlagAt y.gen u) (ha : ∀ σ, Adapted ↥y.C.S (taut y σ) (flagVec h σ))
-    {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)}
-    (hΛ : ∀ s, Adapted ↥y.C.S (Λ s) fun a => (p : ↥y.C.S) • flagVec h (embOf s) a) :
-    nrmIn l f y Λ = ct.nrm (ct.Lb l) f y *
-      ∏ s : PsiT D × Bool, ∏ a : Fin (S.Dw.mult (embOf s)), ((p : ℝ)⁻¹) ^ expOf N l s a := by
-  classical
-  have hd : ∀ s, Diag (flagVec h (embOf s)) (fun a => (p : ↥y.C.S) • flagVec h (embOf s) a) fun _ => (p : ↥y.C.S) :=
-    fun s a => ⟨Pi.single a p, by simp, fun b hb => Pi.single_eq_of_ne hb.ne' _, by simp [Pi.single_apply, ite_smul]⟩
-  rw [nrmIn_eq_nrm_mul l f y (fun s => ha _) hΛ (fun s => linearIndependent_of_diag (linearIndependent_flagVec h _) (hd s)
-    fun _ => Nat.cast_ne_zero.2 ct.hp.ne_zero) hd, y.C.norm_p]
 
 end GlobalTheory.LocM.Frm

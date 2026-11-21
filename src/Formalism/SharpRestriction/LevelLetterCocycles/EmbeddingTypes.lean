@@ -314,10 +314,4 @@ def aux₃ (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ
 
 end Pt
 
-def Stmt (D : D7) : Prop :=
-  ∀ (ep : Bool) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (dc : Decl D i)
-    (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ),
-    GoodR D.nd i r → admitted i r ρ π dc ep e' c0 cB → aux₃ i r ρ π dc ep e' c0 cB
-
 end Formalism.MainNotions.EmbeddingTypes

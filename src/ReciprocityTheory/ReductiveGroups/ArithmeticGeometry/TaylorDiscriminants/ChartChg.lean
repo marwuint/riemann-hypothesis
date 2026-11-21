@@ -42,12 +42,6 @@ def LogDerivSt : Prop :=
     ∀ (u : Fin d → k) (g : PS k 1 d),
       Dof G.F u (ev (n := 1) ![ℓ] g) = ev (n := 1) ![ℓ] (∑ j, C (u j) * pderiv k ((0 : Fin 1), j) g)
 
-def ChainSt : Prop :=
-  ∀ (k : Type) [CommRing k] (d : ℕ) (φ : Pt k 1 d), (∀ i, constantCoeff (φ i) = 0) →
-    ∀ (g : PS k 1 d) (j : Fin d),
-      pderiv k ((0 : Fin 1), j) (ev (n := 1) ![φ] g) =
-        ∑ i, ev (n := 1) ![φ] (pderiv k ((0 : Fin 1), i) g) * pderiv k ((0 : Fin 1), j) (φ i)
-
 def ConstSt : Prop :=
   ∀ (k : Type) [CommRing k] (d : ℕ) (φ : Pt k 1 d), (∀ i, constantCoeff (φ i) = 0) →
     ∀ g : PS k 1 d, constantCoeff (ev (n := 1) ![φ] g) = constantCoeff g

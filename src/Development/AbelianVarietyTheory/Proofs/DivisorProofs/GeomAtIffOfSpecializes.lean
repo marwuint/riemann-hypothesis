@@ -4,7 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportAlg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClopenOfSpecializesIff
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijectiveOverAlgClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeomPointsFactorHenselianOfSpecializes
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeTorsionPointsRestrictBijectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeTorsionPointsRestrictBijective
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDefiniteDatumGoodObj
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeSubsetOfGeom
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsCoprimeZpow
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleLatticeTorsionHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RootsOfUnityMapBijectiveOfHenselian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilIsRootLocal
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitOnInjectiveOfCommRing
@@ -113,15 +117,15 @@ theorem geomAt_transport {b : Base D R} {N : ℕ} (hN : 0 < N) (hNp : N.Coprime 
   have hpow : ∀ a, lvR a ^ N = 1 := fun a => by
     simp only [lvR]; rw [← MonObj.comp_pow, hetapow, MonObj.comp_one]
   have h1 : ∀ n, 0 < n → n.Coprime p → ∀ g h : Over.mk t ⟶ A, g ^ n = 1 → h ^ n = 1 → ρ g = ρ h → g = h :=
-    fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k φ).1
+    fun n hn hnp => (_root_.GlobalTheory.TorsLift.torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k φ).1
   have h2 : ∀ n, 0 < n → n.Coprime p → ∀ x : Over.mk (spMap φ ≫ t) ⟶ A, x ^ n = 1 →
       ∃ g : Over.mk t ⟶ A, g ^ n = 1 ∧ ρ g = x :=
-    fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k φ).2
+    fun n hn hnp => (_root_.GlobalTheory.TorsLift.torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k φ).2
   have h3 : ∀ n, 0 < n → n.Coprime p → ∀ g h : Over.mk t ⟶ A, g ^ n = 1 → h ^ n = 1 → ρ' g = ρ' h → g = h :=
-    fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k' φ').1
+    fun n hn hnp => (_root_.GlobalTheory.TorsLift.torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k' φ').1
   have h4 : ∀ n, 0 < n → n.Coprime p → ∀ x : Over.mk (spMap φ' ≫ t) ⟶ A, x ^ n = 1 →
       ∃ g : Over.mk t ⟶ A, g ^ n = 1 ∧ ρ' g = x :=
-    fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k' φ').2
+    fun n hn hnp => (_root_.GlobalTheory.TorsLift.torsion_points_restrict_bijective S A hA n hn (hS n hn hnp) R' t k' φ').2
   have h5 := fun n (hn : 0 < n) (hnp : n.Coprime p) =>
     (GlobalTheory.rootsOfUnity_map_bijective_of_henselian R' k φ n hn (hRu n hn hnp))
   have h6 := fun n (hn : 0 < n) (hnp : n.Coprime p) =>

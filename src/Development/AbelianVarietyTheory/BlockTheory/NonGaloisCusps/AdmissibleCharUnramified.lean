@@ -54,9 +54,4 @@ def AdmChiOneUnramified {l : ℕ} [Fact l.Prime] (P : LocPrime l) : Prop :=
     ∀ (X : Type) [AddCommGroup X] [Module ↥(Loc.OL LL) X] [Finite X],
       adm (P.PD K) emb Γ D.t D.Ut (Γ.Wchi 1) X = homModInertia Γ X (Loc.IK K)
 
-example {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
-    [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] (Γ : GalData G Qp LL O)
-    (X : Type) [AddCommGroup X] [Module O X] (I : Subgroup G) : 0 ∈ homModInertia Γ X I :=
-  ⟨0, rfl, fun _ _ => rfl⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleCharUnramified

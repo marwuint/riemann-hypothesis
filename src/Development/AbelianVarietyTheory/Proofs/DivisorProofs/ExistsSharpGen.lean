@@ -16,32 +16,6 @@ noncomputable section
 
 namespace GlobalTheory.SiegSharpCover
 
-def powBase {d m : ℕ} (hm : m ≠ 0) (hd : d ≠ 0) : TBase (cycAway (d * m)) d where
-  ζ := (cycBase (mul_ne_zero hd hm)).ζ ^ m
-  unit := (IsUnit.mul_iff.1 (by rw [← Nat.cast_mul]; exact isUnit_natCast (mul_ne_zero hd hm))).1
-  prim K _ β := by
-    rw [Units.val_pow_eq_pow_val, map_pow, cycBase_ζ]
-    exact (isPrimitiveRoot_map (mul_ne_zero hd hm) β).pow (Nat.pos_of_ne_zero (mul_ne_zero hd hm)) (mul_comm d m)
-
-theorem powBase_ζ {d m : ℕ} (hm : m ≠ 0) (hd : d ≠ 0) :
-    ((powBase hm hd).ζ : cycAway (d * m)) = zetaAway (d * m) ^ m :=
-  Units.val_pow_eq_pow_val _ _
-
-def lowerOn {h N d : ℕ} {B : Type} [CommRing B] {ζ' ζ : B} {S : Scheme.{0}} {s : S ⟶ Sp B}
-    (C : SiegPre h (N * d) ζ' s) (h0 : N * d ≠ 0) (hζ : ζ = ζ' ^ d) : SiegPre h N ζ s where
-  A := C.A
-  ab := C.ab
-  P := C.P
-  isLB := C.isLB
-  rig₁ := C.rig₁
-  rig₂ := C.rig₂
-  symm := C.symm
-  lev a := C.lev a ^ d
-  lev_add := (SiegLower.lower C (n := N) (d := d) rfl h0 (RingHom.id B) hζ).lev_add
-  lev_tors := (SiegLower.lower C (n := N) (d := d) rfl h0 (RingHom.id B) hζ).lev_tors
-  geom K _ _ x β z hx hz := (SiegLower.lower C (n := N) (d := d) rfl h0 (RingHom.id B) hζ).geom K x β z
-    (by rw [show spMap (RingHom.id B) = 𝟙 _ from Spec.map_id _, Category.comp_id]; exact hx) hz
-
 theorem smoothDim {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {S : Scheme.{0}} {s : S ⟶ Sp o}
     (c : SiegPre h k ζ s) (hk : 2 ≤ k) (hζ : IsUnit ζ) (hu : IsUnit (k : o)) : SmoothOfRelativeDimension h c.A.hom := by
   have := c.ab.smooth

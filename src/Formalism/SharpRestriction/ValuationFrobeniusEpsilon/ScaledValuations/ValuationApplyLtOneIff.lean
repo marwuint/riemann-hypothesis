@@ -73,9 +73,6 @@ def Ine (A : ValuationSubring (Ω)) : Subgroup (G F Ω) where
 theorem mem_Ine {A : ValuationSubring (Ω)} {σ : G F Ω} :
     σ ∈ Ine (F := F) A ↔ σ ∈ Inertia (F := F) A := Iff.rfl
 
-theorem Ine_le_Dec (A : ValuationSubring (Ω)) : Ine (F := F) A ≤ Dec (F := F) A :=
-  fun _ h => h.1
-
 theorem conj_mem_Ine {A : ValuationSubring (Ω)} {g σ : G F Ω} (hg : g ∈ Dec (F := F) A)
     (hσ : σ ∈ Ine (F := F) A) : g * σ * g⁻¹ ∈ Ine (F := F) A := by
   refine ⟨(Dec (F := F) A).mul_mem ((Dec (F := F) A).mul_mem hg hσ.1) ((Dec (F := F) A).inv_mem hg), fun x hx => ?_⟩
@@ -128,19 +125,6 @@ def NS : Subgroup (G F Ω) :=
 
 instance normal_NS : (NS Ω S).Normal := by
   unfold NS; exact Subgroup.is_normal_topologicalClosure _
-
-variable (Ω) in
-
-abbrev GS := G F Ω ⧸ NS Ω S
-
-variable (Ω) in
-
-def toGS : G F Ω →* GS Ω S := QuotientGroup.mk' (NS Ω S)
-
-def locHom (A : ValuationSubring (Ω)) : Dec (F := F) A →* GS Ω S :=
-  (toGS Ω S).comp (Dec (F := F) A).subtype
-
-def UnramOutside {H : Type*} [Group H] (ρ : G F Ω →* H) : Prop := ∀ σ ∈ NS Ω S, ρ σ = 1
 
 end unram
 

@@ -2,12 +2,6 @@ import Mathlib
 
 namespace Formalism.MainNotions.flipOneThree.Pf.KP
 
-def BlockSplit : Prop :=
-  ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {J : Type} [Fintype J] (n : ℕ) (z : O), z ≠ 0 →
-    ∀ (A : J → Matrix (Fin n) (Fin n) O), ∑ j, A j = z • (1 : Matrix (Fin n) (Fin n) O) →
-    ∃ ν : J → ℕ, n ≤ ∑ j, ν j ∧ ∀ j, ∃ (P : Matrix (Fin (ν j)) (Fin n) O) (Q : Matrix (Fin n) (Fin (ν j)) O),
-      P * A j * Q = z • (1 : Matrix (Fin (ν j)) (Fin (ν j)) O)
-
 open Module
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
@@ -132,9 +126,5 @@ theorem blockSplit {J : Type} [Fintype J] (n : ℕ) (z : O) (hz : z ≠ 0)
         exact_mod_cast hle
     _ ≤ Fintype.card (Σ j, Fin (ν j)) := Fintype.card_range_le V
     _ = ∑ j, ν j := by simp [Fintype.card_sigma]
-
-theorem blockSplitting_holds : BlockSplit := by
-  intro O _ _ _ J _ n z hz A h
-  exact blockSplit n z hz A h
 
 end Formalism.MainNotions.flipOneThree.Pf.KP

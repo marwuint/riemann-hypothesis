@@ -349,25 +349,11 @@ theorem exists_borel_mul_integralGL (g : GL (Fin n) F) :
   rw [← mapSubmodule_standardLattice_eq_iff, mapSubmodule_mul, ← hL, ← hbL,
     mapSubmodule_inv_mapSubmodule]
 
-theorem borel_mul_integralGL :
-    (borel F n : Set (GL (Fin n) F)) * (integralGL F n : Set (GL (Fin n) F)) = Set.univ := by
-  refine Set.eq_univ_of_forall fun g => ?_
-  obtain ⟨b, hb, k, hk, rfl⟩ := exists_borel_mul_integralGL F n g
-  exact Set.mul_mem_mul hb hk
-
 theorem exists_blockUpper_mul_integralGL {α : Type*} [LinearOrder α] {β : Fin n → α}
     (hβ : Monotone β) (g : GL (Fin n) F) :
     ∃ p ∈ blockUpper F n β, ∃ k ∈ integralGL F n, g = p * k := by
   obtain ⟨b, hb, k, hk, rfl⟩ := exists_borel_mul_integralGL F n g
   exact ⟨b, borel_le_blockUpper F n hβ hb, k, hk, rfl⟩
-
-theorem blockUpper_mul_integralGL {α : Type*} [LinearOrder α] {β : Fin n → α}
-    (hβ : Monotone β) :
-    (blockUpper F n β : Set (GL (Fin n) F)) * (integralGL F n : Set (GL (Fin n) F)) =
-      Set.univ := by
-  refine Set.eq_univ_of_forall fun g => ?_
-  obtain ⟨p, hp, k, hk, rfl⟩ := exists_blockUpper_mul_integralGL F n hβ g
-  exact Set.mul_mem_mul hp hk
 
 end Decomposition
 

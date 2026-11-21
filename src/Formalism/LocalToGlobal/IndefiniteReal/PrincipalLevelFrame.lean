@@ -49,10 +49,6 @@ def mc (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) : (Formalism.AUT
     funext g
     simp
 
-def HeckeScalarG (J' : Set (Formalism.AUTREP.GAf L n)) (χ' : Formalism.AUTREP.GAf L n → ℂ) {ι : Type} (s : Finset ι)
-    (γ : ι → Formalism.AUTREP.GAf L n) : Prop :=
-  ∀ π : Formalism.L2.NG.FinTyp L n, ∃ a : ℂ, ∀ x ∈ π.S, IsTypeVec J' χ' x → heckeG s γ x = a • x
-
 end Core
 
 section CoreProofs
@@ -145,16 +141,6 @@ theorem mc_eq_zero {l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ} {U :
 theorem heckeG_apply {ι : Type} (s : Finset ι) (γ : ι → Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n → ℂ) :
     heckeG s γ f = ∑ i ∈ s, Formalism.L2.NG.rt L n (γ i) f := by
   simp [heckeG]
-
-theorem mc_heckeG (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) {ι : Type} (s : Finset ι) (γ : ι → Formalism.AUTREP.GAf L n)
-    (f : Formalism.AUTREP.GAf L n → ℂ) : mc l (heckeG s γ f) = heckeG s γ (mc l f) := by
-  rw [heckeG_apply, heckeG_apply, map_sum]
-  exact Finset.sum_congr rfl fun i _ => mc_rt l (γ i) f
-
-theorem mc_typeVec (l : (Formalism.AUTREP.GAf L n → ℂ) →ₗ[ℂ] ℂ) {J' : Set (Formalism.AUTREP.GAf L n)} {χ' : Formalism.AUTREP.GAf L n → ℂ}
-    {f : Formalism.AUTREP.GAf L n → ℂ} (hf : IsTypeVec J' χ' f) : IsTypeVec J' χ' (mc l f) := by
-  intro κ hκ
-  rw [← mc_rt, hf κ hκ, map_smul]
 
 def coMaxOf (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ) :=
   (exists_coMax f hf).choose
@@ -277,48 +263,6 @@ def finTypOf (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (hsm : ∀ g 
   ne := SOf_ne f hf
   irr := SOf_irr f hf
 
-theorem finTypOf_spec (f : Formalism.AUTREP.GAf L n → ℂ) (hf : f ≠ 0) (hsm : ∀ g ∈ cyc f, IsSmoothF g) :
-    qOf f hf f ∈ (finTypOf f hf hsm).S ∧ qOf f hf f ≠ 0 ∧
-      (∀ (J' : Set (Formalism.AUTREP.GAf L n)) (χ' : Formalism.AUTREP.GAf L n → ℂ), IsTypeVec J' χ' f → IsTypeVec J' χ' (qOf f hf f)) ∧
-      ∀ {ι : Type} (s : Finset ι) (γ : ι → Formalism.AUTREP.GAf L n) (a : ℂ), heckeG s γ f = a • f →
-        heckeG s γ (qOf f hf f) = a • qOf f hf f := by
-  refine ⟨qOf_self_mem f hf, qOf_self_ne f hf, fun J' χ' ht => mc_typeVec _ ht, fun s γ a ha => ?_⟩
-  show heckeG s γ (mc (lOf f hf) f) = a • mc (lOf f hf) f
-  rw [← mc_heckeG, ha, map_smul]
-
-theorem iso_transfer {π π' : Formalism.L2.NG.FinTyp L n} (hI : π.Iso π') {J' : Set (Formalism.AUTREP.GAf L n)}
-    {χ' : Formalism.AUTREP.GAf L n → ℂ} {ι : Type} (s : Finset ι) (γ : ι → Formalism.AUTREP.GAf L n) (a : ℂ)
-    {x : Formalism.AUTREP.GAf L n → ℂ} (hx : x ∈ π.S) (hx0 : x ≠ 0) (ht : IsTypeVec J' χ' x) (hh : heckeG s γ x = a • x) :
-    ∃ y ∈ π'.S, y ≠ 0 ∧ IsTypeVec J' χ' y ∧ heckeG s γ y = a • y := by
-  obtain ⟨T, hT⟩ := hI
-  let x' : π.S := ⟨x, hx⟩
-  have hrt : ∀ h, ((T ⟨Formalism.L2.NG.rt L n h x, π.stable h x hx⟩ : π'.S) : Formalism.AUTREP.GAf L n → ℂ) =
-      Formalism.L2.NG.rt L n h (T x') := fun h => hT h x' ⟨_, π.stable h x hx⟩ rfl
-  refine ⟨T x', (T x').2, ?_, ?_, ?_⟩
-  · intro h0
-    apply hx0
-    have h1 : T x' = 0 := Subtype.ext h0
-    have h2 := T.injective (h1.trans (map_zero T).symm)
-    exact congrArg Subtype.val h2
-  · intro κ hκ
-    rw [← hrt κ]
-    have e : (⟨Formalism.L2.NG.rt L n κ x, π.stable κ x hx⟩ : π.S) = χ' κ • x' := Subtype.ext (ht κ hκ)
-    rw [e, map_smul]
-    rfl
-  · rw [heckeG_apply]
-    have e : (∑ i ∈ s, Formalism.L2.NG.rt L n (γ i) (T x' : Formalism.AUTREP.GAf L n → ℂ)) =
-        ((T (∑ i ∈ s, (⟨Formalism.L2.NG.rt L n (γ i) x, π.stable (γ i) x hx⟩ : π.S)) : π'.S) :
-          Formalism.AUTREP.GAf L n → ℂ) := by
-      rw [map_sum, Submodule.coe_sum]
-      exact Finset.sum_congr rfl fun i _ => (hrt (γ i)).symm
-    rw [e]
-    have e2 : (∑ i ∈ s, (⟨Formalism.L2.NG.rt L n (γ i) x, π.stable (γ i) x hx⟩ : π.S)) = a • x' := by
-      apply Subtype.ext
-      rw [Submodule.coe_sum, ← heckeG_apply, hh]
-      rfl
-    rw [e2, map_smul]
-    rfl
-
 end CoreProofs
 
 section Conc
@@ -348,9 +292,6 @@ def LevOK (P : RowPsi V n) (J : Set (GA D V)) (χ : GA D V → ℂ) : Prop :=
 def Hecke₃ (P : RowPsi V n) (R : Finset (GA D V)) :
     (Formalism.AUTREP.GAf D.host.E n → ℂ) →ₗ[ℂ] (Formalism.AUTREP.GAf D.host.E n → ℂ) :=
   heckeG R (pre P)
-
-def HeckeScalar (P : RowPsi V n) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) : Prop :=
-  ∀ Pr d R, Mult.Hecke₂ V J χ Sb Pr d R → HeckeScalarG (P.ψ ⁻¹' J) (fun κ => χ (P.ψ κ)) R (pre P)
 
 variable {Sp : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
 
@@ -437,58 +378,9 @@ theorem srcOf_smooth (P : RowPsi V n) (hl : LevOK P J χ) (c : Mult.IxFull θ M 
   simp only [(hκ κ hκN).2, one_smul] at h1
   exact h1
 
-theorem srcOf_hecke (P : RowPsi V n) (c : Mult.IxFull θ M J χ Sb e) {Pr : HeightOneSpectrum (𝓞 D.host.E)} {d : List ℤ}
-    {R : Finset (GA D V)} (hR : Mult.Hecke₂ V J χ Sb Pr d R) : Hecke₃ P R (srcOf P c) = c.1 Pr d • srcOf P c := by
-  have hrep : ∀ γ ∈ R, γ ∈ GfC V := by
-    obtain ⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hrep⟩ := id hR
-    exact fun γ hγ => (hrep.1 γ hγ).1
-  have hmem := Submodule.mem_inf.mp (Submodule.mem_inf.mp (witT_mem c)).1
-  have hker : witT c ∈ LinearMap.ker (Mult.heckeOn M R - c.1 Pr d • LinearMap.id) :=
-    (Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp
-      ((Submodule.mem_iInf _).mp hmem.2 Pr) d) R) hR
-  have hT : Mult.heckeOn M R (witT c) = c.1 Pr d • witT c := by
-    have h1 := LinearMap.mem_ker.mp hker
-    rwa [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h1
-  have hTvg : ∀ g, ∑ γ ∈ R, witT c (witV c) (g * γ) = c.1 Pr d * witT c (witV c) g := by
-    intro g
-    have h1 := congrArg (fun T : Mult.MMap M => T (witV c) g) hT
-    simpa [Mult.heckeOn, Mult.postOn, Mult.heckeLin] using h1
-  funext h
-  rw [Hecke₃, heckeG_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
-  simp only [rt_apply, srcOf, map_mul]
-  rw [← hTvg]
-  refine Finset.sum_congr rfl fun γ hγ => ?_
-  rw [pre_spec P (hrep γ hγ), mul_assoc]
-
 def rowRep (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (c : Mult.IxFull θ M J χ Sb e) :
     Formalism.L2.NG.FinTyp D.host.E n :=
   finTypOf (srcOf P c) (srcOf_ne P c) (cyc_smooth hc (srcOf_smooth P hl c))
-
-theorem rowRep_spec (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (c : Mult.IxFull θ M J χ Sb e) :
-    ∃ x ∈ (rowRep P hc hl c).S, x ≠ 0 ∧ IsTypeVec (P.ψ ⁻¹' J) (fun κ => χ (P.ψ κ)) x ∧
-      ∀ Pr d R, Mult.Hecke₂ V J χ Sb Pr d R → Hecke₃ P R x = c.1 Pr d • x := by
-  obtain ⟨h1, h2, h3, h4⟩ :=
-    finTypOf_spec (srcOf P c) (srcOf_ne P c) (cyc_smooth hc (srcOf_smooth P hl c))
-  exact ⟨_, h1, h2, h3 _ _ (srcOf_type P c), fun Pr d R hR => h4 R (pre P) _ (srcOf_hecke P c hR)⟩
-
-theorem rowRep_inj (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (hS : HeckeScalar P J χ Sb)
-    (c c' : Mult.IxFull θ M J χ Sb e) (hI : (rowRep P hc hl c).Iso (rowRep P hc hl c')) : c = c' := by
-  apply Subtype.ext
-  funext Pr d
-  by_cases hH : ∃ R, Mult.Hecke₂ V J χ Sb Pr d R
-  · obtain ⟨R, hR⟩ := hH
-    obtain ⟨x, hx, hx0, hxt, hxh⟩ := rowRep_spec P hc hl c
-    obtain ⟨x', hx', hx0', hxt', hxh'⟩ := rowRep_spec P hc hl c'
-    obtain ⟨y, hy, hy0, hyt, hyh⟩ := iso_transfer hI R (pre P) (c.1 Pr d) hx hx0 hxt (hxh Pr d R hR)
-    obtain ⟨a, ha⟩ := hS Pr d R hR (rowRep P hc hl c')
-    have e1 : c.1 Pr d • y = a • y := hyh.symm.trans (ha y hy hyt)
-    have e2 : c'.1 Pr d • x' = a • x' := (hxh' Pr d R hR).symm.trans (ha x' hx' hxt')
-    exact (smul_left_injective ℂ hy0 e1).trans (smul_left_injective ℂ hx0' e2).symm
-  · rw [c.2.1 Pr d hH, c'.2.1 Pr d hH]
-
-theorem rowRepExists_of (P : RowPsi V n) (hc : CongConj D.host.E n) (hl : LevOK P J χ) (hS : HeckeScalar P J χ Sb) :
-    RowRepExists θ P M J χ Sb e := by
-  exact ⟨rowRep P hc hl, fun c c' h => rowRep_inj P hc hl hS c c' h, rowRep_spec P hc hl⟩
 
 end ConcProofs
 

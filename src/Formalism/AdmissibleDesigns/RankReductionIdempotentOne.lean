@@ -1,4 +1,54 @@
-import Formalism.WachLatticeTwists.RealDisplaySplitting.GaloisTheoremThirdForms
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapSecondPlace
+import Formalism.WachLatticeTwists.SplitClassesAll.Statement
+import Formalism.WachLatticeTwists.SplitLocalLifts.Statement
+import Formalism.WachLatticeTwists.HerrComplexInjectivity.Statement
+import Formalism.WachLatticeTwists.CharacterSplitJumps.WachTwistTheoremFromTorsionBound
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
+import Formalism.WachLatticeTwists.Statement
+import Formalism.WachLatticeTwists.SandwichH1Classes.HypothesisWGivesUnitCongruence
+import Formalism.WachLatticeTwists.SandwichH1Classes.ComparisonMatrixIntertwinesEndomorphisms
+import Formalism.WachLatticeTwists.DenseTopActions.Statement
+import Formalism.WachLatticeTwists.RamifiedBlockRings.ChainFromPrimitiveData
+import Formalism.WachLatticeTwists.RealDisplaySplitting.SurjectionRankOneIdempotent
+import Formalism.WachLatticeTwists.RamifiedBlockRings.LocalToDisplayFree
+import Formalism.WachLatticeTwists.SplitLocalLifts.Cocycles1MapOfEquivariant
+import Formalism.WachLatticeTwists.SplitLocalLifts.SplitLocalLiftProofs.NatCastPowSmul
+import Formalism.WachLatticeTwists.SplitLocalLifts.SplitLocalLiftProofs.LocLift
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.LocDualOrth
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.QuotLen
+import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
+import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
+import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
+import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.ExistsBasisOfLattice
+import Formalism.WachLatticeTwists.CharacterSplitJumps.CharacterJumpProofs.MemAnnih
+import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.MinimalExponentAttained
+import Formalism.WachLatticeTwists.HodgeTateChains.XiAdicFiltrationData
+import Formalism.WachLatticeTwists.HodgeTateChains.HodgeTateFiltrations.Imports
+import Formalism.WachLatticeTwists.HodgeTateChains.Statement
+import Formalism.WachLatticeTwists.TorsionLengthCounts.SubmoduleLengthBoundStatement
+import Formalism.WachLatticeTwists.HodgeTateChains.H2KilledByTateDuality
+import Formalism.WachLatticeTwists.HodgeTateChains.GammaIterateMatrixCongruence
+import Formalism.WindowSums.AnnihilatorPolynomials.ZpowVal
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.FirstSummandActionMem
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.TheoremNFiveDeltaClause
+import Formalism.WachLatticeTwists.CharacterSplitJumps.CharacterJumpProofs.PropLocBK
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.Bridge
+import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelsOfBlockChiCOfBlockChiOne
+import Formalism.WachLatticeTwists.TorsionLengthCounts.RowCol
+import Formalism.CharacterColumnKernels.CharacterColumnKernelEqualityForm
+import Formalism.WachLatticeTwists.TorsionLengthCounts.LengthHomCoker
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.TheoremNFiveReal
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.InRowRealOf
+import Formalism.WachLatticeTwists.WachProductBases.Statement
+import Formalism.LagrangeIdealLifts.Statement
+import Formalism.CoboundaryTransfers.GammaStableTransfers.MemCoboundariesOfIsOneCoboundary
+import Formalism.CoboundaryTransfers.GammaStableTransfers.GammaStableOfGammaQUnitHolds
+import Formalism.CoboundaryTransfers.GammaStableTransfers.DiffOneSmulOfTower
+import Formalism.WachLatticeTwists.LagrangeExtensionCocycles.DualWByLettersExtended
+import Formalism.WachLatticeTwists.SandwichH1Classes.SandwichH1Proofs.GmIApply
+import Formalism.WachLatticeTwists.RealDisplaySplitting.RealDisplayProofs.IdempotentRankOneAtPoint
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapProofs.TheoremNFiveRealAllLiftThird
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
 
@@ -318,10 +368,6 @@ section Top
 variable {O : Type} [CommRing O] {A : Type} [Ring A] [Algebra O A] [TopologicalSpace A] [IsTopologicalAddGroup A]
   [ContinuousConstSMul O A] (e₁ : A)
 
-example : TopologicalSpace (FirstSummandSubmodule O e₁) := inferInstance
-example : IsTopologicalAddGroup (FirstSummandSubmodule O e₁) := inferInstance
-example : ContinuousConstSMul O (FirstSummandSubmodule O e₁) := inferInstance
-
 theorem inc_cont : Continuous (FirstSummandSubmodule O e₁).subtype := continuous_subtype_val
 
 end Top
@@ -428,21 +474,6 @@ theorem tensor_lattice_facts (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (
 
 end Dd
 
-section Checks
-variable {ℓ : ℕ} [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[ℓ] O]
-  {A : Type} [Ring A] [Algebra O A] [TopologicalSpace A] [IsTopologicalAddGroup A] [ContinuousConstSMul O A]
-  {n : Type} [Fintype n] [DecidableEq n] (ρ : A →ₐ[O] Matrix n n O) (x e₁ : A)
-
-example : Module ℤ_[ℓ] (LatM O O n ρ.toRingHom) := inferInstance
-example : IsScalarTower ℤ_[ℓ] O (LatM O O n ρ.toRingHom) := inferInstance
-example : SMulCommClass A O (LeftId O x) := inferInstance
-example : Module ℤ_[ℓ] (LeftId O x) := inferInstance
-example : IsScalarTower ℤ_[ℓ] O (LeftId O x) := inferInstance
-example : IsTopologicalAddGroup (FirstSummandSubmodule O e₁) := inferInstance
-example : ContinuousConstSMul O (FirstSummandSubmodule O e₁) := inferInstance
-
-end Checks
-
 section Cont
 open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff IsFGTop)
 
@@ -468,10 +499,6 @@ theorem piM_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) (ρ : A →ₐ[O] Ma
     Continuous (piM ρ e₁ w) := by
   have := hO.ring
   exact (lin_cont hO hA (piA ρ w)).comp continuous_subtype_val
-
-theorem rho_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) (ρ : A →ₐ[O] Matrix n n O) : Continuous ρ := by
-  have := hO.ring
-  exact lin_cont hO hA ρ.toLinearMap
 
 end Cont
 

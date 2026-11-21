@@ -4,9 +4,9 @@ import Formalism.LocalToGlobal.Columns.CoefficientsModP.LatticeBasisExistsHolds
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PatchAtSelf
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CartanExchangeUnimodularInertPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SubmodulePatchAtPrimeIsLatticeLocPStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SameAtOfLocalizationEqStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SameAtOfLocalizationEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalizationHermitianDualEqStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimePowSmulLeOfLocalizationsEqAwayStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimePowSmulLeOfLocalizationsEqAway
 
 noncomputable section
 open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Formalism.L2.Col GlobalTheory.InertExchange
@@ -108,7 +108,7 @@ theorem exchange : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : �
         rw [locσ Y hYl Q, if_neg hQ]
         exact (hYS Q hQ).localization_eq
     · intro Q hQ
-      apply GlobalTheory.T.sameAt_of_localization_eq Q X _ hXl (latσ Y hYl)
+      apply _root_.GlobalTheory.sameAt_of_localized_eq Q X _ hXl (latσ Y hYl)
       rw [locσ Y hYl Q, if_neg hQ]
       exact (hYS Q hQ).localization_eq.symm
   · intro Y' hl' hu' hS'
@@ -119,7 +119,7 @@ theorem exchange : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : �
       · intro Q hQ
         rw [hYloc Q, if_neg hQ]
     · intro Q hQ
-      apply GlobalTheory.T.sameAt_of_localization_eq Q X _ hXl hYl
+      apply _root_.GlobalTheory.sameAt_of_localized_eq Q X _ hXl hYl
       rw [hYloc Q, if_neg hQ]
       exact (hS' Q hQ).localization_eq.symm
     · show patchAt P (gmap g (patchAt P (gmap g⁻¹ Y') Y')) (patchAt P (gmap g⁻¹ Y') Y') = Y'
@@ -148,16 +148,16 @@ theorem exchange : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : �
     show IsInertNbr P.asIdeal s (patchAt P (gmap g Y) Y) (patchAt P (gmap g Y') Y') ↔ IsInertNbr P.asIdeal s Y Y'
     have hAl := gmap_lattice g Y hYl
     have hBl := gmap_lattice g Y' hY'l
-    have hAA' := GlobalTheory.T.sameAt_of_localization_eq P (gmap g Y) _ hAl (latσ Y hYl) (by rw [locσ Y hYl P, if_pos rfl])
-    have hBB' := GlobalTheory.T.sameAt_of_localization_eq P (gmap g Y') _ hBl (latσ Y' hY'l) (by rw [locσ Y' hY'l P, if_pos rfl])
+    have hAA' := _root_.GlobalTheory.sameAt_of_localized_eq P (gmap g Y) _ hAl (latσ Y hYl) (by rw [locσ Y hYl P, if_pos rfl])
+    have hBB' := _root_.GlobalTheory.sameAt_of_localized_eq P (gmap g Y') _ hBl (latσ Y' hY'l) (by rw [locσ Y' hY'l P, if_pos rfl])
     have hAB : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → localization₂ Q.asIdeal (gmap g Y) = localization₂ Q.asIdeal (gmap g Y') :=
       fun Q hQ => locg g Q Y Y' ((hYS Q hQ).localization_eq.trans (hY'S Q hQ).localization_eq.symm)
     have hA'B' : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P →
         localization₂ Q.asIdeal (patchAt P (gmap g Y) Y) = localization₂ Q.asIdeal (patchAt P (gmap g Y') Y') := by
       intro Q hQ
       rw [locσ Y hYl Q, locσ Y' hY'l Q, if_neg hQ, if_neg hQ, (hYS Q hQ).localization_eq, (hY'S Q hQ).localization_eq]
-    obtain ⟨k1, hk1, hk1'⟩ := GlobalTheory.T.exists_prime_pow_smul_le_of_localizations_eq_away P _ _ hAl hBl hAB
-    obtain ⟨k2, hk2, hk2'⟩ := GlobalTheory.T.exists_prime_pow_smul_le_of_localizations_eq_away P _ _ (latσ Y hYl) (latσ Y' hY'l) hA'B'
+    obtain ⟨k1, hk1, hk1'⟩ := _root_.GlobalTheory.InertExchange.exists_pow_smul_le_of_locP_eq P _ _ hAl hBl hAB
+    obtain ⟨k2, hk2, hk2'⟩ := _root_.GlobalTheory.InertExchange.exists_pow_smul_le_of_locP_eq P _ _ (latσ Y hYl) (latσ Y' hY'l) hA'B'
     obtain ⟨a, ha, a', ha', h1, h2⟩ := hAA'
     obtain ⟨b, hb, b', hb', h3, h4⟩ := hBB'
     have hα0 : a * a' * b * b' ∉ P.asIdeal :=

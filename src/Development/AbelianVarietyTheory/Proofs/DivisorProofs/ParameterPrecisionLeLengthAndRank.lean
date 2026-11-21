@@ -325,24 +325,6 @@ theorem parameterPrecision_le_length_and_rank (D : D7) (L : SizeData₂ D) (P : 
     exact_mod_cast this
   exact ⟨hPT, by linarith⟩
 
-theorem one_le_parPP (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (T : ParamsT D L P) : 1 ≤ T.PP := by
-  have hx1 : 1 < L.sc.x := L.sc.one_lt_alt
-  have hL1 : 1 ≤ L.sc.L := by unfold Scale.L; exact Real.one_le_rpow hx1.le L.sc.eps_pos.le
-  have hf1 : (1 : ℝ) ≤ D.R.f := by
-    have : 1 ≤ D.R.f := by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega
-    exact_mod_cast this
-  have hr1 : (1 : ℝ) ≤ D.R.r := by
-    have : 1 ≤ D.R.r := by unfold Ranks.r; have := D.R.two_le_m; omega
-    exact_mod_cast this
-  have hZ1 : (1 : ℝ) ≤ zBase L := by
-    unfold zBase
-    have : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r := by nlinarith
-    nlinarith
-  rw [T.PP_eq]
-  have h1 := Real.one_le_rpow hZ1 (by linarith [T.eP_ge] : 0 ≤ T.eP)
-  have h2 := T.one_le_CP
-  nlinarith
-
 theorem one_le_nWn (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (T : ParamsT D L P) : 1 ≤ T.nWn := by
   refine le_trans ?_ T.nW_lo.1
   have hf : 0 < D.R.f := by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega
@@ -430,12 +412,6 @@ theorem wSz_eq (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what
     DV.wSz D j τ = (((D.hc τ).e ⟨j - 1, by omega⟩ : ℚ) : ℝ) := by
   unfold DV.wSz
   rw [dif_pos ⟨h1, h2⟩]
-
-theorem six_le_h0 (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) : 6 ≤ LevelStarExponents.h0 L := by
-  have h := P.h0_ge.2.2.2.2.1
-  have h1 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ) ^ 3 := by positivity
-  have h2 : (0 : ℝ) ≤ (D.R.t : ℝ) := Nat.cast_nonneg _
-  linarith
 
 theorem minimalGap_le_first_lowerRowParameter (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau)
     (hw : L.sc.w'' D.R.n ≤ DV.wSz D j τ) (hm : 0 < D.R.m) : LevelStarExponents.h0 L ≤ (((D.hc τ).b ⟨0, hm⟩ : ℚ) : ℝ) := by

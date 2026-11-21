@@ -25,12 +25,6 @@ def BlockImageInverse.Statement : Prop :=
           eval (blockMapC k₀ M z) (map (Int.castRingHom ℂ) F) ≠ 0 →
           SameOrbit (ι := GlobalTheory (Fin r)) (blockMapC k₀ M z) (blockMapC k₀ M z') → SameOrbit z z')
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

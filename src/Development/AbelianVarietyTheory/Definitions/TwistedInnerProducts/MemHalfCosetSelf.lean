@@ -21,19 +21,6 @@ variable (σ) in
 
 def RootsIn (n : ℕ) : Prop := ∀ z : ℂ, z ^ n = 1 → z ∈ Set.range σ
 
-theorem rootsIn_iff {n : ℕ} (hn : n ≠ 0) : RootsIn σ n ↔ ∃ z : K, IsPrimitiveRoot z n := by
-  have : NeZero n := ⟨hn⟩
-  constructor
-  · intro h
-    have hp := Complex.isPrimitiveRoot_exp n hn
-    obtain ⟨z, hz⟩ := h _ hp.pow_eq_one
-    refine ⟨z, ?_⟩
-    rw [← hz] at hp
-    exact hp.of_map_of_injective σ.injective
-  · rintro ⟨z, hz⟩ w hw
-    obtain ⟨i, -, hi⟩ := (hz.map_of_injective σ.injective).eq_pow_of_pow_eq_one hw
-    exact ⟨z ^ i, by rw [map_pow, hi]⟩
-
 variable (σ) in
 
 def LocIn (χ : HChar D.host.E) : Prop := ∀ w x, (χ.loc w x : ℂ) ∈ Set.range σ
@@ -88,24 +75,6 @@ theorem halfCoset_eq {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {k : �
 
 def IsCosetDatum {t : T} {p : Pair T} (k : ℕ) (d : FinDatum G t p) : Prop :=
   ∃ x₀, IsHalf d.e x₀ ∧ k • x₀ ∈ pairLat G p ∧ d.fn = (halfCoset d.e (pairLat G p) k x₀).indicator 1
-
-theorem isCosetDatum_ind (t : T) (p : Pair T) (P h e he) : IsCosetDatum 1 (FinDatum.ind G t p P h e he) := by
-  refine ⟨0, (GlobalTheory.SplitScalar.isHalf_iff e 0).2 (smul_zero e), by simp, ?_⟩
-  refine (GlobalTheory.PlaceModel.halfInd_eq_ind e (pairLat G p)).trans ?_
-  dsimp only [FinDatum.ind]
-  have hm : ∀ x, x ∈ halfCoset e (pairLat G p) 1 0 ↔ x ∈ pairLat G p ⊓ GlobalTheory.PlaceModel.half (G.pS p) (G.pT p) e := by
-    intro x
-    rw [AddSubgroup.mem_inf, GlobalTheory.PlaceModel.mem_half]
-    constructor
-    · rintro ⟨u, hu, hue, rfl⟩
-      simpa using ⟨hu, (GlobalTheory.SplitScalar.isHalf_iff e u).1 hue⟩
-    · rintro ⟨hx, hxe⟩
-      exact ⟨x, hx, (GlobalTheory.SplitScalar.isHalf_iff e x).2 hxe, by simp⟩
-  funext x
-  by_cases hx : x ∈ pairLat G p ⊓ GlobalTheory.PlaceModel.half (G.pS p) (G.pT p) e
-  · rw [Set.indicator_of_mem ((hm x).2 hx), GlobalTheory.PlaceModel.ind, if_pos hx]
-    rfl
-  · rw [Set.indicator_of_notMem (fun h' => hx ((hm x).1 h')), GlobalTheory.PlaceModel.ind, if_neg hx]
 
 theorem IsCosetDatum.fn_eq {t : T} {p : Pair T} {k : ℕ} {d d' : FinDatum G t p} (h : IsCosetDatum k d) (h' : IsCosetDatum k d')
     (he : d.e = d'.e) {x} (hx : d.fn x ≠ 0) (hx' : d'.fn x ≠ 0) : d.fn = d'.fn := by
@@ -285,24 +254,6 @@ theorem NumbersIn.mono {S : GridChoice W Set.univ} {μ₀ : T} (h : NumbersIn σ
     exact ⟨A, A', WW, X, hX, Ω, Ω', hΩ, hΩ', fun t g hg =>
       ⟨fun k hk => hσ ((hs t g hg).1 k hk), fun k hk => hσ ((hs t g hg).2 k hk)⟩⟩
 
-theorem numbersIn_id (S : GridChoice W Set.univ) (μ₀ : T) : NumbersIn (RingHom.id ℂ) S μ₀ where
-  chars :=
-    { mu0 := fun _ _ _ => ⟨_, rfl⟩
-      xi := fun _ _ _ => ⟨_, rfl⟩
-      chi := fun _ _ _ _ _ => ⟨_, rfl⟩
-      eta := fun _ _ => ⟨_, rfl⟩
-      chiPsi := fun _ _ => ⟨_, rfl⟩
-      del := fun _ _ => ⟨_, rfl⟩
-      del' := fun _ _ => ⟨_, rfl⟩ }
-  eighth := fun _ _ => ⟨_, rfl⟩
-  roots := fun _ _ _ _ _ => ⟨_, rfl⟩
-  phases := fun _ _ _ _ _ _ _ _ _ _ => ⟨_, rfl⟩
-  sqrt := fun _ _ => ⟨_, rfl⟩
-  jets := fun _ _ _ _ _ _ _ _ _ => ⟨fun _ _ _ => ⟨_, rfl⟩, fun _ _ _ => ⟨_, rfl⟩⟩
-  ratios := fun _ _ _ _ _ _ _ _ _ _ _ => ⟨_, rfl⟩
-  bottom := fun _ _ ⟨A, A', WW, X, hX⟩ =>
-    ⟨A, A', WW, X, hX, 1, 1, one_ne_zero, one_ne_zero, fun _ _ _ => ⟨fun _ _ => ⟨_, rfl⟩, fun _ _ => ⟨_, rfl⟩⟩⟩
-
 variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
@@ -316,20 +267,7 @@ def FieldIn : Prop := NumbersIn σ ch.S.toGridChoice A.μ0
 
 def FieldOK : Prop := ch.FieldIn D.what₂.embLL
 
-def HasNumberField : Prop :=
-  ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ ch.FieldIn (algebraMap M ℂ)
-
 variable {ch}
-
-theorem FieldIn.fieldOK (h : ch.FieldIn σ) (hσ : Set.range σ ⊆ Set.range D.what₂.embLL) : ch.FieldOK := NumbersIn.mono h hσ
-
-theorem FieldOK.hasNumberField (h : ch.FieldOK) : ch.HasNumberField := by
-  have h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0 := h
-  let f : D.what₂.LL →ₐ[ℚ] ℂ := D.what₂.embLL.toRatAlgHom
-  refine ⟨f.fieldRange, LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField f).toLinearEquiv, ?_⟩
-  refine NumbersIn.mono h' ?_
-  rintro _ ⟨y, rfl⟩
-  exact ⟨⟨D.what₂.embLL y, AlgHom.mem_fieldRange.2 ⟨y, rfl⟩⟩, rfl⟩
 
 theorem FieldOK.isRatAt (h : ch.FieldOK) {t Φ β} (hβ : β ∈ ch.S.supp t Φ) {τ}
     (hτ : IsCosetExpansion ch.S.toGridChoice t Φ β (expDepth ch.S.toGridChoice t Φ β) τ) {d} (hd : d ∈ τ.support)
@@ -340,83 +278,7 @@ theorem FieldOK.isRatAt (h : ch.FieldOK) {t Φ β} (hβ : β ∈ ch.S.supp t Φ)
   have hj := h'.jets t Φ β hβ τ hτ d hd c
   exact ⟨fun j a b => hj.1 j a b, fun i a b => hj.2 i a b⟩
 
-theorem FieldOK.valLL (h : ch.FieldOK) : Formalism.L2.Host.ValLL D R.C := by
-  have h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0 := h
-  exact ⟨fun j => (h'.chars.mu0 j).valuesIn, h'.chars.eta, h'.chars.chiPsi, h'.chars.del, h'.chars.del'⟩
-
-theorem FieldOK.fieldCond (h : ch.FieldOK) (hW : ch.W.Over R) (G' : GlobalTheory.Grid.GridPre R)
-    (h1 : ∀ i, 1 ≤ i → i ≤ D.R.m → G'.chiH i = ch.G.ch.chiH i ∧ G'.chi i = ch.G.ch.chi i)
-    (h2 : G'.toPlaceDat.W R.Pg = ch.G.pl.W0) (h3 : ∀ w ∈ ch.G.pl.W0, G'.toPlaceDat.depth w = depthAt ch.G w)
-    (hL : ∀ i j Λ₀, GlobalTheory.CMVal.IsHeckeL (SqNum.nuH ch.G A.μ0 i j) Λ₀ → ∀ s : ℕ, 1 ≤ s → Λ₀ s ≠ 0)
-    (hB : ∀ i j, ∃ (B B' WW : HSp D) (X : Tri T B B' WW), IsBottomTri ch.W i j X)
-    (hI : ∀ i j (B B' WW : HSp D) (X : Tri T B B' WW), IsBottomTri ch.W i j X → ∀ t,
-      (∀ P g, IntegrableOn (X.ker ch.W.ψ ch.W.θ t P g) X.fd X.m) ∧ ∀ P g, IntegrableOn (X.ker' ch.W.ψ ch.W.θ t P g) X.fd' X.m') :
-    FieldCond G' := by
-  classical
-  have h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0 := h
-  have hψ : ch.W.ψ = R.ψ := hW.1
-  have hθ : ch.W.θ = R.θ := hW.2
-  have hm : ∀ i : Fin D.R.m, 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m := fun i => ⟨by omega, by omega⟩
-  have hnu : ∀ (i j : Fin D.R.m) t, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.nuH G' i j t = SqNum.nuH ch.G t i j := by
-    intro i j t
-    unfold GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.nuH SqNum.nuH
-    rw [(h1 _ (hm i).1 (hm i).2).1]
-  refine ⟨h.valLL, ⟨fun i hi1 hi2 => ?_, fun w hw => ?_⟩, fun t => (h'.chars.xi t).valuesIn, fun i j => ?_,
-    fun i j => ?_⟩
-  · rw [(h1 i hi1 hi2).1]
-    exact (h'.chars.chi i hi1 hi2).valuesIn
-  · have hw' : w ∈ locPl ch.G A.μ0 := by
-      unfold locPl
-      rw [← h2]
-      exact Finset.mem_union_left _ hw
-    have hne : Ideal.absNorm w.asIdeal ^ depthAt ch.G w ≠ 0 :=
-      pow_ne_zero _ (fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0))
-    obtain ⟨z, hz⟩ := (rootsIn_iff hne).1 (h'.roots A.μ0 w hw')
-    refine ⟨z, ?_⟩
-    rw [h3 w (h2 ▸ hw)]
-    have hc : Nat.card (kP w) = Ideal.absNorm w.asIdeal := by
-      rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
-    rw [hc]
-    exact hz
-  · intro t Λ Λ₀ hΛ hΛ₀ s hs1 hs2
-    rw [hnu] at hΛ hΛ₀
-    have h0 := hL i j Λ₀ hΛ₀ s hs1
-    obtain ⟨ρ, hρ⟩ := h'.ratios i j t Λ Λ₀ hΛ hΛ₀ s hs1 hs2 h0
-    exact ⟨ρ, by rw [hρ]; field_simp⟩
-  · obtain ⟨B, B', WW, X, hX, hS⟩ := h'.bottom i j (hB i j)
-    have hR := SumsIn.rationalSums hS (fun t P g => (hI i j B B' WW X hX t).1 P g) (fun t P g => (hI i j B B' WW X hX t).2 P g)
-    rw [hψ, hθ] at hR
-    have hX' := hX.is
-    rw [hψ, hθ] at hX'
-    refine ⟨B, B', WW, X, ?_, ?_, hX.std, hX.std', hX.stdW, ?_, hR⟩
-    · rw [hX.rank]
-      exact (SqNum.ranks_exact D i j).1
-    · rw [hX.rank']
-      exact (SqNum.ranks_exact D i j).2.1
-    · have hpl : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.places G' = locPl ch.G := by
-        funext t
-        ext w
-        simp only [GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.places, locPl, Finset.mem_union, h2]
-      have hb : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.beta G' i j = fun _ => ch.G.ch.chi (D.R.m - i) * R.eta ^ (rankV D i j % 2) := by
-        funext t
-        unfold GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.beta
-        rw [(h1 _ (hm i).1 (hm i).2).2]
-        rfl
-      have hn : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.nuH G' i j = fun t => SqNum.nuH ch.G t i j := funext (hnu i j)
-      rw [hpl, hb, hn]
-      exact hX'
-
 end Choice
-
-example (ch : Choice R) (ρ ξ) : (ch.withReal ρ ξ).FieldOK ↔ ch.FieldOK := Iff.rfl
-
-example : RootsIn σ 2 := fun z hz => by
-  rcases mul_self_eq_one_iff.1 ((sq z).symm.trans hz) with rfl | rfl
-  exacts [⟨1, map_one σ⟩, ⟨-1, by simp⟩]
-
-example (S : GridChoice W Set.univ) (μ₀ : T) : ¬ NumbersIn (Rat.castHom ℂ) S μ₀ := fun h => by
-  obtain ⟨x, hx⟩ := h.eighth Complex.I (by rw [show 8 = 4 * 2 from rfl, pow_mul, Complex.I_pow_four, one_pow])
-  simpa using congrArg Complex.im hx
 
 end GlobalTheory.RowTest
 

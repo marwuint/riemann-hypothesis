@@ -80,12 +80,6 @@ def SegreFlagCutContraction.Statement : Prop :=
         ∀ W, (C ϖ : MRing (bundleIdx (bundleIdx ι M) M') O) ∈ W → ratDiv (pointIdeal O (flagClosurePt y w e φ φ' t (k + 1))) s h W ≠ 0 →
         ∀ l : List (Option (Option K) → ℤ), l.length = d + k → (∀ b ∈ l, b (some none) = 0) → vNumL W l = 0)
 
-section Examples
-
-def scaledDualCoordinate : MRing (bundleIdx (bundleIdx PointIdx 1) 1) ℤ_[2] := X ⟨none, (0 : Fin 1)⟩
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

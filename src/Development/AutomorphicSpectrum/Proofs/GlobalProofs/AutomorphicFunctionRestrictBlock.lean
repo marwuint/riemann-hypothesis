@@ -68,7 +68,7 @@ theorem qdet_scalar_of_gelf : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.
       ∀ f : GlobalTheory.Mem.AutSpace.SmFun θ V, (∀ k, gelf θ V τ k f.1 = c k • f.1) →
         Formalism.REAL.qdet (fun i j => GlobalTheory.Mem.RealTranslate.derEnd hθ τ (M i j)) v f = s • f := by
   intro D θ hθ V τ M hM hsp c v
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   obtain ⟨P, Q, hPQ, h⟩ := GlobalTheory.T.unitary_lie_generators_rep _ _ (R.1 τ).1 (R.1 τ).2
   obtain ⟨h1, h2⟩ := h (EnvAt V τ) (fun X => UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X))
     (fun X Y => by rw [TensorProduct.tmul_add, map_add])
@@ -100,7 +100,7 @@ theorem qdet_scalar_of_gelf : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.
     rw [Subalgebra.mem_center_iff]
     intro u
     have : u ∈ Subalgebra.centralizer ℂ ({z} : Set (EnvAt V τ)) := by
-      obtain ⟨w, rfl⟩ := GlobalTheory.T.enveloping_map_surjective D V τ u
+      obtain ⟨w, rfl⟩ := _root_.GlobalTheory.EnvWords.envOf_surjective D V τ u
       refine Subalgebra.sum_mem _ fun l _ => Subalgebra.smul_mem _ (Subalgebra.list_prod_mem _ fun x hx => ?_) _
       obtain ⟨X, -, rfl⟩ := List.mem_map.1 hx
       rw [Subalgebra.mem_centralizer_iff]

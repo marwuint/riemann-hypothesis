@@ -298,71 +298,9 @@ theorem t_EtaZero : SqrtSumSqLeOneAddInvPowSix := by
 
 end Num3
 
-section Num4
-
-open Formalism.FourierDecayAlt.PB
-
-theorem t_MainRowShape : MainRowShape := by
-  intro δ y z hδ hy hz h1
-  have hx0 : 0 ≤ δ + y + z := by linarith
-  have hconv := convexOn_exp.2 (Set.mem_univ (0:ℝ)) (Set.mem_univ (1:ℝ))
-    (show (0:ℝ) ≤ 1 - (δ + y + z) by linarith) hx0 (by ring)
-  simp only [smul_eq_mul, mul_zero, zero_add, mul_one, Real.exp_zero] at hconv
-  have he := Real.exp_one_lt_d9
-  have hδe : 1 + δ ≤ Real.exp δ := by linarith [Real.add_one_le_exp δ]
-  have hprod : (1 + δ) * Real.exp y * Real.exp z ≤ Real.exp (δ + y + z) := by
-    rw [Real.exp_add, Real.exp_add, mul_assoc, mul_assoc]
-    exact mul_le_mul_of_nonneg_right hδe (by positivity)
-  nlinarith [mul_le_mul_of_nonneg_left he.le hx0]
-
-end Num4
-
 section Hil1
 
 open Formalism.FourierDecayAlt.PB Finset
-
-theorem t_FourParts : FourParts := by
-  intro τ Rw I H H₁ _ _ _ _ _ X hX
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · ext t
-    simp only [Set.mem_union, Set.mem_univ, iff_true]
-    by_cases h1 : X.isId t
-    · exact Or.inl (Or.inl (Or.inl h1))
-    · by_cases h2 : X.G t = 0
-      · exact Or.inl (Or.inl (Or.inr ⟨h2, h1⟩))
-      · by_cases h3 : X.gener t
-        · exact Or.inr ⟨h2, h3⟩
-        · exact Or.inl (Or.inr ⟨h2, h3⟩)
-  · rw [Set.disjoint_left]
-    intro t h1 h2
-    have a : X.isId t := h1
-    have b : X.G t = 0 ∧ ¬ X.isId t := h2
-    exact b.2 a
-  · rw [Set.disjoint_left]
-    intro t h1 h2
-    have a : X.isId t := h1
-    have b : X.G t ≠ 0 ∧ ¬ X.gener t := h2
-    exact b.1 (hX t a)
-  · rw [Set.disjoint_left]
-    intro t h1 h2
-    have a : X.isId t := h1
-    have b : X.G t ≠ 0 ∧ X.gener t := h2
-    exact b.1 (hX t a)
-  · rw [Set.disjoint_left]
-    intro t h1 h2
-    have a : X.G t = 0 ∧ ¬ X.isId t := h1
-    have b : X.G t ≠ 0 ∧ ¬ X.gener t := h2
-    exact b.1 a.1
-  · rw [Set.disjoint_left]
-    intro t h1 h2
-    have a : X.G t = 0 ∧ ¬ X.isId t := h1
-    have b : X.G t ≠ 0 ∧ X.gener t := h2
-    exact b.1 a.1
-  · rw [Set.disjoint_left]
-    intro t h1 h2
-    have a : X.G t ≠ 0 ∧ ¬ X.gener t := h1
-    have b : X.G t ≠ 0 ∧ X.gener t := h2
-    exact a.2 b.2
 
 theorem t_TextClosing : NormSqAddBoundBySqrtSum := by
   intro H _ x y η ε dd hdd hx hy
@@ -557,48 +495,6 @@ open Formalism.FourierDecayAlt.PB Finset
 open Classical
 open scoped ComplexOrder
 
-theorem t_SplitSum : SplitSum := by
-  intro τ Rw I H H₁ _ _ _ _ _ _ X hA hD
-  have hA' : Summable (fun t => ‖X.op t‖) ∧ Summable (fun t => ‖X.vec t‖) ∧ 0 < X.Gam1 := hA
-  have hs : Summable X.op := Summable.of_norm hA'.1
-  have hsI : ∀ S : Set τ, Summable (S.indicator X.op) := fun S => hs.indicator S
-  have hpt : ∀ t, X.op t = X.idSet.indicator X.op t + X.genSet.indicator X.op t +
-      X.ngSet.indicator X.op t + X.degSet.indicator X.op t := by
-    intro t
-    by_cases h1 : X.isId t
-    · have m1 : t ∈ X.idSet := h1
-      have m2 : t ∉ X.genSet := fun h => (show X.G t ≠ 0 ∧ X.gener t from h).1 (hD t h1)
-      have m3 : t ∉ X.ngSet := fun h => (show X.G t ≠ 0 ∧ ¬ X.gener t from h).1 (hD t h1)
-      have m4 : t ∉ X.degSet := fun h => (show X.G t = 0 ∧ ¬ X.isId t from h).2 h1
-      simp [Set.indicator_apply, m1, m2, m3, m4]
-    · by_cases h2 : X.G t = 0
-      · have m1 : t ∉ X.idSet := h1
-        have m2 : t ∉ X.genSet := fun h => (show X.G t ≠ 0 ∧ X.gener t from h).1 h2
-        have m3 : t ∉ X.ngSet := fun h => (show X.G t ≠ 0 ∧ ¬ X.gener t from h).1 h2
-        have m4 : t ∈ X.degSet := ⟨h2, h1⟩
-        simp [Set.indicator_apply, m1, m2, m3, m4]
-      · by_cases h3 : X.gener t
-        · have m1 : t ∉ X.idSet := h1
-          have m2 : t ∈ X.genSet := ⟨h2, h3⟩
-          have m3 : t ∉ X.ngSet := fun h => (show X.G t ≠ 0 ∧ ¬ X.gener t from h).2 h3
-          have m4 : t ∉ X.degSet := fun h => h2 (show X.G t = 0 ∧ ¬ X.isId t from h).1
-          simp [Set.indicator_apply, m1, m2, m3, m4]
-        · have m1 : t ∉ X.idSet := h1
-          have m2 : t ∉ X.genSet := fun h => h3 (show X.G t ≠ 0 ∧ X.gener t from h).2
-          have m3 : t ∈ X.ngSet := ⟨h2, h3⟩
-          have m4 : t ∉ X.degSet := fun h => h2 (show X.G t = 0 ∧ ¬ X.isId t from h).1
-          simp [Set.indicator_apply, m1, m2, m3, m4]
-  show ∑' t, X.op t = (∑' t, X.idSet.indicator X.op t + ∑' t, X.genSet.indicator X.op t +
-    ∑' t, X.ngSet.indicator X.op t) + ∑' t, X.degSet.indicator X.op t
-  have e1 : ∑' t, X.op t = ∑' t, (X.idSet.indicator X.op t + X.genSet.indicator X.op t +
-      X.ngSet.indicator X.op t + X.degSet.indicator X.op t) := tsum_congr hpt
-  rw [e1]
-  first
-    | rw [Summable.tsum_add (((hsI _).add (hsI _)).add (hsI _)) (hsI _),
-        Summable.tsum_add ((hsI _).add (hsI _)) (hsI _), Summable.tsum_add (hsI _) (hsI _)]
-    | rw [tsum_add (((hsI _).add (hsI _)).add (hsI _)) (hsI _),
-        tsum_add ((hsI _).add (hsI _)) (hsI _), tsum_add (hsI _) (hsI _)]
-
 theorem t_EqualIota : GramSumLeOfPosSemidef := by
   intro I H₁ _ _ _ Γ c a hM
   obtain ⟨m, v, hv0⟩ := Matrix.posSemidef_iff_eq_sum_vecMulVec.mp hM
@@ -757,32 +653,6 @@ theorem t_PairSplit : PairSplit := by
     · simp [Set.indicator, Terms.big, Terms.one, h]
 
 end Hil5
-
-section Hil6
-
-open Formalism.FourierDecayAlt.PB
-
-theorem t_NGTotal : NGTotal := by
-  intro hPS hSF τ Rw I H H₁ _ _ _ _ _ _ X ε ε' dd hA hRO hCP hRB hRNG
-  obtain ⟨-, -, hng⟩ := hPS τ Rw I H H₁ X hA hRO hCP
-  have hsubN : X.big X.ngSet ⊆ X.big X.nzSet := by
-    intro p hp
-    have hp' : (p.1 ∈ X.ngSet ∧ p.2 ∈ X.ngSet ∧ X.rowOf p.1 = X.rowOf p.2) ∧ 2 ≤ X.s0 p.1 p.2 := hp
-    have h1 : p.1 ∈ X.nzSet := (show X.G p.1 ≠ 0 ∧ ¬ X.gener p.1 from hp'.1.1).1
-    have h2 : p.2 ∈ X.nzSet := (show X.G p.2 ≠ 0 ∧ ¬ X.gener p.2 from hp'.1.2.1).1
-    show (p.1 ∈ X.nzSet ∧ p.2 ∈ X.nzSet ∧ X.rowOf p.1 = X.rowOf p.2) ∧ 2 ≤ X.s0 p.1 p.2
-    exact ⟨⟨h1, h2, hp'.1.2.2⟩, hp'.2⟩
-  obtain ⟨hmN, -⟩ := hSF τ Rw I H H₁ X hA _ _ hsubN
-  obtain ⟨-, habsN⟩ := hSF τ Rw I H H₁ X hA _ _ (subset_rfl : X.big X.ngSet ⊆ X.big X.ngSet)
-  have hRB' : X.pairAbs (X.big X.nzSet) ≤ ε * dd := hRB
-  have hRNG' : X.pairSum (X.one X.ngSet) ≤ ε' * dd := hRNG
-  have hPhiN : X.PhiEq X.ngSet ≤ (ε + ε') * dd := by
-    rw [hng]
-    have := le_abs_self (X.pairSum (X.big X.ngSet))
-    linarith
-  exact hPhiN
-
-end Hil6
 
 section LocA
 
@@ -1272,13 +1142,7 @@ end Formalism.FourierDecayAlt.P.GrowthPolynomialOperator
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem four_parts : Formalism.FourierDecayAlt.PB.FourParts := GrowthPolynomialOperator.t_FourParts
-
-theorem split_sum_alt : Formalism.FourierDecayAlt.PB.SplitSum := GrowthPolynomialOperator.t_SplitSum
-
 theorem equal_index : Formalism.FourierDecayAlt.PB.GramSumLeOfPosSemidef := GrowthPolynomialOperator.t_EqualIota
-
-theorem gamma_numeric_bound : Formalism.FourierDecayAlt.PB.GGNumeric := GrowthPolynomialOperator.t_GGNumeric
 
 theorem price_of_index : Formalism.FourierDecayAlt.PB.NormSqBoundOfEqualIota := GrowthPolynomialOperator.t_PriceOfIota
 
@@ -1288,40 +1152,8 @@ theorem subfamilyAlt : Formalism.FourierDecayAlt.PB.SubFamily := GrowthPolynomia
 
 theorem loops_give_series : Formalism.FourierDecayAlt.PB.LoopsGiveRows := GrowthPolynomialOperator.t_LoopsGiveRows
 
-theorem total_count_bound : Formalism.FourierDecayAlt.PB.NGTotal := GrowthPolynomialOperator.t_NGTotal
-
-theorem text_closing : Formalism.FourierDecayAlt.PB.NormSqAddBoundBySqrtSum := GrowthPolynomialOperator.t_TextClosing
-
 theorem pair_bound_abstract : Formalism.FourierDecayAlt.PB.PairBoundAbstract := GrowthPolynomialOperator.t_PairBoundAbstract
 
-theorem numerical_price : Formalism.FourierDecayAlt.PB.NumPrice := GrowthPolynomialOperator.t_NumPrice
-
-theorem numerical_exponent : Formalism.FourierDecayAlt.PB.NumExp := GrowthPolynomialOperator.t_NumExp
-
-theorem numerical_density : Formalism.FourierDecayAlt.PB.NumDens := GrowthPolynomialOperator.t_NumDens
-
-theorem numerical_loops : Formalism.FourierDecayAlt.PB.NumLoops := GrowthPolynomialOperator.t_NumLoops
-
-theorem numerical_count : Formalism.FourierDecayAlt.PB.NumNG := GrowthPolynomialOperator.t_NumNG
-
-theorem count_exponent : Formalism.FourierDecayAlt.PB.NGExponent := GrowthPolynomialOperator.t_NGExponent
-
-theorem eta_zero_alt : Formalism.FourierDecayAlt.PB.SqrtSumSqLeOneAddInvPowSix := GrowthPolynomialOperator.t_EtaZero
-
-theorem principal_series_shape : Formalism.FourierDecayAlt.PB.MainRowShape := GrowthPolynomialOperator.t_MainRowShape
-
-theorem pair_bound_alt : Formalism.FourierDecayAlt.PB.PairBound := GrowthPolynomialOperator.t_PairBound
-
-theorem axioms_of_local_model : Formalism.FourierDecayAlt.PB.AxiomsOfLocalModel := GrowthPolynomialOperator.t_AxiomsOfLocalModel
-
-theorem principal_series : Formalism.FourierDecayAlt.PB.MainRow := GrowthPolynomialOperator.t_MainRow
-
 theorem loops_joint : Formalism.FourierDecayAlt.PB.LoopsJoint := GrowthPolynomialOperator.t_LoopsJoint
-
-theorem pair_bound_from_local : Formalism.FourierDecayAlt.PB.PairBoundFromLocal := GrowthPolynomialOperator.t_PairBoundFromLocal
-
-theorem pull_lattice_ordinary : Formalism.FourierDecayAlt.PB.PullLatticeOrdinary := GrowthPolynomialOperator.t_PullLatticeOrdinary
-
-theorem lattice_link : Formalism.FourierDecayAlt.PB.LatticeLink := GrowthPolynomialOperator.t_LatticeLink
 
 end Formalism.FourierDecayAlt.P

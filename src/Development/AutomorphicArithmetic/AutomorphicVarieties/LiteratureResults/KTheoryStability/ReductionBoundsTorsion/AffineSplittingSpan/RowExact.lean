@@ -61,8 +61,6 @@ theorem PInv.smul {a b : ℕ} (r : ℝ) {F : Bi P Q a b} (hF : PInv pr F) : PInv
   show r * F _ _ = r * F x y
   rw [hF g x y]
 
-theorem PInv.zero {a b : ℕ} : PInv pr (0 : Bi P Q a b) := fun _ _ _ => rfl
-
 theorem PInv.dh {a b : ℕ} {F : Bi P Q (a + 1) b} (hF : PInv pr F) : PInv pr (dh F) := by
   intro g x y
   unfold PositivityTheory.KB.SplitAffineSpectral.NormTraceLemmas.dh PositivityTheory.KB.SplitAffineSpectral.dc

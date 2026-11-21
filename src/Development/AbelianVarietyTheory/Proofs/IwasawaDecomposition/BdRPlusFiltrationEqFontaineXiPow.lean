@@ -1,8 +1,8 @@
 import Mathlib
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElementStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjective
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
@@ -28,11 +28,6 @@ theorem evalₐ_eq_zero_iff (h : I = Ideal.span {a}) (n : ℕ) (y : AdicCompleti
 theorem evalₐ_algebraMap (n : ℕ) (r : R) :
     AdicCompletion.evalₐ I n (algebraMap R (AdicCompletion I R) r) = Ideal.Quotient.mk _ r := by
   rw [AlgHom.commutes]; rfl
-
-theorem evalₐ_surj (n : ℕ) : Function.Surjective (AdicCompletion.evalₐ I n) := by
-  intro x
-  obtain ⟨r, rfl⟩ := Ideal.Quotient.mk_surjective x
-  exact ⟨_, evalₐ_algebraMap n r⟩
 
 theorem regular_of_isDomain [IsDomain R] (h : I = Ideal.span {a}) (ha : a ≠ 0) (y : AdicCompletion I R)
     (hy : algebraMap R (AdicCompletion I R) a * y = 0) : y = 0 := by
@@ -88,8 +83,8 @@ theorem GlobalTheory.MemLoc.filtration_eq_xi_pow : ∀ (l : ℕ) [Fact l.Prime],
     IsAdicComplete (Ideal.span {aDp l (xi e)}) (Per.BdRp l) ∧
     (∀ n : ℕ, Function.Surjective (Per.ev l n)) := by
   intro l _ e he
-  have hk := GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he
-  obtain ⟨-, hd, hinj⟩ := GlobalTheory.T.usage l
+  have hk := _root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l e he
+  obtain ⟨-, hd, hinj⟩ := _root_.GlobalTheory.MemLoc.ainf_isDomain_and_injective l
   have hne : algebraMap (Per.Ainf l) (Per.AinfP l) (xi e) ≠ 0 := fun h =>
     xi_ne_zero e he (hinj (h.trans (map_zero _).symm))
   obtain ⟨E, hE, hev⟩ := GlobalTheory.RingIface.exists_bdRp_equiv l

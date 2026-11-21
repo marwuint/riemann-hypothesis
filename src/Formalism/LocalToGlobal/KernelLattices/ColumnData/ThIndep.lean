@@ -15,13 +15,6 @@ open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements Al
 
 theorem hermitian_form_integral_values : HfIntRec := HfIntRec_of_gen (HfGenRec_of_arith arithmetic_hermitian_form)
 
-theorem theta_operator_isometry : ∀ D : Car, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ,
-    IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IopIso D (tor0 D cc δ) :=
-  IopIso_of_parts hermitian_form_integral_values self_dual_lattice
-
-theorem theta_norm_indep_of_pair : LinkThIndep :=
-  LinkThIndep_of_IopIso theta_operator_isometry
-
 end Formalism.L2.Ker.Cd.IntegralLatticeDensity
 
 end

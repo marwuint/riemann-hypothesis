@@ -65,132 +65,6 @@ structure ThetaTie where
 
 namespace SideTie
 
-variable {YS fw T} {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b)
-
-theorem ev_some {y z} (h : Z.pt y = some z) (f) : T.ev i _ b f y = valAt YS fw j z.1 (toK YS j b f) := by
-  rw [Z.ev_eq, h]; rfl
-
-theorem ev_none {y} (h : Z.pt y = none) (f) : T.ev i _ b f y = 0 := by rw [Z.ev_eq, h]; rfl
-
-theorem ev_eq_evI {y z} (h : Z.pt y = some z) :
-    ∃ (Tc : CDVR) (io : T0.Q.c.F →+* Tc.Fr) (k : Tc.Fr →+* ℂ_[D.ntw.l i]) (_ : IsReading (embC YS (T.iC i) b) Tc io k)
-      (y₀ : IntFr (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c Tc io) (u : ℂ_[D.ntw.l i]), y₀.IsAlg ∧ ‖u‖ = 1 ∧
-      ∀ (a : NX.KB S i b) (x : NX.FmK S ((j : ℕ) + 1)),
-        T.ev i _ b ((toK YS j b).symm (a ⊗ₜ[S.Ks] x : NX.KB S i b ⊗[S.Ks] _)) y =
-          T.iC i a * (u * k (evI y₀ (cuspOf YS fw j x : T0.R ((j : ℕ) + 1)))) := by
-  obtain ⟨Tc, io, k, hk, y₀, u, hy, hu, hv⟩ := z.exists_valC (wtA (κ j)) (κ j).n
-  refine ⟨Tc, io, k, hk, y₀, u, hy, hu, fun a x => ?_⟩
-  rw [Z.ev_some h, ← hv _ (cuspOf_mem_sec YS fw j x), ← valAt_tmul]
-  exact congrArg _ ((toK YS j b).apply_symm_apply _)
-
-include Z in
-
-theorem exists_ev_eq (z : Pts YS (T.iC i) b ((j : ℕ) + 1)) :
-    ∃ (y : T.Pt i ((j : ℕ) + 1)) (u : ℂ_[D.ntw.l i]), ‖u‖ = 1 ∧ ∀ f, valAt YS fw j z.1 (toK YS j b f) = u * T.ev i _ b f y := by
-  obtain ⟨y, z', t, hy, ht, hb⟩ := Z.cover z
-  exact ⟨y, _, norm_wchar ht _, fun f => by rw [Z.ev_some hy]; exact valAt_frBor YS fw j hb _⟩
-
-include Z in
-
-theorem exists_ev_eq_evI {Tc : CDVR} {io : T0.Q.c.F →+* Tc.Fr} {k : Tc.Fr →+* ℂ_[D.ntw.l i]}
-    (hk : IsReading (embC YS (T.iC i) b) Tc io k) (y₀ : IntFr (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c Tc io) (hy : y₀.IsAlg) :
-    ∃ (y : T.Pt i ((j : ℕ) + 1)) (u : ℂ_[D.ntw.l i]), ‖u‖ = 1 ∧ ∀ (a : NX.KB S i b) (x : NX.FmK S ((j : ℕ) + 1)),
-      T.iC i a * k (evI y₀ (cuspOf YS fw j x : T0.R ((j : ℕ) + 1))) =
-        u * T.ev i _ b ((toK YS j b).symm (a ⊗ₜ[S.Ks] x : NX.KB S i b ⊗[S.Ks] _)) y := by
-  obtain ⟨z, hz⟩ := PtC.exists_of_reading hk y₀ hy
-  obtain ⟨y, u, hu, h⟩ := Z.exists_ev_eq z
-  refine ⟨y, u, hu, fun a x => ?_⟩
-  rw [← h, ← hz _ _ _ (cuspOf_mem_sec YS fw j x), ← valAt_tmul]
-  exact congrArg _ ((toK YS j b).apply_symm_apply _).symm
-
-include Z in
-
-theorem norm_le_iff {B : ℝ} (hB : 0 ≤ B) (f : D.nexp.Fm i ((j : ℕ) + 1) b) : (∀ y, ‖T.ev i _ b f y‖ ≤ B) ↔
-    ∀ z : Pts YS (T.iC i) b ((j : ℕ) + 1), ‖valAt YS fw j z.1 (toK YS j b f)‖ ≤ B := by
-  refine ⟨fun h z => ?_, fun h y => ?_⟩
-  · obtain ⟨y, u, hu, e⟩ := Z.exists_ev_eq z
-    rw [e, norm_mul, hu, one_mul]
-    exact h y
-  · rcases hy : Z.pt y with _ | z
-    · rw [Z.ev_none hy, norm_zero]; exact hB
-    · rw [Z.ev_some hy]; exact h z
-
-include Z in
-
-theorem ball_iff {B : ℝ} (hB : 0 ≤ B) (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
-    (f ∈ T.FmUr i _ b ∧ ∀ y, ‖T.ev i _ b f y‖ ≤ B) ↔ toK YS j b f ∈ urBall YS fw (T.iC i) b j B :=
-  and_congr (Z.fmUr f) (Z.norm_le_iff hB f)
-
-theorem norm_hkU {k P} (h : HkIdx i k P) {y z} (hy : Z.pt y = some z) (c) : ‖T.hkU i _ b k P c y‖ = 1 := by
-  obtain ⟨u, hu, H⟩ := Z.hk k P h
-  obtain ⟨e, he⟩ := H y z hy
-  obtain ⟨z', t, w, -, -, ht, -, e'⟩ := he c
-  rw [e', norm_mul, hu, one_mul]
-  exact norm_wchar ht _
-
-include Z in
-
-theorem norm_hkU_all {k P} (h : HkIdx i k P) (c) (y) : ‖T.hkU i ((j : ℕ) + 1) b k P c y‖ = 1 := by
-  rcases hy : Z.pt y with _ | z
-  · exact Z.hk_none k P h y hy c
-  · exact Z.norm_hkU h hy c
-
-theorem hecke {k P} (h : HkIdx i k P) : ∃ s : T0.Q.c.F, ‖embC YS (T.iC i) b s‖ = 1 ∧ ∀ y z, Z.pt y = some z →
-    ∃ quot : HkKer P.asIdeal (charAt P) k z.1 → FrC YS (T.iC i) b ((j : ℕ) + 1),
-      (∀ C, IsHkQuot P.asIdeal (charAt P) k z.1 C (quot C)) ∧ ∀ f,
-        valAt YS fw j z.1 (toK YS j b (D.nexp.hkF i _ b k P f)) =
-          embC YS (T.iC i) b s * ∑ᶠ C, valAt YS fw j (quot C) (toK YS j b f) := by
-  obtain ⟨u, hu, H⟩ := Z.hk k P h
-  refine ⟨u, hu, fun y z hy => ?_⟩
-  obtain ⟨e, he⟩ := H y z hy
-  choose z' t w h1 h2 _ h4 h5 using he
-  refine ⟨fun C => w (e.symm C), fun C => by simpa using h2 (e.symm C), fun f => ?_⟩
-  rw [← Z.ev_some hy, T.hk_ev i _ b k P h.1 h.2.1 h.2.2.1 h.2.2.2, ← finsum_comp_equiv e, finsum_eq_sum_of_fintype,
-    Finset.mul_sum]
-  refine Finset.sum_congr rfl fun c _ => ?_
-  beta_reduce
-  rw [h5, Z.ev_some (h1 c), e.symm_apply_apply, valAt_frBor YS fw j (h4 c), mul_assoc]
-
-include Z in
-
-theorem exists_hkF_eq {k P} (h : HkIdx i k P) : ∃ s : T0.Q.c.F, ‖embC YS (T.iC i) b s‖ = 1 ∧
-    ∀ (f : D.nexp.Fm i ((j : ℕ) + 1) b) (g : NX.Fm S i ((j : ℕ) + 1) b),
-      (∀ (z : Pts YS (T.iC i) b ((j : ℕ) + 1)) (quot : HkKer P.asIdeal (charAt P) k z.1 → FrC YS (T.iC i) b ((j : ℕ) + 1)),
-        (∀ C, IsHkQuot P.asIdeal (charAt P) k z.1 C (quot C)) →
-          valAt YS fw j z.1 g = ∑ᶠ C, valAt YS fw j (quot C) (toK YS j b f)) →
-      toK YS j b (D.nexp.hkF i _ b k P f) = sideK YS i b s • g := by
-  obtain ⟨s, hs, H⟩ := Z.hecke h
-  refine ⟨s, hs, fun f g hfg => ?_⟩
-  obtain ⟨g, rfl⟩ := (toK YS j b).surjective g
-  rw [← map_smul]
-  refine congrArg _ (T.ev_inj i _ b (funext fun y => ?_))
-  rcases hy : Z.pt y with _ | z
-  · rw [Z.ev_none hy, Z.ev_none hy]
-  · obtain ⟨quot, hq, hv⟩ := H y z hy
-    rw [Z.ev_some hy, Z.ev_some hy, hv, map_smul, valAt_smul, hfg z quot hq]
-    rfl
-
-include Z in
-
-theorem hkF_mem_fmUr {k P} (h : HkIdx i k P) (f : D.nexp.Fm i ((j : ℕ) + 1) b) {g : NX.Fm S i ((j : ℕ) + 1) b}
-    (hg : g ∈ ratForms S _ b (kurAt YS (T.iC i) b))
-    (hfg : ∀ (z : Pts YS (T.iC i) b ((j : ℕ) + 1)) (quot : HkKer P.asIdeal (charAt P) k z.1 → FrC YS (T.iC i) b ((j : ℕ) + 1)),
-      (∀ C, IsHkQuot P.asIdeal (charAt P) k z.1 C (quot C)) →
-        valAt YS fw j z.1 g = ∑ᶠ C, valAt YS fw j (quot C) (toK YS j b f)) :
-    D.nexp.hkF i _ b k P f ∈ T.FmUr i _ b := by
-  obtain ⟨s, -, H⟩ := Z.exists_hkF_eq h
-  rw [Z.fmUr, H f g hfg]
-  exact smul_mem_ratForms (sideK_mem_kurAt YS _ b s) hg
-
-include Z in
-
-theorem detects : Detects YS fw (T.iC i) b j := fun x hx => by
-  obtain ⟨f, rfl⟩ := (toK YS j b).surjective x
-  have : f = 0 := T.ev_inj i _ b (funext fun y => by
-    rw [map_zero, Pi.zero_apply, ← norm_le_zero_iff]
-    exact (Z.norm_le_iff le_rfl f).2 (fun z => by rw [hx z, norm_zero]) y)
-  rw [this, map_zero]
-
 end SideTie
 
 variable {YS} in
@@ -208,47 +82,6 @@ theorem mem_span_toK {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} {s : Set (D.nexp.
 def SupPin (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) : Prop :=
   ∀ f : D.nexp.Fm i ((j : ℕ) + 1) b, f ∈ D.nexp.Bsup i _ b ↔ toK YS j b f ∈ NX.Bsup S i ((j : ℕ) + 1) b
 
-variable {YS fw T} in
-
-theorem SideTie.mem_bsup_iff {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b)
-    (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
-    f ∈ D.nexp.Bsup i _ b ↔ toK YS j b f ∈ Submodule.span (D.ntw.O i) (urBall YS fw (T.iC i) b j 1) := by
-  rw [T.Bsup_def]
-  exact mem_span_toK (Z.ball_iff zero_le_one) f
-
-variable {YS fw T} in
-
-theorem SideTie.supPin_iff {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b) :
-    SupPin YS i j b ↔ SupDescent YS fw (T.iC i) b j := by
-  refine ⟨fun h => ?_, fun h f => ?_⟩
-  · ext x
-    obtain ⟨f, rfl⟩ := (toK YS j b).surjective x
-    exact (h f).symm.trans (Z.mem_bsup_iff f)
-  · rw [Z.mem_bsup_iff, h]
-
-variable {YS fw T} in
-
-theorem SideTie.supDescent {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (Z : SideTie YS fw T i j b) (h : SupPin YS i j b) :
-    SupDescent YS fw (T.iC i) b j := Z.supPin_iff.1 h
-
-variable {YS fw T} in
-
-theorem ThetaTie.kur_eq (Z : ThetaTie YS fw T)
-    (h : ∀ x : S.Ks, ∃ y : S.Ks, algebraMap S.Ks D.what₂.LL y = star (algebraMap S.Ks D.what₂.LL x)) (i : D.ntw.Tw) (b : Bool) :
-    T.MaximalUnramifiedExtension i = kurAt YS (T.iC i) b := by
-  rw [Z.isUnramified₂, ← kurAt_eq YS _ h, inf_idem]
-  cases b
-  · exact kurAt_eq YS _ h
-  · rfl
-
-variable {YS fw T} in
-
-theorem ThetaTie.root_mem_kur (Z : ThetaTie YS fw T) (i : D.ntw.Tw) {ζ : FractionRing (D.ntw.O i)} {n : ℕ} (hn : ¬ D.ntw.l i ∣ n)
-    (h : ζ ^ n = 1) : ζ ∈ T.MaximalUnramifiedExtension i := by
-  have h' : T.iC i ζ ^ n = 1 := by rw [← map_pow, h, map_one]
-  rw [Z.isUnramified₂]
-  exact ⟨root_mem_kurC _ hn h', root_mem_kurC _ hn h'⟩
-
 section Record
 
 def extLift {m : ℕ} {α : ℕ → Type} (f : ∀ n : Fin m, α ((n : ℕ) + 1)) (d : ∀ j, α j) : ∀ j, α j
@@ -257,12 +90,6 @@ def extLift {m : ℕ} {α : ℕ → Type} (f : ∀ n : Fin m, α ((n : ℕ) + 1)
 
 theorem extLift_succ {m : ℕ} {α : ℕ → Type} (f : ∀ n : Fin m, α ((n : ℕ) + 1)) (d : ∀ j, α j) (n : Fin m) :
     extLift f d ((n : ℕ) + 1) = f n := dif_pos n.2
-
-theorem extLift_off {m : ℕ} {α : ℕ → Type} (f : ∀ n : Fin m, α ((n : ℕ) + 1)) (d : ∀ j, α j) {j : ℕ}
-    (h : j ∉ Finset.Icc 1 m) : extLift f d j = d j := by
-  cases j with
-  | zero => rfl
-  | succ n => exact dif_neg fun h' => h (Finset.mem_Icc.2 ⟨Nat.le_add_left _ _, h'⟩)
 
 theorem lift_cases {m : ℕ} {p : ℕ → Prop} (h1 : ∀ n : Fin m, p ((n : ℕ) + 1)) (h2 : ∀ j, j ∉ Finset.Icc 1 m → p j) (j : ℕ) :
     p j := by
@@ -543,19 +370,7 @@ def geoTie (h : ∀ i, GeoLaws YS fw (T.iC i)) : ThetaTie YS fw (geoNTh h) where
       hk_none := fun k P hk _ _ _ => (congrArg norm (hkUnitN_succ j b k P)).trans ((h i).hkUnit_spec hk b).1 }
   isUnramified₂ _ := rfl
 
-theorem nonempty_pts_of_reading {b : Bool} {j : ℕ} {Tc : CDVR} {io : T0.Q.c.F →+* Tc.Fr} {k : Tc.Fr →+* ℂ_[D.ntw.l i]}
-    (hk : IsReading (embC YS iC b) Tc io k) (y₀ : IntFr (T0.Q.Xo j) T0.Q.c Tc io) (hy : y₀.IsAlg) : Nonempty (Pts YS iC b j) :=
-  ⟨(PtC.exists_of_reading hk y₀ hy).choose⟩
-
 end Record
-
-example {i : D.ntw.Tw} (b : Bool) : ((D.ntw.l i : ℕ) : 𝓞 T0.Q.c.F) ∈ (placeC YS (T.iC i) b).asIdeal := natCast_mem_placeAt _
-
-example (i : D.ntw.Tw) (b : Bool) (a : S.Ks) : sideK YS i b (eKs YS a) = NX.readLL0 S i b (S.kKs a) := sideK_eKs YS i b a
-
-example {i : D.ntw.Tw} (b : Bool) (s : T0.Q.c.F) : embC YS (T.iC i) b s ∈ kurC (embC YS (T.iC i) b) := mem_kurC _ s
-
-example (n : ℕ) : atSide (P := fun _ => ℕ) true ⟨false, n⟩ = none := atSide_other (by simp)
 
 end GlobalTheory.GeoTie
 

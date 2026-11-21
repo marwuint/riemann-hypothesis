@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotentsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsLocalVacuumOfIsLatticeVacuumCoprimeLevelStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsLocalVacuumOfIsLatticeVacuumCoprimeLevel
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeisenbergOperatorFixThetaDatumAwaySplitPlacesStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeisenbergOrientedFiniteFixesFockPolynomialVectoStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -90,7 +90,7 @@ theorem vac_of_frames {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HS
     {f₀ : WO S T → ℂ} (hv : IsVacO ψ θ S T sS sT ΛS ΛT f₀) : IsVacAt ψ S T P f₀ := by
   obtain ⟨cS, hS⟩ := hS
   obtain ⟨cT, hT⟩ := hT
-  refine GlobalTheory.T.isLocalVacuum_of_isLatticeVacuum_coprime_level ψ S T βS βT ΛS ΛT (NS ^ cS) (NT ^ cT) hS hT P ?_ f₀ hv.2.theta hv.2.lat
+  refine _root_.GlobalTheory.VacLat.isVacAt_of_isLatVac ψ S T βS βT ΛS ΛT (NS ^ cS) (NT ^ cT) hS hT P ?_ f₀ hv.2.theta hv.2.lat
   rw [Nat.cast_mul, Nat.cast_pow, Nat.cast_pow]
   intro h
   rcases P.isPrime.mem_or_mem h with h | h
@@ -117,7 +117,7 @@ theorem fock_vacua_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T :
       ∀ i φ, IsVacAt R.ψ _ _ P (R.ptP i t φ) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC t P hG
   classical
-  have hN := ((GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev).2.1 t P hG).1
+  have hN := ((_root_.GlobalTheory.GoodPrimes.good_primes R F hC.lev).2.1 t P hG).1
   have hθ : IsInfFam R.θ := hC.models.inf
   have h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
     rw [Nat.cast_one]; exact fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)

@@ -96,5 +96,3 @@ theorem transfer_holds : Transfer := by
 
 end PI.NUnimodLoc.UnitaryGroupMassFormula.TR
 
-open PI.NUnimodLoc.UnitaryGroupMassFormula.TR in
-#print axioms transfer_holds

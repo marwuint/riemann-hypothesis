@@ -59,7 +59,4 @@ theorem exists_aeval_of_comm (R : Type) [CommRing R] [IsLocalRing R] (n : ℕ)
       _ = 0 := by rw [hDK, zero_mul]
   exact sub_eq_zero.1 hD
 
-example : ∀ (R : Type) [CommRing R] [IsLocalRing R] (n : ℕ) (Y T : Matrix (Fin n) (Fin n) R),
-    Y.charpoly.Separable → T * Y = Y * T → ∃ p : R[X], T = aeval Y p := exists_aeval_of_comm
-
 end GlobalTheory.LocalCommutant

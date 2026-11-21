@@ -3,18 +3,18 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FactTypePrime
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryGroupAdelicClassesViaFiniteAdelicPartStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPointActsLinearlyOnMultiplicityValuesPosDefStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCoefficientSpaceDualDiscreteSeriesModelPosStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMultiplicityMapPrescribedValueDefiniteStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinrankEqCardMulAndTraceEqZeroOfFreeValuesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqOneOfFiniteOrderUnipotentReductionLargePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsOfFinOrderOfConjMemSelfDualLatticeStabilizerStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDefiniteSelfDualOfBaseFramePosDefStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FreeMonoidAlgebraOfCharacterVanishesOffOneStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMultiplicityMapPrescribedValueDefinite
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinrankEqCardMulAndTraceEqZeroOfFreeValues
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqOneOfFiniteOrderUnipotentReductionLargePrime
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsOfFinOrderOfConjMemSelfDualLatticeStabilizer
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDefiniteSelfDualOfBaseFramePosDef
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FreeMonoidAlgebraOfCharacterVanishesOffOne
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CardMulFinrankSubgroupEigenspaceOfTraceVanishesStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGenericSeriesSquarefreeLabelsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodProjectorCoeffEqProdAtTwoTypePrimesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodProjectorCoeffEqProdAtTwoTypePrimes
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelsReadOnProductPrimeFieldGLStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RangeLevelIdempotentProductAndCentralProductStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypePrimeLargeAndOneModSixteenQDStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypePrimeLargeAndOneModSixteenQD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowsOfLevelOnObjects
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UpperLeftBlockEqSubmatrixOfRankEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodTupleProjectorIsProjCentral
@@ -87,11 +87,11 @@ theorem eq_one_of_unipotent {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevD
     (hbig : Module.finrank ℚ D.host.E * V.rank + 1 < p) (u : UR D.sp.cm V.gram) (x : UA D.sp.cm V.gram)
     (hu : conjIn D.sp.cm V.gram (x : GL (Fin V.rank) (EAf D)) u ∈ parLev D.sp.cm V.gram β L)
     (hn : IsNilpotent ((rTup β L (conjIn D.sp.cm V.gram (x : GL (Fin V.rank) (EAf D)) u) PP).val - 1)) : u = 1 := by
-  have hfin := GlobalTheory.T.isOfFinOrder_of_conj_mem_selfDualLatticeStabilizer _ _ D.sp.cm _ _ Λ β hU hβ u x (parLev_St hu)
+  have hfin := _root_.GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St _ _ D.sp.cm _ _ Λ β hU hβ u x (parLev_St hu)
   obtain ⟨y, hy⟩ := parLev_St hu
   have hn' := isNilpotent_sub_one_of_full_block_unipotent L.hr hr (blockTri_blkOf_le _ _ (parLev_g hu PP.2)) hn
   rw [← hy, redFn_frGL] at hn'
-  refine Subtype.ext (GlobalTheory.T.eq_one_of_finiteOrder_unipotentReduction_largePrime D.host.E (EAf D) (kP PP.1) _ (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) (resS D.host.F PP.1) p V.rank hp hc hbig u
+  refine Subtype.ext (_root_.GlobalTheory.UnipRed.eq_one_of_unipotent_reduction D.host.E (EAf D) (kP PP.1) _ (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) (resS D.host.F PP.1) p V.rank hp hc hbig u
     ((x : GL (Fin V.rank) (EAf D)) * β) y ((UR D.sp.cm V.gram).subtype.isOfFinOrder hfin) ?_ hn')
   rw [conjIn_apply] at hy
   have hy' : β * Formalism.UG.bc _ y * β⁻¹ = _ := hy
@@ -137,7 +137,7 @@ theorem principal_count {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar}
   haveI : ∀ τ, FiniteDimensional ℂ (M.H τ) := fun τ => (hfin τ).1
   obtain ⟨c, pr, hc, hpr, hsurj⟩ := GlobalTheory.T.exists_coefficientSpace_dual_discreteSeriesModel_posDef D θ V S M hθ hM
   obtain ⟨a1, -, -, -, a5⟩ := GlobalTheory.T.unitaryGroup_adelicClasses_via_finiteAdelicPart D V
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.finrank_eq_card_mul_and_trace_eq_zero_of_free_values_alt (GA D V) _ (MMap M) _ (clsA V (lev D.sp.cm V.gram β (flag1L L))) (evAt M)
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.finrank_eq_card_mul_and_trace_eq_zero_of_free_values (GA D V) _ (MMap M) _ (clsA V (lev D.sp.cm V.gram β (flag1L L))) (evAt M)
     (Mult θ M (levS V β (flag1L L)) (levChi V β (flag1L L)))
     (fun c => by
       obtain ⟨h, -, e⟩ := a1 (rep c)
@@ -154,7 +154,7 @@ theorem principal_count {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar}
       ext v
       have hT' := (GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hT
       rw [evAt_apply, evAt_apply, hT'.lev v κ hκ, (hT'.aut v).left γ hγ, levChi, hχ, Units.val_one, one_mul])
-    (GlobalTheory.T.exists_multiplicityMap_prescribed_value_definite D θ V S M c pr β L hθ hs hd hc hpr hsurj hχ hΓ)
+    (_root_.GlobalTheory.DefFree.exists_mult_value D θ V S M c pr β L hθ hs hd hc hpr hsurj hχ hΓ)
   refine ⟨h1, ?_, fun H _ _ e he hr A κ hA hκ => h3 H e he hr A (fun h => h * κ) (fun x h => ?_) hκ⟩
   · rw [h2, finrank_multilinear]
     congr 1
@@ -182,7 +182,7 @@ theorem allPlus_last (h : HidaSetting R F) {i : Fin D.R.m} (hi : (i : ℕ) + 1 =
 theorem unimod_last (h : HidaSetting R F) {i : Fin D.R.m} (hi : (i : ℕ) + 1 = D.R.m) :
     IsDefUnimod D.sp.cm (Wc D i).gram (R.ΛW i) ∧ IsFrame (R.βW i) (R.ΛW i) := by
   obtain ⟨c, hc⟩ := h.lev.βW i
-  exact ⟨GlobalTheory.T.isDefiniteSelfDual_of_baseFrame_posDef D _ _ _ _ (D.sp.W_sig _) (posDef_last hi) hc, hc.1⟩
+  exact ⟨_root_.GlobalTheory.BaseFrameUnimod.isDefUnimod_of_isBaseFrame D _ _ _ _ (D.sp.W_sig _) (posDef_last hi) hc, hc.1⟩
 
 theorem levFn_eq_one_chainMember_flags_trivial (i : Fin D.R.m) (x : GL (Fin (Wc D i).rank) (EAf D)) :
     levFn (R.βW i) (flag1L (R.datWp i R.triv)) x = 1 ∧ levFn (R.βW i) (flagL (R.datWp i R.triv)) x = 1 := by
@@ -349,7 +349,7 @@ theorem free_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.host
     have := unipAt_of_mem h b h1
     exact (R.eG.apply_symm_apply _).subst (motive := UnipAt R) this
   · rw [← hdim]
-    exact GlobalTheory.T.free_monoidAlgebra_of_character_vanishes_off_one _ _ (repB R F b i) fun g hg => htr' g g.2 fun e => hg (Subtype.ext e)
+    exact _root_.GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero _ _ (repB R F b i) fun g hg => htr' g g.2 fun e => hg (Subtype.ext e)
   · have := hP.2.2.2.2.2.2.2
     rw [← h0] at this
     exact Nat.pos_of_mul_pos_left this
@@ -358,7 +358,7 @@ end Record
 
 theorem definiteFree : DefiniteFree := by
   intro D L hP G _ _ Pl0 T A Ks _ _ _ R F h i hi
-  have hbig := fun k => (GlobalTheory.T.typePrime_large_and_one_mod_sixteen_q_d D L hP k).1
+  have hbig := fun k => (_root_.GlobalTheory.TypePrimeSize.typePrime_large_and_ok D L hP k).1
   exact ⟨(principal_last h hbig hi).1, free_last h hbig hi⟩
 
 open Classical GlobalTheory.BadShare in
@@ -371,7 +371,7 @@ theorem definiteGoodShare (hG : GlobalTheory.Published.GreenCuspidal) : Definite
   obtain ⟨x₀, hx₀⟩ := UpperTheory.Win.badShare_win eps 5 heps h1
   refine ⟨max (max x₀ (Real.exp 209)) 16, fun D L hP he hx hS hE G _ _ Pl0 T A Ks _ _ _ R F h i hi b => ?_⟩
   subst he
-  have hnum := GlobalTheory.T.typePrime_large_and_one_mod_sixteen_q_d D L hP
+  have hnum := _root_.GlobalTheory.TypePrimeSize.typePrime_large_and_ok D L hP
   have hbig := fun k => (hnum k).1
   obtain ⟨hPC, hdim, htr⟩ := principal_last h hbig hi
   have hd0 := (free_last h hbig hi b).2.2.2
@@ -386,7 +386,7 @@ theorem definiteGoodShare (hG : GlobalTheory.Published.GreenCuspidal) : Definite
     exact ⟨τ, h1, fun f hf x => by rw [hLb]; convert h2 f hf x⟩
   choose τ hτ1 hτ2 using hτ
   obtain ⟨Φ, L₁, L₂, l1, l2, l3, l4⟩ := GlobalTheory.T.levels_read_on_product_primeFieldGL D G Pl0 T A Ks R F h.grp b
-  have hez := GlobalTheory.T.coeff_e0_eq_eGood_mul_eGood D τ (fun k f hf x => by convert hτ2 k f hf x)
+  have hez := _root_.GlobalTheory.GoodProjProd.goodProjector_coeff_eq_prod_at_two_typePrimes D τ (fun k f hf x => by convert hτ2 k f hf x)
   set c : GProd D → ℂ := tens2 (eGood (fun _ => τ 0) (D.nd.chiT 0)) (eGood (fun _ => τ 1) (D.nd.chiT 1)) with hc
   have hcΦ : ∀ g, c (Φ g) = RealDat.eC (A := A) (sg0 D A) g := by
     intro g

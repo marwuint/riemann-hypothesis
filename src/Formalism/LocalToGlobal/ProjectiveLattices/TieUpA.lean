@@ -19,16 +19,6 @@ def TieReadSt : Prop :=
     rdR h j F k ∈ ((T.U j T.σ₀).X k).SS (laU (T.U j T.σ₀) (wtA u) u.n k)) ∧
   ∀ u : WeightFamilies.Wt D j, ReciprocityTheory.ChartRestriction.G.PullbackSections.JInjRd T j (wtA u) u.n
 
-abbrev KT (T : Top D) (j N : ℕ) : Type := FractionRing (MvPolynomial (Idx D j N) T.Q.c.F)
-
-def IsIoExt {N : ℕ} (io : KT T j N →+* ℂ) : Prop :=
-  ∀ a : T.Q.c.F, io (algebraMap T.Q.c.F (KT T j N) a) = T.σ₀ a
-
-def rdSec {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (io : KT T j G.N →+* ℂ)
-    (i : Fin (WeightFamilies.dimY D j + 1)) :=
-  ∑ k', io (algebraMap (MvPolynomial (Idx D j G.N) T.Q.c.F) (KT T j G.N) (MvPolynomial.X (i, k'))) •
-    rdR h j (G.w k')
-
 def TieMaxCuspSt (CR Tt c : ℝ) (ka : WeightFamilies.Wt D j) : Prop :=
   ∀ F : (recB h.toLawsCore).Cusp j ka,
     F ∈ WeightFamilies.MggK (recB h.toLawsCore) CR Tt c j ka ↔

@@ -249,11 +249,6 @@ instance isFiniteMeasure_normOneClassMeasure : IsFiniteMeasure (normOneClassMeas
   unfold normOneClassMeasure
   infer_instance
 
-theorem map_restrict_eq_normOneClassMeasure {F : Set (normOneSubgroup K)}
-    (hF : IsFundamentalDomain (diagonalNormOne K).op F (normOneMeasure K)) :
-    Measure.map QuotientGroup.mk ((normOneMeasure K).restrict F) = normOneClassMeasure K :=
-  hF.quotientMeasure_eq _ (isFundamentalDomain_normOneFundamentalDomain K _)
-
 end NormOneClasses
 
 section Unfolding
@@ -314,54 +309,6 @@ theorem integral_ideleMeasure_eq_integral_fundamentalDomain {E : Type*} [NormedA
   rw [mul_right_comm]
 
 end Unfolding
-
-section Volume
-
-variable {K : Type*} [Field K] [NumberField K]
-
-theorem finiteIdeleMeasure_eq_inv_relindex (W : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ)
-    (hWo : IsOpen (W : Set (FiniteAdeleRing (𝓞 K) K)ˣ)) (hW : W ≤ finiteIntegralUnits K) :
-    finiteIdeleMeasure K W = ((W.relIndex (finiteIntegralUnits K) : ℕ) : ℝ≥0∞)⁻¹ := by
-  set H := finiteIntegralUnits K
-  have hHm : MeasurableEmbedding (Subtype.val : H → (FiniteAdeleRing (𝓞 K) K)ˣ) :=
-    MeasurableEmbedding.subtype_coe (isOpen_finiteIntegralUnits K).measurableSet
-  set μ' : Measure H := Measure.comap Subtype.val (finiteIdeleMeasure K)
-  have hinv : μ'.IsMulLeftInvariant := by
-    refine ⟨fun g ↦ Measure.ext fun s hs ↦ ?_⟩
-    rw [Measure.map_apply (measurable_const_mul g) hs, hHm.comap_apply, hHm.comap_apply]
-    have : Subtype.val '' ((fun x : H ↦ g * x) ⁻¹' s) =
-        (fun x ↦ (g : (FiniteAdeleRing (𝓞 K) K)ˣ) * x) ⁻¹' (Subtype.val '' s) := by
-      ext x
-      constructor
-      · rintro ⟨y, hy, rfl⟩
-        exact ⟨g * y, hy, rfl⟩
-      · rintro ⟨y, hy, hyx⟩
-        refine ⟨g⁻¹ * y, by simpa using hy, ?_⟩
-        simp [hyx]
-    rw [this, measure_preimage_mul]
-  have hc : CompactSpace H := isCompact_iff_compactSpace.1 (isCompact_finiteIntegralUnits K)
-  have hWHo : IsOpen ((W.subgroupOf H : Subgroup H) : Set H) :=
-    hWo.preimage continuous_subtype_val
-  have : Finite (H ⧸ W.subgroupOf H) := Subgroup.quotient_finite_of_isOpen _ hWHo
-  have : (W.subgroupOf H).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient
-  have h := Subgroup.index_mul_measure (W.subgroupOf H) hWHo.measurableSet μ'
-  have h1 : μ' Set.univ = 1 := by
-    rw [hHm.comap_apply, Set.image_univ, Subtype.range_coe]
-    exact finiteIdeleMeasure_finiteIntegralUnits K
-  have h2 : μ' (W.subgroupOf H : Set H) = finiteIdeleMeasure K W := by
-    rw [hHm.comap_apply]
-    congr 1
-    ext x
-    constructor
-    · rintro ⟨y, hy, rfl⟩
-      exact hy
-    · intro hx
-      exact ⟨⟨x, hW hx⟩, hx, rfl⟩
-  rw [h1, h2] at h
-  rw [Subgroup.relIndex]
-  exact ENNReal.eq_inv_of_mul_eq_one_left (by rwa [mul_comm] at h)
-
-end Volume
 
 end
 

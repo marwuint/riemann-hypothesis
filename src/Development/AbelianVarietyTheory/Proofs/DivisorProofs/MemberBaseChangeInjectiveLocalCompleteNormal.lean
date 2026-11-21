@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkUInvar
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPelUnifPsiCoord
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PointsCarryCommonFlagSpectrumMapFieldExt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UwRQeIsNsmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackUniformisationEndomorphismCommGenericFStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackUniformisationEndomorphismCommGenericF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsPullbackUniformisationCommonFieldStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -147,7 +147,7 @@ theorem aA_comm {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain 
       U'.gen.inv.left ≫ pullback.fst ((Over.pullback (specOf g)).obj G).hom (jK R') ≫ pullback.fst G.hom (specOf g))
     (E : EndU U) (E' : EndU U') (hE : E'.aG = (Over.pullback (specOf g)).map E.aG) :
     E'.aA.left ≫ gA = gA ≫ E.aA.left :=
-  GlobalTheory.T.pulledBack_uniformisationEndomorphism_comm_genericFibre g hg U U' gA hgA hrel E E' hE
+  _root_.GlobalTheory.Poinc.AComm.pulled_end_comm g hg U U' gA hgA hrel E E' hE
 
 end GlobalTheory.Poinc.Sep.MemBC
 

@@ -105,9 +105,9 @@ theorem exists_transport (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] 
       (∀ g v, (fun x => I.ext (ρ g v) (T x)) =ᵐ[μ] fun x => I.ext v (T (x * g))) ∧
       (∀ γ, T γ ∈ I.GFset → ∀ v : I.L2 μf fund, (fun x => I.ext v (T (γ * x))) =ᵐ[μ] fun x => I.ext v (T x)) ∧
       ∀ g : ℕ, 1 ≤ g → ∃ U : Subgroup G, IsOpen (U : Set G) ∧ ∀ k ∈ U, (T k).2 ∈ I.Kg g := by
-  obtain ⟨hT2, hL, hS, -, -, -, hK⟩ := GlobalTheory.T.finiteAdelicUnitary_congruenceTopology I
+  obtain ⟨hT2, hL, hS, -, -, -, hK⟩ := _root_.GlobalTheory.CongTop.adelic_topology I
   obtain ⟨Γ, hΓ, hc, hfin, hfd⟩ := GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I
-  obtain ⟨hl, hrt, -⟩ := GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf
+  obtain ⟨hl, hrt, -⟩ := _root_.GlobalTheory.AdelicUnimod.adelic_unimodular I μf
   obtain ⟨r1, r2, r3, r4, r5⟩ := isRightReg_props I μf fund hfund R hR
   have hD := hfd μf fund hfund
   have : BorelSpace I.GA := inferInstance
@@ -255,12 +255,12 @@ theorem exists_mmap {D : D7} {θ : InfFam D} {V : HSp D} (hθ : IsInfFam θ) {S 
         ∀ w : M.sm τ, ℓ w = T (Function.update u τ w) x := by
   obtain ⟨_, _, _, _, _, -, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
   obtain ⟨R, L, hL, hR, hb⟩ := exists_adelic_rep hθ hμ hμ' hloc hlin hiso hρ htr hU
-  have hsmM := GlobalTheory.T.equivariantMultilinear_maps_smoothVectors_intertwines D θ V hθ S M _ ρ Φ he
+  have hsmM := _root_.GlobalTheory.SmoothMultilinear.smooth_map D θ V hθ S M _ ρ Φ he
   have p := fun y : M.Vec => hR _ (hsmM y).1 (hfix _)
-  haveI : ∀ τ, CompleteSpace (M.H τ) := fun τ => (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).1
+  haveI : ∀ τ, CompleteSpace (M.H τ) := fun τ => (_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).1
   have hH : ∀ τ, (gramAt D V τ).IsHermitian := GlobalTheory.SmoothAutCheck.gramAt_herm V
   have hdet : ∀ τ, (gramAt D V τ).det ≠ 0 := fun τ => (GlobalTheory.SmoothAutCheck.gramAt_unit V τ).ne_zero
-  have hsv := fun τ => GlobalTheory.T.smoothVectors_subspace_stable_sobolevForm_deriv V.rank (gramAt D V τ) (M.H τ) (M.rep τ) (hH τ) (hdet τ) (GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.1
+  have hsv := fun τ => _root_.GlobalTheory.UnitarySmVec.smoothVec_basic V.rank (gramAt D V τ) (M.H τ) (M.rep τ) (hH τ) (hdet τ) (_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.1
   have hsm : ∀ τ, ∀ X ∈ lieAt V τ, ∀ w : M.sm τ, dRep (M.rep τ) X (w : M.H τ) ∈ M.sm τ := fun τ X hX w =>
     Submodule.subset_span (((hsv τ).2 w ((hsv τ).1 w w.2)).2.1 X hX).1
   have uniq : ∀ (y : M.Vec) f, Continuous f → ι (Φ fun τ => (y τ : M.H τ)) =ᵐ[μ] f →
@@ -298,16 +298,6 @@ theorem infMat_of_mem_fin {D : D7} (V : HSp D) (φ : Ainf D.host.F ⊗[D.host.F]
   have hk' : infHom V k = 1 := hk
   show (infHom V k).1.map φ = 1
   rw [hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
-
-theorem atTau_spec {D : D7} (V : HSp D) {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {a : Mt V.rank}
-    (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : atTau θ V τ a ∈ GinfC V ∧
-      ∀ τ', archM V (θ τ') (atTau θ V τ a) = (Pi.mulSingle τ a : D.what₂.Tau → Mt V.rank) τ' := by
-  obtain ⟨L, hL1, -, -, -, -, hL3, -⟩ := GlobalTheory.RealLift.exists_real_lift D θ V hθ
-  have hu : (Pi.mulSingle τ a : D.what₂.Tau → Mt V.rank) ∈ UG (gramAt D V) := fun τ' => by
-    by_cases h : τ' = τ
-    · subst h; simpa using ha
-    · simp [Pi.mulSingle_eq_of_ne h, Formalism.QuantumDeterminants.UH]
-  exact (hL3 τ a ha).symm ▸ hL1 _ hu
 
 end GlobalTheory.TensRep
 

@@ -55,13 +55,6 @@ theorem cycN_eq_iff (g : G F Ω) (b : (ZMod N)ˣ) :
 
 end Cyc
 
-def sgL (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K]
-    (L : Type) [Field L] [NumberField L] [Algebra L K] [Normal ℚ L] : (ZMod M)ˣ →* Gal(L/ℚ) :=
-  (AlgEquiv.restrictNormalHom L).comp (Stick.sg M K).toMonoidHom
-
-def leg {N : ℕ} (q : ℕ) [Fact q.Prime] (h : q ∣ N) : (ZMod N)ˣ →* ℤˣ :=
-  (quadraticChar (ZMod q)).toUnitHom.comp (ZMod.unitsMap h)
-
 section Coord
 
 variable (n q d : ℕ) [Fact q.Prime] [Fact d.Prime]
@@ -71,24 +64,6 @@ abbrev lev (n q d : ℕ) : ℕ := 2 ^ n * q * d
 instance : NeZero (lev n q d) :=
   ⟨mul_ne_zero (mul_ne_zero (pow_ne_zero _ two_ne_zero) (Fact.out : q.Prime).ne_zero) (Fact.out : d.Prime).ne_zero⟩
 
-omit [Fact q.Prime] [Fact d.Prime] in
-theorem two_dvd_lev : 2 ^ n ∣ lev n q d := (dvd_mul_right _ _).mul_right _
-omit [Fact q.Prime] [Fact d.Prime] in
-theorem q_dvd_lev : q ∣ lev n q d := (dvd_mul_left _ _).mul_right _
-omit [Fact q.Prime] [Fact d.Prime] in
-theorem d_dvd_lev : d ∣ lev n q d := dvd_mul_left _ _
-
-abbrev Co (n : ℕ) : Type := (ZMod (2 ^ n))ˣ × ℤˣ × ℤˣ
-
-def coord : (ZMod (lev n q d))ˣ →* Co n :=
-  (ZMod.unitsMap (two_dvd_lev n q d)).prod ((leg q (q_dvd_lev n q d)).prod (leg d (d_dvd_lev n q d)))
-
-def pmCo (n k : ℕ) (h : k ≤ n) : Subgroup (Co n) :=
-  ((Subgroup.zpowers (-1 : (ZMod (2 ^ k))ˣ)).comap (ZMod.unitsMap (pow_dvd_pow 2 h))).prod ⊥
-
-def Es (s q d : ℕ) [Fact q.Prime] [Fact d.Prime] : AbF :=
-  ⟨lev (s + 2) q d, NeZero.pos _, (pmCo (s + 2) (s + 2) le_rfl).comap (coord (s + 2) q d)⟩
-
 end Coord
 
 end B1
@@ -97,23 +72,9 @@ namespace AbF
 
 open B1
 
-def U (A : AbF) (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] : Subgroup (G ℚ Ω) := A.H.comap (cycN ℚ Ω A.m)
-
-def plus (A : AbF) : AbF := ⟨A.m, A.pos, A.H ⊔ Subgroup.zpowers (-1)⟩
-
 def comp (A B : AbF) : AbF :=
   ⟨Nat.lcm A.m B.m, Nat.lcm_pos A.pos B.pos,
     A.H.comap (ZMod.unitsMap (Nat.dvd_lcm_left _ _)) ⊓ B.H.comap (ZMod.unitsMap (Nat.dvd_lcm_right _ _))⟩
-
-def ine (A : AbF) (p : ℕ) : Subgroup (ZMod A.m)ˣ := B3.pPart A.m p
-
-def dec (A : AbF) (p : ℕ) : Subgroup (ZMod A.m)ˣ := levelDec p A.m
-
-def Genus (A : AbF) : Prop :=
-  ∀ f : ℕ → (ZMod A.m)ˣ, (∀ p ∈ A.m.primeFactors, f p ∈ A.ine p) → ∏ p ∈ A.m.primeFactors, f p ∈ A.H →
-    ∀ p ∈ A.m.primeFactors, f p ∈ A.H
-
-def OnePrime (A : AbF) (p : ℕ) : Prop := A.dec p ⊔ A.H = ⊤
 
 end AbF
 

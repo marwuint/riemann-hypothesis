@@ -11,10 +11,6 @@ end GlobalTheory.OrdShellInt
 
 namespace GlobalTheory.OrdShellInt
 
-def wt (q : ℝ) : ℕ → ℝ
-  | 0 => 1
-  | m + 1 => q ^ (m + 1) - q ^ m
-
 end GlobalTheory.OrdShellInt
 
 namespace GlobalTheory.OrdShellInt
@@ -39,16 +35,8 @@ end GlobalTheory.OrdShellInt
 
 namespace GlobalTheory.OrdShellInt
 
-open ValuativeRel
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-
-variable [MeasurableSpace k] [BorelSpace k]
-
 end GlobalTheory.OrdShellInt
 
 namespace GlobalTheory.OrdShellInt
-
-open ValuativeRel
 
 end GlobalTheory.OrdShellInt

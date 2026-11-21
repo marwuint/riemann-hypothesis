@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.ThetaFireRow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLeviFlagOfMemParabolic
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftMemMultiplicitySpaceBaseLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLiftMemMultiplicitySpaceBaseLevel
 
 noncomputable section
 
@@ -26,7 +26,7 @@ theorem thetaFireL : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type
   have hyf : R.extV i (tupT μ) y = ((IL.jMt μ hμ i x).1 : GA D (Vc D i) → (R.cV i).W) := by
     rw [← hy]
     exact congrArg Subtype.val ((LinearEquiv.ofInjective _ (hinj i (tupT μ))).apply_symm_apply _)
-  have hM := GlobalTheory.T.thetaLift_mem_multiplicitySpace_baseLevel R F hLev hMod hThP hv0 false i (tupT μ) y (by rw [hyf]; exact hfm.2)
+  have hM := _root_.GlobalTheory.ThetaLevelP.thF_mem_level R F hLev hMod hThP hv0 false i (tupT μ) y (by rw [hyf]; exact hfm.2)
   refine ⟨PiTensorProduct.lift (R.thF i (tupT μ) y), ?_, ?_, ?_⟩
   · exact Submodule.mem_map_of_mem hM
   · rw [← hy]; rfl

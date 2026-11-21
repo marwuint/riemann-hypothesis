@@ -8,11 +8,15 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRepsOfFini
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicLinearIndependent
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOmegaField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHomogeneousOfRowDeg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesFirstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelExtensionSecondStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesSixthStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesFirst
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelExtensionSecond
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesSixth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelUnitValues
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalUnitaryMoveSelfDualToSplitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalUnitaryMoveSelfDualToSplit
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsAdelicUnitaryTranslateStandardLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatrixDetNotMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelTensorValues
 
 set_option autoImplicit false
@@ -88,7 +92,7 @@ theorem exists_split_move {D : D7} (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hL
   have hT2 : Λ.TrivAt (bad * l.M) := by
     obtain ⟨k, hk, h⟩ := hT
     exact ⟨k, hk.mul_right (hk.coprime_dvd_right hM), h⟩
-  obtain ⟨γ, h, hγ, hc, hh, hs, e⟩ := GlobalTheory.T.exists_rationalUnitary_move_selfDual_to_split D V hg hL H (bad * l.M) (Nat.mul_pos hb hM0) Λ hU hT2
+  obtain ⟨γ, h, hγ, hc, hh, hs, e⟩ := _root_.GlobalTheory.SplitMove.exists_move_to_split D V hg hL H (bad * l.M) (Nat.mul_pos hb hM0) Λ hU hT2
   obtain ⟨N', c1, c2, c3, c4, c5⟩ := GlobalTheory.SplitReps.exists_conjLat V hg hL H l bad h2 h hs
   have g := GlobalTheory.ClassScalarCompare.guard_conjLat (H := H)
     (L := (GlobalTheory.UnRep.FullReps.conjLat H (Bridge.hLat V (fin V h))).La) ⟨c1, c2, c5⟩

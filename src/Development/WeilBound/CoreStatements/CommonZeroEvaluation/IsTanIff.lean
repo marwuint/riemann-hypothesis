@@ -2,7 +2,14 @@ import Mathlib
 import Development.WeilBound.CoreStatements.CommonZeroEvaluation.CombComb
 import Development.WeilBound.CoreStatements.CommonZeroEvaluation.ExistsLeftInv
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjEmbRtOfNe
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrPullbackSemiabelianStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrPullbackSemiabelian
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecFracExt
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsAffineLieBasisBaseChange
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsChartFiniteType
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
@@ -122,7 +129,7 @@ theorem IsChart.integral (hExt : GlobalTheory.Published.SemiAbelianHomExtension)
     · rw [Category.assoc, Category.assoc, ha1, Y.m0.act r, ← Category.assoc, ha1, m1.act r]
     · rw [Category.assoc, Category.assoc, ha2, Over.w (Y.oF.t.act.act r), ha2, ← Category.assoc,
         Over.w (t'.act.act r)]
-  obtain ⟨Ψ, hΨ, hm2, -⟩ := GlobalTheory.T.complete_dvr_pullback_semiabelian E H hExt Y.X Y.t T (spMap f₀ ≫ hU.fromSpec) G t' m2 (a ≫ Y.m.φ) gpY
+  obtain ⟨Ψ, hΨ, hm2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.exists_extended_identification E H hExt Y.X Y.t T (spMap f₀ ≫ hU.fromSpec) G t' m2 (a ≫ Y.m.φ) gpY
     (fun r => by rw [← Category.assoc, acta r, Category.assoc, Y.m.act r, Category.assoc])
   obtain ⟨v, hv, hb⟩ := hC T.V f₀ G.G Ψ hΨ
   obtain ⟨u, hu, hp⟩ := exists_prim hb

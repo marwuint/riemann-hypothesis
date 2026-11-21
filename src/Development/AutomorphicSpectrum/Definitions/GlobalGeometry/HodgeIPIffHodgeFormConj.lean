@@ -37,10 +37,6 @@ def LieModel.GramAt (M : LieModel G ξ E) (L : LB G.left) (z : Spec (CommRingCat
     (b : Fin r → E) (Γ : Matrix (Fin r) (Fin r) ℂ) : Prop :=
   ∃ v : Fin r → (epsAt z ⟶ G), (∀ i, M.ValAt z (b i) (v i)) ∧ ∀ p q, HodgeIP G L z (v p) (v q) (Γ p q)
 
-def LieModel.FormGramAt (M : LieModel G ξ E) (L : LB G.left) (z : Spec (CommRingCat.of ℂ) ⟶ X) {r : ℕ}
-    (b : Fin r → E) (Γ : Matrix (Fin r) (Fin r) ℂ) : Prop :=
-  ∃ v : Fin r → (epsAt z ⟶ G), (∀ i, M.ValAt z (b i) (v i)) ∧ ∀ p q, HodgeForm G L z (v p) (v q) (Γ p q)
-
 def leadMinor {r : ℕ} (Γ : Matrix (Fin r) (Fin r) ℂ) (s : ℕ) : ℝ :=
   if h : s ≤ r then (Γ.submatrix (Fin.castLE h) (Fin.castLE h)).det.re else 0
 
@@ -76,27 +72,11 @@ theorem conj_hermForm {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHerm
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
-theorem HodgeForm.conj (h : HodgeForm G L z v w c) : HodgeForm G L z w v ((starRingEnd ℂ) c) := by
-  obtain ⟨hL, hv, hw, A, _, φ, g, u, Hm, χ, v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩ := h
-  refine ⟨hL, hw, hv, A, inferInstance, φ, g, u, Hm, χ, w', v', b, a, h1, h2, h4, h3, h6, h5, ?_⟩
-  rw [map_mul, Complex.conj_ofReal, conj_hermForm h2.1]
-
-theorem HodgeIP.conj (h : HodgeIP G L z v w c) : HodgeIP G L z w v ((starRingEnd ℂ) c) :=
-  hodgeInnerProduct_iff_hodgeForm.2 (hodgeInnerProduct_iff_hodgeForm.1 h).conj
-
-theorem hodgeInnerProduct_iff_hodgeForm_conj : HodgeIP G L z v w c ↔ HodgeForm G L z v w ((starRingEnd ℂ) c) :=
-  ⟨fun h => (hodgeInnerProduct_iff_hodgeForm.1 h).conj, fun h => hodgeInnerProduct_iff_hodgeForm.2 (by simpa using h.conj)⟩
-
 theorem HodgeIP.isLB (h : HodgeIP G L z v w c) : L.IsLB := h.1
 
 theorem HodgeIP.isTanAt_left (h : HodgeIP G L z v w c) : IsTanAt G z v := h.2.1
 
 theorem HodgeIP.isTanAt_right (h : HodgeIP G L z v w c) : IsTanAt G z w := h.2.2.1
-
-theorem LieModel.gramAt_iff_formGramAt (M : LieModel G ξ E) {r : ℕ} {b : Fin r → E} {Γ : Matrix (Fin r) (Fin r) ℂ} :
-    M.GramAt L z b Γ ↔ M.FormGramAt L z b Γ.transpose :=
-  ⟨fun ⟨v, hv, h⟩ => ⟨v, hv, fun p q => hodgeInnerProduct_iff_hodgeForm.1 (h q p)⟩,
-    fun ⟨v, hv, h⟩ => ⟨v, hv, fun p q => hodgeInnerProduct_iff_hodgeForm.2 (h q p)⟩⟩
 
 end Form
 
@@ -105,9 +85,6 @@ section Minor
 variable {r : ℕ} {Γ : Matrix (Fin r) (Fin r) ℂ}
 
 theorem leadMinor_size_zero (Γ : Matrix (Fin r) (Fin r) ℂ) : leadMinor Γ 0 = 1 := by simp [leadMinor]
-
-theorem leadMinor_size_one (Γ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : leadMinor Γ 1 = (Γ 0 0).re := by
-  simp [leadMinor]
 
 theorem leadMinor_size_self (Γ : Matrix (Fin r) (Fin r) ℂ) : leadMinor Γ r = Γ.det.re := by
   simp [leadMinor]
@@ -123,17 +100,6 @@ theorem leadMinor_pos_of_posDef (hΓ : Γ.PosDef) {s : ℕ} (h : s ≤ r) : 0 < 
   rw [dif_pos h]
   exact (Complex.pos_iff.1 (hΓ.submatrix (Fin.castLE_injective h)).det_pos).1
 
-example (a d : ℝ) (ha : a ≠ 0) (b : ℂ) :
-    leadMinor !![(a : ℂ), b; (starRingEnd ℂ) b, d] 2 / leadMinor !![(a : ℂ), b; (starRingEnd ℂ) b, d] 1 =
-      d - Complex.normSq b / a := by
-  rw [leadMinor_size_one]
-  simp [leadMinor, Matrix.det_fin_two, Complex.normSq_apply]
-  field_simp
-
-example {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (p q : Fin g) :
-    hermForm Hm (Pi.single p 1) (Pi.single q 1) = Hm p q := by
-  simp [hermForm, ← Pi.single_star]
-
 end Minor
 
 section Gr
@@ -144,18 +110,6 @@ variable {M : LieModel G ξ E} {L : LB G.left} {V : Lat ξ E} {r : ℕ} {b₀ : 
 theorem LieModel.IsGrNorm.pos (h : M.IsGrNorm L V b₀ i z t ν) : 0 < ν := by
   obtain ⟨_, _, Γ, -, -, -, -, hΓ, rfl⟩ := h
   exact Real.sqrt_pos.2 (div_pos (leadMinor_pos_of_posDef hΓ i.2) (leadMinor_pos_of_posDef hΓ i.2.le))
-
-theorem LieModel.isGrNorm_iff_formGramAt : M.IsGrNorm L V b₀ i z t ν ↔
-    ∃ (h : genPt ξ ⤳ centre z) (b : Fin r → E) (Γ : Matrix (Fin r) (Fin r) ℂ),
-      (∀ s, flagStep Ω b s = flagStep Ω b₀ s) ∧ V.IsFrameAt b ⟨centre z, h⟩ ∧ b i - t • b₀ i ∈ flagStep Ω b₀ i ∧
-        M.FormGramAt L z b Γ ∧ Γ.PosDef ∧ ν = Real.sqrt (leadMinor Γ (i + 1) / leadMinor Γ i) := by
-  constructor
-  · rintro ⟨h, b, Γ, h1, h2, h3, h4, h5, rfl⟩
-    exact ⟨h, b, Γ.transpose, h1, h2, h3, M.gramAt_iff_formGramAt.1 h4, h5.transpose, by
-      rw [leadMinor_transpose, leadMinor_transpose]⟩
-  · rintro ⟨h, b, Γ, h1, h2, h3, h4, h5, rfl⟩
-    exact ⟨h, b, Γ.transpose, h1, h2, h3, M.gramAt_iff_formGramAt.2 h4, h5.transpose, by
-      rw [leadMinor_transpose, leadMinor_transpose]⟩
 
 end Gr
 
@@ -247,20 +201,6 @@ theorem SecNorm.exists_chart (h : SecNorm ξ y A e₀ z w t ν) : ∃ c : (k : K
   choose c hc using h.2.1.1
   exact ⟨c, fun k => (hc k).ne_zero⟩
 
-theorem SecNorm.unique (h : SecNorm ξ y A e₀ z w t ν) (h' : SecNorm ξ y A e₀ z w t ν') : ν = ν' := by
-  obtain ⟨c, hc⟩ := h.exists_chart
-  obtain ⟨u, hu, e⟩ := h.2.2 c hc
-  obtain ⟨u', hu', e'⟩ := h'.2.2 c hc
-  rw [CxVal.unique hu hu', ← e'] at e
-  exact mul_right_cancel₀ (A.pos w fun k => ⟨c k, hc k⟩).ne' e
-
-theorem SecNorm.nonneg (h : SecNorm ξ y A e₀ z w t ν) : 0 ≤ ν := by
-  obtain ⟨c, hc⟩ := h.exists_chart
-  obtain ⟨u, -, e⟩ := h.2.2 c hc
-  refine nonneg_of_mul_nonneg_left ?_ (A.pos w fun k => ⟨c k, hc k⟩)
-  rw [e]
-  positivity
-
 theorem SecNorm.specializes (h : SecNorm ξ y A e₀ z w t ν) : genPt ξ ⤳ centre z := by
   obtain ⟨c, hc⟩ := h.exists_chart
   obtain ⟨u, hu, -⟩ := h.2.2 c hc
@@ -275,17 +215,6 @@ theorem SecNorm.mul (h : SecNorm ξ y A e₀ z w t ν) {f : Ω} {s : ℂ} (hf : 
     exact CxVal.mul hf hu
   · rw [_root_.mul_assoc, e, norm_mul, _root_.mul_assoc]
 
-theorem secNorm_chartMonomial (hz : genPt ξ ⤳ centre z) (he : e₀ ≠ 0) (hw : CoordsAt ξ y z w) (c : (k : K) → J k)
-    (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
-    SecNorm ξ y A e₀ z w ((∏ k, y ⟨k, c k⟩ ^ A.a k) * e₀) ((∏ k, ‖w ⟨k, c k⟩‖ ^ A.a k) / A.h w) := by
-  have hy : (∏ k, y ⟨k, c k⟩ ^ A.a k) ≠ 0 :=
-    Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hw.2 k (c k) (IsUnit.mk0 _ (hc k))).1
-  refine (secNorm_iff_chart he hw c hc).2 ⟨1, ?_, ?_⟩
-  · rw [div_self (mul_ne_zero hy he)]
-    exact CxVal.one hz
-  · rw [div_mul_cancel₀ _ (A.pos w fun k => ⟨c k, hc k⟩).ne']
-    simp
-
 theorem aeval_blockScale {R : Type} [CommRing R] {s : MRing J} {b : K → ℕ} (hs : IsMultiHomog s b) (κ : K → R)
     (x : (Σ k, J k) → R) :
     MvPolynomial.aeval (fun p => κ p.1 * x p) s = (∏ k, κ k ^ b k) * MvPolynomial.aeval x s := by
@@ -295,32 +224,6 @@ theorem aeval_blockScale {R : Type} [CommRing R] {s : MRing J} {b : K → ℕ} (
   rw [Fintype.prod_sigma (fun p : Σ k, J k => κ p.1 ^ m p)]
   simp only [Finset.prod_pow_eq_pow_sum, hs m hm]
   ring
-
-theorem secNorm_form (hz : genPt ξ ⤳ centre z) (he : e₀ ≠ 0) (hw : CoordsAt ξ y z w) {s : MRing J} {b : K → ℕ}
-    (hs : IsMultiHomog s b) (hb : ∀ k, A.a k = b k) :
-    SecNorm ξ y A e₀ z w (MvPolynomial.aeval y s * e₀) (‖MvPolynomial.aeval w s‖ / A.h w) := by
-  choose c hc using hw.1
-  have hy := fun k => (hw.2 k (c k) (hc k)).1
-  choose r hr hr' using fun p : Σ k, J k => (hw.2 p.1 (c p.1) (hc p.1)).2 p.2
-  refine (secNorm_iff_chart he hw c fun k => (hc k).ne_zero).2 ⟨MvPolynomial.aeval r s, ?_, ?_⟩
-  · convert CxVal.aeval hz hr s using 1
-    have e : y = fun p => y ⟨p.1, c p.1⟩ * (y ⟨p.1, p.2⟩ / y ⟨p.1, c p.1⟩) :=
-      funext fun p => (mul_div_cancel₀ _ (hy p.1)).symm
-    have e' := aeval_blockScale hs (fun k => y ⟨k, c k⟩) fun p => y ⟨p.1, p.2⟩ / y ⟨p.1, c p.1⟩
-    rw [← e] at e'
-    have h0 : (∏ k, y ⟨k, c k⟩ ^ b k) ≠ 0 := Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)
-    simp only [hb, zpow_natCast]
-    rw [e']
-    field_simp
-  · have e : w = fun p => w ⟨p.1, c p.1⟩ * r p := funext fun p => (hr' p).trans (mul_comm _ _)
-    have e' := aeval_blockScale hs (fun k => w ⟨k, c k⟩) r
-    rw [← e] at e'
-    rw [div_mul_cancel₀ _ (A.pos w fun k => ⟨c k, (hc k).ne_zero⟩).ne', e']
-    simp only [hb, zpow_natCast, norm_mul, norm_prod, norm_pow]
-    ring
-
-example (k : K) (hk : ∀ i, w ⟨k, i⟩ = 0) : ¬ SecNorm ξ y A e₀ z w t ν ∧ ¬ SecNorm ξ y A 0 z w t ν :=
-  ⟨fun h => let ⟨c, hc⟩ := h.exists_chart; hc k (hk (c k)), fun h => h.1 rfl⟩
 
 end Sec
 

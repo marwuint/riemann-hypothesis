@@ -11,14 +11,6 @@ namespace GlobalTheory.FinWeil
 section
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M]
 
-theorem quot_mk_eq_iff (A B : Submodule R X) (x y : B.toAddSubgroup) :
-    (QuotientAddGroup.mk x : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) = QuotientAddGroup.mk y ↔
-      (y : X) - x ∈ A := by
-  rw [QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]
-  have : ((-x + y : B.toAddSubgroup) : X) = (y : X) - x := by
-    push_cast; abel
-  rw [this]; rfl
-
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in

@@ -3,7 +3,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.GaloisTwistIdentitySection
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExpansionSurjectiveAdditiveLinearStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineFiltrationMultiplicativeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFiltrationGeneratedByDividedXiStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFiltrationGeneratedByDividedXi
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SharpSurjectiveKerSpan
 
 set_option backward.isDefEq.respectTransparency false
@@ -96,7 +96,7 @@ theorem inner_step (k : ℕ) {j : ℕ} (hj : j < l) (b : A.A)
       simp
     rwa [h4] at h3
   rw [← toAcr_teichmuller A b] at hx
-  have hth := ((GlobalTheory.T.graded_filtration_generated_by_dividedXi A 1 (l * k + j)).2 (WittVector.teichmuller l b)).mp hx
+  have hth := ((_root_.GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow A 1 (l * k + j)).2 (WittVector.teichmuller l b)).mp hx
   have hz : A.aToU1 b = 0 := by
     have e := A.sharpMap_coeff (WittVector.teichmuller l b)
     rw [WittVector.teichmuller_coeff_zero] at e

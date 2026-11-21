@@ -6,7 +6,7 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelMulOfPosLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelCoeffAndFunctionUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionsCoeffwiseConjugateRingClosure
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasQOfIntegralQuotStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasQOfIntegralQuot
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
@@ -86,7 +86,7 @@ theorem conj_exists : ∀ (g : ℂ ≃+* ℂ) (N n : ℕ) (f D D' A A' : ℍ →
     simp only [map_zero] at hc'
     have := uf N _ _ _ hc' hz
     exact fun τ => congrFun this τ
-  obtain ⟨h, b, hb, hAh⟩ := GlobalTheory.T.exists_hasQ_quotient_of_integral N n A' D' s' hN ⟨_, he'⟩ ⟨_, hd'⟩
+  obtain ⟨h, b, hb, hAh⟩ := _root_.GlobalTheory.FN.hasQ_of_integral_quot N n A' D' s' hN ⟨_, he'⟩ ⟨_, hd'⟩
     (fun j => by obtain ⟨c, _, hc'⟩ := hs j; exact ⟨_, hc'⟩) hD' hP'0
   have hfD : HasQ N A (conv a d) := by
     have := GlobalTheory.QFam.hasQ_mul_conv N f D a d hN ha hd

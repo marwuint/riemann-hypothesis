@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
 import Formalism.LocalToGlobal.HermitianForms.TiedStep
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemAdelicSpanOfLatticeIffForallPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemAdelicSpanOfLatticeIffForallPlace
 
 open Formalism.BasicNotions Formalism.UG Formalism.L2.Forms NumberField IsDedekindDomain Matrix GlobalTheory.St.G
 open scoped TensorProduct
@@ -31,8 +31,8 @@ theorem prVec_single_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (x : Fi
 
 theorem carry_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L M : Submodule (𝓞 E) (Fin n → E)), IsLat L → IsLat M → ∀ y : GL (Fin n) (E ⊗[F] Ad F), (∀ x, x ∈ hat F L ↔ y.1 *ᵥ x ∈ hat F M) ↔ ∀ v : HeightOneSpectrum (𝓞 F), ∀ x, x ∈ loc v L ↔ (bc (prV (E := E) v) y).1 *ᵥ x ∈ loc v M := by
   intro F E _ _ _ _ _ n L M hL hM y
-  have lgL := GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n L hL
-  have lgM := GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n M hM
+  have lgL := _root_.GlobalTheory.St.G.mem_hat_iff_forall_loc F E n L hL
+  have lgM := _root_.GlobalTheory.St.G.mem_hat_iff_forall_loc F E n M hM
   constructor
   · intro h v x
     have h1 := h (fun i => Formalism.UG.P.afsplitIE v (x i))

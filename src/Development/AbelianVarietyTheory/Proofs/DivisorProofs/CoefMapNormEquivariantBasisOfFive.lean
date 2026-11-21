@@ -18,8 +18,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CircleEqOneIffOfCon
 import Formalism.LocalToGlobal.IndefiniteReal.FWTie
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPairCharactersAtLevel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaActionDeterminantRoot
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EtaCharacterUnramified
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHeckeCharMulInv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstRelIffTwistFactorAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrAtEmb
 import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
@@ -38,12 +40,14 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateWeilRepresentationSixth
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorTorusAction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientConjugateThetaForm
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilMaximalCompactFockSubstitutionCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilMaximalCompactFockSubstitutionCharacter
+import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
+import Formalism.LocalRingCardinality.DataExtra
+import Formalism.LocalRingCardinality.DataTies
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHolRepOfIsTau
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtensionOfLowSmoothLines
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtremalVectorsHolomorphicModelUniqueUpToPhaseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtremalVectorsHolomorphicModelUniqueUpToPhase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateWeilRepresentationFifth
-import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsFockVacAtOfIsThetaAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelExtensionFirst
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
@@ -86,11 +90,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SplitOffBadOfSup
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntValuationEqOfMem
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdentityClassLatticeEqSelfDualFrameLattice
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIsometrySignFirstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPairCharactersAtLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelPointSmulIntegralOfFourierCoeffNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneSubIdempotentSmulMemLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentSumConjSumOrthogonalDvdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneSubIdempotentSmulMemLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentSumConjSumOrthogonalDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAdelicMatrixMemLatticeOfColumnsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenMapTranspose
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartConjMem
@@ -98,16 +99,18 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatti
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulMemLatO
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIsometrySignSecond
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIsometrySignSecondStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelPointSmulIntegralOfFourierCoeffNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinTensAlgebraMap
 import Development.AbelianVarietyTheory.Definitions.Divisors.ConstantUniqueOfEqProduct
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormSignExists
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SignForWeilModelFamily
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanDetSetIffAdelicLatticeValuationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumeratorIdealOfAntiInvariantDivisorStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelicCharacterEqProdUnramifiedValueZpowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceIdempotentComponentsConjValuationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumeratorIdealOfAntiInvariantDivisor
+import Formalism.LocalToGlobal.ProjectiveLattices.ThClass
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelicCharacterEqProdUnramifiedValueZpow
+import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceIdempotentComponentsConjValuation
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBaseChangeFiniteAdeleRingEquiv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePlaceIdempotentBaseChangeAdeles
@@ -117,7 +120,6 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValu
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FgOfSmulLe
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteAdelicLatticeTransportLaws
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesThirdStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormPeriodRelation
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormSqOfMulConjEqDifferentIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EmbeddingConjugateOscillatorSixth
@@ -130,7 +132,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeMarki
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreDictionaryGoodAtGoodEmbedding
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicShapeIntegralWeightGoodEmbedding
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ActLevAndActBC
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MarkingRootsDilationCoprimeLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MarkingRootsDilationCoprimeLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelsWeightCompat
 
 section
@@ -184,18 +186,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.EtaConjType
 
 open Formalism.L2.Host Formalism.L2.JoinChr
-
-section General
-
-variable {E : Type} [Field E] [NumberField E]
-
-variable {L : Type} [Field L] (ι σ : L →+* ℂ) {χ χ' : HChar E} (hu : ∀ P, χ.UnrAt P) (hu' : ∀ P, χ'.UnrAt P)
-  (y : HeightOneSpectrum (𝓞 E) → L) (hy : ∀ P, ι (y P) = ((χ.val P : ℂˣ) : ℂ) * (rt P : ℂ))
-  (hy' : ∀ P, σ (y P) = ((χ'.val P : ℂˣ) : ℂ) * (rt P : ℂ))
-
-include hu hu' hy hy'
-
-end General
 
 theorem resEta_hasInfExp_of_isEtaConj_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∀ η', IsEtaConj σ R.eta η' → ResEta D η' 1 ∧ ∀ ρ, HasInfExp D η' ρ (1 / 2) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR _ σ hσ η' hη
@@ -374,14 +364,6 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 namespace GlobalTheory.OneMapRef.FactsLat
 
 variable {D : D7}
-
-section Model
-
-variable {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {p q : ℕ} (hpq : p + q = V.rank)
-  (hε : ∀ τ a, M.ε τ a = decide ((a : ℕ) < p))
-include hpq hε
-
-end Model
 
 theorem facts_lat_ofFive : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Core5 R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → sg0 D A = D.what₂.embLL ∧ (Vc D i).gram = 1 ∧ Even (Vc D i).rank ∧ (κ i).n = (Vc D i).rank ∧ R.ΛV i = stdL D.host.E (Vc D i).rank ∧ IsSelfDualC (Vc D i) (R.ΛV i) ∧ IsSelfDualC (Wc D i) (R.ΛW i) ∧ IsONeg (Wc D i) (T.Q.Dw ((i : ℕ) + 1)).q (baseZ R i) ∧ cart (R.MW i (sg0 D A)) = cartZ (Wc D i) (T.Q.Dw ((i : ℕ) + 1)).q (baseZ R i) ∧ (∀ ρ, T.x₀ ((i : ℕ) + 1) O.s0 (tauE D ρ) = Matrix.reindex (finCongr (rank_Wc i)) (finCongr (rank_Wc i)) (baseZ R i ρ)) ∧ MuVal (Wc D i) (R.mu0 ((i : ℕ) + 1)) O.mu ∧ (T.Q.Dw ((i : ℕ) + 1)).p ≠ (T.Q.Dw ((i : ℕ) + 1)).q ∧ 1 ≤ D.R.r ∧ LatEmb (Wc D i) (iotaW T i) ∧ ∀ h : GA D (Wc D i), ∃ LT : Lt D.host.E (Wc D i).rank, IsSelfDualC (Wc D i) LT ∧ GlobalTheory.Ker.IsAA (latG (Wc D i) h) LT ∧ GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt (Wc D i) h) (R.ΛW i) LT ∧ ∀ u : WO (Vc D i) (Wc D i), u ∈ (latO (Vc D i) (Wc D i) (R.ΛV i : Set _) (LT : Set _) fun _ => True) ↔ ∃ u₀ ∈ (latO (Vc D i) (Wc D i) (R.ΛV i : Set _) (R.ΛW i : Set _) fun _ => True), u = actO (Vc D i) (Wc D i) 1 h u₀ := by
   rintro D G _ _ Pl0 T0 A T _ R F κ v₀ hR ⟨tie⟩ i Tp tup O hP
@@ -689,7 +671,7 @@ theorem deltaConj_extremal_weight_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fi
       simp [θs, e]
   have e1 : ∀ ρ, (R.BV i ρ)⁻¹ * compAt R.θ ρ (Formalism.L2.Theta.mt (Vc D i) 1) * R.BV i ρ = 1 := fun ρ => by
     rw [show compAt R.θ ρ (Formalism.L2.Theta.mt (Vc D i) 1) = 1 from GlobalTheory.PointAtPlaceHom.infMat_one _ _, Matrix.mul_one, hBi]
-  have key := (GlobalTheory.T.weil_maximalCompact_fock_substitution_character D R.ψ R.θ _ _ _ _ _ _ M (R.BV i) hω hθ (D.sp.V_sig _) (D.sp.W_sig _) hB _ _ hpq hε
+  have key := (_root_.GlobalTheory.FockCompactAction.om_pureTensorO_eq_fact D R.ψ R.θ _ _ _ _ _ _ M (R.BV i) hω hθ (D.sp.V_sig _) (D.sp.W_sig _) hB _ _ hpq hε
     _ _ ha hb x₁ x₂ x₃ hx₁ hx₂ hx₃ _ hth hv 1 (one_mem _) g a1 (fun ρ => hg ρ ▸ diag_mem _)).2
     (delta (pW D i) (qW D i) (fun ρ => aPl D i (pW D i ρ) (lab σ ρ)) (fun ρ => aMi D i (pW D i ρ) (qW D i ρ) (lab σ ρ)))
   simp only [hg, e1] at key
@@ -735,7 +717,7 @@ theorem ioExt_conj_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T
   have hvec := GlobalTheory.GalOne.VecConj.vec_conj_ofFive R F hR i σ μ' η' ω f₀ f hC
   have hinj := hvec.2.2.2.1 _ hvec.2.2.1
   let pt := pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) (R.BV i) (onb (R.MW i σ)) f
-  exact exists_unit_of_isIoW R.θ (R.MW i σ) (GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ _ hH).1 (GlobalTheory.T.extremal_vectors_holomorphic_model_unique_up_to_phase D _ _ _ hH) c ω pt
+  exact exists_unit_of_isIoW R.θ (R.MW i σ) (GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ _ hH).1 (_root_.GlobalTheory.HolLowOnce.extLine_of_holShape D _ _ _ hH) c ω pt
     (deltaConj i σ) (fun h => deltaConj_ne i σ (hinj (h.trans (map_zero pt).symm)))
     (GlobalTheory.GalOne.MinorWeight.deltaConj_extremal_weight_ofFive R F hR i σ μ' η' ω f₀ f hC) io hio v hv
 
@@ -783,29 +765,6 @@ section
 noncomputable section
 
 namespace GlobalTheory.GalOne.PhaseAt
-
-section General
-
-open MvPolynomial Formalism.BasicNotions Formalism.L2.DIV
-
-end General
-
-section Letters
-
-open NumberField Matrix Complex
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host
-open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.L2.Pj
-open scoped TensorProduct Classical ComplexConjugate
-open GlobalTheory.AdTh.PhaseMap
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {m n : ℕ} {l : Geo.Tor.Level H} (c : Coeff l)
-  (φ : c.F →+* ℂ) {e : D.what₂.Tau → D.what₂.Tau}
-
-variable {lt : LtN Dw n → FVar D m n}
-
-end Letters
 
 end GlobalTheory.GalOne.PhaseAt
 
@@ -1005,18 +964,6 @@ section
 noncomputable section
 
 namespace GlobalTheory.GalOne.IoCmp
-
-section Letters
-
-open NumberField Matrix
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host
-open GlobalTheory.SW hiding Level IsSB
-open scoped Classical
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
-
-end Letters
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.FWT Formalism.L2.Pj
 open MeasureTheory IsDedekindDomain NumberField Matrix
@@ -1359,8 +1306,8 @@ theorem omega_level_conjVec_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype 
   have hmu : ∀ x, R.toLevCh.mu A.μ0 ((i : ℕ) + 1) x = R.mu0 ((i : ℕ) + 1) x := fun x => by
     show R.mu0 ((i : ℕ) + 1) x * R.xi A.μ0 x = _
     rw [hxi, MonoidHom.one_apply, mul_one]
-  refine (om_vec hW ⟨_, hη⟩ (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βV i))
-    (GlobalTheory.T.isSelfDualCoordLattice_of_selfDualFrame D _ _ _ _ (hL.βW i)) (hL.βV i).choose_spec.1 (hL.βW i).choose_spec.1 hv).elim fun P h1 =>
+  refine (om_vec hW ⟨_, hη⟩ (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i))
+    (_root_.GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)) (hL.βV i).choose_spec.1 (hL.βW i).choose_spec.1 hv).elim fun P h1 =>
       h1.elim fun e h2 => h2.elim fun hee h3 => ?_
   have he := h3.2.1
   have hP : ∀ PP, PP ∈ P ↔ PP ∈ R.toLevCh.Pg ∨ PP ∈ R.toLevCh.Q A.μ0 := fun PP => by
@@ -1454,13 +1401,6 @@ noncomputable section
 
 namespace GlobalTheory.AdTh.CoefExt
 
-open MvPolynomial Formalism.BasicNotions Formalism.L2.DIV
-
-variable {K K' : Type} [Field K] [Field K'] {σ : K →+* ℂ} {σ' : K' →+* ℂ} (φ : K →+* K')
-  {I : Type} [Fintype I] {n : ℕ} (lam : I → DomWeight n) {W : Type} [AddCommGroup W] [Module ℂ W]
-
-variable {φ lam} {c₀ : VV K lam →ₛₗ[σ] W} {c' : VV K' lam →ₛₗ[σ'] W}
-
 end GlobalTheory.AdTh.CoefExt
 
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
@@ -1536,27 +1476,6 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 
 namespace GlobalTheory.DatumFourier
-
-section Fourier
-
-open NumberField Complex ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.AdTh GlobalTheory.LevelPairing
-open scoped Classical
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} (l : Geo.Tor.Level H)
-
-end Fourier
-
-section General
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.L2.Pj
-  IsDedekindDomain NumberField Matrix GlobalTheory.LatVac GlobalTheory.AdelicLatMove GlobalTheory.PlaceVec
-open scoped TensorProduct Classical
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
-  {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
-
-end General
 
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
@@ -1761,7 +1680,7 @@ theorem moved_datum_ofFive' : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0
       obtain ⟨cQ, hcQ⟩ := D.host.toHostRaw.two_dvd_QS
       rw [hcQ, mul_assoc, mul_assoc, Nat.cast_mul, Nat.cast_ofNat]; exact Ideal.mul_mem_right _ _ h2)⟩)
     bad N h k Λ mk (fun PP hPP => hbad PP (Finset.mem_union.1 hPP)) hh hΛ hT hL hmk Y hY q
-    (fun s hs => GlobalTheory.T.levelPoint_smul_integral_of_fourierCoeff_ne_zero D G Pl0 T0 A Ks R i H Dw ι t l φ hφ q hq s fun PP hPP => hs PP (Finset.mem_union.2 hPP))
+    (fun s hs => _root_.GlobalTheory.HatInt.smul_eq_of_hatC_ne_zero D G Pl0 T0 A Ks R i H Dw ι t l φ hφ q hq s fun PP hPP => hs PP (Finset.mem_union.2 hPP))
     (γ q) (u q) (hu q).1 (hu q).2
   have h3 : heisO R.ψ (Vc D i) (Wc D i) (2 • actO (Vc D i) (Wc D i) h k c) (R.ωP i t (h, k) (R.vacP i)) =
       R.ωP i t (h, k) (R.vacP i) := by
@@ -2062,17 +1981,6 @@ section
 
 namespace GlobalTheory.ClassScalarValue
 
-section Local
-
-open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.IndefR Formalism.IndefR.Links
-  Formalism.L2.JoinChr Formalism.L2.Host Formalism.L2.Pj GlobalTheory.IdemSupport
-open scoped TensorProduct Matrix nonZeroDivisors
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable {D : D7}
-
-end Local
-
 open NumberField Matrix Complex MeasureTheory IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host
@@ -2188,14 +2096,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.OneMapRef GlobalTheory.WeilParts GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature GlobalTheory.GalLift GlobalTheory.GalOne
 
 namespace GlobalTheory.GalOne.ClassConj
-
-section Local
-
-open Formalism.L2.JoinChr Formalism.L2.Host
-
-variable {D : D7}
-
-end Local
 
 set_option maxHeartbeats 1600000 in
 
@@ -2417,12 +2317,6 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts GlobalTheory.IndefiniteRowSid
 
 namespace GlobalTheory.GalOne
 
-section Gen
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
-
-end Gen
-
 set_option maxHeartbeats 800000 in
 
 theorem conj_coeff_eq_dilate_ofFive : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Core5 R F → FWTie T R κ v₀ → ∀ (i : Fin D.R.m) (O : OM T R i), Pinned κ v₀ O → ∀ σ' : O.c'.F →+* ℂ, ∃ m : ℤ, IsCoprime m ((O.dδ ()).l₂.M : ℤ) ∧ ∀ k q, σ' (O.w () k q) = inC O.c' (O.w () k (m • q)) := by
@@ -2469,12 +2363,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.OneMapRef GlobalTheory.WeilParts GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature GlobalTheory.GalLift GlobalTheory.GalOne
 
 namespace GlobalTheory.GalCentral
-
-section Res
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
-
-end Res
 
 variable {D : D7}
 
@@ -2580,7 +2468,7 @@ theorem adelic_value_ofFive (hR : GlobalTheory.Core5 R F) (tie : FWTie T R κ v�
   have h9 : gphi X Dc.bas (T.Q.H.w0 : D.host.E) (O.La () j).La X.Λ v (fun q => σ' (O.w () j q)) (fun q => Y j (m • q)) =
       gphi X Dc.bas (T.Q.H.w0 : D.host.E) (O.La () j).La X.Λ v (fun q => inC O.c' (O.w () j q)) (Y j) := by
     rw [funext (hw j)]
-    exact ((GlobalTheory.T.marking_roots_dilation_coprime_level _ _ _ (O.dδ ()).l₂ _ _ X.Λ mk₂ m hm).2 0 (Y j)).2 g X Dc.bas _ _ v
+    exact ((_root_.GlobalTheory.DilateLevel.dilate _ _ _ (O.dδ ()).l₂ _ _ X.Λ mk₂ m hm).2 0 (Y j)).2 g X Dc.bas _ _ v
       fun q => inC O.c' (O.w () j q)
   rw [hQ, h9]
   simp only [map_mul] at h7 ⊢
@@ -2620,15 +2508,15 @@ theorem geometric_value_ofFive (hR : GlobalTheory.Core5 R F) (tie : FWTie T R κ
   have hj : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
   obtain ⟨hlev, hA₂, hnab⟩ := hP.cov ()
   obtain ⟨him, -, hov, -⟩ := (markAd_laws D _ _ _ _ (rank_Wc i) _ hemb _ _ hlat T.Q.l).2 mk hmk hma
-  have him₂ := (GlobalTheory.T.marking_roots_dilation_coprime_level _ _ _ _ _ 0 _ _ n hn₂).1
+  have him₂ := (_root_.GlobalTheory.DilateLevel.dilate _ _ _ _ _ 0 _ _ n hn₂).1
     ((markAd_laws D _ _ _ _ (rank_Wc i) _ hemb _ _ hlat (O.dδ ()).l₂).2 mk₂ hmk₂ hma₂).1
-  have him₁ := (GlobalTheory.T.marking_roots_dilation_coprime_level _ _ _ _ _ 0 _ _ n hn₁).1 him
+  have him₁ := (_root_.GlobalTheory.DilateLevel.dilate _ _ _ _ _ 0 _ _ n hn₁).1 him
   have hov' := markOver_zsmul (hov _ hlev.1.1 (Ideal.map_mono hlev.1.2.1) mk₂ hmk₂ hma₂) n
   obtain ⟨y', hy', hev⟩ : ∃ y' : FrPt (T.Q.Xo ((i : ℕ) + 1)) O.c' ℂ, levR (O.lev z, LinearMap.id) y y' ∧
       evR _ O.c' (actLev O.c' O.lev2 z f) y = evR _ O.c' f y' :=
     ⟨_, mvPt_spec hP.act.2.total z _,
       evalAt_actL hP.act.2 (GlobalTheory.TransferCompare.evalWD_framed _ _) frMap_trans_id z hf.1 _⟩
-  obtain ⟨A', hrd', hmk''⟩ := GlobalTheory.T.analyticFibre_description_levelMove_marking_comp _ _ _ _ _ O.c' _ _ _ Dc.bas Dc.idx Dc.e _ _ Dc.sympl hdom hsd (O.lev z) _ y' hy' B
+  obtain ⟨A', hrd', hmk''⟩ := _root_.GlobalTheory.Dict.FibreMove.anFib_levR_id _ _ _ _ _ O.c' _ _ _ Dc.bas Dc.idx Dc.e _ _ Dc.sympl hdom hsd (O.lev z) _ y' hy' B
   have hA' : A'.Marked (n • mk) :=
     marked_of_congr A' (hmk'' mk hB) fun a ha => by
       obtain ⟨b, hb⟩ := hzl a ha
@@ -2709,7 +2597,7 @@ theorem identity_of_frConst_ofFive (hR : GlobalTheory.Core5 R F) (tie : FWTie T 
   have h8 := fun k => (DualMark.dual_marking _ _ _ (O.dδ ()).l₂ _ _ _ _ _ hsd (isMark_sign (h7.2 mk₂ hmk₂.1 hmk₂.2).1 ε)
     (Complex.isPrimitiveRoot_exp _ hM₂.ne')).2.2.2.2 (Vc D i).rank (O.Nc () k) ((hP.reps ()).1 k).2.2.2.1.1.pos
   have hY := fun k => (h8 k).choose_spec
-  have hY' := fun k => ((GlobalTheory.T.marking_roots_dilation_coprime_level _ _ _ (O.dδ ()).l₂ _ _ _ ((ε : ℤ) • mk₂) m hm.1).2 _ _).1
+  have hY' := fun k => ((_root_.GlobalTheory.DilateLevel.dilate _ _ _ (O.dδ ()).l₂ _ _ _ ((ε : ℤ) • mk₂) m hm.1).2 _ _).1
     (fun a => zsmul_mem (hmk₂.1 a) _) (hY k)
   simp only [smul_smul] at hY'
   have hAo : AlgOver T.Q.c O.c' O.hle ℂ := fun _ => rfl

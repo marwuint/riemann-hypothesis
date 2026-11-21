@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsLifted
 import Development.AbelianVarietyTheory.Definitions.Divisors.CechFam
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ChartFormsDifferentialClosed
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.LogFormsEqChartForms
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RoundedTwistLocalEquationChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RoundedTwistLocalEquationChart
 open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory.DI GlobalTheory.LogDR GlobalTheory.Cartier
 
 namespace GlobalTheory.LogDR
@@ -15,7 +15,7 @@ theorem extD_mem_logSec_roundedTwist : ∀ (p : ℕ) [Fact p.Prime] {X : Scheme.
   have hcov : y ∈ (⨆ i, 𝒜.U i) := by rw [𝒜.cover]; trivial
   obtain ⟨i, hi⟩ := (Opens.mem_iSup).1 hcov
   obtain ⟨t, ht⟩ := G.exists_isEqn y
-  obtain ⟨-, hloc⟩ := GlobalTheory.T.roundedTwist_localEquation_chart p 𝒜 G r hr
+  obtain ⟨-, hloc⟩ := _root_.GlobalTheory.roundedTwist_isEqn p 𝒜 G r hr
   obtain ⟨ρ, -, hρ⟩ := hloc i
   have heq := hρ y hi t ht
   have hstalk := GlobalTheory.T.log_forms_eq_chart_forms (suppAll E) (𝒜.U i) (𝒜.x i) (𝒜.J i) (p • G + ∑ c, r c • E c) y

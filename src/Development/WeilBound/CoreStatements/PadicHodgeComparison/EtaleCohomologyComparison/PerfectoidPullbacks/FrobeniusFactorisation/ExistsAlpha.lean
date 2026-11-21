@@ -1,7 +1,7 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.TwistedRepresentations.Tens
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatBaseChangeLimitSystemStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatBaseChangeLimitSystem
 
 set_option autoImplicit false
 set_option backward.isDefEq.respectTransparency false
@@ -57,7 +57,7 @@ theorem core [IsDomain W] [IsDiscreteValuationRing W] (l : ℕ) (hl : Irreducibl
     (g' : ∀ n, S.lim →+ T.M n) (hg' : ∀ n (w : W) y, g' n (w • y) = algebraMap W A w • g' n y) (e : ∀ n y, g' n y = g n (y.1 n)) :
     (∀ w, (∀ n, ev (g' n) (hg' n) w = 0) → w = 0) ∧
       ∀ z : ∀ n, T.M n, (∀ n, T.r n (z (n + 1)) = z n) → ∃ w, ∀ n, ev (g' n) (hg' n) w = (l ^ c) • z n := by
-  obtain ⟨hs, α, hα⟩ := GlobalTheory.T.flat_base_change_limit_system W l hl S c h1 h2 h3 h4 A
+  obtain ⟨hs, α, hα⟩ := _root_.GlobalTheory.CompanionTheory.TowerExt.limit_extension_upTo W l hl S c h1 h2 h3 h4 A
   have hev : ∀ n w, ev (g' n) (hg' n) w = ev (g n) (hg n) ((Tw.pr S n).baseChange A w) := fun n =>
     add_ext (f' := (ev (g n) (hg n)).comp ((Tw.pr S n).baseChange A).toAddMonoidHom) fun a y => by
       rw [ev_tmul, e]; rfl

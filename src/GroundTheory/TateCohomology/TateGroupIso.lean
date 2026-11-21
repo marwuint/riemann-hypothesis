@@ -99,25 +99,6 @@ theorem CohTrivial.tateAcyclic [Fintype G] {A : Rep.{u} k G} (h : CohTrivial A) 
   have h1 : TateAcyclic (res (⊤ : Subgroup G).subtype A) := h ⊤
   exact (tateAcyclic_res_iff _ hbij A).1 h1
 
-theorem CohTrivial.res_subtype {A : Rep.{u} k G} (h : CohTrivial A) (S : Subgroup G) :
-    CohTrivial (res S.subtype A) := by
-  classical
-  intro T _
-  let U : Subgroup G := T.map S.subtype
-  let φ : T →* U := (S.subtype.comp T.subtype).codRestrict U fun t =>
-    Subgroup.mem_map.2 ⟨t, t.2, rfl⟩
-  have hinj : Function.Injective φ := fun a b hab =>
-    Subtype.ext (Subtype.ext (congrArg (fun x : U => (x : G)) hab))
-  have hsurj : Function.Surjective φ := by
-    rintro ⟨u, hu⟩
-    obtain ⟨x, hx, rfl⟩ := Subgroup.mem_map.1 hu
-    exact ⟨⟨x, hx⟩, rfl⟩
-  let _ : Fintype U := Fintype.ofSurjective φ hsurj
-  have hφ := (tateAcyclic_res_iff φ ⟨hinj, hsurj⟩ (Rep.res U.subtype A)).2 (h U)
-  have e : U.subtype.comp φ = S.subtype.comp T.subtype := rfl
-  rw [res_res, e, ← res_res] at hφ
-  exact hφ
-
 theorem tateAcyclic_res_conj {A : Rep.{u} k G} (U V : Subgroup G) [Fintype U] [Fintype V] (g : G)
     (hUV : ∀ x, x ∈ U ↔ g⁻¹ * x * g ∈ V) (hV : TateAcyclic (res V.subtype A)) :
     TateAcyclic (res U.subtype A) := by

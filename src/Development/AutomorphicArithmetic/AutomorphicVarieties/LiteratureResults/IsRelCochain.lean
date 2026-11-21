@@ -44,16 +44,4 @@ structure IsRelCochain (P : Sm E a → Prop) {q : ℕ} (ω : Herm E a [⋀^Fin q
 
 end Defs
 
-def BorelC : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a →
-    ∀ (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) → IsCompact (U : Set (GL (Fin a) (Af E))) →
-    (∀ (γ : GL (Fin a) E) (g : GL (Fin a) (Af E)),
-      g⁻¹ * GeneralLinearGroup.map (algebraMap E (Af E)) γ * g ∈ U → IsOfFinOrder γ → γ = 1) →
-    ∀ Ξ : AlgRep E a, (∃ N : ℕ, 0 < N ∧ ∀ u : (𝓞 E)ˣ,
-      ratC Ξ (GeneralLinearGroup.scalar (Fin a) (Units.map (algebraMap (𝓞 E) E).toMonoidHom (u ^ N))) = 1) →
-    ∀ (q : ℕ) (η : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))), IsRelCochain Ξ (IsLevelFn U Ξ) η →
-      IsRelCochain Ξ (IsCuspFn U Ξ) (dCo (smLie Ξ) η) →
-      ∃ η' : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)),
-        IsRelCochain Ξ (IsCuspFn U Ξ) η' ∧ dCo (smLie Ξ) η' = dCo (smLie Ξ) η
-
 end UpperTheory.V.Lit

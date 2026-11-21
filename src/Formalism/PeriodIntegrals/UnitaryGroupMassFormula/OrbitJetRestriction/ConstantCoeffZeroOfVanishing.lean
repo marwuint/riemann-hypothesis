@@ -12,9 +12,6 @@ open Formalism.BasicNotions Formalism.MainNotions.G MvPowerSeries Finsupp PI.Orb
 
 variable {σ τ υ R : Type*} [CommRing R]
 
-theorem subst_zero_fam {a : σ → MvPowerSeries τ R} (ha : HasSubst a) : subst a (0 : MvPowerSeries σ R) = 0 := by
-  simpa [coe_substAlgHom] using (substAlgHom ha).map_zero
-
 theorem killCompl_subst_of (e : υ ↪ τ) (g : τ → MvPowerSeries τ R) (K : υ → MvPowerSeries υ R)
     (hg : HasSubst g) (hK : HasSubst K) (h1 : ∀ w, killCompl e (g (e w)) = K w)
     (h0 : ∀ t, (¬ ∃ w, e w = t) → killCompl e (g t) = 0) (f : MvPowerSeries τ R) :

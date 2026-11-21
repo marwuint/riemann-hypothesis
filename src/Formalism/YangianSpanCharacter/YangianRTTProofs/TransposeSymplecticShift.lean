@@ -42,20 +42,4 @@ theorem planeWaveIntertwining : Formalism.YangianSpanCharacter.T.PlaneWave := by
       simp only [mul_add, add_mul, mul_neg, neg_mul, hpf, key, Algebra.commutes] <;>
       first | noncomm_ring | abel
 
-theorem unipotentSymplectic : Formalism.YangianSpanCharacter.T.UJU := by
-  intro R A _ _ _ s
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [Formalism.YangianSpanCharacter.T.Um, Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]
-
-theorem isWeylTripleShiftModel : Formalism.YangianSpanCharacter.T.WeylModel := by
-  refine ⟨?_, ?_, ?_⟩
-  · refine LinearMap.ext fun f => funext fun n => ?_
-    simp [Formalism.YangianSpanCharacter.T.cM, Formalism.YangianSpanCharacter.T.ciM, LinearMap.funLeft_apply]
-  · refine LinearMap.ext fun f => funext fun n => ?_
-    simp [Formalism.YangianSpanCharacter.T.cM, Formalism.YangianSpanCharacter.T.ciM, LinearMap.funLeft_apply]
-  · refine LinearMap.ext fun f => funext fun n => ?_
-    simp [Formalism.YangianSpanCharacter.T.cM, Formalism.YangianSpanCharacter.T.pM, LinearMap.funLeft_apply]
-    ring
-
 end Formalism.YangianSpanCharacter.P

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DeltaStructureOfWittLengthTwoSection
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeltaAddSubMemPowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeltaAddSubMemPow
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -21,11 +21,11 @@ theorem isδMap_of_dense_δLocus : ∀ (l : ℕ) [Fact l.Prime] (Q : Type) [Comm
   have ha' := (mem_δLocus).1 ha
   set y := x - a with hy
   have hxy : x = a + y := by rw [hy]; ring
-  have h1 : D.δ (a + y) - D.δ a ∈ J ^ n := GlobalTheory.T.delta_add_sub_mem_pow_of_mem_pow_succ l Q D J hl n a y hxa
+  have h1 : D.δ (a + y) - D.δ a ∈ J ^ n := _root_.GlobalTheory.BSP.delta_add_sub_mem_pow l Q D J hl n a y hxa
   have h1' : h (D.δ x) - h (D.δ a) ∈ JC ^ n := by
     rw [hxy, ← map_sub]; exact hpow n (Ideal.mem_map_of_mem h h1)
   have hyC : h y ∈ JC ^ (n + 1) := hpow (n + 1) (Ideal.mem_map_of_mem h hxa)
-  have h2 : DC.δ (h a + h y) - DC.δ (h a) ∈ JC ^ n := GlobalTheory.T.delta_add_sub_mem_pow_of_mem_pow_succ l C DC JC hlC n (h a) (h y) hyC
+  have h2 : DC.δ (h a + h y) - DC.δ (h a) ∈ JC ^ n := _root_.GlobalTheory.BSP.delta_add_sub_mem_pow l C DC JC hlC n (h a) (h y) hyC
   have h2' : DC.δ (h x) - DC.δ (h a) ∈ JC ^ n := by rw [hxy, map_add]; exact h2
   have key : h (D.δ x) - DC.δ (h x) ∈ JC ^ n := by
     have := (JC ^ n).sub_mem h1' h2'

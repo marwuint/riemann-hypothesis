@@ -3,7 +3,8 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HasChar
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantAntiHomomorphismStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviSubspaceInvariantUnderBlocksStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantBlockEigenvalueStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.TensorQuotientQuantumDeterminantEigenStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.TensorQuotientQuantumDeterminantEigen
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CommutingLocallyNilpotentCommonKernel
 
 noncomputable section
 
@@ -185,7 +186,7 @@ theorem block_raise (hS : StepChar) (hT : TensDecomp) (P Q : GMod n) (d : Fin 3 
     · intro b _ hb
       rw [Pi.single_eq_of_ne hb, map_zero, map_zero]
     · simp
-  obtain ⟨r, _, ⟨u, rfl⟩, hw0, hwq⟩ := GlobalTheory.T.tensor_quotient_quantum_determinant_eigen hS hT M χ' hchar (bops Q d h k) (glRel_inj Q.gl hι) Φ hΦ hΦne
+  obtain ⟨r, _, ⟨u, rfl⟩, hw0, hwq⟩ := _root_.GlobalTheory.CompanionTheory.RgTransport.Raise.exists_raised hS hT M χ' hchar (bops Q d h k) (glRel_inj Q.gl hι) Φ hΦ hΦne
   refine ⟨Φ u, hw0, ?_, (e' r).1, ?_⟩
   · intro a b hab
     rw [hΦa, map_sum]

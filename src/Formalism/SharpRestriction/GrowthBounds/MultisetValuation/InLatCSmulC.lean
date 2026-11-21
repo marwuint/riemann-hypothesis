@@ -122,9 +122,4 @@ theorem wt_inv (N d : ℕ) (hpos : 0 < N) (hle : padicValNat p N ≤ d) :
   rw [key]
   exact Y.Oc.mul_mem (natInv_mem Y m hm) (Y.Oc.pow_mem (natCast_mem Y.Oc p) _)
 
-theorem stab_inv (j : ℕ) (hj : j ≤ X.mm) (La : X.Lt j) (hLa : (X.Pj j).IsLatTup La.2) :
-    algebraMap X.G.Kf Y.Kc (((X.stab j La : X.G.Kf))⁻¹) * (p : Y.Kc) ^ ((X.dG j : ℕ) : ℤ) ∈ Y.Oc := by
-  rw [map_inv₀, map_natCast]
-  exact wt_inv Y _ _ (Y.stab_fin j hj La hLa) (X.dG_spec j hj La.1 La.2 hLa)
-
 end Formalism.MainNotions.FormalGroupSystem.Pf

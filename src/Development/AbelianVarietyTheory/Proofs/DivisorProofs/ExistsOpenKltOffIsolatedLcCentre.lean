@@ -4,7 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLocModelIsPrimeOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenKawamataLogTerminalLocusLogCanonicalLocusStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenKawamataLogTerminalLocusLogCanonicalLocus
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOrdSubOneLeOrdWedgeDifferentials
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProporti
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenInterEqSingletonOfNoGenerisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopologicalKrullDimClosurePointLe
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsFiniteLengthOfIsArtinianRingAnnihilator
@@ -19,7 +22,7 @@ theorem GlobalTheory.PairStep.exists_open_lc_klt_off_point :
   intro hPr X _ _ _ p n hp hdim Γ m G x hm hlc hx hcut
   obtain ⟨hlcx, hnk, hdimz⟩ := hcut
   haveI : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hp
-  have hopen := (GlobalTheory.T.isOpen_kawamataLogTerminalLocus_logCanonicalLocus hPr ℂ X p n hp hdim Γ m G hm hlc).1
+  have hopen := (_root_.GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus hPr ℂ X p n hp hdim Γ m G hm hlc).1
   set T : Set X := {y | ¬ KltAt p n Γ y} with hT
   have hTc : IsClosed T := by
     rw [← isOpen_compl_iff]

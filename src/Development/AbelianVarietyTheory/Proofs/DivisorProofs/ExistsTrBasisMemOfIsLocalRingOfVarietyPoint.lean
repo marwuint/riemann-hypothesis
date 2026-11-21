@@ -34,6 +34,3 @@ theorem exists_trBasis_mem_of_isLocModel {K : Type} [Field K] (c : ℂ →+* K) 
 
 end GlobalTheory.FieldPair
 
-example : ∀ {K : Type} [Field K] (c : ℂ →+* K) (R : Subring K) (n : ℕ), IsLocModel c R →
-    (∃ x : Fin n → K, TrBasis c x) → ∃ xi : Fin n → R, TrBasis c (fun j => (xi j : K)) :=
-  @GlobalTheory.FieldPair.exists_trBasis_mem_of_isLocModel

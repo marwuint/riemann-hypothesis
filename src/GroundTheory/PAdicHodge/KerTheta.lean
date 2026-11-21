@@ -41,12 +41,6 @@ theorem exists_eq_teichmuller_add_mul_p (x : WittVector p A) :
 
 omit [PerfectRing A p] in
 
-theorem coeff_zero_teichmuller_add_mul_p (c : A) (v : WittVector p A) :
-    (teichmuller p c + v * p).coeff 0 = c := by
-  rw [add_coeff_zero, teichmuller_coeff_zero, mul_charP_coeff_zero, add_zero]
-
-omit [PerfectRing A p] in
-
 theorem coeff_one_teichmuller_add_mul_p (c : A) (v : WittVector p A) :
     (teichmuller p c + v * p).coeff 1 = v.coeff 0 ^ p := by
   rw [coeff_add_of_disjoint 1 _ _ fun n => ?_, teichmuller_coeff_pos p c 1 one_pos, zero_add,
@@ -392,11 +386,6 @@ theorem ker_fontaineTheta_eq_span_p_sub_teichmuller {pflat : 𝒪♭}
     (isUnit_coeff_one_mul_p_sub_teichmuller (by rw [map_one]; exact isUnit_one) h')
   rwa [one_mul] at this
 
-theorem ker_fontaineTheta_eq_span_p_sub_teichmuller_ofCompatible (y : ℕ → 𝒪)
-    (hy : ∀ n, y (n + 1) ^ p = y n) (h0 : y 0 = p) :
-    RingHom.ker θ = Ideal.span {(p : 𝕎𝒪♭) - teichmuller p (ofCompatible p y hy)} :=
-  ker_fontaineTheta_eq_span_p_sub_teichmuller (by rw [untilt_ofCompatible, h0])
-
 variable (p) in
 
 theorem exists_norm_untilt_eq {b : 𝒪} (hb : ‖(p : K)‖ < ‖(b : K)‖) :
@@ -448,32 +437,6 @@ theorem isPrincipal_ker_fontaineTheta : (RingHom.ker θ).IsPrincipal := by
   obtain ⟨ξ, hξ, h1⟩ := exists_mem_ker_fontaineTheta_isUnit_coeff_one K p
   exact ⟨⟨ξ, ker_fontaineTheta_eq_span hξ h1⟩⟩
 
-variable (K p) in
-
-theorem exists_untilt_eq_p [IsAlgClosed K] : ∃ pflat : 𝒪♭, PreTilt.untilt pflat = p := by
-  have hp : 0 < p := (Fact.out : p.Prime).pos
-  let root : 𝒪 → 𝒪 := fun z =>
-    ⟨Classical.choose (IsAlgClosed.exists_pow_nat_eq (z : K) hp), mem_normInteger.2 (by
-      have h := Classical.choose_spec (IsAlgClosed.exists_pow_nat_eq (z : K) hp)
-      have h2 : ‖Classical.choose (IsAlgClosed.exists_pow_nat_eq (z : K) hp)‖ ^ p ≤ 1 := by
-        rw [← norm_pow, h]; exact mem_normInteger.1 z.2
-      exact (pow_le_one_iff_of_nonneg (norm_nonneg _) hp.ne').1 h2)⟩
-  have hroot : ∀ z, root z ^ p = z := fun z => Subtype.ext (by
-    simp only [root, SubmonoidClass.coe_pow]
-    exact Classical.choose_spec (IsAlgClosed.exists_pow_nat_eq (z : K) hp))
-  let y : ℕ → 𝒪 := fun n => root^[n] p
-  have hy : ∀ n, y (n + 1) ^ p = y n := fun n => by
-    simp only [y, Function.iterate_succ_apply', hroot]
-  exact ⟨ofCompatible p y hy, by rw [untilt_ofCompatible]; rfl⟩
-
-variable (K p) in
-
-theorem exists_ker_fontaineTheta_eq_span_p_sub_teichmuller [IsAlgClosed K] :
-    ∃ pflat : 𝒪♭, PreTilt.untilt pflat = p ∧
-      RingHom.ker θ = Ideal.span {(p : 𝕎𝒪♭) - teichmuller p pflat} := by
-  obtain ⟨pflat, h⟩ := exists_untilt_eq_p K p
-  exact ⟨pflat, h, ker_fontaineTheta_eq_span_p_sub_teichmuller h⟩
-
 end Kernel
 
 section WittTilt
@@ -486,20 +449,6 @@ theorem isDomain_wittVector_preTilt : IsDomain 𝕎𝒪♭ :=
 
 theorem eq_zero_of_p_mul_eq_zero {x : 𝕎𝒪♭} (h : (p : 𝕎𝒪♭) * x = 0) : x = 0 :=
   WittVector.eq_zero_of_p_mul_eq_zero x (by rwa [mul_comm])
-
-theorem eq_zero_of_teichmuller_mul_eq_zero {ϖ : 𝒪♭} (hϖ : ϖ ≠ 0) {x : 𝕎𝒪♭}
-    (h : teichmuller p ϖ * x = 0) : x = 0 := by
-  have := isDomain_wittVector_preTilt K p
-  refine (mul_eq_zero.1 h).resolve_left fun h0 => hϖ ?_
-  rw [← teichmuller_coeff_zero p ϖ, h0, zero_coeff]
-
-theorem mem_nonZeroDivisors_of_isUnit_coeff_one {ξ : 𝕎𝒪♭} (h1 : IsUnit (ξ.coeff 1)) :
-    ξ ∈ nonZeroDivisors 𝕎𝒪♭ := by
-  have := isDomain_preTilt (K := K) p
-  have := isDomain_wittVector_preTilt K p
-  refine mem_nonZeroDivisors_of_ne_zero fun h => ?_
-  rw [h, zero_coeff] at h1
-  exact not_isUnit_zero h1
 
 theorem isHausdorff_span_of_isUnit_coeff_one {ξ : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker θ)
     (h1 : IsUnit (ξ.coeff 1)) : IsHausdorff (Ideal.span {ξ}) 𝕎𝒪♭ := by

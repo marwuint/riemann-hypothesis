@@ -40,50 +40,6 @@ private theorem exists_mem_extP_pow_form_eq_of_mem_extP_pow_smul (hF : IsFixF K 
     exact ⟨u + v, Ideal.add_mem _ hu hv, by
       rw [Submodule.coe_add, map_add, LinearMap.add_apply, hu', hv', map_add]⟩
 
-theorem nk_iff (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {L : Submodule (𝓞 K) V}
-    (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (n : 𝓞 F)
-    (y₀ : ↥L) (n₀ : 𝓞 F) (h₀ : h (y₀ : V) (y₀ : V) = algebraMap F K (n₀ : F)) :
-    (∃ y : ↥L, (Submodule.Quotient.mk y : ↥L ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L)) =
-        Submodule.Quotient.mk y₀ ∧ CongrP 𝔭 k (h (y : V) (y : V)) (algebraMap F K (n : F))) ↔
-      n₀ - n ∈ 𝔭 ^ k := by
-  have hint : ∀ y : ↥L, ∃ o : 𝓞 K, h (y : V) (y : V) = algebraMap (𝓞 K) K o := fun y =>
-    let ⟨o, ho⟩ := Submodule.mem_one.mp (hLi (y : V) y.2 (y : V) y.2)
-    ⟨o, ho.symm⟩
-  have hn : ∀ m : 𝓞 F, algebraMap F K (m : F) = algebraMap (𝓞 K) K (ι m) := fun m => rfl
-  obtain ⟨o₀, ho₀⟩ := hint y₀
-  have ho₀' : o₀ = ι n₀ := IsFractionRing.injective (𝓞 K) K (by rw [← ho₀, h₀, hn])
-  have hcong : ∀ y : ↥L, (Submodule.Quotient.mk y : ↥L ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L)) =
-      Submodule.Quotient.mk y₀ → ∀ o : 𝓞 K, h (y : V) (y : V) = algebraMap (𝓞 K) K o →
-      Ideal.Quotient.mk (extP K 𝔭 ^ k) o = Ideal.Quotient.mk (extP K 𝔭 ^ k) o₀ := by
-    intro y hy o ho
-    rw [Submodule.Quotient.eq] at hy
-    obtain ⟨u1, hu1, he1⟩ := exists_mem_ideal_form_eq_of_mem_ideal_smul hLi (extP K 𝔭 ^ k) y₀ (y - y₀) hy
-    obtain ⟨u2, hu2, he2⟩ := exists_mem_extP_pow_form_eq_of_mem_extP_pow_smul hF hLi 𝔭 k y₀ (y - y₀) hy
-    obtain ⟨u3, hu3, he3⟩ := exists_mem_ideal_form_eq_of_mem_ideal_smul hLi (extP K 𝔭 ^ k) (y - y₀) (y - y₀) hy
-    have hyx : y = y₀ + (y - y₀) := by abel
-    have hsum : o = o₀ + u1 + u2 + u3 := by
-      apply IsFractionRing.injective (𝓞 K) K
-      rw [← ho, hyx]
-      simp only [Submodule.coe_add, map_add, LinearMap.add_apply]
-      rw [he1, he2, he3, ← ho₀]
-      ring
-    rw [Ideal.Quotient.eq, hsum, show o₀ + u1 + u2 + u3 - o₀ = u1 + u2 + u3 by ring]
-    exact Ideal.add_mem _ (Ideal.add_mem _ hu1 hu2) hu3
-  have key : ∀ o : 𝓞 K, Ideal.Quotient.mk (extP K 𝔭 ^ k) o = Ideal.Quotient.mk (extP K 𝔭 ^ k) o₀ →
-      (CongrP 𝔭 k (algebraMap (𝓞 K) K o) (algebraMap F K (n : F)) ↔ n₀ - n ∈ 𝔭 ^ k) := by
-    intro o hoo
-    rw [hn, integralBasisSpans.congrP_int h𝔭, hoo, ho₀', Ideal.Quotient.eq, ← map_sub,
-      ← MeanB.comap_extP_pow (K := K) 𝔭 k, Ideal.mem_comap]
-  constructor
-  · rintro ⟨y, hy, hc⟩
-    obtain ⟨o, ho⟩ := hint y
-    rw [ho] at hc
-    exact (key o (hcong y hy o ho)).mp hc
-  · intro hmem
-    refine ⟨y₀, rfl, ?_⟩
-    rw [ho₀]
-    exact (key o₀ rfl).mpr hmem
-
 section Frame
 
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {m : ℕ} (z : Fin m → ↥L) (g : Fin m → 𝓞 K)

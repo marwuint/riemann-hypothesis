@@ -3,7 +3,8 @@ import Formalism.HermitianCurvature.StatementTBB
 import Formalism.HermitianCurvature.StatementU
 import Formalism.HermitianCurvature.LetterProductDoubleDegreeCount
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutBPEqDecay
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliEigenSumLinearCombinationStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliEigenSumLinearCombination
+import Formalism.HermitianCurvature.StatementQ
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PolynomialSmulCapelliEigenfunctionSum
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Finset

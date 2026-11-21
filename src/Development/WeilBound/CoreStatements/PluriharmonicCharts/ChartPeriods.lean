@@ -5,7 +5,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalPairSumGramBo
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryChartHodgeMatrix
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryDiscMapEmbeddingFixed
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartLatticeTangentCoordinates
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFamilyExponentialLocallyStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFamilyExponentialLocally
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AbelianVarietyTheory.Statements.HyperbolicHypotheses.HypothesesInhabitedHyperbolic
 
@@ -51,7 +54,7 @@ theorem chart_periods {Xo : Moduli D l} {σ : KA l →+* ℂ} {n : ℕ} (C : Bdr
           ∀ j, ty j (t : E) * W a u j = cc * W a u j := by
   classical
   have hpu : ∀ ρ : ℝ, punct n 0 ρ = Metric.ball 0 ρ := fun ρ => by ext z; simp [punct]
-  obtain ⟨ρ, hρ0, hρB, ⟨e⟩⟩ := GlobalTheory.T.exists_family_exponential_locally C.R C.t.G C.g n C.M (Metric.ball 0 1) C.ψ C.t.semi.smooth C.hol 0
+  obtain ⟨ρ, hρ0, hρB, ⟨e⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_famExp_near C.R C.t.G C.g n C.M (Metric.ball 0 1) C.ψ C.t.semi.smooth C.hol 0
     (Metric.mem_ball_self one_pos)
   have hy : IsHolTo (Metric.ball 0 ρ) fun u => C.pt u ≫ C.k :=
     GlobalTheory.LocLift.isHolTo_comp_hom (Marking.isHolTo_mono' (Marking.isHolTo_pt C)

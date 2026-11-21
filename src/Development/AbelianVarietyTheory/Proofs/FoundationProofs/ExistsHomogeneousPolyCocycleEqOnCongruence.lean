@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsScalarGamma1CapGamma0ModLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCocycleExtensionOfNegCentralElementStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLawsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UniformCongruenceLevelGamma1CapGamma0Statement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsScalarGamma1CapGamma0ModLevel
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCocycleExtensionOfNegCentralElement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwoVarPolySubstMatrixBasicLaws
+import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UniformCongruenceLevelGamma1CapGamma0
 
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups
@@ -46,14 +47,14 @@ theorem exists_coc_near : ∀ (N l w : ℕ), 0 < N → l.Prime → l ≠ 2 → �
   obtain ⟨hhom, hadd, hinv, -⟩ := hΦ
   obtain ⟨M₁, hM₁, hadd₁⟩ := hadd n
   obtain ⟨M₂, hM₂, hinv₂⟩ :=
-    GlobalTheory.T.uniform_congruence_level_gamma1CapGamma0 N l (ZMod (l ^ n)) (Φ n) hN hl.pos ⟨M₁, hM₁, hadd₁⟩ (hinv n)
+    _root_.GlobalTheory.KZ.H3.unif_level N l (ZMod (l ^ n)) (Φ n) hN hl.pos ⟨M₁, hM₁, hadd₁⟩ (hinv n)
   obtain ⟨b, M', hlM', hMeq⟩ :=
     Nat.exists_eq_pow_mul_and_not_dvd (n := M₁ * M₂) (Nat.mul_pos hM₁ hM₂).ne' l hl.one_lt.ne'
   have hM'pos : 0 < M' := by
     rcases Nat.eq_zero_or_pos M' with h | h
     · exact absurd (h ▸ dvd_zero l) hlM'
     · exact h
-  obtain ⟨c, hcΓ, hcomm, hcneg⟩ := GlobalTheory.T.exists_scalar_gamma1CapGamma0_mod_level N l (max b n) M' hN hl hl2 hlN hM'pos hlM'
+  obtain ⟨c, hcΓ, hcomm, hcneg⟩ := _root_.GlobalTheory.KZ.exists_scalar_mod_level N l (max b n) M' hN hl hl2 hlN hM'pos hlM'
   have hMK : M₁ * M₂ ∣ M' * N * l ^ (max b n) := by
     rw [hMeq]
     exact dvd_trans (mul_dvd_mul (pow_dvd_pow l (le_max_left b n)) (dvd_refl M')) ⟨N, by ring⟩
@@ -61,7 +62,7 @@ theorem exists_coc_near : ∀ (N l w : ℕ), 0 < N → l.Prime → l ≠ 2 → �
   have hM₂K : M₂ ∣ M' * N * l ^ (max b n) := dvd_trans (dvd_mul_left _ _) hMK
   have hnA : l ^ n ∣ l ^ (max b n) := pow_dvd_pow l (le_max_right b n)
   have hnK : l ^ n ∣ M' * N * l ^ (max b n) := dvd_trans hnA (dvd_mul_left _ _)
-  obtain ⟨L1, L2, L3, -, -, L6, L7⟩ := GlobalTheory.T.twoVarPolySubstMatrix_basic_laws (ZMod (l ^ n))
+  obtain ⟨L1, L2, L3, -, -, L6, L7⟩ := _root_.GlobalTheory.KZ.polySlash_laws (ZMod (l ^ n))
   have hΔ : ((CongruenceSubgroup.Gamma (M' * N * l ^ (max b n))).subgroupOf (Gam N l)).Normal := by
     haveI := CongruenceSubgroup.Gamma_normal (M' * N * l ^ (max b n))
     exact Subgroup.normal_subgroupOf
@@ -69,7 +70,7 @@ theorem exists_coc_near : ∀ (N l w : ℕ), 0 < N → l.Prime → l ≠ 2 → �
     have hc : Nat.Coprime 2 (l ^ n) :=
       Nat.Coprime.pow_right n ((Nat.coprime_primes Nat.prime_two hl).mpr (Ne.symm hl2))
     simpa using (ZMod.isUnit_iff_coprime 2 (l ^ n)).mpr hc
-  obtain ⟨z, hzS, hzc, hzΔ⟩ := GlobalTheory.T.exists_cocycle_extension_of_neg_central_element (Gam N l) (ZMod (l ^ n)) (MvPolynomial (Fin 2) (ZMod (l ^ n)))
+  obtain ⟨z, hzS, hzc, hzΔ⟩ := _root_.GlobalTheory.KZ.H3.exists_cocycle_extension_of_neg_action (Gam N l) (ZMod (l ^ n)) (MvPolynomial (Fin 2) (ZMod (l ^ n)))
     (fun g => (slP ((g : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ)).toLinearMap)
     (fun g h v => by simp [L1]) (fun v => by simp [L2]) h2
     (MvPolynomial.homogeneousSubmodule (Fin 2) (ZMod (l ^ n)) w)

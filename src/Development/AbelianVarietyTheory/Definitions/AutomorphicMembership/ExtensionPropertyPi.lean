@@ -154,10 +154,6 @@ def Loc.pi (L : ι → ModuliIntegralCharts.Loc D r j p) : ModuliIntegralCharts.
   degLie c := (L c.1).degLie c.2
   degLdR c := (L c.1).degLdR c.2
 
-theorem Loc.bs_pi (L : ι → ModuliIntegralCharts.Loc D r j p) (b : Option ℕ) :
-    ModuliIntegralCharts.bs (Loc.pi L) b = fun v => ModuliIntegralCharts.bs (L v) b := by
-  cases b <;> rfl
-
 def ExtA.pi [Finite ι] [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p} (G : ∀ v, ModuliIntegralCharts.ExtA D (L v)) :
     ModuliIntegralCharts.ExtA D (Loc.pi L) where
   FlagData Z := ∀ v, (G v).FlagData (Z v)
@@ -500,30 +496,6 @@ variable (L : ι → ModuliIntegralCharts.Loc D r j p)
     f ∈ (Loc.pi L).H0 F ↔ ∀ v, f v ∈ (L v).H0 (F v) :=
   ⟨fun h v => h v (Set.mem_univ _), fun h v _ => h v⟩
 
-theorem Loc.exists_pi_mdl (v : ι) (Z : (L v).Mdl) : ∃ Z' : (Loc.pi L).Mdl, Z' v = Z := by
-  classical
-  exact ⟨Function.update (β := fun w => (L w).Mdl) (fun w => (L w).Xm) v Z, Function.update_self ..⟩
-
-theorem Loc.exists_pi_unim (v : ι) (La : (L v).Unim) : ∃ La' : (Loc.pi L).Unim, La' v = La := by
-  classical
-  exact ⟨Function.update (β := fun w => (L w).Unim) (fun w => (L w).latStd 0) v La, Function.update_self ..⟩
-
-variable {L} in
-
-theorem Loc.exists_pi_sec {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) (v : ι) (f : (L v).Sec (F v)) :
-    ∃ f' : (Loc.pi L).Sec F, f' v = f ∧ ∀ w, w ≠ v → f' w = 0 := by
-  classical
-  exact ⟨Function.update (β := fun w => (L w).Sec (F w)) (fun _ => 0) v f, Function.update_self ..,
-    fun _ h => Function.update_of_ne h _ _⟩
-
-theorem Loc.thetaExt_pi (La : (Loc.pi L).Unim)
-    (H : ∀ v, ∃ P : (L v).LBG (La v), (L v).resQ P = (L v).PPq (La v) ∧ (L v).symmG P ∧ (L v).rigG P ∧
-      ∀ y, ∃ M : (L v).LBB y (La v), (L v).principal M ∧ (L v).resGt P y = (L v).prPull M) :
-    ∃ P : (Loc.pi L).LBG La, (Loc.pi L).resQ P = (Loc.pi L).PPq La ∧ (Loc.pi L).symmG P ∧ (Loc.pi L).rigG P ∧
-      ∀ y, ∃ M : (Loc.pi L).LBB y La, (Loc.pi L).principal M ∧ (Loc.pi L).resGt P y = (Loc.pi L).prPull M := by
-  choose P h₁ h₂ h₃ h₄ using H
-  exact ⟨P, funext h₁, h₂, h₃, fun y => h₄ y.1 y.2⟩
-
 end Values
 
 section Transfer
@@ -556,161 +528,6 @@ variable [Finite ι] [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p}
 
 @[simp] theorem ExtA.pi_spz {Z : (Loc.pi L).Mdl} (v : ι) (x x' : (G v).ZP (Z v)) :
     (ExtA.pi G).spz (Z := Z) ⟨v, x⟩ ⟨v, x'⟩ ↔ (G v).spz x x' := sigmaRel_mk
-
-theorem ExtA.pi_isHT {n : ℕ} (h : (ExtA.pi G).HTn n) : (ExtA.pi G).IsHT h ↔ ∀ v, (G v).IsHT (h v) :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem ExtA.pi_blowUp_jIdl (b : Option ℕ) (d : (ExtA.pi G).IvD b) (v : ι) :
-    (ExtA.pi G).blowUp (ModuliIntegralCharts.bs (Loc.pi L) b) ((ExtA.pi G).jIdl b d) v =
-      (G v).blowUp (ModuliIntegralCharts.bs (L v) b) ((G v).jIdl b (d v)) := by
-  cases b <;> rfl
-
-theorem ExtA.zz_of_pi {N : ℕ} {Z : (Loc.pi L).Mdl} (h : (ExtA.pi G).ZZ N Z) (v : ι) : (G v).ZZ N (Z v) := by
-  induction h with
-  | base b hb => rw [Loc.bs_pi]; exact .base b hb
-  | flag s _ ih => exact .flag (s v) ih
-  | blow I _ hp hc ih => exact .blow (I v) ih (hp v) fun y e χ => hc ⟨v, y⟩ e χ
-  | diag c _ _ ih₁ ih₂ => exact .diag (c v) ih₁ ih₂
-  | jblow b d hb => rw [ExtA.pi_blowUp_jIdl]; exact .jblow b (d v) hb
-
-theorem ExtA.aHT_pi_iff : (ExtA.pi G).aHT ↔ ∀ v, (G v).aHT := by
-  refine ⟨fun H v Z y => ?_, fun H Z y => H y.1 (Z y.1) y.2⟩
-  obtain ⟨Z, rfl⟩ := Loc.exists_pi_mdl L v Z
-  exact H Z ⟨v, y⟩
-
-theorem ExtA.aKrull_pi_iff : (ExtA.pi G).aKrull ↔ ∀ v, (G v).aKrull := by
-  constructor
-  · intro H v Z η x hx
-    obtain ⟨Z, rfl⟩ := Loc.exists_pi_mdl L v Z
-    exact (H Z ⟨v, η⟩ ⟨v, x⟩ (SigmaRel.mk hx)).imp
-      (fun h => sigma_mk_injective (β := fun w => (G w).ZP (Z w)) h) id
-  · rintro H Z ⟨v, η⟩ ⟨w, x⟩ hx
-    obtain rfl : w = v := SigmaRel.fst_eq hx
-    exact (H w (Z w) η x ((ExtA.pi_spz G w _ _).1 hx)).imp
-      (congrArg (Sigma.mk (β := fun w => (G w).ZP (Z w)) w)) id
-
-theorem ExtA.aNorm_pi (H : ∀ v, (G v).aNorm) : (ExtA.pi G).aNorm := fun Z F hF f =>
-  ⟨fun h v _ => (H v (Z v) (F v) (hF v) (f v)).1 fun η => h ⟨v, η⟩,
-    fun B h y => (H y.1 (Z y.1) (F y.1) (hF y.1) (f y.1)).2 B (fun η => h ⟨y.1, η⟩) y.2⟩
-
-theorem ExtA.aTube_pi (H : ∀ v, (G v).aTube) : (ExtA.pi G).aTube := by
-  rintro Z ⟨v, η⟩ hη F hF f
-  obtain ⟨y, hy⟩ := H v (Z v) η hη (F v) (hF v) (f v)
-  exact ⟨⟨v, y⟩, hy⟩
-
-theorem ExtA.aOrd1_pi (H : ∀ v, (G v).aOrd1) : (ExtA.pi G).aOrd1 := fun Z y e χ hχ F hF et i φ h =>
-  H y.1 (Z y.1) y.2 e χ hχ (F y.1) (hF y.1) (et y.1) i (φ y.1) (h y.1)
-
-theorem ExtA.aOrd2_pi (H : ∀ v, (G v).aOrd2) : (ExtA.pi G).aOrd2 := fun Z y e χ hχ F hF et het a h =>
-  H y.1 (Z y.1) y.2 e χ hχ (F y.1) (hF y.1) (et y.1) (het y.1 (Set.mem_univ _)) a h
-
-theorem ExtA.aOrd3_pi (H : ∀ v, (G v).aOrd3) : (ExtA.pi G).aOrd3 := fun Z F hF et i φ h y =>
-  H y.1 (Z y.1) (F y.1) (hF y.1) (et y.1) i (φ y.1) (fun y' => h ⟨y.1, y'⟩) y.2
-
-theorem ExtA.aSub_pi (H : ∀ v, (G v).aSub) : (ExtA.pi G).aSub := fun n Z' hn hZ h C =>
-  H C.1 n (Z' C.1) hn (hZ C.1) (fun τ => h τ C.1) C.2
-
-theorem ExtA.aClose_pi (H : ∀ v, (G v).aClose) : (ExtA.pi G).aClose := by
-  rintro n Z' hn hZ ⟨v, CQ⟩
-  obtain ⟨c, s, m, hc, h⟩ := H v n (Z' v) hn (hZ v) CQ
-  have hi : Function.Injective (Sigma.mk (β := fun w => (G w).CrvS (Z' w)) v) := sigma_mk_injective
-  refine ⟨c, s.map ⟨_, hi⟩, Function.extend (Sigma.mk v) m 0, hc, fun τ i h₁ h₂ => ?_⟩
-  refine (h τ i h₁ h₂).trans (Eq.trans ?_ (Finset.sum_map s ⟨_, hi⟩ _).symm)
-  refine Finset.sum_congr rfl fun C _ => ?_
-  exact congrArg (fun k : ℕ => (k : ℤ) * (G v).degGr C τ i) (hi.extend_apply m 0 C).symm
-
-theorem ExtA.baseCharts_pi (H : ∀ v, (G v).ChartLiftsThroughSteps) : (ExtA.pi G).ChartLiftsThroughSteps := by
-  rintro ⟨v, y⟩ hy N
-  obtain ⟨e, φ, h⟩ := H v y hy N
-  refine ⟨e, φ, fun b hb => ?_⟩
-  cases b with
-  | none => exact h none hb
-  | some n => exact h (some n) hb
-
-theorem ExtA.aCl_pi (H : ∀ v, (G v).aCl) : (ExtA.pi G).aCl := by
-  refine ⟨fun Z s y e χ => (H y.1).1 (Z y.1) (s y.1) y.2 e χ,
-    fun Z I y e χ hχ hp => (H y.1).2.1 (Z y.1) (I y.1) y.2 e χ hχ (hp y.1),
-    fun Z₁ Z₂ c y e => (H y.1).2.2.1 (Z₁ y.1) (Z₂ y.1) (c y.1) y.2 e, fun b d y e => ?_⟩
-  cases b with
-  | none => exact (H y.1).2.2.2 none (d y.1) y.2 e
-  | some n => exact (H y.1).2.2.2 (some n) (d y.1) y.2 e
-
-theorem ExtA.aHTI_pi (H : ∀ v, (G v).aHTI) : (ExtA.pi G).aHTI := fun n hn h hh =>
-  ⟨fun v => (H v n hn (h v) fun y => hh ⟨v, y⟩).1,
-    fun y e => (H y.1 n hn (h y.1) fun y' => hh ⟨y.1, y'⟩).2 y.2 e⟩
-
-theorem ExtA.extensionProperty_pi (H : ∀ v, (G v).p0) : (ExtA.pi G).p0 := fun l =>
-  ⟨fun f y => (H y.1 l).1 (f y.1) y.2, Set.ext fun f =>
-    ⟨fun h y => ((Set.ext_iff.1 (H y.1 l).2 (f y.1)).1 (h y.1 (Set.mem_univ _))) y.2,
-      fun h v _ => (Set.ext_iff.1 (H v l).2 (f v)).2 fun y => h ⟨v, y⟩⟩⟩
-
-theorem ExtA.pC_pi (H : ∀ v, (G v).pC) : (ExtA.pi G).pC := by
-  rintro ⟨v, y⟩ hy N
-  obtain ⟨⟨e, h₁⟩, h₂⟩ := H v y hy N
-  refine ⟨⟨e, fun Z hZ => h₁ (Z v) (ExtA.zz_of_pi G hZ v)⟩, fun b hb => ?_⟩
-  cases b with
-  | none => exact fun e χ hχ d => h₂ none hb e χ hχ (d v)
-  | some n => exact fun e χ hχ d => h₂ (some n) hb e χ hχ (d v)
-
-theorem ExtA.pNV_pi (H : ∀ v, (G v).pNV) : (ExtA.pi G).pNV := fun N Z hZ η =>
-  H η.1 N (Z η.1) (ExtA.zz_of_pi G hZ η.1) η.2
-
-theorem ExtA.pTR_pi (H : ∀ v, (G v).pTR) : (ExtA.pi G).pTR := by
-  intro N Z hZ
-  refine ⟨fun F hF f => ?_, fun F₁ F₂ h₁ h₂ φ a b h y =>
-    (H y.1 N (Z y.1) (ExtA.zz_of_pi G hZ y.1)).2 (F₁ y.1) (F₂ y.1) (h₁ y.1) (h₂ y.1) (φ y.1) a b
-      (fun y' => h ⟨y.1, y'⟩) y.2⟩
-  choose y₀ hg hle using fun v => (H v N (Z v) (ExtA.zz_of_pi G hZ v)).1 (F v) (hF v) (f v)
-  obtain ⟨v, hv⟩ := Finite.exists_max fun v => (L v).nrm (F v) (f v) (y₀ v)
-  exact ⟨⟨v, y₀ v⟩, hg v, fun y => (hle y.1 y.2).trans (hv y.1)⟩
-
-theorem ExtA.pORD_pi (H : ∀ v, (G v).pORD) : (ExtA.pi G).pORD := fun N Z hZ F hF et het i φ h y =>
-  H y.1 N (Z y.1) (ExtA.zz_of_pi G hZ y.1) (F y.1) (hF y.1) (et y.1) (het y.1 (Set.mem_univ _)) i (φ y.1) (h y.1) y.2
-
-theorem ExtA.pFJ_pi (H : ∀ v, (G v).pFJ) : (ExtA.pi G).pFJ := fun l f h t =>
-  H t.1 l (f t.1) (fun y => h ⟨t.1, y⟩) t.2
-
-theorem ExtA.pHTa_pi_iff : (ExtA.pi G).pHTa ↔ ∀ v, (G v).pHTa := by
-  constructor
-  · intro H v n hn
-    obtain ⟨⟨h, hh⟩, h₂⟩ := H n hn
-    exact ⟨⟨h v, fun y => hh ⟨v, y⟩⟩, fun y => h₂ ⟨v, y⟩⟩
-  · intro H n hn
-    choose h hh using fun v => (H v n hn).1
-    exact ⟨⟨h, fun y => hh y.1 y.2⟩, fun y => (H y.1 n hn).2 y.2⟩
-
-theorem ExtA.zz_of_isHTBlowup (HI : ∀ v, (G v).aHTI) {n : ℕ} (hn : 3 ≤ n) {Z' : (Loc.pi L).Mdl}
-    (hZ : (Loc.pi L).IsHTBlowup Z' ((Loc.pi L).Xn n)) : (ExtA.pi G).ZZ n Z' := by
-  obtain ⟨h, hh, rfl⟩ := ((ExtA.pi G).IsHTBlowup_def n Z' hn).1 hZ
-  obtain ⟨h₁, h₂⟩ := ExtA.aHTI_pi G HI n hn h hh
-  exact .blow _ (.base (some n) ⟨hn, le_rfl⟩) h₁ h₂
-
-theorem ExtA.pHTb_pi (HI : ∀ v, (G v).aHTI) (H : ∀ v, (G v).pHTb) : (ExtA.pi G).pHTb := fun n hn =>
-  ⟨fun h hh y => (H y.1 n hn).1 (h y.1) (fun y' => hh ⟨y.1, y'⟩) y.2, fun Z' hZ =>
-    ⟨ExtA.zz_of_isHTBlowup G HI hn hZ, .flag _ (ExtA.zz_of_isHTBlowup G HI hn hZ),
-      fun y => ((H y.1 n hn).2 (Z' y.1) (hZ y.1)).2.2.1 y.2,
-      fun v => ((H v n hn).2 (Z' v) (hZ v)).2.2.2.1,
-      fun s τ v => ((H v n hn).2 (Z' v) (hZ v)).2.2.2.2.1 s τ,
-      fun τ v => ((H v n hn).2 (Z' v) (hZ v)).2.2.2.2.2 τ⟩⟩
-
-theorem ExtA.pHTc_pi (H : ∀ v, (G v).pHTc) : (ExtA.pi G).pHTc := fun n hn Z' hZ =>
-  ⟨fun l hl => ⟨fun v => ((H v n hn (Z' v) (hZ v)).1 l hl).1, fun v => ((H v n hn (Z' v) (hZ v)).1 l hl).2⟩,
-    fun y => (H y.1 n hn (Z' y.1) (hZ y.1)).2.1 y.2, fun v => (H v n hn (Z' v) (hZ v)).2.2⟩
-
-theorem ExtA.pHTd_pi (H : ∀ v, (G v).pHTd) : (ExtA.pi G).pHTd := fun n hn Z' hZ l v =>
-  H v n hn (Z' v) (hZ v) l
-
-theorem ExtA.pGG_pi_iff : (ExtA.pi G).pGG ↔ ∀ v, (G v).pGG := by
-  constructor
-  · rintro ⟨B, h₁, h₂⟩ v
-    exact ⟨fun n hn => B n hn v, fun n hn => h₁ n hn v, fun n hn => h₂ n hn v⟩
-  · intro H
-    choose B h₁ h₂ using H
-    exact ⟨fun n hn v => B v n hn, fun n hn v => h₁ v n hn, fun n hn v => h₂ v n hn⟩
-
-theorem ExtA.pDR_pi_iff : (ExtA.pi G).pDR ↔ ∀ v, (G v).pDR :=
-  ⟨fun H v => ⟨fun c => H.1 ⟨v, c⟩, fun μ h₁ h₂ c => H.2 μ h₁ h₂ ⟨v, c⟩⟩,
-    fun H => ⟨fun c => (H c.1).1 c.2, fun μ h₁ h₂ c => (H c.1).2 μ h₁ h₂ c.2⟩⟩
 
 end Transfer
 
@@ -750,82 +567,7 @@ variable [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p} (B : ∀ v,
 @[simp] theorem LocB.pi_NN (v : ι) (y : (L v).Pt (L v).Xm) (nW n : ℕ) :
     (LocB.pi B α hα).NN ⟨v, y⟩ nW n = (B v).NN y nW n := rfl
 
-theorem LocB.exists_secOf_pi_iff {F : (Loc.pi L).Sh (Loc.pi L).Xm} (s : (Loc.pi L).Sec F) :
-    (∃ φ : (Loc.pi L).GIso (LocB.pi B α hα).oX F, (LocB.pi B α hα).secOf φ = s) ↔
-      ∀ v, ∃ φ : (L v).GIso (B v).oX (F v), (B v).secOf φ = s v :=
-  ⟨fun ⟨φ, h⟩ v => ⟨φ v, congrFun h v⟩, fun H => ⟨fun v => (H v).choose, funext fun v => (H v).choose_spec⟩⟩
-
-theorem LocB.poincareExt_pi (La : (Loc.pi L).Unim)
-    (H : ∀ v, ∃ P : (B v).StrictHenselianAcyclic (La v), (B v).res2 P = (B v).PoiQ (La v) ∧ (B v).biext P ∧
-      (L v).symmG ((B v).dg P) ∧ (L v).rigG ((B v).dg P) ∧
-      ∀ y, ∃ M : (L v).LBB y (La v), (L v).principal M ∧ (L v).resGt ((B v).dg P) y = (L v).prPull M) :
-    ∃ P : (LocB.pi B α hα).StrictHenselianAcyclic La, (LocB.pi B α hα).res2 P = (LocB.pi B α hα).PoiQ La ∧ (LocB.pi B α hα).biext P ∧
-      (Loc.pi L).symmG ((LocB.pi B α hα).dg P) ∧ (Loc.pi L).rigG ((LocB.pi B α hα).dg P) ∧
-      ∀ y, ∃ M : (Loc.pi L).LBB y La, (Loc.pi L).principal M ∧
-        (Loc.pi L).resGt ((LocB.pi B α hα).dg P) y = (Loc.pi L).prPull M := by
-  choose P h₁ h₂ h₃ h₄ h₅ using H
-  exact ⟨P, funext h₁, h₂, h₃, h₄, fun y => h₅ y.1 y.2⟩
-
-theorem LocB.mul_pi_iff : (LocB.pi B α hα).Mul ↔ ∀ v, (B v).Mul := by
-  refine ⟨fun H v Z y => ?_, fun H Z y => H y.1 y.2⟩
-  obtain ⟨Z, rfl⟩ := Loc.exists_pi_mdl L v Z
-  exact H (Z := Z) ⟨v, y⟩
-
-theorem LocB.fer_pi_iff : (LocB.pi B α hα).FER ↔ ∀ v, (B v).FER :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem LocB.regR_pi_iff : (LocB.pi B α hα).RegR ↔ ∀ v, (B v).RegR :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem LocB.locFree_pi_iff : (LocB.pi B α hα).LocFree ↔ ∀ v, (B v).LocFree :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem LocB.fou_pi_iff : (LocB.pi B α hα).Fou ↔ ∀ v, (B v).Fou :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem LocB.freeB_pi_iff : (LocB.pi B α hα).FreeB ↔ ∀ v, (B v).FreeB :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem LocB.actF_pi_iff : (LocB.pi B α hα).ActF ↔ ∀ v, (B v).ActF :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem LocB.jetB_pi_iff : (LocB.pi B α hα).JetB ↔ ∀ v, (B v).JetB :=
-  ⟨fun H v y => H ⟨v, y⟩, fun H y => H y.1 y.2⟩
-
-theorem LocB.vthF_pi_iff : (LocB.pi B α hα).VthF ↔ ∀ v, (B v).VthF := by
-  constructor
-  · intro H v y
-    obtain rfl := hα v
-    exact H ⟨v, y⟩
-  · rintro H ⟨v, y⟩
-    obtain rfl := hα v
-    exact H v y
-
-theorem LocB.desc_pi (H : ∀ v, (B v).Desc) : (LocB.pi B α hα).Desc := fun h v => H v fun z => h ⟨v, z⟩
-
-omit [Nonempty ι] in
-
-theorem Loc.perf_pi_iff : BoundaryLocalData.LocB.Perf (Loc.pi L) ↔ ∀ v, BoundaryLocalData.LocB.Perf (L v) := by
-  refine ⟨fun H v y La => ?_, fun H y La => H y.1 y.2 (La y.1)⟩
-  obtain ⟨La, rfl⟩ := Loc.exists_pi_unim L v La
-  exact H ⟨v, y⟩ La
-
 end TransferB
-
-example [Fintype ι] [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p} (G : ∀ v, ModuliIntegralCharts.ExtA D (L v)) (Z : (Loc.pi L).Mdl) :
-    Nat.card ((Loc.pi L).Gen Z) = ∑ v, Nat.card ((L v).Gen (Z v)) := by
-  haveI := fun v => (G v).genFin (Z v)
-  exact Nat.card_sigma
-
-example [Finite ι] [Nonempty ι] {L : ι → ModuliIntegralCharts.Loc D r j p} (G : ∀ v, ModuliIntegralCharts.ExtA D (L v)) (Z : (Loc.pi L).Mdl)
-    {v w : ι} (h : v ≠ w) (x : (G v).ZP (Z v)) (x' : (G w).ZP (Z w)) :
-    ¬ (ExtA.pi G).spz (Z := Z) ⟨v, x⟩ ⟨w, x'⟩ := fun hs => h (SigmaRel.fst_eq hs)
-
-example (L : ModuliIntegralCharts.Loc D r j p) : (Loc.pi fun _ : Unit => L).Pt (Loc.pi fun _ : Unit => L).Xm ≃ L.Pt L.Xm :=
-  Equiv.uniqueSigma fun _ : Unit => L.Pt L.Xm
-
-example (L : ι → ModuliIntegralCharts.Loc D r j p) {Z : (Loc.pi L).Mdl} (F : (Loc.pi L).Sh Z) (f : (Loc.pi L).Sec F) :
-    (∀ y, (Loc.pi L).nrm F f y ≤ 1) ↔ ∀ v y, (L v).nrm (F v) (f v) y ≤ 1 := Sigma.forall
 
 end GlobalTheory.LocM
 

@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FiltrationZeroMembership
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicAdmissibleSemistable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvertibleDeRhamPeriodMatrixOfIsDRStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemistableOfInvertiblePeriodMatrixSemistableRiStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPotentiallySemistableOfSemistableRestrictStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvertibleDeRhamPeriodMatrixOfIsDR
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemistableOfInvertiblePeriodMatrixSemistableRi
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPotentiallySemistableOfSemistableRestrict
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon TensorProduct
 open scoped Formalism.Per
 
@@ -52,21 +53,21 @@ theorem deRhamPotSemistable_of_matThm : MatThm → GlobalTheory.Published.DeRham
       exact (continuous_algebraMap ℚ_[l] (Om l)).comp h1
   have hD : AdmDR P (matRep b ρ) := by
     intro m
-    obtain ⟨Q, hQ⟩ := GlobalTheory.T.exists_invertible_deRhamPeriodMatrix_of_isDR l P AI T _ K V b ρ hDR
+    obtain ⟨Q, hQ⟩ := _root_.GlobalTheory.DRMat.exists_period_matrix_of_isDR l P AI T _ K V b ρ hDR
     refine ⟨Q, fun g => ?_⟩
     convert hQ g using 2
     refine Matrix.ext fun i j => ?_
     rw [matD, Matrix.map_apply, matRep_apply, fr_q, kd_alg, toMatrix_map_apply]
   obtain ⟨K', hK, Q, hQ⟩ := hM l P AI T _ K 1 (matRep b ρ) hR hD
   have hS : IsSst P (resTo ρ hK) := by
-    refine GlobalTheory.T.isSemistable_of_invertible_periodMatrix_semistableRing l P AI T _ K' V b (resTo ρ hK) Q fun g => ?_
+    refine _root_.GlobalTheory.PMon.isSst_of_periodMatrix l P AI T _ K' V b (resTo ρ hK) Q fun g => ?_
     convert hQ g using 2
     refine Matrix.ext fun i j => ?_
     simp only [Matrix.map_apply]
     rw [matRep_apply, LinearMap.toMatrix_apply, ks, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply,
       Polynomial.algebraMap_apply]
     rfl
-  exact GlobalTheory.T.isPotentiallySemistable_of_semistable_restrict l P AI T K K' hK V ρ hS
+  exact _root_.GlobalTheory.PMon.isPst_of_isSst_resTo l P AI T K K' hK V ρ hS
 
 end GlobalTheory.PMon.FromMat
 

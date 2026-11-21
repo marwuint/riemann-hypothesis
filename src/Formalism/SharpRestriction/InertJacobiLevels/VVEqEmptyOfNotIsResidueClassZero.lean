@@ -50,13 +50,6 @@ theorem eq_resChar_of_mem (w : D.what₂.places.Pl) (p : ℕ) (hp : p.Prime)
   rw [h2] at h1
   exact (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
-theorem resChar_conj (w : D.what₂.places.Pl) :
-    D.what₂.places.resChar (D.what₂.places.conj w) = D.what₂.places.resChar w := by
-  apply eq_resChar_of_mem D _ _ (D.what₂.places.resChar_prime w)
-  apply natCast_mem_of_val_pos D _ _ (D.what₂.places.resChar_prime w).ne_zero
-  rw [D.conj_val, star_natCast, D.what₂.places.val_resChar]
-  exact_mod_cast D.what₂.places.ramIdx_pos w
-
 theorem finite_resChar_le (B : ℝ) :
     {w : D.what₂.places.Pl | ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ B}.Finite := by
   have hM0 : ((Nat.factorial ⌊B⌋₊ : ℕ) : 𝓞 D.what₂.LL) ≠ 0 := by
@@ -83,88 +76,7 @@ theorem finite_resChar_mem (S : Finset ℕ) : {w : D.what₂.places.Pl | D.what�
   simp only [Set.mem_setOf_eq] at hw ⊢
   exact_mod_cast Finset.le_sup (f := id) hw
 
-theorem exists_place_over (p : ℕ) (hp : p.Prime) : ∃ w : D.what₂.places.Pl, D.what₂.places.resChar w = p := by
-  have hp0 : (p : 𝓞 D.what₂.LL) ≠ 0 := by
-    intro h0
-    have := congrArg (algebraMap (𝓞 D.what₂.LL) D.what₂.LL) h0
-    rw [map_natCast, map_zero] at this
-    exact hp.ne_zero (by exact_mod_cast this)
-  have hnu : ¬ IsUnit (p : 𝓞 D.what₂.LL) := by
-    intro hu
-    have h1 := hu.map (Algebra.norm ℤ (S := 𝓞 D.what₂.LL))
-    rw [show (p : 𝓞 D.what₂.LL) = algebraMap ℤ (𝓞 D.what₂.LL) (p : ℤ) by simp,
-      Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff] at h1
-    have := hp.one_lt
-    rcases h1 with h1 | h1 <;> omega
-  obtain ⟨M, hM, hpM⟩ := Ideal.exists_le_maximal (Ideal.span {(p : 𝓞 D.what₂.LL)})
-    (by rwa [Ne, Ideal.span_singleton_eq_top])
-  let v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.what₂.LL) :=
-    ⟨M, hM.isPrime, fun hb => hp0 ((Ideal.mem_bot).1 (hb ▸ hpM (Ideal.mem_span_singleton_self _)))⟩
-  refine ⟨D.plEq.symm v, eq_resChar_of_mem D _ p hp ?_⟩
-  rw [Equiv.apply_symm_apply]
-  exact hpM (Ideal.mem_span_singleton_self _)
-
 end Places
-
-section Base
-
-variable {N : ℕ} [NeZero N]
-
-theorem val_orbit (h t : ZMod N) (i : ℕ) : (t + i • h).val = (t.val + i * h.val) % N := by
-  rw [show t + i • h = ((t.val + i * h.val : ℕ) : ZMod N) by
-    simp [nsmul_eq_mul, ZMod.natCast_zmod_val], ZMod.val_natCast]
-
-def bsVal (N h t : ℕ) : ℕ := sInf {v | ∃ i : ℕ, (t + i * h) % N = v}
-
-theorem bsVal_mem (N h t : ℕ) : ∃ i : ℕ, (t + i * h) % N = bsVal N h t := by
-  unfold bsVal
-  exact Nat.sInf_mem (s := {v | ∃ i : ℕ, (t + i * h) % N = v}) ⟨(t + 0 * h) % N, 0, rfl⟩
-
-def bsC (h t : ZMod N) : ZMod N := (bsVal N h.val t.val : ℕ)
-
-theorem bsC_val (h t : ZMod N) : (bsC h t).val = bsVal N h.val t.val := by
-  unfold bsC
-  rw [ZMod.val_natCast]
-  obtain ⟨i, hi⟩ := bsVal_mem N h.val t.val
-  rw [← hi, Nat.mod_mod]
-
-theorem bsC_eq (h t : ZMod N) : ∃ i : ℕ, bsC h t = t + i • h := by
-  obtain ⟨i, hi⟩ := bsVal_mem N h.val t.val
-  refine ⟨i, ?_⟩
-  unfold bsC
-  rw [← hi, ZMod.natCast_mod]
-  simp [nsmul_eq_mul, ZMod.natCast_zmod_val]
-
-theorem card_nsmul_zmod (h : ZMod N) : N • h = 0 := by
-  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
-
-theorem bsC_orb (h t : ZMod N) : ∃ i : ℕ, bsC h t + i • h = t := by
-  obtain ⟨i, hi⟩ := bsC_eq h t
-  refine ⟨(N - 1) * i, ?_⟩
-  rw [hi]
-  have hN : 1 ≤ N := Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-  simp only [nsmul_eq_mul, Nat.cast_mul, Nat.cast_sub hN, ZMod.natCast_self, Nat.cast_one]
-  ring
-
-theorem bsC_step (h t : ZMod N) : bsC h (t + h) = bsC h t := by
-  have hN : 1 ≤ N := Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-  unfold bsC
-  congr 1
-  unfold bsVal
-  congr 1
-  ext v
-  simp only [Set.mem_setOf_eq, ← val_orbit]
-  constructor
-  · rintro ⟨i, rfl⟩
-    refine ⟨i + 1, ?_⟩
-    rw [add_nsmul, one_nsmul, add_comm (i • h) h, ← add_assoc]
-  · rintro ⟨i, rfl⟩
-    refine ⟨i + (N - 1), ?_⟩
-    congr 1
-    simp only [nsmul_eq_mul, Nat.cast_add, Nat.cast_sub hN, ZMod.natCast_self, Nat.cast_one]
-    ring
-
-end Base
 
 theorem scale_b'_nonneg (sc : Scale) : 0 ≤ sc.b' := by
   have hx : 0 < sc.x := by linarith [sc.one_lt_alt]
@@ -344,12 +256,6 @@ theorem eTau_tauOf (z : Bool × G.HH D) : (D.eTau (tauOf D z) : D.R.GG) = G.plGG
   unfold tauOf
   simp
 
-theorem eq_tauOf (τ : D.what₂.Tau) (z : Bool × G.HH D) (h : (D.eTau τ : D.R.GG) = G.plGG D z) :
-    τ = tauOf D z := by
-  unfold tauOf
-  rw [Equiv.eq_symm_apply]
-  exact Subtype.ext h
-
 theorem tau1_injective (φ : Formalism.HC.Frame) : Function.Injective φ.tau1 := by
   intro s t hst
   exact Multiplicative.ofAdd.injective (congrArg Prod.snd hst)
@@ -376,11 +282,6 @@ theorem plGG_top_iff (z : Bool × G.HH D) : G.plGG D z ∈ D.host.topPlaces ↔ 
     have h1 : ((1 : ℤˣ), (1 : ℤˣ)) = ((-1 : ℤˣ), (1 : ℤˣ)) := congrArg Prod.fst hst
     have h2 : (1 : ℤˣ) = -1 := congrArg Prod.fst h1
     exact absurd (congrArg Units.val h2) (by norm_num)
-
-theorem mem_thickPlaces (g : D.R.GG) :
-    g ∈ D.host.thickPlaces ↔ ∃ s ∈ D.host.T2, D.R.tau2 (D.R.dig s + D.host.u0) = g := by
-  unfold Formalism.BasicNotions.Host.thickPlaces
-  rw [Finset.mem_image]
 
 theorem plGG_thick_iff (z : Bool × G.HH D) : G.plGG D z ∈ D.host.thickPlaces ↔ G.IsThickPl D z := by
   obtain ⟨b, t⟩ := z
@@ -460,15 +361,6 @@ def instW (kapI : ℕ → (n' : ℕ) → Finset (Fin n') → (Fin n' → ℤ) �
   kapI := kapI
   ep := ep
 
-theorem instW_fill (kapI : ℕ → (n' : ℕ) → Finset (Fin n') → (Fin n' → ℤ) → (Fin n' → ℤ) → ℝ) (ep : ℕ → ℕ) :
-    ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × G.HH D), (D.eTau τ : D.R.GG) = G.plGG D z →
-      G.fill (instW L kapI ep) (G.bL L) j z = wj D j τ := by
-  intro j hj τ z hτ
-  have e := eq_tauOf D τ z hτ
-  subst e
-  simp only [G.fill, instW, offW, if_pos hj]
-  split_ifs <;> ring
-
 end InstW
 
 section Comparison₂
@@ -494,13 +386,6 @@ theorem one_le_fill (hw : 1 ≤ L0.sc.w'' D.R.n) (j : ℕ) (z : Bool × G.HH D) 
     by_cases hthick : G.IsThickPl D z
     · linarith [(X0.off_thick j z hthick).1, hs.2]
     · linarith [(X0.off_thin j z ⟨htop, hthick⟩).1]
-
-theorem TTP_subset (a b : G.HH D → ℤ) (p : ℕ) : ∀ t ∈ G.TTP X0 K a b p, t ∈ D.host.TT := by
-  intro t ht
-  unfold G.TTP at ht
-  split at ht
-  · exact ht
-  · exact (Finset.mem_filter.1 ht).1
 
 def belowSupp : Finset D.what₂.places.Pl := (finite_resChar_le D (L0.sc.X'' D.R.n)).toFinset
 
@@ -635,42 +520,6 @@ def tieInst : G.Inst D (tieWeightData L0 X0 K dr len hw hg hu) where
   off_thick := X0.off_thick
   kapI := X0.kapI
   ep := X0.ep
-
-theorem tie_supp_sat (w : D.what₂.places.Pl)
-    (h : ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ (tieWeightData L0 X0 K dr len hw hg hu).sc.X'' D.R.n) :
-    w ∈ (tieWeightData L0 X0 K dr len hw hg hu).supp := by
-  exact (mem_tieSupp L0 w).2 (Or.inl h)
-
-theorem tie_supp_old (w : D.what₂.places.Pl) (h : w ∈ L0.supp) : w ∈ (tieWeightData L0 X0 K dr len hw hg hu).supp := by
-  exact (mem_tieSupp L0 w).2 (Or.inr (Or.inr h))
-
-theorem tie_FDef : (tieWeightData L0 X0 K dr len hw hg hu).FDef := by
-  intro j _ w
-  rfl
-
-theorem tie_fills
-    (hf : ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × G.HH D),
-      (D.eTau τ : D.R.GG) = G.plGG D z → G.fill X0 (G.bL L0) j z = wj D j τ)
-    (w : D.what₂.places.Pl) :
-    G.ParametersFill (tieInst L0 X0 K dr len hw hg hu) K w := by
-  unfold G.ParametersFill
-  intro p
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · exact hf
-  · intro j t e
-    rfl
-  · dsimp only [tieWeightData]
-    rw [Finset.subtype_map, Finset.filter_true_of_mem (TTP_subset L0 X0 K _ _ _)]
-    rfl
-  · intro h1 h2 j _
-    dsimp only [tieWeightData]
-    split
-    · rfl
-    · rename_i hc
-      exact (hc ⟨h1, h2⟩).elim
-  · rfl
-  · rfl
-  · rfl
 
 end Comparison₂
 

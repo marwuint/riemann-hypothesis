@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StarMulOfMemKc
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsInvInvariantOfRight
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumNormEntriesLeSumSingularValuesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumNormEntriesLeSumSingularValues
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeasurableCoshPowStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LintegralExpNegMulSumNormStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LamBallULeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExpLogNearOneStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHermitianLogUnitaryBlockDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumNormSqExpHermSubOneLeBlockMatStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsometricChartBlockHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InvariantMeasureLowerBoundOfChartStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExpLogNearOne
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHermitianLogUnitaryBlockDiagonal
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumNormSqExpHermSubOneLeBlockMat
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsometricChartBlockHermitian
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InvariantMeasureLowerBoundOfChart
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoshConstNumericalBoundStatement
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.PolarU GlobalTheory.IndefiniteRowSideFullHecke.CartanCoshPower GlobalTheory.CartanInt Matrix MeasureTheory
@@ -62,17 +62,17 @@ theorem sq_matrixEntryNormSum_le_card_sq_mul_sum_sq (A : Mat p q) : l1 A ^ 2 ≤
 theorem measure_ball_K : ∀ (p q : ℕ) (mK : Measure (UpqT p q)), IsProbabilityMeasure mK → mK (Kc p q)ᶜ = 0 → (∀ k ∈ Kc p q, Measure.map (fun x => k * x) mK = mK) → ∀ δ : ℝ, 0 < δ → δ ≤ 1 / 20 → ENNReal.ofReal ((δ / (9 / 2)) ^ (p ^ 2 + q ^ 2)) ≤ mK {k | l1 (UpqT.mat k - 1) ≤ (((p + q : ℕ) : ℝ) ^ 2 / 4 + ((p ^ 2 + q ^ 2 : ℕ) : ℝ)) * δ} := by
   intro p q mK hprob hK0 hleft δ hδ hδ'
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc p q
-  obtain ⟨Φ, hΦc, hΦ, hiso, hsurj⟩ := GlobalTheory.T.exists_isometric_chart_blockHermitian p q
+  obtain ⟨Φ, hΦc, hΦ, hiso, hsurj⟩ := _root_.GlobalTheory.CartanInt.HermChart.exists_chart p q
   let θ : ((Fin p × Fin p) ⊕ (Fin q × Fin q) → ℝ) → UpqT p q := fun R =>
     GlobalTheory.CompactDualExists.expU ⟨Complex.I • Φ R, smul_mem_lieU (hΦ R).1 (hΦ R).2⟩
   have hθc : Continuous θ :=
     GlobalTheory.CompactDualExists.continuous_expU.comp ((hΦc.const_smul Complex.I).subtype_mk _)
-  have key := GlobalTheory.T.ofReal_pow_le_measure_of_chart_cover (UpqT p q) _ mK (Kc p q)
+  have key := _root_.GlobalTheory.CartanInt.invariant_measure_lower_bound_of_chart (UpqT p q) _ mK (Kc p q)
     {k | l1 (UpqT.mat k - 1) ≤ (((p + q : ℕ) : ℝ) ^ 2 / 4 + ((p ^ 2 + q ^ 2 : ℕ) : ℝ)) * δ} θ (89 / 20) δ hθc
     (isClosed_le continuous_matrixEntryNormSum_unitaryPQ_sub_one continuous_const) hK0
     (fun R => hleft _ (exp_mem_Kc (hΦ R).1 (hΦ R).2)) hδ (by norm_num) (by
       intro x hx
-      obtain ⟨H, hH, hHK, hHb, hxH⟩ := GlobalTheory.T.exists_hermitian_log_unitaryBlockDiagonal p q x hx
+      obtain ⟨H, hH, hHK, hHb, hxH⟩ := _root_.GlobalTheory.CartanInt.UnitLog.exists_unitlog p q x hx
       obtain ⟨R₀, rfl, hR₀⟩ := hsurj H hH hHK hHb
       refine ⟨R₀, hR₀, fun R hR => ?_⟩
       have e : UpqT.mat ((θ R)⁻¹ * x) =
@@ -80,7 +80,7 @@ theorem measure_ball_K : ∀ (p q : ℕ) (mK : Measure (UpqT p q)), IsProbabilit
         rw [mat_mul, hxH]; rfl
       show l1 (UpqT.mat ((θ R)⁻¹ * x) - 1) ≤ _
       rw [e]
-      have a1 := GlobalTheory.T.sum_norm_sq_exp_herm_sub_one_le_blockMat p q (Φ R₀) (Φ R) (hΦ R₀).1 (hΦ R).1
+      have a1 := _root_.GlobalTheory.CartanLip.exp_mul_exp_sub_one_le p q (Φ R₀) (Φ R) (hΦ R₀).1 (hΦ R).1
       rw [hiso] at a1
       have a2 : ∑ i, (R₀ i - R i) ^ 2 ≤ ((p ^ 2 + q ^ 2 : ℕ) : ℝ) * δ ^ 2 := by
         refine (Finset.sum_le_card_nsmul _ _ (δ ^ 2) fun i _ => ?_).trans (le_of_eq ?_)
@@ -146,7 +146,7 @@ theorem const_le (m mK : Measure (UpqT p q)) (hm : Formalism.IndefR.Lev.IsMinf m
       (9 / 2) ^ (p ^ 2 + q ^ 2) / Real.pi ^ (p * q) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc p q
   obtain ⟨-, lam, hlam, ht⟩ := hm
-  obtain ⟨ρ, hρ, hexp, hlog⟩ := GlobalTheory.T.exists_radius_exp_sub_one_le_and_exists_log p q
+  obtain ⟨ρ, hρ, hexp, hlog⟩ := _root_.GlobalTheory.CartanInt.ExpLocal.exp_log_near_one p q
   set a : ℝ := ((p + q : ℕ) : ℝ) with ha
   set w : ℝ := max 1 (3 / 2 * a ^ 2) with hw
   have hw1 : 1 ≤ w := le_max_left _ _
@@ -259,7 +259,7 @@ theorem integrand_le {c : ℝ} (hc : 2 * (((p + q : ℕ) : ℝ) - 1) < c) {k : U
             div_inv_eq_mul, mul_comm]
           congr 2; ring
   have h2 := polJ_le_exp (Matrix.of B)
-  have h3 := GlobalTheory.T.sum_norm_entries_le_sum_singularValues p q (Matrix.of B)
+  have h3 := _root_.GlobalTheory.CartanInt.Frob.sum_norm_le_sum_singVal p q (Matrix.of B)
   refine (mul_le_mul h1 h2 (zero_le_one.trans (one_le_polJ _)) (by positivity)).trans ?_
   rw [mul_assoc, ← Real.exp_add]
   refine mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (by positivity)

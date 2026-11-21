@@ -5,17 +5,17 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsZetaTW
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsZetaSystemFixedExponent
 import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsEqSubOfMemCob
-import Development.AbelianVarietyTheory.Definitions.Foundations.EigenfunctionalZeroProjection
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.PieceEqPieceT
 import Development.AbelianVarietyTheory.Definitions.Foundations.HtCoLOfEq
 import Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleHodgeTateZetaClassParams
 import Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleNewformZetaData
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamFROfIsLamF
-import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.ActWBOfInvariant
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalBMemKummerInvariantSet
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPrimitiveRootEOmLevel
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCuspFunctionalOddWeightOddPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCuspFunctionalOddWeightOddPrime
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsRootOfIsAlgClosed
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsCuspFunctionalValueModPrimePowDiamondIndepende
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsThBActSgDDiamIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaBasisLinearCombination
@@ -180,7 +180,7 @@ theorem _root_.UpperTheory.V.Z.Kato.K5.hco : ∀ (Ω : Type) [Field Ω] [Algebra
     obtain ⟨φ, h1, h2⟩ := hφ
     exact ⟨φ, h2, h1⟩
   choose φδ hφδ _ using fun δ : (ZMod N)ˣ =>
-    GlobalTheory.T.exists_cuspFunctional_oddWeight_oddPrime Ω ε X A N l halg hφ' hl2 hlN h5 hlnon n (2 * e - 1) hodd _ (hdB δ)
+    _root_.GlobalTheory.ThEx.thex Ω ε X A N l halg hφ' hl2 hlN h5 hlnon n (2 * e - 1) hodd _ (hdB δ)
   obtain ⟨Φ, hΦ, hΦc⟩ := GlobalTheory.LambdaValuationPowers.ZetaCoef.exists_isThB_sum X hj hlnon Finset.univ Finset.univ_nonempty u
     (fun δ => X.diam N l (δ : ZMod N).val f) φδ hdB hφδ
   have hInChi := GlobalTheory.LambdaValuationPowers.ZetaCoef.inChi_avg X (N := N) hlcop.symm (w := 2 * e - 1) (χ := χ)

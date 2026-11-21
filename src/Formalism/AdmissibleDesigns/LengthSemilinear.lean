@@ -232,27 +232,6 @@ private theorem plOf_idx_of_mem_plSet (v : HeightOneSpectrum (𝓞 D.host.E)) (h
   rw [dif_pos (Fin.is_lt _)]
   simp
 
-theorem plOf_mem_row {n : ℕ} (hn : n ∈ rowsN i dc) : plOf i dc n ∈ dc.row := by
-  unfold rowsN at hn
-  obtain ⟨v, hv, rfl⟩ := Finset.mem_image.mp hn
-  have hvp : v ∈ plSet i dc := by
-    unfold plSet
-    simp [hv]
-  rw [plOf_idx_of_mem_plSet i dc v hvp]
-  exact hv
-
-theorem tieRow_of (rowLen : ℕ → ℕ∞) (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
-    (hG : K.SelfGood i) (hadm : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ π dc lenRow) (hlen : LenOlSelf i)
-    (hT : RowTie i dc r ρ π rowLen) : TieRow i dc rowLen lenRow := by
-  intro n hn
-  have hrow := plOf_mem_row i dc hn
-  have hw : plOf i dc n ∈ placesOver D.host.E (D.nd.l i) := (dc.cover _).mp (Or.inl hrow)
-  have hb := hadm (plOf i dc n) hw hrow (TruncatedSeriesCountingIdentities.CoefExt.self i (plOf i dc n) hw) (hG _ hw)
-  obtain ⟨h1, h2⟩ := hT n hn hw (lenRow (plOf i dc n)) hb
-  refine ⟨h1, ?_⟩
-  rw [hlen (plOf i dc n) hw] at h2
-  linarith [h2, mul_comm (lenRow (plOf i dc n)) (((eON i).toNat : ℚ))]
-
 end Row
 
 end Formalism.MainNotions.N.K.Sel
@@ -362,16 +341,6 @@ theorem lenOlSelf {D : D7} (i : D.nd.Loc) : LenOlSelf i := by
   have h := length_semilinear (D.nbr i w hw).eO (quotSL (D.nbr i w hw).eO ((D.nd.l i : ℕ) : D.nd.O i))
   rw [map_natCast] at h
   exact h.symm
-
-theorem tieRow_rec {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
-    (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
-    (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
-    (rowLen : ℕ → ℕ∞) (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
-    (hG : K.SelfGood i) (hadm : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i r ρ π dc lenRow) (hT : RowTie i dc r ρ π rowLen) :
-    TieRow i dc rowLen lenRow := by
-  first
-  | exact tieRow_of i dc r ρ π rowLen lenRow hG hadm (lenOlSelf i) hT
-  | exact tieRow_of _ _ _ _ _ rowLen lenRow hG hadm (lenOlSelf i) hT
 
 end LenUnit
 

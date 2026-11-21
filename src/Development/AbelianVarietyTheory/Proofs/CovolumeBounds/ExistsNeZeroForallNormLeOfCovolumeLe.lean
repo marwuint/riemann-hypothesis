@@ -36,40 +36,4 @@ theorem covolume_eq_relIndex_mul_of_haar (L' L : Submodule ℤ V) [DiscreteTopol
 
 end Lattice
 
-section Strip
-
-def shearedBox (M ρ y : ℝ) : Set ℂ := {z | |2 * z.re| ≤ M ∧ |2 * z.re * y - z.im| ≤ ρ}
-
-end Strip
-
-section TotallyComplex
-
-open InfinitePlace
-
-end TotallyComplex
-
-section CM
-
-open InfinitePlace IsCMField
-open scoped nonZeroDivisors
-
-variable {E : Type*} [Field E] [NumberField E] [IsCMField E]
-
-end CM
-
-section Constant
-
-end Constant
-
-section Balls
-
-variable {ι : Type*} [Fintype ι] {W : ι → Type*} [∀ i, NormedAddCommGroup (W i)]
-  [∀ i, InnerProductSpace ℝ (W i)] [∀ i, FiniteDimensional ℝ (W i)]
-  [∀ i, MeasurableSpace (W i)] [∀ i, BorelSpace (W i)]
-
-variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
-  [MeasurableSpace V] [BorelSpace V]
-
-end Balls
-
 end GlobalTheory

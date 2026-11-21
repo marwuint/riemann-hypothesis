@@ -67,26 +67,4 @@ theorem exists_lower (b : Module.Basis ι F E) (L : Submodule (𝓞 E) (Fin n �
   rw [Finset.smul_sum]
   exact Submodule.sum_mem _ fun k _ => key j k _ (hy j k)
 
-theorem exists_den_lattice (b : Module.Basis ι F E) (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) :
-    ∃ D : ℕ, 0 < D ∧ ∀ l ∈ L, ∀ j k, IntF ((D : F) * b.repr (l j) k) := by
-  classical
-  haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.mpr hfg
-  haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L
-  obtain ⟨p, s, hs⟩ := Module.Finite.exists_fin (R := ℤ) (M := L)
-  obtain ⟨D, hD, h⟩ := exists_den_fin (fun q : Fin p × Fin n × ι => b.repr ((s q.1 : Fin n → E) q.2.1) q.2.2)
-  refine ⟨D, hD, fun l hl j k => ?_⟩
-  have hmem : (⟨l, hl⟩ : L) ∈ Submodule.span ℤ (Set.range s) := by rw [hs]; trivial
-  obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℤ).mp hmem
-  have hl' : l = ∑ t, c t • (s t : Fin n → E) := by
-    have := congrArg Subtype.val hc
-    simpa [Submodule.coe_sum] using this.symm
-  have : (D : F) * b.repr (l j) k = ∑ t, c t • ((D : F) * b.repr ((s t : Fin n → E) j) k) := by
-    rw [hl']
-    simp only [Finset.sum_apply, Pi.smul_apply]
-    rw [← b.coord_apply, map_sum]
-    simp only [map_zsmul, b.coord_apply, Finset.mul_sum, mul_smul_comm, Finsupp.smul_apply]
-  unfold IntF
-  rw [this, map_sum]
-  exact ohat_sum _ fun t _ => by rw [map_zsmul]; exact ohat_zsmul (h (t, j, k)) _
-
 end PI.WAU

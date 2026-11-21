@@ -20,10 +20,6 @@ theorem cancel_l' {ι κ : Type} [Fintype ι] [DecidableEq ι] (b : GL ι E) (X 
     incM F b.1 * (incM F (b⁻¹).1 * X) = X := by
   rw [← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]
 
-theorem cancel_r {ι κ : Type} [Fintype ι] [DecidableEq ι] (b : GL ι E) (X : Matrix κ ι (AE F E)) :
-    X * incM F (b⁻¹).1 * incM F b.1 = X := by
-  rw [Matrix.mul_assoc, incM_inv_mul, Matrix.mul_one]
-
 theorem cancel_r' {ι κ : Type} [Fintype ι] [DecidableEq ι] (b : GL ι E) (X : Matrix κ ι (AE F E)) :
     X * incM F b.1 * incM F (b⁻¹).1 = X := by
   rw [Matrix.mul_assoc, incM_mul_inv, Matrix.mul_one]

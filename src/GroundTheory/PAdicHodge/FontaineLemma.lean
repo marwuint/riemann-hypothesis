@@ -71,54 +71,6 @@ theorem phiPlus_mem_span_periodT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
           ↑hu.unit⁻¹ := by rw [h2]; ring
     _ = phiPlus K p y := by rw [mul_assoc, IsUnit.mul_val_inv, mul_one]
 
-set_option maxHeartbeats 1600000 in
-
-theorem mem_span_xi_of_forall_imp {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
-    (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1)
-    (H : ∀ y : BCrisPlus K p, (∀ n : ℕ, θdR (iotaPlus K p ((phiPlus K p)^[n] y)) = 0) →
-      y ∈ Ideal.span {algebraMap (ACris K p) (BCrisPlus K p) (periodT hε)})
-    {z : BCrisPlus K p} (hz : θdR (iotaPlus K p z) = 0) :
-    z ∈ Ideal.span {algebraMap (AInf K p) (BCrisPlus K p) (AInf.xi ε)} := by
-  set v : AInf K p := (φ).symm (AInf.mu ε) with hv
-  set V : BCrisPlus K p := algebraMap (AInf K p) (BCrisPlus K p) v with hV
-  have hVa : ∀ w : AInf K p, algebraMap (AInf K p) (BCrisPlus K p) w =
-      algebraMap (ACris K p) (BCrisPlus K p) (algebraMap (AInf K p) (ACris K p) w) :=
-    fun w => IsScalarTower.algebraMap_apply _ _ _ w
-  have hθV : ∀ n : ℕ, θdR (iotaPlus K p ((phiPlus K p)^[n] V)) = θ ((φ ^ n) v) := by
-    intro n
-    rw [hV, hVa, iterate_phiPlus_algebraMap, thetaField_iotaPlus_algebraMap,
-      theta_phi_iterate_algebraMap]
-
-  have hyz : ∀ n : ℕ, θdR (iotaPlus K p ((phiPlus K p)^[n] (V * z))) = 0 := by
-    intro n
-    rw [← RingHom.coe_pow, map_mul, map_mul, map_mul, RingHom.coe_pow, hθV]
-    rcases n with _ | n
-    · rw [Function.iterate_zero_apply, hz, mul_zero]
-    · rw [pow_succ, RingAut.mul_apply, hv, RingEquiv.apply_symm_apply,
-        AInf.fontaineTheta_frobenius_pow_mu hε, ZeroMemClass.coe_zero, zero_mul]
-  obtain ⟨a, ha⟩ := Ideal.mem_span_singleton'.1 (H _ hyz)
-  obtain ⟨u, -, hu⟩ := exists_periodT_eq_mu_mul_unit hε hζ
-
-  have e : V * z = V * (algebraMap (AInf K p) (BCrisPlus K p) (AInf.xi ε) *
-      (algebraMap (ACris K p) (BCrisPlus K p) u * a)) := by
-    rw [← ha, hu, map_mul, ← hVa, AInf.mu_eq_xi_mul ε, map_mul, ← hv, ← hV]
-    ring
-  have hV0 : iotaPlus K p V ≠ 0 := by
-    intro h0
-    have h1 := hθV 0
-    rw [Function.iterate_zero_apply, h0, map_zero, pow_zero, RingAut.one_apply, hv,
-      AInf.frobeniusEquiv_symm_mu, map_sub, map_one, fontaineTheta_teichmuller] at h1
-    apply hζ
-    have h2 : ((PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) - 1 :
-        normInteger K) : K) = 0 := h1.symm
-    rw [AddSubgroupClass.coe_sub, OneMemClass.coe_one, sub_eq_zero] at h2
-    exact Subtype.ext (by rw [h2, OneMemClass.coe_one])
-  have e2 := congrArg (iotaPlus K p) e
-  rw [map_mul, map_mul (iotaPlus K p) V] at e2
-  have e3 := iotaPlus_injective (K := K) (p := p) (mul_left_cancel₀ hV0 e2)
-  rw [Ideal.mem_span_singleton']
-  exact ⟨algebraMap (ACris K p) (BCrisPlus K p) u * a, by rw [e3]; ring⟩
-
 end ACris
 
 end GroundTheory.PAdicHodge

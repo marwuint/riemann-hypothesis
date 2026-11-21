@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBirationalModelIdAndCompStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBlowupModelRegularFunctionOrInverseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirationalModelRegularUnitValuesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBirationalModelIdAndComp
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBlowupModelRegularFunctionOrInverse
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BirationalModelRegularUnitValues
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
@@ -20,7 +20,7 @@ theorem exists_model_list (k : Type) [CommRing k] (D : ℕ) (L : ℕ) :
   | zero =>
     intro X _ p hp g hg _
     obtain rfl := List.length_eq_zero_iff.1 hg
-    refine ⟨X, inferInstance, 𝟙 X, RingHom.id _, by simpa using hp, (GlobalTheory.T.isBirationalModel_id_and_comp X X X (𝟙 X) (𝟙 X)
+    refine ⟨X, inferInstance, 𝟙 X, RingHom.id _, by simpa using hp, (_root_.GlobalTheory.HSNef.isModel_id_and_comp X X X (𝟙 X) (𝟙 X)
       (RingHom.id _) (RingHom.id _)).1, by simp⟩
   | succ n ih =>
     intro X _ p hp g hg hne
@@ -31,10 +31,10 @@ theorem exists_model_list (k : Type) [CommRing k] (D : ℕ) (L : ℕ) :
     obtain ⟨Y₁, hY₁, π₁, φ₁, hA₁, hM₁, hR₁⟩ :=
       ih X p hp g' (by simpa using hg) (fun h hh => hne h (List.mem_cons_of_mem _ hh))
     have ha : φ₁ a ≠ 0 := (map_ne_zero φ₁).2 (hne a List.mem_cons_self)
-    obtain ⟨Y₂, hY₂, π₂, φ₂, hA₂, hM₂, hR₂⟩ := GlobalTheory.T.exists_blowup_model_regular_function_or_inverse k Y₁ (π₁ ≫ p) D hA₁ (φ₁ a) ha
+    obtain ⟨Y₂, hY₂, π₂, φ₂, hA₂, hM₂, hR₂⟩ := _root_.GlobalTheory.RegOrInvModel.exists_model_regAt_or_regAt_inv k Y₁ (π₁ ≫ p) D hA₁ (φ₁ a) ha
     refine ⟨Y₂, hY₂, π₂ ≫ π₁, φ₂.comp φ₁, by simpa [Category.assoc] using hA₂,
-      (GlobalTheory.T.isBirationalModel_id_and_comp X Y₁ Y₂ π₁ π₂ φ₁ φ₂).2 hM₁ hM₂, ?_⟩
-    have hreg := (GlobalTheory.T.birationalModel_regular_unit_values k Y₁ Y₂ (π₁ ≫ p) (π₂ ≫ π₁ ≫ p) π₂ rfl φ₂ hM₂).1
+      (_root_.GlobalTheory.HSNef.isModel_id_and_comp X Y₁ Y₂ π₁ π₂ φ₁ φ₂).2 hM₁ hM₂, ?_⟩
+    have hreg := (_root_.GlobalTheory.HSNef.model_regAt_unitAt_values k Y₁ Y₂ (π₁ ≫ p) (π₂ ≫ π₁ ≫ p) π₂ rfl φ₂ hM₂).1
     intro h hh y
     rcases List.mem_cons.1 hh with rfl | hh
     · simpa using hR₂ y

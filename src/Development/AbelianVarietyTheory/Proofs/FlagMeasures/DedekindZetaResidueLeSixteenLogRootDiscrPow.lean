@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.HermitianLattices.StatementMass
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClassNumberMulRegulatorLeSqrtDiscrRpowStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RootDiscrGeThreeHalvesOfIsTotallyComplexStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClassNumberMulRegulatorLeSqrtDiscrRpow
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RootDiscrGeThreeHalvesOfIsTotallyComplex
 open MeasureTheory NumberField Finset
 
 namespace GlobalTheory
@@ -51,11 +51,11 @@ theorem dedekindZeta_residue_le_log_rootDiscr_pow :
         (16 * Real.log (2 * Formalism.HermitianLatticesTheory.vInv K)) ^ (2 * Formalism.HermitianLatticesTheory.fDeg K) := by
   intro K _ _ hK
   refine ⟨dedekindZeta_residue_pos K, ?_⟩
-  obtain ⟨hn, -, hx, hd⟩ := GlobalTheory.T.rootDiscr_ge_three_halves_of_isTotallyComplex K hK
+  obtain ⟨hn, -, hx, hd⟩ := _root_.GlobalTheory.rootDiscr_ge_three_halves_of_totallyComplex K hK
   obtain ⟨hL0, hnum⟩ := residue_rankin_numeric _ hx (Formalism.HermitianLatticesTheory.fDeg K)
   set x := 2 * Formalism.HermitianLatticesTheory.vInv K with hxdef
   have hx0 : 0 < x := by linarith
-  have hHR := GlobalTheory.T.classNumber_mul_regulator_le_sqrt_discr_rpow' K hK (1 + 1 / Real.log x) (by
+  have hHR := _root_.GlobalTheory.classNumber_mul_regulator_le_sqrt_discr_rpow K hK (1 + 1 / Real.log x) (by
     have : 0 < 1 / Real.log x := by positivity
     linarith)
   have hr : InfinitePlace.nrRealPlaces K = 0 := IsTotallyComplex.nrRealPlaces_eq_zero K

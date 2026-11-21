@@ -1,5 +1,6 @@
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TransPtBase
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMinorSumFrameIdentityStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMinorSumFrameIdentity
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
@@ -77,7 +78,7 @@ theorem read_minor (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (
     rw [hh, Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 hdet)]
   have hy : ∀ m : ι k, detFac j p.2 T * y ⟨k, m⟩ =
       α (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') * ∑ I, α (F.u ⟨k, m⟩ I) * minorIJ h I (stepCols N j p.2) := fun m => by
-    have := GlobalTheory.T.block_minor_sum_frame_identity K ι Φ y Ψ N j M Φ α F hF p k hk m h hb
+    have := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.FrameExt.frame_identity_map K ι Φ y Ψ N j M Φ α F hF p k hk m h hb
     rw [← hTdef, hTh] at this
     rw [M.y_step p k hk m]
     exact this
@@ -149,7 +150,7 @@ theorem transPt_eq_smul_sum : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ 
     rw [hv I' (by simpa using hI'), mul_zero]
   have e1 : ∀ m : ι k, d * transPt Cv ⟨k, m⟩ =
       μ * ∑ I, α (Cv.φ (F.u ⟨k, m⟩ I)) * minorIJ h₀ I (stepCols N j p.2) := fun m => by
-    have := GlobalTheory.T.block_minor_sum_frame_identity K ι Φ y Ψ N j M Φ' ρ F hF p k hk m h₀ hb₀
+    have := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.FrameExt.frame_identity_map K ι Φ y Ψ N j M Φ' ρ F hF p k hk m h₀ hb₀
     rw [← hT, hTh₀] at this
     rw [transPt_step Cv p k hk m]
     exact this

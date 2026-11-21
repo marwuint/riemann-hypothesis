@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsIntegralAdeleLimitCompatibleIntSystem
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DifferentIdealAutomorphismInvariantStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DifferentIdealAutomorphismInvariant
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
@@ -28,9 +28,9 @@ theorem htDual_htW_relabel : ∀ (E : Type) [Field E] [NumberField E] (s : 𝓞 
   · rintro ⟨he, H⟩
     refine ⟨he, fun d hd => ?_⟩
     have hd' : s.symm d ∈ differentIdeal ℤ (𝓞 E) :=
-      (GlobalTheory.T.different_ideal_automorphism_invariant E s (s.symm d)).1 (by simpa using hd)
+      (_root_.GlobalTheory.CompanionTheory.Ar.mem_differentIdeal_ringEquiv_iff E s (s.symm d)).1 (by simpa using hd)
     simpa using H _ hd'
   · rintro ⟨he, H⟩
-    exact ⟨he, fun d hd => H _ ((GlobalTheory.T.different_ideal_automorphism_invariant E s d).2 hd)⟩
+    exact ⟨he, fun d hd => H _ ((_root_.GlobalTheory.CompanionTheory.Ar.mem_differentIdeal_ringEquiv_iff E s d).2 hd)⟩
 
 end GlobalTheory.CompanionTheory.Ar

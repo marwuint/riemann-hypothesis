@@ -17,8 +17,6 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LlcTame
 
-variable {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-
 end GlobalTheory.LlcTame
 
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial in

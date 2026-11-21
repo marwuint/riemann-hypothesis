@@ -92,7 +92,7 @@ theorem exists_root_conj [ArithBase o Ω] [ArithBase o' Ω'] (hx : IsGenLab ρ �
     have := (hV₁ t).transl hx hadd hm (k := h' - h) (by rw [smul_sub, e, e', sub_self]) (t.2 _ (sub_mem hh' hh))
     rwa [add_sub_cancel] at this
   have hφ₀ : φ (S.th x₀) ≠ 0 := (map_ne_zero φ).2 h₀
-  obtain ⟨ξ, hξ, hc⟩ := GlobalTheory.T.twistedThetaValue_eq_root_mul_thetaOperatorValue ρ ρ' lab φ P₀ a a' x hx m hm κ x₀ h e
+  obtain ⟨ξ, hξ, hc⟩ := _root_.GlobalTheory.UPoinc.TwCompare.twVal_eq_root_mul ρ ρ' lab φ P₀ a a' x hx m hm κ x₀ h e
   have hf : ∀ b, ξ * (partV S' H ρ'.i₀ b h / S'.th (lab x₀)) =
       algebraMap o' Ω' (Ring.inverse (Nat.card (S'.perp H) : o')) *
         (∑ t : S'.perp H, algebraMap o' Ω' (S'.ζN ^ (-(wtChar S' _ b t)).val) * V t) / φ (S.th x₀) := fun b => by

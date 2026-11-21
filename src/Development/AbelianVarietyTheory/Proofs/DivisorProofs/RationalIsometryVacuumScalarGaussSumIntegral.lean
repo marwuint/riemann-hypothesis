@@ -127,7 +127,7 @@ theorem omO_act (hσ : Chart θ σ) (u v : RW T S) :
       (actR S T (fun τ => a.map (tauE D τ)) (fun τ => b.map (tauE D τ)) v) = omO S T u v := by
   rw [← hσ.pi_iota T S u, ← hσ.pi_iota T S v, ← piW_act hg hh hσ.inf, ← piW_act hg hh hσ.inf, omO_apply, omO_apply]
   refine Finset.sum_congr rfl fun τ _ => ?_
-  rw [← GlobalTheory.OrientedChar.valTau_symplO hσ.inf, ← GlobalTheory.OrientedChar.valTau_symplO hσ.inf, GlobalTheory.T.symplecticForm_unitaryPairAction]
+  rw [← GlobalTheory.OrientedChar.valTau_symplO hσ.inf, ← GlobalTheory.OrientedChar.valTau_symplO hσ.inf, _root_.GlobalTheory.SymplOInv.symplO_actO]
 
 theorem actR_add_infRat (hσ : Chart θ σ) (y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (v : RW T S) :
     actR S T (fun τ => a.map (tauE D τ)) (fun τ => b.map (tauE D τ)) (infRat S T y + v) =
@@ -199,7 +199,7 @@ theorem chiLat_mul_exp (hψ : IsStdChar D ψ (-1)) (hσ : Chart θ σ) (LS : Set
       rw [← map_add, sub_add_cancel]
     have h1 := phase_identity (W := intA D w) (by rw [cA_intA, ← RingHom.map_add, hw, RingHom.map_one])
       (finRat S T (b * y * a - y)) (finRat S T y)
-      (by rw [e, ← act_finRat hg hh, ← actO_smul, symplOH, symplOH, GlobalTheory.T.symplecticForm_unitaryPairAction])
+      (by rw [e, ← act_finRat hg hh, ← actO_smul, symplOH, symplOH, _root_.GlobalTheory.SymplOInv.symplO_actO])
     have h2 : gamQ ψ S T (GlobalTheory.FinWeil.sgO D w • (b * y * a - y)) y =
         ψ (symplO S T (cA D (intA D w) • finRat S T (b * y * a - y)) (finRat S T y)) := by
       rw [gamQ_eq, map_smul, cA_intA]

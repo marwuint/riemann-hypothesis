@@ -177,6 +177,4 @@ end GlobalTheory.LeadingMinorInv
 
 namespace GlobalTheory
 
-open Formalism.QuantumDeterminants LeadingMinorInv
-
 end GlobalTheory

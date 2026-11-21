@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOneP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfCoefficientsSeparatingCharactersEqZero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalSymplecticPointsSelfAnnihilatorStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalSymplecticPointsSelfAnnihilator
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
 
@@ -76,7 +76,7 @@ theorem exists_unit_smul_of_coefficient_eq : ∀ (D : D7) (ψ : AddChar (AF D.ho
       show ψ (symplO S T x 0) = 1
       rw [symplO_eq, symplOH_zero_right, add_zero, AddChar.map_zero_eq_one])
     (fun γ x => hψ.1.2.1 _)
-    (fun x => by rw [← GlobalTheory.T.rationalSymplecticPoints_self_annihilator D ψ hψ S T x]; exact Subtype.forall)
+    (fun x => by rw [← _root_.GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ S T x]; exact Subtype.forall)
     μ 𝓕 hμ h𝓕 (fun x => heisO ψ S T w f' x * star (f' x) - heisO ψ S T w f x * star (f x))
     (by
       have a := (hT hf' w).cont

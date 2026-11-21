@@ -90,15 +90,6 @@ theorem tensorMap_includeRight (f : R →ₐ[F] S) (e : E) :
       (Algebra.TensorProduct.includeRight e : S ⊗[F] E) := by
   simp [Algebra.TensorProduct.includeRight_apply]
 
-omit [Algebra.IsQuadraticExtension F E] in
-theorem tensorMap_id : tensorMap E (AlgHom.id F R) = AlgHom.id F (R ⊗[F] E) :=
-  Algebra.TensorProduct.map_id
-
-omit [Algebra.IsQuadraticExtension F E] in
-theorem tensorMap_comp (f : R →ₐ[F] S) (g : S →ₐ[F] T) :
-    tensorMap E (g.comp f) = (tensorMap E g).comp (tensorMap E f) :=
-  Algebra.TensorProduct.ext' fun _ _ => rfl
-
 end BaseChange
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] (H : Matrix ι ι E)
@@ -142,42 +133,7 @@ theorem unitaryMap_apply (f : R →ₐ[F] S) (g : unitaryPoints F E H R) :
     ((unitaryMap F E H f g : GL ι (S ⊗[F] E)) : Matrix ι ι (S ⊗[F] E)) =
       ((g : GL ι (R ⊗[F] E)) : Matrix ι ι (R ⊗[F] E)).map (tensorMap E f) := rfl
 
-theorem unitaryMap_id : unitaryMap F E H (AlgHom.id F R) = MonoidHom.id _ := by
-  ext g : 1
-  apply Subtype.ext; apply Units.ext
-  rw [unitaryMap_apply, tensorMap_id]
-  rfl
-
-theorem unitaryMap_comp (f : R →ₐ[F] S) (g : S →ₐ[F] T) :
-    unitaryMap F E H (g.comp f) = (unitaryMap F E H g).comp (unitaryMap F E H f) := by
-  ext x : 1
-  apply Subtype.ext; apply Units.ext
-  rw [MonoidHom.comp_apply, unitaryMap_apply, unitaryMap_apply, unitaryMap_apply, tensorMap_comp,
-    Matrix.map_map]
-  rfl
-
 end Points
-
-section Functor
-
-open CategoryTheory
-
-universe u
-
-variable (F E : Type u) [Field F] [CommRing E] [Algebra F E] [Algebra.IsQuadraticExtension F E]
-  {ι : Type u} [Fintype ι] [DecidableEq ι]
-
-noncomputable def unitaryFunctor (H : Matrix ι ι E) : CommAlgCat.{u} F ⥤ GrpCat.{u} where
-  obj R := GrpCat.of (unitaryPoints F E H R)
-  map f := GrpCat.ofHom (unitaryMap F E H f.hom)
-  map_id R := by
-    rw [CommAlgCat.hom_id, unitaryMap_id]
-    rfl
-  map_comp f g := by
-    rw [CommAlgCat.hom_comp, unitaryMap_comp]
-    rfl
-
-end Functor
 
 section Rational
 

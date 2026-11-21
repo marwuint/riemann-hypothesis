@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsMulCommutativeCentRealUJ
 import Formalism.RealPlaceAnalysis.SmoothOnGVIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyEntriesConjLeftRightMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OffDiagBlockNormContInvStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyEntriesConjLeftRightMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OffDiagBlockNormContInv
 open MeasureTheory Matrix GlobalTheory.Orb
 open Formalism.REAL (UJ KG toM toMK muK expG inG Jm Kset)
 open scoped ContDiff
@@ -24,10 +24,10 @@ theorem main : ∀ (n : ℕ) (ε : Fin n → Bool) (F : ℝ → ℝ) (P : MvPoly
       (MvPolynomial.restrictTotalDegree _ ℂ P.totalDegree).map L := by
     rw [Submodule.span_le]
     rintro φ ⟨k, hk, k', hk', rfl⟩
-    obtain ⟨Q, hQ, hQe⟩ := GlobalTheory.T.exists_poly_entries_conj_left_right_mul n (toM k) (toM k') P
+    obtain ⟨Q, hQ, hQe⟩ := _root_.GlobalTheory.PolyEntryMul.main n (toM k) (toM k') P
     refine ⟨Q, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 hQ, ?_⟩
     funext g
-    have h1 : r (k * g * k') = r g := (GlobalTheory.T.offDiagBlockNorm_mul_invariant n ε).2 ⟨k, hk⟩ ⟨k', hk'⟩ g
+    have h1 : r (k * g * k') = r g := (_root_.GlobalTheory.offDiagBlockNorm_cont_inv n ε).2 ⟨k, hk⟩ ⟨k', hk'⟩ g
     have h2 : toM (k * g * k') = toM k * toM g * toM k' := rfl
     have h3 : MvPolynomial.eval (ev (k * g * k')) P = MvPolynomial.eval (ev g) Q := by
       simp only [ev, h2]; exact hQe (toM g)

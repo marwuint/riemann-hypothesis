@@ -222,51 +222,7 @@ def projLinePlaces : Places k (RatFunc k) where
   fin := fun x => (pf_all x.1 x.ne_zero).1
   sum := fun x => (pf_all x.1 x.ne_zero).2
 
-theorem projLinePlaces_X : (projLinePlaces k).v none (Units.mk0 RatFunc.X RatFunc.X_ne_zero) = -1 := by
-  show plOrd k none RatFunc.X = -1
-  rw [← RatFunc.algebraMap_X, plOrd_none Polynomial.X_ne_zero, Polynomial.natDegree_X]
-  rfl
-
-private theorem appLE_apply_of_eq_id' {Y : Scheme.{0}} (φ : Y ⟶ Y) (hφ : φ = 𝟙 Y) {U : Y.Opens}
-    (e : U ≤ φ ⁻¹ᵁ U) (f : Γ(Y, U)) : (φ.appLE U U e).hom f = f := by
-  subst hφ
-  show (Y.presheaf.map (𝟙 (Opposite.op U))).hom f = f
-  rw [CategoryTheory.Functor.map_id]
-  rfl
-
 end ProjLine
-
-theorem frobG_one {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] : FrobG G 1 1 := by
-  unfold FrobG
-  refine ⟨inferInstanceAs (IsMonHom (𝟙 G)), fun U _ f => ⟨1, le_rfl, ?_⟩⟩
-  have hh : Over.Hom.left (show G ⟶ G from (1 : End G) ^ 1) = 𝟙 G.left := by
-    exact congrArg (fun φ => Over.Hom.left φ) (pow_one (1 : End G))
-  refine ⟨by rw [hh]; rfl, ?_⟩
-  rw [appLE_apply_of_eq_id' _ hh]
-  simp
-
-theorem linComb_triv_gen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
-    ∃ t : LB.Gen (LB.LinComb (Inh.trivLB X) φ ε), t.IsGen := by
-  refine ⟨⟨fun _ => 1⟩, ?_⟩
-  unfold LB.Gen.IsGen
-  intro i j
-  rw [Inh.linComb_triv_g]
-  simp
-
-theorem pullPow_triv {X : Scheme.{0}} (F : X ⟶ X) (q : ℤ) : PullPow F (Inh.trivLB X) q := by
-  unfold PullPow
-  exact linComb_triv_gen _ _
-
-theorem ampleCub_triv {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsAffine G.left] :
-    AmpleCub G (Inh.trivLB G.left) := by
-  unfold AmpleCub
-  refine ⟨Inh.trivLB_isLB _, linComb_triv_gen _ _, linComb_triv_gen _ _, 1, le_rfl, fun x => ?_⟩
-  rw [Nat.cast_one, pw_one]
-  refine ⟨oneSec _, ?_, ?_⟩
-  · rw [nonzeroLocus_oneSec]
-    trivial
-  · rw [nonzeroLocus_oneSec]
-    exact isAffineOpen_top _
 
 end GlobalTheory.SS
 end

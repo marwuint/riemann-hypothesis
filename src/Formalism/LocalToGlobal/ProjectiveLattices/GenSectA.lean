@@ -86,15 +86,6 @@ theorem incl_C (j₀ : Fin m) (a : Ω) : incl (D := D) j₀ (C a) = C a := by
   | simp [incl]
   | exact (incl j₀).commutes a
 
-theorem psi_incl (x : Fin m → Ω) (j₀ : Fin m) (f : CT Ω D j₀) : psi x j₀ (incl j₀ f) = f := by
-  have h : (psi x j₀).comp (incl j₀) = AlgHom.id Ω (CT Ω D j₀) := by
-    apply MvPolynomial.algHom_ext
-    intro q
-    simp only [AlgHom.comp_apply, AlgHom.id_apply, incl, rename_X, psi, aeval_X]
-    rw [gs, if_neg q.2, xv_of_not q.2]
-    try rfl
-  exact DFunLike.congr_fun h f
-
 theorem gs_succ (x : Fin m → Ω) (j₀ : Fin m) (i : Fin D) (j : Fin m) :
     gs x j₀ (i.succ, j) = xv j₀ (i.succ, j) +
       if j = j₀ then -∑ k, xv j₀ (i.succ, k) * C (rr x j₀ k) else 0 := by

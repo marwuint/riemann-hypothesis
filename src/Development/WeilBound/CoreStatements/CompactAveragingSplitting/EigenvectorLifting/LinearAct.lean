@@ -2,7 +2,9 @@ import Development.WeilBound.CoreStatements.CompactAveragingSplitting.Eigenvecto
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.LinearActInt
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.LinearActAlg
 import Development.AutomorphicSpectrum.Proofs.MembershipProofs.DblCoordUnique
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.SplitQuadraticAlgebraOrderStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MembershipProofs.SplitQuadraticAlgebraOrder
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 
 noncomputable section
 
@@ -71,7 +73,7 @@ theorem dbl_fix (hc : Continuous ψ) (h1 : ψ ≠ 1) (hq : IsQuad c ξ₀) (hA :
       rw [hx, ← fromCols_mul_fromRows, fromRows_toRows, ← Matrix.mul_assoc, hM1, Matrix.one_mul]
     rw [Darboux.rho, hz, Matrix.add_mul, map_add, ← schr_add (hisoD _ _), hLY _ (mem_lagY.2 ⟨_, by rw [Matrix.mul_assoc]⟩)
       (fun x => hisoD _ _) _ (schr_mem hc _ hφ), ← hX, hLX _ _ hφ]
-  have hA1 := GlobalTheory.T.lagrangian_stabilizer_character_trivial k K c ξ₀ _ _ _ _ hq (GlobalTheory.CompanionTheory.WeilOneMember.isHerm_dbl hA) hD A.toHomUnits fun p t hp => by
+  have hA1 := _root_.GlobalTheory.CompanionTheory.SiegelChar.char_trivial k K c ξ₀ _ _ _ _ hq (GlobalTheory.CompanionTheory.WeilOneMember.isHerm_dbl hA) hD A.toHomUnits fun p t hp => by
     obtain ⟨g, hg, hdet⟩ := he t
     have e1 := hr L trivial hinv p t hp φ₁ hφ₁
     have e2 := hLT (om p) g (a p) (hs.pres p) (fun x φ hφ => by

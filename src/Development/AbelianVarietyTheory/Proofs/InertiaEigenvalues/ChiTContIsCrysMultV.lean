@@ -1,7 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftQMk
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RestrictionAtGoodPoints
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineTwistCrystallineCharacterJumpsShiftStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineTwistCrystallineCharacterJumpsShift
+import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsJumpVOfInjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitSumTensorDualOfWachMonoidal
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BlockCharactersCrystalline
@@ -44,7 +48,7 @@ theorem chiT_cont_isCrys_multV : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (
     simp only [Formalism.WeaklyAdmissibleFiltrations.charRep, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.smul_apply, LinearMap.id_apply,
       LinearEquiv.refl_apply, smul_eq_mul, hsplit]
     ring
-  obtain ⟨hcr, hm⟩ := GlobalTheory.T.crystalline_twist_crystallineCharacter_jumps_shift (D.nd.l i) (D.loc (D.nd.l i)) (D.locA (D.nd.l i)) (D.locT (D.nd.l i))
+  obtain ⟨hcr, hm⟩ := _root_.GlobalTheory.TwistRepCrys.isCrys_and_multV_twist (D.nd.l i) (D.loc (D.nd.l i)) (D.locA (D.nd.l i)) (D.locT (D.nd.l i))
     (D.nbr i w hw).Kw C.LL ↥C.LL.1 _ ↥C.LL.1 _ _ tw cψ hθ
   refine ⟨?_, hcr, fun τ a => hm τ a _ (jψ τ)⟩
   have hO : Continuous (fun h : GE D.nd => (((chiU D.nd i c * (chiU D.nd i 1)⁻¹) h : (D.nd.O i)ˣ) : D.nd.O i)) := by

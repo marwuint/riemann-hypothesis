@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiffCoeffsInIdealSubstOfConstantCoeffZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2InStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySymmCocycleModStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithmStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2In
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySymmCocycleMod
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithm
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
 namespace GlobalTheory.QLog.KLift
@@ -268,7 +268,7 @@ theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B]
   intro p _ B O Q _ _ _ _ θ F d μ hμ C _ _ G Θ hΘ g w hg hw
   have hμ' : IsLift (RingHom.id O) (fun i => map θ (μ i)) :=
     ⟨hμ.law.const, hμ.law.unit, hμ.law.comm, by simpa only [map_id, RingHom.id_apply] using hμ.law⟩
-  have hgD : DIn (⊤ : Ideal O) g := GlobalTheory.T.divided_in_of_quasi_logarithm p O O C (RingHom.id O) G d _ hμ' ⊤ g hg
+  have hgD : DIn (⊤ : Ideal O) g := _root_.GlobalTheory.QLogDiff.dIn_of_QL p O O C (RingHom.id O) G d _ hμ' ⊤ g hg
   obtain ⟨f₀, hf0c, hf0D, hf0Θ, hf0l⟩ := lift_coeffs F G hΘ g w hgD hg.1 hw
   have hμQ : ∀ i, constantCoeff (up Q μ i) = 0 := const_map _ μ hμ.const
   have hμC : ∀ i, constantCoeff (up C (fun i => map θ (μ i)) i) = 0 :=
@@ -315,7 +315,7 @@ theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B]
       rw [coeff_zero_eq_constantCoeff_apply, hκ0]
       simp
     · rw [hb α, sub_self, map_zero]
-  obtain ⟨hcob2, hsym⟩ := GlobalTheory.T.formalGroupLawCoboundary_symmCocycle_mod p B O Q θ F d μ hμ ⊤ f₀ hf0D
+  obtain ⟨hcob2, hsym⟩ := _root_.GlobalTheory.cob_symCoc_mod p B O Q θ F d μ hμ ⊤ f₀ hf0D
   have hD1 : DIn (RingHom.ker θ) κ₁ := by
     intro α i
     obtain ⟨c, -, e⟩ := dIn_sub hκD (dIn_map K) α i
@@ -339,7 +339,7 @@ theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B]
         rw [hκ1, swap_sub, hsym, map_sub, ← map_swap]; ring
       rw [this]; exact in_map _
     · rw [map_sub, map_swap, hκ1Θ, swap_zero, sub_zero]
-  obtain ⟨e, he0, hel, heJ, heN⟩ := GlobalTheory.T.swap_sub_in_of_cob2_in p B O Q θ F d μ hμ (RingHom.ker θ) (RingHom.ker θ)
+  obtain ⟨e, he0, hel, heJ, heN⟩ := _root_.GlobalTheory.symmetric_cocycle_is_coboundary_mod p B O Q θ F d μ hμ (RingHom.ker θ) (RingHom.ker θ)
     le_rfl κ₁ (Or.inr hD1) hc1 hJ hcob hsw
   have heΘ : map Θ e = 0 := by
     ext α

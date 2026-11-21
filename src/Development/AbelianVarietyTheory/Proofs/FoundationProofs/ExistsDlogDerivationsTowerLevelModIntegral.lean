@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivativeCyclotomicMul
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRootsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRoots
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePow
 
 open GlobalTheory.K5 GlobalTheory.KumDlog Polynomial
 
@@ -32,7 +32,7 @@ theorem exists_levDer : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Alg
   intro p _ Ω _ _ hC T m hm
   haveI : CharZero Ω := Basic.charZero_of_isClo hC
   obtain ⟨ι, hι⟩ := Basic.exists_isEmb T m
-  obtain ⟨hinj, hrange⟩ := GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hC T m hm ι hι
+  obtain ⟨hinj, hrange⟩ := _root_.GlobalTheory.K5.LevEmb.emb_inj_range p Ω hC T m hm ι hι
   have hιA : ∀ z, ι z ∈ integralClosure (O0 p) Ω := fun z =>
     Lev_int T m _ (hrange ▸ AlgHom.mem_range_self ι z)
   let ιA : On p m →ₐ[O0 p] integralClosure (O0 p) Ω := ι.codRestrict _ hιA
@@ -78,7 +78,7 @@ theorem exists_levDer : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Alg
       rw [hlift, e, Derivation.map_algebraMap]
 
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
-  have hpd := GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T 1 1 le_rfl (Nat.totient_pos.2 (ppow_pos (p := p) 1))
+  have hpd := _root_.GlobalTheory.K5.PDiv.pdiv p Ω T 1 1 le_rfl (Nat.totient_pos.2 (ppow_pos (p := p) 1))
   let u : integralClosure (O0 p) Ω := ⟨(p : Ω) / (T.ζ 1 - 1) ^ 1, hpd⟩
   have hz1 : T.ζ 1 - 1 ≠ 0 :=
     sub_ne_zero.2 ((T.prim 1).ne_one (by simpa using (Fact.out : p.Prime).one_lt))

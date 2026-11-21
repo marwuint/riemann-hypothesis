@@ -283,28 +283,6 @@ theorem exists_form_cuspSub (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : 
     rw [integral_add (hint (mem hRx).1 (mem hy).1 (mem hy).2) (hint (mem hx).1 (mem hRy).1 (mem hRy).2)] at key
     linear_combination key
 
-theorem exists_petersson_gkGen : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
-    (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
-    ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ → IsCuspFun V ψ →
-    (∃ W : Submodule ℂ (GA D V → ℂ), FiniteDimensional ℂ W ∧ ψ ∈ W ∧ ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ),
-      M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ) → ∀ f ∈ W, rTr V (atTau θ V τ g) f ∈ W) →
-    ∃ b : (GA D V → ℂ) →ₗ⋆[ℂ] (GA D V → ℂ) →ₗ[ℂ] ℂ,
-      (∀ x ∈ GlobalTheory.CuspGK.gkGen θ M ψ, x ≠ 0 → 0 < (b x x).re) ∧
-      (∀ x ∈ GlobalTheory.CuspGK.gkGen θ M ψ, ∀ y ∈ GlobalTheory.CuspGK.gkGen θ M ψ, star (b x y) = b y x) ∧
-      (∀ τ g, GlobalTheory.CuspGK.InK M τ g → ∀ x ∈ GlobalTheory.CuspGK.gkGen θ M ψ, ∀ y ∈ GlobalTheory.CuspGK.gkGen θ M ψ,
-        b x (rTr V (atTau θ V τ g) y) = b (rTr V (atTau θ V τ g⁻¹) x) y) ∧
-      (∀ τ, ∀ X ∈ lieAt V τ, ∀ x ∈ GlobalTheory.CuspGK.gkGen θ M ψ, ∀ y ∈ GlobalTheory.CuspGK.gkGen θ M ψ,
-        b x (Rder θ V τ X y) = -b (Rder θ V τ X x) y) := by
-  intro hPr D θ V S M hθ ψ hψ hψc _
-  obtain ⟨b, hpos, hherm, htr, hlie⟩ := exists_form_cuspSub (θ := θ) (V := V) hPr.cuspRapidDecay hθ
-  have hle : GlobalTheory.CuspGK.gkGen θ M ψ ≤ cuspSub θ V :=
-    GlobalTheory.CuspGK.gkGen_le θ M (show IsAutFunSm θ V ψ ∧ IsCuspFun V ψ from ⟨hψ, hψc⟩)
-      ⟨fun τ g hg f hf => rTr_mem_cuspSub hθ (show _ ∧ _ from hg).1 hf,
-        fun τ X hX f hf => Rder_mem_cuspSub hθ hX hf⟩
-  exact ⟨b, fun x hx hx0 => hpos x (hle hx) hx0, fun x hx y hy => hherm x (hle hx) y (hle hy),
-    fun τ g hg x hx y hy => htr τ g (show _ ∧ _ from hg).1 x (hle hx) y (hle hy),
-    fun τ X hX x hx y hy => hlie τ X hX x (hle hx) y (hle hy)⟩
-
 end GlobalTheory.CuspGKPet
 
 end

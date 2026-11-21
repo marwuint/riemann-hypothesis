@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAutOfMemAutForms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EnvelopingActionCommutesTranslation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPlaceRep
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryLieGeneratorsRep
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FaithfulOfDerivationsDualFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FaithfulOfDerivationsDualFamily
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolyFunMemSmoothVectors
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightLieDerivativeRealEntryPolynomialFunctionStatement
 
@@ -191,7 +191,7 @@ theorem envRepAll_injective (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[
     rintro ⟨τ, a', b'⟩ ⟨τ', c, d⟩
     rw [hπe]
     exact aeval_matDer_single τ τ' a' b' c d
-  refine GlobalTheory.T.faithful_of_derivations_dualFamily _ _ _ e hgen hbr (polyRep V) hder χ a ha0 hδ u fun x => ?_
+  refine _root_.GlobalTheory.faithful_of_derivations_dual_family _ _ _ e hgen hbr (polyRep V) hder χ a ha0 hδ u fun x => ?_
   have h1 := congrFun (envRepAll_polyFun R u x) 1
   rw [hu, LinearMap.zero_apply, ZeroMemClass.coe_zero, Pi.zero_apply] at h1
   have h2 : polyFun θ V (polyRep V u x) 1 = χ (polyRep V u x) := by

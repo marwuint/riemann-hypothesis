@@ -5,11 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MeasurePreserv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRapidSuperpositionCharacters
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothCompactPartitionOnCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OnMatInfOfIsUnit
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelOperatorGLnSmoothAffineTranslationSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKernelOperatorRowFrequencyColumnTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KernelOperatorGLnSmoothAffineTranslationSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKernelOperatorRowFrequencyColumnTranslate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsArchimedeanRapidKernelOperatorFinsetSumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanUnipotentTimesGLrSetClosedSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanTruncatedRowUnipotentInvariantNonzeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanUnipotentTimesGLrSetClosedSubgroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanTruncatedRowUnipotentInvariantNonzero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanSectionMatrixInvertibleLevelReductionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsArchimedeanModerateGrowthMatrixSmoothingIntegrStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanMatrixSmoothingNeZeroAtOneStatement
@@ -65,7 +65,7 @@ theorem levSetInf_mono {r : ℕ} {g : GL (Fin n) (Cinf E)} (hg : g ∈ levSetInf
 
 theorem levRepInf_zero (n : ℕ) : LevRepInf E n 0 fun W => W 1 := by
   intro Y _ _ _ B hB hBe ⟨D, C, hD, _, hDC⟩
-  have h1 : (1 : GL (Fin n) (Cinf E)) ∈ levSetInf E n 0 := (GlobalTheory.T.archimedeanUnipotentTimesGLrSet_closed_subgroup E n 0).2.2.1 1 (one_mem _)
+  have h1 : (1 : GL (Fin n) (Cinf E)) ∈ levSetInf E n 0 := (_root_.GlobalTheory.JSW.MirCinf.levSetInf_closed_subgroup E n 0).2.2.1 1 (one_mem _)
   have hΦ : ContDiff ℝ ∞ fun y => B (y, matInf (1 : GL (Fin n) (Cinf E))) :=
     hB.comp_contDiff (contDiff_id.prodMk contDiff_const) fun y => (1 : GL (Fin n) (Cinf E)).isUnit
   have hΦc : HasCompactSupport fun y => B (y, matInf (1 : GL (Fin n) (Cinf E))) :=
@@ -154,12 +154,12 @@ theorem step_chart (ρ : Fin n) (hρ : (ρ : ℕ) + 1 < n) {lam : (GL (Fin n) (C
     ⟨tsupport φ, _, hφc.isCompact, (hC.prod hφc.isCompact).image_of_continuousOn hcont, fun z g hg h => by
       have hz : φ z ≠ 0 := fun h0 => h (by simp [B', h0])
       rw [hB'v z g (hφ0 z hz)] at h
-      obtain ⟨u, hu, hu'⟩ := hBC z.1 _ ((GlobalTheory.T.archimedeanUnipotentTimesGLrSet_closed_subgroup E n (ρ + 1)).1 g (levSetInf_mono hg) _
+      obtain ⟨u, hu, hu'⟩ := hBC z.1 _ ((_root_.GlobalTheory.JSW.MirCinf.levSetInf_closed_subgroup E n (ρ + 1)).1 g (levSetInf_mono hg) _
         (hs1 _ (hφ0 z hz)).2) (right_ne_zero_of_mul h)
       exact ⟨subset_tsupport _ hz, u, hu, ⟨(_, z), ⟨hu', subset_tsupport _ hz⟩, by simp [mul_assoc]⟩⟩⟩
-  have hT2 := GlobalTheory.T.kernelOperator_GLn_smoothAffineTranslation_section E n _ (secMatInf ρ j 0) (L.comp (ContinuousLinearMap.snd ℝ Y (Fin n → Cinf E))) (χ ()) α
+  have hT2 := _root_.GlobalTheory.JSW.MirCinf.kerOpInf_section E n _ (secMatInf ρ j 0) (L.comp (ContinuousLinearMap.snd ℝ Y (Fin n → Cinf E))) (χ ()) α
     hχa hχb (fun z hz => by simpa [← hL] using (hs1 _ (hχc hz)).1) hα hαc hαs T hT
-  obtain ⟨T', hT3, hT4⟩ := GlobalTheory.T.exists_kernelOperator_rowFrequency_columnTranslate E n ρ hρ Y _ hT2
+  obtain ⟨T', hT3, hT4⟩ := _root_.GlobalTheory.JSW.MirCinf.exists_kerOpInf_rowFreq_colGL E n ρ hρ Y _ hT2
   refine ⟨T', hT3, fun W hW hWe y g hg => ?_⟩
   rw [hT4 W hW hWe y g hg]
   simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_snd', ← hL]
@@ -189,7 +189,7 @@ theorem levRepInf_succ (ρ : Fin n) (hρ : (ρ : ℕ) + 1 < n) {lam : (GL (Fin n
       exact Units.continuous_val.matrix_elem ρ l
     · simp only [rowCutInf, h, if_false]
       exact continuous_const
-  obtain ⟨hl1, hl2, hl3, hl4⟩ := GlobalTheory.T.archimedeanUnipotentTimesGLrSet_closed_subgroup E n (ρ + 1)
+  obtain ⟨hl1, hl2, hl3, hl4⟩ := _root_.GlobalTheory.JSW.MirCinf.levSetInf_closed_subgroup E n (ρ + 1)
   have hK : IsCompact (D ×ˢ ((fun g : GL (Fin n) (Cinf E) => rowCutInf ρ (g : Matrix (Fin n) (Fin n) (Cinf E))) ''
       (C ∩ levSetInf E n (ρ + 1)))) := hD.prod ((hC.inter_right hl4).image hrc)
   obtain ⟨φ, hφ, hφ1⟩ := GlobalTheory.exists_smooth_compact_partition_on_compact _ _ hK
@@ -198,7 +198,7 @@ theorem levRepInf_succ (ρ : Fin n) (hρ : (ρ : ℕ) + 1 < n) {lam : (GL (Fin n
       simp only [Set.setOf_forall]
       exact isOpen_iInter_of_finite fun w => isOpen_ne_fun (by fun_prop) continuous_const) (by
       rintro ⟨y, v⟩ ⟨-, c, hc, rfl⟩
-      choose j hj hj' using (GlobalTheory.T.archimedeanTruncatedRow_unipotent_invariant_nonzero E n ρ c hc.2).2
+      choose j hj hj' using (_root_.GlobalTheory.JSW.MirCinf.rowCutInf_unipB_mul_levSetInf E n ρ c hc.2).2
       exact Set.mem_iUnion.2 ⟨fun w => ⟨j w, hj w⟩, hj'⟩)
   choose T hT hT' using fun j : InfinitePlace E → {j : Fin n // j ≤ ρ} => step_chart ρ hρ ih hα hαc hαs hB hBe hC
     (fun y g hg h => (hDC y g hg h).2) (j := fun w => (j w).1) (fun w => (j w).2) (hφ j).1 (hφ j).2.1 (hφ j).2.2
@@ -208,7 +208,7 @@ theorem levRepInf_succ (ρ : Fin n) (hρ : (ρ : ℕ) + 1 < n) {lam : (GL (Fin n
   · simp [h]
   · obtain ⟨hy, u, hu, hu'⟩ := hDC y g hg h
     have hc : u⁻¹ * g ∈ levSetInf E n (ρ + 1) := hl1 _ (hl3 _ (inv_mem hu)) _ hg
-    rw [hφ1 _ ⟨hy, u⁻¹ * g, ⟨hu', hc⟩, (GlobalTheory.T.archimedeanTruncatedRow_unipotent_invariant_nonzero E n ρ g hg).1 _ (inv_mem hu)⟩, one_mul]
+    rw [hφ1 _ ⟨hy, u⁻¹ * g, ⟨hu', hc⟩, (_root_.GlobalTheory.JSW.MirCinf.rowCutInf_unipB_mul_levSetInf E n ρ g hg).1 _ (inv_mem hu)⟩, one_mul]
 
 theorem exists_levRepInf (r : ℕ) :
     r < n → ∀ W₀ : GL (Fin n) (Cinf E) → ℂ, IsModGrowthInf W₀ → W₀ 1 ≠ 0 → ∃ lam, lam W₀ ≠ 0 ∧ LevRepInf E n r lam := by

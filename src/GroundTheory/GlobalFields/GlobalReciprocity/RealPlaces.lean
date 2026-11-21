@@ -326,21 +326,6 @@ theorem abstractSymbol_mk_infiniteEmbedding (v : InfinitePlace K.1) (x : v.Compl
   · rw [abstractSymbol_mk_infiniteEmbedding_of_not_isReal K L v hv x,
       infiniteLocalSymbol_of_not_isReal L.1 v hv, MonoidHom.one_apply, map_one]
 
-theorem abstractSymbol_mk_infiniteEmbedding_neg_one (v : InfinitePlace K.1) (hv : v.IsReal)
-    (w : InfinitePlace L.1) (hw : w.comap (algebraMap K.1 L.1) = v) :
-    abstractSymbol K L (IdeleClassGroup.mk K.1 (infiniteEmbedding v (-1))) =
-      Abelianization.of (conjAt K.1 w) := by
-  subst hw
-  rw [abstractSymbol_mk_infiniteEmbedding_of_isReal K L _ hv,
-    infiniteLocalSymbol_apply L.1 _ hv ⟨w, (inferInstance : w.LiesOver _)⟩, if_pos (by simp)]
-
-theorem abstractSymbol_mk_infiniteEmbedding_of_pos (v : InfinitePlace K.1) (hv : v.IsReal)
-    (x : v.Completionˣ) (hx : 0 < extensionEmbeddingOfIsReal hv x) :
-    abstractSymbol K L (IdeleClassGroup.mk K.1 (infiniteEmbedding v x)) = 1 := by
-  obtain ⟨w⟩ := IdeleNorm.nonempty_infinitePlacesOver L.1 v
-  rw [abstractSymbol_mk_infiniteEmbedding_of_isReal K L v hv, infiniteLocalSymbol_apply L.1 v hv w,
-    if_neg (not_lt.2 hx.le), map_one]
-
 end Main
 
 end IdeleClassLimit

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsUnifAt
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelLatticeMovedLatticeTupleStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelLatticeMovedLatticeTuple
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CharDeterminantIdealUnitarySmulSelfDual
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EigenvalueArithmeticElementAtSiteStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SystemWeightsEqShiftedCharacterExponentsStatement
@@ -58,7 +58,7 @@ theorem GlobalTheory.TwV.Xc.moveBy_scal : Sites (fun {D L hT Gi Gl Kc Dx cX ex u
     (Formalism.MainNotions.FormalGroupSystem.Pf.latTup_smul _ _ γ La).2 hLa
   have hjm : j < (sysS H X std).mm := by rw [(GlobalTheory.TwV.DelB.sysS_ranks S).1]; exact hj
   obtain ⟨hA1, -, -, -, hs1, hf1, -, -⟩ := hPair j hjm (c, La) La' hLa hLa'
-  have hker := GlobalTheory.T.kernelLattice_movedLatticeTuple S hD hSp j hj c La γ g κ hr hLa hMove
+  have hker := _root_.GlobalTheory.TwV.Xc.kerN_smul S hD hSp j hj c La γ g κ hr hLa hMove
   obtain ⟨hMgA, hkap⟩ := GlobalTheory.T.eigenvalue_arithmeticElement_at_site S hD hSp hPos j hj c La γ g κ hr hLa hMove (GlobalTheory.T.systemWeights_eq_shifted_character_exponents S hD hSp j hj La'.1)
   obtain ⟨hgU, hpt, -, r, hr_eq, -⟩ := hMove
   have hE := (GlobalTheory.TwV.Xc.eMat_unitary_det D.host.E (D.sp.cm.sig : D.host.E →+* D.host.E) (fun x => rfl) _ _ hr

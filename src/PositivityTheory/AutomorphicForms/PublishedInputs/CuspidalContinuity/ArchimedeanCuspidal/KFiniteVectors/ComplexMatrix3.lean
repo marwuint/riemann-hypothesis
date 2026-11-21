@@ -9,10 +9,6 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 namespace Ad3.K
 
-def LocFG : Prop :=
-  ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
-    (ψ : AddChar F Circle), Continuous ψ → ψ ≠ 1 → ∀ ν : Fˣ →* ℂˣ, IsUnit1 ν → ∃ V, WhF ψ ν V ∧ (IsStd ψ → IsUnramifiedChar ν → sphW ψ ν ∈ V)
-
 abbrev complexMatrix3 : Type := Fin 3 → Fin 3 → ℂ
 
 def extC (W : GL (Fin 3) ℂ → ℂ) (m : complexMatrix3) : ℂ :=
@@ -58,8 +54,6 @@ structure WhC (k : ℕ) (V : Submodule ℂ (GL (Fin 3) ℂ → ℂ)) (E E' : Fin
   cap : ∀ (u : ℂ) (W : V), Formalism.REAL.qdet E (u + 1) W = ((u + (k - 1)) * u * (u - (k - 1))) • W ∧
     Formalism.REAL.qdet E' (u + 1) W = ((u + (k - 1)) * u * (u - (k - 1))) • W
   kfin : ∃ W ∈ V, W ≠ 0 ∧ FiniteDimensional ℂ (Submodule.span ℂ {W' | ∃ o ∈ U3, W' = fun g => W (g * o)})
-
-def LocC : Prop := ∀ k : ℕ, 3 ≤ k → ∃ V E E', WhC k V E E'
 
 variable (K : Type) [Field K] [NumberField K]
 
@@ -118,53 +112,7 @@ structure WhAK (V : Submodule ℂ (G3K K → ℂ)) : Prop where
         ((1 + ‖(a : 𝔸[K]).1 w‖) * (1 + ‖(b : 𝔸[K]).1 w‖)) ^ N ∧
       (W (dg (a * b) b 1 * k) ≠ 0 → (a : 𝔸[K]).2 ∈ Ω ∧ (b : 𝔸[K]).2 ∈ Ω)
 
-def VorK (W : G3K K → ℂ) : Prop :=
-  ∑' a : Kˣ, W (diaK (dg a 1 1)) = ∑' b : Kˣ, ∫ u, W (diaK (dg 1 1 b) * cyc u) ∂adeleMeasure K
-
-variable (K) in
-
-def ConvAK : Prop :=
-  ∀ V, ∀ hV : WhAK V, (∀ W ∈ V, VorK W) → ∃ U : V →ₗ[ℂ] archSmooth K 3,
-    (∀ W : V, IsLeftInvariant (U W : G3K K → ℂ) ∧ HasModerateGrowth (U W : G3K K → ℂ) ∧ IsCuspidal (U W : G3K K → ℂ) ∧
-      FourierWhittaker.whittaker (U W : G3K K → ℂ) = W) ∧
-    (∀ (W : V) h g, (U ⟨fun x => W.1 (x * h), hV.stable _ W.2 h⟩ : G3K K → ℂ) g = (U W : G3K K → ℂ) (g * h)) ∧
-    ∀ (W : V) X, U ⟨_, hV.lie _ W.2 X⟩ = EAK X (U W)
-
-variable (K) in
-
-def MellinK : Prop :=
-  ∀ f₁ f₂ : IdeleGroup K → ℂ, Continuous f₁ → Continuous f₂ →
-    (∃ U : OpenSubgroup (FiniteAdeleRing (𝓞 K) K)ˣ, ∀ u ∈ U, ∀ x, f₁ (x * IdeleGroup.ofFinite u) = f₁ x ∧ f₂ (x * IdeleGroup.ofFinite u) = f₂ x) →
-    (∀ L : Set (IdeleGroup K), IsCompact L → ∃ b : Kˣ → ℝ, Summable b ∧ ∀ a : Kˣ, ∀ x ∈ L,
-      ‖f₁ (Units.map (algebraMap K 𝔸[K]).toMonoidHom a * x)‖ ≤ b a ∧ ‖f₂ (Units.map (algebraMap K 𝔸[K]).toMonoidHom a * x)‖ ≤ b a) →
-    ∀ σ : ℝ, 0 < σ → Integrable (fun x => ‖f₁ x‖ * (IdeleGroup.ideleModule K x : ℝ) ^ σ) (ideleMeasure K) →
-    Integrable (fun x => ‖f₂ x‖ * (IdeleGroup.ideleModule K x : ℝ) ^ (-σ)) (ideleMeasure K) →
-    (∀ c : HeckeCharacter K, ∃ M : ℂ → ℂ, Differentiable ℂ M ∧ Ord M (-σ) ∧
-      (∀ s : ℂ, s.re = σ → M s = ∫ x, f₁ x * (c.toIdele x : ℂ) * ((IdeleGroup.ideleModule K x : ℝ) : ℂ) ^ s ∂ideleMeasure K) ∧
-      ∀ s : ℂ, s.re = -σ → M s = ∫ x, f₂ x * (c.toIdele x : ℂ) * ((IdeleGroup.ideleModule K x : ℝ) : ℂ) ^ s ∂ideleMeasure K) →
-    ∑' a : Kˣ, f₁ (Units.map (algebraMap K 𝔸[K]).toMonoidHom a) = ∑' a : Kˣ, f₂ (Units.map (algebraMap K 𝔸[K]).toMonoidHom a)
-
-def IsLocK (v : PlK K) (x : GL (Fin 3) (Kv K v)) (h : G3K K) : Prop :=
-  Reduction.finAt v h = x ∧ (∀ v' ≠ v, Reduction.finAt v' h = 1) ∧ ∀ w, Reduction.infAt w h = 1
-
-def SphAtK (D : DatK K) (v : PlK K) (W : G3K K → ℂ) : Prop :=
-  ∀ g : G3K K, Reduction.finAt v g = 1 → ∀ x h, IsLocK v x h → W (g * h) = W g * sphW (localAdelicChar K v) (D.ν v) x
-
 def ek (i j : Fin 3) (z : ℂ) : Matrix (Fin 3) (Fin 3) (mixedEmbedding.mixedSpace K) := Matrix.single i j (0, fun _ => z)
-
-def EH (i j : Fin 3) : Module.End ℂ (archSmooth K 3) := (2 : ℂ)⁻¹ • (EAK (ek i j 1) - Complex.I • EAK (ek i j Complex.I))
-def EA' (i j : Fin 3) : Module.End ℂ (archSmooth K 3) := (2 : ℂ)⁻¹ • (EAK (ek i j 1) + Complex.I • EAK (ek i j Complex.I))
-
-def GoodK (D : DatK K) (V : Submodule ℂ (G3K K → ℂ)) (hV : WhAK V) : Prop :=
-  (∀ W ∈ V, VorK W) ∧
-  (∀ W (hW : W ∈ V) (u : ℂ), Formalism.REAL.qdet EH (u + 1) ⟨W, hV.arch W hW⟩ =
-      ((u + (D.k - 1)) * u * (u - (D.k - 1))) • (⟨W, hV.arch W hW⟩ : archSmooth K 3) ∧
-    Formalism.REAL.qdet EA' (u + 1) ⟨W, hV.arch W hW⟩ =
-      ((u + (D.k - 1)) * u * (u - (D.k - 1))) • (⟨W, hV.arch W hW⟩ : archSmooth K 3)) ∧ ∃ W ∈ V, W ≠ 0 ∧ IsKFinite W ∧ ∃ S : Finset (PlK K), ∀ v ∉ S, SphAtK D v W
-
-variable (K) in
-
-def GlobK : Prop := Module.finrank ℚ K = 2 → IsTotallyComplex K → LocFG → LocU → LocC → MellinK K → ∀ D : DatK K, AnK D → ∃ V hV, GoodK D V hV
 
 def BCOf (D : Dat) (DK : DatK K) : Prop :=
   ∀ (v : Pl) (w : PlK K), ((pOf v : ℤ) : 𝓞 K) ∈ w.asIdeal → w ∉ DK.bad → v ∉ D.bad →
@@ -182,22 +130,5 @@ variable (K) in
 def ThK : Prop :=
   Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ (D : Dat) V (hV : WhA V), QOut D V hV →
     ∃ DK : DatK K, DK.k = D.k ∧ BCOf D DK ∧ AnK DK
-
-variable (K) in
-
-def AdFormK : Prop :=
-  Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ (D : Dat) V (hV : WhA V), QOut D V hV →
-    ∃ (DK : DatK K), DK.k = D.k ∧ BCOf D DK ∧ ∃ VK hVK, GoodK DK VK hVK ∧ ∃ U : VK →ₗ[ℂ] archSmooth K 3,
-      (∀ W : VK, IsLeftInvariant (U W : G3K K → ℂ) ∧ HasModerateGrowth (U W : G3K K → ℂ) ∧ IsCuspidal (U W : G3K K → ℂ) ∧
-        FourierWhittaker.whittaker (U W : G3K K → ℂ) = W) ∧
-      (∀ (W : VK) h g, (U ⟨fun x => W.1 (x * h), hVK.stable _ W.2 h⟩ : G3K K → ℂ) g = (U W : G3K K → ℂ) (g * h)) ∧
-      ∀ (W : VK) X, U ⟨_, hVK.lie _ W.2 X⟩ = EAK X (U W)
-
-theorem adFormK_of (h1 : LocFG) (h2 : LocU) (h3 : LocC) (h4 : MellinK K) (h5 : GlobK K) (h6 : ConvAK K) (h7 : ThK K) :
-    AdFormK K := by
-  intro hd hc D V hV hq
-  obtain ⟨DK, hk, hb, ha⟩ := h7 hd hc D V hV hq
-  obtain ⟨VK, hVK, hg⟩ := h5 hd hc h1 h2 h3 h4 DK ha
-  exact ⟨DK, hk, hb, VK, hVK, hg, h6 VK hVK hg.1⟩
 
 end Ad3.K

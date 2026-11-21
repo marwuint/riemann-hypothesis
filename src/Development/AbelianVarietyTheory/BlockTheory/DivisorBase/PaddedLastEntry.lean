@@ -45,17 +45,4 @@ def BlockBound : Prop :=
     (∀ z, ‖G z‖ ≤ S * Real.exp (unitSq r z / 2)) →
     OpNormSqLe lam lam' (jetOp lam lam' (jetC cD G) fun τ => lastEntry (nu τ)) (tmax b nu S Om)
 
-example : ph 0 = 0 ∧ ph 1 = -1 := by simp [ph]
-
-example : StepWeights (a := 1) (b := 2) ⟨fun _ => 0, fun _ _ _ => le_rfl⟩ ⟨fun _ => 3, fun _ _ _ => le_rfl⟩
-    ⟨![2, -1], by intro i j h; fin_cases i <;> fin_cases j <;> simp_all⟩ := by
-  refine ⟨fun _ => by norm_num, ⟨3, fun _ => by norm_num⟩, ⟨1, fun j => ?_⟩⟩
-  fin_cases j <;> simp [padZero]
-
-example {ι : Type} [Fintype ι] {a b : ℕ} (r : ι → ℝ) (z : VCx ι a b) :
-    ‖(fun _ : VCx ι a b => (1 : ℂ)) z‖ ≤ 1 * Real.exp (unitSq r z / 2) := by
-  have h : 0 ≤ unitSq r z := by unfold unitSq; positivity
-  simp only [norm_one, one_mul]
-  exact Real.one_le_exp (by positivity)
-
 end GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry

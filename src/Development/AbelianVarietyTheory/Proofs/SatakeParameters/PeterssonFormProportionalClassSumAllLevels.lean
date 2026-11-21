@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelOperatorsAtPrimeOffLevelDatumStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChainInnerStepIntertwinesMatchedHeckeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaChainLastStepIntertwinesMatchedHeckeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChainInnerStepIntertwinesMatchedHecke
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaChainLastStepIntertwinesMatchedHecke
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
@@ -70,7 +70,7 @@ theorem compositeLift_relation_passes_to_rows (F : Face D A) (hl : R.toLevCh.Is 
     (v : (R.MY 0).Vec) :
     R.e0 (hk _ P c (U.1 (PiTensorProduct.tprod ℂ v))) = hk _ P c (R.e0 (U.1 (PiTensorProduct.tprod ℂ v))) := by
   obtain ⟨n, hn⟩ := hl.βY 0 (by have := D.R.two_le_m; omega)
-  have hN := natCast_pow_notMem P ((GlobalTheory.T.theta_lift_levels_good_primes_properties R F hl).2.1 t P hP).1 n
+  have hN := natCast_pow_notMem P ((_root_.GlobalTheory.GoodPrimes.good_primes R F hl).2.1 t P hP).1 n
   have h1 := (GlobalTheory.T.level_operators_at_prime_off_level_datum _ _ _ _ (R.datYt t 0 R.triv) hn P hN hP).1
   have h2 := (GlobalTheory.T.level_operators_at_prime_off_level_datum _ _ _ _ (R.dat0 R.triv) hn P hN fun PP h =>
     hP PP (Or.inl (h.resolve_right (Finset.notMem_empty PP)))).2.2.2.1
@@ -92,7 +92,7 @@ end Chain
 theorem matchE_of_chain : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Chain.LiftInteg D → Core R F → SchurAll R → ∀ t P, Good R t P → FixAll R t P → ∀ (cX : List ℤ →₀ ℂ) (cs : ℕ → List ℤ →₀ ℂ), Match R.ψ (R.ωX t) P (cs (D.R.m - 1)) (dualC cX) → (∀ k, k + 1 < D.R.m → Match R.ψ (R.ωY t k) P (cs k) (dualC (cs (k + 1)))) → MatchE R t P cX (cs 0) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hI hC hS t P hP hF cX cs hX hY y y' hy
   refine e_Th_hk F hC.lev hC.chain.Th t P hP (cs 0) y y' ?_
-  exact dnFrom_hk t P cs (fun k hk => GlobalTheory.T.chainInnerStep_intertwines_matchedHecke R F hI hC hS t P k hP hk (hF.1 k hk) _ _ (hY k hk))
-    (D.R.m - 1) (by have := D.R.two_le_m; omega) _ _ (GlobalTheory.T.theta_chain_last_step_intertwines_matched_hecke R F hC hS t P hP hF.2.1 _ _ hX y y' hy)
+  exact dnFrom_hk t P cs (fun k hk => _root_.GlobalTheory.ChainStepHecke.step_hk R F hI hC hS t P k hP hk (hF.1 k hk) _ _ (hY k hk))
+    (D.R.m - 1) (by have := D.R.two_le_m; omega) _ _ (_root_.GlobalTheory.Hk3.StepX.stepX_hk R F hC hS t P hP hF.2.1 _ _ hX y y' hy)
 
 end GlobalTheory.Hk3.ChainE

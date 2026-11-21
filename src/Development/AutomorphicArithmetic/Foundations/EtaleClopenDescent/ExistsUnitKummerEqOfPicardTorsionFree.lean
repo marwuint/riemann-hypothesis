@@ -2,11 +2,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleToSheafifyLocallyBijectiveAndLiftStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafSectionsExactStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKummerTorsorSplittingKummerTorsorSplittingStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KummerClassOfUnitCocycleNaturalAdditiveStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KummerSequenceEtaleTateTwistStatement
@@ -237,10 +238,10 @@ private theorem glue (κ : RT q ⟶ Gm)
     ∃ Y : Sec ((II q).X 0) X, Sec.map ((II q).d 0 1) Y = z + zu := by
   obtain ⟨S, hS, hP⟩ := good_ex ρnat ρd hz hw
   choose s hs using hP
-  obtain ⟨Y, hY⟩ := (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) ((II q).X 0) X).2 S hS s (fun V W g k hg =>
+  obtain ⟨Y, hY⟩ := (_root_.GlobalTheory.EtC.sec_ext_glue (ZMod q) ((II q).X 0) X).2 S hS s (fun V W g k hg =>
     good_unique κ hκ ρι hq (k ≫ g) (good_res ρnat hq g k (hs V g hg)) (hs W (k ≫ g) _))
   refine ⟨Y, ?_⟩
-  apply (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) ((II q).X 1) X).1
+  apply (_root_.GlobalTheory.EtC.sec_ext_glue (ZMod q) ((II q).X 1) X).1
   refine GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.2.1 X _ ⟨S, hS, ?_⟩
   intro V g hg
   obtain ⟨y, v, h1, h2, h3⟩ := hs V g hg
@@ -276,8 +277,8 @@ theorem UpperTheory.Cb.exists_unit_kummer_eq_of_picard_torsionFree :
   have hqX : IsUnit (q : Γ(Spec (CommRingCat.of A), ⊤)) := by
     simpa using hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom
   obtain ⟨α, rfl⟩ := x.mk_surjective
-  have T1 := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff (ZMod q) (Spec (CommRingCat.of A)) (II q) 0 1 2 (by norm_num) (by norm_num)
-  have T2 := GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff ℤ (Spec (CommRingCat.of A)) JJ 0 1 2 (by norm_num) (by norm_num)
+  have T1 := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec (ZMod q) (Spec (CommRingCat.of A)) (II q) 0 1 2 (by norm_num) (by norm_num)
+  have T2 := _root_.GlobalTheory.EtC.sch_cls_cocycle_sec ℤ (Spec (CommRingCat.of A)) JJ 0 1 2 (by norm_num) (by norm_num)
   have hz := (T1.2 α).1
   have hz' : Sec.map (JJ.d 1 2) (ρ _ 1 (ev α.1 0 1 (by simp) (Spec (CommRingCat.of A)) (𝟙 _))) = 0 := by
     rw [ρd, hz, map_zero]

@@ -1,9 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.OddLevelBlockBoundAttainedStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LevelsUsedBalancedValueOrbitSumsStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.OddLevelBlockBoundAttained
+import Formalism.LocalToGlobal.CharacterGerms.ContentLargeFromSupplies
+import Formalism.LocalToGlobal.CharacterGerms.ContentZeroAt
+import Formalism.LocalToGlobal.CharacterGerms.LatticeInclusionFormsInjective
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LevelsUsedBalancedValueOrbitSums
+import Formalism.LocalToGlobal.CharacterGerms.ValuationChoiceHypothesis
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FlowProgrammeBoundsAndLowLevelOptimumStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGoodIntegerPlanLowLevelsBoundStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGoodIntegerPlanLowLevelsBound
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InertPrimeValueLePlanBlocksStatement
 
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryBoundIntegral Formalism.L2.DIV Formalism.L2.Pj Formalism.BasicNotions GlobalTheory.GoodDepth NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -97,7 +101,7 @@ theorem orbit (l d : ℕ) [NeZero d] (hl : 5 ≤ l) (m k : ℕ) (hmk : m + 3 ≤
   have hth : 0 ≤ thl k l := by
     rw [(GlobalTheory.T.levelsUsed_balancedValue_orbitSums.1 k l (by omega) (by omega)).2.2.2]; positivity
   have hθ1 : 0 ≤ 1 - θ := by linarith [hθ.2]
-  obtain ⟨p, h1, h2, h3⟩ := GlobalTheory.T.exists_goodIntegerPlan_low_levels_bound l d hl (k - 1) m k (S0 l (i0 k l) (k - 1)) (by omega) (by omega) W
+  obtain ⟨p, h1, h2, h3⟩ := _root_.GlobalTheory.GoodPlan.exists_plan l d hl (k - 1) m k (S0 l (i0 k l) (k - 1)) (by omega) (by omega) W
     (fun a => (1 - θ) * w a / T) Good
     (fun a => ⟨div_nonneg (mul_nonneg hθ1 (hw a).le) hT0.le, by
       rw [div_le_iff₀ hT0]; linarith [hlo a]⟩) hG

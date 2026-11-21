@@ -144,11 +144,6 @@ private theorem isoA_a0_eq_ofMul_gen : D.isoA D.frame.a0 = Additive.ofMul D.gen 
     ((Fintype.equivFin (Additive D.R)).symm.symm (Additive.ofMul D.gen)) = _
   exact Equiv.apply_symm_apply _ _
 
-theorem iso_generator : D.iso (D.frame.iota D.frame.a0) = D.gen := by
-  show Additive.toMul (D.isoA D.frame.a0) = D.gen
-  rw [isoA_a0_eq_ofMul_gen]
-  rfl
-
 theorem ord_eq : D.frame.ord = Nat.card D.R := by
   show Fintype.card (Additive D.R) = Nat.card D.R
   rw [← Nat.card_eq_fintype_card]
@@ -209,23 +204,6 @@ theorem o_eq : D.frame.o = Nat.card D.ξ.range := by
   have hpos : 0 < Nat.card D.p2.ker := Nat.card_pos
   show D.frame.ord / D.frame.n0 = _
   rw [D.ord_eq, hn0, hc, Nat.mul_div_cancel _ hpos, hr]
-
-theorem twoGroup (h : ∃ j : ℕ, ∀ u, D.ξ u ^ 2 ^ j = 1) : D.frame.TwoGroup := by
-  obtain ⟨j, hj⟩ := h
-  have hcard : Nat.card (HGrp D.e) = 2 ^ D.e := (Formalism.TwoAdicCyclotomicDecomposition.towerProperties.1.2.1 D.e).2.1
-  have hpg : IsPGroup 2 D.R := by
-    rintro ⟨_, u, rfl⟩
-    refine ⟨D.e + j, ?_⟩
-    apply Subtype.ext
-    show D.eta u ^ 2 ^ (D.e + j) = 1
-    refine Prod.ext ?_ ?_
-    · show D.cl u ^ 2 ^ (D.e + j) = 1
-      rw [show (2 : ℕ) ^ (D.e + j) = 2 ^ D.e * 2 ^ j from pow_add 2 D.e j, pow_mul, ← hcard,
-        pow_card_eq_one', one_pow]
-    · show D.ξ u ^ 2 ^ (D.e + j) = 1
-      rw [show (2 : ℕ) ^ (D.e + j) = 2 ^ j * 2 ^ D.e by rw [pow_add, mul_comm], pow_mul, hj, one_pow]
-  obtain ⟨n, hn⟩ := IsPGroup.iff_card.mp hpg
-  exact ⟨n, (D.ord_eq).trans hn⟩
 
 section Host
 

@@ -15,12 +15,6 @@ def NefAmpleGeneric.Statement : Prop :=
     IsArithVar (mCoordIdeal y) (D + 1) → P0 ≤ mCoordIdeal y → IsSemipositiveRel P0 (mCoordIdeal y) M →
     1 ≤ b → 1 ≤ a → KH.AmpleV ℚ (KH.genIdeal y) ((b : ℤ) • M.a + fun _ => (a : ℤ))
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

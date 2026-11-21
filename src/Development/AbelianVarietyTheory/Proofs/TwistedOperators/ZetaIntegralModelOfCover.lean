@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.L2UnitaryRepresentationData
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CoverHaarPushforwardSignatureUnitaryGroupStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CoverHaarPushforwardSignatureUnitaryGroup
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockModelJointHarmonicsFormNormalisationUniqueneStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.NotTrivialAndTwist
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembers
@@ -46,7 +46,7 @@ theorem zetaLaw_of_cover : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar)
   intro Φ hΦ v hv μ hμ
   obtain ⟨hsc, -, -⟩ := hT.ord
   obtain ⟨π, c0, hc0, humat, hq, hπm, hmap⟩ :=
-    GlobalTheory.T.cover_haar_pushforward_signatureUnitaryGroup p q W.rank (X.grp p q) (N.ε τ) e br μ hsc hμ
+    _root_.GlobalTheory.ArchRec.cover_haar_map p q W.rank (X.grp p q) (N.ε τ) e br μ hsc hμ
   have huv : UnitHW (X.ds p q lam) (blattner lam) (u v) := (hT.hi v).1 hv
   have huv1 : ‖(X.ds p q lam).ι (u v)‖ = 1 := by
     obtain ⟨-, h⟩ := huv

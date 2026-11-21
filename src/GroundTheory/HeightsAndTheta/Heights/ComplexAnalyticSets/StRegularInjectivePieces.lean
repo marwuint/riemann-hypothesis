@@ -15,16 +15,6 @@ def RegularInjectivePieces.Statement : Prop :=
       ⋃ i, P i = {w | w ∈ U ∧ LinearMap.det (fderiv ℂ g w : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ) ≠ 0} ∧
       ∀ i, Set.InjOn g (P i)
 
-theorem RegularInjectivePieces.hypotheses_inhabited :
-    IsOpen (Set.univ : Set (Fin 1 → ℂ)) ∧
-      DifferentiableOn ℂ (fun w : Fin 1 → ℂ => fun _ : Fin 1 => w 0 ^ 2) Set.univ := by
-  refine ⟨isOpen_univ, ?_⟩
-  intro w _
-  apply DifferentiableAt.differentiableWithinAt
-  apply differentiableAt_pi.2
-  intro _
-  exact ((differentiableAt_apply 0 w).pow 2)
-
 end
 
 end GroundTheory.Heights₂.Heights

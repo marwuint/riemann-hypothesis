@@ -146,8 +146,4 @@ theorem cohGen_of (hInt : CohInt Zd u u' F0 what₂) (hDG : CohDG Zd u u' F0 wha
     cases hg
   · exact Formalism.MainNotions.S.Loc.HermSp.CohU.prim_of_gramInv hN hI hv
 
-theorem star_coherence_of_four (hInt : CohInt Zd u u' F0 what₂) (hDG : CohDG Zd u u' F0 what₂) (hLp : CohLp Zd u u' F0 what₂)
-    (hGood : CohGood Zd u u' F0 what₂) : CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
-  starCoh_of_P'' Zd (cohGen_of Zd hInt hDG hGood) hLp hGood
-
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

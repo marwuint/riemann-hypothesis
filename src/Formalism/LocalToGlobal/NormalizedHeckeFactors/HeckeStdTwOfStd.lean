@@ -144,10 +144,6 @@ def HeckeStd {D : D7} {M : MtFam D} (B : NLocBase D M) : Prop :=
 def LocPl (D : D7) (j : ℕ) (w : D.what₂.places.Pl) : Prop :=
   D.what₂.muAt w ≠ D.what₂.mu0 ∨ (D.nd.locs j w).Nonempty
 
-theorem locPl_iff (D : D7) (hw : ∀ j w, (D.nd.locs j w).Nonempty → D.what₂.muAt w ≠ D.what₂.mu0) (j : ℕ)
-    (w : D.what₂.places.Pl) : LocPl D j w ↔ D.what₂.muAt w ≠ D.what₂.mu0 :=
-  ⟨fun h => h.elim id (hw j w), Or.inl⟩
-
 theorem locPl_of_mem (D : D7) {j : ℕ} {w : D.what₂.places.Pl} {i : D.nd.Loc} (h : i ∈ D.nd.locs j w) :
     LocPl D j w :=
   Or.inr ⟨i, h⟩

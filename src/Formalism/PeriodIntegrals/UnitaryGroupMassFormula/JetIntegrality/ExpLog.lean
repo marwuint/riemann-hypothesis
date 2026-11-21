@@ -1,14 +1,6 @@
 import Formalism.PeriodIntegrals.JetsPhW
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralMv
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CapelliComplements.FirstLemmaG
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralPolynomialFirst
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CapelliComplements.FirstLemmaF
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralPolynomialThird
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralPolynomialFourth
+import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.UnitBall
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntegralNatCast
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralPolynomialFifth
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralPolynomialSixth
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTerAlt
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntMvPderiv
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegralPolynomialSecond
@@ -28,35 +20,9 @@ noncomputable def intSub (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] :=
 
 theorem mem_intSub {x : ℂ_[p]} : x ∈ intSub p ↔ IsIntP x := Iff.rfl
 
-theorem isPadicIntegral_natCast (n : ℕ) : IsIntP (n : ℂ_[p]) :=
-  _root_.UpperTheory.Reformulated.B.IsIntegralNatCast.isPadicIntegral_natCast n
-
-theorem intMv_zero : IntegralMv (0 : MvPowerSeries σ ℂ_[p]) :=
-  _root_.UpperTheory.Reformulated.B.IntegralMvPowerSeriesOverPadicComplex.intMv_zero
-
-theorem intMv_one : IntegralMv (1 : MvPowerSeries σ ℂ_[p]) :=
-  _root_.UpperTheory.Reformulated.B.Gwb3.intMv_one
-
-theorem intMv_add {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
-    IntegralMv (F + G) :=
-  _root_.UpperTheory.Reformulated.B.IntegralPolynomialFirst.intMv_add hF hG
-
-theorem intMv_neg {F : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) : IntegralMv (-F) :=
-  _root_.UpperTheory.Reformulated.B.IntegralPolynomialFourth.intMv_neg hF
-
-theorem intMv_sub {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
-    IntegralMv (F - G) := by
-  rw [sub_eq_add_neg]; exact intMv_add hF (intMv_neg hG)
-
 theorem intMv_mul {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F * G) :=
   _root_.UpperTheory.Reformulated.B.IntegralPolynomialSecond.intMv_mul hF hG
-
-theorem intMv_C {c : ℂ_[p]} (hc : IsIntP c) : IntegralMv (C c : MvPowerSeries σ ℂ_[p]) :=
-  _root_.UpperTheory.Reformulated.B.IntegralPolynomialThird.intMv_C hc
-
-theorem intMv_X (i : σ) : IntegralMv (X i : MvPowerSeries σ ℂ_[p]) :=
-  _root_.UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.intMv_X i
 
 theorem intMv_pderiv {F : MvPowerSeries σ ℂ_[p]} (i : σ) (hF : IntegralMv F) :
     IntegralMv (pderiv ℂ_[p] i F) :=
@@ -133,9 +99,5 @@ theorem L0 {f c : MvPowerSeries σ ℂ_[p]} (i : σ) (hf : constantCoeff f = 0)
     rw [pderiv_expMv hf, mul_assoc, mul_assoc, hEG, mul_one]
   rw [this]
   exact intMv_mul (intMv_mul hc (intMv_pderiv i hE)) hG
-
-theorem integral_of_simeq_alt {F G c : MvPowerSeries σ ℂ_[p]} (i : σ) (h : Simeq F G) (hc : IntegralMv c) :
-    IntegralMv (c * pderiv ℂ_[p] i (F - G)) :=
-  L0 i h.1 h.2 hc
 
 end PI.JetsPhW.W

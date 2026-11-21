@@ -5,7 +5,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.C
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.BigStatementPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.OntoWeightStatementPfA
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.DerivDerivNonposOfIsLocalMax
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LeviLogSumSqFibreZeroAndNonposAtMaxStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LeviLogSumSqFibreZeroAndNonposAtMax
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates MeasureTheory Topology GlobalTheory.Shares
 open scoped ContDiff ENNReal Matrix
@@ -80,7 +80,7 @@ theorem no_localMax {n : ℕ} {U : Set (V n)} (hU : IsOpen U) {z0 : V n} (hz : z
     intro f hf
     filter_upwards [hUz] with z hzU using hf.differentiableAt (hU.mem_nhds hzU)
   obtain ⟨ξ, hξ0, hξ⟩ := exists_dir s k0 z0 ((hs k0).differentiableAt hUz).continuousAt hs0
-  have hT := GlobalTheory.T.levi_log_sum_sq_fibre_zero_and_nonpos_at_max n z0 ξ
+  have hT := _root_.GlobalTheory.LeviFibre.main n z0 ξ
 
   have hone : ∀ {f : V n → ℂ}, DifferentiableOn ℂ f U → f z0 ≠ 0 →
       (leviV n (fun z => ((Real.log (Complex.normSq (f z)) : ℝ) : ℂ)) z0 ξ).re = 0 := by

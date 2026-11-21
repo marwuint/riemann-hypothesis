@@ -12,8 +12,4 @@ def FinrankAdjoinRange.Statement : Prop :=
       IntermediateField.relfinrank (IsScalarTower.toAlgHom F Φ Ω).fieldRange
         ((IsScalarTower.toAlgHom F Φ Ω).fieldRange ⊔ IntermediateField.adjoin F S)
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

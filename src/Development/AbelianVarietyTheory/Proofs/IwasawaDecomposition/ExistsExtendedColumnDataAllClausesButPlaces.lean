@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoefAEqOfHeq
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAdelicCoreTransportEnlargedCoefficientBaseStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtendedAdelicDataWithIntertwinersOverEnlaStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAdelicCoreTransportEnlargedCoefficientBase
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtendedAdelicDataWithIntertwinersOverEnla
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsBaseEnlargementFixedCoefFieldOfCoeffEnlargemen
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Forms
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
@@ -30,10 +30,10 @@ theorem exists_ext_build : GlobalTheory.Published.DiscreteSeriesCover → Global
     ∀ (Z' : w'.Lt) (hX' : B'.fields.Ok), GrpTrue Z'.N f' → GrpAt (w'.st Z') w'.I → VolTieG (w'.D Z') →
       ∃ z' : Dat (w'.st Z') w'.I hX' T' {v | B'.places.resChar v ∈ T'.pl}, Fine z' ∧ ExtN z z') := by
   intro h1 h2 h3 h4 h5 h6 h7
-  refine StepW.trans (GlobalTheory.T.exists_extendedAdelicData_with_intertwiners_over_enlargedCore h1 h2 h3 h4 h5 h6 h7) (StepW.of_all fun K B' f' T' w' _ _ hq => ?_)
+  refine StepW.trans (_root_.GlobalTheory.Mem.R3.Rw.datExt_rest h1 h2 h3 h4 h5 h6 h7) (StepW.of_all fun K B' f' T' w' _ _ hq => ?_)
   intro B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV
   obtain ⟨core', alg', a1, a2, a3, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, l1, l2, l3, l4⟩ :=
-    GlobalTheory.T.exists_adelicCore_transport_enlargedCoefficientBase_alt w w' Z Z' hX Wt z hE hf hF.2.2.1
+    _root_.GlobalTheory.Mem.R3.Rw.exists_adelicCore_transport_enlargedCoefficientBase w w' Z Z' hX Wt z hE hf hF.2.2.1
   obtain ⟨z', hc, hex, hin, hstd, hN⟩ :=
     hq B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' a1 a2 a3
     ⟨c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14⟩ l1 l2 l3 l4

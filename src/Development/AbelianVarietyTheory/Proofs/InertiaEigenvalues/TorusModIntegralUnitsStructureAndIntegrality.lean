@@ -2,16 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValsAtApply
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsReducedOfLieRegStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsReducedOfLieReg
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSurjectiveValuationIsIntegralIffNonnegStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIntegralIffForallMaximalSpectrumResidueStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitPrescribedResidueReducedFiniteAlgebraStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIntegralResidueComapInvolutionIffStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotIsIntegralResidueInvSmallIntegerStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRepresentativesTwoElementOrbitsInvolutionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZValuationsAtIndicesTorusSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitPrescribedResidueReducedFiniteAlgebra
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIntegralResidueComapInvolutionIff
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotIsIntegralResidueInvSmallInteger
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRepresentativesTwoElementOrbitsInvolution
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZValuationsAtIndicesTorusSurjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZValuationsAtIndicesTorusEqOneIffStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorusInvMulPowValuationNonnegIffStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorusInvMulPowValuationNonnegIff
 
 open GlobalTheory.UnitLemma Polynomial
 
@@ -19,7 +19,7 @@ namespace GlobalTheory.UnitLemma
 
 theorem torus_mod_intUnits_structure : ∀ (K : UQ) (B : InvAlg K), B.LieReg → ∀ a : K.O, K.Small a → ∃ (r : ℕ) (φ : B.T →* Multiplicative (Fin r → ℤ)) (c : Fin r → ℕ), Function.Surjective φ ∧ (∀ t : B.T, φ t = 1 ↔ (t : B.Aˣ) ∈ intUnits K.O B.A) ∧ (∀ i, 0 < c i) ∧ ∀ (t : B.T) (k : ℕ), IsIntegral K.O ((((t : B.Aˣ)⁻¹ : B.Aˣ) : B.A) * algebraMap K.O B.A a ^ k) ↔ ∀ i, |Multiplicative.toAdd (φ t) i| ≤ ((k * c i : ℕ) : ℤ) := by
   intro K B hL a ha
-  have hred : IsReduced B.A := GlobalTheory.T.isReduced_of_lieReg' K B hL
+  have hred : IsReduced B.A := _root_.GlobalTheory.UnitLemma.InvAlg.isReduced_of_lieReg K B hL
   haveI : IsArtinianRing B.A := IsArtinianRing.of_finite K.E B.A
   have hv : ∀ m : MaximalSpectrum B.A, ∃ v : (B.A ⧸ m.asIdeal)ˣ →* Multiplicative ℤ,
       Function.Surjective v ∧ ∀ x : (B.A ⧸ m.asIdeal)ˣ,
@@ -57,11 +57,11 @@ theorem torus_mod_intUnits_structure : ∀ (K : UQ) (B : InvAlg K), B.LieReg →
   have hswap : ∀ m x, 0 ≤ Multiplicative.toAdd (w (s m) x) ↔ 0 ≤ Multiplicative.toAdd (w m (τ x)) := by
     intro m x
     rw [← hw, ← hw]
-    exact GlobalTheory.T.isIntegral_residue_comap_involution_iff K B m x
+    exact _root_.GlobalTheory.UnitLemma.InvAlg.isIntegral_mk_comap_sigma_iff K B m x
   have hsupp : ∀ m (n : ℤ), ∃ y : B.Aˣ, w m y = Multiplicative.ofAdd n ∧ ∀ j, j ≠ m → w j y = 1 := by
     intro m n
     obtain ⟨z, hz⟩ := hvs m (Multiplicative.ofAdd n)
-    obtain ⟨y, hy1, hy2⟩ := GlobalTheory.T.unit_prescribed_residue_reduced_finite_algebra K B hred m (z : B.A ⧸ m.asIdeal) z.ne_zero
+    obtain ⟨y, hy1, hy2⟩ := _root_.GlobalTheory.UnitLemma.unit_prescribed_residue K B hred m (z : B.A ⧸ m.asIdeal) z.ne_zero
     refine ⟨y, ?_, fun j hj => ?_⟩
     · have : Units.map (Ideal.Quotient.mk m.asIdeal : B.A →* B.A ⧸ m.asIdeal) y = z := Units.ext hy1
       show v m _ = _
@@ -86,13 +86,13 @@ theorem torus_mod_intUnits_structure : ∀ (K : UQ) (B : InvAlg K), B.LieReg →
       rw [map_inv, toAdd_inv]
       linarith
     rw [← hw] at h1
-    apply GlobalTheory.T.not_isIntegral_residue_inv_small_integer K B a ha m
+    apply _root_.GlobalTheory.NotIntegral.inv_small_not_integral K B a ha m
     convert h1 using 1
     show _ = Ideal.Quotient.mk m.asIdeal (algebraMap K.E B.A (algebraMap K.O K.E a)⁻¹)
     rw [Ideal.Quotient.mk_algebraMap]
-  obtain ⟨r, e, he1, he2, he3⟩ := GlobalTheory.T.exists_representatives_two_element_orbits_involution (MaximalSpectrum B.A) s hs
+  obtain ⟨r, e, he1, he2, he3⟩ := _root_.GlobalTheory.involution_pair_representatives (MaximalSpectrum B.A) s hs
   refine ⟨r, (valsAt w e).comp B.T.subtype, fun j => (Multiplicative.toAdd (w (e j) α)).toNat,
-    GlobalTheory.T.zValuationsAtIndices_torus_surjective B.Aˣ τ hτ B.T hT _ s w hswap hsupp r e he1 he2, fun t => ?_, fun j => ?_, fun t k => ?_⟩
+    _root_.GlobalTheory.UnitLemma.valsAt_torus_surjective B.Aˣ τ hτ B.T hT _ s w hswap hsupp r e he1 he2, fun t => ?_, fun j => ?_, fun t k => ?_⟩
   · rw [GlobalTheory.T.zValuationsAtIndices_torus_eq_one_iff B.Aˣ τ B.T hT _ s w hswap r e he3]
     show _ ↔ IsIntegral K.O ((t : B.Aˣ) : B.A) ∧ IsIntegral K.O (((t : B.Aˣ)⁻¹ : B.Aˣ) : B.A)
     rw [hP, hP]
@@ -104,7 +104,7 @@ theorem torus_mod_intUnits_structure : ∀ (K : UQ) (B : InvAlg K), B.LieReg →
       rw [map_inv, toAdd_inv] at this
       linarith [ha1 m]
   · exact Int.lt_toNat.mpr (hαpos (e j))
-  · rw [← GlobalTheory.T.torus_inv_mul_pow_valuation_nonneg_iff B.Aˣ τ B.T hT _ s w hswap r e he3 α hτα hαpos, ← hP]
+  · rw [← _root_.GlobalTheory.TorusInteg.torus_integral_iff B.Aˣ τ B.T hT _ s w hswap r e he3 α hτα hαpos, ← hP]
     congr 2
     rw [Units.val_mul, Units.val_pow_eq_pow_val, hαv]
 

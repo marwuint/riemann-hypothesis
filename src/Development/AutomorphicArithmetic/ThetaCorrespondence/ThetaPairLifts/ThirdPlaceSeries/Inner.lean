@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AtSame
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
 
@@ -19,8 +19,6 @@ def InnerAlt {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C} (n : _root
     (∀ k, haveI : Fact (n.D.host.g k).Prime := ⟨n.D.host.g_prime k⟩
       n.A.grp.ζ k = (GlobalTheory.Mem.TypePl.labDat (n.D.host.g k)).gen) ∧
     ∃ fr : Formalism.L2.OmFrame n.D, fr.jE = n.jE ∧ PhtOn n.A.wd fr fun _ _ _ _ => True
-section
-end
 end GlobalTheory.LayerMove
 end
 end

@@ -12,10 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAntiInvolu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegrableOnFundamentalDomainMulRight
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotentsStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvolutionSphericalHeckeAntiStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertPlaceHeckeDoubleCosetsInverseRepsLabelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivisorsAtInvDualLabelAndStabilizerMulStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsHyperspecialDoubleCosetOfElementaryDivisorStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ElementaryDivisorsInvHeckeElementSplitPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertPlaceHeckeDoubleCosetsInverseRepsLabel
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DivisorsAtInvDualLabelAndStabilizerMul
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsHyperspecialDoubleCosetOfElementaryDivisor
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ElementaryDivisorsInvHeckeElementSplitPlace
 
 noncomputable section
 
@@ -238,9 +238,9 @@ theorem local_data (hu : RealUnif P) (h : IsPrimeIdem P e f) (hL : ∀ g, g ∈ 
     · obtain ⟨a, ha, b, hb, e⟩ := i5 g ((hL _).1 hg)
       exact ⟨a, m2 ha.1 ha.2, b, m2 hb.1 hb.2, e⟩
     · intro ϖ ϖ' d g g' h1 h2 h3 h4 _ h5 h6 h7 h8
-      obtain ⟨a, ha, b, hb, e⟩ := GlobalTheory.T.exists_hyperspecial_doubleCoset_of_elementaryDivisors V P e ϖ ϖ' d g g' hs h1 h2 h3 h4 h5 h6 h7 h8
+      obtain ⟨a, ha, b, hb, e⟩ := _root_.GlobalTheory.SplitLabel.split_label V P e ϖ ϖ' d g g' hs h1 h2 h3 h4 h5 h6 h7 h8
       exact ⟨⟨a, m1 ha.1 ha.2⟩, ⟨b, m1 hb.1 hb.2⟩, e⟩
-  · have key := GlobalTheory.T.inert_place_hecke_double_cosets_inverse_reps_label V P f h hu
+  · have key := _root_.GlobalTheory.InertDoubleCoset.inert_double_cosets V P f h hu
     refine ⟨⟨fun g => g⁻¹, fun g hg => inv_mem hg, fun x _ y _ => mul_inv_rev x y, fun x _ => inv_inv x,
       fun k hk => inv_mem hk.1, fun g hg => ?_⟩, fun g hg => (key g hg).2.1, ?_⟩
     · obtain ⟨a, b, ha, ha', hb, hb', e⟩ := (key g ((hL _).1 hg)).1
@@ -282,7 +282,7 @@ theorem splitDict : SplitDict (J : Set (GA D V)) χ Sb := by
   have hP : IsPrimeIdem P e (e + cA D e) := Or.inl ⟨he, rfl⟩
   obtain ⟨L, hL⟩ := exists_loc (V := V) hP
   exact ⟨e, e + cA D e, ϖ, α⁻¹, hS, hP, h1, h2, splitLab_pairwise _ _, hJ, hχ,
-    (hL _).1 (inv_mem ((hL _).2 hα.2.1)), GlobalTheory.T.elementary_divisors_inv_hecke_element_split_place V P e ϖ k α he h1 h2 hk hα, hR, hc⟩
+    (hL _).1 (inv_mem ((hL _).2 hα.2.1)), _root_.GlobalTheory.SplitDivisors.divAt_inv_of_isHeckeElt V P e ϖ k α he h1 h2 hk hα, hR, hc⟩
 
 theorem level_heckeLin {d : List ℤ} {R : Finset (GA D V)}
     (hm : ∀ k ∈ J, ∀ k' ∈ J, χ (k * k') = χ k * χ k')
@@ -354,7 +354,7 @@ theorem exists_dual (hu : RealUnif P) {d : List ℤ} {R : Finset (GA D V)}
     rw [show ϖ = 0 from RingOfIntegers.coe_eq_zero_iff.1 h0]
     exact zero_mem _)
   refine ⟨R', ⟨e, f, ϖ, α⁻¹, hS, hP, h1, h2, dualLab_pairwise hd, hJ, hχ, hα',
-    (GlobalTheory.T.divisorsAt_inv_dualLabel_and_stabilizer_mul V e ϖ d α (idem_of_isPrimeIdem hP V) h0 hD).1, hR', hc'⟩, ?_, J ⊓ L, α,
+    (_root_.GlobalTheory.DivDual.divAt_inv_and_mul V e ϖ d α (idem_of_isPrimeIdem hP V) h0 hD).1, hR', hc'⟩, ?_, J ⊓ L, α,
     fun k hk => ⟨hk.1, hχ k hk.1 ((hL _).1 hk.2)⟩, fun a ha => ?_, fun a ha => ?_⟩
   · exact (GlobalTheory.DoubleCosetComm.dcOp_comm_and_card (W := ℂ) (J ⊓ L) L 1 α α R R R' 0 split_triv (fun _ _ => rfl) hι
       (fun a ha => (hL _).2 (hR a ha)) (fun a ha => (hL _).2 (hR a ha)) (fun a ha => (hL _).2 (hR' a ha))

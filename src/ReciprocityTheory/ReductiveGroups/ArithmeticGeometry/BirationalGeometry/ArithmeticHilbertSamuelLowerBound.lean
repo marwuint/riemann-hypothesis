@@ -98,21 +98,6 @@ def PackingStatement : Prop :=
     (∀ τ, {s : La τ | IsSmallH (mCoordIdeal y) y A τ (s : Ω)}.Finite) ∧
       ∃ C : ℝ, ∀ τ, smallSectionCount (IsSmallH (mCoordIdeal y) y A) La τ ≤ C * ((τ : ℝ) + 1) ^ (D + 1)
 
-def ArithmeticHilbertSamuelLowerBound : Prop :=
-  ∀ (ι0 : Type) [Fintype ι0] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (x : ι0 → Ω) (D : ℕ)
-    (A : HermLine (fun _ : Unit => ι0))
-    (II : IntersectionSystem),
-    1 ≤ D → IsIntersectionSystem II → A.a = 1 →
-    IsArithVar (mCoordIdeal (fun p : Σ _ : Unit, ι0 => x p.2)) (D + 1) →
-    Birational (fun p : Σ _ : Unit, ι0 => x p.2) →
-    SmoothGenericFibreM (fun p : Σ _ : Unit, ι0 => x p.2) →
-    IsSemipositiveH (mCoordIdeal (fun p : Σ _ : Unit, ι0 => x p.2)) A → IsConjInvariantH A →
-    II Unit (fun _ => ι0) (mCoordIdeal (fun p : Σ _ : Unit, ι0 => x p.2)) (D + 1) (fun _ => A) ≤
-      liminf (fun τ : ℕ =>
-        smallSectionCount (IsSmallH (mCoordIdeal (fun p : Σ _ : Unit, ι0 => x p.2)) (fun p => x p.2) A)
-          (fun τ => secM (fun p : Σ _ : Unit, ι0 => x p.2) (fun _ => τ)) τ /
-          ((τ : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ))) atTop
-
 def ArithmeticVolumeLowerBound : Prop :=
   ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω]
     (y : (Σ k, ι k) → Ω) (D : ℕ) (A : HermLine ι)

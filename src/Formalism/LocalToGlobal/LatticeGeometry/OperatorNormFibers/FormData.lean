@@ -45,37 +45,4 @@ structure FormData (K R Hb : Type) [Field K] [NumberField K] [CommRing R] [Algeb
   ip_mul : ∀ v f u, f ∈ cusp → u ∈ cusp →
     (ip v (f * u) (f * u)).re ≤ supv v u ^ 2 * (ip v f f).re
 
-def FormData.restrict {K R G : Type} [Field K] [NumberField K] [CommRing R] [Algebra K R] [Group G]
-    [MulSemiringAction G R] (D : FormData K R G) (S : Subgroup G) : FormData K R S where
-  W := D.W
-  Pt := D.Pt
-  av := D.av
-  av_int := D.av_int
-  sn := D.sn
-  sn_nonneg := D.sn_nonneg
-  sn_smul := D.sn_smul
-  sn_add := D.sn_add
-  sn_mul := D.sn_mul
-  mv := fun h => D.mv (h : G)
-  sn_act := fun h => D.sn_act (h : G)
-  cusp := D.cusp
-  cusp_act := fun h => D.cusp_act (h : G)
-  cusp_mul := D.cusp_mul
-  ip := D.ip
-  ip_add_left := D.ip_add_left
-  ip_add_right := D.ip_add_right
-  ip_smul_left := D.ip_smul_left
-  ip_smul_right := D.ip_smul_right
-  ip_conj := D.ip_conj
-  ip_nonneg := D.ip_nonneg
-  ip_act := fun v h => D.ip_act v (h : G)
-  supv := D.supv
-  supv_act := fun v h => D.supv_act v (h : G)
-  ip_mul := D.ip_mul
-
-structure FormDataG (K R Hb : Type) [Field K] [NumberField K] [CommRing R] [Algebra K R] [Group Hb]
-    [MulSemiringAction Hb R] extends FormData K R Hb where
-  ip_posDef : ∀ v (m : ℕ) (e : Fin m → R), (∀ a, e a ∈ cusp) → LinearIndependent K e →
-    (Matrix.of fun a c => ip v (e a) (e c)).PosDef
-
 end Formalism.L2.Geo.ExtensionFiltration

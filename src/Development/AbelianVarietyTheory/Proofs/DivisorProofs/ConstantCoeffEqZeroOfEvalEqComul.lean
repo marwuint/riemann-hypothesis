@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousEvaluationExistsUniqueSubstNaturaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicContinuousEvaluationExistsUniqueSubstNatura
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 open TensorProduct
 
@@ -37,7 +37,7 @@ theorem constantCoeff_eq_zero_of_eval_eq_comul : ∀ (p : ℕ) (O A : Type) [Com
   have hc : ∀ f, c f = constantCoeff f := fun _ => rfl
   have hnil : ∀ j : Fin d ⊕ Fin d, ∃ N : ℕ, (p : O) ∣ (fun _ => (0 : O)) j ^ N :=
     fun _ => ⟨1, by simp⟩
-  obtain ⟨⟨E, _, huniq⟩, _⟩ := GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O O (Fin d ⊕ Fin d) (fun _ => (0 : O)) hnil
+  obtain ⟨⟨E, _, huniq⟩, _⟩ := _root_.GlobalTheory.CEval.continuous_eval p O O (Fin d ⊕ Fin d) (fun _ => (0 : O)) hnil
   have h1 : IsEval p (fun _ => (0 : O)) (φ.comp E₂) := by
     refine ⟨?_, ?_⟩
     · intro j

@@ -6,11 +6,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsPeriodHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DpExpEqSumRangeOfVanish
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltration
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeIsSeparatedOfAffineBaseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeIsSeparatedOfAffineBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallChartPairAlongLinearMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAnalyticChartsRealizationOfAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFirstOrderJetAlgHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentOfUniformisationJetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAnalyticChartsRealizationOfAffine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFirstOrderJetAlgHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentOfUniformisationJet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlobalBoundOfPeriodClassStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormOnTangentEqDerivativeBoundingFunctionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivEqFderivZeroOfConstDifferences
@@ -27,13 +27,13 @@ namespace GlobalTheory.AnPer
 
 theorem pLie_holds : PLie := by
   intro A _ g hA _ L u P hP x
-  have hs := GlobalTheory.T.abelianScheme_isSeparated_of_affine_base A hA
+  have hs := _root_.GlobalTheory.abelianScheme_left_isSeparated_of_affine A hA
   obtain ⟨K, -, -, hK, hsm, -⟩ := GlobalTheory.T.exists_small_chart_pair_along_linear_map (fibUnif u) (fibUnif u) id analyticOnNhd_id (fun _ h ↦ h)
     LinearMap.id (AddMonoidHom.id _) (fun _ _ _ ↦ rfl)
-  obtain ⟨r, hr, -⟩ := GlobalTheory.T.exists_analyticChartsRealization_of_affine (fibUnif u) hs K hsm
+  obtain ⟨r, hr, -⟩ := _root_.GlobalTheory.AnPer.exists_real_isFor (fibUnif u) hs K hsm
   obtain ⟨k, hk⟩ := hK.1 0 trivial
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.exists_firstOrderJet_algHom (K.W k) 0 hk (0, (x : Fin g → ℂ))
-  obtain ⟨v, hv, ht, hd⟩ := GlobalTheory.T.exists_tangent_of_uniformisation_jet u hs (K.W k) (r.x k) (hr k)
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.AnPer.Hol.exists_jet_algHom (K.W k) 0 hk (0, (x : Fin g → ℂ))
+  obtain ⟨v, hv, ht, hd⟩ := _root_.GlobalTheory.AnPer.exists_tangent_of_jet u hs (K.W k) (r.x k) (hr k)
     ((congrArg (r.x k ≫ ·) (Category.comp_id A.hom).symm).trans (r.w k)) hk x ρ hρ
   refine ⟨v, ⟨ht, fun f hf ↦ ?_⟩, hd⟩
   obtain ⟨q, G, hq, hG, hGk, hGl⟩ := GlobalTheory.T.exists_global_bound_of_period_class K hK r f _ (hP ⟨_, hf⟩ K r hr)

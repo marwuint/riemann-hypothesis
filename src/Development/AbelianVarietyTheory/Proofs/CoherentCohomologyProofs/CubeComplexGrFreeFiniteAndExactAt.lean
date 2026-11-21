@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.ExistsAwayFracOfMemHomLoc
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CubeComplexPolyGradingFiniteExactStatement
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CubeComplexPolyGradingFiniteExact
 
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct GlobalTheory
 
@@ -16,7 +16,7 @@ theorem cubeComplex_grFree_finite_and_exactAt :
         ((cubeComplex (grCube ι (grShift (polyGrading ι R) (-d k)) n)).homology p) :=
       have : Module.Finite R (((cubeFunctor ι R).obj
           (grCube ι (polyGrading ι R) (n + -d k))).homology p) :=
-        (GlobalTheory.T.finite_homology_and_exact_cubeComplex_polyGrading ι R (n + -d k)).1 p
+        (_root_.GlobalTheory.cubeComplex_polyGrading_finite_exact ι R (n + -d k)).1 p
       Module.Finite.equiv (HomologicalComplex.homologyMapIso ((cubeFunctor ι R).mapIso
         (grCubeShiftIso (polyGrading ι R) (-d k) n)) p).toLinearEquiv.symm
     exact Module.Finite.equiv
@@ -30,6 +30,6 @@ theorem cubeComplex_grFree_finite_and_exactAt :
     have h₂ := le_abs_self (d k)
     exact (exactAt_iff_of_quasiIsoAt ((cubeFunctor ι R).mapIso
       (grCubeShiftIso (polyGrading ι R) (-d k) n)).hom p).2
-      ((GlobalTheory.T.finite_homology_and_exact_cubeComplex_polyGrading ι R (n + -d k)).2 (by omega) p)
+      ((_root_.GlobalTheory.cubeComplex_polyGrading_finite_exact ι R (n + -d k)).2 (by omega) p)
 
 end GlobalTheory

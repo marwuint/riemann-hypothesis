@@ -1,9 +1,10 @@
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MulVecPairVecDiag
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledLagrangianTransverseInOpenOrbitStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledLagrangianTransverseInOpenOrbit
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjDoublingIsotropicUnipotentMemSiegelStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalIsometryNormalisesIsotropicUnipotentRadiStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalIsometryKeepsIsotropicFrameOfSiegelStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalIsometryNormalisesIsotropicUnipotentRadi
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalIsometryKeepsIsotropicFrameOfSiegel
 open scoped ComplexConjugate Matrix NNReal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cusp GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont
@@ -40,7 +41,7 @@ theorem offOpen : ∀ (D : D7) (V : HSp D), ∀ γ ∈ GQ (dblSp V), ¬ (∃ δ 
     have := congrFun h4 (finSumFinEquiv (.inl i))
     rwa [pairVec_inl] at this
   by_cases hk : ∀ x, Qd *ᵥ x = 0 → x = 0
-  · exact absurd (GlobalTheory.T.doubled_lagrangian_transverse_in_open_orbit D V γ hγ γi hγi hk) hopen
+  · exact absurd (_root_.GlobalTheory.Core.Rk.Dich.exists_mem_siegel_of_diagSnd D V γ hγ γi hγi hk) hopen
   push Not at hk
   obtain ⟨x0, hx0, hx0ne⟩ := hk
   let W := LinearMap.ker Qd.mulVecLin
@@ -87,8 +88,8 @@ theorem offOpen : ∀ (D : D7) (V : HSp D), ∀ γ ∈ GQ (dblSp V), ¬ (∃ δ 
   refine ⟨_, P * K, hiso, GlobalTheory.T.conj_doubling_isotropic_unipotent_mem_siegel D V γ hγ γi hγi _ K hQK hiso, ?_⟩
   intro δ hδ hs n hn
   obtain ⟨d, -, hδm, -⟩ := exists_rat V hδ
-  obtain ⟨G, hG, hGe⟩ := GlobalTheory.T.rational_isometry_keeps_isotropic_frame_of_siegel D V γ hγ γi hγi _ K hQK hspan hiso δ hδ d.1 hδm hs
-  exact GlobalTheory.T.rational_isometry_normalises_isotropic_unipotent_radical D V _ (P * K) δ hδ d.1 hδm G hG hGe n hn
+  obtain ⟨G, hG, hGe⟩ := _root_.GlobalTheory.Core.Rk.Dich.isoFrame_keep D V γ hγ γi hγi _ K hQK hspan hiso δ hδ d.1 hδm hs
+  exact _root_.GlobalTheory.FrameNorm.norm D V _ (P * K) δ hδ d.1 hδm G hG hGe n hn
 
 end GlobalTheory.Core.Rk.Dich
 

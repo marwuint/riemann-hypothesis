@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.Models
+import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularAtTranslateStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslateIntoSmallerOpenStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularAtTranslate
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslateIntoSmallerOpen
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
@@ -19,9 +19,9 @@ theorem QFGroup.btSet_eq_of_le (R : Type) [CommRing R] [IsDomain R] [IsIntegrall
   · intro f hf t g hg
     exact hf t g (hle hg)
   · intro f hf s g hg
-    obtain ⟨σ, t, hσ, hmem⟩ := GlobalTheory.T.translate_into_smaller_open R T Γ U U' hU hU' hle g hg
+    obtain ⟨σ, t, hσ, hmem⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.Transl.translates_cover R T Γ U U' hU hU' hle g hg
     have hreg := hf (s * t⁻¹) _ hmem
-    have key := GlobalTheory.T.regular_at_translate R T Γ σ t hσ
+    have key := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.regularAt_translate R T Γ σ t hσ
       (fun h => algebraMap R (FractionRing R) (f (s * t⁻¹ * h))) g hreg
     have heq : (fun h => algebraMap R (FractionRing R) (f (s * t⁻¹ * (t * h)))) =
         fun h => algebraMap R (FractionRing R) (f (s * h)) := by

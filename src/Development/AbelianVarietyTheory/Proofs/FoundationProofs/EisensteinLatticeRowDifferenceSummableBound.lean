@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FirstDiffStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FirstDiff
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -118,7 +119,7 @@ theorem rowbd : ∀ j L : ℕ, 2 ≤ j → 0 < L → ∃ (C : ℝ) (A : ℕ), �
     ∀ (s : ℝ) (x : ℤ × ℤ), 0 ≤ s → s ≤ 1 →
       ‖dif L (0, 1) (fun y : ℤ × ℤ => trm j s ((y.1 : ℂ) * τ + y.2)) x‖ ≤ u x := by
   intro j L hj hL
-  obtain ⟨C1, hC1⟩ := GlobalTheory.T.norm_trm_sub_trm_add_le j
+  obtain ⟨C1, hC1⟩ := _root_.GlobalTheory.EisM.TermDiff.first_diff j
   set C1' := max C1 0 with hC1'
   have hC1'0 : 0 ≤ C1' := le_max_right _ _
   have hLr : (1:ℝ) ≤ L := by exact_mod_cast hL

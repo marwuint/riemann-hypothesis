@@ -12,23 +12,6 @@ noncomputable section
 
 namespace GlobalTheory.FinPl.Conductor
 
-theorem exists_denominator (E : Type) [Field E] [NumberField E] :
-    ∃ N : ℤ, N ≠ 0 ∧ ∀ x : E, (∀ o : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (x * o) = n) → ∃ o : 𝓞 E, (o : E) = N • x := by
-  classical
-  let b := NumberField.integralBasis E
-  obtain ⟨N, hN, h⟩ := exists_integral_multiples ℤ ℚ (Finset.univ.image b.traceDual)
-  refine ⟨N, hN, fun x hx => ?_⟩
-  have hi : IsIntegral ℤ (N • x) := by
-    rw [← b.traceDual.sum_repr x, Finset.smul_sum]
-    refine IsIntegral.sum _ fun i _ => ?_
-    obtain ⟨n, hn⟩ := hx (RingOfIntegers.basis E i)
-    have e : b.traceDual.repr x i = (n : ℚ) := by
-      rw [← hn, Module.Basis.traceDual_repr_apply, Algebra.traceForm_apply]
-      simp [b]
-    rw [e, Int.cast_smul_eq_zsmul, smul_comm]
-    exact (h _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))).zsmul n
-  exact ⟨⟨_, hi⟩, rfl⟩
-
 section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
@@ -72,12 +55,6 @@ theorem idem_mul_mem {v : HeightOneSpectrum (𝓞 F)} {α : Af F} (h : evalV F v
   by_cases hw : w = v
   · subst hw; rwa [ev_same, one_mul]
   · rw [ev_ne hw, zero_mul]; exact zero_mem _
-
-theorem tmul_denominator {A : Type} [CommRing A] [Algebra F A] (a : A) {N : ℤ} (hN : N ≠ 0) (x : E) :
-    (a ⊗ₜ[F] (1 : E)) * (1 ⊗ₜ[F] x) = (a * algebraMap F A (N : F)⁻¹) ⊗ₜ[F] (N • x) := by
-  have hN' : (N : F) ≠ 0 := Int.cast_ne_zero.2 hN
-  rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul,
-    ← Int.cast_smul_eq_zsmul F, smul_smul, inv_mul_cancel₀ hN', one_smul]
 
 theorem trace_map {A B : Type} [CommRing A] [Algebra F A] [CommRing B] [Algebra F B] (f : A →ₐ[F] B) (z : A ⊗[F] E) :
     Algebra.trace B (B ⊗[F] E) (Algebra.TensorProduct.map f (AlgHom.id F E) z) = f (Algebra.trace A (A ⊗[F] E) z) := by
@@ -185,40 +162,5 @@ theorem lift_mem (v : Pl D) (o : 𝓞 D.host.E) :
     have := idem_mul_mem (v := v) (α := 1) (by rw [map_one]; exact one_mem _)
     rw [mul_one] at this
     exact tmul_mem this o
-
-theorem eventually_conductor : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
-    ∀ᶠ v : Pl D in cofinite, ∀ s ∈ idAt D (· = v),
-      (∀ o ∈ intAt D (· = v), psiE ψ (s * o) = 1) ↔ s ∈ intAt D (· = v) := by
-  intro D ψ hψ
-  obtain ⟨N, hN, hden⟩ := exists_denominator D.host.E
-  have hev : ∀ᶠ v : Pl D in cofinite,
-      evalV D.host.F v (algebraMap D.host.F (Af D.host.F) (N : D.host.F)⁻¹) ∈ v.adicCompletionIntegers D.host.F :=
-    (algebraMap D.host.F (Af D.host.F) (N : D.host.F)⁻¹).2
-  filter_upwards [hev] with v hv s hs
-  have hinf : ∀ o, infPart D (s * o) = 0 := fun o => by
-    have : infPart D s = 0 := hs.1
-    rw [RingHom.map_mul, this, zero_mul]
-  refine ⟨fun h => ⟨hs, ?_⟩, fun h o ho => ?_⟩
-  · have hz : (singleV D.host.F v 1 ⊗ₜ[D.host.F] (1 : D.host.E)) * finPart D s = finPart D s :=
-      idem_mul v _ fun w hw => (Submodule.mem_iInf _).1 hs.2 ⟨w, hw⟩
-    obtain ⟨x, u, hu, e⟩ := approx (finPart D s)
-    have hε : singleV D.host.F v 1 ∈ intAf D.host.F := by
-      have := idem_mul_mem (v := v) (α := 1) (by rw [map_one]; exact one_mem _)
-      rwa [mul_one] at this
-    obtain ⟨y, hy⟩ := hden x fun o => by
-      have h1 := h _ (lift_mem v o)
-      have e1 : singleV D.host.F v 1 ⊗ₜ[D.host.F] (o : D.host.E) =
-          (singleV D.host.F v 1 ⊗ₜ[D.host.F] (1 : D.host.E)) * (1 ⊗ₜ[D.host.F] (o : D.host.E)) := by
-        rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
-      rw [psiE_eq_chi ψ (hinf _), RingHom.map_mul, GlobalTheory.LatVac.finPart_pair, e1, ← mul_assoc, mul_comm (finPart D s), hz, e,
-        add_mul, chi_add, chi_int hψ (mul_mem_int hu (tmul_mem (GlobalTheory.LatVac.one_mem_intAf _) o)), mul_one,
-        Algebra.TensorProduct.tmul_mul_tmul, mul_one] at h1
-      exact (chi_rat hψ _).1 h1
-    rw [← hz, e, mul_add]
-    refine add_mem ?_ (mul_mem_int (tmul_mem hε 1) hu)
-    rw [tmul_denominator _ hN, ← hy]
-    exact tmul_mem (idem_mul_mem hv) y
-  · rw [psiE_eq_chi ψ (hinf _), RingHom.map_mul]
-    exact chi_int hψ (mul_mem_int h.2 ho.2)
 
 end GlobalTheory.FinPl.Conductor

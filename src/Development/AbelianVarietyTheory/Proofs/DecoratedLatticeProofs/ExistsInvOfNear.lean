@@ -367,38 +367,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Transport.Entry
 
-theorem entry_transport : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (u : B.Word) (i : ℕ) (hm : i + 2 < B.R.m) (al : (I.idx I.mu0).β i) (be : (I.idx I.mu0).β (i + 1)) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup I.mu0))
-    (p q : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u (i)) (p' q' : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u (i + 1))
-    (k y : TC.GA B (B.R.N (i))) (k' y' : TC.GA B (B.R.N (i + 1))),
-    TC.PtOf k p.1.1 → p.1.1.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N (i)) →
-    TC.PtOf k' p'.1.1 → p'.1.1.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N (i + 1)) →
-    TC.PtOf (y * k) q.1.1 → TC.PtOf (y' * k') q'.1.1 →
-    ∃ M : ℕ, 0 < M ∧ ∀ M₀ : ℕ, M ∣ M₀ → ∀ x x₀ : Formalism.L2.Col.HomE B.fields.E (B.R.N i) (B.R.N (i + 1)),
-      GlobalTheory.Transport.CongAt B P.1 M₀ y y' x x₀ →
-      Formalism.L2.Col.XiAt I.Ch I.sel (I.tup I.mu0) (I.cst I.mu0) i P ((I.idx I.mu0).h i al P) ((I.idx I.mu0).h (i + 1) be P)
-                (Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup I.mu0) p.1.1 P) (Formalism.L2.Col.frsF I.sel (I.tup I.mu0) p'.1.1 P) x₀) =
-        Formalism.L2.Col.XiAt I.Ch I.sel (I.tup I.mu0) (I.cst I.mu0) i P ((I.idx I.mu0).h i al P) ((I.idx I.mu0).h (i + 1) be P)
-          (Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup I.mu0) q.1.1 P) (Formalism.L2.Col.frsF I.sel (I.tup I.mu0) q'.1.1 P) x) := by
-  intro B X I hI l u i hm al be P p q p' q' k y k' y' hp _ hp' _ hq hq'
-  have hX := (GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1
-  have hL := hI.idx_ok I.mu0
-  have hP : P.1 ∈ (B.primes X).vGs := (Finset.mem_union.1 P.2).resolve_right fun h => by
-    have h' : P.1 ∈ I.Q I.mu0 := h
-    rw [I.twistPrimes_reference_tuple_eq_empty] at h'
-    exact Finset.notMem_empty _ h'
-  have hq0 : ((Formalism.L2.Col.qOf P.1 : ℕ) : B.fields.E) ≠ 0 := Nat.cast_ne_zero.2 (qOf_pos P.1).ne'
-  obtain ⟨M, hM, H⟩ := exists_modulus hp hp' hq hq' ⟨P.1, hP⟩ (pow_ne_zero (I.cst I.mu0).B hq0)
-  refine ⟨M, hM, fun M₀ hM₀ x x₀ hx => ?_⟩
-  obtain ⟨U, U', hU, hU', h⟩ := H M₀ hM₀ x x₀ hx
-  have hu := exp_le_val_qOf (GlobalTheory.UnfoldTwoSided.degOne_bad hX.ok l.pr hI.sel_ok P)
-  unfold Formalism.L2.Col.frsF
-  simp only [dif_pos hP]
-  refine (eq_of_near (P := P.1) _ hq0 (val_qOf_lt_one P.1) (pow_ne_zero (I.cst I.mu0).B hq0) (fun κ κ' hκ hκ' z => ?_)
-    (hL.xiInv i (by omega) al be P) _ _ U U' (hU.mono hu) (hU'.mono hu) h).symm
-  refine xiAt_inFr hX l.pr hI.ch_ok hI.sel_ok hL (by omega) al be P κ κ' ?_ ?_ z
-  · rw [hL.depthG P hP, pow_one]
-    exact hκ
-  · rw [hL.depthG P hP, pow_one]
-    exact hκ'
-
 end GlobalTheory.Transport.Entry

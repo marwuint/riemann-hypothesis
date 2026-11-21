@@ -68,12 +68,6 @@ theorem local_form_of_three_inputs (D : D7) (hG : genR D) (hL : liftR D) (hK : k
   fun l _ hl K LL hg =>
     claimA_of_steps (D.loc l) K LL (hG l hl K LL hg) (hL l hl K LL hg) (hK l hl K LL hg)
 
-theorem local_theorem_of_three_inputs (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
-    (Cm : CmpOf D.loc D.locA HW F) (CA CB CK C : ℝ) (hC : 160 ≤ C)
-    (hG : Adm1 D HW F Cm CA CB CK → genR D) (hL : Adm1 D HW F Cm CA CB CK → liftR D)
-    (hK : Adm1 D HW F Cm CA CB CK → killR D) : IntegralityFromMetric D HW F Cm CA CB CK C :=
-  fun hA => local_theorem_of_good_extensions D C hC (local_form_of_three_inputs D (hG hA) (hL hA) (hK hA))
-
 end Formalism.MainNotions.N.Ln34
 
 end

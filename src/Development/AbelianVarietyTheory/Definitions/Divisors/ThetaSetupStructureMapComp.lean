@@ -85,9 +85,6 @@ namespace Setup
 
 variable (X₁ : Setup F W i)
 
-theorem isThetaCompact : IsThetaCompact F X₁.z i :=
-  ⟨X₁.proj, X₁.normalZ, X₁.imm, X₁.thetaSetup_structureMap_comp, X₁.dense, W, X₁.e8, X₁.thetaInt⟩
-
 theorem div : X₁.M.HasDiv X₁.S.th :=
   X₁.thetaInt X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.u X₁.sharp X₁.gen X₁.M X₁.π X₁.normal X₁.comp
 
@@ -103,15 +100,6 @@ theorem diag_pos (a : Fin 8) : 0 < W a a := by
   have h2 : (0 : ℤ) < W a a + W a a := by exact_mod_cast this
   omega
 
-theorem z_eq {z : Z ⟶ Sp (cycAway n)} (h : i ≫ z = F.s) : X₁.z = z := by
-  haveI := X₁.normalZ
-  haveI : ∀ x : Z, _root_.IsReduced (Z.presheaf.stalk x) := fun x => by
-    haveI := X₁.normalZ.isDomain_stalk x
-    infer_instance
-  haveI : IsReduced Z := isReduced_of_isReduced_stalk Z
-  haveI : IsDominant i := ⟨X₁.dense⟩
-  exact ext_of_isDominant i (X₁.thetaSetup_structureMap_comp.trans h.symm)
-
 theorem isProper_compactificationMap : IsProper X₁.z := ((isProjOver_iff_isProper_and_exists_isAmpleLB X₁.z).1 X₁.proj).1
 
 theorem s_comp : X₁.M.s ≫ spMap X₁.κ = X₁.π ≫ X₁.z := by
@@ -126,12 +114,6 @@ theorem projM : IsProjOver X₁.M.s := by
   haveI : IsProper X₁.M.s := IsProper.of_comp X₁.M.s (spMap X₁.κ)
   exact (isProjOver_iff_isProper_and_exists_isAmpleLB _).2 ⟨this, _, hL.pull_of_isFinite X₁.π⟩
 
-theorem isUnit_level : IsUnit (n : X₁.o₁) := by
-  have hn : (n : ℂ) ≠ 0 := by have := X₁.three_le; exact_mod_cast (by omega : n ≠ 0)
-  have h : IsUnit (n : cycAway n) :=
-    IsUnit.of_mul_eq_one ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩ (Subtype.ext (by simp [hn]))
-  simpa using h.map X₁.κ
-
 end Setup
 
 def CTrait.sc {X₁ : Setup F W i} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (c : CTrait X₁ p z₁) : ℝ :=
@@ -145,10 +127,6 @@ namespace CTrait
 
 variable {X₁ : Setup F W i} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z}
 
-theorem point_eq {c c' : CTrait X₁ p z₁} (h : c.y = c'.y) : spMap c.ι ≫ c.T.y = spMap c'.ι ≫ c'.T.y := by
-  haveI := X₁.imm
-  rw [← cancel_mono i, Category.assoc, Category.assoc, ← c.comm, ← c'.comm, h]
-
 def valInt (c : CTrait X₁ p z₁) : X₁.M.Z.presheaf.stalk z₁ →+* OO p :=
   (RatModel.valLoc c.y z₁ (specializes_of_eq c.cen)).comp (X₁.M.stalkEquiv z₁).toRingHom
 
@@ -159,14 +137,6 @@ theorem norm_val_le (c : CTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁) 
   rw [val_eq_valInt]
   have h : Valued.v (c.valInt a : PadicAlgCl p) ≤ 1 := (c.valInt a).2
   exact_mod_cast h
-
-theorem norm_val_lt_iff (c : CTrait X₁ p z₁) (a : X₁.M.Z.presheaf.stalk z₁) :
-    ‖c.val a‖ < 1 ↔ a ∈ maximalIdeal (X₁.M.Z.presheaf.stalk z₁) := by
-  have h1 : IsUnit (c.valInt a) ↔ IsUnit a :=
-    (RatModel.isUnit_valLoc_iff c.y c.cen _).trans (MulEquiv.isUnit_map (X₁.M.stalkEquiv z₁))
-  rw [val_eq_valInt, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← h1, ← mem_nonunits_iff,
-    ← IsLocalRing.mem_maximalIdeal, Valuation.mem_maximalIdeal_iff]
-  exact_mod_cast Iff.rfl
 
 theorem norm_uniformiser_pos (c : CTrait X₁ p z₁) : 0 < ‖c.ι (algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ)‖ :=
   norm_pos_iff.2 ((map_ne_zero c.ι).2 fun h =>
@@ -189,10 +159,6 @@ theorem exp_neg_sc_mul (c : CTrait X₁ p z₁) (a : ℕ) :
     Real.exp (-(c.sc * a)) = ‖c.ι (algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ)‖ ^ a := by
   rw [CTrait.sc, neg_mul, neg_neg, mul_comm, Real.exp_nat_mul, Real.exp_log c.norm_uniformiser_pos]
 
-example (c : CTrait X₁ p z₁) : c.val 1 = 1 := by simp [val_eq_valInt]
-
-example (c : CTrait X₁ p z₁) : c.val 0 = 0 := by simp [val_eq_valInt]
-
 end CTrait
 
 def FPre.Matches {X₁ : Setup F W i} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z} (Φ : FPre (id : ℤ → ℤ) g p (X₁.M.Z.presheaf.stalk z₁)) :
@@ -205,10 +171,5 @@ def ApproxAt (X₁ : Setup F W i) (φ : InvFun ℤ) (d : ℕ) : Prop :=
     ‖c₀.val f‖ = Real.exp (-(c₀.sc * (d * φ.evalZ c₀.T.β))) ∧ ∀ c : CTrait X₁ p z₁,
       ‖c.val f‖ ≤ Real.exp (-(c.sc * (d * φ.evalZ c.T.β))) ∨
         ∃ h ∈ IsLocalRing.maximalIdeal (X₁.M.Z.presheaf.stalk z₁), ‖c.val f‖ ≤ ‖c.val h‖ ^ e
-
-example (X₁ : Setup F W i) (φ : InvFun ℤ) : ApproxAt X₁ φ 0 := fun p _ z₁ c₀ e =>
-  ⟨1, by simp [CTrait.val_eq_valInt], fun c => Or.inl (by simp [CTrait.val_eq_valInt])⟩
-
-example : IsEmpty (Setup F 0 i) := ⟨fun X₁ => by simpa using X₁.diag_pos 0⟩
 
 end GlobalTheory.Poinc

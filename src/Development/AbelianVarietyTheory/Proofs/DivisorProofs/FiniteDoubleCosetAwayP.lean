@@ -1,6 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSimR
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDoubleCosetOfInvolutive
+import Development.AbelianVarietyTheory.Definitions.Divisors.NormSub
+import Formalism.LocalToGlobal.Divisibility.Tuples
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruenceUnitsBasisOfNbhds
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelesFiniteClassDecomposition
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPowNormOneIdeleEqPrincipalMulIntegralUnit
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFiniteAdeleBaseChangeEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FixedUnitsFinitelyManyNorms
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalConjugacyClassClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalUnitsLocallyCompactStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompactCentralizerTranslate
@@ -63,9 +70,3 @@ theorem adele_split (p : ℕ) [Fact p.Prime] :
 
 end GlobalTheory.CentTorus.AdelicSplit
 
-section Final
-
-open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.CentTorus
-open scoped TensorProduct Classical
-
-end Final

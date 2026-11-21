@@ -78,19 +78,6 @@ theorem phi_symm_cont : Continuous (phi ε e h1 h2).symm := by
   rw [h]
   exact (continuous_coeMatrix ε).matrix_submatrix _ _
 
-theorem preimage_phi (A : Set (UJ ε)) : (phi ε e h1 h2) ⁻¹' A =
-    {g | ∃ a ∈ A, ((a : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) =
-      Matrix.reindex e e (UpqT.mat g)} := by
-  ext g
-  simp only [Set.mem_preimage, Set.mem_setOf_eq]
-  constructor
-  · intro hg
-    exact ⟨_, hg, coe_phi ε e h1 h2 g⟩
-  · rintro ⟨a, ha, hag⟩
-    have : a = phi ε e h1 h2 g := injective_coeMatrix ε (by rw [coe_phi]; exact hag)
-    rw [← this]
-    exact ha
-
 def TR (P Q : ℕ) (R : ℝ) : Set (UpqT P Q) := {g | ∑ i, ∑ j, ‖UpqT.mat g i j‖ ^ 2 ≤ R}
 
 theorem preimage_ball (R : ℝ) : (phi ε e h1 h2) ⁻¹' {a | hsG a ≤ R} = TR P Q R := by
@@ -236,15 +223,5 @@ theorem cdScaleOf_spec {n P Q : ℕ} (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q 
 
 theorem cdScaleOf_pos (n : ℕ) (ε : Fin n → Bool) : 0 < cdScaleOf C n ε :=
   (cdScaleOf_spec C ε (e0 ε) (sign_split_equiv_inl ε) (sign_split_equiv_inr ε)).1
-
-theorem cdScaleOf_tie (n : ℕ) (ε : Fin n → Bool) (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n)
-    (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false)
-    (A : Set (UJ ε)) (hA : MeasurableSet A) :
-    ((cdScaleOf C n ε : ℝ≥0∞) • muG ε) A =
-      C.cd P Q {g | ∃ a ∈ A, ((a : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) =
-        Matrix.reindex e e (UpqT.mat g)} := by
-  rw [← preimage_phi ε e h1 h2 A, ← Measure.map_apply (phi_cont ε e h1 h2).measurable hA,
-    (cdScaleOf_spec C ε e h1 h2).2]
-  rfl
 
 end Formalism.BasicNotions.Examples₂.CD

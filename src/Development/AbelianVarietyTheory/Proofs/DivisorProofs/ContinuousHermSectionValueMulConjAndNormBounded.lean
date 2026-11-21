@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalarStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionLocalFunctionContinuousOnHolomorphicChartStatement
 
 set_option autoImplicit false
@@ -41,7 +41,7 @@ theorem continuous_val_mul_conj (k : Type) [CommRing k] (X : Scheme.{0}) [IsInte
     (hrf.mul he).mul (Complex.continuous_conj.continuousAt.comp (hrg.mul he))
   refine hF.congr ?_
   filter_upwards [hWn] with y hy
-  obtain ⟨θ, hθ, hv⟩ := GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P a b σ y i j hy.1 hy.2
+  obtain ⟨θ, hθ, hv⟩ := _root_.GlobalTheory.HSAmp.val_frame k X p P a b σ y i j hy.1 hy.2
   have h1 : θ * (starRingEnd ℂ) θ = 1 := by
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hθ]; simp
   rw [hv f hf, hv g hg]

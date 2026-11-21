@@ -3,8 +3,8 @@ import Formalism.HermitianCurvature.CapelliDeterminantAndBranching
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.IrreducibleCapelliModules
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Development.AbelianVarietyTheory.Definitions.Jets.Imports
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitCasimirEigenspaceIrreducibleDualStandardStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ReducedWignerCoefficientLoweringStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitCasimirEigenspaceIrreducibleDualStandard
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ReducedWignerCoefficientLowering
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WignerExtremeNeZero
 
 open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
@@ -30,9 +30,9 @@ theorem splitCasimirDual_apply {V : Type} [NormedAddCommGroup V] [InnerProductSp
 
 theorem pieri_step_lowering : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (Et : Fin (n + 1) → Fin (n + 1) → Module.End ℂ (PiLp 2 (fun _ : Fin (n + 1) => V))) (β : ℂ) (L : Fin (n + 1) → ℤ) (l : Fin (n + 1)), Hyp E β L → (∀ a b x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)) → (∀ a b y c, Et a b y c = E a b (y c) - if c = b then y a else 0) → (∀ j, L j ≠ L l - 1) → ∃ S : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), Stab Et S ∧ S ≠ ⊥ ∧ (∀ S' : Submodule ℂ (PiLp 2 (fun _ : Fin (n + 1) => V)), S' ≤ S → Stab Et S' → S' = ⊥ ∨ S' = S) ∧ S ≤ CapSp Et (shf β (Function.update L l (L l - 1))) ∧ ∀ (M : Fin n → ℤ) (v : V), v ∈ CapSp (subA E) (shf β M) → S.starProjection (PiLp.single 2 (Fin.last n) v) (Fin.last n) = (GlobalTheory.WigSh.wM L M l : ℂ) • v := by
   intro V _ _ _ n E Et β L l hH hadj hEt hL
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.splitCasimir_eigenspace_irreducible_dualStandard V n E Et (splitCasimirDual E) β L l hH hadj hEt
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.casimir_eigenspace_irred_dual_standard V n E Et (splitCasimirDual E) β L l hH hadj hEt
     (splitCasimirDual_apply E)
-  have h4 := GlobalTheory.T.reducedWignerCoefficient_lowering V n E Et (splitCasimirDual E) β L l hH hadj hEt
+  have h4 := _root_.GlobalTheory.reducedWigner_lowering V n E Et (splitCasimirDual E) β L l hH hadj hEt
     (splitCasimirDual_apply E)
   refine ⟨_, h1, ?_, h2, h3, h4⟩
   intro hbot

@@ -7,15 +7,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyDatumFibreOfComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyValueHomogOfFibres
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenRingIsDomainNoetherianIntegrallyClosed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleIdentityIso
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSymmetricRigidifiedBundleBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalPolarisationOnAbLocusGenericFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalPolarisationOnAbLocusRestrictAffineOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionNonzeroOnEveryFibreLocalFormBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalFormOfTensorSectionInChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSymmetricRigidifiedBundleBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalPolarisationOnAbLocusGenericFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalPolarisationOnAbLocusRestrictAffineOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionNonzeroOnEveryFibreLocalFormBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalFormOfTensorSectionInChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualTangentBasisPulledCotangentChartFrameStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualTangentBasisPulledFrameCompatiblePointChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreDatumBaseChangeToCoarserPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFormsTensorSectionGenericFibreTransitionGerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreDatumBaseChangeToCoarserPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFormsTensorSectionGenericFibreTransitionGer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualTangentVectorsGenericFibreDetEqDetOmegaTransStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -100,13 +100,13 @@ theorem exists_keyVal : ∀ κ : Rule, ∀ (S : Scheme.{0}) [IsIntegral S] [Char
   have hgab : genericPoint S ∈ abLocus G := by
     obtain ⟨p, hp⟩ := hne
     exact ((genericPoint_spec S).mem_open_set_iff hop).2 ⟨p, trivial, hp⟩
-  obtain ⟨t, ht⟩ := GlobalTheory.T.exists_localFormOfTensorSection_in_chart S G L δ σ i _ (KeyVals.genPt S) hδ (KeyVals.genPt_le _ hgen.2)
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.KeyValsSec.exists_locSec S G L δ σ i _ (KeyVals.genPt S) hδ (KeyVals.genPt_le _ hgen.2)
   obtain ⟨y, hy, hyb⟩ := GlobalTheory.T.exists_dualTangentBasis_pulledCotangentChartFrame S G g c _ (KeyVals.genPt S) hsa hsm (KeyVals.genPt_le _ hgen.1)
   have hab := abLocus_generic S G hgab
   obtain ⟨x, hxg, hx⟩ := GlobalTheory.KeyDatumAb.exists_keyOn (KeyVals.FF S) (KeyVals.FF S) (RingHom.id _)
     (KeyVals.bG G (KeyVals.genPt S)) (KeyVals.bL L (KeyVals.genPt S)) t g y hg (semi_bG S G _ _ hsa)
-    (smooth_bG S G g _ _ hsm) (by rw [hab]; exact isOpen_univ) (GlobalTheory.T.isSymmetric_rigidifiedBundleBaseChange S G L _ _ hsym) (GlobalTheory.T.principalPolarisationOnAbLocus_genericFibre S G L hop hgab hpol) hyb
-    (GlobalTheory.T.sectionNonzeroOnEveryFibre_localFormBaseChange S G L δ σ i _ _ t (KeyVals.genPt_le _ hgen.2) ht hnz) (by rw [hab]; exact Set.subset_univ _)
+    (smooth_bG S G g _ _ hsm) (by rw [hab]; exact isOpen_univ) (_root_.GlobalTheory.KeyVals.isSymmetric_bL S G L _ _ hsym) (_root_.GlobalTheory.KeyValsPol.polOnAb_genPt S G L hop hgab hpol) hyb
+    (_root_.GlobalTheory.KeyVals.nzFib_of_isLocSec S G L δ σ i _ _ t (KeyVals.genPt_le _ hgen.2) ht hnz) (by rw [hab]; exact Set.subset_univ _)
   exact ⟨_, t, y, x, hxg, ht, hy, hx, rfl⟩
 
 theorem keyVal_unit : ∀ κ : Rule, Funct κ → ∀ (S : Scheme.{0}) [IsIntegral S] [CharZero (KeyVals.FF S)] (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (L : RigLB G) (δ : LB S)
@@ -141,14 +141,14 @@ theorem keyVal_unit : ∀ κ : Rule, Funct κ → ∀ (S : Scheme.{0}) [IsIntegr
   have hr : ∀ U : S.Opens, W ≤ U → ⊤ ≤ hW.fromSpec ⁻¹ᵁ U := fun U h q _ =>
     h (show hW.fromSpec q ∈ (W : Set S) from hW.range_fromSpec ▸ ⟨q, rfl⟩)
   have hri := hr _ (hle.trans inf_le_right)
-  obtain ⟨t, ht⟩ := GlobalTheory.T.exists_localFormOfTensorSection_in_chart S G L δ σ i Γ(S, W) hW.fromSpec hδ hri
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.KeyValsSec.exists_locSec S G L δ σ i Γ(S, W) hW.fromSpec hδ hri
   obtain ⟨y, hy, hyb⟩ := GlobalTheory.T.exists_dualTangentBasis_pulledCotangentChartFrame S G g c Γ(S, W) hW.fromSpec hsa hsm (hr _ (hle.trans inf_le_left))
   obtain ⟨hopW, habW⟩ := abLocus_affine S G W hW ⟨p, hpW⟩ hop hgab
   have hsaW := semi_bG S G Γ(S, W) hW.fromSpec hsa
   have hsmW := smooth_bG S G g Γ(S, W) hW.fromSpec hsm
-  have hsyW := GlobalTheory.T.isSymmetric_rigidifiedBundleBaseChange S G L Γ(S, W) hW.fromSpec hsym
-  have hpoW := GlobalTheory.T.principalPolarisationOnAbLocus_restrict_affineOpen S G L W hW hop hpol
-  have hnzW := GlobalTheory.T.sectionNonzeroOnEveryFibre_localFormBaseChange S G L δ σ i Γ(S, W) hW.fromSpec t hri ht hnz
+  have hsyW := _root_.GlobalTheory.KeyVals.isSymmetric_bL S G L Γ(S, W) hW.fromSpec hsym
+  have hpoW := _root_.GlobalTheory.KeyVals.PolOpen.polOnAb_affine S G L W hW hop hpol
+  have hnzW := _root_.GlobalTheory.KeyVals.nzFib_of_isLocSec S G L δ σ i Γ(S, W) hW.fromSpec t hri ht hnz
   obtain ⟨z, hzg, hz⟩ := GlobalTheory.KeyDatumAb.exists_keyOn Γ(S, W) (FractionRing Γ(S, W)) (algebraMap _ _)
     (KeyVals.bG G hW.fromSpec) (KeyVals.bL L hW.fromSpec) t g y hg hsaW hsmW hopW hsyW hpoW hyb hnzW habW
   subst hzg
@@ -160,7 +160,7 @@ theorem keyVal_unit : ∀ κ : Rule, Funct κ → ∀ (S : Scheme.{0}) [IsIntegr
   let e : FractionRing Γ(S, W) →+* KeyVals.FF S := IsFractionRing.lift hinj
   have he : (RingHom.id _).comp r = e.comp (algebraMap _ _) := RingHom.ext fun a => (IsFractionRing.lift_algebraMap hinj a).symm
   have hξ := KeyVals.spMap_germ_fromSpec W hW h
-  have hx' := GlobalTheory.T.fibreDatum_baseChange_to_coarserPoint S G _ L δ σ i Γ(S, W) (KeyVals.FF S) (KeyVals.FF S) hW.fromSpec r (KeyVals.genPt S) (RingHom.id _)
+  have hx' := _root_.GlobalTheory.KeyValsTrans.keyOn_trans S G _ L δ σ i Γ(S, W) (KeyVals.FF S) (KeyVals.FF S) hW.fromSpec r (KeyVals.genPt S) (RingHom.id _)
     t y t' y' x hxg hξ hri ht ht' (GlobalTheory.T.dualTangentBasis_pulledFrame_compatible_pointChange S G _ c Γ(S, W) (KeyVals.FF S) hW.fromSpec r (KeyVals.genPt S) y y' hξ hsa hsm hy hy') hx
   rw [he] at hx'
   have hpb := GlobalTheory.KeyEven.keyPB_of_keyOn_comp Γ(S, W) (FractionRing Γ(S, W)) (KeyVals.FF S) (algebraMap _ _) e
@@ -182,7 +182,7 @@ theorem keyVal_compat : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → �
   obtain ⟨t, y, x, hg, ht, hy, hk, rfl⟩ := hv
   obtain ⟨t', y', x', hg', ht', hy', hk', rfl⟩ := hv'
   obtain ⟨M, hM, hdet⟩ := GlobalTheory.T.dualTangentVectors_genericFibre_det_eq_detOmegaTrans S G g hsa hsm c c' h1 y y' hy hy'
-  have hs := GlobalTheory.T.localFormsTensorSection_genericFibre_transitionGerm S G L δ σ hδ i i' h2 t t' ht ht'
+  have hs := _root_.GlobalTheory.KeySecRel.locSec_eq_germ_mul S G L δ σ hδ i i' h2 t t' ht ht'
   have := GlobalTheory.KeyEven.keyValue_homog_of_fibres κ hH hF (KeyVals.FF S) (KeyVals.bG G (KeyVals.genPt S)) (KeyVals.bL L (KeyVals.genPt S)) t' t g y' y
     x' x hg' hg _ M hk' hk hs hM
   rw [← hdet, mul_comm]

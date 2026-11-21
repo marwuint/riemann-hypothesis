@@ -50,13 +50,6 @@ def IntValuedZp : Prop :=
     (P : Polynomial K), (∀ n : ℕ, ‖P.eval (n : K)‖ ≤ 1) →
       ∀ b : ℤ_[p], ‖P.eval (algebraMap ℚ_[p] K (b : ℚ_[p]))‖ ≤ 1
 
-def PadicMult : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : Type u) [NormedField K] [IsUltrametricDist K]
-    [NormedAlgebra ℚ_[p] K] (F : FormalGroup (unitBall K)) (l e : PowerSeries K),
-    IsLog (F.map (unitBall K).subtype) l →
-    constantCoeff e = 0 → e.subst l = X → l.subst e = X →
-      ∀ b : ℤ_[p], IntegralPS (e.subst (algebraMap ℚ_[p] K (b : ℚ_[p]) • l))
-
 section Cong
 
 variable {K : Type u} [NormedField K] [CharZero K] {σ : Type}
@@ -65,8 +58,6 @@ def logOnePlus (f : MvPowerSeries σ K) : MvPowerSeries σ K := (PowerSeries.log
 
 def InN (G : MvPowerSeries σ K) : Prop :=
   ∃ f : MvPowerSeries σ K, MvPowerSeries.constantCoeff f = 0 ∧ IntegralMv f ∧ G = logOnePlus f
-
-def Cong (G H : MvPowerSeries σ K) : Prop := InN (G - H)
 
 end Cong
 

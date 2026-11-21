@@ -321,27 +321,6 @@ theorem int_n (d : SD σ) (nb : nA σ d.Y d.b → d.G) (lam : Measure (nA σ d.Y
         funext β
         ring
 
-theorem iwaRed : IwaRed := by
-  intro hT hL F E _ _ _ _ _ σ d hnm hE Φ hΦ nb lam 𝓖 hcd ε w hw T hTnd x
-  obtain ⟨p, t, hp, k, hk, rfl⟩ := d.ok.hgt.iwa x
-  obtain ⟨n0, m0, β₀, hn, hm, rfl⟩ := par_decomp d p t hp
-  have key := hL F E σ d hnm hE (d.om k Φ) (kfin_om d hΦ hk) m0 hm nb lam 𝓖 hcd ε w hw T hTnd
-  have e1 : (fun z => ∫ β, flat d.a (d.sec0 Φ) (s0 d.m d.n) z (w * nb β * (n0 * m0 * k)) *
-      d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam) = fun z => d.B.ψ (d.tt (T.1.1 * β₀)) *
-      ∫ β, flat d.a (d.sec0 (d.om k Φ)) (s0 d.m d.n) z (w * nb β * m0) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam := by
-    funext z
-    rw [← int_n d nb lam 𝓖 hcd T w n0 m0 β₀ hn]
-    congr 1
-    funext β
-    simp only [flat]
-    rw [show w * nb β * (n0 * m0 * k) = (w * nb β * (n0 * m0)) * k by simp only [mul_assoc], a_mul_K d _ k hk,
-      section_mul_weil_action]
-  have e2 : d.orb T (d.om (n0 * m0 * k) Φ) = d.B.ψ (d.tt (T.1.1 * β₀)) * d.orb T (d.om m0 (d.om k Φ)) := by
-    rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]
-    exact orb_n hT d T (om_mem_sch d _ (om_mem_sch d _ hΦ.1)) n0 β₀ hn
-  rw [e1, e2]
-  exact holValueAt_const_mul _ key
-
 end PositivityTheory.SiegelWeilFormula.KWhit
 
 end

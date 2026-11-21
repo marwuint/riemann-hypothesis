@@ -10,29 +10,6 @@ namespace PI.EntAtD.W
 
 open PI.EntAtD
 
-section Ker
-
-variable {A : Type} [CommRing A] (D : Derivation ℤ A A)
-
-def heartKer : Subring A where
-  carrier := {f | D f = 0}
-  mul_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_ofPred_eq] at *
-    rw [Derivation.leibniz, ha, hb, smul_zero, smul_zero, add_zero]
-  one_mem' := D.map_one_eq_zero
-  add_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_ofPred_eq] at *
-    rw [map_add, ha, hb, add_zero]
-  zero_mem' := D.map_zero
-  neg_mem' := by
-    intro a ha
-    simp only [Set.mem_ofPred_eq] at *
-    rw [map_neg, ha, neg_zero]
-
-end Ker
-
 private theorem derivation_prod_eq_zero_of_forall' {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A]
     (D : Derivation R A A) (s : Finset ι) (f : ι → A) (h : ∀ i ∈ s, D (f i) = 0) :
     D (∏ i ∈ s, f i) = 0 := by

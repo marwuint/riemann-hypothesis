@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsClosedSubschemeTranslationKernelStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsClosedSubschemeTranslationKernel
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsAffineOfQuasiAffine
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.InKIffTrivialTwist
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjBySmoothIsProperGeometricallyIntegral
@@ -24,7 +24,7 @@ theorem exists_finite_closed_kernel : GlobalFnsSt → ∀ (V : Type) [CommRing V
   have hP : IsProjBy B.hom := (GlobalTheory.AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral _ B L hB hL hA V
     (𝟙 _) B.left (𝟙 _) B.hom IsPullback.of_id_fst).1
   obtain ⟨hO, -, hK⟩ := GlobalTheory.UU.TrivTwist.inK_iff_trivial_twist _ B L hL
-  obtain ⟨H, j, hj, hH⟩ := GlobalTheory.T.exists_closed_subscheme_translation_kernel hG V B hB hP L (pw L 0) hL hO
+  obtain ⟨H, j, hj, hH⟩ := _root_.GlobalTheory.UU.TwistKer.exists_closed_twist_kernel hG V B hB hP L (pw L 0) hL hO
   have : IsCommMonObj B := hB.comm
   exact ⟨H, j, hj, GlobalTheory.AmpleStabFinite.isFinite_of_relAmple hG V B hB L (pw L 0) hL hO hA H j hj hH,
     fun T x => (hK _ rfl T x).trans (hH T x)⟩

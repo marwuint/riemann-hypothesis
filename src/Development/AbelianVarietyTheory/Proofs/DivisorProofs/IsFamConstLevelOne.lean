@@ -24,12 +24,4 @@ theorem isFam_const_E4 (ι : Type) (act : ι → SL(2, ℤ) → ι) : IsFam act 
 theorem isFam_const_E6 (ι : Type) (act : ι → SL(2, ℤ) → ι) : IsFam act 6 (fun _ => ⇑E₆) :=
   isFam_const_of_isMF ι act 6 _ ⟨E₆, fun _ => rfl⟩
 
-theorem isFam_const_DD (ι : Type) (act : ι → SL(2, ℤ) → ι) : IsFam act 12 fun _ => DD :=
-  isFam_const_of_isMF ι act 12 _ ReciprocityTheory.ChartRestriction.L1.isMF_DD
-
-theorem isFam_const_level_one (ι : Type) (act : ι → SL(2, ℤ) → ι) :
-    (∀ (k : ℤ) (F : ℍ → ℂ), IsMF k F → IsFam act k fun _ => F) ∧ IsFam act 4 (fun _ => ⇑E₄) ∧
-      IsFam act 6 (fun _ => ⇑E₆) ∧ IsFam act 12 fun _ => DD :=
-  ⟨isFam_const_of_isMF ι act, isFam_const_E4 ι act, isFam_const_E6 ι act, isFam_const_DD ι act⟩
-
 end GlobalTheory.QFam

@@ -9,18 +9,16 @@ import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PVertPointMultChart
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PCurveSectionQuotFinite
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PCurveVertIndex
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StatementsProjGenericRank
-import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PProjRegularNull
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivPushA
+import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.DivPushResSideInhabitants
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeH
+import ReciprocityTheory.AnalyticForms.AnalyticCharts.NullZero
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PPtsPosDensMeasurable
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PPtsPosPartLocal
 import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PPtsPosPartProjIndep
-set_option maxSynthPendingDepth 1
 
-theorem GroundTheory.Heights₂.Heights.AutoClose.PtsPosPartProjIndep : GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.Statement :=
-  @GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.proof GroundTheory.Heights₂.Heights.AutoClose.PtsSheetSimpleNull GroundTheory.Heights₂.Heights.AutoClose.PtsSheetOnlyNull GroundTheory.Heights₂.Heights.PtsPosPartLocal.proof GroundTheory.Heights₂.Heights.PtsPosDensMeasurable.proof
+set_option maxSynthPendingDepth 1
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.DefectAverage : GroundTheory.Heights₂.Heights.DefectAverage.Statement :=
   @GroundTheory.Heights₂.Heights.DefectAverage.proof GroundTheory.Heights₂.Heights.AutoClose.MahlerAverageSplit GroundTheory.Heights₂.Heights.AutoClose.CycleAverage
 
-theorem GroundTheory.Heights₂.Heights.AutoClose.ConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement :=
-  @GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.proof GroundTheory.Heights₂.Heights.AutoClose.ConeSliceSheetParam GroundTheory.Heights₂.Heights.AutoClose.ConeMapArea

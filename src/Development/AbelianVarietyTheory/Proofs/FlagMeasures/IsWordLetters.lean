@@ -317,21 +317,6 @@ theorem cfg_u (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau)
     rw [h3, dif_pos ⟨by omega, by omega⟩, dif_pos ⟨by omega, by omega⟩]
     split_ifs <;> simp [cfg]
 
-theorem vv_eq (hE : GlobalTheory.Published.DiscreteSeriesUpqExists) (hF : GlobalTheory.Published.FormalDegreeCompactDual) (D : D7)
-    (hT : Ties D) (τ : D.what₂.Tau) : VV D τ = vand (lamSH D.R (D.hc τ)) := by
-  have hpar := GlobalTheory.Mem.Vol.lamSH_isHCParam D.R (D.hc τ)
-  obtain ⟨H, i1, i2, σ, hσ⟩ := GlobalTheory.Published.discreteSeriesUpqExists_iff.1 hE _ (epsSH D.R) _ hpar
-  obtain ⟨d, hd⟩ := GlobalTheory.Mem.Vol.exists_isFdeg_smul_of_isDS _ (epsSH D.R) _ H σ hσ _ (D.s.cdScale_pos _ (epsSH D.R))
-  have : Nontrivial H := hσ.2.1
-  obtain ⟨w, hw⟩ := exists_ne (0 : H)
-  have h1 := GlobalTheory.Published.formalDegreeCompactDual_iff.1 hF D.cd D.s.cdScale hT.cdScale_tie _ (epsSH D.R) _ hpar H σ w hσ hw
-  rw [GlobalTheory.Mem.Vol.fdegOf_eq_of_isFdeg _ σ d hd w hw, hT.dsig_tie τ H σ d hσ hd] at h1
-  unfold VV
-  rw [h1, ← dimS_eq D.R, Formalism.QuantumDeterminants.fdegHC, GlobalTheory.WeylDimU.prod_sub_eq_prod_factorial,
-    div_mul_cancel₀ _ (prod_pos fun i _ => by positivity).ne']
-  exact prod_congr rfl fun a _ => prod_congr rfl fun b hb =>
-    abs_of_pos (sub_pos.2 (hpar.1 (mem_filter.1 hb).2))
-
 theorem num_bound (k m r : ℕ) (B P ae c ka : ℝ) (hm : m = 2 * r + 2) (h40 : 40 ≤ m) (hk : 5 ≤ k)
     (hB : (k : ℝ) ^ 40 ≤ B) (hP : B ^ m ≤ P) (ha0 : 0 < ae) (ha : ae ≤ B ^ 4) (hc : 1 / 8 ≤ c) (hka0 : 0 < ka)
     (hka : ka ≤ 4) : (k : ℝ) ^ (3 * r) ≤ c * (ka ^ (m - 1))⁻¹ * P / ae := by

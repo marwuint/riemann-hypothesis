@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecImageNonzer
 import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapNormCoeff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReversedCharpolyCoeffMapOfIsPushoutStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReversedCharpolyCoeffInDomainMulStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReversedCharpolyCoeffInDomainMul
 open AlgebraicGeometry CategoryTheory Polynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.NormalDescent
@@ -80,7 +81,7 @@ theorem exists_sec_normCoeff_local : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFin
       exact gs_compat t (𝟙 Y) y (le a (la hy)) (le b (lb hy))
     have e : resG X la (c k a) = resG X lg (M.g a.1.2 b.1.2).val ^ k * resG X lb (c k b) :=
       ea.trans ((congrArg (fun z => normCoeff (f.app W).hom (f.finite_app _ hW) z k) eτ).trans
-        ((GlobalTheory.T.reversedCharpolyCoeffInDomain_mul _ _ _ _ k).trans (congrArg (_ * ·) eb.symm)))
+        ((_root_.GlobalTheory.NormalDescent.normCoeff_mul _ _ _ _ k).trans (congrArg (_ * ·) eb.symm)))
     have e' := congrArg (gs (𝟙 X) x W) e
     rwa [gs_mul _ x _ hx, gs_pow _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx,
       gs_unit _ x _ (lg hx)] at e'

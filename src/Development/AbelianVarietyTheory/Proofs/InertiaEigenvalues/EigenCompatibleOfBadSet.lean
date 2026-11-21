@@ -5,7 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHypersp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsHeckeDatum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFamilyIffRationalHecke
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CenLocOfCenReal
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CoreEq
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RatInEig
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CGTrue
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
@@ -229,52 +231,6 @@ theorem satEig_eq (Rk : Ranks) (q : ℕ) (B : Multiset ℂˣ) {k : ℕ} (hk : k 
 
 set_option maxHeartbeats 1000000 in
 
-theorem eigTrue (hL : GlobalTheory.Published.LocalLanglandsGL) (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0)
-    (W : GlobalTheory.RowTie.WDTie D.nd D.naut) (Rw : RowSide D) {sat : D.what₂.FT → PlE D.host → Multiset ℂ}
-    (hrow : RowTrue hL D (typeR Y) (fun σ w => W.e w (Rw.locR σ w)) sat)
-    {eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0} (he : EigAd Y Sb eig) (hsub : Sb ⊆ Sb') (hlow : Low D Sb') :
-    EigTrue D R.C Rw Sb' eig := by
-  intro j σ hne hgood P hs hP
-  obtain ⟨s, rfl⟩ := GlobalTheory.TypeBlockPf.splitAt D P hs
-  have hQ := stdPsi_PW Y j
-  obtain ⟨_, B₀, -, hB₀⟩ := exists_hkDat (Sb := Sb) F hlev hsub hlow j hs hP (Nat.zero_le _)
-  obtain ⟨x, hx, hx0⟩ := exists_sphVec hQ (partR_ne_bot Y hne) hB₀.full
-  have hK : ∀ κ ∈ GlobalTheory.HeckeScalarSph.locK D.R.r s.v, NG.rt D.host.E D.R.r κ x = x := fun κ hκ =>
-    hx.2 κ ((hyp_iff hQ s κ).2 hκ)
-  obtain ⟨τ, hτ⟩ := exists_isLocS (typeR Y σ) s hx.1 hx0 hK
-  have hrec := GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 s.w)
-  have hu := (GlobalTheory.CuspRep.ParLaws.unr_iff hrec τ).2 (isSpherical_of_isLocS (typeR Y σ) s τ hτ hx.1 hx0 hK)
-  obtain ⟨α, hα⟩ := GlobalTheory.CuspRep.ParLaws.exists_hasSatake_of_unr hrec hu
-  have hpar : W.e s.w (Rw.locR σ s.w) = _ := hrow.1 σ s τ hτ
-  have hunr : D.naut.unr (Rw.locR σ s.w) := (W.unr _ _).2 (hpar ▸ hu)
-  refine ⟨hunr, fun k _ hk => ?_⟩
-  obtain ⟨a, B, hd, -⟩ := exists_hkDat (Sb := Sb) F hlev hsub hlow j hs hP hk
-  obtain ⟨y, hy, hy0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
-  have h1 : hkNorm R j k s.w • heckeOn _ B (readW Y j y) = _ • readW Y j y := he j σ k s.w a B hd hgood y hy
-  rw [heckeOn_partR Y hlev j (hlow.offPg hlev hP) hk hd.elt hd.reps σ ((mem_isot_iff Y j σ y).1 hy), smul_smul] at h1
-  have h2 := smul_left_injective ℂ (fun h => hy0 (readW_injective Y j (h.trans (map_zero _).symm))) h1
-  have h3 := sphEig_eq_satEig hQ (typeR Y σ) s ((GlobalTheory.PlaceDict.isSplit_iff_conjPl_ne D _ s.w rfl).2
-    (GlobalTheory.HeckeDatumExists.conj_ne_of_split hs)) τ hτ hα hk
-  have hq : Formalism.UG.qV D.host.E s.w = normV s.w := Ideal.absNorm_apply _
-  have h4 : D.naut.frobEig (Rw.locR σ s.w) = Finset.univ.val.map fun i => (((α i)⁻¹ : ℂˣ) : ℂ) := by
-    rw [W.frobEig _ _ hunr, hpar, GlobalTheory.CuspRep.ParLaws.rec_eq_diag hrec hα, GlobalTheory.WeilDeligne.WD.frobEig_diag]
-  rw [← h2, rowEig, h3, satEig_eq _ _ _ hk, hq, h4, Multiset.map_map, Multiset.map_map]
-  set c : ℂ := (((R.C.mu0 j).val s.w : ℂˣ) : ℂ)⁻¹ * (((normV s.w : ℕ) : ℂ) ^ (D.R.nV / 2))⁻¹ with hc
-  have h5 : (Finset.univ.val.map ((fun a : ℂ => a⁻¹ * (((R.C.mu0 j).val s.w : ℂˣ) : ℂ)⁻¹ *
-      (((normV s.w : ℕ) : ℂ) ^ (D.R.nV / 2))⁻¹) ∘ fun i => (((α i)⁻¹ : ℂˣ) : ℂ))) =
-      (Finset.univ.val.map ((fun b : ℂˣ => (b : ℂ)) ∘ α)).map (c • ·) := by
-    rw [Multiset.map_map]
-    refine Multiset.map_congr rfl fun i _ => ?_
-    simp only [Function.comp_apply, Units.val_inv_eq_inv_val, inv_inv, smul_eq_mul, hc]
-    ring
-  have h6 : hkNorm R j k s.w = c ^ k := by
-    rw [hc, mul_pow, inv_pow (_ ^ _), ← pow_mul, mul_comm (D.R.nV / 2)]
-    rfl
-  rw [h5, ← Multiset.pow_smul_esymm, h6, smul_eq_mul]
-  ring
-
-set_option maxHeartbeats 1000000 in
-
 theorem exists_rat (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0) (hU : R.toRealDat.LUnif)
     (hW : R.toRealDat.models_HW) {eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0} (he : EigAd Y Sb eig) (hsub : Sb ⊆ Sb')
     (hlow : Low D Sb') (i : Fin D.R.m) {σ : D.what₂.FT} (hne : D.what₂.isot (i.1 + 1) σ ≠ ⊥) (hgood : D.nd.goodRow σ)
@@ -411,25 +367,7 @@ theorem eigOcc (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.I
     (fun k P α Rr hd x => hrd j k P α Rr h1 h2 hd x) hne hgood
   exact ⟨x, hx, hx0, fun k P _ => h k P⟩
 
-theorem eig_of_ratAd (hL : GlobalTheory.Published.LocalLanglandsGL) (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0)
-    (hU : R.toRealDat.LUnif) (hW : R.toRealDat.models_HW)
-    (hidem : ∀ g, D.what₂.embLL ((idemOf A3.A.X).coeff g) = D.ntypes.e0.coeff ((R.eG.trans cG) g))
-    {kKs : Ks →+* ↥D.LL0} {hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap Ks D.what₂.LL x}
-    {In : RatIn D (ratDatR R cG kKs hk)} (h : RatAd Y cG kKs hk In) (W : GlobalTheory.RowTie.WDTie D.nd D.naut) (Rw : RowSide D)
-    {sat : D.what₂.FT → PlE D.host → Multiset ℂ} (hrow : RowTrue hL D (typeR Y) (fun σ w => W.e w (Rw.locR σ w)) sat)
-    (hsub : In.Sb ⊆ Sb') (hlow : Low D Sb') :
-    EigTrue D R.C Rw Sb' In.eig ∧ EigOcc D (ratDatR R cG kKs hk) In.θ In.hL Sb' In.eig :=
-  ⟨eigTrue hL Y hlev W Rw hrow h.eig hsub hlow, eigOcc Y hlev hU hW hidem ⟨h.lvl, h.psi⟩ h.eig hsub hlow
-    fun j k P α Rr h1 h2 hd => h.hecke j k P α Rr h1 h2 ⟨hd.split, fun e => hd.offS (hsub e), hd.odd, hd.le, hd.elt, hd.reps⟩⟩
-
 end Rows
-
-section AtRows
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
-attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
-
-end AtRows
 
 end GlobalTheory.TwInputs.Eig
 

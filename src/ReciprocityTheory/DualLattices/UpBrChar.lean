@@ -1,4 +1,6 @@
-import ReciprocityTheory.DualLattices.DetIntegralNonneg
+import ReciprocityTheory.DualLattices.FrobeniusOfGroupDivisorsRank
+import ReciprocityTheory.DualLattices.KilledGen
+import ReciprocityTheory.DualLattices.IdemGen
 
 noncomputable section
 

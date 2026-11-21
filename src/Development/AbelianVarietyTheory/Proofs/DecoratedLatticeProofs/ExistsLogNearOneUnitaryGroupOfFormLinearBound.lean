@@ -5,42 +5,6 @@ namespace GlobalTheory.UnitaryLog
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
-theorem entry_le_linfty {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖X i j‖ ≤ ‖X‖ := by
-  have h : ‖X i j‖₊ ≤ ‖X‖₊ := by
-    rw [Matrix.linfty_opNNNorm_def]
-    exact (Finset.single_le_sum (f := fun j => ‖X i j‖₊) (fun _ _ => bot_le) (Finset.mem_univ j)).trans
-      (Finset.le_sup (f := fun i => ∑ j, ‖X i j‖₊) (Finset.mem_univ i))
-  exact_mod_cast h
-
-theorem linfty_le_of_entries {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {δ : ℝ} (hδ : 0 ≤ δ)
-    (h : ∀ i j, ‖M i j‖ ≤ δ) : ‖M‖ ≤ n * δ := by
-  have h' : ‖M‖₊ ≤ (n : NNReal) * δ.toNNReal := by
-    rw [Matrix.linfty_opNNNorm_def]
-    refine Finset.sup_le fun i _ => ?_
-    calc ∑ j, ‖M i j‖₊ ≤ ∑ _j : Fin n, δ.toNNReal :=
-          Finset.sum_le_sum fun j _ => by
-            rw [← NNReal.coe_le_coe, coe_nnnorm, Real.coe_toNNReal _ hδ]; exact h i j
-      _ = (n : NNReal) * δ.toNNReal := by simp
-  have := NNReal.coe_le_coe.2 h'
-  simpa [Real.coe_toNNReal _ hδ] using this
-
-theorem exp_conj_neg_eq {n : ℕ} (U : (Matrix (Fin n) (Fin n) ℂ)ˣ) (X u : Matrix (Fin n) (Fin n) ℂ)
-    (hX : NormedSpace.exp X = u) (hu : uᴴ * (U : Matrix (Fin n) (Fin n) ℂ) * u = U) :
-    NormedSpace.exp (-(((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * Xᴴ *
-      (U : Matrix (Fin n) (Fin n) ℂ))) = u := by
-  rw [Matrix.exp_neg, Matrix.exp_units_conj', Matrix.exp_conjTranspose, hX]
-  apply Matrix.inv_eq_right_inv
-  rw [mul_assoc, mul_assoc, ← mul_assoc uᴴ, hu, Units.inv_mul]
-
-theorem lie_of_fixed {n : ℕ} (U : (Matrix (Fin n) (Fin n) ℂ)ˣ) (X : Matrix (Fin n) (Fin n) ℂ)
-    (h : X = -(((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * Xᴴ *
-      (U : Matrix (Fin n) (Fin n) ℂ))) : Xᴴ * (U : Matrix (Fin n) (Fin n) ℂ) + (U : Matrix (Fin n) (Fin n) ℂ) * X = 0 := by
-  have e : (U : Matrix (Fin n) (Fin n) ℂ) * X = -(Xᴴ * (U : Matrix (Fin n) (Fin n) ℂ)) := by
-    conv_lhs => rw [h]
-    rw [mul_neg, mul_assoc (((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)),
-      Units.mul_inv_cancel_left]
-  rw [e, add_neg_cancel]
-
 open Matrix Filter Topology in
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 private lemma linftyOp_norm_le_mul_of_entry_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (δ : ℝ)

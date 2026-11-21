@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FlagComponentFramedPointFrame
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLocalRingTrivSqZeroExt
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyValExtOfOverLa
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorsEigenBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorsUniversalBasis
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFlagModelBaseChangeIntegralFramedPoint
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtGMulVec
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePoint
@@ -154,13 +154,6 @@ theorem BM.descend {φ : A →ₐ[c.F] B} (hφ : Function.Injective φ) {t u : I
     rw [map_zero]; exact this)) hc.2.1
   exact ⟨v, hv, h.unique ((BM.of_frBor hv).comp h' fun _ => rfl)⟩
 
-theorem BM.evR [IsLocalRing A] [IsLocalRing B] {φ : A →ₐ[c.F] B} {t : Ix Dw → Bˣ} {P : FrPt Xo c A} {Q : FrPt Xo c B}
-    (h : BM φ t P Q) {ex : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c ex) :
-    evR Xo c f Q = chi ex t * φ (evR Xo c f P) := by
-  obtain ⟨P', h1, h2⟩ := h
-  rw [evR_frBor hf h2, evR_frMap hf.1 h1]
-  rfl
-
 end Move
 
 section Dict
@@ -261,21 +254,6 @@ theorem exists_tie_frame (P : FrPt Xo c S) (hx : GlobalTheory.AllWt.ptF P ≫ Z.
   exact (existsUnique_congr fun a => TanRel.comb_iff (ptF_fst P) hx (hv τ) hu a).1
     (P.basis τ u ((hu.tan_iff (ptF_fst P) hx).2 hw) ((hu.eig_iff _).2 he))
 
-theorem exists_tie_point [IsLocalRing S] (hF : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F S)) (hx : xF ≫ Z.j = x)
-    {φ : c.F →+* S} (hφ : φ = algebraMap c.F S) (g : EigFrame Z φ x) :
-    ∃ P : FrPt Xo c S, GlobalTheory.AllWt.ptF P = xF ∧ Comparison₂ P g := by
-  subst hφ
-  obtain ⟨P, hP⟩ := exists_frPt (c := c) (xF ≫ pullback.fst _ _) (by
-    rw [Category.assoc, pullback.condition, ← Category.assoc, hF, sp_comp]; rfl)
-  have e : GlobalTheory.AllWt.ptF P = xF := pullback.hom_ext ((ptF_fst P).trans hP) ((ptF_snd P).trans hF.symm)
-  subst e
-  choose u hu using fun τ i => exists_tanRel_left hx (g.tan τ i)
-  refine ⟨⟨P.x, P.x_over, u, fun τ i => ((hu τ i).tan_iff (ptF_fst P) hx).2 (g.tan τ i),
-    fun τ i => ((hu τ i).eig_iff _).2 (g.eig τ i), fun τ w hw he => ?_, P.s, P.gen⟩, rfl, rfl, hx, hu⟩
-  obtain ⟨v, hv⟩ := exists_tanRel_right (Z := Z) (ptF_fst P) hw
-  exact (existsUnique_congr fun a => TanRel.comb_iff (ptF_fst P) hx (hu τ) hv a).2
-    (g.basis τ v ((hv.tan_iff (ptF_fst P) hx).1 hw) ((hv.eig_iff _).1 he))
-
 theorem Comparison₂.tri_of_bm {P : FrPt Xo c S} {Q : FrPt Xo c T} {φ : c.F →+* S} {φ' : c.F →+* T} {x' : Sp T ⟶ Z.X}
     {f : EigFrame Z φ x} {g : EigFrame Z φ' x'} (hf : Comparison₂ P f) (hg : Comparison₂ Q g) {ψ : S →ₐ[c.F] T} {t : Ix Dw → Tˣ}
     (h : BM ψ t P Q) : f.Tri ψ.toRingHom g fun τ i => t (some ⟨τ, i⟩) := by
@@ -286,38 +264,6 @@ theorem Comparison₂.tri_of_bm {P : FrPt Xo c S} {Q : FrPt Xo c T} {φ : c.F �
   refine ⟨cf, c1, c2, (TanRel.comb_iff ((ptF_fst Q).trans h2.1) hg.2.1 (fun k => ?_) (hg.2.2 τ i) cf).1 c3⟩
   rw [e, h1.2.1]
   exact (hf.2.2 τ k).map _
-
-theorem Comparison₂.comb {P : FrPt Xo c S} {P' Q : FrPt Xo c T} {φ : c.F →+* S} {φ' : c.F →+* T} {x' : Sp T ⟶ Z.X}
-    {f : EigFrame Z φ x} {g : EigFrame Z φ' x'} (hf : Comparison₂ P f) (hg : Comparison₂ Q g) {ψ : S →ₐ[c.F] T} (hP : FrMap ψ P P')
-    (hx : Q.x = P'.x) (τ : E →+* ℂ) {v : Fin (Dw.mult τ) → (Sp (DualNumber S) ⟶ Z.t.G.left)}
-    {M : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {N : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) T}
-    (hM : ∀ i, IsCombAtG Z.t x (f.v τ) (M i) (v i))
-    (hN : ∀ i, IsCombAtG Z.t x' (fun k => spMap (dualMap ψ.toRingHom) ≫ v k) (N i) (g.v τ i)) (i : Fin (Dw.mult τ)) :
-    IsCombAt P'.x (P'.u τ) ((N * M.map ψ) i) (Q.u τ i) := by
-  have e := ptF_map (hx.trans hP.1)
-  have ex : x' = spMap ψ.toRingHom ≫ x := by rw [← hg.2.1, e, Category.assoc, hf.2.1]
-  refine (TanRel.comb_iff (v := fun k => spMap (dualMap ψ.toRingHom) ≫ f.v τ k) ((ptF_fst Q).trans hx) hg.2.1
-    (fun k => ?_) (hg.2.2 τ i) _).2 ?_
-  · rw [e, hP.2.1]
-    exact (hf.2.2 τ k).map _
-  · subst ex
-    have := GlobalTheory.TangentLinear.isCombAtG_mulVec _ (fun k => GlobalTheory.FactorDepth.isTanAtG_map Z.t ψ.toRingHom (f.tan τ k)) _
-      (M.map ψ).transpose (N i) _ (fun k => GlobalTheory.EigenReduction.isCombAtG_map Z.t ψ.toRingHom (hM k)) (hN i)
-    rwa [Matrix.mulVec_transpose] at this
-
-theorem Comparison₂.bm_of_tri {P : FrPt Xo c S} {Q : FrPt Xo c T} {φ : c.F →+* S} {φ' : c.F →+* T} {x' : Sp T ⟶ Z.X}
-    {f : EigFrame Z φ x} {g : EigFrame Z φ' x'} (hf : Comparison₂ P f) (hg : Comparison₂ Q g) {ψ : S →ₐ[c.F] T}
-    (hx : Q.x = spMap ψ.toRingHom ≫ P.x) {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Tˣ} (h : f.Tri ψ.toRingHom g t) :
-    ∃ u, BM ψ u P Q ∧ ∀ τ i, u (some ⟨τ, i⟩) = t τ i := by
-  obtain ⟨P', hP⟩ := exists_frMap ψ P
-  choose cf c1 c2 c3 using h.2.2
-  have hx' := hx.trans hP.1.symm
-  have e := ptF_map hx
-  obtain ⟨u, hu, hu'⟩ := exists_frBor hx' cf c2 fun τ i =>
-    (TanRel.comb_iff ((ptF_fst Q).trans hx') hg.2.1 (fun k => by
-      rw [e, hP.2.1]
-      exact (hf.2.2 τ k).map _) (hg.2.2 τ i) _).2 (c3 τ i)
-  exact ⟨u, ⟨P', hP, hu⟩, fun τ i => Units.ext ((hu' τ i).trans (c1 τ i))⟩
 
 end Dict
 

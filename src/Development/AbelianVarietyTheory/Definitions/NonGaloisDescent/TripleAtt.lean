@@ -105,11 +105,6 @@ structure RowFacts (A : NAut N) (i : X.Tw) (π₁ π : A.CG D.R.r) : Prop where
   anti : ∀ τc, A.infG π (τc.comp (cj D)) = (A.infG π τc).map fun z => -z
   window : ∀ τc, ∀ z ∈ A.infG π τc, ∀ a : ℤ, (a : ℂ) = -z + ((D.R.t : ℂ) - 1) / 2 → a < -1 ∨ (D.R.t : ℤ) < a
 
-def TripleAtt (A : NAut N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) : Prop :=
-  ∃ (ι : FractionRing (X.O0 i) →+* ℂ) (π₁ π : A.CG D.R.r),
-    Att A bkP i ι (X.rhoS i s) π₁ ((1 - ((D.R.r : ℝ) + D.R.t)) / 2) ∧
-    Att A bkP i ι (Tgl i s) π ((1 - (D.R.t : ℝ)) / 2) ∧ RowFacts A i π₁ π ∧ HkSat A i s ι π
-
 end GlobalTheory.TripleGal
 
 end

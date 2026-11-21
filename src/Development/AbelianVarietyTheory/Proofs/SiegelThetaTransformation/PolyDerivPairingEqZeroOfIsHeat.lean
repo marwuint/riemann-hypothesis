@@ -13,20 +13,6 @@ namespace GlobalTheory.SW.HeatJet
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ}
 
-theorem isOpen_dom : IsOpen {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM Ψ N N) ∈ Hn Ψ N} := by
-  refine isOpen_iff_mem_nhds.2 fun x0 hx0 => Filter.eventually_all.2 fun τ =>
-    ReciprocityTheory.ChartRestriction.G.AR.Up.ExhB.posDef_eventually
-      (fun p : CF Ψ N N × CF Ψ n N × CF Ψ n N => imH ((p.1 : CM Ψ N N) τ)) (fun i j => ?_)
-      (fun p => ?_) x0 (hx0 τ)
-  · change Continuous fun p : CF Ψ N N × CF Ψ n N × CF Ψ n N =>
-      (2 * I)⁻¹ * (p.1 τ i j - star (p.1 τ j i))
-    fun_prop
-  · ext i j
-    change star ((2 * I)⁻¹ * (p.1 τ j i - star (p.1 τ i j))) =
-      (2 * I)⁻¹ * (p.1 τ i j - star (p.1 τ j i))
-    simp
-    ring
-
 def emb : (Ψ × Bool × Fin n × Fin N → ℂ) →ₗ[ℂ] CF Ψ N N × CF Ψ n N × CF Ψ n N where
   toFun w := (0, fun τ k a => w (τ, false, k, a), fun τ k a => w (τ, true, k, a))
   map_add' _ _ := by ext <;> simp

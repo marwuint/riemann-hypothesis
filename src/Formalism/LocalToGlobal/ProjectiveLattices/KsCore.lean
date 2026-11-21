@@ -16,16 +16,6 @@ abbrev WK (j : ℕ) (κ : WeightFamilies.Wt D j) : Submodule T.Q.c.F (T.R j) := 
 def MK (j : ℕ) (κ : WeightFamilies.Wt D j) :=
   latOf (T.C j κ) (T.Vs j) (fun la => isVal_valSet la)
 
-def bW (h : LawsCore T) (j : ℕ) (hj : InR D j) (κ : WeightFamilies.Wt D j) :
-    Module.Basis (Fin (Module.finrank T.Q.c.F (WK T j κ))) T.Q.c.F (WK T j κ) :=
-  haveI := h.fd j hj κ
-  haveI : Module.Free T.Q.c.F (WK T j κ) := Module.Free.of_divisionRing _ _
-  Module.finBasis T.Q.c.F (WK T j κ)
-
-def coordL {ι : Type} (L : Type) [Field L] [Algebra T.Q.c.F L] {j : ℕ} {κ : WeightFamilies.Wt D j}
-    (b : Module.Basis ι T.Q.c.F (WK T j κ)) : WK T j κ →ₗ[T.Q.c.F] (ι → L) :=
-  (LinearMap.compLeft (Algebra.linearMap T.Q.c.F L) ι).comp (Finsupp.lcoeFun.comp b.repr.toLinearMap)
-
 variable {G : Type} [Group G]
 
 def KeepsCu (j : ℕ) (κ : WeightFamilies.Wt D j)
@@ -51,22 +41,6 @@ def rhoGeo (j : ℕ) (κ : WeightFamilies.Wt D j)
         apply Subtype.ext
         exact actL_mul _ _ _ h.1.total h.1.func h.1.mul g g' (cusp_le_sec _ _ _ _ _ f.2).1 }
   else 1
-
-set_option synthInstance.maxHeartbeats 400000 in
-
-def actT (j : ℕ) (κ : WeightFamilies.Wt D j)
-    (lev : G → ((T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La) × ((T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La))
-    (χ : G →* (T.Q.c.F)ˣ) (g : G) : Module.End T.Q.c.F (WK T j κ) :=
-  ((χ g)⁻¹ : (T.Q.c.F)ˣ).val • rhoGeo T j κ lev g
-
-set_option synthInstance.maxHeartbeats 400000 in
-
-def eOf [Fintype G] (j : ℕ) (κ : WeightFamilies.Wt D j)
-    (lev : G → ((T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La) × ((T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La))
-    (χ : G →* (T.Q.c.F)ˣ) (eg : G → T.Q.c.F) : Module.End T.Q.c.F (WK T j κ) :=
-  ∑ g, eg g • actT T j κ lev χ g
-
-abbrev nrm (j : ℕ) (κ : WeightFamilies.Wt D j) (σ : T.Q.c.F →+* ℂ) : T.R j → ℝ := T.Ns j κ σ
 
 end KsCore
 

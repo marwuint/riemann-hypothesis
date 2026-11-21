@@ -91,13 +91,6 @@ theorem sum_idem [Fintype (Comp Xo c)] : ∑ Z : Comp Xo c, idem Z = 1 := by
   rw [mul_sub, h2, mul_one, sub_self]
   exact q.asIdeal.zero_mem
 
-variable (Xo c) in
-
-theorem finsum_idem : ∑ᶠ Z : Comp Xo c, idem Z = 1 := by
-  have := CompFin.finite_comp Xo c
-  have := Fintype.ofFinite (Comp Xo c)
-  rw [finsum_eq_sum_of_fintype, sum_idem]
-
 theorem sum_idem_mul [Fintype (Comp Xo c)] (f : Rul Xo c) : ∑ Z : Comp Xo c, idem Z * f = f := by
   rw [← Finset.sum_mul, sum_idem, one_mul]
 
@@ -140,19 +133,5 @@ def mulEquiv (e : Ix Dw → ℤ) :
     ((s.mulEquiv e).symm f : Rul Xo c) = f.1 * s.inv := rfl
 
 end ConstSec
-
-theorem suppOn_idem_laws (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
-    (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) :
-    (∀ (e : Ix Dw → ℤ) (f : Rul Xo c), f ∈ secZ Xo c e → ∀ Z : Comp Xo c, f ∈ suppOn Z ↔ idem Z * f = f) ∧
-    (∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (Z : Comp Xo c) (la : Weight Dw)
-      (δ : HeightOneSpectrum (𝓞 c.F) → ℝ) (s : ConstSec U x Z la δ) (e : Ix Dw → ℤ),
-      (∀ f ∈ secZ Xo c e ⊓ suppOn Z, f * s.sig * s.inv = f) ∧
-      ∃ m : (secZ Xo c e ⊓ suppOn Z : Submodule c.F (Rul Xo c)) ≃ₗ[c.F]
-          (secZ Xo c (e + exOf Dw la 0) ⊓ suppOn Z : Submodule c.F (Rul Xo c)),
-        (∀ f, (m f : Rul Xo c) = f.1 * s.sig) ∧ ∀ g, (m.symm g : Rul Xo c) = g.1 * s.inv) ∧
-    (Finite (Comp Xo c) ∧ ∀ [Fintype (Comp Xo c)], ∑ Z : Comp Xo c, idem Z = 1) :=
-  ⟨fun _ _ hf Z => mem_suppOn_iff_idem_mul hf Z,
-    fun _ _ _ _ _ _ s e => ⟨fun _ hf => s.mul_sig_mul_inv hf, s.mulEquiv e, fun _ => rfl, fun _ => rfl⟩,
-    CompFin.finite_comp Xo c, sum_idem Xo c⟩
 
 end GlobalTheory.FlatLine

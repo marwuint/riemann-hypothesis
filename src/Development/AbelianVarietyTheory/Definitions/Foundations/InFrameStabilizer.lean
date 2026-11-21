@@ -53,26 +53,10 @@ def IsDual (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E)
 def InS (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (P : Matrix (Fin n) (Fin (r + 1)) E)
     (g : Matrix (Fin n) (Fin n) E) : Prop := IsUn σ J g ∧ ∃ ν, IsUp ν ∧ g * P = P * ν
 
-def InFrameStabilizer (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (P : Matrix (Fin n) (Fin (r + 1)) E)
-    (g : Matrix (Fin n) (Fin n) E) : Prop := IsUn σ J g ∧ g * P = P
-
 def InN (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (P : Matrix (Fin n) (Fin (r + 1)) E)
     (g : Matrix (Fin n) (Fin n) E) : Prop :=
   IsUn σ J g ∧ (∃ ν, IsUp ν ∧ g * eOf P = eOf P * ν) ∧
     ∀ v : Fin n → E, (cT σ (eOf P) * J).mulVec v = 0 → ∃ c, g.mulVec v - v = (eOf P).mulVec c
-
-def InH (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (P : Matrix (Fin n) (Fin (r + 1)) E)
-    (f : Matrix (Fin n) (Fin r) E) (g : Matrix (Fin n) (Fin n) E) : Prop :=
-  IsUn σ J g ∧ g * P = P ∧ g * f = f
-
-def Zhat (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E)
-    (P P' : Matrix (Fin n) (Fin (r + 1)) E) (γ : Matrix (Fin n) (Fin n) E) :
-    Matrix (Fin (r + 1)) (Fin (r + 1)) E := pairM σ J (γ * P') P
-
-def XZ (σ : E →+* E) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (T T' : E)
-    (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
-    Set (Matrix (Fin n) (Fin (r + 1)) E × Matrix (Fin n) (Fin (r + 1)) E) :=
-  {p | IsFrame σ J T p.1 ∧ IsFrame σ J T' p.2 ∧ pairM σ J p.2 p.1 = Z}
 
 def PosOnPerp {n : ℕ} {a : Type} [Fintype a] (J : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin n) a ℂ) : Prop :=
   ∀ w : Fin n → ℂ, (cT (starRingEnd ℂ) A * J).mulVec w = 0 → w ≠ 0 →

@@ -120,9 +120,6 @@ theorem restOrdBound : RestOrdBound := by
       congr 2
       ring
 
-theorem residueClassCount_of_tensor_basis_inclusion (hTen : RestTensor) (hD3 : DualHeightBasis) (hIncl : DualHeightInclusion) : ResidueClassCount :=
-  tensor_bound_of_order_bound hTen restOrdBound hD3 hIncl
-
 end Formalism.MainNotions.flipOneThree.Pf
 
 end

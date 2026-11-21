@@ -6,9 +6,23 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MarkingConj
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIsSplitPeriod
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsDatumRankOne
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RationalPointsAdelicUnitaryEqUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeRationalTranslateInvarianceStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompatStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
+import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
+import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
+import Formalism.LocalToGlobal.ProjectiveLattices.ValSetAlgSubset
+import Formalism.LocalToGlobal.ProjectiveLattices.IntAll
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
+import Formalism.LocalToGlobal.ProjectiveLattices.VolProofs
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeRationalTranslateInvariance
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.NormConst
+import Formalism.LocalToGlobal.ProjectiveLattices.CuspFree
+import Formalism.LocalToGlobal.ProjectiveLattices.RdOrbIntOfLatZ
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.ExistsNormTensor
+import Development.AbelianVarietyTheory.Statements.HyperbolicHypotheses.HypothesesInhabitedHyperbolic
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CramerMemAdelicCompletionOfElementSet
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryMatrixOfLatticeIsometry
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameUniformEmbeddingThird
@@ -239,7 +253,7 @@ theorem exists_of_matched {D : D7} (V : HSp D) (g g' δ : GA D V) (δ' : GL (Fin
     ∃ u : GA D V, gLat V u = latHat V ∧ finHom V g' * finHom V u = finHom V δ * finHom V g ∧
       (finHom V u).1.det * ((1 : Af D.host.F) ⊗ₜ[D.host.F] S.det) - 1 ∈
         GlobalTheory.AdLat.hat1 D.host.F ((algebraMap (𝓞 D.host.E) D.host.E) '' (I : Set (𝓞 D.host.E))) := by
-  obtain ⟨m1, -, -, m4⟩ := GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V
+  obtain ⟨m1, -, -, m4⟩ := _root_.GlobalTheory.Member.latG_move D V
   obtain ⟨-, -, -, -, r5⟩ := GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V
   obtain ⟨m1, m2⟩ := m1 δ δ' g hδ
   have hL : latG V g' = latG V (δ * g) := by
@@ -253,10 +267,10 @@ theorem exists_of_matched {D : D7} (V : HSp D) (g g' δ : GA D V) (δ' : GL (Fin
   refine ⟨g'⁻¹ * (δ * g), gLat_eq_of_finCong V _ (m4 _ _ hL) ?_, hu, ?_⟩
   · rw [mul_inv_rev, inv_inv]
     exact m4 _ _ hL.symm
-  obtain ⟨f1, f2, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V 1
-  obtain ⟨-, -, -, -, a5, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V g
-  obtain ⟨-, -, -, b4, b5, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V g'
-  obtain ⟨-, -, -, -, c5, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V (δ * g)
+  obtain ⟨f1, f2, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V 1
+  obtain ⟨-, -, -, -, a5, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V g
+  obtain ⟨-, -, -, b4, b5, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V g'
+  obtain ⟨-, -, -, -, c5, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V (δ * g)
   let SA := S.map (inclR (F := D.host.F) (Af D.host.F))
   have hd := det_sub_one_mem_of_half D.host.F (latG V 1) f1 f2
     ((finHom V g'⁻¹).1 * (finHom V δ).1 * SA * (finHom V g).1) M hM I I' hI (fun b hb x hx => by
@@ -294,7 +308,7 @@ set_option maxHeartbeats 2000000 in
 theorem marking_of_conjugate : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → (Dw.p = 0 ∨ Dw.q = 0 ∨ 3 ≤ Dw.p + Dw.q) → ∀ τ : ℂ ≃+* ℂ, τ H.rt0 = H.rt0 → ∀ (Cv : Curve H) (io : Cv.P.A.left ⟶ Cv.P.A.left) (s : ℤ × ℤ) (π : Fin C.F.n → Fin C.F.n), Cv.ActsBy τ io l.M s → ConjugationPermutesPeriods C.F τ π → ∀ h γ k h' γ', C.Mark h k γ → C.Mark h' (π k) γ' → ∃ δ ∈ GQ V, ∃ u : GA D V, gLat V u = latHat V ∧ finHom V (γ' * h') * finHom V u = finHom V δ * finHom V (γ * h) ∧ ((Matrix.GeneralLinearGroup.det (finHom V (u)) : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : (Af D.host.F ⊗[D.host.F] D.host.E)) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] ((wE H s ^ Dw.p * H.bar (wE H s) ^ Dw.q : 𝓞 D.host.E) : D.host.E)) - 1 ∈ GlobalTheory.AdLat.hat1 D.host.F ((algebraMap (𝓞 D.host.E) D.host.E) '' (l.Mb : Set (𝓞 D.host.E))) := by
   intro D H Dw l Xo c σ V r C hC hsig τ hτ Cv io s π hact hπ h γ k h' γ' hm hm'
   obtain rfl : V.rank = r := C.hr
-  have hty := (GlobalTheory.T.relabelEmbeddings_good_bijective_conj_compat _ H l c σ hC.good).2.2.2 Dw C.g C.e
+  have hty := (_root_.GlobalTheory.Relab.relab_good _ H l c σ hC.good).2.2.2 Dw C.g C.e
   obtain ⟨P, hP, hsplit⟩ := GlobalTheory.CompRat.exists_isSplit_period _ H Dw l Xo _ C.g _ C.F hC.pos hC.good hty hC.lA
     (hsig.imp_right (Or.imp_right fun h3 => ⟨h3, GlobalTheory.RankOneDatum.exists_datum_rank_one D H Dw V C.ι hC.iota hC.pos⟩)) k
   obtain ⟨P', hP', hu⟩ := hπ k P hP

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.ThConst
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NormalisedPullbackMulNReadsThetaStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SymmetricLiftOddOrderActsAsTranslationStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SymmetricLiftOddOrderActsAsTranslation
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.PullbackSections Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.AnVal
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -38,12 +38,12 @@ theorem rd_vt_and_uu : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonOb
     · simpa only [Nat.cast_pow] using hx
     · rw [he]; exact hok
     · rw [he]; exact ht
-    · refine GlobalTheory.T.symmetric_lift_odd_order_acts_as_translation S A L x0 g Φ hχ _ (N ^ 2) U _ _ s₁ F _ ⟨m, hm⟩ (Φ.lat.nsmul_mem hl _) hx ?_ h6
+    · refine _root_.GlobalTheory.AnVal.rd_fock_of_symLift S A L x0 g Φ hχ _ (N ^ 2) U _ _ s₁ F _ ⟨m, hm⟩ (Φ.lat.nsmul_mem hl _) hx ?_ h6
         (GlobalTheory.T.normalisedPullbackMulN_reads_theta S A L x0 g Φ N α₀ α s s₁ θ h1 h2 h3 h4 hs)
       rw [he]; exact h5
   · rintro x₁ δ₁ x₂ δ₂ F hδ₁ hx₁ hδ₂ hx₂ ⟨α₀, α, s₁, s₂, U₁, U₂, h1, h2, h3, h4, h5, h6, h7, h8⟩
-    refine GlobalTheory.T.symmetric_lift_odd_order_acts_as_translation S A L x0 g Φ hχ _ (N ^ 2) U₂ x₂ δ₂ s₂ F _ hN2 hδ₂ (by simpa only [Nat.cast_pow] using hx₂) h7 h8 ?_
-    exact GlobalTheory.T.symmetric_lift_odd_order_acts_as_translation S A L x0 g Φ hχ _ (N ^ 2) U₁ x₁ δ₁ s₁ s₂ _ hN2 hδ₁ (by simpa only [Nat.cast_pow] using hx₁) h5 h6
+    refine _root_.GlobalTheory.AnVal.rd_fock_of_symLift S A L x0 g Φ hχ _ (N ^ 2) U₂ x₂ δ₂ s₂ F _ hN2 hδ₂ (by simpa only [Nat.cast_pow] using hx₂) h7 h8 ?_
+    exact _root_.GlobalTheory.AnVal.rd_fock_of_symLift S A L x0 g Φ hχ _ (N ^ 2) U₁ x₁ δ₁ s₁ s₂ _ hN2 hδ₁ (by simpa only [Nat.cast_pow] using hx₁) h5 h6
       (GlobalTheory.T.normalisedPullbackMulN_reads_theta S A L x0 g Φ N α₀ α s s₁ θ h1 h2 h3 h4 hs)
 
 end GlobalTheory.AnVal

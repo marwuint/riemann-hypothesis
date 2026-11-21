@@ -9,8 +9,6 @@ open scoped Quaternion Topology TensorProduct
 
 namespace GlobalTheory.QSA.Split
 
-variable {F : Type} [Field F]
-
 end GlobalTheory.QSA.Split
 
 namespace GlobalTheory

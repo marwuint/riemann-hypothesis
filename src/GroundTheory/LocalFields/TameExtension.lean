@@ -65,11 +65,6 @@ theorem maximalUnramifiedExtension_le_tameExtension :
 
 end Definition
 
-theorem finiteDimensional_of_le {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω]
-    {E F : IntermediateField K Ω} [FiniteDimensional K F] (h : E ≤ F) : FiniteDimensional K E :=
-  Module.Finite.of_injective (IntermediateField.inclusion h).toLinearMap
-    (IntermediateField.inclusion_injective h)
-
 section Valued
 
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
@@ -116,18 +111,6 @@ theorem ramificationIndex_restrictScalars (T : IntermediateField K Ω) [FiniteDi
   have hpos : 0 < residueDegree K T * residueDegree T F :=
     Nat.mul_pos (residueDegree_pos K T) (residueDegree_pos T F)
   exact Nat.eq_of_mul_eq_mul_right hpos (by rw [h1]; ring)
-
-theorem IsTameSubextension.of_le {E F : IntermediateField K Ω} (hF : IsTameSubextension F)
-    (h : E ≤ F) : IsTameSubextension E := by
-  have := hF.1
-  have : FiniteDimensional K E := finiteDimensional_of_le h
-  set F' := extendScalars h
-  have : FiniteDimensional K F' := (inferInstance : FiniteDimensional K F)
-  have : FiniteDimensional E F' := Module.Finite.of_restrictScalars_finite K E F'
-  rw [isTameSubextension_iff]
-  have he : ramificationIndex K F = ramificationIndex K E * ramificationIndex E F' :=
-    ramificationIndex_restrictScalars E F'
-  exact Nat.Coprime.coprime_dvd_left (Dvd.intro _ he.symm) hF.coprime
 
 end Valued
 

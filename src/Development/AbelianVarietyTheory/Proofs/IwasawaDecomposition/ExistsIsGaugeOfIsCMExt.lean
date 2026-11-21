@@ -11,16 +11,16 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import Formalism.LocalRingCardinality.DataTies
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueOneVectorStepHaarMeasureStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueOneVectorStepHaarMeasure
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBasisInvariantHaarFamilyAdelicUnitaryStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoboundaryOfInvariantUnitaryStepConstantsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryOneVectorStepCompatibleChangeOfBasisStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryOneVectorStepCompatibleChangeOfBasis
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerMeasureIndependentOfPathStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyStandardLocalHaarMeasuresStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.QuadricFibreMeasureEqSmulNormalisedProductStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueStdHermitianFibreProductOfRankGeThreStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAdeleCharTrivialOnTotallyRealStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerAnisotropicVectorEquivComplemenStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.QuadricFibreMeasureEqSmulNormalisedProduct
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueStdHermitianFibreProductOfRankGeThre
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAdeleCharTrivialOnTotallyReal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryStabilizerAnisotropicVectorEquivComplemen
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
@@ -90,7 +90,7 @@ theorem exists_const (hσ : IsCMExt F E σ) {d : ℕ} {b : Module.Basis (Fin d) 
     haveI : (G.μ M J').IsHaarMeasure := hG M J' hS.2.2.2.2.2
     haveI : (G.μ (M + 1) J).IsHaarMeasure := hG (M + 1) J hS.1
     obtain ⟨⟨μ, hμ, hrel⟩, -⟩ :=
-      GlobalTheory.T.exists_unique_oneVectorStep_haarMeasure F E σ hσ d b s M J x a B J' (G.μ M J') hM hS inferInstance
+      _root_.GlobalTheory.GaugeEx.exists_unique_stepRel F E σ hσ d b s M J x a B J' (G.μ M J') hM hS inferInstance
     haveI := hμ
     refine ⟨Units.mk0 (Measure.haarScalarFactor μ (G.μ (M + 1) J))
       (Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne', ?_⟩
@@ -137,12 +137,12 @@ theorem exists_std_family (hσ : IsCMExt F E σ) {d : ℕ} {b : Module.Basis (Fi
     rw [← hJ₂]
     obtain ⟨⟨eP, heP⟩, hmapP⟩ := hB (M + 1) J J₂ P hS.1 hJ₂
     obtain ⟨⟨eQ, heQ⟩, hmapQ⟩ := hB M J' J₂' Q hS.2.2.2.2.2 hJ₂'
-    obtain ⟨hS₂, hR₂⟩ := GlobalTheory.T.unitaryOneVectorStep_compatible_changeOfBasis F E σ hσ _ b s M J J₂ x a B J' x₂ B₂ J₂' P Q eP eQ _ _ hS hJ₂
+    obtain ⟨hS₂, hR₂⟩ := _root_.GlobalTheory.GaugeEx.stepRel_basis F E σ hσ _ b s M J J₂ x a B J' x₂ B₂ J₂' P Q eP eQ _ _ hS hJ₂
       hJ₂' hx hPB heP heQ (hc M J x a B J' hM hS)
     rw [Measure.map_smul, hmapP eP heP, hmapQ eQ heQ] at hR₂
     have hR₃ := hc M J₂ x₂ a B₂ J₂' hM hS₂
     have hHaar₂ : (G.μ M J₂').IsHaarMeasure := hH M J₂' hS₂.2.2.2.2.2
-    have huniq := (GlobalTheory.T.exists_unique_oneVectorStep_haarMeasure F E σ hσ _ b s M J₂ x₂ a B₂ J₂' (G.μ M J₂') hM hS₂ hHaar₂).2 _ _
+    have huniq := (_root_.GlobalTheory.GaugeEx.exists_unique_stepRel F E σ hσ _ b s M J₂ x₂ a B₂ J₂' (G.μ M J₂') hM hS₂ hHaar₂).2 _ _
       hR₃ hR₂
     haveI : (G.μ (M + 1) J₂).IsHaarMeasure := hH (M + 1) J₂ hS₂.1
     exact Units.ext (smul_haar_inj _ huniq)
@@ -166,8 +166,8 @@ theorem exists_isGauge_of_isCMExt (hσ : IsCMExt F E σ) : ∃ G : GaugeFam F E 
   haveI : IsTotallyReal F := hσ.1
   obtain ⟨s⟩ := GlobalTheory.T.nonempty_standardLocalHaarMeasures F E _ (Module.finBasis F E)
   obtain ⟨G, α, hH, hB, hαinv, hstep⟩ := exists_std_family hσ s
-  obtain ⟨κ, hκ0, hκ⟩ := GlobalTheory.T.quadricFibreMeasure_eq_smul_normalisedProduct F E σ hσ _ _ s
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_nontrivial_adeleChar_trivial_on_totallyReal F
+  obtain ⟨κ, hκ0, hκ⟩ := _root_.GlobalTheory.GaugeEx.isXbetaMeasure_iff_smul_std F E σ hσ _ _ s
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.GaugeEx.CharZero.exists_isCharAF F
   obtain ⟨K, hK⟩ : ∃ K : ℕ → ℝ≥0, K = fun M => ∏ i ∈ Finset.range (M + 1), κ i := ⟨_, rfl⟩
   have hK0 : ∀ M, K M ≠ 0 := fun M => by
     rw [hK]; exact Finset.prod_ne_zero_iff.2 fun i _ => hκ0 i
@@ -184,8 +184,8 @@ theorem exists_isGauge_of_isCMExt (hσ : IsCMExt F E σ) : ∃ G : GaugeFam F E 
     rw [Measure.map_smul, hmap e' he', hJ', hαinv M J P hJ]
   · intro M J J' x β B hM hJ hβ hx hB' hJ'' hJ'
     have hS : StepData σ J x β B J' := ⟨hJ, hβ, hx, hB', hJ'', hJ'⟩
-    obtain ⟨ν, hν, -⟩ := GlobalTheory.T.existsUnique_stdHermitianFibreProduct_of_rank_ge_three F E σ hσ _ _ s (M + 1) J β hM hJ hβ
-    obtain ⟨e, he, -⟩ := (GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hσ (AF F) M J x β B J' hS).2.1
+    obtain ⟨ν, hν, -⟩ := _root_.GlobalTheory.GaugeEx.existsUnique_isStdX F E σ hσ _ _ s (M + 1) J β hM hJ hβ
+    obtain ⟨e, he, -⟩ := (_root_.GlobalTheory.FrameStep.frameStep F E σ hσ (AF F) M J x β B J' hS).2.1
     refine ⟨⟨ψ, hψ⟩, fun ψ' hψ' => ?_⟩
     have hX := hκ (M + 1) J β ψ' ν (by omega) hJ hβ hψ' hν
     refine ⟨⟨_, (hX _).2 rfl⟩, fun νX hνX => ?_⟩

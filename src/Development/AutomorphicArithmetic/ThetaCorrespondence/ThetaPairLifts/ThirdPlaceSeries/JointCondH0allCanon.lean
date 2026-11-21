@@ -1,5 +1,22 @@
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointCondH0allCanon
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AutomorphicArithmetic.CyclotomicBounds.ZmodTwoQuadraticNeZero
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DecompositionInvariantsCondition
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
+import Formalism.SharpRestriction.LevelLetterCocycles.LargeLevelLemmas
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankLeOfSubsetClosureRange
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionLocalAbove
+import Formalism.SharpRestriction.LevelLetterCocycles.AdmissibleParameterJ
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionLocalAway
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CoefficientCompatibilityOf
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PointConditionsOfPointGaloisRepFamilies
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.SemisimpleDecompositionOf
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorsionExponentLeOfJumpsAtEmbeddingsUnramified
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostCompletionLeMaxUnramifiedPadic
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinrankMaxUnramifiedSubfieldPadicFinExtPos
+import Development.AutomorphicArithmetic.ResidueCharacters.TwistedPlaces
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MainAltAltBisStatement
 
@@ -18,7 +35,7 @@ theorem jointCondH0all_canon_alt : GlobalTheory.Published.FontaineBcris → ∀ 
   have hg0 : D.nd.l i ≠ D.host.g 0 := fun h => hg (by simp [TwistedPlaces.gset, h])
   have hg1 : D.nd.l i ≠ D.host.g 1 := fun h => hg (by simp [TwistedPlaces.gset, h])
   have hπZ : π ∈ D.nd.Z i := LargeLevelLemmas.zgoodSubsetZ i hπ
-  obtain ⟨-, -, -, hdec⟩ := GlobalTheory.T.pointConditions_of_pointGaloisRepFamilies D X.r X.ρ hC.fam i π hπZ
+  obtain ⟨-, -, -, hdec⟩ := _root_.GlobalTheory.PointConditions.main D X.r X.ρ hC.fam i π hπZ
   have hgood := hC.fam.good i
   have hcont := hC.fam.cont i π
   have hr1 : 1 ≤ D.R.r := by
@@ -28,13 +45,13 @@ theorem jointCondH0all_canon_alt : GlobalTheory.Published.FontaineBcris → ∀ 
   have hrV : D.R.r ≤ D.R.nV := Nat.le_add_right _ _
   refine ⟨hOf L, hOf L, hl2, ?_⟩
   intro u _ w hw _
-  have hur : (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i) := GlobalTheory.T.hostCompletion_le_maxUnramified_padic D i hls hlq hld w hw
+  have hur : (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i) := _root_.GlobalTheory.HubLoc.kw_le_Kur_all D i hls hlq hld w hw
   refine ⟨GlobalTheory.HubLoc.le_Ks_one_of_Kur _ hur, ?_⟩
   intro C hs hc L2
   have hcrys := (_root_.GlobalTheory.T.decomposition_fontaine_at_places_over_l D i (X.r i) (X.ρ i) π h41 (hAdm i) hgood hcont hdec hg0 hg1 w hw C).2.2.2
-  have hjump := fun τ => GlobalTheory.T.decomposition_local_above D L ep hep hJb hJc hJe hJf i (X.r i) (X.ρ i) π hgood hπZ hdec w hw C τ
+  have hjump := fun τ => _root_.GlobalTheory.jumps_WpO_T2O_window D L ep hep hJb hJc hJe hJf i (X.r i) (X.ρ i) π hgood hπZ hdec w hw C τ
     (T2O D.nd i (X.ρ i) π) (Or.inr rfl)
-  have key := GlobalTheory.T.torsionExponent_le_of_jumps_at_embeddings_unramified D.loc HW D.locA (D.nd.l i) (D.nbr i w hw).Kw C.LL hs (hOf L) D.R.r (4 * D.R.n)
+  have key := _root_.GlobalTheory.HubX.cH0all_le_of_jumps_at_embeddings D.loc HW D.locA (D.nd.l i) (D.nbr i w hw).Kw C.LL hs (hOf L) D.R.r (4 * D.R.n)
     (tTwoLocalLattice D i (X.ρ i) π C hc L2) hur (GlobalTheory.bridge_finrank_le D i w hw) hr1 (fun τ => (hjump τ).1)
   refine ⟨hcrys, key.1, fun τ => (hjump τ).2, ?_⟩
   rw [hC.c0]

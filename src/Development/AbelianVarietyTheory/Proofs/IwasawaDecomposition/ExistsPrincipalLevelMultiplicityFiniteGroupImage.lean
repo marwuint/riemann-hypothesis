@@ -103,18 +103,6 @@ theorem gaL_act (hl : LiftsExist V β L) {c : G → ℂ} (hc : ∀ g a, c (g * a
   show _ = c (g * a * g⁻¹) • postOn M (actL V β L (eG (g * a * g⁻¹ * g))) U
   rw [hc, inv_mul_cancel_right]
 
-omit [Fintype G] in
-
-def repOn (hl : LiftsExist V β L) (W : Submodule ℂ (MMap M)) (hW : W ≤ MultP θ M β L)
-    (hs : ∀ g, ∀ U ∈ W, postOn M (actL V β L (eG g)) U ∈ W) : Representation ℂ G W where
-  toFun g := (postOn M (actL V β L (eG g))).restrict (hs g)
-  map_one' := LinearMap.ext fun U => Subtype.ext (by
-    show postOn M (actL V β L (eG 1)) U = U
-    rw [map_one]; exact act_one (hW U.2))
-  map_mul' g g' := LinearMap.ext fun U => Subtype.ext (by
-    show postOn M (actL V β L (eG (g * g'))) U = postOn M (actL V β L (eG g)) (postOn M (actL V β L (eG g')) U)
-    rw [map_mul]; exact act_mul hl _ _ (hW U.2))
-
 end GlobalTheory.MultAction
 
 end

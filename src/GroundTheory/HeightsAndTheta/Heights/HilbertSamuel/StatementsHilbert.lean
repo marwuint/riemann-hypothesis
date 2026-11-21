@@ -88,8 +88,6 @@ def HilbertModule.AtDim (d : ℕ) : Prop :=
           (topCycleNum F ι M d (fun _ : Fin d => fun k => (a k : ℤ)) : ℝ) / d.factorial| ≤
         C * ((∑ k, (a k : ℝ)) + 1) ^ ((d : ℝ) - 1)
 
-def HilbertModule.Statement : Prop := ∀ d : ℕ, HilbertModule.AtDim.{u, v} d
-
 def ModulesFromPrimes.Statement : Prop :=
   ∀ d : ℕ, (∀ e ≤ d, HilbertPrime.AtDim.{u} e) → HilbertModule.AtDim.{u, v} d
 

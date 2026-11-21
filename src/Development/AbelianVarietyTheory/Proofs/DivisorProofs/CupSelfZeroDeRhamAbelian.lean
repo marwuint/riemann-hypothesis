@@ -3,20 +3,20 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStruct
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjPullbackAxesCohomologyProjectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeOneFormFrameAndSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeGlobalOneFormsClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWedgePrimitiveOneFormsEqZeroAbelianSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamToStructureH1SurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechDeRhamHypercohomologyCupAnticommStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalOneFormFrameCoordinatesConstantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperH2SumOfCupsExactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumCupOneFormsZeroImpCoordinatesZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeOneFormFrameAndSquare
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeGlobalOneFormsClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWedgePrimitiveOneFormsEqZeroAbelianScheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamToStructureH1Surjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechDeRhamHypercohomologyCupAnticomm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalOneFormFrameCoordinatesConstant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HyperH2SumOfCupsExact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumCupOneFormsZeroImpCoordinatesZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupSumClosedGlobalOneFormsEqZeroIffSumWedgeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupId
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullClosedFormClassStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianStructureCohomologyStatementStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullClosedFormClass
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianStructureCohomologyStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeGlobalOneFormsPrimitiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamH1RankPrimitiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeRhamH1RankPrimitive
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -57,7 +57,7 @@ theorem toHO1_pH1_over (f : Y ⟶ A) (a : HH1 A.hom) : toHO1 Y.hom (deRhamH1Pull
 
 theorem pH1_clAll_over (f : Y ⟶ A) (hc : Closed1 (OAff A.hom) = ⊤) (hc' : Closed1 (OAff Y.hom) = ⊤)
     (w : GlobForm A.hom) : deRhamH1Pullback f (clAll (OAff A.hom) hc w) = clAll (OAff Y.hom) hc' (pF f w) :=
-  GlobalTheory.T.pull_closed_form_class R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f) hc hc' w
+  _root_.GlobalTheory.AbCoh.pullHH1_clAll R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f) hc hc' w
 
 end Helpers
 
@@ -95,17 +95,17 @@ end Wsum
 theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ a : HH1 A.hom, cupHH A.hom a a = 0 := by
   intro R _ A _ g hA hs a
-  have hb := GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs
-  have hb2 := GlobalTheory.T.abelianScheme_oneFormFrame_and_square R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2
-  have hc := GlobalTheory.T.abelianScheme_globalOneForms_closed R A g hA hs
-  have hc2 := GlobalTheory.T.abelianScheme_globalOneForms_closed R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2
-  have hsur := GlobalTheory.T.de_rham_to_structure_h1_surjective R A g hA hs
-  have hsur2 := GlobalTheory.T.de_rham_to_structure_h1_surjective R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2
-  have hW := (GlobalTheory.T.abelian_structure_cohomology_statement R A g hA hs).2.1
-  have hP : ∀ x : HH1 A.hom, deRhamH1Pullback μ[A] x = deRhamH1Pullback (fst A A) x + deRhamH1Pullback (snd A A) x := (GlobalTheory.T.de_rham_h1_rank_primitive R A g hA hs).2
+  have hb := _root_.GlobalTheory.AbCoh.basic_of_isAbelianScheme R A g hA hs
+  have hb2 := _root_.GlobalTheory.AbCoh.basic_of_isAbelianScheme R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2
+  have hc := _root_.GlobalTheory.AbCoh.closed1_eq_top_of_abelian R A g hA hs
+  have hc2 := _root_.GlobalTheory.AbCoh.closed1_eq_top_of_abelian R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2
+  have hsur := _root_.GlobalTheory.AbCoh.toHO1_surjective R A g hA hs
+  have hsur2 := _root_.GlobalTheory.AbCoh.toHO1_surjective R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2
+  have hW := (_root_.GlobalTheory.AbCoh.oStr R A g hA hs).2.1
+  have hP : ∀ x : HH1 A.hom, deRhamH1Pullback μ[A] x = deRhamH1Pullback (fst A A) x + deRhamH1Pullback (snd A A) x := (_root_.GlobalTheory.AbCoh.rank_prim_HH1 R A g hA hs).2
   have hPF : ∀ x : GlobForm A.hom, pF μ[A] x = pF (fst A A) x + pF (snd A A) x := GlobalTheory.T.abelianScheme_globalOneForms_primitive R A g hA hs
   have hax := GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A
-  have anti := GlobalTheory.T.cechDeRhamHypercohomologyCup_anticomm R _ (OAff (A ⊗ A).hom)
+  have anti := _root_.GlobalTheory.AbCoh.cupHyp_add_cupHyp_swap R _ (OAff (A ⊗ A).hom)
 
   have hprim : deRhamH2Pullback μ[A] (cupHH A.hom a a) =
       deRhamH2Pullback (fst A A) (cupHH A.hom a a) + deRhamH2Pullback (snd A A) (cupHH A.hom a a) := by
@@ -115,7 +115,7 @@ theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpO
     linear_combination (norm := module) h
 
   obtain ⟨c, rfl⟩ := Hyp1.mk_surjective _ a
-  obtain ⟨n, a', w, hz⟩ := GlobalTheory.T.hyper_h2_sum_of_cups_exact R _ (OAff A.hom) hb.1 hb.2.1 hc hsur (cupZZ _ c c) (fn_cupZZ_self_exact hW c)
+  obtain ⟨n, a', w, hz⟩ := _root_.GlobalTheory.AbCoh.hyp2_eq_sum_cup_of_fn_exact R _ (OAff A.hom) hb.1 hb.2.1 hc hsur (cupZZ _ c c) (fn_cupZZ_self_exact hW c)
   rw [← cupHyp_mk] at hz
   change cupHH A.hom _ _ = _ at hz
   set z := cupHH A.hom (Hyp1.mk _ c) (Hyp1.mk _ c)
@@ -139,7 +139,7 @@ theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpO
       simp only [Fin.append_left, Fin.append_right]
       rw [← Finset.sum_add_distrib]
       exact hcross
-    have h3 := GlobalTheory.T.sum_cup_oneForms_zero_imp_coordinates_zero R _ _ hb2.1 hb2.2.1 hc2 hsur2 (n + n) _ _ h2
+    have h3 := _root_.GlobalTheory.AbCoh.sum_toO_eq_zero_of_sum_cup R _ _ hb2.1 hb2.2.1 hc2 hsur2 (n + n) _ _ h2
       (l ∘ₗ pF (lift (toUnit A ≫ η[A]) (𝟙 A)))
     rw [Fin.sum_univ_add] at h3
     simp only [Fin.append_left, Fin.append_right, LinearMap.comp_apply, (hax.2.1 _).2.2.2.1,
@@ -149,7 +149,7 @@ theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpO
     simpa only [toHO1_pH1_over, (hax.1 _).1] using h4
 
   obtain ⟨m, ⟨Φ⟩⟩ := hb.1
-  obtain ⟨L, -, hL⟩ := GlobalTheory.T.globalOneFormFrame_coordinates_constant R _ (OAff A.hom) hb.2.1 m Φ
+  obtain ⟨L, -, hL⟩ := _root_.GlobalTheory.AbCoh.frame_coord R _ (OAff A.hom) hb.2.1 m Φ
   have hu : ∀ i, ∃ u : Glob1 (OAff A.hom), clAll _ hc u = ∑ k, L i (w k) • a' k := by
     intro i
     have hm : ∑ k, L i (w k) • a' k ∈ Fil1 (OAff A.hom) := by
@@ -175,7 +175,7 @@ theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpO
     rw [hz2] at h
     simp only [map_sum, pH2_cupHH_over, pH1_clAll_over _ hc hc2] at h
     exact wsum_eq_add_of_cupSum_eq _ hc2 hsur2 _ _ _ _ _ _ h
-  have hw0 := GlobalTheory.T.sum_wedge_primitive_oneForms_eq_zero_abelianScheme R A g hA hs m u Φ.w hwp
+  have hw0 := _root_.GlobalTheory.AbCoh.wsum_eq_zero_of_mul R A g hA hs m u Φ.w hwp
   rw [hz2]
   exact (GlobalTheory.T.cupSum_closedGlobalOneForms_eq_zero_iff_sumWedge R _ _ hc hsur m u Φ.w).2 hw0
 

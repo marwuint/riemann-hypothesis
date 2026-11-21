@@ -3,8 +3,9 @@ import Development.AutomorphicArithmetic.LocalEmbeddings.StageGeoDefs
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfUnit
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AlgebraicVectorsCorrespondSchrodingerThetaMapStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilRepOrientedPairRationalSchrodingerStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AlgebraicVectorsCorrespondSchrodingerThetaMap
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilRepOrientedPairRationalSchrodinger
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicWeilRepSchrodingerModelUniqueStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaGlobal
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S IsDedekindDomain NumberField Matrix
@@ -44,8 +45,8 @@ private theorem pair_over {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam
         Matrix (Fin X.rank) (Fin S.rank) (AE D))) ∧ ∀ x, cS.symm x = ptO (sgn ε S).gram e x :=
     ⟨GlobalTheory.FockThetaOnto.crd (D := D) (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram) hG e,
       fun u => by rw [← hg]; rfl, fun _ => rfl⟩
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ ε S X A B e.symm Bs hP.base hP.psi Vs Ws _ _ _ _ hP.JV hP.JW hV hW hc M hP.good cS hcS
-  obtain ⟨om₁, hom₁, hw⟩ := GlobalTheory.T.exists_weilRep_orientedPair_rationalSchrodinger D ψ θ hθ ε S X A B e.symm Bs hP.base hP.psi Vs Ws _ _ _ _ hP.JV hP.JW hV hW hc M
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.SquareAgree.algVec_correspond D ψ θ hθ ε S X A B e.symm Bs hP.base hP.psi Vs Ws _ _ _ _ hP.JV hP.JW hV hW hc M hP.good cS hcS
+  obtain ⟨om₁, hom₁, hw⟩ := _root_.GlobalTheory.SquareAgree.exists_weil_of_oriented D ψ θ hθ ε S X A B e.symm Bs hP.base hP.psi Vs Ws _ _ _ _ hP.JV hP.JW hV hW hc M
     hP.good cS hcS χ χ' ω hω
   have dV : Vs.J.det ≠ 0 := by
     obtain ⟨w⟩ : Nonempty (InfinitePlace D.host.F) := inferInstance

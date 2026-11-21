@@ -13,16 +13,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R]
 
-theorem gObjMap_id {b : GBase G R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : GObj b N s) :
-    Nonempty (GObjMap o o (𝟙 S)) :=
-  ⟨{ φ := 𝟙 _
-     φ₂ := 𝟙 _
-     cart := GlobalTheory.SiegLower.isGrpPullback_id o.A
-     sq := ⟨by simp, by simp⟩
-     act := fun c => by simp
-     pol := GlobalTheory.SiegLower.lbIso_pull_id o.isLB
-     eta := fun y => by simp }⟩
-
 private theorem lbIso_pull_comp_of_lbIso {X Y Z : Scheme.{0}} {M : LB X} {P : LB Y} {Q : LB Z} {a : X ⟶ Y} {c : Y ⟶ Z}
     (H₁ : LBIso M (P.pull a)) (H₂ : LBIso P (Q.pull c)) (hM : M.IsLB) (hP : P.IsLB) (hQ : Q.IsLB) :
     LBIso M (Q.pull (a ≫ c)) := by

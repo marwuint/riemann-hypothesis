@@ -39,8 +39,3 @@ def Good (A R D : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing D]
 
 end GlobalTheory.KeyOriginNoeth
 
-example (A R : Type) [CommRing A] [CommRing R] [Algebra A R] (r : R) :
-    GlobalTheory.KeyOriginNoeth.baseHom A R (GlobalTheory.LocAcyc.GenFib A R) r ∈
-      GlobalTheory.KeyOriginNoeth.closure A R (GlobalTheory.LocAcyc.GenFib A R) := by
-  letI := (GlobalTheory.KeyOriginNoeth.baseHom A R (GlobalTheory.LocAcyc.GenFib A R)).toAlgebra
-  exact isIntegral_algebraMap (R := R) (A := GlobalTheory.LocAcyc.GenFib A R) (x := r)

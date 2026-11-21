@@ -2,7 +2,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRulesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocallyIffAffineEtalePointCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleToSheafifyLocallyBijectiveAndLiftStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafSectionsExactStatement
 
@@ -58,13 +59,13 @@ theorem UpperTheory.existsUnique_section_of_etale_faithfullyFlat_descent :
   intro R _ F A C _ _ _ _ _ w hw
   obtain ⟨S, hS, hSP⟩ := cover_loc A C
   choose lf hlf using hSP
-  obtain ⟨a, ha⟩ := (GlobalTheory.T.etaleSheafSections_ext_and_glue R F _).2 S hS (fun V g hg => Sec.res (lf V g hg) w) (by
+  obtain ⟨a, ha⟩ := (_root_.GlobalTheory.EtC.sec_ext_glue R F _).2 S hS (fun V g hg => Sec.res (lf V g hg) w) (by
     intro V W g k hg
     rw [sec_res_res]
     apply lift_wd F A C w hw
     rw [Category.assoc, hlf, hlf])
   have hex : Sec.res (Spec.map (CommRingCat.ofHom (algebraMap A C))) a = w := by
-    apply (GlobalTheory.T.etaleSheafSections_ext_and_glue R F _).1
+    apply (_root_.GlobalTheory.EtC.sec_ext_glue R F _).1
     have hloc : Loc (Spec (CommRingCat.of C))
         (fun V g => S.arrows (g ≫ Spec.map (CommRingCat.ofHom (algebraMap A C)))) :=
       GlobalTheory.T.etaleLocal_property_calculus_rules.2.2.2.1 _ _ _ (fun V g => S.arrows g) ⟨S, hS, fun _ _ h => h⟩
@@ -74,7 +75,7 @@ theorem UpperTheory.existsUnique_section_of_etale_faithfullyFlat_descent :
     exact lift_wd F A C w hw _ _ (hlf _ _ _)
   refine ⟨a, hex, ?_⟩
   intro y hy
-  apply (GlobalTheory.T.etaleSheafSections_ext_and_glue R F _).1
+  apply (_root_.GlobalTheory.EtC.sec_ext_glue R F _).1
   refine GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 _ _ _ (cover_loc A C) ?_
   rintro V g ⟨h, rfl⟩
   rw [← sec_res_res, ← sec_res_res, hy, hex]

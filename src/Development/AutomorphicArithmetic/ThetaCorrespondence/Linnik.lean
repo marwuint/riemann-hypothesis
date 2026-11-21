@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.PrimesInProgressionNonempty
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimesAPIntervalOfPrimesRel
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimesInProgressionsRelativeErrorStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimesInProgressionsRelativeError
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ZerosDisc
 
 namespace UpperTheory.Lit
 
@@ -140,7 +141,7 @@ theorem exists_prime_modEq_le_rpow_of_primesRel : GlobalTheory.Lin.PrimesRel →
   exact ⟨p, hp.2.1, hp.2.2, (Nat.le_floor_iff (by linarith)).mp hp.1.2⟩
 
 theorem linnik : GlobalTheory.Published.Linnik := by
-  obtain ⟨A, hA, h⟩ := exists_prime_modEq_le_rpow_of_primesRel GlobalTheory.T.primesInProgressions_relativeError
+  obtain ⟨A, hA, h⟩ := exists_prime_modEq_le_rpow_of_primesRel _root_.GlobalTheory.Lin.primesRel_holds
   refine GlobalTheory.Published.linnik_iff_exists_prime.2 ⟨3, A, by norm_num, by linarith, fun a q _ hq hc => ?_⟩
   have hq1 : (1 : ℝ) ≤ (q : ℝ) ^ A := Real.one_le_rpow (by exact_mod_cast hq) (by linarith)
   by_cases h2 : 2 < q

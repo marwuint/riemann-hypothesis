@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameDualUnipotentGroupActsUnitriangularOntoStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualLatticeFrameEqStandardTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameDualUnipotentGroupActsUnitriangularOnto
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualLatticeFrameEqStandardTranslate
 
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG GlobalTheory.LocOver
 open scoped Classical
@@ -103,7 +103,7 @@ lemma side (hM : M.OK) (H : HermSp M V) (r : ℕ) (Fr : FrameD H r) {Λ : Submod
     {f : Fin (r + 1) → V} (hΛ : H.IsSelfDual Λ) (hf : H.IsFrame Λ r f Fr.T) (hT : Tri E Fr.f f) :
     ∃ L : Submodule M.L.O (H.Wb Fr.f), Fr.IsInner L ∧
       ∃ n ∈ Fr.N, f = (fun b => n (Fr.f b)) ∧ Λ = img n (Fr.LamStd L) := by
-  obtain ⟨h1, -, h3⟩ := GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto M hM H r Fr hf.2.2.2.2
+  obtain ⟨h1, -, h3⟩ := _root_.GlobalTheory.LocOver.UnipOnto.unipotent_onto M hM H r Fr hf.2.2.2.2
   obtain ⟨n, hn, hnf⟩ := h3 f hT
   have hu : IsUnitary H n⁻¹ := ((h1 _).1 (Fr.N.inv_mem hn)).1
   have hfr : H.IsFrame (img n⁻¹ Λ) r Fr.f Fr.T := by
@@ -114,7 +114,7 @@ lemma side (hM : M.OK) (H : HermSp M V) (r : ℕ) (Fr : FrameD H r) {Λ : Submod
       exact n.symm_apply_apply _
     rwa [he] at this
   obtain ⟨L, hL, -, n0, hn0, hfix, hΛ0⟩ :=
-    GlobalTheory.T.selfDual_lattice_frame_eq_standard_translate M hM H r Fr (img n⁻¹ Λ) (img_selfDual H hu hΛ) hfr
+    _root_.GlobalTheory.StdLat.eq_img_lamStd M hM H r Fr (img n⁻¹ Λ) (img_selfDual H hu hΛ) hfr
   refine ⟨L, hL, n * n0, Fr.N.mul_mem hn hn0, ?_, ?_⟩
   · rw [hnf]
     funext b

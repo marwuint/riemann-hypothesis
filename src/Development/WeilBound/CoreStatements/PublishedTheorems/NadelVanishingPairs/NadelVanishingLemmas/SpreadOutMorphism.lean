@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimag
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameDiv
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsRefinementOfIsLimit
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionsHaveSameZeroSchemeOfLineBundleIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionsHaveSameZeroSchemeOfLineBundleIso
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.SameDivisorTrans
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.SpreadOutLineBundleStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
@@ -32,7 +32,7 @@ theorem lbSec_descends_to_subring : ∀ (k : Type) [Field k] (R₀ : Subring k) 
   have hj₂ : j' ≫ pullback.snd f₀ a = f ≫ spMap R'.subtype := PX'.lift_snd _ _ _
   obtain ⟨L', hL', hI⟩ := hS R' h' hs' _ _ _ j' PX' hj₁ hj₂
   have hLj : (L'.pull j').IsLB := LB.isLB_pull hL' j'
-  obtain ⟨τ, hστ⟩ := GlobalTheory.T.exists_sectionsHaveSameZeroScheme_of_lineBundleIso X L (L'.pull j') σ hL hLj hI
+  obtain ⟨τ, hστ⟩ := _root_.GlobalTheory.LogPair.exists_sameDiv_of_lbIso X L (L'.pull j') σ hL hLj hI
   have QX : IsPullback j' f (pullback.snd f₀ a) (spMap R'.subtype) :=
     IsPullback.of_right (by rw [hj₁, e₁]; exact hp) hj₂ PX'
   obtain ⟨F₂, hF₂⟩ := GlobalTheory.T.spread_out_line_bundle k R' X (pullback f₀ a) f (pullback.snd f₀ a) j' L' τ QX hL'

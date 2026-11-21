@@ -107,9 +107,6 @@ theorem cx_add (v w : Fin 2 → ℤ) : cx (v + w) = cx v + cx w := by
 theorem cx_smul (a : ℤ) (v : Fin 2 → ℤ) : cx (a • v) = (a : ℂ) * cx v := by
   apply Complex.ext <;> simp [cx]
 
-theorem cx_zero : cx 0 = 0 := by
-  apply Complex.ext <;> simp [cx]
-
 theorem normSq_cx (v : Fin 2 → ℤ) : Complex.normSq (cx v) = (v 0 : ℝ) ^ 2 + (v 1 : ℝ) ^ 2 := by
   rw [cx, Complex.normSq_mk]
   ring

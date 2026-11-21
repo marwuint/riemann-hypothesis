@@ -1,5 +1,6 @@
 import Mathlib
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OmegaMinorStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OmegaMinor
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeRankOneStatement
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 
@@ -66,7 +67,7 @@ theorem qdetTens : QdetTens := by
     have hD : Commute ((qdet X.E u).compLeft (Fin (m + 1)))
         (u • (1 : Module.End ℂ (Fin (m + 1) → X.V)) + om X) :=
       Commute.add_right ((Commute.one_right _).smul_right u) (commute_compLeft_om X u)
-    rw [hC.eq, GlobalTheory.T.HeckeRankOne m X u, mul_add, GlobalTheory.T.OmegaMinor m X u, ← hD.eq]
+    rw [hC.eq, GlobalTheory.T.HeckeRankOne m X u, mul_add, _root_.GlobalTheory.CompanionTheory.HeckeCapelli.omMinor m X u, ← hD.eq]
     simp only [add_smul, one_smul, mul_add, mul_one]
     abel
 

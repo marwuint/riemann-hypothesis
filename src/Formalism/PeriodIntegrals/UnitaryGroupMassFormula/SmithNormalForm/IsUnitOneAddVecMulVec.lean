@@ -48,11 +48,6 @@ theorem addCol_apply (s : ι → R) (i : ι) (B : Matrix ι ι R) (a c : ι) :
   rw [mul_add, mul_one, mul_vecMulVec, mulVec_single_one]
   simp [vecMulVec_apply]
 
-def two (i j : ι) (p q r s : R) : Matrix ι ι R := fun a =>
-  if a = i then p • Pi.single i 1 + q • Pi.single j 1
-  else if a = j then r • Pi.single i 1 + s • Pi.single j 1
-  else Pi.single a 1
-
 end General
 
 section Block

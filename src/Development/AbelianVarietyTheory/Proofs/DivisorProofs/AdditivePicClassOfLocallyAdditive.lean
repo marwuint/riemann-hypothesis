@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.WhiskerLeftEqLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhiskerLeftIsOpenImmersionRange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedPicardClassZeroOfLocallyZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedPicardClassZeroOfLocallyZero
 
 set_option autoImplicit false
 noncomputable section
@@ -36,7 +36,7 @@ theorem addCls_of_locally : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A], IsAb
       AddCls A (GlobalTheory.CechPic.pull (A ◁ z).left c)) → AddCls A c := by
   intro S A T _ hA c h0 hloc
   have hd : addDefect A T c = 0 := by
-    refine GlobalTheory.T.rigidified_picard_class_zero_of_locally_zero S A (A ⊗ T) hA _ ?_ fun p ↦ ?_
+    refine _root_.GlobalTheory.PicGlue.eq_zero_of_rigid_of_locally_zero S A (A ⊗ T) hA _ ?_ fun p ↦ ?_
     · rw [pull_addDefect]
       have h1 : lift (1 : A ⊗ T ⟶ A) (snd A T) = snd A T ≫ lift (1 : T ⟶ A) (𝟙 T) := by
         rw [comp_lift, MonObj.comp_one, Category.comp_id]

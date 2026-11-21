@@ -62,11 +62,6 @@ theorem chrTh_tup {C : Type*} [CommGroup C] (μ : ℕ → C) (η ν : C) (j : �
   unfold chrTh tup
   rw [mul_right_comm]
 
-theorem tup_mul {C : Type*} [CommGroup C] (μ : ℕ → C) (ξ ν : C) : tup μ (ξ * ν) = tup (tup μ ξ) ν := by
-  funext j
-  unfold tup
-  rw [mul_assoc]
-
 theorem change_of_splitting_pair (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW ν : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ho : IsWeilDatumO ψ V W χV χW om) (hν : IsHeckeChar D ν)
     (hF : ∀ a, ν (idF D a) = 1) :

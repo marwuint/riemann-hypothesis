@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GalRigidOfSurjectiv
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodRel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisedIsoPulledBackPeriodRelationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackPeriodConstantsSymmetricStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackPeriodConstantsMultiplicativeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackPeriodConstantsDiagMemMaximalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegDataFromLowerBaseAfterMonomialExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisedIsoPulledBackPeriodRelation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackPeriodConstantsSymmetric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackPeriodConstantsMultiplicative
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackPeriodConstantsDiagMemMaximal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegDataFromLowerBaseAfterMonomialExtension
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.SiegJoin GlobalTheory.TChart
@@ -23,10 +23,10 @@ theorem exists_periods_of_pull : ∀ (n : ℕ) (V : Type) [CommRing V] [IsDomain
   have hy : ∀ a, (y a).left ≫ β' = spMap f₁ ≫ (D.toPre.c (e₀ (e a))).left ∧
       (y a).left ≫ β'' = spMap κ₁ ≫ (L.T.c₀ ((n : ℤ) • a)).left := fun a => ⟨(hx a).2.1, (hx a).2.2⟩
   obtain ⟨w₁, q, hg, hn, hP⟩ :=
-    GlobalTheory.T.exists_normalised_iso_pulledBack_period_relation n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ lb y hy
-  exact ⟨q, GlobalTheory.T.pulledBack_period_constants_symmetric n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP hn,
-    GlobalTheory.T.pulledBack_period_constants_multiplicative n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP hn,
-    GlobalTheory.T.pulled_back_period_constants_diag_mem_maximal n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP,
-    GlobalTheory.T.degData_from_lowerBase_after_monomial_extension n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP⟩
+    _root_.GlobalTheory.TChart.Ratio.exists_normIso_periodRel n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ lb y hy
+  exact ⟨q, _root_.GlobalTheory.TChart.periodConst_symm n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP hn,
+    _root_.GlobalTheory.TChart.PeriodAdd.period_add n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP hn,
+    _root_.GlobalTheory.PeriodPos.periods_pos_diag n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP,
+    _root_.GlobalTheory.PullFrom.degFrom_of_periodRel n V D r e₀ L V₁ f₁ κ₁ e B' β' β'' β₂ β₂' hV hVd h1 h1d hi hf hl hκ p₁ p₂ s₁ s₂ y hy w₁ q hg hP⟩
 
 end GlobalTheory.TChart

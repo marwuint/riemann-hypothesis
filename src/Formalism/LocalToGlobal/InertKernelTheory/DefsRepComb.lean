@@ -82,27 +82,6 @@ def CoefInt {a b : ℕ} (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : 
 
 variable (cc δ) in
 
-def PtTors {a b : ℕ} (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ)
-    (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a))
-    (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b)) (p : ℕ) : Prop :=
-  ∀ x ∈ ptsX cc δ SS cl N N', ∀ y ∈ ptsB cc δ SS cl N N',
-    TaylorLogMetric.TorsPrime D p (TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) N N') (x + y)
-
-def AlgTr (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) {a b : ℕ}
-    (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a))
-    (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b)) (p : ℕ) : Prop :=
-  ∀ t : TaylorLogMetric.VC D a b, TaylorLogMetric.TorsPrime D p (TaylorLogMetric.La D B.tor N N') t → AlgEnt D (TaylorLogMetric.U D B.tor t (B.eNat χ a b N N'))
-
-def CombKer : Prop :=
-  ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (a b : ℕ)
-    (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ)
-    (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a)) (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b))
-    (Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ) (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]),
-    TaylorLogMetric.admitted D a b N N' → CoefInt cc δ SS cl N N' Ξ lam → PtTors cc δ SS cl N N' p → AlgTr B χ N N' p →
-      TaylorLogMetric.IsComb D B.tor (B.eNat χ) lam N N' (Formalism.L2.PairingIndexBounds.F.serP lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl N N' Ξ))
-
-variable (cc δ) in
-
 def FinIdx {a b : ℕ} (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ)
     (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a))
     (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b)) : Prop :=
@@ -115,15 +94,6 @@ variable (cc δ) in
 def LamIn {a b : ℕ} (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a))
     (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b)) : Prop :=
   lamK cc δ N N' ≤ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) N N'
-
-def CombKerS : Prop :=
-  ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (a b : ℕ)
-    (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ)
-    (N : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a)) (N' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b))
-    (Ξ : Formalism.L2.Col.HomE D.host.E a b → ℂ) (S : Finset ℕ) (p : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]),
-    TaylorLogMetric.admitted D a b N N' → LatInt (hK D cc δ a b) (Real.sqrt D.host.d / 2) (lamK cc δ N N') → FinIdx cc δ SS cl N N' →
-    SNum S cl → (∀ x, IntOff S (Ξ x)) → p ∉ S → LamIn cc δ N N' → AlgTr B χ N N' p →
-      TaylorLogMetric.IsComb D B.tor (B.eNat χ) lam N N' (Formalism.L2.PairingIndexBounds.F.serP lam (Formalism.L2.PairingIndexBounds.F.kerTh B χ SS cl N N' Ξ))
 
 def CombKerT : Prop :=
   ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (a b : ℕ)

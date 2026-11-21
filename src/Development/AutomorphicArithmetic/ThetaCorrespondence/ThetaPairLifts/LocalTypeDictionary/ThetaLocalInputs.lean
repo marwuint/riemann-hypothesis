@@ -23,8 +23,6 @@ structure ThetaLocalInputs : Prop where
   berger : GlobalTheory.Published.DeRhamPotSemistable
   cheb : GlobalTheory.Published.ChebotarevDegreeOne
 namespace Inputs
-variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (I : Inputs hL D)
-include I
 end Inputs
 end GlobalTheory.NRows
 end

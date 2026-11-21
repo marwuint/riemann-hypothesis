@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridCharacters
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareThetaTripleExistsSignatureRankSumLt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinPartIdemMulMemIff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUnramifiedAbovePlaceOfTrivialUnits
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsUnramifiedAtPlaceIdempotentOfUnramifiedOverPlaStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NotDvdDifferentIdealOfStandardAddCharUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsUnramifiedAtPlaceIdempotentOfUnramifiedOverPla
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPrimeAdditiveCharacterUnramified
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilDatumAtPlaceEqLatticeIntertwinerMulDetChar
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NotDvdDifferentIdealOfStandardAddCharUnramified
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
 open IsDedekindDomain NumberField MeasureTheory Matrix
 open scoped TensorProduct
@@ -60,13 +62,13 @@ theorem ram_clause : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : 
   by_cases hv : v ∈ X.T
   · right
     have hP : v ∈ Bs.P := hT.chars.sub hv
-    refine ⟨not_nonSplitAt_of_emb hε (Bs.τ ⟨v, hP⟩), ?_, GlobalTheory.T.not_dvd_differentIdeal_of_standardAddChar_unramified hT.base.std (hT.base.psiP v hP)⟩
+    refine ⟨not_nonSplitAt_of_emb hε (Bs.τ ⟨v, hP⟩), ?_, _root_.GlobalTheory.PsiDifferent.not_dvd_different_of_psiUnr hT.base.std (hT.base.psiP v hP)⟩
     rw [← hX.α, ← hX.β]
     exact not_unramAt_of_forall hε fun w hw => hT.chars.ram w (hw ▸ hv)
   · left
     rw [← hX.α, ← hX.β]
-    exact ⟨GlobalTheory.T.isUnramifiedAtPlaceIdempotent_of_unramified_over_place hε fun w hw => hT.chars.unrα w (fun h => hv (hw ▸ h)),
-      GlobalTheory.T.isUnramifiedAtPlaceIdempotent_of_unramified_over_place hε fun w hw => hT.chars.unrβ w (fun h => hv (hw ▸ h))⟩
+    exact ⟨_root_.GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all hε fun w hw => hT.chars.unrα w (fun h => hv (hw ▸ h)),
+      _root_.GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all hε fun w hw => hT.chars.unrβ w (fun h => hv (hw ▸ h))⟩
 
 end GlobalTheory.TripleRam
 

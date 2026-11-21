@@ -1,6 +1,7 @@
 import Formalism.SharpRestriction.GrowthBounds.PlaneCountTheoremWithConstants
 import Formalism.SharpRestriction.AdmissibleParameterJoins.GandSa
-import Formalism.SharpRestriction.AdmissibleParameterJoins.GandSb
+import Formalism.SharpRestriction.GrowthBounds.SelectionLemmas
+import Formalism.SharpRestriction.GlobalSchurBounds.CMFieldLemmas
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.CMFieldLemmas
 import Formalism.SharpRestriction.SmoothDesignExistence.DGamSmooth
 import Formalism.SharpRestriction.GrowthBounds.TopChoiceBounds

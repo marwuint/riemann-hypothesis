@@ -19,10 +19,4 @@ def QdetCommute : Prop :=
 
 def CapTransfer : Prop := CapCongr → QdetCommute → EabPres → EabGlLev → CapCommute
 
-example (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (i : Fin (r + 1)) :
-    IsOpen (Set.univ : Set (Mx k r)) ∧ SmoothLev k r i Set.univ (fun _ => (0 : E)) ∧
-      (1 : Mx k r) ∈ Glev k r i ∩ Set.univ :=
-  ⟨isOpen_univ, fun _ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩,
-    ⟨⟨by simp [UH], fun _ _ => ⟨by simp, by simp⟩⟩, trivial⟩⟩
-
 end QmCapCommW

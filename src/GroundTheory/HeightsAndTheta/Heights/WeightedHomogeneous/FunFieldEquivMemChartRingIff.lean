@@ -98,20 +98,6 @@ def GenSystem.ofIsHomogGenerators {P : ArithVariety n} {r : ℕ}
   homog := h.homog
   span_eq := h.span_eq
 
-omit [Fintype ι] in
-
-theorem GenSystem.isHomogGenerators {P : ArithVariety n} (Γ : GenSystem P) :
-    P.IsHomogGenerators Γ.f Γ.δ :=
-  ⟨Γ.homog, Γ.span_eq⟩
-
-def genSystemEquiv (P : ArithVariety n) :
-    GenSystem P ≃ Σ r : ℕ, {p : (Fin r → MvPolynomial (Coord n) ℤ) × (Fin r → ι → ℕ) //
-      P.IsHomogGenerators p.1 p.2} where
-  toFun Γ := ⟨Γ.r, (Γ.f, Γ.δ), Γ.isHomogGenerators⟩
-  invFun p := GenSystem.ofIsHomogGenerators p.2.2
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close

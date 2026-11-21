@@ -84,22 +84,4 @@ structure Hypotheses2 : Prop where
 
   q18 : GlobalTheory.Published.FormalAlgebraisation
 
-theorem Hypotheses2.p18 (_h : Hypotheses2) : GlobalTheory.Published.FinitenessOfHermitianClasses := GlobalTheory.Published.finitenessOfHermitianClasses_holds
-
-theorem Hypotheses2.q2 (_h : Hypotheses2) : GlobalTheory.Published.CanonicalExtensionRankOne := GlobalTheory.Published.canonicalExtensionRankOne_holds
-
-theorem Hypotheses2.q12 (_h : Hypotheses2) : GlobalTheory.Published.ProperIntersectionLength := GlobalTheory.Published.ProperIntersectionLength_holds
-
-theorem Hypotheses2.toClassicalTheoremsOf (h : Hypotheses2) (hM : GlobalTheory.Published.GoodChernWeil → GlobalTheory.Published.MumfordProportionality) : Hypotheses₂ := by
-  have hM' := hM h.p16
-  refine ⟨h.p1, h.p2, h.p3, h.p4, h.p5, h.p6, h.p8, h.p12, h.p13, h.p14, ?_,
-    h.p18, h.p19, h.p20, h.p22, h.p23, h.p25, h.p26⟩
-  first
-    | exact h.p16
-    | exact hM'
-
-example (h : Hypotheses2) : GlobalTheory.Published.GoodChernNumbers ∧ GlobalTheory.Published.FlagPushForward := h.p16
-
-example (h : Hypotheses2) : GlobalTheory.Published.NefNumerics ∧ GlobalTheory.Published.CanonicalExtensionRankOne := ⟨h.q7, h.q2⟩
-
 end GlobalTheory.CovTop

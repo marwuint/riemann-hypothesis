@@ -1,13 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyBreuilKisinDatumStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyBreuilKisinDatum
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFramedStratifiedCrystalBasisStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFCrystalHomOfStratifiedPhiModuleHomStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStratifiedPhiModuleHomOfGaloisEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EquivariantLatticeMatrixOverBreuilKisinStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStratifiedPhiModuleHomOfGaloisEquivariant
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EquivariantLatticeMatrixOverBreuilKisin
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemilinearBaseChangeExistsBasisEqImageOfBasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFramedMatricesOfEtaleRealisationStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFramedMatricesOfEtaleRealisation
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
@@ -54,19 +55,19 @@ theorem square_column {S A B P P' N N' Q Q' κ : Type} [CommRing S] [CommRing A]
 
 theorem exists_fHom_of_equivariant : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (T : Type) [AddCommGroup T] [Module ℤ_[l] T] (ρ : ↥(GK K) → (T →ₗ[ℤ_[l]] T)) (T' : Type) [AddCommGroup T'] [Module ℤ_[l] T'] (ρ' : ↥(GK K) → (T' →ₗ[ℤ_[l]] T')) (M M' : FCrys l ↥(OL K)) (j : M.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] T)) (j' : M'.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] T')), Realises K M (ainfObj K) (ainfId K) T ρ j → Realises K M' (ainfObj K) (ainfId K) T' ρ' j' → ∀ f : T →ₗ[ℤ_[l]] T', (∀ g x, f (ρ g x) = ρ' g (f x)) → ∃ u : FHom M M', ∀ x, j' (u.u (ainfObj K) x) = f.lTensor (WCb l) (j x) := by
   intro l _ K T _ _ ρ T' _ _ ρ' M M' j j' H H' f hf
-  obtain ⟨bk⟩ := GlobalTheory.T.nonempty_breuilKisinDatum l K
+  obtain ⟨bk⟩ := _root_.GlobalTheory.BSP.nonempty_bk_of_finExt l K
   obtain ⟨d, S, e, hS⟩ := GlobalTheory.T.exists_framedStratifiedCrystalBasis l K bk M
   obtain ⟨d', S', e', hS'⟩ := GlobalTheory.T.exists_framedStratifiedCrystalBasis l K bk M'
-  obtain ⟨b, U, hU, hj⟩ := GlobalTheory.T.exists_framedMatrices_of_etaleRealisation l K bk d S M e hS T ρ j H
-  obtain ⟨b', U', hU', hj'⟩ := GlobalTheory.T.exists_framedMatrices_of_etaleRealisation l K bk d' S' M' e' hS' T' ρ' j' H'
+  obtain ⟨b, U, hU, hj⟩ := _root_.GlobalTheory.BSP.exists_mReal_of_realises l K bk d S M e hS T ρ j H
+  obtain ⟨b', U', hU', hj'⟩ := _root_.GlobalTheory.BSP.exists_mReal_of_realises l K bk d' S' M' e' hS' T' ρ' j' H'
   have hF : ∀ g, LinearMap.toMatrix b b' f * LinearMap.toMatrix b b (ρ g) =
       LinearMap.toMatrix b' b' (ρ' g) * LinearMap.toMatrix b b' f := fun g => by
     rw [← LinearMap.toMatrix_comp, ← LinearMap.toMatrix_comp]
     congr 1
     exact LinearMap.ext (hf g)
-  obtain ⟨Y, hY⟩ := GlobalTheory.T.equivariant_latticeMatrix_over_breuilKisin l K bk d d' S S' _ _ U U' hU hU' _ hF
+  obtain ⟨Y, hY⟩ := _root_.GlobalTheory.BSP.equivariant_matrix_over_bk l K bk d d' S S' _ _ U U' hU hU' _ hF
   obtain ⟨u, hu⟩ := GlobalTheory.T.exists_fCrystalHom_of_stratifiedPhiModuleHom l K bk d d' S S' M M' e e' hS hS' Y
-    (GlobalTheory.T.isStratifiedPhiModuleHom_of_galois_equivariant l K bk d d' S S' _ _ U U' hU hU' _ hF Y hY)
+    (_root_.GlobalTheory.isStratHom_of_equivariant l K bk d d' S S' _ _ U U' hU hU' _ hF Y hY)
   obtain ⟨β, hβ⟩ := GlobalTheory.T.isSemilinearBaseChange_exists_basis_eq_image_of_basis _ _ _ _ _ (M.tr bk.ι) (M.tr_bc bk.ι) _ e
   refine ⟨u, fun x => ?_⟩
   refine semilinear_square_of_basis β (u.u (ainfObj K)) j j' (f.baseChange (WCb l)) (fun k => ?_) x

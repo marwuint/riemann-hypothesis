@@ -5,18 +5,21 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalSncChartSystemStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorusStableSncChartsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsClosedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairLatticeSumComapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairLatticeDegreeBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataIntersectionSumStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPositiveHermitianLineStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConstantsInCoordRatioFieldStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalSncChartSystem
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorusStableSncCharts
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsClosed
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairLatticeSumComap
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairLatticeDegreeBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataIntersectionSum
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPositiveHermitianLine
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConstantsInCoordRatioField
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothGenericFibreOfSncStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BirationalOfTranscendenceDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsChartBundleStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsChartBundle
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBoundsStatement
 
 noncomputable section
@@ -42,7 +45,7 @@ theorem exists_componentData_origin : Top.Given → Out.WeilSt → ∀ (E : Type
         Or.inr ⟨rfl, rfl, rfl⟩, fun _ => by simp, fun _ => rfl, by omega, hq, by omega⟩
   obtain ⟨K, _, J, _, Ω, _, _, y, 𝔐, deg, bd, vdeg, vnum, vden, s, aMu, e₀, hK, hgen, hcov, hom, hfree,
     htr, hsnc, hbd, hR, htors, hvb, hvert, hvert2, hli, hspan, hdeg⟩ :=
-    GlobalTheory.T.global_snc_chart_system hG hW E H D Xo l c Y hgl hp hq Ω₀ ξ₀ hξ S₀ S₁ sm (D.p + D.q - j) hsmc hr hS₀ hS₁ hd hdisc
+    _root_.GlobalTheory.CompanionTheory.Ar.GeoModel.exists_geo hG hW E H D Xo l c Y hgl hp hq Ω₀ ξ₀ hξ S₀ S₁ sm (D.p + D.q - j) hsmc hr hS₀ hS₁ hd hdisc
   have hn : D.dim = Fintype.card (CMType H) * j * (D.p + D.q - j) := by
     have h2 := (GlobalTheory.T.cm_host_rank_bounds E H).2.2
     have hmul : j * (D.p + D.q - j) = D.p * D.q := by
@@ -54,21 +57,21 @@ theorem exists_componentData_origin : Top.Given → Out.WeilSt → ∀ (E : Type
   have htie : CoordTie ℤ 𝔐.ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) := 𝔐.tie
   haveI := hK
   obtain ⟨hbir, harith⟩ := GlobalTheory.T.birational_of_transcendence_degree 𝔐.X Ω 𝔐.ξ K J y _ htie htr
-  obtain ⟨hcl, htor, hconj⟩ := GlobalTheory.T.boundary_points_closed 𝔐.X Ω 𝔐.ξ K J y (abLocus 𝔐.t.G) bd htie hbd
-  obtain ⟨nc, χ, hcov'⟩ := GlobalTheory.T.exists_torus_stable_snc_charts K J Ω y _ bd hsnc harith htor
-  obtain ⟨A, hAa, hApos, hAconj, hAh⟩ := GlobalTheory.T.exists_positive_hermitian_line II K J (mCoordIdeal y) hII
+  obtain ⟨hcl, htor, hconj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BdSym.boundary_closed_torus_conj 𝔐.X Ω 𝔐.ξ K J y (abLocus 𝔐.t.G) bd htie hbd
+  obtain ⟨nc, χ, hcov'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncCpt.exists_sncCharts K J Ω y _ bd hsnc harith htor
+  obtain ⟨A, hAa, hApos, hAconj, hAh⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_fubiniStudy_line II K J (mCoordIdeal y) hII
   have hLvb : ∀ τ, (Lat.comap (fun p => 𝔐.V (bg τ) p ⊔ 𝔐.V (sm τ) p)
       (𝔐.Vgen (bg τ) ⊔ 𝔐.Vgen (sm τ)).subtype).IsVB (D.p + D.q) ⊤ := fun τ => by
     have e : labelRk D (bg τ) + labelRk D (sm τ) = D.p + D.q := by
       rw [hbgj, hr]; omega
-    simpa only [e] using GlobalTheory.T.pair_lattice_sum_comap E H D l (Xo l) c Y S₀ Ω K J y 𝔐 (bg τ) (sm τ) (hne τ)
-  have hWb := fun τ => GlobalTheory.T.exists_chart_bundle 𝔐.X Ω 𝔐.ξ _ _ (segreCoord y) _ (D.p + D.q) htie (hLvb τ)
+    simpa only [e] using _root_.GlobalTheory.CompanionTheory.Ar.HodgeSum.isVB_sup E H D l (Xo l) c Y S₀ Ω K J y 𝔐 (bg τ) (sm τ) (hne τ)
+  have hWb := fun τ => _root_.GlobalTheory.CompanionTheory.Ar.exists_chartBundle_of_isVB 𝔐.X Ω 𝔐.ξ _ _ (segreCoord y) _ (D.p + D.q) htie (hLvb τ)
   choose Wb hWb using hWb
   have hbd' : ∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) w, CoordsAt 𝔐.ξ y z w →
       (w ∈ mcPts (mCoordIdeal y) ∩ mcPts bd ↔ ¬ 𝔐.Interior z) := fun z w h =>
     ⟨fun hw => (hbd z w h).1 hw.2,
-      fun hz => ⟨(GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y htie w).2 ⟨z, 𝔐.all _, h⟩, (hbd z w h).2 hz⟩⟩
-  have hm := fun τ => GlobalTheory.T.pair_lattice_degree_bound hG E H D Xo l c Y hgl S₀ Ω K J y 𝔐 (bg τ) (sm τ) (D.p + D.q) (Wb τ) _ nc _ χ
+      fun hz => ⟨(_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X Ω 𝔐.ξ K J y htie w).2 ⟨z, 𝔐.all _, h⟩, (hbd z w h).2 hz⟩⟩
+  have hm := fun τ => _root_.GlobalTheory.CompanionTheory.Ar.exists_hermMetric_hodge hG E H D Xo l c Y hgl S₀ Ω K J y 𝔐 (bg τ) (sm τ) (D.p + D.q) (Wb τ) _ nc _ χ
     (hLvb τ) (hWb τ) hbd'
   choose hm hgram using hm
   let Dc : ComponentData II (CMType H) K J Ω (fun τ => ↥(𝔐.Vgen (bg τ) ⊔ 𝔐.Vgen (sm τ))) :=
@@ -81,7 +84,7 @@ theorem exists_componentData_origin : Top.Given → Out.WeilSt → ∀ (E : Type
       finiteDimensional := c.fin
       const := 𝔐.cst
       y := y
-      const_mem := fun cc hc r => GlobalTheory.T.constants_in_coord_ratio_field E H D l (Xo l) c Y S₀ Ω K J y 𝔐 cc hc r
+      const_mem := fun cc hc r => _root_.GlobalTheory.CompanionTheory.Ar.CstChart.cst_mem_chart E H D l (Xo l) c Y S₀ Ω K J y 𝔐 cc hc r
       arith := harith
       birational := hbir
       smoothGeneric := GlobalTheory.T.smooth_generic_fibre_of_snc K J Ω y _ bd hsnc
@@ -109,7 +112,7 @@ theorem exists_componentData_origin : Top.Given → Out.WeilSt → ∀ (E : Type
       A'_conj := hAconj
       KA := 0
       heights := fun W hW _ => by simpa using hAh W hW }
-  obtain ⟨Hd, hF⟩ := GlobalTheory.T.component_data_intersection_sum E H D l (Xo l) c Y II K J Ω _ Dc S₀ 𝔐 bg sm
+  obtain ⟨Hd, hF⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BigBlock.main E H D l (Xo l) c Y II K J Ω _ Dc S₀ 𝔐 bg sm
     (fun τ => (𝔐.Vgen (bg τ) ⊔ 𝔐.Vgen (sm τ)).subtype) s aMu e₀ (fun τ => Subtype.val_injective)
     (fun τ => Submodule.range_subtype _) hne hbgj hr hLvb hWb hli hspan hdeg
   refine ⟨K, inferInstance, J, inferInstance, Ω, inferInstance, inferInstance, _, inferInstance, inferInstance, Dc, Hd,

@@ -43,14 +43,14 @@ theorem UpperTheory.Lit.Branch.realInputE :
   intro hPL hEM
   unfold ProjLarge at hPL
   unfold EigMap at hEM
-  obtain ⟨C1, hC1, hIB⟩ := GlobalTheory.T.translateCoefficientIntegralBounds_of_unitary_laws GlobalTheory.T.unitary_stabiliser_embedding_norm_laws (GlobalTheory.T.boostDecompositionNormBound_of_embeddingLaws GlobalTheory.T.unitary_stabiliser_embedding_norm_laws)
-    (GlobalTheory.T.negativeNormPowerIntegrable_of_ballVolume GlobalTheory.T.volume_of_ball_bound) GlobalTheory.T.lowest_Ktype_coefficient_explicit_power_decay 10 (by norm_num)
-  obtain ⟨C3, hC3, hDB⟩ := GlobalTheory.T.translateCoefficientDerivativeIntegralBounds_of_laws GlobalTheory.T.unitary_stabiliser_embedding_norm_laws (GlobalTheory.T.negativeNormPowerIntegrable_of_ballVolume GlobalTheory.T.volume_of_ball_bound)
-    GlobalTheory.T.lowest_Ktype_coefficient_explicit_power_decay GlobalTheory.T.lowestKType_lieWord_normBound 10 (by norm_num)
+  obtain ⟨C1, hC1, hIB⟩ := _root_.GlobalTheory.SepReal.intBounds_main GlobalTheory.T.unitary_stabiliser_embedding_norm_laws (_root_.GlobalTheory.SepReal.boost_of_embLaws GlobalTheory.T.unitary_stabiliser_embedding_norm_laws)
+    (_root_.GlobalTheory.SepReal.powInt_of_volBall _root_.GlobalTheory.SepReal.volBall) _root_.GlobalTheory.SepReal.decPow 10 (by norm_num)
+  obtain ⟨C3, hC3, hDB⟩ := _root_.GlobalTheory.SepReal.DerInt.derBounds_of GlobalTheory.T.unitary_stabiliser_embedding_norm_laws (_root_.GlobalTheory.SepReal.powInt_of_volBall _root_.GlobalTheory.SepReal.volBall)
+    _root_.GlobalTheory.SepReal.decPow _root_.GlobalTheory.SepReal.lieBound 10 (by norm_num)
   obtain ⟨C2, hC2, hVD⟩ := volDeg
-  have hDR := GlobalTheory.T.formalDegree_loweringWeight_ratio_le
+  have hDR := _root_.GlobalTheory.SepReal.FormalDegreeRatio.degRatio_holds
   have hMS := mapSmooth
-  have hLBall := GlobalTheory.T.lowestKType_lieWord_normBound
+  have hLBall := _root_.GlobalTheory.SepReal.lieBound
   unfold ForPair at hPL hEM hIB hDB hVD hMS hDR
   unfold DegRatio at hDR
   unfold MapSmooth at hMS
@@ -59,16 +59,16 @@ theorem UpperTheory.Lit.Branch.realInputE :
   refine ⟨C1 + C3 + C2 + 201, by linarith, ?_⟩
   intro n e ε lam ε' mu B hpar H H' _ _ _ _ π σ hπ hσ
   have hB : 1 ≤ B := one_le_B hpar
-  obtain ⟨⟨v₀, hv₀⟩, -, -⟩ := GlobalTheory.T.discreteSeries_lowestKType_unit_unitary_formalDegree (n + 1) ε lam H π hπ
+  obtain ⟨⟨v₀, hv₀⟩, -, -⟩ := _root_.GlobalTheory.RowLev.isDS_lowUnit_unitary_fdegOf (n + 1) ε lam H π hπ
   obtain ⟨j, P, hjP, g₀, hg₀, hg₀n, hbig⟩ := hPL n e ε lam ε' mu B hpar H H' π σ hπ hσ v₀ hv₀
   obtain ⟨d', hd'⟩ := (hDR n e ε lam ε' mu B hpar H H' π σ hπ hσ).1
-  obtain ⟨⟨w₀, hw₀⟩, -, -⟩ := GlobalTheory.T.discreteSeries_lowestKType_unit_unitary_formalDegree n ε' mu H' σ hσ
+  obtain ⟨⟨w₀, hw₀⟩, -, -⟩ := _root_.GlobalTheory.RowLev.isDS_lowUnit_unitary_fdegOf n ε' mu H' σ hσ
   have hnn : (n : ℝ) ^ 3 ≤ ((n : ℝ) + 1) ^ 3 := by
     have h0 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
     gcongr
     linarith
   have hgap' : GapAtLeast ε' mu (1000 * (n : ℝ) ^ 3) := gap_mono (by linarith) hpar.gap'
-  have hw₀int := integrable_low_coef GlobalTheory.T.lowest_Ktype_coefficient_explicit_power_decay (GlobalTheory.T.negativeNormPowerIntegrable_of_ballVolume GlobalTheory.T.volume_of_ball_bound) ε' mu B hpar.three_le
+  have hw₀int := integrable_low_coef _root_.GlobalTheory.SepReal.decPow (_root_.GlobalTheory.SepReal.powInt_of_volBall _root_.GlobalTheory.SepReal.volBall) ε' mu B hpar.three_le
     hpar.hmu hgap' hpar.bound.2 σ hσ w₀ hw₀
   have hIBv := hIB n e ε lam ε' mu B hpar H H' π σ hπ hσ v₀ hv₀ g₀ hg₀ hg₀n
   have hvint : Integrable (fun h => ⟪π g₀ v₀, π (embH e (umat h)) (π g₀ v₀)⟫_ℂ) (muG ε') := by

@@ -138,11 +138,6 @@ theorem evC_le (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau)
   | add a b _ _ ha hb => rw [map_add]; exact add_mem ha hb
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
-theorem evValC_le (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (G : Tau → Matrix (Fin n) (Fin n) ℂ)
-    (M : Tau → GL (Fin n) ℂ) (lam : Tau → DomWeight n) (hw : WtTie P h pos lam) :
-    (VtupR P ℂ).map (evC P h pos G (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ))) ≤ ValC G lam :=
-  Submodule.map_le_iff_le_comap.2 fun Q hQ => evC_le P h pos G M lam hw Q hQ
-
 end Main
 
 end Formalism.L2.G.EvLe

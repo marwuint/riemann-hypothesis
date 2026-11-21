@@ -1,13 +1,15 @@
 import Mathlib
 import Formalism.LocalToGlobal.TorsionIntegrality.CMGoodModels.Statement
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIdealClassArtinSymbolOfGlobalArtinStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIdealClassArtinSymbolOfGlobalArtin
+import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModGDefs
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CmLatticeGoodModelUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChebotarevDegreeOneValuationSubringsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChebotarevDegreeOneValuationSubrings
+import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModChebOm
 
 namespace GlobalTheory.Corev.CmTwoClosing
 
 theorem cmGoodModel_of_globalArtinReciprocity (hA : GlobalTheory.Published.GlobalArtinReciprocity) : Formalism.L2.Th1.CM.CM2 :=
-  GlobalTheory.T.cmLattice_good_model_unramified (GlobalTheory.T.exists_idealClass_artinSymbol_of_globalArtin hA) GlobalTheory.T.chebotarev_degreeOne_valuationSubrings
+  GlobalTheory.T.cmLattice_good_model_unramified (_root_.GlobalTheory.IdealArtinSymbol.exists_artinSymbol hA) _root_.GlobalTheory.chebOmSt_holds
 
 end GlobalTheory.Corev.CmTwoClosing

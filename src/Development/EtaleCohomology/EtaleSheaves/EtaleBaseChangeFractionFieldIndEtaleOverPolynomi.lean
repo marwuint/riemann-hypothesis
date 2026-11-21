@@ -1,5 +1,4 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-import Development.EtaleCohomology.EtaleSheaves.EtaleChapterEThree
 
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
@@ -153,20 +152,6 @@ theorem Good.of_equiv {q : ℕ} {i : ℤ} {T K A A' : CommRingCat.{0}} {k : T �
     (e : A ≃+* A') (t' : T ⟶ A') (ht : t ≫ CommRingCat.ofHom e.toRingHom = t') : Good q i k t' := fun B c hc => by
   rw [← ht, Category.assoc]
   exact h B _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective e.bijective) hc)
-
-theorem goal_of (h1 : AlgResProps) (h2 : Base) (h3 : Step) (h4 : Global) : LateralTheory.E.EtaleChapterEThree := by
-  intro a1 a2 a3 a4 a5 _ _ a9 _ _ b1 b2 _ b4 _ _ _ _ c3 c4 _ _ _ _ _ _ q _ T _ _ _ hT hq X p _ i
-  have H : Hyp := ⟨a1, a2, a3, a4, a5, a9, b1, b2, b4, c3, c4⟩
-  refine h4 H q i _ (fun n => ?_) p
-  induction n with
-  | zero =>
-    refine (h2 H q i T hT hq).of_equiv (MvPolynomial.isEmptyRingEquiv T (Fin 0)).symm _ ?_
-    ext x; simp
-  | succ n ih =>
-    refine (h3 H q i _ _ hq (h1.2.2.2.2.2 T _ (nonZeroDivisors T)) ih).of_equiv
-      (MvPolynomial.finSuccEquiv T n).symm.toRingEquiv _ ?_
-    ext1
-    exact RingHom.ext fun x => (MvPolynomial.finSuccEquiv T n).symm.commutes x
 
 end LateralTheory.E.t_E3Cut
 

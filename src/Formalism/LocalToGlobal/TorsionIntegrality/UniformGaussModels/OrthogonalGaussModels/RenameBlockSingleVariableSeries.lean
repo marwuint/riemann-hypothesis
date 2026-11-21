@@ -1,4 +1,5 @@
-import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.StatementB
+import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.IsHypPair
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementG
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.UniformGaussModelCondition
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SecondLevelOfNorm
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.BiextensionRelation
@@ -51,10 +52,5 @@ theorem joint (l : ℕ) [Fact l.Prime] (hl : 5 ≤ l) (ν r0 r1 : ℕ) [NeZero �
 end Formalism.L2.Th1.Top.InhA
 
 namespace Formalism.L2.Th1.Top.InhB
-
-open Formalism.L2.Th1.D Formalism.L2.Th1.Top
-open Formalism.DworkPowerSeriesWeights (Integral mvExp)
-open Formalism.InvariantFactorPaths.G7 (lgF at1 UnrOK)
-open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 
 end Formalism.L2.Th1.Top.InhB

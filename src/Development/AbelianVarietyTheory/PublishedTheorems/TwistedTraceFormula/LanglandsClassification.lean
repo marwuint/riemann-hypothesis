@@ -93,36 +93,6 @@ open Langlands in
 def LanglandsClassification : Prop :=
   Induced ∧ Quotient ∧ Classification ∧ Limit ∧ StandardSpan ∧ StandardIndependent ∧ TemperedLevi
 
-theorem Langlands.exists_isHaarSub_nbar {n : ℕ} {ε : Fin n → Bool} (D : Datum ε) :
-    ∃ ν : Measure (UJ ε), IsHaarSub D.Nbar ν := by
-  obtain ⟨⟨N, hN⟩, hc, -⟩ := UnipRad.flagN_subgroup_closed_keeps n ε _ _ _ (isIsoFlag_opp D.flag)
-  rw [Datum.Nbar, ← hN]
-  rw [← hN] at hc
-  have : LocallyCompactSpace N := hc.locallyCompactSpace
-  refine ⟨(Measure.haar : Measure N).map Subtype.val,
-    fun h => NeZero.ne _ ((Measure.map_eq_zero_iff measurable_subtype_coe.aemeasurable).1 h), ⟨fun T hT => ?_⟩, ?_,
-    fun s hs => ?_⟩
-  · rw [Measure.map_apply measurable_subtype_coe hT.measurableSet]
-    exact (hc.isClosedEmbedding_subtypeVal.isCompact_preimage hT).measure_lt_top
-  · rw [Measure.map_apply measurable_subtype_coe hc.measurableSet.compl]
-    convert measure_empty (μ := (Measure.haar : Measure N))
-    ext x
-    simp
-  · conv_rhs => rw [← map_mul_left_eq_self Measure.haar (⟨s, hs⟩ : N)]
-    rw [Measure.map_map (measurable_const_mul s) measurable_subtype_coe,
-      Measure.map_map measurable_subtype_coe (measurable_const_mul _)]
-    rfl
-
-theorem Langlands.equiv_of_zero {n : ℕ} {ε : Fin n → Bool} (I : IndModule ε) (h : I.a = 0) :
-    I.M = ⊤ ∧ ∃ U : I.H ≃ₗᵢ[ℂ] I.V, ∀ g ∈ UJset ε, ∀ v, U (I.ρ g v) = I.σ g (U v) := by
-  obtain ⟨⟨a, j, W, hW, hj, V, σ, hσ, s⟩, H, ρ, ι, hm⟩ := I
-  obtain rfl : a = 0 := h
-  have hU : IsURepOn (UJset ε) σ := by
-    have := hσ.2.2.1
-    rwa [leviOne_zero hW, mats_top] at this
-  obtain ⟨U, -, hU⟩ := hm.unique (isIndModel_zero hW hU s) fun _ hf _ hy => indFun_mul_right hf hy
-  exact ⟨leviOne_zero hW, U, mats_top (ε := ε) ▸ hU⟩
-
 end GlobalTheory.Published
 
 end

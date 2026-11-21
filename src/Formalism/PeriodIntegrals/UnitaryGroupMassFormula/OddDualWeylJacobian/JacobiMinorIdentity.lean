@@ -119,15 +119,6 @@ def eR (k s : ℕ) (hs : s + 1 ≤ k) : Fin (k - 1 - s) ⊕ Fin (s + 1) ≃ Fin 
       have := x.isLt; have := y.isLt
       simp [Fin.val_rev] at h1; omega)
 
-def eL (k s : ℕ) (hs : s + 1 ≤ k) : Fin (k - 1 - s) ⊕ Fin (s + 1) ≃ Fin k :=
-  mkE (a := k - 1 - s) (b := s + 1) (fun x => Fin.rev (Fin.castLE (Nat.sub_le _ _ |>.trans (Nat.sub_le _ _)) x)) (fun y => Fin.castLE hs y) (by omega)
-    (Fin.rev_injective.comp (Fin.castLE_injective _)) (Fin.castLE_injective _)
-    (by
-      intro x y h
-      have h1 := congrArg Fin.val h
-      have := x.isLt; have := y.isLt
-      simp [Fin.val_rev] at h1; omega)
-
 theorem dualSub_pMinor (R : Type*) [CommRing R] {k : ℕ} (σ : Equiv.Perm (Fin k)) (s : ℕ)
     (hs : s ≤ k) :
     dualSub R k (pMinor R σ s hs) =

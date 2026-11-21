@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootEqOfClose
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaActsOnTameRootStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharacterTameQuotientJointPowersTameGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRootOfUnityCongrUnitAtPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRootOfUnityCongrUnitAtPlace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharEqOfApplyRootEqStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameCharEqOfTameRepCongrStatement
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2
@@ -46,7 +46,7 @@ theorem tameChar_of_prime_residue : ∀ {E Ω : Type} [Field E] [NumberField E] 
   have hex : ∀ u : 𝓞 E, u ∉ P.asIdeal → ∃ σ : G E Ω, σ ∈ Ine (F := E) A₀ ∧ ∃ ζ : Ω, ζ ^ m = 1 ∧
       A₀.valuation (ζ - algebraMap E Ω (u : E)) < 1 ∧ σ π = ζ * π := by
     intro u hu
-    obtain ⟨ζ, hζ, hζu⟩ := GlobalTheory.T.exists_rootOfUnity_congr_unit_at_place A₀ P hA₀ u hu
+    obtain ⟨ζ, hζ, hζu⟩ := _root_.GlobalTheory.TameTau.exists_root_congr_unit A₀ P hA₀ u hu
     rw [hNm] at hζ
     obtain ⟨σ, hσ, hσπ⟩ := GlobalTheory.T.inertia_acts_on_tame_root A₀ P hA₀ m hm0 hmP ϖ hϖ hϖ2 π hπ ζ hζ
     exact ⟨σ, hσ, ζ, hζ, hζu, hσπ⟩

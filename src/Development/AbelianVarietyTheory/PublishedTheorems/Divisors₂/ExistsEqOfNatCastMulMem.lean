@@ -126,27 +126,6 @@ theorem ComplexMultiplicationJSt.hilbertClassFieldJ (h : ComplexMultiplicationJS
   rintro x rfl
   exact Subtype.ext e
 
-theorem exists_restrictsTo {K : Type} [Field K] [NumberField K] [Algebra K ℂ] (σ : ℂ ≃ₐ[K] ℂ) :
-    ∃ a, RestrictsTo σ a := by
-  let ι : AlgebraicClosure K →ₐ[K] ℂ := IsAlgClosed.lift
-  let := ι.toRingHom.toAlgebra
-  have : IsScalarTower K (AlgebraicClosure K) ℂ :=
-    IsScalarTower.of_algebraMap_eq fun x => (ι.commutes x).symm
-  exact ⟨_, ι, σ.restrictNormal (AlgebraicClosure K),
-    fun x => (σ.restrictNormal_commutes (AlgebraicClosure K) x).symm, rfl⟩
-
-theorem EllipticMainTheoremCM.exists_idele (h : EllipticMainTheoremCM) {K : Type} [Field K]
-    [NumberField K] [IsTotallyComplex K] [Algebra K ℂ] (h2 : Module.finrank ℚ K = 2)
-    (hA : GlobalReciprocity K) (σ : ℂ ≃ₐ[K] ℂ) :
-    ∃ t : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ,
-      ∀ (X : WeierstrassCurve ℂ) [X.IsElliptic] (𝔞 : FractionalIdeal (𝓞 K)⁰ K) (h𝔞 : 𝔞 ≠ 0)
-        (ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point), IsAnalyticIso ξ → Transports σ t h𝔞 ξ := by
-  obtain ⟨Art, hArt⟩ := hA
-  obtain ⟨a, ha⟩ := exists_restrictsTo σ
-  obtain ⟨c, rfl⟩ := hArt.2.1 a
-  obtain ⟨s, rfl⟩ := QuotientGroup.mk_surjective c
-  exact ⟨finitePart s, fun X _ 𝔞 h𝔞 ξ hξ => h K h2 Art hArt σ s ha X 𝔞 h𝔞 ξ hξ⟩
-
 end GlobalTheory.Published
 
 namespace GlobalTheory.EllipticCM
@@ -301,25 +280,6 @@ theorem exists_eq_of_natCast_mul_mem {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {n :
   rw [map_div₀, e, map_natCast]
   field_simp
 
-theorem exists_uniformised [IsTotallyComplex K] (h2 : Module.finrank ℚ K = 2)
-    {𝔞 : FractionalIdeal (𝓞 K)⁰ K} (h𝔞 : 𝔞 ≠ 0) :
-    ∃ (L : PeriodPair) (ξ : (ℂ ⧸ idealSub 𝔞) ≃+ (latticeCurve L).toAffine.Point),
-      (∀ z, z ∈ idealSub 𝔞 ↔ z ∈ L.lattice) ∧ IsAnalyticIso ξ ∧
-        ∀ z : ℂ, ξ z = latticePoint L z := by
-  obtain ⟨L, hL⟩ := Published.exists_isIdealLattice h2 (Units.mk0 𝔞 h𝔞)
-  have hΛ : ∀ z, z ∈ idealSub 𝔞 ↔ z ∈ L.lattice := fun z => by
-    change _ ↔ z ∈ (L.lattice : Set ℂ)
-    rw [hL]
-    rfl
-  obtain ⟨ξ, h1, h2⟩ := exists_isAnalyticIso (X := latticeCurve L) (C := 1) (one_smul _ _)
-    one_ne_zero (fun z => by rw [one_mul, hΛ])
-  refine ⟨L, ξ, hΛ, h1, fun z => ?_⟩
-  rw [h2, one_mul]
-  rcases latticePoint L z with _ | ⟨x, y, h⟩
-  · rfl
-  · rw [variableChangePoint_some, Affine.Point.some.injEq]
-    simp [VariableChange.one_def]
-
 theorem transports_of_exists {σ : ℂ ≃ₐ[K] ℂ} {t : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ}
     {X : WeierstrassCurve ℂ} [X.IsElliptic] {𝔞 𝔟 : FractionalIdeal (𝓞 K)⁰ K} (h𝔞 : 𝔞 ≠ 0)
     (h𝔟 : 𝔟 = t⁻¹ • 𝔞) {ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point}
@@ -438,68 +398,6 @@ theorem exists_transports (h2 : Module.finrank ℚ K = 2) (σ : ℂ ≃ₐ[K] �
   change _ = ξ' (torsionIncl 𝔟 (Submodule.Quotient.mk (F x)))
   rw [torsionIncl_mk, torsionIncl_mk, hξα, e', mapPoint_variableChangePoint _ h h' hs,
     (hc _ _).1 (hF x)]
-
-theorem Transports.unique {σ : ℂ ≃ₐ[K] ℂ} {t t' : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ}
-    {X : WeierstrassCurve ℂ} [X.IsElliptic] {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {h𝔞 : 𝔞 ≠ 0}
-    {ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point} (h : Transports σ t h𝔞 ξ)
-    (h' : Transports σ t' h𝔞 ξ) :
-    ∃ c : Kˣ, t = IsDedekindDomain.FiniteAdeleRing.unitEmbedding (𝓞 K) K c * t' := by
-  obtain ⟨η, ⟨hη, e⟩, -⟩ := h
-  obtain ⟨η', ⟨hη', e'⟩, -⟩ := h'
-  obtain ⟨L, C, hC⟩ := exists_variableChange_eq_latticeCurve (X.map (σ : ℂ →+* ℂ))
-  obtain ⟨α, hα0, hα, a⟩ := hη.exists_mul hC
-  obtain ⟨β, hβ0, hβ, b⟩ := hη'.exists_mul hC
-  have h0 := Idele.smul_ne_zero t⁻¹ h𝔞
-  obtain ⟨x₀, hx0, hx⟩ := FractionalIdeal.exists_ne_zero_mem_isInteger h0
-  have hx1 : algebraMap K ℂ (algebraMap (𝓞 K) K x₀) ≠ 0 := by simpa using hx0
-  obtain ⟨y₀, -, hy⟩ := mem_idealSub.1 ((hβ (α * algebraMap K ℂ (algebraMap (𝓞 K) K x₀) / β)).2
-    (by rw [mul_div_cancel₀ _ hβ0]; exact (hα _).1 (algebraMap_mem_idealSub.2 hx)))
-  obtain ⟨c, hc⟩ : ∃ c : K, β * algebraMap K ℂ c = α :=
-    ⟨y₀ / algebraMap (𝓞 K) K x₀, by rw [map_div₀, hy]; field_simp⟩
-  have hc0 : c ≠ 0 := by rintro rfl; exact hα0 (by simpa using hc.symm)
-  set u := IsDedekindDomain.FiniteAdeleRing.unitEmbedding (𝓞 K) K (Units.mk0 c hc0) with hu
-  have hJ : t'⁻¹ • 𝔞 = u • t⁻¹ • 𝔞 := by
-    ext y
-    rw [smul_def u, hu, idealOf_unitEmbedding, FractionalIdeal.mem_singleton_mul]
-    obtain ⟨y, rfl⟩ := mul_left_surjective₀ hc0 y
-    rw [← algebraMap_mem_idealSub, hβ, map_mul, ← mul_assoc, hc, ← hα, algebraMap_mem_idealSub]
-    exact ⟨fun h => ⟨y, h, rfl⟩, fun ⟨y', h, e⟩ => mul_left_cancel₀ hc0 e ▸ h⟩
-  have hJ' : t'⁻¹ • 𝔞 = (u * t⁻¹) • 𝔞 := by rw [mul_smul, hJ]
-  have key : t'⁻¹ = u * t⁻¹ := by
-    refine mulEquiv_injective h𝔞 rfl hJ' ?_
-    rw [mulEquiv_mul u t⁻¹ h𝔞 h0 rfl hJ]
-    ext q
-    obtain ⟨y, hy⟩ := Submodule.Quotient.mk_surjective _ (mulEquiv t⁻¹ h𝔞 rfl q)
-    obtain ⟨y', hy'⟩ := Submodule.Quotient.mk_surjective _ (mulEquiv t'⁻¹ h𝔞 rfl q)
-    have := (e' q).symm.trans (e q)
-    rw [← hy, ← hy', torsionIncl_mk, torsionIncl_mk, a, b,
-      (variableChangePoint_bijective C hC).1.eq_iff, latticePoint_eq_iff, ← hc, mul_assoc,
-      ← mul_sub, ← hβ, ← map_mul, ← map_sub, algebraMap_mem_idealSub] at this
-    rw [LinearEquiv.trans_apply, ← hy, ← hy']
-    exact ((Submodule.Quotient.eq _).2 this).trans
-      (mulEquiv_unitEmbedding_mk (Units.mk0 c hc0) h0 hJ y).symm
-  exact ⟨Units.mk0 c hc0, by
-    rw [← hu, mul_comm, ← inv_mul_eq_iff_eq_mul, ← eq_mul_inv_iff_mul_eq]; exact key⟩
-
-theorem IsAnalyticIso.j_eq {X : WeierstrassCurve ℂ} [X.IsElliptic] {Λ : AddSubgroup ℂ}
-    {ξ : (ℂ ⧸ Λ) ≃+ X.toAffine.Point} (hξ : IsAnalyticIso ξ) {M : PeriodPair}
-    (hM : ∀ z, z ∈ Λ ↔ z ∈ M.lattice) : X.j = (latticeCurve M).j := by
-  obtain ⟨L, C, hC⟩ := exists_variableChange_eq_latticeCurve X
-  obtain ⟨α, hα0, hα, -⟩ := hξ.exists_mul hC
-  obtain ⟨a, τ, ha, h⟩ := exists_lattice_eq_mul_tau M
-  have hj : X.j = (latticeCurve L).j := by
-    rw [← X.variableChange_j C]
-    congr 1
-  rw [hj, latticeCurve_j ha h, latticeCurve_j (mul_ne_zero hα0 ha) (τ := τ) fun x => ?_]
-  obtain ⟨x, rfl⟩ := mul_left_surjective₀ hα0 x
-  simp only [← hα, hM, h, mul_assoc, mul_right_inj' hα0]
-
-theorem Transports.map_j {σ : ℂ ≃ₐ[K] ℂ} {t : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ}
-    {X : WeierstrassCurve ℂ} [X.IsElliptic] {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {h𝔞 : 𝔞 ≠ 0}
-    {ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point} (h : Transports σ t h𝔞 ξ) {M : PeriodPair}
-    (hM : ∀ z, z ∈ idealSub (t⁻¹ • 𝔞) ↔ z ∈ M.lattice) : σ X.j = (latticeCurve M).j := by
-  obtain ⟨η, ⟨hη, -⟩, -⟩ := h
-  exact (X.map_j (σ : ℂ →+* ℂ)).symm.trans (hη.j_eq hM)
 
 omit [Algebra K ℂ] in
 

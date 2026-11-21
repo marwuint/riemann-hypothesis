@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFockMapOfCanonicalCommutationRelationsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueArchimedeanMatrixAdeleExtensionOfComStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFockMapOfCanonicalCommutationRelations
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueArchimedeanMatrixAdeleExtensionOfCom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealScalarArchimedeanAdeleSmulMatrixRealPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativeAdditiveCommutatorStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanTraceSymplecticFormOrthonormalFramesStatement
@@ -23,7 +23,7 @@ theorem fockEx_of_derEx : DerEx → FockEx := by
         (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F ((d.e u).2 i)) : ℝ) * f x :=
     fun u hu f x => (hD u hu f).2 x
   obtain ⟨hadd, hsm, hcom⟩ := GlobalTheory.T.archHeisenbergDerivative_additive_commutator σ JA JB d D hDf
-  have hex := fun c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ => GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM (fun w => A w * c w * (C w)ᵀ)
+  have hex := fun c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ => _root_.GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hCM (fun w => A w * c w * (C w)ᵀ)
   choose uOf huOf using fun c => (hex c).exists
   have huniq : ∀ c u, At (evI F) u → (∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ) → u = uOf c :=
     fun c u hu hw => (hex c).unique ⟨hu, hw⟩ (huOf c)
@@ -69,7 +69,7 @@ theorem fockEx_of_derEx : DerEx → FockEx := by
   have hHvac : ∀ w a b, H (Pi.single w (Matrix.single a b 1)) f₀ +
       (lineSign a b * Complex.I) • H (Pi.single w (Matrix.single a b Complex.I)) f₀ = 0 := fun w a b =>
     hv w a b _ _ (huOf _).1 (huOf _).1 (huOf _).2 (huOf _).2
-  obtain ⟨Φ, hinj, hint⟩ := GlobalTheory.T.exists_fockMap_of_canonicalCommutationRelations H hHadd hHsmul hHcomm f₀ hf₀ hHvac
+  obtain ⟨Φ, hinj, hint⟩ := _root_.GlobalTheory.CCRFock.fock_map_of_ccr H hHadd hHsmul hHcomm f₀ hf₀ hHvac
   refine ⟨Φ, hinj, fun u hu c hc T => ?_⟩
   rw [hint, huniq c u hu hc]
   exact (hD _ (huOf c).1 (Φ T)).1

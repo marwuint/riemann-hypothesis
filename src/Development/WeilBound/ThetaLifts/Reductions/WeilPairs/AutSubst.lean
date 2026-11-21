@@ -60,7 +60,7 @@ theorem schur_norm (C : Ctx σ B JS JT ξ₀ θ ι) (M : Module.End ℂ (WOF F E
       IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 μ → ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f →
         ∫⁻ x in 𝓕, ‖M f x‖ₑ ^ 2 ∂μ = ∫⁻ x in 𝓕, ‖f x‖ₑ ^ 2 ∂μ) :
     ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → M f = c • f := by
-  obtain ⟨c, hc⟩ := GlobalTheory.T.schur_lemma_heisenberg_commuting_thetaOperator F E σ B C.good nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ M h1 h2 h3
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.ThetaSchurF.schur F E σ B C.good nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ M h1 h2 h3
   have hψ : ∀ a, ‖B.ψ a‖ = 1 := (GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B C.good).1.2.1
   by_cases h0 : ∃ f y, IsThetaFunOF σ JS JT ξ₀ B.ψ f ∧ f y ≠ 0
   · obtain ⟨f, y, hf, hy⟩ := h0

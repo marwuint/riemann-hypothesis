@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Formalism.CyclotomicNorms.StatementI
 import Development.AbelianVarietyTheory.Definitions.Foundations.RayPrimes
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ZeroCount
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DirichletLZerosInWindowFiniteAndPosOrderStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DirichletLZerosInWindowFiniteAndPosOrder
 open Finset ArithmeticFunction NumberField IsDedekindDomain Filter Topology GlobalTheory.Mem.An Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab
 open scoped nonZeroDivisors
 
@@ -94,8 +94,8 @@ theorem zsumR_recip_le : GlobalTheory.Mem.An.ZeroCount → ∃ C : ℝ, ∀ (q :
   intro q _ χ hχ T hT
   have hq : (1 : ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
   refine ⟨?_, ?_⟩
-  · obtain ⟨hfin, _⟩ := GlobalTheory.T.dirichletLZerosInWindow_finite_and_pos_order q χ 0 T
-    have hfin' : ∀ t : ℝ, (zerosIn χ t 1).Finite := fun t => (GlobalTheory.T.dirichletLZerosInWindow_finite_and_pos_order q χ t 1).1
+  · obtain ⟨hfin, _⟩ := _root_.GlobalTheory.Mem.An.ZeroWindow.finite_and_one_le_zmult q χ 0 T
+    have hfin' : ∀ t : ℝ, (zerosIn χ t 1).Finite := fun t => (_root_.GlobalTheory.Mem.An.ZeroWindow.finite_and_one_le_zmult q χ t 1).1
     have hN1 : 1 ≤ ⌊T⌋₊ := Nat.le_floor (by rw [Nat.cast_one]; linarith)
     have hNT : (⌊T⌋₊ : ℝ) ≤ T := Nat.floor_le (by linarith)
     have hNpos : (0 : ℝ) < ⌊T⌋₊ := by exact_mod_cast hN1

@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ThresholdProductsBounded
 import Formalism.HermitianCurvature.StatementTBB
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSq
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselEnergyNormalisedFrameChangeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitalSquareEqHilbertSchmidtNormalisedVectorStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentHaarMeasureRatioStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselEnergyNormalisedFrameChange
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitalSquareEqHilbertSchmidtNormalisedVector
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentHaarMeasureRatio
 import Formalism.FormalDegreeBessel.FinalG
 open Formalism.FourierDecayAlt Formalism.MainNotions.S GlobalTheory.ThA Formalism.QuantumDeterminants MeasureTheory Matrix
 open Formalism.BasicNotions
@@ -163,18 +163,18 @@ theorem card_rootPat_le {r : ℕ} (γ : Point ℂ (r + 1)) : (rootPat γ).card �
   simp [sq]
 
 theorem bpIneq_of_thmBpAt : ∃ c₃ : ℝ, ∀ (D : D7) (L : LocBessel D.R.k D.R.rS) (μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ) (U U' : ℕ → ℝ) (p : KB.Pl ⟨D.R.k, D.R.rS, Tz D.R.k D.R.rS L.z, Tz D.R.k D.R.rS L.z', U, U'⟩ L.Wp L.Wq) (f : B.Mat D.R.k D.R.rS → (L.Wq →L[ℂ] L.Wp)) (A b C₄ Cb : ℝ) (n₀ p₀ : ℕ), IsStdOf L μsec p.T.base → L.c = cStd → L.κN ≠ 0 → L.κN ≠ ⊤ → c₃ * ((D.R.rS : ℝ) + 1) ^ 2 * ((D.R.rS : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) + 1) ≤ A → B.InCC A 1 f → 3 ≤ b → C₄ + 1 ≤ Cb → ((2 * p₀ + n₀ : ℕ) : ℝ) ≤ Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2 → TBB.ThmBpAt p f b C₄ n₀ p₀ → ∀ γ : Point ℂ (D.R.rS + 1), ThB.Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ ≠ 0 → ThB.BpIneq D Cb L f μsec b γ := by
-  obtain ⟨c₃, hc₃⟩ := GlobalTheory.T.orbitalSquare_eq_hilbertSchmidt_normalisedVector
+  obtain ⟨c₃, hc₃⟩ := _root_.GlobalTheory.ThA.OrbSq.orbSq_eq_vecV
   refine ⟨c₃, ?_⟩
   intro D L μsec U U' p f A b C₄ Cb n₀ p₀ hstd hc hκ0 hκt hA hf hb hC hn hBp γ hγ
   unfold ThB.BpIneq
   rcases lt_or_gt_of_ne hγ with hG | hG
   · rw [orbSq_eq_zero L f γ hG, mul_zero]; exact zero_le
-  obtain ⟨cN, hcN⟩ := GlobalTheory.T.exists_unipotentHaarMeasure_ratio D.R.k D.R.rS
+  obtain ⟨cN, hcN⟩ := _root_.GlobalTheory.ThA.exists_isRatioN D.R.k D.R.rS
   have hk : 1 ≤ D.R.k := p.T.base.k_pos
   have hc0 : (cStd : ℂ) ≠ 0 := by unfold cStd; simp
   have hcc : cStd / L.c = 1 := by rw [hc]; exact div_self hc0
   have horb := hc₃ D.R.k D.R.rS L μsec p.T.base cN A p.ν' p.m₀ f hstd hcN hc hκ0 hκt p.hF hA hf γ hG
-  have hnorm := GlobalTheory.T.besselEnergy_normalised_frame_change D.R.k D.R.rS L μsec p.T.base cN f hk hstd hcN (hc ▸ hc0) hκ0 hκt
+  have hnorm := _root_.GlobalTheory.ThA.energy_change_of_frame D.R.k D.R.rS L μsec p.T.base cN f hk hstd hcN (hc ▸ hc0) hκ0 hκt
   have hj : ThB.jNorm2 L f μsec = ENNReal.ofReal ((L.κN.toReal * cN) ^ 4) * TBB.jN2 p f := by
     rw [GlobalTheory.jN2_eq_normSq_base.besselNormSq_eq_bigCellNormSq]
     unfold lamN at hnorm

@@ -60,23 +60,4 @@ structure SQuot {h N : ℕ} {o' : Type} [CommRing o'] {ζ' : o'} (F : SFam h N �
   fibre : ∀ (R : Type) [CommRing R] [IsLocalRing R] (y y' : Sp R ⟶ F.X) (s' : Sp R ⟶ Sp o) (c : SiegPre h n ζ s'),
     y ≫ F.s ≫ spMap j = y' ≫ F.s ≫ spMap j → SRel c F.univ 1 (N / n) y → SRel c F.univ 1 (N / n) y' → y ≫ π = y' ≫ π
 
-def SQuot.self {h N : ℕ} {o : Type} [CommRing o] {ζ : o} (F : SFam h N ζ) (hN : 0 < N)
-    (hid : SiegPB F.univ F.univ (𝟙 _)) : SQuot F N ζ (RingHom.id o) where
-  X := F.X
-  s := F.s
-  smooth := F.smooth
-  qproj := F.qproj
-  univ := F.univ
-  princ := F.princ
-  π := 𝟙 _
-  base := by rw [show spMap (RingHom.id o) = 𝟙 _ from Spec.map_id _]; simp
-  fin := inferInstance
-  etale := inferInstance
-  onto := inferInstance
-  low := by rw [Nat.div_self hN, sRel_one_one_iff]; exact hid
-  fibre R _ _ y y' s' c h₁ h₂ h₃ := by
-    rw [Nat.div_self hN, sRel_one_one_iff] at h₂ h₃
-    rw [show spMap (RingHom.id o) = 𝟙 _ from Spec.map_id _] at h₁
-    simpa using F.inj R y y' s' c (by simpa using h₁) h₂ h₃
-
 end GlobalTheory.SiegLev

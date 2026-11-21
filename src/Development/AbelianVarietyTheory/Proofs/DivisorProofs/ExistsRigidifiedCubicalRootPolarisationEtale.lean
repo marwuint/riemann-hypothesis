@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRigLBCubical
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleOfMumfordBundleIsoUniversalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteEtaleOfEtale
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleOfMumfordBundleIsoUniversal
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUnifOfIsMumfordOf
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsEquivalenceFiniteEtaleBaseChangeResidueField
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueAlgEquivOfCompatibleQuotient
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteUnramifiedExtensionGroupLift
 
 set_option autoImplicit false
@@ -38,12 +40,12 @@ theorem exists_rigLB_sFam_etale :
   have h₁ : Root F.univ.A F.univ.P (spMap (algebraMap k (AlgebraicClosure k)) ≫ t₀) :=
     root_geom F (AlgebraicClosure k) _
 
-  obtain ⟨B, hB, h₂⟩ := GlobalTheory.T.mumfordBundleRoot_exists_over_fg_subalgebra F.X F.univ.A hAb F.univ.P hP k t₀ (AlgebraicClosure k) h₁
+  obtain ⟨B, hB, h₂⟩ := _root_.GlobalTheory.RootFG.root_fg F.X F.univ.A hAb F.univ.P hP k t₀ (AlgebraicClosure k) h₁
   haveI : Algebra.FiniteType k B := (Subalgebra.fg_iff_finiteType B).1 hB
   haveI : Algebra.IsIntegral k B := ⟨fun b => (isIntegral_algHom_iff B.val Subtype.val_injective).1 (Algebra.IsIntegral.isIntegral (R := k) (b : AlgebraicClosure k))⟩
   haveI : Module.Finite k B := Algebra.IsIntegral.finite
 
-  obtain ⟨C, _, _, _, _, hC, ⟨ιC⟩, hdom⟩ := GlobalTheory.T.exists_complete_local_geomDomain' k B inferInstance
+  obtain ⟨C, _, _, _, _, hC, ⟨ιC⟩, hdom⟩ := _root_.GlobalTheory.SepRing.exists_complete_local_geomDomain k B inferInstance
   let tC : Sp C ⟶ F.X := spMap (algebraMap k C) ≫ t₀
   have h₃ : Root F.univ.A F.univ.P (spMap (residue C) ≫ tC) := by
     refine root_congr ?_ (h₂.comp hAb (spMap ιC.toRingHom))
@@ -51,9 +53,9 @@ theorem exists_rigLB_sFam_etale :
     congr 2
     exact ιC.comp_algebraMap.trans (IsScalarTower.algebraMap_eq k C (ResidueField C))
   have h₄ : Root F.univ.A F.univ.P tC :=
-    GlobalTheory.T.mumfordBundle_root_lifts_from_residue_complete_local F.X F.univ.A hAb F.univ.P hP F.univ.rig₁ F.univ.rig₂ F.princ.1 C hC tC h₃
+    _root_.GlobalTheory.PolRootComplete.root_of_residue F.X F.univ.A hAb F.univ.P hP F.univ.rig₁ F.univ.rig₂ F.princ.1 C hC tC h₃
 
-  obtain ⟨B', hB', h₅⟩ := GlobalTheory.T.mumfordBundleRoot_exists_over_fg_subalgebra F.X F.univ.A hAb F.univ.P hP k t₀ C h₄
+  obtain ⟨B', hB', h₅⟩ := _root_.GlobalTheory.RootFG.root_fg F.X F.univ.A hAb F.univ.P hP k t₀ C h₄
   have hdom' : ∀ (K : Type) [Field K] [Algebra k K], FiniteDimensional k K → IsPurelyInseparable k K →
       IsDomain (K ⊗[k] B') := by
     intro K _ _ h1 h2
@@ -64,7 +66,7 @@ theorem exists_rigLB_sFam_etale :
         Subtype.val_injective
       exact this
     exact hm.isDomain m
-  obtain ⟨k'', _, _, hfin, hsep, ⟨ψ⟩⟩ := GlobalTheory.T.exists_separable_point_of_geometrically_domain k B' ((Subalgebra.fg_iff_finiteType B').1 hB') hdom'
+  obtain ⟨k'', _, _, hfin, hsep, ⟨ψ⟩⟩ := _root_.GlobalTheory.SepPoint.exists_sepPoint k B' ((Subalgebra.fg_iff_finiteType B').1 hB') hdom'
   have h₆ : Root F.univ.A F.univ.P (spMap (algebraMap k k'') ≫ t₀) := by
     refine root_congr ?_ (h₅.comp hAb (spMap ψ.toRingHom))
     rw [← Category.assoc, spMap_comp']
@@ -92,13 +94,13 @@ theorem exists_rigLB_sFam_etale :
     rw [← RingHom.comp_assoc, hφ]
     exact (ResidueField.map_comp_residue ρ).symm
   obtain ⟨B₁, _, _, β, β₂, hβ, hsq, L, hL, hΛ⟩ :=
-    GlobalTheory.T.mumfordBundle_root_lifts_from_residue_complete_local F.X F.univ.A hAb F.univ.P hP F.univ.rig₁ F.univ.rig₂ F.princ.1 R' hcR' T h₇
+    _root_.GlobalTheory.PolRootComplete.root_of_residue F.X F.univ.A hAb F.univ.P hP F.univ.rig₁ F.univ.rig₂ F.princ.1 R' hcR' T h₇
   have hB₁ : IsAbelianScheme B₁ := GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hAb hβ
   have hP' : (F.univ.P.pull β₂).IsLB := ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_linComb hP _ _
   have hker := GlobalTheory.SiegelPull.nondeg_pull hβ hsq hP hP' ((GlobalTheory.CechPic.cls_eq_iff hP' hP').1 rfl) F.princ.2
   obtain ⟨M, hM, ⟨hcub⟩⟩ := exists_rigLB_cubical R' B₁ hB₁ L hL
   have hK := GlobalTheory.KTrivOfLam.kTriv_of_lam_iso _ B₁ hB₁ (F.univ.P.pull β₂) hP' hker L hL hΛ
-  have hA := GlobalTheory.T.relAmple_of_mumfordBundle_iso_universal F R' T B₁ β β₂ hβ hsq L hL hΛ
+  have hA := _root_.GlobalTheory.MumAmple.relAmple_of_lam_iso_univ F R' T B₁ β β₂ hβ hsq L hL hΛ
   subst hM
   have hinj : Function.Injective ρ := by
     letI : Algebra.Etale R R' := het

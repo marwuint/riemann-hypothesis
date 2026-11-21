@@ -97,23 +97,8 @@ theorem split_prime_splits_completely : (placesOver D.host.E (AbsolutelyIrreduci
 
 variable {D}
 
-def underQ (D : D7) (nch : NChoice D) : Set ℕ :=
-  {p | p.Prime ∧ ∃ w, D.what₂.muAt w ≠ D.what₂.mu0 ∧ ∃ v ∈ nch.Q w, v ∈ placesOver D.host.E p}
-
 structure LevelTied (D : D7) : Prop where
   eq : ∀ p, p ∈ D.host.levelPrimes ↔
     (∃ i, p = D.host.g i) ∨ p = D.host.pde ∨ p = D.host.pde' ∨ (∃ u, p = (D.mem u).A.T) ∨ p = AbsolutelyIrreducibleSpan.q0 D
-
-theorem LevelTied.prime (h : LevelTied D) : ∀ p ∈ D.host.levelPrimes, p.Prime := by
-  intro p hp
-  rcases (h.eq p).mp hp with ⟨i, rfl⟩ | rfl | rfl | ⟨u, rfl⟩ | rfl
-  · exact D.host.g_prime i
-  · exact D.host.pde_prime
-  · exact D.host.pde'_prime
-  · exact (D.mem u).A.T_prime
-  · exact (AbsolutelyIrreducibleSpan.auxiliary_prime_mem (D := D)).1
-
-theorem LevelTied.auxiliary_prime_mem (h : LevelTied D) : AbsolutelyIrreducibleSpan.q0 D ∈ D.host.levelPrimes := by
-  exact (h.eq _).mpr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))
 
 end Formalism.L2.Host

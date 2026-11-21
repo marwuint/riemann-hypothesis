@@ -57,41 +57,7 @@ def IsLevLift {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {
       (l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)).mkQ a' = γ ((l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)).mkQ a) →
       ∃ w ∈ latGHat V 1, (finHom V κ).1.mulVec (finVec V (ι a)) - finVec V (ι a') = (l.M : ℕ) • w
 
-def iotaAt (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (hr : (T.V j σ).rank = D.R.r) :
-    (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (T.V j σ).rank → D.host.E) :=
-  LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota j
-
-def geo (T : CoreJ D) (j : ℕ) (γ : LevGrp (T.Q.Dw j) T.Q.l) : T.R j →ₗ[T.Q.c.F] T.R j :=
-  actLev (Xo := T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l) γ
-
 def adFn (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (c : (T.U j σ).Comp → ℂ) (f : T.R j) : GA D (T.V j σ) → ℂ :=
   adel (T.V j σ) (T.dict j σ) (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) c) (rdU (T.U j σ) f)
-
-structure GeoActAt (T : CoreJ D) (j : ℕ) (χ : (𝓞 D.host.E ⧸ T.Q.l.Mb)ˣ →* (T.Q.c.F)ˣ) : Prop where
-
-  laws : ActLev (Xo := T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l)
-
-  keeps : ∀ a n, Dom a n → ∀ γ, ∀ f ∈ T.cuspA j a n, geo T j γ f ∈ T.cuspA j a n
-
-  lifts : ∀ σ, GoodEmb T.Q.c σ → ∀ (hr : (T.V j σ).rank = D.R.r) (γ : LevGrp (T.Q.Dw j) T.Q.l),
-    ∃ κ, IsLevLift T.Q.l (T.V j σ) (iotaAt T j σ hr) γ κ
-
-  equiv : ∀ σ, GoodEmb T.Q.c σ → ∀ (hr : (T.V j σ).rank = D.R.r) (n : ℕ), Even n →
-    ∃ c : (T.U j σ).Comp → ℂ, CUnit c ∧ ∀ a, Dom a n → ∀ f ∈ T.cuspA j a n,
-      ∀ (γ : LevGrp (T.Q.Dw j) T.Q.l) (κ : GA D (T.V j σ)), IsLevLift T.Q.l (T.V j σ) (iotaAt T j σ hr) γ κ →
-        ∀ x, adFn T j σ c (geo T j γ f) x =
-          σ ((χ (levDet (T.Q.Dw j) T.Q.l γ) : (T.Q.c.F)ˣ) : T.Q.c.F) * adFn T j σ c f (x * κ)
-
-  integral : ∀ a n, Dom a n → ∀ γ, ∀ f ∈ T.cuspA j a n, ∀ la : HeightOneSpectrum (𝓞 T.Q.c.F),
-    (∀ y : T.PtM j la, T.nrmM j la y f ≤ 1) → ∀ y : T.PtM j la, T.nrmM j la y (geo T j γ f) ≤ 1
-
-def GeoAct : Prop :=
-  ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, InR D j → ∀ χ : (𝓞 D.host.E ⧸ T.Q.l.Mb)ˣ →* (T.Q.c.F)ˣ,
-    IsInvTame T.σ₀ T.Q.l.Mb (T.Q.l.Mb.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) (T.chiW j T.σ₀) χ →
-      GeoActAt T j χ
-
-example {K : Type} [Field K] (σ : K →+* ℂ) (Mb Mc : Ideal (𝓞 D.host.E)) : IsInvTame (D := D) σ Mb Mc 1 1 := by
-  intro x _ u ub _ _ _
-  simp
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions

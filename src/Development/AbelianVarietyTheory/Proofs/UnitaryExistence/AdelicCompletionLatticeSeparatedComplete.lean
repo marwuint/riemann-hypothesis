@@ -8,58 +8,6 @@ open scoped TensorProduct Matrix nonZeroDivisors
 
 namespace GlobalTheory.AdLat.Complete
 
-theorem baer_fractionField (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K]
-    [IsFractionRing R K] : Module.Baer R K := by
-  intro I g
-  by_cases hI : ∃ a ∈ I, a ≠ 0
-  · obtain ⟨a, ha, ha0⟩ := hI
-    have ha' : algebraMap R K a ≠ 0 := by
-      simpa using ha0
-    refine ⟨LinearMap.toSpanSingleton R K (g ⟨a, ha⟩ / algebraMap R K a), fun x hx => ?_⟩
-    have h : a • g ⟨x, hx⟩ = x • g ⟨a, ha⟩ := by
-      rw [← map_smul, ← map_smul]
-      congr 1
-      ext
-      simp [mul_comm]
-    rw [LinearMap.toSpanSingleton_apply, Algebra.smul_def]
-    rw [Algebra.smul_def, Algebra.smul_def] at h
-    field_simp
-    rw [← h]
-  · refine ⟨0, fun x hx => ?_⟩
-    have : x = 0 := by
-      by_contra h
-      exact hI ⟨x, hx, h⟩
-    subst this
-    have : (⟨0, hx⟩ : I) = 0 := rfl
-    rw [this, map_zero, map_zero]
-
-theorem exists_frame (R K V : Type) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
-    [IsFractionRing R K] [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
-    (M : Submodule R V) [Module.Finite R M] :
-    ∃ (m : ℕ) (e : Fin m → V) (t : Fin m → (V →ₗ[K] K)), (∀ i, e i ∈ M) ∧
-      (∀ i, ∀ v ∈ M, t i v ∈ (algebraMap R K).range) ∧ ∀ v ∈ M, ∑ i, t i v • e i = v := by
-  classical
-  have : Module.IsTorsionFree R V := Module.IsTorsionFree.trans_faithfulSMul R K V
-  have : Module.FinitePresentation R M := Module.finitePresentation_of_finite _ _
-  have : Module.Projective R M := Module.Flat.projective_of_finitePresentation
-  obtain ⟨m, f, g, -, -, hfg⟩ := Module.Finite.exists_comp_eq_id_of_projective R M
-  have h : ∀ i, ∃ s : V →ₗ[R] K, s ∘ₗ M.subtype = Algebra.linearMap R K ∘ₗ LinearMap.proj i ∘ₗ g :=
-    fun i => (baer_fractionField R K).extension_property _ M.injective_subtype _
-  choose s hs using h
-  have hs' : ∀ i v (hv : v ∈ M), s i v = algebraMap R K (g ⟨v, hv⟩ i) := fun i v hv =>
-    LinearMap.congr_fun (hs i) ⟨v, hv⟩
-  refine ⟨m, fun i => f (Pi.single i 1), fun i => (s i).extendScalarsOfIsLocalization R⁰ K,
-    fun i => (f _).2, fun i v hv => ⟨_, (hs' i v hv).symm⟩, fun v hv => ?_⟩
-  have h1 : f (g ⟨v, hv⟩) = ⟨v, hv⟩ := LinearMap.congr_fun hfg _
-  have h2 : ∑ i, g ⟨v, hv⟩ i • f (Pi.single i 1) = ⟨v, hv⟩ := by
-    conv_rhs => rw [← h1, pi_eq_sum_univ' (g _), map_sum]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [map_smul]
-  have h3 := congrArg Subtype.val h2
-  simp only [Submodule.coe_sum, Submodule.coe_smul] at h3
-  refine Eq.trans (Finset.sum_congr rfl fun i _ => ?_) h3
-  rw [LinearMap.extendScalarsOfIsLocalization_apply', hs' i v hv, algebraMap_smul]
-
 section
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}

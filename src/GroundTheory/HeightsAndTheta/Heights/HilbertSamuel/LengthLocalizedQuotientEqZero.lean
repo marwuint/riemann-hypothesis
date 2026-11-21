@@ -1,7 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsHilbert
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ProjectiveSpaceIncrementHyp
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.WeightedHomogeneousSubmoduleBlockWeightIntEqRing
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HilbertSamuel
@@ -182,100 +182,6 @@ theorem card_eq_length_of_filtration {M : Type*} [AddCommGroup M] [Module R M] {
   rw [← h0, telescope_enat n L _ hstep, hl, add_zero, Finset.sum_boole]
 
 end Length
-
-section Spans
-
-theorem image_val_lt_succ {α : Type*} {n : ℕ} (x : Fin n → α) (j : Fin n) :
-    x '' {i | i.val < j.val + 1} = insert (x j) (x '' {i | i.val < j.val}) := by
-  ext y
-  simp only [Set.mem_image, Set.mem_ofPred_eq, Set.mem_insert_iff]
-  constructor
-  · rintro ⟨i, hi, rfl⟩
-    rcases Nat.lt_succ_iff_lt_or_eq.mp hi with h | h
-    · exact Or.inr ⟨i, h, rfl⟩
-    · exact Or.inl (by rw [Fin.ext h])
-  · rintro (rfl | ⟨i, hi, rfl⟩)
-    · exact ⟨j, Nat.lt_succ_self _, rfl⟩
-    · exact ⟨i, Nat.lt_succ_of_lt hi, rfl⟩
-
-theorem span_image_val_lt_succ {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M] {n : ℕ}
-    (x : Fin n → M) (j : Fin n) :
-    Submodule.span R (x '' {i | i.val < j.val + 1}) =
-      Submodule.span R (x '' {i | i.val < j.val}) ⊔ Submodule.span R {x j} := by
-  rw [image_val_lt_succ, Submodule.span_insert, sup_comm]
-
-end Spans
-
-theorem MultigradedFiltration.equiv_mp :
-    GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.Statement.{u, u} →
-      MultigradedFiltration.Statement.{u} := by
-  intro hA F _ K _ _ ι _ M _ _ _ _ ℳ hℳ hfin
-  have := hfin
-  obtain ⟨n, N, x, c, q, hN0, hNl, hj, -⟩ :=
-    hA F K ι M ℳ ((isMultigraded_iff_isMultigrading ℳ).mp hℳ)
-  have hNspan : ∀ (k : ℕ) (hk : k < n + 1),
-      N ⟨k, hk⟩ = Submodule.span (MRing ι F) (x '' {i | i.val < k}) := by
-    intro k
-    induction k with
-    | zero =>
-      intro hk
-      have h0 : (⟨0, hk⟩ : Fin (n + 1)) = 0 := rfl
-      rw [h0, hN0]
-      simp
-    | succ k ih =>
-      intro hk
-      have hkn : k < n := by omega
-      have hs := (hj ⟨k, hkn⟩).2.1
-      have e1 : (⟨k, hkn⟩ : Fin n).succ = ⟨k + 1, hk⟩ := rfl
-      have e2 : (⟨k, hkn⟩ : Fin n).castSucc = ⟨k, by omega⟩ := rfl
-      rw [e1, e2] at hs
-      rw [hs, ih (by omega)]
-      exact (span_image_val_lt_succ x ⟨k, hkn⟩).symm
-  refine ⟨n, x, c, q, fun j => (hj j).1, fun j => ⟨(hj j).2.2.1, (hj j).2.2.2.1⟩, ?_, ?_⟩
-  · have h := hNspan n (by omega)
-    have e : (⟨n, by omega⟩ : Fin (n + 1)) = Fin.last n := rfl
-    rw [e, hNl] at h
-    rw [h, ← Set.image_univ]
-    congr 2
-    ext i
-    simp
-  · intro j f
-    have h := (hj j).2.2.2.2 f
-    have e : j.castSucc = ⟨j.val, by omega⟩ := rfl
-    rw [e, hNspan j.val (by omega)] at h
-    exact h
-
-theorem MultigradedFiltration.equiv_mpr :
-    MultigradedFiltration.Statement.{u} →
-      GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.Statement.{u, u} := by
-  intro hB F _ K _ _ ι _ M _ _ _ _ _ piece hpiece
-  obtain ⟨n, x, c, q, hx, hq, hspan, hann⟩ :=
-    hB F K ι M piece ((isMultigraded_iff_isMultigrading piece).mpr hpiece) inferInstance
-  let N : Fin (n + 1) → Submodule (MRing ι F) M := fun k =>
-    Submodule.span (MRing ι F) (x '' {i | i.val < k.val})
-  have hN0 : N 0 = ⊥ := by simp [N]
-  have hNl : N (Fin.last n) = ⊤ := by
-    simp only [N, Fin.val_last]
-    rw [← hspan, ← Set.image_univ]
-    congr 2
-    ext i
-    simp
-  have hsucc : ∀ j : Fin n, N j.succ = N j.castSucc ⊔ Submodule.span (MRing ι F) {x j} := by
-    intro j
-    simp only [N, Fin.val_succ, Fin.val_castSucc]
-    exact span_image_val_lt_succ x j
-  have hann' : ∀ j (s : MRing ι F), s • x j ∈ N j.castSucc ↔ s ∈ q j := fun j s => hann j s
-  refine ⟨n, N, x, c, q, hN0, hNl, fun j => ⟨hx j, hsucc j, (hq j).1, (hq j).2, hann' j⟩, ?_⟩
-  intro W hW
-  have : W.IsPrime := hW.1.1
-  classical
-  convert card_eq_length_of_filtration N x q hN0 hNl hsucc (fun j => (hq j).1) hann' W hW using 1
-  rfl
-
-theorem MultigradedFiltration.equiv :
-    GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedFiltration.Statement.{u, u} ↔
-      MultigradedFiltration.Statement.{u} :=
-  ⟨MultigradedFiltration.equiv_mp, MultigradedFiltration.equiv_mpr⟩
 
 end
 

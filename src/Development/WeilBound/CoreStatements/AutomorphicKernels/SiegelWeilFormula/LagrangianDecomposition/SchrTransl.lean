@@ -1,9 +1,9 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LagrangianDecomposition.SubSplit
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzPointValuesAdmittedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzPointValuesAdmitted
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsoRows
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompReixMemAdm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzTensorLeftFactor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpace
 
 noncomputable section
@@ -52,7 +52,7 @@ theorem opBox_of (hP : PartCharInv) (hS : SliceFacts) : OpBox := by
   have hvan : ∀ Δ ∈ schA F (κ' ⊕ κ''), (∀ a : κ' → AF F, Δ (a ⊕ᵥ 0) = 0) →
       ∀ a : κ' → AF F, om x Δ (a ⊕ᵥ 0) = 0 := by
     intro Δ hΔ hz a
-    have hl := hsp.adm x _ ((GlobalTheory.T.adelicSchwartz_pointValues_admitted F ψ hψ (κ' ⊕ κ'')).1 (a ⊕ᵥ 0))
+    have hl := hsp.adm x _ ((_root_.GlobalTheory.TowU.PointVal.adelicSchwartz_pointValues_admitted_alt F ψ hψ (κ' ⊕ κ'')).1 (a ⊕ᵥ 0))
     have key := hP F ψ hψ κ' κ'' _ hl ?_ Δ hΔ hz
     · simpa using key
     · intro y Ψ hΨ
@@ -91,7 +91,7 @@ theorem opBox_of (hP : PartCharInv) (hS : SliceFacts) : OpBox := by
       cases i <;> simp
     have hbox := GlobalTheory.SchwartzBox.boxFun_mem_schA F κ' κ'' _ hφ' φ'' hφ''
     set η := schr ψ (z ∘ Sum.inr, 0) φ'' with hη
-    have hηm : η ∈ schA F κ'' := (GlobalTheory.T.adelicSchwartz_pointValues_admitted F ψ hψ κ'').2.2.1 _ φ'' hφ''
+    have hηm : η ∈ schA F κ'' := (_root_.GlobalTheory.TowU.PointVal.adelicSchwartz_pointValues_admitted_alt F ψ hψ κ'').2.2.1 _ φ'' hφ''
     have hη0 : η 0 = φ'' (z ∘ Sum.inr) := by
       rw [hη, schr_transl, zero_add]
     have hL : om x (boxFun φ' φ'') z = om x (boxFun φ' η) (z ∘ Sum.inl ⊕ᵥ 0) := by

@@ -1,6 +1,9 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.LocPoly
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RealCusp
+import GroundTheory.AutomorphicForms.ReductionSplitting
+import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaPair
 import GroundTheory.AutomorphicForms.GL2.GJMatrixSchwartz
+
 open NumberField IsDedekindDomain Matrix GroundTheory.Global GroundTheory.Automorphic.GJMatrix GlobalTheory.HenQ
 open GlobalTheory.CuspRep (GA Af Ad ratGL finGL locGL pFin pLoc)
 open scoped nonZeroDivisors

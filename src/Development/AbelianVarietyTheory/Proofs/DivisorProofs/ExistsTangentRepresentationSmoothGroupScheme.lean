@@ -5,12 +5,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHod
 import Development.AbelianVarietyTheory.Definitions.Divisors.HopfLaurent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiCompactZeroSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoToBidualOfLocalFrames
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecTrivSqZeroExtIsPushoutStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecTrivSqZeroExtIsPushout
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSqZeroPointOfCotangentLinearMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CotangentFormOfSqZeroPointLinearNaturalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqZeroPointEqOfCotangentFormEqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteProjectiveCotangentGlobalSectionsGroupScheStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCotangentFrameSmoothGroupSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CotangentFormOfSqZeroPointLinearNatural
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqZeroPointEqOfCotangentFormEq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteProjectiveCotangentGlobalSectionsGroupSche
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCotangentFrameSmoothGroupScheme
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh GlobalTheory.AbTan
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -85,7 +85,7 @@ theorem fst_baseMap_left (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
 
 theorem left_eq (v₁ v₂ : TM R M ⟶ A) (h₁ : zeroSec R M ≫ v₁ = η[A]) (h₂ : zeroSec R M ≫ v₂ = η[A])
     (e : spMap (baseMap R B M) ≫ v₁.left = spMap (baseMap R B M) ≫ v₂.left) : v₁ = v₂ := by
-  obtain ⟨z₀, _, hu⟩ := GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) A.left
+  obtain ⟨z₀, _, hu⟩ := _root_.GlobalTheory.Pinch.pinch_main R B M (baseMap R B M) (baseMap_isSum R B M) A.left
     (show Sp R ⟶ A.left from η[A].left) (spMap (baseMap R B M) ≫ v₁.left) (fst_baseMap_left A v₁ h₁)
   have a₁ := hu v₁.left ⟨congrArg Over.Hom.left h₁, rfl⟩
   have a₂ := hu v₂.left ⟨congrArg Over.Hom.left h₂, e.symm⟩
@@ -101,12 +101,12 @@ theorem lifts_baseMap (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) :
 theorem exists_of_lifts (z : Sp (TrivSqZeroExt B M) ⟶ A.left) (hz : Lifts A.hom (unitPt A B) z) :
     ∃ (v : TM R M ⟶ A) (_ : zeroSec R M ≫ v = η[A]), spMap (baseMap R B M) ≫ v.left = z := by
   obtain ⟨h₁, h₂⟩ := hz
-  obtain ⟨z₀, ⟨a₁, a₂⟩, -⟩ := GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) A.left
+  obtain ⟨z₀, ⟨a₁, a₂⟩, -⟩ := _root_.GlobalTheory.Pinch.pinch_main R B M (baseMap R B M) (baseMap_isSum R B M) A.left
     (show Sp R ⟶ A.left from η[A].left) z h₂
   have hb : spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ z ≫ A.hom =
       spMap (algebraMap R B) ≫ 𝟙 (Sp R) := by
     rw [← Category.assoc, h₂, unitPt, Category.assoc, unit_w]
-  obtain ⟨y, -, hu⟩ := GlobalTheory.T.spec_trivSqZeroExt_isPushout R B M (baseMap R B M) (baseMap_isSum R B M) (Sp R)
+  obtain ⟨y, -, hu⟩ := _root_.GlobalTheory.Pinch.pinch_main R B M (baseMap R B M) (baseMap_isSum R B M) (Sp R)
     (𝟙 (Sp R)) (z ≫ A.hom) hb
   have e₁ := hu (z₀ ≫ A.hom) ⟨by rw [← Category.assoc, a₁, unit_w], by rw [← Category.assoc, a₂]⟩
   have e₂ := hu (spMap (algebraMap R (TrivSqZeroExt R M))) ⟨by
@@ -120,7 +120,7 @@ theorem exists_of_lifts (z : Sp (TrivSqZeroExt B M) ⟶ A.left) (hz : Lifts A.ho
 def phiLin (v : TM R M ⟶ A) (h : zeroSec R M ≫ v = η[A]) : Wmod A →ₗ[R] M where
   toFun := Phi v h
   map_add' := map_add _
-  map_smul' r w := (GlobalTheory.T.cotangentFormOfSqZeroPoint_linear_natural R A M v h).1 r w
+  map_smul' r w := (_root_.GlobalTheory.SqZeroPt.Phi_linear_natural R A M v h).1 r w
 
 theorem phiLin_congr {v₁ v₂ : TM R M ⟶ A} (h₁ : zeroSec R M ≫ v₁ = η[A])
     (h₂ : zeroSec R M ≫ v₂ = η[A]) (e : v₁ = v₂) : phiLin A v₁ h₁ = phiLin A v₂ h₂ := by
@@ -147,7 +147,7 @@ theorem cotangentAtUnit_tangentBijection (hq : (GlobalTheory.LieVB.omega A).IsQu
     (phiOf_eq A v h).trans (LinearMap.ext hv)⟩, fun z' ⟨hl, hp⟩ => ?_⟩
   obtain ⟨v', h', rfl⟩ := exists_of_lifts A z' hl
   rw [phiOf_eq A v' h'] at hp
-  have e : v' = v := GlobalTheory.T.sqZeroPoint_eq_of_cotangentForm_eq R A hq M v' v h' h fun w => by
+  have e : v' = v := _root_.GlobalTheory.SqZeroPt.eq_of_Phi_eq R A hq M v' v h' h fun w => by
     change phiLin A v' h' w = _
     rw [hp, hv]
   rw [e]
@@ -192,7 +192,7 @@ theorem cotangentAtUnit_tangentBijection_naturality (α : B →ₐ[R] B') (f : M
     rw [← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', hc]
   rw [e, phiOf_eq A v' h', phiOf_eq A v h]
   ext w
-  exact (GlobalTheory.T.cotangentFormOfSqZeroPoint_linear_natural R A M v h).2 M' f g hg v' h' rfl w
+  exact (_root_.GlobalTheory.SqZeroPt.Phi_linear_natural R A M v h).2 M' f g hg v' h' rfl w
 
 end Nat
 
@@ -213,9 +213,9 @@ theorem exists_tanRep : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A]
       Nonempty (TanRep A W) := by
   intro R _ A _ hs
   haveI := hs
-  have hfr := GlobalTheory.T.exists_cotangent_frame_smooth_groupScheme R A
+  have hfr := _root_.GlobalTheory.ConormalFrame.exists_isFrame_omega R A
   have hq : (GlobalTheory.LieVB.omega A).IsQuasicoherent := GlobalTheory.OmegaGlobal.isQuasicoherent_of_frames hfr
-  obtain ⟨hfin, hproj⟩ := GlobalTheory.T.finite_projective_cotangentGlobalSections_groupScheme R A hfr
+  obtain ⟨hfin, hproj⟩ := _root_.GlobalTheory.FramesFGP.finite_projective_wmod R A hfr
   exact ⟨Wmod A, inferInstance, inferInstance, hfin, hproj, ⟨tanRep A hq⟩⟩
 
 end GlobalTheory.TanRepr

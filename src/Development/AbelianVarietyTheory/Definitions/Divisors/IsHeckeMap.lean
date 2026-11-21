@@ -36,21 +36,9 @@ theorem IsHecke.eta {g : D.La →ₗ[D.O] D.La} {c k N : ℕ} {s : S ⟶ Sp R} {
     {ψ : o.A ⟶ o'.A} (h : IsHecke g c k N o o' ψ) (x : D.La) : o'.eta x = o.eta (g x) ≫ ψ :=
   h.2.2.1 x
 
-theorem IsHeckeMap.over {g : D.La →ₗ[D.O] D.La} {c k N : ℕ} {F : RepFam b N} {F' : RepFam b (N * k)}
-    {π : F'.X ⟶ F.X} (h : IsHeckeMap g c k N F F' π) : π ≫ F.s = F'.s :=
-  h.1
-
 theorem IsHeckeMap.dvd {g : D.La →ₗ[D.O] D.La} {c k N : ℕ} {F : RepFam b N} {F' : RepFam b (N * k)}
     {π : F'.X ⟶ F.X} (h : IsHeckeMap g c k N F F' π) : c ∣ k ^ 2 := by
   obtain ⟨-, o', ψ, hH, -⟩ := h
   exact IsHecke.dvd hH
-
-example (g : D.La →ₗ[D.O] D.La) (N : ℕ) {s : S ⟶ Sp R} (o : Obj b (N * 3) s) (o' : Obj b N s)
-    (ψ : o.A ⟶ o'.A) : ¬ IsHecke g 5 3 N o o' ψ :=
-  fun h => absurd h.dvd (by decide)
-
-example (k : ℕ) (hk : 0 < k) : k ^ 2 / k ^ 2 = 1 := Nat.div_self (by positivity)
-
-example (k : ℕ) : (1 : ℕ) ∣ k ^ 2 ∧ k ^ 2 / 1 = k ^ 2 := ⟨one_dvd _, Nat.div_one _⟩
 
 end GlobalTheory.UPel.HT.Hecke

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.Imports
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDistributionAutomorphySourceGroup
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.LatH
 

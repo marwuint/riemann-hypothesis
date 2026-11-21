@@ -3,14 +3,14 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GhostFrobenius
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FontaineAinfLocalDomainXiAdicOrder
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MemSmulOfTmulEqZero
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SemilinearFactorsThroughReduction
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfHodgeTateLatticeConstQpModZpEquivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueMuPInfinityHodgeTateLatticeMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupLatticeFreeRankHeightStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHodgeSequenceFirstMapLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupHodgeTateFirstMapNaturalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeTateSeparatesDualLieGhostComponentStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfHodgeTateLatticeConstQpModZpEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueMuPInfinityHodgeTateLatticeMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivisibleGroupLatticeFreeRankHeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHodgeSequenceFirstMapLattice
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupHodgeTateFirstMapNatural
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeTateSeparatesDualLieGhostComponent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeTateLatticeMuPInfinityFreeRankOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrobeniusHodgeTateLatticeAinfStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrobeniusHodgeTateLatticeAinf
 
 set_option autoImplicit false
 
@@ -31,11 +31,11 @@ theorem prismaticDieudonneHodgeAt_of_hasDatum : ∀ (p : ℕ) [Fact p.Prime] (C 
     rw [← RingHom.mem_ker, hker]; exact Ideal.mem_span_singleton_self _
   have hμ : Sandwich.mu ε ≠ 0 := fun h => GlobalTheory.Dieudonne.not_dvd_mu hε1 (h ▸ dvd_zero _)
 
-  obtain ⟨φ, hφ1, hφ2⟩ := GlobalTheory.T.exists_frobenius_hodgeTateLattice_ainf p C v O hv ε hε
+  obtain ⟨φ, hφ1, hφ2⟩ := _root_.GlobalTheory.PDivLat.exists_frobenius_latt p C v O hv ε hε
 
   have hsep : ∀ (G : PDivGroup p O) (x x' : G.dual.Lie),
       (∀ t, x (hodgeTate G t) = x' (hodgeTate G t)) → x = x' := fun G x x' h =>
-    sub_eq_zero.1 ((GlobalTheory.T.hodgeTate_separates_dual_lie_ghostComponent p C v O hv ε hε G (hD G)).1 (x - x') fun t => by
+    sub_eq_zero.1 ((_root_.GlobalTheory.LieHodgeTate.main p C v O hv ε hε G (hD G)).1 (x - x') fun t => by
       rw [LinearMap.sub_apply, h, sub_self])
   have hqex : ∀ G : PDivGroup p O, ∃ q : latt G →ₛₗ[WittVector.fontaineTheta O p] G.dual.Lie,
       ∀ y t, q y (hodgeTate G t) = WittVector.fontaineTheta O p (y.1 t) := fun G => by
@@ -63,14 +63,14 @@ theorem prismaticDieudonneHodgeAt_of_hasDatum : ∀ (p : ℕ) [Fact p.Prime] (C 
       (xi ε) hθξ _ (D.obj (op G)) G.dual.Lie (r (op G)) (q G) (hr (op G)).1 (hr (op G)).2
   choose π hπ using hπex
 
-  have hιex := fun G : PDivGroup p O => GlobalTheory.T.exists_hodgeSequence_first_map_lattice p C v O hv ε hε G (hD G) (D.obj (op G))
+  have hιex := fun G : PDivGroup p O => _root_.GlobalTheory.LattIota.iota_exists p C v O hv ε hε G (hD G) (D.obj (op G))
     (r (op G)) (π G) (hr (op G)).1 (hr (op G)).2 (fun y t => (LinearMap.congr_fun (hπ G y) _).trans (hq G y t))
   choose ι hι using hιex
   have nr' : ∀ (G H : PDivGroup p O) (f : G ⟶ H) (m : latt H),
       (D.map f.op).hom (r (op H) m) = r (op G) (lattMap f m) := fun G H f m => nr _ _ f.op m
   refine ⟨lattFunctor p O, D, φ, fun G => r (op G), ι, π, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · exact hadd
-  · exact fun G => GlobalTheory.T.pDivisibleGroup_lattice_free_rank_height p C v O hv ε hε G (hD G)
+  · exact fun G => _root_.GlobalTheory.PDivLat.latt_free_finrank p C v O hv ε hε G (hD G)
   · intro G m
     obtain ⟨n, hn⟩ := hφ2 G m
     exact ⟨n, hn⟩
@@ -81,10 +81,10 @@ theorem prismaticDieudonneHodgeAt_of_hasDatum : ∀ (p : ℕ) [Fact p.Prime] (C 
   · exact fun G H f m => nr' G H f m
   · intro G
     refine ⟨(hι G).1, (hι G).2.1, fun x => ?_⟩
-    obtain ⟨y, hy⟩ := (GlobalTheory.T.hodgeTate_separates_dual_lie_ghostComponent p C v O hv ε hε G (hD G)).2 x
+    obtain ⟨y, hy⟩ := (_root_.GlobalTheory.LieHodgeTate.main p C v O hv ε hε G (hD G)).2 x
     exact ⟨r (op G) y, (hπ G y).trans (hsep G _ _ fun t => (hq G y t).trans (hy t))⟩
   · intro G H f w
-    exact GlobalTheory.T.pDivGroup_hodgeTateFirstMap_natural p C v O hv ε hε G H f (hD G) (hD H) (D.obj (op G)) (r (op G)) (D.obj (op H))
+    exact _root_.GlobalTheory.PDivLat.iota_natural p C v O hv ε hε G H f (hD G) (hD H) (D.obj (op G)) (r (op G)) (D.obj (op H))
       (r (op H)) (D.map f.op).hom (ι G) (ι H) (hr (op G)).1 (hr (op G)).2 (nr' G H f)
       (hι G).2.2 (hι H).2.2 w
   · intro G H f x
@@ -92,7 +92,7 @@ theorem prismaticDieudonneHodgeAt_of_hasDatum : ∀ (p : ℕ) [Fact p.Prime] (C 
     refine ((congrArg (π G) (nr' G H f m)).trans (hπ G _)).trans ?_
     refine (hsep G _ _ fun t => ?_).trans (congrArg _ (hπ H m).symm)
     exact (hq G _ t).trans ((hq H m _).symm.trans (congrArg (q H m) (hodgeTate_tateMap f t)))
-  · obtain ⟨e, he⟩ := GlobalTheory.T.ainfHodgeTateLattice_constQpModZp_equiv p C v O hv ε hε
+  · obtain ⟨e, he⟩ := _root_.GlobalTheory.PDivLat.latt_const_equiv p C v O hv ε hε
     exact ⟨e, fun m => (he _).trans ((hφ1 _ _ _).trans (congrArg _ (he m).symm))⟩
   · obtain ⟨e, he⟩ := GlobalTheory.T.hodgeTateLattice_muPInfinity_free_rank_one p C v O hv ε hε
     refine ⟨e, fun m => mul_left_cancel₀ hμ ?_⟩
@@ -104,7 +104,7 @@ theorem prismaticDieudonneHodgeAt_of_hasDatum : ∀ (p : ℕ) [Fact p.Prime] (C 
       ring
     exact h1.trans h2
   · intro g hg
-    obtain ⟨f, hf, hu⟩ := GlobalTheory.T.existsUnique_muPInfinity_hodgeTate_lattice_map p C v O hv ε hε g fun m m' hm t => by
+    obtain ⟨f, hf, hu⟩ := _root_.GlobalTheory.PDivLat.ConstMu.existsUnique_lattMap p C v O hv ε hε g fun m m' hm t => by
       have e : m' = φ _ m := Subtype.ext (LinearMap.ext fun t => by rw [hm, hφ1])
       subst e
       exact (congrArg (fun z => z.1 t) (hg m)).trans (hφ1 _ _ t)

@@ -21,7 +21,7 @@ theorem stabL_relIndex_K0_ne_zero_of_four_mul_add_seven_le : ∀ {F E : Type} [F
     obtain ⟨a, b, -⟩ := (GlobalTheory.HL.volSt (A.L p) r k (G.S p)).1 (A.lat p Λ) (hlat p)
     exact ⟨a, b⟩
   have hKU : {p | K p ≠ U p}.Finite := hfin.subset fun p hp h => hp h.symm
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.T.haarInvVolumeRelIndex_pi_univ_eq_finprod K U hKU hidx
+  obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.HL.invVol_pi_univ K U hKU hidx
   let φ := GlobalTheory.HL.MassProduct.extHom A (k + 2 * r + 1)
   have e1 : G.K0 = (Subgroup.pi Set.univ K).comap φ := (GlobalTheory.HL.MassProduct.comap_pi A _ K).symm
   have e2 : G.stabL Λ = (Subgroup.pi Set.univ U).comap φ := (GlobalTheory.HL.MassProduct.comap_pi A _ U).symm

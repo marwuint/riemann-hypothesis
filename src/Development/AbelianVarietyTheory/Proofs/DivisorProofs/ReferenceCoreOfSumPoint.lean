@@ -1,12 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.PolyBetween
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLocusExponentLeOscillationNonTypePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupLatticeReferenceExponentThetaWeightLevelLeOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetNumberQuotientBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientWeightGapBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLocusExponentLeOscillationNonTypePrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupLatticeReferenceExponentThetaWeightLevelLeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetNumberQuotientBounds
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LocalValuationColumns
 import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientWeightGapBounds
+
 open AlgebraicGeometry CategoryTheory NumberField IsLocalRing IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.PGsh
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.QForm Formalism.MainNotions.ModuliIntegralCharts.H1
 open GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum GlobalTheory.FactorDepth GlobalTheory.CharDepth GlobalTheory.FGDepth GlobalTheory.PtTie GlobalTheory.PlaceInt
@@ -36,26 +37,3 @@ theorem GlobalTheory.RefSum.primeSum_add_pair {S : Finset ℕ} {e : ℕ → ℝ}
     simp only [add_mul, Finset.sum_add_distrib]
     linarith
 
-theorem GlobalTheory.RefSum.refCore_of_sumPt : Size → SumPt → RefCore := by
-  intro hS hSum
-  refine Closed.imp (Closed.and hSum (Closed.and (GlobalTheory.T.quotient_weight_gap_bounds hS) (GlobalTheory.T.jet_number_quotient_bounds hS))) ?_
-  rintro eps Fm CH - ⟨⟨C1, hC1, h1⟩, ⟨C2, -, h2⟩, C3, hC3, h3⟩
-  refine ⟨C1 + C3, add_nonneg hC1 hC3, (h1.and (h2.and h3)).imp fun x0 h x hx hle ι p hp i hi u1 hu => ?_⟩
-  obtain ⟨k1, k2, k3⟩ := h x hx hle ι p hp
-  obtain ⟨S, e, s, hP, hs, hO⟩ := k1 i hi u1 hu
-  obtain ⟨-, -, -, -, -, -, hD, hL, -⟩ := k2 i hi u1 hu
-  obtain ⟨hJ, hr, hg⟩ := k3 i hi u1 hu
-  have hI : InR (Fm.D x ι) ((i : ℕ) + 1) := ⟨by omega, hi.le⟩
-  refine ⟨_, _, _, primeSum_add_pair hP (Fm.D x ι).host.g (Fm.D x ι).host.g_prime, by rw [mul_add, add_mul]; exact add_le_add hs hg,
-    fun q hq => ?_⟩
-  by_cases hq' : q ∈ Finset.univ.image (Fm.D x ι).host.g
-  · obtain ⟨k, -, rfl⟩ := Finset.mem_image.1 hq'
-    refine (GlobalTheory.T.supLatticeReferenceExponent_thetaWeight_level_le_one _ p.T.toCore p.fw.laws.toLawsM (Fm.ex x hx ι).errX _ hI _ _ _ hD hL sum_le_nCol hr hJ k).trans
-      (EReal.coe_le_coe_iff.2 ?_)
-    simp only [if_pos hq']
-    linarith [hP.2.1 ((Fm.D x ι).host.g k)]
-  · haveI := Fact.mk hq
-    have hne : ∀ k, q ≠ (Fm.D x ι).host.g k := fun k h => hq' (Finset.mem_image.2 ⟨k, Finset.mem_univ _, h.symm⟩)
-    refine (GlobalTheory.T.baseLocusExponent_le_oscillation_nonTypePrime _ p.T.toCore p.fw.laws.toLawsM (Fm.ex x hx ι).errX _ hI _ _ _ hD hL sum_le_nCol hr hJ q hne _
-      (hO q hne)).trans (EReal.coe_le_coe_iff.2 ?_)
-    simp only [if_neg hq', add_zero, le_refl]

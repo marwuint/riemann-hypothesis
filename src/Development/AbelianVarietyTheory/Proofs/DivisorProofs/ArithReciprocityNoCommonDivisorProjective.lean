@@ -4,12 +4,35 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ContinuousBcPt
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalSectionDivisorPullbackGeneric
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLineFubiniStudyFacts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReciprocityDefectAddBundleSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCoheightOneNotMemOpenStatement
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShift
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LogInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.SNCAtlas
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.GreenSt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLLocalStatement
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AtlasIndep
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
+import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReciprocityDefectAddBundleSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCoheightOneNotMemOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothSemipositiveWeightOfGenerated
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReciprocitySectionsGeneratedBundlesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratedTwistSectionNonvanishingFiniteSetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReciprocitySectionsGeneratedBundles
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratedTwistSectionNonvanishingFiniteSet
+
 open CategoryTheory AlgebraicGeometry TopologicalSpace Set Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -43,24 +66,24 @@ theorem reciprocity_of_generated_right (hP : GlobalTheory.Published.Principalisa
   haveI := isNoetherian_of_locallyNoetherian_projOverField hproj
   haveI := infinite_of_ringHom_complex σ
   let S : Set X := {genericPoint X} ∪ {z | Order.coheight z = 1 ∧ z ∉ nonzeroLocus t}
-  have hS : S.Finite := (Set.finite_singleton _).union (GlobalTheory.T.finite_coheight_one_notMem_of_genericPoint_mem X (nonzeroLocus t) ht)
-  obtain ⟨A, hA, a, hAgen, hMAgen, haS⟩ := GlobalTheory.T.exists_generated_twist_section_nonvanishing_finite_set F X p hproj M.B M.φ.isLB S hS
+  have hS : S.Finite := (Set.finite_singleton _).union (_root_.GlobalTheory.Mix.finite_coheight_one_notMem_open X (nonzeroLocus t) ht)
+  obtain ⟨A, hA, a, hAgen, hMAgen, haS⟩ := _root_.GlobalTheory.TwistMove.exists_twist_generated_sec_nonzero F X p hproj M.B M.φ.isLB S hS
   obtain ⟨φ, hφ, -⟩ := GlobalTheory.weight_cInf_semiPos_of_generated F X p σ A hA hAgen
   let A' : MLine p σ := ⟨A, φ, hφ⟩
   have ha : genericPoint X ∈ nonzeroLocus a := haS _ (Or.inl rfl)
   have haz : ∀ z : X, Order.coheight z = 1 → z ∉ nonzeroLocus t → z ∈ nonzeroLocus a :=
     fun z hz hzt => haS z (Or.inr ⟨hz, hzt⟩)
-  obtain ⟨s₁, h₁, hloc, hadd⟩ := GlobalTheory.T.reciprocityDefect_add_bundleSection hP F X p σ e hproj hdim L M A' N s hs a ha t ht (by
+  obtain ⟨s₁, h₁, hloc, hadd⟩ := _root_.GlobalTheory.DefectAdd.defect_add hP F X p σ e hproj hdim L M A' N s hs a ha t ht (by
     intro z hz
     by_cases hzt : z ∈ nonzeroLocus t
     · exact Or.inr hzt
     · exact Or.inl ⟨(hcod z hz).resolve_right hzt, haz z hz hzt⟩)
-  have h0A := GlobalTheory.T.reciprocity_sections_generatedBundles hP F X p σ e hproj hdim L A' N a ha t ht (by
+  have h0A := _root_.GlobalTheory.RecSec.reciprocity_sec hP F X p σ e hproj hdim L A' N a ha t ht (by
     intro z hz
     by_cases hzt : z ∈ nonzeroLocus t
     · exact Or.inr hzt
     · exact Or.inl (haz z hz hzt)) hAgen hN
-  have h0MA := GlobalTheory.T.reciprocity_sections_generatedBundles hP F X p σ e hproj hdim L (M.tens A') N s₁ h₁ t ht (by
+  have h0MA := _root_.GlobalTheory.RecSec.reciprocity_sec hP F X p σ e hproj hdim L (M.tens A') N s₁ h₁ t ht (by
     intro z hz
     by_cases hzt : z ∈ nonzeroLocus t
     · exact Or.inr hzt
@@ -74,14 +97,14 @@ theorem reciprocity_of_noCommonDivisor : GlobalTheory.Published.Principalisation
   haveI := isNoetherian_of_locallyNoetherian_projOverField hproj
   haveI := infinite_of_ringHom_complex σ
   let S : Set X := {genericPoint X} ∪ {z | Order.coheight z = 1 ∧ z ∉ nonzeroLocus s}
-  have hS : S.Finite := (Set.finite_singleton _).union (GlobalTheory.T.finite_coheight_one_notMem_of_genericPoint_mem X (nonzeroLocus s) hs)
-  obtain ⟨A, hA, a, hAgen, hNAgen, haS⟩ := GlobalTheory.T.exists_generated_twist_section_nonvanishing_finite_set F X p hproj N.B N.φ.isLB S hS
+  have hS : S.Finite := (Set.finite_singleton _).union (_root_.GlobalTheory.Mix.finite_coheight_one_notMem_open X (nonzeroLocus s) hs)
+  obtain ⟨A, hA, a, hAgen, hNAgen, haS⟩ := _root_.GlobalTheory.TwistMove.exists_twist_generated_sec_nonzero F X p hproj N.B N.φ.isLB S hS
   obtain ⟨φ, hφ, -⟩ := GlobalTheory.weight_cInf_semiPos_of_generated F X p σ A hA hAgen
   let A' : MLine p σ := ⟨A, φ, hφ⟩
   have ha : genericPoint X ∈ nonzeroLocus a := haS _ (Or.inl rfl)
   have haz : ∀ z : X, Order.coheight z = 1 → z ∉ nonzeroLocus s → z ∈ nonzeroLocus a :=
     fun z hz hzs => haS z (Or.inr ⟨hz, hzs⟩)
-  obtain ⟨t₁, h₁, hloc, hadd⟩ := GlobalTheory.T.reciprocityDefect_add_bundleSection hP F X p σ e hproj hdim L N A' M t ht a ha s hs (by
+  obtain ⟨t₁, h₁, hloc, hadd⟩ := _root_.GlobalTheory.DefectAdd.defect_add hP F X p σ e hproj hdim L N A' M t ht a ha s hs (by
     intro z hz
     by_cases hzs : z ∈ nonzeroLocus s
     · exact Or.inr hzs

@@ -7,10 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportFi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelChangeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharactersRestrictionEta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerGoodModelsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatibleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExistStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExist
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatFiniteAdelesMemSpanRestrictedProduStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeCharacterRestrictionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeCharacterRestriction
 
 noncomputable section
 
@@ -111,7 +112,7 @@ end
 
 theorem exists_chr (B : Base F E) (hB : B.IsGood σ) (m : ℕ) :
     ∃ χ : Chr F E, IsHecke F E χ ∧ ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m := by
-  obtain ⟨χ, hχ, hr⟩ := GlobalTheory.T.exists_hecke_character_restriction F E σ B hB
+  obtain ⟨χ, hχ, hr⟩ := _root_.GlobalTheory.CMHeckeEta.exists_hecke_resEtaPow_one F E σ B hB
   refine ⟨χ ^ m, ⟨hχ.1.pow m, fun x => ?_⟩, fun a => ?_⟩
   · rw [MonoidHom.pow_apply, hχ.2 x, one_pow]
   · rw [MonoidHom.pow_apply, Circle.coe_pow, hr a]
@@ -196,8 +197,8 @@ theorem exists_modelChange_pol : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E :
     rw [h1, pureA_pt] at h2
     rw [map_smul, smul_apply, ← h2, smul_eq_mul]
     field_simp
-  obtain ⟨D, hD⟩ := GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ B.ψ _ _ M.co hB.std
-  obtain ⟨D', hD'⟩ := GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ B.ψ _ _ M'.co hB.std
+  obtain ⟨D, hD⟩ := _root_.GlobalTheory.HeisDer.derEx F E σ _ _ _ B.ψ _ _ M.co hB.std
+  obtain ⟨D', hD'⟩ := _root_.GlobalTheory.HeisDer.derEx F E σ _ _ _ B.ψ _ _ M'.co hB.std
   have Heisenberg₂ : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ u Φ) = M'.co.rho B.ψ u (e Φ) := by
     intro u Φ hΦ
     have h1 : ∀ m : ℕ, incM F (1 : Matrix (Fin m) (Fin m) E) = 1 := fun m => Matrix.map_one _ (map_zero _) (map_one _)
@@ -205,7 +206,7 @@ theorem exists_modelChange_pol : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E :
     rwa [h1, h1, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one] at this
   refine ⟨e, hE, ei, ev, hsurj, ?_, hv, hl⟩
   refine pol_map M M' B.ψ B.emb (fun u f => D u f) (fun u f => D' u f)
-    (fun u hu f => actsD_iff GlobalTheory.T.archActionReadings_compatible M B.ψ u f _ (hD u hu f).1) (fun u hu f => actsD_iff GlobalTheory.T.archActionReadings_compatible M' B.ψ u f _ (hD' u hu f).1)
+    (fun u hu f => actsD_iff _root_.GlobalTheory.RealLift.actsLaws M B.ψ u f _ (hD u hu f).1) (fun u hu f => actsD_iff _root_.GlobalTheory.RealLift.actsLaws M' B.ψ u f _ (hD' u hu f).1)
     _ ⟨hinj, hsurj⟩ fun u hu f => ?_
   refine SchwartzMap.ext fun x => ?_
   have h1 := (hD u hu f).1 _ hg _ (GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n d X W X W M M' 1 1 ∅ e hM hM' hE _ (proj_adm x y'))

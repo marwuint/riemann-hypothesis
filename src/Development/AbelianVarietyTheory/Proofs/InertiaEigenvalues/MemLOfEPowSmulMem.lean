@@ -5,16 +5,6 @@ open GlobalTheory.BK PowerSeries
 
 namespace GlobalTheory.BK.PhiMod
 
-section
-
-variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
-  [IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
-  [NormedAlgebra ℚ_[l] K] [NeZero e] (P : PhiMod O K l e a ι)
-
-variable [CompleteSpace K]
-
-end
-
 open PowerSeries in
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
   [_root_.GlobalTheory.BK.IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]

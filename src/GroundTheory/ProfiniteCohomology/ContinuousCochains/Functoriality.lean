@@ -50,12 +50,6 @@ theorem cochainsMap_comp (f : A ⟶ B) (g : B ⟶ C) :
   ext n c : 3
   rfl
 
-theorem cochainsMap_comp_cochainsComplexι (f : A ⟶ B) :
-    cochainsMap f ≫ cochainsComplexι B =
-      cochainsComplexι A ≫ groupCohomology.cochainsMap (MonoidHom.id G) f := by
-  ext n c : 3
-  rfl
-
 instance (f : A ⟶ B) [Mono f] (n : ℕ) : Mono ((cochainsMap f).f n) := by
   rw [ModuleCat.mono_iff_injective]
   intro c d h
@@ -129,17 +123,6 @@ variable (A : Rep.{u} k G) [IsDiscreteRep A]
 
 noncomputable def cohomologyToGroupCohomology (n : ℕ) : cohomology A n ⟶ groupCohomology A n :=
   HomologicalComplex.homologyMap (cochainsComplexι A) n
-
-theorem cohomologyMap_comp_cohomologyToGroupCohomology {B : Rep.{u} k G} [IsDiscreteRep B]
-    (f : A ⟶ B) (n : ℕ) :
-    cohomologyMap f n ≫ cohomologyToGroupCohomology B n =
-      cohomologyToGroupCohomology A n ≫ groupCohomology.map (MonoidHom.id G) f n := by
-  change HomologicalComplex.homologyMap (cochainsMap f) n ≫
-      HomologicalComplex.homologyMap (cochainsComplexι B) n =
-    HomologicalComplex.homologyMap (cochainsComplexι A) n ≫
-      HomologicalComplex.homologyMap (groupCohomology.cochainsMap (MonoidHom.id G) f) n
-  rw [← HomologicalComplex.homologyMap_comp, ← HomologicalComplex.homologyMap_comp,
-    cochainsMap_comp_cochainsComplexι]
 
 instance isIso_cochainsComplexι [DiscreteTopology G] : IsIso (cochainsComplexι A) := by
   have : ∀ n, IsIso ((cochainsComplexι A).f n) := fun n => by

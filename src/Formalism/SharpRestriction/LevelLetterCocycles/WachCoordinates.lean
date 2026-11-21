@@ -363,18 +363,6 @@ def admitted (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf 
 def Stmt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C C₁ C₂ : ℝ) : Prop :=
   admitted D HW F Cm C → Conclusion1 D C₁ ∧ Conclusion2 D C₂
 
-def RealisationStatementAll : Prop :=
-  ∃ C₁ C₀ : ℝ, ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C : ℝ), admitted D HW F Cm C → Conclusion1 D C₁ ∧ ∀ C₂ : ℝ, C₀ ≤ C₂ → Conclusion2 D C₂
-
-theorem closed_form_iff_threshold_form : RealisationStatementAll ↔ ∃ C₁ C₀ : ℝ, ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C C₂ : ℝ), C₀ ≤ C₂ → Stmt D HW F Cm C C₁ C₂ := by
-  constructor
-  · rintro ⟨C₁, C₀, h⟩
-    exact ⟨C₁, C₀, fun D HW F Cm C C₂ hC₂ hA =>
-      ⟨(h D HW F Cm C hA).1, (h D HW F Cm C hA).2 C₂ hC₂⟩⟩
-  · rintro ⟨C₁, C₀, h⟩
-    exact ⟨C₁, C₀, fun D HW F Cm C hA =>
-      ⟨(h D HW F Cm C C₀ le_rfl hA).1, fun C₂ hC₂ => (h D HW F Cm C C₂ hC₂ hA).2⟩⟩
-
 end Record
 
 end Formalism.MainNotions.WachCoordinates

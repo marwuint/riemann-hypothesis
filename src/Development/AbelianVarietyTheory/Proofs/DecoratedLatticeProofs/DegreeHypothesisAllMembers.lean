@@ -4,11 +4,15 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BrgStd
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsScaleWithBoundedGamma
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GlobalRowsOfSizeParameters
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NodesOfSizeData
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HypothesesOfGlobalRowsAndNodesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HypothesesOfGlobalRowsAndNodes
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ToGlob0
+import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowNumAt
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.EventuallyConstructedPointHostSizeNumerical
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TraceLowerBoundAllMembersStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TraceUpperBoundAllMembersStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TraceLowerBoundAllMembers
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.VanishingGramTermsBoundParams
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TraceUpperBoundAllMembers
+
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -45,7 +49,7 @@ theorem evP_hypL (A B : Formalism.MainNotions.Inhab.FC → ℝ) : EvP fun κ K =
   refine ⟨c2, fun ch hch _ => ?_⟩
   obtain ⟨x1, hN⟩ := hN ch hch
   obtain ⟨x2, hNo⟩ := GlobalTheory.Diag.PG.NodeParameters.nodes_of_parameters eps he he52
-  obtain ⟨x3, hH⟩ := GlobalTheory.T.hypotheses_of_global_rows_and_nodes eps (max (B C) 40) he he52 hCD3 (max (A C) (8 * C.CGam)) (max (B C) 40)
+  obtain ⟨x3, hH⟩ := _root_.GlobalTheory.Diag.PG.standingHypotheses_of_glob0_nodes_Tr_bounds eps (max (B C) 40) he he52 hCD3 (max (A C) (8 * C.CGam)) (max (B C) 40)
     (C.P.CYL + 1) hCD0 le_rfl
   refine ⟨max (max x1 x2) (max x3 ((max 2 (5 / (eps / 100))) ^ (eps / 100)⁻¹)), fun K hK hx β hW => ?_⟩
   obtain ⟨hC, hcD', hch', heps, -⟩ := hK
@@ -85,10 +89,5 @@ theorem evP_hypL (A B : Formalism.MainNotions.Inhab.FC → ℝ) : EvP fun κ K =
   have h8 : 8 * β.O.L.CGam ≤ max (A C) (8 * C.CGam) := by rw [N.CGam_eq]; exact le_max_right _ _
   exact GlobalTheory.Core.Deg.hypL_of (hH β.O.L.sc.x (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx') β.D β.O.L
     (1 / 2) C.CTu hL h8 G hNd hW)
-
-theorem hypL_at_points : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL) (A B : Formalism.MainNotions.Inhab.FC → ℝ), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun κ D O _ _ => GlobalTheory.Core.Deg.HypL D O.L.sc.L (max (A κ.C) (8 * κ.C.CGam)) (max (B κ.C) 40) (κ.C.P.CYL + 1) (1 / 4) 3 (1 / 2) κ.C.CTu) := by
-  intro hL p A B
-  exact (EvP.and (RowE.and (GlobalTheory.T.trace_lower_bound_all_members hL p) (GlobalTheory.T.trace_upper_bound_all_members hL p)) (evP_hypL A B)).mono fun _ _ _ H β hq c b hl =>
-    H.2 β fun u => ⟨(H.1 β hq c b hl).1 u, (H.1 β hq c b hl).2 u⟩
 
 end GlobalTheory.Core.HypAt

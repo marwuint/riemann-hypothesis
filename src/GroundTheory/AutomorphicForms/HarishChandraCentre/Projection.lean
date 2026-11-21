@@ -60,9 +60,6 @@ theorem hcProjLin_hcEmb (p : MvPolynomial (Fin n) ℂ) : hcProjLin (hcEmb p) = p
       diagExp_diagEmbExp]
   | add p q hp hq => rw [map_add, map_add, hp, hq]
 
-theorem hcEmb_injective : Function.Injective (hcEmb (n := n)) :=
-  Function.LeftInverse.injective hcProjLin_hcEmb
-
 theorem hcProjLin_eq_zero_of_mem_nPlusU {x : U n} (hx : x ∈ nPlusU n) : hcProjLin x = 0 := by
   have hx' : x ∈ Submodule.span ℂ {x | ∃ m : Fin n × Fin n →₀ ℕ, HasUpper m ∧ canon m = x} :=
     nPlusU_le_spanUpper hx
@@ -74,61 +71,6 @@ theorem hcProjLin_eq_zero_of_mem_nPlusU {x : U n} (hx : x ∈ nPlusU n) : hcProj
   | zero => simp
   | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
   | smul r x _ hx => rw [map_smul, hx, smul_zero]
-
-theorem hcProjLin_eq_zero_of_mem_nMinusU {x : U n} (hx : x ∈ nMinusU n) : hcProjLin x = 0 := by
-  have hx' : x ∈ Submodule.span ℂ {x | ∃ m : Fin n × Fin n →₀ ℕ, HasLower m ∧ canon m = x} :=
-    nMinusU_le_spanLower hx
-  clear hx
-  induction hx' using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨m, hm, rfl⟩ := hx
-    exact hcProjLin_canon_of_not (not_isDiagExp_of_hasLower hm)
-  | zero => simp
-  | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
-  | smul r x _ hx => rw [map_smul, hx, smul_zero]
-
-theorem hcProjLin_eq_zero_of_mem_sup {x : U n} (hx : x ∈ nMinusU n ⊔ nPlusU n) :
-    hcProjLin x = 0 := by
-  obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hx
-  rw [map_add, hcProjLin_eq_zero_of_mem_nMinusU hy, hcProjLin_eq_zero_of_mem_nPlusU hz, add_zero]
-
-theorem sub_hcEmb_mem (u : U n) : u - hcEmb (hcProjLin u) ∈ nMinusU n ⊔ nPlusU n := by
-  let φ : U n →ₗ[ℂ] U n := LinearMap.id - hcEmb.toLinearMap ∘ₗ hcProjLin
-  have hφ : ∀ u, φ u = u - hcEmb (hcProjLin u) := fun _ => rfl
-  suffices ⊤ ≤ (nMinusU n ⊔ nPlusU n).comap φ by
-    have := this (Submodule.mem_top (x := u))
-    rwa [Submodule.mem_comap, hφ] at this
-  rw [← span_canon_eq_top, Submodule.span_le]
-  rintro _ ⟨m, rfl⟩
-  rw [SetLike.mem_coe, Submodule.mem_comap, hφ]
-  rcases isDiagExp_or m with h | h | h
-  · rw [hcProjLin_canon_of_isDiagExp h, ← canon_of_isDiagExp h, sub_self]
-    exact Submodule.zero_mem _
-  · rw [hcProjLin_canon_of_not (not_isDiagExp_of_hasUpper h), map_zero, sub_zero]
-    exact Submodule.mem_sup_right (canon_mem_nPlusU h)
-  · rw [hcProjLin_canon_of_not (not_isDiagExp_of_hasLower h), map_zero, sub_zero]
-    exact Submodule.mem_sup_left (canon_mem_nMinusU h)
-
-theorem hcProjLin_eq_iff (u : U n) (p : MvPolynomial (Fin n) ℂ) :
-    hcProjLin u = p ↔ u - hcEmb p ∈ nMinusU n ⊔ nPlusU n := by
-  constructor
-  · rintro rfl; exact sub_hcEmb_mem u
-  · intro h
-    have := hcProjLin_eq_zero_of_mem_sup h
-    rwa [map_sub, hcProjLin_hcEmb, sub_eq_zero] at this
-
-theorem isCompl_range_hcEmb :
-    IsCompl (LinearMap.range (hcEmb (n := n)).toLinearMap) (nMinusU n ⊔ nPlusU n) := by
-  constructor
-  · rw [Submodule.disjoint_def]
-    rintro x ⟨p, rfl⟩ hx
-    have := hcProjLin_eq_zero_of_mem_sup hx
-    rw [AlgHom.toLinearMap_apply, hcProjLin_hcEmb] at this
-    simp [this]
-  · rw [codisjoint_iff, eq_top_iff]
-    intro u _
-    rw [← sub_add_cancel u (hcEmb (hcProjLin u)), add_comm]
-    exact Submodule.add_mem_sup ⟨_, rfl⟩ (sub_hcEmb_mem u)
 
 theorem sum_mul_rootAt (a : Fin n × Fin n) :
     ∑ k : Fin n, (k : ℤ) * rootAt a k = (a.1 : ℤ) - a.2 := by

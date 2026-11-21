@@ -70,7 +70,7 @@ theorem lat_val (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (Ω : 
     change j (q.symm (a • q b)) = _ • j (q.symm (q b))
     rw [this, q.symm_apply_apply, q.symm_apply_apply]
     exact hjs s b
-  · obtain ⟨hfin, hproj, -⟩ := GlobalTheory.T.lie_model_finite_base_change X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) EA MA
+  · obtain ⟨hfin, hproj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) EA MA
     have : Module.Free (X.presheaf.stalk (centre z)) EA := Module.free_of_flat_of_isLocalRing
     let n := Module.finrank (X.presheaf.stalk (centre z)) EA
     let b : Module.Basis (Fin n) (X.presheaf.stalk (centre z)) EA := Module.finBasis _ EA

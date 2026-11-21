@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FreeCell
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisintegrationParameterContinuousStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisintegrationParameterContinuous
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityExists
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalVolumeRankOneProduct
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
@@ -136,7 +136,7 @@ theorem stage_three {δ : Measure D} {ν₃ : Measure H₃} {f₃ : D → Y₃} 
   have ht : ∀ p ∈ tsupport (ψ ∘ e), e p ∈ tsupport ψ := fun p hp => by
     rwa [tsupport_comp_eq_preimage] at hp
   have hU : ∀ p ∈ tsupport (ψ ∘ e), p.2 ∈ U₃ := fun p hp => (hψt _ (ht p hp)).2
-  obtain ⟨c1, c2, c3⟩ := GlobalTheory.T.disintegration_parameter_continuous D H₃ Y₃ (V₁ × A × P) δ ν₃ f₃ ι₃ q₃ U₃ m₃ hU₃ hq₃ hι₃ hf₃ hm₃
+  obtain ⟨c1, c2, c3⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.FibParam.fibre_param_continuous D H₃ Y₃ (V₁ × A × P) δ ν₃ f₃ ι₃ q₃ U₃ m₃ hU₃ hq₃ hι₃ hf₃ hm₃
     (ψ ∘ e) hc hs hU
   refine ⟨_, c1, c2, ?_, ?_, ?_⟩
   · intro z hz
@@ -189,7 +189,7 @@ theorem stage_one {μ₁ : Measure V₁} {ν₁ : Measure H₁} {f₁ : V₁ →
   have hU : ∀ p ∈ tsupport (ξ ∘ e), p.2 ∈ U₁ := fun p hp => by
     rw [tsupport_comp_eq_preimage] at hp
     exact hξt _ hp
-  obtain ⟨c1, -, -⟩ := GlobalTheory.T.disintegration_parameter_continuous V₁ H₁ Y₁ (P × H₃) μ₁ ν₁ f₁ ι₁ q₁ U₁ m₁ hU₁ hq₁ hι₁ hf₁ hm₁
+  obtain ⟨c1, -, -⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.FibParam.fibre_param_continuous V₁ H₁ Y₁ (P × H₃) μ₁ ν₁ f₁ ι₁ q₁ U₁ m₁ hU₁ hq₁ hι₁ hf₁ hm₁
     (ξ ∘ e) hc hs hU
   have e1 : (fun z : H₁ × P × H₃ => ∫⁻ x, ENNReal.ofReal (ξ (x, z.2.1, z.2.2)) ∂(m₁ z.1)) =
       fun z => ENNReal.ofReal (∫ v, (ξ ∘ e) (z.2, v) ∂(m₁ z.1)) := by

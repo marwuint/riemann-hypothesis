@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 import ReciprocityTheory.DualLattices.FischerSelfNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TotalDegreeSubstFLe
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntertwinerIrreducibleUnitaryHighestWeightStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntertwinerIrreducibleUnitaryHighestWeight
 
 open Formalism.MainNotions.S Matrix GlobalTheory.CompactHowe
 open scoped TensorProduct
@@ -107,7 +107,7 @@ theorem exists_intertwiner_of_embedding (k : ℕ) (κ : Type) (ν : Fin k → �
         rowSubst_mul, mem_UJset_allPos hg, rowSubst_one]
     · intro v
       exact (hdiff v).continuous.continuousOn
-  obtain ⟨L, hL, v, hv⟩ := GlobalTheory.T.exists_intertwiner_with_highestWeight_vector_in_range k (fun a => (ν a : ℝ)) H τ E π D hτ hK hrep (fun w => hdiff w _)
+  obtain ⟨L, hL, v, hv⟩ := _root_.GlobalTheory.HighestWeightMap.exists_intertwiner k (fun a => (ν a : ℝ)) H τ E π D hτ hK hrep (fun w => hdiff w _)
     (fun h => hD (by rw [h, map_zero]))
     (by
       intro a b hab s

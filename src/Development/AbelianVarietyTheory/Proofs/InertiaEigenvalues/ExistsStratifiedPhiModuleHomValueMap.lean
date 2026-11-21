@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisinStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCoverStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectivePushoutOfPrismCoverStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrismCoverReceivingBreuilKisin
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveAndRangeOfPrismCover
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectivePushoutOfPrismCover
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 
@@ -39,8 +39,8 @@ theorem evalHom : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' 
     ∃ w : N →ₗ[B.A] N', ∀ (Q : Obj l ↥(OL K)) (a : Hom B Q) (g : Hom bk.prism Q) (x : N),
       V'.v a g (w x) = (Y.map (BK.hf g)).mulVec (V.v a g x) := by
   intro l _ K bk d d' S S' Y hY B N _ _ N' _ _ V V'
-  obtain ⟨C, h, ⟨f⟩, hc⟩ := GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B
-  obtain ⟨inj, ev⟩ := GlobalTheory.T.injective_and_range_of_prism_cover l K bk d' S' B C N' V' h f hc
+  obtain ⟨C, h, ⟨f⟩, hc⟩ := _root_.GlobalTheory.BSP.exists_cover_receiving_bk l K bk B
+  obtain ⟨inj, ev⟩ := _root_.GlobalTheory.BSP.Eval.effective_of_cover l K bk d' S' B C N' V' h f hc
   have hz : ∀ x, ∀ (Q : Obj l ↥(OL K)) (p q : Hom C Q), p.comp h = q.comp h →
       (fun i => p.f (((Y.map (BK.hf f)).mulVec (V.v h f x)) i)) = (S'.ε (p.comp f) (q.comp f)).mulVec
         fun i => q.f (((Y.map (BK.hf f)).mulVec (V.v h f x)) i) := by
@@ -68,7 +68,7 @@ theorem evalHom : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' 
         refine Eq.trans ?_ (congrArg (h.f c • ·) (hw0 x)).symm
         exact (congrArg (Y.map (BK.hf f)).mulVec ((V.v h f).map_smulₛₗ c x)).trans (Matrix.mulVec_smul _ _ _) }
   refine ⟨w, fun Q a g x => ?_⟩
-  obtain ⟨Q', h', a', hcomm, hinj⟩ := GlobalTheory.T.exists_injective_pushout_of_prismCover l K bk d S B C h hc Q a
+  obtain ⟨Q', h', a', hcomm, hinj⟩ := _root_.GlobalTheory.BSP.cover_po_injective l K bk d S B C h hc Q a
   have hw : w x = w0 x := rfl
   funext i
   apply hinj

@@ -316,18 +316,6 @@ theorem resG_orth (hε : IsIdempotentElem ε) (hε' : IsIdempotentElem ε') (h :
     rw [← map_mul, h, map_zero]
   rw [mtG_mul, mt_resG V hε, mt_resG V hε', mt_resG V (isIdem_add_orth hε hε' h), map_add, resM_add hst]
 
-theorem resG_comm (hε : IsIdempotentElem ε) (hε' : IsIdempotentElem ε') (h : ε * ε' = 0) (g g' : GA D V) :
-    resG V ε g * resG V ε' g' = resG V ε' g' * resG V ε g := by
-  apply gaExt
-  have hst : algebraMap (AF D.host.F) (AE D) ε * algebraMap (AF D.host.F) (AE D) ε' = 0 := by
-    rw [← map_mul, h, map_zero]
-  have hts : algebraMap (AF D.host.F) (AE D) ε' * algebraMap (AF D.host.F) (AE D) ε = 0 := by
-    rw [mul_comm, hst]
-  rw [mtG_mul, mtG_mul]
-  simp only [mt_resG V hε, mt_resG V hε']
-  rw [resM_orth hst, resM_orth hts]
-  abel
-
 theorem resG_compl (hε : IsIdempotentElem ε) (g : GA D V) : resG V ε g * resG V (1 - ε) g = g := by
   have h0 : ε * (1 - ε) = 0 := by rw [mul_sub, mul_one, hε.eq, sub_self]
   have h1 : ε + (1 - ε) = 1 := by ring
@@ -408,38 +396,6 @@ theorem finE_resG_mem_St (hε : IsIdempotentElem ε) {g : GA D V} {β : GL (Fin 
     rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
   rw [resM_map, resM_conj _ _ _ _ hββ, hy', hsub, finE_val, mt_resG V hε, resM_map, toEAf_alg]
 
-theorem redFn_resG_zero (hε : IsIdempotentElem ε) {g : GA D V} {β : GL (Fin V.rank) (Lev.EAf D)}
-    (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) {PP : Formalism.L2.DIV.Pl D.host.E} {v : HeightOneSpectrum (𝓞 D.host.F)}
-    (hv : v.asIdeal = PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)))
-    (h0 : evalV D.host.F v (sndA D.host.F ε) = 0) :
-    Formalism.L2.DIV.redFn β PP (Lev.finE V (resG V ε g)) = 1 := by
-  refine Formalism.L2.DIV.reduction_local D.host.F D.host.E V.rank β PP v hv _ (finE_resG_mem_St V hε hg) ?_
-  apply Units.ext
-  show ((Lev.finE V (resG V ε g) : GL (Fin V.rank) (Lev.EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)).map
-    (Formalism.UG.prV (E := D.host.E) v) = 1
-  rw [finE_val, mt_resG V hε, resM_map, resM_map, toEAf_alg]
-  have hp : Formalism.UG.prV (E := D.host.E) v ((1 : D.host.E) ⊗ₜ[D.host.F] sndA D.host.F ε) = 0 := by
-    show (Algebra.TensorProduct.map (AlgHom.id D.host.F D.host.E) (Formalism.UG.evalV D.host.F v))
-      ((1 : D.host.E) ⊗ₜ[D.host.F] sndA D.host.F ε) = 0
-    rw [Algebra.TensorProduct.map_tmul]
-    have : Formalism.UG.evalV D.host.F v (sndA D.host.F ε) = 0 := h0
-    rw [this, TensorProduct.tmul_zero]
-  rw [hp, resM_zero_left]
-
-theorem redFn_resG_one (hε : IsIdempotentElem ε) {g : GA D V} {β : GL (Fin V.rank) (Lev.EAf D)}
-    (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) {PP : Formalism.L2.DIV.Pl D.host.E} {v : HeightOneSpectrum (𝓞 D.host.F)}
-    (hv : v.asIdeal = PP.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)))
-    (h1 : evalV D.host.F v (sndA D.host.F ε) = 1) :
-    Formalism.L2.DIV.redFn β PP (Lev.finE V (resG V ε g)) = Formalism.L2.DIV.redFn β PP (Lev.finE V g) := by
-  have h1' : evalV D.host.F v (sndA D.host.F (1 - ε)) = 0 := by rw [map_sub, map_one, map_sub, map_one, h1, sub_self]
-  calc Formalism.L2.DIV.redFn β PP (Lev.finE V (resG V ε g))
-        = Formalism.L2.DIV.redFn β PP (Lev.finE V (resG V ε g)) *
-          Formalism.L2.DIV.redFn β PP (Lev.finE V (resG V (1 - ε) g)) := by
-        rw [redFn_resG_zero V hε.one_sub hg hv h1', mul_one]
-    _ = Formalism.L2.DIV.redFn β PP (Lev.finE V (resG V ε g) * Lev.finE V (resG V (1 - ε) g)) :=
-        (Formalism.L2.DIV.redFn_mul (finE_resG_mem_St V hε hg) (finE_resG_mem_St V hε.one_sub hg) PP).symm
-    _ = Formalism.L2.DIV.redFn β PP (Lev.finE V g) := by rw [← map_mul, resG_compl V hε]
-
 end Fin
 
 section Det
@@ -507,30 +463,6 @@ theorem comm_mem_intAE {s : D.host.E ⊗[D.host.F] Af D.host.F} (hs : s ∈ Form
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
   | mul x y _ _ hx hy => rw [map_mul]; exact intAE_mul hx hy
 
-theorem exists_principal_pow (PP : Formalism.L2.DIV.Pl D.host.E) :
-    ∃ π : 𝓞 D.host.E, π ∈ PP.asIdeal ∧ π ≠ 0 ∧ ∃ m : ℕ, PP.asIdeal ^ (m + 1) = Ideal.span {π} := by
-  classical
-  have hne : PP.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 D.host.E)) := mem_nonZeroDivisors_of_ne_zero PP.ne_bot
-  let I : nonZeroDivisors (Ideal (𝓞 D.host.E)) := ⟨PP.asIdeal, hne⟩
-  have hn : 0 < Fintype.card (ClassGroup (𝓞 D.host.E)) := Fintype.card_pos
-  have h1 : ClassGroup.mk0 (I ^ Fintype.card (ClassGroup (𝓞 D.host.E))) = 1 := by
-    rw [map_pow, pow_card_eq_one]
-  rw [ClassGroup.mk0_eq_one_iff] at h1
-  obtain ⟨⟨π, hπ⟩⟩ := h1
-  have hπ' : PP.asIdeal ^ Fintype.card (ClassGroup (𝓞 D.host.E)) = Ideal.span {π} := by
-    first
-      | exact hπ
-      | simpa [Ideal.span] using hπ
-  have hpow0 : PP.asIdeal ^ Fintype.card (ClassGroup (𝓞 D.host.E)) ≠ ⊥ := pow_ne_zero _ PP.ne_bot
-  refine ⟨π, ?_, ?_, Fintype.card (ClassGroup (𝓞 D.host.E)) - 1, ?_⟩
-  · apply Ideal.pow_le_self (Nat.pos_iff_ne_zero.mp hn)
-    rw [hπ']
-    exact Ideal.subset_span (Set.mem_singleton π)
-  · rintro rfl
-    apply hpow0
-    rw [hπ', Ideal.span_singleton_eq_bot]
-  · rw [Nat.sub_add_cancel hn, hπ']
-
 theorem comm_comm (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F))
       ((Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) z) = z := by
@@ -538,116 +470,6 @@ theorem comm_comm (z : Af D.host.F ⊗[D.host.F] D.host.E) :
   | zero => simp
   | tmul a b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
-
-set_option maxHeartbeats 1000000 in
-
-theorem resS_idemAt' {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : Formalism.L2.NTheta.IsIdemAt e PP)
-    (e' : Formalism.L2.Herm.intAf D.host.F D.host.E) (he' : (e' : Lev.EAf D) = toEAf D e) :
-    Formalism.L2.DIV.resS D.host.F PP e' = 1 := by
-  classical
-  have hidem : e' * e' = e' := Subtype.ext (by
-    show (e' : Lev.EAf D) * e' = e'
-    rw [he', ← map_mul, hPP.1.1])
-  haveI : PP.asIdeal.IsPrime := PP.isPrime
-  have hI : IsIdempotentElem (Formalism.L2.DIV.resS D.host.F PP e') := by
-    show _ * _ = _
-    rw [← map_mul, hidem]
-  rcases IsIdempotentElem.iff_eq_zero_or_one.1 hI with h0 | h1
-  · exfalso
-    obtain ⟨π, hπPP, hπ0, m, hπ⟩ := exists_principal_pow PP
-    have hmem : e' ∈ Formalism.L2.DIV.idS D.host.F PP.asIdeal := (Formalism.L2.DIV.resS_eq_zero_iff PP e').1 h0
-    have hpow : e' ∈ Ideal.span {Formalism.L2.DIV.oToS D.host.F D.host.E π} := by
-      have h2 : e' ^ (m + 1) ∈ (Formalism.L2.DIV.idS D.host.F PP.asIdeal) ^ (m + 1) := Ideal.pow_mem_pow hmem (m + 1)
-      have h3 : e' ^ (m + 1) = e' := IsIdempotentElem.pow_succ_eq m hidem
-      rw [h3] at h2
-      unfold Formalism.L2.DIV.idS at h2
-      rwa [← Ideal.map_pow, hπ, Ideal.map_span, Set.image_singleton] at h2
-    obtain ⟨s, hs⟩ := Ideal.mem_span_singleton'.1 hpow
-    apply (hPP.2 π hπ0).1 hπPP
-    have hsv : (s : D.host.E ⊗[D.host.F] Af D.host.F) * ((π : D.host.E) ⊗ₜ[D.host.F] (1 : Af D.host.F)) =
-        toEAf D e := by
-      have := congrArg (fun x : Formalism.L2.Herm.intAf D.host.F D.host.E => (x : D.host.E ⊗[D.host.F] Af D.host.F)) hs
-      rw [← he']
-      exact this
-    have hπE : (π : D.host.E) ≠ 0 := by
-      intro h; apply hπ0; exact FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E (by rw [map_zero]; exact h)
-    have hfe : finPart D e = (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)) (toEAf D e) :=
-      (comm_comm _).symm
-    have key : finPart D (e * incA D ((π : D.host.E)⁻¹)) =
-        (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)) (s : D.host.E ⊗[D.host.F] Af D.host.F) := by
-      calc finPart D (e * incA D ((π : D.host.E)⁻¹))
-          = finPart D e * ((1 : Af D.host.F) ⊗ₜ[D.host.F] (π : D.host.E)⁻¹) := by rw [map_mul, finPart_incA]
-        _ = (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F))
-              ((s : D.host.E ⊗[D.host.F] Af D.host.F) * ((π : D.host.E) ⊗ₜ[D.host.F] (1 : Af D.host.F))) *
-            ((1 : Af D.host.F) ⊗ₜ[D.host.F] (π : D.host.E)⁻¹) := by rw [hfe, hsv]
-        _ = (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)) (s : D.host.E ⊗[D.host.F] Af D.host.F) *
-            (((1 : Af D.host.F) ⊗ₜ[D.host.F] (π : D.host.E)) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] (π : D.host.E)⁻¹)) := by
-            rw [map_mul, Algebra.TensorProduct.comm_tmul, mul_assoc]
-        _ = _ := by
-            rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hπE, ← Algebra.TensorProduct.one_def,
-              mul_one]
-    rw [key]
-    exact comm_mem_intAE s.2
-  · exact h1
-
-theorem resS_idemAt {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : Formalism.L2.NTheta.IsIdemAt e PP) :
-    Formalism.L2.DIV.resS D.host.F PP ⟨toEAf D e, toEAf_mem_intAf (idemAt_int hPP)⟩ = 1 :=
-  resS_idemAt' hPP _ rfl
-
-theorem idemUnit_exists {R : Type*} [CommRing R] (e' : R) (he : e' * e' = e') (d : Rˣ) :
-    ∃ u : Rˣ, (u : R) = e' * d + (1 - e') := by
-  refine ⟨⟨e' * d + (1 - e'), e' * ((d⁻¹ : Rˣ) : R) + (1 - e'), ?_, ?_⟩, rfl⟩
-  · have hd : (d : R) * ((d⁻¹ : Rˣ) : R) = 1 := Units.mul_inv d
-    linear_combination (e' * e') * hd + (2 - (d : R) - ((d⁻¹ : Rˣ) : R)) * he
-  · have hd : ((d⁻¹ : Rˣ) : R) * (d : R) = 1 := Units.inv_mul d
-    linear_combination (e' * e') * hd + (2 - (d : R) - ((d⁻¹ : Rˣ) : R)) * he
-
-set_option maxHeartbeats 1000000 in
-
-theorem tame_detAt {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : Formalism.L2.NTheta.IsIdemAt e PP) (V : HSp D)
-    {g : GA D V} {β : GL (Fin V.rank) (Lev.EAf D)} (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) {χ : (AE D)ˣ →* Circle}
-    {c : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ} {k : ℤ} (hT : TameAt e PP χ c k) :
-    ((χ (detAt e V g) : Circle) : ℂ) =
-      ((c (Matrix.GeneralLinearGroup.det (Formalism.L2.DIV.redFn β PP (Lev.finE V g))) : ℂˣ) : ℂ) ^ k := by
-  obtain ⟨y, hy⟩ := hg
-  have he := hPP.1.1
-  obtain ⟨e', he'⟩ : ∃ e' : Formalism.L2.Herm.intAf D.host.F D.host.E, (e' : Lev.EAf D) = toEAf D e :=
-    ⟨⟨toEAf D e, toEAf_mem_intAf (idemAt_int hPP)⟩, rfl⟩
-  have hidem : e' * e' = e' := Subtype.ext (by
-    show (e' : Lev.EAf D) * e' = e'
-    rw [he', ← map_mul, he])
-  obtain ⟨d, hd⟩ : ∃ d : (Formalism.L2.Herm.intAf D.host.F D.host.E)ˣ, d = Matrix.GeneralLinearGroup.det y := ⟨_, rfl⟩
-  obtain ⟨u, hu⟩ := idemUnit_exists e' hidem d
-  have hx1 : (1 - e) * ((detAt e V g : (AE D)ˣ) : AE D) = 1 - e := by
-    rw [detAt_val he]; linear_combination (1 - (mt V g).det) * he
-
-  have hdet : toEAf D (mt V g).det = ((d : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) := by
-    have h1 : toEAf D (mt V g).det =
-        ((Lev.finE V g : GL (Fin V.rank) (Lev.EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)).det := by
-      rw [finE_val, RingHom.map_det]; rfl
-    rw [h1, ← hy]
-    show ((β : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)) *
-      (y : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)).map
-        (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype *
-      ((β⁻¹ : GL (Fin V.rank) (Lev.EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D))).det = _
-    rw [Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel,
-      Units.val_one, Matrix.det_one, one_mul, hd]
-    exact (RingHom.map_det (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype _).symm
-  have hxu : toEAf D ((detAt e V g : (AE D)ˣ) : AE D) =
-      (((u : Formalism.L2.Herm.intAf D.host.F D.host.E)) : Lev.EAf D) := by
-    rw [detAt_val he, map_add, map_mul, map_sub, map_one, hdet, ← he', hu]
-    rfl
-  have hU : Units.map (Formalism.L2.DIV.resS D.host.F PP).toMonoidHom u =
-      Matrix.GeneralLinearGroup.det (Formalism.L2.DIV.redFn β PP (Lev.finE V g)) := by
-    apply Units.ext
-    show Formalism.L2.DIV.resS D.host.F PP (u : Formalism.L2.Herm.intAf D.host.F D.host.E) = _
-    rw [hu]
-    show Formalism.L2.DIV.resS D.host.F PP (e' * d + (1 - e')) = (Formalism.L2.DIV.redFn β PP (Lev.finE V g) : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.DIV.kP PP)).det
-    rw [map_add, map_mul, map_sub, map_one, resS_idemAt' hPP e' he', one_mul,
-      sub_self, add_zero, ← hy,
-      Formalism.L2.DIV.redFn_frGL, hd]
-    exact RingHom.map_det (Formalism.L2.DIV.resS D.host.F PP) _
-  rw [hT (detAt e V g) u hx1 hxu, hU]
 
 set_option maxHeartbeats 1000000 in
 
@@ -796,131 +618,6 @@ theorem isIdemSum_conj {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (h
     simp only [Formalism.L2.DIV.conjPl_conjPl]
     rw [he, map_sum]
   · rw [cA_cA, mul_comm]; exact hc
-
-theorem exists_anti :
-    ∃ ω : D.host.E, ω ≠ 0 ∧ star ω = -ω ∧ ∃ d : D.host.F, algebraMap D.host.F D.host.E d = ω * ω := by
-  have hx : ∃ x : D.host.E, star x ≠ x := by
-    by_contra hno
-    push Not at hno
-    have hsurj : Function.Surjective (Algebra.linearMap D.host.F D.host.E) := by
-      intro a
-      obtain ⟨f, hf⟩ := (D.sp.cm.fixed a).1 (hno a)
-      exact ⟨f, hf⟩
-    have hinj : Function.Injective (Algebra.linearMap D.host.F D.host.E) := (algebraMap D.host.F D.host.E).injective
-    have h1 := (LinearEquiv.ofBijective (Algebra.linearMap D.host.F D.host.E) ⟨hinj, hsurj⟩).finrank_eq
-    rw [Module.finrank_self, D.sp.cm.deg2] at h1
-    exact absurd h1 (by norm_num)
-  obtain ⟨x, hx⟩ := hx
-  refine ⟨x - star x, sub_ne_zero.2 (Ne.symm hx), by rw [star_sub, star_star, neg_sub], ?_⟩
-  have hfix : star ((x - star x) * (x - star x)) = (x - star x) * (x - star x) := by
-    rw [star_mul, star_sub, star_star]; ring
-  obtain ⟨d, hd⟩ := (D.sp.cm.fixed _).1 hfix
-  exact ⟨d, hd⟩
-
-set_option maxHeartbeats 4000000 in
-
-theorem norm_eq_mul_cA (y : AE D) :
-    algebraMap (AF D.host.F) (AE D) (Algebra.norm (AF D.host.F) y) = y * cA D y := by
-  classical
-  obtain ⟨ω, hω0, hωs, d, hd⟩ := exists_anti (D := D)
-  have hli : LinearIndependent D.host.F ![(1 : D.host.E), ω] := by
-    rw [LinearIndependent.pair_iff]
-    intro s t hst
-    rw [Algebra.smul_def, Algebra.smul_def, mul_one] at hst
-    have hs' : star (algebraMap D.host.F D.host.E s) = algebraMap D.host.F D.host.E s :=
-      (D.sp.cm.fixed _).2 ⟨s, rfl⟩
-    have ht' : star (algebraMap D.host.F D.host.E t) = algebraMap D.host.F D.host.E t :=
-      (D.sp.cm.fixed _).2 ⟨t, rfl⟩
-    have hst2 : algebraMap D.host.F D.host.E s - algebraMap D.host.F D.host.E t * ω = 0 := by
-      have h3 := congrArg star hst
-      rw [star_add, star_mul, hs', ht', hωs, star_zero] at h3
-      linear_combination h3
-    have hsum : (2 : D.host.E) * algebraMap D.host.F D.host.E s = 0 := by linear_combination hst + hst2
-    have hdif : (2 : D.host.E) * algebraMap D.host.F D.host.E t * ω = 0 := by linear_combination hst - hst2
-    have h2 : (2 : D.host.E) ≠ 0 := two_ne_zero
-    constructor
-    · have h4 := (mul_eq_zero.1 hsum).resolve_left h2
-      exact (algebraMap D.host.F D.host.E).injective (by rw [h4, map_zero])
-    · have h4 := (mul_eq_zero.1 hdif).resolve_right hω0
-      have h5 := (mul_eq_zero.1 h4).resolve_left h2
-      exact (algebraMap D.host.F D.host.E).injective (by rw [h5, map_zero])
-  let B : Module.Basis (Fin 2) D.host.F D.host.E :=
-    basisOfLinearIndependentOfCardEqFinrank hli (by rw [Fintype.card_fin, D.sp.cm.deg2])
-  have hB0 : B 0 = 1 := by simp [B]
-  have hB1 : B 1 = ω := by simp [B]
-  let b := Algebra.TensorProduct.basis (AF D.host.F) B
-  have hb0 : b 0 = 1 := by
-    show Algebra.TensorProduct.basis (AF D.host.F) B 0 = 1
-    rw [Algebra.TensorProduct.basis_apply, hB0]; rfl
-  have hb1 : b 1 = incA D ω := by
-    show Algebra.TensorProduct.basis (AF D.host.F) B 1 = incA D ω
-    rw [Algebra.TensorProduct.basis_apply, hB1]; rfl
-  have hWW : incA D ω * incA D ω =
-      algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) d) := by
-    rw [← map_mul, ← hd, incA_alg, IsScalarTower.algebraMap_apply D.host.F (AF D.host.F) (AE D)]
-  have hcW : cA D (incA D ω) = - incA D ω := by rw [cA_incA, hωs, map_neg]
-  have hy : y = algebraMap (AF D.host.F) (AE D) (b.repr y 0) + algebraMap (AF D.host.F) (AE D) (b.repr y 1) * incA D ω := by
-    have h3 := b.sum_repr y
-    rw [Fin.sum_univ_two, hb0, hb1, Algebra.smul_def, Algebra.smul_def, mul_one] at h3
-    exact h3.symm
-  have hrepr : ∀ α β : AF D.host.F, b.repr (algebraMap (AF D.host.F) (AE D) α +
-      algebraMap (AF D.host.F) (AE D) β * incA D ω) = Finsupp.single 0 α + Finsupp.single 1 β := by
-    intro α β
-    have h3 : algebraMap (AF D.host.F) (AE D) α + algebraMap (AF D.host.F) (AE D) β * incA D ω = α • b 0 + β • b 1 := by
-      rw [hb0, hb1, Algebra.smul_def, Algebra.smul_def, mul_one]
-    rw [h3, map_add, map_smul, map_smul, b.repr_self, b.repr_self, Finsupp.smul_single_one, Finsupp.smul_single_one]
-  have hy1 : y * b 1 = algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) d * b.repr y 1) +
-      algebraMap (AF D.host.F) (AE D) (b.repr y 0) * incA D ω := by
-    rw [hb1, map_mul]
-    conv_lhs => rw [hy]
-    linear_combination (algebraMap (AF D.host.F) (AE D) (b.repr y 1)) * hWW
-  have e00 : Algebra.leftMulMatrix b y 0 0 = b.repr y 0 := by rw [Algebra.leftMulMatrix_eq_repr_mul, hb0, mul_one]
-  have e10 : Algebra.leftMulMatrix b y 1 0 = b.repr y 1 := by rw [Algebra.leftMulMatrix_eq_repr_mul, hb0, mul_one]
-  have e01 : Algebra.leftMulMatrix b y 0 1 = algebraMap D.host.F (AF D.host.F) d * b.repr y 1 := by
-    rw [Algebra.leftMulMatrix_eq_repr_mul, hy1, hrepr]; simp
-  have e11 : Algebra.leftMulMatrix b y 1 1 = b.repr y 0 := by
-    rw [Algebra.leftMulMatrix_eq_repr_mul, hy1, hrepr]; simp
-  rw [Algebra.norm_eq_matrix_det b, Matrix.det_fin_two, e00, e11, e01, e10]
-  conv_rhs => rw [hy]
-  rw [map_add, map_mul, cA_alg, cA_alg, hcW, map_sub, map_mul, map_mul, map_mul]
-  linear_combination (algebraMap (AF D.host.F) (AE D) (b.repr y 1) * algebraMap (AF D.host.F) (AE D) (b.repr y 1)) * hWW
-
-theorem chi_cA {χ : (AE D)ˣ →* Circle} {n : ℕ} (hR : ResEta D χ n) (y : (AE D)ˣ) :
-    χ (Units.map (cA D).toMonoidHom y) = (χ y)⁻¹ := by
-  obtain ⟨⟨η, hη⟩, hall⟩ := hR
-  have hprod : y * Units.map (cA D).toMonoidHom y =
-      idF D (Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) y) := by
-    apply Units.ext
-    show (y : AE D) * cA D y = algebraMap (AF D.host.F) (AE D) (Algebra.norm (AF D.host.F) (y : AE D))
-    rw [norm_eq_mul_cA]
-  have h1 : χ y * χ (Units.map (cA D).toMonoidHom y) = 1 := by
-    rw [← map_mul, hprod, hall η hη, hη.2.2.1, one_pow]
-  exact eq_inv_of_mul_eq_one_right h1
-
-theorem detAt_cA {e : AE D} (he : e * e = e) (V : HSp D) (g : GA D V) :
-    detAt (cA D e) V g = Units.map (cA D).toMonoidHom (detAt e V g⁻¹) := by
-  apply Units.ext
-  rw [detAt_val (isIdem_cA he)]
-  show _ = cA D ((detAt e V g⁻¹ : (AE D)ˣ) : AE D)
-  rw [detAt_val he, map_add, map_mul, map_sub, map_one]
-  have h1 := det_conj_mul V g⁻¹
-  have h2 : (mt V g).det * (mt V g⁻¹).det = 1 := by rw [← Matrix.det_mul, mtG_inv, Matrix.det_one]
-  have h3 : cA D (mt V g⁻¹).det = (mt V g).det := by
-    calc cA D (mt V g⁻¹).det = cA D (mt V g⁻¹).det * ((mt V g).det * (mt V g⁻¹).det) := by rw [h2, mul_one]
-      _ = (mt V g).det * (cA D (mt V g⁻¹).det * (mt V g⁻¹).det) := by ring
-      _ = (mt V g).det := by rw [h1, mul_one]
-  rw [h3]
-
-set_option maxHeartbeats 1000000 in
-
-theorem tame_detAt_cA {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : Formalism.L2.NTheta.IsIdemAt e PP) (V : HSp D)
-    {g : GA D V} {β : GL (Fin V.rank) (Lev.EAf D)} (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) {χ : (AE D)ˣ →* Circle}
-    {c : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ} {k : ℤ} {n : ℕ} (hT : TameAt e PP χ c k) (hR : ResEta D χ n) :
-    ((χ (detAt (cA D e) V g) : Circle) : ℂ) =
-      ((c (Matrix.GeneralLinearGroup.det (Formalism.L2.DIV.redFn β PP (Lev.finE V g))) : ℂˣ) : ℂ) ^ k := by
-  have hginv : Lev.finE V g⁻¹ ∈ Formalism.L2.DIV.St β := by rw [map_inv]; exact inv_mem hg
-  rw [detAt_cA hPP.1.1, chi_cA hR, Circle.coe_inv, tame_detAt hPP V hginv hT, map_inv,
-    Formalism.L2.DIV.redFn_inv hg PP, map_inv, map_inv, Units.val_inv_eq_inv_val, _root_.inv_zpow, inv_inv]
 
 end Conj
 

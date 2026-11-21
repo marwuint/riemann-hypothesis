@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarisableOfIsLocS
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EventuallyUnr
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExistsHasSatakeOfUnr
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.IsRecTOfIsRec
@@ -33,10 +33,8 @@ theorem reciprocity_unramified_and_norm_frobenius_eigenvalue_le (hL : _root_.Upp
   apply h2.norm_le
   simpa [Multiset.map_map, Function.comp_def] using hb
 end GlobalTheory.RowSphSmall
-section FormSec
 namespace GlobalTheory.RowSphSmall
 end GlobalTheory.RowSphSmall
-end FormSec
 namespace GlobalTheory.RowSphSmall
 end GlobalTheory.RowSphSmall
 end

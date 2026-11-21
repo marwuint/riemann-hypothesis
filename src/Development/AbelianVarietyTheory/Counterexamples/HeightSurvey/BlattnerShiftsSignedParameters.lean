@@ -33,54 +33,6 @@ theorem isEnum_unique {n : ℕ} {S : SPar} {l l' : Fin n → ℝ} {e e' : Fin n 
   rw [ha'.injective this] at he
   exact he.symm
 
-theorem goodPar_add {n p q : ℕ} {S : SPar} (h : GoodPar n p q S) : p + q = n := by
-  obtain ⟨l, e, -, -, hp, hq⟩ := h
-  have := Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => e a = true)
-  simp only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at this
-  omega
-
-theorem goodPar_ex : GoodPar 2 1 1 {(1 / 2, true), (-1 / 2, false)} := by
-  refine ⟨![1 / 2, -1 / 2], ![true, false], ⟨?_, ![1 / 2, -1 / 2], ?_, ?_⟩, ⟨?_, ?_⟩, by decide, by decide⟩
-  · intro a b; fin_cases a <;> fin_cases b <;> simp <;> norm_num
-  · intro a; fin_cases a <;> simp
-  · ext x; simp [Fin.exists_fin_two, eq_comm]
-  · intro a b; fin_cases a <;> fin_cases b <;> simp <;> norm_num
-  · intro a; fin_cases a
-    · exact ⟨0, by norm_num⟩
-    · exact ⟨-1, by norm_num⟩
-
-theorem lamSH_int (R : Ranks) (P : HCParam R) (a : Fin (2 * R.rS + R.k + 1)) :
-    ∃ m : ℤ, lamSH R P a - (((2 * R.rS + R.k + 1 : ℕ) : ℝ) - 1) / 2 = (m : ℝ) := by
-  obtain ⟨t, ht⟩ := R.k_even
-  have : ∃ z : ℤ, lamSH R P a = z := by
-    unfold lamSH lamS
-    split_ifs with h h'
-    · obtain ⟨z, hz⟩ := P.v_int ⟨_, h⟩; exact ⟨z, by rw [hz]; simp⟩
-    · obtain ⟨z, hz⟩ := P.b_int ⟨_, h'⟩; exact ⟨-z, by rw [hz]; simp⟩
-    · exact ⟨0, by simp⟩
-  obtain ⟨z, hz⟩ := this
-  refine ⟨z - R.rS - t, ?_⟩
-  rw [hz, ht]; push_cast; ring
-
-theorem isoDef_wrong_sign {M : Type} [AddCommGroup M] [Module ℂ M]
-    (π : Matrix (Fin 1) (Fin 1) ℂ → Module.End ℂ M) (x : ℚ) : isoDef 1 π {(x, false)} = ⊥ := by
-  unfold isoDef
-  rw [sSup_eq_bot]
-  rintro W ⟨H, _, _, σ, lam, ε, P, T, ⟨-, q, -, hS⟩, -, -, hP, -⟩
-  exfalso
-  have he : ε 0 = false := by
-    have : (q 0, ε 0) ∈ ({(x, false)} : SPar) := by rw [hS]; exact Finset.mem_image_of_mem _ (Finset.mem_univ 0)
-    exact congrArg Prod.snd (Finset.mem_singleton.1 this)
-  have := congrArg Complex.re (congrFun (congrFun hP 0) 0)
-  simp [Matrix.mul_apply, Formalism.REAL.Jm, he] at this
-  nlinarith [mul_self_nonneg (P 0 0).re, mul_self_nonneg (P 0 0).im]
-
-theorem rho2C_two_one : rhoOfIndex (p := 2) (q := 1) (.inl 0) = 1 ∧ rhoOfIndex (p := 2) (q := 1) (.inl 1) = -1 ∧
-    rhoOfIndex (p := 2) (q := 1) (.inr 0) = 0 := by
-  refine ⟨?_, ?_, ?_⟩ <;>
-  simp only [rhoOfIndex, Finset.card_filter, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_one] <;>
-  simp [posC]
-
 theorem blattner_add_rho2C {p q : ℕ} {lam : Ix p q → ℚ} (h : IsParam lam) (a : Ix p q) :
     blattner lam a + rhoOfIndex a = lam a +
       (((Finset.univ.filter fun b => lam b < lam a).card : ℚ) -
@@ -138,19 +90,6 @@ theorem blattner_inj {p q : ℕ} {l l' : Ix p q → ℚ} (h : IsParam l) (h' : I
   simp only [ord] at x
   rw [e] at x
   linarith
-
-def rhoTwo : Ix 2 0 → ℚ := Sum.elim ![1 / 2, -1 / 2] Fin.elim0
-
-theorem blattner_sing : blattner (fun _ : Ix 2 0 => (0 : ℚ)) = blattner rhoTwo := by
-  funext a
-  rcases a with a | a
-  · fin_cases a <;>
-    simp only [blattner, rhoNC, Finset.card_filter, Fintype.sum_sum_type, Fin.sum_univ_two, Fin.sum_univ_zero] <;>
-    simp [rhoTwo, sameBlock] <;> norm_num
-  · exact a.elim0
-
-theorem hasParam_sing {T : GrpData 2 0} (R : DSRep T) : HasParam R (fun _ => 0) ↔ HasParam R rhoTwo := by
-  unfold HasParam; rw [blattner_sing]
 
 theorem hasParam_zero {T : GrpData 0 0} (R : DSRep T) (lam : Ix 0 0 → ℚ) : HasParam R lam := by
   refine ⟨?_, fun μ v _ => by simp [vogan]⟩

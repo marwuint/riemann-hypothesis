@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToRingActOpOfRingAct
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyHomFixRepTrivial
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowKillsOnCompactOfLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulAppEqZeroNearOfRepresentedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowKillsOnCompactOfLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulAppEqZeroNearOfRepresented
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.EndLoc
@@ -11,16 +11,6 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.ClosedGlue
 open Scheme TopologicalSpace
-
-theorem app_comp_ι_eq_zero_iff {T S : Scheme.{0}} (U : S.Opens) (g : T ⟶ U) (V : U.toScheme.Opens)
-    (x : Γ(S, U.ι ''ᵁ V)) :
-    ((g ≫ U.ι).app (U.ι ''ᵁ V)).hom x = 0 ↔ (g.app V).hom x = 0 := by
-  have e : (g ≫ U.ι).app (U.ι ''ᵁ V) = g.app V ≫ T.presheaf.map (eqToHom (by simp)).op := by
-    simp only [Scheme.Hom.comp_app, Scheme.Opens.ι_app]
-    refine (g.naturality (homOfLE (U.ι.preimage_image_eq V).le).op).trans ?_
-    congr 2
-  rw [e]
-  exact map_eq_zero_iff (T.presheaf.map _).hom (ConcreteCategory.bijective_of_isIso _).1
 
 theorem restrict_app_eq_zero_iff {T S : Scheme.{0}} (f : T ⟶ S) (U : S.Opens) (V : U.toScheme.Opens)
     (a : Γ(S, U.ι ''ᵁ V)) : ((f ∣_ U).app V).hom a = 0 ↔ (f.app (U.ι ''ᵁ V)).hom a = 0 := by
@@ -61,9 +51,9 @@ theorem killIdeal_map_basicOpen {S : Scheme.{0}} (Φ : ∀ (T : Scheme.{0}), (T 
     have hc : algebraMap Γ(S, W) Γ(S, S.basicOpen f) c ∈ killIdeal Φ (S.basicOpen f) := by
       rw [← IsLocalization.mk'_spec Γ(S, S.basicOpen f) c m]
       exact Ideal.mul_mem_right _ _ ha
-    obtain ⟨n, hn⟩ := GlobalTheory.T.exists_pow_kills_on_compact_of_local S Φ (W : S.Opens) W.2.isCompact f c (fun y hy => by
+    obtain ⟨n, hn⟩ := _root_.GlobalTheory.pow_kills_on_compact_of_local S Φ (W : S.Opens) W.2.isCompact f c (fun y hy => by
       obtain ⟨U, Z, i, hyU, hi, hrep⟩ := hcov y
-      exact GlobalTheory.T.exists_pow_mul_app_eq_zero_near_of_represented' S Φ hstab U Z i hi hrep (W : S.Opens) f c
+      exact _root_.GlobalTheory.exists_pow_mul_app_eq_zero_near_of_represented S Φ hstab U Z i hi hrep (W : S.Opens) f c
         (fun T t ht => (mem_killIdeal Φ).1 hc T t ht) y hyU hy)
     change IsLocalization.mk' _ c _ ∈ Ideal.map (algebraMap Γ(S, W) Γ(S, S.basicOpen f)) _
     rw [IsLocalization.mk'_mem_map_algebraMap_iff]

@@ -106,9 +106,6 @@ theorem inFrame_centre_matrix (h : Hyp L nb uM nb' w₁ cM δ) (a : AF F) :
   rw [inFrame_cM h]
   simp [uA_zero, Matrix.transpose_one]
 
-theorem inFrame_sM (b : Fin L.n → AE F E) : inFrame d.b (sM R L b) = bMat (sB R L b) :=
-  inFrame_sM' b
-
 theorem sM_add (b b' : Fin L.n → AE F E) : sM R L (b + b') = sM R L b * sM R L b' := by
   apply KAway.inFrame_inj d
   rw [KAway.inFrame_mul, inFrame_sM', inFrame_sM', inFrame_sM', sB_add]

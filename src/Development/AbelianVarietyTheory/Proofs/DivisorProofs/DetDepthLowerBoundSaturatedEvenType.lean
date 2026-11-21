@@ -1,5 +1,8 @@
 import Mathlib
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuationTheory
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.TypicalCurveStructureConstants
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.RootStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.FactorialWeightedSumBound
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.OmBStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.WtSubOneLe
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.EqZeroOfVecMulTmat
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PtBasisMapGood
@@ -9,10 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TypicalBasisCoord
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDeterminantPowDepthBasisChangeInvariaStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentialOperatorDepthIntegralCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeFormalGroupDeterminantPowDepthOfRadiiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerContentValuationDetPowBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogFGLDepthStagesLowAStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerContentValuationDetPowBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogFGLDepthStagesLowA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSolutionOrdGeRadius
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowCountAllBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowCountAllBounds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedBasis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TypicalCurvesTangentAndBases
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffPowEqZeroOfDegreeLt
@@ -201,7 +204,7 @@ theorem detDepth_lower : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (
   classical
   obtain ⟨K, hK1, hK2⟩ := exists_least_exponent (c := c) hp3
   obtain ⟨γ, dp, hB, hdp, -, hcard, hlc⟩ :=
-    GlobalTheory.T.logFGL_depth_stages_lowA C v p hp hp3 hvp d h hh hev ty G μ j K hj
+    _root_.GlobalTheory.DepthStages.lowA_statement C v p hp hp3 hvp d h hh hev ty G μ j K hj
   obtain ⟨cc, hcT, hc0, hcv, hcdp⟩ := coeff_in_tangent_basis hp hvp hB dp hlc
   obtain ⟨⟨Ψ, hΨint, hΨ0, hΨΦ, hΦΨ⟩, hlg⟩ :=
     (GlobalTheory.TypicalCurveBases.typical_curves_tangent_and_bases.2 C v p hp hvp d h hh ty G μ).2 γ hB
@@ -277,7 +280,7 @@ theorem detDepth_lower : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (
     (fun a => ordGe_mono (htord a) (radius_nonneg hp3 _)) (fun α hα => ?_) f.1 f.2
   have hk : ((((i * c : ℝ) / (p - 1) - (i : ℝ) ^ 2 * Real.logb p (c + 1) : ℝ)) : EReal) ≤
       toE (v ((detPow C i c).coeff α * mfact α)) :=
-    (GlobalTheory.T.dividedPowerContentValuation_detPow_bounds C v p hp hvp i c).2.trans (iInf₂_le α hα)
+    (_root_.GlobalTheory.DetPowContent.content_detPow_bounds C v p hp hvp i c).2.trans (iInf₂_le α hα)
   refine le_trans (WithTop.coe_le_coe.2 ?_) (WithBot.coe_le_coe.1 hk)
   rw [hρ, sum_two_radii hcri]
   linarith

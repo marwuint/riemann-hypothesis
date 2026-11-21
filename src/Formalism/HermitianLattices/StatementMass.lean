@@ -75,16 +75,4 @@ def SiegelMassRatio : Prop :=
       h.IsSymm → h'.IsSymm → IsOrthoLattice h L M → IsOrthoLattice h' L' (M - 1) →
       mass h L / mass h' L' = massRatioRightSide K M
 
-def MassTelescope : Prop :=
-  SiegelMassRatio →
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K], IsCMUnram K →
-    ∀ (k r : ℕ), 2 ≤ k → k ≤ r →
-    ∀ (V V' : Type) [AddCommGroup V] [Module K V] [Module (RingOfIntegers K) V]
-      [IsScalarTower (RingOfIntegers K) K V] [AddCommGroup V'] [Module K V']
-      [Module (RingOfIntegers K) V'] [IsScalarTower (RingOfIntegers K) K V']
-      (h : V →ₗ⋆[K] V →ₗ[K] K) (h' : V' →ₗ⋆[K] V' →ₗ[K] K)
-      (L : Submodule (RingOfIntegers K) V) (L' : Submodule (RingOfIntegers K) V'),
-      h.IsSymm → h'.IsSymm → IsOrthoLattice h L k → IsOrthoLattice h' L' r →
-      mass h' L' = mass h L * ∏ M ∈ Finset.Ico (k + 1) (r + 1), massRatioRightSide K M
-
 end Formalism.HermitianLatticesTheory

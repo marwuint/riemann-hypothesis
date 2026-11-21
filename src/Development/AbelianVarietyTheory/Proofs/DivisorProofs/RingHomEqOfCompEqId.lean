@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ChainFibFinite
+import Development.AbelianVarietyTheory.Definitions.Divisors.Subsingleton
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsStrictlySemistableAlt
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.ChainOfKernelsUnique
 
 set_option autoImplicit false

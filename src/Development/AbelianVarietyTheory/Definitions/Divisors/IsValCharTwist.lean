@@ -204,19 +204,6 @@ theorem isValChar_nu {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (i j : Fi
       exact isValChar_twist hL G i j hs h.fin h.triv h.tame fun Q hQ => h.unr Q fun o =>
         hQ ((S1_mem_OmF D).2 (Or.inr (Or.inr (Or.inr (up _ Q o)))))
 
-theorem gauge_unique {G : GridData L sc} {t : T} {i j : Fin D.R.m} {s : ℕ} {zd zd' g g'} (h : IsTorVal G t i j s zd g)
-    (h' : IsTorVal G t i j s zd' g') : g = g' := by
-  obtain ⟨x, h1, -, -, Λ, p, hΛ, hp, hg⟩ := h
-  obtain ⟨x', h1', -, -, Λ', p', hΛ', hp', hg'⟩ := h'
-  obtain rfl := h1.2.unique h1'.2
-  have e : Λ.lattice = Λ'.lattice := Submodule.ext fun y => (hΛ y).trans (hΛ' y).symm
-  have e2 : GlobalTheory.CMVal.latDisc Λ = GlobalTheory.CMVal.latDisc Λ' := by
-    simp only [GlobalTheory.CMVal.latDisc, PeriodPair.g₂, PeriodPair.g₃, PeriodPair.G]
-    rw [e]
-  have e3 : p = p' := by
-    rw [hp.eq_minpoly, hp'.eq_minpoly, GlobalTheory.CMVal.beta, GlobalTheory.CMVal.beta, e2]
-  exact funext fun w => by rw [hg, hg', e3]
-
 theorem bot_ranks (i j : Fin D.R.m) : 2 ≤ botSmall D i j ∧ botSmall D i j < botBig D i j ∧
     Even (botBig D i j + botSmall D i j) ∧ botBig D i j + botSmall D i j ≤ 2 * bigN D := by
   obtain ⟨h1, h2, h3⟩ := ranks_exact D i j

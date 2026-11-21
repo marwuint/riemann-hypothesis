@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAuxiliaryVectorWittDec
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridLatticesCompactSelfDualSplittingStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridLatticesCompactSelfDualSplitting
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.SepRows GlobalTheory.Asc
 open scoped TensorProduct
@@ -45,7 +46,7 @@ theorem pcFB_fin : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 
     FinLat (pcFB W F σ h h').A₁ ∧ FinLat (pcFB W F σ h h').B₁ ∧ FinLat (pcFB W F σ h h').B₂ ∧
       ∀ u ∈ (pcFB W F σ h h').Γ₀, MxAt (fun _ => True) u := by
   intro D hOff T L μ0 hL sc G W M hM F hF σ h h'
-  have hlat := (GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hOff T L μ0 hL sc G W M hM F hF).1 (2 * σ + 2) (by omega)
+  have hlat := (_root_.GlobalTheory.AscFin.GridLat.lattices_grid D hOff T L μ0 hL sc G W M hM F hF).1 (2 * σ + 2) (by omega)
   have hRow : FinLat (latRow G (2 * σ + 2)) := hlat.1
   have hBig : FinLat (latBig G (2 * σ + 2)) := hlat.2.2.1
   set dV := F.dJ (σ + 1) h

@@ -1,10 +1,16 @@
-import Formalism.SharpRestriction.GlobalSchurBounds.GlobalLinkOfPartStatementsWithDelta
+import Formalism.SharpRestriction.GlobalSchurBounds.LossesSmallShares
+import Formalism.LocalToGlobal.GlobalTheory.LossRequirementsOfSmallShares
 import Formalism.SharpRestriction.GlobalSchurBounds.FiniteModelOfAdmissibleTransports
 import Formalism.SharpRestriction.GlobalSchurBounds.TotallyPositiveTraceGeOfNormDiscr
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.UpperSlopeOfMaximalConstant
-import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.IntegralityOfCommutation
+import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
+import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSchur
+import Formalism.SharpRestriction.CuspSpanNormBounds.DiscreteSeriesWeylDimension
+import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLe
 import Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfHeckeRamified
-import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.FamilyPartFiveExplicitHolds
+import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.LogWeightMinusLogBBound
+import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.LogFactorialProductDifference
+import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.LogVandermondeVariationGeneric
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.FamilyPartFiveOfExplicitConstants
 import Formalism.LocalToGlobal.GlobalTheory.PlacesMin
 
@@ -468,8 +474,6 @@ def family_property_and : Prop :=
 
 variable {D u}
 
-theorem ramified_rank_lines_of_full (h : Conclusion2 D u) : family_property_and D u := ⟨h.1, h.2.1, h.2.2.1⟩
-
 theorem division_side_conditions_at_sizeData (hS : HidaSetting D u) (W : FreeT D u) (hμ : SlopeLine D u) : family_property_and D u :=
   ⟨rank_line W, hμ, muMax_line' hS W⟩
 
@@ -744,75 +748,9 @@ theorem muRank_items (Fm : FamP eps) (C0 : ℝ) (hC0 : 0 < C0) (hT2 : FamU Fm pr
   have hNF : NuFullF Fm := nuFullF_of Fm (nuCommensF_min Fm hE)
   exact ⟨hNF, muRank_min Fm hC0 cPr hNF hE tSet⟩
 
-theorem linkGLOBAL_items (Fm : FamP eps) (Cabs CH C0 eL : ℝ) (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (heL : 0 ≤ eL) (hC0 : 3 ≤ C0)
-    (h5 : StandardLattice.PartFiveFamilyBounds Fm) (hZ2 : flipTwoThree.ConclusionF5 Fm) (hZ3 : flipTwoThree.ConclusionF6 Fm)
-    (tCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u))
-    (hT2 : FamU Fm product_first_zeroth_parts.family_property_and) (hT5 : FamU Fm LocalLatticeBases.CongruenceLatticeLengthBound) :
-    Fm.CoverAll → TuSize Fm → DGamSize Fm → LinkGLOBAL Fm Cabs CH C0 Cabs eL := by
-  intro hCov hTu _ hCh hIn
-  have tSet : SettingEventually Fm := Formalism.L2.GlobalTheoryTheory.Places.settingF_of Fm hTu
-  have hE : J.LvlF Fm := lvlF_of Fm tSet hT2 hT5
-  have hNC : NuCommensF Fm := nuCommensF_min Fm hE
-  have hNF : NuFullF Fm := nuFullF_of Fm hNC
-  have hCount : CountF Fm := countF_fam Fm h5
-  obtain ⟨hRank, hRR, hSM⟩ : J.MuRank Fm ∧ RRRankF Fm ∧ SlopesMF Fm := by
-    obtain ⟨C5', c6, Cb, -, -, -, -, -, -, cQD, -, cPr, -⟩ := hCh
-    obtain ⟨-, lS, lI, lD, -⟩ := hIn
-    exact ⟨muRank_min Fm (by linarith) cPr hNF hE tSet, rrRankF_of Fm Cabs CH C0 (by linarith) lS cPr lI lD,
-      flipTwoThree.slopesMF_of_count_fam Fm hZ2 hZ3 hCount (dl_of_chosen Fm C5' cQD) tCV⟩
-  exact linkGLOBAL Fm Cabs CH C0 eL hCabs hCH.le heL hCount hSM
-    (fun lG lMu => slopesNF_of Fm
-      (Formalism.L2.GlobalTheoryTheory.Places.placesF_min' Fm (J.lemma_five_one_of_theorem_two Fm hTu hE) hNC hTu hRank lG lMu)) hNF hRank hRR
-    (fun cPr cCo lS lI lD => frameF_of Fm CH C0 hCH (by linarith)
-      (frameRealF_of'' Fm Cabs CH C0 hCH.le lD lI lS cPr hNF hRank hTu (ramRankF_min Fm hE)
-        (matKF_of Fm Cabs CH C0 (by linarith) lS cPr lD)) (latF Fm lD hNF hRank hRR) cPr cCo hNF)
-    (fun Cb _ cTT cBad lG => losses_family_of_division_side Fm eL (Formalism.L2.GlobalTheoryTheory.Loss.slope_loss_lemma_family Fm Cb eL heL cTT cBad lG hCov) (askIsF Fm))
-    (charF Fm) hCov hCh hIn
-
-theorem items_of_min (Fm : FamP eps) (C5 : ℝ)
-    (h2b : flipTwoThree.fam0 Fm StandardLattice.MassRatio₂) (h2v : flipTwoThree.fam0 Fm StandardLattice.BaseVolumeEqualsMass) (h3 : flipTwoThree.fam0 Fm StandardLattice.SigmaDegreeTwoSidedBoundOfGap)
-    (hZa : flipTwoThree.FamilySlopeLowerOpenPart Fm) (hZb : flipTwoThree.FamilySlopeMaxOpenPart Fm C5)
-    (hW : FamU Fm fun D u => Nonempty (product_first_zeroth_parts.FreeT D u)) (hμ : FamU Fm product_first_zeroth_parts.SlopeLine)
-    (hI : FamU Fm LocalLatticeBases.HeckeIntegralLevelZero) (hR : FamU Fm LocalLatticeBases.HeckeRamifiedLevelZero) (hB : FamU Fm LocalLatticeBases.SecondBranchInclusionLength) :
-    StandardLattice.PartFiveFamilyBounds Fm ∧ flipTwoThree.ConclusionF5 Fm ∧ flipTwoThree.ConclusionF6 Fm ∧ FamU Fm product_first_zeroth_parts.family_property_and ∧ FamU Fm LocalLatticeBases.CongruenceLatticeLengthBound :=
-  ⟨family_part_five_of_explicit_constants Fm (StandardLattice.division_level_prime_family Fm h2b h2v h3), flipTwoThree.familySlopeLower_of_open Fm hZa, flipTwoThree.familySlopeMax_of_open Fm C5 hZb,
-    (hW.and hμ).mono fun _ _ hS h => by obtain ⟨⟨W⟩, hm⟩ := h; exact product_first_zeroth_parts.division_side_conditions_at_sizeData hS W hm,
-    (hB.and (hI.and hR)).mono fun _ _ hS h => LocalLatticeBases.congruence_no_kernel_minimal hS h.1 h.2.1 h.2.2⟩
-
-theorem low_weight_bound_at {Fm : FamP eps} {P Q : D7 → Prop} (h : flipTwoThree.fam0 Fm P) (h' : flipTwoThree.fam0 Fm Q) :
-    flipTwoThree.fam0 Fm fun D => P D ∧ Q D := by
-  obtain ⟨a, ha⟩ := h
-  obtain ⟨b, hb⟩ := h'
-  exact ⟨max a b, fun x hx hx1 i =>
-    ⟨ha x (le_of_max_le_left hx) hx1 i, hb x (le_of_max_le_right hx) hx1 i⟩⟩
-
 theorem family_property_mono {Fm : FamP eps} {P Q : D7 → Prop} (h : flipTwoThree.fam0 Fm P) (hPQ : ∀ D, P D → Q D) : flipTwoThree.fam0 Fm Q := by
   obtain ⟨a, ha⟩ := h
   exact ⟨a, fun x hx hx1 i => hPQ _ (ha x hx hx1 i)⟩
-
-theorem family_of_global_sources (Fm : FamP eps) (Cabs CH C0 : ℝ) (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (hC0 : 3 ≤ C0)
-
-    (h2U : flipTwoThree.fam0 Fm StandardLattice.VolumeRatio₂) (h2v0 : flipTwoThree.fam0 Fm StandardLattice.DefiniteVolumeEqMass)
-
-    (h3S : flipTwoThree.fam0 Fm StandardLattice.DiscreteSeriesDegreeBoundsOfGap) (hWK : DiscreteSeriesWeylDimension.WeylForK) (hLK : DiscreteSeriesWeylDimension.LowKMultOne) (tDs : flipTwoThree.fam0 Fm StandardLattice.DsigEx)
-
-    (hCS : flipTwoThree.fam0 Fm flipTwoThree.ColSlopeEq) (hSMx : flipTwoThree.fam0 Fm flipTwoThree.SlopeMaxGiven)
-    (tCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u))
-
-    (hW : FamU Fm fun D u => Nonempty (product_first_zeroth_parts.FreeT D u)) (hμ : FamU Fm product_first_zeroth_parts.SlopeLine) (hB : FamU Fm product_first_zeroth_parts.LemB)
-
-    (hI : FamU Fm product_first_zeroth_parts.IntAtT) (hFi : FamU Fm product_first_zeroth_parts.FiSt) (hX : FamU Fm product_first_zeroth_parts.CrossDia) (hU : FamU Fm product_first_zeroth_parts.UnfAll) :
-    TuSize Fm → LinkGLOBAL7 Fm Cabs CH C0 Cabs 0 :=
-  linkGLOBAL7_min Fm Cabs CH C0 4 hCabs hCH hC0
-    (family_property_mono (low_weight_bound_at h2U h2v0) fun D h => StandardLattice.massRatio_of_definiteVolume D (StandardLattice.volumeMass_of_unfolding D h.1) h.2)
-    (family_property_mono (low_weight_bound_at h2U h2v0) fun D h => StandardLattice.volumeY0EqualsMass_of_aux2v D (StandardLattice.volume_eq_mass_of_definite D (StandardLattice.volumeMass_of_unfolding D h.1) h.2))
-    (family_property_mono (low_weight_bound_at h3S tDs) fun D h => StandardLattice.theorem_three_sigma_holds D h.1 (DiscreteSeriesWeylDimension.lowest_K_type_count_of_weyl D hWK hLK) h.2)
-    (flipTwoThree.familySlopeLowerOpen_of_std flipTwoThree.stdSlopeLow_holds flipTwoThree.hookBound_holds Fm hCS) (flipTwoThree.family_slope_bound_of_max_slope flipTwoThree.hookBound_holds Fm hSMx) tCV hW hμ
-    (hI.mono fun _ _ _ h => fun w hw hs v => h 0 (Nat.zero_le _) w hw hs v)
-    ((hFi.and (hX.and hU)).mono fun _ _ _ h => fun v φ hφ => by
-      have h9 := product_first_zeroth_parts.ram_of h.1 (product_first_zeroth_parts.DiaMul_of h.1 h.2.2) h.2.1 h.2.2 0 (Nat.zero_le _) v φ hφ
-      exact ⟨h9.1, h9.2.1, h9.2.2.2.2.2⟩)
-    (hB.mono fun _ _ _ h => LocalLatticeBases.secondBranchInclusionLength_of_lemB h)
 
 end Formalism.MainNotions
 

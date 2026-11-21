@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsLatMeasura
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetDetNormPos
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DetMatrixSandwichLinearMapStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeTraceDualAndTraceDualTraceDualStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TraceFormDualTranslatedLatticeEqInverseTransposeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TraceFormDualTranslatedLatticeEqInverseTranspose
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase GlobalTheory.MeanDual
 
@@ -349,10 +349,10 @@ theorem term_dual (hE : IsTotallyComplex E) {Λ : Submodule (𝓞 E) (Fin j → 
     (hm : Measurable ({g | 0 < detNorm E j g}.indicator fun g => F (latAt E j (trDual E j Λ) g))) :
     term E j (fun L => F (dualAt E j L)) Λ = term E j F (trDual E j Λ) := by
   apply le_antisymm
-  · exact covol_invT_le (GlobalTheory.T.isLattice_traceDual_and_traceDual_traceDual E j Λ hΛ).2 _ _ (fun x hx => congrArg F (GlobalTheory.T.traceFormDual_translatedLattice_eq_inverseTranspose E hE j Λ hΛ x hx)) hm
+  · exact covol_invT_le (GlobalTheory.T.isLattice_traceDual_and_traceDual_traceDual E j Λ hΛ).2 _ _ (fun x hx => congrArg F (_root_.GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual E hE j Λ hΛ x hx)) hm
   · refine covol_invT_le rfl _ _ (fun x hx => ?_) ?_
     · beta_reduce
-      rw [GlobalTheory.T.traceFormDual_translatedLattice_eq_inverseTranspose E hE j Λ hΛ _ ((detNorm_invT_pos_iff E j x).2 hx), invT_invT E j hx]
+      rw [_root_.GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual E hE j Λ hΛ _ ((detNorm_invT_pos_iff E j x).2 hx), invT_invT E j hx]
     · have := hm.comp (measurePreserving_invT E j).measurable
       convert this using 1
       funext x
@@ -360,7 +360,7 @@ theorem term_dual (hE : IsTotallyComplex E) {Λ : Submodule (𝓞 E) (Fin j → 
       · rw [Function.comp, Set.indicator_of_mem hx,
           Set.indicator_of_mem (show invT E j x ∈ {g | 0 < detNorm E j g} from
             (detNorm_invT_pos_iff E j x).2 hx)]
-        exact congrArg F (GlobalTheory.T.traceFormDual_translatedLattice_eq_inverseTranspose E hE j Λ hΛ x hx)
+        exact congrArg F (_root_.GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual E hE j Λ hΛ x hx)
       · rw [Function.comp, Set.indicator_of_notMem hx, Set.indicator_of_notMem
           (show invT E j x ∉ {g | 0 < detNorm E j g} from fun h => hx ((detNorm_invT_pos_iff E j x).1 h))]
 

@@ -26,30 +26,6 @@ lemma sum_position (y : ι → Fin 2 → Fin 2 → ℝ) :
   simp only [Finset.sum_apply, Fin.sum_univ_two]
   fin_cases i <;> fin_cases k <;> simp [position_apply]
 
-lemma norm_th_lt {y : ι → Fin 2 → Fin 2 → ℝ} (hy : ‖y‖ < 1) (τ : ι) (i k : Fin 2) :
-    ‖th y τ i k‖ < 2 := by
-  have h1 : ∀ a b : Fin 2, |y τ a b| < 1 := fun a b => by
-    have h := (norm_le_pi_norm (y τ a) b).trans ((norm_le_pi_norm (y τ) a).trans (norm_le_pi_norm y τ))
-    rw [Real.norm_eq_abs] at h
-    linarith
-  have hadd : ∀ a b : ℝ, |a| < 1 → |b| < 1 → ‖(a : ℂ) + I * b‖ < 2 := fun a b ha hb => by
-    have e1 : ‖(a : ℂ)‖ = |a| := by simp
-    have e2 : ‖I * (b : ℂ)‖ = |b| := by simp
-    have := norm_add_le (a : ℂ) (I * b)
-    linarith
-  have hsub : ∀ a b : ℝ, |a| < 1 → |b| < 1 → ‖(a : ℂ) - I * b‖ < 2 := fun a b ha hb => by
-    have e1 : ‖(a : ℂ)‖ = |a| := by simp
-    have e2 : ‖I * (b : ℂ)‖ = |b| := by simp
-    have := norm_sub_le (a : ℂ) (I * b)
-    linarith
-  simp only [th]
-  split_ifs
-  · have e1 : ‖(y τ i k : ℂ)‖ = |y τ i k| := by simp
-    have := h1 i k
-    linarith
-  · exact hadd _ _ (h1 i k) (h1 k i)
-  · exact hsub _ _ (h1 k i) (h1 i k)
-
 end Slot
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (g : ℕ)

@@ -11,9 +11,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Chamber
 
-example {k : ℕ} (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) :
-    (volume : Measure (aMQ 𝔞 Q)) = (stdOrthonormalBasis ℝ (aMQ 𝔞 Q)).toBasis.addHaar := rfl
-
 def ExpFamilyIntegral : Prop :=
   ∀ (k : ℕ) (𝔞 : Submodule ℝ (A0 k)), IsLevi 𝔞 → ∀ X, IsOrth 𝔞 X → IsGMFam 𝔞 (expFam X) ∧ ∀ Q ∈ parF 𝔞 ∅,
     (Integrable (fun H : aMQ 𝔞 Q => gamM 𝔞 Q X H) ∧
@@ -64,10 +61,6 @@ def LabesseWaldspurger : Prop :=
     OrthogonalY Φ (levelAll D.sp.cm.sig V.gram L a) ∧
     ∀ (μ : Measure (GA D V)) [μ.IsHaarMeasure],
       KernelConvergence Φ (levelAll D.sp.cm.sig V.gram L a) μ ∧ WeightedOrbital Φ (levelAll D.sp.cm.sig V.gram L a) μ
-
-example (D : D7) : wittIndex (CuspDecay.Model.plane D) = 1 ∧
-    ∃ (Φ : WittFrame (CuspDecay.Model.plane D)) (L : _) (a : _), Φ.IsGood D.sp.cm L a :=
-  ⟨wittIndex_plane D, exists_isGood _⟩
 
 end GlobalTheory.Published
 

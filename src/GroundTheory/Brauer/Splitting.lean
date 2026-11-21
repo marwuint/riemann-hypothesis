@@ -380,22 +380,6 @@ theorem exists_isGalois_splits (A : Type v) [Ring A] [Algebra K A] [Algebra.IsCe
     inferInstance, _, nonempty_algEquiv_matrix_of_algHom_field
       (IsScalarTower.toAlgHom K F (IntermediateField.normalClosure K F (SeparableClosure K))) e⟩
 
-theorem exists_isSeparable_splits (A : Type v) [Ring A] [Algebra K A] [Algebra.IsCentral K A]
-    [IsSimpleRing A] [FiniteDimensional K A] :
-    ∃ (L : Type u) (_ : Field L) (_ : Algebra K L), FiniteDimensional K L ∧
-      Algebra.IsSeparable K L ∧
-      ∃ n : ℕ, Nonempty (L ⊗[K] A ≃ₐ[L] Matrix (Fin n) (Fin n) L) := by
-  obtain ⟨L, _, _, h1, h2, h3⟩ := exists_isGalois_splits (K := K) A
-  exact ⟨L, _, _, h1, inferInstance, h3⟩
-
-theorem BrauerGroup.exists_mem_relBrauer (x : BrauerGroup.{u, u} K) :
-    ∃ (L : Type u) (_ : Field L) (_ : Algebra K L), FiniteDimensional K L ∧ IsGalois K L ∧
-      x ∈ BrauerGroup.relBrauer K L := by
-  induction x using Quotient.inductionOn with
-  | h A =>
-    obtain ⟨L, _, _, h1, h2, n, ⟨e⟩⟩ := exists_isGalois_splits (K := K) A
-    exact ⟨L, _, _, h1, h2, (BrauerGroup.mk_mem_relBrauer_iff A).mpr ⟨n, ⟨e⟩⟩⟩
-
 end SeparableSplitting
 
 end GroundTheory.Brauer

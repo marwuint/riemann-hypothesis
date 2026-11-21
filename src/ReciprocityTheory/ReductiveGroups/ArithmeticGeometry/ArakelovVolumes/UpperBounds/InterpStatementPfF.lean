@@ -28,10 +28,6 @@ theorem cut_zero (ε : ℝ) (hε : 0 < ε) {y : V n} (hy : 2 * ε ≤ ‖y‖) :
   rw [(bumpE ε hε).zero_of_le_dist (by rw [dist_zero_right]; exact hy)]
   simp
 
-theorem wdb_const_eq_zero (j : Fin n) (c : ℂ) (y : V n) : wdb n j (fun _ => c) y = 0 := by
-  unfold wdb
-  simp
-
 theorem wdb_cut_zero (ε : ℝ) (hε : 0 < ε) (j : Fin n) {y : V n}
     (hy : ‖y‖ < ε ∨ 2 * ε < ‖y‖) : wdb n j (cut ε hε) y = 0 := by
   have key : ∀ c : ℂ, (cut ε hε =ᶠ[𝓝 y] fun _ => c) → wdb n j (cut ε hε) y = 0 := by

@@ -10,12 +10,14 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenOfRangeGen
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StarRingExtOfStar
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsLocalHomValuationExtension
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFormalGroupJetsChart
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCmTypeEmbeddingsIntoValuationRingStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCmTypeEmbeddingsIntoValuationRing
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmTypeDirectionsEigenbasisValuedIntegersStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IdempotentEmbeddingsCard
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntegralGermEqGaugedFormalGroupLawExpIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntegralGermEqGaugedFormalGroupLawExpIntegral
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IsIntegralGaugedFormalGroupLawPairDataStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFiniteDvrExtensionEmbeddingResidueFieldStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFiniteDvrExtensionEmbeddingResidueField
+import Formalism.LocalToGlobal.CharacterGerms.RowTieTop
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ValuationIntegersPadicComplete
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EmbeddingsCongruentEq
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusPowerEmbeddings
@@ -43,7 +45,7 @@ theorem exists_split_baseChange (W : Type) [CommRing W] [IsDomain W] [IsDiscrete
         ((Over.pullback (spMap (algebraMap W W'))).obj G)) := by
   have h₀ : IsSemiAbelian ((Over.pullback (spMap (residue W))).obj G) := IsSemiAbelian.pullback _ G hG
   obtain ⟨k', _, _, hk, E, ⟨d⟩⟩ := exists_finite_split _ h₀
-  obtain ⟨W', i1, i2, i3, i4, i5, hf, hi, e, he⟩ := GlobalTheory.T.exists_finite_dvr_extension_embedding_residueField W k'
+  obtain ⟨W', i1, i2, i3, i4, i5, hf, hi, e, he⟩ := _root_.GlobalTheory.exists_finite_dvr_residueField_ringHom W k'
   refine ⟨W', i1, i2, i3, i4, i5, hf, hi, ?_⟩
   have key : (e.comp (algebraMap (ResidueField W) k')).comp (residue W) =
       (residue W').comp (algebraMap W W') := RingHom.ext he
@@ -79,11 +81,5 @@ open NumberField IsLocalRing Formalism.L2.Pj ReciprocityTheory.ChartRestriction.
 open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs GlobalTheory.CharDepth
 
 open Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds GlobalTheory.RowLaw
-
-section Map
-
-variable {O C : Type} [CommRing O] [CommRing C] (φ : O →+* C) {dd : ℕ}
-
-end Map
 
 end GlobalTheory.ChartCharacters

@@ -31,9 +31,6 @@ theorem dof_add (F : Fin d → PS k 2 d) (v : Fin d → k) (f g : PS k 1 d) :
     Dof F v (f + g) = Dof F v f + Dof F v g := by
   simp only [← dofD_apply, map_add]
 
-theorem dof_zero (F : Fin d → PS k 2 d) (v : Fin d → k) : Dof F v 0 = 0 := by
-  simp only [← dofD_apply, map_zero]
-
 theorem dof_mul (F : Fin d → PS k 2 d) (v : Fin d → k) (f g : PS k 1 d) :
     Dof F v (f * g) = f * Dof F v g + g * Dof F v f := by
   simp only [← dofD_apply, Derivation.leibniz, smul_eq_mul]

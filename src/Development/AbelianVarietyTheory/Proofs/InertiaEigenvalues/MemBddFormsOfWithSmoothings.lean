@@ -226,8 +226,6 @@ omit [IsTotallyComplex E] in
 
 def invL (x : Lie E a) : Lie E a := toL (Matrix.of x)⁻¹
 
-def starTest (α : Lie E a → ℂ) (y : Lie E a) : ℂ := conj (α (invL y)) * (|(fderiv ℝ invL y).det| : ℝ)
-
 omit [IsTotallyComplex E] in
 theorem invL_val (u : GL (Fin a) (Cinf E)) : invL (toL u.val) = toL (u⁻¹).val := (Matrix.coe_units_inv u).symm
 
@@ -252,20 +250,6 @@ theorem contDiffAt_invL {x : Lie E a} (h : x ∈ invSet E a) : ContDiffAt ℝ (�
 def withSmoothings (π : CuspSub E a) : Submodule ℂ (Sm E a) :=
   π.V ⊔ Submodule.span ℂ {F | ∃ (f : Lie E a → ℂ) (φ : Sm E a), IsTest (invSet E a) f ∧ φ ∈ π.V ∧
     F.1 = GlobalTheory.JSW.smoothInf f φ.1}
-
-theorem isTest_of_isTestInf (h : GlobalTheory.JSW.IsTestInf α) : IsTest (invSet E a) α :=
-  ⟨h.1.of_le (by first | exact le_rfl | exact le_top), h.2⟩
-
-theorem le_withSmoothings (π : CuspSub E a) : π.V ≤ withSmoothings π := le_sup_left
-
-theorem lie_mem_withSmoothings {π : CuspSub E a} (X : Lie E a) {φ : Sm E a} (h : φ ∈ withSmoothings π) :
-    lie E a X φ ∈ withSmoothings π := by
-  refine (sup_le (fun ψ hψ => le_withSmoothings π (π.stable (.lie X) ψ hψ)) (Submodule.span_le.2 ?_) :
-    withSmoothings π ≤ (withSmoothings π).comap (lie E a X)) h
-  rintro F ⟨f, ψ, hf, hψ, e⟩
-  refine Submodule.mem_sup_right (Submodule.subset_span ⟨dens X f, ψ, isTest_dens X hf, hψ, funext fun g => ?_⟩)
-  rw [CuspRep.lie_apply, e]
-  exact lieD_smoothing volume hf ψ.2 X g
 
 theorem mem_bddForms_of_withSmoothings (hB : GlobalTheory.Published.CuspFormsBoundedGL) (hω : ω.IsUnitary) {π : CuspSub E a}
     (h : π.HasCentChar ω) {φ : Sm E a} (hφ : φ ∈ withSmoothings π) : φ.1 ∈ bddForms E a ω := by

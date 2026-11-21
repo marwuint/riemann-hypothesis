@@ -12,10 +12,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 import Development.AbelianVarietyTheory.Definitions.Uniformization.AllDV
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformizationEndomorphismCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RosatiAdjointAbelianPartAndClassifyingMapLinearStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionPointEndomorphismImageEqMovedGtPointStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RosatiAdjointAbelianPartAndClassifyingMapLinear
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionPointEndomorphismImageEqMovedGtPoint
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionIdentificationWithPairing
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.WeilQkPairingExistsUniqueTorusStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.WeilQkPairingExistsUniqueTorus
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.GtOntoDivisibleKernel
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.MemOfNonempty
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.WeilIsCompIffOfRosatiAdj
@@ -75,8 +75,8 @@ theorem main : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWState
   have inj := GlobalTheory.IotaInj.main hL V _ hA D F
   have dv := (gt_onto_divisible_kernel hL V _ hA D F).2.1
   have ec := GlobalTheory.T.uniformizationEndomorphism_calculus hL V _ hA D A G hG U F
-  have key := GlobalTheory.T.torsionPoint_endomorphism_image_eq_moved_gtPoint hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv A G hG U
-  have ros := (GlobalTheory.T.rosatiAdjoint_abelianPart_and_classifying_map_linear hL V _ hA D A G hG U E E' hadj).1
+  have key := _root_.GlobalTheory.UT.EndTors.main hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv A G hG U
+  have ros := (_root_.GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU hL V _ hA D A G hG U E E' hadj).1
 
   have act : ∀ e : EndU U.toUnifPre, ∃ a : GtPtF D.toPre F →+ GtPtF D.toPre F, ∀ x x', e.Act x x' ↔ x' = a x := by
     intro e
@@ -104,7 +104,7 @@ theorem main : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWState
   refine eq_of_torsion_chars (F := F) fun k hk t ht => ?_
   obtain ⟨f, hf⟩ := GlobalTheory.TorsionIso.torsion_eq hL V _ hA D A G hG U F k hk
   obtain ⟨p, p', hp, hpp', hp'⟩ := div k hk f hf
-  have wp := GlobalTheory.T.weilQk_pairing_existsUnique_torus hL V _ hA D F k hk
+  have wp := _root_.GlobalTheory.weilQk_existsUnique hL V _ hA D F k hk
   rw [inj _ _ _ hp₁ hp', ← hp]
   have tor : ∀ p : QkPt D.toPre F k, f p ^ k = 1 := fun p => by
     obtain ⟨w, hw⟩ := U.toUnifPre.ext

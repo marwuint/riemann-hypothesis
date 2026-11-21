@@ -84,15 +84,6 @@ theorem jet_eq {l linv : PowerSeries K} (h : IsLogPair l linv) (g : PowerSeries 
 
 variable {R : Subring K}
 
-theorem intMv_of_intPS {f : PowerSeries K} (h : IntPS R f) : IntMv R (f : MvPowerSeries Unit K) := by
-  intro n
-  have hn : n = Finsupp.single () (n ()) := by
-    ext ⟨⟩
-    simp
-  have := h (n ())
-  rw [hn]
-  exact this
-
 theorem intPS_of_intMv {f : PowerSeries K} (h : IntMv R (f : MvPowerSeries Unit K)) : IntPS R f := by
   intro n
   exact h (Finsupp.single () n)
@@ -277,12 +268,6 @@ theorem subst_ph_linv {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : Powe
     PowerSeries.subst (PowerSeries.subst g linv) ph =
       PowerSeries.subst g (PowerSeries.subst linv ph) := by
   exact (PowerSeries.subst_comp_subst_apply (hs1 h.2.2.1) (hsM hg) ph).symm
-
-theorem subst_ph {l linv : PowerSeries K} (h : IsLogPair l linv) (ph : PowerSeries K)
-    {w : MvPowerSeries σ K} (hw : MvPowerSeries.constantCoeff w = 0) :
-    PowerSeries.subst w ph =
-      PowerSeries.subst (PowerSeries.subst w l) (PowerSeries.subst linv ph) := by
-  rw [PowerSeries.subst_comp_subst_apply (hs1 h.2.2.1) (hsM (cc_subst_zero hw h.1)), subst_subst_l h hw]
 
 def Q (l ψ : PowerSeries K) (α β : K) : MvPowerSeries (Fin 2) K :=
   PowerSeries.subst (MvPowerSeries.C α * PowerSeries.subst (MvPowerSeries.X (0 : Fin 2)) l +

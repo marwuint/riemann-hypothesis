@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCharLab
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLawsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLaws
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntertwinerUnipotentInvariantStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CartanDecomposition
 
@@ -120,7 +120,7 @@ theorem opp (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) (W W' : Type) [AddCom
     (h2 : ∀ u : Gn g n, (∀ i j, ¬ a j < a i → (u : Mt g n) i j = (1 : Mt g n) i j) → ∀ w, ρ' u (T w) = T w)
     (h3 : ∀ m : Gn g n, (∀ i j, a i ≠ a j → (m : Mt g n) i j = 0) → ∀ w, T (ρ m w) = ρ' m (T w))
     (w : W) (hw : ρ'.asAlgebraHom (eSerC L n f') (T (ρ.asAlgebraHom (eSerC L n f) w)) ≠ 0) : f = f' := by
-  obtain ⟨hi, hc, -⟩ := GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n
+  obtain ⟨hi, hc, -⟩ := _root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n
   refine GlobalTheory.T.intertwiner_unipotent_invariant g L h5 hG n _ _ (cut ρ _ (hc f)) (cut ρ' _ (hc f'))
     ((ρ'.asAlgebraHom (eSerC L n f')).rangeRestrict ∘ₗ T ∘ₗ Submodule.subtype _) a f f' ?_ ?_ ?_
     (cut_idem _ _ _ (hi f)) (cut_idem _ _ _ (hi f')) ?_
@@ -324,7 +324,7 @@ theorem finiteIndex_stab (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (hπ :
 
 theorem label_unique : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g → Green → ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) ℚ_[g]) V), IsIrrRep π → ∀ f f', HasLab L π f → HasLab L π f' → f = f' := by
   intro g _ L h5 hG n V _ _ π hπ f f' ⟨v, hv, hf⟩ ⟨v', hv', hf'⟩
-  obtain ⟨-, hc, -⟩ := GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n
+  obtain ⟨-, hc, -⟩ := _root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n
   let ρ : Representation ℂ (GL (Fin n) ℤ_[g]) V := π.comp (inc g n)
   let S := (red g n).ker
   obtain ⟨σ, hσ⟩ := exists_descend (red g n) red_surj

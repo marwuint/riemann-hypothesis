@@ -139,21 +139,6 @@ def NOfG (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : PN.Pts D.host.E D.R
 
 end Conc
 
-def GenCutC : Prop :=
-  ∀ Cg cb Cw cT CT C0 A : ℝ, ∃ (C1 C0n Aexp : ℕ) (CB CSt Cgs CTs : ℝ), 0 ≤ CB ∧ 0 ≤ CSt ∧ 0 ≤ Cgs ∧ 0 ≤ CTs ∧
-    C1 + C0n + 38 ≤ Aexp ∧ ∃ C'₀ Cl₀ : ℝ, ∀ C' Cl : ℝ, C'₀ ≤ C' → Cl₀ ≤ Cl →
-    ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word),
-      Formalism.MainNotions.S.Cnt.Hyp D large₂ u u C' Cl Cg cb Cw cT CT C0 A → ConcTie X Y →
-      ∃ (P : Type) (_ : Fintype P) (B : S3.MassData P) (cSt e1 Irat Ire : ℝ)
-        (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : PN.Pts D.host.E D.R.rS → ℝ),
-        Formalism.L2.SG.RealObj.NuQOK X u u νL ∧ Formalism.L2.SG.RealObj.NuQOK X u u νB ∧
-        (Y.tO u u).Gam1 = B.Gam1 ∧ B.d * B.d' / B.Dstar = ddC X Y u u ∧ PN.NormInputs B ∧
-        PN.FrameInputs B (2 * D.host.v) (X.B.g : ℝ) D.R.rS D.R.k D.R.f Irat Ire ∧
-        PN.NGSizes Cgs CTs CSt D.R.rS D.R.f large₂.sc.b (2 * D.host.v) (X.B.g : ℝ)
-          (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ)) cSt e1 ∧
-        GenInputs (Y.tO u u) (NOfG Y u νL νB ng) D.R.f C1 C0n Aexp CB large₂.sc.b (2 * D.host.v) (X.B.g : ℝ)
-          (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ)) cSt (PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * B.AA) e1 Ire
-
 open Formalism.L2.SG.NormCut in
 
 def DegLeftActC : Prop :=
@@ -302,22 +287,6 @@ end Formalism.L2.SG.Pf.MainEqCut
 namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.Pf.MainEqCut
-
-theorem rowMainEqC_of_cut (hCh : PN.NGChain) (hMG : MeanAmpGen) (hc : GenCutC) : RowMainEqC := by
-  intro Cg cb Cw cT CT C0 A
-  obtain ⟨C1, C0n, Aexp, CB, CSt, Cgs, CTs, h1, h2, h3, h4, hA, C'₀, Cl₀, h⟩ := hc Cg cb Cw cT CT C0 A
-  obtain ⟨Cn, hCn, hK⟩ := rowGenJoint_of hCh hMG C1 C0n Aexp CB CSt Cgs CTs h1 h2 h3 h4 hA
-  refine ⟨Cn, hCn, C'₀, Cl₀, fun C' Cl a b D large₂ X Y u hH hT ha => ?_⟩
-  obtain ⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, _, _, hG, hdd, hN, hF, hS, hIn⟩ :=
-    h C' Cl a b D large₂ X Y u hH hT
-  have hcard := Formalism.MainNotions.LatticeGluingRadicals.d_card D
-  have key := hK D.host.E (TauC Y u u) _ _ _ _ (Y.tO u u) D.R.rS D.R.k (Set (TauC Y u u)) (NuC D)
-    (NOfG Y u νL νB ng) P B large₂.sc.b (2 * D.host.v) (X.B.g : ℝ) (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ))
-    cSt e1 Irat Ire
-  rw [hcard] at key
-  have r := key ha hG hN hF hS hIn
-  rw [hdd] at r
-  exact r
 
 open Formalism.L2.SG.NormCut in
 

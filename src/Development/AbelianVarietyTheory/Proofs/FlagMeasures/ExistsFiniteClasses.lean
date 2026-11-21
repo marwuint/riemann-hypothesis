@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthonormalBasisAndO
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEquivOfRetractions
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualInterSelfDualHermitianLatticeSubspace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryNearIdentityCloseTuplesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruenceSubgroupLatticeStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruenceSubgroupLatticeStabilizer
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MatrixCongruentOneModUniformizerPowGroupAndOrbitStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ThickOrbitSelfDualUnramifiedLatticeStatement
 
@@ -375,7 +375,7 @@ theorem trace_partition : ∀ {F : Type} [Field F] [ValuativeRel F] [Topological
     exact ((isUnit_cT hA').mul hx).mul hA'
   set K := isomG L Hm ⊓ stabL L Λs with hK
   have hcong : ∀ g ∈ isomG L Hm, CongId L ϖ Λs 1 g → g ∈ K := fun g hg hc =>
-    ⟨hg, (GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λs hΛs.1 1).2.1 le_rfl g hc⟩
+    ⟨hg, (_root_.GlobalTheory.HL.congruence_subgroup_facts L ϖ hϖ Λs hΛs.1 1).2.1 le_rfl g hc⟩
   have htr : ∀ g ∈ isomG L Hm, ((g • Λs) ⊓ (Submodule.span E (Set.range x)).restrictScalars L.O =
       Submodule.span L.O (Set.range (rmul x A⁻¹)) ↔
       IsPrimT L Hm Λs (rmul (fun a => g⁻¹ (x a)) A⁻¹)) := by

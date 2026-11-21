@@ -98,39 +98,6 @@ def TangentGaussMoment.Statement : Prop :=
       0 < ∫⁻ r in Set.Ioi (0 : ℝ), tangentGaussProfile n m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) ∧
       ∫⁻ r in Set.Ioi (0 : ℝ), tangentGaussProfile n m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) < ⊤
 
-theorem ConeAreaFormula.hypotheses_inhabited :
-    IsProjPrime (coordPlaneIdeal 1 1) ∧ 0 < 1 ∧ 1 ≤ 1 + 1 ∧
-      (∀ᵐ π : Fin 1 → Fin (1 + 1) → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 1),
-        fibreCount (HermNorm.std (1 + 1)) (coordPlaneIdeal 1 1) π w ≠ ⊤) ∧
-      Measurable (fun _ : EuclideanSpace ℂ (Fin 1) => (1 : ℝ≥0∞)) := by
-  refine ⟨isProjPrime_coordPlaneIdeal one_pos 1, one_pos, by norm_num, ?_, measurable_const⟩
-  filter_upwards [ae_coordPlaneBlock_det_ne_zero 1 1] with π hπ
-  refine Filter.Eventually.of_forall fun w => ?_
-  rw [fibreCount_coordPlaneIdeal π hπ w]
-  exact ENat.one_ne_top
-
-theorem ConeTangentAverage.hypotheses_inhabited :
-    IsProjPrime (coordPlaneIdeal 1 1) ∧ 0 < 1 ∧ 1 ≤ 1 + 1 ∧
-      (∀ᵐ π : Fin 1 → Fin (1 + 1) → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 1),
-        fibreCount (HermNorm.std (1 + 1)) (coordPlaneIdeal 1 1) π w ≠ ⊤) :=
-by
-  obtain ⟨h1, h2, h3, h4, -⟩ := ConeAreaFormula.hypotheses_inhabited
-  exact ⟨h1, h2, h3, h4⟩
-
-theorem ConeRadialIntegral.hypotheses_inhabited :
-    0 < 1 ∧
-      (∀ y ∈ {y : EuclideanSpace ℂ (Fin (1 + 1)) | ∀ j : Fin (1 + 1), 1 ≤ (j : ℕ) → y j = 0},
-        ∀ t : ℝ, 0 < t → t • y ∈ {y : EuclideanSpace ℂ (Fin (1 + 1)) | ∀ j : Fin (1 + 1), 1 ≤ (j : ℕ) → y j = 0}) ∧
-      Measure.hausdorffMeasure ((2 * 1 : ℕ) : ℝ)
-          {y : EuclideanSpace ℂ (Fin (1 + 1)) | ‖y‖ < 1 ∧ ∀ j : Fin (1 + 1), 1 ≤ (j : ℕ) → y j = 0} < ⊤ ∧
-      Measurable (fun r : ℝ => ENNReal.ofReal (Real.exp (-r ^ 2))) := by
-  refine ⟨one_pos, ?_, (coordBall_mass (by norm_num : 1 ≤ 1 + 1)).2, by fun_prop⟩
-  intro y hy t _ j hj
-  simp [hy j hj]
-
-theorem TangentGaussMoment.hypotheses_inhabited : 0 < 1 ∧ 1 ≤ 2 := by
-  norm_num
-
 end
 
 end GroundTheory.Heights₂.Heights

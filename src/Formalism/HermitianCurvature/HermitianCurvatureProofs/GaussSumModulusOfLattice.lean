@@ -9,32 +9,6 @@ open scoped ComplexConjugate
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem phase_critical_points : Formalism.FourierDecayAlt.A6.CritPoints := by
-  intro K _ m hm D' x
-  constructor
-  · intro h
-    obtain ⟨k0⟩ : Nonempty (Fin m) := ⟨⟨0, hm⟩⟩
-    have hx : ∀ k, x k = x k0 := by
-      intro k
-      have := (h k).trans (h k0).symm
-      exact mul_right_cancel this
-    refine ⟨x k0, hx, ?_⟩
-    have := h k0
-    rw [Finset.prod_congr rfl (fun j _ => hx j)] at this
-    simpa [pow_succ, mul_comm] using this
-  · rintro ⟨z, hz, hD⟩ k
-    rw [Finset.prod_congr rfl (fun j _ => hz j), hz k]
-    simpa [pow_succ, mul_comm] using hD
-
-theorem phase_critical_value : Formalism.FourierDecayAlt.A6.CritValue := by
-  intro K _ m z
-  unfold g0
-  simp only [Finset.sum_const, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
-  have : Ring.inverse ((z : K) ^ m) = ((z⁻¹ : Kˣ) : K) ^ m := by
-    rw [← Units.val_pow_eq_pow_val, Ring.inverse_unit, ← Units.val_pow_eq_pow_val, inv_pow]
-  rw [this, pow_succ, mul_assoc, mul_comm (z : K), ← mul_assoc, ← mul_pow]
-  simp [add_mul]
-
 theorem phase_hessian_determinant : Formalism.FourierDecayAlt.A6.HessDet := by
   intro K _ m a
   unfold hessM
@@ -46,47 +20,6 @@ theorem phase_hessian_determinant : Formalism.FourierDecayAlt.A6.HessDet := by
   simp [dotProduct, mul_comm, add_comm]
 
 namespace A6x6
-
-section Jet
-
-open MvPolynomial
-
-variable {m : ℕ}
-
-theorem X_mem (k : Fin m) : (X k : MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ :=
-  Ideal.subset_span ⟨k, rfl⟩
-
-theorem e_mem (s : Finset (Fin m)) :
-    (∑ k ∈ s, X k : MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ :=
-  Ideal.sum_mem _ fun k _ => X_mem k
-
-theorem p_mem (s : Finset (Fin m)) :
-    (∑ k ∈ s, X k ^ 2 : MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ ^ 2 :=
-  Ideal.sum_mem _ fun k _ => Ideal.pow_mem_pow (X_mem k) 2
-
-theorem two_half : (2 : MvPolynomial (Fin m) ℚ) * C (1 / 2 : ℚ) = 1 := by
-  have : (2 : MvPolynomial (Fin m) ℚ) = C 2 := (map_ofNat C 2).symm
-  rw [this, ← C_mul]; norm_num
-
-theorem prod_jet (s : Finset (Fin m)) :
-    (∏ k ∈ s, (1 + X k) - (1 + ∑ k ∈ s, X k + C (1 / 2 : ℚ) *
-      ((∑ k ∈ s, X k) ^ 2 - ∑ k ∈ s, X k ^ 2)) : MvPolynomial (Fin m) ℚ) ∈
-      idealOfVars (Fin m) ℚ ^ 3 := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | insert a s ha ih =>
-    rw [Finset.prod_insert ha, Finset.sum_insert ha, Finset.sum_insert ha]
-    have h1 : (X a * (C (1 / 2 : ℚ) * ((∑ k ∈ s, X k) ^ 2 - ∑ k ∈ s, X k ^ 2)) :
-        MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ ^ 3 := by
-      rw [pow_succ' _ 2]
-      exact Ideal.mul_mem_mul (X_mem a)
-        (Ideal.mul_mem_left _ _ (Ideal.sub_mem _ (Ideal.pow_mem_pow (e_mem s) 2) (p_mem s)))
-    have h2 := Ideal.add_mem _ (Ideal.mul_mem_left _ (1 + X a) ih) h1
-    convert h2 using 1
-    linear_combination (-((∑ k ∈ s, X k) * X a)) * (two_half (m := m))
-
-end Jet
 
 open Formalism.FourierDecayAlt.P.A5x5
 
@@ -472,36 +405,6 @@ theorem gaussModulus_of (hPL : PerpLat) : GaussModulus := by
 end Final
 
 end A6x6
-
-theorem hessian_jet_formula : Formalism.FourierDecayAlt.A6.HessianJet := by
-  intro m d hd
-  have key : ((∏ k : Fin m, (1 + MvPolynomial.X k)) *
-      (1 - ∑ k : Fin m, MvPolynomial.X k + MvPolynomial.C (1 / 2 : ℚ) *
-        (∑ k : Fin m, MvPolynomial.X k ^ 2 + (∑ k : Fin m, MvPolynomial.X k) ^ 2)) -
-      1 : MvPolynomial (Fin m) ℚ) ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 3 := by
-    have hD := A6x6.prod_jet (m := m) Finset.univ
-    have he := A6x6.e_mem (m := m) Finset.univ
-    have hp := A6x6.p_mem (m := m) Finset.univ
-    have he2 := Ideal.pow_mem_pow he 2
-    have h1 : ((∑ k : Fin m, MvPolynomial.X k) * ∑ k : Fin m, MvPolynomial.X k ^ 2 :
-        MvPolynomial (Fin m) ℚ) ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 3 := by
-      rw [pow_succ' _ 2]; exact Ideal.mul_mem_mul he hp
-    have h2 : (((∑ k : Fin m, MvPolynomial.X k) ^ 2 - ∑ k : Fin m, MvPolynomial.X k ^ 2) *
-        ((∑ k : Fin m, MvPolynomial.X k) ^ 2 + ∑ k : Fin m, MvPolynomial.X k ^ 2) :
-        MvPolynomial (Fin m) ℚ) ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 3 := by
-      have : _ ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 2 * MvPolynomial.idealOfVars (Fin m) ℚ ^ 2 :=
-        Ideal.mul_mem_mul (Ideal.sub_mem _ he2 hp) (Ideal.add_mem _ he2 hp)
-      rw [← pow_add] at this
-      exact Ideal.pow_le_pow_right (by norm_num) this
-    have h3 := Ideal.add_mem _ (Ideal.add_mem _ (Ideal.mul_mem_right
-      (1 - ∑ k : Fin m, MvPolynomial.X k + MvPolynomial.C (1 / 2 : ℚ) *
-        (∑ k : Fin m, MvPolynomial.X k ^ 2 + (∑ k : Fin m, MvPolynomial.X k) ^ 2)) _ hD) h1)
-      (Ideal.mul_mem_left _ (MvPolynomial.C (1 / 2 : ℚ) ^ 2) h2)
-    convert h3 using 1
-    linear_combination ((∑ k : Fin m, MvPolynomial.X k) ^ 2 +
-      (∑ k : Fin m, MvPolynomial.X k) * ∑ k : Fin m, MvPolynomial.X k ^ 2) *
-      (A6x6.two_half (m := m))
-  exact (MvPolynomial.mem_pow_idealOfVars_iff 3 _).1 key d hd
 
 theorem gauss_sum_modulus_of_lattice : Formalism.FourierDecayAlt.A6.GaussModulus :=
   A6x6.gaussModulus_of orthogonal_lattice_properties

@@ -79,24 +79,6 @@ theorem isAutFunSm_const (c : ℂ) : IsAutFunSm θ V (fun _ => c) where
 
 end Const
 
-theorem ThetaTied.exists_const {X : ThetaX D} (T : ThetaTied D X) (sm : ThetaSmoothnessCondition T) (V : HSp D) (h1 : V.SigOK)
-    (c : ℂ) : ∃ F : X.AF V, T.ev V F = fun _ => c := by
-  obtain ⟨⟨θ, hθ⟩, h⟩ := sm
-  have hr := h θ hθ V h1
-  have hc : (fun _ => c) ∈ Set.range ⇑(T.ev V) := by
-    rw [hr]
-    exact isAutFunSm_const θ V c
-  obtain ⟨F, hF⟩ := hc
-  exact ⟨F, hF⟩
-
-theorem ThetaTied.nontrivial {X : ThetaX D} (T : ThetaTied D X) (sm : ThetaSmoothnessCondition T) (V : HSp D) (h1 : V.SigOK) :
-    Nontrivial (X.AF V) := by
-  obtain ⟨F1, hF1⟩ := T.exists_const sm V h1 1
-  obtain ⟨F0, hF0⟩ := T.exists_const sm V h1 0
-  refine ⟨F1, F0, fun h => ?_⟩
-  have h' := congrArg (fun F => T.ev V F 1) h
-  simp [hF1, hF0] at h'
-
 theorem VolTieG.volTie (h : VolTieG D) : Formalism.MainNotions.StandardLattice.VolTie D := by
   unfold VolTieG at h
   unfold Formalism.MainNotions.StandardLattice.VolTie

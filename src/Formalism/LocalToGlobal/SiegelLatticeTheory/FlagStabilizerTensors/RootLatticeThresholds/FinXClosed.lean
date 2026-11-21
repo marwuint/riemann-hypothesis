@@ -8,18 +8,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 
 namespace Formalism.L2.SG.Pf
 
-theorem fibFinAll_holds : Formalism.L2.SG.TermTieOf.FibFinAll := FinXP.fibFin_holds
-
-theorem pairIndepAll_holds : Formalism.L2.SG.TermTieOf.PairIndepAll :=
-  FinXP.pairIndep_of Formalism.L2.SG.Pf.KernelOfEmbedding.IotaKer_holds
-
 theorem iotaRowC_holds : FinXP.IotaRowC := fun _ _ Y _ _ s₁ s₂ hr =>
   Formalism.L2.SG.Pf.iotaDict_fwd Y s₁ s₂ (congrArg (fun q => q.1.1) hr) (congrArg (fun q => q.2.1.1) hr)
     (congrArg (fun q => q.2.2) hr)
 
 theorem pairTiesAll_holds : Formalism.L2.SG.TermTieOf.PairTiesAll := FinXP.pairTies_of iotaRowC_holds
-
-theorem atPtRelevantAll_holds : FinXP.AtPtRelevantAll := FinXP.atPtRelevant_holds
 
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 

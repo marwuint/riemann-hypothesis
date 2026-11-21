@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartFixed
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsVacFOfIsVacVec
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameFunctionalKillsFockVacuumRealTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameFunctionalKillsFockVacuumRealTranslates
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TameFunctionalVacuumIrreducibilityStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergCommutantPermutesFirstRowCosetVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergCommutantPermutesFirstRowCosetVectors
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAuxiliaryVectorWittDec
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaHeisenbergConjugationNegHermitianSpace
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.SymplOHSmulRight
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
@@ -191,7 +192,7 @@ theorem fockTot : FockTot := by
   intro D hoff T L μ0 hL sc G W M hM i ℓ hℓ hkill f hf
   have hψ := W.ψ_std
   have hi : i.1 < D.R.m := i.2
-  have cos := GlobalTheory.T.heisenbergCommutant_permutes_firstRowCosetVectors D hoff T L μ0 hL sc G W M hM i.1 hi
+  have cos := _root_.GlobalTheory.CosPerm.cosVec_perm D hoff T L μ0 hL sc G W M hM i.1 hi
   obtain ⟨A, hAc, hAo⟩ := frame_neg (G.V (.grid (i.1 + 1) 0)) (W.cart (.grid (i.1 + 1) 0)) (W.onb (.grid (i.1 + 1) 0))
     (W.onb_is _ ⟨by omega, Nat.zero_le _⟩)
   obtain ⟨B, hBc, hBo⟩ := frame_pos (G.V (.grid i.1 0)) (W.cart (.grid i.1 0)) (W.onb (.grid i.1 0))
@@ -214,7 +215,7 @@ theorem fockTot : FockTot := by
       rw [hfock]
       simp only [conjFun]
       rw [cj_eq_star, hkill κ P, map_zero]
-    have h := GlobalTheory.T.tameFunctional_kills_fockVacuum_realTranslates D W.ψ W.θ hψ W.θ_is _ _ A B (conjFun ℓ) (tame_conjFun hψ hℓ) _ hv hk w hw
+    have h := _root_.GlobalTheory.FockTransl.tame_kills_real_translates D W.ψ W.θ hψ W.θ_is _ _ A B (conjFun ℓ) (tame_conjFun hψ hℓ) _ hv hk w hw
     simp only [conjFun] at h
     rw [cj_heisO (S := G.V (.grid (i.1 + 1) 0)) hψ, map_eq_zero, cj_eq_star] at h
     exact h

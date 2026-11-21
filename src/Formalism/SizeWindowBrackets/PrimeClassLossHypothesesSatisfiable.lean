@@ -63,18 +63,6 @@ def tSecondD (P : Par) (m T : ℝ) : ℝ := 2 * P.a * m * T * (P.x ^ 9)⁻¹
 
 def tIoD (P : Par) (m T : ℝ) : ℝ := P.a * m * T * (P.x ^ 9)⁻¹
 
-def SizeOutD : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), WindowsD P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tOutD P m T ≤ sg P K * unitU P m T
-
-def SizeSecondD : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), WindowsD P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tSecondD P m T ≤ sg P K * unitU P m T
-
-def SizeIoD : Prop :=
-  ∀ (P : Par) (e K m T : ℝ), WindowsD P e K → LargeX P.x P.ε e K → 0 ≤ m → 1 ≤ T →
-    tIoD P m T ≤ sg P K * unitU P m T
-
 def tDetD (P : Par) (m T : ℝ) : ℝ :=
   tFloors P m + tCp P m T + tPrLow P m T + tPrHigh P m T + tOr P m T + tOutD P m T + tOrders P m T
     + tBand P m T + tHigh P m T + tD P m T + tSecondD P m T
@@ -103,12 +91,6 @@ def ExplicitLossAndPrimeLogSumBounds (P : Par) (K : ℝ) {U : Type} (Ps cand : F
   (∀ υ, (D υ).ASK P.d Ps J TT - (D υ).Ga J ≤ (2 * Real.log 4 * P.C + 13 * sg P K) * unitU P J.card TT.card) ∧
   ∀ υ, ∑ p ∈ cand, Real.log p * io υ p ≤ sg P K * unitU P J.card TT.card
 
-def ExplicitLossBoundsUnderSizeWindows : Prop :=
-  ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ (P : Par) (e K : ℝ), P.Cord = Cord → WindowsD P e K → LargeX P.x P.ε e K →
-    ∀ (ι κ τ U : Type) (Ps cand PR : Finset ℕ) (J : Finset κ) (TT : Finset τ)
-      (BAD : ℕ → τ → Prop) (Sig : ℕ → ℝ) (io : U → ℕ → ℝ) (D : U → LD ι κ τ),
-      PrimeClassLossHypotheses P Ps cand PR J TT BAD Sig io D → ExplicitLossAndPrimeLogSumBounds P K Ps cand J TT io D
-
 def LossBoundsUnderSizeWindows : Prop :=
   ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ (P : Par) (e K : ℝ), P.Cord = Cord → WindowsD P e K → LargeX P.x P.ε e K →
     ∀ (ι κ τ U : Type) (Ps cand PR : Finset ℕ) (J : Finset κ) (TT : Finset τ)
@@ -121,48 +103,6 @@ def LossBoundsEventually : Prop :=
     ∀ (ι κ τ U : Type) (Ps cand PR : Finset ℕ) (J : Finset κ) (TT : Finset τ)
       (BAD : ℕ → τ → Prop) (Sig : ℕ → ℝ) (io : U → ℕ → ℝ) (D : U → LD ι κ τ),
       PrimeClassLossHypotheses P Ps cand PR J TT BAD Sig io D → ExcessAndPrimeLogSumUnitBounds P Ps cand J TT io D
-
-open Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds in
-
-def LossBoundsOfD : Prop :=
-  ∀ (P : Par) (ι κ τ U U0 : Type) (Ps cand : Finset ℕ) (J : Finset κ) (TT : Finset τ)
-    (io : U → ℕ → ℝ) (D : U → LD ι κ τ) (sel : U0 → U)
-    {W : U0 → Type} {Top : Type} [Fintype Top] {m f : ℕ} (Dd : Data U0 W Top m f) (Cc : Consts),
-    ExcessAndPrimeLogSumUnitBounds P Ps cand J TT io D → 1 ≤ P.x → 0 ≤ P.ε → 0 ≤ P.C →
-    Dd.x = P.x → Dd.ε = P.ε → Dd.b = P.b → Fintype.card Top = TT.card → m = J.card →
-    (∀ u0, Dd.ASK u0 = (D (sel u0)).ASK P.d Ps J TT) → (∀ u0, Dd.Ga u0 = (D (sel u0)).Ga J) →
-    (∀ u0, Dd.IO u0 = ∑ p ∈ cand, Real.log p * io (sel u0) p) →
-    3 * P.C + 13 ≤ Cc.cLoss → 0 ≤ Cc.eLoss →
-    LossBounds Dd Cc
-
-open Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds in
-
-def DLossesLeadingTermForm : Prop :=
-  ∃ Cord : ℝ, 0 ≤ Cord ∧ ∀ ε e K : ℝ, 0 < ε → ε < 1 / 4 → ∃ x₀ : ℝ,
-    ∀ (P : Par), P.ε = ε → P.Cord = Cord → x₀ ≤ P.x → WindowsD P e K →
-    ∀ (ι κ τ U U0 : Type) (Ps cand PR : Finset ℕ) (J : Finset κ)
-      (TT : Finset τ) (BAD : ℕ → τ → Prop) (Sig : ℕ → ℝ) (io : U → ℕ → ℝ) (D : U → LD ι κ τ),
-      PrimeClassLossHypotheses P Ps cand PR J TT BAD Sig io D →
-        ∀ (sel : U0 → U) {W : U0 → Type} {Top : Type} [Fintype Top] {m f : ℕ}
-          (Dd : Data U0 W Top m f) (Cc : Consts),
-          Dd.x = P.x → Dd.ε = P.ε → Dd.b = P.b → Fintype.card Top = TT.card → m = J.card →
-          (∀ u0, Dd.ASK u0 = (D (sel u0)).ASK P.d Ps J TT) → (∀ u0, Dd.Ga u0 = (D (sel u0)).Ga J) →
-          (∀ u0, Dd.IO u0 = ∑ p ∈ cand, Real.log p * io (sel u0) p) →
-          3 * P.C + 13 ≤ Cc.cLoss → 0 ≤ Cc.eLoss →
-          LossBounds Dd Cc
-
-def PrimeClassLossHypothesesSatisfiable : Prop :=
-  ∀ (P : Par) (e K : ℝ), WindowsD P e K → LargeX P.x P.ε e K →
-    ∃ (Ps cand PR : Finset ℕ) (J : Finset Unit) (TT : Finset Unit) (BAD : ℕ → Unit → Prop)
-      (Sig : ℕ → ℝ) (io : Unit → ℕ → ℝ) (D : Unit → LD ℕ Unit Unit),
-      PrimeClassLossHypotheses P Ps cand PR J TT BAD Sig io D ∧ J.card = 1 ∧ TT.card = 1 ∧
-      (∀ p ∈ PR, p.Prime ∧ (p : ℝ) < P.Xp) ∧ cand ⊆ PR ∧ PR ⊆ Ps ∧
-      (∀ p ∈ Ps, (D ()).cl p ≠ PClass.served → io () p = 0) ∧
-      0 < (D ()).ASK P.d Ps J TT ∧
-      (∃ p ∈ Ps, (D ()).cl p = PClass.second) ∧
-      (∃ p ∈ cand, (D ()).cl p = PClass.served ∧ 0 < Sig p ∧ Sig p ≤ P.θ ∧ 0 < io () p ∧
-          (TT \ (D ()).TTp p).Nonempty) ∧
-      (∃ p ∈ Ps, (D ()).cl p = PClass.served ∧ (D ()).TTp p = TT ∧ 0 < (D ()).vonMangoldtClassSum () () p)
 
 end
 

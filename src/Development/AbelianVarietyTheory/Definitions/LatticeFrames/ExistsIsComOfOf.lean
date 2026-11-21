@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevAtZ
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.BaseMatrixGlApply
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TiedAt
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TopFormula
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisOFinsetSum
@@ -69,11 +69,6 @@ theorem support_convList {p : WO S T → Prop} (h0 : p 0) (hadd : ∀ x y, p x �
     obtain ⟨x, hx, y, hy, rfl⟩ := mem_support_conv hw
     exact hadd x y (hl c List.mem_cons_self x hx) (ih (fun c' hc' => hl c' (List.mem_cons_of_mem _ hc')) y hy)
 
-example (x y : WO S T) :
-    conv ψ S T (Finsupp.single x 1) (Finsupp.single y 1) = Finsupp.single (x + y) (ψ (symplOH S T x y)) := by
-  rw [conv, Finsupp.support_single_ne_zero _ one_ne_zero, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton,
-    Finset.sum_singleton, Finsupp.single_eq_same, Finsupp.single_eq_same, one_mul, one_mul]
-
 end Conv
 
 section Gen
@@ -86,15 +81,6 @@ variable {D : D7} {u : D.what₂.Word}
 def symLevel (Pg : Finset (Pl D.host.E)) (ψ₀ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) : LevelP Pg D.R.r ℂ :=
   LevelP.ofLocal (fun PP => Formalism.L2.Col.HPsymF (kP PP.1) D.R.r D.R.k D.R.rS)
     fun PP => Formalism.L2.Col.chiSymF (ψ₀ PP.1) D.R.r D.R.k D.R.rS
-
-theorem mem_symLevel {Pg : Finset (Pl D.host.E)} {ψ₀ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ} (g : Formalism.L2.DIV.G0 Pg D.R.r) :
-    g ∈ (symLevel Pg ψ₀).H ↔ ∀ PP, g PP ∈ Formalism.L2.Col.HPsymF (kP PP.1) D.R.r D.R.k D.R.rS :=
-  ⟨fun h PP => h PP (Set.mem_univ _), fun h PP _ => h PP⟩
-
-theorem symLevel_chi {Pg : Finset (Pl D.host.E)} {ψ₀ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ} (g : (symLevel Pg ψ₀).H) :
-    (symLevel Pg ψ₀).chi g =
-      ∏ PP : Pg, Formalism.L2.Col.chiSymF (ψ₀ PP.1) D.R.r D.R.k D.R.rS ⟨g.1 PP, (mem_symLevel g.1).1 g.2 PP⟩ :=
-  MonoidHom.finset_prod_apply _ _ _
 
 section At
 
@@ -110,10 +96,6 @@ structure GX.Frames (fr : ∀ i, i ≤ D.R.m → Matrix (Fin (D.sp.X i).rank) (F
     ∃ e : Ix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.t) (G.s + 2) ⊕ Unit ≃ Fin (D.R.N (G.s + 1 + 1)),
       IsOrd (Sum.elim zPos fun _ => D.R.N D.R.m - 1) e ∧
         ∀ r c, valuation G.k (G.FM.β r c - G.emb (fr (G.s + 1 + 1) hm r (e c))) < 1
-
-def GX.InCoset (y : Fin (D.R.N (G.s + 1)) → D.host.E) : Prop :=
-  ∀ e : XIx (Fin D.R.k) (Fin D.R.t) (G.s + 1) ≃ Fin (D.R.N (G.s + 1)), IsOrd xPos e → ∀ c,
-    G.emb (y (e c)) - G.S.y0 (Fin D.R.t) c ∈ 𝒪[G.k]
 
 end At
 
@@ -133,86 +115,7 @@ structure StdSp (a : XPart D u) (ζ₀ : Fin a.Lz.rank → D.host.E) (π : D.hos
 
 namespace StdSp
 
-variable {a : XPart D u} {ζ₀ : Fin a.Lz.rank → D.host.E} {π : D.host.E} (H : StdSp a ζ₀ π)
-include H
-
-theorem norm : star ζ₀ ⬝ᵥ a.Lz.gram *ᵥ ζ₀ = star π * π := by
-  rw [H.lzGram, H.zeta, Matrix.one_mulVec]
-  simp [dotProduct, H.lzRank]
-
-theorem line (h : π ≠ 0) : IsLineVec a.Lz ζ₀ := ⟨H.lzRank, by rw [H.norm]; exact mul_ne_zero (star_ne_zero.2 h) h⟩
-
-theorem vec (n) (h : n = D.R.m) (r) : vecB (a.oT n h) ζ₀ r = if r.val + 1 = (D.sp.X n).rank then π else 0 := by
-  simp only [vecB, Matrix.mulVec, dotProduct, H.iB, H.zeta]
-  split_ifs <;> simp [H.lzRank]
-
 end StdSp
-
-example {a : XPart D u} {ζ₀ : Fin a.Lz.rank → D.host.E} {π : D.host.E} (h : (a.x 0).L = ⊥) : ¬ StdSp a ζ₀ π := fun H => by
-  have h1 := (H.lat 0 (Nat.zero_le _) fun _ => 1).2 fun _ => isIntegral_one
-  rw [h, Submodule.mem_bot] at h1
-  exact one_ne_zero (congrFun h1 ⟨0, GlobalTheory.FinPl.rank_pos_of_le D (Nat.zero_le _)⟩)
-
-def unitLine (D : D7) : HSp D := Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral 1
-
-theorem unitLine_spec (D : D7) :
-    (unitLine D).rank = 1 ∧ (unitLine D).gram = 1 ∧ (unitLine D).SigOK ∧ (unitLine D).IsPosDef := by
-  refine ⟨rfl, ?_, Examples₂.posSpace_sigOK _ 1, fun _ => rfl⟩
-  refine Matrix.ext fun i j => ?_
-  refine (Examples₂.stdSpace_gram_apply (E := D.host.E) Examples₂.star_isIntegral 1 (fun _ => false) 1 0 i j).trans ?_
-  obtain rfl : i = j := Subsingleton.elim (α := Fin 1) i j
-  rw [Matrix.one_apply_eq]
-  exact if_pos rfl
-
-def lastDec {V A : HSp D} (hV : V.gram = 1) (hA : A.gram = 1) (h : A.rank + 1 = V.rank) : OrthDec V A (unitLine D) where
-  iA := Matrix.of fun r c => if r.val = c.val then 1 else 0
-  iB := Matrix.of fun r _ => if r.val + 1 = V.rank then 1 else 0
-  isoA := by
-    refine Matrix.ext fun i j => ?_
-    rw [hV, hA, Matrix.mul_one, Matrix.mul_apply, Finset.sum_eq_single ⟨i.val, by omega⟩]
-    · simp [Matrix.one_apply, Fin.ext_iff]
-    · intro r _ hr
-      have : r.val ≠ i.val := fun e => hr (Fin.ext e)
-      simp [this]
-    · simp
-  isoB := by
-    refine Matrix.ext fun i j => ?_
-    have hij : i = j := Subsingleton.elim (α := Fin 1) i j
-    rw [hV, (unitLine_spec D).2.1, Matrix.mul_one, Matrix.mul_apply, Finset.sum_eq_single ⟨A.rank, by omega⟩]
-    · rw [hij, Matrix.one_apply_eq]
-      simp [h]
-    · intro r _ hr
-      have : r.val + 1 ≠ V.rank := fun e => hr (Fin.ext (by simp only; omega))
-      simp [this]
-    · simp
-  orth := by
-    refine Matrix.ext fun i j => ?_
-    rw [hV, Matrix.mul_one, Matrix.mul_apply]
-    refine Finset.sum_eq_zero fun r _ => ?_
-    by_cases e : r.val = j.val
-    · have : r.val + 1 ≠ V.rank := by omega
-      simp [this]
-    · simp [e]
-  rank_add := h
-
-section Ker
-
-variable {a : XPart D u} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
-
-@[reducible] def XPart.withKer (a : XPart D u) (c : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ) : XPart D u :=
-  { a with k := fun j => ⟨(a.k j).om, (a.k j).vac, c j⟩ }
-
-@[reducible] def OffX.withKer (o : OffX a k ι) (c cG : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ) : OffX (a.withKer c) k ι :=
-  { o with cG := cG }
-
-@[reducible] def GX.withKer {ζ₀ : Fin a.Lz.rank → D.host.E} {PP : Pl D.host.E} (G : GX a ζ₀ PP)
-    (c : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ) : GX (a.withKer c) ζ₀ PP :=
-  { G with }
-
-def prodG {ζ₀ : Fin a.Lz.rank → D.host.E} (G : ∀ PP : a.c.Pg, GX a ζ₀ PP.1) (j : ℕ) : WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ :=
-  if j < D.R.m then convList a.c.ψ _ _ (a.c.Pg.attach.toList.map fun PP => (G PP).cg j) else 0
-
-end Ker
 
 end Gen
 
@@ -241,14 +144,6 @@ structure IsComOf (c : GlobalTheory.ChainOnto.Com (I.rec7 l Z)) : Prop where
 
 variable {I l Z}
 
-theorem IsComOf.nonempty {c} (H : IsComOf I l Z c) : c.Pg.Nonempty := by
-  classical
-  obtain ⟨w, hw⟩ := Finset.card_pos.1 ((l.pr.vG_card 0).symm ▸ (base_fields_primes_ok B X).1.f_pos)
-  refine ⟨w, ?_⟩
-  rw [H.places]
-  unfold Formalism.L2.Col.Primes.vGs
-  exact (@Finset.mem_union _ (_) _ _ _).2 (Or.inl hw)
-
 variable {v : B.Word} {Ch : ℕ → Type} (A : ColDat I l Z v Ch)
 
 def BaseCoset : Prop :=
@@ -262,33 +157,6 @@ def BaseOne (i : ℕ) (hi : i ≤ B.R.m) : Prop :=
       (baseFr A i hi P r c - if r.val = c.val then 1 else 0) < 1
 
 def BaseEnds : Prop := BaseOne A 0 (Nat.zero_le _) ∧ BaseOne A B.R.m le_rfl
-
-def baseY (j : ℕ) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup I.mu0)) : Fin (B.R.N j) → B.fields.E :=
-  (Formalism.L2.Col.frsF I.sel (I.tup I.mu0) (A.p0 j).1.1 P).symm (Formalism.L2.Col.repY (A.p0 j).1.2)
-
-variable {A} in
-
-theorem BaseCoset.intAt (H : BaseCoset A) {j : ℕ} (hj : j + 1 = B.R.m) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup I.mu0))
-    (hP : P.1 ∈ (B.primes X).vGs) (i : Fin (B.R.N j)) :
-    Formalism.L2.Col.IntAt P.1 (baseY A j P i - if i.val = B.R.k then ((Formalism.L2.Col.qOf P.1 : B.fields.E))⁻¹ else 0) := by
-  letI := GlobalTheory.Mem.Col2.starE B
-  obtain ⟨c, hc, y, hy, h⟩ := H j hj P hP
-  obtain ⟨y₀, -, e⟩ := (A.p0 j).mem_ybSet hj
-  have h1 := (A.p0 j).repY_mem hj
-  rw [e] at hy
-  have h1' := e.subset h1
-  have h2 := (Formalism.L2.Col.mem_locLat _ _ _ _).1 (sub_mem h1' hy) P
-  rw [if_pos hP, pow_zero, inv_one, one_smul] at h
-  simp only [if_pos hP, zpow_zero, inv_one, one_smul, sub_sub_sub_cancel_right] at h2
-  have h3 := GlobalTheory.ColNorms.liftFr_lifts B.fields.E _ _ _ (A.p0 j).1.1.deco ⟨P.1, hP⟩
-  have e2 : Formalism.L2.Col.frsF I.sel (I.tup I.mu0) (A.p0 j).1.1 P = (A.p0 j).1.1.deco.1.liftFr ⟨P.1, hP⟩ := dif_pos hP
-  have h4 := (h3.1 ((Formalism.L2.Col.frsF I.sel (I.tup I.mu0) (A.p0 j).1.1 P).symm (Formalism.L2.Col.repY (A.p0 j).1.2 - y))).1 (by
-    rw [← e2, LinearEquiv.apply_symm_apply]
-    exact h2)
-  have h5 := (Formalism.L2.Col.mem_localization_standardLattice P.1 _).1 (sub_mem h4 h) i
-  convert h5 using 1
-  simp only [baseY, map_sub, Pi.sub_apply, Pi.single_apply, Fin.ext_iff, hc]
-  ring
 
 variable {a : XPart (I.rec7 l Z) v}
 
@@ -354,34 +222,9 @@ structure XStdBy (A : ColDat I l Z v (w.C.herm.base.Ch v)) : Prop where
   cG_zero : ∀ j, B.R.m ≤ j → o.cG j = 0
   ker : ∀ j, j < B.R.m → (a.k j).c = conv a.c.ψ _ _ (o.cG j) (o.cT j)
 
-def XStd : Prop := ∃ A, XStdBy w a o G A
-
 namespace XStdBy
 
-variable {w a o G} {A : ColDat I l Z v (w.C.herm.base.Ch v)} (H : XStdBy w a o G A)
-include H
-
-theorem weil {j : ℕ} (hj : j < B.R.m) : IsWeilDatumO a.c.ψ _ _ (a.c.μ (j + 1)) (a.c.μ (j + 1)) (a.k j).om := by
-  rw [H.col.om j hj, ← H.col.chr j hj]
-  exact H.col.is.om j hj
-
-theorem norm : star o.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ o.ζ₀ = ((B.T v : ℕ) : B.host.E) := by
-  refine H.sp.norm.trans ?_
-  have h := congrArg (algebraMap (𝓞 B.fields.E) B.fields.E) (l.pr.piT_norm v)
-  rw [map_mul, map_natCast, mul_comm] at h
-  exact h
-
 end XStdBy
-
-example : Nonempty ((B.primes X).vT v) :=
-  let ⟨P, hP⟩ := Finset.card_pos.1 ((l.pr.vT_card v).symm ▸ (base_fields_primes_ok B X).1.f_pos)
-  ⟨⟨P, hP⟩⟩
-
-example (h : a.c.Pg = ∅) : ¬ XStd w a o G := fun ⟨_, H⟩ => H.com.nonempty.ne_empty h
-
-example (H : OffsetCompatibility A o) : valuation k ((B.T v : ℕ) : k) < 1 := by
-  rw [← H.unif]
-  exact (Valuation.Integer.not_isUnit_iff_valuation_lt_one).1 o.q.2.not_isUnit
 
 end World
 

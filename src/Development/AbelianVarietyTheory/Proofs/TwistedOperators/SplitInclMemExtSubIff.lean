@@ -26,9 +26,6 @@ def wPart (τ : E →ₐ[F] Fv F v) (W : Submodule E V.V) : Submodule (Fv F v) (
     rw [splitVec_smul, AlgHom.commutes]
     rfl
 
-theorem splitVec_mem_wPart (τ : E →ₐ[F] Fv F v) {W : Submodule E V.V} {y : Fin V.rank → Fv F v ⊗[F] E}
-    (hy : y ∈ extSub (F := F) V (Fv F v) W) : splitVec τ y ∈ wPart τ W := ⟨y, hy, rfl⟩
-
 theorem wPart_mono (τ : E →ₐ[F] Fv F v) {A B : Submodule E V.V} (h : A ≤ B) : wPart τ A ≤ wPart τ B := by
   rintro _ ⟨y, hy, rfl⟩
   exact ⟨y, GlobalTheory.Cusp.extSub_mono V _ h hy, rfl⟩

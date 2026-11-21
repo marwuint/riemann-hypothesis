@@ -68,10 +68,6 @@ instance compactSpace_range_gsDecomp : CompactSpace (gsDecomp K S ιs v).range :
   rw [MonoidHom.coe_range]
   exact isCompact_range (continuous_gsDecomp K S ιs v)
 
-theorem isClosed_range_gsDecomp : IsClosed ((gsDecomp K S ιs v).range : Set (galUnramifiedOutside K.1 ℚ̄ S)) := by
-  rw [MonoidHom.coe_range]
-  exact (isCompact_range (continuous_gsDecomp K S ιs v)).isClosed
-
 theorem isQuotientMap_rangeRestrict_gsDecomp : Topology.IsQuotientMap (gsDecomp K S ιs v).rangeRestrict :=
   ((continuous_rangeRestrict_gsDecomp K S ιs v).isClosedMap).isQuotientMap
     (continuous_rangeRestrict_gsDecomp K S ιs v) (MonoidHom.rangeRestrict_surjective _)

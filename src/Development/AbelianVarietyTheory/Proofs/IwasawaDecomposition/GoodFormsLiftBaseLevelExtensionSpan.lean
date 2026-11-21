@@ -12,10 +12,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinrankSpanCw
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteGroupActionCoordinatewiseFieldEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteGroupCharactersOnLiftFormsExtendedDataStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseLevelsExtendedDataCorrespondFieldEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodIdempotentCoeffsCorrespondFieldEmbeddingStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteGroupActionCoordinatewiseFieldEmbedding
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteGroupCharactersOnLiftFormsExtendedData
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseLevelsExtendedDataCorrespondFieldEmbedding
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodIdempotentCoeffsCorrespondFieldEmbedding
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Cx Formalism.IndefR.RecTie
 open scoped TensorProduct InnerProductSpace ComplexOrder
@@ -36,8 +37,8 @@ theorem goodForms_lift_bc : GlobalTheory.Published.DiscreteSeriesCover → Globa
         ∀ φ : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL, (∀ x, (w'.st Z').toD7.what₂.embLL (φ x) = (w.st Z).toD7.what₂.embLL x) →
         z'.R.toRealDat.WL z'.F.lv2 false j' = Submodule.span (w'.st Z').toD7.what₂.LL {x' | ∃ x ∈ z.R.toRealDat.WL z.F.lv2 false j, ∀ (k : Fin (z.R.nW j)) (k' : Fin (z'.R.nW j')), (k : ℕ) = k' → x' k' = φ (x k)}) := by
   intro p1 p2 p3 p4 p5 p6 p7
-  have H := StepW.and (StepW.and (GlobalTheory.T.finiteGroupAction_coordinatewise_fieldEmbedding p1 p2 p3 p4 p5 p6 p7) (GlobalTheory.T.finiteGroupCharactersOnLiftForms_extendedData p1 p2 p3 p4 p5 p6 p7))
-    (StepW.and (GlobalTheory.T.baseLevels_extendedData_correspond_fieldEmbedding p1 p2 p3 p4 p5 p6 p7) (GlobalTheory.T.goodIdempotent_coeffs_correspond_fieldEmbedding p1 p2 p3 p4 p5 p6 p7))
+  have H := StepW.and (StepW.and (_root_.GlobalTheory.Mem.R3.RhoExt.rho_ext p1 p2 p3 p4 p5 p6 p7) (_root_.GlobalTheory.Mem.R3.ChiExt.chi_ext p1 p2 p3 p4 p5 p6 p7))
+    (StepW.and (_root_.GlobalTheory.Mem.R3.Rw.extN_baseLevel_bc p1 p2 p3 p4 p5 p6 p7) (_root_.GlobalTheory.Mem.R3.GoodIdemBC.idemOf_coeff_ext p1 p2 p3 p4 p5 p6 p7))
   refine StepW.trans H (StepW.of_all fun K B' f' T' w' _ _ hq => ?_)
   intro B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' hEx j j' hj φ hφ
   have S1 := hq.1.1 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' hEx j j' hj φ hφ

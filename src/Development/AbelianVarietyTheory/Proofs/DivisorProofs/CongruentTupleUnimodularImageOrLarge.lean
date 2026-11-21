@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetSqMulPowLeProdBilinFormLatticeBasisStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetSqMulPowLeProdBilinFormLatticeBasis
 
 open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.Poinc
 
@@ -292,7 +292,7 @@ theorem dichotomy : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (bar : O �
         have h2 : (N : ℤ) - 1 ≤ d := by rw [hd']; linarith
         exact pow_le_pow_left₀ hN0 h2 2
     have hdsqR : ((N : ℝ) - 1) ^ 2 ≤ (d : ℝ) ^ 2 := by exact_mod_cast hdsq
-    have hidx := GlobalTheory.T.det_sq_mul_pow_le_prod_bilinForm_lattice_basis r X₀ X b ε g β hsym hp lam hlam hlow
+    have hidx := _root_.GlobalTheory.LatIndex.det_sq_mul_pow_le_prod r X₀ X b ε g β hsym hp lam hlam hlow
     have hbj : ∀ j, (β (g (b j)) (g (b j)) : ℝ) ≤ D * s0 := by
       intro j
       have e1 : g (b j) = ∑ l, cf (b j) l • μ l := by rw [← hg', hcf]

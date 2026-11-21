@@ -33,8 +33,6 @@ lemma ord5 (m : ℕ) : orderOf (u5 (m + 2)) = 2 ^ m := by
       have h3 := h8.trans h2
       omega
 
-lemma five_unit_coe_nat (n : ℕ) : ((u5 n : (ZMod (2 ^ n))ˣ) : ZMod (2 ^ n)) = ((5 : ℕ) : ZMod (2 ^ n)) := by simp [u5, ZMod.coe_unitOfCoprime]
-
 lemma unitsMap_five {a b : ℕ} (h : 2 ^ b ∣ 2 ^ a) : ZMod.unitsMap h (u5 a) = u5 b := by
   ext
   rw [ZMod.unitsMap_def, Units.coe_map, five_unit_coe_int, five_unit_coe_int]

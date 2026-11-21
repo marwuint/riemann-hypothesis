@@ -20,18 +20,6 @@ def blk (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   Matrix.of fun i l => (e.symm i).elim ((e.symm l).elim 1 fun _ => 0)
     fun a => (e.symm l).elim 0 fun b => m a b
 
-theorem ext_e (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
-    {u v : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ} (h : ∀ x y, u (e x) (e y) = v (e x) (e y)) :
-    u = v := by
-  ext i l
-  simpa using h (e.symm i) (e.symm l)
-
-theorem blk_mul (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
-    (m n : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) : blk e (m * n) = blk e m * blk e n := by
-  refine ext_e e fun x y => ?_
-  rw [Matrix.mul_apply, ← e.sum_comp, Fintype.sum_option]
-  rcases x with _ | x <;> rcases y with _ | y <;> simp [blk, Matrix.mul_apply, -Fintype.sum_sum_type]
-
 open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 variable {P Q P' Q' : ℕ} in

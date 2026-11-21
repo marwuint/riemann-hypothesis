@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NatCastEqOneOfCoprimeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NatCastEqOneOfCoprime
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPthPowerScaleThinShellStatement
 
 open GlobalTheory.AlmostEt
@@ -50,7 +50,7 @@ theorem moves_top_of_coprime_order : ∀ (L : Type) [Field L] (v : Valuation L �
     intro j _
     rw [← Valuation.map_neg, neg_sub]
     exact hstep j
-  rw [map_mul, GlobalTheory.T.valuation_natCast_eq_one_of_coprime' L v p l hp1 hl, one_mul] at h1
+  rw [map_mul, _root_.GlobalTheory.AlmostEt.natCast_eq_one_of_coprime L v p l hp1 hl, one_mul] at h1
   exact absurd (lt_of_lt_of_le hrx h1) (lt_irrefl _)
 
 end GlobalTheory.AlmostEt

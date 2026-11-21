@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvVolEqInfMulSupAnd
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairCommonUnipotentStabiliserSummary
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummaryStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalFormTerminalDeterminantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefiniteThetaLatticeLeFixedIndexBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegerAddStarEqOneOfIsCMUnramStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefiniteThetaLatticeLeFixedIndexBound
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegerAddStarEqOneOfIsCMUnram
+import Formalism.LocalRingCardinality.DataSpaces
+import Formalism.FlagUnipotentLattices.CardSubmodulesAndLinearEquivBounds
 import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.ExistsHasLeadingCoeffOfMemSpanBelow
 
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt
@@ -1010,8 +1012,8 @@ theorem invVol_mid_layer_le : ∀ (K V : Type) [Field K] [NumberField K] [StarRi
   classical
   obtain ⟨-, hlift, hc, -, hn, huP, hw, -, -, -, -, hP⟩ := GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N
   obtain ⟨hb0, -, -, -⟩ := GlobalTheory.T.normal_form_terminal_determinant K V H hK r N g Λ hg hterm
-  obtain ⟨hT, hg0, hi0, -, -, -, -, -⟩ := GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ hg hterm
-  obtain ⟨w₀, hw₀⟩ := GlobalTheory.T.exists_integer_add_star_eq_one_of_isCMUnram' K hK
+  obtain ⟨hT, hg0, hi0, -, -, -, -, -⟩ := _root_.GlobalTheory.DegCnt.FixIdx.main K V H hK r N g Λ hg hterm
+  obtain ⟨w₀, hw₀⟩ := _root_.GlobalTheory.exists_integer_add_star_eq_one_of_isCMUnram K hK
   obtain ⟨hU, hF, -⟩ := hterm.1
   have hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K) := by
     intro x hx y hy

@@ -25,12 +25,6 @@ theorem inv_smul_ne {n : ℕ} (k : ℂ) (hk : k ≠ 0) (A : Matrix (Fin n) (Fin 
       exact h (isUnit_of_mul_isUnit_right hu)
     rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', smul_zero]
 
-theorem quotMetC_smul {n d : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.PosDef) (P : Matrix (Fin d) (Fin n) ℂ)
-    (c : ℝ) (hc : 0 < c) : quotMetC P ((c : ℂ) • A) = (c : ℂ) • quotMetC P A := by
-  have hc' : (c : ℂ) ≠ 0 := by exact_mod_cast hc.ne'
-  unfold quotMetC
-  rw [inv_smul_ne _ hc', Matrix.mul_smul, Matrix.smul_mul, inv_smul_ne _ (inv_ne_zero hc'), inv_inv]
-
 theorem unitary_inv {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A.det)
     (R : Matrix (Fin n) (Fin n) ℂ) (hR : Rᴴ * A * R = A) (hRu : IsUnit R.det) :
     R * A⁻¹ * Rᴴ = A⁻¹ := by
@@ -218,24 +212,6 @@ theorem blk_ext {a b : ℕ} {A A' : Matrix (Fin a) (Fin b) α} (h : ∀ x, A *�
     rw [Matrix.toLin'_apply, Matrix.toLin'_apply, h x])
 
 end Gen
-
-theorem blk_orth {K : Type} [Field K] [StarRing K] {n m d d' : ℕ} (H : Matrix (Fin n) (Fin n) K)
-    (z : Matrix (Fin n) (Fin d) K) (Pr : Matrix (Fin d) (Fin n) K) (hPr : Pr = orthPr H z)
-    (H' : Matrix (Fin m) (Fin m) K) (z' : Matrix (Fin m) (Fin d') K) (P' : Matrix (Fin d') (Fin m) K)
-    (hP' : IsOrthProj H' z' P') (R : Matrix (Fin n) (Fin m) K) (Q : Matrix (Fin d) (Fin d') K)
-    (hR : zᴴ * H * R = Q * (z'ᴴ * H')) : Pr * R = (Pr * R * z') * P' := by
-  obtain ⟨-, h2⟩ := hP'
-  rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at h2
-  have hR' : zᴴ * H * R = Q * z'ᴴ * H' := by rw [hR]; simp only [Matrix.mul_assoc]
-  have e : Q * z'ᴴ * H' * z' * P' = Q * z'ᴴ * H' := by
-    calc Q * z'ᴴ * H' * z' * P' = Q * (z'ᴴ * H' * (z' * P')) := by simp only [Matrix.mul_assoc]
-      _ = Q * (z'ᴴ * H') := by rw [← h2]
-      _ = Q * z'ᴴ * H' := by simp only [Matrix.mul_assoc]
-  subst hPr
-  unfold orthPr
-  calc (zᴴ * H * z)⁻¹ * (zᴴ * H) * R = (zᴴ * H * z)⁻¹ * (zᴴ * H * R) := by simp only [Matrix.mul_assoc]
-    _ = (zᴴ * H * z)⁻¹ * (Q * z'ᴴ * H' * z' * P') := by rw [hR', e]
-    _ = (zᴴ * H * z)⁻¹ * (zᴴ * H) * R * z' * P' := by rw [← hR']; simp only [Matrix.mul_assoc]
 
 theorem blk_maj {K : Type} [Field K] [NumberField K] {n d : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
     (Y : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K) (J : Matrix (Fin d) (Fin n) K) (c : ℂ)
@@ -723,15 +699,7 @@ theorem transferS_holds : TransferS (K := K) (G := G) (Pl0 := Pl0) := by
 theorem invS_holds : InvS (K := K) (G := G) (Pl0 := Pl0) := by
   exact fun B v0 hv0 s h X hX Z hZ g ρ hρ v x y => BlockMetrics.quot_invariant' B hv0 h X hX Z hZ g ρ hρ v x y
 
-theorem side_lv (b : Bool) :
-    lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b = I.A.side (I.lvP b) (I.lvψ b) I.X.zs := by
-  cases b <;> rfl
-
 theorem side_g : lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false = I.A.side ⊥ 1 I.X.zs := rfl
-
-theorem toR_cr (b : Bool) (t : I.A.fam.base.Tup) :
-    HEq (I.cr.toR I.X.zs b t) ((I.A.fam.R t).toF (I.A.fam.lvl (I.lvP b) (I.lvψ b)) (I.X.zs.Z t)) := by
-  cases b <;> exact HEq.rfl
 
 theorem toR_cg (t : I.A.fam.base.Tup) :
     I.cg.toR I.X.zs false t = (I.A.fam.R t).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z t) := rfl
@@ -749,14 +717,6 @@ theorem iC_cpt {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A �
 theorem gramE_unit' {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool)
     (h1 : Function.Injective (X.iC cr b Bs.μ0)) (hn : 0 < X.nP b) : IsUnit (frameOf (X.gramE cr b)).det :=
   frame_gram_smul_unit _ (li_of_lin_injective (by rw [lin_basis]; exact h1)) _ (inv_pos.mpr hn)
-
-theorem pFrames : I.PFrames := by
-  intro s h v
-  have hW := I.A.side_WF h.ok ⊥ 1 I.X.zs h.stable h.inBlock h.sep
-  have hu : IsUnit (frameOf ((prin I.X).gramE I.cg false)).det :=
-    gramE_unit' (prin I.X) I.cg false h.h2g.1 (by show (0 : ℝ) < 1; norm_num)
-  exact (rowXE_spec (Df := I.A.side ⊥ 1 I.X.zs) hW _ hu I.X.κ h.h4pos.1 (fun j p v => I.X.lam j I.A.fam.base.μ0 p v)
-    (fun j p v => h.h4pos.2.1 j _ p v)).1 v
 
 theorem exists_toF_act (B : BlockDat K G Pl0) {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (hrow : B.Ok s)
     (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (Z : Submodule K B.S.Forms) (hZg : ∀ g, Z ≤ Z.comap (B.r g))
@@ -777,31 +737,6 @@ theorem exists_toF_act (B : BlockDat K G Pl0) {v0 : InfinitePlace K} (hv0 : IsCo
   have hu0 : u ∈ B.Z0 ⟨X, ⊥, 1⟩ Z := by rw [BlockDat.Z0, B.mem_goodPart_iff, hu]; exact h4
   obtain ⟨y, hy⟩ := B.exists_zE ⟨X, ⊥, 1⟩ Z hu0
   exact ⟨y, by rw [BlockDat.toF_apply, hy, hu]⟩
-
-variable {I} in
-theorem Z_stable_g {s : ℕ} (h : I.Hyp s) (g : G) :
-    I.X.zs.Z I.A.fam.μ0 ≤ (I.X.zs.Z I.A.fam.μ0).comap ((I.A.fam.R I.A.fam.μ0).r g) := fun _ hz =>
-  h.stable.1 I.A.fam.μ0 (Sum.inr g) (Submodule.mem_map_of_mem hz)
-
-variable {I} in
-theorem toF_rho (hρ : I.PRho) {s : ℕ} (h : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
-    (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) (I.ρf g *ᵥ x) =
-      (I.A.fam.R I.A.fam.μ0).r g ((I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) x) := by
-  obtain ⟨y, hty⟩ := exists_toF_act (I.A.fam.R I.A.fam.μ0) h.ok.conj (h.ok.what₂ _) I.A.fam.X h.ok.irr
-    (I.X.zs.Z I.A.fam.μ0) (fun g => Z_stable_g h g) g x
-  have key : I.iCg (cpt I.A.fam.base.v0.embedding (I.ρf g *ᵥ x)) = I.iCg (cpt I.A.fam.base.v0.embedding y) := by
-    rw [(hρ s h).2.2 g x]
-    have e1 : I.iCg (cpt I.A.fam.base.v0.embedding x) =
-        I.X.Θ I.A.fam.μ0 (I.X.jR I.A.fam.μ0 ((I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) x)) :=
-      iC_cpt I.X I.cg false I.A.fam.μ0 x
-    have e2 : I.iCg (cpt I.A.fam.base.v0.embedding y) =
-        I.X.Θ I.A.fam.μ0 (I.X.jR I.A.fam.μ0 ((I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) y)) :=
-      iC_cpt I.X I.cg false I.A.fam.μ0 y
-    rw [e1, e2]
-    erw [hty]
-    exact (h.gequiv I.A.fam.μ0 g _).symm
-  have hxy := cpt_injective _ (h.h2g.1 key)
-  exact (congrArg (fun z => (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) z) hxy).trans hty
 
 theorem partPr_map {Bs : DefBase K} (D1 D2 : DefSide Bs) (h1 : D1.WF) (h2 : D2.WF)
     (M : Matrix (Fin (D2.dQ Bs.μ0)) (Fin (D1.dQ Bs.μ0)) K)
@@ -832,51 +767,6 @@ theorem rowXE_map {Bs : DefBase K} (D1 D2 : DefSide Bs) (h1 : D1.WF) (h2 : D2.WF
   rw [partPr_map D1 D2 h1 h2 M hM p x, partPr_map D1 D2 h1 h2 M hM p y, hq]
   ring
 
-variable {I} in
-theorem wf_lv {s : ℕ} (h : I.Hyp s) (b : Bool) : (lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).WF := by
-  rw [side_lv]; exact I.A.side_WF h.ok _ _ _ h.stable h.inBlock h.sep
-
-variable {I} in
-theorem wf_g {s : ℕ} (h : I.Hyp s) : (lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).WF :=
-  I.A.side_WF h.ok ⊥ 1 _ h.stable h.inBlock h.sep
-
-theorem mem_part_iff (B : BlockDat K G Pl0) (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (S : Pl0 → Polynomial K)
-    (y : Fin (B.dZ ℓ Z) → K) : y ∈ B.part ℓ Z S ↔ B.toF ℓ Z y ∈ B.partF S := by
-  show B.vE ℓ *ᵥ (B.zE ℓ Z *ᵥ y) ∈
-      (B.partF S).map (B.S.basis.equivFun : B.S.Forms →ₗ[K] (Fin B.S.dim → K)) ↔ _
-  exact Submodule.mem_map_equiv (e := B.S.basis.equivFun) (p := B.partF S)
-
-variable {I} in
-theorem Jm_parts (hJt : I.PJt) {s : ℕ} (h : I.Hyp s) (b : Bool) (p : I.A.fam.base.Ix)
-    (x : Fin ((lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).dQ I.A.fam.base.μ0) → K)
-    (hx : x ∈ (lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).Qp I.A.fam.base.μ0 p) :
-    I.Jm b *ᵥ x ∈ (lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Qp I.A.fam.base.μ0 p := by
-  cases b
-  · refine (mem_part_iff (I.A.fam.R I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 (I.Jm false *ᵥ x)).2 ?_
-    have e : (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) (I.Jm false *ᵥ x) =
-        (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl I.P0 I.ψ0) (I.X.zs.Z I.A.fam.μ0) x := (hJt s h false I.A.fam.μ0).2.1 x
-    rw [e]
-    exact (mem_part_iff (I.A.fam.R I.A.fam.μ0) (I.A.fam.lvl I.P0 I.ψ0) (I.X.zs.Z I.A.fam.μ0) p.1 x).1 hx
-  · refine (mem_part_iff (I.A.fam.R I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 (I.Jm true *ᵥ x)).2 ?_
-    have e : (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) (I.Jm true *ᵥ x) =
-        (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl I.P1 I.ψ1) (I.X.zs.Z I.A.fam.μ0) x := (hJt s h true I.A.fam.μ0).2.1 x
-    rw [e]
-    exact (mem_part_iff (I.A.fam.R I.A.fam.μ0) (I.A.fam.lvl I.P1 I.ψ1) (I.X.zs.Z I.A.fam.μ0) p.1 x).1 hx
-
-variable {I} in
-theorem quot_lv (hT : TransferS (K := K) (G := G) (Pl0 := Pl0)) (hJt : I.PJt) {s : ℕ} (h : I.Hyp s) (b : Bool)
-    (v : InfinitePlace K)
-    (x y : Fin ((lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).dQ I.A.fam.base.μ0) → K) :
-    Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K _) ((lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).XQ I.A.fam.base.μ0) v x y =
-      (((Nat.card (I.lvP b) : ℝ)⁻¹ : ℝ) : ℂ) *
-        Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K _) ((lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).XQ I.A.fam.base.μ0) v
-          (I.Jm b *ᵥ x) (I.Jm b *ᵥ y) := by
-  cases b
-  · exact hT (I.A.fam.R I.A.fam.μ0) h.ok.conj (h.ok.what₂ _) I.A.fam.X h.ok.irr I.P0 I.ψ0 (I.X.zs.Z I.A.fam.μ0)
-      (fun g => Z_stable_g h g) (I.Jm false) (hJt s h false I.A.fam.μ0).2.1 v x y
-  · exact hT (I.A.fam.R I.A.fam.μ0) h.ok.conj (h.ok.what₂ _) I.A.fam.X h.ok.irr I.P1 I.ψ1 (I.X.zs.Z I.A.fam.μ0)
-      (fun g => Z_stable_g h g) (I.Jm true) (hJt s h true I.A.fam.μ0).2.1 v x y
-
 theorem majorant_at_base_eq_scaled_inner {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc)
     (b : Bool) (hW : (lv (fc X.zs) b).WF) (h2 : Function.Injective (X.iC cr b Bs.μ0)) (hn : 0 < X.nP b) (hκ : ∀ v, 0 < X.κ v)
     (hlam : ∀ j p v, 0 < X.lam j Bs.μ0 p v) (x y : Fin ((lv (fc X.zs) b).dQ Bs.μ0) → K) :
@@ -887,85 +777,6 @@ theorem majorant_at_base_eq_scaled_inner {Bs : DefBase K} {A : DefAmb Bs} (X : C
       (fun j p v => hlam j p v)).2.1
   rw [majAt_gram_smul (X.XE cr b) Bs.v0 (fun i => X.iC cr b Bs.μ0 (Pi.single i 1))
     (li_of_lin_injective (by rw [lin_basis]; exact h2)) _ (inv_pos.mpr hn) hX, lin_basis]
-
-variable {I} in
-theorem majorant_at_base_eq_inner {s : ℕ} (h : I.Hyp s) (x y : Fin I.Sg.D → K) :
-    Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin I.Sg.D)) I.Sg.XE I.A.fam.base.v0 x y =
-      ⟪I.iCg (cpt I.A.fam.base.v0.embedding x), I.iCg (cpt I.A.fam.base.v0.embedding y)⟫_ℂ := by
-  have e := majorant_at_base_eq_scaled_inner (prin I.X) I.cg false (wf_g h) h.h2g.1 (show (0 : ℝ) < 1 by norm_num) h.h4pos.1
-    (fun j p v => h.h4pos.2.1 j _ p v) x y
-  have e1 : (prin I.X).nP false = 1 := rfl
-  rw [e1, inv_one, Complex.ofReal_one, one_mul] at e
-  exact e
-
-variable {I} in
-theorem majorant_at_base_eq_inner_of_package {s : ℕ} (h : I.Hyp s) (b : Bool) (x y : Fin (I.Sb b).D → K) :
-    Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin (I.Sb b).D)) (I.Sb b).XE I.A.fam.base.v0 x y =
-      (((I.X.nP b)⁻¹ : ℝ) : ℂ) *
-        ⟪I.X.iC I.cr b I.A.fam.base.μ0 (cpt I.A.fam.base.v0.embedding x),
-          I.X.iC I.cr b I.A.fam.base.μ0 (cpt I.A.fam.base.v0.embedding y)⟫_ℂ :=
-  majorant_at_base_eq_scaled_inner I.X I.cr b (wf_lv h b) (h.h2 b).1 (h.h4pos.2.2 b) h.h4pos.1 (fun j p v => h.h4pos.2.1 j _ p v) x y
-
-variable {I} in
-theorem nP_eq_card_lvP {s : ℕ} (h : I.Hyp s) (b : Bool) : I.X.nP b = (Nat.card (I.lvP b) : ℝ) := by
-  cases b
-  · exact h.np0
-  · exact h.np1
-
-theorem pMet_core (hT : TransferS (K := K) (G := G) (Pl0 := Pl0)) (hsc : ∀ {n : ℕ}
-    (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (c : ℝ), 0 < c → ∀ (v : InfinitePlace K) (x y : Fin n → K),
-      Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) (Formalism.BranchingDeterminantCap.scaleFrame c X) v x y =
-        (((c ^ 2)⁻¹ : ℝ) : ℂ) * Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x y)
-    (hJt : I.PJt) (hJ : I.PJ) : I.PMet := by
-  intro s h b v x y
-  have hcard : (0 : ℝ) < (Nat.card (I.lvP b) : ℝ) := by exact_mod_cast Nat.card_pos
-  rw [hsc _ _ (Real.sqrt_pos.2 hcard), Real.sq_sqrt hcard.le]
-  by_cases hv : v = I.A.fam.base.v0
-  · subst hv
-    rw [majorant_at_base_eq_inner_of_package h b, majorant_at_base_eq_inner h, nP_eq_card_lvP h b]
-    congr 1
-    exact (congrArg₂ (fun a c => ⟪a, c⟫_ℂ) ((hJ s h b).1 x) ((hJ s h b).1 y)).symm
-  · exact rowXE_map (lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b)
-      (lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false) (wf_lv h b) (wf_g h) _
-      (gramE_unit' I.X I.cr b (h.h2 b).1 (h.h4pos.2.2 b)) _
-      (gramE_unit' (prin I.X) I.cg false h.h2g.1 (by show (0 : ℝ) < 1; norm_num)) I.X.κ h.h4pos.1
-      (fun j p v => I.X.lam j I.A.fam.base.μ0 p v) (fun j p v => h.h4pos.2.1 j _ p v) (I.Jm b)
-      (fun p x hx => Jm_parts hJt h b p x hx) _ v hv (quot_lv hT hJt h b v) x y
-
-variable {I} in
-theorem rho_parts (hρ : I.PRho) {s : ℕ} (h : I.Hyp s) (g : G) (p : I.A.fam.base.Ix)
-    (x : Fin ((lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ I.A.fam.base.μ0) → K)
-    (hx : x ∈ (lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Qp I.A.fam.base.μ0 p) :
-    I.ρf g *ᵥ x ∈ (lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Qp I.A.fam.base.μ0 p := by
-  have hx' := (mem_part_iff (I.A.fam.R I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 x).1 hx
-  refine (mem_part_iff (I.A.fam.R I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 (I.ρf g *ᵥ x)).2 ?_
-  rw [toF_rho hρ h g x]
-  exact Formalism.L2.Col.eigSum_le_comap (fun k => (h.ok.what₂ I.A.fam.μ0).opG k g) _ hx'
-
-theorem pUni_core (hI : InvS (K := K) (G := G) (Pl0 := Pl0)) (hρ : I.PRho) : I.PUni := by
-  intro s h v g x y
-  by_cases hv : v = I.A.fam.base.v0
-  · subst hv
-    rw [majorant_at_base_eq_inner h, majorant_at_base_eq_inner h]
-    exact (congrArg₂ (fun a c => ⟪a, c⟫_ℂ) ((hρ s h).2.2 g x) ((hρ s h).2.2 g y)).trans (h.gunit g _ _)
-  · have e := rowXE_map (lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false)
-      (lv (faceOf I.A ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false) (wf_g h) (wf_g h) _
-      (gramE_unit' (prin I.X) I.cg false h.h2g.1 (by show (0 : ℝ) < 1; norm_num)) _
-      (gramE_unit' (prin I.X) I.cg false h.h2g.1 (by show (0 : ℝ) < 1; norm_num)) I.X.κ h.h4pos.1
-      (fun j p v => I.X.lam j I.A.fam.base.μ0 p v) (fun j p v => h.h4pos.2.1 j _ p v) (I.ρf g)
-      (fun p x hx => rho_parts hρ h g p x hx) 1 v hv
-      (fun x y => by
-        rw [one_mul]
-        exact (hI (I.A.fam.R I.A.fam.μ0) h.ok.conj (h.ok.what₂ _) I.A.fam.X h.ok.irr (I.X.zs.Z I.A.fam.μ0)
-          (fun g => Z_stable_g h g) g (I.ρf g) (toF_rho hρ h g) v x y).symm) x y
-    rw [one_mul] at e
-    exact e.symm
-
-theorem pMet_of (hJt : I.PJt) (hJ : I.PJ) : I.PMet := by
-  exact I.pMet_core transferS_holds (fun X c hc v x y => BlockMetrics.majAt_scaleFrame X c hc v x y) hJt hJ
-
-theorem pUni_of (_hJt : I.PJt) (hρ : I.PRho) : I.PUni := by
-  exact I.pUni_core invS_holds hρ
 
 end In
 

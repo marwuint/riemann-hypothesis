@@ -1,15 +1,17 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsLatFamilyCongr
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartSequenceHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartSequenceHolds
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.OverZpOfInFibre
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeRelayStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmEmbeddingConjugateCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeHeightStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeValueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyModelPrimeRelayStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeCountStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeChartDualRankBoundStatement
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.MemOfIsIntegralLoc
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeDegree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmEmbeddingConjugateCompat
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.SequenceLocalizationExists
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeValue
+import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.SequenceTestFunction
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeCount
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeChartDualRankBound
 open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
@@ -70,19 +72,19 @@ theorem generatesDiff_one {O Ω E : Type} [CommRing O] [Field Ω] [Algebra O Ω]
 theorem seq_holds : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (b : ∀ t, Fin (labelRk D t) → 𝔐.Li), (∀ t, LinearIndependent Ω (b t) ∧ Submodule.span Ω (Set.range (b t)) = 𝔐.Vgen t) → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ w : O, HT.IsCp p (algebraMap O Ω w) → ∀ (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c') (t : CMType H ⊕ CMType H), ∃ i : (Fin (labelRk D t) → Ω) →ₗ[Ω] (Fin (D.p + D.q) → Ω), SeqHyp (CR O y c') (algebraMap O Ω w) (coordLat O y (𝔐.HT p t) (b t) c') (dotDual (CR O y c') (coordLat O y (𝔐.HT p t.swap) (b t.swap) c')) i (qMap P (b t.swap)) ∧ ∀ σE : E →+* Ω, (∀ a : 𝓞 E, σE (a : E) = 𝔐.emb t a) → DualSeq P σE (𝔐.R p - 2) (coordLat O y (𝔐.HT p t) (b t) c') (b t) i := by
   intro hF E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hA hpq p _ hpS hfree hp2 hdisc b hb A _ _ _ m _ hpm O _ _ _
     _ _ _ _ w hw G c' hc' P t
-  obtain ⟨hchar, hN, hI, hFr, hreg, hpt⟩ := GlobalTheory.T.arith_variety_prime_hodge_relay E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS A m hpm O c' hc'
+  obtain ⟨hchar, hN, hI, hFr, hreg, hpt⟩ := _root_.PositivityTheory.Xgn.sequence_ring_exists E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS A m hpm O c' hc'
   haveI := hchar
   haveI := hN
   haveI := hI
   haveI := hFr
   have hc : ∀ x, HT.cmConj E (HT.cmConj E x) = x := fun x => by simp [HT.cmConj]
-  obtain ⟨σ, hσ, hσ', huniq⟩ := GlobalTheory.T.cm_embedding_conjugate_compat E H D l Xo c O₀ β Y S Ω K J y 𝔐 t
-  have hd := GlobalTheory.T.arith_variety_prime_hodge_degree E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hdisc A m hpm O
+  obtain ⟨σ, hσ, hσ', huniq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.FamEx.Lab.exists_labelEmbedding E H D l Xo c O₀ β Y S Ω K J y 𝔐 t
+  have hd := _root_.GlobalTheory.CompanionTheory.Ar.Num.FamEx.Diff.embedding_integers_and_different_unit E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hdisc A m hpm O
   have hgd : ∀ τ : E →+* Ω, HT.GeneratesDiff τ (1 : CR O y c') := fun τ =>
     generatesDiff_one _ τ (hd τ).1 (hd τ).2
-  have hloc := GlobalTheory.T.arith_variety_prime_hodge_height E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS A m hpm O G c' hc' P
-  obtain ⟨hpO, hpH⟩ := GlobalTheory.T.arith_variety_prime_hodge_value E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hfree hdisc A m hpm O G c' hc' P hN hpt hloc
-  have htest := GlobalTheory.T.arith_variety_model_prime_relay hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hp2 A m hpm O w hw G c' hc' P
+  have hloc := _root_.PositivityTheory.Xgn.sequence_localization_exists E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS A m hpm O G c' hc' P
+  obtain ⟨hpO, hpH⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.FamEx.chart_om_eigQuot_projective E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hfree hdisc A m hpm O G c' hc' P hN hpt hloc
+  have htest := _root_.PositivityTheory.Xgn.sequence_test_function hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hp2 A m hpm O w hw G c' hc' P
   have hR := 𝔐.R_ge p hpS
   obtain ⟨n, hn⟩ : ∃ n, 𝔐.R p = (n + 2) + 2 := ⟨𝔐.R p - 4, by omega⟩
   have hm : 𝔐.R p - 2 = n + 2 := by omega
@@ -94,7 +96,7 @@ theorem seq_holds : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → ∀ 
     push_cast
     rw [pow_add (p : Ω) (n + 2) 2, hu]
     ring
-  obtain ⟨-, hseq⟩ := GlobalTheory.T.chart_sequence_holds (CR O y c') Ω E (HT.cmConj E) hc p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li) P.Dh
+  obtain ⟨-, hseq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.FinrankDualChartSequence.chartSequence (CR O y c') Ω E (HT.cmConj E) hc p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li) P.Dh
     (algebraMap O (CR O y c') w) (𝔐.R p - 2) hdiv htest hpO
   obtain ⟨i₀, hDm, hEx⟩ := hseq σ 1 1 (hgd σ) (hgd _) (hpH t σ hσ) (hpH t.swap _ hσ')
   have hact : ∀ (a : 𝓞 E) (w : Module.Dual Ω 𝔐.Li), P.Dh.ρΩ a w = w ∘ₗ 𝔐.ρ (RingOfIntegers.mapRingEquiv (HT.cmConj E) a) :=
@@ -110,7 +112,7 @@ theorem seq_holds : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → ∀ 
     rw [hτ a]
     rfl
   have hcoord := fun (s : CMType H ⊕ CMType H) (τ : E →+* Ω) (hτ : ∀ a : 𝓞 E, τ (a : E) = 𝔐.emb s a) =>
-    GlobalTheory.T.arith_variety_prime_hodge_count E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS b hb A m hpm O G c' hc' P s
+    _root_.GlobalTheory.CompanionTheory.Ar.Num.FamEx.mem_coordLat_iff_forall_om_mem_chartRing E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS b hb A m hpm O G c' hc' P s
       (fun a => by rw [← hτ a]; exact (hd τ).1 a)
       (by
         obtain ⟨x, hx, o, ho⟩ := (hd τ).2
@@ -119,7 +121,7 @@ theorem seq_holds : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → ∀ 
     refine ⟨u * (p : Ω) ^ n, (CR O y c').mul_mem huR ((CR O y c').pow_mem (natCast_mem _ p) n), ?_⟩
     rw [hm, pow_add, mul_comm ((p : Ω) ^ n), hu]
     ring
-  obtain ⟨i, h1, h2⟩ := GlobalTheory.T.hodge_chart_exists_seqHyp_gram_congr_mod_pow O Ω 𝔐.Li (CR O y c') E (HT.cmConj E) hc p (𝔐.R p) (D.p + D.q) _ _ (𝔐.R p - 2) P.Dh 𝔐.ρ hact σ
+  obtain ⟨i, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.FamEx.SeqPure.seqHyp_chart O Ω 𝔐.Li (CR O y c') E (HT.cmConj E) hc p (𝔐.R p) (D.p + D.q) _ _ (𝔐.R p - 2) P.Dh 𝔐.ρ hact σ
     i₀ hEx hDm (hpH t σ hσ) (b t) (b t.swap) (hb t).1 (hV t σ hσ) (hb t.swap).1 (hV t.swap _ hσ') _ _
     (hcoord t σ hσ) (hcoord t.swap _ hσ') (algebraMap O Ω w) ((CR O y c').algebraMap_mem w) hwu
   refine ⟨i, h1, fun σE hσE a ha j => ?_⟩

@@ -145,10 +145,6 @@ structure BaseW (F : Face D A) : Prop where
   chain : R.IsChainW
   thP : R.IsThPW
 
-structure CharW (F : Face D A) : Prop extends R.BaseW F where
-  scal : R.IsScal F
-  tup : R.IsTup F
-
 variable {R}
 
 theorem chain_of_weak (h : R.IsChainW) (e : R.ExAt) : R.IsChain := ⟨h.ωY, h.ωX, h.vY, h.vX, h.ptY, h.ptX,

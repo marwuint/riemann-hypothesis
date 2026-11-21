@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProjOverWeierstrass
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensFacts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDegenerationValuesAlgClosedFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorTorsionPointOfComponentTupleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComponentTupleTensorTorsionUnimodularStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorsionAddComponentwiseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorsionPointEquivIffComponentsEquivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorsionTowerNsmulComponentwiseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingTensorTorsionEqProdComponentsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDegenerationValuesAlgClosedField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorTorsionPointOfComponentTuple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComponentTupleTensorTorsionUnimodular
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorsionAddComponentwise
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorsionPointEquivIffComponentsEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorTorsionTowerNsmulComponentwise
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingTensorTorsionEqProdComponents
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorQuotientTorsionOrderActionMatrixStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
@@ -33,16 +33,16 @@ theorem GlobalTheory.Mum.TensTor.tate_tens : ∀ (R : Type) [CommRing R] [IsDoma
   intro R _ _ _ hB E _ _ _ H D D' r W _ hdet T ρ hρ _ _ o hact _ Dm g e _ he hEF F _ _ _ ζ hprim hpow ev hadd hker
     honto htow hweil
 
-  obtain ⟨N, ⟨ν⟩⟩ := GlobalTheory.T.exists_degenerationValues_algClosed_field R hB D F
-  obtain ⟨N', ⟨ν'⟩⟩ := GlobalTheory.T.exists_degenerationValues_algClosed_field R hB D' F
+  obtain ⟨N, ⟨ν⟩⟩ := _root_.GlobalTheory.MumValues.exists_values R hB D F
+  obtain ⟨N', ⟨ν'⟩⟩ := _root_.GlobalTheory.MumValues.exists_values R hB D' F
   choose P hP using fun (n : ℕ) (a : Dm.La) =>
-    GlobalTheory.T.exists_tensor_torsion_point_of_component_tuple R hB D D' W T F N N' ν ν' n (fun j => ev n (e a j))
+    _root_.GlobalTheory.Mum.TensTor.exists_ptRel R hB D D' W T F N N' ν ν' n (fun j => ev n (e a j))
   refine ⟨⟨ζ, hprim, hpow, P, ?_, ?_, ?_, ?_, ?_, ?_⟩, rfl⟩
   ·
     intro n hn a b
     have hs := hP n (a + b)
     simp only [map_add, Pi.add_apply] at hs
-    exact GlobalTheory.T.tensor_torsion_add_componentwise R hB D D' W T F N N' ν ν' n (P n a) (P n b) (P n (a + b)) _ _ _ (hP n a) (hP n b) hs
+    exact _root_.GlobalTheory.Mum.TensTor.qkAdd_of_components R hB D D' W T F N N' ν ν' n (P n a) (P n b) (P n (a + b)) _ _ _ (hP n a) (hP n b) hs
       (fun i => hadd n hn (e a i) (e b i))
   ·
     intro n hn x a
@@ -52,7 +52,7 @@ theorem GlobalTheory.Mum.TensTor.tate_tens : ∀ (R : Type) [CommRing R] [IsDoma
       (P n a) (P n (x • a)) (hP n a) hs
   ·
     intro n hn a b
-    rw [GlobalTheory.T.tensor_torsion_point_equiv_iff_components_equiv R hB D D' W T F N N' ν ν' hdet n (P n a) (P n b) _ _ (hP n a) (hP n b)]
+    rw [_root_.GlobalTheory.Mum.TensTor.qkPt_equiv_iff_components R hB D D' W T F N N' ν ν' hdet n (P n a) (P n b) _ _ (hP n a) (hP n b)]
     simp only [hker n hn]
     constructor
     · intro h
@@ -65,20 +65,20 @@ theorem GlobalTheory.Mum.TensTor.tate_tens : ∀ (R : Type) [CommRing R] [IsDoma
       exact ⟨e c i, by simp only [map_add, map_nsmul, Pi.add_apply, Pi.smul_apply]⟩
   ·
     intro n hn p
-    obtain ⟨ps, hps⟩ := GlobalTheory.T.exists_component_tuple_tensor_torsion_unimodular R hB D D' W T F N N' ν ν' hdet n p
+    obtain ⟨ps, hps⟩ := _root_.GlobalTheory.Mum.TensTor.exists_components_of_unimodular R hB D D' W T F N N' ν ν' hdet n p
     choose a ha using fun i => honto n hn (ps i)
     refine ⟨e.symm a, ?_⟩
-    rw [GlobalTheory.T.tensor_torsion_point_equiv_iff_components_equiv R hB D D' W T F N N' ν ν' hdet n (P n (e.symm a)) p _ ps (hP n (e.symm a)) hps]
+    rw [_root_.GlobalTheory.Mum.TensTor.qkPt_equiv_iff_components R hB D D' W T F N N' ν ν' hdet n (P n (e.symm a)) p _ ps (hP n (e.symm a)) hps]
     intro i
     simpa only [e.apply_symm_apply] using ha i
   ·
     intro n m hn hm a
-    exact GlobalTheory.T.tensor_torsion_tower_nsmul_componentwise R hB D D' W T F N N' ν ν' n m hn hm (P (n * m) a) _ (P n a) _ (hP (n * m) a) (hP n a)
+    exact _root_.GlobalTheory.Mum.TensTower.tower R hB D D' W T F N N' ν ν' n m hn hm (P (n * m) a) _ (P n a) _ (hP (n * m) a) (hP n a)
       (fun i => htow n m hn hm (e a i))
   ·
 
     intro n hn a b
-    have h := GlobalTheory.T.weil_pairing_tensor_torsion_eq_prod_components R hB D D' W T F N N' ν ν' n hn (P n a) (P n b) _ _ (hP n a) (hP n b)
+    have h := _root_.GlobalTheory.Mum.TensTor.weilQk_tens R hB D D' W T F N N' ν ν' n hn (P n a) (P n b) _ _ (hP n a) (hP n b)
       (fun i j => ζ n ^ ((e a i).1 ⬝ᵥ (e b j).2 - (e a i).2 ⬝ᵥ (e b j).1)) (fun i j => hweil n hn (e a i) (e b j))
     have key : (∏ i, ∏ j, (ζ n ^ ((e a i).1 ⬝ᵥ (e b j).2 - (e a i).2 ⬝ᵥ (e b j).1)) ^ (W + W.transpose) i j) =
         ζ n ^ Dm.EF a b := by

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSimultaneousDiagonalisationPosDefHermitianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSimultaneousDiagonalisationPosDefHermitian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramIsHermitianL2EqDoubleSumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramPosDefOfL2DefiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramPosDefOfL2Definite
 
 set_option autoImplicit false
 
@@ -91,7 +91,7 @@ theorem exp_neg_bound_mul_l2_le_l2_twist (h : IsFam μ v) (hw : ∀ σ, Measurab
 
 theorem posDef_twist (h : IsFam μ v) (hG : (gram μ v).PosDef) (hw : ∀ σ, Measurable (w σ))
     (hC : ∀ σ y, |w σ y| ≤ C) : (gram μ (twist v w)).PosDef := by
-  refine GlobalTheory.T.gram_posDef_of_l2_definite S Y ι μ _ (isFam_twist h hw hC) fun c hc0 => ?_
+  refine _root_.GlobalTheory.HSAmp.gram_posDef S Y ι μ _ (isFam_twist h hw hC) fun c hc0 => ?_
   by_contra hne
   have hx : star c ≠ 0 := fun h' => hne (by simpa using congrArg star h')
   have hpos := hG.dotProduct_mulVec_pos hx
@@ -169,7 +169,7 @@ theorem jensen_gram (h : IsFam μ v) (hG : (gram μ v).PosDef) (hw : ∀ σ, Mea
   refine ⟨hF, hG', ?_⟩
   have hS := h.finite
   haveI := Fintype.ofFinite S
-  obtain ⟨T, d, -, hT, hT'⟩ := GlobalTheory.T.exists_simultaneous_diagonalisation_posDef_hermitian ι _ _ hG hG'.1
+  obtain ⟨T, d, -, hT, hT'⟩ := _root_.GlobalTheory.HSAmp.simultaneous_diagonalisation ι _ _ hG hG'.1
   obtain ⟨-, hl⟩ := GlobalTheory.T.gram_isHermitian_l2_eq_double_sum S Y ι μ v h
   obtain ⟨-, hl'⟩ := GlobalTheory.T.gram_isHermitian_l2_eq_double_sum S Y ι μ _ hF
   have hl1 : ∀ a, l2 μ v (col T a) = 1 := fun a => by

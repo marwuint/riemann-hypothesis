@@ -349,10 +349,6 @@ theorem secVal_bijective (V : X.Opens) :
 instance : IsIso (toDivisorSheaf hL) :=
   isIso_of_locally_bijective _ (fun _ => ⟨⊤, trivial, fun V _ => secVal_bijective hL V⟩)
 
-theorem exists_iso_divisorSheaf (hL : IsInvertibleSheaf L) :
-    ∃ D : WeilDivisor X, Nonempty (L ≅ divisorSheaf D) :=
-  ⟨divisorOfInvertible hL, ⟨asIso (toDivisorSheaf hL)⟩⟩
-
 end Invertible
 
 end GroundTheory.Arith.SchemeCoh

@@ -6,12 +6,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCocycleOnPointsIsCocycleAndEvalEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamFreeBaseChangeRigid
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCobWholeOfIsCobCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumMulHodgeFilEqZeroOfDeRhamCoboundaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumMulHodgeFilEqZeroOfDeRhamCoboundary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParCocIsCoc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParCocSpOver
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PtAlgCompRight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleSpecProdAbelianCohomologousSumMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointwiseCocycleOnCoverExtendsUpToCoboundaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CocycleSpecProdAbelianCohomologousSumMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointwiseCocycleOnCoverExtendsUpToCoboundary
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDatNeZero
 
 set_option autoImplicit false
 
@@ -66,9 +67,9 @@ theorem exists_isCob_of_mem_fil : GlobalTheory.Published.AbelianHodgeDeRham → 
       ∃ (m : ℕ) (d : Fin m → D) (c : Fin m → Z1 (O (dp0 R) (B.hom ≫ 𝟙 _))) (k : Fn0 (SpAlg R D ⊗ B)),
         IsCob (parCov W x) ((parCoc a (fun i ↦ fv (β i)) n x).add (sumMul d fun i ↦ fv (c i)).neg) k := by
     intro D _ _ x
-    obtain ⟨u, hu, k₁, h₁⟩ := GlobalTheory.T.pointwise_cocycle_on_cover_extends_up_to_coboundary R _ K (parCov W x) (iSup_parCov hW x) _
+    obtain ⟨u, hu, k₁, h₁⟩ := _root_.GlobalTheory.PtExt.CocExt.cocycle_extends R _ K (parCov W x) (iSup_parCov hW x) _
       (GlobalTheory.PtExt.parCoc_isCoc R A B K W J a _ n ha (fun i ↦ hfv _) hn D x)
-    obtain ⟨m, d, c, k₂, h₂⟩ := GlobalTheory.T.cocycle_spec_prod_abelian_cohomologous_sum_mul H R B g hB hg D u hu
+    obtain ⟨m, d, c, k₂, h₂⟩ := _root_.GlobalTheory.PtExt.cohom_sumMul_fv_of_abelian H R B g hB hg D u hu
     refine ⟨m, d, c, fun E _ _ z ↦ k₁ E z + k₂ E z, ?_⟩
     intro E _ _ E' _ _ ψ z hz
     have e₁ := h₁ E E' ψ z hz
@@ -95,7 +96,7 @@ theorem exists_isCob_of_mem_fil : GlobalTheory.Published.AbelianHodgeDeRham → 
     beta_reduce
     rw [map_sub, Category.assoc]
     linear_combination e₂ - e₁ + e₃ + e₄
-  have h0 := GlobalTheory.T.sum_mul_hodgeFil_eq_zero_of_deRham_coboundary H R B g hB hg y hy D' _ _ _ (fun i ↦ hP _)
+  have h0 := _root_.GlobalTheory.PtExt.sum_mul_eq_zero_of_isCob H R B g hB hg y hy D' _ _ _ (fun i ↦ hP _)
     (GlobalTheory.PtExt.isCob_whole_of_isCob_cover R _ K _ (iSup_parCov hW (spOver φ ≫ x)) _
       ((GlobalTheory.PtExt.SumMulFacts.main R D' B _ _ _).1 fun i ↦ hfv _) _ hcob)
   simp only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib] at h0

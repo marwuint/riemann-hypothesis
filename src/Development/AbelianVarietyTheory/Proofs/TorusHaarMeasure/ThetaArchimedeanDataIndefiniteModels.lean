@@ -18,7 +18,7 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHLAM
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.GenFrExAndGenFromTest
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExpLeOfNegLogSqrtLe
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsCuspFormNonzeroEveryComponentStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsCuspFormNonzeroEveryComponent
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.WeightsBelow
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GamAtOfLawsCore
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.SizePageRowsOfSizePageAt
@@ -63,7 +63,7 @@ theorem archAt_of_run : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : I
     hP.hyp ht hP.page hjm hj.1 (le_trans (by norm_num) hP.df)
   obtain ⟨-, -, -, -, -, -, ⟨-, -, -, -, -, -, PLam, lNc, -, -, hw1, w2, hG2, th2, -, hth2, -⟩, -⟩ := hC
   obtain ⟨w1, hG1, th1, -, hth1, -⟩ := hw1 hjm
-  obtain ⟨⟨g0, hg0, -⟩, hnz⟩ := GlobalTheory.T.exists_cuspForm_nonzero_everyComponent D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0
+  obtain ⟨⟨g0, hg0, -⟩, hnz⟩ := _root_.GlobalTheory.RunJoin.exists_nonZeroComp_and_ne_zero D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0
     (GlobalTheory.Reg.genFrEx_and_genFromTest _ _ _ _ _ _).1 hP
   obtain ⟨-, -, -, hw, hlow⟩ := hGen
   obtain ⟨hi, ⟨-, het⟩, -, -, harch, -⟩ := hEta

@@ -1,4 +1,5 @@
-import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCG
+import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCS
+import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCT
 import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCR
 
 noncomputable section
@@ -48,23 +49,6 @@ theorem UTri.mul {T W : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) (h' : UTri W) :
   rcases lt_or_ge k j with a | a
   · rw [h.low a, zero_mul]
   · rw [h'.low (lt_of_lt_of_le e a), mul_zero]
-
-theorem UTri.sup {T W : Matrix (Fin ρ) (Fin ρ) R} (h : UTri T) (h' : UTri W) {i j : Fin ρ} (e : j.1 = i.1 + 1) :
-    (T * W) i j = T i j + W i j := by
-  have hij : i ≠ j := fun a => by rw [a] at e; omega
-  rw [Matrix.mul_apply, Finset.sum_eq_add i j hij, h.diag, h'.diag, one_mul, mul_one, add_comm]
-  · intro k _ hk
-    by_cases a : k < i
-    · rw [h.low a, zero_mul]
-    · have : j < k := by
-        have h1 : k.1 ≠ i.1 := fun b => hk.1 (Fin.ext b)
-        have h2 : k.1 ≠ j.1 := fun b => hk.2 (Fin.ext b)
-        have h3 : ¬ k.1 < i.1 := a
-        show j.1 < k.1
-        omega
-      rw [h'.low this, mul_zero]
-  · exact fun h => absurd (Finset.mem_univ i) h
-  · exact fun h => absurd (Finset.mem_univ j) h
 
 theorem left_inv {K : Type} [Field K] {n : ℕ} (C : Matrix (Fin n) (Fin ρ) K) (h : LinearIndependent K C.transpose) :
     ∃ L : Matrix (Fin ρ) (Fin n) K, L * C = 1 := by
@@ -120,18 +104,10 @@ theorem Good.mul {n n' : GA D B} (h : Good d n) (h' : Good d n') : (Good d (n * 
   · rw [mt_mul, Matrix.mul_assoc, h'.1, ← Matrix.mul_assoc, h.1, Matrix.mul_assoc]
   · rw [bV, key x hx, add_sub_cancel_left, lA_vec]
 
-variable (d) in
-
-def valN (n : GA D B) : AE D :=
-  (∑ i : Fin d.ρ, ∑ j : Fin d.ρ, if j.1 = i.1 + 1 then incA D (d.c i) * (tM d n - 1) i j else 0) +
-    ∑ i : Fin d.ρ, if i.1 + 1 = d.ρ then incA D (d.c i) * bV d n d.z i else 0
-
 theorem trace_gen {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [CommRing R] [Algebra F R] (r : E) :
     Algebra.trace R (R ⊗[F] E) (inclR R r) = algebraMap F R (Algebra.trace F E r) := by
   rw [Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange, Algebra.baseChange_lmul]
   rfl
-
-def NFCpt (D : D7) : Prop := ∀ (B : HSp D) (ρ : ℕ) (e : Matrix (Fin B.rank) (Fin ρ) D.host.E), IsIsoSub B e → CoCpt (NFlag B e)
 
 end Formalism.L2.Fam.ThC
 

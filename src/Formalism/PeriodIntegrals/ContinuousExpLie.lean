@@ -180,33 +180,6 @@ theorem InLieN.smul {X : Mx k r} (hX : InLieN k r X) (c : ℝ) : InLieN k r ((c 
   · intro i j h1 h2 h3
     rw [Matrix.smul_apply, hX.2.2 i j h1 h2 h3, smul_zero]
 
-theorem InLieN.zero : InLieN k r (0 : Mx k r) := by
-  refine ⟨?_, ?_, ?_⟩
-  · show (0 : Mx k r)ᴴ * Hpk k r + Hpk k r * 0 = 0
-    simp
-  · intro a i _; rfl
-  · intro i j _ _ _; rfl
-
-theorem unrealify_add (x y : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) :
-    unrealify (x + y) = unrealify x + unrealify y := by
-  ext i j
-  apply Complex.ext <;> simp [unrealify]
-
-theorem unrealify_smul (c : ℝ) (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) :
-    unrealify (c • x) = (c : ℂ) • unrealify x := by
-  ext i j
-  apply Complex.ext <;> simp [unrealify]
-
-theorem continuous_of : Continuous (fun x : Mt k r => (Matrix.of x : Mx k r)) := continuous_id
-
-def unrealL (k r : ℕ) : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool) →ₗ[ℝ] Mx k r where
-  toFun := unrealify
-  map_add' := unrealify_add
-  map_smul' := by
-    intro c x
-    rw [unrealify_smul]
-    exact Complex.coe_smul c _
-
 instance (S : Set (Mx k r)) (κ : ENNReal) : SFinite (haarLie S κ) := by
   unfold haarLie
   infer_instance

@@ -12,7 +12,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalFunctionsCons
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LineBundleIsoOfGenericIsoNormalLocalBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaPointShapePrimitivityNearGeneric
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlobalUnitRatioGenericLineBundleIsosStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlobalUnitRatioGenericLineBundleIsos
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RigidifiedPartialLineBundleIsoCocycle
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -76,7 +77,7 @@ theorem exists_iso_const_of_generic : ∀ (W K' : Type) [CommRing W] [IsDomain W
   have hP' := pull_isLB hP (pullback.fst G.hom (spMap (algebraMap W K')))
   have hM' := pull_isLB hM (pullback.fst G.hom (spMap (algebraMap W K')))
   obtain ⟨v, hv⟩ := lbIso_of_generic W K' G hG P M hP hM (LBIso.trans hP' hN hM' ⟨w₁, hw₁⟩ (LBIso.symm ⟨w, hw⟩))
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_global_unit_ratio_generic_lineBundle_isos _ _ _ P M N hP hM hN w w₁ v hw hw₁ hv
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.GenIsoRatio.ratio _ _ _ P M N hP hM hN w w₁ v hw hw₁ hv
   obtain ⟨c, hc⟩ := globalFn_eq_cst W K' G hG u.val
   refine ⟨v, c, hv, fun n i m hle => ?_⟩
   rw [hu n i m hle, hc, GlobalTheory.AbLaw.rs_cst]

@@ -19,8 +19,6 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
-def TopFirstOfParts : Prop := TL.WordStep → RadAATop → KB.DensC → KB.TopFirst
-
 def DegTopOfParts : Prop := TL.WordStep → RadAATop → PolyTop → KB.DensC → KB.DegTop
 
 section lin

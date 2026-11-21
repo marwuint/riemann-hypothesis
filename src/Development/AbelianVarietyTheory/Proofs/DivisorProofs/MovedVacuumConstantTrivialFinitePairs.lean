@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteAdelicPointUnitaryGroupGramOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadsGaussianSmulConstUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilOperatorNormalisingVectorNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfIsFiniteAdelicPointSameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteAdelicPointOfUnitaryGroupMulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteAdelicPointOfUnitaryGroupOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAdelicCharacterEqOneSplitInertStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadsGaussianSmulConstUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilOperatorNormalisingVectorNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfIsFiniteAdelicPointSame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteAdelicPointOfUnitaryGroupMul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteAdelicPointOfUnitaryGroupOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAdelicCharacterEqOneSplitInert
 
 open NumberField MeasureTheory
 open scoped Classical
@@ -67,28 +67,28 @@ theorem vacuum_const_trivial : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ
   intro D ψ θ S T a d hS hT cc δ r hset e0 W χS χT om hW hInp t0 ht0 hev hodd hχS hχT f₀ hf₀ hline hmul hsplit hinert
   subst hS
   subst hT
-  have hnz : ∀ x y, W.Om x y e0 ≠ 0 := GlobalTheory.T.weilOperator_normalisingVector_ne_zero cc δ t0 e0 W hset.crv hodd
+  have hnz : ∀ x y, W.Om x y e0 ≠ 0 := _root_.GlobalTheory.NormExact.om_normalising_ne_zero cc δ t0 e0 W hset.crv hodd
   have huniq : ∀ (x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank) (y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank) (g : GA D S) (h : GA D T) (c c' : ℂ),
       Reads ψ θ rfl rfl cc δ r (c • W.Om x y e0) (om (g, h) f₀) →
       Reads ψ θ rfl rfl cc δ r (c' • W.Om x y e0) (om (g, h) f₀) → c = c' :=
-    fun x y g h c c' h1 h2 => GlobalTheory.T.readsGaussian_smul_const_unique ψ θ S T rfl rfl cc δ r hset _ _ c c' (hnz x y) h1 h2
+    fun x y g h c c' h1 h2 => _root_.GlobalTheory.NormExact.reads_smul_const_unique ψ θ S T rfl rfl cc δ r hset _ _ c c' (hnz x y) h1 h2
   have hone : ∀ (x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank) (y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank) (g : GA D S) (h : GA D T),
       Reads ψ θ rfl rfl cc δ r (W.Om x y e0) (om (g, h) f₀) →
       Reads ψ θ rfl rfl cc δ r ((1 : ℂ) • W.Om x y e0) (om (g, h) f₀) := fun x y g h hr => by rwa [one_smul]
-  have p1S : IsFinPt S (1 : GA D S) (1 : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank) := GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_one S rfl
-  have p1T : IsFinPt T (1 : GA D T) (1 : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank) := GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_one T rfl
+  have p1S : IsFinPt S (1 : GA D S) (1 : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank) := _root_.GlobalTheory.BotFormula.isFinPt_one S rfl
+  have p1T : IsFinPt T (1 : GA D T) (1 : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank) := _root_.GlobalTheory.BotFormula.isFinPt_one T rfl
   have exS : ∀ x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank, ∃ g, IsFinPt S g x :=
     fun x => GlobalTheory.BotFormula.exists_isFinPt_of_gram_one S hset.gS x rfl
   have exT : ∀ y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank, ∃ h, IsFinPt T h y :=
     fun y => GlobalTheory.BotFormula.exists_isFinPt_of_gram_one T hset.gT y rfl
   choose gx hgx using exS
   choose hy hhy using exT
-  have gx1 : gx 1 = 1 := GlobalTheory.T.eq_of_isFiniteAdelicPoint_same S _ _ 1 (hgx 1) p1S
-  have hy1 : hy 1 = 1 := GlobalTheory.T.eq_of_isFiniteAdelicPoint_same T _ _ 1 (hhy 1) p1T
+  have gx1 : gx 1 = 1 := _root_.GlobalTheory.FinPtUnique.eq_of_isFinPt S _ _ 1 (hgx 1) p1S
+  have hy1 : hy 1 = 1 := _root_.GlobalTheory.FinPtUnique.eq_of_isFinPt T _ _ 1 (hhy 1) p1T
   have gxm : ∀ x₁ x₂, gx x₁ * gx x₂ = gx (x₁ * x₂) :=
-    fun x₁ x₂ => GlobalTheory.T.eq_of_isFiniteAdelicPoint_same S _ _ _ (GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_mul S _ _ _ _ (hgx x₁) (hgx x₂)) (hgx (x₁ * x₂))
+    fun x₁ x₂ => _root_.GlobalTheory.FinPtUnique.eq_of_isFinPt S _ _ _ (_root_.GlobalTheory.FinPtMul.isFinPt_mul S _ _ _ _ (hgx x₁) (hgx x₂)) (hgx (x₁ * x₂))
   have hym : ∀ y₁ y₂, hy y₁ * hy y₂ = hy (y₁ * y₂) :=
-    fun y₁ y₂ => GlobalTheory.T.eq_of_isFiniteAdelicPoint_same T _ _ _ (GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_mul T _ _ _ _ (hhy y₁) (hhy y₂)) (hhy (y₁ * y₂))
+    fun y₁ y₂ => _root_.GlobalTheory.FinPtUnique.eq_of_isFinPt T _ _ _ (_root_.GlobalTheory.FinPtMul.isFinPt_mul T _ _ _ _ (hhy y₁) (hhy y₂)) (hhy (y₁ * y₂))
   choose cS hcS using fun x => hline x 1 (gx x) 1 (hgx x) p1T
   choose cT hcT using fun y => hline 1 y 1 (hy y) p1S (hhy y)
 
@@ -114,7 +114,7 @@ theorem vacuum_const_trivial : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ
   let νT : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank →* ℂ := { toFun := cT, map_one' := cT1, map_mul' := cTm }
   have tS : ∀ x, cS x = 1 := by
     intro x
-    have := GlobalTheory.T.unitaryAdelicCharacter_eq_one_split_inert S hset.gS νS.toHomUnits
+    have := _root_.GlobalTheory.InertSuppChar.char_eq_one S hset.gS νS.toHomUnits
       (fun k hk => Units.ext (by
         rw [MonoidHom.coe_toHomUnits, Units.val_one]
         exact huniq _ _ _ _ _ _ (hcS k) (hone _ _ _ _ (hsplit k 1 (gx k) 1 (hgx k) p1T hk (by simpa using one_suppSplit)))))
@@ -126,7 +126,7 @@ theorem vacuum_const_trivial : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ
     rwa [MonoidHom.coe_toHomUnits, Units.val_one] at this
   have tT : ∀ y, cT y = 1 := by
     intro y
-    have := GlobalTheory.T.unitaryAdelicCharacter_eq_one_split_inert T hset.gT νT.toHomUnits
+    have := _root_.GlobalTheory.InertSuppChar.char_eq_one T hset.gT νT.toHomUnits
       (fun k hk => Units.ext (by
         rw [MonoidHom.coe_toHomUnits, Units.val_one]
         exact huniq _ _ _ _ _ _ (hcT k) (hone _ _ _ _ (hsplit 1 k 1 (hy k) p1S (hhy k) (by simpa using one_suppSplit) hk))))
@@ -137,8 +137,8 @@ theorem vacuum_const_trivial : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ
     have := congrArg Units.val this
     rwa [MonoidHom.coe_toHomUnits, Units.val_one] at this
   intro x y g h hg hh
-  have eg : g = gx x := GlobalTheory.T.eq_of_isFiniteAdelicPoint_same S _ _ x hg (hgx x)
-  have eh : h = hy y := GlobalTheory.T.eq_of_isFiniteAdelicPoint_same T _ _ y hh (hhy y)
+  have eg : g = gx x := _root_.GlobalTheory.FinPtUnique.eq_of_isFinPt S _ _ x hg (hgx x)
+  have eh : h = hy y := _root_.GlobalTheory.FinPtUnique.eq_of_isFinPt T _ _ y hh (hhy y)
   subst eg eh
   have h1 := hmul x 1 (gx x) 1 1 y 1 (hy y) (cS x) (cT y) (hgx x) p1T p1S (hhy y) (hcS x) (hcT y)
   rw [tS, tT] at h1

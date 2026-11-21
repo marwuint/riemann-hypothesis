@@ -1,17 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAdeleCharTrivialOnTotallyRealStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAdeleCharTrivialOnTotallyReal
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNeZeroAdeleCharEqCompMulTotallyRealStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.VectorTupleProductMeasureTwoSidedActionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.VectorTupleProductMeasureTwoSidedAction
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousDistribHaarCharUnits
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNiceLocalFieldProductRingInfiniteAdelesComplet
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensorNiceRingArtinianReducedOpenUnits
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HaarModulusProductFormulaTotallyReal
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProductFormulaHaarModulusCmFieldElementStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyNormalizedLocalHaarSelfDualStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueSelfDualHaarMeasureInfiniteAdelesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SelfDualCompSelfAdjointStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueSelfDualMeasuresFinitePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProductFormulaHaarModulusCmFieldElement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyNormalizedLocalHaarSelfDual
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueSelfDualHaarMeasureInfiniteAdeles
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SelfDualCompSelfAdjoint
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueSelfDualMeasuresFinitePlace
 
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
@@ -33,7 +33,7 @@ theorem sdR_change (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRi
     (ψ0 ψ : R → ℂ) (a : R) (ha : IsUnit a) (h : ∀ x, ψ x = ψ0 (a * x)) (ν : Measure R)
     (hν : SdR R ψ0 ν) : SdR R ψ (NNReal.sqrt (modu R a) • ν) := by
   obtain ⟨hpos, hm⟩ := (GlobalTheory.GaugeEx.modu_basic R).1 a ha
-  have h1 := GlobalTheory.T.selfDual_sqrt_smul_comp_of_invariant R ν (fun s t => ψ0 (s * t)) (mulHomeo ha.unit) (modu R a) hpos.ne'
+  have h1 := _root_.GlobalTheory.GaugeEx.selfDual_comp_selfAdjoint R ν (fun s t => ψ0 (s * t)) (mulHomeo ha.unit) (modu R a) hpos.ne'
     (hm ν hν.1) (fun x y => by
       show ψ0 (x * (a * y)) = ψ0 ((a * x) * y)
       congr 1; ring) hν
@@ -145,14 +145,14 @@ theorem sdW_change (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
     rw [RingHom.map_det]; rfl
   have hu : IsUnit (JR (F := F) R (a • J)).det := by
     rw [hdet]; exact (Ne.isUnit hJ'.2).map _
-  have hm := GlobalTheory.T.vectorTupleProductMeasure_two_sided_action (R ⊗[F] E) h1 h2 lam hl 1 M (JR R (a • J)) 1 hu (by simp)
+  have hm := _root_.GlobalTheory.GaugeEx.ModDet.tupMeas_lrAct (R ⊗[F] E) h1 h2 lam hl 1 M (JR R (a • J)) 1 hu (by simp)
   obtain ⟨hb, -, hone, -⟩ := GlobalTheory.GaugeEx.modu_basic (R ⊗[F] E)
   have hT : lrAct (JR (F := F) R (a • J)) (1 : Matrix (Fin 1) (Fin 1) _) = actHomeo (n := 1) _ hu := by
     funext X; rw [lrAct_one]; rfl
   rw [Matrix.det_one, hone, one_pow, pow_one, mul_one, hT, hdet] at hm
   have hpos := (hb _ hu).1
   rw [hdet] at hpos
-  have h3 := GlobalTheory.T.selfDual_sqrt_smul_comp_of_invariant _ (r • tupMeas lam 1 M) (fun X Y => ψ0 (BR R σ 1 X Y)) (actHomeo (n := 1) _ hu)
+  have h3 := _root_.GlobalTheory.GaugeEx.selfDual_comp_selfAdjoint _ (r • tupMeas lam 1 M) (fun X Y => ψ0 (BR R σ 1 X Y)) (actHomeo (n := 1) _ hu)
     _ hpos.ne' (by rw [Measure.map_smul, smul_comm, ← hm]) (fun X Y => by
       show ψ0 (BR R σ 1 X fun c => (JR R (a • J)).mulVec (Y c)) =
         ψ0 (BR R σ 1 (fun c => (JR R (a • J)).mulVec (X c)) Y)
@@ -228,9 +228,9 @@ theorem final_prod {ι : Type} (A B r t : ι → ℝ≥0) (a b ri ti : ℝ≥0)
 theorem selfDual_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (M : ℕ), ∃ κ : ℝ≥0, κ ≠ 0 ∧ ∀ (ψ : AddChar (AF F) ℂ) (J : Matrix (Fin M) (Fin M) E), IsCharAF F ψ → IsHermND σ J → ∀ (μi : Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)) (νi : Measure (Ainf F)) (μv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)) (νv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), SdW F E σ M J (Ainf F) (psiInf F ψ) 1 μi → SdR (Ainf F) (psiInf F ψ) νi → (∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) 1 (μv v)) → (∀ v, SdR (Fv F v) (psiV F ψ v) (νv v)) → ∃ (ri ti : ℝ≥0) (r t : HeightOneSpectrum (𝓞 F) → ℝ≥0), μi = ri • tupMeas s.lamI 1 M ∧ νi = ti • s.nuI ∧ (∀ v, μv v = r v • tupMeas (s.lamV v) 1 M) ∧ (∀ v, νv v = t v • s.nuV v) ∧ ri ≠ 0 ∧ ti ≠ 0 ∧ (∀ v, r v ≠ 0) ∧ (∀ v, t v ≠ 0) ∧ (Function.mulSupport fun v => r v / t v).Finite ∧ ri / ti * ∏ᶠ v, r v / t v = κ := by
   intro F E _ _ _ _ _ σ hCM d b s M
   haveI : IsTotallyReal F := hCM.1
-  obtain ⟨ψ0, hψ0⟩ := GlobalTheory.T.exists_nontrivial_adeleChar_trivial_on_totallyReal F
+  obtain ⟨ψ0, hψ0⟩ := _root_.GlobalTheory.GaugeEx.CharZero.exists_isCharAF F
   have h1 := herm_one σ M
-  obtain ⟨⟨ν0i, hν0i, -⟩, hWi⟩ := GlobalTheory.T.existsUnique_selfDual_haar_measure_infinite_adeles F E σ hCM ψ0 hψ0
+  obtain ⟨⟨ν0i, hν0i, -⟩, hWi⟩ := _root_.GlobalTheory.GaugeEx.SdInf.existsUnique_selfDual_inf F E σ hCM ψ0 hψ0
   obtain ⟨μ0i, hμ0i, -⟩ := hWi M 1 h1
   obtain ⟨ri, hri, eri, -⟩ := exists_smul_haar μ0i _ hμ0i.1 (tup_haar s.lamI s.haar_lamI 1 M)
   obtain ⟨ti, hti, eti, -⟩ := exists_smul_haar ν0i _ hν0i.1 s.haar_nuI
@@ -238,13 +238,13 @@ theorem selfDual_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
       SdW F E σ M 1 (Fv F v) (psiV F ψ0 v) 1 (c • tupMeas (s.lamV v) 1 M) ∧
       (SdW F E σ M 1 (Fv F v) (psiV F ψ0 v) 1 (tupMeas (s.lamV v) 1 M) → c = 1) := by
     intro v
-    obtain ⟨μ, hμ, hu⟩ := (GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ0 hψ0 v).2 M 1 h1
+    obtain ⟨μ, hμ, hu⟩ := (_root_.GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite F E σ hCM ψ0 hψ0 v).2 M 1 h1
     obtain ⟨c, hc, ec, h⟩ := exists_smul_haar μ _ hμ.1 (tup_haar (s.lamV v) (s.haar_lamV v) 1 M)
     exact ⟨c, hc, ec ▸ hμ, fun h' => h (hu _ h').symm⟩
   have ht : ∀ v : HeightOneSpectrum (𝓞 F), ∃ c : ℝ≥0, c ≠ 0 ∧
       SdR (Fv F v) (psiV F ψ0 v) (c • s.nuV v) ∧ (SdR (Fv F v) (psiV F ψ0 v) (s.nuV v) → c = 1) := by
     intro v
-    obtain ⟨μ, hμ, hu⟩ := (GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ0 hψ0 v).1
+    obtain ⟨μ, hμ, hu⟩ := (_root_.GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite F E σ hCM ψ0 hψ0 v).1
     obtain ⟨c, hc, ec, h⟩ := exists_smul_haar μ _ hμ.1 (s.haar_nuV v)
     exact ⟨c, hc, ec ▸ hμ, fun h' => h (hu _ h').symm⟩
   choose r hr0 hrs hr1 using hr
@@ -252,7 +252,7 @@ theorem selfDual_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   rw [eri] at hμ0i
   rw [eti] at hν0i
   have hfin : (Function.mulSupport fun v => r v / t v).Finite := by
-    have := Filter.eventually_cofinite.1 (GlobalTheory.T.eventually_normalizedLocalHaar_selfDual F E σ hCM d b s ψ0 hψ0 M 1 h1)
+    have := Filter.eventually_cofinite.1 (_root_.GlobalTheory.GaugeEx.SelfDualAE.main F E σ hCM d b s ψ0 hψ0 M 1 h1)
     refine this.subset fun v hv h => hv ?_
     show r v / t v = 1
     rw [hr1 v h.2, ht1 v h.1, div_one]
@@ -264,22 +264,22 @@ theorem selfDual_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   have hJ' := herm_smul σ J hJ a ha
   obtain ⟨hNi, hNv⟩ := GlobalTheory.GaugeEx.nice_ainf_fv F
   obtain ⟨hB, hB1⟩ := GlobalTheory.GaugeProdFormula.prod_modu_eq_one F a ha
-  obtain ⟨hA, hA1⟩ := GlobalTheory.T.product_formula_haarModulus_cmField_element F E σ hCM _ hJ'.2
+  obtain ⟨hA, hA1⟩ := _root_.GlobalTheory.GaugeEx.prod_modu_inclR F E σ hCM _ hJ'.2
   obtain ⟨hB', hB1'⟩ := sqrt_prod _ _ hB hB1
   obtain ⟨hA', hA1'⟩ := sqrt_prod _ _ hA hA1
   obtain ⟨hf, he⟩ := final_prod _ _ r t _ _ ri ti hA' hB' hfin hA1' hB1'
   refine ⟨_, _, _, _, ?_, ?_, fun v => ?_, fun v => ?_, ?_, ?_, fun v => ?_, fun v => ?_, hf, he⟩
   · rw [mul_smul]
-    exact ((GlobalTheory.T.existsUnique_selfDual_haar_measure_infinite_adeles F E σ hCM ψ hψ).2 M J hJ).unique hμi
+    exact ((_root_.GlobalTheory.GaugeEx.SdInf.existsUnique_selfDual_inf F E σ hCM ψ hψ).2 M J hJ).unique hμi
       (sdW_change F E σ _ hNi _ _ a ha (psiInf_mul F ψ0 ψ a hψa) M J hJ _ s.haar_lamI ri hμ0i)
   · rw [mul_smul]
-    exact (GlobalTheory.T.existsUnique_selfDual_haar_measure_infinite_adeles F E σ hCM ψ hψ).1.unique hνi
+    exact (_root_.GlobalTheory.GaugeEx.SdInf.existsUnique_selfDual_inf F E σ hCM ψ hψ).1.unique hνi
       (sdR_change _ _ _ _ ((Ne.isUnit ha).map _) (psiInf_mul F ψ0 ψ a hψa) _ hν0i)
   · rw [mul_smul]
-    exact ((GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ hψ v).2 M J hJ).unique (hμv v)
+    exact ((_root_.GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite F E σ hCM ψ hψ v).2 M J hJ).unique (hμv v)
       (sdW_change F E σ _ (hNv v) _ _ a ha (psiV_mul F ψ0 ψ a hψa v) M J hJ _ (s.haar_lamV v) _ (hrs v))
   · rw [mul_smul]
-    exact (GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ hψ v).1.unique (hνv v)
+    exact (_root_.GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite F E σ hCM ψ hψ v).1.unique (hνv v)
       (sdR_change _ _ _ _ ((Ne.isUnit ha).map _) (psiV_mul F ψ0 ψ a hψa v) _ (hts v))
   · exact mul_ne_zero (left_ne_zero_of_mul_eq_one hA1') hri
   · exact mul_ne_zero (left_ne_zero_of_mul_eq_one hB1') hti

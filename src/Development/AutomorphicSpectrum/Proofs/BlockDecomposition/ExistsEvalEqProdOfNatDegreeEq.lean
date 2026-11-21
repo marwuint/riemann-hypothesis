@@ -40,10 +40,4 @@ theorem exists_eval_eq_prod_of_natDegree_eq {B : Type} [CommRing B]
       rw [hev, hb' a, Fin.prod_univ_succ]
       simp only [Fin.cons_zero, Fin.cons_succ]
 
-theorem exists_eval_eq_prod (B : Type) [CommRing B]
-    (hB : ∀ p : Polynomial B, p.Monic → 0 < p.natDegree → ∃ a, p.eval a = 0)
-    (P : Polynomial B) (hP : P.Monic) :
-    ∃ b : Fin P.natDegree → B, ∀ a : B, P.eval a = ∏ j, (a - b j) :=
-  exists_eval_eq_prod_of_natDegree_eq hB P.natDegree P hP rfl
-
 end GlobalTheory.CompanionTheory.AicSplit

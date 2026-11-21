@@ -117,10 +117,6 @@ def IsLowUnitH (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r
     (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)) (w : H) : Prop :=
   ∃ P, IsCayleyU k r ε P ∧ IsLowUnit ε lam (fun g => σ (P⁻¹ * g * P)) w
 
-def IsHighestUnitH (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ)
-    (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)) (w : H) : Prop :=
-  ∃ P, IsCayleyU k r ε P ∧ IsHighestUnit ε lam (fun g => σ (P⁻¹ * g * P)) w
-
 def blockW (k r : ℕ) (h : Matrix (Fin k) (Fin k) ℂ) :
     Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ :=
   fun i j =>
@@ -174,11 +170,6 @@ def lamSH (R : Ranks) (P : HCParam R) : Fin (2 * R.rS + R.k + 1) → ℝ :=
 
 def epsSH (R : Ranks) : Fin (2 * R.rS + R.k + 1) → Bool := fun i => epsS R (Fin.cast (dimS_eq R) i)
 
-def IsRowsDS (D : Formalism.BasicNotions.D7) (τ : D.what₂.Tau) {H : Type*} [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H]
-    (σ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ → (H →L[ℂ] H)) : Prop :=
-  IsDSHpk D.R.k D.R.rS (epsSH D.R) (lamSH D.R (D.hc τ)) σ
-
 def IsColsType (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (τ : D.what₂.Tau) {H : Type*} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (z : Fin (2 * D.R.rS + D.R.k + 1) → ℂ)
     (π : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ → (H →L[ℂ] H)) : Prop :=
@@ -229,8 +220,6 @@ def rconv {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] (μG : Measu
 end Bessel
 
 section Points
-
-def ptHead {K : Type*} [Zero K] (bs : List (K × ℕ)) : List (K × ℕ) := bs.dropLast
 
 def leadMinor {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (l : ℕ) (hl : l ≤ N) : ℂ :=
   (A.submatrix (Fin.castLE hl) (Fin.castLE hl)).det
@@ -354,26 +343,12 @@ def famNG {u u' : Word} : Set (s.Term u u') := {t | ¬ s.isId t ∧ s.Gterm t �
 
 def famG {u u' : Word} : Set (s.Term u u') := {t | ¬ s.isId t ∧ s.Gterm t ≠ 0 ∧ s.generic t}
 
-def loopP {u u' : Word} (p : s.Pair u u') : Prop :=
-  s.Gterm (s.pfst p) ≠ 0 ∧ s.Gterm (s.psnd p) ≠ 0 ∧
-    (2 ≤ s.s0 p ∨ (s.generic (s.pfst p) ∧ s.generic (s.psnd p) ∧ s.s0 p = 1 ∧ ¬ s.scalarPair p))
-
 def scalarP {u u' : Word} (p : s.Pair u u') : Prop :=
   s.generic (s.pfst p) ∧ s.generic (s.psnd p) ∧ s.s0 p = 1 ∧ s.scalarPair p
 
 def pairsIn {u u' : Word} (Φ : Set (s.Term u u')) : Set (s.Pair u u') := {p | s.pfst p ∈ Φ ∧ s.psnd p ∈ Φ}
 
 def K2 (u u' : Word) : s.Cu u' →L[ℂ] s.Cu u := KOf s u u' (RelevantZeroGramTerms s)
-
-def Kgs (u u' : Word) (w w' : Point E (R.rS + 1)) : ℂ :=
-  ∑' p : {p : s.Pair u u' // scalarP s p ∧ s.ptOf (s.pfst p) = w ∧ s.ptOf (s.psnd p) = w'},
-    (s.massPair p.1 : ℂ) * s.cTerm (s.pfst p.1) * star (s.cTerm (s.psnd p.1))
-
-def IdCellDiag (u : Word) : Prop :=
-  HasSum (fun t : {t : s.Term u u // s.isId t} => s.aTerm u u t.1) (ContinuousLinearMap.id ℂ (s.Cu u))
-
-def IdCellOff (u u' : Word) : Prop :=
-  HasSum (fun t : {t : s.Term u u' // s.isId t} => s.aTerm u u' t.1) 0
 
 end Kernel
 
@@ -436,19 +411,10 @@ def rdM {m : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] (X : Ma
     (f : Matrix (Fin m) (Fin m) ℂ → V) : Matrix (Fin m) (Fin m) ℂ → V :=
   fun g => deriv (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0
 
-def ldM {m : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] (X : Matrix (Fin m) (Fin m) ℂ)
-    (f : Matrix (Fin m) (Fin m) ℂ → V) : Matrix (Fin m) (Fin m) ℂ → V :=
-  fun g => deriv (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X) * g)) 0
-
 def rdWord {m : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] :
     List (Matrix (Fin m) (Fin m) ℂ) → (Matrix (Fin m) (Fin m) ℂ → V) → Matrix (Fin m) (Fin m) ℂ → V
   | [], f => f
   | X :: w, f => rdM X (rdWord w f)
-
-def ldWord {m : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] :
-    List (Matrix (Fin m) (Fin m) ℂ) → (Matrix (Fin m) (Fin m) ℂ → V) → Matrix (Fin m) (Fin m) ℂ → V
-  | [], f => f
-  | X :: w, f => ldM X (ldWord w f)
 
 end Amp
 
@@ -518,9 +484,6 @@ def PiU (u : D.what₂.Word) : D.s.Cu u →L[ℂ] D.s.Cu u :=
 
 def hsSqD (u u' : D.what₂.Word) : ℝ := hsNormSq (KD D u u')
 
-def hsDiagD (u : D.what₂.Word) : ℝ :=
-  hsNormSq ((PiU D u).comp ((KD D u u - ContinuousLinearMap.id ℂ (D.s.Cu u)).comp (PiU D u)))
-
 end KernelD
 
 def LocBessel.beta {k r : ℕ} (L : LocBessel k r) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
@@ -544,23 +507,6 @@ def brkW {n : ℕ} (lam : Fin n → ℝ) (Ys : List ℝ) : ℝ :=
 
 def IsCutoff (χ : ℝ → ℝ) : Prop :=
   ContDiff ℝ ∞ χ ∧ (∀ x, 0 ≤ χ x ∧ χ x ≤ 1) ∧ (∀ x ≤ 1 / 2, χ x = 0) ∧ ∀ x, 1 ≤ x → χ x = 1
-
-theorem isCutoff_exists : ∃ χ : ℝ → ℝ, IsCutoff χ := by
-  refine ⟨fun x => Real.smoothTransition (2 * x - 1), ?_, ?_, ?_, ?_⟩
-  · exact Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)
-  · intro x
-    exact ⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩
-  · intro x hx
-    exact Real.smoothTransition.zero_of_nonpos (by linarith)
-  · intro x hx
-    exact Real.smoothTransition.one_of_one_le (by linarith)
-
-def IsCC {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] (k r : ℕ) (A : ℝ) (mm : ℕ)
-    (F : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → V) : Prop :=
-  Formalism.QuantumDeterminants.SmoothOnH (Formalism.QuantumDeterminants.Hpk k r) F ∧
-    ∀ w : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ), w.length ≤ mm →
-      (∀ X ∈ w, InLieHpk k r X) → ∃ C : ℝ, ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r),
-        ‖rdWord w F g‖ ≤ C * (1 + Real.sqrt (∑ i, ∑ j, Complex.normSq (g i j))) ^ (-A)
 
 def IsKFinCoefH {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnipotentFrameCoordsOfMemIsotropicUnipotenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnipotentFrameCoordsOfMemIsotropicUnipoten
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnipotentRadicalPointWithCoordsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentRadicalCoordinatesGroupLawStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRationalPointsOfUnipotentCoordsRationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsCompactOfUnipotentCoordinatesMemStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoverRectangularAdelicMatricesShrunkCompactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentRadicalCoordinatesGroupLaw
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRationalPointsOfUnipotentCoordsRational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsCompactOfUnipotentCoordinatesMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoverRectangularAdelicMatricesShrunkCompact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoverSkewHermitianAdelicMatricesShrunkCompactStatement
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.EisLine GlobalTheory.SphEis
@@ -118,7 +118,7 @@ theorem cover_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
 
   set K : Matrix (Fin m) (Fin m) (AF F ⊗[F] E) := adMat F J₀⁻¹ with hKdef
   have hplus : ∀ b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E), plus σ J₀ b = K * cT (sigR (AF F) σ) b := fun b => rfl
-  obtain ⟨Ω₁, B₁, hΩ₁, hrect⟩ := GlobalTheory.T.cover_rectangularAdelicMatrices_shrunkCompact F E σ hcm j m
+  obtain ⟨Ω₁, B₁, hΩ₁, hrect⟩ := _root_.GlobalTheory.SphEis.cover_rect_adMat F E σ hcm j m
   obtain ⟨Ω₂, B₂, hΩ₂, hskew⟩ := GlobalTheory.T.cover_skewHermitianAdelicMatrices_shrunkCompact F E σ hcm j
   set S₁ : Set (Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) := {ω | ∀ i k, ω i k ∈ Ω₁} with hS₁
   set S₂ : Set (Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) := {ω | ∀ i k, ω i k ∈ Ω₂} with hS₂
@@ -138,7 +138,7 @@ theorem cover_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
       (q.2 - (2⁻¹ : F) • (q.1 * (K * cT (sigR (AF F) σ) q.1))) i k) '' (S₁ ×ˢ S₂) with hΩ₃
   have hΩ₃c : IsCompact Ω₃ :=
     hΩ₁.union (isCompact_iUnion fun i => isCompact_iUnion fun k => (hS₁c.prod hS₂c).image (hcont i k))
-  obtain ⟨V, hV, hVmem⟩ := GlobalTheory.T.exists_isCompact_of_unipotentCoordinates_mem F E σ n J j m C D Z J₀ hFr Ω₃ hΩ₃c
+  obtain ⟨V, hV, hVmem⟩ := _root_.GlobalTheory.SphEis.exists_isCompact_of_crd_mem F E σ n J j m C D Z J₀ hFr Ω₃ hΩ₃c
   refine ⟨V, B₁ * B₂, hV, fun μ => ?_⟩
 
   obtain ⟨Y₁, hY₁, hcov₁⟩ := hrect μ
@@ -165,7 +165,7 @@ theorem cover_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   · intro y hy
     obtain ⟨⟨b, z⟩, hq, rfl⟩ := Finset.mem_image.1 hy
     exact (hf b z (hY₂sk z (Finset.mem_product.1 hq).2)).1
-  obtain ⟨b, c, hbc, hcond⟩ := GlobalTheory.T.exists_unipotentFrameCoords_of_mem_isotropicUnipotentRadical F E σ n J j m C D Z J₀ hFr u hu
+  obtain ⟨b, c, hbc, hcond⟩ := _root_.GlobalTheory.SphEis.exists_crd_of_mem_unipRad F E σ n J j m C D Z J₀ hFr u hu
   obtain ⟨x₀, y, hy, ω, hω, hb⟩ := hcov₁ b
   set t := tor F E fun i => (μ i : ℤ) with ht
   have hcond' : c + cT (sigR (AF F) σ) c + (adMat F x₀ + (y + t.1 * ω)) *
@@ -194,7 +194,7 @@ theorem cover_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     simp only [cT_sub, cT_neg, cT_smul _ hk, cT_pair _ K hs hK, hx₁', Matrix.neg_mul, Matrix.mul_neg, neg_neg]
     module
   obtain ⟨γ, hγU, hγC⟩ := crd2 (adMat F (-x₀)) (adMat F c₀) hγrel
-  have hγrat := GlobalTheory.T.mem_rationalPoints_of_unipotentCoords_rational F E σ n J j m C D Z J₀ hFr γ (-x₀) c₀ hγC
+  have hγrat := _root_.GlobalTheory.SphEis.mem_ratPts_of_crd_rat F E σ n J j m C D Z J₀ hFr γ (-x₀) c₀ hγC
 
   obtain ⟨w, hwU, hwC⟩ := crd2 ω (ωs - (2⁻¹ : F) • (ω * plus σ J₀ ω)) (hrel ω ωs hωs)
   have hwV : w ∈ V := hVmem w ω _ hwC (fun i k => Or.inl (hω i k))
@@ -203,7 +203,7 @@ theorem cover_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   have hy'mem : f (y, z) ∈ (Y₁ ×ˢ Y₂).image f := Finset.mem_image_of_mem f (Finset.mem_product.2 ⟨hy, hz⟩)
   obtain ⟨hy'U, hy'C⟩ := hf y z (hY₂sk z hz)
 
-  have law := GlobalTheory.T.unipotentRadical_coordinates_groupLaw F E σ n J j m C D Z J₀ hFr lv hlv
+  have law := _root_.GlobalTheory.SphEis.crd_law F E σ n J j m C D Z J₀ hFr lv hlv
   have h1 := (law γ u (adMat F (-x₀)) (adMat F c₀) b c hγC).1 hbc
   have hcj := (law w w ω _ 0 0 hwC).2.2 t
   have h2 := (law (f (y, z)) _ y _ _ _ hy'C).1 hcj

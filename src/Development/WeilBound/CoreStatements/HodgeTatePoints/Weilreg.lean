@@ -72,7 +72,4 @@ theorem weil_regular_of_fun (hW : type_of% @PositivityTheory.HtPt.Weilfun.weil_f
   rw [e, hw, val_unitOn]
   rfl
 
-theorem weil_regular : type_of% (weil_regular_of_fun @PositivityTheory.HtPt.Weilfun.weil_fun) :=
-  weil_regular_of_fun @PositivityTheory.HtPt.Weilfun.weil_fun
-
 end PositivityTheory.HtPt.Weilreg

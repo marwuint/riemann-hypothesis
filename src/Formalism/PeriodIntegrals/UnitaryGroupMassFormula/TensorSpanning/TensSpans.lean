@@ -58,38 +58,4 @@ theorem key (c : ℝ) (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (�
     rw [Finset.card_insert_of_notMem hb, pow_succ, ← mul_assoc, ih z, Finset.prod_insert hb]
     linear_combination (∏ x ∈ s, θ (part z x)) * hc
 
-theorem tens_eq {n : Type} (θ : (n → ℂ) → ℂ) (N N' : ℕ) (z : n → Fin N' → Fin N → ℂ) :
-    tensPow θ N N' z = ∏ b : Fin N' × Fin N, θ (part z b) := by
-  rw [tensPow, Fintype.prod_prod_type]
-  rfl
-
-theorem tensSpans : PI.KerTens.TensSpans := by
-  intro c L n _ _ ΛM θ hyp N N' F hF
-  by_cases hex : ∃ t0, θ t0 ^ Fintype.card (Fin N' × Fin N) ≠ 0
-  · obtain ⟨t0, ht0⟩ := hex
-    refine ⟨F (fun τ _ _ => t0 τ) / θ t0 ^ Fintype.card (Fin N' × Fin N), ?_⟩
-    funext z
-    have h := key c L ΛM θ hyp F hF t0 Finset.univ z
-    have hr : repl t0 Finset.univ z = fun τ _ _ => t0 τ := by
-      funext τ i j
-      simp [repl]
-    rw [hr, Finset.card_univ, ← tens_eq] at h
-    simp only [Pi.smul_apply, smul_eq_mul]
-    field_simp
-    linear_combination h
-  · simp only [not_exists, not_not] at hex
-    have hcard : Fintype.card (Fin N' × Fin N) ≠ 0 := by
-      intro h0
-      have := hex 0
-      rw [h0, pow_zero] at this
-      exact one_ne_zero this
-    have hθ : ∀ t, θ t = 0 := fun t => (pow_eq_zero_iff hcard).mp (hex t)
-    obtain ⟨b⟩ : Nonempty (Fin N' × Fin N) := Fintype.card_pos_iff.mp (Nat.pos_of_ne_zero hcard)
-    refine ⟨0, ?_⟩
-    funext z
-    obtain ⟨a, ha⟩ := hyp _ (slice_th c L ΛM F hF z b)
-    have e := congrFun ha (part z b)
-    simp only [Pi.smul_apply, smul_eq_mul, upd_part, hθ, mul_zero] at e
-    simp [e]
-
 end PI.KerTens.W

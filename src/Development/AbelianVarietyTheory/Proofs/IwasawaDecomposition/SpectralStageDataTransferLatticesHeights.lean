@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.UpLReStage
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsSameFOfDiv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ReadsUnique
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpectralComparisonTransportedDivisionLatticeChanStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpectralComparisonTransportedDivisionLatticeChan
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RelabelledWeight
 
 noncomputable section
 
@@ -78,7 +79,7 @@ set_option maxHeartbeats 8000000 in
 theorem sxMv : SxMv := by
   intro K B f T w Z Wt p0 r col N h p0' t col' e ⟨s⟩
   obtain ⟨F₁, hF⟩ := exists_sameF_ofDiv (D := Late.D Z) ((by with_unfolding_all exact (N :))) ((by with_unfolding_all exact (h :))) fun u => (col.C.forms u).to0
-  obtain ⟨s', -⟩ := GlobalTheory.T.spectralComparison_transported_divisionLatticeChange B w.C Z (pkOf r).G' (pkOf r).Pl0 (pkOf r).T (pkOf r).A (pkOf r).Ks (pkOf r).R (pkOf r).F
+  obtain ⟨s', -⟩ := _root_.GlobalTheory.Mem.SRe.sAtL_exists_ofDiv B w.C Z (pkOf r).G' (pkOf r).Pl0 (pkOf r).T (pkOf r).A (pkOf r).Ks (pkOf r).R (pkOf r).F
     (fun u => (col.C.forms u).to0) (pkOf r).eE (cast (sx_eq r col) s) ((by with_unfolding_all exact (N :))) ((by with_unfolding_all exact (h :))) ((by with_unfolding_all exact (F₁ :))) ((by with_unfolding_all exact (hF :)))
   have c := StdUnique.sameStd B f T w Z (New.ofDiv (Late.D Z) ((by with_unfolding_all exact (N :))) ((by with_unfolding_all exact (h :)))) col ((by with_unfolding_all exact (col' :))) ((by with_unfolding_all exact (F₁ :))) ((by with_unfolding_all exact (hF :)))
   have e' : pkOf t = (pkOf r).up Z Z.S N h := eq_of_heq e

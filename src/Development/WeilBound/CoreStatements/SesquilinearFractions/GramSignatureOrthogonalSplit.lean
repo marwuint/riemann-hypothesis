@@ -22,7 +22,7 @@ theorem gram_signature_orthogonal_split : ∀ (E : Type) [Field E] [NumberField 
       DPer.herm_EF hty _ n hn0 x (DPer.coef_sum D x hx n hn) horth⟩
     · rw [injective_iff_map_eq_zero]
       exact fun y h => hc0 y (DPer.coef_zero_of_per hty _ n hn0 y h)
-    · exact fun m m' => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.1 (x m) (x m')
+    · exact fun m m' => (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.2.1 (x m) (x m')
   refine ⟨_, hP, fun a => ?_, fun b => ?_⟩
   · intro k hk
     exact DPer.per_inl hty _ n _ a (hcx _) k (by simpa [sgnRt] using hk)

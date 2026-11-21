@@ -4,8 +4,8 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.GaloisCohomology.LocalTateDualityK
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientOfCompleteNakayamaStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FreeModuleAdicCompleteSeparatedStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientOfCompleteNakayama
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FreeModuleAdicCompleteSeparated
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodCoefficientsExplicitSumsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeCocyclesFinitelyGeneratedModPrimeStatement
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
@@ -18,7 +18,7 @@ theorem tate_finH1 (hT : Formalism.GaloisCohomology.LocalTateDualityK) :
   obtain ⟨hR, hRs⟩ := GlobalTheory.T.goodCoefficients_explicit_sums l LL O hO
   haveI : Module.Free O ↥LA.T := LA.free
   haveI : Module.Finite O ↥LA.T := Module.Finite.iff_fg.2 LA.fg
-  obtain ⟨hTc, hTs⟩ := GlobalTheory.T.free_finite_module_adicComplete_and_separated ((l : ℕ) : O) hR hRs ↥LA.T
+  obtain ⟨hTc, hTs⟩ := _root_.GlobalTheory.freeModule_adicComplete_separated ((l : ℕ) : O) hR hRs ↥LA.T
   have hmemT : ∀ c : ↥(latticeCocycles LA), ∀ g, (c : ↥(GK K) → A.V) g ∈ LA.T := fun c g =>
     (Submodule.mem_pi.1 (Submodule.mem_inf.1 c.2).2) g (Set.mem_univ g)
   have hd : ∀ t : ↥LA.T, ((cob A.ρ).restrictScalars O) (t : A.V) ∈ latticeCocycles LA := fun t => by
@@ -48,7 +48,7 @@ theorem tate_finH1 (hT : Formalism.GaloisCohomology.LocalTateDualityK) :
       rfl
     exact congrArg Subtype.val h0
   obtain ⟨s, hs⟩ := GlobalTheory.T.latticeCocycles_finitelyGenerated_mod_prime hT l K LL O hO A LA
-  refine GlobalTheory.T.module_finite_quotient_of_complete_of_span_mod_range ((l : ℕ) : O) hR hTc hZ d _ hdN s fun c => ?_
+  refine _root_.GlobalTheory.finite_quotient_of_complete_nakayama ((l : ℕ) : O) hR hTc hZ d _ hdN s fun c => ?_
   obtain ⟨a, c', hm⟩ := hs c
   obtain ⟨x, hx, hxe⟩ := hm
   refine ⟨a, c', ⟨x, hx⟩, Subtype.ext ?_⟩

@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenNormalisedSubgroupSubset
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatDistributionEqZeroBaireStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatrixConjTransposeBySymmetricTausskyZassenhausStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatDistributionEqZeroBaire
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatrixConjTransposeBySymmetricTausskyZassenhaus
 
 open MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Topology
 
@@ -67,7 +67,7 @@ theorem invariant_of_anti [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpac
   let K : S → ℕ → Subgroup G := fun c m => J m ⊓ (J m).comap (MulAut.conj (c : G)).toMonoidHom
   have hKm : ∀ c m y, y ∈ K c m ↔ y ∈ J m ∧ (c : G) * y * (c : G)⁻¹ ∈ J m := fun c m y => Iff.rfl
   have hD : T - T.comp (pull t) = 0 := by
-    refine GlobalTheory.T.schwartzBruhat_distribution_eq_zero_baire G S K (fun c m => ?_) (fun c V hV => ?_) _ fun x => ?_
+    refine _root_.GlobalTheory.BaireDistribution.eq_zero G S K (fun c m => ?_) (fun c V hV => ?_) _ fun x => ?_
     · have ho : IsOpen (K c m : Set G) :=
         (hJo m).inter ((hJo m).preimage (f := fun y => (c : G) * y * (c : G)⁻¹) (by fun_prop))
       exact ⟨ho, hKc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun y hy => hJK m hy.1⟩
@@ -156,7 +156,7 @@ theorem transpose_invariant (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     (fun x => ?_) T hT φ
   · obtain ⟨h1, h2⟩ := (SplitFlip.mem_KO_iff _).1 hx
     exact (SplitFlip.mem_KO_iff _).2 ⟨fun i j => h1 j i, fun i j => h2 j i⟩
-  · obtain ⟨P, ⟨s, rfl⟩, h1, h2⟩ := GlobalTheory.T.matrix_conj_transpose_by_symmetric_taussky_zassenhaus k n x.val
+  · obtain ⟨P, ⟨s, rfl⟩, h1, h2⟩ := _root_.GlobalTheory.SymmetricSimilarTranspose.main k n x.val
     exact ⟨s, Units.ext h1, Units.ext h2⟩
 
 end GlobalTheory.GelfandKazhdan

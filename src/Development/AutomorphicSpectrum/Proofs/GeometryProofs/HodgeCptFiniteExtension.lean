@@ -8,7 +8,15 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorFla
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductOnSpan
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
@@ -291,7 +299,7 @@ def push (m : SABMap t' t f) {z : Sp ℂ ⟶ X'} (v : epsAt z ⟶ t'.G) : epsAt 
 
 theorem hodgeInnerProduct_unique (m : SABMap t' t f) {z : Sp ℂ ⟶ X'} (v w : epsAt z ⟶ t'.G) (c c' : ℂ)
     (h : HodgeIP t'.G t'.PP.L z v w c) (h' : HodgeIP t'.G t'.PP.L z v w c') : c = c' := by
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.hodge_inner_product_pullback_unique E H X' X t' t f m z v w (push m v) (push m w) rfl rfl
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H X' X t' t f m z v w (push m v) (push m w) rfl rfl
   exact h2 c c' ((h1 c).1 h) ((h1 c').1 h')
 
 theorem grNorm_down (m : SABMap t' t f) (hξ' : IsCptGen ξ') (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i)
@@ -376,7 +384,7 @@ theorem grNorm_down (m : SABMap t' t f) (hξ' : IsCptGen ξ') (hd : GlobalTheory
   refine ⟨τ, _, ((P idx idx : regAt ξ' p') : Ω')⁻¹, (C idx idx)⁻¹,
     ⟨hp, b, Cᴴ * Γ' * C, hbf, hbV, hτ, ⟨w, hw, fun p q => ?_⟩, hpd'.conjTranspose_mul_mul_same hinj, rfl⟩,
     inv_ne_zero (hCd idx), CxVal.inv (hφ _) (hCd idx), ?_, ?_⟩
-  · refine ((GlobalTheory.T.hodge_inner_product_pullback_unique E H X' X t' t f m z (w' p) (w' q) (w p) (w q) (hww p) (hww q)).1 _).1 ?_
+  · refine ((_root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H X' X t' t f m z (w' p) (w' q) (w p) (w q) (hww p) (hww q)).1 _).1 ?_
     rw [hw'e, hw'e, hJval, hJval]
     exact hgram p q
   · rw [← hdiag]

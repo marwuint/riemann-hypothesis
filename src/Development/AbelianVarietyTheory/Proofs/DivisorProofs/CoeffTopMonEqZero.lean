@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsThetaMeanSquareNorm
-import Development.AbelianVarietyTheory.Definitions.Divisors.SecJets4
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorusExt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
@@ -78,12 +78,6 @@ def epsScale (c : R) : epsR R ⟶ epsR R :=
 
 variable {R}
 
-def epsPt {G : Over (Sp R)} [GrpObj G] (y : epsR R ⟶ G) (k : ℕ) : epsT R k ⟶ G :=
-  (List.ofFn fun a : Fin k => epsIn R a ≫ y).prod
-
-def jetVal {G : Over (Sp R)} [GrpObj G] (y : epsR R ⟶ G) (k : ℕ) (U : G.left.Opens) (f : Γ(G.left, U)) : R :=
-  topCoeff R k (valR (epsPt y k).left U f)
-
 def tanComb {G : Over (Sp R)} [GrpObj G] {m : ℕ} (c : Fin m → R) (v : Fin m → (epsR R ⟶ G)) : epsR R ⟶ G :=
   (List.ofFn fun i => epsScale R (c i) ≫ v i).prod
 
@@ -93,30 +87,10 @@ theorem isLieComb_tanComb {G : Over (Sp R)} [GrpObj G] {m : ℕ} (c : Fin m → 
 
 end Geo
 
-def jetFun {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] (y : epsR K ⟶ G) {L : LB G.left} (i₀ : L.ι) (c₀ : K)
-    {r : ℕ} (b : Fin r → L.Sec) (i : ℕ) : (Fin r → K) →ₗ[K] K :=
-  ∑ a, (c₀⁻¹ * jetVal y i (L.U i₀) ((b a).f i₀)) • LinearMap.proj a
-
-theorem jetFun_apply {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] (y : epsR K ⟶ G) {L : LB G.left} (i₀ : L.ι)
-    (c₀ : K) {r : ℕ} (b : Fin r → L.Sec) (i : ℕ) (c : Fin r → K) :
-    jetFun y i₀ c₀ b i c = ∑ a, c₀⁻¹ * jetVal y i (L.U i₀) ((b a).f i₀) * c a := by
-  simp [jetFun]
-
 def filt {K V : Type} [Field K] [AddCommGroup V] [Module K V] (j : ℕ → V →ₗ[K] K) (i : ℕ) : Submodule K V :=
   Nat.rec ⊤ (fun k F => F ⊓ LinearMap.ker (j k)) i
 
 theorem filt_succ {K V : Type} [Field K] [AddCommGroup V] [Module K V] (j : ℕ → V →ₗ[K] K) (i : ℕ) :
     filt j (i + 1) = filt j i ⊓ LinearMap.ker (j i) := rfl
-
-open Classical in
-
-def rigVal {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp K)} {AA : Over (Sp (𝓞 K))} [GrpObj AA]
-    {φ : P.A.left ⟶ AA.left} {MM : RigLB AA} {N : ℕ} (w : LB.Iso (MM.L.pull φ) (lbPow P.L N))
-    (i₀ : (lbPow P.L N).ι) : K :=
-  if h : ∃ p : PUnit → MM.L.ι,
-      ⊤ ≤ (spMap (algebraMap (𝓞 K) K)) ⁻¹ᵁ (show (Sp (𝓞 K)).Opens from (MM.L.pull (eSec AA)).U p) then
-    valR (X := P.A.left) (eSec P.A) _ (w.s (i₀, h.choose)).val *
-      valR (X := Sp (𝓞 K)) (spMap (algebraMap (𝓞 K) K)) _ (MM.rig.s h.choose).val
-  else 0
 
 end GlobalTheory.SecJet

@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AtMostTwoThickInWindowLongOrbitStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CyclicWordMarkedClustersOfAtMostTwoInWindowStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AtMostTwoThickInWindowLongOrbit
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CyclicWordMarkedClustersOfAtMostTwoInWindow
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory
@@ -15,7 +15,7 @@ theorem long_clusters : ∀ {R : Ranks} (H : Host R) (τ φ : R.GG) (j : ℕ), 4
   have hpos : 0 < orderOf φ := orderOf_pos φ
   have hdvd : orderOf φ.2 ∣ orderOf φ := orderOf_snd_dvd_orderOf
   have hle : orderOf φ.2 ≤ orderOf φ := Nat.le_of_dvd hpos hdvd
-  have hw := GlobalTheory.T.atMostTwoThick_in_window_long_orbit H τ φ h4
-  refine ⟨GlobalTheory.T.cyclicWord_markedClusters_of_atMostTwoInWindow _ H.Lw j hj (by omega) (by omega) hw, by omega⟩
+  have hw := _root_.GlobalTheory.HTW.LongWindow.main H τ φ h4
+  refine ⟨_root_.GlobalTheory.HTW.winClusters _ H.Lw j hj (by omega) (by omega) hw, by omega⟩
 
 end GlobalTheory

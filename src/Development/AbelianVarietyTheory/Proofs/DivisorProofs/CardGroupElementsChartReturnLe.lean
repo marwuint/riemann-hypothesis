@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsThickPo
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.MajLactRmul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LminorSubmatrixCastSucc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EncardSelfDualLatticeBoundedMajorantLeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MajorantChartPointCentreFactorTwoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MajorantChartPointCentreFactorTwo
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ModeHalfStatementPfA
 open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates GlobalTheory.LevGeo
 open scoped ENNReal
@@ -136,9 +136,9 @@ theorem maj_le_four {r : ℕ} (X : DataX E r) {x : Frame X.Ψ r} (hx : IsOrth X.
   have hr2 : (0 : ℝ) ≤ (r : ℝ) ^ 2 := by positivity
   have hs : ∀ w : V (nd X.toData), ‖w‖ ≤ ρ → (r : ℝ) ^ 2 * ‖w‖ ≤ 1 / 100 := fun w hw =>
     (mul_le_mul_of_nonneg_left hw hr2).trans hρ
-  have h1 := (GlobalTheory.T.majorant_chart_point_centre_factor_two E r X.toData x z' hx (hs z' hz') τ
+  have h1 := (_root_.GlobalTheory.ChartGraph.maj_cpt_le_two E r X.toData x z' hx (hs z' hz') τ
     (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v))).2
-  have h2 := (GlobalTheory.T.majorant_chart_point_centre_factor_two E r X.toData x z hx (hs z hz) τ (Data.emb τ.1 v)).1
+  have h2 := (_root_.GlobalTheory.ChartGraph.maj_cpt_le_two E r X.toData x z hx (hs z hz) τ (Data.emb τ.1 v)).1
   have e1 : X.maj (cpt X.toData x z') τ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v)) =
       X.maj (cpt X.toData x z) τ (Data.emb τ.1 v) := by
     rw [← maj_rmul_any X.toData _ hb, ← heq, emb_mulVec',

@@ -4,10 +4,10 @@ import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentat
 import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentativesTrivial
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NatCastMemOfPlace
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemHomLat
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NumberFieldCompletionRingEquivOfDenseUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NumberFieldCompletionRingEquivOfDenseUnramified
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemClosureIffMapMemMatrixHomLatticeCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IdealMulHomMapMemMatrixHomLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatrixHomLatticeLeSpanIdealHomImageStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IdealMulHomMapMemMatrixHomLattice
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MatrixHomLatticeLeSpanIdealHomImage
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexMatrixHomLatticeRatioEqResiduePowStatement
 
 noncomputable section
@@ -74,7 +74,7 @@ theorem vol_main : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) 
   intro D p _ X v j ρ P hA h1 h2
   have hS := X.G.P.setting v
   haveI := hS.frac_alt
-  obtain ⟨φ, hφ, hop, hnb⟩ := GlobalTheory.T.numberField_completion_ringEquiv_of_dense_unramified P p hS.p_unif hS.eq_sum_herm_smul_frame_of_inW ρ h1 h2
+  obtain ⟨φ, hφ, hop, hnb⟩ := _root_.GlobalTheory.DenseCompl.completion_ringEquiv_of_dense P p hS.p_unif hS.eq_sum_herm_smul_frame_of_inW ρ h1 h2
   refine ⟨φ, hφ, ?_⟩
   intro M M' hM hM' N N' S hSq
   have key : ∀ q ∈ S, ∃ (g : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v))
@@ -99,8 +99,8 @@ theorem vol_main : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) 
     obtain ⟨-, -, ⟨hFG, hspan, -⟩, ⟨hFG', hspan', -⟩⟩ := hAdm
     refine ⟨g, g', hMg, hMg', fun y => ?_, fun z => ?_, ?_, ?_⟩
     · exact GlobalTheory.T.mem_closure_iff_map_mem_matrixHomLattice_completion P p hS.p_unif ρ h2 φ hφ hop hnb (TaylorLogMetric.YYl D (N q.1) (N' q.2)) _ _ hMg hMg'
-        (GlobalTheory.T.ideal_mul_hom_map_mem_matrixHomLattice D P p hS.p_unif ρ hA h1 _ _ _ _ hNa hNb)
-        (GlobalTheory.T.matrixHomLattice_le_span_ideal_hom_image D P p hS.p_unif ρ hA h1 _ _ hFG hFG' hspan hspan' _ _ hMg hMg' hNa hNb) y
+        (_root_.GlobalTheory.TwU.map_mem_homLat_of_mem_YYl D P p hS.p_unif ρ hA h1 _ _ _ _ hNa hNb)
+        (_root_.GlobalTheory.VolOnto.homLat_le_span_YYl D P p hS.p_unif ρ hA h1 _ _ hFG hFG' hspan hspan' _ _ hMg hMg' hNa hNb) y
     · rw [homLat_conj M g M' g' hM' z, ← hgL, ← hgL']
       unfold Sys.ind
       split_ifs with h

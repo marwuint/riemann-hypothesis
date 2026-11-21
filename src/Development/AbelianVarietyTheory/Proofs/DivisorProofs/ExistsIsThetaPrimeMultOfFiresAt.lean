@@ -1,7 +1,6 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ThetaKernelFiring
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaPrimeMultiplicity
 
 noncomputable section
 
@@ -92,7 +91,7 @@ theorem exists_linear_lift {ι X : Type} [AddCommGroup X] [Module ℂ X] {M : ι
 
 end Gen
 
-open GlobalTheory.IndefiniteRowSideFullHecke.ThetaKernelFiring GlobalTheory.IndefiniteRowSideFullHecke.ThetaPrimeMultiplicity
+open GlobalTheory.IndefiniteRowSideFullHecke.ThetaKernelFiring
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

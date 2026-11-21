@@ -313,9 +313,4 @@ theorem tanBC_alg {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [Alge
     rw [← pushR_left, e1, ← e3, ← e2]
     rfl
 
-theorem tanBC : TanBCSt := by
-  intro R R' _ _ _ φ G _ n x hx
-  letI := φ.toAlgebra
-  exact tanBC_alg G n x hx
-
 end ReciprocityTheory.ChartRestriction.G.Chart

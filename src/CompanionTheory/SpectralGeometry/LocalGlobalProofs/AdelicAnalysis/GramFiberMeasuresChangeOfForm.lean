@@ -3,10 +3,10 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IsFibreFamilyTransport
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentities
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensorStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScalingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresUniqueAeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensor
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScaling
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresUniqueAe
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -16,7 +16,7 @@ theorem fibre_map_isometry : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   intro F E _ _ _ _ _ σ hcm M J hJ J' hJ' R _ _ _ _ _ hR n μ ν m hμ hν hm μ' m' hμ' hm' g hg a ha S
   have hR' := hR
   obtain ⟨hTR, hLC, hSC, hT2, -, -, -, -⟩ := hR'
-  obtain ⟨hK1, hK2, hK3, hK4, -, -, -, hK8, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+  obtain ⟨hK1, hK2, hK3, hK4, -, -, -, hK8, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   haveI := hK8 n M
   obtain ⟨hH1, hH2, hH3, hH4, hlift⟩ := GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hcm R n
   obtain ⟨l, hlc, hl⟩ := hlift M J hJ
@@ -42,7 +42,7 @@ theorem fibre_map_isometry : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   have he : (e : (Fin n → Fin M → R ⊗[F] E) → _) = actTup R g := rfl
   let B : Set (HermR R σ n) := {S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}
   have hB : IsOpen B := by
-    have hu := (GlobalTheory.T.units_open_embedding_local_tensor F E σ hcm R hR).isOpen_range
+    have hu := (_root_.GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hcm R hR).isOpen_range
     have hd : Continuous fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det :=
       Continuous.matrix_det continuous_subtype_val
     have := hu.preimage hd
@@ -87,9 +87,9 @@ theorem fibre_map_isometry : ∀ (F E : Type) [Field F] [NumberField F] [Field E
     rw [Measure.map_apply e.continuous.measurable MeasurableSet.univ] at this
     simpa using this
   have hHaar : (a • μ).IsAddHaarMeasure := Measure.IsAddHaarMeasure.nnreal_smul μ ha0
-  have h1 := GlobalTheory.T.gram_fiber_measures_scaling F E σ hcm M J hJ R hR n μ ν m hμ hν hm a 1 ha0 one_ne_zero
+  have h1 := _root_.GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hcm M J hJ R hR n μ ν m hμ hν hm a 1 ha0 one_ne_zero
   rw [one_smul] at h1
   simp only [div_one] at h1
-  exact GlobalTheory.T.gram_fiber_measures_unique F E σ hcm M J hJ R hR n (a • μ) ν _ hHaar hν hfib _ h1 S
+  exact _root_.GlobalTheory.CompanionTheory.SW.GramFib.fibre_unique F E σ hcm M J hJ R hR n (a • μ) ν _ hHaar hν hfib _ h1 S
 
 end GlobalTheory.CompanionTheory.SW.LocIsom

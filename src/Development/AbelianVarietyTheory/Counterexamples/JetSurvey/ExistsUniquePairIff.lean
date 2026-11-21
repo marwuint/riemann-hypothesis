@@ -20,11 +20,6 @@ theorem isZero_toT (g : GtPtF D F) : (toT g).IsZero ↔ g.IsZero := Iff.rfl
 theorem isPullF_iff_isPull (x : Spec (CommRingCat.of F) ⟶ T.left) (g : GtPt D T) (g' : GtPtF D F) :
     GtPt.IsPullF F x g g' ↔ GtPt.IsPull (T' := TF (R := R) F) x g (toT g') := Iff.rfl
 
-theorem over_of_isPullF {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {g' : GtPtF D F}
-    (H : GtPt.IsPullF F x g g') : x ≫ T.hom = jFK (R := R) F ≫ jK R := by
-  rw [← Over.w g.b, ← Category.assoc, ← H.1]
-  exact Over.w g'.b
-
 theorem maps_eq {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {g' : GtPtF D F}
     (H : GtPt.IsPullF F x g g') (χ : D.X) (k : Fin 4) :
     DegPre.gtφ D F g'.b χ k = x ≫ DegPre.gtφT D T g.b χ k := by
@@ -105,41 +100,5 @@ theorem isNsmul_restrict {σ : TF (R := R) F ⟶ T} {k : ℕ} {a c : GtPt D T} {
   exact ⟨v, isZero_restrict (hv _) u0, fun i => isAdd_restrict (hv _) Ha (hv _) (us i), isPullF_unique (hv _) Hc⟩
 
 variable {W : (Spec (CommRingCat.of R)).Opens} {ψW : PsiOn D W} {S : Over W.toScheme}
-
-theorem isIota_restrict {σ : TF (R := R) F ⟶ overW W S} {y : D.X} {a : GtPt D (overW W S)} {a' : GtPtF D F}
-    (Ha : GtPt.IsPullF F σ.left a a') (h : GtPt.IsIotaW ψW y a) : GtPtF.IsIota y a' := by
-  obtain ⟨ab, av⟩ := (isPullF_iff σ _ _).1 Ha
-  have hw : (σ.left ≫ S.hom) ≫ W.ι = jFK (R := R) F ≫ jK R := by
-    rw [Category.assoc]; exact Over.w σ
-  let r := (isPullback_morphismRestrict (jK R) W).lift (σ.left ≫ S.hom) (jFK (R := R) F) hw
-  have r1 : r ≫ (jK R ∣_ W) = σ.left ≫ S.hom := IsPullback.lift_fst _ _ _ _
-  have r2 : r ≫ (jK R ⁻¹ᵁ W).ι = jFK (R := R) F := IsPullback.lift_snd _ _ _ _
-  refine (isIota_iff _ _).2 ⟨?_, fun χ z J hJ => ?_⟩
-  · rw [ab, h.1, cP, comp_toUnit_assoc]
-  · have p : ∀ α, val (ψW.psi α) (σ.left ≫ S.hom) z J = val (D.psi α) (jFK (R := R) F) z J := fun α => by
-      have := (val_pull hJ _ _ _).symm.trans ((val_corr hJ (ψW.psi_eq α) r).trans (val_pull hJ _ _ _))
-      rwa [r1, r2] at this
-    have q : val (D.rigW W) (σ.left ≫ S.hom) z J = val D.rigK (jFK (R := R) F) z J :=
-      (val_pull hJ _ _ _).trans ((congrArg (fun m => val D.rig m z J) hw).trans (val_pull hJ _ _ _).symm)
-    refine (av χ z J hJ).trans ((val_corr hJ (h.2 χ) _).trans ((val_pull hJ _ _ _).trans ?_))
-    rw [Category.id_comp]
-    refine (val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)
-    refine congrArg₂ (· * ·) ?_ ((val_inv _ _).trans ((congrArg (·⁻¹) q).trans (val_inv _ _).symm))
-    refine (val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)
-    refine congrArg₂ (· * ·) ?_ ((val_inv _ _).trans ((congrArg (·⁻¹) (p _)).trans (val_inv _ _).symm))
-    refine (val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)
-    exact congrArg₂ (· * ·) (p _) ((val_inv _ _).trans ((congrArg (·⁻¹) (p _)).trans (val_inv _ _).symm))
-
-theorem existsUnique_pair_iff {k : ℕ} (x : Spec (CommRingCat.of F) ⟶ S.left) (p : QkPtW D W ψW k S) :
-    (∃! q : QkPt D F k, QkPtW.IsPullF F x p q) ↔ x ≫ S.hom ≫ W.ι = jFK (R := R) F ≫ jK R := by
-  refine ⟨fun ⟨_, h, _⟩ => over_of_isPullF h.2, fun hx => ?_⟩
-  let σ : TF (R := R) F ⟶ overW W S := Over.homMk x hx
-  obtain ⟨g, hg⟩ := exists_isPullF σ p.g
-  obtain ⟨h, h1, h2⟩ := p.eq
-  obtain ⟨h', hh⟩ := exists_isPullF σ h
-  refine ⟨⟨p.y, g, h', isNsmul_restrict hg hh h1, isIota_restrict hh h2⟩, ⟨rfl, hg⟩, ?_⟩
-  rintro ⟨y, g', _⟩ ⟨rfl, e⟩
-  obtain rfl : g' = g := isPullF_unique e hg
-  rfl
 
 end GlobalTheory.FieldRestrictionTest

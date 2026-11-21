@@ -122,15 +122,6 @@ def Pl.V (p : Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (a : C.LPt) 
 
 end lift
 
-def TopLiftExists2 : Prop :=
-  ∃ Cb : ℝ, 0 ≤ Cb ∧ ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
-    (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r))
-    (L : R.LevelData (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) P.r)
-    (st : Fr.Start (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (l0 : ℕ),
-    P5.IsData P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 →
-      ∃ Θ : Top.TopLift P.k P.r Wp Wq, IsTopLift2 P l0 Bs L st Θ ∧ InDDplus2 P l0 Bs Cb Θ
-
 def SliceCpt : Prop :=
   ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : Pl P Wp Wq) (F) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) (a : C.LPt) (ha : D.IsLocPt a j),
@@ -269,14 +260,6 @@ def ThetaCpt : Prop :=
     ∃ F', CptCoef p.T.base F' ∧ (∀ g ∈ C6.domL p.T.base ∅, p.Θ.Θ w e F g = F' g) ∧
       ∀ a, p.V (p.Θ.Θ w e F) a = p.V F' a
 
-def TopFirst : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : Pl P Wp Wq) (F F') (w : List C.Letter) (y : ℝ) (e : Wd.Ix (Fin w.length)) (Cb : ℝ), InDDplus2 P p.l0 p.T.base Cb p.Θ → CptCoef p.T.base F →
-    CutWord P p.l0 ((true, y) :: w) → CptCoef p.T.base F' → (∀ g ∈ C6.domL p.T.base ∅, p.Θ.Θ w e F g = F' g) →
-    ∀ a, p.V (p.Θ.Θ ((true, y) :: w) (Fin.cons (0 : Fin 2) e) F) a =
-      p.V (fun g => (Dmin P.k P.r p.T.base.z p.T.base.z' g (Fin.last _))⁻¹ •
-        C3.AAop P.k P.r P.r le_rfl ((y : ℂ) + ((2 * P.r + P.k : ℕ) : ℂ) / 2) F' g) a
-
 def DegTop : Prop :=
   ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : Pl P Wp Wq) (F) (s : ℕ) (w : List C.Letter) (h : C.LPt) (t : ℂ) (K : ℕ) (grid : Fin K → Fin (D.ptSize h + 1) → ℝ)
@@ -342,62 +325,6 @@ def IsLeadingFormPlace (Cb Cc : ℝ) (S : C.HidaSetting E Wp Wq) (p : ∀ v, Pl 
   IsLeadingFormSetting Cb Cc S p f χ A₀ ∧ EigenF S f ∧ CutInside S
 
 end hermitianSpaces
-
-def BuiltBounds2 : Prop :=
-  P5.ThmPActual → ∀ Cb : ℝ, ∃ Cc C₄ : ℝ, 1 ≤ C₄ ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
-    [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
-    (S : C.HidaSetting E Wp Wq) (p : ∀ v, Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
-    (f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (χ : ℝ → ℝ) (A₀ : ℝ),
-    IsLeadingFormSetting Cb Cc S p f χ A₀ →
-      C.ThmPPos S ∧ IntAll S ∧ (∃ Lw, JC.WaveByPlaces S Lw ∧ JC.HidaCurvatureBarriers S Lw) ∧
-      (∃ Ll Ll', JC.LiftBelowTop S Ll ∧ JC.LiftTopDiag S Ll' ∧ JC.ThresholdsLift S Ll Ll') ∧
-      JC.SumFormConcrete S C₄
-
-def RealInputsClosedLeadingForm : Prop :=
-  P5.ThmPActual → JC.RadialModuleForm → JC.PosDensityMM → JC.FormLevSesqMM → JC.ThmPModuleOfActualMM →
-  D.MuRHaar → MA.LemmaEModel → JCT.LevelsActualBuilt → JCT.SlicesCCBuilt → JCT.ModelPlaceBuilt → Top.TopPSDT →
-  BuiltBounds2 →
-  ∀ Cb : ℝ, ∃ C₆ Cc C₄ : ℝ, 0 < C₆ ∧ 1 ≤ C₄ ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
-    (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
-    [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
-    (S : C.HidaSetting E Wp Wq) (p : ∀ v, Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
-    (f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (χ : ℝ → ℝ) (A₀ : ℝ)
-    (c : LE.Cut) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Vt : TB.Pt E → H),
-    IsLeadingFormPlace Cb Cc S p f χ A₀ → JCT.SliceBudget S A₀ → c.χ = χ →
-    (∀ v, C₆ * ((S.G.k : ℝ) * S.Ntop * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 2 * ((S.G.r : ℝ) + 1) ^ 2) ≤
-      S.cutHi v - S.cutLo v) →
-    JCT.VtTensor S (plT S p) f (plν S p) (plm S p) Vt →
-    ∃ (L : ∀ v : Fin S.f, R.LevelData (MA.A (D.parOf S v) (MA.DQ (D.parOf S v))) (D.parOf S v).r)
-      (j : ∀ v : Fin S.f, M.Ty (D.parOf S v) → MA.SmQ (D.parOf S v).r (D.parOf S v).TT)
-      (lam : ∀ v : Fin S.f, Fin ((D.parOf S v).k + 2 * (D.parOf S v).r + 1) → ℝ) (Cm σ : Fin S.f → ℝ),
-      (∀ v, JC.IsModelPlace S (plT S p) f χ v (L v) (j v) (lam v) c (Cm v) (σ v)) ∧
-      ∀ Kr hK0 Th e, PB.RealInputs (S.mkData Kr hK0 Th e) C₄ (∏ v, JCT.jvModel S j Cm v) Vt
-
-def RealInputsClosedAdmissibleSettings : Prop :=
-  P5.ThmPActual → JC.RadialModuleForm → JC.PosDensityMM → JC.FormLevSesqMM → JC.ThmPModuleOfActualMM →
-  D.MuRHaar → MA.LemmaEModel → JCT.LevelsActualBuilt → JCT.SlicesCCBuilt → JCT.ModelPlaceBuilt2 → Top.TopPSDT →
-  BuiltBounds2 →
-  ∀ Cb : ℝ, ∃ C₆ Cc C₄ : ℝ, 0 < C₆ ∧ 1 ≤ C₄ ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
-    (Wp Wq : InfinitePlace E → Type)
-    [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
-    [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
-    [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
-    (S : C.HidaSetting E Wp Wq) (p : ∀ v, Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
-    (f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (χ : ℝ → ℝ) (A₀ : ℝ)
-    (c : LE.Cut) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Vt : TB.Pt E → H),
-    IsLeadingFormPlace Cb Cc S p f χ A₀ → JCT.SliceBudget S A₀ → c.χ = χ →
-    (∀ v, C₆ * ((S.G.k : ℝ) * S.Ntop * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 2 * ((S.G.r : ℝ) + 1) ^ 2) ≤
-      S.cutHi v - S.cutLo v) →
-    JCT.VtTensor S (plT S p) f (plν S p) (plm S p) Vt →
-    ∃ (L : ∀ v : Fin S.f, R.LevelData (MA.A (D.parOf S v) (MA.DQ (D.parOf S v))) (D.parOf S v).r)
-      (j : ∀ v : Fin S.f, M.Ty (D.parOf S v) → MA.SmQ (D.parOf S v).r (D.parOf S v).TT)
-      (lam : ∀ v : Fin S.f, Fin ((D.parOf S v).k + 2 * (D.parOf S v).r + 1) → ℝ) (Cm σ : Fin S.f → ℝ),
-      (∀ v, JC.IsModelPlace S (plT S p) f χ v (L v) (j v) (lam v) c (Cm v) (σ v)) ∧
-      ∀ Kr hK0 Th e, PB.RealInputs (S.mkData Kr hK0 Th e) C₄ (∏ v, JCT.jvModel S j Cm v) Vt
 
 end
 

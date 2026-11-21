@@ -102,42 +102,5 @@ def clearDen {S : Type} [DecidableEq S] {r : ℕ}
       rw [this]
       exact h
 
-theorem ker_eq (C : Type) [Field C] (w : Valuation C ℝ≥0) (S : Type) [Fintype S] [DecidableEq S]
-    (a : S → w.valuationSubring) (r : ℕ) (Fil : Submodule w.valuationSubring (S → Fin r → C))
-    (τ : S) (ha : Function.Injective a) (hF : IsFiltration a Fil) :
-    eigenSub (W := fun _ => Fin r → C) (freeLattice a r) τ ⊓
-        LinearMap.ker (quotMap (w := w) (filSpace Fil τ)) =
-      eigenSub (W := fun _ => Fin r → C) Fil τ := by
-  apply le_antisymm
-  · rintro v ⟨hH, hK⟩
-    have hH' : (Pi.single τ v : S → Fin r → C) ∈ freeLattice a r := by
-      simpa [eigenSub] using hH
-    have hK' : v ∈ filSpace Fil τ := by
-      simpa [quotMap, Submodule.Quotient.mk_eq_zero] using hK
-    have hle : filSpace Fil τ ≤ clearDen Fil τ := by
-      refine Submodule.span_le.2 ?_
-      rintro _ ⟨x, hx, rfl⟩
-      exact ⟨diffGen a τ, diffGen_ne_zero a ha τ, single_mem_of_mem a Fil hF.stable τ x hx⟩
-    obtain ⟨b, hb, hbv⟩ := hle hK'
-    show (Pi.single τ v : S → Fin r → C) ∈ Fil
-    refine hF.saturated _ hH' b hb ?_
-    convert hbv using 1
-    funext s i
-    by_cases e : s = τ
-    · subst e; simp [smul_pi_apply, smul_vec_apply, smul_C]
-    · simp [smul_pi_apply, e]
-  · intro v hv
-    have hv' : (Pi.single τ v : S → Fin r → C) ∈ Fil := by simpa [eigenSub] using hv
-    refine ⟨?_, ?_⟩
-    · show (Pi.single τ v : S → Fin r → C) ∈ freeLattice a r
-      exact hF.le hv'
-    · show quotMap (w := w) (filSpace Fil τ) v = 0
-      simp only [quotMap, LinearMap.restrictScalars_apply, Submodule.mkQ_apply,
-        Submodule.Quotient.mk_eq_zero]
-      refine Submodule.subset_span ⟨_, hv', ?_⟩
-      simp
-
 end GlobalTheory.Div.KerFil
 
-theorem GlobalTheory.Div.kerFil : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (S : Type) [Fintype S] [DecidableEq S] (a : S → w.valuationSubring) (r : ℕ) (Fil : Submodule w.valuationSubring (S → Fin r → C)) (τ : S), Function.Injective a → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsFiltration a Fil → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub (W := fun _ => Fin r → C) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.freeLattice a r) τ ⊓ LinearMap.ker (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.quotMap (w := w) (GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace Fil τ)) = GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.eigenSub (W := fun _ => Fin r → C) Fil τ :=
-  fun C _ w S _ _ a r Fil τ ha hF => GlobalTheory.Div.KerFil.ker_eq C w S a r Fil τ ha hF

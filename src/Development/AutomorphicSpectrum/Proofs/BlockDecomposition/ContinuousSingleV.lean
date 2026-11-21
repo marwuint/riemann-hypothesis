@@ -1,5 +1,5 @@
 import Mathlib
-import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PlaneSupports.PlaneSupp
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
 import GroundTheory.GlobalFields.LocalAtPlace
 
 noncomputable section
@@ -169,46 +169,6 @@ def placeMapInf (w : InfinitePlace F) : PlaceMap F w.Completion where
   cont_proj := (continuous_apply w).comp continuous_fst
   cont_inj := (continuous_single w).prodMk continuous_const
 
-theorem exists_placeMap_fin (v : HeightOneSpectrum (𝓞 F)) :
-    ∃ (K : Type) (_ : NontriviallyNormedField K) (_ : ProperSpace K) (_ : Algebra F K) (P : PlaceMap F K),
-      IsPlacesIdem ∅ {v} (P.inj 1) := by
-  letI nn : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _
-  haveI pr : ProperSpace (v.adicCompletion F) :=
-    ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace (v.adicCompletion F)
-  refine ⟨v.adicCompletion F, nn, pr, inferInstance, placeMapFin v, ?_, ?_, ?_, ?_⟩
-  · intro w hw
-    exact absurd hw (Finset.notMem_empty w)
-  · intro w _
-    rfl
-  · intro u hu
-    rw [Finset.mem_singleton.1 hu]
-    exact StrongApprox.evalV_single_same v 1
-  · intro u hu
-    exact StrongApprox.evalV_single_ne (fun h => hu (Finset.mem_singleton.2 h)) 1
-
-theorem exists_placeMap_inf (w : InfinitePlace F) :
-    ∃ (K : Type) (_ : NontriviallyNormedField K) (_ : ProperSpace K) (_ : Algebra F K) (P : PlaceMap F K),
-      IsPlacesIdem {w} ∅ (P.inj 1) := by
-  classical
-  letI nn : NontriviallyNormedField w.Completion :=
-    { (inferInstance : NormedField w.Completion) with
-      non_trivial := ⟨2, by
-        rw [← (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _),
-          map_ofNat]
-        simp⟩ }
-  haveI pr : ProperSpace w.Completion :=
-    ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace w.Completion
-  refine ⟨w.Completion, nn, pr, inferInstance, placeMapInf w, ?_, ?_, ?_, ?_⟩
-  · intro u hu
-    rw [Finset.mem_singleton.1 hu]
-    exact singleI_self w 1
-  · intro u hu
-    exact singleI_ne (fun h => hu (Finset.mem_singleton.2 h)) 1
-  · intro u hu
-    exact absurd hu (Finset.notMem_empty u)
-  · intro u _
-    exact map_zero (evalV F u)
-
 end Inhabitants
 
 section Ring
@@ -217,21 +177,6 @@ variable {R : Type} [CommRing R] {M : ℕ}
 
 def qr (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a : Fin M → R) (k : R) : Matrix (Fin M) (Fin M) R :=
   1 + k • Matrix.vecMulVec a (fun j => ∑ i, c (a i) * Jm i j)
-
-def IsQR (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (X : Matrix (Fin M) (Fin M) R) : Prop :=
-  ∃ (a : Fin M → R) (l k : R), IsUnit (Formalism.UG.hform c Jm a a) ∧ l * c l = 1 ∧ k * Formalism.UG.hform c Jm a a = l - 1 ∧
-    X = qr c Jm a k
-
-def IsQPairOf (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (a b : Fin M → R) (X : Matrix (Fin M) (Fin M) R) : Prop :=
-  ∃ l ka kb : R, IsUnit (Formalism.UG.hform c Jm a a) ∧ IsUnit (Formalism.UG.hform c Jm b b) ∧ l * c l = 1 ∧
-    ka * Formalism.UG.hform c Jm a a = l - 1 ∧ kb * Formalism.UG.hform c Jm b b = c l - 1 ∧ X = qr c Jm a ka * qr c Jm b kb
-
-def IsQPair (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (X : Matrix (Fin M) (Fin M) R) : Prop :=
-  ∃ a b, IsQPairOf c Jm a b X
-
-def NormOneGen (c : R →+* R) : Prop :=
-  ∀ α p : R, IsUnit α → c α = α →
-    ∃ μ : R, μ * c μ = 1 ∧ IsUnit (α - μ * p) ∧ IsUnit (2 * α - μ * p - c (μ * p))
 
 end Ring
 
@@ -243,30 +188,6 @@ variable {F E K : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [Field
 def iB (P : PlaceMap F K) : K ⊗[F] E →ₗ[F] AF F ⊗[F] E :=
   TensorProduct.map { toFun := P.inj, map_add' := map_add _, map_smul' := map_smul _ } LinearMap.id
 
-def IsLift (P : PlaceMap F K) (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
-    (L : HA K σ J →* HA (AF F) σ J) : Prop :=
-  ∀ (x : HA K σ J) (i j : Fin M),
-    (((HA.mat (AF F) σ J (L x)).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) - 1) i j =
-      iB P ((((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1) i j)
-
 end Lift
-
-section Iso
-
-variable {F E : Type} [Field F] [Field E] [Algebra F E]
-
-def incV (K : Type) [CommRing K] [Algebra F K] {M : ℕ} (x : Fin M → E) : Fin M → K ⊗[F] E :=
-  fun i => inclR K (x i)
-
-def IsoAt (K : Type) [CommRing K] [Algebra F K] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : Prop :=
-  ∃ u v : Fin M → K ⊗[F] E, hR K σ J u u = 0 ∧ hR K σ J u v = 1
-
-def IsoPlane (K : Type) [CommRing K] [Algebra F K] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
-    (a b : Fin M → K ⊗[F] E) : Prop :=
-  hR K σ J a a * hR K σ J b b - hR K σ J a b * hR K σ J b a ≠ 0 ∧
-    ∃ (x y : K ⊗[F] E) (z : Fin M → K ⊗[F] E),
-      hR K σ J (x • a + y • b) (x • a + y • b) = 0 ∧ hR K σ J (x • a + y • b) z = 1
-
-end Iso
 
 end GlobalTheory.CompanionTheory.SaGen

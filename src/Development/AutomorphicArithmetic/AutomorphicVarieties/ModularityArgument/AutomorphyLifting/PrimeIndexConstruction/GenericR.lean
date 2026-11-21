@@ -30,7 +30,7 @@ theorem good_of_isCuspFormR (a : ℕ) (ψ : AddChar (Ad F) ℂ) (φ : TR.Sm F a)
       ⟨hper.1.comp (blkIxHomeo r).continuous, fun γ hγ x => by
         simp only [map_add]
         exact hper.2 _ ((blkIxHomeo_mem r γ).2 hγ) _⟩
-    have key := GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ (ratN F a r) (ratV F _) (isCoLat_ratV F (BlockIx a r))
+    have key := _root_.GlobalTheory.CuspGeneric.avg_equiv _ _ (ratN F a r) (ratV F _) (isCoLat_ratV F (BlockIx a r))
       (isCoLat_ratV F _) (blkIxHomeo r) (blkIxHomeo_mem r) _ hper
     rw [← key]
     have hfun : (fun x => φ.1 (blkU (blkIxHomeo r x) * g)) = fun x => φ.1 (unip x * g) :=
@@ -38,8 +38,8 @@ theorem good_of_isCuspFormR (a : ℕ) (ψ : AddChar (Ad F) ℂ) (φ : TR.Sm F a)
     rw [hfun] at hper2 ⊢
     letI : MeasurableSpace (BlockIx a r → Ad F) := borel _
     haveI : BorelSpace (BlockIx a r → Ad F) := ⟨rfl⟩
-    obtain ⟨μ, 𝓕, hμ, hF, h1⟩ := GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice _ (ratN F a r) (isCoLat_ratV F (BlockIx a r))
-    obtain ⟨-, -, -, hint⟩ := GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average _ _ (isCoLat_ratV F (BlockIx a r)) μ 𝓕 hμ hF _ hper2
+    obtain ⟨μ, 𝓕, hμ, hF, h1⟩ := _root_.GlobalTheory.CuspGeneric.exists_fundamentalDomain_mass_one _ (ratN F a r) (isCoLat_ratV F (BlockIx a r))
+    obtain ⟨-, -, -, hint⟩ := _root_.GlobalTheory.CuspGeneric.setIntegral_eq_mass_mul_avg _ _ (isCoLat_ratV F (BlockIx a r)) μ 𝓕 hμ hF _ hper2
     have hc := h.2 r hr hra' μ 𝓕 hμ hF g
     rw [hint, h1] at hc
     simp only [ENNReal.toReal_one, Complex.ofReal_one, one_mul] at hc
@@ -85,7 +85,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 theorem isGeneric_of_isLocCompR (a : ℕ) (P : TR.CuspSub F a) (w : HeightOneSpectrum (𝓞 F))
     (σ : SmIrr (GL (Fin a) (w.adicCompletion F))) (hσ : P.IsLocComp w σ) : GlobalTheory.LocGL.IsGeneric σ.ρ := by
   obtain ⟨f, hf0, hf⟩ := hσ
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_standardAdelicAddChar F
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.CuspGeneric.exists_stdPsi F
   have hg : ∀ v, Good ψ (a - 1) (f v).1.1 := fun v => good_of_isCuspFormR a ψ (f v).1 (P.cusp _ (f v).2)
   have h0 : a - 1 < a ∨ a - 1 = 0 := by omega
   obtain ⟨v₀, hv₀⟩ : ∃ v, f v ≠ 0 := by

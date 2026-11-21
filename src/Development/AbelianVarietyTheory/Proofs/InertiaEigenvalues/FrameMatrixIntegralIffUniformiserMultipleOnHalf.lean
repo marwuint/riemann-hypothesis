@@ -4,7 +4,14 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentSumIntegralDivUniformisersIffReductionStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentSumIntegralDivUniformisersIffReduction
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussGLZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlatVecExistsUnique
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentSumSelfDualFramesBound
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdjointFrameMatrixIntegralOfConjugateHalf
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDualHalfLatticeDetectingCharacter
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameMatrixReductionEqOfHalfIdempotentSubset
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.L2.Pj
 open scoped TensorProduct
@@ -62,7 +69,7 @@ theorem half_int_iff : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)
     ext i j
     have hN' : a * M i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
       have := hN i j; rwa [Matrix.smul_apply, smul_eq_mul] at this
-    have key := (GlobalTheory.T.idempotentSum_integral_div_uniformisers_iff_reduction_zero D Q es (fun _ => ϖ) hes hc hQ' (a * M i j) hN' (hNe i j)).1
+    have key := (_root_.GlobalTheory.IdemKerDiv.integral_div_iff D Q es (fun _ => ϖ) hes hc hQ' (a * M i j) hN' (hNe i j)).1
       (by rw [hinv]; exact hI i j) PP hPP
     unfold redM
     rw [dif_pos (hN i j), Matrix.zero_apply]
@@ -71,7 +78,7 @@ theorem half_int_iff : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)
   · rintro ⟨hN, hR⟩ i j
     have hN' : a * M i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
       have := hN i j; rwa [Matrix.smul_apply, smul_eq_mul] at this
-    have key := (GlobalTheory.T.idempotentSum_integral_div_uniformisers_iff_reduction_zero D Q es (fun _ => ϖ) hes hc hQ' (a * M i j) hN' (hNe i j)).2
+    have key := (_root_.GlobalTheory.IdemKerDiv.integral_div_iff D Q es (fun _ => ϖ) hes hc hQ' (a * M i j) hN' (hNe i j)).2
       (fun PP hPP => by
         have h3 := congrFun (congrFun (hR PP hPP) i) j
         unfold redM at h3

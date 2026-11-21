@@ -3,10 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorPartTorusExten
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsoFreePerpLabelKernelWeights
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSemiAbelianOfIsGrpPullbackSquare
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitSpreadingTorusPartOfSpecialisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusPartGenericFibreClosedFibreDvrStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCompatOfCompatOverFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCompatOfCompatClosedPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitSpreadingTorusPartOfSpecialisation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitTorusPartGenericFibreClosedFibreDvr
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCompatOfCompatOverField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCompatOfCompatClosedPoint
 
 noncomputable section
 
@@ -175,7 +176,7 @@ theorem latAt_iff_of_specializes [IsNoetherianRing o] [IsCommMonObj G] (hG : IsS
     exact Iff.rfl
   have := ratModel_isLocallyNoetherian M
   obtain ⟨V, _, _, _, ξ, G₁, _, _, φ₁, X₁, _, _, _, j, GK, _, ψ, hψ, hξ', hξ, hφ₁, hj, hjt⟩ :=
-    GlobalTheory.T.exists_trait_spreading_torusPart_of_specialisation M.Z G hG w w' hw hww
+    _root_.GlobalTheory.Poinc.FibLat.exists_trait_torusPart M.Z G hG w w' hw hww
   have := hj
   obtain ⟨a, ha⟩ := exists_spMap (ξ ≫ M.s)
   have hG₁ : IsSemiAbelian G₁ := GlobalTheory.Mum.isSemiAbelian_of_isGrpPullback_square _ _ ξ G G₁ φ₁ hφ₁ hG
@@ -193,7 +194,7 @@ theorem latAt_iff_of_specializes [IsNoetherianRing o] [IsCommMonObj G] (hG : IsS
     rw [← spMap_comp']
     exact hψ₁.comp hGc
   have ht0 : IsTorPart (pullTorus hψc j) :=
-    GlobalTheory.T.splitTorusPart_generic_fibre_closed_fibre_dvr V G₁ hG₁ X₁ j hj GK ψ hψ hjt K (b₁.comp (IsLocalRing.residue V)) inferInstance GK' _ hψc X₀ _
+    _root_.GlobalTheory.Poinc.FibClosed.isTorPart_pullTorus_closed V G₁ hG₁ X₁ j hj GK ψ hψ hjt K (b₁.comp (IsLocalRing.residue V)) inferInstance GK' _ hψc X₀ _
       (ht₀.pull hψ₀) (hrk₀.trans hrX)
   have hsc : (spMap (b₁.comp (IsLocalRing.residue V)) ≫ ξ) (closedPoint K) = w' :=
     (congrArg (fun x => ξ x) (GtDescent.spMap_cpt (b₁.comp (IsLocalRing.residue V)))).trans hξ'
@@ -213,7 +214,7 @@ theorem latAt_iff_of_specializes [IsNoetherianRing o] [IsCommMonObj G] (hG : IsS
     have hinj : Function.Injective (b₂.comp (algebraMap V (FractionRing V))) :=
       b₂.injective.comp (IsFractionRing.injective V (FractionRing V))
     have hcV : Compat f gγ ζ L m c ξ a φ₁ (torusMap _ e.toAddMonoidHom ≫ j) := by
-      refine GlobalTheory.T.torusCompat_of_compat_over_field o Ω M G hG I T f gγ ζ L hL hζ X m c V ξ a G₁ φ₁ hφ₁ _ hextV K₂ _ hinj GK₂ _ hψ₂' ?_
+      refine _root_.GlobalTheory.Poinc.FibLat.compat_of_compat_field o Ω M G hG I T f gγ ζ L hL hζ X m c V ξ a G₁ φ₁ hφ₁ _ hextV K₂ _ hinj GK₂ _ hψ₂' ?_
       rw [pullTorus_torusMap_comp, ← pullTorus_pullTorus hψ₂ hψ hψ₂' (spMap_comp' _ _).symm rfl, ← spMap_comp']
       simpa only [Category.assoc, RingHom.comp_assoc] using hc
     have hc2 := hcV.pull (b₁.comp (IsLocalRing.residue V)) hψc
@@ -226,7 +227,7 @@ theorem latAt_iff_of_specializes [IsNoetherianRing o] [IsCommMonObj G] (hG : IsS
       rw [← spMap_comp']
       exact hψ₂.comp hψc
     have hcV : Compat f gγ ζ L m c ξ a φ₁ (torusMap _ e.toAddMonoidHom ≫ j) := by
-      refine GlobalTheory.T.torusCompat_of_compat_closedPoint o Ω M G hG I T f gγ ζ L hL hζ hu hf hγ X m c V ξ a G₁ φ₁ hφ₁ _ inferInstance hextV GK ψ hψ
+      refine _root_.GlobalTheory.Poinc.FibLat.ClosedLift.compat_of_closed o Ω M G hG I T f gγ ζ L hL hζ hu hf hγ X m c V ξ a G₁ φ₁ hφ₁ _ inferInstance hextV GK ψ hψ
         ?_ K₂ _ inferInstance GK₂ _ hψ₃ ?_ ?_
       · rw [pullTorus_torusMap_comp]
         exact hjt.equiv e

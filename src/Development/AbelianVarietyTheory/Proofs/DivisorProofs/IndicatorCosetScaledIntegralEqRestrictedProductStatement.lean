@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndicatorCosetScaledIntegralEqRestrictedProduct
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenScaledInt
 
 open scoped TensorProduct NNReal Matrix

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Dchart
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalBlockUnitriangularFlagStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalBlockUnitriangularFlag
 import Formalism.FormalDegreeBessel.FinalG
 import Formalism.FormalDegreeBessel.FinalBF
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
@@ -218,7 +218,7 @@ theorem bigCell_coords_unique : ∀ (k r : ℕ) (x y : Fin r → ℂ), (∀ a, x
     n₁⁻¹ * bigCell k r x 1 * m₁ * n₁' = n₂⁻¹ * bigCell k r y 1 * m₂ * n₂' →
     n₁ = n₂ ∧ x = y ∧ m₁ = m₂ ∧ n₁' = n₂' := by
   intro k r x y hx hy n₁ hn₁ n₂ hn₂ n₁' hn₁' n₂' hn₂' m₁ hm₁ m₂ hm₂ h
-  have hP : ∀ g ∈ Nset k r, ∀ i j, lev k r j ≤ lev k r i → g i j = (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) i j := fun g hg => GlobalTheory.T.unipotentRadical_block_unitriangular_flag k r g hg
+  have hP : ∀ g ∈ Nset k r, ∀ i j, lev k r j ≤ lev k r i → g i j = (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) i j := fun g hg => _root_.GlobalTheory.CellDens.nset_block_unitriangular k r g hg
   obtain ⟨μ₁, hμ₁, rfl⟩ := (Formalism.FourierDecayAlt.P.TwoByOneBlock.UWb_iff m₁).1 hm₁
   obtain ⟨μ₂, hμ₂, rfl⟩ := (Formalism.FourierDecayAlt.P.TwoByOneBlock.UWb_iff m₂).1 hm₂
   rw [Matrix.mul_assoc n₁⁻¹, Matrix.mul_assoc n₂⁻¹, ← (Formalism.FourierDecayAlt.P.TwoByOneBlock.bigCellFactor k r x μ₁).1,

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotIsIsoSpMapDnFst
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveLineBundleFamilyCalculusRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualNumberFieldHomFlatSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftMonoOfFpqcCoverLiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualNumberFieldHomFlatSurjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftMonoOfFpqcCoverLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMonoFiniteTypeAgreementLocusInjectiveFamilStatement
 
 set_option autoImplicit false
@@ -41,7 +41,7 @@ theorem tanLift_of_fieldChart : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], Is
   intro S A _ hA U _ M hM hInj hFC k _ s N hN u₀ h₀
   obtain ⟨hpull, -, -, hcomp, hev⟩ := GlobalTheory.T.additiveLineBundleFamily_calculus_rules S A
   obtain ⟨ψ, hψ₁, hψ₂, hflat, hsurj⟩ :=
-    GlobalTheory.T.dualNumber_fieldHom_flat_surjective k (AlgebraicClosure k) (algebraMap k (AlgebraicClosure k))
+    _root_.GlobalTheory.DualOpen.dualNumber_map_flat_surjective k (AlgebraicClosure k) (algebraMap k (AlgebraicClosure k))
 
   let T : Over S := Over.mk (spMap (dnInl k) ≫ s)
   haveI : IsNoetherianRing (DualNumber k) := inferInstance
@@ -89,7 +89,7 @@ theorem tanLift_of_fieldChart : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], Is
   obtain ⟨z', hz'⟩ := (hG Y y).1 ⟨u', h₃⟩
   haveI : Flat (spMap ψ) := hflat
   haveI : Surjective (spMap ψ) := hsurj
-  obtain ⟨w, hw⟩ := GlobalTheory.T.exists_lift_mono_of_fpqc_cover_lift G.left T.left Y.left T.left π.left (𝟙 _) (spMap ψ) z'
+  obtain ⟨w, hw⟩ := _root_.GlobalTheory.DualOpen.exists_lift_of_fpqc_cover G.left T.left Y.left T.left π.left (𝟙 _) (spMap ψ) z'
     (by rw [Category.comp_id]; exact hz')
   exact (hG T (𝟙 T)).2 ⟨w, hw⟩
 

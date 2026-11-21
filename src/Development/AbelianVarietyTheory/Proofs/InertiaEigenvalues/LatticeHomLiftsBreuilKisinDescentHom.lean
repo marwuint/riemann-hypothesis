@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.On
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinFullFaithfulnessLatticeMorphism
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisEqMulKisinInfTameSemidirectStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisEqMulKisinInfTameSemidirect
 
 noncomputable section
 
@@ -88,7 +88,7 @@ theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → ∀ (l
     (P₂.R.I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) P₁.isBK P₂.isBK f'
   have hF' : IsMapOf P₁.R.I P₂.R.I f F := hF
   have hcov : ∀ γ : TameGal ↥LL.1 l e a, ∃ g : Gl l, Covers ↥LL.1 (thetaW a LL) ϖ (sQ l g) γ := fun γ => by
-    obtain ⟨k, -, hc⟩ := (GlobalTheory.T.galois_eq_mul_kisinInf_tameSemidirect l a e ϖ LL).2.2.1 γ
+    obtain ⟨k, -, hc⟩ := (_root_.GlobalTheory.TameCover.main l a e ϖ LL).2.2.1 γ
     refine ⟨⟨k, ?_⟩, hc⟩
     show k ∈ (⊥ : IntermediateField ℚ_[l] (Om l)).fixingSubgroup
     rw [IntermediateField.fixingSubgroup_bot]

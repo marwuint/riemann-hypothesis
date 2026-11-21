@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawaStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramLeadingMinorLowerBoundIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReductionStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrix
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawa
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramLeadingMinorLowerBoundIntegral
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReduction
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumns
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -66,10 +66,10 @@ theorem le_of_swap {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ
   set g := k * diagonal a * n with hg
   have hpq : p < q := by rw [Fin.lt_def]; omega
   have hqN : (q : ℕ) ≤ N := q.2.le
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.gram_minor_swap_adjacent_columns N k a n g (g.submatrix id (Equiv.swap p q)) p q hk hn1 hn0 hq rfl rfl
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.ClassFin.gram_minor_swap_columns N k a n g (g.submatrix id (Equiv.swap p q)) p q hk hn1 hn0 hq rfl rfl
   have hG : ∀ j : Fin (N + 1),
       gramMinor g j = ∏ i : Fin j, a (Fin.castLE (Nat.lt_succ_iff.mp j.2) i) ^ 2 :=
-    fun j => GlobalTheory.T.det_leading_minor_gram_iwasawa N k a n hk hn1 hn0 j _
+    fun j => _root_.GlobalTheory.ClassFin.det_leading_gram_iwasawa N k a n hk hn1 hn0 j _
   let qq : Fin (N + 1) := ⟨q, Nat.lt_succ_of_le hqN⟩
   have hpos : ∀ j, 0 < gramMinor g j := fun j => by
     rw [hG]
@@ -110,7 +110,7 @@ theorem le_of_swap {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ
 
 theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det ≠ 0 → ∃ (γ : Matrix (Fin N) (Fin N) ℤ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), (γ.det = 1 ∨ γ.det = -1) ∧ kᵀ * k = 1 ∧ (∀ i, 0 < a i) ∧ (∀ i, n i i = 1) ∧ (∀ i j, j < i → n i j = 0) ∧ (∀ i j, i < j → |n i j| ≤ 1 / 2) ∧ (∀ p q : Fin N, (q : ℕ) = p + 1 → a p ≤ 2 * a q) ∧ g * γ.map (Int.cast : ℤ → ℝ) = k * diagonal a * n := by
   intro N g hg
-  obtain ⟨c, hc, hcb⟩ := GlobalTheory.T.gram_leading_minor_lower_bound_integral N g hg
+  obtain ⟨c, hc, hcb⟩ := _root_.GlobalTheory.ClassFin.gram_leading_minor_lower_bound N g hg
   let S := {γ : Matrix (Fin N) (Fin N) ℤ // γ.det = 1 ∨ γ.det = -1}
   have : Nonempty S := ⟨⟨1, Or.inl Matrix.det_one⟩⟩
   have hdet0 : ∀ γ : S, γ.1.det ≠ 0 := fun γ => by
@@ -127,8 +127,8 @@ theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det �
     refine mul_ne_zero hg ?_
     rw [← Int.cast_det]
     exact_mod_cast hdet0 γ0
-  obtain ⟨k, a, n, hk, ha, hn1, hn0, hgk⟩ := GlobalTheory.T.iwasawa_decomposition_real_matrix N _ hgd
-  obtain ⟨ν, hν1, hν0, hνb⟩ := GlobalTheory.T.unipotent_upper_size_reduction N n hn1 hn0
+  obtain ⟨k, a, n, hk, ha, hn1, hn0, hgk⟩ := _root_.GlobalTheory.ClassFin.iwasawa_real N _ hgd
+  obtain ⟨ν, hν1, hν0, hνb⟩ := _root_.GlobalTheory.ClassFin.unipotent_size_reduction N n hn1 hn0
   have hνR1 : ∀ i, ν.map (Int.cast : ℤ → ℝ) i i = 1 := fun i => by simp [hν1]
   have hνR0 : ∀ i j, j < i → ν.map (Int.cast : ℤ → ℝ) i j = 0 := fun i j h => by simp [hν0 i j h]
   obtain ⟨hn'1, hn'0⟩ := mul_upper n _ hn1 hn0 hνR1 hνR0
@@ -149,7 +149,7 @@ theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det �
     rw [hgk]
     refine Finset.prod_congr rfl fun j _ => ?_
     unfold gramMinor
-    rw [GlobalTheory.T.det_leading_minor_gram_iwasawa N k a _ hk hn'1 hn'0 j _, GlobalTheory.T.det_leading_minor_gram_iwasawa N k a n hk hn1 hn0 j _]
+    rw [_root_.GlobalTheory.ClassFin.det_leading_gram_iwasawa N k a _ hk hn'1 hn'0 j _, _root_.GlobalTheory.ClassFin.det_leading_gram_iwasawa N k a n hk hn1 hn0 j _]
   refine ⟨γ0.1 * ν, k, a, n * ν.map (Int.cast : ℤ → ℝ), hγdet, hk, ha, hn'1, hn'0, hνb,
     fun p q hq => ?_, heq⟩
   have hpq : p ≠ q := fun h => by rw [h] at hq; omega

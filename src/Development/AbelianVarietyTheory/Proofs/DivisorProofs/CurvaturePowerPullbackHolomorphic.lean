@@ -18,23 +18,6 @@ noncomputable def subst {n n' : ℕ} (L : V n' →L[ℂ] V n) :
   aeval fun x : Fin n × Fin n => ∑ c, ∑ d, C (L (coordVec c) x.1 * (starRingEnd ℂ) (L (coordVec d) x.2)) *
     (X (c, d) : MvPolynomial (Fin n' × Fin n') ℂ)
 
-theorem sesq_expand {n : ℕ} {r : Type} {F : V n → V n → Matrix r r ℂ} (h : IsSesq F) (ξ η : V n) (i j : r) :
-    F ξ η i j = ∑ a, ∑ b, ξ a * (starRingEnd ℂ) (η b) * F (coordVec a) (coordVec b) i j := by
-  have e (v : V n) : v = ∑ a, v a • coordVec a := by
-    ext b; simp [Pi.single_apply]
-  have h1 (s : Finset (Fin n)) (c : Fin n → ℂ) (y : V n) :
-      F (∑ a ∈ s, c a • coordVec a) y = ∑ a ∈ s, c a • F (coordVec a) y := by
-    induction s using Finset.induction_on with
-    | empty => simpa using h.smul_left 0 0 y
-    | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_left, h.smul_left, ih]
-  have h2 (s : Finset (Fin n)) (c : Fin n → ℂ) (x : V n) :
-      F x (∑ a ∈ s, c a • coordVec a) = ∑ a ∈ s, (starRingEnd ℂ) (c a) • F x (coordVec a) := by
-    induction s using Finset.induction_on with
-    | empty => simpa using h.smul_right 0 x 0
-    | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_right, h.smul_right, ih]
-  conv_lhs => rw [e ξ, e η, h1]
-  simp only [h2, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
-
 variable {n n' : ℕ} {r : Type} [Fintype r] [DecidableEq r] {G : V n → Matrix r r ℂ} {φ : V n' → V n} {w : V n'}
 
 theorem curvPoly_comp (hφ : ContDiffAt ℂ 2 φ w) (hG : MContDiffAt ∞ G (φ w)) (hu : IsUnit (G (φ w)).det) :

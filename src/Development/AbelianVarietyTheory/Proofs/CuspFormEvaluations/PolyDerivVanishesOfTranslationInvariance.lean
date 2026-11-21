@@ -146,22 +146,6 @@ theorem polyDeriv_exp_mul_dir (P : MvPolynomial σ ℂ) (β : σ → σ → ℂ)
   rw [h1, polyDeriv_eq_apolar, polyDeriv_eq_apolar, taylorDir_add u hG (hBa.mul hH),
     taylorDir_mul u hBa hH, map_add, hT, apolar_quad_mul P β hP, add_zero]
 
-theorem analyticAt_quad (β : σ → σ → ℂ) (x : σ → ℂ) :
-    AnalyticAt ℂ (fun z : σ → ℂ => ∑ s, ∑ t, β s t * z s * z t) x := by
-  have h (i : σ) : AnalyticAt ℂ (fun z : σ → ℂ => z i) x :=
-    (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) i).analyticAt x
-  exact Finset.analyticAt_fun_sum _ fun s _ => Finset.analyticAt_fun_sum _ fun t _ =>
-    (analyticAt_const.mul (h s)).mul (h t)
-
-theorem polyDeriv_exp_mul [DecidableEq σ] (P : MvPolynomial σ ℂ) (β : σ → σ → ℂ)
-    (hP : ∑ s, ∑ t, β s t • MvPolynomial.pderiv s (MvPolynomial.pderiv t P) = 0)
-    {G : (σ → ℂ) → ℂ} (hG : AnalyticAt ℂ G 0) :
-    polyDeriv P (fun i => (Pi.single i 1 : σ → ℂ))
-        (fun z => Complex.exp (∑ s, ∑ t, β s t * z s * z t) * G z) 0 =
-      polyDeriv P (fun i => (Pi.single i 1 : σ → ℂ)) G 0 :=
-  polyDeriv_exp_mul_dir P β hP _ (analyticAt_quad β 0)
-    (fun z => by rw [← pi_eq_sum_univ' z]) hG
-
 theorem polyDeriv_eq_zero_of_mem_span {ι : Type*} (v : ι → σ → ℂ) (u : σ → W) {G : W → ℂ}
     (hG : AnalyticAt ℂ G 0)
     (hv : ∀ k, ∀ᶠ w in 𝓝 (0 : W), fderiv ℂ G w (∑ s, v k s • u s) = 0) {P : MvPolynomial σ ℂ}

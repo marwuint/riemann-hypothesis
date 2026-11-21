@@ -25,8 +25,4 @@ theorem dTerm_origin (φ : I → E →+* ℂ) (k : ℕ) (m : I → ℕ) (x : E) 
   simp only [defCoord, Pi.zero_apply, zero_mul, add_zero]
   ring
 
-example (φ : E →+* ℂ) (x : E) :
-    dTerm (fun _ : Unit => φ) 4 (fun _ => 1) 0 x = -4 * (starRingEnd ℂ (φ x)) * (φ x)⁻¹ ^ 5 := by
-  simp [dTerm, defCoord]
-
 end GlobalTheory.DeformedSum

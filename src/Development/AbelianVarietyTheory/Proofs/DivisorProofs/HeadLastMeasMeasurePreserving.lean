@@ -39,25 +39,4 @@ def headLastMeas (n : ℕ) : V (n + 1) ≃ᵐ V n × ℂ :=
 
 theorem headLastMeas_apply (n : ℕ) (v : V (n + 1)) : headLastMeas n v = (headL n v, v (Fin.last n)) := rfl
 
-theorem headLastMeas_measurePreserving (n : ℕ) : MeasurePreserving (headLastMeas n) := by
-  let e := LinearIsometryEquiv.ofSurjective (headLastIsom n) (headLastIsom_surjective n)
-  let eR : V (n + 1) ≃ₗᵢ[ℝ] WithLp 2 (V n × ℂ) :=
-    { toLinearEquiv := e.toLinearEquiv.restrictScalars ℝ, norm_map' := e.norm_map }
-  have h1 : MeasurePreserving eR := LinearIsometryEquiv.measurePreserving eR
-  exact (WithLp.volume_preserving_ofLp (V n) ℂ).comp h1
-
-theorem integral_headL_last {n : ℕ} (F : V n → ℂ → ℝ)
-    (hF : Integrable (fun v : V (n + 1) => F (headL n v) (v (Fin.last n)))) :
-    Integrable (fun w => ∫ x, F w x) ∧ ∫ v, F (headL n v) (v (Fin.last n)) = ∫ w, ∫ x, F w x := by
-  have hmp := headLastMeas_measurePreserving n
-  have hc : (fun v : V (n + 1) => F (headL n v) (v (Fin.last n))) = Function.uncurry F ∘ headLastMeas n := rfl
-  have hI : Integrable (Function.uncurry F) ((volume : Measure (V n)).prod (volume : Measure ℂ)) := by
-    rw [hc] at hF
-    exact (hmp.integrable_comp_emb (headLastMeas n).measurableEmbedding).1 hF
-  refine ⟨hI.integral_prod_left, ?_⟩
-  calc ∫ v, F (headL n v) (v (Fin.last n)) = ∫ v, Function.uncurry F (headLastMeas n v) := rfl
-    _ = ∫ z, Function.uncurry F z ∂((volume : Measure (V n)).prod (volume : Measure ℂ)) :=
-        hmp.integral_comp' (Function.uncurry F)
-    _ = ∫ w, ∫ x, F w x := integral_prod _ hI
-
 end GlobalTheory.LocFub

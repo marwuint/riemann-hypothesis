@@ -5,8 +5,6 @@ noncomputable section
 namespace Formalism.MainNotions.StandardLattice
 open NumberField Formalism.BasicNotions Finset
 
-theorem volumeY0EqualsMass_of_aux2v (D : D7) (h2v : VolumeEqMass₂ D) : BaseVolumeEqualsMass D := volume_eq_mass_at_rank D h2v
-
 section P3
 open Formalism.MainNotions.S MeasureTheory
 open scoped InnerProductSpace
@@ -16,43 +14,6 @@ theorem signature_counts_ge_one (D : D7) : 1 ≤ pY D ∧ 1 ≤ qY D := by
   simp only [Formalism.BasicNotions.Ranks.sigY0]
   have := D.R.m_add_three_le_k
   constructor <;> omega
-
-theorem theorem_three_sigma_holds (D : D7) : SigmaDegreeBoundOfDiscreteSeriesBounds D := by
-  intro hAll hT hEx ep0 he1 he2 ρ hgap
-  obtain ⟨H, i1, i2, σ, hDS, hF⟩ := hEx ρ
-  have hcs : CompleteSpace H := hDS.1
-  have hnt : Nontrivial H := hDS.2.1
-  obtain ⟨w, hw⟩ := exists_ne (0 : H)
-  have hHC := line_param_harish_chandra D ρ
-  have hdt := (hT _ (epsSH D.R) (lamSH D.R (D.hc ρ)) hHC H σ hDS).2
-  have hp : ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) = (pY D : ℝ) := by
-    have : (Finset.univ.filter (fun a => epsSH D.R a = true)).card = nPlus (epsSH D.R) := rfl
-    rw [this, sign_vector_eq_line_sign, count_plus_finCast, count_plus_line_sign]
-  have hq : ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ) = (qY D : ℝ) := by
-    have : (Finset.univ.filter (fun a => epsSH D.R a = false)).card = nMinus (epsSH D.R) := rfl
-    rw [this, sign_vector_eq_line_sign, count_minus_finCast, count_minus_line_sign]
-  have hN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ) := by rw [dimS_eq]
-  have hg' : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamSH D.R (D.hc ρ)) (spectralGapLowerBound D ep0) := by
-    rw [sign_vector_eq_line_sign, param_vector_eq_line_param]; exact gapAtLeast_finCast _ _ _ _ hgap
-  have key := hAll _ (epsSH D.R) (lamSH D.R (D.hc ρ)) ep0 (spectralGapLowerBound D ep0) H σ w
-    (by rw [hp]; exact_mod_cast (signature_counts_ge_one D).1) (by rw [hq]; exact_mod_cast (signature_counts_ge_one D).2) hHC hg'
-    (by rw [hN]; exact he1) he2
-    (by rw [hp, hq, hN]; unfold spectralGapLowerBound; rw [Nat.cast_min]) hDS hw
-  rw [formal_degree_of_eq _ σ _ hF w hw, hp, hq, hdt] at key
-  rw [← dimV_eq_fdegHC _ hHC.1] at key
-  rw [sign_vector_eq_line_sign, param_vector_eq_line_param, dim_weyl_finCast, formal_degree_finCast, abs_param_sup_finCast] at key
-  refine ⟨key.1, ?_⟩
-  have e : ((pY D : ℝ) * (qY D : ℝ)) = ((pY D * qY D : ℕ) : ℝ) := by push_cast; rfl
-  rw [e, Real.rpow_natCast] at key
-  exact key.2
-
-theorem family_theorem_three_sigma_holds {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : FamilySigmaStatement Fm := by
-  intro hS hA hE x i
-  have h := hA x i
-  unfold Adm3 at h
-  exact theorem_three_sigma_holds _ (hS x i).1
-    (by first | exact h.2 | exact h.2.1 | exact h.2.2 | exact h.2.2.1 | exact h.2.2.2 | exact h.2.2.2.1 | exact h.2.2.2.2)
-    (hE x i)
 
 end P3
 
@@ -69,24 +30,6 @@ theorem explicit_gap_le_general_gap (D : D7) (C ep0 : ℝ) (hC : 8192 ≤ C) : s
   apply div_le_div_of_nonneg_right ?_ (sq_nonneg ep0)
   have h1 : (8192 : ℝ) ≤ C * D.R.r := by nlinarith
   nlinarith [mul_nonneg (sub_nonneg.2 h1) (mul_nonneg hX hlog)]
-
-theorem theorem_three_sigma_of_explicit (D : D7) (C : ℝ) (hC : 8192 ≤ C) (h : SigmaDegreeTwoSidedBoundOfGap D) : PointsLemma D C := by
-  intro ep0 h1 h2 ρ hg
-  obtain ⟨hA, hB⟩ := h ep0 h1 h2 ρ (fun a b hab => (explicit_gap_le_general_gap D C ep0 hC).trans (hg a b hab))
-  refine ⟨hA, hB.trans ?_⟩
-  have hr1 : (1 : ℝ) ≤ D.R.r := by
-    have : 1 ≤ D.R.r := by
-      simp only [Formalism.BasicNotions.Ranks.r]
-      have := D.R.m_add_three_le_k
-      omega
-    exact_mod_cast this
-  have hd := (formalDegreeFactor_pos_of_strictAnti (rowSgn D) (rowLam D ρ) (line_param_strictAnti D ρ)).le
-  have hl := lamAbs_nonneg (rowLam D ρ)
-  have hpq : (0 : ℝ) ≤ (pY D : ℝ) * (qY D : ℝ) := by positivity
-  apply mul_le_mul_of_nonneg_left _ (by linarith)
-  apply pow_le_pow_left₀ (by positivity)
-  have h3 : (3 : ℝ) ≤ C * D.R.r := by nlinarith
-  nlinarith [mul_nonneg (sub_nonneg.2 h3) (mul_nonneg hpq hl)]
 
 theorem weighted_log_sum_lower_bound (D : D7) (w : ℕ → D.what₂.Tau → ℝ) (w0 : ℝ) (hw0 : 0 < w0) (hpi : Real.pi ≤ D.host.v)
     (hw : ∀ ρ j, j < D.R.m → w0 ≤ w j ρ) :

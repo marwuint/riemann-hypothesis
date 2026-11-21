@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdxEqRelIndex
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormCmPrimeInertPrimeSignStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormCmPrimeInertPrimeSign
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPrimeDvdMem
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.RatEqui GlobalTheory.InertParity
@@ -27,7 +27,7 @@ theorem simple_case (D : D7) (S : Type) [AddCommGroup S] [Module (𝓞 D.host.E)
   have hc : Nat.card S = Ideal.absNorm P := by
     rw [Nat.card_congr e.toEquiv, Ideal.absNorm_apply, Submodule.cardQuot_apply]
   have h0 : Ideal.absNorm P ≠ 0 := hc ▸ Nat.card_pos.ne'
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.absNorm_cmPrime_inertPrime_sign D P hP
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.InertResidue.norm_prime D P hP
   rw [hc]
   refine ⟨h1, fun h => ?_⟩
   by_cases hs : D.host.conj • P = P

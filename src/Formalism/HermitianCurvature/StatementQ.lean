@@ -59,8 +59,6 @@ def ExpLastRow : Prop :=
       qminor E a b u = ∑ l : Fin (t + 1), (((-1 : ℤ) ^ (t + (l : ℕ)) : ℤ) : A) *
         (qminor E (a ∘ Fin.castSucc) (b ∘ l.succAbove) (u - 1) * Tm E u (a (Fin.last t)) (b l))
 
-def ExpRowsFromRowForm : Prop := RowForm → ExpFirstRow ∧ ExpLastRow
-
 def MoveVec : Prop :=
   ∀ (A : Type) [Ring A] [Algebra ℂ A] (n t : ℕ) (E : Fin n → Fin n → A) (y : Fin n → A), GlRel E →
     (∀ a b c, E a b * y c - y c * E a b = if a = c then -y b else 0) → (∀ a b, y a * y b = y b * y a) →
@@ -144,9 +142,6 @@ def BorderFull : Prop :=
         + ∑ w : Fin m, (((-1 : ℤ) ^ ((w : ℕ) + 1 + m) : ℤ) : A) *
             (E (v w) e * qminor E (Fin.snoc (α := fun _ => Fin n) (v ∘ skip1 w) es ∘ Fin.cast (by
                 have := w.isLt; omega)) v (u - 1) * E e es)
-
-def BorderFromExpansions : Prop :=
-  ExpFirstCol → ExpLastCol → ExpFirstRow → ExpLastRow → QSkewRow → BorderE ∧ BorderS ∧ BorderFull
 
 abbrev Mx (k r : ℕ) := Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
 
@@ -240,23 +235,6 @@ def FFl (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp �
 
 end Classes
 
-def CapLZero : Prop :=
-  ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (u : ℂ) (f : Mx k r → E),
-    capL k r 0 u f = capelliH (Hpk k r) u f
-
-def TLZero : Prop :=
-  ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (z z' : Fin (2 * r + (k + 1) + 1) → ℂ) (Y : ℂ)
-    (p q : Fin 2) (f : Mx (k + 1) r → E),
-    tL (k + 1) r z z' 0 Y p q f =
-      QQop (m := 2 * r + k) (EabH (Hpk (k + 1) r)) (((2 * r + (k + 1) + 1 : ℕ) : ℂ) / 2 - 1 / 2) Y
-        (fun g => g⁻¹ *ᵥ fvec (k + 1) r z 0) (fun g j => herm (Hpk (k + 1) r) (g *ᵥ bvec j) (fvec (k + 1) r z 0))
-        (fvec (k + 1) r z' 0) (fun j => herm (Hpk (k + 1) r) (bvec j) (fvec (k + 1) r z' 0)) p q f
-
-def FFZero : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
-    (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (π' : Mx k r → (Wq →L[ℂ] Wq)),
-    inWb k r z → inWb k r z' → FFl k r z z' π π' 0 Set.univ = EqF k r z z' cStd π π'
-
 def LevelTransfer : Prop :=
   ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (k i r' : ℕ) (z z' : Fin (2 * r' + k + 1) → ℂ) (Y : ℂ)
     (p q : Fin 2) (f : Mx k (i + r') → E) (g : Mx k r'), g ∈ UH (Hpk k r') →
@@ -281,10 +259,6 @@ def WeylLevelElementFacts : Prop :=
   ∀ (k r : ℕ) (l : Fin r) (c : ℂ), c ≠ 0 → w1 k r l c ∈ Glev k r l.castSucc ∧
     ∀ g ∈ Glev k r l.succ, g ∈ Glev k r l.castSucc ∧ w1 k r l c * g = g * w1 k r l c ∧
       herm (Hpk k r) ((w1 k r l c * g) *ᵥ bvec (eI k r l)) (bvec (eI k r l)) = c
-
-def WCellBigCell : Prop :=
-  ∀ (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ),
-    bigCell k r c μ = wCell k r (Fin.last r) c * bigCell k r (fun _ => 1) μ * wCell k r (Fin.last r) (fun _ => 1)
 
 def QMinorLeftH : Prop :=
   ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (n t : ℕ) (H : Matrix (Fin n) (Fin n) ℂ)
@@ -489,13 +463,6 @@ def ResSurj : Prop :=
       (∀ c, c ≠ 0 → ∀ g ∈ Glev k r l.succ, (w1 k r l c * g ∈ D₀ ↔ g ∈ D₁)) ∧
       ∃ J ∈ FFl k r z z' π π' l.castSucc D₀, ∀ c, c ≠ 0 → ∀ g ∈ Glev k r l.succ ∩ D₁, J (w1 k r l c * g) = φ c • Ψ g
 
-def CellDecomp : Prop :=
-  ∀ (k r : ℕ) (l : Fin r), ∀ g ∈ Glev k r l.castSucc ∩ cellD k r l, ∃ n ∈ Nlev k r l.castSucc, ∃ n' ∈ Nlev k r l.castSucc,
-    ∃ g₁ ∈ Glev k r l.succ, g = n * (w1 k r l (herm (Hpk k r) (g *ᵥ bvec (eI k r l)) (bvec (eI k r l))) * g₁) * n'
-
-def CellDense : Prop :=
-  ∀ (k r : ℕ) (l : Fin r), Glev k r l.castSucc ⊆ closure (Glev k r l.castSucc ∩ cellD k r l)
-
 def ChainAll : Prop :=
   ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
     (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (π' : Mx k r → (Wq →L[ℂ] Wq))
@@ -513,11 +480,6 @@ def CVv : Prop :=
       resG k r i (CV k r Y J) c g =
         (∑ a : Fin 2, ∑ b : Fin 2, crd (cmp (vABs r Y i.val) a)
           (QL k r z z' i Y a b (crd (cmp (vAB r Y i.val) b) (resG k r i J)))) c g
-
-def VMonic : Prop :=
-  ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (r i : ℕ), i ≤ r →
-    ∃ a : ℕ → ((Fin r → ℂ) → E) → (Fin r → ℂ) → E, ∀ (Y : ℂ), ∀ f ∈ WSm r E,
-      (vAB r Y i).1 f = Y ^ i • f + ∑ j ∈ Finset.range i, Y ^ j • a j f
 
 def ChainStepFromRules : Prop :=
   BorderE → BorderS → BorderFull → EabGlLev → EabPres → QMinorLeftH → RuleRight → RuleLeft → RuleTorus → WeylLevelElementFacts →
@@ -781,8 +743,6 @@ def DetAt (i : (P : M.Par) → Fin (P.r + 1)) : Prop :=
       (tL P.k P.r z z' (i P) Y c 0 (tL P.k P.r z z' (i P) (Y + 1) d 1 J) g -
           tL P.k P.r z z' (i P) Y c 1 (tL P.k P.r z z' (i P) (Y + 1) d 0 J) g = (M.qC P Y * epsJ c d) • J g)
 
-def DetLevel : Prop := ∀ i : (P : M.Par) → Fin (P.r + 1), DetAt i
-
 def QdetFromRTT : Prop :=
   ∀ (A : Type) [Ring A] [Algebra ℂ A] (QQ : ℂ → Matrix (Fin 2) (Fin 2) A), W.IsRTT QQ → ∀ Y : ℂ, ∃ qh : A,
     (QQ (Y + 1))ᵀ * YangianSpanCharacter.T.J A * QQ Y = qh • YangianSpanCharacter.T.J A ∧ QQ Y * YangianSpanCharacter.T.J A * (QQ (Y + 1))ᵀ = qh • YangianSpanCharacter.T.J A ∧
@@ -792,10 +752,6 @@ def qhat {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (z z
     (f : Mx k r → E) : Mx k r → E :=
   fun g => tL k r z z' (Fin.last r) (Y + 1) 0 0 (tL k r z z' (Fin.last r) Y 1 1 f) g -
     tL k r z z' (Fin.last r) (Y + 1) 1 0 (tL k r z z' (Fin.last r) Y 0 1 f) g
-
-def IsRegular (k r : ℕ) (f : Mx k r → ℂ) : Prop :=
-  ∃ p : MvPolynomial ((Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) ℂ,
-    ∀ g, f g = MvPolynomial.eval (Sum.elim (fun x => g x.1 x.2) (fun x => g⁻¹ x.1 x.2)) p
 
 def DetHatOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     (D : Set (Mx k r)) (f : Mx k r → E) : Prop :=
@@ -809,48 +765,9 @@ def DetHat : Prop :=
     (f : Mx k r → E), inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsOpen D →
     SmoothLev k r (Fin.last r) D f → DetHatOn k r z z' D f
 
-def DetHatRegular : Prop :=
-  ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (f : Mx k r → ℂ),
-    inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsRegular k r f → DetHatOn k r z z' Set.univ f
-
-def RegularToSmooth : Prop := DetHatRegular → DetHat
-
-def InZZ (k : ℕ) (u u' : ℕ → ℝ) : Prop :=
-  (∀ s ∈ Finset.Icc 2 k, max (u s) (u' s) < min (u (s - 1)) (u' (s - 1))) ∧ ∀ s ∈ Finset.Icc 1 k, u s ≠ u' s
-
-def DetGeneric : Prop :=
-  ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (f : Mx k r → ℂ) (u u' : ℕ → ℝ),
-    inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsRegular k r f → InZZ k u u' →
-    ∀ (Bs Bs' : Fin k → Fin (2 * r + k + 1) → ℂ), IsFrameOf k r [z] Bs → IsFrameOf k r [z'] Bs' →
-    (∀ g ∈ Glev k r (Fin.last r), ∀ Y : ℂ,
-      capLft k r Bs (Y + (k : ℂ) / 2) f g = (∏ i ∈ Finset.Icc 1 k, (Y + 1 / 2 + (u i : ℂ))) • f g ∧
-      capR k r Bs' (Y + (k : ℂ) / 2) f g = (∏ i ∈ Finset.Icc 1 k, (Y + 1 / 2 + (u' i : ℂ))) • f g) →
-    ∀ g ∈ Glev k r (Fin.last r), ∀ Y : ℂ,
-      qhat k r z z' Y f g = (-((Tz k r z * Tz k r z' : ℝ) : ℂ) *
-        ∏ i ∈ Finset.Icc 1 k, ((Y + 1 / 2 + (u i : ℂ)) * (Y + 1 / 2 + (u' i : ℂ)))) • f g
-
-def LemmaD : Prop :=
-  ∀ (A : Type) [CommRing A] [IsDomain A] (DD : ℕ → Set (A →+ A)), DD 0 = {0} →
-    (∀ n, ∀ D ∈ DD (n + 1), ∀ a : A, ∃ D' ∈ DD n, ∀ b, D' b = D (a * b) - a * D b) →
-    ∀ A' : AddSubgroup A, (∀ x ∈ A', ∀ y ∈ A', x * y ∈ A') →
-    (∀ b : A, ∃ a₁ ∈ A', ∃ a₂ ∈ A', a₂ ≠ 0 ∧ a₂ * b = a₁) →
-    ∀ n, ∀ D ∈ DD n, (∀ x ∈ A', D x = 0) → D = 0
-
 def DetCoreFromSteps : Prop :=
   RTTLevel → QdetFromRTT → DetHat → RightTypeAction → LeftTypeAction → TPreservesFF → TLinLoc →
     DetAt fun P => Fin.last P.r
-
-def DetLevelFromCore : Prop :=
-  (DetAt fun P => Fin.last P.r) → ChainStep → ResMem → FamOps → TTriples → TPreservesFF → TLinLoc → TJointSmooth →
-    CellDecomp → CellDense → DetLevel
-
-def EigenCoeff : Prop :=
-  ∀ (Vs : Type) [NormedAddCommGroup Vs] [NormedSpace ℂ Vs] (k r : ℕ) (σ : Mx k r → (Vs →L[ℂ] Vs)) (v : Vs)
-    (lam : Fin (2 * r + k + 1) → ℂ), IsCRepOn (UH (Hpk k r)) σ → SmoothLev k r 0 Set.univ (fun g => σ g v) →
-    (∀ u : ℂ, qmF (fun a b => EcRep (Hpk k r) σ (Matrix.single a b 1)) id id u v =
-      (∏ s, (u - (((2 * r + k + 1 : ℕ) : ℂ) - 1) / 2 + lam s)) • v) →
-    ∀ (ℓ : Vs →L[ℂ] ℂ) (Y : ℂ), ∀ g ∈ UH (Hpk k r),
-      CV k r Y (fun x => ℓ (σ x v)) g = (∏ s, (Y + lam s)) • ℓ (σ g v)
 
 def CkLev {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (k r : ℕ) (i : Fin (r + 1)) (m : ℕ) (D : Set (Mx k r))
     (f : Mx k r → E) : Prop :=
@@ -871,20 +788,6 @@ def BesselCommutes : Prop :=
         Jt (h * g * h') = (D.π h).comp ((Jt g).comp (D.π' h'))) ∧
       (∀ᵐ q ∂(volume.restrict (B.Qset D)), Jt (B.gq D q) = B.JF D F (B.gq D q)) ∧
       ∀ᵐ q ∂(volume.restrict (B.Qset D)), CV k r Y Jt (B.gq D q) = B.JF D (CV k r Y F) (B.gq D q)
-
-def EigenBessel : Prop :=
-  ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (A : ℝ) (m : ℕ) (F : Mx k r → (Wq →L[ℂ] Wp)) (Y PY : ℂ),
-    2 * r + k + 1 ≤ m → ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < (A - 6 * r * m) / (9 * (r + 1)) → B.InCC A m F →
-    (∀ g ∈ UH (Hpk k r), CV k r Y F g = PY • F g) →
-    ∃ Jt : Mx k r → (Wq →L[ℂ] Wp), CkLev k r 0 (2 * r + k + 1) (OmPlus k r D.z D.z') Jt ∧
-      LeftEq k r D.z 0 (OmPlus k r D.z D.z') Jt ∧ RightEq k r D.z' 0 (OmPlus k r D.z D.z') Jt ∧
-      (∀ g ∈ Glev k r 0 ∩ OmPlus k r D.z D.z', ∀ h ∈ UWset k r D.z, ∀ h' ∈ UWset k r D.z',
-        Jt (h * g * h') = (D.π h).comp ((Jt g).comp (D.π' h'))) ∧
-      (∀ᵐ q ∂(volume.restrict (B.Qset D)), Jt (B.gq D q) = B.JF D F (B.gq D q)) ∧
-      ∀ᵐ q ∂(volume.restrict (B.Qset D)), CV k r Y Jt (B.gq D q) = PY • Jt (B.gq D q)
-
-def EigenBesselFromCommutes : Prop := BesselCommutes → B.CCLin → EigenBessel
 
 def Pr (V : Type*) [AddCommGroup V] [Module ℂ V] : Type _ := Module.End ℂ V × (Module.End ℂ V)ᵐᵒᵖ
 

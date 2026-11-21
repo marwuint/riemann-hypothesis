@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchOperatorUnitaryWSeesawStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionOneParamSubgroupGaussVacuumSmoothStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmoothWeilOrbitPreservedByHeisenbergDerivativesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchOperatorUnitaryWSeesaw
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionOneParamSubgroupGaussVacuumSmooth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmoothWeilOrbitPreservedByHeisenbergDerivatives
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -26,7 +26,7 @@ theorem exists_lie_deriv_pol : ∀ {F E : Type} [Field F] [NumberField F] [Field
     ∃ δ : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')), ∀ f ∈ G.M.Pol B.ψ B.emb,
       δ f ∈ G.M.Pol B.ψ B.emb ∧ ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f (δ f) := by
   intro F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ
-  choose T hT' using fun t : ℝ => GlobalTheory.T.exists_archOperator_unitaryW_seesaw B G X om om' hT (γ (Multiplicative.ofAdd t)) (hγ.2 _)
+  choose T hT' using fun t : ℝ => _root_.GlobalTheory.ArchFactor.exists_archOperator B G X om om' hT (γ (Multiplicative.ofAdd t)) (hγ.2 _)
   have hvac : ∀ f₀, G.M.IsGauss B.ψ B.emb f₀ → f₀ ∈ G.M.Pol B.ψ B.emb := fun f₀ h =>
     Submodule.mem_sInf.2 fun N hN => hN.1 f₀ h
   have hstab : ∀ u, At (evI F) u → ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F (Fin a × Fin (a + a')),
@@ -50,9 +50,9 @@ theorem exists_lie_deriv_pol : ∀ {F E : Type} [Field F] [NumberField F] [Field
         simpa using (hf2 x).const_mul c }
   have hPN : G.M.Pol B.ψ B.emb ≤ N := by
     refine sInf_le ⟨fun f₀ h => ?_, fun u hu f hf f₁ h => ?_⟩
-    · exact ⟨hvac f₀ h, GlobalTheory.T.weilAction_oneParamSubgroup_gaussVacuum_smooth B G X om om' hT γ hγ T hT' f₀ h⟩
+    · exact ⟨hvac f₀ h, _root_.GlobalTheory.GaussLine.smooth_vacuum_line B G X om om' hT γ hγ T hT' f₀ h⟩
     · obtain ⟨hf0, hf1, hf2⟩ := hf
-      exact ⟨hstab u hu f hf0 f₁ h, GlobalTheory.T.smooth_weilOrbit_preserved_by_heisenbergDerivatives B G X om om' hT γ hγ T hT' u hu f hf0 hf1 hf2 f₁ h⟩
+      exact ⟨hstab u hu f hf0 f₁ h, _root_.GlobalTheory.HeisOrbit.orbit_heis B G X om om' hT γ hγ T hT' u hu f hf0 hf1 hf2 f₁ h⟩
   have hex : ∀ f : G.M.Pol B.ψ B.emb, ∃ f' : SInf F (Fin a × Fin (a + a')), f' ∈ G.M.Pol B.ψ B.emb ∧
       ∀ x, HasDerivAt (fun t => T t (f : SInf F (Fin a × Fin (a + a'))) x) (f' x) 0 := fun f => by
     obtain ⟨-, -, f', hf', h⟩ := hPN f.2

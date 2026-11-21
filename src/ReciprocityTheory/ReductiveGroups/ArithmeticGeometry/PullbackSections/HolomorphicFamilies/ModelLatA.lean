@@ -69,16 +69,6 @@ theorem herm_add_left {D : D7} (G : Matrix (Fin r) (Fin r) D.host.E) (x x' y : F
   simp only [Pi.add_apply]
   ring
 
-theorem herm_add_right {D : D7} (G : Matrix (Fin r) (Fin r) D.host.E) (x y y' : Fin r → D.host.E) :
-    herm G x (y + y') = herm G x y + herm G x y' := by
-  unfold herm
-  rw [← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  rw [← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun b _ => ?_
-  simp only [Pi.add_apply, cc, map_add]
-  ring
-
 theorem AA_mul_inv (hP : FactPrincipalDatum) (D : D7) : D.host.AA * D.host.AA⁻¹ = 1 :=
   mul_inv_cancel₀ (AA_ne_zero hP D)
 

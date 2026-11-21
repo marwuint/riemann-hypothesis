@@ -45,21 +45,6 @@ theorem heisenbergComm : OpUComm := by
   push_cast
   ring
 
-theorem heisenbergNorm : OpUNorm := by
-  intro V _ _ H hH x F z
-  have hre := re_swap H hH z x
-  have hE : (-(Real.pi : ℂ) * H z x - (Real.pi : ℂ) * H x x / 2).re =
-      -Real.pi * (H z x).re - Real.pi * (H x x).re / 2 := by
-    simp [Complex.sub_re, Complex.mul_re]
-  have hzz : (H (z + x) (z + x)).re = (H z z).re + 2 * (H z x).re + (H x x).re := by
-    simp only [map_add, LinearMap.add_apply, Complex.add_re]
-    linarith
-  simp only [opU, norm_mul, Complex.norm_exp, hE]
-  rw [hzz, mul_pow, ← Real.exp_nat_mul, mul_assoc, ← Real.exp_add]
-  congr 2
-  push_cast
-  ring
-
 theorem heisenbergIsometry : OpUIsom := by
   intro V W _ _ _ _ H H' g hg x G z
   simp only [opU, map_add]

@@ -1,13 +1,13 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DwCons
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PoincareValueBoundOnCubeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PoincareValueBoundOnCube
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeAsRightWordsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarChartIntegralComparisonStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarChartIntegralComparison
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthContinuousProperSublevelStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartAndRightWordsSmoothStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftTranslateRightDerivativeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartPartialEqRightWordStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartPartialEqRightWord
 
 noncomputable section
 open MeasureTheory Matrix Finset
@@ -79,7 +79,7 @@ theorem sobG : PositivityTheory.RgBcC.SobG := by
     rw [Real.norm_eq_abs, abs_of_nonneg (ht.1 i)]
     exact ht.2 i
   have hQG : ∀ t ∈ Q, 1 + cm t ∈ GLs n := fun t ht => hQU ht
-  obtain ⟨T, C1, hC1, hsob⟩ := GlobalTheory.T.poincare_value_bound_on_cube (Idx n) ε hεpos
+  obtain ⟨T, C1, hC1, hsob⟩ := _root_.GlobalTheory.CompanionTheory.SobCube.sobolev_cube (Idx n) ε hεpos
   have hbd := fun L => bound_on_cube n Q hQc hQG L
   choose W B hB hWB using hbd
   have hK : IsCompact ((fun t => 1 + cm t) '' Q) := hQc.image (continuous_const.add hcm)
@@ -98,11 +98,11 @@ theorem sobG : PositivityTheory.RgBcC.SobG := by
     have h := hr _ ⟨t, ht, rfl⟩
     rw [Real.norm_eq_abs] at h
     exact (le_abs_self _).trans h
-  obtain ⟨C2, hC2, hcmp⟩ := GlobalTheory.T.haar_chart_integral_comparison n μ Q S hQc hSc hcov
+  obtain ⟨C2, hC2, hcmp⟩ := _root_.GlobalTheory.CompanionTheory.SobGL.lebesgue_le_haar n μ Q S hQc hSc hcov
   refine ⟨T.biUnion W, r, C1 * C2 * ∑ L ∈ T, B L, ?_⟩
   intro V _ _ _ f hf x hx
   obtain ⟨hgs, hgR⟩ := GlobalTheory.T.left_translate_right_derivative n V f hf x hx
-  obtain ⟨hFs, hpd⟩ := GlobalTheory.T.chart_partial_eq_right_word n V (fun y => f (x * y)) hgs
+  obtain ⟨hFs, hpd⟩ := _root_.GlobalTheory.CompanionTheory.SobGL.Chart.chart_main n V (fun y => f (x * y)) hgs
   have hxmul : ∀ y ∈ GLs n, x * y ∈ GLs n := by
     intro y hy
     show Matrix.det (x * y) ≠ 0

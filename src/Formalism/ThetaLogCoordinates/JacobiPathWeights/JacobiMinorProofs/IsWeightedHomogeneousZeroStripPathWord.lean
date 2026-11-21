@@ -272,11 +272,6 @@ theorem sg_pm {n : ℕ} (I : Finset (Fin n)) (m : Fin n) : sg I m = 1 ∨ sg I m
   unfold Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg
   exact neg_one_pow_eq_or ℤ _
 
-theorem mem_canIdx {n : ℕ} (μN : Fin n → ℤ) (c : ℤ) (m : Fin n) :
-    m ∈ canIdx μN c ↔ if 1 ≤ c then m.val < colHeight μN c else colHeight μN c ≤ m.val := by
-  unfold Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx
-  split_ifs <;> simp
-
 def Dc {n : ℕ} (μ : ℕ → Fin n → ℤ) (N : ℕ) (c : ℤ) : ℕ × Fin n →₀ ℕ :=
   ∑ m : Fin n, if colHeight (μ (N + 1)) c ≠ colHeight (μ N) c ∧
       m.val = min (colHeight (μ (N + 1)) c) (colHeight (μ N) c) then Finsupp.single (N, m) 1 else 0

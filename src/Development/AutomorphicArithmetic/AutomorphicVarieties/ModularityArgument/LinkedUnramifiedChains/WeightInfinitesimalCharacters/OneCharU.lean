@@ -66,24 +66,3 @@ private theorem oneChar_unramU (hC : U3.CohInp) (hLM : LemmaM) (hLM' : LemmaM') 
     simp only [← htr]
     exact (Chr.nrm_mono l hV hlen).trans hle
 
-theorem UpperTheory.V.Z.J.oneCharU :
-    U3.CohInp → LemmaM → LemmaM' → LemmaP → Z.Kato.KatoTwo → Th.RigI → Th.RigII → AdmI → Aut.AutomorphyUnramifiedCoefficients → OneCharU := by
-  intro hC hLM hLM' hLP hK hRI hRII hAd hA Ω _ _ _ K _ _ _ _ _ l _ c N _ e ψ hG ι σ t ht hne
-  obtain ⟨c', ψ', he, hψ⟩ := exists_unram c ψ hG.ord
-  have h1 : chHom c.O.val.toRingHom ψ = chHom c'.O.val.toRingHom ψ' := MulChar.ext fun a => hψ a
-  have hG' : GD Ω K l e ψ' :=
-    (gd_chHom c'.O.val.toRingHom Subtype.val_injective ψ').1
-      (h1 ▸ (gd_chHom c.O.val.toRingHom Subtype.val_injective ψ).2 hG)
-  obtain ⟨h2, h3⟩ := coefIndep Ω l c c' N e ψ ψ' hψ
-  have h4 : ∀ g, Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ) g) =
-      Units.map (algebraMap c'.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ') g) := by
-    intro g
-    simp only [Chr.Psi, MonoidHom.mul_apply, MonoidHom.zpow_apply, map_mul, map_zpow]
-    congr 1
-    exact Units.ext (hψ _)
-  have h5 := congrArg Units.val (h4 (galEmb ℚ K Ω σ))
-  have h6 := congrArg (fun u : (PadicAlgCl l)ˣ => (u⁻¹).val) (h4 (galEmb ℚ K Ω σ))
-  rw [Ne, h2, h3]
-  refine oneChar_unramU hC hLM hLM' hLP hK hRI hRII hAd hA Ω K l c' N e ψ' he hG' ι σ t ?_ hne
-  rw [ht, map_add, map_add, map_add, map_add, map_one, map_one]
-  exact congrArg₂ (· + ·) (congrArg (· + 1) h5) h6

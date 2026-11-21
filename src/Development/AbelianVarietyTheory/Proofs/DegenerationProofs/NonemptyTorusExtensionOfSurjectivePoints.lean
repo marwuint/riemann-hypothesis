@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAss
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusQuotientNoCocharacter
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsMonHomFactorOfFlatSurjective
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SplitTorusHomEqOneOfNoCocharacterStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SplitTorusHomEqOneOfNoCocharacter
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -25,7 +25,7 @@ theorem nonempty_torusExtension_of_surjective_points : ∀ (k : Type) [Field k] 
   let _ := E.grpB
   have := E.i_hom
   have := E.q_hom
-  have hkill : E.i ≫ r ≫ q₁ = 1 := GlobalTheory.T.splitTorus_hom_eq_one_of_no_cocharacter' _ B₁ E.X hno _ inferInstance
+  have hkill : E.i ≫ r ≫ q₁ = 1 := _root_.GlobalTheory.SS.splitTorus_hom_eq_one_of_no_cocharacter _ B₁ E.X hno _ inferInstance
   obtain ⟨⟨ψ, -, hψ⟩, -⟩ := GlobalTheory.exists_monHom_factor_of_flat_surjective _ G E.B B₁ E.q (r ≫ q₁)
     E.q_hom inferInstance E.q_flat E.q_surjective E.q_quasiCompact (fun T x hx => by
       have h := E.isKernel.lift_fst x (toUnit T) hx

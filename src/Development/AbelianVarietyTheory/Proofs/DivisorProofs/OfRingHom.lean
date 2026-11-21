@@ -14,29 +14,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.BdDim
 
-def TrLe (K : Type) [Field K] (n : ℕ) : Prop := Algebra.trdeg (⊥ : Subfield K) K ≤ n
-
-theorem TrLe.mono {K : Type} [Field K] {n m : ℕ} (h : TrLe K n) (hnm : n ≤ m) : TrLe K m :=
-  le_trans h (by exact_mod_cast hnm)
-
-theorem TrLe.of_ringHom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ} (h : TrLe L n) : TrLe K n := by
-  have hb : ∀ x : (⊥ : Subfield K), f x ∈ (⊥ : Subfield L) := fun x =>
-    (show (⊥ : Subfield K) ≤ (⊥ : Subfield L).comap f from bot_le) x.2
-  let e : (⊥ : Subfield K) →+* (⊥ : Subfield L) := (f.comp (Subfield.subtype _)).codRestrict _ hb
-  have he : Function.Surjective e := fun y => by
-    have : (⊥ : Subfield L) ≤ (⊥ : Subfield K).map f := bot_le
-    obtain ⟨x, hx, hxy⟩ := this y.2
-    exact ⟨⟨x, hx⟩, Subtype.ext hxy⟩
-  obtain ⟨s, hs⟩ := exists_isTranscendenceBasis (⊥ : Subfield K) K
-  refine le_trans ?_ h
-  rw [← hs.cardinalMk_eq_trdeg]
-  have := hs.1.ringHom_of_comp_eq e f he f.injective (RingHom.ext fun _ => rfl)
-  exact this.cardinalMk_le_trdeg
-
-example : TrLe ℚ 0 := by
-  have : Algebra.IsAlgebraic (⊥ : Subfield ℚ) ℚ := ⟨fun x => isAlgebraic_algebraMap (⟨x, by simpa using SubfieldClass.ratCast_mem (⊥ : Subfield ℚ) x⟩ : (⊥ : Subfield ℚ))⟩
-  simp [TrLe, trdeg_eq_zero]
-
 section Fibres
 
 variable {T X Y Z : Scheme.{0}}
@@ -48,9 +25,6 @@ def SameFibre (G : Over X) [GrpObj G] (x : T ⟶ X) (G' : Over Y) [GrpObj G'] (y
 def IsAbPart {k : Type} [Field k] (G : Over X) [GrpObj G] (x : Sp k ⟶ X) (B : Over Y) [GrpObj B] (y : Sp k ⟶ Y) : Prop :=
   ∃ (A : Over (Sp k)) (_ : GrpObj A) (φ : A.left ⟶ G.left) (t : TorusExtension A) (β : t.B.left ⟶ B.left),
     IsGrpPullback A G x φ ∧ @IsGrpPullback _ _ t.B t.grpB B _ y β
-
-theorem SameFibre.refl (G : Over X) [GrpObj G] (x : T ⟶ X) : SameFibre G x G x :=
-  ⟨_, _, _, _, isGrpPullback_pullback G x, isGrpPullback_pullback G x⟩
 
 theorem IsAbPart.trans {k : Type} [Field k] {G : Over X} [GrpObj G] {x : Sp k ⟶ X} {B : Over Y} [GrpObj B] {y : Sp k ⟶ Y}
     {B' : Over Z} [GrpObj B'] {z : Sp k ⟶ Z} (h : IsAbPart G x B y) (h' : SameFibre B y B' z) : IsAbPart G x B' z := by

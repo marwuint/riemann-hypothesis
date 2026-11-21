@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.SzHypFam
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RowsConc
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PgFrameAtRecord
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CriticalLevelLePowAllPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CriticalLevelLePowAllPlaces
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
@@ -11,7 +11,7 @@ namespace GlobalTheory
 theorem levelPrime_size : Formalism.HermitianLatticesTheory.SiegelMassRatio → Formalism.L2.SG.Pf.SzHypFD.DsigHC → ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ), Ties D → Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 → 40 ≤ Cl → Cu * large₂.sc.L ≤ (D.R.m : ℝ) - 1 → C0 * Real.exp 8 ≤ D.R.k → LocalBesselAndTopKernel.FamilyMidVolume D → ∀ u, large₂.sc.b ^ ((1 / 2 : ℝ) * (D.R.m : ℝ)) ≤ Tr D u ∧ Tr D u ≤ large₂.sc.b ^ ((4 * Cg + 13) * (D.R.m : ℝ)) := by
   intro hS hDs D large₂ C' Cl Cg cb Cu cT CT C0 hT hH hCl hCu hC0 hR u
   obtain ⟨hF, hA, -, hk⟩ := pgFrame_at_record hS hDs D large₂ C' Cl Cg cb Cu cT CT C0 hT hH hCl hCu hC0 hR
-  have hcrit := GlobalTheory.T.criticalLevel_le_pow_allPlaces hDs D large₂ C' Cl Cg cb Cu cT CT C0 hT hH hCl
+  have hcrit := _root_.GlobalTheory.CritLevelUpper.tcrit_le_pow hDs D large₂ C' Cl Cg cb Cu cT CT C0 hT hH hCl
   obtain ⟨hS0, hData, hC01⟩ := hH
   dsimp only [StandingHypotheses] at hS0
   obtain ⟨-, -, hm4, hfk, -, -, -, -, -, -, -, hg1, -, hg2, -, -, -, -, hv, -, -, -, -, hClm, -⟩ := hS0

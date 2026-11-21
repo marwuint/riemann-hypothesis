@@ -4,10 +4,10 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermLoc
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.UnitriangularLatticeStabiliserSubFrameAutomorphi
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralOfUnimodular
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowLatticesSameInnerDifferByRationalUnipotentStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowLatticesSameInnerDifferByRationalUnipotent
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AutLzFinite
 import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.LiftsConjugateUnderStabilizer
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLatticeRepresentativeNormalisedStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLatticeRepresentativeNormalised
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryUnitriangularizingFlagStabilizerStatement
 
 noncomputable section
@@ -228,7 +228,7 @@ theorem stab_mapsP {γ : GV D} (hγ : γ ∈ stabF D F0) : ∀ y ∈ perpS (VS D
 
 theorem lift_fix (hΛ : IsRowLat D F0 Λ) {a : GV D} (ha : a ∈ A0 F0 Λ) :
     ∃ γ ∈ stabF D F0, Formalism.HermitianLatticesTheory.gmap γ Λ = Λ ∧ ∀ y ∈ perpS (VS D) F0.X, γ y - a y ∈ F0.X := by
-  obtain ⟨σ, hσ, hσz⟩ := GlobalTheory.T.exists_lattice_representative_normalised D T F0 Λ hΛ
+  obtain ⟨σ, hσ, hσz⟩ := _root_.GlobalTheory.RowPartner.exists_partner_rowLat D T F0 Λ hΛ
   obtain ⟨-, ⟨-, hU, ⟨hzΛ, -⟩, -⟩, -⟩ := hΛ
   have hzΛ' : F0.z ∈ Λ := hzΛ
   have hx0X : a F0.z - F0.z ∈ F0.X := frameAdaptedIsometry_vector_sub_mem_flag F0 ha.1
@@ -285,7 +285,7 @@ theorem stab_fix (hΛ : IsRowLat D F0 Λ) {γ : GV D} (hγ : γ ∈ stabF D F0) 
       have e : t.symm y = y - (t (t.symm y) - t.symm y) := by simp
       rw [e]
       exact sub_mem hy (hXL (htP _ hwP))
-  obtain ⟨n, hn, hnΛ⟩ := GlobalTheory.T.row_lattices_same_inner_differ_by_rational_unipotent D T F0 Λ Λ (t * γ) hΛ hΛ hσ hL
+  obtain ⟨n, hn, hnΛ⟩ := _root_.GlobalTheory.Unfold.sameInner_unip D T F0 Λ Λ (t * γ) hΛ hΛ hσ hL
   refine ⟨n * (t * γ), ⟨⟨Subgroup.mul_mem _ hn.1 hσ.1, fun k => ?_⟩, hnΛ⟩, fun y hy => ?_⟩
   · have e : (n * (t * γ)) (frame (lf D F0) k) - frame (lf D F0) k =
         (n ((t * γ) (frame (lf D F0) k)) - (t * γ) (frame (lf D F0) k)) +

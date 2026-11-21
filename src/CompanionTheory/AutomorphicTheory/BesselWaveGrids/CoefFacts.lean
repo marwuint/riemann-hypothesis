@@ -30,10 +30,6 @@ theorem kfin_wsp (hf : KFinDSCoef ε μ f) : ∃ F ∈ Wsp k r Wp Wq ε μ, ∀ 
   rw [op_expand (f g), hfG g hg]
   simp only [Finset.sum_apply, φ, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.comp_apply, ea, eb]
 
-theorem kfin_ckOn (hK : PI.KFinSmooth) (hS : CoefSmooth) (hf : KFinDSCoef ε μ f) : B.CkOn ⊤ (B.GV k r) f := by
-  obtain ⟨F, hF, he⟩ := kfin_wsp hf
-  exact Qb1.ckOn_congr he (wsp_ckOn hK hS hF)
-
 theorem kfin_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k r ε A h)
     (hg : PI.ZuckTensor.GapAtLeast ε μ h) (hf : KFinDSCoef ε μ f) (m : ℕ) : B.InCC A m f := by
   obtain ⟨F, hF, he⟩ := kfin_wsp hf
@@ -49,14 +45,6 @@ theorem kfin_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k 
   obtain ⟨c, hc⟩ := hFm
   exact ⟨c, JCx2.mn_ccle_congr he hc⟩
 
-theorem kfin_eig (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (hf : KFinDSCoef ε μ f) (Y : ℂ) :
-    ∀ g ∈ B.GV k r, Q.CV k r Y f g = Formalism.QuantumDeterminants.capP (fun s => (μ s : ℂ)) Y • f g := by
-  obtain ⟨F, hF, he⟩ := kfin_wsp hf
-  intro g hg
-  rw [← he g hg, ← wsp_eig hK hS hE Y hF g hg]
-  exact (Dx1.LZ.good_CV (k := k) (r := r) (E := Wq →L[ℂ] Wp) Y).loc f F (fun y hy => (he y hy.1.1).symm) g
-    (Dx1.LZ.glev0 hg)
-
 end coef
 
 def SmoothKB : Prop :=
@@ -66,17 +54,6 @@ def SmoothKB : Prop :=
     B.CkOn ⊤ (B.GV P.k P.r) f → (∀ m : ℕ, B.InCC A m f) →
     (∀ Y : ℝ, ∃ c : ℂ, ∀ g ∈ B.GV P.k P.r, Q.CV P.k P.r (Y : ℂ) f g = c • f g) →
     Q.SmoothLev P.k P.r 0 (Q.OmPlus P.k P.r p.T.base.z p.T.base.z') (B.JF p.T.base f)
-
-theorem kfin_ffkb {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
-    [FiniteDimensional ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-    [CompleteSpace Wp] (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (hB : SmoothKB)
-    (p : KB.Pl P Wp Wq) {ε : Fin (2 * P.r + P.k + 1) → Bool} {μ : Fin (2 * P.r + P.k + 1) → ℝ}
-    {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hf : KFinDSCoef ε μ f) {A : ℝ}
-    (hA : ∀ m, m ≤ CompanionTheory.JfS.NN P.k P.r → JF.TransportedAlt P.k P.r A m) (hcc : ∀ m : ℕ, B.InCC A m f) :
-    B.JF p.T.base f ∈ FFKB p := by
-  have hs := hB P Wp Wq p f A hA (kfin_ckOn hK hS hf) hcc fun Y => ⟨_, kfin_eig hK hS hE hf Y⟩
-  exact EqShift.jf_ff_of_smooth p.T.base f (OmKB p) fun g₀ hg₀ =>
-    hs g₀ ⟨hg₀.1, (CutMP.jdc_om_of _ _ hg₀.1.1 hg₀.2).2⟩
 
 def thrX (k r : ℕ) : ℝ :=
   ((r : ℝ) + 1) ^ 4 * (((3 * (r + 1) : ℕ) : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3)

@@ -6,10 +6,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNo
 import Development.AbelianVarietyTheory.Definitions.Divisors.CongModRefl
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeepLevelCoverPrincipalLevelLawsGalois
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCuspFormPullbackGoodCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCuspFormPullbackGoodCover
+import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackMemCuspFormSupLatticeIffStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntFrBelow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramedPointRestrictCoefficientFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramedPointRestrictCoefficientField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOverLaUnder
 
 set_option autoImplicit false
@@ -48,12 +49,12 @@ theorem refExp_vp_cover_le : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.to
   intro la₂ S io₂ e₂ ho₂ y₂ ha₂ φ hφ
   obtain ⟨y', ha', hφ', hv'⟩ := GlobalTheory.CoverDown.exists_intFr_below _ _ _ _ (T.Q.Xo j) Y.c' Y.d hpq hG.lev.1
     (Or.inl ⟨hne, hL.levA⟩) S io₂ y₂ ha₂
-  obtain ⟨y, ha, hφy, hv⟩ := GlobalTheory.T.integralFramedPoint_restrict_coefficient_field _ _ _ _ (T.Q.Xo j) T.Q.c Y.c' Y.hle S _ y' ha'
+  obtain ⟨y, ha, hφy, hv⟩ := _root_.GlobalTheory.RefSum.intFr_res_down _ _ _ _ (T.Q.Xo j) T.Q.c Y.c' Y.hle S _ y' ha'
   obtain ⟨la', e', hq', ho'⟩ := GlobalTheory.PlaceBelow.exists_overLa_under Y.c'.F Y.d.c₂.F (Y.d.eF : Y.c'.F →+* Y.d.c₂.F) q la₂.1 hq la₂.2 S io₂ e₂ ho₂
   obtain ⟨la, e₀, hq₀, ho⟩ := GlobalTheory.PlaceBelow.exists_overLa_under T.Q.c.F Y.c'.F (IntermediateField.inclusion Y.hle).toRingHom q la' hq hq' S _ e' ho'
   refine le_trans ?_ (refExp_vp_le_iff (T.U j) |>.1 le_rfl ⟨la, hq₀⟩ S _ e₀ ho y ha φ (hφy φ (hφ' φ hφ)))
   refine le_iInf₂ fun f hf => ?_
-  obtain ⟨g, ⟨hg, hP⟩, -⟩ := GlobalTheory.T.existsUnique_cuspForm_pullback_goodCover D T j Y e o hJ hj hG hG.unit hG.modelW a n hD f.1 f.2
+  obtain ⟨g, ⟨hg, hP⟩, -⟩ := _root_.GlobalTheory.CoverPull.cusp_pullback_existsUnique D T j Y e o hJ hj hG hG.unit hG.modelW a n hD f.1 f.2
   have hgl := (GlobalTheory.T.pullback_mem_cuspFormSupLattice_iff D T j Y e o hJ hj hG a n f ⟨g, hg⟩ hP).2 hf
   have hfs : f.1 ∈ sec (T.Q.Xo j) T.Q.c a n := mem_sec_of_mem_cuspW_wtZ f.2
   have hP' := ((GlobalTheory.DeepLaws.laws_galois_pull D T j Y e o hJ hj hG hG.unit hG.modelW).2.2 a n f.1 hfs g).1 hP

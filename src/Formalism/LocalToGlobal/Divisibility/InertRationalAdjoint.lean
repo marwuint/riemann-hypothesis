@@ -68,12 +68,6 @@ structure InertRationalAdjoint : Prop where
     B.S.csum (D.opI k f : B.S.Cl → B.S.V) (g : B.S.Cl → B.S.V) =
       B.S.csum (f : B.S.Cl → B.S.V) (D.opI k' g : B.S.Cl → B.S.V)
 
-structure OkLat3 : Prop where
-
-  nab : ∀ k, ∀ x ∈ B.S.nabLat, (LinearMap.toMatrix B.S.basis B.S.basis (D.opI k)).mulVec x ∈ B.S.nabLat
-
-  del : ∀ k, ∀ x ∈ B.S.delLat, (LinearMap.toMatrix B.S.basis B.S.basis (D.opI k)).mulVec x ∈ B.S.delLat
-
 def Stable3 (Z : Submodule K B.S.Forms) : Prop := ∀ i, Z ≤ Z.comap (D.opAll i)
 
 end InertDat3

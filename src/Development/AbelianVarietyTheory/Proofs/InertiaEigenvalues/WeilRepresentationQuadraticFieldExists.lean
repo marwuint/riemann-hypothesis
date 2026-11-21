@@ -1,16 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStableGauss
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Sl2PresentationRelationsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Sl2PresentationRelations
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilUnipotentTorusPreserveTestStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilFourierPreservesTestAdditiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGroupSignMulAndNegOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilTorusMulUnipotentCommuteStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilFourierCompSmulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableQuadraticGaussIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilFourierPreservesTestAdditive
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGroupSignMulAndNegOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilTorusMulUnipotentCommute
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilFourierCompSmul
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableQuadraticGaussIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuadraticWeilFOpNOpFOpGaussStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralSqEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralTransformWeilStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralSqEqOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.StableQuadraticGaussIntegralTransformWeil
 
 open GlobalTheory.JR GlobalTheory.JR.WeilQuad Matrix MeasureTheory Filter Topology
 
@@ -190,10 +190,10 @@ theorem weilField_main : WeilField := by
   intro F E _ _ _ _ _ A hK hL ψ hψ x μ hμ ω hω
   have H : Hyp A ψ x μ ω := ⟨hK, hL, hψ, hμ, hω⟩
   have h2a := GlobalTheory.T.quadraticWeil_unipotent_torus_preserve_test F E A ψ x μ ω H
-  have h2b := GlobalTheory.T.quadraticWeilFourier_preserves_test_additive F E A ψ x μ ω H
-  obtain ⟨hmul, hneg⟩ := GlobalTheory.T.normGroupSign_mul_and_neg_one F E A ψ x μ ω H
-  obtain ⟨G₁, hG₁⟩ := GlobalTheory.T.exists_stable_quadraticGaussIntegral F E A ψ x μ ω H 1
-  have hsq := GlobalTheory.T.stableQuadraticGaussIntegral_sq_eq_one F E A ψ x μ ω H G₁ hG₁
+  have h2b := _root_.GlobalTheory.JR.WeilQuad.fOp_isTest_add F E A ψ x μ ω H
+  obtain ⟨hmul, hneg⟩ := _root_.GlobalTheory.JR.WeilQuad.NormSign.omega_mul_neg_one F E A ψ x μ ω H
+  obtain ⟨G₁, hG₁⟩ := _root_.GlobalTheory.JR.WeilQuad.exists_stableGauss F E A ψ x μ ω H 1
+  have hsq := _root_.GlobalTheory.JR.WeilQuad.stableGauss_sq_eq_one F E A ψ x μ ω H G₁ hG₁
   have hG0 : G₁ ≠ 0 := by rintro rfl; norm_num at hsq
   let S := testSub A.L
   let Nz : A.K → Module.End ℂ S := fun z =>
@@ -227,16 +227,16 @@ theorem weilField_main : WeilField := by
   have e4 : ∀ a b, Ms (a * b) = Ms a * Ms b := fun a b =>
     LinearMap.ext fun f => Subtype.ext (mOp_mul A hmul a b f)
   have e5 : ∀ s z, Ms s * Nz z = Nz ((s : A.K) ^ 2 * z) * Ms s := fun s z =>
-    LinearMap.ext fun f => Subtype.ext (GlobalTheory.T.quadraticWeilTorus_mul_unipotent_commute F E A ψ x μ ω H s z f)
+    LinearMap.ext fun f => Subtype.ext (_root_.GlobalTheory.JR.WeilQuad.mOp_nOp F E A ψ x μ ω H s z f)
   have e6 : Tw * Tw = Ms (-1) := LinearMap.ext fun f => Subtype.ext (rel_ww A H hneg hsq f f.2)
   have e7 : ∀ s, Tw * Ms s = Ms s⁻¹ * Tw := fun s => LinearMap.ext fun f =>
-    Subtype.ext (rel_wm A H hmul G₁ s f (GlobalTheory.T.quadraticWeilFourier_comp_smul F E A ψ x μ ω H s f f.2))
+    Subtype.ext (rel_wm A H hmul G₁ s f (_root_.GlobalTheory.JR.WeilQuad.fOp_comp_smul F E A ψ x μ ω H s f f.2))
   have e8 : ∀ u : A.Kˣ, Tw * Nz u * Tw = Nz (-((u⁻¹ : A.Kˣ) : A.K)) * Ms (-u⁻¹) * Tw * Nz (-((u⁻¹ : A.Kˣ) : A.K)) :=
     fun u => LinearMap.ext fun f => Subtype.ext (by
-      obtain ⟨G, hG⟩ := GlobalTheory.T.exists_stable_quadraticGaussIntegral F E A ψ x μ ω H u
-      exact rel_wnw A H hmul hneg hG0 u G (GlobalTheory.T.stableQuadraticGaussIntegral_transform_weil F E A ψ x μ ω H u G G₁ hG hG₁) f
+      obtain ⟨G, hG⟩ := _root_.GlobalTheory.JR.WeilQuad.exists_stableGauss F E A ψ x μ ω H u
+      exact rel_wnw A H hmul hneg hG0 u G (_root_.GlobalTheory.JR.WeilQuad.gauss_transform F E A ψ x μ ω H u G G₁ hG hG₁) f
         (GlobalTheory.T.quadraticWeil_fOp_nOp_fOp_gauss F E A ψ x μ ω H u G hG f f.2))
-  obtain ⟨ρ, hρn, hρm, hρw⟩ := GlobalTheory.T.exists_hom_specialLinearGroup_of_relations A.K hK (Module.End ℂ S) Nz Ms Tw e1 e2 e3 e4 e5 e6 e7 e8
+  obtain ⟨ρ, hρn, hρm, hρw⟩ := _root_.GlobalTheory.BruhatRep.exists_hom_of_bruhat A.K hK (Module.End ℂ S) Nz Ms Tw e1 e2 e3 e4 e5 e6 e7 e8
   refine ⟨G₁⁻¹, fun g φ => if h : IsTest φ then ((ρ g ⟨φ, h⟩ : S) : A.L → ℂ) else 0, ⟨?_, ?_, ?_, ?_⟩, ?_⟩
   · intro g f hf
     simp only [dif_pos hf]

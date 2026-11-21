@@ -1,7 +1,6 @@
 import Mathlib
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.RegDom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsReducedOfFormallyEtale
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeightComapFlatHeightOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteMaximalSpectrumOfFiniteOfIsLocalRing
 
 open IsLocalRing TensorProduct

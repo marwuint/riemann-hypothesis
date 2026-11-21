@@ -1,17 +1,11 @@
 import Formalism.HermitianCurvature.StatementLE
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ShiftBound
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.DegreeOfProdLinearLe
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.WeightedL2BoundedMul
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.Cauchy
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.Markov
 
 namespace Formalism.FourierDecayAlt.P.LEx2
 open Formalism.FourierDecayAlt.LE
-
-theorem lemmaEprimeFull_fromSteps (h1 : WeightedIntegrable) (h2 : EpCoefInt) (h3 : LemmaEprime) :
-    LemmaEprimeFull := by
-  intro B X c M p N hN hdw hM hJ hP hNF hPol hCw hBF
-  exact h3 B X c M hdw hM hJ hP (h2 h1 B X p N hN hdw hM hNF) hPol hCw hBF
 
 theorem stepClaim (hC : E.CauchyTheta) (hMV : E.MarkovVector) : StepClaim :=
   A.stepClaimFromSteps_full hC hMV thetaForm thetaRange thetaSmooth thetaBound thetaLimit cutTheta
@@ -430,24 +424,8 @@ theorem lemmaE (hC : E.CauchyTheta) (hMV : E.MarkovVector) : LemmaE :=
 theorem lemmaE_closed : LemmaE :=
   lemmaE Formalism.FourierDecayAlt.P.cauchy_theta_identity Formalism.FourierDecayAlt.P.markov_inequality_vector
 
-theorem lemmaEprimeFull_closed : LemmaEprimeFull :=
-  lemmaEprimeFull_fromSteps derived_energy_L2 epCoefInt lemmaEprime
-
 end Formalism.FourierDecayAlt.P.LEx2
 
-theorem Formalism.FourierDecayAlt.P.le_interpolation_coefficients_in_L2 : Formalism.FourierDecayAlt.LE.InterpolationCoefficientsInL2 :=
-  Formalism.FourierDecayAlt.P.LEx2.coefficient_L2
-theorem Formalism.FourierDecayAlt.P.limit_A : Formalism.FourierDecayAlt.LE.LimitA :=
-  Formalism.FourierDecayAlt.P.LEx2.limitA
-theorem Formalism.FourierDecayAlt.P.le_cutoff_limit_in_L2 : Formalism.FourierDecayAlt.LE.CutoffLimitInL2 :=
-  Formalism.FourierDecayAlt.P.LEx2.limit_L2
-theorem Formalism.FourierDecayAlt.P.pair_limit : Formalism.FourierDecayAlt.LE.PairLimit :=
-  Formalism.FourierDecayAlt.P.LEx2.pairLimit
-theorem Formalism.FourierDecayAlt.P.limit_B : Formalism.FourierDecayAlt.LE.LimitB :=
-  Formalism.FourierDecayAlt.P.LEx2.limitB
-theorem Formalism.FourierDecayAlt.P.grid_convergence : Formalism.FourierDecayAlt.LE.GridConvergence :=
-  Formalism.FourierDecayAlt.P.LEx2.gridConvergence
-theorem Formalism.FourierDecayAlt.P.constant_sign : Formalism.FourierDecayAlt.LE.ConstSign := Formalism.FourierDecayAlt.P.LEx2.le_constSign_proof
 theorem Formalism.FourierDecayAlt.P.ratio_middle_range : Formalism.FourierDecayAlt.LE.PRatioMiddle := by
   intro n lam α β L Y s hαβ hroot hL hnL hs hY1 hY2 hYs1 hYs2
   set D := (β - α) / 3 with hD
@@ -533,55 +511,4 @@ theorem Formalism.FourierDecayAlt.P.imported_results_hold : Formalism.FourierDec
     simp only [add_neg_cancel_right] at key
     rw [S.step_P, S.step_P]
     exact key
-theorem Formalism.FourierDecayAlt.P.reduce_to_boxes : Formalism.FourierDecayAlt.LE.ReduceToBoxes := Formalism.FourierDecayAlt.P.LEx2.le_reduceToBoxes_proof
-theorem Formalism.FourierDecayAlt.P.level_induction : Formalism.FourierDecayAlt.LE.ClaimInduction := Formalism.FourierDecayAlt.P.LEx2.le_claimInduction_proof
-theorem Formalism.FourierDecayAlt.P.induction_all_levels : Formalism.FourierDecayAlt.LE.ClaimAll := Formalism.FourierDecayAlt.P.LEx2.le_claimAll_proof
-theorem Formalism.FourierDecayAlt.P.box_limit_of_induction : Formalism.FourierDecayAlt.LE.BoxLimitFromClaim := Formalism.FourierDecayAlt.P.LEx2.le_boxLimitFromClaim_proof
 theorem Formalism.FourierDecayAlt.P.le_E_proof : Formalism.FourierDecayAlt.LE.LemmaE := Formalism.FourierDecayAlt.P.LEx2.lemmaE_closed
-theorem Formalism.FourierDecayAlt.P.lemma_E_of_parts : Formalism.FourierDecayAlt.LE.LemmaEFromSteps := Formalism.FourierDecayAlt.P.LEx2.le_eFromConstituents_proof
-theorem Formalism.FourierDecayAlt.P.le_weightedIntegrable_proof : Formalism.FourierDecayAlt.LE.WeightedIntegrable :=
-  Formalism.FourierDecayAlt.P.LEx2.derived_energy_L2
-theorem Formalism.FourierDecayAlt.P.derived_coefficient_integrable : Formalism.FourierDecayAlt.LE.EpCoefInt :=
-  Formalism.FourierDecayAlt.P.LEx2.epCoefInt
-theorem Formalism.FourierDecayAlt.P.derived_energy_fifth_estimate : Formalism.FourierDecayAlt.LE.EpStep5 :=
-  Formalism.FourierDecayAlt.P.LEx2.epStep5
-theorem Formalism.FourierDecayAlt.P.derived_energy_sixth_estimate : Formalism.FourierDecayAlt.LE.EpStep6 :=
-  Formalism.FourierDecayAlt.P.LEx2.epStep6
-theorem Formalism.FourierDecayAlt.P.lemma_E_derived : Formalism.FourierDecayAlt.LE.LemmaEprime :=
-  Formalism.FourierDecayAlt.P.LEx2.lemmaEprime
-theorem Formalism.FourierDecayAlt.P.lemma_E_derived_full : Formalism.FourierDecayAlt.LE.LemmaEprimeFull :=
-  Formalism.FourierDecayAlt.P.LEx2.lemmaEprimeFull_closed
-theorem Formalism.FourierDecayAlt.P.lemma_E_derived_of_parts : Formalism.FourierDecayAlt.LE.LemmaEprimeFromSteps :=
-  Formalism.FourierDecayAlt.P.LEx2.lemmaEprimeFromSteps
-theorem Formalism.FourierDecayAlt.P.energy_estimate_joint : Formalism.FourierDecayAlt.LE.EstEJoint := by
-  intro E W _ D S loc hN hRO hAdm hwt hgram hJ0 hEL
-  intro w hw
-  obtain ⟨hwW, hcnt⟩ := Finset.mem_filter.mp hw
-  have hlim : ∀ v, Filter.Tendsto (fun ε : ℝ => (S v).principalHermitianLattice ε (loc w v)) (nhdsWithin 0 (Set.Ioi 0))
-      (nhds ((S v).size (loc w v) * (S v).jn)) := by
-    intro v
-    obtain ⟨hadm, hlen⟩ := hAdm w hwW v
-    exact hEL v (loc w v) hadm (by rw [hN v]; omega)
-  have hprod := tendsto_finset_prod Finset.univ (fun v _ => hlim v)
-  have hsize : ∀ v, (S v).size (loc w v) ≠ 0 := by
-    intro v
-    obtain ⟨⟨hin, -⟩, -⟩ := hAdm w hwW v
-    intro h0
-    rw [Formalism.FourierDecayAlt.LE.Sys.size, List.prod_eq_zero_iff] at h0
-    obtain ⟨x, hx, hx0⟩ := List.mem_map.mp h0
-    have hP : (S v).P x.2 = 0 := abs_eq_zero.mp hx0
-    obtain ⟨s, -, hs⟩ := Finset.prod_eq_zero_iff.mp hP
-    have hxin := hin x hx
-    exact hRO v s (by rw [show -(S v).lam s = x.2 by linarith]; exact hxin)
-  have hjn : ∀ v, (S v).jn = (S v).jsq := fun v =>
-    congrArg (MeasureTheory.integral (S v).B.μ) (funext (hJ0 v))
-  have hlim2 := hprod.div_const (D.wt w)
-  have hval : (∏ v, (S v).size (loc w v) * (S v).jn) / D.wt w = ∏ v, (S v).jsq := by
-    rw [hwt w hwW, Finset.prod_mul_distrib, mul_div_right_comm,
-      div_self (Finset.prod_ne_zero_iff.mpr (fun v _ => hsize v)), one_mul]
-    exact Finset.prod_congr rfl (fun v _ => hjn v)
-  rw [← hval]
-  refine hlim2.congr' ?_
-  filter_upwards [self_mem_nhdsWithin] with ε hε
-  show (∏ v, (S v).principalHermitianLattice ε (loc w v)) / D.wt w = (D.gram ε 0 w [] []).re / D.wt w
-  rw [hgram ε hε w hwW]

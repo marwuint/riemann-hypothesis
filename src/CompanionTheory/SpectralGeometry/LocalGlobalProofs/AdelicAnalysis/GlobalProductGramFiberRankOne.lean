@@ -1,12 +1,12 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleHaarPiRestrictedProductStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleHaarEqProductLocalMeasuresStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberRankOneSetFormulaStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountableStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleHaarEqProductLocalMeasures
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberRankOneSetFormula
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -281,12 +281,12 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 local instance instLCv (v : HeightOneSpectrum (𝓞 F)) : LocallyCompactSpace (Fv F v) := by
-  have h := GlobalTheory.T.completion_is_local_ring F v
+  have h := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   unfold IsLocR at h
   exact h.2.1
 
 local instance instSCv (v : HeightOneSpectrum (𝓞 F)) : SecondCountableTopology (Fv F v) := by
-  have h := GlobalTheory.T.completion_is_local_ring F v
+  have h := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   unfold IsLocR at h
   exact h.2.2.1
 
@@ -294,9 +294,9 @@ local instance instBorv (v : HeightOneSpectrum (𝓞 F)) : BorelSpace (Fv F v) :
 
 local instance instBorf : BorelSpace (Af F) := ⟨rfl⟩
 
-local instance instLCf : LocallyCompactSpace (Af F) := (GlobalTheory.T.adeles_locally_compact_second_countable F).2.1
+local instance instLCf : LocallyCompactSpace (Af F) := (_root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F).2.1
 
-local instance instSCf : SecondCountableTopology (Af F) := (GlobalTheory.T.adeles_locally_compact_second_countable F).2.2.1
+local instance instSCf : SecondCountableTopology (Af F) := (_root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F).2.2.1
 
 theorem nice_nbhd {v : HeightOneSpectrum (𝓞 F)} {lam : Measure (Fv F v)} (h : IsStdV v lam)
     {s : Fv F v} {n : Set (Fv F v)} (hn : n ∈ 𝓝 s) :
@@ -310,9 +310,9 @@ theorem nice_nbhd {v : HeightOneSpectrum (𝓞 F)} {lam : Measure (Fv F v)} (h :
 theorem sA_cpt_open (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {d M : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) {a : ℕ} (ha : 0 < a) :
     IsCompact (sA (M := M) b v a) ∧ IsOpen (sA (M := M) b v a) := by
-  obtain ⟨hTR, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)
+  obtain ⟨hTR, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)
   haveI := hTR
-  have hlat := (GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 M).2.2.2.1 v
+  have hlat := (_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 M).2.2.2.1 v
   have hcont : ∀ c : Fv F v ⊗[F] E, Continuous
       (fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (i : Fin M) => c * X p i) := fun c =>
     continuous_pi fun p => continuous_pi fun i =>
@@ -345,7 +345,7 @@ theorem sA_cpt_open (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {d M : ℕ}
 theorem qF_cont (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (qF (Fv F v) σ J : (Fin 1 → Fin M → Fv F v ⊗[F] E) → Fv F v) := by
-  obtain ⟨-, -, -, -, -, htr, -, -, -, hgram⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)
+  obtain ⟨-, -, -, -, -, htr, -, -, -, hgram⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)
   have h1 := hgram 1 M J
   exact continuous_const.mul (htr.comp ((continuous_apply 0).comp ((continuous_apply 0).comp h1)))
 
@@ -407,10 +407,10 @@ theorem box_tuple (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J : Mat
   have hq : ∀ (X : Fin 1 → Fin M → Af F ⊗[F] E) v, (qF (Af F) σ J X) v = qF (Fv F v) σ J (projV v X) :=
     fun X v => map_qF σ J (evalV F v) X
   have hmeas : ∀ v, MeasurableSet (sA (M := M) b v a ∩ {X | qF (Fv F v) σ J X ∈ V v}) := fun v => by
-    obtain ⟨-, -, -, -, -, -, -, hB, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)
+    obtain ⟨-, -, -, -, -, -, -, hB, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)
     haveI := hB 1 M
     exact ((sA_cpt_open σ hcm b v ha).2.inter ((hV v).preimage (qF_cont σ hcm J v))).measurableSet
-  rw [← GlobalTheory.T.finite_adele_haar_eq_product_local_measures F E σ hcm d b lam hlam lf hlf hlf1 1 M S _ hmeas]
+  rw [← _root_.GlobalTheory.CompanionTheory.SW.WBox.coordW_box F E σ hcm d b lam hlam lf hlf hlf1 1 M S _ hmeas]
   congr 1
   ext X
   constructor
@@ -455,7 +455,7 @@ theorem hasProd_fibre_mass : ∀ (F E : Type) [Field F] [NumberField F] [Field E
     (fun v => (m v (hermScal (Fv F v) σ (algebraMap F _ β)) (sA b v a)).toReal) hε3
   have hne : ∀ v : HeightOneSpectrum (𝓞 F), algebraMap F (Fv F v) β ≠ 0 := fun v =>
     (map_ne_zero (algebraMap F (Fv F v))).2 hβ
-  have hloc := fun v => GlobalTheory.T.local_gram_fiber_rank_one_set_formula F E σ hcm M J hJ d b v (lam v) (hlam v) (m v) (hm v)
+  have hloc := fun v => _root_.GlobalTheory.CompanionTheory.SW.fibre_mass_ratio F E σ hcm M J hJ d b v (lam v) (hlam v) (m v) (hm v)
     (sA b v a) (sA_cpt_open σ hcm b v ha).1 (sA_cpt_open σ hcm b v ha).2
     (algebraMap F (Fv F v) β) (hne v) δ hδ
   choose Uv hUv hUv' using hloc

@@ -170,16 +170,4 @@ theorem word_free_of_unused_positions : Formalism.FourierDecayAlt.Wd.WordFree :=
 theorem word_module_structure : Formalism.FourierDecayAlt.Wd.WordModule := Formalism.FourierDecayAlt.P.Wd5.wordModule_of initial_module_structure letter_module_plus letter_module_minus
   word_free_of_unused_positions
 
-theorem transfer_matrix_factorization : Formalism.FourierDecayAlt.Wd.TTFactor := by
-  intro K A S _ _ _ _ _ _ _ _ QQ w Y
-  induction w with
-  | nil => simp [TTw, Xm, Xp]
-  | cons l w ih =>
-    simp only [TTw, Xm, Xp]
-    split_ifs
-    · rw [ih]
-      simp only [mul_assoc]
-    · rw [ih]
-      simp only [mul_assoc]
-
 end Formalism.FourierDecayAlt.P

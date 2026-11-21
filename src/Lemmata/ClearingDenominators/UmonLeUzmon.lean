@@ -10,10 +10,9 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.DataS
 import Formalism.SharpRestriction.GrowthBounds.DataG
 import Formalism.LocalRingCardinality.DataCD
 import Formalism.FrobeniusOrbits.DiscrMaximalRealCyclotomic
-import Formalism.FrobeniusOrbits.HostOrbitsPlaces
+import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.HostDiffSupport
 import Formalism.FrobeniusOrbits.HostThickExists
-import Formalism.FrobeniusOrbits.HostOrbitCountSg
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ConjEMemHostFIff
 import Formalism.CoboundaryTransfers.Statement
 import Formalism.DegreeFormula.FlagDegFormula
@@ -24,10 +23,14 @@ import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.RealCyclotomicSubfield
 import Formalism.LocalRingCardinality.DataLevel
 import Formalism.SatakeDualWeyl.Statement
 import Formalism.FormalDegreeBessel.StatementG
-import Formalism.FrobeniusOrbits.Statement
 import Formalism.FormalDegreeBessel.StatementDS
 import Formalism.SharpRestriction.CuspSpanNormBounds.Point
-import Formalism.TameInertiaTowers.FinalGroup
+import Formalism.TameInertiaTowers.CentralOrderTwo.OrderOfThreeUnitsTwoPow
+import Formalism.TameInertiaTowers.CentralOrderTwo.TwoAdic
+import Formalism.TameInertiaTowers.CentralOrderTwo.MemDecompositionSubgroupIff
+import Formalism.TameInertiaTowers.CentralOrderTwo.NegOneNeOneUnitsZmodFour
+import Formalism.TameInertiaTowers.CentralOrderTwo.Groups
+import Formalism.TameInertiaTowers.CentralOrderTwo.NormalOrderTwoCentral
 import Formalism.TameInertiaTowers.CentralOrderTwo.Galois
 import Formalism.TameInertiaTowers.CentralOrderTwo.ConjEqInvOfPowEqOne
 import Formalism.FormalDegreeBessel.StatementBF
@@ -42,7 +45,7 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTranspose
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexifiedDerivativeCommutator
 import Formalism.RealPlaceAnalysis.StatementU
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.MemUnitaryGroupIffMulConjTranspose
-import Formalism.RealPlaceAnalysis.StatementD
+import Formalism.RealPlaceAnalysis.StatementA
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.QuadraticInequalityBoundHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.SumOfSquaresIdentityHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CasKHW
@@ -52,7 +55,6 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.QuantumDetHighestWeightHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ShiftedGeneratorEqIteSmulAdd
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.GeneratorCommutatorQuantumDet
 import Formalism.RealPlaceAnalysis.SmoothOnG
-import Formalism.RealPlaceAnalysis.StatementA
 import Formalism.RealPlaceAnalysis.StatementC
 
 universe u_1 u_2

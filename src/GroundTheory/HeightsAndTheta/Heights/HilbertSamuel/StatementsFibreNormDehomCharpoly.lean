@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsFibreNormIntegral
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsFibreNormCharpoly
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
@@ -34,12 +35,6 @@ def FibreNormDehomCharpoly.Statement : Prop :=
       ∀ τ : ℕ, ∀ s ∈ chartLatNm y (fun k => ((q * e k : ℕ) : ℤ)) τ, ∀ j : Fin (D + 1), aeval y (L j) ≠ 0 →
         ∃ c : ℕ → MvPolynomial (Fin (D + 1)) ℚ, IsDehomNormForms y L j (q * τ) s c ∧
           (s ≠ 0 → c (Module.finrank (pullField y L) Ω) ≠ 0)
-
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
 
 end
 

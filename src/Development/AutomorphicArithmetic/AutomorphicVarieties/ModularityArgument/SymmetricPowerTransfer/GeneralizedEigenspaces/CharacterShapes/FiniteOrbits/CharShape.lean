@@ -10,12 +10,6 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Z.Sym.So.CS
 
-section One
-
-variable {G : Type} [CommGroup G]
-
-end One
-
 section Main
 
 variable {I : Type}
@@ -33,15 +27,6 @@ structure D (S : Finset I) (G : I → Type) [∀ v, CommGroup (G v)] where
 variable {S : Finset I} {G : I → Type} [∀ v, CommGroup (G v)]
 
 def sg (d : ∀ v, Fin 3 → G v) : ∀ v, Fin 3 → G v := fun v => ![(d v 2)⁻¹, (d v 1)⁻¹, (d v 0)⁻¹]
-
-def io (i : Fin 3) : (∀ v, G v) →* (∀ v, Fin 3 → G v) where
-  toFun t v := Pi.mulSingle i (t v)
-  map_one' := by
-    funext v
-    exact Pi.mulSingle_one i
-  map_mul' s t := by
-    funext v
-    exact Pi.mulSingle_mul i _ _
 
 namespace D
 
@@ -67,8 +52,6 @@ def Dm (d : ∀ v, Fin 3 → G v) : Prop :=
 def Sd (d : ∀ v, Fin 3 → G v) : Prop :=
   ∀ v ∈ S, L.od v (d v 1) < L.od v (d v 0) ∧ L.od v (d v 2) < L.od v (d v 1)
 
-def Cn (t : ∀ v, G v) : Prop := ∀ v ∈ S, 2 < L.od v (t v)
-
 variable {L}
 
 private theorem Dm.mul {d d' : ∀ v, Fin 3 → G v} (h : L.Dm d) (h' : L.Dm d') : L.Dm (d * d') := by
@@ -83,13 +66,6 @@ private theorem Sd.mul {d d' : ∀ v, Fin 3 → G v} (h : L.Sd d) (h' : L.Dm d')
   obtain ⟨h1, h2⟩ := h v hv
   obtain ⟨h1', h2'⟩ := h' v hv
   simp only [Pi.mul_apply, od_mul]
-  constructor <;> linarith
-
-private theorem Dm.sg {d : ∀ v, Fin 3 → G v} (h : L.Dm d) : L.Dm (sg d) := by
-  intro v hv
-  obtain ⟨h1, h2⟩ := h v hv
-  simp only [CS.sg, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.head_cons, Matrix.tail_cons, od_inv]
   constructor <;> linarith
 
 private theorem dm_one : L.Dm 1 := by
@@ -119,34 +95,9 @@ private theorem Ch.pow (hχ : L.Ch χ) {d : ∀ v, Fin 3 → G v} (hd : L.Dm d) 
   | succ n ih =>
     rw [pow_succ, pow_succ, hχ.mul _ _ (hd.pow n) hd, ih]
 
-section X
-
-variable {X : (∀ v, Fin 3 → G v) →* ℂˣ}
-
-end X
-
 end D
 
 end Main
-
-section Ord
-
-variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-
-private theorem phi_ne (x : kˣ) :
-    IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k (valuation k (x : k)) ≠ 0 := by
-  simp
-
-def ordU : kˣ →* Multiplicative ℤ where
-  toFun x := Multiplicative.ofAdd
-    (-WithZero.log (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k (valuation k (x : k))))
-  map_one' := by simp
-  map_mul' x y := by
-    have hx := phi_ne k x
-    have hy := phi_ne k y
-    rw [Units.val_mul, map_mul, map_mul, WithZero.log_mul hx hy, neg_add, ofAdd_add]
-
-end Ord
 
 end UpperTheory.V.Z.Sym.So.CS
 

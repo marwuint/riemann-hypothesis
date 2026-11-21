@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraFiniteFormsGLSingleCharSpanMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraFiniteFormsGLSingleCharSpanMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarishChandraUniformSmoothingTestFunctionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalCuspFormsFixedLevelKtypesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalCuspFormsFixedLevelKtypes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalFormsSpanLevelStatement
 
 open NumberField GlobalTheory.CuspRep GlobalTheory.HCF GlobalTheory.CuspQuot MeasureTheory
@@ -19,14 +19,14 @@ theorem finiteDimensional_single (E : Type) [Field E] [NumberField E] [IsTotally
     FiniteDimensional ℂ (Submodule.span ℂ (formsGL E a L W {χ} N)) := by
   obtain ⟨n, T, hT⟩ := GlobalTheory.T.finiteDimensional_forms_span_level E a ih L hL W hW χ N
   obtain ⟨α, hα, hrep⟩ := GlobalTheory.T.harishChandra_uniform_smoothing_test_function E a L hL W hW χ N (MeasureTheory.Measure.addHaar) inferInstance
-  have hQ := GlobalTheory.T.finiteDimensional_cuspForms_fixedLevel_Ktypes E a L hL W hW χ N MeasureTheory.Measure.addHaar inferInstance α hα hrep
+  have hQ := _root_.GlobalTheory.HCFCusp.finiteDimensional_cuspSpan E a L hL W hW χ N MeasureTheory.Measure.addHaar inferInstance α hα hrep
   set P := Submodule.span ℂ (formsGL E a L W {χ} N)
   set Q := Submodule.span ℂ {φ | φ ∈ formsGL E a L W {χ} N ∧ IsCuspidal φ.1}
   have h1 : (P.map T).FG := IsNoetherian.noetherian _
   have h2 : (P ⊓ LinearMap.ker T).FG := by
     have hle : P ⊓ LinearMap.ker T ≤ Q := by
       intro φ hφ
-      have hS := GlobalTheory.T.harishChandraFiniteFormsGL_single_char_span_mem E a L W χ N φ hφ.1
+      have hS := _root_.GlobalTheory.HCF.formsGL_single_span E a L W χ N φ hφ.1
       exact Submodule.subset_span ⟨hS, hT φ hS hφ.2⟩
     haveI := Submodule.finiteDimensional_of_le hle
     exact (Submodule.fg_iff_finiteDimensional _).2 inferInstance

@@ -57,10 +57,6 @@ theorem fixed_left {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.
   calc hJ ε x (H *ᵥ w) = hJ ε (H *ᵥ x) (H *ᵥ w) := by rw [hx]
     _ = hJ ε x w := isom hH x w
 
-theorem fix_zd {H : Matrix (Fin n) (Fin n) ℂ} (hz : H *ᵥ F.z = F.z) : H *ᵥ F.zd = F.zd := by
-  show H *ᵥ ((-(F.T : ℂ)⁻¹) • F.z) = (-(F.T : ℂ)⁻¹) • F.z
-  rw [Matrix.mulVec_smul, hz]
-
 theorem H_wb {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε)
     (he : ∀ a, H *ᵥ F.e a = F.e a) (hf : ∀ a, H *ᵥ F.fd a = F.fd a) (hz : H *ᵥ F.z = F.z) (i : Fin k) :
     H *ᵥ F.wb i = ∑ j, mW F H j i • F.wb j := by

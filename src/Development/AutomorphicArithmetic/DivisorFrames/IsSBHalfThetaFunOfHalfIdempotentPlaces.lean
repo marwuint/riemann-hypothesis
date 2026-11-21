@@ -6,7 +6,8 @@ import Development.AutomorphicArithmetic.DivisorFrames.ExistsNeZeroLinearModelVa
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergStableRelationOfVacuaStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoxGraphGraphHeis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitBasisWittModelLocal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddCharStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramHspOf
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilZetaGlobal
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S IsDedekindDomain NumberField Matrix
@@ -195,7 +196,7 @@ theorem UpperTheory.isSBHalf_thetaFun_of_halfIdempotent_places :
   obtain ⟨hB, rfl, -, -, ⟨r, s, hV⟩, ⟨r', s', hW⟩, hM⟩ := hP
   have hcm := hB.cm
   have hstd := hB.std
-  have hψ := GlobalTheory.T.isStdChar_neg_one_of_standardTraceAdelicAddChar D _ hstd
+  have hψ := _root_.GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D _ hstd
   have ht' : ∀ v, t₀ v = (t₁ v).comp D.sp.cm.sig := fun v => AlgHom.ext (ht v)
   choose z hz0 hz using fun v : P => UpperTheory.exists_ne_zero_linearModel_vacuum_eq_smul _ _ _ Bs _ _ Vs Ws M r s r' s' hB hV hW hM v.1 (t₁ v) (t₀ v) (ht v)
     (b v) (c v) (ι v) (hι v)

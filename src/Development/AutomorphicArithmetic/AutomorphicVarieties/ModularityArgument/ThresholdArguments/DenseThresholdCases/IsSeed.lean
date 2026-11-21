@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.DiscreteSeriesCoefficientsCuspidal
+import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.SlopeTestRemainingChoices
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.IsAutCsdA
 
@@ -11,13 +11,6 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Base
 open scoped Matrix
 namespace UpperTheory.V.Sd
-section Sym
-variable (R : Type) [CommRing R]
-variable {Γ k : Type} [Group Γ] [Field k]
-end Sym
-section Cong
-variable {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] {n : ℕ}
-end Cong
 section Gal
 variable {Ω : Type} [Field Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
 variable {F : Type} [Field F] [NumberField F] [Algebra F Ω]

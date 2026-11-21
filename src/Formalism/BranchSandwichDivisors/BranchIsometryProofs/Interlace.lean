@@ -41,27 +41,4 @@ theorem interlaceIdentities : InterlaceIdent := by
     push_cast
     omega
 
-theorem interlaceTelescope_statement : InterlaceTelescope := by
-  intro n lam sg h p q hpq
-  have hpq' := Fin.le_iff_val_le_val.mp hpq
-  obtain ⟨k, hk⟩ : ∃ k, q.val = p.val + k := ⟨q.val - p.val, by omega⟩
-  induction k generalizing q with
-  | zero =>
-    have : q = p := Fin.ext (by omega)
-    subst this
-    simp
-  | succ k ih =>
-    have hlt : p.val + k < n := by omega
-    have hq1 : p ≤ (⟨p.val + k, hlt⟩ : Fin n) := Fin.le_iff_val_le_val.mpr (by simp)
-    have ih' := ih ⟨p.val + k, hlt⟩ hq1 (by simp) rfl
-    have hIcc : Finset.Icc p q = insert q (Finset.Icc p ⟨p.val + k, hlt⟩) := by
-      ext x
-      simp only [Finset.mem_Icc, Finset.mem_insert, Fin.le_iff_val_le_val, Fin.ext_iff]
-      omega
-    rw [hIcc, Finset.sum_insert (by simp only [Finset.mem_Icc, Fin.le_iff_val_le_val]; omega)]
-    have hq := (h q).1
-    have hcs : q.castSucc = (⟨p.val + k, hlt⟩ : Fin n).succ := Fin.ext (by simp; omega)
-    rw [hcs] at hq
-    linarith
-
 end Formalism.BranchingDeterminantCap

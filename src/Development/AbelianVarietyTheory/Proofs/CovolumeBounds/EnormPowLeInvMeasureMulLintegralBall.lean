@@ -315,37 +315,6 @@ theorem measurePreserving_toLp_complex :
     exact_mod_cast (ENNReal.mul_eq_right h0 ht).1 hb
   rw [h, h1, one_smul]
 
-theorem preimage_toLp_ball_complex {r : ℝ} (hr : 0 < r) :
-    (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι) ⁻¹' ball 0 r =
-      {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < r ^ 2} := by
-  ext x
-  simp [EuclideanSpace.norm_eq, Real.sqrt_lt' hr]
-
-theorem volume_sum_norm_sq_lt {r : ℝ} (hr : 0 < r) :
-    volume {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < r ^ 2} =
-      ENNReal.ofReal (π ^ Fintype.card ι * r ^ (2 * Fintype.card ι) /
-        (Fintype.card ι).factorial) := by
-  rw [← preimage_toLp_ball_complex hr,
-    measurePreserving_toLp_complex.measure_preimage measurableSet_ball.nullMeasurableSet,
-    volume_ball_euclideanSpace_complex 0 hr]
-
-theorem enorm_pow_mul_lintegral_sum_norm_sq_lt_le {H : Type*} [NormedAddCommGroup H]
-    [NormedSpace ℂ H] [CompleteSpace H] {R : ℝ} {φ : (ι → ℂ) → H}
-    (hφ : DifferentiableOn ℂ φ {x | ∑ i, ‖x i‖ ^ 2 < R}) {w : ℝ → ℝ≥0∞} (hw : Measurable w)
-    (n : ℕ) :
-    ‖φ 0‖ₑ ^ n * ∫⁻ z in {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < R}, w (∑ i, ‖z i‖ ^ 2) ≤
-      ∫⁻ z in {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < R}, ‖φ z‖ₑ ^ n * w (∑ i, ‖z i‖ ^ 2) := by
-  have hq : Continuous fun x : ι → ℂ => ∑ i, ‖x i‖ ^ 2 := by fun_prop
-  have ho : IsOpen {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < R} := isOpen_lt hq continuous_const
-  refine enorm_pow_mul_lintegral_le_of_balanced volume ho.measurableSet ?_
-    (fun _ hz => hφ.differentiableAt (ho.mem_nhds hz)) (w := fun z => w (∑ i, ‖z i‖ ^ 2))
-    (hw.comp hq.measurable) (fun c hc z _ => by simp [hc]) n
-  rintro c hc _ ⟨z, hz, rfl⟩
-  simp only [mem_ofPred_eq, Pi.smul_apply, norm_smul] at hz ⊢
-  refine lt_of_le_of_lt (Finset.sum_le_sum fun i _ => ?_) hz
-  gcongr
-  exact mul_le_of_le_one_left (norm_nonneg _) hc
-
 theorem submean_sq_closedBall {D : ℕ} {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H]
     [CompleteSpace H] {r : ℝ} (hr : 0 < r) {φ : EuclideanSpace ℂ (Fin D) → H}
     (hφ : DifferentiableOn ℂ φ (ball 0 r)) :

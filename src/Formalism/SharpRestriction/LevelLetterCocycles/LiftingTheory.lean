@@ -153,69 +153,6 @@ def coreWR (W : LocWach PD LL O v n) (C : ℝ) : Prop :=
         (rI W F i : ℝ) ≤ C * (Gc / PD.p + (Hmax n Mi hi : ℝ) / ((PD.p : ℝ) - 1) ^ (j + 1) +
           (1 + Real.log ((Hmax n Mi hi : ℝ) + 1)))
 
-def coreWS (W : LocWach PD LL O v n) : Prop :=
-  CaseA W → ∀ (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (Mi hi : ZMod n → ℕ),
-    Sur W F → JumpsLet W T₁ Mi hi → ∀ i : ZMod n,
-      sI W F i ≤ Hmax n Mi hi ∧
-      ∀ (j : ℕ) (Gc : ℝ), 0 ≤ Gc → (∀ a : ℕ, 1 ≤ a → a ≤ j →
-          ((Mi (i + (a : ZMod n)) + hi (i + (a : ZMod n)) : ℕ) : ℝ) ≤ 2 * Gc) →
-        (sI W F i : ℝ) ≤ (2 * Gc + cH PD.p (Hmax n Mi hi) + 3) * ((PD.p : ℝ) - 1) / ((PD.p : ℝ) - 2) +
-          (Hmax n Mi hi : ℝ) / ((PD.p : ℝ) - 1) ^ j
-
-theorem ws_step (b q x x' y w : ℝ) (j : ℕ) (hq : 2 ≤ q) (h1 : x ≤ w + x' / q) (hw : w ≤ b)
-    (h2 : x' ≤ b * q / (q - 1) + y / q ^ j) : x ≤ b * q / (q - 1) + y / q ^ (j + 1) := by
-  have hq0 : 0 < q := by linarith
-  have hq1 : 0 < q - 1 := by linarith
-  have h3 : x' / q ≤ (b * q / (q - 1) + y / q ^ j) / q := div_le_div_of_nonneg_right h2 hq0.le
-  have h4 : (b * q / (q - 1) + y / q ^ j) / q = b / (q - 1) + y / q ^ (j + 1) := by
-    field_simp
-    ring
-  have h5 : b + b / (q - 1) = b * q / (q - 1) := by
-    field_simp
-    ring
-  linarith
-
-theorem coreWS_of (W : LocWach PD LL O v n) (hX : coreWX W) (h2 : WachExponentRecursion W) : coreWS W := by
-  intro hA T₁ T₂ F Mi hi hS hJ
-  have hH : ∀ i : ZMod n, sI W F i ≤ Hmax n Mi hi := by
-    intro i
-    apply Nat.sInf_le
-    have h := hX T₁ T₂ F Mi hi hS hJ i
-    have hXπ : W.X = letπ := by simp [LocWach.X, hA.2.1]
-    rwa [hXπ] at h
-  intro i
-  refine ⟨hH i, ?_⟩
-  intro j Gc hG
-  have hp3 : 3 ≤ PD.p := by
-    have h1 := PD.hp.two_le
-    have h2 := hA.2.2
-    omega
-  have hq : (2 : ℝ) ≤ (PD.p : ℝ) - 1 := by
-    have : (3 : ℝ) ≤ (PD.p : ℝ) := by exact_mod_cast hp3
-    linarith
-  have hpq : (PD.p : ℝ) - 2 = ((PD.p : ℝ) - 1) - 1 := by ring
-  rw [hpq]
-  induction j generalizing i with
-  | zero =>
-    intro _
-    have h1 : (sI W F i : ℝ) ≤ Hmax n Mi hi := by exact_mod_cast hH i
-    have hc : (0 : ℝ) ≤ (cH PD.p (Hmax n Mi hi) : ℝ) := Nat.cast_nonneg _
-    have h3 : 0 ≤ (2 * Gc + cH PD.p (Hmax n Mi hi) + 3) * ((PD.p : ℝ) - 1) / (((PD.p : ℝ) - 1) - 1) :=
-      div_nonneg (mul_nonneg (by linarith) (by linarith)) (by linarith)
-    simp only [pow_zero, div_one]
-    linarith
-  | succ j ih =>
-    intro hB
-    have hw := h2 hA T₁ T₂ F Mi hi hS hJ (i + 1)
-    rw [add_sub_cancel_right] at hw
-    have hB1 := hB 1 le_rfl (by omega)
-    rw [Nat.cast_one] at hB1
-    have hi' := ih (i + 1) (fun a ha1 ha2 => by
-      have h := hB (a + 1) (by omega) (by omega)
-      have e : i + ((a + 1 : ℕ) : ZMod n) = i + 1 + (a : ZMod n) := by push_cast; ring
-      rwa [e] at h)
-    exact ws_step _ _ _ _ _ _ j hq hw (by linarith) hi'
-
 def coreLiftA (W : LocWach PD LL O v n) : Prop :=
   CaseA W → ∀ (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (Mi hi : ZMod n → ℕ),
     Sur W F → JumpsLet W T₁ Mi hi →
@@ -543,13 +480,6 @@ def WachResultConstant (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
     coreWR ((HW l).W K s LL h) C
 
-def WachExponentUpperBound (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
-    coreWS ((HW l).W K s LL h)
-
-theorem wach_exponent_bound_of_kills (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (hX : WachKillsQuotients D HW F) (h2 : WachExponentRecursionAll D HW F) : WachExponentUpperBound D HW F :=
-  fun l _ K s LL h => coreWS_of _ (hX l K s LL h) (h2 l K s LL h)
-
 def ConclusionH (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
     coreH ((HW l).W K s LL h)
@@ -656,8 +586,5 @@ def admitted (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf 
     adm17 D HW F ∧ adm18 D HW F ∧ adm19 D HW F ∧ adm20 D HW F ∧ adm21 D HW F ∧ adm22 D HW F ∧ adm23 D HW F
 
 def Stmt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (C CA CB CK : ℝ) : Prop := admitted D HW F Cm → aux₃ D HW F C CA CB CK
-
-def RealisationStatementAll : Prop := ∃ C CA CB CK : ℝ, ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
-    (Cm : CmpOf D.loc D.locA HW F), Stmt D HW F Cm C CA CB CK
 
 end Formalism.MainNotions.LiftingTheory

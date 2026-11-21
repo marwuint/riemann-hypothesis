@@ -26,8 +26,4 @@ theorem numStandardTable_pos {m : ℕ} (lam : Fin m → ℕ) : 0 < numStandardTa
 theorem RectangleTablePos.intersectionNumber_baseChange : RectangleTablePos.Statement :=
   fun r a => numStandardTable_pos (rectangle r a)
 
-theorem RectangleTablePos.proof (_h : FrobeniusDimensionFormula.Statement) :
-    RectangleTablePos.Statement :=
-  RectangleTablePos.intersectionNumber_baseChange
-
 end GroundTheory.Heights₂.Heights.RestTerms

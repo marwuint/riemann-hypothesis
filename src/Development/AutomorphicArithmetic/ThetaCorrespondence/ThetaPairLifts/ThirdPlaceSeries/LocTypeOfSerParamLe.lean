@@ -1,5 +1,5 @@
 import Development.DiscreteGroups.GlobalIrreducibility.LocTypeOfSerParamLe
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LocComp
 
 set_option synthInstance.maxHeartbeats 200000

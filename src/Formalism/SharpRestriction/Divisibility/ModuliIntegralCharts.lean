@@ -367,9 +367,6 @@ def secJet (y : L.Pt L.Xm) (La : L.Unim) (n DF : ℕ) (sg : L.At y La n → L.Th
 
 end Loc
 
-def Dom {α : Type} [LE α] (r : ℕ) (l : PsiT D → ℕ → α) : Prop :=
-  ∀ τ i, 1 ≤ i → i < r → l τ (i + 1) ≤ l τ i
-
 def NHyp (D : Formalism.BasicNotions.D7) (p n : ℕ) : Prop :=
   Odd n ∧ Nat.Coprime n p ∧
     ((∃ mm : ℕ, n = mm ^ 2) ∨ ∃ π : 𝓞 D.host.E, (π : D.host.E) ∈ D.host.K ∧
@@ -673,11 +670,6 @@ def aHTI (G : ExtA D L) : Prop :=
     ∀ (y : L.DVP) (e : L.Ext y) (χ : L.Chart (L.Xn n) y e), 0 < L.dvRho y → IsChart L χ →
       G.pbPrinc (G.htIdl h) χ
 
-def p0 (_G : ExtA D L) : Prop :=
-  ∀ l : PsiT D → ℕ → ℤ,
-    (∀ f y, L.nrmRef l f y = L.nrm (L.Lb l) f y) ∧
-    (L.H0 (L.Lb l) : Set _) = {f | ∀ y, L.nrmRef l f y ≤ 1}
-
 def pC (G : ExtA D L) : Prop :=
   ∀ y : L.DVP, 0 < L.dvRho y → ∀ N,
     (∃ e : L.Ext y, ∀ Z, G.ZZ N Z → ∃ χ : L.Chart Z y e, IsChart L χ) ∧
@@ -699,51 +691,6 @@ def pORD (G : ExtA D L) : Prop :=
   ∀ N Z, G.ZZ N Z → ∀ F : L.Sh Z, L.IsInv F →
     ∀ et ∈ L.H0 F, ∀ (i : ℚ) (φ : L.PL), L.divGe F et i φ →
       ∀ y, L.nrm F et y ≤ (p : ℝ) ^ (-((i : ℝ) * L.phiAt φ y))
-
-def pFJ (_G : ExtA D L) : Prop :=
-  ∀ l (f : L.Sec (L.Lb l)), (∀ y, L.nrmRef l f y ≤ 1) → ∀ t χ, L.fjN l f t χ ≤ 1
-
-def pHTa (G : ExtA D L) : Prop :=
-  ∀ n, 3 ≤ n → (∃ h : G.HTn n, G.IsHT h) ∧
-    ∀ y : L.Pt (L.Xn n), LinearMap.ker (G.htC y) = G.lieGt1 y ∧
-      ∀ x, x ∈ G.lieGt1 y ↔ ∀ z ∈ G.lieGt1 y, G.psiC y x z = 0
-
-def pHTb (G : ExtA D L) : Prop :=
-  ∀ n, 3 ≤ n →
-    (∀ h : G.HTn n, G.IsHT h → ∀ y : L.Pt (L.Xn n),
-      G.omP h y = Ospan (C := (L.fld y).C) (Set.range (L.ht y)) ∧
-      G.omP h y ≤ L.om y ∧
-      (∀ v ∈ L.om y, ((p : (L.fld y).C) ^ 2) • v ∈ G.omP h y) ∧
-      ∀ τ, G.wFib h y τ = (G.lieGt1 y ⊓ LinearMap.range (G.eT y τ)).toAddSubgroup ⊓
-        Ospan (C := (L.fld y).C) (Set.range (G.iT y))) ∧
-    ∀ Z', L.IsHTBlowup Z' (L.Xn n) →
-      G.ZZ n Z' ∧ G.ZZ n (G.flagCl Z' (G.htFlags Z')) ∧
-      (∀ y : L.Pt Z', G.omPat y = Ospan (C := (L.fld y).C) (Set.range (L.ht y)) ∧
-        G.omPat y ≤ L.om y ∧ ∀ v ∈ L.om y, ((p : (L.fld y).C) ^ 2) • v ∈ G.omPat y) ∧
-      L.IsLocFree (G.omSh Z') ∧
-      (∀ s τ, L.IsLocFree (L.eOmP Z' s τ)) ∧
-      (∀ τ, L.ExactMod (L.htSES Z' τ) (n - 2))
-
-def pHTc (G : ExtA D L) : Prop :=
-  ∀ n, 3 ≤ n → ∀ Z', L.IsHTBlowup Z' (L.Xn n) →
-    (∀ l : PsiT D → ℕ → ℝ, Dom r l → L.nefHT Z' l ∧ L.nefQ l) ∧
-    (∀ y : G.BPt Z', (∀ τ, G.eOmB y τ = (G.omPB y).map (G.eB y τ).toAddMonoidHom) ∧
-      G.omPB y ≤ G.omB y ∧ ∀ v ∈ G.omB y, ((p : (G.bfld y).C) ^ 2) • v ∈ G.omPB y) ∧
-    L.bdryLoci Z'
-
-def pHTd (_G : ExtA D L) : Prop :=
-  ∀ n, 3 ≤ n → ∀ Z', L.IsHTBlowup Z' (L.Xn n) → ∀ l : PsiT D → ℕ → ℤ, L.descK Z' l
-
-def pGG (_G : ExtA D L) : Prop :=
-  ∃ B : ∀ n, 3 ≤ n → L.BT n, (∀ n h, L.extA (B n h)) ∧
-    ∀ n (h : 3 ≤ n), L.compat (B n h) (B (n + 1) (Nat.le_succ_of_le h))
-
-def pDR (_G : ExtA D L) : Prop :=
-  (∀ CC : L.Crv, ((p : ℤ) - 2) * L.Pm CC ≤ L.eDeg CC ∧
-      ∀ τ, L.degLie CC τ false = L.degLie CC τ true) ∧
-    ∀ μ : PsiT D → ℕ → ℝ, Dom r μ →
-      (∀ τ τ', 2 * (D.R.f : ℝ) * (μ τ' 1 - μ τ' r) ≤ ((p : ℝ) - 2) * (μ τ j - μ τ (j + 1))) →
-      ∀ CC, 0 ≤ L.degLdR CC μ
 
 end ExtA
 
@@ -790,14 +737,6 @@ structure Prov (D : Formalism.BasicNotions.D7) where
 
 variable {D : Formalism.BasicNotions.D7}
 
-theorem Prov.dP_le (X : Prov D) (w : X.Dat) (p : ℕ) {Z : (X.loc w p).Mdl} (y : (X.loc w p).Pt Z) :
-    (X.loc w p).dP y ≤ 2 * D.R.f * min (X.jj w) (X.rk w - X.jj w) :=
-  (X.loc w p).dP_le (X.jj_range w).1 (X.jj_range w).2 y
-
-theorem Prov.dP_le_of (X : Prov D) {w : X.Dat} {m : ℕ} (hm : min (X.jj w) (X.rk w - X.jj w) ≤ m) (p : ℕ)
-    {Z : (X.loc w p).Mdl} (y : (X.loc w p).Pt Z) : (X.loc w p).dP y ≤ 2 * D.R.f * m :=
-  (X.dP_le w p y).trans (Nat.mul_le_mul_left _ hm)
-
 def adm1 (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, p.Prime → (X.ex w p).aHT
 
 def adm2 (_D : Formalism.BasicNotions.D7) (_X : Prov _D) : Prop := Formalism.HadamardInequality.Transference
@@ -828,8 +767,6 @@ def admitted (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
   adm1 D X ∧ adm2 D X ∧ adm3 D X ∧ ArchimedeanSignatureMatching D X ∧ adm5 D X ∧ adm6 D X ∧ adm7 D X ∧ adm8 D X ∧ adm9 D X ∧
     adm10 D X ∧ adm11 D X ∧ adm12 D X ∧ adm13 D X
 
-def Conclusion1 (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, p.Prime → (X.ex w p).p0
-
 def Conclusion2 (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, p.Prime → (X.ex w p).pC
 
 def PointsLemma (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, p.Prime → (X.ex w p).pNV
@@ -837,18 +774,6 @@ def PointsLemma (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, 
 def Conclusion4 (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, p.Prime → (X.ex w p).pTR
 
 def Conclusion5 (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, p.Prime → (X.ex w p).pORD
-
-def Conclusion6 (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop := ∀ w p, p.Prime → (X.ex w p).pFJ
-
-def division_rows_rational_lattice (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
-  ∀ w p, p.Prime →
-    (∀ La, ∃ P : (X.loc w p).LBG La, (X.loc w p).resQ P = (X.loc w p).PPq La ∧
-      (X.loc w p).symmG P ∧ (X.loc w p).rigG P ∧
-      ∀ y, ∃ M : (X.loc w p).LBB y La, (X.loc w p).principal M ∧
-        (X.loc w p).resGt P y = (X.loc w p).prPull M) ∧
-    (∀ Z (y : (X.loc w p).Pt Z) (a : (X.loc w p).Ylat y),
-      (X.loc w p).psiV y a = (X.loc w p).be y a a / 2) ∧
-    (X.loc w p).IsInv (X.loc w p).piPP
 
 def Conclusion8 (D : Formalism.BasicNotions.D7) (X : Prov D) (ka : ℝ) : Prop :=
   ∀ g : ℕ, 1 ≤ g → ∃ c : ℕ, 1 ≤ c ∧ 4 ∣ c ∧ ∃ kf : X.KF g c, ∀ z, X.kfNorm kf z = Real.exp (c * g * ka)
@@ -870,16 +795,6 @@ def LinkConditions (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
           t • v ∈ Ospan (C := ((X.loc w p).fld y).C)
             ((X.loc w p).secJet y ((X.loc w p).latStd nW) n DF sg)
 
-def jet_form_downstream' (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
-  ∀ w p, p.Prime → ∀ n DF nW : ℕ, NHyp D p n → 3 * DF + 2 ≤ n →
-    ∀ y : (X.loc w p).Pt (X.loc w p).Xm,
-      ∀ sg, (X.loc w p).SymLift y ((X.loc w p).latStd nW) n sg →
-      ∀ t : ((X.loc w p).fld y).C,
-        ‖t‖ ≤ (p : ℝ) ^ (-((X.loc w p).cJ y n DF * (X.loc w p).phiCy y)) →
-        ∀ v ∈ (X.loc w p).intJet y ((X.loc w p).latStd nW) n DF,
-          t • v ∈ Ospan (C := ((X.loc w p).fld y).C)
-            ((X.loc w p).secJet y ((X.loc w p).latStd nW) n DF sg)
-
 def RunConditions (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
   ∀ w p, p.Prime → ∀ (y : (X.loc w p).Pt (X.loc w p).Xm),
     (∀ σ : PsiT D × Bool,
@@ -888,69 +803,6 @@ def RunConditions (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
       (∀ u u', (X.loc w p).kapGt y σ u u' =
         (X.loc w p).kapB y σ ((X.loc w p).resB y σ u) ((X.loc w p).resB y σ u'))) ∧
     ∀ P s, (X.loc w p).evA y P s = (X.loc w p).evGt y P s
-
-def HodgeTateGroupConditions (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
-  ∀ w p, p.Prime → (X.ex w p).pHTa ∧ (X.ex w p).pHTb ∧ (X.ex w p).pHTc ∧ (X.ex w p).pHTd ∧
-    (X.ex w p).pGG
-
-def DeRhamUnramified (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
-  ∀ w (p : ℕ), p.Prime → p ≠ 2 → DV.UnramE D p → (X.ex w p).pDR
-
-def Prov.LevelForIntegralModel (X : Prov D) (w : X.Dat) : Prop :=
-  X.levIn w 12 ∨ X.levIn w (D.host.g 0 * D.host.g 1)
-
-def GlobalIntegralModel (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
-  ∀ w, X.LevelForIntegralModel w → ∃ (Z : X.Xg w) (m₀ : ℕ) (BD : X.DivX Z),
-    (∀ p : ℕ, p.Prime → ∃ d : (X.ex w p).IvD none,
-      X.bc p Z = (X.ex w p).blowUp (X.loc w p).Xm ((X.ex w p).jIdl none d)) ∧
-    X.effD BD ∧ X.noVertD BD ∧ X.posBdD BD ∧ X.ampleOnAbelianBase Z m₀ BD
-
-def IntegralModelAndNefLimit (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
-  GlobalIntegralModel D X ∧ ∀ w (M : X.Met w), X.nefFib M → X.ampleGen M → X.limRA M
-
-def familyJetConsequence (D : Formalism.BasicNotions.D7) (X : Prov D) : Prop :=
-  Conclusion1 D X ∧ Conclusion2 D X ∧ PointsLemma D X ∧ Conclusion4 D X ∧ Conclusion5 D X ∧ Conclusion6 D X ∧ division_rows_rational_lattice D X ∧ LinkConditions D X ∧
-    RunConditions D X ∧ HodgeTateGroupConditions D X ∧ DeRhamUnramified D X ∧ IntegralModelAndNefLimit D X
-
-def Stmt (D : Formalism.BasicNotions.D7) (X : Prov D) (ka : ℝ) : Prop :=
-  admitted D X → familyJetConsequence D X ∧ Conclusion8 D X ka ∧ KeyFormulaLineBundle D X ka
-
-abbrev ObjClass : Type 1 := ∀ {D : Formalism.BasicNotions.D7}, Prov D → Prop
-
-def UniformExportStatement (𝒪 : ObjClass) (ka : ℝ) : Prop :=
-  ∀ (D : Formalism.BasicNotions.D7) (X : Prov D), 𝒪 X → Stmt D X ka
-
-def AdmF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ∀ x (i : Fm.Ix x), Prov (Fm.D x i)) : Prop :=
-  ∀ x (i : Fm.Ix x), admitted (Fm.D x i) (XF x i)
-
-def ChernFormFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ∀ x (i : Fm.Ix x), Prov (Fm.D x i)) : Prop :=
-  ∀ x (i : Fm.Ix x), familyJetConsequence (Fm.D x i) (XF x i)
-
-def KeyFormulaFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ∀ x (i : Fm.Ix x), Prov (Fm.D x i)) (ka : ℝ) : Prop :=
-  ∀ x (i : Fm.Ix x), Conclusion8 (Fm.D x i) (XF x i) ka ∧ KeyFormulaLineBundle (Fm.D x i) (XF x i) ka
-
-def KudlaFamilyStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ∀ x (i : Fm.Ix x), Prov (Fm.D x i)) (ka : ℝ) : Prop :=
-  AdmF Fm XF → ChernFormFamily Fm XF ∧ KeyFormulaFamily Fm XF ka
-
-theorem rules_family_of_uniform {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
-    (XF : ∀ x (i : Fm.Ix x), Prov (Fm.D x i)) (hO : ∀ x i, 𝒪 (XF x i)) : KudlaFamilyStatement Fm XF ka :=
-  fun a => ⟨fun x i => (h _ _ (hO x i) (a x i)).1, fun x i => (h _ _ (hO x i) (a x i)).2⟩
-
-def FamilyPacketImplication {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (XF : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Prov (Fm.D x i)) (ka : ℝ) : Prop :=
-  (∀ x hx i, admitted (Fm.D x i) (XF x hx i)) →
-    ∀ x hx i, familyJetConsequence (Fm.D x i) (XF x hx i) ∧ Conclusion8 (Fm.D x i) (XF x hx i) ka ∧ KeyFormulaLineBundle (Fm.D x i) (XF x hx i) ka
-
-theorem familyPacket_of_uniformPacket {𝒪 : ObjClass} {ka : ℝ} (h : UniformExportStatement 𝒪 ka) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
-    (XF : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Prov (Fm.D x i)) (hO : ∀ x hx i, 𝒪 (XF x hx i)) : FamilyPacketImplication Fm XF ka :=
-  fun a x hx i => h _ _ (hO x hx i) (a x hx i)
-
-def DerivativeStatementDesign (Fm : Formalism.MainNotions.DFamP)
-    (XF : ∀ ε h0 h1 x (i : (Fm ε h0 h1).Ix x), Prov ((Fm ε h0 h1).D x i)) : Prop :=
-  ∃ ka : ℝ, ∀ ε h0 h1, KudlaFamilyStatement (Fm ε h0 h1) (XF ε h0 h1) ka
-
-def AdmissibleEpsilonFamily (Fm : Formalism.MainNotions.DFamP)
-    (XF : ∀ ε h0 h1 x, (Fm ε h0 h1).x1 < x → ∀ i : (Fm ε h0 h1).Ix x, Prov ((Fm ε h0 h1).D x i)) : Prop :=
-  ∃ ka : ℝ, ∀ ε h0 h1, FamilyPacketImplication (Fm ε h0 h1) (XF ε h0 h1) ka
 
 end Formalism.MainNotions.ModuliIntegralCharts
 

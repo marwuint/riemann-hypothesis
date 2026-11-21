@@ -178,21 +178,6 @@ theorem reducedNorm_one : reducedNorm F C 1 = 1 := by
 end GlobalTheory.Nrd
 
 namespace GlobalTheory.Nrd
-open scoped TensorProduct
-open NumberField
-
-section Inv
-variable {F C : Type} [Field F] [NumberField F] [IsCMField F] [Ring C] [Algebra F C]
-    [FiniteDimensional F C] [Algebra.IsCentral F C] [IsSimpleRing C]
-
-end Inv
-
-section BaseChange
-variable {F C : Type} [Field F] [Ring C] [Algebra F C] [FiniteDimensional F C]
-    [Algebra.IsCentral F C] [IsSimpleRing C]
-
-end BaseChange
-
 end GlobalTheory.Nrd
 
 namespace GlobalTheory.Nrd

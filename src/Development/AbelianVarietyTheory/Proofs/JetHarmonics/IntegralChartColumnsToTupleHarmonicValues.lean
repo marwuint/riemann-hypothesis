@@ -2,12 +2,12 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBCPf
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BoxTupOfColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BoxTupOfColumns
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralChartDirectionsAreEigenvectors
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFramesEL
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralChartFormalBiext
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ChartFromPointDatumOfLawsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatementStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ChartFromPointDatumOfLaws
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumSupportRename
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.CanonGaugeIndependenceHarmonic
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.RosIdSt
@@ -135,9 +135,9 @@ theorem transfer_columns : Laws → Laws2 → Laws4 → TwistBaseChangeStatement
   obtain ⟨hF, hA, hG, hcan⟩ := e7 F
   obtain ⟨τ, hτ, hEL, -⟩ := frame1St_holds E H T.V C.I.G P (chD C.ch) C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT
     C.xT C.eT C.wPT C.chartT C.frameT C.primT
-  obtain ⟨x, hx, j, hj, u, hu, B, hB, ρ, hρ, ε, hrel, hgerm⟩ := GlobalTheory.T.chartFromPointDatum_of_laws L1 L2 L4 TW E H T.V T.cpl C.I.G P tors ϖ hϖ
+  obtain ⟨x, hx, j, hj, u, hu, B, hB, ρ, hρ, ε, hrel, hgerm⟩ := _root_.GlobalTheory.ChartLink.link L1 L2 L4 TW E H T.V T.cpl C.I.G P tors ϖ hϖ
     Q hQ F v hv (chD C.ch) BT C.tgT C.xT C.eT C.wPT (by rw [e1, e2]; exact C.chartT)
-    (by rw [e1, e2, e3, e4, e5, e6]; exact C.frameT) C.primT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C) hFr τ hτ
+    (by rw [e1, e2, e3, e4, e5, e6]; exact C.frameT) C.primT (_root_.GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y C) hFr τ hτ
     (by rw [e2]; exact hEL)
   refine ⟨x, hx, j, hj, u, hu, B, hB, ρ, hρ, (Transfer.law_eq hrel).trans e1, (Transfer.act_eq hrel).trans e2, ?_⟩
   intro g g' π hg hg' hπ n D' A' G' _ _ pD pA pG U' PU _ oD' hxe hon s s' t f hcol
@@ -147,7 +147,7 @@ theorem transfer_columns : Laws → Laws2 → Laws4 → TwistBaseChangeStatement
     rw [_root_.mul_assoc, ← map_pow, ← map_mul, hun, map_one, _root_.mul_one]
   choose σ hσ1 hσ2 using fun b => hgerm (g' * g) (t b) (f b) _ (hcol b).2.2.2 (hf b)
   choose p xx w ζ t₀ h1 h2 h3 h4 h5 h6 h7 using fun b => (hcol b).2.2.1
-  obtain ⟨S, S₂, p', w', ζ', x', T₀, T₁, σ', hbox, -⟩ := GlobalTheory.T.boxTupSt_of_laws_of_twistBaseChange L1 L2 L4 TW E H Dw l Xo c T io y C P ϖ hϖ Q hQ F v
+  obtain ⟨S, S₂, p', w', ζ', x', T₀, T₁, σ', hbox, -⟩ := _root_.GlobalTheory.boxTup_of_columns L1 L2 L4 TW E H Dw l Xo c T io y C P ϖ hϖ Q hQ F v
     g g' π hg hg' hπ τ hτ hEL n D' A' G' pD pA pG U' PU oD' hxe hon s s' t₀ t p w ζ xx σ
     (fun b => f b * MvPowerSeries.map (algebraMap T.V F) un)
     (fun b => ⟨(hcol b).1, (hcol b).2.1, h3 b, h4 b, h5 b, h1 b, h2 b, h6 b, h7 b, hσ1 b, hσ2 b⟩)

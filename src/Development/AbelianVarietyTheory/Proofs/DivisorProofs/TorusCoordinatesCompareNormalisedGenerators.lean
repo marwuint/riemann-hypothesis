@@ -118,7 +118,7 @@ theorem coord_of_lin : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), A
   have down₂ : ∀ χ e (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G₂).left) (z : Z) (J), Good D₂.toPre.P.L z J →
       val ((U₂.gt (e + 1)).t χ) (r ≫ thickMap R I e G₂) z J = val ((U₂.gt e).t χ) r z J :=
     fun χ e Z r z J hJ => (val_pull hJ _ _ _).symm.trans (val_corr hJ (U₂.gt_t e χ) r)
-  obtain ⟨u, hu, uv⟩ := T.exists_generator_of_compatible_thickening_generators R I hC D₁.toPre.P.A D₁.toPre.P.isAb.smooth
+  obtain ⟨u, hu, uv⟩ := _root_.GlobalTheory.Unif.exists_gen_of_thick R I hC D₁.toPre.P.A D₁.toPre.P.isAb.smooth
     (AbProj.isProjBy_of_isPullback D₁.toPre.P (IsPullback.id_horiz _)) _ (JN D₁.toPre D₂.toPre) _ _ _ _ hB
     (fun _ _ => rfl) v hv (fun e z J hJ => by
       have := (U₁.gt e).q_flat

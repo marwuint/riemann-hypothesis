@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ReadsMove
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartLastStepTwistBasePointStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartsRebasedOneOffLevelPrimeKilledStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartsRebasedOneOffLevelPrimeKilled
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
 import Formalism.LocalToGlobal.GroupLattices.Joint0
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix GlobalTheory.TwU GlobalTheory.TwU.AtTrue
@@ -18,7 +18,7 @@ theorem chart_last_good : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
   obtain ⟨K1, hR, -, -, hfin, -⟩ := GlobalTheory.T.chart_lastStep_twistBasePoint I hI hP l Z u a Q (F.cls B.R.m le_rfl (Or.inr rfl)) hQ
     (hF.ends B.R.m le_rfl (Or.inr rfl))
   obtain ⟨k, hk, -⟩ := hR
-  obtain ⟨Kc, h1, h2⟩ := GlobalTheory.T.charts_rebased_one_off_levelPrime_killed I hI hP l Z u a B.R.m le_rfl (badQ (I.rec7 l Z) Q) Unit (fun _ => ()) K1 ⟨k, hk⟩
+  obtain ⟨Kc, h1, h2⟩ := _root_.GlobalTheory.TwU.AtTrue.charts_funKilled_one I hI hP l Z u a B.R.m le_rfl (badQ (I.rec7 l Z) Q) Unit (fun _ => ()) K1 ⟨k, hk⟩
     (fun β => by cases β; exact hfin)
   exact ⟨Unit, inferInstance, fun _ => (), Kc, h1, h2⟩
 

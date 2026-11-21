@@ -2,10 +2,9 @@ import Mathlib
 import Formalism.LocalRingCardinality.Params
 import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
 import Formalism.FrobeniusOrbits.DiscrMaximalRealCyclotomic
-import Formalism.FrobeniusOrbits.HostOrbitsPlaces
+import Formalism.FrobeniusOrbits.Statement
 import Formalism.FrobeniusOrbits.HostDiffSupport
 import Formalism.FrobeniusOrbits.HostThickExists
-import Formalism.FrobeniusOrbits.HostOrbitCountSg
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ConjEMemHostFIff
 
 open NumberField Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
@@ -167,15 +166,6 @@ def secondSet_card_lower_bound : Prop :=
 
 end Host
 
-def FactIota : Prop := ∀ e : ℕ,
-  Function.Bijective (iotaH e) ∧
-  (∀ i j : ZMod (2 ^ e), iotaH e (i + j) = iotaH e i * iotaH e j) ∧
-  iotaH e 1 = hcl e (u5 (e + 2))
-
-def bridge_iota : Prop := ∀ e : ℕ, ∀ ι : Multiplicative (ZMod (2 ^ e)) ≃* HGrp e,
-  ι (Multiplicative.ofAdd 1) = hcl e (u5 (e + 2)) →
-  ∀ i : ZMod (2 ^ e), ι (Multiplicative.ofAdd i) = iotaH e i
-
 def bridge_star : Prop := ∀ (R : Ranks) (H : Host R) (x : H.E),
   (@star H.E (@InvolutiveStar.toStar _ (@StarMul.toInvolutiveStar _ _
     (@StarRing.toStarMul _ _ H.cmStar))) x) = H.conj x
@@ -225,9 +215,5 @@ def FactClassFrob : Prop := ∀ (R : Ranks) (H : Host R),
     (H.cls p = .splitK ↔ ((H.galE σ).1 = 1 ∨ (H.galE σ).1 = (-1, 1))) ∧
     (H.cls p = .signal ↔ (H.galE σ).1 = (1, -1)) ∧
     (H.cls p = .inertClass ↔ (H.galE σ).1 = c0)
-
-def FactFrobGeom : Prop := ∀ (R : Ranks) (H : Host R) (σ : H.E ≃ₐ[ℚ] H.E),
-  H.galE σ⁻¹ = (H.galE σ)⁻¹ ∧
-  R.iotaInv (H.galE σ⁻¹).2 = - R.iotaInv (H.galE σ).2
 
 end Formalism.BasicNotions

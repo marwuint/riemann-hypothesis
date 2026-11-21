@@ -19,13 +19,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToO
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFinsetPlacesOverFinsetPlaces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProdLocalValuesGlobalOverPlacesAboveStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevel
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAbelianizedGaloisHomOfClosureIsoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComapEqOfContinuousAdicCompletionIsoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCloseToComponentLocalDegreeOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTotallyPositiveApproxAtFinitePlacesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProdIdeleCharacterEqOneOfTotallyPositiveStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAbelianizedGaloisHomOfClosureIso
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComapEqOfContinuousAdicCompletionIso
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCloseToComponentLocalDegreeOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTotallyPositiveApproxAtFinitePlaces
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProdIdeleCharacterEqOneOfTotallyPositive
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormTotallyPositiveOfTotallyPositiveNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ArtinTransportAlgClosureEquivStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ArtinTransportAlgClosureEquiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitsAdicCompletionHomExtOfIsOpenKerStatement
 
 noncomputable section
@@ -62,7 +62,7 @@ theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algeb
     (x : (w.adicCompletion E)ˣ) :
     ρ (art' (localIdele E' w' (Units.map i.toRingHom.toMonoidHom x))) = art (localIdele E w x) := by
   classical
-  have hw' := GlobalTheory.T.comap_eq_of_continuous_adicCompletion_iso E E' w w' i hi hloc
+  have hw' := _root_.GlobalTheory.PlaceOver.comap_eq_of_continuous_iso E E' w w' i hi hloc
   have hdE : ∀ k : Eˣ, art (diagUnits E k) = 1 := fun k => by
     have hk : diagUnits E k ∈ art.ker := by
       rw [ha.ker]
@@ -133,11 +133,11 @@ theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algeb
   have hWT : w' ∈ TSK := (hTSK w').mpr ⟨w, hwSE, hw'⟩
   obtain ⟨MainNotions, MK, hTS, -, hSKc⟩ := GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr E' ψ1.ker ho1 TSK
   choose M' hM' using fun v' : HeightOneSpectrum (𝓞 E) => GlobalTheory.NormCompat.NormCont.norm_close_to_one E E' v' ME
-  obtain ⟨ML, hML⟩ := GlobalTheory.T.norm_close_to_component_localDegreeOne E E' w w' i hi hloc ME
+  obtain ⟨ML, hML⟩ := _root_.GlobalTheory.NormCompat.LocalDegOne.norm_div_close_to_one E E' w w' i hi hloc ME
   let M'' : ℕ := SE.sup M'
   let m : ℕ := (WithZero.log (w'.valuation E' (y : E'))).natAbs
   let P0 : ℕ := MK + M'' + ML + 1
-  obtain ⟨a, hap, hapos⟩ := GlobalTheory.T.exists_totallyPositive_approx_at_finite_places E' TSK (fun u => if u = w' then (y : E') else 1) (P0 + m)
+  obtain ⟨a, hap, hapos⟩ := _root_.GlobalTheory.FinPlaceApproxPos.approxpos_target E' TSK (fun u => if u = w' then (y : E') else 1) (P0 + m)
   have haW : w'.valuation E' (a - y) ≤ WithZero.exp (-((P0 : ℤ) + m)) := by
     have := hap w' hWT
     rw [if_pos rfl] at this
@@ -191,7 +191,7 @@ theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algeb
     MonoidHom.mem_ker.mp (hSu v' hv' z hz)
   have hchi := fun (v' : HeightOneSpectrum (𝓞 E)) (hv' : v' ∉ SE) (u : HeightOneSpectrum (𝓞 E'))
       (hu : u.asIdeal.comap (algebraMap (𝓞 E) (𝓞 E')) = v'.asIdeal) =>
-    GlobalTheory.T.artin_transport_algClosure_equiv E Ω E' Ω' φ hφ art art' ha ha' ρ hρ (Gab E Ω ⧸ U) χ v' u hu (hunitE v' hv')
+    _root_.GlobalTheory.ArtinTransport.chi_artin_transport E Ω E' Ω' φ hφ art art' ha ha' ρ hρ (Gab E Ω ⧸ U) χ v' u hu (hunitE v' hv')
   obtain ⟨TK, TE, hTK1, hTK2, hTE1, hTE2, hprod⟩ := GlobalTheory.T.prod_localValues_global_over_places_above E E' (Gab E Ω ⧸ U) ψ1 ψ2 SE hunitE
     (fun v' hv' u hu => (hchi v' hv' u hu).1) (fun v' hv' u hu => (hchi v' hv' u hu).2) au
 
@@ -201,7 +201,7 @@ theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algeb
       intro u h1 h2
       obtain ⟨v', hv', e⟩ := (hTSK u).mp h2
       exact hTK1 u h1 v' hv' e
-    have h := GlobalTheory.T.prod_idele_character_eq_one_of_totallyPositive E' (Gab E Ω ⧸ U) ψ1 ho1 (fun k => by simp [ψ1, hdK]) (fun z hz => by simp [ψ1, hiK z hz])
+    have h := _root_.GlobalTheory.ProdLocUnitPos.prod_locUnit_eq_one_of_pos E' (Gab E Ω ⧸ U) ψ1 ho1 (fun k => by simp [ψ1, hdK]) (fun z hz => by simp [ψ1, hiK z hz])
       au (fun φ => hapos φ) (TK ∪ TSK) fun u hu => by
         rw [Finset.mem_union, not_or] at hu
         exact hTK2 u hu.1 fun v' hv' e => hu.2 ((hTSK u).mpr ⟨v', hv', e⟩)
@@ -212,7 +212,7 @@ theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algeb
       rw [Finset.disjoint_left]
       intro v' h1 h2
       exact hTE1 v' h1 h2
-    have h := GlobalTheory.T.prod_idele_character_eq_one_of_totallyPositive E (Gab E Ω ⧸ U) ψ2 ho2 (fun k => by simp [ψ2, hdE]) (fun z hz => by simp [ψ2, hiE z hz])
+    have h := _root_.GlobalTheory.ProdLocUnitPos.prod_locUnit_eq_one_of_pos E (Gab E Ω ⧸ U) ψ2 ho2 (fun k => by simp [ψ2, hdE]) (fun z hz => by simp [ψ2, hiE z hz])
       (NK au) (fun φ => GlobalTheory.T.norm_totallyPositive_of_totallyPositive_ne_zero E E' a ha0 hapos φ) (TE ∪ SE) fun v' hv' => by
         rw [Finset.mem_union, not_or] at hv'
         exact hTE2 v' hv'.1 hv'.2
@@ -226,7 +226,7 @@ theorem res_art_eq_art (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algeb
 theorem artin_of_placeIso : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω') (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (φ : Ω ≃+* Ω') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), PlaceIso A w A' w' φ j i → ∀ (art : Neutral.B1.Ideles E →* GlobalTheory.HeckeGal.Gab E Ω) (art' : Neutral.B1.Ideles E' →* GlobalTheory.HeckeGal.Gab E' Ω'), GlobalTheory.HeckeGal.IsGlobalArtin art → GlobalTheory.HeckeGal.IsGlobalArtin art' → ∀ (σ : Weil h) (σ' : Weil h') (x : (w.adicCompletion E)ˣ), WeilRel φ σ σ' → art' (Neutral.B1.localIdele E' w' (Units.map i.toRingHom.toMonoidHom x)) = GlobalTheory.HeckeGal.toAb E' Ω' σ' → art (Neutral.B1.localIdele E w x) = GlobalTheory.HeckeGal.toAb E Ω σ := by
   intro E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j i hPI art art' ha ha' σ σ' x hW hx
   letI : Algebra E E' := j.toAlgebra
-  obtain ⟨ρ, hρc, hρ⟩ := GlobalTheory.T.exists_abelianizedGalois_hom_of_closureIso E Ω E' Ω' φ j hPI.ext
+  obtain ⟨ρ, hρc, hρ⟩ := _root_.GlobalTheory.HeckeGal.exists_abHom_of_ringEquiv E Ω E' Ω' φ j hPI.ext
   have key := res_art_eq_art E Ω E' Ω' φ hPI.ext w w' i hPI.cont hPI.loc art art' ha ha' ρ hρc hρ x
   have hσ : ρ (toAb E' Ω' σ') = toAb E Ω σ := hρ σ' σ hW
   rw [← key, hx, hσ]

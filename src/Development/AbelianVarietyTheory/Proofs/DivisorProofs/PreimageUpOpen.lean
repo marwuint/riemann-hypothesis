@@ -27,8 +27,6 @@ theorem upOpen_preimage (V : Y₁.Opens) : upOpen i (i ⁻¹ᵁ V) = V := by
 
 theorem upOpen_mono : Monotone (upOpen i) := fun _ _ h ↦ Set.image_mono h
 
-abbrev upFun : Y₀.Opens ⥤ Y₁.Opens := (upOpen_mono i).functor
-
 def res (U : Y₀.Opens) : Γ(Y₁, upOpen i U) ⟶ Γ(Y₀, U) :=
   i.appLE (upOpen i U) U (preimage_upOpen i U).ge
 
@@ -73,14 +71,6 @@ def fib : Y₀.Opensᵒᵖ ⥤ CommRingCat.{0} where
     (by simp [homOfLE_refl]) (by simp [homOfLE_refl])
   map_comp f g := PullbackCone.IsLimit.hom_ext (coneIsLimit i₁ i₂ _)
     (by simp [← Functor.map_comp]; rfl) (by simp [← Functor.map_comp]; rfl)
-
-def fibFst : fib i₁ i₂ ⟶ (upFun i₁).op ⋙ Y₁.presheaf where
-  app U := (cone i₁ i₂ U.unop).fst
-  naturality U V f := fibMap_fst i₁ i₂ f.unop.le
-
-def fibSnd : fib i₁ i₂ ⟶ (upFun i₂).op ⋙ Y₂.presheaf where
-  app U := (cone i₁ i₂ U.unop).snd
-  naturality U V f := fibMap_snd i₁ i₂ f.unop.le
 
 def fibπ : fib i₁ i₂ ⟶ Y₀.presheaf where
   app U := (cone i₁ i₂ U.unop).fst ≫ res i₁ U.unop

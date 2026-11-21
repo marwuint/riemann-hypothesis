@@ -140,11 +140,6 @@ theorem exists_sub_mul_eq_of_mem [IsAdicComplete (maximalIdeal B) B] (v c : B) {
     h₀
   exact ⟨x, sub_eq_zero.1 (by simpa using hx), hxm⟩
 
-theorem exists_sub_mul_eq [IsAdicComplete (maximalIdeal B) B] (v c : B) :
-    ∃ x, σ x - v * x = c := by
-  obtain ⟨x, hx, -⟩ := exists_sub_mul_eq_of_mem σ hσ hπB v c (m := 0) (x₀ := 0) (by simp)
-  exact ⟨x, hx⟩
-
 theorem exists_units_eq_mul [IsAdicComplete (maximalIdeal B) B] (v : Bˣ) :
     ∃ η : Bˣ, σ η = v * η := by
   set q := Nat.card (ResidueField A)
@@ -182,18 +177,3 @@ variable {A B : Type*} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
 
 include hunr hσ
 
-theorem surjective_sub_self : Function.Surjective fun x : B => σ x - x := by
-  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible A
-  intro c
-  obtain ⟨x, hx⟩ := exists_sub_mul_eq σ hσ (irreducible_algebraMap hunr hπ) 1 c
-  exact ⟨x, by simpa using hx⟩
-
-theorem surjective_div_self :
-    Function.Surjective fun u : Bˣ => Units.map (σ : B →* B) u / u := by
-  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible A
-  intro v
-  obtain ⟨η, hη⟩ := exists_units_eq_mul σ hσ (irreducible_algebraMap hunr hπ) v
-  refine ⟨η, ?_⟩
-  rw [div_eq_iff_eq_mul]
-  ext
-  simpa using hη

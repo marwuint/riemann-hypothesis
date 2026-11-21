@@ -3,8 +3,8 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneTmulMemRangeIff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CovOfAlgHom
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPQ
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusPowerSolutionLiftStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectFrobeniusRootSolutionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusPowerSolutionLift
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectFrobeniusRootSolution
 open TensorProduct CrystallineSemistableComparison.D
 open scoped LaurentPolynomial
 
@@ -35,8 +35,8 @@ theorem cov_root : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ
   refine ⟨T, inferInstance, inferInstance, hq.pf, ?_, i' (AdjoinRoot.root P), ?_⟩
   · refine GlobalTheory.CompanionTheory.CovCmp.cov_of_solv p A T r fun m n a c hs => ?_
     refine ⟨A, inferInstance, inferInstance, GlobalTheory.CompanionTheory.CovMono.cov_self p A r, ?_⟩
-    obtain ⟨k, s, hs'⟩ := GlobalTheory.T.frobenius_power_solution_lift p A (AdjoinRoot P) T i' ⊥ m n a c hA.char hq' hs
-    refine GlobalTheory.T.perfect_frobenius_root_solution p A A m n k a c hA ?_
+    obtain ⟨k, s, hs'⟩ := _root_.GlobalTheory.CompanionTheory.PerfectQuotient.solv_pow p A (AdjoinRoot P) T i' ⊥ m n a c hA.char hq' hs
+    refine _root_.GlobalTheory.CompanionTheory.PerfectRing.solv_of_solv_pow p A A m n k a c hA ?_
     obtain ⟨ρ, hρ⟩ := exists_retraction P hP hd
     have hρa : ∀ x : A, ρ (algebraMap A (AdjoinRoot P) x) = x := fun x => by
       rw [Algebra.algebraMap_eq_smul_one, map_smul, hρ, smul_eq_mul, mul_one]

@@ -76,36 +76,6 @@ theorem compactCohomologyMap_congr {g g' : A ⟶ B} {gᵥ gᵥ' : ∀ v, Aᵥ v 
   subst h2
   rfl
 
-theorem compactCohomologyMap_nsmul_id (m : ℕ)
-    (hg : ∀ v, a v ≫ (m • 𝟙 (Aᵥ v)) = (Rep.resFunctor (φ v).toMonoidHom).map (m • 𝟙 A) ≫ a v) (n : ℕ) :
-    compactCohomologyMap φ (m • 𝟙 A) (fun v => m • 𝟙 (Aᵥ v)) hg n = m • 𝟙 _ := by
-  have h : compactCochainsMap φ (m • 𝟙 A) (fun v => m • 𝟙 (Aᵥ v)) hg = m • 𝟙 _ := by
-    ext n : 1
-    refine ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n ×
-      shiftNegOneX (piComplex fun v => cochainsComplex (Aᵥ v)) n) => ?_)
-    have hR : ((m • 𝟙 (compactCochains φ A Aᵥ a) : compactCochains φ A Aᵥ a ⟶ _).f n).hom p = m • p := by
-      simp only [HomologicalComplex.smul_f_apply, HomologicalComplex.id_f, ModuleCat.hom_nsmul, ModuleCat.hom_id]
-      rfl
-    rw [hR]
-    obtain ⟨x, y⟩ := p
-    refine Prod.ext ?_ ?_
-    · change ((cochainsMap (m • 𝟙 A)).f n).hom x = m • x
-      rw [cochainsMap_nsmul, cochainsMap_id]
-      simp [Module.End.mul_apply, Module.End.natCast_apply]
-    · cases n with
-      | zero => rfl
-      | succ n =>
-        change ((piMap fun v => cochainsMap (m • 𝟙 (Aᵥ v))).f n).hom y = m • y
-        funext v
-        change ((cochainsMap (m • 𝟙 (Aᵥ v))).f n).hom (y v) = m • y v
-        rw [cochainsMap_nsmul, cochainsMap_id]
-        simp [Module.End.mul_apply, Module.End.natCast_apply]
-  change HomologicalComplex.homologyMap (compactCochainsMap φ (m • 𝟙 A) (fun v => m • 𝟙 (Aᵥ v)) hg) n = _
-  rw [h]
-  change (HomologicalComplex.homologyFunctor _ _ n).map (m • 𝟙 _) = _
-  rw [Functor.map_nsmul, CategoryTheory.Functor.map_id]
-  rfl
-
 end CompactMap
 
 section ULiftCompare

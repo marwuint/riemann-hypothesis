@@ -82,7 +82,7 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.stepN_pf (hT : _root_.Pos
   obtain ⟨hM, hβw, hβo, hβf⟩ := R.frame_nU w y b hy
   refine ⟨fun f hf => ?_, fun Ψ hΨ => ⟨hΨ, fun f hf Φ hΦ hTΦ => ?_⟩⟩
   · obtain ⟨φ, rfl⟩ := hf
-    obtain ⟨ψ, hψ⟩ := GlobalTheory.T.schwartz_quadratic_phase_multiplication d.m d.n (((R.sg w : ℤ) : ℝ)) b hb φ
+    obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.CompanionTheory.QuadChirp.exists_schwartz_chirp_mul d.m d.n (((R.sg w : ℤ) : ℝ)) b hb φ
     refine ⟨ψ, ?_⟩
     rw [hψ]
     funext u

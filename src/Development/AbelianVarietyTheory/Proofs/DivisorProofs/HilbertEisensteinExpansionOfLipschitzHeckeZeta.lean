@@ -2,9 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TraceDualDifferent
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinSeriesLatticeDifferentiableOnStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumHilbertEisensteinConstantTermPartialZetaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinNonconstantTermsHasSumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinSeriesLatticeDifferentiableOn
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorization
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumHilbertEisensteinConstantTermPartialZeta
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinNonconstantTermsHasSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GammaRealFunctionalEquationConstantEvenIntegerStatement
 
 noncomputable section
@@ -67,13 +68,13 @@ theorem eisExp : GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.Lips
   have hsum : ∀ z ∈ upperHalf F, Summable (eisClass 𝔞 𝔟 (2 * s) 0 z) := fun z hz =>
     eisClass_summable_of_hecke hH hf 𝔞 𝔟 h2 hz
   refine ⟨eisSum 𝔞 𝔟 (2 * s) 0, ⟨fun _ z hz => (hsum z hz).hasSum, fun h => by omega⟩,
-    GlobalTheory.T.hilbertEisensteinSeriesLattice_differentiableOn F 𝔞 𝔟 _ hsum, ?_⟩
+    _root_.GlobalTheory.eisSum_zero_differentiableOn F 𝔞 𝔟 _ hsum, ?_⟩
   let D : (Ideal (𝓞 F))⁰ := ⟨differentIdeal ℤ (𝓞 F), mem_nonZeroDivisors_of_ne_zero (differentIdeal_ne_bot (A := ℤ))⟩
   obtain ⟨Z, Z', hZ, hZ', hfe⟩ := hP F (ClassGroup.mk0 D * ClassGroup.mk F 𝔞) (ClassGroup.mk F 𝔞)⁻¹ D rfl
     (by rw [mul_assoc, mul_inv_cancel, mul_one])
   refine ⟨Z', hZ', fun z hz => ?_⟩
-  obtain ⟨hq, h3⟩ := GlobalTheory.T.hilbertEisenstein_nonconstant_terms_hasSum F hL 𝔞 𝔟 (2 * s) (by omega) (even_two_mul s) hsum z hz
-  have h0 := GlobalTheory.T.hasSum_hilbertEisenstein_constantTerm_partialZeta F 𝔞 𝔟 s (by omega) D rfl Z hZ z hz
+  obtain ⟨hq, h3⟩ := _root_.GlobalTheory.EisNonConst.nonconst_terms F hL 𝔞 𝔟 (2 * s) (by omega) (even_two_mul s) hsum z hz
+  have h0 := _root_.GlobalTheory.EisConstTerm.hasSum_constTerm F 𝔞 𝔟 s (by omega) D rfl Z hZ z hz
   have hfe' := hfe ((2 * s : ℕ) : ℂ) (fun n h => by
       have h' : ((2 * s : ℕ) : ℤ) = -2 * n := by exact_mod_cast h
       omega) (fun n h => by

@@ -1,12 +1,18 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.PluriharmonicCharts.AnalyticAtFlagPt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicLiftRealisationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticOrbitOffBoundaryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.UnipotentValueNeZeroStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularFunctionAnalyticOnChartStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointInMultiprojectivePointsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormNonvanishingAnalyticHarmonicStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPotentialBlockDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicLiftRealisation
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsFibreChartIff
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationBijectiveDegreeOne
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogNormNonvanishingAnalyticHarmonic
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticOrbitOffBoundary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ValueConstantOnOrbitStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.UnipotentValueNeZero
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularFunctionAnalyticOnChart
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointInMultiprojectivePoints
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BasePartFlagPt
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPotentialBlockDecomposition
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WMan
@@ -47,10 +53,10 @@ theorem period_chart (FA : FlagAn BM d) (hsurj : Function.Surjective FA.Re.π) {
       SameOrbit (FA.Re.R.lift x₀ x₀) (FC.flagPt M (BM.F l) (FC.bvec BM l (FA.pr x')) fun τ => H τ x')) :
     ∃ V, IsPeriodChart (FA.S.comap some).A j (FA.S.comap some).potH x V fun τ x' => Pi τ (FA.pr x') * H τ x' := by
   have hj := M.j_le
-  have hg := GlobalTheory.T.base_vector_properties K ι Φ y Ψ N j M n BM l
+  have hg := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec_good K ι Φ y Ψ N j M n BM l
   have hl1 : ∀ x' ∈ W, FA.pr x' ∈ BM.O l := fun x' h => (hl x' h).1.1
   have hbv := bvec_holo BM FA.pr_holo hW hl1
-  have hst := fun (p : Ψ × Fin N) x' (hx' : x' ∈ W) => GlobalTheory.T.flag_potential_block_decomposition N j p.2 (Pi p.1 (FA.pr x'))
+  have hst := fun (p : Ψ × Fin N) x' (hx' : x' ∈ W) => _root_.GlobalTheory.CompanionTheory.Ar.PB.stepPot_mul_eq_blockPot N j p.2 (Pi p.1 (FA.pr x'))
     (BM.G l p.1 (FA.pr x')) (H p.1 x') hj (hPi.2.2 p.1 _ (hl x' hx').2) (BM.G_pos l p.1 _ (hl x' hx').1).1
     (BM.G_pos l p.1 _ (hl x' hx').1).2 (hHb p.1 x' hx').1 (hHb p.1 x' hx').2
   obtain ⟨k, hk⟩ := FA.S.A.cover x
@@ -61,24 +67,24 @@ theorem period_chart (FA : FlagAn BM d) (hsurj : Function.Surjective FA.Re.π) {
   have key : ∀ p : Ψ × Fin N, ∃ V : Set FA.S.X, IsOpen V ∧ x ∈ V ∧ ∃ G : FA.S.X → ℂ, FA.S.A.HoloOn V G ∧
       ∀ x' ∈ V, ((FA.S.comap some).potH p).φ x x' - stepPot N j p.2 (Pi p.1 (FA.pr x') * H p.1 x') = (G x').re := by
     intro p
-    obtain ⟨H1, hH1, he1⟩ := GlobalTheory.T.local_holomorphic_lift_realisation K ι (d + 1) _ FA.S (mCoordIdeal y) FA.Re (some p) (d + 1)
+    obtain ⟨H1, hH1, he1⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.ref_pot_along_exact_family K ι (d + 1) _ FA.S (mCoordIdeal y) FA.Re (some p) (d + 1)
       (c.target ∩ c.symm ⁻¹' W) c.symm
       (fun u => FC.flagPt M (BM.F l) (FC.bvec BM l (FA.pr (c.symm u))) fun τ => H τ (c.symm u)) (c x)
       FA.J_top FA.deg_one FA.br_empty hO hxO
       (fun q u hu => analyticAt_flagPt (BM.F l) (fun q => hbv.1 q k u hu)
         (fun q I => hbv.2 _ (fun b hb => ((hg b hb).2.1.2.1 q I).1) k u hu) (fun τ r s => hH τ r s k u hu) q)
-      (fun u hu => GlobalTheory.T.flag_point_in_multiprojective_points K ι Φ y Ψ N j M n BM l _ (hl1 _ hu.2) _ fun τ => hHb τ _ hu.2)
+      (fun u hu => _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.flagPt_mem_mcPts K ι Φ y Ψ N j M n BM l _ (hl1 _ hu.2) _ fun τ => hHb τ _ hu.2)
       (fun u hu x₀ h => ho _ hu.2 x₀ h)
-    obtain ⟨H2, hH2, he2⟩ := GlobalTheory.T.log_norm_nonvanishing_analytic_harmonic (d + 1) (fun u => detFac j p.2 (H p.1 (c.symm u))) (c x)
+    obtain ⟨H2, hH2, he2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.log_norm_eventually_eq_re_analyticAt (d + 1) (fun u => detFac j p.2 (H p.1 (c.symm u))) (c x)
       (analyticAt_detFac p.2 fun r s => hH p.1 r s k _ hxO)
       (CPts.detFac_ne_zero hj p.2 (hHb p.1 _ hxO.2).1 (hHb p.1 _ hxO.2).2)
     obtain ⟨H3, hH3, he3⟩ : ∃ H3 : (Fin (d + 1) → ℂ) → ℂ, AnalyticAt ℂ H3 (c x) ∧
         ∀ᶠ u in 𝓝 (c x), Fib.upsLogAt BM l p (FA.pr (c.symm u)) = (H3 u).re := by
       by_cases hp : M.blk p = none
       · simp only [Fib.upsLogAt, if_pos hp]
-        refine GlobalTheory.T.log_norm_nonvanishing_analytic_harmonic (d + 1) (fun u => Fib.upsVal BM l p (FA.pr (c.symm u))) (c x) ?_
-          (GlobalTheory.T.unipotent_value_ne_zero K ι Φ y Ψ N j M n d BM l p _ (hl1 _ hxO.2) hp)
-        exact GlobalTheory.T.regular_function_analytic_on_chart _ _ M.Ω M.x ((BM.F l).υ p) (d + 1) n BM.Rb (c.target ∩ c.symm ⁻¹' W) (FA.pr ∘ c.symm) (c x)
+        refine _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.log_norm_eventually_eq_re_analyticAt (d + 1) (fun u => Fib.upsVal BM l p (FA.pr (c.symm u))) (c x) ?_
+          (_root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.UpsNe.upsVal_ne_zero K ι Φ y Ψ N j M n d BM l p _ (hl1 _ hxO.2) hp)
+        exact _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.analyticAt_valAt_lift_family _ _ M.Ω M.x ((BM.F l).υ p) (d + 1) n BM.Rb (c.target ∩ c.symm ⁻¹' W) (FA.pr ∘ c.symm) (c x)
           hO hxO (FA.pr_holo.1.comp_continuousOn (c.continuousOn_symm.mono Set.inter_subset_left))
           (fun m => (FA.pr_holo.2 k m).mono fun t ht => ⟨ht.1.1, ht.2⟩)
           ((BM.good l _ (hl1 _ hxO.2)).2.2 p hp).2.1
@@ -86,7 +92,7 @@ theorem period_chart (FA : FlagAn BM d) (hsurj : Function.Surjective FA.Re.π) {
     refine exists_holoOn_of_germ FA.S.A hk (H := fun u => H1 u - H2 u - H3 u) ((hH1.sub hH2).sub hH3) ?_
     filter_upwards [he1, he2, he3, hO.mem_nhds hxO] with u h1 h2 h3 hu
     obtain ⟨x₀, hx₀⟩ := hsurj (c.symm u)
-    have hline := GlobalTheory.T.flag_analytic_orbit_off_boundary K ι Φ y Ψ N j M n d BM FA l x₀ _ (FA.pr (c.symm u)) p (H p.1 (c.symm u))
+    have hline := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.log_fsHerm_add_ph_eq_potAt K ι Φ y Ψ N j M n d BM FA l x₀ _ (FA.pr (c.symm u)) p (H p.1 (c.symm u))
       (hl _ hu.2).1 (ho _ hu.2 x₀ hx₀) (by rw [FC.basePart_flagPt]; exact (hg _ (hl1 _ hu.2)).2.2.2)
       (FC.exactAt_flagPt M (BM.F l) (hg _ (hl1 _ hu.2)).2.2.1 (fun τ => H τ (c.symm u)) p)
       (hHb _ _ hu.2).1 (hHb _ _ hu.2).2

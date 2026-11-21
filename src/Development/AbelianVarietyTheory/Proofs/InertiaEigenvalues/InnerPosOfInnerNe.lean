@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdjFormula
 import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCartanInvOneOfOnb
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DownwardLiftAdjointEqUpwardThetaIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DownwardLiftAdjointEqUpwardThetaIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffSpaceLevelFixesFockVectors
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockVacOmFin
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealLow
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TrivAtOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalCoeffVanishesOffLevelBadPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalCoeffVanishesOffLevelBadPlaces
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaIPEqStarL2
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IndexSumOfRank
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnderEqOfConj
@@ -54,10 +54,10 @@ theorem rawLift_main : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G
   have lf : ∀ i t, LevFix R i t := GlobalTheory.RawLift.LevelFix.levFix D G Pl0 T A Ks R F hL hF
   have vn : ∀ i t, VecNe R i t := vecNe D G Pl0 T A Ks R F hL hF
   have fs : ∀ i t, FinSum R i t := fun i t =>
-    GlobalTheory.RawLift.finSum_of_rallis hC D G Pl0 T A Ks R F hL hF hR i t (GlobalTheory.T.downwardLift_adjoint_eq_upwardThetaIntegral hC D G Pl0 T A Ks R F hL hF i t) (lf i t)
+    GlobalTheory.RawLift.finSum_of_rallis hC D G Pl0 T A Ks R F hL hF hR i t (_root_.GlobalTheory.AdjUp.adjFormula_holds hC D G Pl0 T A Ks R F hL hF i t) (lf i t)
       (GlobalTheory.RawLift.FactorInf.factInf D G Pl0 T A Ks R F hL hF i t) (GlobalTheory.RawLift.RealLowPf.realLow D G Pl0 T A Ks R F hL hF i t) (vn i t) (lp i) (tr i)
   have fm : ∀ i t, FinMult R i t := GlobalTheory.RawLift.LocalFactor.finMult D G Pl0 T A Ks R F hL hF
-  have bs : ∀ i t, BadSupp R i t := GlobalTheory.T.localCoeff_vanishes_offLevel_badPlaces D G Pl0 T A Ks R F hL hF
+  have bs : ∀ i t, BadSupp R i t := _root_.GlobalTheory.BadSuppPf.badSupp D G Pl0 T A Ks R F hL hF
   have ls : ∀ i t, LocSmall R i t := fun i t =>
     GlobalTheory.RawLift.Small.locSmall D G Pl0 T A Ks R F hL hF i t (bs i t) (GlobalTheory.RawLift.GoodModulus.goodMod D G Pl0 T A Ks R F hL hF i t)
       (GlobalTheory.IndexCount.indexSum_holds D G Pl0 T A Ks R F hL hF i)

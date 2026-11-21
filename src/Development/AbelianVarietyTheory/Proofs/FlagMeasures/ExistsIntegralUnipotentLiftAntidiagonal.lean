@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsVolData
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowEmbeddingMemIntegralOrthogonalGroupStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowIsometryEntriesInModelCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowEmbeddingMemIntegralOrthogonalGroup
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowIsometryEntriesInModelCoordinates
 
 noncomputable section
 
@@ -15,7 +15,7 @@ theorem exists_lift_antidiag : ∀ (F E : Type) [Field F] [NumberField F] [Field
   obtain ⟨c, hc, hσ, hlw⟩ := hl
   have hσ' : σ c = -c := hσ
   refine ⟨rowE (σ : E →+* E) J (fun i => P i a.castSucc) 0 c, ?_, ?_⟩
-  · refine GlobalTheory.T.rowE_mem_GN_of_form_add_trace_eq_zero F E σ k r J Λ P f T A s hV a 0 c ?_ ?_ ?_ hc
+  · refine _root_.GlobalTheory.SnMass.VolN.RowIso.rowE_mem_GN F E σ k r J Λ P f T A s hV a 0 c ?_ ?_ ?_ hc
     · intro b _
       simp [form]
     · simp [form, hσ']
@@ -30,7 +30,7 @@ theorem exists_lift_antidiag : ∀ (F E : Type) [Field F] [NumberField F] [Field
         funext l
         simp
       rw [h1, mulVec_zero]
-    rw [GlobalTheory.T.rowIsometry_entries_in_modelCoordinates F E σ k r J Λ P f T A s hV a 0 c w i j, h0]
+    rw [_root_.GlobalTheory.SnMass.VolN.rowE_entries F E σ k r J Λ P f T A s hV a 0 c w i j, h0]
     simp [herm]
   have hne : ∀ b b' : Fin r, eI k r b ≠ esI k r b' := by
     intro b b' h

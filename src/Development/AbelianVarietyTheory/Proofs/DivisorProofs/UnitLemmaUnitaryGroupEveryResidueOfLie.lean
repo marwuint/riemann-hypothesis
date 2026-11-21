@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalRingOfIdem
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeCountAndGramDetSignNormClassStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KappaSumZeroAndStableSumMulZeroOfNotIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KappaSumZeroAndStableSumMulZeroOfNotIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvolutiveAlgIdentityProdOfUnitResultantStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvolutiveAlgebraProductIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitLemmaLocalAnyResidueCharOfLieAlgebraStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitLemmaLocalAnyResidueCharOfLieAlgebra
 
 noncomputable section
 
@@ -100,7 +100,7 @@ theorem identity_integral (hL : UnitLemmaLie) (n : ℕ) : ∀ B₁ B₂ : InvAlg
       e * e = e → (B₁.prod B₂).σ e = e → e = 0 ∨ e = 1
   · rcases one_orbit (B₁.prod B₂) (Prod.ext u₁ u₂) (prod_integral _ _ i₁ i₂) h with h | h
     · exact GlobalTheory.T.involutive_algebra_product_identity K B₁ B₂ u₁ u₂ hs i₁ i₂ h
-    · exact GlobalTheory.T.unitLemma_local_anyResidueChar_of_lieAlgebra hL K B₁ B₂ u₁ u₂ hs i₁ i₂ h
+    · exact _root_.GlobalTheory.UnitLemma.UnrAny.unitLemma_local_of_lie_any hL K B₁ B₂ u₁ u₂ hs i₁ i₂ h
   push Not at h
   obtain ⟨e, he, hee, hσ, h0, h1⟩ := h
   rw [Algebra.adjoin_singleton_eq_range_aeval] at he
@@ -147,7 +147,7 @@ theorem identity_of_lie : UnitLemmaLie → ∀ (K : UQ) (B₁ B₂ : InvAlg K), 
   intro hL K B₁ B₂ u₁ u₂ hs
   by_cases hi : IsIntegral K.O B₁.g ∧ IsIntegral K.O B₂.g
   · exact identity_integral hL _ B₁ B₂ rfl u₁ u₂ hs hi.1 hi.2
-  · obtain ⟨h1, h2⟩ := GlobalTheory.T.kappaSum_zero_and_stableSum_mul_zero_of_not_integral K B₁ B₂ hi
+  · obtain ⟨h1, h2⟩ := _root_.GlobalTheory.UnitLemma.kapSum_eq_zero_and_stSum_mul_eq_zero_of_not_isIntegral K B₁ B₂ hi
     unfold InvAlg.Identity
     rw [h1, h2, mul_zero]
 

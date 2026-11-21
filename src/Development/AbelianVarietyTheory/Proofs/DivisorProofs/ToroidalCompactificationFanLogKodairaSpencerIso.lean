@@ -1,11 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToroidalFanKodairaSpencerOfRigidBoundaryChartsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidBoundaryChartsForFanUnitaryDatumStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToroidalFanKodairaSpencerOfRigidBoundaryCharts
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
+import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidBoundaryChartsForFanUnitaryDatum
 
 namespace GlobalTheory.TorKSField
 
 theorem toroidalForFanKS : GlobalTheory.Published.ToroidalForFanKS :=
-  GlobalTheory.T.toroidalFanKodairaSpencer_of_rigidBoundaryCharts GlobalTheory.T.rigidBoundaryChartsForFan_unitaryDatum
+  _root_.GlobalTheory.RigChart.toroidalForFanKS_of_rigidForFan _root_.GlobalTheory.RigChart.rigidForFan_holds
 
 end GlobalTheory.TorKSField

@@ -8,11 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FamilySplitOpera
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreClausesOfWeakCharacterisation
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSplitPrimeHeckeTransferCompositeLiftStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertHeckeOperatorsRowsRationalSelfAdjointLabelsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualAntitoneListIffInertPrimeHeckeExponentsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwoSidedHeckePartnerInertPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharacterisationPlacesPartsOfWeakStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperspecialFixesAllChainVacuaAtInertPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertHeckeOperatorsRowsRationalSelfAdjointLabels
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualAntitoneListIffInertPrimeHeckeExponents
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwoSidedHeckePartnerInertPrime
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharacterisationPlacesPartsOfWeak
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperspecialFixesAllChainVacuaAtInertPrime
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
 open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
@@ -64,7 +66,7 @@ theorem entry_split (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hL : GlobalTheory.C
       MatchE R.toRealDat t p cX c0 := by
   have hcore := (GlobalTheory.CoreOfWeak.core_of_weak R F hW hE).1
   have hg : Good R.toRealDat t (R.pl P0.1) :=
-    ((GlobalTheory.T.theta_lift_levels_good_primes_properties R.toRealDat F.lv2 hcore.lev).2.2.2 hcore.fam t P0.1 P0.2).1
+    ((_root_.GlobalTheory.GoodPrimes.good_primes R.toRealDat F.lv2 hcore.lev).2.2.2 hcore.fam t P0.1 P0.2).1
   by_cases hk : k ≤ D.sp.X'.rank
   · have hz := GlobalTheory.T.exists_splitPrime_heckeTransfer_compositeLift R.toRealDat F.lv2 hL hcore hS t P0
     have hop := (GlobalTheory.SplitHeckeLabel.split_ops R.toRealDat F.lv2 hcore.lev hcore.fam hcore.models).1 t
@@ -89,16 +91,16 @@ theorem entry_valid (hH : HoweUnram) (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hL
       (∀ h, IsOpsX R.toRealDat t h → ∀ x, R.jX t ((A3.rowI t).opAll (Sum.inr (Q, s)) x) = h (R.plI Q.1) cX (R.jX t x)) ∧
       MatchE R.toRealDat t (R.plI Q.1) cX c0 := by
   have hcore := (GlobalTheory.CoreOfWeak.core_of_weak R F hW hE).1
-  have hQ := (GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hW).2.2.1
+  have hQ := (_root_.GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hW).2.2.1
   have hg := (hQ t Q.1 Q.2).1
   have hc := (hQ t Q.1 Q.2).2
-  have hTwo := GlobalTheory.T.twoSidedHeckePartner_inertPrime hH R.toRealDat F.lv2 hL hcore hS t _ hg hc (GlobalTheory.T.hyperspecialFixesAllChainVacua_at_inert_prime R F hW t _ hg hc)
+  have hTwo := _root_.GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert hH R.toRealDat F.lv2 hL hcore hS t _ hg hc (_root_.GlobalTheory.VacFixInert.fixAll_inert R F hW t _ hg hc)
   have hpre : ∀ j : A3.okI t × List ℕ, Formalism.L2.Col.InertTypeOk D.sp.X'.rank j.2 →
       Good R.toRealDat t (R.plI j.1.1) ∧ conjPl (R.plI j.1.1) = R.plI j.1.1 ∧
         (GlobalTheory.Hk3.labIn D.sp.X'.rank j.2).Pairwise (fun a b => b ≤ a) := fun j hj =>
-    ⟨(hQ t j.1.1 j.1.2).1, (hQ t j.1.1 j.1.2).2, ((GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents D.sp.X'.rank (GlobalTheory.Hk3.labIn D.sp.X'.rank j.2)).2
+    ⟨(hQ t j.1.1 j.1.2).1, (hQ t j.1.1 j.1.2).2, ((_root_.GlobalTheory.Hk3.labIn_selfDual_iff D.sp.X'.rank (GlobalTheory.Hk3.labIn D.sp.X'.rank j.2)).2
       ⟨j.2, hj.2.2, hj.1, hj.2.1, rfl⟩).2.1⟩
-  have hR := GlobalTheory.T.inertHeckeOperators_rows_rational_selfAdjoint_labels R.toRealDat F.lv2 hcore.lev hcore.fam hcore.models t (A3.okI t × List ℕ)
+  have hR := _root_.GlobalTheory.InertRows.inert_rows R.toRealDat F.lv2 hcore.lev hcore.fam hcore.models t (A3.okI t × List ℕ)
     (fun j => R.plI j.1.1) (fun j => GlobalTheory.Hk3.labIn D.sp.X'.rank j.2) (A3.heckeRI t)
     (fun j => Formalism.L2.Col.InertTypeOk D.sp.X'.rank j.2) hpre (hW.inert.hR t).some (Q, s') hs'
   have hop := hR.2.2.2
@@ -115,7 +117,7 @@ theorem entry_inert (hH : HoweUnram) (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hL
       (∀ h, IsOpsX R.toRealDat t h → ∀ x, R.jX t ((A3.rowI t).opAll (Sum.inr (Q, s)) x) = h p cX (R.jX t x)) ∧
       MatchE R.toRealDat t p cX c0 := by
   have hcore := (GlobalTheory.CoreOfWeak.core_of_weak R F hW hE).1
-  have hg := ((GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hW).2.2.1 t Q.1 Q.2).1
+  have hg := ((_root_.GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hW).2.2.1 t Q.1 Q.2).1
   by_cases hv : Formalism.L2.Col.InertTypeOk D.sp.X'.rank s
   · have hz := entry_valid hH R F hL hW hE hS t Q s s hv rfl
     exact ⟨_, hz.choose, hz.choose_spec.choose, hg, hz.choose_spec.choose_spec.1, hz.choose_spec.choose_spec.2⟩

@@ -2,7 +2,8 @@ import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsPartnerLift
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdxNOneMulAbsNorm
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountTermsGramClassOverSublatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountTermsGramClassOverSublattice
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowMinor
 
 open NumberField Module IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat
 open scoped Classical
@@ -189,7 +190,7 @@ theorem final_arith {N De H C : ℝ} {r f : ℕ} (hr : 1 ≤ r) (hN0 : 0 ≤ N) 
 
 theorem partners_le : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → Formalism.MainNotions.S.UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
   intro Cg cb Cu cT CT C0 A
-  obtain ⟨C₀, hC₀⟩ := GlobalTheory.T.count_terms_gramClass_over_sublattice Cg cb Cu cT CT C0 A
+  obtain ⟨C₀, hC₀⟩ := _root_.GlobalTheory.LoopC.TermsOver.main Cg cb Cu cT CT C0 A
   refine ⟨max (max C₀ 37) CT, ?_⟩
   intro D large₂ u u' C' Cl hCl hHyp F0 he hz Λ hΛ F' hterm hgen hrel Z hZ
   have hCC₀ : C₀ ≤ max (max C₀ 37) CT := (le_max_left _ _).trans (le_max_left _ _)

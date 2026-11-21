@@ -53,8 +53,6 @@ def DualLineIndex.Statement : Prop :=
       genIndex (Submodule.span (𝓞 K') (Set.range (dualPointCoord b v))).toAddSubgroup
         (1 : Submodule (𝓞 K') K').toAddSubgroup = 1
 
-example : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)) := dualBasisStandard
-
 end
 
 end GroundTheory.Heights₂.Heights

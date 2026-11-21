@@ -84,57 +84,6 @@ theorem exists_of_jet (B : Base) (C : Cols B) (vol : @HSpace B.host.E _ _ B.host
 def gxOne (B : Base) : GlobalExtra B.LL (Tau B.R) :=
   ⟨fun _ _ => 1, fun _ _ => one_pos, fun _ => 1, fun _ => one_pos⟩
 
-def jetOn {R : Ranks} (H : Host R) (S : Set ℕ) (hS : ∀ j ∈ S, 1 ≤ j ∧ j ≤ R.m) : ThetaJet R H where
-  Sit := S
-  loc := fun j =>
-    haveI : Fact (exists_inert H).choose.Prime := ⟨(exists_inert H).choose_spec.1⟩
-    { l := (exists_inert H).choose
-      five_le_l := (exists_inert H).choose_spec.2.1
-      d := 2
-      d_even := even_two
-      two_le_d := le_rfl
-      N0 := R.N (j.1 - 1)
-      N1 := R.N j.1
-      Th := 1 }
-  l_inert := fun _ => (exists_inert H).choose_spec.2.2
-  jOf := fun j => j.1
-  j_mem := fun j => hS j.1 j.2
-  N0_eq := fun _ => rfl
-  N1_eq_exponentN1 := fun _ => rfl
-  Sit1 := Empty
-  loc1 := fun i => i.elim
-  l_inert1 := fun i => i.elim
-  j1Of := fun i => i.elim
-  firstJetIndex_mem_range := fun i => i.elim
-  firstJet_lowerRank_eq := fun i => i.elim
-  firstJet_upperRank_eq := fun i => i.elim
-
-theorem nonempty_iff (B : Base) (C : Cols B) : Nonempty (GJStage B C) ↔ Nonempty CDHaar := by
-  refine ⟨fun ⟨G⟩ => ⟨G.cd⟩, fun ⟨cd⟩ => ?_⟩
-  obtain ⟨G, -⟩ := exists_of_jet B C (fun _ => 1) (fun _ => one_pos) cd
-    (jetOn B.host ∅ (fun _ h => h.elim)) (gxOne B) (fun i => i.2.elim) (fun i => i.elim)
-  exact ⟨G⟩
-
-theorem exists_all_lifts (B : Base) (C : Cols B) (cd : CDHaar) (u : B.Word)
-    (hu : ∀ j, j ≤ B.R.m → Nonempty ((C.mem u).C.cls j)) :
-    ∃ G : GJStage B C, G.cd = cd ∧ Nonempty G.jet.Sit ∧
-      (∀ j, 1 ≤ j → j ≤ B.R.m → ∃ i, G.jet.jOf i = j) ∧ ∀ u w h, (G.gat u w h).FinClasses := by
-  obtain ⟨G, -, hcd, hj, -, hfin⟩ := exists_of_jet B C (fun _ => 1) (fun _ => one_pos) cd
-    (jetOn B.host {j | 1 ≤ j ∧ j ≤ B.R.m} (fun _ h => h)) (gxOne B)
-    (fun i => ⟨u, hu _ (le_trans (Nat.sub_le _ _) i.2.2), hu _ i.2.2⟩) (fun i => i.elim)
-  have hm := B.R.two_le_m
-  refine ⟨G, hcd, ?_, ?_, hfin⟩
-  · rw [hj]; exact ⟨⟨1, le_rfl, by omega⟩⟩
-  · rw [hj]; exact fun j h1 h2 => ⟨⟨j, h1, h2⟩, rfl⟩
-
-theorem sit_spec {B : Base} {C : Cols B} (G : GJStage B C) (i : G.jet.Sit) :
-    Nonempty ((C.mem (G.jetU i)).C.cls (G.jet.jOf i - 1)) ∧ Nonempty ((C.mem (G.jetU i)).C.cls (G.jet.jOf i)) ∧
-      5 ≤ B.places.resChar (G.jetW i) ∧
-      (B.host.cls (B.places.resChar (G.jetW i)) = .signal ∨ B.host.cls (B.places.resChar (G.jetW i)) = .inertClass) := by
-  refine ⟨⟨G.jetL i⟩, ⟨G.jetL' i⟩, ?_, ?_⟩
-  · rw [G.jetW_l]; exact (G.jet.loc i).five_le_l
-  · rw [G.jetW_l]; exact G.jet.l_inert i
-
 end GlobalTheory.Mem.GJModel
 
 end

@@ -50,8 +50,6 @@ theorem lift_sum {ι : Type} (s : Finset ι) (f : ι → Af D.host.F ⊗[D.host.
 
 theorem lift_neg (y : Af D.host.F ⊗[D.host.F] D.host.E) : lift (D := D) (-y) = -lift y := map_neg (LinearMap.rTensor D.host.E (inrL D.host.F)) y
 
-theorem lift_nsmul (k : ℕ) (y : Af D.host.F ⊗[D.host.F] D.host.E) : lift (D := D) (k • y) = k • lift y := map_nsmul (LinearMap.rTensor D.host.E (inrL D.host.F)) k y
-
 theorem finPart_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (lift y) = y := by
   induction y using TensorProduct.induction_on with
   | zero => rw [lift_zero, map_zero]
@@ -60,15 +58,6 @@ theorem finPart_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (lift 
     erw [Algebra.TensorProduct.map_tmul]
     rfl
   | add x y hx hy => rw [lift_add, map_add, hx, hy]
-
-theorem infPart_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (lift y) = 0 := by
-  induction y using TensorProduct.induction_on with
-  | zero => rw [lift_zero, map_zero]
-  | tmul a w =>
-    rw [lift_tmul]
-    erw [Algebra.TensorProduct.map_tmul]
-    exact TensorProduct.zero_tmul _ _
-  | add x y hx hy => rw [lift_add, map_add, hx, hy, add_zero]
 
 theorem liftI_tmul (a : Ainf D.host.F) (w : D.host.E) : liftI (D := D) (a ⊗ₜ[D.host.F] w) = pairA D.host.F a 0 ⊗ₜ w := rfl
 
@@ -149,10 +138,6 @@ theorem mt_mul_inv (V : HSp D) (g : GA D V) : mt V g * mt V g⁻¹ = 1 := by
 def frG (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) : GL (Fin V.rank) (EAf D) :=
   β⁻¹ * Lev.finE V g * β
 
-theorem frG_mul (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g g' : GA D V) : frG V β (g * g') = frG V β g * frG V β g' := by
-  simp only [frG, map_mul]
-  group
-
 theorem frG_inv (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) : frG V β g⁻¹ = (frG V β g)⁻¹ := by
   simp only [frG, map_inv]
   group
@@ -160,10 +145,6 @@ theorem frG_inv (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) : frG V 
 theorem gl_cancel_left {R : Type} [CommRing R] {n m : ℕ} (A : GL (Fin n) R) (X : Matrix (Fin n) (Fin m) R) :
     (A : Matrix (Fin n) (Fin n) R) * (((A⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * X) = X := by
   rw [← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
-
-theorem gl_cancel_left' {R : Type} [CommRing R] {n m : ℕ} (A : GL (Fin n) R) (X : Matrix (Fin n) (Fin m) R) :
-    (((A⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) * ((A : Matrix (Fin n) (Fin n) R) * X) = X := by
-  rw [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]
 
 theorem frG_coe (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) :
     ((frG V β g : GL (Fin V.rank) (EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) =
@@ -253,99 +234,9 @@ theorem isIntM_add {a b : ℕ} {N M : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIn
 theorem intM_eq {n : ℕ} (y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     y.map Subtype.val = y.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype := rfl
 
-theorem intM_mul_inv {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : intM (D := D) y * intM y⁻¹ = 1 := by
-  show ((y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) *
-    (((y⁻¹ : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) = 1
-  rw [← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
-
-theorem intM_inv_mul {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : intM (D := D) y⁻¹ * intM y = 1 := by
-  show (((y⁻¹ : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) *
-    ((y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) = 1
-  rw [← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
-
-theorem isIntM_mul_right_iff {a b : ℕ} (N : Matrix (Fin b) (Fin a) (EAf D))
-    (y : GL (Fin a) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : IsIntM (N * intM y) ↔ IsIntM N := by
-  constructor
-  · intro h
-    have := isIntM_mul h (isIntM_intM y⁻¹)
-    rwa [Matrix.mul_assoc, intM_mul_inv, Matrix.mul_one] at this
-  · intro h
-    exact isIntM_mul h (isIntM_intM y)
-
-theorem isIntM_mul_left_iff {a b : ℕ} (N : Matrix (Fin b) (Fin a) (EAf D))
-    (y : GL (Fin b) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : IsIntM (intM y * N) ↔ IsIntM N := by
-  constructor
-  · intro h
-    have := isIntM_mul (isIntM_intM y⁻¹) h
-    rwa [← Matrix.mul_assoc, intM_inv_mul, Matrix.one_mul] at this
-  · intro h
-    exact isIntM_mul (isIntM_intM y) h
-
 theorem redM_of_int (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) (i j) :
     redM PP N i j = Formalism.L2.DIV.resS D.host.F PP ⟨N i j, hN i j⟩ := by
   unfold redM; rw [dif_pos (hN i j)]
-
-set_option maxHeartbeats 1000000 in
-
-theorem redM_mul_intM (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N)
-    (y : GL (Fin a) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
-    redM PP (N * intM y) = redM PP N * (y : Matrix (Fin a) (Fin a) _).map (Formalism.L2.DIV.resS D.host.F PP) := by
-  ext i j
-  have : (⟨(N * intM y) i j, isIntM_mul hN (isIntM_intM y) i j⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) =
-      ∑ k, ⟨N i k, hN i k⟩ * (y : Matrix (Fin a) (Fin a) _) k j := by
-    apply Subtype.ext
-    show (N * intM y) i j = ((∑ k, ⟨N i k, hN i k⟩ * (y : Matrix (Fin a) (Fin a) _) k j :
-      ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : EAf D)
-    rw [Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum]
-    exact Finset.sum_congr rfl fun k _ => rfl
-  calc redM PP (N * intM y) i j
-      = Formalism.L2.DIV.resS D.host.F PP ⟨(N * intM y) i j, isIntM_mul hN (isIntM_intM y) i j⟩ :=
-        redM_of_int PP (isIntM_mul hN (isIntM_intM y)) i j
-    _ = Formalism.L2.DIV.resS D.host.F PP (∑ k, ⟨N i k, hN i k⟩ * (y : Matrix (Fin a) (Fin a) _) k j) := congrArg _ this
-    _ = ∑ k, Formalism.L2.DIV.resS D.host.F PP ⟨N i k, hN i k⟩ *
-          Formalism.L2.DIV.resS D.host.F PP ((y : Matrix (Fin a) (Fin a) _) k j) := by
-        rw [map_sum]; exact Finset.sum_congr rfl fun k _ => map_mul _ _ _
-    _ = _ := by
-        rw [Matrix.mul_apply]
-        exact Finset.sum_congr rfl fun k _ => by rw [← redM_of_int PP hN i k]; rfl
-
-set_option maxHeartbeats 1000000 in
-theorem redM_intM_mul (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N)
-    (y : GL (Fin b) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
-    redM PP (intM y * N) = (y : Matrix (Fin b) (Fin b) _).map (Formalism.L2.DIV.resS D.host.F PP) * redM PP N := by
-  ext i j
-  have : (⟨(intM y * N) i j, isIntM_mul (isIntM_intM y) hN i j⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) =
-      ∑ k, (y : Matrix (Fin b) (Fin b) _) i k * ⟨N k j, hN k j⟩ := by
-    apply Subtype.ext
-    show (intM y * N) i j = ((∑ k, (y : Matrix (Fin b) (Fin b) _) i k * ⟨N k j, hN k j⟩ :
-      ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : EAf D)
-    rw [Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum]
-    exact Finset.sum_congr rfl fun k _ => rfl
-  calc redM PP (intM y * N) i j
-      = Formalism.L2.DIV.resS D.host.F PP ⟨(intM y * N) i j, isIntM_mul (isIntM_intM y) hN i j⟩ :=
-        redM_of_int PP (isIntM_mul (isIntM_intM y) hN) i j
-    _ = Formalism.L2.DIV.resS D.host.F PP (∑ k, (y : Matrix (Fin b) (Fin b) _) i k * ⟨N k j, hN k j⟩) := congrArg _ this
-    _ = ∑ k, Formalism.L2.DIV.resS D.host.F PP ((y : Matrix (Fin b) (Fin b) _) i k) *
-          Formalism.L2.DIV.resS D.host.F PP ⟨N k j, hN k j⟩ := by
-        rw [map_sum]; exact Finset.sum_congr rfl fun k _ => map_mul _ _ _
-    _ = _ := by
-        rw [Matrix.mul_apply]
-        exact Finset.sum_congr rfl fun k _ => by rw [← redM_of_int PP hN k j]; rfl
-
-theorem frG_of_St (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) :
-    ∃ y : GL (Fin V.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E),
-      (frG V β g : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) = intM y ∧
-      ∀ PP, Formalism.L2.DIV.redFn β PP (Lev.finE V g) = Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP) y := by
-  obtain ⟨y, hy⟩ := hg
-  refine ⟨y, ?_, fun PP => ?_⟩
-  · unfold frG
-    rw [← hy]
-    show ((β⁻¹ * (β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y * β⁻¹) * β : GL (Fin V.rank) (EAf D)) :
-      Matrix (Fin V.rank) (Fin V.rank) (EAf D)) = _
-    rw [show β⁻¹ * (β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y * β⁻¹) * β =
-      Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y by group]
-    rfl
-  · rw [← hy]; exact Formalism.L2.DIV.redFn_frGL β PP y
 
 section Lat
 
@@ -419,13 +310,6 @@ theorem smul_mem_latAll {a : AE D} (ha : finPart D a ∈ intAE D) {u : WO S T} (
     rw [Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul,
       eq_lift_of_infPart (u i j) (latAll_infPart hu i j), mul_lift, lift_mul, finPart_lift]
   rw [e]; exact lift_smul_mem ha hu
-
-theorem comm_comm (y : EAf D) :
-    Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) y) = y := by
-  induction y using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a b => simp
-  | add x y hx hy => simp only [map_add, hx, hy]
 
 theorem liftE_mul (y : EAf D) (z : AE D) : liftE y * z = liftE (y * toEAf D z) := by
   have hc : ∀ x : Af D.host.F ⊗[D.host.F] D.host.E, Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)
@@ -722,58 +606,8 @@ theorem isHalf_actO (e : AE D) (g : GA D S) (h : GA D T) {t : WO S T} (ht : IsHa
   calc e * (mt T h i k * t k l * mt S g⁻¹ l j) = mt T h i k * (e * t k l) * mt S g⁻¹ l j := by ring
     _ = _ := by rw [ht k l]
 
-theorem isHalf_actO_iff (e : AE D) (g : GA D S) (h : GA D T) (t : WO S T) :
-    IsHalf e (actO S T g h t) ↔ IsHalf e t := by
-  refine ⟨fun ht => ?_, isHalf_actO e g h⟩
-  have := isHalf_actO e g⁻¹ h⁻¹ ht
-  rwa [actO_actO, inv_mul_cancel, inv_mul_cancel, actO_one] at this
-
-theorem frG_eq_of_St (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) :
-    ∃ y : GL (Fin V.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E),
-      frG V β g = Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y ∧
-      ∀ PP, Formalism.L2.DIV.redFn β PP (Lev.finE V g) = Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP) y := by
-  obtain ⟨y, hy⟩ := hg
-  refine ⟨y, ?_, fun PP => ?_⟩
-  · unfold frG
-    rw [← hy]
-    show β⁻¹ * (β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y * β⁻¹) * β = _
-    group
-  · rw [← hy]; exact Formalism.L2.DIV.redFn_frGL β PP y
-
 theorem intGL_coe {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     ((Formalism.L2.DIV.intGL D.host.F D.host.E n y : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) = intM y := rfl
-
-open Classical in
-
-def frameFn (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
-    (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP)) → ℂ) : WO S T → ℂ :=
-  fun t => if IsHalf e t ∧ IsIntM (frMapO S T βS βT t) then G (fun PP => redM PP (frMapO S T βS βT t)) else 0
-
-set_option maxHeartbeats 2000000 in
-
-theorem frameFn_actO {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (e : AE D)
-    (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP)) → ℂ)
-    {g : GA D S} {h : GA D T} {yg : GL (Fin S.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)}
-    {yh : GL (Fin T.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)}
-    (hyg : frG S βS g = Formalism.L2.DIV.intGL D.host.F D.host.E S.rank yg)
-    (hyh : frG T βT h = Formalism.L2.DIV.intGL D.host.F D.host.E T.rank yh) (t : WO S T) :
-    frameFn S T βS βT e G (actO S T g h t) =
-      frameFn S T βS βT e (fun Y => G (fun PP =>
-        (yh : Matrix (Fin T.rank) (Fin T.rank) _).map (Formalism.L2.DIV.resS D.host.F PP) * Y PP *
-          ((yg⁻¹ : GL (Fin S.rank) _) : Matrix (Fin S.rank) (Fin S.rank) _).map (Formalism.L2.DIV.resS D.host.F PP))) t := by
-  have hinv : (frG S βS g)⁻¹ = Formalism.L2.DIV.intGL D.host.F D.host.E S.rank yg⁻¹ := by rw [hyg, map_inv]
-  have hN : frMapO S T βS βT (actO S T g h t) = intM yh * frMapO S T βS βT t * intM yg⁻¹ := by
-    rw [frMapO_actO, hinv, hyh]; rfl
-  have hiff : (IsHalf e (actO S T g h t) ∧ IsIntM (frMapO S T βS βT (actO S T g h t))) ↔
-      (IsHalf e t ∧ IsIntM (frMapO S T βS βT t)) := by
-    rw [isHalf_actO_iff, hN, isIntM_mul_right_iff, isIntM_mul_left_iff]
-  unfold frameFn
-  by_cases hc : IsHalf e t ∧ IsIntM (frMapO S T βS βT t)
-  · rw [if_pos (hiff.2 hc), if_pos hc]
-    congr 1
-    funext PP
-    rw [hN, redM_mul_intM PP (isIntM_mul (isIntM_intM yh) hc.2), redM_intM_mul PP hc.2]
-  · rw [if_neg (fun h' => hc (hiff.1 h')), if_neg hc]
 
 theorem col_mem_hatL {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hf : Formalism.L2.DIV.IsFrame β Λ) (j : Fin n) :
@@ -837,61 +671,6 @@ theorem frMapO_neg {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D
     frMapO S T βS βT (-t) = -frMapO S T βS βT t := by
   simp [frMapO, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul]
 
-theorem frMapO_nsmul {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (k : ℕ) (t : WO S T) :
-    frMapO S T βS βT (k • t) = k • frMapO S T βS βT t := by
-  induction k with
-  | zero => simp only [zero_nsmul, frMapO_zero]
-  | succ k ih => rw [succ_nsmul, succ_nsmul, frMapO_add, ih]
-
-theorem AA_den : ∃ n : ℕ, 0 < n ∧ ∀ a ∈ D.host.AA, ∃ o : 𝓞 D.host.E, (o : D.host.E) = (n : D.host.E) * a := by
-  obtain ⟨b, hb, hbi⟩ := D.host.AA.isFractional
-  have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
-  refine ⟨Ideal.absNorm (Ideal.span {b}), Nat.pos_of_ne_zero ?_, fun a ha => ?_⟩
-  · rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]; exact hb0
-  · obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {b}))
-    obtain ⟨o, ho⟩ := hbi a ha
-    refine ⟨c * o, ?_⟩
-    have e1 : ((Ideal.absNorm (Ideal.span {b}) : ℕ) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E (c * b) := by
-      rw [hc, map_natCast]
-    rw [e1]
-    show algebraMap (𝓞 D.host.E) D.host.E (c * o) = _
-    rw [Algebra.smul_def] at ho
-    rw [map_mul, map_mul, ho]; ring
-
-theorem frMapO_latAll_int {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
-    (hS : IsSelfDualC S ΛS) (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT) :
-    ∃ n : ℕ, 0 < n ∧ ∀ u ∈ latAll S T ΛS ΛT, IsIntM (n • frMapO S T βS βT u) := by
-  obtain ⟨n, hn, hden⟩ := AA_den (D := D)
-  refine ⟨n, hn, fun u hu => ?_⟩
-  induction hu using AddSubgroup.closure_induction with
-  | mem w hw =>
-    obtain ⟨α, hα, _, a, ha, s, hs, t, ht, rfl⟩ := hw
-    obtain ⟨o, ho⟩ := hden a ha
-    have key : IsIntM (n • frMapO S T βS βT (genL S T α a s t)) := by
-      rw [genL_eq_genE, genE, frMapO_mapLiftE, mul_vecMulVec_mul, ← smul_assoc]
-      intro i j
-      simp only [Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]
-      have hc : (n : EAf D) * (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
-        rw [← mul_assoc, show (n : EAf D) * eToEAf D a = eToEAf D ((n : D.host.E) * a) by rw [map_mul, map_natCast],
-          ← ho]
-        refine mul_mem (Subring.subset_closure (Or.inl ⟨⟨_, ⟨o, rfl⟩⟩, rfl⟩))
-          (Subring.subset_closure (Or.inr ⟨⟨α, fun v => hα v⟩, rfl⟩))
-      rw [show (n • (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) : EAf D) =
-        (n : EAf D) * (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) from nsmul_eq_mul _ _]
-      refine mul_mem hc (mul_mem ?_ ?_)
-      · exact (hfT _).1 (mem_hatL_of_mem ht) i
-      · rw [Matrix.vecMul_vecMul]
-        show (fun k => sR D (eToEAf D (s k))) ⬝ᵥ (fun l => (S.gram.map (eToEAf D) * (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D))) l j) ∈ _
-        have e : (fun l => (S.gram.map (eToEAf D) * (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D))) l j) =
-            S.gram.map (eToEAf D) *ᵥ (fun i => (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) i j) := by
-          funext l; rw [Matrix.mul_apply]; rfl
-        rw [e]
-        exact hform_int hS hs (col_mem_hatL hfS j)
-    exact key
-  | zero => rw [frMapO_zero, smul_zero]; exact fun i j => zero_mem _
-  | add x y _ _ hx hy => rw [frMapO_add, smul_add]; exact isIntM_add hx hy
-  | neg x _ hx => rw [frMapO_neg, smul_neg]; exact fun i j => neg_mem (hx i j)
-
 theorem infPart_of_splitIdem {e : AE D} (he : IsSplitIdem D e) : infPart D e = 0 := by
   obtain ⟨h1, h2, v, ε, ⟨α, rfl, _, _⟩, hε⟩ := he
   have : e = e * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) := by rw [← hε, mul_add, h1, h2, add_zero]
@@ -919,147 +698,6 @@ theorem liftE_toEAf (x : AE D) (hx : infPart D x = 0) : liftE (toEAf D x) = x :=
   show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)
     (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (finPart D x))) = x
   rw [comm_comm', ← eq_lift_of_infPart x hx]
-
-def liftEHom (D : D7) : EAf D →+ AE D where
-  toFun := liftE
-  map_zero' := liftE_zero
-  map_add' := liftE_add
-
-theorem int_of_rf (PP : Formalism.L2.DIV.Pl D.host.E) {z : EAf D} (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (m : ℕ)
-    (hm : ((m : 𝓞 D.host.E)) ∈ PP.asIdeal) :
-    Formalism.L2.DIV.resS D.host.F PP ⟨m • z, by rw [nsmul_eq_mul]; exact mul_mem (natCast_mem _ m) hz⟩ = 0 := by
-  have e : (⟨m • z, by rw [nsmul_eq_mul]; exact mul_mem (natCast_mem _ m) hz⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) =
-      (m : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) * ⟨z, hz⟩ := by
-    apply Subtype.ext; show m • z = (m : EAf D) * z; exact nsmul_eq_mul _ _
-  rw [e, map_mul, map_natCast]
-  have : ((m : Formalism.L2.DIV.kP PP)) = 0 := by
-    rw [show ((m : Formalism.L2.DIV.kP PP)) = Ideal.Quotient.mk PP.asIdeal (m : 𝓞 D.host.E) by rw [map_natCast]]
-    exact Ideal.Quotient.eq_zero_iff_mem.2 hm
-  rw [this, zero_mul]
-
-theorem liftEHom_single_smul (c : EAf D) {m n : ℕ} (B : Matrix (Fin m) (Fin n) (EAf D)) :
-    (liftEHom D).mapMatrix (c • B) = liftE c • B.map (liftE (D := D)) := by
-  ext i j
-  simp only [AddMonoidHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]
-  exact (liftE_mul_liftE c (B i j)).symm
-
-set_option maxHeartbeats 4000000 in
-
-theorem isSBHalf_frameFn (hPL : PlaceLatDual D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
-    (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
-    (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT)
-    {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) (he2 : e * e = e)
-    (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP)) → ℂ)
-    (hG : ∀ Y Y' : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP)),
-      (∀ PP ∈ P, Y PP = Y' PP) → G Y = G Y') :
-    IsSBHalf e (latAll S T ΛS ΛT) (frameFn S T βS βT e G) := by
-  classical
-  obtain ⟨nA, hnA, hint⟩ := frMapO_latAll_int (ΛT := ΛT) hS hfS hfT
-  obtain ⟨-, -, hP⟩ := hPL ψ hψ S T ΛS ΛT hS hT
-  obtain ⟨-, -, -, hv⟩ := hP P e he
-  have hpt : ∀ (i : Fin T.rank) (j : Fin S.rank), ∃ k : ℕ, 0 < k ∧
-      k • (e • (((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-        ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D))).map (liftE (D := D)))) ∈
-        latAll S T ΛS ΛT := by
-    intro i j
-    refine hv e (Or.inl rfl) _ (fun a b => ?_)
-    simp only [Matrix.smul_apply, smul_eq_mul]
-    rw [← mul_assoc, he2]
-  choose kf hkf0 hkf using hpt
-  have hk'0 : 0 < ∏ i, ∏ j, kf i j := Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => hkf0 i j
-  have hnP0 : 0 < ∏ PP ∈ P, Ideal.absNorm PP.asIdeal :=
-    Finset.prod_pos fun PP _ => Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact PP.ne_bot)
-  set k' := ∏ i, ∏ j, kf i j with hk'
-  set nP := ∏ PP ∈ P, Ideal.absNorm PP.asIdeal with hnPdef
-  have hnP : ∀ PP ∈ P, (((nP * k' : ℕ)) : 𝓞 D.host.E) ∈ PP.asIdeal := fun PP hPP => by
-    rw [Nat.cast_mul]
-    apply Ideal.mul_mem_right
-    rw [hnPdef, ← Finset.mul_prod_erase P _ hPP, Nat.cast_mul]
-    exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)
-  refine ⟨fun t ht => ?_, nA * (nP * k'), Nat.mul_pos hnA (Nat.mul_pos hnP0 hk'0), fun u hu hue t => ?_, fun t ht => ?_⟩
-  · by_contra hc
-    exact ht (by unfold frameFn; rw [if_neg (fun h => hc h.1)])
-  · have hM : frMapO S T βS βT (t + (nA * (nP * k')) • u) =
-        frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u) := by
-      rw [frMapO_add, frMapO_nsmul, mul_comm nA, mul_smul]
-    have hK : IsIntM ((nP * k') • (nA • frMapO S T βS βT u)) := fun i j => nsmul_mem (hint u hu i j) _
-    have hhe : ∀ i j, e * (t + (nA * (nP * k')) • u) i j = e * t i j + ((nA * (nP * k')) • u) i j := by
-      intro i j
-      simp only [Matrix.add_apply, Matrix.smul_apply, mul_add, mul_smul_comm, hue i j]
-    have hhalf : IsHalf e (t + (nA * (nP * k')) • u) ↔ IsHalf e t := by
-      constructor
-      · intro h i j
-        have := h i j
-        rw [hhe, Matrix.add_apply] at this
-        exact add_right_cancel this
-      · intro h i j
-        rw [hhe, Matrix.add_apply, h i j]
-    have hint' : IsIntM (frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u)) ↔ IsIntM (frMapO S T βS βT t) := by
-      constructor
-      · intro h i j
-        have := sub_mem (h i j) (hK i j)
-        rwa [Matrix.add_apply, add_sub_cancel_right] at this
-      · intro h; exact isIntM_add h hK
-    have hred : IsIntM (frMapO S T βS βT t) → ∀ PP ∈ P,
-        redM PP (frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u)) = redM PP (frMapO S T βS βT t) := by
-      intro hN PP hPP
-      ext i j
-      rw [redM_of_int PP (isIntM_add hN hK), redM_of_int PP hN]
-      have e1 : (⟨(frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u)) i j, isIntM_add hN hK i j⟩ :
-          ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) = ⟨frMapO S T βS βT t i j, hN i j⟩ +
-          ⟨(nP * k') • (nA • frMapO S T βS βT u) i j, hK i j⟩ := Subtype.ext rfl
-      rw [e1, map_add]
-      have e2 : Formalism.L2.DIV.resS D.host.F PP ⟨(nP * k') • (nA • frMapO S T βS βT u) i j, hK i j⟩ = 0 :=
-        int_of_rf PP (hint u hu i j) (nP * k') (hnP PP hPP)
-      rw [e2, add_zero]
-    unfold frameFn
-    rw [hM]
-    by_cases hc : IsHalf e t ∧ IsIntM (frMapO S T βS βT t)
-    · rw [if_pos ⟨hhalf.2 hc.1, hint'.2 hc.2⟩, if_pos hc]
-      exact hG _ _ (fun PP hPP => hred hc.2 PP hPP)
-    · rw [if_neg (fun h => hc ⟨hhalf.1 h.1, hint'.1 h.2⟩), if_neg hc]
-  · have hc : IsHalf e t ∧ IsIntM (frMapO S T βS βT t) := by
-      by_contra hc; exact ht (by unfold frameFn; rw [if_neg hc])
-    suffices hs : k' • t ∈ latAll S T ΛS ΛT by
-      rw [show nA * (nP * k') = (nA * nP) * k' by ring, mul_smul]; exact nsmul_mem hs _
-    have hinf : ∀ i j, infPart D (t i j) = 0 := fun i j => by
-      rw [← hc.1 i j, map_mul, infPart_of_idemSum he, zero_mul]
-    have h1 : t = (t.map (toEAf D)).map (liftE (D := D)) := by ext a b; exact (liftE_toEAf _ (hinf a b)).symm
-    have htf : t.map (toEAf D) = (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * frMapO S T βS βT t *
-        ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) := by
-      unfold frMapO
-      simp only [Matrix.mul_assoc, gl_cancel_left, Units.mul_inv, Matrix.mul_one]
-    have hsg : ∀ (M : Matrix (Fin T.rank) (Fin S.rank) (EAf D)),
-        (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * M * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) =
-        ∑ i, ∑ j, M i j • ((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-          ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D))) := by
-      intro M
-      have hs : ∀ i j, Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : EAf D) := fun i j => by
-        rw [Matrix.smul_single, smul_eq_mul, mul_one]
-      conv_lhs => rw [Matrix.matrix_eq_sum_single M]
-      simp only [hs, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul]
-    have hdec : t = ∑ i, ∑ j, liftE (frMapO S T βS βT t i j) •
-        (e • (((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-          ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D))).map (liftE (D := D)))) := by
-      have h3 : t = e • t := by ext a b; simp only [Matrix.smul_apply, smul_eq_mul, hc.1 a b]
-      conv_lhs => rw [h3, h1, htf, hsg]
-      rw [show (∑ i, ∑ j, frMapO S T βS βT t i j • ((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) *
-          Matrix.single i j (1 : EAf D) * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D)))).map (liftE (D := D)) =
-        (liftEHom D).mapMatrix (∑ i, ∑ j, frMapO S T βS βT t i j • ((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) *
-          Matrix.single i j (1 : EAf D) * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D)))) from rfl]
-      simp only [map_sum, liftEHom_single_smul, Finset.smul_sum]
-      exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _
-    rw [hdec, Finset.smul_sum]
-    refine sum_mem fun i _ => ?_
-    rw [Finset.smul_sum]
-    refine sum_mem fun j _ => ?_
-    rw [smul_comm]
-    refine liftE_smul_mem (hc.2 i j) _ ?_
-    obtain ⟨m, hm⟩ : kf i j ∣ k' :=
-      dvd_trans (Finset.dvd_prod_of_mem (fun j => kf i j) (Finset.mem_univ j))
-        (Finset.dvd_prod_of_mem (fun i => ∏ j, kf i j) (Finset.mem_univ i))
-    rw [hm, mul_comm, mul_smul]
-    exact nsmul_mem (hkf i j) m
 
 theorem hO_add_left (x x' y : WO S T) : hO S T (x + x') y = hO S T x y + hO S T x' y := by
   unfold hO; simp only [Matrix.add_apply, mul_add, ← Finset.sum_add_distrib]
@@ -1208,22 +846,11 @@ abbrev GIE (V : HSp D) : Matrix (Fin V.rank) (Fin V.rank) (EAf D) := (V.gram⁻�
 theorem GIE_GE (V : HSp D) : GIE V * GE V = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]
 
-theorem GE_GIE (V : HSp D) : GE V * GIE V = 1 := by
-  rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]
-
 theorem GE_sR (V : HSp D) : (GE V).map (sR D) = (GE V)ᵀ := by
   ext i j
   simp only [Matrix.map_apply, Matrix.transpose_apply, sR_eTo]
   congr 1
   have := congrFun (congrFun (gram_herm_E V) j) i
-  rwa [Matrix.conjTranspose_apply] at this
-
-theorem GIE_sR (V : HSp D) : (GIE V).map (sR D) = (GIE V)ᵀ := by
-  have h : (V.gram⁻¹)ᴴ = V.gram⁻¹ := by rw [Matrix.conjTranspose_nonsing_inv, gram_herm_E]
-  ext i j
-  simp only [Matrix.map_apply, Matrix.transpose_apply, sR_eTo]
-  congr 1
-  have := congrFun (congrFun h j) i
   rwa [Matrix.conjTranspose_apply] at this
 
 theorem adjO_toEAf (x : WO S T) :
@@ -1233,15 +860,6 @@ theorem adjO_toEAf (x : WO S T) :
   unfold adjO
   simp only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map]
   rw [e1, e2]
-
-theorem toEAf_adjO_adj (x : WO S T) :
-    x.map (toEAf D) = GIE T * (((adjO S T x).map (toEAf D)).map (sR D))ᵀ * GE S := by
-  rw [adjO_toEAf, Matrix.map_mul, Matrix.map_mul, GIE_sR, GE_sR, Matrix.transpose_map, Matrix.map_map]
-  have e : (sR D ∘ sR D) = id := funext sR_sR
-  rw [e, Matrix.map_id, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose,
-    Matrix.transpose_transpose, Matrix.transpose_transpose]
-  simp only [Matrix.mul_assoc]
-  rw [GIE_GE, Matrix.mul_one, ← Matrix.mul_assoc, GIE_GE, Matrix.one_mul]
 
 theorem vecMulVec_transpose {R : Type} [CommRing R] {m n : ℕ} (c : R) (x : Fin m → R) (y : Fin n → R) :
     (c • Matrix.vecMulVec x y)ᵀ = c • Matrix.vecMulVec y x := by
@@ -1271,15 +889,6 @@ theorem frMapAdj_genE {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EA
     funext k; exact sR_sR _
   rw [e1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, GIE_GE, Matrix.mul_one]
 
-theorem adjO_add (x y : WO S T) : adjO S T (x + y) = adjO S T x + adjO S T y := by
-  simp [adjO, Matrix.mul_add, Matrix.add_mul, Matrix.map_add, Matrix.transpose_add]
-
-theorem adjO_zero : adjO S T 0 = 0 := by
-  simp [adjO]
-
-theorem adjO_neg (x : WO S T) : adjO S T (-x) = -adjO S T x := by
-  simp [adjO, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.transpose_neg]
-
 theorem frMapAdj_add {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (x y : WO S T) :
     frMapAdj S T βS βT (x + y) = frMapAdj S T βS βT x + frMapAdj S T βS βT y := by
   simp [frMapAdj, Matrix.mul_add, Matrix.add_mul, Matrix.map_add, Matrix.transpose_add]
@@ -1292,231 +901,11 @@ theorem frMapAdj_neg {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf
     frMapAdj S T βS βT (-x) = -frMapAdj S T βS βT x := by
   simp [frMapAdj, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.transpose_neg]
 
-theorem frMapAdj_nsmul {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (k : ℕ) (x : WO S T) :
-    frMapAdj S T βS βT (k • x) = k • frMapAdj S T βS βT x := by
-  induction k with
-  | zero => simp only [zero_nsmul, frMapAdj_zero]
-  | succ k ih => rw [succ_nsmul, succ_nsmul, frMapAdj_add, ih]
-
-theorem sR_gen_int {a : D.host.E} {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {n : ℕ} {o : 𝓞 D.host.E}
-    (ho : (o : D.host.E) = (n : D.host.E) * a) :
-    (n • sR D (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) : EAf D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
-  have h1 : sR D (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) =
-      eToEAf D (star a) * ((1 : D.host.E) ⊗ₜ[D.host.F] α) := by
-    rw [map_mul, sR_eTo]; congr 1; show (star (1 : D.host.E)) ⊗ₜ[D.host.F] α = _; rw [star_one]
-  have h2 : (n : EAf D) * eToEAf D (star a) = eToEAf D (star (o : D.host.E)) := by
-    rw [ho, star_mul, star_natCast, map_mul, map_natCast, mul_comm]
-  rw [h1, nsmul_eq_mul, ← mul_assoc, h2]
-  exact mul_mem (Subring.subset_closure (Or.inl ⟨⟨_, ⟨⟨_, isIntegral_star' o⟩, rfl⟩⟩, rfl⟩))
-    (Subring.subset_closure (Or.inr ⟨⟨α, fun v => hα v⟩, rfl⟩))
-
-set_option maxHeartbeats 4000000 in
-
-theorem frMapAdj_latAll_int {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
-    (hT : IsSelfDualC T ΛT) (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT) :
-    ∃ n : ℕ, 0 < n ∧ ∀ u ∈ latAll S T ΛS ΛT, IsIntM (n • frMapAdj S T βS βT u) := by
-  obtain ⟨n, hn, hden⟩ := AA_den (D := D)
-  refine ⟨n, hn, fun u hu => ?_⟩
-  induction hu using AddSubgroup.closure_induction with
-  | mem w hw =>
-    obtain ⟨α, hα, _, a, ha, s, hs, t, ht, rfl⟩ := hw
-    obtain ⟨o, ho⟩ := hden a ha
-    have key : IsIntM (n • frMapAdj S T βS βT (genL S T α a s t)) := by
-      rw [genL_eq_genE, frMapAdj_genE, ← smul_assoc]
-      intro i j
-      simp only [Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]
-      refine mul_mem (sR_gen_int hα ho) (mul_mem ?_ ?_)
-      · exact (hfS _).1 (mem_hatL_of_mem hs) i
-      · rw [Matrix.vecMul_vecMul]
-        have e : (fun l => (GE T * (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D))) l j) =
-            GE T *ᵥ (fun i => (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) i j) := by
-          funext l; rw [Matrix.mul_apply]; rfl
-        show (fun k => sR D (eToEAf D (t k))) ⬝ᵥ (fun l => (GE T * (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D))) l j) ∈ _
-        rw [e]
-        exact hform_int hT ht (col_mem_hatL hfT j)
-    exact key
-  | zero => rw [frMapAdj_zero, smul_zero]; exact fun i j => zero_mem _
-  | add x y _ _ hx hy => rw [frMapAdj_add, smul_add]; exact isIntM_add hx hy
-  | neg x _ hx => rw [frMapAdj_neg, smul_neg]; exact fun i j => neg_mem (hx i j)
-
-open Classical in
-
-def frameFnAdj (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
-    (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (Formalism.L2.DIV.kP PP)) → ℂ) : WO S T → ℂ :=
-  fun x => if IsHalf e x ∧ IsIntM (frMapAdj S T βS βT x) then G (fun PP => redM PP (frMapAdj S T βS βT x)) else 0
-
-set_option maxHeartbeats 2000000 in
-
-theorem frameFnAdj_actO {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (e : AE D)
-    (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (Formalism.L2.DIV.kP PP)) → ℂ)
-    {g : GA D S} {h : GA D T} {yg : GL (Fin S.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)}
-    {yh : GL (Fin T.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)}
-    (hyg : frG S βS g = Formalism.L2.DIV.intGL D.host.F D.host.E S.rank yg)
-    (hyh : frG T βT h = Formalism.L2.DIV.intGL D.host.F D.host.E T.rank yh) (x : WO S T) :
-    frameFnAdj S T βS βT e G (actO S T g h x) =
-      frameFnAdj S T βS βT e (fun U => G (fun PP =>
-        (yg : Matrix (Fin S.rank) (Fin S.rank) _).map (Formalism.L2.DIV.resS D.host.F PP) * U PP *
-          ((yh⁻¹ : GL (Fin T.rank) _) : Matrix (Fin T.rank) (Fin T.rank) _).map (Formalism.L2.DIV.resS D.host.F PP))) x := by
-  have hinv : (frG T βT h)⁻¹ = Formalism.L2.DIV.intGL D.host.F D.host.E T.rank yh⁻¹ := by rw [hyh, map_inv]
-  have hN : frMapAdj S T βS βT (actO S T g h x) = intM yg * frMapAdj S T βS βT x * intM yh⁻¹ := by
-    rw [frMapAdj_actO, hinv, hyg]; rfl
-  have hiff : (IsHalf e (actO S T g h x) ∧ IsIntM (frMapAdj S T βS βT (actO S T g h x))) ↔
-      (IsHalf e x ∧ IsIntM (frMapAdj S T βS βT x)) := by
-    rw [isHalf_actO_iff, hN, isIntM_mul_right_iff, isIntM_mul_left_iff]
-  unfold frameFnAdj
-  by_cases hc : IsHalf e x ∧ IsIntM (frMapAdj S T βS βT x)
-  · rw [if_pos (hiff.2 hc), if_pos hc]
-    congr 1
-    funext PP
-    rw [hN, redM_mul_intM PP (isIntM_mul (isIntM_intM yg) hc.2), redM_intM_mul PP hc.2]
-  · rw [if_neg (fun h' => hc (hiff.1 h')), if_neg hc]
-
 theorem infPart_cA_idemSum {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) :
     infPart D (cA D e) = 0 := by
   obtain ⟨⟨es, hes, rfl⟩, _⟩ := he
   rw [map_sum, map_sum]
   exact Finset.sum_eq_zero fun PP hPP => infPart_of_splitIdem (isSplitIdem_cA (hes PP hPP).1)
-
-set_option maxHeartbeats 4000000 in
-
-theorem isSBHalf_frameFnAdj (hPL : PlaceLatDual D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
-    (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
-    (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT)
-    {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) (he2 : e * e = e)
-    (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (Formalism.L2.DIV.kP PP)) → ℂ)
-    (hG : ∀ Y Y' : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (Formalism.L2.DIV.kP PP)),
-      (∀ PP ∈ P, Y PP = Y' PP) → G Y = G Y') :
-    IsSBHalf (cA D e) (latAll S T ΛS ΛT) (frameFnAdj S T βS βT (cA D e) G) := by
-  classical
-  have he2' : cA D e * cA D e = cA D e := by rw [← map_mul, he2]
-  obtain ⟨nA, hnA, hint⟩ := frMapAdj_latAll_int (ΛS := ΛS) hT hfS hfT
-  obtain ⟨-, -, hP⟩ := hPL ψ hψ S T ΛS ΛT hS hT
-  obtain ⟨-, -, -, hv⟩ := hP P e he
-  have hpt : ∀ (i : Fin S.rank) (j : Fin T.rank), ∃ k : ℕ, 0 < k ∧
-      k • (cA D e • ((GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-        ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S).map
-          (liftE (D := D)))) ∈ latAll S T ΛS ΛT := by
-    intro i j
-    refine hv (cA D e) (Or.inr rfl) _ (fun a b => ?_)
-    simp only [Matrix.smul_apply, smul_eq_mul]
-    rw [← mul_assoc, he2']
-  choose kf hkf0 hkf using hpt
-  have hk'0 : 0 < ∏ i, ∏ j, kf i j := Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => hkf0 i j
-  have hnP0 : 0 < ∏ PP ∈ P, Ideal.absNorm PP.asIdeal :=
-    Finset.prod_pos fun PP _ => Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact PP.ne_bot)
-  set k' := ∏ i, ∏ j, kf i j with hk'
-  set nP := ∏ PP ∈ P, Ideal.absNorm PP.asIdeal with hnPdef
-  have hnP : ∀ PP ∈ P, (((nP * k' : ℕ)) : 𝓞 D.host.E) ∈ PP.asIdeal := fun PP hPP => by
-    rw [Nat.cast_mul]
-    apply Ideal.mul_mem_right
-    rw [hnPdef, ← Finset.mul_prod_erase P _ hPP, Nat.cast_mul]
-    exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)
-  refine ⟨fun t ht => ?_, nA * (nP * k'), Nat.mul_pos hnA (Nat.mul_pos hnP0 hk'0), fun u hu hue t => ?_, fun t ht => ?_⟩
-  · by_contra hc
-    exact ht (by unfold frameFnAdj; rw [if_neg (fun h => hc h.1)])
-  · have hM : frMapAdj S T βS βT (t + (nA * (nP * k')) • u) =
-        frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u) := by
-      rw [frMapAdj_add, frMapAdj_nsmul, mul_comm nA, mul_smul]
-    have hK : IsIntM ((nP * k') • (nA • frMapAdj S T βS βT u)) := fun i j => nsmul_mem (hint u hu i j) _
-    have hhe : ∀ i j, cA D e * (t + (nA * (nP * k')) • u) i j = cA D e * t i j + ((nA * (nP * k')) • u) i j := by
-      intro i j
-      simp only [Matrix.add_apply, Matrix.smul_apply, mul_add, mul_smul_comm, hue i j]
-    have hhalf : IsHalf (cA D e) (t + (nA * (nP * k')) • u) ↔ IsHalf (cA D e) t := by
-      constructor
-      · intro h i j
-        have := h i j
-        rw [hhe, Matrix.add_apply] at this
-        exact add_right_cancel this
-      · intro h i j
-        rw [hhe, Matrix.add_apply, h i j]
-    have hint' : IsIntM (frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u)) ↔
-        IsIntM (frMapAdj S T βS βT t) := by
-      constructor
-      · intro h i j
-        have := sub_mem (h i j) (hK i j)
-        rwa [Matrix.add_apply, add_sub_cancel_right] at this
-      · intro h; exact isIntM_add h hK
-    have hred : IsIntM (frMapAdj S T βS βT t) → ∀ PP ∈ P,
-        redM PP (frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u)) = redM PP (frMapAdj S T βS βT t) := by
-      intro hN PP hPP
-      ext i j
-      rw [redM_of_int PP (isIntM_add hN hK), redM_of_int PP hN]
-      have e1 : (⟨(frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u)) i j, isIntM_add hN hK i j⟩ :
-          ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) = ⟨frMapAdj S T βS βT t i j, hN i j⟩ +
-          ⟨(nP * k') • (nA • frMapAdj S T βS βT u) i j, hK i j⟩ := Subtype.ext rfl
-      rw [e1, map_add]
-      have e2 : Formalism.L2.DIV.resS D.host.F PP ⟨(nP * k') • (nA • frMapAdj S T βS βT u) i j, hK i j⟩ = 0 :=
-        int_of_rf PP (hint u hu i j) (nP * k') (hnP PP hPP)
-      rw [e2, add_zero]
-    unfold frameFnAdj
-    rw [hM]
-    by_cases hc : IsHalf (cA D e) t ∧ IsIntM (frMapAdj S T βS βT t)
-    · rw [if_pos ⟨hhalf.2 hc.1, hint'.2 hc.2⟩, if_pos hc]
-      exact hG _ _ (fun PP hPP => hred hc.2 PP hPP)
-    · rw [if_neg (fun h => hc ⟨hhalf.1 h.1, hint'.1 h.2⟩), if_neg hc]
-  · have hc : IsHalf (cA D e) t ∧ IsIntM (frMapAdj S T βS βT t) := by
-      by_contra hc; exact ht (by unfold frameFnAdj; rw [if_neg hc])
-    suffices hs : k' • t ∈ latAll S T ΛS ΛT by
-      rw [show nA * (nP * k') = (nA * nP) * k' by ring, mul_smul]; exact nsmul_mem hs _
-    have hinf : ∀ i j, infPart D (t i j) = 0 := fun i j => by
-      rw [← hc.1 i j, map_mul, infPart_cA_idemSum he, zero_mul]
-    have h1 : t = (t.map (toEAf D)).map (liftE (D := D)) := by ext a b; exact (liftE_toEAf _ (hinf a b)).symm
-    have hA : (adjO S T t).map (toEAf D) = (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * frMapAdj S T βS βT t *
-        ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) := by
-      rw [frMapAdj_eq]
-      simp only [Matrix.mul_assoc, gl_cancel_left, Units.mul_inv, Matrix.mul_one]
-    have hsg : ∀ (M : Matrix (Fin S.rank) (Fin T.rank) (EAf D)),
-        GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * M *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S =
-        ∑ i, ∑ j, sR D (M i j) • (GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) *
-          Matrix.single i j (1 : EAf D) *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S) := by
-      intro M
-      have hs : ∀ i j, Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : EAf D) := fun i j => by
-        rw [Matrix.smul_single, smul_eq_mul, mul_one]
-      conv_lhs => rw [Matrix.matrix_eq_sum_single M]
-      simp only [hs, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul]
-      rw [show ((∑ i, ∑ j, M i j • ((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D)))).map (sR D)) =
-          (sR D).toAddMonoidHom.mapMatrix (∑ i, ∑ j, M i j • ((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) *
-            Matrix.single i j (1 : EAf D) *
-            ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D)))) from rfl]
-      simp only [map_sum, Matrix.transpose_sum, Matrix.mul_sum, Matrix.sum_mul]
-      refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-      rw [show (sR D).toAddMonoidHom.mapMatrix (M i j • ((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) *
-          Matrix.single i j (1 : EAf D) *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D)))) =
-          sR D (M i j) • ((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D) by
-        ext a b; simp only [AddMonoidHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul,
-          RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]]
-      rw [Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul]
-    have hdec : t = ∑ i, ∑ j, liftE (sR D (frMapAdj S T βS βT t i j)) •
-        (cA D e • ((GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S).map
-            (liftE (D := D)))) := by
-      have h3 : t = cA D e • t := by ext a b; simp only [Matrix.smul_apply, smul_eq_mul, hc.1 a b]
-      conv_lhs => rw [h3, h1, toEAf_adjO_adj, hA, hsg]
-      rw [show (∑ i, ∑ j, sR D (frMapAdj S T βS βT t i j) • (GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) *
-          Matrix.single i j (1 : EAf D) *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S)).map
-            (liftE (D := D)) =
-        (liftEHom D).mapMatrix (∑ i, ∑ j, sR D (frMapAdj S T βS βT t i j) • (GIE T *
-          (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) *
-          ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S)) from rfl]
-      simp only [map_sum, liftEHom_single_smul, Finset.smul_sum]
-      exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _
-    rw [hdec, Finset.smul_sum]
-    refine sum_mem fun i _ => ?_
-    rw [Finset.smul_sum]
-    refine sum_mem fun j _ => ?_
-    rw [smul_comm]
-    refine liftE_smul_mem (sR_mem_intAf (hc.2 i j)) _ ?_
-    obtain ⟨m, hm⟩ : kf i j ∣ k' :=
-      dvd_trans (Finset.dvd_prod_of_mem (fun j => kf i j) (Finset.mem_univ j))
-        (Finset.dvd_prod_of_mem (fun i => ∏ j, kf i j) (Finset.mem_univ i))
-    rw [hm, mul_comm, mul_smul]
-    exact nsmul_mem (hkf i j) m
 
 end Lat
 

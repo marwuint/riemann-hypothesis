@@ -171,11 +171,4 @@ theorem eq_zero_of_forall_valOn_eq_zero (i : PtsOver Ω (I.subschemeι ≫ p) �
 
 end Subscheme
 
-example (D : ℕ) : Module.finrank ℚ (sectionsOnClosedSubscheme (CanonLB.affStr ℚ D) (AffineExample.triv ℚ D)
-    (AffineExample.ideal MvPolynomial.X)) = 1 := by
-  have := AffineExample.isIso_of_span (k := ℚ) (D := D) (g := MvPolynomial.X) rfl
-  rw [finrank_H0On AffineExample.isLB_triv ℂ, Nat.card_eq_one_iff_exists]
-  exact ⟨⟨spMap (algebraMap ℚ ℂ) ≫ inv _, by simp⟩, fun x => Subtype.ext
-    ((IsIso.eq_comp_inv _).2 x.2)⟩
-
 end GlobalTheory.Vanishing

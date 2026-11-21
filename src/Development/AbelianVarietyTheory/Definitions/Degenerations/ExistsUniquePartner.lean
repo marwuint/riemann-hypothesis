@@ -60,11 +60,6 @@ def Under {D₀ : DegData R I} (U : PreU I D₀.toPre A G) (U₀ : UnifPre I D�
 abbrev withPsi (D : DegPre R) (psi : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => ptK (D.c χ)) (fun _ => -1)))
     (h : ∀ χ, (psi χ).IsGen) : DegPre R := setPsi D psi h
 
-theorem Under.iff_match {D₀ : DegData R I} {U : PreU I D₀.toPre A G} {U₀ : UnifPre I D₀ A G} :
-    Under U U₀ ↔ GlobalTheory.UU.Match U U₀ :=
-  ⟨fun ⟨h₁, h₂, h₃, h₄, h₅, h₆⟩ => ⟨h₁.symm, h₂.symm, h₃.symm, h₄.symm, h₅.symm, h₆.symm⟩,
-    fun h => ⟨h.gen.symm, h.LG.symm, h.cub.symm, h.sym.symm, h.gt.symm, h.w.symm⟩⟩
-
 theorem withPsi_eq (D : DegPre R) (psi) (h) : withPsi D psi h = setPsi D psi h := rfl
 
 namespace Cmp
@@ -123,114 +118,7 @@ def refl (U : PreU I D A G) : Cmp (RingHom.id R) U U (𝟙 G.left) where
 
 variable {φ : R →+* V} {U : PreU I D A G} {U' : PreU I' D' A' G'} {F : G'.left ⟶ G.left}
 
-theorem pow_le (C : Cmp φ U U' F) (e : ℕ) : I ^ (e + 1) ≤ (I' ^ (e + 1)).comap φ := by
-  rw [← Ideal.map_le_iff_le_comap, Ideal.map_pow]
-  exact Ideal.pow_right_mono C.map_le _
-
-def baseMap (C : Cmp φ U U' F) (e : ℕ) :
-    Spec (CommRingCat.of (V ⧸ I' ^ (e + 1))) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1))) :=
-  spMap (Ideal.quotientMap (I' ^ (e + 1)) φ (C.pow_le e))
-
-theorem baseMap_thick (C : Cmp φ U U' F) (e : ℕ) : C.baseMap e ≫ thick R I e = thick V I' e ≫ spMap φ := by
-  simp only [baseMap, thick, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]
-
-def levMap (C : Cmp φ U U' F) (e : ℕ) : (thickObj V I' e G').left ⟶ (thickObj R I e G).left :=
-  pullback.lift ((fstG I' e G').left ≫ F) (pullback.snd G'.hom (thick V I' e) ≫ C.baseMap e) (by
-    simp only [Category.assoc]
-    rw [C.pb.1.w, C.baseMap_thick]
-    exact pullback.condition_assoc (f := G'.hom) (g := thick V I' e) _)
-
-theorem levMap_fst (C : Cmp φ U U' F) (e : ℕ) : C.levMap e ≫ (fstG I e G).left = (fstG I' e G').left ≫ F :=
-  pullback.lift_fst _ _ _
-
-theorem levMap_hom (C : Cmp φ U U' F) (e : ℕ) :
-    C.levMap e ≫ (thickObj R I e G).hom = (thickObj V I' e G').hom ≫ C.baseMap e :=
-  pullback.lift_snd _ _ _
-
-theorem comp_levMap_fst (C : Cmp φ U U' F) (e : ℕ) {Z : Scheme.{0}} (x' : Z ⟶ (thickObj V I' e G').left) :
-    (x' ≫ C.levMap e) ≫ (fstG I e G).left = x' ≫ (fstG I' e G').left ≫ F := by
-  rw [Category.assoc, C.levMap_fst]
-
-theorem existsUnique_partner (C : Cmp φ U U' F) (e : ℕ) {Z : Scheme.{0}} (x' : Z ⟶ (thickObj V I' e G').left) :
-    ∃! x : Z ⟶ (thickObj R I e G).left, x ≫ (fstG I e G).left = x' ≫ (fstG I' e G').left ≫ F := by
-  refine ⟨x' ≫ C.levMap e, C.comp_levMap_fst e x', fun y hy => ?_⟩
-  have := mono_fstG I e G
-  exact (cancel_mono (fstG I e G).left).1 (hy.trans (C.comp_levMap_fst e x').symm)
-
-theorem levMap_pG (C : Cmp φ U U' F) (e : ℕ) : C.levMap e ≫ (U.gt e).pG.left = (U'.gt e).pG.left ≫ C.β := by
-  have h := (C.lev e _ (𝟙 _) (C.levMap e) (by rw [Category.id_comp]; exact C.levMap_fst e)).1
-  rw [Category.id_comp] at h
-  exact h.symm
-
-theorem one_fstG (I : Ideal R) (e : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G]
-    (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) :
-    (1 : T ⟶ thickObj R I e G).left ≫ (fstG I e G).left = (T.hom ≫ thick R I e) ≫ eSec G :=
-  one_left_comp (toBase_mul_pullback G (thick R I e)) T
-
-theorem one_pG {e : ℕ} (g : GtCoord I D e G) (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) :
-    (1 : T ⟶ thickObj R I e G).left ≫ g.pG.left = (T.hom ≫ thick R I e) ≫ eSec D.P.A := by
-  have := g.q_hom
-  have h1 : (1 : T ⟶ thickObj R I e G) ≫ g.q = 1 := by simp
-  have h2 := congrArg Over.Hom.left h1
-  rw [Over.comp_left] at h2
-  show (1 : T ⟶ thickObj R I e G).left ≫ ((Over.map (thick R I e)).map g.q ≫ DegPre.prBe I D e).left = _
-  rw [Over.comp_left, Over.map_map_left, ← Category.assoc, h2]
-  exact one_fstG I e D.P.A T
-
-theorem v_rig_level (C : Cmp φ U U' F) (e : ℕ) {Z : Scheme.{0}} (r : Z ⟶ Spec (CommRingCat.of (V ⧸ I' ^ (e + 1))))
-    (z : Z) {J J'} (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J') :
-    val (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig ((r ≫ thick V I' e) ≫ spMap φ) z J =
-      gw C.v ((r ≫ thick V I' e) ≫ eSec D'.P.A) z (J (((r ≫ thick V I' e) ≫ spMap φ) ≫ eSec D.P.A))
-          (J' ((r ≫ thick V I' e) ≫ eSec D'.P.A)) *
-        val (L := D'.P.L) (φ := fun _ : PUnit => eSec D'.P.A) (ε := fun _ => 1) D'.rig (r ≫ thick V I' e) z J' := by
-  obtain ⟨JG, hJG⟩ := exists_good_pt U.P.L.isLB z
-  obtain ⟨JG', hJG'⟩ := exists_good_pt U'.P.L.isLB z
-  have hx'F : (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left = (r ≫ thick V I' e) ≫ eSec G' :=
-    one_fstG I' e G' (Over.mk r)
-  have hxF : (1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (fstG I e G).left =
-      ((r ≫ thick V I' e) ≫ spMap φ) ≫ eSec G := by
-    rw [one_fstG I e G]
-    simp only [Over.mk_hom, Category.assoc, C.baseMap_thick]
-  have h1 : (1 : Over.mk (r ≫ thick V I' e) ⟶ G').left = (r ≫ thick V I' e) ≫ eSec G' := one_left G' _
-  have hF : (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left ≫ F =
-      ((r ≫ thick V I' e) ≫ spMap φ) ≫ eSec G := by
-    rw [← Category.assoc, hx'F, ← h1]
-    exact one_left_comp C.wL_map.mul (Over.mk (r ≫ thick V I' e))
-  have hx'P : (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (U'.gt e).pG.left = (r ≫ thick V I' e) ≫ eSec D'.P.A :=
-    one_pG (U'.gt e) (Over.mk r)
-  have hxP : (1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (U.gt e).pG.left =
-      ((r ≫ thick V I' e) ≫ spMap φ) ≫ eSec D.P.A := by
-    rw [one_pG (U.gt e)]
-    simp only [Over.mk_hom, Category.assoc, C.baseMap_thick]
-  have hxx : (1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (fstG I e G).left =
-      (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left ≫ F := by
-    rw [hxF, hF]
-  have ha := (U'.w_vals e (Over.mk r) z JG' J' hJG' hJ' _ (fun _ => rfl)).1
-  have hb := (U.w_vals e (Over.mk (r ≫ C.baseMap e)) z JG J hJG hJ _ (fun _ => rfl)).1
-  have hc := (C.wL_map.vals (Over.mk (r ≫ thick V I' e)) z JG' JG hJG' hJG _ (fun _ => rfl)).1
-  have hd := ((C.lev e Z _ _ hxx).2 z J J' hJ hJ').2
-    (JG ((1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (fstG I e G).left))
-    (JG' ((1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left)) (hJG _) (hJG' _)
-  beta_reduce at ha hb hc
-  rw [hx'P, hx'F] at ha
-  rw [hxP, hxF] at hb
-  rw [hx'P, hxP, hx'F, hxF] at hd
-  have hL := one_left_comp C.wL_map.mul (Over.mk (r ≫ thick V I' e))
-  rw [hL, h1] at hc
-  have hbt : (r ≫ C.baseMap e) ≫ thick R I e = (r ≫ thick V I' e) ≫ spMap φ := by
-    simp only [Category.assoc, C.baseMap_thick]
-  simp only [Over.mk_hom] at ha hb hc
-  rw [hbt] at hb
-  rw [hb, hc, ha, ← _root_.mul_assoc, ← hd, _root_.mul_assoc]
-
 end Cmp
 
-example (U : PreU I D A G) (e : ℕ) : (Cmp.refl U).levMap e = 𝟙 _ :=
-  have := Cmp.mono_fstG I e G
-  (cancel_mono (fstG I e G).left).1 (((Cmp.refl U).levMap_fst e).trans (by simp))
-example {φ : R →+* V} {U : PreU I D A G} {U' : PreU I' D' A' G'} {F : G'.left ⟶ G.left} (hI' : I' ≠ ⊤)
-    (h : I.map φ ⊔ I' = ⊤) : IsEmpty (Cmp φ U U' F) :=
-  ⟨fun C => hI' ((sup_eq_right.2 C.map_le).symm.trans h)⟩
-example (D : DegPre R) : withPsi D D.psi D.psi_gen = D := rfl
 end GlobalTheory.LN
 end

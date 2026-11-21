@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjectiveOfEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectedPDivGroupFormalLawCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionsEqSeriesInChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionsEqSeriesInChart
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
 namespace GlobalTheory.Katz
@@ -13,7 +13,7 @@ theorem eq_zero_of_cob1_eq_zero : ∀ (p : ℕ) (k : Type) [CommRing k] (h : (p 
     (G : PDivGroup p k) (c : Chart G d) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k),
     c.IsLawOf μ → ∀ b, cob1 μ b = 0 → b = 0 := by
   intro p k _ h d G c μ hμ b hb
-  obtain ⟨hres, -, huniq⟩ := GlobalTheory.T.functions_eq_series_in_chart p k d G c
+  obtain ⟨hres, -, huniq⟩ := _root_.GlobalTheory.Katz.Chart.functions_are_series p k d G c
   have hlaw := ((GlobalTheory.T.connectedPDivGroup_formalLaw_coordinates p k d G c).2 μ hμ).2
   let B : G.funs := ⟨fun n => c.ev n b, fun n => hres n b⟩
   have hB : G.cob B = 0 := by

@@ -18,10 +18,4 @@ def ArithmeticIntersectionChartFinite.Statement : Prop :=
     FiniteDimensional G.Φ (IntermediateField.adjoin G.Φ
       (Set.range fun q : Σ k : FibreBlock κ, ι' k.1 => G.x' ⟨q.1.1, q.2⟩ / G.x' ⟨q.1.1, j q.1⟩))
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

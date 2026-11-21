@@ -23,9 +23,4 @@ theorem numerical_closed_of_threshold (C₀ : ℝ) (h9 : 9 ≤ C₀) (h : nc_Nee
     have H := h D L X Y K h1 h2 h3 hr hs hT hL u w hg hlog t0 ht0 j hj
     ⟨nc_de X Y K hT hL u w hg t0 ht0 j hj (h9.trans h1) (h9.trans h2) hlog H.1, H.2⟩
 
-theorem numerical_family_of_threshold (C₀ : ℝ) (h9 : 9 ≤ C₀) (h : nc_Need3 C₀) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
-    ∃ C₀, Formalism.MainNotions.FormalGroupSystem.NumericalComparisonFamily Fm C₀ := by
-  obtain ⟨C, hC⟩ := numerical_closed_of_threshold C₀ h9 h
-  exact ⟨C, fun x i => hC _ _ _ _⟩
-
 end Formalism.MainNotions.FormalGroupSystem.Pf

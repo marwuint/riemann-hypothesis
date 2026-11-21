@@ -11,16 +11,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
-theorem exists_specMap_fromSpec_of_range_subset {A : CommRingCat.{0}} {X : Scheme.{0}} (f : Spec A ⟶ X)
-    {U : X.Opens} (hU : IsAffineOpen U) (h : ∀ x, f x ∈ U) :
-    ∃ φ : Γ(X, U) ⟶ A, Spec.map φ ≫ hU.fromSpec = f := by
-  have hr : Set.range f ⊆ Set.range hU.fromSpec := by
-    rw [hU.range_fromSpec]
-    rintro _ ⟨x, rfl⟩
-    exact h x
-  refine ⟨Spec.preimage (IsOpenImmersion.lift hU.fromSpec f hr), ?_⟩
-  rw [Spec.map_preimage, IsOpenImmersion.lift_fac]
-
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in

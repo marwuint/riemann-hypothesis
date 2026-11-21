@@ -8,18 +8,18 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ei
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.WeilSiegelFormulaUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinContinuationOfDoublingMethod
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumHermitianSpaceDoubledStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumHermitianSpaceDoubled
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingMapThetaIdentityAnyWeilDataStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeilSectionDoublingEqMatrixCoefficientStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingVectorFockPairIsCompactFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelWeilSectionDoublingEqMatrixCoefficient
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingVectorFockPairIsCompactFinite
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingSiegelWeilSectionMemDegeneratePrincipalSStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicIwasawaDoubledGroupSelfDualLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicIwasawaDoubledGroupSelfDualLattice
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeesawFubiniTwoLiftsModerateGrowthKernelsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelModerateGrowthBothVariablesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspFormsArchimedeanKFiniteStarCompMemStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelNormSqModerateGrowthLargeStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaIntegralEqSiegelEisensteinOfWeilRangeStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingBasicIdentityFlatSectionCuspFormsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelModerateGrowthBothVariables
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspFormsArchimedeanKFiniteStarCompMem
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaKernelNormSqModerateGrowthLarge
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaIntegralEqSiegelEisensteinOfWeilRange
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingBasicIdentityFlatSectionCuspForms
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilDatumAtPlaceEqLatticeIntertwinerMulDetChar
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasChr
 open scoped ComplexConjugate Matrix NNReal
@@ -37,20 +37,20 @@ theorem innerProduct_convergent : GlobalTheory.Published.CuspRapidDecay → Glob
   intro hC hWS hSEC D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hwitt hat m mH hm hmH Φ₁ Φ₂ hΦ₁ hΦ₂ u₁ hu₁ u₂ hu₂
   have hW := GlobalTheory.weilRepresentationUnitaryPair
   obtain ⟨ha, ht, hb, hθ, hSig, hCart, -⟩ := hP.setting
-  obtain ⟨omh, homh⟩ := GlobalTheory.T.exists_weilDatum_hermitianSpaceDoubled hW D ψ A B χA χB om hP.weil
+  obtain ⟨omh, homh⟩ := _root_.GlobalTheory.Core.Rk.exists_doubled_weilDatum hW D ψ A B χA χB om hP.weil
   have hTC := GlobalTheory.T.doublingMap_thetaIdentity_any_weilData D ψ A B χA χB om omh hP.weil homh
-  have hCC := GlobalTheory.T.siegelWeilSection_doubling_eq_matrixCoefficient D ψ A B χA χB om omh hP.weil hTC ν 𝓕 hP.covol
+  have hCC := _root_.GlobalTheory.Core.Rk.coefClause_of_thetaClause D ψ A B χA χB om omh hP.weil hTC ν 𝓕 hP.covol
   obtain ⟨hφ, hid⟩ := hTC Φ₁ Φ₂ hΦ₁.1 hΦ₂.1
-  have hK := GlobalTheory.T.doublingVector_fockPair_isCompactFinite D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh Φ₁ Φ₂ hΦ₁ hΦ₂
+  have hK := _root_.GlobalTheory.Core.Rk.IP.delta_isKFinVec D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh Φ₁ Φ₂ hΦ₁ hΦ₂
   have h2a : 2 * A.rank < B.rank := by omega
   have hw : wittIndex B = 0 ∨ A.rank + wittIndex B < B.rank := by
     rcases hwitt with h | h
     · exact Or.inl h
     · exact Or.inr (by omega)
 
-  obtain ⟨-, hEis⟩ := GlobalTheory.T.thetaIntegral_eq_siegelEisenstein_of_weilRange hWS D ψ A B ha h2a hw χB omh homh ν 𝓕 hP.covol mH hmH (delta A B Φ₁ Φ₂) hφ
+  obtain ⟨-, hEis⟩ := _root_.GlobalTheory.Core.Rk.IP.thetaMean_eq_eis_of_weil hWS D ψ A B ha h2a hw χB omh homh ν 𝓕 hP.covol mH hmH (delta A B Φ₁ Φ₂) hφ
   have hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) :=
-    GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hP.maj
+    _root_.GlobalTheory.Core.Rk.IP.hasIwasawa_KAd_selfDual D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hP.maj
   have hmem := GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries hW D ψ A B χB omh homh ν 𝓕 hP.covol (delta A B Φ₁ Φ₂) hφ a hK
   have hHk : IsHeckeChar D χB⁻¹ := by
     have h := homh.hecT
@@ -59,8 +59,8 @@ theorem innerProduct_convergent : GlobalTheory.Published.CuspRapidDecay → Glob
       rw [this]; exact h.1.inv
     · rw [MonoidHom.inv_apply, h.2 x, inv_one]
 
-  have hf₁ := GlobalTheory.T.cuspFormsArchimedeanKFinite_star_comp_mem D θ A cA hθ u₁ hu₁
-  have hf₂ := GlobalTheory.T.cuspFormsArchimedeanKFinite_star_comp_mem D θ A cA hθ u₂ hu₂
+  have hf₁ := _root_.GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 D θ A cA hθ u₁ hu₁
+  have hf₂ := _root_.GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 D θ A cA hθ u₂ hu₂
   have rd : ∀ u ∈ A0 θ A cA, GlobalTheory.Grow.RapidDec A u := fun u hu =>
     GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (mem_cuspForms.1 hu).1.1 (mem_cuspForms.1 hu).1.2
 
@@ -71,7 +71,7 @@ theorem innerProduct_convergent : GlobalTheory.Published.CuspRapidDecay → Glob
     have : (A.rank : ℝ) < t := by exact_mod_cast hat
     have hb' : (B.rank : ℝ) = A.rank + t := by exact_mod_cast hb
     rw [hb']; linarith
-  have hBI := GlobalTheory.T.doublingBasicIdentity_flatSection_cuspForms hSEC hC D A (by omega) a hP.maj hI χB⁻¹ hHk (sZero A B)
+  have hBI := _root_.GlobalTheory.Core.Rk.IP.basicIdentity_flat hSEC hC D A (by omega) a hP.maj hI χB⁻¹ hHk (sZero A B)
     (swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂)) hmem θ hθ cA m hm _ hf₁ _ hf₂ (sZero A B) hre
   simp only [flatH_self] at hBI
   obtain ⟨-, hZc, hZe⟩ := hBI
@@ -109,13 +109,13 @@ theorem innerProduct_convergent : GlobalTheory.Published.CuspRapidDecay → Glob
       (GlobalTheory.Grow.ModGrowth A fun g => petersson B mH (fun h => thetaKO om g h Φ) fun h => thetaKO om g h Φ) ∧
       ∀ h, GlobalTheory.Grow.ModGrowth A fun g => thetaKO om g h Φ := by
     intro Φ hΦ
-    obtain ⟨hL2, hMG⟩ := GlobalTheory.T.thetaKernel_normSq_moderateGrowth_large hWS hSEC D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hwitt hat mH hmH Φ hΦ
+    obtain ⟨hL2, hMG⟩ := _root_.GlobalTheory.Core.Rk.IP.normSq_theta_modGrowth_big hWS hSEC D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hwitt hat mH hmH Φ hΦ
     refine ⟨hP.weil.om_cont Φ hΦ.1 0, fun γ hγ g h => ?_, hL2, hMG, fun h => ?_⟩
     · have e : ((γ * g, h) : GA D A × GA D B) = (γ, 1) * (g, h) := by simp
       unfold thetaKO
       rw [e, map_mul]
       exact hP.weil.om_aut γ hγ 1 (one_mem _) _ (hP.weil.om_pres _ _ hΦ.1)
-    · obtain ⟨C, N, hCN⟩ := GlobalTheory.T.theta_kernel_moderate_growth_both_variables D ψ A B χA χB om hP.weil Φ hΦ.1
+    · obtain ⟨C, N, hCN⟩ := _root_.GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ D ψ A B χA χB om hP.weil Φ hΦ.1
       refine ⟨C * GlobalTheory.Grow.height B h ^ N, N, fun g => (hCN g h).trans (le_of_eq ?_)⟩
       rw [mul_pow]; ring
   obtain ⟨i₁, i₂, l₁, l₂, hss⟩ := GlobalTheory.T.seesaw_fubini_two_lifts_moderate_growth_kernels D A B m mH hm hmH (fun g h => thetaKO om g h Φ₁)

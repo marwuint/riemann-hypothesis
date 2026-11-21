@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteTypeSpannedBySplitPlaceLocalComponentStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteTypeSpannedBySplitPlaceLocalComponent
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FixedVectorsNeBotOfMemSumIntertwiningRanges
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdelicUnitaryTrivialOutsideSplitPlaceLocEq
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCuspidalIffCompositions
@@ -99,7 +100,7 @@ theorem fixed_ne_bot_of_fixed_vector : ∀ (L : Type) [Field L] [NumberField L] 
   intro L _ _ _ n π s τ hloc f hf hf0 hfix
   classical
   obtain ⟨c, _, hc, hci, _⟩ := id hloc
-  have hspan := GlobalTheory.T.finiteType_spanned_by_splitPlace_localComponent L n π s τ hloc c hc hci hf
+  have hspan := _root_.GlobalTheory.FinTypSpanLoc.main L n π s τ hloc c hc hci hf
   let H : Subgroup (GAf L n) :=
     { carrier := {x | TrivOutside {s.v} x}
       mul_mem' := fun {x y} hx hy v hv => by

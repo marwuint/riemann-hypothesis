@@ -39,12 +39,6 @@ theorem frac_prod_smul (f : Fin d → R) (m : M) (k : ℕ) : frac f ((∏ l, f l
   refine ⟨1, ?_⟩
   simp only [one_smul, Submonoid.smul_def, smul_smul, pow_succ]
 
-theorem frac_zero_of_pos (f : Fin d → R) (hd : 0 < d) (m : M) : frac f m 0 = 0 := by
-  unfold frac
-  rw [Submodule.Quotient.mk_eq_zero]
-  apply Submodule.subset_span
-  exact ⟨⟨0, hd⟩, 0, m, by simp⟩
-
 def IsRes {B : Type} [CommRing B] [Algebra ℂ B] (s : Fin d → B) (e : B →ₐ[ℂ] MvPowerSeries (Fin d) ℂ)
     (ρ : LC s (Om ℂ B d) →ₗ[ℂ] ℂ) : Prop :=
   (∀ j, e (s j) = MvPowerSeries.X j) ∧
@@ -76,37 +70,5 @@ end IsRes
 end GlobalTheory.W1
 
 namespace GlobalTheory.W1.Ex
-
-def rho0 (s : Fin 0 → ℂ) : LC s (Om ℂ ℂ 0) →ₗ[ℂ] ℂ :=
-  (Submodule.liftQ (omitted s (Om ℂ ℂ 0))
-    ((exteriorPower.zeroEquiv ℂ Ω[ℂ⁄ℂ]).toLinearMap ∘ₗ
-      LocalizedModule.lift (pw s) LinearMap.id (fun u => by
-        obtain ⟨n, hn⟩ := u.2
-        have : (u : ℂ) = 1 := by simpa using hn.symm
-        rw [this, map_one]; exact isUnit_one))
-    (by
-      have : omitted s (Om ℂ ℂ 0) = ⊥ := by
-        unfold omitted
-        rw [Submodule.span_eq_bot]
-        rintro z ⟨j, _, _, _⟩
-        exact j.elim0
-      rw [this]; exact bot_le))
-
-example (s : Fin 0 → ℂ) : IsRes s (Algebra.ofId ℂ (MvPowerSeries (Fin 0) ℂ)) (rho0 s) := by
-  refine ⟨fun j => j.elim0, fun ω => ⟨exteriorPower.zeroEquiv ℂ Ω[ℂ⁄ℂ] ω, ?_⟩, fun k h => ?_⟩
-  · apply (exteriorPower.zeroEquiv ℂ Ω[ℂ⁄ℂ]).injective
-    rw [LinearEquiv.map_smul, exteriorPower.zeroEquiv_ιMulti, smul_eq_mul, mul_one]
-  · have hn : (Finsupp.equivFunOnFinite.symm fun _ : Fin 0 => k) = 0 := Subsingleton.elim _ _
-    rw [hn, Algebra.ofId_apply, MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply,
-      MvPowerSeries.coeff_zero_C]
-    simp [rho0, frac, LocalizedModule.lift_mk, exteriorPower.zeroEquiv_ιMulti]
-
-example : frac (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (1 : Polynomial ℂ) 0 = 0 :=
-  frac_zero_of_pos _ Nat.one_pos _
-
-example : frac (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (Polynomial.X : Polynomial ℂ) 2 =
-    frac (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (1 : Polynomial ℂ) 1 := by
-  have := frac_prod_smul (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (1 : Polynomial ℂ) 1
-  simpa using this
 
 end GlobalTheory.W1.Ex

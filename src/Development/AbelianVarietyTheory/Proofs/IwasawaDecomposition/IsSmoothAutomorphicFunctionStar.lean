@@ -69,7 +69,7 @@ theorem conjWord_center (τ : D.what₂.Tau) {w : List (LieAt V τ) →₀ ℂ}
     exact List.map_congr_left fun X _ => (h2 X).symm
   rw [Subalgebra.mem_center_iff] at hw ⊢
   intro u
-  obtain ⟨w', rfl⟩ := GlobalTheory.T.enveloping_map_surjective D V τ u
+  obtain ⟨w', rfl⟩ := _root_.GlobalTheory.EnvWords.envOf_surjective D V τ u
   rw [← conjWord_conjWord w', key (conjWord w'), key w, ← map_mul, ← map_mul, hw]
 
 theorem wordDer_star (e : LieInf V → GA D V) (l : List (LieInf V)) (φ : GA D V → ℂ) :
@@ -121,7 +121,7 @@ theorem foldr_Rder_star (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.r
 theorem isAutFunSm_star : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (φ : GA D V → ℂ),
     IsAutFunSm θ V φ → IsAutFunSm θ V (fun g => star (φ g)) := by
   intro D θ hθ V φ h
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   have hsm : ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ),
       (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g, ContDiff ℝ ∞ fun t : Fin k → ℝ =>
         (star φ) (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod) :=

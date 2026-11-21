@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPullbackMulPO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoboundaryTranslationInvariantPTorsionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSymmetricCocyclesOfPullbackMulPStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionAdditiveFnPDivGroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivCocycleMemRangeCobOfPullbackMulPStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivCocycleMemRangeCobOfPullbackMulP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveFunctionCartierDualTangentBijectiveStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OmegaBaseChangeBijectiveOfPEqZeroStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveFunctionsFlatBaseChangeBijectiveStatement
@@ -57,11 +57,6 @@ theorem vecExtMap_add (f g : G ⟶ H) : vecExtMap (f + g) = vecExtMap f + vecExt
     Submodule.Quotient.mk (cocyclesMap f c + cocyclesMap g c)
   refine (Submodule.Quotient.eq _).2 ⟨B, Subtype.ext (funext fun n => ?_)⟩
   exact eq_sub_iff_add_eq'.2 (T.bialgebraPullbackTwo_convMul_symmetricCocycle (f.app n) (g.app n) (c.1 n) (c.2 n).1).symm
-
-theorem vecExtMap_id : vecExtMap (𝟙 G) = LinearMap.id :=
-  LinearMap.ext fun x => by
-    obtain ⟨c, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-    exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun _ => pullTwo_id _))
 
 theorem SemiHom.ofHom_vecExt (f : G ⟶ H) (x : H.VecExt) :
     (SemiHom.ofHom f).vecExt x = vecExtMap f x := by
@@ -163,7 +158,7 @@ theorem extChar_eq_iff (hp : (p : R) = 0) (x : G.VecExt) (b : G.A 1) :
 theorem extChar_bijective (hp : (p : R) = 0) : Function.Bijective (G.extChar hp) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun b => ?_⟩
   · obtain ⟨c, B, rfl, h1, -, h3⟩ := (G.extChar_eq_iff hp x 0).1 (congrArg Subtype.val hx)
-    exact (Submodule.Quotient.mk_eq_zero _).2 (T.pDivCocycle_mem_range_cob_of_pullback_mulP G c B h1 h3)
+    exact (Submodule.Quotient.mk_eq_zero _).2 (_root_.GlobalTheory.cocycle_mem_range_cob_of_pullback_mulP G c B h1 h3)
   · obtain ⟨x, hx⟩ := exists_of_cobOne_eq_zero b.2
     exact ⟨x, Subtype.ext ((G.extChar_eq_iff hp x _).2 hx)⟩
 

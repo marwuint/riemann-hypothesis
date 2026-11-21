@@ -96,18 +96,6 @@ def toMoved (κ : S.U) : (moveLev k).U :=
     rw [mem_moveLev, e]
     exact κ.2⟩
 
-theorem chi_toMoved (κ : S.U) : (moveLev k).chi (toMoved k κ) = S.chi κ := by
-  rw [moveLev_chi]
-  congr 1
-  apply Subtype.ext
-  show k.1 * (k.1⁻¹ * κ.1 * k.1) * k.1⁻¹ = κ.1
-  group
-
-theorem basePt_hatStab : HatStab S.Lb k.1 := fun z => ((inv_mem k.2.1).2 z).symm
-
-theorem latAd_basePt [StarRing E] (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : latAd (x * k.1) S.Lb = latAd x S.Lb :=
-  latAd_stab x k.1 S.Lb (basePt_hatStab k)
-
 theorem cls_move_iff (x y : UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
     (Quotient.mk'' (x * basePtU k) : Cls (moveLev k)) = Quotient.mk'' (y * basePtU k) ↔
       (Quotient.mk'' x : Cls S) = Quotient.mk'' y := by
@@ -151,13 +139,6 @@ theorem bij_move {cl : Type} {y : cl → UPts σ J (FiniteAdeleRing (𝓞 F) F)}
     refine ⟨c, ?_⟩
     have h := (cls_move_iff k _ _).2 hc
     rwa [inv_mul_cancel_right] at h
-
-example : (moveLev (1 : basePts S)).U = S.U := by
-  ext x
-  simp [mem_moveLev]
-
-example (κ : S.U) (h : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∈ v.asIdeal → bc (prV (E := E) v) κ.1 = 1) : κ.1 ∈ basePts S :=
-  (mem_basePts_iff S _).2 ⟨((S.U_eq _).1 κ.2).1, fun v => S.Uloc_lev v (((S.U_eq _).1 κ.2).2 v), h⟩
 
 end Level
 

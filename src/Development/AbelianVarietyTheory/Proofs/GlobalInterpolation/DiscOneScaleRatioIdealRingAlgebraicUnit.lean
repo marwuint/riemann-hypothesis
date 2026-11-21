@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.PairingIndexBounds.HalvesRecursion.RecursiveLatti
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGoodReductionAlgebraicWeierstrassModel
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRingEquivApplyEqMulOfTranscendental
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormDiscriminantSuperlatticeOddIndexEqStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CmBaseFieldIntegersAndCurveIdealFactsStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CmBaseFieldIntegersAndCurveIdealFacts
 
 noncomputable section
 
@@ -102,7 +102,7 @@ theorem delta_ratio : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ δ₀ : ℂ)
     δ₀ ^ 12 = GlobalTheory.MomOne.discr D.host.d → ∀ (q : ℕ) [Fact q.Prime], q ≠ 2 → Nat.Coprime (Ideal.absNorm cc) q →
     δ / δ₀ ∈ Qbar ∧ ∀ ι : ℂ ≃+* ℂ_[q], ‖ι (δ / δ₀)‖ = 1 := by
   intro D cc δ δ₀ hcc hδ hδ₀ q _ hq hNq
-  obtain ⟨hdp, h16, hOK, -, hlam⟩ := GlobalTheory.T.cmBaseField_integers_and_curveIdeal_facts D
+  obtain ⟨hdp, h16, hOK, -, hlam⟩ := _root_.GlobalTheory.MomDict.main D
   obtain ⟨hne, hcop⟩ := hcc
   have hN0 : Ideal.absNorm cc ≠ 0 := fun h => hne (Ideal.absNorm_eq_zero_iff.1 h)
   have hN2 : Nat.Coprime (Ideal.absNorm cc) (2 * q) :=

@@ -126,9 +126,6 @@ theorem GrassLinesProj.proof (hPF : PFCoordStatement) : GrassLinesProj.Statement
   rw [hd]
   exact h
 
-example : IsBlockMap GrassmannianLinesProjective.blk (GrassmannianLinesProjective.coordMap 1) :=
-  GrassmannianLinesProjective.isBlockMap 1
-
 end
 
 end GroundTheory.Heights₂.Heights

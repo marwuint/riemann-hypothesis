@@ -41,15 +41,6 @@ structure Red (res : R →+* k) (t : R) (Λ : Submodule R V) {W : Type} [AddComm
   surj : ∀ w, ∃ x ∈ Λ, π x = w
   ker : ∀ x ∈ Λ, π x = 0 ↔ ∃ y ∈ Λ, ∃ s, res s ≠ 0 ∧ s • x = t • y
 
-example : Pr.Ok (RingHom.id k) (⟨⊤, id⟩ : Pr k k k) :=
-  ⟨fun _ _ _ _ => trivial, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ h => (h trivial).elim, ⟨1, one_ne_zero⟩⟩
-
-example : Red (RingHom.id k) 0 (⊤ : Submodule k k) (id : k → k) :=
-  ⟨fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun w => ⟨w, trivial, rfl⟩, fun x _ =>
-    ⟨fun h => ⟨0, trivial, 1, one_ne_zero, by simpa using h⟩, fun ⟨_, _, s, hs, h⟩ => by
-      have h' : s * x = 0 := by simpa using h
-      exact (mul_eq_zero.1 h').resolve_left hs⟩⟩
-
 def Unram (res : R →+* k) (t : R) : Prop := res t = 0 ∧ ∀ a, res a = 0 → ∃ s b, res s ≠ 0 ∧ s * a = t * b
 
 abbrev loc (res : R →+* k) (M : Submodule R V) : Submodule R V :=

@@ -99,24 +99,8 @@ def LargeScaleConditions (D : D7) (L : SizeData₂ D) : Prop :=
 def EstimatedPrimesExceedScale (D : D7) (L : SizeData₂ D) : Prop :=
   ∀ p : ℕ, p.Prime → IsResidueClassZero D p → L.sc.x ^ (L.sc.ez / 5) < (p : ℝ)
 
-def TypePrimeSizeConds (D : D7) (L : SizeData₂ D) : Prop := Formalism.MainNotions.SizesAt L
-
-def BadPrimeBound (D : D7) (L : SizeData₂ D) (X : Inst D L) (Cb : ℝ) : Prop := Formalism.MainNotions.J.BadProb X Cb
-
-def SegmentEndpointChoiceExists (D : D7) (L : SizeData₂ D) : Prop := Formalism.MainNotions.UnusedSlot33.Conclusion6 D L.sc
-
 def MertensBound (_D : D7) : Prop :=
   ∀ y : ℝ, 1 ≤ y → ∑ p ∈ (Finset.range ⌈y⌉₊).filter Nat.Prime, Real.log p / p ≤ 2 * Real.log y
-
-def SegmentEndpointChoiceWithConstant (D : D7) (L : SizeData₂ D) (X : Inst D L) (Cb : ℝ) : Prop :=
-  ∃ T : Finset (HH D), Formalism.MainNotions.J.TopsOK X Cb T
-
-open Classical in
-
-def SegmentEndpointChoiceAtInstance (D : D7) (L : SizeData₂ D) (X : Inst D L) : Prop :=
-  ∃ T : Finset (HH D), L.sc.delta1 * D.R.n / 2 ≤ (T.card : ℝ) ∧ (T.card : ℝ) ≤ 2 * L.sc.delta1 * D.R.n ∧
-    ∑ p ∈ largeOrderResiduePrimes L, Real.log p / p * ((T.filter (fun t => Formalism.MainNotions.J.BadOrb X (hP D p) t T)).card : ℝ) ≤
-      (T.card : ℝ) * L.sc.x ^ (-2 + L.sc.eps)
 
 open Classical in
 
@@ -210,55 +194,12 @@ def CutSizes (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (C : ℝ) 
 def WeightSumBound (D : D7) (L : SizeData₂ D) (C bo : ℝ) : Prop :=
   ∑ w ∈ L.supp, SizeData₂.sz w (L.tau w) ≤ C * D.R.m * (D.host.TT.card : ℝ) * L.sc.a * Real.log L.sc.X' + bo
 
-def RamificationSandwich (D : D7) (L : SizeData₂ D) (X : Inst D L) (Ce : ℝ) : Prop := Formalism.MainNotions.AuxBlock8.adm9 D L X Ce
-
-def ParametersFillsEverywhere (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) : Prop := ∀ w, ParametersFill X K w
-
-def CutSizesAtParams (D : D7) (L : SizeData₂ D) (K : Consts) (Ce C : ℝ) : Prop :=
-  K.Nonneg → ∀ X : Inst D L, TypePrimeSizeConds D L ∧ RamificationSandwich D L X Ce → CutSizes D L X K C
-
-def WeightSumAtParams (D : D7) (L : SizeData₂ D) (K : Consts) (C C' bo : ℝ) : Prop :=
-  K.Nonneg → ∀ X : Inst D L, TypePrimeSizeConds D L ∧ MertensBound D ∧ ParametersFillsEverywhere D L X K ∧ CutSizes D L X K C → WeightSumBound D L C' bo
-
-def OrbitStructureBounds (D : D7) : Prop := OrbitPositionsAndSizeBounds D
-
-def LargeScaleOfPrimeConditions (D : D7) (L : SizeData₂ D) : Prop := TypePrimeSizeConds D L ∧ EstimatedPrimesExceedScale D L → LargeScaleConditions D L
-
-def BadPrimeBoundOfPrimeSizes (D : D7) (L : SizeData₂ D) (Cb : ℝ) : Prop :=
-  ∀ X : Inst D L, TypePrimeSizeConds D L ∧ EstimatedPrimesExceedScale D L → BadPrimeBound D L X Cb
-
-def SegmentEndpointChoiceWithConstantAt (D : D7) (L : SizeData₂ D) (Cb : ℝ) : Prop :=
-  ∀ X : Inst D L, SegmentEndpointChoiceExists D L ∧ 16 ≤ L.sc.delta1 * D.R.n ∧ BadPrimeBound D L X Cb → SegmentEndpointChoiceWithConstant D L X Cb
-
-def SegmentEndpointChoiceAt (D : D7) (L : SizeData₂ D) (Cb : ℝ) : Prop :=
-  ∀ X : Inst D L, SegmentEndpointChoiceExists D L ∧ MertensBound D ∧ 16 ≤ L.sc.delta1 * D.R.n ∧ 0 ≤ Cb ∧
-    16 * Cb * L.sc.x ^ (L.sc.eps / 3) ≤ L.sc.x ^ L.sc.eps ∧ BadPrimeBound D L X Cb → SegmentEndpointChoiceAtInstance D L X
-
-def OrdersSmallPrimeLemma (D : D7) (L : SizeData₂ D) (C₄ : ℝ) : Prop := GlobalOrderEstimate D C₄ ∧ TypePrimeSizeConds D L → OrdersSmallPrimeBound D L
-
-def ParametersSecondOrderCondition (D : D7) (L : SizeData₂ D) (K : Consts) : Prop :=
-  K.Nonneg → TypePrimeSizeConds D L ∧ OrbitSizeBounds D ∧ WindowLogBound D L K → OrdersLargePrimeBound D L K
-
 def GrowthHypotheses (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
   unitBoundAtTwistedPlaces D L X Y K ∧ MLatticeCond D ∧ ServiceLatticeCondition D L X Y K ∧ OrbitLatticeBounds D L X Y K ∧ LatticeSandwich D L X ∧ RamifiedPartSaturated D Y ∧ LargeScaleSmallness D L ∧
     ServiceLowerValuation D L X Y K
 
 def LatticeGrowthOfGrowthHypotheses (D : D7) (L : SizeData₂ D) (K : Consts) : Prop :=
   ∀ (X : Inst D L) (Y : LatInst D), GrowthHypotheses D L X Y K → LatticeGrowthBound D L X Y K ∧ LatticeGrowthBound' D L X Y K
-
-def admitted (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) (C₄ : ℝ) : Prop :=
-  TypePrimeSizeConds D L ∧ EstimatedPrimesExceedScale D L ∧ SegmentEndpointChoiceExists D L ∧ MertensBound D ∧ GlobalOrderEstimate D C₄ ∧ GrowthHypotheses D L X Y K ∧ WindowLogBound D L K
-
-def Conclusion₂ (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) (Cb : ℝ) : Prop :=
-  OrbitPositionsAndSizeBounds D ∧ LargeScaleConditions D L ∧ BadPrimeBound D L X Cb ∧ SegmentEndpointChoiceWithConstant D L X Cb ∧ SegmentEndpointChoiceAtInstance D L X ∧ OrdersSmallPrimeBound D L ∧ OrdersLargePrimeBound D L K ∧
-    LatticeGrowthBound D L X Y K ∧ LatticeGrowthBound' D L X Y K
-
-def Stmt (D : D7) (L : SizeData₂ D) (K : Consts) (C₄ Cb : ℝ) : Prop :=
-  K.Nonneg → ∀ (X : Inst D L) (Y : LatInst D), admitted D L X Y K C₄ → Conclusion₂ D L X Y K Cb
-
-def ClosedFormOfAdmitted (D : D7) (L : SizeData₂ D) : Prop :=
-  ∀ K : Consts, K.Nonneg → ∀ C₄ : ℝ, ∃ Cb : ℝ, 0 ≤ Cb ∧
-    ∀ (X : Inst D L) (Y : LatInst D), admitted D L X Y K C₄ → Conclusion₂ D L X Y K Cb
 
 section Family
 
@@ -268,34 +209,17 @@ def FamilyOrbitPositionsAndSizeBounds : Prop := ∀ x (i : Fm.Ix x), OrbitPositi
 
 def FamilyLargeScale : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, LargeScaleConditions (Fm.D x i) (Fm.L x i)
 
-def FamilyBadPrimeBound : Prop := ∃ Cb : ℝ, 0 ≤ Cb ∧ ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, BadPrimeBound (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Cb
-
-def FamilyMaximaChoiceWithConstant : Prop := ∃ Cb : ℝ, 0 ≤ Cb ∧ ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, SegmentEndpointChoiceWithConstant (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Cb
-
-def FamilyMaximaChoice : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, SegmentEndpointChoiceAtInstance (Fm.D x i) (Fm.L x i) (Fm.Gx x i)
-
 def FamilyOrdersSmallPrimeBoundConstant : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, OrdersSmallPrimeBound (Fm.D x i) (Fm.L x i)
 
 def FamilyOrdersLargePrimeBoundConstant : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, OrdersLargePrimeBound (Fm.D x i) (Fm.L x i) Fm.GK
-
-def FamilyLatticeGrowth : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, LatticeGrowthBound (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (Fm.Gy x i) Fm.GK
-
-def FamilyLatticeValuationLowerBound : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, LatticeGrowthBound' (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (Fm.Gy x i) Fm.GK
 
 def FamilyWindowLogBound : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, WindowLogBound (Fm.D x i) (Fm.L x i) Fm.GK
 
 def FamilyInertPrimesLarge : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, EstimatedPrimesExceedScale (Fm.D x i) (Fm.L x i)
 
-def FamilyMaximaSpacing : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, SegmentEndpointChoiceExists (Fm.D x i) (Fm.L x i)
-
 def FamilyMertensBound : Prop := ∀ x (i : Fm.Ix x), MertensBound (Fm.D x i)
 
 def FamilyGlobalOrderEstimate (C₄ : ℝ) : Prop := ∀ x (i : Fm.Ix x), GlobalOrderEstimate (Fm.D x i) C₄
-
-def FamilyFirstGrowthBound : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, GrowthHypotheses (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (Fm.Gy x i) Fm.GK
 
 def FamilyCutSizes : Prop :=
   ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, CutSizes (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK C
@@ -304,35 +228,13 @@ def FamilyWeightSumBound : Prop :=
   ∃ (C x0 : ℝ) (δ : ℝ → ℝ), Filter.Tendsto δ Filter.atTop (nhds 0) ∧
     ∀ x ≥ x0, ∀ i : Fm.Ix x, WeightSumBound (Fm.D x i) (Fm.L x i) C ((Fm.L x i).sc.b ^ δ x)
 
-def FamilyRamificationSandwich : Prop :=
-  ∃ Ce : ℝ, 0 ≤ Ce ∧ ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, RamificationSandwich (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Ce
-
-def FamilyCutSizesOfRamificationSandwich : Prop := FamilyRamificationSandwich Fm → FamilyCutSizes Fm
-
 def FamilyWeightSum : Prop := FamilyMertensBound Fm → FamilyCutSizes Fm → FamilyWeightSumBound Fm
 
 def FamilyLargeScaleOfInertPrimesLarge : Prop := FamilyInertPrimesLarge Fm → FamilyLargeScale Fm
 
-def FamilyBadPrimeBoundOfInertPrimesLarge : Prop := FamilyInertPrimesLarge Fm → FamilyBadPrimeBound Fm
-
-def FamilyMaximaChoiceBound : Prop := FamilyMaximaSpacing Fm → FamilyMertensBound Fm → FamilyBadPrimeBound Fm → FamilyMaximaChoiceWithConstant Fm ∧ FamilyMaximaChoice Fm
-
 def FamilyOrdersSmallPrimeBound (C₄ : ℝ) : Prop := FamilyGlobalOrderEstimate Fm C₄ → FamilyOrdersSmallPrimeBoundConstant Fm
 
 def FamilyOrdersLargePrimeBound : Prop := FamilyOrbitPositionsAndSizeBounds Fm → FamilyWindowLogBound Fm → FamilyOrdersLargePrimeBoundConstant Fm
-
-def FamilyLatticeGrowthOfGrowthHypotheses : Prop := FamilyFirstGrowthBound Fm → FamilyLatticeGrowth Fm ∧ FamilyLatticeValuationLowerBound Fm
-
-def AdmF (C₄ : ℝ) : Prop :=
-  FamilyInertPrimesLarge Fm ∧ FamilyMaximaSpacing Fm ∧ FamilyMertensBound Fm ∧ FamilyGlobalOrderEstimate Fm C₄ ∧ FamilyFirstGrowthBound Fm ∧ FamilyRamificationSandwich Fm ∧ FamilyWindowLogBound Fm
-
-def ConclusionOnFamily : Prop :=
-  FamilyOrbitPositionsAndSizeBounds Fm ∧ FamilyLargeScale Fm ∧ FamilyBadPrimeBound Fm ∧ FamilyMaximaChoiceWithConstant Fm ∧ FamilyMaximaChoice Fm ∧ FamilyOrdersSmallPrimeBoundConstant Fm ∧ FamilyOrdersLargePrimeBoundConstant Fm ∧ FamilyLatticeGrowth Fm ∧
-    FamilyCutSizes Fm ∧ FamilyWeightSumBound Fm ∧ FamilyLatticeValuationLowerBound Fm
-
-def KudlaFamilyStatement (C₄ : ℝ) : Prop := AdmF Fm C₄ → ConclusionOnFamily Fm
-
-def FamilyClosedForm : Prop := ∀ C₄ : ℝ, KudlaFamilyStatement Fm C₄
 
 end Family
 

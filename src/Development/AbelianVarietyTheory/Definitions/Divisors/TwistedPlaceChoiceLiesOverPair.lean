@@ -6,7 +6,17 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.BasePlaceNotMemChiG
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyGridDataIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilOver
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotTeichTrivOfIsDelta
-import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DisjointConductorPlacesExcludedSet
+import Formalism.LocalToGlobal.UnitaryNorms.CharTied
+import Formalism.LocalToGlobal.HermitianColumns.SymAll
+import Formalism.LocalToGlobal.KernelLattices.LateralTheory
+import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
+import Formalism.LocalToGlobal.GlobalTheory.GL5.Statement
+import Formalism.SharpRestriction.GlobalSchurBounds.TaylorLogMetric
+import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DisjointExceptional
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIffHostBound
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.GoodPairSystems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatLatSmulLeOfIsIntegral
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGaloisGe
 
@@ -218,28 +228,6 @@ structure GridFit (p : PtAt ex Csz) {CF : ℝ} (G : Grid p CF) : Prop where
 
   list : GlobalTheory.LamTie.IsLamTieFull D.ntw (lamOf G)
 
-theorem GridFit.fieldLL {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} (h : GridFit p G) : FieldHas G D.what₂.embLL :=
-  h.field.map D.LL0.val.toRingHom
-
-theorem GridFit.of_twistAt {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} {xd v0 rep} (h : GlobalTheory.EX.TwistAt L ex.nch xd v0 rep)
-    (h1 : ValLL0 D p.R.C) (h2 : FieldHas G (embLL0 D)) (h3 : Formalism.L2.Host.PsiChoiceCompatible D p.R.C ex.nch p.Tp)
-    (h4 : GlobalTheory.LamTie.IsLamTieFull D.ntw (lamOf G)) : GridFit p G := by
-  classical
-  obtain ⟨⟨N0, hN⟩, hall⟩ := h.2.1
-  have hg := (hall N0 hN).1
-  refine ⟨h1, h2, ⟨hg.1.1, fun w w' a b c _ => hg.1.2 w w' a b c⟩, fun w hw => ?_, ⟨N0, fun w hw a ha => ?_⟩, h3, h4⟩
-  · obtain ⟨c, -, -, -, S, -, hS⟩ := hg.2.1 w hw
-    have e := (hS 1 isCoprime_one_left).1
-    exact ⟨fun P hP => (e.1 P hP).1, (Finset.disjoint_union_right.1 e.2.1).1, c⟩
-  · obtain ⟨-, -, -, -, S, -, hS⟩ := hg.2.1 w hw
-    have e : ∃ b : ℤ, IsCoprime b (D.ntw.l (ex.nch.twI w) : ℤ) ∧
-        BlochKatoReduction.Gen.psiAt (ex.nch.sd w) (ex.nch.psi' w) ^ b = ex.nch.psi' w ^ a := by
-      cases ex.nch.sd w
-      · exact ⟨-a, ha.neg_left, by simp [BlochKatoReduction.Gen.psiAt]⟩
-      · exact ⟨a, ha, by simp [BlochKatoReduction.Gen.psiAt]⟩
-    obtain ⟨b, hb, e⟩ := e
-    exact e ▸ (hS b hb).2.2.2.2.1
-
 end Fit
 
 abbrev FldT := ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (CF : ℝ) (G : Grid p CF), G.Weil → Prop
@@ -252,61 +240,7 @@ def Fitted (Comparison₂ : TieT) : TieT := fun p CF d => GridFit p d.G ∧ Comp
 def Lf (Comparison₂ : TieT) (Q : PropT) : Prop := ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed FamHyp fun Fm CH => DIVinN Fm →
   ∃ C0 : ℝ, ∀ C, C0 ≤ C → EvPt Fm fun _ _ _ p => ∀ d : FunIn p CF, Comparison₂ p CF d → Q p CF d C CH
 
-def Ex (Fld : FldT) (Comparison₂ : TieT) : Prop := ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed FamHyp fun Fm _ => DIVinN Fm →
-  EvPt Fm fun _ _ _ p => ∀ (G : Grid p CF) (W : G.Weil), W.Over p.R.toRealDat → GridFit p G → Fld p CF G W →
-    ∃ d : FunIn p CF, d.G = G ∧ Comparison₂ p CF d
-
-def MM (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun _ _ d C _ => LeafMM d.O C
-
-def OneMap (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d _ _ =>
-  ∃ ze : Tup p → _, ze p.P.A3.fam3.base3.μ0 = 1 ∧ (∀ t, ∃ n : ℕ, 0 < n ∧ ze t ^ n = 1) ∧
-    LeafC (p.S false) (d.data ze ∅ fun _ => 0)
-
-def Ker (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun _ _ d _ _ => LeafKer d.O
-
-def FP (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ => ∃ Tf dF, LeafFP (d.data (fun _ => 1) Tf dF) (p.S false).μ C p.Z.b
-
-def IPa (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ =>
-  ∀ vb : Matrix (Fin d.n) (Fin ((Df p).dQ p.P.A3.fam3.base3.μ0)) _,
-    vb * (Df p).Pq p.P.A3.fam3.base3.μ0 = d.V p.P.A3.fam3.base3.μ0 →
-      Formalism.HN.htMap (Pi.basisFun _ (Fin ((Df p).dQ p.P.A3.fam3.base3.μ0))) ((Df p).XQ p.P.A3.fam3.base3.μ0)
-        (Pi.basisFun _ (Fin d.n)) d.X' (Matrix.mulVecLin vb) ≤ d.O.bIPa C p.Z.b
-
-def IPb : Prop := Lf trivialTieCondition fun p _ d C _ =>
-  ∃ g : InfinitePlace _ → ℝ, (∀ v q, (Df p).Qp p.P.A3.fam3.base3.μ0 q ≠ ⊥ →
-      g v ≤ ∑ j, Real.log ((p.S false).lam j p.P.A3.fam3.base3.μ0 q v)) ∧
-    -(3 * C * d.O.f * d.O.m * (d.O.N : ℝ) ^ 2 * Real.log p.Z.b) ≤ Formalism.PairingDivisionLocalBalance.meanInf _ g
-
-def OneSq (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ => LeafOneSquare d.O (p.S false).μ C p.Z.b
-
-def Den (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ => PrimeCountingSumBound d.O C p.Z.x p.Z.b
-
 def Int (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ => LeafINT d.O C p.Z.b
-
-def Arch (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ => LeafARCH d.O C p.Z.b
-
-def Thb (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ => LeafTHB d.O C p.Z.x p.Z.b
-
-def Wt (Comparison₂ : TieT) : Prop := Lf (Fitted Comparison₂) fun p _ d C _ => LeafWt d.O C p.Z.b
-
-def DesH : Prop := Lf trivialTieCondition fun p _ d _ _ => leafHypothesesConst d.O ∧ LatticeConstantBound d.O p.Z.b
-
-def RankGapBound : Prop := Lf trivialTieCondition fun p _ d C _ => DegreeAndSizeBounds d.O C p.Z.b
-
-def RamifiedSumBound : Prop := Lf trivialTieCondition fun p _ d C _ => PrimePowerModuliSumBound d.O C p.Z.b ∧ LeafCS d.O p.Z.b
-
-def DesPol : Prop := Lf trivialTieCondition fun p _ d C CH => LeafPol d.O C p.Z.x CH p.Z.b
-
-def Scale : Prop := Closed FamHyp fun Fm _ => EvPt Fm fun _ _ _ p =>
-  1 ≤ p.Z.x ∧ 1 ≤ Real.log p.Z.b ∧ Real.log p.Z.b + Real.log p.Z.x ≤ 3 * Real.log p.Z.b
-
-def Bundle : Prop := ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), p.Rows →
-  (Df p).WF ∧ ∃ R0 : IndefRows (Df p), R0.toIndefData = p.S false
-
-def Fun0Fit (Fld : FldT) : Prop := ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed FamHyp fun Fm CH => DIVinN Fm →
-  EvPt Fm fun _ _ _ p => HasGrid Fld p CF → ∀ C, (p.S false).FUN (p.N C CH)
-
-def FamGrid (Fld : FldT) (CF : ℝ) : FamClass := fun Fm => FamHyp Fm ∧ EvPt Fm fun _ _ _ p => HasGrid Fld p CF
 
 theorem evPt_and {eps : ℝ} {Fm : FamP eps} {P Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (hP : EvPt Fm P) (hQ : EvPt Fm Q) : EvPt Fm fun x hx i p => P x hx i p ∧ Q x hx i p :=
@@ -338,65 +272,6 @@ theorem Lf.and {Comparison₂ : TieT} {Q Q' : PropT} (h : Lf Comparison₂ Q) (h
   obtain ⟨C1, c2⟩ := c.2 hN
   exact ⟨max C0 C1, fun C hC => evPt_imp (evPt_and (c1 C (le_of_max_le_left hC)) (c2 C (le_of_max_le_right hC)))
     fun _ _ _ _ _ e d hd => ⟨e.1 d hd, e.2 d hd⟩⟩
-
-theorem Lf.of_noTie {Q : PropT} (h : Lf trivialTieCondition Q) (Comparison₂ : TieT) : Lf Comparison₂ Q :=
-  h.mono fun _ _ _ _ _ _ _ => ⟨trivial, id⟩
-
-theorem fun0Fit_of_leaves (Fld : FldT) (Comparison₂ : TieT) (hB : Bundle) (hS : Scale) (hE : Ex Fld Comparison₂) (h1 : MM Comparison₂) (h2 : OneMap Comparison₂)
-    (h3 : Ker Comparison₂) (h4 : FP Comparison₂) (h5 : IPa Comparison₂) (h6 : IPb) (h7 : OneSq Comparison₂) (h8 : Den Comparison₂) (h9 : Int Comparison₂) (h10 : Arch Comparison₂)
-    (h11 : Thb Comparison₂) (h12 : Wt Comparison₂) (h13 : DesH) (h14 : RankGapBound) (h15 : RamifiedSumBound) (h16 : DesPol) : Fun0Fit Fld := by
-  obtain ⟨a, hA⟩ := Lf.and h1 <| Lf.and h2 <| Lf.and h3 <| Lf.and h4 <| Lf.and h5 <| Lf.and (Lf.of_noTie h6 _) <| Lf.and h7 <|
-    Lf.and h8 <| Lf.and h9 <| Lf.and h10 <| Lf.and h11 <| Lf.and h12 <| Lf.and (Lf.of_noTie h13 _) <|
-    Lf.and (Lf.of_noTie h14 _) <| Lf.and (Lf.of_noTie h15 _) (Lf.of_noTie h16 _)
-  obtain ⟨b, hE⟩ := hE
-  refine ⟨max a b, fun CF hCF => (((hA CF (le_of_max_le_left hCF)).and (hE CF (le_of_max_le_right hCF))).and hS).imp
-    fun Fm CH _ c hN => ?_⟩
-  obtain ⟨C0, c1⟩ := c.1.1 hN
-  refine evPt_imp (evPt_and (evPt_and (c1 (max C0 1) (le_max_left _ _)) (c.1.2 hN)) c.2) fun x hx i p hp e hG C => ?_
-  obtain ⟨⟨e1, e2⟩, s1, s2, s3⟩ := e
-  obtain ⟨G, W, g1, g2, g3⟩ := hG
-  obtain ⟨d, rfl, hd⟩ := e2 G W g1 g2 g3
-  obtain ⟨l1, ⟨ze, z1, z2, l2⟩, l3, ⟨Tf, dF, l4⟩, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16⟩ := e1 d ⟨g2, hd⟩
-  obtain ⟨wf, R0, hR⟩ := hB p hp
-  have v0 : (d.data ze Tf dF).vmu p.P.A3.fam3.base3.μ0 = d.V p.P.A3.fam3.base3.μ0 := by
-    show (ze _)⁻¹ • _ = _
-    rw [z1, inv_one]
-    exact one_smul _ _
-  have v1 : ∀ Tf dF t, (d.data (fun _ => 1) Tf dF).vmu t = d.V t := fun _ _ _ => by
-    show (1 : _)⁻¹ • _ = _
-    rw [inv_one]
-    exact one_smul _ _
-  have hRR := R0.RR_spec Formalism.DivisionValues.lattice_gluing wf
-  refine functional_lower_bound_of_conditions_numeric wf (p.S false) p.Z C CH (d.data ze Tf dF) (max C0 1) (hR ▸ R0.D_pos) (hR ▸ R0.h0) (hR ▸ R0.l1a)
-    (hR ▸ R0.l1c) (hR ▸ R0.frames.1) (hR ▸ hRR.1) (hR ▸ hRR.2) (le_max_right _ _) s1 s2 s3 l1 l2 ?_ ?_ ⟨?_, l6⟩ l7 l8 l9 l10
-    l11 l13.1 l13.2 l14 l15.1 l15.2 l12 l16
-  · have : LinearMap.ker (d.O.vmu _).mulVecLin = _ := l3
-    rw [v1] at this
-    show LinearMap.ker ((d.data ze Tf dF).vmu _).mulVecLin = _
-    rw [v0]
-    exact this
-  · have := GlobalTheory.finitePlaceBound_inv_rootOfUnity_smul _ ze _ _ _ z2 l4
-    simp only [v1] at this
-    exact this
-  · intro vb hvb
-    exact l5 vb (hvb.trans v0)
-
-def FunIn.ofGrid {p : PtAt ex Csz} {CF : ℝ} (G : Grid p CF) (W : G.Weil) (h : W.Over p.R.toRealDat) (n : ℕ)
-    (V : ∀ t : Tup p, Matrix (Fin n) (Fin ((Df p).nV t)) D.what₂.LL) : FunIn p CF :=
-  ⟨G, W, h, n, fun _ => 1, Submodule.span _ (Set.range (Pi.basisFun D.what₂.LL (Fin n))), V, fun _ _ => 1, fun _ => 0, ∅, ∅,
-    fun _ _ _ => 0, fun _ => 1, fun _ => 1, fun _ _ => 1, fun _ _ _ => 1, fun _ _ _ => 0, fun _ => true, 1⟩
-
-example (p : PtAt ex Csz) : p.Z.b = L.sc.b ∧ p.Z.x = L.sc.x := ⟨rfl, rfl⟩
-
-example (p : PtAt ex Csz) (CF : ℝ) (G : Grid p CF) (h : GridFit p G) : ∃ z : D.what₂.LL,
-    IsPrimitiveRoot z (Ideal.absNorm G.pl.v0.asIdeal ^ GlobalTheory.ChiGrid.depth0 D CF p.Z.b) := by
-  simpa [GlobalTheory.ChiGrid.Places.depth] using h.fieldLL.roots _ (G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl))
-
-example (p : PtAt ex Csz) (CF : ℝ) (G : Grid p CF) (h : GridFit p G) (w) (hw : TwistedAt D w) :
-    Nonempty (D.ntw.abelian₂ (ex.nch.twI w)) := h.list.nonempty (h.setting.inW1 hw)
-
-example (Fld : FldT) (h : Fun0) : Fun0Fit Fld :=
-  ⟨0, fun _ _ => h.imp fun _ _ _ a hN => evPt_imp (a hN) fun _ _ _ _ _ b _ => b⟩
 
 end GlobalTheory.BigTop.Fun
 

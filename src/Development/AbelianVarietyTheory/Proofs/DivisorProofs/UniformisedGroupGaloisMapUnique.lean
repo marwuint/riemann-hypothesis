@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SecEqZeroA
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsoUniqueOfRig
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValTorusPointAndTranslate
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThickenedUniformisedGroupPointExtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCoordinateValueEqOfMapsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThickenedUniformisedGroupPointExt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusCoordinateValueEqOfMaps
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -60,10 +61,10 @@ theorem level_eq {I' : Ideal R'} {D' : DegPre R'} {e : ℕ} {G' : Over (Sp R')} 
     (ht' : ∀ x : D'.X, ∃ hψ : ∀ k : Fin 4, D'.Oφ g.pG x k ≫ F = f' ≫ D'.Oφ g.pG x k,
       LB.Gen.Maps (LB.linCombIso w _ Oinvε) (g.t x)
         (GeneratorPullback.pullAlong D'.P.L F f' _ Oinvε _ hψ (g.t x))) : f = f' := by
-  refine GlobalTheory.T.thickenedUniformisedGroup_point_ext g f f' hb (hp.symm.trans hp') fun z J hJ χ => ?_
+  refine _root_.GlobalTheory.Mum.gtCoord_point_ext g f f' hb (hp.symm.trans hp') fun z J hJ χ => ?_
   obtain ⟨hψ, hm⟩ := ht χ
   obtain ⟨hψ', hm'⟩ := ht' χ
-  exact GlobalTheory.T.torusCoordinate_value_eq_of_maps g F w f f' χ hψ hψ' hm hm' z J hJ
+  exact _root_.GlobalTheory.Mum.gtCoord_val_eq_of_maps g F w f f' χ hψ hψ' hm hm' z J hJ
 
 end GlobalTheory.Mum.GalUniq
 

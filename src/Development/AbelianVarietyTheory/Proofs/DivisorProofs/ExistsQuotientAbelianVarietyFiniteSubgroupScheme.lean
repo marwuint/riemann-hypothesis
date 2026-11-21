@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTo
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteMulByNatAbelianVarietyStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteMulByNatAbelianVariety
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsIdPowEqOneOfIsFiniteOfFlat
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsBasisMemOfSpanEqTopOfSemilocal
@@ -35,7 +36,7 @@ theorem exists_quotient : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp
       IsCommMonObj.mul_comm]⟩
   obtain ⟨N, hN, hH⟩ := GlobalTheory.FiniteFlatKilled.main K H hfin hflat
   have : IsLocallyNoetherian A.left := LocallyOfFiniteType.isLocallyNoetherian A.hom
-  have : IsFinite (𝟙 A ^ N : A ⟶ A).left := GlobalTheory.T.isFinite_mulByNat_abelianVariety K A hA N hN
+  have : IsFinite (𝟙 A ^ N : A ⟶ A).left := _root_.GlobalTheory.MulFinite.isFinite_mul K A hA N hN
   have : IsFinite H.hom := hfin
   obtain ⟨Λ, _, _, _, _, e, _⟩ := exists_hopfAlgebra K H
   have hi' : i ^ N = 1 := by

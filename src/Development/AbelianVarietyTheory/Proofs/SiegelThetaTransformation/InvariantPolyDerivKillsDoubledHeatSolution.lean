@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.MemAnalyticAtZer
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.DifferentiablePolyDeriv
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DblZMemHn
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PolyDerivEqSumList
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.InvariantPolynomialEqAevalPairingsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PolyDerivPairingEqZeroOfIsHeatStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.InvariantPolynomialEqAevalPairings
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GCauchyStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PolyDerivPairingEqZeroOfIsHeat
 
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.SW GlobalTheory.ThFr ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
 open scoped ComplexConjugate ComplexOrder Real Classical
@@ -343,7 +344,7 @@ theorem biDeriv_kZero_mul_heat_eq_zero : ∀ (E : Type) [Field E] [NumberField E
     (by rintro τ (i | i) c <;> have := i.isLt <;> simp [ellN] <;> omega) hP
     (fun τ => (((aLin X x₁ x₂ τ).det * (aAnti X x₁ x₂ τ).det) ^ (n / 2))⁻¹)
     (fun τ => (imH (dblZ X x₁ x₂ τ))⁻¹) (letterDir X hr idx) (fun _ _ _ => rfl)
-  obtain ⟨s, rfl⟩ := GlobalTheory.T.exists_aeval_pairings_eq_of_invariant X.Ψ n r hn R hR
+  obtain ⟨s, rfl⟩ := _root_.GlobalTheory.invariant_polynomial_eq_aeval_pairings X.Ψ n r hn R hR
   have hF : Differentiable ℂ fun w : Ell X.Ψ n r → ℂ => D (dblZ X x₁ x₂)
       (fun τ => Matrix.of fun k a => w (τ, false, k, a))
       (fun τ => Matrix.of fun k a => w (τ, true, k, a)) := by
@@ -354,6 +355,6 @@ theorem biDeriv_kZero_mul_heat_eq_zero : ∀ (E : Type) [Field E] [NumberField E
   refine Eq.trans ?_ ((hR' _ hF).trans ?_)
   · simp only [biDeriv, kZero, dblz_eq, dblz'_eq]
     rfl
-  · convert GlobalTheory.T.polyDeriv_aeval_pairings_eq_zero_of_isHeat E X.Ψ n r D hD h0 _ hZ s
+  · convert _root_.GlobalTheory.SW.polyDeriv_pairing_eq_zero_of_isHeat E X.Ψ n r D hD h0 _ hZ s
 
 end GlobalTheory.SW

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpec
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.CuspFrame
-import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.RowsFinC
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsProjOnOne
 import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.LatticeCountingTheorem
 import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.DeepKernelBound
@@ -17,17 +17,25 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SummableOfSupport
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagRareOfNonzeroFlagBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PtBoundOfDecGap
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneTypeArith
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FarTermsModerateRegionOfFlagBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepPointKernelBoundOfPointwiseBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCountingOfFiniteAndBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FarTermsModerateRegionOfFlagBound
+import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.FarTermsLatticeBound
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepPointKernelBoundOfPointwiseBound
+import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.CuspidalFrames
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCountingOfFiniteAndBounds
+import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.PointwiseKernelBound
+import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.DefiniteFiniteCount
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepRegionKernelDiagonalBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteDimensionalRowsSpaceDiscreteSeriesCountStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeDecayGapOfCompressionFormulaGapStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeCompressionFormulaOfStrictLowestKTypeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagExplicitConstantLeExpNegHalfStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonzeroFlagProbabilityBoundOfVolumeRatioInductioStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagProbabilityBoundOfVolumeRatioStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermAbsoluteVolumeBoundOfVolumeRatioInductionStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteDimensionalRowsSpaceDiscreteSeriesCount
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeDecayGapOfCompressionFormulaGap
+import Formalism.RealPlaceAnalysis.FinalF
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeCompressionFormulaOfStrictLowestKType
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ActSingleNeZero
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.FirstSlotSliceSlotMixedCasimirZero
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IsCompactInvariantOrthogonalInf
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagExplicitConstantLeExpNegHalf
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NonzeroFlagProbabilityBoundOfVolumeRatioInductio
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagProbabilityBoundOfVolumeRatio
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermAbsoluteVolumeBoundOfVolumeRatioInduction
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ContDiff
@@ -37,15 +45,15 @@ namespace GlobalTheory.CountFinal
 theorem countingTheorem_of_volumeStep :
     GlobalTheory.FlagMeas.VolumeStep → GlobalTheory.IndefiniteRowSideFullHecke.LatticeCountingTheorem.CountingTheorem := by
   intro hV
-  have hDec : GlobalTheory.DSId.DecGap := GlobalTheory.T.lowestKType_decayGap_of_compressionFormulaGap GlobalTheory.T.lowestKType_compressionFormula_of_strictLowestKType
+  have hDec : GlobalTheory.DSId.DecGap := _root_.GlobalTheory.DecGapBound.decGap_of_formulaGap _root_.GlobalTheory.Jet.FormGapFree.formulaGap
   have hPt : GlobalTheory.Deep.PtBound := GlobalTheory.Deep.ptBound_of_decGap hDec
-  have hAbs : GlobalTheory.FlagMeas.AbsoluteVolume := GlobalTheory.T.hermAbsoluteVolumeBound_of_volume_ratio_induction hV
-  have hFM : GlobalTheory.FlagMeas.FlagMeasureBound := GlobalTheory.T.isotropicFlagProbabilityBound_of_volumeRatio hV
-  have hFin := GlobalTheory.T.finiteDimensional_rowsSpace_discreteSeriesCount hDec hAbs
-  have hNear := GlobalTheory.NearMod.nearModerate hFM GlobalTheory.T.flag_explicit_constant_le_exp_neg_half GlobalTheory.NearElement.near_unipotent hPt
-  have hFar := GlobalTheory.T.farTermsModerateRegion_of_flagBound hFM (GlobalTheory.FarTerms.farBound_of_ptBound hPt)
-  have hRare := GlobalTheory.FlagRareProof.flagRare_of_nonzeroFlagBound (GlobalTheory.T.nonzeroFlagProbabilityBound_of_volumeRatioInduction hV)
-  have hDeep := GlobalTheory.T.deepRegion_kernelDiagonal_bound hAbs (GlobalTheory.T.deepPointKernelBound_of_pointwiseBound hPt hFin)
-  exact GlobalTheory.T.discreteSeries_counting_of_finite_and_bounds hFin hFM hPt hNear hFar hRare hDeep
+  have hAbs : GlobalTheory.FlagMeas.AbsoluteVolume := _root_.GlobalTheory.FlagMeas.AbsVol.absoluteVolume_of_volumeStep hV
+  have hFM : GlobalTheory.FlagMeas.FlagMeasureBound := _root_.GlobalTheory.FlagMeas.Bound.flagMeasureBound hV
+  have hFin := _root_.GlobalTheory.RowsFinMult.rows_finiteDimensional hDec hAbs
+  have hNear := GlobalTheory.NearMod.nearModerate hFM _root_.GlobalTheory.FlagMeas.constantBound GlobalTheory.NearElement.near_unipotent hPt
+  have hFar := _root_.GlobalTheory.Deep.farModerate_of_farBound hFM (GlobalTheory.FarTerms.farBound_of_ptBound hPt)
+  have hRare := GlobalTheory.FlagRareProof.flagRare_of_nonzeroFlagBound (_root_.GlobalTheory.NonzeroFlag.nonzeroFlagBound hV)
+  have hDeep := GlobalTheory.T.deepRegion_kernelDiagonal_bound hAbs (_root_.GlobalTheory.DeepKernel.deep_kernel_bound_of_ptBound hPt hFin)
+  exact _root_.GlobalTheory.CountSum.countingTheorem_of_finite_of_bounds hFin hFM hPt hNear hFar hRare hDeep
 
 end GlobalTheory.CountFinal

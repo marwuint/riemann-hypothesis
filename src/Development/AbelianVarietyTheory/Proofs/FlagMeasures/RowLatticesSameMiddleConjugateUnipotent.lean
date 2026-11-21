@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowMinor
 import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitRowLatticeMiddleIffGluedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameFixingIsometrySplitRowLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameFixingIsometrySplitRowLattice
 
 open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt GlobalTheory.LoopC
 open scoped ENNReal Classical
@@ -132,8 +132,8 @@ theorem rowsLift : ∀ (D : D7) (u : D.what₂.Word), (Tu D u).Prime → 3 ≤ T
   intro D u _ hT3 _ F0 he hz Λ₁ Λ₂ h₁ h₂ hL
   have hT1 : 1 ≤ Tu D u := by omega
   have hB : IsBase D u F0 := ⟨he, hz⟩
-  obtain ⟨n₁, hf₁, hs₁, hr₁⟩ := GlobalTheory.T.exists_frameFixing_isometry_split_rowLattice D u F0 Λ₁ hB h₁ hT1
-  obtain ⟨n₂, hf₂, hs₂, hr₂⟩ := GlobalTheory.T.exists_frameFixing_isometry_split_rowLattice D u F0 Λ₂ hB h₂ hT1
+  obtain ⟨n₁, hf₁, hs₁, hr₁⟩ := _root_.GlobalTheory.LoopC.RowSplit.main D u F0 Λ₁ hB h₁ hT1
+  obtain ⟨n₂, hf₂, hs₂, hr₂⟩ := _root_.GlobalTheory.LoopC.RowSplit.main D u F0 Λ₂ hB h₂ hT1
   have hfx₁ := rowsLift_fixX hf₁
   have hfx₂ := rowsLift_fixX hf₂
   have hLs : ∀ (n : (hS D).V ≃ₗ[D.host.E] (hS D).V) (Λ : LatV D), FixFr D (lf D F0) n →

@@ -1,9 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiltGraded
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTateIsoGenericAbelianOfUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateIsoEvEqAtLcmLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateIsoEvEqAtLcmLevel
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUnitOfPowEqOne
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LinearUniformisationTorsionIsomorphismStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LinearUniformisationTorsionIsomorphism
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AllTorsMap
+import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitOnInjectiveOfCommRing
 
@@ -100,9 +102,9 @@ theorem GlobalTheory.LowDat.level_points_compat : ∀ {E : Type} [Field E] [Numb
   obtain ⟨J₂, h₂⟩ := GlobalTheory.LowDat.exists_tateIso_ext Dw C.P.A _ σ.toRingHom _ _ (GlobalTheory.LowDat.spMap_comp_jFK σ) J
   have hM : 0 < l.M := by have := l.three_le; omega
   have hM' : 0 < l.M' := Nat.lcm_pos hM l.A_pos
-  have hT := GlobalTheory.T.linearUniformisation_torsionIsomorphism E H R _ hR.1 C.t C.P
+  have hT := _root_.GlobalTheory.FlatTors.torsionIso_holds E H R _ hR.1 C.t C.P
   have u : J₂.ev l.M' a = J'.ev l.M' a := by
-    refine GlobalTheory.T.tateIso_ev_eq_at_lcm_level Dw l F' _ _ _
+    refine _root_.GlobalTheory.LowDat.tateIso_ev_lcm_eq Dw l F' _ _ _
       (fun n _ p q d d' => GlobalTheory.weilIs_unique_fieldPoint _ _ _ C.P.A.isLB F' _ n p q d d') J₂ J' ?_ ?_ ?_ a
     · apply Units.ext
       rw [(h₂ _ hM').1, hJζ, hJζ', hI.1, hI'.1]

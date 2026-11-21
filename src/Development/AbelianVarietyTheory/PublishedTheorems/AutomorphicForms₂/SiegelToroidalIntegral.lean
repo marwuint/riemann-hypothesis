@@ -48,35 +48,6 @@ theorem IsRelParam.mem_of_mem_sq {b : o →+* R} {t : Fin m → R} (h : IsRelPar
     (hc : ∑ i, c i * t i ∈ maximalIdeal R ^ 2) (i : Fin m) : c i ∈ maximalIdeal R :=
   h.2 c (Ideal.mem_sup_left hc) i
 
-example (b : o →+* R) (p : o) : ¬ IsRelParam b ![b p] := fun h =>
-  (maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 (h.2 ![1] (Ideal.mem_sup_right (by
-    simpa using Ideal.mem_map_of_mem b (show p ∈ (maximalIdeal R).comap b from h.1 0))) 0))
-
-theorem isRelParam_X (o : Type) [CommRing o] [IsLocalRing o] :
-    IsRelParam (PowerSeries.C (R := o)) ![(PowerSeries.X : PowerSeries o)] := by
-  have hm : ∀ f : PowerSeries o, f ∈ maximalIdeal (PowerSeries o) ↔ PowerSeries.coeff 0 f ∈ maximalIdeal o := fun f => by
-    simp [mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]
-  refine ⟨fun i => by simp [hm], fun c hc i => ?_⟩
-  obtain rfl : i = 0 := Subsingleton.elim _ _
-  have h0 : ∀ f g : PowerSeries o, PowerSeries.coeff 0 (f * g) = PowerSeries.coeff 0 f * PowerSeries.coeff 0 g := by simp
-  have h1 : ∀ f g : PowerSeries o, PowerSeries.coeff 1 (f * g) =
-      PowerSeries.coeff 0 f * PowerSeries.coeff 1 g + PowerSeries.coeff 1 f * PowerSeries.coeff 0 g := fun f g => by
-    rw [PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ]; simp
-  let J : Ideal (PowerSeries o) :=
-    { carrier := {f | PowerSeries.coeff 0 f ∈ maximalIdeal o ∧ PowerSeries.coeff 1 f ∈ maximalIdeal o}
-      add_mem' := fun h h' => ⟨by simpa using add_mem h.1 h'.1, by simpa using add_mem h.2 h'.2⟩
-      zero_mem' := by simp
-      smul_mem' := fun f g h => ⟨h0 f g ▸ Ideal.mul_mem_left _ _ h.1,
-        h1 f g ▸ add_mem (Ideal.mul_mem_left _ _ h.2) (Ideal.mul_mem_left _ _ h.1)⟩ }
-  have hJ : maximalIdeal (PowerSeries o) ^ 2 ⊔ ((maximalIdeal (PowerSeries o)).comap PowerSeries.C).map PowerSeries.C ≤ J := by
-    refine sup_le ?_ (Ideal.map_le_iff_le_comap.2 fun a ha => ⟨by simpa [hm] using ha, by simp [PowerSeries.coeff_C]⟩)
-    rw [sq]
-    refine Ideal.mul_le.2 fun f hf g hg => ?_
-    rw [hm] at hf hg
-    exact ⟨h0 f g ▸ Ideal.mul_mem_left _ _ hg, h1 f g ▸ add_mem (Ideal.mul_mem_right _ _ hf) (Ideal.mul_mem_left _ _ hg)⟩
-  have := (hJ hc).2
-  simpa [hm, PowerSeries.coeff_succ_mul_X] using this
-
 end Param
 
 section Charts
@@ -108,26 +79,6 @@ def HasChart [IsOpenImmersion j] (φ : InvFun ℤ) (BD : EffCartierData S) (d : 
     (∀ i, (a i : ℝ) = d * φ.evalZ ((n : ℤ) • γ i)) ∧ idlAlong BD.idealSheaf ξ = Ideal.span {∏ i, t i ^ a i}
 
 variable {F s j e}
-
-theorem HasChart.idl_eq_top_iff [IsOpenImmersion j] {φ : InvFun ℤ} (hφ : IsPolFan id g φ) (hn : n ≠ 0) {BD : EffCartierData S}
-    {d : ℕ} (hd : d ≠ 0) {x : S} (h : HasChart F s j e φ BD d x) :
-    ReciprocityTheory.AnForm.R.FinalTheorems.stalkId BD.idealSheaf x = ⊤ ↔ x ∈ Set.range j := by
-  obtain ⟨R, _, _, b, ξ, m, t, R', _, _, _, ρ, r, G', _, _, π, D, A, U, γ, a, ⟨-, -, rfl, -, -⟩, ⟨ht, -, hj⟩, -,
-    ⟨-, hX, hγ, -⟩, ha, hD⟩ := h
-  have pos : ∀ i, a i ≠ 0 := fun i h0 => by
-    have h₁ := (hφ _ hX).pos _ (hγ.mem i) (hγ.nonneg i) (hγ.linearIndependent.ne_zero i)
-    have h₂ := ha i
-    rw [h0, hγ.evalZ_smul] at h₂
-    have : (0 : ℝ) < d * (n * φ.evalZ (γ i)) := by positivity
-    simp [← h₂] at this
-  have e₁ : ReciprocityTheory.AnForm.R.FinalTheorems.stalkId BD.idealSheaf (ξ (closedPoint R)) = ⊤ ↔ idlAlong BD.idealSheaf ξ = ⊤ := by
-    refine ⟨fun h => by rw [idlAlong, h, Ideal.map_top], fun h => by_contra fun h' => ?_⟩
-    refine (maximalIdeal.isMaximal R).ne_top (top_le_iff.1 (h.ge.trans (Ideal.map_le_iff_le_comap.2 fun c hc => ?_)))
-    exact (map_mem_nonunits_iff (Scheme.stalkClosedPointTo ξ).hom c).2 (le_maximalIdeal h' hc)
-  refine e₁.trans (Iff.trans ?_ (hj _).symm)
-  change _ ↔ ∏ i, t i ∉ maximalIdeal R
-  rw [hD, Ideal.span_singleton_eq_top, notMem_maximalIdeal, IsUnit.prod_univ_iff, IsUnit.prod_univ_iff]
-  exact forall_congr' fun i => isUnit_pow_iff (pos i)
 
 end Charts
 

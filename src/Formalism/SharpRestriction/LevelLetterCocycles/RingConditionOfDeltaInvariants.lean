@@ -212,33 +212,9 @@ theorem baseIdOf_full (hR : Ring9 W) : (baseIdOf hR).Full := by
   intro a ha
   exact ιOf_full hR a ha
 
-theorem Inv1.mul {a b : PowerSeries O} (ha : Inv1 W a) (hb : Inv1 W b) : Inv1 W (a * b) := by
-  intro δ hδ
-  rw [map_mul, ha δ hδ, hb δ hδ]
-
-theorem Inv1.add {a b : PowerSeries O} (ha : Inv1 W a) (hb : Inv1 W b) : Inv1 W (a + b) := by
-  intro δ hδ
-  rw [map_add, ha δ hδ, hb δ hδ]
-
-theorem Inv1.sub {a b : PowerSeries O} (ha : Inv1 W a) (hb : Inv1 W b) : Inv1 W (a - b) := by
-  intro δ hδ
-  rw [map_sub, ha δ hδ, hb δ hδ]
-
-theorem Inv1.pow {a : PowerSeries O} (ha : Inv1 W a) (k : ℕ) : Inv1 W (a ^ k) := by
-  intro δ hδ
-  rw [map_pow, ha δ hδ]
-
-theorem invariant_natCast (k : ℕ) : Inv1 W ((k : ℕ) : PowerSeries O) := by
-  intro δ _
-  exact map_natCast _ k
-
 variable (W) in
 
 def qP₁ : PowerSeries O := W.π₀₁ + ((PD.p : ℕ) : PowerSeries O)
-
-theorem qP₁_inv (hR : Ring9 W) : Inv1 W (qP₁ W) := by
-  rw [qP₁]
-  exact (π₀₁_inv hR).add (invariant_natCast _)
 
 theorem ι_q (hR : Ring9 W) : ιOf hR (baseIdOf hR).Bs.q = qP₁ W := by
   show ιOf hR (PowerSeries.X + PowerSeries.C ((PD.p : ℕ) : O)) = W.π₀₁ + ((PD.p : ℕ) : PowerSeries O)

@@ -19,21 +19,4 @@ theorem nu_pos_iff (U : Subgroup ℤ_[l]ˣ) (tr : ℕ) : 0 < nu l U tr ↔ resOr
   · intro h u hu
     exact congrArg Subtype.val (h ⟨red l u, u, hu, rfl⟩)
 
-private theorem nb_two_dvd (u : ℤ_[2]ˣ) : ((2 : ℕ) : ℤ_[2]) ∣ (u : ℤ_[2]) - 1 :=
-  nb_red_eq_one.mp (Subsingleton.elim _ _)
-
-theorem nu_two_of_odd (U : Subgroup ℤ_[2]ˣ) {tr : ℕ} (htr : Odd tr) :
-    nu 2 U tr = nu 2 U 1 ∧ 1 ≤ nu 2 U tr := by
-  constructor
-  · refine nuStar_eq_nuStar_one PadicInt.prime_p ?_ ?_
-    · rintro _ ⟨u, -, rfl⟩
-      exact nb_two_dvd u
-    · intro h
-      rw [← PadicInt.norm_lt_one_iff_dvd, PadicInt.norm_natCast_lt_one_iff] at h
-      exact (Nat.not_even_iff_odd.mpr htr) (even_iff_two_dvd.mpr h)
-  · rw [← Nat.cast_one (R := ℕ∞), le_nu_iff]
-    intro u _
-    rw [pow_one, ← Units.val_pow_eq_pow_val]
-    exact nb_two_dvd _
-
 end KStar.TotallyRealRoots

@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValQOfValQr
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaStepSplitPlaceValuePeriodGroupInvariaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaStepSplitPlaceValuePeriodGroupInvaria
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLocalGroupClosedEmbeddingIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodLocalGroupsNormalFramesSplitPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodLocalGroupsNormalFramesSplitPlace
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisOFinsetSum
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalSchrodingerModelUniqTransportExists
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryFiniteAdelicGroupSplitFinitePlaceSet
@@ -245,7 +246,7 @@ theorem val_inv (hψ : IsStdChar D ψ (-1)) (Q : QStep S) {c₁ c₂} (h₁ : Q.
   obtain ⟨g₀, hg, -⟩ := G₀.2.2.1 g
   obtain ⟨x₀, hx, -⟩ := G₁.2.2.1 x
   obtain ⟨y₀, hy, -⟩ := G₂.2.2.1 y
-  have key := GlobalTheory.T.doubleThetaStep_splitPlace_value_periodGroup_invariant D ψ hψ σ S Q c₁ c₂ h₁ h₂ f₁ f₂ hv φ f hφ hf ht _ _ _ hg hx hy g₀ x₀ y₀ a ha j hj a' ha' j' hj'
+  have key := _root_.GlobalTheory.DblInv.val_inv D ψ hψ σ S Q c₁ c₂ h₁ h₂ f₁ f₂ hv φ f hφ hf ht _ _ _ hg hx hy g₀ x₀ y₀ a ha j hj a' ha' j' hj'
   have e₁ : x * (Q.gl₁ x₀)⁻¹ * Q.gl₁ (a * x₀ * j) = Q.gl₁ a * x * Q.gl₁ j := by
     rw [map_mul, map_mul, ← mul_assoc, ← mul_assoc, ← G₁.2.2.2.1 a _ hx, mul_assoc (Q.gl₁ a), inv_mul_cancel_right]
   have e₂ : y * (Q.gl₂ y₀)⁻¹ * Q.gl₂ (a' * y₀ * j') = Q.gl₂ a' * y * Q.gl₂ j' := by
@@ -317,7 +318,7 @@ theorem left_jac {m : ℕ} (τ : Fin m → Fin n) {ρ : GA D S.J.W} (hρ : ρ �
     (fun ρ => ∀ x, integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (ρ * x) y = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y)
     (fun x => by rw [one_mul]) (fun a b ha hb x => by rw [mul_assoc, ha, hb]) (fun i z hz => ?_) ρ hρ hP x
   have G := GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q (τ i)).k (Q (τ i)).q S.J.W _ (Q (τ i)).F.G₁ (Q (τ i)).gl₁ (Q (τ i)).loc₁
-  have H := (GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D (Q (τ i)).k (Q (τ i)).q (Q (τ i)).n₁ ((Q (τ i)).c + 1 + 1) (σ + 1)).1 S.J _ _ _ _ (Q (τ i)).gl₁
+  have H := (_root_.GlobalTheory.LocGrpIff.local_groups_iff D (Q (τ i)).k (Q (τ i)).q (Q (τ i)).n₁ ((Q (τ i)).c + 1 + 1) (σ + 1)).1 S.J _ _ _ _ (Q (τ i)).gl₁
     (Nat.le_add_left 1 σ) (Q (τ i)).F.s_ne (GlobalTheory.LocMod.Witness.hz_ne _ S.B) (Q (τ i)).F.jac (Q (τ i)).loc₁
   obtain ⟨a, ha, -⟩ := G.2.2.1 z
   have hm : (Q (τ i)).gl₁ a ∈ jacGrp S.J.d := H.2 a _ ha (by rw [G.2.2.2.1 a _ ha, inv_mul_cancel_right]; exact hz)
@@ -330,7 +331,7 @@ theorem left_bes {m : ℕ} (τ : Fin m → Fin n) {ρ : GA D S.B'.V} (hρ : ρ �
     (fun ρ => ∀ y, integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x (ρ * y) = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y)
     (fun x => by rw [one_mul]) (fun a b ha hb x => by rw [mul_assoc, ha, hb]) (fun i z hz => ?_) ρ hρ hP y
   have G := GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q (τ i)).k (Q (τ i)).q S.B'.V _ (Q (τ i)).F.G₂ (Q (τ i)).gl₂ (Q (τ i)).loc₂
-  have H := (GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D (Q (τ i)).k (Q (τ i)).q (Q (τ i)).n₂ ((Q (τ i)).c + 1) σ).2 S.B' _ _ _ (Q (τ i)).gl₂
+  have H := (_root_.GlobalTheory.LocGrpIff.local_groups_iff D (Q (τ i)).k (Q (τ i)).q (Q (τ i)).n₂ ((Q (τ i)).c + 1) σ).2 S.B' _ _ _ (Q (τ i)).gl₂
     (mul_ne_zero (Q (τ i)).F.s_ne (GlobalTheory.LocMod.Witness.xi_ne _)) (Q (τ i)).F.bes' (Q (τ i)).loc₂
   obtain ⟨a, ha, -⟩ := G.2.2.1 z
   have hm : (Q (τ i)).gl₂ a ∈ besGrp S.B'.d S.B'.o := H.2 a _ ha (by rw [G.2.2.2.1 a _ ha, inv_mul_cancel_right]; exact hz)

@@ -48,8 +48,6 @@ lemma map_mul_apply (g h : G) (v : H) : π (g * h) v = π g (π h v) := by
 @[simp] lemma inner_map_map (g : G) (v w : H) : ⟪π g v, π g w⟫_ℂ = ⟪v, w⟫_ℂ :=
   Unitary.inner_map_map _ v w
 
-lemma mem_unitary (g : G) : π g ∈ unitary (H →L[ℂ] H) := (π.toHom g).2
-
 @[simp] lemma star_map (g : G) : star (π g) = π g⁻¹ := by
   show star ((π.toHom g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) =
     ((π.toHom g⁻¹ : unitary (H →L[ℂ] H)) : H →L[ℂ] H)
@@ -72,10 +70,6 @@ lemma inner_map_right (g : G) (v w : H) : ⟪v, π g w⟫_ℂ = ⟪π g⁻¹ v, 
 
 lemma norm_map_le (g : G) : ‖π g‖ ≤ 1 :=
   opNorm_le_bound _ zero_le_one fun v => by simp
-
-lemma map_injective (g : G) : Function.Injective (π g) := fun v w h => by
-  have := congrArg (π g⁻¹) h
-  rwa [map_inv_apply_map, map_inv_apply_map] at this
 
 noncomputable def ofLinearIsometryEquiv (ρ : G →* (H ≃ₗᵢ[ℂ] H))
     (hρ : ∀ v, Continuous fun g => ρ g v) : UnitaryRep G H where
@@ -108,61 +102,12 @@ theorem continuous_of_weak (ρ : G →* unitary (H →L[ℂ] H))
   rw [← h0]
   exact hc.continuousAt
 
-theorem continuous_of_continuousAt_one [IsTopologicalGroup G] (ρ : G →* unitary (H →L[ℂ] H))
-    (hρ : ∀ v : H, ContinuousAt (fun g => (ρ g : H →L[ℂ] H) v) 1) (v : H) :
-    Continuous fun g => (ρ g : H →L[ℂ] H) v := by
-  rw [continuous_iff_continuousAt]
-  intro h
-  rw [ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]
-  have key : ∀ g, ‖(ρ g : H →L[ℂ] H) v - (ρ h : H →L[ℂ] H) v‖ =
-      ‖(ρ (h⁻¹ * g) : H →L[ℂ] H) v - v‖ := by
-    intro g
-    have e : ρ g = ρ h * ρ (h⁻¹ * g) := by rw [← MonoidHom.map_mul, mul_inv_cancel_left]
-    have : (ρ g : H →L[ℂ] H) v - (ρ h : H →L[ℂ] H) v =
-        (ρ h : H →L[ℂ] H) ((ρ (h⁻¹ * g) : H →L[ℂ] H) v - v) := by
-      rw [map_sub, e]
-      rfl
-    rw [this, Unitary.norm_map]
-  simp_rw [key]
-  have ht : Tendsto (fun g => h⁻¹ * g) (𝓝 h) (𝓝 1) := by
-    have := (continuous_const_mul h⁻¹).tendsto h
-    rwa [inv_mul_cancel] at this
-  have h1 := Filter.Tendsto.comp (hρ v) ht
-  rw [tendsto_iff_norm_sub_tendsto_zero] at h1
-  simpa [Function.comp_def] using h1
-
-theorem continuous_action : Continuous fun p : G × H => π p.1 p.2 := by
-  rw [continuous_iff_continuousAt]
-  rintro ⟨h, w⟩
-  rw [ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]
-  have hle : ∀ p : G × H, ‖π p.1 p.2 - π h w‖ ≤ ‖p.2 - w‖ + ‖π p.1 w - π h w‖ := by
-    intro p
-    calc ‖π p.1 p.2 - π h w‖ = ‖π p.1 (p.2 - w) + (π p.1 w - π h w)‖ := by
-          rw [map_sub]; congr 1; abel
-      _ ≤ ‖π p.1 (p.2 - w)‖ + ‖π p.1 w - π h w‖ := norm_add_le _ _
-      _ = ‖p.2 - w‖ + ‖π p.1 w - π h w‖ := by rw [norm_map]
-  refine squeeze_zero (fun _ => norm_nonneg _) hle ?_
-  rw [← add_zero (0 : ℝ)]
-  refine Tendsto.add ?_ ?_
-  · have : Tendsto (fun p : G × H => p.2) (𝓝 (h, w)) (𝓝 w) := continuous_snd.tendsto _
-    rw [tendsto_iff_norm_sub_tendsto_zero] at this
-    exact this
-  · have : Tendsto (fun p : G × H => π p.1 w) (𝓝 (h, w)) (𝓝 (π h w)) :=
-      ((π.continuous_orbit w).comp continuous_fst).tendsto _
-    rw [tendsto_iff_norm_sub_tendsto_zero] at this
-    exact this
-
 lemma continuous_inner_orbit (v w : H) : Continuous fun g => ⟪π g v, w⟫_ℂ :=
   (π.continuous_orbit v).inner continuous_const
 
 def IsInvariant (V : Submodule ℂ H) : Prop := ∀ (g : G) (v : H), v ∈ V → π g v ∈ V
 
 variable {π}
-
-lemma isInvariant_bot : π.IsInvariant ⊥ := fun g v hv => by
-  rw [Submodule.mem_bot] at hv ⊢; simp [hv]
-
-lemma isInvariant_top : π.IsInvariant ⊤ := fun _ _ _ => Submodule.mem_top
 
 theorem IsInvariant.orthogonal {V : Submodule ℂ H} (hV : π.IsInvariant V) :
     π.IsInvariant Vᗮ := by
@@ -212,30 +157,6 @@ variable {σ : UnitaryRep G K} {τ : UnitaryRep G L}
 lemma mem_intertwiners {T : H →L[ℂ] K} :
     T ∈ π.intertwiners σ ↔ ∀ (g : G) (v : H), T (π g v) = σ g (T v) := Iff.rfl
 
-lemma mem_intertwiners_iff_comp {T : H →L[ℂ] K} :
-    T ∈ π.intertwiners σ ↔ ∀ g : G, T ∘L π g = σ g ∘L T := by
-  simp only [mem_intertwiners, ContinuousLinearMap.ext_iff, ContinuousLinearMap.comp_apply]
-
-lemma one_mem_intertwiners : (1 : H →L[ℂ] H) ∈ π.intertwiners π := fun _ _ => rfl
-
-lemma comp_mem_intertwiners {S : K →L[ℂ] L} {T : H →L[ℂ] K} (hS : S ∈ σ.intertwiners τ)
-    (hT : T ∈ π.intertwiners σ) : S ∘L T ∈ π.intertwiners τ := fun g v => by
-  simp [hT g v, hS g (T v)]
-
-lemma mul_mem_intertwiners {S T : H →L[ℂ] H} (hS : S ∈ π.intertwiners π)
-    (hT : T ∈ π.intertwiners π) : S * T ∈ π.intertwiners π := comp_mem_intertwiners hS hT
-
-theorem adjoint_mem_intertwiners {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) :
-    adjoint T ∈ σ.intertwiners π := by
-  intro g w
-  apply ext_inner_left ℂ
-  intro v
-  rw [adjoint_inner_right, inner_map_right π, adjoint_inner_right, hT, inner_map_left σ, inv_inv]
-
-lemma star_mem_intertwiners {T : H →L[ℂ] H} (hT : T ∈ π.intertwiners π) :
-    star T ∈ π.intertwiners π := by
-  rw [star_eq_adjoint]; exact adjoint_mem_intertwiners hT
-
 lemma commute_of_mem_intertwiners {T : H →L[ℂ] H} (hT : T ∈ π.intertwiners π) (g : G) :
     Commute T (π g) := by
   ext v; exact hT g v
@@ -244,17 +165,6 @@ lemma mem_intertwiners_self_iff {T : H →L[ℂ] H} :
     T ∈ π.intertwiners π ↔ ∀ g, Commute T (π g) := by
   refine ⟨commute_of_mem_intertwiners, fun h g v => ?_⟩
   exact congrArg (fun S : H →L[ℂ] H => S v) (h g)
-
-lemma isInvariant_range {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) :
-    σ.IsInvariant (LinearMap.range (T : H →ₗ[ℂ] K)) := by
-  rintro g _ ⟨v, rfl⟩
-  exact ⟨π g v, hT g v⟩
-
-lemma isInvariant_ker {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) :
-    π.IsInvariant (LinearMap.ker (T : H →ₗ[ℂ] K)) := by
-  intro g v hv
-  simp only [LinearMap.mem_ker, ContinuousLinearMap.coe_coe] at hv ⊢
-  rw [hT, hv, map_zero]
 
 variable (π σ) in
 
@@ -281,9 +191,6 @@ def symm (e : π.Equiv σ) : σ.Equiv π where
 def trans (e : π.Equiv σ) (f : σ.Equiv τ) : π.Equiv τ where
   toLinearIsometryEquiv := e.toLinearIsometryEquiv.trans f.toLinearIsometryEquiv
   map_apply' g v := by simp [e.map_apply', f.map_apply']
-
-lemma mem_intertwiners (e : π.Equiv σ) :
-    (e.toLinearIsometryEquiv : H →L[ℂ] K) ∈ π.intertwiners σ := e.map_apply'
 
 end Equiv
 
@@ -325,10 +232,6 @@ theorem IsIrreducible.of_equiv (hπ : π.IsIrreducible) (e : π.Equiv σ) : σ.I
     obtain ⟨v, rfl⟩ := hsurj w
     have : v ∈ W.comap (E : H →ₗ[ℂ] K) := by rw [h]; exact Submodule.mem_top
     exact this
-
-theorem IsEquivalent.isIrreducible_iff (h : π.IsEquivalent σ) :
-    π.IsIrreducible ↔ σ.IsIrreducible :=
-  ⟨fun hπ => hπ.of_equiv h.some, fun hσ => hσ.of_equiv h.some.symm⟩
 
 section restrict
 

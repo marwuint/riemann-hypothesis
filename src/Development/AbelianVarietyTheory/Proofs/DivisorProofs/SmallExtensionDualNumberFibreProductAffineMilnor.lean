@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotIsIsoSpMapDnFst
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineMilnorSquareOfCartesianRingSquareStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineMilnorSquareOfCartesianRingSquare
 
 set_option autoImplicit false
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
@@ -93,7 +93,7 @@ theorem smallExt_fibre_ring : ∀ (C : Type) [CommRing C] [IsLocalRing C] (e : C
       @nilradical_le_prime _ _ x.asIdeal x.isPrime _ (hker ha)
     rw [← this] at hx
     exact hx
-  · refine GlobalTheory.T.affineMilnorSquare_of_cartesian_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ Ideal.Quotient.mk_surjective
+  · refine _root_.GlobalTheory.DualOpen.milnor_of_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ Ideal.Quotient.mk_surjective
     · refine RingHom.ext fun x ↦ ?_
       refine (Ideal.Quotient.eq.2 ?_).symm
       show x.1.1 + φ x.1.2.snd - x.1.1 ∈ _
@@ -115,7 +115,7 @@ theorem smallExt_fibre_ring : ∀ (C : Type) [CommRing C] [IsLocalRing C] (e : C
       show a + φ (residue C c) = b
       rw [hφ, hc]
       ring
-  · refine GlobalTheory.T.affineMilnorSquare_of_cartesian_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ (fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩)
+  · refine _root_.GlobalTheory.DualOpen.milnor_of_ring_square _ _ _ _ _ _ _ _ ?_ ?_ ?_ (fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩)
     · exact RingHom.ext fun x ↦ x.2
     · intro x h1 h2
       exact Subtype.ext (Prod.ext h1 h2)

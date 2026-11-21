@@ -93,16 +93,6 @@ theorem zzplus_mem (M : Loc.Model F E) (g : Loc.SplitG M.L) (hs : M.split = some
 
 end Generic
 
-def NormG : Prop :=
-  ∀ (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-    (∀ p, Agree δ M p) → ∀ (u u' : D.what₂.Word),
-    (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2] →
-    ∀ (F0 : FlagG (VS D) D.R.rS (Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-      RowsOf u F0 what₂ → ∀ Λ ∈ what₂, ∀ (Z : MatZ D) (F' : LFlag (VS D) D.R.rS (Tn u')),
-        F' ∈ EZ (Tn u') F0 Λ Z → ∀ p (g : Loc.SplitG (M p).L), (M p).split = some g →
-          ∀ a b, NormAt g (ZhatLoc M δ p Z) (((D.mem u).A.T : ℕ) : (D.s.atP p).Fp)
-            (((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) a b
-
 theorem tt_mod_q (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word)
     (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2]) (p : PlF D) (g : Loc.SplitG (M p).L)
@@ -135,13 +125,5 @@ theorem tt_mod_q (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p
     simp only [Int.cast_natCast] at hk'
     push_cast
     linear_combination -hk'
-
-theorem intG_of (hN : NormG) : IntG := by
-  intro D δ M hA u u' hT F0 what₂ hrows Λ hΛ Z F' hF' p g hs a b
-  exact zzplus_mem (M p) g hs _ _ _ (tt_mod_q D δ M hA u u' hT p g hs)
-    (hN D δ M hA u u' hT F0 what₂ hrows Λ hΛ Z F' hF' p g hs) a b
-
-theorem notIntAll_of_loc (hL : LocGen) (hN : NormG) : PI.CntLocalParts.NotIntAll :=
-  notIntAll_of_gen hL (intG_of hN)
 
 end PI.CntNotIntW

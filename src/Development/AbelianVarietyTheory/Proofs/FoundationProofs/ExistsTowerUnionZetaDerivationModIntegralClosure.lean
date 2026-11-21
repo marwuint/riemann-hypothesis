@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsTrDataGaussianIntOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationOnISupOfCompatible
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationTowerLevelAlgebraPrescribedStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationTowerLevelAlgebraPrescribed
 open GlobalTheory.AlmostEt GlobalTheory.K5
 open scoped NNReal
 
@@ -151,7 +151,7 @@ theorem zeta_derivation : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [A
       IsDerOn (levelAlg T (m + 1)) D ∧
         D (zS T (m + 1)) = Submodule.Quotient.mk (T.ζ (m + 1) * p / (p : Ω) ^ (m + 1)) ∧
         D (qS T (m + 1)) = 0 := fun m =>
-    GlobalTheory.T.exists_derivation_towerLevelAlgebra_prescribed p Ω hc T (m + 1) (Nat.succ_pos m) (Frac p Ω) _ 0
+    _root_.GlobalTheory.AlmostEt.LevDer.exists_derOn_levelAlg p Ω hc T (m + 1) (Nat.succ_pos m) (Frac p Ω) _ 0
       (cyc_relation inferInstance T m) (smul_zero _)
   choose D hD hDz hDq using hlev
   have hval : ∀ m, D m (zS T m) = Submodule.Quotient.mk (T.ζ m * p / (p : Ω) ^ m) ∧

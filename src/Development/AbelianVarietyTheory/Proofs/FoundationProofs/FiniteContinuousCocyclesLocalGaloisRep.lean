@@ -10,16 +10,6 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.LocalH1Finiteness
 
-theorem finite_cocycles_of_finite_h1 {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
-    [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
-    [ContinuousConstSMul R M] [Finite M] (rho : Representation R G M) (h : Finite (H1 rho)) :
-    Finite (Z1 rho) := by
-  have hB : Finite (B1 rho) := Finite.of_surjective _ (d0 rho).surjective_rangeRestrict
-  have hB' : Finite ((B1 rho).comap (Z1 rho).subtype) :=
-    Finite.of_injective (fun x : (B1 rho).comap (Z1 rho).subtype => (⟨x.1.1, x.2⟩ : B1 rho))
-      (fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun x : B1 rho => x.1) hab)))
-  exact @Finite.of_addSubgroup_quotient _ _ ((B1 rho).comap (Z1 rho).subtype).toAddSubgroup hB' h
-
 section General
 
 variable {G V : Type} [Group G] [NormedAddCommGroup V] [IsUltrametricDist V]

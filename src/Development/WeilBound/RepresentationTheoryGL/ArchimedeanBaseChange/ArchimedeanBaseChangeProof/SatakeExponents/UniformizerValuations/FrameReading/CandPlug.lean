@@ -2,7 +2,14 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.PairDoubleCosetFiniteSupport
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.RExpReadOf
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.IsOpenChiMu
-import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.RReadLev
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.JoinType
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealReadLevi
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFixedNonzeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusTrivialOnCompactParabolic
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicElementBlockForm
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.SphericalEmbeddings.Imports
 
 namespace PositivityTheory.Rg.BcB.F.CandPlug
@@ -11,7 +18,7 @@ open PositivityTheory.Rg.BcB.F
 
 theorem readT : Tail.ReadT := Tail.rReadT RS.reading_module_holds
 theorem expRead : Tail.ExpRead := Tail.rExpRead PositivityTheory.Rg.BcB.N3.Final.n3
-theorem readLev : Tail.ReadLev := GlobalTheory.T.real_read_levi RS.reading_module_holds RS.join_module_holds
+theorem readLev : Tail.ReadLev := _root_.GlobalTheory.CompanionTheory.ReadLevel.rReadLev RS.reading_module_holds RS.join_module_holds
 theorem readS : Tail.ReadS := Tail.rReadS_c RS.reading_module_holds RS.join_module_holds PositivityTheory.Rg.BcN.F2.LocOpPf.locOp3
 
 theorem candT : CandT := fun hR E _ _ _ hE n _ π _ S T F₀ F _ i s₁ s₂ Pa Pb D A G hc hG hl hne w hw hu hs =>

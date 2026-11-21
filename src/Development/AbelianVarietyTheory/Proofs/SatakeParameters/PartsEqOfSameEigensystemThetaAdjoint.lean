@@ -4,15 +4,17 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HarishChandraFinite
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharacterisationPlacesPartsOfWeakStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperspecialFixesAllChainVacuaAtInertPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaIntertwinesMatchedOperatorsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwoSidedHeckePartnerInertPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharacterisationPlacesPartsOfWeak
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HyperspecialFixesAllChainVacuaAtInertPrime
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaIntertwinesMatchedOperators
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwoSidedHeckePartnerInertPrime
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftTransferHeckePolySplitPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FamilySplitOperatorsEqLabelOperatorsModels
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertHeckeOperatorsLiftsRationalSelfAdjointLabelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSphericalDoubleCosetLabelIffDecreasingStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualAntitoneListIffInertPrimeHeckeExponentsStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertHeckeOperatorsLiftsRationalSelfAdjointLabel
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSphericalDoubleCosetLabelIffDecreasing
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualAntitoneListIffInertPrimeHeckeExponents
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RealizationFamilyNormalOperatorsStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeightCocharacterEqOfGoodPlacesStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -98,7 +100,7 @@ theorem evC_single (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) (d : Lis
 
 theorem isLab_splitLab (V : HSp D) (P : Pl D.host.E) (hP : conjPl P ≠ P) (k : ℕ) (hk : k ≤ V.rank) :
     IsLab V P (splitLab V.rank k) := by
-  refine (GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing V P _).2 ⟨?_, ?_, fun h => absurd h hP⟩
+  refine (_root_.GlobalTheory.LabChar.labels_char V P _).2 ⟨?_, ?_, fun h => absurd h hP⟩
   · simp [splitLab]
     omega
   · unfold splitLab
@@ -149,7 +151,7 @@ set_option maxHeartbeats 8000000 in
 
 theorem parts_eq_of_labW : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → InertJunk A3 → (∀ χ ∈ A3.A.X, IsAbsIrrChar χ) → ∀ j pl cV cW, LiftDict R j A3.A.μ0 pl cV cW → ∀ c c', ∀ w ∈ R.Wc' j c, ∀ w' ∈ R.Wc' j c', LinearMap.adjoint (R.thG j A3.A.μ0) w ≠ 0 → LinearMap.adjoint (R.thG j A3.A.μ0) w' ≠ 0 → labW j pl cW c = labW j pl cW c' → R.Wc' j c = R.Wc' j c' := by
   intro hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hInt hCW hEx hSch _ hAbs j pl cV cW hLD c c' w hw w' hw' hy hy' hlab
-  obtain ⟨hCoreF, hSF, hOkI, hOnto, -, hWc, -⟩ := GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hCW
+  obtain ⟨hCoreF, hSF, hOkI, hOnto, -, hWc, -⟩ := _root_.GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hCW
   have hCore := hCoreF hEx
   have hw2 : w ∈ Wcc R.toRealDat R.SF j c := (hWc j c) ▸ hw
   have hw2' : w' ∈ Wcc R.toRealDat R.SF j c' := (hWc j c') ▸ hw'
@@ -165,7 +167,7 @@ theorem parts_eq_of_labW : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fint
   have hsys : ∀ P, Good R.toRealDat A3.A.μ0 P → ∀ cV0 cW0, MatchW R.toRealDat j A3.A.μ0 P cV0 cW0 →
       hV P cV0 y = evC (Wc D j) P (c P) cW0 • y ∧ hV P cV0 y' = evC (Wc D j) P (c' P) cW0 • y' := by
     intro P hP cV0 cW0 hm
-    have h := (GlobalTheory.T.theta_intertwines_matched_operators R.toRealDat F.lv2 hCore hSch hAbs R.SF hSF j A3.A.μ0 P hP cV0 cW0 hm hV hVops).2
+    have h := (_root_.GlobalTheory.SysW.matched_operators_theta_intertwine R.toRealDat F.lv2 hCore hSch hAbs R.SF hSF j A3.A.μ0 P hP cV0 cW0 hm hV hVops).2
     rw [hydef, hy'def]
     exact ⟨h c w hw2, h c' w' hw2'⟩
 
@@ -217,23 +219,23 @@ theorem parts_eq_of_labW : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fint
   ·
     intro P d hP hconj hd
     obtain ⟨Q, hQ, rfl⟩ := (hOnto P hP).1 hconj
-    have hFix := GlobalTheory.T.hyperspecialFixesAllChainVacua_at_inert_prime R F hCW A3.A.μ0 (R.plI Q) hP hconj
-    have hTwo := GlobalTheory.T.twoSidedHeckePartner_inertPrime hHowe R.toRealDat F.lv2 hInt hCore hSch A3.A.μ0 (R.plI Q) hP hconj hFix
+    have hFix := _root_.GlobalTheory.VacFixInert.fixAll_inert R F hCW A3.A.μ0 (R.plI Q) hP hconj
+    have hTwo := _root_.GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert hHowe R.toRealDat F.lv2 hInt hCore hSch A3.A.μ0 (R.plI Q) hP hconj hFix
     obtain ⟨cV', hm⟩ := (hTwo.2 j).2 (Finsupp.single d 1)
     have h12 := hsys (R.plI Q) hP cV' _ hm
     have htie := (hCW.inert.hL j A3.A.μ0).some
-    have hIL := GlobalTheory.T.inertHeckeOperators_lifts_rational_selfAdjoint_labels R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models j A3.A.μ0 (A3.okI A3.A.μ0 × List ℕ)
+    have hIL := _root_.GlobalTheory.InertHeckeLift.inert_lifts R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models j A3.A.μ0 (A3.okI A3.A.μ0 × List ℕ)
       (fun k => R.plI k.1) (fun k => GlobalTheory.Hk3.labIn (Vc D j).rank k.2) (A3.heckeLI j A3.A.μ0)
       (fun k => Formalism.L2.Col.InertTypeOk (Vc D j).rank k.2)
       (fun k hk => ⟨(hOkI _ k.1 k.1.2).1, (hOkI _ k.1 k.1.2).2,
-        ((GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents _ _).2 ⟨k.2, hk.2.2, hk.1, hk.2.1, rfl⟩).2.1⟩) htie
+        ((_root_.GlobalTheory.Hk3.labIn_selfDual_iff _ _).2 ⟨k.2, hk.2.2, hk.1, hk.2.1, rfl⟩).2.1⟩) htie
 
     have hlabop : ∀ e, ∃ μ : ℂ, hV (R.plI Q) (Finsupp.single e 1) y = μ • y ∧
         hV (R.plI Q) (Finsupp.single e 1) y' = μ • y' := by
       intro e
       by_cases he : GlobalTheory.Hk3.IsLab (Vc D j) (R.plI Q) e
-      · obtain ⟨hlen, hpw, hdual⟩ := (GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Vc D j) (R.plI Q) e).1 he
-        obtain ⟨s, hs2, hspw, hspos, rfl⟩ := (GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents (Vc D j).rank e).1 ⟨hlen, hpw, hdual hconj⟩
+      · obtain ⟨hlen, hpw, hdual⟩ := (_root_.GlobalTheory.LabChar.labels_char (Vc D j) (R.plI Q) e).1 he
+        obtain ⟨s, hs2, hspw, hspos, rfl⟩ := (_root_.GlobalTheory.Hk3.labIn_selfDual_iff (Vc D j).rank e).1 ⟨hlen, hpw, hdual hconj⟩
         have hok : Formalism.L2.Col.InertTypeOk (Vc D j).rank s := ⟨hspw, hspos, hs2⟩
         have hop1 := (hIL (⟨Q, hQ⟩, s) hok).2.2.2 hV hVops
         let i0 : (A3.liftI j A3.A.μ0).OpIx := Sum.inr (⟨Q, hQ⟩, s)

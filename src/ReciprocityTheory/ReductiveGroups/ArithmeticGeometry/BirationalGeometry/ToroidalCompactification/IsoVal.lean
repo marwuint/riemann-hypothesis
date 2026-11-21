@@ -103,12 +103,6 @@ omit hG hA hwg in
 def cubZ {Z : Scheme.{0}} {s : Z ⟶ S} (z : Z) (J : (Z ⟶ A.left) → L.L.ι) (a b d : Over.mk s ⟶ A) : (Z.presheaf.stalk z)ˣ :=
   cubV c (T := Over.mk s) z J a b d
 
-omit hG hA hwg [GrpObj A] [IsCommMonObj A] in
-
-def valZ {M : LB A.left} {K : Type} [Fintype K] {ε : K → ℤ} {φ : K → ((A ⊗ A).left ⟶ A.left)} (W : LB.Gen (LB.LinComb M φ ε))
-    {Z : Scheme.{0}} {s : Z ⟶ S} (z : Z) (J : (Z ⟶ A.left) → M.ι) (a b : Over.mk s ⟶ A) : (Z.presheaf.stalk z)ˣ :=
-  val W (show Z ⟶ _ from (lift a b).left) z J
-
 include gp in
 theorem cub_w {Z : Scheme.{0}} {s' : Z ⟶ S'} {s : Z ⟶ S} {z : Z} {J J'} (hJ : Good L.L z J) (hJ' : Good L'.L z J')
     (a b d : Over.mk s' ⟶ A') (a₀ b₀ d₀ : Over.mk s ⟶ A) (ha : a.left ≫ Φ = a₀.left) (hb : b.left ≫ Φ = b₀.left)

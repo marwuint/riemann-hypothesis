@@ -27,12 +27,7 @@ theorem endoP (P : Pred) (h : CuspReadP P) : EndoP P :=
 theorem stableP (h1 : PiTerm) (h2 : PiFin) (h3 : PiAdm) (h4 : TwTrSum) (h5 : GrowthPiJ) (P : Pred) (h : CuspReadP P) :
     StableP P := rStable h2 h3 h5 (cmbPi h1 h4) P (specP P h)
 
-theorem endoBlock (h : CuspRead) : EndoBlock := endo_of _ (endoP _ (cuspReadP_true h))
-
 theorem endoBlockG (h : CuspReadI) : EndoBlockG := endoG_of (endoP _ (cuspReadP_inf h))
-
-theorem stableBlock (h : CuspRead) (h1 : PiTerm) (h2 : PiFin) (h3 : PiAdm) (h4 : TwTrSum) (h5 : GrowthPiJ) : StableBlock :=
-  stable_of _ (stableP h1 h2 h3 h4 h5 _ (cuspReadP_true h))
 
 theorem stableBlockG (h : CuspReadI) (h1 : PiTerm) (h2 : PiFin) (h3 : PiAdm) (h4 : TwTrSum) (h5 : GrowthPiJ) : StableBlockG :=
   stableG_of (stableP h1 h2 h3 h4 h5 _ (cuspReadP_inf h))

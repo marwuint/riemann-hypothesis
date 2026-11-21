@@ -25,14 +25,6 @@ theorem _root_.GlobalTheory.UTr.IsCsr.conj_mul_coeff_zero {P : B[X]}
     coeff_natDegree, h.1.leadingCoeff, map_one] at h0
   exact h0
 
-theorem isCsr_X_sub_C [Nontrivial B] {u : B} : IsCsr s (X - C u) ↔ s u * u = 1 := by
-  refine ⟨fun h => by simpa using h.conj_mul_coeff_zero, fun h => ⟨monic_X_sub_C u, ?_⟩⟩
-  have e : reflect 1 (X : B[X]) = 1 := by simpa using reflect_monomial (R := B) 1 1
-  have e' : C (s u) * C u = (1 : B[X]) := by rw [← C_mul, h, C_1]
-  rw [natDegree_X_sub_C, Polynomial.map_sub, map_X, map_C, reflect_sub, e, reflect_C]
-  simp only [coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub, map_neg]
-  linear_combination e'
-
 theorem IsCsr.mul {P Q : B[X]} (hP : IsCsr s P) (hQ : IsCsr s Q) : IsCsr s (P * Q) := by
   refine ⟨hP.1.mul hQ.1, ?_⟩
   rw [hP.1.natDegree_mul hQ.1, Polynomial.map_mul, reflect_mul _ _ natDegree_map_le natDegree_map_le, ← hP.2, ← hQ.2,
@@ -53,16 +45,6 @@ abbrev Csr : Type := {P : B[X] // IsCsr s P}
 def Csr.mul (P Q : Csr s) : Csr s := ⟨P.1 * Q.1, P.2.mul Q.2⟩
 
 def Csr.map (P : Csr s) (φ : B →+* B') (hφ : ∀ b, φ (s b) = s' (φ b)) : Csr s' := ⟨P.1.map φ, P.2.map φ hφ⟩
-
-abbrev Csr.Factorisation (P : Csr s) : Type := {p : Csr s × Csr s // p.1.1 * p.2.1 = P.1}
-
-def Csr.mulFactorisation (P₁ P₂ : Csr s) : (P₁.mul P₂).Factorisation := ⟨(P₁, P₂), rfl⟩
-
-def Csr.Factorisation.map {P : Csr s} (p : P.Factorisation) (φ : B →+* B') (hφ : ∀ b, φ (s b) = s' (φ b)) :
-    (P.map φ hφ).Factorisation :=
-  ⟨(p.1.1.map φ hφ, p.1.2.map φ hφ), (Polynomial.map_mul φ).symm.trans (congrArg (Polynomial.map φ) p.2)⟩
-
-def Csr.Factorisation.res {P : Csr s} (p : P.Factorisation) : B := resultant p.1.1.1 p.1.2.1
 
 def Alg (P : Csr s) : Type := AdjoinRoot P.1
 
@@ -175,9 +157,6 @@ variable (P : _root_.GlobalTheory.UTr.Csr s) in
 
 theorem root_mul_conj_root : root P * conj P (root P) = 1 := by rw [conj_root]; exact (gamma P).mul_inv
 
-theorem conj_smul (b : B) (z : Alg P) : conj P (b • z) = s b • conj P z := by
-  rw [Algebra.smul_def, Algebra.smul_def, map_mul, conj_algebraMap]
-
 open Polynomial Matrix in
 variable {B B' : Type} [CommRing B] [CommRing B'] (s : B →+* B) {s' : B' →+* B'} in
 variable {s} in
@@ -223,8 +202,6 @@ variable {P} in
 
 theorem mem_tor {z : (Alg P)ˣ} : z ∈ tor P ↔ (z : Alg P) * conj P z = 1 := Units.ext_iff
 
-theorem gamma_mem_tor : gamma P ∈ tor P := mem_tor.2 (root_mul_conj_root P)
-
 def plus : Subgroup (Alg P)ˣ := (Units.map (conj P : Alg P →* Alg P)).eqLocus (MonoidHom.id _)
 
 open Polynomial Matrix in
@@ -258,8 +235,6 @@ variable {P} in
 
 def Cls.rep (c : Cls P) : Alg P := ((Quotient.out c : plus P) : (Alg P)ˣ)
 
-def torInt (O : Subring B) : Subgroup (tor P) := (UnitLemma.intUnits O (Alg P)).subgroupOf (tor P)
-
 section Map
 
 variable {P} {Q : Csr s'} (φ : B →+* B') (h : Q.1 ∣ P.1.map φ)
@@ -290,46 +265,11 @@ def torMap : tor P →* tor Q :=
     change algMap φ h (z.1 : Alg P) * conj Q (algMap φ h (z.1 : Alg P)) = 1
     rw [← algMap_conj φ h hφ, ← map_mul, mem_tor.1 z.2, map_one])
 
-def plusMap : plus P →* plus Q :=
-  ((Units.map (algMap φ h : Alg P →* Alg Q)).comp (plus P).subtype).codRestrict _ fun z => mem_plus.2 (by
-    change conj Q (algMap φ h (z.1 : Alg P)) = algMap φ h (z.1 : Alg P)
-    rw [← algMap_conj φ h hφ, mem_plus.1 z.2])
-
-def clsMap : Cls P →* Cls Q :=
-  QuotientGroup.map _ _ (plusMap φ h hφ) (by
-    rintro x ⟨u, hu⟩
-    refine ⟨Units.map (algMap φ h : Alg P →* Alg Q) u, Units.ext ?_⟩
-    change algMap φ h (u : Alg P) * conj Q (algMap φ h (u : Alg P)) = algMap φ h (x.1 : Alg P)
-    rw [← algMap_conj φ h hφ, ← map_mul, ← val_normU, hu]; rfl)
-
 @[simp] theorem coe_torMap (z : tor P) : ((torMap φ h hφ z).1 : Alg Q) = algMap φ h (z.1 : Alg P) := rfl
 
 end Map
 
-variable {P} in
-
-def Csr.Factorisation.fst (p : P.Factorisation) : Alg P →+* Alg p.1.1 :=
-  algMap (RingHom.id B) (by rw [Polynomial.map_id]; exact Dvd.intro _ p.2)
-
-variable {P} in
-
-def Csr.Factorisation.snd (p : P.Factorisation) : Alg P →+* Alg p.1.2 :=
-  algMap (RingHom.id B) (by rw [Polynomial.map_id]; exact Dvd.intro_left _ p.2)
-
 def herm (x y z : Alg P) : B := Algebra.trace B _ (x * y * conj P z)
-
-theorem herm_mul_mul (x u y z : Alg P) : herm P x (u * y) (u * z) = herm P (x * (u * conj P u)) y z := by
-  rw [herm, herm, map_mul (conj P)]; congr 1; ring
-
-def gram (x : Alg P) : Matrix (Fin P.1.natDegree) (Fin P.1.natDegree) B :=
-  Matrix.of fun i j => herm P x (powBasis P j) (powBasis P i)
-
-open Classical in
-variable (s) in
-
-def normSign (d : B) : ℤˣ := if ∃ u : Bˣ, d = u * s u then 1 else -1
-
-def etaDet (x : Alg P) : ℤˣ := normSign s (gram P x).det
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
@@ -423,35 +363,9 @@ def torToU (g : UJ s J) (hg : aeval g.1.1 P.1 = 0) : tor P →* UJ s J :=
 @[simp] theorem coe_torToU (g : UJ s J) (hg : aeval g.1.1 P.1 = 0) (z : tor P) :
     (torToU P g hg z).1.1 = evalMat P _ hg (z.1 : Alg P) := rfl
 
-theorem torToU_gamma (g : UJ s J) (hg : aeval g.1.1 P.1 = 0) : torToU P g hg ⟨gamma P, gamma_mem_tor P⟩ = g :=
-  Subtype.ext (Units.ext (evalMat_root P _ hg))
-
-def torToCent (g : UJ s J) (hg : aeval g.1.1 P.1 = 0) : tor P →* Subgroup.centralizer ({g} : Set (UJ s J)) :=
-  (torToU P g hg).codRestrict _ fun z => Subgroup.mem_centralizer_singleton_iff.2 (by
-    have := congrArg (torToU P g hg) (mul_comm z ⟨gamma P, gamma_mem_tor P⟩)
-    rwa [map_mul, map_mul, torToU_gamma] at this)
-
-theorem hform_mulVec (J g : Matrix n n B) (u v : n → B) :
-    hform s J (g *ᵥ u) (g *ᵥ v) = hform s (cT s g * J * g) u v := by
-  have key : ∀ (M : Matrix n n B) (a b : n → B), hform s M a b = (s ∘ a) ⬝ᵥ M *ᵥ b := fun M a b => by
-    simp [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
-  have e : s ∘ (g *ᵥ u) = (s ∘ u) ᵥ* cT s g := by
-    rw [cT, Matrix.vecMul_transpose]; funext i; exact RingHom.map_mulVec s g u i
-  rw [key, key, e, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
-
-theorem hform_single (J : Matrix n n B) (i j : n) : hform s J (Pi.single i 1) (Pi.single j 1) = J i j := by
-  simp [hform, Pi.single_apply, apply_ite s, ite_mul]
-
 variable (J) in
 
 abbrev Isom (x : Alg P) : Type := {i : Alg P ≃ₗ[B] (n → B) // ∀ y z, hform s J (i z) (i y) = herm P x y z}
-
-def stdIsom (x : Alg P) : Isom P (gram P x) x :=
-  ⟨(powBasis P).equivFun, fun y z => by
-    conv_rhs => rw [← (powBasis P).sum_equivFun y, ← (powBasis P).sum_equivFun z]
-    simp only [hform, gram, herm, Matrix.of_apply, map_sum, conj_smul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm,
-      smul_mul_assoc, map_smul, smul_eq_mul]
-    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring⟩
 
 variable {P}
 
@@ -473,18 +387,6 @@ theorem aeval_mulMat_root (i : Alg P ≃ₗ[B] (n → B)) : aeval (mulMat i (roo
   rw [aeval_algHom_apply, aeval_root, map_zero]
 
 variable {x x' : Alg P}
-
-def Isom.elt (i : Isom P J x) : UJ s J :=
-  ⟨Units.map (mulMat i.1 : Alg P →* Matrix n n B) (gamma P), by
-    change cT s (mulMat i.1 (root P)) * J * mulMat i.1 (root P) = J
-    ext a b
-    obtain ⟨y, hy⟩ := i.1.surjective (Pi.single a 1)
-    obtain ⟨z, hz⟩ := i.1.surjective (Pi.single b 1)
-    rw [← hform_single (s := s) (_ * _ * _), ← hform_single (s := s) J, ← hform_mulVec, ← hy, ← hz, mulMat_mulVec, mulMat_mulVec,
-      i.2, i.2, herm_mul_mul, root_mul_conj_root, mul_one]⟩
-
-def Isom.mulNorm (i : Isom P J x) (u : (Alg P)ˣ) : Isom P J (x * (u * conj P u)) :=
-  ⟨(u.mulLeftLinearEquiv B (Alg P)).trans i.1, fun y z => (i.2 _ _).trans (herm_mul_mul P x u y z)⟩
 
 variable (P) in
 
@@ -556,23 +458,5 @@ theorem IsCyc.map {g : Matrix n n B} (h : IsCyc P g) (φ : B →+* B') {Q : Csr 
   refine ⟨LinearEquiv.ofBijective l hb, (eq_mulMat _ fun y => ?_).symm⟩
   change g.map φ *ᵥ (evalMat Q _ hg' y *ᵥ _) = evalMat Q _ hg' (root Q * y) *ᵥ _
   rw [map_mul, evalMat_root, Matrix.mulVec_mulVec]
-
-example [Nontrivial B] {α β : B} (hα : s α * α = 1) (hβ : s β * β = 1) :
-    (Csr.mulFactorisation ⟨X - C α, isCsr_X_sub_C.2 hα⟩ ⟨X - C β, isCsr_X_sub_C.2 hβ⟩).res = α - β := by
-  change resultant (X - C α) (X - C β) = α - β
-  rw [natDegree_X_sub_C α, resultant_X_sub_C_left _ _ _ le_rfl]; simp
-
-example : IsCsr (starRingEnd ℂ) (X - C Complex.I) ∧ ¬ IsCsr (starRingEnd ℂ) (X - C 2) :=
-  ⟨isCsr_X_sub_C.2 (by simp), fun h => by
-    have := isCsr_X_sub_C.1 h
-    rw [map_ofNat] at this; norm_num at this⟩
-
-example : normSign (starRingEnd ℂ) (-1) = -1 ∧ normSign (starRingEnd ℂ) 2 = 1 :=
-  ⟨if_neg fun ⟨u, hu⟩ => by
-    rw [Complex.mul_conj] at hu
-    have : (-1 : ℝ) = Complex.normSq u := by exact_mod_cast hu
-    linarith [Complex.normSq_nonneg u],
-  if_pos ⟨Units.mk0 (1 + Complex.I) (fun h => by simpa using congrArg Complex.re h), by
-    simp [Complex.ext_iff]; norm_num⟩⟩
 
 end GlobalTheory.UTr

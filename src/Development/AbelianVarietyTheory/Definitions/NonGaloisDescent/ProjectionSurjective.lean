@@ -31,11 +31,6 @@ structure Point {Φ : Frame} (G : PolGp Φ) where
     (∀ i j : Fin Φ.n, ¬ ((i : ℕ) < a ↔ (j : ℕ) < a) → X i j = 0) →
     X ∈ Submodule.span Φ.F (Set.range fun g => (r g).map (algebraMap Φ.A Φ.F))
 
-def IsPtMap {Φ : Frame} {G : PolGp Φ} (R : Pair G) (x : Point G) (φ : R.B →+* Φ.A) : Prop :=
-  IsLocalHom φ ∧ φ.comp R.j = Φ.jA ∧
-    R.D.map φ = GDet.ofRep x.r ∧
-    ∀ v i g, φ ((R.psi v i g : R.Bˣ) : R.B) = ((x.psi v i g : Φ.Aˣ) : Φ.A)
-
 section Selmer
 
 variable {Φ : Frame} {Gb : PolGp Φ} (x : Point Gb) {G : PolGp Φ} (p : Mor G Gb)
@@ -75,8 +70,6 @@ def SelP (al : G.Γ → Mat Φ R) (Y : Φ.Vl → Mat Φ R) : Prop :=
 def SelM (ka : G.Γ → Mat Φ R) (Y : Φ.Vl → Mat Φ R) : Prop :=
   IsCoc x p ka ∧ PolTriv ka ∧ (∀ g, IsMinus x (ka g)) ∧ (∀ v, IsMinus x (Y v)) ∧
   ∀ v g, InB x v (ka (G.iv v g) - cob x p R (Y v) (G.iv v g))
-
-def LocConst (f : G.Γ → Mat Φ R) : Prop := IsLocallyConstant f
 
 def BddCont (f : G.Γ → Mat Φ Φ.F) : Prop :=
   ∃ (s : ℕ) (f' : G.Γ → Mat Φ Φ.A), (∀ i j, ContM Φ.A (fun g => f' g i j)) ∧
@@ -129,25 +122,6 @@ end Sel2
 def Frame.red (Φ : Frame) (m : ℕ) : Φ.Am (m + 1) →+* Φ.Am m :=
   Ideal.Quotient.factor (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ (Nat.le_succ m)))
 
-def SelLev {Φ : Frame} {Gb : PolGp Φ} {x : Point Gb} (K : Kap x) (G : ℕ → PolGp Φ)
-    (p : ∀ N, Mor (G N) Gb) (d : ℕ) : Prop :=
-  ∃ (C : ℕ) (z : ∀ N m : ℕ, ((G N).Γ → Mat Φ (Φ.Am m)) → (Φ.Vl → Mat Φ (Φ.Am m)) →
-      Matrix (Fin K.g) (Fin K.g) (Φ.Am m)),
-    ∀ N m : ℕ, m ≤ N →
-      (∀ (c c' : Φ.Am m) al Y al' Y', LocConst al → LocConst al' → SelP x (p N) al Y → SelP x (p N) al' Y' →
-        z N m (c • al + c' • al') (c • Y + c' • Y') = c • z N m al Y + c' • z N m al' Y') ∧
-      (∀ al Y Y', LocConst al → SelP x (p N) al Y → SelP x (p N) al Y' → (∀ v, InB x v (Y v - Y' v)) →
-        z N m al Y = z N m al Y') ∧
-      (m + 1 ≤ N → ∀ al Y, LocConst al → SelP x (p N) al Y →
-        z N m (fun g => (al g).map (Φ.red m)) (fun v => (Y v).map (Φ.red m)) =
-          (z N (m + 1) al Y).map (Φ.red m)) ∧
-      (∀ T : Submodule (Φ.Am m) (((G N).Γ → Mat Φ (Φ.Am m)) × (Φ.Vl → Mat Φ (Φ.Am m))),
-        (∀ y ∈ T, LocConst y.1 ∧ SelP x (p N) y.1 y.2 ∧ z N m y.1 y.2 = 0) →
-        Module.length (Φ.Am m) ↥((T.map (LinearMap.fst _ _ _)).map (cobSub x (p N) (Φ.Am m)).mkQ) +
-          (m * K.g ^ 2 : ℕ) ≤ (m * d + C : ℕ)) ∧
-      ∀ be Y0 (al : Fin K.g → (G N).Γ → Mat Φ (Φ.Am m)) Y, LocConst be → (∀ j, LocConst (al j)) →
-        Sel2 K (p N) be Y0 al Y → ∀ i, ∑ j, z N m (al j) (Y j) i j = 0
-
 end GlobalTheory.Pat
 
 noncomputable section
@@ -187,38 +161,6 @@ def fPoly {B : Type} [CommRing B] {q n : ℕ} (N : Fin q → ℕ) (u : Fin q →
 def RegSplit {Φ : Frame} {Gb : PolGp Φ} (x : Point Gb) (g : Gb.Γ) : Prop :=
   ∃ α : Fin Φ.n → Φ.A, Function.Injective α ∧
     (x.r g).charpoly = ∏ i, (Polynomial.X - Polynomial.C (α i))
-
-structure GalTower {Φ : Frame} (Gb : PolGp Φ) {ι : Type} (x : ι → Point Gb) where
-  q : ℕ
-  G : ℕ → PolGp Φ
-  p : ∀ N, Mor (G N) Gb
-
-  H0 : Subgroup Gb.Γ
-  openSubgroupNormal : H0.Normal
-  openSubgroupIsOpen : IsOpen (H0 : Set Gb.Γ)
-  openSubgroupSigmaStable : ∀ h ∈ H0, Gb.sig h ∈ H0
-  openSubgroupCharTrivial : ∀ h ∈ H0, ∀ i, Gb.chi i h = 1
-  proL : ∀ N, IsProL Φ.l (H0.comap (p N).p)
-  h : ℕ
-  gens : ∀ N, ∃ s : Fin h → (G N).Γ,
-    (Subgroup.closure (Set.range s)).topologicalClosure = H0.comap (p N).p
-  ph : ∀ N, Fin q → (G N).Γ
-  ta : ∀ N, Fin q → (G N).Γ
-  Nq : ℕ → Fin q → ℕ
-  Nq_cong : ∀ N j, Nq N j ≡ 1 [MOD Φ.l ^ N]
-  tame : ∀ N j, ph N j * ta N j ^ Nq N j = ta N j * ph N j
-  ker : ∀ N, (p N).p.ker = (Subgroup.normalClosure
-    (Set.range (ta N) ∪ Set.range (fun j => (G N).sig (ta N j)))).topologicalClosure
-  sg : Fin q → Gb.Γ
-  ph_chi : ∀ N j i, (G N).chi i (ph N j) = Gb.chi i (sg j)
-  ph_r : ∀ a N j i i', (x a).r ((p N).p (ph N j)) i i' - (x a).r (sg j) i i' ∈
-    Ideal.span {(PowerSeries.X : Φ.A) ^ N}
-  reg : ∀ a j, RegSplit (x a) (sg j)
-  ut : Fin q → Fin Φ.n → Φ.O
-  ut_red : ∀ j i, residue Φ.O (ut j i) = ((Gb.chi i (sg j) : Φ.kˣ) : Φ.k)
-  K : ∀ a, Kap (x a)
-  spans : ∀ a, (K a).Spans (Mor.id Gb)
-  sel : ∀ a, SelLev (K a) G p (Φ.d0 + Φ.n * q)
 
 abbrev Base.C {Φ : Frame} {Gb : PolGp Φ} (b : Base Gb) {q : ℕ} (g : Fin q → Gb.Γ)
     (ut : Fin q → Fin Φ.n → Φ.O) : Type :=
@@ -266,10 +208,6 @@ structure HeckeLev {Φ : Frame} {Gb : PolGp Φ} (b : Base Gb) {G : PolGp Φ} (p 
   ps_ph : ∀ m, psm (phm m) = fPoly Nq (b.Cu (fun j => p.p (ph j)) ut) ^ c • m
 
 attribute [instance] HeckeLev.iM HeckeLev.iMT
-
-def HeckeTower {Φ : Frame} {Gb : PolGp Φ} (b : Base Gb) {ι : Type} {x : ι → Point Gb}
-    (t : GalTower Gb x) : Prop :=
-  ∃ c : ℕ, ∀ N, Nonempty (HeckeLev b (t.p N) (t.ph N) (t.ta N) (t.Nq N) t.ut N c)
 
 structure IsCplAt {R S : Type} [CommRing R] [CommRing S] [IsLocalRing S] (q : Ideal R) (φ : R →+* S) :
     Prop where

@@ -47,12 +47,6 @@ theorem isUnit_coW (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : f ∈ X.dom) (τ
   rw [frameCo_eq X hj hp hf, det_mul, det_fromBlocks_zero₁₂] at h
   exact isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_right h)
 
-theorem co_x0F (τ : X.Ψ) : coW X hj (x0F X) τ = 1 ∧ coOm X hj (x0F X) τ = 1 := by
-  have e : frameCo X hj (x0F X) τ = fromBlocks 1 0 0 1 := by
-    rw [frameCo, nonsing_inv_mul _ (det_x0F X τ).isUnit, fromBlocks_one, reindex_apply, submatrix_one_equiv]
-  rw [coW, coOm, e, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]
-  simp
-
 theorem hodge_co (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : IsOrth X f) (τ : X.Ψ) :
     (coW X hj f τ)ᴴ * (hP (moeb (frameCo X hj f τ) 0))⁻¹ * coW X hj f τ = 1 ∧
       (coOm X hj f τ)ᴴ * hQ (moeb (frameCo X hj f τ) 0) * coOm X hj f τ = 1 := by
@@ -128,15 +122,6 @@ theorem toCpt_zOf (f : (s.fd k).dom) : s.toCpt L k (s.zOf L k f) = s.framePt k f
   s.framePt_eq L k (one_mem _)
     ((funext fun _ => PointWell.moeb_one _).trans (s.zOf_frameOver L k (s.zOf_mem L k f)))
 
-theorem toCpt_moeb {g : D.what₂.Tau → GL (Fin j ⊕ Fin (N - j)) ℂ}
-    (hg : g ∈ gammaU (s.fd k) s.j_le (s.lab L k)) {z : Pt D.what₂.Tau j (N - j)}
-    (hz : z ∈ DomI D.what₂.Tau j (N - j)) : s.toCpt L k (moebI g z) = s.toCpt L k z :=
-  (s.framePt_eq L k hg (by
-    rw [s.zOf_frameOver L k hz, s.zOf_frameOver L k (z := moebI g z)
-      fun t => moeb_mem (gammaU_le _ _ _ (s.p0_eq k) hg t trivial) (hz t)])).symm
-
-theorem not_liesIn_toCpt (z : Pt D.what₂.Tau j (N - j)) : ¬ LiesIn (s.toCpt L k z) (genBd s.T.Z) := not_liesIn_cxPt _
-
 end FinalTheorems
 
 variable {s : FinalTheorems S κ} (x : ToroidalCompactificationData s) (L : CmList A)
@@ -150,40 +135,6 @@ def ToroidalCompactificationData.gramOm (k : s.Comp) (f : (s.fd k).dom) (t : D.w
     (dualGram (x.gram (s.framePt k f) (s.lieFrame k f) (conjEmb (L.ψ t).1))).submatrix
       (fun a => Fin.cast (S.mult_conj L t).symm a.rev) (fun a => Fin.cast (S.mult_conj L t).symm a.rev)
 
-theorem ToroidalCompactificationData.gramW_posDef (k : s.Comp) (f : (s.fd k).dom) (t : D.what₂.Tau) : (x.gramW L k f t).PosDef :=
-  (x.gram_posDef _ _).submatrix (Fin.cast_injective _)
-
-theorem ToroidalCompactificationData.gramOm_posDef (k : s.Comp) (f : (s.fd k).dom) (t : D.what₂.Tau) : (x.gramOm L k f t).PosDef :=
-  ((dualGram_posDef (x.gram_posDef _ _)).submatrix ((Fin.cast_injective _).comp Fin.rev_injective)).smul
-    (pow_pos (Complex.zero_lt_real.2 (hodgeC_pos _ _ t)) 2)
-
-theorem ToroidalCompactificationData.gram_hodge (k : s.Comp) (f : (s.fd k).dom) (t : D.what₂.Tau)
-    (h : ∀ τ, x.gram (s.framePt k f) (s.lieFrame k f) τ = (hodgeC (s.fd k) (s.lab L k) t : ℂ) • 1) :
-    x.gramW L k f t = (hodgeC (s.fd k) (s.lab L k) t : ℂ) • 1 ∧
-      x.gramOm L k f t = (hodgeC (s.fd k) (s.lab L k) t : ℂ) • 1 := by
-  have h0 : (hodgeC (s.fd k) (s.lab L k) t : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 (hodgeC_pos _ _ t).ne'
-  constructor
-  · ext a b
-    simp [ToroidalCompactificationData.gramW, h, one_apply]
-  · ext a b
-    rw [ToroidalCompactificationData.gramOm, h, dualGram_smul_one h0]
-    simp [one_apply, sq, h0]
-
-def ToroidalCompactificationData.metW (k : s.Comp) (z : Pt D.what₂.Tau j (N - j)) (t : D.what₂.Tau) : Matrix (Fin j) (Fin j) ℂ :=
-  ((coW (s.fd k) s.j_le (s.frameOver L k z).1 (s.lab L k t))⁻¹)ᴴ * x.gramW L k (s.frameOver L k z) t *
-    (coW (s.fd k) s.j_le (s.frameOver L k z).1 (s.lab L k t))⁻¹
-
-def ToroidalCompactificationData.metOm (k : s.Comp) (z : Pt D.what₂.Tau j (N - j)) (t : D.what₂.Tau) : Matrix (Fin (N - j)) (Fin (N - j)) ℂ :=
-  ((coOm (s.fd k) s.j_le (s.frameOver L k z).1 (s.lab L k t))⁻¹)ᴴ * x.gramOm L k (s.frameOver L k z) t *
-    (coOm (s.fd k) s.j_le (s.frameOver L k z).1 (s.lab L k t))⁻¹
-
-theorem ToroidalCompactificationData.met_posDef (k : s.Comp) (z : Pt D.what₂.Tau j (N - j)) (t : D.what₂.Tau) :
-    (x.metW L k z t).PosDef ∧ (x.metOm L k z t).PosDef :=
-  ⟨(x.gramW_posDef L k _ t).conjTranspose_mul_mul_same (mulVec_injective_of_isUnit (isUnit_nonsing_inv_iff.2
-    ((isUnit_iff_isUnit_det _).2 (isUnit_coW _ _ (s.p0_eq k) (s.frameOver L k z).2 _)))),
-   (x.gramOm_posDef L k _ t).conjTranspose_mul_mul_same (mulVec_injective_of_isUnit (isUnit_nonsing_inv_iff.2
-    ((isUnit_iff_isUnit_det _).2 (isUnit_coOm _ _ (s.p0_eq k) (s.frameOver L k z).2 _))))⟩
-
 structure IsBdOf (B : s.Bd L) : Prop where
   m_eq : ∀ k, (B k).m = x.m
   nrm : ∀ k i, ∀ z ∈ DomI D.what₂.Tau j (N - j), (B k).nrm i z = x.nrm κ.σ₀ (Fin.cast (m_eq k) i) (s.toCpt L k z)
@@ -195,57 +146,7 @@ structure IsBdOf (B : s.Bd L) : Prop where
   metOm : ∀ k f t, (coOm (s.fd k) s.j_le f.1 (s.lab L k t))ᴴ * (B k).metOm (s.zOf L k f) t *
     coOm (s.fd k) s.j_le f.1 (s.lab L k t) = x.gramOm L k f t
 
-def bdOf (h : ∃ B, IsBdOf x L B) : s.Bd L := h.choose
-
-theorem isBdOf_bdOf (h : ∃ B, IsBdOf x L B) : IsBdOf x L (bdOf x L h) := h.choose_spec
-
 namespace IsBdOf
-
-variable {x L} {B B' : s.Bd L} (h : IsBdOf x L B) (k : s.Comp) {z : Pt D.what₂.Tau j (N - j)}
-include h
-
-theorem nrm_zOf (i : Fin (B k).m) (f : (s.fd k).dom) :
-    (B k).nrm i (s.zOf L k f) = x.nrm κ.σ₀ (Fin.cast (h.m_eq k) i) (s.framePt k f) := by
-  rw [h.nrm k i _ (s.zOf_mem L k f), s.toCpt_zOf]
-
-theorem r_eq (hz : z ∈ DomI D.what₂.Tau j (N - j)) : (B k).r z = x.r κ.σ₀ (s.toCpt L k z) := by
-  rw [BdData.r, OddPrimesWithRootsOfUnity.r, Fintype.prod_equiv (finCongr (h.m_eq k)) _ (fun i => x.nrm κ.σ₀ i (s.toCpt L k z))
-    fun i => h.nrm k i z hz]
-
-theorem m_ne_zero (hb : (genBd s.T.Z : Set (gen s.T.Z : Scheme.{0})).Nonempty) : (B k).m ≠ 0 :=
-  fun h0 => hb.ne_empty (x.m_eq_zero_iff.1 ((h.m_eq k).symm.trans h0))
-
-theorem nrm_unique (h' : IsBdOf x L B') (hz : z ∈ DomI D.what₂.Tau j (N - j)) (i : Fin (B k).m) :
-    (B k).nrm i z = (B' k).nrm (Fin.cast ((h.m_eq k).trans (h'.m_eq k).symm) i) z :=
-  (h.nrm k i z hz).trans (h'.nrm k (Fin.cast ((h.m_eq k).trans (h'.m_eq k).symm) i) z hz).symm
-
-theorem met_eq (hz : z ∈ DomI D.what₂.Tau j (N - j)) (t : D.what₂.Tau) :
-    (B k).metW z t = x.metW L k z t ∧ (B k).metOm z t = x.metOm L k z t := by
-  have key : ∀ {n : Type} [Fintype n] [DecidableEq n] {T M G : Matrix n n ℂ}, IsUnit T.det →
-      Tᴴ * M * T = G → M = (T⁻¹)ᴴ * G * T⁻¹ := fun hT e => by
-    rw [← e, Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hT, ← Matrix.mul_assoc, ← conjTranspose_mul,
-      mul_nonsing_inv _ hT, conjTranspose_one, Matrix.one_mul]
-  have h1 := h.metW k (s.frameOver L k z) t
-  have h2 := h.metOm k (s.frameOver L k z) t
-  rw [s.zOf_frameOver L k hz] at h1 h2
-  exact ⟨key (isUnit_coW _ _ (s.p0_eq k) (s.frameOver L k z).2 _) h1,
-    key (isUnit_coOm _ _ (s.p0_eq k) (s.frameOver L k z).2 _) h2⟩
-
-theorem kae_unique (h' : IsBdOf x L B') (hz : z ∈ DomI D.what₂.Tau j (N - j)) : (B k).kae z = (B' k).kae z := by
-  obtain ⟨W, φ, hW, hφ⟩ := (x.kae_kaehler κ.σ₀).1 (s.toCpt L k z)
-  have e : ∀ ξ, ((B k).kae z - (B' k).kae z) ξ ξ = 0 := fun ξ => sub_eq_zero.2 (Complex.ext
-    ((h.kae k W φ hφ z hz hW ξ).trans (h'.kae k W φ hφ z hz hW ξ).symm)
-    ((Complex.conj_eq_iff_im.1 ((B k).kae_herm z hz ξ ξ).symm).trans
-      (Complex.conj_eq_iff_im.1 ((B' k).kae_herm z hz ξ ξ).symm).symm))
-  rw [← sub_eq_zero]
-  generalize (B k).kae z - (B' k).kae z = b at e
-  refine LinearMap.ext₂ fun ξ ζ => ?_
-  have e1 := e (ξ + ζ)
-  have e2 := e (ξ + Complex.I • ζ)
-  simp only [map_add, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, e, smul_eq_mul, Complex.conj_I,
-    RingHom.id_apply] at e1 e2
-  show b ξ ζ = 0
-  linear_combination (1 / 2) * e1 + (Complex.I / 2) * e2 + ((b ξ ζ - b ζ ξ) / 2) * Complex.I_mul_I
 
 end IsBdOf
 

@@ -6,7 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NormProdSignM
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsThickPointHyperbolic
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFinsetTypesOfBoundedBases
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFinsetMeetingFibres
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FirstRaisingMemEquivariant
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspidalExponentialDecay
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsIntegralCc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.TiledBoundaries.NstatementHypsConsistent
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD
 open Matrix hiding gram
@@ -248,16 +250,5 @@ theorem exists_finite_net {r : ℕ} (X : DataX E r) (la : Wt X.Ψ r) (M w : ℝ)
     rcases (hp0 P x).eq_or_lt with h | h
     · exact ⟨y₀, hy₀, by linarith [hp0 P y₀]⟩
     · exact hmain P hP x hx h
-
-open ReciprocityTheory.ChartRestriction.G.I2.TiledBoundaries (E4) in
-
-theorem exists_finite_net_rank_one : ∃ (X : DataX E4 1) (la : Wt X.Ψ 1) (P : Frame X.Ψ 1 → ℂ)
-    (N : Finset (Frame X.Ψ 1)), P ∈ X.SS la ∧ la ≠ 0 ∧ (∃ x ∈ X.dom, P x ≠ 0) ∧ N.Nonempty ∧
-    (∀ y ∈ N, y ∈ X.dom) ∧
-    ∀ Q ∈ X.SS la, ∀ x ∈ X.dom, ∃ y ∈ N, X.pnorm la Q x ≤ 4 * X.pnorm la Q y := by
-  obtain ⟨X, la, P, M, hP, hla, hx, hM, -, hT⟩ := exists_cuspData_rank_one
-  obtain ⟨N, h1, h2, h3, -⟩ := exists_finite_net X la M (max 1 (∑ τ, X.spread la τ)) hM
-    (le_max_right _ _) (lt_of_lt_of_le one_pos (le_max_left _ _)) hT
-  exact ⟨X, la, P, N, hP, hla, hx, h1, h2, h3⟩
 
 end GlobalTheory

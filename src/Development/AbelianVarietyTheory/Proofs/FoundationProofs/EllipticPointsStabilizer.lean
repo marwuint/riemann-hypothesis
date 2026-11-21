@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIndexOfGammaLe
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JInvariantEqualSl2OrbitStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JInvariantEqualSl2Orbit
 open UpperHalfPlane Filter GlobalTheory.OddFrame
 open ModularForm (E₄ E₆)
 open scoped MatrixGroups ModularForm Manifold Topology
@@ -81,14 +81,14 @@ theorem elliptic_of_zero : ∀ τ₀ : ℍ,
     obtain ⟨σ, u, hu, hp⟩ := exists_four
     have h0 : E₆ σ = 0 := eq_zero_of_fix E₆ u σ hu (by
       rw [Ne, hp.zpow_eq_one_iff_dvd]; norm_num)
-    obtain ⟨γ, rfl⟩ := GlobalTheory.T.j_invariant_equal_sl2_orbit τ₀ σ (by rw [h, h0]; ring)
+    obtain ⟨γ, rfl⟩ := _root_.GlobalTheory.JOrbit.exists_smul_of_E₄_E₆ τ₀ σ (by rw [h, h0]; ring)
     obtain ⟨h1, h2⟩ := conj_fix γ u σ hu
     exact ⟨_, h1, h2 ▸ hp⟩
   · intro h
     obtain ⟨σ, u, hu, hp⟩ := exists_six
     have h0 : E₄ σ = 0 := eq_zero_of_fix E₄ u σ hu (by
       rw [Ne, hp.zpow_eq_one_iff_dvd]; norm_num)
-    obtain ⟨γ, rfl⟩ := GlobalTheory.T.j_invariant_equal_sl2_orbit τ₀ σ (by rw [h, h0]; ring)
+    obtain ⟨γ, rfl⟩ := _root_.GlobalTheory.JOrbit.exists_smul_of_E₄_E₆ τ₀ σ (by rw [h, h0]; ring)
     obtain ⟨h1, h2⟩ := conj_fix γ u σ hu
     exact ⟨_, h1, h2 ▸ hp⟩
 

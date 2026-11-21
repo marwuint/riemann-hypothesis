@@ -150,10 +150,4 @@ theorem CohTrivial.of_shortExact_X₁ {S : ShortComplex (Rep.{u} k G)} (hS : S.S
 
 end ShortExact
 
-section Rat
-
-variable {G : Type} [Group G]
-
-end Rat
-
 end GroundTheory.GroupCoh

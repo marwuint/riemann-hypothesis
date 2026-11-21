@@ -65,7 +65,7 @@ theorem potLoc (Gr : RefGeo Y) (An : Gr.An)
     holo_comp hψ k (hVt ht.1) (An.Re.R.holo (w t₁) q) ht.2
   have horb : ∀ t ∈ B, SameOrbit (γ t) (An.Re.R.lift (w t) (w t)) := fun t ht => An.Re.R.compat _ _ _ ⟨ht.2, An.Re.R.mem_U _⟩
   have hco : ∀ t ∈ B, CoordsAt Gr.𝔐.ξ Gr.y (z t) (γ t) := fun t ht => coords_orbit (hpt t ht.1).2.1 (horb t ht)
-  have hz : IsHolTo B z := GlobalTheory.T.holomorphic_coords_of_generic_point _ _ Gr.𝔐.ξ _ _ Gr.y Gr.𝔐.tie Gr.𝔐.all _ B γ z hB
+  have hz : IsHolTo B z := _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family _ _ Gr.𝔐.ξ _ _ Gr.y Gr.𝔐.tie Gr.𝔐.all _ B γ z hB
     (differentiableOn_pi.2 fun q t ht => (hγ t ht q).differentiableAt.differentiableWithinAt) hco
   have hop : ∀ t ∈ V, An.Re.π (w t) ∈ An.Sys.open' := fun t ht => by
     rw [hπ]
@@ -114,7 +114,7 @@ theorem ptsFam (Gr : RefGeo Y) (An : Gr.An) (ψ : An.Sys.X → An.Re.R.X) (hψ :
       (An.Sys.A.chart k).symm.isOpen_inter_preimage ((An.Re.R.isOpen_U w₀).preimage hψ.1)
     refine ⟨(An.Sys.A.chart k).target ∩ (An.Sys.A.chart k).symm ⁻¹' (ψ ⁻¹' An.Re.R.U w₀), Set.inter_subset_left,
       ⟨ht₀, An.Re.R.mem_U w₀⟩, ?_⟩
-    refine GlobalTheory.T.holomorphic_coords_of_generic_point _ _ Gr.𝔐.ξ _ _ Gr.y Gr.𝔐.tie Gr.𝔐.all _ _
+    refine _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family _ _ Gr.𝔐.ξ _ _ Gr.y Gr.𝔐.tie Gr.𝔐.all _ _
       (fun t => An.Re.R.lift w₀ (ψ ((An.Sys.A.chart k).symm t))) _ hB ?_ ?_
     · refine differentiableOn_pi.2 fun p t ht => ?_
       exact (analyticAt_comp hψ (An.Re.R.holo w₀ p) k ht.1 ht.2).differentiableAt.differentiableWithinAt

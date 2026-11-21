@@ -2,10 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedLaurentIsDVRStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGaloisInvariantValuationIntegersEqIntegral
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePidSubalgebraDivPadicIntStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorValuationPrimeDvdPowSubOfFinitePaStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsFieldAndPthRootsOfLocalAlgFrobeniusFixedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DivMemSubalgebraOfValuationLeOneOfUniformizerStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePidSubalgebraDivPadicInt
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorValuationPrimeDvdPowSubOfFinitePa
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsFieldAndPthRootsOfLocalAlgFrobeniusFixed
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DivMemSubalgebraOfValuationLeOneOfUniformizer
 
 open GlobalTheory.K5
 open scoped NNReal
@@ -151,7 +151,7 @@ theorem residue_core : ∀ (p : ℕ) [Fact p.Prime] (O Ω : Type) [CommRing O] [
     obtain ⟨⟨t0, ht0⟩, -, rfl⟩ := ht
     rw [← map_pow, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, memI]
     simpa using hstep t0 ht0
-  obtain ⟨hfield, hroot⟩ := GlobalTheory.T.isField_and_pthRoots_of_localAlg_frobenius_fixed p (O ⧸ Ideal.span {(p : O)})
+  obtain ⟨hfield, hroot⟩ := _root_.GlobalTheory.localAlg_frob_fixed_isField_and_pth_roots p (O ⧸ Ideal.span {(p : O)})
     (Algebra.adjoin O (T : Set Ω) ⧸ I) T' f hf hgen hfrob
   have hzero : ∀ z : Algebra.adjoin O (T : Set Ω), v z < 1 → z ∈ I := by
     intro z hz
@@ -233,9 +233,9 @@ theorem not_pow_mod_max : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [A
     intro s hs
     obtain ⟨P, hP0, hP⟩ := hS s hs
     exact ⟨P, hP0, by rwa [Polynomial.aeval_map_algebraMap] at hP⟩
-  obtain ⟨R, hRfin, hRpid, hRS⟩ := GlobalTheory.T.exists_finite_pid_subalgebra_padicInt_contains_fractions p Ω hinj S hSalg
+  obtain ⟨R, hRfin, hRpid, hRS⟩ := _root_.GlobalTheory.exists_finite_pid_subalgebra_div_padicInt p Ω hinj S hSalg
   obtain ⟨π, hπR, hπ0, hvπ, hpπ, f, hf, hstep⟩ :=
-    GlobalTheory.T.exists_uniformizer_valuation_lt_one_frobenius_congr p Ω hinj v hvint hvp1 R hRfin hRpid
+    _root_.GlobalTheory.exists_generator_valuation_prime_dvd_pow_sub_of_finite_padicInt p Ω hinj v hvint hvp1 R hRfin hRpid
   have hfg : (Subalgebra.toSubmodule R).FG := Module.Finite.iff_fg.1 hRfin
   obtain ⟨T, hT⟩ := Subalgebra.fg_of_fg_toSubmodule hfg
   have hRB : ∀ x ∈ R, x ∈ Algebra.adjoin (O0 p) (T : Set Ω) := by
@@ -252,7 +252,7 @@ theorem not_pow_mod_max : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [A
     (hRB _ hpπ) f hf (fun t ht => hRB _ (hstep t (hTR t ht)))
   have hBint : ∀ x ∈ Algebra.adjoin (O0 p) (T : Set Ω), v x ≤ 1 := fun x hx =>
     (hv x).2 (Algebra.adjoin_le (S := integralClosure (O0 p) Ω) (fun t ht => hTint t ht) hx)
-  have hclosed := GlobalTheory.T.div_mem_subalgebra_of_valuation_le_one_of_uniformizer (O0 p) Ω v hv _ hBint π (hRB _ hπR) hπ0 hvπ hdiv
+  have hclosed := _root_.GlobalTheory.K5.IntFrac.mem_of_div_le_one (O0 p) Ω v hv _ hBint π (hRB _ hπR) hπ0 hvπ hdiv
   have hsub : Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ (S : Set Ω)) ≤
       Subfield.closure (Algebra.adjoin (O0 p) (T : Set Ω) : Set Ω) := by
     rw [Subfield.closure_le]

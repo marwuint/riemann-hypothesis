@@ -1,9 +1,11 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.DifferentIdealLogSumRootDiscriminantStatement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.DifferentIdealLogSumRootDiscriminant
+import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsOfNonzeroAdelicStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumEmbeddingsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogIdealSupportFiniteStatement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumEmbeddingsBaseChange
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogIdealSupportFinite
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.ProductFormulaLogNormsStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -50,10 +52,10 @@ theorem corr {E k : Type} [Field E] [NumberField E] [Field k] [NumberField k] (f
     ∑ᶠ p : Nat.Primes, ∑ κ : k →+* ℂ_[p], (logIdeal ((κ.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) -
       Real.log ‖((d : ℕ) : ℂ_[p])‖) = Module.finrank ℚ k * (Real.log d - Real.log (rootDiscr E)) := by
   have hdk : (d : k) ≠ 0 := by exact_mod_cast hd
-  have hI := GlobalTheory.T.logIdeal_support_finite E (differentIdeal ℤ (𝓞 E)) differentIdeal_ne_bot
+  have hI := _root_.GlobalTheory.CompanionTheory.Ar.Fl.finite_logIdeal_ne_zero E (differentIdeal ℤ (𝓞 E)) differentIdeal_ne_bot
   have hX := GlobalTheory.T.log_norms_of_nonzero_adelic k (d : k) hdk
   have hP := GlobalTheory.T.product_formula_log_norms k (d : k) hdk
-  have hD := GlobalTheory.T.different_ideal_log_sum_root_discriminant E
+  have hD := _root_.GlobalTheory.CompanionTheory.Ar.Fl.different_sum_eq_neg_finrank_mul_log_rootDiscr E
   have hcast : ∀ (p : Nat.Primes) (κ : k →+* ℂ_[p]), κ (d : k) = ((d : ℕ) : ℂ_[p]) := fun _ κ => map_natCast κ d
   constructor
   · refine (hI.union hX).subset ?_
@@ -81,7 +83,7 @@ theorem corr {E k : Type} [Field E] [NumberField E] [Field k] [NumberField k] (f
     have hB : Function.HasFiniteSupport B := hP.1
     have hF : ∀ p : Nat.Primes, (Module.finrank ℚ E : ℝ) * A p = (Module.finrank ℚ k : ℝ) *
         ∑ j : E →+* ℂ_[p], logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) := fun p =>
-      GlobalTheory.T.sum_embeddings_base_change E k ℂ_[p] f (fun j => logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)))
+      _root_.GlobalTheory.CompanionTheory.Ar.Fl.finrank_mul_sum_comp_eq E k ℂ_[p] f (fun j => logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)))
     have hE : (Module.finrank ℚ E : ℝ) ≠ 0 := by exact_mod_cast Module.finrank_pos.ne'
     have hsA : ∑ᶠ p, A p = -(Module.finrank ℚ k : ℝ) * Real.log (rootDiscr E) := by
       have h1 : (Module.finrank ℚ E : ℝ) * ∑ᶠ p, A p =

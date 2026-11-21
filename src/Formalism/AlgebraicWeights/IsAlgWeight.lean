@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.ConjugateSelfDual.Imports
+import Formalism.ConjugateSelfDual.StatementRest
 import Formalism.SatakeDualWeyl.Statement
 import ReciprocityTheory.Automorphisms.Unitary
 import ReciprocityTheory.Automorphisms.SplitCoeAlgebraMap
@@ -18,9 +18,6 @@ def eig (T : Subalgebra k (Module.End k M)) (x : T →ₐ[k] k) : Submodule k M 
   ⨅ t : T, LinearMap.ker ((t : Module.End k M) - algebraMap k (Module.End k M) (x t))
 
 def mult (T : Subalgebra k (Module.End k M)) (x : T →ₐ[k] k) : ℕ := Module.finrank k (eig T x)
-
-def xval (T : Subalgebra k (Module.End k M)) (x : T →ₐ[k] k) (t : Module.End k M) : k :=
-  open Classical in if h : t ∈ T then x ⟨t, h⟩ else 0
 
 end Eig
 
@@ -46,10 +43,6 @@ structure LevelDatum where
   open_ : ∀ a, princAt L n (s a).v (c a) ≤ H a
 
 variable {L n}
-
-def LevelDatum.U (D : LevelDatum L n) : Subgroup (GAf L n) := Level D.s D.H
-
-def LevelDatum.B (D : LevelDatum L n) : Set (HeightOneSpectrum (𝓞 L⁺)) := Set.range fun a => (D.s a).v
 
 variable (L n)
 
@@ -99,31 +92,11 @@ def heckeAlg {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ
   Algebra.adjoin ℂ {t | ∃ (s : SplitPlace L) (ϖ : s.v.adicCompletion L⁺) (j : ℕ),
     s.v ∉ B ∧ IsUnif L s.v ϖ ∧ 1 ≤ j ∧ j ≤ n ∧ t = tOp L n ρ U s ϖ j}
 
-def satPoly {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ (GQ L n) W}
-    {U : Subgroup (GAf L n)} {B : Set (HeightOneSpectrum (𝓞 L⁺))} (x : heckeAlg L n ρ U B →ₐ[ℂ] ℂ)
-    (s : SplitPlace L) (ϖ : s.v.adicCompletion L⁺) : ℂ[X] :=
-  X ^ n + ∑ j ∈ Finset.Icc 1 n,
-    C ((-1 : ℂ) ^ j * (s.q : ℂ) ^ (j * (j - 1) / 2) * xval (heckeAlg L n ρ U B) x (tOp L n ρ U s ϖ j)) *
-      X ^ (n - j)
-
 end Unitary
 
 section GeneralLinearIntegers
 
 variable {L : Type} [Field L] [NumberField L]
-
-abbrev qw (w : HeightOneSpectrum (𝓞 L)) : ℕ := Formalism.ConjugateSelfDual.normV w
-
-def dualPoly (P : ℂ[X]) (c : ℂ) : ℂ[X] :=
-  C (P.coeff 0)⁻¹ * ∑ i ∈ Finset.range (P.natDegree + 1), C (P.coeff i * c ^ i) * X ^ (P.natDegree - i)
-
-def PolHecke [IsCMField L] {a : ℕ} (S : Formalism.ConjugateSelfDual.CuspSpectrum L a) (π : S.Rep) (m : ℤ) : Prop :=
-  ∀ᶠ w in cofinite, ∀ w' : HeightOneSpectrum (𝓞 L),
-    w'.asIdeal = w.asIdeal.comap (IsCMField.ringOfIntegersComplexConj L : 𝓞 L →+* 𝓞 L) →
-    S.hecke π w' = dualPoly (S.hecke π w) ((qw w : ℂ) ^ m)
-
-def chiVal (S : Formalism.ConjugateSelfDual.CuspSpectrum L 1) (ν : S.Rep) (w : HeightOneSpectrum (𝓞 L)) : ℂ :=
-  -(S.hecke ν w).coeff 0
 
 structure Part (S : Formalism.ConjugateSelfDual.SpectrumFamily) (L : Type) [Field L] [NumberField L] where
   a : ℕ
@@ -132,21 +105,6 @@ structure Part (S : Formalism.ConjugateSelfDual.SpectrumFamily) (L : Type) [Fiel
   t : ℤ
   ν : (S L 1).Rep
 
-def partHecke {S : Formalism.ConjugateSelfDual.SpectrumFamily} (p : Part S L) (w : HeightOneSpectrum (𝓞 L)) : ℂ[X] :=
-  ∏ k ∈ Finset.range p.d, ((S L p.a).hecke p.π w).scaleRoots
-    (chiVal (S L 1) p.ν w * ((Real.sqrt (qw w : ℝ) : ℝ) : ℂ) ^ (p.t + p.d - 1 - 2 * (k : ℤ)))
-
-def isoHecke {S : Formalism.ConjugateSelfDual.SpectrumFamily} (P : List (Part S L)) (w : HeightOneSpectrum (𝓞 L)) : ℂ[X] :=
-  (P.map fun p => partHecke p w).prod
-
 end GeneralLinearIntegers
-
-open ReciprocityTheory.Aut in
-
-def GoodCM (L : Type) [Field L] [NumberField L] [IsCMField L] : Prop :=
-  (∀ w : HeightOneSpectrum (𝓞 L),
-    w.asIdeal.ramificationIdx (𝓞 (NumberField.maximalRealSubfield L)) = 1) ∧
-  ∀ v : HeightOneSpectrum (𝓞 (NumberField.maximalRealSubfield L)),
-    (¬ ∃ s : SplitPlace L, s.v = v) → ((2 : ℕ) : 𝓞 (NumberField.maximalRealSubfield L)) ∉ v.asIdeal
 
 end Formalism.AUTREP

@@ -1,6 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsNetDataFromHalfConjugateEmbeddingsStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsScalarEvaluationsCuspFormsFiniteNetStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsNetDataFromHalfConjugateEmbeddings
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.NormEuclideanEmbeddingEqNetNorm
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsScalarEvaluationsCuspFormsFiniteNet
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.InnerEuclideanEmbeddingEqAverage
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAtExtExtAll
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.AdmissibleModuleIffLatticeQuotients
@@ -60,7 +61,7 @@ theorem supN_conj {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (w : WeightFamili
 theorem netData_exists : ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → 16 ≤ D.R.f → ∃ Nt : NetData (recB h.toLawsCore) j w, NetMax Nt ∧ NetLeSup Nt ∧ NetSize Nt (1041 * Zb D large₂ ^ 3) ∧ ∀ σ, NetInj Nt σ := by
   intro D T h hG large₂ j hj w hP hL hr hf
   classical
-  have key := GlobalTheory.T.exists_scalar_evaluations_cusp_forms_finite_net D T h hG large₂ j hj w hP hL hr hf
+  have key := _root_.GlobalTheory.exists_scalar_readings_on_net D T h hG large₂ j hj w hP hL hr hf
   have key2 : ∀ σ : T.Q.c.F →+* ℂ, ∃ (n : ℕ) (ev : Fin n → ((recB h.toLawsCore).Cusp j w →ₛₗ[σ] ℂ)),
       GoodEmb T.Q.c σ → (∀ F, ∃ y, (recB h.toLawsCore).supN j w σ F / 4 ≤ ‖ev y F‖) ∧
         (∀ y F, ‖ev y F‖ ≤ (recB h.toLawsCore).supN j w σ F) ∧ Real.log (16 * (n : ℝ)) ≤ 1041 * Zb D large₂ ^ 3 ∧
@@ -72,7 +73,7 @@ theorem netData_exists : ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore 
       exact ⟨n, ev, fun _ => H⟩
     · exact ⟨0, Fin.elim0, fun h' => absurd h' hσ⟩
   choose n ev H using key2
-  exact GlobalTheory.T.exists_netData_from_half_conjugate_embeddings D (recB h.toLawsCore) j w (GoodEmb T.Q.c)
+  exact _root_.GlobalTheory.exists_netData_of_readings_on_half D (recB h.toLawsCore) j w (GoodEmb T.Q.c)
     (fun σ => by rw [good_conj_iff]; exact not_not.symm) (supN_conj h j w) n ev _ H
 
 end GlobalTheory.RunIn.NetAtRecord

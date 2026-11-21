@@ -70,27 +70,6 @@ end OrderApi
 
 namespace OrderEx
 
-def muTwoOrder : Subalgebra ℤ (ℤˣ → ℤ) where
-  carrier := {f | (2 : ℤ) ∣ f 1 - f (-1)}
-  mul_mem' {f g} hf hg := by
-    have : (f * g) 1 - (f * g) (-1) = f 1 * (g 1 - g (-1)) + (f 1 - f (-1)) * g (-1) := by
-      simp only [Pi.mul_apply]; ring
-    change (2 : ℤ) ∣ _
-    rw [this]
-    exact dvd_add (Dvd.dvd.mul_left hg _) (Dvd.dvd.mul_right hf _)
-  add_mem' {f g} hf hg := by
-    have : (f + g) 1 - (f + g) (-1) = (f 1 - f (-1)) + (g 1 - g (-1)) := by
-      simp only [Pi.add_apply]; ring
-    change (2 : ℤ) ∣ _
-    rw [this]
-    exact dvd_add hf hg
-  algebraMap_mem' r := by
-    change (2 : ℤ) ∣ _
-    simp
-
-example {S : Type} [CommRing S] {G : Type} [CommGroup G] (B : Subalgebra S (G → S)) : Module S (omega B) :=
-  inferInstance
-
 end OrderEx
 
 end GlobalTheory.CompanionTheory.Ar.BT

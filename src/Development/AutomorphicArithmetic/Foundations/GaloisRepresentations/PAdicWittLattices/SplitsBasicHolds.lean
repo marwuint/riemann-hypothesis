@@ -142,10 +142,4 @@ theorem twSplit_holds : TwSplit := pTwSplit splitsPts_holds
 
 theorem twGal_holds : TwGal := pTwGal twSplit_holds
 
-theorem plInv_holds : PlInv.{u} := @pPlInv.{u} @galInv_holds.{u} @twGal_holds
-
-theorem hopDeep_holds : HopDeep.{u} := @pHopDeep.{u} @plInv_holds.{u}
-
-theorem hopEx_holds : HopEx.{u} := @pHopEx.{u} @plInv_holds.{u} @hopDeep_holds.{u}
-
 end UpperTheory.Gal.G3

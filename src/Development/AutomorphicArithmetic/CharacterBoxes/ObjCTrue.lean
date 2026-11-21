@@ -2,8 +2,18 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConst
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormPrimesAndLevelPrimeUnconditional
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SmallPrimeOneOfPrimesRel
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimesInProgressionsRelativeError
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WindowShareRequirementClosedFormProofStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsObjectsOfAdmissibleTwistDatumStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WindowShareRequirementClosedFormProof
+import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
+import Formalism.LocalToGlobal.GlobalTheory.IsResidueClassZero
+import Formalism.SharpRestriction.GrowthBounds.SmallOrderPrimes
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DisjointExceptional
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIffHostBound
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LogCondLeThree
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.AuxiliaryPrimeMemAvoidedPrimes
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsObjectsOfAdmissibleTwistDatum
+import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 import Development.AutomorphicArithmetic.CharacterBoxes.SmallestPrimePolynomialBound
 import Development.AutomorphicArithmetic.CharacterBoxes.HostWW
 import Development.AutomorphicArithmetic.CharacterBoxes.KitS
@@ -31,8 +41,8 @@ theorem recS (QO : Par → ∀ D : D7, Obj D → Prop) (cT : ℝ → ℝ → ℝ
     (hM : DC.MinkDiv) : ExD (clsP QO) cT := by
   intro la G hla hH
   have hS : SmallPrimeOne := GlobalTheory.EX.smallPrimeOne_of_primesRel GlobalTheory.Lin.primesRel_holds
-  have hO := GlobalTheory.T.existsObjects_of_admissibleTwistDatum _ GlobalTheory.EX.normPrimes_and_levelPrime_unconditional.2 (hR hM)
-  have hW : DC.HostWW la G.req := hostWW _ la _ hla (hostQ hS la G hH) (objC_true hO) GlobalTheory.T.windowShareRequirementClosedForm_proof
+  have hO := _root_.GlobalTheory.Fc.objCP_of_recExP _ GlobalTheory.EX.normPrimes_and_levelPrime_unconditional.2 (hR hM)
+  have hW : DC.HostWW la G.req := hostWW _ la _ hla (hostQ hS la G hH) (objC_true hO) _root_.GlobalTheory.EX.G4.wClosed
   exact designS (fun κ => ptO (DQ.withQD (QO κ))) cT la G hla hM (kitS _ la G hW hO)
 
 end UpperTheory.Top

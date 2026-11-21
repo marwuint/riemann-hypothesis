@@ -6,10 +6,10 @@ import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ContinuousIdeleCircle
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HeckeCharacterConductorExponentStatement
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CmHeckeCharacterInfinityTypeStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CmHeckeCharacterNotNormPowerStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CmHeckeCharacterNotNormPower
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HeckeLFunctionEulerProductStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocalAdditiveCharacterEqAdelicStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteEpsilonFactorDependenceOnSStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocalAdditiveCharacterEqAdelic
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteEpsilonFactorDependenceOnS
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HaarIntegralIntegersFiniteSumStatement
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HeckeGaussSumLocalTermStatement
 
@@ -35,14 +35,14 @@ theorem L_notPow {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : IsCMType
     (n : I → ℤ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (hn : ∃ i, n i ≠ 0) :
     ¬ ∃ τ : ℝ, ∀ x : IdeleGroup E,
       ((toHecke χ hu).toIdele x : ℂ) = ((ideleModule E x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I) :=
-  GlobalTheory.T.cm_hecke_character_not_norm_power E I φ hφ χ hu n hi hn
+  _root_.GlobalTheory.CompanionTheory.HeckeBridge.NotPow.not_modulePow E I φ hφ χ hu n hi hn
 
 theorem L_euler (χ : HChar E) (hu : IsUnitary χ) {s : ℂ} (hs : 1 < s.re) :
     HasProd (eulerFactor χ s) ((toHecke χ hu).LFunction s) := GlobalTheory.T.hecke_L_function_euler_product E χ hu s hs
 
 theorem L_shift (χ : HChar E) (a : HeightOneSpectrum (𝓞 E) →₀ ℕ) (s : ℂ) :
     finEps χ a s = finEps χ a (1 / 2) *
-      (((discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k : ℕ) : ℂ) ^ (1 / 2 - s) := GlobalTheory.T.finite_epsilon_factor_dependence_on_s E χ a s
+      (((discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k : ℕ) : ℂ) ^ (1 / 2 - s) := _root_.GlobalTheory.CompanionTheory.HeckeBridge.finEps_shift E χ a s
 
 theorem ord_unif (v : HeightOneSpectrum (𝓞 E)) (k : ℕ) :
     ord ((atFin v (unif v ^ k) : (v.adicCompletion E)ˣ) : v.adicCompletion E) = k := by
@@ -64,7 +64,7 @@ theorem L_ramInt (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞
       (((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℂ))⁻¹ * gaussSumAt χ v m (unif v ^ (m + diffExp v)) := by
   have hc : multiplicity v.asIdeal (toHecke χ hu).conductor = m := L_cond χ hu v m h
   have hG := GlobalTheory.T.hecke_gauss_sum_local_term E χ hu v m hm h
-  simp only [GlobalTheory.T.local_additive_character_eq_adelic] at hG
+  simp only [_root_.GlobalTheory.CompanionTheory.PsiStd.psiAt_eq_localAdelicChar] at hG
   rw [GlobalTheory.T.haar_integral_integers_finite_sum E v m _ (fun y hy => by rw [(toHecke χ hu).finiteTest_eq_zero hy, zero_mul]) (fun y k hk => ?_), hG]
   set c : v.adicCompletion E := ((atFin v (unif v ^ (m + diffExp v)) : (v.adicCompletion E)ˣ) : v.adicCompletion E) with hcdef
   have hcv : Valued.v c = WithZero.exp (-((m + diffExp v : ℕ) : ℤ)) := by

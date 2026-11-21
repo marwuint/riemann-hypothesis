@@ -1,5 +1,5 @@
 import Mathlib
-import Mathlib
+
 open NumberField IsDedekindDomain
 
 namespace PositivityTheory.Xgn.FixedFieldAutomorphism

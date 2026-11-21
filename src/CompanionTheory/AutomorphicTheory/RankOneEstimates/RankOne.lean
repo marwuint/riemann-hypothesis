@@ -2,11 +2,19 @@ import CompanionTheory.AutomorphicTheory.RankOneEstimates.DecSender
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.ThmMOfXi
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.FrameBlockWMem
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.JDiagExists
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.IsHaarOnIffGroupsUnitaryUnipotentImports
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.BesselSubgroupParameterMeasurePreservingImports
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.BesselCharacterUnipotentRadicalPropertiesImports
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Mathlib
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
+import Formalism.PeriodIntegrals.DSInfCharCap
+import Formalism.PeriodIntegrals.LowCyc
+import Formalism.PeriodIntegrals.UpqRep
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSubgroupParameterMeasurePreserving
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselCharacterUnipotentRadicalProperties
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EqSmulOfTwoSided
-import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.DiscreteSeriesUnitarySmoothBasicImports
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesUnitarySmoothBasic
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
 
 open Matrix MeasureTheory Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Formalism.QuantumDeterminants ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.Mult1
@@ -47,12 +55,12 @@ theorem be_rank_one {k r : ℕ} (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → Boo
   have hm0 : μW Set.univ ≠ 0 := fun e => hW.2.1 (Measure.measure_univ_eq_zero.1 e)
   have hm1 : μW Set.univ ≠ ⊤ := measure_ne_top _ _
   have hWB : B.IsHaarOn (UWset k r D0.z) ((μW Set.univ)⁻¹ • μW) :=
-    haar_smul (((GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μW).2.2 _ hz hT hk).1 hW) (ENNReal.inv_ne_zero.2 hm1) (ENNReal.inv_ne_top.2 hm0)
+    haar_smul (((_root_.GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μW).2.2 _ hz hT hk).1 hW) (ENNReal.inv_ne_zero.2 hm1) (ENNReal.inv_ne_top.2 hm0)
   let D : B.RealPlaceData k r Wp Wp :=
     { D0 with
       μW := (μW Set.univ)⁻¹ • μW, μW' := (μW Set.univ)⁻¹ • μW, μN := μN, haarW := hWB
       haarW' := by rw [hD0.z_eq]; exact hWB
-      haarN := (GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μN).2.1.1 hN }
+      haarN := (_root_.GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μN).2.1.1 hN }
   have hD : IsDiag D := ⟨hD0.z_eq, hD0.π_eq, rfl, by
     show ((μW Set.univ)⁻¹ • μW) Set.univ = 1
     rw [Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hm0 hm1], hD0.irr⟩
@@ -69,15 +77,15 @@ theorem be_rank_one {k r : ℕ} (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → Boo
     obtain ⟨C, Ws, -, h2⟩ := DecS.decayM hl hσ hg _ hm v hv
     exact ⟨_, fun x hx => h2 (aM k r) (by unfold aM nR; push_cast; rfl) w hw x hx⟩
   obtain ⟨-, -, -, -, hsm, -, hKT, ⟨w0, hw0, hw0K, -⟩, -⟩ :=
-    GlobalTheory.T.discreteSeries_unitary_smooth_basic CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam ⟨H, σ⟩ ⟨hl, hσ⟩
+    _root_.GlobalTheory.rep_basic_of_isDS CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam ⟨H, σ⟩ ⟨hl, hσ⟩
   have hw0s := hsm w0 (hKT w0 hw0K)
   obtain ⟨C0, hC0⟩ := dec w0 hw0s w0 hw0s
   let X : SigData k r := ⟨H, σ, hU, TopTA.irr_of_DSHpk (σ := σ) hσ, w0, hw0, aM k r, C0, hC0⟩
   have hS : SqIntG D X := hsq
   obtain ⟨l, -, hl2⟩ := thmM k r Wp D X hD hS le_rfl
-  have hmp := GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z D.μW μN hk hz hT (((GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r D.μW).2.2 _ hz hT hk).2 hWB) hN
+  have hmp := _root_.GlobalTheory.sParam_measurePreserving k r D.z D.μW μN hk hz hT (((_root_.GlobalTheory.HaarNotions.isHaarOn_iff_groups k r D.μW).2.2 _ hz hT hk).2 hWB) hN
   obtain ⟨-, -, hT4, -, -, hae⟩ := hmp
-  have hψ := GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z cStd hz
+  have hψ := _root_.GlobalTheory.BesselPsi.psi_character k r D.z cStd hz
   have e : μW.prod μN = μW Set.univ • D.μW.prod μN := by
     haveI := hN.1
     show _ = μW Set.univ • ((μW Set.univ)⁻¹ • μW).prod μN

@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FlagPairDefi
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AdaptSelf
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFrameWeightSumSameDatumLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardInnerLatticesWithDefiniteTraceLeNormStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFrameWeightSumSameDatumLe
+import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardInnerLatticesWithDefiniteTraceLeNorm
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonUnipotentStabiliserPreservesTermsAndDatum
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvVolPos
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt GlobalTheory.DegAsm
@@ -51,7 +52,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   have hom := (GlobalTheory.DegAsm.WeightInf.main K V H hK r).1 N g
   let f : ι → Submodule (𝓞 K) V := fun i => latL N.F' N.F (Λ i)
   have hcard : ((s.image f).card : ℝ) ≤ N.NT ^ 2 := by
-    have h1 := GlobalTheory.T.card_innerLattices_with_definite_trace_le_norm K V H hK r N g Λ₀ hg h0
+    have h1 := _root_.GlobalTheory.DegCnt.GlueZ.main K V H hK r N g Λ₀ hg h0
     have h2 : ((s.image f : Finset _) : Set (Submodule (𝓞 K) V)) ⊆ {L' : Submodule (𝓞 K) V | ∃ Λ', N.IsTerm g Λ' ∧ L' = latL N.F' N.F Λ' ∧ flagPairDefinitePartLattice N.F' N.F Λ' = flagPairDefinitePartLattice N.F' N.F Λ₀} := by
       intro L hL
       rw [Finset.mem_coe, Finset.mem_image] at hL
@@ -64,7 +65,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   have hfib : ∀ L ∈ s.image f, ∑ i ∈ s with f i = L, N.om (Λ i) ≤ B := by
     intro L hL
     obtain ⟨i₀, hi₀, rfl⟩ := Finset.mem_image.1 hL
-    have h1 := GlobalTheory.T.hermFrame_weightSum_sameDatum_le K V H hK r N g (Λ i₀) hg (hs i₀ hi₀).1
+    have h1 := _root_.GlobalTheory.DegCnt.omSum_sameDat_le K V H hK r N g (Λ i₀) hg (hs i₀ hi₀).1
     have hgI : N.gI g (Λ i₀) = N.gI g Λ₀ := by
       unfold NF.gI latLa flagPairDefinitePartLattice
       rw [(hs i₀ hi₀).2.1, (hs i₀ hi₀).2.2.2]

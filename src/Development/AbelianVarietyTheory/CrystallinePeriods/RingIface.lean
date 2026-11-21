@@ -13,9 +13,6 @@ open scoped Formalism.Per
 
 namespace X
 variable {l : ℕ} [Fact l.Prime]
-theorem alg_mem_kerP {a : Per.Ainf l} (h : Per.θ l a = 0) : algebraMap (Per.Ainf l) (Per.AinfP l) a ∈ Per.kerP l := by
-  first | exact @AlgebraMemThetaKernel.Bridge.alg_mem_kerP | exact AlgebraMemThetaKernel.Bridge.alg_mem_kerP .. | (intros; apply AlgebraMemThetaKernel.Bridge.alg_mem_kerP <;> assumption)
-
 theorem dp (x : Per.Ainf l) (n : ℕ) (y : Per.AinfP l) (hx : Per.θ l x = 0)
     (h : ((n.factorial : ℕ) : Per.AinfP l) * y = algebraMap (Per.Ainf l) (Per.AinfP l) x ^ n) : y ∈ Per.Acris0 l := by
   first | exact @DividedPowerInCrisZero.Bridge.dividedPower_mem_Acris0 | exact DividedPowerInCrisZero.Bridge.dividedPower_mem_Acris0 .. | (intros; apply DividedPowerInCrisZero.Bridge.dividedPower_mem_Acris0 <;> assumption)
@@ -109,9 +106,6 @@ theorem zB_eq_aB_zA : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), Formalism.Per.
 theorem mem_filtration_iff_mem_kerTheta_pow : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (y : Formalism.Per.BdRp l), y ∈ Formalism.Per.FilP l n ↔ Formalism.Per.ev l n y = 0 := by
   first | exact @DividedPowerFiltrationIff.Bridge.mem_filtration_iff_mem_kerTheta_pow | exact DividedPowerFiltrationIff.Bridge.mem_filtration_iff_mem_kerTheta_pow .. | (intros; apply DividedPowerFiltrationIff.Bridge.mem_filtration_iff_mem_kerTheta_pow <;> assumption)
 
-theorem toC_alg : ∀ (l : ℕ) [Fact l.Prime] (a : Formalism.Per.OC l), Formalism.Per.toC l (algebraMap (Formalism.Per.OC l) (Localization.Away ((l : ℕ) : Formalism.Per.OC l)) a) = (a : ℂ_[l]) := by
-  first | exact @CrisToComplexAlgebra.Bridge.toC_alg | exact CrisToComplexAlgebra.Bridge.toC_alg .. | (intros; apply CrisToComplexAlgebra.Bridge.toC_alg <;> assumption)
-
 theorem padicIntMap_eq_algebraMap_comp : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), Formalism.Per.zP l z = algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l) (Formalism.Per.zA l z) := by
   first | exact @GeneratorAlgebraRelation.Bridge.padicIntMap_eq_algebraMap_comp | exact GeneratorAlgebraRelation.Bridge.padicIntMap_eq_algebraMap_comp .. | (intros; apply GeneratorAlgebraRelation.Bridge.padicIntMap_eq_algebraMap_comp <;> assumption)
 
@@ -145,9 +139,6 @@ theorem aB_apply : ∀ (l : ℕ) [Fact l.Prime] (a : Formalism.Per.Ainf l), Form
 theorem aB_alg : ∀ (l : ℕ) [Fact l.Prime] (w : Formalism.Per.Ainf l), Formalism.Per.aB l w = algebraMap (Formalism.Per.Acris l) (Formalism.Per.Bcris l) (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l) w) := by
   first | exact @PeriodMapApply.Bridge.aB_apply | exact PeriodMapApply.Bridge.aB_apply .. | (intros; apply PeriodMapApply.Bridge.aB_apply <;> assumption)
 
-theorem aB_zA : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), Formalism.Per.aB l (Formalism.Per.zA l z) = Formalism.Per.zB l z := by
-  first | exact @PeriodGeneratorImage.Bridge.aB_zA | exact PeriodGeneratorImage.Bridge.aB_zA .. | (intros; apply PeriodGeneratorImage.Bridge.aB_zA <;> assumption) | exact @GeneratorRelation.Bridge.zB_eq_aB_zA | exact GeneratorRelation.Bridge.zB_eq_aB_zA .. | (intros; apply GeneratorRelation.Bridge.zB_eq_aB_zA <;> assumption)
-
 theorem pD_eq_alg : ∀ (l : ℕ) [Fact l.Prime] (a : Formalism.Per.AinfP l), Formalism.Per.pD l a = algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) (algebraMap (Formalism.Per.AinfP l) (Formalism.Per.BdRp l) a) := by
   first | exact @DividedPowerApply.Bridge.pD_apply | exact DividedPowerApply.Bridge.pD_apply .. | (intros; apply DividedPowerApply.Bridge.pD_apply <;> assumption)
 
@@ -162,9 +153,6 @@ theorem acris0_le : ∀ (l : ℕ) [Fact l.Prime] (S : Subalgebra (Formalism.Per.
 
 theorem acris0_le_3 : ∀ (l : ℕ) [Fact l.Prime] (S : Subalgebra (Formalism.Per.Ainf l) (Formalism.Per.AinfP l)), (∀ x : Formalism.Per.Ainf l, Formalism.Per.θ l x = 0 → ∀ (n : ℕ) (y : Formalism.Per.AinfP l), y ∈ Formalism.Per.Acris0 l → ((n.factorial : ℕ) : Formalism.Per.AinfP l) * y = algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l) x ^ n → y ∈ S) → Formalism.Per.Acris0 l ≤ S := by
   first | exact @CrisZeroLeThird.Bridge.acris0_le_3 | exact CrisZeroLeThird.Bridge.acris0_le_3 .. | (intros; apply CrisZeroLeThird.Bridge.acris0_le_3 <;> assumption) | exact @CrisZeroDividedPowersLe.Bridge.Acris0_le_of_dividedPowers | exact CrisZeroDividedPowersLe.Bridge.Acris0_le_of_dividedPowers .. | (intros; apply CrisZeroDividedPowersLe.Bridge.Acris0_le_of_dividedPowers <;> assumption)
-
-theorem dividedPower_mem : ∀ (l : ℕ) [Fact l.Prime] (m : Formalism.Per.Ainf l) (j : ℕ) (y : Formalism.Per.AinfP l), Formalism.Per.θ l m = 0 → ((j.factorial : ℕ) : Formalism.Per.AinfP l) * y = algebraMap (Formalism.Per.Ainf l) (Formalism.Per.AinfP l) m ^ j → y ∈ Formalism.Per.Acris0 l := by
-  first | exact @DividedPowerInCrisZero.Bridge.dividedPower_mem_Acris0 | exact DividedPowerInCrisZero.Bridge.dividedPower_mem_Acris0 .. | (intros; apply DividedPowerInCrisZero.Bridge.dividedPower_mem_Acris0 <;> assumption)
 
 theorem ev_sigDp : ∀ (l : ℕ) [Fact l.Prime] (g : Formalism.Per.Gq l) (n : ℕ) (y : Formalism.Per.BdRp l) (a : Formalism.Per.AinfP l), Formalism.Per.ev l n y = Ideal.Quotient.mk _ a → Formalism.Per.ev l n (Formalism.Per.σDp g y) = Ideal.Quotient.mk _ (Formalism.Per.extP (Formalism.Per.σA g) a) := by
   first | exact @EvaluationDividedPower.Bridge.ev_sigDp | exact EvaluationDividedPower.Bridge.ev_sigDp .. | (intros; apply EvaluationDividedPower.Bridge.ev_sigDp <;> assumption)

@@ -16,11 +16,6 @@ theorem col_mul_eq (P B : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
   simp only [col, Matrix.mul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
-noncomputable def jpL (x : Frame X.Ψ r) (τ : X.Ψ) : (Fin r → ℂ) →ₗ[ℂ] (Fin r → ℂ) where
-  toFun := X.jp x τ
-  map_add' := X.jp_add x τ
-  map_smul' := X.jp_smul x τ
-
 noncomputable def pposL (x : Frame X.Ψ r) (τ : X.Ψ) : (Fin r → ℂ) →ₗ[ℂ] (Fin r → ℂ) where
   toFun := X.ppos x τ
   map_add' := X.ppos_add x τ

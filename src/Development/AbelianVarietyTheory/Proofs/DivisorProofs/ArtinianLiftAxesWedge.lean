@@ -2,10 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupIdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGrpObjIsGrpPullbackOfIsPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallExtensionPrimitiveLiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullH1SurjectiveOfBijectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StructureSheafCohomologyPullbackCompCupId
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGrpObjIsGrpPullbackOfIsPullback
+import Development.AbelianVarietyTheory.Definitions.Divisors.PreUMono
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallExtensionPrimitiveLift
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullH1SurjectiveOfBijective
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -41,9 +42,9 @@ theorem surj_of_smallExt : ∀ (R : Type) [CommRing R] [IsLocalRing R] (t : R) (
 
     have hP' := IsPullback.of_hasPullback A.hom (spMap σ')
     have hP₀ := IsPullback.of_hasPullback A.hom (spMap σ₀)
-    obtain ⟨i', hg', hab', hsm'⟩ := GlobalTheory.T.exists_grpObj_isGrpPullback_of_isPullback' R R' σ' A _ _ _ hP'
-    obtain ⟨i₀, hg₀, hab₀, hsm₀⟩ := GlobalTheory.T.exists_grpObj_isGrpPullback_of_isPullback' R R₀ σ₀ A _ _ _ hP₀
-    have hstep := GlobalTheory.T.small_extension_primitive_lift R R' R₀ t σ' σ₀ g A _ _ _ _ hg' hg₀ hse hA hg
+    obtain ⟨i', hg', hab', hsm'⟩ := _root_.GlobalTheory.AbCoh.exists_grpObj_isGrpPullback_of_isPullback R R' σ' A _ _ _ hP'
+    obtain ⟨i₀, hg₀, hab₀, hsm₀⟩ := _root_.GlobalTheory.AbCoh.exists_grpObj_isGrpPullback_of_isPullback R R₀ σ₀ A _ _ _ hP₀
+    have hstep := _root_.GlobalTheory.AbCoh.pullHO1_surjective_of_smallExt R R' R₀ t σ' σ₀ g A _ _ _ _ hg' hg₀ hse hA hg
       (hR' _ g (hab' hA) (hsm' g hg)).2 (hfield R₀ hR₀ _ g (hab₀ hA) (hsm₀ g hg)).2.1
 
     have hle : RingHom.ker σ' ≤ RingHom.ker σ := by
@@ -65,7 +66,7 @@ theorem surj_of_smallExt : ∀ (R : Type) [CommRing R] [IsLocalRing R] (t : R) (
     obtain ⟨x', rfl⟩ := hsurj y
     obtain ⟨a, rfl⟩ := hstep x'
     refine ⟨a, ?_⟩
-    exact ((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).1 R R' A.left (pullback A.hom (spMap σ')) A.hom (pullback.snd A.hom (spMap σ'))
+    exact ((_root_.GlobalTheory.AbCoh.pull_comp_cup_id).1 R R' A.left (pullback A.hom (spMap σ')) A.hom (pullback.snd A.hom (spMap σ'))
       σ' (pullback.fst A.hom (spMap σ')) hg'.1.w k X₀ s₀ τ ψ' w'.w σ ψ w.w hψ'.symm (fun r => (hτ r).symm)).1 a |>.symm
   ·
     have hu : IsUnit t := by
@@ -76,6 +77,6 @@ theorem surj_of_smallExt : ∀ (R : Type) [CommRing R] [IsLocalRing R] (t : R) (
       intro a ha
       have hma : a ∈ IsLocalRing.maximalIdeal R := by rw [← hkerσ]; exact ha
       exact (hu.mul_left_eq_zero).1 (hm a hma)
-    exact GlobalTheory.T.pull_h1_surjective_of_bijective R k σ A.left X₀ A.hom s₀ ψ w ⟨hinj, hσ⟩
+    exact _root_.GlobalTheory.AbCoh.pullHO1_surjective_of_bijective_base R k σ A.left X₀ A.hom s₀ ψ w ⟨hinj, hσ⟩
 
 end GlobalTheory.AbCoh.SmallStepSurj

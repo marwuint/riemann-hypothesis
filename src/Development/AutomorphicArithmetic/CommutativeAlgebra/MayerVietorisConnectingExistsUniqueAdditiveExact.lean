@@ -1,6 +1,9 @@
 import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainShortExactOfInjectiveTermsStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainShortExactOfInjectiveTerms
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSpaceChainsMayerVietorisShortExactStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMayerVietorisConnectingExactStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf
@@ -203,7 +206,7 @@ private theorem mvx_of_se {R : Type} [CommRing R] {P A B E I : Cx R} {p : P ⟶ 
   have hd : biprod.desc i j = biprod.fst ≫ i + biprod.snd ≫ j := by
     apply biprod.hom_ext' <;> simp
   refine ⟨comm, fun n γ => ?_, fun n α β h => ?_, fun n c h1 h2 => ?_⟩
-  · obtain ⟨b, hb⟩ := (GlobalTheory.T.etaleCochain_shortExact_of_injective_terms R I hI _ hS n).1 γ
+  · obtain ⟨b, hb⟩ := (_root_.GlobalTheory.EtC.cochain_shortExact_of_injective R I hI _ hS n).1 γ
     have hb' : pb (biprod.lift p (-q)) b = γ := hb
     refine ⟨pb biprod.inl b, pb biprod.inr b, ?_⟩
     rw [← pb_comp, ← pb_comp, ← pb_hsub, ← hl, hb']
@@ -213,12 +216,12 @@ private theorem mvx_of_se {R : Type} [CommRing R] {P A B E I : Cx R} {p : P ⟶ 
       rw [pb_add, ← pb_comp, ← pb_comp, biprod.inr_fst, biprod.inr_snd, pb_id, pb_hzero, zero_add]
     have hf : pb (biprod.lift p (-q)) (pb biprod.fst α + pb biprod.snd β) = 0 := by
       rw [hl, pb_hsub, pb_comp, pb_comp, hb1, hb2, h, sub_self]
-    obtain ⟨c, hc⟩ := (GlobalTheory.T.etaleCochain_shortExact_of_injective_terms R I hI _ hS n).2.1 _ hf
+    obtain ⟨c, hc⟩ := (_root_.GlobalTheory.EtC.cochain_shortExact_of_injective R I hI _ hS n).2.1 _ hf
     have hc' : pb (biprod.desc i j) c = pb biprod.fst α + pb biprod.snd β := hc
     refine ⟨c, ?_, ?_⟩
     · rw [← biprod.inl_desc i j, pb_comp, hc', hb1]
     · rw [← biprod.inr_desc i j, pb_comp, hc', hb2]
-  · refine (GlobalTheory.T.etaleCochain_shortExact_of_injective_terms R I hI _ hS n).2.2 c ?_
+  · refine (_root_.GlobalTheory.EtC.cochain_shortExact_of_injective R I hI _ hS n).2.2 c ?_
     change pb (biprod.desc i j) c = 0
     rw [hd, pb_hadd, pb_comp, pb_comp, h1, h2, pb_zero, pb_zero, add_zero]
 

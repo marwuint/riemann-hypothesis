@@ -2,10 +2,14 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.BridgeTie
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Formalism.GradedWeylDivisibility.FinalD
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylModuleLeSpanExtremalTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylModuleLeSpanExtremalTranslates
+import Formalism.LocalToGlobal.Divisibility.CoefMod
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DualWeylModuleSimpleCharZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylTensorCoefSpaceLeSpanPureTensorsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylTensorCoefSpaceEndomorphismPreservesTorusWeiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightSpaceCoefficientSpaceEqExtremalTensorLineStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightSpaceCoefficientSpaceEqExtremalTensorLine
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DualWeylHighestWeightSpaceLineField
 set_option autoImplicit false
 noncomputable section
 open NumberField Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR
@@ -39,14 +43,14 @@ theorem endo_scalar : ∀ (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype
     (∀ (h : ι → GL (Fin n) K) v, g (rhoK lam h v) = rhoK lam h (g v)) → ∃ a : K, ∀ v, g v = a • v := by
   intro K _ _ ι _ n lam g hg
   set v0 : VV K lam := ⟨_, ten_ext_mem K lam⟩ with hv0
-  have hw0 := (GlobalTheory.T.weightSpace_coefficientSpace_eq_extremalTensorLine K lam).1
+  have hw0 := (_root_.GlobalTheory.CoefWtLine.weight_line K lam).1
   have hgw := GlobalTheory.T.weylTensorCoefSpace_endomorphism_preserves_torus_weight K lam g hg v0 hw0
-  obtain ⟨a, ha⟩ := (GlobalTheory.T.weightSpace_coefficientSpace_eq_extremalTensorLine K lam).2 _ (g v0).2 hgw
+  obtain ⟨a, ha⟩ := (_root_.GlobalTheory.CoefWtLine.weight_line K lam).2 _ (g v0).2 hgw
   have ha' : g v0 = a • v0 := Subtype.ext ha
   refine ⟨a, ?_⟩
   let W : Submodule K (Pol K ι n) := Submodule.map (VV K lam).subtype (LinearMap.ker (g - a • LinearMap.id))
   have hS : ∀ τ, nablaSq K n (lam τ) ≤ Submodule.span K (Set.range fun x : GL (Fin n) K => sqAct K n (lam τ) x (extremal K n (lam τ))) :=
-    fun τ => GlobalTheory.T.dualWeylModule_le_span_extremalTranslates K n (lam τ)
+    fun τ => _root_.GlobalTheory.nablaSq_le_span_extremal K n (lam τ)
   have hle := GlobalTheory.T.weylTensorCoefSpace_le_span_pure_tensors K lam _ hS
   have hW : VV K lam ≤ W := by
     refine hle.trans (Submodule.span_le.2 ?_)

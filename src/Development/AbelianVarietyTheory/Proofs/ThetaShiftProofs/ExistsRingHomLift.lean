@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ArcDi
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFShiftZeroIff
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyFiniteRootsOfBimul
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ConstOfNormPeriodic
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtensionComplexPointsEqCharactersStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtensionComplexPointsEqCharacters
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArcPts
@@ -244,7 +244,7 @@ theorem nonempty_gtAn : Out.Laws → Out.Laws2 → ThetaUnifAV → ∀ (E : Type
     (fun y x => mul_ne_zero (mul_ne_zero (ne _) (inv_ne_zero (ne _))) (inv_ne_zero (ne _)))
     (fun y x x' => by rw [symm, tauVal_add hAH hrig hc a.bimult, symm x, symm x']) symm (fun x => (bal x).2)
   choose ex0 hex0 using fun v : (a.D₀.X →+ ℂ) × (Fin a.D₀.P.g → ℂ) =>
-    ((GlobalTheory.T.torusExtension_complexPoints_eq_characters a.D₀ _ u Hm χ ct hAH hrig hc v.2).1 v.1).exists
+    ((_root_.GlobalTheory.TorusExtChar.points_eq_characters a.D₀ _ u Hm χ ct hAH hrig hc v.2).1 v.1).exists
   let A : AnArc (𝓞 E) :=
     { gB := a.D₀.P.g, abelian₂ := u.Λ, discrete := u.discrete, full := u.full, Hm := Hm, Hm_herm := hAH.1,
       Hm_pos := hAH.2.1, Ef := Ef, Ef_eq := hEf, Ef_bij := hbij, chi := χ, chi_norm := hAH.2.2.1,

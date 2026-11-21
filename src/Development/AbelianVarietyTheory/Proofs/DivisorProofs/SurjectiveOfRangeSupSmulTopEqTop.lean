@@ -51,6 +51,4 @@ theorem surjective_of_range_sup_smul_top_eq_top (R : Type) [CommRing R] (M : Typ
     exact h2
   exact LinearMap.range_eq_top.mp hS
 
-example : ∀ (R : Type) [CommRing R] (M : Type 1) [AddCommGroup M] [Module R M] (N : Type) [AddCommGroup N] [Module R N] [Module.Finite R N] (f : M →ₗ[R] N), (∀ I : Ideal R, I.IsMaximal → LinearMap.range f ⊔ I • (⊤ : Submodule R N) = ⊤) → Function.Surjective f := @surjective_of_range_sup_smul_top_eq_top
-
 end GlobalTheory

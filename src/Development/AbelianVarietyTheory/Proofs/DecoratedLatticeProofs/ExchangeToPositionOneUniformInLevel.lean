@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExchangeEqFiniteTranslateCombOfLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExchangeEqFiniteTranslateCombOfLevel
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExDownExUpAndExUpExDown
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOfMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.PosOne
@@ -72,13 +72,13 @@ theorem toOne_comb (ψ : AddChar k Circle) (hψc : Continuous ψ) (hψ1 : ψ ≠
     have hqc : q + 1 < c := by omega
 
     have H1 := fun g : GL (n ⊕ Fin c) k =>
-      GlobalTheory.T.exchange_eq_finiteTranslateComb_of_level k n c (q + 1) hq1 hqc ψ hψc hψ1 ν (conjSub U g) (isOpen_conjSub U hU g)
+      _root_.GlobalTheory.PosOne.exchange_eq_comb k n c (q + 1) hq1 hqc ψ hψc hψ1 ν (conjSub U g) (isOpen_conjSub U hU g)
     choose eg eg' heg using H1
 
     have H2 := fun g : GL (n ⊕ Fin c) k => ih (by omega) (conjSub U g) (isOpen_conjSub U hU g)
     choose E E' hE using H2
     obtain ⟨e₀, _e₀', he₀⟩ := ih (by omega) U hU
-    obtain ⟨_e₁', e₁, he₁⟩ := GlobalTheory.T.exchange_eq_finiteTranslateComb_of_level k n c (q + 1) hq1 hqc ψ hψc hψ1 ν U hU
+    obtain ⟨_e₁', e₁, he₁⟩ := _root_.GlobalTheory.PosOne.exchange_eq_comb k n c (q + 1) hq1 hqc ψ hψc hψ1 ν U hU
     refine ⟨e₀.sum fun g a => a • (eg g).mapDomain (· * g),
       e₁.sum fun g a => a • (E' g).mapDomain (· * g), ?_⟩
     intro A _ _ σ hsm l v hl hv

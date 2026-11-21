@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsTrDataGauss
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingCyclotomicTowerLevel
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemAdjoinDivOfFixed
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOfMemAdjoin
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerEmbeddingInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerEmbeddingInjective
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTowerUnionAdjoinIntegralClosureIffStatement
 
 noncomputable section
@@ -19,7 +19,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω
 theorem exists_eq_of_isIntegral_div (h : IsClo p Ω) (T : Tower p Ω) {n : ℕ} (hn : 1 ≤ n)
     (ι : On p n →ₐ[O0 p] Ω) (hι : IsEmb T n ι) (wb wc : On p n) (hc : ι wc ≠ 0) {x : Ω}
     (hx : IsIntegral (O0 p) x) (hxe : x = ι wb / ι wc) : ∃ w : On p n, ι w = x := by
-  have hinj : Function.Injective ι := GlobalTheory.T.tower_embedding_injective p Ω h T n hn ι hι
+  have hinj : Function.Injective ι := _root_.GlobalTheory.K5.EmbInj.emb_injective p Ω h T n hn ι hι
   obtain ⟨hdom, hdvr, -⟩ := GlobalTheory.K5.OnDVR.isDVR_On p n hn
   let K := FractionRing (On p n)
   let φ : K →+* Ω := IsFractionRing.lift (g := ι.toRingHom) hinj

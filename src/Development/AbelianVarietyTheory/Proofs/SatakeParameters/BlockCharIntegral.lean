@@ -83,28 +83,4 @@ theorem blockChar_eq (h5 : JacquetShalikaStrongMultOne N A) (i : N.Loc) (ρ : G 
   have e2 := C_injective (sub_right_injective e)
   exact (A.iotaQC i).injective e2
 
-theorem chiIne_of_data (hLP : TieLP N A) (hAut : TieAut N A) (h2 : exists_galois_rep_local_global_compatible N A) (h5 : JacquetShalikaStrongMultOne N A)
-    (hMu : MuInt N A) : ChiIne N A := by
-  intro i w hw σ hσ
-  obtain ⟨ρ, hρ, hwd, -⟩ := (h2 i).2.2 (A.tw (A.muC i) A.etaTinv) (blockShift R)
-    (fun τ z hz => blockChar_integral N A hAut hMu i τ z hz)
-  have hρσ := blockChar_eq N A h5 i ρ hρ hwd σ
-  have e := A.wdOf_ine i ρ w hw hρ σ hσ
-  rw [hwd w hw, A.inePol_tw _ _ _ hσ, A.locG_tw, charpoly_fin_one, hρσ] at e
-  have hdim : A.lpDim (A.locG A.etaTinv w) = 1 := A.locG_dim _ _
-  have hine : A.inePol (A.locG A.etaTinv w) σ = X - C 1 := by
-    have := ((A.unr_iff_ine _).1 (A.etaTinv_def w).1).2 σ hσ
-    rw [hdim, pow_one] at this
-    simpa using this
-  have hs := ((hLP w (A.locG (A.muC i) w) (A.locG (A.muC i) w) (A.locG A.etaTinv w) (A.locG A.etaTinv w) 0
-    hdim hdim).2.2.2.2.2 σ hσ).2 1 hine
-  rw [hs, Polynomial.scaleRoots_one] at e
-  rw [← e]
-  simp only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]
-  rfl
-
-theorem chiIne_main : ∀ D : D7, Formalism.MainNotions.SumRepresentations.tie0 D → Formalism.MainNotions.SumRepresentations.adm2 D → Formalism.MainNotions.SumRepresentations.adm5 D → MuInt D.nd D.naut →
-    ChiIne D.nd D.naut :=
-  fun D h0 h2 h5 hMu => chiIne_of_data D.nd D.naut h0.1 h0.2.1 h2 h5 hMu
-
 end GlobalTheory.SplitRead

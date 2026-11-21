@@ -6,7 +6,11 @@ import Formalism.LocalToGlobal.ProjectiveLattices.HostSize
 import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SupBoundPageRows
 import Formalism.LocalToGlobal.ProjectiveLattices.PhiSetPullSub
-import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PhiCLeNormalizedValuationProductFormAlgebraicStatement
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.PhiCLeNormalizedValuationProductFormAlgebraic
+import Development.AbelianVarietyTheory.Definitions.TorusSections.ExistsSecTie
+import Formalism.LocalToGlobal.ProjectiveLattices.DataAtPointN3
+import Formalism.LocalToGlobal.ProjectiveLattices.LiesOverBaseChange
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ETPoint
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.EtaForm GlobalTheory.EtaAn
 
 namespace GlobalTheory.EtaVal
@@ -29,7 +33,7 @@ theorem val_at_partner {D : D7} {Q : Par D} (G : In66 Q) (hT : G.PinTower) (hL :
   have hf : vAtV y f = nval S.V e (evI y' f) := congrFun (congrArg Prod.fst hq) f
   rw [hi, hf]
   obtain ⟨z, hr, hz⟩ := hl h2
-  obtain ⟨A, bA, hb, hv⟩ := GlobalTheory.T.phiC_le_normalized_valuation_product_form_algebraic D.host.E _ (Q.Dw j) _ (Q.Xo j) Q.c la
+  obtain ⟨A, bA, hb, hv⟩ := _root_.GlobalTheory.EtaVal.phiC_le_nval_of_lies D.host.E _ (Q.Dw j) _ (Q.Xo j) Q.c la
     (G.Tw j (WeightAlgebra.resCh la)) (hT j h1 h2 _ (resCh_prime la)) S io e y' z ho hy hz
     (fun x : D.host.E => D.host.conj x) (fun a => by
       apply D.host.φ₀.injective

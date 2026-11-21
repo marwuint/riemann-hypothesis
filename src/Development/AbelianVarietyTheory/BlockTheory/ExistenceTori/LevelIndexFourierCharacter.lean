@@ -108,14 +108,6 @@ def pairOne (a : ConjCl D l) (x : NamedCl D l) : ZMod l.M :=
     rw [smul_sub, map_sub, Int.cast_sub, sub_eq_zero] at h2
     exact h1.trans h2)
 
-theorem pairOne_mk {c : 𝓞 E} (hc : IsSep l c) (u v : D.La) :
-    pairOne D l (Submodule.Quotient.mk u) (Submodule.Quotient.mk v) = ((D.EF u (c • v) : ℤ) : ZMod l.M) := by
-  change ((D.EF u (sep l • v) : ℤ) : ZMod l.M) = _
-  have h1 := ef_smul_eq_zero D l hc.2 (sep_spec l).1 u v
-  have h2 := ef_smul_eq_zero D l (sep_spec l).2 hc.1 u v
-  rw [sub_mul, _root_.one_mul, sub_smul, map_sub, Int.cast_sub, sub_eq_zero] at h1 h2
-  rw [← h1, ← h2, mul_comm]
-
 def pairing {n : ℕ} (a : Fin n → ConjCl D l) (t : Fin n → NamedCl D l) : ZMod l.M :=
   ∑ b, pairOne D l (a b) (t b)
 
@@ -138,16 +130,6 @@ variable {l} in
 
 def zetaM (c : Coeff l) : c.F := ⟨zeta l.M, zeta_level_mem l c⟩
 
-variable {l} in
-theorem zetaM_prim (c : Coeff l) : IsPrimitiveRoot (zetaM c) l.M :=
-  IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom)
-    (Complex.isPrimitiveRoot_exp l.M (by have := l.three_le; omega)) Subtype.val_injective
-
-variable {l} in
-
-def zetaU (c : Coeff l) : (c.F)ˣ :=
-  Units.mk0 (zetaM c) ((zetaM_prim c).ne_zero (by have := l.three_le; omega))
-
 variable {l}
 
 def eChar (c : Coeff l) {n : ℕ} (a : Fin n → ConjCl D l) (t : Fin n → NamedCl D l) : c.F :=
@@ -169,19 +151,9 @@ def levPtCl (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (x : 
 theorem levPtCl_mk (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (u : D.La) :
     levPtCl Xo x0 (Submodule.Quotient.mk u) = levPt Xo x0 u := rfl
 
-def levelPoints (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (n : ℕ) :
-    Set (Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)) :=
-  Set.range fun (t : Fin n → NamedCl D l) (b : Fin n) => levPtCl Xo x0 (t b)
-
 variable (D l) in
 
 def levelIndex (n : ℕ) : Finset (Fin n → NamedCl D l) := (Set.finite_univ).toFinset
-
-def IsConjPt (Xo : Moduli D l) (c : Coeff l) {S : Type} [CommRing S] [Algebra c.F S] (x0 : Sp S ⟶ Xo.X)
-    (a : ConjCl D l) (u : ptO Xo x0 ⟶ Xo.univ.t.G) : Prop :=
-  KilledBy Xo (conjHalf l) u ∧ ∀ x : NamedCl D l,
-    Out.WeilIs Xo.univ.t.G Xo.univ.t.PP.L (l.M : ℤ) u (levPtCl Xo x0 x)
-      (unitOn (Units.map (algebraMap c.F S).toMonoidHom (zetaU c ^ (pairOne D l a x).val)))
 
 def SpansAtEvery {n : ℕ} (s : Set (Fin n)) (x₀ : Fin n → ConjCl D l) : Prop :=
   ∀ 𝔭 : Ideal (𝓞 E), 𝔭.IsMaximal → conjHalf l ≤ 𝔭 →
@@ -203,39 +175,5 @@ def fourier (c : Coeff l) {n : ℕ} (φ : (Fin n → ConjCl D l) → c.F) (t : F
 
 def indicatorCl (c : Coeff l) {n : ℕ} (x₀ : Fin n → ConjCl D l) : (Fin n → ConjCl D l) → c.F :=
   Set.indicator {x₀} 1
-
-def indCoeff (c : Coeff l) {n : ℕ} (x₀ : Fin n → ConjCl D l) (t : Fin n → NamedCl D l) : c.F :=
-  fourier c (indicatorCl c x₀) t
-
-theorem indCoeff_eq (c : Coeff l) {n : ℕ} (x₀ : Fin n → ConjCl D l) (t : Fin n → NamedCl D l) :
-    indCoeff c x₀ t = (Nat.card (Fin n → NamedCl D l) : c.F)⁻¹ * (zetaM c ^ (pairing D l x₀ t).val)⁻¹ := by
-  rw [indCoeff, fourier, Finset.sum_eq_single x₀]
-  · simp [indicatorCl, eChar]
-  · intro b _ hb; simp [indicatorCl, hb]
-  · intro h; simp at h
-
-variable (D l) in
-
-def PairingPerfect (n : ℕ) : Prop :=
-  (∀ a : Fin n → ConjCl D l, (∀ t, pairing D l a t = 0) → a = 0) ∧
-    ∀ t : Fin n → NamedCl D l, (∀ a, pairing D l a t = 0) → t = 0
-
-variable (D) in
-
-def FourierInversion (c : Coeff l) (n : ℕ) : Prop :=
-  (∀ (φ : (Fin n → ConjCl D l) → c.F) (a : Fin n → ConjCl D l),
-      φ a = ∑ t ∈ levelIndex D l n, fourier c φ t * eChar D c a t) ∧
-    ∀ t₀ : Fin n → NamedCl D l, fourier c (fun a => eChar D c a t₀) = Set.indicator {t₀} 1
-
-variable (D l) in
-
-def AdmissibleStable (n : ℕ) : Prop :=
-  ∀ u : 𝓞 E, Ideal.span {u} ⊔ conjHalf l = ⊤ → ∀ x₀ : Fin n → ConjCl D l,
-    (FirstInv x₀ → FirstInv (u • x₀)) ∧ (RankFull x₀ → RankFull (u • x₀))
-
-def HalvesNamed (Xo : Moduli D l) (c : Coeff l) : Prop :=
-  ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] (x0 : Sp k ⟶ Xo.X), x0 ≫ Xo.s = sOf c k →
-    (Function.Injective (levPtCl Xo x0) ∧ ∀ u, KilledBy Xo l.Mb u ↔ u ∈ Set.range (levPtCl Xo x0)) ∧
-    (∀ a, ∃! u, IsConjPt Xo c x0 a u) ∧ ∀ u, KilledBy Xo (conjHalf l) u → ∃! a, IsConjPt Xo c x0 a u
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LevelSpanSeparation

@@ -17,9 +17,6 @@ section PullLB
 
 variable {Z Z' : Scheme.{0}} {S : Type} [CommRing S] (L : LB Z) (f : Z' ⟶ Z)
 
-theorem le_pull_chart {w : Sp S ⟶ Z'} {j : PUnit → L.ι} (hz : ⊤ ≤ (w ≫ f) ⁻¹ᵁ L.U (j PUnit.unit)) :
-    ⊤ ≤ w ⁻¹ᵁ (L.pull f).U j := fun p hp => mem_pull.2 (hz hp)
-
 theorem ev_pull_g (j j' : PUnit → L.ι) (w : Sp S ⟶ Z') (hw : ⊤ ≤ w ⁻¹ᵁ ((L.pull f).U j ⊓ (L.pull f).U j'))
     (hh : ⊤ ≤ (w ≫ f) ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit))) :
     ev w _ hw ((L.pull f).g j j').val = ev (w ≫ f) _ hh (L.g (j PUnit.unit) (j' PUnit.unit)).val := by
@@ -31,21 +28,6 @@ theorem ev_pull_g (j j' : PUnit → L.ι) (w : Sp S ⟶ Z') (hw : ⊤ ≤ w ⁻�
     exact zpow_one _
   rw [hg]
   exact ev_appLE w f _ hw hh _
-
-variable {L} in
-
-def secPull (s : L.Sec) : (L.pull f).Sec where
-  f j := (f.appLE (L.U (j PUnit.unit)) _ (fun _ hp => mem_pull.1 hp)).hom (s.f (j PUnit.unit))
-  compat j j' := ext_ev fun S _ w hw => by
-    have hh : ⊤ ≤ (w ≫ f) ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) :=
-      fun p hp => ⟨(mem_pull (F := f)).1 (hw hp).1, (mem_pull (F := f)).1 (hw hp).2⟩
-    have h := congrArg (ev (w ≫ f) _ hh) (s.compat (j PUnit.unit) (j' PUnit.unit))
-    have a := le_preimage_mono inf_le_left hh
-    have b := le_preimage_mono inf_le_right hh
-    rw [map_mul, ev_res _ _ hh a, ev_res _ _ hh b] at h
-    rw [map_mul, ev_res w _ hw (le_pull_chart L f a), ev_res w _ hw (le_pull_chart L f b)]
-    exact ((ev_appLE w f _ _ a _).trans h).trans
-      (congrArg₂ (· * ·) (ev_pull_g L f j j' w hw hh).symm (ev_appLE w f _ _ b _).symm)
 
 end PullLB
 
@@ -256,15 +238,6 @@ theorem ChartFr.exists_frBor {k : F.J} {z : Sp S ⟶ Z} {hz : ⊤ ≤ z ⁻¹ᵁ
   exact ⟨_, frBor_of_frVec (F.inM hz rfl) h.over hP.1.symm
     (fun ix => match ix with | none => u0 | some p => (hu p.1 p.2).unit) b hb (fun _ _ => rfl) hv fun _ => hu0⟩
 
-theorem TopEigen.mem_step_top_iff (hT : F.TopEigen) {V K : Type} [CommRing V] [IsLocalRing V] [CommRing K]
-    [Algebra c.F K] (φ : V →+* K) (hφ : Function.Injective φ) (z : Sp V ⟶ Z) {x : Sp V ⟶ Y.X} (hx : z ≫ π = x)
-    {y : Sp K ⟶ Xo.XF c} (hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F K)) (e : spMap φ ≫ x = y ≫ Y.j)
-    (σ : E →+* ℂ) (v : TanM x Y.t.G) :
-    v ∈ F.step z hx σ (Dw.mult σ) ↔ tanPull φ e v ∈ eigLie c (y ≫ Y.j) σ := by
-  have hxK : (spMap φ ≫ z) ≫ π = y ≫ Y.j := by rw [Category.assoc, hx, e]
-  obtain ⟨k, hz⟩ := exists_chart_of_isLocalRing F.cover z
-  rw [F.mem_step_iff_of_injective φ hφ z hx rfl hxK e, F.step_eq k _ (le_preimage_comp _ hz), hT K y hy]
-
 theorem TopEigen.diag_unit (hT : F.TopEigen) {V K : Type} [CommRing V] [IsLocalRing V] [CommRing K]
     [Algebra c.F K] (φ : V →+* K) (hφ : Function.Injective φ) (z : Sp V ⟶ Z) {k : F.J} (hz : ⊤ ≤ z ⁻¹ᵁ F.U k)
     {P Q : FrPt Xo c K} (hP : F.Lies (spMap φ ≫ z) P) (e : spMap φ ≫ z ≫ π = frX P ≫ Y.j) (σ : E →+* ℂ)
@@ -320,24 +293,6 @@ def coord (M : GChart Y) (h : ∀ σ, Dw.mult σ ≤ M.n) : Frames Y M.U.ι wher
     have e : chg M.toMChart M.toMChart = 1 := Module.Basis.toMatrix_self _
     rw [e, Matrix.map_one _ (map_zero _) (map_one _)]
     exact (Matrix.one_mul _).trans (Matrix.mul_one _).symm⟩
-
-example (M : GChart Y) (h : ∀ σ, Dw.mult σ ≤ M.n) (z : Sp S ⟶ M.U.toScheme) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) :
-    (coord M h).vecAt () z le_top rfl σ i =
-      lieBasis M.toMChart _ ((coord M h).inM (k := ()) le_top rfl) (Fin.castLE (h σ) i) := by
-  have hu : ∀ j : Fin M.n, (coord M h).uAt () z le_top σ j i = if j = Fin.castLE (h σ) i then 1 else 0 := fun j => by
-    show ev z ⊤ le_top ((1 : Matrix (Fin M.n) (Fin M.n) _) j (Fin.castLE (h σ) i)) = _
-    rw [Matrix.one_apply, apply_ite (ev z ⊤ le_top), map_one, map_zero]
-  refine (congrArg (vec M.toMChart _ ((coord M h).inM (k := ()) le_top rfl)) (funext hu)).trans ?_
-  exact (vec_apply _ _ _ _).trans (by simp)
-
-open Classical in
-
-theorem LL_single_one (F : Frames Y π) (ix : Ix Dw) : F.LL (Pi.single ix 1) = GlobalTheory.CechPic.dual (F.line ix) := by
-  unfold LL line GlobalTheory.CechPic.dual
-  congr 1
-  funext k k'
-  rw [Finset.prod_eq_single ix (fun b _ hb => by rw [Pi.single_eq_of_ne hb]; simp) (by simp)]
-  simp
 
 end Frames
 
@@ -411,8 +366,6 @@ abbrev gr (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) : LB X.YY := X.F.gr σ i
 
 abbrev LL (e : Ix Dw → ℤ) : LB X.YY := X.F.LL e
 
-abbrev de : LB X.YY := X.F.de
-
 abbrev detOm : LB X.YY := X.F.detOm
 
 def Llam (la : Weight Dw) : LB X.YY := X.F.LL (exOf Dw la 0)
@@ -483,12 +436,6 @@ theorem le_pull {w : Sp S ⟶ X.Yo} {k : X.F.J} (hz : ⊤ ≤ (w ≫ X.inc) ⁻�
 
 def coef (s : X.SecO e) (k : X.F.J) (w : Sp S ⟶ X.Yo) (hz : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ X.F.U k) : S :=
   ev w _ (le_pull hz) (s.f fun _ => k)
-
-def resO (s : (X.F.LL e).Sec) : X.SecO e := secPull X.inc s
-
-omit [Algebra c.F S] in
-theorem coef_resO (s : (X.F.LL e).Sec) (k : X.F.J) (w : Sp S ⟶ X.Yo) (hz : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ X.F.U k) :
-    coef (resO s) k w hz = ev (w ≫ X.inc) (X.F.U k) hz (s.f k) := ev_appLE w X.inc _ _ hz _
 
 omit [Algebra c.F S] in
 open Classical in
@@ -645,12 +592,6 @@ theorem evR_toRule (s : X.SecO e) (P : FrPt Xo c S)
 theorem evR_toRule_of_isReduced [_root_.IsReduced S] (s : X.SecO e) (P : FrPt Xo c S) :
     evR Xo c (toRule s) P = val s P := evR_toRule s P ((evLaws_genFr_atlas E H Dw l Xo c).1.test S P)
 
-theorem val_add {s s₁ s₂ : X.SecO e} (h : ∀ j, s.f j = s₁.f j + s₂.f j) (P : FrPt Xo c S) :
-    val s P = val s₁ P + val s₂ P := by
-  refine (IsVal.eq_val fun S' _ _ ψ P' hP k hz Q t hQ ht => ?_).symm
-  rw [map_add, isVal_val s₁ P S' ψ P' hP k hz Q t hQ ht, isVal_val s₂ P S' ψ P' hP k hz Q t hQ ht, ← mul_add]
-  exact congrArg _ ((congrArg _ (h _)).trans (map_add _ _ _)).symm
-
 theorem val_mul {e₁ e₂ : Ix Dw → ℤ} {s : X.SecO (e₁ + e₂)} {s₁ : X.SecO e₁} {s₂ : X.SecO e₂}
     (h : ∀ j, s.f j = (show Γ(X.Yo, ((X.F.LL (e₁ + e₂)).pull X.inc).U j) from s₁.f j) *
       (show Γ(X.Yo, ((X.F.LL (e₁ + e₂)).pull X.inc).U j) from s₂.f j)) (P : FrPt Xo c S) :
@@ -662,62 +603,7 @@ theorem val_mul {e₁ e₂ : Ix Dw → ℤ} {s : X.SecO (e₁ + e₂)} {s₁ : X
   simp only [Pi.add_apply, zpow_add, Finset.prod_mul_distrib, Units.val_mul]
   ring
 
-theorem eq_of_val_eq {s s' : X.SecO e}
-    (h : ∀ (S : Type) [CommRing S] [Algebra c.F S] (P : FrPt Xo c S), val s P = val s' P) : s = s' := by
-  refine TieUniq.sec_ext fun j => ext_ev fun S _ w hw => ?_
-  obtain ⟨k, rfl⟩ : ∃ k, j = fun _ => k := ⟨j PUnit.unit, rfl⟩
-  letI : Algebra c.F S :=
-    ((ev (w ≫ pullback.snd X.π Y.j ≫ pullback.snd _ _) ⊤ le_top).comp (toΓ c.F)).toAlgebra
-  have hz : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ X.F.U k := fun p hp => mem_pull.1 (hw hp)
-  obtain ⟨Q, hQ, ew⟩ := X.exists_chartFr w (spMap_ev_top _).symm k hz
-  have key : ∀ (w : Sp S ⟶ X.Yo) (_ : X.pt Q = w) (hz : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ X.F.U k),
-      X.F.ChartFr k (w ≫ X.inc) hz Q → coef s k w hz = coef s' k w hz := by
-    rintro _ rfl hz hQ
-    exact (val_chartFr s hQ).symm.trans ((h S Q).trans (val_chartFr s' hQ))
-  exact key w ew hz hQ
-
 variable (X)
-
-open Classical in
-
-theorem Llam_single_big (τ : Psi H) (i : Fin (Dw.mult τ.1)) (hi : (i : ℕ) < Dw.p + Dw.q) :
-    X.Llam (Pi.single τ (Pi.single ⟨i, hi⟩ (-1))) = X.gr τ.1 i := by
-  have hp := mult_of_mem (Dw := Dw) τ
-  refine (congrArg X.F.LL (exOf_ext (by simp) (fun τ' j hj => ?_) fun τ' j hj => ?_)).trans (X.F.LL_single_neg _)
-  · by_cases e : τ' = τ
-    · subst e
-      simp [Pi.single_apply, Fin.ext_iff]
-    · have : τ'.1 ≠ τ.1 := fun h => e (Subtype.ext h)
-      simp [Pi.single_apply, e, this]
-  · have : conjEmb τ'.1 ≠ τ.1 := fun h => GlobalTheory.AllWt.conj_not_mem τ' (h ▸ τ.2)
-    have h2 : Dw.p + (Dw.q - 1 - j) ≠ i := by have := i.2; omega
-    by_cases e : τ' = τ
-    · subst e
-      simp [Pi.single_apply, Fin.ext_iff, this, h2]
-    · simp [Pi.single_apply, e, this]
-
-open Classical in
-
-theorem Llam_single_small (τ : Psi H) (i : Fin (Dw.mult (conjEmb τ.1)))
-    (hi : Dw.p + (Dw.q - 1 - i) < Dw.p + Dw.q) :
-    X.Llam (Pi.single τ (Pi.single ⟨_, hi⟩ (-1))) = GlobalTheory.CechPic.dual (X.gr (conjEmb τ.1) i) := by
-  have hq := mult_conj (Dw := Dw) τ
-  refine (congrArg X.F.LL (exOf_ext (by simp) (fun τ' j hj => ?_) fun τ' j hj => ?_)).trans (X.F.LL_single_one _)
-  · have : τ'.1 ≠ conjEmb τ.1 := fun h => GlobalTheory.AllWt.conj_not_mem τ (h ▸ τ'.2)
-    have h2 : (j : ℕ) ≠ Dw.p + (Dw.q - 1 - i) := by have := j.2; have := mult_of_mem (Dw := Dw) τ'; omega
-    by_cases e : τ' = τ
-    · subst e
-      simp [Pi.single_apply, Fin.ext_iff, this, h2]
-    · simp [Pi.single_apply, e, this]
-  · by_cases e : τ' = τ
-    · subst e
-      have : Dw.q - 1 - j = Dw.q - 1 - i ↔ (j : ℕ) = i := by have := i.2; have := j.2; omega
-      by_cases h : (j : ℕ) = i <;> simp [Pi.single_apply, Fin.ext_iff, this, h]
-    · have : conjEmb τ'.1 ≠ conjEmb τ.1 := fun h => e (Subtype.ext (by
-        rw [← GlobalTheory.AllWt.conjEmb_conjEmb τ'.1, h, GlobalTheory.AllWt.conjEmb_conjEmb]))
-      simp [Pi.single_apply, e, this]
-
-example (k k' : X.F.J) : (X.LL 0).g k k' = 1 := Finset.prod_eq_one fun _ _ => zpow_zero _
 
 end FlagCover
 

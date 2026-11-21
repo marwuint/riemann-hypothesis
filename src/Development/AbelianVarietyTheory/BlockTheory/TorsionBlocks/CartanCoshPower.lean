@@ -21,13 +21,6 @@ def cartanB {p q : ℕ} (g : UpqT p q) : Matrix (Fin p) (Fin q) ℂ :=
 def coshPow {p q : ℕ} (c : ℝ) (g : UpqT p q) : ℝ :=
   ∏ i ∈ Finset.range (min p q), Real.cosh (singVal (cartanB g) i) ^ (-c)
 
-def JacBound : Prop :=
-  ∀ (p q : ℕ) (B : Matrix (Fin p) (Fin q) ℂ),
-    polJ (pOf B) ≤ Real.exp (∑ i ∈ Finset.range (min p q),
-        2 * (((p + q : ℕ) : ℝ) - 2 * ((i : ℝ) + 1) + 1) * singVal B i) ∧
-      ∑ i ∈ Finset.range (min p q), 2 * (((p + q : ℕ) : ℝ) - 2 * ((i : ℝ) + 1) + 1) * singVal B i ≤
-        2 * (((p + q : ℕ) : ℝ) - 1) * ∑ i ∈ Finset.range (min p q), singVal B i
-
 def CoshFinite : Prop :=
   ∀ (p q : ℕ) (m : Measure (UpqT p q)), Formalism.IndefR.Lev.IsMinf m →
     ∀ c : ℝ, 2 * (((p + q : ℕ) : ℝ) - 1) < c → Integrable (coshPow c) m
@@ -191,13 +184,7 @@ theorem isCartan_cartanB {p q : ℕ} (g : UpqT p q) : IsCartan g (cartanB g) := 
     Matrix.mem_unitaryGroup_iff'.mpr (by simpa [star_eq_conjTranspose] using hb.2.2.2), ?_⟩
   rw [← hkb, hLp, hk, Matrix.mul_assoc, heE, Matrix.mul_one]
 
-theorem isCartan_iff {p q : ℕ} (g : UpqT p q) (B : Matrix (Fin p) (Fin q) ℂ) :
-    IsCartan g B ↔ cartanB g = B :=
-  ⟨cartanB_eq, fun h => h ▸ isCartan_cartanB g⟩
-
 theorem coshPow_pos {p q : ℕ} (c : ℝ) (g : UpqT p q) : 0 < coshPow c g :=
   Finset.prod_pos fun _ _ => Real.rpow_pos_of_pos (Real.cosh_pos _) _
-
-example {p : ℕ} (c : ℝ) (g : UpqT p 0) : coshPow c g = 1 := by simp [coshPow]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.CartanCoshPower

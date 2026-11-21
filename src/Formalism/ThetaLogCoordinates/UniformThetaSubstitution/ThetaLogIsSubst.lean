@@ -1,5 +1,6 @@
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.KernelFromKOneK
-import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.ThetaLogIsSubstitution
+import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.EdgeNoTrunc
+import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.EChain
 import Mathlib
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.StatementN
 

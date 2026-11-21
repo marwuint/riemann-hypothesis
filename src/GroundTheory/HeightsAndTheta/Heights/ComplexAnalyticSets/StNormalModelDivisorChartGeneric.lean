@@ -27,10 +27,6 @@ def NormalModelDivisorChartGeneric.Statement : Prop :=
         ∀ w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal, linEval u (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) = 0 →
           w ∉ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn B → NormalDivisorChartAtPoint M u d w
 
-theorem lineNormalDivisorChartAtPoint :
-    NormalDivisorChartAtPoint IndefiniteRowSideFullHecke.ComplexSets.lineDiagonalModel (fun _ => (1 : ℂ)) 0 0 :=
-  lineNormalDivisorChartAt 0 (IndefiniteRowSideFullHecke.ComplexSets.const_mem_zeroSetIn_lineDiagonal 0) rfl
-
 end
 
 end GroundTheory.Heights₂.Heights

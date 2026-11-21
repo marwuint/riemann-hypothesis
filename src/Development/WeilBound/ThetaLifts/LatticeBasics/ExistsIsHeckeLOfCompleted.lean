@@ -102,63 +102,6 @@ theorem isCMType_emb (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver
 
 variable {I : Type} [Fintype I]
 
-theorem exists_isHeckeL_of_completed {χ : Formalism.L2.Host.HChar E} {n : I → ℤ} {Λ : ℂ → ℂ} (h : IsCompletedL χ n Λ) :
-    ∃ L, IsHeckeL χ L := by
-  have hpi : (2 * (Real.pi : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)
-  have hA : ∀ (z : ℂ) i, (2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2))) ≠ 0 := fun z i =>
-    mul_ne_zero two_ne_zero (by rw [Ne, Complex.cpow_eq_zero_iff]; tauto)
-  refine ⟨fun z => Λ z * ∏ i, ((2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2)))⁻¹ *
-    (Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2))⁻¹), ?_, fun z hz => ?_⟩
-  · refine h.1.mul (Differentiable.fun_finsetProd fun i _ => ?_)
-    refine Differentiable.mul (fun z => ?_) ?_
-    · refine DifferentiableAt.inv ?_ (hA z i)
-      exact (((differentiableAt_id.add_const _).neg).const_cpow (Or.inl hpi)).const_mul 2
-    · exact Complex.differentiable_one_div_Gamma.comp (differentiable_id.add_const _)
-  · obtain ⟨L, h1, h2⟩ := h.2 z hz
-    have hz' : ∀ i, Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2) ≠ 0 := fun i => Complex.Gamma_ne_zero_of_re_pos (by
-      have h2 : (0:ℝ) ≤ |(n i : ℝ)| := abs_nonneg _
-      simp only [Complex.add_re, Complex.div_re, Complex.intCast_re, Complex.intCast_im]
-      norm_num
-      linarith)
-    convert h1 using 1
-    beta_reduce
-    rw [h2, mul_comm _ L, mul_assoc, archFactor, ← Finset.prod_mul_distrib, Finset.prod_eq_one, mul_one]
-    intro i _
-    rw [mul_mul_mul_comm, mul_inv_cancel₀ (hA z i), mul_inv_cancel₀ (hz' i), one_mul]
-
-theorem shift_ne {z k : ℤ} (h : 0 < 2 * z + |k|) (j : ℕ) : (z : ℂ) + ((|k| : ℤ) : ℂ) / 2 ≠ -j := fun e => by
-  have : ((2 * z + |k| : ℤ) : ℂ) = ((-2 * j : ℤ) : ℂ) := by push_cast at e ⊢; linear_combination 2 * e
-  have := Int.cast_injective this
-  omega
-
-theorem heckeL_ne_zero (hFE : GlobalTheory.Published.HeckeTateFunctionalEquation) [IsTotallyComplex E] {φ : I → E →+* ℂ} (hφ : IsCMType φ)
-    {χ : Formalism.L2.Host.HChar E} {n : I → ℤ} (hu : χ.IsUnitary) (hn : χ.HasInf φ n) (h0 : ∃ i, n i ≠ 0) :
-    ∃ L, IsHeckeL χ L ∧ ∀ z : ℤ, (∀ i, 0 < 2 * z + |n i|) → L z ≠ 0 := by
-  have hu' := GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu
-  obtain ⟨a, ha⟩ := GlobalTheory.Published.HeckeFEModel.exists_exponents χ⁻¹
-  obtain ⟨Λ', Λ, h', h, fe⟩ := hFE E I φ hφ χ⁻¹ (fun i => -n i) a hu' (GlobalTheory.Published.HeckeFEModel.hasInf_inv hn)
-    (h0.imp fun i hi => neg_ne_zero.2 hi) ha
-  simp only [inv_inv, neg_neg] at h
-  obtain ⟨L, hL⟩ := exists_isHeckeL_of_completed h
-  obtain ⟨L', hL'⟩ := exists_isHeckeL_of_completed h'
-  refine ⟨L, hL, fun z hz => ?_⟩
-  rcases le_or_gt 1 z with h1 | h1
-  · have e : ((z.toNat : ℕ) : ℂ) = (z : ℂ) := by rw [← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]
-    exact e ▸ hL.ne_zero_nat hu (by omega)
-  have e : (((1 - z).toNat : ℕ) : ℂ) = ((1 - z : ℤ) : ℂ) := by rw [← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]
-  have hL1 : L' ((1 - z : ℤ) : ℂ) ≠ 0 := e ▸ hL'.ne_zero_nat hu' (by omega)
-  have g1 : ∀ i (j : ℕ), ((1 - z : ℤ) : ℂ) + ((|-n i| : ℤ) : ℂ) / 2 ≠ -j := fun i =>
-    shift_ne (by have := abs_nonneg (-n i); omega)
-  have hpi : (2 * (Real.pi : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)
-  have hΛ' : Λ' ((1 - z : ℤ) : ℂ) ≠ 0 := by
-    rw [GlobalTheory.HeckeEps.completed_eq_mul h' hL' g1]
-    refine mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (mul_ne_zero two_ne_zero ?_)
-      (Complex.Gamma_ne_zero (g1 i))) hL1
-    rw [Ne, Complex.cpow_eq_zero_iff]; tauto
-  rw [fe, show 1 - ((1 - z : ℤ) : ℂ) = (z : ℂ) by push_cast; ring,
-    GlobalTheory.HeckeEps.completed_eq_mul h hL fun i => shift_ne (hz i)] at hΛ'
-  exact right_ne_zero_of_mul (right_ne_zero_of_mul hΛ')
-
 theorem eq_charL {χ : Chr F E} {H : Formalism.L2.Host.HChar E} (hu : H.IsUnitary) (hloc : ∀ W x, H.loc W x = locChar χ W x)
     {L : ℂ → ℂ} (hL : IsHeckeL H L) {s : ℂ} (hs : 1 < s.re) : L s = charL χ (∅ : Set (Pl F)) s := by
   have e : charFam χ = heckeFam H := funext fun w => by

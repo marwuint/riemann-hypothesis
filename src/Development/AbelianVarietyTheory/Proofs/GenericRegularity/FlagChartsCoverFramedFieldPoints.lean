@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCellChartOverFramedAffineOpenStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsIntegralSmoothChartFrameModuliStatement
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCellChartOverFramedAffineOpen
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsIntegralSmoothChartFrameModuli
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsTriangularReframeExistsAndUniqueStatement
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsIntegralPivotDecomposition
 
@@ -53,7 +53,7 @@ theorem atlas : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E :
     rfl
   let q : Sp L ⟶ Xo.XF c := pullback.lift y.x (spMap (algebraMap c.F L)) hcond
   obtain ⟨A, _, _, _, j, yA, hj, hp, hjs, hsm, hyA⟩ :=
-    GlobalTheory.T.exists_integral_smooth_chart_frame_moduli hS E H Dw l Xo c (q (IsLocalRing.closedPoint L))
+    _root_.GlobalTheory.LocalFrame.exists_integral_chart_frame hS E H Dw l Xo c (q (IsLocalRing.closedPoint L))
   obtain ⟨f, hf⟩ := exists_algHom_of_mem_range (pullback.snd _ _) j hjs q (pullback.lift_snd _ _ _) hp
   obtain ⟨z₀, hz₀⟩ := hBC A L f yA
   have hx : y.x = z₀.x := by
@@ -61,7 +61,7 @@ theorem atlas : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E :
     exact (pullback.lift_fst _ _ _).symm
   obtain ⟨g, ⟨hgu, hg⟩, -⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c L z₀).2 y hx
   choose σ u b h0 h1 hb e using fun τ => exists_perm_lower_upper (g τ) (hgu τ)
-  obtain ⟨C, hC⟩ := GlobalTheory.T.exists_flagCellChart_over_framedAffineOpen E H Dw l Xo c hBC h A j yA hj hjs hsm hyA σ
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.Reg.exists_fChart_cell E H Dw l Xo c hBC h A j yA hj hjs hsm hyA σ
   let x : FlagVar Dw → L := fun v => u v.1 (σ v.1 v.2.1.2) v.2.1.1
   have hu : ∀ τ, (lowM x τ).submatrix (σ τ).symm id = u τ := by
     intro τ

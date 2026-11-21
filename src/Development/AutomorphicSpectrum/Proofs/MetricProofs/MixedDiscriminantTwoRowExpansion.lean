@@ -6,8 +6,8 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
 import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PDiagFibreFubini
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SphereMeasureStereographicIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.XiPotentialHessianDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantCofactorExpansionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.XiPotentialHessianDecomposition
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDiscriminantCofactorExpansion
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EvalW
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights
 open scoped ComplexOrder
@@ -82,12 +82,12 @@ theorem mdisc_extract_two : ∀ (d : ℕ) (T : Fin 3 → Matrix (Fin d) (Fin d) 
   have h1 : ((d + 2).factorial : ℂ) * mdisc (fun r => blk ((u r 0 : ℂ) * e₀) (blk ((u r 1 : ℂ) * e₁) (M r))) =
       ∑ r, ((u r 0 : ℂ) * e₀) * (((d + 1).factorial : ℂ) *
         mdisc fun s => blk ((u (r.succAbove s) 1 : ℂ) * e₁) (M (r.succAbove s))) :=
-    (GlobalTheory.T.mixed_discriminant_cofactor_expansion (d + 1)).1 (fun r => (u r 0 : ℂ) * e₀) (fun r => blk ((u r 1 : ℂ) * e₁) (M r))
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.mdisc_split_fibre_direction (d + 1)).1 (fun r => (u r 0 : ℂ) * e₀) (fun r => blk ((u r 1 : ℂ) * e₁) (M r))
   have h2 : ∀ r : Fin (d + 2), ((d + 1).factorial : ℂ) *
       mdisc (fun s => blk ((u (r.succAbove s) 1 : ℂ) * e₁) (M (r.succAbove s))) =
       ∑ s, ((u (r.succAbove s) 1 : ℂ) * e₁) * ((d.factorial : ℂ) *
         mdisc fun t => M (r.succAbove (s.succAbove t))) := fun r =>
-    (GlobalTheory.T.mixed_discriminant_cofactor_expansion d).1 (fun s => (u (r.succAbove s) 1 : ℂ) * e₁) (fun s => M (r.succAbove s))
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.mdisc_split_fibre_direction d).1 (fun s => (u (r.succAbove s) 1 : ℂ) * e₁) (fun s => M (r.succAbove s))
   have h3 : ∀ (r : Fin (d + 2)) (s : Fin (d + 1)),
       (d.factorial : ℂ) * mdisc (fun t => M (r.succAbove (s.succAbove t))) =
       L (∏ t, evalW n₀ n₁ (rowW (u (r.succAbove (s.succAbove t))) (v (r.succAbove (s.succAbove t))))) := by

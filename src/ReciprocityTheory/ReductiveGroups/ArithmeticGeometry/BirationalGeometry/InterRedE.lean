@@ -14,14 +14,4 @@ theorem ptsIntegral_eq_mInt' (hE : ResExistsStatement) (hB : ResBridgeStatement)
       ReciprocityTheory.AnForm.M.mInt R.A (fun j => potOf R (L j)) (fun x => logNorm A s (R.lift x x)) :=
   ptsIntegral_eq_mInt hE hB goodProjExists R hP hL hA hs
 
-theorem stokes_of'' (hE : ResExistsStatement) (hB : ResBridgeStatement)
-    (hBP : ReciprocityTheory.AnForm.M.ByPartsSymmStatement) : ReciprocityTheory.ChartRestriction.G.Geo.StokesStatement :=
-  stokes_of' hE hB goodProjExists hBP
-
-theorem poincareLelong_of_resolution_atlas (hE : ResExistsStatement) (hB : ResBridgeStatement)
-    (hPL : ReciprocityTheory.AnForm.M.PoincareLelongStatement)
-    (hInd : ReciprocityTheory.AnForm.M.SNCInducedAtlasStatement) (hPush : ResDivPushStatement) :
-    ArithmeticPoincareLelongFormula :=
-  arithmeticPoincareLelong_of hE hB goodProjExists hPL hInd hPush
-
 end ReciprocityTheory.ChartRestriction.G.Geo

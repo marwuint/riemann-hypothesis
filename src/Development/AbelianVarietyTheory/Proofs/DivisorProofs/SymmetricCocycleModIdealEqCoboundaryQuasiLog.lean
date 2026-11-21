@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2InStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2In
 
 set_option autoImplicit false
 
@@ -130,7 +130,7 @@ theorem cocycle_lift : ∀ (p : ℕ) [Fact p.Prime] (O C : Type) [CommRing O] [C
     have h1 : swap c' - c' = ai • map (algebraMap O C) (swap c - c) := by
       rw [hc', swap_smul, map_sub, map_swap, smul_sub]
     rw [h1, coeff_smul, coeff_map, hb, map_mul, ← mul_assoc, mul_comm ai, hAai, one_mul]
-  obtain ⟨g', hg0, hglin, -, hgIn⟩ := GlobalTheory.T.swap_sub_in_of_cob2_in p O O C (RingHom.id O) hF d μ hlift ⊤ ⊤ le_rfl c'
+  obtain ⟨g', hg0, hglin, -, hgIn⟩ := _root_.GlobalTheory.symmetric_cocycle_is_coboundary_mod p O O C (RingHom.id O) hF d μ hlift ⊤ ⊤ le_rfl c'
     (Or.inl hμ) hc'0 hden hcob' hsw'
   have hcob1 : cob1 (up C μ) (A • g') = A • cob1 (up C μ) g' := formalCoboundary_smul hμc A g'
   have hlin : lin (A • g') = 0 := by

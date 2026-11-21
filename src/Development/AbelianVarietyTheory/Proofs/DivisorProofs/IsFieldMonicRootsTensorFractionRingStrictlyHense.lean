@@ -170,5 +170,3 @@ theorem isField_aic_tensor_fractionRing_of_strictlyHenselian :
 
 end GlobalTheory
 
-example : ∀ (A O : Type) [CommRing A] [IsDomain A] [CommRing O] [Algebra A O], AIC A → SH O → IndEt A O → IsField (O ⊗[A] FractionRing A) ∧ AIC (O ⊗[A] FractionRing A) :=
-  GlobalTheory.isField_aic_tensor_fractionRing_of_strictlyHenselian

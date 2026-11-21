@@ -247,20 +247,12 @@ def toRobba : AnnulusRing.halfOpen K r →ₐ[K] Robba K where
 
 @[simp] theorem coeff_toRobba (f : AnnulusRing.halfOpen K r) : (toRobba f).coeff = f.coeff := rfl
 
-theorem toRobba_injective : Function.Injective (toRobba : AnnulusRing.halfOpen K r → Robba K) :=
-  fun _ _ h => AnnulusRing.ext (congrArg Robba.coeff h)
-
 theorem toRobba_restrict {s : ℝ} [Fact (s < 1)] (hrs : r ≤ s) (f : AnnulusRing.halfOpen K r) :
     toRobba (restrict (J := Set.Ico s 1) (Set.Ico_subset_Ico_left hrs) f) = toRobba f := rfl
 
 end AnnulusRing
 
 namespace Robba
-
-theorem exists_toRobba (f : Robba K) : ∃ (r : ℝ) (_ : Fact (r < 1)) (g : AnnulusRing.halfOpen K r),
-    AnnulusRing.toRobba g = f := by
-  obtain ⟨r, hr, h⟩ := f.exists_convergesAt'
-  exact ⟨r, ⟨hr⟩, ⟨f.coeff, fun ρ hρ h0 => h ρ hρ.1 hρ.2 h0⟩, rfl⟩
 
 end Robba
 
@@ -379,25 +371,6 @@ theorem mem_bounded_of_mul_eq_one {f g : Robba K} (h : f * g = 1) : f ∈ bounde
     le_div_iff₀ hpos]
   exact this
 
-theorem isUnit_iff {f : Robba K} :
-    IsUnit f ↔ ∃ g : (bounded K)ˣ, ((g : bounded K) : Robba K) = f := by
-  constructor
-  · rintro ⟨u, rfl⟩
-    have h1 : (u : Robba K) ∈ bounded K := mem_bounded_of_mul_eq_one u.mul_inv
-    have h2 : ((u⁻¹ : (Robba K)ˣ) : Robba K) ∈ bounded K := mem_bounded_of_mul_eq_one u.inv_mul
-    exact ⟨⟨⟨u, h1⟩, ⟨_, h2⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩, rfl⟩
-  · rintro ⟨g, rfl⟩
-    exact (Units.map (bounded K).subtype.toMonoidHom g).isUnit
-
-theorem isUnit_iff_isUnit_bounded {f : Robba K} :
-    IsUnit f ↔ ∃ hf : f ∈ bounded K, IsUnit (⟨f, hf⟩ : bounded K) := by
-  rw [isUnit_iff]
-  constructor
-  · rintro ⟨g, rfl⟩
-    exact ⟨(g : bounded K).2, g.isUnit⟩
-  · rintro ⟨hf, u, hu⟩
-    exact ⟨u, by rw [hu]⟩
-
 end Robba
 
 namespace Laurent
@@ -434,10 +407,6 @@ theorem isUnit_single (k : ℤ) {c : K} (hc : c ≠ 0) : IsUnit (single k c) := 
   have h : single k c * single (-k) c⁻¹ = 1 := by
     rw [single_mul_single, add_neg_cancel, mul_inv_cancel₀ hc, single_zero_one]
   exact ⟨⟨single k c, single (-k) c⁻¹, h, by rw [mul_comm]; exact h⟩, rfl⟩
-
-def T : Robba K := single 1 1
-
-theorem isUnit_T : IsUnit (T : Robba K) := isUnit_single 1 one_ne_zero
 
 theorem single_mem_bounded (k : ℤ) (c : K) : single k c ∈ bounded K :=
   ⟨‖c‖, Set.forall_mem_range.2 fun n => by

@@ -105,35 +105,3 @@ private theorem descend {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H
     unfold W.GDet.lam
     rw [hchi, (AlgebraTools.Det.repApi _).2.1, (AlgebraTools.Det.repApi _).2.1, hm]
 
-theorem UpperTheory.V.Z.Ord.flagJ :
-    GlobalTheory.Mem.LiteralAutomorphy.LitN → FlagJ := by
-  intro H l _ L Ω _ _ _ _ _ _ s n V c r B Λ J hJ x h ρ hJx hA hx hirr v
-  have hn : 1 ≤ n := by
-    rcases Nat.eq_zero_or_pos n with rfl | h0
-    · exact absurd (Subsingleton.elim _ _) hirr.1
-    · exact h0
-  have hs : Function.Surjective V.pr := fun g => by
-    obtain ⟨τ, hτ⟩ : ∃ τ, toGS Ω V.S' τ = g.1 := QuotientGroup.mk_surjective g.1
-    obtain ⟨σ, rfl⟩ := (V.hη τ).1 (by rw [hτ]; exact g.2)
-    exact ⟨σ, Subtype.ext hτ⟩
-  have hF : Ws.Eb.Full ρ := (AlgebraTools.Det.irrIffSpan (W.mat ρ)).1 fun N hN => by
-    rcases hirr.2.2 N le_top fun g v hv => hN g v hv with h1 | h1
-    · exact Or.inl h1
-    · exact Or.inr h1
-  obtain ⟨ρ₀, rfl, hfull, hD⟩ := descend x.D V.pr hs ρ hn hF hx
-  obtain ⟨hO, -⟩ := Ws.Eb.relKill B x ρ₀ hfull hD
-  obtain ⟨g₀, hg₀⟩ := Th.Nm.regArith H s h v (x.psi v) hA.1 (hA.2 v)
-  refine flag_of_rel _ (x.psi v) (hO v) (fun t => ?_) g₀ hg₀
-  let xb : B.B ⧸ J →+* Qbar l := Ideal.Quotient.lift J (x : B.B →+* Qbar l) fun a ha => hJx ha
-  have e0 : xb.comp (Ideal.Quotient.mk J) = (x : B.B →+* Qbar l) := RingHom.ext fun a => rfl
-  have e1 : (B.DD J).map xb = W.GDet.ofRep (W.mat ρ₀) := by
-    have h1 : (B.DD J).map xb = B.u.D.map (xb.comp (Ideal.Quotient.mk J)) := (CA.d_gmap B.u.D).2.1 _ _
-    rw [h1, e0]
-    exact hD
-  have e2 := (AlgebraTools.Det.mapApi (B.DD J) xb).1 (MonoidAlgebra.single (V.frame.φ v t) 1)
-  rw [MonoidAlgebra.mapRingHom_single, map_one, e1, (AlgebraTools.Det.repApi _).2.1] at e2
-  refine e2.trans ((congrArg (Polynomial.map xb) (hJ.O1 v t)).trans ?_)
-  rw [Polynomial.map_prod]
-  refine Finset.prod_congr rfl fun i _ => ?_
-  simp only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]
-  rfl

@@ -1,7 +1,8 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantHeatOperatorActsOnFourierTermsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeibnizAlongBaseConstantsAtPointsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantHeatOperatorActsOnFourierTerms
+import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeibnizAlongBaseConstantsAtPoints
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeatOperatorConjTranslationGaugeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaShiftFourierTermTranslationGaugeStatement
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
@@ -46,13 +47,13 @@ theorem exists_conj_shift : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
   refine ⟨h', w, π, π', hb', hΘ, hu, ?_⟩
   intro k α σ σ₁ σ₁' hk hs hA
   obtain ⟨τ₁, τ₁', hτ₁, hτ₁', hA₁⟩ := hA
-  obtain ⟨σ'', τ, τ'', hτ, hτ'', hA'⟩ := GlobalTheory.T.torusInvariant_heatOperator_acts_on_fourierTerms R Dd O oa Y n v dd hv D h' hb' k α σ
+  obtain ⟨σ'', τ, τ'', hτ, hτ'', hA'⟩ := _root_.GlobalTheory.Heat.heat_acts_on_terms R Dd O oa Y n v dd hv D h' hb' k α σ
   obtain ⟨ρ, hρ⟩ := exists_gauge_translate Y x e he k τ₁
   obtain ⟨ρ', hρ'⟩ := exists_gauge_translate Y x e he k τ₁'
   have hAρ := hint k τ₁ τ₁' ρ ρ' hρ hρ' hA₁
   obtain ⟨a, b, -, hab⟩ := hTR k α hk
   obtain ⟨h1, h2⟩ := hab σ σ₁ τ τ₁ ρ hs hτ hτ₁ hρ
   exact ⟨σ'', ⟨τ, τ'', hτ, hτ'', hA'⟩, h2 σ'' σ₁' τ'' τ₁' ρ' hτ'' hτ₁' hρ'
-    (GlobalTheory.T.leibniz_along_baseConstants_at_points Y.H Y.q.left Dd.toPre.P.L Dd.toPre.P.isLB (fun a => v a) dd hv D h' k a b ρ τ ρ' τ'' h1 hAρ hA')⟩
+    (_root_.GlobalTheory.Heat.Heat.acts_const_at_points Y.H Y.q.left Dd.toPre.P.L Dd.toPre.P.isLB (fun a => v a) dd hv D h' k a b ρ τ ρ' τ'' h1 hAρ hA')⟩
 
 end GlobalTheory.HeatDefect

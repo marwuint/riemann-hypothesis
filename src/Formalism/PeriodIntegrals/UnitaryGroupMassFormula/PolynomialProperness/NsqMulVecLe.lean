@@ -14,8 +14,6 @@ theorem gvGroup : GVGroup := fun _ _ =>
   ⟨fun _ hg _ hh => GN.mul_mem hg hh,
     fun _ hg => ⟨GN.inv_eq hg, GN.inv_mem hg, GN.mul_inv hg, GN.inv_mul hg⟩⟩
 
-theorem gvHerm : GVHerm := fun _ _ _ hg v w => GN.herm_mulVec hg v w
-
 theorem normInv : NormInv := GN.polynomial_normInv
 
 theorem zhatBound : ZhatBound := GN.zhat_norm_linear_bound

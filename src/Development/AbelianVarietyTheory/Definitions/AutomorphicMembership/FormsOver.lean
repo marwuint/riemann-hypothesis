@@ -40,10 +40,6 @@ def Sig.wt (S : Sig A N j) (L : CmList A) : (D.what₂.Tau → Fin N → ℤ) �
   map_zero' := rfl
   map_add' _ _ := rfl
 
-example (S : Sig A N j) (L : CmList A) (la : D.what₂.Tau → Fin N → ℤ) (t : D.what₂.Tau) (i : Fin (S.Dw.p + S.Dw.q)) :
-    S.wt L la (L.ψ t) i = la t (Fin.cast S.rank_eq i) := by
-  simp [Sig.wt]
-
 def FinalTheorems.Lw (Φ : s.Flag) (k : s.Comp) : (D.what₂.Tau → Fin N → ℤ) →+ (Φ.C k).Y.Dv :=
   AddMonoidHom.mk' (fun la => (Φ.C k).Lw (S.wt L la)) fun a b => by
     have h := GlobalTheory.AllWt.exOf_add (Dw := S.Dw) (S.wt L a) (S.wt L b) 0 0
@@ -112,16 +108,11 @@ def famOf (hg : F.κg.primes = Finset.univ.image D.host.g) (P : FormsOver K R k)
   U := shimOf K R k
   forms := P
 
-example (hg : F.κg.primes = Finset.univ.image D.host.g) (P : FormsOver K R k) (w : Dat D (Lv A)) :
-    ((famOf K R k hg P).U w).Comp = (F.at w).Comp := rfl
-
 end Fam
 
 section Comparison₂
 
 def ambOf (Q : Par D) (h : Q.PinHost) : Amb D := ⟨Q.H, h.1, h.2.1, h.2.2.1⟩
-
-example (Q : Par D) (h : Q.PinHost) : (ambOf Q h).H = Q.H := rfl
 
 abbrev MD {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : Type 1 :=
   Σ (l : Level H) (Dw : Datum H), Moduli Dw l
@@ -154,9 +145,6 @@ structure FormsAre (P : FormsOver K R k) : Prop where
     ∃ e : P.Pt j la ≃ T.PtA j la', (∀ y, j < D.R.m → HEq (P.pt66 j la y) (imgV (e y))) ∧
       ∀ y w (f : P.Cusp j w) (f' : (recB h.toLawsCore).Cusp j w), HEq f f' → P.vAtC j la y w f = vAtV (e y) f'.1
   th : ∀ j (hj : InR D j) w, HEq (P.thAll j w) ((recPJ h j hj).thAll w) ∧ HEq (P.shortTh j w) ((recPJ h j hj).shortTh w)
-
-def PtsTie : Prop := ∀ j, 1 ≤ j → j < D.R.m → ∀ p,
-  T.G.PY j p = ((k.at (datW D F.κg j)).pad.loc p).Pt ((k.at (datW D F.κg j)).pad.loc p).YY
 
 end Comparison₂
 

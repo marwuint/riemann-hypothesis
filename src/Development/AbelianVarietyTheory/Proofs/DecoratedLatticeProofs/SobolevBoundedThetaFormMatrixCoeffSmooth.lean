@@ -8,8 +8,8 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDa
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ComplexEmbeddingHermitianQuadrupleSum
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergTranslateThetaContinuousDifferentiableStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasFDerivAtOfContinuousCoordinatePartialsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDerivAtSobolevThetaFormHeisenbergAlongRealLinStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasFDerivAtOfContinuousCoordinatePartials
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HasDerivAtSobolevThetaFormHeisenbergAlongRealLin
 
 noncomputable section
 
@@ -35,7 +35,7 @@ theorem contDiff_of_partials {k : ℕ} (P : ((Fin k → ℝ) → ℂ) → Prop) 
       choose m a H ha hH hD using hd F hF
       have hGc : ∀ i, Continuous fun t => ∑ j, a i j t * H i j t := fun i =>
         continuous_finset_sum _ fun j _ => ((ha i j).continuous).mul (hc _ (hH i j))
-      have hfd := GlobalTheory.T.hasFDerivAt_of_continuous_coordinate_partials k F (fun i t => ∑ j, a i j t * H i j t) hGc hD
+      have hfd := _root_.GlobalTheory.hasFDerivAt_of_continuous_coordinate_line_derivs k F (fun i t => ∑ j, a i j t * H i j t) hGc hD
       have hfe : fderiv ℝ F = fun t => ∑ i, (∑ j, a i j t * H i j t) •
           (ContinuousLinearMap.proj i : (Fin k → ℝ) →L[ℝ] ℝ).smulRight (1 : ℂ) := by
         funext t
@@ -221,7 +221,7 @@ theorem matCoef_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
         rw [map_add, add_assoc, ← this]
         rfl
       rw [e]
-      convert GlobalTheory.T.hasDerivAt_sobolevThetaForm_heisenberg_along_real_line D ψ hψ θ hθ S T ℓ hℓ f hf M hM hMf (u + L t) using 1
+      convert _root_.GlobalTheory.MatCoeffDeriv.hasDerivAt_form_heisO_line D ψ hψ θ hθ S T ℓ hℓ f hf M hM hMf (u + L t) using 1
       simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_mul]
       ring
 

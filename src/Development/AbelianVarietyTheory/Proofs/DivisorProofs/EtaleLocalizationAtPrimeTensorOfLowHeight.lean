@@ -23,9 +23,4 @@ theorem etale_localization_of_etaleLow : ∀ (A R C O : Type) [CommRing A] [Comm
   exact Algebra.Etale.of_equiv (Algebra.TensorProduct.cancelBaseChange R
     (Localization.AtPrime (Q.comap (algebraMap R O))) (Localization.AtPrime Q) (Localization.AtPrime Q) C)
 
-example : ∀ (A R C O : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing C] [Algebra R C]
-    [CommRing O] [Algebra R O] (Q : Ideal O) [Q.IsPrime],
-    GlobalTheory.GoodEtale.EtaleLow A R C → ((Q.comap (algebraMap R O)).comap (algebraMap A R)).height ≤ 1 →
-    Algebra.Etale (Localization.AtPrime Q) (Localization.AtPrime Q ⊗[R] C) := etale_localization_of_etaleLow
-
 end GlobalTheory.GoodEtale

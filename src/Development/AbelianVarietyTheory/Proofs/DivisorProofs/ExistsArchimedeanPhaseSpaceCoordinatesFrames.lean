@@ -31,7 +31,7 @@ theorem exists_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
           φ c = φ₀ (GlobalTheory.ArchUniq.locV (d.e u).1, GlobalTheory.ArchUniq.locV (d.e u).2) := by
   intro F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S τ JA JB d a₀ b₀ A C hCM hFr
   have hU := fun c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ =>
-    GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM (fun w => A w * c w * (C w)ᵀ)
+    _root_.GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hCM (fun w => A w * c w * (C w)ᵀ)
   choose U hU hU' using hU
   have hadd : ∀ c c', U (c + c') = U c + U c' := fun c c' => by
     refine (hU' (c + c') _ ⟨fun u hu => ?_, fun w => ?_⟩).symm

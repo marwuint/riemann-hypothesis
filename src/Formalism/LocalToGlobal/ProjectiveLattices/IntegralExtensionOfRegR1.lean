@@ -9,10 +9,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAl
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
-def RegularityR1 (X : PJ D B P j) (E : PtExt X) : Prop :=
-  ∀ w (F : B.Cusp j w), (∀ la (y : X.Pt la), 0 ≤ X.vAt la y (X.inc w F)) →
-    ∀ la (y' : E.Pt' la), 0 ≤ E.vAt' la y' (X.inc w F)
-
 def RegularityR2 (X : PJ D B P j) (E : PtExt X)
     (NoZero : ∀ {wL : WeightFamilies.Wt D j} {n : ℕ}, (Fin n → B.Cusp j wL) → Prop) : Prop :=
   (∀ (wL wE : WeightFamilies.Wt D j) (n : ℕ) (gens : Fin n → B.Cusp j wL) (et : B.Cusp j wE)
@@ -54,17 +50,6 @@ theorem iInf_span_eq {X : PJ D B P j} {wL : WeightFamilies.Wt D j} {n : ℕ} (g 
         calc (⨅ k, v (X.inc wL (g k))) = 0 + ⨅ k, v (X.inc wL (g k)) := (zero_add _).symm
           _ ≤ _ := add_le_add h0 hx
 
-def RegTrivK (X : PJ D B P j) (Q : Type) (ord : Q → X.Forms → EReal) : Prop :=
-  (∀ w (F : B.Cusp j w), (∀ la (y : X.Pt la), 0 ≤ X.vAt la y (X.inc w F)) →
-    ∀ q, 0 ≤ ord q (X.inc w F)) ∧
-  (∀ (wL wE : WeightFamilies.Wt D j) (M : Submodule (𝓞 B.KO) (B.Cusp j wL)) (et : B.Cusp j wE)
-    (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (c : ℝ), 0 ≤ c →
-    (∀ la (y : X.Pt la), 0 ≤ X.vAt la y (X.inc wE et) ∧ (X.vAt la y (X.inc wE et) ≠ ⊤ →
-      (⨅ F ∈ M, X.vAt la y (X.inc wL F)) ≤
-        (((nus la : ℝ) + c * (X.vAt la y (X.inc wE et)).toReal : ℝ) : EReal))) →
-    ∀ q, 0 ≤ ord q (X.inc wE et) ∧ (ord q (X.inc wE et) ≠ ⊤ →
-      (⨅ F ∈ M, ord q (X.inc wL F)) ≤ ((c * (ord q (X.inc wE et)).toReal : ℝ) : EReal)))
-
 def gd2Xplus {ka wL wF : WeightFamilies.Wt D j} {X : PJ D B P j} (G : GlobalFamilyData X ka wL wF) (E : PtExt X)
     (hM : IntAtExt X E) : GlobalFamilyData (xplus X E hM) ka wL wF :=
   ⟨G.N, G.w, G.del, G.th', G.rz, G.alz, G.th0, G.zc, G.rq, G.th, G.iet, G.et, G.mx⟩
@@ -100,19 +85,5 @@ theorem combBound_xplus {ka wL wF : WeightFamilies.Wt D j} (X : PJ D B P j) (E :
     · have := hR2.2 wL G.N G.w nus hNZ (fun la' y => by have h := (hX la' y).2 hj; rw [dX] at h; exact h) la y1
       show (⨅ F ∈ X.WWc S.sW wL, E.vAt' la y1 (X.inc wL F)) ≤ _
       rw [dE]; exact this
-
-section l2NormAlt
-
-variable (N : ∀ j ka, (B.KO →+* ℂ) → B.Cusp j ka → ℝ)
-    (h0 : ∀ j ka σ F, 0 ≤ N j ka σ F) (h1 : ∀ j ka σ F, N j ka σ F = 0 ↔ F = 0)
-    (h2 : ∀ j ka σ (a : B.KO) F, N j ka σ (a • F) = ‖σ a‖ * N j ka σ F)
-    (h3 : ∀ j ka σ F G, N j ka σ (F + G) ≤ N j ka σ F + N j ka σ G)
-    (h4 : ∀ j ka σ F, N j ka σ F ≤ B.supN j ka σ F)
-
-def gd2XplusN {ka wL wF : WeightFamilies.Wt D j} {X : PJ D B P j} (G : GlobalFamilyData X ka wL wF) (E : PtExt X)
-    (hM : IntAtExt X E) : GlobalFamilyData (xplusN N h0 h1 h2 h3 h4 X E hM) ka wL wF :=
-  ⟨G.N, G.w, G.del, G.th', G.rz, G.alz, G.th0, G.zc, G.rq, G.th, G.iet, G.et, G.mx⟩
-
-end l2NormAlt
 
 end Formalism.L2.Pj

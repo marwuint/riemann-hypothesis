@@ -154,21 +154,11 @@ open Formalism.BasicNotions (Ranks)
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
-theorem kj_le_N (R : Ranks) (j : ℕ) : R.k + j ≤ R.N j := by
-  simp only [Ranks.N, Nat.mul_add, Nat.mul_one]
-  omega
-
 theorem N_eq_blocks (R : Ranks) (j : ℕ) : R.N j = (R.k + j) + j * R.t := by
   simp only [Ranks.N, Nat.mul_add, Nat.mul_one]
   omega
 
 instance neZeroN (R : Ranks) (j : ℕ) : NeZero (R.N j) := ⟨(R.N_pos j).ne'⟩
-
-def colP (Ch : Chars X Pr R.m) (j : ℕ) : LevFam X.E X.K (R.k + j) Pr.vGs := fun w =>
-  ⟨HU (𝓞 X.E ⧸ w.1.asIdeal) (R.k + j), supChar (Ch.psi0 w) (R.k + j) (R.k + j) [] (SX R.k R.m j)⟩
-
-def colDat (Ch : Chars X Pr R.m) (j : ℕ) : Formalism.L2.DIV.LevDat X.E X.K (R.N j) :=
-  parDat (kj_le_N R j) R.t j (colP Ch j) fun w => extChi fun s => Ch.chi s w
 
 def colLevS (Ch : Chars X Pr R.m) (j : ℕ) : LevFam X.E X.K (R.N j) Pr.vGs := fun w =>
   if j + 1 < R.m then colLev Ch j w
@@ -179,16 +169,10 @@ def colLevS (Ch : Chars X Pr R.m) (j : ℕ) : LevFam X.E X.K (R.N j) Pr.vGs := f
     ⟨HXmsharp (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.r R.t R.m,
       lamXmsharp (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N j) R.k R.r R.t R.m⟩
 
-@[reducible] def colGSDS (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (u : Pr.Word) (j : ℕ) : GSD X.K :=
-  formGSD (colVal W u j (Pr.vT u) Pr.vGs) (colLevS Ch j)
-
 variable (hc : Formalism.BasicNotions.CMData X.F X.E) (Ch : Chars X Pr R.m)
 
 def colU (u : Pr.Word) (j : ℕ) : Subgroup (GL (Fin (R.N j)) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) :=
   levU hc (R.N j) (Pr.vT u) Pr.vGs (colLev Ch j).grp
-
-def colUS (u : Pr.Word) (j : ℕ) : Subgroup (GL (Fin (R.N j)) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) :=
-  levU hc (R.N j) (Pr.vT u) Pr.vGs (colLevS Ch j).grp
 
 open Classical in
 
@@ -196,13 +180,6 @@ def diaT (u : Pr.Word) : DiaG X.E (Pr.vT u) := fun P =>
   if h : IsUnit (Ideal.Quotient.mk P.1.asIdeal (X.conjO (Pr.piT u))) then h.unit else 1
 
 def colDia (R : Ranks) (u : Pr.Word) (j : ℕ) : DiaG X.E (Pr.vT u) := if j < R.m then 1 else diaT u
-
-def colPt (u : Pr.Word) (j : ℕ) (d : ColDeco X Pr u (R.N j)) : UAd hc (R.N j) :=
-  ptOfD hc (R.N j) (Pr.vT u) Pr.vGs (colDia R u j) d
-
-def colTyp (u : Pr.Word) (j : ℕ) : colU hc Ch u j →* X.Kˣ := levTyp (colLev Ch j).chr
-
-def colTypS (u : Pr.Word) (j : ℕ) : colUS hc Ch u j →* X.Kˣ := levTyp (colLevS Ch j).chr
 
 end Cols
 

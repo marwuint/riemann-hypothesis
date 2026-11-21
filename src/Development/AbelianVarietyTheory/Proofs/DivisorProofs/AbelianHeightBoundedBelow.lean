@@ -1,11 +1,25 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RatValEqValAt
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClosedPointGeometricFibresFinite
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValAtAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallSectionHeightLowerBound
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharZeroResidueField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerOfInducedBundleGeneratedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonzeroLocusSectionPullbackExtendsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CartierLocalEquationCommon
+import Development.AbelianVarietyTheory.Definitions.Divisors.EqOfSpecializesOfFinite
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinsumLengthMulLogCardEqNegLogAdicAbvNorm
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemEqnSetOmegaCoeff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrictPosOfExists
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GenericallySmoothModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCoordsBaseChange
+import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.AApproxC
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NefFibOfInducedOfInduced
+import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemSupportBDIff
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmulSecNonzeroOnSpecialFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfIntersectionLowerHeight
 
 set_option autoImplicit false
 
@@ -60,43 +74,6 @@ theorem small_of_shift : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶
   calc ((L.pow m).φ σ).nsq (CxPts.secVal p σ s) y * Real.exp (-(2 * (m : ℝ) * -(-(Real.log K' / 2))))
       ≤ K' * K'⁻¹ := mul_le_mul ((hK σ y).trans (hK' σ)) h2 (Real.exp_pos _).le hpos.le
     _ = 1 := mul_inv_cancel₀ hpos.ne'
-
-theorem htLow (hE : GlobalTheory.Published.ArExists) (F : Type) [Field F] [NumberField F] (Y : Var F) (A : Adl (cxSt F) Y)
-    (M : TrueGeo.Model Y) (L : HermLB M.p) (q : ℕ+) (hI : A.Induced M L q 0) (hA : Y.ample A.D) :
-    ∃ C : ℝ, ∀ x : Y.X, IsClosed ({x} : Set Y.X) → -C ≤ A.ht x := by
-  have := M.ar.isIntegral
-  obtain ⟨m, hm, N, t, ht⟩ := GlobalTheory.T.power_of_induced_bundle_generated F (cxSt F) Y A M L q 0 hI hA
-  have hs : ∀ i, ∃ s : (L.pow m).B.Sec, ∀ y : Y.X,
-      M.j y ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s ↔ y ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (t i) :=
-    fun i => GlobalTheory.T.nonzero_locus_section_pullback_extends F Y M _ (L.pow m).isLB (t i)
-  choose s hs using hs
-  have hc : ∀ i, ∃ c : ℝ, s i ∈ ((L.shift (fun _ => -c) fun _ => rfl).pow m).smallSec :=
-    fun i => small_of_shift (𝓞 F) M.X M.p Y.dim M.ar L m hm (s i)
-  choose c hc using hc
-  obtain ⟨h, H⟩ := (hE _ M.X M.p _ M.ar).1 L
-  have hk : (0 : ℝ) < ((q : ℕ) : ℝ) * (A.n : ℕ) := mul_pos (Nat.cast_pos.2 q.pos) (Nat.cast_pos.2 A.n.pos)
-  refine ⟨(∑ i, |c i|) / (((q : ℕ) : ℝ) * (A.n : ℕ)), fun x hx => ?_⟩
-  obtain ⟨i, hi⟩ : ∃ i, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (t i) :=
-    TopologicalSpace.Opens.mem_iSup.1 (ht.ge (Set.mem_univ x))
-  have hN : (0 : ℝ) < Nat.card (M.X.residueField (M.j x) →+* ℂ) :=
-    Nat.cast_pos.2 (NefModel.card_pos M hx)
-  have hb : IsPtHt L (M.j x) (h (M.j x) / Nat.card (M.X.residueField (M.j x) →+* ℂ)) :=
-    ⟨h, H, (div_mul_cancel₀ _ hN.ne').symm⟩
-  have h1 := GlobalTheory.SmallSecHeight.le_ptHt (𝓞 F) M.X M.p Y.dim M.ar L m (c i) _ (M.j x) (s i) hm (hc i)
-    ((hs i x).2 hi) (ClosedAlg.isAlgPt_of_isClosed F Y M x hx) hb
-  rw [HtModel.ht_eq F _ Y A M L q hI x _ hx hb]
-  have h2 : -(∑ j, |c j|) ≤ c i :=
-    (neg_le_neg (Finset.single_le_sum (fun j _ => abs_nonneg (c j)) (Finset.mem_univ i))).trans (neg_abs_le _)
-  rw [← neg_div]
-  exact div_le_div_of_nonneg_right (h2.trans h1) hk.le
-
-theorem main : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ c : O.s.Comp, ∃ C : ℝ,
-    ∀ b : (O.var c).X, IsClosed ({b} : Set (O.var c).X) → -C ≤ (O.met.ab c).ht b := by
-  intro hP _ D O hO c
-  obtain ⟨x, P, h⟩ := hO
-  obtain ⟨M, L, q, hI, -⟩ := P.ab_model c
-  rw [h.ab_eq]
-  exact htLow hP.p4.arExists _ _ _ M L q hI (P.ab_ample c)
 
 end GlobalTheory.AmpleHtLow
 

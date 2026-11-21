@@ -130,12 +130,7 @@ theorem IndexLeDet.full : IndexLeDet.Statement E := IndexLeDet.proof E
 
 theorem WeightedNormSq.full : WeightedNormSq.Statement E := WeightedNormSq.proof E
 
-theorem IdealClassesFinite.full : IdealClassesFinite.Statement E := IdealClassesFinite.proof E
-
 theorem IntegralFamilyBound.full : IntegralFamilyBound.Statement E := IntegralFamilyBound.proof E
-
-theorem CongruenceUnitsFiniteIndex.full : CongruenceUnitsFiniteIndex.Statement E :=
-  CongruenceUnitsFiniteIndex.proof E
 
 theorem WeightedSpaceDim.full [IsTotallyComplex E] : WeightedSpaceDim.Statement E :=
   WeightedSpaceDim.proof E

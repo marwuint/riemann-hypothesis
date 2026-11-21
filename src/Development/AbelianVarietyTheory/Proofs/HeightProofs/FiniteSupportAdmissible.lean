@@ -10,12 +10,6 @@ namespace GlobalTheory
 
 namespace AdmissibleFiniteSupport
 
-variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
-  {Ω : ι → Type} [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)]
-  {WT : Type} [AddCommGroup WT]
-  {A : ι → Type} [∀ c, CommRing (A c)] [∀ c, Algebra (Ω c) (A c)] [∀ c, Algebra K (A c)]
-  [∀ c, Algebra (𝓞 K) (A c)]
-
 end AdmissibleFiniteSupport
 
 open NumberField in

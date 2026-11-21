@@ -54,34 +54,4 @@ theorem primeOrderFinrank : PrimeOrderFinrank := by
     have := LinearMap.congr_fun hf1 v
     simpa [f] using this
 
-theorem primePowerSubgroupTrivial : PrimePowerSubgroupTrivial := by
-  intro K _ _ n g Γ hg hfin hcard hlt
-  obtain ⟨e, he⟩ := hcard
-  rw [Subgroup.eq_bot_iff_forall]
-  intro γ hγ
-  by_contra hne
-  set x : Γ := ⟨γ, hγ⟩ with hxdef
-  have hx : x ≠ 1 := fun h => hne (congrArg Subtype.val h)
-  have hdvd : orderOf x ∣ g ^ e := by
-    rw [← he]
-    exact orderOf_dvd_natCard x
-  obtain ⟨m, -, hm⟩ := (Nat.dvd_prime_pow hg).1 hdvd
-  have hm0 : m ≠ 0 := by
-    rintro rfl
-    exact hx (orderOf_eq_one_iff.1 (by simpa using hm))
-  set y := x ^ (g ^ (m - 1)) with hy
-  have hyg : y ^ g = 1 := by
-    rw [hy, ← pow_mul, ← pow_succ, Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 hm0), ← hm,
-      pow_orderOf_eq_one]
-  have hy1 : y ≠ 1 := by
-    intro h
-    have h3 := orderOf_dvd_of_pow_eq_one (show x ^ (g ^ (m - 1)) = 1 from h)
-    rw [hm] at h3
-    have := (Nat.pow_dvd_pow_iff_le_right hg.one_lt).1 h3
-    omega
-  have key := primeOrderFinrank K n g ((y : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) hg
-    (by rw [← Units.val_pow_eq_pow_val, ← Subgroup.coe_pow, hyg]; rfl)
-    (fun h => hy1 (Subtype.ext (Units.ext (by simpa using h))))
-  omega
-
 end Formalism.LogVandermondeBounds.StandardLattice

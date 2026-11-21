@@ -1,4 +1,4 @@
-import Formalism.LocalToGlobal.CharacterGerms.RowTieUpF
+import Formalism.LocalToGlobal.CharacterGerms.ChartHypothesisOfCharacters
 import Formalism.LocalToGlobal.CharacterGerms.RowTiePFBMapSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 
@@ -53,10 +53,6 @@ theorem isChar_of_isCh (Y : FBChart C V OE dd) (hR : ∀ x : R, V.Ge 0 (algebraM
       rw [hF i]
     rw [e] at h
     exact h
-
-theorem dlogC_toC (u : PS R 1 dd) (i : Fin dd) : dlogC (toC u) i = algebraMap R C (dl u i) := by
-  unfold dlogC dl
-  rw [MvPowerSeries.coeff_map]
 
 end Series
 
@@ -121,71 +117,6 @@ theorem frobSum_conj_all {d : ℕ} {l : ℕ} (hl : 1 < l) (n j j' : ℕ) (q : ZM
   ring
 
 end Sum
-
-section Core
-
-variable {C : Type} [Field C] [CharZero C] {V : VF C} {OE : Type} [CommRing OE] [StarRing OE] {dd : ℕ} {d : ℕ} [NeZero d]
-  {I : Fin 2 → Type} [∀ g, Fintype (I g)]
-
-def rk {Y : FBChart C V OE dd} (p : PairData Y d I) (g : Fin 2) (b : ZMod d) : ℕ :=
-  (Finset.univ.filter fun c : I g => p.ty g c = b).card
-
-def AFBound (Y : FBChart C V OE dd) (p : PairData Y d I) (vm : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C]
-    (FR : Fin dd → PS R 2 dd) : Prop :=
-  ∀ g a, p.big g a → ∃ (s : ℕ) (e : Fin s ≃ {x : I g // p.ty g x = a}) (W : Fin s → Fin dd → R) (xs : NNReal),
-    (∀ c i, algebraMap R C (W c i) = p.u g (e c) i) ∧ HasAF vm FR W xs ∧
-      vm (V.l : C) ^ (S4.frobSum V.l (rk p (1 - g)) a) ≤ xs
-
-theorem upChar_of_afBound (Y : FBChart C V OE dd) (p : PairData Y d I) (hr : (Y.raw p).RankHyp)
-    (Hc : ∀ g, (Y.raw p).CartHyp V g) (vm : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C]
-    (hT : ValTie V vm) (hv : vm.Integers R) (h0 : 0 < (vm (V.l : C) : ℝ)) (h1 : (vm (V.l : C) : ℝ) < 1)
-    (FR : Fin dd → PS R 2 dd) (hF : ∀ i, Y.B.G.F i = toC (FR i))
-    (hF0 : ∀ i, MvPowerSeries.constantCoeff (FR i) = 0) (h : AFBound Y p vm R FR) : UPCharSt Y p Hc := by
-  have hR : ∀ x : R, V.Ge 0 (algebraMap R C x) := fun x => vA_nonneg hT hv h0 h1 x
-  have hl1 : 1 < V.l := V.l_prime.one_lt
-  have key : ∀ g a, ∃ (N : ℕ) (u : Fin N → PS C 1 dd), (∀ k, Y.IsChar (u k)) ∧ (p.big g a →
-      ∃ e : Fin (pT (fun g => RawChart.cart (Hc g)) g a) ≃ {x : I g // (RawChart.cart (Hc g)).ty (Sum.inl x) = a},
-        S4.lenCoker V.v (Matrix.of fun c k => p.yOf g (u k) (e c)) ≤
-          ((S4.frobSum V.l (rk p (1 - g)) a : ℝ) : WithTop ℝ)) := by
-    intro g a
-    by_cases hb : p.big g a
-    · obtain ⟨s, e, W, xs, hW, ⟨N, u, hu, hx⟩, hS⟩ := h g a hb
-      have hs : s = pT (fun g => RawChart.cart (Hc g)) g a := by
-        have := Fintype.card_congr e
-        rw [Fintype.card_fin, Fintype.card_subtype] at this
-        exact this
-      subst hs
-      refine ⟨N, fun k => toC (u k), fun k => isChar_of_isCh Y hR FR hF hF0 (hu k), fun _ => ⟨e, ?_⟩⟩
-      have := lenCoker_le_of_hasLen hT hv h0 h1 W u hx hS
-      simp only [hW] at this
-      exact this
-    · exact ⟨0, fun k => k.elim0, fun k => k.elim0, fun hb' => absurd hb' hb⟩
-  choose N u hu he using key
-  let eq : ∀ g, (Σ a : ZMod d, Fin (N g a)) ≃ Fin (Fintype.card (Σ a : ZMod d, Fin (N g a))) := fun g => Fintype.equivFin _
-  refine ⟨fun g => Fintype.card (Σ a : ZMod d, Fin (N g a)),
-    fun g i => u g ((eq g).symm i).1 ((eq g).symm i).2, fun g i => hu g _ _, fun g a hb => ?_⟩
-  obtain ⟨e, hle⟩ := he g a hb
-  have hle' : S4.lenCoker V.v (Matrix.of fun c i => p.yOf g (u g ((eq g).symm i).1 ((eq g).symm i).2) (e c)) ≤
-      ((S4.frobSum V.l (rk p (1 - g)) a : ℝ) : WithTop ℝ) := by
-    refine le_trans (lenCoker_mono V.v _ (fun k : Fin (N g a) => eq g ⟨a, k⟩)) ?_
-    have e3 : (Matrix.of fun c i => p.yOf g (u g ((eq g).symm i).1 ((eq g).symm i).2) (e c)).submatrix id
-        (fun k : Fin (N g a) => eq g ⟨a, k⟩) = Matrix.of fun c k => p.yOf g (u g a k) (e c) := by
-      ext c k
-      simp only [Matrix.submatrix_apply, Matrix.of_apply, id]
-      rw [Equiv.symm_apply_apply]
-    rw [e3]
-    exact hle
-  have hc1 : ∀ b, p.big g b → rk p (1 - g) b = p.j' := fun b hb' =>
-    hr.rk_small (1 - g) b (fun hh => (hr.big_compl g b).mp hh hb')
-  have hc2 : ∀ b, ¬ p.big g b → rk p (1 - g) b = p.n + p.j := fun b hb' =>
-    hr.rk_big (1 - g) b ((hr.big_compl g b).mpr hb')
-  refine ⟨e, fun hA => ?_, fun hB => ?_⟩
-  · rw [← frobSum_conj_alt hl1 p.n p.j p.j' (p.big g) (alt_step p.big hr.big_compl hA g) (rk p (1 - g)) hc1 hc2 a hb]
-    exact hle'
-  · rw [← frobSum_conj_all hl1 p.n p.j p.j' (rk p (1 - g)) (fun b => hc1 b (hB b)) a]
-    exact hle'
-
-end Core
 
 end UpFBr
 

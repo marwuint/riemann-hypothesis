@@ -1,20 +1,22 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChosenSeries
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitary
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealIntertwinerOfCompactGroupIntertwiner
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactExponentialSurjective
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluingLawHoldsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFockPolynomialIsoUnitaryPairStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsContractionIsometricDiscreteSeriesFockStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsContractionIsometricDiscreteSeriesFock
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalFockIntertwinerRealPlaceOfCoverContraStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGlobalFockIntertwinerTensorRealPlacesStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesPureInnerProductsTensorProductStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NotLocallyFiniteQuadraticMulAddDegreeNonraisingStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NotLocallyFiniteQuadraticMulAddDegreeNonraising
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockSourceGlActionEqQuadraticAddNonRaisingStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockTargetGlActionEqQuadraticAddNonRaisingStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EquivariantOfGeneratorOneParameterGroupStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EquivariantOfGeneratorOneParameterGroup
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemMaximalCompactOfMapsFockVectorToFockStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubstitutionTotalDegreeLeStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubstitutionTotalDegreeLe
 
 noncomputable section
 
@@ -95,7 +97,7 @@ theorem not_locFin {σ : Type} [Finite σ] {A : Module.End ℂ (MvPolynomial σ 
     ¬ ∀ m : ℕ, ((A + c • 1) ^ m) φ ∈ F := by
   obtain ⟨Q, L, hQ, hh, hL, rfl⟩ := h
   rw [add_assoc]
-  refine GlobalTheory.T.not_locallyFinite_quadraticMul_add_degreeNonraising σ Q (L + c • 1) hQ hh (fun P => ?_) φ hφ F hF
+  refine _root_.GlobalTheory.Chain.RealIt.not_locallyFinite_mulLeft_add σ Q (L + c • 1) hQ hh (fun P => ?_) φ hφ F hF
   exact (MvPolynomial.totalDegree_add _ _).trans (max_le (hL P) (MvPolynomial.totalDegree_smul_le c P))
 
 variable {D : D7}
@@ -176,7 +178,7 @@ theorem compact_action_preserves_polynomial_degree (hθ : IsInfFam θ) {τ : D.w
   have := h k hk 1 (one_mem_K _) P
   rw [elt_one hθ M'] at this
   refine ⟨_, ?_, this.trans (map_smul (ptL ψ θ M M' f) _ _).symm⟩
-  exact (MvPolynomial.totalDegree_smul_le _ _).trans (GlobalTheory.T.substitution_total_degree_le D _ _ τ _ _ _ _ P)
+  exact (MvPolynomial.totalDegree_smul_le _ _).trans (_root_.GlobalTheory.Chain.RealIt.SubstDeg.totalDegree_subst_le D _ _ τ _ _ _ _ P)
 
 theorem cpt_tgt (hθ : IsInfFam θ) {τ : D.what₂.Tau} {a b : ℚ} (h : CompactFock ψ θ M M' ω f τ a b)
     (k : Matrix (Fin W.rank) (Fin W.rank) ℂ) (hk : k ∈ Formalism.REAL.Kset (M'.ε τ)) (P : PolF D W.rank V.rank) :
@@ -186,7 +188,7 @@ theorem cpt_tgt (hθ : IsInfFam θ) {τ : D.what₂.Tau} {a b : ℚ} (h : Compac
   have := h 1 (one_mem_K _) k hk P
   rw [elt_one hθ M] at this
   refine ⟨_, ?_, this.trans (map_smul (ptL ψ θ M M' f) _ _).symm⟩
-  exact (MvPolynomial.totalDegree_smul_le _ _).trans (GlobalTheory.T.substitution_total_degree_le D _ _ τ _ _ _ _ P)
+  exact (MvPolynomial.totalDegree_smul_le _ _).trans (_root_.GlobalTheory.Chain.RealIt.SubstDeg.totalDegree_subst_le D _ _ τ _ _ _ _ P)
 
 theorem om_src_one (hθ : IsInfFam θ) (τ : D.what₂.Tau) : ω (atTau θ V τ 1, 1) = 1 := by
   rw [GlobalTheory.PointAtPlaceHom.atTau_one hθ]; exact map_one ω
@@ -228,7 +230,7 @@ theorem equiv_alt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what�
     rw [e']
     exact conj_mem (M.fr_unit τ) (M.fr_gram τ) hk'
   rw [← h1] at e ⊢
-  refine GlobalTheory.T.equivariant_of_generator_oneParameterGroup _ _ _ (ptL ψ θ M M' f) (fun t : ℝ => ω (atTau θ V τ (NormedSpace.exp (t • X)), 1))
+  refine _root_.GlobalTheory.OneParamEquivariance.equivariant_of_generator _ _ _ (ptL ψ θ M M' f) (fun t : ℝ => ω (atTau θ V τ (NormedSpace.exp (t • X)), 1))
     (srcOp M M' τ (aT τ) X) (fun t : ℝ => actT M τ (NormedSpace.exp (t • X))) (I.flip x) (Set.range (ellT M)) hinj
     ?_ ?_ ?_ (hasDerivAt_lieAction_source_operator hL hX) ?_ ?_ ?_ ?_ ?_ φ φ' e
   · simp only [zero_smul, NormedSpace.exp_zero]
@@ -286,7 +288,7 @@ theorem inv_tgt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what₂
   let ev : (∀ τ, M.H τ) × (⨂[ℂ] τ, M'.H τ) → ((⨂[ℂ] τ, M'.H τ) →ₗ[ℂ] ⨂[ℂ] τ, M.H τ) →ₗ[ℂ] ℂ :=
     fun p => ellT M p.1 ∘ₗ LinearMap.applyₗ p.2
   have key : I φ' = I φ ∘ₗ A (-1) := by
-    refine GlobalTheory.T.equivariant_of_generator_oneParameterGroup _ _ _ (ptL ψ θ M M' f) (fun t : ℝ => ω (1, atTau θ W τ (NormedSpace.exp (t • X))))
+    refine _root_.GlobalTheory.OneParamEquivariance.equivariant_of_generator _ _ _ (ptL ψ θ M M' f) (fun t : ℝ => ω (1, atTau θ W τ (NormedSpace.exp (t • X))))
       (tgtOp M M' τ (aS τ) X) (fun t : ℝ => LinearMap.lcomp ℂ _ (A (-t))) I (Set.range ev) hinj
       ?_ ?_ ?_ (lie_tgt hL hX) ?_ ?_ ?_ ?_ ?_ φ φ' e
     · simp only [zero_smul, NormedSpace.exp_zero]

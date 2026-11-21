@@ -31,15 +31,4 @@ def DeepKernelBound : Prop :=
         (17 * Real.sqrt B.I.n / least B.I x ^ 2) ^ (2 * dimN B) *
         (B.D : ℝ) * (∏ v, c v) / (B.μf (B.I.Kg B.g)).toReal
 
-example (n : ℕ) (b : ℝ) {P P' : ℕ} (h : P ≤ P') : stepBe n b P ≤ stepBe n b P' := by
-  unfold stepBe
-  have : (P : ℝ) ≤ P' := by exact_mod_cast h
-  linarith
-
-example : stepBe 4 1 2 = 20 := by
-  have : Real.sqrt (4 : ℕ) = 2 := by
-    rw [show ((4 : ℕ) : ℝ) = 2 ^ 2 by norm_num]; exact Real.sqrt_sq (by norm_num)
-  unfold stepBe
-  rw [this]; norm_num
-
 end GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound

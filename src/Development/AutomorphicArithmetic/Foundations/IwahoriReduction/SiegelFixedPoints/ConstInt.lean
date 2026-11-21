@@ -7,7 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.EisensteinModularT
 import Development.AutomorphicArithmetic.AutomorphicVarieties.EisensteinModularTowers.ValuationSiegelUnitLevelEqOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EdgeClassEqKummerCharacterOfChosenRootFunctionFiStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCupProductCoboundaryTheoremStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCupProductCoboundaryTheorem
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalLevStatement
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L GlobalTheory.KEdge GlobalTheory.NeedB Polynomial
@@ -113,7 +115,7 @@ private theorem topexOf [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M l n : ℕ} (h
     rw [hβ, IsScalarTower.algebraMap_apply (topF X M) (topL X M) (topBar X M)]; rfl
   have hx := topChar_apply X hl hd hu hu0
   have hy := topChar_apply X hl hd hv hv0
-  obtain ⟨-, -, -, -, η₀, hlc, hcob, hin⟩ := GlobalTheory.T.kummerCupProduct_coboundary_theorem Ω (topL X M) (topBar X M) (l ^ n) (topZeta X M l n) hN hζ a b _ _ ha0 hb0
+  obtain ⟨-, -, -, -, η₀, hlc, hcob, hin⟩ := _root_.GlobalTheory.KummerCob.thmA Ω (topL X M) (topBar X M) (l ^ n) (topZeta X M l n) hN hζ a b _ _ ha0 hb0
     hai hai' hbi hbi' hα hβ
   obtain ⟨η, hηlc, hηe⟩ := UpperTheory.exists_isLocallyConstant_lift_to_geometric_galois (F := topF X M) η₀ hlc
   have hex : ∃ η, IsTopEta X M (topChar X M l n u) (topChar X M l n v) η := by

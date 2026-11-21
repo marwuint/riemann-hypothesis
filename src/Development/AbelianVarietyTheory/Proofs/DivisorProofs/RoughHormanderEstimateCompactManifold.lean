@@ -1,17 +1,21 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalHormanderIterationStepStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHolomorphicSectionOfRapidCauchyDbarStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEnergyOnCoverBallsLtTopOfSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalHormanderIterationStep
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHolomorphicSectionOfRapidCauchyDbar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEnergyOnCoverBallsLtTopOfSmooth
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
 theorem GlobalTheory.rough_hormander_compact : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ C : Cover A, ∃ K t0 : ℝ, 0 ≤ K ∧ ∀ (la : La) (t : ℝ), t0 ≤ t → CurvGe C la t → ∀ F0 : ι → Y → ℂ, A.IsSSec (A.kap + la) F0 → ∃ F : ι → Y → ℂ, A.IsSec (A.kap + la) F ∧ n0 A la (F0 - F) ≤ ENNReal.ofReal K * n1 C la F0 := by
   intro n Y _ _ _ _ _ _ ι La _ A C
-  obtain ⟨K4, hK4, h4⟩ := GlobalTheory.T.exists_local_hormander_iteration_step n Y ι La A C
+  obtain ⟨K4, hK4, h4⟩ := _root_.GlobalTheory.hormander_step n Y ι La A C
   refine ⟨4, 4 * K4 + 1, by norm_num, ?_⟩
   intro la t ht hC F0 hF0
   have tpos : 0 < t := by linarith
@@ -27,7 +31,7 @@ theorem GlobalTheory.rough_hormander_compact : ∀ (n : ℕ) (Y : Type) [Topolog
   choose g hg using step
   let S : ℕ → {F : ι → Y → ℂ // A.IsSSec (A.kap + la) F} := fun m => g^[m] ⟨F0, hF0⟩
   have hS : ∀ m, S (m + 1) = g (S m) := fun m => Function.iterate_succ_apply' g m _
-  have hN : n1 C la F0 < ⊤ := GlobalTheory.T.dbarEnergyOnCoverBalls_lt_top_of_smooth n Y ι La A C la F0 hF0
+  have hN : n1 C la F0 < ⊤ := _root_.GlobalTheory.n1_lt_infty_of_isSSec n Y ι La A C la F0 hF0
   have hq1 : ENNReal.ofReal (1 / 4) ≤ 1 := by
     rw [← ENNReal.ofReal_one]; exact ENNReal.ofReal_le_ofReal (by norm_num)
   have h1 : ∀ m, n1 C la (S m).1 ≤ ENNReal.ofReal ((1 / 4) ^ m) * n1 C la F0 := by
@@ -60,7 +64,7 @@ theorem GlobalTheory.rough_hormander_compact : ∀ (n : ℕ) (Y : Type) [Topolog
     rw [zero_mul] at hl
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hl
       (fun _ => zero_le) h1
-  obtain ⟨G, hG, hfin⟩ := GlobalTheory.T.exists_holomorphicSection_of_rapid_cauchy_dbar n Y ι La A C la t (n1 C la F0).toReal (fun m => (S m).1)
+  obtain ⟨G, hG, hfin⟩ := _root_.GlobalTheory.OTY.exists_isSec_of_rapid_cauchy n Y ι La A C la t (n1 C la F0).toReal (fun m => (S m).1)
     tpos hC ENNReal.toReal_nonneg (fun m => (S m).2) h0 hT
   refine ⟨G, hG, hfin.trans (le_of_eq ?_)⟩
   rw [ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_toReal hN.ne]

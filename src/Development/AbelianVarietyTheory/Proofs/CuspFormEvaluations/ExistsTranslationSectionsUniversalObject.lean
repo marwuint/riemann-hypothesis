@@ -5,7 +5,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsUniqueIsTwistPull
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalNormalisedMulByNatPullbackIsoStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalSymLiftExistsUniqueGlobalStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalSymLiftExistsUniqueGlobal
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -112,11 +112,11 @@ theorem exists_isVtOver_and_existsUnique_isUUOver : Laws → ∀ (E : Type) [Fie
     unfold IsActOf
     exact (existsUnique_isTwistPull _ _ _ hL _ _ _ _ _ _ U.φ U.isGen a).exists
   refine ⟨fun ok t t' h1 h2 h3 => ?_, fun x₁ x₂ hx₁ hx₂ => ?_⟩
-  · obtain ⟨U, hU⟩ := (GlobalTheory.T.universal_symLift_exists_unique_global hLaws E H Dw l Xo N hN T t' h2).1
+  · obtain ⟨U, hU⟩ := (_root_.GlobalTheory.moduli_univ_symLift_global hLaws E H Dw l Xo N hN T t' h2).1
     obtain ⟨F, hF⟩ := hact U s₁
     exact ⟨F, t', α₀, α, s₁, U, h1, h3, hg₀, hn₀, hcα, hs₁, hU, hF⟩
-  · have S₁ := GlobalTheory.T.universal_symLift_exists_unique_global hLaws E H Dw l Xo N hN T x₁ hx₁
-    have S₂ := GlobalTheory.T.universal_symLift_exists_unique_global hLaws E H Dw l Xo N hN T x₂ hx₂
+  · have S₁ := _root_.GlobalTheory.moduli_univ_symLift_global hLaws E H Dw l Xo N hN T x₁ hx₁
+    have S₂ := _root_.GlobalTheory.moduli_univ_symLift_global hLaws E H Dw l Xo N hN T x₂ hx₂
     obtain ⟨U₁, hU₁⟩ := S₁.1
     obtain ⟨U₂, hU₂⟩ := S₂.1
     obtain ⟨s₂, hs₂⟩ := hact U₁ s₁

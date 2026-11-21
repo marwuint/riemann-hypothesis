@@ -6,11 +6,6 @@ open Matrix
 
 variable {O : Type} [CommRing O]
 
-def el {n : ℕ} (b a : Fin n) (c : O) : Matrix (Fin n) (Fin n) O := 1 + Matrix.single b a c
-
-def Gen (O : Type) [CommRing O] (n : ℕ) : Submonoid (Matrix (Fin n) (Fin n) O) :=
-  Submonoid.closure {g | ∃ (b a : Fin n) (c : O), g = el b a c}
-
 def bord {m : ℕ} (M : Matrix (Fin m) (Fin m) O) : Matrix (Fin (m+1)) (Fin (m+1)) O :=
   Matrix.of (Fin.cons (Fin.cons 1 0) (fun i => Fin.cons 0 (M i)))
 

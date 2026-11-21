@@ -29,15 +29,6 @@ def TransferOn (D : D7) (C : HeightOneSpectrum (𝓞 D.host.F) → Prop) : Prop 
 def CosetSym {G : Type} [Group G] (K : Subgroup G) : Prop :=
   ∀ g : G, Nat.card {c : G ⧸ K // ∃ k ∈ K, c = ((k * g : G) : G ⧸ K)} = Nat.card {c : G ⧸ K // ∃ k ∈ K, c = ((k * g⁻¹ : G) : G ⧸ K)}
 
-theorem TransferOn.mono {D : D7} {C C' : HeightOneSpectrum (𝓞 D.host.F) → Prop} (h : TransferOn D C) (hC : ∀ v, C' v → C v) :
-    TransferOn D C' := fun ψ S T χS χT om hW t ht v hv => h ψ S T χS χT om hW t ht v (hC v hv)
-
-example {G : Type} [Group G] : CosetSym (⊤ : Subgroup G) := fun g => by
-  have e : ∀ g : G, Nat.card {c : G ⧸ (⊤ : Subgroup G) // ∃ k ∈ (⊤ : Subgroup G), c = ((k * g : G) : G ⧸ (⊤ : Subgroup G))} = 1 := fun g => by
-    haveI : Subsingleton (G ⧸ (⊤ : Subgroup G)) := QuotientGroup.subsingleton_quotient_top
-    exact Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨⟨_, 1, trivial, rfl⟩⟩⟩
-  rw [e, e]
-
 end GlobalTheory.ChainOnto
 
 end

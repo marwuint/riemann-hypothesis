@@ -20,24 +20,3 @@ private theorem sat_of_equiv {E : Type} [Field E] [NumberField E] {w : HeightOne
     rw [he]
     exact GlobalTheory.LGrp.mem_fixed.1 hy k hk
 
-theorem UpperTheory.V.Z.Desc.W.splitSat :
-    UpperTheory.V.Z.Desc.W.SplitSat := by
-  rintro - E _ _ n c a d hn w ρ σ had hsp S hS τ ⟨e⟩ B hB
-  obtain ⟨S', s1, s2⟩ := GlobalTheory.SatInd.satake_locProd_speh E w c n a d hn ρ σ (fun i => (had i).2) hsp B (sat_of_equiv e hB)
-  obtain rfl : S = S' := funext fun i => (hS i).unique (s1 i)
-  simp only [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def] at s2
-  apply Multiset.map_injective (f := fun z : ℂˣ => (z : ℂ)) Units.val_injective
-  rw [← s2]
-  unfold satTot
-  rw [← Multiset.coe_mapAddMonoidHom (fun z : ℂˣ => (z : ℂ)), map_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [map_sum, ← Equiv.sum_comp Fin.revPerm]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [Multiset.coe_mapAddMonoidHom, Multiset.map_map]
-  refine Multiset.map_congr rfl fun x _ => ?_
-  have hq : Ideal.absNorm w.asIdeal = normV w := rfl
-  simp only [Function.comp_apply, Units.val_mul, coe_qPow, Fin.revPerm_apply, Fin.val_rev, hq]
-  congr 2
-  rw [Nat.cast_sub k.2]
-  push_cast
-  ring

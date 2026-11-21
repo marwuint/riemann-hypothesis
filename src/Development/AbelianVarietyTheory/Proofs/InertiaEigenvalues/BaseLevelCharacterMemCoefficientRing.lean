@@ -73,19 +73,6 @@ theorem typeCharacterExtension_mem_range_coefficientRing (Y : SerSide X E) (i : 
     rw [map_pow, ← e1, ← Units.val_pow_eq_pow_val, hfin, Units.val_one, map_one]
   · exact one_mem _
 
-theorem mu_mem (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
-    (hμ : ∀ PP ∈ (Y.Z.ρ.B i j b).G.Pg, ∀ (u : (kP PP)ˣ) (x : (AE D)ˣ), GlobalTheory.ConjTwist.IsLocUnit PP u x →
-      (((Y.Z.ρ.B i j b).mu0 x : Circle) : ℂ) ∈ (Y.Z.ρ.eOk i b 0).range)
-    {PP : Pl D.host.E} (hPP : PP ∈ (Y.Z.ρ.B i j b).G.Pg) (w : (kP PP)ˣ) :
-    (((Y.Z.ρ.B i j b).G.muC PP w : ℂˣ) : ℂ) ∈ (Y.Z.ρ.eOk i b 0).range := by
-  have hB := Y.Z.good.base i j b
-  obtain ⟨P, hPg, -, hsp⟩ := hB.places.split
-  obtain ⟨x, hx⟩ := GlobalTheory.ConjTwist.exists_isLocUnit (hsp.isIdemAt (hPg hPP)) w
-  have e1 : (Y.Z.ρ.B i j b).G.mu PP w = (Y.Z.ρ.B i j b).mu x := (hx.eq (hB.tame PP hPP)).symm
-  show (((Y.Z.ρ.B i j b).G.mu PP w : Circle) : ℂ) ∈ _
-  rw [e1, Base.mu, MonoidHom.mul_apply, Circle.coe_mul]
-  exact mul_mem (hμ PP hPP w x hx) (de_mem Y.Z.good i j b x)
-
 theorem loc_mem (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (PP : Pl D.host.E) (w : (kP PP)ˣ) :
     ((((Y.Z.ρ.B i j b).de.locC PP * (Y.Z.ρ.tw i b 0 ∅ 1).locC PP) w : ℂˣ) : ℂ) ∈ (Y.Z.ρ.eOk i b 0).range := by
   have hψ : (Y.Z.ρ.tw i b 0 ∅ 1).locC PP = 1 := by
@@ -104,17 +91,6 @@ theorem loc_mem (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (PP 
 end GlobalTheory.LamVal
 
 namespace GlobalTheory.LamVal
-
-theorem levLam_mem : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool),
-    (∀ PP ∈ (Y.Z.ρ.B i j b).G.Pg, ∀ (u : (kP PP)ˣ) (x : (AE D)ˣ), GlobalTheory.ConjTwist.IsLocUnit PP u x →
-      (((Y.Z.ρ.B i j b).mu0 x : Circle) : ℂ) ∈ (Y.Z.ρ.eOk i b 0).range) →
-    ∀ (k : (Y.Z.ρ.B i j b).levJ (Y.Z.ρ.tw i b 0 ∅ 1)),
-      (((Y.Z.ρ.B i j b).levLam (Y.Z.ρ.tw i b 0 ∅ 1) k : ℂˣ) : ℂ) ∈ (Y.Z.ρ.eOk i b 0).range := by
-  intro D X E Y i j b hμ k
-  rw [GlobalTheory.MtLatConj.levelCharacter_apply_eq_levelFunction_swap]
-  simp only [levFn, Base.levS, Units.val_mul, Units.coe_prod]
-  exact mul_mem (mul_mem (typeCharacterExtension_mem_range_coefficientRing Y i j b _) (prod_mem fun PP hPP => prod_mem fun _ _ => mu_mem Y i j b hμ hPP _))
-    (prod_mem fun PP _ => loc_mem Y i j b PP _)
 
 variable {D : D7} {X : RealSide D} {E : IntegralHeckeForms.XD D}
 

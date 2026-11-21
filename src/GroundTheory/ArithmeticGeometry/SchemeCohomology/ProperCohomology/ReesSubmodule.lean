@@ -83,10 +83,4 @@ theorem reesSubmodule_eq_span :
 
 end
 
-section Map
-
-variable {M : Type v} [AddCommGroup M] [Module A M] {N : Type w} [AddCommGroup N] [Module A N]
-
-end Map
-
 end GroundTheory.Arith.SchemeCoh

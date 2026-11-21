@@ -180,14 +180,4 @@ theorem quadraticSemicharacterIdentity_of_reformulated_of_taylorMv_of_repsExist_
     exact (Finset.sum_coe_sort S fun x => MvPowerSeries.C (ι (c x)) * ∏ w, at1 w
       ((PowerSeries.map (ι : ℂ →+* ℂ_[l]) (Formalism.L2.Th1.F.taylor0 (f x w))).subst lg)).symm
 
-theorem quadraticSemicharacters_of_taylor_mv (hA : quadraticSemicharacterIdentityReformulated₂) (hLin : TaylorMvLinear) (hComp : TaylorMvComp)
-    (hProd : TaylorMvProd) (hT4 : TaylorMvTens4) : quadraticSemicharacterIdentity :=
-  quadraticSemicharacterIdentity_of_reformulated_of_taylorMv_of_repsExist_of_opUAnalytic hA hLin hComp hProd hT4 cosetRepsExist heisenbergAnalytic
-
-theorem ThetaIntegral_of (hK : quadraticSemicharacterIdentity) : ThetaIntegral := by
-  intro l _ L ι ω₀ lg linv ph R hR hFr hTI O _ _ τ hEnd hBin hF1 hNm hAd n _ _ h Λ α β g hD hln ε hε θ hθ hten
-    t N hN hlN hNt γ B' hγ hB
-  exact Formalism.L2.Th1.E.generalIntOf ℂ_[l] R hR lg linv ph hFr O τ hEnd hBin hF1 hNm hAd n _ γ hγ
-    (hK l L ι ω₀ lg linv ph hFr.1 hFr.2.2 hTI n h Λ α β g hD hln ε hε θ hθ hten t N hN hlN hNt O τ γ B' hB)
-
 end Formalism.L2.Th1.H

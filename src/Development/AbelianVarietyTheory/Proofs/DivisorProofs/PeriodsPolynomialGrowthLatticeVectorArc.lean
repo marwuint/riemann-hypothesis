@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsArcLiftPeriodsTendstoSpan
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousPeriodBasisAlongArcStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousPeriodBasisAlongArc
 
 noncomputable section
 
@@ -108,7 +108,7 @@ theorem periods_le_of_mem_lattice : ∀ (E : Type) [Field E] [NumberField E] [Is
     have hm1' : GlobalTheory.AllWt.ptF (y u) ≫ Z.jQ = spMap (ψ u) ≫ x := hm1
     exact hb ⟨GlobalTheory.AllWt.ptF (y u) s, by rw [← hm1']; rfl⟩
   obtain ⟨T₀, m, lam, hT₀, hcont, hbas, hker, hgrow⟩ :=
-    GlobalTheory.T.exists_continuous_period_basis_along_arc E H Dw l Xo c O β Z σ A φ x fr ψ r g e hσ hpq harc hoff
+    _root_.GlobalTheory.ShFam.BdArc.exists_period_basis_halfPlane E H Dw l Xo c O β Z σ A φ x fr ψ r g e hσ hpq harc hoff
   obtain ⟨-, -, hxd, hxm, -⟩ := horb
   set T₁ := max T T₀ with hT₁def
   have hT₁ : ∀ w : ℂ, T₁ < w.im → T < w.im ∧ T₀ < w.im := fun w hw =>

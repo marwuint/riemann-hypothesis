@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApplyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApply
 
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory Filter Topology
 open scoped ContDiff
@@ -34,7 +34,7 @@ theorem fderiv_integral_mul (ν : Measure V) [ν.IsAddHaarMeasure] (hU : IsOpen 
     (hα : IsTest U α) {K : V × V → ℂ} (hK : ContDiffOn ℝ ∞ K (U ×ˢ U)) {x : V} (hx : x ∈ U) (v : V) :
     fderiv ℝ (fun x' => ∫ y, α y * K (x', y) ∂ν) x v =
       ∫ y, α y * fderiv ℝ (fun x' => K (x', y)) x v ∂ν :=
-  GlobalTheory.T.fderiv_integral_mul_kernel_apply' ν hU hα.1.continuous hα.2.1 hα.2.2 hK hx v
+  _root_.GlobalTheory.fderiv_integral_mul_kernel_apply ν hU hα.1.continuous hα.2.1 hα.2.2 hK hx v
 
 end Analytic
 

@@ -85,38 +85,6 @@ def Realised : Prop :=
       ∃ D : BrData W T₁ T₂ F, BrProps D (cutsOf hC) (kdOf ty) (bbOf ty) j (gPar Gp S η) Gp S η h
         (sigPar PD.p (gPar Gp S η) h j) (rrPar PD.p n (Mb₁ + hb₁) (Mb₂ + hb₂) cuts)
 
-structure BrHyp : Prop where
-
-  s_one : W.s = 1
-
-  herr : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → Formalism.MainNotions.DeltaInvariantLattices.p2aK W T
-
-  nat : W.ClKNat
-
-  real : Realised W
-
 variable {W}
-
-theorem thmELiftAt_of (H : BrHyp W) : ThmELiftAt PD (O := O) n W.emb v := by
-  intro _ h5 T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hK hJ hg hS hC hT hb1 hb2
-    hW
-  obtain ⟨D, P⟩ := H.real T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen Mb₁ hb₁ Mb₂ hb₂ hC hK hJ hg
-    hS hT hb1 hb2 hW
-  obtain ⟨-, -, hO, hD, hF⟩ := hG
-  have := hO
-  have := hD
-  have hnum := finalNum_of PD.p (by omega) n j Gp S η h ty cuts arcLen (Mb₁ + hb₁) (Mb₂ + hb₂) hC hg hS
-    hT hW
-  have hnum' : Formalism.ExponentWindows.E.FinalNum D.I.Bs.ℓ (cutsOf hC) (kdOf ty) (bbOf ty) j (gPar Gp S η) Gp S η h
-      (sigPar PD.p (gPar Gp S η) h j) (rrPar PD.p n (Mb₁ + hb₁) (Mb₂ + hb₂) cuts)
-      (kapPar PD.p (gPar Gp S η) h (ellMax cuts arcLen)) (ellMax cuts arcLen) := by
-    rw [D.I.ℓ_eq]
-    exact hnum
-  have key := Formalism.ExponentWindows.E.theorem_E_final_form O D.ϖ P.irr D.I.Bs D.eO n (cutsOf hC) (kdOf ty) (bbOf ty) j
-    (gPar Gp S η) Gp S η h _ _ _ _ D.u D.x LL D.Ks D.Δ D.C₁.V D.C₂.V D.C₀.V (latOf D.C₁) (latOf D.C₂)
-    (latOf D.C₀) D.e₀ (latHomOf D.h) (Zf D.C₁) (Zf D.C₂) ⟨P.prim, P.u_eq, hF⟩ hnum'
-    P.lat₁ P.lat₂ P.unit ⟨fun m κ hκ => Zf_smul D.C₁ m κ hκ, P.rho, P.ext⟩ P.wprime P.arcs
-  rw [parE_eq_ePar] at key
-  exact liftF_of D.h H.s_one (by omega) (H.herr T₂ hc₂.2.2.2) H.nat _ key
 
 end Formalism.MainNotions.WachCoordinates.Br

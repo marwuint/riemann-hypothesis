@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockDa
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightDegreeLeOfHomogeneousFockWeightVector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicHomogeneousOfKType
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FischerDecompositionFockNoncompactParts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OmEFormAndDegree
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
 
@@ -263,9 +263,9 @@ section Main
 variable {p q r s : ℕ} {M1 : GKMod p q} {M2 : GKMod r s}
   {f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ M1.V M2.V}
 
-theorem kLie1 : IsKLieAct (fockAct1 p q r s) := fun Y Z _ _ => (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.1 Y Z
+theorem kLie1 : IsKLieAct (fockAct1 p q r s) := fun Y Z _ _ => (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.1 Y Z
 
-theorem kLie2 : IsKLieAct (fockAct2 p q r s) := fun Y Z _ _ => (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.2.1 Y Z
+theorem kLie2 : IsKLieAct (fockAct2 p q r s) := fun Y Z _ _ => (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.1 Y Z
 
 theorem wts1 (P : Pol p q r s) : P ∈ ⨆ μ : Ix p q → ℚ, wtSub (fockAct1 p q r s) μ :=
   ((GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).2
@@ -275,7 +275,7 @@ theorem wts2 (P : Pol p q r s) : P ∈ ⨆ μ : Ix r s → ℚ, wtSub (fockAct2 
 
 theorem fockAct1_fockAct2_commute (Y : Mat p q) (Z : Mat r s) (P : Pol p q r s) :
     fockAct2 p q r s Z (fockAct1 p q r s Y P) = fockAct1 p q r s Y (fockAct2 p q r s Z P) :=
-  (LinearMap.congr_fun ((GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.2.2 Y Z) P).symm
+  (LinearMap.congr_fun ((_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.2 Y Z) P).symm
 
 theorem ofType_of_hw {μ : Ix p q → ℚ} {P : Pol p q r s} (h : P ∈ hwSub (fockAct1 p q r s) μ) :
     OfType (fockAct1 p q r s) μ P := by
@@ -362,7 +362,7 @@ theorem hw_mem (hI : Intw M1 M2 f) {μ : Ix p q → ℚ}
   rcases lt_trichotomy ((d + 2 : ℕ) : ℚ) (degW (cPair r s) μ) with h | h | h
   · exact hker (low_vanish hI hmin h hPd)
   ·
-    obtain ⟨e1, s1, -, -⟩ := GlobalTheory.T.fockHarmonics_graded_compactStable p q r s _ (Or.inr (Or.inr rfl))
+    obtain ⟨e1, s1, -, -⟩ := _root_.GlobalTheory.FockAlg.harm_graded_stable p q r s _ (Or.inr (Or.inr rfl))
     have hlow : ∀ e, e < d + 2 → homog (Ix p q × Ix r s) e ≤ LinearMap.ker f := fun e he =>
       low_vanish hI hmin (h ▸ (by exact_mod_cast he))
     rw [(GlobalTheory.FischerParts.fischer_parts p q r s d).2.2] at hPd
@@ -382,7 +382,7 @@ theorem hw_mem (hI : Intw M1 M2 f) {μ : Ix p q → ℚ}
       (fun Z _ P hP => ker_stable1 hI Z hP) (kStable_inf (kStable_homog (d + 2)) s1) hR hP
     exact T.add_mem (hker hy) (hJ z (e1 ▸ hz.2) h1)
   ·
-    obtain ⟨e1, s1, -, -⟩ := GlobalTheory.T.fockHarmonics_graded_compactStable p q r s _ (Or.inl rfl)
+    obtain ⟨e1, s1, -, -⟩ := _root_.GlobalTheory.FockAlg.harm_graded_stable p q r s _ (Or.inl rfl)
     haveI := homog_fd (p := p) (q := q) (r := r) (s := s) (d + 2)
     haveI := homog_fd (p := p) (q := q) (r := r) (s := s) d
     rw [(GlobalTheory.FischerParts.fischer_parts p q r s d).2.1,
@@ -424,7 +424,7 @@ open GlobalTheory.FockAlg.MinFirst in
 
 theorem GlobalTheory.FockAlg.min_first : ∀ (p q r s : ℕ) (M1 : GKMod p q) (M2 : GKMod r s) (f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ M1.V M2.V), IrrGK M1 → AdmGK M1 → Intw M1 M2 f → f ≠ 0 → ∀ (μ : Ix p q → ℚ), (∃ v, IsHW M1.act μ v) → (∀ ν w, IsHW M1.act ν w → degW (cPair r s) μ ≤ degW (cPair r s) ν) → (∃ (μ' : Ix r s → ℚ) (P : Pol p q r s), P ∈ jointHarm p q r s ∧ IsHW (fockAct1 p q r s) μ P ∧ IsHW (fockAct2 p q r s) μ' P ∧ f P ≠ 0) ∧ ∀ P, OfType (fockAct1 p q r s) μ P → f P ∈ Submodule.map f (genSub (fockAct2 p q r s) {Q | Q ∈ jointHarm p q r s ∧ OfType (fockAct1 p q r s) μ Q}) := by
   intro p q r s M1 M2 f hirr _ hI hf μ hμ hmin
-  obtain ⟨e1, s1, s2, -⟩ := GlobalTheory.T.fockHarmonics_graded_compactStable p q r s _ (Or.inr (Or.inr rfl))
+  obtain ⟨e1, s1, s2, -⟩ := _root_.GlobalTheory.FockAlg.harm_graded_stable p q r s _ (Or.inr (Or.inr rfl))
   constructor
   · obtain ⟨v, hv⟩ := hμ
     obtain ⟨P0, hP0⟩ := DFunLike.ne_iff.1 hf

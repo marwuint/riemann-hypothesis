@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.L2UnitaryRepresentationData
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDiscreteSeriesConjugateReverseContragredientStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDiscreteSeriesConjugateReverseContragredient
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Datum
 open Formalism.IndefR.Mult (DSModel dualPar parA parB)
@@ -129,7 +129,7 @@ theorem directBridge : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.BarMa
   obtain ⟨hsrc, htgt⟩ := hB
   have hds : ∀ τ, letI := M.nacg τ; letI := M.ips τ
       IsDS (fun a => M.ε τ a.rev) (fun a => -M.lam τ a.rev) (fun g => M.σ τ (barRev g)) :=
-    fun τ => GlobalTheory.T.isDiscreteSeries_conjugate_reverse_contragredient _ _ _ _ _ (M.ds τ)
+    fun τ => _root_.GlobalTheory.ArchRec.isDS_conj_rev _ _ _ _ _ (M.ds τ)
   have hset : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.HidaSetting X p q l₁ l₂ c (fun τ => dualPar (S τ)) τ := by
     refine ⟨hpq, h₁, h₂, hpar, hhas, ?_⟩
     show dualPar (S τ) = _

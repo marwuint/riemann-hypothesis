@@ -8,9 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalBo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetsMemSubalgebraOfFiniteType
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CcSubst
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNeZeroForallPointExtendSubalgebra
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasseDerivativePowerSeriesMulSubstLeibnizStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasseDerivativePowerSeriesMulSubstLeibniz
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasseJetVanishingMemPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinrankQuotientSpanModEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinrankQuotientSpanModEqOne
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSeparableNormalisationReducedFibresStatement
 
 open Polynomial
@@ -204,7 +205,7 @@ theorem formal_deformation : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CommRin
     rw [hΔ, GlobalTheory.PicDiv.hasse_zero, map_one, ← PowerSeries.coe_substAlgHom (hsub i), map_one]
   · intro i l u w
     simp only [hΔ, map_mul]
-    exact GlobalTheory.T.hasseDerivativePowerSeries_mul_subst_leibniz k (a i) _ _ l (ha0 i)
+    exact _root_.GlobalTheory.hasse_mul_subst k (a i) _ _ l (ha0 i)
   · intro i
     refine ⟨π i, ?_⟩
     have hX : GlobalTheory.PicDiv.hasse 1 (PowerSeries.X : PowerSeries k) = 1 := by
@@ -533,7 +534,7 @@ theorem pic_divisible : ∀ (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] 
     rw [hmap, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]
     exact hδ α hα Q hQ
   have key := exists_classGroup_mk0_eq_mul_pow_reduced k B hred' q h2 hNk
-  obtain ⟨f, hf0, hfmod⟩ := GlobalTheory.T.exists_finrank_quotient_span_mod_eq_one' k B q (by omega)
+  obtain ⟨f, hf0, hfmod⟩ := _root_.GlobalTheory.exists_finrank_quotient_span_mod_eq_one k B q (by omega)
   obtain ⟨d, hd⟩ := classGroup_nthPower_of_codim_one_mod k B q (by omega) key ⟨f, hf0, hfmod⟩ c
   exact ⟨d, hd.symm⟩
 

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelRegionNormBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelRegionNormBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsometryOpNormBoundedByTwoFramesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselZhatInvAndRegularIffStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
 
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
 open scoped InnerProductSpace
@@ -40,10 +40,10 @@ theorem left_bound (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Mat k r)) (hz 
     (hCr : C ⊆ Greg k r z z') :
     ∃ C0 : ℝ, ∀ γ ∈ C, ∀ s ∈ Sset k r z, ∀ s' ∈ Sset k r z',
       opn s ≤ C0 * opn (s * γ * s'⁻¹) ^ (2 * (r ^ 2 + r + 1)) := by
-  obtain ⟨C1, h1⟩ := GlobalTheory.T.siegel_region_norm_bound k r z z' C hz hz' hT hT' hC hCr
+  obtain ⟨C1, h1⟩ := _root_.GlobalTheory.SgInf.frame_image_bound k r z z' C hz hz' hT hT' hC hCr
   obtain ⟨C2, h2⟩ := GlobalTheory.T.isometry_opNorm_bounded_by_two_frames k r z z' C hz hz' hT hT' hC
     (fun γ hγ => ⟨(hCr hγ).1, (hCr hγ).2.2⟩)
-  obtain ⟨hN1, -, -, -, hN5, -⟩ := GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r
+  obtain ⟨hN1, -, -, -, hN5, -⟩ := _root_.GlobalTheory.SgInf.opn_facts k r
   refine ⟨C2 * (max 1 C1) ^ 2, fun γ hγ s hs s' hs' => ?_⟩
   have hsG := mem_of_S hs
   have hs'G := mem_of_S hs'
@@ -85,7 +85,7 @@ theorem poly_proper : ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (C : 
     rw [← inv_eq hγG]
     exact (GlobalTheory.T.besselZhat_inv_and_regular_iff k r z z' γ hγG).2.1 (hCr hγ)
   obtain ⟨C2, h2⟩ := left_bound z' z _ hz' hz hT' hT (hC.image hcont) hCr'
-  obtain ⟨hN1, -⟩ := GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r
+  obtain ⟨hN1, -⟩ := _root_.GlobalTheory.SgInf.opn_facts k r
   refine ⟨max 1 (max C1 C2), le_max_left _ _, fun γ hγ s hs s' hs' => ?_⟩
   have hsG := mem_of_S hs
   have hs'G := mem_of_S hs'

@@ -1,8 +1,13 @@
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasPRatio
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.HeightBoundStatement.HTBoundSt
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LineModel
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GrNormPush
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MultiplicationLatticeSecond
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsRegularFnIffOfIsAffineOpen
+
 open AlgebraicGeometry CategoryTheory Limits NumberField MonObj
-open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.ShFam.Pad GlobalTheory.HTLine
+open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.ShFam.Pad
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 attribute [local instance] Over.cartesianMonoidalCategory
 
@@ -154,75 +159,5 @@ theorem exists_dvd_of_span_mul_eq {R : Type*} [CommRing R] (P : Ideal R) [P.IsPr
     _ = A k * c k * A k' := by rw [ht]
     _ = A k * (A k' * c k) := by ring
     _ = f * (A k * t k k') := by rw [ht]; ring
-
-theorem exists_idealSheaf_principalises : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (p n : ℕ) (U : Fin n → X.Opens) (m : Fin n → ℕ) (A : ∀ j, Fin (m j) → Γ(X, U j)), (∀ j, IsAffineOpen (U j)) → (∀ j, (p : Γ(X, U j)) ∈ (Ideal.span (Set.range (A j))).radical) → ∃ J : X.IdealSheafData, (∀ x ∈ J.support, x ∉ X.basicOpen (p : Γ(X, ⊤))) ∧ ∀ (W W' : Scheme.{0}) (b : W ⟶ X) (ν : W' ⟶ W), ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J.comap b) → ∀ (w : W') (j : Fin n), (ν ≫ b) w ∈ U j → ∃ (V : W'.Opens) (hV : V ≤ (ν ≫ b) ⁻¹ᵁ U j), w ∈ V ∧ IsAffineOpen V ∧ ∃ k, ∀ k', ((ν ≫ b).appLE (U j) V hV).hom (A j k) ∣ ((ν ≫ b).appLE (U j) V hV).hom (A j k') := by
-  intro X _ p n U m A hU hp
-  choose J hJU hJp using fun j => kerIdealAffine X (U j) (hU j) (Ideal.span (Set.range (A j)))
-  choose N hN using fun j => hp j
-  have hmem : ∀ (V : X.affineOpens) (s : Finset (Fin n)),
-      ((p ^ (∑ j ∈ s, N j) : ℕ) : Γ(X, V.1)) ∈ (∏ j ∈ s, J j).ideal V := by
-    intro V s
-    induction s using Finset.induction_on with
-    | empty => simp
-    | insert j s hj ih =>
-      rw [Finset.prod_insert hj, Finset.sum_insert hj, Scheme.IdealSheafData.ideal_mul, Pi.mul_apply,
-        pow_add, Nat.cast_mul]
-      refine Ideal.mul_mem_mul (hJp j _ ?_ V) ih
-      rw [Nat.cast_pow]
-      exact hN j
-  refine ⟨∏ j, J j, fun x hx hxp => ?_, ?_⟩
-  · obtain ⟨_, ⟨V, hV, rfl⟩, hxV, -⟩ :=
-      X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
-    have h1 := (Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V, hV⟩) hxV).1 hx
-    rw [Scheme.mem_zeroLocus_iff] at h1
-    refine h1 _ (hmem ⟨V, hV⟩ Finset.univ) ?_
-    have e : ((p ^ (∑ j, N j) : ℕ) : Γ(X, V)) =
-        (X.presheaf.map (homOfLE le_top).op).hom ((p : Γ(X, ⊤)) ^ (∑ j, N j)) := by
-      simp
-    rw [e, Scheme.basicOpen_res]
-    refine ⟨hxV, ?_⟩
-    have htop : x ∈ (⊤ : X.Opens) := trivial
-    show x ∈ X.basicOpen _
-    rw [Scheme.mem_basicOpen _ _ _ htop, map_pow]
-    exact ((Scheme.mem_basicOpen _ _ _ htop).1 hxp).pow _
-  · intro W W' b ν hE w j hw
-    have hw0 : b (ν w) ∈ U j := hw
-    obtain ⟨V₁, f, hw₁, hf, hV₁⟩ := hE (ν w)
-    obtain ⟨g, hgle, hwg⟩ := V₁.2.exists_basicOpen_le (V := V₁.1 ⊓ b ⁻¹ᵁ U j) ⟨ν w, hw₁, hw0⟩ hw₁
-    have hDU : (W.affineBasicOpen g).1 ≤ b ⁻¹ᵁ U j := hgle.trans inf_le_right
-    have hDV : (W.affineBasicOpen g).1 ≤ V₁.1 := W.basicOpen_le g
-    have hfD : (W.presheaf.map (homOfLE hDV).op).hom f ∈ nonZeroDivisors Γ(W, (W.affineBasicOpen g).1) :=
-      (GlobalTheory.Cartier.isRegularFn_iff_of_isAffineOpen (W.affineBasicOpen g).2).1
-        (((GlobalTheory.Cartier.isRegularFn_iff_of_isAffineOpen V₁.2).2 hf).resG hDV)
-    have hI1 := ((∏ i, J i).comap b).map_ideal_basicOpen V₁ g
-    rw [hV₁, Ideal.map_span, Set.image_singleton] at hI1
-    have hI2 := comapIdealAffine (∏ i, J i) b ⟨U j, hU j⟩ (W.affineBasicOpen g) hDU
-    rw [← Finset.mul_prod_erase Finset.univ J (Finset.mem_univ j), Scheme.IdealSheafData.ideal_mul,
-      Pi.mul_apply, Ideal.map_mul, hJU, Ideal.map_span, ← Set.range_comp] at hI2
-    rw [← Finset.mul_prod_erase Finset.univ J (Finset.mem_univ j)] at hI1
-    have hwD : ν w ∈ (W.affineBasicOpen g).1 := hwg
-    obtain ⟨k, s, hsP, hdiv⟩ := exists_dvd_of_span_mul_eq
-      (Ideal.comap (W.presheaf.germ (W.affineBasicOpen g).1 (ν w) hwD).hom (IsLocalRing.maximalIdeal _)) _ _
-      (hI2.symm.trans hI1.symm) hfD
-    have hsu : ν w ∈ W.basicOpen s := by
-      rw [Scheme.mem_basicOpen _ _ _ hwD]
-      by_contra hc
-      exact hsP ((IsLocalRing.mem_maximalIdeal _).2 hc)
-    have hED : W.basicOpen s ≤ (W.affineBasicOpen g).1 := W.basicOpen_le s
-    obtain ⟨_, ⟨V, hVa, rfl⟩, hwV, hVE⟩ := W'.isBasis_affineOpens.exists_subset_of_mem_open
-      (show w ∈ ν ⁻¹ᵁ W.basicOpen s from hsu) (ν ⁻¹ᵁ W.basicOpen s).isOpen
-    have hVE' : V ≤ ν ⁻¹ᵁ W.basicOpen s := hVE
-    have hV : V ≤ (ν ≫ b) ⁻¹ᵁ U j := fun x hx => hDU (hED (hVE' hx))
-    refine ⟨V, hV, hwV, hVa, k, fun k' => ?_⟩
-    have key : (b.appLE (U j) _ hDU ≫ W.presheaf.map (homOfLE hED).op) ≫ ν.appLE _ V hVE' =
-        (ν ≫ b).appLE (U j) V hV := by
-      rw [Scheme.Hom.appLE_map, Scheme.Hom.appLE_comp_appLE]
-    have hu := W.toRingedSpace.isUnit_res_basicOpen s
-    have h1 := map_dvd (W.presheaf.map (homOfLE hED).op).hom (hdiv k')
-    rw [map_mul] at h1
-    have h2 := hu.dvd_mul_left.1 h1
-    have h3 := map_dvd (ν.appLE _ V hVE').hom h2
-    rw [← key]
-    simpa using h3
 
 end GlobalTheory.Principalise

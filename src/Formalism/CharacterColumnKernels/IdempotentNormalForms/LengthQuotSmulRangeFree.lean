@@ -587,73 +587,9 @@ end QuotientPowerLengths
 
 open QuotientPowerLengths
 
-theorem congBound : StatCongBound := by
-  unfold StatCongBound
-  intro O _ _ _ X _ T _ _ V _ _ _ _ _ act hsum L hL _ hLT Z
-  refine congMod_le hsum L hL Z ((fun c : T => act c) '' (ccIdeal T (Z : Set X) : Set T))
-    (vcc T (Z : Set X)) ?_ ?_ ?_ ?_
-  · rintro g ⟨c, -, rfl⟩ f
-    exact cc_comm c f
-  · rintro g ⟨c, -, rfl⟩ v hv
-    exact hLT c v hv
-  · rintro g ⟨c, hc, rfl⟩ v -
-    exact cc_mem_VS hsum hc v
-  · intro x _
-    obtain ⟨c, hc, hcx⟩ := vcc_attain (T := T) (Z : Set X) x
-    exact ⟨act c, ⟨c, hc, rfl⟩, (c : X → O) x, fun v hv => (mem_Vx.mp hv) c, hcx.le⟩
-
 theorem congBoundGood : StatCongBoundGood := by
   unfold StatCongBoundGood
   intro O _ _ _ X _ T _ _ V _ _ _ _ _ act hsum L hL _ hLT Z Zg _ a A haL hacomm hZgA hZ0
-  have hVa : VS T act (Z : Set X) ≤ (VS T act (Zg : Set X)).comap a := by
-    unfold VS
-    refine iSup₂_le fun y hy => ?_
-    intro v hv
-    rw [Submodule.mem_comap]
-    by_cases hyg : y ∈ Zg
-    · rw [hZgA y hyg v hv]
-      exact Submodule.smul_mem _ _
-        ((le_iSup₂_of_le y (Finset.mem_coe.mpr hyg) le_rfl :
-          Vx T act y ≤ ⨆ x ∈ (Zg : Set X), Vx T act x) hv)
-    · rw [hZ0 y (Finset.mem_coe.mp hy) hyg v hv]
-      exact Submodule.zero_mem _
-  refine congMod_le hsum L hL Zg ((fun c : T => a * act c) '' (ccIdeal T (Z : Set X) : Set T))
-    (fun x => vcc T (Z : Set X) x + addVal O (A : O)) ?_ ?_ ?_ ?_
-  · rintro g ⟨c, -, rfl⟩ f
-    show a * act c * act f = act f * (a * act c)
-    rw [mul_assoc, cc_comm c f, ← mul_assoc, hacomm f, mul_assoc]
-  · rintro g ⟨c, -, rfl⟩ v hv
-    exact haL (act c v) (hLT c v hv)
-  · rintro g ⟨c, hc, rfl⟩ v -
-    exact hVa (cc_mem_VS hsum hc v)
-  · intro x hx
-    obtain ⟨c, hc, hcx⟩ := vcc_attain (T := T) (Z : Set X) x
-    refine ⟨a * act c, ⟨c, hc, rfl⟩, (A : O) * (c : X → O) x, fun v hv => ?_, ?_⟩
-    · show a (act c v) = _
-      rw [(mem_Vx.mp hv) c, ← algebraMap_smul (FractionRing O) ((c : X → O) x) v, map_smul,
-        hZgA x hx v hv, smul_smul,
-        ← algebraMap_smul (FractionRing O) ((A : O) * (c : X → O) x) v, map_mul, map_intCast,
-        mul_comm]
-    · exact le_of_eq (by rw [addVal_mul, hcx, add_comm])
-
-theorem congBoundLarge : StatCongBoundLarge := by
-  unfold StatCongBoundLarge
-  intro O _ _ _ X _ T _ _ V _ _ _ _ _ act hsum L hL _ hLT Z _
-  refine congMod_le hsum L hL Z ((fun c : T => act c) '' (ccIdeal T (Z : Set X) : Set T))
-    (vcc T (Z : Set X)) ?_ ?_ ?_ ?_
-  · rintro g ⟨c, -, rfl⟩ f
-    exact cc_comm c f
-  · rintro g ⟨c, -, rfl⟩ v hv
-    exact hLT c v hv
-  · rintro g ⟨c, hc, rfl⟩ v -
-    exact cc_mem_VS hsum hc v
-  · intro x _
-    obtain ⟨c, hc, hcx⟩ := vcc_attain (T := T) (Z : Set X) x
-    exact ⟨act c, ⟨c, hc, rfl⟩, (c : X → O) x, fun v hv => (mem_Vx.mp hv) c, hcx.le⟩
-
-theorem congBoundGoodLarge : StatCongBoundGoodLarge := by
-  unfold StatCongBoundGoodLarge
-  intro O _ _ _ X _ T _ _ V _ _ _ _ _ act hsum L hL _ hLT Z Zg _ _ a A haL hacomm hZgA hZ0
   have hVa : VS T act (Z : Set X) ≤ (VS T act (Zg : Set X)).comap a := by
     unfold VS
     refine iSup₂_le fun y hy => ?_

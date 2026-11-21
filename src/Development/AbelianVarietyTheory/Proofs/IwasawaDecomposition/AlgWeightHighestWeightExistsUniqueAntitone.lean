@@ -2,12 +2,16 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolynomialRepGLComplexAlgebraicWeightEvalPointStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicWeightSpanTranslatesFactorCommutantStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominanceOrderLEOfMemSpanWeightVectorsDominatedBStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MulVecMemSpanLowerWeightsOfBorelEigenvectorStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsTorusWeightOfPolyRepCompSwapStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBorelEigenvectorOfPolynomialRepGLComplexStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicWeightPolyMatrixChangeOfBasisStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicWeightSpanTranslatesFactorCommutant
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateNeSelf
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicWeightPolyMatrixMultiplicativeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanRationalPointOrbitAlgebraicWeight
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominanceOrderLEOfMemSpanWeightVectorsDominatedB
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MulVecMemSpanLowerWeightsOfBorelEigenvector
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsTorusWeightOfPolyRepCompSwap
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBorelEigenvectorOfPolynomialRepGLComplex
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicWeightPolyMatrixChangeOfBasis
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalUnitaryCoordinateZeroOfRationalPoints
 
 noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
@@ -87,14 +91,14 @@ theorem domLE_of_agrees {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype 
     DomLE μ lam := by
   obtain ⟨w, hw0, hw⟩ := hμ
   have hR := GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ
-  refine GlobalTheory.T.dominanceOrderLE_of_mem_spanWeightVectorsDominatedBy n ι _ hR μ lam w hw hw0 ?_
-  have hspan := GlobalTheory.T.algebraicWeight_span_translates_factor_commutant L n a ι b P hP τ v hv.1 w
+  refine _root_.GlobalTheory.AlgWtHW.DomLEOfSle.domLE_of_mem_Sle n ι _ hR μ lam w hw hw0 ?_
+  have hspan := _root_.GlobalTheory.AlgWtHW.span_tau_commutant L n a ι b P hP τ v hv.1 w
   refine (Submodule.span_le.2 ?_) hspan
   rintro x ⟨B, M, hM, rfl⟩
   have e : evM P (evPt τ B) *ᵥ (M *ᵥ v) = M *ᵥ (evM P (evPt τ B) *ᵥ v) := by
     rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM]
   rw [e]
-  exact sle_mulVec hM lam (GlobalTheory.T.mulVec_mem_span_lower_weights_of_borelEigenvector n ι _ hR v lam hv B)
+  exact sle_mulVec hM lam (_root_.GlobalTheory.AlgWtHW.mulVec_mem_sle_of_isBEig n ι _ hR v lam hv B)
 
 theorem isWt_of_beig {ι : Type} [Fintype ι] {Φ : GL (Fin n) ℂ → Matrix ι ι ℂ} {v : ι → ℂ} {lam : Fin n → ℤ}
     (h : IsBEig Φ v lam) : IsWt Φ lam :=
@@ -112,7 +116,7 @@ theorem beig_transport {a : AlgWt L n} {τ : L →+* ℂ} {ι : Type} [Fintype �
   · have := congrArg (fun x => b'.toMatrix b *ᵥ x) h0
     simpa [Matrix.mulVec_mulVec, hC] using this
   · show evM P (evPt τ B) *ᵥ (b.toMatrix b' *ᵥ v') = _
-    rw [GlobalTheory.T.algebraicWeight_polyMatrix_change_of_basis L n a ι' b' P' ι b P hP' hP τ B, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hC,
+    rw [_root_.GlobalTheory.AlgWtHW.evM_change_of_basis L n a ι' b' P' ι b P hP' hP τ B, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hC,
       Matrix.mul_one, ← Matrix.mulVec_mulVec]
     have := hv.2 B hB
     simp only at this
@@ -128,12 +132,12 @@ theorem hw_exists_unique_antitone : ∀ (L : Type) [Field L] [NumberField L] [Is
     rcases eq_or_lt_of_le hij with e | hlt
     · rw [e]
     · exact le_of_domLE_swap hlt (domLE_of_agrees hP hv
-        (GlobalTheory.T.isTorusWeightOfPolyRep_comp_swap n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ) lam (isWt_of_beig hv) i j))
+        (_root_.GlobalTheory.isWt_comp_swap n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ) lam (isWt_of_beig hv) i j))
   refine ⟨?_, hanti⟩
   obtain ⟨_, ι, _, _, b, P, hP⟩ := a.alg
   haveI := algWeight_space_nontrivial a
   haveI := b.index_nonempty
-  obtain ⟨v, lam, hv⟩ := GlobalTheory.T.exists_borelEigenvector_of_polynomialRepGLComplex n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ)
+  obtain ⟨v, lam, hv⟩ := _root_.GlobalTheory.AlgWtHW.exists_isBEig_of_isPolyRep n ι _ (GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ)
   refine ⟨lam, ⟨ι, inferInstance, inferInstance, b, P, hP, v, hv.1, hv.2⟩, fun lam' h' => ?_⟩
   obtain ⟨ι', _, _, b', P', v', hP', hv'⟩ := beig_of_hwAt h'
   have hv'' := beig_transport hP hP' hv'

@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeIntegral
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisEqEmbeddingsOCModPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltOfTiltRootFlatAlgebraicAndGaloisFixStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RingHomEqOfPerfectOfDvdSubAdicSeparatedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectiveMapIntegersClToWittQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorMapBreuilKisinEvEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisEqEmbeddingsOCModPrime
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltOfTiltRootFlatAlgebraicAndGaloisFix
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RingHomEqOfPerfectOfDvdSubAdicSeparated
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectiveMapIntegersClToWittQuotient
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorMapBreuilKisinEvEq
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
@@ -23,10 +23,10 @@ theorem exists_galK_fixFlat_of_tilt_maps_agree : ∀ (l : ℕ) [Fact l.Prime] (K
     have h := hs X
     rw [bk.ev_X, WittVector.teichmuller_coeff_zero] at h
     exact h.symm
-  have hW := GlobalTheory.T.wittVector_map_breuilKisin_ev_eq l K bk O ψ ψ' h0 hc hs
-  obtain ⟨θ₁, hθ₁, hinj₁, hdom, hdiv⟩ := GlobalTheory.T.exists_injective_map_integers_Cl_to_wittQuotient l K bk O ψ h0 hu hc
+  have hW := _root_.GlobalTheory.BSP.wmap_ev_eq l K bk O ψ ψ' h0 hc hs
+  obtain ⟨θ₁, hθ₁, hinj₁, hdom, hdiv⟩ := _root_.GlobalTheory.BSP.exists_untilt_map l K bk O ψ h0 hu hc
   obtain ⟨θ₂', hθ₂', hinj₂', -, -⟩ :=
-    GlobalTheory.T.exists_injective_map_integers_Cl_to_wittQuotient l K bk O ψ' (hflat ▸ h0) (hflat ▸ hu) (hflat ▸ hc)
+    _root_.GlobalTheory.BSP.exists_untilt_map l K bk O ψ' (hflat ▸ h0) (hflat ▸ hu) (hflat ▸ hc)
   have hI : Ideal.span {WittVector.map ψ' (bk.ev bk.E)} = Ideal.span {WittVector.map ψ (bk.ev bk.E)} := by
     rw [hW bk.E]
   let θ₂ := (Ideal.quotEquivOfEq hI).toRingHom.comp θ₂'
@@ -40,8 +40,8 @@ theorem exists_galK_fixFlat_of_tilt_maps_agree : ∀ (l : ℕ) [Fact l.Prime] (K
     intro r
     obtain ⟨x, hx⟩ := Ideal.Quotient.mk_surjective (bk.str r)
     rw [← bk.θ_ev r x hx, hθ₁, hθ₂, hW x]
-  obtain ⟨g, halg, hl⟩ := GlobalTheory.T.exists_galois_eq_embeddings_OC_mod_prime l K _ θ₁ θ₂ hinj₁ hinj₂ hK
-  obtain ⟨hroot, hfix⟩ := GlobalTheory.T.untiltOfTiltRoot_flat_algebraic_and_galois_fix l K bk
+  obtain ⟨g, halg, hl⟩ := _root_.GlobalTheory.EmbTwo.exists_gal_eq l K _ θ₁ θ₂ hinj₁ hinj₂ hK
+  obtain ⟨hroot, hfix⟩ := _root_.GlobalTheory.BSP.rootT_flat_alg_and_fix l K bk
 
   have key : ∀ z : OCb l, ψ z = ψ' z →
       ψ ((frobeniusEquiv (OCb l) l).symm z) = ψ' ((frobeniusEquiv (OCb l) l).symm z) := by
@@ -66,7 +66,7 @@ theorem exists_galK_fixFlat_of_tilt_maps_agree : ∀ (l : ℕ) [Fact l.Prime] (K
     have h := halg _ ⟨z, hz⟩
     rw [← hθroot n] at h
     exact (hinj₁ h).symm
-  · have hext := GlobalTheory.T.ringHom_eq_of_perfect_of_dvd_sub_adicSeparated l (OCb l) O (ψ bk.flat) bk.Ep.natDegree bk.deg_pos hc.toIsHausdorff
+  · have hext := _root_.GlobalTheory.ringHom_eq_of_perfect_of_dvd_sub l (OCb l) O (ψ bk.flat) bk.Ep.natDegree bk.deg_pos hc.toIsHausdorff
       ψ' (ψ.comp (Per.σF (g : GQ l))) fun y => ?_
     · intro y
       exact RingHom.congr_fun hext y

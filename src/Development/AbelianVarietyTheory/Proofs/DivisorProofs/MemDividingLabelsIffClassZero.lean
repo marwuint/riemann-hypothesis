@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnOfHasTraitsP
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLabelsSurjectiveHomLatticeModLevelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionTranslateOfClassZeroDividingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaLabelsSurjectiveHomLatticeModLevel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionTranslateOfClassZeroDividing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMemberDividingLabelClassZeroStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -129,7 +129,7 @@ open GlobalTheory.GSep.IntLabel in
 
 theorem mem_HH_iff_yy_zero : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (a : X₁.S.Gam), a ∈ X₁.S.HH X₁.M z₁ ↔ 𝔪.YY a 0 := by
   intro I X₁ z₁ act x₀ hx₀ V _ _ _ ev X _ t δ 𝔪 a
-  obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.thetaLabels_surjective_hom_lattice_mod_level I X₁ z₁ act V ev X t δ 𝔪
+  obtain ⟨h1, h2, h3, h4⟩ := _root_.GlobalTheory.GSep.Labels.yy_hom I X₁ z₁ act V ev X t δ 𝔪
   obtain ⟨j, hj, hr⟩ := X₁.ρ.r_eq
   have hp : 0 < X₁.ρ.n := X₁.ρ.n_prime.pos
   have hk := X₁.ρ.two_le
@@ -154,6 +154,6 @@ theorem mem_HH_iff_yy_zero : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z�
   rw [ThetaSys.HH]
   exact mem_closure_iff (X₁.ρ.n) (j + X₁.ρ.k * 2) hJ hN hG htor htf h1 h2 h3 h4 _
     (fun b hb => GlobalTheory.T.thetaMember_dividing_label_class_zero I X₁ z₁ act V ev X t δ 𝔪 b hb)
-    (fun b hb => GlobalTheory.T.exists_torsionTranslate_of_classZero_dividing I X₁ z₁ act V ev X t δ 𝔪 x₀ hx₀ b hb) a
+    (fun b hb => _root_.GlobalTheory.GSep.TorTrans.exists_translate_mem_supI I X₁ z₁ act V ev X t δ 𝔪 x₀ hx₀ b hb) a
 
 end GlobalTheory.GSep

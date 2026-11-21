@@ -48,37 +48,6 @@ theorem stackedFormEval_second {K : Type} [Field K] [NumberField K] {i : ℕ} {F
     stackedFormEval b b' (graphSecond t) = ∑ j, C ((b t : Fin i → K) j) * X j := by
   simp [stackedFormEval, graphSecond]
 
-theorem isMultiHomog_first {T : Type} [Fintype T] (t : T) :
-    IsMultiHomog (graphFirst t : MRing (stackedBlocks T)) (bidegree 1 0) := by
-  classical
-  intro m hm κ
-  rw [graphFirst, support_X, Finset.mem_singleton] at hm
-  subst hm
-  rcases κ with ⟨⟨⟩⟩ | ⟨⟨⟩⟩
-  · have key : ∀ s : T, ((⟨Sum.inl (), t⟩ : Σ κ, stackedBlocks T κ) = ⟨Sum.inl (), s⟩ ↔ t = s) :=
-      fun s => ⟨fun h => by cases h; rfl, fun h => by rw [h]⟩
-    simp [bidegree, Finsupp.single_apply, key]
-    exact Finset.mem_univ _
-  · have key : ∀ s : T, (⟨Sum.inl (), t⟩ : Σ κ, stackedBlocks T κ) ≠ ⟨Sum.inr (), s⟩ :=
-      fun s h => by cases h
-    simp [bidegree, key]
-
-theorem example_relation :
-    stackedFormEval dualBasisStandard DualStackedExcResidueExample.halfBasis
-      (graphSecond () - C 2 * graphFirst ()) = 0 := by
-  rw [map_sub, map_mul, stackedFormEval_first, stackedFormEval_second, dualBasisStandard_apply,
-    DualStackedExcResidueExample.halfBasis_apply]
-  simp only [stackedFormEval, oneDual, DualStackedExcResidueExample.halfDual]
-  simp
-  rw [← mul_assoc, ← map_ofNat C 2, ← C_mul, mul_inv_cancel₀ two_ne_zero, C_1, one_mul, sub_self]
-
-theorem example_first_ne :
-    stackedFormEval dualBasisStandard DualStackedExcResidueExample.halfBasis (graphFirst ()) ≠ 0 := by
-  rw [stackedFormEval_first, DualStackedExcResidueExample.halfBasis_apply]
-  intro h
-  have h2 := congrArg (MvPolynomial.eval fun _ : Fin 1 => (1 : ℚ)) h
-  simp [DualStackedExcResidueExample.halfDual] at h2
-
 end DualStackedExcLeadExample
 
 end

@@ -182,7 +182,4 @@ theorem splitAsym_good : SplitAsymFor GoodP := by
       ENNReal.toReal_ofReal hcμ.le, ENNReal.toReal_ofReal hcν.le]
     field_simp
 
-theorem jacOneGood (hK : KPos) : JacOneFor GoodP :=
-  jacOneFor_of hK (locRatioFor_of hK splitAsym_good)
-
 end PI.AprimeInfW

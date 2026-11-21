@@ -32,10 +32,6 @@ private theorem eta_apply {I K : Type} [Group I] [Field K] (g n : ℕ) (R : I �
 
 end Pure
 
-section Scalars
-
-end Scalars
-
 theorem parEx : ParEx := by
   intro E Ω _ _ _ _ _ A w h a ha g _ i hi y hy hdz
   haveI : CharZero (HeightOneSpectrum.adicCompletion E w) :=

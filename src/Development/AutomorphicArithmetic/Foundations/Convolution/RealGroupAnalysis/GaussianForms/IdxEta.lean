@@ -17,11 +17,6 @@ private theorem ab_mul_idx {F : Type} [Field F] [NumberField F] (a b : (A F)ˣ) 
   rw [map_mul]
   rfl
 
-private theorem ab_one {F : Type} [Field F] [NumberField F] : ab (1 : (A F)ˣ) = 1 := by
-  unfold ab
-  rw [map_one]
-  rfl
-
 private theorem ab_diag {F : Type} [Field F] [NumberField F] (k : Fˣ) : ab (IdeleGroup.diagonal F k) = 1 := by
   unfold ab
   rw [IdeleGroup.ideleModule_diagonal]

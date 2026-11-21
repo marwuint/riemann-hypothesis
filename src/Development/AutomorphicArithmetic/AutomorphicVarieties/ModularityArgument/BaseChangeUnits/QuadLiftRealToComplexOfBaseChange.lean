@@ -27,8 +27,6 @@ def UpperTheory.V.Z.Bc.CyclicBaseChangeLiftRankTwo : Prop :=
         (∀ (τ : E →+* ℂ) (m : Multiset ℂ), π.HasInfChar (τ.comp (algebraMap F E)) m → P.HasInfChar τ m) ∧
         WeakBC (CG.mk π).HasSat (CG.mk P).HasSat
 
-theorem UpperTheory.V.Z.Bc.complexLiftRankTwo_of (h : LiftC) : CyclicBaseChangeLiftRankTwo := fun F E _ _ _ _ _ _ _ _ hp π hr => h F E hp 2 one_le_two π hr
-
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
   have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
@@ -166,9 +164,6 @@ def UpperTheory.V.Z.Bc.QuadLiftRealToComplexRankTwo : Prop :=
       (∃ η : HChar F, IsQuadCharOf E η ∧ IsoTwist π η) ∨ ∃ P : CuspSub E 2, Br.IsBC0 π P
 
 theorem UpperTheory.V.Z.Bc.quadLiftRealToComplex_of_base_change (h : Br.QuadBC0) : QuadLiftRealToComplexRankTwo := fun F E _ _ _ _ _ _ _ h2 π hr => h F E h2 2 one_le_two π hr
-
-theorem UpperTheory.V.Z.Bc.realLiftRankTwo_of_quadratic (h : QuadBC2) : QuadLiftRealToComplexRankTwo := fun F E _ _ _ _ _ _ _ h2 π hr =>
-  (h F E h2 π hr).imp_right fun ⟨P, hP⟩ => ⟨P, hP.inf, hP.unr⟩
 
 theorem UpperTheory.V.Z.Bc.upQuadI_of (hP : Af.Hypotheses₂) (h : QuadLiftRealToComplexRankTwo) : UpQuadI := by
   intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE r π hr hreg hatt hirr

@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.InZhIffKillsAdapt
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.EqOfSqEqOfOdd
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueSymmetricTranslateOddLevel
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SumSupportCMul
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ReachedSectionRegularOnIntegralModelStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ReachedSectionRegularOnIntegralModel
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IntegralChartFormalBiextensionGaugeBoundStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupPointsOfIntegralChartSpecStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SplitKernelFormalGroupOfRationalTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.KillsFormalPointsIffMemCoordinateKernelStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupPointsOfIntegralChartSpec
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SplitKernelFormalGroupOfRationalTorsion
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.KillsFormalPointsIffMemCoordinateKernel
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SumHarmonicValuesFormalKernelSimilitudeStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ShortPlaceB
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
@@ -225,10 +225,10 @@ theorem sum_hv_primary_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   letI := io.toAlgebra
   have hodd : Odd (N ^ 2) := hN.pow
   obtain ⟨B, hBT, -⟩ := GlobalTheory.T.integralChart_formalBiextension_gauge_bound E H Dw l Xo c hbar T io y C
-  obtain ⟨f1, -, fmul, -, -⟩ := GlobalTheory.T.formal_group_points_of_integral_chart_spec E H Dw l Xo c hbar T io y C B hBT
+  obtain ⟨f1, -, fmul, -, -⟩ := _root_.GlobalTheory.PlaceFormPt.formPt_spec E H Dw l Xo c hbar T io y C B hBT
   have hadj := adj_mul hsim
   have hM0 : 0 < M := Nat.pos_of_ne_zero fun h0 => hodd.pos.ne' (by rw [hkM, h0, Nat.mul_zero])
-  have hprim := (GlobalTheory.T.splitKernel_formalGroup_of_rational_torsion E H Dw l Xo c hbar T io y C hC B hBT ℓ hℓ hℓu n (p * q) _ k M hk hM0
+  have hprim := (_root_.GlobalTheory.SplitKernel.splitKer_of_allRat E H Dw l Xo c hbar T io y C hC B hBT ℓ hℓ hℓu n (p * q) _ k M hk hM0
     (by rw [hadj, hkM]) hM).2
   let W : Subgroup (Fin n → (ptO Xo (xOf y) ⟶ Xo.univ.t.G)) := kerSub Xo _ (p * q) ⊓ primSub Xo _ ℓ
   have hW : ∀ u, u ∈ W ↔ ∃ i, a i = u := fun u => (hrange u).symm
@@ -284,10 +284,10 @@ theorem sum_hv_primary_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
         hsim hkM hk hM W₁ (fun α => α.1.1) (Subtype.val_injective.comp Subtype.val_injective)
         (fun u => ⟨by rintro ⟨α, rfl⟩; exact ⟨α.1.2.1, α.2⟩, fun ⟨h1, h2⟩ => by
           choose α hα using h2
-          exact ⟨⟨⟨u, h1, hprim α ((GlobalTheory.T.kills_formalPoints_iff_mem_coordinateKernel E H Dw l Xo c hbar T io y C B hBT n _ u α hα).1 h1) u hα⟩,
+          exact ⟨⟨⟨u, h1, hprim α ((_root_.GlobalTheory.PlaceInt.FormKer.kills_iff_mem_kerM E H Dw l Xo c hbar T io y C B hBT n _ u α hα).1 h1) u hα⟩,
             fun b => ⟨α b, hα b⟩⟩, rfl⟩⟩)
         (G (eq.symm x)) G'
-        (fun b => GlobalTheory.T.reachedSection_regular_on_integralModel E H Dw l Xo c hbar T io y C hC _ _ (Reach.move _ _ _ _ (hF b) (hG' x b))) hG''
+        (fun b => _root_.GlobalTheory.ReachRegular.regular_of_reach E H Dw l Xo c hbar T io y C hC _ _ (Reach.move _ _ _ _ (hF b) (hG' x b))) hG''
         (fun α hα => by
           have h1 := hW₀ α hα x
           rw [_root_.mul_comm] at h1

@@ -59,12 +59,6 @@ def AmpleVanish.Statement : Prop :=
     (F : SubFamily S x E), (∀ I, (F.sub I).FG) → ∀ H : LineBundle S x, IsVeryAmple H.toSubSystem →
     ∃ a₀ : ℕ, ∀ (i a : ℕ), 1 ≤ i → a₀ ≤ a → Subsingleton ((F.twist (H.pow a)).H i)
 
-section Hypotheses
-
-variable (k : Type u) [Field k]
-
-end Hypotheses
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman

@@ -110,10 +110,6 @@ def FCorr (U : Subgroup (GL (Fin a) (Af E))) (Y : GA E a → Herm E a) (W : (GL 
   ∀ (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)),
     W (x : GL (Fin a) (Af E) ⧸ U) (sand g (hOne E a)) = sand g (hv (Y (infGL E a g * finGL E a x)))
 
-theorem FCorr.neg {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a}
-    {W : (GL (Fin a) (Af E) ⧸ U) → HV E a → HV E a} (h : FCorr U Y W) : FCorr U (-Y) (-W) := fun g x => by
-  simp only [Pi.neg_apply, map_neg, h g x]
-
 def Bd {Ξ : AlgRep E a} {q : ℕ} (α : Co Ξ q) (g : GA E a) (M : ℝ) : Prop :=
   ∀ X : Fin q → Herm E a, ‖ev (α X) (retractOne g : KernelIndexFullLattice.G1 E a).1‖ ≤ M * ∏ i, ‖hv (X i)‖
 

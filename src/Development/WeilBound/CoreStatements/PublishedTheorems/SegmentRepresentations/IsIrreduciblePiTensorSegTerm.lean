@@ -1,5 +1,5 @@
 import Mathlib
-import Development.WeilBound.CoreStatements.PublishedTheorems.SegmentRepresentations.SegmentRepresentationLit
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPosOfSocle
 
 noncomputable section

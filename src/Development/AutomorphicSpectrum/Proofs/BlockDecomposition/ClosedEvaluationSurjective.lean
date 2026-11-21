@@ -9,13 +9,13 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSu
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductorAndHaarIntegersExist
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothSubrepCompactInductionSpanStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupOpenCompactStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupOpenCompact
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupsBasisNhdsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftedEmbeddingMemCongruenceIffStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentCongruenceFactorizationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentBallMemCongruenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BumpSectionValueLocalIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedNearIdentityStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentCongruenceFactorization
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentBallMemCongruence
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BumpSectionValueLocalIntegral
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedNearIdentity
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG
 open scoped TensorProduct
 
@@ -183,7 +183,7 @@ theorem IsBump.right (hF : IsBump s hs w F) (g κ : Mir k ((i + 1) + t + 1))
 
 theorem IsBump.on_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ∀ j, d j ∈ GlobalTheory.SplitWeil.cball s) :
     evX F (dEmb k i t d) = w := by
-  have h := hF.one 1 _ ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).1 hd)
+  have h := hF.one 1 _ ((_root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.dEmb_mem_congM_and_ball k i t s hs d).1 hd)
   rw [map_one, Module.End.one_apply] at h
   rw [← h]
   congr 1
@@ -191,7 +191,7 @@ theorem IsBump.on_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ∀ 
 
 theorem IsBump.off_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ¬ ∀ j, d j ∈ GlobalTheory.SplitWeil.cball s) :
     evX F (dEmb k i t d) = 0 := by
-  refine hF.zero _ fun ⟨a, x, hx, e⟩ => hd ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).2 a a.2 x hx ?_)
+  refine hF.zero _ fun ⟨a, x, hx, e⟩ => hd ((_root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.dEmb_mem_congM_and_ball k i t s hs d).2 a a.2 x hx ?_)
   rw [e, mul_one]
 
 theorem IsBump.intC_sEmb (ψ : AddChar k Circle) (hF : IsBump s hs w F) (x : Mir k ((i + 1) + t))
@@ -212,7 +212,7 @@ theorem IsBump.intC_off (ψ : AddChar k Circle) (hs1 : valuation k (s : k) < 1) 
   refine intC_eq_zero ψ F _ fun d => hF.zero _ fun ⟨a, x, hx, e⟩ => ?_
   have e' : dEmb k i t d * sEmb k ((i + 1) + t) g = (a : Mir k ((i + 1) + (t + 1))) * x := by
     rw [e, mul_one]
-  have h := GlobalTheory.T.unipotent_congruence_factorization k i t s hs hs1 d g a a.2 x hx e'
+  have h := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.Key1.mem_mirabolicParabolic_mul_cong k i t s hs hs1 d g a a.2 x hx e'
   obtain ⟨b, hb, z, hz, e2⟩ := h
   exact hg ⟨⟨b, hb⟩, z, hz, e2⟩
 
@@ -228,7 +228,7 @@ theorem local_core {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ
         B.1.1.1 ((a : Mir k ((i + 1) + t)) * x) = sigC τ σ a (qC τ σ w)) ∧
       ∀ g, (¬ ∃ a : MirabolicParabolic k (i + 1) t, ∃ x ∈ congM k s hs ((i + 1) + t), g = (a : Mir k ((i + 1) + t)) * x) →
         B.1.1.1 g = 0 := by
-  have hv := GlobalTheory.T.bump_section_value_local_integral k i t ψ τ σ s hψ1 w F hF.on_ball hF.off_ball
+  have hv := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.intC_one_of_bump k i t ψ τ σ s hψ1 w F hF.on_ball hF.off_ball
   obtain ⟨c, hc0, hc⟩ := hv
   have hy := GlobalTheory.T.closed_evaluation_induced k i t ψ hψ τ σ hτ hσ F
   obtain ⟨yF, hyF⟩ := hy
@@ -278,10 +278,10 @@ theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
     LinearMap.rTensor_surjective σ.V (Submodule.mkQ_surjective _) v
   obtain ⟨w, hw⟩ := hsurj
   subst hw
-  have hfx := GlobalTheory.T.smooth_vector_fixed_near_identity k i t τ σ hτ hσ w
+  have hfx := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.sigX_fix k i t τ σ hτ hσ w
   obtain ⟨O₁, hO₁, hfix⟩ := hfx
   obtain ⟨s, hs, hs1, hψ1, hsO, hsO₁⟩ := exists_radius ψ hψ O hO O₁ hO₁
-  obtain ⟨hKo, hKc⟩ := GlobalTheory.T.congruence_subgroup_open_compact k ((i + 1) + t + 1) s hs
+  obtain ⟨hKo, hKc⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM_isOpen_isCompact k ((i + 1) + t + 1) s hs
   have hb := GlobalTheory.CompanionTheory.BZMirOnto.exists_bump (HPG k (i + 1) (t + 1)) (sigX τ σ)
     (congM k s hs ((i + 1) + t + 1)) hKo hKc 1 w (fun a x hx e => hfix a (by
       have e' : (a : Mir k ((i + 1) + (t + 1))) = x := by rw [e]; group
@@ -290,7 +290,7 @@ theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
   obtain ⟨F, hF1, hF0⟩ := hb
   have hbump : IsBump s hs w F := ⟨hF1, hF0⟩
   have hc := local_core ψ hψ τ σ hτ hσ w s hs hs1 hψ1 (fun x hx => (hsO x hx).2) F hbump
-  exact ⟨congM k s hs ((i + 1) + t), (GlobalTheory.T.congruence_subgroup_open_compact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩
+  exact ⟨congM k s hs ((i + 1) + t), (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM_isOpen_isCompact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩
 
 theorem imC_translate {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (g : Mir k ((i + 1) + t)) (B : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ))

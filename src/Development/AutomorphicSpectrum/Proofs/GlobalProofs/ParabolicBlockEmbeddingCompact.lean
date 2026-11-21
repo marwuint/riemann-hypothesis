@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsConstAlo
 import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
 import Development.WeilBound.ThetaLifts.Reductions.SiegelPar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StdParEqFlag
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviDecompositionGradedIsotropicFlagStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviDecompositionGradedIsotropicFlag
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableIffMemL2
 
 noncomputable section
 
@@ -54,7 +55,7 @@ theorem minPar_eq_unip_mul_levi : ∀ (F E : Type) [Field F] [NumberField F] [Fi
     obtain ⟨B, hB, e⟩ := hp
     obtain ⟨B', hB', e'⟩ := PositivityTheory.ThKR.inv_mem_minPar h hJ hW (show p ∈ PositivityTheory.ThKR.minPar σ J X from ⟨B, hB, e⟩)
     exact ⟨exists_block_of_triangular X S hs hB e, exists_block_of_triangular X S hs hB' e'⟩
-  obtain ⟨u, hu', m, hm, e, -⟩ := (GlobalTheory.T.leviDecomposition_gradedIsotropicFlag F E σ h n J hJ s (X.submatrix id (Fin.castLE hs))
+  obtain ⟨u, hu', m, hm, e, -⟩ := (_root_.GlobalTheory.LeviFlag.levi_decomposition F E σ h n J hJ s (X.submatrix id (Fin.castLE hs))
     (Y.submatrix id (Fin.castLE hs)) (fun i : Fin s => (S.filter (· < Fin.castLE hs i)).card)
     (by rw [GlobalTheory.TieStd.cT_submatrix_mul, hW.xx]; ext; simp)
     (by rw [GlobalTheory.TieStd.cT_submatrix_mul, hW.yy]; ext; simp)

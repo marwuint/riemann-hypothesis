@@ -26,8 +26,6 @@ lemma h_sub_left (u u' v : Fin n → ℂ) : herm H (u - u') v = herm H u v - her
   rw [sub_eq_add_neg, h_add_left, h_neg_left, sub_eq_add_neg]
 lemma h_sub_right (u v v' : Fin n → ℂ) : herm H u (v - v') = herm H u v - herm H u v' := by
   rw [sub_eq_add_neg, h_add_right, h_neg_right, sub_eq_add_neg]
-lemma h_zero_left (u : Fin n → ℂ) : herm H 0 u = 0 := B2x8.al_herm_zero_left H u
-lemma h_zero_right (u : Fin n → ℂ) : herm H u 0 = 0 := B2x8.al_herm_zero_right H u
 lemma h_conj (hH : Hᴴ = H) (u v : Fin n → ℂ) : conj (herm H u v) = herm H v u := B2x8.herm_conj H hH u v
 
 def hs (p v : Fin n → ℂ) (σ : ℂ) : Matrix (Fin n) (Fin n) ℂ :=
@@ -125,9 +123,6 @@ lemma uh_mul_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 := Matr
 lemma uh_inv_mul {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ * g = 1 := Matrix.nonsing_inv_mul _ (uh_unit hg)
 lemma uh_inv_fix {g : Mx k r} (hg : g ∈ UH (Hpk k r)) {v w : Fin (2 * r + k + 1) → ℂ} (h : g *ᵥ v = w) : g⁻¹ *ᵥ w = v :=
   B2x8.al_inv_mulVec (uh_unit hg) h
-lemma uh_herm_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) (u v : Fin (2 * r + k + 1) → ℂ) : ⟪g *ᵥ u, v⟫ = ⟪u, g⁻¹ *ᵥ v⟫ := by
-  rw [← uh_herm hg u (g⁻¹ *ᵥ v), Matrix.mulVec_mulVec, uh_mul_inv hg, Matrix.one_mulVec]
-
 lemma glev_one (i : Fin (r + 1)) : (1 : Mx k r) ∈ Glev k r i :=
   ⟨uh_one, fun a _ => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩⟩
 lemma glev_mul {i : Fin (r + 1)} {g h : Mx k r} (hg : g ∈ Glev k r i) (hh : h ∈ Glev k r i) : g * h ∈ Glev k r i :=
@@ -220,8 +215,6 @@ lemma up_nset {u : Mx k r} (hu : u ∈ UP k r l) : u ∈ Nset k r := by
         apply Pi.single_eq_of_ne
         intro h; have := congrArg Fin.val h; simp only [eI] at this; omega
       rw [Pi.add_apply, Pi.smul_apply, this, smul_zero, add_zero]; simp only [bvec, Pi.single_apply]
-
-lemma up_nlev {u : Mx k r} (hu : u ∈ UP k r l) : u ∈ Nlev k r l.castSucc := ⟨up_nset hu, hu.1⟩
 
 def IsX (k r : ℕ) (l : Fin r) (x : Fin (2 * r + k + 1) → ℂ) : Prop :=
   herm (Hpk k r) x (bvec (eI k r l)) = 1 ∧ herm (Hpk k r) x x = 0 ∧
@@ -452,146 +445,6 @@ lemma dec_exists {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (hc : ⟪g *ᵥ �
   refine ⟨u, g₁, u', hc, hu, hg₁, hu', ?_⟩
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← h, ← Matrix.mul_assoc (w1 k r l c), uh_mul_inv hw.1, Matrix.one_mul,
     ← Matrix.mul_assoc, uh_mul_inv hu.1.1, Matrix.one_mul]
-
-theorem cellDecomp : CellDecomp := by
-  intro k r l g hg
-  obtain ⟨u, g₁, u', h⟩ := dec_exists hg.1 hg.2
-  exact ⟨u, up_nlev h.hu, u', up_nlev h.hu', g₁, h.hg, h.eq⟩
-
-lemma hs_poly (p v₀ : Fin (2 * r + k + 1) → ℂ) (κ : ℂ) (t : ℝ) :
-    hs (Hpk k r) p ((t : ℂ) • v₀) ((t : ℂ) ^ 2 * κ) =
-      1 + (t : ℂ) • (Matrix.vecMulVec v₀ (fun j => ⟪bvec j, p⟫) - Matrix.vecMulVec p (fun j => ⟪bvec j, v₀⟫)) +
-        ((t : ℂ) ^ 2 * κ) • Matrix.vecMulVec p (fun j => ⟪bvec j, p⟫) := by
-  ext i j
-  simp only [hs, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, vecMulVec_apply, h_smul_right, Complex.conj_ofReal,
-    Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-  ring
-
-lemma zero_mem_closure_poly {A B : ℂ} (h : A ≠ 0 ∨ B ≠ 0) :
-    (0 : ℝ) ∈ closure {t : ℝ | (t : ℂ) * (A + t * B) ≠ 0} := by
-  have hs : ({t : ℝ | (t : ℂ) * (A + t * B) ≠ 0}ᶜ).Countable := by
-    apply Set.Countable.mono (s₂ := {0, (-A / B).re})
-    · intro t ht
-      simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_not, mul_eq_zero] at ht
-      rcases ht with ht | ht
-      · left; exact_mod_cast ht
-      · right
-        have hB : B ≠ 0 := by
-          intro hB
-          rw [hB, mul_zero, add_zero] at ht
-          rcases h with h | h
-          · exact h ht
-          · exact h hB
-        have h2 : (t : ℂ) = -A / B := by
-          field_simp
-          linear_combination ht
-        simp [← h2]
-    · exact (Set.toFinite _).countable
-  have h2 := hs.dense_compl ℝ
-  rw [compl_compl] at h2
-  exact h2 0
-
-lemma herm_H_bvec (y : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) : ⟪Hpk k r *ᵥ y, bvec j⟫ = y j := by
-  rw [herm_bvec_right, Matrix.mulVec_mulVec, B2x8.Hpk_sq, Matrix.one_mulVec]
-
-open scoped ComplexOrder in
-theorem cellDense : CellDense := by
-  intro k r l g hg
-  by_cases hc : herm (Hpk k r) (g *ᵥ bvec (eI k r l)) (bvec (eI k r l)) = 0
-  swap
-  · exact subset_closure ⟨hg, hc⟩
-  set x := g⁻¹ *ᵥ bvec (eI k r l) with hx
-  set α := herm (Hpk k r) x (bvec (esI k r l)) with hα
-  set x₀ := x - α • bvec (eI k r l) with hx₀
-  set v₀ := Hpk k r *ᵥ x₀ with hv₀
-  set q := herm (Hpk k r) v₀ v₀ with hq
-  set κ := Complex.I - q / 2 with hκ
-  have hex : herm (Hpk k r) (bvec (eI k r l)) x = 0 := by rw [hx, ← uh_herm_inv hg.1, hc]
-  have hxe : herm (Hpk k r) x (bvec (eI k r l)) = 0 := by rw [← h_conj _ Hh, hex, map_zero]
-  have hve : herm (Hpk k r) v₀ (bvec (eI k r l)) = 0 := by
-    rw [hv₀, herm_H_bvec, ← herm_es_right x₀ l, hx₀, h_sub_left, h_smul_left, h_e_es, if_pos rfl, ← hα]; ring
-  have hvs : herm (Hpk k r) v₀ (bvec (esI k r l)) = 0 := by
-    rw [hv₀, herm_H_bvec, ← herm_e_right x₀ l, hx₀, h_sub_left, h_smul_left, h_e_e, hxe]; ring
-  have hev : herm (Hpk k r) (bvec (eI k r l)) v₀ = 0 := by rw [← h_conj _ Hh, hve, map_zero]
-  have hva : ∀ a : Fin r, a.val < (l.castSucc).val →
-      herm (Hpk k r) (bvec (eI k r a)) v₀ = 0 ∧ herm (Hpk k r) (bvec (esI k r a)) v₀ = 0 := by
-    intro a ha
-    have hne : a ≠ l := ne_of_val_lt (by simpa using ha)
-    have hgi := glev_inv hg
-    constructor
-    · rw [← h_conj _ Hh, hv₀, herm_H_bvec, ← herm_es_right x₀ a, hx₀, h_sub_left, h_smul_left, h_e_es, if_neg (Ne.symm hne), hx]
-      conv_lhs => rw [← (hgi.2 a ha).2]
-      rw [uh_herm hgi.1, h_e_es, if_neg (Ne.symm hne)]; simp
-    · rw [← h_conj _ Hh, hv₀, herm_H_bvec, ← herm_e_right x₀ a, hx₀, h_sub_left, h_smul_left, h_e_e, hx]
-      conv_lhs => rw [← (hgi.2 a ha).1]
-      rw [uh_herm hgi.1, h_e_e]; simp
-  have hqc : conj q = q := h_conj _ Hh _ _
-  have hκ0 : κ ≠ 0 := by
-    intro h
-    have h1 := congrArg Complex.im h
-    have h2 : q.im = 0 := B2x8.herm_self_im k r v₀
-    simp [hκ, h2] at h1
-  set A := herm (Hpk k r) v₀ x with hA
-  set B := κ * conj α with hB
-  have hAB : A ≠ 0 ∨ B ≠ 0 := by
-    by_cases h0 : x₀ = 0
-    · right
-      have hα0 : α ≠ 0 := by
-        intro h
-        have hx0 : x = 0 := by
-          have : x = x₀ + α • bvec (eI k r l) := by rw [hx₀]; simp
-          rw [this, h0, h]; simp
-        have h1 : g *ᵥ x = bvec (eI k r l) := by
-          rw [hx, Matrix.mulVec_mulVec, uh_mul_inv hg.1, Matrix.one_mulVec]
-        rw [hx0, Matrix.mulVec_zero] at h1
-        have h2 := congrFun h1 (eI k r l)
-        simp [bvec] at h2
-      exact mul_ne_zero hκ0 ((map_ne_zero _).2 hα0)
-    · left
-      have h1 : A = star x₀ ⬝ᵥ x₀ := by
-        have : x = x₀ + α • bvec (eI k r l) := by rw [hx₀]; simp
-        rw [hA, this, h_add_right, h_smul_right, hve, mul_zero, add_zero, hv₀]
-        unfold herm
-        rw [Matrix.mulVec_mulVec, B2x8.Hpk_sq, Matrix.one_mulVec]
-      rw [h1]
-      intro h2
-      exact h0 (dotProduct_star_self_eq_zero.mp h2)
-  let γ : ℝ → Mx k r := fun t => g * hs (Hpk k r) (bvec (esI k r l)) ((t : ℂ) • v₀) ((t : ℂ) ^ 2 * κ)
-  have hγc : Continuous γ := by
-    have : γ = fun t : ℝ => g * (1 + (t : ℂ) • (Matrix.vecMulVec v₀ (fun j => herm (Hpk k r) (bvec j) (bvec (esI k r l))) -
-        Matrix.vecMulVec (bvec (esI k r l)) (fun j => herm (Hpk k r) (bvec j) v₀)) +
-        ((t : ℂ) ^ 2 * κ) • Matrix.vecMulVec (bvec (esI k r l)) (fun j => herm (Hpk k r) (bvec j) (bvec (esI k r l)))) := by
-      funext t; simp only [γ]; rw [hs_poly]
-    rw [this]
-    fun_prop
-  have hγ0 : γ 0 = g := by
-    simp only [γ]; rw [hs_poly]; simp
-  rw [← hγ0]
-  refine map_mem_closure hγc (zero_mem_closure_poly hAB) ?_
-  intro t ht
-  have hk : hs (Hpk k r) (bvec (esI k r l)) ((t : ℂ) • v₀) ((t : ℂ) ^ 2 * κ) ∈ Glev k r l.castSucc := by
-    apply hs_glev (h_es_es l l)
-    · rw [h_smul_left, hvs, mul_zero]
-    · rw [h_smul_left, h_smul_right, ← hq, map_mul, map_pow, Complex.conj_ofReal, hκ, map_sub, map_div₀, hqc,
-        Complex.conj_I]
-      simp only [map_ofNat]
-      ring
-    · intro a ha
-      have hne : a ≠ l := ne_of_val_lt (by simpa using ha)
-      exact ⟨by rw [h_e_es, if_neg hne], h_es_es a l⟩
-    · intro a ha
-      rw [h_smul_right, h_smul_right, (hva a ha).1, (hva a ha).2]
-      simp
-  refine ⟨glev_mul hg hk, ?_⟩
-  show herm (Hpk k r) (γ t *ᵥ bvec (eI k r l)) (bvec (eI k r l)) ≠ 0
-  have : herm (Hpk k r) (γ t *ᵥ bvec (eI k r l)) (bvec (eI k r l)) = (t : ℂ) * (A + t * B) := by
-    simp only [γ]
-    rw [← Matrix.mulVec_mulVec, uh_herm_inv hg.1, ← hx, hs_act, h_smul_right, hev, h_e_es, if_pos rfl]
-    simp only [h_add_left, h_sub_left, h_smul_left, hex, ← hA]
-    rw [← h_conj _ Hh x, ← hα, hB]
-    ring
-  rw [this]
-  exact ht
 
 def cF (k r : ℕ) (l : Fin r) (g : Mx k r) : ℂ := herm (Hpk k r) (g *ᵥ bvec (eI k r l)) (bvec (eI k r l))
 
@@ -1151,8 +1004,6 @@ end Formalism.FourierDecayAlt.P.Qx4
 namespace Formalism.FourierDecayAlt.P
 
 theorem resSurj_statement : Formalism.FourierDecayAlt.Q.ResSurj := Qx4.resSurj
-theorem cell_decomposition : Formalism.FourierDecayAlt.Q.CellDecomp := Qx4.cellDecomp
-theorem cells_dense : Formalism.FourierDecayAlt.Q.CellDense := Qx4.cellDense
 theorem flag_frame_transfer : Formalism.FourierDecayAlt.Q.FFTransfer := Qx4.fFTransfer
 
 end Formalism.FourierDecayAlt.P

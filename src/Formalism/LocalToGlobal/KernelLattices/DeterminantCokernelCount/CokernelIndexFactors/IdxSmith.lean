@@ -163,9 +163,4 @@ theorem card_quot_range_toLin_clean {ι : Type*} [Fintype ι] [DecidableEq ι] (
       card_quot_range_scaleAt ϖ hϖ i0, ih C' _ hdetC'] at e1
     rw [← e1, pow_succ']
 
-example {ι : Type*} [Fintype ι] [DecidableEq ι] (ϖ : O) (hϖ : Irreducible ϖ) (j : ι) :
-    Nat.card ((ι → O) ⧸ LinearMap.range (Matrix.toLin' (scaleAt j ϖ))) =
-      Nat.card (IsLocalRing.ResidueField O) ^ 1 :=
-  card_quot_range_toLin_clean ϖ hϖ (scaleAt j ϖ) 1 1 (by rw [det_scaleAt]; simp)
-
 end DVRLatticeIndex

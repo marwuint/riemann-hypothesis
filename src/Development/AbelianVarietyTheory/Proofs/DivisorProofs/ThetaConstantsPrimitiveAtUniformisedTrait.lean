@@ -1,16 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.MinSt2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantListAlgClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaConstantListOfFibrePullbackFieldExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantUniqueAndLinearInSectionStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaConstantListAlgClosed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThetaConstantListOfFibrePullbackFieldExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantUniqueAndLinearInSection
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantsAtUniformisedTrait
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.UniformizationLawsAndExpansionStatements
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThValAtAndNotIsThValue
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValExt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralElemOfValNonnegOverCompleteDVRStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedGenericFibreUniformisedTraitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralElemOfValNonnegOverCompleteDVR
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipallyPolarisedGenericFibreUniformisedTrait
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory.UPoinc GlobalTheory.Ex.OneGen
@@ -55,7 +57,7 @@ theorem thG_unique [IsCommMonObj G] (ρ : LB.Gen (L.pull (eSec G))) (hL : L.IsLB
     {K : Type} [Field K] {x : Sp K ⟶ S} (θ : SecAt G L x) (p : Over.mk x ⟶ G) {c c' : K} (hm : Odd m)
     (hm0 : (m : K) ≠ 0) (hP : PolFib G L g x) (h₁ : ThG G L ρ m θ p (GlobalTheory.ZH.fn c))
     (h₂ : ThG G L ρ m θ p (GlobalTheory.ZH.fn c')) : c' = c := by
-  have := (GlobalTheory.T.thetaConstant_unique_and_linear_in_section S G L ρ hL hρ g m K x θ θ p 1 c c' hm hm0 hP (by simp) h₁).1 h₂
+  have := (_root_.GlobalTheory.UMin.thG_smul_iff S G L ρ hL hρ g m K x θ θ p 1 c c' hm hm0 hP (by simp) h₁).1 h₂
   simpa using this
 end
 
@@ -72,7 +74,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible V
   let F := AlgebraicClosure (FractionRing V)
   obtain ⟨v, hv⟩ := ReciprocityTheory.ChartRestriction.G.DVR.exists_valOver hϖ F
-  obtain ⟨g, hg⟩ := GlobalTheory.T.principallyPolarised_genericFibre_uniformised_trait E H S t V hV χ t' ⟨hm⟩ ⟨P⟩
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.UMin.UnifPolFib.polFib_of_unif E H S t V hV χ t' ⟨hm⟩ ⟨P⟩
   set x' : Sp F ⟶ S := (jFK (R := V) F ≫ jK V) ≫ χ with hx'
   set θF : SecAt t.G t.PP.L x' :=
     VVRank.pullS t.G _ (Over.homMk (jFK (R := V) F ≫ jK V) rfl : Over.mk x' ⟶ Over.mk χ) σ with hθF
@@ -86,7 +88,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     have := hmu.map φF
     rw [map_natCast] at this
     exact this.ne_zero
-  obtain ⟨ptF, cF, hLF⟩ := GlobalTheory.T.exists_thetaConstantList_algClosed S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen g m (m ^ (4 * g)) F x' θF hodd
+  obtain ⟨ptF, cF, hLF⟩ := _root_.GlobalTheory.UMin.exists_thList S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen g m (m ^ (4 * g)) F x' θF hodd
     hmF rfl hPF
   let Kb := AlgebraicClosure K
   let i' : K →+* Kb := algebraMap K Kb
@@ -111,7 +113,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     have := hmu.map (i'.comp i)
     rw [map_natCast] at this
     exact this.ne_zero
-  obtain ⟨pt1, hpt1, hL1⟩ := GlobalTheory.T.isThetaConstantListOfFibre_pullback_field_extension S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen m N K Kb i' (spMap i ≫ χ)
+  obtain ⟨pt1, hpt1, hL1⟩ := _root_.GlobalTheory.UMin.ThPull.thList_pull S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen m N K Kb i' (spMap i ≫ χ)
     (SecAt.pull t.G t.PP.L σ i) pt c hL
   have hθ : HEq (SecAt.pull t.G t.PP.L (SecAt.pull t.G t.PP.L σ i) i') (SecAt.pull t.G t.PP.L θF j) := by
     simp only [SecAt.pull, hθF, GlobalTheory.ThetaRuleCompare.pullS_comp]
@@ -120,10 +122,10 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     change spMap i' ≫ spMap i = spMap j ≫ (spMap (algebraMap (FractionRing V) F) ≫ spMap (algebraMap V (FractionRing V)))
     rw [spMap_comp', spMap_comp', spMap_comp', hsq]
   obtain ⟨ptK, hptK, hLK⟩ := thList_of_eq t.PP.rig m hy hθ hL1
-  obtain ⟨ptF', hptF', hLF'⟩ := GlobalTheory.T.isThetaConstantListOfFibre_pullback_field_extension S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen m (m ^ (4 * g)) F Kb j x' θF
+  obtain ⟨ptF', hptF', hLF'⟩ := _root_.GlobalTheory.UMin.ThPull.thList_pull S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen m (m ^ (4 * g)) F Kb j x' θF
     ptF cF hLF
   have hint : ∀ b, φF.IsIntegralElem (cF b) := fun b =>
-    GlobalTheory.T.isIntegralElem_of_val_nonneg_over_completeDVR V hV ϖ hϖ F v hv (cF b) (hA (ptF b) (cF b) (hLF.2.1 b))
+    _root_.GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg V hV ϖ hϖ F v hv (cF b) (hA (ptF b) (cF b) (hLF.2.1 b))
   refine ⟨fun a => ?_, ?_⟩
   · obtain ⟨b, hb⟩ := hLF.2.2 Kb j (ptK a) (hLK.2.1 a).1
     have heq : ptK a = ptF' b := Over.OverMorphism.ext (hb.trans (hptF' b).symm)
@@ -154,7 +156,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
       rw [h, map_zero] at hab
       exact hc0 (j.injective (hab.trans (map_zero j).symm))
     refine ⟨a0, hca, isIntegralElem_of_sq φF i i' j hsq (z := c0⁻¹) (by rw [map_inv₀, map_inv₀, hab]) ?_⟩
-    refine GlobalTheory.T.isIntegralElem_of_val_nonneg_over_completeDVR V hV ϖ hϖ F v hv _ ?_
+    refine _root_.GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg V hV ϖ hϖ F v hv _ ?_
     have h01 : v c0 + v c0⁻¹ = 0 := by
       rw [← AddValuation.map_mul, mul_inv_cancel₀ hc0, AddValuation.map_one]
     rw [hv0, zero_add] at h01

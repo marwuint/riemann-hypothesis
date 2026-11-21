@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndEStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceRestrictionExistsPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleAdelicMatrixFamilyPullbackExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleAdelicMatrixFamilyOrdersFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicMatrixDegreeLeTwoMulOfUpperTriangularStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceRestrictionExistsPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleAdelicMatrixFamilyPullbackExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleAdelicMatrixFamilyOrdersFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicMatrixDegreeLeTwoMulOfUpperTriangular
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef Matrix
@@ -46,9 +46,9 @@ theorem nrm_two (v : Place k K) (x y : K) : nrm v ![x, y] = max (v.1 x) (v.1 y) 
 theorem quot_line_le : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∀ (r : ℕ) (g : Place k F → Matrix (Fin (r + 1)) (Fin (r + 1)) F), admitted g → (∀ (v : Place k F) (i : Fin r), g v i.succ 0 = 0) → admitted (fun v => (g v).submatrix Fin.succ Fin.succ) → ∀ b : ℝ, LinesLE g b → LinesLE (fun v => (g v).submatrix Fin.succ Fin.succ) (2 * b - (∑ᶠ v, ord v (g v 0 0) : ℤ)) := by
   intro k F _ _ _ _ _ hF r g hg hg0 hh b hb E _ _ _ _ _ ρ hρ m hm
-  have hE : IsFF k E := (GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k F hF).2 E
-  obtain ⟨hGa, -, -, hGL⟩ := GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hF ρ hρ (r + 1) g hg
-  obtain ⟨hQa, -, -, -⟩ := GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hF ρ hρ r _ hh
+  have hE : IsFF k E := (_root_.GlobalTheory.Nef.isFF_main k F hF).2 E
+  obtain ⟨hGa, -, -, hGL⟩ := _root_.GlobalTheory.Nef.PullAd.adm_pullAd_and_deg_mul_finrank k F E hF ρ hρ (r + 1) g hg
+  obtain ⟨hQa, -, -, -⟩ := _root_.GlobalTheory.Nef.PullAd.adm_pullAd_and_deg_mul_finrank k F E hF ρ hρ r _ hh
   have hGb := hGL b hb
 
   have hcF : ∀ v, Unimod v (g v) → Unimod v ((g v).submatrix Fin.succ Fin.succ) → v.1 (g v 0 0) = 1 :=
@@ -66,7 +66,7 @@ theorem quot_line_le : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [
     refine ⟨fun i j => ?_, ?_⟩
     · fin_cases i; fin_cases j; simp [ha1def, h1]
     · simp [ha1def, h1]
-  obtain ⟨-, hdeg1, -, -⟩ := GlobalTheory.T.isAdmissibleAdelicMatrixFamily_pullback_extension k F E hF ρ hρ 1 a1 ha1
+  obtain ⟨-, hdeg1, -, -⟩ := _root_.GlobalTheory.Nef.PullAd.adm_pullAd_and_deg_mul_finrank k F E hF ρ hρ 1 a1 ha1
   generalize hGdef : pullAd ρ g = G at hGa hGb
   generalize hQdef : pullAd ρ (fun v => (g v).submatrix Fin.succ Fin.succ) = Q at hQa ⊢
   have hQG : ∀ p, Q p = (G p).submatrix Fin.succ Fin.succ := by
@@ -79,9 +79,9 @@ theorem quot_line_le : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [
     have e2 : deg a1 = ∑ᶠ v, ord v (g v 0 0) := by
       unfold deg; apply finsum_congr; intro v; simp [ha1def]
     rw [← e1, hdeg1, e2]
-  obtain ⟨-, hQm⟩ := GlobalTheory.T.admissibleAdelicMatrixFamily_orders_finite k E hE r Q hQa
+  obtain ⟨-, hQm⟩ := _root_.GlobalTheory.Nef.lineFin k E hE r Q hQa
   obtain ⟨hfinQm, hnz⟩ := hQm m hm
-  have hord := fun p : Place k E => GlobalTheory.T.functionFieldPlaceOrder_calculus k E p
+  have hord := fun p : Place k E => _root_.GlobalTheory.Nef.ord_calculus k E p
   choose idx hidx using fun p : Place k E => (hord p).2.2.2.2.2.2.1 r (Q p *ᵥ m) (hnz p)
   obtain ⟨t, ht⟩ : ∃ t : Place k E → Matrix (Fin 2) (Fin 2) E, t = fun p =>
       !![G p 0 0, ∑ j : Fin r, G p 0 j.succ * m j; 0, (Q p *ᵥ m) (idx p)] := ⟨_, rfl⟩
@@ -95,7 +95,7 @@ theorem quot_line_le : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [
     intro j
     by_cases hj : m j = 0
     · simp [hj]
-    · exact ((GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k E hE (m j) hj).1).subset fun p hp h1 => hp (le_of_eq h1)
+    · exact ((_root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k E hE (m j) hj).1).subset fun p hp h1 => hp (le_of_eq h1)
   have hta : admitted t := by
     refine ⟨fun p => by rw [hdett]; exact mul_ne_zero (hG00 p) (hidx p).1, ?_⟩
     refine ((hGa.2.union hQa.2).union (hfinQm.union (Set.finite_iUnion hmfin))).subset ?_
@@ -113,7 +113,7 @@ theorem quot_line_le : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [
     · rw [hdett, map_mul, hc1, hm1, one_mul]
   have htL : LinesLE t (b * Module.finrank F E) := by
     intro E' _ _ _ _ _ ρ' hρ' w hw
-    have hres := (GlobalTheory.T.functionFieldPlace_restriction_exists_pow k E E').2 ρ' hρ'
+    have hres := (_root_.GlobalTheory.Nef.place_res_exists_pow k E E').2 ρ' hρ'
     obtain ⟨w', hw'def⟩ : ∃ w' : Fin (r + 1) → E', w' = Fin.cons (w 0) (fun j => w 1 * algebraMap E E' (m j)) :=
       ⟨_, rfl⟩
     have hw' : w' ≠ 0 := by
@@ -152,7 +152,7 @@ theorem quot_line_le : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [
       have hs : (fun i => w 1 * algebraMap E E' ((Q (ρ' p') *ᵥ m) i)) =
           w 1 • (fun i => algebraMap E E' ((Q (ρ' p') *ᵥ m) i)) := by
         ext; simp [smul_eq_mul]
-      rw [hs, (GlobalTheory.T.functionFieldPlaceOrder_calculus k E' p').2.2.2.2.2.2.2.1, map_mul, mul_comm]
+      rw [hs, (_root_.GlobalTheory.Nef.ord_calculus k E' p').2.2.2.2.2.2.2.1, map_mul, mul_comm]
       congr 1
       apply le_antisymm
       · exact Finset.le_sup (f := fun i => p'.1 (algebraMap E E' ((Q (ρ' p') *ᵥ m) i)))
@@ -162,7 +162,7 @@ theorem quot_line_le : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [
     have heq : degLine (pullAd ρ' t) w = degLine (pullAd ρ' G) w' := by
       simp only [degLine, ordVec, hloc]
     rw [heq]; exact hGb E' ρ' hρ' w' hw'
-  have hdeg := GlobalTheory.T.adelicMatrixDegree_le_two_mul_of_upperTriangular k E hE t hta (fun p => by simp [ht]) _ htL
+  have hdeg := _root_.GlobalTheory.Nef.deg_le_two_mul_of_triangular k E hE t hta (fun p => by simp [ht]) _ htL
   have hs1 : (Function.support fun p : Place k E => ord p (G p 0 0)).Finite := by
     refine (hGa.2.union hQa.2).subset ?_
     intro p hp

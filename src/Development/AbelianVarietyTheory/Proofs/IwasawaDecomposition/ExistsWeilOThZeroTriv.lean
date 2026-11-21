@@ -35,12 +35,6 @@ theorem thMM_spec (B : Base D cc δ) (h : B.StdOK) : B.IsThMM B.thMM ∧ B.thMM 
   have h1 : B.IsThMM B.thMM := Classical.epsilon_spec (p := IsThM B.L B.ω₀ B.cq B.lamM B.gC B.kappa) e
   exact ⟨h1, (u _ h1.1 h1.2).1⟩
 
-theorem thZero_ne_zero (B : Base D cc δ) (h : B.StdOK) (N N' : ℕ) : B.thZero N N' ≠ 0 := by
-  obtain ⟨a, ha⟩ := Function.ne_iff.1 (thMM_spec B h).2
-  refine Function.ne_iff.2 ⟨fun τ _ _ => a τ, ?_⟩
-  show ∏ _i : Fin N', ∏ _j : Fin N, B.thMM a ≠ 0
-  exact Finset.prod_ne_zero_iff.2 fun _ _ => Finset.prod_ne_zero_iff.2 fun _ _ => ha
-
 theorem areaOK (B : Base D cc δ) : B.AreaOK := by
   rw [Base.AreaOK, ThetaVec.area_eq]
   exact GlobalTheory.OddTheta.area_eq B.L _ fun z => by rw [← B.lat]; rfl
@@ -101,16 +95,6 @@ theorem thZero_mem (B : Base D cc δ) (h : B.StdOK) (N N' : ℕ) :
     simp only [Base.thZero, tensPow, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib, Complex.exp_sum,
       ← Finset.prod_mul_distrib]
     exact Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => hθ.2 _ (hx' i j) fun τ => z τ i j
-
-def trivChar (D : D7) {N : ℕ} (hN : Even N) : HeckeU D N where
-  f := 1
-  n := fun _ => 0
-  unitary := fun _ => by simp
-  cont := ⟨1, one_pos, fun _ _ _ => rfl⟩
-  aut := fun _ => by simp
-  norm := fun _ => rfl
-  par := fun _ => by simpa using hN
-  unr := fun _ _ _ => rfl
 
 end WeilVac
 

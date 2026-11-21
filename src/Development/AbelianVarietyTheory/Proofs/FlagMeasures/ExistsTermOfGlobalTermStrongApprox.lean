@@ -4,10 +4,10 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.VolPin
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PlacesOf
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdmissibleIntegralFrameOfLocalTermsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermRowEqIffMovedLatticeInnerDataEqStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdmissibleIntegralFrameOfLocalTerms
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermRowEqIffMovedLatticeInnerDataEq
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnipotentGroupsLatticesGlobalCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedTermLatticeIsGlobalTermPhaseStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedTermLatticeIsGlobalTermPhase
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RatLinkPoints
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLattices
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalHermitianFramesRationalWitnessesPhaseStatement
@@ -171,7 +171,7 @@ theorem exists_term_of_global : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv Γ hΓ
   obtain ⟨hNiff, hN'iff, hlat, hsurj, -, -⟩ :=
     GlobalTheory.T.rational_unipotent_groups_lattices_global_coordinates D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv
-  have hT0 := (GlobalTheory.T.movedTermLattice_isGlobalTerm_phase D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv).1
+  have hT0 := (_root_.GlobalTheory.HL.MovedTermPhase.main D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv).1
   have ht0 : Formalism.HermitianLatticesTheory.gmap t₀.lin t₀.lam' = t₀.lam := t₀.rep.2.2.2.1
   have e3 : c.lat ρ t₀.lam = c.lat (ρ * t₀.lin) t₀.lam' := by rw [← ht0, lat_gmap']
   obtain ⟨⟨x, hx, hΓx⟩, ⟨x', hx', hΓx'⟩⟩ := term_eq_map G hk hT0 hΓ
@@ -188,7 +188,7 @@ theorem exists_term_of_global : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u
     group
   have hγiso : n⁻¹ * t₀.lin * m ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT :=
     (Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).inv_mem hn.1) t₀.rep.2.2.1) hm.1
-  have hPD := GlobalTheory.T.exists_admissible_integralFrame_of_localTerms D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv n m hn hm hγmap
+  have hPD := _root_.GlobalTheory.HL.AdmFrame.exists_admissible_integralFrame_of_localTerms_alt D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv n m hn hm hγmap
     ⟨_, hΓn ▸ hΓ⟩
   obtain ⟨xp, hxp, -⟩ := (GlobalTheory.RatIsomPoint.ratLink_points D X).1 _ hγiso
   let p : GCar X u u' (X.Fu u) (X.Fu u') t₀.lam t₀.lam' := ⟨(xp, n⁻¹ * t₀.lin * m), hxp, hγiso, hγmap, hPD⟩
@@ -212,7 +212,7 @@ theorem exists_term_of_global : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u
   have hΓ₂ : Γ = c.lat (ρ * (n * a⁻¹)) t.lam := by
     show Γ = c.lat (ρ * (n * a⁻¹)) t₀.lam
     rw [← mul_assoc, ← lat_gmap', (nlam_inv' ha).1.2, hΓn]
-  have hrow := (GlobalTheory.T.termRow_eq_iff_movedLatticeInnerData_eq D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv t (n * a⁻¹) (m * b)
+  have hrow := (_root_.GlobalTheory.HL.DatEq.row_eq_iff_datOf_eq D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv t (n * a⁻¹) (m * b)
     rfl rfl ⟨hn₂, hm₂, hlin⟩).2 (by
       rw [← hΓ₂]
       funext p

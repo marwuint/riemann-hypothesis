@@ -82,17 +82,11 @@ instance sc_HAinf : SecondCountableTopology (HA (Ainf F) σ J) :=
 instance sc_HAf : SecondCountableTopology (HA (Af F) σ J) :=
   PI.VolStabSW.TopoAF.secondCountable_HA_of (Af F) σ J
 
-example (v : HeightOneSpectrum (𝓞 F)) {r : ℕ} (P : Frame E n r) :
-    LocallyCompactSpace (Ssub (Fv F v) σ J P) := inferInstance
-
 instance sc_subInf (K : Subgroup (HA (Ainf F) σ J)) : SecondCountableTopology K :=
   TopologicalSpace.Subtype.secondCountableTopology _
 
 instance sc_subF (K : Subgroup (HA (Af F) σ J)) : SecondCountableTopology K :=
   TopologicalSpace.Subtype.secondCountableTopology _
-
-example {r : ℕ} (P : Frame E n r) : SigmaCompactSpace (Hsub (Ainf F) σ J P) := inferInstance
-example {r : ℕ} (P : Frame E n r) : SigmaCompactSpace (Nsub (Af F) σ J P) := inferInstance
 
 end NF
 

@@ -169,9 +169,6 @@ section Basic₂
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E)
 
-example (a : v.adicCompletionIntegers F) :
-    algebraMap (v.adicCompletionIntegers F) (Ev E v) a = (a : Fv F v) ⊗ₜ[F] (1 : E) := rfl
-
 open scoped TensorProduct in
 open NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E]

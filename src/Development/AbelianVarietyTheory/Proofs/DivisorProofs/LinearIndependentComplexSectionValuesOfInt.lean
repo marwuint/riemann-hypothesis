@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalarStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfForallAlgHom
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
@@ -72,7 +72,7 @@ theorem linearIndependent_vals : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [I
     intro s
     have hy : ofHom (σ := (x s).comp (algX p U)) hU (x s) (fun _ => rfl) ∈ ptsIn p ((x s).comp (algX p U)) U :=
       ofHom_mem hU _ _
-    obtain ⟨θ, hθ, hval⟩ := GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P a b _ _ i j (ptsIn_mono hl hy) (ptsIn_mono hr hy)
+    obtain ⟨θ, hθ, hval⟩ := _root_.GlobalTheory.HSAmp.val_frame k X p P a b _ _ i j (ptsIn_mono hl hy) (ptsIn_mono hr hy)
     have h0 := hc _ (ofHom (σ := (x s).comp (algX p U)) hU (x s) (fun _ => rfl))
     have hθ0 : θ ≠ 0 := by
       intro h; rw [h, norm_zero] at hθ; exact zero_ne_one hθ

@@ -23,10 +23,6 @@ def GVGroup : Prop :=
   ∀ k r : ℕ, (∀ g ∈ B.GV k r, ∀ h ∈ B.GV k r, g * h ∈ B.GV k r) ∧
     ∀ g ∈ B.GV k r, g⁻¹ = Hpk k r * gᴴ * Hpk k r ∧ g⁻¹ ∈ B.GV k r ∧ g * g⁻¹ = 1 ∧ g⁻¹ * g = 1
 
-def GVHerm : Prop :=
-  ∀ (k r : ℕ), ∀ g ∈ B.GV k r, ∀ v w : Fin (2 * r + k + 1) → ℂ,
-    herm (Hpk k r) (g *ᵥ v) (g *ᵥ w) = herm (Hpk k r) v w
-
 def GNFacts : Prop :=
   ∀ (k r : ℕ), (∀ g : B.Mat k r, 0 ≤ B.gN g) ∧
     (∀ g h : B.Mat k r, B.gN (g * h) ≤ B.gN g * B.gN h) ∧

@@ -3,12 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Co
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
-section
-
-variable {k G M : Type} [CommRing k] [Group G] [AddCommGroup M] [Module k M]
-
-end
-
 private theorem dn_two_apply' {R G M : Type} [CommRing R] [Group G] [AddCommGroup M] [Module R M]
     (rho : Representation R G M) (F : (Fin 2 → G) → M) (g : Fin 3 → G) :
     dn rho 2 F g = rho (g 0) (F ![g 1, g 2]) - F ![g 0 * g 1, g 2] + F ![g 0, g 1 * g 2] - F ![g 0, g 1] := by

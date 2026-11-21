@@ -37,27 +37,6 @@ def RamUnitary (D : D7) : Prop :=
       ∫ g in vS.𝓕, sOp β P q (resChar χ hχ q) ε φ g * star (sOp β P q (resChar χ hχ q) ε φ' g) ∂vS.μ =
         (resCard k : ℂ) ^ Fintype.card n * ∫ g in vS.𝓕, φ g * star (φ' g) ∂vS.μ
 
-def DoubleCollapse (D : D7) : Prop :=
-  ∀ (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (Λ : DblLat B J B') (P : Pl D → Prop),
-    IsSelfDualC J.W Λ.L₁ → IsSelfDualC B'.V Λ.L₂ →
-    ∀ (μ₁ : Measure (GA D J.W)) (μ₂ : Measure (GA D B'.V)) (m₁ : Measure (grpOff J.W P))
-      (ν₁ : Measure ((jacGrp J.d).subgroupOf (grpOff J.W P))) (m₂ : Measure (grpOff B'.V P))
-      (ν₂ : Measure ((besGrp B'.d B'.o).subgroupOf (grpOff B'.V P))),
-      μ₁.IsHaarMeasure → μ₂.IsHaarMeasure → m₁.IsHaarMeasure → ν₁.IsHaarMeasure → m₂.IsHaarMeasure → ν₂.IsHaarMeasure →
-    ∃ c : ℝ, 0 < c ∧
-    ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
-      (p : ι → SplitPt D k) (n n' n'' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n'']
-      [DecidableEq n''] (q : Unif k) (ψ : AddChar (AF D.host.F) ℂ) (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B')
-      (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) (a : PairDat p B.A B.V₀ n') (b : MidDat p J.W₀ n)
-      (a' : PairDat p B'.A B'.V₀ n''), DblShape s₁ s₂ Λ P q a b a' →
-      ∀ Φ₁ Φ₂, Vac ψ B.V J.W Λ.L₀ Λ.L₁ P Φ₁ → Vac ψ J.W B'.V Λ.L₁ Λ.L₂ P Φ₂ → ∀ g ∈ grpOff B.V P, ∀ φ, a.Ram φ →
-      ∀ G : GA D B'.V → ℂ, (∀ κ, InK B'.V Λ.L₂ P κ → rTrans κ G = G) → ∀ (f₁ : GA D J.W → ℂ) (z : ℂ),
-        IsQuotIntL1 J.μR μ₁ f₁ z →
-        (∀ h₁, IsQuotIntL1 B'.μR μ₂ (fun h₂ => B'.per ψ (Chain.hand s₁ s₂ l vL Φ₁ Φ₂ φ g h₁ h₂) (rTrans h₂ G)) (f₁ h₁)) →
-        ∃ (f₁' : grpOff J.W P → ℂ) (z' : ℂ), IsQuotIntL1 ν₁ m₁ f₁' z' ∧ z = c * z' ∧
-          ∀ h₁ : grpOff J.W P, IsQuotIntL1 ν₂ m₂
-            (fun h₂ : grpOff B'.V P => B'.per ψ (Chain.hand s₁ s₂ l vL Φ₁ Φ₂ φ g h₁ h₂) (rTrans (h₂ : GA D B'.V) G)) (f₁' h₁)
-
 end GlobalTheory.FinPl
 
 end

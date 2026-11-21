@@ -67,66 +67,6 @@ theorem isLagr_of_free [Invertible (2 : k)] (hK : IsField K) (hc : ∀ x, c (c x
     simp
   exact ⟨hY, X, _, e3, (Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq (by simp; omega))).1 g', g'⟩
 
-def anti (K : Type) [CommRing K] (n : ℕ) : Matrix (Fin n) (Fin n) K := fun i j => if i.val + j.val + 1 = n then 1 else 0
-
-variable (c) in
-
-def HasAnti {n : ℕ} (J : Matrix (Fin n) (Fin n) K) : Prop :=
-  ∃ P Q : Matrix (Fin n) (Fin n) K, P * Q = 1 ∧ Q * P = 1 ∧ Pᵀ * J * P.map c = anti K n
-
-theorem exists_anti_equiv (a' r : ℕ) : ∃ e : Fin a' ⊕ (Fin r ⊕ Fin r) ≃ Fin (a' + 2 * r),
-    (anti K (a' + 2 * r)).submatrix e e = Matrix.fromBlocks (anti K a') 0 0 (Matrix.fromBlocks 0 1 1 0) := by
-  let f : Fin a' ⊕ (Fin r ⊕ Fin r) → Fin (a' + 2 * r) :=
-    Sum.elim (fun i => ⟨r + i, by omega⟩) (Sum.elim (fun j => ⟨j, by omega⟩) fun j => ⟨a' + 2 * r - 1 - j, by omega⟩)
-  have hf : Function.Injective f := by
-    rintro (i | i | i) (j | j | j) h <;> simp only [f, Sum.elim_inl, Sum.elim_inr, Fin.mk.injEq] at h <;>
-      first | (simp only [Sum.inl.injEq, Sum.inr.injEq]; exact Fin.ext (by omega)) | (exfalso; omega)
-  refine ⟨Equiv.ofBijective f ((Fintype.bijective_iff_injective_and_card f).2 ⟨hf, by simp; omega⟩), ?_⟩
-  ext (i | i | i) (j | j | j) <;>
-    simp only [f, anti, Matrix.submatrix_apply, Equiv.ofBijective_apply, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₁,
-      Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.one_apply,
-      Fin.ext_iff] <;>
-    first | exact if_congr (by omega) rfl rfl | exact if_neg (by omega)
-
-theorem isAbove_of_hasAnti {a a' : ℕ} (h : a' ≤ a) (he : Even (a + a')) {J : Matrix (Fin a) (Fin a) K}
-    {J' : Matrix (Fin a') (Fin a') K} (h1 : HasAnti c J) (h2 : HasAnti c J') : IsAbove c J J' := by
-  obtain ⟨r, rfl⟩ : ∃ r, a = a' + 2 * r := by
-    obtain ⟨s, hs⟩ := he
-    exact ⟨s - a', by omega⟩
-  obtain ⟨P, Q, p1, p2, p3⟩ := h1
-  obtain ⟨P', Q', q1, q2, q3⟩ := h2
-  obtain ⟨e, he⟩ := exists_anti_equiv (K := K) a' r
-  have b1 : (Matrix.fromBlocks Q' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K) *
-      Matrix.fromBlocks P' 0 0 1 = 1 := by simp [Matrix.fromBlocks_multiply, q2]
-  have b2 : (Matrix.fromBlocks P' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K) *
-      Matrix.fromBlocks Q' 0 0 1 = 1 := by simp [Matrix.fromBlocks_multiply, q1]
-  have c1 : P.submatrix id e * Q.submatrix e id = 1 := by rw [Matrix.submatrix_mul_equiv, p1]; rfl
-  have c2 : Q.submatrix e id * P.submatrix id e = 1 := by
-    rw [show Q.submatrix e id * P.submatrix id e = (Q * P).submatrix e e from rfl, p2, Matrix.submatrix_one_equiv]
-  have c3 : (P.submatrix id e)ᵀ * J * (P.submatrix id e).map c = (anti K _).submatrix e e := by rw [← p3]; rfl
-  have d : Q'ᵀ * anti K a' * Q'.map c = J' := by
-    rw [← q3, Matrix.mul_assoc, Matrix.mul_assoc, ← map_mul_c, q1, map_one_c, Matrix.mul_one, ← Matrix.mul_assoc,
-      ← Matrix.transpose_mul, q1, Matrix.transpose_one, Matrix.one_mul]
-  refine ⟨r, P.submatrix id e * (Matrix.fromBlocks Q' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K),
-    (Matrix.fromBlocks P' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K) * Q.submatrix e id, ?_, ?_, ?_⟩
-  · rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.fromBlocks Q' 0 0 1), b1, Matrix.one_mul, c1]
-  · rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Q.submatrix e id), c2, Matrix.one_mul, b2]
-  · rw [map_mul_c, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc J,
-      ← Matrix.mul_assoc (P.submatrix id e)ᵀ, ← Matrix.mul_assoc (P.submatrix id e)ᵀ, c3, he, Matrix.fromBlocks_map,
-      Matrix.fromBlocks_transpose, Matrix.map_zero _ (map_zero c), Matrix.map_zero _ (map_zero c), map_one_c,
-      Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
-    simp [← Matrix.mul_assoc, d]
-
 end Forms
-
-theorem exists_to_quot {S T : Type} [AddCommGroup S] [Module ℂ S] [AddCommGroup T] [Module ℂ T] (s : S →ₗ[ℂ] T)
-    (A B : Submodule ℂ S) (h : ∀ φ ∈ B, s φ = 0 → φ ∈ A) : ∃ j : T →ₗ[ℂ] S ⧸ A, ∀ φ ∈ B, j (s φ) = A.mkQ φ := by
-  have hk : LinearMap.ker (s ∘ₗ B.subtype) ≤ LinearMap.ker (A.mkQ ∘ₗ B.subtype) := fun φ hφ =>
-    (Submodule.Quotient.mk_eq_zero A).2 (h φ φ.2 hφ)
-  obtain ⟨j, hj⟩ := LinearMap.exists_extend
-    (((LinearMap.ker (s ∘ₗ B.subtype)).liftQ _ hk) ∘ₗ (s ∘ₗ B.subtype).quotKerEquivRange.symm.toLinearMap)
-  refine ⟨j, fun φ hφ => ?_⟩
-  have := LinearMap.congr_fun hj ((s ∘ₗ B.subtype).quotKerEquivRange (Submodule.Quotient.mk ⟨φ, hφ⟩))
-  simpa using this
 
 end PositivityTheory.ThK.PT

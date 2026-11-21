@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TransPtBase
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverBasePointRegularStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorOfRegularMatrixValueStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorOfRegularMatrixValue
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
@@ -29,7 +29,7 @@ theorem coE_regAt_valAt : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, F
   obtain ⟨-, -, -, -, hst⟩ := GlobalTheory.CompanionTheory.Ar.PB.ValRing.regAt_valAt_ring _ _ _ M'.x zb hz
   have hT : ∀ a b, RegAt M'.x (mCoordIdeal zb) (trMat Cv F' F p.1 a b) := fun a b =>
     (Cv.agree zb hz F' F hF' hF hG' hG p.1 a b).1
-  have hmin := fun I I' => GlobalTheory.T.minor_of_regular_matrix_value _ _ _ M'.x zb N (trMat Cv F' F p.1) hz hT I I'
+  have hmin := fun I I' => _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.regAt_minorIJ_valAt _ _ _ M'.x zb N (trMat Cv F' F p.1) hz hT I I'
   have hu := fun I => GlobalTheory.T.flag_cover_base_point_regular K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv zb (F.u q I) hz (hG.2.1 q I).1
   have hu' := fun I' => (hG'.2.1 r I').2
   have hterm : ∀ I I', RegAt M'.x (mCoordIdeal zb) (Cv.φ (F.u q I) * minorIJ (trMat Cv F' F p.1) I I' * F'.u' I' r) ∧

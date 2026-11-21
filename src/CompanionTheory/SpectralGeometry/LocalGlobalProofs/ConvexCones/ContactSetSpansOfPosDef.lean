@@ -3,7 +3,7 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunE
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.IsPosDefAddAndMemPsdCone
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.MemRationalConeOfPerturbationStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsPsdFormsCoverContactSetStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsBalancedFormsDominatingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsBalancedFormsDominating
 
 set_option autoImplicit false
 
@@ -62,7 +62,7 @@ theorem isSpanned_contact_of_posDef : ∀ (O : Type) [CommRing O] [IsDedekindDom
   intro O _ _ _ _ bar X _ _ _ _ ι _ a hR hC ⟨B₀, hB₀, hd⟩
   have : Module.Finite ℤ X := Module.Finite.trans O X
   obtain ⟨k, m, u, hsym, hnn, hcov⟩ := GlobalTheory.T.exists_psd_forms_cover_contact_set O bar X ι a hR hC
-  choose s γ hbal hγnn hγK hsub using fun j => GlobalTheory.T.exists_balanced_forms_dominating O bar X ι a (m j) (u j) (hsym j) (hnn j)
+  choose s γ hbal hγnn hγK hsub using fun j => _root_.GlobalTheory.CompanionTheory.Ar.Fan.contact_inter_rcone_spanned O bar X ι a (m j) (u j) (hsym j) (hnn j)
   let e := Fintype.equivFin (Σ j, Fin (s j))
   refine ⟨_, fun i => γ (e.symm i).1 (e.symm i).2, fun i => hbal _ _, fun i y => hγnn _ _ _, fun i => hγK _ _,
     fun B hB => ?_⟩

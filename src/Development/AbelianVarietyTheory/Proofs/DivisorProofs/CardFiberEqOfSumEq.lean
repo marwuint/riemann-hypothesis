@@ -30,20 +30,6 @@ theorem card_fiber_eq_of_sum_eq {M : Type} [Monoid M] {n : ℕ} (f g : Fin n →
   rw [sub_eq_zero, Nat.cast_inj] at hψ
   simpa [Nat.card_eq_fintype_card, Fintype.card_subtype] using hψ
 
-def posMonoid {Λ : Type} [CommGroup Λ] (d : Λ →* Multiplicative ℤ) : Submonoid Λ where
-  carrier := {x | x = 1 ∨ 0 < Multiplicative.toAdd (d x)}
-  one_mem' := Or.inl rfl
-  mul_mem' := by
-    rintro a b (rfl | ha) (rfl | hb)
-    · left; simp
-    · right; simpa using hb
-    · right; simpa using ha
-    · right; simp only [map_mul, toAdd_mul]; omega
-
-noncomputable def res {Λ : Type} [CommGroup Λ] (d : Λ →* Multiplicative ℤ) (χ : Λ →* ℂˣ) :
-    posMonoid d →* ℂ :=
-  (Units.coeHom ℂ).comp (χ.comp (posMonoid d).subtype)
-
 theorem sum_eq_of_prod_eq {n : ℕ} (a b : Fin n → ℂ)
     (h : ∏ j, (X - C (a j)) = ∏ j, (X - C (b j))) : ∑ j, a j = ∑ j, b j := by
   have := congrArg Polynomial.nextCoeff h

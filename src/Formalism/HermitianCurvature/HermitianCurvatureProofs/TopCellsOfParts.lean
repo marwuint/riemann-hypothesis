@@ -178,14 +178,6 @@ theorem continuous_zjH {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ)
 
 def iotaC (p s : ℕ) : G.Mat s →L[ℝ] G.Mat (p + s) := LinearMap.toContinuousLinearMap (iotaL p s)
 
-def gA {p s : ℕ} (T : G.Mat (p + s)) : G.Mat s →ᴬ[ℝ] G.Mat (p + s) where
-  toFun x := T + iotaC p s x
-  linear := iotaL p s
-  map_vadd' x v := by
-    show T + iotaL p s (v + x) = iotaL p s v + (T + iotaL p s x)
-    rw [map_add]; abel
-  cont := continuous_const.add (iotaC p s).continuous
-
 def Lc {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] (c : ℂ) : V →L[ℝ] V :=
   (c • ContinuousLinearMap.id ℂ V).restrictScalars ℝ
 
@@ -397,14 +389,7 @@ theorem topCells_of (hZ : ZjAffine) (hST : SizesTop) (hIT : IntTop) : TopCells :
           ring
       _ ≤ _ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hsum hK) hr
 
-theorem topCellsOfParts : TopCellsOfParts := by
-  intro hZ _ hST hIT
-  exact topCells_of hZ hST hIT
-
 end Formalism.FourierDecayAlt.P.Ux13
-
-theorem Formalism.FourierDecayAlt.P.top_cells_of_parts : Formalism.FourierDecayAlt.U.TopCellsOfParts := by
-  exact Formalism.FourierDecayAlt.P.Ux13.topCellsOfParts
 
 theorem Formalism.FourierDecayAlt.P.top_cells : Formalism.FourierDecayAlt.U.TopCells := by
   exact Formalism.FourierDecayAlt.P.Ux13.topCells_of Formalism.FourierDecayAlt.P.level_z_affine Formalism.FourierDecayAlt.P.sizes_top_level Formalism.FourierDecayAlt.P.integrability_top_level

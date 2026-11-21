@@ -14,27 +14,9 @@ section Gen
 
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 
-section Jet
-
-variable {k : Type} [CommRing k] {n : ℕ}
-
-def AgreeTo (N : ℕ) (g g' : PS k n d) : Prop :=
-  ∀ e : Fin n × Fin d →₀ ℕ, e.degree ≤ N → MvPowerSeries.coeff e g = MvPowerSeries.coeff e g'
-
-end Jet
-
 section Lin
 
 variable {k : Type} [CommRing k] {n : ℕ}
-
-def DofNL (F : Fin d → PS k 2 d) (b : Fin n) (u : Fin d → k) : PS k n d →ₗ[k] PS k n d where
-  toFun := DofN F b u
-  map_add' := by
-    intro x y
-    simp only [DofN, map_add, mul_add, Finset.sum_add_distrib]
-  map_smul' := by
-    intro c x
-    simp only [DofN, Derivation.map_smul, RingHom.id_apply, Finset.smul_sum, mul_smul_comm]
 
 theorem DpolyN_sub {ι : Type} [Fintype ι] (F : Fin d → PS k 2 d) (cp : ι → Fin n) (u : ι → Fin d → k)
     (P : MvPolynomial ι k) (g : PS k n d) (S : Finset (ι →₀ ℕ)) (hS : P.support ⊆ S) :
@@ -79,17 +61,5 @@ theorem nabValN_smulP (B : FB R d O) (k : Type) [CommRing k] [Algebra ℚ k] [Al
   rw [DpolyN_smulP, MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_C]
 
 end Gen
-
-section Asm
-
-variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
-
-end Asm
-
-section Main
-
-open ReciprocityTheory.ChartRestriction.G.TB Formalism.MainNotions.ModuliIntegralCharts.H1.GermFun
-
-end Main
 
 end Formalism.MainNotions.ModuliIntegralCharts.H1.DescentPf

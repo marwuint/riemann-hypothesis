@@ -1,13 +1,11 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PProjOne
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PProjTwo
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.MapWopWmap
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PCertProj
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PProjTrace
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PTracePow
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PExtZero
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PCentralEig
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PExtEig
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PExtHecke
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SimultaneousEigenvectors.SimEig
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PFormGU
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.ZetaMain
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PCentralEig2Of
@@ -40,15 +38,7 @@ namespace UpperTheory.Gal.CertificateRingHomMap
 
 universe u v
 
-theorem projOne_holds : ProjOne.{u} := pProjOne_holds
-theorem projTwo_holds : ProjTwo.{u, v} := pProjTwo_holds
-theorem certProj_holds : CertProj.{u} := pCertProj_holds
-theorem projTrace_holds : ProjTrace.{u} := pProjTrace_holds
-theorem tracePow_holds : TracePow.{u} := pTracePow_holds
 theorem extZero_holds : ExtZero := pExtZero_holds
-theorem centralEig_holds : CentralEig := pCentralEig_holds
-theorem extEig_holds : ExtEig := pExtEig_holds extZero_holds centralEig_holds
-theorem extHecke_holds : ExtHecke := pExtHecke_holds extEig_holds
 theorem centralEig2_holds : CentralEig2 := pCentralEig2_of
 theorem extEig2_holds : ExtEig2 := pExtEig2_of extZero_holds centralEig2_holds
 theorem locAdj_holds : LocAdj := pLocAdj_of

@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousIsotro
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmoothIffRealCoordinatesAndRealLines
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsInfFamFamily
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContDiffHeisenbergTranslateThetaFunctionRealCoorStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContDiffHeisenbergTranslateThetaFunctionRealCoor
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open scoped TensorProduct ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -65,7 +65,7 @@ theorem hasFDerivAt_pt (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {F : WO S T
     (w : WO S T) (c : ℂ) (z : RW T S) :
     HasFDerivAt (fun z : RW T S => c * heisO ψ S T (iotaW σ T S z) F w)
       (∑ i, (c * sco ψ σ S T F (bas S T i) z w) • coordC S T i) z := by
-  have hs := GlobalTheory.T.contDiff_heisenbergTranslate_thetaFunction_realCoords D θ σ h ψ hψ S T F hF w
+  have hs := _root_.GlobalTheory.ThetaTranslate.contDiff_heisO_iota_fderiv D θ σ h ψ hψ S T F hF w
   have hd : HasFDerivAt (fun z : RW T S => heisO ψ S T (iotaW σ T S z) F w)
       (fderiv ℝ (fun z : RW T S => heisO ψ S T (iotaW σ T S z) F w) z) z :=
     ((hs.1.differentiable (by simp)) z).hasFDerivAt

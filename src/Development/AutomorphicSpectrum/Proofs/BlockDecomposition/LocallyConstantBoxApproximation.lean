@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetOff
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureLocalBallStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureLocalBall
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFactorSandwichApprox
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherSide
@@ -176,7 +176,7 @@ theorem real_boxS {v : HeightOneSpectrum (𝓞 F)} {lam : Measure (Fv F v)} (hst
   haveI := sigmaFinite_lam hstd
   have hq : (0 : ℝ) ≤ ((Ideal.absNorm v.asIdeal : ℝ) ^ k)⁻¹ := by positivity
   rw [Measure.real, boxS, Measure.pi_pi]
-  simp only [GlobalTheory.T.haar_measure_local_ball F v lam hstd k, Finset.prod_const, Finset.card_univ]
+  simp only [_root_.GlobalTheory.CompanionTheory.Equi.BallVol.measure_translate_ballV F v lam hstd k, Finset.prod_const, Finset.card_univ]
   rw [ENNReal.toReal_pow, ENNReal.toReal_ofReal hq, inv_pow]
 
 theorem loc_approx : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ (ι : Type) [Fintype ι] (ψ : (ι → Fv F v) → ℝ), Continuous ψ → HasCompactSupport ψ → ∃ B : ℝ, 0 ≤ B ∧ ∀ δ : ℝ, 0 < δ → ∃ (k : ℕ) (C : Finset (ι → Fv F v)), (∀ y, |ψ y - ∑ c ∈ C, ψ c * boxInd v k c y| ≤ δ * ∑ c ∈ C, boxInd v k c y) ∧ (C.card : ℝ) * (((Ideal.absNorm v.asIdeal : ℝ) ^ k) ^ Fintype.card ι)⁻¹ ≤ B ∧ |(∫ y, ψ y ∂(Measure.pi fun _ => lam)) - ∑ c ∈ C, ψ c * (((Ideal.absNorm v.asIdeal : ℝ) ^ k) ^ Fintype.card ι)⁻¹| ≤ δ * B := by

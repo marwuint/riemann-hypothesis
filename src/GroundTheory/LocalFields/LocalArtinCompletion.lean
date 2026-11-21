@@ -48,12 +48,6 @@ theorem classField_anti {H H' : openFiniteIndex Kˣ} (h : H.1 ≤ H'.1) :
   rw [← range_normUnits_le_iff, range_normUnits_classField, range_normUnits_classField]
   exact h
 
-theorem le_classField (L : IntermediateField K Ω) [FiniteDimensional K L] [IsAbelianGalois K L] :
-    L ≤ classField K Ω ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩ := by
-  have := (classField K Ω ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩).2.1
-  have := (classField K Ω ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩).2.2
-  rw [← range_normUnits_le_iff, range_normUnits_classField]
-
 end ClassField
 
 section Coord
@@ -121,52 +115,6 @@ theorem galToOpenCompletion_apply (σ : maximalAbelianExtension K Ω ≃ₐ[K] m
     ((galToOpenCompletion K Ω σ : openCompletion Kˣ) : ∀ H : openFiniteIndex Kˣ, Kˣ ⧸ H.1) H =
       artinCoord K Ω H σ :=
   rfl
-
-theorem galToOpenCompletion_localArtinMap (x : Kˣ) :
-    galToOpenCompletion K Ω (localArtinMap K Ω x) = openCompletion.of Kˣ x :=
-  openCompletion.ext fun H => artinCoord_localArtinMap H x
-
-theorem continuous_galToOpenCompletion : Continuous (galToOpenCompletion K Ω) :=
-  Continuous.subtype_mk (continuous_pi fun H => continuous_artinCoord H) _
-
-theorem injective_galToOpenCompletion : Function.Injective (galToOpenCompletion K Ω) := by
-  rw [injective_iff_map_eq_one]
-  intro σ hσ
-  refine ext_restrictAb fun L _ _ => ?_
-  set H : openFiniteIndex Kˣ := ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩
-  have := (classField K Ω H).2.1
-  have := (classField K Ω H).2.2
-  have hH : artinCoord K Ω H σ = 1 := by
-    rw [← galToOpenCompletion_apply, hσ]
-    rfl
-  have h1 : restrictAb (classField K Ω H : IntermediateField K Ω) (le_maximalAbelianExtension _) σ =
-      restrictAb (classField K Ω H : IntermediateField K Ω) (le_maximalAbelianExtension _) 1 := by
-    rw [map_one]
-    simpa [artinCoord] using hH
-  exact restrictAb_eq_of_le (le_maximalAbelianExtension _) (le_classField L) h1
-
-theorem surjective_galToOpenCompletion : Function.Surjective (galToOpenCompletion K Ω) := by
-  have hc : IsClosed (Set.range (galToOpenCompletion K Ω)) :=
-    (isCompact_range continuous_galToOpenCompletion).isClosed
-  have hsub : Set.range (openCompletion.of Kˣ) ⊆ Set.range (galToOpenCompletion K Ω) := by
-    rintro _ ⟨x, rfl⟩
-    exact ⟨_, galToOpenCompletion_localArtinMap x⟩
-  have := (openCompletion.denseRange_of (G := Kˣ)).closure_range
-  intro a
-  have ha : a ∈ closure (Set.range (openCompletion.of Kˣ)) := by rw [this]; trivial
-  exact hc.closure_subset_iff.2 hsub ha
-
-variable (K Ω) in
-
-def localArtinCompletion :
-    openCompletion Kˣ ≃ₜ* (maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω) :=
-  let e := MulEquiv.ofBijective (galToOpenCompletion K Ω)
-    ⟨injective_galToOpenCompletion, surjective_galToOpenCompletion⟩
-  ContinuousMulEquiv.symm
-    { e with
-      continuous_toFun := continuous_galToOpenCompletion
-      continuous_invFun :=
-        (continuous_galToOpenCompletion.homeoOfEquivCompactToT2 (f := e.toEquiv)).symm.continuous }
 
 end Completion
 

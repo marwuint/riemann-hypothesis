@@ -82,13 +82,6 @@ def NondegL : Prop :=
     (∀ a ∈ continuousCocycles A.ρ, (∀ b ∈ continuousCocycles A'.ρ, CobL PD (cupL A'.ρ P a b)) → a ∈ B1 A.ρ) ∧
     (∀ b ∈ continuousCocycles A'.ρ, (∀ a ∈ continuousCocycles A.ρ, CobL PD (cupL A'.ρ P a b)) → b ∈ B1 A'.ρ)
 
-def EulerL : Prop :=
-  ∀ (LL : Type) [Field LL] [Algebra Qp LL] [TopologicalSpace LL] (O : Type) [CommRing O]
-    [Algebra O LL], GoodO (Qp := Qp) LL O →
-  ∀ (A A' : GRep G Qp LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 PD A.ρ A'.ρ P →
-    Module.Finite LL (H1V A.ρ) ∧
-    finrank LL (H1V A.ρ) = finrank LL ↥(H0V A.ρ) + finrank LL ↥(H0V A'.ρ) + finrank Qp K * finrank LL A.V
-
 def OrthL : Prop :=
   ∀ (LL : Type) [Field LL] [Algebra Qp LL] [TopologicalSpace LL] (O : Type) [CommRing O]
     [Algebra O LL], GoodO (Qp := Qp) LL O →
@@ -105,8 +98,5 @@ def DualL : Prop :=
         finrank LL (↥S' ⧸ (B1 A'.ρ).comap S'.subtype) →
       (∀ a ∈ continuousCocycles A.ρ, (∀ b ∈ S', CobL PD (cupL A'.ρ P a b)) → a ∈ S) ∧
       (∀ b ∈ continuousCocycles A'.ρ, (∀ a ∈ S, CobL PD (cupL A'.ρ P a b)) → b ∈ S'))
-
-def All : Prop :=
-  FinZQ PD ∧ TopInj PD ∧ DualQ PD ∧ DualD PD ∧ CobLO PD ∧ TopLine PD ∧ NondegL PD ∧ EulerL PD ∧ DualL PD
 
 end GlobalTheory.CompanionTheory.LocDual

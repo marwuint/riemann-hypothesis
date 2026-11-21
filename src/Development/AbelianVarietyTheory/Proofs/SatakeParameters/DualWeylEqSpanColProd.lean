@@ -237,55 +237,6 @@ theorem tensorLat_span {R K : Type} [CommRing R] [Field K] [Algebra R K] {S : Ty
   · rintro P ⟨i, rfl⟩
     exact ⟨_, fun s => Submodule.subset_span ⟨i s, rfl⟩, rfl⟩
 
-theorem tensorLat_map_mul {R K : Type} [CommRing R] [Field K] [Algebra R K] {S : Type} [Fintype S] {n : ℕ}
-    (M : S → Submodule R (MvPolynomial (Fin n × Fin n) K)) (E : S → MvPolynomial (Fin n × Fin n) K) :
-    tensorLat R K (fun s => (M s).map (LinearMap.mulRight R (E s))) =
-      (tensorLat R K M).map (LinearMap.mulRight R (ten E)) := by
-  unfold tensorLat
-  rw [Submodule.map_span]
-  congr 1
-  ext P
-  constructor
-  · rintro ⟨F, hF, rfl⟩
-    choose G hG hGF using hF
-    refine ⟨_, ⟨G, hG, rfl⟩, ?_⟩
-    simp only [← hGF, LinearMap.mulRight_apply, map_mul, Finset.prod_mul_distrib, ten]
-  · rintro ⟨_, ⟨G, hG, rfl⟩, rfl⟩
-    refine ⟨fun s => G s * E s, fun s => ⟨G s, hG s, rfl⟩, ?_⟩
-    simp only [LinearMap.mulRight_apply, map_mul, Finset.prod_mul_distrib, ten]
-
-theorem mem_localization_span_iff {R K V κ κ' : Type} [CommRing R] [Field K] [Algebra R K] [AddCommGroup V] [Module K V]
-    [Module R V] [IsScalarTower R K V] [Fintype κ] [DecidableEq κ] (p : Ideal R) [p.IsPrime]
-    (B : V →ₗ[K] V →ₗ[K] K) (D E : κ → V) (h : ∀ i j, B (D i) (E j) = if i = j then 1 else 0)
-    (G : κ' → V) (hG : Submodule.span R (Set.range G) = Submodule.span R (Set.range E))
-    (x : V) (hx : x ∈ Submodule.span K (Set.range D)) :
-    x ∈ Formalism.HermitianLatticesTheory.localization₂ p (Submodule.span R (Set.range D)) ↔
-      ∀ j, B x (G j) ∈ Formalism.HermitianLatticesTheory.localization₂ p (1 : Submodule R K) := by
-  constructor
-  · rintro ⟨s, hs, hsx⟩ j
-    refine ⟨s, hs, ?_⟩
-    have h1 := (GlobalTheory.StdDual.dual_span_iff (R := R) (c := RingHom.id K) (fun a ha => ha) B.flip E D
-      (fun i j => by rw [LinearMap.flip_apply, h]; simp only [eq_comm]) (s • x)
-      (Submodule.smul_of_tower_mem _ s hx)).mpr hsx (G j) (hG ▸ Submodule.subset_span ⟨j, rfl⟩)
-    rw [LinearMap.flip_apply, LinearMap.map_smul_of_tower, LinearMap.smul_apply] at h1
-    exact Submodule.mem_one.mpr h1
-  · intro H
-    have H' : Submodule.span R (Set.range E) ≤
-        (Formalism.HermitianLatticesTheory.localization₂ p (1 : Submodule R K)).comap ((B x).restrictScalars R) := by
-      rw [← hG, Submodule.span_le]
-      rintro _ ⟨j, rfl⟩
-      exact H j
-    obtain ⟨a, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).mp hx
-    refine Submodule.sum_mem _ fun i _ => ?_
-    obtain ⟨s, hs, hsa⟩ := H' (Submodule.subset_span ⟨i, rfl⟩)
-    have e : B (∑ j, a j • D j) (E i) = a i := by
-      simp [map_sum, h]
-    rw [LinearMap.restrictScalars_apply, e] at hsa
-    obtain ⟨r, hr⟩ := Submodule.mem_one.mp hsa
-    refine ⟨s, hs, ?_⟩
-    rw [← smul_assoc, ← hr, algebraMap_smul]
-    exact Submodule.smul_mem _ r (Submodule.subset_span ⟨i, rfl⟩)
-
 theorem natW_cast {n : ℕ} (l : DomWeight n) (r : Fin n) : (l.natW r : ℤ) = l.w r - l.detShift := by
   unfold DomWeight.natW
   refine Int.toNat_of_nonneg (sub_nonneg.mpr ?_)
@@ -311,18 +262,6 @@ theorem ten_gdet {K ι : Type} [Field K] [Fintype ι] (n : ℕ) (e : ι → ℕ)
   congr 1
   ext1 a s
   simp [blockEmb]
-
-theorem gdet_ne_zero (K : Type) [Field K] (n : ℕ) : gdet K n ≠ 0 := by
-  intro h
-  have := congrArg (eval fun v : Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) K) v.1 v.2) h
-  unfold gdet at this
-  rw [RingHom.map_det, map_zero] at this
-  have e : (eval fun v : Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) K) v.1 v.2).mapMatrix
-      (Matrix.of fun a s : Fin n => (X (a, s) : MvPolynomial (Fin n × Fin n) K)) = 1 := by
-    ext a s
-    simp
-  rw [e, Matrix.det_one] at this
-  exact one_ne_zero this
 
 theorem aeval_nablaX {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (n : ℕ) (ν : ι → YoungDiagram)
     (hν : ∀ s, (ν s).colLen 0 ≤ n) (J : KM.ColChoice n ν) :
@@ -350,100 +289,5 @@ theorem fockB_ten {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (f g : ι → M
 theorem fockB_map {K σ : Type} [Field K] [CharZero K] (f g : MvPolynomial σ ℚ) :
     fockB (map (algebraMap ℚ K) f) (map (algebraMap ℚ K) g) = (fockQ f g : K) :=
   (@fockSQ K _ starRingOfComm _ σ f g).trans (eq_ratCast _ _)
-
-theorem weyl_dual_minors : ∀ {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] [DecidableEq ι] (n : ℕ) (ν : ι → YoungDiagram) (lam : ι → DomWeight n) (e : ι → ℕ), (∀ s (r : Fin n), ((ν s).rowLen r : ℤ) = (lam s).w r - (lam s).detShift + e s) → (∀ s, (ν s).colLen 0 ≤ n) → ∃ c : ℚ, 0 < c ∧ (∀ w : HeightOneSpectrum (𝓞 K), ∀ P ∈ Formalism.L2.DIV.VV K lam, P ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (delStd K lam) ↔ ∀ J : KM.ColChoice n ν, ((c : K)⁻¹ * fockB (P * ∏ τ, frDet K n τ ^ e τ) (MvPolynomial.aeval (R := ℤ) (fun v : ι × ℕ × Fin n => if h : v.2.1 < n then (X (v.1, v.2.2, (⟨v.2.1, h⟩ : Fin n)) : Pol K ι n) else 0) (KM.nablaX n ν J))) ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)) ∧ ∀ J : KM.ColChoice n ν, (∀ s (k : Fin ((ν s).rowLen 0)) (i : Fin ((ν s).colLen k)), (J s k i : ℕ) = i) → (c : K) = fockB (MvPolynomial.aeval (R := ℤ) (fun v : ι × ℕ × Fin n => if h : v.2.1 < n then (X (v.1, v.2.2, (⟨v.2.1, h⟩ : Fin n)) : Pol K ι n) else 0) (KM.nablaX n ν J)) (MvPolynomial.aeval (R := ℤ) (fun v : ι × ℕ × Fin n => if h : v.2.1 < n then (X (v.1, v.2.2, (⟨v.2.1, h⟩ : Fin n)) : Pol K ι n) else 0) (KM.nablaX n ν J)) := by
-  classical
-  intro K _ _ ι _ _ n ν lam e hrow hν
-  set μ : ι → Fin n → ℕ := fun s r => (ν s).rowLen r with hμ
-  have hμe : ∀ s, μ s = fun r => (lam s).natW r + e s := by
-    intro s
-    funext r
-    have h1 := hrow s r
-    have h2 := natW_cast (lam s) r
-    simp only [hμ]
-    omega
-  have hanti : ∀ s, Antitone (μ s) := fun s a b hab => (ν s).rowLen_anti _ _ hab
-  haveI : ∀ τ, Fintype (ssIdx n n (μ τ)) := fun τ => (sSIdxFinite n n _).fintype
-  choose b d hb hd hbd using fun τ => GlobalTheory.StdDual.exists_dual_bases n (μ τ) (hanti τ)
-  set N : ι → ℚ := fun s => fockQ (hw ℚ (le_refl n) (μ s)) (hw ℚ (le_refl n) (μ s)) with hN
-  have hNpos : ∀ s, 0 < N s := fun s => (fockQPos _ _ (hw ℚ (le_refl n) (μ s))).2 (hwNe ℚ n n le_rfl _)
-  have hc : 0 < ∏ s, N s := Finset.prod_pos fun s _ => hNpos s
-  have hcK : ((∏ s, N s : ℚ) : K) ≠ 0 := by exact_mod_cast hc.ne'
-  refine ⟨∏ s, N s, hc, ?_, ?_⟩
-  · intro w P hP
-    set φ := algebraMap ℚ K with hφ
-    set E : Pol K ι n := ∏ τ, frDet K n τ ^ e τ with hE
-    have hEt : (ten fun τ => gdet K n ^ e τ) = E := ten_gdet n e
-    have hE0 : E ≠ 0 := by
-      rw [← hEt]
-      refine Finset.prod_ne_zero_iff.mpr fun τ _ => ?_
-      exact (map_ne_zero_iff _ (rename_injective _ (Prod.mk_right_injective τ))).mpr
-        (pow_ne_zero _ (gdet_ne_zero K n))
-    have hB : Submodule.span (𝓞 K) (Set.range fun J : KM.ColChoice n ν =>
-          ten fun s => colProd K n (ν s) (hν s) (J s)) =
-        Submodule.span (𝓞 K) (Set.range fun i : (∀ τ, ssIdx n n (μ τ)) => ten fun τ => map φ (b τ (i τ))) := by
-      refine (tensorLat_span (fun s => colProd K n (ν s) (hν s))).symm.trans
-        (Eq.trans ?_ (tensorLat_span (fun τ i => map φ (b τ i))))
-      congr 1
-      funext τ
-      have h1 := GlobalTheory.StdDual.dualWeyl_toK K n (μ τ)
-      rw [← GlobalTheory.StdDual.span_image_eq _ _ (hb τ), ← Set.range_comp, dualWeyl_eq_span_colProd _ _ _ (hν τ),
-        Submodule.map_span, ← Set.range_comp] at h1
-      refine Eq.trans ?_ h1
-      congr 2
-      funext J
-      exact (fk_map_bidet (algebraMap (𝓞 K) K) _ _ _).symm
-    have hD : Submodule.span (𝓞 K) (Set.range fun i : (∀ τ, ssIdx n n (μ τ)) => ten fun τ => map φ (d τ (i τ))) =
-        (delStd K lam).map (LinearMap.mulRight (𝓞 K) E) := by
-      rw [← tensorLat_span (fun τ i => map φ (d τ i)), ← hEt, delStd, ← tensorLat_map_mul]
-      congr 1
-      funext τ
-      have h1 := GlobalTheory.StdDual.weyl_toK K n (μ τ)
-      rw [← GlobalTheory.StdDual.span_image_eq _ _ (hd τ), ← Set.range_comp] at h1
-      refine Eq.trans h1.symm ?_
-      rw [hμe, weyl_add, delSq, ← Submodule.map_comp, ← Submodule.map_comp]
-      congr 1
-      refine LinearMap.ext fun f => ?_
-      simp only [LinearMap.comp_apply, LinearMap.mulRight_apply, GlobalTheory.StdLatSpan.toK_apply, map_mul, map_pow,
-        map_gdet]
-    have hx : P * E ∈ Submodule.span K
-        (Set.range fun i : (∀ τ, ssIdx n n (μ τ)) => ten fun τ => map φ (d τ (i τ))) := by
-      rw [← Submodule.span_span_of_tower (𝓞 K), hD]
-      rw [← (GlobalTheory.StdLatSpan.std_fg_span K ι n lam).2.2.2] at hP
-      have h1 := Submodule.mem_map_of_mem (f := LinearMap.mulRight K E) hP
-      rw [Submodule.map_span] at h1
-      exact h1
-    have key := mem_localization_span_iff w.asIdeal ((((∏ s, N s : ℚ) : K))⁻¹ • fockBL) _ _ (by
-      intro i j
-      rw [LinearMap.smul_apply, LinearMap.smul_apply, fockBL_apply, fockB_ten, smul_eq_mul]
-      simp only [hφ, fockB_map]
-      have hs : ∀ τ, fockQ (d τ (i τ)) (b τ (j τ)) = if j τ = i τ then N τ else 0 := fun τ =>
-        (fockQPos _ _ _).1.trans (hbd τ _ _)
-      simp only [hs]
-      split_ifs with hij
-      · subst hij
-        simp only [if_true]
-        rw [← Rat.cast_prod]
-        exact inv_mul_cancel₀ hcK
-      · obtain ⟨τ, hτ⟩ := Function.ne_iff.mp hij
-        exact mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ τ)
-          (by rw [if_neg (Ne.symm hτ), Rat.cast_zero])))
-      _ hB _ hx
-    simp only [aeval_nablaX n ν hν]
-    refine Iff.trans ?_ key
-    rw [hD]
-    refine exists_congr fun s => and_congr_right fun _ => ?_
-    rw [← smul_mul_assoc]
-    constructor
-    · intro h
-      exact ⟨_, h, rfl⟩
-    · rintro ⟨y, hy, hye⟩
-      rwa [← mul_right_cancel₀ hE0 hye]
-  · intro J hJ
-    rw [aeval_nablaX n ν hν, fockB_ten, Rat.cast_prod]
-    refine Finset.prod_congr rfl fun s _ => ?_
-    have : colProd K n (ν s) (hν s) (J s) = map (algebraMap ℚ K) (hw ℚ (le_refl n) (μ s)) := by
-      rw [lclosedeq_hw_map, colProd, bidet_lead K n _ _ _ (hJ s), shapeDeg_colLen]
-    rw [this, fockB_map]
 
 end GlobalTheory.WeylMinorDual

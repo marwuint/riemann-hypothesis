@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsLatti
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FinPartIdemSumMulInvMem
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOneTmulMem
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OffIdempotentFinitePointMemCompletedTensorLatticStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OffIdempotentFinitePointMemCompletedTensorLattic
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.FWT Formalism.L2.Pj
 open MeasureTheory IsDedekindDomain NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Ker GlobalTheory.AdSpan
@@ -171,7 +171,7 @@ theorem rowRed_eq_zero_iff : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.ra
     have hpe : partAt e (finW S T y) ∈ hatA S T (tens (stdL D.host.E S.rank) (liftI Pg Q • C.X.Λ)) := by
       rw [e1]; exact smul_mem_hatA_of_int (hAo _) hz1 (hfinW _ _ hty)
 
-    have hpo := GlobalTheory.T.offIdempotent_finitePoint_mem_completedTensorLattice D S T Pg Q e he C.X.Λ y (hy _ hv)
+    have hpo := _root_.GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA D S T Pg Q e he C.X.Λ y (hy _ hv)
     have hsum : finW S T y = partAt (cA D e) (finW S T y) + partAt e (finW S T y) +
         partAt (1 - e - cA D e) (finW S T y) := by
       ext i j; simp only [partAt, Matrix.add_apply, Matrix.map_apply]; ring

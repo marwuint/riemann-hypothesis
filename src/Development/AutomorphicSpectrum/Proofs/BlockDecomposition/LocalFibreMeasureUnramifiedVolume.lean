@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EMatMulNegCol
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedFormula
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FibreMassEq
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
 open scoped Matrix NNReal ENNReal TensorProduct
@@ -89,7 +89,7 @@ theorem GlobalTheory.CompanionTheory.AvgFree.Lim.avg_tendsto_free : ∀ (F E : T
   haveI : SecondCountableTopology (HermR (Fv F v) σ n) := TopologicalSpace.Subtype.secondCountableTopology _
   haveI : (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n).IsNegInvariant :=
     Measure.IsAddHaarMeasure.isNegInvariant_of_regular _
-  have I := GlobalTheory.T.local_fibre_measure_unramified_formula F E σ hσ d b v lv hlv M J hJ n mv hmv
+  have I := _root_.GlobalTheory.CompanionTheory.AvgFree.free_fibre_masses F E σ hσ d b v lv hlv M J hJ n mv hmv
   have hAm : MeasurableSet A := hAo.measurableSet
 
   obtain ⟨h0m, -, -, C, hC⟩ := I (Tt 0) (hT 0).1 (hT 0).2.1 (hT 0).2.2.2

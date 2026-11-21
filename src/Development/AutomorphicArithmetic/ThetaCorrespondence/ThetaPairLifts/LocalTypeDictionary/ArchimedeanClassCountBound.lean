@@ -1,7 +1,18 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfiniteClassBound
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.DictAt
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HBdNonneg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteVertexClassesCardLePrincipalCongruence
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardTopVertexClassesLeClassNumberBoundNormPowStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormGridModulusLeExpDepthLogNormSum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteKernelNodeRankLeTotalRank
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterSizeConditionsNumericBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalCongruenceLeTopLevelClassSum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassSumVertexLevelsContainPrincipalCongruence
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfiniteClassBoundStatement
 
 section
 noncomputable section
@@ -11,15 +22,15 @@ namespace GlobalTheory.ClassCount
 set_option maxHeartbeats 2000000 in
 theorem archimedean_class_count_bound : _root_.GlobalTheory.FunPr.ThetaLocalInputs → InfClassK := by
   intro _
-  obtain ⟨c1, hT1⟩ := GlobalTheory.T.principalCongruence_le_topLevel_classSum
-  obtain ⟨c2, hR1⟩ := GlobalTheory.T.classSum_vertexLevels_contain_principalCongruence
+  obtain ⟨c1, hT1⟩ := _root_.GlobalTheory.LevTopCong.congLev_le_levTop
+  obtain ⟨c2, hR1⟩ := _root_.GlobalTheory.ClassCount.levRow_congLev_le
   refine ⟨max c1 c2, fun CF hCF => ⟨144, fun ε C hC => ?_⟩⟩
   obtain ⟨x1, hx1⟩ := hT1 CF ((le_max_left _ _).trans hCF) ε
   obtain ⟨x2, hx2⟩ := hR1 CF ((le_max_right _ _).trans hCF) ε
   refine ⟨max x1 x2, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt hFO => ?_⟩
   have hTop := hx1 D large₂ he ((le_max_left _ _).trans hx) Γ Pl0 T A Ks R F hS ch hIs hAt hFO
   have hRow := hx2 D large₂ he ((le_max_right _ _).trans hx) Γ Pl0 T A Ks R F hS ch hIs hAt hFO
-  obtain ⟨hNb, hfb, hN1, hf1, hm2, hrd1, hlrd, hb12⟩ := GlobalTheory.T.parameterSizeConditions_numericBounds large₂ hS.size
+  obtain ⟨hNb, hfb, hN1, hf1, hm2, hrd1, hlrd, hb12⟩ := _root_.GlobalTheory.SizesOfRows.sizes_of_sizeRows large₂ hS.size
   set b := large₂.sc.b with hb
   set N := bigN D with hNdef
   have hsig : 0 ≤ sig ch.G := Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)
@@ -53,11 +64,11 @@ theorem archimedean_class_count_bound : _root_.GlobalTheory.FunPr.ThetaLocalInpu
     have h2 : a ^ (n ^ 2) ≤ Real.exp (2 * sig ch.G) ^ (N ^ 2) :=
       (pow_le_pow_left₀ ha0 ha _).trans (pow_le_pow_right₀ (Real.one_le_exp (by linarith)) (by gcongr))
     exact mul_le_mul h1 h2 (by positivity) (by rw [hBd]; positivity)
-  have hmod := GlobalTheory.T.absNorm_gridModulus_le_exp_depthLogNormSum ch.G hS.hF
+  have hmod := _root_.GlobalTheory.ModulNorm.absNorm_modul_le ch.G hS.hF
   have fin : ∀ (X : Node), DefNode D.R.m X → ∀ K : Subgroup (GL (Fin (ch.G.V X).rank) (Lev.EAf D)),
       congLev D.sp.cm (ch.G.V X).gram (ch.G.Λ X) ch.G.modul ≤ K → (Nat.card (FinCl (ch.G.V X) K) : ℝ) ≤ M := fun X hX K hK =>
-    (GlobalTheory.T.definiteVertexClasses_card_le_principalCongruence ch.G ch.S.N X hX _ (ch.G.pl.modul_ne_bot _) K hK).trans
-      (factor _ (GlobalTheory.T.definiteKernelNode_rank_le_totalRank ch.G X hX) _ (Nat.cast_nonneg _) hmod)
+    (_root_.GlobalTheory.FrameTransport.finCl_card_le ch.G ch.S.N X hX _ (ch.G.pl.modul_ne_bot _) K hK).trans
+      (factor _ (_root_.GlobalTheory.DefRank.rank_le_bigN ch.G X hX) _ (Nat.cast_nonneg _) hmod)
   set K0 := 48 * (D.R.f:ℝ) * (N : ℝ) ^ 2 * Real.log b + 2 * (N : ℝ) ^ 2 * sig ch.G with hK0
   have hK00 : 0 ≤ K0 := by positivity
   have hMK : M ≤ Real.exp K0 := by
@@ -98,7 +109,7 @@ theorem archimedean_class_count_bound : _root_.GlobalTheory.FunPr.ThetaLocalInpu
   refine ⟨?_, fun Φ β hβ => ?_⟩
   ·
     have h := (GlobalTheory.T.card_topVertexClasses_le_classNumberBound_norm_pow ch.G ch.S.N).trans
-      (factor _ (GlobalTheory.T.definiteKernelNode_rank_le_totalRank ch.G (.top 0) (by simp [DefNode])) _ (Nat.cast_nonneg _) hmod)
+      (factor _ (_root_.GlobalTheory.DefRank.rank_le_bigN ch.G (.top 0) (by simp [DefNode])) _ (Nat.cast_nonneg _) hmod)
     refine h.trans (hMK.trans ((le_self_pow₀ (Real.one_le_exp hK00) (by omega)).trans hexp))
   ·
     rw [GridChoice.Classes, Nat.card_prod, Nat.card_pi, Nat.card_pi]

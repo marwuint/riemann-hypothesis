@@ -10,44 +10,6 @@ noncomputable section
 
 namespace GlobalTheory.TopVal.OneForm
 
-section Generic
-
-variable {D : D7} {O : Obj D} {c : ℝ}
-
-set_option maxHeartbeats 800000 in
-
-theorem row_of_btw (b : Bundle D O c) (x : R3.TwIn O.ex) (y : Bl.BTw b x) (t : (packB b).P.T)
-    (F : Fin (((packB b).P.A3.side3 (packB b).P.Ps (packB b).P.ψs (packB b).P.Zs).nV t) → D.what₂.LL)
-    (F' : Fin (((packB b).Q.F.fc (cxW (packB b)).zs).Df1.nV t) → D.what₂.LL) (hF : HEq F F') :
-    ∃ (s : x.T) (v : Fin (rDim D x.A3.A x.F.P1 x.F.ψ1 s) → D.what₂.LL), (packB b).P.I.tup t = x.Y.tup s ∧
-      HEq ((packB b).Q.F.eV (cxW (packB b)).zs t F') (R3.rowForm x.A3.A x.F.P1 x.F.ψ1 s v) ∧
-      HEq ((packB b).P.I.jA t ((rV0 D (packB b).P.A3.A (packB b).P.Ps (packB b).P.ψs t).mulVec F)) (x.Y.jA s v) := by
-  have key : ∀ k : Bl.RPk b.R b.S, k = Bl.rpkX y.y → ∀ (t : k.P.T)
-      (F : Fin ((k.P.A3.side3 k.P.Ps k.P.ψs k.P.Zs).nV t) → D.what₂.LL)
-      (F' : Fin ((k.B.Q.F.fc (k.B.Q.Rl.toCx3 k.B.Q.F).zs).Df1.nV t) → D.what₂.LL), HEq F F' →
-      ∃ (s : x.T) (v : Fin (rDim D x.A3.A x.F.P1 x.F.ψ1 s) → D.what₂.LL), k.P.I.tup t = x.Y.tup s ∧
-        HEq (k.B.Q.F.eV (k.B.Q.Rl.toCx3 k.B.Q.F).zs t F') (R3.rowForm x.A3.A x.F.P1 x.F.ψ1 s v) ∧
-        HEq (k.P.I.jA t ((rV0 D k.P.A3.A k.P.Ps k.P.ψs t).mulVec F)) (x.Y.jA s v) := by
-    intro k hk
-    subst hk
-    intro t F F' hF
-    have e : F = F' := eq_of_heq hF
-    subst e
-    refine ⟨t, (rV0 D x.A3.A x.F.P1 x.F.ψ1 t).mulVec F, rfl, heq_of_eq ?_, HEq.rfl⟩
-    have hOk := y.intersectionNumber_baseChange.ok
-    have hb : BlockHyp (x.A3.A.fam.R t) (x.A3.A.fam.lvl x.F.P1 x.F.ψ1) x.A3.A.fam.v0 1 :=
-      ⟨hOk.ok2.conj, hOk.ok2.irr, hOk.ok2.what₂ t⟩
-    have key := BlockDat.lf_lvl_vE hb
-    unfold R3.rowForm rV0
-    show (x.A3.A.fam.R t).S.basis.equivFun.symm (((x.A3.A.fam.R t).vE (x.A3.A.fam.lvl x.F.P1 x.F.ψ1)) *ᵥ F) = _
-    congr 1
-    conv_lhs => rw [← key]
-    rw [Matrix.mul_assoc]
-    exact (Matrix.mulVec_mulVec _ _ _).symm
-  exact key (Bl.rpkB b) y.eq t F F' hF
-
-end Generic
-
 section Rows
 
 open GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top.Bl
@@ -140,26 +102,6 @@ theorem one_form_congr {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : Col2.
   cases hx
   cases hG
   exact h
-
-set_option maxHeartbeats 800000 in
-
-theorem one_form {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) (x : R3.TwIn q.O.ex)
-    (a : R3.TwArgs q.O.ex q.x.what₂) (ax : HEq a.x x) (rx : Bl.RXs q.x.what₂) (s : x.T)
-    (v : Fin (rDim (q.w.D q.Z) x.A3.A x.F.P1 x.F.ψ1 s) → (q.w.D q.Z).what₂.LL) :
-    ∃ φ : Frm q.w.I (x.Y.tup s), IsRes φ (R3.rowForm x.A3.A x.F.P1 x.F.ψ1 s v) ∧
-      ∀ u, RecVal (I := q.w.I) (l := q.w.l) (Z := q.Z) u (x.Y.tup s) φ (x.Y.jA s v) := by
-  have e : a.x = x := eq_of_heq ax
-  subst e
-  obtain ⟨s', v', k1, k2, k3⟩ := row_of_args (w := q.w) (Z := q.Z) (ex := q.O.ex) (t := q.x.what₂) a s v
-  exact one_form_congr (I := q.w.I) (l := q.w.l) (Z := q.Z) k1 k2 k3 (one_form_rows rx s' v')
-
-set_option maxHeartbeats 800000 in
-
-theorem recVal_packB : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → Nonempty (Bl.RXs q.x.what₂) → ∀ (t : (packB b).P.T) (F : Fin (((packB b).P.A3.side3 (packB b).P.Ps (packB b).P.ψs (packB b).P.Zs).nV t) → (q.w.D q.Z).what₂.LL) (F' : Fin (((packB b).Q.F.fc (cxW (packB b)).zs).Df1.nV t) → (q.w.D q.Z).what₂.LL), HEq F F' → ∃ φ : GlobalTheory.TopVal.Frm q.w.I ((packB b).P.I.tup t), GlobalTheory.TopVal.IsRes φ ((packB b).Q.F.eV (cxW (packB b)).zs t F') ∧ ∀ u, GlobalTheory.TopVal.RecVal (I := q.w.I) (l := q.w.l) (Z := q.Z) u ((packB b).P.I.tup t) φ ((packB b).P.I.jA t ((rV0 (q.w.D q.Z) (packB b).P.A3.A (packB b).P.Ps (packB b).P.ψs t).mulVec F)) := by
-  intro hL p K q c b hb hR t F F' hF
-  obtain ⟨rx⟩ := hR
-  obtain ⟨s, v, h1, h2, h3⟩ := row_of_btw b hb.x hb.y t F F' hF
-  exact one_form_congr (I := q.w.I) (l := q.w.l) (Z := q.Z) h1 h2 h3 (one_form q hb.x hb.a hb.ax rx s v)
 
 end GlobalTheory.TopVal.OneForm
 

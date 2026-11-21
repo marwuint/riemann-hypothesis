@@ -10,12 +10,6 @@ open Formalism.BasicNotions Classical NumberField IsDedekindDomain Matrix Global
 open Formalism.MainNotions.product_first_zeroth_parts (Ow ten blk CSpan IntSpan wSh)
 open Formalism.L2.Col (conjPrime₂ PosStar hStd UF Sp)
 
-theorem exists_below {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (j : K →+* L)
-    (W : HeightOneSpectrum (𝓞 L)) : ∃ Q : HeightOneSpectrum (𝓞 K),
-      ∀ r : 𝓞 K, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom j r ∈ W.asIdeal := by
-  letI : Algebra K L := j.toAlgebra
-  exact ⟨W.under (𝓞 K), fun r => Iff.rfl⟩
-
 theorem mem_valO_of_below {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (j : K →+* L)
     (W : HeightOneSpectrum (𝓞 L)) (Q : HeightOneSpectrum (𝓞 K))
     (h : ∀ r : 𝓞 K, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom j r ∈ W.asIdeal) (x : K) :

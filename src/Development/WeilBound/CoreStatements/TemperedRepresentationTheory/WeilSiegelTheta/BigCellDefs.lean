@@ -60,11 +60,6 @@ def PoissonHerm : Prop :=
     Summable (fun b : HermE D r => J ψ V μ φ b) →
     HasSum (fun β : HermE D r => W ψ V μ lam φ β) (∑' b : HermE D r, J ψ V μ φ b)
 
-def SplitGram : Prop :=
-  ∀ (D : D7) (r : ℕ) (V : HSp D) (ν : Measure (GA D V)), ν.IsHaarMeasure → ∀ φ : Mx D V.rank r → ℂ,
-    GlobalTheory.SiegelFormula.absThetaInt V ν φ < ⊤ →
-    HasSum (fun β : HermE D r => IfrB V ν φ β) (Ifr V ν φ)
-
 def SiegelND : Prop :=
   ∀ (D : D7) (r : ℕ) (V : HSp D) ψ θ μ lam ν φ, Hyp D r V ψ θ μ lam ν φ →
     ∀ β : HermE D r, β.1.det ≠ 0 → IfrB V ν φ β = W ψ V μ lam φ β

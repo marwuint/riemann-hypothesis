@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsNoetheri
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianLiftReductionStandardFacts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummandDualAnnihilatorReductionProjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeCrystalReducesToDeRhamSqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummandDualAnnihilatorReductionProjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeCrystalReducesToDeRhamSqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianHodgeDeRhamOfCrystallineLift
 open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.DeRham GlobalTheory.SqLift GlobalTheory.LiftSys GlobalTheory.Published
 attribute [local instance] Over.cartesianMonoidalCategory
@@ -60,7 +60,7 @@ theorem admissible_classification : CrystallineSmoothLift → AbelianHodgeDeRham
   intro H1 H2 R R₀ _ _ I hI π hπ hk g A₀ _ A' _ i' h' hA hg
   obtain ⟨-, -, pc, bij, fin, proj, hA₀, hg₀⟩ :=
     abelianLift_facts H1 H2 R R₀ I hI π hπ hk g A₀ A' i' h' hA hg
-  obtain ⟨rs, rk⟩ := GlobalTheory.T.abelianScheme_crystal_reduces_to_deRham_sqZero H1 H2 R R₀ I hI π hπ hk g A₀ A' i' h' hA hg
+  obtain ⟨rs, rk⟩ := _root_.GlobalTheory.LiftSys.rhoBC_of_abelianLift H1 H2 R R₀ I hI π hπ hk g A₀ A' i' h' hA hg
   obtain ⟨-, ⟨N₀, hN₀⟩, -⟩ := GlobalTheory.AbelianHodge.abelianDeRham_hodge H1 H2 R₀ A₀ g hA₀ hg₀
   let P := prim (divided₂ hI) (spMap π) A₀
   let Ψ : primDR A' ≃ₗ[R] P := LinearEquiv.ofBijective (liftMor (divided₂ hI) h').pull bij
@@ -101,7 +101,7 @@ theorem admissible_classification : CrystallineSmoothLift → AbelianHodgeDeRham
     obtain ⟨d, hd⟩ := rs (mT.pull1 y.1)
     refine ⟨Φ.symm d, Subtype.ext (inj ?_)⟩
     rw [key, LinearEquiv.apply_symm_apply, hd]
-  obtain ⟨D1, D2⟩ := GlobalTheory.T.summand_dualAnnihilator_reduction_projective R R₀ π hπ (primDR A') (primDR A₀) (Module.Finite.equiv Φ.symm)
+  obtain ⟨D1, D2⟩ := _root_.GlobalTheory.LiftSys.summand_dual_reduction R R₀ π hπ (primDR A') (primDR A₀) (Module.Finite.equiv Φ.symm)
     (Module.Projective.of_equiv Φ.symm) ρ ρsurj ρker (PrimitiveSubmodule A₀) ⟨N₀, hN₀⟩
   have cond : ∀ K : Submodule R (Cr hI π A₀.hom),
       (∀ c, c ∈ K ⊔ I • ⊤ ↔ rho hI hk A₀.hom c ∈ F1 A₀.hom) ↔

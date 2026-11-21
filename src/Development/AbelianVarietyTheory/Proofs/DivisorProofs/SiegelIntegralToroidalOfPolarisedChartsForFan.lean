@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelIntegralToroidalOfPolarisedChartsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantSmoothProjFanNoSelfIntersectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantSmoothProjFanNoSelfIntersections
+import Development.AbelianVarietyTheory.Definitions.Divisors.EvenDefect
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelToroidalPolCharts
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecCmp
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -11,6 +14,6 @@ namespace GlobalTheory
 
 theorem siegelToroidalIntegral_of_polCharts :
     GlobalTheory.Published.SiegelToroidalPolCharts → GlobalTheory.Published.SiegelToroidalIntegral :=
-  GlobalTheory.T.siegelIntegralToroidal_of_polarisedCharts GlobalTheory.T.exists_invariant_smoothProjFan_noSelfIntersections
+  GlobalTheory.T.siegelIntegralToroidal_of_polarisedCharts _root_.GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt
 
 end GlobalTheory

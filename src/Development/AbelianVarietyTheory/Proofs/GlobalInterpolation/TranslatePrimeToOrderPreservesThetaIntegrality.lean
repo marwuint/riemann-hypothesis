@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.CokernelI
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmLatticeTranslationOperatorEqPhaseMulNegComp
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsOrthogonalFrameNormsCoprimeOfUnimodular
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegral
 
 open GlobalTheory.MomN Formalism.L2.Ker.JMB
 open scoped ComplexConjugate BigOperators
@@ -74,9 +74,9 @@ theorem latInt_translate : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q])
   obtain ⟨μ0, hμ0, hM0⟩ := hN 0 h0
   obtain ⟨μt, hμt, hMt⟩ := hN t ht
   have hU0 : opU S.Hm 0 e = e := by funext z; simp [opU, hf]
-  have b0 := GlobalTheory.T.momentMeasure_norm_le_one_iff_latticeIntegral q ι lam δ₀ Ω g S g x 0 (opU S.Hm 0 e) μ0 hlam hδ hΩ hO hS hNN h0
+  have b0 := _root_.GlobalTheory.MomN.norm_le_one_iff_latInt q ι lam δ₀ Ω g S g x 0 (opU S.Hm 0 e) μ0 hlam hδ hΩ hO hS hNN h0
     (GlobalTheory.MomOne.Translates.contDiff_opU S.Hm 0 hth.1) hM0
-  have bt := GlobalTheory.T.momentMeasure_norm_le_one_iff_latticeIntegral q ι lam δ₀ Ω g S g x t (opU S.Hm t e) μt hlam hδ hΩ hO hS hNN ht
+  have bt := _root_.GlobalTheory.MomN.norm_le_one_iff_latInt q ι lam δ₀ Ω g S g x t (opU S.Hm t e) μt hlam hδ hΩ hO hS hNN ht
     (GlobalTheory.MomOne.Translates.contDiff_opU S.Hm t hth.1) hMt
   rw [hU0] at b0
   have hN1 : N ≤ 1 := hμ0 ▸ b0.2 hLe

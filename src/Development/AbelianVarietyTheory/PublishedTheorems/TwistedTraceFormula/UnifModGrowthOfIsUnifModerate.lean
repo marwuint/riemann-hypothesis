@@ -77,17 +77,17 @@ theorem unifModGrowth_of_isUnifModerate (hθ : IsInfFam θ) {φ : GA D V → ℂ
       (pow_nonneg (NNReal.coe_nonneg _) A) (abs_nonneg _)
   refine ⟨A, fun l hl => key _ ?_⟩
   obtain ⟨l', hl'⟩ := exists_sigma_list l hl
-  rw [hl', foldr_Rder_eq ((GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V)]
+  rw [hl', foldr_Rder_eq ((_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V)]
   exact hA _
 
 theorem unifModGrowth_of_isAutFunSm (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) :
     UnifModGrowth V θ φ :=
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   unifModGrowth_of_isUnifModerate hθ ((growth_iff hθ R h.toIsAutFun ((smooth_iff R φ).1 h.smooth)).1 h.growth)
 
 theorem cuspRapidDecay_of_bound (hP : GlobalTheory.Published.CuspDecayBound) : GlobalTheory.Published.CuspRapidDecay := by
   intro D θ hθ V e he φ ha hs hg hc
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   obtain rfl := eq_expInf R he
   obtain ⟨A, hA⟩ := unifModGrowth_of_isUnifModerate hθ hg
   obtain ⟨U, hU, hφ⟩ := ha.level
@@ -102,7 +102,7 @@ theorem rapidDec_of_unifModGrowth (hP : GlobalTheory.Published.CuspRapidDecay) (
       (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g,
         ContDiff ℝ ∞ fun t : Fin k → ℝ => φ (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod))
     (hg : UnifModGrowth V θ φ) (hc : IsCuspFun V φ) : RapidDec V φ :=
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   have hs' := (smooth_iff R φ).1 hs
   (rapidDec_iff_isRapidDecay hθ).2 ⟨ha.left, ha.cont,
     hP D θ hθ V _ (isExpFam_expInf R) φ ha hs' ((growth_iff hθ R ha hs').1 (hg.growth hθ)) hc⟩

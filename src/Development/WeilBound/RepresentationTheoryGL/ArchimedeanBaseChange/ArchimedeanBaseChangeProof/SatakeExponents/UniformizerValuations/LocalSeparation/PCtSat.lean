@@ -1,6 +1,19 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LocalSeparation.PCtSatB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryHeckeCharCMLocKNonsplitEqNegOnePow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevOpParabEqLevOpCt
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UNInjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevOpMemFixed
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportTwistedConstantTermSplitPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumParabolicQuotientFubini
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModulusHalfLeviAbsDet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarIntegralNormalizedOpenCompactEqFiniteLevelSu
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviProjectionMaximalCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsHalfBlockDetIntegralGLInvariant
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfIsCompactIsOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenCompactIntegralMatrixAddSubgroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarIntegralNormalizedIntegralMatricesTwoSidedMu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBlockLevelsTwistedConstantTermSplitPlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParameterSphericalProductSpehQuotients
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumSatEqOfIsCT
@@ -34,18 +47,5 @@ theorem ord_neg_one' {w : Pl E} : GlobalTheory.SmGL.ord (w.adicCompletion E) (-1
   have e : WithZero.unzero h1 = 1 := by
     rw [← WithZero.coe_inj, WithZero.coe_unzero, this]; rfl
   rw [e, toAdd_one, neg_zero]
-
-theorem ordL_one' {w : Pl E} : ordL (1 : w.adicCompletion E) = 0 := by
-  have h1 := GlobalTheory.BCT.InertChar.ord_eq_ordL w (1 : (w.adicCompletion E)ˣ)
-  have h2 := GlobalTheory.SmGL.ord_mul (w.adicCompletion E) 1 1
-  rw [mul_one] at h2
-  rw [Units.val_one] at h1
-  omega
-
-theorem ordL_div' {w : Pl E} {x y : w.adicCompletion E} (hx : x ≠ 0) (hy : y ≠ 0) :
-    ordL (x / y) = ordL x - ordL y := by
-  have := Formalism.UG.P.fIwasawa_ordL_mul (x / y) y (div_ne_zero hx hy) hy
-  rw [div_mul_cancel₀ x hy] at this
-  omega
 
 end PositivityTheory.Rg.BcB.F.RS

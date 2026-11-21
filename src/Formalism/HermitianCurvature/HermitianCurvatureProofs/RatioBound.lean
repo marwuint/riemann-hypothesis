@@ -165,49 +165,11 @@ def uY (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v))
     Wd.Ix (Fin w.length) → B.Mat S.G.k (S.G.r - j) → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)) :=
   if h ∈ Y then uB S p F v ε j hj w h else 0
 
-theorem uY_nv (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
-    (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
-    (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ)
-    (hj : j ≤ S.G.r) (w : List C.Letter) (Y : Finset C.LPt) :
-    ∃ ε', 0 < ε' ∧ ∀ h, NV ((p v).T.bs j) ε' (uY S p F v ε j hj w Y h) := by
-  obtain ⟨ε0, hε0, hall⟩ := nv_common Y (uB S p F v ε j hj w) (fun h _ => uB_nv hB F hF v ε hε j hj w h)
-  refine ⟨ε0, hε0, fun h => ?_⟩
-  unfold uY
-  split_ifs with hh
-  · exact hall h hh
-  · exact nv_zero
-
 theorem uY_mem (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
     (hj : j ≤ S.G.r) (w : List C.Letter) (Y : Finset C.LPt) (h : C.LPt) (hh : h ∈ Y) :
     uY S p F v ε j hj w Y h = uB S p F v ε j hj w h := by
   unfold uY; rw [if_pos hh]
-
-theorem gN_psd (hA : P5.ThmPActual) (hFP : FormPos) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
-    (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
-    (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ)
-    (hj : j ≤ S.G.r) (w : List C.Letter) (hw : KB.CutWord (D.parOf S v) (S.l + 1) w) (Y : Finset C.LPt) :
-    TB.PSDOn Y (KB.gN (setC S p F) v ε j w) := by
-  have hB' := hB
-  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩ := hB'
-  obtain ⟨hl0, -, -, -, -⟩ := hv v
-  have hw' : KB.CutWord (D.parOf S v) (p v).l0 w := by rw [hl0]; exact hw
-  obtain ⟨ε0, hε0, hu⟩ := uY_nv hB F hF v ε hε j hj w Y
-  set c0 : ℝ := 1 / (ΓS S j * S.sizeAt v w) with hc0
-  have hc0n : 0 ≤ c0 := by
-    have := gam_pos hB j
-    have := sizeAt_nonneg S v w
-    positivity
-  set Dv := NV ((p v).T.bs j) ε0 (S := Fin w.length) with hDv
-  have hG := gram_psd Dv (fun x y => (c0 : ℂ) * (p v).form j hj w x y) nv_zero (fun x y hx hy => nv_add hx hy)
-    (fun c x hx => nv_smul c hx)
-    (fun x₁ x₂ y c h₁ h₂ hy => by simp only [form_sl (p v) j hj w x₁ x₂ y c h₁ h₂ hy]; ring)
-    (fun x y₁ y₂ c hx h₁ h₂ => by simp only [form_sr (p v) j hj w x y₁ y₂ c hx h₁ h₂]; ring)
-    (fun x hx => mul_nonneg (by exact_mod_cast hc0n) (hFP hA _ _ (D.parOf S v) (p v) j hj w hw' x ε0 hε0 hx))
-    Y (uY S p F v ε j hj w Y) hu
-  refine psd_congr (fun x hx y hy => ?_) hG
-  show (c0 : ℂ) * (p v).form j hj w (uY S p F v ε j hj w Y x) (uY S p F v ε j hj w Y y) = _
-  rw [uY_mem S p F v ε j hj w Y x hx, uY_mem S p F v ε j hj w Y y hy, gN_uB hB F hF v ε hε j hj w x y]
 
 theorem blockPSD_congr {α : Type} {Y : Finset α} {a a' b b' w w' : α → α → ℂ}
     (ha : ∀ x ∈ Y, ∀ y ∈ Y, a x y = a' x y) (hw : ∀ x ∈ Y, ∀ y ∈ Y, w x y = w' x y)

@@ -142,11 +142,6 @@ theorem exists_unit_conj (f g : B →ₐ[K] A) :
   simp only [LinearEquiv.coe_coe, ← hu] at h
   simp only [Units.val_mk, Units.inv_mk, mul_assoc, h, ← mul_assoc v u, hvu, one_mul]
 
-theorem AlgEquiv.exists_unit_conj (σ : A ≃ₐ[K] A) :
-    ∃ a : Aˣ, ∀ x, σ x = a * x * ↑a⁻¹ := by
-  obtain ⟨a, ha⟩ := GroundTheory.Brauer.exists_unit_conj (AlgHom.id K A) σ.toAlgHom
-  exact ⟨a, fun x ↦ by simpa using ha x⟩
-
 end SkolemNoether
 
 end GroundTheory.Brauer

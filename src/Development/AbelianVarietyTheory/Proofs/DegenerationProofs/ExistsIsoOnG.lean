@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRankZero
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLawsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLaws
+import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataTorsionStructureAlgClosed
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex
 open scoped BigOperators
@@ -109,7 +110,7 @@ theorem txT_eq {O : Type} [CommRing O] (N : NumD O) (m : ℕ) (p : N.QT (m ^ 2))
     (q p₁ : N.QT m) (hq : q.1.1 = 1) (hq' : q.1.2 = p.1.2 ^ m) :
     N.txT m p p₁.1.1.toAdd =
       (N.ψ p₁.1.1.toAdd * N.wp q p₁ * mulq N.θ N.σ m p₁.1.2.b : Oˣ) * N.uth m p.1.2.b p₁.1.2.b := by
-  have a := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB m m p₁.1.2.b p.1.2.b).2.1
+  have a := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB m m p₁.1.2.b p.1.2.b).2.1
   have c := cubN_mul_exp N.cub m m p.1.2.b p₁.1.2.b
   rw [← sq] at c
   have key : N.wQ p / mulq N.θ N.σ m p.1.2.b * (N.ψ p₁.1.1.toAdd * (p.1.2 ^ m).s p₁.1.1.toAdd) =

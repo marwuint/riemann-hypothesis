@@ -56,9 +56,6 @@ theorem h_smul_left (x y : n → A) (c : A) : D.h (c • x) y = D.σA c * D.h x 
   simp only [h, hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
-theorem h_zero_left (y : n → A) : D.h 0 y = 0 := by
-  simp [h, hform]
-
 theorem h_sub_left (x x' y : n → A) : D.h (x - x') y = D.h x y - D.h x' y := by
   simp only [h, hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
@@ -158,8 +155,6 @@ theorem pU_pU (H : D.Hyp) (v : n → A) : D.pU (D.pU v) = D.pU v := by
   rw [pU_apply D (D.pU v), pX_apply D (D.pU v), pXv_apply D (D.pU v), pz_apply D (D.pU v)]
   simp only [h_f_pU H, h_e_pU H, h_z_pU H]
   rw [← pX_apply, ← pXv_apply, ← pz_apply, ← pU_apply]
-
-theorem pU_pW (H : D.Hyp) (v : n → A) : D.pU (D.pW v) = 0 := pU_of_isW (isW_pW H v)
 
 theorem pW_pW (H : D.Hyp) (v : n → A) : D.pW (D.pW v) = D.pW v := pW_of_isW (isW_pW H v)
 

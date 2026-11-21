@@ -29,10 +29,6 @@ def UnramAbove (g : ℕ) : Prop :=
 def PrimeToDifferent (g : ℕ) : Prop :=
   IsCoprime (differentIdeal ℤ (𝓞 E)) (Ideal.span {(g : 𝓞 E)})
 
-def SplitsCompletely (p : ℕ) : Prop :=
-  p.Prime ∧ ∀ P : Ideal (𝓞 E), P.IsPrime → (p : 𝓞 E) ∈ P →
-    Ideal.absNorm P = p ∧ (p : 𝓞 E) ∉ P ^ 2
-
 noncomputable def rd : ℝ := ((|discr E| : ℤ) : ℝ) ^ ((finrank ℚ E : ℝ)⁻¹)
 
 noncomputable def idl (g : ℕ) (k ν : ℤ) : FI E :=
@@ -99,14 +95,6 @@ def UnramRelative : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unram E →
     differentIdeal (𝓞 (maximalRealSubfield E)) (𝓞 E) = ⊤ ∧ ∀ g : ℕ, UnramAbove E g
 
-def DiscrSquare : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unram E →
-    (discr E).natAbs = (discr (maximalRealSubfield E)).natAbs ^ 2
-
-def SplitCoprime : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (p : ℕ),
-    SplitsCompletely E p → PrimeToDifferent E p
-
 def Between : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (A B : FI E) (s : ℕ),
     B ≤ A → ConjStable E B → zsub E B ≤ twLat E A B s ∧ twLat E A B s ≤ zsub E A
@@ -159,32 +147,14 @@ def LocOrdinary : Prop :=
     (P : Ideal (𝓞 (maximalRealSubfield E))), P.IsPrime → (g : 𝓞 (maximalRealSubfield E)) ∉ P →
     locAt E P (zsub E (idl E g k ν)) = locAt E P (zsub E (idl E g 0 ν))
 
-def LocTyped : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (k ν : ℤ), 0 < g →
-    PrimeToDifferent E g →
-    ∀ P : Ideal (𝓞 (maximalRealSubfield E)), P.IsPrime → (g : 𝓞 (maximalRealSubfield E)) ∈ P →
-    locAt E P (zsub E (idl E g k ν)) = locAt E P (zsub E (idl E g k 0))
-
 def IsFLattice (E : Type) [Field E] [NumberField E] [IsCMField E] (L : Submodule ℤ E) : Prop :=
   (∀ (a : 𝓞 (maximalRealSubfield E)) (t : E), t ∈ L →
     algebraMap (𝓞 (maximalRealSubfield E)) E a * t ∈ L) ∧
   ∀ t : E, ∃ n : ℕ, 0 < n ∧ (n : E) * t ∈ L
 
-def QuotientSplits (E : Type) [Field E] [NumberField E] [IsCMField E] (L : Submodule ℤ E) : Prop :=
-  (∀ t : E, {P : Ideal (𝓞 (maximalRealSubfield E)) | P.IsMaximal ∧ t ∉ locAt E P L}.Finite) ∧
-  (∀ t : E, (∀ P : Ideal (𝓞 (maximalRealSubfield E)), P.IsMaximal → t ∈ locAt E P L) → t ∈ L) ∧
-  ∀ (S : Finset (Ideal (𝓞 (maximalRealSubfield E)))) (τ : Ideal (𝓞 (maximalRealSubfield E)) → E),
-    (∀ P ∈ S, P.IsMaximal) →
-    ∃ t : E, (∀ P ∈ S, t - τ P ∈ locAt E P L) ∧
-      ∀ P : Ideal (𝓞 (maximalRealSubfield E)), P.IsMaximal → P ∉ S → t ∈ locAt E P L
-
 def TwIsFLattice : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (A B : FI E) (s : ℕ),
     B ≠ 0 → B ≤ A → ConjStable E B → IsFLattice E (twLat E A B s)
-
-def LocalGlobal : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (L : Submodule ℤ E),
-    IsFLattice E L → QuotientSplits E L
 
 end Small
 
@@ -213,52 +183,9 @@ def LatticesGeneral : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unram E →
     ∀ (g : ℕ) (ν : ℤ) (s : ℕ), 0 < g → LatticeFacts E g ν s
 
-def TextLattices : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unram E →
-    ∀ g₁ g₂ : ℕ, SplitsCompletely E g₁ → SplitsCompletely E g₂ →
-    ∀ (ν : ℤ) (s : ℕ), 1 ≤ s → LatticeFacts E (g₁ * g₂) ν s
-
 def AssembleLattices : Prop :=
   DegreeFacts → PowConjStable → UnramRelative → Between → IndexCore →
     DualSubset → DualSupset → NormIdl → CovolumeIndex → LatticesGeneral
-
-def TextFromGeneral : Prop := LatticesGeneral → TextLattices
-
-def LeastNorm : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (ν : ℤ) (s : ℕ), 0 < g →
-    ∀ l ∈ dualLat E g (perLat E g ν s), l ≠ 0 →
-      ((g : ℝ) * rd E ^ (ν + 1)) ^ (-(deg E : ℤ)) ≤ ∏ w : InfinitePlace E, w l
-
-def SizeQuotient : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g r i : ℕ) (c : InfinitePlace E → ℝ),
-    0 < g → (∀ v, 0 ≤ c v) →
-    ∀ l ∈ dualLat E g (perLat E g (nuBlock r i 1) 1), l ≠ 0 →
-      (∏ v, c v * (2 * Real.pi / g) ^ ((2 * i : ℤ) - 3 - 2 * r)) / ∏ w : InfinitePlace E, w l ≤
-        (∏ v, c v) * (2 * Real.pi / rd E) ^ (((2 * i : ℤ) - 3 - 2 * r) * deg E) *
-          (g : ℝ) ^ (((2 * r + 2 : ℤ) - 2 * ((i : ℤ) - 1)) * deg E)
-
-def TextLeast : Prop := LeastNorm ∧ SizeQuotient
-
-def AssembleLeast : Prop :=
-  Formalism.FourierDecayAlt.L.DualLatticeInclusion → Formalism.FourierDecayAlt.W.NormLower → Formalism.FourierDecayAlt.DualSizeIdentity → DegreeFacts →
-    PowConjStable → Between → NormIdl → TextLeast
-
-def TextLocal : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g₁ g₂ : ℕ),
-    SplitsCompletely E g₁ → SplitsCompletely E g₂ → ∀ (ν : ℤ) (s : ℕ), 1 ≤ s →
-    (∀ P : Ideal (𝓞 (maximalRealSubfield E)), P.IsMaximal →
-      ((g₁ * g₂ : ℕ) : 𝓞 (maximalRealSubfield E)) ∉ P →
-      locAt E P (perLat E (g₁ * g₂) ν s) = locAt E P (zsub E (idl E (g₁ * g₂) 0 ν))) ∧
-    (∀ P : Ideal (𝓞 (maximalRealSubfield E)), P.IsMaximal →
-      ((g₁ * g₂ : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ P → ∀ t : E,
-      (t ∈ locAt E P (perLat E (g₁ * g₂) ν s) ↔
-        t ∈ locAt E P (zsub E (idl E (g₁ * g₂) 1 0)) ∧
-          t - (-1) ^ s * complexConj E t ∈ locAt E P (zsub E (idl E (g₁ * g₂) 2 0)))) ∧
-    QuotientSplits E (perLat E (g₁ * g₂) ν s)
-
-def AssembleLocal : Prop :=
-  PowConjStable → SplitCoprime → LocTw → LocOrdinary → LocTyped → TwIsFLattice → LocalGlobal →
-    TextLocal
 
 def TypedModel : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (ν : ℤ) (s : ℕ), 0 < g →

@@ -67,16 +67,4 @@ theorem exists_sIdeles_cohomology_eq (n : ℕ) (S₀ : Finset (HeightOneSpectrum
     (sIdelesSubmodule_mono K L) (sIdelesSubmodule_stable K L) h
   rw [← hy, ← ModuleCat.comp_apply, ← cohomologyMap_comp, e]
 
-theorem exists_sIdeles_cohomology_eq_zero (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 K)))
-    (y : cohomology ((ideleRep K L).subrepresentation (sIdelesSubmodule K L S)
-      (sIdelesSubmodule_stable K L S)) n)
-    (hy : (cohomologyMap (Rep.subtype (ideleRep K L) (sIdelesSubmodule K L S)
-      (sIdelesSubmodule_stable K L S)) n).hom y = 0) :
-    ∃ (T : Finset (HeightOneSpectrum (𝓞 K))) (h : S ≤ T),
-      (cohomologyMap (subrepInclusion (ideleRep K L) (sIdelesSubmodule K L)
-        (sIdelesSubmodule_mono K L) (sIdelesSubmodule_stable K L) h) n).hom y = 0 :=
-  exists_cohomologyMap_subrepInclusion_eq_zero (ideleRep K L) (sIdelesSubmodule K L)
-    (sIdelesSubmodule_mono K L) (sIdelesSubmodule_stable K L) (exists_mem_sIdelesSubmodule K L) n
-    S y hy
-
 end GroundTheory.ProfCoh

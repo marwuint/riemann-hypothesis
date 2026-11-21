@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstHasSumAndBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstHasSumAndBounds
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesIntegralBoundedClosureStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConvergentSubstOneVariableAndFormalAgreementStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesEvalTsumOpenPolydiscPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesEvalTsumOpenPolydiscProperties
 
 open GlobalTheory.ConvSer
 
@@ -13,7 +13,7 @@ theorem powerSeriesEvalTsum_unitDisc_properties : ∀ (K : Type) [NormedField K]
   intro K _ _ _ x hx
   have A := GlobalTheory.T.convergentSubst_oneVariable_and_formal_agreement K
   obtain ⟨B1, B2, B3, B4, B5, B6, B7, BetaSesquilinearity, B9, lowerOffDiagonalCoeff⟩ := GlobalTheory.T.mvPowerSeries_integral_bounded_closure K Unit
-  obtain ⟨C1, C2, C3, C4, C5, C6, C7, C8⟩ := GlobalTheory.T.mvPowerSeriesEvalTsum_openPolydisc_properties K Unit (fun _ => x) (fun _ => hx)
+  obtain ⟨C1, C2, C3, C4, C5, C6, C7, C8⟩ := _root_.GlobalTheory.ConvSer.ev_algebra K Unit (fun _ => x) (fun _ => hx)
   have hev : ∀ (f : PowerSeries K) (t : K), ev1 f t = ev f (fun _ : Unit => t) := A.2.1
   have P1 : ∀ f : PowerSeries K, Bdd f → PowerSeriesHasSumAt f x (ev1 f x) := by
     intro f hf
@@ -128,7 +128,7 @@ theorem powerSeriesEvalTsum_unitDisc_properties : ∀ (K : Type) [NormedField K]
       · exact B5 ()
       · exact (B4 y).2.2 hy
     have hFb : Bdd F := ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K (Fin 2)).2.2.1 F 0).2.2 hF
-    have D := GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K (Fin 2) Unit _ F hs hFb
+    have D := _root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K (Fin 2) Unit _ F hs hFb
     rw [A.2.2.2.2.1 F y]
     refine ⟨D.2.2.1 hF, ?_⟩
     rw [hev, C6 (Fin 2) _ F hs hFb]

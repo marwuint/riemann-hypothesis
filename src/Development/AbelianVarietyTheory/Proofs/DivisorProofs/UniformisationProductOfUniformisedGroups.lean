@@ -1,18 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBoxGenOfSection
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStrBoxOfIsSumDeg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExternalTensorRigidifiedCubicalProductStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericFibreProductSumPolarisedAbelianVariStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionProductOverThickeningOfSumDataStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExternalTensorRigidifiedCubicalProduct
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericFibreProductSumPolarisedAbelianVari
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionProductOverThickeningOfSumData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TMulOfBox
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdUnit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GmCharHom
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratingBoxProductOfRestrictedIsosStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratingBoxProductOfRestrictedIsos
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigAlongBox
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsLastLast
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompatBox
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThickeningProductIsoPreservesCubicalStructureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoxFamilyProductDegenerationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoxFamilyProductDegeneration
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoxFamilyLinearIndependentProductDegenerationStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExpansionModIdealPowBoxProductEqBoxProductStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothDimTensor
@@ -112,7 +112,7 @@ theorem exists_gt (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q�
         (Y₂ := (thickObj R I e G₂).left) w ((Over.pullback (thick R I e)).map (fst G₁ G₂)).left
         ((Over.pullback (thick R I e)).map (snd G₁ G₂)).left (g.t x) (g₁.t (q₁ x)) (g₂.t (q₂ x)) := by
   obtain ⟨q, i, q_hom, q_flat, q_surj, q_aff, i_hom, hker, hq₁, hq₂, hi₁, hi₂⟩ :=
-    GlobalTheory.T.torusExtension_product_over_thickening_of_sumData R I e D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂ G₁ G₂ g₁ g₂ hD
+    _root_.GlobalTheory.ProdTorusExt.main R I e D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂ G₁ G₂ g₁ g₂ hD
   have := hD.hom₁
   have := hD.hom₂
   have hp₁ := pG_pr hq₁
@@ -177,15 +177,15 @@ theorem exists_pre (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q
         (T₂ := (thickObj R I e G₂).left) wM wL (U.w e) (U₁.w e) (U₂.w e) ((Over.pullback (thick R I e)).map (fst G₁ G₂)).left
         ((Over.pullback (thick R I e)).map (snd G₁ G₂)).left := by
   obtain ⟨wM_gen, mr, mc, ms⟩ := hM
-  obtain ⟨gen, gen_hom, gen₁, gen₂, ext⟩ := GlobalTheory.T.exists_genericFibre_product_sumPolarisedAbelianVariety R I D₁ A₁ G₁ U₁ D₂ A₂ G₂ U₂ A a₁ a₂ hA
-  obtain ⟨L, c, s, wL, s_gen, s_rig, hwLgen, lr, lc, ls⟩ := GlobalTheory.T.exists_externalTensor_rigidified_cubical_product _ G₁ G₂ U₁.LG U₂.LG U₁.cubG U₂.cubG U₁.symG U₂.symG
+  obtain ⟨gen, gen_hom, gen₁, gen₂, ext⟩ := _root_.GlobalTheory.ProdGen.exists_gen_prod R I D₁ A₁ G₁ U₁ D₂ A₂ G₂ U₂ A a₁ a₂ hA
+  obtain ⟨L, c, s, wL, s_gen, s_rig, hwLgen, lr, lc, ls⟩ := _root_.GlobalTheory.GrpBox.exists_prod _ G₁ G₂ U₁.LG U₂.LG U₁.cubG U₂.cubG U₁.symG U₂.symG
     U₁.symG_gen U₂.symG_gen U₁.symG_rig U₂.symG_rig
   choose gt hq₁ hq₂ hi₁ hi₂ ht using fun e => exists_gt hD wM wM_gen mc e (U₁.gt e) (U₂.gt e)
   have hp₁ : ∀ e, (gt e).pG.left ≫ p₁.left = ((Over.pullback (thick R I e)).map (fst G₁ G₂)).left ≫ (U₁.gt e).pG.left :=
     fun e => congrArg (fun z => z.left) (pG_pr (hq₁ e))
   have hp₂ : ∀ e, (gt e).pG.left ≫ p₂.left = ((Over.pullback (thick R I e)).map (snd G₁ G₂)).left ≫ (U₂.gt e).pG.left :=
     fun e => congrArg (fun z => z.left) (pG_pr (hq₂ e))
-  choose w w_gen Q using fun e => GlobalTheory.T.exists_generating_boxProduct_of_restrictedIsos (T := (thickObj R I e (G₁ ⊗ G₂)).left) (T₁ := (thickObj R I e G₁).left)
+  choose w w_gen Q using fun e => _root_.GlobalTheory.ProdBoxIso.exists_wiso (T := (thickObj R I e (G₁ ⊗ G₂)).left) (T₁ := (thickObj R I e G₁).left)
     (T₂ := (thickObj R I e G₂).left) wM wL (U₁.w e) (U₂.w e) D.toPre.P.isLB D₁.toPre.P.isLB D₂.toPre.P.isLB L.isLB
     U₁.LG.isLB U₂.LG.isLB (hp₁ e) (hp₂ e) (thick_fstG I e _) (thick_fstG I e _) wM_gen hwLgen (U₁.w_gen e) (U₂.w_gen e)
   have gq := thickMap_pG hD U₁ U₂ gt hp₁ hp₂
@@ -320,7 +320,7 @@ theorem exists_unif (hR : AdmBase R I) (hD : IsSumDeg D.toPre D₁.toPre D₂.to
   choose σ₁ hσ₁ using fun l => ((U₁.expand k hk).2 (b₁ l)).exists
   choose σ₂ hσ₂ using fun l => ((U₂.expand k hk).2 (b₂ l)).exists
   choose b hb using fun a : Fin (k ^ A₁.g) × Fin (k ^ A₂.g) =>
-    GlobalTheory.T.exists_boxFamily_productDegeneration R _ _ _ p₁ p₂ q₁ q₂ hD wM hM.1 hM.2.1 hψ (FractionRing R) k (b₁ a.1) (b₂ a.2)
+    _root_.GlobalTheory.BoxFamSum.exists_isBoxFam₂ R _ _ _ p₁ p₂ q₁ q₂ hD wM hM.1 hM.2.1 hψ (FractionRing R) k (b₁ a.1) (b₂ a.2)
   choose σ hσ using fun a : Fin (k ^ A₁.g) × Fin (k ^ A₂.g) =>
     exists_boxSec (Y := pullback (G₁ ⊗ G₂).hom (jK R)) (Y₁ := pullback G₁.hom (jK R)) (Y₂ := pullback G₂.hom (jK R))
       (φ := fun _ : Fin 1 => pullback.fst (G₁ ⊗ G₂).hom (jK R))

@@ -74,24 +74,6 @@ def otNorm {M : Type*} [MeasurableSpace M] (n : ℕ) (z : M → V n) (ph ph2 : M
     (F : M → ℂ) : ℝ≥0∞ :=
   ∫⁻ x, ENNReal.ofReal (‖F x‖ ^ 2 * Real.exp (-ph2 x - ((n : ℝ) + j) * ph x)) ∂vol n z
 
-def EvLeviStatement (n : ℕ) (M : Type*) [TopologicalSpace M] : Prop :=
-  ∀ (z : M → V n) (g : Fin n → M → ℂ) (ph : M → ℝ) (r : ℝ),
-    IsLocalHomeomorph z → (∀ i, Holo n z (g i)) → SmoothR n z ph → r ≠ 0 →
-    ∀ (x : M) (ξ : Fin n → ℂ),
-      ‖dDot n z (fun y => (ev n g ph r y : ℂ)) x ξ‖ ^ 2 ≤
-          ev n g ph r x * ((Levi n z (ev n g ph r) x ξ).re +
-            ev n g ph r x * (Levi n z ph x ξ).re) ∧
-        0 ≤ (Levi n z (ev n g ph r) x ξ).re + ev n g ph r x * (Levi n z ph x ξ).re
-
-def LogLeviStatement (n : ℕ) (M : Type*) [TopologicalSpace M] : Prop :=
-  ∀ (z : M → V n) (g : Fin n → M → ℂ) (ph : M → ℝ) (r ε : ℝ),
-    IsLocalHomeomorph z → (∀ i, Holo n z (g i)) → SmoothR n z ph → LeviNonneg n z ph →
-    r ≠ 0 → 0 < ε →
-    ∀ (x : M) (ξ : Fin n → ℂ),
-      ε ^ 2 * ‖dDot n z (fun y => (lw n g ph r ε y : ℂ)) x ξ‖ ^ 2 ≤
-          ev n g ph r x * ((Levi n z (lw n g ph r ε) x ξ).re + (Levi n z ph x ξ).re) ∧
-        0 ≤ (Levi n z (lw n g ph r ε) x ξ).re + (Levi n z ph x ξ).re
-
 def TwistLeviStatement (n : ℕ) (M : Type*) [TopologicalSpace M] : Prop :=
   ∀ (z : M → V n) (g : Fin n → M → ℂ) (ph ph2 : M → ℝ) (r : ℝ) (j : ℕ) (ε δ : ℝ),
     IsLocalHomeomorph z → (∀ i, Holo n z (g i)) →
@@ -143,23 +125,10 @@ def IsCutoff (χ : ℝ → ℝ) : Prop :=
   ContDiff ℝ ∞ χ ∧ (∀ t, t ≤ 1 / 2 → χ t = 1) ∧ (∀ t, 1 ≤ t → χ t = 0) ∧
     (∀ t, 0 ≤ χ t ∧ χ t ≤ 1) ∧ ∀ t, |deriv χ t| ≤ 3
 
-def CutoffStatement : Prop := ∃ χ : ℝ → ℝ, IsCutoff χ
-
 def PolarStatement (n : ℕ) : Prop :=
   1 ≤ n → ∀ a b : ℝ, 0 < a → a ≤ b →
     ∫⁻ y in {y : V n | a ≤ ‖y‖ ^ 2 ∧ ‖y‖ ^ 2 ≤ b}, ENNReal.ofReal ((‖y‖ ^ 2) ^ (-(n : ℝ))) =
       ENNReal.ofReal (Real.pi ^ n / (Nat.factorial (n - 1) : ℝ) * Real.log (b / a))
-
-def ShellStatement (n : ℕ) (M : Type*) [TopologicalSpace M] [SecondCountableTopology M]
-    [MeasurableSpace M] [BorelSpace M] : Prop :=
-  ∀ (z : M → V n) (g : Fin n → M → ℂ) (ph ph2 : M → ℝ) (r : ℝ) (j : ℕ) (p : M),
-    1 ≤ n → IsLocalHomeomorph z → (∀ i, Holo n z (g i)) → SmoothR n z ph → SmoothR n z ph2 →
-    0 < r → p ∈ zeroSet n g → jac n z g p ≠ 0 →
-    ∃ W : Set M, IsOpen W ∧ p ∈ W ∧ ∀ τ : ℝ, 0 < τ → ∀ᶠ ε in 𝓝[>] (0 : ℝ),
-      ∫⁻ x in W ∩ shell n g ph r ε, ENNReal.ofReal (‖jac n z g x‖ ^ 2 *
-          Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n z ≤
-        ENNReal.ofReal ((1 + τ) * (Real.pi ^ n / (Nat.factorial (n - 1) : ℝ) * Real.log 2) *
-          r ^ (2 * n) * Real.exp (-ph2 p - (j : ℝ) * ph p))
 
 def CovStatement (n : ℕ) : Prop :=
   ∀ (W : Set (V n)) (G : V n → V n) (f : V n → ℝ≥0∞), IsOpen W → DifferentiableOn ℂ G W →
@@ -180,13 +149,6 @@ def IsLocalData {M : Type*} [TopologicalSpace M] (n : ℕ) (g : Fin n → M → 
   0 < m ∧ ∀ p ∈ zeroSet n g, IsOpen (W p) ∧ p ∈ W p ∧ IsCompact (closure (W p)) ∧
     (∀ x ∈ frontier (W p), m ≤ ev n g ph r x) ∧
     ∀ q ∈ zeroSet n g, q ≠ p → Disjoint (closure (W p)) (closure (W q))
-
-def LocalStatement (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M] : Prop :=
-  ∀ (z : M → V n) (g : Fin n → M → ℂ) (ph : M → ℝ) (r : ℝ) (N : M → Set M),
-    IsLocalHomeomorph z → (∀ i, Holo n z (g i)) → SmoothR n z ph → 0 < r →
-    (zeroSet n g).Finite → (∀ p ∈ zeroSet n g, jac n z g p ≠ 0) →
-    (∀ p ∈ zeroSet n g, IsOpen (N p) ∧ p ∈ N p) →
-    ∃ (W : M → Set M) (m : ℝ), IsLocalData n g ph r W m ∧ ∀ p ∈ zeroSet n g, W p ⊆ N p
 
 def ApplyStatement (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : Prop :=
@@ -222,11 +184,6 @@ def FixedStatement (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
               Real.exp (-ph2 x - ((n : ℝ) + j) * ph x) * ev n g ph r x ^ (-(n : ℝ))) ∂vol n X.z)
             ^ (1 / 2 : ℝ) +
           otNorm n X.z ph ph2 j (cutExt n X.z g ph r c W χ ε) ^ (1 / 2 : ℝ)) ^ (2 : ℝ)
-
-def MACofStatement (n : ℕ) : Prop :=
-  ∀ (U : Set (V n)) (f : V n → ℝ), IsOpen U → ContDiffOn ℝ ∞ f U →
-    ∀ y ∈ U, ∀ k : Fin n,
-      ∑ j, wd n j (fun w => (cHess n (fun w' => (f w' : ℂ)) w).adjugate k j) y = 0
 
 end
 

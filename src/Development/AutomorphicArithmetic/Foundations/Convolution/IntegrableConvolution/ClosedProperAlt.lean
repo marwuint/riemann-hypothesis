@@ -74,10 +74,6 @@ def tens (D : Split ι s m) (n : ℕ) (φ : Fin (m + 1) → GL (Fin n) R → ℂ
 
 end Split
 
-example (R : Type) [CommRing R] [TopologicalSpace R] :
-    Split (Pi.constRingHom (Fin 1) R) (RingHom.id (Fin 1 → R)) 0 :=
-  ⟨RingEquiv.refl _, continuous_id, continuous_id, fun _ _ => rfl, fun x i => congrArg x (Subsingleton.elim _ _)⟩
-
 def ChangeVar : Prop :=
   ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (m : ℕ)

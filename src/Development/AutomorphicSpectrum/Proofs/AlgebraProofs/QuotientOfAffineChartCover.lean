@@ -2,9 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.RegularHypothesesAndConclusion
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartId
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartIff
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartRestrictPreimageOpenStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartRestrictPreimageOpen
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.InvariantOpenChartPreimageStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GlueQuotientChartsCoverStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GlueQuotientChartsCover
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackOfGluedChartsStatement
 
 noncomputable section
@@ -32,7 +32,7 @@ theorem IsChart.exists_isOpenImmersion {P X Y Y' : Scheme.{0}} {a b : P ⟶ X} {
     {q : V.toScheme ⟶ Y} {q' : V'.toScheme ⟶ Y'} (h : IsChart a b V q) (h' : IsChart a b V' q')
     (hle : V' ≤ V) : ∃ k : Y' ⟶ Y, IsOpenImmersion k ∧ q' ≫ k = X.homOfLE hle ≫ q := by
   obtain ⟨D, rfl⟩ := GlobalTheory.T.invariant_open_chart_preimage h V' hle h'.stable
-  obtain ⟨hle₂, q'', hc, hq⟩ := GlobalTheory.T.chart_restrict_preimage_open h D
+  obtain ⟨hle₂, q'', hc, hq⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.isChart_restrict_quotient_open h D
   have := h'.effectiveEpi
   have := hc.effectiveEpi
   obtain ⟨e, he⟩ := exists_iso_of_effectiveEpi q' q'' fun Z g₁ g₂ ↦ by
@@ -54,7 +54,7 @@ theorem exists_common {P X : Scheme.{0}} {a b : P ⟶ X} {U V : X.Opens}
   have hx : x ∈ U.ι ''ᵁ (q ⁻¹ᵁ D) := hD ▸ ⟨hxU, hxV⟩
   obtain ⟨u, hu, rfl⟩ := hx
   obtain ⟨D', hD', hm, hle⟩ := exists_isAffineOpen_mem_and_subset (X := Y) (x := q u) (U := D) hu
-  obtain ⟨hW, q', hc, hq'⟩ := GlobalTheory.T.chart_restrict_preimage_open hq D'
+  obtain ⟨hW, q', hc, hq'⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.isChart_restrict_quotient_open hq D'
   have hle' : U.ι ''ᵁ (q ⁻¹ᵁ D') ≤ U ⊓ V := by
     rw [← hD]
     rintro _ ⟨v, hv, rfl⟩
@@ -94,7 +94,7 @@ theorem GlobalTheory.CompanionTheory.FreeQuotGlue.exists_of_affineCharts : ∀ {
   let R : X → X → Prop := fun x y ↦ ∃ p : P, a p = x ∧ b p = y
   have hk (U V : 𝒰) (h : U.1 ≤ V.1) := (hq V).exists_isOpenImmersion (hq U) h
   choose k hk hqk using hk
-  obtain ⟨Y', π, em, hem, hcomm, hpre, hsurj⟩ := GlobalTheory.T.glue_quotient_charts_cover R 𝒰
+  obtain ⟨Y', π, em, hem, hcomm, hpre, hsurj⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.exists_colimit_of_quotient_charts R 𝒰
     (fun U hU V hV x hx hx' ↦ by
       obtain ⟨W, h1, h2, h3, h4⟩ := exists_common hU hV x hx hx'
       exact ⟨W, h1, h2, h3, h4⟩)

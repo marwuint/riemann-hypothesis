@@ -227,18 +227,6 @@ theorem mem_range_unramifiedInv_iff (x : QZ) :
       GroundTheory.GroupCoh.cyclicChar_apply_gen, card_algEquiv_of_unramified K L he]
     rfl
 
-theorem range_unramifiedInv :
-    (unramifiedInv K L).range = AddSubgroup.zmultiples (QZ.mk (1 / Module.finrank K L)) := by
-  have hn : 0 < Module.finrank K L := Module.finrank_pos
-  ext x
-  rw [mem_range_unramifiedInv_iff, AddSubgroup.mem_zmultiples_iff]
-  constructor
-  · intro hx
-    obtain ⟨m, rfl⟩ := QZ.exists_eq_nsmul_mk_one_div hn hx
-    exact ⟨m, natCast_zsmul _ _⟩
-  · rintro ⟨k, rfl⟩
-    rw [smul_comm, QZ.nsmul_mk_one_div, smul_zero]
-
 end Invariant
 
 end GroundTheory.ProfCoh

@@ -126,8 +126,6 @@ theorem eSame (T : Forms0 D u) : Formalism.L2.GlobalTheoryTheory.UnramifiedDiago
   · exact eSame_one T v a k hk δ hδ c _ _ x.1 (γ1 x) (γ1 (σ x)) (η1 x) (η1 (σ x)) (κ1 x) (κ1 (σ x))
       (hs1 x) (hr1 x) (hl1 x) (hf1 x) (hs1 (σ x)) (hr1 (σ x)) (hl1 (σ x)) (hf1 (σ x))
 
-theorem equal_diagonal_entries_all : Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.ESameAll := fun _ _ T => eSame T
-
 end SameDiaZero
 
 end

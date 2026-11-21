@@ -254,9 +254,6 @@ theorem nonsingular_residue_of_isElliptic {x y : 𝒪} (h : (curveK K W).Equatio
     (curveRed W).Nonsingular (ρ x) (ρ y) :=
   WeierstrassCurve.Affine.equation_iff_nonsingular.mp (equation_residue W (equation_of_map K W h))
 
-theorem mem_E0Set_of_isElliptic (P : (curveK K W).Point) : P ∈ E0Set K W :=
-  fun _ _ h _ => nonsingular_residue_of_isElliptic K W h.1
-
 variable [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
 
 theorem reducePoint_add (P Q : (curveK K W).Point) :

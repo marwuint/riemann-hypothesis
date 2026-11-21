@@ -2,7 +2,8 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -211,7 +212,7 @@ theorem valAt_iff_isValueAt_coords : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω]
     have ha : a ∈ regAt ξ p := by
       obtain ⟨_, s, hs, _⟩ := hv
       exact ⟨s, hs⟩
-    obtain ⟨s, hs, hunit, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ _ tie c p hchart a).mp ha
+    obtain ⟨s, hs, hunit, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ _ _ tie c p hchart a).mp ha
     obtain ⟨ds, Gs, hGs, hsG⟩ := chart_form y c hy hs
     obtain ⟨dt, Gt, hGt, htG⟩ := chart_form y c hy hsa
     have hVs : ValAt ξ z s (MvPolynomial.eval₂ (Int.castRingHom ℂ) e Gs) := by

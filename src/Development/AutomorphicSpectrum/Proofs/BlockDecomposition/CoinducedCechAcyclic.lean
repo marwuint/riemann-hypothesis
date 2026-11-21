@@ -124,9 +124,4 @@ theorem isZero_homology (e : κ → P) (he : Function.Surjective e) (M : P → M
   (HomologicalComplex.exactAt_iff_isZero_homology _ _).1
     ((cechComplex_exactAt_succ_iff (cubeOf e (coind M)) n).2 (exact_d e he M n))
 
-example : ∀ {R : Type} [CommRing R] {P : Type} [SemilatticeInf P] {κ : Type} [LinearOrder κ] (e : κ → P),
-    Function.Surjective e → ∀ (M : P → ModuleCat.{0} R) (n : ℕ),
-    IsZero (((cechOf e).obj (coind M)).homology (n + 1)) :=
-  fun e he M n ↦ isZero_homology e he M n
-
 end GlobalTheory.CompanionTheory.Hodge.Nerve.Acyc

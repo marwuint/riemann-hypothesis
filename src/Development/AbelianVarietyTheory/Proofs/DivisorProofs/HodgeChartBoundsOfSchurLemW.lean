@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgePeriodGram
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodChartUniformConstantsHalfPolydiscStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodChartUniformConstantsHalfPolydisc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeMetricGramMatrixLocalHolomorphicImPartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareMetricPuncturedPolydiscBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectionMatrixGramOperatorNormLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareMetricPuncturedPolydiscBounds
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectionMatrixGramOperatorNormLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeCurvatureDualMetricPointwiseBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernCurvatureFormSelfEqDualNormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernCurvatureFormSelfEqDualNorm
 
 open Matrix Complex Filter Topology
 open scoped ComplexOrder ContDiff
@@ -40,7 +40,7 @@ theorem isOpen_punctured {n a : ℕ} (ha : a ≤ n) (ρ : ℝ) : IsOpen (punctur
 
 theorem hodgeChartBounds_of_schur_lemW (hS : ∀ (k l : ℕ) (a bt : Matrix (Fin k) (Fin k) ℝ) (b : Matrix (Fin k) (Fin l) ℝ) (d : Matrix (Fin l) (Fin l) ℝ) (C₀ c₀ b₀ : ℝ), 0 ≤ C₀ → 0 < c₀ → 0 < b₀ → a.IsSymm → d.IsSymm → bt.IsSymm → (∀ x, |x ⬝ᵥ a.mulVec x| ≤ C₀ * (x ⬝ᵥ x)) → (∀ y, (b.mulVec y) ⬝ᵥ (b.mulVec y) ≤ C₀ ^ 2 * (y ⬝ᵥ y)) → (∀ y, c₀ * (y ⬝ᵥ y) ≤ y ⬝ᵥ d.mulVec y) → (∀ x, b₀ * (x ⬝ᵥ x) ≤ x ⬝ᵥ bt.mulVec x) → ∀ z : Fin k ⊕ Fin l → ℝ, ((1 + C₀ / c₀) ^ 2 * max 1 (1 / c₀))⁻¹ * (z ⬝ᵥ z) ≤ z ⬝ᵥ (Matrix.fromBlocks (a + ((1 + C₀ + C₀ ^ 2 / c₀) / b₀) • bt) b b.transpose d).mulVec z) (hW : ∀ (g a : ℕ) (B : Fin a → Matrix (Fin g) (Fin g) ℝ) (c C : ℝ), 0 < c → (∀ i, (B i).PosSemidef) → ∃ W : ℝ, ∀ (Y' : Matrix (Fin g) (Fin g) ℝ) (t : Fin a → ℝ), Y'.IsSymm → (∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y'.mulVec x) → (∀ x, x ⬝ᵥ Y'.mulVec x ≤ C * (x ⬝ᵥ x)) → (∀ i, 0 < t i) → ∀ i x, ‖(t i • ((Y' + ∑ l, t l • B l)⁻¹ * B i)).mulVec x‖ ≤ W * ‖x‖) : HodgeChartBounds := by
   intro n a g rk ha τ₀ B hP
-  obtain ⟨T₀, c₁, C₁, M, β, hT₀, hc₁, hM, hβ, hBq, hY'⟩ := GlobalTheory.T.periodChart_uniform_constants_half_polydisc n a g rk τ₀ B hS hP
+  obtain ⟨T₀, c₁, C₁, M, β, hT₀, hc₁, hM, hβ, hBq, hY'⟩ := _root_.GlobalTheory.UnifConsts.uniform_consts n a g rk τ₀ B hS hP
   obtain ⟨W, hW'⟩ := hW g a (fun i => (B i).map (Int.cast : ℤ → ℝ)) c₁ C₁ hc₁ hP.psd
   have hBnn : ∀ i (x : Fin g → ℝ), 0 ≤ x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x := fun i x => by
     simpa using (posSemidef_iff_dotProduct_mulVec.1 (hP.psd i)).2 x
@@ -138,7 +138,7 @@ theorem hodgeChartBounds_of_schur_lemW (hS : ∀ (k l : ℕ) (a bt : Matrix (Fin
   ·
     intro z hz
     have hzp := hz1 z hz
-    obtain ⟨hGpsd, hG⟩ := GlobalTheory.T.poincareMetric_punctured_polydisc_bounds n a ha ρ hρ1 z hz
+    obtain ⟨hGpsd, hG⟩ := _root_.GlobalTheory.PoincareBounds.poincare_bounds n a ha ρ hρ1 z hz
     refine ⟨PosDef.one, hGpsd, fun ξ => ?_⟩
     have hgn0 : 0 ≤ gnorm (poincareGram a z) ξ := gnorm_nonneg _ _
     obtain ⟨hξk, hξi⟩ := hG ξ
@@ -154,7 +154,7 @@ theorem hodgeChartBounds_of_schur_lemW (hS : ∀ (k l : ℕ) (a bt : Matrix (Fin
       beta_reduce at this ⊢
       rw [← hdec z] at this
       exact this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _))
-    have key := GlobalTheory.T.connectionMatrix_gramOperatorNorm_le g a (imPeriod ha τ₀ B z) (fun i => (B i).map (Int.cast : ℤ → ℝ))
+    have key := _root_.GlobalTheory.connMatrix_opNorm_le g a (imPeriod ha τ₀ B z) (fun i => (B i).map (Int.cast : ℤ → ℝ))
       (of fun j k => fderiv ℂ (fun x => τ₀ x j k) z ξ)
       (fun i => ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i)))
       (fun i => tlog (z (Fin.castLE ha i)) - T₀) c₁ (M * ‖ξ‖) W'
@@ -200,17 +200,17 @@ theorem hodgeChartBounds_of_schur_lemW (hS : ∀ (k l : ℕ) (a bt : Matrix (Fin
         hP.psd (fun i => show 0 < tlog _ - T₀ by linarith [ht z hz i]) (hYBi z hz) (fun j k => by simp)).1
     have hPos : IsPosFrame (punctured ha ρ) (hodgeGram ha τ₀ B) := ⟨isOpen_punctured ha ρ,
       fun j k z hz => ((GlobalTheory.T.hodgeMetricGramMatrix_local_holomorphic_imPart n a g rk ha τ₀ B hP z (hz1 z hz)).1 j k).contDiffWithinAt, hPD⟩
-    refine (twoFormBound_curv_two_mul hPos (fun z hz => (GlobalTheory.T.poincareMetric_punctured_polydisc_bounds n a ha ρ hρ1 z hz).1) hC' ?_).mono
+    refine (twoFormBound_curv_two_mul hPos (fun z hz => (_root_.GlobalTheory.PoincareBounds.poincare_bounds n a ha ρ hρ1 z hz).1) hC' ?_).mono
       ((le_max_right _ _).trans (le_max_right _ _))
     intro z hz ξ v
     have hzp := hz1 z hz
     obtain ⟨hB1, hB2, hB3⟩ := GlobalTheory.T.hodgeMetricGramMatrix_local_holomorphic_imPart n a g rk ha τ₀ B hP z hzp
-    obtain ⟨hGpsd, hG⟩ := GlobalTheory.T.poincareMetric_punctured_polydisc_bounds n a ha ρ hρ1 z hz
+    obtain ⟨hGpsd, hG⟩ := _root_.GlobalTheory.PoincareBounds.poincare_bounds n a ha ρ hρ1 z hz
     have hpd := hPD z hz
     have hgn0 : 0 ≤ gnorm (poincareGram a z) ξ := gnorm_nonneg _ _
     obtain ⟨hξk, hξi⟩ := hG ξ
     have hξ : ‖ξ‖ ≤ 2 * gnorm (poincareGram a z) ξ := (pi_norm_le_iff_of_nonneg (by positivity)).2 hξk
-    rw [GlobalTheory.T.chernCurvature_form_self_eq_dual_norm n g (hodgeGram ha τ₀ B) z (hB1.of_le (by norm_cast))
+    rw [_root_.GlobalTheory.CurvForm.form_curv_self_eq n g (hodgeGram ha τ₀ B) z (hB1.of_le (by norm_cast))
       ((isUnit_iff_isUnit_det _).1 hpd.isUnit)
       (mem_of_superset ((isOpen_polydisc n 1).mem_nhds hzp.1) fun x hx => hsymC x hx)
       (mem_of_superset ((isOpen_polydisc n 1).mem_nhds hzp.1) fun x hx => hhermC x hx) hB3 ξ v,

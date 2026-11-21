@@ -5,10 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepW
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClassPresBasic
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlaces
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DoubleCosetOperatorEqLabelOperatorLocalRepsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitHeckeElementLabelZerosThenNegOnesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVectorStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DoubleCosetOperatorEqLabelOperatorLocalReps
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitHeckeElementLabelZerosThenNegOnes
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalLabelOperatorsOnHyperspecialFixedVector
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
 
 noncomputable section
 
@@ -74,19 +74,19 @@ theorem side_label {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ :
   rcases Nat.eq_zero_or_pos k with rfl | hpos
   · have e0 : splitLab V.rank 0 = List.replicate V.rank 0 := by simp [splitLab]
     rw [h0, e0, hkF_single]
-    refine ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V (pl P)).2.2.1.2 _ _ _ fun a ha => ?_).symm
+    refine ((_root_.GlobalTheory.SphLabelOps.label_operators V (pl P)).2.2.1.2 _ _ _ fun a ha => ?_).symm
     obtain ⟨ha, e, f', he, hs⟩ := ha
     funext g
     exact hinv g ⟨(finHom V).rangeRestrict a, (((hl e f' he).1 a hs).2 ha).2⟩ ⟨e, f', a, he, ha.1, rfl, hs⟩
   · have hi : 1 ≤ ((P, k) : ok × ℕ).2 ∧ ((P, k) : ok × ℕ).2 ≤ V.rank := ⟨hpos, hk⟩
-    have hs := fun x => GlobalTheory.T.split_hecke_element_label_zeros_then_neg_ones V pl ok (P, k) x
-    have hd := GlobalTheory.T.doubleCosetOperator_eq_labelOperator_localReps V β Λ 1 L hc' (pl P) h1 hoff (splitLab V.rank k) (Comparison₂.hx (P, k)) (Comparison₂.hA (P, k)) (hs 1).2.2
+    have hs := fun x => _root_.GlobalTheory.Hk3Split.isLabElt_of_isTEnv V pl ok (P, k) x
+    have hd := _root_.GlobalTheory.HkDict.dcOp_eq_label V β Λ 1 L hc' (pl P) h1 hoff (splitLab V.rank k) (Comparison₂.hx (P, k)) (Comparison₂.hA (P, k)) (hs 1).2.2
       ((hs _).1 hk (Comparison₂.hx_ok _ hi)) (fun a ha => (hs a).2.1 (Comparison₂.hA_loc _ hi a ha)) (Comparison₂.hDC _ hi)
     exact (Comparison₂.op_eq _ hi f).trans (hd.2 W _ hinv)
 
 theorem split_ops : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → (∀ t h, IsOpsX R t h → ∀ (P : A.ok t) k, k ≤ D.sp.X'.rank → ∀ f, R.jX t (A.heckeR t (P, k) f) = h (R.pl P) (Finsupp.single (splitLab D.sp.X'.rank k) 1) (R.jX t f)) ∧ ∀ j t h, IsOpsV R j t h → ∀ (P : A.ok t) k, k ≤ (Vc D j).rank → ∀ f, R.jV j t (A.heckeL j t (P, k) f) = h (R.pl P) (Finsupp.single (splitLab (Vc D j).rank k) 1) (R.jV j t f) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF hM
-  have hgood : ∀ t (P : A.ok t), Good R t (R.pl P) := fun t P => ((GlobalTheory.T.theta_lift_levels_good_primes_properties R F hL).2.2.2 hF t P P.2).1
+  have hgood : ∀ t (P : A.ok t), Good R t (R.pl P) := fun t P => ((_root_.GlobalTheory.GoodPrimes.good_primes R F hL).2.2.2 hF t P P.2).1
   refine ⟨fun t h hh P k hk f => ?_, fun j t h hh P k hk f => ?_⟩
   · have hd := side_label D.sp.X' R.βX R.ΛX (R.datXt t) hL.βX (R.B.R t).pres R.pl (A.ok t) (A.heckeR t) (R.B.R t).hecke
       P (hF.degR t P).1 (hgood t P) k hk f

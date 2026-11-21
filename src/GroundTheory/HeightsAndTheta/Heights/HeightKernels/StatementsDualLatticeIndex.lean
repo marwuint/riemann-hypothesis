@@ -13,9 +13,6 @@ def DualLatticeIndex.Statement : Prop :=
     (dualLattice F).toAddSubgroup.relIndex (dualLattice F').toAddSubgroup =
       F'.lattice.toAddSubgroup.relIndex F.lattice.toAddSubgroup
 
-example : HermLattice.twiceStandardExample.lattice ≤ (HermLattice.standard ℚ 1).lattice :=
-  twiceStandardExample_le
-
 end
 
 end GroundTheory.Heights₂.Heights

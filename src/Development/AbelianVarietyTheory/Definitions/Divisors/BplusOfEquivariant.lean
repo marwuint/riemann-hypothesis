@@ -306,17 +306,6 @@ theorem Bplus_smul (c c' : ℂ) (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0)) 
     simp only [besInt, Pi.smul_apply, smul_eq_mul]; ring
   simp only [Bplus, e, integral_const_mul]
 
-theorem Bplus_of_equivariant (hM : M.νN M.fdN = 1) (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0))
-    (hψ : ∀ n ∈ NFlag _ G.besTop.e, ‖besChar W.ψ G.besTop n‖ = 1)
-    (hF : ∀ n ∈ NFlag _ G.besTop.e, ∀ g, F (n * g) = besChar W.ψ G.besTop n * F g) :
-    Bplus W M φ F = ∫ h in M.fd (.top 0), φ h * F (embTop G h) ∂M.ν (.top 0) := by
-  have e : ∀ h n, besInt W φ F h n = φ h * F (embTop G h) := fun h n => by
-    have h1 := Complex.mul_conj' (besChar W.ψ G.besTop (n : GA D _))
-    rw [hψ _ n.2] at h1
-    rw [besInt, hF _ n.2]
-    linear_combination (norm := (simp; ring_nf)) φ h * F (embTop G h) * h1
-  simp [Bplus, e, Measure.real, hM]
-
 def pairVec {V : HSp D} (c : CoefA V) (ξ : Module.Dual ℂ c.W) : (Bridge.Gf V → c.W) →ₗ[ℂ] (GA D V → ℂ) :=
   ξ.compLeft _ ∘ₗ c.ext
 
@@ -349,12 +338,6 @@ theorem fPsiPhi_add {ρ : G.RealVec} {c : CoefA (G.V (.top 0))} {ξ : Module.Dua
   refine integral_congr_ae (.of_forall fun x => ?_)
   simp only [e2]
   exact integral_add (h.2.1 x) (h'.2.1 x)
-
-example (t : T) : (givenPath t 2).arrows = [.down t 0 1, .down t 0 0, .right 0 0, .right 1 0] ∧
-    (oppPath t 2).arrows = [.right 0 2, .right 1 2, .down t 2 1, .down t 2 0] := ⟨rfl, rfl⟩
-
-example (f : ∀ i : Fin 2, Sch G (.right i 0)) (u : Fn G (.grid 0 0)) :
-    liftP W M (rowPath T 0 2) (rowFam 0 2 f) u = liftA W M (.right 1 0) (f 1) (liftA W M (.right 0 0) (f 0) u) := rfl
 
 end GlobalTheory.FunObj
 

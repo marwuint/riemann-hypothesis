@@ -1,8 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.JointExample
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PProjLineAmple
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.AssemblyLaplacianLogGrowth
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterFS
+
 set_option maxSynthPendingDepth 1
 
 noncomputable section
@@ -112,13 +111,6 @@ def StokesLimitPos.Statement : Prop :=
       ((D.n + 1 : ℕ) : ℝ) * (a - meanU X.H X.Cd / 2) * degMu X.H ≤ arLim X.H X.S B
 
 namespace Line
-
-open GroundTheory.Heights₂.Heights.Regular.ProjectiveLine
-
-variable (II : IntersectionSystem)
-  (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
-
-def lineScale (p q : ℕ) : ℝ := min (1 / 16) (p / (40 * q * (max cpCutoff.choose 0 + 1)))
 
 end Line
 

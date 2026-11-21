@@ -17,10 +17,4 @@ def pullbackBadImage_holds.Statement : Prop :=
     IsGoodProj (imageZ v P') Ψ →
     volume (pullQ R v Ψ '' (pullBad R v Ψ ∩ {x | Ψ (segre (pullPt R v x)) 0 ≠ 0})) = 0
 
-section Inhabitants
-
-open IndefiniteRowSideFullHecke.Inter
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

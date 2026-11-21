@@ -57,20 +57,6 @@ theorem rho_side_inequality : C7.RhoSide := by
       · rw [max_eq_left h]; exact h1.2.2.1
     linarith
 
-theorem sign_change_count : C7.SignCount := by
-  unfold C7.SignCount
-  intro ι _ f S hS hne
-  classical
-  rw [← Finset.prod_mul_prod_compl S f, ← mul_assoc]
-  have h1 : (-1 : ℝ) ^ S.card * ∏ i ∈ S, f i = ∏ i ∈ S, (-f i) := by
-    rw [Finset.prod_neg]
-  rw [h1]
-  apply mul_pos
-  · exact Finset.prod_pos fun i hi => by linarith [(hS i).1 hi]
-  · refine Finset.prod_pos fun i hi => ?_
-    have h2 : ¬ f i < 0 := fun h => (Finset.mem_compl.1 hi) ((hS i).2 h)
-    exact lt_of_le_of_ne (not_lt.1 h2) (hne i).symm
-
 theorem sign_prod_of_split_at_index (s : Finset ℕ) (g : ℕ → ℝ) (m : ℕ) (hpos : ∀ j ∈ s, j < m → 0 < g j)
     (hneg : ∀ j ∈ s, m ≤ j → g j < 0) : 0 < (-1 : ℝ) ^ (s.filter (m ≤ ·)).card * ∏ j ∈ s, g j := by
   induction s using Finset.induction_on with
@@ -135,8 +121,6 @@ theorem polynomial_sign : C7.PSign := by
   rw [abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul] at h
   exact h
 
-theorem polynomial_sign_of_parts : C7.PSignOfParts := fun _ _ _ => polynomial_sign
-
 theorem roots_outside_jointly : C7.RootsOutJoint := by
   unfold C7.RootsOutJoint LE.Sys.RootsOut
   intro S u u' l hl hlk hI hI' hB s hs
@@ -149,12 +133,5 @@ theorem roots_outside_jointly : C7.RootsOutJoint := by
     linarith [hb.1]
   · have := key.2 (by omega)
     linarith [hb.2]
-
-theorem roots_outside_of_parts : C7.RootsOutOfParts := fun _ => roots_outside_jointly
-
-theorem interlacing_of_parts : C7.LemmaEInterlacingOfParts := by
-  unfold C7.LemmaEInterlacingOfParts C7.LemmaEInterlacing LE.LemmaE
-  intro hE hR CR Cd CP h1 h2 h3 C₂ hC₂ C₆ hC₆ S u u' l hl hlk hI hI' hB hN hL hβ
-  exact hE CR Cd CP h1 h2 h3 C₂ hC₂ C₆ hC₆ S hN hL hβ (hR S u u' l hl hlk hI hI' hB)
 
 end Formalism.FourierDecayAlt.P

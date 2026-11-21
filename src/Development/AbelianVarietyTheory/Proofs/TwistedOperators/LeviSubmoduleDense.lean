@@ -3,8 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ps
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.DiscreteSeriesCharacter
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleCoefficientsAnalytic
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAdmOnOfFiniteDimensional
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IrreducibleUnitaryAdmissible
-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.KFiniteCoefficientsAnalytic
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviModulusOneLinearReductiveExpMulExpStatement
 
 noncomputable section
@@ -72,26 +70,6 @@ theorem oneParameter_mem_closure {T : ℝ → V →L[ℂ] V} (h0 : T 0 = 1) (hT 
 section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
-theorem analytic_exp {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
-    (hf : AnalyticOnGroup G f) {X : Matrix (Fin n) (Fin n) ℂ} (hX : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ G) :
-    AnalyticOnNhd ℝ (fun t : ℝ => f (NormedSpace.exp (t • X))) Set.univ := by
-  intro t₀ _
-  obtain ⟨U, F, hUo, hgU, hF, hfF⟩ := hf _ (hX t₀)
-  let L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (Fin n → Fin n → ℂ) :=
-    LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap
-  have hL : ∀ A, L A = Matrix.of.symm A := fun _ => rfl
-  have hE : AnalyticAt ℝ (fun t : ℝ => L (NormedSpace.exp (t • X))) t₀ :=
-    L.analyticAt _ |>.comp ((NormedSpace.exp_analytic (𝕂 := ℝ) _).comp
-      ((analyticAt_id).smul analyticAt_const))
-  have hE' : AnalyticAt ℝ (fun t : ℝ => F (L (NormedSpace.exp (t • X)))) t₀ :=
-    (hF _ (by rw [hL]; exact hgU)).comp hE
-  have hev : ∀ᶠ t in nhds t₀, L (NormedSpace.exp (t • X)) ∈ U :=
-    hE.continuousAt.preimage_mem_nhds (hUo.mem_nhds (by rw [hL]; exact hgU))
-  refine hE'.congr (hev.mono fun t ht => ?_)
-  have h1 := hfF _ ht (by rw [hL, Equiv.apply_symm_apply]; exact hX t)
-  rw [hL, Equiv.apply_symm_apply] at h1
-  exact h1.symm
-
 private theorem mul_Jm_comm_of_unitary_of_preserves {n : ℕ} (ε : Fin n → Bool) {A : Matrix (Fin n) (Fin n) ℂ}
     (hu : A ∈ Matrix.unitaryGroup (Fin n) ℂ) (hJ : Aᴴ * Formalism.REAL.Jm ε * A = Formalism.REAL.Jm ε) :
     A * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * A := by
@@ -115,37 +93,6 @@ theorem isKFinOn_of_isKFinIn {n : ℕ} {ε : Fin n → Bool} {M : Subgroup (UJ �
   show toM g ∈ Kset ε
   show toM g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ toM g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * toM g
   exact ⟨hgu, mul_Jm_comm_of_unitary_of_preserves ε hgu g.2⟩
-
-theorem leviSubmoduleDense (hadm : GlobalTheory.Published.IrreducibleUnitaryAdmissible)
-    (han : GlobalTheory.Published.KFiniteCoefficientsAnalytic) : GlobalTheory.Published.LeviSubmoduleDense := by
-  intro n ε a j W hW hj V _ _ _ σ hU hI S hS hK hD
-  obtain ⟨hLR, hdec⟩ := GlobalTheory.T.leviModulusOne_linearReductive_exp_mul_exp n ε a j W hW hj
-  have hadmG : GlobalTheory.LinRed.IsAdmOn (mats (leviOne ε W)) σ := hadm n _ hLR V σ hU hI
-  have hexp : ∀ X : Matrix (Fin n) (Fin n) ℂ, (∀ t : ℝ, NormedSpace.exp (t • X) ∈ mats (leviOne ε W)) →
-      ∀ x ∈ S.topologicalClosure, σ (NormedSpace.exp X) x ∈ S.topologicalClosure := by
-    intro X hX x hx
-    have h1 := oneParameter_mem_closure (T := fun t : ℝ => σ (NormedSpace.exp (t • X))) ?_ ?_ (hD X hX) ?_ 1 x hx
-    · simpa using h1
-    · simp only [zero_smul, NormedSpace.exp_zero]
-      exact hU.1.1
-    · intro s t
-      show σ (NormedSpace.exp ((s + t) • X)) = σ (NormedSpace.exp (s • X)) ∘L σ (NormedSpace.exp (t • X))
-      rw [add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)]
-      exact hU.1.2 _ (hX s) _ (hX t)
-    · intro v hv w
-      exact analytic_exp (han n _ hLR V σ hadmG v w (isKFinOn_of_isKFinIn (hK v hv))) hX
-  have hinv : ∀ g ∈ mats (leviOne ε W), ∀ x ∈ S.topologicalClosure, σ g x ∈ S.topologicalClosure := by
-    intro g hg x hx
-    obtain ⟨X, Y, hX, hY, rfl⟩ := hdec g hg
-    have hX1 : NormedSpace.exp X ∈ mats (leviOne ε W) := by simpa using hX 1
-    have hY1 : NormedSpace.exp Y ∈ mats (leviOne ε W) := by simpa using hY 1
-    rw [hU.1.2 _ hX1 _ hY1, ContinuousLinearMap.comp_apply]
-    exact hexp X hX _ (hexp Y hY x hx)
-  rcases hI S.topologicalClosure S.isClosed_topologicalClosure hinv with h | h
-  · have hle := S.le_topologicalClosure
-    rw [h] at hle
-    exact absurd (eq_bot_iff.2 hle) hS
-  · rw [dense_iff_closure_eq, ← Submodule.topologicalClosure_coe, h, Submodule.top_coe]
 
 end GlobalTheory.LeviDense
 

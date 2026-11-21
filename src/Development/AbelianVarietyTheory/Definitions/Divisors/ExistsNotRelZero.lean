@@ -41,10 +41,6 @@ def translates {H : Type} [Mul H] (z : H →₀ ℂ) (φ : H → ℂ) : H → �
 
 def zdeg {H : Type} (z : H →₀ ℂ) : ℂ := z.sum fun _ c => c
 
-theorem translates_one {H : Type} [MulOneClass H] (φ : H → ℂ) :
-    translates (Finsupp.single 1 1) φ = φ ∧ zdeg (Finsupp.single (1 : H) 1) = 1 :=
-  ⟨funext fun u => by simp [translates], by simp [zdeg]⟩
-
 variable (G) in
 
 abbrev PolRoute (X M Y : Node) : Type := PolF D (G.V X).rank (G.V M).rank ⊗[ℂ] PolF D (G.V M).rank (G.V Y).rank
@@ -97,12 +93,6 @@ theorem exists_matched (i j : ℕ) (b : (Unit × PolF D (G.V (.grid i (j + 1))).
   obtain ⟨x, hx⟩ := ρ.onto_small i j (toTens b)
   obtain ⟨a, rfl⟩ := toTens_surjective x
   exact ⟨a, fun _ => hx⟩
-
-theorem exists_not_rel_zero (i j : ℕ) : ∃ a, (a, 0) ∉ ρ.rel i j := by
-  by_contra! h
-  refine ρ.proper i j (eq_top_iff.2 fun x _ => ?_)
-  obtain ⟨a, ha⟩ := ρ.onto_small i j x.2
-  simpa using add_mem ha (h (x.1 - a))
 
 end RealMatch
 
@@ -229,30 +219,6 @@ theorem IsSquareConst.unique (h : SquareNonzero W B ρ t i j) {c c' : ℂ} (hc :
     (hc' : IsSquareConst W B ρ t i j c') : c = c' := by
   obtain ⟨M, hM, Θ, Θ', hΘ, z, g, g₁, hz, h0⟩ := h
   exact mul_right_cancel₀ h0 ((hc M hM Θ Θ' hΘ z g g₁ hz).symm.trans (hc' M hM Θ Θ' hΘ z g g₁ hz))
-
-theorem IsSquareConst.of_integrable {c : ℂ} (hc : IsSquareConst W B ρ t i j c) {M : Vol G} (hM : M.Is t) {Θ Θ'}
-    (hΘ : IsMatched B t ρ i j Θ Θ') {g g₁} (h : IntegrableOn (kerBig W Θ g g₁) (M.fd _) (M.ν _))
-    (h' : IntegrableOn (kerSmall W Θ' g g₁) (M.fd _) (M.ν _)) :
-    ∫ u in M.fd _, kerBig W Θ g g₁ u ∂M.ν _ = c * ∫ u in M.fd _, kerSmall W Θ' g g₁ u ∂M.ν _ := by
-  have := hc M hM Θ Θ' hΘ (Finsupp.single 1 1) g g₁ ⟨h, by rwa [(translates_one _).1]⟩
-  rwa [(translates_one _).1, (translates_one (fun _ => 0)).2, one_mul] at this
-
-example (t : T) : (routeSmall t 0 0).arrows = [.down t 0 0, .right 0 0] ∧
-    (routeBig t 0 0).arrows = [.right 0 1, .down t 1 0] := ⟨rfl, rfl⟩
-
-example (M : Vol G) (d : PureT G (routeSmall t i j)) (F : Fn G (.grid i (j + 1))) (g₁ : GA D (G.V (.grid (i + 1) j))) :
-    liftT W M _ (Finsupp.single d 1) F g₁ =
-      ∫ u in M.fd _, ∫ g in M.fd _, kerSmall W (Finsupp.single d 1) g g₁ u * F g ∂M.ν _ ∂M.ν _ := by
-  rw [liftT_single, one_smul]
-  refine integral_congr_ae (.of_forall fun u => ?_)
-  have e : ∀ g, kerSmall W (Finsupp.single d 1) g g₁ u * F g =
-      W.kerA (.right i j) d.2 u g₁ * (W.kerA (.down t i j) d.1.2 g u * F g) := fun g => by
-    rw [kerSmall, Finsupp.sum_single_index (zero_mul _)]; ring
-  simp only [e, integral_const_mul]
-  rfl
-
-example {H : Type} (u v : H) : zdeg (Finsupp.single u 1 - Finsupp.single v 1) = 0 := by
-  rw [zdeg, Finsupp.sum_sub_index (fun _ _ _ => rfl)]; simp
 
 end GlobalTheory.FunObj
 

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSymm
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHomFromConstThickeningOfDerivationStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHomFromConstThickeningOfDerivation
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ConstThickeningComplexFunctionsStructureStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGlobalDerivationOfKodairaSpencerZeroStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoThickeningMapOfModEpsStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGlobalDerivationOfKodairaSpencerZero
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoThickeningMapOfModEps
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsGrpPullbackRetraction
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
@@ -47,7 +47,7 @@ theorem exists_isConst_of_ksRel_zero :
     rw [← hcomp]
     exact hj.1.paste_horiz hφ.1
 
-  obtain ⟨d, hd⟩ := GlobalTheory.T.exists_global_derivation_of_kodairaSpencer_zero hL P₀ u Hm χ hU R _ A.left A.hom (j ≫ φ) hA.smooth hsq
+  obtain ⟨d, hd⟩ := _root_.GlobalTheory.exists_locDer_top_of_ksRel_zero hL P₀ u Hm χ hU R _ A.left A.hom (j ≫ φ) hA.smooth hsq
     (fun r => (xD r).snd) s (isDer_snd_of_ringHom xD) hKS
 
   obtain ⟨Y', ρ, π, hpb⟩ : ∃ (Y' : Scheme.{0}) (ρ : Y' ⟶ P₀.A.left) (π : Y' ⟶ Sp (DualNumber ℂ)),
@@ -62,7 +62,7 @@ theorem exists_isConst_of_ksRel_zero :
       P₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap xD := by
     rw [Category.assoc, hφ.1.w, ← Category.assoc, hj.1.w, Category.assoc]
   obtain ⟨Φ, hiΦ, hΦ⟩ :=
-    GlobalTheory.T.exists_hom_from_const_thickening_of_derivation P₀.A.left Y' P₀.A.hom π ρ i hpb hiρ hiπ R xD A.left A.hom (j ≫ φ) d hm hd
+    _root_.GlobalTheory.KS.DerMor.exists_mor P₀.A.left Y' P₀.A.hom π ρ i hpb hiρ hiπ R xD A.left A.hom (j ≫ φ) d hm hd
 
   obtain ⟨e, heφ, heπ⟩ := hφ.1.exists_lift Φ π hΦ
   have hie : i ≫ e = j := by
@@ -73,7 +73,7 @@ theorem exists_isConst_of_ksRel_zero :
   have hpb' := (GlobalTheory.T.const_thickening_complex_functions_structure P₀.A.left Y' P₀.A.hom π ρ i hpb hiρ hiπ).2.1
   have := P₀.isAb.smooth
   have hfl : Flat π := MorphismProperty.of_isPullback (P := @Flat) hpb inferInstance
-  have he : IsIso e := GlobalTheory.T.isIso_thickening_map_of_mod_eps P₀.A.left Y' A'.left P₀.A.hom π A'.hom i j e hpb' hj.1 hfl heπ hie
+  have he : IsIso e := _root_.GlobalTheory.ThickeningIso.isIso_of_mod_eps P₀.A.left Y' A'.left P₀.A.hom π A'.hom i j e hpb' hj.1 hfl heπ hie
 
   have hsq2 : IsPullback (inv e) A'.hom π (𝟙 _) :=
     IsPullback.of_horiz_isIso ⟨by rw [Category.comp_id, IsIso.inv_comp_eq, heπ]⟩

@@ -8,8 +8,6 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.G2
 
 variable {k : Type} [CommRing k] {ι : Type}
 
-def ev0 (b : List ι) : k := if b = [] then 1 else 0
-
 def ev1 (g : ι → k) : List ι → k
   | [y] => g y
   | _ => 0

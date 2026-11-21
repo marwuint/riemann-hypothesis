@@ -86,17 +86,4 @@ def StarMinors : Prop :=
 
 variable {u u' F0 what₂}
 
-theorem starFrame_of (hM : StarMinors u u' F0 what₂) : StarFrame u u' F0 what₂ := by
-  intro γ Z hC
-  obtain ⟨hZ, hZ₁, hx⟩ := hM γ Z hC
-  obtain ⟨h1, h2⟩ := star_frame_orthogonal γ
-  obtain ⟨F₂, hZh, hom, -⟩ := FsLA.frame_la F0 (starFrame γ) h1 h2 Z hZ hZ₁ hx
-  refine ⟨⟨F₂, F₂.z⟩, hZh, ?_, ?_⟩
-  · have e : starZh (frame (lf D F0)) (frame (⟨F₂, F₂.z⟩ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))) = Z := hZh
-    rw [e, FsLA.leadMinorE_full, FsLA.leadMinorE_full]
-    exact hx
-  · have e : starZh (frame (lf D F0)) (frame (⟨F₂, F₂.z⟩ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))) = Z := hZh
-    rw [FsLA.leadMinorE_full, FsLA.leadMinorE_full, e]
-    exact hom
-
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

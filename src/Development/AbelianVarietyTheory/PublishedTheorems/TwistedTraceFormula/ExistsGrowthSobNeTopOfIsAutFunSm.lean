@@ -22,14 +22,6 @@ def CuspDecaySobolev : Prop :=
         φ ∈ SmFun θ V → (∀ k, growthSob θ V k N φ ≠ ∞) → IsCuspFun V φ →
           decaySize V M φ ≤ C * growthSob θ V d N φ
 
-def UnitaryReduction : Prop :=
-  ∀ (D : D7) (V : HSp D),
-    (∃ A : ℕ, ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ →
-      IntegrableOn (fun g => (quotHeight V g ^ A)⁻¹) 𝓕 μ) ∧
-    ∀ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) →
-      ∃ S : Finset (GA D V), (∀ x ∈ S, x ∈ GfC V) ∧
-        ∀ g, ∃ γ ∈ GQ V, ∃ x ∈ S, ∃ a ∈ GinfC V, ∃ k ∈ U, k ∈ GfC V ∧ g = γ * x * a * k
-
 end GlobalTheory.Published
 
 namespace GlobalTheory.Size
@@ -50,7 +42,7 @@ theorem exists_finset_doubleCosets (V : HSp D) (U : Subgroup (GA D V)) (hU : IsO
       ∀ g, ∃ γ ∈ GQ V, ∃ x ∈ S, ∃ a ∈ GinfC V, ∃ k ∈ U, k ∈ GfC V ∧ g = γ * x * a * k := by
   classical
   obtain ⟨⟨θ, hθ⟩, -⟩ := GlobalTheory.Ker.exists_infFam_and_stdChar D
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   obtain ⟨S, _, _, hS⟩ := GlobalTheory.SmoothForms.reduction hθ R U hU
   choose p hp q hq e using R.2.2.2.2.2.2.1
   refine ⟨S.image p, fun x hx => ?_, fun g => ?_⟩
@@ -59,13 +51,6 @@ theorem exists_finset_doubleCosets (V : HSp D) (U : Subgroup (GA D V)) (hU : IsO
   · obtain ⟨γ, hγ, x, hx, a, ha, k, hk, hk', h, -⟩ := hS g
     refine ⟨γ⁻¹, inv_mem hγ, p x, Finset.mem_image_of_mem p hx, q x * a, mul_mem (hq x) ha, k, hk, hk', ?_⟩
     rw [mul_assoc γ⁻¹, mul_assoc γ⁻¹, ← mul_assoc (p x), ← e x, ← h, inv_mul_cancel_left]
-
-theorem _root_.GlobalTheory.Published.unitaryReduction_holds : GlobalTheory.Published.UnitaryReduction := fun _ V =>
-  ⟨⟨0, fun _ _ => integrableOn_inv_quotHeight_pow 0⟩, exists_finset_doubleCosets V⟩
-
-theorem exists_growthSob_ne_top_of_isAutFunSm (hθ : IsInfFam θ) (h : IsAutFunSm θ V φ) :
-    UnifModGrowth V θ φ ∧ ∃ N, ∀ d, growthSob θ V d N φ ≠ ∞ :=
-  ⟨unifModGrowth_of_isAutFunSm hθ h, exists_growthSob_ne_top h.smooth (unifModGrowth_of_isAutFunSm hθ h)⟩
 
 theorem growthSize_sum_le {T : (GA D V → ℂ) → GA D V → ℂ} (hT : LinOnSm θ V T) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     {f : ι → GA D V → ℂ} (hf : ∀ a, f a ∈ SmFun θ V) (N : ℕ) :

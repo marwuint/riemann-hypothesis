@@ -41,23 +41,6 @@ theorem slopes_family_of_column_values {eps : ℝ} (Fm : FamP eps) (hT : TuSize 
   have e1 : x ≥ x1 := le_trans (le_max_right _ _) hx
   exact ⟨by linarith [flipTwoThree.two_le_rdE (Fm.D x i).host], (hN x e0 i).1, (hN x e0 i).2, hCV x e1 i⟩
 
-theorem levelPrime_summary_of_fifth_without_span (D : D7) (L : SizeData₂ D) (C C1 : ℝ) (h2 : ∀ u, product_first_zeroth_parts.Conclusion2 D u)
-    (h5 : ∀ u, product_first_zeroth_parts.Conclusion5 D u C) (hNu : DV.NuDef D L) (hAtT : NuAtTDef D L) (hS : LevelPrimeSizeBounds D L C1)
-    (hSet : ∀ u, product_first_zeroth_parts.HidaSetting D u) (hC1 : 0 ≤ C1) : LocalQuadraticParts.adm26 L (4 * C1) :=
-  levelPrime_summary_of_fifth D L C C1 h2 h5 hNu hAtT (locSpan D) (lenAtT D L hAtT) hS hSet hC1
-
-theorem family_levelPrime_summary_simple {eps : ℝ} (Fm : FamP eps) (C C1 : ℝ) (hC1 : 0 ≤ C1)
-    (hE : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,
-      (∀ u, product_first_zeroth_parts.Conclusion2 (Fm.D x i) u) ∧ (∀ u, product_first_zeroth_parts.Conclusion5 (Fm.D x i) u C) ∧
-      LevelPrimeSizeBounds (Fm.D x i) (Fm.L x i) C1 ∧ ∀ u, product_first_zeroth_parts.HidaSetting (Fm.D x i) u) :
-    LocalQuadraticParts.LevelTFamily Fm := by
-  obtain ⟨x0, hE⟩ := hE
-  refine family_levelPrime_summary Fm C C1 hC1 ⟨max x0 (Fm.x1 + 1), fun x hx i => ?_⟩
-  have e0 : x ≥ x0 := le_trans (le_max_left _ _) hx
-  have e1 : Fm.x1 < x := lt_of_lt_of_le (by linarith) (le_trans (le_max_right _ _) hx)
-  obtain ⟨a, b, c, d⟩ := hE x e0 i
-  exact ⟨a, b, locSpan _, lenAtT _ _ (Fm.ex x e1 i).lat.atT, c, d⟩
-
 end Formalism.MainNotions.J
 
 end

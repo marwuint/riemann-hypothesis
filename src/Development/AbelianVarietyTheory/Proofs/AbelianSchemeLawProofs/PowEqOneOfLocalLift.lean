@@ -48,13 +48,4 @@ theorem mem_tors_of_weilIs {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S}
     obtain ⟨V, hV, ⟨θx, θy, -, hy⟩, -⟩ := h p
     exact ⟨V, hV, θy, hy⟩
 
-section Clauses
-
-variable {S : Scheme.{0}} (P : PolAV S) (k : ℕ) (T : Over S)
-
-end Clauses
-
-def unitSpecEquiv (K : Type) [CommRing K] : Kˣ ≃* Γ(Spec (CommRingCat.of K), ⊤)ˣ :=
-  Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.toMulEquiv
-
 end GlobalTheory.PairingLawsCompare

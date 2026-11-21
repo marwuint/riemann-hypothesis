@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSecti
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedF
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinearStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinear
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 
@@ -82,7 +82,7 @@ theorem last_lin (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (
   let n : Fin (e + 1) → Fin e ⊕ Bool → ℤ :=
     Fin.snoc (fun i => Pi.single (Sum.inl i) 1)
       (Pi.single (Sum.inr false) 1 + m • Pi.single (Sum.inr true) 1)
-  obtain ⟨hexp, hperm⟩ := GlobalTheory.T.log_integral_multilinear II hII K ι P (e + 1) (Fin e ⊕ Bool) ℓ n hP hℓ
+  obtain ⟨hexp, hperm⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.geo_multilin II hII K ι P (e + 1) (Fin e ⊕ Bool) ℓ n hP hℓ
   have h1 := hperm (fun k => combLine ℓ (n k)) (Fin.snoc L C) 1 (fun k => smooth_comb hℓ _)
     (smooth_snoc hL hC) (by
       intro k

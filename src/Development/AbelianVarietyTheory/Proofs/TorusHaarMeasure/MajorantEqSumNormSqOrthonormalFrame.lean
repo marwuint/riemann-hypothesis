@@ -10,19 +10,6 @@ namespace GlobalTheory.MajorantOrthFrame
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-lemma sum_castLE_eq {p r : ℕ} (h : p ≤ r) (f : Fin r → ℝ) :
-    ∑ a : Fin p, f (Fin.castLE h a) = ∑ a : Fin r, if (a : ℕ) < p then f a else 0 := by
-  rw [← Finset.sum_filter]
-  refine Finset.sum_bij (fun a _ => Fin.castLE h a) ?_ ?_ ?_ ?_
-  · intro a _
-    simp
-  · intro a _ b _ hab
-    exact Fin.castLE_injective h hab
-  · intro b hb
-    exact ⟨⟨b, by simpa using hb⟩, Finset.mem_univ _, rfl⟩
-  · intro a _
-    rfl
-
 open NumberField MeasureTheory Topology in
 open scoped ComplexOrder ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in

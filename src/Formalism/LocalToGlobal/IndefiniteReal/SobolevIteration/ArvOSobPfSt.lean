@@ -34,22 +34,6 @@ def IsHaarK {n : ℕ} (G s : Matrix (Fin n) (Fin n) ℂ) (μ : Measure (Fin n �
     (∀ k₀ ∈ KAt G s, μ.map (fun k => Matrix.of.symm (k₀ * Matrix.of k)) = μ) ∧
     ∀ U : Set (Fin n → Fin n → ℂ), IsOpen U → (∃ k ∈ U, Matrix.of k ∈ KAt G s) → 0 < μ U
 
-def SobRepM (D : D7) : Prop :=
-  ∀ {S : HSp D} {Ss : D.what₂.Tau → SPar} (M : DSModel S Ss) (τ : D.what₂.Tau),
-    CompleteSpace (M.H τ) ∧ IsGRep (gramAt D S τ) (M.rep τ)
-
-def SmoothLin : Prop :=
-  ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (G : Matrix (Fin n) (Fin n) ℂ)
-    (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsGRep G π →
-    SmoothVec (lieG G) π 0 ∧
-    ∀ (c : ℂ) (u v : H), SmoothVec (lieG G) π u → SmoothVec (lieG G) π v → SmoothVec (lieG G) π (c • u + v)
-
-def FoldLin : Prop :=
-  ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (G : Matrix (Fin n) (Fin n) ℂ)
-    (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsGRep G π →
-    ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, X ∈ lieG G) → ∀ (c : ℝ) (u v : H),
-      SmoothVec (lieG G) π u → SmoothVec (lieG G) π v → dL π l (c • u + v) = c • dL π l u + dL π l v
-
 def SobChart : Prop :=
   ∀ {n : ℕ} (G s : Matrix (Fin n) (Fin n) ℂ), IsCartanInv G s →
     ∃ (d : ℕ) (Y : Fin d → Matrix (Fin n) (Fin n) ℂ), (∀ i, Y i ∈ lieG G) ∧
@@ -69,12 +53,6 @@ def Cont1 : Prop :=
     ∀ w : H, SmoothVec (lieG G) π w → ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, X ∈ lieG G) →
       ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ g ∈ Formalism.QuantumDeterminants.UH G,
         (∀ i j, ‖g i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖ < δ) → ‖dL π l (π g w) - dL π l w‖ < ε
-
-def FoldEquiv : Prop :=
-  ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (G : Matrix (Fin n) (Fin n) ℂ)
-    (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsGRep G π →
-    ∀ g ∈ Formalism.QuantumDeterminants.UH G, ∀ w : H, SmoothVec (lieG G) π w → ∀ l : List (Matrix (Fin n) (Fin n) ℂ),
-      (∀ X ∈ l, X ∈ lieG G) → dL π l (π g w) = π g (dL π (l.map fun X => g⁻¹ * X * g) w)
 
 def FoldBddK : Prop :=
   ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (G s : Matrix (Fin n) (Fin n) ℂ)

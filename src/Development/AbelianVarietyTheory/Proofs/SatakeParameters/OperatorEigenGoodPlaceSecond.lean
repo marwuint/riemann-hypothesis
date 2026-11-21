@@ -10,9 +10,12 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMaxCompac
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteInertHeckeSupportCosetsStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertDoubleCosetOperatorEqInertHeckeOperator
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertDatumLocalMemUnitaryGroupAntidiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertDatumLocalStdLatticeStabilizerMemMaxCompactStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTrivOutsideInertDatumLocalEqStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertDatumLocalInjectiveOnTrivOutsideStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertDatumLocalStdLatticeStabilizerMemMaxCompact
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CommuteOfTrivOutside
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMaxCompactOfTrivOutsideLocalIntegral
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteInertHeckeSupportCosets
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTrivOutsideInertDatumLocalEq
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertDatumLocalInjectiveOnTrivOutside
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitPlaceIdempotentMulEqSelfOfSupported
 import Development.AbelianVarietyTheory.Definitions.Foundations.EqPlaceIdemOfIsPrimeIdem
 import Formalism.LocalToGlobal.IndefiniteReal.TopMult
@@ -260,7 +263,7 @@ theorem transport_succ {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTi
   have hp := rep_pull A.hF (A.PV j) (A.stdV j) hd hv
   obtain ⟨a, R₀, ha, hR₀, hs⟩ := hp
   have hq := GlobalTheory.InertDCOp.dcOp_eq_heckeFunI D.host.E D.R.nV v Pp Dv
-    (GlobalTheory.T.inertDatum_local_mem_unitaryGroup_antidiagonal _ _ v Pp Dv) (GlobalTheory.T.inertDatum_local_stdLatticeStabilizer_mem_maxCompact _ _ v Pp Dv) (GlobalTheory.T.exists_trivOutside_inertDatum_local_eq _ _ v Pp Dv) (GlobalTheory.T.inertDatum_local_injective_on_trivOutside _ _ v Pp Dv) a ha
+    (GlobalTheory.T.inertDatum_local_mem_unitaryGroup_antidiagonal _ _ v Pp Dv) (_root_.GlobalTheory.InertStdLat.loc_mem_KU _ _ v Pp Dv) (_root_.GlobalTheory.InertLift.exists_trivOutside_loc_eq _ _ v Pp Dv) (_root_.GlobalTheory.InertLocInj.loc_injective _ _ v Pp Dv) a ha
   obtain ⟨R₁, h0, hR₁, hh0, hsum⟩ := hq
   refine ⟨h0, hh0, fun f' y' c hy hfix hc => ?_⟩
   refine eigen_of_fin X j _ h hh Pp hG d y' c fun g hg => ?_
@@ -269,9 +272,5 @@ theorem transport_succ {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTi
     hR₀ hR₁ (fun l hl z => congrFun (hfix l hl.1 hl.2) z) c
     (fun z => (Finset.sum_apply z R₁ fun γ => NG.rt D.host.E D.R.nV γ ((M μ (j.1 + 1) k1 k2).real f')).symm.trans
       (congrFun ((hsum _ _ hfix).trans hc) z)) x
-
-theorem main : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i), ∀ h, GlobalTheory.Hk3.IsOpsV X.R j (X.tupT (D.nd.mu i)) h → ∀ Pp, GlobalTheory.Hk3.Good X.R (X.tupT (D.nd.mu i)) Pp → Formalism.UG.IsInertAt D.host.F D.host.E (Pp.under (𝓞 D.host.F)) Pp → ∀ d, GlobalTheory.Hk3.IsLab (Formalism.IndefR.Links.Vc D j) Pp d → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (Dv : InertDatum D.host.E D.R.nV v Pp), NG.OverPl Pp v → ∃ h0 : Formalism.UG.GU Dv.σw D.R.nV → ℂ, h0 ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw D.R.nV) ∧ ∀ (f' : D.what₂.Mt (D.nd.mu i) (j.1 + 1)) (y' : (X.R.HV j (X.tupT (D.nd.mu i))).H) (c : ℂ), X.R.extV j (X.tupT (D.nd.mu i)) y' = X.fn hμ j f' → (∀ κ ∈ Umax D.host.E D.R.nV, TrivOutside {v} κ → NG.rt D.host.E D.R.nV κ ((P.M.loc i).real (hj ▸ f')) = (P.M.loc i).real (hj ▸ f')) → heckeFunI D.host.E D.R.nV (Umax D.host.E D.R.nV) Dv h0 ((P.M.loc i).real (hj ▸ f')) = c • (P.M.loc i).real (hj ▸ f') → h Pp (Finsupp.single d 1) y' = c • y' := by
-  intro _ hL D P X A _ _ _ i hμ j hj h hh Pp hG _ d hd v Dv hv
-  exact transport_succ X A hμ j (D.nd.j i) hj _ _ h hh Pp hG d hd v Dv hv
 
 end GlobalTheory.InertTransport

@@ -9,7 +9,8 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHermExtend
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PProjSmoothAlong
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PHoloInjDerivInj
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PVertFactorPos
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChartStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChart
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsLocalOrbitChart
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -98,7 +99,7 @@ theorem bregWeight_ge_and_MUc_smooth : ∀ (K : Type) [Fintype K] (J : K → Typ
   have hδ' : ∀ᶠ t in 𝓝[>] (0 : ℝ), t < δ :=
     Filter.mem_of_superset (Ioo_mem_nhdsGT hδ) fun t ht => ht.2
   have hMU := GroundTheory.Heights₂.Heights.NineStatements.MUcSmooth.proof HermExtend.proof
-    (ProjSmoothAlong.proof HoloInjDerivInj.proof GlobalTheory.T.local_orbit_chart_statement_holds)
+    (ProjSmoothAlong.proof HoloInjDerivInj.proof _root_.GlobalTheory.CompanionTheory.Ar.Giv.localOrbitChart)
   filter_upwards [self_mem_nhdsWithin, hδ', S'.eventually_chartLevi hS] with t ht htδ hlev
   have ht' : 0 < t := ht
   have hε : 0 < S'.e1 t := lt_of_lt_of_le ht' (S'.e1_ge t ht')

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemLatOIffExi
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurLemmaThetaFunctionsOrientedPairStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryAdelicCharacterTrivialRatAndSplitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceHalfHeisenbergInvariantFormStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceHalfHeisenbergInvariantForm
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.WeilParts MeasureTheory IsDedekindDomain NumberField Matrix
 open scoped TensorProduct ComplexOrder
@@ -65,7 +65,7 @@ theorem scalar_split (H : IsWeilDatumO ψ S T χS χT om) (H' : IsWeilDatumO ψ 
   obtain ⟨y, hy⟩ := exists_isDetAt he.1 T h
   obtain ⟨r, hr, h1⟩ := H.om_split e he g h hg hh x y hx hy
   obtain ⟨r', hr', h2⟩ := H'.om_split e he g h hg hh x y hx hy
-  obtain ⟨ℓ, hℓ, f, hf, hne⟩ := GlobalTheory.T.exists_split_place_half_heisenberg_invariant_form D ψ H.std S T e he
+  obtain ⟨ℓ, hℓ, f, hf, hne⟩ := _root_.GlobalTheory.HalfCoinv.exists_invariant_form D ψ H.std S T e he
   have e1 := h1 ℓ hℓ f hf
   rw [hc f hf, map_smul, h2 ℓ hℓ f hf, smul_eq_mul] at e1
   have e2 : (c : ℂ) * r' = r := by

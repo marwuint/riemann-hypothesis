@@ -29,10 +29,6 @@ def ChartFracSeparable.Statement : Prop :=
     [IsScalarTower (Localization.AtPrime p) (ChartLoc I t e p) L],
     IsProjPrime I → IsChowForm I (e + 1) f → linForm t ∉ I → Algebra.IsSeparable K L
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

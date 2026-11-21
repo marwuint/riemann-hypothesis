@@ -25,8 +25,6 @@ structure FrS (I : LocId L p nV W Qq) {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N 
 def FrS.frQ {I : LocId L p nV W Qq} {N : ℕ} {Lb : Submodule (𝓞 E) (Fin N → E)} (B : FrS I Lb) (v : Fin nV) :
     GL (Fin N) Qq := bc (I.eQ v).symm.toRingHom (B.fr (I.pl v).1 (I.pl v).2)
 
-def LocId.frS (I : LocId L p nV W Qq) : FrS I L.Lb := ⟨I.fr, I.fr_lat⟩
-
 structure StepAt (I : LocId L p nV W Qq) (O : Type) [CommRing O] (N : ℕ) where
   J : Matrix (Fin N) (Fin N) E
   Lb : Submodule (𝓞 E) (Fin N → E)

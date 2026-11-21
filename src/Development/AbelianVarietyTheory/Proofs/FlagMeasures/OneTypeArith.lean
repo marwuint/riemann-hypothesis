@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SizeIntegralsAndCard
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TruncatedLeastLatticeSizeRightTranslateLowerBoun
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountHypPAtAddQAt
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralLeSumTypes
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NearTermsModeratePointsOneTypeBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NearTermsModeratePointsOneTypeBound
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ContDiff
@@ -95,7 +95,7 @@ theorem nearModerate : GlobalTheory.FlagMeas.FlagMeasureBound → GlobalTheory.F
       Real.exp (1 / 8 * ((B.I.n : ℝ) * B.I.f * Real.log B.I.n)) :=
     hY.1.trans_eq (by congr 1; ring)
 
-  have hA := GlobalTheory.T.nearTerms_moderate_points_one_type_bound hFM hNU hPB B Cg _ d p q b h8 hq hC
+  have hA := _root_.GlobalTheory.NearType.near_terms_one_type hFM hNU hPB B Cg _ d p q b h8 hq hC
   have hper : ∀ J ∈ Finset.Icc 1 q, ∀ c : Composition J,
       ∫⁻ x in {x | ∃ τ, HasType B.I x c.blocksFun τ} ∩ B.fund,
           {x | tauStar B q b ≤ least B.I x}.indicator (GlobalTheory.IndefiniteRowSideFullHecke.NearNonzeroTerms.nearAbs B d) x ∂(B.I.muA B.μf) ≤

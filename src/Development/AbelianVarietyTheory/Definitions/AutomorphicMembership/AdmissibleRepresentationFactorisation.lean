@@ -33,9 +33,6 @@ theorem stepLB_of_some (b : Bool) {st : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Let
   · next y hy => obtain rfl : y = x := Option.some.inj (hy.symm.trans h); rfl
   · next hy => exact absurd (hy.symm.trans h) (by simp)
 
-def rootLB (b : Bool) (τ : E →+* ℂ) (i : ℕ) : FinLB z.Z.X :=
-  if i < Dw.p then z.stepLB b (.inl (τ, i)) else (z.stepLB b (.inl (conjEmb τ, Dw.p + Dw.q - 1 - i))).dual
-
 variable (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
 
 section Step
@@ -47,23 +44,6 @@ def genId : GenIso z.Z (z.line false st x h).L (z.line true st x h).L :=
 
 theorem isGenId_genId : IsGenId (z.line false st x h) (z.line true st x h) (z.genId hp hW h) :=
   (exists_isGenId hp hW z.full (GenId.bdd_step hp st) _ _).choose_spec
-
-theorem log_norm_genId (y : z.Z.Pt) (a : Fin z.Z.m) (φ : Γ(z.Z.X, (z.Z.U a).1) →+* ↥y.C.S)
-    (hφ : spMap φ ≫ z.Z.chart a = y.gen) {i j} (hi : ⊤ ≤ y.z ⁻¹ᵁ (z.line false st x h).L.U i)
-    (hj : ⊤ ≤ y.z ⁻¹ᵁ (z.line true st x h).L.U j) :
-    Real.log ‖valF y.gen _ ((z.genId hp hW h).u i j).val‖ =
-      lnStep (Y z.Z.i).t (y.gen ≫ z.Z.π) ((z.Z.fr a).bc φ) p false st -
-        lnStep (Y z.Z.i).t (y.gen ≫ z.Z.π) ((z.Z.fr a).bc φ) p true st := by
-  have ha := Pull.le_of_fromSpec (z.Z.U a).2 hφ
-  have hi' : ⊤ ≤ y.gen ⁻¹ᵁ (z.line false st x h).L.U i := fun q _ => hi (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))
-  have hj' : ⊤ ≤ y.gen ⁻¹ᵁ (z.line true st x h).L.U j := fun q _ => hj (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))
-  have e := z.isGenId_genId hp hW h _ y.gen a i j fun q hq => ⟨ha hq, hi' hq, hj' hq⟩
-  have n := GenId.val_ne_zero _ ha hj'
-  have e' := congrArg (fun c => Real.log ‖c‖) e
-  rw [← e] at n
-  simp only [norm_mul] at e'
-  rw [Real.log_mul (norm_ne_zero_iff.2 (left_ne_zero_of_mul n)) (norm_ne_zero_iff.2 (right_ne_zero_of_mul n))] at e'
-  linarith [(z.line false st x h).norm y a i φ hφ hi, (z.line true st x h).norm y a j φ hφ hj]
 
 end Step
 
@@ -79,16 +59,8 @@ def dualPair : DV.FPair (ithOf hp hW z.Z d) r :=
 
 theorem pair_x_eq_LB_false (i : Fin r) : (z.stepPair hp hW d h).x i = z.stepLB false (st i) := (z.stepLB_of_some _ _).symm
 
-theorem pair_x_prime_eq_LB_true (i : Fin r) : (z.stepPair hp hW d h).x' i = z.stepLB true (st i) := (z.stepLB_of_some _ _).symm
-
 theorem dualPair_x_eq_dual_LB_false (i : Fin r) : (z.dualPair hp hW d h).x i = (z.stepLB false (st i)).dual :=
   congrArg FinLB.dual (z.stepLB_of_some _ _).symm
-
-theorem dualPair_x_prime_eq_dual_LB_true (i : Fin r) : (z.dualPair hp hW d h).x' i = (z.stepLB true (st i)).dual :=
-  congrArg FinLB.dual (z.stepLB_of_some _ _).symm
-
-theorem dualPair_Dv (i : Fin r) : (z.dualPair hp hW d h).Dv i = -vdiv hp hW d _ _ (z.genId hp hW (h i)) :=
-  vdiv_dual hp hW d _ _ _
 
 omit hp
 
@@ -164,57 +136,12 @@ def mdlOf : DV.Mdl D p N (DV.rkOf (DV.PsiOf D jc) N j) where
   dim_eq := rfl
   omW_dual := ⟨Fin.revPerm, fun _ => FinLB.firstChern_dual _⟩
 
-theorem mdlOf_lie (τ : DV.Emb D p) (i) : ((mdlOf z jc).lie τ).x i = z.stepLB false (.inl (jc.comp τ, i)) ∧
-    ((mdlOf z jc).lie τ).x' i = z.stepLB true (.inl (jc.comp τ, i)) :=
-  ⟨z.pair_x_eq_LB_false hp hW _ _ i, z.pair_x_prime_eq_LB_true hp hW _ _ i⟩
-
-theorem mdlOf_om (τ : DV.Emb D p) (i) :
-    ((mdlOf z jc).om τ).x i = (z.stepLB false (.inl (conjEmb (jc.comp τ), i.rev))).dual ∧
-    ((mdlOf z jc).om τ).x' i = (z.stepLB true (.inl (conjEmb (jc.comp τ), i.rev))).dual :=
-  ⟨z.dualPair_x_eq_dual_LB_false hp hW _ _ i, z.dualPair_x_prime_eq_dual_LB_true hp hW _ _ i⟩
-
-theorem mdlOf_lieW (k) : (mdlOf z jc).lieW.x k = z.stepLB false (.inr k) ∧
-    (mdlOf z jc).lieW.x' k = z.stepLB true (.inr k) :=
-  ⟨z.pair_x_eq_LB_false hp hW _ _ k, z.pair_x_prime_eq_LB_true hp hW _ _ k⟩
-
-theorem mdlOf_omW (k) : (mdlOf z jc).omW.x k = (z.stepLB false (.inr k.rev)).dual ∧
-    (mdlOf z jc).omW.x' k = (z.stepLB true (.inr k.rev)).dual :=
-  ⟨z.dualPair_x_eq_dual_LB_false hp hW _ _ k, z.dualPair_x_prime_eq_dual_LB_true hp hW _ _ k⟩
-
 theorem mdlOf_lie_Dv (τ : DV.Emb D p) (i) :
     ((mdlOf z jc).lie τ).Dv i = vdiv hp hW _ _ _ (z.genId hp hW (letterOf_lie S jc τ i)) := rfl
-
-theorem mdlOf_om_Dv (τ : DV.Emb D p) (i) :
-    ((mdlOf z jc).om τ).Dv i = -vdiv hp hW _ _ _ (z.genId hp hW (letterOf_om S jc τ i)) :=
-  z.dualPair_Dv hp hW _ _ i
-
-theorem mdlOf_omW_Dv (k) : (mdlOf z jc).omW.Dv k = -(mdlOf z jc).lieW.Dv k.rev := z.dualPair_Dv hp hW _ _ k
-
-def rootOf (x : Bool × DV.Rt D.what₂.Tau N) : (mdlOf z jc).Z.LB := z.rootLB x.1 (DV.tauEmb D x.2.1) x.2.2
 
 variable {jc} {t : D.what₂.Tau} {τ : DV.Emb D p} (ht : jc.comp τ = DV.tauEmb D t)
 
 include ht
-
-theorem rootOf_lie (i : Fin (DV.rkOf (DV.PsiOf D jc) N j τ)) (i' : Fin N) (h : (i' : ℕ) = i) :
-    rootOf z jc (false, (t, i')) = ((mdlOf z jc).lie τ).x i ∧ rootOf z jc (true, (t, i')) = ((mdlOf z jc).lie τ).x' i := by
-  have hi : (i' : ℕ) < S.Dw.p := by
-    have hr : DV.rkOf (DV.PsiOf D jc) N j τ = j := if_pos ⟨t, ht⟩
-    have := i.2
-    have := S.p_eq
-    omega
-  rw [(mdlOf_lie z jc τ i).1, (mdlOf_lie z jc τ i).2, ht, ← h]
-  exact ⟨if_pos hi, if_pos hi⟩
-
-theorem rootOf_om (i : Fin (N - DV.rkOf (DV.PsiOf D jc) N j τ)) (i' : Fin N) (h : (i' : ℕ) = j + i) :
-    rootOf z jc (false, (t, i')) = ((mdlOf z jc).om τ).x i ∧ rootOf z jc (true, (t, i')) = ((mdlOf z jc).om τ).x' i := by
-  have hr : DV.rkOf (DV.PsiOf D jc) N j τ = j := if_pos ⟨t, ht⟩
-  have h₁ := S.p_eq
-  have h₂ := S.rank_eq
-  have hi : ¬ (i' : ℕ) < S.Dw.p := by omega
-  have e : (i.rev : ℕ) = S.Dw.p + S.Dw.q - 1 - i' := by rw [Fin.val_rev]; omega
-  rw [(mdlOf_om z jc τ i).1, (mdlOf_om z jc τ i).2, ht, e]
-  exact ⟨if_neg hi, if_neg hi⟩
 
 end Mdl
 
@@ -245,45 +172,5 @@ def admissible_representation_factorisation (hA : AdmEx S κ) : AdmSt D N j jC w
 variable (hA : AdmEx S κ) (p : ℕ) [Fact p.Prime] (la : PlL D p)
 
 end PiLocalization₂
-
-section Examples
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-  {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
-  (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
-
-example (z : admitted Y i₀) {τ : E →+* ℂ} (hτ : τ (H.rt : E) ≠ H.rt0) (k : Fin (Dw.mult τ))
-    (h : letterOf Dw (.inl (τ, k)) = some ⟨τ, k⟩) (y : z.Z.Pt) (a : Fin z.Z.m) (φ : Γ(z.Z.X, (z.Z.U a).1) →+* ↥y.C.S)
-    (hφ : spMap φ ≫ z.Z.chart a = y.gen) {i j} (hi : ⊤ ≤ y.z ⁻¹ᵁ (z.line false _ _ h).L.U i)
-    (hj : ⊤ ≤ y.z ⁻¹ᵁ (z.line true _ _ h).L.U j) : 0 ≤ Real.log ‖valF y.gen _ ((z.genId hp hW h).u i j).val‖ := by
-  have g : y.gen ≫ z.Z.π = spMap (intO ↥y.C.S).subtype ≫ y.z ≫ z.Z.π := Category.assoc _ _ _
-  have F := Pull.frame_ind (Pull.chart_frame z.Z hφ) τ
-  rw [z.log_norm_genId hp hW h y a φ hφ hi hj]
-  simp only [lnStep, dif_pos k.2, hτ, and_false, if_false, sub_zero, sub_nonneg]
-  rw [g] at F ⊢
-  have pos (b) := GlobalTheory.GrNormPos.grNorm_pos HTBound.htBound E H _ _ p y.C b _ hp (Pull.ext_unique _ _) _ _ F.1 F.2 k
-  refine Real.log_le_log (pos true) (csInf_le_csInf ⟨0, ?_⟩ ?_ ?_)
-  · rintro r ⟨cf, -, -, -, rfl⟩
-    positivity
-  · exact Set.nonempty_iff_ne_empty.2 fun e => (pos false).ne' ((congrArg sInf e).trans Real.sInf_empty)
-  · rintro r ⟨cf, h₁, h₂, ⟨w, hw, hc⟩, rfl⟩
-    exact ⟨cf, h₁, h₂, ⟨w, latDR_subset_latHT E H _ _ _ p _ hw, hc⟩, rfl⟩
-
-example {Z : LocM.Mdl Y i₀} {b st x} (M : LineModel Z b st x) (u : GenIso Z M.L M.L) (h : IsGenId M M u) (d : ℕ) :
-    vdiv hp hW d _ _ u = 0 := by
-  have := isDiscreteValuationRing_V Z.i.c hp hW
-  have e : IsGenId M M (.ofGlobal (idIso _) (idIso_isGen M.L.isLB)) := fun k _ w a i j hw => by
-    have hw' : ⊤ ≤ w ⁻¹ᵁ ((nmodel Z).gen ⊓ (M.L.U i ⊓ M.L.U j)) := fun q hq => ⟨chart_le_gen hp hW a (hw hq).1, (hw hq).2⟩
-    rw [M.trans k w a i j hw]
-    exact congrArg (· * _) (FieldPtGlue.valF_restrict _ hw' _)
-  rw [h.unique hp hW e]
-  exact (congrArg NModel.toQ (NModel.GenIso.div_ofGlobal _ _ _ _)).trans (map_zero _)
-
-example {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} [Fact p.Prime] (z : AdmAt S κ hp hW)
-    (jc : DV.KW p →+* ℂ) (h : 0 < D.R.f * N) : (mdlOf z jc).Z.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1 ∧
-      (mdlOf z jc).omW.x ⟨0, h⟩ = (z.stepLB false (.inr (D.R.f * N - 1))).dual :=
-  ⟨rfl, (mdlOf_omW z jc _).1⟩
-
-end Examples
 
 end GlobalTheory.ShFam.Pad

@@ -6,7 +6,7 @@ import Formalism.MahlerMeasure.MahlerMeasureProofs.FreezeY
 import Formalism.MahlerMeasure.MahlerMeasureProofs.LevelDecomp
 import Formalism.MahlerMeasure.MahlerMeasureProofs.PhiInt
 import Formalism.MahlerMeasure.MahlerMeasureProofs.RemoveS
-import Formalism.MahlerMeasure.LevelConst
+import Formalism.MahlerMeasure.QuotientUpperBoundsOfPowerBounds
 
 namespace Formalism.GM.Top
 open Formalism.GM

@@ -165,11 +165,6 @@ theorem inner_def (x y : RealSpace h) :
     inner ℝ x y = ∑ σ, ((h.form σ).inner (realToFibre σ E (equivTensor h x))
       (realToFibre σ E (equivTensor h y))).re := rfl
 
-theorem norm_sq_eq (x : RealSpace h) :
-    ‖x‖ ^ 2 = ∑ σ, ((h.form σ).inner (realToFibre σ E (equivTensor h x))
-      (realToFibre σ E (equivTensor h x))).re := by
-  rw [← real_inner_self_eq_norm_sq, inner_def]
-
 def ofModule : E →+ RealSpace h := (TensorProduct.mk ℤ ℝ E 1).toAddMonoidHom
 
 def lattice : Submodule ℤ (RealSpace h) := LinearMap.range (ofModule h).toIntLinearMap
@@ -203,25 +198,9 @@ instance : IsZLattice ℝ (lattice h) where
     obtain ⟨n, b, hb⟩ := exists_basis_lattice_eq h
     rw [hb, Submodule.span_span_of_tower, b.span_eq]
 
-theorem ofModule_injective : Function.Injective (ofModule h) := by
-  have : Module.Finite ℤ E := finite_int K E
-  have : Module.Free ℤ E := free_int K E
-  set bZ := Module.finBasis ℤ E
-  intro e e' he
-  have h1 := congrArg (Algebra.TensorProduct.basis ℝ bZ).repr
-    (show (1 : ℝ) ⊗ₜ[ℤ] e = (1 : ℝ) ⊗ₜ[ℤ] e' from he)
-  simp only [Algebra.TensorProduct.basis_repr_tmul, one_smul] at h1
-  exact bZ.repr.injective
-    (Finsupp.mapRange_injective _ _ (algebraMap ℤ ℝ).injective_int h1)
-
 end RealSpace
 
 end General
-
-abbrev HermitianBundle.RealSpace (A : HermitianBundle K) : Type _ := Heights.RealSpace A.metric
-
-example : IsZLattice ℝ (RealSpace.lattice (HermitianMetric.standard GaussianField (Fin 2))) :=
-  inferInstance
 
 end
 

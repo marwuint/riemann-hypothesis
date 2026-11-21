@@ -33,9 +33,6 @@ def m2 (ψ : AddChar F Circle) : Measure (Fin 2 → F) := Measure.pi fun _ => se
 
 def sF (ψ : AddChar F Circle) (Ψ : (Fin 2 → F) → ℂ) (r : Fin 2 → F) : ℂ := ∫ r', Ψ r' * (ψ (dt r' r) : ℂ) ∂m2 ψ
 
-def triI (ν c : Fˣ →* ℂˣ) (s : ℂ) (φ₁ Ψ φ₃ : (Fin 2 → F) → ℂ) (p : (Fin 2 → F) × (Fin 2 → F) × (Fin 2 → F)) : ℂ :=
-  Ψ p.1 * (φ₁ p.2.1 * conj (φ₃ p.2.2) * Kr ν c s p.2.1 p.1 p.2.2)
-
 def Av (W W' : GL (Fin 2) F → ℂ) (c : Fˣ →* ℂˣ) (s : ℂ) (κ : GL (Fin 2) F) : ℂ :=
   ∫ a, W (dg2 a 1 * κ) * conj (W' (dg2 a 1 * κ)) * ((c a : ℂˣ) : ℂ) * mp a (s - 1) ∂multHaar F
 
@@ -90,7 +87,6 @@ def band : Set G2 := {g | 1 ≤ Dt g ∧ Dt g < 2}
 
 def inv2 (g : G2) : G2 := dg2 (GeneralLinearGroup.det g)⁻¹ (GeneralLinearGroup.det g)⁻¹ * g
 def sFA (Φ : (Fin 2 → 𝔸[ℚ]) → ℂ) (r : Fin 2 → 𝔸[ℚ]) : ℂ := Adele2.adelicFourier2 ℚ Φ ![r 1, -r 0]
-def lrow (z : Jd) (κ : G2) : Fin 2 → 𝔸[ℚ] := ![0, (z : 𝔸[ℚ])] ᵥ* (κ : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])
 abbrev KA : Type := (maxCompact : Subgroup G2)
 def pt (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) : G2 := uni2 x * dg2 a 1 * dg2 z z * κ
 def LInv {X : Type} (H : G2 → X) : Prop := ∀ γ g, H (dia2 γ * g) = H g
@@ -130,12 +126,6 @@ structure Par (H P : G2 → ℂ) : Prop where
 
 def Zg (μ : Measure G2) (𝓕 : Set G2) (H : G2 → ℂ) (c : HeckeCharacter ℚ) (Φ : (Fin 2 → 𝔸[ℚ]) → ℂ) (s : ℂ) : ℂ :=
   ∫ g in 𝓕, H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s * th Φ g ∂μ
-
-def Ag (P : G2 → ℂ) (c : HeckeCharacter ℚ) (s : ℂ) (κ : G2) : ℂ :=
-  ∫ a, P (dg2 a 1 * κ) * (c.toIdele a : ℂ) * modPow a (s - 1) ∂ideleMeasure ℚ
-
-def Jg (mK : Measure KA) (P : G2 → ℂ) (c : HeckeCharacter ℚ) (Φ : (Fin 2 → 𝔸[ℚ]) → ℂ) (s : ℂ) : ℂ :=
-  ∫ κ, godementSection c c⁻¹ s Φ κ.1 * Ag P c s κ.1 ∂mK
 
 def Wh (φ : G2 → ℂ) (g : G2) : ℂ :=
   ∫ x in fundamentalSet ℚ, φ (uni2 x * g) * (adelicChar ℚ (-x) : ℂ) ∂adeleMeasure ℚ

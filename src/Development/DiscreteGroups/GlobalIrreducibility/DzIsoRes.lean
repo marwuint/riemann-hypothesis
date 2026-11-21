@@ -46,29 +46,4 @@ theorem ker_redO : RingHom.ker (redO i hi) = IsLocalRing.maximalIdeal 𝒪[w.adi
   rw [← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def,
     coe_toInt, ← valuation_lt_iff i hi, RingEquiv.apply_symm_apply]
 
-theorem resCard_eq : resCard (w.adicCompletion E) = g := by
-  have e : (𝒪[w.adicCompletion E] ⧸ IsLocalRing.maximalIdeal 𝒪[w.adicCompletion E]) ≃+* ZMod g :=
-    (Ideal.quotEquivOfEq (ker_redO i hi).symm).trans (RingHom.quotientKerEquivOfSurjective (redO_surjective i hi))
-  show Nat.card (𝒪[w.adicCompletion E] ⧸ IsLocalRing.maximalIdeal 𝒪[w.adicCompletion E]) = g
-  rw [Nat.card_congr e.toEquiv, Nat.card_zmod]
-
-theorem valuation_i_eq_uniformizer : valuation (w.adicCompletion E) (i (g : ℚ_[g])) = uniformizer (w.adicCompletion E) := by
-  apply le_antisymm
-  · rw [le_uniformizer_iff]
-    exact (valuation_lt_iff i hi _).2 Padic.norm_p_lt_one
-  · obtain ⟨y, hy⟩ := valuation_surjective (K := w.adicCompletion E) (uniformizer (w.adicCompletion E))
-    have hx : ‖i.symm y‖ < 1 :=
-      (valuation_lt_iff i hi _).1 (by rw [RingEquiv.apply_symm_apply, hy]; exact uniformizer_lt_one)
-    obtain ⟨x', hx'⟩ : ∃ x' : ℤ_[g], (x' : ℚ_[g]) = i.symm y := ⟨⟨i.symm y, hx.le⟩, rfl⟩
-    obtain ⟨c, hc⟩ := (PadicInt.norm_lt_one_iff_dvd x').1 (by rw [PadicInt.norm_def, hx']; exact hx)
-    have e := congrArg (fun z : ℤ_[g] => (z : ℚ_[g])) hc
-    simp only [PadicInt.coe_mul, PadicInt.coe_natCast, hx'] at e
-    have e2 : y = i (g : ℚ_[g]) * i (c : ℚ_[g]) := by
-      rw [← map_mul, ← e, RingEquiv.apply_symm_apply]
-    rw [← hy, e2, map_mul]
-    exact mul_le_of_le_one_right' ((valuation_le_iff i hi _).2 c.2)
-
-theorem valuation_natCast_eq_uniformizer : valuation (w.adicCompletion E) (g : w.adicCompletion E) = uniformizer (w.adicCompletion E) := by
-  rw [← map_natCast i g, valuation_i_eq_uniformizer i hi]
-
 end DiscreteGroups.sglob.DzIso

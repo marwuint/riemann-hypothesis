@@ -17,34 +17,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
-variable (D) in
-
-def OverK (σ : D.what₂.LL →+* ℂ) : Prop :=
-  ∀ a : D.host.K, σ (D.embE (algebraMap D.host.K D.host.E a)) = D.what₂.embLL (D.embE (algebraMap D.host.K D.host.E a))
-
-example : OverK D D.what₂.embLL := fun _ => rfl
-
-def LabPerm (σ : D.what₂.LL →+* ℂ) : Prop :=
-  Function.Bijective (lab (D := D) σ) ∧ ∀ ρ, labE σ (lab σ ρ) = tauE D ρ
-
-variable (D) in
-
-def hookSum (i : Fin D.R.m) (l : D.what₂.Tau → D.what₂.Tau) : ℝ :=
-  ∑ ρ, (Formalism.BasicNotions.DV.logHook ((Wc D i).sig (tauE D ρ)).1 (fun n => (aPl D i ((Wc D i).sig (tauE D ρ)).1 (l ρ) n : ℝ)) +
-    Formalism.BasicNotions.DV.logHook ((Wc D i).sig (tauE D ρ)).2
-      (fun n => (aMi D i ((Wc D i).sig (tauE D ρ)).1 ((Wc D i).sig (tauE D ρ)).2 (l ρ) n : ℝ)))
-
 def deltaAtEmb (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : PolF D (Wc D i).rank (Vc D i).rank :=
   delta (fun ρ => ((Wc D i).sig (tauE D ρ)).1) (fun ρ => ((Wc D i).sig (tauE D ρ)).2)
     (fun ρ => aPl D i ((Wc D i).sig (tauE D ρ)).1 (lab σ ρ))
     (fun ρ => aMi D i ((Wc D i).sig (tauE D ρ)).1 ((Wc D i).sig (tauE D ρ)).2 (lab σ ρ))
-
-def IsCompUnit (V : HSp D) (J : Subgroup (GA D V)) (u : GA D V → ℂ) : Prop :=
-  (∀ g, ‖u g‖ = 1) ∧ (∀ γ ∈ GQ V, ∀ g, u (γ * g) = u g) ∧ (∀ k ∈ GinfC V, ∀ g, u (g * k) = u g) ∧
-    ∀ k ∈ J, ∀ g, u (g * k) = u g
-
-example (V : HSp D) (J : Subgroup (GA D V)) : IsCompUnit V J fun _ => 1 :=
-  ⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
 section Conj
 
@@ -64,8 +40,6 @@ def ResAt (χ' : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (kP PP)ˣ →* ℂˣ) : 
 
 def datV (χ' : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (kP PP)ˣ →* ℂˣ) : Formalism.L2.DIV.LevDat D.host.E ℂ (Vc D i).rank :=
   datY _ D.R.r D.R.t 1 (r_le_V i) R.Pg (R.Q A.μ0) (LevelP.triv _ _ _) (fun _ => χ') (R.xiR A.μ0) Frm.A
-
-example : datV R i (R.chi ((i : ℕ) + 1)) = R.datVt i A.μ0 := rfl
 
 def valAt (x : A.fam.amb.FL i A.μ0) (c : (A.MtCSD i A.μ0).Cl) : (A.MtCSD i A.μ0).V :=
   ((show (A.MtCSD i A.μ0).Forms from x) : (A.MtCSD i A.μ0).Cl → (A.MtCSD i A.μ0).V) c
@@ -152,72 +126,6 @@ structure Is : Prop where
 
 end ConjLift
 
-structure IsCentralTr (z : G) : Prop where
-  center : z ∈ Subgroup.center G
-  lift : ∃ (k : GA D (Wc D i)) (e : AE D), IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG z) k ∧
-    k ∈ Subgroup.center (GA D (Wc D i)) ∧ IsIdemSum e R.Pg ∧ SuppAt e (Wc D i) k ∧
-    ∀ x v g, (R.HW i σ).e (R.gW i σ z x) v g = (R.HW i σ).e x v (g * k)
-  unitary : ∀ x y, inner ℂ (R.gW i σ z x) (R.gW i σ z y) = inner ℂ x y
-  comm_fin : ∀ g x, R.gW i σ z (R.gW i σ g x) = R.gW i σ g (R.gW i σ z x)
-  comm_hecke : ∀ S : Finset (GA D (Wc D i)), (∀ γ ∈ S, γ ∈ GfC (Wc D i)) → ∀ x y,
-    (R.HW i σ).e y = heckeOn (R.MW i σ) S ((R.HW i σ).e x) →
-      (R.HW i σ).e (R.gW i σ z y) = heckeOn (R.MW i σ) S ((R.HW i σ).e (R.gW i σ z x))
-
-def IsRatLift (ph : ℂ) (th : A.fam.amb.FL i A.μ0 →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)) : Prop :=
-  ∀ x, (R.FW i).j (sg0 D A) (th x) = ph • R.thG i A.μ0 (R.jV i A.μ0 x)
-
-variable {R i σ} in
-
-def ConjLift.Ident (Y : ConjLift R i σ) (th : A.fam.amb.FL i A.μ0 →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)) : Prop :=
-  ∃ (κ : ℂ) (z : G) (u : GA D (Wc D i) → ℂ), ‖κ‖ = 1 ∧ IsCentralTr R i σ z ∧
-    IsCompUnit (Wc D i) (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) u ∧
-    ∀ x v g, u g * (R.HW i σ).e ((R.FW i).j σ (th x)) v g = κ * (R.HW i σ).e (R.gW i σ z (Y.thG (Y.jV x))) v g
-
-def GalAt (th : A.fam.amb.FL i A.μ0 →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)) : Prop :=
-  LabPerm (D := D) σ ∧ hookSum D i (lab σ) = hookSum D i id ∧
-    (∃ Y : ConjLift R i σ, Y.Is) ∧ ∀ Y : ConjLift R i σ, Y.Is → Y.Ident th
-
 end Conj
-
-def GalD (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)
-    (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
-    (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) : Prop :=
-  R.Char F → ∀ t : FWTie T R κ v₀,
-    (∀ (i : Fin D.R.m) (ph : ℂ), OMPins T R κ v₀ O i →
-      (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) (T.cE ((i : ℕ) + 1) (O i).s0) ph →
-        (∃ th, IsRatLift R i ph th) ∧ ∀ th, IsRatLift R i ph th → ∀ σ, OverK D σ → GalAt R i σ th) ∧
-    (∀ σ, OverK D σ ∨ OverK D ((starRingEnd ℂ).comp σ)) ∧
-    (BarTie t → JConj R)
-
-section Base
-
-variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
-
-def castSL {K X Z : Type} [Field K] [AddCommGroup X] [Module K X] [AddCommGroup Z] [Module ℂ Z] {s s' : K →+* ℂ} (h : s = s')
-    (f : X →ₛₗ[s] Z) : X →ₛₗ[s'] Z where
-  toFun := f
-  map_add' := f.map_add
-  map_smul' a x := by rw [← h]; exact f.map_smulₛₗ a x
-
-include R in
-theorem sign_at_base_place_eq_embedding : D.what₂.embLL = sg0 D A := (sgAt_mk _ R.hv0).symm
-
-def base : ConjLift R i (sg0 D A) where
-  mu := R.toLevCh.mu A.μ0 ((i : ℕ) + 1)
-  eta := R.eta
-  chi := R.chi ((i : ℕ) + 1)
-  cV := R.cV i
-  coef := castSL (sign_at_base_place_eq_embedding R) (R.B.L i A.μ0).pres.coef
-  HV := R.HV i A.μ0
-  jV := castSL (sign_at_base_place_eq_embedding R) (R.jV i A.μ0)
-  om := R.ωP i A.μ0
-  BW := onb (R.MW i (sg0 D A))
-  vac := R.vacP i
-  vec := R.vP i A.μ0
-  io := R.ioP i
-  thF := R.thF i A.μ0
-  thG := R.thG i A.μ0
-
-end Base
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ConjugateLiftSL

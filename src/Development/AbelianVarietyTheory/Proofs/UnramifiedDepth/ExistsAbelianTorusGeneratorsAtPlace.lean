@@ -10,13 +10,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.B
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIsQProjOver
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenspaceDimAddSplitExactTransposeStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EmbeddingsLiftIntegersIdempotentsConjugationStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenbasisRestrictionSurjectiveEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TateModuleEigenspaceDimEqLieAlgebraSumStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenspaceDimAddSplitExactTranspose
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EmbeddingsLiftIntegersIdempotentsConjugation
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenbasisRestrictionSurjectiveEquivariant
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TateModuleEigenspaceDimEqLieAlgebraSum
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PadicPlaceBasisOfIdempotentStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFreeGeneratorsStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PadicIntAlgebraOfIsAdicCompleteMatrixUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFreeGenerators
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PadicIntAlgebraOfIsAdicCompleteMatrixUnique
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2 GlobalTheory.ChF
@@ -115,7 +115,7 @@ private theorem wfd (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C
     ∃ (h : ℕ) (y : Fin h → κ → ℤ_[p]),
       Submodule.span ℤ_[p] (Set.range fun q : Fin w.n × Fin h => ρ (b q.1 : ℤ_[p] ⊗[ℤ] OE) *ᵥ y q.2) = LinearMap.range (Matrix.mulVecLin (ρ w.e)) ∧
       ∀ τ ∈ Emb (O := O) w.e, eigDim C (fun a : OE => (ρ (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)) ((algebraMap O C).comp τ) = h := by
-  obtain ⟨h, y, h1, h2⟩ := GlobalTheory.T.exists_linearIndependent_spanning_range_mulVec p OE ⟨w.e, w.idem, w.ne_zero, w.prim⟩ b κ ρ
+  obtain ⟨h, y, h1, h2⟩ := _root_.GlobalTheory.LocalFactorFree.exists_free_generators p OE ⟨w.e, w.idem, w.ne_zero, w.prim⟩ b κ ρ
   exact ⟨h, y, h2, GlobalTheory.T.padic_place_basis_of_idempotent p C v O hv OE ⟨w.e, w.idem, w.ne_zero, w.prim⟩ b κ ρ h y h1 h2⟩
 
 private theorem mulVec_comb {O I J K : Type} [CommRing O] [Fintype I] [Fintype J] (M : Matrix K J O)
@@ -196,8 +196,8 @@ private theorem core {R O Λ I J Y : Type} [CommRing R] [CommRing O] [Algebra R 
 theorem exists_generators : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (cp : O), HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp → ∀ (g : ℕ) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (d r m : ℕ) (A : Matrix (Fin d) (Fin r) O) (B : Matrix (Fin g) (Fin d) O) (ρG : OE →+* Matrix (Fin d) (Fin d) O) (N : OE →+* Matrix (Fin r) (Fin r) ℤ) (s : Fin m → Fin d → O), LinDat H A B ρG N s → ∀ (w : Place p OE) (t : Fin w.n ≃ Emb (O := O) w.e) (α : ℤ_[p] ⊗[ℤ] OE) (b : Module.Basis (Fin w.n) ℤ_[p] w.Ow), (∀ k, (b k : ℤ_[p] ⊗[ℤ] OE) = w.e * α ^ (k : ℕ)) → ∀ (rp rm : ℕ) (W : Fin w.n → Fin rp → Fin d → O), (∀ j, EigB ρG ((t j : Emb (O := O) w.e) : OE →+* O) (W j)) → (∀ τ ∈ Emb (O := O) w.bar, eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp τ) ≤ rm) → ∃ (h : ℕ) (ψ : Fin h → Fin d → O), h ≤ rp + rm ∧ (∀ l j, Pdiv.ChartF.res (W j) (ψ l) ∈ Submodule.span O (Set.range fun k => Pdiv.ChartF.res (W j) (s k))) ∧ ∃ f : htCoker H w.e w.bar →ₗ[O] ((LinearMap.range (LinearMap.pi fun y : Fin w.n × Fin rp => (LinearMap.proj y.2).comp (Pdiv.ChartF.res (W y.1))) : Submodule O (Fin w.n × Fin rp → O)) ⧸ (Submodule.span O (Set.range fun q : Fin w.n × Fin h => fun y : Fin w.n × Fin rp => tauExt ((t y.1 : Emb (O := O) w.e) : OE →+* O) α ^ (q.1 : ℕ) * Pdiv.ChartF.res (W y.1) (ψ q.2) y.2)).comap (Submodule.subtype _)), Function.Surjective f := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hU g H d r m A B ρG N s hL w t α b hb rp rm W hW hrm
   classical
-  obtain ⟨-, -, hstar⟩ := GlobalTheory.T.embeddings_lift_integers_idempotents_conjugation p C v O hv OE
-  have hzp := (GlobalTheory.T.padicInt_algebra_of_isAdicComplete_matrix_unique p O).2
+  obtain ⟨-, -, hstar⟩ := _root_.GlobalTheory.ChF.embeddings_idempotents_conjugation p C v O hv OE
+  have hzp := (_root_.GlobalTheory.ChF.padicInt_algebra_of_isAdicComplete_and_matrix_unique p O).2
   have hbar : ∀ τ : OE →+* O, w.bar = sigE p OE w.e := fun τ => (hstar τ w.e).2
 
   let NZ : OE →+* Matrix (Fin r) (Fin r) ℤ_[p] := ((Int.castRingHom ℤ_[p]).mapMatrix).comp N
@@ -279,9 +279,9 @@ theorem exists_generators : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [I
     have hτe : τ ∈ Emb (O := O) w.e := (t j₀).2
     have e1 := hyd τ hτe
     have e2 := hzd τ hτe
-    have e3 := (GlobalTheory.T.eigenbasis_restriction_surjective_equivariant C v O hv OE d rp ρG τ (W j₀) (hW j₀)).2.2
-    have e4 := (GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C O OE d r g A B hL.exact ρG NO LB hL.eqB hL.eqA ((algebraMap O C).comp τ)).1
-    have e5 := (GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C O OE r r 0 1 0 (splitEx_one r) NO NO
+    have e3 := (_root_.GlobalTheory.ChF.eigB_res_surjective C v O hv OE d rp ρG τ (W j₀) (hW j₀)).2.2
+    have e4 := (_root_.GlobalTheory.EigAdd.eigDim_add_transpose C O OE d r g A B hL.exact ρG NO LB hL.eqB hL.eqA ((algebraMap O C).comp τ)).1
+    have e5 := (_root_.GlobalTheory.EigAdd.eigDim_add_transpose C O OE r r 0 1 0 (splitEx_one r) NO NO
       ⟨⟨⟨fun _ => 1, rfl⟩, fun _ _ => Subsingleton.elim _ _⟩, Subsingleton.elim _ _, fun _ _ => Subsingleton.elim _ _⟩
       (fun a => Subsingleton.elim _ _) (fun a => by simp) ((algebraMap O C).comp τ)).2
     have e2' : (fun a : OE => (extM p (trR NZ) (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)) = fun a => (NO a)ᵀ := by
@@ -292,7 +292,7 @@ theorem exists_generators : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [I
         fun a => (fun a : OE => (H.ρ (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)) (star a) := by
       funext a
       rfl
-    rw [e1', eigDim_star C (fun a : OE => (H.ρ (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)), GlobalTheory.T.tateModule_eigenspace_dim_eq_lieAlgebra_sum p C v O hv OE cp hU g H] at e1
+    rw [e1', eigDim_star C (fun a : OE => (H.ρ (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)), _root_.GlobalTheory.ChF.eigDim_tate p C v O hv OE cp hU g H] at e1
     have e6 : (((algebraMap O C).comp τ).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom).comp
         ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom = (algebraMap O C).comp τ := by
       ext a; simp

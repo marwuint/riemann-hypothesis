@@ -27,15 +27,15 @@ theorem exists_rebase_splitting_datum : _root_.GlobalTheory.FunPr.ThetaLocalInpu
     rw [incM_map_piInf']; exact hC w
   have fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C := ⟨one_mul _, hA1, hC1⟩
   have fr' : Framed B.emb (incM F W.J) (incM F X.J) Complex.I 1 C A := ⟨mul_one _, hC1, hA1⟩
-  have hvl := GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives GlobalTheory.T.archHeisenbergDerivatives_exist
-  obtain ⟨Φ, hΦ⟩ := GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hB.cm hB.std fr
-  have hr := GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws actsLaws GlobalTheory.T.archHeisenbergDerivatives_exist hvl F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hB.cm hB.std fr hAθ hCθ hΦ
+  have hvl := GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives _root_.GlobalTheory.HeisDer.derEx
+  obtain ⟨Φ, hΦ⟩ := _root_.GlobalTheory.FockMapEx.fockEx_of_derEx _root_.GlobalTheory.HeisDer.derEx F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hB.cm hB.std fr
+  have hr := GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws actsLaws _root_.GlobalTheory.HeisDer.derEx hvl F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hB.cm hB.std fr hAθ hCθ hΦ
   have hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om := hWeil
   obtain ⟨d', hdd, hB1'⟩ := hwp.2.1
   have hΦ' := fockMap_swap hΦ hdd
-  obtain ⟨c, hact⟩ := _root_.GlobalTheory.T.weil_lie_algebra_scalar_action hKP GlobalTheory.T.archHeisenbergDerivatives_exist hvl F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ d' Complex.I 1 C A _
+  obtain ⟨c, hact⟩ := _root_.GlobalTheory.T.weil_lie_algebra_scalar_action hKP _root_.GlobalTheory.HeisDer.derEx hvl F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ d' Complex.I 1 C A _
     (om.comp (MonoidHom.inl _ _)) hB.cm hB.std fr' hΦ' hB1'.1
-  obtain ⟨Y, -, hY⟩ := GlobalTheory.T.oneParamSubgroup_generators_exist F E σ (Fin n) r s B.emb (incM F X.J) 1 A hB.cm hA1 γ hγ
+  obtain ⟨Y, -, hY⟩ := _root_.GlobalTheory.RealLiftGen.genEx F E σ (Fin n) r s B.emb (incM F X.J) 1 A hB.cm hA1 γ hγ
   rw [← hr] at hf
   obtain ⟨T, rfl⟩ := hf
   have hT : Φ T = (Φ ∘ₗ (swapT (InfinitePlace F) r s r' s').toLinearMap) ((swapT (InfinitePlace F) r s r' s').symm T) := by

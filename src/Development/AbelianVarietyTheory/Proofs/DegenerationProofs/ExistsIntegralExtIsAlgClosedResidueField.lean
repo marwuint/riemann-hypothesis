@@ -52,11 +52,6 @@ theorem Unram.irreducible {π : W} {R : Subalgebra W Ω} (h : Unram π R)
   conv_rhs => rw [hab]
   ring
 
-theorem Unram.dvr {π : W} {R : Subalgebra W Ω} (h : Unram π R)
-    (h0 : algebraMap W Ω π ≠ 0) : IsDiscreteValuationRing R :=
-  IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization
-    ⟨_, h.irreducible h0, fun {x} hx => h.factor x hx⟩
-
 open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 private lemma exists_maximal_unram_subalgebra (π : W) (h0 : _root_.GlobalTheory.ClosedResidueExt.Unram π (⊥ : Subalgebra W Ω)) :

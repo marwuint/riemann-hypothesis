@@ -1,5 +1,6 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.Inhabitants
+import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.IntToFracInjective
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Vertical
@@ -80,12 +81,6 @@ def NormFormDvd.Statement : Prop :=
     (n : ℕ) (x : Fin n → A) (p : MvPolynomial (Fin n) R),
       (∑ j, X j * C (x j) : MvPolynomial (Fin n) A) ∣ p.map (algebraMap R A) →
         normForm A x ∣ p ^ Module.finrank R A
-
-section Inhabitants
-
-def complexGens : Fin 2 → ℂ := ![1, Complex.I]
-
-end Inhabitants
 
 end
 

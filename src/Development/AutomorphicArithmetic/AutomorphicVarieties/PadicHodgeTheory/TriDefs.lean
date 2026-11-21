@@ -137,11 +137,6 @@ theorem cont_char_div [IsTopologicalGroup G] {a b : G →* Bˣ} (ha : Continuous
 theorem contAction_chRep {a : G →* Bˣ} (ha : Continuous fun g => (a g : B)) : ContAction (chRep a) :=
   (ha.comp continuous_fst).mul continuous_snd
 
-theorem contAction_twist {V : Type} [AddCommGroup V] [Module B V] [TopologicalSpace V] [ContinuousSMul B V]
-    {a : G →* Bˣ} (ha : Continuous fun g => (a g : B)) {ρ : Representation B G V} (hρ : ContAction ρ) :
-    ContAction (twist a ρ) :=
-  (ha.comp continuous_fst).smul hρ
-
 theorem contAction_charExtension_of_continuous_cocycle {a b : G →* Bˣ} (ha : Continuous fun g => (a g : B)) (hb : Continuous fun g => (b g : B))
     {x : G → B} (hx : ∀ g h, x (g * h) = x g + ((a / b) g : Bˣ) * x h) (hc : Continuous x) :
     ContAction (ext2 a b x hx) := by

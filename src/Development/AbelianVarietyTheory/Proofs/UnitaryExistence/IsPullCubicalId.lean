@@ -74,36 +74,6 @@ def sabMapId {S : Scheme.{0}} (t : SAB H S) : SABMap t t (𝟙 S) where
   act := fun _ => (Category.comp_id _).trans (Category.id_comp _).symm
   lin := isPullCubical_id t.G t.cub
 
-theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
-
-theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
-  congrArg CommRingCat.Hom.hom (Spec.map_injective h)
-
-theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (x : Sp B ⟶ Sp A) : ∃ f : A →+* B, x = spMap f :=
-  ⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩
-
 variable {D : Datum H} {l : Level H} {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B} {b' : Base l B'}
-
-def up (j : B →+* B') (hρ : j b.ρ = b'.ρ) (hζ : j b.ζ = b'.ζ) {S : Scheme.{0}} {s' : S ⟶ Sp B'}
-    (o : Obj D l b (s' ≫ spMap j)) : Obj D l b' s' :=
-  { t := o.t, proper := o.proper, ample := o.ample, ktriv := o.ktriv
-    eta := o.eta, eta_add := o.eta_add, eta_ker := o.eta_ker
-    etaA := o.etaA, etaA_add := o.etaA_add, etaA_ker := o.etaA_ker
-    geom := fun k _ _ x β hx => by
-      have h := o.geom k x (β.comp j) (by rw [← Category.assoc, hx, spMap_comp'])
-      rwa [RingHom.comp_apply, RingHom.comp_apply, hρ, hζ] at h }
-
-def down (j : B →+* B') (hρ : j b.ρ = b'.ρ) (hζ : j b.ζ = b'.ζ) {S : Scheme.{0}} {s' : S ⟶ Sp B'}
-    (o : Obj D l b' s') : Obj D l b (s' ≫ spMap j) :=
-  { t := o.t, proper := o.proper, ample := o.ample, ktriv := o.ktriv
-    eta := o.eta, eta_add := o.eta_add, eta_ker := o.eta_ker
-    etaA := o.etaA, etaA_add := o.etaA_add, etaA_ker := o.etaA_ker
-    geom := fun k _ _ x β hx => by
-      obtain ⟨β', hβ'⟩ := exists_spMap (x ≫ s')
-      obtain rfl : β'.comp j = β := spMap_inj (by rw [spMap_comp', ← hβ', Category.assoc, hx])
-      have h := o.geom k x β' hβ'
-      rwa [RingHom.comp_apply, RingHom.comp_apply, hρ, hζ] }
 
 end GlobalTheory.ObjRebase

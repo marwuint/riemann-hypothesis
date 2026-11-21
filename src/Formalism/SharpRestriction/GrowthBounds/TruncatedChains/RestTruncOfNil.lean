@@ -87,27 +87,6 @@ theorem pf_sub (E : GLOps n K V) (a b : Fin n) (c T : ℕ) (x : V) :
 
 end Gen
 
-def RestTrunc : Prop :=
-  ∀ (K V : Type) [Field K] [CharZero K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] (n : ℕ)
-    (E : GLOps n K V), IsGLRep E → ∀ a b : Fin n, a ≠ b → ∀ c T T' : ℕ, Module.finrank K V ≤ T →
-      Module.finrank K V ≤ T' → pf E a b c T = pf E a b c T'
-
-theorem restTrunc_of_nil (hN : RestNil) : RestTrunc := by
-  unfold RestTrunc
-  unfold RestNil at hN
-  intro K V _ _ _ _ _ n E hE a b hab c T T' hT hT'
-  have key : ∀ m, Module.finrank K V ≤ m → pf E a b c m = pf E a b c (Module.finrank K V) := by
-    intro m hm
-    induction m, hm using Nat.le_induction with
-    | base => rfl
-    | succ m hm ih =>
-      rw [← ih]
-      have h0 : (E a b) ^ (m + 1) = 0 := hN K V n E hE a b hab (m + 1) (by omega)
-      unfold pf
-      rw [Finset.sum_range_succ _ (m + 1)]
-      simp [divPowE, h0]
-  rw [key T hT, key T' hT']
-
 section Tens
 
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]

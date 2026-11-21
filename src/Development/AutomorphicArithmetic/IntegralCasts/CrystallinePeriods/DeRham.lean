@@ -211,9 +211,6 @@ theorem maximalIdeal_eq : IsLocalRing.maximalIdeal (BdRPlus p R) = RingHom.ker (
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_theta_ne_zero, not_not,
     RingHom.mem_ker]
 
-theorem fil_eq_maximalIdeal_pow (n : ℕ) :
-    fil p R n = IsLocalRing.maximalIdeal (BdRPlus p R) ^ n := by rw [fil, maximalIdeal_eq]
-
 instance isAdicComplete_maximalIdeal :
     IsAdicComplete (IsLocalRing.maximalIdeal (BdRPlus p R)) (BdRPlus p R) := by
   rw [maximalIdeal_eq]
@@ -229,16 +226,6 @@ def residueFieldEquiv : IsLocalRing.ResidueField (BdRPlus p R) ≃+* Localizatio
 
 @[simp] theorem residueFieldEquiv_residue (x : BdRPlus p R) :
     residueFieldEquiv p R (IsLocalRing.residue _ x) = theta p R x := rfl
-
-theorem algebraMap_injective : Function.Injective (algebraMap (AinfInv p R) (BdRPlus p R)) := by
-  obtain ⟨ϖ⟩ : Nonempty (PFlat p R) := inferInstance
-  rw [injective_iff_map_eq_zero]
-  intro x hx
-  refine AinfInv.eq_zero_of_forall_mem_kerTheta_pow ϖ fun n => ?_
-  rw [← Ideal.Quotient.eq_zero_iff_mem, ← eval_algebraMap, hx, map_zero]
-
-theorem algebraMap_ainf_injective : Function.Injective (algebraMap (Ainf p R) (BdRPlus p R)) :=
-  algebraMap_injective.comp AinfInv.algebraMap_injective
 
 theorem ker_theta_eq_span_teich_sub_one {ε : tateModule p R} (hε : IsPrimitive ε) :
     RingHom.ker (theta p R) = span {algebraMap (Ainf p R) (BdRPlus p R) (Ainf.teich p ε.1 - 1)} := by
@@ -346,37 +333,12 @@ instance gradedMonoid : SetLike.GradedMonoid (fil p R) where
   one_mem := (mem_fil_zero_iff _).2 ⟨1, map_one _⟩
   mul_mem _ _ _ _ := mul_mem_fil
 
-theorem fil_antitone : Antitone (fil p R) := by
-  obtain ⟨ϖ⟩ : Nonempty (PFlat p R) := inferInstance
-  have h := BdRPlus.ker_theta ϖ
-  intro i j hij x hx
-  obtain ⟨n, rfl⟩ := Int.le.dest hij
-  obtain ⟨c, rfl⟩ := (mem_fil_iff h _ _).1 hx
-  exact (mem_fil_iff h _ _).2 ⟨BdRPlus.xi ϖ ^ n * c, by
-    rw [zpow_add₀ (algebraMap_ne_zero h), map_mul, map_pow, zpow_natCast, mul_assoc]⟩
-
-theorem exists_mem_fil (x : BdR p R) : ∃ i, x ∈ fil p R i := by
-  obtain ⟨ϖ⟩ : Nonempty (PFlat p R) := inferInstance
-  have h := BdRPlus.ker_theta ϖ
-  have := isLocalization_away h
-  obtain ⟨n, a, e⟩ := IsLocalization.Away.surj (BdRPlus.xi ϖ) x
-  refine ⟨-n, (mem_fil_iff h _ _).2 ⟨a, ?_⟩⟩
-  have h0 := algebraMap_ne_zero h
-  rw [← e, zpow_neg, zpow_natCast]
-  field_simp
-
-theorem iSup_fil : ⨆ i, fil p R i = ⊤ :=
-  eq_top_iff.2 fun x _ => let ⟨i, hi⟩ := exists_mem_fil x; Submodule.mem_iSup_of_mem i hi
-
 theorem eq_zero_of_forall_mem_fil {x : BdR p R} (h : ∀ i, x ∈ fil p R i) : x = 0 := by
   obtain ⟨ϖ⟩ : Nonempty (PFlat p R) := inferInstance
   obtain ⟨c, rfl⟩ := (mem_fil_zero_iff x).1 (h 0)
   rw [BdRPlus.eq_zero_of_forall_xi_pow_dvd ϖ (x := c) fun n => ?_, map_zero]
   rw [← mem_span_singleton, ← BdRPlus.fil_eq_span, ← algebraMap_mem_fil_iff]
   exact h n
-
-theorem iInf_fil : ⨅ i, fil p R i = ⊥ :=
-  eq_bot_iff.2 fun _ hx => eq_zero_of_forall_mem_fil fun i => (Submodule.mem_iInf _).1 hx i
 
 instance charZero : CharZero (BdR p R) :=
   charZero_of_injective_algebraMap (algebraMap ℚ_[p] (BdR p R)).injective

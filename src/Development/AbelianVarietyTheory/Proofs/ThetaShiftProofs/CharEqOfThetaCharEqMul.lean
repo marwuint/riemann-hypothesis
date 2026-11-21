@@ -509,34 +509,6 @@ theorem theta_comparison (A : AnArc O) {T₀ : ℝ} (hT : A.IsConvLine T₀) {g 
   have := Complex.exp_ne_zero (B v v)
   field_simp
 
-example (τ₀ : ℂ) : ∃ (h₀ : (tate τ₀).V ≃ₗ[ℂ] (Fin 1 → ℂ)) (bas : (Fin 1 ⊕ Fin 1 → ℤ) ≃ₗ[ℤ] (tate τ₀).La),
-    (∀ u v, (tate τ₀).EF (bas u) (bas v) = -omegaStd u v) ∧
-    (∀ u, (bas u).y = 0 ↔ ∀ k ∈ (Finset.univ : Finset (Fin 1)), u (.inr k) = 0) ∧
-    ∀ w k, (1 : Matrix (Fin 1) (Fin 1) ℂ) *ᵥ h₀ ((tate τ₀).Pw w (bas (Pi.single (.inl k) 1))) = Pi.single k 1 ∧
-      (1 : Matrix (Fin 1) (Fin 1) ℂ) *ᵥ h₀ ((tate τ₀).Pw w (bas (Pi.single (.inr k) 1))) =
-        !![τ₀ + 2 * w] *ᵥ Pi.single k 1 := by
-  let h₀ : ((ℤ →+ ℂ) × (Fin 0 → ℂ)) ≃ₗ[ℂ] (Fin 1 → ℂ) :=
-    { toFun := fun v _ => v.1 1
-      map_add' := fun _ _ => rfl
-      map_smul' := fun _ _ => rfl
-      invFun := fun z => (zmultiplesHom ℂ (z 0), 0)
-      left_inv := fun v => Prod.ext (AddMonoidHom.ext_int (by simp)) (Subsingleton.elim _ _)
-      right_inv := fun z => funext fun i => by simp [Subsingleton.elim i 0] }
-  let bas : (Fin 1 ⊕ Fin 1 → ℤ) ≃+ (ℤ × (ℤ →+ ℤ) × (⊥ : Submodule ℤ (Fin 0 → ℂ))) :=
-    { toFun := fun u => (u (.inr 0), zmultiplesHom ℤ (u (.inl 0)), 0)
-      map_add' := fun u u' => Prod.ext rfl (Prod.ext (AddMonoidHom.ext_int (by simp)) (Subsingleton.elim _ _))
-      invFun := fun p => Sum.elim (fun _ => p.2.1 1) fun _ => p.1
-      left_inv := fun u => funext fun s => by rcases s with i | i <;> simp [Subsingleton.elim i 0]
-      right_inv := fun p => Prod.ext rfl (Prod.ext (AddMonoidHom.ext_int (by simp)) (Subsingleton.elim _ _)) }
-  refine ⟨h₀, AddEquiv.toIntLinearEquiv (M₂ := (tate τ₀).La) bas, fun u v => ?_, fun u => ?_, fun w k => ?_⟩
-  · change zmultiplesHom ℤ (v (.inl 0)) (u (.inr 0)) - zmultiplesHom ℤ (u (.inl 0)) (v (.inr 0)) + 0 = _
-    simp [omegaStd, mul_comm]
-  · change u (.inr 0) = 0 ↔ _
-    simp
-  · rw [one_mulVec, one_mulVec, Subsingleton.elim k 0]
-    refine ⟨funext fun i => (tate_Pw τ₀ w _ _).trans ?_, funext fun i => (tate_Pw τ₀ w _ _).trans ?_⟩ <;>
-      simp [Subsingleton.elim i 0]
-
 end AnArc
 
 end GlobalTheory

@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SqMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 
 noncomputable section
 
@@ -91,7 +93,7 @@ theorem substitution_action_commutes : ∀ (E : Type) [Field E] [NumberField E] 
       (homAt (𝟙 (Sp k)) (A.comp (sub1 Qs m)) ≫ gB.x m) = 1 := by
     rw [← Category.assoc, actComm_homAt_comp, a1]
     exact gB.chart.zero m
-  exact ((GlobalTheory.T.formal_germ_dimension_unique E H hst (Sp k) Q.tB k (𝟙 (Sp k)) d' gB).2 (Fin 1 × Fin d) m _ hz).unique
+  exact ((_root_.GlobalTheory.CompanionTheory.Ar.GermUniv.germ_chart_universal E H hst (Sp k) Q.tB k (𝟙 (Sp k)) d' gB).2 (Fin 1 × Fin d) m _ hz).unique
     ⟨haug _ a1, rfl⟩ ⟨haug _ a2, h1.trans h2.symm⟩
 
 end GlobalTheory.CompanionTheory.Ar.Flat.FrGauge

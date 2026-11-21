@@ -1,6 +1,8 @@
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.FrameMatching.HeckeEigenvalueFiniteness.PowEigAlt
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.ShuffleChoices.FixedEquiv
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLengthOfProductsStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLengthOfProducts
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SubOfNonNil
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsolateRepresentationAtCharacterStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteSubquotientsStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalAlgebraHolds
@@ -42,7 +44,7 @@ theorem UpperTheory.HeckeLevelFrameExistence.locE :
     ⟨T y₀, ((hd 0 hz).2 y₀ hy₀).1, fun h => hy₀0 (T.map_eq_zero_iff.1 h)⟩
   obtain ⟨e₀, hIk, ⟨v₀, hv₀, l, hl1, hl⟩, hkill⟩ :=
     PositivityTheory.Rg.BcB.F.Choice.choiceS_of (fun E _ _ _ n w => GlobalTheory.T.isolate_representation_at_character _ _)
-      (fun E _ _ _ n w => GlobalTheory.T.finite_subquotients _ _) (fun E _ _ _ n w => GlobalTheory.T.finite_length_of_products _ _)
+      (fun E _ _ _ n w => GlobalTheory.T.finite_subquotients _ _) (fun E _ _ _ n w => _root_.GlobalTheory.CompanionTheory.ProdLen.prodFinLen _ _)
       E n w K' hKo hKc P hP0 k D
   set r : ℂ := (((K'.subgroupOf (UL n w)).relIndex (KL n w) : ℕ) : ℂ) with hr
   have hIk' : PositivityTheory.Rg.BcN.F2.IsHk K' (fun g => r * e₀ g) :=

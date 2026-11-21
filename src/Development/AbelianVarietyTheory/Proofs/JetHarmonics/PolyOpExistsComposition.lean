@@ -32,6 +32,4 @@ end GlobalTheory.HatNF.PolyComp
 
 namespace GlobalTheory.HatNF
 
-open GlobalTheory.HatNF.PolyComp
-
 end GlobalTheory.HatNF

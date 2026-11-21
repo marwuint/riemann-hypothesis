@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.Divisors.AnisoClauseOfFirstTerm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SphericalEisensteinSeriesOnGroup
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.AdelicConjTransposeBlockMatrixTwoByTwoFin
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicQuotientWittTowerPropertie
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteAnnihilatorOpenSubgroupInBox
@@ -37,25 +37,9 @@ def hermN : AddSubgroup (Mx D n n) where
 
 variable {D n}
 
-def nElt (b : hermN D n) : StdUnn.G D n := ((StdUnn.Model.exists_unip b.1).2 b.2).choose
-
-theorem mat_nElt (b : hermN D n) : StdUnn.mat (nElt b) = StdUnn.blk4 1 b.1 0 1 :=
-  ((StdUnn.Model.exists_unip b.1).2 b.2).choose_spec
-
 variable (D n)
 
-def wElt : StdUnn.G D n := (StdUnn.Model.exists_weyl (D := D) (n := n)).choose
-
-theorem mat_wElt : StdUnn.mat (wElt D n) = StdUnn.blk4 0 1 (-1) 0 :=
-  (StdUnn.Model.exists_weyl (D := D) (n := n)).choose_spec
-
 variable {D n}
-
-def intw (db : Measure (hermN D n)) (f : ℂ → StdUnn.G D n → ℂ) (s : ℂ) (g : StdUnn.G D n) : ℂ :=
-  ∫ b, f s (wElt D n * nElt b * g) ∂db
-
-def eisOf (H : StdUnn.G D n → ℝ≥0) (s₁ : ℂ) (r : StdUnn.G D n → ℂ) (g : StdUnn.G D n) : ℂ → ℂ :=
-  fun s => cosetSum (StdUnn.P D n) (StdUnn.GF D n) (fun x => npow (H x) (s - s₁) * r x) g
 
 end GlobalTheory.ResAniso
 end

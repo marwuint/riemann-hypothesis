@@ -1,20 +1,21 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
-import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.Models
+import GroundTheory.PAdicHodge.FiniteFlat
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.FormallyUnramifiedOfTangentMapInjective
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueBtOrderEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EmbeddingBaseChangeCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingOpenCoverStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroupStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderScalarExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HenselianQuasiFiniteFinitePartStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFinOpenSubOfFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderFlatBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsHenselianFlatOverPrimeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderIsHopfOrderNoetherianStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatLocalExtensionExistsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueBtOrderEmbedding
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EmbeddingBaseChangeCompat
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderEmbeddingOpenCover
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsBaseChangeGroup
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderScalarExtension
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HenselianQuasiFiniteFinitePart
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFinOpenSubOfFinite
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderFlatBaseChange
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsHenselianFlatOverPrime
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.BtHopf
+import Development.WeilBound.CoreStatements.HodgeTatePoints.MiOpen
+
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
@@ -33,7 +34,7 @@ theorem btEmb_localData (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed
       IsOpenImmersion (U.ι ≫ j') ∧ Γ'.TranslatesCover (Γ'.btOrder ⊤) j' U ∧
       ∀ x : Γ'.G.left, Spec.map (CommRingCat.ofHom (algebraMap R' (Γ'.btOrder ⊤))) (j' x) =
         IsLocalRing.closedPoint R' → x ∈ U := by
-  have hA := GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ
+  have hA := _root_.PositivityTheory.UnitarySelfGeneration.bt_hopf R T Γ
   have hinj : Function.Injective (algebraMap R R') := by
     rw [injective_iff_map_eq_zero]
     intro r hr
@@ -43,19 +44,19 @@ theorem btEmb_localData (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed
     have : r • (1 : R') = r • (0 : R') := by
       simp [Algebra.smul_def, hr]
     exact one_ne_zero (hreg this)
-  obtain ⟨Γ', F, hbc⟩ := GlobalTheory.T.exists_base_change_group R T Γ R' (algebraMap R R') hinj
+  obtain ⟨Γ', F, hbc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.exists_isBaseChange_of_injective R T Γ R' (algebraMap R R') hinj
   haveI := Γ'.quasiFinite
   haveI := Γ'.separated
   haveI := Γ'.quasiCompact
   haveI := Γ'.finPres
-  obtain ⟨U, hUfin, hUcl⟩ := GlobalTheory.T.henselian_quasi_finite_finite_part R' Γ'.G.left Γ'.G.hom
-  have hU : Γ'.IsFinOpenSub U := GlobalTheory.T.isFinOpenSub_of_finite R' T Γ' U hUfin hUcl
-  obtain ⟨j', hj'⟩ := (GlobalTheory.T.existsUnique_btOrder_embedding R' T Γ').exists
-  have hbt := GlobalTheory.T.btOrder_flat_base_change R T Γ R' Γ' F hbc hflat
+  obtain ⟨U, hUfin, hUcl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.exists_isFinite_open_of_henselian R' Γ'.G.left Γ'.G.hom
+  have hU : Γ'.IsFinOpenSub U := _root_.GlobalTheory.CompanionTheory.Ar.BT.QFGroup.isFinOpenSub_of_closedFibre R' T Γ' U hUfin hUcl
+  obtain ⟨j', hj'⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.BT.exists_unique_emb_btOrder_top R' T Γ').exists
+  have hbt := _root_.GlobalTheory.CompanionTheory.Ar.BT.FlatBC.btOrder_flat_baseChange R T Γ R' Γ' F hbc hflat
   have hfull : ∃ d : R, algebraMap R R' d ≠ 0 ∧ ∀ f : T → R, d • f ∈ Γ.btOrder ⊤ := by
     obtain ⟨d, hd, hf⟩ := hA.full
     exact ⟨d, fun h => hd (hinj (by simpa using h)), hf⟩
-  have hext := (GlobalTheory.T.hopf_order_scalar_extension R T R' (Γ.btOrder ⊤) hA hfull).2
+  have hext := (_root_.GlobalTheory.CompanionTheory.Ar.BT.ext_tensor_base_change R T R' (Γ.btOrder ⊤) hA hfull).2
   have hext' : ∃ e : R' ⊗[R] (Γ.btOrder ⊤) ≃ₐ[R'] Γ'.btOrder ⊤,
       ∀ (a : Γ.btOrder ⊤) (t : T), (e (1 ⊗ₜ a)).1 t = algebraMap R R' (a.1 t) := by
     rw [hbt]; exact hext
@@ -90,12 +91,12 @@ theorem btEmb_localData (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed
     · simp
     · simp
   have hw : F ≫ j = j' ≫ Spec.map (CommRingCat.ofHom ψ) :=
-    GlobalTheory.T.embedding_base_change_compat R T Γ R' Γ' F hbc _ _ ψ hψ j j' hj hj'
+    _root_.GlobalTheory.CompanionTheory.Ar.BT.isEmb_baseChange_square R T Γ R' Γ' F hbc _ _ ψ hψ j j' hj hj'
   have hsq2 : IsPullback F j' j (Spec.map (CommRingCat.ofHom ψ)) := by
     refine IsPullback.of_bot ?_ hw hsq
     rw [hj'.isOver, hj.isOver]
     exact hbc.cart
-  obtain ⟨ho, hTC⟩ := GlobalTheory.T.btOrder_embedding_open_cover R' T Γ' U hU j' hj'
+  obtain ⟨ho, hTC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.EmbSub.openImmersion_translatesCover R' T Γ' U hU j' hj'
   refine ⟨Γ', F, j', ψ, U, hψ, hsq, hsq2, ho, hTC, fun x hx => hUcl x ?_⟩
   rw [← hj'.isOver]
   simpa using hx
@@ -105,7 +106,7 @@ theorem btEmb_specMap_asIdeal {A B : Type} [CommRing A] [CommRing B] (φ : A →
 
 theorem isOpenImmersion_emb_and_translatesCover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤))), Γ.IsEmb (Γ.btOrder ⊤) j → IsOpenImmersion j ∧ Γ.TranslatesCover (Γ.btOrder ⊤) j ⊤ := by
   intro R _ _ _ _ T _ _ Γ j hj
-  have hA := GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ
+  have hA := _root_.PositivityTheory.UnitarySelfGeneration.bt_hopf R T Γ
   refine ⟨?_, ?_⟩
   · haveI := hA.finite
     haveI : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) := by
@@ -115,15 +116,15 @@ theorem isOpenImmersion_emb_and_translatesCover : ∀ (R : Type) [CommRing R] [I
       rw [hj.isOver]; exact Γ.finPres
     haveI := GlobalTheory.TangentCrit.locallyOfFinitePresentation_of_comp j
       (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤))))
-    refine GlobalTheory.T.flat_local_extension_exists R Γ.G.left _ j (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) ?_
+    refine _root_.PositivityTheory.HtPt.Mi.open_crit R Γ.G.left _ j (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) ?_
     intro P _
-    obtain ⟨R', _, _, _, _, hic, hflat, hcomap⟩ := GlobalTheory.T.exists_henselian_flat_over_prime R P
+    obtain ⟨R', _, _, _, _, hic, hflat, hcomap⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.exists_flat_henselian_normal_over_prime R P
     obtain ⟨Γ', F, j', ψ, U, -, hsq, hsq2, ho, -, hcl⟩ := btEmb_localData R T Γ j hj R' hflat
     exact ⟨R', inferInstance, inferInstance, inferInstance, Γ'.G.left, _, j', _, F, _, U, hflat, hcomap, hsq, hsq2, ho, hcl⟩
   · intro P
     let p : Ideal R := P.asIdeal.comap (algebraMap R (Γ.btOrder ⊤))
     haveI : p.IsPrime := Ideal.comap_isPrime _ _
-    obtain ⟨R', _, _, _, _, hic, hflat, hcomap⟩ := GlobalTheory.T.exists_henselian_flat_over_prime R p
+    obtain ⟨R', _, _, _, _, hic, hflat, hcomap⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.exists_flat_henselian_normal_over_prime R p
     obtain ⟨Γ', F, j', ψ, U, hψ, hsq, hsq2, -, hTC, -⟩ := btEmb_localData R T Γ j hj R' hflat
     obtain ⟨z, hz1, hz2⟩ := Scheme.Pullback.exists_preimage_pullback
       (f := Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤))))

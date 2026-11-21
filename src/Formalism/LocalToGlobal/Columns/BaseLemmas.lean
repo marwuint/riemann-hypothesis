@@ -453,18 +453,6 @@ theorem lamOf_wtN {R : Ranks} (P : HCParam R) {j : ℕ} (hj : j ≤ R.m) (i : Fi
   · rfl
   · exact absurd (R.blk_lt hj i h1) h2
 
-theorem wtN_new {R : Ranks} (P : HCParam R) {j : ℕ} (hj : j < R.m) {n : ℕ} (h1 : R.N j ≤ n) (h2 : n < R.N (j + 1)) :
-    Examples₂.wtN P n = -wG R (P.e ⟨j, hj⟩) (j + 1) := by
-  have h1' : R.k + j * (R.t + 1) ≤ n := h1
-  have h2' : n < R.k + (j + 1) * (R.t + 1) := h2
-  have hb : Examples₂.blkN R n = j :=
-    Nat.div_eq_of_lt_le (by omega) (show n - R.k < (j + 1) * (R.t + 1) by omega)
-  have hbm : Examples₂.blkN R n < R.m := hb ▸ hj
-  unfold Examples₂.wtN
-  rw [dif_neg (by omega : ¬ n < R.k), dif_pos hbm]
-  have e : (⟨Examples₂.blkN R n, hbm⟩ : Fin R.m) = ⟨j, hj⟩ := Fin.ext hb
-  rw [e, hb]
-
 namespace Wts
 
 variable {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R)
@@ -488,10 +476,6 @@ theorem lamTrue_eq (u : Word) (j : ℕ) (τ : X.Tau) (i : Fin (R.N j)) :
   simp only [Int.cast_add, Int.cast_neg, Int.cast_mul, Int.cast_natCast]
   rw [cast_t_add_one_div_two R]
   ring
-
-theorem lamTrue_zero (u : Word) (τ : X.Tau) (i : Fin (R.N 0)) : (W.lamTrue u 0 τ).w i = (W.lamN u 0 τ).w i := by
-  show (W.lamN u 0 τ).w i + -(((0 : ℕ) : ℤ) * (((R.t + 1) / 2 : ℕ) : ℤ)) = (W.lamN u 0 τ).w i
-  simp
 
 theorem lamTrue_old (u : Word) {j : ℕ} (hj : j < R.m) (τ : X.Tau) (i : Fin (R.N (j + 1))) (h : i.1 < R.N j) :
     ((W.lamTrue u (j + 1) τ).w i : ℚ) =
@@ -552,20 +536,6 @@ theorem nuW_eq_true (u : Word) {j : ℕ} (hj : j < R.m) (τ : X.Tau) (i : Fin (R
 
 variable {W}
 
-theorem sgW_eq (hW : W.Ok) (τ : X.Tau) (i : Fin (R.N R.m - 1)) :
-    ((W.sgW τ).w i : ℚ) = (W.row τ).sgHC i.1 - rhoVec (R.N R.m - 1) i := by
-  obtain ⟨P, hP⟩ := hW.row_ok τ
-  unfold Wts.sgW
-  rw [← hP]
-  exact RowPar.sg_eq P i
-
-theorem lamV_eq (hW : W.Ok) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ R.m) (τ : X.Tau) (i : Fin R.nV) :
-    ((W.lamV j τ).w i : ℚ) = (W.row τ).lamVQ j i := by
-  obtain ⟨P, hP⟩ := hW.row_ok τ
-  unfold Wts.lamV
-  rw [← hP]
-  exact RowPar.lamV_eq P h1 h2 i
-
 end Wts
 
 namespace RowPar
@@ -583,19 +553,6 @@ theorem sgTrue_eq (i : Fin (R.N R.m - 1)) :
 end RowPar
 
 namespace Wts
-
-variable {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R)
-
-theorem degTrue_eq (u : Word) (τ : X.Tau) :
-    W.degTrue u τ = W.deg u τ - (R.m : ℤ) * (((R.t + 1) / 2 : ℕ) : ℤ) := by
-  have hN1 : 1 ≤ R.N R.m := by
-    show 1 ≤ R.k + R.m * (R.t + 1)
-    have := R.m_add_three_le_k
-    omega
-  unfold Wts.degTrue Wts.deg Wts.lamTrue Wts.sgTrue Wts.sgW RowPar.sgTrue
-  simp only [shiftW, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-    nsmul_eq_mul, Nat.cast_sub hN1, Nat.cast_one]
-  ring
 
 end Wts
 

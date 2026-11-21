@@ -533,24 +533,6 @@ theorem exists_free_tensor_of_isUnit.{w} (S : Type*) [CommRing S] [Algebra R S]
   obtain ⟨a, ha0, ha⟩ := exists_hasBasisAway_of_finiteType (R := R) (A := S) M
   exact ⟨a, ha0, fun R' _ _ h => ha.free_tensor R' h⟩
 
-theorem exists_free_localization_away (S : Type*) [CommRing S] [Algebra R S]
-    [Algebra.FiniteType R S] :
-    ∃ a : R, a ≠ 0 ∧ Module.Free (Localization.Away a)
-      (Localization (Algebra.algebraMapSubmonoid S (Submonoid.powers a))) := by
-  obtain ⟨a, ha0, ha⟩ := exists_hasBasisAway_of_finiteType (R := R) (A := S) S
-  exact ⟨a, ha0, ha.free_of_isLocalizedModule (.powers a) (Submonoid.mem_powers a) _
-    (IsScalarTower.toAlgHom R S
-      (Localization (Algebra.algebraMapSubmonoid S (Submonoid.powers a)))).toLinearMap⟩
-
-theorem exists_free_away_quotient (A₀ : Type*) [CommRing A₀] [Algebra R A₀]
-    [Algebra.FiniteType R A₀] (A : Type*) [CommRing A] [Algebra A₀ A] [Algebra.FiniteType A₀ A]
-    {M : Type*} [AddCommGroup M] [Module R M] [Module A₀ M] [Module A M] [IsScalarTower R A₀ M]
-    [IsScalarTower A₀ A M] [Module.Finite A M] (N : Submodule A₀ M) (hN : N.FG) :
-    ∃ a : R, a ≠ 0 ∧ ∀ b, a ∣ b →
-      Module.Free (Localization.Away b) (LocalizedModule.Away b (M ⧸ N.restrictScalars R)) := by
-  obtain ⟨a, ha0, ha⟩ := exists_hasBasisAway_quotient R A₀ A N hN
-  exact ⟨a, ha0, fun b hb => (ha.quotient.of_dvd hb).free_away⟩
-
 variable {R} {A₀ : Type*} [CommRing A₀] [Algebra R A₀] [Algebra.FiniteType R A₀]
   {A : Type*} [CommRing A] [Algebra R A] [Algebra.FiniteType R A] (φ : A₀ →ₐ[R] A)
 

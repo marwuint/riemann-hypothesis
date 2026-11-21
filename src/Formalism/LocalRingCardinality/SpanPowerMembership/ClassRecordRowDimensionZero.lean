@@ -397,12 +397,6 @@ theorem classRecord_rowDimension_zero :
 theorem classRecord_lowerLevel (u) : ((classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).mem u).A.Tstar =
     (Dst / du) ^ ((1 : ℝ) / (R.f * R.k)) * Gam ^ (-(2 : ℝ) / (R.f * R.k)) := rfl
 
-omit kb ks in
-
-theorem classRecord_weights_defined : ∃ kb ks, DV.KapDef (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks) := by
-  obtain ⟨kb, ks, h⟩ := DV.exists_blocks (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0))
-  exact ⟨kb, ks, fun j _ _ τ => h j τ⟩
-
 end Record
 
 end Formalism.BasicNotions.Examples₂

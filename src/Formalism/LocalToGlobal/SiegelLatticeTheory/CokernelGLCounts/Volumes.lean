@@ -64,36 +64,10 @@ def VolStabAt {a : ℕ} (X0 : Fin a → Fin M → E)
     IsFundamentalDomain (ratIn F E σ M J (stabT (AF F) σ J X0)) 𝓕' μ') fun 𝓕' =>
     μ' 𝓕' = μ 𝓕
 
-def VolStab : Prop :=
-  IsHermND σ J → ∀ (a : ℕ), 1 ≤ a → a + 2 ≤ M → ∀ (X0 : Fin a → Fin M → E)
-    (hT : ∀ i j, σ (gramE σ J X0 j i) = gramE σ J X0 i j),
-    (gramE σ J X0).det ≠ 0 → VolStabAt F E σ M J X0 hT
-
-def VolumeIsotropicTuple : Prop :=
-  IsHermND σ J → ∀ (r : ℕ), 2 * (r + 1) + 1 ≤ M → ∀ (X0 : Fin (r + 1) → Fin M → E) (β : F), β ≠ 0 →
-    LinearIndependent E X0 →
-    (∀ i j, gramE σ J X0 i j = if i = Fin.last r ∧ j = Fin.last r then algebraMap F E β else 0) →
-    ∀ hT : ∀ i j, σ (gramE σ J X0 j i) = gramE σ J X0 i j, VolStabAt F E σ M J X0 hT
-
 def IsProdNH {R : Type} [CommRing R] [Algebra F R] [TopologicalSpace R] (K N H : Subgroup (HA R σ J))
     (μK : Measure K) (μN : Measure N) (μH : Measure H) : Prop :=
   ∀ f : HA R σ J → ENNReal, Measurable f →
     ∫⁻ k, f (k : HA R σ J) ∂μK = ∫⁻ m, ∫⁻ h, f ((m : HA R σ J) * (h : HA R σ J)) ∂μH ∂μN
-
-def VolumeUnipotent : Prop :=
-  IsHermND σ J → ∀ (r : ℕ) (P : Frame E M r) (T : F), 2 * r + 3 ≤ M → P.IsStd σ J T →
-    ∀ μN : Measure (FrameUnipotentSubgroup (AF F) σ J P), μN.IsHaarMeasure →
-    ∀ μH : Measure (Hsub (AF F) σ J P), μH.IsHaarMeasure →
-    AllSome (fun μS : Measure (S0 (AF F) σ J P) => μS.IsHaarMeasure ∧
-      IsProdNH F E σ M J (S0 (AF F) σ J P) (FrameUnipotentSubgroup (AF F) σ J P) (Hsub (AF F) σ J P) μS μN μH)
-      fun μS =>
-    AllSome (fun 𝓕 : Set (S0 (AF F) σ J P) =>
-      IsFundamentalDomain (ratIn F E σ M J (S0 (AF F) σ J P)) 𝓕 μS) fun 𝓕 =>
-    AllSome (fun 𝓕N : Set (FrameUnipotentSubgroup (AF F) σ J P) =>
-      IsFundamentalDomain (ratIn F E σ M J (FrameUnipotentSubgroup (AF F) σ J P)) 𝓕N μN) fun 𝓕N =>
-    AllSome (fun 𝓕H : Set (Hsub (AF F) σ J P) =>
-      IsFundamentalDomain (ratIn F E σ M J (Hsub (AF F) σ J P)) 𝓕H μH) fun 𝓕H =>
-      μS 𝓕 = μN 𝓕N * μH 𝓕H
 
 def Adapted {r : ℕ} (P : Frame E M r) (ΛX ΛW ΛY : Set (Fin M → E)) : Prop :=
   (∀ x ∈ ΛX, x ∈ Submodule.span E (Set.range P.e)) ∧
@@ -114,46 +88,6 @@ def LevelS : Prop :=
 
 end Ext
 
-def VolumesFromSW : Prop :=
-  Formalism.MainNotions.UnusedSlot34.ForAllCM fun F E _ _ _ _ σ M J =>
-    Formalism.MainNotions.UnusedSlot34.SWa1 F E σ M J → Formalism.MainNotions.UnusedSlot34.SWc1 F E σ M J →
-      VolStab F E σ M J ∧ VolumeIsotropicTuple F E σ M J
-
-def VolumeUnipotentAllCM : Prop := Formalism.MainNotions.UnusedSlot34.ForAllCM fun F E _ _ _ _ σ M J => VolumeUnipotent F E σ M J
-
 def LevelSAll : Prop := Formalism.MainNotions.UnusedSlot34.ForAllCM fun F E _ _ _ _ σ M J => LevelS F E σ M J
-
-section Comparison₂
-
-variable (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
-  (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
-
-def VolumeUnipotentOne : Prop :=
-  IsHermND σ J → ∀ (r : ℕ) (P : Frame E M r) (T : F), 2 * r + 3 ≤ M → P.IsStd σ J T →
-    ∀ (hT0 : ∀ i j, σ (gramE σ J (F0 P) j i) = gramE σ J (F0 P) i j)
-      (hT1 : ∀ i j, σ (gramE σ J (tupH P) j i) = gramE σ J (tupH P) i j),
-    AllSome (IsCharAF F) fun ψ =>
-    AllSome (IsHaarH F E σ M J) fun μ =>
-    AllSome (IsOmT F E σ M J ψ (gramE σ J (F0 P)) hT0) fun νS =>
-    AllSome (fun μS : Measure (S0 (AF F) σ J P) =>
-      μS.IsHaarMeasure ∧ IsCompatT F E σ M J (F0 P) μ μS νS) fun μS =>
-    AllSome (IsOmT F E σ M J ψ (gramE σ J (tupH P)) hT1) fun νH =>
-    AllSome (fun μH : Measure (Hsub (AF F) σ J P) =>
-      μH.IsHaarMeasure ∧ IsCompatT F E σ M J (tupH P) μ μH νH) fun μH =>
-    AllSome (fun μN : Measure (FrameUnipotentSubgroup (AF F) σ J P) => μN.IsHaarMeasure ∧
-      IsProdNH F E σ M J (S0 (AF F) σ J P) (FrameUnipotentSubgroup (AF F) σ J P) (Hsub (AF F) σ J P) μS μN μH)
-      fun μN =>
-    AllSome (fun 𝓕N : Set (FrameUnipotentSubgroup (AF F) σ J P) =>
-      IsFundamentalDomain (ratIn F E σ M J (FrameUnipotentSubgroup (AF F) σ J P)) 𝓕N μN) fun 𝓕N =>
-      μN 𝓕N = 1
-
-def VolumeUnipotentOneFrom : Prop :=
-  Formalism.MainNotions.UnusedSlot34.ForAllCM fun F E _ _ _ _ σ M J =>
-    Formalism.MainNotions.UnusedSlot34.SWa1 F E σ M J → VolStab F E σ M J → VolumeIsotropicTuple F E σ M J → VolumeUnipotent F E σ M J →
-      VolumeUnipotentOne F E σ M J
-
-variable {F E σ M J}
-
-end Comparison₂
 
 end Formalism.L2.SG.Volumes

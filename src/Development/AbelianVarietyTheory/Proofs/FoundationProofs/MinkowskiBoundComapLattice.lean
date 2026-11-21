@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.SlopeE
-import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.SpreadComposition
+import Formalism.LocalToGlobal.Divisibility.CoefMod
+import Formalism.HarderNarasimhan.QuotRealize
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LeafBounds.MeanMaxLeaf.LeafMMFree
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPairingGramMatrixValuesAndDefinite
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthogonalSumCoefficientLatticeIsLatticeAndDual
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DualLatticeIsLatticeAndHermitianDual
@@ -17,35 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.TestLat.Compare
 
-def conjHom (E : Type) [Field E] [NumberField E] [IsCMField E] : E →+* E :=
-  (IsCMField.complexConj E : E →+* E)
-
-section Space
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
-
-end Space
-
-section Sum
-
-variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι C : Type} [Fintype ι] {n N : ℕ}
-
-end Sum
-
-section DualSpace
-
-variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} {n : ℕ}
-
-end DualSpace
-
 section Nabla
 
 variable {K : Type} [Field K] [NumberField K] {ι C : Type} [Fintype ι] {n N : ℕ}
-
-open Classical in
-
-def blk {F I : Type} [Zero F] (e : Fin N ≃ C × I) (M : Matrix I I F) : Matrix (Fin N) (Fin N) F :=
-  Matrix.of fun a b => if (e a).1 = (e b).1 then M (e a).2 (e b).2 else 0
 
 omit [NumberField K] in
 theorem pairK_basis [StarRing K] (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (i j : VVIdx lam) :
@@ -116,17 +92,5 @@ def Under (P : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField
 theorem slopeE_eq : SlopeE = Under fun _ _ _ _ _ _ _ _ _ _ emb _ lam R J _ L _ e X =>
     WeylClause emb lam R J L e X ∧ NablaClause emb lam R J L e X ∧
       WeylClauseDual emb lam R J L e X ∧ NablaClauseDual emb lam R J L e X := rfl
-
-def FirstCM : Prop := Under fun E _ _ _ _ _ _ cE _ _ emb n lam R J _ L _ e X =>
-  cE ≠ RingHom.id E → 1 ≤ n → WeylClause emb lam R J L e X
-
-def First : Prop := Under fun _ _ _ _ _ _ _ _ _ _ emb _ lam R J _ L _ e X => WeylClause emb lam R J L e X
-
-def FirstDegenerate : Prop := Under fun E _ _ _ _ _ _ cE _ _ emb n lam R J _ L _ e X =>
-  cE = RingHom.id E ∨ n = 0 → WeylClause emb lam R J L e X
-
-def SlopeCM : Prop := Under fun E _ _ _ _ _ _ cE _ _ emb n lam R J _ L _ e X =>
-  cE ≠ RingHom.id E → 1 ≤ n → WeylClause emb lam R J L e X ∧ NablaClause emb lam R J L e X ∧
-      WeylClauseDual emb lam R J L e X ∧ NablaClauseDual emb lam R J L e X
 
 end GlobalTheory.TestLat.Compare

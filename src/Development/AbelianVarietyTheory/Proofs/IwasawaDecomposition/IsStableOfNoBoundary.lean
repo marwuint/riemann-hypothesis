@@ -42,30 +42,4 @@ theorem aut_bar (σ : 𝓞 E ≃+* 𝓞 E) (a : 𝓞 E) : σ (H.bar a) = H.bar (
     have := t.prim
     rwa [← hσ] at this
 
-def twistCpt (σ : 𝓞 E ≃+* 𝓞 E) (hσ : σ H.w0 = H.w0) {U : Scheme.{0}} {F O : Type} [Field F] [CommRing O]
-    {c : U ⟶ Sp F} {t : SAB H U} {β : O →+* F} (C : Cpt c t β) : Cpt c (twist σ hσ t) β :=
-  ⟨C.X, C.s, C.normal, C.proj, C.flat, C.jQ, C.jQ_over, C.jQ_open, C.jQ_dense, twist σ hσ C.t,
-    ⟨C.m.cm, C.m.cart, C.m.base, fun a => C.m.act (σ a), C.m.lin⟩, C.ab_gen⟩
-
-theorem exists_ext {U : Scheme.{0}} {F O : Type} [Field F] [CommRing O]
-    {c : U ⟶ Sp F} {t : SAB H U} {β : O →+* F} (C : Cpt c t β) (hβ : IsDedFrac β) (hO : Algebra.FiniteType ℤ O)
-    (hs : IsFinite C.s) (γ : F →+* F) (γ₀ : O →+* O) (hγ : ∀ x, β (γ₀ x) = γ (β x)) (r : U ⟶ U)
-    (hr : r ≫ c = c ≫ spMap γ) : ∃ ρ : C.X ⟶ C.X, ρ ≫ C.s = C.s ≫ spMap γ₀ ∧ C.j ≫ ρ = r ≫ C.j := by
-  obtain ⟨-, h1, h2, h3, h4⟩ := C.arith_and_proOpen hβ hO
-  have hj : C.j ≫ C.s = c ≫ spMap β := by
-    rw [Cpt.j, Category.assoc, pullback.condition, ← Category.assoc, C.jQ_over]
-  have e : spMap β ≫ spMap γ₀ = spMap γ ≫ spMap β := by
-    rw [← Spec.map_comp, ← Spec.map_comp]
-    congr 1
-    ext x
-    exact hγ x
-  have : IsLocallyNoetherian C.X := by
-    obtain ⟨⟨_, _⟩, -, hfr⟩ := hβ
-    letI := β.toAlgebra
-    exact (GlobalTheory.genericPart_dense_proOpen O F C.X U C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense).1
-  obtain ⟨ρ, ⟨k1, k2⟩, -⟩ := GlobalTheory.existsUnique_lift_of_densePart C.X U _ C.X C.j C.normal h1 h2 h3 h4
-    C.s (C.s ≫ spMap γ₀) (r ≫ C.j) inferInstance (by
-      rw [Category.assoc, hj, reassoc_of% hj, reassoc_of% hr, e])
-  exact ⟨ρ, k2, k1⟩
-
 end GlobalTheory.FiniteStable

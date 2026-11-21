@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramIsHermitianL2EqDoubleSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramPosDefOfL2DefiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVolumeDensityFiniteIsOpenPosStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentComplexSectionValuesOfIntStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramPosDefOfL2Definite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBounded
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVolumeDensityFiniteIsOpenPos
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndependentComplexSectionValuesOfInt
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -15,8 +15,8 @@ namespace GlobalTheory.HSAmp
 theorem gram_posDef_and_l2_le_sup_bound : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p) (ω : ∀ σ, VolDens p σ D) (a b : ℤ) (ι : Type) [Fintype ι] [DecidableEq ι] (f : ι → X.functionField), (∀ i, f i ∈ P.H a b) → LinearIndependent ℤ f → IsFam (fun σ => (ω σ).meas) (vals P a b f) ∧ (gram (fun σ => (ω σ).meas) (vals P a b f)).PosDef ∧ ∀ (c : ι → ℂ) (M : ℝ), (∀ σ y, cmb (vals P a b f) c σ y ≤ M) → l2 (fun σ => (ω σ).meas) (vals P a b f) c ≤ (∑ᶠ σ, ((ω σ).meas Set.univ).toReal) * M := by
   intro k _ X _ p D hX hG P ω a b ι _ _ f hf hli
   haveI : Finite (k →+* ℂ) := hX.finite_emb
-  have hfin := fun σ => GlobalTheory.T.smoothVolumeDensity_finite_isOpenPos k X p D hX hG σ (ω σ)
-  obtain ⟨hprod, hnu⟩ := GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hX P a b
+  have hfin := fun σ => _root_.GlobalTheory.HSAmp.volDens_meas_finite_openPos k X p D hX hG σ (ω σ)
+  obtain ⟨hprod, hnu⟩ := _root_.GlobalTheory.HSAmp.continuous_val_and_bounded k X p D hX P a b
   have hfam : IsFam (fun σ => (ω σ).meas) (vals P a b f) := by
     refine ⟨inferInstance, fun σ i j => ?_⟩
     haveI := (hfin σ).1
@@ -44,12 +44,12 @@ theorem gram_posDef_and_l2_le_sup_bound : ∀ (k : Type) [CommRing k] (X : Schem
     exact Complex.continuous_re.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
       continuous_const.mul (hprod σ _ (hf i) _ (hf j)))
   haveI : Fintype (k →+* ℂ) := Fintype.ofFinite _
-  refine ⟨hfam, GlobalTheory.T.gram_posDef_of_l2_definite (k →+* ℂ) (fun σ => CxPts p σ) ι (fun σ => (ω σ).meas) (vals P a b f) hfam
+  refine ⟨hfam, _root_.GlobalTheory.HSAmp.gram_posDef (k →+* ℂ) (fun σ => CxPts p σ) ι (fun σ => (ω σ).meas) (vals P a b f) hfam
     fun c hc => ?_, fun c M hM => ?_⟩
   · rw [l2, finsum_eq_sum_of_fintype] at hc
     have hz := (Finset.sum_eq_zero_iff_of_nonneg fun σ _ =>
       integral_nonneg fun y => sq_nonneg ‖∑ i, c i * vals P a b f σ y i‖).1 hc
-    refine GlobalTheory.T.linearIndependent_complex_sectionValues_of_int k X p D hX P a b ι f hf hli c fun σ y => ?_
+    refine _root_.GlobalTheory.HSAmp.linearIndependent_vals k X p D hX P a b ι f hf hli c fun σ y => ?_
     haveI := (hfin σ).2
     have hae := (integral_eq_zero_iff_of_nonneg (fun y => sq_nonneg ‖∑ i, c i * vals P a b f σ y i‖)
       ((hl2.2 c).1 σ)).1 (hz σ (Finset.mem_univ _))

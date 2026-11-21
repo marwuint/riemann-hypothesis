@@ -12,9 +12,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedAlgebraicOfLimitOfFixedElementsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DenseNumberFieldOfContinuousCompletionEquivStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsNormPlaceLeOfFrobeniusStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedAlgebraicOfLimitOfFixedElements
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DenseNumberFieldOfContinuousCompletionEquiv
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsNormPlaceLeOfFrobenius
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
@@ -148,7 +148,7 @@ theorem weil_equiv : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Alg
   have fixE : ∀ σ : G E Ω, σ ∈ Dec (F := E) A →
       ∀ y : E', conj φ σ.toRingEquiv (algebraMap E' Ω' y) = algebraMap E' Ω' y := by
     intro σ hσ y
-    refine GlobalTheory.T.fixed_algebraic_of_limit_of_fixed_elements Ω' A' (conj φ σ.toRingEquiv) ?_ _ ?_ ?_
+    refine _root_.GlobalTheory.FixApprox.fix_of_approx Ω' A' (conj φ σ.toRingEquiv) ?_ _ ?_ ?_
     · intro z
       rw [conj_apply, hP.mem, AlgEquiv.coe_ringEquiv, apply_mem_iff_of_mem_Dec hσ]
       conv_rhs => rw [← φ.apply_symm_apply z]
@@ -156,7 +156,7 @@ theorem weil_equiv : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Alg
     · exact (IsIntegral.map (algebraMap E' Ω').toRatAlgHom
         (Algebra.IsIntegral.isIntegral (R := ℚ) y)).isAlgebraic
     · intro δ hδ
-      obtain ⟨x, hx⟩ := GlobalTheory.T.dense_numberField_of_continuous_completion_equiv E w E' Ω' A' w' h' j i hP.cont hP.loc y δ hδ
+      obtain ⟨x, hx⟩ := _root_.GlobalTheory.approx_of_completion_equiv E w E' Ω' A' w' h' j i hP.cont hP.loc y δ hδ
       refine ⟨algebraMap E' Ω' (j x), ?_, hx⟩
       rw [conj_apply, ← hP.ext, RingEquiv.symm_apply_apply, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes]
   have fixE' : ∀ σ' : G E' Ω', ∀ x : E,
@@ -173,11 +173,11 @@ theorem weil_equiv : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Alg
     apply le_antisymm
     · obtain ⟨σ, hσ⟩ := exists_isFrob h
       have hrel := hrelC σ (fixE σ hσ.1)
-      refine GlobalTheory.T.absNorm_place_le_of_frobenius E' Ω' A' w' h' (normV w) (one_lt_normV w) (conjAlg φ σ (fixE σ hσ.1)) ?_
+      refine _root_.GlobalTheory.NormLeFrob.normV_le_of_isFrob E' Ω' A' w' h' (normV w) (one_lt_normV w) (conjAlg φ σ (fixE σ hσ.1)) ?_
       rw [← actsAs_one_iff, actsAs_iff hP.mem hrel, actsAs_one_iff]; exact hσ
     · obtain ⟨τ', hτ'⟩ := exists_isFrob h'
       have hrel := hrelC' τ'
-      refine GlobalTheory.T.absNorm_place_le_of_frobenius E Ω A w h (normV w') (one_lt_normV w') (conjAlg φ.symm τ' (fixE' τ')) ?_
+      refine _root_.GlobalTheory.NormLeFrob.normV_le_of_isFrob E Ω A w h (normV w') (one_lt_normV w') (conjAlg φ.symm τ' (fixE' τ')) ?_
       rw [← actsAs_one_iff, ← actsAs_iff hP.mem hrel, actsAs_one_iff]; exact hτ'
   have memW : ∀ σ : Weil h, conjAlg φ (σ : G E Ω) (fixE σ (Weil_le_Dec h σ.2)) ∈ Weil h' := by
     intro σ

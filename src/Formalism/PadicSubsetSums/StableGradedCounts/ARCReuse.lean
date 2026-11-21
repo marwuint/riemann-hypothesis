@@ -6,14 +6,10 @@ import Formalism.EisensteinCokernelLengths.FactorialValuationBounds.FactorialVal
 import Formalism.EisensteinCokernelLengths.FactorialValuationBounds.LagrangeIdealSgProof
 import Mathlib
 import Formalism.GaloisIrreducibility.NoSolvableTransitive
-import Formalism.ResultantValuation.ResultantAdjugateProofs.Adjugate
-import Formalism.ResultantValuation.ResultantAdjugateProofs.Mobius
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Window
-import Formalism.ResultantValuation.ResultantAdjugateProofs.Koszul
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Parabolic
-import Formalism.ResultantValuation.BoundedCubic
 import Formalism.ResultantValuation.ResultantAdjugateProofs.Laplace
-import Formalism.ResultantValuation.PrimePairDyadicDisjointAlt
+import Formalism.CyclotomicNorms.StatementI
 
 namespace Formalism.IrreducibleCountingLemmas.WindowSums
 

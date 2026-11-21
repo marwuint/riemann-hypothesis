@@ -20,7 +20,7 @@ theorem ram_sOp {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
     (hinj : Function.Injective fun i => (p i).v) (q : Unif k) (χ : AddChar k Circle) (hχ : HasConductor χ 1) (ε : 𝓀[k]ˣ) (i : ι)
     (φ : GA D A → ℂ) (hφ : IsContAut A φ ∧ ∀ j, RamAt (α j) (P j) φ) :
     IsContAut A (sOp (α i) (P i) q (resChar χ hχ q) ε φ) ∧ ∀ j, RamAt (α j) (P j) (sOp (α i) (P i) q (resChar χ hχ q) ε φ) := by
-  obtain ⟨hbij, -, c, c', hc, -⟩ := GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k (p i) n q χ hχ _ rfl ε A (α i) (P i)
+  obtain ⟨hbij, -, c, c', hc, -⟩ := _root_.GlobalTheory.FinPl.ramBijective_holds D k (p i) n q χ hχ _ rfl ε A (α i) (P i)
   have hC := mapDomain_mem _ (gl_mem (α i)) c
   have hT : ∀ φ, sOp (α i) (P i) q (resChar χ hχ q) ε φ = act (Finsupp.mapDomain (α i).gl c) φ :=
     fun φ => (hc φ).trans (sum_rep_eq _ _ _)

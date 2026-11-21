@@ -12,10 +12,11 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLocalizeQuotien
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PRegularLocusIdentity
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PUniformiserBranchSimpleZero
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PCycleSplitFilt
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PDedekindFibreRank
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PFibreSectionsFlat
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PGenericRestrLen
-import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PRestrQuotTorsionFree
+import Mathlib
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.TwistAlg
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PFiniteSections
+
 set_option maxSynthPendingDepth 1
 
 theorem GroundTheory.Heights₂.Heights.AutoClose.GenericFibreRadicalAway : GroundTheory.Heights₂.Heights.GenericFibreRadicalAway.Statement :=

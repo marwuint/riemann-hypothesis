@@ -63,33 +63,4 @@ end WD
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
-theorem inertialType_of_tame : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (T : WDTie N A) (S : Reading T) (i : N.Loc) (w : PlE H) (hw : IsSplitPl H w), TameSplitAll H.E → Laws S → TypeTame S i w hw → (∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.locG (A.muC i) w) σ = X - C (iotaO N A i (chi1 N i σ))) → ∀ P : A.AV i, A.mono0 (A.locV i P w) ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.locV i P w) σ = (X - 1) ^ R.r * (X - C (iotaO N A i (chi1 N i σ))) ^ R.t := by
-  intro R H what₂ N A T S i w hw hTS hL hT hmu P
-  obtain ⟨htame, hram, hv⟩ := hT
-  obtain ⟨v, hv0, hv⟩ := hv P
-  have L := hL i w hw
-  have hs := (S i w hw).mu_ok.1
-  obtain ⟨π₁, π₂, h1, h2, he⟩ := hTS w _ _ _ _ v hs htame hram hv0 hv
-  let c : Irr (w.adicCompletion H.E) 1 :=
-    { V := ℂ, π := detRep (Fin 1) (S i w hw).mu, smooth := (isSmooth_ofChar_iff _).2 hs.detChar,
-      irr := isIrreducible_ofChar _ }
-  let τ : Irr (w.adicCompletion H.E) R.t :=
-    { V := π₂.V, π := twist π₂.π (detChar (Fin R.t) (S i w hw).mu), smooth := isSmooth_twist π₂.smooth hs.detChar,
-      irr := irreducible_twist π₂.irr _ }
-  have hc : Nonempty (c.π.Equiv (detRep (Fin 1) (S i w hw).mu)) := ⟨Representation.Equiv.refl _⟩
-  have e1 := L.prod _ _ π₁ τ _ he
-  have e2 := L.twist _ _ c π₂ τ hc ⟨Representation.Equiv.refl _⟩
-  have u1 := (L.sph _ π₁).2 h1
-  have u2 := (L.sph _ π₂).2 h2
-  have eV := (S i w hw).locV P
-  have eM := (S i w hw).locMu c hc
-  rw [e1, e2] at eV
-  refine ⟨?_, fun σ hσ => ?_⟩
-  · rw [T.mono0, eV, WeilDeligne.WD.monomial_sum_iff, WeilDeligne.WD.monomial_char_iff _ _ (L.dim 1 c)]
-    exact ⟨weilDeligneParameter_monodromy_zero_of_unramified u1, weilDeligneParameter_monodromy_zero_of_unramified u2⟩
-  · have hz := hmu σ hσ
-    rw [T.inePol _ _ _ hσ, eM] at hz
-    rw [T.inePol _ _ _ hσ, eV, WeilDeligne.WD.inePol_sum, inePol_of_unr u1 hσ,
-      inePol_char_of_unr u2 (L.dim 1 c) hσ hz, L.dim, L.dim]
-
 end GlobalTheory.TameType

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SkewAdjointCasimirSpectralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieSkewAdjointL2Statement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieSkewAdjointL2
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasimirSignatureMemCenterStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterCommutesLieActionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimStableSubspaceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterCommutesLieAction
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimStableSubspace
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.CuspDiscreteDecompositionGL
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.NotIsFinitePartOfBot
 open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary GlobalTheory.DiscreteSum GlobalTheory.OpTrace GlobalTheory.UnitaryBC GlobalTheory.DiscSpec GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL
@@ -92,7 +92,7 @@ theorem factorial_bound : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyCom
   have hZ : ∀ i, Restricts W (Zop i) (lie E a (Z i)) := fun i v => rfl
   let j := toL2ₗ μ W hm
   have hskew : ∀ i v w, inner ℂ (j (Zop i v)) (j w) = - inner ℂ (j v) (j (Zop i w)) := fun i v w =>
-    GlobalTheory.T.lie_skew_adjoint_l2 E a μ (Z i) v.1 w.1 (hm _ v.2) (hm _ w.2) (hm _ (hL _ _ v.2)) (hm _ (hL _ _ w.2))
+    _root_.GlobalTheory.CompanionTheory.LieSkew.lie_skew E a μ (Z i) v.1 w.1 (hm _ v.2) (hm _ w.2) (hm _ (hL _ _ v.2)) (hm _ (hL _ _ w.2))
       (hc _ v.2) (hc _ w.2) (hc _ (hL _ _ v.2)) (hc _ (hL _ _ w.2))
   choose r hr using fun (p : ι × ι) => hreal (toL (of (Z p.1) * of (Z p.2)) - toL (of (Z p.2) * of (Z p.1)))
   have hcomm : ∀ κ i, Zop κ * Zop i - Zop i * Zop κ = ∑ l, ((r (κ, i) l : ℝ) : ℂ) • Zop l := fun κ i => by
@@ -107,8 +107,8 @@ theorem factorial_bound : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyCom
     (Restricts.sum _ fun κ => (hZ κ).mul (hZ κ)).sub hSI
   have hcentral : ∀ i, (∑ i ∈ Kᶜ, Zop i * Zop i - ∑ κ ∈ K, Zop κ * Zop κ) * Zop i
       = Zop i * (∑ i ∈ Kᶜ, Zop i * Zop i - ∑ κ ∈ K, Zop κ * Zop κ) := fun i =>
-    Restricts.ext_of_eq (hΩI.mul (hZ i)) ((hZ i).mul hΩI) (GlobalTheory.T.center_commutes_lie_action E a Ω₀ hΩ (Z i))
-  obtain ⟨Y, hfd, hYW, hφY, hZY, hKY⟩ := GlobalTheory.T.finite_dim_stable_subspace E a W hW (fun ψ h => (hA ψ h).1) φ hφ
+    Restricts.ext_of_eq (hΩI.mul (hZ i)) ((hZ i).mul hΩI) (_root_.GlobalTheory.CompanionTheory.ZalgCentral.Zalg_mul_lie E a Ω₀ hΩ (Z i))
+  obtain ⟨Y, hfd, hYW, hφY, hZY, hKY⟩ := _root_.GlobalTheory.CompanionTheory.IrredMod.exists_finiteDimensional_zalg_lie_stable E a W hW (fun ψ h => (hA ψ h).1) φ hφ
   let b := Module.finBasis ℂ Y
   have hSY : ∀ u ∈ Y, S₀ u ∈ Y := fun u hu => by
     rw [hS₀, LinearMap.sum_apply]

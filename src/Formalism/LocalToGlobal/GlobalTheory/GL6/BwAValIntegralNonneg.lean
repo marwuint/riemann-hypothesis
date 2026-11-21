@@ -616,17 +616,6 @@ theorem bwA_span_diag (hν : Antitone ν) (hn0 : 0 < n) (j : Fin r) (p : K) (hpO
     exact hz hg
   exact hO hf
 
-theorem bwA_span_sandwich (hν : Antitone ν) (hn0 : 0 < n) (j : Fin r) (p : K) (hpO : p ∈ O) (hp : p ≠ 0)
-    (K₁ K₂ : Matrix (Fin r) (Fin r) K)
-    (h₁ : K₁ ∈ Submonoid.closure {g : Matrix (Fin r) (Fin r) K | ∃ (a b : Fin r) (c : K), c ∈ O ∧ g = 1 + Matrix.single b a c})
-    (h₂ : K₂ ∈ Submonoid.closure {g : Matrix (Fin r) (Fin r) K | ∃ (a b : Fin r) (c : K), c ∈ O ∧ g = 1 + Matrix.single b a c})
-    (f : MvPolynomial (Fin r × Fin n) K) (hf : f ∈ bwA_span O hn ν) :
-    p ^ ν ⟨0, hn0⟩ • Formalism.GradedWeylDivisibility.rowAct K (K₁ * Matrix.diagonal (Function.update 1 j p⁻¹) * K₂) f ∈ bwA_span O hn ν := by
-  rw [rowAct_mul_eq_rowAct_rowAct, rowAct_mul_eq_rowAct_rowAct]
-  have h3 := bwA_span_diag O hn ν hν hn0 j p hpO hp _ (bwA_span_closure O hn ν K₁ h₁ f hf)
-  have h4 := bwA_span_closure O hn ν K₂ h₂ _ h3
-  rwa [map_smul] at h4
-
 end Span
 
 section Blocks

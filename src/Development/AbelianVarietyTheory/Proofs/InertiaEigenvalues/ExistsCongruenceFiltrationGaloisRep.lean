@@ -1,7 +1,8 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CongruenceSubgroupsGLPadicStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowPrimeSubOneNormLeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixNearOnePowPrimeDeepStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CongruenceSubgroupsGLPadic
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowPrimeSubOneNormLe
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixNearOnePowPrimeDeep
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon
 open scoped Formalism.Per
 
@@ -22,7 +23,7 @@ theorem congrFilt_le_all_eq_zero (l : ℕ) [hl : Fact l.Prime] (x : ℝ) (hx0 : 
 
 theorem congrFiltration : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (ρ : ↥(GK K) →* GL n ℚ_[l]), (∀ i j, Continuous fun g => (ρ g : Matrix n n ℚ_[l]) i j) → ∃ N : ℕ → Subgroup ↥(GK K), (∀ k g, g ∈ N k ↔ ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ (l : ℝ) ^ (-((k : ℤ) + 2))) ∧ Antitone N ∧ (∀ k, IsOpen (N k : Set ↥(GK K))) ∧ (∀ k g, g ∈ N k → g ^ l ∈ N (k + 1)) ∧ (∀ k g, g ∈ N 0 → g ^ l ∈ N (k + 1) → g ∈ N k) ∧ ∀ g, (∀ k, g ∈ N k) → ρ g = 1 := by
   intro l _ n _ _ K ρ hcont
-  obtain ⟨Γ, hΓ⟩ := GlobalTheory.T.exists_congruenceSubgroups_GL_padic l n
+  obtain ⟨Γ, hΓ⟩ := _root_.GlobalTheory.congruenceSubgroups_GL_padic l n
   have hl1 : (1 : ℝ) ≤ l := by exact_mod_cast (Fact.out : l.Prime).one_lt.le
   have hmem : ∀ k g, g ∈ (Γ k).comap ρ ↔ ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ (l : ℝ) ^ (-((k : ℤ) + 2)) := by
     intro k g
@@ -48,7 +49,7 @@ theorem congrFiltration : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [D
       (zpow_pos (by linarith) _).ne').preimage hc
   · intro k g hg
     rw [hmem] at hg ⊢
-    have := GlobalTheory.T.norm_pow_prime_sub_one_le_of_norm_sub_one_le l n (ρ g : Matrix n n ℚ_[l]) k hg
+    have := _root_.GlobalTheory.pow_prime_sub_one_norm_le l n (ρ g : Matrix n n ℚ_[l]) k hg
     simpa [map_pow, Units.val_pow_eq_pow_val] using this
   · intro k g h0 hk
     rw [hmem] at h0 hk ⊢
@@ -56,7 +57,7 @@ theorem congrFiltration : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [D
       simpa using h0
     have hk' : ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) ^ l - 1) i j‖ ≤ (l : ℝ) ^ (-(((k + 1 : ℕ) : ℤ) + 2)) := by
       simpa [map_pow, Units.val_pow_eq_pow_val] using hk
-    exact GlobalTheory.T.norm_sub_one_le_of_norm_pow_prime_sub_one_le l n _ k h0' hk'
+    exact _root_.GlobalTheory.matrix_near_one_pow_prime_deep l n _ k h0' hk'
   · intro g hg
     apply Units.ext
     ext i j

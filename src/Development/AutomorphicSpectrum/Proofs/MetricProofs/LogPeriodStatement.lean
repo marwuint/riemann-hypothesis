@@ -1,14 +1,16 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackPullback
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentSwapVarietiesArithmeticStatement
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCWArith
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorSumIdentityBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProportionalMinorsBlockTriangularStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorizationOfNearTriangularStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.NearTriangularOfStepConditionsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorCommutationStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericFlagElementaryTwistStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorSumIdentityBaseChange
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProportionalMinorsBlockTriangular
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorizationOfNearTriangular
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.NearTriangularOfStepConditions
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorCommutation
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericFlagElementaryTwist
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
@@ -205,10 +207,10 @@ theorem fwd_flags {τ : Ψ} {a b ca cb : Fin N} {k₀ : K} (hb : (b : ℕ) = a +
     obtain ⟨α, hα, hz⟩ := H.2.2 (τ, i) k hp
     obtain ⟨β, hβ, hz'⟩ := H'.2.2 (τ, i) k hp
     rw [hsnd] at hz'
-    exact GlobalTheory.T.proportional_minors_block_triangular N j i (h τ) (h' τ) α β M.j_le (H.2.1 τ).1 (H'.2.1 τ).1 (H.2.1 τ).2 hα hβ
+    exact _root_.GlobalTheory.CompanionTheory.Ar.PB.PlVanish.quot_vanish N j i (h τ) (h' τ) α β M.j_le (H.2.1 τ).1 (H'.2.1 τ).1 (H.2.1 τ).2 hα hβ
       (step_pl M hF hzb hG hp (H.2.1 τ).1 (H'.2.1 τ).1 fun m => by rw [← hz m, ← hz' m, snd_fst_ne hkk])
-  obtain ⟨B, U, t, hB, hBt, hBd, hU, hUt, hUd, hC⟩ := GlobalTheory.T.elementary_factorization_of_near_triangular N j ca cb C hcb hS hCb hCd
-    (GlobalTheory.T.near_triangular_of_step_conditions N j a b ca cb C M.j_le hb hab hca hcb hCb vanish)
+  obtain ⟨B, U, t, hB, hBt, hBd, hU, hUt, hUd, hC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.Factor.exists_upper_transvection_upper N j ca cb C hcb hS hCb hCd
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.StepShape.upper_of_steps N j a b ca cb C M.j_le hb hab hca hcb hCb vanish)
   have hBc : ∀ c, B c c ≠ 0 := fun c => by
     rw [Matrix.det_of_upperTriangular hBt] at hBd
     exact Finset.prod_ne_zero_iff.1 hBd c (Finset.mem_univ c)
@@ -258,7 +260,7 @@ theorem frame_any {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {S : Typ
       f (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') * ∑ I, f (F.u ⟨k, m⟩ I) * minorIJ G I (stepCols N j p.2) := by
   haveI : Infinite M.Ω := Infinite.of_injective (Nat.cast : ℕ → M.Ω) Nat.cast_injective
   letI : Algebra M.Ω S := f.toAlgebra
-  have h1 := GlobalTheory.T.minor_sum_identity_base_change M.Ω N j (F.T p.1) _ _ (M.coef ⟨k, m⟩) (F.u ⟨k, m⟩) (stepCols N j p.2)
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.PB.MinorAny.minor_any M.Ω N j (F.T p.1) _ _ (M.coef ⟨k, m⟩) (F.u ⟨k, m⟩) (stepCols N j p.2)
     (hF.2.1 p k hp m) S G hG
   have e' : (F.T p.1).map (algebraMap M.Ω S) * G = gg * bb := e
   rw [e'] at h1
@@ -293,7 +295,7 @@ theorem back {τ : Ψ} {a b ca cb : Fin N} {k₀ : K} (hb : (b : ℕ) = a + 1) (
   let A := regRing M.x zb
   let val : A →+* ℂ := regVal hzb
   obtain ⟨L, R, _, _, φ, θ, U, s, i, ρ, cA, B, sR, hi, hθ, hU, hU0, hθX, hic, hρc, hBb, hBi, hBρ, his, hρs⟩ :=
-    GlobalTheory.T.generic_flag_elementary_twist M.Ω Φ Ψ N j M.g F.T A val h t τ ca cb hcb hS M.g_block M.g_indep hF.1 fun τ => (H.2.1 τ).1
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.CPts.GenData.gen_data M.Ω Φ Ψ N j M.g F.T A val h t τ ca cb hcb hS M.g_block M.g_indep hF.1 fun τ => (H.2.1 τ).1
   let am := algebraMap M.Ω Φ
   let φΩ : M.Ω →+* L := φ.comp am
   let uA : (Σ k, ι k) → Finset (Fin N) → A := fun q I => ⟨F.u q I, exists_isValueAt hzb (hG.2.1 q I).1⟩
@@ -358,7 +360,7 @@ theorem back {τ : Ψ} {a b ca cb : Fin N} {k₀ : K} (hb : (b : ℕ) = a + 1) (
     | none =>
       show ∃ (e : L) (t' : ℂ) (sv : ι k₀ → R), e ≠ 0 ∧ t' ≠ 0 ∧
         (∀ m, θ (M.wCo (τ, a) k₀ ca cb RatFunc.X ⟨none, m⟩) = e * i (sv m)) ∧ ∀ m, ρ (sv m) = t' * z ⟨none, m⟩
-      obtain ⟨V, hVb, hVt, hVd, hV⟩ := GlobalTheory.T.elementary_factor_commutation L N j ca cb (U τ) (θ RatFunc.X) s hcb hS (hU τ).1 (hU τ).2.1
+      obtain ⟨V, hVb, hVt, hVd, hV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.MoveTransvection.exists_conj L N j ca cb (U τ) (θ RatFunc.X) s hcb hS (hU τ).1 (hU τ).2.1
         (hU τ).2.2 hU0 hθX
       have hcbS : cb ∉ stepCols N j a := by
         simp only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -410,7 +412,7 @@ end Flags
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (d : ℕ) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsArithVar (mCoordIdeal y) (d + 2) → ∀ (F : FrameData ι Ψ N M.Ω M.blk) (z : (Σ o : Option K, ι (o.getD k₀)) → ℂ), M.IsFrame F → basePart M.blk (fstPt k₀ z) ∈ mcPts (mCoordIdeal M.x) → M.GoodAt F (mCoordIdeal (basePart M.blk (fstPt k₀ z))) → (∀ k, basePart M.blk (fstPt k₀ z) ⟨k, F.c k⟩ = 1) → (z ∈ mcPts (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ↔ ∃ (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (t : ℂ), M.IsFlagOf F (fstPt k₀ z) h ∧ M.IsFlagOf F (sndPt k₀ z) (Function.update h τ (h τ * (1 + Matrix.single cb ca t)))) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M d τ a b k₀ ca cb hb hab hk hca hcb hy F z hF hzb hG hc
   refine ⟨fun hz => ?_, fun ⟨h, t, H, H'⟩ => back M hb hab hk hca hcb hF hzb hG H H'⟩
-  have hI := (GlobalTheory.T.flag_adjacent_swap_varieties_arithmetic K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hab hk hca hcb hy).2.2.2.2 (v₁ k₀)
+  have hI := (_root_.PositivityTheory.Xgp.t_c_w_arith K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hab hk hca hcb hy).2.2.2.2 (v₁ k₀)
     (fun p hp => v₁_ne hp) (v₁_self k₀)
   have hsnd := basePart_snd M hk z
   have z₀ : fstPt k₀ z ∈ mcPts (mCoordIdeal y) :=

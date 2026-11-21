@@ -32,12 +32,6 @@ def embK : D.host.K →+* D.what₂.LL := D.embE.comp (algebraMap D.host.K D.hos
 def tupLevel (t : T0) : ℕ :=
   D.host.g 0 * D.host.g 1 * ∏ q ∈ (R.Q t).image (fun PP => Nat.card (kP PP)), q
 
-structure FieldHyp (t : T0) : Prop where
-  xi : ∀ x, ((R.xi t x : Circle) : ℂ) ∈ D.what₂.embLL.fieldRange
-  eta : ∀ P, Formalism.L2.Host.etaAlg D.host R.C.eta P ∈ D.what₂.embLL.fieldRange
-  roots : ∀ PP ∈ R.Q t, ∃ z : D.what₂.LL, IsPrimitiveRoot z (Nat.card (kP PP))
-  comp : ContainsRayField (embK D) (tupLevel R t)
-
 def RatAt (i : Fin D.R.m) (ph : ℂ) (t : T0) : Prop :=
   ∀ x₀ : A.fam.amb.FL i t, ∃ y : Fin (R.nW i) → D.what₂.LL,
     (R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) y) = ph • R.thF i t (R.jV i t x₀) ∧
@@ -65,20 +59,5 @@ theorem proj_clause (i : Fin D.R.m) (ph : ℂ) (t : T0) (hG : R.thP_thG)
   first | rfl | exact Finset.sum_congr rfl fun _ _ => rfl
 
 end Tuple
-
-def RatThetaAt (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)
-    (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
-    (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
-    (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ) (i : Fin D.R.m) : Prop :=
-  R.Char F → Nonempty (FWTie T R κ v₀) → RhoTie R → OMPins T R κ v₀ O i → PhaseTie T R κ v₀ O ph i → QGuard R →
-    ∀ t : T0, FieldHyp R t → RatAt R i (ph i) t
-
-def RatTheta : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
-    (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)
-    (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
-    (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
-    (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ) (i : Fin D.R.m),
-    RatThetaAt T R F κ v₀ O ph i
 
 end GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta

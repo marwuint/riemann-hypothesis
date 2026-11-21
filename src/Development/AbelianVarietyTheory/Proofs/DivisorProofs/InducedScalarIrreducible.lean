@@ -60,29 +60,4 @@ theorem indScal_scal_lift (ν β : kˣ →* ℂˣ) (a b : ℕ) {f : GL (Fin (a +
     indScalVal ν β a b (indScalLift ν β a b hf) = f :=
   funext (indScal_lift_apply ν β a b hf)
 
-theorem indScal_irreducible : GlobalTheory.Published.BernsteinUnitaryProductIrreducible → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ) (ν β : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → GlobalTheory.SmGL.IsSmoothChar β → GlobalTheory.SmGL.IsUnitaryChar β → ∀ M : Submodule ℂ (GL (Fin (a + b)) k → ℂ), M ≤ GlobalTheory.RankFibre.indScal ν β a b → (∀ f ∈ M, ∀ h : GL (Fin (a + b)) k, (fun x => f (x * h)) ∈ M) → M = ⊥ ∨ GlobalTheory.RankFibre.indScal ν β a b ≤ M := by
-  intro H k _ _ _ _ a b ν β hνs hνu hβs hβu M hM hinv
-  have hs : IsSmoothChar (ν * β) := hνs.mul hβs
-  have hu : IsUnitaryChar (ν * β) := fun g => by simp [hνu g, hβu g]
-  have h₁ := GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp a hs hu
-  have h₂ := GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp b hβs hβu
-  have hirr := H k a b ℂ ℂ (detRep (Fin a) (ν * β)) (detRep (Fin b) β) h₁.1 h₁.2.1 h₁.2.2 h₂.1 h₂.2.1 h₂.2.2
-  let S : Subrepresentation (prod₂ (detRep (Fin a) (ν * β)) (detRep (Fin b) β)) :=
-    ⟨M.comap (indScalVal ν β a b), fun g F hF => hinv _ hF g⟩
-  have hS : S.toSubmodule = M.comap (indScalVal ν β a b) := rfl
-  have hmem : ∀ f (hf : f ∈ indScal ν β a b), f ∈ M ↔ indScalLift ν β a b hf ∈ S.toSubmodule := fun f hf => by
-    rw [hS, Submodule.mem_comap, indScal_scal_lift]
-  rcases hirr.eq_bot_or_eq_top S with h | h
-  · left
-    refine (Submodule.eq_bot_iff M).2 fun f hf => ?_
-    have h' := (hmem f (hM hf)).1 hf
-    rw [h] at h'
-    have h0 : indScalLift ν β a b (hM hf) = 0 := (Submodule.mem_bot ℂ).1 h'
-    rw [← indScal_scal_lift ν β a b (hM hf), h0, map_zero]
-  · right
-    intro f hf
-    refine (hmem f hf).2 ?_
-    rw [h]
-    exact Submodule.mem_top
-
 end GlobalTheory.RankFibre

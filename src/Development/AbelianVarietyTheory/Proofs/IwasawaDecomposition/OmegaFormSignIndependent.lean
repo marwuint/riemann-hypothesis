@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormInt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormSignExists
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitFinitePointMovesVacuumToProjectionStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormPeriodRelation
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicThetaOfTestFunctionExistsLawsFockVectorsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicThetaOfTestFunctionExistsLawsFockVectors
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsLatticeVacuumIffSignedRationalFixed
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeLatticeVacuumTransport
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionFixesLevelVectorUpToUnit
@@ -437,7 +437,7 @@ theorem heis_root_zak {r g : ℕ} (hr : T.rank = r) {ψ : AddChar (AF D.host.F) 
   replace hEF : ∀ u v, EF X' u v = EF X u v := hEF
   have hL' : SelfD X' (latG T g') := ⟨hL.1, by simpa only [hEF] using hL.2⟩
   let C := ctxOf hS.1 hS.2.1 hS.2.2.2.1 X' m hq' bas' idx' hsy
-  have hz := (GlobalTheory.T.adelicTheta_of_testFunction_exists_laws_fockVectors D S T _ g rfl ψ θ X eT bas idx hS Z hZ).1
+  have hz := (_root_.GlobalTheory.OneMapRef.zak_laws D S T _ g rfl ψ θ X eT bas idx hS Z hZ).1
   have hsb := Const.isSB_smul_tf a hv.1
   have hlat : IsLatVac (heisO ψ S T) (hatA S T (tens (stdL D.host.E S.rank) (latG T g'))) f := by
     refine (SignVac.isLatVac_iff D S T C w hw hw' hw2 1 _ (Base.stdL_mem_Vset _ 1) _ hL' f hf.1).2 fun y hy => ?_
@@ -466,7 +466,7 @@ theorem zak_sum {r g : ℕ} {hr : T.rank = r} {ψ : AddChar (AF D.host.F) ℂ} {
     Zak ψ θ hr eT bas idx (frOf hr eT Z) (c • ∑ q, W q • heisG X bas (Y q) φ)
       (c • ∑ q, W q • heisO ψ S T (finR S hr (-Y q)) f) := by
   classical
-  have hz := (GlobalTheory.T.adelicTheta_of_testFunction_exists_laws_fockVectors D S T _ g hr ψ θ X eT bas idx hS Z hZ).1
+  have hz := (_root_.GlobalTheory.OneMapRef.zak_laws D S T _ g hr ψ θ X eT bas idx hS Z hZ).1
   have key : ∀ s : Finset Q, SW.IsSB (∑ q ∈ s, W q • heisG X bas (Y q) φ) ∧ Zak ψ θ hr eT bas idx (frOf hr eT Z)
       (∑ q ∈ s, W q • heisG X bas (Y q) φ) (∑ q ∈ s, W q • heisO ψ S T (finR S hr (-Y q)) f) := by
     intro s

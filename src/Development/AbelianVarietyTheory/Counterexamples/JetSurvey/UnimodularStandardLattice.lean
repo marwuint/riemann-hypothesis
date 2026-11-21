@@ -60,11 +60,6 @@ theorem _root_.GlobalTheory.Survey.UnimodularStandardLattice.unimod_std :
       Finset.mem_univ, if_true] at hs
     exact (complexConj_mem_integers_iff (v i)).1 hs
 
-omit [IsCMField E] in
-
-theorem trivAt_std (bad : ℕ) : (⟨stdLat E n⟩ : GenLat E n).TrivAt bad :=
-  ⟨1, by simp, Submodule.smul_le_right, Submodule.smul_le_right⟩
-
 variable {H : Host E} {Dw : Datum H} {l : Level H}
 
 end GlobalTheory.Survey.UnimodularStandardLattice

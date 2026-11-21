@@ -99,10 +99,6 @@ structure ConeExact {K : ℕ → Type v} {C : ℕ → Type w} [∀ p, AddCommGro
     dK (p + 2) k = 0 → ∃ (c' : C p) (k' : K (p + 1)),
       dC p c' + φ (p + 1) k' = c ∧ dK (p + 1) k' = k
 
-theorem coneExact_id {K : ℕ → Type v} [∀ p, AddCommGroup (K p)] (d : ∀ p, K p →+ K (p + 1)) :
-    ConeExact (fun p => d p) (fun p => d p) (fun _ x => x) :=
-  ⟨fun _ h _ => h, fun c _ h _ => ⟨c, rfl, h⟩, fun p c _ h _ => ⟨0, c, by simp, h⟩⟩
-
 section Cone
 
 variable {R : Type u} [CommRing R] {K : ℕ → Type v} {C : ℕ → Type w} [∀ p, AddCommGroup (K p)]

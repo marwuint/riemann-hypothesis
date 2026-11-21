@@ -1,4 +1,10 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DensityLemma.PFibreBoundDefs
+import Formalism.HermitianCurvature.BigCellVanishingOfCommute
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.DerivativeBoundInBanachSpace
+import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.ZhatNormLinearBound
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.UnipotentFixesFrameVector
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVector
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryQuotientCompactness.UnitaryWeylCompact
 
 open MeasureTheory Matrix Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C6
@@ -6,13 +12,6 @@ open MeasureTheory Matrix Formalism.REAL Formalism.QuantumDeterminants Formalism
 noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.DLm
-
-section Frob
-
-attribute [local instance] Matrix.frobeniusSeminormedAddCommGroup Matrix.frobeniusNormedAddCommGroup
-  Matrix.frobeniusNormedSpace
-
-end Frob
 
 lemma gN_cont (k r : ℕ) : Continuous (fun g : B.Mat k r => B.gN g) := by
   unfold B.gN

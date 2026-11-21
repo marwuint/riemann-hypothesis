@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InertPrimeDepthContentBoundProofStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ComplexConjFrobeniusDepthContentBoundProofStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitPrimeDepthContentBoundProofStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LargePrimePackagesDepthNonposStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InertPrimeDepthContentBoundProof
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ComplexConjFrobeniusDepthContentBoundProof
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SplitPrimeDepthContentBoundProof
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LargePrimePackagesDepthNonpos
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ErealLeMulOfForallLe
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ForcedContentBoundsProgrammeValueGoodPrime
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevelLe
@@ -11,7 +11,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CrudeVal
 import Development.AutomorphicArithmetic.OrbitLabellings.PkgZeroCsNuNonposOfMonSupply
 import Development.AutomorphicArithmetic.OrbitLabellings.RowBoundLeFnumSumAddError
 import Development.AutomorphicArithmetic.OrbitLabellings.FMulLeastAdmissibleLevelRowsLe
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.OddLevelBlockBoundAttainedStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.OddLevelBlockBoundAttained
+import Formalism.LocalToGlobal.CharacterGerms.ContentLargeFromSupplies
+import Formalism.LocalToGlobal.CharacterGerms.ContentZeroAt
+import Formalism.LocalToGlobal.CharacterGerms.LatticeInclusionFormsInjective
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MonomialBlockSupplyBothTypingsStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CharacterBlocksAttainBoundStatement
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryBoundIntegral Formalism.L2.DIV Formalism.L2.Pj Formalism.BasicNotions GlobalTheory.GoodDepth NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -55,11 +58,11 @@ private theorem odd_ordP_of_conjIn {N : NumDatum} {l : ℕ} (h : ConjIn N l) : O
 
 theorem nuGood : NuGoodSt := by
   intro C1 hC1
-  obtain ⟨CI, hCI, HI⟩ := GlobalTheory.T.inertPrimeDepthContentBound_proof C1 hC1
-  obtain ⟨CP, hCP, HP⟩ := GlobalTheory.T.complexConjFrobeniusDepthContentBound_proof C1 hC1
-  obtain ⟨CS, hCS, HS⟩ := GlobalTheory.T.splitPrimeDepthContentBound_proof C1 hC1
+  obtain ⟨CI, hCI, HI⟩ := _root_.GlobalTheory.InertContent.main C1 hC1
+  obtain ⟨CP, hCP, HP⟩ := _root_.GlobalTheory.GoodDepth.ConjPkg.phiCBd C1 hC1
+  obtain ⟨CS, hCS, HS⟩ := _root_.GlobalTheory.GoodDepth.splitBd C1 hC1
   obtain ⟨CC, hCC, HC⟩ := UpperTheory.rowBound_le_Fnum_sum_add_error GlobalTheory.T.oddLevelBlock_bound_attained.2 GlobalTheory.T.characterBlocks_attain_bound.2 GlobalTheory.T.monomialBlock_supply_both_typings.2 C1 hC1
-  obtain ⟨HZ, -⟩ := GlobalTheory.T.largePrime_packages_depth_nonpos
+  obtain ⟨HZ, -⟩ := _root_.GlobalTheory.GoodDepth.zeroBd
   refine ⟨2 * CI + 2 * CP + 2 * CC + CS + 2, by positivity, ?_⟩
   intro E _ _ _ H Dw lv Xo c _ hstar hIC hPk N j pl a nW T b L w hj1 hjm hpl hp hq hdom hG hw hb la h2 hq' hd hg0 hg1 hM
   obtain ⟨PI, PP, PS, PZ, -, PC, PZC⟩ := hPk

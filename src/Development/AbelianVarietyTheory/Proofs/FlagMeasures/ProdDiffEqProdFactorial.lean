@@ -6,19 +6,6 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.FormalDegreeDatum
 
-theorem prod_diff_eq_prod_factorial (n : ℕ) :
-    (∏ a : Fin n, ∏ b ∈ Finset.univ.filter (fun b : Fin n => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) =
-      ∏ i ∈ Finset.range n, (i.factorial : ℝ) := by
-  cases n with
-  | zero => simp
-  | succ m =>
-    have h := Matrix.det_vandermonde_id_eq_superFactorial (R := ℝ) m
-    rw [Matrix.det_vandermonde, ← Nat.prod_range_succ_factorial] at h
-    push_cast at h
-    rw [← h]
-    refine Finset.prod_congr rfl fun a _ => Finset.prod_congr ?_ fun b _ => rfl
-    ext b; simp
-
 theorem inUJ_of_cayley {n : ℕ} (ε : Fin n → Bool) (P Q G : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P)
     (h1 : Pᴴ * Formalism.REAL.Jm ε * P = G) (h2 : Qᴴ * Formalism.REAL.Jm ε * Q = G) :
     Formalism.REAL.inUJ ε (Q * P⁻¹) := by
@@ -66,36 +53,5 @@ theorem fdeg_of_conj {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGr
   have hd0 : d ≠ 0 := hd.1.ne'
   rw [h1, h4]
   field_simp
-
-theorem fdeg_mul_prod_factorial : GlobalTheory.Published.FormalDegreeCompactDual → ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mat k r → (H →L[ℂ] H)) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (cd : Formalism.BasicNotions.CDHaar) (sc : ∀ n : ℕ, (Fin n → Bool) → NNReal) (P : Mat k r) (d : ℝ), GlobalTheory.Mem.Vol.CdScaleIs cd sc → IsHCParam lam → IsDSHpk k r ε lam σ → IsCayley k r ε P → IsFdeg ((sc _ ε : ℝ≥0∞) • Formalism.REAL.muG ε) (fun g => σ (P⁻¹ * g * P)) d → d * (∏ i ∈ Finset.range (2 * r + k + 1), (i.factorial : ℝ)) = vand lam := by
-  intro hF k r H _ _ _ σ ε lam cd sc P d hsc hlam hDS hP hd
-  obtain ⟨Q, ⟨hQ, -⟩, hDS⟩ := hDS
-  have hPd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP.1
-  have hQd : IsUnit Q.det := (Matrix.isUnit_iff_isUnit_det Q).1 hQ.1
-  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPd
-  have hPP' : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul P hPd
-  have hQQ : Q * Q⁻¹ = 1 := Matrix.mul_nonsing_inv Q hQd
-  have hQQ' : Q⁻¹ * Q = 1 := Matrix.nonsing_inv_mul Q hQd
-  let u : (Mat k r)ˣ := ⟨Q * P⁻¹, P * Q⁻¹,
-    by rw [Matrix.mul_assoc, ← Matrix.mul_assoc P⁻¹, hPP', Matrix.one_mul, hQQ],
-    by rw [Matrix.mul_assoc, ← Matrix.mul_assoc Q⁻¹, hQQ', Matrix.one_mul, hPP]⟩
-  let a : Formalism.REAL.UJ ε := ⟨u, inUJ_of_cayley ε P Q _ hP.1 hP.2 hQ.2⟩
-  haveI := hDS.2.1
-  obtain ⟨w, hw⟩ := exists_ne (0 : H)
-  have h1 := hF cd sc hsc _ ε lam hlam H _ w hDS hw
-  have h2 := fdeg_of_conj ((sc _ ε : ℝ≥0∞) • Formalism.REAL.muG ε) (fun g => σ (P⁻¹ * g * P))
-    (fun g => σ (Q⁻¹ * g * Q)) a (fun g => by
-      have e : umat (a * g * a⁻¹) = Q * P⁻¹ * umat g * (P * Q⁻¹) := rfl
-      have e2 : Q⁻¹ * (Q * P⁻¹ * umat g * (P * Q⁻¹)) * Q = (Q⁻¹ * Q) * (P⁻¹ * umat g * P) * (Q⁻¹ * Q) := by
-        simp only [Matrix.mul_assoc]
-      simp only [e, e2, hQQ', Matrix.one_mul, Matrix.mul_one]) hDS.2.2.1 d hd w hw
-  rw [h2, prod_diff_eq_prod_factorial] at h1
-  have hne : (∏ i ∈ Finset.range (2 * r + k + 1), (i.factorial : ℝ)) ≠ 0 :=
-    Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast i.factorial_ne_zero
-  rw [h1, div_mul_cancel₀ _ hne]
-  unfold vand
-  refine Finset.prod_congr rfl fun x _ => Finset.prod_congr rfl fun y hy => ?_
-  have : x < y := (Finset.mem_filter.1 hy).2
-  exact abs_of_pos (sub_pos.2 (hlam.1 this))
 
 end GlobalTheory.FormalDegreeDatum

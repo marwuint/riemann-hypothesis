@@ -111,16 +111,6 @@ instance isMulRightInvariant_unitaryAdeleGroup [Fact (IsUnit H.det)]
     (μ : Measure (unitaryAdeleGroup K H)) [μ.IsHaarMeasure] : μ.IsMulRightInvariant :=
   RightCosetSpace.isMulRightInvariant_of_compactSpace (unitaryRationalGroup K H) μ
 
-section TraceFormula
-
-open RightCosetSpace
-
-variable [Fact (IsUnit H.det)]
-  [Fact (∀ x : ι → E, (fun i => conj K E (x i)) ⬝ᵥ (H *ᵥ x) = 0 → x = 0)]
-  (μ : Measure (unitaryAdeleGroup K H)) [μ.IsHaarMeasure]
-
-end TraceFormula
-
 end CompactFormula
 
 end

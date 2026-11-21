@@ -2,9 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.ConvolutionSmoothL2
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsProjOnOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLeOfMeanZero
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CuspidalSubspaceClosedRightTranslationStableStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RepresentativeValuesVectorVariationUnipotentOrbiStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousRepresentativePropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CuspidalSubspaceClosedRightTranslationStable
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
+import Formalism.HarderNarasimhan.ShiftInvariance
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RepresentativeValuesVectorVariationUnipotentOrbi
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousRepresentativeProperties
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec GlobalTheory.Deep GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis
 open scoped InnerProductSpace ContDiff
@@ -28,8 +30,8 @@ theorem step_bound (B : RowsAut) (b ρ M : ℝ) (P : ℕ) (D : ℕ)
   have hvvs : ∀ z : B.I.GA, ‖vv B Fr u z - vv B Fr u x‖ = Real.sqrt (∑ i, ‖Fr i u z - Fr i u x‖ ^ 2) := by
     intro z
     simp [vv, EuclideanSpace.norm_eq]
-  have hnear := GlobalTheory.T.representativeValuesVector_variation_unipotentOrbit B b ρ M P D T Fr x W hS hR hM hb
-  have hcusp := GlobalTheory.T.cuspidalSubspace_closed_rightTranslation_stable B
+  have hnear := _root_.GlobalTheory.PathVar.path_variation B b ρ M P D T Fr x W hS hR hM hb
+  have hcusp := _root_.GlobalTheory.CuspSubspace.cuspidal_closed_stable B
   obtain ⟨L, hL, -, -, hLf⟩ := hcusp
   have hrep : ∀ i, GlobalTheory.Dec.IsContRep B (T i u) (Fr i u) := fun i => (hR i P u hu).1
   have hx : ‖vv B Fr u x‖ ≤ ρ * Real.sqrt B.I.f * beP B.I.n b P * M * ‖u‖ := by
@@ -38,7 +40,7 @@ theorem step_bound (B : RowsAut) (b ρ M : ℝ) (P : ℕ) (D : ℕ)
     · intro i
       obtain ⟨hc, hl, hae⟩ := hrep i
       refine ⟨hc, hl, (hR i P u hu).2.1, ?_⟩
-      have h1 := ((GlobalTheory.T.continuous_representative_properties B).2.2.2 _ _ (hrep i)).1
+      have h1 := ((_root_.GlobalTheory.ContRepUniq.contRep_unique_linear B).2.2.2 _ _ (hrep i)).1
       exact (hLf (T i u) (Fr i u) hl hc h1).1 ((hL _).2 (hC i u))
     · intro ν hν
       obtain ⟨γ, hγ, k, hk, z, hz, he⟩ := hcov ν hν

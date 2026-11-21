@@ -1,9 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAdmissibleSubalgebra
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SemisimplePotentialsAtNewformEigensystemStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SemisimpleTensorOfSemisimplePotentialsStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SemisimplePotentialsAtNewformEigensystem
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SemisimpleTensorOfSemisimplePotentials
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisRepresentationOfEigensystemStatement
+
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
 
@@ -15,7 +18,7 @@ theorem heckeProj_newform : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgCl
   have hlp : l.Prime := Fact.out
   have hlN : ¬ l ∣ N := (Nat.Prime.coprime_iff_not_dvd hlp).1 hNl.symm
   have hpot : SSPotB N l (k - 2) lamC :=
-    GlobalTheory.T.semisimple_potentials_at_newform_eigensystem k g N l hgN hN5 hlp hlN hk hk3 α hα hα1 hα2 lamC hT hU hD
+    _root_.GlobalTheory.KZ.SSPotBr.ssPotB_at_newform k g N l hgN hN5 hlp hlN hk hk3 α hα hα1 hα2 lamC hT hU hD
   have hw : Odd w := by
     obtain ⟨j, rfl⟩ := hk
     refine ⟨j - 1, ?_⟩
@@ -26,7 +29,7 @@ theorem heckeProj_newform : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgCl
       funext T; simp [lam]
     rw [this]; exact hpot
   have hbb : X.SSBB N l w E lam :=
-    GlobalTheory.T.semisimple_tensor_of_semisimple_potentials ε X hε han N l w hl2 hN5 hNl hw ι lam hpot'
+    _root_.GlobalTheory.KZ.Comp.ssbb_of_ssPotB ε X hε han N l w hl2 hN5 hNl hw ι lam hpot'
   exact GlobalTheory.T.galois_representation_of_eigensystem ε X hε han N l w hl2 hN5 hNl hw hnorm lam hbb ρ S0 htr hdet hfrob hirr
 
 end GlobalTheory.KZ.HeckeProj

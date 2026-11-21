@@ -12,10 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBi
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkInjective
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GenRelNeZero
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDVRResidueGaloisAutomorphismsStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompleteDVRResidueGaloisAutomorphisms
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ArcDatumMatchLengthSymmPreimagesStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusPointWithCharactersIffPullDegStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSplitTorusExtensionDescentGaloisInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusPointWithCharactersIffPullDeg
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSplitTorusExtensionDescentGaloisInvariant
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -58,7 +58,7 @@ theorem pull_rel {φ : R →+* R'} {D : DegData R I} {D' : DegData R' I'} {hD : 
   obtain rfl : z' ≫ h = z := by
     rw [← cancel_mono (fstG I e G).left, Category.assoc, h₁, hz]
   refine ⟨by rw [h₂, Category.assoc], fun a => ?_⟩
-  have key := GlobalTheory.T.torusPoint_with_characters_iff_pullDeg R R' I I' φ D.toPre D'.toPre hD G G' e (U.gt e) (U'.gt e) h h₂ h₃ T z' (fun x => a (ε'.symm x))
+  have key := _root_.GlobalTheory.TorusPull.torus_point_iff R R' I I' φ D.toPre D'.toPre hD G G' e (U.gt e) (U'.gt e) h h₂ h₃ T z' (fun x => a (ε'.symm x))
   constructor
   · rintro ⟨τ, hτ, ha⟩
     obtain ⟨τ₁, k₁, k₂⟩ := key.1 ⟨τ, hτ, fun x => by rw [← ha, Equiv.apply_symm_apply]⟩
@@ -244,7 +244,7 @@ theorem split_of_galois (hL : Laws) (h2 : Laws2) (h3 : Laws3) (h4 : Laws4) (h5 :
         (thickObj R I 0 W.P.D.toPre.P.A).hom ≫ spMap α :=
     ⟨pullback.lift _ _ (gB.1.w.trans (Category.assoc _ _ _).symm), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
   have haff := (W.P.U.gt 0).q_affine
-  refine GlobalTheory.T.exists_splitTorusExtension_descent_galois_invariant k (R ⧸ I ^ (0 + 1)) ((Over.pullback (spMap p)).obj t.G)
+  refine _root_.GlobalTheory.exists_splitExt_of_galois_invariant k (R ⧸ I ^ (0 + 1)) ((Over.pullback (spMap p)).obj t.G)
     ((Over.pullback (spMap (p.comp f))).obj a.D₀.P.A) (GlobalTheory.isAbelianScheme_pullback_obj _ _ a.D₀.P.isAb)
     (thickObj R I 0 W.t.G) (thickObj R I 0 W.P.D.toPre.P.A) W.P.D.toPre.X φG φB
     ((isGrpPullback_pullback t.G (spMap p)).cancel (gG.congr rfl G₁.symm) G₂)
@@ -295,7 +295,7 @@ theorem split_of_galois (hL : Laws) (h2 : Laws2) (h3 : Laws3) (h4 : Laws4) (h5 :
 theorem splitOver_of_hasArcData : Laws → Laws2 → Laws3 → Laws4 → Laws5 → Laws6 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O'] (b : c.V W₀ →+* O') (a : ArcIn D l (c.V W₀).subtype O' b) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (f : O' →+* V) (u : V), (∀ x, x ≠ 0 → IsUnit (f x)) → ¬ IsUnit u → ∀ (χ : Sp V ⟶ Y.X) (y : Sp (FractionRing V) ⟶ Xo.XF c), y ≫ Y.j = jK V ≫ χ → ∀ (t : SAB H (Sp V)) (_ : SABMap t Y.t χ) (V' : Type) [CommRing V'] [IsDomain V'] [IsLocalRing V'], CDvr V' → ∀ g : V →+* V', Function.Injective g → g.Finite → Y.HasArcData a (IsLocalRing.maximalIdeal V') (g.comp f) (g u) (spMap g ≫ χ) → SplitOver t.G (IsLocalRing.maximalIdeal V) := by
   intro hL h2 h3 h4 h5 h6 E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a V _ _ _ hV f u hf hu χ y hy t m V' _ _ _ hV' g hg hfin hA
   obtain ⟨W'⟩ := (Y.hasArcData_iff a _ _ _ _).1 hA
-  obtain ⟨R, _, _, _, j, hR, hj, hjI, hgI, hG⟩ := GlobalTheory.T.exists_completeDVR_residue_galois_automorphisms V V' hV hV'
+  obtain ⟨R, _, _, _, j, hR, hj, hjI, hgI, hG⟩ := _root_.GlobalTheory.exists_cDvr_residue_galois V V' hV hV'
     (fun n hn => by rw [← map_natCast f]; exact hf _ (Nat.cast_ne_zero.2 hn)) g hg hfin
   have := hR.1
   have := hV'.1

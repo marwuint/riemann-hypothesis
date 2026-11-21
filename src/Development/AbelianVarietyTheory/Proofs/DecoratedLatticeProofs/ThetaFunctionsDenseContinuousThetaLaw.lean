@@ -9,10 +9,11 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmoothIffRealCoordin
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsInfFamFamily
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.CovolOneIntegralAdd
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaLawTendstoUniformNearZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSmallCompactLevelSymplecticCharacterTriviaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsHeisenbergAverageCompactSymplecticTrivialStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergAverageRealPlacesSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorThetaLawTendstoUniformNearZero
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSmallCompactLevelSymplecticCharacterTrivia
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsHeisenbergAverageCompactSymplecticTrivial
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergAverageRealPlacesSmooth
 
 noncomputable section
 
@@ -63,7 +64,7 @@ theorem exists_theta_of_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), I
   have hφs : ContDiff ℝ ∞ φ := b.contDiff_normed
   have hφc : HasCompactSupport φ := b.hasCompactSupport_normed
   let g : WO A T → ℂ := fun w => ∫ x, (φ x : ℂ) * heisO ψ A T (iotaW σ T A x) f w
-  have hsm : Sm (iotaW σ T A) g := GlobalTheory.T.heisenbergAverage_realPlaces_smooth D θ σ h ψ hψ A T φ hφs hφc f hf
+  have hsm : Sm (iotaW σ T A) g := _root_.GlobalTheory.HeisAverage.sm_heisO_average D θ σ h ψ hψ A T φ hφs hφc f hf
   have hl : ∃ U : AddSubgroup (WO A T), IsOpen (U : Set (WO A T)) ∧
       ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ A T u g = g := by
     obtain ⟨U, hU, hUf⟩ := hlev
@@ -95,9 +96,9 @@ theorem exists_theta_of_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), I
     rwa [b.support_normed_eq] at this
 
 theorem exists_theta_near : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (q : WO A T → ℂ), Continuous q → (∀ (γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), q (ratW T A γ + u) = ψ (-(symplOH A T (ratW T A γ) u)) * q u) → ∀ ε : ℝ, 0 < ε → ∃ g : WO A T → ℂ, IsThetaFunO ψ A T g ∧ ∀ u, ‖q u - g u‖ ≤ ε := by
-  have h1 := GlobalTheory.T.heisenbergOperator_thetaLaw_tendsto_uniform_near_zero
-  have h2a := GlobalTheory.T.exists_small_compact_level_symplecticCharacter_trivial
-  have h2b := GlobalTheory.T.exists_heisenbergAverage_compactSymplecticTrivial
+  have h1 := _root_.GlobalTheory.HeisNearZero.heisO_near_zero_unif
+  have h2a := _root_.GlobalTheory.SmallLevel.exists_small_level
+  have h2b := _root_.GlobalTheory.HeisAvgCompact.exists_average
   have h4 := exists_theta_of_level
   intro D ψ hψ A T q hq hlaw ε hε
   obtain ⟨N, hN, hNq⟩ := h1 D ψ hψ A T q hq hlaw (ε / 2) (half_pos hε)

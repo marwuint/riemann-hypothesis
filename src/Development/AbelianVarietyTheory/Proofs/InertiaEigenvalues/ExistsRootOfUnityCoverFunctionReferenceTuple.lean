@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMapOfOfExtends
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsThClsDGalRul
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjFourierCoefficientsConjugateTuplesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisConjClassScalarsAndVolumeStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjFourierCoefficientsConjugateTuples
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisConjClassScalarsAndVolume
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MarkedIsometryHalf
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SecEqZeroOfComplex
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.GalRulGalRul
@@ -210,9 +210,9 @@ theorem exists_root_galRul_isSum : Formalism.MainNotions.ModuliIntegralCharts.H1
   have hsame0 : SameCover M A.μ0 A.μ0 (Equiv.refl _) :=
     ⟨⟨_, rfl⟩, HEq.rfl, HEq.rfl, rfl, rfl, fun _ => ⟨rfl, rfl, rfl, rfl⟩⟩
   have hconj : ConjTup R τ (id A.μ0) (id A.μ0) := ⟨rfl, fun x => by simp [hRxi]⟩
-  obtain ⟨u, s, w', hu, hw'e, hw⟩ := GlobalTheory.T.conj_fourierCoefficients_conjugate_tuples D G Pl0 T0 A T R F κ v₀ hcore ⟨fw⟩ i T0 id M hM τ ta hta hfb A.μ0 A.μ0
+  obtain ⟨u, s, w', hu, hw'e, hw⟩ := _root_.GlobalTheory.ConjDatum.conj_coeff D G Pl0 T0 A T R F κ v₀ hcore ⟨fw⟩ i T0 id M hM τ ta hta hfb A.μ0 A.μ0
     (Equiv.refl _) hsame0 hconj
-  obtain ⟨hvol, hep⟩ := GlobalTheory.T.galoisConj_classScalars_and_volume D G Pl0 T0 A T R F κ v₀ hcore ⟨fw⟩ i T0 id M hM τ ta hta hfb A.μ0 A.μ0
+  obtain ⟨hvol, hep⟩ := _root_.GlobalTheory.ConjScalar.conj_vol_ep D G Pl0 T0 A T R F κ v₀ hcore ⟨fw⟩ i T0 id M hM τ ta hta hfb A.μ0 A.μ0
     (Equiv.refl _) hsame0 hconj
   have hu1 : u = 1 := by
     apply Subtype.ext

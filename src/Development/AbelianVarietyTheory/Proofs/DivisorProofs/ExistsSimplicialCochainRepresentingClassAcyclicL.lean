@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSpaceCohomologyPresheafClassesAsCocyclesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafBasicPropertiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafBasicProperti
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct GlobalTheory.EtC
 
 namespace GlobalTheory.EtC.LeraySurj
@@ -79,7 +79,7 @@ theorem reduce (F : Shv R) (E : Spc) (n : ℕ)
   | zero =>
     obtain ⟨z, rfl⟩ := x.mk_surjective
     refine ⟨z, rfl, fun p q hpq hp => ?_⟩
-    exact ((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F).2.2.2.2.2 E p (by omega)).eq_of_src _ _
+    exact ((_root_.GlobalTheory.EtC.res_basic R F).2.2.2.2.2 E p (by omega)).eq_of_src _ _
   | succ j ih =>
     obtain ⟨z, hz, hv⟩ := ih (by omega)
     obtain ⟨z', hz', hv'⟩ := step E F z j hv (fun t ht => by
@@ -94,7 +94,7 @@ theorem main (R : Type) [CommRing R] (F : Shv R) (E : Spc) (n : ℕ)
     (hyp : ∀ k m : ℕ, 0 < m → k + m = n → ∀ y : H R (disc.obj (E.obj (op ⦋k⦌))) F m, y = 0)
     (x : H R E F n) : ∃ s : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F, cobd s = 0 ∧ IsCls s x := by
   obtain ⟨z, rfl, hv⟩ := reduce F E n hyp x n le_rfl
-  obtain ⟨-, hneg, hmono, ⟨w, hex⟩, -, -⟩ := GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F
+  obtain ⟨-, hneg, hmono, ⟨w, hex⟩, -, -⟩ := _root_.GlobalTheory.EtC.res_basic R F
   have hcl : z.1.v (-(n : ℤ)) 0 (by omega) ≫ (res R F).d 0 1 = 0 := by
     have h := Cochain.congr_v (Cocycle.δ_eq_zero z ((n : ℤ) + 1)) (-(n : ℤ)) 1 (by omega)
     rw [δ_v (n : ℤ) ((n : ℤ) + 1) rfl _ _ _ _ 0 (-(n : ℤ) + 1) (by omega) rfl,

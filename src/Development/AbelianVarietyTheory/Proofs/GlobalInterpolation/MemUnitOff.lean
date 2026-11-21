@@ -24,22 +24,6 @@ theorem smul_PP {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ} (g : GL
 def IntGL {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (O : Subring K) (g : GL ι K) : Prop :=
   ∀ a b, (g : Matrix ι ι K) a b ∈ O ∧ ((g⁻¹ : GL ι K) : Matrix ι ι K) a b ∈ O
 
-def intGL {K : Type} [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (O : Subring K) : Subgroup (GL ι K) where
-  carrier := {g | IntGL O g}
-  one_mem' a b := by
-    have : (1 : Matrix ι ι K) a b ∈ O := by
-      rw [Matrix.one_apply]; split_ifs
-      · exact O.one_mem
-      · exact O.zero_mem
-    exact ⟨this, by simpa using this⟩
-  mul_mem' {g h} hg hh a b := by
-    refine ⟨?_, ?_⟩
-    · rw [Units.val_mul, Matrix.mul_apply]
-      exact O.sum_mem fun c _ => O.mul_mem (hg a c).1 (hh c b).1
-    · rw [_root_.mul_inv_rev, Units.val_mul, Matrix.mul_apply]
-      exact O.sum_mem fun c _ => O.mul_mem (hh a c).2 (hg c b).2
-  inv_mem' {g} hg a b := ⟨(hg a b).2, by rw [inv_inv]; exact (hg a b).1⟩
-
 def valO {K : Type} [Field K] [NumberField K] (Q : HeightOneSpectrum (𝓞 K)) : Subring K :=
   (Q.valuation K).valuationSubring.toSubring
 
@@ -60,17 +44,6 @@ def unitGL (K : Type) [Field K] [StarRing K] (n : ℕ) : Subgroup (GL (Fin n) K)
       rw [← Matrix.one_mul ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K), ← hg, Matrix.mul_assoc, ← Units.val_mul,
         mul_inv_cancel, Units.val_one, Matrix.mul_one]
     rw [h1, Matrix.conjTranspose_conjTranspose, ← h1, ← Units.val_mul, mul_inv_cancel, Units.val_one]
-
-def unitOff {K : Type} [Field K] [NumberField K] [StarRing K] (P : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
-    Subgroup (GL (Fin n) K) :=
-  unitGL K n ⊓ ⨅ Q : {Q : HeightOneSpectrum (𝓞 K) // Q ≠ P ∧ Q ≠ Formalism.L2.Col.conjPrime₂ P}, intGL (Fin n) (valO Q.1)
-
-theorem mem_unitOff {K : Type} [Field K] [NumberField K] [StarRing K] (P : HeightOneSpectrum (𝓞 K)) (n : ℕ)
-    (g : GL (Fin n) K) : g ∈ unitOff P n ↔ (g : Matrix (Fin n) (Fin n) K)ᴴ * (g : Matrix (Fin n) (Fin n) K) = 1 ∧
-      ∀ Q : HeightOneSpectrum (𝓞 K), Q ≠ P → Q ≠ Formalism.L2.Col.conjPrime₂ P → IntGL (valO Q) g := by
-  rw [unitOff, Subgroup.mem_inf, Subgroup.mem_iInf]
-  exact and_congr Iff.rfl
-    ⟨fun h Q h₁ h₂ => h ⟨Q, h₁, h₂⟩, fun h Q => h Q.1 Q.2.1 Q.2.2⟩
 
 def latB {K ι : Type} [Field K] [NumberField K] [Fintype ι] [DecidableEq ι]
     (B : HeightOneSpectrum (𝓞 K) → GL ι K) : Submodule (𝓞 K) (ι → K) where

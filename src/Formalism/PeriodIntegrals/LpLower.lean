@@ -14,8 +14,4 @@ def lpFeasible (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ) : Set ℝ :=
 def lpF (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ) : ℝ :=
   (l : ℝ) / ((l : ℝ) ^ 2 - 1) * (∑ s, Ds s) - sSup (lpFeasible l d Ds)
 
-def LpLower : Prop :=
-  ∀ (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ), 2 ≤ l → (∀ s, 0 ≤ Ds s) →
-    (∑ s, Ds s) / ((l : ℝ) ^ 2 - 1) ≤ lpF l d Ds
-
 end PI

@@ -142,17 +142,7 @@ theorem isConj_fsBasis_of_unitary {α : Type*} [Fintype α] [DecidableEq α] (hB
     Finset.sum_mul]
   exact Finset.sum_comm.trans (Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)
 
-theorem isConj_fsBasis {α : Type*} [Fintype α] [DecidableEq α] (hB : B.IsLB)
-    (b : α → B.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤) {M M' : Matrix α α ℂ}
-    (hM : M.det ≠ 0) (hM' : M'.det ≠ 0) (e : M' = M.map (starRingEnd ℂ)) :
-    (fsBasis p σ hB b hb M hM).IsConj (fsBasis p σ' hB b hb M' hM') :=
-  isConj_fsBasis_of_unitary hB b hb hM hM' (one_mem _) (e.trans (Matrix.mul_one _).symm)
-
 variable {φ : Weight p σ B} {φ' : Weight p σ' B}
-
-theorem IsConj.tens {ψ : Weight p σ A} {ψ' : Weight p σ' A} (h' : ψ.IsConj ψ') (h : φ.IsConj φ') :
-    (ψ.tens φ).IsConj (ψ'.tens φ') := fun c y y' e hy =>
-  congrArg₂ (· + ·) (h' c.1 y y' e (mem_ptsIn_inf.1 hy).1) (h c.2 y y' e (mem_ptsIn_inf.1 hy).2)
 
 theorem IsConj.dual (h : φ.IsConj φ') : φ.dual.IsConj φ'.dual := fun i y y' e hy =>
   congrArg Neg.neg (h i y y' e hy)
@@ -164,9 +154,6 @@ theorem IsConj.linComb (h : φ.IsConj φ') {k' : Type} [CommRing k'] {Y' : Schem
     (φ.linComb f ε m hm).IsConj (φ'.linComb f ε m' hm') := fun j z z' e hz =>
   Finset.sum_congr rfl fun a _ => congrArg (_ * ·) (h (j a) _ _
     (by rw [hm, hm', e, Category.assoc]) (mem_of_mem_linComb (hm · z) hz a))
-
-theorem IsConj.zpow (h : φ.IsConj φ') (n : ℤ) : (φ.zpow n).IsConj (φ'.zpow n) :=
-  h.linComb _ _ _ _ _ _
 
 theorem IsConj.pull (h : φ.IsConj φ') {Y' : Scheme.{0}} {q : Y' ⟶ Sp k} (f : Y' ⟶ Y)
     (hf : f ≫ p = q) : (φ.pull f hf).IsConj (φ'.pull f hf) :=

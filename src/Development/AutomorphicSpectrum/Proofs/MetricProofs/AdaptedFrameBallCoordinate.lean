@@ -5,7 +5,7 @@ import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
 import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntEmbInjective
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PPartRealSmul
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameInversePropertiesStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameInverseProperties
 open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.FiniteCovolume GroundTheory.Automorphic GlobalTheory.CompanionTheory.Ar.Cusp.Dict
 open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
@@ -63,7 +63,7 @@ theorem point_graph_gram (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ 
     (hA : C.IsAdapted R A) (h0 : (A₀ τ)ᴴ * C.sgr τ * A₀ τ = sgI j j')
     (hW : W = moebW (C.cinv (A₀ τ) τ * A τ) 0) :
     (∀ v : Fin j → ℂ, C.pPart R τ (A₀ τ *ᵥ Sum.elim v (W *ᵥ v)) = 0) ∧ R.gram (fun b : Fin j' => C.pPart R τ (A₀ τ *ᵥ Sum.elim 0 (Pi.single b 1))) * (1 - W * Wᴴ) = ((2 * C.c : ℝ) : ℂ) • (1 : Matrix (Fin j') (Fin j') ℂ) ∧ (1 - W * Wᴴ).PosDef := by
-  obtain ⟨hc1, hc2, -⟩ := GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A₀ τ) h0
+  obtain ⟨hc1, hc2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.cinv_facts E Ψ j j' n g Λ F C τ (A₀ τ) h0
   generalize C.cinv (A₀ τ) τ = c at hc1 hc2 hW
   have hsgr : cᴴ * sgI j j' * c = C.sgr τ := by
     have : cᴴ * ((A₀ τ)ᴴ * C.sgr τ * A₀ τ) * c = (A₀ τ * c)ᴴ * C.sgr τ * (A₀ τ * c) := by

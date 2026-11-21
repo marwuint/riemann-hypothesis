@@ -6,7 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformiz
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MK
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomMumfordGeneratorNormalisedOriginStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomMumfordGeneratorAdditiveCubicalStructuresStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordGeneratorAbelianPartAtLevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordGeneratorAbelianPartAtLevel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
 
 noncomputable section
 
@@ -41,7 +42,7 @@ theorem GlobalTheory.HomMum.lbIso_descends : ∀ (R : Type) [CommRing R] [IsDoma
       have : ConnectedSpace (thickObj R (maximalIdeal R) e G₁).left :=
         GroupConn.connectedSpace_of_section (thickObj R (maximalIdeal R) e G₁).hom
           (η : 𝟙_ _ ⟶ thickObj R (maximalIdeal R) e G₁).left (Over.w _)
-      exact GlobalTheory.T.exists_mumfordGenerator_abelianPart_at_level U₁.toUnifPre U₂.toUnifPre e (of e) (og e) u hu
+      exact _root_.GlobalTheory.HomMum.exists_gen_level U₁.toUnifPre U₂.toUnifPre e (of e) (og e) u hu
         fun T z J hJ x x' y => GlobalTheory.T.homMumfordGenerator_additive_cubicalStructures U₁.cubG U₂.cubG hN sj f g u hu T z J hJ x x' y) (closedPoint R)
   have hall : ∀ p : PrimeSpectrum R, p ∈ V := fun p =>
     ((PrimeSpectrum.le_iff_specializes p (closedPoint R)).1 (le_maximalIdeal p.isPrime.ne_top)).mem_open V.isOpen hV

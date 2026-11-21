@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommGaloisActionModularTowerStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraKummerModularUnitStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerBettiModuleFreeFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorCommGaloisActionModularTower
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraKummerModularUnit
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerBettiModuleFreeFinite
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlMulToRingEquiv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MobToGQScalar
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalMulApply
@@ -270,7 +270,7 @@ theorem rel_BSet [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (hε : Function.Injecti
   have hlM : l ∣ M := ⟨N * l ^ n * ∏ i, m i, by rw [hM]; ring⟩
   have hnM : l ^ n ∣ M := ⟨N * l * ∏ i, m i, by rw [hM]; ring⟩
   have hmM : ∀ i, m i ∣ M := fun i => Dvd.dvd.mul_left (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) _
-  choose S hS using fun i => GlobalTheory.T.eichlerShimura_kummer_modularUnit ε X hε hj l M n (f i) hM0 hlM (hfU i)
+  choose S hS using fun i => _root_.GlobalTheory.KZ.ESFun.eichler_shimura_kummer ε X hε hj l M n (f i) hM0 hlM (hfU i)
     (fun γ hγ => hm i γ (gamma_le_of_dvd (hmM i) hγ))
   refine ⟨Finset.univ.biUnion S ∪ M.primeFactors, fun q hq hqS s hs u => ?_⟩
   rw [Finset.mem_union, not_or, Finset.mem_biUnion, Nat.mem_primeFactors] at hqS
@@ -298,7 +298,7 @@ theorem eichlerShimura_B_mod : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAl
   intro Ω _ _ _ ε X hε hj N l w _ hl2 hN hNl hw n
   have hl : l.Prime := Fact.out
   have hfg : (Submodule.span ℤ_[l] (X.BSet N l w)).FG :=
-    Module.Finite.iff_fg.1 (GlobalTheory.T.kummerBettiModule_free_finite ε X hε hj N l w hl2 hN hNl hw).2
+    Module.Finite.iff_fg.1 (_root_.GlobalTheory.KZ.B_free_finite ε X hε hj N l w hl2 hN hNl hw).2
   obtain ⟨G, hG, hspan⟩ := (Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg
   choose S hS using fun b : G => rel_BSet X hε hj N l w (by omega) n b (hG b.2)
   refine ⟨Finset.univ.biUnion S ∪ (N * l).primeFactors, fun q hq hqS s hs b hb u => ?_⟩
@@ -315,7 +315,7 @@ theorem eichlerShimura_B_mod : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAl
     | add x y _ _ hx hy => intro u; rw [map_add]; exact Submodule.add_mem _ (hx u) (hy u)
     | smul a x _ hx => intro u; rw [map_smul]; exact Submodule.smul_mem _ _ (hx u)
   have hcomm : X.heckeT N l q (X.galB l s b) = X.galB l s (X.heckeT N l q b) :=
-    GlobalTheory.T.hecke_operator_comm_galois_action_modular_tower ε X hε hj N l w hl2 hN hNl hw (Letter.T q) hadm s b hb
+    _root_.GlobalTheory.KZ.HeckeGal.op_galB_comm ε X hε hj N l w hl2 hN hNl hw (Letter.T q) hadm s b hb
   have e : X.galB l s (X.galB l s b) - X.heckeT N l q (X.galB l s b) + ((q : ℤ_[l]) ^ (w + 1)) • X.diam N l q b =
       X.galB l s (L b) := by
     simp only [L, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_add,

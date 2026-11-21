@@ -3,13 +3,13 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.VolumeInputs
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumFundCoMulSumIic
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.GenericComplexPoint
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightIdentityStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginDegreeCountStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginDegreeCountAltBis
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightComparisonShiftStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginMultiplicityBoundStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalMultihomogQuotientExistsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightIdentity
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginDegreeCount
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemOpenOfForms
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightComparison
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginWeightComparisonShift
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.RootOriginMultiplicityBound
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalMultihomogQuotientExists
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Small
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Small.Fund
 
@@ -194,7 +194,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Small
 
 theorem root_origin_weight_free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (RM : RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (Or : RootOrigin Y S RM Fx) (lam nu : Wt (CMType H) (D.p + D.q)) (n' : Option (RootIx D) → ℤ), (∀ r, (Fx.n r : ℝ) = (Fx.kA * Fx.q' : ℕ) * nu r.1 r.2) → (∀ j, (n' j : ℝ) = RM.coef lam 0 j) → ∃ (q₀ : ℕ) (n₀ : Option (RootIx D) → ℤ) (ε : RM.Ω) (u : MRing RM.ι) (C s₀ : ℝ), 0 < q₀ ∧ (∀ j, (n₀ j : ℝ) = q₀ * RM.coef nu (-1) j) ∧ ε ≠ 0 ∧ ε ∈ chartLatNm RM.y (combLine (RM.line 1) n₀).a 1 ∧ IsFormOff (mCoordIdeal RM.y) u ∧ 0 ≤ C ∧ 0 < s₀ ∧ ∀ s : ℝ, 0 < s → s ≤ s₀ → ∀ z ∈ mcPts (mCoordIdeal RM.y), aeval z u ≠ 0 → ∀ x : ℂ, HasVal RM.y (combLine (RM.line 1) n₀).a ε z x → x ≠ 0 → s / q₀ * Real.log ‖x‖ + RM.weight (scale s) (lam - s • nu) s z ≤ C * s + Real.log (∏ r, (Or.sing r).h z ^ n' (some r)) := by
   intro E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or lam nu n' hn hn'
-  obtain ⟨n₀, N₀, hn₀, hN₀, hε0, hεm⟩ := GlobalTheory.T.root_origin_weight_identity E H D l Xo c O β Y S RM Sys Fx Or nu hn
+  obtain ⟨n₀, N₀, hn₀, hN₀, hε0, hεm⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Small.OriginEps.section_on_model E H D l Xo c O β Y S RM Sys Fx Or nu hn
   have hkA : RM.kA = Fx.kA := Or.kA_eq
   have hk0 : 0 < Fx.kA := hkA ▸ RM.kA_pos
   have hq0 : 0 < Fx.kA * Fx.q' := Nat.mul_pos hk0 Fx.q'_pos
@@ -238,11 +238,11 @@ theorem root_origin_weight_free : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       ring
   have hmn : m none = -(Fx.q' : ℤ) := rfl
   set Eh : HermLine RM.ι := combLine Or.Re.ref m with hEh
-  have hEa : Eh.a = (combLine (RM.line 1) n₀).a := GlobalTheory.T.root_origin_multiplicity_bound E H D l Xo c O β Y S RM Sys Fx Or nu n₀ m hn hns hnn hm hmn
+  have hEa : Eh.a = (combLine (RM.line 1) n₀).a := _root_.GlobalTheory.CompanionTheory.Ar.Small.Fund.combLine_ref_a_eq_line_a E H D l Xo c O β Y S RM Sys Fx Or nu n₀ m hn hns hnn hm hmn
   have hEs : IsSmoothHerm Eh := isSmoothHerm_comb Or.Re.ref_smooth m
-  have hrep := GlobalTheory.T.root_origin_degree_count E H D l Xo c O β Y S RM Sys Fx Or n₀ N₀ hns hnn hε0
-  have hbd := GlobalTheory.T.root_origin_degree_count_alt E H D l Xo c O β Y S RM Sys Fx Or n₀ N₀ hns hnn hε0
-  obtain ⟨δ, C₁, hδ, hdec⟩ := GlobalTheory.T.local_multihomog_quotient_exists RM.K RM.ι RM.Ω RM.y Or.Re.J _ Or.Re.R _ Sys Or.Re.π Or.Re.holo Eh hEs ε
+  have hrep := _root_.GlobalTheory.CompanionTheory.Ar.Small.origin_section_rep E H D l Xo c O β Y S RM Sys Fx Or n₀ N₀ hns hnn hε0
+  have hbd := _root_.GlobalTheory.CompanionTheory.Ar.Small.FormsVal.mem_open_of_forms E H D l Xo c O β Y S RM Sys Fx Or n₀ N₀ hns hnn hε0
+  obtain ⟨δ, C₁, hδ, hdec⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Small.GlobDecay.global_decay RM.K RM.ι RM.Ω RM.y Or.Re.J _ Or.Re.R _ Sys Or.Re.π Or.Re.holo Eh hEs ε
     (fun x => by
       obtain ⟨dg, dh, G, Hf, h1, h2, h3, h4, -, h6⟩ := hrep _ (Or.Re.R.mem x x (Or.Re.R.mem_U x))
       exact ⟨dg, dh, G, Hf, h1, h2, by rw [hEa]; exact h3, h4, h6⟩)
@@ -319,9 +319,9 @@ theorem root_origin_weight_free : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   have hv'0 : v * ∏ k, cc k ^ (combLine (RM.line 1) n₀).a k ≠ 0 :=
     mul_ne_zero hv0 (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hcc k))
   have hD := hdec x hπ _ hv' hv'0
-  have hO := GlobalTheory.T.root_origin_weight_comparison_shift E H D l Xo c O β Y S RM Sys Fx Or lam nu n' n₀ (Fx.kA * Fx.q') s (scale s) cc z v hq0 hn' hn₀ hcc hz.1 hv0
+  have hO := _root_.GlobalTheory.CompanionTheory.Ar.Small.Fund.Orbit.torus_invariant E H D l Xo c O β Y S RM Sys Fx Or lam nu n' n₀ (Fx.kA * Fx.q') s (scale s) cc z v hq0 hn' hn₀ hcc hz.1 hv0
   rw [← hx] at hO
-  have hI := GlobalTheory.T.root_origin_weight_comparison E H D l Xo c O β Y S RM Sys Fx Or lam nu n' s x hn' hscale hπ
+  have hI := _root_.GlobalTheory.CompanionTheory.Ar.Small.Fund.weight_sub_log_sing E H D l Xo c O β Y S RM Sys Fx Or lam nu n' s x hn' hscale hπ
 
   let co : Option (RootIx D) → ℝ := fun o => o.elim 0 fun r => fundCo ((lam - s • nu) r.1) r.2
   have hco : ∀ r : RootIx D, fundCo ((lam - s • nu) r.1) r.2 = fundCo (lam r.1) r.2 - s * fundCo (nu r.1) r.2 := by

@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOneP
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaKernelLiftConvergesContinuousGrowthDerivStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaKernelLiftConvergesContinuousGrowthDeriv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GelfandOperatorAdjointDecayingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemSmoothFunctionsOfClosedRightDerivativesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemSmoothFunctionsOfClosedRightDerivatives
 
 noncomputable section
 
@@ -32,7 +32,7 @@ theorem word_ker (hκ : IsKerSys θ V W κ) (l : List (D.what₂.Tau × Matrix (
 
 theorem isMod_ker (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (f : M) (h : GA D W) : IsMod θ V fun g => κ f g h := by
   have hc : ∀ f, Continuous fun g => κ f g h := fun f => (hκ.cont f).comp (Continuous.prodMk_left h)
-  refine ⟨GlobalTheory.T.mem_smoothFunctions_of_closed_rightDerivatives D θ hθ V (Set.range fun f g => κ f g h) ?_ ?_ _ ⟨f, rfl⟩, fun γ hγ g => ?_, fun l hl => ?_⟩
+  refine ⟨_root_.GlobalTheory.Mem.DerClosed.mem_smFun_of_closed D θ hθ V (Set.range fun f g => κ f g h) ?_ ?_ _ ⟨f, rfl⟩, fun γ hγ g => ?_, fun l hl => ?_⟩
   · rintro _ ⟨f, rfl⟩
     exact hc f
   · rintro _ ⟨f, rfl⟩ τ X hX
@@ -55,7 +55,7 @@ variable {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
 
 theorem lift_add_left (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) {F : GA D V → ℂ}
     (hF : F ∈ Decay θ V) (f f' : M) : lift κ μ 𝓕 (f + f') F = lift κ μ 𝓕 f F + lift κ μ 𝓕 f' F := by
-  have I := (GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1
+  have I := (_root_.GlobalTheory.Mem.Lift.lift_conv_cont_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1
   funext h
   simp only [lift, map_add, Pi.add_apply, add_mul]
   exact integral_add (I f h) (I f' h)
@@ -65,8 +65,8 @@ theorem lift_add_right (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQu
     lift κ μ 𝓕 f (F + F') = lift κ μ 𝓕 f F + lift κ μ 𝓕 f F' := by
   funext h
   simp only [lift, Pi.add_apply, mul_add]
-  exact integral_add ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1 f h)
-    ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F' hF').1 f h)
+  exact integral_add ((_root_.GlobalTheory.Mem.Lift.lift_conv_cont_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).1 f h)
+    ((_root_.GlobalTheory.Mem.Lift.lift_conv_cont_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F' hF').1 f h)
 
 theorem lift_smul_left (c : ℂ) (F : GA D V → ℂ) (f : M) : lift κ μ 𝓕 (c • f) F = c • lift κ μ 𝓕 f F := by
   funext h
@@ -122,7 +122,7 @@ theorem compat_Rder (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot 
     {X : Matrix (Fin W.rank) (Fin W.rank) ℂ} (hX : X ∈ lieAt W τ) : Compat θ κ μ 𝓕 (Rder θ W τ X) := fun f => by
   obtain ⟨f', e⟩ := hκ.derW τ X hX f
   exact ⟨f', fun g => funext fun h => (e g h).deriv, fun F hF => funext fun h =>
-    ((GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).2.2.2 τ X hX f f' e h).deriv⟩
+    ((_root_.GlobalTheory.Mem.Lift.lift_conv_cont_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hF).2.2.2 τ X hX f f' e h).deriv⟩
 
 theorem compat_gelf (hθ : IsInfFam θ) (hκ : IsKerSys θ V W κ) (hq : IsQuot V μ 𝓕) (τ : D.what₂.Tau) (k : ℕ) :
     Compat θ κ μ 𝓕 (gelf θ W τ k) := by

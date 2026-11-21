@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompGvec
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PluckerNonzeroIffIndependentStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PluckerNonzeroIffIndependent
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory GlobalTheory.LocM GlobalTheory.LieMet GlobalTheory.DRFlag GlobalTheory.GrCl
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv)
@@ -44,10 +44,10 @@ theorem plk_point_iff {O K : Type} [CommRing O] [Field K] {N n k : ℕ} (A : Mat
       (Submodule.span K (Set.range ξ')).map A.mulVecLin := fun ξ' => by
     rw [Submodule.map_span, ← Set.range_comp]
     rfl
-  have hI := (GlobalTheory.T.plucker_nonzero_iff_independent K N k (fun l => A.mulVec (ξ l)) fun l => A.mulVec (ξ l)).1.1
+  have hI := (_root_.GlobalTheory.FlagEmb.PlkSpan.main K N k (fun l => A.mulVec (ξ l)) fun l => A.mulVec (ξ l)).1.1
     (span_range_eq_top_iff_ne_zero.1 hv)
   refine ⟨(hli ξ).1 hI, fun ξ' => ?_⟩
-  have hk := (GlobalTheory.T.plucker_nonzero_iff_independent K N k (fun l => A.mulVec (ξ l)) fun l => A.mulVec (ξ' l)).2 hI
+  have hk := (_root_.GlobalTheory.FlagEmb.PlkSpan.main K N k (fun l => A.mulVec (ξ l)) fun l => A.mulVec (ξ' l)).2 hI
   rw [hli, hsp, hsp, (Submodule.map_injective_of_injective hinj).eq_iff] at hk
   rw [hk]
   constructor

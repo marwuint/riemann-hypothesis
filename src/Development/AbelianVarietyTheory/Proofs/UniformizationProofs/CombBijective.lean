@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsAffine
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPullSecSval
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalSecComb
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpFOfExpT
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsExpansionSectionLineBundlePowerStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsExpansionSectionLineBundlePower
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -168,7 +168,7 @@ theorem main : Laws → Laws2 → (AllPre fun {V} _ _ _ {_} {_} {_} _ _ U => ∀
       Good U.P.L.L z J → r' ≫ (snd _ G).left = r ≫ (snd _ G).left →
       sval σ r z J = ∑ i, gs (r ≫ (fst (TA V W) G).left) z ⊤ (cst (b i)) * sval (σ' i) r' z J :=
     fun Z r r' z J hJ h => (hτ Z r z J hJ).trans (Finset.sum_congr rfl fun i _ => by rw [hσ' i Z r' z J hJ, h])
-  choose g hg using fun i => GlobalTheory.T.exists_expansion_section_lineBundle_power hL hL2 V hV D A G U k hk (σ' i)
+  choose g hg using fun i => _root_.GlobalTheory.BaseExpansionExists.main hL hL2 V hV D A G U k hk (σ' i)
   choose g' hg' using fun i α => exists_pullSec_sval (g i α) (toUnit (TA V W) ▷ D.P.A).left (famφT D (TA V W) α)
     (whisker_famφT D _ α)
   have s1 : ∀ (T B : Over (Spec (CommRingCat.of V))), (toUnit T ▷ B).left ≫ (snd (𝟙_ _) B).left = (snd T B).left :=

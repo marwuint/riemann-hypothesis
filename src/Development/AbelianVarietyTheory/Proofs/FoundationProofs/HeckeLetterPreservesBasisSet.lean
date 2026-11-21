@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegralityStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegrality
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntMatrixActionMemHomogeneousPolyFunctionsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntMatrixPrimeDetCosetRepresentativesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiamondMatrixChosenDiamondMatrixGamma1Gamma0Statement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntMatrixPrimeDetCosetRepresentatives
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiamondMatrixChosenDiamondMatrixGamma1Gamma0
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ
 
@@ -46,10 +46,10 @@ theorem polAct (X : Tower Ω ε) (l w : ℕ) [Fact l.Prime] (m : Matrix (Fin 2) 
 
 theorem coset (q : ℕ) (hq : q.Prime) (m : Matrix (Fin 2) (Fin 2) ℤ) (hm : m.det = q) :
     (∃ g : Matrix (Fin 2) (Fin 2) ℤ, g * !![(q : ℤ), 0; 0, 1] = m) ∨
-      ∃ k : ℕ, k < q ∧ ∃ g : Matrix (Fin 2) (Fin 2) ℤ, g * !![1, (k : ℤ); 0, (q : ℤ)] = m := GlobalTheory.T.intMatrix_prime_det_coset_representatives q hq m hm
+      ∃ k : ℕ, k < q ∧ ∃ g : Matrix (Fin 2) (Fin 2) ℤ, g * !![1, (k : ℤ); 0, (q : ℤ)] = m := _root_.GlobalTheory.cosetPrimeDet q hq m hm
 
 theorem sgD_spec (N l d : ℕ) (hl : l.Prime) (hN : 0 < N) (hNl : Nat.Coprime N l) (hd : Nat.Coprime d N) :
-    IsDiam N l d (sgD N l d) := GlobalTheory.T.isDiamondMatrix_chosenDiamondMatrixGamma1Gamma0 N l d hl hN hNl hd
+    IsDiam N l d (sgD N l d) := _root_.GlobalTheory.KZ.isDiam_sgD_of_prime N l d hl hN hNl hd
 
 theorem zmod_eq_one_iff (N : ℕ) (x : ℤ) : (x : ZMod N) = 1 ↔ (N : ℤ) ∣ x - 1 := by
   rw [← sub_eq_zero, ← Int.cast_one (R := ZMod N), ← Int.cast_sub, ZMod.intCast_zmod_eq_zero_iff_dvd]
@@ -405,7 +405,7 @@ theorem B_stable_op : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
     ∀ (N l w : ℕ) [Fact l.Prime], l ≠ 2 → 5 ≤ N → Nat.Coprime N l → Odd w → ∀ T : Letter, admitted N l T →
     ∀ b ∈ X.B N l w, X.op N l T b ∈ X.B N l w := by
   intro Ω _ _ _ ε X hinj hj N l w _ _ hN hNl _ T hT b hb
-  have hA := (GlobalTheory.T.modular_function_tower_integrality ε X hinj hj l).1
+  have hA := (_root_.GlobalTheory.KZ.kmap_A_stable ε X hinj hj l).1
   have hle : X.B N l w ≤ (X.B N l w).comap (X.op N l T) :=
     Submodule.span_le.mpr (fun x hx => Submodule.subset_span
       (StabHecke.op_BSet X hA N w (by omega) hNl T hT x hx))

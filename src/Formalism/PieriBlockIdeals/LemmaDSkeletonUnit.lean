@@ -62,11 +62,6 @@ def ContraIota : Prop :=
     (S : HidaSetting k V P R) (B : LinearMap.BilinForm k V), Contra S B → ∀ (n : ℕ) (m : Sym (R × P) n) (u v : V),
     B (((mfact m : k)⁻¹) • S.Fs m u) v = B u (S.iota n v m) ∧ B v (((mfact m : k)⁻¹) • S.Fs m u) = B (S.iota n v m) u
 
-def WeightOrthogonal : Prop :=
-  ∀ (k V P R : Type) [Field k] [CharZero k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R]
-    (S : HidaSetting k V P R) (B : LinearMap.BilinForm k V), Contra S B → ∀ κ κ' : P ⊕ R → ℤ, κ ≠ κ' →
-    ∀ x ∈ S.wt κ, ∀ y ∈ S.wt κ', B x y = 0
-
 def DepthEigen : Prop :=
   ∀ (k V P R : Type) [CommRing k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R] [Fintype P] [Fintype R]
     (S : HidaSetting k V P R) (n : ℕ) (z : Tens R P S.W n),
@@ -93,12 +88,6 @@ def IotaKernel : Prop :=
   ∀ (k V P R : Type) [Field k] [CharZero k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R]
     [Fintype P] [Fintype R] (S : HidaSetting k V P R) (B : LinearMap.BilinForm k V), Contra S B →
     ∀ (n : ℕ) (v : V), (∀ m, S.iota n v m = 0) → ∀ z : Tens R P S.W n, B (S.mu n z) v = 0
-
-def IotaInjectiveLocal : Prop :=
-  ∀ (k V P R : Type) [Field k] [CharZero k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R]
-    [Fintype P] [Fintype R] (S : HidaSetting k V P R) (B : LinearMap.BilinForm k V), Contra S B → ∀ n : ℕ,
-    (∀ z : Tens R P S.W n, (∀ z' : Tens R P S.W n, B (S.mu n z') (S.mu n z) = 0) → S.mu n z = 0) →
-    ∀ z : Tens R P S.W n, (∀ m, S.iota n (S.mu n z) m = 0) → S.mu n z = 0
 
 def IotaInjective : Prop :=
   ∀ (k V P R : Type) [Field k] [CharZero k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R]
@@ -153,24 +142,6 @@ def ValuationUnit : Prop :=
   ∀ (O : Type) [CommRing O] (l : ℕ), l.Prime → (∀ m : ℤ, ¬ (l : ℤ) ∣ m → IsUnit (m : O)) →
     ∀ D : ℤ, D ≠ 0 → ∃ η : O, IsUnit η ∧ (D : O) = η * (l : O) ^ padicValInt l D
 
-def LemmaDSkeletonUnit : Prop :=
-  ∀ (O K V P R I : Type) [CommRing O] [Field K] [CharZero K] [Algebra O K] [AddCommGroup V] [Module K V] [Module O V]
-    [IsScalarTower O K V] [DecidableEq P] [DecidableEq R] [Fintype P] [Fintype R] (S : HidaSetting K V P R) (n : ℕ)
-    (wO : O) (nabL DelL : Submodule O S.W) (Mt : I → Submodule K (Sym (R × P) n → S.W)) (χ : I → Fin n → K)
-    (Dn : O[X]) (xi : (P ⊕ R → ℤ) →+ ℤ) (lam : P ⊕ R → ℤ) (l : O) (e : ℕ) (i' : ℤ),
-    S.w = algebraMap O K wO →
-    (∀ b b', ∀ u ∈ nabL, S.EW b b' u ∈ nabL) →
-    (∀ z : Tens R P S.W n, (∀ m, S.iota n (S.mu n z) m = 0) → S.mu n z = 0) →
-    (∀ (τ : I) (a : Fin n) (z : Tens R P S.W n), toSym K z ∈ Mt τ →
-      toSym K ((AApoly K S.EW n).coeff a.val z) = χ τ a • toSym K z) →
-    (∀ τ, (X ^ n + ∑ a : Fin n, C (χ τ a) * X ^ a.val : K[X]) ∣ Dn.map (algebraMap O K)) →
-    (∀ z : Tens R P S.W n, toSym K (AA K S.EW n S.w z) ∈ ⨆ τ, Mt τ) →
-    (∀ (α : P) (b : R), 0 ≤ xi (Pi.single (Sum.inl α) 1 - Pi.single (Sum.inr b) 1)) →
-    (∀ κ, xi (lam - κ) ≤ i' → ∀ u ∈ nabL, (u : V) ∈ S.wt κ → l ^ e • u ∈ DelL) →
-    ∀ ν, xi (lam - ν) ≤ i' → ∀ z : Tens R P S.W n, S.mu n z ∈ S.wt ν →
-      (∀ m, ∃ u ∈ nabL, S.iota n (S.mu n z) m = (u : V)) →
-      ∀ (a : ℕ) (η : O), IsUnit η → Dn.eval wO = η * l ^ a → l ^ (e + a) • S.mu n z ∈ S.DeltaN n DelL
-
 structure LemmaDInputs {O K V P : Type} {q : ℕ} [CommRing O] [Field K] [Algebra O K] [AddCommGroup V] [Module K V]
     [Module O V] [IsScalarTower O K V] [DecidableEq P] [Fintype P] (S : HidaSetting K V P (Fin q))
     (B : LinearMap.BilinForm K V) (n w : ℕ) (lam2 : Fin q → ℕ) (DelL : Submodule O S.W)
@@ -219,29 +190,11 @@ def LemmaDSkeleton2Val : Prop :=
     ∀ ν, xi (lam - ν) ≤ i' → ∀ v ∈ B.dualSubmodule (DeltaAll S DelL), v ∈ LinearMap.range (S.mu n) → v ∈ S.wt ν →
       (l : O) ^ (e + padicValInt l (LD.Dn (Fintype.card P) w n lam2)) • v ∈ S.DeltaN n DelL
 
-def GL2PieriInstance : Prop :=
-  ∀ (O K : Type) [CommRing O] [Field K] [CharZero K] [Algebra O K], Function.Injective (algebraMap O K) →
-    ∀ y d : ℕ, 1 ≤ d →
-    ∃ (V : Type) (_ : AddCommGroup V) (_ : Module K V) (_ : Module O V) (_ : IsScalarTower O K V)
-      (S : HidaSetting K V Unit (Fin 1)) (B : LinearMap.BilinForm K V) (DelL : Submodule O S.W)
-      (Mt : (Fin 1 → ℕ) → Submodule K (Sym (Fin 1 × Unit) 1 → S.W)) (xi : (Unit ⊕ Fin 1 → ℤ) →+ ℤ)
-      (lam ν : Unit ⊕ Fin 1 → ℤ) (v : V),
-      (∀ l : O, LemmaDInputs S B 1 (y + d) (fun _ => y) DelL Mt xi lam l 0 1) ∧
-      LD.Dn (Fintype.card Unit) (y + d) 1 (fun _ : Fin 1 => y) = (d : ℤ) ∧
-      xi (lam - ν) ≤ 1 ∧ v ∈ B.dualSubmodule (DeltaAll S DelL) ∧ v ∈ LinearMap.range (S.mu 1) ∧ v ∈ S.wt ν ∧
-      ∀ c : O, c • v ∈ S.DeltaN 1 DelL ↔ (d : O) ∣ c
-
 def DepthOfWeight : Prop :=
   ∀ (k V P R : Type) [Field k] [CharZero k] [AddCommGroup V] [Module k V] [DecidableEq P] [DecidableEq R]
     [Fintype P] [Fintype R] (S : HidaSetting k V P R) (w n : ℕ), S.w = (w : k) → Generated S →
     ∀ (ν : P ⊕ R → ℤ) (v : V), v ∈ S.wt ν → ∑ α : P, ν (Sum.inl α) + (n : ℤ) = (Fintype.card P : ℤ) * (w : ℤ) →
       v ∈ LinearMap.range (S.mu n)
-
-def DeltaDepth : Prop :=
-  ∀ (O K V P R : Type) [CommRing O] [Field K] [CharZero K] [Algebra O K] [AddCommGroup V] [Module K V] [Module O V]
-    [IsScalarTower O K V] [DecidableEq P] [DecidableEq R] [Fintype P] [Fintype R] (S : HidaSetting K V P R)
-    (DelL : Submodule O S.W) (n : ℕ) (x : V),
-    x ∈ S.DeltaN n DelL ↔ x ∈ DeltaAll S DelL ∧ x ∈ LinearMap.range (S.mu n)
 
 def LemmaDSkeleton2Lit : Prop :=
   ∀ (O K V P : Type) (q : ℕ) [CommRing O] [Field K] [CharZero K] [Algebra O K] [AddCommGroup V] [Module K V]
@@ -360,17 +313,5 @@ def LemmaDSkeleton3 : Prop :=
       ∀ v ∈ B.dualSubmodule (DeltaAll S DelL), v ∈ S.wt ν →
       (l : O) ^ (e + padicValInt l (LD.Dn (Fintype.card P) w n lam2)) • v ∈ DeltaAll S DelL ∧
         (l : O) ^ (e + padicValInt l (LD.Dn (Fintype.card P) w n lam2)) • v ∈ S.wt ν
-
-def GL2PieriInstanceRankThree : Prop :=
-  ∀ (O K : Type) [CommRing O] [Field K] [CharZero K] [Algebra O K], Function.Injective (algebraMap O K) →
-    ∀ y d : ℕ, 1 ≤ d →
-    ∃ (V : Type) (_ : AddCommGroup V) (_ : Module K V) (_ : Module O V) (_ : IsScalarTower O K V)
-      (S : HidaSetting K V Unit (Fin 1)) (B : LinearMap.BilinForm K V) (DelL : Submodule O S.W)
-      (xi : (Unit ⊕ Fin 1 → ℤ) →+ ℤ) (lam ν : Unit ⊕ Fin 1 → ℤ) (v : V),
-      (∀ l : O, LemmaDInputs3 S B 1 (y + d) (fun _ => y) DelL xi lam l 0 1) ∧
-      LD.Dn (Fintype.card Unit) (y + d) 1 (fun _ : Fin 1 => y) = (d : ℤ) ∧
-      ∑ α : Unit, ν (Sum.inl α) + ((1 : ℕ) : ℤ) = (Fintype.card Unit : ℤ) * ((y + d : ℕ) : ℤ) ∧
-      xi (lam - ν) ≤ 1 ∧ v ∈ B.dualSubmodule (DeltaAll S DelL) ∧ v ∈ S.wt ν ∧
-      ∀ c : O, c • v ∈ DeltaAll S DelL ↔ (d : O) ∣ c
 
 end Formalism.CohomologicalDescent.BinaryFormsExample

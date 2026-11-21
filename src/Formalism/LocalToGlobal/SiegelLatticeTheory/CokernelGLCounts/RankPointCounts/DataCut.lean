@@ -525,24 +525,6 @@ def FiberCntC (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model
 
 end RD
 
-def RowsDatum (D : Formalism.BasicNotions.D7) : Prop :=
-  (VS D).SigOK →
-  ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-    (∀ p, Agree δ M p) → ∀ (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),
-    (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Formalism.MainNotions.S.Lat.gS D) ^ 2] →
-    ∀ (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-      IsRowReps D F0 what₂ →
-    ∀ ϖ : ∀ p : PlF D, 𝒪[(D.s.atP p).Fp], (∀ p, Irreducible (ϖ p)) →
-    ∀ nc : ℝ, CntLocal.Formula δ L u u' F0 what₂ nc →
-      (∀ d ∈ densSet L δ ϖ u u' F0 what₂, 0 ≤ d) ∧
-      ∃ (th : TermDef.Term D u u' F0 what₂ → ∀ p, Option ((M p).Cls D.R.rS)) (dn : TermDef.Term D u u' F0 what₂ → ℝ),
-        (∀ θ0 : ∀ p, Option ((M p).Cls D.R.rS),
-          (∀ w, ∃ S : Finset (PlF D), Formalism.L2.SG.Pf.UnramOff M δ (D.mem u).A.T (D.mem u').A.T θ0 S w) →
-          ∀ γ w, EligAt γ w → Formalism.L2.SG.Pf.Restricted θ0 (th γ)) ∧
-        (∀ γ w, EligAt γ w → dn γ ∈ densSet L δ ϖ u u' F0 what₂) ∧
-        PartnerSumC δ M (PairVal.vRdef D u u' F0 what₂ δ M) th ∧
-        FiberCntC δ M (PairVal.vRdef D u u' F0 what₂ δ M) nc th dn
-
 section RDProof
 
 theorem density_gram_matrix_sub_posSemidef {ι Θ : Type*} [Fintype ι] [Fintype Θ] (v : Θ → ι → ℂ) (a dens : Θ → ℝ) (Dsup : ℝ) (n : ι → ℝ)
@@ -894,12 +876,6 @@ theorem dom_points (hN : SupportG.NormProd D) {δ : ∀ p : PlF D, (D.s.atP p).F
   exact (hKA.smul (Complex.zero_le_real.2 hsd)).add hclose
 
 end RDProof4
-
-section RDProof5
-
-variable {D : Formalism.BasicNotions.D7}
-
-end RDProof5
 
 section Close
 

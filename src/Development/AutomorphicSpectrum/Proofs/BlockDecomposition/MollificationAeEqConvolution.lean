@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RwAppend
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LpIntegralAePointwiseStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularRepresentationContinuousStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularRepresentationContinuous
 open MeasureTheory Matrix Finset Filter Topology
 open scoped ContDiff ComplexConjugate InnerProductSpace ZeroAtInfty
 open PositivityTheory.RgTw (Mat G)
@@ -21,7 +21,7 @@ theorem mol_ae_lConv : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] 
   have hφv : Continuous (fun y : G n => φ y.val) := hφc.comp Units.continuous_val
 
   have hcont : Continuous (fun y : G n => φ y.val • lT μ V y x) :=
-    hφv.smul (GlobalTheory.T.regular_representation_continuous n μ V hU x).2
+    hφv.smul (_root_.GlobalTheory.CompanionTheory.PresSobA.translations_strongly_continuous n μ V hU x).2
   have hK : IsCompact ((Units.val : G n → Mat n) ⁻¹' tsupport φ) := by
     refine ((GlobalTheory.CompanionTheory.SobGL.HaarDom.isOpenEmbedding_valG n).isInducing.isCompact_preimage_iff
       ?_).2 hφ.2.1

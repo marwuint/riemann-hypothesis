@@ -14,11 +14,6 @@ noncomputable section
 
 namespace GlobalTheory.BetaIntegrand
 
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
-
 end GlobalTheory.BetaIntegrand
 
 open Filter Topology MeasureTheory in

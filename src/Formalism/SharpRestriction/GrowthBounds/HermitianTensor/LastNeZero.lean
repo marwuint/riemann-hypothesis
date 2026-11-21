@@ -41,10 +41,6 @@ theorem dualWt_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Ant
   have := h (Fin.rev_le_rev.mpr hij)
   linarith
 
-theorem dualWt_zero (m : ℕ) : dualWt (0 : Fin (m + 1) → ℤ) = 0 := by
-  funext i
-  simp [dualWt]
-
 theorem flatW_top {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be : TT → ℕ) (s : TT) :
     flatW m al be s.val = wtPQ m (al s) (be s) := by
   funext i
@@ -73,41 +69,6 @@ theorem lo_apply (m : ℕ) (ccl P Q : ℕ) (lam : Fin (m + 1) → ℤ) (h0 : lam
     rw [hl]
     ring
   · ring
-
-theorem lo_anti (m : ℕ) (hm : 1 ≤ m) (ccl P Q : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
-    (h0 : lam 0 = (P : ℤ) + ccl) (hl : lam (Fin.last m) = -((Q : ℤ) + ccl))
-    (hmid : ∀ i : Fin (m + 1), 0 < i.val → i.val < m → |lam i| ≤ ccl) : Antitone (lam - wtPQ m P Q) := by
-  have hl0 := last_ne_zero'' m hm
-  have hc : (0 : ℤ) ≤ ccl := Nat.cast_nonneg _
-  have hab : ∀ k : Fin (m + 1), k ≠ 0 → k ≠ Fin.last m → -(ccl : ℤ) ≤ lam k ∧ lam k ≤ ccl := by
-    intro k hk0 hkl
-    refine abs_le.mp (hmid k ?_ ?_)
-    · exact Nat.pos_of_ne_zero fun h => hk0 (Fin.ext h)
-    · have h1 := k.isLt
-      have h2 : k.val ≠ m := fun h => hkl (Fin.ext (by rw [Fin.val_last]; exact h))
-      omega
-  intro i j hij
-  rw [lo_apply m ccl P Q lam h0 hl i, lo_apply m ccl P Q lam h0 hl j]
-  by_cases hj0 : j = 0
-  · have hi0 : i = 0 := le_antisymm (hj0 ▸ hij) (Fin.zero_le _)
-    rw [if_pos hj0, if_pos hi0]
-  by_cases hil : i = Fin.last m
-  · have hjl : j = Fin.last m := le_antisymm (Fin.le_last _) (hil ▸ hij)
-    rw [if_neg hj0, if_pos hjl, if_neg (hil ▸ hl0), if_pos hil]
-  rw [if_neg hj0]
-  by_cases hjl : j = Fin.last m
-  · rw [if_pos hjl]
-    by_cases hi0 : i = 0
-    · rw [if_pos hi0]
-      linarith
-    · rw [if_neg hi0, if_neg hil]
-      linarith [(hab i hi0 hil).1]
-  · rw [if_neg hjl]
-    by_cases hi0 : i = 0
-    · rw [if_pos hi0]
-      linarith [(hab j hj0 hjl).2]
-    · rw [if_neg hi0, if_neg hil]
-      exact hlam hij
 
 theorem bE_snd {K : Type} [Field K] {α : Type} (b : Bool) (f : MvPolynomial α K) :
     rename (Prod.snd : Bool × α → α) (rename (fun v => (b, v)) f) = f := by

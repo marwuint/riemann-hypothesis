@@ -13,10 +13,6 @@ namespace TwistData
 
 variable {K : Type} [Field K] (D : TwistData K)
 
-theorem Lam_sub (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (Z W : MvPolynomial (D.ML × Fin D.r) K) :
-    D.abelian₂ p F (Z - W) = D.abelian₂ p F Z - D.abelian₂ p F W := by
-  unfold abelian₂; simp only [gaAct_eq_dg, map_sub, fock_sub_right]
-
 theorem Lam_smul (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (a : K) (Z : MvPolynomial (D.ML × Fin D.r) K) :
     D.abelian₂ p F (a • Z) = a * D.abelian₂ p F Z := by
   unfold abelian₂; simp only [gaAct_eq_dg, map_smul, fock_smul_right]

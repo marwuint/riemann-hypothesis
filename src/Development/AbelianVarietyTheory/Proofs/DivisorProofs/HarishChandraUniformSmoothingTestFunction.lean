@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CasKOp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemZalgCommuteLieAction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartLeftInvariantLaplacianOpPowEqIterateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEllipticReproducingTestFunctionLaplacianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEllipticReproducingTestFunctionLaplacian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CasimirGlFactorEmbeddingMemCapelliAlgebraStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyMaximalCompactCasimirKillsKTypeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeftInvariantLaplacianEqCasimirDecompositionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyAnnihilatesCommutingLinearCombinationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyAnnihilatesCommutingLinearCombination
 
 noncomputable section
 
@@ -26,7 +26,7 @@ theorem reproduce_of_lap : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyCo
     ν.IsAddHaarMeasure → ∀ p : Polynomial ℂ, p ≠ 0 → ∃ α : Lie E a → ℂ, IsTest (invSet E a) α ∧
       ∀ φ : Sm E a, Polynomial.aeval (lapOp E a) p φ = 0 → smoothing ν α φ.1 = φ.1 := by
   intro E _ _ _ a ν hν p hp
-  obtain ⟨α, hα, h⟩ := GlobalTheory.T.exists_ellipticReproducing_testFunction_laplacian E a ν hν p hp
+  obtain ⟨α, hα, h⟩ := _root_.GlobalTheory.HCParam.reproduce E a ν hν p hp
   refine ⟨α, hα, fun φ hφ => funext fun x => ?_⟩
   have h1 := h (chart φ.1 x) (φ.2 x) (fun y hy => by
     rw [Polynomial.aeval_eq_sum_range] at hφ
@@ -99,7 +99,7 @@ theorem exists_alpha_smoothing : ∀ (E : Type) [Field E] [NumberField E] [IsTot
     rintro (_ | τ)
     · exact hq0
     · exact pow_ne_zero _ (Polynomial.X_sub_C_ne_zero _)
-  obtain ⟨p, hp0, hp⟩ := GlobalTheory.T.exists_poly_annihilates_commuting_linear_combination A hc c P hP
+  obtain ⟨p, hp0, hp⟩ := _root_.GlobalTheory.CommutingPoly.exists_poly_annihilates_linear_combination A hc c P hP
   obtain ⟨α, hα, hsm⟩ := reproduce_of_lap E a ν hν p hp0
   refine ⟨α, hα, fun φ hφ => hsm φ ?_⟩
   have e : ∑ i, c i • A i = lapOp E a := by

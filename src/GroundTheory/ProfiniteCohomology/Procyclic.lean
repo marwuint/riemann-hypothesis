@@ -72,14 +72,6 @@ theorem exists_pow_mem_of_isOpen [CompactSpace G] (H : Subgroup G) (hH : IsOpen 
   obtain ⟨N, hN, -, h⟩ := Subgroup.exists_pow_mem_of_index_ne_zero H.index_ne_zero_of_finite σ
   exact ⟨N, hN, h⟩
 
-theorem IsTopologicalGenerator.eq_top_of_isOpen {σ : G} (hσ : IsTopologicalGenerator σ)
-    (H : Subgroup G) (hH : IsOpen (H : Set G)) (hσH : σ ∈ H) : H = ⊤ := by
-  have hcl : IsClosed (H : Set G) := H.isClosed_of_isOpen hH
-  have hle : (Subgroup.zpowers σ : Set G) ⊆ H := (Subgroup.zpowers_le.2 hσH)
-  have := hcl.closure_subset_iff.2 hle
-  rw [hσ.closure_eq] at this
-  exact eq_top_iff.2 fun x _ => this (Set.mem_univ x)
-
 end Generator
 
 section Cocycles
@@ -353,21 +345,6 @@ section Iso
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   (A : Rep.{u} k G) [IsDiscreteRep A] {σ : G}
 
-theorem invariants_eq_ker (hσ : IsTopologicalGenerator σ) :
-    A.ρ.invariants = LinearMap.ker (A.ρ σ - 1) := by
-  ext a
-  rw [Representation.mem_invariants, LinearMap.mem_ker, LinearMap.sub_apply,
-    Module.End.one_apply, sub_eq_zero]
-  refine ⟨fun h => h σ, fun h g => ?_⟩
-  have hσa : σ ∈ stabilizer A.ρ a := h
-  have htop := hσ.eq_top_of_isOpen _ (isOpen_stabilizer A a) hσa
-  have hg : g ∈ stabilizer A.ρ a := htop ▸ Subgroup.mem_top g
-  exact hg
-
-noncomputable def H0IsoKer (hσ : IsTopologicalGenerator σ) :
-    cohomology A 0 ≅ ModuleCat.of k (LinearMap.ker (A.ρ σ - 1)) :=
-  H0Iso A ≪≫ (LinearEquiv.ofEq _ _ (invariants_eq_ker A hσ)).toModuleIso
-
 variable [CompactSpace G]
 
 noncomputable def H1Iso (hσ : IsZHatGenerator σ) (hA : IsAddTorsion A) :
@@ -381,63 +358,5 @@ theorem H1Iso_hom (hσ : IsZHatGenerator σ) (hA : IsAddTorsion A) :
   rfl
 
 end Iso
-
-section Vanishing
-
-variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-  [CompactSpace G]
-
-theorem isAddTorsion_discreteCoind (X : Type u) [AddCommGroup X] [Module k X]
-    (hX : IsAddTorsion X) : IsAddTorsion (discreteCoind k G X) := by
-  intro f
-  classical
-  have hfin := (f : LocallyConstant G X).range_finite
-  set s := hfin.toFinset
-  refine isOfFinAddOrder_iff_nsmul_eq_zero.2
-    ⟨∏ v ∈ s, addOrderOf v, Finset.prod_pos fun v _ => (hX v).addOrderOf_pos, ?_⟩
-  change (∏ v ∈ s, addOrderOf v) • (f : LocallyConstant G X) = 0
-  ext x
-  rw [LocallyConstant.coe_smul, Pi.smul_apply, LocallyConstant.coe_zero, Pi.zero_apply,
-    ← addOrderOf_dvd_iff_nsmul_eq_zero]
-  exact Finset.dvd_prod_of_mem _ (hfin.mem_toFinset.2 ⟨x, rfl⟩)
-
-variable {σ : G}
-
-theorem mem_range_sub_one_discreteCoind (hσ : IsZHatGenerator σ) (A : Rep.{u} k G)
-    [IsDiscreteRep A] (hA : IsAddTorsion A) (c : LocallyConstant G A) :
-    c ∈ LinearMap.range ((discreteCoind k G A).ρ σ - 1) := by
-  have hz := isZero_cohomology_discreteCoind k G A 0
-  have hs : Subsingleton (cohomology (discreteCoind k G A) 1) :=
-    ModuleCat.subsingleton_of_isZero hz
-  obtain ⟨x, hx⟩ := H1Eval_surjective (discreteCoind k G A) hσ
-    (isAddTorsion_discreteCoind (G := G) A hA) (Submodule.Quotient.mk c)
-  rw [Subsingleton.elim x 0, map_zero, eq_comm, Submodule.Quotient.mk_eq_zero] at hx
-  exact hx
-
-theorem IsZHatGenerator.isZero_cohomology_two (hσ : IsZHatGenerator σ) (A : Rep.{u} k G)
-    [IsDiscreteRep A] (hA : IsAddTorsion A) : IsZero (cohomology A 2) := by
-  refine IsZero.of_iso ?_ (cohomologyCoindCokernelIso A 0).symm
-  refine @ModuleCat.isZero_of_subsingleton _ _ _ ⟨fun x y => ?_⟩
-  apply H1Eval_injective (coindCokernel A) hσ.dense
-  refine Subsingleton.elim (h := ⟨fun q q' => ?_⟩) _ _
-  obtain ⟨q, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  obtain ⟨q', rfl⟩ := Submodule.Quotient.mk_surjective _ q'
-  rw [Submodule.Quotient.eq]
-  obtain ⟨c, hc⟩ := Submodule.Quotient.mk_surjective _ (q - q')
-  rw [← hc]
-  obtain ⟨d, hd⟩ := mem_range_sub_one_discreteCoind hσ A hA c
-  refine ⟨(coindCokernelπ A).hom d, ?_⟩
-  rw [LinearMap.sub_apply, Module.End.one_apply, ← Rep.hom_comm_apply, ← map_sub]
-  rw [← hd]
-  rfl
-
-end Vanishing
-
-section Dimension
-
-variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
-  {σ : G}
-
-end Dimension
 
 end GroundTheory.ProfCoh

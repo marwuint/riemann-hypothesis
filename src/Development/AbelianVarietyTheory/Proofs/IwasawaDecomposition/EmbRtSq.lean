@@ -56,12 +56,6 @@ private theorem mult_conjEmb_eq_ite {H : Host E} (D : Datum H) (τ : E →+* ℂ
       exact fun e => hne e.symm
     rw [if_pos h2, if_neg h3]
 
-theorem main {H : Host E} (D : Datum H) (τ : E →+* ℂ) :
-    Datum.mult D (conjEmb τ) + Datum.mult D τ = Datum.p D + Datum.q D := by
-  rw [mult_conjEmb_eq_ite]
-  unfold Datum.mult
-  split_ifs <;> omega
-
 end GlobalTheory.ConjugateMultiplicity
 
 theorem GlobalTheory.ConjugateMultiplicity.target : ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (D : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (τ : E →+* ℂ), ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult D (ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb τ) + ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult D τ = ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.p D + ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.q D := by

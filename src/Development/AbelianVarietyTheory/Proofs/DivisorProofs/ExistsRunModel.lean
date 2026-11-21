@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunModel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatPIffMulVec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UsedRunUniformisationComponentsShareCmDataStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UsedRunUniformisationCharacterTrivialArithmeticGStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticePreservedByComponentStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UsedRunUniformisationComponentsShareCmData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UsedRunUniformisationCharacterTrivialArithmeticG
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticePreservedByComponentStabilizer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelGroupTransportUniformisationComponentStatement
 
 set_option autoImplicit false
@@ -29,9 +29,9 @@ theorem exists_runModel (p : PtAt ex Csz) (hm : More p) (r : TwoRuns p.T p.P.Gp)
   classical
   obtain ⟨v⟩ := nonempty_place D
   have hne : Nonempty (uAt r v i).Comp := GlobalTheory.ModelLatticeCheck.comp_nonempty _ _ _
-  have hcom := GlobalTheory.T.uniformisation_components_share_cmData p hm r h ho i v
-  have hchi := GlobalTheory.T.uniformisation_character_trivial_arithmeticGroup p hm r h ho i v
-  have hcong := GlobalTheory.T.lattice_preserved_by_component_stabilizer p hm r h ho i v
+  have hcom := _root_.GlobalTheory.ShareOn.comps_share p hm r h ho i v
+  have hchi := _root_.GlobalTheory.ShareOn.uAt_chi_eq_one p hm r h ho i v
+  have hcong := _root_.GlobalTheory.ShareOn.sub_mem_half_smul_latP p hm r h ho i v
   obtain ⟨act, tr, h1, hmul, hmt, hconj, hcoc, hfaith, ⟨a, ha⟩, hd2⟩ := GlobalTheory.T.exists_levelGroup_transport_uniformisation_components p hm r h ho i v
   choose Xx hXd hXL using exists_dataX_latP p r h i v
   have hΓ : ∀ c, (Xx c).Γ = ((uAt r v i).X c).Γ := fun c => congrArg Data.Γ (hXd c)

@@ -535,9 +535,6 @@ theorem IsEta.val_eq (h2 : Module.finrank F E = 2) (h : IsEta F E η) (hu : IsUn
   · exact h.loc_of_mem h2 (mem_normGroup_of_isSplit h2 hv _)
   · exact h.loc_of_not_mem h2 (not_mem_normGroup_of_inert h2 hv hu (unif_spec v))
 
-theorem IsHeckeF.pow (h : IsHeckeF F η) (k : ℕ) : IsHeckeF F (η ^ k) :=
-  ⟨h.1.pow k, fun a => by rw [MonoidHom.pow_apply, h.2 a, one_pow]⟩
-
 theorem loc_pow (χ : HChar F) (k : ℕ) (x : (Fv F v)ˣ) : (χ ^ k).loc v x = χ.loc v x ^ k := rfl
 
 variable {μ : (AF F ⊗[F] E)ˣ →* Circle} {k : ℕ}

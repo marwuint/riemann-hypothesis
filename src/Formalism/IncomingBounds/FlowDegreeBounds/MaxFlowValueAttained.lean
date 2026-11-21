@@ -190,11 +190,6 @@ theorem convex_K : Convex ℝ (Kset l d) := by
     simp only [Prod.snd_add, Prod.smul_snd, smul_eq_mul]
     exact add_le_add (mul_le_mul_of_nonneg_left h1v ha) (mul_le_mul_of_nonneg_left h2v hb)
 
-def gmap (l d : ℕ) [NeZero d] (x : ZMod d → ℕ → ℝ) : (ZMod d → ℝ) × ℝ :=
-  (fun s => dpLoad l d x s, flowVal d x)
-
-def Cset (d : ℕ) : Set ((ZMod d → ℝ) × ℝ) := {q | (∀ s, 0 ≤ q.1 s) ∧ q.2 ≤ 0}
-
 theorem isClosed_K (hl : 1 ≤ l) : IsClosed (Kset l d) := by
   refine IsSeqClosed.isClosed ?_
   intro q p hq hlim

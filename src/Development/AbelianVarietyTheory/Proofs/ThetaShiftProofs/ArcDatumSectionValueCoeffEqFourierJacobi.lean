@@ -7,17 +7,18 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbedding
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointValueIsHomogeneousLetters
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsLetterRingBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.DegenerationDataBaseChangesExistPid
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangularStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramedPointEvalNaturalWeightScalingStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointUniqueAndBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangular
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramedPointEvalNaturalWeightScaling
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointUniqueAndBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFrameChangeByConstantsStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsIntegralElemOfIsAlgebraicInt
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertible
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNeZeroIff
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnfStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtExponentialDerivativeBijectiveTangentStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChange
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnf
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtExponentialDerivativeBijectiveTangent
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LaurentCoeffSectionValueArcEqFourierJacobiStatement
 import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.MemOfPowEqInt
 import Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.FirstMinimumRankZero
@@ -69,7 +70,7 @@ theorem gtTanR_of_isArcFr (hG : Out.GlobalFnsSt) {O : Type} [CommRing O] {β : O
     {y : FrPt Xo c S} (h : IsArcFr W e th ι y) (τ : E →+* ℂ) (k : Fin (Dw.mult τ)) : GtTanR (e τ k) := by
   obtain ⟨z, t', m1, m2, φ, -, -, -, -, -, hu, -⟩ := h
   obtain ⟨v, u', hv, h1, h2, h3⟩ := hu τ k
-  refine ((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 v hv).2 ?_
+  refine ((_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 v hv).2 ?_
   have e1 : eSec t'.G ≫ m1.φ = y.x ≫ eSec Xo.univ.t.G := m1.cm.e_comm.trans (congrArg (· ≫ _) m1.base)
   have e2 : eSec t'.G ≫ m2.φ = spMap ι ≫ eSec W.t.G := m2.cm.e_comm.trans (congrArg (· ≫ _) m2.base)
   have h0 : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ u' = eSec t'.G := by
@@ -161,13 +162,13 @@ theorem exists_frPt_at (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTheory.Reg.
         rfl }
   obtain ⟨y₁, hy₁⟩ := hev.bc _ _ φ y₀
   obtain ⟨z₁, hz₁⟩ := hev.bc _ _ φ d.yF
-  have a₀ := (GlobalTheory.T.arcFramedPoint_unique_and_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W e₀ d.th hth _ _ y₀ hy₀).2 hY _ φ y₁ hy₁
+  have a₀ := (_root_.GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W e₀ d.th hth _ _ y₀ hy₀).2 hY _ φ y₁ hy₁
   have hι : φ.toRingHom.comp (arcι Dw K₁) = (HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.map ι) :=
     RingHom.ext fun g => evS_arcι ι hx g
   rw [hι] at a₀
-  have b₁ := GlobalTheory.T.isFramedPoint_of_arc_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W ℂ b' a₁ ι p W₁ hY hp hW e₀ e₁ d.th th₁ he ht
+  have b₁ := _root_.GlobalTheory.ArcQ.isArcFr_witBC h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W ℂ b' a₁ ι p W₁ hY hp hW e₀ e₁ d.th th₁ he ht
     _ _ y₁ a₀
-  have c₁ := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c (ArcS Dw K₁)).2.2.1 _ φ _ _ _ _ _ _ hc hy₁).1 hz₁
+  have c₁ := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c (ArcS Dw K₁)).2.2.1 _ φ _ _ _ _ _ _ hc hy₁).1 hz₁
   let g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ := fun τ => Matrix.of fun i k => x ⟨τ, (i, k)⟩
   have hM : ∀ τ, (letM Dw K₁ τ).map φ = 1 * (g τ).map cstL := fun τ => by
     rw [one_mul]
@@ -181,15 +182,15 @@ theorem exists_frPt_at (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTheory.Reg.
   have hu := (GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c ℂ⸨X⸩ _ _ y₁).2.2.1 z₁ c₁
   obtain ⟨y₂, hy₂⟩ := (GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c ℂ⸨X⸩ (fun τ => (g τ).map cstL) 1 y₁).1
     (fun τ => by simpa only [one_mul] using hu.1 τ) isUnit_one
-  have c₂ : FrChg (fun _ => 1) (cstL (ι ζ)) y₂ z₁ := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c ℂ⸨X⸩).1 _ _ _ _ _ _ _ hy₂).2 c₁
+  have c₂ : FrChg (fun _ => 1) (cstL (ι ζ)) y₂ z₁ := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c ℂ⸨X⸩).1 _ _ _ _ _ _ _ hy₂).2 c₁
   refine ⟨fun h0 => hu.2.ne_zero (by rw [h0, map_zero, zero_mul]), y₂, ?_, fun F hF => ?_⟩
   · refine GlobalTheory.T.arcFrame_change_by_constants h1 h2 E H Dw l Xo c _ _ d.Y ℂ b' a₁ _ W₁ e₁ e₂ th₁ th₁ g 1 hth₁ he₂ (ThMul.refl _) _ _ y₁ y₂
       hY b₁ ?_
     rw [map_one, map_one]
     exact hy₂
   · obtain ⟨P, hP, -⟩ := evR_arc_isHomogeneous h1 h2 E H Dw l Xo c hev K₁ d a' n F hF
-    have eS := (GlobalTheory.T.framedPoint_eval_natural_weight_scaling E H Dw l Xo c hev a' n F hF (ArcS Dw K₁)).1 _ φ _ _ hz₁
-    have eT := ((GlobalTheory.T.framedPoint_eval_natural_weight_scaling E H Dw l Xo c hev a' n F hF ℂ⸨X⸩).2 inferInstance).2 _ _ _ c₂
+    have eS := (_root_.GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a' n F hF (ArcS Dw K₁)).1 _ φ _ _ hz₁
+    have eT := ((_root_.GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a' n F hF ℂ⸨X⸩).2 inferInstance).2 _ _ _ c₂
     have e3 : evP ι x P = cstL (ι ζ ^ n) * evR Xo c F y₂ := by
       rw [map_pow, ← eT, eS, ← hP]
       exact (evS_algebraMap ι hx P).symm
@@ -224,7 +225,7 @@ theorem ajAt_eq_fj_of_overBase : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt
   letI : Algebra (FractionRing ℂ) ℂ := FractionRing.liftAlgebra ℂ ℂ
   haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := FractionRing.isScalarTower_liftAlgebra ℂ ℂ
   letI : Algebra c.F ℂ⸨X⸩ := (cstL.comp (ι.comp (algebraMap c.F K₁))).toAlgebra
-  obtain ⟨Uw⟩ := GlobalTheory.T.nonempty_unifWitnessData_of_isUnf E H Dw l Xo c _ r U hunf
+  obtain ⟨Uw⟩ := _root_.GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c _ r U hunf
   obtain ⟨ζ, e₀, y₀, hy₀, hc⟩ := d.exists_normal_tangent h1 h2
   have hth : ThNZ d.th := by
     obtain ⟨_, _, _, _, hne, -⟩ := d.isArc3
@@ -254,7 +255,7 @@ theorem ajAt_eq_fj_of_overBase : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt
       obtain ⟨y, rfl⟩ := f.surjective y
       exact LinearMap.congr_fun h y))
     (betaAt_comp f ξ hp.2.2.1 hbeta) hdom htv (((Ha.T + 1 : ℝ) : ℂ) * Complex.I) (by simp)
-  obtain ⟨v₁, v₂, -, v₄⟩ := GlobalTheory.T.torusExt_exponential_derivative_bijective_tangent h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha
+  obtain ⟨v₁, v₂, -, v₄⟩ := _root_.GlobalTheory.ExpTan.anVec_bijective h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha
   choose z₁ hz₁ using fun τ i =>
     (v₁ (e₁ τ i) (htan _ _ (he₁ τ i) (gtTanR_of_isArcFr h1.globalFns hι hy₀ τ i))).exists
   have key : ∀ x, InvBl x → ∃ (fr : (U.X k).dom) (κ : ℂ), κ ≠ 0 ∧

@@ -132,44 +132,4 @@ theorem weylK_add_smul_single {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → �
   rw [h]
   exact weylK_shift ε Λ hΛ s c
 
-theorem weylK_two {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) {i j : Fin n}
-    (hij : ε i ≠ ε j) :
-    weylK ε (Λ + (Pi.single i 1 - Pi.single j 1)) =
-      weylK ε Λ *
-        (∏ b ∈ univ.filter (fun b => b ≠ i ∧ ε b = ε i),
-          (((Λ + rhoC ε) i - (Λ + rhoC ε) b + 1) / ((Λ + rhoC ε) i - (Λ + rhoC ε) b))) *
-        ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j),
-          (((Λ + rhoC ε) j - (Λ + rhoC ε) b - 1) / ((Λ + rhoC ε) j - (Λ + rhoC ε) b)) := by
-  have hji : j ≠ i := fun h => hij (by rw [h])
-  have hF : ∀ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j),
-      (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) j - (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) b =
-        (Λ + rhoC ε) j - (Λ + rhoC ε) b := by
-    intro b hb
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb
-    have hbi : b ≠ i := fun h => hij (by rw [← h, hb.2])
-    simp only [Pi.add_apply, Pi.single_apply, hji, hbi, ↓reduceIte]
-    ring
-  have hP0 : ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j),
-      ((Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) j - (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) b) =
-        ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), ((Λ + rhoC ε) j - (Λ + rhoC ε) b) :=
-    Finset.prod_congr rfl hF
-  have hP1 : ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j),
-      ((Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) j - (Λ + Pi.single i (1 : ℝ) + rhoC ε : Fin n → ℝ) b + -1) =
-        ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), ((Λ + rhoC ε) j - (Λ + rhoC ε) b - 1) :=
-    Finset.prod_congr rfl fun b hb => by rw [hF b hb]; ring
-  have hmul := weylK_shift_mul ε (Λ + Pi.single i 1) j (-1)
-  rw [hP0, hP1, weylK_shift ε Λ hΛ i 1] at hmul
-  have hΛe : Λ + (Pi.single i 1 - Pi.single j 1) = Λ + Pi.single i 1 + Pi.single j (-1) := by
-    rw [sub_eq_add_neg, ← Pi.single_neg, add_assoc]
-  rw [hΛe, Finset.prod_div_distrib (s := univ.filter (fun b => b ≠ j ∧ ε b = ε j)), ← mul_div_assoc, eq_div_iff (weylRatio_prod_ne ε Λ hΛ j), hmul]
-
-theorem weylK_add_single_sub_single {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ)
-    (i j : Fin n) (hij : ε i ≠ ε j) :
-    weylK ε (Λ + ((Pi.single i (1 : ℝ) : Fin n → ℝ) - Pi.single j 1)) = weylK ε Λ *
-      (∏ b ∈ univ.filter (fun b => b ≠ i ∧ ε b = ε i),
-        ((Λ + rhoC ε) i - (Λ + rhoC ε) b + 1) / ((Λ + rhoC ε) i - (Λ + rhoC ε) b)) *
-      (∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j),
-        ((Λ + rhoC ε) j - (Λ + rhoC ε) b - 1) / ((Λ + rhoC ε) j - (Λ + rhoC ε) b)) :=
-  weylK_two ε Λ hΛ hij
-
 end ReciprocityTheory.ChartRestriction.DS.HW

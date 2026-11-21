@@ -277,13 +277,6 @@ theorem mu_mem_span_periodT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
   rw [Ideal.mem_span_singleton']
   exact ⟨↑hu.unit⁻¹, by rw [ht, mul_comm, mul_assoc, IsUnit.mul_val_inv, mul_one]⟩
 
-theorem span_periodT_eq_span_mu {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
-    (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) :
-    Ideal.span {periodT (K := K) hε} =
-      Ideal.span {algebraMap (AInf K p) (ACris K p) (AInf.mu ε)} := by
-  obtain ⟨u, hu, ht⟩ := exists_periodT_eq_mu_mul_unit hε hζ
-  rw [ht, Ideal.span_singleton_mul_right_unit hu]
-
 end ACris
 
 end GroundTheory.PAdicHodge

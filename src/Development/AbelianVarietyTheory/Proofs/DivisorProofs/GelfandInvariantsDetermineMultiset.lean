@@ -35,9 +35,9 @@ theorem gelfVal_multiset_eq : ∀ (n : ℕ) (χ χ' : Fin n → ℂ), (∀ k : �
       | zero => rw [GlobalTheory.CapelliNewton.gelfVal_zero, GlobalTheory.CapelliNewton.gelfVal_zero]
       | succ k => exact h k
     have hgv : GlobalTheory.Dec.gelfVal χ = GlobalTheory.Dec.gelfVal χ' := funext hall
-    obtain ⟨r, hr, hrE⟩ := GlobalTheory.T.scalar_capelli_truncated_perelomov_popov m (m + 1) χ
-    obtain ⟨r', hr', hrE'⟩ := GlobalTheory.T.scalar_capelli_truncated_perelomov_popov m (m + 1) χ'
-    have hf := GlobalTheory.T.poly_eq_zero_of_newton_recursion m (m + 1) (GlobalTheory.Dec.gelfVal χ)
+    obtain ⟨r, hr, hrE⟩ := _root_.GlobalTheory.ScalarNewton.scalar_newton m (m + 1) χ
+    obtain ⟨r', hr', hrE'⟩ := _root_.GlobalTheory.ScalarNewton.scalar_newton m (m + 1) χ'
+    have hf := _root_.GlobalTheory.newton_recursion_poly_unique m (m + 1) (GlobalTheory.Dec.gelfVal χ)
       (GlobalTheory.CapelliNewton.capQ m χ - GlobalTheory.CapelliNewton.capQ m χ') (r - r')
       (Nat.lt_succ_self m) (GlobalTheory.CapelliNewton.gelfVal_zero m χ) ?_ ?_ ?_
     · have hQ : GlobalTheory.CapelliNewton.capQ m χ = GlobalTheory.CapelliNewton.capQ m χ' := sub_eq_zero.mp hf

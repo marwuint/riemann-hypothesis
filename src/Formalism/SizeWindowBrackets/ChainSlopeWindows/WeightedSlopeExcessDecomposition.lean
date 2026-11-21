@@ -17,21 +17,6 @@ theorem weightedSlopeExcess_decomposition (W : Finset ι) (J : Finset κ) (l : �
   simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]
   ring
 
-theorem unit_weight_partition (W : Finset ι) (P : Finset ℕ) (pr : ι → ℕ) (l io : ι → ℝ)
-    (iop : ℕ → ℝ) : ClaimUnit W P pr l io iop := by
-  unfold ClaimUnit
-  intro hP hl hio
-  have hmain : 2 * ∑ w ∈ W, l w * io w = 2 * ∑ p ∈ P, Real.log (p : ℝ) * iop p := by
-    congr 1
-    rw [← Finset.sum_fiberwise_of_maps_to hP]
-    refine Finset.sum_congr rfl (fun p hp => ?_)
-    rw [← hl p hp, Finset.sum_mul]
-    refine Finset.sum_congr rfl (fun w hw => ?_)
-    rw [Finset.mem_filter] at hw
-    rw [hio w hw.1, hw.2]
-  refine Eq.trans ?_ hmain
-  first | rfl | (show ∑ w ∈ W, 2 * l w * io w = _; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun w _ => mul_assoc _ _ _)) | (show ∑ w ∈ W, 2 * (l w * io w) = _; rw [Finset.mul_sum])
-
 theorem deficit_bounds (f : ℕ) (T dM du : ℝ) : ClaimDe f T dM du := by
   unfold ClaimDe
   intro hdM hT hdu
@@ -60,23 +45,6 @@ theorem deficit_bounds (f : ℕ) (T dM du : ℝ) : ClaimDe f T dM du := by
   refine ⟨?_, by linarith, by linarith, by linarith⟩
   rw [hdu]
   ring
-
-theorem truncatedLength_bound (WT : Finset ι) (l len : ι → ℝ) (dM du de lam T : ℝ) :
-    ClaimT WT l len dM du de lam T := by
-  unfold ClaimT
-  intro hl hdM hde0 hde1 hdu hlam hlen hsum
-  have hdu0 : 0 < du := by rw [hdu]; exact mul_pos (by linarith) hdM
-  have hdu2 : dM ≤ 2 * du := by
-    rw [hdu]
-    nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ 1 - 2 * de) hdM.le]
-  calc ∑ w ∈ WT, 2 * l w * len w / du ≤ ∑ w ∈ WT, 4 * lam * l w := by
-        refine Finset.sum_le_sum (fun w hw => ?_)
-        rw [div_le_iff₀ hdu0]
-        have h1 := hl w hw
-        have h2 := hlen w hw
-        nlinarith [mul_nonneg h1 (sub_nonneg.2 h2),
-          mul_nonneg (mul_nonneg h1 hlam) (sub_nonneg.2 hdu2)]
-    _ = 4 * lam * Real.log T := by rw [← Finset.mul_sum, hsum]
 
 private theorem le_muN_of_hypLow {W WT : Finset ι} {J : Finset κ} {l : ι → ℝ} {gain F E : κ → ι → ℝ}
     {tau io len sg' : ι → ℝ} {dM du de muMu muN PT Rd X : ℝ}

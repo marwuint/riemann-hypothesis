@@ -1,6 +1,17 @@
 import ReciprocityTheory.L2DbarEstimates.Localization.UnweightBackStatement
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.Imports
-import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.HilbertLemmas
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ChartSymmEventuallyEq
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.TsupportDbSubset
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.CommFderivApply
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.MeasurableSetImageOfIsLocalHomeomorph
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ExistsChartPartition
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.IntegralFderivApplyEqZero
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.IsLocalHomeomorphCompFst
+import ReciprocityTheory.L2DbarEstimates.JacobianInterpolationStatement
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.CvxOfConvex
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.MinimalSolution
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.HormanderLemma
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.OntoWithBoundTop
 
 namespace ReciprocityTheory.L2DbarEstimates.F
 
@@ -115,14 +126,6 @@ theorem splitT_weakS (F G : M → V n) (hFG : F =ᵐ[vol n z] G) (σ : M → Fin
   rw [hx]
 
 end SplitHelpers
-
-def splitTestSub {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) :
-    Submodule ℂ (M → ℂ) where
-  carrier := {g | IsTest n z g}
-  add_mem' := fun {a b} ha hb => ⟨Smooth.add n z a b ha.1 hb.1, ha.2.add hb.2⟩
-  zero_mem' := ⟨Smooth.const n z 0, HasCompactSupport.zero⟩
-  smul_mem' := fun c g hg => ⟨Smooth.mul n z (fun _ => c) g (Smooth.const n z c) hg.1,
-    hg.2.mul_left (f := fun _ => c)⟩
 
 private theorem d_db_eq_zero_of_not_mem_compact_support {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ) (z : M → V n)
     (K0 : Set M) (hK0 : IsCompact K0) (u : M → ℂ) (hu : ∀ x, x ∉ K0 → u x = 0) (x : M)

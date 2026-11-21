@@ -61,16 +61,6 @@ def ReadCmp : Prop := ∀ (ρ : Setup D.ntw) (hρ : ρ.Good) (e : FractionRing (
 
 end Point
 
-def KerOfAt : Prop := AtTw fun _ _ _ _ p w j => KerOf p w j
-
-def TraceOfAt : Prop := AtTw fun _ _ _ _ p w j => TraceOf p w j
-
-def KerRatAt : Prop := AtTw fun _ _ _ _ p w j => KerRat p w j
-
-def LatIoAt : Prop := AtTw fun _ _ _ _ p w j => LatIo p w j
-
-def ReadCmpAt : Prop := AtTw fun _ _ _ _ p w j => ReadCmp p w j
-
 def FlatKer : Prop := ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
   (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R →
   ∀ i : Fin D.R.m, VStd D i → ∀ B : Base (Vc D i) (Wc D i), B.Good → BaseOf R i B →

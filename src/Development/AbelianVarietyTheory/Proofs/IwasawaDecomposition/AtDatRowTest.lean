@@ -17,11 +17,13 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TwistPl
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HoldsUIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBare
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CopyLIntegral
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestAtRealisationOfHilbertModelsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyStagesParametersParameterSizeConditionsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestHypothesesAtMemberAdelicDataStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestChoicesExistLargeCoeffFieldAdelicDataStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqualMultiplicitiesRowTestOfSameGroupTransferStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestAtRealisationOfHilbertModels
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyStagesParamSizeConditions
+import Development.AbelianVarietyTheory.Definitions.Divisors.Hypotheses2
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimesLifts
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestHypothesesAtMemberAdelicData
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestChoicesExistLargeCoeffFieldAdelicData
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqualMultiplicitiesRowTestOfSameGroupTransfer
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Cx Formalism.IndefR.RecTie
 open scoped TensorProduct InnerProductSpace ComplexOrder
@@ -46,18 +48,18 @@ theorem atDat_rowTest : GlobalTheory.Published.GreenCuspidal → GlobalTheory.Pu
       (z : GlobalTheory.Mem.R3.Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GlobalTheory.Mem.R3.GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt →
       GlobalTheory.RealGeo.InGeo z.geo → Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F) := by
   intro hG hC h1 h2 h3 h4 h5 h6 h7 hEF
-  obtain ⟨CF1, H1⟩ := GlobalTheory.T.rowTest_at_realisation_of_hilbertModels hC h1 h2 h3 h4 h5 h6 h7
-  obtain ⟨CF2, H2⟩ := GlobalTheory.T.testChoices_exist_largeCoeffField_adelicData hEF
+  obtain ⟨CF1, H1⟩ := _root_.GlobalTheory.RowTest.rowTest_realisation hC h1 h2 h3 h4 h5 h6 h7
+  obtain ⟨CF2, H2⟩ := _root_.GlobalTheory.RowEx.dat_choice_exists hEF
   have hCh := H2 (max CF1 CF2) (le_max_right _ _)
-  have e1 := ((evG_of_ev (ev_scale fun eps _ => H1 eps (max CF1 CF2) (le_max_left _ _))).inter GlobalTheory.T.eventually_stages_parameterSizeConditions).inter
-    (evG_of_ev GlobalTheory.T.hidaSetting_of_sizeRows)
+  have e1 := ((evG_of_ev (ev_scale fun eps _ => H1 eps (max CF1 CF2) (le_max_left _ _))).inter _root_.GlobalTheory.Mem.R3.LedSize.evG_exists_sizeRows).inter
+    (evG_of_ev _root_.GlobalTheory.PrimIn.rowTest_setting_dat)
   have s1 : Step KPx (fun _ _ _ _ => True) _ := Step.of_evLgG (evLgG_of_evLg hCh)
   refine s1.trans (Step.of_evG (e1.imp ?_))
   rintro K - - - - ⟨⟨⟨x₀, hx, hH⟩, hLed⟩, hSet⟩ B f T hO - - hch w - Z hX Wt z g1 - hEx -
   obtain ⟨Z', g1', hη, hA⟩ := LedRec.exists_bare hG (B := B) (C := w.C) Z f (6 * K.s.x ^ (-K.C.P.CF))
   obtain ⟨L, hsc, hsz⟩ := hLed (w.st Z') hO hη hA
   have s : SameGrp Z Z' := LedRec.sameGrp g1 g1'
-  refine (GlobalTheory.T.equalMultiplicities_rowTest_of_sameGroupTransfer B w.C Z Z' w.px w.I hX T Wt s z).2 ?_
+  refine (_root_.GlobalTheory.Twist.multEq_rowTest_of_copy B w.C Z Z' w.px w.I hX T Wt s z).2 ?_
   have hEx' := DatCopy.copy_exAt Z' s hEx
   generalize DatCopy.copy Z' s z = y at hEx' ⊢
   have hS := hSet B f T w Z' hX Wt y hO g1' hEx' L hsz

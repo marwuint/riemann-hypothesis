@@ -198,10 +198,6 @@ theorem isConjInvariantH_fsLine : IsConjInvariantH (fsLine 2) := by
   intro z
   simp [fsLine, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]
 
-theorem isVerticalDivisorAt_line {p : ℕ} (hp : p ≠ 0) :
-    IsVerticalDivisorAt (mCoordIdeal yLine) p 0 (C (p : ℤ)) 1 :=
-  IsVerticalDivisorAt.ofPrime isArithVar_yLine.2.2.1 hp
-
 def lineData (II : IntersectionSystem)
     (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2]) :
     ComponentData II Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) where

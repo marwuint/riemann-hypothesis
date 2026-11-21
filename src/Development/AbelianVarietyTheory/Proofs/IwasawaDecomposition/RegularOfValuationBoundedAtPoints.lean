@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValAtAlgebraMap
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsZeroOfInvOfNotRegularNormalStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtPointSpecializingOutsideBasicOpenStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsZeroOfInvOfNotRegularNormal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtPointSpecializingOutsideBasicOpen
 
 set_option autoImplicit false
 
@@ -46,7 +46,7 @@ theorem regAt_of_integral_values : ∀ (F : Type) [Field F] [NumberField F] (Y :
     infer_instance
   have : IsLocallyNoetherian N.X := LocallyOfFiniteType.isLocallyNoetherian N.p
   by_contra hreg
-  obtain ⟨z, hz, hzero⟩ := GlobalTheory.T.exists_zero_of_inv_of_not_regular_normal N.X hN x f hreg
+  obtain ⟨z, hz, hzero⟩ := _root_.GlobalTheory.NormalPole.exists_zeroAt_inv N.X hN x f hreg
   have hf0 : f ≠ 0 := fun h => hreg (h ▸ regAt_zero x)
   have hzU : z ∈ U := hz.mem_open U.isOpen hx
   obtain ⟨W₀, hzW, g₀, hg₀⟩ := hzero.regAt.exists_fnOf
@@ -56,7 +56,7 @@ theorem regAt_of_integral_values : ∀ (F : Type) [Field F] [NumberField F] (Y :
   have hg0 : g ≠ 0 := fun h => inv_ne_zero hf0 (by rw [← hg (gen_mem hzW'), h, map_zero])
   have hzg : z ∉ N.X.basicOpen g := fun h =>
     (zeroAt_iff.1 hzero).2 (hg (gen_mem hzW') ▸ (unitAt_fnOf_iff hzW' _ g).2 h)
-  obtain ⟨v, e, y, yt, hc, hW, hn, hu⟩ := GlobalTheory.T.exists_ext_point_specializing_outside_basicOpen F Y N _ z g hzW' hg0 hzg
+  obtain ⟨v, e, y, yt, hc, hW, hn, hu⟩ := _root_.GlobalTheory.TrueGeo.HorizPt.main F Y N _ z g hzW' hg0 hzg
   have hle := hf v e y yt hc fun p hp => (hW hp).2
   have hu' : below (y.1 ≫ N.j) ∈ N.X.basicOpen g := hu
   have hb : below (y.1 ≫ N.j) ∈ W₀ ⊓ U := N.X.basicOpen_le g hu'

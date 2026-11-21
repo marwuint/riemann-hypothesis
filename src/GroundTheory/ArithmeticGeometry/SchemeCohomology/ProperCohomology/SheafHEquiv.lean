@@ -62,15 +62,6 @@ instance isDenseSubsite_overEquivalence_inverse :
       ((Opens.grothendieckTopology X.toTopCat).over U) :=
   U.instIsDenseSubsiteSubtypeMemOverGrothendieckTopologyOverInverseOverEquivalence
 
-lemma overEquivalence_inverse_left (W : U.toScheme.Opens) :
-    (U.overEquivalence.inverse.obj W).left = U.ι ''ᵁ W := by
-  ext x
-  constructor
-  · rintro ⟨y, hy, rfl⟩
-    exact ⟨y, hy, rfl⟩
-  · rintro ⟨y, hy, rfl⟩
-    exact ⟨y, hy, rfl⟩
-
 set_option maxHeartbeats 4000000 in
 
 def restrictAbIso (F : X.Modules) :

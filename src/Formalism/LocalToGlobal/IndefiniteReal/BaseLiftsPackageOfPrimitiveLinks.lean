@@ -61,8 +61,6 @@ def PrincipalLevelBijective : Prop := PrincipalLevelBijectivity A3 (R.toCx3 F) (
 def PLevW : Prop :=
   LevelTypeOfLifts A3 (R.toCx3 F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) (R.gWx F) false F.P0 F.ψ0
 
-def PEig0 : Prop := ∃ C0, LiftsEig3 A3 (R.toCx3 F) F.P0 F.ψ0 C0 ∧ LiftsTyp3 A3 C0
-
 def PPos : Prop := 0 < R.kap ∧ ∀ i t p v, 0 < R.lam3 i t p v
 
 def PThmA : Prop :=
@@ -158,18 +156,6 @@ private theorem smul_tw_map_adjoint_apply_of_unit_modulus {s : Bool} {E F : Type
     (c • Tw.map s f) (LinearMap.adjoint (c • Tw.map s f) e) = (l : ℂ) • e := by
   rw [phase_cancel hc]
   exact tw_map_adjoint_apply_of_eigen f l e he
-
-theorem tw_smul_cancel {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
-    [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] {c : ℂ} (hc : starRingEnd ℂ c * c = 1) (f : E →ₗ[ℂ] F)
-    (w : Tw s F) : Tw.map s (c • f) (LinearMap.adjoint (Tw.map s (c • f)) w) = Tw.map s f (LinearMap.adjoint (Tw.map s f) w) := by
-  have hmap : Tw.map s (c • f) = cj s c • Tw.map s f := by
-    ext x
-    show c • f (Tw.out x) = cj s (cj s c) • f (Tw.out x)
-    rw [cj_cj]
-  have hc' : starRingEnd ℂ (cj s c) * cj s c = 1 := by
-    rw [← cj_conj, ← map_mul, hc, map_one]
-  rw [hmap]
-  exact phase_cancel hc' _ w
 
 set_option maxHeartbeats 1000000 in
 theorem thmAop_of (hph : R.phase) (h : R.PThmA) (b : Bool) : (R.toCx3 F).ThmAop b := by
@@ -347,20 +333,6 @@ theorem base_lifts_package_of_primitive_links {s : ℕ} (hOk : A3.fam3.Ok3 s) (h
   fun0 := hP.fun0
 
 end Three2
-
-section Geo3
-
-open Formalism.L2.Geo Formalism.MainNotions Formalism.IndefR.Cx
-
-variable {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
-  {Gm : DV.Geo D.what₂.LL} {Lv : Type} {Fam : ShimFam D Gm Lv} (Kp : FormsKPkg Fam) [Algebra Kp.fs.KO D.what₂.LL]
-
-structure GeometricWeakCharacterisation (R : RealDat3 D A3 Kp.fs.KO) (F : Face3 D A3) (e : G ≃* Kp.Hb) : Prop where
-  char : R.WeakCharacterisation F
-  geo : GeoTied Kp R.toRealDat e
-  conj : R.toRealDat.PConj
-
-end Geo3
 
 end Formalism.IndefR.Links
 

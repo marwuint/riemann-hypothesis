@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsAtAndSeedFacts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepresentationVacuumCosetVectorsGrid
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadratiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadrati
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -85,6 +85,6 @@ theorem square_chars : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G 
     resEta_parity (resEta_mul hμ0 hη1) (by rw [zero_add]; exact p2)
   have h2 : Module.finrank D.host.F D.host.E = 2 := D.sp.cm.deg2
   exact ⟨isHeckeChar_mul' hχ hη, isHeckeChar_mul' hμ hη,
-    GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow D.host.F D.host.E h2 _ _ hβ, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow D.host.F D.host.E h2 _ _ hα⟩
+    _root_.GlobalTheory.LFun.resEtaPow_of_resEta D.host.F D.host.E h2 _ _ hβ, _root_.GlobalTheory.LFun.resEtaPow_of_resEta D.host.F D.host.E h2 _ _ hα⟩
 
 end GlobalTheory.SquareChars

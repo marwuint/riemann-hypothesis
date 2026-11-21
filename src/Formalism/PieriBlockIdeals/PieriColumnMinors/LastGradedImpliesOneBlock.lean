@@ -54,124 +54,6 @@ theorem depth2Dual : Depth2Dual := by
   · intro hξ a b hab
     exact neg_le_neg (hξ (Fin.rev_le_rev.mpr hab))
 
-theorem mem_shapes_iff (p w i q : ℕ) (lam2 tau : Fin q → ℕ) :
-    tau ∈ shapes p w i lam2 ↔ (∀ a, lam2 a ≤ tau a ∧ tau a ≤ lam2 a + i) ∧
-      (∀ a b : Fin q, a ≤ b → tau b ≤ tau a) ∧ ∑ a, tau a = ∑ a, lam2 a + i ∧
-      (∀ b : Fin q, ∀ j < tau b, colLen lam2 tau j ≤ p) ∧ boxesOfContent lam2 tau (w : ℤ) = 0 := by
-  simp [shapes, Fintype.mem_piFinset, Finset.mem_Icc]
-
-theorem boxes_of_content_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (x : ℤ) :
-    boxesOfContent (fun b => lam2 b + c) (fun b => tau b + c) (x + (c : ℤ)) = boxesOfContent lam2 tau x := by
-  unfold boxesOfContent
-  congr 1
-  ext a
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  push_cast
-  constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> omega
-
-theorem column_length_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (j : ℕ) :
-    colLen (fun b => lam2 b + c) (fun b => tau b + c) (j + c) = colLen lam2 tau j := by
-  unfold colLen
-  congr 1
-  ext a
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> omega
-
-theorem column_length_below_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (j : ℕ) (hj : j < c) :
-    colLen (fun b => lam2 b + c) (fun b => tau b + c) j = 0 := by
-  unfold colLen
-  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
-  rintro a _ ⟨h1, _⟩
-  have h1' : lam2 a + c ≤ j := h1
-  omega
-
-theorem shapes_shift_iff (p w i q c : ℕ) (lam2 tau : Fin q → ℕ) :
-    (fun b => tau b + c) ∈ shapes p (w + c) i (fun b => lam2 b + c) ↔ tau ∈ shapes p w i lam2 := by
-  rw [mem_shapes_iff, mem_shapes_iff]
-  have hbx : boxesOfContent (fun b => lam2 b + c) (fun b => tau b + c) ((w + c : ℕ) : ℤ) =
-      boxesOfContent lam2 tau (w : ℤ) := by
-    rw [Nat.cast_add]
-    exact boxes_of_content_shift q c lam2 tau w
-  rw [hbx, Finset.sum_add_distrib, Finset.sum_add_distrib]
-  constructor
-  · rintro ⟨h1, h2, h3, h4, h5⟩
-    refine ⟨fun a => ?_, fun a b hab => ?_, by omega, fun b j hj => ?_, h5⟩
-    · have := h1 a
-      omega
-    · have := h2 a b hab
-      omega
-    · rw [← column_length_shift q c]
-      exact h4 b (j + c) (by omega)
-  · rintro ⟨h1, h2, h3, h4, h5⟩
-    refine ⟨fun a => ?_, fun a b hab => ?_, by omega, fun b j hj => ?_, h5⟩
-    · have := h1 a
-      omega
-    · have := h2 a b hab
-      omega
-    · by_cases hjc : j < c
-      · rw [column_length_below_shift q c lam2 tau j hjc]
-        exact Nat.zero_le _
-      · obtain ⟨j', rfl⟩ : ∃ j', j = j' + c := ⟨j - c, by omega⟩
-        rw [column_length_shift]
-        exact h4 b j' (by omega)
-
-theorem multiplicity_shift_invariant (p w i q c : ℕ) (lam2 : Fin q → ℕ) (x : ℤ) :
-    mu p (w + c) i (fun b => lam2 b + c) (x + (c : ℤ)) = mu p w i lam2 x := by
-  unfold mu
-  apply le_antisymm
-  · refine Finset.sup_le fun tau' htau' => ?_
-    have hge : ∀ a, c ≤ tau' a := fun a => by
-      have := ((mem_shapes_iff _ _ _ _ _ _).mp htau').1 a
-      omega
-    have he : tau' = fun b => (tau' b - c) + c := funext fun b => by
-      have := hge b
-      omega
-    rw [he] at htau' ⊢
-    rw [boxes_of_content_shift]
-    exact Finset.le_sup (f := fun tau => boxesOfContent lam2 tau x) ((shapes_shift_iff _ _ _ _ _ _ _).mp htau')
-  · refine Finset.sup_le fun tau htau => ?_
-    rw [← boxes_of_content_shift q c lam2 tau x]
-    exact Finset.le_sup (f := fun tau => boxesOfContent (fun b => lam2 b + c) tau (x + (c : ℤ)))
-      ((shapes_shift_iff _ _ _ _ _ _ _).mpr htau)
-
-theorem dnShift : DnShift := by
-  intro p w i q c lam2 hb
-  unfold Dn
-  have hr : q + (w + c) + i = c + (q + w + i) := by omega
-  rw [hr, Finset.prod_range_add]
-  have h1 : ∏ k ∈ Finset.range c, (((w + c : ℕ) : ℤ) - ((k : ℤ) - (q : ℤ))) ^
-      mu p (w + c) i (fun b => lam2 b + c) ((k : ℤ) - (q : ℤ)) = 1 := by
-    refine Finset.prod_eq_one fun k hk => ?_
-    have hk' := Finset.mem_range.mp hk
-    have hz : mu p (w + c) i (fun b => lam2 b + c) ((k : ℤ) - (q : ℤ)) = 0 := by
-      by_contra hne
-      have := (muRange p (w + c) i q c (fun b => lam2 b + c) _
-        (fun b => ⟨Nat.le_add_left _ _, Nat.add_le_add_right (hb b) c⟩) hne).1
-      omega
-    rw [hz, pow_zero]
-  rw [h1, one_mul]
-  refine Finset.prod_congr rfl fun k _ => ?_
-  have e1 : (((c + k : ℕ) : ℤ) - (q : ℤ)) = ((k : ℤ) - (q : ℤ)) + (c : ℤ) := by
-    push_cast
-    ring
-  rw [e1, multiplicity_shift_invariant]
-  congr 1
-  push_cast
-  ring
-
-theorem dnLastIndep : DnLastIndep := by
-  intro p w i q M M' lam2 hwM hb hMM
-  obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le hMM
-  have e1 : M + c - w = (M - w) + c := by omega
-  have e2 : (fun b : Fin q => M + c - lam2 (Fin.rev b)) = fun b => (M - lam2 (Fin.rev b)) + c :=
-    funext fun b => by
-      have := hb (Fin.rev b)
-      omega
-  rw [e1, e2]
-  exact dnShift p (M - w) i q c (fun b => M - lam2 (Fin.rev b)) fun b => by
-    have := hb (Fin.rev b)
-    omega
-
 theorem dominance_of_nabla_weight (r : ℕ) (ν μ : Fin r → ℕ) (hν : Antitone ν) (x : MvPolynomial (Fin r × Fin r) ℤ)
     (hx : x ∈ nablaWt r ν μ) (hne : x ≠ 0) :
     (∀ k : ℕ, (∑ a : Fin r with a.val < k, μ a) ≤ ∑ a : Fin r with a.val < k, ν a) ∧ ∑ a, μ a = ∑ a, ν a := by
@@ -255,39 +137,6 @@ theorem peelBoundLast : PeelBoundLast := by
   · omega
   · have := hb ⟨0, hq⟩
     omega
-
-theorem block_weight_last_one_one (w y : ℕ) : blockWtLast 1 1 w (fun _ : Fin 1 => y) = wt2 y w := by
-  funext a
-  fin_cases a <;> rfl
-
-theorem lemmaDLastGraded_rank2 : LemmaDLastGraded_rank2 := by
-  intro l w y M ξ hl hwy hyM _ i' e _ i μ hd _
-  have hd' : μ 1 = w + i := by simpa [IsDepthLast] using hd
-  rw [block_weight_last_one_one]
-  show ExpLe l 2 (wt2 y w) μ (e + padicValInt l (Dn 1 (M - w) i fun _ : Fin 1 => M - y))
-  rw [expLeIffKilled l 2 _ μ e _ hl (dnNeZero 1 (M - w) i 1 _)]
-  intro x hx
-  refine ⟨1, (Nat.prime_iff_prime_int.mp hl).not_dvd_one, ?_⟩
-  by_cases hex : ∃ j, w + j ≤ y ∧ μ = wt2 (y - j) (w + j)
-  · obtain ⟨j, hj, rfl⟩ := hex
-    have hd'' : w + j = w + i := hd'
-    have hij : j = i := by omega
-    subst hij
-    rw [(rank2Exact y w j hj).1] at hx
-    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hx
-    rw [dn2 1 (M - w) (M - y) j le_rfl (by omega), smul_smul]
-    have hyw : M - w - (M - y) = y - w := by omega
-    rw [hyw]
-    have : (1 * ((l : ℤ) ^ e * ((j.factorial * (y - w).choose j : ℕ) : ℤ)) * c) =
-        ((l : ℤ) ^ e * (j.factorial : ℤ) * c) * ((y - w).choose j : ℤ) := by
-      push_cast
-      ring
-    rw [this, mul_smul]
-    exact Submodule.smul_mem _ _ (ld_gen_mem_weyl y w j)
-  · have hbot := rank2Other y w μ hwy (fun j hj hμ => hex ⟨j, hj, hμ⟩)
-    rw [hbot] at hx
-    rw [(Submodule.mem_bot ℤ).mp hx, smul_zero]
-    exact Submodule.zero_mem _
 
 theorem restriction_eq_block_weight (n t : ℕ) (lam : ℕ → ℕ) (hc : ∀ a, n ≤ a → a < n + t → lam a = lam n) :
     res (n + t) lam = blockWtLast t n (lam n) (res n lam) := by
@@ -378,18 +227,5 @@ theorem applicationSteps : ApplicationSteps := by
       ecl + j * ((h - 1) / (l - 1)) + blockCost l (k + j) t I lam + q * ((h - 1) / (l - 1)) := by ring
   rw [e]
   exact s1
-
-theorem last_graded_implies_last : LastGradedImpliesLast := lastGradedImpliesLast
-theorem last_graded_implies_one_block : OneRowBoundOfLastGraded := last_graded_implies_one_block'
-theorem depth_two_levi : Depth2Levi := depth2Levi
-theorem depth_last_iff : DepthLastIff := depthLastIff
-theorem depth_two_duality : Depth2Dual := depth2Dual
-theorem d_n_shift : DnShift := dnShift
-theorem d_n_last_independent : DnLastIndep := dnLastIndep
-theorem lemma_d_last_graded_rank_two : LemmaDLastGraded_rank2 := lemmaDLastGraded_rank2
-theorem peel_bound_last : PeelBoundLast := peelBoundLast
-theorem peel_rows : PeelRows := peelRows
-theorem block_induction' : BlockStep := blockStep
-theorem application_steps : ApplicationSteps := applicationSteps
 
 end Formalism.CohomologicalDescent.LD

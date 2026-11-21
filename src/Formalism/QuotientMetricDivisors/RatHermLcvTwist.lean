@@ -37,25 +37,12 @@ def embSpan {K : Type} [Field K] {n : ℕ} (σ : K →+* ℂ) (Z : Submodule K (
     Submodule ℂ (Fin n → ℂ) :=
   Submodule.span ℂ ((fun z i => σ (z i)) '' (Z : Set (Fin n → K)))
 
-def comb {K : Type} [Field K] {n d : ℕ} (z : Fin d → Fin n → K) (x : Fin d → K) : Fin n → K :=
-  ∑ a, x a • z a
-
-def gramMat {K : Type} [Field K] [StarRing K] {n d : ℕ} (H : Matrix (Fin n) (Fin n) K)
-    (z : Fin d → Fin n → K) : Matrix (Fin d) (Fin d) K :=
-  Matrix.of fun a b => star (z a) ⬝ᵥ H.mulVec (z b)
-
 def JwGramW : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (d : ℕ) (H : Matrix (Fin d) (Fin d) K),
     (∀ i j, H j i = star (H i j)) → H.det ≠ 0 →
     ∀ T : Submodule (𝓞 K) (Fin d → K), Submodule.IsLattice K T →
     ∀ (w : HeightOneSpectrum (𝓞 K)) (f : Fin d → Fin d → K), IsLocBasis T w f →
       jw H w T = - vw w (gramR H f)
-
-def JwConjW : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (d : ℕ) (H : Matrix (Fin d) (Fin d) K),
-    (∀ i j, H j i = star (H i j)) → H.det ≠ 0 →
-    ∀ T : Submodule (𝓞 K) (Fin d → K), Submodule.IsLattice K T →
-    ∀ w : HeightOneSpectrum (𝓞 K), jw H (conjPl w) T = jw H w T
 
 def StepBW : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (K0 : Subfield K),
@@ -192,64 +179,10 @@ def BoundsChainW : Prop :=
       lcv XE R / D ≤ meanLog κ + ∑ j, L j + 2 * ∑ j, ∑ w ∈ S, lw w * F w j + LG +
         ∑ j, (E1 j + E2 j) + E3
 
-def CmMaxSpec : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K],
-    IsCMSub (cmMax K) ∧ (∀ K0 : Subfield K, IsCMSub K0 → K0 ≤ cmMax K) ∧
-    (∀ a ∈ cmMax K, star a ∈ cmMax K) ∧
-    ∀ a : K, a ∈ cmMax K ↔ ∀ σ : K →+* ℂ, twist σ a = σ a
-
 def DescentCM : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) (Z : Submodule K (Fin n → K)),
     (∀ σ : K →+* ℂ, embSpan σ Z = embSpan (twist σ) Z) →
     ∃ (d : ℕ) (z : Fin d → Fin n → K), LinearIndependent K z ∧
       Submodule.span K (Set.range z) = Z ∧ ∀ a i, z a i ∈ cmMax K
-
-def DescentCMConv : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (n d : ℕ) (z : Fin d → Fin n → K),
-    (∀ a i, z a i ∈ cmMax K) →
-    ∀ σ : K →+* ℂ, embSpan σ (Submodule.span K (Set.range z)) =
-      embSpan (twist σ) (Submodule.span K (Set.range z))
-
-def RestrictRatHerm : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (K0 : Subfield K), IsCMSub K0 →
-    (∀ a ∈ K0, star a ∈ K0) →
-    ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) K) (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ),
-    IsRatHerm K0 H X →
-    ∀ (d : ℕ) (z : Fin d → Fin n → K), LinearIndependent K z → (∀ a i, z a i ∈ K0) →
-    ∃ XT : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ, IsRatHerm K0 (gramMat H z) XT ∧
-      (∀ (v : InfinitePlace K) (x y : Fin d → K),
-        Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) XT v x y =
-          Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v (comb z x) (comb z y)) ∧
-      ∀ x y : Fin d → K, hform (gramMat H z) x y = hform H (comb z x) (comb z y)
-
-def RestrictHermAt : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (K0 : Subfield K) (v0 : InfinitePlace K),
-    IsConjAt v0 →
-    ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) K) (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ),
-    IsRatHerm K0 H X →
-    ∀ (d : ℕ) (z : Fin d → Fin n → K), LinearIndependent K z →
-    ∃ XT : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ, IsHermAt v0 (gramMat H z) XT ∧
-      (∀ (v : InfinitePlace K) (x y : Fin d → K),
-        Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) XT v x y =
-          Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v (comb z x) (comb z y)) ∧
-      ∀ x y : Fin d → K, hform (gramMat H z) x y = hform H (comb z x) (comb z y)
-
-def RatHermLcvTwist : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (K0 : Subfield K),
-    IsCMSub K0 →
-    ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) K) (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ),
-    IsRatHerm K0 H X →
-    ∀ Z : Submodule K (Fin n → K), (∀ σ : K →+* ℂ, embSpan σ Z = embSpan (twist σ) Z) →
-    ∃ (d : ℕ) (z : Fin d → Fin n → K) (XT : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ),
-      LinearIndependent K z ∧ Submodule.span K (Set.range z) = Z ∧
-      IsRatHerm (cmMax K) (gramMat H z) XT ∧
-      (∀ (v : InfinitePlace K) (x y : Fin d → K),
-        Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) XT v x y =
-          Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v (comb z x) (comb z y)) ∧
-      (∀ x y : Fin d → K, hform (gramMat H z) x y = hform H (comb z x) (comb z y)) ∧
-      ∀ T : Submodule (𝓞 K) (Fin d → K), Submodule.IsLattice K T →
-        (Function.support fun w : HeightOneSpectrum (𝓞 K) =>
-          lw w * (jw (gramMat H z) w T : ℝ)).Finite ∧
-        lcv XT T = - ∑ᶠ w : HeightOneSpectrum (𝓞 K), lw w * (jw (gramMat H z) w T : ℝ)
 
 end Formalism.DivisionValues

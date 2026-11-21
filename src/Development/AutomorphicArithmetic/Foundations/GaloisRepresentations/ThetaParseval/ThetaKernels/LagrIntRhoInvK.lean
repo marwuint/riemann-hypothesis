@@ -11,10 +11,8 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 noncomputable section
 namespace GlobalTheory.LagrThetaInv
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end GlobalTheory.LagrThetaInv
 namespace GlobalTheory.LagrThetaInv
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end GlobalTheory.LagrThetaInv
 open scoped Pointwise in
 open GlobalTheory.LagrThetaInv in

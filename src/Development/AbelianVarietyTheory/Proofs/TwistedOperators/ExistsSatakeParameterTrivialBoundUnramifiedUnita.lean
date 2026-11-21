@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalEigenvectorGeneratesIrreducibleSubrepreStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeTrivialBoundInertPlaceUnitarisableSphericaStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalEigenvectorGeneratesIrreducibleSubrepre
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeTrivialBoundInertPlaceUnitarisableSpherica
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
@@ -20,7 +20,7 @@ theorem GlobalTheory.Twist.satParam_exists_trivialBound : ∀ (L : Type) [Field 
   intro L _ _ _ ϖ σ q n hU V _ _ ρ hρ x hx0 hxK hxH
   obtain ⟨ho, hc⟩ := GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n hU
   obtain ⟨U, hU', hxU, hirr, hun, hline⟩ :=
-    GlobalTheory.T.spherical_eigenvector_generates_irreducible_subrepresentation ρ (KU σ n) ho (Formalism.UG.P.isCommensurated_integral_unitary_of_unramified hU n) hρ x hx0 hxK hxH
+    _root_.GlobalTheory.spherical_eigenvector_generates_irreducible ρ (KU σ n) ho (Formalism.UG.P.isCommensurated_integral_unitary_of_unramified hU n) hρ x hx0 hxK hxH
   set π := GlobalTheory.PRep.sub ρ U hU'
   set x' : U := ⟨x, hxU⟩
   have hx'0 : x' ≠ 0 := fun h => hx0 (congrArg Subtype.val h)
@@ -32,6 +32,6 @@ theorem GlobalTheory.Twist.satParam_exists_trivialBound : ∀ (L : Type) [Field 
       exact Submodule.smul_mem _ c (Submodule.subset_span rfl)
     exact Submodule.finiteDimensional_of_le hle
   obtain ⟨α, hα⟩ := exists_hasSatU hU hirr hf hs
-  refine ⟨α, ?_, GlobalTheory.T.satakeTrivialBound_inertPlace_unitarisable_spherical L ϖ σ q n hU U π α hirr hun hα⟩
+  refine ⟨α, ?_, _root_.GlobalTheory.SatBoundInert.satakeBoundInert L ϖ σ q n hU U π α hirr hun hα⟩
   have := (hα.2 x' hx'K hx'0).map hU U.subtype (fun g y => rfl) hx0
   exact this

@@ -3,20 +3,20 @@ import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonNCongr
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalModuleMatrixApplyPointsActionLawsStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupTranslateAutomorphismAndMatrixKernel
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GaugeThirdDifferenceSymmetryIntegralExponentialsStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsIntegralExponentialSimilitudeGaugeStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GaugeThirdDifferenceSymmetryIntegralExponentials
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsIntegralExponentialSimilitudeGauge
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ProdSymmetricTranslationUnitsEqKappaRatioStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConnectionValueLevelKappaMulPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConnectionValueLevelKappaMulPullback
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.CoeffSingleEq
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.JacobianNonzeroSplittingOfProductStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.JacobianNonzeroSplittingOfProduct
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueIntegralPointEqValueOnBiextensionCoStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IntegralChartFormalBiextensionGaugeBoundStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.RegularSectionIntegralGermUniqueScaleStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupPointsOfIntegralChartSpecStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.KillsFormalPointsIffMemCoordinateKernelStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FiniteHeightFormalGroupUniformisedModelStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SplitKernelFormalGroupOfRationalTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsTranslateUnitSymmetricFormalGroupPointStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupPointsOfIntegralChartSpec
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.KillsFormalPointsIffMemCoordinateKernel
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FiniteHeightFormalGroupUniformisedModel
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SplitKernelFormalGroupOfRationalTorsion
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsTranslateUnitSymmetricFormalGroupPoint
 
 set_option autoImplicit false
 noncomputable section
@@ -206,7 +206,7 @@ theorem sum_hv_formal_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   let _ := io.toAlgebra
   obtain ⟨B, hB, hBall⟩ := GlobalTheory.T.integralChart_formalBiextension_gauge_bound E H Dw l Xo c hstar T io y C
   obtain ⟨hcan, hg0, heig, hbd⟩ := hBall B hB
-  obtain ⟨⟨Θ, hΘ⟩, jo, hjo⟩ := GlobalTheory.T.gauge_thirdDifference_symmetry_integral_exponentials T.V (chD C.ch) (𝓞 E) B T.Fr (gaugeOf C) H.w0 hcan
+  obtain ⟨⟨Θ, hΘ⟩, jo, hjo⟩ := _root_.GlobalTheory.PlaceInt.exists_isTheta_and_isIota T.V (chD C.ch) (𝓞 E) B T.Fr (gaugeOf C) H.w0 hcan
   have hNpos : N ^ 2 ≠ 0 := pow_ne_zero 2 (Odd.pos hN).ne'
   have hN2 : ((N ^ 2 : ℕ) : 𝓞 E) ≠ 0 := Nat.cast_ne_zero.mpr hNpos
 
@@ -227,8 +227,8 @@ theorem sum_hv_formal_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   choose f hf using fun b => (h51 (N ^ 2) (F b)).1 (hF b)
   have hkpq : ∀ i, Kills Xo (p * q) (a i) := fun i => ((hiff (a i)).mp ⟨i, rfl⟩).1
   choose α hα using fun i b => ((hiff (a i)).mp ⟨i, rfl⟩).2 b
-  have h66 := GlobalTheory.T.formal_group_points_of_integral_chart_spec E H Dw l Xo c hstar T io y C B hB
-  have h67 := fun (mu : Matrix (Fin n) (Fin n) (𝓞 E)) => GlobalTheory.T.kills_formalPoints_iff_mem_coordinateKernel E H Dw l Xo c hstar T io y C B hB n mu
+  have h66 := _root_.GlobalTheory.PlaceFormPt.formPt_spec E H Dw l Xo c hstar T io y C B hB
+  have h67 := fun (mu : Matrix (Fin n) (Fin n) (𝓞 E)) => _root_.GlobalTheory.PlaceInt.FormKer.kills_iff_mem_kerM E H Dw l Xo c hstar T io y C B hB n mu
   have hker : ∀ i, α i ∈ kerM B (p * q) := fun i => (h67 (p * q) (a i) (α i) (hα i)).mp (hkpq i)
   have hsm : ∀ i b, Small (α i b) := fun i => by
     obtain ⟨h1, -⟩ := hker i
@@ -254,9 +254,9 @@ theorem sum_hv_formal_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
 
   have htor : ∀ i b, a i b ^ (N ^ 2) = 1 := fun i b =>
     GlobalTheory.PtTie.IsSymAct.pow_eq_one Xo.univ.t.G Xo.univ.t.PP (hmove i b)
-  have h70 := GlobalTheory.T.exists_translateUnit_symmetric_formalGroup_point E H Dw l Xo c hstar T io y C hG.1 B hB Θ jo hΘ hjo (N ^ 2) hN.pow
+  have h70 := _root_.GlobalTheory.TransUnit.exists_trUnit E H Dw l Xo c hstar T io y C hG.1 B hB Θ jo hΘ hjo (N ^ 2) hN.pow
   choose u hu hgerm using fun i b => h70 (a i b) (α i b) (hα i b) (htor i b)
-  obtain ⟨κ, hκ, hκ1⟩ := GlobalTheory.T.exists_integral_exponential_similitude_gauge T.V (chD C.ch) (𝓞 E) B T.Fr (gaugeOf C) H.w0 hcan n (p * q) (N ^ 2) hsimS
+  obtain ⟨κ, hκ, hκ1⟩ := _root_.GlobalTheory.PlaceInt.exists_isKappa T.V (chD C.ch) (𝓞 E) B T.Fr (gaugeOf C) H.w0 hcan n (p * q) (N ^ 2) hsimS
   have hU : ∀ i, (∏ b, evV (n := n) ![pt T.V (chD C.ch) b] (u i b)) * shift B.G.F (α i) κ = κ := fun i =>
     GlobalTheory.T.prod_symmetricTranslationUnits_eq_kappa_ratio T.V (chD C.ch) (𝓞 E) B T.Fr (gaugeOf C) H.w0 hcan Θ jo hΘ hjo n (p * q) (N ^ 2) hN.pow hsimS κ hκ
       (α i) (hker i) (u i) (fun b => hu i b)
@@ -272,7 +272,7 @@ theorem sum_hv_formal_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     exact (h51 (N ^ 2) (G i b)).2.1 _ _ (hgerm i b (F b) (G i b) (f b) (hF b) (hf b) (hmove i b))
       ((h51 (N ^ 2) (F b)).2.2 (G i b) (r b) (f b) (hr b) (hf b))
 
-  have hFinHt := GlobalTheory.T.finiteHeight_formalGroup_uniformisedModel E H Dw l Xo c hstar T io y C hG B hB
+  have hFinHt := _root_.GlobalTheory.PlaceFinHt.finHt_of_good E H Dw l Xo c hstar T io y C hG B hB
   have hN1 : 1 ≤ N ^ 2 := Nat.one_le_iff_ne_zero.mpr hNpos
   have hM0 : 0 < M := by
     rcases Nat.eq_zero_or_pos M with h0 | h0
@@ -283,7 +283,7 @@ theorem sum_hv_formal_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     have e0 : sM * (p * q) = ((k * M : ℕ) : 𝓞 E) • (1 : Matrix (Fin n) (Fin n) (𝓞 E)) := by
       rw [← hNk]
       exact hsM
-    exact (GlobalTheory.T.splitKernel_formalGroup_of_rational_torsion E H Dw l Xo c hstar T io y C hG B hB ℓ hℓ hℓu n (p * q) sM k M hkℓ hM0 e0 hrat).1
+    exact (_root_.GlobalTheory.SplitKernel.splitKer_of_allRat E H Dw l Xo c hstar T io y C hG B hB ℓ hℓ hℓu n (p * q) sM k M hkℓ hM0 e0 hrat).1
   have hjac : ∀ x : Matrix (Fin n) (Fin n) (𝓞 E), algebraMap T.V T.Fr (jacM B x) =
       ∏ τ : E →+* ℂ, (io.comp (embK c τ)) x.det ^ Dw.mult τ := fun x =>
     GlobalTheory.JacVal.jacM_eq_prod T.V (chD C.ch) (𝓞 E) B T.Fr n x (E →+* ℂ) Dw.mult (fun τ => io.comp (embK c τ))
@@ -303,7 +303,7 @@ theorem sum_hv_formal_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     rw [h0, _root_.map_zero] at e0
     exact (Finset.prod_ne_zero_iff.mpr fun τ _ => pow_ne_zero _ (hdetpq τ)) e0.symm
   obtain ⟨g, hg⟩ := sum_twisted B p q (((kerM B q).ncard : T.V) * jacM B p)
-    (fun f0 hf0 => GlobalTheory.T.jacobian_nonzero_splitting_of_product T.V (chD C.ch) (𝓞 E) B hFinHt n p q sM (N ^ 2) hN1 hsM hsM' inferInstance hN2 hjpq
+    (fun f0 hf0 => _root_.GlobalTheory.PlaceInt.KerTrace.sum_shift_kerM_mul T.V (chD C.ch) (𝓞 E) B hFinHt n p q sM (N ^ 2) hN1 hsM hsM' inferInstance hN2 hjpq
       hsplit f0 hf0)
     κ hκ1 α hinj hrange (∏ b, evV (n := n) ![pt T.V (chD C.ch) b] (f b))
     (fun i => ∏ b, evV (n := n) ![pt T.V (chD C.ch) b] (u i b)) hU hq
@@ -337,7 +337,7 @@ theorem sum_hv_formal_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     rw [← e0]
     congr 1
     simp only [FB.toK, MvPowerSeries.smul_eq_C_mul, _root_.map_mul, MvPowerSeries.map_C]
-  have e3 := GlobalTheory.T.connectionValueLevel_kappa_mul_pullback T.V (chD C.ch) (𝓞 E) B T.Fr (gaugeOf C) H.w0 hg0 n (p * q) (N ^ 2) κ hκ (E →+* ℂ) Dw.mult
+  have e3 := _root_.GlobalTheory.PlaceInt.nabValN_kappa_mul_pullM T.V (chD C.ch) (𝓞 E) B T.Fr (gaugeOf C) H.w0 hg0 n (p * q) (N ^ 2) κ hκ (E →+* ℂ) Dw.mult
     (fun τ => io.comp (embK c τ)) C.ch.uvec heig (MvPolynomial.map io P) g
   have mpush := map_pushL c io (p * q) P
   have hcard : (kerM B q).ncard = Nat.card {i : J // Kills Xo q (a i)} := by

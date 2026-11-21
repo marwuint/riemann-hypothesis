@@ -7,27 +7,6 @@ namespace Formalism.FourierDecayAlt.P.SignAntidiagonal
 
 open Formalism.FourierDecayAlt.C3 Formalism.REAL Formalism.QuantumDeterminants
 
-theorem first_expansion_of_parts : ExpansionFirstCaseFromComponents := by
-  unfold ExpansionFirstCaseFromComponents
-  intros
-  exact first_expansion_identity
-theorem second_expansion_of_parts : ExpansionSecondCaseFromComponents := by
-  unfold ExpansionSecondCaseFromComponents
-  intros
-  exact second_expansion_identity
-theorem third_expansion_of_parts : ExpansionThirdCaseFromComponents := by
-  unfold ExpansionThirdCaseFromComponents
-  intros
-  exact column_indicator_expansion
-theorem fourth_expansion_of_parts : ExpansionFourthCaseFromComponents := by
-  unfold ExpansionFourthCaseFromComponents
-  intros
-  exact fourth_expansion_identity
-theorem chain_first_of_parts : LastColumnChainFromComponents := by
-  unfold LastColumnChainFromComponents
-  intros
-  exact chain_first_identity
-
 theorem herm_bvec_bvec {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) :
     herm H (bvec p) (bvec q) = H q p := by
   have hs : star (bvec q) = bvec q := by
@@ -64,71 +43,6 @@ theorem hpk_row_eI {k r : ℕ} (b : Fin r) (p : Fin (2 * r + k + 1)) :
   · rw [if_neg h, if_neg (fun hc => h (by rw [heI] at hc; omega)),
       if_neg (fun hc => by rw [heI] at hc; omega),
       if_neg (fun hc => by rw [heI] at hc; exact absurd hc.1 (by omega))]
-
-theorem right_derivative_rule_psi : RuleRightDpsi := by
-  intro k r z' l j hw
-  have hl := l.isLt
-  have hj := j.isLt
-  simp only [Formalism.FourierDecayAlt.Q.mdim, Fin.val_succ] at hj
-  have heI : ∀ a : Fin r, (eI k r a).val = a.val := fun _ => rfl
-  have hesI : ∀ a : Fin r, (esI k r a).val = 2 * r + k - a.val := fun _ => rfl
-  have hqv : (Formalism.FourierDecayAlt.Q.posL k r l.succ j).val = j.val + l.val + 1 := by
-    simp only [Formalism.FourierDecayAlt.Q.posL, Fin.val_succ]
-    omega
-  have hz : ∀ q : Fin (2 * r + k + 1), (q.val < r ∨ r + k < q.val) →
-      herm (Hpk k r) (bvec q) z' = 0 := by
-    intro q hq
-    unfold herm
-    show ∑ m, (star z') m * (Hpk k r *ᵥ bvec q) m = 0
-    refine Finset.sum_eq_zero fun m _ => ?_
-    by_cases hm : r ≤ m.val ∧ m.val ≤ r + k
-    · have h0 : (Hpk k r *ᵥ bvec q) m = 0 := by
-        have e : (Hpk k r *ᵥ bvec q) m = Hpk k r m q := by
-          simp [Matrix.mulVec, dotProduct, bvec, Pi.single_apply]
-        rw [e]
-        simp only [Hpk]
-        rw [if_neg (fun hc => by omega), if_neg (fun hc => by omega),
-          if_neg (fun hc => by rw [hc.2.2] at hm; omega)]
-      rw [h0, mul_zero]
-    · have h0 : z' m = 0 := hw m (by omega)
-      simp [h0]
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · unfold InNp
-    rw [heI, hqv]
-    omega
-  · by_cases hlr : l.val + 1 < r
-    · have hf : fvec k r z' l.succ = bvec (eI k r ⟨l.val + 1, hlr⟩) := by
-        simp only [fvec, Fin.val_succ, dif_pos hlr]
-      have hv : (eI k r (⟨l.val + 1, hlr⟩ : Fin r)).val = l.val + 1 := rfl
-      simp only [Formalism.FourierDecayAlt.Q.xv, hf, bvec, Pi.single_apply, Fin.ext_iff, hv, hqv, dpsiP, heI]
-      split_ifs <;> first | rfl | (exfalso; omega)
-    · have hf : fvec k r z' l.succ = z' := by
-        simp only [fvec, Fin.val_succ, dif_neg hlr]
-      simp only [Formalism.FourierDecayAlt.Q.xv, hf, dpsiP, heI, hqv]
-      split_ifs <;> first
-        | rfl
-        | (exfalso; omega)
-        | exact hw _ (by rw [hqv]; omega)
-        | exact (hw _ (by rw [hqv]; omega)).symm
-  · unfold InNp
-    rw [hesI, hqv]
-    omega
-  · by_cases hlr : l.val + 1 < r
-    · have hf : fvec k r z' l.succ = bvec (eI k r ⟨l.val + 1, hlr⟩) := by
-        simp only [fvec, Fin.val_succ, dif_pos hlr]
-      simp only [Formalism.FourierDecayAlt.Q.xbv, hf, herm_bvec_bvec]
-      have hv : (eI k r (⟨l.val + 1, hlr⟩ : Fin r)).val = l.val + 1 := rfl
-      simp only [dpsiP, Hpk, Fin.ext_iff, hv, hqv, hesI]
-      split_ifs <;> first | rfl | (exfalso; omega)
-    · have hf : fvec k r z' l.succ = z' := by
-        simp only [fvec, Fin.val_succ, dif_neg hlr]
-      simp only [Formalism.FourierDecayAlt.Q.xbv, hf]
-      rw [dpsiP]
-      split_ifs <;> first
-        | rfl
-        | (exfalso; rw [hqv, hesI] at *; omega)
-        | exact hz _ (by rw [hqv]; omega)
-        | (exfalso; omega)
 
 theorem herm_unitary {k r : ℕ} (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hg : g ∈ UH (Hpk k r))
     (x y : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) (g *ᵥ x) (g *ᵥ y) = herm (Hpk k r) x y := by

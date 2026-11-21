@@ -12,19 +12,6 @@ namespace TorsionMatrix
 section
 open Matrix
 
-theorem norm_card_quot_span (l : ℕ) [Fact l.Prime] {a : ℤ_[l]} (ha : a ≠ 0) :
-    ‖((Nat.card (ℤ_[l] ⧸ Ideal.span {a}) : ℕ) : ℚ_[l])‖ = ‖a‖ := by
-  have h1 : Ideal.span {a} = RingHom.ker (PadicInt.toZModPow (p := l) a.valuation) := by
-    rw [PadicInt.ker_toZModPow]
-    conv_lhs => rw [PadicInt.unitCoeff_spec ha]
-    exact Ideal.span_singleton_mul_left_unit (PadicInt.unitCoeff ha).isUnit _
-  have h2 : Nat.card (ℤ_[l] ⧸ Ideal.span {a}) = l ^ a.valuation := by
-    rw [h1, Nat.card_congr (RingHom.quotientKerEquivOfSurjective
-      (ZMod.ringHom_surjective (PadicInt.toZModPow (p := l) a.valuation))).toEquiv, Nat.card_zmod]
-  rw [h2, PadicInt.norm_eq_zpow_neg_valuation ha]
-  push_cast
-  rw [Padic.norm_p_pow]
-
 theorem norm_index_range (l : ℕ) [Fact l.Prime] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ ℤ_[l]) (hM : M.det ≠ 0) :
     ‖M.det‖ = ‖(((LinearMap.range M.mulVecLin).toAddSubgroup.index : ℕ) : ℚ_[l])‖ := by

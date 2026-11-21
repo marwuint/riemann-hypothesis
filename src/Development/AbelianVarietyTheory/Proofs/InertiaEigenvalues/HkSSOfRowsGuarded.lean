@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.OffRange
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.HeckePin
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparableCompSmul
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ISupEigenspaceEqTopOfAeval
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitCharpolyLatticeKillsSpanStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckePreservesGoodPartStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitCharpolyLatticeKillsSpan
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckePreservesGoodPart
 
 noncomputable section
 
@@ -54,7 +54,7 @@ theorem hkSS_of_rows_guarded {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T
   have hpoly : ∀ k P, HkIdx i k P → ∃ p : (FractionRing (D.ntw.O i))[X], p.Separable ∧ p.Splits ∧
       ∀ x ∈ V0 D.nexp i j b, Polynomial.aeval (D.nexp.hkF i j b k P) p x = 0 := by
     intro k P hkP
-    obtain ⟨p1, hp10, hp1s, hp1k⟩ := GlobalTheory.T.split_charpoly_lattice_kills_span (D.ntw.O i) (D.nexp.Fm i j b) (D.ntw.B i j b)
+    obtain ⟨p1, hp10, hp1s, hp1k⟩ := _root_.GlobalTheory.charpoly_split_kills_span (D.ntw.O i) (D.nexp.Fm i j b) (D.ntw.B i j b)
       (D.nexp.embB i j b) (D.ntw.hk i j b k P) (D.nexp.hkF i j b k P) (hEmb i hi j hj b k P hkP)
       (hSp i hi j hj b k P hkP)
     obtain ⟨p2, hp2s, hp2k⟩ :=
@@ -70,7 +70,7 @@ theorem hkSS_of_rows_guarded {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T
   have hJ := GlobalTheory.JointDiag.le_iSup_jointEigenspace_inf (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b) {a : ℕ × PlE D.host // HkIdx i a.1 a.2}
     (fun a => D.nexp.hkF i j b a.1.1 a.1.2) (V0 D.nexp i j b)
     (fun a c => hC i hi j hj b _ _ _ _ a.2 c.2)
-    (fun a x hx => GlobalTheory.T.hecke_preserves_good_part D hG i hi j hj b _ _ a.2 x hx)
+    (fun a x hx => _root_.GlobalTheory.HkGoodStable.hkF_mem_V0 D hG i hi j hj b _ _ a.2 x hx)
     (fun a => hpoly _ _ a.2)
   refine hJ.trans (iSup_le fun ev => ?_)
   classical

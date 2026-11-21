@@ -208,10 +208,6 @@ theorem linearPart_X [DecidableEq σ] : linearPart (X : σ → MvPowerSeries σ 
   ext i j
   simp [coeff_X, Matrix.one_apply, Finsupp.single_left_inj, eq_comm]
 
-theorem linearPart_map {S : Type*} [CommRing S] (φ : R →+* S) (u : ι → MvPowerSeries σ R) :
-    linearPart (fun i => MvPowerSeries.map φ (u i)) = (linearPart u).map φ := by
-  ext i j; simp
-
 theorem mem_degGe_two {f : MvPowerSeries σ R} :
     f ∈ degGe σ R 2 ↔ constantCoeff f = 0 ∧ ∀ j, coeff (single j 1) f = 0 := by
   rw [mem_degGe]
@@ -432,11 +428,6 @@ theorem eq_substInv_of_right (hu : ∀ i, constantCoeff (u i) = 0)
   (eq_of_subst_eq_X hu hv (subst_substInv_left hu
     (IsUnit.of_mul_eq_one _ (linearPart_mul_eq_one hu hv h))) h).symm
 
-theorem eq_substInv_of_left (hu : ∀ i, constantCoeff (u i) = 0)
-    (hv : ∀ i, constantCoeff (v i) = 0) (h : ∀ i, (v i).subst u = X i) : v = substInv u :=
-  eq_of_subst_eq_X hu (constantCoeff_substInv hu) h (subst_substInv_right hu
-    (IsUnit.of_mul_eq_one_right _ (linearPart_mul_eq_one hv hu h)))
-
 theorem exists_substInv_iff (hu : ∀ i, constantCoeff (u i) = 0) :
     (∃ v : σ → MvPowerSeries σ R, (∀ i, constantCoeff (v i) = 0) ∧
       (∀ i, (u i).subst v = X i) ∧ ∀ i, (v i).subst u = X i) ↔ IsUnit (linearPart u) :=
@@ -470,14 +461,6 @@ def substAlgEquiv (hu : ∀ i, constantCoeff (u i) = 0) (hA : IsUnit (linearPart
 @[simp] theorem substAlgEquiv_symm_apply (hu : ∀ i, constantCoeff (u i) = 0)
     (hA : IsUnit (linearPart u)) (f : MvPowerSeries σ R) :
     (substAlgEquiv hu hA).symm f = f.subst (substInv u) := by simp [substAlgEquiv]
-
-theorem map_substInv {S : Type*} [CommRing S] (φ : R →+* S) (hu : ∀ i, constantCoeff (u i) = 0)
-    (hA : IsUnit (linearPart u)) :
-    (fun i => MvPowerSeries.map φ (substInv u i)) =
-      substInv fun i => MvPowerSeries.map φ (u i) := by
-  refine eq_substInv_of_right (fun i => by simp [hu i])
-    (fun i => by simp [constantCoeff_substInv hu i]) fun i => ?_
-  rw [← map_subst (hasSubst_substInv hu), subst_substInv_right hu hA, map_X]
 
 theorem coeff_substInv_mem (hu : ∀ i, constantCoeff (u i) = 0) {S : Subring R} {g : ℕ}
     (hB : ∀ i j, (linearPart u)⁻¹ i j ∈ S)
@@ -612,58 +595,6 @@ theorem coeff_subst_sumFamily_mem [Finite σ] [Finite σ'] [Finite τ] [Finite �
       rw [degree_eq_weight_one]; exact hd true
     · refine rename_mem_coeffsIn _ fun d hd => haS' j d ?_
       rw [degree_eq_weight_one]; exact hd false
-
-theorem subst_sumFamily_rename_inl [Finite σ] [Finite σ'] [Finite τ] [Finite τ']
-    {a : σ → MvPowerSeries τ R} {a' : σ' → MvPowerSeries τ' R}
-    (ha : ∀ i, constantCoeff (a i) = 0) (ha' : ∀ j, constantCoeff (a' j) = 0)
-    (f : MvPowerSeries σ R) :
-    (rename Sum.inl f).subst (sumFamily a a') = rename Sum.inl (f.subst a) := by
-  have h := hasSubst_of_constantCoeff_zero (constantCoeff_sumFamily ha ha')
-  rw [rename_eq_subst, rename_eq_subst, subst_comp_subst_apply (HasSubst.X_comp _) h,
-    subst_comp_subst_apply (hasSubst_of_constantCoeff_zero ha) (HasSubst.X_comp _)]
-  congr 1
-  funext i
-  rw [Function.comp_apply, subst_X h, sumFamily_inl, rename_eq_subst]
-
-theorem subst_sumFamily_rename_inr [Finite σ] [Finite σ'] [Finite τ] [Finite τ']
-    {a : σ → MvPowerSeries τ R} {a' : σ' → MvPowerSeries τ' R}
-    (ha : ∀ i, constantCoeff (a i) = 0) (ha' : ∀ j, constantCoeff (a' j) = 0)
-    (f : MvPowerSeries σ' R) :
-    (rename Sum.inr f).subst (sumFamily a a') = rename Sum.inr (f.subst a') := by
-  have h := hasSubst_of_constantCoeff_zero (constantCoeff_sumFamily ha ha')
-  rw [rename_eq_subst, rename_eq_subst, subst_comp_subst_apply (HasSubst.X_comp _) h,
-    subst_comp_subst_apply (hasSubst_of_constantCoeff_zero ha') (HasSubst.X_comp _)]
-  congr 1
-  funext i
-  rw [Function.comp_apply, subst_X h, sumFamily_inr, rename_eq_subst]
-
-theorem subst_sumFamily_sumFamily {υ' : Type*} [Finite σ] [Finite σ'] [Finite τ] [Finite τ']
-    (b : υ → MvPowerSeries σ R) (b' : υ' → MvPowerSeries σ' R)
-    {a : σ → MvPowerSeries τ R} {a' : σ' → MvPowerSeries τ' R}
-    (ha : ∀ i, constantCoeff (a i) = 0) (ha' : ∀ j, constantCoeff (a' j) = 0) (s : υ ⊕ υ') :
-    (sumFamily b b' s).subst (sumFamily a a') =
-      sumFamily (fun i => (b i).subst a) (fun j => (b' j).subst a') s := by
-  cases s
-  · exact subst_sumFamily_rename_inl ha ha' _
-  · exact subst_sumFamily_rename_inr ha ha' _
-
-theorem sumFamily_X [Finite σ] [Finite σ'] (s : σ ⊕ σ') :
-    sumFamily (fun i : σ => (X i : MvPowerSeries σ R)) (fun j : σ' => X j) s = X s := by
-  cases s <;> simp
-
-theorem substInv_sumFamily [Fintype σ] [Fintype σ'] [DecidableEq σ] [DecidableEq σ']
-    {a : σ → MvPowerSeries σ R} {a' : σ' → MvPowerSeries σ' R}
-    (ha : ∀ i, constantCoeff (a i) = 0) (ha' : ∀ j, constantCoeff (a' j) = 0)
-    (hA : IsUnit (linearPart a)) (hA' : IsUnit (linearPart a')) :
-    IsUnit (linearPart (sumFamily a a')) ∧
-      substInv (sumFamily a a') = sumFamily (substInv a) (substInv a') := by
-  have h0 := constantCoeff_sumFamily (constantCoeff_substInv ha) (constantCoeff_substInv ha')
-  have h : ∀ s, (sumFamily a a' s).subst (sumFamily (substInv a) (substInv a')) = X s := by
-    intro s
-    rw [subst_sumFamily_sumFamily _ _ (constantCoeff_substInv ha) (constantCoeff_substInv ha'),
-      funext (subst_substInv_right ha hA), funext (subst_substInv_right ha' hA'), sumFamily_X]
-  exact ⟨IsUnit.of_mul_eq_one _ (linearPart_mul_eq_one (constantCoeff_sumFamily ha ha') h0 h),
-    (eq_substInv_of_right (constantCoeff_sumFamily ha ha') h0 h).symm⟩
 
 end TwoGroups
 

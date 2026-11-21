@@ -621,26 +621,8 @@ theorem Jm_eq : Jm R S = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) fun _ =>
   have h : Jm R S = Matrix.fromBlocks 1 0 0 (-1) := rfl
   rw [h, ← Matrix.fromBlocks_diagonal, Matrix.diagonal_one, ← Matrix.diagonal_neg, Matrix.diagonal_one]
 
-theorem Jm_mul_self : Jm R S * Jm R S = 1 := by
-  rw [Jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  rcases a with a | a <;> simp
-
 theorem map_star_mul {l m n : Type} [Fintype m] (A : Matrix l m ℂ) (B : Matrix m n ℂ) :
     (A * B).map star = A.map star * B.map star := Matrix.map_mul (f := starRingEnd ℂ)
-
-theorem frame_inv {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} (h : IsFrame M C) :
-    ∃ C' : Matrix (Ix R S) β ℂ, C * C' = 1 ∧ C' * C = 1 := by
-  obtain ⟨h1, C', h2⟩ := h
-  refine ⟨C', h2, ?_⟩
-  have h3 : (M * C.map star * Jm R S)ᵀ * C = 1 := by
-    have : Cᵀ * (M * C.map star * Jm R S) = 1 := by
-      rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Jm_mul_self]
-    rw [← Matrix.transpose_one, ← this, Matrix.transpose_mul Cᵀ, Matrix.transpose_transpose]
-  have h4 : C' = (M * C.map star * Jm R S)ᵀ := by
-    rw [← Matrix.one_mul C', ← h3, Matrix.mul_assoc, h2, Matrix.mul_one]
-  rw [h4, h3]
 
 end Frame
 

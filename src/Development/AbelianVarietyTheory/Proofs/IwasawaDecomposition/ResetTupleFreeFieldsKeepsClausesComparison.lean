@@ -15,9 +15,11 @@ import Formalism.LocalToGlobal.IndefiniteReal.LinksStage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CrdOver
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RSideA
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteFormsReadingResetBaseEnlargementStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResetModelsMeasuresFormsEnlargedCoefficientBaseStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ResetModelsMeasuresFormsEnlargedCoefficientBase
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NVNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StandardLatticesDiagonal
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LargeCoefficientFieldContainsTwistValuesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LargeCoefficientFieldContainsTwistValues
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FieldValuesMemFixedField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RecAtOfTwoPasses
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIndexBoundCoreOverExactSmallField
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
@@ -59,7 +61,7 @@ theorem reset_stepW : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheor
         RSideW z {v | B'.places.resChar v ∈ T'.pl} R₁) := by
   intro h1 h2 h3 h4 h5 h6 h7
   refine Step.of_evLgG (GlobalTheory.Mem.Top.evLgG_of_evLg ?_)
-  refine GlobalTheory.Mem.Top.V4.TwoPass.ev_mono ?_ (GlobalTheory.Mem.Top.V4.TwoPass.ev_and GlobalTheory.Mem.HostFrames.hostHyp_frames_ev GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientField)
+  refine GlobalTheory.Mem.Top.V4.TwoPass.ev_mono ?_ (GlobalTheory.Mem.Top.V4.TwoPass.ev_and GlobalTheory.Mem.HostFrames.hostHyp_frames_ev _root_.GlobalTheory.Mem.R3.OkVals.large_coefficientField_contains_twist_values)
   rintro K ⟨hK, hO⟩
   refine hO.imp ?_
   rintro B' f' T' hOv hOB w' ⟨pin⟩ B f T w hE hf _ hp Z hX Wt z _ _ hFine _ Z' hX' _ hgrp _ core' alg' ha _ hKs hc _ _ _ _
@@ -68,7 +70,7 @@ theorem reset_stepW : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheor
   obtain ⟨hHH, -, -, hPos, hStd, hStdX, -, -⟩ := hK (w'.st Z') hOv
   obtain ⟨hVals, -⟩ := hOB w'.px w'.I hX' w'.ok w'.C_eq w'.xi_range
   refine (GlobalTheory.T.definiteFormsReading_reset_baseEnlargement z hE hf hp hFine.2.2.2 (fun i => (hStd _).2.1) hStdX hVals R₀ cG hKept).elim fun Ra h => h.elim fun cGa h => ?_
-  refine (GlobalTheory.T.reset_modelsMeasuresForms_enlargedCoefficientBase z hE hf hp core' ha hc.1 hc.2.1 hc.2.2.1 Ra cGa h.1 h.2).elim fun R₁ h => h.elim fun cG₁ h => ?_
+  refine (_root_.GlobalTheory.Mem.R3.Rw.resetW z hE hf hp core' ha hc.1 hc.2.1 hc.2.2.1 Ra cGa h.1 h.2).elim fun R₁ h => h.elim fun cG₁ h => ?_
   obtain ⟨⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11⟩, b⟩ := h
   exact ⟨R₁, cG₁, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, b⟩
 

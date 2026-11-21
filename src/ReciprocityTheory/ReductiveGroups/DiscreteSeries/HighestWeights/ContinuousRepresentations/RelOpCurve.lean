@@ -74,15 +74,6 @@ private theorem KRep.rel_op_curve {ε : Fin n → Bool} (R : KRep ε)
     _ = NormedSpace.exp ((t : ℂ) • A) := by
         rw [hconst t 0, hg0, one_mul]
 
-private theorem KRep.rel_op_inv {ε : Fin n → Bool} (R : KRep ε) (k : KG ε) :
-    R.op k⁻¹ = star (R.op k) := by
-  show ((R.τ k⁻¹ : unitary (R.V →L[ℂ] R.V)) : R.V →L[ℂ] R.V) = star ((R.τ k : unitary (R.V →L[ℂ] R.V)) : R.V →L[ℂ] R.V)
-  rw [map_inv]
-  first
-    | rfl
-    | simp [Unitary.coe_star]
-    | simp [Unitary.coe_inv]
-
 private theorem exists_curve_toMK_eq_exp_smul_of_inK {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     ∃ γ : ℝ → KG ε, ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X) := by
   obtain ⟨hG, hJ⟩ := hX

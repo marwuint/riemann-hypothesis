@@ -9,13 +9,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.GeometricallyConnectedSplitTorusAff
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothGroupRelDimGeneric
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteNormalCoverGenericPointStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteNormalCoverGenericPoint
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionTwoTorsionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusKernelTrivialOpenStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwoTorsionSpreadOpenStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusKernelTrivialOpen
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwoTorsionSpreadOpen
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwoTorsionCardBoundStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionRankBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteSurjectiveOpenImageStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteSurjectiveOpenImage
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorusExtensionSplitMapStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
@@ -46,11 +46,11 @@ theorem core (hE : GlobalTheory.Published.SemiAbelianHomExtension) (Z : Scheme.{
   haveI := τ'.free
   haveI := τ'.finite
   obtain ⟨u, hu, hmono⟩ := GlobalTheory.T.torus_extension_split_map hE Z' hnorm ((Over.pullback π).obj G) hG' L' j hj τ'
-  obtain ⟨V₁, hV₁, hC⟩ := GlobalTheory.T.torus_kernel_trivial_open Z' ((Over.pullback π).obj G) τ'.X u L' j hj hmono
-  obtain ⟨V₂, hV₂, hD⟩ := GlobalTheory.T.two_torsion_spread_open Z' Z π G L' j hj m P hPi hP2
+  obtain ⟨V₁, hV₁, hC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.KerSpread.injective_on_points_of_generic Z' ((Over.pullback π).obj G) τ'.X u L' j hj hmono
+  obtain ⟨V₂, hV₂, hD⟩ := _root_.GlobalTheory.CompanionTheory.Ar.pts_spread Z' Z π G L' j hj m P hPi hP2
   have hVne : ((V₁ ⊓ V₂ : Z'.Opens) : Set Z').Nonempty :=
     nonempty_preirreducible_inter V₁.isOpen V₂.isOpen hV₁ hV₂
-  obtain ⟨U, hU, hUV⟩ := GlobalTheory.T.finite_surjective_open_image Z Z' π hfin hsurj (V₁ ⊓ V₂) hVne
+  obtain ⟨U, hU, hUV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Strat.preimage_le_of_finite_surjective Z Z' π hfin hsurj (V₁ ⊓ V₂) hVne
   have hm : 0 < m := by
     rcases Nat.eq_zero_or_pos m with rfl | h
     · exact absurd hcount.symm (by simp)
@@ -100,7 +100,7 @@ theorem strat_open : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (Z :
     rw [this]
     exact genericPoint_specializes q)
   obtain ⟨L', _, _, hfd, hB⟩ := GlobalTheory.T.torus_extension_two_torsion Z G hG g hg Z.functionField z
-  obtain ⟨Z', _, π, j, hfin, hsurj, hnorm, hj, hjπ⟩ := GlobalTheory.T.finite_normal_cover_generic_point Z s Z.functionField z hz L'
+  obtain ⟨Z', _, π, j, hfin, hsurj, hnorm, hj, hjπ⟩ := _root_.GlobalTheory.CompanionTheory.Ggeo.normalisation_finite_cover Z s Z.functionField z hz L'
   rw [← hjπ] at hB
   obtain ⟨τ, m, P, hPi, hP2, hcount⟩ := hB
   exact core hE Z s G hG g hg Z' π hfin hsurj hnorm L' j hj τ m P hPi hP2 hcount

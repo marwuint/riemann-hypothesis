@@ -13,24 +13,24 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularRefra
 import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProofFree
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralIff
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.VVAlgebraMapNonneg
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTraceOrthogonalityStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTraceOrthogonality
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralScalarOfPulledBackGeneratorExtendsModelStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ModuliPointIntegralFrameAfterFiniteExtensionStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieLatticeOntoStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsThetaTraceBaseChangeIffStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumSymmetricTranslatesThetaPullbackExtendsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsExtPairStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsExtPair
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLinearHeckeIsogenyInverseUpToPSqStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsRigIsoOfBaseChangeStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTraceIsTranslSumStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FibreIsogenyPairDefinedOverFiniteSubextensionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFibreMapBaseChangeAndIsogenyPairIffStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FibreIsogenyPairDefinedOverFiniteSubextension
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFibreMapBaseChangeAndIsogenyPairIff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteAndIntegralStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralFrameExtensionOfRankZeroSignatureStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieImageCompatibleWithBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsProperModelOfExtendsFibreIsogenyStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FramedPointDescendsFiniteSubextensionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodReductionStableValuationRingExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieImageCompatibleWithBaseChange
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsProperModelOfExtendsFibreIsogeny
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FramedPointDescendsFiniteSubextension
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodReductionStableValuationRingExtension
 
 set_option autoImplicit false
 
@@ -62,11 +62,11 @@ theorem hkWith_iff {K L : Type} [Field K] [Field L] [Algebra c.F K] [Algebra c.F
     {f : Fib Xo y.x ⟶ Fib Xo z.x} {f' : Fib Xo z.x ⟶ Fib Xo y.x} {g : Fib Xo y'.x ⟶ Fib Xo z'.x}
     {g' : Fib Xo z'.x ⟶ Fib Xo y'.x} (h : IsBC φ.toRingHom f g) (h' : IsBC φ.toRingHom f' g')
     (hR : AllRat Xo y.x (p ^ 2)) : HkWith p y z f f' ↔ HkWith p y' z' g g' := by
-  have e₁ := (GlobalTheory.T.exists_fibreMap_baseChange_and_isogenyPair_iff E H Dw l Xo K L φ.toRingHom y.x z.x y'.x z'.x).2 f f' g g' (p ^ 2) h h'
+  have e₁ := (_root_.GlobalTheory.HkIntegral.PairBC.exists_isBC_and_isPair_iff E H Dw l Xo K L φ.toRingHom y.x z.x y'.x z'.x).2 f f' g g' (p ^ 2) h h'
   have e₂ : ∀ τ j, IsLieImageH p f.left (y.u τ j) (z.u τ j) ↔ IsLieImageH p g.left (y'.u τ j) (z'.u τ j) :=
     fun τ j => by
       rw [hy.2.1, hz.2.1]
-      exact GlobalTheory.T.lie_image_compatible_with_base_change E H Dw l Xo K L φ.toRingHom y.x z.x y'.x z'.x f g p _ _ h (y.tan τ j)
+      exact _root_.GlobalTheory.LieImageBC.isLieImageH_baseChange E H Dw l Xo K L φ.toRingHom y.x z.x y'.x z'.x f g p _ _ h (y.tan τ j)
   have e₃ := fun a b => GlobalTheory.T.isThetaTrace_conj_iff_of_rigIso E H Dw l Xo c K L φ y z y' z' f f' g p hp hy hz a h hR b
   constructor
   · rintro ⟨a, b, d⟩
@@ -86,8 +86,8 @@ theorem HkOver.up {K L : Type} [Field K] [Field L] [Algebra c.F K] [Algebra c.F 
     (hp : 0 < p) {y z : FrPt Xo c K} {y' z' : FrPt Xo c L} (hy : FrMap φ y y') (hz : FrMap φ z z')
     (h : HkOver p y z) : HkOver p y' z' := by
   obtain ⟨h₁, h₂, f, f', h⟩ := h
-  obtain ⟨g, hg⟩ := (GlobalTheory.T.exists_fibreMap_baseChange_and_isogenyPair_iff E H Dw l Xo K L φ.toRingHom y.x z.x y'.x z'.x).1 hy.1 hz.1 f
-  obtain ⟨g', hg'⟩ := (GlobalTheory.T.exists_fibreMap_baseChange_and_isogenyPair_iff E H Dw l Xo K L φ.toRingHom z.x y.x z'.x y'.x).1 hz.1 hy.1 f'
+  obtain ⟨g, hg⟩ := (_root_.GlobalTheory.HkIntegral.PairBC.exists_isBC_and_isPair_iff E H Dw l Xo K L φ.toRingHom y.x z.x y'.x z'.x).1 hy.1 hz.1 f
+  obtain ⟨g', hg'⟩ := (_root_.GlobalTheory.HkIntegral.PairBC.exists_isBC_and_isPair_iff E H Dw l Xo K L φ.toRingHom z.x y.x z'.x y'.x).1 hz.1 hy.1 f'
   exact ⟨allRat_up _ (pow_pos hp _) hy.1 h₁, allRat_up _ (pow_pos hp _) hz.1 h₂, g, g',
     (hkWith_iff φ hp hy hz hg hg' h₁).1 h⟩
 
@@ -97,7 +97,7 @@ theorem exists_hkOver {K Ω : Type} [Field K] [Field Ω] [IsAlgClosed Ω] [Algeb
     ∃ (L : Type) (_ : Field L) (_ : Algebra c.F L) (i : K →ₐ[c.F] L) (j : L →ₐ[c.F] Ω) (y' z' : FrPt Xo c L),
       j.comp i = k ∧ i.toRingHom.Finite ∧ FrMap i y y' ∧ FrMap j z' z ∧ HkOver p y' z' := by
   obtain ⟨g, g', h⟩ := h
-  obtain ⟨L₁, _, _, i₁, j₁, z₁, e₁, f₁, hz₁⟩ := GlobalTheory.T.framedPoint_descends_finite_subextension E H Dw l Xo c K Ω k z hk
+  obtain ⟨L₁, _, _, i₁, j₁, z₁, e₁, f₁, hz₁⟩ := _root_.GlobalTheory.HkIntegral.frPt_descends_finite E H Dw l Xo c K Ω k z hk
   obtain ⟨y₁, hy₁⟩ := exists_frMap i₁ y
   have hw₁ : FrMap j₁ y₁ w := frMap_of_comp hy₁ hw fun a => DFunLike.congr_fun e₁ a
   obtain ⟨L₂, _, _, f₂, r₂⟩ := (torsion_rational_over_finite_extension E H Dw l Xo L₁ y₁.x _ (pow_pos hp 2)).1
@@ -113,7 +113,7 @@ theorem exists_hkOver {K Ω : Type} [Field K] [Field Ω] [IsAlgClosed Ω] [Algeb
     exact hk
   have sq : ∀ x : Sp L₁ ⟶ Xo.X, spMap j₁.toRingHom ≫ x = spMap j₃ ≫ spMap a ≫ x := fun x => by
     rw [← Category.assoc, TorsionRat.sp_comp, e₃]
-  obtain ⟨M, _, i₄, j₄, e₄, f₄, hM⟩ := GlobalTheory.T.fibreIsogenyPair_defined_over_finite_subextension E H Dw l Xo L₃ Ω j₃ (spMap a ≫ y₁.x) (spMap a ≫ z₁.x) w.x z.x g g'
+  obtain ⟨M, _, i₄, j₄, e₄, f₄, hM⟩ := _root_.GlobalTheory.HkIntegral.pair_defined_over_finite E H Dw l Xo L₃ Ω j₃ (spMap a ≫ y₁.x) (spMap a ≫ z₁.x) w.x z.x g g'
     hint (hw₁.1.trans (sq _)) (hz₁.1.trans (sq _)) h.1.1 h.1.2.1
   letI : Algebra c.F M := ((i₄.comp a).comp (algebraMap c.F L₁)).toAlgebra
   let b : L₁ →ₐ[c.F] M := ⟨i₄.comp a, fun _ => rfl⟩
@@ -175,7 +175,7 @@ theorem theta_low (hp : IsUnit (p : T.V)) (y y' : IntFr Xo c T io)
   obtain ⟨I⟩ := (GlobalTheory.IntegralData.integralIff E H Dw l Xo c T io y.1).1 y.2.2
   obtain ⟨I'⟩ := (GlobalTheory.IntegralData.integralIff E H Dw l Xo c T io y'.1).1 y'.2.2
   obtain ⟨F, F', a₁, a₂, a₃, -, -, a₄, -⟩ :=
-    GlobalTheory.T.exists_ext_pair_alt E H Dw l Xo T _ _ I.G I'.G I.t' I'.t' I.m1 I.m2 I'.m1 I'.m2 f f' hP.1 hP.2.1
+    _root_.GlobalTheory.HkIntegral.exists_ext_pair E H Dw l Xo T _ _ I.G I'.G I.t' I'.t' I.m1 I.m2 I'.m1 I'.m2 f f' hP.1 hP.2.1
   obtain ⟨w, w₁, w₂⟩ := GlobalTheory.T.exists_pull_isTranslSum_of_isThetaTrace E H Dw l Xo T.Fr _ _ f f' p y.1.s y'.1.s s _ hP hs hT
   exact GlobalTheory.T.integral_scalar_of_pulledBack_generator_extends_model E H Dw l Xo c T io y y' I I' f F F' (p ^ 2) p _ w a₁ a₂ a₃ (a₄ _ hP.2.2.2.1)
     (by rw [Nat.cast_pow]; exact hp.pow 2) w₁ (GlobalTheory.T.sum_symmetricTranslates_thetaPullback_extends E H Dw l Xo c T io y I p w (hU I) hp w₂)
@@ -192,9 +192,9 @@ theorem theta_high (hpp : p.Prime) (hp : IsUnit (p : T.V)) (y y' : IntFr Xo c T 
   obtain ⟨I⟩ := (GlobalTheory.IntegralData.integralIff E H Dw l Xo c T io y.1).1 y.2.2
   obtain ⟨I'⟩ := (GlobalTheory.IntegralData.integralIff E H Dw l Xo c T io y'.1).1 y'.2.2
   obtain ⟨b, ζ, m, hζ, hab, f₂, hf₂, hff, w, w₁, w₂⟩ :=
-    GlobalTheory.T.exists_orth_pull_isTranslSum_of_isThetaTrace E H Dw l Xo T.Fr _ _ f f' p y.1.s y'.1.s s _ hpp hP hR (t none).ne_zero hs hT
+    _root_.GlobalTheory.TraceOrth.thetaTrace_orthogonality E H Dw l Xo T.Fr _ _ f f' p y.1.s y'.1.s s _ hpp hP hR (t none).ne_zero hs hT
   obtain ⟨F, F', a₁, a₂, -, a₃, a₄, -⟩ :=
-    GlobalTheory.T.exists_ext_pair_alt E H Dw l Xo T _ _ I.G I'.G I.t' I'.t' I.m1 I.m2 I'.m1 I'.m2 f f₂ hP.1 hf₂
+    _root_.GlobalTheory.HkIntegral.exists_ext_pair E H Dw l Xo T _ _ I.G I'.G I.t' I'.t' I.m1 I.m2 I'.m1 I'.m2 f f₂ hP.1 hf₂
   obtain ⟨b₀, rfl⟩ := GlobalTheory.T.integral_scalar_of_pulledBack_generator_extends_model E H Dw l Xo c T io y' y I' I f₂ F' F (p ^ 3) (p ^ 2) b w a₂ a₁ a₃ (a₄ _ hff)
     (by rw [Nat.cast_pow]; exact hp.pow 3) w₁
     (GlobalTheory.T.sum_symmetricTranslates_thetaPullback_extends E H Dw l Xo c T io y' I' (p ^ 2) w (hU I') (by rw [Nat.cast_pow]; exact hp.pow 2) w₂)
@@ -297,7 +297,7 @@ theorem exists_frBor_unit (hpp : p.Prime) (hp : IsUnit (p : T.V)) (hT : T.FinRes
   obtain ⟨I⟩ := (GlobalTheory.IntegralData.integralIff E H Dw l Xo c T io y.1).1 y.2.2
   obtain ⟨I'⟩ := (GlobalTheory.IntegralData.integralIff E H Dw l Xo c T io y₀.1).1 y₀.2.2
   obtain ⟨F, F', a₁, a₂, a₃, -, a₄, a₅, a₆, a₇⟩ :=
-    GlobalTheory.T.exists_ext_pair_alt E H Dw l Xo T _ _ I.G I'.G I.t' I'.t' I.m1 I.m2 I'.m1 I'.m2 f f' hP.1 hP.2.1
+    _root_.GlobalTheory.HkIntegral.exists_ext_pair E H Dw l Xo T _ _ I.G I'.G I.t' I'.t' I.m1 I.m2 I'.m1 I'.m2 f f' hP.1 hP.2.1
   obtain ⟨k, hk, hc⟩ := GlobalTheory.T.lieLattice_onto_of_monHom_pair_pow_p_sq E H Dw l Xo c T io y y₀ I I' f F F' p u hp a₁ a₂ a₃ (a₄ _ hP.2.2.1) (a₅ _ hP.2.2.2.1)
     (a₆ hP.2.2.2.2.1) (a₇ hP.2.2.2.2.2) hL
   obtain ⟨y', -, hx, hu, -⟩ := GlobalTheory.IntRebase.intRebase GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c T io y₀
@@ -312,8 +312,8 @@ theorem exists_frBor_unit (hpp : p.Prime) (hp : IsUnit (p : T.V)) (hT : T.FinRes
   refine ⟨y', fun a => Option.elim a u₀ fun _ => 1, ?_, ht.1, fun τ i => ⟨Pi.single i 1, by simp,
     fun j hj => Pi.single_eq_of_ne hj.ne' _, hs τ i⟩, ?_⟩
   · rintro ⟨G, t₁, m₁, m₂, hG⟩
-    obtain ⟨F₁, -, -, -, b₁, -⟩ := GlobalTheory.T.exists_ext_pair_alt E H Dw l Xo T _ _ G I'.G t₁ I'.t' m₁ m₂ I'.m1 I'.m2 f f' hP.1 hP.2.1
-    exact ⟨I'.G, I'.t', hx ▸ I'.m1, I'.m2, GlobalTheory.T.isProper_model_of_extends_fibreIsogeny E H Dw l Xo T _ _ G I'.G t₁ I'.t' m₁ m₂ I'.m1 I'.m2 f f' F₁ _ b₁
+    obtain ⟨F₁, -, -, -, b₁, -⟩ := _root_.GlobalTheory.HkIntegral.exists_ext_pair E H Dw l Xo T _ _ G I'.G t₁ I'.t' m₁ m₂ I'.m1 I'.m2 f f' hP.1 hP.2.1
+    exact ⟨I'.G, I'.t', hx ▸ I'.m1, I'.m2, _root_.GlobalTheory.HkIntegral.isProper_of_ext E H Dw l Xo T _ _ G I'.G t₁ I'.t' m₁ m₂ I'.m1 I'.m2 f f' F₁ _ b₁
       hP.2.2.2.1 (pow_pos hpp.pos 2) hG⟩
   · have := ht.2.2
     rw [← hu₀] at this
@@ -370,7 +370,7 @@ theorem heckeFrameInt (cls : PtClass Xo c)
     (h₁.up b hpp.pos (frMap_of_comp hy₁ hy₂ hφ) hz₂)
   obtain ⟨w', hw'⟩ := exists_frMap J y'.1
   refine ⟨T₂, i, ⟨(GlobalTheory.T.ringHom_finite_and_isIntegral_of_valuation_scaled T T₂ i _ hr hv hT₂).1, _, hr, hv⟩, J, RingHom.ext hjk, y', hT₂,
-    hcls T io y T₂ _ y' hc fun h => hg (GlobalTheory.T.goodReduction_stable_valuationRing_extension E H Dw l Xo c T T₂ io _ y y₂ i _ hr hv hy₂.1 h), w', u, hw', ?_⟩
+    hcls T io y T₂ _ y' hc fun h => hg (_root_.GlobalTheory.GoodBaseChange.good_baseChange E H Dw l Xo c T T₂ io _ y y₂ i _ hr hv hy₂.1 h), w', u, hw', ?_⟩
   exact frBor_map J hb hw' (frMap_of_comp hz₂ hz₁ hj')
 
 theorem heckeValueInt (cls : PtClass Xo c) (h : HeckeFrameInt Xo c cls) : HeckeValueInt Xo c cls := by

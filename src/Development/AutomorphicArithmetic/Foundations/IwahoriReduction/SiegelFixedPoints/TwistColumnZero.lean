@@ -1,7 +1,10 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.IsThBIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.LiftSLMapMulInvMem
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueNormalizedCyclotomicTraceStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueNormalizedCyclotomicTrace
+import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.MemClosureOfIsIntegral
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.SpecialLinearMulApplyZeroZero
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.OrderOfTranslationMod
@@ -210,7 +213,7 @@ theorem UpperTheory.Kd.L.arith :
       _ = _ := by rw [h1, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast]
   have hS2Z : InZl ε l (m + n) S2 := isum _ _ fun y _ => isum _ _ fun r₀ _ => isum _ _ fun γ hγ => irep y _ (hE r₀ γ hγ).1
   have hE0 : InZl ε l (m + n) ((N : Ω) ^ 3 * S2) := imul _ _ iN3 hS2Z
-  obtain ⟨E', hNT', hE'Z, -⟩ := GlobalTheory.T.exists_unique_normalizedCyclotomicTrace ε l (m + n) m hm (by omega) _ hE0
+  obtain ⟨E', hNT', hE'Z, -⟩ := _root_.GlobalTheory.NTr.normTrace_exists_unique ε l (m + n) m hm (by omega) _ hE0
   obtain ⟨τ, hτ, hsum⟩ := hNT
   obtain ⟨τ', hτ', hsum'⟩ := hNT'
   rw [Nat.add_sub_cancel_left] at hsum hsum'

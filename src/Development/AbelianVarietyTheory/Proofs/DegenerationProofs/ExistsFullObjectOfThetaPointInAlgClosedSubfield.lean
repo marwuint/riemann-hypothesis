@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPointStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FullTorsionObjectExistsUniqueModuliPoint
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTateIsoOfLevel
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -23,7 +23,7 @@ theorem exists_full_of_theta_in_subfield : HV → Laws6 → GlobalTheory.LN.UDvr
       (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne') Subtype.val_injective).map_of_injective
         b.injective).map_of_injective i.injective
   obtain ⟨I, hI⟩ := GlobalTheory.TateRoot.exists_tateIso_zeta_eq E H D l κ _ _ _ o'.I l.A _ l.A_pos hp
-  obtain ⟨y, ⟨hy, φ, h₁, h₂, h₃, -⟩, -⟩ := (GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint hv h6 hU hX hT hE hA E H D l Xo c W₀ Y κ (i.comp b)).1
+  obtain ⟨y, ⟨hy, φ, h₁, h₂, h₃, -⟩, -⟩ := (_root_.GlobalTheory.FullPoint.fullAt_existsUnique_exists_ext hv h6 hU hX hT hE hA E H D l Xo c W₀ Y κ (i.comp b)).1
     { o' with I := I } (fun r h => by
       obtain rfl : r = ⟨_, hr⟩ := Subtype.ext h
       exact hρ.trans (congrArg i hb.symm)) (fun r h => by

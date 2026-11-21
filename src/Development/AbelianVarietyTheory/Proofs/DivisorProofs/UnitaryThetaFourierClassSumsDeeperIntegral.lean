@@ -5,11 +5,14 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsFrameTwoLevels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSystemValueEqRootMulThetaConstant
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenNonemptyCrystallineTrait
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryTraitLabelsSurjectiveKernel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabelsUnitaryClassicalTraitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabelsUnitaryClassicalTrait
+import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyUWit
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.ImmersedBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClassicalPointCentredClosedPointArithmetic
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsometryEqReflOfCongrModGeThree
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeClassSumsOfTermsPrescribedNormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaloisAutConjugateFieldPointsCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeClassSumsOfTermsPrescribedNorms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGenLab
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaloisAutConjugateFieldPointsCover
 
 noncomputable section
 
@@ -148,7 +151,7 @@ theorem exists_div_torsion (hpq : 1 ≤ Dw.p + Dw.q) (X : USetup C) (z : X.M.Z) 
   obtain rfl : p = p' := prime_eq_of_cen hy₀ hy
   obtain ⟨ct, -⟩ := hct y hyU
   obtain ⟨wi⟩ := nonempty_uWit X
-  obtain ⟨yy, hyy⟩ := GlobalTheory.T.exists_labels_unitaryClassicalTrait E H Dw hpq l Xo cf C X wi p _ ct
+  obtain ⟨yy, hyy⟩ := _root_.GlobalTheory.UPoinc.exists_uIsLabW E H Dw hpq l Xo cf C X wi p _ ct
   obtain ⟨a, ha, hdv⟩ := (gLab_of hyy.uIsLab).exists_div X.hasDiv ct.cen
     (fun x => div_nonneg (mul_nonneg (sc_pos ct).le (by exact_mod_cast be_nonneg ct.T x)) zero_le_two) hk hd
   exact ⟨a, ha, hdv.of_specializes (hy ▸ hsp)⟩
@@ -298,7 +301,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     choose α hα using fun ν : ct.T.P.D.toPre.X => on₀ (QuotientAddGroup.mk ν)
     have hcl : ∀ {a a' ν ν'}, yy₀ a = QuotientAddGroup.mk ν → yy₀ a' = QuotientAddGroup.mk ν' → CongMod D.m ν ν' →
         f (D.m • a) = f (D.m • a') := fun ha ha' h => hf₂ _ _ (by rw [← k₀]; exact wtChar_eq D on₀ ha ha' h)
-    obtain ⟨t, ht₁, ht₂, ht₃⟩ := GlobalTheory.T.lattice_class_sums_of_terms_prescribed_norms p _ (X₁.S.HH X₁.M z₁) D.m (qf ct) s n (gLab_of h₁).tendsto hs
+    obtain ⟨t, ht₁, ht₂, ht₃⟩ := _root_.GlobalTheory.UPoinc.USum.classSum_of_terms p _ (X₁.S.HH X₁.M z₁) D.m (qf ct) s n (gLab_of h₁).tendsto hs
       (fun ν κ => D.X.M.val (gPt p ≫ y₀) (f (D.m • α ν) κ))
       (fun ν ν' κ h => by simp only [hcl (hα ν) (hα ν') h])
       (fun ν κ hmin => by
@@ -320,7 +323,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     replace k₂ : yy.ker = D.X.S.HH D.X.M z₂ := k₂.trans (congrArg _ hy)
     haveI := D.fd
     haveI := D.gal
-    obtain ⟨σ, s', hs', e, hv⟩ := GlobalTheory.T.exists_galois_aut_conjugate_field_points_cover _ _ _ _ X₁.M D.X.M D.q (normal X₁) (normal D.X) D.fin D.gen (PadicAlgCl p)
+    obtain ⟨σ, s', hs', e, hv⟩ := _root_.GlobalTheory.Poinc.FieldConj.exists_aut_eq_of_comp_eq _ _ _ _ X₁.M D.X.M D.q (normal X₁) (normal D.X) D.fin D.gen (PadicAlgCl p)
       (gPt p ≫ y₀) (gPt p ≫ y) (by rw [Category.assoc, Category.assoc, h₀, h])
     obtain ⟨g, hg, hgl, hgf⟩ := hf₃ σ σ.surjective (RingHom.ext σ.commutes)
     haveI := D.X.ar.ded

@@ -432,17 +432,6 @@ theorem exp_log : ∀ᶠ a in 𝓝 (0 : A), h.exp (h.log (φ a)) = a := by
   filter_upwards [h.log_exp] with v hv
   rw [hv]
 
-omit [FiniteDimensional ℂ V] in
-
-theorem log_add :
-    ∀ᶠ p in 𝓝 (0 : A × A), h.log (φ (p.1 + p.2)) = h.log (φ p.1) + h.log (φ p.2) := by
-  have t1 : Tendsto (fun p : A × A => p.1) (𝓝 0) (𝓝 0) := continuous_fst.tendsto 0
-  have t2 : Tendsto (fun p : A × A => p.2) (𝓝 0) (𝓝 0) := continuous_snd.tendsto 0
-  have hl := φ.eventually_left_inverse h.zero_mem_source
-  filter_upwards [((h.tendsto.comp t1).prodMk_nhds (h.tendsto.comp t2)).eventually
-    h.isLocalCommGroupLaw.log_law, t1.eventually hl, t2.eventually hl] with p h1 h2 h3
-  simpa [chartLaw, h2, h3] using h1
-
 theorem chart_exp_eventuallyEq :
     (fun v => φ (h.exp v)) =ᶠ[𝓝 0] h.isLocalCommGroupLaw.logChart.symm := by
   have t0 : Tendsto h.isLocalCommGroupLaw.logChart.symm (𝓝 0) (𝓝 0) := by
@@ -457,12 +446,6 @@ theorem analyticAt_chart_exp : AnalyticAt ℂ (fun v => φ (h.exp v)) 0 :=
 theorem hasFDerivAt_chart_exp :
     HasFDerivAt (fun v => φ (h.exp v)) (ContinuousLinearMap.id ℂ V) 0 :=
   h.isLocalCommGroupLaw.hasFDerivAt_logChart_symm.congr_of_eventuallyEq h.chart_exp_eventuallyEq
-
-theorem eq_exp_of_log {e : V →+ A} (he : ∀ᶠ a in 𝓝 (0 : A), e (h.log (φ a)) = a) :
-    e = h.exp := by
-  refine addMonoidHom_eq_of_eventuallyEq ?_
-  filter_upwards [Tendsto.eventually h.map_exp_nhds_zero.le he, h.log_exp] with v h1 h2
-  rwa [h2] at h1
 
 noncomputable def periodLattice : Submodule ℤ V := AddSubgroup.toIntSubmodule h.exp.ker
 
@@ -480,15 +463,6 @@ instance isZLattice_periodLattice [CompactSpace A] : IsZLattice ℝ h.periodLatt
 theorem exp_surjective [CompactSpace A] (hdiv : ∀ n : ℕ, n ≠ 0 → ∀ a : A, ∃ b : A, n • b = a) :
     Function.Surjective h.exp :=
   surjective_of_isOpenMap_of_compact_of_divisible h.isOpenMap_exp hdiv
-
-noncomputable def quotientKerExpEquiv (hs : Function.Surjective h.exp) : (V ⧸ h.exp.ker) ≃ₜ+ A where
-  __ := QuotientAddGroup.quotientKerEquivOfSurjective h.exp hs
-  continuous_toFun :=
-    (QuotientAddGroup.isQuotientMap_mk h.exp.ker).continuous_iff.mpr h.continuous_exp
-  continuous_invFun := by
-    refine (h.isOpenMap_exp.isQuotientMap h.continuous_exp hs).continuous_iff.mpr ?_
-    refine (QuotientAddGroup.continuous_mk (N := h.exp.ker)).congr fun v => ?_
-    exact ((QuotientAddGroup.quotientKerEquivOfSurjective h.exp hs).symm_apply_apply v).symm
 
 end IsAnalyticGroupChart
 

@@ -6,9 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDPMorphismOfIsStd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FilProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FilIsSubDPIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientSubDPIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsStdStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltrationIdealLeMapOfIsDPMorphismStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareLemmaTruncatedDivPowerPolyOneVariableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsStd
+import Development.AbelianVarietyTheory.Definitions.Divisors.RatBasisLinearIndependentInt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltrationIdealLeMapOfIsDPMorphism
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareLemmaTruncatedDivPowerPolyOneVariable
 
 set_option autoImplicit false
 
@@ -40,7 +41,7 @@ theorem exists_isFree_one_qAt : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : 
       IsFree (n + 1) u τ ∧ (KK κ t).QAt u := by
   intro R _ I κ X t n T hT
   obtain ⟨Q⟩ := GlobalTheory.exists_pdPoly T.B
-  obtain ⟨η, hη⟩ := GlobalTheory.T.exists_dividedPowers_ext_isStd T.B T.J T.δ Q
+  obtain ⟨η, hη⟩ := _root_.GlobalTheory.PDA.PDPoly.exists_isStd T.B T.J T.δ Q
   obtain ⟨hlift, ε, hε⟩ := GlobalTheory.PDA.PDPoly.exists_lift_and_aug T.B Q
   have hfil := GlobalTheory.PDA.fil_properties Q.P (Q.ext T.J) η
   obtain ⟨K, hK⟩ : ∃ K : Ideal Q.P, K = fil η (n + 1) := ⟨_, rfl⟩
@@ -69,7 +70,7 @@ theorem exists_isFree_one_qAt : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : 
   let πF : Q.P ⧸ K →+* T.B₀ := Ideal.Quotient.lift K π₀ fun p hp ↦ (hπ₀ p).2 (hKle hp)
   have hπF : ∀ p, πF (Ideal.Quotient.mk K p) = T.π (ε p) := fun p ↦ rfl
   have hlev : IsLev δ' (n + 1) := by
-    have h := GlobalTheory.T.dividedPowerFiltrationIdeal_le_map_of_isDPMorphism Q.P (Q.ext T.J) η (Q.P ⧸ K) _ δ' (Ideal.Quotient.mk K) hδ' rfl (n + 1)
+    have h := _root_.GlobalTheory.PDA.fil_le_map_fil Q.P (Q.ext T.J) η (Q.P ⧸ K) _ δ' (Ideal.Quotient.mk K) hδ' rfl (n + 1)
     rw [← hK, Ideal.map_quotient_self] at h
     exact le_bot_iff.1 h
   have halg : algebraMap R (Q.P ⧸ K) = (Ideal.Quotient.mk K).comp ((algebraMap T.B Q.P).comp (algebraMap R T.B)) :=
@@ -153,7 +154,7 @@ theorem exists_isFree_one_qAt : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : 
         change S.δ.dpow k (g'.φ (Ideal.Quotient.mk K (Q.e 1))) = _
         rw [show g'.φ (Ideal.Quotient.mk K (Q.e 1)) = c () from h2 ()]
   · have hsemi : SemiHom (RingHom.id R) (Ideal.Quotient.mk K) := fun r p ↦ map_smul (Ideal.Quotient.mkₐ R K) r p
-    exact GlobalTheory.T.poincareLemma_truncated_divPowerPoly_oneVariable R T.B T.J T.δ Q η (Q.P ⧸ K) F.J δ' (Ideal.Quotient.mk K) n hη hT hsemi hδ'
+    exact _root_.GlobalTheory.PDForm.rq_truncPoly R T.B T.J T.δ Q η (Q.P ⧸ K) F.J δ' (Ideal.Quotient.mk K) n hη hT hsemi hδ'
       Ideal.Quotient.mk_surjective rfl (fun b ↦ by rw [Ideal.Quotient.eq_zero_iff_mem, hK]) φ
       (SemiHom.of_algHom u.φ) u.dp fun _ ↦ rfl
 

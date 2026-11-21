@@ -46,8 +46,6 @@ theorem ff_adjoin (A : Type) [CommRing A] [Nontrivial A] (q : ℕ) [NeZero q] :
   have : Nonempty (Fin (cyclotomic q A).natDegree) := ⟨⟨0, hpos⟩⟩
   exact Module.FaithfullyFlat.of_linearEquiv _ _ b.repr
 
-example (U : Scheme.{0}) : U ⟶ Spec Γ(U, ⊤) := U.toSpecΓ
-
 theorem prim_adjoin (A : Type) [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) :
     Nonempty (Prim q (AdjoinRoot (cyclotomic q A))) := by
   refine ⟨⟨AdjoinRoot.root _, by simpa using hq.map (algebraMap A (AdjoinRoot (cyclotomic q A))), ?_⟩⟩

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalarStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueUnitFrameEqLocalFunctionUnitScalar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryOfFrameNormConj
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -34,8 +34,8 @@ theorem val_conj : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (
   have h : (conjPt y).1 = spMap (starRingEnd ℂ) ≫ y.1 := rfl
   have hi := mem_pick (P.L.φ σ).isLB y
   have hj := mem_pick (P.A.φ σ).isLB y
-  obtain ⟨θ₁, h₁, e₁⟩ := GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P a b σ y _ _ hi hj
-  obtain ⟨θ₂, h₂, e₂⟩ := GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P a b _ (conjPt y) _ _
+  obtain ⟨θ₁, h₁, e₁⟩ := _root_.GlobalTheory.HSAmp.val_frame k X p P a b σ y _ _ hi hj
+  obtain ⟨θ₂, h₂, e₂⟩ := _root_.GlobalTheory.HSAmp.val_frame k X p P a b _ (conjPt y) _ _
     (CxPts.mem_ptsIn_conj h hi) (CxPts.mem_ptsIn_conj h hj)
   refine ⟨_, conjPt y, θ₂ * θ₁, by rw [norm_mul, h₁, h₂, one_mul], fun f hf => ?_⟩
   have hreg := hf _ _ _ (mem_ptsIn.1 hi) (mem_ptsIn.1 hj)

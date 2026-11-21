@@ -168,6 +168,4 @@ end GlobalTheory.PowerSumDiv
 
 namespace GlobalTheory.PowerSumDiv
 
-open NumberField IsDedekindDomain
-
 end GlobalTheory.PowerSumDiv

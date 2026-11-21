@@ -69,6 +69,4 @@ def totSym (Co : Coord X.toGeo hs δ) (a : ℕ) : totFil X s a →ₗ[F] (MonoDe
 
 end Split
 
-example (G : Geo F) (u : Fin G.N → F) (x : Tot G) : shift G u x 0 = 0 := rfl
-
 end GlobalTheory.HSShort

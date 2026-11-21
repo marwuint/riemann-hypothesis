@@ -6,12 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SwapCastEqSw
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtLvlFormMemCutSp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeOperatorKeepsRationalIntegralLevelFormsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StdFrameLevelSubgroupBoundedOpenHyperspecialStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RamifiedLevelEqParahoricWithTupleCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProdLevelStdFrameTwoBlockUnipotentLevelStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RamifiedLevelEqParahoricWithTupleCharacter
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DatVtEq
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProdLevelStdFrameTwoBlockUnipotentLevel
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemRationalGLOfUnitaryGroupGramUnitGram
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteLevelFormsIffStdGroupTypeSpaceStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlacesUnder
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelUnipotentGenericCharTypePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelUnipotentGenericCharTypePlace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefficientSpaceDefiniteFormIrreducibleAlgebraicStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InfOfLamLdefEqParamV
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitFrame
@@ -148,9 +149,9 @@ theorem tup_read {μ : D.what₂.Tup} {i : Fin D.R.m} {c : CoefA (Vc D i)} {T : 
       real_inj := rinj
       real_range := rrange.trans hsp }
   refine ⟨m, eW, ?_, heq, fun x g => ?_⟩
-  · refine ⟨GlobalTheory.T.isProdLevel_stdFrame_twoBlockUnipotentLevel D _ hr _ _ ψ _ _, GlobalTheory.T.ramifiedLevel_eq_parahoric_with_tupleCharacter D T L μ0 hL hPg i t hr ψ, fun k v s hs' => ?_, hB, fun t' a' lam h1 h2 => ?_,
+  · refine ⟨_root_.GlobalTheory.MtInProd.main D _ hr _ _ ψ _ _, _root_.GlobalTheory.MtPara.levelPara D T L μ0 hL hPg i t hr ψ, fun k v s hs' => ?_, hB, fun t' a' lam h1 h2 => ?_,
       fun s ϖ k h1 h2 h3 h4 x => ?_, fun w s ϖ k h1 h0 h2 h3 h4 y hy => ?_, fun y hy => ?_, (D.what₂.MtLat μ ((i : ℕ) + 1)).span_top⟩
-    · exact GlobalTheory.T.levelUnipotent_genericChar_typePlace D T L μ0 hL hPg i t hr ψ hψ s ((hPg _).2 ⟨k, v, hs'⟩)
+    · exact _root_.GlobalTheory.TypeLevelUni.levelUni_typePlace D T L μ0 hL hPg i t hr ψ hψ s ((hPg _).2 ⟨k, v, hs'⟩)
     · rw [hw a' t' lam h1 h2]
       exact GlobalTheory.Mem.WtPar.infOf_lamLdef_eq_paramV D i t'
     · obtain ⟨x, rfl⟩ := τ.e.surjective x
@@ -470,10 +471,6 @@ theorem inMt_state (pin : ColPin w) :
   refine ⟨m, fun i => ?_⟩
   rw [hm]
   exact idFrame_castFr _ _ (hF i)
-
-theorem inMt_idFrame : PrN → AllSt fun _ _ _ _ w P x =>
-    ∃ m : InMt x.r.Y (cfOf x) w.I.xi (QOf P), ∀ i, GlobalTheory.MtRead.IdFrame x.r.Y.hF (m.ad.PV i) :=
-  fun _ => StepW.of_all fun _ _ _ _ _ _ _ hs _ x => hs.1.elim fun pin => inMt_state x pin
 
 theorem sMt : SMt :=
   StepW.of_all fun _ _ _ _ _ _ _ hs _ x => hs.1.elim fun pin => (inMt_state x pin).elim fun m _ => ⟨m⟩

@@ -220,56 +220,6 @@ theorem isAddFundamentalDomain_levelDomain :
       exact hm'
     exact Subtype.ext (by simp only [this])
 
-variable {N} in
-
-theorem conj_unipFin_mem {w : FiniteAdelicGL ℚ 2} (hw : w ∈ integralFiniteGL ℚ 2) {y : 𝔸f}
-    (hy : y ∈ levelIdeal N) : w⁻¹ * unipFin y * w ∈ Gamma0Level N := by
-  have hyZ : y ∈ integralFiniteAdeles (𝓞 ℚ) ℚ := levelIdeal_subset N hy
-  have hu : unipFin y ∈ integralFiniteGL ℚ 2 := by
-    rw [mem_integralFiniteGL_iff]
-    refine ⟨fun a b => ?_, fun a b => ?_⟩
-    · change unipMatrix (n := 2) (r := 1) (fun _ => y) a b ∈ _
-      rw [unipMatrix_apply]
-      split_ifs
-      · exact hyZ
-      · exact one_mem _
-      · exact zero_mem _
-    · rw [unipFin, coe_unipGL_inv]
-      change unipMatrix (n := 2) (r := 1) (fun _ => -y) a b ∈ _
-      rw [unipMatrix_apply]
-      split_ifs
-      · exact neg_mem hyZ
-      · exact one_mem _
-      · exact zero_mem _
-  refine ⟨mul_mem (mul_mem (inv_mem hw) hu) hw, ?_⟩
-  have hVW : ((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) * (w : Matrix (Fin 2) (Fin 2) 𝔸f) = 1 := by
-    rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
-  have h10 : ((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) 1 0 * (w : Matrix (Fin 2) (Fin 2) 𝔸f) 0 0 +
-      ((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) 1 1 * (w : Matrix (Fin 2) (Fin 2) 𝔸f) 1 0 = 0 := by
-    have := congrFun (congrFun hVW 1) 0
-    simpa [Matrix.mul_apply, Fin.sum_univ_two] using this
-  have u00 : unipMatrix (n := 2) (r := 1) (fun _ => y) 0 0 = 1 := by rw [unipMatrix_apply]; simp
-  have u01 : unipMatrix (n := 2) (r := 1) (fun _ => y) 0 1 = y := by rw [unipMatrix_apply]; simp
-  have u10 : unipMatrix (n := 2) (r := 1) (fun _ => y) 1 0 = 0 := by rw [unipMatrix_apply]; simp
-  have u11 : unipMatrix (n := 2) (r := 1) (fun _ => y) 1 1 = 1 := by rw [unipMatrix_apply]; simp
-  have key : ((w⁻¹ * unipFin y * w : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) 1 0 =
-      (((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) 1 0 * (w : Matrix (Fin 2) (Fin 2) 𝔸f) 1 0) * y := by
-    rw [Units.val_mul, Units.val_mul]
-    change (((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) *
-      unipMatrix (n := 2) (r := 1) (fun _ => y) * (w : Matrix (Fin 2) (Fin 2) 𝔸f)) 1 0 = _
-    rw [Matrix.mul_apply, Fin.sum_univ_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.mul_apply,
-      Fin.sum_univ_two, u00, u01, u10, u11]
-    linear_combination h10
-  rw [key]
-  refine mul_mem_levelIdeal ?_ hy
-  have h1 := ((mem_integralFiniteGL_iff ℚ 2).1 hw)
-  exact mul_mem (h1.2 1 0) (h1.1 1 0)
-
-theorem realEmb_finEmb_mul (a c : GL (Fin 2) ℝ) (b d : FiniteAdelicGL ℚ 2) :
-    realEmb a * finEmb ℚ 2 b * (realEmb c * finEmb ℚ 2 d) = realEmb (a * c) * finEmb ℚ 2 (b * d) := by
-  apply (prodEquiv ℚ 2).injective
-  simp only [map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]
-
 instance isAddHaarMeasure_map_realHomeomorph :
     ((infiniteAdeleMeasure ℚ).map realHomeomorph).IsAddHaarMeasure :=
   RationalIdeles.realEquiv.toAddEquiv.isAddHaarMeasure_map (infiniteAdeleMeasure ℚ)
@@ -295,48 +245,6 @@ theorem levelConstant_pos : 0 < levelConstant N := by
       (isCompact_integralFiniteAdeles ℚ).measure_lt_top |>.ne
 
 variable {N} {k : ℤ}
-
-theorem constantTerm_realEmb_mul_finEmb {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ)
-    (h : GL (Fin 2) ℝ) {w : FiniteAdelicGL ℚ 2} (hw : w ∈ integralFiniteGL ℚ 2) :
-    constantTerm 1 φ (realEmb h * finEmb ℚ 2 w) =
-      levelConstant N • ∫ t in (0 : ℝ)..N, φ (realEmb (unipReal t * h) * finEmb ℚ 2 w) := by
-  set G : ℝ → ℂ := fun t => φ (realEmb (unipReal t * h) * finEmb ℚ 2 w)
-  rw [constantTerm_eq_setIntegral_adele hφ.isLeftInvariant (isAddFundamentalDomain_levelDomain N)]
-  have heq : Set.EqOn (fun x : 𝔸[ℚ] => φ (unipAdele x * (realEmb h * finEmb ℚ 2 w)))
-      (fun x => G (RationalIdeles.realEquiv x.1)) (levelDomain N) := by
-    intro x hx
-    have e : unipAdele x * (realEmb h * finEmb ℚ 2 w) =
-        realEmb (unipReal (RationalIdeles.realEquiv x.1) * h) * finEmb ℚ 2 w *
-          finEmb ℚ 2 (w⁻¹ * unipFin x.2 * w) := by
-      rw [unipAdele_eq]
-      apply (prodEquiv ℚ 2).injective
-      simp only [map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]
-      rw [Prod.mk.injEq]
-      exact ⟨rfl, by group⟩
-    simp only [G]
-    rw [e, hφ.right_level _ _ (conj_unipFin_mem hw hx.2)]
-  rw [setIntegral_congr_fun (measurableSet_levelDomain N) heq]
-  set A : Set (InfiniteAdeleRing ℚ) := RationalIdeles.realEquiv ⁻¹' Set.Ico (0 : ℝ) N
-  calc ∫ x in levelDomain N, G (RationalIdeles.realEquiv x.1) ∂adeleMeasure ℚ
-      = ∫ x in (A ×ˢ levelIdeal N : Set (InfiniteAdeleRing ℚ × 𝔸f)), G (RationalIdeles.realEquiv x.1)
-          ∂((infiniteAdeleMeasure ℚ).prod (finiteAdeleMeasure ℚ)) := rfl
-    _ = (finiteAdeleMeasure ℚ (levelIdeal N)).toReal •
-          ∫ x in A, G (RationalIdeles.realEquiv x) ∂infiniteAdeleMeasure ℚ := by
-        have hf := integral_fun_fst (μ := (infiniteAdeleMeasure ℚ).restrict A)
-          (ν := (finiteAdeleMeasure ℚ).restrict (levelIdeal N))
-          (fun a : InfiniteAdeleRing ℚ => G (RationalIdeles.realEquiv a))
-        rw [← Measure.prod_restrict]
-        refine hf.trans ?_
-        rw [measureReal_restrict_apply_univ, measureReal_def]
-    _ = (finiteAdeleMeasure ℚ (levelIdeal N)).toReal •
-          ∫ t in Set.Ico (0 : ℝ) N, G t ∂(infiniteAdeleMeasure ℚ).map realHomeomorph := by
-        congr 1
-        exact (realHomeomorph.measurableEmbedding.setIntegral_map (μ := infiniteAdeleMeasure ℚ)
-          G (Set.Ico (0 : ℝ) N)).symm
-    _ = levelConstant N • ∫ t in (0 : ℝ)..N, G t := by
-        rw [map_infiniteAdeleMeasure, Measure.restrict_smul, integral_smul_nnreal_measure,
-          intervalIntegral.integral_of_le (Nat.cast_nonneg N), integral_Ico_eq_integral_Ioo,
-          ← integral_Ioc_eq_integral_Ioo, levelConstant, NNReal.smul_def, smul_smul]
 
 end GL2Classical
 

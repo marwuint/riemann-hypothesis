@@ -283,10 +283,6 @@ theorem IsMor.pullCohomologyOne_id (h : IsMor γ s γ s (RingHom.id R) (𝟙 X))
   (h.coef.pullCohomologyOne_eq_of_natTrans (CoefMap.id _) h.idTrans (fun _ _ ↦ rfl) c).trans
     (CoefMap.pullCohomologyOne_id c)
 
-theorem IsMor.pullCohomologyTwo_id (h : IsMor γ s γ s (RingHom.id R) (𝟙 X)) (c : H2 γ s) : h.pull2 c = c :=
-  (h.coef.pullCohomologyTwo_eq_of_natTrans (CoefMap.id _) h.idTrans (fun _ _ ↦ rfl) c).trans
-    (CoefMap.pullCohomologyTwo_id c)
-
 variable {τ : R' →+* R''} {ψ : X'' ⟶ X'} {ρ : R →+* R''} {χ : X'' ⟶ X}
 
 def IsMor.compTrans (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ'' s'' τ ψ)
@@ -306,13 +302,6 @@ theorem IsMor.pullback1_comp (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ
     h'.pull1 (h.pull1 c) = h''.pull1 c :=
   (h.coef.pullCohomologyOne_comp h'.coef c).symm.trans
     ((h.coef.comp h'.coef).pullCohomologyOne_eq_of_natTrans h''.coef (h.compTrans h' h'' e e')
-      (fun _ _ ↦ rfl) c)
-
-theorem IsMor.pullback2_comp (h : IsMor γ s γ' s' σ φ) (h' : IsMor γ' s' γ'' s'' τ ψ)
-    (h'' : IsMor γ s γ'' s'' ρ χ) (e : ∀ r, τ (σ r) = ρ r) (e' : ψ ≫ φ = χ) (c : H2 γ s) :
-    h'.pull2 (h.pull2 c) = h''.pull2 c :=
-  (h.coef.pullCohomologyTwo_comp h'.coef c).symm.trans
-    ((h.coef.comp h'.coef).pullCohomologyTwo_eq_of_natTrans h''.coef (h.compTrans h' h'' e e')
       (fun _ _ ↦ rfl) c)
 
 end Pull
@@ -585,25 +574,6 @@ theorem val_pull {s' : X' ⟶ Sp R} {φ : X' ⟶ X} (h : IsMor (dp0 R) s (dp0 R)
   have l2 : ev (h.pullForm f).1 (E.idHom hy) = ev f.1 (h.functor.map (E.idHom hy)) := rfl
   rw [val_apply, val_apply, l1, l2, s1, s2]
   exact (add_sub_add_right_eq_sub _ _ _).symm
-
-@[reducible] def self (R B : Type) [CommRing R] [CommRing B] [Algebra R B] : SqExt R where
-  C := B
-  B := B
-  π := AlgHom.id R B
-  i := AlgHom.id R B
-  π_i _ := rfl
-  sq := by
-    rw [(RingHom.injective_iff_ker_eq_bot _).1 (fun _ _ h ↦ h)]
-    simp
-
-theorem val_self {B : Type} [CommRing B] [Algebra R B] (y : Sp B ⟶ X)
-    (hy : y ≫ s = spMap (algebraMap R B)) (f : Form s) : (self R B).val y hy f.1 = 0 := by
-  have hk : RingHom.ker ((self R B).π : B →+* B) = ⊥ :=
-    (RingHom.injective_iff_ker_eq_bot _).1 fun _ _ h ↦ h
-  have k1 : ev f.1 ((self R B).secHom ((self R B).red_w hy) (self R B).i (self R B).π_i) = 0 :=
-    f.2 _ rfl hk
-  have k2 : ev f.1 ((self R B).idHom hy) = 0 := f.2 _ rfl hk
-  rw [val_apply, k1, k2, sub_zero]
 
 theorem π_val (y : Sp E.C ⟶ X) (hy : y ≫ s = spMap (algebraMap R E.C)) (f : Form s) :
     E.π (E.val y hy f.1) = 0 := by

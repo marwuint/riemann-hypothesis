@@ -74,13 +74,6 @@ theorem mulVB_Dcris (c : K₀) {z : V ⊗[Qp] B} (hz : z ∈ Dcris PD ρ) :
   intro g
   rw [act_mulVB, hz g]
 
-theorem act_ιV (g : G) (z : V ⊗[Qp] B) :
-    actVdR PD ρ g (ιV PD (LL := LL) (V := V) z) = ιV PD (LL := LL) (V := V) (actVB PD ρ g z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul v c => simp [actVdR, ιV, actVB, PD.ι_comm]
-  | add x y hx hy => simp only [map_add, hx, hy]
-
 theorem coord_ιV {ι₀ : Type} (b : Module.Basis ι₀ Qp V) (i : ι₀) (z : V ⊗[Qp] B) :
     Formalism.MainNotions.LiftingTheory.lone_coord b i BdR (ιV PD (LL := LL) (V := V) z) = PD.ι (Formalism.MainNotions.LiftingTheory.lone_coord b i B z) := by
   induction z using TensorProduct.induction_on with

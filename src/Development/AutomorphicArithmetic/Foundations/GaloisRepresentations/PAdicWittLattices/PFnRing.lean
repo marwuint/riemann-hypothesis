@@ -4,10 +4,6 @@ open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.G3
 
 namespace UpperTheory.Gal.G3.FunctionRings
 
-variable {G R : Type} [Group G] [Field R] {K : Subgroup G}
-
-variable {B : Scheme.{0}} (X : Tower B G)
-
 end UpperTheory.Gal.G3.FunctionRings
 
 private theorem apply_out_mk_eq_of_tower_biinvariant {B : Scheme} {G : Type} [Group G] (X : Tower B G) {R : Type} [Field R]

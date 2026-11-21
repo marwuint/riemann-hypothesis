@@ -56,37 +56,15 @@ theorem conclusion_iff (W : HSpace E) (M P Q : ℕ) :
     (fun β P' Q' => ∃ x : W.V, W.hD x x = β ∧ SelfDualLatticeComplements.HasComplement W x (M - 1) P' Q')]
   simp only [hasComplement_iff]
 
-theorem conclusionAll_iff (W : HSpace E) (M P Q : ℕ) :
-    ((1 ≤ P → (∃ x : W.V, W.hD x x = 1) ∧
-        ∀ x : W.V, W.hD x x = 1 → UnitVectorOrthogonal.HasComplement W x (M - 1) (P - 1) Q) ∧
-      (1 ≤ Q → (∃ x : W.V, W.hD x x = -1) ∧
-        ∀ x : W.V, W.hD x x = -1 → UnitVectorOrthogonal.HasComplement W x (M - 1) P (Q - 1))) ↔
-    ∀ (β : E) (P' Q' : ℕ), SelfDualLatticeComplements.Step β P Q P' Q' →
-      (∃ x : W.V, W.hD x x = β) ∧
-        ∀ x : W.V, W.hD x x = β → SelfDualLatticeComplements.HasComplement W x (M - 1) P' Q' := by
-  rw [forall_step_iff P Q
-    (fun β P' Q' => (∃ x : W.V, W.hD x x = β) ∧
-        ∀ x : W.V, W.hD x x = β → SelfDualLatticeComplements.HasComplement W x (M - 1) P' Q')]
-  simp only [hasComplement_iff]
-
 theorem over_iff : UnitVectorOrthogonal.UnitVectorPerpOver E ↔ SelfDualLatticeComplements.ExistsPerpOver E := by
   refine forall_congr' fun W => forall_congr' fun M => forall_congr' fun P =>
     forall_congr' fun Q => imp_congr (ofKind_iff W M P Q) (imp_congr Iff.rfl ?_)
   exact conclusion_iff W M P Q
 
-theorem overAll_iff : UnitVectorOrthogonal.UnitVectorPerpEveryOver E ↔ SelfDualLatticeComplements.ForallPerpOver E := by
-  refine forall_congr' fun W => forall_congr' fun M => forall_congr' fun P =>
-    forall_congr' fun Q => imp_congr (ofKind_iff W M P Q) (imp_congr Iff.rfl ?_)
-  exact conclusionAll_iff W M P Q
-
 end General
 
 theorem unitVectorPerp_iff (D : D7) : UnitVectorOrthogonal.UnitVectorPerp D ↔ SelfDualLatticeComplements.UnitVectorPerp D :=
   @over_iff D.host.E _ _ D.host.cmStar
-
-theorem unitVectorPerpAll_iff (D : D7) :
-    UnitVectorOrthogonal.UnitVectorPerpEvery D ↔ SelfDualLatticeComplements.UnitVectorPerpAll D :=
-  @overAll_iff D.host.E _ _ D.host.cmStar
 
 end GlobalTheory.UnitVectorPerpCompare
 

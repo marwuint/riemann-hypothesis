@@ -78,42 +78,6 @@ def compKernel (a b : C(X × X, ℂ)) : C(X × X, ℂ) where
 theorem compKernel_apply (a b : C(X × X, ℂ)) (z : X × X) :
     compKernel μ a b z = ∫ y, a (z.1, y) * b (y, z.2) ∂μ := rfl
 
-theorem contKernelOp_comp (a b : C(X × X, ℂ)) :
-    (contKernelOp μ a).comp (contKernelOp μ b) = contKernelOp μ (compKernel μ a b) := by
-  ext1 f
-  refine Lp.ext ?_
-  filter_upwards [contKernelOp_apply_ae μ a (contKernelOp μ b f),
-    contKernelOp_apply_ae μ (compKernel μ a b) f] with x h1 h2
-  rw [ContinuousLinearMap.comp_apply, h1, h2]
-  have h3 : (fun y => a (x, y) * contKernelOp μ b f y) =ᵐ[μ]
-      fun y => ∫ z, a (x, y) * (b (y, z) * f z) ∂μ := by
-    filter_upwards [contKernelOp_apply_ae μ b f] with y hy
-    rw [hy, integral_const_mul]
-  rw [integral_congr_ae h3]
-  have hf : Integrable (fun z => f z) μ := (Lp.memLp f).integrable one_le_two
-  have hab : Continuous fun p : X × X => a (x, p.1) * b (p.1, p.2) :=
-    (a.continuous.comp (continuous_const.prodMk continuous_fst)).mul b.continuous
-  have hint : Integrable (Function.uncurry fun y z => a (x, y) * (b (y, z) * f z)) (μ.prod μ) := by
-    have h1 : Integrable (fun p : X × X => (1 : ℂ) * f p.2) (μ.prod μ) :=
-      (integrable_const (1 : ℂ)).mul_prod hf
-    have h2 := h1.bdd_mul (c := ‖a‖ * ‖b‖)
-      (measurable_of_continuous_compactProd hab).aestronglyMeasurable
-      (ae_of_all _ fun p => by
-        rw [norm_mul]
-        exact mul_le_mul (a.norm_coe_le_norm _) (b.norm_coe_le_norm _) (norm_nonneg _)
-          (norm_nonneg _))
-    refine h2.congr (ae_of_all _ fun p => ?_)
-    obtain ⟨y, z⟩ := p
-    simp only [Function.uncurry_apply_pair]
-    ring
-  rw [integral_integral_swap hint]
-  refine integral_congr_ae (ae_of_all _ fun z => ?_)
-  simp only [compKernel_apply]
-  rw [← integral_mul_const]
-  refine integral_congr_ae (ae_of_all _ fun y => ?_)
-  simp only
-  ring
-
 end Comp
 
 end

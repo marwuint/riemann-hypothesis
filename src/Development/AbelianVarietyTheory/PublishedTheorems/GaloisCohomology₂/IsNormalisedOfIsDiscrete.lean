@@ -132,26 +132,6 @@ theorem indForms_one (h : ∑ _ : Fin 1, a = a) (π : CuspSub E a) : indForms h 
   · rw [hl, Fin.prod_univ_one, ← mul_assoc]
     rfl
 
-theorem isSpehOf_one (π : CuspSub E a) : IsSpehOf π.V π 1 := by
-  refine ⟨by simp, fun _ => 1, fun i => ?_, LinearMap.id, ?_, fun _ _ _ => rfl⟩
-  · have : spehExp 1 i + a * spehExp 1 i = 0 := by simp [spehExp]
-    rw [this]
-    exact ⟨fun _ _ _ => rfl, fun _ => by simp [HChar.val, HChar.locK], fun _ => by simp [HChar.inf]⟩
-  · simp only [Submodule.map_id, CuspSub.twist_one]
-    exact indForms_one _ π
-
-theorem isNormalised_triv (ha : a ≤ 1) : IsNormalised (CuspSub.triv E ha) := fun φ hφ _ _ => by
-  obtain ⟨z, rfl⟩ := Submodule.mem_span_singleton.1 hφ
-  rfl
-
-theorem isNormalised_of_isDiscrete {π : CuspSub E a} (h : IsDiscrete π.V) : IsNormalised π :=
-  fun φ hφ => (h.sqInt φ hφ).1
-
-theorem isIsoGL_iff (π π' : CuspSub E a) : IsIsoGL π.V π'.V ↔ π.Iso π' := by
-  refine exists_congr fun T => ⟨fun h o φ => Subtype.ext (h o φ _ rfl), fun h o φ ψ e => ?_⟩
-  rw [show ψ = π.op o φ from Subtype.ext e, h]
-  rfl
-
 end GlobalTheory.DiscSpec
 
 namespace GlobalTheory.Published

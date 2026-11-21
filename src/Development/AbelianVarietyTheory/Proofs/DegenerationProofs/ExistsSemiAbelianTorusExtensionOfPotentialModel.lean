@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohom
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import Development.AbelianVarietyTheory.Definitions.Degenerations.PlOrdSomeOfAssociated
 import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteDvrTorusExtensionSpecialFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GroupSchemeModelFiniteRingExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteDvrTorusExtensionSpecialFibre
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GroupSchemeModelFiniteRingExtension
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj
@@ -28,8 +28,8 @@ theorem exists_semiAbelian_model_torusExtension_of_potModel : ∀ (V : Type) [Co
     haveI : IsScalarTower V K L := IsScalarTower.of_algebraMap_eq' e
     haveI : FaithfulSMul V W := (faithfulSMul_iff_algebraMap_injective V W).2 hinj
     exact Module.Finite.of_isLocalization V W (nonZeroDivisors V)
-  obtain ⟨W', _, _, _, hW', _, hfin', hinj', -, hG', hT⟩ := GlobalTheory.T.exists_finite_dvr_torusExtension_specialFibre' W G hG
-  obtain ⟨_, hK', e', hmod'⟩ := GlobalTheory.T.groupScheme_model_finite_ring_extension V K A L W e G hmod W' hfin' hinj'
+  obtain ⟨W', _, _, _, hW', _, hfin', hinj', -, hG', hT⟩ := _root_.GlobalTheory.exists_finite_dvr_torusExtension_specialFibre W G hG
+  obtain ⟨_, hK', e', hmod'⟩ := _root_.GlobalTheory.SS.model_finite_ext V K A L W e G hmod W' hfin' hinj'
   letI : Algebra V W' := ((algebraMap W W').comp (algebraMap V W)).toAlgebra
   haveI : IsScalarTower V W W' := IsScalarTower.of_algebraMap_eq fun _ => rfl
   exact ⟨FractionRing W', inferInstance, inferInstance, hK', W', inferInstance, inferInstance, inferInstance, hW',

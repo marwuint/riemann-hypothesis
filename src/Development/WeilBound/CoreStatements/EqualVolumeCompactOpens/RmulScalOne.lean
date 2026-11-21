@@ -34,8 +34,6 @@ theorem lact_mul (a b : GL (Fin r) E) (x : Frame Ψ r) : lact (a * b) x = lact a
 theorem lact_one' (x : Frame Ψ r) : lact (1 : GL (Fin r) E) x = x :=
   frame_ext fun τ => by rw [mat_lact, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
-def scal (s : Ψ → ℂ) : Frame Ψ r := fun τ => (s τ • (1 : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)
-
 end frames
 
 theorem levelFacts : LevelFacts := by

@@ -76,76 +76,8 @@ def TailInequalitySum : Prop :=
     totalBound P T (30 * (P.m : ℝ) * P.b * P.L ^ 2) ≤
       30 * (T : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2 + 2 * (P.m : ℝ) * P.b
 
-def TailInequalityEventually : Prop :=
-  ∀ ε C : ℝ, 0 < ε → ∃ x0 : ℝ, ∀ P : Par, P.Hyp → x0 ≤ P.x → P.L = P.x ^ ε →
-    Rows P (Real.exp (P.x ^ (ε / 3))) (P.x ^ C) → ∀ T : ℕ, T ≤ P.f →
-    totalBound P T (30 * (P.m : ℝ) * P.b * P.x ^ (2 * ε)) ≤
-      30 * (T : ℝ) * (P.m : ℝ) * P.b * P.x ^ (2 * ε) + 2 * (P.m : ℝ) * P.b
-
-def Corollary8Tail : Prop :=
-  PrimeCountingBound → ∀ (P : Par) (X' A : ℝ), P.Hyp → P.Large → Rows P X' A → Big P.L P.x X' A →
-    ∀ (ι : Type) [Fintype ι] (D : SizeData₂ ι), D.Inputs P → Places D P →
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (D.J l : ℝ) * Real.log (l : ℝ) ≤
-        30 * (D.T2.card : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2 + 2 * (P.m : ℝ) * P.b
-
-section Real7
-
-open TensorProduct MvPolynomial
-open Formalism.UG Formalism.RankGapBounds.FormsTensorLocalization Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.LD Formalism.CohomologicalDescent.UnitNormBounds Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.ShortWeightBounds
-
-def CorollaryOfRecord7Tail : Prop :=
-  LA.LemmaAZ → PrimeCountingBound → ∀ (P : Par) (X' A : ℝ), P.Hyp → P.Large → Rows P X' A → Big P.L P.x X' A →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P → Fintype.card ι = P.f →
-    W.Sp.card ≤ 5 →
-    ∀ X : ℕ → HidaSetting ι P.Nr W.lam, (∀ l : ℕ, l.Prime → ¬ IsUnit ((l : ℕ) : (X l).O)) →
-    (∀ l : ℕ, l.Prime → W.WRange P l → (X l).WInputs l (kc P) W.j W.T2 (W.iW P l)) →
-    (∀ l : ℕ, l.Prime → (X l).Incl l (W.Jrec7 P l) ∧ (X l).Incl l ((X l).Jmin l) ∧
-      (X l).Jmin l ≤ W.Jrec7 P l) ∧
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (W.Jrec7 P l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2 + 2 * (P.m : ℝ) * P.b ∧
-      ∑ l ∈ Q, ((X l).Jmin l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.L ^ 2 + 2 * (P.m : ℝ) * P.b
-
-end Real7
-
 def LargeOfRows : Prop :=
   ∀ (P : Par) (X' A : ℝ), P.Hyp → Rows P X' A → Big P.L P.x X' A →
     P.b ^ ((4 : ℝ) / 5) ≤ P.w'' / P.S → 4 * A ^ 4 * P.x ^ 2 * P.L ^ 2 < P.b ^ ((4 : ℝ) / 5) → P.Large
-
-def BigEv2 : Prop :=
-  ∀ ε C : ℝ, 0 < ε → ∃ x0 : ℝ, ∀ x : ℝ, x0 ≤ x →
-    4 * (x ^ C) ^ 4 * x ^ 2 * (x ^ ε) ^ 2 < Real.exp (x ^ ε) ^ ((4 : ℝ) / 5)
-
-def Corollary8Ev : Prop :=
-  PrimeCountingBound → ∀ ε C : ℝ, 0 < ε → ∃ x0 : ℝ, ∀ P : Par, P.Hyp → x0 ≤ P.x → P.L = P.x ^ ε →
-    Rows P (Real.exp (P.x ^ (ε / 3))) (P.x ^ C) → P.b ^ ((4 : ℝ) / 5) ≤ P.w'' / P.S →
-    ∀ (ι : Type) [Fintype ι] (D : SizeData₂ ι), D.Inputs P → Places D P →
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (D.J l : ℝ) * Real.log (l : ℝ) ≤
-        30 * (D.T2.card : ℝ) * (P.m : ℝ) * P.b * P.x ^ (2 * ε) + 2 * (P.m : ℝ) * P.b
-
-section Real7Ev
-
-open TensorProduct MvPolynomial
-open Formalism.UG Formalism.RankGapBounds.FormsTensorLocalization Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.LD Formalism.CohomologicalDescent.UnitNormBounds Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.ShortWeightBounds
-
-def CorollaryOfRecord7Ev : Prop :=
-  LA.LemmaAZ → PrimeCountingBound → ∀ ε C : ℝ, 0 < ε → ∃ x0 : ℝ, ∀ P : Par, P.Hyp → x0 ≤ P.x → P.L = P.x ^ ε →
-    Rows P (Real.exp (P.x ^ (ε / 3))) (P.x ^ C) → P.b ^ ((4 : ℝ) / 5) ≤ P.w'' / P.S →
-    ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P → Fintype.card ι = P.f →
-    W.Sp.card ≤ 5 →
-    ∀ X : ℕ → HidaSetting ι P.Nr W.lam, (∀ l : ℕ, l.Prime → ¬ IsUnit ((l : ℕ) : (X l).O)) →
-    (∀ l : ℕ, l.Prime → W.WRange P l → (X l).WInputs l (kc P) W.j W.T2 (W.iW P l)) →
-    (∀ l : ℕ, l.Prime → (X l).Incl l (W.Jrec7 P l) ∧ (X l).Incl l ((X l).Jmin l) ∧
-      (X l).Jmin l ≤ W.Jrec7 P l) ∧
-    ∀ Q : Finset ℕ, (∀ l ∈ Q, l.Prime) →
-      ∑ l ∈ Q, (W.Jrec7 P l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.x ^ (2 * ε) + 2 * (P.m : ℝ) * P.b ∧
-      ∑ l ∈ Q, ((X l).Jmin l : ℝ) * Real.log (l : ℝ) ≤
-          30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.x ^ (2 * ε) + 2 * (P.m : ℝ) * P.b
-
-end Real7Ev
 
 end Formalism.CohomologicalDescent.LargeParameterEstimates

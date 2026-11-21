@@ -1,14 +1,16 @@
 import Mathlib
 import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MassSelfDualLatticeFirstSpaceEq
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualLatticeOverColumnBaseLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StabiliserSelfDualLatticeLevelIndexFormulaStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualLatticeOverColumnBaseLattice
+import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SplittingProjection
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StabiliserSelfDualLatticeLevelIndexFormula
+import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SelfDualLatticeIndex
 
 namespace GlobalTheory.ColClassNumber
 
 open Formalism.BasicNotions Formalism.MainNotions.StandardLattice
 
 theorem classNumber_all (D : D7) (Lv : LevelData D) : ClassNumberFormula₂ D Lv :=
-  classNumber_of_index GlobalTheory.T.selfDualLattice_over_columnBaseLattice GlobalTheory.T.stabiliser_self_dual_lattice_level_index_formula D Lv
+  classNumber_of_index _root_.GlobalTheory.OverObj.selfDualOverBase _root_.GlobalTheory.LevelIndex.selfDualLatticeIndex_stabiliserLevelIndexFormula D Lv
 
 end GlobalTheory.ColClassNumber

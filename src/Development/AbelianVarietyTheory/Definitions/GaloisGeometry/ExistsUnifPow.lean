@@ -81,95 +81,9 @@ variable {L : Type} [Field L] [NumberField L]
 theorem ide_snd_mul (a b : Ideles L) (v : HeightOneSpectrum (𝓞 L)) :
     ((a * b : Ideles L) : AdeleRing (𝓞 L) L).2 v = (a : AdeleRing (𝓞 L) L).2 v * (b : AdeleRing (𝓞 L) L).2 v := rfl
 
-theorem ide_snd_inv_mul (a : Ideles L) (v : HeightOneSpectrum (𝓞 L)) :
-    ((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v * (a : AdeleRing (𝓞 L) L).2 v = 1 := by
-  rw [← ide_snd_mul, inv_mul_cancel]
-  rfl
-
-theorem ide_finite (a : Ideles L) : {v : HeightOneSpectrum (𝓞 L) | ¬ Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1}.Finite := by
-  have h1 := (a : AdeleRing (𝓞 L) L).2.2
-  have h2 := ((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2.2
-  refine Filter.eventually_cofinite.1 ((h1.and h2).mono fun v hv => ?_)
-  have e1 : Valued.v ((a : AdeleRing (𝓞 L) L).2 v) ≤ 1 := (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hv.1
-  have e2 : Valued.v (((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v) ≤ 1 := (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hv.2
-  have e3 := congrArg Valued.v (ide_snd_inv_mul a v)
-  rw [map_mul, map_one] at e3
-  refine le_antisymm e1 ?_
-  calc (1 : WithZero (Multiplicative ℤ)) = Valued.v (((a⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v) * Valued.v ((a : AdeleRing (𝓞 L) L).2 v) := e3.symm
-    _ ≤ 1 * Valued.v ((a : AdeleRing (𝓞 L) L).2 v) := mul_le_mul_left e2 _
-    _ = _ := one_mul _
-
-theorem exists_unif_pow (v : HeightOneSpectrum (𝓞 L)) (y : v.adicCompletion L) (hy : y ≠ 0) :
-    ∃ n : ℤ, Valued.v (((atFin v (unif v)) ^ n : (v.adicCompletion L)ˣ) : v.adicCompletion L) = Valued.v y := by
-  have h0 : Valued.v y ≠ 0 := (Valuation.ne_zero_iff _).2 hy
-  refine ⟨-WithZero.log (Valued.v y), ?_⟩
-  have hu : Valued.v ((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) = WithZero.exp (-1 : ℤ) := unif_spec v
-  rw [Units.val_zpow_eq_zpow_val, map_zpow₀, hu, ← WithZero.exp_zsmul]
-  simp [WithZero.exp_log h0]
-
-theorem ide_values {Gp : Type} [CommGroup Gp] (f : Ideles L →* Gp)
-    (hU : ∀ a : Ideles L, (∀ v, Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1) → f a = 1) (S : Subgroup Gp)
-    (hS : ∀ v, f (localIdele L v (atFin v (unif v))) ∈ S) (a : Ideles L) : f a ∈ S := by
-  classical
-  have key : ∀ (T : Finset (HeightOneSpectrum (𝓞 L))) (a : Ideles L),
-      (∀ v, v ∉ T → Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1) → f a ∈ S := by
-    intro T
-    induction T using Finset.induction_on with
-    | empty =>
-      intro a ha
-      rw [hU a fun v => ha v (Finset.notMem_empty v)]
-      exact S.one_mem
-    | insert v0 T _ ih =>
-      intro a ha
-      have hy : (a : AdeleRing (𝓞 L) L).2 v0 ≠ 0 := by
-        intro h0
-        have := ide_snd_inv_mul a v0
-        rw [h0, mul_zero] at this
-        exact zero_ne_one this
-      obtain ⟨n, hn⟩ := exists_unif_pow v0 _ hy
-      have h1 : f (a * (localIdele L v0 ((atFin v0 (unif v0)) ^ n))⁻¹) ∈ S := by
-        refine ih _ fun v hv => ?_
-        rw [← map_inv, ide_snd_mul]
-        by_cases hvv : v = v0
-        · subst hvv
-          rw [localIdele_snd_self, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hn]
-          exact mul_inv_cancel₀ ((Valuation.ne_zero_iff _).2 hy)
-        · rw [(localIdele_isSupportedAt L v0 _).2 v hvv, mul_one]
-          exact ha v fun h => (Finset.mem_insert.1 h).elim hvv hv
-      have h2 : f a = f (a * (localIdele L v0 ((atFin v0 (unif v0)) ^ n))⁻¹) * f (localIdele L v0 (atFin v0 (unif v0))) ^ n := by
-        rw [map_mul, map_inv, map_zpow (localIdele L v0), map_zpow f, inv_mul_cancel_right]
-      rw [h2]
-      exact S.mul_mem h1 (S.zpow_mem (hS v0) n)
-  exact key (ide_finite a).toFinset a fun v hv => by
-    by_contra h
-    exact hv ((ide_finite a).mem_toFinset.2 h)
-
 end Gen
 
 variable {D : D7}
-
-def ratSub (D : D7) : Subgroup ℂˣ where
-  carrier := {z | ∃ r : D.what₂.LL, D.what₂.embLL r = (z : ℂ)}
-  one_mem' := ⟨1, map_one _⟩
-  mul_mem' := by
-    rintro a b ⟨r, hr⟩ ⟨s, hs⟩
-    exact ⟨r * s, by rw [map_mul, hr, hs, Units.val_mul]⟩
-  inv_mem' := by
-    rintro a ⟨r, hr⟩
-    exact ⟨r⁻¹, by rw [map_inv₀, hr, Units.val_inv_eq_inv_val]⟩
-
-theorem chiDRat_of {C : CharFrame D} (T : DtTied D C) (hV : C.chiPsi.ValuesIn 0 D.what₂.embLL) : ChiDRat D := by
-  intro z
-  obtain ⟨a, rfl⟩ := T.surj z
-  refine ide_values (D.chiD.comp T.eDt) (fun a ha => D.chiD_UO _ ((T.UO_eq _).2 ⟨a, ha, rfl⟩)) (ratSub D) (fun v => ?_) a
-  obtain ⟨y, hy⟩ := hV v (C.isChi.unr v)
-  refine ⟨y, ?_⟩
-  rw [hy]
-  show _ = ((D.chiD (T.eDt (localIdele D.host.E v (atFin v (unif v)))) : ℂˣ) : ℂ)
-  rw [T.chiD_eq _ (fun w => (localIdele_isSupportedAt D.host.E v _).1 w)]
-  unfold HChar.valTw
-  rw [Complex.ofReal_zero, neg_zero, Complex.cpow_zero, mul_one]
-  rfl
 
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl Kc Dx cX}

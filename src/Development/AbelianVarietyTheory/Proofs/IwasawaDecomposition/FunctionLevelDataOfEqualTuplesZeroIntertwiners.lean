@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Exists
 import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneTupleRowsCuspFormsIsometricThetaLiftsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneTupleRowsCuspFormsIsometricThetaLifts
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTupChars
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterIdeleCharacterMatchUnique
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueInfFam
@@ -48,7 +48,7 @@ theorem rows_of_ties : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G
     · obtain ⟨hx, hT⟩ := hU μ hμ
       have hc : ∀ j, j < D.R.m → Rc.chr μ (j + 1) = R.toLevCh.mu (tupT μ) (j + 1) := fun j hj =>
         hu _ _ _ (hR.chr μ ⟨j, hj⟩) (hx ▸ GlobalTheory.Mem.TupChar.chrEq_mul (hL.mu0 ⟨j, hj⟩) (hL.xi (tupT μ)))
-      obtain ⟨row, Phi, h1, h2, h3⟩ := GlobalTheory.T.oneTuple_rows_cuspForms_isometric_thetaLifts hD D G Pl0 T A Ks R hL hM hC (tupT μ) μ hT Wf
+      obtain ⟨row, Phi, h1, h2, h3⟩ := _root_.GlobalTheory.Mem.OneTuple.rows_theta hD D G Pl0 T A Ks R hL hM hC (tupT μ) μ hT Wf
         (fun j => Rc.mY μ j * Rc.petC (D.sp.Y j)) fun j =>
           mul_pos (Rc.mY_pos _ _) (mul_pos (Rc.petF_pos _) (Finset.prod_pos fun _ _ => Rc.meas.petR_pos _ _))
       refine ⟨row, Phi, h1, fun _ => h2, fun j hj y => ?_⟩

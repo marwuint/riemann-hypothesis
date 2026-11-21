@@ -82,14 +82,6 @@ theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
 
 end hpk
 
-section wb
-variable {k r : ℕ}
-
-def wbE (k r : ℕ) (v : Fin (k + 1) → ℂ) : Fin (2 * r + k + 1) → ℂ := fun i =>
-  if h : r ≤ i.val ∧ i.val ≤ r + k then v ⟨i.val - r, by omega⟩ else 0
-
-end wb
-
 section cc
 variable {k r : ℕ}
 

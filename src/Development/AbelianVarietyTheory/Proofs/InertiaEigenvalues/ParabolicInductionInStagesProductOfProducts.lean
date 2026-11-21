@@ -63,11 +63,6 @@ theorem mp_head {d T M : ℕ} (N : Fin (d + 1) → ℕ) (hM : ∑ i, N i = M) (A
   multiProd_head (d := N) (X := fun i => (A i).V) (fun i => (A i).ρ) (stdBlocks N hM) e
     (stdBlocks (fun i : Fin d => N i.succ) hT)
 
-theorem mp_empty {M : ℕ} (N N' : Fin 0 → ℕ) (hM : ∑ i, N i = M) (hM' : ∑ i, N' i = M) (A : ∀ i, BR k (N i))
-    (A' : ∀ i, BR k (N' i)) : Iso (mp N hM A) (mp N' hM' A') :=
-  multiProd_empty (d := N) (d' := N') (X := fun i => (A i).V) (X' := fun i => (A' i).V) (fun i => (A i).ρ)
-    (fun i => (A' i).ρ) (stdBlocks N hM) (stdBlocks N' hM')
-
 theorem two_unit {r t : ℕ} (e : r + t = r) (A : BR k r) (hA : Sm A) (N : Fin 0 → ℕ) (hN : ∑ i, N i = t)
     (C : ∀ i, BR k (N i)) : Iso (two e A (mp N hN C)) A :=
   ind₂_unit_right e A.ρ hA (d := N) (X := fun i => (C i).V) (fun i => (C i).ρ) (stdBlocks N hN)
@@ -76,19 +71,10 @@ theorem two_unit_pr {r t : ℕ} (e : r + t = r) (A : BR k r) (hA : Sm A) (y : Fi
     (hy : ∑ i, (y i).1 = t) : Iso (two e A (pr y hy)) A :=
   two_unit e A hA _ hy _
 
-theorem mp_empty_pr {M : ℕ} (N : Fin 0 → ℕ) (hM : ∑ i, N i = M) (A : ∀ i, BR k (N i)) (y : Fin 0 → IrrGL k)
-    (hy : ∑ i, (y i).1 = M) : Iso (mp N hM A) (pr y hy) :=
-  mp_empty N _ hM hy A _
-
 theorem pr_succ {a t N : ℕ} (z : Fin (a + 1) → IrrGL k)
     (hx : ∑ i : Fin a, (z i.succ).1 = t) (hz : ∑ i, (z i).1 = N) (e : (z 0).1 + t = N) :
     Iso (pr z hz) (two e (one (z 0)) (pr (fun i : Fin a => z i.succ) hx)) :=
   mp_head (fun i => (z i).1) hz (fun i => one (z i)) hx e
-
-theorem of_iso {d h : ℕ} (y : Fin d → Fin h → IrrGL k) (N : Fin d → ℕ) {M c : ℕ} (hN : ∀ i, ∑ j, (y i j).1 = N i)
-    (hM : ∑ i, N i = M) (z : Fin c → IrrGL k) (hz : ∑ p, (z p).1 = M)
-    (H : Iso (mp N hM fun i => pr (y i) (hN i)) (pr z hz)) :
-    Nonempty ((multiProd (stdBlocks N hM) fun i => prodIrr (y i) (hN i)).Equiv (prodIrr z hz)) := H
 
 attribute [irreducible] one two mp pr Iso Sm
 
@@ -145,51 +131,5 @@ theorem pr_append {a : ℕ} : ∀ {b c r t N : ℕ} (x : Fin a → IrrGL k) (y :
         (sm_one _) (sm_pr _ _) (sm_pr _ _)
       exact iso_trans B (iso_trans (two_congr e' (iso_refl _) C) (iso_trans (iso_symm D)
         (two_congr e (iso_symm A) (iso_refl _))))
-
-theorem ofFn_lex {α : Type*} {d h : ℕ} (y : Fin d → Fin h → α) :
-    List.ofFn (fun p : Fin (d * h) => y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2) =
-      (List.ofFn fun i => List.ofFn (y i)).flatten := by
-  rw [List.ofFn_mul]
-  refine congrArg List.flatten (congrArg List.ofFn (funext fun i => congrArg List.ofFn (funext fun j => ?_)))
-  have key : ∀ p : Fin (d * h), p = finProdFinEquiv (i, j) →
-      y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2 = y i j := by
-    rintro _ rfl
-    rw [Equiv.symm_apply_apply]
-  exact key _ (Fin.ext (by simp; ring))
-
-theorem mp_pr_iso {h : ℕ} (d : ℕ) : ∀ (y : Fin d → Fin h → IrrGL k) (N : Fin d → ℕ) (M : ℕ)
-    (hN : ∀ i, ∑ j, (y i j).1 = N i) (hM : ∑ i, N i = M)
-    (hM' : ∑ p : Fin (d * h), (y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2).1 = M),
-    Iso (mp N hM fun i => pr (y i) (hN i))
-      (pr (fun p => y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2) hM') := by
-  induction d with
-  | zero =>
-    intro y N M hN hM hM'
-    obtain rfl : M = 0 := by simpa using hM.symm
-    let z : Fin 0 → IrrGL k := fun i => i.elim0
-    have hz : ∑ i, (z i).1 = 0 := by simp
-    exact iso_trans (mp_empty_pr N hM _ z hz) (pr_congr (x := z) (by rw [ofFn_lex]; simp) hz hM')
-  | succ d ih =>
-    intro y N M hN hM hM'
-    have e : N 0 + ∑ i : Fin d, N i.succ = M := (Fin.sum_univ_succ N).symm.trans hM
-    have hT : ∑ p : Fin (d * h), (y (finProdFinEquiv.symm p).1.succ (finProdFinEquiv.symm p).2).1 =
-        ∑ i : Fin d, N i.succ := by
-      rw [Equiv.sum_comp finProdFinEquiv.symm fun q : Fin d × Fin h => (y q.1.succ q.2).1, Fintype.sum_prod_type]
-      exact Finset.sum_congr rfl fun i _ => hN _
-    have A := mp_head N hM (fun i => pr (y i) (hN i)) rfl e
-    have B := ih (fun i => y i.succ) (fun i => N i.succ) _ (fun i => hN _) rfl hT
-    have C := pr_append (y 0) _ _
-      (by rw [ofFn_lex y, ofFn_lex fun i : Fin d => y i.succ, List.ofFn_succ, List.flatten_cons])
-      (by rcases Nat.eq_zero_or_pos h with rfl | hh; exacts [Or.inr rfl, Or.inl hh.ne']) (hN 0) hT hM' e
-    exact iso_trans A (iso_trans (two_congr e (iso_refl _) B) (iso_symm C))
-
-theorem multiProd_prodIrr_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
-    [IsNonarchimedeanLocalField k]
-    (d h : ℕ) (y : Fin d → Fin h → IrrGL k) (N : Fin d → ℕ) (M : ℕ) (hN : ∀ i, ∑ j, (y i j).1 = N i)
-    (hM : ∑ i, N i = M)
-    (hM' : ∑ p : Fin (d * h), (y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2).1 = M),
-    Nonempty ((multiProd (stdBlocks N hM) fun i => prodIrr (y i) (hN i)).Equiv
-      (prodIrr (fun p => y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2) hM')) :=
-  fun _ _ _ _ _ d _ y N M hN hM hM' => of_iso y N hN hM _ hM' (mp_pr_iso d y N M hN hM hM')
 
 end GlobalTheory.ProdFlatten

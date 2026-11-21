@@ -70,8 +70,6 @@ def globOf (V : s.Lev) : Glob l (locOf r) where
   φu u := V.pr.comp (Dec (F := L) (s.A (Subtype.val u))).subtype
   φu_cont _ := (V.pr_cont continuous_resP).comp continuous_subtype_val
 
-example : (globOf r V0).frame = reIu V0.frame (globOf r V0).frame.Iu := rfl
-
 def residOf : Resid (globOf r V0).frame O n :=
   ⟨r.chib, r.chib_open, r.chib_inj, r.polar, r.psib, r.psib_open, r.th, r.th_comm⟩
 

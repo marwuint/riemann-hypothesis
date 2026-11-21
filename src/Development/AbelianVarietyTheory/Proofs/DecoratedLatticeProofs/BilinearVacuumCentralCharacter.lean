@@ -6,9 +6,16 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiThetaOfVac
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CentralEigenRealDatumFiniteSumFockProducts
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleLiftFockSumEqSumIteratedLifts
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegralCompactAutomorphicQuotientParaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilOperatorIntegralCommOfBoundedFiniteMeasureStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SetIntegralFundamentalDomainRightTranslateInvariStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegralCompactAutomorphicQuotientPara
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaAbsoluteSum
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TransvectionAction
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.WeilDatumExistence
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilOperatorIntegralCommOfBoundedFiniteMeasure
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SetIntegralFundamentalDomainRightTranslateInvari
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TransferOn
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeilRepresentationContinuous
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMultTOfEquivariant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
@@ -248,13 +255,13 @@ theorem integral_mean_translate {S : HSp D} (hS : CoCpt S) (v : Vol S) {K : Type
     {b : K → GA D S} (hb : Continuous b) {Ψ : GA D S → ℂ} (hΨ : IsContAut S Ψ) :
     ∫ h in v.𝓕, (∫ k, Ψ (h * b k) ∂ν) ∂v.μ = ∫ h in v.𝓕, Ψ h ∂v.μ := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S
-  have h1 := (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D S hS v Unit (fun _ _ => 1) continuous_const (fun _ _ _ _ => rfl)).1 ()
+  have h1 := (_root_.GlobalTheory.CocompactParam.continuous_integral_param D S hS v Unit (fun _ _ => 1) continuous_const (fun _ _ _ _ => rfl)).1 ()
   haveI : IsFiniteMeasure (v.μ.restrict v.𝓕) := (integrable_const_iff.1 h1).resolve_left one_ne_zero
-  obtain ⟨C, hC⟩ := (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D S hS v Unit (fun g _ => Ψ g) (hΨ.2.comp continuous_fst)
+  obtain ⟨C, hC⟩ := (_root_.GlobalTheory.CocompactParam.continuous_integral_param D S hS v Unit (fun g _ => Ψ g) (hΨ.2.comp continuous_fst)
     (fun γ hγ g _ => hΨ.1 γ hγ g)).2.2 ()
   have hC' := hC.self_of_nhds
   rw [integral_integral_swap]
-  · simp only [GlobalTheory.T.setIntegral_fundamentalDomain_right_translate_invariant D S v.μ v.𝓕 v.haar v.fund Ψ hΨ.1]
+  · simp only [_root_.GlobalTheory.ChainOnto.setIntegral_fd_mul_right D S v.μ v.𝓕 v.haar v.fund Ψ hΨ.1]
     simp
   · exact Integrable.of_bound (hΨ.2.comp (continuous_fst.mul (hb.comp continuous_snd))).aestronglyMeasurable C
       (ae_of_all _ fun q => hC' _)
@@ -365,7 +372,7 @@ theorem om_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : Is
     rw [map_smul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, mul_one]
   have e0 : mean om ν χ f = fun y => ∫ b, (χ b.1 • om (1 * b.1, 1) f) y ∂ν := by
     funext y; simp only [mean, one_mul, Pi.smul_apply, smul_eq_mul]
-  have := GlobalTheory.T.weilOperator_integral_comm_of_bounded_finiteMeasure D ψ S T χS χT om hom _ ν (fun b => χ b.1 • om (1 * b.1, 1) f) (g, h) (hth 1 1) (hco 1 1)
+  have := _root_.GlobalTheory.CommIntBdd.om_integral_comm_bdd D ψ S T χS χT om hom _ ν (fun b => χ b.1 • om (1 * b.1, 1) f) (g, h) (hth 1 1) (hco 1 1)
     (family_bounded hom.std (hth 1 1) (hco 1 1)) (by simp only [e]; exact hco g h)
     (by simp only [e]; exact family_bounded hom.std (hth g h) (hco g h)) (e0 ▸ theta_mean hom hθ hχ hf) w
   rw [e0, this]
@@ -416,7 +423,7 @@ variable {A S A' : HSp D} {χA χS χS' χA' : (AE D)ˣ →* Circle} {oma : Om A
 theorem contAut_lift (hw : IsWeilDatumO ψ A S χA χS oma) (hA : CoCpt A) (v : Vol A) {X : WO A S → ℂ}
     (hX : IsThetaFunO ψ A S X) {φ : GA D A → ℂ} (hφ : IsContAut A φ) :
     IsContAut S fun h => ∫ g in v.𝓕, oma (g, h) X 0 * φ g ∂v.μ := by
-  refine ⟨fun γ hγ h => ?_, (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D A hA v (GA D S) (fun g h => oma (g, h) X 0 * φ g)
+  refine ⟨fun γ hγ h => ?_, (_root_.GlobalTheory.CocompactParam.continuous_integral_param D A hA v (GA D S) (fun g h => oma (g, h) X 0 * φ g)
     ((hw.om_cont X hX 0).mul (hφ.2.comp continuous_fst)) fun γ hγ g h => ?_).2.1⟩
   · simp only []
     congr 1

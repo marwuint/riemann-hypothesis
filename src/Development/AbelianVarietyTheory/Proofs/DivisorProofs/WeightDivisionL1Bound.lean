@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
-import Formalism.MeanHeightDescent.CovolumeFullAssemblyWeighted
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBarStatement
+import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
+import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBar
 
 open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.L2.Indef.Tree NumberField GlobalTheory.MeanTop
 
@@ -17,8 +18,8 @@ theorem Wts.divided_weight_small_block_le_neg_three_mul {ι : Type} [Fintype ι]
     intro hk
     have h1 := hH.kc_pos
     have h2 := hH.kc_lt
-    have hg := ((GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hH hD τ ⟨W.p - 1, by omega⟩ ⟨W.p + 0, hk⟩ (by simp; omega)).2.1 (by simp)).2
-    have he := (GlobalTheory.T.dividedWeight_entries_signs_sizes ι N W hH hD τ ⟨W.p - 1, by omega⟩).2.1 (by simp; omega)
+    have hg := ((_root_.GlobalTheory.MeanTop.divided_gaps ι N W hH hD τ ⟨W.p - 1, by omega⟩ ⟨W.p + 0, hk⟩ (by simp; omega)).2.1 (by simp)).2
+    have he := (_root_.GlobalTheory.MeanTop.divided_entries ι N W hH hD τ ⟨W.p - 1, by omega⟩).2.1 (by simp; omega)
     have h3 := hH.h2.2
     have hN : (0 : ℤ) ≤ 24 * (N : ℤ) * W.T := by positivity
     have h4 : 0 ≤ W.u1 τ ⟨W.p - 1, by omega⟩ - W.u1 τ ⟨W.p + 0, hk⟩ - 3 * N := by
@@ -29,7 +30,7 @@ theorem Wts.divided_weight_small_block_le_neg_three_mul {ι : Type} [Fintype ι]
   | succ k ih =>
     intro hk
     have h1 := ih (by omega)
-    have hg := (GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hH hD τ ⟨W.p + k, by omega⟩ ⟨W.p + (k + 1), hk⟩ (by simp; omega)).1 (by simp)
+    have hg := (_root_.GlobalTheory.MeanTop.divided_gaps ι N W hH hD τ ⟨W.p + k, by omega⟩ ⟨W.p + (k + 1), hk⟩ (by simp; omega)).1 (by simp)
     have hN : (0 : ℤ) ≤ (W.T : ℤ) + W.Dd + 2 + 2 * N := by positivity
     linarith
 
@@ -52,7 +53,7 @@ theorem divided_weight_size : ∀ (ι : Type) [Fintype ι] (N : ℕ) (W : Wts ι
   refine ⟨?_, ?_, fun τ i => W.abs_u'_le hH hD τ i⟩
   · have key : ∀ τ i, (W.T : ℝ) * |(W.u1 τ i : ℝ)| ≤ |(W.u τ i : ℝ)| + (W.c0 + 4 * N) := by
       intro τ i
-      have h1 := (GlobalTheory.T.dividedWeight_entries_signs_sizes ι N W hH hD τ i).1
+      have h1 := (_root_.GlobalTheory.MeanTop.divided_entries ι N W hH hD τ i).1
       have h0 : (0 : ℤ) ≤ ((W.Dd : ℤ) + 1) * |W.u1 τ i| := by positivity
       have h2 : (W.T : ℤ) * |W.u1 τ i| ≤ |W.u τ i| + (W.c0 + 4 * N) := by nlinarith
       exact_mod_cast h2

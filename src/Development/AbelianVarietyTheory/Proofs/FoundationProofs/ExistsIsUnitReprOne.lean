@@ -11,12 +11,6 @@ open scoped ENNReal nonZeroDivisors
 
 namespace GlobalTheory.SelBaseChange
 
-section Coord
-
-variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [Algebra R R']
-
-end Coord
-
 section Coh
 
 variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
@@ -87,46 +81,5 @@ theorem eq_zero_of_cH {ι : Type} (u : ι → (M' →ₗ[R] M)) (hu : ∀ i, Con
   exact this
 
 end Coh
-
-section Main
-
-open Formalism.MainNotions.BlochKatoReduction.Gen
-
-variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
-  (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (k k' : ℕ)
-
-theorem trep_one_apply (g : Gen.GE N) (m : Fin D.R.r → KmodO (X.Ok i k)) (a : Fin D.R.r) :
-    Trep i s k 1 g m a = ∑ j, phiK X i k (Tmat i s g a j) • m j := by
-  simp [Trep, twRep, matAct, Tmat, Finset.smul_sum, smul_smul]
-
-def bkGen (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ placesOver D.host.E (X.l i)) :
-    Set (H1 ((Trep i s k 1).comp (DecV N v).subtype)) :=
-  {x | ∃ (z : Z1 ((Trep i s k 1).comp (DecV N v).subtype))
-      (c : ↥(Loc.GK (bkP.br i v hv).Kw) → Fin D.R.r → ↥(bkP.br i v hv).LL.1)
-      (y : ↥(DecV N v) → Fin D.R.r → FractionRing (X.Ok i k)),
-      c ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (PDv bkP i v hv) (Gen.repV bkP i v hv (Tgl i s)) ∧
-      (∀ g a, IsImgK bkP i v hv k (c ((bkP.br i v hv).e g) a) (y g a)) ∧
-      (∀ g a, (z : ↥(DecV N v) → Fin D.R.r → Formalism.BasicNotions.KmodO (X.Ok i k)) g a =
-        Submodule.Quotient.mk (y g a)) ∧
-      x = Submodule.Quotient.mk z}
-
-variable [Algebra (X.Ok i k) (X.Ok i k')] [IsScalarTower (X.O i) (X.Ok i k) (X.Ok i k')]
-
-theorem phiK_eq (a : X.O0 i) :
-    phiK X i k' a = algebraMap (X.Ok i k) (X.Ok i k') (phiK X i k a) :=
-  IsScalarTower.algebraMap_apply (X.O i) (X.Ok i k) (X.Ok i k') _
-
-variable (p : KmodO (X.Ok i k') →ₗ[X.Ok i k] KmodO (X.Ok i k))
-
-theorem equivariant (g : Gen.GE N) (m : Fin D.R.r → KmodO (X.Ok i k')) :
-    p.compLeft (Fin D.R.r) (Trep i s k' 1 g m) = Trep i s k 1 g (p.compLeft (Fin D.R.r) m) := by
-  funext a
-  show p (Trep i s k' 1 g m a) = _
-  rw [trep_one_apply, trep_one_apply, map_sum]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [phiK_eq i k k', algebraMap_smul, map_smul]
-  rfl
-
-end Main
 
 end GlobalTheory.SelBaseChange

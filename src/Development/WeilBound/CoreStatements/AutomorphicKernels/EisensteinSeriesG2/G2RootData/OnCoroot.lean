@@ -40,21 +40,10 @@ structure IsGood [TopologicalSpace G] : Prop where
 
 abbrev Cos := Quotient (QuotientGroup.rightRel (D.Bo.subgroupOf D.Γ))
 
-abbrev CosA (a : Fin r) := Quotient (QuotientGroup.rightRel (D.Bo.subgroupOf (D.Γ ⊓ D.Pa a)))
-
-abbrev CosP (a : Fin r) := Quotient (QuotientGroup.rightRel ((D.Pa a).subgroupOf D.Γ))
-
 def term (φ : G → ℂ) (lam : Fin r → ℂ) (g : G) : ℂ :=
   Complex.exp (cpair (lam + fun j => (D.rho j : ℂ)) (D.Hv g)) * φ g
 
-def eisB (φ : G → ℂ) (lam : Fin r → ℂ) (g : G) : ℂ := ∑' q : D.Cos, D.term φ lam ((Quotient.out q).1 * g)
-
-def eisA (a : Fin r) (φ : G → ℂ) (lam : Fin r → ℂ) (g : G) : ℂ :=
-  ∑' q : D.CosA a, D.term φ lam ((Quotient.out q).1 * g)
-
 def refl (a : Fin r) (lam : Fin r → ℂ) : Fin r → ℂ := fun j => lam j - onCoroot lam (D.coroot a) * (D.root a j : ℂ)
-
-def wordAct (w : List (Fin r)) (lam : Fin r → ℂ) : Fin r → ℂ := w.foldr (fun a l => D.refl a l) lam
 
 def cone (R : ℝ) : Set (Fin r → ℝ) := {x | ∀ a, R < ∑ j, x j * D.coroot a j}
 

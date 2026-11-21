@@ -10,31 +10,7 @@ namespace GlobalTheory.RunWeightTest
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons
 
-theorem gapZ_nonneg {p : ℕ} {l : Fin p → ℕ} (hl : Antitone l) (i : Fin p) : 0 ≤ WeightAlgebra.gapZ l i := by
-  unfold WeightAlgebra.gapZ
-  split_ifs with h
-  · have : l ⟨i.1 + 1, h⟩ ≤ l i := hl (by simp [Fin.le_def])
-    omega
-  · positivity
-
 variable {D : D7} {j : ℕ}
-
-theorem isL_lWt (ka : WeightFamilies.Wt D j) (T nW : ℕ) (hW : Even nW)
-    (h : ∀ τ (i : Fin (D.R.sigW j).1), i.1 + 1 = (D.R.sigW j).1 →
-      ((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r ≤ ka.aP τ i) :
-    WeightAlgebra.IsL D ka (lWt D ka T nW hW) T nW := by
-  have hp : (0 : ℤ) ≤ (WeightAlgebra.Tp D j T : ℕ) := by positivity
-  refine ⟨rfl, fun τ i => ?_, fun τ i => ?_⟩
-  · show WeightAlgebra.gapZ (ofGaps (lGapP D ka T nW τ)) i = _
-    rw [gapZ_ofGaps]; unfold lGapP
-    split_ifs with hi
-    · exact Int.toNat_of_nonneg (Int.fdiv_nonneg (by have := gapZ_nonneg (ka.aPlus_antitone τ) i; omega) hp)
-    · exact Int.toNat_of_nonneg (Int.fdiv_nonneg (by have := h τ i (by have := i.2; omega); omega) hp)
-  · show WeightAlgebra.gapZ (ofGaps (lGapM D ka T τ)) i = _
-    rw [gapZ_ofGaps]; unfold lGapM
-    split_ifs with hi
-    · exact Int.toNat_of_nonneg (Int.fdiv_nonneg (by have := gapZ_nonneg (ka.aM_anti τ) i; omega) hp)
-    · exact Int.toNat_of_nonneg (Int.fdiv_nonneg (by positivity) hp)
 
 set_option autoImplicit false in
 variable {D : _root_.Formalism.BasicNotions.D7} {j : ℕ} in
@@ -142,30 +118,5 @@ theorem _root_.GlobalTheory.RunWeightTest.isF'_fWt (ka : _root_.Formalism.MainNo
       linarith
 
 variable {L : SizeData₂ D} {P : ParameterChoice' D L}
-
-theorem main (Tp : ParamsT D L P) (hK : DV.KapDef D) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
-    WeightAlgebra.IsL D (kaR Tp hK j) (lR Tp hK j) Tp.TO Tp.nWn ∧
-      WeightAlgebra.IsF' (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO Tp.nP ∧
-      kaR Tp hK j = WeightAlgebra.wadd (fR Tp hK j) (WeightAlgebra.wsmul Tp.TO (lR Tp hK j)) := by
-  have hF : WeightAlgebra.IsF' (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO Tp.nP := isF'_fWt _ _ _ _ _ _
-  refine ⟨isL_lWt _ _ _ _ fun τ i hi => ?_, hF, ?_⟩
-  · have ha := GlobalTheory.DepthBoundTest.two_sq_le_last Tp hK ⟨h1, h2⟩ τ i hi
-    have hd : WeightFamilies.dimY D j = Tp.Dp := by rw [GlobalTheory.DepthBoundTest.dimY_eq_flag ⟨h1, h2⟩, Tp.Dp_eq]
-    have hc : (((WeightFamilies.dimY D j : ℕ) : ℤ) + 2) * Tp.nWn + 2 * D.R.r ≤ Tp.TO := by
-      rw [hd]; exact_mod_cast Tp.TO_nW
-    have : (0 : ℤ) ≤ Tp.TO := by positivity
-    nlinarith
-  · have hn : (kaR Tp hK j).n = Tp.nP + Tp.TO * Tp.nWn := by
-      rw [← Tp.split]; exact kaWt_n D hK _ j
-    have hP : (kaR Tp hK j).aP = fun τ i => (fR Tp hK j).aP τ i + Tp.TO * (lR Tp hK j).aP τ i := by
-      funext τ i; have := hF.2.1 τ i; zify; linarith
-    have hM : (kaR Tp hK j).aM = fun τ i => (fR Tp hK j).aM τ i + Tp.TO * (lR Tp hK j).aM τ i := by
-      funext τ i; have := hF.2.2 τ i; zify; linarith
-    have ext : ∀ w w' : WeightFamilies.Wt D j, w.aP = w'.aP → w.aM = w'.aM → w.n = w'.n → w = w' := by
-      rintro ⟨⟩ ⟨⟩ h h' h''
-      simp only at h h' h''
-      subst h h' h''
-      rfl
-    exact ext _ _ hP hM hn
 
 end GlobalTheory.RunWeightTest

@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HolomorphicMapModuliLiftsLocallyToPeriods
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsRelativeExpOfParts
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LatContMapContinuous
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPositiveRiemannFormOfRelAmpleExponentialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicLatticeFamilyRetypePeriodTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCommutatorPairingConstHolomorphicFamilyAnStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPositiveRiemannFormOfRelAmpleExponential
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicLatticeFamilyRetypePeriodType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCommutatorPairingConstHolomorphicFamilyAn
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUnique
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
@@ -86,17 +86,17 @@ theorem holomorphic_map_lifts_to_periods : ∀ (O : Type) [Ring O] (bar : O → 
   have hwe : ∀ b ∈ C, ∀ (k : ℕ) (a a₂ : D'.La) (c : ℂˣ), 0 < k →
       (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a a₂ : ℂ) / k) →
       Out.WeilIs F.A F.L k (e b ((k : ℂ)⁻¹ • P b a)) (e b ((k : ℂ)⁻¹ • P b a₂)) (unitOn c) :=
-    fun b hb k a a₂ c hk hc => (GlobalTheory.T.torsion_commutatorPairing_const_holomorphicFamily_anyLineBundle F.X F.s F.A F.L hlft hab F.isLB m k C y
+    fun b hb k a a₂ c hk hc => (_root_.GlobalTheory.torsion_eq_and_weilIs_of_isHolTo_anyLB F.X F.s F.A F.L hlft hab F.isLB m k C y
       (fun b => e b ((k : ℂ)⁻¹ • P b a)) (fun b => e b ((k : ℂ)⁻¹ • P b a₂)) c b₀ hk hCo hCc hC₀ hyC
       (htor k a) (htor k a₂) fun b hb => ⟨hpow k hk a b hb, hpow k hk a₂ b hb⟩).2
       (by simp only [hP₀]; exact hweil₀ k a a₂ c hk hc) b hb
   have heC : ∀ a, ∀ b ∈ C, toUnit _ ≫ F.eta a = e b ((N : ℂ)⁻¹ • P b (t a)) := fun a =>
-    (GlobalTheory.T.torsion_commutatorPairing_const_holomorphicFamily_anyLineBundle F.X F.s F.A F.L hlft hab F.isLB m N C y (fun b => toUnit _ ≫ F.eta a)
+    (_root_.GlobalTheory.torsion_eq_and_weilIs_of_isHolTo_anyLB F.X F.s F.A F.L hlft hab F.isLB m N C y (fun b => toUnit _ ≫ F.eta a)
       (fun b => e b ((N : ℂ)⁻¹ • P b (t a))) 1 b₀ hN hCo hCc hC₀ hyC
       (GlobalTheory.LocLift.isHolTo_congr (GlobalTheory.LocLift.isHolTo_comp_hom (GlobalTheory.LocLift.isHolTo_mono hy₁ hCo hC₁)
         (F.eta a).left) fun b _ => by rw [Over.comp_left, Over.toUnit_left]; rfl) (htor N (t a))
       fun b hb => ⟨comp_pow_one _ _ (heta a), hpow N hN (t a) b hb⟩).1 (by rw [hP₀]; exact heta₀ a)
-  obtain ⟨B₂, h, hB₂, hb₂, hB₂C, hh₀, hhd, hh⟩ := GlobalTheory.T.holomorphic_lattice_family_retype_periodType O bar g ρ D' m C b₀ P hCo hC₀ hPd
+  obtain ⟨B₂, h, hB₂, hb₂, hB₂C, hh₀, hhd, hh⟩ := _root_.GlobalTheory.PELU.Retype.retype O bar g ρ D' m C b₀ P hCo hC₀ hPd
     (by rw [hP₀]; exact hper₀) fun b hb => ⟨(hball b hb).1.2.2.2.1, fun a => ⟨LinearMap.toMatrix' (L a b), fun x => by
       rw [LinearMap.toMatrix'_mulVec]; exact sub_eq_zero.1 (hlin a x b hb)⟩⟩
   have hdet : ∀ b ∈ B₂, IsUnit (h b).det := fun b hb => (Matrix.isUnit_iff_isUnit_det _).1 (hh b hb).1
@@ -136,9 +136,9 @@ theorem holomorphic_map_lifts_to_periods : ∀ (O : Type) [Ring O] (bar : O → 
       rw [hsm, hsm]
       exact hwe b hbC k a a₂ c hk hc
     obtain ⟨Hm, EF', h1, h2, h3, h4⟩ :=
-      GlobalTheory.T.exists_positiveRiemannForm_of_relAmple_exponential F.X F.A g hab F.dim F.L F.isLB F.ample (y b) _ D'.La (P' b) hex hPinj hker
+      _root_.GlobalTheory.exists_riemannForm_of_relAmple F.X F.A g hab F.dim F.L F.isLB F.ample (y b) _ D'.La (P' b) hex hPinj hker
     have hEF : ∀ x x', EF' x x' = D'.EF x x' := fun x x' => GlobalTheory.LocLift.int_eq_of_exp fun k hk => by
-      have := congrArg Units.val (GlobalTheory.T.weilPairing_complex_value_unique F.X F.A g hab F.dim F.L F.isLB (y b) k _ _
+      have := congrArg Units.val (_root_.GlobalTheory.WeilComplexUnique.weilIs_unitOn_unique_complex F.X F.A g hab F.dim F.L F.isLB (y b) k _ _
         (Units.mk0 _ (Complex.exp_ne_zero _)) (Units.mk0 _ (Complex.exp_ne_zero _)) (h4 k x x' _ hk rfl)
         (hweil' k x x' _ hk rfl))
       exact this

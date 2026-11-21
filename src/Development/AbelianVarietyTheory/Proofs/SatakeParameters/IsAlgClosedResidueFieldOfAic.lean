@@ -79,14 +79,6 @@ abbrev genFib (p : X ⟶ Spec (CommRingCat.of T)) : Scheme.{0} :=
 
 abbrev genInc (p : X ⟶ Spec (CommRingCat.of T)) : genFib p ⟶ X := pullback.fst _ _
 
-abbrev spMapOf {Y : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of T)} {p' : Y ⟶ Spec (CommRingCat.of T)} (u : X ⟶ Y)
-    (h : u ≫ p' = p) : spFib p ⟶ spFib p' :=
-  pullback.map _ _ _ _ u (𝟙 _) (𝟙 _) (by simp [h]) (by simp)
-
-abbrev genMapOf {Y : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of T)} {p' : Y ⟶ Spec (CommRingCat.of T)} (u : X ⟶ Y)
-    (h : u ≫ p' = p) : genFib p ⟶ genFib p' :=
-  pullback.map _ _ _ _ u (𝟙 _) (𝟙 _) (by simp [h]) (by simp)
-
 end Fibres
 
 end GlobalTheory.GenusTwoPureComparison.Cmp
@@ -161,11 +153,6 @@ end Main
 end GlobalTheory.GenusTwoPureComparison.Cmp
 
 namespace GlobalTheory.GenusTwoPureComparison.Cmp
-
-theorem aic_of_isAlgClosed' (K : Type) [Field K] [IsAlgClosed K] : GlobalTheory.EtC.AIC K := fun p hp hd =>
-  IsAlgClosed.exists_root p (by rw [Polynomial.degree_eq_natDegree hp.ne_zero]; exact_mod_cast hd.ne')
-
-example : GlobalTheory.EtC.AIC ℂ ∧ IsUnit ((2 : ℕ) : ℂ) := ⟨aic_of_isAlgClosed' ℂ, by norm_num⟩
 
 end GlobalTheory.GenusTwoPureComparison.Cmp
 

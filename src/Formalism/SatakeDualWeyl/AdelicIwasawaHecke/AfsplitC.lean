@@ -80,11 +80,6 @@ theorem afsplitC_prV_ne (w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (M : Matr
   simp only [Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub,
     map_one, afsplit_prV_IE_ne v w h, afsplit_prV_eps_ne v w h, sub_zero, one_mul, zero_add]
 
-theorem afsplitC_C (M M' : Matrix n n Rv) (N : Matrix n n R) :
-    afsplitC v M (afsplitC v M' N) = afsplitC v M N := by
-  unfold afsplitC
-  rw [smul_add, afsplit_smul_map, zero_add, smul_smul, afsplit_om_idem]
-
 theorem afsplitC_cT (σ : E →ₐ[F] E) (M : Matrix n n Rv) (N : Matrix n n R) :
     cT (sigR σ 𝔸) (afsplitC v M N) =
       afsplitC v (cT (sigR σ (v.adicCompletion F)) M) (cT (sigR σ 𝔸) N) := by

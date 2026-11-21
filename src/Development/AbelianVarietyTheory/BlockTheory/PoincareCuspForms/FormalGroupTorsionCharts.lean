@@ -38,18 +38,6 @@ theorem evalTerm_finite [Finite σ] (F : MvPowerSeries σ A) (x : σ → R)
 def evalNil [Finite σ] (F : MvPowerSeries σ A) (x : σ → R) (hx : ∀ i, IsNilpotent (x i)) : R :=
   ∑ d ∈ (evalTerm_finite F x hx).toFinset, evalTerm F x d
 
-theorem evalNil_eq_finsum [Finite σ] (F : MvPowerSeries σ A) (x : σ → R)
-    (hx : ∀ i, IsNilpotent (x i)) : evalNil F x hx = ∑ᶠ d, evalTerm F x d :=
-  (finsum_eq_sum _ (evalTerm_finite F x hx)).symm
-
-example [Finite σ] (x : σ → R) (hx : ∀ i, IsNilpotent (x i)) (j : σ) :
-    evalNil (MvPowerSeries.X j : MvPowerSeries σ A) x hx = x j := by
-  classical
-  rw [evalNil_eq_finsum, finsum_eq_single _ (Finsupp.single j 1)]
-  · simp [evalTerm, MvPowerSeries.coeff_X]
-  · intro d hd
-    simp [evalTerm, MvPowerSeries.coeff_X, hd]
-
 end Eval
 
 open MvPowerSeries in
@@ -71,38 +59,6 @@ structure FormalGroupLaw (A : Type*) [CommRing A] (g : ℕ) where
           (fun c => X (2, c)))))
 
   comm : ∀ a, (F a).subst (fun s => (X s.swap : MvPowerSeries (Fin g ⊕ Fin g) A)) = F a
-
-open MvPowerSeries in
-
-def FormalGroupLaw.additive (A : Type*) [CommRing A] (g : ℕ) : FormalGroupLaw A g where
-  F a := X (Sum.inl a) + X (Sum.inr a)
-  const a := by simp
-  lin_left a b := by
-    classical
-    simp [coeff_X, Finsupp.single_left_inj, eq_comm]
-  lin_right a b := by
-    classical
-    simp [coeff_X, Finsupp.single_left_inj, eq_comm]
-  assoc a := by
-    have h : ∀ {τ : Type} (f : Fin g ⊕ Fin g → MvPowerSeries τ A),
-        (∀ s, constantCoeff (f s) = 0) → ∀ b,
-        (X (Sum.inl b) + X (Sum.inr b) : MvPowerSeries (Fin g ⊕ Fin g) A).subst f =
-          f (Sum.inl b) + f (Sum.inr b) := fun f hf b => by
-      have hs : HasSubst f := hasSubst_of_constantCoeff_zero hf
-      rw [subst_add hs, subst_X hs, subst_X hs]
-    have h1 : ∀ (i j : Fin 3) (b : Fin g),
-        (X (Sum.inl b) + X (Sum.inr b) : MvPowerSeries (Fin g ⊕ Fin g) A).subst
-          (Sum.elim (fun c => (X (i, c) : MvPowerSeries (Fin 3 × Fin g) A)) (fun c => X (j, c))) =
-          X (i, b) + X (j, b) := fun i j b => by
-      rw [h _ (by rintro (s | s) <;> simp)]; simp
-    simp only [h1]
-    rw [h _ (by rintro (s | s) <;> simp), h _ (by rintro (s | s) <;> simp)]
-    simp [add_assoc]
-  comm a := by
-    have hs : HasSubst (fun s : Fin g ⊕ Fin g => (X s.swap : MvPowerSeries (Fin g ⊕ Fin g) A)) :=
-      hasSubst_of_constantCoeff_zero (by simp)
-    rw [subst_add hs, subst_X hs, subst_X hs]
-    simp [add_comm]
 
 variable {R₀ : Type u} [CommRing R₀]
 
@@ -176,20 +132,6 @@ def tateModule (B : BX R₀) (p : ℕ) (O : LAlg R₀) : AddSubgroup (ℕ → B.
     exact ⟨fun n => by simp [ha n], fun n => by
       rw [Pi.neg_apply, Pi.neg_apply, smul_neg, ← ha' n]⟩
 
-theorem tateModule_ker (B : BX R₀) (p : ℕ) (O : LAlg R₀) (τ : ℕ → B.G O)
-    (hτ : τ ∈ tateModule B p O) : τ 0 = 0 ↔ ∃ τ' ∈ tateModule B p O, τ = p • τ' := by
-  constructor
-  · intro h0
-    have key : ∀ n, p ^ n • τ n = τ 0 := by
-      intro n
-      induction n with
-      | zero => simp
-      | succ n ih => rw [pow_succ, mul_smul, ← hτ.2 n, ih]
-    exact ⟨fun n => τ (n + 1), ⟨fun n => by rw [key, h0], fun n => hτ.2 (n + 1)⟩,
-      funext fun n => hτ.2 n⟩
-  · rintro ⟨τ', h', rfl⟩
-    simpa using h'.1 0
-
 structure TorsionRep (B : BX R₀) (p : ℕ) (O : ResAlg k) where
 
   A : Tors B p k → ResAlg k
@@ -252,16 +194,5 @@ structure ChartData (B : BX R₀) {g : ℕ} (gb : Module.Basis (Fin g) R₀ B.gg
   smooth : LiftsFromResidue B W
 
   fin : FiniteTorsion B p g O C
-
-example (hk : IsField (k : Type u)) : NilAlg k where
-  alg := k
-  res := LHom.id k
-  res_surj := fun a => ⟨a, rfl⟩
-  res_ker := by
-    rw [IsLocalRing.isField_iff_maximalIdeal_eq.1 hk]
-    exact (RingHom.injective_iff_ker_eq_bot _).1 fun _ _ h => h
-  nil := fun x hx => by
-    rw [IsLocalRing.isField_iff_maximalIdeal_eq.1 hk, Ideal.mem_bot] at hx
-    exact hx ▸ IsNilpotent.zero
 
 end GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts

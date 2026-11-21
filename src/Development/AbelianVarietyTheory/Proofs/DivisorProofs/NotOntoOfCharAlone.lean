@@ -18,82 +18,9 @@ namespace GlobalTheory.RealIndexBound
 open Formalism.BasicNotions Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx
 open GlobalTheory.OntoChain GlobalTheory.RealIndexBoundProbe
 
-theorem rankRows_cx {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
-    {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool) (wf : (lv (fc X.zs) b).WF) (hp : (lv (fc X.zs) b).Pos)
-    (ht : (lv (fc X.zs) b).Types) (h3 : X.H3 cr b) (h3W : X.H3W cr b) (h5 : X.H5 cr b) (hr : X.RATth cr b)
-    (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.nP b) (hd : (X.data cr b).DimensionsOfPartsAgree) : RankRows (X.data cr b) := by
-  refine ⟨hp, fun j => ?_⟩
-  have hb := X.liftMat_bij cr b hk he hn h5 hr j Bs.μ0
-  have h1 := sum_finrank ((lv (fc X.zs) b).Qp Bs.μ0) wf.Qp_indep wf.Qp_top
-  have h2 := sum_finrank ((lv (fc X.zs) b).Zp j Bs.μ0) (wf.Zp_indep _) (ht _)
-  rw [Module.finrank_fin_fun] at h1 h2
-  have h0 : (lv (fc X.zs) b).dZ j Bs.μ0 = X.dW b j := dim_of_bij _ hb
-  show X.dW b j = (lv (fc X.zs) b).dQ Bs.μ0
-  rw [← h0, ← h1, ← h2]
-  refine Finset.sum_congr rfl fun p _ => ?_
-  have e1 : (lv (fc X.zs) b).Qp Bs.μ0 p = X.Ep cr b p := Submodule.ext fun x => h3 p x
-  have e2 : (lv (fc X.zs) b).Zp j Bs.μ0 p = (X.WpK b j p).comap (X.liftMat cr b j Bs.μ0).mulVecLin := by
-    ext x
-    rw [Submodule.mem_comap, Matrix.mulVecLin_apply, CxData.mem_WpK, X.key_lift cr b h5 hr]
-    exact h3W j p x
-  rw [e1, e2, finrank_comap_bij _ hb]
-  exact hd j p
-
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
-
-section Any
-
-variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
-
-theorem rankRows_of_links {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (hSt : R.LStable F) (hBl : R.LBlock F)
-    (hP : R.LPos F) (hT : R.LTypes F) (hE : R.LPartsE F) (hW : R.LPartsW F) (h5 : R.LTheta F) (hr : R.LRatTh F)
-    (hU : R.LUnif) (hd : R.LDims F) : RankRows ((R.toCx F).data F.cr false) :=
-  rankRows_cx (R.toCx F) F.cr false (A.side_WF hOk F.P0 F.ψ0 _ hSt hBl hsep) (hP false) (hT false) (hE false) (hW false)
-    (h5 false) (hr false) (RealDat.kForm hU false) (RealDat.ewNorm false) (RealDat.nP_pos false) (hd false)
-
-theorem not_onto_of_char_alone (h : R.Char F) {w : HeightOneSpectrum (𝓞 D.what₂.LL)} (hw : w ∈ R.twPl) :
-    ∃ R' : RealDat D A Ks, R'.Char F ∧ R'.mu = R.mu ∧ R'.twPl = R.twPl ∧ ∀ C CH, ¬ R'.LOnto F C CH :=
-  exists_char_not_onto h hw ⟨0, lt_of_lt_of_le two_pos D.R.two_le_m⟩
-
-variable {P : Type} [Group P] [Finite P] {c : OnConst}
-
-theorem onto_of_coord (O : OnObj ((R.toCx F).data F.cr false) P c) (C CH : ℝ)
-    (hRk : RankRows ((R.toCx F).data F.cr false)) (hC : TieCoord O)
-    (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O)
-    (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
-    (hI : LeafIdentity O) (h2 : LeafTW2 O) (h1 : LeafTW1 O)
-    (hSh : LeafShareI O) (hIU : LeafIndexU O) (hBS : LeafBadShare O) (hUn : LeafUnip O)
-    (hG : LeafDepthGood (R.num F C CH) O) (hR : LeafDepthRam (R.num F C CH) O) (h2p : LeafDepth2 (R.num F C CH) O)
-    (hL : LeafDepthLevel (R.num F C CH) O)
-    (hPg : LeafPage O) (hSz : LeafSizes O) (hX : LeafX O) (hBad : LeafBad O)
-    (hJS : LeafJSum O) (hJE : LeafJExp (R.num F C CH) O) (hCE : c.CE ≤ C) (tE1 : ErrorConstantMatchesDefinition (R.num F C CH) O C) :
-    (withErr R O.errOn).LOnto F C CH ∧ (TieErr O → R.LOnto F C CH) :=
-  ⟨on_built (R.num F C CH) O C hRk hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad
-      hJS hJE hCE tE1,
-    on_of_leaves (R.num F C CH) O C hRk hMk hSup hProj hC hSp hS hT0 hD hJ hI h2 h1 hSh hIU hBS hUn hG hR h2p hL hPg hSz hX
-      hBad hJS hJE hCE tE1⟩
-
-theorem onto_built {s : ℕ} (c : OnConst) (a : ChainArgs D.what₂.LL (Fin D.R.m) R.nW) (C CH : ℝ)
-    (hOk : A.fam.Ok s) (hC : R.Char F) (hI : R.LIntegral) (hRk : RankRows ((R.toCx F).data F.cr false))
-    (hY : LeafYBound (onOf R F c a))
-    (hSp : LeafSpan (onOf R F c a)) (hS : LeafLemmaS (onOf R F c a)) (hT0 : LatticeIndexBoundAtPairs (onOf R F c a))
-    (hD : LeafData (onOf R F c a)) (hJ : LeafRankJ (onOf R F c a)) (h2 : LeafTW2 (onOf R F c a))
-    (h1 : LeafTW1 (onOf R F c a)) (hSh : LeafShareI (onOf R F c a)) (hBS : LeafBadShare (onOf R F c a))
-    (hG : LeafDepthGood (R.num F C CH) (onOf R F c a)) (hR : LeafDepthRam (R.num F C CH) (onOf R F c a))
-    (h2p : LeafDepth2 (R.num F C CH) (onOf R F c a)) (hL : LeafDepthLevel (R.num F C CH) (onOf R F c a))
-    (hPg : LeafPage (onOf R F c a)) (hSz : LeafSizes (onOf R F c a)) (hX : LeafX (onOf R F c a))
-    (hBad : LeafBad (onOf R F c a)) (hJS : LeafJSum (onOf R F c a)) (hJE : LeafJExp (R.num F C CH) (onOf R F c a))
-    (hCE : c.CE ≤ C) (tE1 : ErrorConstantMatchesDefinition (R.num F C CH) (onOf R F c a) C) :
-    ((withErr R (onOf R F c a).errOn).Char F ∧ (withErr R (onOf R F c a).errOn).LOnto F C CH) ∧
-      (TieErr (onOf R F c a) → R.LOnto F C CH) :=
-  have h := onto_of_coord (onOf R F c a) C CH hRk (tieCoord c a hOk hC.grp.levels hC.tup.mu_conj)
-    (leafMackey c a hC.grp.levels) (leafSup c a hI) (leafProj c a hOk.irr) hSp hS hT0 hD hJ (leafIdentity c a hOk) h2 h1 hSh
-    (leafIndexU c a hC.grp.record hY) hBS (leafUnip c a hC.grp.record) hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1
-  ⟨⟨char_withErr hC _, h.1⟩, h.2⟩
-
-end Any
 
 section Block
 
@@ -205,33 +132,6 @@ theorem lPr_eq_zero_of_ker {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV
 theorem lift_sub (i : Fin D.R.m) (t : T0) (x y : Fin (OntoChain.srcDim F i t) → D.what₂.LL) :
     R.thG i t (R.jV i t (srcF F i t (x - y))) = R.thG i t (R.jV i t (srcF F i t x)) - R.thG i t (R.jV i t (srcF F i t y)) :=
   ((R.thG i t).toAddMonoidHom.comp ((R.jV i t).toAddMonoidHom.comp (srcF F i t).toAddMonoidHom)).map_sub x y
-
-theorem eq_thetaOp {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV : R.models_jV) (hU : R.LUnif) (h5 : R.LTheta F)
-    (hr : R.LRatTh F) (i : Fin D.R.m) (t : T0) (x : Fin (OntoChain.srcDim F i t) → D.what₂.LL) {u : Fin (R.nW i) → D.what₂.LL}
-    (hu : u ∈ R.WL F false i) (ha : (R.FW i).j (sg0 D A) u = R.thG i t (R.jV i t (srcF F i t x))) :
-    u = thetaOp R F i t x := by
-  rw [← range_coordMap] at hu
-  obtain ⟨z, rfl⟩ := hu
-  obtain ⟨y, rfl⟩ : ∃ y, (thetaMat R F i t).mulVec y = z := ((R.toCx F).liftMat_bij F.cr false (RealDat.kForm hU false)
-    (RealDat.ewNorm false) (RealDat.nP_pos false) (h5 false) (hr false) i t).2 z
-  have hb : _ = R.thG i t (R.jV i t (srcF F i t (((A.fam.L i t).lE (liftLvl F) (liftSub R F i t)).mulVec y))) :=
-    (j_thetaMat h5 hr i t y).trans (congrArg (fun f => R.thG i t (R.jV i t f)) (toF_eq_srcF hOk i t y))
-  have h0 := lPr_eq_zero_of_ker hOk hHV hjV i t (x - ((A.fam.L i t).lE (liftLvl F) (liftSub R F i t)).mulVec y)
-    ((lift_sub i t _ _).trans (sub_eq_zero.2 (ha.symm.trans hb)))
-  rw [Matrix.mulVec_sub, Matrix.mulVec_mulVec, BlockDat.lf_lPr_lE (blockHyp (F := F) hOk i t), Matrix.one_mulVec,
-    sub_eq_zero] at h0
-  rw [← h0, Matrix.mulVec_mulVec]
-  rfl
-
-theorem goodOp_classSum {s : ℕ} (hOk : A.fam.Ok s) {ph : Fin D.R.m → ℂ} (hG : PhasedLift R ph) (hHV : R.models_HV)
-    (hjV : R.models_jV) (hHW : R.models_HW) (hU : R.LUnif) (h5 : R.LTheta F) (hr : R.LRatTh F) (i : Fin D.R.m) (t : T0)
-    {θ : (Fin (OnTies.srcDim A i t F.P0 F.ψ0⁻¹) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)}
-    (hθ : OnTies.IsClassSum R i t F.P0 F.ψ0⁻¹ (ph i) θ) (x : Fin (OnTies.srcDim A i t F.P0 F.ψ0⁻¹) → D.what₂.LL)
-    (hx : goodOp R i (θ x) ∈ R.WL F false i) : goodOp R i (θ x) = thetaOp R F i t x := by
-  refine eq_thetaOp hOk hHV hjV hU h5 hr i t x hx ((hHW i _).1 ?_)
-  refine (adForm_goodOp hU i _).trans ?_
-  refine (congrArg (postOn _ (R.eWf i (sg0 D A))) (hθ x)).trans ?_
-  exact (LinearMap.map_smul _ _ _).trans (hG i t _).symm
 
 theorem chi_eq_one (h1 : R.grp_levels F) (h2 : R.grp_chiW) (i : Fin D.R.m) {g : G} (hg : g ∈ F.P0) : (R.FW i).chi g = 1 := by
   obtain ⟨u, hu, rfl⟩ := (mem_base_iff h1 g).1 hg
@@ -437,40 +337,6 @@ variable {fw : FWTie J R κ v₀} {hc : LawsCore J.toCore} {run : HeightOneSpect
   {ℓ : ∀ i : Fin D.R.m, G → (LaMod (J.Q.Dw ((i : ℕ) + 1)) J.Q.l ≃ₗ[𝓞 D.host.E] LaMod (J.Q.Dw ((i : ℕ) + 1)) J.Q.l)}
   {ph : Fin D.R.m → ℂ} {c : OnConst} {s : ℕ}
 
-theorem exists_tieCoord {P : Type} [Group P] [Finite P] {inc : P →* G} {O : OnObj ((R.toCx F).data F.cr false) P c}
-    (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph inc O) (hinc : F.P0 ≤ inc.range)
-    (hOk : A.fam.Ok s) (h1 : R.grp_levels F) (h2 : R.grp_chiW) (hHV : R.models_HV) (hjV : R.models_jV) (hHW : R.models_HW)
-    (hμ : R.tup_mu_conj) (hG : PhasedLift R ph) (hU : R.LUnif) (h5 : R.LTheta F) (hr : R.LRatTh F)
-    (hrat : TwistedRational R F ph) (hI : LeafIdentity O) (hT : LeafTW2 O) : ∃ w, TieCoord (withCoord O w) := by
-  obtain ⟨z, act, y, ht⟩ := ht
-  obtain ⟨v₁, -⟩ := exists_place3 D.what₂.LL
-  let w : ∀ j, (Fin (O.nZ j) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL) := fun j =>
-    LinearEquiv.ofBijective (toForms (T := (run v₁).full) (R := R) (h v₁) fw j (z j))
-      (toForms_bijective (T := (run v₁).full) (R := R) (h v₁) fw j (z j))
-  have he : ∀ j x, w j (O.e j x) = goodOp R j (w j x) := fun j x => (ht v₁ j).1.e_eOp x
-  have hZ : ∀ j x, x ∈ O.Zg j ↔ w j x ∈ R.WL F false j := fun j =>
-    mem_Zg_iff h1 h2 hinc j ((ht v₁ j).1.rho_eq_of_actionPin (ht v₁ j).2) (ht v₁ j).1.U_eq (ht v₁ j).1.ψ_eq (he j)
-      (ht v₁ j).1.V₀_eq
-  have hM : ∀ j x, x ∈ O.Ms j ↔ w j x ∈ supLat (R.FW j) := fun j x => mem_Ms_iff (ht v₁ j).1 x
-  have key : ∀ v j, ClassSumRational R j (R.mu v) F.P0 F.ψ0⁻¹ (ph j) →
-      (O.θ' v j ∘ₗ O.eX v j = O.e j ∘ₗ O.θ' v j ∧
-        ∀ x ∈ LinearMap.range (O.eX v j), x - O.pr v j x ∈ LinearMap.ker (O.θ' v j)) →
-      IsLatIn (O.Zg j) (O.Im v j) → (withCoord O w).TjId j v (R.mu v) := fun v j hra hI hT => by
-    refine coord_tuple j v (y v j) (fun x => by rw [(ht v j).1.Mt_eq]; rfl) (fun x hx => ?_) hI
-    have hθ : OnTies.IsClassSum R j (R.mu v) F.P0 F.ψ0⁻¹ (ph j)
-        ((w j).toLinearMap ∘ₗ O.θ' v j ∘ₗ (y v j).symm.toLinearMap) := (ht v j).1.θ'_eq hra
-    have e : ((w j).toLinearMap ∘ₗ O.θ' v j ∘ₗ (y v j).symm.toLinearMap) (y v j x) = w j (O.θ' v j x) :=
-      congrArg (fun u => w j (O.θ' v j u)) ((y v j).symm_apply_apply x)
-    have hm : w j (O.e j (O.θ' v j x)) ∈ R.WL F false j :=
-      (hZ j _).1 (hT.2.le (Submodule.subset_span ⟨_, ⟨x, hx, rfl⟩, rfl⟩))
-    have := goodOp_classSum hOk hG hHV hjV hHW hU h5 hr j (R.mu v) hθ (y v j x) (by rw [e, ← he]; exact hm)
-    rw [e, ← he] at this
-    exact this
-  refine ⟨w, fun j => coord_lattice j (hZ j) (hM j), fun v hv j =>
-    ⟨key v j (hrat v hv j) ((hI v hv).1 j) ((hT v hv).1 j).2.1, ?_⟩⟩
-  have := key (conjPl v) j (by rw [hμ v]; exact hrat v hv j) ((hI v hv).2 j) ((hT v hv).2 j).2.1
-  rwa [hμ v] at this
-
 theorem level_of_tied {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c}
     (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph (mirIncl R) O) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ)
     (h1 : R.grp_levels F) : (TieU O fun v => uniSub (Res R v) (rankPred D.R)) ∧ LeafMackey O ∧ LeafProj O := by
@@ -494,44 +360,6 @@ theorem level_of_tied {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c}
   · refine (toForms_bijective (T := (run v).full) (R := R) (h v) fw j (z j)).1 ?_
     refine ((ht v j).1.e_eOp _).trans ((congrArg (goodOp R j) ((ht v j).1.e_eOp x)).trans ?_)
     exact (LinearMap.congr_fun (goodOp_idem hX j) _).trans ((ht v j).1.e_eOp x).symm
-
-theorem onto_of_tied_phase {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c} (C CH : ℝ)
-    (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph (mirIncl R) O)
-    (hOk : A.fam.Ok s) (h1 : R.grp_levels F) (h2 : R.grp_chiW) (hHV : R.models_HV) (hjV : R.models_jV) (hHW : R.models_HW)
-    (hμ : R.tup_mu_conj) (hG : PhasedLift R ph) (hU : R.LUnif) (h5 : R.LTheta F) (hr : R.LRatTh F)
-    (hrat : TwistedRational R F ph) (hRk : RankRows ((R.toCx F).data F.cr false))
-    (hN : TieLevelNum O (rankPred D.R) D.R.f) (hSq : LeafLevelSq O (Res R) D.R.f) (hY : LeafYBound O)
-    (hSup : LeafSup O) (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
-    (hI : LeafIdentity O) (hT2 : LeafTW2 O) (hT1 : LeafTW1 O) (hSh : LeafShareI O) (hBS : LeafBadShare O)
-    (hDG : LeafDepthGood (R.num F C CH) O) (hDR : LeafDepthRam (R.num F C CH) O) (hD2 : LeafDepth2 (R.num F C CH) O)
-    (hDL : LeafDepthLevel (R.num F C CH) O) (hPg : LeafPage O) (hSz : LeafSizes O) (hX : LeafX O) (hBad : LeafBad O)
-    (hJS : LeafJSum O) (hJE : LeafJExp (R.num F C CH) O) (hCE : c.CE ≤ C) (tE1 : ErrorConstantMatchesDefinition (R.num F C CH) O C) :
-    (withErr R O.errOn).LOnto F C CH ∧ (TieErr O → R.LOnto F C CH) := by
-  classical
-  obtain ⟨w, hw⟩ := exists_tieCoord ht (fun g hg => by
-    obtain ⟨u, -, e⟩ := (mem_base_iff h1 g).1 hg
-    exact ⟨u, e⟩) hOk h1 h2 hHV hjV hHW hμ hG hU h5 hr hrat hI hT2
-  obtain ⟨tU, hMk, hP⟩ := level_of_tied ht hOk.irr h1
-  exact onto_of_coord (withCoord O w) C CH hRk hw hMk hSup hP hSp hS hT0 hD hJ hI hT2 hT1 hSh
-    (leafIndexU_of O D.R.f (mirab_levelGroups _ _) hSq hY tU hN) hBS (leafUnip_of O D.R.f (mirab_levelGroups _ _) hSq tU hN)
-    hDG hDR hD2 hDL hPg hSz hX hBad hJS hJE hCE tE1
-
-theorem onto_of_tied {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c} (C CH : ℝ)
-    (hC : R.Char F) (hOk : A.fam.Ok s)
-    (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ (fun _ => 1) (mirIncl R) O)
-    (hU : R.LUnif) (h5 : R.LTheta F) (hr : R.LRatTh F) (hrat : TwistedRational R F fun _ => 1)
-    (hRk : RankRows ((R.toCx F).data F.cr false))
-    (hN : TieLevelNum O (rankPred D.R) D.R.f) (hSq : LeafLevelSq O (Res R) D.R.f) (hY : LeafYBound O)
-    (hSup : LeafSup O) (hSp : LeafSpan O) (hS : LeafLemmaS O) (hT0 : LatticeIndexBoundAtPairs O) (hD : LeafData O) (hJ : LeafRankJ O)
-    (hI : LeafIdentity O) (hT2 : LeafTW2 O) (hT1 : LeafTW1 O) (hSh : LeafShareI O) (hBS : LeafBadShare O)
-    (hDG : LeafDepthGood (R.num F C CH) O) (hDR : LeafDepthRam (R.num F C CH) O) (hD2 : LeafDepth2 (R.num F C CH) O)
-    (hDL : LeafDepthLevel (R.num F C CH) O) (hPg : LeafPage O) (hSz : LeafSizes O) (hX : LeafX O) (hBad : LeafBad O)
-    (hJS : LeafJSum O) (hJE : LeafJExp (R.num F C CH) O) (hCE : c.CE ≤ C) (tE1 : ErrorConstantMatchesDefinition (R.num F C CH) O C) :
-    ((withErr R O.errOn).Char F ∧ (withErr R O.errOn).LOnto F C CH) ∧ (TieErr O → R.LOnto F C CH) :=
-  have k := onto_of_tied_phase C CH ht hOk hC.grp.levels hC.grp.chiW hC.models.HV hC.models.jV hC.models.HW hC.tup.mu_conj
-    (phasedLift_one hC.thP.thG) hU h5 hr hrat hRk hN hSq hY hSup hSp hS hT0 hD hJ hI hT2 hT1 hSh hBS hDG hDR hD2 hDL hPg hSz hX
-    hBad hJS hJE hCE tE1
-  ⟨⟨char_withErr hC _, k.1⟩, k.2⟩
 
 def scaledSpan {B : WeightFamilies.Prov D} {P6 : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P6 j) (hinj : Function.Injective D.what₂.OtoLL)
     (EX : ErrX D) (p : ℕ) (ka wL wF : WeightFamilies.Wt D j) (nT : ℕ) {K : Type} [Field K] [NumberField K] [Algebra B.KO K] {n : ℕ}

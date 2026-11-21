@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.Imports
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.SaturatingElementNotMemMinimalPrimesReducedOrdinStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryComponentUniquePrimeDimThirteenNearBaseStatement
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.ReducedOrdinaryIdealLeKerOfConjOfSaturatingNeZerStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.OrdinaryComponentUniquePrimeDimThirteenNearBase
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.ReducedOrdinaryIdealLeKerOfConjOfSaturatingNeZer
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoEvLow
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoMvps
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoQuot
@@ -101,7 +101,7 @@ theorem GlobalTheory.OrdLoc.rtConj :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (r : GQ l →* GG 3 C) (h : GL (Fin 3) C), UpperTheory.V.UnitaryThreeInertia.InHat h → GlobalTheory.OrdLoc.On D U r → GlobalTheory.OrdLoc.On D U (conjBy h r) := by
   intro hP l _ O _ _ _ _ _ _ _ D U C _ _ _ r h hh hr
   obtain ⟨f, rfl, hf⟩ := hr
-  obtain ⟨hpr, hprime, hl, hIt, -, -, -⟩ := GlobalTheory.T.ordinaryComponent_unique_prime_dim_thirteen_near_base hP D U
+  obtain ⟨hpr, hprime, hl, hIt, -, -, -⟩ := _root_.GlobalTheory.OrdLoc.component_basic hP D U
   have hmin : GlobalTheory.OrdLoc.It D U ∈ (GlobalTheory.OrdLoc.Icr D U).minimalPrimes := by
     have : GlobalTheory.OrdLoc.It D U ∈ GlobalTheory.OrdLoc.primesAt0 D U := by rw [hpr]; rfl
     exact this.1
@@ -138,7 +138,7 @@ theorem GlobalTheory.OrdLoc.rtConj :
       have := congrArg MvPowerSeries.constantCoeff h0
       simpa using this
     exact GlobalTheory.T.saturatingElement_notMem_minimalPrimes_reducedOrdinaryIdeal D U _ hmin (Ideal.Quotient.eq_zero_iff_mem.1 h1)
-  have h1 : GlobalTheory.OrdLoc.Icr D U ≤ RingHom.ker α := GlobalTheory.T.reducedOrdinaryIdeal_le_ker_of_conj_of_saturating_ne_zero D U S i α u hα' hIY hdel
+  have h1 : GlobalTheory.OrdLoc.Icr D U ≤ RingHom.ker α := _root_.GlobalTheory.OrdLoc.icr_le_ker_of_conj D U S i α u hα' hIY hdel
   obtain ⟨c, ⟨hc1, hc2⟩, -⟩ := co_ev O (GlobalTheory.OrdLoc.Rt D U) (GlobalTheory.OrdLoc.Rt D U) (Fin 3 × Fin 3) (AlgHom.id O _) 0 fun _ => zero_mem _
   have h2 : c.comp α = q := by
     have e1 : c.comp i = q := AlgHom.ext fun a => hc1 _

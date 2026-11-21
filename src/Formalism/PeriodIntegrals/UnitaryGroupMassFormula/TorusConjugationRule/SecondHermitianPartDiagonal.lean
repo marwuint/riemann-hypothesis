@@ -97,15 +97,6 @@ lemma inv_conj_single (x : Fin (2 * r + k + 1)) :
 def dz (l : Fin r) (κ κ' : ℂ) : Mx k r :=
   diagonal (fun p => if p = eI k r l then κ else if p = esI k r l then κ' else 0)
 
-lemma half_eq : (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) := by
-  push_cast
-  ring
-
-lemma quarter_eq : (1 / (2 * Complex.I) : ℂ) = ((-1 / 2 : ℝ) : ℂ) * Complex.I := by
-  rw [one_div, mul_inv, Complex.inv_I]
-  push_cast
-  ring
-
 lemma X1_eq (l : Fin r) : hpart1 (Hpk k r) (single (eI k r l) (eI k r l) 1) =
     dz l ((1 / 2 : ℝ) : ℂ) (-((1 / 2 : ℝ) : ℂ)) := by
   have hne : eI k r l ≠ esI k r l := e_ne_es l
@@ -314,48 +305,5 @@ lemma lin_single {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (l : Fin 
       exact (Complex.re_add_im z).symm
     · simp [hi]
   rw [h, map_add, map_smul, map_smul, Complex.coe_smul, Complex.coe_smul]
-
-theorem ruleTorus : RuleTorus := by
-  intro E _ _ k r l D f hD hf c hcO g₁ hg₁ hcD
-  have hc : c l ≠ 0 := hcO l
-  constructor
-  · show RdV _ f _ + Complex.I • RdV _ f _ = _
-    rw [X1_eq, depthNumbers_threshold_eq, rdV_dz' l D f hf c hc g₁ hg₁ hcD ((1 / 2 : ℝ) : ℂ) (-((1 / 2 : ℝ) : ℂ)) (by simp),
-      rdV_dz' l D f hf c hc g₁ hg₁ hcD (((-1 / 2 : ℝ) : ℂ) * Complex.I) (((-1 / 2 : ℝ) : ℂ) * Complex.I)
-        (by simp)]
-    unfold pOp wirt
-    rw [if_pos hcO]
-    generalize fderiv ℝ (fun c' : Fin r → ℂ => f (w1 k r l (c' l) * g₁)) c = L'
-    rw [lin_single l L' (c l * ((1 / 2 : ℝ) : ℂ)),
-      lin_single l L' (c l * (((-1 / 2 : ℝ) : ℂ) * Complex.I))]
-    generalize hA : L' (Pi.single l (1 : ℂ)) = A
-    generalize hB : L' (Pi.single l Complex.I) = B
-    simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re,
-      Complex.I_im, Complex.neg_re, Complex.neg_im]
-    push_cast
-    conv_rhs => rw [← Complex.re_add_im (c l)]
-    try simp only [Complex.star_def, map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]
-    generalize (c l).re = a
-    generalize (c l).im = b
-    match_scalars <;> ring_nf <;> (try simp only [Complex.I_sq]) <;> ring_nf
-  · show RdV _ f _ + Complex.I • RdV _ f _ = _
-    rw [first_hermitian_part_diagonal, second_hermitian_part_diagonal, rdV_dz' l D f hf c hc g₁ hg₁ hcD (-((1 / 2 : ℝ) : ℂ)) ((1 / 2 : ℝ) : ℂ) (by simp),
-      rdV_dz' l D f hf c hc g₁ hg₁ hcD (((-1 / 2 : ℝ) : ℂ) * Complex.I) (((-1 / 2 : ℝ) : ℂ) * Complex.I)
-        (by simp)]
-    unfold pbOp wirtBar
-    rw [if_pos hcO]
-    generalize fderiv ℝ (fun c' : Fin r → ℂ => f (w1 k r l (c' l) * g₁)) c = L'
-    rw [lin_single l L' (c l * -((1 / 2 : ℝ) : ℂ)),
-      lin_single l L' (c l * (((-1 / 2 : ℝ) : ℂ) * Complex.I))]
-    generalize hA : L' (Pi.single l (1 : ℂ)) = A
-    generalize hB : L' (Pi.single l Complex.I) = B
-    simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re,
-      Complex.I_im, Complex.neg_re, Complex.neg_im]
-    push_cast
-    conv_rhs => rw [← Complex.re_add_im (c l)]
-    try simp only [Complex.star_def, map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]
-    generalize (c l).re = a
-    generalize (c l).im = b
-    match_scalars <;> ring_nf <;> (try simp only [Complex.I_sq]) <;> ring_nf
 
 end PI.QnRT

@@ -14,9 +14,6 @@ section Avg
 
 variable {K M : Type*} [Group K] [AddCommGroup M] [Module ℂ M]
 
-private def av (ρ : K →* Module.End ℂ M) (S : Subgroup K) (m : M) : M :=
-  ((S.index : ℂ)⁻¹) • ∑ᶠ q : K ⧸ S, ρ q.out m
-
 private theorem exists_avg [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] (ρ : K →* Module.End ℂ M)
     (hs : ∀ m, IsOpen {k | ρ k m = m}) :
     ∃ P : M →ₗ[ℂ] M, (∀ m k, ρ k (P m) = P m) ∧ (∀ m, (∀ k, ρ k m = m) → P m = m) ∧

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Si
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNoetherianRingAdicCompletionOfNoetherian
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompletionIsDomainAndIsIntegrallyClosed
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfForallCompleteDvrDominatingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfForallCompleteDvrDominating
 open AlgebraicGeometry CategoryTheory IsLocalRing ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef GlobalTheory.Poinc
 
 namespace GlobalTheory.Poinc
@@ -48,7 +48,7 @@ theorem mem_span_sup_pow_of_forall_complete_dvr : ∀ (O : Type) [CommRing O] [I
 
   have hgR : ι g ≠ 0 := fun h => hg (hinj (by rw [h, map_zero]))
   have hdvd : ι g ∣ F := by
-    refine GlobalTheory.T.dvd_of_forall_complete_dvr_dominating R F (ι g) hgR ?_
+    refine _root_.GlobalTheory.Poinc.dvd_of_forall_complete_dvr R F (ι g) hgR ?_
     intro V _ _ _ hVc ρ' hρ' _
     let ρ : O →+* V := ρ'.comp ι
     have hρ : Function.Injective ρ := hρ'.comp hinj

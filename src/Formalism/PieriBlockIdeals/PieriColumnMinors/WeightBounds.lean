@@ -480,8 +480,6 @@ theorem rank_pos_of_hyp (P : Par) (hH : P.Hyp) : 0 < P.Nr := by
   have h2 := hH.t_ge
   omega
 
-theorem one_le_k_of_hyp (P : Par) (hH : P.Hyp) : 1 ≤ P.k := le_trans hH.m_pos hH.m_le
-
 theorem kc_cast_le_k (P : Par) : (kc P : ℝ) ≤ (P.k : ℝ) := by
   unfold kc
   exact_mod_cast Nat.sub_le _ _
@@ -504,8 +502,6 @@ theorem correction_weight_eq_formula {ι : Type} (W : Wts ι) (P : Par) (J : ℕ
             min (min (P.k : ℝ) (P.t : ℝ))
               ((W.sizeData₂ P J).depth P τ l / (d0 l (W.xm τ - W.top P τ) : ℝ)) else 0)
         + ((W.sizeData₂ P J).depth P τ l / (l : ℝ)) * (1 + max 0 (Real.log (P.h / (l : ℝ)))) := rfl
-
-theorem top_inputs_real_holds : TopInputsReal := top_inputs_of_shape_w shape_w_real_holds
 
 theorem inclusion_w_real_holds : InclWReal := inclusion_w_of_shape_w shape_w_real_holds
 
@@ -670,15 +666,6 @@ theorem j_w_seven_le_holds : CoarseWeightBoundLe := by
       unfold cTau
       rw [if_neg hτ]
       exact le_rfl
-
-theorem inclusion_w_seven_real_holds : HidaLatticeInclusionAtCoarseWeightBound := by
-  intro hD P hH hL ι _ _ W hW l X hl hu hlJ hWI
-  obtain ⟨ϖ, n₀, e, Λ, L, _, _, _, _, _, hwt, hfin, hϖ, hA, hT, hS, hI⟩ := hWI
-  have hTop := top_inputs_real_holds P hH hL ι W hW l X hl hu hlJ ϖ n₀ e Λ L hwt hfin hϖ hA hT hS hI
-  have h := weight_theorem_top_coarse (last_graded_of_graded_alone hD) X.O X.A X.G X.Γ X.K X.jK ι l
-    P.Nr (kc P) P.t (h0 P) W.lam W.T2 W.j W.q W.xm W.xp (fun τ => W.ecl P τ l)
-    (fun τ => W.ex P τ l) (W.iW P l) X.T X.S ϖ n₀ e Λ L hwt hTop
-  exact ⟨h, Nat.sInf_le h⟩
 
 theorem seventh_recursion_eq_a_of_small_prime {ι : Type} [Fintype ι] [DecidableEq ι] (W : Wts ι) (P : Par) (l : ℕ)
     (hc : (l : ℝ) ≤ P.lJ ∨ P.Excl l ∨ l ∈ W.Sp) : W.Jrec7 P l = W.JA P l := by

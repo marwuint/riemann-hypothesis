@@ -11,10 +11,6 @@ open Formalism.FourierDecayAlt.Wd Formalism.YangianSpanCharacter.T
 
 namespace TwistedTransfer
 
-section Ring
-
-end Ring
-
 section Frame
 
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}

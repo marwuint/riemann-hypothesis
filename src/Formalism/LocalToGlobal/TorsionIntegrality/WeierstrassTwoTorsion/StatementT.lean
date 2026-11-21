@@ -8,29 +8,6 @@ noncomputable section
 
 namespace Formalism.L2.Th1.A
 
-def DLCoeff : Prop :=
-  ∀ (R : Type u) [CommRing R] (f : LaurentSeries R) (n : ℤ),
-    (dL f).coeff n = ((n + 1 : ℤ) : R) * f.coeff (n + 1)
-
-def DLLeibniz : Prop :=
-  ∀ (R : Type u) [CommRing R] (f g : LaurentSeries R), dL (f * g) = f * dL g + g * dL f
-
-def DLCoe : Prop :=
-  ∀ (R : Type u) [CommRing R] (f : R⟦X⟧), dL (toL f) = toL (derivative R f)
-
-def UPowRules : Prop :=
-  ∀ (R : Type u) [CommRing R],
-    (uPow 0 : LaurentSeries R) = 1 ∧ (uPow 1 : LaurentSeries R) = toL X ∧
-    (∀ m n : ℤ, (uPow (m + n) : LaurentSeries R) = uPow m * uPow n) ∧
-    (∀ n : ℤ, dL (uPow n : LaurentSeries R) = HahnSeries.C ((n : ℤ) : R) * uPow (n - 1)) ∧
-    (∀ r : R, dL (HahnSeries.C r : LaurentSeries R) = 0) ∧
-    (∀ r : R, toL (C r) = (HahnSeries.C r : LaurentSeries R))
-
-def ToLInjective : Prop :=
-  ∀ (R : Type u) [CommRing R],
-    Function.Injective (toL : R⟦X⟧ → LaurentSeries R) ∧
-    ∀ (n : ℤ) (f g : LaurentSeries R), uPow n * f = uPow n * g → f = g
-
 def CompInvSpec : Prop :=
   ∀ (R : Type u) [CommRing R] (s : R⟦X⟧), constantCoeff s = 0 → IsUnit (coeff 1 s) →
     constantCoeff (compInv s) = 0 ∧ s.subst (compInv s) = X ∧ (compInv s).subst s = X ∧

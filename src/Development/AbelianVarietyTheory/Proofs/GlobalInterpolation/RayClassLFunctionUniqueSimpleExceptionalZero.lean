@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNotPrimePow
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionFamilyContinuationGrowthStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassFamilyLogDerivReGtOneStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionLogDerivLocalFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionFamilyLogDerivPositivityStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionLogDerivLocalFormula
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionFamilyLogDerivPositivity
 
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem
 open scoped Classical
@@ -74,7 +74,7 @@ theorem exists_bound : ∃ C : ℝ, 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar �
     (∀ β ∈ T, 3 / 4 ≤ β ∧ 𝓕.F χ β = 0) →
     (LSeries (𝓕.lamChi χ) σ).re ≤ (if χ = 1 then 1 / (σ - 1) else 0) + C * 𝓕.ell 0
       - ∑ β ∈ T, (analyticOrderNatAt (𝓕.F χ) β : ℝ) / (σ - β) := by
-  obtain ⟨C, hC, hmain⟩ := GlobalTheory.T.rayClassLFunction_logDeriv_local_formula
+  obtain ⟨C, hC, hmain⟩ := _root_.GlobalTheory.HkLocal.logDeriv_local
   refine ⟨C, hC, fun 𝓕 χ σ hσ1 hσ2 T hT => ?_⟩
   obtain ⟨hfin, -, happ⟩ := hmain 𝓕 χ 0
   simp only [Complex.ofReal_zero, zero_mul, add_zero] at hfin happ
@@ -211,13 +211,13 @@ theorem main : ∃ c : ℝ, 0 < c ∧ ∀ (𝓕 : LFam) (χ ψ : AddChar 𝓕.G 
     · subst h1
       have hB := hb 𝓕 1 σ hσ1 hσ2 T hT
       rw [if_pos rfl, hpole] at hB
-      have h0 := (GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 1 1 σ 0 hσ1).2.1
+      have h0 := (_root_.GlobalTheory.Hk.LFamPos.positivity 𝓕 1 1 σ 0 hσ1).2.1
       exact false_of_le_of_mul_hundred_mul_add_one_eq_one hC hℓ hcC hc hXT (by linarith)
     · have hB := hb 𝓕 χ σ hσ1 hσ2 T hT
       rw [if_neg h1] at hB
       have hB1 := hb 𝓕 1 σ hσ1 hσ2 ∅ (by simp)
       rw [if_pos rfl, hpole, Finset.sum_empty] at hB1
-      have h0 := ((GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 χ χ σ 0 hσ1).2.2 hχ hχ).1
+      have h0 := ((_root_.GlobalTheory.Hk.LFamPos.positivity 𝓕 χ χ σ 0 hσ1).2.2 hχ hχ).1
       exact false_of_le_of_mul_hundred_mul_add_one_eq_one hC hℓ hcC hc hXT (by linarith)
   · exfalso
     by_cases h1 : χ = 1
@@ -227,7 +227,7 @@ theorem main : ∃ c : ℝ, 0 < c ∧ ∀ (𝓕 : LFam) (χ ψ : AddChar 𝓕.G 
       rw [if_pos rfl, hpole, Finset.sum_singleton] at hB1
       have hBψ := hb 𝓕 ψ σ hσ1 hσ2 {β'} (sg ψ β' hβ' hz')
       rw [if_neg hψ1, Finset.sum_singleton] at hBψ
-      have h0 := ((GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 ψ ψ σ 0 hσ1).2.2 hψ hψ).1
+      have h0 := ((_root_.GlobalTheory.Hk.LFamPos.positivity 𝓕 ψ ψ σ 0 hσ1).2.2 hψ hψ).1
       exact false_of_le_of_mul_hundred_mul_add_one_eq_one hC hℓ hcC hc (X := (analyticOrderNatAt (𝓕.F 1) β : ℝ) / (σ - β) +
         (analyticOrderNatAt (𝓕.F ψ) β' : ℝ) / (σ - β')) (by linarith) (by linarith)
     · by_cases h2 : ψ = 1
@@ -236,7 +236,7 @@ theorem main : ∃ c : ℝ, 0 < c ∧ ∀ (𝓕 : LFam) (χ ψ : AddChar 𝓕.G 
         rw [if_pos rfl, hpole, Finset.sum_singleton] at hB1
         have hBχ := hb 𝓕 χ σ hσ1 hσ2 {β} (sg χ β hβ hz)
         rw [if_neg h1, Finset.sum_singleton] at hBχ
-        have h0 := ((GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 χ χ σ 0 hσ1).2.2 hχ hχ).1
+        have h0 := ((_root_.GlobalTheory.Hk.LFamPos.positivity 𝓕 χ χ σ 0 hσ1).2.2 hχ hχ).1
         exact false_of_le_of_mul_hundred_mul_add_one_eq_one hC hℓ hcC hc (X := (analyticOrderNatAt (𝓕.F χ) β : ℝ) / (σ - β) +
           (analyticOrderNatAt (𝓕.F 1) β' : ℝ) / (σ - β')) (by linarith) (by linarith)
       · have hχψ : χ * ψ ≠ 1 := by
@@ -253,7 +253,7 @@ theorem main : ∃ c : ℝ, 0 < c ∧ ∀ (𝓕 : LFam) (χ ψ : AddChar 𝓕.G 
         rw [if_neg h2, Finset.sum_singleton] at hBψ
         have hBχψ := hb 𝓕 (χ * ψ) σ hσ1 hσ2 ∅ (by simp)
         rw [if_neg hχψ, Finset.sum_empty] at hBχψ
-        have h0 := ((GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 χ ψ σ 0 hσ1).2.2 hχ hψ).2
+        have h0 := ((_root_.GlobalTheory.Hk.LFamPos.positivity 𝓕 χ ψ σ 0 hσ1).2.2 hχ hψ).2
         exact false_of_le_of_mul_hundred_mul_add_one_eq_one hC hℓ hcC hc (X := (analyticOrderNatAt (𝓕.F χ) β : ℝ) / (σ - β) +
           (analyticOrderNatAt (𝓕.F ψ) β' : ℝ) / (σ - β')) (by linarith) (by linarith)
 

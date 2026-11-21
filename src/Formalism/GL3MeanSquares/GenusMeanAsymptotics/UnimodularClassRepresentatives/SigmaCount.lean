@@ -17,17 +17,6 @@ def eA (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : Ide
   sInf {e : ℕ | ∀ x : V, (∀ y ∈ A, h y x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)) →
     ∀ t ∈ 𝔭 ^ e, algebraMap (𝓞 F) (𝓞 K) t • x ∈ A}
 
-def sigmaCount (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (j : ℕ) : ℕ :=
-  Nat.card {Y : Module.End (𝓞 K) (↥A ⧸ ((extP K 𝔭) ^ j • ⊤ : Submodule (𝓞 K) ↥A)) //
-    ∀ x y x' y' : ↥A, Submodule.Quotient.mk x' = Y (Submodule.Quotient.mk x) →
-      Submodule.Quotient.mk y' = Y (Submodule.Quotient.mk y) →
-      CongrP 𝔭 j (h (x' : V) (y : V) + h (x : V) (y' : V)) 0}
-
-def redCount (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (j : ℕ) : ℕ :=
-  Nat.card {X : Module.End (𝓞 K) (↥A ⧸ ((extP K 𝔭) ^ j • ⊤ : Submodule (𝓞 K) ↥A)) //
-    ∃ g ∈ autSub h A, ∀ x : ↥A, ∃ y : ↥A, (y : V) = g x ∧
-      X (Submodule.Quotient.mk x) = Submodule.Quotient.mk y}
-
 def repRatio (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (n : 𝓞 F) : ℝ :=
   (Ideal.absNorm 𝔭 : ℝ) ^ ((finrank K V - 1) * vd h L 𝔭) * alphaN h L 𝔭 n / alphaL h L 𝔭
 

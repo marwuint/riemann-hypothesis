@@ -13,26 +13,6 @@ section Mat
 
 variable {K : Type} [Field K] [NumberField K]
 
-theorem isUpUni_mul {N : ℕ} {U V : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) (hV : IsUpUni V) :
-    IsUpUni (U * V) := by
-  intro i j
-  constructor
-  · intro hji
-    rw [Matrix.mul_apply]
-    refine Finset.sum_eq_zero fun k _ => ?_
-    by_cases hk : k < i
-    · rw [(hU i k).1 hk, zero_mul]
-    · rw [(hV k j).1 (lt_of_lt_of_le hji (not_lt.mp hk)), mul_zero]
-  · intro hij
-    subst hij
-    rw [Matrix.mul_apply, Finset.sum_eq_single i]
-    · rw [(hU i i).2 rfl, (hV i i).2 rfl, mul_one]
-    · intro k _ hki
-      rcases lt_or_gt_of_ne hki with h | h
-      · rw [(hU i k).1 h, zero_mul]
-      · rw [(hV k i).1 h, mul_zero]
-    · simp
-
 theorem sgUp_mul {N : ℕ} {U V : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) (hV : IsUpUni V) :
     sgUp (U * V) = sgUp U + sgUp V := by
   unfold sgUp
@@ -64,12 +44,6 @@ theorem sgUp_one {N : ℕ} : sgUp (1 : Matrix (Fin N) (Fin N) K) = 0 := by
     rw [Fin.ext_iff] at e
     simp at e
   · rfl
-
-theorem isUpUni_one {N : ℕ} : IsUpUni (1 : Matrix (Fin N) (Fin N) K) := by
-  intro i j
-  refine ⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => ?_⟩
-  subst h
-  exact Matrix.one_apply_eq i
 
 theorem det_upUni {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) : U.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j h => (hU i j).1 h)]

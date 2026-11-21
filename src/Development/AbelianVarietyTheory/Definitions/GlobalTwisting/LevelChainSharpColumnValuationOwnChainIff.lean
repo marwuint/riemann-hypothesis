@@ -124,10 +124,6 @@ theorem dia_zero (v : X.A.vT) (a : (X.A.Fv v)ˣ) : dia X 0 v a = X.A.rhoT v a :=
 theorem Nm_zero (v : X.A.vT) : Nm X 0 v = X.A.Nm v := by
   unfold Nm ColumnsAtT.Nm; exact Finset.sum_congr rfl (fun a _ => dia_zero X v a)
 
-theorem Gs_zero (v : X.A.vT) : Gs X 0 v = X.A.gauss v := by
-  unfold Gs ColumnsAtT.gauss Formalism.ThetaLiftIndependence.gaussOp
-  exact Finset.sum_congr rfl (fun a _ => by rw [dia_zero])
-
 def MramI (i : ℕ) : Submodule ℂ (Fn X i) := X.fm.Fi i ⊓ ⨅ v, LinearMap.ker (Nm X i v)
 
 theorem MramI_zero : MramI X 0 = X.A.Mram := by
@@ -362,10 +358,6 @@ def lamTr (τ : D.what₂.Tau) : DomWeight (D.R.N D.R.m) := wSh (X.fm.lam D.R.m 
 
 def sgTr (τ : D.what₂.Tau) : DomWeight (D.R.N D.R.m - 1) := wSh (X.fm.sg τ) (cTw D.R)
 
-theorem interlaceTr (h : X.fm.SgInterlace) (τ : D.what₂.Tau) :
-    Formalism.MainNotions.PrimeDegreeVariant.Interlace (Nm_succ D.R) (lamTr X τ) (sgTr X τ) :=
-  fun i => ⟨sub_le_sub_right (h τ i).1 _, sub_le_sub_right (h τ i).2 _⟩
-
 def sqrtT : ℂˣ := Units.mk0 ((Real.sqrt (X.A.T : ℝ) : ℝ) : ℂ) (by
   have h : 0 < (X.A.T : ℝ) := by exact_mod_cast X.A.T_prime.pos
   exact_mod_cast (Real.sqrt_pos.mpr h).ne')
@@ -384,15 +376,6 @@ def TupleChainSharpColumnValuation (Tw : TwForms D) (u : D.what₂.Word) (μ : D
     ∀ x ∈ LT.Nlam D u w, ∃ y ∈ (Tw.fm u μ).S D.R.m w,
       (Tw.fm u μ).emb D.R.m y = D.what₂.embLL c • (D.chTw u μ).col (D.e0Tw u μ ((D.fm u).emb 0 x))
 
-def EveryLevelLiftProperties : Prop :=
-  Function.Injective X.fm.til ∧
-  (∀ c, Function.Bijective (X.fm.stabMap c)) ∧
-  (∀ φ ∈ X.fm.Fi D.R.m, Pt X φ ∈ X.fm.ptC) ∧
-  ∃ h : X.fm.PRat, X.fm.PtilIntegral h
-
-theorem everyLevelPart_of_full (h : Conclusion6 X) : EveryLevelLiftProperties X :=
-  ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1.elim fun hP hh => ⟨hP, hh.1⟩⟩
-
 def BaseDet (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.host.E) (D.sp.X i).V)
     (dt : ∀ i, X.C.cls i → D.Dt) : Prop :=
   letI := D.host.cmStar
@@ -408,99 +391,15 @@ def BaseDet (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.
             y = a + D.host.conj (π : D.host.E) • b) ∧
           (QuotientGroup.mk (dt i c) : D.Dt ⧸ D.UO) = D.relDet (D.R.N i) L0 Ln
 
-def admB (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.host.E) (D.sp.X i).V)
-    (mt : ℕ → D.Dt →* ℂˣ) (dt : ∀ i, X.C.cls i → D.Dt) : Prop :=
-  (letI := D.host.cmStar; ∀ i c, Submodule.IsLattice D.host.E (cl i c)) ∧
-    Formalism.MainNotions.GL3Theta.CarriesTupleCharacters D X.C mt dt ∧ BaseDet X cl dt
-
-def NatComp (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.host.E) (D.sp.X i).V)
-    (O : Formalism.MainNotions.GL3Theta.LiftObj D X.C) : Prop :=
-  letI := D.host.cmStar
-  ∃ π : 𝓞 D.host.E, (π : D.host.E) ∈ D.host.K ∧
-    (π : D.host.E) * D.host.conj (π : D.host.E) = (X.A.T : D.host.E) ∧
-    (∀ w, OverT X w → (X.fm.seenP w = true ↔ 0 < D.what₂.places.val w (D.embE (π : D.host.E)))) ∧
-    ∀ i, i ≤ D.R.m → ∃ co : (D.sp.X i).V ≃ₗ[D.host.E] (Fin (D.R.N i) → D.host.E),
-      (∀ x y, stdH D.host.E (D.R.N i) (co x) (co y) = (D.sp.X i).hT x y) ∧
-      (∀ y, co y ∈ (O.L0 i).1 ↔ y ∈ (D.sp.X i).L0) ∧
-      ∀ (c : X.C.cls i) y, co y ∈ (O.lat i c).1 ↔
-        ∃ a ∈ cl i c, ∃ b ∈ Formalism.HermitianLatticesTheory.dual (D.sp.X i).hT (cl i c), y = a + D.host.conj (π : D.host.E) • b
-
-theorem admissibleBasis_of_naturalComparison (cl : letI := D.host.cmStar; ∀ i, X.C.cls i → Submodule (𝓞 D.host.E) (D.sp.X i).V)
-    (hcl : letI := D.host.cmStar; ∀ i c, Submodule.IsLattice D.host.E (cl i c))
-    (O : Formalism.MainNotions.GL3Theta.LiftObj D X.C) (h : NatComp X cl O) : admB X cl O.mt O.dt := by
-  obtain ⟨π, h1, h2, h3, h4⟩ := h
-  refine ⟨hcl, O.c13, π, h1, h2, h3, fun i hi => ?_⟩
-  obtain ⟨co, a, b, c⟩ := h4 i hi
-  exact ⟨co, O.L0 i, a, b, fun d => ⟨O.lat i d, c d, O.dt_lat i d⟩⟩
-
-section Indep
-
-variable (Y : Ch D u)
-
-theorem lam_indep (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) (a : Fin (D.R.N j)) :
-    (X.fm.lam j τ).w a = (Y.fm.lam j τ).w a := by
-  have h := (X.fm.lam_eq j hj τ a).trans (Y.fm.lam_eq j hj τ a).symm
-  exact_mod_cast h
-
-theorem Wt_indep (τ : D.what₂.Tau) : Wt X τ = Wt Y τ := by
-  unfold Wt TauWeight
-  refine Finset.sup_congr rfl fun i hi => Finset.sup_congr rfl fun a _ => ?_
-  rw [lam_indep X Y i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) τ a]
-
-theorem ETpi_indep : ETpi X = ETpi Y := by
-  unfold ETpi; simp only [Wt_indep X Y]
-
-theorem aTop_indep : X.fm.aTop = Y.fm.aTop :=
-  funext fun τ => lam_indep X Y 0 (Nat.zero_le _) τ _
-
-theorem bTop_indep : X.fm.bTop = Y.fm.bTop := by
-  funext τ
-  unfold MemberForms.bTop DomWeight.detShift
-  rw [dif_pos (D.R.N_pos 0), dif_pos (D.R.N_pos 0), lam_indep X Y 0 (Nat.zero_le _)]
-
-theorem levelSetting_indep_chain (hT : X.A.T = Y.A.T) : HidaSetting X ↔ HidaSetting Y := by
-  have hA : Alcove X ↔ Alcove Y := by
-    unfold Alcove
-    refine forall_congr' fun j => forall_congr' fun hj => forall_congr' fun τ => forall_congr' fun a =>
-      forall_congr' fun b => ?_
-    rw [lam_indep X Y j hj τ a, lam_indep X Y j hj τ b, hT]
-  unfold HidaSetting amax
-  rw [hA, hT, aTop_indep X Y, bTop_indep X Y]
-
-end Indep
-
 theorem emb_mem_Fi (i : ℕ) (x : Vl X i) : X.fm.emb i x ∈ X.fm.Fi i := by
   rw [← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]
   refine Submodule.sum_mem _ fun a _ => ?_
   rw [LinearMap.map_smulₛₗ]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
-def UComm : Prop :=
-  (∀ v, ∀ φ ∈ X.fm.Fi 0, Uop X 0 v φ ∈ X.fm.Fi 0) ∧
-  ∀ v v', v ≠ v' → ∀ φ ∈ X.fm.Fi 0, Uop X 0 v (Uop X 0 v' φ) = Uop X 0 v' (Uop X 0 v φ)
-
-theorem upCommute_of_firstProperty (h : Conclusion1 X) : UComm X :=
-  ⟨fun v φ hφ => (h.1 0 (Nat.zero_le _) v φ hφ).1, h.2.1 0 (Nat.zero_le _)⟩
-
 def Ulist (l : List X.A.vT) : Fn X 0 →ₗ[ℂ] Fn X 0 := l.foldr (fun v g => (Uop X 0 v).comp g) LinearMap.id
 
 variable {X}
-
-theorem Ulist_mem (h : UComm X) (l : List X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) : Ulist X l φ ∈ X.fm.Fi 0 := by
-  induction l with
-  | nil => exact hφ
-  | cons v l ih => exact h.1 v _ ih
-
-theorem Ulist_perm (h : UComm X) {l l' : List X.A.vT} (p : l.Perm l') {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) :
-    Ulist X l φ = Ulist X l' φ := by
-  induction p with
-  | nil => rfl
-  | cons v _ ih => exact congrArg (Uop X 0 v) ih
-  | swap v v' l =>
-    by_cases hv : v' = v
-    · subst hv; rfl
-    · exact h.2 v' v hv _ (Ulist_mem h l hφ)
-  | trans _ _ ih1 ih2 => exact ih1.trans ih2
 
 structure SharedBy (X Y : Ch D u) (e : Fn X 0 ≃ₗ[ℂ] Fn Y 0) (eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0)
     (ev : X.A.vT ≃ Y.A.vT) (eF : ∀ v, X.A.Fv v ≃+* Y.A.Fv (ev v)) : Prop where
@@ -517,183 +416,9 @@ structure SharedBy (X Y : Ch D u) (e : Fn X 0 ≃ₗ[ℂ] Fn Y 0) (eL : Vl X 0 �
   dia_eq : ∀ v (a : (X.A.Fv v)ˣ), ∀ φ ∈ X.fm.Fi 0,
     e (dia X 0 v a φ) = dia Y 0 (ev v) (Units.map (eF v : X.A.Fv v →* Y.A.Fv (ev v)) a) (e φ)
 
-def Shared (X Y : Ch D u) (e : Fn X 0 ≃ₗ[ℂ] Fn Y 0) (eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0) : Prop :=
-  ∃ (ev : X.A.vT ≃ Y.A.vT) (eF : ∀ v, X.A.Fv v ≃+* Y.A.Fv (ev v)), SharedBy X Y e eL ev eF
-
-theorem SharedBy.refl (X : Ch D u) : SharedBy X X (LinearEquiv.refl ℂ _) (LinearEquiv.refl _ _) (Equiv.refl _)
-    (fun _ => RingEquiv.refl _) :=
-  ⟨rfl, fun _ => rfl, fun _ => Iff.rfl, fun _ _ _ _ => rfl, fun _ _ => rfl, fun _ _ => rfl, fun _ _ _ => rfl,
-    fun _ _ _ _ _ => Iff.rfl, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩
-
-theorem Shared.refl (X : Ch D u) : Shared X X (LinearEquiv.refl ℂ _) (LinearEquiv.refl _ _) :=
-  ⟨_, _, SharedBy.refl X⟩
-
-theorem Shared.of_eq {X Y : Ch D u} (h : Y = X) (e : Fn X 0 ≃ₗ[ℂ] Fn Y 0) (eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0)
-    (he : ∀ φ, HEq (e φ) φ) (hL : ∀ x, Y.fm.emb 0 (eL x) = e (X.fm.emb 0 x)) : Shared X Y e eL := by
-  subst h
-  obtain rfl : e = LinearEquiv.refl ℂ _ := LinearEquiv.ext fun φ => eq_of_heq (he φ)
-  obtain rfl : eL = LinearEquiv.refl _ _ := LinearEquiv.ext fun x => Y.fm.emb_inj 0 (hL x)
-  exact Shared.refl Y
-
 namespace SharedBy
 
-variable {Y : Ch D u} {e : Fn X 0 ≃ₗ[ℂ] Fn Y 0} {eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0}
-  {ev : X.A.vT ≃ Y.A.vT} {eF : ∀ v, X.A.Fv v ≃+* Y.A.Fv (ev v)} (h : SharedBy X Y e eL ev eF)
-include h
-
-theorem overT_iff (w : D.what₂.places.Pl) : OverT Y w ↔ OverT X w := by
-  unfold OverT; rw [h.T_eq]
-
-theorem S_iff (w : D.what₂.places.Pl) (x : Vl X 0) : eL x ∈ Y.fm.S 0 w ↔ x ∈ X.fm.S 0 w := by
-  constructor
-  · intro hx
-    have key : ∀ y ∈ Y.fm.S 0 w, eL.symm y ∈ X.fm.S 0 w := by
-      intro y hy
-      induction hy using Submodule.span_induction with
-      | mem z hz => exact Submodule.subset_span ((h.lat_iff _).mpr (by rw [eL.apply_symm_apply]; exact hz))
-      | zero => rw [map_zero]; exact Submodule.zero_mem _
-      | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
-      | smul r a _ ha =>
-        rw [Subring.smul_def, map_smul]
-        exact Submodule.smul_mem _ r ha
-    simpa using key _ hx
-  · intro hx
-    induction hx using Submodule.span_induction with
-    | mem z hz => exact Submodule.subset_span ((h.lat_iff z).mp hz)
-    | zero => rw [map_zero]; exact Submodule.zero_mem _
-    | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
-    | smul r a _ ha =>
-      rw [Subring.smul_def, map_smul]
-      exact Submodule.smul_mem _ r ha
-
-theorem Nm_eq (v : X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) : e (Nm X 0 v φ) = Nm Y 0 (ev v) (e φ) := by
-  unfold Nm
-  rw [LinearMap.sum_apply, LinearMap.sum_apply, map_sum]
-  exact Fintype.sum_equiv (Units.mapEquiv (eF v).toMulEquiv).toEquiv _ _ fun a => h.dia_eq v a φ hφ
-
-theorem ramSub_iff (x : Vl X 0) : eL x ∈ Y.fm.ramSub ↔ x ∈ X.fm.ramSub := by
-  show Y.fm.emb 0 (eL x) ∈ Y.A.Mram ↔ X.fm.emb 0 x ∈ X.A.Mram
-  rw [← MramI_zero X, ← MramI_zero Y]
-  unfold MramI
-  simp only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, emb_mem_Fi, true_and]
-  rw [h.emb_eq, ← ev.forall_congr_right]
-  refine forall_congr' fun v => ?_
-  rw [← h.Nm_eq v (emb_mem_Fi X 0 x), e.map_eq_zero_iff]
-
-theorem Sram_iff (w : D.what₂.places.Pl) (x : Vl X 0) : eL x ∈ Sram Y w ↔ x ∈ Sram X w :=
-  and_congr (h.S_iff w x) (h.ramSub_iff x)
-
-theorem VVT_eq {w : D.what₂.places.Pl} (hw : OverT X w) : VVT Y w = (VVT X w).map ev.toEmbedding := by
-  unfold VVT
-  rw [h.seen_eq w hw]
-  split_ifs
-  · ext y
-    obtain ⟨v, rfl⟩ := ev.surjective y
-    simp [h.tau_eq w hw]
-  · rfl
-
-theorem expT_eq {w : D.what₂.places.Pl} (hw : OverT X w) : expT Y w = expT X w := by
-  unfold expT
-  rw [h.VVT_eq hw, Finset.sum_map, bTop_indep Y X]
-  simp only [Equiv.coe_toEmbedding, h.tau_eq w hw]
-
-theorem ET_eq {w : D.what₂.places.Pl} (hw : OverT X w) : ET Y w = ET X w := by
-  unfold ET; rw [h.seen_eq w hw, ETpi_indep Y X]
-
-theorem Ulist_eq (hU : UComm X) (l : List X.A.vT) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) :
-    e (Ulist X l φ) = Ulist Y (l.map ev) (e φ) := by
-  induction l with
-  | nil => rfl
-  | cons v l ih => exact (h.U_eq v _ (Ulist_mem hU l hφ)).trans (congrArg (Uop Y 0 (ev v)) ih)
-
-theorem Uprod_eq (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) :
-    e (Uprod X 0 w φ) = Uprod Y 0 w (e φ) := by
-  have p : (VVT X w).toList.Perm ((VVT Y w).toList.map ev.symm) := by
-    rw [← Multiset.coe_eq_coe, ← Multiset.map_coe, Finset.coe_toList, Finset.coe_toList, h.VVT_eq hw]
-    simp [Multiset.map_map]
-  show e (Ulist X _ φ) = Ulist Y _ (e φ)
-  rw [Ulist_perm hU p hφ, h.Ulist_eq hU _ hφ, List.map_map]
-  simp
-
-theorem Uprod_pow_eq (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) (n : ℕ) {φ : Fn X 0}
-    (hφ : φ ∈ X.fm.Fi 0) : e ((Uprod X 0 w ^ n) φ) = (Uprod Y 0 w ^ n) (e φ) := by
-  induction n generalizing φ with
-  | zero => rfl
-  | succ n ih =>
-    rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ← h.Uprod_eq hU hw hφ]
-    exact ih (Ulist_mem hU _ hφ)
-
-theorem Nlam_iff (hU : UComm X) {w : D.what₂.places.Pl} (hw : OverT X w) (x : Vl X 0) :
-    eL x ∈ Nlam Y w ↔ x ∈ Nlam X w := by
-  have key : ∀ z : Vl X 0, Y.fm.emb 0 (eL x) = (((Y.A.T : ℂ) ^ expT Y w) • (Uprod Y 0 w) ^ D.R.m) (Y.fm.emb 0 (eL z)) ↔
-      X.fm.emb 0 x = (((X.A.T : ℂ) ^ expT X w) • (Uprod X 0 w) ^ D.R.m) (X.fm.emb 0 z) := by
-    intro z
-    rw [h.emb_eq, h.emb_eq, LinearMap.smul_apply, LinearMap.smul_apply, ← h.Uprod_pow_eq hU hw _ (emb_mem_Fi X 0 z),
-      h.T_eq, h.expT_eq hw, ← map_smul, e.injective.eq_iff]
-  constructor
-  · rintro ⟨y, hy, hh⟩
-    obtain ⟨z, rfl⟩ := eL.surjective y
-    exact ⟨z, (h.Sram_iff w z).mp hy, (key z).mp hh⟩
-  · rintro ⟨z, hz, hh⟩
-    exact ⟨eL z, (h.Sram_iff w z).mpr hz, (key z).mpr hh⟩
-
 end SharedBy
-
-def TwTie (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) : Prop :=
-  Shared (own D u) (tw Tw u μ) (D.e0Tw u μ) (Tw.e0 u μ)
-
-theorem TwTie.of_copy (Tw : TwForms D) (μ : D.what₂.Tup) (h : tw Tw u μ = own D u)
-    (he : ∀ φ, HEq (D.e0Tw u μ φ) φ) : TwTie Tw u μ :=
-  Shared.of_eq h _ _ he (Tw.embed_mul_block_embedding u μ)
-
-theorem Wt_tw (Tw : TwForms D) (μ : D.what₂.Tup) (τ : D.what₂.Tau) : Wt (tw Tw u μ) τ = Wtau D u τ :=
-  Wt_indep (tw Tw u μ) (own D u) τ
-
-theorem levelSetting_twist_iff (Tw : TwForms D) (μ : D.what₂.Tup) : HidaSetting (tw Tw u μ) ↔ Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u :=
-  levelSetting_indep_chain (tw Tw u μ) (own D u) (Tw.A_T u μ)
-
-theorem OverT_tw (Tw : TwForms D) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) :
-    OverT (tw Tw u μ) w ↔ Formalism.MainNotions.product_first_zeroth_parts.OverT D u w := by
-  show D.what₂.places.resChar w = (Tw.A u μ).T ↔ _
-  rw [Tw.A_T]; rfl
-
-theorem TwTie.ET_eq {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) {w : D.what₂.places.Pl}
-    (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) : ET (tw Tw u μ) w = EatT D u w :=
-  h.elim fun _ h => h.elim fun _ h => h.ET_eq hw
-
-theorem TwTie.Nlam_iff {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) (hU : UComm (own D u))
-    {w : D.what₂.places.Pl} (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) (x : ((D.fm u).lat 0).V) :
-    Tw.e0 u μ x ∈ Nlam (tw Tw u μ) w ↔ x ∈ LT.Nlam D u w :=
-  h.elim fun _ h => h.elim fun _ h => h.Nlam_iff hU hw x
-
-theorem TwTie.Nlam_eq_map {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) (hU : UComm (own D u))
-    {w : D.what₂.places.Pl} (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) :
-    Nlam (tw Tw u μ) w = (LT.Nlam D u w).map ((Tw.e0 u μ).toLinearMap.restrictScalars (Ow D w)) := by
-  ext y
-  obtain ⟨x, rfl⟩ := (Tw.e0 u μ).surjective y
-  rw [h.Nlam_iff hU hw x]
-  constructor
-  · exact fun hx => ⟨x, hx, rfl⟩
-  · rintro ⟨z, hz, e⟩
-    obtain rfl : z = x := (Tw.e0 u μ).injective e
-    exact hz
-
-theorem TwTie.sharpBound_twist_iff {Tw : TwForms D} {μ : D.what₂.Tup} (h : TwTie Tw u μ) (hU : UComm (own D u)) :
-    Conclusion5Sharp (tw Tw u μ) ↔ TupleChainSharpColumnValuation Tw u μ := by
-  refine forall_congr' fun w => ?_
-  rw [OverT_tw]
-  refine forall_congr' fun hw => forall_congr' fun c => forall_congr' fun n => forall_congr' fun _ => ?_
-  rw [h.ET_eq hw]
-  refine forall_congr' fun _ => ?_
-  constructor
-  · intro H x hx
-    obtain ⟨y, hy, e⟩ := H (Tw.e0 u μ x) ((h.Nlam_iff hU hw x).mpr hx)
-    exact ⟨y, hy, by rw [← Tw.embed_mul_block_embedding]; exact e⟩
-  · intro H x' hx
-    obtain ⟨x, rfl⟩ := (Tw.e0 u μ).surjective x'
-    obtain ⟨y, hy, e⟩ := H x ((h.Nlam_iff hU hw x).mp hx)
-    rw [← Tw.embed_mul_block_embedding] at e
-    exact ⟨y, hy, e⟩
 
 section Reformulated
 
@@ -773,20 +498,6 @@ theorem GsD_own (i v) : GsD (own D u) i v = Formalism.MainNotions.product_first_
 
 theorem MramI_own (i) : MramI (own D u) i = Formalism.MainNotions.product_first_zeroth_parts.MramI D u i := rfl
 
-theorem admissibleBasis_chain_iff : admB (own D u) (D.clsLat u) D.muTil (D.detCls u) ↔ Formalism.MainNotions.product_first_zeroth_parts.admB D u :=
-  ⟨fun h => h.2.2, fun h => ⟨D.clsLat_lat u, Formalism.MainNotions.GL3Theta.member_chain_has_characters D u, h⟩⟩
-
 end Reformulated
-
-example (w : D.what₂.places.Pl) (h : X.fm.seenP w = false) : ET X w = 0 := by simp [ET, h]
-
-example (w : D.what₂.places.Pl) (h : X.fm.seenP w = false) (i : ℕ) : Uprod X i w = LinearMap.id := by
-  simp [Uprod, VVT, h]
-
-example (w : D.what₂.places.Pl) (hw : OverT X w) (e) (eL) :
-    ¬ Shared X ⟨X.C, X.A, X.P, { X.fm with seenP := fun w => !X.fm.seenP w }⟩ e eL := by
-  rintro ⟨_, _, h⟩
-  have := h.seen_eq w hw
-  simp at this
 
 end GlobalTheory.LvT

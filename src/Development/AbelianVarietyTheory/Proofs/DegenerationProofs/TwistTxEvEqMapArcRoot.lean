@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.CharZeroOfIsPrimitiveRoot
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxEvEqMapArcStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistTxEvEqMapArc
+import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRankZero
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HomTransport
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.Ex
@@ -58,7 +59,7 @@ theorem twist_tx_ev_eq_map_arc_root : ∀ (O C : Type) [CommRing O] [Nontriviall
   have hn : 0 < m ^ 2 * j := Nat.mul_pos (pow_pos hm.pos 2) hj
   have htu : t ^ (m ^ 2 * j) = u := by rw [mul_comm, pow_mul, hrm, hu]
   have hd : m ^ 2 ∣ m ^ 2 * j := Dvd.intro _ rfl
-  have key := GlobalTheory.T.twist_tx_ev_eq_map_arc_alt O C φ h1 h2 t ht N₀ N I (m ^ 2 * j) (scaleForm (pullForm β I.e be₀ hβ) _ hn)
+  have key := _root_.GlobalTheory.Ex.twist_tx_ev_eq_map_arc O C φ h1 h2 t ht N₀ N I (m ^ 2 * j) (scaleForm (pullForm β I.e be₀ hβ) _ hn)
     (scaleForm β _ hn) (fun y z => congrArg (((m ^ 2 * j : ℕ) : ℤ) * ·) (hβ y z)) m hd hm p₀ p₁ hp1 hp2
   have hr := idHom_rel β _ hn t u rm htu j rfl hd hrm p₁ p hp
   have tr := (NumD.hom_transport C C _ _ _ (idHom β _ hn t u htu)).2.2.2.2 m hm _ p hr.1 hr.2

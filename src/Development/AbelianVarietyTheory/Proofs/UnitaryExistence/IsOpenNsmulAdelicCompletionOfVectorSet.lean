@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsNatMulMem
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsNsmulIntegersMem
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ImportsBis
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ImportsTer
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.NsmulIntegralMemNhdsZero
+
 open NumberField IsDedekindDomain GlobalTheory.AdLat
 open scoped TensorProduct Topology Matrix
 

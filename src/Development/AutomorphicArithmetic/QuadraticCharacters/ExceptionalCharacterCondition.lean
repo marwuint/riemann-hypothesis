@@ -29,10 +29,6 @@ def Xplus : Set (DirichletCharacter ℂ P.E.N) :=
   {χ | ∃ hχ : χ ∈ P.E.chars, (∀ g ∈ P.A0, P.E.toGalChar χ hχ g = 1) ∧
     ∀ u ∈ P.E.inertiaUnits P.d, χ (u : ZMod P.E.N) = 1}
 
-def fixedA0Chars : Set PrimChar :=
-  {ψ | ∃ (χ : DirichletCharacter ℂ P.E.N) (hχ : χ ∈ P.E.chars),
-    (∀ g ∈ P.A0, P.E.toGalChar χ hχ g = 1) ∧ prim χ = ψ}
-
 def Xminus : Set (DirichletCharacter ℂ P.E.N) := {χ | ∃ ξ ∈ P.Xplus, χ = P.ch * ξ}
 
 def bounded : Set PrimChar :=
@@ -67,13 +63,5 @@ structure Host (T : HostType) (VV : VVFun) (X x : ℝ) extends PreHost T X x whe
     | none => prim ps ∉ T.kept
 
   ha11 : VV.VV E (T.t x) ≤ ENNReal.ofReal (Real.exp (x ^ T.eps) ^ (1 / 2 : ℝ))
-
-structure HostFamily (T : HostType) (VV : VVFun) (X : ℝ) (S : Set ℝ) where
-  host : ∀ x ∈ S, Host T VV X x
-  second_clause_independent_of_x : ∀ x hx x' hx', ¬ (host x hx).toPreHost.BoundedCharsPointwise →
-    let H := host x hx
-    let H' := host x' hx'
-    H.d = H'.d ∧ H.qs = H'.qs ∧ prim H.ps = prim H'.ps ∧
-      H.toPreHost.fixedA0Chars = H'.toPreHost.fixedA0Chars
 
 end HostParam

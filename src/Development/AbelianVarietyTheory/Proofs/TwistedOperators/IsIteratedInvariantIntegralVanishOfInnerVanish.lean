@@ -4,9 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsClosedOfLocallyCompactSpace
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuotientIntegralFinitelyManyCellsWeightedSumStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuotientIntegralVanishOfCommutingProductStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIteratedInvariantIntegralLinearAndCongrStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuotientIntegralFinitelyManyCellsWeightedSum
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValLastX
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.QuotientIntegralVanishOfCommutingProduct
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIteratedInvariantIntegralLinearAndCongr
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
@@ -123,7 +127,7 @@ theorem nested_vanish : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ 
       have hq' : g = pb * ⟨s i, hsB⟩ * ⟨k, hkB⟩ := congrArg Prod.snd (e.injective key)
       exact ⟨⟨s i, hsB⟩, Finset.mem_subtype.2 (Finset.mem_image_of_mem _ hs), pb, Subgroup.mem_subgroupOf.2 hpR.2,
         ⟨k, hkB⟩, Subgroup.mem_subgroupOf.2 hk, hq'⟩
-    obtain ⟨T', w, -, hW⟩ := GlobalTheory.T.quotientIntegral_finitelyManyCells_weightedSum (B i) ((R i).subgroupOf (B i)) ((K i).subgroupOf (B i)) hRB hKbc sp.opn
+    obtain ⟨T', w, -, hW⟩ := _root_.GlobalTheory.CellInt.quotInt_finiteCells (B i) ((R i).subgroupOf (B i)) ((K i).subgroupOf (B i)) hRB hKbc sp.opn
       (ρ' i) (μ' i) hρ' inferInstance hμ' inferInstance T
     simp only [NIter] at hN
     obtain ⟨f, hfz, hfg⟩ := hN
@@ -144,7 +148,7 @@ theorem nested_vanish : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ 
       by_contra hno
       apply hg
       have h0 : NIter ρ μ (fun _ => (0:ℂ)) l 1 (f g) := by
-        refine (GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι H R ρ μ l 1).2 (fun x => q (Function.update x i g)) _ _ ?_ (hf' g)
+        refine (_root_.GlobalTheory.RowVal.niter_lin_congr ι H R ρ μ l 1).2 (fun x => q (Function.update x i g)) _ _ ?_ (hf' g)
         intro x hx
         by_contra hq
         obtain ⟨s, hs, hc⟩ := hsupp (Function.update x i g) (fun j hj => by
@@ -154,7 +158,7 @@ theorem nested_vanish : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ 
         rw [Function.update_self] at e
         exact hno ⟨s, hs, r, hr, a₀, ha₀, k, hk, e⟩
       exact niter_unique ρ μ _ l huH 1 _ _ h0 (niter_zero ρ μ l 1)
-    refine GlobalTheory.T.quotientIntegral_vanish_of_commutingProduct (H i) (A i) (B i) (R i) sp.clA sp.clB sp.clR sp.comm sp.prod sp.split (ρ i) (μ i) (ρ' i) (μ' i)
+    refine _root_.GlobalTheory.CommProd.quot_vanish_of_prod (H i) (A i) (B i) (R i) sp.clA sp.clB sp.clR sp.comm sp.prod sp.split (ρ i) (μ i) (ρ' i) (μ' i)
       hρ inferInstance hμ hρ' inferInstance hμ' f z hfz ?_
     intro a ha
     have h1 := hW (fun b => f (a * b.1))
@@ -170,7 +174,7 @@ theorem nested_vanish : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ 
     suffices hsum : ∑ t ∈ T', w t * f (a * t.1) = 0 by rw [hsum] at h1; exact h1
     let q' : (∀ j, H j) → ℂ := fun x => ∑ t ∈ T', w t * q (Function.update x i (a * t.1))
     have hq'N : NIter ρ μ q' l 1 (∑ t ∈ T', w t * f (a * t.1)) :=
-      (GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι H R ρ μ l 1).1 (B i) T' w (fun t => f (a * t.1))
+      (_root_.GlobalTheory.RowVal.niter_lin_congr ι H R ρ μ l 1).1 (B i) T' w (fun t => f (a * t.1))
         (fun t x => q (Function.update x i (a * t.1))) (fun t _ => hf' _)
     refine ih hnd' (fun j hj => hsp j (List.mem_cons_of_mem _ hj)) ρ μ ρ' μ'
       (fun j hj => hhaar j (List.mem_cons_of_mem _ hj)) S q' _ hSB ?_ ?_ hq'N ?_
@@ -241,7 +245,7 @@ theorem nested_vanish : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ 
         by_contra hno
         apply hg
         have h0 : NIter ρ' μ' (fun _ => (0:ℂ)) l 1 (f₁ g) := by
-          refine (GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι (fun j => B j) (fun j => (R j).subgroupOf (B j)) ρ' μ' l 1).2 _ _ _ ?_ (hf₁' g)
+          refine (_root_.GlobalTheory.RowVal.niter_lin_congr ι (fun j => B j) (fun j => (R j).subgroupOf (B j)) ρ' μ' l 1).2 _ _ _ ?_ (hf₁' g)
           intro b hb
           by_contra hq
           rw [hQu] at hq
@@ -256,7 +260,7 @@ theorem nested_vanish : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ 
         exact niter_unique ρ' μ' _ l huB 1 _ _ h0 (niter_zero ρ' μ' l 1)
       have hf₁W := hW f₁ (fun r hr g => f₁L r hr g) (fun k hk g => f₁K g k hk) (fun g hg => cell a ha g (f₁S g hg))
       have hz := IsQuotIntL1.unique hRB hf₁W hf₁0
-      have hlin := (GlobalTheory.T.isIteratedInvariantIntegral_linear_and_congr ι (fun j => B j) (fun j => (R j).subgroupOf (B j)) ρ' μ' l 1).1 (B i) T' w f₁
+      have hlin := (_root_.GlobalTheory.RowVal.niter_lin_congr ι (fun j => B j) (fun j => (R j).subgroupOf (B j)) ρ' μ' l 1).1 (B i) T' w f₁
         (fun t b => Qa (Function.update b i t)) (fun t _ => hf₁' t)
       rw [hz] at hlin
       have e : (fun b : ∀ j, B j => q' fun j => a' j * (b j).1) = fun b => ∑ t ∈ T', w t * Qa (Function.update b i t) := by

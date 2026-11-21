@@ -1,6 +1,29 @@
 import Mathlib
-import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLineFubiniStudyFacts
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShift
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
+import ReciprocityTheory.AnalyticForms.PotentialTheory.LogInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.SNCAtlas
+import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.GreenSt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PLLocalStatement
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
+import ReciprocityTheory.AnalyticForms.PotentialTheory.AtlasIndep
+import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
+import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
+import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.AnalyticLimit
@@ -132,26 +155,6 @@ theorem EnergyStep.proof : EnergyStep.Statement := by
   rw [h8, h9, add_zero, hV] at h7
   rw [h1, h2, h3]
   linarith [h4, h5, h7]
-
-def projectiveLineEnergyData : EnergyStep.Data p1 projectiveLineKaehler where
-  w _ := -1
-  v _ := -1 / 2
-  f := Fin.elim0
-  M := 1
-  w_smooth := st_smooth_const p1 (-1)
-  w_psh := isPsh_add_const projectiveLineKaehler.isPsh (-1)
-  v_smooth := st_smooth_const p1 (-1 / 2)
-  v_nonpos _ := by norm_num
-  le_v _ := by norm_num
-  f_smooth i := Fin.elim0 i
-  f_psh i := Fin.elim0 i
-
-theorem projectiveLine_energy_inequality :
-    mInt p1 (Fin.cons (projectiveLineKaehler.pot + LocPot.ofFun projectiveLineEnergyData.v) projectiveLineEnergyData.T)
-        (fun x => -projectiveLineEnergyData.w x) ≤
-      mInt p1 (Fin.cons projectiveLineKaehler.pot projectiveLineEnergyData.T) (fun x => -projectiveLineEnergyData.w x) +
-        projectiveLineEnergyData.M * projectiveLineKaehler.vol :=
-  EnergyStep.proof p1 projectiveLineKaehler projectiveLineEnergyData
 
 end
 

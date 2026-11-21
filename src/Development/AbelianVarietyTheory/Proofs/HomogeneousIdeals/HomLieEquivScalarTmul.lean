@@ -54,12 +54,6 @@ def mk (a : OAct O G) (w : epsR R ⟶ G) (hw : IsTangent w) : Lie a := ⟨Pts.mk
 
 @[ext] theorem ext {v w : Lie a} (h : v.hom = w.hom) : v = w := Subtype.ext h
 
-def equivTangent (a : OAct O G) : Lie a ≃ {w : epsR R ⟶ G // IsTangent w} where
-  toFun v := ⟨v.hom, v.isTangent⟩
-  invFun w := mk a w.1 w.2
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 @[simp] theorem hom_zero : (0 : Lie a).hom = 1 := rfl
 
 @[simp] theorem hom_add (v w : Lie a) : (v + w).hom = v.hom * w.hom := rfl
@@ -234,32 +228,6 @@ def lieEquiv : M ⊗[O] Lie a ≃ₗ[O] Lie b :=
 @[simp] theorem hom_lieEquiv_tmul (m : M) (v : Lie a) :
     (h.lieEquiv (m ⊗ₜ v)).hom = v.hom ≫ h.tmul m := rfl
 
-theorem toPts_lieEquiv (z : M ⊗[O] Lie a) :
-    Lie.toPts b (h.lieEquiv z) = h.equiv (epsR R) ((Lie.toPts a).lTensor M z) := h.toPts_lieMap z
-
-theorem lieEquiv_smul (r : R) (z : M ⊗[O] Lie a) :
-    h.lieEquiv ((DistribSMul.toLinearMap O (Lie a) r).lTensor M z) = r • h.lieEquiv z := by
-  induction z with
-  | zero => simp
-  | tmul m v => ext; simp
-  | add z w hz hw => simp only [map_add, smul_add, hz, hw]
-
-theorem map_lieEquiv (h' : IsTensor H' b' G' a' M') (φ : M →ₗ[O] M') {f : G ⟶ G'}
-    (hf : IsLinearHom a a' f) (z : M ⊗[O] Lie a) :
-    Lie.map b b' (h.map h' φ hf) (h.lieEquiv z) =
-      h'.lieEquiv (TensorProduct.map φ (Lie.mapLinear hf) z) := by
-  induction z with
-  | zero => simp
-  | tmul m v => ext; simp
-  | add z w hz hw => simp only [map_add, hz, hw]
-
-theorem mapLeft_lieEquiv (h' : IsTensor H' b' G a M') (φ : M →ₗ[O] M') (z : M ⊗[O] Lie a) :
-    Lie.map b b' (h.mapLeft h' φ) (h.lieEquiv z) = h'.lieEquiv (φ.rTensor _ z) := by
-  induction z with
-  | zero => simp
-  | tmul m v => ext; simp
-  | add z w hz hw => simp only [map_add, hz, hw]
-
 def lieEquivBase (b₁ : OAct O' H) : Lie a ⊗[O] M ≃ₗ[R] Lie b₁ :=
   ({ (TensorProduct.comm O (Lie a) M ≪≫ₗ h.lieEquiv).toAddEquiv with
     map_smul' := fun r z ↦ by
@@ -368,16 +336,6 @@ def lieEquivLine (b₁ : OAct O' H) {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
 
 variable [Algebra O O'] [Module O' M] [IsScalarTower O O' M]
 
-theorem lieEquivLine_smul {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
-    (hτ : ∀ x, (v ≫ a.act x).left = spMap (epsScaleR (algebraMap O R x)) ≫ v.left) (x : O')
-    (z : R ⊗[O] M) :
-    h.lieEquivLine (h.algAct O') hv hτ ((Algebra.lsmul O O M x).lTensor R z) =
-      x • h.lieEquivLine (h.algAct O') hv hτ z := by
-  induction z with
-  | zero => simp
-  | tmul v m => ext; simp
-  | add z w hz hw => simp only [map_add, smul_add, hz, hw]
-
 theorem nonempty_eig_equiv [Algebra O' R] [IsScalarTower O O' R] [Module.Finite O M]
     [Module.Projective O M] [Algebra.FormallyUnramified R (R ⊗[O] O')]
     [Algebra.EssFiniteType R (R ⊗[O] O')] {N : Type} [AddCommGroup N] [Module R N] [Module O N]
@@ -479,20 +437,6 @@ theorem lieMult_iff_finrank (hφ : IsLinearPullback a₁ a t φ) (τ : O →+* k
   exact ⟨fun ⟨v⟩ ↦ ⟨.of_basis v, (Module.finrank_eq_card_basis v).trans (Fintype.card_fin n)⟩,
     fun ⟨_, h⟩ ↦ ⟨Module.finBasisOfFinrankEq _ _ h⟩⟩
 
-variable (a₁) in
-
-theorem lieMult_of_isLieBasis {τ₀ : O →+* k} {n : ℕ} {v : Fin n → (epsR k ⟶ G₁)}
-    (hv : IsLieBasis v)
-    (hτ : ∀ i x, (v i ≫ a₁.act x).left = spMap (epsScaleR (τ₀ x)) ≫ (v i).left) :
-    LieMult a₁ (𝟙 _) τ₀ n ∧ ∀ τ, τ ≠ τ₀ → LieMult a₁ (𝟙 _) τ 0 := by
-  have h := eig_eq_top hv hτ
-  refine ⟨(lieMult_id_iff _ _ _).mpr ⟨(basis a₁ hv).map (LinearEquiv.ofTop _ h).symm⟩,
-    fun τ hne ↦ (lieMult_id_iff _ _ _).mpr ?_⟩
-  have hd : Disjoint (eig a₁ τ) (eig a₁ τ₀) := (iSupIndep_eig a₁).pairwiseDisjoint hne
-  rw [h, disjoint_top] at hd
-  rw [hd]
-  exact ⟨Module.Basis.empty _⟩
-
 end Lie
 
 namespace IsTensor
@@ -548,194 +492,10 @@ theorem lieMult (t : Sp k ⟶ S) (τ : 𝓞 E →+* k) {n : ℕ}
   rw [← (TensorProduct.isBaseChange (𝓞 E) M k).finrank_eq]
   exact h.lieMult_of_unramified t hn
 
-theorem detCond [IsCMField E] {X : Host E} (D : Datum X) (t : Sp k ⟶ S) (ρ : k) (r : 𝓞 K)
-    (hr : algebraMap (𝓞 K) (𝓞 E) r = X.rt) {p₀ q₀ : ℕ}
-    (hG : ∀ σ : 𝓞 K →+* k, (σ r = ρ → LieMult a t σ p₀) ∧ (σ r ≠ ρ → LieMult a t σ q₀))
-    (hp : D.p = p₀ * Module.finrank (𝓞 E) M) (hq : D.q = q₀ * Module.finrank (𝓞 E) M) :
-    DetCond D (h.algAct (𝓞 E)) t ρ := fun τ ↦ by
-  rw [hp, hq, ← hr]
-  exact ⟨fun e ↦ h.lieMult t τ ((hG _).1 e), fun e ↦ h.lieMult t τ ((hG _).2 e)⟩
-
-theorem detCond_line {G₁ H₁ : Over (Sp k)} [GrpObj G₁] [GrpObj H₁] [IsCommMonObj G₁]
-    [IsCommMonObj H₁] {a₁ : OAct (𝓞 K) G₁} {b₁ : OAct (𝓞 K) H₁} (h : IsTensor H₁ b₁ G₁ a₁ M)
-    [IsCMField E] {X : Host E} (D : Datum X) (r : 𝓞 K) (hr : algebraMap (𝓞 K) (𝓞 E) r = X.rt)
-    (hK : Algebra.adjoin ℚ {(r : K)} = ⊤) {τ₀ : 𝓞 K →+* k} {v : epsR k ⟶ G₁} (hv : IsLieBasis ![v])
-    (hτ : ∀ x, (v ≫ a₁.act x).left = spMap (epsScaleR (τ₀ x)) ≫ v.left)
-    (hp : D.p = Module.finrank (𝓞 E) M) (hq : D.q = 0) :
-    DetCond D (h.algAct (𝓞 E)) (𝟙 _) (τ₀ r) := by
-  have H := Lie.lieMult_of_isLieBasis a₁ hv (τ₀ := τ₀) fun i ↦ by
-    rw [Subsingleton.elim i 0]; exact hτ
-  refine h.detCond D _ _ r hr (p₀ := 1) (q₀ := 0) (fun σ ↦ ⟨fun e ↦ ?_, fun e ↦ H.2 σ ?_⟩)
-    (by rw [hp, _root_.one_mul]) (by rw [hq, zero_mul])
-  · let l (σ : 𝓞 K →+* k) : K →ₐ[ℚ] k :=
-      (IsFractionRing.lift (ringOfIntegers_injective k K σ)).toRatAlgHom
-    have hl : ∀ σ (x : 𝓞 K), l σ x = σ x := fun σ x ↦
-      IsFractionRing.lift_algebraMap (ringOfIntegers_injective k K σ) x
-    have : l σ = l τ₀ := AlgHom.ext_of_adjoin_eq_top hK fun x hx ↦ by
-      rw [Set.mem_singleton_iff.mp hx, hl, hl, e]
-    obtain rfl : σ = τ₀ := RingHom.ext fun x ↦ by rw [← hl, this, hl]
-    exact H.1
-  · rintro rfl
-    exact e rfl
-
 end Module
-
-section Ideal
-
-variable {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E}
-
-theorem lieMult_fractionalIdeal (h : IsTensor H b G a I) (hI : I ≠ 0) (t : Sp k ⟶ S)
-    (τ : 𝓞 E →+* k) {n : ℕ} (hn : LieMult a t (τ.comp (algebraMap (𝓞 K) (𝓞 E))) n) :
-    LieMult (h.algAct (𝓞 E)) t τ n := by
-  simpa only [finrank_fractionalIdeal E hI, _root_.mul_one] using h.lieMult t τ hn
-
-variable {G₁ H₁ : Over (Sp k)} [GrpObj G₁] [GrpObj H₁] [IsCommMonObj G₁] [IsCommMonObj H₁]
-  {a₁ : OAct (𝓞 K) G₁} {b₁ : OAct (𝓞 K) H₁}
-
-theorem lieMult_line (h : IsTensor H₁ b₁ G₁ a₁ I) (hI : I ≠ 0) {τ₀ : 𝓞 K →+* k}
-    {v : epsR k ⟶ G₁} (hv : IsLieBasis ![v])
-    (hτ : ∀ x, (v ≫ a₁.act x).left = spMap (epsScaleR (τ₀ x)) ≫ v.left) (τ : 𝓞 E →+* k) :
-    (τ.comp (algebraMap (𝓞 K) (𝓞 E)) = τ₀ → LieMult (h.algAct (𝓞 E)) (𝟙 _) τ 1) ∧
-      (τ.comp (algebraMap (𝓞 K) (𝓞 E)) ≠ τ₀ → LieMult (h.algAct (𝓞 E)) (𝟙 _) τ 0) := by
-  have H := Lie.lieMult_of_isLieBasis a₁ hv (τ₀ := τ₀) fun i ↦ by
-    rw [Subsingleton.elim i 0]; exact hτ
-  exact ⟨fun e ↦ h.lieMult_fractionalIdeal hI _ τ (e ▸ H.1),
-    fun e ↦ h.lieMult_fractionalIdeal hI _ τ (H.2 _ e)⟩
-
-theorem isInternal_eig [Algebra K k] [DecidableEq (E →ₐ[K] k)] (h : IsTensor H₁ b₁ G₁ a₁ I)
-    (hI : I ≠ 0) (hk : ∀ x : E, ((minpoly K x).map (algebraMap K k)).Splits)
-    {v : epsR k ⟶ G₁} (hv : IsLieBasis ![v])
-    (hτ : ∀ x : 𝓞 K, (v ≫ a₁.act x).left = spMap (epsScaleR (algebraMap K k x)) ≫ v.left) :
-    DirectSum.IsInternal fun σ : E →ₐ[K] k ↦
-      Lie.eig (h.algAct (𝓞 E)) ((σ : E →+* k).comp (algebraMap (𝓞 E) E)) := by
-  let r (σ : E →ₐ[K] k) : 𝓞 E →+* k := (σ : E →+* k).comp (algebraMap (𝓞 E) E)
-  have hr : Function.Injective r := fun σ σ' e ↦ AlgHom.coe_ringHom_injective
-    (IsFractionRing.ringHom_ext (A := 𝓞 E) fun x ↦ congr($e x))
-  have hind : iSupIndep fun σ ↦ Lie.eig (h.algAct (𝓞 E)) (r σ) := (Lie.iSupIndep_eig _).comp hr
-  refine DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind ?_
-  have hw : ∀ σ, ∃ w ∈ Lie.eig (h.algAct (𝓞 E)) (r σ), w ≠ 0 := fun σ ↦ by
-    obtain ⟨u⟩ := (Lie.lieMult_id_iff _ _ _).mp ((h.lieMult_line hI
-      (τ₀ := (algebraMap K k).comp (algebraMap (𝓞 K) K)) hv hτ (r σ)).1
-        (RingHom.ext fun x ↦ σ.commutes x))
-    exact ⟨u 0, (u 0).2, fun e ↦ u.ne_zero 0 (Subtype.ext e)⟩
-  choose w hw hw₀ using hw
-  let : Algebra (𝓞 K) k := ((algebraMap K k).comp (algebraMap (𝓞 K) K)).toAlgebra
-  have : FaithfulSMul (𝓞 K) k :=
-    (faithfulSMul_iff_algebraMap_injective _ _).mpr (ringOfIntegers_injective k K _)
-  let e := h.lieEquivLine (h.algAct (𝓞 E)) hv hτ
-  have : Module.Finite k (Lie (h.algAct (𝓞 E))) := .equiv e
-  have hspan := (hind.linearIndependent _ hw hw₀).span_eq_top_of_card_eq_finrank' (by
-    rw [AlgHom.card_of_splits K E k hk, ← e.finrank_eq,
-      (TensorProduct.isBaseChange (𝓞 K) I k).finrank_eq, finrank_fractionalIdeal_restrict K E hI])
-  rw [eq_top_iff, ← hspan, Submodule.span_le]
-  rintro _ ⟨σ, rfl⟩
-  exact Submodule.mem_iSup_of_mem σ (hw σ)
-
-end Ideal
 
 end IsTensor
 
 end Mult
-
-def Lie.splitTorusEquiv {R O X : Type} [CommRing R] [CommRing O] [AddCommGroup X]
-    (a : OAct O (ReciprocityTheory.ChartRestriction.G.Semi.splitTorus (Sp R) X)) : (X →+ R) ≃ₗ[R] Lie a :=
-  LinearEquiv.ofBijective
-    ({ toFun c := Lie.mk a (Diag.lieVec c) (Diag.isTangent_lieVec c)
-       map_add' c d := Lie.ext (Diag.lieVec_add c d)
-       map_smul' r c := Lie.ext (Diag.lieVec_smul r c) } : (X →+ R) →ₗ[R] Lie a)
-    ⟨fun _ _ e ↦ Diag.lieVec_injective (congrArg Lie.hom e), fun v ↦
-      ((Diag.isTangent_iff_exists _).mp v.isTangent).imp fun _ e ↦ Lie.ext e⟩
-
-example : Module.finrank ℚ
-    (Lie (tensorAct (Fin 2 → ℤ) (intAct (ReciprocityTheory.ChartRestriction.G.Semi.splitTorus (Sp ℚ) ℤ)))) = 2 := by
-  have e := (isTensor (Fin 2 → ℤ) (intAct (ReciprocityTheory.ChartRestriction.G.Semi.splitTorus (Sp ℚ) ℤ))).lieEquivScalar
-    (tensorAct (Fin 2 → ℤ) _) (N := ℚ)
-    ((addMonoidHomLequivInt ℚ ≪≫ₗ LinearMap.ringLmapEquivSelf ℤ ℚ ℚ).symm ≪≫ₗ
-      Lie.splitTorusEquiv _) (by
-      refine eq_top_iff.mpr fun v _ x ↦ ?_
-      rw [algebraMap_int_eq, eq_intCast, Int.cast_smul_eq_zsmul]
-      exact int_smul_eq_zsmul Lie.actModule x v)
-  rw [← e.finrank_eq, Module.finrank_baseChange, Module.finrank_fin_fun]
-
-open NumberField in
-
-theorem lie_tensor :
-    (∀ (R O : Type) [CommRing R] [CommRing O] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
-      (a : OAct O G),
-      (∀ w : epsR R ⟶ G, IsTangent w ↔ ∃ v : Lie a, v.hom = w) ∧
-      Function.Injective (Lie.hom : Lie a → _) ∧
-      (∀ v w : Lie a, (v + w).hom = v.hom * w.hom) ∧
-      (∀ (r : R) (v : Lie a), (r • v).hom.left = spMap (epsScaleR r) ≫ v.hom.left) ∧
-      (∀ (x : O) (v : Lie a), (x • v).hom = v.hom ≫ a.act x) ∧
-      (∀ (r : R) (x : O) (v : Lie a), r • x • v = x • r • v) ∧
-      (∀ (n : ℕ) (v : Fin n → (epsR R ⟶ G)),
-        IsLieBasis v ↔ ∃ u : Module.Basis (Fin n) R (Lie a), ∀ i, (u i).hom = v i) ∧
-      ∀ (H K : Over (Sp R)) [GrpObj H] [IsCommMonObj H] [GrpObj K] [IsCommMonObj K] (b : OAct O H)
-        (c : OAct O K) (i : K ⟶ G) (f : G ⟶ H) [IsMonHom i] [IsMonHom f],
-        IsPullback i (toUnit K) f η[H] →
-          Function.Injective (Lie.map c a i) ∧ Function.Exact (Lie.map c a i) (Lie.map a b f)) ∧
-    (∀ (R O : Type) [CommRing R] [CommRing O] (G H : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
-      [GrpObj H] [IsCommMonObj H] (a : OAct O G) (b : OAct O H) (M : Type) [AddCommGroup M]
-      [Module O M] (h : IsTensor H b G a M),
-      (∀ (m : M) (v : Lie a), (h.lieEquiv (m ⊗ₜ v)).hom = v.hom ≫ h.tmul m) ∧
-      (∀ (r : R) (z : M ⊗[O] Lie a),
-        h.lieEquiv ((DistribSMul.toLinearMap O (Lie a) r).lTensor M z) = r • h.lieEquiv z) ∧
-      ∀ (H' : Over (Sp R)) [GrpObj H'] [IsCommMonObj H'] (b' : OAct O H') (M' : Type)
-        [AddCommGroup M'] [Module O M'] (h' : IsTensor H' b' G a M') (φ : M →ₗ[O] M')
-        (z : M ⊗[O] Lie a),
-        Lie.map b b' (h.mapLeft h' φ) (h.lieEquiv z) = h'.lieEquiv (φ.rTensor _ z)) ∧
-    (∀ (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
-      (R : Type) [CommRing R] [Algebra (𝓞 K) R] (G H : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
-      [GrpObj H] [IsCommMonObj H] (a : OAct (𝓞 K) G) (b : OAct (𝓞 K) H) (M : Type) [AddCommGroup M]
-      [Module (𝓞 K) M] [Module (𝓞 E) M] [IsScalarTower (𝓞 K) (𝓞 E) M] (h : IsTensor H b G a M)
-      (v : epsR R ⟶ G), IsLieBasis ![v] →
-      (∀ x, (v ≫ a.act x).left = spMap (epsScaleR (algebraMap (𝓞 K) R x)) ≫ v.left) →
-      ∃ e : R ⊗[𝓞 K] M ≃ₗ[R] Lie (h.algAct (𝓞 E)), (∀ m, (e (1 ⊗ₜ m)).hom = v ≫ h.tmul m) ∧
-        ∀ (x : 𝓞 E) (r : R) (m : M), e (r ⊗ₜ (x • m)) = x • e (r ⊗ₜ m)) ∧
-    (∀ (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
-      (S : Scheme.{0}) (G H : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H]
-      (a : OAct (𝓞 K) G) (b : OAct (𝓞 K) H) (M : Type) [AddCommGroup M] [Module (𝓞 K) M]
-      [Module (𝓞 E) M] [IsScalarTower (𝓞 K) (𝓞 E) M] [Module.Finite (𝓞 E) M]
-      [Module.Projective (𝓞 E) M] (h : IsTensor H b G a M) (k : Type) [Field k] [CharZero k]
-      (t : Sp k ⟶ S),
-      (∀ (τ : 𝓞 E →+* k) (n : ℕ), LieMult a t (τ.comp (algebraMap (𝓞 K) (𝓞 E))) n →
-        LieMult (h.algAct (𝓞 E)) t τ (n * Module.finrank (𝓞 E) M)) ∧
-      ∀ [IsCMField E] (X : Host E) (D : Datum X) (ρ : k) (r : 𝓞 K) (p₀ q₀ : ℕ),
-        algebraMap (𝓞 K) (𝓞 E) r = X.rt →
-        (∀ σ : 𝓞 K →+* k, (σ r = ρ → LieMult a t σ p₀) ∧ (σ r ≠ ρ → LieMult a t σ q₀)) →
-        D.p = p₀ * Module.finrank (𝓞 E) M → D.q = q₀ * Module.finrank (𝓞 E) M →
-        DetCond D (h.algAct (𝓞 E)) t ρ) ∧
-    (∀ (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
-      (k : Type) [Field k] [CharZero k] (G H : Over (Sp k)) [GrpObj G] [IsCommMonObj G] [GrpObj H]
-      [IsCommMonObj H] (a : OAct (𝓞 K) G) (b : OAct (𝓞 K) H)
-      (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (h : IsTensor H b G a I) (v : epsR k ⟶ G),
-      I ≠ 0 → IsLieBasis ![v] →
-      (∀ τ₀ : 𝓞 K →+* k, (∀ x, (v ≫ a.act x).left = spMap (epsScaleR (τ₀ x)) ≫ v.left) →
-        ∀ τ : 𝓞 E →+* k,
-          (τ.comp (algebraMap (𝓞 K) (𝓞 E)) = τ₀ → LieMult (h.algAct (𝓞 E)) (𝟙 _) τ 1) ∧
-          (τ.comp (algebraMap (𝓞 K) (𝓞 E)) ≠ τ₀ → LieMult (h.algAct (𝓞 E)) (𝟙 _) τ 0)) ∧
-      ∀ [Algebra K k] [DecidableEq (E →ₐ[K] k)],
-        (∀ x : E, ((minpoly K x).map (algebraMap K k)).Splits) →
-        (∀ x : 𝓞 K, (v ≫ a.act x).left = spMap (epsScaleR (algebraMap K k x)) ≫ v.left) →
-        DirectSum.IsInternal fun σ : E →ₐ[K] k ↦
-          Lie.eig (h.algAct (𝓞 E)) ((σ : E →+* k).comp (algebraMap (𝓞 E) E))) := by
-  refine ⟨fun R O _ _ G _ _ a ↦ ⟨fun w ↦ ⟨fun hw ↦ ⟨Lie.mk a w hw, rfl⟩, ?_⟩, fun _ _ ↦ Lie.ext,
-      Lie.hom_add, Lie.hom_smul_left, Lie.hom_act_smul, smul_comm,
-      fun n v ↦ ⟨fun hv ↦ ⟨Lie.basis a hv, Lie.hom_basis hv⟩, ?_⟩,
-      fun H K _ _ _ _ b c i f _ _ h ↦ Lie.map_kernel h⟩,
-    fun R O _ _ G H _ _ _ _ a b M _ _ h ↦ ⟨h.hom_lieEquiv_tmul, h.lieEquiv_smul,
-      fun H' _ _ b' M' _ _ h' ↦ h.mapLeft_lieEquiv h'⟩,
-    fun K E _ _ _ _ _ R _ _ G H _ _ _ _ a b M _ _ _ _ h v hv hτ ↦
-      ⟨h.lieEquivLine _ hv hτ, fun m ↦ ?_, fun x r m ↦ h.lieEquivLine_smul hv hτ x (r ⊗ₜ m)⟩,
-    fun K E _ _ _ _ _ S G H _ _ _ _ a b M _ _ _ _ _ _ h k _ _ t ↦ ⟨fun τ n ↦ h.lieMult t τ,
-      fun X D ρ r p₀ q₀ hr ↦ h.detCond D t ρ r hr⟩,
-    fun K E _ _ _ _ _ k _ _ G H _ _ _ _ a b I h v hI hv ↦
-      ⟨fun τ₀ ↦ h.lieMult_line hI hv, fun hk ↦ h.isInternal_eig hI hk hv⟩⟩
-  · rintro ⟨v, rfl⟩
-    exact v.isTangent
-  · rintro ⟨u, hu⟩
-    obtain rfl : (fun i ↦ (u i).hom) = v := funext hu
-    exact Lie.isLieBasis_basis u
-  · rw [IsTensor.hom_lieEquivLine_tmul, epsScale_one, Category.id_comp]
 
 end GlobalTheory.Serre

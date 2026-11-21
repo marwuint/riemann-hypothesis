@@ -204,8 +204,6 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts GlobalTheory.IndefiniteRowSid
 
 namespace GlobalTheory.GalOne.PhaseAt
 
-open GlobalTheory.AdTh GlobalTheory.AdTh.PhaseMap
-
 end GlobalTheory.GalOne.PhaseAt
 
 end

@@ -12,10 +12,6 @@ namespace Formalism.L2.G.Triv
 
 section Helpers
 
-theorem conj_pow' {G : Type} [Group G] (a b : G) (n : ℕ) : (a⁻¹ * b * a) ^ n = a⁻¹ * b ^ n * a := by
-  have := conj_pow (a := a⁻¹) (b := b) (i := n)
-  simpa using this
-
 theorem bc_injective {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n] (φ : A →+* B)
     (hφ : Function.Injective φ) : Function.Injective (bc (n := n) φ) := by
   intro x y hxy

@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NotDvdCondN
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.SharpRestriction.ParConsts
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualPageWordJumpsInWindowsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualPageWordSmallJumpsCardStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualSizeWordLetterEqPageWordStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualPageWordJumpsInWindows
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualPageWordSmallJumpsCard
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TwistedDualSizeWordLetterEqPageWord
 
 open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.FrobeniusOrbits
 
@@ -39,9 +40,9 @@ theorem letter_one_zero {φ : Formalism.HC.Frame} (τ : φ.GG) : letter τ 1 (0 
 
 theorem recWord_jumps : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) {n : ℕ} (g : ZMod n → D.R.GG), Roomy L C → ∀ a, (∀ u ∈ jT1 (hcAt D (g a)) j (pos ε (g a)), u ∈ (recWord L j ε g).win a ∧ u ∈ Set.Icc (-((recWord L j ε g).Mi a : ℤ)) ((recWord L j ε g).hi a : ℤ)) ∧ (∀ u ∈ jT2 (hcAt D (g a)) j (pos ε (g a)), u ∈ jT1 (hcAt D (g a)) j (pos ε (g a))) ∧ ∑ u ∈ Finset.Icc (-(etaHat L : ℤ)) (etaHat L), (((jT2 (hcAt D (g a)) j (pos ε (g a))).count u : ℕ) : ℤ) ≤ D.R.m := by
   intro D L C j ε n g hR a
-  obtain ⟨hT1, hbox⟩ := GlobalTheory.T.twistedDualPageWord_jumps_in_windows L C j ε (g a) 1 hR
-  obtain ⟨hT2, hcard⟩ := GlobalTheory.T.pageWord_T2_and_J2_card_of_roomy L C j ε (g a) 1 hR
-  obtain ⟨hsz, hMi, hhi, -⟩ := GlobalTheory.T.twistedDualSizeWord_letter_eq_pageWord L C j ε (g a) 1 hR 0
+  obtain ⟨hT1, hbox⟩ := _root_.GlobalTheory.HTW.pageWord_T1_and_J1_mem_window_of_roomy L C j ε (g a) 1 hR
+  obtain ⟨hT2, hcard⟩ := _root_.GlobalTheory.HTW.twistedDualPageWord_small_jumps_card L C j ε (g a) 1 hR
+  obtain ⟨hsz, hMi, hhi, -⟩ := _root_.GlobalTheory.HTW.Rec.recWord_letter_eq_pageWord L C j ε (g a) 1 hR 0
   have hl := letter_one_zero (g a)
   have t1 := hT1 0
   have t2 := hT2 0

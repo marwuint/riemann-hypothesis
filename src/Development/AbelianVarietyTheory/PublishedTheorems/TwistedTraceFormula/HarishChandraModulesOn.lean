@@ -146,11 +146,6 @@ theorem HarishChandraModules.analytic (h : HarishChandraModules) (hU : IsURepOn 
     exact ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, analyticOnNhd_const, fun _ _ _ => Subsingleton.elim _ _⟩
   · exact h.2 n ε H σ hU hI v hv
 
-theorem HarishChandraModules.smoothOnH (h : HarishChandraModules) (hU : IsURepOn (UJset ε) σ)
-    (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) :
-    Formalism.QuantumDeterminants.SmoothOnH (Formalism.REAL.Jm ε) fun g => σ g v :=
-  (h.analytic hU hI hv).smoothOnH
-
 theorem HarishChandraModules.smoothVec (h : HarishChandraModules) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v)
     {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hG : Pᴴ * Formalism.REAL.Jm ε * P = G) :
@@ -158,53 +153,6 @@ theorem HarishChandraModules.smoothVec (h : HarishChandraModules) (hU : IsURepOn
   (h.analytic hU hI hv).smoothVec hP hG
 
 end Consequences
-
-section Inhabitants
-
-private theorem sub_line (S : Submodule ℂ ℂ) : S = ⊥ ∨ S = ⊤ := eq_bot_or_eq_top S
-
-def sqrtDetRep {p q : ℕ} (T : GrpData p q) : URep T where
-  H := ℂ
-  π :=
-    { toFun := fun g => ((T.sq g : ℂˣ) : ℂ) • (1 : ℂ →L[ℂ] ℂ)
-      map_one' := by simp
-      map_mul' := fun a b => by ext; simp [mul_comm] }
-  isom := fun g x => by
-    have hm : (((T.cov g : GL _ ℂ) : Formalism.BasicNotions.TH.Mat p q))ᴴ * Formalism.UG.Jpq p q * (T.cov g : GL _ ℂ) =
-        Formalism.UG.Jpq p q := T.cov_mem g
-    have hd := congrArg (fun A => ‖Matrix.det A‖) hm
-    have hJ : ‖(Formalism.UG.Jpq p q).det‖ = 1 := by
-      simp [Formalism.UG.Jpq, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]
-    simp only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star, hJ, ← T.sq_sq g, norm_pow] at hd
-    have h1 : ‖((T.sq g : ℂˣ) : ℂ)‖ = 1 := by
-      have h4 : ‖((T.sq g : ℂˣ) : ℂ)‖ ^ 4 = 1 := by nlinarith
-      exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h4
-    simp [h1]
-  cont := fun x => by
-    have h1 : Continuous fun g : T.G => T.sq g := continuous_snd.comp T.emb.continuous
-    have h2 : Continuous fun g : T.G => ((T.sq g : ℂˣ) : ℂ) := Units.continuous_val.comp h1
-    have h3 : Continuous fun g : T.G => ((T.sq g : ℂˣ) : ℂ) * x := h2.mul continuous_const
-    simpa using h3
-
-theorem det_isURepOn {n : ℕ} (ε : Fin n → Bool) :
-    IsURepOn (UJset ε) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧
-    IsIrredOn (UJset ε) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧
-    ∀ v, IsKFin ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) v := by
-  refine ⟨⟨⟨by simp, fun a _ b _ => by ext; simp [mul_comm]⟩, fun g hg v => ?_, fun v => ?_⟩, fun S _ _ => sub_line S,
-    fun v => ⟨⊤, inferInstance, trivial, fun _ _ _ _ => trivial⟩⟩
-  · have hm : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
-    have hd := congrArg (fun A => ‖Matrix.det A‖) hm
-    have hJ : ‖(Formalism.REAL.Jm ε).det‖ ≠ 0 := norm_ne_zero_iff.2
-      ((Matrix.isUnit_iff_isUnit_det _).1 (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).ne_zero
-    simp only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star] at hd
-    have h2 : ‖g.det‖ ^ 2 = 1 := mul_right_cancel₀ hJ (by nlinarith)
-    have h1 : ‖g.det‖ = 1 := (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h2
-    simp [h1]
-  · have : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => g.det * v :=
-      (continuous_id.matrix_det).mul continuous_const
-    simpa using this.continuousOn
-
-end Inhabitants
 
 end GlobalTheory.Published
 

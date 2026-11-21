@@ -1,9 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormOneReflectionCorrectionAtLevelStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryMatrixEqProdQuasiReflectionsStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormOneReflectionCorrectionAtLevel
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryMatrixEqProdQuasiReflections
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryQuasiReflectionLawsStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.Imports
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNsmulMem
 
 open NumberField IsDedekindDomain GlobalTheory.AdLat GlobalTheory.UnRep
@@ -12,17 +11,6 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.UnRep.Correct
 
 variable {E : Type} [Field E] {n : ℕ}
-
-theorem exists_nat_smul_mem [NumberField E] (L : Submodule (𝓞 E) (Fin n → E))
-    (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
-    ∃ d : ℕ, 0 < d ∧ d • x ∈ L := by
-  first
-  | exact @_root_.GlobalTheory.NatMulMem.main
-  | exact _root_.GlobalTheory.NatMulMem.main
-  | (apply _root_.GlobalTheory.NatMulMem.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.NatMulMem.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.NatMulMem.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.NatMulMem.main ..)
 
 theorem exists_nat_mulVec_mem [NumberField E] (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (M : Matrix (Fin n) (Fin n) E) :
@@ -78,7 +66,7 @@ theorem smul_mul_mem {L : Submodule (𝓞 E) (Fin n → E)} {s t : 𝓞 E} {A B 
 
 theorem exists_unitary_correction : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E), IsHermForm c G → ∀ L : Submodule (𝓞 E) (Fin n → E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∀ (γ₀ : GL (Fin n) E) (N D : ℕ), IsUnE c G γ₀.1 → 0 < N → 0 < D → ∃ γ : GL (Fin n) E, IsUnE c G γ.1 ∧ CongAt L N D (γ * γ₀⁻¹).1 ∧ ∃ s : 𝓞 E, SplitOr c N s ∧ ∀ v ∈ L, s • (γ.1 *ᵥ v) ∈ L ∧ s • ((γ⁻¹).1 *ᵥ v) ∈ L := by
   intro F E _ _ _ _ _ c n G hG L hfg hL γ₀ N D hγ₀ hN hD
-  obtain ⟨l, hl, hprod⟩ := GlobalTheory.T.unitaryMatrix_eq_prod_quasiReflections F E c n G hG _ hγ₀
+  obtain ⟨l, hl, hprod⟩ := _root_.GlobalTheory.UnRep.isUnE_eq_prod_refl F E c n G hG _ hγ₀
   clear hγ₀
   induction l generalizing γ₀ D with
   | nil =>
@@ -104,7 +92,7 @@ theorem exists_unitary_correction : ∀ (F E : Type) [Field F] [NumberField F] [
         change _ = _
         have : ((R u hu0)⁻¹).1 * refl c G x u = 1 := (R u hu0).inv_mul
         rw [this, one_mul])
-    obtain ⟨u', hu', hc', s', hs', hL'⟩ := GlobalTheory.T.exists_norm_one_reflection_correction_at_level F E c n G hG L hfg hL x u N D hx hu hN hD
+    obtain ⟨u', hu', hc', s', hs', hL'⟩ := _root_.GlobalTheory.UnRep.exists_refl_correction F E c n G hG L hfg hL x u N D hx hu hN hD
     have hu'0 : u' ≠ 0 := left_ne_zero_of_mul_eq_one hu'
     refine ⟨R u' hu'0 * γ₁, ?_, ?_, s' * s₁, splitOr_mul hs' hs₁, fun v hv => ⟨?_, ?_⟩⟩
     · intro y z

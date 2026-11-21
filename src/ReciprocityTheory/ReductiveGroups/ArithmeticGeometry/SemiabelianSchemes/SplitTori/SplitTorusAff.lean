@@ -28,9 +28,6 @@ noncomputable abbrev splitTorusAff (R : CommRingCat.{u}) (X : Type u) [AddCommGr
     Over (Spec R) :=
   (Spec (torusRing R X)).asOver (Spec R)
 
-noncomputable example (R : CommRingCat.{u}) (X : Type u) [AddCommGroup X] : GrpObj (splitTorusAff R X) :=
-  inferInstance
-
 noncomputable def toZ (S : Scheme.{u}) : S ⟶ Spec ZU := specULiftZIsTerminal.from S
 
 noncomputable def splitTorus (S : Scheme.{u}) (X : Type u) [AddCommGroup X] : Over S :=
@@ -43,8 +40,6 @@ noncomputable instance (S : Scheme.{u}) (X : Type u) [AddCommGroup X] :
 noncomputable abbrev Gm (S : Scheme.{u}) : Over S := splitTorus S (ULift.{u} ℤ)
 
 variable {S : Scheme.{u}}
-
-def characters (G : Over S) [GrpObj G] : Type u := {f : G ⟶ Gm S // IsMonHom f}
 
 noncomputable def mulN (G : Over S) [GrpObj G] : ℕ → (G ⟶ G)
   | 0 => toUnit G ≫ η

@@ -6,46 +6,6 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filt
 
 namespace GlobalTheory.CapelliFoldBound
 
-open Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.JCx2
-
-variable {k r : ℕ} (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq]
-
-def UnifOp (o : ℕ) (Θ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)) : Prop :=
-  (∀ F, CkOn (⊤ : ℕ∞) (GV k r) F → CkOn (⊤ : ℕ∞) (GV k r) (Θ F)) ∧
-  ∃ K : ℝ, 0 ≤ K ∧ ∀ (A : ℝ) (m : ℕ) (F : Mat k r → (Wq →L[ℂ] Wp)) (b : ℝ), CkOn (⊤ : ℕ∞) (GV k r) F →
-    CCle A (m + o) F b → CCle A m (Θ F) (K * b)
-
-variable {Wp Wq}
-
-theorem UnifOp.congr {o : ℕ} {Θ Θ' : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)}
-    (h : UnifOp Wp Wq o Θ) (e : ∀ F, Θ' F = Θ F) : UnifOp Wp Wq o Θ' := by
-  have : Θ' = Θ := funext e
-  rw [this]; exact h
-
-theorem UnifOp.mono {o o' : ℕ} (ho : o ≤ o')
-    {Θ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)} (h : UnifOp Wp Wq o Θ) : UnifOp Wp Wq o' Θ := by
-  obtain ⟨h1, K, hK, h2⟩ := h
-  exact ⟨h1, K, hK, fun A m F b hF hF' => h2 A m F b hF (pd_ccle_mono le_rfl (by omega) hF')⟩
-
-theorem UnifOp.comp {o₁ o₂ o : ℕ} (ho : o₁ + o₂ ≤ o)
-    {Θ₁ Θ₂ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)} (h₁ : UnifOp Wp Wq o₁ Θ₁)
-    (h₂ : UnifOp Wp Wq o₂ Θ₂) : UnifOp Wp Wq o (fun F => Θ₁ (Θ₂ F)) := by
-  obtain ⟨s1, K₁, hK₁, h1⟩ := h₁
-  obtain ⟨s2, K₂, hK₂, h2⟩ := h₂
-  refine ⟨fun F hF => s1 _ (s2 F hF), K₁ * K₂, mul_nonneg hK₁ hK₂, fun A m F b hF hF' => ?_⟩
-  rw [mul_assoc]
-  exact h1 A m _ _ (s2 F hF) (h2 A (m + o₁) F b hF (pd_ccle_mono le_rfl (by omega) hF'))
-
-theorem UnifOp.add {o : ℕ} {Θ₁ Θ₂ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)}
-    (h₁ : UnifOp Wp Wq o Θ₁) (h₂ : UnifOp Wp Wq o Θ₂) : UnifOp Wp Wq o (fun F g => Θ₁ F g + Θ₂ F g) := by
-  obtain ⟨s1, K₁, hK₁, h1⟩ := h₁
-  obtain ⟨s2, K₂, hK₂, h2⟩ := h₂
-  refine ⟨fun F hF => Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add (s1 F hF) (s2 F hF), K₁ + K₂, add_nonneg hK₁ hK₂,
-    fun A m F b hF hF' => ?_⟩
-  rw [add_mul]
-  exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add (h1 A m F b hF hF') (h2 A m F b hF hF')
-
 end GlobalTheory.CapelliFoldBound
 
 namespace GlobalTheory

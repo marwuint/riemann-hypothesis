@@ -2,7 +2,12 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothHermCombLine
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointIdealMultiprojectivePrime
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointIdealHorizontalIffCharZero
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosureDimIffArithmeticVarietyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosureDimIffArithmeticVariety
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullHermPullLine
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedA
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.IsSmoothHermConstLine
 
 set_option autoImplicit false
 
@@ -98,6 +103,6 @@ theorem ptDict : PtDict := by
     (ptIdeal_isHorizontal_iff m n _).mp h
   have hdim : topologicalKrullDim (closure ({j (genericPoint Z)} : Set (MP ℤ m n))) = (d : ℕ) := by
     rw [dim_closure_image_generic j, hd]
-  exact (GlobalTheory.T.closure_dim_iff_arithmetic_variety m n _ d hc).mp hdim
+  exact (_root_.GlobalTheory.CompanionTheory.MPDict.DimClosure.dim_closure_iff_isArithVar m n _ d hc).mp hdim
 
 end GlobalTheory.CompanionTheory.MixZ

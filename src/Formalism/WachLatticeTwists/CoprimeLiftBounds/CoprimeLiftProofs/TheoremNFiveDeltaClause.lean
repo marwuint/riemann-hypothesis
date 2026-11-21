@@ -1,5 +1,7 @@
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.WachTwistTheoremDeltaClause
-import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.TheoremNFiveTopHolds
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.Bridge
+import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelsOfBlockChiCOfBlockChiOne
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.SelmerInjColumnPlace
 import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 
@@ -164,20 +166,6 @@ theorem theorem_n_five_delta_clause : WachTwistTheoremDeltaClause := by
       exact add_le_add (Nat.mul_le_mul_right _ (Nat.le_succ t)) (Nat.le_add_left _ _)
   gcongr
 
-theorem deltaPt : StatDeltaPt := by
-  intro O Tc M _ _ _ _ _ t rr a h m
-  have key : ∀ s : Finset ℕ, (∀ i ∈ s, 0 < t ∧ i < t) → ∀ m : M,
-      (∏ i ∈ s, (rr 0 - rr i)) • m = (∏ i ∈ s, (a 0 - a i)) • m := by
-    intro s
-    induction s using Finset.induction_on with
-    | empty => intro _ m; simp
-    | insert i s hi ih =>
-      intro hs m
-      obtain ⟨h0, hit⟩ := hs i (Finset.mem_insert_self i s)
-      rw [Finset.prod_insert hi, Finset.prod_insert hi, mul_smul, mul_smul,
-        ih (fun k hk => hs k (Finset.mem_insert_of_mem hk)) m, sub_smul, sub_smul, h 0 h0, h i hit]
-  exact key _ (fun i hi => by rw [Finset.mem_Ioo] at hi; omega) m
-
 theorem inputs_from_selmer_inj : SelmerInjConditions := by
   intro O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ _ colIdx D j e' Kc k0 ℓ what₂ s
     L _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz HcG Hc F Vo Io ε T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ lam
@@ -187,41 +175,5 @@ theorem inputs_from_selmer_inj : SelmerInjConditions := by
   obtain ⟨b1, b2, b3, b4, b5⟩ := a8 l
   exact selmer_inj_column_place O A T' G M L V r χ (D (colIdx l)) iL qV tens a1 a2 a3 a4 a5 a6 a7 (Ff l)
     (j (colIdx l)) (κ l) (κz l) b1 b2 b3 b4 b5
-
-set_option maxHeartbeats 4000000 in
-theorem theorem_n_five_top_variant : WachTwistTheoremVariant := by
-  intro O _ _ _ X X' T T' Z p q b ha hb d _ _ R' _ hc Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinj
-    D j e' Kc k0 hEE hee hpts g₀ n hspan π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard hcard1
-    sE tE δO ℓ cB what₂ qs deg s vhE H0 Sha hEsum hk0 NNc cols eO vδ N h0
-    L _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz HcG Hc F Vo VS Io IS ε T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ
-    lam Cs _ _ cls pr Fs Im cT I γQ ζ ζO nQ u rr gI s₀ u₁ y hℓ hℓu hs hs2 hx hδ hδO hrr
-    hE0 hτ0 hne hIn0 hC hOne
-  have hδm : ∀ (c : Fin (t + 1)) (m : blockRestrictedRepresentationType bl ρk c), δ • m = δO • m := by
-    intro c m
-    have h := deltaPt O Tc (blockRestrictedRepresentationType bl ρk c) t rr
-      (fun i => (u₁ : O) * (((ε gI)⁻¹ ^ i : Oˣ) : O)) (hrr c) m
-    simp only [pow_zero, Units.val_one, mul_one] at h
-    rw [hδ, hδO]
-    exact h
-  obtain ⟨hv1, hv2⟩ := theorem_n_five_delta_clause O ℓ hℓ hℓu s₀ hs hs2 (ε gI) y u₁ hx t
-  refine ⟨?_, ?_, ?_⟩
-  · exact theorem_n_five_top_holds O X X' T T' Z p q b ha hb d R' hc Tc G r χ E e₁ δ ι colIdx hinj D j e' Kc k0 hEE hee
-      hpts g₀ n hspan π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard hcard1 sE tE δO ℓ cB what₂ qs deg
-      s vhE H0 Sha hEsum hk0 L tens v₁ κ HcG Hc F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π γ lam Cs cls pr
-      Fs Im cT I γQ ζ ζO nQ u hE0 (hδm 0) hτ0 hne
-      (inputs_from_selmer_inj O R' Tc G (blockRestrictedRepresentationType bl ρk 0) r χ E e₁ δ ι colIdx D j e' Kc k0 ℓ what₂ s L tens v₁ κ V
-        iL qV Ff κz (HcG 0) (Hc 0) (F 0) Vo Io ε T₁ T₂ ρ₁ ρ₂ inc π γ lam Cs cls pr Fs Im hIn0)
-      (fun c hc2 => by
-        obtain ⟨a1, a2, a4, a5, a6⟩ := hC c hc2
-        exact ⟨a1, a2, hδm c, a4, a5, a6⟩)
-      (by
-        obtain ⟨a1, a2, a3, a5, a6, a7, a8, a9⟩ := hOne
-        exact ⟨a1, a2, a3, hδm _, a5, a6, a7, a8, a9⟩)
-  · show addVal O δO = _
-    rw [hδO]
-    exact hv1
-  · show addVal O δO ≤ _
-    rw [hδO]
-    exact hv2
 
 end Formalism.RepresentationBoundsCohomology.BR

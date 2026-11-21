@@ -7,43 +7,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.Published.PoitouTate.Model
 
-theorem exists_containsAbove (F : Type) [Field F] [NumberField F] (l : ℕ) [hl : Fact l.Prime] :
-    ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ContainsAbove S l := by
-  have h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact Nat.cast_ne_zero.mpr hl.out.ne_zero
-  refine ⟨(Ideal.finite_factors h0).toFinset, fun v hv => ?_⟩
-  rw [Set.Finite.mem_toFinset]
-  exact Ideal.dvd_span_singleton.2 hv
-
-theorem exists_data (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
-    [IsAlgClosure F Ω] (l : ℕ) [hl : Fact l.Prime] (r : ℕ) :
-    ∃ ζ : Ω, IsPrimitiveRoot ζ (l ^ r) ∧
-    ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ContainsAbove S l ∧
-    ∃ Av : S → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v.1) ∧
-    ∃ μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ,
-      μ.comp (toGS Ω _) = cycMod F Ω l r ∧ ContAction (charRep μ) := by
-  have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F
-  have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
-  have : NeZero ((l : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩
-  obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ r)
-  obtain ⟨S, hS⟩ := exists_containsAbove F l
-  obtain ⟨μ, hμ⟩ := exists_lift_cycMod (Ω := Ω) (r := r) hS
-  exact ⟨ζ, hζ, S, hS, fun v => placeOf Ω v.1, fun v => isPlaceOver_placeOf Ω v.1, μ, hμ,
-    contAction_charRep hμ⟩
-
 abbrev Qi : Type := CyclotomicField 4 ℚ
 
 instance : IsTotallyComplex Qi :=
   haveI : IsCyclotomicExtension {4} ℚ Qi := CyclotomicField.isCyclotomicExtension 4 ℚ
   IsCyclotomicExtension.Rat.isTotallyComplex (n := 4) Qi (by norm_num)
-
-theorem card_H2_gaussian_field (h : PoitouTateTotallyComplex) (v : HeightOneSpectrum (𝓞 Qi)) :
-    Nat.card (H2 (muLoc Qi 2 2 (placeOf (AlgebraicClosure Qi) v))) = 4 := by
-  obtain ⟨ζ, hζ, -⟩ := exists_data Qi (AlgebraicClosure Qi) 2 2
-  obtain ⟨inv, hinv, -⟩ := h Qi (AlgebraicClosure Qi) 2 2 (by norm_num) ζ hζ
-  rw [Nat.card_eq_of_bijective _ (hinv.1 _ v (isPlaceOver_placeOf _ v)).1]
-  simp
 
 theorem exists_kummer {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [hl : Fact l.Prime] {r : ℕ} {ζ : Ω} (hζ : IsPrimitiveRoot ζ (l ^ r))
@@ -247,25 +215,5 @@ theorem exists_unramified {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Al
     exact eq_of_pow_eq_one A hNv (hg _) hξ.pow_eq_one (hg'.2 ξ hξA)
   · rw [← hχ, ← Nat.cast_one, hval, pow_one]
     exact eq_of_pow_eq_one A hNv (hg _) (hpw _) (hg'.2 ξ hξA)
-
-theorem exists_eq_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
-    [IsAlgClosure F Ω] {l : ℕ} [hl : Fact l.Prime] {r : ℕ} (hr : 0 < r) {ζ : Ω}
-    (hζ : IsPrimitiveRoot ζ (l ^ r)) {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
-    (hA : IsPlaceOver A v) :
-    ∃ x : H2 (muLoc F l r A), ∀ inv, IsNormalised ζ A v inv → inv x = 1 := by
-  obtain ⟨χ, h1, h2, h3, h4⟩ := exists_unramified hA (n := l ^ r) (Nat.one_lt_pow hr.ne' hl.out.one_lt)
-  obtain ⟨ϖ, y, κ, z, a, b, c, d, e⟩ := exists_kummer hζ A v χ h1 h2
-  exact ⟨Submodule.Quotient.mk z, fun inv h => h ϖ y κ χ z a b c d h1 h3 h4 e⟩
-
-theorem inv_unique {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
-    [IsAlgClosure F Ω] {l : ℕ} [hl : Fact l.Prime] {r : ℕ} (hr : 0 < r) {ζ : Ω}
-    (hζ : IsPrimitiveRoot ζ (l ^ r)) {inv inv' : InvFam F Ω l r} (h : IsLocalInvariants ζ inv)
-    (h' : IsLocalInvariants ζ inv') {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
-    (hA : IsPlaceOver A v) : inv A = inv' A := by
-  obtain ⟨x, hx⟩ := exists_eq_one hr hζ hA
-  refine LinearMap.ext fun w => ?_
-  have e : w = inv A w • x := (h.1 A v hA).1.1 (by
-    rw [map_smul, hx _ (h.1 A v hA).2, smul_eq_mul, mul_one])
-  conv_rhs => rw [e, map_smul, hx _ (h'.1 A v hA).2, smul_eq_mul, mul_one]
 
 end GlobalTheory.Published.PoitouTate.Model

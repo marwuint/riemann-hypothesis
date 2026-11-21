@@ -5,7 +5,6 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementRe
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CardQuotPow
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardQuotPow
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBis
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -37,10 +36,6 @@ theorem resQ_ne_zero {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) : resQ ϖ ≠ 0 := by
   rw [← hϖ.maximalIdeal_eq]
   haveI : Finite (𝒪[F] ⧸ IsLocalRing.maximalIdeal 𝒪[F]) := inferInstanceAs (Finite 𝓀[F])
   exact Nat.card_pos.ne'
-
-theorem exp_eq {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {a : ℤ} {m : ℕ} {u v : (𝒪[F])ˣ}
-    (h : (ϖ : F) ^ a * ((u : 𝒪[F]) : F) * ((v : 𝒪[F]) : F) = (ϖ : F) ^ m) : a = m :=
-  _root_.GlobalTheory.QuotientCardinality.main hϖ h
 
 theorem relIndex_map {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {W : Type} [AddCommGroup W] [Module F W]
     {ι : Type} [Fintype ι] (b : Module.Basis ι F W) (ψ : W →ₗ[F] W) (a : ℤ) (u : (𝒪[F])ˣ)

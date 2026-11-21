@@ -65,24 +65,6 @@ theorem exists_norm_eq_pow {x : normInteger K} (hx : x ≠ 0) : ∃ n : ℕ, ‖
   simp only [Subring.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow] at this
   rwa [isUnit_integer_iff_norm_eq_one.1 u.isUnit, mul_one] at this
 
-theorem mem_span_unif_pow_iff {x : normInteger K} (n : ℕ) :
-    x ∈ span {ϖ ^ n} ↔ ‖(x : K)‖ ≤ ‖(ϖ : K)‖ ^ n := by
-  rw [← span_singleton_pow, mem_span_singleton_pow_iff]
-
-theorem norm_le_pow_succ_of_lt {x : normInteger K} {n : ℕ} (h : ‖(x : K)‖ < ‖(ϖ : K)‖ ^ n) :
-    ‖(x : K)‖ ≤ ‖(ϖ : K)‖ ^ (n + 1) := by
-  by_cases hx : x = 0
-  · simp [hx]
-  obtain ⟨m, hm⟩ := exists_norm_eq_pow hϖ hx
-  rw [hm] at h ⊢
-  have h1 := norm_unif_lt_one hϖ
-  have h0 := norm_unif_pos hϖ
-  have : n < m := by
-    by_contra hnm
-    replace hnm := not_lt.1 hnm
-    exact absurd h (not_lt.2 (pow_le_pow_of_le_one h0.le h1.le hnm))
-  exact pow_le_pow_of_le_one h0.le h1.le this
-
 end Integers
 
 section PowCongr
@@ -417,15 +399,6 @@ theorem norm_cohenMap_of_coeff_ne_zero {w : WittVector p (ResidueField (normInte
   refine le_antisymm (norm_coe_integer_le_one _) (not_lt.1 fun h => hw ?_)
   rw [← residue_cohenMap, residue_eq_zero_iff_norm_lt_one]
   exact h
-
-theorem cohenMap_injective : Function.Injective (cohenMap K p) := by
-  rw [injective_iff_map_eq_zero]
-  intro w hw
-  by_contra h0
-  obtain ⟨m, b, hb, rfl⟩ := WittVector.exists_eq_pow_p_mul w h0
-  rw [map_mul, map_pow, map_natCast] at hw
-  have hb' : cohenMap K p b ≠ 0 := fun h => hb (by rw [← residue_cohenMap, h, map_zero])
-  exact mul_ne_zero (pow_ne_zero _ (natCast_prime_ne_zero p)) hb' hw
 
 instance cohenAlgebra : Algebra (WittVector p (ResidueField (normInteger K))) (normInteger K) :=
   (cohenMap K p).toAlgebra

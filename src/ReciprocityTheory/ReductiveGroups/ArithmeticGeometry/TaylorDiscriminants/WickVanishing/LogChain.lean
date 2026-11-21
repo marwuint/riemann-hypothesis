@@ -1,5 +1,5 @@
 import Mathlib
-import ReciprocityTheory.ReductiveGroups.Models.FiniteGeneration.FiniteGenerationProofs.SolveV
+import Formalism.FormalGroupWitt.FormalGroupWittProofs.SolveV
 
 set_option autoImplicit false
 

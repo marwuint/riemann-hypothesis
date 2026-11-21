@@ -26,11 +26,6 @@ theorem deriv_finsetProd {ι : Type*} [DecidableEq ι] (D : Derivation R A A) (t
       smul_eq_mul, smul_eq_mul, Finset.mul_sum]
     ring
 
-theorem deriv_finsetProd_eq_zero {ι : Type*} [DecidableEq ι] (D : Derivation R A A) (t : Finset ι)
-    (P : ι → A) (h : ∀ k ∈ t, D (P k) = 0) : D (∏ k ∈ t, P k) = 0 := by
-  rw [deriv_finsetProd]
-  exact Finset.sum_eq_zero fun k₀ hk₀ => Finset.prod_eq_zero hk₀ (by simp [h k₀ hk₀])
-
 theorem leibniz_ofFn {m s : ℕ} (ds : Fin m → Derivation R A A) (P : Fin s → A) :
     (List.ofFn fun i => (ds i : A →ₗ[R] A)).prod (∏ k, P k) =
       ∑ φ : Fin m → Fin s,

@@ -22,10 +22,6 @@ theorem midI_lt (r : ℕ) {i j : Fin r} (h : i < j) : midI r i < midI r j := by
   have := Fin.lt_iff_val_lt_val.mp h
   omega
 
-theorem midI_pos (r : ℕ) (j : Fin r) : (0 : Fin (r + 1 + 1)) < midI r j := by
-  rw [Fin.lt_def, midI_val]
-  simp
-
 theorem midOf_midI (r : ℕ) (j : Fin r) : midOf (midI r j) = some j := by
   have hv := midI_val r j
   have hj := j.isLt

@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BsLApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackGramMatricesIndependentOfFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackGramMatricesIndependentOfFrame
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.L2DbarEstimates (V)
@@ -18,7 +20,7 @@ theorem pullGram_cell : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F
   intro F _ σ X Y ι _ m E E' φ f hf hR _c A u H hH z hz
   obtain ⟨hA, hB⟩ := hz
   funext τ
-  rw [(GlobalTheory.T.pulled_back_gram_matrices_independent_of_frame F σ X Y ι m E E' φ f hf hR H hH z).2 A hA _ hB τ]
+  rw [(_root_.GlobalTheory.ChernCalc.pullGram_eq_of_frame F σ X Y ι m E E' φ f hf hR H hH z).2 A hA _ hB τ]
   have hd : ∀ τ, ((A.map φ) τ).det ≠ 0 := fun τ => by
     change ((A τ).map φ).det ≠ 0
     have := RingHom.map_det (φ : X.Fn →+* Y.Fn) (A τ)

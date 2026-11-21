@@ -92,21 +92,6 @@ theorem algebraMap_isogConst (φ : Isogeny E E') :
     algebraMap F E.toAffine.FunctionField (isogConst φ) = isogCoeff φ :=
   (exists_isogCoeff_eq_algebraMap φ).choose_spec
 
-theorem isogenyPullback_invariantDifferential_eq_const_smul (φ : Isogeny E E') :
-    isogenyPullback φ (invariantDifferential E') = isogConst φ • invariantDifferential E := by
-  rw [isogenyPullback_invariantDifferential_eq_smul, ← algebraMap_isogConst, algebraMap_smul]
-
-theorem isogConst_add {φ ψ χ : Isogeny E E'} (h : χ.1 = φ.1 + ψ.1) :
-    isogConst χ = isogConst φ + isogConst ψ :=
-  (algebraMap F E.toAffine.FunctionField).injective (by
-    rw [map_add, algebraMap_isogConst, algebraMap_isogConst, algebraMap_isogConst, isogCoeff_add h])
-
-variable (E) in
-
-theorem isogConst_mulIsogeny (n : ℤ) (hn : n ≠ 0) : isogConst (mulIsogeny E n hn) = n :=
-  (algebraMap F E.toAffine.FunctionField).injective (by
-    rw [algebraMap_isogConst, isogCoeff_mulIsogeny, map_intCast])
-
 theorem isSeparable_iff_isogConst_ne_zero (φ : Isogeny E E') :
     φ.IsSeparable ↔ isogConst φ ≠ 0 := by
   rw [isSeparable_iff_isogCoeff_ne_zero, ← algebraMap_isogConst, ne_eq, ne_eq,

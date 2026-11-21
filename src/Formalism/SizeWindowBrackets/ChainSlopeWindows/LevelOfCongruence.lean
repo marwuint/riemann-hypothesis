@@ -1,6 +1,6 @@
 import Formalism.SizeWindowBrackets.QuotientSlopeBoundsWith
 import Formalism.RankGapBounds.RankGapProofs.WeightedMeanData
-import Formalism.RankGapBounds.RankGapProofs.UniformMeanTopLine
+import Formalism.RankGapBounds.MeanBoundSecondForm
 
 open Real
 
@@ -38,14 +38,6 @@ lemma exponent_ge_lower (hE : EComp5 D C) (u0 : U0) (u : W u0) :
     (m : ℝ) * (D.sumA * D.lg - C.cE * D.B0) ≤ D.Ee u0 u := by
   have := (abs_le.mp (hE u0 u)).1
   linarith
-
-lemma losses_of_losses5 [Nonempty U0] (h : LossBounds D C) : D.Losses C := by
-  refine ⟨?_, ?_⟩
-  · have := umean_mono (X := fun u0 => D.ASK u0 - D.Ga u0) (Y := fun _ : U0 => D.LoP C)
-      (fun u0 => (h u0).1)
-    rwa [umean_const] at this
-  · have := umean_mono (X := D.IO) (Y := fun _ : U0 => D.LoP C) (fun u0 => (h u0).2)
-    rwa [umean_const] at this
 
 lemma s_lower5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C) (hCount : Count5 D C)
     (hSl : D.Slopes C) (hSN : QuotientSlopeBoundsWith D C Xpp) (u0 : U0) :
@@ -195,51 +187,6 @@ theorem each_unit_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
   unfold K0v5 Data.EDiv at h1
   unfold ErrX5at UBar5
   linarith
-
-theorem weighted_mean_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
-    [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
-    (D : Data U0 W Top m f) (C : Consts) (Xpp : ℝ) : MeanBoundOfLossBounds D C Xpp := by
-  intro hne hS hDIV hE hH hCount hSl hSN hLoss hSI hHH hFP
-  have := hne
-  have hx : 0 < D.x := hS.1
-  have hdelBar : D.delBar < 1 := hS.2.2.2.2.2.2.2.2.2.2.2.2.2.1
-  have hcSl1 : 0 ≤ C.cSl1 := hS.2.2.2.2.2.2.2.2.2.2.2.2.1
-  have hinv0 : 0 ≤ (1 - D.delBar)⁻¹ := inv_nonneg.mpr (by linarith)
-  have hX : 0 < D.x ^ C.cHH := Real.rpow_pos_of_pos hx _
-  have hLX : 0 ≤ Real.log (1 + D.x ^ C.cHH) := Real.log_nonneg (by linarith)
-  have hc4 : 0 ≤ (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH)) :=
-    mul_nonneg hinv0 (mul_nonneg (by norm_num) hLX)
-  have hp : 0 ≤ (1 + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))) * C.cSl1 :=
-    mul_nonneg (by linarith) hcSl1
-  have hGa : ∀ u0, D.Ga u0 ≤ D.Main u0 + Real.log (Fintype.card (W u0) : ℝ)
-      + ((1 + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))) * C.cSl1) * D.IO u0
-      + 0 * D.IO u0
-      + (K0v5 D C + (1 + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))) * K7v5 D C Xpp
-        + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH)) * (D.K3 C + D.b)
-        + (1 - D.delBar)⁻¹ * ((D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b))) := by
-    intro u0
-    have h1 := Ga_bound5 D C Xpp hS hDIV hE hH hCount hSl hSN hSI hHH hFP u0
-    have h2 := weighted_mean_lower_bound_le D C Xpp hS hCount u0
-    have h3 := mul_le_mul_of_nonneg_left h2 hc4
-    linarith
-  have h1 := umean_le_comb (X := D.Ga) (A := D.Main)
-    (B := fun u0 => Real.log (Fintype.card (W u0) : ℝ)) (P := D.IO) (E := D.IO) _ _ _ hGa
-  have h2 := umean_le_comb (X := D.ASK) (A := fun u0 => D.ASK u0 - D.Ga u0) (B := D.Ga)
-    (P := D.Ga) (E := D.Ga) 0 0 0 (fun i => by
-      show D.ASK i ≤ (D.ASK i - D.Ga i) + D.Ga i + 0 * D.Ga i + 0 * D.Ga i + 0
-      linarith)
-  have h3 := mul_le_mul_of_nonneg_left hLoss.2 hp
-  have h4 := hLoss.1
-  unfold K0v5 Data.K3 K7v5 Data.EDiv at h1
-  unfold errorTermWith UBar5 MLo5
-  linarith
-
-theorem uniform_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
-    [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
-    (D : Data U0 W Top m f) (C : Consts) (Xpp : ℝ) : MeanBoundWith D C Xpp := by
-  intro hne hS hDIV hE hH hCount hSl hSN hLoss hSI hHH hFP
-  exact weighted_mean_bound_statement D C Xpp hne hS hDIV hE hH hCount hSl hSN
-    (losses_of_losses5 D C hLoss) hSI hHH hFP
 
 def C1 : Consts := ⟨1, 1, 1, 1, 1, 1, 1, 1, 1, 1⟩
 

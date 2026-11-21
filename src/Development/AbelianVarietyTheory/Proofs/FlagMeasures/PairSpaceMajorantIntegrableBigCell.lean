@@ -20,8 +20,8 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.SettingConstruction
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.BFCell
 import Formalism.FormalDegreeBessel.FinalBF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BigCellQuotientNormalisesUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MapConjUnipotentHaarEqSmulStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegrableBesselPairMajorantMulRightStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MapConjUnipotentHaarEqSmul
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegrableBesselPairMajorantMulRight
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S BranchingSupport GlobalTheory.CellAmp
@@ -118,12 +118,12 @@ theorem bigConv : ∀ (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (h
   set a := (Formalism.QuantumDeterminants.bigCell k r c μ₁)⁻¹ * Formalism.QuantumDeterminants.bigCell k r c μ with ha
   have haU : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hg₁) hg
   have hN := GlobalTheory.T.bigCell_quotient_normalises_unipotent k r c μ₁ μ hc hμ₁ hμ
-  obtain ⟨C, hC, hmap⟩ := GlobalTheory.T.map_conj_unipotentHaar_eq_smul k r L hκ0 hκ a haU hN
+  obtain ⟨C, hC, hmap⟩ := _root_.GlobalTheory.NConjHaar.map_conj_eq_smul k r L hκ0 hκ a haU hN
   refine ⟨b, hb0, hb1, ?_⟩
   have e : Formalism.QuantumDeterminants.bigCell k r c μ₁ * a = Formalism.QuantumDeterminants.bigCell k r c μ := by
     rw [ha, Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]
   rw [← e]
-  exact GlobalTheory.T.integrable_besselPairMajorant_mul_right k r L _ a b C hκ0 hκ hb0 hg₁ haU hC hmap hint
+  exact _root_.GlobalTheory.CellMajTransfer.integrable_mul_right k r L _ a b C hκ0 hκ hb0 hg₁ haU hC hmap hint
 
 end GlobalTheory.BigConv
 end

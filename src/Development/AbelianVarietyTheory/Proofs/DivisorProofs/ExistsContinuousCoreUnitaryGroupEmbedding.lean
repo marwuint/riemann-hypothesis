@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfFrameCols
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryAdelicPointPrescribedFrameImagesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemUnitaryRationalPointsOfFrameImagesRationalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousUnitaryAdelicOfFrameColumnsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryAdelicPointPrescribedFrameImages
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemUnitaryRationalPointsOfFrameImagesRational
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousUnitaryAdelicOfFrameColumns
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.EisLine GlobalTheory.SphEis
 open GlobalTheory.ResLine (IsHt SemiLat)
@@ -43,7 +43,7 @@ theorem core_embeds : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
       _ = _ := by rw [h, hU]
   have img : ∀ g : GAd σ J₀, ∃ h : GAd σ J, (matHom _ σ J h).1 * adMat F C = adMat F C ∧
       (matHom _ σ J h).1 * adMat F Z = adMat F Z * (matHom _ σ J₀ g).1 ∧ (matHom _ σ J h).1 * adMat F D = adMat F D :=
-    fun g => GlobalTheory.T.exists_unitaryAdelicPoint_prescribed_frameImages F E σ n J j m C D Z J₀ hF (adMat F C) (adMat F D) (adMat F Z * (matHom _ σ J₀ g).1)
+    fun g => _root_.GlobalTheory.SphEis.ColImg.exists_point_images F E σ n J j m C D Z J₀ hF (adMat F C) (adMat F D) (adMat F Z * (matHom _ σ J₀ g).1)
       (by rw [adelicMatrixOfTensor_gram_conjTranspose_mul, hF.cc]; simp [adMat]) (by rw [adelicMatrixOfTensor_gram_conjTranspose_mul, hF.dd]; simp [adMat])
       (by rw [adelicMatrixOfTensor_gram_conjTranspose_mul, hF.cd]; simp [adMat])
       (by rw [← Matrix.mul_assoc, adelicMatrixOfTensor_gram_conjTranspose_mul, hF.cz]; simp [adMat])
@@ -64,7 +64,7 @@ theorem core_embeds : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   refine ⟨MonoidHom.mk' f hmul, ?_, fun g => ⟨hC g, hD g, hZ g⟩, ?_⟩
   · haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
     haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _
-    apply GlobalTheory.T.continuous_unitaryAdelic_of_frameColumns F E σ n J j m C D Z J₀ hF (GAd σ J₀) f
+    apply _root_.GlobalTheory.SphEis.continuous_of_frameCols F E σ n J j m C D Z J₀ hF (GAd σ J₀) f
     · simp only [hC]; exact continuous_const
     · simp only [hZ]
       exact continuous_const.matrix_mul (Units.continuous_val.comp (isEmbedding_matHom (AF F) σ J₀).continuous)
@@ -75,7 +75,7 @@ theorem core_embeds : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
     obtain ⟨γ, -, hγ⟩ := hg
     have hg' : (matHom _ σ J₀ g).1 = adMat F γ.1 := by
       rw [← hγ]; rfl
-    apply GlobalTheory.T.mem_unitaryRationalPoints_of_frameImages_rational F E σ n J j m C D Z J₀ hF (f g) C D (Z * γ.1) (hC g)
+    apply _root_.GlobalTheory.SphEis.mem_ratPts_of_cols_rat F E σ n J j m C D Z J₀ hF (f g) C D (Z * γ.1) (hC g)
     · rw [hZ, hg', adMat, adMat, adMat, Matrix.map_mul]
     · exact hD g
 

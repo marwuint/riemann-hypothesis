@@ -14,11 +14,6 @@ open scoped ValuativeRel
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ}
 
-def vWeight (t : ℂ) (l : Fin n → ℤ) : ℂ :=
-  ∏ a ∈ Finset.univ.image l, vPoly (Finset.univ.filter fun i => l i = a).card t
-
-def hallLittlewoodP (t : ℂ) (l : Fin n → ℤ) : LaurentRing n := (vWeight t l)⁻¹ • hlR t l
-
 theorem vPoly_ne_zero {t : ℂ} (ht : Function.Injective fun k : ℕ => t ^ k) (m : ℕ) :
     vPoly m t ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun k _ => div_ne_zero ?_ ?_
@@ -30,10 +25,6 @@ theorem vPoly_ne_zero {t : ℂ} (ht : Function.Injective fun k : ℕ => t ^ k) (
     have h' : t ^ 1 = t ^ 0 := by rw [pow_zero, pow_one]; exact (sub_eq_zero.1 h).symm
     have := ht h'
     omega
-
-theorem vWeight_ne_zero {t : ℂ} (ht : Function.Injective fun k : ℕ => t ^ k) (l : Fin n → ℤ) :
-    vWeight t l ≠ 0 :=
-  Finset.prod_ne_zero_iff.2 fun _ _ => vPoly_ne_zero ht _
 
 theorem injective_qInv_pow : Function.Injective fun k : ℕ => ((qF F : ℂ))⁻¹ ^ k := by
   have hq : 1 < qF F := Finite.one_lt_card
@@ -144,64 +135,6 @@ theorem macdonald_formula_hlR (z : Fin n → ℂˣ) {l : Fin n → ℤ} (hl : An
       simp only [hf, torusPow_zero, zonalSpherical_one, halfModulus_zero, one_mul, mul_one]
       rw [hlR_zero t injective_qInv_pow, AlgHom.commutes]
       simp)
-  exact sub_eq_zero.1 (key l hl)
-
-theorem macdonald_formula (z : Fin n → ℂˣ) {l : Fin n → ℤ} (hl : Antitone l) :
-    zonalSpherical μ z (torusPow F n l) =
-      halfModulus F l * (vWeight ((qF F : ℂ))⁻¹ l / vPoly n ((qF F : ℂ))⁻¹) *
-        evalAt z (hallLittlewoodP ((qF F : ℂ))⁻¹ l) := by
-  have h := macdonald_formula_hlR (μ := μ) z hl
-  have hv := vPoly_ne_zero (injective_qInv_pow (F := F)) n
-  have hw := vWeight_ne_zero (injective_qInv_pow (F := F)) l
-  have h' : zonalSpherical μ z (torusPow F n l) =
-      halfModulus F l * evalAt z (hlR ((qF F : ℂ))⁻¹ l) / vPoly n ((qF F : ℂ))⁻¹ := by
-    rw [eq_div_iff hv, mul_comm, h]
-  rw [hallLittlewoodP, map_smul, smul_eq_mul, h']
-  generalize ((qF F : ℂ))⁻¹ = t at hv hw ⊢
-  field_simp
-
-theorem eq_smul_zonalSpherical (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
-    (hfK : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g)
-    (hfK' : ∀ k ∈ integralGL F n, ∀ g, f (k * g) = f g)
-    (heig : ∀ (h : SphericalHecke μ (F := F) (n := n)) (g : GL (Fin n) F),
-      ∫ x, (h : HeckeAlgebra μ) x * f (g * x) ∂μ = evalAt z (satakeTransform μ h) * f g)
-    (g : GL (Fin n) F) : f g = f 1 * zonalSpherical μ z g := by
-  set F' : (Fin n → ℤ) → ℂ := fun m =>
-    f (torusPow F n m) - f 1 * zonalSpherical μ z (torusPow F n m) with hF'
-  have hcomp : ∀ (m : Fin n → ℤ) (σ : Equiv.Perm (Fin n)), f (torusPow F n (m ∘ σ)) = f (torusPow F n m) := by
-    intro m σ
-    rw [← permGL_conj_torusPow, hfK _ _ (permGL_mem_integralGL F n σ),
-      hfK' _ ((integralGL F n).inv_mem (permGL_mem_integralGL F n σ))]
-  have hswap : ∀ (m : Fin n → ℤ) (i j : Fin n), (j : ℕ) = i + 1 → m j = m i + 1 →
-      F' (m ∘ Equiv.swap i j) = F' m := by
-    intro m i j _ _
-    simp only [hF']
-    rw [hcomp, zonalSpherical_torusPow_comp]
-  have key := eq_zero_of_recursion (fun S => (kappa F S : ℝ)) (fun S => by exact_mod_cast kappa_pos S)
-    (fun r => sqrtQ F ^ (r * (n - r)) * evalAt z (esymmL n r))
-    (by
-      rw [Nat.sub_self, mul_zero, pow_zero, one_mul]
-      exact evalAt_esymmL_self_ne_zero z)
-    F'
-    (by
-      intro m hm r hr
-      have h1 := zonalSpherical_recursion (μ := μ) z hm hr
-      have h2 := recursion_of_integral_eq (μ := μ) z hfK (fun u hu g => hfK' u hu.2 g) hm hr
-        (heig _ _)
-      simp only [hF', Complex.ofReal_natCast]
-      calc _ = sqrtQ F ^ (r * (n - r)) * evalAt z (esymmL n r) * f (torusPow F n m) -
-            f 1 * (sqrtQ F ^ (r * (n - r)) * evalAt z (esymmL n r) *
-              zonalSpherical μ z (torusPow F n m)) := by ring
-        _ = _ := by
-          rw [h1, h2, Finset.mul_sum, ← Finset.sum_sub_distrib]
-          exact Finset.sum_congr rfl fun S _ => by ring)
-    (fun m hm S => Or.inr (by
-      obtain ⟨σ, hσ, hfσ⟩ := exists_perm_antitone F' hswap hm S
-      exact ⟨σ, hσ, hfσ.symm⟩))
-    (by simp only [hF', torusPow_zero, zonalSpherical_one, mul_one, sub_self])
-  obtain ⟨l, hl, k₁, hk₁, k₂, hk₂, rfl⟩ := Cartan.exists_eq_mul_diagPow_mul F n g
-  rw [hfK _ _ hk₂, hfK' _ hk₁, zonalSpherical_mul_right z _ hk₂, zonalSpherical_mul_left z hk₁,
-    diagPow_eq_torusPow]
   exact sub_eq_zero.1 (key l hl)
 
 theorem casselman_shalika (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)

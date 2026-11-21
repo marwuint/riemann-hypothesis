@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FibreRankCompOfSurj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankFrobeniusDualAddFinrankKerVerschiebungStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankFrobeniusKernelHopfLePowCotangentStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusKernelIdealEqKernelRelativeFrobeniusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppOneEqZeroOfKernelIdealOfCompEqPrimeSmulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppOneEqZeroOfKernelIdealOfCompEqPrimeSmul
 set_option autoImplicit false
 noncomputable section
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
@@ -34,7 +34,7 @@ theorem GlobalTheory.PDivGroup.height_le_finrank_cot_add_finrank_cot_dual (p : �
   have hker : (kerIdeal ((relFrob h G).app 1)).restrictScalars K ≤
       LinearMap.ker ((verschiebung h G).app 1 :
         G.A 1 →ₐ[K] (frobTwist h G).A 1).toLinearMap := fun a ha =>
-    GlobalTheory.T.app_one_eq_zero_of_kernel_ideal_of_comp_eq_prime_smul p K G (frobTwist h G) (relFrob h G) (verschiebung h G)
+    _root_.GlobalTheory.PDivGroup.app_one_eq_zero_of_mem_kerIdeal_of_comp_eq_prime_smul p K G (frobTwist h G) (relFrob h G) (verschiebung h G)
       (verschiebung_comp_relFrob h G) a ha
   have hV := GlobalTheory.T.finrank_frobeniusDual_add_finrank_ker_verschiebung p K h G
   have hq := Submodule.finrank_quotient_add_finrank

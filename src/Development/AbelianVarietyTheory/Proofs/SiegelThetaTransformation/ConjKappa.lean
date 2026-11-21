@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DblZMemHnStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DblZMemHn
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.SW GlobalTheory.ThFr ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
 open scoped ComplexConjugate ComplexOrder Real Classical
 
@@ -214,7 +214,7 @@ theorem ccT_dblT : ccT (dblT X) =
 
 theorem dbl_per : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, ∀ y₁ y₂ : Matrix (Fin n) (Fin r) E, (∀ τ, dblz' X idx x₁ x₂ (fun k => per X x₁ (y₁ k) ∘ idx) (fun k i => conj (per X x₂ (y₂ k) (idx i))) τ = ((Matrix.fromCols y₁ y₂ * dblT X).toCols₂).map τ.1 + ((Matrix.fromCols y₁ y₂ * dblT X).toCols₁).map τ.1 * dblZ X x₁ x₂ τ) ∧ (∀ τ, dblz X idx x₁ x₂ (fun k => per X x₁ (y₁ k) ∘ idx) (fun k i => conj (per X x₂ (y₂ k) (idx i))) τ = (((Matrix.fromCols y₁ y₂ * dblT X).toCols₂).map τ.1).map conj + (((Matrix.fromCols y₁ y₂ * dblT X).toCols₁).map τ.1).map conj * (dblZ X x₁ x₂ τ)ᵀ) ∧ IsUnit (dblT X).det ∧ dblT X * Matrix.J (Fin r) E * ccT (dblT X) = (X.κ0 / 2) • Matrix.fromBlocks X.Gm 0 0 (-X.Gm) := by
   intro E _ _ _ r X g bas idx n _ _ x₁ hx₁ x₂ hx₂ y₁ y₂
-  have hI := GlobalTheory.T.dblZ_mem_Hn_and_det_ne_zero E r X x₁ hx₁ x₂ hx₂
+  have hI := _root_.GlobalTheory.SW.dblZ_mem_Hn E r X x₁ hx₁ x₂ hx₂
   have hm₁ : ∀ τ, (mat x₁ τ).det ≠ 0 := fun τ => (hx₁ τ).1
   have hm₂ : ∀ τ, (mat x₂ τ).det ≠ 0 := fun τ => (hx₂ τ).1
 

@@ -26,34 +26,6 @@ theorem analyticAt_eval₂Hom {E R J : Type*} [NormedAddCommGroup E] [NormedSpac
     simp only [map_mul, MvPolynomial.eval₂Hom_X']
     exact hP.mul (hu i)
 
-theorem hasDerivAt_eval₂Hom_line {R J : Type*} [CommRing R] [Fintype J]
-    (φ : R →+* ℂ) (q : MvPolynomial J R) (y v : J → ℂ) :
-    HasDerivAt (fun t : ℂ => MvPolynomial.eval₂Hom φ (y + t • v) q)
-      (∑ i, MvPolynomial.eval₂Hom φ y (MvPolynomial.pderiv i q) * v i) 0 := by
-  classical
-  induction q using MvPolynomial.induction_on with
-  | C a => simpa using hasDerivAt_const (0 : ℂ) (φ a)
-  | add P Q hP hQ =>
-    simp only [map_add, add_mul, Finset.sum_add_distrib]
-    exact hP.add hQ
-  | mul_X P i hP =>
-    have hX : HasDerivAt (fun t : ℂ => y i + t * v i) (v i) 0 := by
-      simpa using ((hasDerivAt_id (0 : ℂ)).mul_const (v i)).const_add (y i)
-    have h := hP.mul hX
-    simp only [map_mul, MvPolynomial.eval₂Hom_X', Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-    refine HasDerivAt.congr_deriv h ?_
-    have h1 : ∀ j, MvPolynomial.eval₂Hom φ y (MvPolynomial.pderiv j (P * MvPolynomial.X i)) * v j =
-        MvPolynomial.eval₂Hom φ y (MvPolynomial.pderiv j P) * v j * y i +
-        if i = j then MvPolynomial.eval₂Hom φ y P * v j else 0 := by
-      intro j
-      rw [MvPolynomial.pderiv_mul, MvPolynomial.pderiv_X]
-      by_cases hij : i = j
-      · subst hij; simp; ring
-      · simp [hij, Pi.single_eq_of_ne hij]; ring
-    simp only [h1, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true,
-      ← Finset.sum_mul]
-    simp
-
 theorem exists_local_inverse {E S J σ : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] [CommRing S] [Fintype J] [Fintype σ] [DecidableEq σ]
     (χ : E → (S →+* ℂ)) (rel : σ → MvPolynomial J S) (c : σ → J) (hc : Function.Bijective c)

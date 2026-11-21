@@ -162,17 +162,4 @@ theorem ker_mul_of_fix {T : Type} {A A' WW : HSp D} {X : Tri T A A' WW} {ψ : Ad
 
 end GlobalTheory.BotBigLevel
 
-theorem GlobalTheory.BotBigLevel.ker_mul_level : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
-    (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
-    GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
-      (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (t : T) (Pf : PolF D WW.rank A.rank) (g : Formalism.L2.Theta.GA D WW) (n : ℕ) (x : Formalism.MainNotions.StandardLatticesGL3.GA D n)
-        (k : Formalism.L2.Theta.GA D A), x ∈ GlobalTheory.NormSum.intG D n → GlobalTheory.BotFormula.IsFinPt A k x →
-        ∀ y, X.ker W.ψ W.θ t Pf g (y * k) = X.ker W.ψ W.θ t Pf g y := by
-  intro _ _ _ _ _
-  refine ⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ _ T Lc μ₀ hμ G => ?_⟩⟩
-  intro W _ i j A A' WW X hX t Pf g n x k hx hk y
-  exact GlobalTheory.BotBigLevel.ker_mul_of_fix hX.is t hk.1
-    (GlobalTheory.BotBigLevel.fix_fst_of_unram hX.is t (fun v hv => GlobalTheory.BotFinLevel.unram_off G hμ t i j _ hv) hk.1
-      (GlobalTheory.BotBigLevel.mem_St_of_isFinPt hX.is.rigA hX.std hx hk)) Pf g y
-
 end

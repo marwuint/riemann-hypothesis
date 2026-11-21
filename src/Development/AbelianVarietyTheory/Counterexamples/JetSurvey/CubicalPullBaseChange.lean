@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Counterexamples.AbelianLawCounterexamples.GtBaseChangeSharp
 import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.CubeMapTripleProductUnique
-import Development.AbelianVarietyTheory.BlockTheory.AbelianSchemeLaw.GroupHomPullback
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubeConclusionIff
 
 noncomputable section
@@ -15,12 +15,6 @@ open GlobalTheory.GtCubeCompare (gw PM maps_iff_pm)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CubePullLawChecks
-
-section General
-
-variable {X Y : Scheme.{0}} {A B C : LB X}
-
-end General
 
 theorem rigPullIsGen : RigPullIsGenSt.{0} := by
   intro S S' G' G _ _ _ _ F e he L r _ hr

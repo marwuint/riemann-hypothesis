@@ -67,11 +67,6 @@ def SlopeLeMuMax : Prop :=
   ∀ (E : Type*) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     (L N : Submodule ℤ E), DiscreteTopology L → N ≤ L → N ≠ ⊥ → slope N ≤ muMax L
 
-def MuMaxAttained : Prop :=
-  ∀ (E : Type*) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    (L : Submodule ℤ E), DiscreteTopology L → L ≠ ⊥ →
-    ∃ N : Submodule ℤ E, IsSaturated L N ∧ N ≠ ⊥ ∧ slope N = muMax L
-
 def SlopeInequality : Prop :=
   ∀ (E F : Type*) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]

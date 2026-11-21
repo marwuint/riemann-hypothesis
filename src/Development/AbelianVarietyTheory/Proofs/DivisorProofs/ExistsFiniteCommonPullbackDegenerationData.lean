@@ -1,13 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyIsPullDegCompOfInjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPullDegCancelTowerOfFields
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.NonemptyCubicalPull
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsWithoutCohomology
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsomorphismMonHomDescendsFiniteExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyPullDegIdOfCommonFieldExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsomorphismMonHomDescendsFiniteExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyPullDegIdOfCommonFieldExtension
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -59,7 +60,7 @@ theorem exists_finite_common_pull : ∀ (K L : Type) [Field K] [CharZero K] [Fie
   haveI := h₁.e_hom
   haveI := h₂.e_hom
   obtain ⟨K', _, io, Ω, _, j, l, φ, hfin, hl, hφ, hcomp⟩ :=
-    GlobalTheory.T.isomorphism_mon_hom_descends_finite_extension K L β E₁.P.A E₂.P.A E₁.P.isAb E₂.P.isAb (h₁.e.symm ≪≫ h₂.e) (by dsimp; infer_instance)
+    _root_.GlobalTheory.IsoFinExt.exists_finite_iso K L β E₁.P.A E₂.P.A E₁.P.isAb E₂.P.isAb (h₁.e.symm ≪≫ h₂.e) (by dsimp; infer_instance)
   have hP := GlobalTheory.polBaseChange_holds
   obtain ⟨E₃, h₃, -, -⟩ := GlobalTheory.DegPull.exists_isPullDeg hP K K' io E₁ ⊤ (FieldPull.nonempty_psiOn_field E₁) trivial
   obtain ⟨E₄, h₄, -, -⟩ := GlobalTheory.DegPull.exists_isPullDeg hP K K' io E₂ ⊤ (FieldPull.nonempty_psiOn_field E₂) trivial
@@ -102,7 +103,7 @@ theorem exists_finite_common_pull : ∀ (K L : Type) [Field K] [CharZero K] [Fie
       rw [key, Category.assoc, ← Over.comp_left, Iso.hom_inv_id, Over.id_left, Category.comp_id]
     refine Eq.trans ?_ k2
     simp only [Ψ, Iso.trans_hom, Iso.symm_hom, Over.comp_left, Category.assoc]
-  obtain ⟨q⟩ := GlobalTheory.T.nonempty_pullDeg_id_of_common_fieldExtension K' Ω l E₄ E₃ E'' g₄ g₃ Ψ hΨ cΨ
+  obtain ⟨q⟩ := _root_.GlobalTheory.nonempty_isPullDeg_id_of_common_pull K' Ω l E₄ E₃ E'' g₄ g₃ Ψ hΨ cΨ
   have hh := nonempty_isPullDeg_comp_of_injective K K' K' io (RingHom.id K') E₂ E₄ E₃ (fun _ _ h => h) ⟨h₄⟩ ⟨q⟩
   rw [RingHom.id_comp] at hh
   exact ⟨K', inferInstance, io, E₃, hfin, ⟨h₃⟩, hh⟩

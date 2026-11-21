@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableEmbeddingOfInjectiveProperStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypOneZeroZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTamagawaMeasureNormalization
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureAddRankOneBlock
@@ -144,8 +144,8 @@ theorem theta_stage_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   obtain ⟨b1, b2, -, -⟩ := BlockAlg.block_alg F E σ hσ M J t
   have hJb : IsHermND σ (blockOne (algebraMap F E t) J) :=
     ⟨b2 hJ.1, by rw [b1]; exact mul_ne_zero ht' hJ.2⟩
-  obtain ⟨tg, lc, sc, t2, bs, act⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ (M + 1) _ hJb (AF F)
-  obtain ⟨tg₁, lc₁, sc₁, t2₁, bs₁, act₁⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)
+  obtain ⟨tg, lc, sc, t2, bs, act⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ (M + 1) _ hJb (AF F)
+  obtain ⟨tg₁, lc₁, sc₁, t2₁, bs₁, act₁⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ (AF F)
   haveI := tg
   haveI := lc
   haveI := sc
@@ -184,7 +184,7 @@ theorem theta_stage_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E
         gact σ g q.1 = fun _ => Fin.cons 1 (fun _ => 0) := by
     intro q
     have hq : gramE σ (blockOne (algebraMap F E t) J) q.1 = fun _ _ => algebraMap F E t := q.2
-    obtain ⟨g, hg, hgy⟩ := GlobalTheory.T.witt_extension_global F E σ hσ (M + 1) _ hJb 1 q.1
+    obtain ⟨g, hg, hgy⟩ := _root_.GlobalTheory.CompanionTheory.SW.WittE.witt_tuple F E σ hσ (M + 1) _ hJb 1 q.1
       (fun _ => Fin.cons 1 (fun _ => 0)) (by rw [hq, gram_first])
       (by rw [hq]; intro h; exact ht' ((Matrix.det_fin_one (fun _ _ => algebraMap F E t : Matrix (Fin 1) (Fin 1) E)).symm.trans h))
     exact ⟨⟨g, hg⟩, funext hgy⟩
@@ -264,7 +264,7 @@ theorem theta_stage_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E
         exact congrArg _ (map_inv ι u').symm
       rw [h6, hmul, hstab, e3, hfix, hrinv]
     rw [← e1, ← e2]
-  have key := GlobalTheory.T.quotient_measure_tower _ _ ι hιc μ μ₁ Γ Γ₁ 𝓕 𝓕₁ h𝓕 h𝓕₁ hfin hΓ _ r (fun q => ratH_mem _ σ _ _) huniq φ hφ hinv
+  have key := _root_.GlobalTheory.CompanionTheory.SW.Averaging.lintegral_sum_cosets_average _ _ ι hιc μ μ₁ Γ Γ₁ 𝓕 𝓕₁ h𝓕 h𝓕₁ hfin hΓ _ r (fun q => ratH_mem _ σ _ _) huniq φ hφ hinv
   have hA : ∀ h : HA (AF F) σ (blockOne (algebraMap F E t) J),
       ∑' Y : framesE σ (blockOne (algebraMap F E t) J) (blockOne (algebraMap F E t) T),
         Φ (actW (AF F) σ _ h⁻¹ (ratTup (AF F) Y.1)) =
@@ -285,12 +285,12 @@ theorem theta_stage_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E
           actW (AF F) σ _ g⁻¹ (consTup X) :=
         (act (n + 1)).1.comp (continuous_const.prodMk continuous_consTup)
       exact this.measurable
-    rw [hyp g⁻¹, GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ M J hJ μ₁ 𝓕₁ hμ₁ h𝓕₁ n _ _ hm]
+    rw [hyp g⁻¹, _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ M J hJ μ₁ 𝓕₁ hμ₁ h𝓕₁ n _ _ hm]
     congr 1
     refine lintegral_congr fun u => tsum_congr fun X => ?_
     rw [mul_inv_rev, hmul, ← map_inv ι, hιcons]
-  rw [GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 (n + 1) _ Φ hΦ,
-    GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 1 _ Ψ hΨ]
+  rw [_root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 (n + 1) _ Φ hΦ,
+    _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 1 _ Ψ hΨ]
   congr 1
   calc _ = ∫⁻ h in 𝓕, ∑' q, φ (r q * h) ∂μ := lintegral_congr hA
     _ = _ := key

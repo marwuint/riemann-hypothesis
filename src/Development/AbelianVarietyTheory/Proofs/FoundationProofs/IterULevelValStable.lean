@@ -2,9 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.Chapter
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUOperatorLowersLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletionStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUOperatorLowersLevel
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletion
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -28,7 +29,7 @@ theorem iterU_level_val_stable : ∀ (k N l m : ℕ) (ε : DirichletCharacter �
     | succ m ih =>
       intro a ha
       have hU : MF k (N * l ^ (m + 1)) (ch ε) (Uo l a) := by
-        refine GlobalTheory.T.coeffHeckeUOperator_lowers_level k (N * l ^ (m + 1)) l (ch ε) a hk hl ?_ ?_ ?_
+        refine _root_.GlobalTheory.Uo_lowers_level k (N * l ^ (m + 1)) l (ch ε) a hk hl ?_ ?_ ?_
         · exact Dvd.dvd.mul_left (dvd_pow_self l (Nat.succ_ne_zero m)) N
         · exact ch_periodic_of_dvd ε (Dvd.intro _ rfl)
         · simpa [pow_succ, mul_assoc] using ha
@@ -43,7 +44,7 @@ theorem iterU_level_val_stable : ∀ (k N l m : ℕ) (ε : DirichletCharacter �
     | zero => simpa using hb
     | succ j ih =>
       rw [Function.iterate_succ_apply']
-      exact (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion k (N * l) l (ch ε) _ hk hl (Dvd.intro_left _ rfl) per ih).1
+      exact (_root_.GlobalTheory.depletion_mf k (N * l) l (ch ε) _ hk hl (Dvd.intro_left _ rfl) per ih).1
   have lamj : ∀ j, lam B c ((Uo l)^[j] ((Uo l)^[m] a)) = α ^ j * lam B c ((Uo l)^[m] a) := by
     intro j
     induction j with

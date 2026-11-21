@@ -332,16 +332,6 @@ def HerrLat (W : LocWach PD LL O v n) : Prop :=
   ∀ T : LocLat G Qp LL O, ∃ ψ : W.DD T →ₗ[O] W.DD T, (∀ x, ψ (W.φD T x) = x) ∧
     (∀ (a : W.EE) x, ψ (W.φE a • x) = a • ψ x) ∧ ∀ g x, ψ (W.γD T g x) = W.γD T g (ψ x)
 
-theorem prop_two_a_of_herr_lattice (W : LocWach PD LL O v n) (h : HerrLat W)
-    (T : LocLat G Qp LL O) : Formalism.MainNotions.DeltaInvariantLattices.p2aK W T := by
-  intro _ _
-  obtain ⟨hs, hk⟩ := h.1 T
-  refine ⟨hs, fun w => (hk w).trans ⟨?_, ?_⟩⟩
-  · rintro ⟨m, hm, e⟩
-    exact ⟨m, hm, e⟩
-  · rintro ⟨m, hm, e⟩
-    exact ⟨m, hm, e⟩
-
 def HerrSub (W : LocWach PD LL O v n) : Prop :=
   ∀ (T : LocLat G Qp LL O) (D' : Submodule W.EE (W.DD T)),
     (∃ a : ℕ, ∀ x : W.DD T, ((PD.p : ℕ) : W.EE) ^ a • x ∈ D') →
@@ -440,16 +430,6 @@ def adm17 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
     HerrSub ((HW l).W K 1 LL hA.2.2) ∧
       HerrExt ((HW l).W K 1 LL hA.2.2) ((F l).E K 1 LL hA.2.2).tie
 
-theorem gamK_eq_gam (D : D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL) :
-    ((HW l).W K 1 LL hA.2.2).gamK = ((HW l).W K 1 LL hA.2.2).gam :=
-  ((HW l).W K 1 LL hA.2.2).gamK_eq_one ((HW l).W_s K 1 LL hA.2.2)
-    (by rw [(D.loc l).PD_p]; exact hA.2.1)
-
-theorem prop_two_a_of_herr_hypothesis (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : adm16 D HW F) (l : ℕ) [Fact l.Prime] (K LL : FinExt l)
-    (hA : CaseA K LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) :
-    Formalism.MainNotions.DeltaInvariantLattices.p2aK ((HW l).W K 1 LL hA.2.2) T :=
-  prop_two_a_of_herr_lattice _ (h l K LL hA) T
-
 def adm18 (_D : D7) : Prop := Formalism.GaloisCohomology.LocalTateDualityK ∧ Formalism.GaloisCohomology.LocalEulerCharK
 
 def adm19 (D : D7) : Prop :=
@@ -478,27 +458,6 @@ def admitted (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf 
     adm20 D HW F ∧ adm21 D HW F ∧ adm22 D ∧ adm23 D HW F ∧ FrobeniusExpansionCongruence D HW F
 
 def Stmt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) : Prop := admitted D HW F Cm → aux₃ D HW F
-
-theorem hypotheses_of_theorem_top (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (h : Formalism.MainNotions.DeltaInvariantLattices.aux₃ D HW F Cm) :
-    adm1 D HW F ∧ adm2 D HW F ∧ adm3 D HW F Cm ∧ ArchimedeanSignatureMatching D HW F Cm ∧ adm5 D HW F ∧ adm6 D HW F ∧ adm7 D HW F ∧ adm8 D HW F ∧ adm9 D HW F ∧ adm10 D HW F ∧
-      adm11 D HW F ∧ adm12 D HW F ∧ adm13 D HW F ∧ adm14 D HW F ∧ adm15 D HW F := by
-  obtain ⟨h1, hc, h2, _⟩ := h
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro l _ K s LL hg
-  · exact (h1 l K s LL hg).1.1
-  · exact (h1 l K s LL hg).2.1
-  · exact (h1 l K s LL hg).2.2.1
-  · exact (h1 l K s LL hg).2.2.2.1
-  · exact (h1 l K s LL hg).2.2.2.2.1
-  · exact (h1 l K s LL hg).2.2.2.2.2.1
-  · exact (h1 l K s LL hg).2.2.2.2.2.2.1
-  · exact (h1 l K s LL hg).2.2.2.2.2.2.2.1
-  · exact (h1 l K s LL hg).2.2.2.2.2.2.2.2.1
-  · exact (h1 l K s LL hg).2.2.2.2.2.2.2.2.2.1
-  · exact Formalism.MainNotions.DeltaInvariantLattices.gamma_semisimple_of_consequences _ _ (hc l K s LL hg)
-  · exact (h2 l K s LL hg).1
-  · exact (h2 l K s LL hg).2.1
-  · exact (h2 l K s LL hg).2.2.1
-  · exact (h2 l K s LL hg).2.2.2
 
 theorem ainf_clauses_of_theorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : Formalism.MainNotions.DeltaInvariantLattices.ConclusionE D HW F) : adm23 D HW F ∧ FrobeniusExpansionCongruence D HW F := ⟨h.1, h.2⟩
 

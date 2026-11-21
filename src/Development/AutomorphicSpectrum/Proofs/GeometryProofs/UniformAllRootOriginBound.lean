@@ -12,7 +12,8 @@ import Development.WeilBound.CoreStatements.CommonZeroEvaluation.TestMem
 import Development.WeilBound.CoreStatements.CommonZeroEvaluation.AevalRatioForm
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameDegreeBoundStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformLawsRootModelBound
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IntegralFramedPointBaseChangeStableStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.FinExtIn
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IntegralFramedPointBaseChangeStable
 import Formalism.LocalToGlobal.ProjectiveLattices.GenValInjPf
 open NumberField IsDedekindDomain Filter Topology
 open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions
@@ -25,7 +26,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.uniform_all_root_origin_bound 
   classical
   haveI : CharZero RM.Ω := charZero_of_injective_ringHom Or.𝔐.cst.injective
   letI aΩ : Algebra c.F RM.Ω := Small.cstAlg Or
-  obtain ⟨B, hB⟩ := GlobalTheory.T.root_origin_frame_height E H Dw l Xo c O β Y SS RM Sys Fx Or Fr
+  obtain ⟨B, hB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Good.exists_finset E H Dw l Xo c O β Y SS RM Sys Fx Or Fr
   obtain ⟨w, tl, hw, htl⟩ := hLk
   have hy0 : ∀ k, ∃ i, RM.y ⟨k, i⟩ ≠ 0 := fun k => by
     obtain ⟨i, hi⟩ := RM.arith.2.1.2.2 k
@@ -77,7 +78,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.uniform_all_root_origin_bound 
       map_add' := fun a b => hinj (by rw [hf, map_add, hf, hf]; exact map_add ev₁ ⟨_, h3A a⟩ ⟨_, h3A b⟩) }
   have hev₀ : ∀ x : A₃, j (ev₀ x) = ev₁ ⟨x, h3A x⟩ := hf
   have h23 : A₂ ≤ A₃ := fun x hx => (hA₃ x).2 ⟨hle hx, hLj _ (FinRd.Pt.hasVal_mem hzL (hev ⟨x, hx⟩))⟩
-  obtain ⟨y₀, φT, hφT, hy₀⟩ := GlobalTheory.T.integralFramedPoint_baseChange_stable E H Dw l Xo c T T₀ io y iT r₀ hr₀ (fun a _ => hv₀ a)
+  obtain ⟨y₀, φT, hφT, hy₀⟩ := _root_.GlobalTheory.IntFrBaseChange.exists_intFr_baseChange E H Dw l Xo c T T₀ io y iT r₀ hr₀ (fun a _ => hv₀ a)
   have ho₀ : OverLa la T₀.V (iT.comp io) (r₀ * e₀) := ho.bc iT hr₀ hv₀
   obtain ⟨T₂, φV, φ₂, r₂, yy, τ, hfe, hbc, hyA, hτ⟩ := hUn la T₀ (iT.comp io) _ ho₀ y₀ hfin
   letI a0 : Algebra c.F T₀.Fr := (iT.comp io).toAlgebra

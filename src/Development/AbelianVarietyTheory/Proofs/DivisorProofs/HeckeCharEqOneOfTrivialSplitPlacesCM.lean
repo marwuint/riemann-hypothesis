@@ -1,11 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IncMDblR
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDiagInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagonalLagrangianInvariantForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitLocF
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryIdeleCharTrivialCongruentOneModuloStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinPartEqOneMulInvMemSplitCongruenceIdelesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemClosureSplitCongruenceIdelesOfFinPartEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryIdeleCharTrivialCongruentOneModulo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinPartEqOneMulInvMemSplitCongruenceIdeles
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemClosureSplitCongruenceIdelesOfFinPartEqOne
+
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
@@ -21,7 +23,7 @@ theorem heckeChar_eq_one_of_split : ∀ (F E : Type) [Field F] [NumberField F] [
       (∀ e, IsSplitIdemF σ e → ∀ x : (AF F ⊗[F] E)ˣ, (e + cAF σ e) * ((x : AF F ⊗[F] E) - 1) = (x : AF F ⊗[F] E) - 1 → ν x = 1) →
       ∀ x, ν x = 1 := by
   intro F E _ _ _ _ _ σ hcm ν hν hs
-  obtain ⟨N, hN, hA⟩ := GlobalTheory.T.unitaryIdeleChar_trivial_congruentOneModulo F E ν hν.1
+  obtain ⟨N, hN, hA⟩ := _root_.GlobalTheory.HeckeSplitGen.char_trivial_modSetF F E ν hν.1
   have hH : grpHF σ N ≤ ν.ker := by
     refine (Subgroup.closure_le _).2 ?_
     rintro x ((⟨k, rfl⟩ | ⟨e, he, hx⟩) | hx)
@@ -34,9 +36,9 @@ theorem heckeChar_eq_one_of_split : ∀ (F E : Type) [Field F] [NumberField F] [
     rw [this]
     exact isClosed_singleton.preimage hν.1
   intro x
-  obtain ⟨z, hz, hxz⟩ := GlobalTheory.T.exists_finPart_eq_one_mul_inv_mem_split_congruence_ideles F E σ hcm N hN x
+  obtain ⟨z, hz, hxz⟩ := _root_.GlobalTheory.HeckeSplitGen.FinF.exists_finPart_eq_one_mul_inv_mem F E σ hcm N hN x
   have h1 : ν (x * z⁻¹) = 1 := hH hxz
-  have h2 : ν z = 1 := hcl (GlobalTheory.T.mem_closure_split_congruence_ideles_of_finPart_eq_one F E σ hcm N hN z hz)
+  have h2 : ν z = 1 := hcl (_root_.GlobalTheory.HeckeSplitGen.mem_closure_grpHF_of_finPart_eq_one F E σ hcm N hN z hz)
   have : x = x * z⁻¹ * z := by group
   rw [this, map_mul, h1, h2, one_mul]
 

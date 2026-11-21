@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKSIffKsRel
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueModificationLiftSqZeroFlagStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJacobianEvalRingPointNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJacobianEvalRingPointNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroTangentOfJacobianDerivsVanishStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniversalFirstOrderDeformationStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniversalFirstOrderDeformation
 
 set_option autoImplicit false
 
@@ -47,13 +47,13 @@ theorem exists_datum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   obtain ⟨alg, hQex⟩ := exists_chartFr (z ≫ toFlag M) hfo
   obtain ⟨Q, hQ⟩ := hQex k hk
   have hzQ : z ≫ toFlag M = X.ptY Q := FlagCover.eq_ptY hQ.lies
-  obtain ⟨W, v, hWP, hWv, hv, hinj⟩ := GlobalTheory.T.exists_universal_first_order_deformation X K Q (hKS K Q)
+  obtain ⟨W, v, hWP, hWv, hv, hinj⟩ := _root_.GlobalTheory.FlagTan.KSIso.tanFrame_of_universal_injective X K Q (hKS K Q)
   have hW0 : spMap (TrivSqZeroExt.fstHom K K (TIx Dw (psiSet H) → K)).toRingHom ≫ X.ptY W = z ≫ toFlag M := by
     have e : (TrivSqZeroExt.fstHom K K (TIx Dw (psiSet H) → K)).toRingHom =
         (TrivSqZeroExt.fstHom c.F K (TIx Dw (psiSet H) → K)).toRingHom := RingHom.ext fun _ => rfl
     rw [hzQ, e]; exact X.ptY_frMap hWP
   obtain ⟨W', hW'1, hW'2, hW'3⟩ := GlobalTheory.T.existsUnique_modification_lift_sqZero_flag M z ho (X.ptY W) hW0
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_jacobian_evalRingPoint_ne_zero M.K i z hi
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.CanonLB.exists_jacobian_evalPt_ne_zero M.K i z hi
   have hW'O := hW'3 _ hi
   have hpre : ∀ {R : Type} [CommRing R] (φ : TrivSqZeroExt K (TIx Dw (psiSet H) → K) →+* R),
       ⊤ ≤ (spMap φ ≫ W') ⁻¹ᵁ M.K.bundle.U i := fun φ s _ => hW'O (Set.mem_univ ((spMap φ).base s))

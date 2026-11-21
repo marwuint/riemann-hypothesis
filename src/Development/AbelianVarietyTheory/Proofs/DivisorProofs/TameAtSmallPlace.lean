@@ -141,12 +141,6 @@ theorem tameAt_of_smallAt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Fo
   rw [hx1, orderOf_one] at hx
   exact hl.one_lt.ne hx
 
-theorem tameSt : InRange fun _ _ _ _ p j P _ w => SmallAt p j P w → TameAt p j w := by
-  unfold GlobalTheory.ExpTie.InRange GlobalTheory.BigOn.AtPts Formalism.MainNotions.Closed GlobalTheory.BigTop.EvPt
-  refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ _ => ?_⟩⟩⟩
-  intro j P W hD _ w _ _ hS
-  exact tameAt_of_smallAt p j P w hD.Nr hS
-
 end GlobalTheory.TameStab
 
 end

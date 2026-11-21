@@ -93,10 +93,6 @@ def jbc (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L →+* ℂ) :
       try rfl
     | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
-theorem jbc_tmul (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L →+* ℂ) (a : L) (x : WL) :
-    jbc (Ks := Ks) jj σ (a ⊗ₜ[L0] x : L ⊗[L0] WL) = (σ a • jj (σ.comp (algebraMap L0 L)) x : W _) :=
-  jAdd_tmul jj σ a x
-
 end Gen
 
 section Forms
@@ -148,17 +144,6 @@ theorem bc_rho_tmul (g : G0) (a : L) (x : WL) :
 theorem bc_rho_incl (g : G0) (x : WL) : (bc L A).ρ g (incl Ks L0 L WL x) = incl Ks L0 L WL (A.ρ g x) :=
   bc_rho_tmul L A g 1 x
 
-theorem bc_j_tmul (σ : L →+* ℂ) (a : L) (x : WL) :
-    (bc L A).j σ (a ⊗ₜ[L0] x : L ⊗[L0] WL) = σ a • A.j (σ.comp (algebraMap L0 L)) x :=
-  jbc_tmul A.j σ a x
-
-theorem bc_j_incl (σ : L →+* ℂ) (x : WL) :
-    (bc L A).j σ (incl Ks L0 L WL x) = A.j (σ.comp (algebraMap L0 L)) x := by
-  rw [incl_apply, bc_j_tmul, map_one, one_smul]
-
-def fmBC (K : Type) [Field K] [Algebra Ks K] : K ⊗[Ks] A.WK ≃ₗ[K] K ⊗[Ks] (bc L A).WK :=
-  LinearEquiv.baseChange Ks K _ _ (wkE L A)
-
 variable [Module (𝓞 L0) WL] [IsScalarTower (𝓞 L0) L0 WL] [Module (𝓞 Ks) WL] [IsScalarTower (𝓞 Ks) Ks WL]
   [Fintype G0]
 
@@ -173,39 +158,6 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.L
 
 def ιOf (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) : C.L0 →+* what₂.LL :=
   (algebraMap (↥LL0) what₂.LL).comp eL.toRingHom
-
-abbrev baseFieldAlgebra (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) : Algebra C.L0 what₂.LL := (ιOf C eL).toAlgebra
-
-abbrev algKsLL (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) : Algebra C.Ks what₂.LL :=
-  ((ιOf C eL).comp (algebraMap C.Ks C.L0)).toAlgebra
-
-theorem towKsLL (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) :
-    letI := baseFieldAlgebra C eL
-    letI := algKsLL C eL
-    IsScalarTower C.Ks C.L0 what₂.LL :=
-  letI := baseFieldAlgebra C eL
-  letI := algKsLL C eL
-  IsScalarTower.of_algebraMap_eq fun _ => rfl
-
-def ofCore (tw : NTw R H what₂ LL0 N) (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) (eG : C.G ≃* G0g N) : RatDat tw :=
-  letI := baseFieldAlgebra C eL
-  letI := algKsLL C eL
-  haveI := towKsLL C eL
-  { Ks := C.Ks
-    WL := fun j => BCW C.Ks C.L0 what₂.LL (C.WL j)
-    modWL := fun j => modL C.Ks C.L0 what₂.LL (C.WL j)
-    modKsWL := fun j => modKs C.Ks C.L0 what₂.LL (C.WL j)
-    towWL := fun j => towKsL C.Ks C.L0 what₂.LL (C.WL j)
-    modOLLWL := fun _ => modOL what₂.LL
-    towOLLWL := fun _ => towOL what₂.LL
-    modOKsWL := fun _ => modOKs what₂.LL
-    towOKsWL := fun _ => towOKs what₂.LL
-    W := fun j => Wbc C.L0 what₂.LL (C.W j)
-    G := C.G
-    eG := eG
-    A := fun j => bc what₂.LL (C.A j)
-    kKs := eL.toRingHom.comp (algebraMap C.Ks C.L0)
-    kKs_spec := fun _ => rfl }
 
 def rdTw (tw : NTw R H what₂ LL0 N) (i : tw.Tw) (b : Bool) : ↥LL0 →+* FractionRing (tw.O i) :=
   (IsFractionRing.map (A := tw.O0 i) (B := tw.O i) (K := FractionRing (tw.O0 i)) (L := FractionRing (tw.O i))
@@ -226,43 +178,6 @@ instance modFmCoreW (tw : NTw R H what₂ LL0 N) (C : Core.RatCore) (eL : C.L0 �
     (b : Bool) : Module (FractionRing (tw.O i)) (Core.Fm (withTw tw C eL) i j b) :=
   Core.modFmK (withTw tw C eL) i j b
 
-def fmEquiv (tw : NTw R H what₂ LL0 N) (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) (eG : C.G ≃* G0g N)
-    (i : tw.Tw) (j : ℕ) (b : Bool) :
-    Core.Fm (withTw tw C eL) i j b ≃ₗ[FractionRing (tw.O i)] Fm (ofCore tw C eL eG) i j b :=
-  letI := baseFieldAlgebra C eL
-  letI := algKsLL C eL
-  haveI := towKsLL C eL
-  letI : Algebra C.Ks (Core.KB (withTw tw C eL) i b) := (Core.ιK (withTw tw C eL) i b).toAlgebra
-  fmBC what₂.LL (C.A j) (Core.KB (withTw tw C eL) i b)
-
 end Rec
-
-section Test
-
-def testA : Arith.FormsL ℚ ℚ ℚ (fun _ => ℂ) Unit where
-  WK := ⊤
-  Pt _ := Empty
-  nrm _ _ _ := 0
-  nrm_nonneg _ _ _ := le_rfl
-  nrm_zero _ _ := rfl
-  nrm_add _ _ _ _ := by simp
-  nrm_smul _ _ _ _ := by simp
-  towKs := inferInstance
-  ρ := 1
-  chi := 1
-  j σ := { toFun := σ, map_add' := map_add σ, map_smul' := fun c x => by simp [smul_eq_mul] }
-
-example : Arith.FormsL ℚ ℚ (BCW ℚ ℚ ℚ ℚ) (Wbc ℚ ℚ fun _ => ℂ) Unit := bc ℚ testA
-
-end Test
-
-section BsupMap
-
-open Formalism.BasicNotions
-
-variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
-  {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂}
-
-end BsupMap
 
 end Formalism.IndefR.NX.BC

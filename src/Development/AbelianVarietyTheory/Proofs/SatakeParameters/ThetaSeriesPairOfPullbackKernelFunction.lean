@@ -1,10 +1,11 @@
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Reframe
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TaylorDirLinear
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IteratedFDerivConstSmulOfNe
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TaylorSeriesMatrixPullbackEqLinearSubstitutionStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DifferentiableOfUnitaryMatrixPullbackDifferentiaStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicSeriesAlgebraicMultipleViaPlaceExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PullbackThenFrameSubstitutionEqChangedFramesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TaylorSeriesMatrixPullbackEqLinearSubstitution
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DifferentiableOfUnitaryMatrixPullbackDifferentia
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PadicSeriesAlgebraicMultipleViaPlaceExtension
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PullbackThenFrameSubstitutionEqChangedFrames
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.MainNotions.G.KAat Formalism.MainNotions.G.CmpJ Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelInstances Formalism.L2.KerInert.SecondKernelSeries Formalism.L2.KerInert.QuadraticBaseChangeGL3 Formalism.L2.KerInert.SecondKernelDifference Formalism.L2.KerInert.SecondKernelHermitian GlobalTheory.TwU GlobalTheory.TwV GlobalTheory.TwV.DelB TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelB
@@ -23,12 +24,12 @@ theorem frecG_pull : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (X : Sys p) (E : CEmb
   intro D p _ X E pos fd lam ι hι ρ hρ e c j La La' he he' cc δ B χ SS cl Ξ₀ muT hok hj hL hL' s Θ hs hK
   obtain ⟨-, -, hdiff, hcoef, hsc, hcf, hcf0, hfr⟩ := hok j hj La La' hL hL'
   have hΘ : Differentiable ℂ Θ :=
-    GlobalTheory.T.differentiable_of_unitary_matrixPullback_differentiable D cc δ (e j La) (e (j + 1) La') Θ _ s he he' hs hdiff hK
+    _root_.GlobalTheory.TwU.XbEntire.entire_of_pull D cc δ (e j La) (e (j + 1) La') Θ _ s he he' hs hdiff hK
   have hsc' : scal0 X fd χ muT j La La' * (Base.chiFac χ _ _ (fd.kerN j La) (fd.kerN (j + 1) La'))⁻¹ ∈ TaylorLogMetric.Qbar :=
     TaylorLogMetric.Qbar.mul_mem hsc (TaylorLogMetric.Qbar.inv_mem hcf)
-  have hser := GlobalTheory.T.padicSeries_algebraic_multiple_via_place_extension D p lam ι hι _ _ _ s hsc' hcoef hK
-  have htay := GlobalTheory.T.taylorSeries_matrixPullback_eq_linear_substitution D cc δ (e j La) (e (j + 1) La') Θ hΘ
-  have hsub := GlobalTheory.T.pullback_then_frame_substitution_eq_changed_frames D p X E pos fd lam ι hι ρ hρ e c j La La' he he' (fun v => ⟨(hfr v).1, (hfr v).2.1⟩)
+  have hser := _root_.GlobalTheory.TwV.SerMap.padicSeries_const_mul D p lam ι hι _ _ _ s hsc' hcoef hK
+  have htay := _root_.GlobalTheory.TwV.DelB.tay_pull_linSub D cc δ (e j La) (e (j + 1) La') Θ hΘ
+  have hsub := _root_.GlobalTheory.TwV.DelB.sum_pullMat_subBG_reframe D p X E pos fd lam ι hι ρ hρ e c j La La' he he' (fun v => ⟨(hfr v).1, (hfr v).2.1⟩)
   rw [frecG_eq, hser]
   change linSub _ (_ • _ • MvPowerSeries.map ι (tay (TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) (e j La) (e (j + 1) La') Θ))) = _
   rw [htay, map_linSub', ← linSub_smul', ← linSub_smul', GlobalTheory.TwU.LawAll.linSub_linSub', smul_smul]

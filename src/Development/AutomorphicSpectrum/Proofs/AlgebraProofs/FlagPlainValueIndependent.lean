@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagIndependenceStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagIndependence
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinFlagPlainValueIndep
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinFlagPairIff
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinVertDivSupportFibre
@@ -9,6 +10,6 @@ namespace GlobalTheory.CompanionTheory.CommAlg.FlagPlainValue
 open GroundTheory.Heights₂.Heights.NumbersDVR in
 
 theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.FlagPlainValueIndependence.Statement :=
-  FlagPlainValueIndependence.proof GlobalTheory.T.flag_independence FlagPairCharacterisation.proof VerticalDivisorSupportFibre.proof
+  FlagPlainValueIndependence.proof _root_.GlobalTheory.CompanionTheory.CommAlg.FlagIndependence.main FlagPairCharacterisation.proof VerticalDivisorSupportFibre.proof
 
 end GlobalTheory.CompanionTheory.CommAlg.FlagPlainValue

@@ -7,14 +7,6 @@ namespace UpperTheory.ConvolutionTheory.R
 
 open PositivityTheory.RgJS UpperTheory.ConvolutionTheory.Rs
 
-theorem expRight : ExpRight := by
-  intro W q X d A hS x y
-  obtain ⟨F, σ₀, hF, he⟩ := hS.rs x y
-  refine ⟨F, by simpa using hF 1 one_pos, fun σ hσ => ?_⟩
-  classical
-  rw [eq_exp hS x y F (fun s => (s - 1) ^ (if x = y then 1 else 0)) σ₀ hF
-    (fun t => (analyticAt_id.sub analyticAt_const).pow _) (fun t ht => by rw [he t ht]; split_ifs <;> simp) σ hσ]
-
 theorem logAsym : LogAsym := by
   intro W q X d A hS x y
   obtain ⟨F, σ₀, hF, he⟩ := hS.rs x y

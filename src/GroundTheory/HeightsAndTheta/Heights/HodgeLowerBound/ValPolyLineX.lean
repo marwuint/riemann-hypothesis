@@ -11,16 +11,6 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 namespace FlagModelAlt
 
-section Values
-
-variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
-
-def ValPoly (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) {σ : Type} (A : MvPolynomial σ Ω)
-    (B : MvPolynomial σ ℂ) : Prop :=
-  ∀ μ, IsValueAt y (A.coeff μ) z (B.coeff μ)
-
-end Values
-
 section GenPt
 
 variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {K : Type} [Fintype K] {ι : K → Type}

@@ -44,26 +44,6 @@ theorem hform_conj (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (x y : Fin n → 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
-theorem hform_single (i j : Fin n) :
-    hform s J (Pi.single i 1) (Pi.single j 1) = J i j := by
-  have hs : ∀ k, s ((Pi.single i (1 : S) : Fin n → S) k) = (Pi.single i (1 : S) : Fin n → S) k := fun k => by
-    by_cases h : k = i
-    · subst h
-      simp
-    · simp [h]
-  unfold hform
-  simp only [hs]
-  simp [Pi.single_apply]
-
-theorem hform_entry (T : Matrix (Fin n) (Fin n) S) (i j : Fin n) :
-    (cT s T * J * T) i j = hform s J (T *ᵥ Pi.single i 1) (T *ᵥ Pi.single j 1) := by
-  have hv : ∀ m, T *ᵥ Pi.single m (1 : S) = fun k => T k m := fun m => by
-    ext k
-    simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-  unfold cT hform
-  simp only [hv, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
-  exact Finset.sum_comm
-
 end Refl
 
 end PIW.AdelicOrbitU

@@ -56,9 +56,6 @@ def BaseTied (D : D7) (H : HermCols D) (aT : ∀ u, AtT D u (H.vT u) (H.Fv u)) :
       (H.lev u i h1 hm).Lb ⊔ Ideal.span {pb} • dualL D.sp.cm (D.sp.X i) (H.lev u i h1 hm).Lb =
         crdLat (D.sp.X i) (D.sp.X i).L0
 
-def ZeroPointScaledByCharacter (D : D7) (H : HermCols D) (aT : ∀ u, AtT D u (H.vT u) (H.Fv u)) : Prop :=
-  ∀ u, (aT u).z0 = (D.cOf u)⁻¹ • D.sp.z
-
 end Formalism.L2.Herm
 
 end

@@ -9,16 +9,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieDerivativeRealLi
 import Development.AbelianVarietyTheory.Definitions.Divisors.MemL2OfSmoothVector
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAddHaarMeasureVolumeLie
 import GroundTheory.AutomorphicForms.ReductionFinite
-import Development.AbelianVarietyTheory.Definitions.Divisors.MemMspan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecaysOfMemSmoothSpan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WordAppendSingle
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KSpan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodSmoothDecayModerateGrowthRightTranslateStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeSmoothOfChartDifferentiableLieDerivStableStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecaysAtShortRationalVectorsRapidKernelOperatorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ModerateGrowthRapidKernelOperatorStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecaysAtShortRationalVectorsRapidKernelOperator
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ModerateGrowthRapidKernelOperator
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasFDerivAtRealChartRapidKernelOperatorStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RapidKernelIntegralConjLieDerivativeMemSpanStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RapidKernelIntegralConjLieDerivativeMemSpan
 
 noncomputable section
 
@@ -70,7 +69,7 @@ theorem kSpan_lie : ∀ F ∈ kSpan E a, ∀ Y : Lie E a, lieD Y F ∈ kSpan E a
       rw [lieD, ← e1, hL.fderiv, hZ Y]
       simp
     rw [e]
-    exact GlobalTheory.T.rapidKernel_integral_conjLieDerivative_mem_span E a G X ν k γ Y hk hG
+    exact _root_.GlobalTheory.MSpanDecay.integral_lieD_conj_mem_kSpan E a G X ν k γ Y hk hG
   | zero =>
     have e : lieD Y (0 : GA E a → ℂ) = 0 := by
       funext g; simp [lieD, chart_zero]
@@ -97,7 +96,7 @@ theorem kSpan_decays_growth : ∀ F ∈ kSpan E a, GlobalTheory.ShortVecDecay.De
   induction hF using Submodule.span_induction with
   | mem F hF =>
     obtain ⟨X, _, ν, _, k, γ, G, hk, hG, rfl⟩ := hF
-    exact ⟨GlobalTheory.T.decaysAtShortRationalVectors_rapidKernelOperator E a G X ν k γ hk hG.decays, GlobalTheory.T.moderateGrowth_rapidKernelOperator E a G X ν k γ hk hG.growth⟩
+    exact ⟨_root_.GlobalTheory.RapidKernelDecay.decays_integral E a G X ν k γ hk hG.decays, _root_.GlobalTheory.MSpanDecay.growth_kernel E a G X ν k γ hk hG.growth⟩
   | zero => exact ⟨GlobalTheory.ShortVecDecay.Decays.zero, Growth.zero⟩
   | add F G _ _ hF hG => exact ⟨hF.1.add hG.1, hF.2.add hG.2⟩
   | smul z F _ hF => exact ⟨hF.1.smul z, hF.2.smul z⟩

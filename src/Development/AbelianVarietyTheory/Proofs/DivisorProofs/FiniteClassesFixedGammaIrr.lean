@@ -10,11 +10,18 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePolynomialsBo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugatePairRelated
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SameElementSignAmbiguity
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedEigenvaluesClasses
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedDenominatorsNonzeroTerms
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsRootSelectionUnitaryRankOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralSmulOfCharpolyCoeffMulIntStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedHeckeTestFunctionSupportCompactStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompactConjCharpolyBoundedDenominatorsAwayPStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitNormBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicCoeffDenominatorBoundOfBoundedRootsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenBoundCombinePadicPrimeToPStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatDegreeMinpolyLeBaseChange
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicConjugateOfTrivialisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalNormOutsideFiniteSet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteBadPlacesPairs
+
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
 
@@ -129,13 +136,9 @@ namespace GlobalTheory.LKIrr
 end GlobalTheory.LKIrr
 
 namespace GlobalTheory.LKIrr
-open GlobalTheory.LKMid.Northcott
-
 end GlobalTheory.LKIrr
 
 namespace GlobalTheory.LKIrr
-
-variable {p : ℕ} [Fact p.Prime]
 
 end GlobalTheory.LKIrr
 

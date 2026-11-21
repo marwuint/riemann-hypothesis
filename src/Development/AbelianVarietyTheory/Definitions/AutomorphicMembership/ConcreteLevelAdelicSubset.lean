@@ -59,19 +59,10 @@ def RowJ (R : RealDat D A Ks) (eE : D.what₂.EE →ₗ[ℂ] R.HE.H) (X : HidaSe
 
 theorem mem_conjRows_iff (X : HidaSetting D) (f : L2X X) : f ∈ conjRows X ↔ conjL (muX X) f ∈ HHX X := Iff.rfl
 
-theorem EEC_le_conjRows (X : HidaSetting D) (G : GoodOp X) : EEC X G ≤ conjRows X := fun _ hF => hF.1
-
-example (X : HidaSetting D) (k : X.B.I.Gf) (hk : k ∈ X.K2) :
-    ((1, k) : X.B.I.GA) ∈ concreteLevelAdelicSubset X ∧ adelicCharacterOfHidaSetting X (1, k) = star (X.chi2 k) := ⟨⟨rfl, hk⟩, rfl⟩
-
 theorem evalTieT_iff_evalOn (R : RealDat D A Ks) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (G : GoodOp X)
     (t : GA D (D.sp.Y 0)) (c : ℝ) (E : Submodule ℂ (MMap (MP R))) :
     EvalTieT (MP R) R.ν0 R.fd0 E X G (iotaX X h).toMulEquiv t c ↔
       ∃ v₀ : (MP R).Vec, (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) ∧ EvalOn R X h t v₀ c E (EEC X G) := Iff.rfl
-
-example (R : RealDat D A Ks) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (D.sp.Y 0))
-    (v₀ : (MP R).Vec) (x : X.B.I.GA) : ev (MP R) v₀ 0 ((iotaX X h).symm x * t) = 0 := by
-  rw [map_zero]; rfl
 
 theorem SeeAt.levelMatchA {R : RealDat D A Ks} {F : Face D A} {X : HidaSetting D}
     {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {t : GA D (D.sp.Y 0)} (hs : SeeAt R F X h t) : LevelMatchA R F X h t := by

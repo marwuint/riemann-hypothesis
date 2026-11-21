@@ -1,17 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySymmCocycleModStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiffCoeffsInIdealSubstOfConstantCoeffZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySymmCocycleMod
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiffCoeffsInIdealSubstOfConstantCoeffZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqSmulProdChooseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffEdgesMemOfCoboundaryTwoCoeffsInIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoboundaryDegreePartCocycleModIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffCob1HomogLiftBinomialStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSubstMapToFractionsMemSubmoduleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSubstEqZeroOfDegreeLtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryTwoCoboundaryOneFractionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapVariableGroupsFormalGroupLawCoboundaryOneComStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySwapSubRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSumElimPowerSeriesSwapVariableGroupsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffEdgesMemOfCoboundaryTwoCoeffsInIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoboundaryDegreePartCocycleModIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffCob1HomogLiftBinomial
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSubstMapToFractionsMemSubmodule
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSubstEqZeroOfDegreeLt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryTwoCoboundaryOneFraction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapVariableGroupsFormalGroupLawCoboundaryOneCom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySwapSubRules
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSumElimPowerSeriesSwapVariableGroups
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
 set_option autoImplicit false
@@ -47,11 +47,6 @@ theorem mem_NS {N : Ideal B} {q : Q} : q ∈ (NS N : Submodule B Q) ↔ ∃ b �
 
 theorem mem_V {p : ℕ} {J : Ideal B} {q : Q} :
     q ∈ (V p J : Submodule B Q) ↔ ∃ k : ℕ, ∃ b ∈ J, (p : Q) ^ k * q = algebraMap B Q b := Iff.rfl
-
-theorem NS_le_V (p : ℕ) {N J : Ideal B} (h : N ≤ J) : (NS N : Submodule B Q) ≤ V p J := by
-  intro q hq
-  obtain ⟨b, hb, rfl⟩ := mem_NS.1 hq
-  exact ⟨0, b, h hb, by simp⟩
 
 theorem in_iff {σ : Type} {N : Ideal B} {f : MvPowerSeries σ Q} :
     In N f ↔ ∀ α, coeff α f ∈ (NS N : Submodule B Q) := by
@@ -95,9 +90,9 @@ theorem inR_eq {d : ℕ} (f : MvPowerSeries (Fin d) Q) :
 theorem coeff_cob1_mem_submodule {d : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}
     (hμ : ∀ i, constantCoeff (μ i) = 0) (S : Submodule B Q) (f : MvPowerSeries (Fin d) Q)
     (hf : ∀ α, coeff α f ∈ S) (α : Fin d ⊕ Fin d →₀ ℕ) : coeff α (cob1 (up Q μ) f) ∈ S := by
-  have h1 := GlobalTheory.T.coeff_subst_mapToFractions_mem_submodule B Q (Fin d) (Fin d ⊕ Fin d) S f μ hμ hf α
-  have h2 := GlobalTheory.T.coeff_subst_mapToFractions_mem_submodule B Q (Fin d) (Fin d ⊕ Fin d) S f _ (fun i => constantCoeff_X (Sum.inl i)) hf α
-  have h3 := GlobalTheory.T.coeff_subst_mapToFractions_mem_submodule B Q (Fin d) (Fin d ⊕ Fin d) S f _ (fun i => constantCoeff_X (Sum.inr i)) hf α
+  have h1 := _root_.GlobalTheory.SubstSub.coeff_subst_up_mem B Q (Fin d) (Fin d ⊕ Fin d) S f μ hμ hf α
+  have h2 := _root_.GlobalTheory.SubstSub.coeff_subst_up_mem B Q (Fin d) (Fin d ⊕ Fin d) S f _ (fun i => constantCoeff_X (Sum.inl i)) hf α
+  have h3 := _root_.GlobalTheory.SubstSub.coeff_subst_up_mem B Q (Fin d) (Fin d ⊕ Fin d) S f _ (fun i => constantCoeff_X (Sum.inr i)) hf α
   unfold cob1
   rw [inL_eq (B := B), inR_eq (B := B), map_sub, map_sub]
   exact S.sub_mem (S.sub_mem h1 h2) h3
@@ -113,10 +108,10 @@ theorem dIn_cob1_of_isFrame_of_dIn {p : ℕ} [Fact p.Prime] {O : Type} [CommRing
     {d : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}
     (hμ : ∀ i, constantCoeff (μ i) = 0) {N : Ideal B} {f : MvPowerSeries (Fin d) Q}
     (hf : DIn N f) : DIn N (cob1 (up Q μ) f) := by
-  have h1 := (GlobalTheory.T.diffCoeffsInIdeal_subst_of_constantCoeff_zero p B O Q θ hF (Fin d) (Fin d ⊕ Fin d) N f μ hf hμ).1
-  have h2 := (GlobalTheory.T.diffCoeffsInIdeal_subst_of_constantCoeff_zero p B O Q θ hF (Fin d) (Fin d ⊕ Fin d) N f _ hf
+  have h1 := (_root_.GlobalTheory.QLog.dIn_subst_up p B O Q θ hF (Fin d) (Fin d ⊕ Fin d) N f μ hf hμ).1
+  have h2 := (_root_.GlobalTheory.QLog.dIn_subst_up p B O Q θ hF (Fin d) (Fin d ⊕ Fin d) N f _ hf
     (fun i => constantCoeff_X (Sum.inl i))).1
-  have h3 := (GlobalTheory.T.diffCoeffsInIdeal_subst_of_constantCoeff_zero p B O Q θ hF (Fin d) (Fin d ⊕ Fin d) N f _ hf
+  have h3 := (_root_.GlobalTheory.QLog.dIn_subst_up p B O Q θ hF (Fin d) (Fin d ⊕ Fin d) N f _ hf
     (fun i => constantCoeff_X (Sum.inr i))).1
   unfold cob1
   rw [inL_eq (B := B), inR_eq (B := B)]
@@ -149,10 +144,10 @@ theorem maint {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {θ : B →+* O} 
       In N (swap (c - cob1 (up Q μ) h) - (c - cob1 (up Q μ) h)) ∧
       ∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < m + 1 → coeff α (c - cob1 (up Q μ) h) ∈ (NS N : Submodule B Q) := by
   have hμQ := up_const (Q := Q) hμ.const
-  have hlin := GlobalTheory.T.formalGroupLawCoboundary_swap_sub_rules Q d (up Q μ) hμQ
-  have hsw := GlobalTheory.T.swapVariableGroups_formalGroupLawCoboundaryOne_comm B Q d μ hμ.const hμ.comm h
-  have hco := GlobalTheory.T.coeff_cob1_homog_lift_binomial B O Q θ d μ hμ m h hm hhom
-  have hedge := GlobalTheory.T.coeff_edges_mem_of_coboundaryTwo_coeffsInIdeal B O Q θ d μ hμ N c h0 h2
+  have hlin := _root_.GlobalTheory.CobLin.sub_rules Q d (up Q μ) hμQ
+  have hsw := _root_.GlobalTheory.CobSwap.swap_cob1_eq_of_swap_eq B Q d μ hμ.const hμ.comm h
+  have hco := _root_.GlobalTheory.CobHom.coeff_cob1_homogeneous_binomial B O Q θ d μ hμ m h hm hhom
+  have hedge := _root_.GlobalTheory.CobEdges.coeff_edges_mem B O Q θ d μ hμ N c h0 h2
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   · rcases hor with hl | ⟨hc, hh⟩
     · exact Or.inl hl
@@ -165,8 +160,8 @@ theorem maint {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {θ : B →+* O} 
     exact Submodule.sub_mem _ (hV α) (coeff_cob1_mem_submodule hμ.const _ h hhV α)
   · rw [(hlin c (cob1 (up Q μ) h) 0 0).1]
     rcases hor with hl | ⟨hc, hh⟩
-    · rw [GlobalTheory.T.cob2_cob1_eq_zero_of_isLaw B Q d μ hl h, sub_zero]; exact h2
-    · have h3 := (GlobalTheory.T.formalGroupLawCoboundary_symmCocycle_mod p B O Q θ hF d μ hμ N h hh).1
+    · rw [_root_.GlobalTheory.formalGroupLawCoboundaryTwo_coboundaryOne_fractions B Q d μ hl h, sub_zero]; exact h2
+    · have h3 := (_root_.GlobalTheory.cob_symCoc_mod p B O Q θ hF d μ hμ N h hh).1
       refine in_sub h2 ?_
       intro α
       obtain ⟨b, hb, e⟩ := h3 α
@@ -259,7 +254,7 @@ theorem build {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {θ : B →+* O} 
       rw [show (n : B) * ((hu.unit⁻¹ : Bˣ) : B) = 1 from hu.mul_val_inv, one_smul]
   have hlow' : ∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < m → ∃ b ∈ N, coeff α c = algebraMap B Q b := by
     intro α hα; exact mem_NS.1 (hlow α hα)
-  have hrel := GlobalTheory.T.coboundary_degree_part_cocycle_mod_ideal B O Q θ d μ hμ N m c hlow' h2
+  have hrel := _root_.GlobalTheory.CobRel.cocycle_rel_mod B O Q θ d μ hμ N m c hlow' h2
   have key : ∀ n : Fin d →₀ ℕ, ∃ q : VJ, n.degree = m → ∀ a, a ≤ n → a ≠ 0 → a ≠ n →
       coeff (Finsupp.sumElim a (n - a)) c - (∏ i, Nat.choose (n i) (a i) : Q) * q ∈ (NS N : Submodule B Q) := by
     intro n
@@ -274,7 +269,7 @@ theorem build {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {θ : B →+* O} 
       rw [hK]
       simp only [tsub_tsub_cancel_of_le ha]
       have := (in_iff.1 hs) (Finsupp.sumElim (n - a) a)
-      rwa [map_sub, GlobalTheory.T.coeff_sumElim_powerSeriesSwapVariableGroups] at this
+      rwa [map_sub, _root_.GlobalTheory.SwapCoeff.coeff_swap] at this
     have hr : ∀ a b, a ≠ 0 → b ≠ 0 → a + b ≤ n → a + b ≠ n →
         (∏ i, Nat.choose ((a + b : Fin d →₀ ℕ) i) (a i)) • cn (a + b) =
           (∏ i, Nat.choose ((n - a : Fin d →₀ ℕ) i) (b i)) • cn a := by
@@ -388,10 +383,10 @@ theorem coeff_cob1_low_degree_vanish {d : ℕ} {μ : Fin d → MvPowerSeries (Fi
     (hμ : ∀ i, constantCoeff (μ i) = 0) (f : MvPowerSeries (Fin d) Q) (M : ℕ)
     (hf : ∀ β : Fin d →₀ ℕ, β.degree < M → coeff β f = 0) (α : Fin d ⊕ Fin d →₀ ℕ)
     (hα : α.degree < M) : coeff α (cob1 (up Q μ) f) = 0 := by
-  have h1 := GlobalTheory.T.coeff_subst_eq_zero_of_degree_lt' Q (Fin d) (Fin d ⊕ Fin d) (up Q μ) f M (up_const hμ) hf α hα
-  have h2 := GlobalTheory.T.coeff_subst_eq_zero_of_degree_lt' Q (Fin d) (Fin d ⊕ Fin d) (fun i => X (Sum.inl i)) f M
+  have h1 := _root_.GlobalTheory.coeff_subst_eq_zero_of_degree_lt Q (Fin d) (Fin d ⊕ Fin d) (up Q μ) f M (up_const hμ) hf α hα
+  have h2 := _root_.GlobalTheory.coeff_subst_eq_zero_of_degree_lt Q (Fin d) (Fin d ⊕ Fin d) (fun i => X (Sum.inl i)) f M
     (fun i => constantCoeff_X _) hf α hα
-  have h3 := GlobalTheory.T.coeff_subst_eq_zero_of_degree_lt' Q (Fin d) (Fin d ⊕ Fin d) (fun i => X (Sum.inr i)) f M
+  have h3 := _root_.GlobalTheory.coeff_subst_eq_zero_of_degree_lt Q (Fin d) (Fin d ⊕ Fin d) (fun i => X (Sum.inr i)) f M
     (fun i => constantCoeff_X _) hf α hα
   unfold cob1 inL inR
   rw [map_sub, map_sub, h1, h2, h3, sub_zero, sub_zero]
@@ -472,6 +467,6 @@ theorem GlobalTheory.symmetric_cocycle_is_coboundary_mod : ∀ (p : ℕ) [Fact p
     have hdiff : coeff α (cob1 (up Q μ) (g - G α.degree)) = 0 := by
       refine coeff_cob1_low_degree_vanish hμ.const _ (α.degree + 1) (fun β hβ => ?_) α (by omega)
       rw [map_sub, hgG α.degree β (by omega), sub_self]
-    rw [(GlobalTheory.T.formalGroupLawCoboundary_swap_sub_rules Q d (up Q μ) hμQ 0 0 g (G α.degree)).2.2, map_sub, sub_eq_zero] at hdiff
+    rw [(_root_.GlobalTheory.CobLin.sub_rules Q d (up Q μ) hμQ 0 0 g (G α.degree)).2.2, map_sub, sub_eq_zero] at hdiff
     rw [map_sub, hdiff, ← map_sub, ← hsG]
     exact (hP α.degree).2.2.2.2.2 α (by omega)

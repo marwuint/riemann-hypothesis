@@ -11,10 +11,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonNCongr
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MinorStProdRange
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValueTranslatePullbackEqGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsAlgClosedValuedFieldOverCompleteDVRStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DepthBelowOneOfHodgeTateChartFormStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsAlgClosedValuedFieldOverCompleteDVR
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DepthBelowOneOfHodgeTateChartForm
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsProductDataCopiesTrivialisationValuationStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointStatementsOnCopiesHoldStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PointStatementsOnCopiesHold
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NonemptyTateIsometryIntegralFramedPointChartStatement
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
@@ -217,7 +217,7 @@ theorem least_value_le : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartR
   have hc' : ∃ u u' : 𝓞 E, u * π' + u' * star π' = 1 :=
     ⟨u * π, u' * star π, by rw [← huu]; ring⟩
   haveI : CharZero T.Fr := inferInstance
-  obtain ⟨F, _, _, _, _, _, _, v, hv, O, _, _, _, _, hO1, hO2, hO3⟩ := GlobalTheory.T.exists_algClosed_valuedField_over_completeDVR T ϖ hϖ inferInstance
+  obtain ⟨F, _, _, _, _, _, _, v, hv, O, _, _, _, _, hO1, hO2, hO3⟩ := _root_.GlobalTheory.ClosedValuedField.exists_field_over_cdvr T ϖ hϖ inferInstance
   obtain ⟨I⟩ := GlobalTheory.T.nonempty_tateIsometry_integralFramedPoint_chart E H Dw l Xo c T io y C P F
   obtain ⟨n₂, rfl⟩ : ∃ n₂, n = (Dw.p + Dw.q) + n₂ := ⟨n - (Dw.p + Dw.q), by omega⟩
   obtain ⟨D', A', G', _, _, pD, pA, pG, U', PU, _, oD', hx1, hx2, -⟩ :=
@@ -267,7 +267,7 @@ theorem least_value_le : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartR
       exact not_lt.2 h3 hgpos
   obtain ⟨m, hm, hdeg, Ppol, hPpol, hmap⟩ := exists_minor_harm E H Dw l c _ htyp a ha (Dw.p + Dw.q) n₂ hmult hmult2
   obtain ⟨s, s₂, p, w, ζ, x, t₀, t, σ', h, ρ, b1, b2, b3, b4, b5, b6, b7, b8, b9, hval, hρ⟩ :=
-    GlobalTheory.T.depthBelowOne_of_hodgeTate_chart_form hHT E H Dw l Xo c (fun _ => rfl) T io y hy C hTr P hP ϖ hϖ Q hQ g g' hg hg' hgg hog hog' π π' hπ hπ'
+    _root_.GlobalTheory.PowGerm.lemmaBT_of_hodgeTate_chart hHT E H Dw l Xo c (fun _ => rfl) T io y hy C hTr P hP ϖ hϖ Q hQ g g' hg hg' hgg hog hog' π π' hπ hπ'
       hc hc' hcard hnd hnu F v hv O hO1 hO2 (hO3 g hg.ne_zero hnu) I Φ M0 r b hΦ hb hM0 (Dw.p + Dw.q) n₂ hn1
       D' A' G' pD pA pG U' PU oD' hx1 hx2 m
       (fun τ s h => ⟨(hm τ s h).1, (hm τ s h).2, by

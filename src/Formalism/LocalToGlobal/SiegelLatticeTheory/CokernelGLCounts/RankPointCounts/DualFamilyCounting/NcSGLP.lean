@@ -6,47 +6,6 @@ namespace Formalism.L2.SG.Pf.NcS.LT.GLP
 
 variable {K : Type*} [Field K]
 
-theorem surj_equiv {C W : Type*} [AddCommGroup C] [Module K C] [FiniteDimensional K C]
-    [AddCommGroup W] [Module K W] (L1 L2 : C →ₗ[K] W) (h1 : Function.Surjective L1)
-    (h2 : Function.Surjective L2) : ∃ δ : C ≃ₗ[K] C, ∀ c, L1 (δ c) = L2 c := by
-  obtain ⟨s, hs⟩ := LinearMap.exists_rightInverse_of_surjective L1 (LinearMap.range_eq_top.mpr h1)
-  obtain ⟨p, hp⟩ := LinearMap.exists_leftInverse_of_injective (LinearMap.ker L2).subtype
-    (LinearMap.ker L2).ker_subtype
-  have hdim : Module.finrank K (LinearMap.ker L2) = Module.finrank K (LinearMap.ker L1) := by
-    have e1 := LinearMap.finrank_range_add_finrank_ker L1
-    have e2 := LinearMap.finrank_range_add_finrank_ker L2
-    rw [LinearMap.range_eq_top.mpr h1, finrank_top] at e1
-    rw [LinearMap.range_eq_top.mpr h2, finrank_top] at e2
-    omega
-  let e : LinearMap.ker L2 ≃ₗ[K] LinearMap.ker L1 := by
-    first
-    | exact LinearEquiv.ofFinrankEq _ _ hdim
-    | exact LinearEquiv.ofFinrankEq hdim
-  let δ : C →ₗ[K] C := s ∘ₗ L2 + (LinearMap.ker L1).subtype ∘ₗ (e.toLinearMap ∘ₗ p)
-  have hδ : ∀ c, δ c = s (L2 c) + ((e (p c) : LinearMap.ker L1) : C) := by
-    intro c
-    first
-    | rfl
-    | simp [δ]
-  have hL1 : ∀ c, L1 (δ c) = L2 c := by
-    intro c
-    have h1' : L1 (s (L2 c)) = L2 c := by simpa using LinearMap.congr_fun hs (L2 c)
-    have h2' : L1 ((e (p c) : LinearMap.ker L1) : C) = 0 := LinearMap.mem_ker.mp (e (p c)).2
-    rw [hδ, map_add, h1', h2', add_zero]
-  have hinj : Function.Injective δ := by
-    refine (injective_iff_map_eq_zero δ).mpr fun c hc => ?_
-    have hc2 : L2 c = 0 := by rw [← hL1 c, hc, map_zero]
-    have hpc : p c = ⟨c, hc2⟩ := by simpa using LinearMap.congr_fun hp ⟨c, hc2⟩
-    rw [hδ, hc2, map_zero, zero_add, hpc] at hc
-    have hk : (⟨c, hc2⟩ : LinearMap.ker L2) = 0 := by simpa using hc
-    first
-    | exact congrArg Subtype.val hk
-    | simpa using congrArg Subtype.val hk
-  refine ⟨LinearEquiv.ofInjectiveEndo δ hinj, fun c => ?_⟩
-  first
-  | exact hL1 c
-  | simpa using hL1 c
-
 private theorem dual_apply_eq_sum_mul_single {a : ℕ} (μ : Module.Dual K (Fin a → K)) (t : Fin a → K) :
     μ t = ∑ i, t i * μ (Pi.single i 1) := by
   have ht : t = ∑ i, t i • (Pi.single i 1 : Fin a → K) := by

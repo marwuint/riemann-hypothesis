@@ -21,42 +21,13 @@ def levMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n
     R ⧸ I ^ n →+* S ⧸ J ^ n :=
   Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n)
 
-theorem levMap_mk (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (r : R) :
-    levMap I J f hf n (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk _ (f r) := by
-  first | exact @AdicLevelMap.Bridge.AdicMaps.levMap_mk | exact AdicLevelMap.Bridge.AdicMaps.levMap_mk .. | (intros; apply AdicLevelMap.Bridge.AdicMaps.levMap_mk <;> assumption)
-
-theorem factorPow_evalₐ (I : Ideal R) {m n : ℕ} (hle : m ≤ n) (x : AdicCompletion I R) :
-    Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
-  first | exact @FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ | exact FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ .. | (intros; apply FactorPowerEval.Bridge.AdicMaps.factorPow_evalₐ <;> assumption)
-
-theorem levMap_compat (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) {m n : ℕ}
-    (hle : m ≤ n) :
-    (Ideal.Quotient.factorPow J hle).comp ((levMap I J f hf n).comp
-      (AdicCompletion.evalₐ I n : AdicCompletion I R →+* R ⧸ I ^ n)) =
-    (levMap I J f hf m).comp (AdicCompletion.evalₐ I m : AdicCompletion I R →+* R ⧸ I ^ m) := by
-  first | exact @AdicLevelCompat.Bridge.AdicMaps.levMap_compat | exact AdicLevelCompat.Bridge.AdicMaps.levMap_compat .. | (intros; apply AdicLevelCompat.Bridge.AdicMaps.levMap_compat <;> assumption)
-
 def adicMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) :
     AdicCompletion I R →+* AdicCompletion J S :=
   Reformulated.AutPerF.adicMap I J f hf
 
-theorem evalₐ_adicMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ)
-    (x : AdicCompletion I R) :
-    AdicCompletion.evalₐ J n (adicMap I J f hf x) = levMap I J f hf n (AdicCompletion.evalₐ I n x) := by
-  first | exact @AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap | exact AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap .. | (intros; apply AdicEvaluationMap.Bridge.AdicMaps.evalₐ_adicMap <;> assumption)
-
-theorem evalₐ_adicMap_mk (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ)
-    (x : AdicCompletion I R) (r : R) (h : AdicCompletion.evalₐ I n x = Ideal.Quotient.mk _ r) :
-    AdicCompletion.evalₐ J n (adicMap I J f hf x) = Ideal.Quotient.mk _ (f r) := by
-  first | exact @AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk | exact AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk .. | (intros; apply AdicEvaluationMk.Bridge.AdicMaps.evalₐ_adicMap_mk <;> assumption)
-
 theorem adicMap_alg (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (r : R) :
     adicMap I J f hf (algebraMap R (AdicCompletion I R) r) = algebraMap S (AdicCompletion J S) (f r) := by
   first | exact @AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg | exact AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg .. | (intros; apply AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg <;> assumption)
-
-theorem span_le_comap (p : ℕ) (f : R →+* S) :
-    Ideal.span {(p : R)} ≤ (Ideal.span {(p : S)}).comap f := by
-  first | exact @AdicSpanLeComap.Bridge.AdicMaps.span_le_comap | exact AdicSpanLeComap.Bridge.AdicMaps.span_le_comap .. | (intros; apply AdicSpanLeComap.Bridge.AdicMaps.span_le_comap <;> assumption)
 
 abbrev PHat (p : ℕ) (R : Type) [CommRing R] : Type := AdicCompletion (Ideal.span {(p : R)}) R
 

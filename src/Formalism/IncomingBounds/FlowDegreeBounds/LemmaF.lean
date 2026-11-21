@@ -43,26 +43,6 @@ private theorem self_le_pow_of_one_le_of_one_le_exp {a : ℝ} (ha : 1 ≤ a) {n 
   have h := pow_le_pow_right_of_one_le_real ha hn
   rwa [pow_one] at h
 
-private lemma isDual_const (hl : 1 ≤ l) : IsDual l d (fun _ => 1 / ((l : ℝ) + 1)) := by
-  have hl1 : (1 : ℝ) ≤ l := by exact_mod_cast hl
-  have hpos : (0 : ℝ) < (l : ℝ) + 1 := by linarith
-  have hc : ((l : ℝ) + 1) * (1 / ((l : ℝ) + 1)) = 1 := mul_one_div_cancel hpos.ne'
-  have hc0 : 0 ≤ 1 / ((l : ℝ) + 1) := by positivity
-  refine ⟨fun s => ⟨hc0, ?_⟩, fun s i hi => ?_⟩
-  · show 1 / ((l : ℝ) + 1) ≤ 1
-    nlinarith
-  · show 1 ≤ (l : ℝ) ^ i * (1 / ((l : ℝ) + 1)) + 1 / ((l : ℝ) + 1)
-    have hli := self_le_pow_of_one_le_of_one_le_exp hl1 (oddLevels_one_le hi)
-    have hm := mul_le_mul_of_nonneg_right hli hc0
-    nlinarith
-
-private lemma flow_out_le {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ} (hx : IsFlow l d D x) (s : ZMod d) :
-    ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i ≤ D s := by
-  have h := hx.2 s
-  have h0 : 0 ≤ ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i :=
-    Finset.sum_nonneg fun i _ => hx.1 _ _
-  linarith
-
 private lemma sum_incoming (x : ZMod d → ℕ → ℝ) :
     ∑ s : ZMod d, ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i =
       ∑ s : ZMod d, ∑ i ∈ oddLevels d, x s i := by
@@ -166,12 +146,6 @@ private theorem exists_isDual_Fnum_eq_sum_deficit (hA : LemmaFa) (hl : 3 ≤ l) 
     ∃ sig, IsDual l d sig ∧ Fnum l d D = ∑ s, D s * (gam l - sig s) :=
   (hA l d hl hd hev D hD).2.1
 
-private theorem sum_smul_apply_mul (c : ℝ) (D f : ZMod d → ℝ) :
-    ∑ s, (c • D) s * f s = c * ∑ s, D s * f s := by
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl fun s _ => ?_
-  rw [Pi.smul_apply, smul_eq_mul, mul_assoc]
-
 private theorem sum_add_apply_mul (D E f : ZMod d → ℝ) :
     ∑ s, (D + E) s * f s = ∑ s, D s * f s + ∑ s, E s * f s := by
   rw [← Finset.sum_add_distrib]
@@ -205,34 +179,6 @@ private lemma altNum_nonneg (hl : 1 ≤ l) (hev : Even d) {D : ZMod d → ℝ}
 
 end Helpers
 
-theorem lemmaFb_of (hF : FlowAttained) (hA : LemmaFa) : LemmaFb := by
-  intro l d _ hl hd hev
-  refine ⟨fun c D hc hD => ?_, ⟨convex_Ici 0, fun D hD E hE a b ha hb hab => ?_⟩, fun D hD => ?_⟩
-  · have hcD : 0 ≤ c • D := fun s => by
-      rw [Pi.smul_apply, smul_eq_mul]
-      exact mul_nonneg hc (hD s)
-    obtain ⟨s1, hs1, e1⟩ := exists_isDual_Fnum_eq_sum_deficit hA hl hd hev hcD
-    obtain ⟨s0, hs0, e0⟩ := exists_isDual_Fnum_eq_sum_deficit hA hl hd hev hD
-    apply le_antisymm
-    · rw [e1, sum_smul_apply_mul]
-      exact mul_le_mul_of_nonneg_left (sum_deficit_le_Fnum_of_isDual hA hl hd hev hD hs1) hc
-    · have h := sum_deficit_le_Fnum_of_isDual hA hl hd hev hcD hs0
-      rw [sum_smul_apply_mul, ← e0] at h
-      exact h
-  · have hD' : 0 ≤ D := hD
-    have hE' : 0 ≤ E := hE
-    have hF0 : 0 ≤ a • D + b • E := fun s => by
-      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-      exact add_nonneg (mul_nonneg ha (hD' s)) (mul_nonneg hb (hE' s))
-    obtain ⟨sg, hsg, e⟩ := exists_isDual_Fnum_eq_sum_deficit hA hl hd hev hF0
-    rw [e, sum_add_apply_mul, sum_smul_apply_mul, sum_smul_apply_mul, smul_eq_mul, smul_eq_mul]
-    exact add_le_add (mul_le_mul_of_nonneg_left (sum_deficit_le_Fnum_of_isDual hA hl hd hev hD' hsg) ha)
-      (mul_le_mul_of_nonneg_left (sum_deficit_le_Fnum_of_isDual hA hl hd hev hE' hsg) hb)
-  · have h := sum_deficit_le_Fnum_of_isDual hA hl hd hev hD (isDual_const (d := d) (by omega : 1 ≤ l))
-    rw [gam_sub_inv (by omega : 2 ≤ l), ← Finset.sum_mul] at h
-    rw [mul_comm]
-    exact h
-
 theorem lemmaFc_of (hF : FlowAttained) (hA : LemmaFa) : LemmaFc := by
   intro l d _ hl hd hev D E sig hD hE hopt
   have hDE : 0 ≤ D + E := add_nonneg hD hE
@@ -257,89 +203,5 @@ theorem lemmaFc_of (hF : FlowAttained) (hA : LemmaFa) : LemmaFc := by
       nlinarith
     rw [e, sum_add_apply_mul]
     linarith
-
-theorem deficitOfBoundedRatio : LemmaFe := by
-  intro l d _ hl hd hev D hD hr
-  have hl1 : 1 ≤ l := by omega
-  have hl0 : (0 : ℝ) < l := by exact_mod_cast (show 0 < l by omega)
-  have hpos : (0 : ℝ) < (l : ℝ) + 1 := by linarith
-  obtain ⟨q, hq_eq⟩ : ∃ q : ℝ, q = 1 - ((l : ℝ) ^ d)⁻¹ := ⟨_, rfl⟩
-  have hq : 0 < q := by
-    have hL : (3 : ℝ) ≤ (l : ℝ) ^ d :=
-      le_trans (by exact_mod_cast hl) (self_le_pow_of_one_le_of_one_le_exp (by exact_mod_cast hl1) (by omega))
-    have hLpos : (0 : ℝ) < (l : ℝ) ^ d := by linarith
-    have hu := inv_mul_cancel₀ hLpos.ne'
-    have hupos := inv_pos.2 hLpos
-    rw [hq_eq]
-    nlinarith
-  obtain ⟨y, hy⟩ : ∃ y : ZMod d → ℝ, ∀ s, y s = altNum l d D s / q := ⟨_, fun _ => rfl⟩
-  have hy0 : ∀ s, 0 ≤ y s := fun s => by
-    rw [hy]
-    exact div_nonneg (altNum_nonneg hl1 hev hr s) hq.le
-  have hrec : ∀ s, (l : ℝ) * y s + y (s - 1) = D s := by
-    intro s
-    have h := altNum_rec hl1 hev D s
-    rw [← hq_eq] at h
-    have e : (l : ℝ) * (altNum l d D s / q) + altNum l d D (s - 1) / q =
-        ((l : ℝ) * altNum l d D s + altNum l d D (s - 1)) / q := by ring
-    rw [hy, hy, e, h, mul_div_cancel_left₀ _ hq.ne']
-  have h1mem := one_mem_oddLevels hd
-  obtain ⟨x, hx⟩ : ∃ x : ZMod d → ℕ → ℝ, ∀ s i, x s i = if i = 1 then y s else 0 :=
-    ⟨fun s i => if i = 1 then y s else 0, fun _ _ => rfl⟩
-  have hout : ∀ s, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i = (l : ℝ) * y s := by
-    intro s
-    rw [Finset.sum_eq_single_of_mem 1 h1mem (fun i _ hi => by rw [hx, if_neg hi, mul_zero]),
-      hx, if_pos rfl, pow_one]
-  have hin : ∀ s, ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i = y (s - 1) := by
-    intro s
-    rw [Finset.sum_eq_single_of_mem 1 h1mem (fun i _ hi => by rw [hx, if_neg hi]),
-      hx, if_pos rfl, Nat.cast_one]
-  have hsel : ∀ s, ∑ i ∈ oddLevels d, x s i = y s := by
-    intro s
-    rw [Finset.sum_eq_single_of_mem 1 h1mem (fun i _ hi => by rw [hx, if_neg hi]), hx, if_pos rfl]
-  have hflow : IsFlow l d D x := by
-    refine ⟨fun s i => ?_, fun s => le_of_eq ?_⟩
-    · rw [hx]
-      split_ifs
-      exacts [hy0 s, le_refl 0]
-    · rw [hout, hin, hrec]
-  have hval : flowVal d x = ∑ s, y s := by
-    unfold flowVal
-    exact Finset.sum_congr rfl fun s _ => hsel s
-  have hshift : ∑ s, y (s - 1) = ∑ s, y s :=
-    Fintype.sum_equiv (Equiv.subRight (1 : ZMod d)) _ _ (fun s => rfl)
-  have htot : ((l : ℝ) + 1) * ∑ s, y s = ∑ s, D s := by
-    have h : ∑ s, ((l : ℝ) * y s + y (s - 1)) = ∑ s, D s := Finset.sum_congr rfl fun s _ => hrec s
-    rw [Finset.sum_add_distrib, ← Finset.mul_sum, hshift] at h
-    rw [add_mul, one_mul]
-    exact h
-  have hsum : ∑ s, y s = (∑ s, D s) / ((l : ℝ) + 1) := by
-    rw [eq_div_iff hpos.ne', mul_comm]
-    exact htot
-  have hmax : maxFlow l d D = (∑ s, D s) / ((l : ℝ) + 1) :=
-    le_antisymm (maxFlow_le hl1 hD) (by rw [← hsum, ← hval]; exact le_maxFlow hl1 hflow)
-  unfold Fnum
-  rw [hmax, ← gam_sub_inv (l := l) (by omega)]
-  ring
-
-theorem highLevelTail : LevelTail := by
-  intro l d _ hl D x hx i0
-  have hl0 : (0 : ℝ) < l := by exact_mod_cast (show 0 < l by omega)
-  have hl1 : (1 : ℝ) ≤ l := by exact_mod_cast (show 1 ≤ l by omega)
-  have hpos : (0 : ℝ) < (l : ℝ) ^ i0 := pow_pos hl0 i0
-  apply le_div_of_mul_le_of_pos_flow_degree_bounds hpos
-  calc (∑ a : ZMod d, ∑ i ∈ (oddLevels d).filter (fun i => i0 ≤ i), x a i) * (l : ℝ) ^ i0
-      = ∑ a : ZMod d, ∑ i ∈ (oddLevels d).filter (fun i => i0 ≤ i), (l : ℝ) ^ i0 * x a i := by
-        rw [Finset.sum_mul]
-        refine Finset.sum_congr rfl fun a _ => ?_
-        rw [Finset.sum_mul]
-        exact Finset.sum_congr rfl fun i _ => mul_comm _ _
-    _ ≤ ∑ a : ZMod d, ∑ i ∈ (oddLevels d).filter (fun i => i0 ≤ i), (l : ℝ) ^ i * x a i :=
-        Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun i hi =>
-          mul_le_mul_of_nonneg_right (pow_le_pow_right_of_one_le_real hl1 (Finset.mem_filter.1 hi).2) (hx.1 a i)
-    _ ≤ ∑ a : ZMod d, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x a i :=
-        Finset.sum_le_sum fun a _ => Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
-          (fun i _ _ => mul_nonneg (pow_nonneg hl0.le i) (hx.1 a i))
-    _ ≤ ∑ a : ZMod d, D a := Finset.sum_le_sum fun a _ => flow_out_le hx a
 
 end Formalism.IncomingBounds

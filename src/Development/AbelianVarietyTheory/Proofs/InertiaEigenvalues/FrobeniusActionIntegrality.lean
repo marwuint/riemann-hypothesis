@@ -12,14 +12,14 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameMatrixRed
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDualHalfLatticeDetectingCharacter
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniformiserFamilyHostFieldIntegersStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniformiserFamilyHostFieldIntegers
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralScalarInverseUniformisersIdempotentSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemCompletedLatticeHalfIffFrameMatrixIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentSumIntegralDivUniformisersIffReductionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegralLiftResiduesIdempotentSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjugateHalfPrescribedAdjointFrameMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemCompletedLatticeHalfIffFrameMatrixIntegral
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentSumIntegralDivUniformisersIffReduction
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegralLiftResiduesIdempotentSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjugateHalfPrescribedAdjointFrameMatrix
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemCompletedLatticeConjugateHalfIffDualStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeHalfRepresentativesModReductionsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeHalfRepresentativesModReductions
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice IsDedekindDomain NumberField Matrix Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.L2.Pj
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -81,7 +81,7 @@ theorem isIntM_smul_iff (Q : Finset (Pl D.host.E)) (es : Pl D.host.E → AE D) (
     IsIntM (toEAf D (∑ PP ∈ Q, es PP * incA D ((ϖ PP : D.host.E)⁻¹)) • N) ↔ ∀ PP ∈ Q, redM PP N = 0 := by
   have key : ∀ i j, (toEAf D (∑ PP ∈ Q, es PP * incA D ((ϖ PP : D.host.E)⁻¹)) * N i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔
       ∀ PP ∈ Q, resS D.host.F PP ⟨N i j, hN i j⟩ = 0) := fun i j =>
-    GlobalTheory.T.idempotentSum_integral_div_uniformisers_iff_reduction_zero D Q es ϖ hes hc hϖ (N i j) (hN i j) (by
+    _root_.GlobalTheory.IdemKerDiv.integral_div_iff D Q es ϖ hes hc hϖ (N i j) (hN i j) (by
       have := congrFun (congrFun he i) j
       rwa [Matrix.smul_apply, smul_eq_mul] at this)
   constructor
@@ -173,7 +173,7 @@ theorem GlobalTheory.ZRep.central_reps : ∀ (D : D7) (G : Type) [Group G] [Fint
   have sW : IsSelfDualC (Wc D i) (R.ΛW i) :=
     GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βW i))
   have hP := hQ.2 t
-  refine ⟨?_, GlobalTheory.T.exists_uniformiser_family_hostField_integers D, ?_⟩
+  refine ⟨?_, _root_.GlobalTheory.exists_uniformiser_family_host D, ?_⟩
   · obtain ⟨f, eg, eQ, fg, -, hq, -⟩ := (GlobalTheory.FlatVecExist.flatVec_existsUnique D G Pl0 T0 A Ks R F hR hQ i t).1
     exact ⟨eQ, hq⟩
   intro eQ es ϖ hq hes hϖ heQ
@@ -220,7 +220,7 @@ theorem GlobalTheory.ZRep.central_reps : ∀ (D : D7) (G : Type) [Group G] [Fint
   subst hΛ
   set Λ := latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (fun _ => True) with hΛ
   have H1e : ∀ w : WO (Vc D i) (Wc D i), IsHalf e w → (w ∈ Λ ↔ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) w)) :=
-    GlobalTheory.T.mem_completedLattice_half_iff_frameMatrix_integral D _ _ _ _ _ _ sV sW fV fW (R.Q t) e hq hP
+    _root_.GlobalTheory.HalfOInt.mem_latO_iff_frMapO_int D _ _ _ _ _ _ sV sW fV fW (R.Q t) e hq hP
   have H1c : ∀ w : WO (Vc D i) (Wc D i), IsHalf (cA D e) w → (w ∈ Λ ↔ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) w)) :=
     fun w hw => ⟨fun h => GlobalTheory.HalfAdjInt.frMapAdj_int_of_half D _ _ _ _ _ _ sV sW fV fW _ e hq hP w h hw,
       fun h => GlobalTheory.HalfAdjLattice.mem_latO_of_adj_int D _ _ _ _ _ _ sV sW fV fW _ e hq hP w hw h⟩
@@ -296,7 +296,7 @@ theorem GlobalTheory.ZRep.central_reps : ∀ (D : D7) (G : Type) [Group G] [Fint
       IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) w) ∧ ∀ PP ∈ R.Q t, redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) w) = Y PP := by
     intro Y
     choose N hN heN hNY using fun (ij : Fin (Wc D i).rank × Fin (Vc D i).rank) =>
-      GlobalTheory.T.exists_integral_lift_residues_idempotentSum D (R.Q t) es hes hc (fun PP => Y PP ij.1 ij.2)
+      _root_.GlobalTheory.IdemResLift.exists_int_lift D (R.Q t) es hes hc (fun PP => Y PP ij.1 ij.2)
     obtain ⟨y, hyh, -, hyz⟩ := GlobalTheory.HalfDuality.exists_half_frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) e he_idem
       (fun a b => N (a, b)) (fun a b => heN (a, b))
     have hI : IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) y) := by rw [hyz]; exact fun a b => hN (a, b)
@@ -310,8 +310,8 @@ theorem GlobalTheory.ZRep.central_reps : ∀ (D : D7) (G : Type) [Group G] [Fint
       IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) w) ∧ ∀ PP ∈ R.Q t, redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) w) = Y PP := by
     intro Y
     choose N hN heN hNY using fun (ij : Fin (Vc D i).rank × Fin (Wc D i).rank) =>
-      GlobalTheory.T.exists_integral_lift_residues_idempotentSum D (R.Q t) es hes hc (fun PP => Y PP ij.1 ij.2)
-    obtain ⟨y, hyh, -, hyz⟩ := GlobalTheory.T.exists_conjugateHalf_prescribed_adjoint_frameMatrix D (Vc D i) (Wc D i) (R.βV i) (R.βW i) e he_idem
+      _root_.GlobalTheory.IdemResLift.exists_int_lift D (R.Q t) es hes hc (fun PP => Y PP ij.1 ij.2)
+    obtain ⟨y, hyh, -, hyz⟩ := _root_.GlobalTheory.AdjHalfLift.exists_half_frMapAdj D (Vc D i) (Wc D i) (R.βV i) (R.βW i) e he_idem
       (fun a b => N (a, b)) (fun a b => heN (a, b))
     have hI : IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) y) := by rw [hyz]; exact fun a b => hN (a, b)
     refine ⟨y, hyh, hI, fun PP hPP => ?_⟩
@@ -320,9 +320,9 @@ theorem GlobalTheory.ZRep.central_reps : ∀ (D : D7) (G : Type) [Group G] [Fint
     have := hNY (a, b) PP hPP
     convert this using 2
     exact Subtype.ext (congrFun (congrFun hyz a) b)
-  obtain ⟨Xe, hXe1, hXe2, hXecard, hXeY⟩ := GlobalTheory.T.lattice_half_representatives_mod_reductions D (Vc D i) (Wc D i) Λ Λe e (R.Q t)
+  obtain ⟨Xe, hXe1, hXe2, hXecard, hXeY⟩ := _root_.GlobalTheory.ZRepBlock.zrep_block D (Vc D i) (Wc D i) Λ Λe e (R.Q t)
     (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (frMapO_sub _ _) H1e H2e H3e
-  obtain ⟨Xc, hXc1, hXc2, hXccard, hXcY⟩ := GlobalTheory.T.lattice_half_representatives_mod_reductions D (Vc D i) (Wc D i) Λ Λc (cA D e) (R.Q t)
+  obtain ⟨Xc, hXc1, hXc2, hXccard, hXcY⟩ := _root_.GlobalTheory.ZRepBlock.zrep_block D (Vc D i) (Wc D i) Λ Λc (cA D e) (R.Q t)
     (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (frMapAdj_sub _ _) H1c H2c WeightCompositions
 
   have cl6e : ∀ u, IsHalf (cA D e) u → ((∀ l ∈ Λe, IsHalf e l → R.ψ (symplO (Vc D i) (Wc D i) l u) = 1) ↔

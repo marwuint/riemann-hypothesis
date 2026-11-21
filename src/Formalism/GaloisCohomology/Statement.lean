@@ -119,21 +119,9 @@ end Field
 def LDataExists : Prop := ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
   [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], Nonempty (LData F Ω l)
 
-def Indep : Prop := ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
-  [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D D' : LData F Ω l) (e : ℤ),
-  shaLen D e = shaLen D' e ∧ VLen D e = VLen D' e ∧ sumLocalH0TwistLength D e = sumLocalH0TwistLength D' e
-
 def ContTw : Prop := ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
   [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (e : ℤ),
   ContAction (qzTw D e) ∧ ContAction (zlTw D e)
-
-def GlobalH0TwistFiniteLength : Prop := ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
-  [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (e : ℤ), e ≠ 0 →
-  Module.length ℤ_[l] (H0 (qzTw D e)) < ⊤
-
-def LocalH0TwistFiniteLength : Prop := ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
-  [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (e : ℤ), e ≠ 0 → ∀ v : D.S,
-  Module.length ℤ_[l] (H0 ((qzTw D e).comp (locFam D.S D.A v))) < ⊤
 
 def VFormula : Prop := ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
   [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (e : ℤ), PTCase F l →
@@ -165,11 +153,6 @@ def bkCond (rho : Representation R (G F Ω) M) (A : Places F Ω)
     ∀ v, Submodule R (H1 (rho.comp (Dec (F := F) (A.1 v)).subtype)) :=
   open Classical in
   fun v => if ((l : ℕ) : 𝓞 F) ∈ v.asIdeal then Ll v else if v ∈ Sig then ⊤ else unrAt rho (A.1 v)
-
-def selLen (rho : Representation R (G F Ω) M) (A : Places F Ω)
-    (l : ℕ) (Sig : Set (HeightOneSpectrum (𝓞 F)))
-    (Ll : ∀ v, Submodule R (H1 (rho.comp (Dec (F := F) (A.1 v)).subtype))) : ℕ∞ :=
-  Module.length R (SelAll rho A (bkCond rho A l Sig Ll))
 
 end Sel
 

@@ -90,12 +90,6 @@ theorem cechHEquivCoh_δ {S : ShortComplex X.Modules} (hS : S.ShortExact) [S.X�
 
 end Comparison
 
-theorem cohOn.subsingleton_of_card_le [Fintype ι] (hc : V ≤ ⨆ i, U i)
-    (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (cechOpen V U s))
-    (F : X.Modules) [F.IsQuasicoherent] {n : ℕ} (hn : Fintype.card ι ≤ n) :
-    Subsingleton (cohOn F V n) :=
-  subsingleton_cohOn_of_cechAcyclic hc (cechAcyclicMod_of_isAffineOpen hU F) hn
-
 theorem coh.subsingleton_of_card_le [Fintype ι] (hc : ⨆ i, U i = ⊤)
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i))
     (F : X.Modules) [F.IsQuasicoherent] {n : ℕ} (hn : Fintype.card ι ≤ n) :

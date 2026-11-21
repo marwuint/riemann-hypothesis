@@ -12,7 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnrAtOfOff
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameAtOfCongr
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePlaceIdempotentBaseChangeAdeles
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBaseChangeFiniteAdeleRingEquiv
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharacterTrivialOnSubfieldOfIdelicReadingStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharacterTrivialOnSubfieldOfIdelicReading
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCmAdeleUnitCharacterReadingHeckeChar
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ResFinEqOneOfAway
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.FWT Formalism.IndefR.Links IsDedekindDomain NumberField GlobalTheory.ExportSeries Formalism.L2.Pj GlobalTheory.CoverRead GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels GlobalTheory.SeriesTie
 open Formalism.L2.Host (embLL0)
 open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ)
@@ -84,7 +86,7 @@ theorem isTwist_mul : ∀ (D : D7) (t t' : Twist D Circle), t.Good → t'.Good �
       rw [MonoidHom.pow_apply, hnx x, MonoidHom.one_apply]
     rw [h1] at hp
     exact GlobalTheory.ChrEqUnique.hchar_unique D 1 _ _ hp chrEq_one_one
-  · exact GlobalTheory.T.heckeCharacter_trivialOnSubfield_of_idelicReading D _ _ hc fun a => by rw [MonoidHom.mul_apply, ht.real, ht'.real, one_mul]
+  · exact _root_.GlobalTheory.TrivOnRead.trivOn_of_chrEq D _ _ hc fun a => by rw [MonoidHom.mul_apply, ht.real, ht'.real, one_mul]
   · intro v x hx hx1
     show χ.loc v x * χ'.loc v x = 1
     rw [tameAt_of_good t ht χ hχ v x hx hx1, tameAt_of_good t' ht' χ' hχ' v x hx hx1, one_mul]

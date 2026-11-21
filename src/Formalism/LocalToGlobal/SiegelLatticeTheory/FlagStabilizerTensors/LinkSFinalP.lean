@@ -113,31 +113,4 @@ theorem offDiagonalK0_of_rows (hT : TheoremSDistinctWords) (h1 : 1 ≤ C0) {𝒞
     (Formalism.MainNotions.NonGenericAndKTwoTheorems.Hyp_of _ _ _ _ _ _ _ _ _ _ hH.1 hH.2.1 hH.2.2 (by linarith))
     (gap_hypothesis_of_hypotheses hH.2.1 (by linarith) hC'29) ok.2.2.2.2.2.1 ok.2.2.2.2.2.2 hRB hRNS
 
-variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
-
-theorem theoremS_transport_link_partner (𝒞 : FamClass) (sel : SSel 𝒞)
-    (hWu : Formalism.L2.SG.Pf.WuDecayOfGap) (hRF : Formalism.L2.SG.RowsDef.RowsFinDim)
-    (hLoc : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (hx : Fm.x1 < x) (h0 : (sel Fm hc).1 ≤ x) (i : Fm.Ix x),
-      Formalism.L2.SG.Pf.LocCP.LocTied (Fm.D x i))
-    (hInst : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (hx : Fm.x1 < x) (h0 : (sel Fm hc).1 ≤ x) (i : Fm.Ix x),
-      InstTie ((sel Fm hc).2 x hx h0 i).X.B.I)
-    (hQ : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (hx : Fm.x1 < x) (h0 : (sel Fm hc).1 ≤ x) (i : Fm.Ix x),
-      1 ≤ qqI ((sel Fm hc).2 x hx h0 i).X.B.I)
-    (hRk : Formalism.L2.SG.Pf.SzHypFam.RanksRow C0 𝒞)
-    (c30 : List ℝ → CountingConstants) (h1 : 1 ≤ C0)
-    (hc30 : ∀ {eps : ℝ} (Fm : FamP eps), 0 ≤ (c30 Fm.cOut).C ∧ 2 * (Fm.CYL + 1) ≤ (c30 Fm.cOut).A)
-    (hRes : Closed 𝒞 fun Fm _ => ResidEv Fm)
-    (hTy : Formalism.L2.SG.RowsPos.TypeP) (hNG : Formalism.L2.SG.RowsPos.RowNGP) (hM : Formalism.L2.SG.RowsPos.RowMainEqP)
-    (hLp : LoopRowS C0 𝒞 sel) (hT : TheoremSDistinctWords)
-    (h30 : Closed 𝒞 fun Fm _ => CountE.CountAllPointsClass PLevT' Fm (c30 Fm.cOut).n0 (c30 Fm.cOut).A (c30 Fm.cOut).C
-      (c30 Fm.cOut).c (c30 Fm.cOut).cb) :
-    Closed 𝒞 fun Fm _ => TuSize Fm → Formalism.MainNotions.LinkS Fm C0 :=
-  have hTF := Formalism.L2.SG.Pf.SzHypFam.hTF_of_ranks C0 hRk
-  have hOK := selOK_of C0 (Formalism.L2.SG.Pf.finXC_of hWu hRF) hWu sel hLoc hTF
-  theoremS_transport_link_zero C0 𝒞 sel hWu hRF hLoc hInst hQ hTF c30 h1 hc30 hRes hTy hNG hM hLp
-    (offDiagonalK0_of_rows C0 hT h1 sel hOK
-      (Formalism.L2.SG.Pf.SzHypOf.sizesRowS_of C0 sel (Formalism.L2.SG.Pf.SzHypFam.hRw_of_ranks C0 hRk)
-        (Formalism.L2.SG.Pf.ThresholdLevels.thrRow_holds C0))
-      (Formalism.L2.SG.Pf.SzHypFam.aSz C0) (Formalism.L2.SG.Pf.SzHypFam.hA_of_ranks C0 h1 hRk) hLp absConvTied_holds) h30
-
 end Formalism.L2.SG.ThmSOwn

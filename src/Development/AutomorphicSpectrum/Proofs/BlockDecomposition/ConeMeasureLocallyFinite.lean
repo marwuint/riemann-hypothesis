@@ -3,7 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeas
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceSingleMulSingle
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasDerivAtTwistHomotopyKernel
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveConeIsOpenStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveConeIsOpen
 
 noncomputable section
 
@@ -64,7 +64,7 @@ theorem coneW_pos {v : Fin n × Fin n → ℝ} (hv : v ∈ cone n) : coneW n v �
 theorem coneMeas_ne_zero : coneMeas n ≠ 0 := by
   intro h0
   have hz := (withDensity_eq_zero measurable_coneW.aemeasurable h0)
-  have hopen : IsOpen (cone n) := GlobalTheory.T.positive_cone_isOpen n
+  have hopen : IsOpen (cone n) := _root_.GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone n
   have hvol : 0 < volume (cone n) := hopen.measure_pos volume cone_nonempty
   rw [Filter.EventuallyEq, ae_restrict_iff' hopen.measurableSet] at hz
   have hnull : volume (cone n) = 0 := by

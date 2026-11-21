@@ -25,10 +25,6 @@ def GenericProjClosureDivisor.Statement : Prop :=
           (zetaFirst a₀ - zetaSecond a₀') f₀ g₀ ∧
         aeval (pairProjCoord y e φ φ' t) f₀ = aeval (pairProjCoord y e φ φ' t) g₀
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

@@ -42,12 +42,6 @@ theorem pos_of_mem {k : Type} [Field k] {m e : ℕ} {ξ : Sp (ChartRing k m e) �
     exact absurd ((Ideal.eq_top_iff_one _).2 this) (closedPoint _ : PrimeSpectrum _).isPrime.ne_top
   · exact hm
 
-theorem not_hasChartOf_of_min_eq_zero (h0 : min D.p D.q = 0) (hx : x ∈ genBd Z) : ¬ HasChartOf φ Z BD d x := by
-  rintro ⟨k, _, m, e, ξ, t, P, γ, δ, a, rfl, -, -, h₃, -, -, h₀, h₆, -⟩
-  have := projective_of_free_int (E := E) P.D.toPre.X
-  have : Subsingleton P.D.toPre.X := Module.finrank_zero_iff.1 (Nat.le_zero.1 (h0 ▸ h₀))
-  exact h₆.linearIndependent.ne_zero ⟨0, pos_of_mem h₃ hx⟩ (Subsingleton.elim _ _)
-
 theorem idlAlong_ne_top (hφ : IsPolFan H.bar (min D.p D.q) φ) (hd : 1 ≤ d) (hx : x ∈ genBd Z)
     (h : HasChartOf φ Z BD d x) : FinalTheorems.stalkId BD.idealSheaf (genι Z x) ≠ ⊤ := by
   obtain ⟨k, _, m, e, ξ, t, P, γ, δ, a, rfl, -, -, h₃, -, -, h₀, h₆, h₇, h₈, h₉⟩ := h
@@ -66,18 +60,5 @@ theorem idlAlong_ne_top (hφ : IsPolFan H.bar (min D.p D.q) φ) (hd : 1 ≤ d) (
   rw [idlAlong, ht', Ideal.map_top, eq_comm, Ideal.span_singleton_eq_top] at h₉
   have hu := (isUnit_pow_iff ha).1 (isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun j => bdParam k m e j ^ a j) (Finset.mem_univ i)) h₉)
   simpa [MvPowerSeries.isUnit_iff_constantCoeff] using hu
-
-theorem not_hasChartOf_zero (hφ : IsPolFan H.bar (min D.p D.q) φ) (hd : 1 ≤ d) (hx : x ∈ genBd Z) :
-    ¬ HasChartOf φ Z (EffCartierData.zero Z.X) d x := fun h => idlAlong_ne_top hφ hd hx h (by
-  rw [EffCartierData.stalkId_idealSheaf (EffCartierData.zero Z.X) PUnit.unit _ (Set.mem_univ _), Ideal.span_singleton_eq_top]
-  exact (isUnit_one.map _))
-
-theorem exists_model_definite (h : GlobalTheory.Published.ToroidalChartsForFan) {Dw : Datum H} (hp : 1 ≤ Dw.p) (hq : Dw.q = 0)
-    {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) :
-    ∃ Y : Model Xo c (RingHom.id c.F), ∀ x, x ∉ genBd Y := by
-  have h0 : min Dw.p Dw.q = 0 := by omega
-  obtain ⟨Y, BD, d, k, -, -, -, -, -, h₅, -⟩ := h E H Dw (by omega) (InvFun.minVal _) (h0 ▸ isPolFan_zero)
-    (h0 ▸ noSelfInt_zero) l Xo c
-  exact ⟨Y, fun x hx => not_hasChartOf_of_min_eq_zero h0 hx (h₅ x hx)⟩
 
 end GlobalTheory.FanChartTest

@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPathFormallySmoothRingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalkStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGroupSchemeUnitStalkDataStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkDerivationOfLieSheafSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormallySmoothStalkUnitSmoothGroupSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeSquaringCotangentEqTwoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPathFormallySmoothRing
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalk
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGroupSchemeUnitStalkData
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkDerivationOfLieSheafSections
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormallySmoothStalkUnitSmoothGroupScheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeSquaringCotangentEqTwo
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -21,13 +22,13 @@ theorem exists_path_tan : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type
   set β : S.presheaf.stalk s →+* R := (Scheme.stalkClosedPointTo b).hom
   have hβ : Spec.map (CommRingCat.ofHom β) ≫ S.fromSpecStalk s = b :=
     Scheme.Spec_stalkClosedPointTo_fromSpecStalk b
-  obtain ⟨-, -, -, hev4, -, -, hev7⟩ := GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk
+  obtain ⟨-, -, -, hev4, -, -, hev7⟩ := _root_.GlobalTheory.Nef.evAt_calculus
   have hsV : s ∈ V := (hev4 R S b V).1 hbV
-  obtain ⟨π, ε, m, hSD, hεπ, hmπ, hεm⟩ := GlobalTheory.T.exists_groupSchemeUnitStalkData S G s
-  have hfs := GlobalTheory.T.formallySmooth_stalk_unit_smooth_groupScheme S G hsm s π ε m hSD
-  have hm2 := GlobalTheory.T.groupSchemeSquaring_cotangent_eq_two S G hqs s π ε m hSD
-  obtain ⟨δ, hδ, hδπ, hδτ⟩ := GlobalTheory.T.exists_stalkDerivation_of_lieSheafSections S G R s π ε m β n V hsV τ w hSD
-  obtain ⟨ψ, hψπ, hψ0, hψ1, hψ2⟩ := GlobalTheory.T.exists_path_formallySmooth_ring _ _ R π ε m β δ hfs hεπ hmπ hεm hm2 hδ hδπ
+  obtain ⟨π, ε, m, hSD, hεπ, hmπ, hεm⟩ := _root_.GlobalTheory.Nef.stalkData_exists S G s
+  have hfs := _root_.GlobalTheory.Nef.stalk_formallySmooth_of_smooth S G hsm s π ε m hSD
+  have hm2 := _root_.GlobalTheory.Nef.sqr_sub_two_mem S G hqs s π ε m hSD
+  obtain ⟨δ, hδ, hδπ, hδτ⟩ := _root_.GlobalTheory.Nef.exists_stalkDer_of_lie S G R s π ε m β n V hsV τ w hSD
+  obtain ⟨ψ, hψπ, hψ0, hψ1, hψ2⟩ := _root_.GlobalTheory.Nef.exists_path_ring _ _ R π ε m β δ hfs hεπ hmπ hεm hm2 hδ hδπ
   refine ⟨Spec.map (CommRingCat.ofHom ψ) ≫ G.left.fromSpecStalk (unitSec G s), ⟨?_, ?_, ?_⟩, ?_⟩
   · rw [Category.assoc, ← hSD.str, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hψπ,
       CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, hβ]

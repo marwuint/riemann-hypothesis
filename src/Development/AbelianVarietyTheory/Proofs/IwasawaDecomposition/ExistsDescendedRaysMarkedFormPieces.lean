@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullAddInjec
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCellQuotientByRadicalOfMemCone
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveBalancedFormPrimitiveAmongIntForms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalPullSemilinearOfIsTwInv
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingOfIntegersAutCommHostConjugationStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingOfIntegersAutCommHostConjugation
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntBilinFormDescendAlongSurjectiveStatement
 
 noncomputable section
@@ -82,7 +82,7 @@ theorem exists_desc_rays_pullAdd : ∀ (E : Type) [Field E] [NumberField E] [IsC
     · obtain ⟨y₀, hy₀⟩ := hq (f y)
       obtain ⟨z₀, hz₀⟩ := hq (f z)
       simp only [pullAdd_apply, hsm, ← hy₀, ← hz₀, ← Submodule.Quotient.mk_smul, hU i hi]
-      rw [(hm i).2, GlobalTheory.T.ringOfIntegers_aut_comm_hostConjugation E H τ a]
+      rw [(hm i).2, _root_.GlobalTheory.ringOfIntegers_equiv_bar_comm E H τ a]
     · obtain ⟨y₀, hy₀⟩ := hq (f y)
       simp only [pullAdd_apply, ← hy₀, hU i hi]
       exact hpos i y₀

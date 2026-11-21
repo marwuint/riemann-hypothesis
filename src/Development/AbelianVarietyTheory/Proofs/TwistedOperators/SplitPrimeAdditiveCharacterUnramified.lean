@@ -114,31 +114,6 @@ theorem not_mem_sq_of_ext {E : Type} [Field E] [NumberField E] [Algebra F E] {p 
   have h2 : (p : 𝓞 E) ∈ Q ^ 2 := Ideal.pow_right_mono hle 2 h1
   exact h ⟨Q, hQ.isPrime, hb⟩ (Ideal.pow_le_self two_ne_zero h2) h2
 
-theorem psiUnramAt_of_splitsCompletely : ∀ (D : D7) (p : ℕ) (ψ : AddChar (AF D.host.F) ℂ),
-    GlobalTheory.IndefiniteRowSideFullHecke.IteratedLiftChains.SplitsCompletely D p → IsStdChar D ψ (-1) →
-    ∀ v : HeightOneSpectrum (𝓞 D.host.F), (p : 𝓞 D.host.F) ∈ v.asIdeal → GlobalTheory.IndefiniteRowSideFullHecke.IteratedLiftChains.PsiUnramAt ψ v := by
-  intro D p ψ hp hψ v hv α hα
-  have hc := count_codiff_eq_zero v
-    (not_dvd_different hp.1 v hv (not_mem_sq_of_ext (fun w hw => (hp.2 w hw).2) v))
-  have h := mem_adelicIdeal_codiff_iff hψ.1.1 (GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ) α
-  have h' : (∀ β ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F, ψ (pairA D.host.F 0 (α * β)) = 1) ↔
-      α ∈ adelicIdeal (codiff D.host.F) := by
-    rw [h]
-    exact forall_congr' fun β => by rw [mul_comm]; rfl
-  rw [h', mem_adelicIdeal_iff codiff_ne_zero, HeightOneSpectrum.mem_adicCompletionIntegers]
-  constructor
-  · intro H
-    have := H v
-    rwa [hc, neg_zero, exp_zero] at this
-  · intro H w
-    by_cases hw : w = v
-    · subst hw
-      rw [hc, neg_zero, exp_zero]
-      exact H
-    · have h0 : α w = 0 := hα w hw
-      rw [h0, map_zero]
-      exact zero_le
-
 end GlobalTheory.SplitUnram
 
 end

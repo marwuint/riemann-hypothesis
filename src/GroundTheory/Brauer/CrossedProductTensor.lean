@@ -33,11 +33,6 @@ def rightCoeff (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) (ρ τ : L ≃�
 
 omit [FiniteDimensional K L] [DecidableEq (L ≃ₐ[K] L)] in
 
-theorem isMulCocycle₂_mul (hf : IsMulCocycle₂ f) (hg : IsMulCocycle₂ g) : IsMulCocycle₂ (f * g) :=
-  (mulCocycles₂ (L ≃ₐ[K] L) Lˣ).mul_mem hf hg
-
-omit [FiniteDimensional K L] [DecidableEq (L ≃ₐ[K] L)] in
-
 theorem rightCoeff_mul (hf : IsMulCocycle₂ f) (k σ τ : L ≃ₐ[K] L) :
     rightCoeff f (k * τ⁻¹) σ * σ (rightCoeff f k τ) * ((f (σ, τ) : L) * (g (σ, τ) : L)) =
       (g (σ, τ) : L) * rightCoeff f k (σ * τ) := by

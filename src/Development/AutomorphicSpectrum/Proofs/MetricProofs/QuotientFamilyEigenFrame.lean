@@ -2,8 +2,8 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjectionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicEigencomponentConjugateFormStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.RiemannLatticeEigenProjections
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.EigenProjectionConjugateInner
 
 noncomputable section
 
@@ -162,7 +162,7 @@ theorem gram_append_det {r k : ℕ} (w : Fin r → Fin g → ℂ) (x : Fin k →
 
 theorem exists_eigLin (s : 𝓞 E →+* ℂ) :
     ∃ L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ x, L x = eigComp R.B s x := by
-  obtain ⟨-, -, h1, -, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
+  obtain ⟨-, -, h1, -, -⟩ := _root_.LevelTowerAlt.riemann_lattice_eigen_projections E g Λ Unit R
   have hl := (h1 s).2.2.1
   have h0 : eigComp R.B s 0 = 0 := by simpa using hl (-1) 0 0
   exact ⟨{ toFun := eigComp R.B s
@@ -172,7 +172,7 @@ theorem exists_eigLin (s : 𝓞 E →+* ℂ) :
 theorem eigComp_mem (W : Submodule ℂ (Fin g → ℂ)) (hW : ∀ a, ∀ y ∈ W, R.B a y ∈ W) (s : 𝓞 E →+* ℂ)
     {y : Fin g → ℂ} (hy : y ∈ W) : eigComp R.B s y ∈ W := by
   classical
-  obtain ⟨-, -, h1, h2, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
+  obtain ⟨-, -, h1, h2, -⟩ := _root_.LevelTowerAlt.riemann_lattice_eigen_projections E g Λ Unit R
   obtain ⟨Ls, hLs⟩ := exists_eigLin R s
   obtain ⟨L, hLW, hLid, hLF⟩ := exists_proj R.B W hW s
     ((Finset.univ.image fun t : E →+* ℂ => t.comp (algebraMap (𝓞 E) E)).erase s) (Finset.notMem_erase _ _)
@@ -205,9 +205,9 @@ theorem gram_append_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   intro E _ _ _ g g' Λ Λ' _ _ _ _ R R' q I s r k v x hI hv hq hR hx
   classical
   obtain ⟨-, hvI, hvli, hidx⟩ := hv
-  obtain ⟨-, -, h1, h2, h3⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
+  obtain ⟨-, -, h1, h2, h3⟩ := _root_.LevelTowerAlt.riemann_lattice_eigen_projections E g Λ Unit R
   have hwli : LinearIndependent ℂ fun a => eigComp R.B s (R.P (v a)) :=
-    (GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Unit R I hI s).2 r v hvI hvli
+    (_root_.LevelTowerAlt.eigen_projection_conjugate_inner E g Λ Unit R I hI s).2 r v hvI hvli
   obtain ⟨M, hz, hdet⟩ := gram_append_det R _ x hwli
   rw [hdet]
   congr 2

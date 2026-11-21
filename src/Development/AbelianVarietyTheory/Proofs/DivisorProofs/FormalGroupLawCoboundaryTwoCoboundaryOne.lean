@@ -57,14 +57,6 @@ theorem _root_.GlobalTheory.Katz.CobCob.constantCoeff_threeGroupsThirdVariables 
   unfold _root_.GlobalTheory.Katz.x3
   exact constantCoeff_X _
 
-theorem powerSeriesEvalTwoGroups_sub {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
-    (hv : ∀ i, constantCoeff (v i) = 0) (c c' : MvPowerSeries (Fin d ⊕ Fin d) R) :
-    at2 (c - c') u v = at2 c u v - at2 c' u v := subst_sub (elim_has hu hv) _ _
-
-theorem powerSeriesEvalTwoGroups_smul {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
-    (hv : ∀ i, constantCoeff (v i) = 0) (r : R) (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
-    at2 (r • c) u v = r • at2 c u v := subst_smul (elim_has hu hv) _ _
-
 end CobCob
 
 set_option autoImplicit false in

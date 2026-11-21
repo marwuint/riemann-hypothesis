@@ -28,29 +28,6 @@ theorem isFdeg_dv (v : InfinitePlace X.B.I.F) :
   rw [e]
   exact hd
 
-theorem rph_fix_hom
-    (hL : ∀ v, Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v)))
-    (Φ : X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund) (hΦ : Φ ∈ X.B.I.HomS X.B.σs X.B.μf X.B.fund X.B.R) :
-    X.Rph (Φ (X.B.tens X.B.w)) = Φ (X.B.tens X.B.w) := by
-  apply ext_inner_left ℂ
-  intro a
-  have hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v) := fun v => (X.ds v).2.2.1
-  have hw : ∀ v, ‖X.B.w v‖ = 1 := fun v => (X.low v).1
-  have hs := (Formalism.L2.SG.Pf.glob_schur X.B.I X.B.σ X.dv X.B.w hU (isFdeg_dv X) hw hL X.B.σs X.B.tens
-    X.B.tens_spec (ContinuousLinearMap.adjoint Φ a)).2
-  rw [X.Rph_spec a (Φ (X.B.tens X.B.w))]
-  have hg : ∀ g : X.B.I.Ginf, X.B.R (g, 1) (Φ (X.B.tens X.B.w)) = Φ (X.B.σs g (X.B.tens X.B.w)) := by
-    intro g
-    have := congrArg (fun L : X.B.Hs →L[ℂ] X.B.I.L2 X.B.μf X.B.fund => L (X.B.tens X.B.w)) (hΦ g)
-    simpa using this.symm
-  have hi : ∀ x : X.B.Hs, ⟪a, Φ x⟫_ℂ = ⟪ContinuousLinearMap.adjoint Φ a, x⟫_ℂ := fun x =>
-    (ContinuousLinearMap.adjoint_inner_left Φ x a).symm
-  rw [hi, ← hs]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)
-  show _ * _ = _ * _
-  rw [hg g, hi]
-  rfl
-
 theorem inner_tens_orbit (g : X.B.I.Ginf) :
     ⟪X.B.tens X.B.w, X.B.σs g (X.B.tens X.B.w)⟫_ℂ = mInf X.B.I X.B.σ X.B.w g := by
   rw [Formalism.L2.SG.Pf.orbit_eq X.B.I X.B.σ X.B.σs X.B.tens X.B.tens_spec X.B.w g, X.B.tens_spec.1]

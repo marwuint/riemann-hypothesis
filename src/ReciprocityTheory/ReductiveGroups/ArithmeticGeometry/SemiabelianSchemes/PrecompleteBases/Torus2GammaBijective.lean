@@ -1,4 +1,4 @@
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.SplitTori.SplitTorusIsCommMonObjSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.SplitTori.SplitTorusAff
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsaRos
 
 universe u
@@ -209,8 +209,6 @@ theorem chi_zero (X : Type u) [AddCommGroup X] : chi (S := S) X 0 = 1 := by
   | (simp only [chi]; rw [← AddMonoidAlgebra.one_def, map_one])
   | (simp [chi, AddMonoidAlgebra.one_def]; done)
 
-theorem isUnit_chi (X : Type u) [AddCommGroup X] (a : X) : IsUnit (chi (S := S) X a) := by
-  exact (isUnit_single_one (R := ULift.{u} ℤ) a).map (coord (𝟙 (splitTorus S X))).hom
 end
 
 section

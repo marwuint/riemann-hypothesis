@@ -39,8 +39,6 @@ theorem LossLe.mono {w : PlL D} {z : ℂ} {a a' : ℝ} (h : LossLe w z a) (ha : 
   let ⟨y, e, h⟩ := h
   ⟨y, e, h.imp_right fun h => (neg_le_neg ha).trans h⟩
 
-example (w : PlL D) (σ : D.what₂.LL →+* ℂ) : LossLe w 0 0 ∧ AbsLe σ 1 0 := ⟨⟨0, map_zero _, Or.inl rfl⟩, 1, map_one _, by simp⟩
-
 variable {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 
 def sig : ℝ := ∑ v ∈ G.pl.S0, (G.pl.depth sc v : ℝ) * Real.log (Ideal.absNorm v.asIdeal)

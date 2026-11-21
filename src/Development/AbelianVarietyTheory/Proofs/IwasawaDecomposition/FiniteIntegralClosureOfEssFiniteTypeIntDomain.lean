@@ -77,7 +77,4 @@ theorem finite_integralClosure_of_essFiniteType_int :
     haveI : Algebra.EssFiniteType S₀ K := .comp S₀ D K
     exact finite_integralClosure_of_essFiniteType_field ℤ S₀ K
 
-example : ∀ (D : Type) [CommRing D] [IsDomain D] [Algebra.EssFiniteType ℤ D],
-    Module.Finite D (integralClosure D (FractionRing D)) := finite_integralClosure_of_essFiniteType_int
-
 end GlobalTheory

@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSumSwap
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsFlagBundleRankOne
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlteration
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfSwap2
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalEqOfNonneg
 
 set_option autoImplicit false
@@ -9,32 +12,15 @@ noncomputable section
 
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.Points GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.HermFrame GlobalTheory.CovTest.SwapLine
+open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.Points GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.HermFrame
 
 namespace GlobalTheory.LineForm
 
 def hs (m : ℕ) : MvPolynomial (Fin 2) ℝ :=
   ∑ j ∈ Finset.range (m + 1), C ((-1) ^ j * ((m - j).choose j : ℝ)) * X 0 ^ (m - 2 * j) * X 1 ^ j
 
-def pm (m : ℕ) : MvPolynomial (Fin 2) ℝ :=
-  ∑ j ∈ Finset.range (m + 1), C ((m.choose j * j.factorial * j.factorial : ℝ) / (2 * j + 1).factorial) *
-    X 1 ^ (m - j) * (X 0 ^ 2 - 4 * X 1) ^ j
-
-def upperParabolic {ι : Type} (s : Finset ι) (m : ι → ℕ) (W : ι → MvPolynomial (Fin 3) ℝ) : MvPolynomial (Fin 5) ℝ :=
-  ∑ x ∈ s, (X 0 * (X 3 + X 4 - X 0)) ^ m x * aeval ![X 2, X 3, X 4] (W x)
-
-def downP {ι : Type} (s : Finset ι) (m : ι → ℕ) (W : ι → MvPolynomial (Fin 3) ℝ) : MvPolynomial (Fin 4) ℝ :=
-  ∑ x ∈ s, aeval ![X 1 + X 2, X 3] (pm (m x)) * aeval ![X 0, X 1, X 2] (W x)
-
-def idx (d : ℕ) : Finset (ℕ × ℕ) := (Finset.range (d + 3) ×ˢ Finset.range (d + 3)).filter fun x => x.2 < x.1
-
-def expo (x : ℕ × ℕ) : ℕ := x.1 - 1 - x.2
-
 def coefW (R : ℕ → MvPolynomial (Fin 2) ℝ) (x : ℕ × ℕ) : MvPolynomial (Fin 3) ℝ :=
   (X 1 * X 2) ^ x.2 * aeval ![X 1 + X 2, X 0] (R x.1)
-
-def baseT (d : ℕ) (R : ℕ → MvPolynomial (Fin 2) ℝ) : MvPolynomial (Fin 3) ℝ :=
-  ∑ x ∈ idx d, X 1 ^ x.2 * aeval ![X 0, X 1] (pm (expo x)) * aeval ![X 0, X 2] (R x.1)
 
 section Manifold
 
@@ -77,10 +63,6 @@ def c2F {E : X.Modules} (m : VMetric p E 2) (fl : Vert.Flag E 2) (x : (h.atlas �
 
 def omF {E : X.Modules} (m : VMetric p E 2) (fl : Vert.Flag E 2) (x : (h.atlas σ).Pt) : Ev D :=
   ofValues (extTrace (fun v => (m.met σ).gram (frameAt fl x.pt).frame (x.ch.symm v)) x.crd)
-
-def fam4 {E : X.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl : Vert.Flag E 2) (A : HermLB p) :
-    Fin 4 → (h.atlas σ).Pt → Ev D :=
-  ![c1F h σ A, c1F h σ (VMetric.grLB fl 0 H), c1F h σ (VMetric.grLB fl 1 H), c2F h σ m fl]
 
 def pullF (π : Y ⟶ X) (w : π ≫ p = p') (α : (h.atlas σ).Fld) : (h'.atlas σ).Fld :=
   (h.atlas σ).pullback (h'.atlas σ) (PtsOver.map π w _) α

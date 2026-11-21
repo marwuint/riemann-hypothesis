@@ -34,11 +34,6 @@ noncomputable def cf (k r : ℕ) (c : Fin r → ℂ) (p : Fin (2 * r + k + 1)) :
   if p.val < r then (star (cN r c p.val))⁻¹
   else if p.val ≤ r + k then 1 else cN r c (2 * r + k - p.val)
 
-theorem cf_one (k r : ℕ) (p : Fin (2 * r + k + 1)) : cf k r (fun _ => 1) p = 1 := by
-  have hp := p.isLt
-  simp only [cf, cN]
-  split_ifs <;> first | omega | simp
-
 noncomputable def Wm (k r : ℕ) (S : Finset ℕ) (c : Fin r → ℂ) : Mx k r := fun p q =>
   if q.val < r then
     (if q.val ∈ S then (if p.val = 2 * r + k - q.val then cN r c q.val else 0)
@@ -149,22 +144,6 @@ theorem Wm_mul_apply (k r : ℕ) (c : Fin r → ℂ) (M : Mx k r) (p q : Fin (2 
   simp_rw [Wm_range_apply]
   simp [ite_mul]
 
-theorem mul_Wm_apply (k r : ℕ) (c : Fin r → ℂ) (M : Mx k r) (p q : Fin (2 * r + k + 1)) :
-    (M * Wm k r (Finset.range r) c) p q = M p (swp k r q) * cf k r c (swp k r q) := by
-  rw [Matrix.mul_apply]
-  have e : ∀ x, Wm k r (Finset.range r) c x q = if x = swp k r q then cf k r c x else 0 := by
-    intro x
-    rw [Wm_range_apply]
-    by_cases h : x = swp k r q
-    · subst h
-      simp [swp_swp]
-    · rw [if_neg h, if_neg]
-      intro h'
-      apply h
-      rw [h', swp_swp]
-  simp_rw [e]
-  simp [mul_ite]
-
 def μE {k : ℕ} (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : ℕ) : ℂ :=
   if h : i < k + 1 ∧ j < k + 1 then μ ⟨i, h.1⟩ ⟨j, h.2⟩ else 0
 
@@ -200,21 +179,5 @@ theorem bigCell_apply (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1))
     · rw [dif_neg h2, if_neg h2]
       have h4 : 2 * r + k - q.val < r := by omega
       rw [cN_mk r c _ h4]
-
-theorem cN_one (r j : ℕ) : cN r (fun _ => 1) j = if j < r then 1 else 0 := by
-  unfold cN
-  split_ifs <;> rfl
-
-set_option maxHeartbeats 1000000 in
-theorem main (k r : ℕ) (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
-    bigCell k r c μ =
-      wCell k r (Fin.last r) c * bigCell k r (fun _ => 1) μ * wCell k r (Fin.last r) (fun _ => 1) := by
-  rw [wCell_last, wCell_last]
-  ext p q
-  rw [mul_Wm_apply, Wm_mul_apply, cf_one, mul_one, bigCell_apply, bigCell_apply]
-  have hp := p.isLt
-  have hq := q.isLt
-  simp only [cf, cN_one, swp_val]
-  split_ifs <;> first | rfl | (exfalso; omega) | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega) | (simp only [star_one, inv_one, mul_one, one_mul, mul_zero, zero_mul, star_zero, _root_.inv_zero] <;> first | rfl | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega))
 
 end PI.QnWCellW

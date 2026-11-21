@@ -55,20 +55,6 @@ def HookSumBound.Statement : Prop :=
     ∑ nu ∈ (partitionsOf r k).filter (fun nu => ∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1), |b nu| ≤
       (Nat.choose (r * a + k) k : ℚ) * 2 ^ (k - 1) * numStandardTable (rectangle r a)
 
-def ShiftSumRule.Statement : Prop :=
-  ∀ r a : ℕ, 1 ≤ r → 1 ≤ a → ∀ Q : ℕ → Fin 1 → RootRing 1 (r + a),
-    IsPowerSumDecomposition 1 (r + a) (restPolynomial 1 r a .last) Q →
-      (a : ℚ) * flagIntegral 1 (r + a) (Q 1 0) =
-        ∑ k ∈ Finset.Icc 2 (r + a),
-          restTerm 1 (r + a) Q k 0 (smallPowerSum 1 r a .last (k - 1) 0)
-
-def LinearTermValue.Statement : Prop :=
-  ∀ r a : ℕ, 1 ≤ r → 1 ≤ a → ∀ Q : ℕ → Fin 1 → RootRing 1 (r + a),
-    IsPowerSumDecomposition 1 (r + a) (restPolynomial 1 r a .last) Q →
-      flagIntegral 1 (r + a) (Q 1 0) * numStandardTable (rectangle r a) =
-        fibreDegree 1 r a .last *
-          numStandardTable (fun i : Fin r => a + if (i : ℕ) = 0 then 1 else 0)
-
 end
 
 end RestTerms

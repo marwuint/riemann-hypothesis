@@ -351,14 +351,6 @@ theorem exists_ext_of_reps : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalT
 
 variable {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E}
 
-def unitary {A : Type} [Group A] (δ : A →* ℂˣ) : A →* Circle where
-  toFun x := ⟨(δ x : ℂ) / (‖(δ x : ℂ)‖ : ℂ), mem_sphere_zero_iff_norm.2 (by
-    rw [norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 (δ x).ne_zero)])⟩
-  map_one' := Subtype.ext (by simp)
-  map_mul' x y := Subtype.ext (by
-    change ((δ (x * y) : ℂˣ) : ℂ) / _ = (δ x : ℂ) / (‖(δ x : ℂ)‖ : ℂ) * ((δ y : ℂ) / (‖(δ y : ℂ)‖ : ℂ))
-    rw [map_mul, Units.val_mul, norm_mul, Complex.ofReal_mul, div_mul_div_comm])
-
 variable {G : QGeo v B PP} {χ : ℕ → (AE D)ˣ →* Circle} (E : QExt G χ)
 
 end Main

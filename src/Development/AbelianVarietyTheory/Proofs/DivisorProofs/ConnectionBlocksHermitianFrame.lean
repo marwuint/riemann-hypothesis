@@ -210,6 +210,4 @@ theorem connBlocks_secondForm {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ
       quotMap_mul_mdbar_orthLift, one_mulVec, zero_mulVec, zero_add, add_zero]
     rfl
 
-example : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsHermFrame U H) (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det) (hz : z ∈ U), ConnBlocks H z (fun η => -secondFormAdj H z η) (secondForm H z) := @connBlocks_secondForm
-
 end GlobalTheory.SubQuotConn

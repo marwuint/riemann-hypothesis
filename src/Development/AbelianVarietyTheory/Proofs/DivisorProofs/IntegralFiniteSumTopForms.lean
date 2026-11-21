@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.EndValuedForm11Coeffs
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopFormIntegralAddStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopFormIntegralAdd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTopFormChartIntegralZeroStatement
 
 open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.GoodTop
@@ -29,7 +29,7 @@ private theorem isTopForm_hasInt_finset_sum {n : ℕ} {Y κ : Type} [Topological
     simp only [Finset.sum_insert ha]
     obtain ⟨hF, hI⟩ := ih
     refine ⟨⟨fun i j y hy hi hj => ?_, fun i => ((hd a).meas i).add (hF.meas i)⟩,
-      GlobalTheory.T.topFormIntegral_add e he hc hS (hd a) hF (ht a) hI⟩
+      _root_.GlobalTheory.GoodTop.hasInt_add e he hc hS (hd a) hF (ht a) hI⟩
     rw [(hd a).trans i j y hy hi hj, hF.trans i j y hy hi hj]
     ring
 

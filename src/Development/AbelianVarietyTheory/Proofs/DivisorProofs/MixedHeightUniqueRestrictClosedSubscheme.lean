@@ -1,6 +1,7 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArithStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArith
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -34,8 +35,8 @@ theorem GlobalTheory.MixHt.eq_of_isMix : ∀ (k : Type) [CommRing k] (X Y : Sche
     (∀ a, ((L a).pull i hi).Isometric (L' a)) → ∀ y : Y, HasDim y d → T d L (i y) = T' d L' y := by
   intro k _ X Y p q hp i _ hi m m' T T' hT hT' d
   have hq : IsAmb q := hi ▸ hp.sub i
-  have DX := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hp
-  have DY := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hq
+  have DX := _root_.GlobalTheory.MixHt.hasDim_basic k X p hp
+  have DY := _root_.GlobalTheory.MixHt.hasDim_basic k Y q hq
   haveI : IsNoetherian Y := hq.isNoetherian
   induction d with
   | zero =>
@@ -69,7 +70,7 @@ theorem GlobalTheory.MixHt.eq_of_isMix : ∀ (k : Type) [CommRing k] (X Y : Sche
     by_cases hz : ((((L' 0).pull (cloι y) rfl)).div hr).mult z = 0
     · simp [hz]
     · have hz1 := CartierDiv.coheight_eq_one_of_mult_ne_zero hz
-      have hzd : HasDim z e := ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k (clo y) (cloι y ≫ q) hW e hdim).1 z).1 hz1
+      have hzd : HasDim z e := ((_root_.GlobalTheory.MixHt.dimOne k (clo y) (cloι y ≫ q) hW e hdim).1 z).1 hz1
       have hjz : HasDim (cloι y z) e := (DY.2.2.2.2.1 (clo y) (cloι y) z e).2 hzd
       dsimp only
       rw [Scheme.Hom.comp_apply, ih (by omega) (by omega) (Fin.tail L) (Fin.tail L') (fun a => hL a.succ) _ hjz]

@@ -1,12 +1,24 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsIsBIffCoreB
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsTrueWith
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.BuiltCols
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsEntC
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ColNorm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TrueColumnTupleTrivialEqOne
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CevInjective
+import Formalism.LocalToGlobal.Columns.ToHLat
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HtPsiLeIffExists
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerEntTiedWithEnt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelEntriesCompatibleTrueColumns
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelChoicesStandardTrueColumns
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnfIsAllOfSame
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ErrXSPiAndVal
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedVectorEqOfStandardData
+import Formalism.LocalToGlobal.KernelLattices.TopPin
+import Formalism.LocalToGlobal.KernelLattices.InterlaceAll
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MtOfFactors
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NotDvdDifferent
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AbsNormEqOfSplit
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsStdFStdLvC
 
 section BaseLevels₂
@@ -48,45 +60,7 @@ theorem GlobalTheory.Core.DefKer.stdRd_keep {B : Base} {X : PreX B.toPre} (I : T
   · exact fun u a => ⟨I.kerRd l Z u a, HEq.rfl, fun _ _ => rfl, fun _ _ _ _ _ => rfl⟩
   · exact fun u a => I.kerRd_top l Z hm u a
 
-set_option maxHeartbeats 1000000 in
-
-theorem GlobalTheory.Core.DefKer.all_pins {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (hTw : I.IsTw) (l : I.Laws)
-    (Z : TC.Later B (I.cols l))
-    {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)} {K : G.Consts}
-    {Y : DivX (I.rec7 l Z)} {cX : ExtraC} (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX)
-    (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (E : KerEnt (I.rec7 l Z) Y ex.tw) (hQ : I.QpIs Y.Qp)
-    (hO : I.StdO l Z Y.Qp O) (hU : ∀ u a i, i < B.R.m → UnfIsAll (O u a) i) (hE : EntOk E O)
-    (hS : ∀ u w h, ThAtServed (ex.ker u w h) E)
-    (hC : ∃ (Pl : Examples₂.EntPl (I.rec7 l Z)) (Bs : PlaceMatrixFamily (I.rec7 l Z)) (h : KerEntHyp Pl O Bs Y ex.tw), E = kerEntC Pl O Bs h)
-    (hpi : ex.errX.piT = X.piT) :
-    ∃ t : KerEntTied ex, I.StdKer l Z t ∧ GlobalTheory.Pdv.StdRd I l Z t ∧ GlobalTheory.Pdv.IsEntC t ∧ t.Adapted ∧ t.TopPinned ∧ t.AAUnit ∧ t.UnfAll ∧
-      t.ChTie ∧ t.MemSideU ∧ t.MtTwTie ∧ ∀ a, (t.cst a).sharp = true := by
-  obtain ⟨t1, s1, o1, -, p1⟩ := kerEntTied_true I hOk hP l Z L hT Gi Gl K Y cX ex O E hQ hO hU hE hS
-  obtain ⟨t0, s0, o0, e0, a0, -⟩ := kerEntTied_withEnt I l Z O E hE hS t1 s1 o1 p1
-  obtain ⟨t, s, r, p, o, e⟩ := GlobalTheory.Core.DefKer.stdRd_keep I hOk l Z t0 ((StdModel.stdKer_iff I l Z t0).2 s0)
-  obtain ⟨k1, k2⟩ := kernel_inputs I hOk hP l Z L hT Gi Gl K Y cX ex t s p hTw
-  obtain ⟨c1, c2, c3, c4⟩ := k_pins_tie I hOk hP l Z L hT Gi Gl K Y cX ex t ((StdModel.stdKer_iff I l Z t).1 s) hpi
-  refine ⟨t, s, r, ?_, ?_, p, k1, k2, c1, c2, c3, c4⟩
-  · unfold GlobalTheory.Pdv.IsEntC
-    rw [o, e, o0, e0]
-    exact hC
-  · unfold KerEntTied.Adapted at a0 ⊢
-    rw [o, e]
-    exact a0
-
 end BaseLevels₂
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Core GlobalTheory.Core.Cls NumberField IsDedekindDomain GlobalTheory.Mem.Db Formalism.L2 Formalism.L2.Ker Formalism.L2.Forms
 
-set_option maxHeartbeats 1000000 in
-
-theorem GlobalTheory.Core.DefKer.exists_kerTie : ∀ (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (b : CoreB K w Z) (O : Obj (w.D Z)), ofObj O = b.obj → ∃ t : KerEntTied O.ex, TC.StdKer w.I w.l Z t ∧ GlobalTheory.Pdv.StdRd w.I w.l Z t ∧ GlobalTheory.Pdv.IsEntC t ∧ t.Adapted ∧ t.TopPinned ∧ t.AAUnit ∧ t.UnfAll ∧ t.ChTie ∧ t.MemSideU ∧ t.MtTwTie ∧ ∀ a, (t.cst a).sharp = true := by
-  intro K B f T w Z b O hO
-  obtain ⟨L, gatT, Gx, Gy, Kc, X, cX, ex⟩ := O
-  obtain ⟨lev, th, th_io, cmp, lat, tw, ker, ep_def, ep_tie, kapI_def, fills_all, nu_unserved, idx, kap_def, lam_def, kapR_def, errX, err, nch, nch_tie, xd, p0, rationalRoots_def, amb, amb0, fdef, duStar_def, Dstar_def, gauge, gauge_def⟩ := ex
-  simp only [ofObj, extraObj, CoreB.obj, Obj2.mk.injEq] at hO
-  obtain ⟨h1, -, h3, h4, h5, h6, -, -, -, h10, -, h12, -⟩ := hO
-  subst h1 h3 h4 h5 h6 h10
-  obtain rfl := eq_of_heq h12
-  exact GlobalTheory.Core.DefKer.all_pins w.I w.ok w.pins b.pin.isTw w.l Z _ b.kt.O b.kt.E b.sd.qp b.kt.std b.kt.unf b.kt.ok b.kt.served b.entC
-    (GlobalTheory.Core.Cls.errXS_pi_and_val K B f T w Z b).2.1

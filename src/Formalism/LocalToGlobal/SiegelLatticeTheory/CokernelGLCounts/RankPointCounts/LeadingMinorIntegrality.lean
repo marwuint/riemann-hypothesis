@@ -124,16 +124,6 @@ theorem hT_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.Hermit
   obtain ⟨o, ho, e⟩ := (FractionalIdeal.mem_coeIdeal _).1 hmem
   exact ⟨o, ho, e⟩
 
-theorem det_mem {q : ℕ} (M : Matrix (Fin q) (Fin q) (𝓞 D.host.E)) (m : Fin q → ℕ)
-    (hM : ∀ i j, M i j ∈ dI D ^ (m i + m j)) : M.det ∈ dI D ^ (2 * ∑ i, m i) := by
-  rw [Matrix.det_apply]
-  refine Ideal.sum_mem _ fun σ _ => ?_
-  have h := Ideal.prod_mem_prod (s := Finset.univ) (I := fun i => dI D ^ (m (σ i) + m i))
-    (x := fun i => M (σ i) i) (fun i _ => hM (σ i) i)
-  rw [Finset.prod_pow_eq_pow_sum, Finset.sum_add_distrib, Equiv.sum_comp σ m, ← two_mul] at h
-  rw [Units.smul_def]
-  exact zsmul_mem h _
-
 theorem two_sum_sub (r : ℕ) : ∀ q : ℕ, q ≤ r + 1 → 2 * ∑ i : Fin q, (r - (i : ℕ)) = q * (2 * r + 1 - q)
   | 0, _ => by simp
   | q + 1, hq => by

@@ -13,12 +13,6 @@ def LocalMultOrd.Statement : Prop :=
         Ring.ord (Localization.AtPrime (W.map (Ideal.Quotient.mk I)))
           (algebraMap _ _ (Ideal.Quotient.mk I x))
 
-section Inhabitants
-
-open MvPolynomial
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

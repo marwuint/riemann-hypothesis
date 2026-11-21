@@ -2,9 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.LamRange
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedMemberDividingThetaConstantNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemberTermsIntegralUnitShiftStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMemberTermsIntegralUnitShift
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrPull
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkEvaluationRootOfUnityValueMemberStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StalkEvaluationRootOfUnityValueMember
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesAlongThetaTowerRootOfUnityPowerStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaWitnessesBaseChangeMemberStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
@@ -29,7 +30,7 @@ theorem terms_baseChange : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matr
   obtain ⟨x, fr, th, w₀, s, g', w, h1, h2, h3, h4, h5, h6, h7⟩ := hT
   obtain ⟨wψ, hwψ⟩ := hw
   obtain ⟨j₂, hj₂⟩ := 𝔗.X₂.div z₂
-  obtain ⟨u, ⟨x₂, fr₂, -, -, -, -, -, h1', h2', -⟩, -, -⟩ := GlobalTheory.T.exists_member_terms_integral_unit_shift _ _ F W Z i 𝔗.X₂ z₂ 𝔗.act₂ j₂ hj₂ V' ev₂ X m
+  obtain ⟨u, ⟨x₂, fr₂, -, -, -, -, -, h1', h2', -⟩, -, -⟩ := _root_.GlobalTheory.Poinc.IntTerm.exists_terms _ _ F W Z i 𝔗.X₂ z₂ 𝔗.act₂ j₂ hj₂ V' ev₂ X m
     (fun k => io (t k)) δ 𝔪₂ (𝔗.X₂.S.HH 𝔗.X₂.M z₂) Subtype.val Subtype.range_coe
   obtain ⟨c₀, hc₀⟩ := hk z₁ z₂ hp V ev X m t δ 𝔪 V' io f hf ev₂ X m (fun k => io (t k)) δ 𝔪₂ ψ wψ hwψ hExt hyK hcart hφ
     x fr h1 h2 x₂ fr₂ h1' h2'
@@ -56,7 +57,7 @@ theorem terms_baseChange : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matr
     x₂ fr₂ h1' h2' ρ hρ
   refine ⟨x₂, fr₂, th₂, w₀₂, s₂, g'₂, w₂, h1', h2', h3', h4', h5', h6', ?_⟩
   intro mu c
-  have hz := GlobalTheory.T.stalk_evaluation_root_of_unity_value_member 𝔗.X₂ z₂ 𝔗.act₂ V' ev₂ X m (fun k => io (t k)) δ 𝔪₂ zt hzt
+  have hz := _root_.GlobalTheory.Poinc.Sep.MemberZeta.algebraMap_ev_eq_yK 𝔗.X₂ z₂ 𝔗.act₂ V' ev₂ X m (fun k => io (t k)) δ 𝔪₂ zt hzt
   have hF0 : f (𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩) ≠ 0 :=
     (map_ne_zero_iff f f.injective).2 (UMem.yK_th_ne_zero _ _ F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ hdiv)
   have hρc : (ρ (lab c) : FractionRing V') ≠ 0 := (ρ (lab c)).ne_zero

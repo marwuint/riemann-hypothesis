@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableF
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleExtensionOfGenericFibreDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoAbelianSchemeDVROfGenericIsoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoAbelianSchemeDVROfGenericIso
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
@@ -105,7 +105,7 @@ theorem exists_extension_square_of_axes_trivial : ∀ (W L : Type) [CommRing W] 
     have q2 : LBIso ((M.pull iG).pull φ) ((LB.triv G.left).pull φ) :=
       LBIso.trans (pull_isLB (pull_isLB hM _) _) lTA (pull_isLB hT _) q1 a1
     have q3 : LBIso (M.pull iG) (LB.triv G.left) :=
-      GlobalTheory.T.lineBundleIso_abelianSchemeDVR_of_generic_iso W L G A.left A.hom φ hG hA.1 (M.pull iG) (LB.triv G.left) (pull_isLB hM _) hT q2
+      _root_.GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback W L G A.left A.hom φ hG hA.1 (M.pull iG) (LB.triv G.left) (pull_isLB hM _) hT q2
     exact (GlobalTheory.CechPic.iso_triv_iff _).1 q3.symm
   refine ⟨M, hM, axis _ _ ?_ h₁, axis _ _ ?_ h₂, iP⟩
   · exact lift_match hsq.1 hsq.2 _ _ _ _ (one_comm hA).symm (by simp)

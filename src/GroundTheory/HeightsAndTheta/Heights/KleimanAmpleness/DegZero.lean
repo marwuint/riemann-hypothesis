@@ -47,45 +47,6 @@ def EulerSES.Statement : Prop :=
       ∑ n ∈ Finset.range (N + 1), (-1 : ℤ) ^ n * (Module.finrank F (coh CA dA n) : ℤ) +
         ∑ n ∈ Finset.range (N + 1), (-1 : ℤ) ^ n * (Module.finrank F (coh CC dC n) : ℤ)
 
-def EulerSES.degZero (n : ℕ) : Submodule ℚ ℚ := if n = 0 then ⊤ else ⊥
-
-theorem EulerSES.hyps :
-    let CA : ∀ _ : ℕ, Submodule ℚ ℚ := fun _ => ⊥
-    let CB : ∀ _ : ℕ, Submodule ℚ ℚ := EulerSES.degZero
-    let d : ∀ n : ℕ, (fun _ : ℕ => ℚ) n →ₗ[ℚ] (fun _ : ℕ => ℚ) (n + 1) := fun _ => 0
-    let f : ∀ n : ℕ, (fun _ : ℕ => ℚ) n →ₗ[ℚ] (fun _ : ℕ => ℚ) n := fun _ => 0
-    let g : ∀ n : ℕ, (fun _ : ℕ => ℚ) n →ₗ[ℚ] (fun _ : ℕ => ℚ) n := fun _ => LinearMap.id
-    (∀ n, ∀ x ∈ CA n, d n x ∈ CA (n + 1)) ∧ (∀ n, ∀ x ∈ CB n, d n x ∈ CB (n + 1)) ∧
-    (∀ n, ∀ x ∈ CA n, d (n + 1) (d n x) = 0) ∧ (∀ n, ∀ x ∈ CB n, d (n + 1) (d n x) = 0) ∧
-    (∀ n, ∀ x ∈ CA n, f n x ∈ CB n) ∧ (∀ n, ∀ y ∈ CB n, g n y ∈ CB n) ∧
-    (∀ n, ∀ x ∈ CA n, d n (f n x) = f (n + 1) (d n x)) ∧
-    (∀ n, ∀ y ∈ CB n, d n (g n y) = g (n + 1) (d n y)) ∧
-    (∀ n, ∀ x ∈ CA n, f n x = 0 → x = 0) ∧
-    (∀ n, ∀ x ∈ CA n, g n (f n x) = 0) ∧
-    (∀ n, ∀ y ∈ CB n, g n y = 0 → ∃ x ∈ CA n, f n x = y) ∧
-    (∀ n, ∀ z ∈ CB n, ∃ y ∈ CB n, g n y = z) ∧
-    (∀ n, FiniteDimensional ℚ (coh CA d n)) ∧ (∀ n, FiniteDimensional ℚ (coh CB d n)) ∧
-    Subsingleton (coh CA d 1) ∧ Module.finrank ℚ (coh CB d 0) = 1 := by
-  intro CA CB d f g
-  refine ⟨fun _ _ _ => zero_mem _, fun _ _ _ => zero_mem _, fun _ _ _ => rfl, fun _ _ _ => rfl,
-    fun _ _ _ => zero_mem _, fun _ _ h => h, fun _ _ _ => rfl, fun _ _ _ => rfl,
-    fun _ x hx _ => (Submodule.mem_bot ℚ).1 hx, fun _ _ _ => rfl,
-    fun _ y _ hy => ⟨0, zero_mem _, hy.symm⟩, fun _ z hz => ⟨z, hz, rfl⟩,
-    fun _ => inferInstance, fun _ => inferInstance, ?_, ?_⟩
-  · refine ⟨fun a b => ?_⟩
-    obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ a
-    obtain ⟨b, rfl⟩ := Submodule.Quotient.mk_surjective _ b
-    have ha := (Submodule.mem_bot ℚ).1 (Submodule.mem_inf.1 a.2).1
-    have hb := (Submodule.mem_bot ℚ).1 (Submodule.mem_inf.1 b.2).1
-    congr 1
-    exact Subtype.ext (ha.trans hb.symm)
-  · have hcyc : cyc CB d 0 = ⊤ := by
-      simp [cyc, CB, EulerSES.degZero, d]
-    have hbnd : bnd CB d 0 = ⊥ := rfl
-    rw [Submodule.Quotient.equiv _ ⊥ (LinearEquiv.ofTop _ hcyc) (by
-      rw [hbnd, Submodule.comap_bot, Submodule.map_eq_bot_iff, Submodule.ker_subtype]) |>.finrank_eq]
-    rw [(Submodule.quotEquivOfEqBot ⊥ rfl).finrank_eq, Module.finrank_self]
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

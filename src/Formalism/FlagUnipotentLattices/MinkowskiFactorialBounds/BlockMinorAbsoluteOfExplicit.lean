@@ -157,10 +157,6 @@ theorem majorant_parameter_choice_holds : SkewVectorChoice := by
   refine ⟨e', _, he1, he3, p1, fun b hb => p2 _ ⟨b, hb, rfl⟩, ?_⟩
   rw [p3, hu3]
 
-noncomputable def tensorBasisCoordinates {W V : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V] {n : ℕ}
-    (xi : Module.Basis (Fin n) ℂ V) : (W ⊗[ℂ] V) →ₗ[ℂ] (Fin n → W) :=
-  (TensorProduct.piScalarRight ℂ ℂ W (Fin n)).toLinearMap ∘ₗ LinearMap.lTensor W xi.equivFun.toLinearMap
-
 theorem matrix_adjoint_action_holds : RankTwoSkewConjugation := by
   intro n H hH g hg e v
   obtain ⟨hgu, hgi⟩ := (unitary_group_holds n H hH).2.2 g hg
@@ -209,14 +205,6 @@ lemma s1c2_UH_of_isom {ι : Type*} [Fintype ι] [DecidableEq ι] (H p : Matrix �
     intro i j
     rw [← s1c2_herm_single (pᴴ * H * p) i j, ← s1c2_herm_conj, h, s1c2_herm_single]
   exact this
-
-section ext
-variable {ι σ : Type*} [Fintype ι] [DecidableEq ι] [Fintype σ] [DecidableEq σ]
-
-noncomputable def gramCoordinateMap (H : Matrix ι ι ℂ) (v : σ → ι → ℂ) : (ι → ℂ) →ₗ[ℂ] (σ → ℂ) :=
-  ((Matrix.of fun i j => herm H (v j) (v i))⁻¹).mulVecLin ∘ₗ LinearMap.pi fun j => (hermitianSesquilinearForm H).flip (v j)
-
-end ext
 
 open Formalism.QuantumDeterminants.WeylGroupFacts in
 lemma s1c2_Hh (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := Formalism.QuantumDeterminants.GBasic.Hpk_herm k r

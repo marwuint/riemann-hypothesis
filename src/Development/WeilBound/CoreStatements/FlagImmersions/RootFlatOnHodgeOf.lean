@@ -1,8 +1,19 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.TauInInjective
 import Development.WeilBound.CoreStatements.VolumeEquality.ChartMeetsPoint
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NearRecordOfValue
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalSystemSplitFibresStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatHermRootLineDegreeStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalSystemSplitFibres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.IsPolLatticePlane
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenericCentreSpecializes
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.ThmFlatA
+import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatHermRootLineDegree
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.MetricsProjectionFormulaNef
 
 noncomputable section
 
@@ -42,14 +53,14 @@ theorem rootFlatOnHodge_of (h1 : CptEx) (h2 : PeriodOf) (h3 : SmoothLine) (h4 : 
   obtain ⟨F', _, _, ψ, A, Sf, hO, hAs, hAa, hAh, hnr⟩ := core h3 h4 h6 hF Z φ τ N o.𝔐 o.Fl M.xdeg o.e o.sing _ k1 k2 k3
     k4 k5 k6 hgp M.birational M.arith o.lines o.hodge o.sing_deg
     ((hbad 2).2 ⟨Nat.prime_two, by exact_mod_cast (dvd_mul_right (2 : ℤ) _).mul_right _⟩) hdS hom (by omega)
-    (fun p hp hS => GlobalTheory.T.local_system_split_fibres E H D Xo Yl (fun p W hp hW i => ⟨((hYl p W hp hW).2 i).1, ((hYl p W hp hW).2 i).2.1⟩)
+    (fun p hp hS => _root_.GlobalTheory.CompanionTheory.Ar.Flat.numTriv_offS E H D Xo Yl (fun p W hp hW i => ⟨((hYl p W hp hW).2 i).1, ((hYl p W hp hW).2 i).2.1⟩)
       l c hg Y hdom bad M.Ω M.K M.ι M.y o.𝔐 p hp hS (fun hd => hS (hdS p hp hd)) τ)
   let i₀ : Fin (D.p + D.q) := ⟨D.p + D.q - 1, by omega⟩
   have hi₀ : Finset.Iic i₀ = Finset.univ := by
     ext k
     simp only [Finset.mem_Iic, Fin.le_def, Finset.mem_univ, iff_true, i₀]
     omega
-  obtain ⟨R, hR⟩ := GlobalTheory.T.flat_herm_root_line_degree hIn (CMType H) (D.p + D.q) M Sys o.Re τ i₀ F' ψ A Sf hO hAs
+  obtain ⟨R, hR⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_rootFlat_of_realis hIn (CMType H) (D.p + D.q) M Sys o.Re τ i₀ F' ψ A Sf hO hAs
     (by show D.p + D.q - 1 + 1 = _; omega) (Sys.reg none).1 hAa (fun σ i => by
       rw [o.fund_deg, sum_Iic_step (fun k => M.xdeg (σ, k)) i]
       split_ifs with h

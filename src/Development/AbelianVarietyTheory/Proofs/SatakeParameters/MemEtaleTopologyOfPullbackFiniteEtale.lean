@@ -43,7 +43,4 @@ theorem mem_etaleTopology_of_pullback_finite : ∀ {Z X : Scheme.{0}} (f : Z ⟶
     exact Scheme.etaleTopology.top_mem _
   · exact hT
 
-example : ∀ {Z X : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [Etale f] (T : Sieve X), T.pullback f ∈ Scheme.etaleTopology Z → (∀ {V : Scheme.{0}} (v : V ⟶ X), IsEmpty (pullback f v : Scheme.{0}) → T v) → T ∈ Scheme.etaleTopology X :=
-  mem_etaleTopology_of_pullback_finite
-
 end GlobalTheory.EtC.Tr

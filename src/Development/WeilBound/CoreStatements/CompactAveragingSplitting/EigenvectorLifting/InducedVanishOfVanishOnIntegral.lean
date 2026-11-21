@@ -37,46 +37,6 @@ theorem law_parab {α β : kˣ →* ℂˣ} {F : GL (Fin (a + a')) k → ℂ} (hF
       (GeneralLinearGroup.det (leviProj k (two (stdE a a')) p true)) * F h :=
   hF.2 _ h ((isBlockUpper_iff _).2 p.2) _ _ (det_blkA p) (det_blkD p)
 
-theorem indFac_eventually {α β : kˣ →* ℂˣ} {F : GL (Fin (a + a')) k → ℂ} (hF : F ∈ indSp a a' α β)
-    {h : GL (Fin (a + a')) k} (h0 : F h ≠ 0) :
-    ∀ᶠ g in 𝓝 (1 : GL (Fin a) k × GL (Fin a') k),
-      indFac a a' α β (GeneralLinearGroup.det g.1) (GeneralLinearGroup.det g.2) = 1 := by
-  obtain ⟨U, hU, hUF⟩ := hF.1
-  have hc : Continuous fun g : GL (Fin a) k × GL (Fin a') k => h⁻¹ * emb₂ k (stdE a a') g * h :=
-    (continuous_const.mul ((continuous_leviEmb k (two (stdE a a'))).comp (continuous_leviTwo k))).mul continuous_const
-  have hn : (fun g : GL (Fin a) k × GL (Fin a') k => h⁻¹ * emb₂ k (stdE a a') g * h) ⁻¹' (U : Set _) ∈ 𝓝 1 :=
-    (hU.preimage hc).mem_nhds (by simp)
-  filter_upwards [hn] with g hg
-  have h1 := hUF _ hg h
-  have h2 := law_parab hF ⟨_, leviEmb_mem_parab k (two (stdE a a')) (leviTwo k _ _ g)⟩ h
-  rw [leviProj_leviEmb] at h2
-  have h3 : h * (h⁻¹ * emb₂ k (stdE a a') g * h) = emb₂ k (stdE a a') g * h := by group
-  rw [h3] at h1
-  exact mul_right_cancel₀ h0 ((h2.symm.trans h1).trans (one_mul _).symm)
-
-theorem smooth_of_eventually {n : ℕ} {χ : kˣ →* ℂˣ} (z : ℂ)
-    (h : ∀ᶠ g in 𝓝 (1 : GL (Fin n) k), (χ (GeneralLinearGroup.det g) : ℂ) * apow (GeneralLinearGroup.det g) z = 1) :
-    IsSmooth (detRep (Fin n) χ) := by
-  refine (isSmooth_ofChar_iff _).2 (Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_)
-  have hz : IsSmoothChar (detChar (Fin n) (absPow k z)) := (isSmoothChar_of_isUnram (isUnram_absPow k z)).detChar
-  filter_upwards [h, IsOpen.mem_nhds hz (one_mem _)] with g h1 h2
-  have h3 : apow (GeneralLinearGroup.det g) z = 1 := congrArg Units.val (MonoidHom.mem_ker.1 h2)
-  rw [h3, mul_one] at h1
-  exact Units.ext h1
-
-theorem smooth_of_ne_zero {α β : kˣ →* ℂˣ} {F : GL (Fin (a + a')) k → ℂ} (hF : F ∈ indSp a a' α β)
-    {h : GL (Fin (a + a')) k} (h0 : F h ≠ 0) : IsSmooth (detRep (Fin a) α) ∧ IsSmooth (detRep (Fin a') β) := by
-  have he := indFac_eventually hF h0
-  constructor
-  · refine smooth_of_eventually ((a' : ℂ) / 2) ?_
-    have hc : ContinuousAt (fun g : GL (Fin a) k => (g, (1 : GL (Fin a') k))) 1 := by fun_prop
-    filter_upwards [hc.eventually he] with g hg
-    simpa [indFac] using hg
-  · refine smooth_of_eventually (-(a : ℂ) / 2) ?_
-    have hc : ContinuousAt (fun g : GL (Fin a') k => ((1 : GL (Fin a) k), g)) 1 := by fun_prop
-    filter_upwards [hc.eventually he] with g hg
-    simpa [indFac] using hg
-
 abbrev rhoD (a a' : ℕ) (α β : kˣ →* ℂˣ) : Representation ℂ (Levi k (Two (Fin a) (Fin a'))) (ℂ ⊗[ℂ] ℂ) :=
   (extTensor (detRep (Fin a) α) (detRep (Fin a') β)).comp (leviTwo k (Fin a) (Fin a')).symm.toMonoidHom
 
@@ -119,30 +79,6 @@ theorem exists_toFn {α β : kˣ →* ℂˣ} {F : GL (Fin (a + a')) k → ℂ} (
     exact congrArg _ (law_parab hF p g)
   · exact Subtype.ext (funext fun x => congrArg (TensorProduct.lid ℂ ℂ).symm (hUF u hu x))
   · exact (TensorProduct.lid ℂ ℂ).apply_symm_apply _
-
-theorem indIrred_of (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) : IndIrred := by
-  intro k _ _ _ _ a a' α β hα hβ N hN hr
-  by_cases h0 : N = ⊥
-  · exact Or.inl h0
-  refine Or.inr (le_antisymm hN ?_)
-  obtain ⟨F, hFN, hF0⟩ := (Submodule.ne_bot_iff N).1 h0
-  obtain ⟨h, hh⟩ := Function.ne_iff.1 hF0
-  obtain ⟨s₁, s₂⟩ := smooth_of_ne_zero (hN hFN) hh
-  have hI : (parInd (two (stdE a a')) (rhoD a a' α β)).IsIrreducible := hB k a a' ℂ ℂ _ _
-    s₁ (isIrreducible_ofChar _) ((isUnitarisable_ofChar_iff _).2 fun _ => hα _)
-    s₂ (isIrreducible_ofChar _) ((isUnitarisable_ofChar_iff _).2 fun _ => hβ _)
-  let S : Subrepresentation (parInd (two (stdE a a')) (rhoD a a' α β)) :=
-    ⟨N.comap (toFn a a' α β), fun g f hf => hr g _ hf⟩
-  rcases hI.eq_bot_or_eq_top S with e | e
-  · obtain ⟨f, rfl⟩ := exists_toFn (hN hFN)
-    have hf : f ∈ S.toSubmodule := hFN
-    rw [e] at hf
-    have hf0 : f = 0 := hf
-    exact absurd (by rw [hf0, map_zero]) hF0
-  · intro G hG
-    obtain ⟨f, rfl⟩ := exists_toFn hG
-    have hf : f ∈ S.toSubmodule := by rw [e]; trivial
-    exact hf
 
 end PositivityTheory.ThK.SplitLoc
 

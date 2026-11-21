@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumAlternatingCardElementarySublatticesAboveStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumAlternatingCardElementarySublatticesAbove
 
 open GlobalTheory.LatHecke
 
@@ -60,7 +60,7 @@ theorem heckeSeries_identity : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDis
   refine Finset.sum_eq_zero fun M hM => ?_
   rw [← Finset.sum_smul]
   have hM' : M ∈ subIdx n L := (Set.Finite.mem_toFinset _).1 hM
-  have h := GlobalTheory.T.sum_alternating_card_elementarySublattices_above O K r n L M hn hM'
+  have h := _root_.GlobalTheory.LatHecke.sum_alt_card_subElem_ge O K r n L M hn hM'
   convert zero_smul ℂ (φ M) using 2
   rw [← h]
   refine Finset.sum_congr rfl fun k _ => ?_

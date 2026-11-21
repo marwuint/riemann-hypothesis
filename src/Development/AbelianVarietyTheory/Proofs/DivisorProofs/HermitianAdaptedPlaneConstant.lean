@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantFinprodSchwartzBruhatFiniteAdel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportFinprodSchwartzBruhatFiniteAdel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactOpenSubgroupsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactOpenSubgroups
 
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -98,7 +98,7 @@ theorem sb_decomp : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintyp
     filter_upwards [h2.eventually_eq (0, z)] with q hq
     simp only [Prod.mk.injEq, add_zero] at hq
     rw [hq.1, hq.2]
-  obtain ⟨N, hNo, hNc, hNcof, hPn, hPV⟩ := GlobalTheory.T.exists_compact_open_subgroups F κ _ h1
+  obtain ⟨N, hNo, hNc, hNcof, hPn, hPV⟩ := _root_.GlobalTheory.FinAdeleNbhd.exists_prod_openCompact_subset F κ _ h1
   let U : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F) :=
     { carrier := {y | ∀ i v, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i) ∈ N v}
       zero_mem' := fun i v => by simp

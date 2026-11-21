@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldMapCompConstFn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationSubringFractionsOfEssFiniteTypeComplexStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationSubringFractionsOfEssFiniteTypeComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDVRValuationSubringComapOfFiniteDimensionalStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrEqLocalizationIntegralClosureComapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FractionsUnitDenominatorsReplaceGeneratorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FractionsUnitDenominatorsReplaceGenerators
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZariskiDescentDvrTraceLocalisationStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -14,10 +14,10 @@ open Polynomial
 namespace GlobalTheory
 
 theorem restrict_dvr_essFiniteType : ∀ (K L : Type) [Field K] [Field L] (φ : K →+* L) (c : ℂ →+* K), (letI := φ.toAlgebra; FiniteDimensional K L) → ∀ (V : ValuationSubring L) [IsDiscreteValuationRing V] (hc : ∀ a, φ (c a) ∈ V), ((φ.comp c).codRestrict V hc).EssFiniteType → IsDiscreteValuationRing (V.comap φ) ∧ (c.codRestrict (V.comap φ) hc).EssFiniteType := by
-  have hL0 := GlobalTheory.T.valuationSubring_fractions_of_essFiniteType_complex
+  have hL0 := _root_.GlobalTheory.valuationSubring_fractions_of_essFiniteType
   have hL1 := GlobalTheory.T.isDVR_valuationSubring_comap_of_finiteDimensional
   have hL2 := GlobalTheory.T.dvr_eq_localization_integralClosure_comap
-  have hL4 := GlobalTheory.T.fractions_unitDenominators_replace_generators
+  have hL4 := _root_.GlobalTheory.fractions_unit_denominators_replace_generators
   have hL3 := GlobalTheory.T.zariski_descent_dvr_trace_localisation
   intro K L _ _ φ c hfin V _ hc hV
   have hE : IsDiscreteValuationRing (V.comap φ) := hL1 K L φ hfin V

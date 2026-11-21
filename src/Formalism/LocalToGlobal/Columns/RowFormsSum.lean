@@ -206,41 +206,12 @@ theorem rf_g0Hat_injX (a : G0 X.E Pr.vGs R.r) (ha : unipotentGroupBlockEmbedding
     exact h1
   exact rf_diagEmb_mem_HK _ _ _ h3
 
-theorem rf_g0Hat_injV (j : ℕ) (a : G0 X.E Pr.vGs R.r) (ha : unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R) a ∈ (mtTyKK Ch sel mu j).grp) :
-    a = 1 := by
-  funext w
-  have h1 : unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R) a (inlSG w) ∈ (((mtTyK Ch j).glue
-      (mtTyQ R (mu : Chr X.F X.E X.K) (QE sel (mu : Chr X.F X.E X.K)))) (inlSG w)).H :=
-    (mtTyKK Ch sel mu j).mem_at ⟨_, ha⟩ (inlSG w)
-  rw [LevFam.glue_of_mem _ _ (inlSG w) w.2] at h1
-  have h2 : unipotentGroupBlockEmbedding Pr sel mu (r_le_nV R) a (inlSG w) = diagEmb _ (r_le_nV R) (a w) := extGLG_of_mem _ (inlSG w) w.2
-  have h3 : diagEmb _ (r_le_nV R) (a w) ∈ HK R.nV (𝓞 X.E ⧸ w.1.asIdeal) R.r [R.t] := by
-    rw [← h2]
-    exact h1
-  exact rf_diagEmb_mem_HK _ _ _ h3
-
 theorem levelSumX (h : (mtildeGSD W Ch sel mu P).Ok) (h' : (mtildeKGSD W Ch sel mu).Ok)
     (φ ψ : DecoSet X.E (R.N R.m - 1) ∅ (rowSG Pr sel mu) → VV X.K W.sgTrue)
     (hφ : φ ∈ (mtildeGSD W Ch sel mu P).EqFun) (hψ : ψ ∈ (mtildeGSD W Ch sel mu P).EqFun) :
     (mtildeGSD W Ch sel mu P).ip h φ ψ = ((Nat.card P.grp : X.K))⁻¹ * (mtildeKGSD W Ch sel mu).ip h' φ ψ := by
   exact rf_ip_split (rowVal W (rowSG Pr sel mu)) (rowTy_split Ch sel mu P).inv
     (fun a ha => Subtype.ext (rf_g0Hat_injX Ch sel mu a.1 ha)) h h' φ ψ hφ hψ
-
-theorem levelSumV (j : ℕ) (h : (mtGSD W Ch sel mu P j).Ok) (h' : (mtKGSD W Ch sel mu j).Ok)
-    (φ ψ : DecoSet X.E R.nV ∅ (rowSG Pr sel mu) → VV X.K (W.lamV j))
-    (hφ : φ ∈ (mtGSD W Ch sel mu P j).EqFun) (hψ : ψ ∈ (mtGSD W Ch sel mu P j).EqFun) :
-    (mtGSD W Ch sel mu P j).ip h φ ψ = ((Nat.card P.grp : X.K))⁻¹ * (mtKGSD W Ch sel mu j).ip h' φ ψ := by
-  exact rf_ip_split (mtVal W j (rowSG Pr sel mu)) (mtTy_split Ch sel mu P j).inv
-    (fun a ha => Subtype.ext (rf_g0Hat_injV Ch sel mu j a.1 ha)) h h' φ ψ hφ hψ
-
-theorem levelCsX (h : (mtildeGSD W Ch sel mu P).Ok) (h' : (mtildeKGSD W Ch sel mu).Ok)
-    (F : DecoSet X.E (R.N R.m - 1) ∅ (rowSG Pr sel mu) → X.K)
-    (hF : ∀ (g : (mtildeGSD W Ch sel mu P).G) (d : (mtildeGSD W Ch sel mu P).D), F (g • d) = F d) :
-    (mtildeKGSD W Ch sel mu).csOf h' (mtildeKGSD W Ch sel mu).outSec F =
-      (Nat.card P.grp : X.K) * (mtildeGSD W Ch sel mu P).csOf h (mtildeGSD W Ch sel mu P).outSec F := by
-  exact rf_cs_split (rowVal W (rowSG Pr sel mu)) (rowTy_split Ch sel mu P).inv
-    (fun a ha => Subtype.ext (rf_g0Hat_injX Ch sel mu a.1 ha)) h h' _ _ F
-    (fun γ k d => hF (γ, k) d)
 
 end Rows
 

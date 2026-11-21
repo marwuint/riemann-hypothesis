@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsOneCocycleOnSubgroup
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FixingSubgroupOfIntermediateFieldPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FixingSubgroupOfIntermediateFieldProperties
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertFixesRootOfUnitRatioStatement
 open GlobalTheory.KCoh Polynomial
 
@@ -44,7 +44,7 @@ theorem thmA_on_open_geo : GlobalTheory.NeedB.ThmA → ∀ (k F Ω : Type) [Fiel
   ∀ r ∈ GlobalTheory.K4.geo F (RatFunc k) Ω ⊓ U, ∀ B : ValuationSubring Ω, (∀ p : k[X], algebraMap k[X] Ω p ∈ B) → GlobalTheory.NeedB.Inert B r → η₀ r = 0 ∧ r α = α ∧ r β = β := by
   intro hA k F Ω _ _ _ _ _ _ _ _ _ _ _ _ _ N _ ζ hζ U hU α β hα0 hβ0 hαi hαi' hβi hβi' hUfix
   classical
-  obtain ⟨-, ⟨e, he, hec, -⟩, -, -, -⟩ := GlobalTheory.T.fixingSubgroupOfIntermediateField_properties F (RatFunc k) Ω
+  obtain ⟨-, ⟨e, he, hec, -⟩, -, -, -⟩ := _root_.GlobalTheory.K4.geo_facts F (RatFunc k) Ω
   let U' : Subgroup (Ω ≃ₐ[RatFunc k] Ω) :=
     U.comap ((GlobalTheory.K4.geo F (RatFunc k) Ω).subtype.comp e.toMonoidHom)
   have hU'mem : ∀ g, g ∈ U' ↔ ((e g : GlobalTheory.K4.geo F (RatFunc k) Ω) : Ω ≃ₐ[F] Ω) ∈ U := fun g => Iff.rfl
@@ -58,7 +58,7 @@ theorem thmA_on_open_geo : GlobalTheory.NeedB.ThmA → ∀ (k F Ω : Type) [Fiel
   haveI : IsScalarTower k[X] K' Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
   haveI : IsAlgClosure K' Ω :=
     ⟨IsAlgClosure.isAlgClosed (RatFunc k), Algebra.IsAlgebraic.tower_top (K := RatFunc k) K'⟩
-  obtain ⟨-, ⟨e', he', -, hesc'⟩, -, -, -⟩ := GlobalTheory.T.fixingSubgroupOfIntermediateField_properties F K' Ω
+  obtain ⟨-, ⟨e', he', -, hesc'⟩, -, -, -⟩ := _root_.GlobalTheory.K4.geo_facts F K' Ω
   have hφ : ∀ g (hg : g ∈ GlobalTheory.K4.geo F K' Ω) x, (e'.symm ⟨g, hg⟩) x = g x := by
     intro g hg x
     have := he' (e'.symm ⟨g, hg⟩) x

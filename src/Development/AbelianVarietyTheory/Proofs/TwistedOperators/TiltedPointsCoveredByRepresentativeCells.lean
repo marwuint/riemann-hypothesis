@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryAdelicInfFinSplitPeriodsUnimodular
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLocalLatticeMatricesMulStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLocalLatticeMatricesInvStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemFinitePointsOfHasLocalLatticeMatricesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRowFlagTiltUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestMemLatticeStabilizerOfLocalMatricesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLocalLatticeMatricesMul
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLocalLatticeMatricesInv
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemFinitePointsOfHasLocalLatticeMatrices
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsRowFlagTiltUnique
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestMemLatticeStabilizerOfLocalMatrices
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPeriodGroupPointLiftingRowGroupLocalElemenStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
@@ -26,7 +26,7 @@ theorem eltAt {k : Type} [Field k] {Gr : GlobalTheory.SplitFlip.Grid k} {hs : 1 
 set_option maxHeartbeats 1600000 in
 
 theorem cover_at : Big fun ch => ∀ s, CoverAt ch s := by
-  refine big_mono (fun {D} _ _ _ _ _ _ _ _ _ _ _ ch h => ?_) (Big.and GlobalTheory.T.rowTest_mem_latticeStabilizer_of_localMatrices GlobalTheory.T.exists_periodGroup_point_lifting_rowGroup_localElements)
+  refine big_mono (fun {D} _ _ _ _ _ _ _ _ _ _ _ ch h => ?_) (Big.and _root_.GlobalTheory.LatOfHasLoc.mem_latGrp_of_hasLoc GlobalTheory.T.exists_periodGroup_point_lifting_rowGroup_localElements)
   obtain ⟨h5, h7⟩ := h
   classical
   intro s t b hb p hp
@@ -57,9 +57,9 @@ theorem cover_at : Big fun ch => ∀ s, CoverAt ch s := by
   choose l hl κ hκ hrep using key
   obtain ⟨y, hy, hyR⟩ := h7 s t (i + 1) hj hjm hj' (δ (i + 1) hj hjm) (hδ _ _ _) (fun w => (l w)⁻¹)
     fun w => inv_mem (hl w)
-  have h1 := GlobalTheory.T.hasLocalLatticeMatrices_mul t ch.S.B hjm y r' _ _ hy hr'
-  have h2 := GlobalTheory.T.hasLocalLatticeMatrices_inv t ch.S.B hjm (y * r') _ h1
-  have hz := GlobalTheory.T.hasLocalLatticeMatrices_mul t ch.S.B hjm ((y * r')⁻¹) (x (i + 1) hj hjm) _ _ h2 (hx (i + 1) hj hjm)
+  have h1 := _root_.GlobalTheory.RowVal.hasLoc_mul t ch.S.B hjm y r' _ _ hy hr'
+  have h2 := _root_.GlobalTheory.RowVal.hasLoc_inv t ch.S.B hjm (y * r') _ h1
+  have hz := _root_.GlobalTheory.RowVal.hasLoc_mul t ch.S.B hjm ((y * r')⁻¹) (x (i + 1) hj hjm) _ _ h2 (hx (i + 1) hj hjm)
   have hfun : (fun w => ((sgnAt ch.G t s w.1 (i + 1) * (l w)⁻¹ * (sgnAt ch.G t s w.1 (i + 1))⁻¹) *
       (sgnAt ch.G t s w.1 (i + 1) * (repsAt ch.G t w.1).elt (β w) (D.R.m, i + 1)))⁻¹ * g (i + 1) hj hjm w) =
       fun w => (κ w)⁻¹ := by
@@ -69,8 +69,8 @@ theorem cover_at : Big fun ch => ∀ s, CoverAt ch s := by
   rw [hfun] at hz
   set z := (y * r')⁻¹ * x (i + 1) hj hjm with hzdef
   have hzl : z ∈ latGrp ch.G (i + 1) := h5 t (i + 1) (by omega) hjm _ _ hz fun w => inv_mem (hκ w)
-  have htilt : δ (i + 1) hj hjm = δ' := GlobalTheory.T.isRowFlagTilt_unique ch.G hj' _ _ (hδ _ _ _) hδ'
-  have hyf : y ∈ GfC _ := GlobalTheory.T.mem_finitePoints_of_hasLocalLatticeMatrices t ch.S.B hjm _ _ hy
+  have htilt : δ (i + 1) hj hjm = δ' := _root_.GlobalTheory.TiltUnique.tilt_unique ch.G hj' _ _ (hδ _ _ _) hδ'
+  have hyf : y ∈ GfC _ := _root_.GlobalTheory.RowCover.mem_GfC_of_hasLoc t ch.S.B hjm _ _ hy
   set Y := δ (i + 1) hj hjm * y * (δ (i + 1) hj hjm)⁻¹ with hY
   have hYf : Y ∈ GfC _ := by
     rw [GfC, MonoidHom.mem_ker] at hyf ⊢

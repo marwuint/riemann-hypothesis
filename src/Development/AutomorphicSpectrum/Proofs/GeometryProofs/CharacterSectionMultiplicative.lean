@@ -2,7 +2,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValuesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 
@@ -157,7 +159,7 @@ theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra
     exact (congrArg (· ≫ c) hφ).trans hg
   choose e he using lift
   refine ⟨I, inferInstance, Subtype.val, e, he, fun b hb => ?_⟩
-  have hs := GlobalTheory.T.section_eq_zero_of_values R T Γ (c ''ᵁ ⊤)
+  have hs := _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic R T Γ (c ''ᵁ ⊤)
     ((c.appIso ⊤).inv ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b)) (fun t h => by
       have hr : Set.range (Γ.pt t).left ⊆ Set.range c := by
         rintro _ ⟨x, rfl⟩

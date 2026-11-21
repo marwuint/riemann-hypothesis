@@ -5,8 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FinsumQ
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInnerProductSelfNonnegBounds
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EqOfSiegelThetaSeriesRationalEq
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TestFunctionWitness
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergOperatorRationalPointLawsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergOperatorRationalPointLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionSpecStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledThetaTestFunctionSesquilinearHeisenbergStatement
@@ -35,21 +36,21 @@ theorem ip_self_ne_zero (h : IsSB φ) (h0 : φ ≠ 0) : ip φ φ ≠ 0 := by
   rw [e]; exact_mod_cast ht.ne'
 
 theorem isSB_mul_conj (h : IsSB φ) (h' : IsSB ψ) : IsSB fun x => φ x * conj (ψ x) :=
-  (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h' h').2.2.2.1).2.2.1
+  (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ h (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ h' h').2.2.2.1).2.2.1
 
 theorem ip_add_left (h : IsSB φ) (h' : IsSB φ') (k : IsSB ψ) :
     ip (φ + φ') ψ = ip φ ψ + ip φ' ψ := by
-  rw [ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h' k)).2.2.2.2.1]
+  rw [ip, ip, ip, ← (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h' k)).2.2.2.2.1]
   congr 1; funext x; simp [add_mul]
 
 theorem ip_add_right (h : IsSB φ) (k : IsSB ψ) (k' : IsSB ψ') :
     ip φ (ψ + ψ') = ip φ ψ + ip φ ψ' := by
-  rw [ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k')).2.2.2.2.1]
+  rw [ip, ip, ip, ← (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k')).2.2.2.2.1]
   congr 1; funext x; simp [mul_add]
 
 theorem ip_smul (h : IsSB φ) (k : IsSB ψ) (a b : ℂ) :
     ip (a • φ) (b • ψ) = a * conj b * ip φ ψ := by
-  rw [ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.1]
+  rw [ip, ip, ← (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.1]
   congr 1; funext x; simp; ring
 
 end Ip
@@ -84,7 +85,7 @@ theorem heisS_cosetInd_zero (R : ℕ) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι
 theorem isSB_cosetInd {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) :
     IsSB (cosetInd R q) := by
   rw [← heisS_cosetInd_zero]
-  exact (GlobalTheory.T.heisenbergOperatorRationalPoint_laws _ _ _ _ _ ⟨R, hR, hasLevel_cosetInd_zero R⟩).1
+  exact (_root_.GlobalTheory.SW.heisS_laws _ _ _ _ _ ⟨R, hR, hasLevel_cosetInd_zero R⟩).1
 
 theorem heisS_cosetInd_char {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) (k : κ) (i : ι) :
     heisS (Matrix.single k i (R : ℚ)⁻¹) 0 (cosetInd R q) =
@@ -136,7 +137,7 @@ theorem map_sum_of_isSB {α : Type} (m : (Matrix κ ι ℚ → ℂ) → ℂ) (h0
   | empty => exact ⟨by simpa using isSB_zero, by simpa using h0⟩
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd _ _ (hf a) ih.1, ih.2]
-    exact ⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (hf a) ih.1).1, rfl⟩
+    exact ⟨(_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (hf a) ih.1).1, rfl⟩
 
 theorem exists_eq_mul_ip (l : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ → ℂ) → ℂ)
     (h1 : ∀ φ φ' ψ, IsSB φ → IsSB φ' → IsSB ψ → l (φ + φ') ψ = l φ ψ + l φ' ψ)
@@ -145,7 +146,7 @@ theorem exists_eq_mul_ip (l : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ �
     (hi : ∀ a b φ ψ, IsSB φ → IsSB ψ → l (heisS a b φ) (heisS a b ψ) = l φ ψ) :
     ∃ c : ℂ, ∀ φ ψ, IsSB φ → IsSB ψ → l φ ψ = c * ip φ ψ := by
   have sm : ∀ (c : ℂ) (φ : Matrix κ ι ℚ → ℂ), IsSB φ → IsSB (c • φ) := fun c φ h =>
-    (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h h).2.1 c
+    (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ h h).2.1 c
   have lev : ∀ R : ℕ, 0 < R → ∃ c : ℂ, ∀ φ ψ, HasLevel R φ → HasLevel R ψ →
       l φ ψ = c * ip φ ψ := by
     intro R hR
@@ -216,7 +217,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
 
 theorem ip_heisH (d b : Matrix (Fin n) (Fin r) E) {φ ψ : Matrix (Fin n) (Fin r) E → ℂ}
     (h : IsSB φ) (k : IsSB ψ) : ip (heisH d b φ) (heisH d b ψ) = ip φ ψ := by
-  rw [ip, ip, ← ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.2.2 d).2]
+  rw [ip, ip, ← ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.2.2 d).2]
   congr 1; funext x
   have e : ∀ t : ℚ, cexp (π * I * t) * conj (cexp (π * I * t)) = 1 := fun t => by
     rw [← Complex.exp_conj, ← Complex.exp_add]; simp

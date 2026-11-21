@@ -69,30 +69,6 @@ theorem cechHc_subsingleton_of_block {V : Ideal (MvPolynomial (Σ k, ι k) F)} {
 
 end Vanish
 
-theorem EulerVar.hyps :
-    let v : (Σ _ : Unit, Fin 1) := ⟨(), 0⟩
-    let V : Ideal (MvPolynomial (Σ _ : Unit, Fin 1) ℚ) := Ideal.span {X v}
-    NumbersDVR.IsMultiHomogIdeal V ∧
-      (∀ (m : Unit → ℤ) (i : ℕ), FiniteDimensional ℚ (cechHc (fun _ : Unit => Fin 1) (quotPart ℚ V) m i)) ∧
-      (∀ (m : Unit → ℤ) (i : ℕ), FiniteDimensional ℚ
-        (cechHc (fun _ : Unit => Fin 1) (quotPart ℚ (V.colon (Ideal.span {(X v : MvPolynomial (Σ _ : Unit, Fin 1) ℚ)}))) m i)) ∧
-      (∀ (m : Unit → ℤ) (i : ℕ), FiniteDimensional ℚ
-        (cechHc (fun _ : Unit => Fin 1) (quotPart ℚ (V ⊔ Ideal.span {(X v : MvPolynomial (Σ _ : Unit, Fin 1) ℚ)})) m i)) := by
-  intro v V
-  have hX : (X v : MvPolynomial (Σ _ : Unit, Fin 1) ℚ) ∈ V := Ideal.subset_span rfl
-  have hfin : ∀ W : Ideal (MvPolynomial (Σ _ : Unit, Fin 1) ℚ), (X v : MvPolynomial _ ℚ) ∈ W →
-      ∀ (m : Unit → ℤ) (i : ℕ), FiniteDimensional ℚ (cechHc (fun _ : Unit => Fin 1) (quotPart ℚ W) m i) := by
-    intro W hW m i
-    have := cechHc_subsingleton_of_block (ι := fun _ : Unit => Fin 1) (V := W) (k := ())
-      (fun j : Fin 1 => by rw [Subsingleton.elim j 0]; exact hW) m i
-    have : Finite (cechHc (fun _ : Unit => Fin 1) (quotPart ℚ W) m i) := Finite.of_subsingleton
-    exact Module.Finite.of_finite
-  refine ⟨NumbersDVR.isMultiHomogIdeal_span_singleton
-    (isWeightedHomogeneous_X ℚ (NumbersDVR.blockWeight (fun _ : Unit => Fin 1)) v), hfin V hX, hfin _ ?_,
-    hfin _ (Ideal.mem_sup_left hX)⟩
-  rw [Submodule.mem_colon_span_singleton, smul_eq_mul]
-  exact V.mul_mem_left _ hX
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

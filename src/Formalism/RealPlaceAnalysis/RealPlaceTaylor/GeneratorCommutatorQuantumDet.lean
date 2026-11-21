@@ -6,34 +6,6 @@ noncomputable section
 
 namespace Formalism.REAL
 
-private theorem update_zero_apply_zero {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (x : A) :
-    Function.update F 0 x 0 = x := by
-  rw [Function.update_apply, if_pos rfl]
-
-private theorem update_zero_comp_succ {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (x : A) :
-    (fun i : Fin t => Function.update F 0 x i.succ) = fun i => F i.succ := by
-  funext i
-  rw [Function.update_apply, if_neg (Fin.succ_ne_zero i)]
-
-private theorem update_succ_apply_zero {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (j : Fin t) (x : A) :
-    Function.update F j.succ x 0 = F 0 := by
-  rw [Function.update_apply, if_neg (Fin.succ_ne_zero j).symm]
-
-private theorem update_succ_comp_succ {A : Type*} {t : ℕ} (F : Fin (t + 1) → A) (j : Fin t) (x : A) :
-    (fun i : Fin t => Function.update F j.succ x i.succ) = Function.update (fun i => F i.succ) j x := by
-  funext i
-  rw [Function.update_apply, Function.update_apply]
-  simp only [Fin.succ_inj]
-
-private theorem prod_ofFn_update_zero {A : Type*} [Monoid A] {t : ℕ} (F : Fin (t + 1) → A) (x : A) :
-    (List.ofFn (Function.update F 0 x)).prod = x * (List.ofFn fun i : Fin t => F i.succ).prod := by
-  rw [List.ofFn_succ, List.prod_cons, update_zero_apply_zero, update_zero_comp_succ]
-
-private theorem prod_ofFn_update_succ {A : Type*} [Monoid A] {t : ℕ} (F : Fin (t + 1) → A) (j : Fin t) (x : A) :
-    (List.ofFn (Function.update F j.succ x)).prod =
-      F 0 * (List.ofFn (Function.update (fun i : Fin t => F i.succ) j x)).prod := by
-  rw [List.ofFn_succ, List.prod_cons, update_succ_apply_zero, update_succ_comp_succ]
-
 theorem prod_ofFn_update_eq_mul {A : Type*} [Ring A] : ∀ {t : ℕ} (F : Fin t → A) (k : Fin t),
     ∃ L R : A, ∀ x : A, (List.ofFn (Function.update F k x)).prod = L * x * R
   | 0, _, k => k.elim0

@@ -8,11 +8,6 @@ open scoped Pointwise
 
 namespace Formalism.L2.NR
 
-def RowPolLL (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (σ : D.what₂.FT) (Sig : List (Part D.naut.CG)), Formalism.MainNotions.N.HasParamW D.nd D.naut i σ Sig →
-    ∀ᶠ w in Filter.cofinite, ∃ p : Polynomial D.what₂.LL, p.map D.what₂.embLL =
-      Formalism.MainNotions.N.galPol D.naut (D.naut.lpTw (Formalism.MainNotions.N.isoLoc D.nd D.naut Sig w) ((1 - (D.R.r : ℝ)) / 2))
-
 structure NRhoTied (D : D7) : Prop where
   rbarSS : ∀ (σ : D.what₂.FT) (lam : D.what₂.places.Pl), (∃ a : D.nd.Loc, D.nd.w a = lam) →
     Formalism.MainNotions.N.IsSSRep (D.ntypes.rbar σ lam)
@@ -52,16 +47,6 @@ def primeOf (k : AlgebraicClosure L ≃+* Ω) (B : ValuationSubring Ω) : Ideal 
 
 instance primeOf_isPrime (k : AlgebraicClosure L ≃+* Ω) (B : ValuationSubring Ω) : (primeOf k B).IsPrime :=
   Ideal.comap_isPrime _ _
-
-theorem normV_eq_absNorm (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
-    normV w = Ideal.absNorm (mapPl j w).asIdeal := by
-  rw [Ideal.absNorm_apply, Submodule.cardQuot_apply, normV]
-  refine Nat.card_congr (Ideal.quotientEquiv w.asIdeal (mapPl j w).asIdeal (RingOfIntegers.mapRingEquiv j) ?_).toEquiv
-  ext y
-  rw [Ideal.map_comap_of_equiv, Ideal.mem_comap]
-  obtain ⟨x, rfl⟩ := (RingOfIntegers.mapRingEquiv j).surjective y
-  rw [mem_mapPl]
-  simp
 
 end transport
 
@@ -149,48 +134,6 @@ theorem charpoly_map_of_inv {L : Type} [Field L] {n : ℕ} (f : K →+* L) (g : 
   rfl
 
 end charpolyInv
-
-section norm
-
-end norm
-
-section ss
-
-variable {Γ : Type} [Group Γ] {K : Type} [Field K] {n : ℕ}
-
-end ss
-
-section krull
-
-variable {E Ω L : Type} [Field E] [Field Ω] [Algebra E Ω] [Field L]
-
-end krull
-
-section transfer
-
-variable {E Ω L : Type} [Field E] [Field Ω] [Algebra E Ω] [Field L]
-variable {K : Type} [Field K] [TopologicalSpace K] {a b : ℕ}
-
-end transfer
-
-section gal
-
-variable (D : D7) (T : NormalizedHeckeDataPlaceholder D)
-
-def TempCSD : Prop :=
-  ∀ (a : ℕ) (π : D.naut.CG a), 1 ≤ a → D.naut.csd π → D.naut.ralg π → ∀ w, D.naut.tempered (D.naut.locG π w)
-
-def PurityN : Prop :=
-  ∀ a (π : D.naut.CG a), D.naut.ralg π → ∃ w₀ : ℂ, ∀ τ : D.host.E →+* ℂ,
-    D.naut.infG π (τ.comp (D.host.conj : D.host.E ≃ₐ[ℚ] D.host.E).toRingEquiv.toRingHom) =
-      (D.naut.infG π τ).map (w₀ - ·)
-
-end gal
-
-theorem exists_frame {E Ω L : Type} [Field E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [Field L] (j : E ≃+* L) :
-    ∃ k : AlgebraicClosure L ≃+* Ω, FrameOver j k :=
-  ⟨IsAlgClosure.equivOfEquiv (AlgebraicClosure L) Ω j.symm, fun x => by
-    rw [IsAlgClosure.equivOfEquiv_algebraMap, RingEquiv.symm_apply_apply]⟩
 
 theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) : (placesOver E p).Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by

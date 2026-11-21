@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JoinedPre
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftFormsBijectiveDegreeOneTwoStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftFormsBijectiveDegreeOneTwo
 
 set_option autoImplicit false
 
@@ -137,8 +137,8 @@ theorem deRhamCochainCorrespondence_degree_one_coboundary {g : (Kp Λ' φ).T1} {
 theorem Cor.unique {k : (Kp Λ' φ).T2} {w w' : Tot2 (OPair φ D'.s)} (h : Cor Λ' k w) (h' : Cor Λ' k w') : w = w' := by
   unfold Cor at h h'
   have e0 : ∀ p, Function.Injective (i0 Λ' φ p) := fun p ↦ (Λ'.e _).injective
-  have e1 : ∀ p, Function.Injective (i1 Λ' φ p) := fun p ↦ (GlobalTheory.T.liftForms_bijective_degree_one_two D' Λ' _).1.1
-  have e2 : ∀ p, Function.Injective (i2 Λ' φ p) := fun p ↦ (GlobalTheory.T.liftForms_bijective_degree_one_two D' Λ' _).2.1
+  have e1 : ∀ p, Function.Injective (i1 Λ' φ p) := fun p ↦ (_root_.GlobalTheory.PDForm.lift_forms_bij D' Λ' _).1.1
+  have e2 : ∀ p, Function.Injective (i2 Λ' φ p) := fun p ↦ (_root_.GlobalTheory.PDForm.lift_forms_bij D' Λ' _).2.1
   exact Tot2.ext (fun p q r a b ↦ e0 r ((h.1 p q r a b).trans (h'.1 p q r a b).symm))
     (fun p q a ↦ e1 q ((h.2.1 p q a).trans (h'.2.1 p q a).symm))
     (fun p ↦ e2 p ((h.2.2 p).trans (h'.2.2 p).symm))
@@ -177,7 +177,7 @@ theorem exists_deRhamCochainCorrespondence_degree_one (g : (Kp Λ' φ).T1) : ∃
   obtain ⟨c1, hc1⟩ : ∃ c1 : ∀ (p q : (Pair φ)ᵒᵖ) (_ : p ⟶ q), (OPair φ D'.s).obj q,
       ∀ p q a, i0 Λ' φ q (c1 p q a) = g.1 p q a :=
     ⟨fun p q a ↦ (Λ'.e _).symm (g.1 p q a), fun p q a ↦ (Λ'.e _).apply_symm_apply _⟩
-  choose c2 hc2 using fun p ↦ (GlobalTheory.T.liftForms_bijective_degree_one_two D' Λ' ((pairFst φ).obj p)).1.2 (g.2 p)
+  choose c2 hc2 using fun p ↦ (_root_.GlobalTheory.PDForm.lift_forms_bij D' Λ' ((pairFst φ).obj p)).1.2 (g.2 p)
   exact ⟨(c1, c2), deRhamCochainCorrespondence_degree_one_coboundary Λ' (c := (c1, c2)) hc1 hc2⟩
 
 set_option maxHeartbeats 1000000 in

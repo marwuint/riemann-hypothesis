@@ -1,11 +1,11 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantDerivationOfCounitalComulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorsDualPointDerivationsAugmentedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationsDualToFamilyOfNilpotentAugStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TruncatedMonomialsLinearIndependentOverConstantsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerAevalTruncatedPolynomialPresentationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquarePresentationOfTowerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusSubalgebraCounitalComulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantDerivationOfCounitalComul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorsDualPointDerivationsAugmented
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDerivationsDualToFamilyOfNilpotentAug
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TruncatedMonomialsLinearIndependentOverConstants
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerAevalTruncatedPolynomialPresentation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquarePresentationOfTower
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusSubalgebraCounitalComul
 open scoped TensorProduct
 
 namespace GlobalTheory
@@ -22,9 +22,9 @@ theorem square_presentation_counital_comul_of_finrank (p : ℕ) [Fact p.Prime] (
   induction n using Nat.strong_induction_on with
   | _ n ih =>
   intro A _ _ _ ε Δ hn hΔ hε
-  obtain ⟨d, x, l, hl, hlx, hadj⟩ := GlobalTheory.T.exists_generators_dual_point_derivations_augmented k A ε hε
-  choose D hD using fun i => GlobalTheory.T.exists_invariant_derivation_of_counital_comul k A ε Δ hΔ (l i) (hl i)
-  obtain ⟨E, hE⟩ := GlobalTheory.T.exists_derivations_dual_to_family_of_nilpotent_aug k A ε hε d x D (fun i j => by rw [hD, hlx])
+  obtain ⟨d, x, l, hl, hlx, hadj⟩ := _root_.GlobalTheory.exists_generators_dual_point_derivations k A ε hε
+  choose D hD using fun i => _root_.GlobalTheory.invariant_derivation_exists k A ε Δ hΔ (l i) (hl i)
+  obtain ⟨E, hE⟩ := _root_.GlobalTheory.derivation_normalise_family k A ε hε d x D (fun i j => by rw [hD, hlx])
   have hnt : Nontrivial A := ε.toRingHom.domain_nontrivial
   rcases Nat.eq_zero_or_pos d with hd | hd
   · subst hd
@@ -35,7 +35,7 @@ theorem square_presentation_counital_comul_of_finrank (p : ℕ) [Fact p.Prime] (
       rw [MvPolynomial.eq_C_of_isEmpty f, MvPolynomial.eq_C_of_isEmpty g] at h ⊢
       simp only [MvPolynomial.aeval_C] at h
       rw [(algebraMap k A).injective h]
-  · obtain ⟨B, hB, Δ', hΔ'⟩ := GlobalTheory.T.frobeniusSubalgebra_counital_comul p k A ε Δ hΔ
+  · obtain ⟨B, hB, Δ', hΔ'⟩ := _root_.GlobalTheory.frobSubalgebra_counit p k A ε Δ hΔ
     have hp : (p : A) = 0 := by
       rw [← map_natCast (algebraMap k A), CharP.cast_eq_zero, map_zero]
     have hEB : ∀ i, ∀ b ∈ B, E i b = 0 := by
@@ -69,11 +69,11 @@ theorem square_presentation_counital_comul_of_finrank (p : ℕ) [Fact p.Prime] (
       rw [Ideal.mem_comap, Ideal.mem_bot] at hb
       rw [Ideal.mem_bot]
       exact Subtype.ext hb
-    refine GlobalTheory.T.exists_square_presentation_of_tower k B A (ih _ hlt B (ε.comp B.val) Δ' rfl hΔ' hε') ?_
+    refine _root_.GlobalTheory.SquareTower.tower k B A (ih _ hlt B (ε.comp B.val) Δ' rfl hΔ' hε') ?_
     refine ⟨d, MvPolynomial.aeval x, _, ?_,
-      GlobalTheory.T.ker_aeval_truncatedPolynomial_presentation p (Fact.out : p.Prime).pos B A d x
+      _root_.GlobalTheory.ker_aeval_truncated p (Fact.out : p.Prime).pos B A d x
         (fun i => ⟨x i ^ p, (hB _).2 ⟨x i, rfl⟩⟩) (fun i => rfl)
-        (GlobalTheory.T.truncatedMonomials_linearIndependent_over_constants p k A d x E hE B hEB)⟩
+        (_root_.GlobalTheory.truncMono_linearIndependent p k A d x E hE B hEB)⟩
     rw [← AlgHom.range_eq_top, ← Algebra.adjoin_range_eq_range_aeval, eq_top_iff]
     intro a _
     have ha : a ∈ Algebra.adjoin k (Set.range x) := hadj ▸ Algebra.mem_top

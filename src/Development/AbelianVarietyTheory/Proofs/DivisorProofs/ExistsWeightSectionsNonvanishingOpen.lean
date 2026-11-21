@@ -96,24 +96,4 @@ theorem exists_lb_dominates (hE : GlobalTheory.Published.SemiAbelianHomExtension
     rw [← cls_pull hY _ (pull_isLB hY _), ← (cls_eq_iff TF.X.F.isLB_detOm _).2 (TF.X.F.detOm_iso_pull hY)]
     exact ((cls_eq_iff _ _).2 (FlagHodge.lbIso_detOm_Llam TF.X)).symm
 
-theorem exists_weight_dominates : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∃ χ : AllWt.Weight Dw, ∀ y ∈ U₀ TF.X Z, ∀ A : LB TF.Y.X, A.IsLB → ∃ (m : ℕ) (s : (LB.div (lbPow (L₀ TF.X Z χ) m) (A.pull (inc₀ TF.X Z ≫ TF.X.π))).Sec), 0 < m ∧ y ∈ nonzeroLocus s := by
-  intro hP _ hS hF E _ _ _ H Dw l Xo c TF Z _
-  obtain ⟨ω, hω, e, h⟩ := exists_lb_dominates hP.p22 hS hF TF
-  refine ⟨FlagMod.mu0 Dw, fun y hy A hA => ?_⟩
-  obtain ⟨w, hw⟩ : ∃ w, TF.Y.j w = (inc₀ TF.X Z ≫ TF.X.π) y := hy
-  obtain ⟨m, hm, s, hs⟩ := h w A hA
-  have hD := LB.isLB_div (isLB_lbPow hω m) hA
-  have hL := isLB_L₀ TF.X Z (FlagMod.mu0 Dw)
-  have hT := LB.isLB_div (isLB_lbPow hL m) (pull_isLB hA (inc₀ TF.X Z ≫ TF.X.π))
-  have e' : cls _ hL = CechPic.pull (inc₀ TF.X Z ≫ TF.X.π) (cls ω hω) := by
-    rw [CechPic.pull_comp, ← e]
-    exact cls_pull (TF.X.isLB_Llam _) _ _
-  obtain ⟨t, ht⟩ := exists_sec_nonzeroLocus_eq_of_lbIso hT (pull_isLB hD (inc₀ TF.X Z ≫ TF.X.π))
-    ((cls_eq_iff hT (pull_isLB hD _)).1 (by
-      rw [cls_div (isLB_lbPow hL m) (pull_isLB hA _), cls_lbPow hL, cls_pull hA, cls_pull hD,
-        cls_div (isLB_lbPow hω m) hA, cls_lbPow hω, map_sub, map_nsmul, e'])) (lbSecPull _ s _)
-  refine ⟨m, t, hm, ?_⟩
-  rw [ht, nonzeroLocus_lbSecPull]
-  exact (hw ▸ hs : (inc₀ TF.X Z ≫ TF.X.π) y ∈ nonzeroLocus s)
-
 end GlobalTheory.HodgeDominates

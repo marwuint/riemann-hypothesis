@@ -10,7 +10,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ResChPrime
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.DegenerationDataAtModelPointOfUniformisation
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenOfRangeGenericSubset
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SemiAbelianDvrExtensionsIsoCompatible
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsEmbeddingCompleteAlgClosedFixedCarrierStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsEmbeddingCompleteAlgClosedFixedCarrier
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DegenerationDataCoordsNeZeroLatticesIsomorphicStatement
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing IsDedekindDomain
@@ -145,7 +145,7 @@ theorem exists_equiv_of_uniformisation {O : Type} [CommRing O] {β : O →+* c.F
     have h' : ‖(p : ↥C.S)‖ = 1 := by simpa using h
     rw [C.norm_p] at h'
     exact hp.ne_one (by exact_mod_cast inv_eq_one.1 h')
-  obtain ⟨f, hf, -, hfl⟩ := (GlobalTheory.T.exists_embedding_completeAlgClosed_fixedCarrier T p hp hT hpm).2 C g T' φ hg hlt hφ hφf
+  obtain ⟨f, hf, -, hfl⟩ := (_root_.GlobalTheory.SmallClosedField.exists_embedding_and_extension T p hp hT hpm).2 C g T' φ hg hlt hφ hφf
   obtain ⟨n2, -⟩ := sabComp pullCubComp E H _ _ _ Y.t G G' yt (spMap φ) n mG
   have hab : (spMap φ ≫ yt) ⁻¹' abLocus Y.t.G = abLocus G'.G :=
     Set.ext fun q => abLocus_pullback abLocusOne Y.t.semi n2.cart.1 q

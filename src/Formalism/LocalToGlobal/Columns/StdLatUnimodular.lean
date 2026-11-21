@@ -708,17 +708,7 @@ variable (X : Fields) (Pr : Primes X)
 
 abbrev ColDeco (u : Pr.Word) (n : ℕ) : Type := DecoSet X.E n (Pr.vT u) Pr.vGs
 
-abbrev RowDeco (n : ℕ) : Type := DecoSet X.E n ∅ Pr.vGs
-
 variable {X Pr}
-
-def tilD (u : Pr.Word) {n : ℕ} (d : RowDeco X Pr n) : ColDeco X Pr u (n + 1) := DecoSet.til (Pr.piT u) d
-
-def upD (u : Pr.Word) {n : ℕ} (P : Pr.vT u) (d : ColDeco X Pr u n) : Set (ColDeco X Pr u n) :=
-  d.upSet P (Pr.T u : 𝓞 X.E)
-
-def dnD (u : Pr.Word) {n : ℕ} (P : Pr.vT u) (d : ColDeco X Pr u n) : Set (ColDeco X Pr u n) :=
-  d.dnSet P (Pr.T u : 𝓞 X.E)
 
 end Inst
 

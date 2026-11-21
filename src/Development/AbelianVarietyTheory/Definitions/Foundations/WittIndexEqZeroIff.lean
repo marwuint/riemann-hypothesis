@@ -248,9 +248,6 @@ theorem mem_trivOn (h : A ≤ B) : g ∈ trivOn hc V R A B ↔
     ((Submodule.span_le (p := (extSub (F := F) V R A).comap
       ((HA.mat R hc.sig V.gram g).1.mulVecLin - LinearMap.id))).2 (by rintro _ ⟨x, hx, rfl⟩; exact h x hx) hy :)⟩
 
-theorem trivOn_le_parab (h1 : A ≤ W) (h2 : W ≤ B) : trivOn hc V R A B ≤ parab hc V R W := fun g hg =>
-  mem_parab_iff_maps.2 fun y hy => by simpa using add_mem (extSub_mono V R h1 (hg.2 y (extSub_mono V R h2 hy))) hy
-
 theorem trivOn_mono {A' B' : Submodule E V.V} (h1 : A ≤ A') (h2 : A' ≤ B') (h3 : B' ≤ B) :
     trivOn hc V R A B ≤ trivOn hc V R A' B' := fun _ hg =>
   (mem_trivOn_iff_maps h2).2 fun y hy => extSub_mono V R h1 (hg.2 y (extSub_mono V R h3 hy))
@@ -278,9 +275,6 @@ variable {R' : Type} [CommRing R'] [Algebra F R']
 theorem act_mapH (φ : R →ₐ[F] R') (g : HA R hc.sig V.gram) (y : Fin V.rank → R ⊗[F] E) :
     act hc V (mapH hc.sig V.gram φ g) (mapVec V φ y) = mapVec V φ (act hc V g y) :=
   funext fun i => (RingHom.map_mulVec (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom _ y i).symm
-
-theorem mapH_mem_parab (φ : R →ₐ[F] R') (hg : g ∈ parab hc V R W) : mapH hc.sig V.gram φ g ∈ parab hc V R' W :=
-  mem_parab.2 fun x hx => by rw [← mapVec_coordR V φ, act_mapH]; exact mapVec_mem V φ (mem_parab.1 hg x hx)
 
 theorem mapH_mem_trivOn (h : A ≤ B) (φ : R →ₐ[F] R') (hg : g ∈ trivOn hc V R A B) :
     mapH hc.sig V.gram φ g ∈ trivOn hc V R' A B :=
@@ -342,12 +336,6 @@ theorem mem_extSub_of_adelic {y : Fin V.rank → AF F ⊗[F] E}
   · exact (repr_map b (evFin F v) _ j).symm.trans
       (by rw [show Algebra.TensorProduct.map _ _ _ = 0 from congrFun (h' v) k]; simp; rfl)
 
-theorem mem_parab_of_adelic (h : ∀ w, projArch hc.sig V.gram w g ∈ parab hc V w.Completion W)
-    (h' : ∀ v, proj hc.sig V.gram v g ∈ parab hc V (Fv F v) W) : g ∈ parab hc V (AF F) W :=
-  mem_parab.2 fun x hx => mem_extSub_of_adelic
-    (fun w => by rw [← act_mapH, mapVec_coordR]; exact mem_parab.1 (h w) x hx)
-    fun v => by rw [← act_mapH, mapVec_coordR]; exact mem_parab.1 (h' v) x hx
-
 theorem mem_trivOn_of_adelic (e : A ≤ B) (h : ∀ w, projArch hc.sig V.gram w g ∈ trivOn hc V w.Completion A B)
     (h' : ∀ v, proj hc.sig V.gram v g ∈ trivOn hc V (Fv F v) A B) : g ∈ trivOn hc V (AF F) A B :=
   (mem_trivOn e).2 fun x hx => mem_extSub_of_adelic
@@ -408,9 +396,6 @@ theorem le_perp (i j : Fin (𝔉.k + 1)) : 𝔉.X i ≤ perp V (𝔉.X j) :=
 
 theorem isIsotropic {i : Fin (𝔉.k + 1)} (hi : i ≠ 0) : IsIsotropic V (𝔉.X i) :=
   ⟨𝔉.zero ▸ (𝔉.strictMono (Fin.pos_iff_ne_zero.2 hi)).ne', 𝔉.le_perp i i⟩
-
-theorem Proper.isIsotropic_top {𝔉 : IsoFlag V} (h : 𝔉.Proper) : IsIsotropic V 𝔉.top :=
-  𝔉.isIsotropic (Fin.ne_of_val_ne h.ne')
 
 variable (V) in
 
@@ -496,9 +481,6 @@ theorem unip_single : (single hW).unip hc R = unipRad hc V R W :=
 
 theorem par_le_parab (i : Fin (𝔉.k + 1)) : 𝔉.par hc R ≤ parab hc V R (𝔉.X i) := iInf_le _ i
 
-theorem par_le_parab_perp (i : Fin (𝔉.k + 1)) : 𝔉.par hc R ≤ parab hc V R (perp V (𝔉.X i)) :=
-  (𝔉.par_le_parab hc R i).trans parab_le_perp
-
 theorem unip_single_le {i : Fin (𝔉.k + 1)} (hi : i ≠ 0) : (single (𝔉.isIsotropic hi)).unip hc R ≤ 𝔉.unip hc R := by
   intro g hg
   obtain ⟨h1, h2⟩ := mem_unip.1 hg
@@ -508,9 +490,6 @@ theorem unip_single_le {i : Fin (𝔉.k + 1)} (hi : i ≠ 0) : (single (𝔉.isI
   · exact trivOn_mono bot_le (𝔉.le_succ j) (𝔉.strictMono.monotone (Fin.castSucc_lt_iff_succ_le.1 h)) (h1 (0 : Fin 1))
 
 variable {𝔉 hc R} {R' : Type} [CommRing R'] [Algebra F R']
-
-theorem mapH_mem_par (φ : R →ₐ[F] R') (hg : g ∈ 𝔉.par hc R) : mapH hc.sig V.gram φ g ∈ 𝔉.par hc R' :=
-  mem_par.2 fun i => mapH_mem_parab φ (mem_par.1 hg i)
 
 theorem mapH_mem_unip (φ : R →ₐ[F] R') (hg : g ∈ 𝔉.unip hc R) : mapH hc.sig V.gram φ g ∈ 𝔉.unip hc R' :=
   mem_unip.2 ⟨fun i => mapH_mem_trivOn (𝔉.le_succ i) φ ((mem_unip.1 hg).1 i), mapH_mem_trivOn 𝔉.iso φ (mem_unip.1 hg).2⟩
@@ -522,9 +501,6 @@ theorem mem_unipRat {γ : GRat hc V} : γ ∈ 𝔉.unipRat hc ↔
     (∀ i : Fin 𝔉.k, ∀ x ∈ 𝔉.X i.succ, ratAct hc V γ x - x ∈ 𝔉.X i.castSucc) ∧
       ∀ x ∈ perp V 𝔉.top, ratAct hc V γ x - x ∈ 𝔉.top :=
   mem_unip.trans (and_congr (forall_congr' fun i => diagH_mem_trivOn F (𝔉.le_succ i)) (diagH_mem_trivOn F 𝔉.iso))
-
-theorem diagH_mem_par [Nontrivial R] {γ : GRat hc V} : diagH hc.sig V.gram R γ ∈ 𝔉.par hc R ↔ γ ∈ 𝔉.parRat hc :=
-  (mem_par.trans (forall_congr' fun _ => diagH_mem_parab R)).trans mem_parRat.symm
 
 theorem diagH_mem_unip [Nontrivial R] {γ : GRat hc V} : diagH hc.sig V.gram R γ ∈ 𝔉.unip hc R ↔ γ ∈ 𝔉.unipRat hc :=
   (mem_unip.trans (and_congr (forall_congr' fun i => diagH_mem_trivOn R (𝔉.le_succ i))
@@ -564,11 +540,6 @@ instance (v : HeightOneSpectrum (𝓞 F)) : LocallyCompactSpace (𝔉.unip hc (F
 
 variable {𝔉 hc} {g : GAd hc.sig V.gram}
 
-theorem mem_par_adelic : g ∈ 𝔉.par hc (AF F) ↔ (∀ w, projArch hc.sig V.gram w g ∈ 𝔉.par hc w.Completion) ∧
-    ∀ v, proj hc.sig V.gram v g ∈ 𝔉.par hc (Fv F v) :=
-  ⟨fun h => ⟨fun _ => mapH_mem_par _ h, fun _ => mapH_mem_par _ h⟩, fun h => mem_par.2 fun i =>
-    mem_parab_of_adelic (fun w => mem_par.1 (h.1 w) i) fun v => mem_par.1 (h.2 v) i⟩
-
 theorem mem_unip_adelic : g ∈ 𝔉.unip hc (AF F) ↔ (∀ w, projArch hc.sig V.gram w g ∈ 𝔉.unip hc w.Completion) ∧
     ∀ v, proj hc.sig V.gram v g ∈ 𝔉.unip hc (Fv F v) :=
   ⟨fun h => ⟨fun _ => mapH_mem_unip _ h, fun _ => mapH_mem_unip _ h⟩, fun h => mem_unip.2 ⟨fun i =>
@@ -578,13 +549,6 @@ theorem mem_unip_adelic : g ∈ 𝔉.unip hc (AF F) ↔ (∀ w, projArch hc.sig 
 theorem emb_mem_unip {v : HeightOneSpectrum (𝓞 F)} {x : GLoc hc.sig V.gram v} :
     emb hc.sig V.gram v x ∈ 𝔉.unip hc (AF F) ↔ x ∈ 𝔉.unip hc (Fv F v) :=
   mem_unip_adelic.trans ⟨fun h => by simpa using h.2 v, fun h => ⟨fun w => by simp [one_mem], fun u => by
-    by_cases e : u = v
-    · subst e; simpa using h
-    · rw [proj_emb_ne _ _ e]; exact one_mem _⟩⟩
-
-theorem emb_mem_par {v : HeightOneSpectrum (𝓞 F)} {x : GLoc hc.sig V.gram v} :
-    emb hc.sig V.gram v x ∈ 𝔉.par hc (AF F) ↔ x ∈ 𝔉.par hc (Fv F v) :=
-  mem_par_adelic.trans ⟨fun h => by simpa using h.2 v, fun h => ⟨fun w => by simp [one_mem], fun u => by
     by_cases e : u = v
     · subst e; simpa using h
     · rw [proj_emb_ne _ _ e]; exact one_mem _⟩⟩
@@ -628,27 +592,11 @@ theorem wittIndex_pos_iff : 0 < wittIndex V ↔ ∃ W, IsIsotropic V W := by
   · rintro ⟨W, h0, hW⟩
     exact (Nat.pos_of_ne_zero fun e => h0 (Submodule.finrank_eq_zero.1 e)).trans_le (finrank_le_wittIndex hW)
 
-theorem wittIndex_eq_zero_iff : wittIndex V = 0 ↔ ∀ x, V.hD x x = 0 → x = 0 := by
-  rw [← not_iff_not, ← Ne, ← Nat.pos_iff_ne_zero, wittIndex_pos_iff]
-  push Not
-  constructor
-  · rintro ⟨W, h0, hW⟩
-    obtain ⟨x, hx, h⟩ := (Submodule.ne_bot_iff W).1 h0
-    exact ⟨x, mem_perp.1 (hW hx) x hx, h⟩
-  · rintro ⟨x, h, hx⟩
-    refine ⟨E ∙ x, by simpa using hx, (Submodule.span_singleton_le_iff_mem _ _).2 (mem_perp.2 fun y hy => ?_)⟩
-    obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hy
-    simp [HSpace.hD, show V.hT x x = 0 from h]
-
 theorem IsoFlag.k_le_wittIndex (𝔉 : IsoFlag V) : 𝔉.k ≤ wittIndex V := by
   have h : StrictMono fun i => Module.finrank E (𝔉.X i) := fun i j h => Submodule.finrank_lt_finrank_of_lt (𝔉.strictMono h)
   have : ∀ i : Fin (𝔉.k + 1), i.val ≤ Module.finrank E (𝔉.X i) := fun i =>
     Fin.induction (Nat.zero_le _) (fun i ih => Nat.succ_le_of_lt (ih.trans_lt (h i.castSucc_lt_succ))) i
   exact (this (Fin.last _)).trans (finrank_le_wittIndex 𝔉.iso)
-
-theorem exists_proper_iff : (∃ 𝔉 : IsoFlag V, 𝔉.Proper) ↔ 0 < wittIndex V :=
-  ⟨fun ⟨𝔉, h⟩ => lt_of_lt_of_le h 𝔉.k_le_wittIndex,
-    fun h => (wittIndex_pos_iff.1 h).elim fun _ hW => ⟨_, IsoFlag.proper_single hW⟩⟩
 
 end Witt
 

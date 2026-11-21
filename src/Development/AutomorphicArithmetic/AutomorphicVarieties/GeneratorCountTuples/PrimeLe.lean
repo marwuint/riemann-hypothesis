@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.Bridge
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.TorsBoundPow
 
 open NumberField UpperTheory.V UpperTheory.V.K
 

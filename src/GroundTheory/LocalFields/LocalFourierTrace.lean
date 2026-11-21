@@ -187,19 +187,6 @@ theorem traceChar_ne_one : traceChar L ψ ≠ 1 := by
   have := (isTrivialOn_traceChar_iff hψ hψ1 _).mp ht
   linarith
 
-theorem addCharConductor_traceChar :
-    addCharConductor (traceChar L ψ) =
-      (ramificationIndex K L : ℤ) * addCharConductor ψ - differentExponent K L := by
-  have hc := continuous_traceChar (L := L) hψ hψ1
-  have hne := traceChar_ne_one (L := L) hψ hψ1
-  apply le_antisymm
-  · exact (isTrivialOn_iff hc hne _).mp ((isTrivialOn_traceChar_iff hψ hψ1 _).mpr le_rfl)
-  · exact (isTrivialOn_traceChar_iff hψ hψ1 _).mp (isTrivialOn_addCharConductor hc hne)
-
-theorem addCharConductor_traceChar_of_eq_zero (h0 : addCharConductor ψ = 0) :
-    addCharConductor (traceChar L ψ) = -(differentExponent K L : ℤ) := by
-  rw [addCharConductor_traceChar hψ hψ1, h0, mul_zero, zero_sub]
-
 end TraceChar
 
 end GroundTheory.LocalField

@@ -133,7 +133,7 @@ theorem valR_prod {v : Fin n → TanM (𝟙 (Sp R)) G} {u : Fin n → (epsR R �
 
 end Group
 
-open GlobalTheory.TangentCob ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF GlobalTheory.CubeFib GlobalTheory.AddCurve in
+open GlobalTheory.TangentCob ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF GlobalTheory.CubeFib in
 
 theorem eq_one_of_coboundary {k : Type} [CommRing k] {B : Over (Sp k)} [GrpObj B] {L : LB B.left}
     (hL : L.IsLB) (hK : KTriv B L) {D : Type} [CommRing D] [Algebra k D] (e : D) (he : e * e = 0)

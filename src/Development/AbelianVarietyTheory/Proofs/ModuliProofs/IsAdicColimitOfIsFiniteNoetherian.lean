@@ -32,15 +32,4 @@ theorem isAdicColimit_of_isFinite_noetherian {R : Type} [CommRing R] [IsLocalRin
     (ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra _)
   exact IsAdicColimit.of_iso (Over.isoMk N.left.isoSpec.symm hφ.symm) H
 
-theorem main : AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∀ (N : Over (Sp R)) (g₀ : GtPt P.D.toPre N) (x₀ : N ⟶ t.G), IsFinite N.hom → GtTors k g₀ → (∀ (T : Over (Sp R)) (g : GtPt P.D.toPre T), GtTors k g → ∃! h : T ⟶ N, GtPt.IsPull h.left g₀ g) → FormalEq P.U.toUnifPre x₀ g₀ → ∀ T : Over (Sp R), IsFinite T.hom → ∀ x : T ⟶ t.G, x ^ k = 1 → ∃ h : T ⟶ N, h ≫ x₀ = x := by
-  intro E _ _ _ H R _ _ _ _ hR t P W _ _ ψW k _ N g₀ x₀ _ _ huniv hform T _ x hx
-  obtain ⟨_, _, _, hc⟩ := hR
-  have hT := isAdicColimit_of_isFinite_noetherian hc T
-  obtain ⟨Gt, _, _, Φ, hΦ, -⟩ := exists_represents P.D.toPre
-  obtain ⟨J, hJ⟩ := exists_mulEquiv P.U.toUnifPre abelianSchemeLaws_all.1.globalFns hΦ
-  obtain ⟨w, rfl⟩ := (J T hT).surjective x
-  have hw : w ^ k = 1 := (J T hT).injective (by rw [map_pow, hx, map_one])
-  obtain ⟨h, hh, -⟩ := huniv T (Φ T w) ((tors_iff hΦ k w).2 hw)
-  exact ⟨h, ((hJ T hT w _).2 (((formalEq_iff _ _ _).1 hform).pull h hh)).symm⟩
-
 end GlobalTheory.FiniteTorsLift

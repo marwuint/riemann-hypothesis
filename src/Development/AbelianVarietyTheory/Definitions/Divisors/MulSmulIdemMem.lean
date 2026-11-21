@@ -18,9 +18,6 @@ def IntOff {K : Type} [Field K] [NumberField K] (B : Finset ℕ) (ρ : HeightOne
 
 def logSum (B : Finset ℕ) : ℝ := ∑ p ∈ B, Real.log p
 
-theorem intOff_zero {K : Type} [Field K] [NumberField K] (B : Finset ℕ) :
-    IntOff B (0 : HeightOneSpectrum (𝓞 K) → ℝ) := fun _ _ => ⟨0, by simp⟩
-
 theorem IntOff.add {K : Type} [Field K] [NumberField K] {B : Finset ℕ} {ρ ρ' : HeightOneSpectrum (𝓞 K) → ℝ}
     (h : IntOff B ρ) (h' : IntOff B ρ') : IntOff B (ρ + ρ') := fun w hw => by
   obtain ⟨n, hn⟩ := h w hw
@@ -79,23 +76,6 @@ variable {Z : Comp Xo c} {G₀ G₁ : WTZ E}
 
 theorem sig_mem_suppOn (s : TwSec U x Z G₀) : s.sig ∈ suppOn Z := by
   rw [← s.idem_sig, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)
-
-theorem inv_mem_suppOn (s : TwSec U x Z G₀) : s.inv ∈ suppOn Z := by
-  rw [← s.idem_inv, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)
-
-theorem sig_ne_zero (s : TwSec U x Z G₀) : s.sig ≠ 0 := fun h0 => by
-  obtain ⟨z, hz⟩ := (s.pts.1 c.F.val.toRingHom).1
-  have h1 := s.norm_inf _ z hz
-  rw [h0, ← zero_smul c.F (0 : Rul Xo c), homN_smul, map_zero, norm_zero, zero_mul] at h1
-  exact (s.cInf_pos _).ne h1
-
-theorem lo_le_hi (s : TwSec U x Z G₀) (w : HeightOneSpectrum (𝓞 c.F)) : s.lo w ≤ s.hi w := by
-  obtain ⟨v, hv⟩ := s.pts.2 w
-  exact EReal.coe_le_coe_iff.1 ((s.lo_le w v hv).trans (s.le_hi w v hv))
-
-theorem cInf_eq (s t : TwSec U x Z G₀) (e : s.sig = t.sig) : s.cInf = t.cInf := funext fun σ => by
-  obtain ⟨z, hz⟩ := (s.pts.1 σ).1
-  rw [← s.norm_inf σ z hz, ← t.norm_inf σ z hz, e]
 
 theorem cInf_congr (s : TwSec U x Z G₀) {σ σ' : c.F →+* ℂ} (h : goodOf c σ = goodOf c σ') : s.cInf σ = s.cInf σ' := by
   obtain ⟨z, hz⟩ := (s.pts.1 σ).1
@@ -214,14 +194,6 @@ def ofConst {la : Weight Dw} {δ : HeightOneSpectrum (𝓞 c.F) → ℝ} (s : Co
   finite_hi := (hδ.union s.finite_rho).subset (Function.support_add _ _)
   pts := s.hasPts
 
-theorem degLo_ofConst {la : Weight Dw} {δ : HeightOneSpectrum (𝓞 c.F) → ℝ} (s : ConstSec U x Z la δ)
-    (hδ : (Function.support δ).Finite) (h₁ h₂) :
-    (ofConst s hδ h₁ h₂).degLo = s.deg + ∑ᶠ w, δ w * lw c.F w := by
-  have := lineDeg_mul (r := 1) (fun _ => one_pos) s.cInf_pos hδ s.finite_rho
-  rw [one_mul] at this
-  refine this.trans ?_
-  simp [lineDeg, ConstSec.deg, add_comm]
-
 variable (x) in
 
 def const (h : HasPts U Z) (a : c.F) (ha : a ≠ 0) : TwSec U x Z 0 :=
@@ -241,24 +213,6 @@ theorem const_spec (h : HasPts U Z) (a : c.F) (ha : a ≠ 0) :
 
 end TwSec
 
-theorem twSec_inhabited :
-    (1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → (∀ σ, GoodEmb c σ → IsUnf (U σ)) →
-      ∀ (Z : Comp Xo c) (a : c.F), a ≠ 0 → ∃ s : TwSec U x Z 0, s.sig = a • idem Z ∧ (∀ σ, s.cInf σ = ‖σ a‖) ∧
-        (∀ w, s.lo w = vAdd w a) ∧ s.degLo = 0) ∧
-    ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E)
-      (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
-      (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ (Dw.p + Dw.q)) (Z : Comp Xo c),
-      1 ≤ Dw.p ∧ (∀ σ, GoodEmb c σ → IsUnf (U σ)) ∧ ∀ a : c.F, a ≠ 0 →
-        ∃ s : TwSec U x Z 0, s.sig = a • idem Z ∧ (∀ σ, s.cInf σ = ‖σ a‖) ∧ (∀ w, s.lo w = vAdd w a) ∧
-          s.degLo = 0 := by
-  refine ⟨fun hpq hg hU Z a ha => ?_, ?_⟩
-  · obtain ⟨h1, h2, h3, -, h4⟩ := TwSec.const_spec (x := x) (hasPts U hpq hg hU Z) a ha
-    exact ⟨_, h1, h2, h3, h4⟩
-  · obtain ⟨E, _, _, _, H, Dw, l, Xo, c, U, Z, τ, hp, hU, ⟨s⟩⟩ := GlobalTheory.FlatLine.Definite.exists_flatSec x
-    refine ⟨E, _, _, _, H, Dw, l, Xo, c, U, Z, hp, hU, fun a ha => ?_⟩
-    obtain ⟨h1, h2, h3, -, h4⟩ := TwSec.const_spec (x := x) s.hasPts a ha
-    exact ⟨_, h1, h2, h3, h4⟩
-
 variable (Xo c) in
 
 def UnramPts (B : Finset ℕ) : Prop :=
@@ -269,9 +223,6 @@ def badPrimes (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Lev
   (2 * H.d * (discr E).natAbs * l.M').primeFactors
 
 theorem badPrimes_prime (p : ℕ) (hp : p ∈ badPrimes H l) : p.Prime := Nat.prime_of_mem_primeFactors hp
-
-theorem UnramPts.mono {B B' : Finset ℕ} (h : UnramPts Xo c B) (hB : B ⊆ B') : UnramPts Xo c B' :=
-  fun Z w hw => h Z w fun p hp => hw p (hB hp)
 
 theorem mem_badPrimes {p : ℕ} :
     p ∈ badPrimes H l ↔ p.Prime ∧ (p = 2 ∨ p = H.d ∨ p ∣ (discr E).natAbs ∨ p ∣ l.M ∨ p ∣ l.A) := by
@@ -294,16 +245,5 @@ theorem UnramPts.of_index_one {B : Finset ℕ}
   by_cases h0 : evI y f = 0
   · rw [h0, nval_zero]; exact Or.inl rfl
   · exact Or.inr ⟨vV T.V (evI y f), by rw [nval_of_ne h0]; simp⟩
-
-example : 2 ∈ badPrimes H l := mem_badPrimes.2 ⟨Nat.prime_two, Or.inl rfl⟩
-
-example : logSum {2, 3} = Real.log 2 + Real.log 3 := by simp [logSum]
-
-example {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
-    ¬ IntOff ∅ (fun _ : HeightOneSpectrum (𝓞 K) => (1 / 2 : ℝ)) := fun h => by
-  obtain ⟨n, hn⟩ := h w (by simp)
-  have h2 : (1 : ℝ) = 2 * n := by simp only at hn; linarith
-  have h3 : (1 : ℤ) = 2 * n := by exact_mod_cast h2
-  omega
 
 end GlobalTheory.FlatTw

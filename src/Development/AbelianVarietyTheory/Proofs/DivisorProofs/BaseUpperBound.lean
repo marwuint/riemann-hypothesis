@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NabBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralUniformiserActsByDilationTameKernelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameKernelVectorUnitMulDilatedFlatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatThetaQuotientAtPrincipalLevelProofStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralUniformiserActsByDilationTameKernel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameKernelVectorUnitMulDilatedFlat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatThetaQuotientAtPrincipalLevelProof
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTraceLevelCompatibleProofStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefLatticeIndepCoefMapProofStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefLatticeIndepCoefMapProof
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylLatticeBaseChangeSpanProofStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCharacterFiniteOrderDefiniteFormsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCharacterFiniteOrderDefiniteForms
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsCentAtScalar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealizationEmbeddingCompatible
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlatVecExistsUnique
@@ -92,13 +92,13 @@ theorem exists_om_eq (hC : GlobalTheory.Hk3.Core R F) (hG : QGuard R) (hV : VStd
     (hK : KerDat R i ξ χ ξR B.de.Q ω φ) (hχ : ChrEq B.de.chi ξ) (hQ : ∃ t, B.de.Q ⊆ R.Q t) {N : ℕ} (hN : N ≠ 0)
     (hNQ : ∀ PP ∈ B.de.Q, (N : 𝓞 D.host.E) ∈ PP.asIdeal) :
     ∃ (z : GA D (Vc D i)) (c : ℂ), IsCentAt i B.de.Q z ∧ UnitOff N c ∧ ω (z, 1) φ = c • (princ B).vecBase := by
-  obtain ⟨eg, eQ, fg, heg, heQ, hfg, hf⟩ := GlobalTheory.T.flatThetaQuotientAtPrincipalLevel_proof D G Pl0 T0 A Ks R F hC i ξ χ ξR ω φ B hB hBo hK hχ
+  obtain ⟨eg, eQ, fg, heg, heQ, hfg, hf⟩ := _root_.GlobalTheory.BaseCmp.flatTwoStep_holds D G Pl0 T0 A Ks R F hC i ξ χ ξR ω φ B hB hBo hK hχ
   obtain ⟨ϖ, hϖ0, hϖ⟩ := exists_uniformiser D.host.E B.de.Q
   have hϖE : (ϖ : D.host.E) ≠ 0 := by exact_mod_cast hϖ0
   obtain ⟨z, hz, hzm⟩ := GlobalTheory.CentScal.exists_isCentAt_scalar D i B.de.Q eQ heQ (ϖ : D.host.E) hϖE
-  obtain ⟨κ, hκ, hact⟩ := GlobalTheory.T.central_uniformiser_acts_by_dilation_tame_kernel D G Pl0 T0 A Ks R F hC hG i hV ξ χ ξR _ ω φ hK hQ N hN hNQ eg eQ fg heg heQ hfg ϖ
+  obtain ⟨κ, hκ, hact⟩ := _root_.GlobalTheory.BaseCmp.dilKer_of_ne_zero D G Pl0 T0 A Ks R F hC hG i hV ξ χ ξR _ ω φ hK hQ N hN hNQ eg eQ fg heg heQ hfg ϖ
     (by first | exact hϖ0 | exact hϖE) hϖ z hzm
-  obtain ⟨Gc, hGc, hSB, hvP⟩ := GlobalTheory.T.tameKernel_vector_unit_mul_dilated_flat D G Pl0 T0 A Ks R F hC hG i hV ξ χ ξR _ ω φ hK hQ N hN hNQ eg eQ fg heg heQ hfg ϖ hϖ0 hϖ
+  obtain ⟨Gc, hGc, hSB, hvP⟩ := _root_.GlobalTheory.BaseCmp.liftKer_of_ne D G Pl0 T0 A Ks R F hC hG i hV ξ χ ξR _ ω φ hK hQ N hN hNQ eg eQ fg heg heQ hfg ϖ hϖ0 hϖ
   obtain ⟨Tm, hTm⟩ := hf.1
   refine ⟨z, κ * Gc, hz, unitOff_mul hκ hGc, ?_⟩
   have hcomp : ∀ x : WO (Vc D i) (Wc D i), dil i (ϖ : D.host.E) (dil i (ϖ : D.host.E)⁻¹ x) = x := by
@@ -171,7 +171,7 @@ theorem mem_span_coefLat (hC : GlobalTheory.Hk3.Core R F) (hBo : BaseOf R i B)
     (O O' : Subring ℂ) (hO' : ∀ a : 𝓞 D.what₂.LL, D.what₂.embLL a ∈ O') {h : GA D (Vc D i)} {w : (R.cV i).W}
     (hw : InCoefLat R i h w) : c⁻¹ • Φ w ∈ Submodule.span O'
       (B.coefLat (Formalism.L2.Host.embLL0 D) (labLL0 D) O (finPt _ h) : Set (PolF D (Wc D i).rank (Vc D i).rank)) := by
-  obtain ⟨P, hP, rfl⟩ := GlobalTheory.T.coefLattice_indep_coefMap_proof D G Pl0 T0 A Ks R F hC i c0L hc0 h w hw
+  obtain ⟨P, hP, rfl⟩ := _root_.GlobalTheory.CoefIndepProof.coefIndep D G Pl0 T0 A Ks R F hC i c0L hc0 h w hw
   have hlat : B.latAt (finPt _ h) = Bridge.hLat (Vc D i) (fin (Vc D i) h) :=
     GlobalTheory.LatAtHLat.latAt_eq_hLat D _ _ B (hBo.ΛS ▸ GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βV i)) _
   have hP' := GlobalTheory.T.dualWeylLattice_baseChange_span_proof D.host.E D.LL0 D.what₂.LL D.what₂.Tau _ (algebraMap D.LL0 D.what₂.LL) (labLL0 D) (lamV D i) _
@@ -204,10 +204,10 @@ theorem exists_move {h : GA D (Vc D j)} (hh : h ∈ GfC (Vc D j)) :
     ∃ (s : Finset (Pl D.host.E)) (h' : GA D (Vc D j)) (T : PolF D (Wc D j).rank (Vc D j).rank →ₗ[ℂ] PolF D (Wc D j).rank (Vc D j).rank)
       (ζ : ℂ), (∃ n : ℕ, n ≠ 0 ∧ ζ ^ n = 1) ∧ (∀ P, ρ.theta i j b h P = ζ • ρ.theta i j b h' (T P)) ∧
       ∀ P ∈ ρ.lat i j b (ρ.eO i b).range h, ρ.IsDatum i j b s h' (T P) := by
-  obtain ⟨hg, ha, -⟩ := GlobalTheory.T.twistingCharacter_admissibleGaloisTwist_good D _ D.ntw ρ hρ i j b 0 ∅ 1 (twOK_one i 0)
+  obtain ⟨hg, ha, -⟩ := _root_.GlobalTheory.TwistGood.tw_good D _ D.ntw ρ hρ i j b 0 ∅ 1 (twOK_one i 0)
   have hB := hρ.base i j b
-  obtain ⟨γ, s, h', k, hs, hoff, hh', hsupp, e⟩ := GlobalTheory.T.exists_split_supported_rep_finite_unitary_class D ρ hρ i j b h hh
-  obtain ⟨n, hn, hk⟩ := GlobalTheory.T.levelCharacter_finiteOrder_definite_forms D _ _ (ρ.B i j b) _ k
+  obtain ⟨γ, s, h', k, hs, hoff, hh', hsupp, e⟩ := _root_.GlobalTheory.RankReps.exists_rep_split_levJ D ρ hρ i j b h hh
+  obtain ⟨n, hn, hk⟩ := _root_.GlobalTheory.BaseCmp.levLamRoot D _ _ (ρ.B i j b) _ k
   refine ⟨s, h', (ρ.B i j b).act ((γ⁻¹ : GQ (Vc D j)) : GA D (Vc D j)), _, ⟨n, hn, by rw [inv_pow, hk, inv_one]⟩, fun P => ?_,
     fun P hP => ⟨hs, hoff, hh', hsupp, ?_⟩⟩
   · rw [← GlobalTheory.BaseClassSum.series_triv, GlobalTheory.BaseClassSum.series_move hB (D.sp.V_sig _) hg ha (hρ.weil i j b _ hg) hh hh' γ k e,
@@ -318,10 +318,6 @@ theorem isUnit_ownAt (c : NChoice D) (w : D.what₂.places.Pl) : IsUnit ((ownAt 
       (h2 ▸ add_mem (Ideal.mul_mem_left _ _ h0) (Ideal.mul_mem_left _ _ (D.ntw.O_l _))))
   simpa using h1.map (algebraMap _ (c.Oe w))
 
-theorem core_of_rows (hr : p.Rows) : GlobalTheory.Hk3.Core p.R.toRealDat p.F.lv2 :=
-  have hc := RealDat3.characterisation_of_weak p.charW hr.exAt
-  ⟨hc.lev, hc.grp, hc.fam, hc.models, hc.chain, hc.thP⟩
-
 theorem baseOf_of_realPin {ρ : Setup D.ntw} (hρ : ρ.Good) (hp : RealPin p.R p.cG ρ) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) :
     BaseOf p.R.toRealDat j (ρ.B i j b) := by
   have hB := hρ.base i j b
@@ -338,163 +334,6 @@ theorem baseOf_of_realPin {ρ : Setup D.ntw} (hρ : ρ.Good) (hp : RealPin p.R p
       c := funext fun τ => GlobalTheory.BaseLiftWeight.c_eq hL hB (hp.mu0 i j b) τ }
   rw [← liftWeight_delta, Weight.delta, Weight.delta, hP, hQ, hAP, hAM]
   rfl
-
-theorem exists_series (hr : p.Rows) (hm : RecTies p) (hw : D.plEq w ∈ p.R.twPl) {ρ : Setup D.ntw} {hρ : ρ.Good} {ν : ℂ}
-    (hf : Fit p w j hρ ν) (O' : Subring ℂ) (hO' : ∀ a : 𝓞 D.what₂.LL, D.what₂.embLL a ∈ O') {ω φ}
-    (hk : IsKernel p.R.toRealDat j (p.R.C.delAt (Formalism.EigenvalueLevelCeiling.plc (D.plEq w)))
-      (GlobalTheory.OnTies.placesOver p.R.toRealDat (p.R.mu (D.plEq w)) (ownAt D (D.plEq w))) ω φ) {x}
-    (hx : x ∈ seriesSet p.R.toRealDat j p.P.P0 p.P.ψ0⁻¹ 1 ω φ) :
-    ∃ (s : Finset (Pl D.host.E)) (h : GA D (Vc D j)) (P : PolF D (Wc D j).rank (Vc D j).rank) (ζ : ℂ) (n : ℕ),
-      IsIntegral ℤ (((ownAt D (D.plEq w) : ℕ) : ℂ) ^ n * ζ) ∧
-      P ∈ Submodule.span O' {Q | ρ.IsDatum (ex.nch.twI w) j (ex.nch.sd w) s h Q} ∧
-      ν⁻¹ • adForm p.R.toRealDat j x (p.v₀ j _) = ζ • ρ.theta (ex.nch.twI w) j (ex.nch.sd w) h P := by
-  classical
-  have hC := core_of_rows hr
-  have hp := hf.pin
-  set i := ex.nch.twI w with hi
-  set b := ex.nch.sd w with hb
-  have hB := hρ.base i j b
-  have hBo := baseOf_of_realPin hρ hp i j b
-  have hl : D.ntw.l i = Formalism.EigenvalueLevelCeiling.plc (D.plEq w) := (ex.nch.twI_l w).trans (GlobalTheory.Mem.Top.Bl.resChar_eq_plc D w)
-  have hpD : ∀ P, P ∈ D.ntw.pD i ↔ ((ownAt D (D.plEq w) : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal := fun P => by
-    rw [← Finset.mem_coe, D.ntw.pD_eq, hl]
-    rfl
-  have hQ : GlobalTheory.OnTies.placesOver p.R.toRealDat (p.R.mu (D.plEq w)) (ownAt D (D.plEq w)) = (ρ.B i j b).de.Q :=
-    Finset.ext fun P => by
-      rw [(placesAt hw hρ hp).1 P, GlobalTheory.OnTies.placesOver, Finset.mem_filter, hpD]
-  obtain ⟨χ, ξR, hK⟩ := GlobalTheory.OnBaseKer.kerDat_of_isBaseKernel D _ _ _ _ _ p.R.toRealDat _ hC j _ hw p.charW.tup.mu_on ω φ hk
-  rw [hQ] at hK
-  have hN : ownAt D (D.plEq w) ≠ 0 := by
-    unfold ownAt
-    split_ifs
-    exacts [D.host.pde'_prime.ne_zero, D.host.pde_prime.ne_zero]
-  obtain ⟨k, hkf, c, m, hc, H⟩ := exists_trace_eq hC p.qGuard (GlobalTheory.StdFrame.vStd_of_orthonormal_span _ j (p.stdV j)) hB hBo hK
-    (hl ▸ hp.delta i j b) ⟨_, fun P h => (((placesAt hw hρ hp).1 P).1 h).1⟩ hN
-    (fun P h => (hpD P).1 (((placesAt hw hρ hp).1 P).1 h).2) p.P.P0 p.P.ψ0⁻¹ ((p.R.eG.trans p.cG).trans (ρ.eG i j b))
-    (fun g P h h' a c => by
-      have e := hp.grp i j b (p.cG (p.R.eG g)) P h h' a c
-      rw [MulEquiv.symm_apply_apply] at e
-      exact e)
-    (mem_level_iff hm hf.level i j b)
-    (fun u hu => by
-      refine (level_chi hm hρ hf.level i j b u hu).1.trans ?_
-      rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀])
-    (hρ.weil_base i j b)
-  obtain ⟨h, hh, y, hy, hx⟩ := hx
-  obtain ⟨hy', hs⟩ := H h y hy
-  obtain ⟨hν, c₀, ⟨gramR, c0R, c0L, hT, u, hu, hsc⟩, n₀, hn₀, hpow⟩ := hf.norm
-  rw [p.phsOne, map_one, one_mul] at hpow
-  have hc₀ : c₀ ≠ 0 := fun h0 => hν (pow_eq_zero_iff hn₀ |>.1 (by rw [hpow, h0, zero_pow hn₀]))
-  obtain ⟨cc, hcc, hbij, -⟩ := GlobalTheory.CoefExtC.exists_extC_bijective_unique D _ _ _ _ p.T p.R.toRealDat _ p.κ p.v₀ hC ⟨p.fw⟩ j _ _
-    (p.O j) (p.pins j).2
-  obtain ⟨-, -, hval, -⟩ := GlobalTheory.CoefLatConj.exists_coef_scale D _ _ _ _ p.T p.R.toRealDat _ p.κ p.v₀ p.O hC ⟨p.fw⟩ hr.ioExt j
-    (p.pins j) cc hcc u hu _ hB hBo
-  have hmem := mem_span_coefLat hC hBo ⟨gramR, c0R, hT⟩ (p.R.ioP j (PiTensorProduct.tprod ℂ u))
-    (fun z => by obtain ⟨z, rfl⟩ := hbij.2 z; exact hval z) hc₀ hsc (ρ.eO i b).range O' hO' hy'
-  obtain ⟨s, h', T, ζ, hζ, hT1, hT2⟩ := exists_move hρ i j b (mul_mem hh hkf)
-  obtain ⟨-, n, hc1, -⟩ := hc
-  have hN' : ((ownAt D (D.plEq w) : ℕ) : ℂ) ≠ 0 := by exact_mod_cast hN
-  refine ⟨s, h', T (c₀⁻¹ • p.R.ioP j (PiTensorProduct.tprod ℂ u) ((((ownAt D (D.plEq w) : ℕ) : ℂ) ^ m) • y)),
-    (c₀ / ν) * c * ζ * (((ownAt D (D.plEq w) : ℕ) : ℂ) ^ m)⁻¹, n + m, ?_, ?_, ?_⟩
-  · have h1 : IsIntegral ℤ (c₀ / ν) := isIntegral_of_root ⟨n₀, hn₀, by rw [div_pow, hpow, div_self (pow_ne_zero _ hc₀)]⟩
-    rw [show ((ownAt D (D.plEq w) : ℕ) : ℂ) ^ (n + m) * (c₀ / ν * c * ζ * (((ownAt D (D.plEq w) : ℕ) : ℂ) ^ m)⁻¹) =
-      c₀ / ν * (((ownAt D (D.plEq w) : ℕ) : ℂ) ^ n * c) * ζ by rw [pow_add]; field_simp]
-    exact (h1.mul hc1).mul (isIntegral_of_root hζ)
-  · have h1 := Submodule.mem_map_of_mem (f := T.restrictScalars O') hmem
-    rw [Submodule.map_span] at h1
-    refine Submodule.span_mono ?_ h1
-    rintro _ ⟨Q, hQ, rfl⟩
-    exact hT2 Q hQ
-  · have e : p.v₀ j (sg0 D p.P.A3.A) = fun τ => (u τ : (p.R.MW j (sg0 D p.P.A3.A)).sm τ) := funext fun τ => (hu τ).symm
-    rw [e, hx u, one_smul, hs u]
-    change ν⁻¹ • c • ρ.theta i j b _ _ = _
-    rw [hT1, map_smul, map_smul, map_smul]
-    simp only [Setup.theta, map_smul, smul_smul]
-    congr 1
-    field_simp
-
-theorem realBase_le (hr : p.Rows) (hm : RecTies p) (hw : D.plEq w ∈ p.R.twPl) {ρ : Setup D.ntw} {hρ : ρ.Good} {ν : ℂ}
-    (hf : Fit p w j hρ ν) {rd : Can p w j} (hcan : IsCan p rd) : realBase p rd ≤ baseLat p w j hρ ν := by
-  obtain ⟨-, e, he1, he2⟩ := hf.adapted
-  obtain ⟨Z⟩ := hm.series
-  have hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm := GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)
-  have hF : Faithful (rdAt p w j hρ ν) := realRd_faithful _ _ _ _ _ _ _ p.R p.cG p.Sx p.nexp p.v₀ ρ hρ _ j _ ν hf.norm.1 hr.prim.unif
-    p.charW.base.models.HW (Z.vec j) hK
-  have hL : ∀ c : D.ntw.O (ex.nch.twI w), e (algebraMap _ (FractionRing (ex.nch.Oe w)) c) =
-      ρ.e (ex.nch.twI w) (ex.nch.sd w) (algebraMap _ (FractionRing _) c) := fun c => by
-    rw [IsScalarTower.algebraMap_apply _ (ex.nch.Oe w) (FractionRing (ex.nch.Oe w)),
-      IsScalarTower.algebraMap_apply _ (D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) (ex.nch.Oe w), he2, hρ.ek_e]
-    rfl
-  set Ψ := readExt (rdAt p w j hρ ν) e hL with hΨ
-  have hint : ∀ a : 𝓞 D.what₂.LL, ∃ o : ex.nch.Oe w, algebraMap _ (FractionRing (ex.nch.Oe w)) o = ex.nch.embW w a := fun a =>
-    exists_of_integral e (N := 1) (n := 0) (by simp) (by
-      rw [pow_zero, one_mul, he1]
-      exact map_isIntegral_int _ a.isIntegral_coe)
-  have hrd : ∀ y, Ψ (rd y) = ν⁻¹ • adForm p.R.toRealDat j y (p.v₀ j _) := fun y => by
-    obtain ⟨y, rfl⟩ := (p.nexp.fi j).e.surjective y
-    change Ψ (rd ((p.nexp.fi j).e y)) = ν⁻¹ • evW p.nexp p.v₀ j y
-    obtain ⟨n, β, hβ, -, -, -, hs⟩ := hK
-    have hy : y ∈ Submodule.span D.what₂.LL (Set.range β) := hs ▸ Submodule.mem_top
-    induction hy using Submodule.span_induction with
-    | mem y hy =>
-      obtain ⟨a, rfl⟩ := hy
-      refine (congrArg Ψ (hcan ⟨β a, hβ a⟩)).trans ?_
-      rw [hΨ, readExt_tmul, map_one, one_smul]
-      refine (realRd_tmul p.nexp p.v₀ hρ _ j _ ν _ _).trans ?_
-      congr 1
-      exact mul_right_eq_self₀.2 (Or.inl (map_one (ρ.e _ _)))
-    | zero => rw [map_zero, map_zero, smul_zero]; exact (congrArg Ψ rd.map_zero).trans Ψ.map_zero
-    | add u v _ _ hu hv => rw [map_add, map_add, smul_add, ← hu, ← hv, ← Ψ.map_add]; exact congrArg Ψ (rd.map_add _ _)
-    | smul c u _ hu =>
-      rw [map_smul, evW_smul, smul_comm, ← hu, ← he1, hΨ, ← readExt_smul]
-      exact congrArg _ (rd.map_smulₛₗ _ _)
-  let O' : Subring ℂ := (e.comp (algebraMap (ex.nch.Oe w) (FractionRing (ex.nch.Oe w)))).range
-  have hser : ∀ s h, ∀ P ∈ Submodule.span O' {Q | ρ.IsDatum (ex.nch.twI w) j (ex.nch.sd w) s h Q},
-      ∃ t ∈ baseLat p w j hρ ν, Ψ t = ρ.theta (ex.nch.twI w) j (ex.nch.sd w) h P := fun s h P hP => by
-    induction hP using Submodule.span_induction with
-    | mem Q hQ =>
-      obtain ⟨f, e1⟩ := hf.rat.1 s h Q hQ
-      refine ⟨_, Submodule.subset_span ⟨f, ⟨s, h, Q, hQ, e1⟩, rfl⟩, ?_⟩
-      rw [← e1, hΨ]
-      exact (readExt_tmul _ e hL 1 f).trans (by rw [map_one, one_smul])
-    | zero => exact ⟨0, zero_mem _, Ψ.map_zero.trans (LinearMap.map_zero _).symm⟩
-    | add _ _ _ _ h1 h2 =>
-      obtain ⟨t, m1, e1⟩ := h1
-      obtain ⟨t', m2, e2⟩ := h2
-      exact ⟨t + t', add_mem m1 m2, by rw [Ψ.map_add, e1, e2]; exact (LinearMap.map_add _ _ _).symm⟩
-    | smul a Q _ h1 =>
-      obtain ⟨t, m1, e1⟩ := h1
-      obtain ⟨_, o, rfl⟩ := a
-      refine ⟨o • t, Submodule.smul_mem _ o m1, ?_⟩
-      rw [← algebraMap_smul (FractionRing (ex.nch.Oe w)) o t, hΨ, readExt_smul, ← hΨ, e1]
-      exact (LinearMap.map_smul _ _ _).symm
-  refine Submodule.span_le.2 ?_
-  rintro _ ⟨x, hx, rfl⟩
-  change x ∈ thetaBase p.R.toRealDat j p.P.P0 p.P.ψ0⁻¹ 1 (D.plEq w) (ownAt D (D.plEq w)) at hx
-  change rd x ∈ baseLat p w j hρ ν
-  induction hx using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨ω, φ, hk, hx⟩ := hx
-    obtain ⟨s, h, P, ζ, n, hζ, hP, e1⟩ := exists_series hr hm hw hf O'
-      (fun a => by obtain ⟨o, ho⟩ := hint a; exact ⟨o, by rw [RingHom.comp_apply, ho, he1]⟩) hk hx
-    obtain ⟨t, ht, e2⟩ := hser s h P hP
-    rcases exists_scalar_of_readExt _ e hL hF (x := rd x) (t := t) (ζ := ζ) (((hrd x).trans e1).trans (congrArg _ e2.symm)) with
-      h0 | ⟨a, ha, h0⟩
-    · exact h0 ▸ zero_mem _
-    · obtain ⟨o, rfl⟩ := exists_of_integral e (isUnit_ownAt ex.nch w) (ha ▸ hζ)
-      rw [h0, algebraMap_smul]
-      exact Submodule.smul_mem _ o ht
-  | zero => exact rd.map_zero ▸ zero_mem _
-  | add u v _ _ hu hv => exact rd.map_add u v ▸ add_mem hu hv
-  | smul a y _ hy =>
-    obtain ⟨o, ho⟩ := hint a
-    have e1 : rd (a • y) = o • rd y := by
-      rw [← algebraMap_smul (FractionRing (ex.nch.Oe w)) o, ho]
-      exact rd.map_smulₛₗ (a : D.what₂.LL) y
-    exact e1 ▸ Submodule.smul_mem _ o hy
-
-theorem baseLe : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → BaseLe :=
-  fun _ _ _ => AtTw.of_forall fun _ _ _ _ _ hr hm _ hw _ _ _ _ _ hf hcan => realBase_le hr hm.2.2 hw hf hcan
 
 end GlobalTheory.BigOn.Exp
 

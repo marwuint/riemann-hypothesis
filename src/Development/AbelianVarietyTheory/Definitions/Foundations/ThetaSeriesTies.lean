@@ -316,20 +316,6 @@ theorem sub_orthProj_mem_perpOf {K : Type} [Field K] [StarRing K] {n : ℕ} (Hm 
       mul_left_comm]
   rw [h1, Matrix.mulVecLin_apply, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h0, dotProduct_zero]
 
-example {K : Type} [Field K] [StarRing K] {n : ℕ} (Hm : Matrix (Fin n) (Fin n) K) (x : Fin n → K) :
-    orthProj Hm ⊥ x = 0 := orthProj_mem Hm ⊥ x
-
-section
-
-variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
-
-theorem IsClassSum.unique {t : T0} {U : Subgroup G} {ψ : U →* D.what₂.LLˣ} {ph : ℂ}
-    {θ θ' : (Fin (srcDim A i t U ψ) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)}
-    (hinj : Function.Injective (adForm R i)) (h : IsClassSum R i t U ψ ph θ) (h' : IsClassSum R i t U ψ ph θ') : θ = θ' :=
-  LinearMap.ext fun x => hinj ((h x).trans (h' x).symm)
-
-end
-
 variable {T : Full D} [inst : Algebra T.J.Q.c.F D.what₂.LL] {R : RealDat D A T.J.Q.c.F}
   {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
@@ -383,12 +369,6 @@ theorem OnTie.Th0_le_ThK (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc �
 theorem OnTie.e_eOp (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (x : Fin (O.nZ i) → D.what₂.LL) :
     toForms h fw ι z (O.e i x) = (R.FW ι).eOp (fun g => (idemOf A.X).coeff g) (toForms h fw ι z x) :=
   LinearMap.congr_fun t.e_eq x
-
-theorem OnTie.adForm_θ' (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y)
-    (hr : ClassSumRational R ι (R.mu v) U ψ ph) (x : Fin (O.nX v i) → D.what₂.LL) :
-    adForm R ι (toForms h fw ι z (O.θ' v i x)) = ph • R.thF ι (R.mu v) (jVx R ι (R.mu v) (srcForm A ι (R.mu v) U ψ (y x))) := by
-  have := t.θ'_eq hr (y x)
-  simpa using this
 
 theorem OnTie.rho_eq_of_actionPin (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (g : P) (x : Fin (O.nZ i) → D.what₂.LL) :

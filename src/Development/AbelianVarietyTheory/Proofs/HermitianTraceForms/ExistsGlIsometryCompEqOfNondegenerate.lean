@@ -255,14 +255,6 @@ theorem exists_isometry_comp_eq [FiniteDimensional E V] (h2 : (2 : E) ≠ 0)
     (by rintro _ ⟨a, rfl⟩; exact h0 a) (by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩; exact hgf a b)
   exact ⟨γ, hγ, fun a => e _ ⟨a, rfl⟩⟩
 
-theorem exists_isometry_extend [FiniteDimensional E V] (h2 : (2 : E) ≠ 0)
-    (hc : ∀ t, c (c t) = t) {B : V →ₗ[E] V →ₛₗ[c] E} (hB : ∀ x y, c (B x y) = B y x)
-    (hV : ∀ x, (∀ y, B y x = 0) → x = 0) {U U' : Submodule E V} (f : U ≃ₗ[E] U')
-    (hf : ∀ a b : U, B (f a) (f b) = B a b) :
-    ∃ γ : V ≃ₗ[E] V, (∀ z w, B (γ z) (γ w) = B z w) ∧ ∀ a : U, γ a = f a :=
-  exists_isometry_comp_eq h2 hc hB hV (g := U.subtype) (f := U'.subtype ∘ₗ f.toLinearMap)
-    (fun a => by simp) hf
-
 end Abstract
 
 section MatrixForm
@@ -354,17 +346,6 @@ theorem exists_gl_isometry_comp_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t
   obtain ⟨g, hg⟩ := exists_gl_mulVec_eq γ
   exact ⟨g, by simpa only [toLinearMapₛₗ₂'_eq_dotProduct, hg] using hγ⟩
 
-theorem exists_gl_isometry_extend (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
-    {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a) (hdet : G.det ≠ 0)
-    {U U' : Submodule E (n → E)} (f : U ≃ₗ[E] U')
-    (hf : ∀ a b : U, (f a : n → E) ⬝ᵥ G *ᵥ (c ∘ (f b : n → E)) =
-      (a : n → E) ⬝ᵥ G *ᵥ (c ∘ (b : n → E))) :
-    ∃ γ : GL n E,
-      (∀ z w, ((γ : Matrix n n E) *ᵥ z) ⬝ᵥ G *ᵥ (c ∘ ((γ : Matrix n n E) *ᵥ w)) =
-        z ⬝ᵥ G *ᵥ (c ∘ w)) ∧ ∀ a : U, (γ : Matrix n n E) *ᵥ (a : n → E) = f a :=
-  exists_gl_isometry_comp_eq h2 hc hG hdet (g := U.subtype) (f := U'.subtype ∘ₗ f.toLinearMap)
-    (fun a => by simp) hf
-
 theorem exists_gl_isometry_mul_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     {G : Matrix n n E} (hG : ∀ a b, c (G a b) = G b a) (hdet : G.det ≠ 0)
     {m : Type*} [Fintype m] {X Y : Matrix n m E} (h0 : ∀ a, X *ᵥ a = 0 ↔ Y *ᵥ a = 0)
@@ -443,72 +424,5 @@ theorem congr_of_fromBlocks_congr (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
   simp [Matrix.mul_assoc, hB]
 
 end MatrixForm
-
-section CM
-
-open NumberField ReciprocityTheory.ChartRestriction.G
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
-
-theorem exists_gl_isometry_mulVec_eq_herm {G : Matrix (Fin r) (Fin r) E}
-    (hG : ∀ a b, FD.cc (G a b) = G b a) {x y : Fin r → E}
-    (hxy : FD.herm G x x = FD.herm G y y) (hx : FD.herm G x x ≠ 0) :
-    ∃ γ : GL (Fin r) E,
-      (∀ z w, FD.herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ z)
-        ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w) = FD.herm G z w) ∧
-      (γ : Matrix (Fin r) (Fin r) E) *ᵥ x = y ∧
-      ∀ u, FD.herm G u x = 0 → FD.herm G u y = 0 → (γ : Matrix (Fin r) (Fin r) E) *ᵥ u = u := by
-  simp only [herm_eq_dotProduct] at hxy hx ⊢
-  exact exists_gl_isometry_mulVec_eq (c := (IsCMField.complexConj E : E →+* E))
-    two_ne_zero (IsCMField.complexConj_apply_apply E) hG hxy hx
-
-theorem congr_of_fromBlocks_congr_cc {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n]
-    [DecidableEq n] {D : Matrix m m E} (hD : ∀ a b, FD.cc (D a b) = D b a)
-    (hdet : D.det ≠ 0) {G₁ G₂ : Matrix n n E} (hG : ∀ a b, FD.cc (G₁ a b) = G₁ b a)
-    {P : Matrix (m ⊕ n) (m ⊕ n) E} (hP : P.det ≠ 0)
-    (h : fromBlocks D 0 0 G₂ = Pᵀ * fromBlocks D 0 0 G₁ * P.map FD.cc) :
-    ∃ Q : Matrix n n E, Q.det ≠ 0 ∧ G₂ = Qᵀ * G₁ * Q.map FD.cc :=
-  congr_of_fromBlocks_congr (c := (IsCMField.complexConj E : E →+* E))
-    two_ne_zero (IsCMField.complexConj_apply_apply E) hD hdet hG hP h
-
-theorem exists_gl_isometry_extend_herm {G : Matrix (Fin r) (Fin r) E}
-    (hG : ∀ a b, FD.cc (G a b) = G b a) (hdet : G.det ≠ 0)
-    {U U' : Submodule E (Fin r → E)} (f : U ≃ₗ[E] U')
-    (hf : ∀ a b : U, FD.herm G (f a) (f b) = FD.herm G a b) :
-    ∃ γ : GL (Fin r) E,
-      (∀ z w, FD.herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ z)
-        ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w) = FD.herm G z w) ∧
-      ∀ a : U, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (a : Fin r → E) = f a := by
-  simp only [herm_eq_dotProduct] at hf ⊢
-  exact exists_gl_isometry_extend (c := (IsCMField.complexConj E : E →+* E))
-    two_ne_zero (IsCMField.complexConj_apply_apply E) hG hdet f hf
-
-end CM
-
-theorem witt_theorem {E : Type*} [Field E] (h2 : (2 : E) ≠ 0) (c : E →+* E)
-    (hc : ∀ t, c (c t) = t) {r : ℕ} (G : Matrix (Fin r) (Fin r) E)
-    (hG : ∀ a b, c (G a b) = G b a) :
-    (∀ x y : Fin r → E, x ⬝ᵥ G *ᵥ (c ∘ x) = y ⬝ᵥ G *ᵥ (c ∘ y) → x ⬝ᵥ G *ᵥ (c ∘ x) ≠ 0 →
-      ∃ γ : GL (Fin r) E,
-        (∀ z w, ((γ : Matrix (Fin r) (Fin r) E) *ᵥ z) ⬝ᵥ G *ᵥ
-          (c ∘ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w)) = z ⬝ᵥ G *ᵥ (c ∘ w)) ∧
-        (γ : Matrix (Fin r) (Fin r) E) *ᵥ x = y) ∧
-    (∀ {s : ℕ} (D : Matrix (Fin s) (Fin s) E), (∀ a b, c (D a b) = D b a) → D.det ≠ 0 →
-      ∀ G' : Matrix (Fin r) (Fin r) E,
-        (∃ P : Matrix (Fin s ⊕ Fin r) (Fin s ⊕ Fin r) E, P.det ≠ 0 ∧
-          fromBlocks D 0 0 G' = Pᵀ * fromBlocks D 0 0 G * P.map c) →
-        ∃ Q : Matrix (Fin r) (Fin r) E, Q.det ≠ 0 ∧ G' = Qᵀ * G * Q.map c) ∧
-    (G.det ≠ 0 → ∀ (U U' : Submodule E (Fin r → E)) (f : U ≃ₗ[E] U'),
-      (∀ a b : U, (f a : Fin r → E) ⬝ᵥ G *ᵥ (c ∘ (f b : Fin r → E)) =
-        (a : Fin r → E) ⬝ᵥ G *ᵥ (c ∘ (b : Fin r → E))) →
-      ∃ γ : GL (Fin r) E,
-        (∀ z w, ((γ : Matrix (Fin r) (Fin r) E) *ᵥ z) ⬝ᵥ G *ᵥ
-          (c ∘ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w)) = z ⬝ᵥ G *ᵥ (c ∘ w)) ∧
-        ∀ a : U, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (a : Fin r → E) = f a) := by
-  refine ⟨fun x y hxy hx => ?_, fun D hD hdet G' ⟨P, hP, h⟩ => ?_, fun hdet U U' f hf => ?_⟩
-  · obtain ⟨γ, h1, h3, -⟩ := exists_gl_isometry_mulVec_eq h2 hc hG hxy hx
-    exact ⟨γ, h1, h3⟩
-  · exact congr_of_fromBlocks_congr h2 hc hD hdet hG hP h
-  · exact exists_gl_isometry_extend h2 hc hG hdet f hf
 
 end GlobalTheory.HermWitt

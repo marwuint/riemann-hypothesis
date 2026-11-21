@@ -383,17 +383,4 @@ theorem frame_module_of_word : WordJoint := by
       · simp [ofWord, hl, FrameData.minus, h4]
       · ext Y; simp [ofWord, hl, FrameData.minus, h5, Reg, RegL, and_comm]
 
-theorem residue_partial_fractions : ResidueStep := by
-  intro B _ _ Z γ Ya Y h1 h2 h3
-  have e1 : Y - γ ≠ 0 := sub_ne_zero.mpr h1
-  have e2 : Ya - γ ≠ 0 := sub_ne_zero.mpr h2
-  have e3 : Y - Ya ≠ 0 := sub_ne_zero.mpr h3
-  constructor
-  · simp only [← sub_smul, smul_smul]
-    congr 1
-    first | (field_simp; ring) | field_simp | ring
-  · simp only [← sub_smul, ← add_smul, smul_smul]
-    congr 1
-    first | (field_simp; ring) | field_simp | ring
-
 end Formalism.FourierDecayAlt.P

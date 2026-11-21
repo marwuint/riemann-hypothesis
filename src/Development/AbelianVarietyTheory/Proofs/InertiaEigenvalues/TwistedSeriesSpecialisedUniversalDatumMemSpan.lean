@@ -1,11 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMemThPsiOfMemSpan
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistingCharacterAdmissibleGaloisTwistGood
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaSeriesIntegralSourceTranslationRightMulStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaSeriesIntegralSourceTranslationRightMul
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationCommFockPolynomialVectors
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleConjugatePairPlacesEqOfTwistConditionAStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueCharacterTwistUniversalCharAtChosenPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientRowsExteriorDetEqConstMulTopBlockDetStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleConjugatePairPlacesEqOfTwistConditionA
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SurjConj
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueCharacterTwistUniversalCharAtChosenPlace
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ToUnitsCompToCircle
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameTwistFamilySpecializationGood
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjPlNeOfSplit
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientRowsExteriorDetEqConstMulTopBlockDet
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivOfNotLinearIndependent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitCardResidueFieldOffExceptionalPlacesStatement
 
 noncomputable section
@@ -73,7 +79,7 @@ theorem twist_series_mem_span {D : D7} {S T : HSp D} (B : Base S T) (hB : B.Good
     simp only [map_smul]
   rw [hvec, series_sum B hB ω _ _ _ (fun τ => theta_vecAt hB hQ (φ τ)), map_sum]
   refine Submodule.sum_mem _ fun τ _ => ?_
-  obtain ⟨hQτ, hsupp, hmove⟩ := GlobalTheory.T.thetaSeries_integralSourceTranslation_right_mul D S T B hB hS ω hω t.Q hQ (fun PP => g PP (τ PP))
+  obtain ⟨hQτ, hsupp, hmove⟩ := _root_.GlobalTheory.SourceTrans.exists_series_vecAt_translate_eq_series_mul D S T B hB hS ω hω t.Q hQ (fun PP => g PP (τ PP))
   have e2 : series B.F ω (B.vecAt t.Q (φ τ)) h P = series B.F ω (B.vecFlat t) (h * hQτ) P :=
     hmove (fun PP => flat (t.resC PP.1)) h P
   rw [map_smul, e2]
@@ -153,12 +159,12 @@ theorem specSer_mem_span : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NT
         Submodule.span (ρ.eOk i b k).range (ρ.gens i j b k Q (χ.comp (Y.delU i Q M)) h P) := by
   intro D N X ρ hρ Y hY i j b k Q M χ hT _ s h P _ _
   classical
-  have hA : admissibleConjugatePairPlaces X i Q M = Q := GlobalTheory.T.admissibleConjugatePairPlaces_eq_of_twOK Y hY i k Q M χ hT
+  have hA : admissibleConjugatePairPlaces X i Q M = Q := _root_.GlobalTheory.AdmAll.admissibleConjugatePairPlaces_eq_of_twist_condition Y hY i k Q M χ hT
   obtain ⟨-, hadm, -⟩ := GlobalTheory.TwistGood.tw_good D N X ρ hρ i j b k Q (χ.comp (Y.delU i Q M)) hT
   have hS : (Vc D j).SigOK := D.sp.V_sig _
   haveI : ∀ PP : Pl D.host.E, Fintype (Planes (kP PP) (Wc D j).rank (Vc D j).rank) := fun PP => Fintype.ofFinite _
   choose gC cC hgc using fun (PP : Pl D.host.E) (U : Planes (kP PP) (Wc D j).rank (Vc D j).rank) =>
-    GlobalTheory.T.quotientRowsExteriorDet_eq_const_mul_topBlockDet (kP PP) (Wc D j).rank (Vc D j).rank (ρ.β j PP) U
+    _root_.GlobalTheory.dU_eq_const_mul_det_topL_translate (kP PP) (Wc D j).rank (Vc D j).rank (ρ.β j PP) U
   have key : ∀ (Q₀ : Finset (Pl D.host.E)), Q₀ = (ρ.tw i b k Q (χ.comp (Y.delU i Q M))).Q →
       ∀ (loc : ∀ PP : ↥Q₀, Matrix (Fin (Wc D j).rank) (Fin (Vc D j).rank) (kP PP.1) → ℂ)
         (a : ∀ PP : ↥Q₀, Planes (kP PP.1) (Wc D j).rank (Vc D j).rank → ℂ),
@@ -184,7 +190,7 @@ theorem specSer_mem_span : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NT
       (ν PP).comp ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).kap PP.1) = (ρ.tw i b k Q (χ.comp (Y.delU i Q M))).resC PP.1 := by
     intro PP
     ext x
-    rw [GlobalTheory.T.residueCharacter_twist_universalChar_at_chosen_place ρ hρ Y hY i b k Q M χ hT PP x, MonoidHom.comp_apply, ← hν, ofAdd_toAdd]
+    rw [_root_.GlobalTheory.ResTwist.res_twist_spec ρ hρ Y hY i b k Q M χ hT PP x, MonoidHom.comp_apply, ← hν, ofAdd_toAdd]
   have hnS : ∀ PP : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)), PP.1 ∉ X.S0 i := fun PP =>
     Finset.disjoint_left.1 hT.2.1 (admissibleConjugatePairPlaces_subset i Q M (mem_half.1 PP.2).1)
   let qi : Pl D.host.E → ℂ := fun PP => ((Nat.card (kP PP) : ℂ) ^ ((Wc D j).rank * ((Vc D j).rank - (Wc D j).rank)))⁻¹

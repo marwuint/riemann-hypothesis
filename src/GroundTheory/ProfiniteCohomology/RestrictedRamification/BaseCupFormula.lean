@@ -52,20 +52,6 @@ theorem zmodToQZ_gsLocalInvRoots_eq_localInvU (v : S)
         ((cohomologyMap (f ≫ rootsOfUnityToUnits _ _ n) 2).hom z))
       (gsRootsOmegaMor_eq_gsRootsLocalMor S ιs n v).symm).trans (localInvU_eq_brauerInvOfIsSepClosure _ _).symm))
 
-theorem compactCup_congr {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-    {ι : Type u} {H : ι → Type u} [∀ v, Group (H v)] [∀ v, TopologicalSpace (H v)] [∀ v, IsTopologicalGroup (H v)]
-    (φ : ∀ v, H v →ₜ* G) {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
-    {Aᵥ Cᵥ : ∀ v, Rep.{u} k (H v)} [∀ v, IsDiscreteRep (Aᵥ v)] [∀ v, IsDiscreteRep (Cᵥ v)]
-    {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v} {c : ∀ v, Rep.res (φ v).toMonoidHom C ⟶ Cᵥ v}
-    {μ₁ μ₂ : A ⊗ B ⟶ C} {μ₁ᵥ μ₂ᵥ : ∀ v, Aᵥ v ⊗ Rep.res (φ v).toMonoidHom B ⟶ Cᵥ v}
-    (h₁ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μ₁ ≫ c v = resTensorHom (φ v).toMonoidHom (a v) (𝟙 _) ≫ μ₁ᵥ v)
-    (h₂ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μ₂ ≫ c v = resTensorHom (φ v).toMonoidHom (a v) (𝟙 _) ≫ μ₂ᵥ v)
-    (e : μ₁ = μ₂) (eᵥ : ∀ v, μ₁ᵥ v = μ₂ᵥ v) {r s m : ℕ} (h : r + s = m) :
-    compactCup φ μ₁ μ₁ᵥ h₁ h = compactCup φ μ₂ μ₂ᵥ h₂ h := by
-  subst e
-  obtain rfl : μ₁ᵥ = μ₂ᵥ := funext eᵥ
-  rfl
-
 theorem compactCup_congr_apply {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {ι : Type u} {H : ι → Type u} [∀ v, Group (H v)] [∀ v, TopologicalSpace (H v)] [∀ v, IsTopologicalGroup (H v)]
     (φ : ∀ v, H v →ₜ* G) {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]

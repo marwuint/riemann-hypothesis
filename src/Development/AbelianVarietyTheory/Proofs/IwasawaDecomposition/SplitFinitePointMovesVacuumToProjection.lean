@@ -1,7 +1,7 @@
 import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.FWTie
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateModelSameThetaFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateModelSameThetaFunctions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumSplitPlaceReadsThetaClassically
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationSplitSupportProjectsVacuum
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MapFinNeg
@@ -350,7 +350,7 @@ theorem zak_om_split : ∀ (D : D7) (S T : HSp D) (r g : ℕ) (hr : T.rank = r) 
     Λ hΛ hm v hv t f hf
   subst hr
   obtain ⟨X', m, hq', bas', idx', hs', π, -, hEF, hh, hfr⟩ :=
-    GlobalTheory.T.exists_conjugateModel_same_thetaFunctions D S T _ g rfl ψ θ X eT bas idx hS _ (Nat.add_sub_cancel' X.p0_le)
+    _root_.GlobalTheory.OneMapRef.Flip.exists_flip_model D S T _ g rfl ψ θ X eT bas idx hS _ (Nat.add_sub_cancel' X.p0_le)
   obtain ⟨hB, hz⟩ := hfr Z
   obtain ⟨-, hz, -⟩ := hz hZ
   replace hB := hB.1 hZ

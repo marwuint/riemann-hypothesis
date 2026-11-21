@@ -3,17 +3,17 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGr
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DltEqZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteClassesOfSeparableCharPolyStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvolutionIdempotentDecompositionOfSeparableCharStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPlusElementEtaNormNegOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUniformizerIdempotentFrameProdStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvolutionIdempotentDecompositionOfSeparableChar
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPlusElementEtaNormNegOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUniformizerIdempotentFrameProd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RhoProdFiniteAlgebraWithInvolutionStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCharacterOnIdempotentPartFramePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SignedInvolutionStableLatticeSumEqAlternatingSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCharacterOnIdempotentPartOrthogonalityClasseStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SignedInvolutionStableLatticeSumEqAlternatingSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCharacterOnIdempotentPartOrthogonalityClasse
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardClProdFiniteAlgebraWithInvolutionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCharacterOnIdempotentPartProdInlStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormCharacterOnIdempotentPartProdInl
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoSignedLatticeSumSubNormCharacterMulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoSignedLatticeSumProductSubFactorsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoSignedLatticeSumProductSubFactors
 
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Desc Polynomial Filter Topology
 
@@ -25,13 +25,13 @@ open Classical
 
 theorem frame_exists (K : UQ) (B : InvAlg K) (hs : B.P.Separable) :
     ∃ (ι : Type) (_ : Fintype ι) (e π : ι → B.A) (S : Finset ι), IsFrame B e π S := by
-  obtain ⟨ι, _, e, S, hP⟩ := GlobalTheory.T.involutionIdempotentDecomposition_of_separable_charpoly K B hs
+  obtain ⟨ι, _, e, S, hP⟩ := _root_.GlobalTheory.UnitLemma.Desc.isPre_of_separable K B hs
   have : ∀ i, ∃ y : B.A, i ∈ S → B.Plus y ∧ y * (1 - e i) = 1 - e i ∧ K.eta (Algebra.norm K.E y) = -1 := by
     intro i
     by_cases hi : i ∈ S
     · obtain ⟨f, hf, hf0, hfld, hS, -⟩ := hP.2 i
       obtain ⟨he, hσ⟩ := hS hi
-      obtain ⟨y, hy⟩ := GlobalTheory.T.exists_plus_element_eta_norm_neg_one K B f hf hf0 hfld hσ
+      obtain ⟨y, hy⟩ := _root_.GlobalTheory.UnitLemma.Desc.exists_plus_eta_norm_neg_one K B f hf hf0 hfld hσ
       exact ⟨y, fun _ => by rw [he]; exact hy⟩
     · exact ⟨1, fun h => absurd h hi⟩
   choose π hπ using this
@@ -65,7 +65,7 @@ theorem lim_HH {K : UQ} (B : InvAlg K) {ι : Type} [Fintype ι] [DecidableEq ι]
       (B.rho (algebraMap K.O B.A a ^ k) : ℝ) = ∑ J ∈ S.powerset, (-1 : ℝ) ^ (J ∩ I).card *
         ((B.GG ((∏ j ∈ J, π j) * x * algebraMap K.O B.A a ^ (2 * k)) : ℝ) / (B.rho (algebraMap K.O B.A a ^ k) : ℝ)) := by
     intro k
-    rw [GlobalTheory.T.signedInvolutionStableLatticeSum_eq_alternating_sum K B ι e π S hB hF I hI _ (hu k)]
+    rw [_root_.GlobalTheory.UnitLemma.Desc.HH_eq_alternating_GG K B ι e π S hB hF I hI _ (hu k)]
     push_cast
     rw [Finset.sum_div]
     refine Finset.sum_congr rfl fun J _ => ?_
@@ -101,7 +101,7 @@ theorem sum_formula {K : UQ} (B : InvAlg K) {ι : Type} [Fintype ι] [DecidableE
     ring
   refine ⟨lim1 I hI, ?_⟩
   haveI : Finite B.Cl := GlobalTheory.T.finite_classes_of_separable_charPoly K B hB.2
-  exact GlobalTheory.T.normCharacterOnIdempotentPart_orthogonality_classes K B ι e π S hF this ℓ h key I hI
+  exact _root_.GlobalTheory.UnitLemma.Desc.sum_chi_ell_cl K B ι e π S hF this ℓ h key I hI
 
 theorem linearDescent : LinearDescent := by
   intro K B₁ B₂ hg₁ hg₂ hsep a ha ℓ ℓ₁ ℓ₂ hℓ hℓ₁ hℓ₂
@@ -116,7 +116,7 @@ theorem linearDescent : LinearDescent := by
     exact h2
   obtain ⟨ι₁, _, e₁, π₁, S₁, hF₁⟩ := frame_exists K B₁ hs₁
   obtain ⟨ι₂, _, e₂, π₂, S₂, hF₂⟩ := frame_exists K B₂ hs₂
-  have hF := GlobalTheory.T.isUniformizerIdempotentFrame_prod K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ hF₁ hF₂
+  have hF := _root_.GlobalTheory.UnitLemma.Desc.isFrame_prod K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ hF₁ hF₂
   have hL₁ : B₁.LieReg := ⟨hg₁, hs₁⟩
   have hL₂ : B₂.LieReg := ⟨hg₂, hs₂⟩
   have hL : (B₁.prod B₂).LieReg := ⟨by
@@ -137,7 +137,7 @@ theorem linearDescent : LinearDescent := by
   set h₂ := ∑ J ∈ S₂.powerset, (-1 : ℝ) ^ (J ∩ ∅).card * ℓ₂ (∏ j ∈ J, π₂ j)
   set h := ∑ J ∈ (S₁.disjSum S₂).powerset, (-1 : ℝ) ^ (J ∩ S₁.map Function.Embedding.inl).card *
     ℓ (∏ j ∈ J, Sum.elim (fun i => ((π₁ i, 1) : B₁.A × B₂.A)) (fun j => ((1, π₂ j) : B₁.A × B₂.A)) j)
-  have hd := GlobalTheory.T.tendsto_signedLatticeSum_product_sub_factors K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ a hL₁ hL₂ hsep ha hF₁ hF₂
+  have hd := _root_.GlobalTheory.UnitLemma.Desc.hh_prod_tendsto K B₁ B₂ ι₁ ι₂ e₁ π₁ e₂ π₂ S₁ S₂ a hL₁ hL₂ hsep ha hF₁ hF₂
   set v := val K.O (resultant B₁.P B₂.P)
   have hrho : ∀ k : ℕ, (B₁.prod B₂).rho (algebraMap K.O (B₁.A × B₂.A) a ^ k) =
       B₁.rho (algebraMap K.O B₁.A a ^ k) * B₂.rho (algebraMap K.O B₂.A a ^ k) := fun k =>
@@ -161,7 +161,7 @@ theorem linearDescent : LinearDescent := by
       ∑ᶠ k : (B₁.prod B₂).Cl, (chi (B₁.prod B₂) (Sum.elim (fun i => ((e₁ i, 0) : B₁.A × B₂.A))
         (fun j => ((0, e₂ j) : B₁.A × B₂.A))) (S₁.map Function.Embedding.inl) k.rep : ℝ) * ℓ k.rep := by
     refine finsum_congr fun k => ?_
-    rw [GlobalTheory.T.normCharacterOnIdempotentPart_prod_inl K B₁ B₂ ι₁ ι₂ e₁ e₂ S₁ (InvAlg.Cl.rep k)]
+    rw [_root_.GlobalTheory.UnitLemma.Desc.chi_prod_inl K B₁ B₂ ι₁ ι₂ e₁ e₂ S₁ (InvAlg.Cl.rep k)]
     have hk : (B₁.prod B₂).Plus k.rep := ⟨Units.isUnit _, (Quot.out k).2⟩
     have hk1 : B₁.Plus (InvAlg.Cl.rep k).1 :=
       ⟨(Prod.isUnit_iff.1 hk.1).1, congrArg Prod.fst hk.2⟩

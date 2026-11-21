@@ -1,15 +1,15 @@
 import Mathlib
 import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMeasureProdOfAddGroupsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlacesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorIntegerRingAlmostAllPlacesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentitiesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlaces
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorIntegerRingAlmostAllPlaces
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentities
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalLatticeCompactOpenUnitVolumeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresSupportStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresSupport
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
@@ -67,20 +67,20 @@ theorem mass_eq_of_integral (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ
     (hS : (S' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) =
       cT (sigR (Fv F v) σ) g * (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * g) :
     m S' (latV b v) = m S (latV b v) := by
-  have hloc := GlobalTheory.T.completion_is_local_ring F v
+  have hloc := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
   haveI := hTR; haveI := hLC; haveI := hSC; haveI := hT2
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  obtain ⟨hKring, hKlc, hKsc, hKt2, -, -, -, hWb, hHcl, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)
+  obtain ⟨hKring, hKlc, hKsc, hKt2, -, -, -, hWb, hHcl, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)
   haveI := hKring; haveI := hKlc; haveI := hKsc; haveI := hKt2
   haveI := hWb n M
   haveI hWb' := hWb n n
-  obtain ⟨hHlc, hHsc, hHt2, hHb, -⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hCM (Fv F v) n
+  obtain ⟨hHlc, hHsc, hHt2, hHb, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM (Fv F v) n
   haveI := hHlc; haveI := hHsc; haveI := hHt2; haveI := hHb
-  obtain ⟨-, hμ, hν⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b lam hlam.1
+  obtain ⟨-, hμ, hν⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b lam hlam.1
   haveI := hμ n M
   haveI := hν n
-  obtain ⟨-, hcomp, hone, hherm, -⟩ := GlobalTheory.T.gram_right_action_identities F E σ hCM M J hJ (Fv F v) n
+  obtain ⟨-, hcomp, hone, hherm, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramAlg.gram_algebra F E σ hCM M J hJ (Fv F v) n
   obtain ⟨hLc, hLo, hL0, -⟩ := GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b n M v
   obtain ⟨hLc', hLo', hL0', -⟩ := GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b n n v
   have hrm : ∀ (h : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)), (∀ i j, h i j ∈ O) →
@@ -142,7 +142,7 @@ theorem mass_eq_of_integral (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ
     · intro A hA
       exact hconj gi hgi _ hA
   have hdet : IsUnit g.det := Matrix.isUnit_det_of_right_inverse hggi
-  have hs := GlobalTheory.T.gram_fiber_measures_rmul_equivariant F E σ hCM M J hJ (Fv F v) hloc n _ _ m (hμ n M) (hν n) hm g hdet τ
+  have hs := _root_.GlobalTheory.CompanionTheory.SW.FibScale.fib_rmul F E σ hCM M J hJ (Fv F v) hloc n _ _ m (hμ n M) (hν n) hm g hdet τ
     (fun _ => rfl) 1 1 (by simpa using hmapW) (by simpa using hmapH) S
   simp only [one_smul] at hs
   have hτ : τ S = S' := Subtype.ext hS.symm
@@ -158,12 +158,12 @@ theorem mass_eq_of_integral (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ
 
 theorem mass_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (g : Matrix (Fin n) (Fin n) E), g.det ≠ 0 → ∀ (T' : Matrix (Fin n) (Fin n) E) (hT' : ∀ a b, σ (T' b a) = T' a b), T' = cT (σ : E →+* E) g * T * g → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ lam, IsStdV v lam → ∀ m, IsGramFib (Fv F v) σ J n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m → m (hermOf (Fv F v) σ T' hT') (latV b v) = m (hermOf (Fv F v) σ T hT) (latV b v) := by
   intro F E _ _ _ _ _ σ hCM M J hJ n T hT _ g hg T' hT' hTT' d b
-  have hint := (GlobalTheory.T.integral_almost_all_places F E σ hCM d b).1
+  have hint := (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hCM d b).1
   have hev : ∀ A : Matrix (Fin n) (Fin n) E, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
       ∀ i j k, (Algebra.TensorProduct.basis (Fv F v) b).repr (inclR (Fv F v) (A i j)) k ∈
         v.adicCompletionIntegers F := fun A =>
     Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hint (A i j)
-  filter_upwards [GlobalTheory.T.tensor_integer_ring_almost_all_places F E σ hCM d b, hev g, hev g⁻¹] with v hv hgv hgiv lam hlam m hm
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.SW.GoodRing.good_ring F E σ hCM d b, hev g, hev g⁻¹] with v hv hgv hgiv lam hlam m hm
   obtain ⟨O, hO, hσ, -⟩ := hv
   have hu : IsUnit g.det := isUnit_iff_ne_zero.2 hg
   have hc : cT (sigR (Fv F v) σ) (g.map (inclR (Fv F v))) =

@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.JSmul
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsQuotOfAdmissible
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachDeltaInvariantsReductionIsLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PhiGammaReductionBaseLatticeBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenMultisetBaseLatticeEqJumpsModStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachDeltaInvariantsReductionIsLattice
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PhiGammaReductionBaseLatticeBounds
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenMultisetBaseLatticeEqJumpsMod
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EPolyBase
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankOneReductionFrobeniusPullbackEqShiftStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankOneReductionFrobeniusPullbackEqShift
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReductionSum
 
 noncomputable section
@@ -55,14 +55,14 @@ theorem exists_modTh_of_pres {l : ℕ} [Fact l.Prime] {P : LocPrime l} {H : LocH
     intro T A q U hq hK hc N hN i s hs
     exact BaseLatticeE.ePoly_base H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN i s hs
   exact exists_real hθ hk hlam hC.1 hC.2.1 p.obj
-    (fun T A q U hq hK hc => GlobalTheory.T.wachDeltaInvariants_reduction_isLattice H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc)
+    (fun T A q U hq hK hc => _root_.GlobalTheory.Present.RedLat.red_isLat H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc)
     (fun T A q U hq hK hc N hN w w' hw =>
-      GlobalTheory.T.phiGamma_reduction_base_lattice_bounds H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN w w' hw)
+      _root_.GlobalTheory.BaseABC.base_abc H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN w w' hw)
     (fun T A q U hq hK hc N hN i x =>
-      GlobalTheory.T.senMultiset_base_lattice_eq_jumps_mod H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN i x)
+      _root_.GlobalTheory.BaseSen.sen_base H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN i x)
     hpoly
     (fun T A q U hq hK hc N hN a hm ha i =>
-      GlobalTheory.T.rankOne_reduction_frobeniusPullback_eq_shift H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN a hm ha i)
+      _root_.GlobalTheory.RankOneReduction.pull_eq_sh H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc N hN a hm ha i)
     (fun T A q U hq hK hc T' A' q' U' hq' hK' hc' Z C r V hr hKr hcr f g a b hb hs ha hb' hfa hgb
         N N' L hN hN' hL i =>
       GlobalTheory.Present.SumRed.reduction_sum H S k hk ι F τ γ p hι hτ hγ hQ T A q U hq hK hc T' A' q' U' hq' hK'

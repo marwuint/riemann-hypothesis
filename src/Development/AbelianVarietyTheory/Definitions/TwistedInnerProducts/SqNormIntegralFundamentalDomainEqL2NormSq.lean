@@ -52,12 +52,6 @@ def wordSum (d : ℕ) (x : X) : ℝ≥0∞ :=
 
 @[simp] theorem wordSum_zero (x : X) : wordSum A p 0 x = p x := by simp [wordSum]
 
-theorem wordSum_one (x : X) : wordSum A p 1 x = p x + ∑ i, p (A i x) := by
-  simp only [wordSum, Finset.sum_range_succ, Finset.range_zero, Finset.sum_empty, zero_add]
-  congr 1
-  · simp
-  · exact Fintype.sum_equiv (Equiv.funUnique _ _) _ _ fun a => by simp
-
 variable {A p}
 
 theorem le_wordSum {d : ℕ} {l : List ι} (hl : l.length ≤ d) (x : X) : p (wordAct A l x) ≤ wordSum A p d x := by
@@ -131,20 +125,6 @@ structure RapidDecSm (φ : GA D V → ℂ) : Prop extends IsAutFun V φ where
   smooth : φ ∈ SmFun θ V
   decay : ∀ l, IsLieWord V l → RapidDec V (rWord θ V l φ)
 
-theorem rWord_const (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (c : ℂ) :
-    ∃ c' : ℂ, rWord θ V l (fun _ => c) = fun _ => c' := foldrRder_const θ V l c
-
-open scoped ComplexOrder in
-
-theorem rapidDecSm_const (hV : ∀ τ, (gramAt D V τ).PosDef) (c : ℂ) : RapidDecSm θ V fun _ => c := by
-  refine ⟨(isAutFunSm_const θ V c).toIsAutFun, (isAutFunSm_const θ V c).smooth, fun l _ => ?_⟩
-  obtain ⟨K, hK, h⟩ := GlobalTheory.definite_unitary_cocompact V hV
-  obtain ⟨c', hc⟩ := rWord_const θ V l c
-  rw [hc]
-  refine .of_isCompact (fun _ _ _ => rfl) continuous_const hK fun g => ?_
-  obtain ⟨γ, hγ, k, hk, rfl⟩ := h g
-  exact ⟨γ⁻¹, inv_mem hγ, by simpa using hk⟩
-
 def posSp (D : D7) (n : ℕ) : HSp D := Examples₂.posSpace Examples₂.star_isIntegral n
 
 theorem gramAt_posSp (n : ℕ) (τ : D.what₂.Tau) : gramAt D (posSp D n) τ = 1 := by
@@ -156,11 +136,6 @@ theorem gramAt_posSp (n : ℕ) (τ : D.what₂.Tau) : gramAt D (posSp D n) τ = 
   unfold gramAt
   rw [hg]
   exact Matrix.map_one _ (map_zero _) (map_one _)
-
-open scoped ComplexOrder in
-
-theorem rapidDecSm_one_posSp (n : ℕ) : RapidDecSm θ (posSp D n) fun _ => 1 :=
-  rapidDecSm_const θ _ (fun τ => by rw [gramAt_posSp]; exact Matrix.PosDef.one) 1
 
 variable {θ V} {φ φ' : GA D V → ℂ} {N : ℕ}
 
@@ -277,9 +252,6 @@ theorem rapidDecSm_iff : RapidDecSm θ V φ ↔ φ ∈ allDer θ V (rapidSub V) 
 
 theorem RapidDecSm.rapidDec (h : RapidDecSm θ V φ) : RapidDec V φ := h.decay [] fun _ e => by simp at e
 
-theorem RapidDecSm.unifModGrowth (h : RapidDecSm θ V φ) : UnifModGrowth V θ φ :=
-  ⟨0, fun l hl => (h.decay l hl).bounded.imp fun _ hC g => (hC g).trans_eq (by simp)⟩
-
 theorem RapidDecSm.add (h : RapidDecSm θ V φ) (h' : RapidDecSm θ V φ') : RapidDecSm θ V (φ + φ') := by
   obtain ⟨a, U, hU, hk⟩ := rapidDecSm_iff.1 h
   obtain ⟨a', U', hU', hk'⟩ := rapidDecSm_iff.1 h'
@@ -373,15 +345,6 @@ theorem sqNormIntegralFundamentalDomain_eq_l2Norm_sq {f : WO V W → ℂ} (h : C
   have : BorelSpace (WO V W) := ⟨rfl⟩
   rw [← ENNReal.toReal_pow, l2O_sq_eq_lintegral, nrm2, GlobalTheory.Ker.ScalarProduct.integral_normSq_eq _ h.measurable]
 
-theorem enorm_ipO_le {f f' : WO V W → ℂ} (h : Continuous f) (h' : Continuous f') :
-    ‖ipO μ 𝓕 f f'‖ₑ ≤ l2O μ 𝓕 f * l2O μ 𝓕 f' := by
-  have : BorelSpace (WO V W) := ⟨rfl⟩
-  refine (enorm_integral_le_lintegral_enorm _).trans ?_
-  rw [← eLpNorm_one_eq_lintegral_enorm]
-  have := eLpNorm_smul_le_mul_eLpNorm (μ := μ.restrict 𝓕) (p := 2) (q := 2) (r := 1) (φ := f) (f := star f')
-    h'.star.measurable.aestronglyMeasurable h.measurable.aestronglyMeasurable
-  rwa [eLpNorm_star] at this
-
 variable (V W) in
 
 theorem exists_isCovolOne : ∃ (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), IsCovolOne (ratL W V) μ 𝓕 := by
@@ -398,19 +361,6 @@ theorem measure_dom (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain 
     continuous_const fun _ _ _ => rfl
   exact ⟨(hN μ 𝓕 hμ h𝓕).1, (hN μ 𝓕 hμ h𝓕).2.1⟩
 
-theorem covolOne_unique {μ' : Measure (WO V W)} {𝓕' : Set (WO V W)} (h : IsCovolOne (ratL W V) μ 𝓕)
-    (h' : IsCovolOne (ratL W V) μ' 𝓕') : μ' = μ := by
-  obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.AdelicMatrixLattice.lattice D W V
-  have : BorelSpace (WO V W) := ⟨rfl⟩
-  have : Countable (ratL W V) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
-  obtain ⟨a1, a2, a3⟩ := h
-  obtain ⟨b1, b2, b3⟩ := h'
-  have e := Measure.isAddLeftInvariant_eq_smul μ' μ
-  have h1 : IsAddFundamentalDomain (ratL W V) 𝓕 μ' := a2.mono (by rw [e]; exact Measure.smul_absolutelyContinuous)
-  have h2 := h1.measure_eq b2
-  rw [b3, e, Measure.smul_apply, a3, ENNReal.smul_def, smul_eq_mul, mul_one, ENNReal.coe_eq_one] at h2
-  rw [e, h2, one_smul]
-
 theorem mul_conj_periodic (hψ : IsStdChar D ψ (-1)) (h : IsThetaFunO ψ V W f) (h' : IsThetaFunO ψ V W f') :
     ∀ γ ∈ ratL W V, ∀ w, f (γ + w) * conj (f' (γ + w)) = f w * conj (f' w) := by
   rintro _ ⟨γ, rfl⟩ w
@@ -420,14 +370,6 @@ theorem mul_conj_periodic (hψ : IsStdChar D ψ (-1)) (h : IsThetaFunO ψ V W f)
   change f (ratW W V γ + w) * conj (f' (ratW W V γ + w)) = _
   rw [e, e', map_mul]
   linear_combination (f w * conj (f' w)) * this
-
-theorem ipO_dom_eq (hψ : IsStdChar D ψ (-1)) (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ)
-    {𝓕' : Set (WO V W)} (h𝓕' : IsAddFundamentalDomain (ratL W V) 𝓕' μ) (h : IsThetaFunO ψ V W f)
-    (h' : IsThetaFunO ψ V W f') : ipO μ 𝓕 f f' = ipO μ 𝓕' f f' := by
-  obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.AdelicMatrixLattice.lattice D W V
-  have : BorelSpace (WO V W) := ⟨rfl⟩
-  have : Countable (ratL W V) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
-  exact h𝓕.setIntegral_eq h𝓕' (f := fun w => f w * conj (f' w)) fun γ w => mul_conj_periodic hψ h h' γ γ.2 w
 
 theorem memLp_theta (hψ : IsStdChar D ψ (-1)) (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ)
     (h : IsThetaFunO ψ V W f) : MemLp f 2 (μ.restrict 𝓕) := by
@@ -468,14 +410,6 @@ theorem ipO_self_eq_zero_iff (hψ : IsStdChar D ψ (-1)) (hμ : μ.IsAddHaarMeas
     (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ) (h : IsThetaFunO ψ V W f) : ipO μ 𝓕 f f = 0 ↔ f = 0 := by
   rw [ipO_self, sqNormIntegralFundamentalDomain_eq_l2Norm_sq μ 𝓕 h.cont, ← l2O_eq_zero_iff_of_isThetaFunO hψ hμ h𝓕 h]
   simp [ENNReal.toReal_eq_zero_iff, l2NormOnFundamentalDomain_thetaFunction_ne_top hψ hμ h𝓕 h]
-
-theorem thetaL2_fundamentalDomain_indep (hψ : IsStdChar D ψ (-1)) (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ)
-    {𝓕' : Set (WO V W)} (h𝓕' : IsAddFundamentalDomain (ratL W V) 𝓕' μ) (h : IsThetaFunO ψ V W f) :
-    l2O μ 𝓕 f = l2O μ 𝓕' f := by
-  have e := ipO_dom_eq hψ hμ h𝓕 h𝓕' h h
-  rw [ipO_self, ipO_self, sqNormIntegralFundamentalDomain_eq_l2Norm_sq μ 𝓕 h.cont, sqNormIntegralFundamentalDomain_eq_l2Norm_sq μ 𝓕' h.cont, Complex.ofReal_inj,
-    pow_left_inj₀ ENNReal.toReal_nonneg ENNReal.toReal_nonneg two_ne_zero] at e
-  exact (ENNReal.toReal_eq_toReal_iff' (l2NormOnFundamentalDomain_thetaFunction_ne_top hψ hμ h𝓕 h) (l2NormOnFundamentalDomain_thetaFunction_ne_top hψ hμ h𝓕' h)).1 e
 
 theorem ipO_heisO (hψ : IsStdChar D ψ (-1)) (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ)
     (h : IsThetaFunO ψ V W f) (h' : IsThetaFunO ψ V W f') (u : WO V W) :
@@ -570,13 +504,6 @@ theorem sobO_add_le (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (h : IsTheta
     rw [wordAct_cons, ih]
     exact dRho_add hψ hθ a.1 _ (theta_word hψ hθ l h) (theta_word hψ hθ l h')
 
-theorem sobO_eq_zero_iff (hψ : IsStdChar D ψ (-1)) (hμ : μ.IsAddHaarMeasure)
-    (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ) (h : IsThetaFunO ψ V W f) (d : ℕ) : sobO ψ θ μ 𝓕 d f = 0 ↔ f = 0 := by
-  refine ⟨fun h0 => (l2O_eq_zero_iff_of_isThetaFunO hψ hμ h𝓕 h).1 (le_zero_iff.1 ?_), fun h0 => ?_⟩
-  · exact (sobO_zero (ψ := ψ) (θ := θ)).ge.trans ((sobO_mono d.zero_le).trans h0.le)
-  · have := sobO_smul (ψ := ψ) (θ := θ) (μ := μ) (𝓕 := 𝓕) (f := f) d 0
-    rwa [zero_smul, enorm_zero, zero_mul, ← h0] at this
-
 theorem isTheta_iff_level : IsThetaFunO ψ V W f ↔
     ∃ U : AddSubgroup (WO V W), IsOpen (U : Set (WO V W)) ∧ f ∈ thetaLevel ψ V W U :=
   ⟨fun h => h.level.imp fun _ hU => ⟨hU.1, h, hU.2⟩, fun ⟨_, _, h⟩ => h.1⟩
@@ -590,43 +517,6 @@ theorem dRho_mem_thetaLevel (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {U :
   ⟨theta_dRho hθ hψ τ z h.1, fun u hu h0 => by rw [← GlobalTheory.FinTranslate.dRho_heisO hθ h0, h.2 u hu h0]⟩
 
 end Sob
-
-section Examples
-
-variable {D : D7}
-
-open scoped ComplexOrder in
-
-theorem exists_theta_posSp (D : D7) (m n : ℕ) : ∃ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
-    (μ : Measure (WO (posSp D m) (posSp D n))) (𝓕 : Set (WO (posSp D m) (posSp D n)))
-    (U : AddSubgroup (WO (posSp D m) (posSp D n))) (f : WO (posSp D m) (posSp D n) → ℂ),
-    IsStdChar D ψ (-1) ∧ IsInfFam θ ∧ IsCovolOne (ratL (posSp D n) (posSp D m)) μ 𝓕 ∧
-      IsOpen (U : Set (WO (posSp D m) (posSp D n))) ∧ f ∈ thetaLevel ψ _ _ U ∧ ipO μ 𝓕 f f ≠ 0 ∧
-      ∀ d, sobO ψ θ μ 𝓕 d f ≠ 0 ∧ sobO ψ θ μ 𝓕 d f ≠ ∞ := by
-  obtain ⟨⟨θ, hθ⟩, ψ, hψ⟩ := GlobalTheory.Ker.exists_infFam_and_stdChar D
-  have hc : ∀ k τ, IsCartanInv (gramAt D (posSp D k) τ) 1 := fun k τ => by
-    rw [gramAt_posSp]
-    exact ⟨by simp, by simp, by simpa using Matrix.PosDef.one⟩
-  obtain ⟨f, f0, hf⟩ := GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ (posSp D m) (posSp D n) _ _ (hc m) (hc n) _ _
-    (GlobalTheory.PlaceModel.isSelfDualC_latFrame _) (GlobalTheory.PlaceModel.isSelfDualC_latFrame _)
-  have h : IsThetaFunO ψ _ _ f := by simpa using (hf 1).1
-  obtain ⟨μ, 𝓕, hm⟩ := exists_isCovolOne (posSp D m) (posSp D n)
-  obtain ⟨U, hU, hl⟩ := isTheta_iff_level.1 h
-  exact ⟨ψ, θ, μ, 𝓕, U, f, hψ, hθ, hm, hU, hl, mt (ipO_self_eq_zero_iff hψ hm.1 hm.2.1 h).1 f0, fun d =>
-    ⟨mt (sobO_eq_zero_iff hψ hm.1 hm.2.1 h d).1 f0, sobO_ne_top hψ hθ hm.1 hm.2.1 h d⟩⟩
-
-example {V W : HSp D} {μ : Measure (WO V W)} {𝓕 : Set (WO V W)} (h : μ 𝓕 = 1) :
-    ipO μ 𝓕 (fun _ => 1) (fun _ => Complex.I) = -Complex.I := by
-  have : μ.real 𝓕 = 1 := by rw [Measure.real, h, ENNReal.toReal_one]
-  rw [ipO, setIntegral_const, this, one_smul, one_mul, Complex.conj_I]
-
-example (V : HSp D) : growthSize V 1 (fun g => (height V g : ℂ)) = 1 := by
-  simp [growthSize, abs_of_pos (height_pos V _), (height_pos V _).ne']
-
-example (θ : InfFam D) (V : HSp D) (N : ℕ) (c : ℂ) : growthSob θ V 1 N (fun _ => c) = ‖c‖ₑ := by
-  simp [growthSob, wordSum_one, glDer, RderC_const, growthSize_const]
-
-end Examples
 
 end GlobalTheory.Size
 

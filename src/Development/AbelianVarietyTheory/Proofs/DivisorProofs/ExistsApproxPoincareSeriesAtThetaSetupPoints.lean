@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructureMapComp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongModOfSpan
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassicalTraitsFourierTermsAllLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassicalTraitsFourierTermsAllLevels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClassicalTraitSystemAtClosedPointStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDefMapIntOfPos
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonModule
@@ -103,7 +103,7 @@ theorem GlobalTheory.Poinc.exists_approxAt : ∀ (g n : ℕ) (F : SFam g n (zeta
   intro p _ z₁ c₀ e
   have hcl : IsClosed ({z₁} : Set X₁.M.Z) := c₀.cen ▸ isClosed_singleton_cPt c₀.y
   obtain ⟨Φ, hM, hL, hR⟩ := GlobalTheory.T.exists_classicalTrait_system_at_closedPoint g n F W Z i hE hT X₁ p z₁ hcl
-  have hF := GlobalTheory.T.classical_traits_fourier_terms_all_levels g n F W Z i X₁ p z₁ Φ hE.1 hR
+  have hF := _root_.GlobalTheory.Poinc.four_of_classical g n F W Z i X₁ p z₁ Φ hE.1 hR
   haveI : IsDedekindDomain X₁.o₁ := X₁.ar.ded
   haveI := X₁.M.lft
   haveI : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s

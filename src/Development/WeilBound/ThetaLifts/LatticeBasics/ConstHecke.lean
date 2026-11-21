@@ -79,13 +79,6 @@ theorem hchar_eq_one (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (�
     (tendsto_atTop_add_const_right _ (-(2 * (C + hS.toFinset.card))) (tendsto_primeIdealZetaSum_univ K)))) _ hc
   filter_upwards [self_mem_nhdsWithin] with s hs using key s hs
 
-theorem exists_prime_norm (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) {S : Set (HeightOneSpectrum (𝓞 K))} (hS : S.Finite) :
-    ∃ w ∉ S, (Ideal.absNorm w.asIdeal).Prime := by
-  by_contra hn
-  push Not at hn
-  obtain ⟨t, ht⟩ := GlobalTheory.HeckeOne.exists_normChar_ne_one (K := K)
-  exact ht (hchar_eq_one H _ (GlobalTheory.HeckeOne.isUnitary_normChar t) hS fun w h1 h2 => absurd h2 (hn w h1))
-
 theorem closed_eq_top [IsTotallyComplex K] (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (M : Subgroup (Ideles K))
     (hM : IsClosed (M : Set (Ideles K))) (h1 : ∀ k, diagUnits K k ∈ M) (h2 : GlobalTheory.IdeleCovolume.eIdele K ∈ M)
     {S : Set (HeightOneSpectrum (𝓞 K))} (hS : S.Finite)

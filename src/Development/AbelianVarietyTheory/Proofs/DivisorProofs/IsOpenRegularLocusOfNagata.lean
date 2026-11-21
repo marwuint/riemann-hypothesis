@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsRegularLocalRingOfFlatOfMapEqMaximalIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenOfStableUnderGeneralizationOfLocallyOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenOfStableUnderGeneralizationOfLocallyOpen
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRegularNearOfRegularQuotientPrimeStatement
 open IsLocalRing TensorProduct
 
@@ -32,7 +32,7 @@ theorem isRegularLocalRing_atPrime_of_le {B : Type} [CommRing B] (p q : Ideal B)
 
 theorem isOpen_regularLocus_of_nagata : ∀ (B : Type) [CommRing B] [IsNoetherianRing B], (∀ (p : Ideal B) [p.IsPrime], ∃ g, g ∉ p ∧ ∀ (q : Ideal B) [q.IsPrime], p ≤ q → g ∉ q → IsRegularLocalRing (Localization.AtPrime q ⧸ p.map (algebraMap B (Localization.AtPrime q)))) → IsOpen {Q : PrimeSpectrum B | IsRegularLocalRing (Localization.AtPrime Q.asIdeal)} := by
   intro B _ _ hyp
-  apply GlobalTheory.T.isOpen_of_stableUnderGeneralization_of_locally_open B
+  apply _root_.GlobalTheory.isOpen_of_stableUnderGeneralization_of_locally_open_in_closure B
   · intro p q hpq hq
     exact isRegularLocalRing_atPrime_of_le p.asIdeal q.asIdeal hpq hq
   · intro p hp

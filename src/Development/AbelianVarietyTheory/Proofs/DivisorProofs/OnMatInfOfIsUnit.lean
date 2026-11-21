@@ -86,13 +86,6 @@ theorem mem_levSetInf {r : ℕ} {g : GL (Fin n) (Cinf E)} : g ∈ levSetInf E n 
     · rw [compGL_apply, (h i hi).1 j hj]; rfl
     · rw [compGL_apply, (h i hi).2]; rfl
 
-theorem isKerOpInf_dirac (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z] (h : GL (Fin n) (Cinf E)) :
-    IsKerOpInf (fun W (_ : Z) g => W (g * h)) := by
-  refine ⟨Unit, inferInstance, Measure.dirac (), inferInstance, fun _ => 1, fun _ => h, fun _ => 0,
-    ⟨measurable_const, fun _ _ => measurable_const, fun _ => measurable_const, fun _ => integrable_const _⟩,
-    fun W _ z g => ?_⟩
-  simp
-
 def LevRepInf (E : Type) [Field E] [NumberField E] (n r : ℕ) (lam : (GL (Fin n) (Cinf E) → ℂ) → ℂ) : Prop :=
   ∀ (Y : Type) [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y] (B : Y × (Fin n → Fin n → Cinf E) → ℂ),
     ContDiffOn ℝ ∞ B {p | IsUnit (Matrix.of p.2)} → (∀ y, IsWhitInf fun g => B (y, matInf g)) →
@@ -100,10 +93,5 @@ def LevRepInf (E : Type) [Field E] [NumberField E] (n r : ℕ) (lam : (GL (Fin n
       B (y, matInf g) ≠ 0 → y ∈ D ∧ ∃ u ∈ GlobalTheory.SmGL.unipB (Cinf E) (Fin n), u⁻¹ * g ∈ C) →
     ∃ T : (GL (Fin n) (Cinf E) → ℂ) → Y → GL (Fin n) (Cinf E) → ℂ, IsKerOpInf T ∧
       ∀ W, IsModGrowthInf W → IsWhitInf W → ∀ y, ∀ g ∈ levSetInf E n r, T W y g = B (y, matInf g) * lam W
-
-example (r : ℕ) : (1 : GL (Fin n) (Cinf E)) ∈ levSetInf E n r ∧
-    IsKerOpInf (fun W (_ : ℝ) g => W (g * (1 : GL (Fin n) (Cinf E)))) := by
-  refine ⟨mem_levSetInf.2 fun i _ => ⟨fun j hj => ?_, by simp⟩, isKerOpInf_dirac ℝ 1⟩
-  simp [Matrix.one_apply, hj.ne']
 
 end GlobalTheory.JSW.MirCinf

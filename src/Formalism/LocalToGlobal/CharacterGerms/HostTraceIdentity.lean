@@ -158,35 +158,4 @@ def Lab.RankOK {Orb : Type} {d : ℕ} (lab : Lab E Orb d) (Dw : Datum H) : Prop 
     (∀ g a, lab.big o g a → Dw.mult (lab.tau o g a) = lab.n + lab.j) ∧
     (∀ g a, ¬ lab.big o g a → Dw.mult (lab.tau o g a) = lab.j')
 
-section Top
-
-variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} [Fintype Orb] {d : ℕ} [NeZero d]
-
-theorem nuLocC_le (hD : DescentSt Xo c) {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι) {k : ℕ}
-    {Y : FBChart C V (𝓞 E) (chD C3.ch)} (hY : IsBC C3 ι k Y) {lab : Lab E Orb d}
-    (ha : LabArith V io ι lab) (hg : LabGeo C3 ι Y lab) (Hy : ∀ o, (Y.raw (pairOfLab ha hg o)).Hyps V)
-    (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hv : ValEqPSt Y (pairOfLab ha hg) Hy (chartLetterSystem C3 V ι a) n)
-    (P : MvPolynomial (LtN Dw n) C) (hP : P ∈ (chartLetterSystem C3 V ι a).FF n)
-    (Po : ∀ o, MvPolynomial (Fin n × WV (lab.II Dw o)) C)
-    (hQ : IsImgO (fun o => Y.raw (pairOfLab ha hg o)) ((chartLetterSystem C3 V ι a).cp n) ((chartLetterSystem C3 V ι a).uv n) P
-      (∏ o, toAll o (Po o)))
-    (kind : Orb → Fin n → Option (Fin 2 × ZMod d × ZMod d))
-    (hk : ∀ o, RowsOK ((Y.raw (pairOfLab ha hg o)).rowData (Hy o)).G ((Y.raw (pairOfLab ha hg o)).rowData (Hy o)).Alt
-      (Po o) (kind o))
-    (S : ∀ o g, Sys (((Y.raw (pairOfLab ha hg o)).rowData (Hy o)).G g))
-    (t : ∀ o g, lab.II Dw o g → MvPowerSeries (lab.II Dw o g) C) (ht : ∀ o g, (S o g).IsT (t o g))
-    (gr : ∀ o, Fin n → MvPowerSeries (WV (lab.II Dw o)) C) (hgr : ∀ o ρ, gr o ρ ∈ IntGerm V (t o)) :
-    nuLocC C3 (eOf T V) k a n ≤
-      (WithBot.some (∑ o, V.v (ValOf ((Y.raw (pairOfLab ha hg o)).rowData (Hy o)).hL (Po o) (kind o) (gr o))) :
-        WithBot (WithTop ℝ)) := by
-  have hsep : PairsSep Y (pairOfLab ha hg) := pairsSep_ofLab ha hg
-  obtain ⟨f, hf, he⟩ := hv hsep P hP Po hQ kind hk S t ht gr hgr
-  refine (hD T io y C3 C V ι hι k Y hY a n).trans ?_
-  unfold FBChart.nuPlE
-  refine (iInf₂_le (V.v (Y.nab (chartLetterSystem C3 V ι a) n f P)) ⟨P, hP, f, hf, rfl⟩).trans ?_
-  rw [he, map_prod_add]
-  exact le_rfl
-
-end Top
-
 end Formalism.L2.FormalSeriesBounds

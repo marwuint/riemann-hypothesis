@@ -8,14 +8,6 @@ open Matrix
 
 namespace Formalism.IndefR.LocBrg
 
-def IntWittLoc : Prop :=
-  ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ),
-    Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) L),
-      (∀ i j, H i j ∈ Formalism.UG.intL L) → Valued.v H.det = 1 → Formalism.UG.cT σ H = H →
-      ∃ R ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L),
-        Formalism.UG.cT σ ((R : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * H * ((R : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) =
-          Formalism.UG.antiJ L n
-
 section Glue
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
@@ -222,9 +214,5 @@ theorem normSurj [CompleteSpace L] (hF : FinNormSurj) (hS : HenselSqrt) {ϖ : L}
     ring
 
 end Norm
-
-section Final
-
-end Final
 
 end Formalism.IndefR.LocBrg

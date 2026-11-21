@@ -8,7 +8,7 @@ theorem UpperTheory.V.Br.wdAway :
     UpperTheory.V.Br.WdAway := by
   intro F K Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι A v w h h' i hP hl hl' n r x y hx hy
   haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic
-  obtain ⟨c, hc, hdegc, hq, hsm⟩ := GlobalTheory.T.place_over_transport_ring_iso F Ω A v h K Ω A w h' _ _ i hP
+  obtain ⟨c, hc, hdegc, hq, hsm⟩ := _root_.GlobalTheory.WeilTransport.weil_equiv F Ω A v h K Ω A w h' _ _ i hP
   have hd1 : ∀ σ, deg (c.symm σ) = deg σ := fun σ => by
     rw [← hdegc, MulEquiv.apply_symm_apply]
   have hs1 : ∀ (M : Type) [Monoid M] (g : Weil h →* M), IsSmooth g →

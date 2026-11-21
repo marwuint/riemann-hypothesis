@@ -1,19 +1,21 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SplitPart
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GaussianReadingFiniteRationalHeisenbergTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GaussianReadingFiniteRationalHeisenbergTranslate
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OmAtSmulRight
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EventuallyFinEqOne
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableOfChar
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaSupportInDivLattice
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodLatticeHalvesRepsFiniteIndexStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteFourierExpansionHalfSplitPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaFourierSumEqSumHeisenbergTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodLatticeHalvesRepsFiniteIndex
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergOperatorFinitePartLatticeVacuumSign
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIsometrySignFirst
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteFourierExpansionHalfSplitPlaces
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaFourierSumEqSumHeisenbergTranslates
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StdCharSymplecticHalfPeriodLatticeEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorConjugateHalfVacuumEqSemicharaStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorHalfComponentOnVacuumTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorConjugateHalfVacuumEqSemichara
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorHalfComponentOnVacuumTranslate
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.Forms Formalism.L2.Ker Formalism.UG
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.MixPer GlobalTheory.Core.Rk GlobalTheory.AdForm
 open scoped TensorProduct Classical
@@ -26,7 +28,7 @@ theorem reads_datum_eq_thC : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ :
   classical
   obtain ⟨ΛS, hΛS, hΛS'⟩ := id hdS
   obtain ⟨ΛT, hΛT, hΛT'⟩ := id hdT
-  obtain ⟨hRX, hRA, hRB⟩ := GlobalTheory.T.periodLatticeHalves_reps_finite_index D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa
+  obtain ⟨hRX, hRA, hRB⟩ := _root_.GlobalTheory.PeriodReps.reps_genuine D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa
   set SX := repsOf (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')
     (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) with hSXd
   set SA := repsOf (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c)
@@ -61,11 +63,11 @@ theorem reads_datum_eq_thC : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ :
     rw [h, Matrix.toLin'_toMatrix']
   let K : VV D.what₂.Tau a b × VV D.what₂.Tau a b → ℂ := fun p =>
     ((SA.card : ℂ))⁻¹ * ∑ s ∈ SA, onV (tauE D) δ Ξ (s - p.1) * (brk (HV sc) p.2 s)⁻¹
-  have hF := GlobalTheory.T.finite_fourier_expansion_half_split_places D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa hdS hdT Φ Ξ hSB hΦ hΞ1 hΞ2 SX SA SB hRX hRA hRB px py hpx' hpy'
+  have hF := _root_.GlobalTheory.AdForm.DatumFour.four_expand D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa hdS hdT Φ Ξ hSB hΦ hΞ1 hΞ2 SX SA SB hRX hRA hRB px py hpx' hpy'
   have hee : e * e = e := GlobalTheory.PlaceDatum.idemSum_mul_self hE
   have hf1 : f = ∑ p ∈ SX ×ˢ SB, K p • heisO ψ S T ((mt (px p.1)).map fun r => e * incA D r)
       (heisO ψ S T ((mt (py p.2)).map fun r => cA D e * incA D r) f₀) := by
-    refine GlobalTheory.T.thetaFourierSum_eq_sum_heisenberg_translates D ψ S T e _ f₀ Φ f _ (SX ×ˢ SB) K (fun p => (mt (px p.1)).map fun r => e * incA D r)
+    refine _root_.GlobalTheory.HalfFourier.thetaAt_eq_sum_heis_translates D ψ S T e _ f₀ Φ f _ (SX ×ˢ SB) K (fun p => (mt (px p.1)).map fun r => e * incA D r)
       (fun p => (mt (py p.2)).map fun r => cA D e * incA D r) c hc hTh ?_ ?_ ?_ ?_
     · intro p _ i j
       simp only [Matrix.map_apply, ← mul_assoc, hee]
@@ -89,9 +91,9 @@ theorem reads_datum_eq_thC : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ :
     rw [hf1]
     refine Finset.sum_congr rfl fun p hp => ?_
     obtain ⟨h1, h2'⟩ := Finset.mem_product.1 hp
-    rw [GlobalTheory.T.heisenbergOperator_conjugateHalf_vacuum_eq_semicharacter D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa ΛS ΛT hΛS hΛT hΛS' hΛT' f₀ hV (py p.2) (hpy' _ h2').1,
+    rw [_root_.GlobalTheory.ConjHalfHeis.heisO_conjHalf_eq D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa ΛS ΛT hΛS hΛT hΛS' hΛT' f₀ hV (py p.2) (hpy' _ h2').1,
       GlobalTheory.LatVac.heisO_smul,
-      GlobalTheory.T.heisenbergOperator_halfComponent_on_vacuumTranslates D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa ΛS ΛT hΛS hΛT hΛS' hΛT' f₀ hV (px p.1) (hpx' _ h1).1 (py p.2) (hpy' _ h2').1,
+      _root_.GlobalTheory.AdForm.HalfHeis.heisO_halfA_eq D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc hcP h2 hLa ΛS ΛT hΛS hΛT hΛS' hΛT' f₀ hV (px p.1) (hpx' _ h1).1 (py p.2) (hpy' _ h2').1,
       (hpx' _ h1).2, (hpy' _ h2').2, smul_smul, smul_smul, hC]
     congr 1
     ring
@@ -117,7 +119,7 @@ theorem reads_datum_eq_thC : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ :
         ⟨GlobalTheory.VacUnique.finRat_inf S T γ, GlobalTheory.VacUnique.finRat_fin S T γ⟩
       have ht1 : IsThetaFunO ψ S T (heisO ψ S T (GlobalTheory.VacUnique.finRat S T (mt (py p.2))) f₀) :=
         GlobalTheory.FinTranslate.isTheta_heisO_fin hψ (GlobalTheory.VacUnique.finRat_inf S T _) h0
-      rw [GlobalTheory.T.gaussianReading_finiteRationalHeisenbergTranslate D ψ θ S T a b hS hT δ sc hP _ ht1 _ _ (hfin _), GlobalTheory.T.gaussianReading_finiteRationalHeisenbergTranslate D ψ θ S T a b hS hT δ sc hP _ h0 _ _ (hfin _),
+      rw [_root_.GlobalTheory.AdForm.HeisRead.xiN_heisO_finOf D ψ θ S T a b hS hT δ sc hP _ ht1 _ _ (hfin _), _root_.GlobalTheory.AdForm.HeisRead.xiN_heisO_finOf D ψ θ S T a b hS hT δ sc hP _ h0 _ _ (hfin _),
         hmt, hmt, (hpx' _ h1).2, (hpy' _ h2').2]
     funext z
     have hlin : xiN θ S T hS hT δ sc f z = ∑ p ∈ SX ×ˢ SB, C p * xiN θ S T hS hT δ sc

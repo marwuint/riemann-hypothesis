@@ -121,34 +121,4 @@ theorem sq_div_norm {z : ℂ} (hz : z ≠ 0) : (z / ((‖z‖ : ℝ) : ℂ)) ^ (
   rw [zpow_ofNat, div_pow, ← h1]
   field_simp
 
-theorem locK_mem_coeff : ∀ (Z : Dat), Z.Ok → ∀ (m0 : Fin Z.R.m → Formalism.L2.Host.HChar Z.X.E) (eta : Formalism.L2.Host.HChar Z.X.E), Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta → ∀ (j : Fin Z.R.m) (P : HeightOneSpectrum (𝓞 Z.X.E)) (x : Z.X.Eˣ), ∃ k : Z.X.K, Z.sig0 k = (((m0 j).locK P x : ℂˣ) : ℂ) := by
-  intro Z hZ m0 eta hT j P x
-  have hm := hT.mu0 j
-  have hg : ((Z.Pr.g 0 : ℕ) : 𝓞 Z.X.E) * ((Z.Pr.g 1 : ℕ) : 𝓞 Z.X.E) ≠ 0 :=
-    mul_ne_zero (Nat.cast_ne_zero.2 (hZ.primes.g_prime 0).ne_zero) (Nat.cast_ne_zero.2 (hZ.primes.g_prime 1).ne_zero)
-  have hoff : ∀ v : HeightOneSpectrum (𝓞 Z.X.E),
-      v ∉ divs (((Z.Pr.g 0 : ℕ) : 𝓞 Z.X.E) * ((Z.Pr.g 1 : ℕ) : 𝓞 Z.X.E)) →
-      ∀ i, ((Z.Pr.g i : ℕ) : 𝓞 Z.X.E) ∉ v.asIdeal := by
-    intro v hv i hi
-    apply hv
-    rw [Formalism.L2.Col.mem_divs hg]
-    fin_cases i
-    · exact v.asIdeal.mul_mem_right _ hi
-    · exact v.asIdeal.mul_mem_left _ hi
-  refine locK_mem (m0 j) (unitsIn Z.sig0.fieldRange) _ hm.tame (fun v hv => hm.unr v (hoff v hv))
-    (fun v hv => ⟨_, hT.muVal j v (hoff v hv)⟩) (fun k => ?_) P x
-  obtain ⟨n, hn, hinf⟩ := hm.inf
-  change (((m0 j).inf k : ℂˣ) : ℂ) ∈ Z.sig0.fieldRange
-  rw [hinf k]
-  refine prod_mem fun τ _ => ?_
-  obtain ⟨Q, hQ⟩ := hZ.wts.row_ok τ
-  obtain ⟨z, hz⟩ := Q.e_int j
-  have he : (Z.W.row τ).e j = z := by rw [← hQ]; exact hz
-  have hn2 : n τ = 2 * (-z) := by
-    have := hn τ
-    simp only [he] at this
-    exact_mod_cast this
-  rw [hn2, zpow_mul, sq_div_norm ((map_ne_zero _).2 k.ne_zero), ← hZ.fields.conjE]
-  exact zpow_mem (Z.sig0.fieldRange.div_mem ⟨_, rfl⟩ ⟨_, rfl⟩) _
-
 end GlobalTheory.TameVal

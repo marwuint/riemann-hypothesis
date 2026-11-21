@@ -138,7 +138,7 @@ theorem good_adjoint (R : RealDat D A Ks) (F : Face D A) (hC : Core R F) (i : Fi
   have hc : GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.Commutes π (R.gW i (sg0 D A)) (R.thG i t) := fun g y =>
     (GlobalTheory.LiftEquivariance.exists_adelic_lift (hπ.2 g y)).elim fun κ hκ =>
       GlobalTheory.ThetaProjEquiv.thG_intertwines_core R F hC i t g κ hκ.1 y _ hκ.2
-  have ha := GlobalTheory.LiftEquivariance.commutes_adjoint π _ hπ.1 (GlobalTheory.T.norm_liftForms_finiteGroup_action R hC.models.HW hC.models.gW hC.models.νW i _) _ hc
+  have ha := GlobalTheory.LiftEquivariance.commutes_adjoint π _ hπ.1 (_root_.GlobalTheory.gW_norm_eq R hC.models.HW hC.models.gW hC.models.νW i _) _ hc
   have hx' : (∑ g, RealDat.eC (A := A) (sg0 D A) g • R.gW i (sg0 D A) g) x = x := hx
   have h1 := sum_fix _ _ _ ha (RealDat.eC (A := A) (sg0 D A)) x hx'
   exact goodVt_of R i t _ fun l => gaL_fix (V := Vc D i) (β := R.βV i) (L := R.datVt i t) (R.cV i) (hC.models.cV i) R.eG (R.HV i t) π hπ.2 _ _ h1 l
@@ -206,9 +206,9 @@ theorem eig_of_match (R : RealDat D A Ks) (F : Face D A) (hC : Core R F) (hS : S
     (hy : h P cV y = l • y) :
     h P cV (LinearMap.adjoint (R.thG i t) (R.thG i t y)) = l • LinearMap.adjoint (R.thG i t) (R.thG i t y) := by
   refine hM.elim fun cW hM => (exists_isSF R).elim fun SF hSF => (GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R F hC hS hX SF hSF i).elim fun hW hhW => ?_
-  have hP0 : Good R A.μ0 P := ((GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev).2.1 t P hG).2.2
+  have hP0 : Good R A.μ0 P := ((_root_.GlobalTheory.GoodPrimes.good_primes R F hC.lev).2.1 t P hG).2.2
   have key := (GlobalTheory.SysW.matched_operators_theta_intertwine R F hC hS hX SF hSF i t P hG cV cW hM h hh).1 hW hhW.1
-  exact GlobalTheory.T.eigenvector_adjoint_intertwiner_normal_operators (R.thG i t) (fun _ : Unit => h P cV) (fun _ : Unit => hW P cW) (fun _ u => key u)
+  exact _root_.GlobalTheory.HkUp.eigen_up_along_adjoint (R.thG i t) (fun _ : Unit => h P cV) (fun _ : Unit => hW P cW) (fun _ u => key u)
     (fun _ => NormalFam.normal hN hG cV) (fun _ => NormalFam.normal hhW.2.1 hP0 cW) () l _
     ((key y).symm.trans ((congrArg (R.thG i t) hy).trans (map_smul _ _ _)))
 
@@ -240,7 +240,7 @@ theorem eig_of_split {V : HSp D} {X : Type} [AddCommGroup X] [Module ℂ X] (π 
       have nn := NormalFam.normal hN hok (Finsupp.single (splitLab V.rank k) 1)
       exact ⟨star l, by rw [ho, ← e, adjoint_eig _ nn l y hl, map_smul],
         by rw [ho, ← e, adjoint_eig _ nn l u (hu k hk l hl), map_smul]⟩
-  obtain ⟨a, ha1, ha2⟩ := GlobalTheory.T.exists_adjoin_splitHeckeGenerators_duals_spherical V P hP X π d
+  obtain ⟨a, ha1, ha2⟩ := _root_.GlobalTheory.SplitGen.gen_split V P hP X π d
   obtain ⟨l, e1, e2⟩ := GlobalTheory.Hk3.LabDet.adjoin_common _ (E y) (E u) hs a ha1
   rw [ha2 _ (hfix y), ho, hy d hd, map_smul] at e1
   rw [ha2 _ (hfix u), ho, ← map_smul] at e2

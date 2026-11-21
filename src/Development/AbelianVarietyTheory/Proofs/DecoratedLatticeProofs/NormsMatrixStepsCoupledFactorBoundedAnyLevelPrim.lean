@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NcardYbSet
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixEntryFiniteDatumBoundedLevelSizeStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FirstCoupledKernelFiniteDatumLevelSizeStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastKernelFiniteDatumBoundedLevelSizeStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CardMatrixStepIndicesLeExpStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CardMatrixStepIndicesLeExp
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainKernelBoundAtEmbeddingAnyLevelPrimeStatement
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms GlobalTheory.CoreHt GlobalTheory.Core.Ht2
@@ -22,7 +22,7 @@ theorem factors_leS : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.Bl
   obtain ⟨Cd, hdat⟩ := GlobalTheory.T.matrix_entry_finite_datum_bounded_level_size
   obtain ⟨C₁, hC₁, hker⟩ := GlobalTheory.T.chainKernel_bound_at_embedding_anyLevelPrime hB hT hV hL hR hP Cd
   obtain ⟨Cc, hCc, hcl⟩ := GlobalTheory.ChainClassNumbersS.classNumbers_leS
-  obtain ⟨Ci, hCi, hidx⟩ := GlobalTheory.T.card_matrixStep_indices_le_exp
+  obtain ⟨Ci, hCi, hidx⟩ := _root_.GlobalTheory.Core.Ht2.IndexCountS.card_index_le_sharp
   obtain ⟨Cy, hCy, hyb⟩ := GlobalTheory.CouplingCosetsS.ncard_ybSet_le
   refine ⟨C₁ + (Cc + Ci + Cy), by positivity, ?_⟩
   intro CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H B b hY hK hF hE hFD M _ hM ρ
@@ -40,8 +40,8 @@ theorem factors_leS : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.Bl
     kernelBound_ge N δ _ _ _ j _ _ _ _ _ _
   have hpos : ∀ {n : ℕ} (lam : X.Tau → DomWeight n),
       ((Matrix.of fun i j => pairVr X.emb lam 1 (bVV X.K lam i) (bVV X.K lam j)).map
-        (placeUnder s.σ₀ hM.1 ρ).embedding).PosSemidef := fun lam => (GlobalTheory.T.coefficientGram_posSemidef_and_normAtPlace X.E X.K X.Tau X.emb _ lam _).1
-  have hsq := fun {n : ℕ} (lam : X.Tau → DomWeight n) => (GlobalTheory.T.coefficientGram_posSemidef_and_normAtPlace X.E X.K X.Tau X.emb n lam σ).2
+        (placeUnder s.σ₀ hM.1 ρ).embedding).PosSemidef := fun lam => (_root_.GlobalTheory.ColNorms.gram_posSemidef_and_sqAt X.E X.K X.Tau X.emb _ lam _).1
+  have hsq := fun {n : ℕ} (lam : X.Tau → DomWeight n) => (_root_.GlobalTheory.ColNorms.gram_posSemidef_and_sqAt X.E X.K X.Tau X.emb n lam σ).2
   have hk := hker CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H B hFD
   obtain ⟨hc1, hc2, -⟩ := hcl CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H
   have hi1 := hidx CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H

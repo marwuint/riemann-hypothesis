@@ -68,10 +68,6 @@ def Van {k : Type} [Field k] (T : Finset ℕ) (pl : ℕ → ValuationSubring Ω)
     (∀ A : ValuationSubring Ω, (∀ p ∈ T, ¬ A.valuation (p : Ω) < 1) → ∀ g ∈ Ine (F := ℚ) A, g ∈ K → z g = 0) →
     (∀ v ∈ T, ∃ m, ∀ g ∈ Dec (F := ℚ) (pl v), z g = (γ g : k) * m - m) → ∃ m, ∀ g, z g = (γ g : k) * m - m
 
-example (l : ℕ) (hl : l.Prime) (h2 : l ≠ 2) (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
-    GalData l {v | ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal} {l} ∅ (fun _ => A) ⊤ :=
-  ⟨h2, by simpa using hl, by simp, by simp, by simp, by simpa using hA, by simp⟩
-
 end Gal
 
 end UpperTheory.V.X

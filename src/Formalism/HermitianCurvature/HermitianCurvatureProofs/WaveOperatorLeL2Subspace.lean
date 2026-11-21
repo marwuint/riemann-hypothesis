@@ -42,18 +42,6 @@ theorem wave_operator_le_l2_subspace (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1)
   unfold LevelZeroSquareIntegrable
   simpa [wt0] using h
 
-theorem base_le_wave_operator (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
-    (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
-    (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)
-    (D : B.RealPlaceData P.k P.r Wp Wq) (hD : IsData P z z' π π' X μ L st l0) (hz : D.z = z) (hz' : D.z' = z')
-    (hπ : D.π = π) (hπ' : D.π' = π') (l : Fin P.r) (hl : l.val = 0) :
-    base0 S P z z' π π' L st l0 D ≤ waveJ P z z' π π' D l := by
-  have hl0 : l.castSucc = (0 : Fin (P.r + 1)) := Fin.ext (by simp [hl])
-  have hK := herKc0_le_waveJ (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0
-  refine sup_le hK (Submodule.span_le.mpr ?_)
-  rintro Φ ⟨w, hw, a, b, Ψ, hΨ, rfl⟩
-  exact rr_waveJ (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 w hw a b Ψ (hK hΨ)
-
 end Wave
 
 end Formalism.FourierDecayAlt.P.CutSE

@@ -1,7 +1,9 @@
 import Mathlib
-import Formalism.FlagUnipotentLattices.QDetNegTranspose
+import Formalism.RealPlaceAnalysis.StatementC
+import Formalism.FormalDegreeBessel.StatementDS
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-open Finset TensorProduct Formalism.HermitianLatticeCounting.S8
+
+open Finset TensorProduct
 
 noncomputable section
 
@@ -96,17 +98,7 @@ theorem eq_zero_of_eval (P : B[X]) (h : ∀ u : ℂ, P.eval (algebraMap ℂ B u)
 
 end
 
-section
-variable {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
-
-def op (M : Fin n → Fin n → Module.End ℂ V) : Module.End ℂ (V ⊗[ℂ] (Fin n → ℂ)) :=
-  ∑ a, ∑ b, TensorProduct.map (M a b) (stdRep n a b)
-
-end
-
 end GlobalTheory.CompanionTheory.Inh.CharId
 
 namespace GlobalTheory.CompanionTheory.Inh
-open CharId
-
 end GlobalTheory.CompanionTheory.Inh

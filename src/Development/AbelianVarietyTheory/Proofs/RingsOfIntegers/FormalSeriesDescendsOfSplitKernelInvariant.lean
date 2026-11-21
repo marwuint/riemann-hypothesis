@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsFiniteBasis
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.InvariantsAndTraceFiniteFreeDomainEndomorphisms
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalMatrixKernelFiniteNcardEqRankStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalModuleMatrixApplyPointsActionLawsStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupTranslateAutomorphismAndMatrixKernelStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupTranslateAutomorphismAndMatrixKernel
 
 set_option autoImplicit false
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
@@ -76,7 +76,7 @@ theorem descends_of_invariant : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDisc
   obtain ⟨r, b, hr, hb⟩ := GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V (Fin n × Fin d) φ hφ0 (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n q q' N hN hq)
   obtain ⟨hfin, hcard⟩ := GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n q q' N hN hq hj hs
   have : IsDomain (MvPowerSeries (Fin n × Fin d) V) := NoZeroDivisors.to_isDomain _
-  have hsh := (GlobalTheory.T.formalGroupTranslate_automorphism_and_matrixKernel V d O B n q).2.2
+  have hsh := (_root_.GlobalTheory.PlaceInt.shift_kerM V d O B n q).2.2
   obtain ⟨a, ha⟩ := mem_range_of_invariant (MvPowerSeries (Fin n × Fin d) V) (MvPowerSeries (Fin n × Fin d) V)
     (Ψ : MvPowerSeries (Fin n × Fin d) V →+* MvPowerSeries (Fin n × Fin d) V) r b
     (fun f => by simpa only [hs', RingHom.coe_coe] using hb f) (kerM B q) hfin (hcard.trans hr) (shift B.G.F)

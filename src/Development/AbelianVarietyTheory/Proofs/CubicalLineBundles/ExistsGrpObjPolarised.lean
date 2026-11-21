@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.OpensRangeC
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.ExistsUniqueEqConstMulOriginSec
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsStandardSmoothOfRelativeDimensionAwayJacobian
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddXYZOrChordXYZOrOriginXYZNeZero
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCommGrpObjWeierstrassSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsCommGrpObjWeierstrassScheme
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeSchemeOver
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SurjectiveFst
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.OriginLineBundlePolarisationStatement
@@ -49,7 +49,7 @@ theorem exists_grpObj_polarised (R : Type) [CommRing R] (W : _root_.WeierstrassC
         (∃ h : IsUnimodularSol (W.map (algebraMap R (DualNumber R))) ![DualNumber.eps, -1, 0],
           v.left = ptHom W (algebraMap R (DualNumber R)) ![DualNumber.eps, -1, 0] h) ∧
         IsLieBasis ![v] := by
-  obtain ⟨inst, hc, hη, hadd, hneg⟩ := GlobalTheory.T.exists_commGrpObj_weierstrassScheme R W hΔ
+  obtain ⟨inst, hc, hη, hadd, hneg⟩ := _root_.GlobalTheory.exists_grpObj_weierstrass R W hΔ
   exact ⟨inst, hc, hη, hadd, hneg, polarised_of_grpObj R W hΔ hc hη,
     GlobalTheory.WeierstrassLie.isLieBasis_eps R W hη⟩
 

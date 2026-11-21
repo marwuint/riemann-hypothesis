@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.KawamataVi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageOfIsPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveLineBundleDescendsToCountableSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelDimGeomConnectedDescendFieldExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectiveLineBundleDescendsToCountableSubfield
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothOfRelDimGeomConnectedDescendFieldExtension
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefLineBundleOfBaseChangeFieldStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBigLineBundlePullbackFieldExtensionIffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubsingletonLineBundleCohomologyProjBaseChangeIfStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubsingletonLineBundleCohomologyProjBaseChangeIf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataViehwegVanishingComplexEmbeddedFieldStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenConnectedComponentOfNoetherianSpace
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaKeyRuleExistsOfAlgebraicInvariants
@@ -30,10 +30,10 @@ theorem subsingleton_coh_twist (hN : GlobalTheory.Published.NefNumerics) (hV : G
   have hNl : N.IsLB := by
     letI := algebraΓOfHom p
     exact h₁.isLB
-  obtain ⟨K₁, X₁, p₁, ψ, L₁, hc, hp₁, H, hL₁, e⟩ := GlobalTheory.T.projectiveLineBundle_descends_to_countable_subfield k X p hp N hNl
+  obtain ⟨K₁, X₁, p₁, ψ, L₁, hc, hp₁, H, hL₁, e⟩ := _root_.GlobalTheory.ProjCountableDescent.projLB_descends_to_countable_subfield k X p hp N hNl
   have hsm : Smooth p := SmoothOfRelativeDimension.smooth D p
   have hg : GeometricallyConnected p := GlobalTheory.geometricallyConnected_of_isAlgClosed p
-  obtain ⟨hs₁, hg₁⟩ := GlobalTheory.T.smoothOfRelDim_geomConnected_descend_fieldExtension K₁ k X₁ X p₁ p ψ H D inferInstance hs hg
+  obtain ⟨hs₁, hg₁⟩ := _root_.GlobalTheory.FieldDescentSm.smoothOfRelativeDimension_and_geometricallyConnected_descend K₁ k X₁ X p₁ p ψ H D inferInstance hs hg
   have hne : Nonempty X₁ := ⟨ψ (Classical.arbitrary X)⟩
   have hP := LB.isLB_pull hL₁ ψ
   have ec : cls N hNl = cls (L₁.pull ψ) hP := (cls_eq_iff _ _).2 e
@@ -49,7 +49,7 @@ theorem subsingleton_coh_twist (hN : GlobalTheory.Published.NefNumerics) (hV : G
   have v₁ := GlobalTheory.T.kawamataViehweg_vanishing_complexEmbeddedField hN hV K₁ (GlobalTheory.KeyHouse.nonempty_ringHom_complex K₁) X₁ p₁ D hp₁ hg₁
     C L₁ n₁ b₁ q hq
   have hT := isLB_tens C.isLB hL₁
-  have v := (GlobalTheory.T.subsingleton_lineBundleCohomology_projBaseChange_iff K₁ k X₁ X p₁ p ψ H hp₁ hp _ hT q).2 v₁
+  have v := (_root_.GlobalTheory.CohFieldChange.subsingleton_coh_pull_iff_of_isProjOver K₁ k X₁ X p₁ p ψ H hp₁ hp _ hT q).2 v₁
   have eK : cls K.bundle K.isLB = cls (C.bundle.pull ψ) (LB.isLB_pull C.isLB ψ) := by
     obtain ⟨w, hw, -⟩ := canonLB_baseChange K₁ k _ X₁ X p₁ p ψ D H C K
     exact (cls_eq_iff _ _).2 ⟨w, hw⟩

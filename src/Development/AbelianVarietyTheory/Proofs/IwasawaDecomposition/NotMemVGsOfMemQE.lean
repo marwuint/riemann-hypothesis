@@ -10,15 +10,15 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ParahoricLeIn
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AbsNormEqOfSplitFactor
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhiMapsAndOmegaLaw
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleRepresentativesFiniteLevelCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeNormalFormModuloUnipotentSemidirectStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLatticeNormalFormOfBetweenStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LatticeNormalFormModuloUnipotentSemidirect
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLatticeNormalFormOfBetween
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowTypeMulOnLevelAtTwistPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowTypeMulOnSymmetricLevelAtTypePrimeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowTypeOneAddPrimeSmulEqOneStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepDatumBoundedAtTypePrimeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AffineEigenvalueEqOneOfBoxSumNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnfoldingCharArgMulLeftUnipotentStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormOneDetEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AffineEigenvalueEqOneOfBoxSumNeZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnfoldingCharArgMulLeftUnipotent
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormOneDetEqOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLevelGroupModTypePrimeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelGroupReductionStepZeroTypePrimeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelCharacterStepZeroTypePrimeStatement
@@ -72,11 +72,6 @@ theorem homBdd_mono {N N' a b : ℕ} (h : N ≤ N') {Psi : Loc.SF E K a b} (H : 
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
   rw [pow_add, mul_smul]
   exact H.2 x _ (intHom_pow_smul k hy)
-
-theorem homBdd_add {N B a b : ℕ} (h : N ≤ B) {Psi : Loc.SF E K a b} (H : HomBdd P N Psi) (x y : (Fin a → E) →ₗ[E] (Fin b → E))
-    (hy : IntHom P (((qOf P : E) ^ B)⁻¹ • y)) : Psi (x + y) = Psi x := by
-  have := (homBdd_mono h H).2 x _ hy
-  rwa [smul_inv_smul₀ (pow_ne_zero _ (qOf_ne_zero P))] at this
 
 open GlobalTheory.Proof.localUnfoldingIntegrand_boundedSchwartz in
 theorem integrand_funBdd {n' c' n c : ℕ} {psi : E → K} {D N : ℕ} {Psi : Loc.SF E K (n' + c') (n + c)}
@@ -256,7 +251,7 @@ theorem chiTriv_mid (hc : cst.Ok) (hs : cst.sharp = true) (hd : DegOneUnram P.1)
   intro r hr hfix
   have hκ := conj_mem hr
   have hdet : LinearEquiv.det (h⁻¹ * r * h) = 1 := by
-    rw [map_mul, map_mul, GlobalTheory.T.norm_one_det_eq_one X.E _ _ r ⟨hr.1, hfix⟩, map_inv, mul_one, inv_mul_cancel]
+    rw [map_mul, map_mul, _root_.GlobalTheory.Mem.Col2.IdxEx.det_eq_one_of_mem_unip X.E _ _ r ⟨hr.1, hfix⟩, map_inv, mul_one, inv_mul_cancel]
   have hphi : ∀ x, PhiAt Ch mu cst.sharp i P.1 ((h⁻¹ * r * h).toLinearMap ∘ₗ x) =
       lamRow Ch mu cst.sharp (i + 1) P.1 (h⁻¹ * r * h).toLinearMap * PhiAt Ch mu cst.sharp i P.1 x := by
     intro x
@@ -288,10 +283,10 @@ theorem chiTriv_mid (hc : cst.Ok) (hs : cst.sharp = true) (hd : DegOneUnram P.1)
     change _ = r (Loc.xx1 xj' 0 (Loc.inX X.E _ _ v))
     rw [unfoldingAffinePointMap_apply_inclusion, hfix]
   have hn := intAt_n1Arg_of_mem hc hD (by omega) h2 hr
-  refine GlobalTheory.T.affine_eigenvalue_eq_one_of_boxSum_ne_zero X.E X.K P.1 hd _ _ R.m I T b _ (fun t => ?_) ?_
+  refine _root_.GlobalTheory.Proof.affine_eigenvalue_eq_one_of_boxSum_ne_zero.eigen_eq_one X.E X.K P.1 hd _ _ R.m I T b _ (fun t => ?_) ?_
   · have hT' : Loc.xx1 xj' (T t + b) = r.toLinearMap ∘ₗ Loc.xx1 xj' t := (hT t).symm
     unfold integrand chiInv
-    rw [hT', hom, GlobalTheory.T.unfoldingCharArg_mul_left_unipotent X.E _ _ _ _ hc1 hc2 r hr.1]
+    rw [hT', hom, _root_.GlobalTheory.Proof.unfoldingCharArg_mul_left_unipotent.chArg_left X.E _ _ _ _ hc1 hc2 r hr.1]
     by_cases h0 : omPhi Ch sel mu cst i P hal h (Loc.xx1 xj' t) = 0
     · simp [h0]
     · rw [neg_add, hc.psi_add P _ _ (by simpa using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg (b2 _ h0)) (by simpa using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg hn),
@@ -345,8 +340,8 @@ theorem exists_step (hc : cst.Ok) (hd : DegOneUnram P.1) (hD : P.1 ∉ Pr.vGs �
       by_cases hP : P.1 ∈ Pr.vGs
       · exact ⟨h, sameDC_refl _ _ _ _, ⟨hh, fun e => (e hP).elim⟩, a, ha, hE⟩
       · obtain ⟨ρ, hρ, e, z, hz⟩ := GlobalTheory.QNormalShape.exists_shape
-          (GlobalTheory.Proof.lattice_normal_form_coordinates.latticeNormalFormCoord_of GlobalTheory.T.latticeNormalForm_modulo_unipotentSemidirect) X.E P.1 hd _ _ h
-        have hn := GlobalTheory.T.hasLatticeNormalForm_of_between X Pr R _ P.1 hP h ρ e z hρ (hh.2 hP) hz
+          (GlobalTheory.Proof.lattice_normal_form_coordinates.latticeNormalFormCoord_of _root_.GlobalTheory.Proof.latticeNormalForm_modulo_unipotentSemidirect.latticeNormalForm) X.E P.1 hd _ _ h
+        have hn := _root_.GlobalTheory.Proof.hasLatticeNormalForm_of_between.nf_of_between X Pr R _ P.1 hP h ρ e z hρ (hh.2 hP) hz
         have := hD hP
         refine ⟨ρ * h, sameDC_symm (sameDC_mul _ _ _ hρ), ⟨⟨fun e => (hP e).elim, fun _ => between_of_nf hP hn⟩, fun _ => hn⟩,
           a, ha, ?_⟩

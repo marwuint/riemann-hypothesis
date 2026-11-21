@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasTypeVec
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.LabesseWaldspurger
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConstantTermVanishing
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointRadical
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspidalNoRadicalFixed
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.StandardMaximalParabolic
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CentralizerTensorForms
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabilizerInertPlace
+
 open MeasureTheory Set Filter NumberField IsDedekindDomain
 open GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary GlobalTheory.AutMult Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult
@@ -56,41 +56,6 @@ theorem exists_loc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
 end GlobalTheory.InertIwasawaLoc
 
 namespace GlobalTheory.InertIwasawaLoc
-
-open scoped Matrix TensorProduct
-
-theorem eq_mul_stab_of_not_split : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (a : GL (Fin V.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E)), Φ.IsGood D.sp.cm L a → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ (g : GLoc D.sp.cm.sig V.gram v), ∃ q k : GLoc D.sp.cm.sig V.gram v, k ∈ stabLoc D.sp.cm.sig V.gram L v ∧ g = q * k ∧ ∃ β : GL (Fin (wittIndex V)) (TensorProduct D.host.F (Fv D.host.F v) D.host.E), (HA.mat (F := D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram q).1 * (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) = (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) * β.1 := by
-  intro D V Φ L a hG v hv g
-  haveI := hG.1
-  have := v.isMaximal
-  obtain ⟨P, hP, hPv⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal
-  let w : HeightOneSpectrum (𝓞 D.host.E) := ⟨P, hP.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩
-  have h : w.under (𝓞 D.host.F) = v := HeightOneSpectrum.ext hPv.over.symm
-  have hi := GlobalTheory.LPositivity.split_or_inert D w
-  rw [h] at hi
-  obtain ⟨c, hc⟩ := D.host.exists_trace_one
-  rw [← show D.sp.cm.sig (c : D.host.E) = D.host.conj c from D.host.φ₀.injective
-    (((isCMExt_host D).2.2.2 _ _).trans (Formalism.HC.HostAx.conjE_apply _ _ _).symm)] at hc
-  have key : ∀ (x y : Fin (wittIndex V) → V.V) (j i : Fin (wittIndex V)),
-      (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (Matrix.of fun z k => V.frame.repr (x k) z) * V.gram *
-        Matrix.of fun z k => V.frame.repr (y k) z) j i = V.hD (y i) (x j) := by
-    intro x y j i
-    have := GlobalTheory.AutFunCompare.hT_col D.sp.cm V (Matrix.of fun z k => V.frame.repr (x k) z) j (y i)
-    have e : GlobalTheory.AutFunCompare.vecOf V ((Matrix.of fun z k => V.frame.repr (x k) z)ᵀ j) = x j :=
-      V.frame.equivFun.symm_apply_apply (x j)
-    rw [e] at this
-    change _ = V.hT (x j) (y i)
-    rw [this]; rfl
-  obtain ⟨q, k, hk, hg, β, hβ⟩ := exists_loc (isCMExt_host D) (c := c) hc (GlobalTheory.Doubling.isHermND_gram V)
-    (hi.resolve_left hv)
-    ((GlobalTheory.SelfDualLatticeCompare.unram_iff ..).2 fun u hu =>
-      haveI := u.isPrime
-      GlobalTheory.FinPl.TamePlaces.extUnramAt D v u.asIdeal hu)
-    (hG.2.1 v) (e := Matrix.of fun z k => V.frame.repr (Φ.e k) z)
-    (p := Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (Matrix.of fun z k => V.frame.repr (Φ.f k) z) * V.gram)
-    (by ext j i; rw [key, Φ.ef, Matrix.one_apply]; simp only [eq_comm])
-    (by ext j i; rw [key, Φ.ee]; rfl) g
-  exact ⟨q, k, hk, hg, β, hβ⟩
 
 end GlobalTheory.InertIwasawaLoc
 

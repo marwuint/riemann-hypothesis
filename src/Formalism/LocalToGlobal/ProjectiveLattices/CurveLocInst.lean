@@ -58,34 +58,11 @@ theorem hone_of (hC : CompSplitSt h j hG) :
   exact CurveLoc.one_of_split (recPlus h j hj) la G.N G.w (fun Z => Om Z) (fun Z => formsEvR j hG hT Z)
     (fun Z k => split_of h j hj hG hT hC G Z k) Q hQ Z Z' hZ hZ'
 
-theorem hloc_of (hB : ∀ (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore))
-      (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → BIRSt h j hj hG G)
-    (hQ : CountQAtSt h j hj hG hT) :
-    ∀ ka wL wF G S g0 la, CurveHyp h j hj hG ka wL wF G S g0 →
-      ∀ Z (r : RZs (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hT Z) G.w),
-        ∃ a p : ↥(Frac0 (recPlus h j hj) la G.w),
-          (∀ Q : Ideal ↥(Frac0 (recPlus h j hj) la G.w), Q.IsPrime → Jid (recPlus h j hj) la G.w ≤ Q →
-            RingHom.ker (phiI h j hj hG hT la G Z) ≤ Q → p ∉ Q) ∧
-          phiI h j hj hG hT la G Z p * r = phiI h j hj hG hT la G Z a := by
-  intro ka wL wF G S g0 la hH Z r
-  exact CurveLoc.loc_of_bir (recPlus h j hj) la G.N G.w (formsEvR j hG hT Z)
-    (birAt_of h j hj hG hT G (hB ka wL wF G S g0 hH) Z) (hQ ka wL wF G S g0 la hH Z) r
-
 theorem countQAtSt_holds : CountQAtSt h j hj hG hT := by
   intro ka wL wF G S g0 la hH Z
   obtain ⟨k₀, hk₀, htr⟩ := hH.2.1.2 Z
   exact CurveLoc.countQAt_of (recPlus h j hj) la G.N G.w (formsEvR j hG hT Z)
     (fun i => evC hG Z ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j))
     (fun i => formsEvR_inc h j hj hG hT Z wL (G.w i)) ⟨k₀, hk₀, le_of_eq htr⟩
-
-theorem hloc_of_bir (hB : ∀ (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore))
-      (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → BIRSt h j hj hG G) :
-    ∀ ka wL wF G S g0 la, CurveHyp h j hj hG ka wL wF G S g0 →
-      ∀ Z (r : RZs (recPlus h j hj) la G.N (Om Z) (formsEvR j hG hT Z) G.w),
-        ∃ a p : ↥(Frac0 (recPlus h j hj) la G.w),
-          (∀ Q : Ideal ↥(Frac0 (recPlus h j hj) la G.w), Q.IsPrime → Jid (recPlus h j hj) la G.w ≤ Q →
-            RingHom.ker (phiI h j hj hG hT la G Z) ≤ Q → p ∉ Q) ∧
-          phiI h j hj hG hT la G Z p * r = phiI h j hj hG hT la G Z a :=
-  hloc_of h j hj hG hT hB (countQAtSt_holds h j hj hG hT)
 
 end Formalism.L2.Pj

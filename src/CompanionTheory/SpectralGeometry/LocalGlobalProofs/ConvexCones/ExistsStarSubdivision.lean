@@ -2,11 +2,17 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionInvariantPolyhedralFan
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarDepthTwistedGaloisStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StrictStarFunctionBoundsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarFunctionLinearOnCellStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.IsStarOfClausesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarIntegralValuesPolyhedralStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarDepthTwistedGalois
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionDepthHostFixingAutInvariant
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToFunNonneg
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionFunctionIntegralStrictlyCon
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StrictStarFunctionBounds
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarFunctionLinearOnCell
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionFunctionLinearOnCells
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.IsStarOfClauses
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionCellMemStarConeOrCentreless
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarIntegralValuesPolyhedral
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyFanOfStarSubdivisionCells
 
 noncomputable section
 
@@ -22,8 +28,8 @@ theorem isTwG_starFun {O : Type} [CommRing O] [Module.Finite ℤ O] {bar : O →
 
 theorem exists_starSubdivision : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (ψ w : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsTwG w0 ψ → IsTwG w0 w → IsCentreSet bar q ψ w → ∃ ψ' : InvFun O, IsPolyFan bar q ψ' ∧ IsTwG w0 ψ' ∧ Subordinate bar q ψ' ψ ∧ IsStarOf bar q ψ w ψ' := by
   intro O _ _ _ _ bar w0 hb q ψ w hDom hψ htψ htw hW
-  obtain ⟨K, D, hK, hD, hint, hs1, hs2⟩ := GlobalTheory.T.strict_star_function_bounds O bar hb q ψ w hDom hψ hW
-  obtain ⟨hl1, hl2⟩ := GlobalTheory.T.star_function_linear_on_cell O bar hb q ψ w K D hW
+  obtain ⟨K, D, hK, hD, hint, hs1, hs2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.StrictStarFunction.exists_starFun_strict O bar hb q ψ w hDom hψ hW
+  obtain ⟨hl1, hl2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.StarFunctionLinear.starFun_linearOn O bar hb q ψ w K D hW
   have c1 : ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X],
       Module.finrank O X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ →
         (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0) →
@@ -43,7 +49,7 @@ theorem exists_starSubdivision : ∀ (O : Type) [CommRing O] [IsDedekindDomain O
     · refine Fin.cases ?_ (fun j => ?_) i
       · simpa using hp y
       · simpa using hγ.nonneg (s j) y
-  have hstar : IsStarOf bar q ψ w (starFun bar ψ w K D) := GlobalTheory.T.is_star_of_clauses O bar hb q ψ w _ hψ hW c1 c2
+  have hstar : IsStarOf bar q ψ w (starFun bar ψ w K D) := _root_.GlobalTheory.CompanionTheory.Ar.Fan.StarOfClauses.isStarOf_of_clauses O bar hb q ψ w _ hψ hW c1 c2
   have hpos : ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X],
       Module.finrank O X ≤ q → ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → β ≠ 0 →
         0 < (starFun bar ψ w K D).evalZ β := by
@@ -54,7 +60,7 @@ theorem exists_starSubdivision : ∀ (O : Type) [CommRing O] [IsDedekindDomain O
     have hK' : (0 : ℝ) < K := by exact_mod_cast hK
     have hD' : (0 : ℝ) < D := by exact_mod_cast hD
     positivity
-  exact ⟨starFun bar ψ w K D, GlobalTheory.T.star_integral_values_polyhedral O bar hb q ψ w _ hψ hW hstar hint hpos,
-    isTwG_starFun htψ (GlobalTheory.T.star_depth_twisted_galois O bar w0 hb ψ w htψ htw) K D, GlobalTheory.T.starSubdivision_subordinate_to_fan _ bar q ψ w _ hstar, hstar⟩
+  exact ⟨starFun bar ψ w K D, _root_.GlobalTheory.CompanionTheory.Ar.Fan.StarPolyhedralFan.isPolyFan_star O bar hb q ψ w _ hψ hW hstar hint hpos,
+    isTwG_starFun htψ (_root_.GlobalTheory.CompanionTheory.Ar.Fan.StarDepthTwist.isTwG_starDepth O bar w0 hb ψ w htψ htw) K D, _root_.GlobalTheory.PolFan.subordinate_of_isStarOf _ bar q ψ w _ hstar, hstar⟩
 
 end GlobalTheory.CompanionTheory.Ar.Fan.StarSubdivision

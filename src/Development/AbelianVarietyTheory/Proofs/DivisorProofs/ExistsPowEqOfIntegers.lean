@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjectiveOfEqZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DUnitMemRangeOfMemKerIdeal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulPMemSqCounitKerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomCotangentPullbackInjectiveOfSqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupOmegaNoPTorsionOfCotangentInjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulPMemSqCounitKer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomCotangentPullbackInjectiveOfSq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupOmegaNoPTorsionOfCotangentInjective
 
 set_option autoImplicit false
 
@@ -32,8 +32,8 @@ theorem omega_finite_projective (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [I
     rw [map_natCast, map_zero] at this
     exact (Fact.out : p.Prime).ne_zero (Nat.cast_eq_zero.1 this)
   have htf : ∀ w : G.omega, (p : O) • w = 0 → w = 0 :=
-    GlobalTheory.T.pDivGroup_omega_noPTorsion_of_cotangent_injective p O G fun n => GlobalTheory.T.bialgHomCotangentPullback_injective_of_sq O _ _ (G.mulP n)
-      (GlobalTheory.T.mulP_mem_sq_counit_ker p O hp Fact.out (exists_pow_eq_of_integers hv (Fact.out : p.Prime).pos) G n)
+    _root_.GlobalTheory.omega_eq_zero_of_p_smul_eq_zero p O G fun n => _root_.GlobalTheory.PDiv.cotMap_injective_of_sq O _ _ (G.mulP n)
+      (_root_.GlobalTheory.PDivGroup.mulP_mem_sq_counit p O hp Fact.out (exists_pow_eq_of_integers hv (Fact.out : p.Prime).pos) G n)
   have htfk : ∀ (k : ℕ) (w : G.omega), (p : O) ^ k • w = 0 → w = 0 := fun k => by
     induction k with
     | zero => intro w hw; rwa [pow_zero, one_smul] at hw

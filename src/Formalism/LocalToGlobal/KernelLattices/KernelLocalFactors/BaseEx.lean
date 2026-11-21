@@ -4,15 +4,19 @@ import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.IsAdmissibleFla
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.SplitK
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerPerPair
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KernelLatticeT0Exists
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerFourSq
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerExtC
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerSelfDual
+import Formalism.PeriodIntegrals.KerLat
+import Formalism.PeriodIntegrals.KerIso
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FourSquareQuaternions.OrthogonalDiagonal
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FourSquareQuaternions.QmapInjective
+import Formalism.PeriodIntegrals.SelfDualOfDiff
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerSplit
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerDetOrd
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerDetFin
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerTens
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.KerLocIso
+import Formalism.PeriodIntegrals.KerTens
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TensorSpanning.TensSpans
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalLatticeIsomorphism.LatticeFromNormOne
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalLatticeIsomorphism.RpOfIsIntegral
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalLatticeIsomorphism.LatticeFromNormOneInduction
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 
 noncomputable section
@@ -35,15 +39,6 @@ theorem phi_conj (φ : H.E →+* ℂ) (x : H.E) : φ (H.conj x) = conj (φ x) :=
 theorem d_pos : 0 < H.d := H.hyp.2.1.pos
 
 theorem bE_sq : H.sqd ^ 2 = -(H.d : H.E) := H.sqd_sq
-
-theorem bE_ne : H.sqd ≠ 0 := by
-  intro h0
-  have h := bE_sq H
-  rw [h0] at h
-  have hd : (H.d : H.E) ≠ 0 := Nat.cast_ne_zero.mpr (d_pos H).ne'
-  apply hd
-  have : -(H.d : H.E) = 0 := by rw [← h]; simp
-  simpa using this
 
 theorem conj_b : H.conj (H.sqd) = -H.sqd := by
   apply H.φ₀.injective
@@ -85,38 +80,6 @@ theorem fix_K (σ : H.E ≃ₐ[ℚ] H.E) (hσ : σ (H.sqd) = H.sqd) (k : H.K) : 
 theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   apply H.φ₀.injective
   rw [phi_conj, phi_conj, Complex.conj_conj]
-
-theorem isConj : PI.KerIso.IsConj H.K H.conj := by
-  refine ⟨conj_conj H, fun k => ⟨⟨H.conj (k : H.E), conj_mem_K H k⟩, rfl⟩, ⟨bK H, ?_⟩⟩
-  intro h
-  have h1 : H.conj (H.sqd) = H.sqd := h
-  rw [conj_b] at h1
-  have h2 : (2 : H.E) * H.sqd = 0 := by linear_combination -h1
-  rcases mul_eq_zero.mp h2 with h3 | h3
-  · exact two_ne_zero h3
-  · exact bE_ne H h3
-
-theorem tr_pos (x : H.E) (hx : x ≠ 0) : 0 < Algebra.trace ℚ H.E (x * H.conj x) := by
-  have h := trace_eq_sum_embeddings (K := ℚ) (L := H.E) ℂ (x := x * H.conj x)
-  have h2 : ∀ σ : H.E →ₐ[ℚ] ℂ, σ (x * H.conj x) = ((Complex.normSq (σ x) : ℝ) : ℂ) := by
-    intro σ
-    have h3 := phi_conj H (σ : H.E →+* ℂ) x
-    rw [map_mul]
-    have h4 : σ (H.conj x) = conj (σ x) := h3
-    rw [h4, Complex.mul_conj]
-  rw [Finset.sum_congr rfl (fun σ _ => h2 σ), ← Complex.ofReal_sum] at h
-  have h5 : ((Algebra.trace ℚ H.E (x * H.conj x) : ℚ) : ℝ) = ∑ σ : H.E →ₐ[ℚ] ℂ, Complex.normSq (σ x) := by
-    apply Complex.ofReal_injective
-    rw [← h]
-    simp
-  have h6 : 0 < ∑ σ : H.E →ₐ[ℚ] ℂ, Complex.normSq (σ x) := by
-    have : Nonempty (H.E →ₐ[ℚ] ℂ) := ⟨(H.φ₀ : H.E →+* ℂ).toRatAlgHom⟩
-    apply Finset.sum_pos
-    · intro σ _
-      exact Complex.normSq_pos.mpr ((map_ne_zero σ).mpr hx)
-    · exact Finset.univ_nonempty
-  rw [← h5] at h6
-  exact_mod_cast h6
 
 theorem finrank_E_K : Module.finrank H.K H.E = 2 * R.ord := by
   have h1 := Module.finrank_mul_finrank ℚ H.K H.E
@@ -167,27 +130,6 @@ theorem phi_thetaK : H.φ₀ (((thetaK H : 𝓞 H.K) : H.K) : H.E) = (1 + Comple
     simp [thetaK, bK]
     rfl
   rw [h, map_div₀, map_add, map_one, phi_b, map_ofNat]
-
-theorem conj_ideal (B : Ideal (𝓞 H.E)) (x : 𝓞 H.E) :
-    x ∈ H.conj • B ↔ ∃ y ∈ B, H.conj (y : H.E) = (x : H.E) := by
-  constructor
-  · intro hx
-    refine ⟨H.conj⁻¹ • x, Ideal.mem_pointwise_smul_iff_inv_smul_mem.mp hx, ?_⟩
-    show H.conj (H.conj.symm (x : H.E)) = _
-    exact H.conj.apply_symm_apply _
-  · rintro ⟨y, hy, hxy⟩
-    have : x = H.conj • y := by
-      apply RingOfIntegers.ext
-      rw [← hxy]
-      rfl
-    rw [this]
-    exact Ideal.smul_mem_pointwise_smul _ _ _ hy
-
-theorem host_selfDual : PI.KerIso.SelfDualI H.K H.conj H.AA0 :=
-  kernel_self_dual_of_different H.K H.E H.conj H.𝔟 (H.conj • H.𝔟) (isConj H) (conj_ideal H H.𝔟) H.𝔟_spec.1
-
-theorem host_splits (p : ℕ) (hp : p.Prime) (hs : p = 2 ∨ jacobiSym (-(H.d : ℤ)) p = 1) : PI.KerIso.SplitsAt H.K H.conj p :=
-  kernel_split_of_jacobi H.K H.E H.conj H.d p (bK H) (d_mod_eight_eq_seven H) (bK_mul H) (conj_b H) hp hs
 
 end Host
 
@@ -265,32 +207,9 @@ theorem Base.half_not_mem {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : 
   have h1 : B.ω₀ / 2 ∈ TaylorLogMetric.lamOf D cc δ := by rw [← B.lat]; exact h
   exact B.t0.2.1 (latStable D cc δ _ h1)
 
-theorem Base.thZeroSpans {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (hS : B.StdOK) (N N' : ℕ) :
-    B.ThZeroSpans N N' := by
-  intro F hF
-  have hsp := isThM_spans B.L B.ω₀ B.cq B.lamM B.gC B.kappa hS B.kappa_ne_zero (B.thMM_spec hS)
-  have e : TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ) = Formalism.L2.Th1.F.area B.L := B.areaOK
-  have h0' : TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = powLat B.lamM N N' := B.lat0OK N N'
-  have hq := B.qInt0 hS N N'
-  have h2 : F ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N')
-      (Formalism.L2.Th1.H.alphaQ B.cq (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N'))
-      (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) := by
-    refine Th_congr _ _ _ _ (fun x hx => ?_) hF
-    obtain ⟨m, hm⟩ := hq x hx
-    exact al_eq D B.tor x m hm
-  rw [e, h0'] at h2
-  exact kernel_tensor_spans B.cq B.L D.what₂.Tau B.lamM B.thMM hsp N N' F h2
-
 end Final
 
 namespace Test
-
-open Formalism.BasicNotions.Examples₂
-
-theorem tr_one : 0 < Algebra.trace ℚ H0.E (1 * H0.conj 1) := tr_pos H0 1 one_ne_zero
-
-theorem example_ideal_self_dual : PI.KerIso.SelfDualI H0.K H0.conj H0.AA0 := host_selfDual H0
-theorem two_splits : PI.KerIso.SplitsAt H0.K H0.conj 2 := host_splits H0 2 Nat.prime_two (Or.inl rfl)
 
 end Test
 

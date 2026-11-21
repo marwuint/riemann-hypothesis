@@ -132,7 +132,7 @@ theorem pt_tilF_gen : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → P
   obtain ⟨m, hm, rfl⟩ := Subgroup.mem_map.1 ht
   have hB := (isPtOf_mul_J0 B.host.F B.host.E B.sp.cm _ ((B.primes X).vT u) (B.primes X).vGs ∅ _ m.1 _
     (tilFr (ST := (B.primes X).vT u) hN ((B.primes X).piT u) (extTo ∅ d)) 1).2.1 rfl hA m.2 (by rw [inv_one]; exact hm)
-  obtain ⟨-, -, hiX, -⟩ := GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hI hP l Z
+  obtain ⟨-, -, hiX, -⟩ := _root_.GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z
   have hpi0 : ((X.piT u : 𝓞 B.host.E) : B.host.E) ≠ 0 := by
     intro h0
     have h1 : X.piT u = 0 := RingOfIntegers.ext h0

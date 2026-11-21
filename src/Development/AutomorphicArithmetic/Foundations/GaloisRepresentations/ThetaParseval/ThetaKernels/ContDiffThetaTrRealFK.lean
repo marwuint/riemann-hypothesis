@@ -51,7 +51,7 @@ theorem contDiff_thetaTr_realF_k : ∀ (F E : Type) [Field F] [NumberField F] [F
   | mem Φ h =>
     obtain ⟨f, g, hg, rfl⟩ := h
     intro w
-    obtain ⟨M, hM⟩ := GlobalTheory.T.summable_rational_schwartzBruhat_mul_polynomial_decay F κ g hg (fun i => ((co.e w).1 i).2)
+    obtain ⟨M, hM⟩ := _root_.GlobalTheory.LatSumSB.summable_sb_mul_decay F κ g hg (fun i => ((co.e w).1 i).2)
     let eM := InfiniteAdeleRing.ringEquiv_mixedSpace F
     let yv : (κ → F) → (κ → mixedEmbedding.mixedSpace F) := fun x i => mixedEmbedding F (x i)
     let ah : κ → mixedEmbedding.mixedSpace F := fun i => eM ((co.e w).1 i).1

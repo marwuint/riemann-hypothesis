@@ -157,8 +157,4 @@ theorem frame_unit_of_tie (h : ∀ v x y, Formalism.HermitianLatticesTheory.majA
 
 end Comparison₂
 
-section Norm
-
-end Norm
-
 end Formalism.MainNotions.DIV.HookProducts.RBTie

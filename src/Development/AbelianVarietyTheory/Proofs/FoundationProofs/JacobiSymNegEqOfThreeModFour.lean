@@ -16,7 +16,4 @@ theorem jacobiSym_neg_eq_of_three_mod_four (q n : ℕ) (hq : q % 4 = 3) (hn : Od
       jacobiSym.quadratic_reciprocity_three_mod_four hq h]
     ring
 
-theorem kronOdd_holds : Formalism.HermitianLattices.GL2a2.KronOdd :=
-  fun q n hq hn => jacobiSym_neg_eq_of_three_mod_four q n hq hn
-
 end GlobalTheory

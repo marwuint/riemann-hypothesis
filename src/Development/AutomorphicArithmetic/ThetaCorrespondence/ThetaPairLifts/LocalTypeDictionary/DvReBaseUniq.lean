@@ -1,5 +1,7 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AutomorphicArithmetic.LocalEmbeddings.ReBaseUniq
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRealmapsIsomorphism
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatchedFiniteMapsRestriction
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.MemPolarizationStabilizerOfDualPair
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.PolarizationRankLeDim
@@ -137,7 +139,7 @@ theorem real_maps_unique : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F
     rw [Module.End.mul_apply, Module.End.mul_apply, lhs, rhs]
   have hrank : Module.rank ℂ R.Pi ≤ Cardinal.aleph0 :=
     (LinearMap.rank_le_of_surjective π hπ).trans (_root_.GlobalTheory.T.polarization_rank_le_dim hKP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hPV)
-  obtain ⟨c, hc⟩ := GlobalTheory.T.eq_smul_one_of_commute_irreducible_of_countable_rank R.Pi ι ρ T hR.nontriv hrank irrρ comm
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.dixmier_schur_of_rank_le_aleph0 R.Pi ι ρ T hR.nontriv hrank irrρ comm
   have hT : ∀ x, T x = c • x := fun x => by rw [hc]; rfl
   refine ⟨ψ, c, ?_, hψ, fun f hf => ?_⟩
   · rintro rfl
@@ -151,9 +153,6 @@ theorem real_maps_unique : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F
           rw [LinearEquiv.apply_symm_apply]
     _ = c • ψ (R.p' f) := by rw [hT, map_smul]
 end Real
-section Fin
-open GlobalTheory.FinUniq
-end Fin
 end GlobalTheory.ReBase
 end
 end

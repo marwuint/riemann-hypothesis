@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIrreducibleFibreFstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImageSndOfSubsetSemiAbelianFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSpecializesSemiAbelianSquareSameProjectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIrreducibleFibreFst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImageSndOfSubsetSemiAbelianFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSpecializesSemiAbelianSquareSameProjections
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -56,7 +57,7 @@ theorem exists_open_mul_mem : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoe
       · rw [← Scheme.Hom.comp_apply, ← Over.comp_left, hΨ2]
   have hFirr : IsIrreducible F := by
     rw [← hsurj v hvc]
-    exact (GlobalTheory.T.isIrreducible_preimage_fst_of_isSemiAbelian R G hG v).image _ (snd G G).left.continuous.continuousOn
+    exact (_root_.GlobalTheory.MoverFibre.isIrreducible_fibre_fst R G hG v).image _ (snd G G).left.continuous.continuousOn
   set gpt := hFirr.genericPoint
   have hgp : IsGenericPoint gpt F := by
     have := hFirr.isGenericPoint_genericPoint_closure
@@ -75,21 +76,21 @@ theorem exists_open_mul_mem : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoe
     (snd G G).left '' ((fst G G).left ⁻¹' {x} ∩ μ[G].left ⁻¹' (V : Set G.left)ᶜ)
   have hTc : ∀ x ∈ s, IsClosed (T x) := by
     intro x hx
-    refine GlobalTheory.T.isClosed_image_snd_of_subset_semiAbelian_fibre R G hG x (hs x hx).1 (hs x hx).2 _ ?_ Set.inter_subset_left
+    refine _root_.GlobalTheory.Mum.isClosed_image_snd_of_subset_fibre_closedPoint R G hG x (hs x hx).1 (hs x hx).2 _ ?_ Set.inter_subset_left
     exact ((hs x hx).2.preimage (fst G G).left.continuous).inter
       (V.isOpen.isClosed_compl.preimage μ[G].left.continuous)
   have hgpV : gpt ∈ (V : Set G.left) := (hgp.specializes (show v ∈ F from hvc)).mem_open V.isOpen hvV
   have hgpT : ∀ x ∈ s, gpt ∉ T x := by
     intro x hx ⟨n, ⟨hn1, hn2⟩, hn3⟩
     have hZc : IsClosed ((fst G G).left ⁻¹' {x}) := (hs x hx).2.preimage (fst G G).left.continuous
-    have hZi := GlobalTheory.T.isIrreducible_preimage_fst_of_isSemiAbelian R G hG x
+    have hZi := _root_.GlobalTheory.MoverFibre.isIrreducible_fibre_fst R G hG x
     have hξ : IsGenericPoint hZi.genericPoint ((fst G G).left ⁻¹' {x}) := by
       have := hZi.isGenericPoint_genericPoint_closure
       rwa [hZc.closure_eq] at this
     have e2 := gen_of _ (snd G G).left.continuous _ _ hξ (hsurj x (hs x hx).1)
     have em := gen_of _ μ[G].left.continuous _ _ hξ (hmsurj x (hs x hx).1)
     have hnξ : hZi.genericPoint = n :=
-      GlobalTheory.T.eq_of_specializes_semiAbelian_square_same_projections R G hG x (hs x hx).1 (hs x hx).2 _ _ hξ.mem hn1 (e2.trans hn3.symm) (hξ.specializes hn1)
+      _root_.GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq R G hG x (hs x hx).1 (hs x hx).2 _ _ hξ.mem hn1 (e2.trans hn3.symm) (hξ.specializes hn1)
     exact hn2 (hnξ ▸ em ▸ hgpV)
   refine ⟨⟨(⋃ x ∈ (s : Set G.left), T x)ᶜ,
     isOpen_compl_iff.2 (s.finite_toSet.isClosed_biUnion hTc)⟩, ⟨gpt, ?_, hgp.mem⟩, ?_⟩

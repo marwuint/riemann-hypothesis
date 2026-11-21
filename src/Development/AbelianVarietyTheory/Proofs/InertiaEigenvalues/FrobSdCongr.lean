@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CstSApply
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusMapsDividedPowerSeriesGeneratorSetStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusMapsDividedPowerSeriesGeneratorSet
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittTiltFrobeniusEqPowAddMulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DividedPowerMonomialFrobeniusCongrPowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DividedPowerMonomialFrobeniusCongrPow
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DividedPowerSeriesGeneratorSetEqSumAddMulStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DividedPowerSeriesSubringEqGeneratorSet
 
@@ -59,14 +59,14 @@ theorem frob_sd_congr : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZ
     rw [hf, hx, map_add, map_pow, map_mul, map_natCast]
   have gdp : ∀ n, G (dpS a e n) := by
     intro n
-    obtain ⟨hm, B, hB, eB⟩ := GlobalTheory.T.dividedPowerMonomial_frobenius_congr_pow l a e O K t n
+    obtain ⟨hm, B, hB, eB⟩ := _root_.GlobalTheory.CrysPrism.dpS_frob_good l a e O K t n
     exact ⟨memS hm, B, memS hB, eB⟩
   have gsum : ∀ (N : ℕ) (v : ℕ → Wq l a), G (∑ n ∈ Finset.range N, cstS t K (v n) * dpS a e n) := by
     intro N v
     refine Finset.sum_induction _ G gadd ⟨(Sd t K e).zero_mem, 0, (Sd t K e).zero_mem, ?_⟩ fun n _ => gmul _ _ (gcst _) (gdp n)
     rw [map_zero, zero_pow hl0, mul_zero, add_zero]
   intro F hF
-  refine ⟨GlobalTheory.T.frobenius_maps_dividedPowerSeriesGeneratorSet l a e O K t F hF, ?_⟩
+  refine ⟨_root_.GlobalTheory.CrysPrism.frobTot_mem_SdSet l a e O K t F hF, ?_⟩
   obtain ⟨N, v, y, hy, hFe⟩ := GlobalTheory.T.dividedPowerSeriesGeneratorSet_eq_sum_add_mul l a e O K t F hF
   obtain ⟨hg, Bg, hBg, eg⟩ := gsum N v
   set g := ∑ n ∈ Finset.range N, cstS t K (v n) * dpS a e n
@@ -79,7 +79,7 @@ theorem frob_sd_congr : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZ
     have h := geom_sum₂_mul (g + L * y) g l
     linear_combination -h
   refine ⟨Bg + frobTot K a l y - y * Q, hclosed _ ((Sd t K e).sub_mem ((Sd t K e).add_mem hBg
-    (memS (GlobalTheory.T.frobenius_maps_dividedPowerSeriesGeneratorSet l a e O K t y hy))) ((Sd t K e).mul_mem (memS hy) hQ)), ?_⟩
+    (memS (_root_.GlobalTheory.CrysPrism.frobTot_mem_SdSet l a e O K t y hy))) ((Sd t K e).mul_mem (memS hy) hQ)), ?_⟩
   rw [hFe, map_add, map_mul, map_natCast]
   linear_combination eg - geo
 

@@ -39,33 +39,6 @@ theorem hp_sum_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : Petersso
     rw [Submodule.coe_sum] at h
     exact h
 
-theorem iSupIndep_of_orth {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : PeterssonHilbertSpace.IsHermPos C ip) {ι : Type}
-    (W : ι → Submodule ℂ C) (horth : ∀ i j, i ≠ j → ∀ x ∈ W i, ∀ y ∈ W j, ip x y = 0) : iSupIndep W := by
-  rw [iSupIndep_def]
-  intro i
-  rw [Submodule.disjoint_def]
-  intro x hx hxS
-  have hs : ∀ (s : ℂ) (y : C), ip (x : A) ((s • y : C) : A) = s * ip (x : A) (y : A) := by
-    intro s y
-    rw [← hp.herm (s • y) x, Submodule.coe_smul, hp.smul s y x, map_mul, Complex.conj_conj, hp.herm y x]
-  let ℓ : C →ₗ[ℂ] ℂ :=
-    { toFun := fun y => ip (x : A) (y : A)
-      map_add' := fun y z => by
-        simp only [Submodule.coe_add]
-        exact hp_add_right hp x y z
-      map_smul' := fun s y => by
-        simp only [RingHom.id_apply, smul_eq_mul]
-        exact hs s y }
-  have hle : (⨆ (j : ι) (_ : j ≠ i), W j) ≤ LinearMap.ker ℓ := by
-    refine iSup₂_le fun j hj y hy => ?_
-    rw [LinearMap.mem_ker]
-    exact horth i j (Ne.symm hj) x hx y hy
-  have h0 : ip (x : A) (x : A) = 0 := hle hxS
-  by_contra hne
-  have := hp.pos x hne
-  rw [h0, Complex.zero_re] at this
-  exact lt_irrefl _ this
-
 end Indep
 
 section F
@@ -115,62 +88,6 @@ theorem isotL_iso (P : RowPsi W n) (M : Mult.DSModel W SpW) (J : Set (GA D W)) (
     isotL θ P M J χ e π = isotL θ P M J χ e π' := by
   unfold isotL
   rw [isotIn_iso (actM P M) (Minf θ P M) h]
-
-open Classical in
-
-def IsotF (PY : RowPsi Y n) (MY : Mult.DSModel Y SpY) (JY : Bool → Set (GA D Y)) (χY : Bool → GA D Y → ℂ)
-    (eY : Bool → (GA D Y → ℂ) →ₗ[ℂ] (GA D Y → ℂ)) (PW : RowPsi W n) (MW : Mult.DSModel W SpW) (JW : Set (GA D W))
-    (χW : GA D W → ℂ) (eW : (GA D W → ℂ) →ₗ[ℂ] (GA D W → ℂ)) : Prop :=
-  DirectSum.IsInternal (fun σ : FTR θ PY MY JY χY eY =>
-    (isotL θ PW MW JW χW eW (rowRepR θ σ)).comap (Mult.goodPart θ MW JW χW eW).subtype)
-
-open Classical in
-
-theorem isotF_of (PY : RowPsi Y n) (MY : Mult.DSModel Y SpY) (JY : Bool → Set (GA D Y)) (χY : Bool → GA D Y → ℂ)
-    (eY : Bool → (GA D Y → ℂ) →ₗ[ℂ] (GA D Y → ℂ)) (PW : RowPsi W n) (MW : Mult.DSModel W SpW) (JW : Set (GA D W))
-    (χW : GA D W → ℂ) (eW : (GA D W → ℂ) →ₗ[ℂ] (GA D W → ℂ)) {μ : Measure (GA D W)} {𝓕 : Set (GA D W)}
-    (hD : IsotDecomp θ PW MW JW χW eW μ 𝓕)
-    (hp : PeterssonHilbertSpace.IsHermPos (Mult.goodPart θ MW JW χW eW) (Mult.ipM MW μ 𝓕))
-    (hocc : ∀ π, isotL θ PW MW JW χW eW π ≠ ⊥ → ∃ σ : FTR θ PY MY JY χY eY, (rowRepR θ σ).Iso π) :
-    IsotF θ PY MY JY χY eY PW MW JW χW eW := by
-  unfold IsotF
-  rw [DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
-  have hle : ∀ π, isotL θ PW MW JW χW eW π ≤ Mult.goodPart θ MW JW χW eW := fun π => by
-    unfold isotL
-    exact inf_le_left
-  constructor
-  · refine iSupIndep_of_orth hp _ ?_
-    intro σ σ' hne x hx y hy
-    refine hD.2 (rowRepR θ σ) (rowRepR θ σ') ?_ x hx y hy
-    intro hiso
-    apply hne
-    exact Quotient.out_equiv_out.1 hiso
-  · have hmap : ∀ σ : FTR θ PY MY JY χY eY,
-        ((isotL θ PW MW JW χW eW (rowRepR θ σ)).comap (Mult.goodPart θ MW JW χW eW).subtype).map
-          (Mult.goodPart θ MW JW χW eW).subtype = isotL θ PW MW JW χW eW (rowRepR θ σ) := fun σ => by
-      rw [Submodule.map_comap_subtype]
-      exact inf_eq_right.2 (hle _)
-    have hGle : Mult.goodPart θ MW JW χW eW ≤
-        (⨆ σ : FTR θ PY MY JY χY eY,
-          (isotL θ PW MW JW χW eW (rowRepR θ σ)).comap (Mult.goodPart θ MW JW χW eW).subtype).map
-          (Mult.goodPart θ MW JW χW eW).subtype := by
-      rw [Submodule.map_iSup]
-      simp only [hmap]
-      rw [hD.1]
-      refine iSup_le fun π => ?_
-      by_cases h0 : isotL θ PW MW JW χW eW π = ⊥
-      · rw [h0]
-        exact bot_le
-      · obtain ⟨σ, hσ⟩ := hocc π h0
-        rw [← isotL_iso θ PW MW JW χW eW hσ]
-        exact le_iSup (fun σ => isotL θ PW MW JW χW eW (rowRepR θ σ)) σ
-    rw [eq_top_iff]
-    intro x _
-    obtain ⟨y, hy, hxy⟩ := hGle x.2
-    have h2 : (y : Mult.MMap MW) = x := hxy
-    have h3 : y = x := Subtype.ext h2
-    rw [← h3]
-    exact hy
 
 end F
 

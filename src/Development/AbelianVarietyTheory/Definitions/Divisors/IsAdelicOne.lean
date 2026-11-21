@@ -37,12 +37,6 @@ def matNorm (Y : (K →+* ℂ) → Matrix ι ι ℂ) (σ : K →+* ℂ) (x : ι 
 def detDeg (A : HeightOneSpectrum (𝓞 K) → Matrix ι ι K) (Y : (K →+* ℂ) → Matrix ι ι ℂ) : ℝ :=
   GlobalTheory.FlatLine.lineDeg (fun σ => ‖(Y σ).det‖) (fun w => (vAdd w (A w).det : ℝ))
 
-theorem isAdelic_one : IsAdelic (fun _ : HeightOneSpectrum (𝓞 K) => (1 : Matrix ι ι K)) := by
-  refine ⟨fun _ => by simp, ?_⟩
-  have h : ∀ w : HeightOneSpectrum (𝓞 K), IntAt w (1 : Matrix ι ι K) := fun w i j => by
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
-  simp [h]
-
 end Adelic
 
 section Tensor
@@ -68,8 +62,6 @@ def fibA (la : ∀ t, Fin (N t) → ℕ) {K : Type} [Field K] [CharZero K] (a : 
 
 def fibY (la : ∀ t, Fin (N t) → ℕ) (s : ℝ) (X : ∀ t, Matrix (Fin (N t)) (Fin (N t)) ℂ) : Matrix (TIdx la) (TIdx la) ℂ :=
   (s : ℂ) • kron fun t => onMat (la t) * rhoMat (la t) (X t)
-
-example (la : ∀ t, Fin (N t) → ℕ) (y : ∀ t, Matrix (Fin (N t)) (Fin (N t)) ℚ) : tval la 0 y = 0 := by simp [tval]
 
 end Tensor
 

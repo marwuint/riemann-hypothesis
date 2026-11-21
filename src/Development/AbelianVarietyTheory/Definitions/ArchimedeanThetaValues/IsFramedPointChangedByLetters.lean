@@ -173,33 +173,9 @@ variable {K₁ : Type} [Field K₁] [Algebra c.F K₁] [Algebra c.F (ArcS Dw K�
 def ArcDatum.OverBase (d : ArcDatum Xo c K₁) : Prop :=
   d.χ ≫ d.Y.s = spMap (PowerSeries.C (R := K₁)) ≫ spMap ((algebraMap c.F K₁).comp (c.V d.Wp).subtype)
 
-theorem ArcDatum.overBase (d : ArcDatum Xo c K₁) : d.OverBase := d.arcDatum_isArc_point_basis.1
-
 def ArcDatum.Normal (d : ArcDatum Xo c K₁) (ζ : K₁) : Prop :=
   ∃ y₀ : FrPt Xo c (ArcS Dw K₁), IsArcFr d.W d.e d.th (arcι Dw K₁) y₀ ∧
     GlobalTheory.Frames.FrChg (letM Dw K₁) (cst Dw ζ) y₀ d.yF
-
-def ArcDatum.IsPullOf {K' K₁ : Type} [Field K'] [Algebra c.F K'] [Field K₁] [Algebra c.F K₁]
-    [Algebra c.F (ArcS Dw K')] [Algebra c.F (ArcS Dw K₁)]
-    (f : K' →+* K₁) (d : ArcDatum Xo c K') (d₁ : ArcDatum Xo c K₁) : Prop :=
-  algebraMap c.F K₁ = f.comp (algebraMap c.F K') ∧
-  ∃ p : Out.IsPullDeg f d.a.D₀ d₁.a.D₀, InBC f d.a d₁.a p ∧
-    (∀ ψ : FractionRing K' →+* FractionRing K₁, ψ.comp (algebraMap K' _) = (algebraMap K₁ _).comp f →
-      (∀ v, p.xe (d₁.a.eta v).y = (d.a.eta v).y ∧
-        (d₁.a.eta v).g.b.left ≫ p.e.hom.left ≫ pullback.fst d.a.D₀.P.A.hom (Out.specOf f) =
-          spMap ψ ≫ (d.a.eta v).g.b.left) ∧
-      (∀ v, p.xe (d₁.a.etaA v).y = (d.a.etaA v).y ∧
-        (d₁.a.etaA v).g.b.left ≫ p.e.hom.left ≫ pullback.fst d.a.D₀.P.A.hom (Out.specOf f) =
-          spMap ψ ≫ (d.a.etaA v).g.b.left)) ∧
-    HEq d₁.χ (spMap (PowerSeries.map f) ≫ d.χ) ∧ (∀ τ k, LetBC p (d.e τ k) (d₁.e τ k)) ∧ ThBC p d.th d₁.th ∧
-    (∀ th, IsArcPt3At d.Y (d.a.restrict (c.V d.Wp).subtype) d.χ d.W d.yF th →
-      ∃ th₁ : d₁.a.D₀.P.L.Sec,
-        IsArcPt3At d₁.Y (d₁.a.restrict (c.V d₁.Wp).subtype) d₁.χ d₁.W d₁.yF th₁ ∧ ThBC p th th₁) ∧
-    ∃ φ : ArcS Dw K' →ₐ[c.F] ArcS Dw K₁,
-      (∀ g : LaurentSeries K', ∃ g₁ : LaurentSeries K₁, (∀ m, g₁.coeff m = f (g.coeff m)) ∧
-        φ (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K')) _ (MvPolynomial.C g)) =
-          algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) _ (MvPolynomial.C g₁)) ∧
-      (∀ τ i k, φ (arcX Dw K' τ i k) = arcX Dw K₁ τ i k) ∧ FrMap φ d.yF d₁.yF
 
 section Fld
 
@@ -209,21 +185,6 @@ theorem lieImg_iff_isLieImage (W : Wit Y a χ) (ν : Out.GtPt a.D₀ (epsR K)) (
     LieImg W ν v ↔ IsLieImage W ν v := Iff.rfl
 
 theorem gtTanR_iff_gtTan (ν : Out.GtPt a.D₀ (epsR K)) : GtTanR ν ↔ GtTan (a := a) ν := Iff.rfl
-
-theorem arcBasis_iff_arcLieBasis [Algebra c.F K] (W : Wit Y a χ) (ρ : (E →+* ℂ) → (𝓞 E →+* K))
-    (hρ : ∀ τ x, ρ τ x = algebraMap c.F K (embK c τ x))
-    (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K)) : ArcBasis W ρ e ↔ ArcLieBasis W e := by
-  simp only [ArcBasis, ArcLieBasis, hρ]
-  exact Iff.rfl
-
-theorem IsArcFr.isArcPt3At [Algebra c.F K] [Algebra c.F (ArcS Dw K)] {W : Wit Y a χ}
-    {e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K)} {th : a.D₀.P.L.Sec}
-    {y : FrPt Xo c (ArcS Dw K)} (h : IsArcFr W e th (arcι Dw K) y) (hth : ∃ j, th.f j ≠ 0) :
-    IsArcPt3At Y a χ W y th := by
-  obtain ⟨-, t', m1, m2, φ, -, -, -, hφ0, hφ, -, θ, w1, w2, σ', s1, θ2, hΘ, hr1, hr2, hi1, hi2, hps, hs⟩ := h
-  obtain ⟨σ, fam, θ', hexp, hcoh, hσ, hθ⟩ := hΘ
-  exact ⟨σ, fam, θ', θ, hth, hexp, hcoh, hσ, hθ, t', m1, m2, w1, w2, σ', s1, θ2, ⟨φ, hφ0, hφ⟩,
-    hr1, hr2, hi1, hi2, hps, hs⟩
 
 theorem IsArcFr.isFramedPoint_changed_by_letters [Algebra c.F K] [Algebra c.F (ArcS Dw K)] {W : Wit Y a χ}
     {e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K)} {th : a.D₀.P.L.Sec} {ζ : ArcS Dw K}
@@ -272,16 +233,6 @@ theorem ThNZ.ne_zero {th : D₀.P.L.Sec} (h : ThNZ th) : ∃ j, th.f j ≠ 0 := 
   rw [h0, Scheme.basicOpen_zero] at hj
   simp at hj
 
-example (cf : Fin 0 → A) (e : Fin 0 → Out.GtPt D₀ (epsR A)) (ν : Out.GtPt D₀ (epsR A)) :
-    GtComb cf e ν ↔ ν.IsZero :=
-  ⟨fun ⟨_, p, _, h0, _, h⟩ => h ▸ h0, fun h => ⟨e, fun _ => ν, fun i => i.elim0, h, fun i => i.elim0, rfl⟩⟩
-
-example (th th' : D₀.P.L.Sec) (h : ThMul 0 th th') : ¬ ThNZ th' := fun hn => by
-  obtain ⟨j, hj⟩ := hn.ne_zero
-  exact hj (by rw [h j]; simp [constFn])
-
 end Dom
-
-example (Dw : Datum H) {K : Type} [Field K] (x y : K) : cst Dw (x * y) = cst Dw x * cst Dw y := by simp [cst]
 
 end GlobalTheory.ArcQ

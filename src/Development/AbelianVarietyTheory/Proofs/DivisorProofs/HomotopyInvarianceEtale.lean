@@ -11,13 +11,6 @@ namespace GlobalTheory.EtC.HomotopyInv
 
 variable {R : Type} [CommRing R]
 
-theorem eqv_comp {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} {F : Shv R} (hf : Eqv R f F) (hg : Eqv R g F) :
-    Eqv R (f ≫ g) F := fun n => by
-  have h : (pull R (f ≫ g) F n : H R E'' F n → H R E F n) = pull R f F n ∘ pull R g F n :=
-    funext fun x => pull_comp R f g F n x
-  rw [h]
-  exact (hf n).comp (hg n)
-
 attribute [local instance] Polynomial.algebra
 
 theorem eqv_baseChange (q : ℕ) (A : Type) [CommRing A] (i : ℤ) (A' : Type) [CommRing A']

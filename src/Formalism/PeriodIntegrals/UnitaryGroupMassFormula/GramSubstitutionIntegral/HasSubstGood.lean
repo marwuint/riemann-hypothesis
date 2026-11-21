@@ -40,10 +40,6 @@ private theorem cc_subst_lemma {κ : Type*} {a : MvPowerSeries κ ℂ_[p]}
   · intro d hd
     simp [map_pow, ha, zero_pow hd]
 
-theorem cc_psubst {f : PowerSeries ℂ_[p]} (hf : PowerSeries.constantCoeff f = 0)
-    {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0) :
-    MvPowerSeries.constantCoeff (PowerSeries.subst a f) = 0 := (cc_subst_lemma ha f).trans hf
-
 variable {l ex ph : PowerSeries ℂ_[p]}
 
 theorem cc_l (hD : Data l ex ph) : PowerSeries.constantCoeff l = 0 := by
@@ -56,9 +52,6 @@ theorem cc_lg (hD : Data l ex ph) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSe
 
 theorem cc_pt (hD : Data l ex ph) {x : MvPowerSeries σ ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.constantCoeff (pt ex x) = 0 := (cc_subst_lemma hx ex).trans hD.1
-
-theorem cc_phAt (hD : Data l ex ph) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0) :
-    MvPowerSeries.constantCoeff (phAt ph a) = 0 := (cc_subst_lemma ha ph).trans hD.2.2
 
 private theorem inv_lemma_2 {κ : Type*} {l ex : PowerSeries ℂ_[p]}
     (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subst ex l = PowerSeries.X)

@@ -4,11 +4,21 @@ import Development.WeilBound.ThetaLifts.CartanFactorisation.Factor
 import Development.WeilBound.ThetaLifts.CartanFactorisation.ExistsEnlarge
 import Development.WeilBound.ThetaLifts.CartanFactorisation.RealTrans
 import Development.WeilBound.ThetaLifts.CartanFactorisation.ArchimedeanEvaluationVector
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasFiniteLengthOfSubsingleton
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibRepApply
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLengthCoinvariantsExact
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTwistedRankQuotient
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaEquivInducedFibreStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviIntegralFacts
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenNormalisedSubgroupSubset
+import GroundTheory.AutomorphicForms.FiniteLengthLattice
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreRepresentationSmoothStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NontrivialOfIrreducible
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.Inertof
 import Development.WeilBound.CoreStatements.LocalThetaKernels.IwasMain
 import Development.WeilBound.CoreStatements.LocalThetaKernels.EvlMain
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyCompSideMulEq
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.HypothesesAtTriple
 import Development.WeilBound.ThetaLifts.CartanFactorisation.Cartan
@@ -17,7 +27,11 @@ import Development.WeilBound.ThetaLifts.FrameEstimates.WeilConv
 import Development.WeilBound.CoreStatements.LocalThetaKernels.LocpairU
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfDict
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.FullOfSoLoc
-import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.KCoinvOfDict
+import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfSurj
+import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ExistsExtZ
+import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ContinuousFinId
+import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.SoStatement
+import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfSplit
 
 noncomputable section
 
@@ -27,8 +41,6 @@ open GlobalTheory.ThK
 
 theorem iLeft (hT : ThetaBasic) : ILeft := fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hp _ hΦ g =>
   I_left unimodularity_holds hT hp hΦ g
-
-theorem kCoinv (h : KP) : KCoinv := PositivityTheory.KCo.kCoinv_of_dict h.base.bernsteinUnitaryProductIrreducible PositivityTheory.KCo.dictionary_statement
 
 end PositivityTheory.ThKF
 

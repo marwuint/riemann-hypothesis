@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FirstI
 import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSelfDualTr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFullLevelGroupDataSameCovolumeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTransportSelfDualDataOneHermitianSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovolumeEqSelfDualLatticesSameHermitianSpaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTransportSelfDualDataOneHermitianSpace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovolumeEqSelfDualLatticesSameHermitianSpace
 
 open NumberField
 
@@ -21,8 +21,8 @@ theorem covol_eq_of_isUnf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   have ep : Y'.p0 = Y.p0 := by rw [hp0, hp0', (hk k).1, (hk k').1]
   have h1 : 1 ≤ Y.p0 := by rw [hp0, (hk k).1]; exact hq
   have h2 : Y.p0 < r := by rw [hp0, (hk k).1, hr]; omega
-  obtain ⟨Z, hZΨ, hZG, hZξ, hZp, hZL, hZS, hZc⟩ := GlobalTheory.T.exists_transport_selfDual_data_one_hermitianSpace E H l r Y Y' hY eΨ ep h1 h2 hL' hS hS'
+  obtain ⟨Z, hZΨ, hZG, hZξ, hZp, hZL, hZS, hZc⟩ := _root_.GlobalTheory.EqCovol.exists_transport E H l r Y Y' hY eΨ ep h1 h2 hL' hS hS'
   rw [hc, hc', ← hZc]
-  exact GlobalTheory.T.covolume_eq_selfDual_lattices_same_hermitian_space E H l r Y Z hG hY hZΨ hZG hZξ hZp h1 h2 hL hZL hS hZS
+  exact _root_.GlobalTheory.EqCovol.SameSpace.covol_eq_of_same_space E H l r Y Z hG hY hZΨ hZG hZξ hZp h1 h2 hL hZL hS hZS
 
 end GlobalTheory.EqCovol

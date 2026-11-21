@@ -8,12 +8,6 @@ open scoped ContDiff
 
 namespace UpperTheory.V.Lit.Dr
 
-section
-
-variable {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {d : ℕ} {G : Geo Γ V S d} {u : S → V → ℝ}
-
-end
-
 theorem average : Average := by
   intro Γ V S _ _ _ d G u hu q
   have hu' := hu

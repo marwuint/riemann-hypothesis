@@ -2,7 +2,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.ConjTorusSubApply
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.Multi
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ApplyMemTwKerOfNormalizer
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreduciblesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreducibles
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsCuspSpaceBot
 
 open NumberField IsDedekindDomain ValuativeRel Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.L2.Host
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Shin
@@ -87,6 +89,6 @@ theorem UpperTheory.Gal.InertialTypesAlt.cuspIrr :
   have hadm := (UpperTheory.Zero.LLC.Pr.adm k y.1 y.2.rep.V y.rep y.2.rep.smooth y.2.rep.irr).2 (levelPre ⊥)
     (isOpen_levelPre ⊥) (isCompact_levelPre ⊥)
   rw [levelPre_bot] at hadm
-  obtain ⟨ω, hω⟩ := (GlobalTheory.T.centralCharacter_subquotient_productIrreducibles k).1 y
+  obtain ⟨ω, hω⟩ := (_root_.GlobalTheory.GamMul.centralChar_subquotient_prodIrr k).1 y
   have hF := finCusp_levelZero y.rep y.2.rep.smooth y.2.rep.irr hc.2
   exact ⟨hadm, irreducible_levelZero y.2.rep ω hω hF hD, hF⟩

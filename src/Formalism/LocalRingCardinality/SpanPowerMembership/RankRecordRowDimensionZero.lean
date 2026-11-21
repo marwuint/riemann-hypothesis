@@ -329,7 +329,6 @@ theorem rankRecord_hc_eq : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg
 theorem rankRecord_hcW_eq (u) : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).hcW u = hc := rfl
 theorem rankRecord_eta (j w) : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.etaJ j w = 0 := rfl
 theorem rankRecord_mem_A_T (u) : ((rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.T = T := rfl
-theorem rankRecord_lowerLevel (u) : ((rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.Tstar = Ts := rankMember_lowerLevel_eq hc T Ts hTs Gam hG
 theorem rankRecord_gamma (u) : ((rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.GamP = Gam := rfl
 theorem rankRecord_delta : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).s.Del = Del := rfl
 theorem rankRecord_letter (u l) : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).s.letter u l = false := rfl
@@ -339,10 +338,6 @@ theorem rankRecord_dsig : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg 
 theorem rankRecord_etaF : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).div.etaF = etaF := rfl
 theorem rankRecord_dimensionBound : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.Dstar = dstarOfRanks R Ts Gam := rfl
 theorem rankRecord_rowDimension_zero : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.Drows = 0 := rfl
-theorem rankRecord_divisor_zero : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).div.R = 0 := by
-  show ∑ u : Unit, (zeroHLat H.E).rank = 0
-  simp [zeroHLat_rank]
-
 end Record
 
 end Formalism.BasicNotions.Examples₂

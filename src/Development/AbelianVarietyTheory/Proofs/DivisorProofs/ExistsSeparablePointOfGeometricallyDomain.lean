@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegrallyClosedAdjoin
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteSeparablePointOfSeparableClosurePoinStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteSeparablePointOfSeparableClosurePoin
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearIndepOnPowOfIsDomainTensorPurelyInseparablStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendAlgHomAdjoinIntegralRootStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendAlgHomAdjoinIntegralRoot
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjoinHomExtendOfDenominatorStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimitiveElementSeparabilityCertificateStatement
 
@@ -52,7 +52,7 @@ theorem core (k F : Type) [Field k] [Field F] [Algebra k F] (s : Finset F)
   obtain ⟨r, hr⟩ := IsSepClosed.exists_root _ hdeg hsepa
   have hr' : Polynomial.eval₂ (ev : R →+* SeparableClosure k) r f = 0 := by
     rwa [Polynomial.IsRoot, Polynomial.eval_map] at hr
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_algHom_adjoin_extend_of_isIntegral_root k F (SeparableClosure k) R θ hθ ev r hr'
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.extend_alg_hom_adjoin_integral_root k F (SeparableClosure k) R θ hθ ev r hr'
   have hHS : (H : F) ∈ Algebra.adjoin k (insert θ (R : Set F)) :=
     Algebra.subset_adjoin (Set.mem_insert_of_mem _ H.2)
   exact GlobalTheory.T.nonempty_adjoin_algHom_of_mul_mem_of_map_ne_zero k F (SeparableClosure k) _ ψ ⟨H, hHS⟩
@@ -74,6 +74,6 @@ theorem exists_sepPoint : ∀ (k B : Type) [Field k] [CommRing B] [Algebra k B],
     rw [← Algebra.map_top]
     exact hB.out.map g
   obtain ⟨ψ⟩ := core k (FractionRing B) s hs hsep g.range hfg
-  exact GlobalTheory.T.exists_finite_separable_point_of_separableClosure_point' k B hB ⟨ψ.comp g.rangeRestrict⟩
+  exact _root_.GlobalTheory.exists_finite_separable_point_of_separableClosure_point k B hB ⟨ψ.comp g.rangeRestrict⟩
 
 end GlobalTheory.SepPoint

@@ -5,15 +5,15 @@ import Formalism.LocalToGlobal.ProjectiveLattices.RulInst
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEig
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramePointVectors
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStableEigenTangentsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExteriorCoeffRatioRegularStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEigenTangentsPullbackStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFramesInvertibleChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorsSpreadFromStalkStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEigenAtComponentStalkStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStableEigenTangents
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExteriorCoeffRatioRegular
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEigenTangentsPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFramesInvertibleChange
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorsSpreadFromStalk
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEigenAtComponentStalk
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramePointMultiplicityCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalPointSpecializesComponentStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionExteriorValueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalPointSpecializesComponent
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionExteriorValue
 
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.LocFn
 
@@ -61,31 +61,31 @@ theorem exists_localData : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     rfl
   have hy1 : under y = spMap (algebraMap S T) ≫ z.x := by
     simp only [y, under, Category.assoc, zPt_fst]
-  obtain ⟨h, κ, hκ₁, hκ₂⟩ := GlobalTheory.T.local_point_specializes_component E H D l Xo c U O β Y Z T y c₀ hy2 hcen
+  obtain ⟨h, κ, hκ₁, hκ₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.Coef.exists_coef E H D l Xo c U O β Y Z T y c₀ hy2 hcen
   let P : Cpt (Z.ξ₀ ≫ Y.j) := ⟨centre (y ≫ Y.j), h⟩
   let x₀ := Y.X.fromSpecStalk P.1
   let θs : Y.X.presheaf.stalk P.1 →+* T := (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom
   have hθs : spMap θs ≫ x₀ = y ≫ Y.j := Scheme.Spec_stalkClosedPointTo_fromSpecStalk _
   have hκ₂' : θs.comp κ = c₀ := hκ₂
-  obtain ⟨r₁, e₁, he₁⟩ := GlobalTheory.T.exists_stable_eigen_tangents E H l c Y.X Y.t (Y.X.presheaf.stalk P.1) x₀ κ τ
-  obtain ⟨r₂, e₂, he₂⟩ := GlobalTheory.T.exists_stable_eigen_tangents E H l c Y.X Y.t (Y.X.presheaf.stalk P.1) x₀ κ (ComplexEmbedding.conjugate τ)
-  obtain ⟨V₁, hV₁, hVf₁⟩ := GlobalTheory.T.stable_eigen_tangents_pullback E H D l Xo c O β Y T y _ x₀ κ θs τ r₁ e₁ hθs he₁
-  obtain ⟨V₂, hV₂, hVf₂⟩ := GlobalTheory.T.stable_eigen_tangents_pullback E H D l Xo c O β Y T y _ x₀ κ θs _ r₂ e₂ hθs he₂
+  obtain ⟨r₁, e₁, he₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.EigStalk.exists_stableEig E H l c Y.X Y.t (Y.X.presheaf.stalk P.1) x₀ κ τ
+  obtain ⟨r₂, e₂, he₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.EigStalk.exists_stableEig E H l c Y.X Y.t (Y.X.presheaf.stalk P.1) x₀ κ (ComplexEmbedding.conjugate τ)
+  obtain ⟨V₁, hV₁, hVf₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.exists_eigFrame_univ E H D l Xo c O β Y T y _ x₀ κ θs τ r₁ e₁ hθs he₁
+  obtain ⟨V₂, hV₂, hVf₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.exists_eigFrame_univ E H D l Xo c O β Y T y _ x₀ κ θs _ r₂ e₂ hθs he₂
   rw [hκ₂'] at hVf₁ hVf₂
   obtain ⟨u₁, hu₁, huf₁⟩ := exists_frame_ring z (algebraMap S T) (under y) hy1 τ D.p hp
   obtain ⟨u₂, hu₂, huf₂⟩ := exists_frame_ring z (algebraMap S T) (under y) hy1 (ComplexEmbedding.conjugate τ) D.q hq
-  obtain ⟨hr₁, M₁, hM₁, M₁', hl₁, -⟩ := GlobalTheory.T.eigen_frames_invertible_change Xo.X T Xo.univ.t.G (under y) _ Xo.univ.t.act _ _ _ u₁ V₁ huf₁ hVf₁
-  obtain ⟨hr₂, M₂, hM₂, M₂', hl₂, -⟩ := GlobalTheory.T.eigen_frames_invertible_change Xo.X T Xo.univ.t.G (under y) _ Xo.univ.t.act _ _ _ u₂ V₂ huf₂ hVf₂
+  obtain ⟨hr₁, M₁, hM₁, M₁', hl₁, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.FrameChange.eigFrame_change Xo.X T Xo.univ.t.G (under y) _ Xo.univ.t.act _ _ _ u₁ V₁ huf₁ hVf₁
+  obtain ⟨hr₂, M₂, hM₂, M₂', hl₂, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.FrameChange.eigFrame_change Xo.X T Xo.univ.t.G (under y) _ Xo.univ.t.act _ _ _ u₂ V₂ huf₂ hVf₂
   subst hr₁ hr₂
-  obtain ⟨b₁, hbE₁, hbF₁⟩ := GlobalTheory.T.stable_eigen_at_component_stalk E H D l Xo c U O β Y Z P κ τ _ e₁ hκ₁ he₁
-  obtain ⟨b₂, hbE₂, hbF₂⟩ := GlobalTheory.T.stable_eigen_at_component_stalk E H D l Xo c U O β Y Z P κ _ _ e₂ hκ₁ he₂
+  obtain ⟨b₁, hbE₁, hbF₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.frame_of_stableEig E H D l Xo c U O β Y Z P κ τ _ e₁ hκ₁ he₁
+  obtain ⟨b₂, hbE₂, hbF₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.frame_of_stableEig E H D l Xo c U O β Y Z P κ _ _ e₂ hκ₁ he₂
   have hP : P ∈ Z.genFib := by
     have key : ∀ t : Sp T, (y ≫ Y.j) t = pullback.fst Y.s (spMap β) (Y.jQ (y t)) := fun t => by
       simp only [Model.j, Scheme.Hom.comp_apply]
     exact ⟨Y.jQ (y (IsLocalRing.closedPoint T)), (key _).symm⟩
-  obtain ⟨α, κ', ha, hb, s, hs⟩ := GlobalTheory.T.exterior_coeff_ratio_regular Y.X Z.Ω _ Z.V _ _ _ _ a b P b₁ b₂ (hgen.2.2 P hP) hbF₁ hbF₂
+  obtain ⟨α, κ', ha, hb, s, hs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.exists_coeff_regular_of_frames Y.X Z.Ω _ Z.V _ _ _ _ a b P b₁ b₂ (hgen.2.2 P hP) hbF₁ hbF₂
   haveI := Y.t.semi.smooth
-  obtain ⟨R, _, x, _, θA, e', f', -, hθA, hf', ht, hleft⟩ := GlobalTheory.T.tangent_vectors_spread_from_stalk Y.X Y.t.G P.1 (Fin D.p ⊕ Fin D.q)
+  obtain ⟨R, _, x, _, θA, e', f', -, hθA, hf', ht, hleft⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.exists_chart_spread Y.X Y.t.G P.1 (Fin D.p ⊕ Fin D.q)
     (Sum.elim e₁ e₂) s (by rintro (i | i); exacts [(hbE₁ i).1, (hbE₂ i).1])
   have hcomp : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C),
       spMap (g.comp f) = spMap g ≫ spMap f := fun f g => by
@@ -181,7 +181,7 @@ theorem exists_regular_near : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     hc₁, hc₂⟩ := exists_localData E H D l Xo c U τ O β Y Z a b p.R z q hp hq hgen hcen
   obtain ⟨g, θ', C₁', C₂', hgq, hθ', hu₁', hu₂', hc₁', hc₂'⟩ := GlobalTheory.T.frame_point_multiplicity_compat E H D l Xo c O β Y p.R z q R x θ τ _ _ _
     hp hq e₁ e₂ C₁ C₂ hθ ht₁ ht₂ hu₁ hu₂ hc₁ hc₂
-  have FS := GlobalTheory.T.frame_function_exterior_value E H D l Xo c U τ O β Y Z φ a b p.R z hp hq R x φ₂ e₁ e₂ f b₁ b₂ α κ
+  have FS := _root_.GlobalTheory.CompanionTheory.Ar.LocFn.function_of_frames_at_field_point E H D l Xo c U τ O β Y Z φ a b p.R z hp hq R x φ₂ e₁ e₂ f b₁ b₂ α κ
     (Localization.Away g) θ' C₁' C₂' hL hrep hφ₂ ha hb hf ht₁ ht₂ hb₁ hb₂ hθ' hu₁' hu₂' hc₁' hc₂'
   obtain ⟨m, a₀, hm⟩ := IsLocalization.Away.surj g (θ' f * C₁'.det * ((hu₂'.unit⁻¹ : (Localization.Away g)ˣ) : Localization.Away g))
   have hg0 : ψ₀ g ≠ 0 := hgq

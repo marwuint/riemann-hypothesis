@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZAEqAlgebraMapPt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBcrisTensorLatticeToDeRhamMapStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCoeffDeRhamPlusActionOnVTensorBdRStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCoeffDeRhamPlusActionOnVTensorBdR
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BcrisTensorLatticeToDeRhamEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffDeRhamPlusActionConstantsGaloisCommStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHorizontalVectorOfBreuilKisinJumpStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffDeRhamPlusActionConstantsGaloisComm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHorizontalVectorOfBreuilKisinJump
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemCompletionFiltrationIffDeRhamFiltrationStatement
 
 noncomputable section
@@ -18,8 +18,8 @@ theorem GlobalTheory.BKGal.JumpDR.jump_gives_fixed_vector : GlobalTheory.Publish
   intro hF l _ a e _ _ ϖ LL _ _ hl ι _ _ P T I jB Pl AI hStd hCmp hHor hEN i hi
   have Td : LocTied l Pl AI := hStd.some
   obtain ⟨X, hX⟩ := GlobalTheory.T.exists_bcrisTensorLattice_to_deRham_map l Pl AI Td LL T
-  obtain ⟨A, hA⟩ := GlobalTheory.T.exists_coeffDeRhamPlus_action_on_VTensorBdR l Pl AI Td LL T
-  obtain ⟨n, d, c, hd, h1, h2⟩ := GlobalTheory.T.exists_horizontal_vector_of_breuilKisin_jump l a e LL hl ι P hEN i hi
+  obtain ⟨A, hA⟩ := _root_.GlobalTheory.BKGal.JumpDR.exists_odAction l Pl AI Td LL T
+  obtain ⟨n, d, c, hd, h1, h2⟩ := _root_.GlobalTheory.BKGal.JumpDR.Horiz.main l a e LL hl ι P hEN i hi
   let m : Fin n → P.MMl := fun k => ⟨P.xi (d k), hd k⟩
   have key := fun j => GlobalTheory.T.mem_completionFiltration_iff_deRhamFiltration hF l a e ϖ LL hl ι P T I jB Pl AI Td hCmp X hX A hA n
     (fun k => GlobalTheory.BKGal.JumpDR.kLift ↥(OL LL) (c k)) m j
@@ -28,7 +28,7 @@ theorem GlobalTheory.BKGal.JumpDR.jump_gives_fixed_vector : GlobalTheory.Publish
   intro g hg
   rw [map_sum]
   refine Finset.sum_congr rfl fun k _ => ?_
-  have e1 := GlobalTheory.T.coeffDeRhamPlusAction_constants_galois_comm l Pl AI Td LL T A hA a e ϖ (c k) g hg (X (jB (toBcris (thetaW a LL) ϖ P (m k))))
+  have e1 := _root_.GlobalTheory.BKGal.JumpConst.actVdR_comm_kLift l Pl AI Td LL T A hA a e ϖ (c k) g hg (X (jB (toBcris (thetaW a LL) ϖ P (m k))))
   have e2 := GlobalTheory.T.bcrisTensorLattice_to_deRham_equivariant l Pl AI Td LL T X hX g (jB (toBcris (thetaW a LL) ϖ P (m k)))
   have e3 := hHor g hg (d k) (hd k)
   rw [e1, ← e2]

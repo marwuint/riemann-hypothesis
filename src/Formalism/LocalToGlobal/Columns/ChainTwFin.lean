@@ -1,6 +1,7 @@
 import Formalism.LocalToGlobal.Columns.ChainFrmOk
 import Formalism.LocalToGlobal.Columns.ThetaOpenTwLevQ
-import Formalism.LocalToGlobal.Columns.ChainTwTop
+import Formalism.LocalToGlobal.Columns.ChainTwMain
+import Formalism.LocalToGlobal.Columns.WithTopLevGTop
 
 open NumberField IsDedekindDomain Module Matrix
 
@@ -169,34 +170,5 @@ theorem thetaOpen_root (h : ThetaOpen Θ) (c : ↥Θ.grp) : ∃ m : ℕ, 0 < m �
   rw [← Units.val_pow_eq_pow_val, key, Units.val_one]
 
 end Fam
-
-section Tw
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (m2 : ℕ)
-  (Λt : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs) (Θt : ∀ j, LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K)))
-
-theorem thetaOpen_twIdxTop (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (hΘ : ∀ j, m2 + 1 < j → ThetaOpen (Θt j)) (j : ℕ)
-    (b : (twIdxTop Ch sel mu cst m2 Λt Θt).β j) : ThetaOpen ((twIdxTop Ch sel mu cst m2 Λt Θt).levQ j b) := by
-  unfold twIdxTop ChIdx.withTop at b ⊢
-  obtain ⟨ob, hob⟩ := b
-  cases ob with
-  | some b' =>
-    exact thetaOpen_twIdx (Ch := Ch) (sel := sel) (mu := mu) (cst := cst) hc hQg m2 j b'
-  | none =>
-    have hj : m2 + 1 < j := by
-      simp only [Option.isSome_none] at hob
-      by_contra hcon
-      have h1 : j ≤ m2 + 1 := by omega
-      simp [h1] at hob
-    exact hΘ j hj
-
-theorem chF_ok_twIdxTop (hX : X.Ok) (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (hΘ : ∀ j, m2 + 1 < j → ThetaOpen (Θt j))
-    (u : Pr.Word) (j : ℕ) : (chF W sel mu (twIdxTop Ch sel mu cst m2 Λt Θt) u j).Ok :=
-  chF_ok_of_finIdx (W := W) (sel := sel) (mu := mu) (L := twIdxTop Ch sel mu cst m2 Λt Θt) hX u j
-    (fun b P => thetaOpen_finIdx _ (thetaOpen_twIdxTop Ch sel mu cst m2 Λt Θt hc hQg hΘ j b) P)
-    (fun b c => thetaOpen_root _ (thetaOpen_twIdxTop Ch sel mu cst m2 Λt Θt hc hQg hΘ j b) c)
-
-end Tw
 
 end Formalism.L2.Col

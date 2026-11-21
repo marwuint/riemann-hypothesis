@@ -171,58 +171,12 @@ theorem step {A : Type*} [AddCommGroup A] (n : ℕ)
     _ ≤ j * j ^ n := Nat.mul_le_mul_right _ (Nat.card_divisors_le_self j)
     _ = j ^ (n + 1) := by ring
 
-theorem transfer {G G' : Type*} [AddCommGroup G] [AddCommGroup G'] (e : G ≃+ G') (n : ℕ)
-    (h : ∀ j : ℕ, 1 ≤ j → {H : AddSubgroup G' | H.index = j}.Finite ∧
-      {H : AddSubgroup G' | H.index = j}.ncard ≤ j ^ n) :
-    ∀ j : ℕ, 1 ≤ j → {H : AddSubgroup G | H.index = j}.Finite ∧
-      {H : AddSubgroup G | H.index = j}.ncard ≤ j ^ n := by
-  intro j hj
-  obtain ⟨hfin, hcard⟩ := h j hj
-  let f : AddSubgroup G → AddSubgroup G' := fun H => H.comap e.symm.toAddMonoidHom
-  have hmaps : ∀ H ∈ {H : AddSubgroup G | H.index = j},
-      f H ∈ {H : AddSubgroup G' | H.index = j} := by
-    intro H hH
-    show (H.comap e.symm.toAddMonoidHom).index = j
-    rw [index_comap_of_surjective _ e.symm.surjective]
-    exact hH
-  have hinj : Set.InjOn f {H : AddSubgroup G | H.index = j} :=
-    (comap_injective e.symm.surjective).injOn
-  refine ⟨Set.Finite.of_finite_image (hfin.subset ?_) hinj, ?_⟩
-  · rintro _ ⟨H, hH, rfl⟩
-    exact hmaps H hH
-  exact (Set.ncard_le_ncard_of_injOn f hmaps hinj hfin).trans hcard
-
 def consEquiv (n : ℕ) : (Fin (n + 1) → ℤ) ≃+ ℤ × (Fin n → ℤ) where
   toFun f := (f 0, Fin.tail f)
   invFun p := Fin.cons p.1 p.2
   left_inv f := Fin.cons_self_tail f
   right_inv p := by simp
   map_add' f g := rfl
-
-lemma gen_pi (n : ℕ) (K : AddSubgroup (Fin n → ℤ)) :
-    ∃ v : Fin n → (Fin n → ℤ), AddSubgroup.closure (Set.range v) = K := by
-  obtain ⟨k, b⟩ := Submodule.basisOfPid (Pi.basisFun ℤ (Fin n)) K.toIntSubmodule
-  have hk : k ≤ n := by
-    have h1 := Submodule.finrank_le K.toIntSubmodule
-    rwa [Module.finrank_eq_card_basis b, Fintype.card_fin, Module.finrank_fin_fun] at h1
-  refine ⟨fun i => if h : i.val < k then (b ⟨i, h⟩ : Fin n → ℤ) else 0, ?_⟩
-  apply AddSubgroup.toIntSubmodule.injective
-  rw [AddSubgroup.toIntSubmodule_closure]
-  apply le_antisymm
-  · rw [Submodule.span_le]
-    rintro _ ⟨i, rfl⟩
-    dsimp only
-    split_ifs
-    · exact (b _).2
-    · exact Submodule.zero_mem _
-  · intro x hx
-    have h2 : x ∈ (Submodule.span ℤ (Set.range b)).map K.toIntSubmodule.subtype :=
-      ⟨⟨x, hx⟩, by rw [b.span_eq]; trivial, rfl⟩
-    rw [Submodule.map_span] at h2
-    refine Submodule.span_mono ?_ h2
-    rintro _ ⟨_, ⟨m, rfl⟩, rfl⟩
-    refine ⟨⟨m, lt_of_lt_of_le m.2 hk⟩, ?_⟩
-    simp [m.2]
 
 lemma base : ∀ j : ℕ, 1 ≤ j → {H : AddSubgroup (Fin 0 → ℤ) | H.index = j}.Finite ∧
     {H : AddSubgroup (Fin 0 → ℤ) | H.index = j}.ncard ≤ j ^ 0 := by

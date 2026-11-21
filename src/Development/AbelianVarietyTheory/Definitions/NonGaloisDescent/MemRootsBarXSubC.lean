@@ -242,16 +242,6 @@ theorem thetaOf_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (
     _ = L.teich x ^ (n % orderOf (L.teich x)) := by rw [h3]
     _ = L.teich x ^ n := pow_mod_orderOf _ _
 
-theorem thetaOf_norm (L : LabelDatum g) {d e : ℕ} (hd : 0 < d) (he : 0 < e) {x : Fbar g}
-    (hx : x ^ (g ^ d - 1) = 1) (n : ℕ) :
-    thetaOf L (d * e) x (L.gen (d * e) ^ n) =
-      thetaOf L d x ((L.gen (d * e) ^ n) ^ ((g ^ (d * e) - 1) / (g ^ d - 1))) := by
-  have hx' : x ^ (g ^ (d * e) - 1) = 1 := by
-    obtain ⟨c, hc⟩ := N_dvd g d e
-    rw [hc, pow_mul, hx, one_pow]
-  rw [thetaOf_gen_pow L (Nat.mul_pos hd he) hx', ← pow_mul, Nat.mul_comm n, pow_mul,
-    L.gen_norm d e hd he, thetaOf_gen_pow L hd hx]
-
 theorem cuspOf_prod (L : LabelDatum g) (Q : List ((ZMod g)[X] × Pc g)) (h : ∀ p ∈ Q, IsCuspOf L p.1 p.2.2) :
     (Q.map Prod.fst).prod.Monic ∧ (Q.map Prod.fst).prod.natDegree = degL (Q.map Prod.snd) ∧
       (Q.map Prod.fst).prod.coeff 0 ≠ 0 := by
@@ -295,89 +285,5 @@ theorem hc_full {n : ℕ} (α : Gn g n → ℂ) (hα : IsClass α) : hc n 0 α (
   simp only [hc, hcT, hpar, if_true, mul_one, tl_self, toG_coe, hα', Finset.sum_const,
     Finset.filter_true, Finset.card_univ, nsmul_eq_mul]
   exact inv_mul_cancel_left₀ hcard _
-
-theorem isIrr_one {G : Type} [Group G] [Fintype G] : IsIrr (fun _ : G => (1 : ℂ)) := by
-  have : NeZero (Nat.card G : ℂ) := ⟨Nat.cast_ne_zero.mpr Nat.card_pos.ne'⟩
-  let V : FDRep ℂ G := FDRep.of (Representation.trivial ℂ G ℂ)
-  have hchar : ∀ x, V.character x = 1 := by
-    intro x
-    simp [V, FDRep.character, Representation.trivial]
-  refine ⟨V, ?_, hchar⟩
-  rw [FDRep.simple_iff_char_is_norm_one]
-  simp [hchar, Nat.card_eq_fintype_card]
-
-theorem mem_rootsBar_X_sub_C {a : ZMod g} {z : Fbar g} (hz : z ∈ rootsBar (X - C a)) :
-    z = algebraMap (ZMod g) (Fbar g) a := by
-  simpa [rootsBar, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C,
-    Polynomial.roots_X_sub_C] using hz
-
-theorem isCuspOf_one (L : LabelDatum g) : IsCuspOf L (X - C 1) (fun _ : Gn g 1 => (1 : ℂ)) := by
-  refine ⟨⟨monic_X_sub_C 1, irreducible_X_sub_C 1, by simp, natDegree_X_sub_C 1⟩,
-    ⟨one_pos, isIrr_one, fun a ha ha' => by omega⟩, ?_⟩
-  intro x hx y _ z hz
-  have hx1 : x = 1 := by simpa using mem_rootsBar_X_sub_C hx
-  subst hx1
-
-  have hcp : (y : Mt g 1).charpoly = X - C ((y : Mt g 1) 0 0) := by
-    rw [Matrix.charpoly, Matrix.det_unique, Matrix.charmatrix_apply_eq]
-    rfl
-  rw [hcp] at hz
-  have hz' := mem_rootsBar_X_sub_C hz
-  have hy0 : (y : Mt g 1) 0 0 ≠ 0 := by
-    have := (Matrix.isUnit_iff_isUnit_det _).mp y.isUnit
-    rw [Matrix.det_unique] at this
-    exact this.ne_zero
-  have hzN : z ^ (g ^ 1 - 1) = 1 := by
-    rw [hz', ← map_pow, pow_one, ZMod.pow_card_sub_one_eq_one hy0, map_one]
-  have hP : IsPrimitiveRoot (L.gen 1) (g ^ 1 - 1) :=
-    L.gen_order 1 one_pos ▸ IsPrimitiveRoot.orderOf (L.gen 1)
-  have : NeZero (g ^ 1 - 1) := ⟨(N_pos g one_pos).ne'⟩
-  obtain ⟨i, -, hi⟩ := hP.eq_pow_of_pow_eq_one hzN
-  simp only [Nat.sub_self, pow_zero, one_mul, Finset.sum_range_one, pow_one]
-  rw [thetaOf, dif_pos ⟨i, hi.symm⟩, map_one, one_pow]
-
-theorem hasLabel_one (L : LabelDatum g) : HasLabel L (fun _ : Gn g 1 => (1 : ℂ)) (X - C 1) := by
-  have key : hcL [(⟨1, fun _ => 1⟩ : Pc g)] 1 = fun _ : Gn g 1 => (1 : ℂ) := by
-    rw [hcL_cons, hcL_nil]
-    exact hc_full (fun _ => 1) (fun _ _ => rfl)
-  refine ⟨[(X - C 1, ⟨1, fun _ => 1⟩)], ?_, ?_, ?_, ?_⟩
-  · intro p hp
-    rw [List.mem_singleton] at hp
-    subst hp
-    exact isCuspOf_one L
-  · simp [degL]
-  · simp
-  · simp only [List.map_cons, List.map_nil]
-    rw [key]
-    have hcard : (Fintype.card (Gn g 1) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr Fintype.card_ne_zero
-    simp only [ip, mul_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
-    rw [inv_mul_cancel₀ hcard]
-    exact one_ne_zero
-
-theorem label_unique (hG : Green) (L : LabelDatum g) {d : ℕ}
-    (hE : ∀ χ χ' : Gn g d → ℂ, IsCusp χ → IsCusp χ' →
-      (∀ y : Gn g d, Irreducible (y : Mt g d).charpoly → χ y = χ' y) → χ = χ')
-    {P P' : (ZMod g)[X]} {χ : Gn g d → ℂ} (h : IsCuspOf L P χ) (h' : IsCuspOf L P' χ) : P = P' := by
-  have hd : 0 < d := h.2.1.1
-  obtain ⟨τ, hτ, hinj, -⟩ := hG g L d hd
-
-  have root : ∀ f : (ZMod g)[X], 0 < f.natDegree → ∃ x, x ∈ rootsBar f := by
-    intro f hf
-    obtain ⟨x, hx⟩ := IsAlgClosed.exists_root (f.map (algebraMap (ZMod g) (Fbar g)))
-      (by rw [Polynomial.degree_map]; exact (Polynomial.natDegree_pos_iff_degree_pos.mp hf).ne')
-    refine ⟨x, (Polynomial.mem_roots (Polynomial.map_ne_zero ?_)).mpr hx⟩
-    rintro rfl
-    simp at hf
-
-  have same : ∀ {Q : (ZMod g)[X]} {ψ ψ' : Gn g d → ℂ}, IsCuspOf L Q ψ → IsCuspOf L Q ψ' → ψ = ψ' := by
-    intro Q ψ ψ' hψ hψ'
-    apply hE ψ ψ' hψ.2.1 hψ'.2.1
-    intro y hy
-    obtain ⟨x, hx⟩ := root Q (by rw [hψ.1.2.2.2]; exact hd)
-    obtain ⟨z, hz⟩ := root (y : Mt g d).charpoly
-      (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]; exact hd)
-    rw [hψ.2.2 x hx y hy z hz, hψ'.2.2 x hx y hy z hz]
-  apply hinj P P' h.1 h'.1
-  rw [← same h (hτ P h.1).1, ← same h' (hτ P' h'.1).1]
 
 end GlobalTheory.GLq.Model

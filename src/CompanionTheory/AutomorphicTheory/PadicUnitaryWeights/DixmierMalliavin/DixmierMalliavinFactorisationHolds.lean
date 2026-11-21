@@ -1,7 +1,10 @@
 import CompanionTheory.AutomorphicTheory.PadicUnitaryWeights.DixmierMalliavin.DecompDirection
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsClosedEmbeddingOfLocallyCompact
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedMatrixSubgroupTheorem
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlueSmoothOfCompactSupportStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlueSmoothOfCompactSupport
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TransChartSymmApply
 
 namespace CompanionTheory.DM
 
@@ -44,7 +47,7 @@ theorem mem_ccSmooth_iff {H : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : 
     rw [show f = Φ ∘ fun x : H => ((x : 𝔸ˣ) : 𝔸) from funext e]
     exact hΦ.contMDiff.comp (h.contMDiff_val ∞)
   · rintro ⟨hf, hc⟩
-    refine ⟨hc, GlobalTheory.T.exists_contDiff_comp_of_locally_smooth_compactSupport H 𝔸 _ f (continuous_val_val H) hc fun a => ?_⟩
+    refine ⟨hc, _root_.GlobalTheory.glue_smooth_of_compactSupport H 𝔸 _ f (continuous_val_val H) hc fun a => ?_⟩
     have h1 : ContDiff ℝ ∞ fun Y : 𝔤 => f (a * h.expG Y) := by
       have := (h.contDiff_comp_expG_smul_mul_mul_expG hf 0 a).comp (contDiff_id.prodMk (contDiff_const (c := (0 : ℝ))))
       simpa [Function.comp_def, h.expG_zero] using this

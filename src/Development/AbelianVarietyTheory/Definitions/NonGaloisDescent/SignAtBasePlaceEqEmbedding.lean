@@ -196,10 +196,6 @@ def KsIso.bc (A : Arith.FormsL L0 Ks WL W G) :
 theorem KsIso.bc_apply (A : Arith.FormsL L0 Ks WL W G) (x : A.WK) :
     ((KsIso.bc L A).φ x : NX.BC.BCW Ks L0 L WL) = NX.BC.incl Ks L0 L WL x := rfl
 
-theorem KsIso.bc_j (A : Arith.FormsL L0 Ks WL W G) (σ : L →+* ℂ) (x : A.WK) :
-    (NX.BC.bc L A).j σ ((KsIso.bc L A).φ x : NX.BC.BCW Ks L0 L WL) = A.j (σ.comp (algebraMap L0 L)) x :=
-  NX.BC.bc_j_incl L A σ x
-
 end BC
 
 section Fm
@@ -360,29 +356,6 @@ theorem ratDatBC_A (j : ℕ) : letI := ι.toAlgebra
     haveI := towKsBC S ι
     (ratDatBC tw' S ι e he c).A j = NX.BC.bc rows'.LL (S.A j) := rfl
 
-def kBC : S.Ks ≃+* (ratDatBC tw' S ι e he c).Ks := RingEquiv.refl S.Ks
-
-def gBC : S.G ≃* (ratDatBC tw' S ι e he c).G := MulEquiv.refl S.G
-
-def ksBC (j : ℕ) : KsIso ι (kBC tw' S ι e he c) (gBC tw' S ι e he c) (S.A j) ((ratDatBC tw' S ι e he c).A j) :=
-  letI := ι.toAlgebra
-  letI := algKsBC S ι
-  haveI := towKsBC S ι
-  KsIso.bc rows'.LL (S.A j)
-
-theorem ratDatBC_rhoStab_iff (j : ℕ) : NX.RhoStab S j ↔ NX.RhoStab (ratDatBC tw' S ι e he c) j :=
-  (ksBC tw' S ι e he c j).rhoStab_iff
-
-theorem ratDatBC_chiInLL0 (j : ℕ) (h : NX.ChiInLL0 S j) : NX.ChiInLL0 (ratDatBC tw' S ι e he c) j :=
-  (ksBC tw' S ι e he c j).chiInLL0 he h
-
-theorem ksBC_j (j : ℕ) (σ : rows'.LL →+* ℂ) (x : (S.A j).WK) :
-    ((ratDatBC tw' S ι e he c).A j).j σ ((ksBC tw' S ι e he c j).φ x : (ratDatBC tw' S ι e he c).WL j) = (S.A j).j (σ.comp ι) x :=
-  letI := ι.toAlgebra
-  letI := algKsBC S ι
-  haveI := towKsBC S ι
-  KsIso.bc_j rows'.LL (S.A j) σ x
-
 end Fm
 
 section Cast
@@ -391,9 +364,6 @@ def ringCast {A B : Type} [iA : CommRing A] [iB : CommRing B] (h : A = B) (hi : 
   toEquiv := Equiv.cast h
   map_mul' x y := by subst h; cases hi; rfl
   map_add' x y := by subst h; cases hi; rfl
-
-theorem ringCast_heq {A B : Type} [iA : CommRing A] [iB : CommRing B] (h : A = B) (hi : HEq iA iB) (x : A) :
-    HEq (ringCast h hi x) x := cast_heq h x
 
 theorem fracEquiv_ringCast_heq {A B : Type} [iA : CommRing A] [iB : CommRing B] (h : A = B) (hi : HEq iA iB)
     (x : FractionRing A) : HEq (fracEquiv (ringCast h hi) x) x := by
@@ -514,14 +484,9 @@ theorem Tw_eq : D.ntw.Tw = D'.ntw.Tw := eq_of_heq h.set.Tw
 
 theorem instTau : HEq D.what₂.instTau D'.what₂.instTau := Subsingleton.helim (congrArg Fintype h.Tau) _ _
 
-theorem freeB_finB : HEq D.ntw.freeB D'.ntw.freeB ∧ HEq D.ntw.finB D'.ntw.finB := ⟨proof_irrel_heq _ _, proof_irrel_heq _ _⟩
-
 theorem embLL_comp : D'.what₂.embLL.comp ι = D.what₂.embLL := RingHom.ext h.embLL
 
 theorem embLL0_eq (x : ↥D'.LL0) : embLL0 D (e x) = embLL0 D' x := (h.embLL _).symm.trans (congrArg D'.what₂.embLL (h.LL0 x))
-
-theorem map_star (x : D.what₂.LL) : ι (star x) = star (ι x) :=
-  D'.what₂.embLL.injective (by rw [h.embLL, D.starLL_cx, D'.starLL_cx, h.embLL])
 
 theorem map_embE {x : D.host.E} {x' : D'.host.E} (hx : HEq x x') : ι (D.embE x) = D'.embE x' := by
   have key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'}, R = R' → HEq H H' → ∀ {y : H.E} {y' : H'.E}, HEq y y' →
@@ -543,8 +508,6 @@ variable {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i')
 
 def oEquiv : D.ntw.O i ≃+* D'.ntw.O i' :=
   ringCast (heq_ring h.Tw_eq h.set.O h.set.crO hi).1 (heq_ring h.Tw_eq h.set.O h.set.crO hi).2
-
-theorem oEquiv_heq (x : D.ntw.O i) : HEq (h.oEquiv hi x) x := ringCast_heq _ _ x
 
 theorem frac_heq (x : FractionRing (D.ntw.O i)) : HEq (fracEquiv (h.oEquiv hi) x) x := fracEquiv_ringCast_heq _ _ x
 
@@ -582,30 +545,7 @@ theorem eFMove_fmCast {S : NX.RatDat D.ntw} {S' : NX.RatDat D'.ntw} {eK : S.Ks �
     (x : D.nexp.Fm i j b) : h.eFMove hi q eF (h.fmCast hi j b x) = fmOf (h.scal hi b) q (eF x) :=
   congrArg (fun y => fmOf (h.scal hi b) q (eF y)) ((h.fmCast hi j b).symm_apply_apply x)
 
-abbrev ratDat (S : NX.RatDat D.ntw) : NX.RatDat D'.ntw := ratDatBC D'.ntw S ι e h.LL0 h.grpEquiv
-
 end CopyTw
-
-section Move
-
-variable {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) (S : NX.RatDat D.ntw)
-  {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i') (j : ℕ) (b : Bool)
-
-def fmMove : NX.Fm S i j b ≃+ NX.Fm (h.ratDat S) i' j b :=
-  fmOf (h.scal hi b) (ksBC D'.ntw S ι e h.LL0 h.grpEquiv j)
-
-theorem fmMove_smul (c : FractionRing (D.ntw.O i)) (x : NX.Fm S i j b) :
-    fmMove h S hi j b (c • x) = fracEquiv (h.oEquiv hi) c • fmMove h S hi j b x := fmOf_smul _ _ c x
-
-theorem fmMove_mem_Bsup (x : NX.Fm S i j b) : fmMove h S hi j b x ∈ NX.Bsup (h.ratDat S) i' j b ↔ x ∈ NX.Bsup S i j b :=
-  fmOf_mem_Bsup _ _ x
-
-theorem fmMove_actG (hst : NX.RhoStab S j) (hχ : NX.ChiInLL0 S j) (hst' hχ') (g : G0g D.nd) (x : NX.Fm S i j b) :
-    fmMove h S hi j b (NX.actG S i j b hst hχ g x) =
-      NX.actG (h.ratDat S) i' j b hst' hχ' (h.grpEquiv g) (fmMove h S hi j b x) :=
-  fmOf_actG _ _ hst hχ hst' hχ' g _ (congrArg S.eG.symm (h.grpEquiv.symm_apply_apply g)) x
-
-end Move
 
 section Models
 
@@ -635,9 +575,6 @@ def SameMap {M : Mult.DSModel V P} {M' : Mult.DSModel V' P'} (T : Mult.MMap M) (
 
 theorem SameMap.refl {M : Mult.DSModel V P} (T : Mult.MMap M) : SameMap T T := fun _ _ h _ _ h' => by
   cases h'; rw [h.eq]
-
-theorem SameMap.eq {M : Mult.DSModel V P} {T T' : Mult.MMap M} (h : SameMap T T') : T = T' :=
-  MultilinearMap.ext fun v => funext fun g => h v v (.refl v) g g HEq.rfl
 
 end Models
 
@@ -718,8 +655,6 @@ structure RealMove (X : RealSide D) (X' : RealSide D') (ι : D.what₂.LL →+* 
 def TupExt (X : RealSide D) (X' : RealSide D') : Prop :=
   ∀ t : X.T, ∃ t' : X'.T, HEq (X.R.xi t) (X'.R.xi t') ∧ HEq (X.R.Q t) (X'.R.Q t')
 
-theorem TupExt.refl (X : RealSide D) : TupExt X X := fun t => ⟨t, HEq.rfl, HEq.rfl⟩
-
 namespace RealMove
 
 def refl (X : RealSide D) : RealMove X X (RingHom.id _) where
@@ -758,18 +693,8 @@ def refl (X : RealSide D) : RealMove X X (RingHom.id _) where
 variable {X : RealSide D} {X' : RealSide D'} {ι : D.what₂.LL →+* D'.what₂.LL} (m : RealMove X X' ι)
 include m
 
-theorem Sb : HEq X.R.Sb X'.R.Sb :=
-  (heq_of_eq (X.char.allPl : X.R.Sb = X.R.Pg)).trans (m.Pg.trans (heq_of_eq (X'.char.allPl : X'.R.Sb = X'.R.Pg)).symm)
-
-theorem phs (j : Fin D.R.m) (j' : Fin D'.R.m) : X.R.phs j = X'.R.phs j' := (X.phs j).trans (X'.phs j').symm
-
 variable {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e)
 include h
-
-omit m in
-
-theorem fixedEmbedding_comp (X : RealSide D) (X' : RealSide D') : (sg0 D' X'.A3.A).comp ι = sg0 D X.A3.A := by
-  rw [sign_at_base_place_eq_embedding, sign_at_base_place_eq_embedding, h.embLL_comp]
 
 theorem cG_eG (g : X.Γ) : X'.cG (X'.R.eG (m.γ g)) = h.grpEquiv (X.cG (X.R.eG g)) := by
   have key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'} {P P' : Fin 2 → Type} {Q : Finset (Pl H.E)} {Q' : Finset (Pl H'.E)},
@@ -805,19 +730,6 @@ theorem kKsOf_spec {S : NX.RatDat D.ntw} (YS : NX.NExpRealS X.R X.cG S) (j : Fin
   exact congrArg (fun y : ↥D.LL0 => ι y) ((e.apply_symm_apply _).trans (congrArg S.kKs (RingEquiv.symm_apply_apply _ c)))
 
 end RealMove
-
-example (σ : CyclotomicField 4 ℚ →+* ℂ) :
-    (show ℂ from (NX.BC.bc (CyclotomicField 4 ℚ) NX.BC.testA).j σ
-      ((KsIso.bc (CyclotomicField 4 ℚ) NX.BC.testA).φ ⟨1, trivial⟩ : NX.BC.BCW ℚ ℚ (CyclotomicField 4 ℚ) ℚ)) = 1 :=
-  (KsIso.bc_j (CyclotomicField 4 ℚ) NX.BC.testA σ ⟨1, trivial⟩).trans (map_one (σ.comp (algebraMap ℚ _)))
-
-example (D : D7) (g : G0g D.nd) (i : D.ntw.Tw) (x : D.ntw.O i) :
-    (CopyTw.refl D).grpEquiv g = g ∧ (CopyTw.refl D).oEquiv (i' := i) HEq.rfl x = x := ⟨rfl, rfl⟩
-
-example (D : D7) (ι : D.what₂.LL →+* D.what₂.LL) (e : ↥D.LL0 ≃+* ↥D.LL0) (h : CopyTw D D ι e) : ι = RingHom.id _ :=
-  RingHom.ext fun x => D.what₂.embLL.injective (h.embLL x)
-
-example (X : RealSide D) (j : Fin D.R.m) (x : (X.R.FW j).WK) : ((RealMove.refl X).forms j j rfl).φ x = x := rfl
 
 end GlobalTheory.TwInputs.Move
 

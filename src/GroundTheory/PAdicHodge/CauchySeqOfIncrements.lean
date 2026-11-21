@@ -246,8 +246,6 @@ theorem prod_eq_part_mul_shift (k : ℕ) : F.prod = F.part k * (F.shift k).prod 
   rw [e] at h1
   exact tendsto_nhds_unique h1 h2
 
-theorem part_dvd_prod (k : ℕ) : F.part k ∣ F.prod := ⟨_, F.prod_eq_part_mul_shift k⟩
-
 end InfProd
 
 def normProd (ρ0 : Set.Ioo (0 : ℝ) 1) (l : List T.Pt) : T.RobbaExt ρ0 :=

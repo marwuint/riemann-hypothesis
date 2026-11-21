@@ -4,8 +4,9 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.TwistSeries
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SerIntAtOfSeriesRat
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExtLinearIndependent
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjIdempotentSumOverLevelStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharacterQuotientValuesInEmbeddingFieldStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjIdempotentSumOverLevel
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLevels
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharacterQuotientValuesInEmbeddingField
 
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
@@ -84,7 +85,7 @@ theorem untwRatS : UntwRatS := by
     exact f5 τ
   have hlt := GlobalTheory.FockLetters.isLetters_letterEquiv (n := (Vc D i).rank) (T.Q.Dw ((i : ℕ) + 1)) hΨ hpq
   generalize GlobalTheory.FockLetters.letterEquiv (n := (Vc D i).rank) (T.Q.Dw ((i : ℕ) + 1)) hΨ hpq = lt at hlt
-  have hχ := GlobalTheory.T.referenceTuple_secondSplittingCharacter D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd
+  have hχ := _root_.GlobalTheory.LevelSeries.chiData_chrTh_base D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd
   have hMg : T.Q.l.M = D.host.g 0 * D.host.g 1 := hL.pins.2.1.1
   rw [← hMg] at hχ
   have hM₀ : T.Q.l.M ≠ 0 := by have := T.Q.l.three_le; omega
@@ -97,7 +98,7 @@ theorem untwRatS : UntwRatS := by
     rw [hMg]
     exact (this 0).mul_left (this 1)
   obtain ⟨ph, hph, hbase⟩ := GlobalTheory.T.coreConstants_eq_vacuumIdentity_up_to_phase D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV hFP
-  obtain ⟨ka, hka, J, hJH, hJk, hJ⟩ := GlobalTheory.T.harmonicMap_extremalVector_eq_phase_smul_letters D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd u hu c0 hcm lt hlt
+  obtain ⟨ka, hka, J, hJH, hJk, hJ⟩ := _root_.GlobalTheory.SerIntLetters.io_eq_phase_smul_harmLetters D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd u hu c0 hcm lt hlt
   have hph0 : ph ≠ 0 := fun h => by simp [h] at hph
   have hka0 : ka ≠ 0 := fun h => by simp [h] at hka
   refine ⟨(ka * ph)⁻¹, by rw [norm_inv, norm_mul, hka, hph]; norm_num, fun C hC s hs f hf w hw => ?_⟩
@@ -109,13 +110,13 @@ theorem untwRatS : UntwRatS := by
   have hcl : Nat.Coprime C.d.pd l :=
     ((Nat.Prime.coprime_iff_not_dvd hl).2 fun h => by have := Nat.le_of_dvd hpd0 h; omega).symm
   obtain ⟨c₂, hc₂⟩ := series_bound hP (rank_Wc i) hodd hχ hM₀ hpq hΨ hB hlt hDom hLast hl hs
-  obtain ⟨hD, hF, hrel, hσ⟩ := GlobalTheory.T.uniformisedCover_isDictionary_frameCompatible D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV C hU
-  have hcc := GlobalTheory.T.vacuumIdentityConstants_cover_of_dominantPins D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV ph hph hbase C hU hpin
+  obtain ⟨hD, hF, hrel, hσ⟩ := _root_.GlobalTheory.LevelSeries.cover_dict_frameTie D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV C hU
+  have hcc := _root_.GlobalTheory.LevelSeries.covCc_of_pinned D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV ph hph hbase C hU hpin
   have hgood : C.d.l₂.GoodAt l := goodAt_of_dvd hl hM₂ hcl
     (Formalism.L2.Pj.goodAt_of_two_primes hMg (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne l hl)
-  have hval := GlobalTheory.T.character_quotient_values_in_embedding_field D G Pl0 T0 A T.Q.c.F R i C.d.c₂.F C.σ₂ hSmall
+  have hval := _root_.GlobalTheory.Member.character_quotient_values_in_embedding_field.small_quot_values D G Pl0 T0 A T.Q.c.F R i C.d.c₂.F C.σ₂ hSmall
   obtain ⟨P, e, Φ, he, hPM, hsupp, hper, hΦk, hth⟩ := hf
-  obtain ⟨e', P', he', hPM', hce⟩ := GlobalTheory.T.exists_conj_idempotentSum_over_level D _ e P he hPM
+  obtain ⟨e', P', he', hPM', hce⟩ := _root_.GlobalTheory.HalfLevelConj.exists_conj_idemSum D _ e P he hPM
   obtain ⟨la, hla⟩ := exists_place_over C.d.c₂.F hl
   have hθf : IsThetaFunO R.ψ (Vc D i) (Wc D i) f :=
     GlobalTheory.VecTheta.isThetaFunO_of_thetaAt hPr.weil.std hPr.inf hth hvac.2.theta

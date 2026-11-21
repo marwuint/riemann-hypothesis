@@ -448,15 +448,6 @@ theorem piB_blockW (hF : IsFrameJ ε e f wf z0) {V : Type} [NormedAddCommGroup V
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hw b, Qi_mulVec_col hF, hw a, hJ_colQ_Qm hF, Hpk_mulVec,
     sgn_wI _ (by simp only; exact a.isLt), sig_wI_eq, one_mul, ← mat_apply_bvec, blockW_wI]
 
-theorem piB_conj (hF : IsFrameJ ε e f wf z0) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
-    (πl : Matrix (Fin k) (Fin k) ℂ → (V →L[ℂ] V)) (h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
-    piB ε e f wf z0 πl (Qi ε e f wf z0 * h * Qm e f wf z0) = πl (fun a b => hJ ε (wf a) (h *ᵥ wf b)) := by
-  unfold piB
-  have : Qm e f wf z0 * (Qi ε e f wf z0 * h * Qm e f wf z0) * Qi ε e f wf z0 = h := by
-    simp only [← Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.one_mul]
-    rw [Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.mul_one]
-  rw [this]
-
 end Frame2
 
 def zBv (k r : ℕ) (T : ℝ) : Fin (2 * r + k + 1) → ℂ := ((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))
@@ -959,14 +950,6 @@ def BesselLevi : Prop :=
       (s *ᵥ (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k)))) i =
         (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))) i) →
     s ∈ Sset k r (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k)))
-
-def BesselSGroup : Prop :=
-  ∀ (k r : ℕ) (T : ℝ), 0 < T →
-    (∀ s ∈ Sset k r (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))),
-      ∀ t ∈ Sset k r (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))),
-        s * t ∈ Sset k r (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k)))) ∧
-    ∀ s ∈ Sset k r (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))),
-      Hpk k r * sᴴ * Hpk k r ∈ Sset k r (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k)))
 
 def TensInt : Prop :=
   ∀ (ι : Type) [Fintype ι] (X : ι → Type) [∀ v, MeasurableSpace (X v)] (μ : ∀ v, Measure (X v))

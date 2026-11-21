@@ -55,9 +55,6 @@ def IsSmoothInf (V : HSp D) (e : LieInf V → GA D V) (φ : GA D V → ℂ) : Pr
   ∀ g, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞)
     (fun X : (∀ τ : D.what₂.Tau, (lieU (gramAt D V τ)).toSubmodule) => φ (g * e fun τ => ⟨(X τ).1, (X τ).2⟩))
 
-theorem isSmoothInf_const (V : HSp D) (e : LieInf V → GA D V) (c : ℂ) : IsSmoothInf V e fun _ => c :=
-  fun _ => contDiff_const
-
 end Smooth
 
 def lieDer (V : HSp D) (e : LieInf V → GA D V) (X : LieInf V) (φ : GA D V → ℂ) : GA D V → ℂ :=
@@ -127,19 +124,6 @@ def IsSmoothAutForm (V : HSp D) (φ : GA D V → ℂ) : Prop :=
   IsAutFun V φ ∧
     AllSome (IsInfFam (D := D)) fun θ => AllSome (IsExpFam θ V) fun e =>
       IsSmoothInf V e φ ∧ (∀ τ, IsZFiniteAt V e τ φ) ∧ IsUnifModerate θ V e φ
-
-def FormsTied {X : ThetaX D} (T : ThetaTied D X) : Prop :=
-  ∀ (V : HSp D) (φ : GA D V → ℂ), (∃ F : X.AF V, T.ev V F = φ) ↔ IsSmoothAutForm V φ
-
-theorem wordDer_const (V : HSp D) (e : LieInf V → GA D V) (l : List (LieInf V)) (c : ℂ) :
-    ∃ c' : ℂ, wordDer V e l (fun _ => c) = fun _ => c' := by
-  induction l with
-  | nil => exact ⟨c, rfl⟩
-  | cons X l ih =>
-    obtain ⟨c', h⟩ := ih
-    refine ⟨0, ?_⟩
-    change lieDer V e X (wordDer V e l fun _ => c) = _
-    rw [h]; funext g; simp [lieDer]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies
 

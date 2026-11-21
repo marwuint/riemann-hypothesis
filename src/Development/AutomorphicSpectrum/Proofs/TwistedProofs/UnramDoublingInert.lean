@@ -7,22 +7,23 @@ import Development.AutomorphicSpectrum.Proofs.TwistedProofs.FractionExistsOfSmit
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CompletionExistsStatement
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.AdditiveVectorExistsStatement
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.DualPairingExistsStatement
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.SpanEqualityStatement
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.SpanEquality
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.HeisenbergMatrixFactsStatement
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.PointwiseOfSpanHeisenbergStatement
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.PointwiseOfSpanHeisenberg
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.LatticeIndexOfSmithStatement
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.TraceIndexFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.SmallCornerOfHeisenbergDualStatement
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CountOfHeisenbergIndexStatement
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.LeviDecompositionExistsStatement
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CosetSurjectiveOfLeviStatement
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CosetInjectiveStatement
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CosetInjective
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.SphericalTransitiveOfLeviStatement
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.SmallRankBoundStatement
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CosetIntegralStatement
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.SmallRankBound
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.CosetIntegral
 import Development.AutomorphicSpectrum.Proofs.TwistedProofs.DoubleCosetSwapStatement
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.GeneratingFunctionIdentityStatement
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.RecursionIdentityStatement
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.GeneratingFunctionIdentity
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.RecursionIdentity
 
 noncomputable section
 
@@ -116,18 +117,18 @@ theorem unramDoublingInert : UnramDoublingInert := by
   have hint : ∀ Z, HasSum (fun x : GU σ n ⧸ KU σ n => varX q n (χ ϖ) s ^ len (mat x.out) * w x.out) Z →
       Integrable (fun g => Φ (io1 σ n g) * w g) μ ∧ ∫ g, Φ (io1 σ n g) * w g ∂μ = Z := fun Z hZ => by
     rw [hsec]
-    refine GlobalTheory.T.cosetIntegral' _ μ (KU σ n) (GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n hU).1 hμ _ Z (fun g k hk => ?_) hZ
+    refine _root_.GlobalTheory.CompanionTheory.InertZeta.cosetIntegral _ μ (KU σ n) (GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n hU).1 hμ _ Z (fun g k hk => ?_) hZ
     have h1 := hw.1 1 ⟨k, hk⟩ g
     have h2 := len_mat_mul (one_mem _) hk g
     simp only [OneMemClass.coe_one, one_mul] at h1 h2
     rw [h1, h2]
-  refine ⟨fun hD => ?_, fun hn => hint 1 (hasSum_small GlobalTheory.T.small_rank_bound hU hn (fun g => varX q n (χ ϖ) s ^ len (mat g) * w g)
+  refine ⟨fun hD => ?_, fun hn => hint 1 (hasSum_small _root_.GlobalTheory.CompanionTheory.InertZeta.smallRank hU hn (fun g => varX q n (χ ϖ) s ^ len (mat g) * w g)
     fun k hk => ?_)⟩
   · obtain ⟨φ, hφ, h1, -⟩ := Final.SphericalExistsU L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (α i : ℂ))
       fun i => (α i).ne_zero
-    have h2 := hasSum_spherical hF (GlobalTheory.T.pointwise_of_span_heisenberg GlobalTheory.T.additive_vector_exists GlobalTheory.T.dual_pairing_exists GlobalTheory.T.span_equality GlobalTheory.T.heisenberg_matrix_facts)
-      (GlobalTheory.T.count_of_heisenberg_index GlobalTheory.T.heisenberg_matrix_facts (GlobalTheory.T.lattice_index_of_smith GlobalTheory.T.smith_normal_form_exists) GlobalTheory.T.trace_index_formula) (GlobalTheory.T.small_corner_of_heisenberg_dual GlobalTheory.T.heisenberg_matrix_facts GlobalTheory.T.dual_pairing_exists) GlobalTheory.T.generating_function_identity (GlobalTheory.T.coset_surjective_of_levi GlobalTheory.T.levi_decomposition_exists)
-      GlobalTheory.T.coset_injective GlobalTheory.T.levi_decomposition_exists (GlobalTheory.T.spherical_transitive_of_levi GlobalTheory.T.levi_decomposition_exists) GlobalTheory.T.small_rank_bound GlobalTheory.T.recursion_identity hU (n / 2) n (by omega) (by omega)
+    have h2 := hasSum_spherical hF (_root_.GlobalTheory.CompanionTheory.InertLen.pointwise GlobalTheory.T.additive_vector_exists GlobalTheory.T.dual_pairing_exists _root_.GlobalTheory.CompanionTheory.InertSpan.spanEq GlobalTheory.T.heisenberg_matrix_facts)
+      (GlobalTheory.T.count_of_heisenberg_index GlobalTheory.T.heisenberg_matrix_facts (GlobalTheory.T.lattice_index_of_smith GlobalTheory.T.smith_normal_form_exists) GlobalTheory.T.trace_index_formula) (GlobalTheory.T.small_corner_of_heisenberg_dual GlobalTheory.T.heisenberg_matrix_facts GlobalTheory.T.dual_pairing_exists) _root_.GlobalTheory.CompanionTheory.InertGenFun.genFun (GlobalTheory.T.coset_surjective_of_levi GlobalTheory.T.levi_decomposition_exists)
+      _root_.GlobalTheory.CompanionTheory.InertZeta.cosetInj GlobalTheory.T.levi_decomposition_exists (GlobalTheory.T.spherical_transitive_of_levi GlobalTheory.T.levi_decomposition_exists) _root_.GlobalTheory.CompanionTheory.InertZeta.smallRank _root_.GlobalTheory.CompanionTheory.InertLevi.step hU (n / 2) n (by omega) (by omega)
       (fun i => (α i : ℂ)) (varX q n (χ ϖ) s) (varY q (χ ϖ) s) φ (fun i => (α i).ne_zero) (by
         rw [varX, varY, neg_add, neg_add, Complex.cpow_add _ _ hq0, Complex.cpow_add _ _ hq0, Complex.cpow_neg_one,
           Complex.cpow_neg _ (n : ℂ), Complex.cpow_natCast]

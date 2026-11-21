@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedFejerPositivityStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedFejerPositivity
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 
 namespace GlobalTheory
@@ -30,7 +30,7 @@ theorem powerSum_weighted_ineq {ι : Type} (S : Finset ι) (z : ι → ℂ) (b :
     rw [inv_le_comm₀ hRpos h1x, ← one_div]; exact hRge
   have hRinv0 : 0 ≤ R⁻¹ := by positivity
   set θ : ℝ := Complex.arg (z i₁) with hθ
-  obtain ⟨hF1, hF2⟩ := GlobalTheory.T.neg_one_le_sum_fejer_cos_re_pow_and_lower_bound J θ
+  obtain ⟨hF1, hF2⟩ := _root_.GlobalTheory.weighted_fejer_positivity J θ
   set c : ℕ → ℝ := fun j => (1 - (j : ℝ) / (J + 1)) * (1 + Real.cos (j * θ)) with hc
   set F : ℂ → ℝ := fun w => ∑ j ∈ Finset.Icc 1 J, c j * (w ^ j).re with hF
   have hF1' : ∀ w : ℂ, ‖w‖ ≤ 1 → -1 ≤ F w := hF1

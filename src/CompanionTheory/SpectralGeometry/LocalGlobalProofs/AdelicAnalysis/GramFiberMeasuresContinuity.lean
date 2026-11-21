@@ -3,10 +3,10 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityContinuous
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentities
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensorStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresIntegralFormulaStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianLocalContinuousCongruenceSectionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensor
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresIntegralFormula
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianLocalContinuousCongruenceSection
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -28,7 +28,7 @@ theorem fibre_loc_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   haveI : LocallyCompactSpace R := hR.2.1
   haveI : SecondCountableTopology R := hR.2.2.1
   haveI : T2Space R := hR.2.2.2.1
-  obtain ⟨tK1, tK2, tK3, tK4, -, -, -, tK8, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R
+  obtain ⟨tK1, tK2, tK3, tK4, -, -, -, tK8, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R
   haveI := tK1
   haveI := tK2
   haveI := tK3
@@ -40,7 +40,7 @@ theorem fibre_loc_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   haveI := h3
   haveI := h4
   obtain ⟨g, hgc, hg⟩ := h5 M J hJ
-  have hKU := GlobalTheory.T.units_open_embedding_local_tensor F E σ hσ R hR
+  have hKU := _root_.GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hσ R hR
   have hBo : IsOpen {S : HermR R σ n | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det} := by
     have hdet : Continuous fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det :=
       continuous_subtype_val.matrix_det
@@ -58,11 +58,11 @@ theorem fibre_loc_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     Subtype.val_injective hgc hg _ hBo m hfib
   refine ⟨hloc S, ?_⟩
   rintro U hU ⟨X₀, hX₀U, hX₀S, hX₀⟩ h0
-  obtain ⟨κ, -, -, -, hκ⟩ := GlobalTheory.T.gram_fiber_measures_gl_equivariant F E σ hσ M J hJ R hR n μ ν m hμ hν hm
+  obtain ⟨κ, -, -, -, hκ⟩ := _root_.GlobalTheory.CompanionTheory.SW.ScaleCont.fibre_scale_continuous F E σ hσ M J hJ R hR n μ ν m hμ hν hm
   have hSdet : IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det := by
     rw [← hX₀S]
     exact hX₀
-  obtain ⟨B₁, gs, hB₁, hSB₁, hgs, hgs1, hgsS⟩ := GlobalTheory.T.hermitian_local_continuous_congruence_section F E σ hσ R hR n S hSdet
+  obtain ⟨B₁, gs, hB₁, hSB₁, hgs, hgs1, hgsS⟩ := _root_.GlobalTheory.CompanionTheory.SW.exists_local_section F E σ hσ R hR n S hSdet
   obtain ⟨a1, a2, a3, -, -⟩ := GramAlg.gram_algebra F E σ hσ M J hJ R n
   have hgX₀ : g X₀ = S := Subtype.ext ((hg X₀).symm.trans hX₀S)
   have hr : Continuous fun p : (Fin n → Fin M → R ⊗[F] E) × Matrix (Fin n) (Fin n) (R ⊗[F] E) =>

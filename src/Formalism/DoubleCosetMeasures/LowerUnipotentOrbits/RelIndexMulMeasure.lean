@@ -221,27 +221,4 @@ end Formalism.DoubleCosetMeasures.P.GLRed
 
 namespace Formalism.DoubleCosetMeasures.P
 
-theorem volJ : Formalism.DoubleCosetMeasures.VolJ := by
-  intro F _ _ _ O hO ϖ hϖ hϖ0 hloc hfin a μ _ J' hKJ hJL
-  have hKL : congSub O ϖ a ≤ GLint O a := fun g hg => hg.1
-  have hcard := GLRed.card_eq O a ϖ hϖ hϖ0 hloc
-  have hfinGL : Finite (GL (Fin a) (kF O ϖ hϖ)) := by
-    have : Finite (Matrix (Fin a) (Fin a) (kF O ϖ hϖ)) :=
-      inferInstanceAs (Finite (Fin a → Fin a → kF O ϖ hϖ))
-    exact Finite.of_injective _ Units.val_injective
-  have hpos : Nat.card (GL (Fin a) (kF O ϖ hϖ)) ≠ 0 := Nat.card_pos.ne'
-  have hrel : (congSub O ϖ a).relIndex (GLint O a) = Nat.card (GL (Fin a) (kF O ϖ hϖ)) := by
-    rw [← hcard]; rfl
-  have hmul := Subgroup.relIndex_mul_relIndex (congSub O ϖ a) J' (GLint O a) hKJ hJL
-  have hJfin : J'.relIndex (GLint O a) ≠ 0 := by
-    intro h0; rw [h0, mul_zero, hrel] at hmul; exact hpos hmul.symm
-  have : (J'.subgroupOf (GLint O a)).FiniteIndex := ⟨hJfin⟩
-  have hJopen : IsOpen (J' : Set (GL (Fin a) F)) :=
-    Subgroup.isOpen_mono hKJ (GLRed.congSub_open O hO ϖ a)
-  have hmeas := GLRed.relIndex_mul_measure J' (GLint O a) hJL hJopen.measurableSet μ
-  have hq : Nat.card (J' ⧸ (congSub O ϖ a).subgroupOf J') = (congSub O ϖ a).relIndex J' := rfl
-  rw [hq, ← hmeas, ← hrel, ← hmul]
-  push_cast
-  ring
-
 end Formalism.DoubleCosetMeasures.P

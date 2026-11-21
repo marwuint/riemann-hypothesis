@@ -3,7 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HostBoundHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodCoverOverSizedFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodCoverOverSizedField
+import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
+import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
 
 set_option synthInstance.maxHeartbeats 400000
 
@@ -54,16 +56,6 @@ theorem size_le {D : D7} {L : SizeData₂ D} {PP A M o : ℝ} (hN : HostNum D L 
     nlinarith
   rw [hlog]
   nlinarith
-
-theorem deepEx (hP : Hypotheses2) : DeepEx := by
-  refine Closed.imp (GlobalTheory.CovTop.Sizes.hostN 0) fun Fm CH _ h => ?_
-  obtain ⟨C, hC, x0, h⟩ := h
-  refine ⟨C, hC, x0, fun x hx hle ι p hp i hi => ?_⟩
-  have hN := h x hx hle ι p hp i
-  obtain ⟨Y, hY⟩ := GlobalTheory.T.exists_good_cover_over_sized_field hP.p8 (Fm.D x ι) p.T.toCore p.fw.laws.pins ((i : ℕ) + 1) ⟨by omega, i.isLt⟩ hN.split
-    hN.cop (expL (Fm.L x ι).sc.L)
-  refine ⟨Y, (goodCov_iff p i Y).2 (hY.mono (size_le hN ?_))⟩
-  exact RecTied.core_size_le p hp.2 (by linarith [hN.big.2.1])
 
 end GlobalTheory.CovTop.DeepExist
 

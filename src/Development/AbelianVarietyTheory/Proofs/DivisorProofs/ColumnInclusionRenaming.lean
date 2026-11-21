@@ -1,14 +1,14 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TraceSubstitution
-import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ExtensionSingularValues
+import Formalism.LocalToGlobal.Columns.CoefficientsModP.PairingNondegenerateHolds
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LRowstLemmas
+import Formalism.LocalToGlobal.Divisibility.CoefMod
+import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.L2.DIV
 
 noncomputable section
 
 namespace GlobalTheory.Proof.ColumnInclusionRenaming
-
-open GlobalTheory.IndefiniteRowSideFullHecke
 
 theorem fockS_rename {σ τ : Type} {e : σ → τ} (he : Function.Injective e) (f g : MvPolynomial σ ℂ) :
     fockS (rename e f) (rename e g) = fockS f g := by

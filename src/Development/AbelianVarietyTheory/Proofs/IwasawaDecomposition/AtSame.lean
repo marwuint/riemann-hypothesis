@@ -277,17 +277,6 @@ def Mv.all {C : NChoice D} (a : NAllC D C) : NAllC m.D (m.ch C) := @_root_.Globa
     (iCq_embO := (by with_unfolding_all exact (a.iCq_embO :)))
     (embO_star := (by with_unfolding_all exact (a.embO_star :)))
 
-def Inner {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C} (n : NTrue hL D cf C tp) : Prop :=
-  LabConj n.D n.A.wdT ∧
-    (∀ k, haveI : Fact (n.D.host.g k).Prime := ⟨n.D.host.g_prime k⟩
-      n.A.grp.ζ k = (GlobalTheory.Mem.TypePl.labDat (n.D.host.g k)).gen) ∧
-    ∃ fr : Formalism.L2.OmFrame n.D, fr.jE = n.jE ∧ PhtOn n.A.wd fr fun _ _ _ _ => True
-
-def AtSame {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C} (a : NAt hL D cf C tp) {D' : D7} {cf' : CharFrame D'}
-    {C' : NChoice D'} {tp' : TupTied D' cf' C'} (a' : NAt hL D' cf' C' tp') : Prop :=
-  HEq a'.all (m.all a.all) ∧ HEq a'.Pq a.Pq ∧ HEq (ratL a'.nt.L a'.nt.S) (ratL a.nt.L a.nt.S) ∧ HEq a'.nt.hL a.nt.hL ∧
-    HEq a'.nt.rep a.nt.rep ∧ HEq a'.nt.eig a.nt.eig ∧ (Inner a.nt → Inner a'.nt)
-
 section
 variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} (S' : SStage B w.C Z.W)
   (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)

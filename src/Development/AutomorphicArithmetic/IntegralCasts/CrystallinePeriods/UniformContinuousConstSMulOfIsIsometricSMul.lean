@@ -232,17 +232,6 @@ def padicIntToComplexInt : ℤ_[p] →+* PadicComplexInt p :=
 @[simp] theorem coe_padicIntToComplexInt (x : ℤ_[p]) :
     (padicIntToComplexInt p x : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] x := rfl
 
-example : Fact ¬IsUnit (p : PadicComplexInt p) := inferInstance
-example : IsAdicComplete (span {(p : PadicComplexInt p)}) (PadicComplexInt p) := inferInstance
-example : IsDomain (PadicComplexInt p) := inferInstance
-example : ValuationRing (PadicComplexInt p) := inferInstance
-example : CharZero (PadicComplexInt p) := inferInstance
-example : IsAlgClosed (FractionRing (PadicComplexInt p)) := inferInstance
-example : MulSemiringAction (PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (PadicComplexInt p) :=
-  inferInstance
-example (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
-    MulSemiringAction (PadicAlgCl p ≃ₐ[K] PadicAlgCl p) (PadicComplexInt p) := inferInstance
-
 end PadicComplex
 
 section CK
@@ -276,8 +265,6 @@ instance (F : Type*) [Field F] [Algebra K F] [Algebra F (AlgCl K)] [IsScalarTowe
 
 end AlgCl
 
-abbrev GalK : Type u := AlgCl K ≃ₐ[K] AlgCl K
-
 abbrev CK : Type u := UniformSpace.Completion (AlgCl K)
 
 namespace CK
@@ -308,25 +295,6 @@ def OCK.ofInteger : unitBall K →+* OCK K :=
 
 @[simp] theorem OCK.coe_ofInteger (x : unitBall K) :
     (OCK.ofInteger K x : CK K) = algebraMap K (CK K) x := rfl
-
-theorem CK.smul_coe (g : GalK K) (x : AlgCl K) : g • (x : CK K) = (g x : AlgCl K) :=
-  (UniformSpace.Completion.coe_smul g x).symm
-
-theorem CK.smul_algebraMap (g : GalK K) (x : K) :
-    g • algebraMap K (CK K) x = algebraMap K (CK K) x := by
-  change g • ((algebraMap K (AlgCl K) x : AlgCl K) : CK K) = (algebraMap K (AlgCl K) x : AlgCl K)
-  rw [CK.smul_coe, AlgEquiv.commutes]
-
-theorem OCK.smul_ofInteger (g : GalK K) (x : unitBall K) :
-    g • OCK.ofInteger K x = OCK.ofInteger K x := Subtype.ext (CK.smul_algebraMap K g x)
-
-example (p : ℕ) [Fact (‖(p : K)‖ < 1)] : Fact ¬IsUnit (p : OCK K) := inferInstance
-example (p : ℕ) [Fact (‖(p : K)‖ < 1)] : IsAdicComplete (span {(p : OCK K)}) (OCK K) :=
-  inferInstance
-example [CharZero K] : CharZero (OCK K) := inferInstance
-example [CharZero K] : IsAlgClosed (FractionRing (OCK K)) := inferInstance
-example : ValuationRing (OCK K) := inferInstance
-example : MulSemiringAction (GalK K) (OCK K) := inferInstance
 
 end CK
 

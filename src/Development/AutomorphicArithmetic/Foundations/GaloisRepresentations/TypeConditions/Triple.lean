@@ -11,10 +11,6 @@ noncomputable section
 namespace UpperTheory.GalS
 open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.TripleLocal
 
-theorem galW {D : D7} {a : ℕ} {π : D.naut.CG a} {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
-    {r : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* GL (Fin a) (Qbar l)} (h : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.IsGaloisRepOf D π l ι r) :
-    IsGaloisRepOfN D π l ι r := ⟨h.1, h.2.1, fun w hw => ⟨fun _ => (h.2.2 w hw).1,
-      fun u => (h.2.2 w hw).2.1.1 ((D.naut.monomial_twist_iff _ _).2 (D.naut.unr_mono0 _ u)), (h.2.2 w hw).2.2⟩⟩
 theorem galW' {D : D7} {a : ℕ} {π : D.naut.CG a} {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
     {r : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* GL (Fin a) (Qbar l)} (h : IsGaloisRepOfN D π l ι r) : IsGaloisRepOfN D π l ι r := h
 
@@ -229,23 +225,6 @@ theorem attN_of_isSSRep_mapRep_of_nc_locG (hF : FrobDense D) (hG : UpperTheory.G
     refine Multiset.map_congr rfl fun z _ => ?_
     push_cast
     ring
-end
-
-section
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
-open Formalism.L2.Host Formalism.FrobeniusOrbits Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR
-open GlobalTheory.RowTie (WDTie)
-open GlobalTheory.HeightCounting (CharSide)
-open GlobalTheory.GalOfCusp GlobalTheory.TripleGal GlobalTheory.Triple
-open GlobalTheory.TypeLeaf (FrobDense)
-open GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary (embOver)
-open GlobalTheory.JumpDictionaryFoundation (exists_embOver embOver_true_apply)
-variable {D : D7} {T : WDTie D.nd D.naut} {C₀ C : CharFrame D} (S : CharSide D C₀)
-  {art : Ideles D.host.E →* GlobalTheory.HeckeGal.Gab D.host.E D.nd.Om} {i : D.ntw.Tw} {s : D.ntw.Sig i}
-  {ρ : Reading D.ntw i (D.ntw.side i s)} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
-  {r : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* GL (Fin D.R.r) (Qbar (D.ntw.l i))} {ν : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* (D.ntw.O0 i)ˣ}
-  {w : D.what₂.places.Pl} {red : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.Zbar (D.ntw.l i) →+* FbAt D w}
-
 end
 
 end GlobalTheory.TripleLocal

@@ -7,7 +7,7 @@ import ReciprocityTheory.L2DbarEstimates.LeviForms.OfRealNormSqSumMul
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FirstMinimumSqMulIInfHeightLeCard
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsGeneratorsLattice
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LogThetaSumInvariantSmoothStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LeviLogThetaSumStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LeviLogThetaSum
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.TorusAtExists
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.I2 ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst
@@ -42,7 +42,7 @@ theorem exists_weight : TStatement → ∀ (E : Type) [Field E] [NumberField E] 
     choose ps hps using h
     exact ⟨ps, hps⟩
   obtain ⟨h1, h2⟩ := GlobalTheory.T.log_theta_sum_invariant_smooth_alt E r X hiso hw ps hps
-  refine ⟨ps, h1, h2, GlobalTheory.T.levi_log_theta_sum_alt E r X hiso hw ps hps, ?_⟩
+  refine ⟨ps, h1, h2, _root_.GlobalTheory.ThetaSumLevi.levi_log_theta_sum E r X hiso hw ps hps, ?_⟩
   obtain ⟨C, A', -, hC⟩ := GlobalTheory.ThetaSumBound.growth_decay hT E r X hiso hf1 hf2 hrd hm
   refine ⟨⟨C, A', fun x hx => ?_⟩, fun η hη _ => ⟨C, A', fun x hx ξ hξ ht => ?_⟩⟩
   · obtain ⟨A, hA⟩ := hps x hx

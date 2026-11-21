@@ -9,10 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqIsMulRightInv
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuotientIntegrationFormulaDiscreteSubgroupLeft
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.T2SpaceCmHostAdeles
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentAnisotropicProjectionEqOne
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiGroupSplitRealFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiGroupSplitRealFinite
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselGroupSplitRealFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiGroupHaarIsMulRightInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselGroupHaarIsMulRightInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiGroupHaarIsMulRightInvariant
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselGroupHaarIsMulRightInvariant
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Unf GlobalTheory.SeeSaw
 open scoped TensorProduct
@@ -168,29 +168,29 @@ theorem adelic_split : ∀ (D : D7) (V : HSp D), IsClosed (GinfC V : Set (GA D V
       (GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V _ inferInstance)
   have hJ := GlobalTheory.jacGrp_isClosed D V V₀ ρ d
   haveI : LocallyCompactSpace (jacGrp d) := hJ.locallyCompactSpace
-  refine ⟨⟨GlobalTheory.T.fourierJacobiGroup_split_real_finite D V V₀ ρ d, fun μ hμ => ?_, fun μ hμ => ?_⟩, fun A L o => ?_⟩
+  refine ⟨⟨_root_.GlobalTheory.jacGrp_split_inf_fin D V V₀ ρ d, fun μ hμ => ?_, fun μ hμ => ?_⟩, fun A L o => ?_⟩
   · haveI := hμ
-    haveI := GlobalTheory.T.fourierJacobiGroup_haar_isMulRightInvariant D V V₀ ρ d μ hμ
+    haveI := _root_.GlobalTheory.JacUnimod.jacGrp_rightInv D V V₀ ρ d μ hμ
     exact GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ
   · have hc : IsClosed (((jacGrp d).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V)) :=
       hJ.preimage continuous_subtype_val
     haveI : LocallyCompactSpace ((jacGrp d).subgroupOf (GfC V)) := hc.locallyCompactSpace
     haveI := hμ
     haveI := rightInv_restr (GinfC V) (GfC V) (jacGrp d) hi hf hJ (splitEquiv V) (splitEquiv_apply V)
-      (GlobalTheory.T.fourierJacobiGroup_split_real_finite D V V₀ ρ d) (GlobalTheory.T.fourierJacobiGroup_haar_isMulRightInvariant D V V₀ ρ d) μ hμ
+      (_root_.GlobalTheory.jacGrp_split_inf_fin D V V₀ ρ d) (_root_.GlobalTheory.JacUnimod.jacGrp_rightInv D V V₀ ρ d) μ hμ
     exact GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ
   have hB := GlobalTheory.BesClosed.besGrp_isClosed D V V₀ A L ρ d o
   haveI : LocallyCompactSpace (besGrp d o) := hB.locallyCompactSpace
   refine ⟨GlobalTheory.T.besselGroup_split_real_finite D V V₀ A L ρ d o, fun μ hμ => ?_, fun μ hμ => ?_⟩
   · haveI := hμ
-    haveI := GlobalTheory.T.besselGroup_haar_isMulRightInvariant D V V₀ A L ρ d o μ hμ
+    haveI := _root_.GlobalTheory.BesUnimod.besGrp_isMulRightInvariant D V V₀ A L ρ d o μ hμ
     exact GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ
   · have hc : IsClosed (((besGrp d o).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V)) :=
       hB.preimage continuous_subtype_val
     haveI : LocallyCompactSpace ((besGrp d o).subgroupOf (GfC V)) := hc.locallyCompactSpace
     haveI := hμ
     haveI := rightInv_restr (GinfC V) (GfC V) (besGrp d o) hi hf hB (splitEquiv V) (splitEquiv_apply V)
-      (GlobalTheory.T.besselGroup_split_real_finite D V V₀ A L ρ d o) (GlobalTheory.T.besselGroup_haar_isMulRightInvariant D V V₀ A L ρ d o) μ hμ
+      (GlobalTheory.T.besselGroup_split_real_finite D V V₀ A L ρ d o) (_root_.GlobalTheory.BesUnimod.besGrp_isMulRightInvariant D V V₀ A L ρ d o) μ hμ
     exact GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ
 
 end GlobalTheory.AdelicSplit

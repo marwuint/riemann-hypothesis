@@ -2,7 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.L2UnitaryRepresentationData
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoIntertwinerSmallerFockToDiscreteSeries
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsSubOfDisjoint
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirstStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Datum
 open Formalism.IndefR.Mult (DSModel dualPar parA parB)
 open Formalism.MainNotions.SchurIrreducible (AdmGK ARi ARiiiUp ARiiiDown ARiiiLine DiscreteSeriesBlattner admQ5)
@@ -46,7 +48,7 @@ theorem tensNo_first (X : ProvA) (hD : DiscreteSeriesBlattner X) (h5 : admQ5 X)
     exact ⟨v, hv0, hv⟩
   have hflow := GlobalTheory.T.degW_blattner_le_of_blattnerCone p q (X.ds p q lam).HK lam (cPair r s) θ hcone hsign
   obtain ⟨⟨μ, P, hPJ, hP1, hP2, -⟩, -⟩ :=
-    GlobalTheory.T.exists_jointHarm_highestWeight_and_map_mem_genSub p q r s (X.ds p q lam).HK MM f hirr hadm hf hne (blattner lam) hex hflow
+    _root_.GlobalTheory.FockAlg.min_first p q r s (X.ds p q lam).HK MM f hirr hadm hf hne (blattner lam) hex hflow
   have hbot := ((GlobalTheory.JointHarm.fock_polynomials X p q r s).2.2.2.2.1 (blattner lam) μ).2 (hno μ)
   have hmem : P ∈ hwSub (X.fock p q r s).act1 (blattner lam) ⊓ hwSub (X.fock p q r s).act2 μ ⊓
       Submodule.span ℂ (X.fock p q r s).J :=
@@ -89,8 +91,8 @@ theorem no_map_lower : ∀ (X : ProvA), DiscreteSeriesBlattner X → admQ5 X →
   have ht : 1 ≤ t := hA.1
   have hn : 1 ≤ al.length + be.length + ga.length + de.length := hA.2.1
   have ht0 : (0 : ℚ) ≤ t := Nat.cast_nonneg t
-  obtain ⟨-, hpar, hpar', hsign, hsign'⟩ := GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hA
-  obtain ⟨hno, -, hno'⟩ := GlobalTheory.T.lowestType_not_jointShape_smaller_pairs t al be ga de hA i hi
+  obtain ⟨-, hpar, hpar', hsign, hsign'⟩ := _root_.GlobalTheory.LowestTypes.lowest_types t al be ga de hA
+  obtain ⟨hno, -, hno'⟩ := _root_.GlobalTheory.LowestTypeDrop.lowestType_not_jointShape t al be ga de hA i hi
   refine ⟨fun hr hs => ?_, fun hbig hp hq => ?_⟩
   · refine tensNo_first X hD h5 (by omega) _ hpar 0 ?_ (hno hr hs)
     rw [cPair_sub hr hs]

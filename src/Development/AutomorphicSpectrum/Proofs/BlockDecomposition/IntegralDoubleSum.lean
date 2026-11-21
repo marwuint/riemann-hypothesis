@@ -19,12 +19,6 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
-section Expand
-
-variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
-
-end Expand
-
 section Pairing
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]

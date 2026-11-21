@@ -1,7 +1,11 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.LUnlinkedComm
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedProductDropZeroFactorsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedProductDropZeroFactors
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DropHom
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardBlocksReindexStrictMono
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorProductDropZeroFactorsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JordanHolderMultiplicityJacquetEqBorelJacquetOfS
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Cos
 
 namespace GlobalTheory.CompanionTheory.FineProd.ProdSingle
@@ -14,7 +18,7 @@ theorem prodIrr_single : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalS
   subst hN
   refine ⟨(Y i₀).2, Sigma.eta _, ?_⟩
   have hd' : ∑ a : Fin 1, (Y ((fun _ : Fin 1 => i₀) a)).1 = (Y i₀).1 := by simp
-  obtain ⟨e₁⟩ := GlobalTheory.T.induced_product_drop_zero_factors Y hd (fun _ : Fin 1 => i₀) (Subsingleton.strictMono _)
+  obtain ⟨e₁⟩ := _root_.GlobalTheory.CompanionTheory.FineProd.ProdDrop.prodIrr_drop Y hd (fun _ : Fin 1 => i₀) (Subsingleton.strictMono _)
     (fun j hj => ⟨0, by
       by_contra hne
       exact hj (h0 j (fun e => hne e.symm))⟩) hd'

@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TraitOrdOfTraitOrdPt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLinForms
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsProperOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabDescentOfFieldExtension
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CoefficientFieldIntegersDedekindFractionField
@@ -74,7 +74,3 @@ theorem isOpen_abLocus_of_locallyNoetherian {S : Scheme.{0}} [IsLocallyNoetheria
 
 end GlobalTheory.AbLocusOpenGlobal
 
-theorem GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c), IsOpen (abLocus Z.t.G) := by
-  intro E _ _ _ H D l Xo c Z
-  have : IsLocallyNoetherian Z.X := (GlobalTheory.ModelRelCompare.densePart Z (GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).1).1
-  exact GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_of_locallyNoetherian Z.t.G Z.t.semi

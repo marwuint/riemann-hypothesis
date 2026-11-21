@@ -22,49 +22,6 @@ theorem jetWedge_apply (ω : M [⋀^Fin D]→ₗ[A] N) (v : Fin (D + 1) → A ×
   simp only [Int.cast_pow, Int.cast_neg, Int.cast_one]
   rfl
 
-theorem jetWedge_shear (ω : M [⋀^Fin D]→ₗ[A] N) (h : A) (u : M) (v : Fin (D + 1) → A × M) :
-    jetWedge ω (fun i => (h * (v i).1, h • (v i).2 + (v i).1 • u)) = h ^ (D + 1) • jetWedge ω v := by
-  classical
-  let φ : (A × M) →ₗ[A] (A × M) :=
-    (h • LinearMap.fst A A M).prod (h • LinearMap.snd A A M + (LinearMap.fst A A M).smulRight u)
-  let g : Option M → A × M := fun o => o.elim (1, 0) (fun m => (0, m))
-  have hg : Submodule.span A (Set.range g) = ⊤ := by
-    rw [eq_top_iff]
-    rintro ⟨a, m⟩ -
-    have : ((a, m) : A × M) = a • g none + g (some m) := by simp [g]
-    rw [this]
-    exact add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨none, rfl⟩))
-      (Submodule.subset_span ⟨some m, rfl⟩)
-  have key : ((jetWedge ω).compLinearMap φ).toMultilinearMap
-      = (h ^ (D + 1) • jetWedge ω).toMultilinearMap := by
-    refine MultilinearMap.ext_of_span_eq_top (g := fun _ => g) (fun _ => hg) fun j => ?_
-    change jetWedge ω (fun i => φ (g (j i))) = h ^ (D + 1) • jetWedge ω (fun i => g (j i))
-    by_cases hj : ∃ a b, a ≠ b ∧ j a = j b
-    · obtain ⟨a, b, hab, hjab⟩ := hj
-      rw [(jetWedge ω).map_eq_zero_of_eq _ (i := a) (j := b) (by simp only [hjab]) hab,
-        (jetWedge ω).map_eq_zero_of_eq _ (i := a) (j := b) (by simp only [hjab]) hab, smul_zero]
-    · push Not at hj
-      rw [jetWedge_apply, jetWedge_apply, Finset.smul_sum]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      cases hi : j i with
-      | some m => simp [φ, g]
-      | none =>
-        have hk : ∀ k : Fin D, (g (j (i.succAbove k))).1 = 0 := by
-          intro k
-          cases hk : j (i.succAbove k) with
-          | some m => simp [g]
-          | none => exact absurd (hk.trans hi.symm) (hj _ _ (Fin.succAbove_ne i k))
-        have : (fun k : Fin D => (φ (g (j (i.succAbove k)))).2)
-            = fun k : Fin D => h • (g (j (i.succAbove k))).2 := by
-          funext k
-          simp [φ, hk k]
-        rw [this, ω.map_smul_univ (fun _ => h)]
-        simp only [φ, g, smul_smul]
-        congr 1
-        simp
-        ring
-  exact congrArg (fun F : MultilinearMap A (fun _ : Fin (D + 1) => A × M) N => F v) key
-
 theorem alternating_map_sum_smul_eq_det_smul {n : ℕ} (ω : M [⋀^Fin n]→ₗ[A] N)
     (a : Matrix (Fin n) (Fin n) A) (w : Fin n → M) :
     ω (fun i => ∑ k, a i k • w k) = a.det • ω w := by
@@ -140,11 +97,6 @@ theorem jacForm_eq_jetWedge (f : Fin (D + 1) → A) :
     jacForm d ω f = jetWedge ω (fun i => (f i, d (f i))) := by
   rw [jetWedge_apply, jacForm]
 
-theorem jacForm_mul (h : A) (f : Fin (D + 1) → A) :
-    jacForm d ω (fun i => h * f i) = h ^ (D + 1) • jacForm d ω f := by
-  rw [jacForm_eq_jetWedge, jacForm_eq_jetWedge, ← jetWedge_shear ω h (d h)]
-  simp only [Derivation.leibniz]
-
 theorem form_d_mul_sub_mem (I : Ideal A) (h : A) (g : Fin D → A) (hg : ∀ k, g k ∈ I) :
     ω (fun k => d (h * g k)) - h ^ D • ω (fun k => d (g k)) ∈ I • (⊤ : Submodule A N) := by
   have : h ^ D • ω (fun k => d (g k)) = ω (fun k => h • d (g k)) := by
@@ -217,10 +169,6 @@ noncomputable def dWedge (g : Fin D → A) : ⋀[A]^D Ω[A⁄R] :=
 
 noncomputable def jac (f : Fin (D + 1) → A) : ⋀[A]^D Ω[A⁄R] :=
   ∑ i : Fin (D + 1), ((-1 : A) ^ (i : ℕ) * f i) • dWedge R (fun k => f (i.succAbove k))
-
-theorem jac_mul (h : A) (f : Fin (D + 1) → A) :
-    jac R (fun i => h * f i) = h ^ (D + 1) • jac R f :=
-  jacForm_mul _ _ h f
 
 theorem dWedge_mul_sub_mem (I : Ideal A) (h : A) (g : Fin D → A) (hg : ∀ k, g k ∈ I) :
     dWedge R (fun k => h * g k) - h ^ D • dWedge R g ∈ I • (⊤ : Submodule A (⋀[A]^D Ω[A⁄R])) :=

@@ -340,27 +340,6 @@ section Examples
 local instance isPrime_span_two : (Ideal.span {(2 : ℤ)}).IsPrime :=
   (Ideal.span_singleton_prime two_ne_zero).2 Int.prime_two
 
-example : IsUnit (algebraMap (MvPolynomial Unit ℤ) (GaussLocal ℤ (Ideal.span {2}) Unit)
-    (X () + C 2)) := by
-  rw [map_add]
-  have h2 : algebraMap (MvPolynomial Unit ℤ) (GaussLocal ℤ (Ideal.span {2}) Unit) (C 2) ∈
-      maximalIdeal _ :=
-    (algebraMap_base_mem_maximalIdeal_iff 2).2 (Ideal.mem_span_singleton_self 2)
-  rw [← notMem_maximalIdeal, Ideal.add_mem_iff_left _ h2, notMem_maximalIdeal]
-  exact isUnit_X _ ()
-
-example : ¬ IsField (GaussLocal ℤ (Ideal.span {2}) Unit) := by
-  rw [isField_iff_maximalIdeal_eq, maximalIdeal_eq_span Unit rfl, Ideal.span_singleton_eq_bot,
-    FaithfulSMul.algebraMap_eq_zero_iff]
-  exact two_ne_zero
-
-example [IsNoetherianRing O] [Finite σ] : IsNoetherianRing (GaussLocal O p σ) := inferInstance
-
-example : IsScalarTower O (MvPolynomial σ O) (GaussLocal O p σ) ∧
-    IsScalarTower O (Localization.AtPrime p) (GaussLocal O p σ) ∧
-    IsLocalHom (algebraMap (Localization.AtPrime p) (GaussLocal O p σ)) :=
-  ⟨inferInstance, inferInstance, inferInstance⟩
-
 end Examples
 
 end GaussLocal

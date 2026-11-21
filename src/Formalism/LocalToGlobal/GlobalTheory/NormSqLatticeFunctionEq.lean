@@ -31,11 +31,6 @@ theorem is_theta_zero_iff (d : ℕ) (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) : G
 
 theorem normSq_lattice_function_eq (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) : GL3Theta.normSq1 Λ G = normSq1 Λ G := rfl
 
-theorem theta_power_of_first_layer {D : D7} {δ : ℂ} {e : TaylorLogMetric.FamE D} (h : GL3Theta.thPow D D.host.ccK δ e) : ThPow D δ e := by
-  intro M _ hD N N' L L' hA hC ρ G hG
-  have h2 := (h.2 M hD ρ).2 G ((is_theta_zero_iff _ _ _).2 hG) N N' L L' hA hC
-  exact h2
-
 end Formalism.L2.GlobalTheoryTheory
 
 end

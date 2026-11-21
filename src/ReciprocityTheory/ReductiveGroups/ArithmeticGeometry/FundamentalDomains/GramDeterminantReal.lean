@@ -118,10 +118,6 @@ theorem hC_add_right (u v v' : Fin r → ℂ) :
     hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
   simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
-theorem hC_sub_right (u v v' : Fin r → ℂ) :
-    hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
-  simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
-
 theorem hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) :
     hermC τ G u (a • v) = conj a * hermC τ G u v := by
   simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]

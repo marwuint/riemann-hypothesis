@@ -9,16 +9,6 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Db.DivTr
 
-section GyGen
-
-variable {D : D7} (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ)
-
-@[reducible] def ledBack (L : SizeData₂ (setDiv D N h)) : SizeData₂ D := { L with }
-
-@[reducible] def instBack {L : SizeData₂ (setDiv D N h)} (X : G.Inst (setDiv D N h) L) : G.Inst D (ledBack N h L) := { X with }
-
-end GyGen
-
 variable {B : Base} {f : Fr B.toPre} {T : TwDat B}
 variable (w : ColW B f T) (Z : w.Lt) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)
 

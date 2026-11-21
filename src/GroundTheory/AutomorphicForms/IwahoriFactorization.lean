@@ -398,118 +398,6 @@ theorem valuation_zpow_mul_le_pow_mul {x : F} {e : ℕ} {z : ℤ} (hz : (e : ℤ
     map_pow, mul_right_comm]
   exact mul_le_of_le_one_right' (pow_le_one' (valuation_uniformizer_lt_one F).le d)
 
-theorem valuation_rankTorus_conj_sub_le {e : ℕ} {u : GL (Fin n) F}
-    (hu : u ∈ unipotentRadical F n β) (i j : Fin n) :
-    valuation F ((rankTorus F n β e * u * (rankTorus F n β e)⁻¹ : GL (Fin n) F) i j -
-      (1 : Matrix (Fin n) (Fin n) F) i j) ≤
-        valuation F ϖ ^ e * valuation F (u i j - (1 : Matrix (Fin n) (Fin n) F) i j) := by
-  obtain ⟨hP, h1⟩ := mem_unipotentRadical.1 hu
-  rw [rankTorus_conj_apply]
-  rcases lt_trichotomy (β i) (β j) with h | h | h
-  · have hij : i ≠ j := fun hh => h.ne (by rw [hh])
-    rw [one_apply_ne hij, sub_zero, sub_zero]
-    refine valuation_zpow_mul_le_pow_mul ?_
-    have := blockRank_lt h
-    have : e * blockRank β i + e ≤ e * blockRank β j := by nlinarith
-    push_cast
-    omega
-  · rw [h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul, sub_self, map_zero]
-    exact zero_le
-  · rw [hP h, mul_zero, one_apply_ne (fun hh => h.ne' (by rw [hh])), sub_zero, map_zero]
-    exact zero_le
-
-theorem valuation_rankTorus_inv_conj_sub_le {e : ℕ} {z : GL (Fin n) F}
-    (hz : z ∈ oppositeUnipotentRadical F n β) (i j : Fin n) :
-    valuation F (((rankTorus F n β e)⁻¹ * z * rankTorus F n β e : GL (Fin n) F) i j -
-      (1 : Matrix (Fin n) (Fin n) F) i j) ≤
-        valuation F ϖ ^ e * valuation F (z i j - (1 : Matrix (Fin n) (Fin n) F) i j) := by
-  obtain ⟨hlow, h1⟩ := mem_oppositeUnipotentRadical.1 hz
-  rw [rankTorus_inv_conj_apply]
-  rcases lt_trichotomy (β i) (β j) with h | h | h
-  · rw [hlow i j h, mul_zero, one_apply_ne (fun hh => h.ne (by rw [hh])), sub_zero, map_zero]
-    exact zero_le
-  · rw [h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul, sub_self, map_zero]
-    exact zero_le
-  · have hij : i ≠ j := fun hh => h.ne' (by rw [hh])
-    rw [one_apply_ne hij, sub_zero, sub_zero]
-    refine valuation_zpow_mul_le_pow_mul ?_
-    have := blockRank_lt h
-    have : e * blockRank β j + e ≤ e * blockRank β i := by nlinarith
-    push_cast
-    omega
-
-theorem rankTorus_conj_mem_congruenceSubgroup {e m : ℕ} {u : GL (Fin n) F}
-    (hu : u ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β) :
-    rankTorus F n β e * u * (rankTorus F n β e)⁻¹ ∈
-      congruenceSubgroup F n (m + e) ⊓ unipotentRadical F n β := by
-  have hb : ∀ w ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β, ∀ i j,
-      valuation F ((rankTorus F n β e * w * (rankTorus F n β e)⁻¹ : GL (Fin n) F) i j -
-        (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ϖ ^ (m + e) := by
-    intro w hw i j
-    obtain ⟨hwK, hwN⟩ := Subgroup.mem_inf.1 hw
-    refine (valuation_rankTorus_conj_sub_le hwN i j).trans ?_
-    rw [pow_add, mul_comm (valuation F ϖ ^ m)]
-    gcongr
-    exact ((mem_congruenceSubgroup_iff F n).1 hwK).2 i j
-  refine Subgroup.mem_inf.2 ⟨mem_congruenceSubgroup_of_le (hb u hu) ?_,
-    conj_mem_unipotentRadical (rankTorus_mem_blockUpper e) (Subgroup.mem_inf.1 hu).2⟩
-  have : (rankTorus F n β e * u * (rankTorus F n β e)⁻¹)⁻¹ =
-      rankTorus F n β e * u⁻¹ * (rankTorus F n β e)⁻¹ := by group
-  rw [this]
-  exact hb _ (Subgroup.inv_mem _ hu)
-
-theorem rankTorus_inv_conj_mem_congruenceSubgroup {e m : ℕ} {z : GL (Fin n) F}
-    (hz : z ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β) :
-    (rankTorus F n β e)⁻¹ * z * rankTorus F n β e ∈
-      congruenceSubgroup F n (m + e) ⊓ oppositeUnipotentRadical F n β := by
-  have hb : ∀ w ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β, ∀ i j,
-      valuation F (((rankTorus F n β e)⁻¹ * w * rankTorus F n β e : GL (Fin n) F) i j -
-        (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ϖ ^ (m + e) := by
-    intro w hw i j
-    obtain ⟨hwK, hwN⟩ := Subgroup.mem_inf.1 hw
-    refine (valuation_rankTorus_inv_conj_sub_le hwN i j).trans ?_
-    rw [pow_add, mul_comm (valuation F ϖ ^ m)]
-    gcongr
-    exact ((mem_congruenceSubgroup_iff F n).1 hwK).2 i j
-  have htP : (rankTorus F n β e)⁻¹ ∈ blockUpper F n (OrderDual.toDual ∘ β) :=
-    Subgroup.inv_mem _ (Subgroup.mem_inf.1 (rankTorus_mem_levi (F := F) (β := β) e)).2
-  have hN := conj_mem_unipotentRadical htP (Subgroup.mem_inf.1 hz).2
-  rw [inv_inv] at hN
-  refine Subgroup.mem_inf.2 ⟨mem_congruenceSubgroup_of_le (hb z hz) ?_, hN⟩
-  have : ((rankTorus F n β e)⁻¹ * z * rankTorus F n β e)⁻¹ =
-      (rankTorus F n β e)⁻¹ * z⁻¹ * rankTorus F n β e := by group
-  rw [this]
-  exact hb _ (Subgroup.inv_mem _ hz)
-
-variable (β) in
-
-theorem exists_central_contracting (m : ℕ) :
-    ∃ a ∈ levi F n β, (∀ y ∈ levi F n β, a * y = y * a) ∧
-      (∀ u ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β,
-        a * u * a⁻¹ ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β) ∧
-      (∀ z ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β,
-        a⁻¹ * z * a ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β) ∧
-      ∀ U ∈ 𝓝 (1 : GL (Fin n) F), ∃ k : ℕ,
-        (∀ u ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β, a ^ k * u * (a ^ k)⁻¹ ∈ U) ∧
-        ∀ z ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β,
-          (a ^ k)⁻¹ * z * a ^ k ∈ U := by
-  have hmono : congruenceSubgroup F n (m + 1) ≤ congruenceSubgroup F n m :=
-    congruenceSubgroup_antitone F n (by omega)
-  refine ⟨rankTorus F n β 1, rankTorus_mem_levi 1, fun y hy => rankTorus_commute 1 hy,
-    fun u hu => ?_, fun z hz => ?_, fun U hU => ?_⟩
-  · have := Subgroup.mem_inf.1 (rankTorus_conj_mem_congruenceSubgroup (e := 1) hu)
-    exact Subgroup.mem_inf.2 ⟨hmono this.1, this.2⟩
-  · have := Subgroup.mem_inf.1 (rankTorus_inv_conj_mem_congruenceSubgroup (e := 1) hz)
-    exact Subgroup.mem_inf.2 ⟨hmono this.1, this.2⟩
-  · obtain ⟨t, -, ht⟩ := (hasBasis_nhds_one F n).mem_iff.1 hU
-    have hle : congruenceSubgroup F n (m + t) ≤ congruenceSubgroup F n t :=
-      congruenceSubgroup_antitone F n (by omega)
-    refine ⟨t, fun u hu => ht ?_, fun z hz => ht ?_⟩
-    · rw [rankTorus_pow, one_mul]
-      exact hle (Subgroup.mem_inf.1 (rankTorus_conj_mem_congruenceSubgroup hu)).1
-    · rw [rankTorus_pow, one_mul]
-      exact hle (Subgroup.mem_inf.1 (rankTorus_inv_conj_mem_congruenceSubgroup hz)).1
-
 end Contraction
 
 section Jacquet
@@ -522,13 +410,6 @@ theorem jacquetFixedMap_surjective_congruenceSubgroup (hπ : IsAdmissible π) {m
     Function.Surjective (jacquetFixedMap F n β π (congruenceSubgroup F n m)) :=
   jacquetFixedMap_surjective hπ (isCompact_congruenceSubgroup F n m)
     (isOpen_congruenceSubgroup F n m) (congruenceSubgroup_iwahoriFactorization β hm)
-
-variable {β} in
-
-theorem jacquetFixedMap_surjective_iwahori (hπ : IsAdmissible π) (hβ : Monotone β) :
-    Function.Surjective (jacquetFixedMap F n β π (iwahori F n)) :=
-  jacquetFixedMap_surjective hπ (isCompact_iwahori F n) (isOpen_iwahori F n)
-    (iwahori_iwahoriFactorization hβ)
 
 end Jacquet
 

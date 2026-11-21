@@ -47,8 +47,6 @@ namespace PositivityTheory.ResPlug.WeightsCompactStabilizer
 
 open GlobalTheory.CompanionTheory.Hypotheses₂ GlobalTheory.CompanionTheory.Hypotheses₂.SncBlowup FunctorialResolution
 
-example (k : Type) [Field k] : Sp k = Spec (CommRingCat.of k) := rfl
-
 theorem isIso_structMap_zero {X : Scheme.{0}} (s : BlowupSequence X) : IsIso (s.structMap 0) := by
   have : IsIso (s.down (le_refl 0)) := by
     unfold BlowupSequence.down

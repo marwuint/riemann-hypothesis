@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLinearHomProd
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MulAFiniteFlatSurjective
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsEqPowOfTorsionCompEqOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTorsionMemClosureGenerators
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomKillsTorsionOfComplexPointsOneEmbeddingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomKillsTorsionOfComplexPointsOneEmbedding
+import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
 
 set_option autoImplicit false
 
@@ -25,7 +26,7 @@ theorem exists_linear_pow_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   obtain ⟨_, hfl, hsu⟩ := GlobalTheory.PairKernel.mulA_finite_flat_surjective _ A.pol m hm
   have hc : IsCommMonObj A.t.G := A.ab.comm
   have hcB : IsCommMonObj B.t.G := B.ab.comm
-  have hall := GlobalTheory.T.hom_kills_torsion_of_complexPoints_oneEmbedding E H K σ A B G hGm m hm hker
+  have hall := _root_.GlobalTheory.TorsionKill.kill_torsion E H K σ A B G hGm m hm hker
   obtain ⟨F, hF⟩ := GlobalTheory.DivisibleHom.exists_factor (A := A.t.G) m G hall
   have hFm : IsMonHom (ReciprocityTheory.ChartRestriction.G.Out.mulA A.t.G m ≫ F) := hF ▸ hGm
   have : IsMonHom F := GlobalTheory.DivisibleHom.isMonHom_of_factor m F

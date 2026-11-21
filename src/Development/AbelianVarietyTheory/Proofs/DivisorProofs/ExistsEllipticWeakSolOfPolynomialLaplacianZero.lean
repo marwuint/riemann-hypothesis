@@ -7,8 +7,8 @@ import GroundTheory.AutomorphicForms.HarishChandraInvariance.Compact
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeftInvariantVectorFieldsExpCoordsSmoothFrameStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSumSquaresRightDerivPowDifferentialOperatoStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeftTranslateSmoothCommuteLeftInvariantOpsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApOpAddSmulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakSolutionOfSmoothSolutionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApOpAddSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakSolutionOfSmoothSolution
 open ZetaZeros.D.EllReg GlobalTheory.HCA MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff
 
@@ -28,7 +28,7 @@ theorem exists_apOp_add_lower_sum {d : ℕ} (U : Set (E d)) (k : ℕ)
     intro hN
     obtain ⟨a, ha, hs, hop⟩ := ih (by omega)
     obtain ⟨a'', h1, h2, h3⟩ :=
-      GlobalTheory.T.exists_apOp_add_smul' d (2 * k) (2 * N) U a (A N) (t N) (by omega) ha (hA N)
+      _root_.GlobalTheory.HCA.exists_apOp_add_smul d (2 * k) (2 * N) U a (A N) (t N) (by omega) ha (hA N)
     refine ⟨a'', h1, fun x ξ => ?_, fun u x => ?_⟩
     · rw [h2, if_neg (by omega), add_zero, hs]
     · rw [h3, hop, Finset.sum_range_succ]; ring
@@ -61,7 +61,7 @@ theorem exists_elliptic_weakSol_of_aeval_eq_zero : ∀ (𝔸 : Type) [NormedRing
     have hu : (fun y : E d => (f : G → ℂ) (g * h.expG (coordEquiv b y))) =
         fun y => (f' : G → ℂ) (h.expG (coordEquiv b y)) := by
       funext y; rw [hf'1]
-    refine GlobalTheory.T.weakSolution_of_smooth_solution d (2 * P.natDegree) (Metric.ball 0 r) Metric.isOpen_ball a ha _
+    refine _root_.GlobalTheory.HCA.weakSol_of_smooth d (2 * P.natDegree) (Metric.ball 0 r) Metric.isOpen_ball a ha _
       (h.contDiff_comp_coordEquiv f.2 g b).contDiffOn ?_
     intro x hx
     rw [hopa, hu]

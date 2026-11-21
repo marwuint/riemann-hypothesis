@@ -120,38 +120,6 @@ theorem absFin_eq_zero_iff {v : HeightOneSpectrum (𝓞 F)} {y : Fv F v ⊗[F] E
   rw [algebraMap_basis_repr]
   simp [h0]
 
-theorem normFin_le_one_iff {v : HeightOneSpectrum (𝓞 F)} {m n : Type} [Fintype m] [Fintype n]
-    {y : Matrix m n (Fv F v ⊗[F] E)} : normFin F v y ≤ 1 ↔ ∀ i j, y i j ∈ intLoc F E v := by
-  simp only [normFin_le_iff, mem_intLoc_iff_absFin_le_one]
-
-theorem mem_stabLoc_stdLattice_iff_htFin_eq_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
-    {v : HeightOneSpectrum (𝓞 F)} {g : GLoc σ J v} :
-    g ∈ stabLoc σ J (stdLattice E n) v ↔ htFin F v (matHom _ σ J g) = 1 := by
-  rw [htFin, htOf_eq_one]
-  constructor
-  · intro hg
-    have h1 := normFin_conj_le_one isLatticeFrame_one hg
-    have h2 := normFin_conj_le_one isLatticeFrame_one (inv_mem hg)
-    rw [map_one, inv_one, one_mul, mul_one] at h1 h2
-    rw [map_inv] at h2
-    exact ⟨h1, h2⟩
-  · rintro ⟨h1, h2⟩
-    have key : ∀ (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)), normFin F v M ≤ 1 → ∀ y,
-        y ∈ latLoc F (stdLattice E n) v → M *ᵥ y ∈ latLoc F (stdLattice E n) v := fun M hM y hy =>
-      mem_latLoc_stdLattice.2 fun i => by
-        change ∑ j, M i j * y j ∈ _
-        exact sum_mem fun j _ => mul_mem (normFin_le_one_iff.1 hM i j) (mem_latLoc_stdLattice.1 hy j)
-    refine mem_stabLoc.2 fun y => ⟨key _ h1 y, fun hy => ?_⟩
-    have := key _ h2 _ hy
-    rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
-
-theorem intLoc_absFin_htFin (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) :
-    (∀ y : Fv F v ⊗[F] E, y ∈ intLoc F E v ↔ absFin F v y ≤ 1) ∧
-    (∀ y : Fv F v ⊗[F] E, absFin F v y = 0 ↔ y = 0) ∧
-    ∀ g : GLoc σ J v, g ∈ stabLoc σ J (stdLattice E n) v ↔ htFin F v (matHom _ σ J g) = 1 :=
-  ⟨fun _ => mem_intLoc_iff_absFin_le_one, fun _ => absFin_eq_zero_iff,
-    fun _ => mem_stabLoc_stdLattice_iff_htFin_eq_one⟩
-
 end GlobalTheory.AdelicU
 
 end

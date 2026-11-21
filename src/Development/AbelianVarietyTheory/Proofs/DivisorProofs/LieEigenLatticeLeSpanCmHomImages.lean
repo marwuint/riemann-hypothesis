@@ -8,13 +8,15 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HasTypeBaseCha
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPullback
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CubeLBPairingIsoIffWeilPairingCompatibleOverRing
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMulEquivOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtensionPrincipalTriplesTensorLattiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtensionPrincipalTriplesTensorLatti
+import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTensorRetractOfCmDatumRankOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegerRelationLinearHomsCmSignatureTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqPowOfBaseChangeEqPowPrincipalAbelianCMTripleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmObjHomOfTypeLinearIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOfMemSpanRingOfIntegersMapNumberFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenLatticeImageLeSpanAfterBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegerRelationLinearHomsCmSignatureType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqPowOfBaseChangeEqPowPrincipalAbelianCMTriple
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmObjHomOfTypeLinearIndependent
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOfMemSpanRingOfIntegersMapNumberField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenLatticeImageLeSpanAfterBaseChange
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM
@@ -168,7 +170,7 @@ theorem exists_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   obtain ⟨A', mA, -⟩ := PAT.exists_pullback E H _ _ (spMap β) A
   obtain ⟨B', mB, -⟩ := PAT.exists_pullback E H _ _ (spMap β) B
   choose ψ' hψ' e using fun i => exists_linear_over mA mB (hψ i)
-  obtain ⟨x, hx, h⟩ := GlobalTheory.T.exists_integer_relation_linear_homs_cm_signature_type E H (β ρ) A' B' p q (by rw [← map_pow, hρ, map_neg, map_natCast])
+  obtain ⟨x, hx, h⟩ := _root_.GlobalTheory.CM.PureHom.exists_prod_act_comp_eq_one_of_pure E H (β ρ) A' B' p q (by rw [← map_pow, hρ, map_neg, map_natCast])
     ((hasType_baseChange E H _ _ β _ _ mA ρ 1 0).1 hβ hA) ((hasType_baseChange E H _ _ β _ _ mB ρ p q).1 hβ hB)
     n hn ψ' hψ'
   exact ⟨x, hx, rel_descend mA mB hβ e x h⟩
@@ -183,7 +185,7 @@ theorem eigLat_le_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
             {w | ∃ c ∈ GlobalTheory.FlatCM.HomLat.lat X, ∃ e ∈ FP.eigLat (X.A true).t.act τ, w = ∑ a, τE (c a) • MP a e} := by
   intro E _ _ _ H _ K _ _ ρ σ₁ p X FP FB MP hMP τ _ τE hτE w hw
   obtain ⟨K', _, _, j, ω, C, A', B', mA, mB, DA, DB, hA, hB, rA, -, ⟨tA⟩, ⟨tB⟩⟩ :=
-    GlobalTheory.T.exists_finiteExtension_principalTriples_tensorLattice E H K ρ (X.A true) X.B 1 p X.ρ_sq X.typeP X.typeB
+    _root_.GlobalTheory.CM.TenPair.exists_isTen_pair E H K ρ (X.A true) X.B 1 p X.ρ_sq X.typeP X.typeB
   obtain ⟨n, f', g', hf', hg', hfg⟩ := GlobalTheory.T.cmTensor_retract_of_cmDatum_rank_one E H _ ω C A' B' DA DB hA hB rA tA tB
   have hj : Function.Injective (RingOfIntegers.mapRingHom j) := fun a b h => by
     apply RingOfIntegers.ext
@@ -204,17 +206,17 @@ theorem eigLat_le_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     have h₀ : x 0 ≠ 0 := fun h₀ => by
       haveI := (hf' i).isMonHom
       rw [h₀, Serre.act_zero, MonObj.one_comp, _root_.one_mul] at h
-      have hs := GlobalTheory.T.cmObjHomOfType_linearIndependent E H K ρ σ₁ p 0 X _ (rel_descend mA mB hj eφ _ h)
+      have hs := _root_.GlobalTheory.FlatCM.HomIndep.phiP_independent E H K ρ σ₁ p 0 X _ (rel_descend mA mB hj eφ _ h)
       exact hx (funext (Fin.cases h₀ fun a => congrFun hs a))
     obtain ⟨N, hN, y, hy⟩ := exists_pow_eq (hf' i) hφ' h₀ h
-    obtain ⟨f, hf, e₁, e₂⟩ := GlobalTheory.T.eq_pow_of_baseChange_eq_pow_principalAbelianCMTriple E H K K' j (X.A true) X.B A' B' mA mB _ (f' i) N hN (isLinearHom_prod X y) (hf' i)
+    obtain ⟨f, hf, e₁, e₂⟩ := _root_.GlobalTheory.eq_pow_of_baseChange_eq_pow E H K K' j (X.A true) X.B A' B' mA mB _ (f' i) N hN (isLinearHom_prod X y) (hf' i)
       (by rw [hy]; exact comb_over mA mB eφ y)
     exact ⟨f, hf, e₂, N, hN, y, e₁⟩
   choose f hf ef N hN y hy using key
   choose M hM using fun i =>
     (DiffCoord.existsUnique_isDiffOf K _ FP _ FB (f i) (hf i).isMonHom).1.exists
-  refine GlobalTheory.T.mem_of_mem_span_ringOfIntegers_map_numberField K K' j _ _ w (Submodule.span_mono (Set.image_mono ?_)
-    (GlobalTheory.T.eigenLattice_image_le_span_after_baseChange E H K K' j (X.A true) X.B A' B' mA mB n f f' g' hf hf' hg' ef hfg FP FB M hM τ w hw))
+  refine _root_.GlobalTheory.FlatDescent.mem_of_mem_span_map K K' j _ _ w (Submodule.span_mono (Set.image_mono ?_)
+    (_root_.GlobalTheory.CM.LieSpanBaseChange.eigLat_image_le_span_diff E H K K' j (X.A true) X.B A' B' mA mB n f f' g' hf hf' hg' ef hfg FP FB M hM τ w hw))
   rintro _ ⟨i, e, he, rfl⟩
   have hE : (N i : E) ≠ 0 := Nat.cast_ne_zero.2 (hN i).ne'
   have hK : (N i : K) ≠ 0 := Nat.cast_ne_zero.2 (hN i).ne'

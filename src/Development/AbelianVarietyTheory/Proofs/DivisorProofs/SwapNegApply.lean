@@ -61,15 +61,4 @@ def swapNeg [Neg Y] (Z : Y × Y) : Y × Y := (-Z.2, -Z.1)
 
 theorem swapNeg_apply [Neg Y] (Z : Y × Y) : swapNeg Z = (-Z.2, -Z.1) := rfl
 
-theorem sliceT_boxFun [CommRing k] (ι : ((κ → k) → ℂ) →ₗ[ℂ] (Y → ℂ)) (φ₁ φ₂ : (κ → k) → ℂ) (Z : Y × Y) :
-    sliceT ι (boxFun φ₁ φ₂) Z = ι φ₁ Z.1 * barL ι φ₂ Z.2 := by
-  have e : (fun x₂ => ι (fun x₁ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) Z.1) = ι φ₁ Z.1 • φ₂ := by
-    funext x₂
-    have e' : (fun x₁ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) = φ₂ x₂ • φ₁ := by
-      funext x₁; simp [boxFun, Function.comp_def, mul_comm]
-    rw [e', map_smul]
-    simp [mul_comm]
-  rw [sliceT_apply, e, map_smul]
-  simp
-
 end GlobalTheory.SwapSlice

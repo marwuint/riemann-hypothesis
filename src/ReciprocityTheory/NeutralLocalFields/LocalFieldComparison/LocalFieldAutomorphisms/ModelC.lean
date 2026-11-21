@@ -40,7 +40,4 @@ theorem norm_le_one_of_monic_root (P : Polynomial (PadicAlgCl p)) (hP : P.Monic)
     have h3 : ‖x‖ ^ m < ‖x‖ ^ (m + 1) := pow_lt_pow_right₀ hlt (Nat.lt_succ_self m)
     linarith
 
-example (ι : Ω →+* PadicAlgCl p) : algebraMap 𝒪[Kloc F ι] (AlgebraicClosure (Kloc F ι)) =
-    (algebraMap (Kloc F ι) (AlgebraicClosure (Kloc F ι))).comp (algebraMap 𝒪[Kloc F ι] (Kloc F ι)) := rfl
-
 end ReciprocityTheory.Neutral.Cmp

@@ -19,11 +19,6 @@ def InfFamExists : Prop :=
 def InfFamUnique : Prop :=
   ∀ θ θ' : Datum.InfFam D, IsInfFam θ → IsInfFam θ' → θ = θ'
 
-def InfSplit : Prop :=
-  ∀ θ : Datum.InfFam D, IsInfFam θ →
-    ∃ e : (Ainf D.host.F ⊗[D.host.F] D.host.E) ≃+* (D.what₂.Tau → ℂ),
-      Continuous e ∧ Continuous e.symm ∧ ∀ x τ, e x τ = θ τ x
-
 def AtTauExUnique : Prop :=
   ∀ θ : Datum.InfFam D, IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ),
     gᴴ * gramAt D V τ * g = gramAt D V τ → ∃! h : GA D V, IsAtTau θ V τ g h
@@ -39,18 +34,11 @@ def AtTauHom : Prop :=
       g'ᴴ * gramAt D V τ * g' = gramAt D V τ → atTau θ V τ (g * g') = atTau θ V τ g * atTau θ V τ g') ∧
     ContinuousOn (atTau θ V τ) {g | gᴴ * gramAt D V τ * g = gramAt D V τ}
 
-def GATop : Prop :=
-  ∀ V : HSp D, IsTopologicalGroup (GA D V) ∧ LocallyCompactSpace (GA D V) ∧ T2Space (GA D V) ∧
-    SecondCountableTopology (GA D V) ∧ BorelSpace (GA D V)
-
 def GQDiscrete : Prop :=
   ∀ V : HSp D, DiscreteTopology (GQ V)
 
 def FundDomExists : Prop :=
   ∀ V : HSp D, ∃ 𝓕 : Set (GA D V), MeasurableSet 𝓕 ∧ ∀ μ : Measure (GA D V), IsFundamentalDomain (GQ V) 𝓕 μ
-
-def MinfExUnique : Prop :=
-  ∀ p q : ℕ, ∃! m : Measure (UpqT p q), Lev.IsMinf m
 
 variable {D}
 

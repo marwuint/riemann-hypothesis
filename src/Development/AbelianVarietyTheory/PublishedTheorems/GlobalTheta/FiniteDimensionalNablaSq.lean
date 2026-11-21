@@ -60,6 +60,4 @@ end GlobalTheory.WeylDimGL
 
 namespace GlobalTheory.Published
 
-open GlobalTheory.WeylDimGL
-
 end GlobalTheory.Published

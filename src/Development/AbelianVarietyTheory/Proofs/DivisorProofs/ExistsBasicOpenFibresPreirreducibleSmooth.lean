@@ -1,6 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreirreducibleFibreStandardEtaleSpreadsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeComapIncludeRightFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreirreducibleFibreStandardEtaleSpreads
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RangeComapIncludeRightField
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreirreducibleTensorLocalizationAwayStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
@@ -21,7 +21,7 @@ theorem exists_basicOpen_fibres_preirreducible :
   obtain ⟨b, hbq, n, _, hST, hSE⟩ :=
     Algebra.IsSmoothAt.exists_isStandardEtale_mvPolynomial (R := A) (p := q.asIdeal)
   have hΩb := GlobalTheory.T.preirreducible_tensor_localization_away A B b Ω hΩ
-  obtain ⟨a, I, haΩ, hIΩ, hall⟩ := GlobalTheory.T.preirreducible_fibre_standardEtale_spreads A (Localization.Away b) n hSE Ω hΩb
+  obtain ⟨a, I, haΩ, hIΩ, hall⟩ := _root_.GlobalTheory.preirreducibleSpace_fibre_standardEtale_spreads A (Localization.Away b) n hSE Ω hΩb
   have memq : ∀ x : A, algebraMap A B x ∈ q.asIdeal ↔ algebraMap A Ω x = 0 := by
     intro x
     have := congrArg (x ∈ ·) hq
@@ -43,7 +43,7 @@ theorem exists_basicOpen_fibres_preirreducible :
     (PrimeSpectrum.continuous_comap _).continuousOn
   convert himg using 1
   rw [Set.image_univ, PrimeSpectrum.comap_comp, Set.range_comp,
-    GlobalTheory.T.range_comap_includeRight_eq_comap_eq_ker, hker]
+    _root_.GlobalTheory.range_comap_includeRight_field, hker]
   ext r
   simp only [Set.mem_setOf_eq, Set.mem_image]
   constructor

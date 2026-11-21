@@ -1,9 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.GoodChi
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsMirClass
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLawsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HarishChandraSeriesCentralIdempotentNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCharacterOfFDRepMemCyclotomicAdjoinStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLaws
+import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HarishChandraSeriesCentralIdempotentNeZero
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCharacterOfFDRepMemCyclotomicAdjoin
 
 open Polynomial Formalism.MainNotions.ArithmeticCylinders GlobalTheory.GLq GlobalTheory.GLm
 open scoped Classical
@@ -28,10 +30,10 @@ theorem zOf_coeff_mem {G : Type} [Group G] [Fintype G] (K : IntermediateField �
 
 theorem isSer_eSerC (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (hg : 5 ≤ g) (hG : Green) (r N : ℕ) (hN : 0 < N)
     (hd : Nat.card (GL (Fin r) (ZMod g)) ∣ N) : GlobalTheory.MemN.IsSer r g N (eSerC L r) := by
-  obtain ⟨h1, h2, h3, h4, h5⟩ := GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L hg hG r
+  obtain ⟨h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.GLq.eSerC_laws g L hg hG r
   refine ⟨h1, h2, h3, ?_, h5, ?_⟩
   · intro f
-    refine ⟨fun h0 hf => GlobalTheory.T.harishChandraSeriesCentralIdempotent_ne_zero g L hG r f hf.1 hf.2.1 hf.2.2 h0, h4 f⟩
+    refine ⟨fun h0 hf => _root_.GlobalTheory.GLm.eSerC_ne_zero g L hG r f hf.1 hf.2.1 hf.2.2 h0, h4 f⟩
   · intro f x
     unfold eSerC
     refine finsum_mem_induction (fun a : MonoidAlgebra ℂ (Gn g r) => a.coeff x ∈
@@ -42,6 +44,6 @@ theorem isSer_eSerC (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (hg : 5 ≤ g) (
       simpa using this
     · intro χ hχ
       obtain ⟨⟨V, _, hV⟩, _⟩ := hχ
-      exact zOf_coeff_mem _ χ (GlobalTheory.T.isCharacterOfFDRep_mem_cyclotomic_adjoin (Gn g r) χ N hN hd ⟨V, hV⟩) x
+      exact zOf_coeff_mem _ χ (_root_.GlobalTheory.GLm.isChar_mem_adjoin_exp (Gn g r) χ N hN hd ⟨V, hV⟩) x
 
 end GlobalTheory.GLm

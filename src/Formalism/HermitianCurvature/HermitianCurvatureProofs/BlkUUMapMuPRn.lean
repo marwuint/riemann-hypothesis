@@ -84,21 +84,6 @@ theorem simpleUp_mul {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2
         rw [hB.1 c b hc', mul_zero]
   · simp
 
-theorem simpleUp_inv {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
-    C2.simpleUp A⁻¹ = -C2.simpleUp A := by
-  have hAi := Formalism.FourierDecayAlt.P.C2x2.ut_inv hA
-  have hdet : IsUnit A.det := by rw [StabilizerDisintegration.UC.det_UT hA]; exact isUnit_one
-  have h := simpleUp_mul hA hAi
-  rw [Matrix.mul_nonsing_inv _ hdet] at h
-  have h1 : C2.simpleUp (1 : Matrix (Fin m) (Fin m) ℂ) = 0 := by
-    unfold C2.simpleUp
-    refine Finset.sum_eq_zero fun a _ => ?_
-    split_ifs with h'
-    · rw [Matrix.one_apply_ne]; intro e; have := congrArg Fin.val e; simp at this
-    · rfl
-  rw [h1] at h
-  linear_combination (-1 : ℂ) * h
-
 theorem gaXi_zero (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (ξ : U.Xi k r 0 0 σ) (γ : B.Mat k 0) :
     U.gaXi k 0 σ d ξ (fun a => a.elim0) γ =
       (U.Rn k r 0 ξ.1.1)⁻¹ * U.mMap k r 0 (U.headH σ d ξ.2.2.1 ξ.2.2.2) γ * U.Rn k r 0 ξ.1.2 := by

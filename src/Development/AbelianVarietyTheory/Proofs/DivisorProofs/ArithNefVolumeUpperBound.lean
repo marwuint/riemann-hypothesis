@@ -7,15 +7,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoSelfIntersec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsBaseBundlesAndTrivial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallSectionsTwistedPowerEncardEqBall
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefPow
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoHermLineBundleGeometricDegreePowTensDivPoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleGeometricDegreeNonnegOfSemiPosStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoHermLineBundleGeometricDegreePowTensDivPo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleGeometricDegreeNonnegOfSemiPos
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistNefSquarefreeMonomialsSmallStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithKleimanHeightNefOfIsNefStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyLeOfSmallSectionLogCountUpperBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLineBundlePositivityPreservedIsometricStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleIsNefTensStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranscendenceBasisFunctionFieldArithmeticVarieStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithLogSmallSectionsUpperBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithKleimanHeightNefOfIsNef
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyLeOfSmallSectionLogCountUpperBound
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLineBundlePositivityPreservedIsometric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundleIsNefTens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranscendenceBasisFunctionFieldArithmeticVarie
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithLogSmallSectionsUpperBound
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
@@ -38,28 +38,28 @@ theorem main : GlobalTheory.Published.ArCalc → AmpleHS → SemiPull → ∀ (k
     ∀ ε : ℝ, 0 < ε → ∀ᶠ m : ℕ in atTop,
       Real.log (((L.pow m).tens N).smallSec.ncard : ℝ) ≤ (a / (D + 1).factorial + ε) * (m : ℝ) ^ (D + 1) := by
   intro HC HA HS k _ X _ p D hX L N a hL ha ε hε
-  obtain ⟨⟨x, hx⟩, -⟩ := GlobalTheory.T.isTranscendenceBasis_functionField_arithmeticVariety k X p D hX
+  obtain ⟨⟨x, hx⟩, -⟩ := _root_.GlobalTheory.ArithTrdeg.isTranscendenceBasis_functionField k X p D hX
   obtain ⟨H, hNH, hbox⟩ := GlobalTheory.T.exists_twist_nef_squarefree_monomials_small HC k X p D hX N x
   set G := N.tens H with hG
 
   have hnef : ∀ m : ℕ, ((L.pow m).tens G).IsNef D := fun m =>
-    GlobalTheory.T.hermLineBundle_isNef_tens HC k X p D hX _ _ (GlobalTheory.NefPow.isNef_pow HC k X p D hX L m hL) hNH
+    _root_.GlobalTheory.NefTens.isNef_tens HC k X p D hX _ _ (GlobalTheory.NefPow.isNef_pow HC k X p D hX L m hL) hNH
   obtain ⟨α, hα, hαlim⟩ := GlobalTheory.SelfInterGrowth.main HC k X p D hX L G a ha
   have hα0 : ∀ m, 0 ≤ α m := fun m => by
     obtain ⟨h, Hh, e⟩ := hα m
     rw [← e]
-    exact (GlobalTheory.T.arithKleiman_heightNef_of_isNef HC HA HS k X p D hX _ (hnef m)).2 h Hh _
+    exact (_root_.GlobalTheory.KleimanNef.htNef_of_isNef HC HA HS k X p D hX _ (hnef m)).2 h Hh _
   have hg0 : ∀ m, 0 ≤ gdeg ((L.pow m).tens G) D := fun m =>
-    GlobalTheory.T.hermLineBundleGeometricDegree_nonneg_of_semiPos k X p D hX _ (hnef m).semiPos
-  have hglim := GlobalTheory.T.tendsto_hermLineBundleGeometricDegree_pow_tens_div_pow HC k X p D hX L G
-  refine GlobalTheory.T.eventually_le_of_smallSectionLogCountUpperBound D (fun m => Real.log (((L.pow m).tens N).smallSec.ncard : ℝ)) α
+    _root_.GlobalTheory.HSNef.gdeg_nonneg_of_semiPos k X p D hX _ (hnef m).semiPos
+  have hglim := _root_.GlobalTheory.DegGrowth.main HC k X p D hX L G
+  refine _root_.GlobalTheory.HSNefAsymp.eventually_le_of_bound D (fun m => Real.log (((L.pow m).tens N).smallSec.ncard : ℝ)) α
     (fun m => gdeg ((L.pow m).tens G) D) a (gdeg L D) hα0 hg0 hαlim hglim (fun m q hq => ?_) ε hε
   obtain ⟨P, hPL, hPA, hPbox⟩ := hbox ((L.pow m).tens N)
   have hiso : (P.L.tens P.A).Isometric ((L.pow m).tens G) := by
     rw [hPL, hPA]
     exact HermLB.isometric_tens_assoc _ _ _
-  have T := GlobalTheory.T.hermitianLineBundle_positivity_preserved_isometric HC k X p D hX _ _ hiso.symm
-  have hb := GlobalTheory.T.arith_log_small_sections_upper_bound HC HA HS k X p D hX P x (α m) q hx.1 hPbox (T.2.1 (hnef m)) (T.2.2.2.1 _ (hα m)) hq
+  have T := _root_.GlobalTheory.HSNef.isometric_keeps HC k X p D hX _ _ hiso.symm
+  have hb := _root_.GlobalTheory.HSNef.lc_le_bound HC HA HS k X p D hX P x (α m) q hx.1 hPbox (T.2.1 (hnef m)) (T.2.2.2.1 _ (hα m)) hq
   rw [hiso.gdeg_eq, ← log_ncard_smallSec] at hb
   have e : Real.log (P.L.smallSec.ncard : ℝ) = Real.log (((L.pow m).tens N).smallSec.ncard : ℝ) := by
     rw [hPL]

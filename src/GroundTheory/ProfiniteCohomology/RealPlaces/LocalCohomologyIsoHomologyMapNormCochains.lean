@@ -304,14 +304,6 @@ theorem tateGlobalZeroToLocal_tateLocalToCompact :
     ((congrArg (_ ≫ ·) (Iso.hom_inv_id_assoc _ _)).trans
       (mappingCoconeNat.homologyMap_homologyδ _ 0)))).trans comp_zero)
 
-theorem tateCompactCohomology_exact_localZero :
-    (ShortComplex.mk _ _ (tateGlobalZeroToLocal_tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar)).Exact := by
-  refine (ShortComplex.exact_iff_of_iso ?_).1
-    (mappingCoconeNat.homology_exact₁ (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0)
-  exact ShortComplex.isoMk (tateGlobalCohomologyZeroIso A Aᵣ) (tateLocalCohomologyIso Aᵥ Aᵣ 0)
-    (Iso.refl _) (Iso.hom_inv_id_assoc _ _)
-    ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm)
-
 section NormClass
 
 variable {F' : Type u} [Group F'] [TopologicalSpace F'] [IsTopologicalGroup F'] [Fintype F']
@@ -339,48 +331,6 @@ theorem localCohomologyIso_homologyMap_normCochains
   apply iCycles_hom_injective
   rw [iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]
   exact ((cochainsComplex (Aᵣ w)).i_cyclesMk _ _ _ _).symm
-
-theorem tateGlobalZeroToLocal_hom_apply (x : cohomology A 0) (e : ∀ w, Aᵣ w) :
-    (tateGlobalZeroToLocal φ ψ A Aᵥ a Aᵣ ar).hom (x, e) =
-      ((globalToLocal φ A Aᵥ a 0).hom x,
-        (globalToLocal ψ A Aᵣ ar 0).hom x + fun w => normClass (Aᵣ w) (e w)) := by
-  set z := (tateGlobalCohomologyZeroIso A Aᵣ).inv.hom (x, e) with hz
-  have hze : (tateGlobalCohomologyZeroIso A Aᵣ).hom.hom z = (x, e) :=
-    hom_apply_hom_apply_of_comp_eq (Iso.inv_hom_id (tateGlobalCohomologyZeroIso A Aᵣ))
-      (show ModuleCat.of k (cohomology A 0 × ∀ w, Aᵣ w) from (x, e))
-  have hx : (HomologicalComplex.homologyMap (prodFst _ _) 0).hom z = x := congrArg Prod.fst hze
-  have he : (degZeroHomologyIso (ModuleCat.of k (∀ w, Aᵣ w))).hom.hom
-      ((HomologicalComplex.homologyMap (prodSnd _ _) 0).hom z) = e := congrArg Prod.snd hze
-  change (tateLocalCohomologyIso Aᵥ Aᵣ 0).hom.hom
-    ((HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0).hom z) = _
-  rw [tateLocalCohomologyIso_hom_apply]
-  refine Prod.ext ?_ ?_
-  · have e1 : HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0 ≫
-        HomologicalComplex.homologyMap (prodFst _ _) 0 ≫ (localCohomologyIso Aᵥ 0).hom =
-        HomologicalComplex.homologyMap (prodFst _ _) 0 ≫ globalToLocal φ A Aᵥ a 0 := by
-      rw [← HomologicalComplex.homologyMap_comp_assoc, tateCompactRes_prodFst,
-        HomologicalComplex.homologyMap_comp_assoc, homologyMap_localRes_localCohomologyIso_hom]
-    rw [← hx]
-    exact hom_apply_hom_apply_of_comp_eq e1 z
-  · have e2 : HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0 ≫
-        HomologicalComplex.homologyMap (prodSnd _ _) 0 =
-        HomologicalComplex.homologyMap (prodFst _ _) 0 ≫
-            HomologicalComplex.homologyMap (localRes ψ A Aᵣ ar) 0 +
-          HomologicalComplex.homologyMap (prodSnd _ _) 0 ≫
-            HomologicalComplex.homologyMap (normCochains Aᵣ) 0 := by
-      rw [← HomologicalComplex.homologyMap_comp, tateCompactRes_prodSnd,
-        HomologicalComplex.homologyMap_add, HomologicalComplex.homologyMap_comp,
-        HomologicalComplex.homologyMap_comp]
-    change (localCohomologyIso Aᵣ 0).hom.hom
-      ((HomologicalComplex.homologyMap (prodSnd _ _) 0).hom
-        ((HomologicalComplex.homologyMap (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) 0).hom z)) = _
-    rw [hom_apply_hom_apply_of_comp_eq e2 z, ModuleCat.hom_add, LinearMap.add_apply, map_add]
-    congr 1
-    · rw [← hx]
-      exact hom_apply_hom_apply_of_comp_eq
-        (homologyMap_localRes_localCohomologyIso_hom ψ A Aᵣ ar 0) _
-    · rw [← he]
-      exact localCohomologyIso_homologyMap_normCochains Aᵣ _
 
 end Zero
 

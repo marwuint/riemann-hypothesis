@@ -76,9 +76,6 @@ structure ThetaTied (D : D7) (X : ThetaX D) where
 
 def ThetaTied.petC {D : D7} {X : ThetaX D} (T : ThetaTied D X) (V : HSp D) : ℝ := petCOf D T.petF T.petR V
 
-theorem ThetaTied.petC_pos {D : D7} {X : ThetaX D} (T : ThetaTied D X) (V : HSp D) : 0 < T.petC V :=
-  mul_pos (T.petF_pos V) (Finset.prod_pos fun _ _ => T.petR_pos _ _)
-
 structure RealTied (D : D7) : Prop where
 
   cdScale : cdScaleTie D

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSmoothVec
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AnalyticVectorExponentialSeriesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionOfSmoothVectorStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionOfSmoothVector
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionAdditiveStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieAlgebraOfLinearGroupClosedStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieAlgebraOfLinearGroupClosed
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DifferentiableAtOrbit
 
 noncomputable section
@@ -30,7 +30,7 @@ theorem iterate_smooth (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.I
   | zero => simpa using hs
   | succ m ih =>
     rw [Function.iterate_succ_apply']
-    exact (GlobalTheory.T.derived_action_of_smooth_vector hG hrep ih hX).2
+    exact (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.HCA.hasDerivAt_dRep_and_isSmoothVec hG hrep ih hX).2
 
 theorem iterate_real_smul (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hs : IsSmoothVec G π v)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) (s : ℝ) (m : ℕ) :
@@ -55,7 +55,7 @@ theorem analytic_coeff : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H
   have key : ∀ s : ℝ, |s| * mnorm X < r → HasSum (fun m : ℕ => (s : ℂ) ^ m * a m)
       (⟪w, π (NormedSpace.exp ((t₀ + s) • X)) v⟫_ℂ) := by
     intro s hs'
-    have h1 := hsum (s • X) ((GlobalTheory.T.lie_algebra_of_linear_group_closed hG).2.1 s X hX) (by rwa [mnorm_real_smul])
+    have h1 := hsum (s • X) ((_root_.GlobalTheory.CompanionTheory.Hypotheses₂.HCA.lieOf_isLieSubalgebra hG).2.1 s X hX) (by rwa [mnorm_real_smul])
     have h2 := L.hasSum h1
     have e : ⟪w, π (NormedSpace.exp ((t₀ + s) • X)) v⟫_ℂ = L (π (NormedSpace.exp (s • X)) v) := by
       have hc : Commute (t₀ • X) (s • X) := ((Commute.refl X).smul_left t₀).smul_right s

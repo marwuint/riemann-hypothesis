@@ -37,11 +37,6 @@ theorem frame_alg (u u' : D.what₂.Word) {h h' : X.B.I.Ginf} (hh : h ∈ X.Sinf
   ext x
   simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul]
 
-theorem comp_smul_mid (u u' : D.what₂.Word) (h h' : X.B.I.Ginf) (O : X.Vpi u' →L[ℂ] X.Vpi u) (a : ℂ) :
-    (X.piU u h⁻¹).comp ((a • O).comp (X.piU u' h')) = a • (X.piU u h⁻¹).comp (O.comp (X.piU u' h')) := by
-  ext x
-  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, map_smul]
-
 section Transfer
 
 variable {n r k : ℕ}
@@ -110,12 +105,6 @@ def VIndepLiftC : Prop :=
         (X.piU u h₁⁻¹).comp ((chiOO X Y u u' s.1).comp (X.piU u' h₁')) =
           (X.piU u h₂⁻¹).comp ((chiOO X Y u u' s.1).comp (X.piU u' h₂'))
 
-def OOtNuC : Prop :=
-  ∀ (R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR) (ρ : ℕ) (s : LiftT X Y u u' κ R ρ), s.1.relevant →
-    ∃ a : ℂ, Formalism.L2.SG.TermOp.OOt s.1 =
-      a • (haveI := FiniteDimensional.complete ℂ (X.Vpi u)
-        Formalism.L2.SG.TermOp.OO (νq s.1.pt.1) Set.univ (X.Wu u) (X.Wu u') s.1.pt.1)
-
 def CommonDFrameC : Prop :=
   ∀ (R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR) (ρ : ℕ),
     ∃ h ∈ Formalism.L2.SG.RealObj.HsetU X u, ∃ h' ∈ Formalism.L2.SG.RealObj.HsetU X u', ∃ ζ : ℂ, ‖ζ‖ = 1 ∧
@@ -182,14 +171,6 @@ theorem commonDFrameC_of_exact (hE : CommonDFrameExactC X Y u u' i0 i0' κ) :
   obtain ⟨h, hh, h', hh', hs⟩ := hE R ρ
   exact ⟨h, hh, h', hh', 1, by simp, fun s hrel => ⟨h, h', hs s hrel, (one_smul ℂ _).symm⟩⟩
 
-theorem vIndepLiftC_of (hF : OOtNuC X Y u u' νq κ) (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq)
-    (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq) : VIndepLiftC X Y u u' i0 i0' κ := by
-  intro R ρ s hrel h₁ h₁' h₂ h₂' hD₁ hD₂
-  obtain ⟨a, ha⟩ := hF R ρ s hrel
-  have hV := hVI hNu s.1.pt.1 h₁ h₁' h₂ h₂' hD₁ hD₂
-  unfold chiOO
-  rw [ha, smul_smul, ClassFrameUnitaryProducts.comp_smul_mid, ClassFrameUnitaryProducts.comp_smul_mid, hV]
-
 theorem classFrameOO1_liftFrame (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hVL : VIndepLiftC X Y u u' i0 i0' κ)
     (R : Formalism.L2.SG.TermOp.Rw (Y.what₂ u) (Y.what₂ u') Y.TR) (ρ : ℕ) (s : LiftT X Y u u' κ R ρ) (hrel : s.1.relevant)
     (hs hs' : X.B.I.Ginf) (hD : Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0' s.1.pt.1 hs hs') :
@@ -244,30 +225,5 @@ theorem irrelZeroC_of (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u 
   refine ⟨?_, Or.inl (cTerm_irrel X Y u u' vR hAt s.1.toTerm hrel)⟩
   unfold chiOO
   rw [hV R ρ s hrel, smul_zero]
-
-theorem commonFrameC_of_vIndep (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
-    (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
-    (hCD : CommonDFrameC X Y u u' vR i0 i0' νq κ) (hZ : IrrelZeroC X Y u u' vR i0 i0' νq κ) :
-    CommonFrameC X Y u u' vR i0 i0' νq κ :=
-  commonFrameC_of X Y u u' vR i0 i0' νq κ hP (vIndepLiftC_of X Y u u' i0 i0' νq κ hF hNu hVI) hCD hZ
-
-theorem commonFrameC_of_cut (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
-    (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
-    (hCD : CommonDFrameC X Y u u' vR i0 i0' νq κ) (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u u') :
-    CommonFrameC X Y u u' vR i0 i0' νq κ :=
-  commonFrameC_of_vIndep X Y u u' vR i0 i0' νq κ hP hF hNu hVI hCD (irrelZeroC_of X Y u u' vR i0 i0' νq κ hV hAt)
-
-theorem commonFrameC_of_pair (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
-    (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
-    (hPair : PairDFrameC X Y u u' i0 i0' κ) (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u u') :
-    CommonFrameC X Y u u' vR i0 i0' νq κ :=
-  commonFrameC_of_cut X Y u u' vR i0 i0' νq κ hP hF hNu hVI
-    (commonDFrameC_of_exact X Y u u' vR i0 i0' νq κ (commonDFrameExactC_of X Y u u' vR i0 i0' νq κ hP hPair)) hV hAt
-
-theorem commonFrameC_of_scalar (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hF : OOtNuC X Y u u' νq κ)
-    (hNu : Formalism.L2.SG.RealObj.NuQOK X u u' νq) (hVI : Formalism.L2.SG.RealObj.VIndep X u u' 1 i0 i0' νq)
-    (hS : ScalarAgreeC X Y u u' κ) (hV : LemmaVLiftC X Y u u' κ) (hAt : AtPtRelevantC X Y u u') :
-    CommonFrameC X Y u u' vR i0 i0' νq κ :=
-  commonFrameC_of_pair X Y u u' vR i0 i0' νq κ hP hF hNu hVI (pairDFrameC_of X Y u u' i0 i0' κ hS) hV hAt
 
 end Formalism.L2.SG.Pf.RowForm

@@ -11,69 +11,6 @@ universe u
 
 namespace GroundTheory.Arith.SchemeCoh
 
-section Valuation
-
-theorem valuation_eq_of_isEquiv {K : Type*} [Field K] {v w : Valuation K ℤᵐ⁰}
-    (hv : Function.Surjective v) (hw : Function.Surjective w) (h : v.IsEquiv w) : v = w := by
-  have disc : ∀ x : ℤᵐ⁰, x ≠ 0 → x < 1 → x ≤ WithZero.exp (-1) := by
-    intro x hx h1
-    rw [← WithZero.exp_log hx] at h1 ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h1
-    rw [WithZero.exp_le_exp]
-    omega
-  have lt1 : ∀ x, v x < 1 ↔ w x < 1 := fun x => by
-    have h1 := h 1 x
-    simp only [map_one] at h1
-    rw [← not_le, ← not_le, h1]
-  have eq1 : ∀ x, v x = 1 ↔ w x = 1 := fun x => by
-    have h1 := h 1 x
-    have h2 := h x 1
-    simp only [map_one] at h1 h2
-    rw [le_antisymm_iff, le_antisymm_iff, h1, h2]
-  obtain ⟨π, hπ⟩ := hw (WithZero.exp (-1))
-  obtain ⟨ϖ, hϖ⟩ := hv (WithZero.exp (-1))
-  have hπ0 : π ≠ 0 := by
-    rintro rfl
-    rw [map_zero] at hπ
-    exact WithZero.exp_ne_zero hπ.symm
-  have hϖ0 : ϖ ≠ 0 := by
-    rintro rfl
-    rw [map_zero] at hϖ
-    exact WithZero.exp_ne_zero hϖ.symm
-  have hexp : WithZero.exp (-1 : ℤ) < 1 := by
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp]
-    norm_num
-  have hvπ : v π = WithZero.exp (-1) := by
-    refine le_antisymm ?_ ?_
-    · exact disc _ ((Valuation.ne_zero_iff _).mpr hπ0) ((lt1 π).mpr (hπ ▸ hexp))
-    · rw [← hϖ]
-      refine (h ϖ π).mpr ?_
-      rw [hπ]
-      exact disc _ ((Valuation.ne_zero_iff _).mpr hϖ0) ((lt1 ϖ).mp (hϖ ▸ hexp))
-  ext f
-  by_cases hf : f = 0
-  · simp [hf]
-  have hwf : w f ≠ 0 := (Valuation.ne_zero_iff _).mpr hf
-  set n := WithZero.log (w f) with hn
-  have hwf' : w f = WithZero.exp n := (WithZero.exp_log hwf).symm
-  have hpow : ∀ u : Valuation K ℤᵐ⁰, u π = WithZero.exp (-1) →
-      u (f * π ^ n) = u f * WithZero.exp (-n) := by
-    intro u hu
-    rw [map_mul, map_zpow₀, hu, ← WithZero.exp_zsmul]
-    simp
-  have hg : w (f * π ^ n) = 1 := by
-    rw [hpow w hπ, hwf', ← WithZero.exp_add]
-    simp
-  have hg' := (eq1 _).mpr hg
-  rw [hpow v hvπ] at hg'
-  rw [hwf']
-  have : v f = v f * WithZero.exp (-n) * WithZero.exp n := by
-    rw [mul_assoc, ← WithZero.exp_add]
-    simp
-  rw [this, hg', one_mul]
-
-end Valuation
-
 section ToPlace
 
 open GroundTheory.FunctionField
@@ -113,11 +50,6 @@ lemma mem_toPlace_ring (Z : PrimeDivisor X) (f : X.functionField) :
   Valuation.mem_valuationSubring_iff _ _
 
 variable [IsFunctionField k X.functionField]
-
-theorem toPlace_valuation (Z : PrimeDivisor X) : (Z.toPlace (k := k)).valuation = Z.valuation := by
-  refine valuation_eq_of_isEquiv (Place.valuation_surjective _) Z.valuation_surjective ?_
-  refine Valuation.isEquiv_of_val_le_one fun f => ?_
-  rw [Place.valuation_le_one_iff, mem_toPlace_ring]
 
 end PrimeDivisor
 

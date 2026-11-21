@@ -145,32 +145,6 @@ def pullSys (x : Fin (N + 1) → Ω) (x' : Fin (N' + 1) → Ω) : SubSystem S x'
     · intro a b _ _ ha hb; exact Submodule.add_mem _ ha hb
     · intro a z _ hz; exact Submodule.smul_mem _ (chartIncl h a) hz
 
-variable (S) in
-
-structure IsDomination (x : Fin (N + 1) → Ω) (x' : Fin (N' + 1) → Ω) : Prop where
-  invertible : ∀ I : Chart x', ∃ Q' : Submodule (chartRing S x' I) Ω,
-    (pullSys (S := S) x x').sub I * Q' = 1
-
-variable (S) in
-
-def domRing (x : Fin (N + 1) → Ω) (x' : Fin (N' + 1) → Ω) (i : Fin (N + 1)) : Set Ω :=
-  ampleRing (pullSys (S := S) x x') 1 (x i)
-
-def pullSecs {x : Fin (N + 1) → Ω} (x' : Fin (N' + 1) → Ω) (L : SubSystem S x Ω) : Submodule S Ω :=
-  ⨅ (i : Fin (N + 1)) (hi : x i ≠ 0), Submodule.span S
-    {z | ∃ b ∈ domRing S x x' i, ∃ l ∈ L.sub (singleChart hi), z = b * l}
-
-variable (S) in
-
-def IsBirationalPt (x : Fin (N + 1) → Ω) : Prop :=
-  ∀ s : Ω, ∃ (I : Chart x) (a b : Ω), a ∈ chartRing S x I ∧ b ∈ chartRing S x I ∧ b ≠ 0 ∧ s * b = a
-
-variable (S) in
-
-def IsNormalPt (x : Fin (N + 1) → Ω) : Prop :=
-  ∀ (i : Fin (N + 1)) (hi : x i ≠ 0) (b : Ω), IsIntegral (chartRing S x (singleChart hi)) b →
-    b ∈ chartRing S x (singleChart hi)
-
 end Domination
 
 section Restrict
@@ -278,58 +252,12 @@ theorem twistSys_zero_twist (Q : SubSystem S x Ω) : (twistSys S x 0).twist Q = 
   · intro q hq
     exact Submodule.subset_span ⟨q, hq, 1, one_mem_twistMod_zero I, by rw [smul_eq_mul, mul_one]⟩
 
-theorem pow_twistSys_zero (n : ℕ) : (twistSys S x 0).pow n = twistSys S x 0 := by
-  induction n with
-  | zero => rfl
-  | succ n ih =>
-    change ((twistSys S x 0).pow n).twist (twistSys S x 0) = _
-    rw [ih, SubSystem.twist_twistSys_zero]
-
-theorem foldl_twist_zero {n : ℕ} (L : Fin n → SubSystem S x Ω) (hL : ∀ i, L i = twistSys S x 0)
-    (l : List (Fin n)) :
-    l.foldl (fun F i => F.twist (L i)) (twistSys S x 0) = twistSys S x 0 := by
-  induction l with
-  | nil => rfl
-  | cons a l ih =>
-    rw [List.foldl_cons, hL a, SubSystem.twist_twistSys_zero]
-    exact ih
-
-theorem tensorSub_of_forall_eq {n : ℕ} (L : Fin n → SubSystem S x Ω)
-    (hL : ∀ i, L i = twistSys S x 0) (T : Finset (Fin n)) : tensorSub L T = twistSys S x 0 :=
-  foldl_twist_zero L hL _
-
-theorem interNum_twistSys_zero (pp : Ideal (Poly S N)) : interNum pp ![twistSys S x 0] = 0 := by
-  have h0 : interSum pp ![twistSys S x 0] = fun _ => 0 := by
-    funext c
-    have hT : ∀ T : Finset (Fin 1), tensorSub ![twistSys S x 0] T = twistSys S x 0 :=
-      tensorSub_of_forall_eq _ (fun i => by fin_cases i; rfl)
-    simp only [interSum, hT]
-    rw [← Finset.powerset_univ, Finset.sum_powerset_apply_card
-      (f := fun j => (-1 : ℤ) ^ (1 - j) * restrLen pp ((twistSys S x 0).twist (twistSys S x (c : ℤ))))]
-    simp [Finset.sum_range_succ]
-  rw [interNum, h0]
-  exact tendsto_const_nhds.limUnder_eq
-
-theorem nef_twistSys_zero : Nef (twistSys S x 0) := fun pp _ _ => by
-  rw [interNum_twistSys_zero]
-
 end Lemmas
 
 section Inhabitants2
 
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
-
-theorem isSubvar_genericPt (k : Type u) [Field k] (N : ℕ) :
-    IsSubvar (genericPt k N) (primeOf (S := k) (genericPt k N)) N where
-  isPrime := inferInstance
-  homog p hp d := homogeneousComponent_mem_primeOf _ hp d
-  le := le_rfl
-  relevant := ⟨0, by rw [primeOf_genericPt, Submodule.mem_bot]; exact X_ne_zero 0⟩
-  dim := by
-    rw [primeOf_genericPt, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot (Poly k N)),
-      MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
-    simp
 
 theorem isVeryAmpleBy_twistSys_one : IsVeryAmpleBy (twistSys S x 1) x where
   mem_secs := mem_secs_twistBundle_one
@@ -347,102 +275,7 @@ theorem isVeryAmpleBy_twistSys_one : IsVeryAmpleBy (twistSys S x 1) x where
 
 theorem isVeryAmple_twistSys_one : IsVeryAmple (twistSys S x 1) := ⟨N, x, isVeryAmpleBy_twistSys_one⟩
 
-theorem pullSys_self : pullSys (S := S) x x = twistSys S x 1 :=
-  SubSystem.ext_sub fun I => span_range_eq_twistMod_one I
-
-theorem isDomination_self : IsDomination S x x where
-  invertible I := by
-    rw [pullSys_self]
-    exact (twistBundle S x 1).invertible I
-
-theorem domRing_self_le {i : Fin (N + 1)} (hi : x i ≠ 0) :
-    domRing S x x i ⊆ chartRing S x (singleChart hi) := by
-  intro a ha
-  rw [domRing, pullSys_self] at ha
-  obtain ⟨n, hn⟩ := Set.mem_iInter.mp ha (singleChart hi)
-  rw [one_mul] at hn
-  obtain ⟨b, hb⟩ := Submodule.mem_span_singleton.mp
-    (pow_twistSys_one_le n (singleChart hi) (Finset.mem_singleton_self i) hn)
-  rw [chartRing_smul_def] at hb
-  have hab : a = b := (mul_right_cancel₀ (pow_ne_zero n hi) hb).symm
-  rw [hab]; exact b.2
-
-theorem restrictData_id (Q : SubSystem S x Ω) :
-    RestrictData (K' := Ω) Q (y := x) (fun _ h => h) Q id where
-  mem _ _ hq := hq
-  add _ _ _ _ _ := rfl
-  smul _ _ _ _ _ _ _ _ _ := rfl
-  span I := by rw [Set.image_id]; exact Submodule.span_eq _
-
 end Inhabitants2
-
-section LineData
-
-variable (k : Type u) [Field k]
-
-def lineStepData : StepData k (genericPt k 1) where
-  d := 0
-  dim := isSubvar_genericPt k 1
-  M := twistBundle k (genericPt k 1) 0
-  nef := nef_twistSys_zero
-  t := 2
-  s' := 1
-  s'_pos := one_pos
-  s'_lt := by norm_num
-  p := 2
-  p_pos := by norm_num
-  m := 2
-  m_eq := by norm_num
-  c₁ := 1
-  c₁_pos := le_rfl
-  si := genericPt k 1 0
-  si_mem := by
-    have h0 : (twistBundle k (genericPt k 1) 0).toSubSystem = twistSys k (genericPt k 1) 0 := rfl
-    rw [h0, twistMul, pow_twistSys_zero, twistSys_zero_twist, show (2 : ℤ) - 1 = 1 by norm_num]
-    exact mem_secs_twistBundle_one 0
-  si_ne := (map_ne_zero_iff _ (IsFractionRing.injective (Poly k 1) (FractionRing (Poly k 1)))).mpr
-    (X_ne_zero 0)
-
-theorem algebraMap_mem_chartRing_line (p : Polynomial k) :
-    algebraMap (Polynomial k) (RatFunc k) p ∈ chartRing k (lineX k) (lineChart0 k) := by
-  have hX : (RatFunc.X : RatFunc k) ∈ chartRing k (lineX k) (lineChart0 k) := by
-    have := (ratio (S := k) (lineX_ne_zero k 0) 1).2
-    unfold lineChart0
-    simpa [ratio, lineX] using this
-  let φ := IsScalarTower.toAlgHom k (Polynomial k) (RatFunc k)
-  have hp : p ∈ Algebra.adjoin k {(Polynomial.X : Polynomial k)} := by
-    rw [Polynomial.adjoin_X]; trivial
-  have hφ : φ p ∈ (Algebra.adjoin k {(Polynomial.X : Polynomial k)}).map φ := ⟨p, hp, rfl⟩
-  rw [AlgHom.map_adjoin, Set.image_singleton] at hφ
-  refine Algebra.adjoin_le ?_ hφ
-  rw [Set.singleton_subset_iff]
-  change algebraMap (Polynomial k) (RatFunc k) Polynomial.X ∈ _
-  rw [RatFunc.algebraMap_X]
-  exact hX
-
-theorem isBirationalPt_lineX : IsBirationalPt k (lineX k) := by
-  intro s
-  have hd : algebraMap (Polynomial k) (RatFunc k) s.denom ≠ 0 :=
-    (map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr s.denom_ne_zero
-  refine ⟨lineChart0 k, algebraMap (Polynomial k) (RatFunc k) s.num,
-    algebraMap (Polynomial k) (RatFunc k) s.denom, algebraMap_mem_chartRing_line k _,
-    algebraMap_mem_chartRing_line k _, hd, ?_⟩
-  exact ((div_eq_iff hd).mp (RatFunc.num_div_denom s)).symm
-
-def ptX : Fin (0 + 1) → k := fun _ => 1
-
-theorem ptX_ne_zero (i : Fin (0 + 1)) : ptX k i ≠ 0 := one_ne_zero
-
-theorem mem_chartRing_ptX (I : Chart (ptX k)) (a : k) : a ∈ chartRing k (ptX k) I :=
-  ⟨C a, 1, 0, one_mem _, isHomogeneous_C _ _, isHomogeneous_one _ _, by simp⟩
-
-theorem isNormalPt_ptX : IsNormalPt k (ptX k) := fun _ _ b _ => mem_chartRing_ptX k _ b
-
-theorem isBirationalPt_ptX : IsBirationalPt k (ptX k) := fun s =>
-  ⟨singleChart (ptX_ne_zero k 0), s, 1, mem_chartRing_ptX k _ s, mem_chartRing_ptX k _ 1, one_ne_zero,
-    mul_one s⟩
-
-end LineData
 
 end
 

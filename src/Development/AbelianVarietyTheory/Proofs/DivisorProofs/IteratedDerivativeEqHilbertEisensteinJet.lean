@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHilbertEisensteinFourierCoeffFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumIteratedDerivHilbertEisensteinSplitLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHilbertEisensteinFourierCoeffFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumIteratedDerivHilbertEisensteinSplitLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitOfHilbertLatticeHasLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CountWordWithLetterMultiplicities
 
@@ -21,9 +21,9 @@ namespace GlobalTheory.HilbFam
 theorem iterD_eq_jet_of_count : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) (L : Lat F), 1 ≤ s → 0 < N → HasLevel N L → ∀ (τ c t : ℂ) (κ : Emb F → ℕ) (u : List (Emb F)), 0 < τ.im → (∀ i, u.count i = κ i) → iterD u (fun z ↦ (cK F (2 * s) : ℂ) * gval (2 * s) L (fun i ↦ τ + z i * (c * τ + t)) (fun i ↦ 1 + z i * c)) 0 = jet (2 * s) L κ τ c t := by
   intro hE F _ _ _ hf s N L hs hN hL τ c t κ u hτ hu
   obtain ⟨𝔞, 𝔟, x, rfl⟩ := exists_eq_split_of_hasLevel F N L hN hL
-  obtain ⟨Z, a, -, ha⟩ := GlobalTheory.T.exists_hilbertEisenstein_fourierCoeffFamily hE F hf 𝔞 𝔟 s hs
-  have h1 := GlobalTheory.T.hasSum_iteratedDeriv_hilbertEisenstein_splitLattice F (2 * s) 𝔞 𝔟 _ a x τ c t u (even_two_mul s) ha hτ
-  have h2 := GlobalTheory.T.hasSum_iteratedDeriv_hilbertEisenstein_splitLattice F (2 * s) 𝔞 𝔟 _ a x τ c t (word κ) (even_two_mul s) ha hτ
+  obtain ⟨Z, a, -, ha⟩ := _root_.GlobalTheory.HilbFam.exists_isCoef hE F hf 𝔞 𝔟 s hs
+  have h1 := _root_.GlobalTheory.HilbFam.hasSum_iterD_gval_split F (2 * s) 𝔞 𝔟 _ a x τ c t u (even_two_mul s) ha hτ
+  have h2 := _root_.GlobalTheory.HilbFam.hasSum_iterD_gval_split F (2 * s) 𝔞 𝔟 _ a x τ c t (word κ) (even_two_mul s) ha hτ
   simp only [hu] at h1
   simp only [count_word_eq] at h2
   have h3 := h1.unique h2

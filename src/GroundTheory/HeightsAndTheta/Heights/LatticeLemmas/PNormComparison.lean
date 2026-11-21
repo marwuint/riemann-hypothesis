@@ -91,49 +91,6 @@ theorem gramDet_le_of_norm_le {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [
     _ ≤ (max A 0 ^ 2) ^ r * gramDet h σ s := by
       gcongr
 
-theorem NormComparison.proof : NormComparison.Statement := by
-  intro K _ _ M h' A hA
-  obtain ⟨s, hs⟩ := exists_linearIndependent_fin (K := K) (E := M.carrier)
-  have hlog : ∀ σ : K →+* ℂ, Real.log (gramDet h' σ s) ≤
-      2 * (Module.finrank (𝓞 K) M.carrier : ℝ) * Real.log (A σ) + Real.log (gramDet M.metric σ s) := by
-    intro σ
-    have hle := gramDet_le_of_norm_le M.metric h' σ (A σ) (hA σ) hs
-    have hg : 0 < gramDet M.metric σ s := gramDet_pos _ σ hs
-    have hg' : 0 < gramDet h' σ s := gramDet_pos _ σ hs
-    rcases Nat.eq_zero_or_pos (Module.finrank (𝓞 K) M.carrier) with hr | hr
-    · have h1 : (max (A σ) 0 ^ 2) ^ Module.finrank (𝓞 K) M.carrier = 1 := by rw [hr, pow_zero]
-      have h0 : ((Module.finrank (𝓞 K) M.carrier : ℕ) : ℝ) = 0 := by exact_mod_cast hr
-      rw [h1, one_mul] at hle
-      rw [h0, mul_zero, zero_mul, zero_add]
-      exact Real.log_le_log hg' hle
-    · have hpos : 0 < (max (A σ) 0 ^ 2) ^ Module.finrank (𝓞 K) M.carrier :=
-        (pos_iff_pos_of_mul_pos (lt_of_lt_of_le hg' hle)).mpr hg
-      have hmax : 0 < max (A σ) 0 := by
-        rcases (le_max_right (A σ) 0).lt_or_eq with h1 | h1
-        · exact h1
-        · rw [← h1] at hpos; simp [zero_pow (Nat.pos_iff_ne_zero.mp hr)] at hpos
-      have hApos : 0 < A σ := by
-        rcases le_or_gt (A σ) 0 with h1 | h1
-        · rw [max_eq_right h1] at hmax; exact absurd hmax (lt_irrefl 0)
-        · exact h1
-      rw [max_eq_left hApos.le] at hle
-      calc Real.log (gramDet h' σ s) ≤
-            Real.log ((A σ ^ 2) ^ Module.finrank (𝓞 K) M.carrier * gramDet M.metric σ s) :=
-            Real.log_le_log hg' hle
-        _ = 2 * (Module.finrank (𝓞 K) M.carrier : ℝ) * Real.log (A σ) + Real.log (gramDet M.metric σ s) := by
-          rw [Real.log_mul (by positivity) hg.ne', ← pow_mul, Real.log_pow]
-          push_cast; ring
-  simp only [HermitianBundle.deg, HermitianBundle.arithDegree]
-  rw [arithDegree_eq M.metric hs (Fintype.card_fin _), arithDegree_eq h' hs (Fintype.card_fin _)]
-  simp only [degreeWith]
-  rw [← sub_div]
-  apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
-  have hsum : ∑ σ : K →+* ℂ, Real.log (gramDet h' σ s) ≤
-      2 * (Module.finrank (𝓞 K) M.carrier : ℝ) * ∑ σ : K →+* ℂ, Real.log (A σ) + ∑ σ : K →+* ℂ, Real.log (gramDet M.metric σ s) := by
-    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
-    exact Finset.sum_le_sum fun σ _ ↦ hlog σ
-  linarith
-
 end
 
 end GroundTheory.Heights₂.Heights.LatticeLemmas

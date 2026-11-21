@@ -113,10 +113,6 @@ def branchT (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) : VV K la
   (LinearMap.BilinForm.toDual (pairBK (K := K) sg) (pairingBNondegenerate_holds K ι n sg)).symm.toLinearMap ∘ₗ
     (branch K lam sg).dualMap ∘ₗ pairB lam ∘ₗ (VV K lam).subtype
 
-theorem pair_branchT (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) (x : VV K lam) (y : VV K sg) :
-    pairBK sg (branchT K lam sg x) y = pairB lam x.1 (branch K lam sg y) := by
-  simp [branchT, LinearMap.BilinForm.apply_toDual_symm_apply]
-
 variable {K}
 
 def pTilde (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) (t : ι → K) : VV K lam →ₗ[K] VV K sg :=
@@ -131,12 +127,6 @@ def extLat {K : Type} [Field K] [NumberField K] {n : ℕ} (M : Submodule (𝓞 K
   M.comap (LinearMap.funLeft (𝓞 K) K Fin.castSucc) ⊓
     (Submodule.span (𝓞 K) {t}).comap (LinearMap.proj (Fin.last n))
 
-theorem mem_extLat {K : Type} [Field K] [NumberField K] {n : ℕ} (M : Submodule (𝓞 K) (Fin n → K)) (t : K)
-    (x : Fin (n + 1) → K) :
-    x ∈ extLat M t ↔ (fun a : Fin n => x a.castSucc) ∈ M ∧ ∃ c : 𝓞 K, c • t = x (Fin.last n) := by
-  simp only [extLat, Submodule.mem_inf, Submodule.mem_comap, Submodule.mem_span_singleton, LinearMap.proj_apply]
-  rfl
-
 def PTildeIntegral : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ)
     (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n),
@@ -146,25 +136,5 @@ def PTildeIntegral : Prop :=
     ∀ x : VV K lam, x ∈ delK lam (fun τ => extLat (M τ) (t τ)) → pTilde lam sg t x ∈ delK sg M
 
 end Statement
-
-example (K : Type) [Field K] (lam : DomWeight 1) (sg : DomWeight 0) (t : Gen lam sg) :
-    zOp K lam sg = 1 ∧ piGen K lam sg t = 1 ∧ phiGen K lam sg t = 1 ∧ degDiff lam sg = lam.w 0 := by
-  simp [zOp, piGen, phiGen, degDiff]
-
-example (K : Type) [Field K] (ι : Type) [Fintype ι] (lam : ι → DomWeight 1) (sg : ι → DomWeight 0) :
-    LinearMap.ker (piAll K lam sg) ≤ LinearMap.ker (zPhiAll K lam sg) := by
-  have h1 : ∀ t, piAll K lam sg t = C (t.sum fun _ c => c) := by
-    intro t
-    simp [piAll, piGen, ten, Finsupp.linearCombination_apply, Finsupp.sum, smul_eq_C_mul]
-  have h2 : ∀ t, zPhiAll K lam sg t = C (t.sum fun _ c => c) := by
-    intro t
-    simp [zPhiAll, zOp, phiGen, ten, Finsupp.linearCombination_apply, Finsupp.sum, smul_eq_C_mul]
-  intro t ht
-  rw [LinearMap.mem_ker, h1, C_eq_zero] at ht
-  rw [LinearMap.mem_ker, h2, ht, C_0]
-
-example (K : Type) [Field K] (u : ℤ) :
-    capelli K 1 u (X (0, 0)) = u • (X (0, 0) : MvPolynomial (Fin 2 × Fin 2) K) := by
-  simp [capelli, fOp, eOp, Fin.sum_univ_two, pderiv_X, Pi.single_apply, add_mul]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators

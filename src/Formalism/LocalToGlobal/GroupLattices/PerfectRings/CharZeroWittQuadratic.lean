@@ -1,4 +1,5 @@
-import Formalism.LocalToGlobal.GroupLattices.PerfectRings.GoodRingWittExtension
+import Formalism.SharpRestriction.GrowthBounds.ObjBridge
+import Formalism.LocalToGlobal.GroupLattices.PerfectRings.JOInjective
 import Formalism.LocalToGlobal.GroupLattices.PerfectRings.IsLocalRingOfComplete
 import Formalism.LocalToGlobal.GroupLattices.LevelGatherings.StdSubPlacesConst
 

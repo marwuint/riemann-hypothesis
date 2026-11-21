@@ -40,28 +40,6 @@ def LcvMu : Prop :=
         (haveI := p.2.isPrime; Formalism.HermitianLatticesTheory.lidx p.1 (Submodule.span (𝓞 K) (Set.range e)) M)).Finite ∧
       muDef b X M = -lcv b X e M / (rkK M : ℝ)
 
-def LcvBasisFree : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] [AddCommGroup V]
-    [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι]
-    (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ), (∀ v, IsUnit (X v).det) →
-    ∀ (j j' : ℕ) (e : Fin j → V) (e' : Fin j' → V) (M : Submodule (𝓞 K) V),
-      LinearIndependent K e → LinearIndependent K e' → M.FG → M ≠ ⊥ →
-      Submodule.span K (M : Set V) = Submodule.span K (Set.range e) →
-      Submodule.span K (M : Set V) = Submodule.span K (Set.range e') →
-      lcv b X e M = lcv b X e' M
-
-def LcvBaseChange : Prop :=
-  ∀ (K V ι : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] [AddCommGroup V]
-    [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι]
-    (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ), (∀ v, IsUnit (X v).det) →
-    ∀ (j : ℕ) (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K) (M : Submodule (𝓞 K) V),
-      LinearIndependent K e → IsUnit g.det → M.FG → M ≠ ⊥ →
-      Submodule.span K (M : Set V) = Submodule.span K (Set.range e) →
-      lcvInf b X (fun a => ∑ c, g c a • e c) = lcvInf b X e +
-        2 / (Module.finrank ℚ K : ℝ) * Real.log |((Algebra.norm ℚ g.det : ℚ) : ℝ)| ∧
-      lcvFin (fun a => ∑ c, g c a • e c) M = lcvFin e M -
-        2 / (Module.finrank ℚ K : ℝ) * Real.log |((Algebra.norm ℚ g.det : ℚ) : ℝ)|
-
 def LcvExists : Prop :=
   ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (M : Submodule (𝓞 K) V),

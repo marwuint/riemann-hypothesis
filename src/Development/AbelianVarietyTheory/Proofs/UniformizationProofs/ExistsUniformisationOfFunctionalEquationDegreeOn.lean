@@ -1,8 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpBijOfMatchStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpBijOfMatch
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsExpFOfFam
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FiniteExponentBaseChangeFieldStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FunctionalEquationAllDegreesAlgebraicClosureStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FiniteExponentBaseChangeField
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FunctionalEquationAllDegreesAlgebraicClosure
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.GmResPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
@@ -24,10 +24,10 @@ theorem exists_unif_of_fe_one : Laws → Laws2 → ∀ (V : Type) [CommRing V] [
   intro hL hL2 V _ _ _ hV D A G _ _ U h1
   obtain ⟨U', hM⟩ := ToChart.exists_match V (IsLocalRing.maximalIdeal V) D A G U
   refine ⟨⟨U', fun k hk => ?_⟩, hM⟩
-  have hb : U.FE (Kbar V) k := GlobalTheory.T.functional_equation_all_degrees_algebraic_closure hL hL2 V hV D.toPre A G U D.tau_bimult h1 k hk
+  have hb : U.FE (Kbar V) k := _root_.GlobalTheory.UU.fe_all_degrees hL hL2 V hV D.toPre A G U D.tau_bimult h1 k hk
   have hF : U.FE (FractionRing V) k :=
-    GlobalTheory.T.finite_exponent_base_change_field hL.globalFns V hV D.toPre A G U k hb (FractionRing V)
-  exact GlobalTheory.T.expBij_of_match_of_fam_expF hL hL2 V hV D A G U U' hM k hk hF
+    _root_.GlobalTheory.UU.FEDesc.fe_of_fe_kbar hL.globalFns V hV D.toPre A G U k hb (FractionRing V)
+  exact _root_.GlobalTheory.ExpansionClause.expBij_of_match hL hL2 V hV D A G U U' hM k hk hF
     (ExpOnto.exists_expF_of_fam hL hL2 V hV D.toPre A G U D.tau_bimult (FractionRing V) k hk hF)
 
 end GlobalTheory.UU

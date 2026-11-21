@@ -4,10 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertEisensteinCoefficientValuationBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedHilbertLatticeContainsAndCoordinateSizeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedHilbertLatticeContainsAndCoordinateSize
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertLatticeTwistHasLevel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModularGroupRowVecAndConjRightActions
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassTorsionQExpansionIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeierstrassTorsionQExpansionIntegral
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.TranslateProduct
+import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraicValuationAtLeastAtEmbeddingRingOps
 open NumberField UpperHalfPlane GlobalTheory.HilbFam GlobalTheory.QFam
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM qPow upperHalf cK omegaFactor IsPartialZeta HasExpansion)
@@ -26,10 +29,10 @@ theorem main : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyRea
   have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
   have hTw : HasLevel N (twist N L ((α : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) :=
     GlobalTheory.HilbFam.hasLevel_twist_of_hasLevel F N L _ hL
-  obtain ⟨hmem, hsz⟩ := GlobalTheory.T.twistedHilbertLattice_contains_and_coordinate_size l lam F N (M * l ^ b) L α ρ₀ hL.2 hML hLsz hNsz
+  obtain ⟨hmem, hsz⟩ := _root_.GlobalTheory.HilbFam.TwistSize.main l lam F N (M * l ^ b) L α ρ₀ hL.2 hML hLsz hNsz
   have hx : M' • vmul y α = 0 := by rw [← hA.2.2.2.2.2.1, hMy]; exact (hA.2.2.2.2.1 0 α).mpr rfl
   have hx0 : vmul y α ≠ 0 := fun h => hy ((hA.2.2.2.2.1 y α).mp h)
-  obtain ⟨hQ, -⟩ := GlobalTheory.T.weierstrassTorsion_qExpansion_integral l lam N M' (vmul y α) hlM' hx hx0
+  obtain ⟨hQ, -⟩ := _root_.GlobalTheory.WpFam.ExpansionIntegral.main l lam N M' (vmul y α) hlM' hx hx0
   have hQρ : QAll (Sz l lam ρ) N (wB N (vmul y α)) := by
     obtain ⟨a, ha, hp⟩ := hQ
     exact ⟨a, ha, fun n => hS.2.2.2.1 0 ρ _ hρ0 (hp n)⟩

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsNilpotentTmulSubTmulOfConstOnFibresStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsCommonDenominatorNilpotentCoboundaryStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsNilpotentTmulSubTmulOfConstOnFibres
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsCommonDenominatorNilpotentCoboundary
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -44,7 +44,7 @@ theorem exists_multiplier_descend_of_closed {σ X : Type} [Fintype σ] [Nonempty
   have hnil : ∀ g ∈ s.image π, IsNilpotent (g ⊗ₜ[B] (1 : A) - (1 : A) ⊗ₜ[B] g) := by
     intro g hg
     obtain ⟨f, hf, rfl⟩ := Finset.mem_image.1 hg
-    refine GlobalTheory.T.isNilpotent_tmul_sub_tmul_of_const_on_fibres' B A (π f) ?_
+    refine _root_.GlobalTheory.ClassFin.isNilpotent_tmul_sub_tmul_of_const_on_fibres B A (π f) ?_
     intro χ χ' h
     obtain ⟨x, hx⟩ := hpt χ
     obtain ⟨x', hx'⟩ := hpt χ'
@@ -52,7 +52,7 @@ theorem exists_multiplier_descend_of_closed {σ X : Type} [Fintype σ] [Nonempty
     refine hs f hf x x' fun i => ?_
     rw [← hx, ← hx']
     exact h ⟨π (q i), MvPolynomial.X i, by simp⟩
-  obtain ⟨b, hb, hbs⟩ := GlobalTheory.T.exists_common_denominator_nilpotent_coboundary B A Subtype.val_injective (s.image π) hnil
+  obtain ⟨b, hb, hbs⟩ := _root_.GlobalTheory.exists_common_denominator_of_isNilpotent B A Subtype.val_injective (s.image π) hnil
   obtain ⟨b, c, rfl⟩ := b
   refine ⟨c, ?_, fun f hf => ?_⟩
   · by_contra hc

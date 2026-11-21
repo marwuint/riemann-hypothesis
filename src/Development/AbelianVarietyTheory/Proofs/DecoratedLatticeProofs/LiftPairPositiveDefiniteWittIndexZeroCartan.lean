@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaSourceAction
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MultiplicityMapValueKFiniteMemCuspFormsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MultiplicityMapValueKFiniteMemCuspForms
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowestKTypeMemDiscreteSeriesKFiniteVectorsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsBesPosOfBesselTied
@@ -25,7 +25,7 @@ theorem main : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A :
   have hV : (Vc D i).rank = D.R.nV := D.sp.V_rank _ hi1 hi2
   have hk := D.R.rank_add_five_le
   have hm := D.R.two_le_m
-  obtain ⟨cA, hF, hcart, hJ, hA0⟩ := GlobalTheory.T.multiplicity_map_apply_mem_A0_of_kfin D R.θ hC.models.inf (Wc D i) (D.sp.W_sig _) _ (R.MW i σ)
+  obtain ⟨cA, hF, hcart, hJ, hA0⟩ := _root_.GlobalTheory.ChainOnto.RealData.multiplicityMap_value_kFinite_mem_cuspForms D R.θ hC.models.inf (Wc D i) (D.sp.W_sig _) _ (R.MW i σ)
   have hpos : ∀ τ, (gramAt D (Vc D i) τ).PosDef := fun τ => by
     have := D.sp.V_sig (↑i + 1) (tauE D τ)
     rw [hC.models.vpos i] at this

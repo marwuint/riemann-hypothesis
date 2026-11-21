@@ -446,11 +446,4 @@ theorem exists_isHCTypeU (N : ℕ) (lam : Fin N → ℝ) (h : Formalism.QuantumD
   rw [← e] at this
   exact this
 
-theorem exists_isDS_const : ∀ (N : ℕ) (b : Bool) (lam : Fin N → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
-    ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
-      (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)), IsDS (fun _ => b) lam σ := by
-  intro N b lam h
-  obtain ⟨H, _, _, σ, hσ⟩ := exists_isHCTypeU N lam h
-  exact ⟨H, _, _, σ, (GlobalTheory.RealPar.isDS_const_iff b lam σ).2 hσ⟩
-
 end GlobalTheory.CompactDS

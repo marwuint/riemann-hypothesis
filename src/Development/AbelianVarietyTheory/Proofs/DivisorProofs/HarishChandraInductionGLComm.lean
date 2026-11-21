@@ -122,28 +122,4 @@ theorem br_aflip {a b : ℕ} (M : Matrix (Fin (a + b)) (Fin (a + b)) F) : br b a
 theorem gal_id (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
   ext i j; simp [gal]
 
-theorem main : ∀ (F : Type) [Field F] [Finite F], ∀ (a b n : ℕ) (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ),
-    IsCl α → IsCl β → n = a + b → hc a b α β n = hc b a β α n := by
-  intro F _ _ a b n α β hα hβ hn
-  subst hn
-  funext x
-  obtain ⟨p, hp⟩ := aflipG_conj x
-  unfold hc hcTw
-  simp only [gal_id]
-  congr 1
-  · congr 2
-    exact Nat.card_congr ((aflipE (a + b)).subtypeEquiv fun y => (inPar_aflip y).symm)
-  · symm
-    rw [← finsum_comp_equiv (((aflipE (a + b)).trans (Equiv.mulRight p)).trans (Equiv.inv _))]
-    symm
-    congr 1
-    funext y
-    have h1 : (((aflipE (a + b)).trans (Equiv.mulRight p)).trans (Equiv.inv _)) y = (aflipG y * p)⁻¹ := rfl
-    have h2 : ((aflipG y * p)⁻¹)⁻¹ * x * (aflipG y * p)⁻¹ = aflipG (y⁻¹ * x * y) := by
-      rw [aflipG_mul, aflipG_mul, aflipG_inv, hp]; group
-    rw [h1, h2]
-    unfold tlG brG
-    rw [aflipG_coe, tl_aflip, br_aflip]
-    simp only [inPar_aflip, class_aflip hα, class_aflip hβ, mul_comm (β _)]
-
 end GlobalTheory.HCCommF

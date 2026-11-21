@@ -117,8 +117,6 @@ theorem integral_top_level_point {β E : Type} [MeasurableSpace β] [NormedAddCo
 theorem glue_last_level (c : Fin r → ℂ) (a : Cf r (Fin.last r)) : glue (Fin.last r) c a = c := by
   funext j; have := j.isLt; simp only [glue, Fin.val_last]; rw [dif_neg (by omega)]
 
-theorem weight_last_level (a : Cf r (Fin.last r)) : (∏ l, ‖a l‖ ^ (-2 : ℤ)) = 1 := Finset.prod_of_isEmpty _
-
 end Top
 
 section Dens

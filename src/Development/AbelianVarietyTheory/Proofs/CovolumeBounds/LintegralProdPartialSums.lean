@@ -91,44 +91,6 @@ theorem lintegral_pi_inv_pow (n : ℕ) : ∀ (m : ℕ) {A : ℝ}, 0 < A →
     field_simp
     ring
 
-theorem lintegral_prod_partial_sums (n : ℕ) : ∀ {A : ℝ}, 0 < A →
-    ∫⁻ z : Fin n → ℂ, ENNReal.ofReal
-      (∏ i : Fin n, ((A + ∑ k, if k ≤ i then ‖z k‖ ^ 2 else 0) ^ 2)⁻¹) =
-      ENNReal.ofReal (π ^ n / n ! * (A ^ n)⁻¹) := by
-  induction n with
-  | zero =>
-    intro A hA
-    simp [volume_pi]
-  | succ n ih =>
-    intro A hA
-    have hm : ∀ (N : ℕ) (B : ℝ), Measurable fun z : Fin N → ℂ ↦ ENNReal.ofReal
-        (∏ i : Fin N, ((B + ∑ k, if k ≤ i then ‖z k‖ ^ 2 else 0) ^ 2)⁻¹) := fun N B ↦ by
-      refine ENNReal.measurable_ofReal.comp (Finset.measurable_prod _ fun i _ ↦ ?_)
-      refine ((Measurable.const_add (Finset.measurable_sum _ fun k _ ↦ ?_) B).pow_const 2).inv
-      split_ifs <;> fun_prop
-    rw [lintegral_fin_succ (hm _ _)]
-    simp only [Fin.prod_univ_succ, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, ← add_assoc,
-      Fin.zero_le, if_true, Fin.succ_le_succ_iff, Fin.le_zero_iff, Fin.succ_ne_zero, if_false,
-      Finset.sum_const_zero, add_zero]
-    have h : ∀ z : ℂ, ∫⁻ w : Fin n → ℂ,
-        ENNReal.ofReal (((A + ‖z‖ ^ 2) ^ 2)⁻¹ *
-          ∏ i : Fin n, ((A + ‖z‖ ^ 2 + ∑ k, if k ≤ i then ‖w k‖ ^ 2 else 0) ^ 2)⁻¹) =
-        ENNReal.ofReal (π ^ n / n !) *
-          ENNReal.ofReal (((A + ‖z‖ ^ 2) ^ (n + 2))⁻¹) := fun z ↦ by
-      simp only [ENNReal.ofReal_mul (show 0 ≤ ((A + ‖z‖ ^ 2) ^ 2)⁻¹ by positivity)]
-      rw [lintegral_const_mul _ (hm _ _), ih (by positivity),
-        ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]
-      congr 1
-      field_simp
-      ring
-    simp only [h]
-    rw [lintegral_const_mul _ (by fun_prop), lintegral_complex_inv_pow hA,
-      ← ENNReal.ofReal_mul (by positivity), Nat.factorial_succ n]
-    congr 1
-    push_cast
-    field_simp
-    ring
-
 theorem lintegral_comp_vecMul {n : Type*} [Fintype n] [DecidableEq n] (R : Matrix n n ℂ)
     (hR : R.det ≠ 0) {f : (n → ℂ) → ℝ≥0∞} (hf : Measurable f) :
     ∫⁻ b, f b = ENNReal.ofReal (‖R.det‖ ^ 2) * ∫⁻ y, f (Matrix.vecMul y R) := by

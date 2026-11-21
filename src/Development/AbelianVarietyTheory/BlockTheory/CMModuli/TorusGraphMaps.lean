@@ -53,9 +53,6 @@ def PsiGenOn (D : DegPre R) (χ : D.X) (U : Set (Spec (CommRingCat.of R))) : Pro
     ∃ (h : jK R ⁻¹ᵁ V ≤ (LB.LinComb D.P.L (K := PUnit) (fun _ => D.xK χ) (fun _ => -1)).U j)
       (r : Γ(Spec (CommRingCat.of R), V)ˣ), pullU (jK R) V r = res h ((D.psi χ).s j)
 
-lemma PsiGenOn.mono {D : DegPre R} {χ : D.X} {U U' : Set (Spec (CommRingCat.of R))}
-    (h : PsiGenOn D χ U) (hU : U' ⊆ U) : PsiGenOn D χ U' := fun x hx => h x (hU hx)
-
 section Points
 
 variable {O : Type} [Ring O] [StarRing O] {D : DegPre R} [Module O D.X]

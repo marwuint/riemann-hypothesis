@@ -83,7 +83,7 @@ abbrev recXE : ThetaX D where
     rw [map_mul, mul_comm]
     exact congrArg₂ _ (star_star _).symm rfl
   pet_pos V F hF := by
-    have h := GlobalTheory.T.petersson_normSq_pos_automorphicFunction_unitary D V _ _ (quot_mu V) F.1.1 (aut hθ F.1).toIsAutFun
+    have h := _root_.GlobalTheory.Mem.PetPos.petersson_pos D V _ _ (quot_mu V) F.1.1 (aut hθ F.1).toIsAutFun
       (fun h => hF (Subtype.ext (Subtype.ext h)))
       (hP θ hθ V _ _ (quot_mu V) _ _ (aut hθ F.1) (cuspF hθ (cuspEq θ V F)))
     rw [Complex.re_ofReal_mul]
@@ -107,7 +107,7 @@ abbrev recXE : ThetaX D where
       rw [mul_assoc, mul_assoc, (GlobalTheory.PointAtPlaceHom.atTau_laws D θ hθ V τ).2.2.2.1 h g g.2]
     · rw [mul_one, one_mul]
   Ksph := ksph
-  Ksph_mono V S S' h g hg := mem_ksph.2 ((GlobalTheory.T.exists_lattice_stabiliser_subgroup_outside_places D V S).choose_spec.2 S' h (mem_ksph.1 hg))
+  Ksph_mono V S S' h g hg := mem_ksph.2 ((_root_.GlobalTheory.Mem.Ksph.exists_subgroup_ksph D V S).choose_spec.2 S' h (mem_ksph.1 hg))
   typ V P := (TypS θ V P).comap (AFs θ V).subtype
   Chr := chrGrp D
   infTy := expo
@@ -141,7 +141,7 @@ abbrev recXE : ThetaX D where
   conjAF_conjAF V F := Subtype.ext (funext fun g => star_star _)
   conjAF_cusp V F hF := by
     rw [mem_cuspIn hθ] at hF ⊢
-    exact (GlobalTheory.T.isCuspFunction_closed_under_operations D V _ _ (aut hθ F).toIsAutFun (aut hθ F).toIsAutFun hF hF).2.2.2
+    exact (_root_.GlobalTheory.Mem.Th.isCuspFun_closed D V _ _ (aut hθ F).toIsAutFun (aut hθ F).toIsAutFun hF hF).2.2.2
   Pos A B ι := PosT A B ι
   FJd _ _ _ := ℂ
   Bper A B ι p _ φ F := (Rc.petC A : ℂ) * perT hB hθ hψ Rc A B ι p φ (cuspEq θ B F)

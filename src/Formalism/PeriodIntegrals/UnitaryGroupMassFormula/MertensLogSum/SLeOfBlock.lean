@@ -49,11 +49,6 @@ theorem u29 : Real.log (29 : ℝ) ≤ 98 / 20 * Real.log 2 := by
   push_cast at h
   linarith
 
-theorem u31 : Real.log (31 : ℝ) ≤ 100 / 20 * Real.log 2 := by
-  have h := log_le_of_pow_le 31 100 20 (by norm_num) (by norm_num) (by norm_num)
-  push_cast at h
-  linarith
-
 theorem u37 : Real.log (37 : ℝ) ≤ 105 / 20 * Real.log 2 := by
   have h := log_le_of_pow_le 37 105 20 (by norm_num) (by norm_num) (by norm_num)
   push_cast at h

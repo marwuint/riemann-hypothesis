@@ -5,7 +5,9 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundles
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DegreeInvariantLinearEquiv
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenFlagSlopeBoundStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenFlagSlopeBound
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CurveLieEigenDegreeStatement
 
 noncomputable section
@@ -63,7 +65,7 @@ theorem m2Curve_holds : CurveSemiAbelianConjecture := by
   letI := H.starRing
   obtain ⟨d, D, e, hlie, her⟩ := GlobalTheory.T.curve_lie_eigen_degree E H (fun _ => rfl) X0 t hpow K p C z Y hne hfib V M r hact
   let f : V →ₗ[K] (Fin d → K) := e
-  have key := GlobalTheory.T.eigen_flag_slope_bound K C p (𝓞 E) k (T ⊕ T) T χ d D Sum.inl Sum.inr j q w
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.Crv.LmuDeg.lmuNum_nonneg_of_conjData K C p (𝓞 E) k (T ⊕ T) T χ d D Sum.inl Sum.inr j q w
     (fun τ i => (W τ i).map f) (fun τ i => (L τ i).map f) hp hsplit hk
     (by
       have : (Sum.elim Sum.inl Sum.inr : T ⊕ T → T ⊕ T) = id := by ext (x | x) <;> rfl

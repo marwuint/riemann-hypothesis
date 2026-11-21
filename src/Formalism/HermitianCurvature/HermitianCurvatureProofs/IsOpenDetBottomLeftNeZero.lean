@@ -328,22 +328,4 @@ end Formalism.FourierDecayAlt.P.PBI
 
 namespace Formalism.FourierDecayAlt.P
 
-open Matrix Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.U
-
-theorem pb_chartSmooth (k j ρ : ℕ) :
-    ∃ φ : Mt k (j + ρ) → (RC k j ρ × RC k j ρ) × ((Fin j → Fin j → ℂ) × Mt k ρ),
-      IsOpen {y : Mt k (j + ρ) | DjU k j ρ (Matrix.of y) ≠ 0} ∧
-      ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ {y | DjU k j ρ (Matrix.of y) ≠ 0} ∧
-      ∀ g ∈ B.GV k (j + ρ), DjU k j ρ g ≠ 0 →
-        (Matrix.of (φ (Matrix.of.symm g)).2.1).det ≠ 0 ∧ Matrix.of (φ (Matrix.of.symm g)).2.2 ∈ B.GV k ρ ∧
-        g = (Rn k j ρ (φ (Matrix.of.symm g)).1.1)⁻¹ *
-          mMap k j ρ (Matrix.of (φ (Matrix.of.symm g)).2.1) (Matrix.of (φ (Matrix.of.symm g)).2.2) *
-          Rn k j ρ (φ (Matrix.of.symm g)).1.2 := by
-  have hset : {y : Mt k (j + ρ) | DjU k j ρ (Matrix.of y) ≠ 0} = {y | (PBI.bk31 (Matrix.of y)).det ≠ 0} := by
-    ext y; exact PBI.djU_ne_iff _
-  refine ⟨PBI.chart, by rw [hset]; exact PBI.isOpen_det_bottom_left_ne_zero, by rw [hset]; exact PBI.chart_contDiffOn, ?_⟩
-  intro g hg hD
-  have h := PBI.chart_spec g hg hD
-  simpa [PBI.chart] using h
-
 end Formalism.FourierDecayAlt.P

@@ -77,10 +77,4 @@ theorem sum_gx_eq_gval (l : Fin n → ℂ) (k : ℕ) : ∑ r, gx l k r = gval l 
   rw [gval, gelfandSeries_eq, PowerSeries.coeff_succ_X_mul, map_sum]
   simp [gxSeries]
 
-theorem gval_perm (l : Fin n → ℂ) (σ : Equiv.Perm (Fin n)) (k : ℕ) : gval (l ∘ σ) k = gval l k := by
-  have h : gelfandSeries (l ∘ σ) = gelfandSeries l := by
-    simp only [gelfandSeries, Function.comp_apply]
-    rw [Equiv.prod_comp σ (fun r => (1 - PowerSeries.X * (1 - PowerSeries.C (l r) * PowerSeries.X)⁻¹))]
-  rw [gval, gval, h]
-
 end ReciprocityTheory.ChartRestriction.DS

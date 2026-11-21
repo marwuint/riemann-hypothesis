@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChowFormSpecializationProportionalStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsScaleStable
+import Development.WeilBound.CoreStatements.CommonZeroEvaluation.EvalEqZeroOfCommonZero
 set_option maxSynthPendingDepth 1
 open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalTheory.CompanionTheory.Ar.Short.Crofton
 open scoped ENNReal
@@ -53,7 +54,7 @@ theorem PositivityTheory.Xgn.t_xgz_chow_mahler_fibrefactor : ∀ (n e δ : ℕ) 
   have hone : ∀ y ∈ fibrePts (coneSet h W) π,
       ∑ j, ((h.mat)⁻¹ *ᵥ π 0) j * h.pointOf y j = 1 := fun y hy => by
     rw [pair_eq, row_zero hy]
-  obtain ⟨c, hc0, hcu⟩ := GlobalTheory.T.chow_form_specialization_proportional n e δ W g (nrmGroups h e (coefRows h π))
+  obtain ⟨c, hc0, hcu⟩ := _root_.ModelDimension.chow_form_product_formula n e δ W g (nrmGroups h e (coefRows h π))
     (hfin.toFinset.image h.pointOf) u₀ hch hmh
     (by
       intro x hx

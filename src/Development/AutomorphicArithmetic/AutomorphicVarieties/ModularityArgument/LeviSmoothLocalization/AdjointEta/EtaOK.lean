@@ -25,12 +25,6 @@ def Ram3 (ν c : kˣ →* ℂˣ) : Prop := ¬ IsUnram (ν * c) ∧ ¬ IsUnram c 
 
 end Loc
 
-def tri (a x : ℂˣ) : Multiset ℂ := (({a * x, x, a⁻¹ * x} : Multiset ℂˣ)).map fun b : ℂˣ => (b : ℂ)
-
-def par (D : Ad3.Dat) (χ : HChar ℚ) (p : Ad3.Pl) : Multiset ℂ := tri (D.ν p (unif (p.adicCompletion ℚ))) (χ.val p)
-
-def arch (k : ℕ) (s : ℂ) : ℂ := Ad3.lR k true s * Ad3.lR k false s
-
 structure EtaOK (K : Type) [Field K] [NumberField K] (η : HeckeCharacter ℚ) : Prop where
   fin : IsOfFinOrder η
   sgn : ∀ w : InfinitePlace ℚ, ((η.infiniteComponent w (-1) : Circle) : ℂ) = -1

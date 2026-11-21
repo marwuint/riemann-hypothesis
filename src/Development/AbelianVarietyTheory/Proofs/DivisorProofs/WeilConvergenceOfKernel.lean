@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaBasicPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaBasicProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureFundDomLtTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralSiegelConeInvModulusLtTopWeil
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LintegralFundamentalDomainLeOfMeetsOrbits
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelSetWittFrameDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittRankLeHermitianSignatureStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelSetWittFrameDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittRankLeHermitianSignature
 
 noncomputable section
 
@@ -42,7 +42,7 @@ open scoped Classical in
 
 theorem weilConv (hKP : KP) : WeilConv := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP hdim
-  have hb := GlobalTheory.T.theta_basic_properties hKP.base F E σ B n d X W M χX χW om r s r' s' hP
+  have hb := _root_.GlobalTheory.ThKBasic.thetaBasic hKP.base F E σ B n d X W M χX χW om r s r' s' hP
   have hcm := hP.base.cm
   have hσ := GlobalTheory.SiegelSet.sigma_sigma hcm
   have hJ' : IsHermND σ ((1 : E) • X.J.map σ) := by
@@ -63,7 +63,7 @@ theorem weilConv (hKP : KP) : WeilConv := by
     ⟨fun g => (continuous_const.mul continuous_id).measurable, fun g => (continuous_id.mul continuous_const).measurable⟩
   have hH : (M.μ.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map M.μ e he he'
   obtain ⟨r₀, Xf, Yf, hW⟩ := GlobalTheory.SiegelSet.exists_isWittFrame hcm hJ'
-  obtain ⟨hr₀, hs₀⟩ := GlobalTheory.T.witt_rank_le_hermitian_signature F E σ B n X r s hP.base hP.herm r₀ Xf Yf hW
+  obtain ⟨hr₀, hs₀⟩ := _root_.GlobalTheory.WittFrameSig.wittFrame_le_signature F E σ B n X r s hP.base hP.herm r₀ Xf Yf hW
   obtain ⟨K, Ω, c, hK, hΩ, -, hc, -, hcl, hcov, ⟨C₀, hC₀, hconj⟩, hmeas, -, -⟩ :=
     hKP.siegelSetUnitary F E σ hcm n ((1 : E) • X.J.map σ) hJ' r₀ Xf Yf hW
   obtain ⟨-, C₁, hC₁⟩ := hmeas _ hH
@@ -145,7 +145,7 @@ theorem weilConv (hKP : KP) : WeilConv := by
     | mem x hx =>
       obtain ⟨f, g, hg, rfl⟩ := hx
       obtain ⟨N, C, T, hT⟩ :=
-        GlobalTheory.T.siegel_set_witt_frame_domain F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hconj g hg
+        _root_.GlobalTheory.SiegelTheta.theta_le_seminorm_height_torus F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hconj g hg
       exact ⟨N, C * (T.sup (schwartzSeminormFamily ℂ _ ℂ)) f, fun h p hp t htc a ha k hk => hT f h _ p hp t htc a ha k hk rfl⟩
     | zero => exact ⟨0, 0, fun h p _ t _ a _ k _ => by simp [theta, thetaSum]⟩
     | add x y hx hy ihx ihy =>
@@ -179,7 +179,7 @@ theorem weilConv (hKP : KP) : WeilConv := by
     rw [← zero_mul ((ht h : ℝ) ^ N), ← max_mul_of_nonneg _ _ hH]
     ring_nf
   · obtain ⟨N, C, T, hT⟩ :=
-      GlobalTheory.T.siegel_set_witt_frame_domain F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hconj φ hφ
+      _root_.GlobalTheory.SiegelTheta.theta_le_seminorm_height_torus F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hconj φ hφ
     have memA : ∀ f : SInf F (Fin n × Fin d), pureA F f φ ∈ schA F (Fin n × Fin d) := fun f =>
       Submodule.subset_span ⟨f, φ, hφ, rfl⟩
     have hint := fun f : SInf F (Fin n × Fin d) => key (fun g => theta om (pureA F f φ) g h)

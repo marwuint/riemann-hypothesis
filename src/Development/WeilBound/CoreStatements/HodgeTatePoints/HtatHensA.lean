@@ -364,9 +364,6 @@ theorem maximalIdeal_eq : maximalIdeal (etaleColimit R K) = RingHom.ker toK := b
   ext y
   rw [mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_toK_ne_zero, not_not, RingHom.mem_ker]
 
-theorem residue_eq_zero_iff_toK_eq_zero (y : etaleColimit R K) : residue _ y = 0 ↔ toK y = 0 := by
-  rw [IsLocalRing.residue_eq_zero_iff, maximalIdeal_eq, RingHom.mem_ker]
-
 theorem exists_monic_lift (F : (etaleColimit R K)[X]) (hF : F.Monic) :
     ∃ (X : PointedEtale R K) (q : X[X]), q.Monic ∧ q.map (of X) = F := by
   classical

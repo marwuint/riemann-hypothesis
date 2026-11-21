@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorTorusActionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorTorusAction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorFockVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorNeZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaVectorNeZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PureTensorOInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPairCharactersAtLevel
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemUJsetOfKset
@@ -165,7 +165,7 @@ theorem ioExt : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A
   have hP := (GlobalTheory.AdTh.RecPair.isPair_record D G Pl0 T0 A Ks R F hR i A.μ0 (hV i)).1
   have hinj := GlobalTheory.FockVecInj.pureTensorO_injective D R.ψ R.θ (Vc D i) (Wc D i) hP.weil.std hP.inf (fun _ => 1) (R.BV i)
     (cart (R.MW i (sg0 D A))) (onb (R.MW i (sg0 D A))) (fun _ => (Vc D i).rank) (fun τ => ((Wc D i).sig (tauE D τ)).1)
-    hcV hcW (hR.models.BV i) hbW hP.sigV hP.sigW _ hth hvac (GlobalTheory.T.theta_vector_ne_zero D G Pl0 T0 A Ks R F hR i (hV i))
+    hcV hcW (hR.models.BV i) hbW hP.sigV hP.sigW _ hth hvac (_root_.GlobalTheory.AdTh.VecNe.thetaVector_ne_zero D G Pl0 T0 A Ks R F hR i (hV i))
   let pt := pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A)))
     (R.vP i A.μ0)
   let f : LowT (R.MW i (sg0 D A)) →ₗ[ℂ] (WO (Vc D i) (Wc D i) → ℂ) := pt ∘ₗ (R.ioP i).flip w
@@ -177,7 +177,7 @@ theorem ioExt : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A
   have hm := GlobalTheory.LowKProj.lowKSub_stable _ _ _ _ ha _ (v τ).2
   let u : lowT (R.MW i (sg0 D A)) τ := ⟨⟨_, hs τ hm⟩, hm⟩
   have h1 := hK τ _ ha v u rfl w
-  rw [hio, GlobalTheory.T.theta_vector_torus_action D G Pl0 T0 A Ks R F hR i (hV i) τ a A.μ0, ← hio, ← hf, ← hf] at h1
+  rw [hio, _root_.GlobalTheory.AdTh.MinorWeight.delta_extremal_weight D G Pl0 T0 A Ks R F hR i (hV i) τ a A.μ0, ← hio, ← hf, ← hf] at h1
   have h2 := inj_factor (R.MW i (sg0 D A)) hs hl τ f
     (fun k => R.ωP i A.μ0 (1, atTau R.θ (Wc D i) τ (((R.MW i (sg0 D A)).fr τ)⁻¹ * k * (R.MW i (sg0 D A)).fr τ)))
     (fun k hk v u hu => hK τ k hk v u hu w) v hv0

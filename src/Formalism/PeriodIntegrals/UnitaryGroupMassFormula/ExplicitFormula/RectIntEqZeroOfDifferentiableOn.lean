@@ -249,14 +249,6 @@ lemma le_of_mem_rectOpen {z w p : ℂ} (hp : p ∈ rectOpen z w) : z.re ≤ w.re
   obtain ⟨h1, h2, h3, h4⟩ := hp
   exact ⟨by linarith, by linarith⟩
 
-theorem rectInt_eq_zero_of_differentiableOn {f : ℂ → ℂ} {z w : ℂ} (hre : z.re ≤ w.re)
-    (him : z.im ≤ w.im) (hf : DifferentiableOn ℂ f (rectClosed z w)) : rectInt f z w = 0 := by
-  have e : rectClosed z w = uIcc z.re w.re ×ℂ uIcc z.im w.im := by
-    rw [rectClosed, uIcc_of_le hre, uIcc_of_le him]
-  rw [e] at hf
-  unfold rectInt
-  exact Complex.integral_boundary_rect_eq_zero_of_differentiableOn f z w hf
-
 lemma continuousOn_div_sub {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
     (hh : ContinuousOn h (rectBdry z w)) : ContinuousOn (fun s => h s / (s - p)) (rectBdry z w) :=
   hh.div (continuousOn_id.sub continuousOn_const) fun s hs =>
@@ -267,10 +259,6 @@ lemma continuousOn_div_sub_sq {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOp
     ContinuousOn (fun s => h s / (s - p) ^ 2) (rectBdry z w) :=
   hh.div ((continuousOn_id.sub continuousOn_const).pow 2) fun s hs =>
     pow_ne_zero 2 (sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp))
-
-lemma continuousOn_bdry {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
-    (hh : DifferentiableOn ℂ h (rectClosed z w)) : ContinuousOn h (rectBdry z w) :=
-  hh.continuousOn.mono (rectBdry_subset (le_of_mem_rectOpen hp).1 (le_of_mem_rectOpen hp).2)
 
 theorem rectInt_div_sub {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
     (hh : DifferentiableOn ℂ h (rectClosed z w)) :

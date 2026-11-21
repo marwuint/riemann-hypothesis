@@ -20,12 +20,6 @@ def GenTwistVanish.Statement : Prop :=
     ∀ e : K → ℤ, ∃ c₀ : ℕ, ∀ m n : ℕ, c₀ ≤ n →
       Subsingleton (KH.cechHc ι (KH.quotPart S V) (e + (m : ℤ) • α + fun _ => (n : ℤ)) 1)
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

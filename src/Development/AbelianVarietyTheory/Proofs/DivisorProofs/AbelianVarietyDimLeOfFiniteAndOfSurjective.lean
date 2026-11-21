@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimEqDimStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimEqDim
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFibreAndEqOfSpecializesOfIsFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericFibreDimensionLe
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -50,8 +50,8 @@ end
 theorem dim_le : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B),
     (IsFinite f.hom.left → A.dim ≤ B.dim) ∧ (Surjective f.hom.left → B.dim ≤ A.dim) := by
   intro K _ A B f
-  have hA := GlobalTheory.T.topologicalKrullDim_abVar_eq_dim K A
-  have hB := GlobalTheory.T.topologicalKrullDim_abVar_eq_dim K B
+  have hA := _root_.GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim K A
+  have hB := _root_.GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim K B
   refine ⟨fun hf => ?_, fun hf => ?_⟩
   · have h := topologicalKrullDim_le_of_isFinite f.hom.left
     rw [hA, hB] at h

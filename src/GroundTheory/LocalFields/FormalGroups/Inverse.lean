@@ -170,6 +170,4 @@ noncomputable instance instAddCommGroupPoint [F.IsComm] : AddCommGroup (F.Point 
   { instAddGroupPoint F with
     add_comm := fun x y => Subtype.ext (F.comm' x.prop y.prop) }
 
-private noncomputable def pointX : F.Point Unit := ⟨PowerSeries.X, PowerSeries.HasSubst.X'⟩
-
 end GroundTheory.LocalField.FormalGroup

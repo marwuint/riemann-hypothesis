@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HInv
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingKrullDimLtTopOfEssFiniteType
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfRingEquivStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfSubsingletonStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfRingEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHomotopyInvariantTwistsOfClosedCoverStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 open scoped TensorProduct
@@ -15,7 +15,7 @@ theorem homotopyInv_quot_iInf_ker_retractions : ∀ (q : ℕ) [NeZero q] (D T E 
   induction X using Finset.induction_on with
   | empty =>
     intro _
-    apply GlobalTheory.T.etaleHomotopyInvariantTwists_of_subsingleton
+    apply _root_.GlobalTheory.EtC.hInv_of_subsingleton
     rw [Ideal.Quotient.subsingleton_iff]
     simp
   | @insert χ Y hχY ih =>
@@ -60,8 +60,8 @@ theorem homotopyInv_quot_iInf_ker_retractions : ∀ (q : ℕ) [NeZero q] (D T E 
       · have hsurj : Function.Surjective χ := fun t => ⟨ι t, hχι t⟩
         have e1 := DoubleQuot.quotQuotEquivQuotOfLE hJP
         have e2 := (Ideal.quotientKerAlgEquivOfSurjective hsurj).toRingEquiv
-        exact GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q T _ (e1.trans e2).symm hT
-      · exact GlobalTheory.T.etaleHomotopyInvariantTwists_of_ringEquiv q _ _ (DoubleQuot.quotQuotEquivQuotOfLE hJI).symm ih'
+        exact _root_.GlobalTheory.EtC.hInv_of_ringEquiv q T _ (e1.trans e2).symm hT
+      · exact _root_.GlobalTheory.EtC.hInv_of_ringEquiv q _ _ (DoubleQuot.quotQuotEquivQuotOfLE hJI).symm ih'
       · apply hlow _ s hs0
         change Ideal.Quotient.mk _ (Ideal.Quotient.mk J (algebraMap D E s)) = 0
         rw [Ideal.Quotient.eq_zero_iff_mem, ← Ideal.map_sup]

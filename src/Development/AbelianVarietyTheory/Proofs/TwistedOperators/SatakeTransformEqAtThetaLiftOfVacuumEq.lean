@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPairingSingleNe
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UpperTriangularUnitaryLowerHalfBlockTriangularStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UpperTriangularUnitaryLowerHalfBlockTriangular
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelMultiplicativeEqProdDiagonalValuationsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumDiagOrderEqOfIntegralTranslateIndicatorRelatiStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelInvariantFormUpperTriangularPairActionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMixedModelSelfDualLatticeInvariantLinearFoStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumDiagOrderEqOfIntegralTranslateIndicatorRelati
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelInvariantFormUpperTriangularPairAction
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMixedModelSelfDualLatticeInvariantLinearFo
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelFormValueTorusGeneratorFirstGroupStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedFormTorusTranslateVacuumValueStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeVecSatakeSumUnitaryBorelRepresentativesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedFormTorusTranslateVacuumValue
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeVecSatakeSumUnitaryBorelRepresentatives
 open Matrix Formalism.UG GlobalTheory.Hk3 GlobalTheory.FinWeil GlobalTheory.SphTheta ValuativeRel Classical
 open GlobalTheory.LFun (HasSatU IsSatVecU heckeVec)
 open GlobalTheory.LGrp (bcParam extProd)
@@ -81,11 +81,11 @@ theorem prodId2 : ∀ (n n' : ℕ) (hn : n ≤ n') (qu : ℂˣ) (α : Fin (n / 2
 theorem satU_eq_satU_liftPar_of_heckeVec_eq : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → CayleyRule q n' ρ (ω.comp (MonoidHom.inl _ _)) s → CayleyRule q n ρ (ω.comp (MonoidHom.inr _ _)) s → n ≤ n' → ∀ h ∈ Hecke ℂ (KU σ n), ∀ h' ∈ Hecke ℂ (KU σ n'), heckeVec (ω.comp (MonoidHom.inl _ _)) (KU σ n) h s = heckeVec (ω.comp (MonoidHom.inr _ _)) (KU σ n') h' s → ∀ qu : ℂˣ, (qu : ℂ) = q → ∀ α : Fin (n / 2) → ℂˣ, SatU ϖ q h (fun i => (α i : ℂ)) = SatU ϖ q h' (fun i => (liftPar qu n n' α i : ℂ)) := by
   intro L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS hC hC' hnn h hh h' hh' hE qu hqu α
   have hU := hS.1.unr
-  obtain ⟨ℓ, hℓs, hℓa, hℓ0, hℓu, hℓz⟩ := GlobalTheory.T.exists_mixedModelSelfDualLattice_invariant_linearForm L ϖ σ q δ ψ n n' M ρ ω s hS
+  obtain ⟨ℓ, hℓs, hℓa, hℓ0, hℓu, hℓz⟩ := _root_.GlobalTheory.SphTheta.exists_mixLat_form L ϖ σ q δ ψ n n' M ρ ω s hS
   have hvac : LocVac ρ s := hS.2.2.1
   have hb1 : ∀ {N : ℕ}, IsBorelU (1 : GU σ N) := fun i j hij => by
     simp [Matrix.one_apply_ne (ne_of_gt hij)]
-  have hmix := GlobalTheory.T.mixedModelInvariantForm_upperTriangular_pair_action L ϖ σ q δ ψ n n' M ρ ω s hS ℓ hℓa hℓu
+  have hmix := _root_.GlobalTheory.SphTheta.mixLat_form_borel L ϖ σ q δ ψ n n' M ρ ω s hS ℓ hℓa hℓu
   have hμ : ∀ b : GU σ n, IsBorelU b → ℓ (ω (b, 1) s) =
       ∏ k, ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n')) ^ ordL (b.1.1 (lo n k) (lo n k)) := by
     refine GlobalTheory.T.borelMultiplicative_eq_prod_diagonal_valuations L ϖ σ q hU n (fun g => ℓ (ω (g, 1) s)) ?_ ?_ _ ?_
@@ -109,14 +109,14 @@ theorem satU_eq_satU_liftPar_of_heckeVec_eq : ∀ (L : Type) [Field L] [Valued L
     · intro k hk _
       exact (congrArg ℓ (hS.1.fix 1 k (by simpa using one_mem _) (mem_KU_iff.1 hk) s hvac)).trans hℓs
     · intro k t ht
-      rw [GlobalTheory.T.mixedForm_torusTranslate_vacuum_value L ϖ σ q δ ψ n n' M ρ ω s hS hC' ℓ hℓs hℓa hℓ0 k t ht, hqu]
-  obtain ⟨ι, _, b, hb, hvec, hsat⟩ := GlobalTheory.T.heckeVec_satake_sum_unitaryBorel_representatives L ϖ σ q hU n h hh
-  obtain ⟨κ, _, b', hb', hvec', hsat'⟩ := GlobalTheory.T.heckeVec_satake_sum_unitaryBorel_representatives L ϖ σ q hU n' h' hh'
+      rw [_root_.GlobalTheory.SphTheta.mixed_torus_value L ϖ σ q δ ψ n n' M ρ ω s hS hC' ℓ hℓs hℓa hℓ0 k t ht, hqu]
+  obtain ⟨ι, _, b, hb, hvec, hsat⟩ := _root_.GlobalTheory.SatBorel.heckeVec_satU_borel L ϖ σ q hU n h hh
+  obtain ⟨κ, _, b', hb', hvec', hsat'⟩ := _root_.GlobalTheory.SatBorel.heckeVec_satU_borel L ϖ σ q hU n' h' hh'
   have E := hE
   rw [hvec M (ω.comp (MonoidHom.inl _ _)) s (fun k hk => hS.1.fix k 1 (mem_KU_iff.1 hk) (by simpa using one_mem _) s hvac),
     hvec' M (ω.comp (MonoidHom.inr _ _)) s (fun k hk => hS.1.fix 1 k (by simpa using one_mem _) (mem_KU_iff.1 hk) s hvac)] at E
   simp only [MonoidHom.comp_apply, MonoidHom.inl_apply, MonoidHom.inr_apply] at E
-  obtain ⟨hbl1, hbl2⟩ := GlobalTheory.T.upperTriangularUnitary_lowerHalfBlock_triangular L ϖ σ q hU n n' hnn
+  obtain ⟨hbl1, hbl2⟩ := _root_.GlobalTheory.SphTheta.lowBlocks_borel L ϖ σ q hU n n' hnn
   choose U hU1 hU2 hU3 using fun i => hbl1 (b i) (hb i)
   choose V hVt hV2 hV3 using fun j => hbl2 (b' j) (hb' j)
   obtain ⟨Z, hZ⟩ : ∃ Z : Matrix (Fin (n / 2)) (Fin (n / 2)) L → Matrix (Fin (n' / 2)) (Fin (n / 2)) L,
@@ -157,7 +157,7 @@ theorem satU_eq_satU_liftPar_of_heckeVec_eq : ∀ (L : Type) [Field L] [Valued L
     have := congrArg (fun v => ℓ (ρ (embLow n' n (Z t.1)) v)) E
     simp only [map_sum, map_smul, smul_eq_mul, l1, l2] at this
     simpa only [mul_assoc] using this
-  have G := GlobalTheory.T.sum_diag_order_eq_of_integralTranslateIndicator_relation L ϖ σ q hU (n / 2) ι κ _ _ U V hU2 hVt key
+  have G := _root_.GlobalTheory.SphTheta.sum_ordL_diag_eq_of_indicator L ϖ σ q hU (n / 2) ι κ _ _ U V hU2 hVt key
     (fun d => ∏ r : Fin (n / 2), ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') *
       (qu : ℂ) ^ ((n : ℤ) - 1 - 2 * (((n / 2 : ℕ) : ℤ) - 1 - (r : ℤ))) / (α r.rev : ℂ)) ^ d r)
   have hY : ((-1) ^ n' * (qu : ℂ) ^ (2 * ((n' / 2 : ℕ) : ℤ) - n') : ℂ) ≠ 0 := by

@@ -1,4 +1,6 @@
-import Formalism.HarderNarasimhan.StatementFrame
+import Mathlib
+import Formalism.HarderNarasimhan.StatementPl
+import Formalism.CorankShare.StatementFR
 import Formalism.LatticeSlopes.ExistsSaturatedSlopeEqMuMax
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.DiscreteSpanOfLinIndep
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.PlaceSplit
@@ -103,12 +105,6 @@ theorem frameB_rkK_top (b : Basis ι K V) (L : Submodule (𝓞 K) V)
     (hL : Submodule.span K (L : Set V) = ⊤) : rkK L = Fintype.card ι := by
   unfold rkK
   rw [hL, finrank_top, Module.finrank_eq_card_basis b]
-
-theorem frameB_ne_bot [Nontrivial V] (L : Submodule (𝓞 K) V)
-    (hL : Submodule.span K (L : Set V) = ⊤) : L ≠ ⊥ := by
-  intro h0
-  rw [h0, Submodule.bot_coe, Submodule.span_zero_singleton] at hL
-  exact bot_ne_top hL
 
 end Herm
 

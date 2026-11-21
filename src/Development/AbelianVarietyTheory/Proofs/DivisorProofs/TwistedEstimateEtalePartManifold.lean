@@ -1,20 +1,30 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonvanishingSetEtaleSteinStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableNsqExtendAndPsiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHolomorphicIffChartHolomorphicStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedExtensionEtaleSteinLogGrowthWeightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonvanishingSetEtaleStein
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableNsqExtendAndPsi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleHolomorphicIffChartHolomorphic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedExtensionEtaleSteinLogGrowthWeight
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendByZeroOnSubsetApplyCoe
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameWeightSingularWeightSmoothLeviNonnegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientHolomorphicMeasurableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionHolomorphicMulFrameExtendByZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralWeightedAtlasFrameEtaleTransferStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedEstimateRhsLeManifoldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedL2EstimateTwistedSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedEstimateLhsTransferStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameWeightSingularWeightSmoothLeviNonneg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothEtaleOfSmoothInCharts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLeviNonnegOfChartPlurisubharmonic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JacobianDetIsFrameOnCanonicalWeight
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameWeightLevi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffAtPsiOfNotMemZeroSet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientHolomorphicMeasurable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionHolomorphicMulFrameExtendByZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HoloEtaleIffCharts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralWeightedAtlasFrameEtaleTransfer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralAtlasMeasureEtalePullbackLebesgue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedEstimateRhsLeManifold
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedL2EstimateTwistedSections
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedEstimateLhsTransfer
 
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
@@ -23,20 +33,20 @@ theorem GlobalTheory.OTY.TwEst.twisted_estimate_nz : ∀ (n : ℕ) (Y : Type) [T
   intro n Y _ _ _ _ _ _ ι La _ A E L s hs hsq δ hδ hlev Λ τ z β hdat Ω h T θ hhd hT hθ hΩcov hfin
   obtain ⟨hτ, hpos, hz, hβ, _hdense, C, hC0, hC⟩ := hdat
   obtain ⟨hΩ, hh, hh0⟩ := hhd
-  obtain ⟨X, hXz, hXe⟩ := GlobalTheory.T.nonvanishingSet_etale_stein n Y ι La A Λ τ z hτ hpos hz
+  obtain ⟨X, hXz, hXe⟩ := _root_.GlobalTheory.nzEtaleStein n Y ι La A Λ τ z hτ hpos hz
   have hU : IsOpen (nz A τ) := hz.isOpen
   have hpt := GlobalTheory.OTY.TwEst.nz_facts A L Λ s τ C hC0 hsq hC
-  obtain ⟨hsmφ, hsmψ, hlevi⟩ := GlobalTheory.T.frameWeight_singularWeight_smooth_leviNonneg n Y ι La A E L s hs δ hlev (nz A τ) z β hz hβ
+  obtain ⟨hsmφ, hsmψ, hlevi⟩ := _root_.GlobalTheory.OTY.TwEst.wt_psi_smooth_leviNonneg n Y ι La A E L s hs δ hlev (nz A τ) z β hz hβ
     (fun y hy => (hpt y hy).1)
-  obtain ⟨hqd, hqm, hq⟩ := GlobalTheory.T.sectionQuotient_holomorphic_measurable n Y ι La A (A.kap + E) (nz A τ) Ω β h hU hΩ hβ hh hh0
+  obtain ⟨hqd, hqm, hq⟩ := _root_.GlobalTheory.OTY.TwEst.quot_holo_measurable n Y ι La A (A.kap + E) (nz A τ) Ω β h hU hΩ hβ hh hh0
   have hψm : Measurable (psi A L s) :=
-    (GlobalTheory.T.measurable_nsq_and_psi_of_isSecOn n Y ι La A (A.kap + E) Ω h hΩ hh hh0).2 L s hs
-  have htr := GlobalTheory.T.lintegral_weightedAtlas_frame_etale_transfer n Y ι La A E (nz A τ) z β hz hβ
+    (_root_.GlobalTheory.OTY.measurable_nsq_extend_and_psi n Y ι La A (A.kap + E) Ω h hΩ hh hh0).2 L s hs
+  have htr := _root_.GlobalTheory.OTY.TwEst.lintegral_frame_transfer n Y ι La A E (nz A τ) z β hz hβ
   have hGholo : ∀ e : OpenPartialHomeomorph (nz A τ) (V n), IsChart n X.z e →
       DifferentiableOn ℂ ((fun y : nz A τ => GlobalTheory.OTY.TwEst.quot A h β y) ∘ e.symm)
         (e.target ∩ e.symm ⁻¹' (Subtype.val ⁻¹' Ω)) := by
     rw [hXz]
-    exact (GlobalTheory.T.etale_holomorphic_iff_chart_holomorphic n Y ι La A (nz A τ) z hz Ω (GlobalTheory.OTY.TwEst.quot A h β) hΩ).2 hqd
+    exact (_root_.GlobalTheory.OTY.holo_etale_iff_holo_chart n Y ι La A (nz A τ) z hz Ω (GlobalTheory.OTY.TwEst.quot A h β) hΩ).2 hqd
   have hGm : Measurable (fun y : nz A τ => GlobalTheory.OTY.TwEst.quot A h β y) := by
     have h1 := hqm.comp (measurable_subtype_coe : Measurable (Subtype.val : nz A τ → Y))
     convert h1 using 1
@@ -44,8 +54,8 @@ theorem GlobalTheory.OTY.TwEst.twisted_estimate_nz : ∀ (n : ℕ) (Y : Type) [T
     simp only [Function.comp, GlobalTheory.OTY.TwEst.extendByZeroOnSubset_apply_coe]
   have hθc : Continuous θ := hθ.1.continuous
   have hθb : ∀ x, 0 ≤ θ x ∧ θ x ≤ 1 := hθ.2.2.2.1
-  have hwint := GlobalTheory.T.weighted_l2_estimate_twisted_sections n Y ι La A E L s (nz A τ) z β h hU htr hq hqm hψm δ θ hθc hθb
-  obtain ⟨F0, hF0, hest⟩ := GlobalTheory.T.twisted_extension_etaleStein_logGrowthWeight n (nz A τ) X
+  have hwint := _root_.GlobalTheory.OTY.TwEst.cutoff_quot_wint_le n Y ι La A E L s (nz A τ) z β h hU htr hq hqm hψm δ θ hθc hθb
+  obtain ⟨F0, hF0, hest⟩ := _root_.GlobalTheory.LogGrowth.twisted_extension_logGrowth n (nz A τ) X
     (fun y => GlobalTheory.OTY.TwEst.wt A E β z y) (fun y => psi A L s y)
     (fun y => GlobalTheory.OTY.TwEst.quot A h β y) (Subtype.val ⁻¹' Ω) δ T θ
     (by rw [hXz]; exact hsmφ) (by rw [hXz]; exact hsmψ) (fun x => (hpt x x.2).2.1) hδ hT hθ
@@ -54,8 +64,8 @@ theorem GlobalTheory.OTY.TwEst.twisted_estimate_nz : ∀ (n : ℕ) (Y : Type) [T
     ⟨n, n * Real.log C, fun x => by rw [hXe]; exact (hpt x x.2).2.2⟩
     (by rw [hXz]; exact lt_of_le_of_lt hwint hfin)
   rw [hXz] at hF0 hest
-  obtain ⟨hFsec, hFm⟩ := GlobalTheory.T.isSection_holomorphic_mul_frame_extendByZero n Y ι La A (A.kap + E) (nz A τ) z β F0 hz hβ hF0
+  obtain ⟨hFsec, hFm⟩ := _root_.GlobalTheory.OTY.TwEst.isSecOn_frame_mul_ext0_and_measurable n Y ι La A (A.kap + E) (nz A τ) z β F0 hz hβ hF0
   refine ⟨fun i y => β i y * GlobalTheory.OTY.TwEst.ext0 (nz A τ) F0 y, hFsec, ?_⟩
-  exact (GlobalTheory.T.twistedEstimate_lhs_transfer n Y ι La A E L s (nz A τ) z β h hU htr hq hqm hψm δ T θ F0 hθc hFm).trans_le
+  exact (_root_.GlobalTheory.OTY.TwEst.lhs_transfer n Y ι La A E L s (nz A τ) z β h hU htr hq hqm hψm δ T θ F0 hθc hFm).trans_le
     (hest.trans (mul_le_mul_of_nonneg_left
-      (GlobalTheory.T.twistedEstimate_rhs_le_manifold n Y ι La A E L s (nz A τ) z β h hU htr hq hqm hψm δ T) (by norm_num)))
+      (_root_.GlobalTheory.OTY.TwEst.rhs_le_manifold n Y ι La A E L s (nz A τ) z β h hU htr hq hqm hψm δ T) (by norm_num)))

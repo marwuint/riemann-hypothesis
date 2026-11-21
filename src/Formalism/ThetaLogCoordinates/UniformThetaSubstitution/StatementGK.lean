@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.StatementJ
-import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.StatementW
+import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.ThmSUniform
 
 noncomputable section
 
@@ -139,17 +139,5 @@ def KernelBoundsGeneric : Prop :=
           (p : ℝ) ^ (-(gainG (p : ℝ) TT (oddT TT) (fun s => (alG TT colN hts s : ℝ))
             (fun s => (capG TT colN hts s : ℝ))
             (deLoss p r0 r1 TT (alG TT colN hts) (lsG TT colN hts))))
-
-def ChainModel : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime], 2 < p →
-    ∃ (K0 : Type) (_ : NormedField K0) (_ : IsUltrametricDist K0) (_ : CharZero K0)
-      (_ : CompleteSpace K0) (σ : K0 →+* K0) (F be : MvPowerSeries (Fin 2) K0)
-      (K : Type) (_ : NormedField K) (_ : IsUltrametricDist K) (_ : CharZero K) (j : K0 →+* K)
-      (ϖ : K) (μ : PowerSeries K),
-      UnrOK K0 p σ ∧ (∃ ζ : K0, IsPrimitiveRoot ζ (p ^ 2 - 1)) ∧ IsLawOfLog p F ∧ BetaHyp p F be ∧
-        ¬ Simeq be 0 ∧ (∀ a, ‖j a‖ = ‖a‖) ∧ ϖ ^ (p ^ 2 - 1) = (p : K) ∧
-        PowerSeries.constantCoeff μ = 0 ∧
-        (PowerSeries.subst μ (lamF p ϖ) : PowerSeries K) = PowerSeries.X ∧
-        OmOK p 1 (fun _ _ => (1 : K)) (fun _ _ => (1 : K))
 
 end Formalism.InvariantFactorPaths.G7

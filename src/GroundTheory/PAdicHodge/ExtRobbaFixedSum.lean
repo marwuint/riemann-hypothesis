@@ -44,15 +44,6 @@ instance instNonarchimedeanAddGroupRobbaExt : NonarchimedeanAddGroup (T.RobbaExt
 
 variable {T}
 
-theorem HasSum.res {ι : Type*} {f : ι → T.RobbaExt ρ0} {s : T.RobbaExt ρ0} (hs : HasSum f s)
-    {ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) :
-    HasSum (fun i => T.res h (f i)) (T.res h s) :=
-  hs.map (T.res h) (T.continuous_res h)
-
-theorem HasSum.extFrob (F : T.TeichFrob) {ι : Type*} {f : ι → T.RobbaExt ρ0} {s : T.RobbaExt ρ0}
-    (hs : HasSum f s) : HasSum (fun i => F.extFrob ρ0 (f i)) (F.extFrob ρ0 s) :=
-  hs.map (F.extFrob ρ0) (F.continuous_extFrob ρ0)
-
 end TeichLift
 
 end GroundTheory.PAdicHodge

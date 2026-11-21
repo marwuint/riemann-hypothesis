@@ -320,20 +320,6 @@ theorem nu_qinv (hρ : 0 < ρ) (ε : ℝ) (hε0 : 0 < ε) (hε1 : ε < 1) : ∃ 
     · rw [mat_expG, map_mul, mat_expG, mat_expG]
       exact e1
 
-theorem exists_density (lam : Measure V) [lam.IsAddHaarMeasure] :
-    ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ ∀ S : ℝ → Set V, (∀ r, MeasurableSet (S r)) →
-      (∀ δ > 0, ∀ᶠ r in 𝓝[>] (0 : ℝ), S r ⊆ ball 0 δ) →
-      (∀ᶠ r in 𝓝[>] (0 : ℝ), lam (S r) ≠ 0 ∧ lam (S r) ≠ ⊤) →
-      Tendsto (fun r => μ (C.img (S r)) / lam (S r)) (𝓝[>] 0) (𝓝 c) := by
-  obtain ⟨ρ, hρ, hR⟩ := C.exists_rho
-  have := C.nu_finite hR μ
-  obtain ⟨c, hc0, hct, hup, hdown⟩ := HExp.exists_density lam (C.nu ρ μ)
-    (fun ε h0 h1 => C.nu_qinv hR μ hρ ε h0 h1) (fun r hr => C.nu_pos hR μ hρ r hr)
-  refine ⟨c, hc0, hct, fun S hSm hS hS0 => ?_⟩
-  refine (tendsto_ratio lam (C.nu ρ μ) hup hdown S hS hS0).congr' ?_
-  filter_upwards [hS ρ hρ] with r hr
-  rw [C.nu_apply hR μ (hSm r), Set.inter_eq_self_of_subset_left hr, img_eq]
-
 theorem exists_density_unif (lam : Measure V) [lam.IsAddHaarMeasure] :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧
       (∀ D : ℝ≥0, c < D → ∃ δ > 0, ∀ s : Set V, MeasurableSet s → s ⊆ ball (0 : V) δ →
@@ -358,20 +344,6 @@ theorem exists_density_unif (lam : Measure V) [lam.IsAddHaarMeasure] :
     exact h s (hs.trans (ball_subset_ball (min_le_left _ _)))
 
 end Chart
-
-theorem Chart.exists_density' {V : Submodule ℝ 𝔸} {G : Type*} [Group G] [TopologicalSpace G]
-    (C : Chart V G) (_hfd : FiniteDimensional ℝ V) (mV : MeasurableSpace V) (_hbV : BorelSpace V)
-    (mG : MeasurableSpace G) (_hbG : BorelSpace G) (_hG : IsTopologicalGroup G)
-    (μ : Measure G) (_hμ : μ.IsHaarMeasure) (lam : Measure V) (_hlam : lam.IsAddHaarMeasure) :
-    ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ ∀ S : ℝ → Set V, (∀ r, MeasurableSet (S r)) →
-      (∀ δ > 0, ∀ᶠ r in 𝓝[>] (0 : ℝ), ∀ X ∈ S r, ‖(X : 𝔸)‖ < δ) →
-      (∀ᶠ r in 𝓝[>] (0 : ℝ), lam (S r) ≠ 0 ∧ lam (S r) ≠ ⊤) →
-      Tendsto (fun r => μ {g | ∃ X ∈ S r, C.mat g = exp ((X : V) : 𝔸)} / lam (S r)) (𝓝[>] 0) (𝓝 c) := by
-  obtain ⟨c, h0, ht, h⟩ := C.exists_density μ lam
-  refine ⟨c, h0, ht, fun S hm hS hS0 => h S hm (fun δ hδ => ?_) hS0⟩
-  filter_upwards [hS δ hδ] with r hr X hX
-  rw [mem_ball_zero_iff]
-  exact hr X hX
 
 theorem Chart.exists_density_unif' {V : Submodule ℝ 𝔸} {G : Type*} [Group G] [TopologicalSpace G]
     (C : Chart V G) (_hfd : FiniteDimensional ℝ V) (mV : MeasurableSpace V) (_hbV : BorelSpace V)

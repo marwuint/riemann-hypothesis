@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjointLiftRangeLeGoodBlockEigenspacesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLevelGoodFormsDimsAgreePartwiseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelRowsEqPrincipalRowsOfTypeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLevelWFormsEqPrincipalFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelRowsOrthogonalSumOfPartsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLevelWOrthogonalSumOfPartsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLevelGoodFormsDimsAgreePartwise
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelRowsEqPrincipalRowsOfType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLevelWFormsEqPrincipalForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelRowsOrthogonalSumOfParts
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseLevelWOrthogonalSumOfParts
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
@@ -37,16 +37,16 @@ theorem primRows3_of_parts : GlobalTheory.Published.CuspRapidDecay → HoweUnram
       liftOnto := hOnto
       pos := hPos
       posScal := hPP
-      levE := GlobalTheory.T.levelRows_eq_principalRows_of_type hCusp hHowe R F hLift hOk hC hEx hInert hGE hPos hPP' hB hRT
+      levE := _root_.GlobalTheory.LevelRowsPrincipal.pLevE_of hCusp hHowe R F hLift hOk hC hEx hInert hGE hPos hPP' hB hRT
       h2P := hH2
       thmB := hB
-      sumE := GlobalTheory.T.levelRows_orthogonalSum_of_parts hCusp hHowe R F hLift hOk hC hEx hInert hR hGE hPos hPP' hB
+      sumE := _root_.GlobalTheory.RowsSum3.partsE hCusp hHowe R F hLift hOk hC hEx hInert hR hGE hPos hPP' hB
       unif := hU
       mLat := hM
-      levW := GlobalTheory.T.baseLevelW_forms_eq_principalForms hCusp hHowe R F hLift hOk hC hEx hInert hGS hCD hME hGE hPos hPP' hA hLT hU
+      levW := _root_.GlobalTheory.LevW.levW_of_parts hCusp hHowe R F hLift hOk hC hEx hInert hGS hCD hME hGE hPos hPP' hA hLT hU
       thmA := hA
-      sumW := GlobalTheory.T.baseLevelW_orthogonalSum_of_parts hCusp hHowe R F hLift hOk hC hEx hInert hGS hCD hME hR hGE hPos hPP' hB hU
+      sumW := _root_.GlobalTheory.SumW.partsW_base hCusp hHowe R F hLift hOk hC hEx hInert hGS hCD hME hR hGE hPos hPP' hB hU
       scalConj := hGal
-      dimParts := GlobalTheory.T.baseLevel_goodForms_dims_agree_partwise hCusp R F hOk hC hEx hGS hCD hME hU }
+      dimParts := _root_.GlobalTheory.DimPartsFull.dimParts hCusp R F hOk hC hEx hGS hCD hME hU }
 
 end GlobalTheory

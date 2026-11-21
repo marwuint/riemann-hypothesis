@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBPu
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.LengthBallQuotientEqSumMulFdeg
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientTriple
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFinAffineCover
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CechComplexAcyclicPrimitiveNontrivialAlgClosedStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CechComplexAcyclicPrimitiveNontrivialAlgClosed
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LineBundleProductAcyclicOfAffineBaseAcyclicStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SubsingletonOfForallIsMaximalSmulEqZero
 
@@ -211,7 +211,7 @@ theorem eq_one_of_lam_eq_zero (hL : L.IsLB) (hK : KTriv B L) (x : 𝟙_ _ ⟶ B)
 
 theorem ac_of_primitive [IsAlgClosed K] (hB : IsAbelianScheme B) (hp : IsProjBy B.hom) {M : LB B.left}
     (hM : M.IsLB) (h : lam (cls M hM) (fst B B) (snd B B) = 0) (hne : cls M hM ≠ 0) : Ac B.hom M :=
-  GlobalTheory.T.cechComplex_acyclic_primitive_nontrivial_algClosed K B hB hp M hM
+  _root_.GlobalTheory.PrimVan.acyclic_cechLB_of_primitive K B hB hp M hM
     ((cls_eq_zero_iff (LB.isLB_linComb hM _ _)).1 ((cls_cube_two hM _ _ (LB.isLB_linComb hM _ _)).trans h))
     fun ht => hne ((cls_eq_zero_iff hM).2 ht)
 

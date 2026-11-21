@@ -170,11 +170,6 @@ def canFn (a b : Fin g → ℝ) (x : Frame X.Ψ r) (z : Fin g → ℂ) : ℂ :=
   cexp (Real.pi / 2 * ((hMat X bas idx x *ᵥ z) ⬝ᵥ imInv X bas idx x *ᵥ (hMat X bas idx x *ᵥ z))) *
     thetaChar (tauMat X bas idx x) (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) (hMat X bas idx x *ᵥ z)
 
-theorem canFn_zero (a b : Fin g → ℝ) (x : Frame X.Ψ r) :
-    canFn X bas idx a b x 0 =
-      thetaChar (tauMat X bas idx x) (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) 0 := by
-  simp [canFn]
-
 end Periods
 
 section Rows
@@ -269,18 +264,9 @@ def thFrLin : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n) →ₗ[ℂ] (Frame X.Ψ r → �
 
 @[simp] theorem thFr_zero : thFr X hr bas idx n a b 0 = 0 := map_zero (thFrLin X hr bas idx n a b)
 
-theorem thFr_one (x : Frame X.Ψ r) :
-    thFr X hr bas idx n a b 1 x = (hMat X bas idx x).det ^ (n / 2) *
-      ∏ k, thetaChar (tauMat X bas idx x) (fun i => (a k i : ℂ)) (fun i => (b k i : ℂ)) 0 := by
-  rw [thFr, show (1 : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) = MvPolynomial.monomial 0 1 from rfl,
-    I2.polyDeriv_monomial_one, I2.pdTerm_eq_itD]
-  simp [I2.itD_nil, canFn_zero]
-
 end Series
 
 section Diagonal
-
-def diagFr (d : X.Ψ → Fin r → ℂ) : Frame X.Ψ r := fun τ => Matrix.diagonal (d τ)
 
 def rowFac (d : X.Ψ → Fin r → ℂ) (p : X.Ψ × Fin r) : ℂ :=
   if (p.2 : ℕ) < X.p0 then d p.1 p.2 else (d p.1 p.2)⁻¹
@@ -294,30 +280,7 @@ theorem rowFac_ne_zero (p : X.Ψ × Fin r) : rowFac X d p ≠ 0 := by
   · exact hd _ _
   · exact inv_ne_zero (hd _ _)
 
-theorem per_rmul_diagFr (x : Frame X.Ψ r) (v : Fin r → E) (p : X.Ψ × Fin r) :
-    per X (rmul x (diagFr X d)) v p = rowFac X d p * per X x v p := by
-  have hm : mat (rmul x (diagFr X d)) p.1 = mat x p.1 * Matrix.diagonal (d p.1) := rfl
-  have hi : (Matrix.diagonal (d p.1))⁻¹ = Matrix.diagonal fun a => (d p.1 a)⁻¹ :=
-    Matrix.inv_eq_left_inv (by simp [diagonal_mul_diagonal, hd])
-  simp only [per, rowFac, hm]
-  split_ifs
-  · simp only [hermC, FD.col, mul_diagonal, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-  · rw [Matrix.mul_inv_rev, ← mulVec_mulVec, hi, mulVec_diagonal]
-
 variable (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r)
-
-theorem perMat_rmul_diagFr (s : Fin g → Fin g ⊕ Fin g) :
-    perMat X bas idx s (rmul x (diagFr X d)) =
-      Matrix.diagonal (fun i => rowFac X d (idx i)) * perMat X bas idx s x := by
-  ext i k
-  rw [diagonal_mul, perMat_apply, perMat_apply, per_rmul_diagFr hd]
-
-theorem hMat_rmul_diagFr : hMat X bas idx (rmul x (diagFr X d)) =
-    hMat X bas idx x * Matrix.diagonal fun i => (rowFac X d (idx i))⁻¹ := by
-  rw [hMat, perMat_rmul_diagFr hd, Matrix.mul_inv_rev, hMat]
-  congr 1
-  exact Matrix.inv_eq_left_inv (by simp [diagonal_mul_diagonal, rowFac_ne_zero hd])
 
 omit hd in
 
@@ -345,62 +308,6 @@ namespace Gauss
 open HyperbolicCusp
 open ReciprocityTheory.ChartRestriction.G.I2.TiledBoundaries (E4)
 
-def vec (m : Fin 2 ⊕ Fin 2 → ℤ) : Fin 2 → E4 :=
-  ![m (Sum.inl 0) - m (Sum.inr 0) * ii, m (Sum.inl 1) + m (Sum.inr 1) * ii]
-
-theorem vec_mem (m : Fin 2 ⊕ Fin 2 → ℤ) : vec m ∈ flagData.Λ := by
-  rw [flagData_Λ]
-  intro a
-  fin_cases a
-  · exact (isIntegral_intCast _).sub ((isIntegral_intCast _).mul ii_isIntegral)
-  · exact (isIntegral_intCast _).add ((isIntegral_intCast _).mul ii_isIntegral)
-
-theorem EF_vec (m m' : Fin 2 ⊕ Fin 2 → ℤ) :
-    EF flagData (vec m) (vec m') = -(omegaStd m m' : ℤ) := by
-  have hc (a : ℤ) : cc (a : E4) = a := map_intCast (IsCMField.complexConj E4) a
-  have hadd (u v : E4) : cc (u + v) = cc u + cc v := map_add (IsCMField.complexConj E4) u v
-  have h := trace_eq (-(m (.inl 0) * m' (.inl 0) + m (.inr 0) * m' (.inr 0) -
-    m (.inl 1) * m' (.inl 1) - m (.inr 1) * m' (.inr 1) : ℤ)) (-(omegaStd m m' : ℤ))
-  rw [← h, EF_def, flagData_κ0, flagData_Gm, herm_gm]
-  congr 1
-  simp only [vec, cons_val_zero, cons_val_one, cc_sub, hadd, cc_mul, hc, cc_ii, omegaStd,
-    Fin.sum_univ_two]
-  push_cast
-  linear_combination (ii / 2 * (-(m (.inr 0) * m' (.inr 0) : E4) + m (.inr 1) * m' (.inr 1))) *
-    ii_mul_ii
-
-def vecLin : (Fin 2 ⊕ Fin 2 → ℤ) →ₗ[ℤ] flagData.Λ :=
-  AddMonoidHom.toIntLinearMap
-    { toFun := fun m => ⟨vec m, vec_mem m⟩
-      map_zero' := by ext a; fin_cases a <;> simp [vec]
-      map_add' := fun m m' => by ext a; fin_cases a <;> simp [vec] <;> ring }
-
-theorem vecLin_bijective : Function.Bijective vecLin := by
-  constructor
-  · rw [injective_iff_map_eq_zero]
-    intro m hm
-    have h0 : vec m = 0 := congrArg Subtype.val hm
-    have h (m' : Fin 2 ⊕ Fin 2 → ℤ) : omegaStd m m' = 0 := by
-      have := EF_vec m m'
-      rw [h0, EF_def] at this
-      simpa [herm] using this
-    funext j
-    rcases j with j | j
-    · simpa [omegaStd, Pi.single_apply] using h (Pi.single (Sum.inr j) 1)
-    · simpa [omegaStd, Pi.single_apply] using h (Pi.single (Sum.inl j) 1)
-  · rintro ⟨v, hv⟩
-    have hv' : v ∈ lat := flagData_Λ ▸ hv
-    obtain ⟨m₀, n₀, h₀⟩ := exists_int_of_isIntegral (hv' 0)
-    obtain ⟨m₁, n₁, h₁⟩ := exists_int_of_isIntegral (hv' 1)
-    refine ⟨Sum.elim ![m₀, m₁] ![-n₀, n₁], Subtype.ext ?_⟩
-    change vec _ = v
-    funext a
-    fin_cases a <;> simp [vec, h₀, h₁]
-
-def bas : (Fin 2 ⊕ Fin 2 → ℤ) ≃ₗ[ℤ] flagData.Λ := LinearEquiv.ofBijective vecLin vecLin_bijective
-
-theorem isSympl_bas : IsSympl flagData bas := EF_vec
-
 instance : Unique flagData.Ψ :=
   have hne : Nonempty flagData.Ψ := by
     obtain ⟨τ⟩ : Nonempty (E4 →+* ℂ) := inferInstance
@@ -412,97 +319,7 @@ instance : Unique flagData.Ψ :=
       obtain ⟨p, q, rfl⟩ := exists_rat z
       simp [emb_ii_eq] }
 
-def idx : Fin 2 ≃ flagData.Ψ × Fin 2 := (Equiv.uniqueProd _ _).symm
-
-theorem hr : flagData.p0 + 1 = 2 := by rw [hyperbolicFlagData_base_point]
-
-def one : Frame flagData.Ψ 2 := fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ)
-
-theorem one_mem : one ∈ flagData.dom := fun τ => by
-  have hm : mat one τ = 1 := rfl
-  refine ⟨by rw [hm]; simp, fun i => ?_⟩
-  unfold dmin
-  rw [hm, flagData_Gm, hyperbolicFlagData_base_point, gram_one]
-  fin_cases i
-  · simp [lminor, psgn]
-  · simp [lminor, psgn, sgn]
-  · simp [lminor, psgn, sgn, Finset.prod_range_succ, Matrix.det_fin_two]
-
-theorem per_one (v : Fin 2 → E4) (τ : flagData.Ψ) :
-    per flagData one v (τ, 0) = conj (τ.1 (v 0)) ∧ per flagData one v (τ, 1) = τ.1 (v 1) := by
-  have hm : mat one τ = 1 := rfl
-  rw [per_of_lt _ _ _ _ (by simp [hyperbolicFlagData_base_point]), per_of_le _ _ _ _ (by simp [hyperbolicFlagData_base_point]), hm,
-    flagData_Gm]
-  simp [hermC, FD.col, gm, Data.emb, Fin.sum_univ_two]
-
-theorem perMat_one : perMat flagData bas idx Sum.inl one = 1 ∧
-    perMat flagData bas idx Sum.inr one = I • (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
-  have h0 (m) : per flagData one (bas m) (idx 0) = _ := (per_one (vec m) default).1
-  have h1 (m) : per flagData one (bas m) (idx 1) = _ := (per_one (vec m) default).2
-  constructor <;> ext i k <;> fin_cases i <;> fin_cases k <;> simp [h0, h1, vec, emb_ii_eq]
-
-theorem hMat_one : hMat flagData bas idx one = 1 := by rw [hMat, perMat_one.1, inv_one]
-
-theorem tauMat_one : tauMat flagData bas idx one = I • (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
-  rw [tauMat, hMat_one, perMat_one.2, Matrix.one_mul]
-
-theorem thetaChar_I_ne_zero : thetaChar (I • (1 : Matrix (Fin 2) (Fin 2) ℂ)) 0 0 0 ≠ 0 := by
-  have h1 : Summable fun n : ℤ => Real.exp (-Real.pi * 1 * n ^ 2) := by
-    have := (summable_jacobiTheta₂_term_iff 0 I).2 (by simp)
-    refine (Complex.summable_ofReal.1 (this.congr fun n => ?_))
-    simp only [jacobiTheta₂_term, ofReal_exp]
-    congr 1
-    push_cast
-    linear_combination (Real.pi * n ^ 2 : ℂ) * I_mul_I
-  have h2 : Summable fun n : Fin 2 → ℤ =>
-      Real.exp (-Real.pi * 1 * n 0 ^ 2) * Real.exp (-Real.pi * 1 * n 1 ^ 2) :=
-    (finTwoArrowEquiv ℤ).summable_iff.2
-      (h1.mul_of_nonneg h1 (fun _ => (Real.exp_pos _).le) fun _ => (Real.exp_pos _).le)
-  have h3 := h2.tsum_pos (fun _ => by positivity) 0 (by positivity)
-  have h4 := ofReal_ne_zero.2 h3.ne'
-  rw [ofReal_tsum] at h4
-  convert h4 using 1
-  refine tsum_congr fun n => ?_
-  rw [← Real.exp_add, ofReal_exp]
-  congr 1
-  simp only [add_zero, smul_mulVec, one_mulVec, dotProduct, Fin.sum_univ_two, Pi.smul_apply,
-    smul_eq_mul, Pi.zero_apply, mul_zero]
-  push_cast
-  linear_combination (Real.pi * (n 0 ^ 2 + n 1 ^ 2) : ℂ) * I_mul_I
-
-theorem thFr_one_ne_zero (n : ℕ) : thFr flagData hr bas idx n 0 0 1 one ≠ 0 := by
-  rw [thFr_one, hMat_one, tauMat_one, det_one, one_pow, one_mul]
-  exact Finset.prod_ne_zero_iff.2 fun k _ => by
-    simpa [Pi.zero_def] using thetaChar_I_ne_zero
-
 end Gauss
-
-example : rowIdx (show 2 + 1 = 3 from rfl) (Sum.inr 0) = 1 ∧
-    rowIdx (show 2 + 1 = 3 from rfl) (Sum.inr 1) = 0 ∧
-    rowIdx (show 2 + 1 = 3 from rfl) (Sum.inl 0) = 2 := by decide
-
-example (τ : HyperbolicCusp.flagData.Ψ) :
-    wtOf HyperbolicCusp.flagData Gauss.hr (fun _ _ => 3) (fun _ _ => 5) 4 τ = ![-7, 5] := by
-  have hp := HyperbolicCusp.hyperbolicFlagData_base_point
-  funext a
-  obtain ⟨i | i, rfl⟩ := (rowIdx Gauss.hr).surjective a
-  · have : rowIdx Gauss.hr (Sum.inl i) = 1 := Fin.ext (by simp [hp])
-    rw [wtOf_inl, this, Harm.partOf_eq_add, dif_neg (by omega)]
-    rfl
-  · have : rowIdx Gauss.hr (Sum.inr i) = 0 := Fin.ext (by simp [hp])
-    rw [wtOf_inr, this, Harm.partOf_eq_add, dif_neg (by omega)]
-    rfl
-
-example : EF HyperbolicCusp.flagData ![1, 0] ![-HyperbolicCusp.ii, 0] = -1 := by
-  simpa [Gauss.vec, omegaStd] using
-    Gauss.EF_vec (Pi.single (Sum.inl 0) 1) (Pi.single (Sum.inr 0) 1)
-
-example : hMat HyperbolicCusp.flagData Gauss.bas Gauss.idx
-    (rmul Gauss.one (diagFr _ fun _ => ![2, 3])) = Matrix.diagonal ![2⁻¹, 3] := by
-  rw [hMat_rmul_diagFr (fun _ a => by fin_cases a <;> simp), Gauss.hMat_one, Matrix.one_mul]
-  congr 1
-  funext i
-  fin_cases i <;> simp [rowFac, Gauss.idx, HyperbolicCusp.hyperbolicFlagData_base_point]
 
 end
 

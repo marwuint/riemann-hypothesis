@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GenericPartDenseProO
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueLiftOfDensePart
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDescOfIsFiniteOfDensePart
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSemiAbelianTripleMapExtendingModelMap
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLevelChangeLiftKeepingEtaAStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLevelChangeLiftKeepingEtaA
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct Pointwise
@@ -82,7 +82,7 @@ theorem extendsAut_of_above : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDis
   intro hext L1 L2 L3 E _ _ _ H D Xo n N T hpq l₀ l₁ h O₀ O₁ _ _ β₀ β₁ C C₁ b r ν A b' q hq hβ₀ hβ₁ hft hb hfin hjq
     hA hM hMb hcop hlev hr hk r₀ ν₀ g hr₀ hη
   obtain ⟨k, hk1, hk2, -⟩ := hk
-  obtain ⟨r₁, ν₁, h1, h2, -, h4⟩ := GlobalTheory.T.exists_level_change_lift_keeping_etaA L1 L2 L3 E H D Xo hpq l₀ l₁ r ν r₀ ν₀ g hA hM hMb (h ▸ hcop) hlev
+  obtain ⟨r₁, ν₁, h1, h2, -, h4⟩ := _root_.GlobalTheory.LiftAut.exists_lift_keeping_etaA L1 L2 L3 E H D Xo hpq l₀ l₁ r ν r₀ ν₀ g hA hM hMb (h ▸ hcop) hlev
     ⟨k, hk1, hk2⟩ hr₀ hη
   have h5 : r₁.hom ≫ T.a l₁ h = T.a l₁ h := (T.compat l₁ l₁ h h r₁.hom ν₁ (RingHom.id _) (fun _ => rfl) (by
     rw [h1]

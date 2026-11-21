@@ -101,10 +101,6 @@ def LacBridge : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (a dd : ℕ)
     (ρ : G E Ω →* GL (Fin dd) (Qbar l)), HTRichEx ρ a → HTLac ρ a
 
-def RichEx : Prop :=
-  ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (a dd : ℕ)
-    (ρ : G E Ω →* GL (Fin dd) (Qbar l)) (v : HeightOneSpectrum (𝓞 E)), ((l : ℕ) : 𝓞 E) ∈ v.asIdeal → HTRichAt ρ a v → HTRichEx ρ a
-
 def DenseUs : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (a d : ℕ), ImQ E d →
     ∀ U : Submodule ℂ (UA E a → ℂ), IsAutRepU U → ∀ X : Finset (HeightOneSpectrum (𝓞 E)),
@@ -157,11 +153,6 @@ def CentU : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ), 1 ≤ a → ∀ U : Submodule ℂ (UA E a → ℂ), IsAutRepU U →
     ∃ (χ : HChar E) (n : (E →+* ℂ) → ℤ), IsAlgPos χ n ∧ ∀ w : HeightOneSpectrum (𝓞 E), IsSplitAt w → ∀ B : Multiset ℂˣ, SatU U w B →
       χ.UnrAt w ∧ χ.val w = B.prod
-
-theorem phiOfDiv_of (h1 : DetEx) (h2 : DivDet) (h3 : PhiSeed) : PhiOfDiv := by
-  intro E Ω _ _ _ _ _ _ l _ ι a ha d hd U hU r hr dd ρ hc hs hin w hw B hB hg hk
-  obtain ⟨ψ, hψ⟩ := h1 E Ω l ι a ha U hU
-  exact h3 E Ω l ι a dd U ψ hψ r ρ hc hs hin (h2 E Ω l ι a d hd U hU ψ hψ r hr) w hw B hB hg hk
 
 theorem divAll_of (h1 : DetEx) (h2 : DivDet) (h3 : PhiSeed) (h4 : DivOne) (h5 : DivUniq) (h6 : IsoMove) (h7 : FrobeniusCondition)
     (h8 : JumpCondition) (h9 : SubLoc) : DivAll := by

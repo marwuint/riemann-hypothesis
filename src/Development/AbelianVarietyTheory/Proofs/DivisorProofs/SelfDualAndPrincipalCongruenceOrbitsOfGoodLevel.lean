@@ -65,9 +65,9 @@ theorem selfDual_and_congr_free (E : Type) [Field E] [NumberField E] [IsCMField 
     obtain ⟨Pm, h1, h2, -⟩ := hun k ⟨x, hx⟩
     exact GlobalTheory.FrameSign.im_neg_of_isPeriod E H Dw l c σ g e _ r (U.X k) (φ k) hσ hr (hty k).1 (hty k).2 (hef k)
       x hx Pm h1 h2 (by omega)
-  obtain ⟨m, hm, ht⟩ := GlobalTheory.T.transvection_mem_principalCongruenceGroup E H l _ r _ _ φ0 hξ hlat
-  have hi := GlobalTheory.T.principalLevelGroup_finiteIndex_unitaryStabiliser E H l _ r _ _ φ0 hξ hlat
-  have hf := GlobalTheory.T.principalGroup_acts_freely_on_flags E H l _ r _ _ φ0 hξ hlat (U.X k).Ψ (U.X k).p0 (hty k).2
+  obtain ⟨m, hm, ht⟩ := _root_.GlobalTheory.PrincTransv.transv_mem_princ E H l _ r _ _ φ0 hξ hlat
+  have hi := _root_.GlobalTheory.FrameUnif.princ_finiteIndex E H l _ r _ _ φ0 hξ hlat
+  have hf := _root_.GlobalTheory.PrincFree.princ_free E H l _ r _ _ φ0 hξ hlat (U.X k).Ψ (U.X k).p0 (hty k).2
   have hmem : ∀ γ : GL (Fin r) E, γ ∈ princ l (U.X k).Gm (F.Di (ik k)) φ0 ↔ IsUStab (U.X k).Gm (U.X k).Λ γ ∧
       (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di (ik k)).La), ∃ b : (F.Di (ik k)).La,
         (γ : Matrix (Fin r) (Fin r) E).mulVec (φ k a : Fin r → E) =

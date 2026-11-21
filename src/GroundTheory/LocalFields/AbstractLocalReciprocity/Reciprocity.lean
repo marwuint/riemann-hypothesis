@@ -91,14 +91,6 @@ theorem relDeg_field :
   rw [D.relDeg_pow, inertiaDegree_field, ← ofAdd_nsmul, nsmul_one]
   exact s.deg_eq
 
-theorem inf_ker_le_inf :
-    ((s.field L hLK : OpenSubgroup G) : Subgroup G) ⊓ D.deg.ker ≤
-      ((L ⊓ s.field L hLK : OpenSubgroup G) : Subgroup G) := by
-  intro x hx
-  have hx' := hx
-  rw [field_inf_ker] at hx'
-  exact ⟨hx'.1, hx.1⟩
-
 end FrobeniusLift
 
 omit [TotallyDisconnectedSpace G] in

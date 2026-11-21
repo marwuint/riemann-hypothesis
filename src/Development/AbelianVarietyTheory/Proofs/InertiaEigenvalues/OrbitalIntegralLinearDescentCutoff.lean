@@ -1,10 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LeftMulTau
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleUnitsHaarMeasureDivAbsIsHaarMeasureStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleUnitsHaarMeasureDivAbsIsHaarMeasure
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralLinearHaarIsMulRightInvariantUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNormStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitalIntegrandIsLocallyConstantCoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisInvKRegularIffIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedValuationParitySignCharacterKernelNorm
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitalIntegrandIsLocallyConstantCo
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisInvKRegularIffIsUnit
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisBorderedMatrixNormalFormInvariants
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FubiniCutoffIntegralGeneralLinearTorusStatement
 
@@ -29,7 +31,7 @@ theorem desc_unit_eq {F E : Type} [NontriviallyNormedField F] [NontriviallyNorme
   letI := M.mG
   haveI := M.bG
   haveI : M.μG.IsMulRightInvariant := GlobalTheory.T.generalLinear_haar_isMulRightInvariant_unramified F E r M
-  have hmul := (GlobalTheory.T.unramifiedValuationParitySign_character_kernel_norms F E).1
+  have hmul := (_root_.GlobalTheory.EtaChar.main F E).1
   set Y := pt A hG lam 1 (a : A.K) with hY
   set u : A.Kˣ := a * s⁻¹ with hu
   have hpt : pt A hG lam ((a : A.K) * Ring.inverse (s : A.K)) (s : A.K) = act (tm A hG u) Y := by
@@ -83,7 +85,7 @@ theorem orb_descent_unit : ∀ (F E : Type) [NontriviallyNormedField F] [Nontriv
   obtain ⟨a, rfl⟩ := ha
   letI := M.mG
   set Y := pt A hG lam 1 (a : A.K) with hY
-  have hconv := (GlobalTheory.T.etaleUnitsHaarMeasureDivAbs_isHaarMeasure F E A μK hμK).2.2
+  have hconv := (_root_.GlobalTheory.JR.LinDesc.unitsMeas_isHaar F E A μK hμK).2.2
     (fun t => desc A M hG lam α f' ((a : A.K) * Ring.inverse t, t) * A.etaK t)
   have hO : A.orbK μK (desc A M hG lam α f') (a : A.K) =
       ∫ s, desc A M hG lam α f' ((a : A.K) * Ring.inverse (s : A.K), (s : A.K)) * A.etaK s ∂(unitsMeas A μK) := by
@@ -91,8 +93,8 @@ theorem orb_descent_unit : ∀ (F E : Type) [NontriviallyNormedField F] [Nontriv
   set Φ : GL (Fin r) F → ℂ := fun g => f' (act g Y) * omega (act g Y) with hΦ
   have hΔ : Delta (inv Y) ≠ 0 := by
     rw [hY, pt_one, GlobalTheory.JR.NormalFormL.inv_sec']
-    exact ((GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ p lam hG).2 (a : A.K)).2.2 (Units.isUnit a)
-  have hΦt : IsTest Φ := (GlobalTheory.T.jacquetRallis_orbitalIntegrand_isLocallyConstantCompactSupport F E r M).1 f' hf' Y hΔ
+    exact ((_root_.GlobalTheory.JR.EtInv.invK_regular_iff_isUnit F E A r τ p lam hG).2 (a : A.K)).2.2 (Units.isUnit a)
+  have hΦt : IsTest Φ := (_root_.GlobalTheory.JR.orb_integrand_isTest F E r M).1 f' hf' Y hΔ
   have hinner : ∀ s : A.Kˣ, κ₀ * (desc A M hG lam α f' ((a : A.K) * Ring.inverse (s : A.K), (s : A.K)) * A.etaK s) =
       ∫ g, Φ g * (α (g * tm A hG a⁻¹ * tm A hG s) : ℂ) ∂M.μG := by
     intro s

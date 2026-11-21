@@ -48,9 +48,6 @@ theorem mem_ThS {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {f : WA V W → �
 
 theorem CuspS_le (θ : InfF D) (V : HSp D) : CuspS θ V ≤ AFs θ V := Submodule.span_mono fun _ h => h.1
 
-theorem const_mem_AFs (θ : InfF D) (V : HSp D) (c : ℂ) : (fun _ => c) ∈ AFs θ V :=
-  Submodule.subset_span (isAutFunSm_const θ V c)
-
 theorem CuspS_eq_of_aniso (θ : InfF D) {V : HSp D} (h : IsAniso V) : CuspS θ V = AFs θ V := by
   unfold CuspS AFs
   congr 1
@@ -119,9 +116,9 @@ def KfinS (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF D) (Dc : OrthDec D) (V W :
 theorem OrthDec.exists_rel (Dc : OrthDec D) {V : HSp D} (hV : V.SigOK) :
     ∃ s : GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.InvFam V, ∀ τ, GlobalTheory.FockCompare.Rel V τ (Dc.cpt V τ) (s τ) := by
   classical
-  obtain ⟨b, hb⟩ := (GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).1 _ (Dc.bas_unit V hV)
+  obtain ⟨b, hb⟩ := (_root_.GlobalTheory.FockBasisMatrix.basis_matrix D V).1 _ (Dc.bas_unit V hV)
   have ho : ∀ i j, i ≠ j → V.hT (b i) (b j) = 0 := fun i j hij => by
-    rw [← ((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 b).2.1 i j, ← hb]
+    rw [← ((_root_.GlobalTheory.FockBasisMatrix.basis_matrix D V).2 b).2.1 i j, ← hb]
     exact Dc.bas_orth V hV i j hij
   refine ⟨fun τ => b.constr D.host.E fun i => if 0 < (tauE D τ (V.hT (b i) (b i))).re then b i else -b i, fun τ =>
     GlobalTheory.FockCompare.rel_of_monomial hV τ b ho (fun i => b.constr_basis _ _ i) (Dc.cpt_gram V hV τ) ?_⟩
@@ -226,36 +223,12 @@ def core : WeilCore D ψ :=
   ⟨Wf.om, fun V W χ χ' ha => ⟨Wf.om_heis V W χ χ' ha, Wf.om_aut V W χ χ' ha, Wf.om_cont V W χ χ' ha,
     Wf.om_unit V W χ χ' ha, Wf.om_split V W χ χ' ha⟩⟩
 
-theorem rules : Wf.core.Rules := ⟨Wf.twW, Wf.twV, Wf.om_swap, Wf.om_unr⟩
-
 def ker (V W : HSp D) (χ χ' : IdC D) (Φ : ThS ψ V W) (g : GA D V) (h : GA D W) : ℂ := (Wf.om V W χ χ' (g, h) Φ).1 0
-
-theorem ker_left {V W : HSp D} {χ χ' : IdC D} (ha : admitted V W χ χ') (Φ : ThS ψ V W) {γ : GA D V} (hγ : γ ∈ GQ V)
-    {δ : GA D W} (hδ : δ ∈ GQ W) (g h) : Wf.ker V W χ χ' Φ (γ * g) (δ * h) = Wf.ker V W χ χ' Φ g h := by
-  have e : Wf.om V W χ χ' (γ * g, δ * h) = Wf.om V W χ χ' (γ, δ) * Wf.om V W χ χ' (g, h) := by rw [← map_mul]; rfl
-  unfold ker
-  rw [e, Module.End.mul_apply]
-  exact Wf.om_aut V W χ χ' ha γ hγ δ hδ _
 
 end WeilFun
 
 theorem isHC_one (D : D7) : IsHC D 1 :=
   ⟨⟨continuous_const, fun _ => rfl⟩, fun _ => ⟨0, 0, by simp, GlobalTheory.Member.exists_isInfFam_family D, fun _ _ _ _ _ => by simp⟩⟩
-
-theorem isAdmissibleIntegralBasisChange_one {V W : HSp D} (h : V.rank ≠ W.rank) (hV : Even V.rank) (hW : Even W.rank) : admitted V W 1 1 := by
-  have h0 : ResEta D 1 0 := ⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩
-  exact ⟨h, isHC_one D, isHC_one D, resEta_parity h0 (by rw [Nat.even_iff] at hV; omega),
-    resEta_parity h0 (by rw [Nat.even_iff] at hW; omega)⟩
-
-theorem isWeilOn_rank_zero (ψ : AddChar (AF D.host.F) ℂ) {V W : HSp D} (hV : 0 < V.rank) (hW : W.rank = 0) (χ : IdC D) :
-    IsWeilOn ψ V W χ 1 1 := by
-  haveI : IsEmpty (Fin W.rank) := by rw [hW]; infer_instance
-  have hs : ∀ x y : WA V W, x = y := fun x y => Matrix.ext fun _ j => isEmptyElim j
-  refine ⟨fun g h w₀ Φ Φ' e => ?_, fun _ _ _ _ _ => rfl, fun Φ w => (continuous_const : Continuous fun _ : GA D V × GA D W => Φ.1 w), fun _ _ _ _ _ _ => rfl,
-    fun e _ g h _ _ x y _ hy => ⟨1, one_pos, fun ℓ _ Φ => ?_⟩⟩
-  · rw [hs (actHom V W g h w₀) w₀]; exact e
-  · have hy1 : y = 1 := Units.ext (by rw [hy, Matrix.det_isEmpty]; simp)
-    simp [splitFac, hy1]
 
 structure Tow (D : D7) where
   Xs : ℕ → ℕ → HSp D
@@ -413,23 +386,6 @@ theorem nonempty_realMeas (D : D7) : Nonempty (RealMeas D) := by
 def memberBes (D : D7) (u : D.what₂.Word) : BesDat (D.sp.X 0) (D.sp.Y 0) (D.sp.iXY 0) :=
   GlobalTheory.BesselCompare.toBes (GlobalTheory.IndefiniteRowSideFullHecke.BesselData.memberDatum D u)
 
-theorem memberBes_spec (D : D7) (u : D.what₂.Word) :
-    (memberBes D u).e = GlobalTheory.BesselCompare.eMat (D.sp.Y 0) D.sp.hypE ∧
-    (memberBes D u).z = GlobalTheory.BesselCompare.co (D.sp.Y 0) (D.zmOf u) ∧ (∀ i, (memberBes D u).c i = D.host.xi0) ∧
-    ((memberBes D u).y : GA D (D.sp.Y 0)) = 1 := ⟨rfl, rfl, fun _ => rfl, rfl⟩
-
-theorem memberBes_norm (D : D7) (u : D.what₂.Word) :
-    Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.Y 0).gram (memberBes D u).z (memberBes D u).z =
-      -((D.mem u).A.T : D.host.E) := by
-  rw [(memberBes_spec D u).2.1, GlobalTheory.BesselCompare.hform_co]
-  unfold D7.zmOf
-  rw [map_smul, LinearMap.map_smulₛₗ (D.sp.Y 0).hT, LinearMap.smul_apply, D.sp.zm_norm, D.sp_T, ← D.cOf_eq u,
-    ← bridge_star_holds D.R D.host]
-  have hc := D.cOf_ne u
-  have hc' : star (D.cOf u) ≠ 0 := star_ne_zero.2 hc
-  simp only [smul_eq_mul, starRingEnd_apply, star_inv₀]
-  field_simp
-
 def PlaceOver (D : D7) (ε : AE D) (𝔭 : Ideal (𝓞 D.host.K)) : Prop :=
   ∀ π ∈ 𝔭, π ≠ 0 → GlobalTheory.IndefiniteRowSideFullHecke.BesselData.PlaceDivides D ε (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) π)
 
@@ -485,10 +441,6 @@ def petC (V : HSp D) : ℝ := petCOf D Rc.petF Rc.meas.petR V
 
 def carY (μ : D.what₂.Tup) (s i : ℕ) : IdC D := if Even i then Rc.chr μ s * Rc.eta⁻¹ else Rc.chr μ s
 
-def RowIsom : Prop := ∀ μ j, j ≤ D.R.m → ∀ x y : D.what₂.Mult μ j,
-  GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y j) (Rc.mY μ j * Rc.petC (D.sp.Y j))
-    (fun h => star ((Rc.row μ j x).1 h) * (Rc.row μ j y).1 h) (inner ℂ x y)
-
 def IoTie (Wf : WeilFun D ψ) : Prop := ∀ μ j, j < D.R.m → ∀ y : D.what₂.Mult μ (j + 1), ∃ L : GA D (D.sp.Y j) → ℂ,
   (∀ g, GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y (j + 1)) (Rc.mY μ (j + 1) * Rc.petC (D.sp.Y (j + 1)))
     (fun h => Wf.ker _ _ (Rc.carY μ (j + 1) (j + 1)) (Rc.carY μ (j + 1) j) (Rc.Phi μ j) h g * (Rc.row μ (j + 1) y).1 h)
@@ -496,34 +448,10 @@ def IoTie (Wf : WeilFun D ψ) : Prop := ∀ μ j, j < D.R.m → ∀ y : D.what�
   ∀ x : D.what₂.Mult μ j, GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y j) (Rc.mY μ j * Rc.petC (D.sp.Y j))
     (fun g => star (L g) * (Rc.row μ j x).1 g) (inner ℂ (D.what₂.io μ j y) x)
 
-def TopTie : Prop := ∀ u μ (φ : D.what₂.Mu u) (F : D.what₂.Amb μ) (s : GA D (D.sp.Y D.R.m) → GA D (D.sp.X D.R.m)),
-  (∀ h, EmbRel (D.sp.X D.R.m) (D.sp.Y D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) (s h) h) →
-  GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y D.R.m) (Rc.mY μ D.R.m * Rc.petC (D.sp.Y D.R.m))
-    (fun h => (Rc.col u μ D.R.m φ).1 (s h) * (Rc.row μ D.R.m ((D.what₂.multTop μ).symm F)).1 h) (D.what₂.perCol u μ φ F)
-
-structure OfRecord (Wf : WeilFun D ψ) : Prop where
-  rowIsom : Rc.RowIsom
-  io : Rc.IoTie Wf
-  top : Rc.TopTie
-  col_inj : ∀ u μ, Function.Injective (Rc.col u μ 0)
-  phi_pure : ∀ μ j, j < D.R.m → IsPureFun ψ _ _ (Rc.Phi μ j).1
-  phi_pol : ∀ μ j, j < D.R.m → IsPolFock ψ θ _ _ (Rc.dec.cpt _) (Rc.dec.cpt _) (Rc.Phi μ j).1
-
-theorem RowIsom.injective (h : Rc.RowIsom) (μ) {j} (hj : j ≤ D.R.m) : Function.Injective (Rc.row μ j) := by
-  refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
-  obtain ⟨⟨m, hm⟩, h2⟩ := h μ j hj x x
-  have := (h2 m hm).2
-  rw [hx] at this
-  simpa using this
-
 end RecFun
 
 def EtaEx (D : D7) : Prop :=
   ∃ η : IdC D, IsHeckeChar D η ∧ (∀ τ, HasInfExp D η τ (1 / 2)) ∧ ResEta D η 1 ∧ UnramEverywhere D η
-
-def VacEx (D : D7) : Prop := ∀ θ : InfF D, IsInfFam θ → ∀ ψ, IsStdChar D ψ (-1) → ∀ (Dc : OrthDec D) (V W : HSp D),
-  V.rank ≠ W.rank → V.SigOK → W.SigOK →
-    ∃ Φ : ThS ψ V W, Φ ≠ 0 ∧ IsPureFun ψ V W Φ.1 ∧ IsPolFock ψ θ V W (Dc.cpt V) (Dc.cpt W) Φ.1
 
 def ChrEx (D : D7) : Prop :=
   ∀ j : Fin D.R.m, ∃ χ : IdC D, IsHeckeChar D χ ∧ (∀ τ, HasInfExp D χ τ (-(D.hc τ).e j)) ∧ ResEta D χ 0
@@ -676,94 +604,7 @@ def WeilEx (D : D7) : Prop := ∀ ψ, IsStdChar D ψ (-1) → Nonempty (WeilFun 
 theorem weilEx_of (h : WeilCoreEx D) (hr : WeilRules D) : WeilEx D :=
   fun ψ hψ => (h ψ hψ).elim fun Wc => ⟨Wc.toFun (hr ψ hψ Wc)⟩
 
-def RealisedEx (D : D7) : Prop := ∀ θ : InfF D, IsInfFam θ → ∀ ψ, IsStdChar D ψ (-1) →
-  ∀ (Wf : WeilFun D ψ) (Tw : Tow D) (Rc : RecFun D θ ψ),
-    ∃ (X : ThetaX D) (T : ThetaTied D X) (W : WeilTied D X T) (B : BesselTied D X T W) (h : W.ψ = ψ),
-      Realises (θ := θ) B (h ▸ Wf) Tw (h ▸ Rc)
-
 namespace Realises
-
-variable {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : WeilTied D X T} {B : BesselTied D X T W}
-  {Wf : WeilFun D W.ψ} {Tw : Tow D} {Rc : RecFun D θ W.ψ} (h : Realises B Wf Tw Rc)
-
-include h
-
-theorem eq_of_isInfFam {θ' : InfF D} (h' : IsInfFam θ') : θ' = θ :=
-  ((GlobalTheory.AutFunCompare.isInfFam_iff θ').1 h').trans ((GlobalTheory.AutFunCompare.isInfFam_iff θ).1 h.inf).symm
-
-theorem afTiedSm : ThetaSmoothnessCondition T := ⟨⟨θ, h.inf⟩, fun _ h' V _ => by rw [h.eq_of_isInfFam h']; exact h.forms V⟩
-
-theorem formSub : FormSub D := fun θ' h' V φ => by
-  rw [h.eq_of_isInfFam h']
-  refine ⟨fun hφ => ?_, fun hφ => Submodule.subset_span hφ⟩
-  have : AFs θ V ≤ LinearMap.range (T.ev V) := Submodule.span_le.2 (by rw [LinearMap.coe_range, h.forms V])
-  have h2 : φ ∈ Set.range (T.ev V) := this hφ
-  rwa [h.forms V] at h2
-
-theorem typTied (ht : TypAdd D) : TypTied T := ⟨⟨θ, h.inf⟩, fun _ h' V hV P hP => by
-  intros
-  rename_i F
-  rw [h.eq_of_isInfFam h', h.typ, mem_TypS h.formSub ht h.inf hV hP]
-  have : T.ev V F ∈ Set.range (T.ev V) := ⟨F, rfl⟩
-  rw [h.forms V] at this
-  exact ⟨fun k => k.2, fun k => ⟨this, k⟩⟩⟩
-
-theorem weilUnrTied : WeilUnramifiedCondition W := fun V V' χ χ' hr h1 h2 S u1 u2 k hk k' hk' Φ hΦ => by
-  have hc : ∀ χ, IsHC D (T.eChr χ) := fun χ => by
-    have : T.eChr χ ∈ Set.range T.eChr := ⟨χ, rfl⟩
-    rwa [T.eChr_range] at this
-  have hf : W.evS V V' Φ ∈ Set.range (W.evS V V') := ⟨Φ, rfl⟩
-  rw [h.sch] at hf
-  refine W.evS_inj V V' ?_
-  rw [h.om V V' χ χ' (k, k') Φ ⟨_, mem_ThS.2 hf⟩ rfl,
-    Wf.om_unr V V' _ _ ⟨hr, hc χ, hc χ', h1, h2⟩ S u1 u2 k hk k' hk' _ hΦ]
-
-theorem allTied (ht : TypAdd D) {A : ProvA} (hr : RealTied D) (hp : ProvisionCompatibility D A) : Nonempty (AllTied D X A) := by
-  obtain ⟨K, -⟩ := h.kfin
-  exact ⟨⟨T, h.afTiedSm, h.typTied ht, W, h.weilUnrTied, K, h.phiUp, B, hr, hp⟩⟩
-
-theorem petC_eq (V : HSp D) : T.petC V = Rc.petC V := by
-  unfold ThetaTied.petC RecFun.petC; rw [h.petF, h.petR]
-
-theorem tieRowIsom (hi : Rc.RowIsom) : X.TieRowIsom := fun μ j hj x y => by
-  obtain ⟨⟨m, hm⟩, h2⟩ := hi μ j hj x y
-  have e := T.pet _ (D.sp.Y_sig j) m.1 m.2 hm (X.rowAF μ j x) (X.rowAF μ j y)
-  unfold ThetaX.petY
-  rw [e, (h2 m hm).2, h.row, h.row, h.mY, ← h.petC_eq]
-  simp only [ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
-
-theorem tieBm (hi : Rc.TopTie) : X.TieBm := fun u μ φ F => by
-  have hι : HSpace.IsIsomEmb (D.sp.Y D.R.m) (D.sp.X D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) := fun x y => by
-    have h1 := D.sp.iX'_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)
-    have h2 := D.sp.eYm_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)
-    simp only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h2
-    exact h1.trans h2.symm
-  have hs := fun g => (GlobalTheory.AutFunCompare.embRel_iff _ _ _ hι _ g).2 rfl
-  obtain ⟨⟨m, hm⟩, h2⟩ := hi u μ φ F _ hs
-  rw [T.btop _ _ _ (D.sp.Y_sig _) hι m.1 m.2 hm _ hs, (h2 m hm).2]
-  simp only [T.conj, star_star, h.col, h.row, h.mY, ← h.petC_eq, ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
-
-theorem carY_eq (μ s i) : T.eChr (X.carY μ s i) = Rc.carY μ s i := by
-  unfold ThetaX.carY RecFun.carY
-  split_ifs
-  · rw [map_mul, map_inv, h.chr, h.eta]
-  · exact h.chr _ _
-
-theorem tieIo (hi : Rc.IoTie Wf) : X.TieIo := fun μ j hj y x => by
-  obtain ⟨L, hL, hx⟩ := hi μ j hj y
-  obtain ⟨⟨m, hm⟩, h2⟩ := hx x
-  have e : T.ev _ (X.dnY μ j (X.rowAF μ (j + 1) y)) = L := by
-    funext g
-    obtain ⟨⟨n, hn⟩, h3⟩ := hL g
-    have k := W.th _ _ _ _ (rank_Y_ne X j hj) (row_lift_ok T μ (j + 1) (by omega) hj (j + 1) hj)
-      (row_lift_ok T μ (j + 1) (by omega) hj j hj.le) (D.sp.Y_sig _) n.1 n.2 hn (X.PhiY μ j) (X.rowAF μ (j + 1) y) g
-    unfold ThetaX.dnY
-    rw [LinearMap.smul_apply, map_smul, Pi.smul_apply, k, (h3 n hn).2]
-    simp only [h.om _ _ _ _ _ _ _ (h.phi μ j), h.carY_eq, h.row, h.mY, ← h.petC_eq, WeilFun.ker, Complex.ofReal_mul,
-      mul_assoc, smul_eq_mul]
-  unfold ThetaX.petY
-  rw [T.pet _ (D.sp.Y_sig j) m.1 m.2 hm, (h2 m hm).2, e, h.row, h.mY, ← h.petC_eq]
-  simp only [ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
 
 end Realises
 

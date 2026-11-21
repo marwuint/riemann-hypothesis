@@ -50,12 +50,6 @@ theorem setLIntegral_muF {U : Set (V (nd X))} (hU : MeasurableSet U) (hUO : U �
     Measure.restrict_restrict hU, Set.inter_eq_left.mpr hUO]
   rfl
 
-theorem deriv_ka (bb t : ℝ) : deriv (fun t : ℝ => Real.exp (-bb * t)) t = -bb * Real.exp (-bb * t) := by
-  have h : HasDerivAt (fun t : ℝ => Real.exp (-bb * t)) (Real.exp (-bb * t) * (-bb * 1)) t :=
-    ((hasDerivAt_id t).const_mul (-bb)).exp
-  rw [h.deriv]
-  ring
-
 private lemma wdb_holo_lemma {n : ℕ} (j : Fin n) {g : V n → ℂ} {y : V n}
     (hg : DifferentiableAt ℂ g y) : wdb n j g y = 0 := by
   unfold wdb

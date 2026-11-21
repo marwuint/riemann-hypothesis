@@ -3,8 +3,8 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.DifferentialOperato
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Development.AbelianVarietyTheory.Definitions.Jets.Imports
 import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsWignerContractionChainLoweringStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsWignerContractionChainRaisingStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsWignerContractionChainLowering
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsWignerContractionChainRaising
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FrameExistsAndVectorEqSmulTranslate
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HypAndAdj
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIntCoordsOfRegularParam
@@ -38,13 +38,13 @@ theorem exists_shifted_types_lower_bound : ∀ (V : Type) [NormedAddCommGroup V]
     have h2 := abs_le.mp (hb (((Fin.last n : Fin (n + 1)) : ℕ) + 1) (by simp))
     linarith [h1.2, h2.1]
   obtain ⟨Vp, iP1, iP2, iP3, πp, Ap, hπp, hAp, hwp⟩ :=
-    GlobalTheory.T.exists_wignerContraction_chain_raising V n r z π u β L B i.succ n₀ hz hT hπ hL hu hB (by
+    _root_.GlobalTheory.WigSh.chain_raise V n r z π u β L B i.succ n₀ hz hT hπ hL hu hB (by
       intro j hj
       have hj' : j ≤ i.castSucc := Fin.le_castSucc_iff.mpr hj
       have := hL.antitone hj'
       omega)
   obtain ⟨Vm, familyMassRatio, familyMassSecondLine, iM3, πm, Am, hπm, hAm, hwm⟩ :=
-    GlobalTheory.T.exists_wignerContraction_chain_lowering V n r z π u β L B i.castSucc n₀ hz hT hπ hL hu hB (by
+    _root_.GlobalTheory.WigSh.exists_wigMap_chain_lowering V n r z π u β L B i.castSucc n₀ hz hT hπ hL hu hB (by
       intro j hj
       have hj' : i.succ ≤ j := Fin.castSucc_lt_iff_succ_le.mp hj
       have := hL.antitone hj'

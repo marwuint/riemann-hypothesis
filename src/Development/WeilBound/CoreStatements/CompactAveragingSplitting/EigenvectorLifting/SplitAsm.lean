@@ -17,9 +17,6 @@ def ChrFacts : Prop :=
     (v ∈ X.T → ¬ GlobalTheory.SplitWeil.IsUnram (chrW X.ν τ)) ∧
     (v ∉ X.T → GlobalTheory.SplitWeil.IsUnram (chrW X.α τ) ∧ GlobalTheory.SplitWeil.IsUnram (chrW X.β τ))
 
-theorem sb_eq (Y : Type) [TopologicalSpace Y] : GlobalTheory.SplitWeil.SB Y = GlobalTheory.WeilM.SB Y := by
-  exact SetLike.ext fun _ => Iff.rfl
-
 theorem extendOn {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (S : Submodule ℂ V)
     (g : V → W) (hg : ∀ x ∈ S, ∀ y ∈ S, ∀ c : ℂ, g (x + c • y) = g x + c • g y) :
     ∃ p : V →ₗ[ℂ] W, ∀ x ∈ S, p x = g x := by

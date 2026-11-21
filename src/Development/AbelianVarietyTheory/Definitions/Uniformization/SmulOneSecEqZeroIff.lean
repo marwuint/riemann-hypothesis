@@ -68,13 +68,6 @@ instance : Module F (SecMod p N) where
     (s - t).sec.f j = s.sec.f j - t.sec.f j := by
   rw [sub_eq_add_neg, coord_add, coord_neg, ← sub_eq_add_neg]
 
-theorem coord_sum {I : Type*} (S : Finset I) (s : I → SecMod p N) (j : N.ι) :
-    (∑ i ∈ S, s i).sec.f j = ∑ i ∈ S, (s i).sec.f j := by
-  classical
-  induction S using Finset.induction_on with
-  | empty => simp only [Finset.sum_empty, coord_zero]
-  | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, coord_add, ih]
-
 @[simp] theorem coord_mk (s : LB.Sec N) (j : N.ι) : (mk p s).sec.f j = s.f j := rfl
 
 @[ext] theorem ext_coord {s t : SecMod p N} (h : ∀ j, s.sec.f j = t.sec.f j) : s = t := by
@@ -92,28 +85,12 @@ variable {X Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶
   {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (r : Z ⟶ Y)
 include hJ
 
-theorem value_zero : sval (0 : SecMod p (LB.LinComb L φ ε)).sec r z J = 0 := by
-  refine (congrArg (gs r z (LB.wchart L φ fun k => J (r ≫ φ k)))
-    (coord_zero (p := p) (N := LB.LinComb L φ ε) (fun k => J (r ≫ φ k)))).trans ?_
-  exact (gs_eq r z _ (hJ.mem φ r) 0).trans (by rw [map_zero, map_zero])
-
-theorem value_add (s t : SecMod p (LB.LinComb L φ ε)) :
-    sval (s + t).sec r z J = sval s.sec r z J + sval t.sec r z J := by
-  exact (congrArg (gs r z (LB.wchart L φ fun k => J (r ≫ φ k))) (coord_add s t _)).trans
-    (gs_add _ _ _ (hJ.mem φ r) _ _)
-
 theorem value_smul (c : F) (s : SecMod p (LB.LinComb L φ ε)) :
     sval (c • s).sec r z J = gs r z ⊤ (scal p c) * sval s.sec r z J := by
   refine (congrArg (gs r z (LB.wchart L φ fun k => J (r ≫ φ k))) (coord_smul c s _)).trans ?_
   exact (gs_mul r z _ (hJ.mem φ r) _ _).trans
     (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) _))
 
-theorem value_sum {I : Type*} (S : Finset I) (s : I → SecMod p (LB.LinComb L φ ε)) :
-    sval (∑ i ∈ S, s i).sec r z J = ∑ i ∈ S, sval (s i).sec r z J := by
-  classical
-  induction S using Finset.induction_on with
-  | empty => rw [Finset.sum_empty, Finset.sum_empty]; exact value_zero hJ r
-  | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, value_add hJ r, ih]
 end Val
 
 def oneSec (F : Type) [CommRing F] :
@@ -141,13 +118,6 @@ theorem smul_oneSec_eq_zero_iff (F : Type) [CommRing F] (c : F) : c • oneSec F
   · rintro rfl
     exact zero_smul F _
 
-example : Nontrivial (SecMod (𝟙 (Spec (CommRingCat.of ℚ)))
-    (⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ : LB (Spec (CommRingCat.of ℚ)))) :=
-  ⟨⟨_, _, oneSec_ne_zero ℚ⟩⟩
-example : (2 : ℤ) • oneSec ℚ = (2 : ℚ) • oneSec ℚ := by
-  rw [two_smul, two_smul]
-example : oneSec ℚ + oneSec ℚ ≠ 0 := by
-  rw [← two_smul ℚ, Ne, smul_oneSec_eq_zero_iff]; norm_num
 end SecMod
 end GlobalTheory.UU
 end

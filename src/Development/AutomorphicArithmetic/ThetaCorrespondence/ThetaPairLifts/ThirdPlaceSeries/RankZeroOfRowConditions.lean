@@ -1,5 +1,5 @@
-import Formalism.LocalToGlobal.NormalizedHeckeFactors.RankZeroOfLevelThree
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.BaseRowsEqRecordRows
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesKernelFrame
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RowSideDetermined
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BaseRowsEqRecordRows
@@ -10,7 +10,7 @@ section
 noncomputable section
 namespace Formalism.L2.N.RankZeroOfLevelThree
 open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain Module
-open Formalism.L2.N.ExtNRows3 Formalism.L2.N.ExtNRows Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
+open Formalism.L2.N.ExtNRows3 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
 theorem rank_zero_of_row_conditions_alt {eps : ℝ} (Fm : FamP eps) (x0 : ℝ)
     (T : ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.TiedDataSKAlt (Fm.ex x hx i))
     (P : ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, RowSideFamily (Fm.ex x hx i))

@@ -36,10 +36,6 @@ theorem multi_isRatSection_mul {V : Ideal (MRingOver F ι)} (hV : V.IsPrime) {a 
     simp only [Pi.add_apply, Nat.cast_add]
     omega
 
-theorem multi_cycEval_add_fun (J J' : Ideal (MRingOver F ι) → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ) :
-    cycEval (fun W => J W + J' W) D = cycEval J D + cycEval J' D := by
-  simp only [cycEval, mul_add, Finsupp.sum_add]
-
 theorem multi_eval_sec {I : IFamily F ι} (hI : IsFieldIntersection I) {V : Ideal (MRingOver F ι)}
     {n : ℕ} (hV : IsProjVarF V (n + 1)) (L : Fin (n + 1) → K → ℤ) :
     I V (n + 1) L = cycEval (fun W => I W n (Fin.init L))

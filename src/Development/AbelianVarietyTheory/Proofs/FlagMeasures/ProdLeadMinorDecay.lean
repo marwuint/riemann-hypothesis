@@ -1,10 +1,10 @@
 import Mathlib
 import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CumulantLowerBoundOfBoundedCentredStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CumulantLowerBoundOfBoundedCentred
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeadMinorExpHermitianEqConvexExpSumStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DerivLeadMinorExpHermitianZeroDiagStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AbsSumEigenvaluesNoncompactPartLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HsLeWeightedSumBlockVariancesOfGapStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DerivLeadMinorExpHermitianZeroDiag
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AbsSumEigenvaluesNoncompactPartLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HsLeWeightedSumBlockVariancesOfGap
 open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants
 
 namespace GlobalTheory.MinorDecay
@@ -101,8 +101,8 @@ lemma minor_bound {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) �
         ≤ Real.log (leadMinor (NormedSpace.exp Y) l hl).re := by
   have hH := herm_of_inP h
   obtain ⟨w, hw0, -, hw1, hw⟩ := GlobalTheory.T.leadMinor_exp_hermitian_eq_convex_exp_sum n Y hH l hl
-  obtain ⟨hd1, hd2⟩ := GlobalTheory.T.deriv_leadMinor_exp_hermitian_zeroDiag n Y hH (diag_of_inP h) l hl
-  have hrange := GlobalTheory.T.abs_sum_eigenvalues_noncompactPart_le n ε Y hH h
+  obtain ⟨hd1, hd2⟩ := _root_.GlobalTheory.MinorJet.deriv_leadMinor_exp n Y hH (diag_of_inP h) l hl
+  have hrange := _root_.GlobalTheory.EigenPartialSum.abs_sum_eigenvalues_le n ε Y hH h
   rw [← hR] at hrange
   set y : Finset (Fin n) → ℝ := fun J => ∑ j ∈ J, hH.eigenvalues j with hy
   have hfun : (fun t : ℝ => (leadMinor (NormedSpace.exp ((t : ℂ) • Y)) l hl).re)
@@ -132,7 +132,7 @@ lemma minor_bound {n : ℕ} {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) �
   · have hy0 : ∀ J, y J = 0 := fun J => abs_nonpos_iff.1 (by rw [h0]; exact hrange J)
     change _ ≤ Real.log (∑ J, w J * Real.exp (y J))
     simp [hy0, hw1]
-  · exact GlobalTheory.T.quadratic_le_log_sum_exp_of_bounded_centred _ w y R h0 hw0 hw1 hd1 (fun J _ => hrange J)
+  · exact _root_.GlobalTheory.cumulant_lower_bound_of_bounded_centred _ w y R h0 hw0 hw1 hd1 (fun J _ => hrange J)
 
 lemma min_mul_eq (H c : ℝ) (hH : 0 ≤ H) :
     min 1 (1 / (c * Real.sqrt H)) * H = min H (Real.sqrt H / c) := by
@@ -154,7 +154,7 @@ theorem prod_leadMinor_decay : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n 
   set Y := km⁻¹ * X * km with hYdef
   have key := minor_bound hY _ rfl
   refine ⟨fun l hl => ⟨(key l hl).1, (key l hl).2.1⟩, ?_⟩
-  have hgs := GlobalTheory.T.hs_le_weighted_sum_blockVariances_of_gap n ε lam h Y hlam.1 hgap hY
+  have hgs := _root_.GlobalTheory.GapSum.gap_mul_hs_le n ε lam h Y hlam.1 hgap hY
   rw [← min_mul_eq _ _ (hs_nonneg Y)]
   set c := Real.sqrt (2 * ((min (univ.filter fun a => ε a = true).card
       (univ.filter fun a => ε a = false).card : ℕ) : ℝ)) with hc

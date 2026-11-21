@@ -5,10 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryPartn
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsContOnOfLocal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdeleJoinZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrArchPairAdeleJoin
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorArchimedeanMemAdelicSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzHaarWeilStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorArchimedeanMemAdelicSchwartz
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzHaarWeil
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicL2LimitZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicL2EqZeroImpEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicL2EqZeroImpEqZero
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta
 open IsDedekindDomain NumberField
@@ -41,7 +41,7 @@ theorem dS_om_eq : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : Ade
   set Qr : ℕ → (κ → AdeleRing (𝓞 F) F) → ℂ := fun n => ((n : ℂ) + 1) •
       (GlobalTheory.WeilM.schr ψ (GlobalTheory.WeilL2Words.archPair F (((n : ℝ) + 1)⁻¹ • h')) φ - φ) - GlobalTheory.WeilL2Words.dS F ψ h' φ with hQr
   have hQr_mem : ∀ n, Qr n ∈ GlobalTheory.WeilM.schA F κ := fun n =>
-    Submodule.sub_mem _ (Submodule.smul_mem _ _ (Submodule.sub_mem _ (GlobalTheory.T.schroedingerOperator_archimedean_mem_adelicSchwartz F κ ψ hψ _ φ hφ) hφ)) hD1
+    Submodule.sub_mem _ (Submodule.smul_mem _ _ (Submodule.sub_mem _ (_root_.GlobalTheory.WeilL2Words.schr_archPair_mem_schA F κ ψ hψ _ φ hφ) hφ)) hD1
   set Gn : ℕ → (κ → AdeleRing (𝓞 F) F) → ℂ := fun n a => ((n : ℂ) + 1) *
       (GlobalTheory.WeilM.schr ψ (GlobalTheory.WeilL2Words.archPair F (((n : ℝ) + 1)⁻¹ • h)) (om p φ) a - om p φ a) -
         om p (GlobalTheory.WeilL2Words.dS F ψ h' φ) a with hGn
@@ -57,7 +57,7 @@ theorem dS_om_eq : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : Ade
     have e : (fun n => GlobalTheory.WeilL2Words.l2A F μ (Gn n)) = fun n => GlobalTheory.WeilL2Words.l2A F μ (Qr n) := by
       funext n; rw [hGQ, hiso p _ (hQr_mem n)]
     rw [e]
-    have := GlobalTheory.T.adelic_schwartz_haar_weil F κ ψ hψ μ hμ h' φ hφ
+    have := _root_.GlobalTheory.WeilL2Convergence.tendsto_l2A_diffQuot F κ ψ hψ μ hμ h' φ hφ
     refine this.congr fun n => ?_
     congr 1
   set D : (κ → AdeleRing (𝓞 F) F) → ℂ := GlobalTheory.WeilL2Words.dS F ψ h (om p φ) - om p (GlobalTheory.WeilL2Words.dS F ψ h' φ) with hD
@@ -86,7 +86,7 @@ theorem dS_om_eq : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : Ade
     push_cast
     ring
   have hl := GlobalTheory.T.adelic_l2_limit_zero F κ μ D Gn hGmem hpt hGl2
-  have hz := GlobalTheory.T.adelic_l2_eq_zero_imp_eq_zero F κ μ hμ D hDmem hl
+  have hz := _root_.GlobalTheory.WeilL2Words.eq_zero_of_l2A_eq_zero F κ μ hμ D hDmem hl
   exact sub_eq_zero.mp hz
 
 end GlobalTheory.WeilL2Words

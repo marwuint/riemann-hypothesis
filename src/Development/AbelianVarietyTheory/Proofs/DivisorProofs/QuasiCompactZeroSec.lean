@@ -162,28 +162,6 @@ scoped instance cotCentral {O B : Type} [CommRing O] [CommRing B] [Bialgebra O B
 variable {p : ℕ} {O : Type} [CommRing O] {G : PDivGroup p O} {A : Over (Sp O)} [GrpObj A]
   {M : Type} [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M]
 
-theorem zeroSec_spOver_y (t : G.TorsionTower A) (n : ℕ) (φ : G.A n →ₐ[O] TrivSqZeroExt O M)
-    (hφ : (TrivSqZeroExt.fstHom O O M).comp φ = Bialgebra.counitAlgHom O (G.A n)) :
-    zeroSec O M ≫ spOver φ ≫ t.y n = η[A] := by
-  have h1 := (t.eq_one_iff n (Bialgebra.counitAlgHom O (G.A n))).2 fun a => by simp
-  have h2 := congrArg Over.Hom.left h1
-  simp only [Over.comp_left] at h2
-  ext1
-  simp only [Over.comp_left]
-  have e : (zeroSec O M).left ≫ (spOver φ).left =
-      (spOver (Bialgebra.counitAlgHom O (G.A n))).left := by
-    change Spec.map _ ≫ Spec.map _ = Spec.map _
-    rw [← Spec.map_comp]
-    congr 1
-    ext a
-    exact congrArg (fun f => f a) (congrArg AlgHom.toRingHom hφ)
-  rw [← Category.assoc, e, h2]
-  have hu : (toUnit (Over.mk (spMap (algebraMap O O)))).left = 𝟙 (Sp O) := by
-    rw [Over.toUnit_left]; exact Spec.map_id _
-  change (toUnit (Over.mk (spMap (algebraMap O O)))).left ≫ η[A].left = η[A].left
-  erw [hu]
-  exact Category.id_comp _
-
 variable (G) in
 
 def univ (n : ℕ) : G.A n →ₐ[O] TrivSqZeroExt O (Cot O (G.A n)) :=
@@ -193,9 +171,6 @@ theorem fst_comp_univ (n : ℕ) :
     (TrivSqZeroExt.fstHom O O (Cot O (G.A n))).comp (univ G n) =
       Bialgebra.counitAlgHom O (G.A n) := by
   ext a; simp [univ]
-
-def cn (t : G.TorsionTower A) (n : ℕ) : Wmod A →+ Cot O (G.A n) :=
-  Phi (spOver (univ G n) ≫ t.y n) (zeroSec_spOver_y t n _ (fst_comp_univ (G := G) n))
 
 end Tower
 

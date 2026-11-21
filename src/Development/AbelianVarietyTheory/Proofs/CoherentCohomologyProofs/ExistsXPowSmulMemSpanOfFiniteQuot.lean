@@ -10,16 +10,6 @@ namespace GlobalTheory
 
 open GradedHilbert Pointwise
 
-section
-
-variable {ι : Type} {R : Type} [CommRing R] {M : Type} [AddCommGroup M] [Module R M]
-  [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M]
-  (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] (i : ι)
-
-variable [Decomposition ℳ]
-
-end
-
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct in
 open Pointwise in
 

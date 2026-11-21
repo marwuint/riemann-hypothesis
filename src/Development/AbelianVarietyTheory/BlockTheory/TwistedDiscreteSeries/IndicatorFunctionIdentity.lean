@@ -210,59 +210,9 @@ def K (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q
     EqForm π' →ₗ[ℂ] EqForm π :=
   (evalEquiv π Q₀).symm.toLinearMap ∘ₗ kerVec hμ hθ P₀ Q₀ ∘ₗ (evalEquiv π' P₀).toLinearMap
 
-theorem K_apply (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n) (φ : EqForm π')
-    (h : GL n k) : (K hμ hθ P₀ Q₀ φ).1 (h • Q₀) = π h (θ (φ.1 P₀) (phiOneSB P₀ Q₀)) := by
-  change formOf π Q₀ (kerVec hμ hθ P₀ Q₀ (evalEquiv π' P₀ φ)) (h • Q₀) = _
-  rw [formOf_smul]
-  rfl
-
 open Classical in
 
 def midInd (q : Unif k) (L : Submodule 𝒪[k] (n' → k)) (e₁ : n' → k) (Q : Pair k n) (x : Matrix n n' k) : ℂ :=
   if (∀ y ∈ L, x *ᵥ y ∈ Q.lat) ∧ Q.HasVal (x *ᵥ (q.1 • e₁)) 1 then 1 else 0
-
-open Classical in
-
-def IndicatorIdentity : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    (n n' : Type) [Fintype n] [Fintype n'] (q : Unif k) (P₁ : Pair k n') (e₁ : n' → k) (_ : P₁.HasVal e₁ 1)
-    (Q : Pair k n) (x : Matrix n n' k),
-    ∑ Q₁ ∈ withKer Q.lat with cross q Q₁ Q = 1, phiOne P₁ Q₁ x = midInd q P₁.ker e₁ Q x ∧
-      midInd q P₁.ker e₁ Q x = ∑ P ∈ withLat P₁.ker with cross q P₁ P = 1, phiOne P Q x
-
-def scal (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) : ℂ :=
-  (((resCard k : ℝ) ^ (((t : ℝ) + 1) / 2) : ℝ) : ℂ)
-
-def OperatorRules : Prop :=
-  ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (t : ℕ)
-    (_ : Fintype.card n = Fintype.card n' + (t + 1))
-    (q : Unif k) (ψ : AddChar k Circle) (hψ : HasConductor ψ 1)
-    (μ : kˣ →* ℂˣ) (hμ : IsUnram μ) (_ : ∀ x, ‖(μ x : ℂ)‖ = 1)
-    (V' V : Type) [AddCommGroup V'] [Module ℂ V'] [AddCommGroup V] [Module ℂ V]
-    (π' : Representation ℂ (GL n' k) V') (π : Representation ℂ (GL n k) V) (_ : IsSmoothRep π') (_ : IsSmoothRep π)
-    (θ : V' →ₗ[ℂ] SB (Matrix n n' k) →ₗ[ℂ] V) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n),
-    (∀ φ : EqForm π', U q (K hμ hθ P₀ Q₀ φ).1 =
-      scal k t • (K hμ hθ P₀ Q₀ ⟨U q φ.1, U_mem_EqForm q φ.2⟩).1) ∧
-    (∀ (s : 𝓀[k]ˣ) (φ : EqForm π'), (K hμ hθ P₀ Q₀ ⟨dia s φ.1, dia_mem_EqForm s φ.2⟩).1 =
-      dia s (K hμ hθ P₀ Q₀ φ).1) ∧
-    (∀ φ : EqForm π', φ.1 ∈ Mram k n' V' →
-      (K hμ hθ P₀ Q₀ φ).1 ∈ Mram k n V ∧
-      FF q (resChar ψ hψ q) (K hμ hθ P₀ Q₀ φ).1 =
-        scal k t • (K hμ hθ P₀ Q₀ ⟨FF q (resChar ψ hψ q) φ.1, FF_mem_EqForm q _ φ.2⟩).1 ∧
-      FFStar q (resChar ψ hψ q) (K hμ hθ P₀ Q₀ φ).1 =
-        scal k t • (K hμ hθ P₀ Q₀ ⟨FFStar q (resChar ψ hψ q) φ.1, FFStar_mem_EqForm q _ φ.2⟩).1)
-
-def KernelsCommute : Prop := IndicatorIdentity ∧ OperatorRules
-
-example (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n) (φ : EqForm π') :
-    (K hμ hθ P₀ Q₀ φ).1 Q₀ = θ (φ.1 P₀) (phiOneSB P₀ Q₀) := by
-  simpa using K_apply hμ hθ P₀ Q₀ φ 1
-
-example (t : ℕ) : scal k t ^ 2 = (resCard k : ℂ) ^ (t + 1) := by
-  rw [scal, ← Complex.ofReal_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _)]
-  rw [show ((t : ℝ) + 1) / 2 * (2 : ℕ) = ((t + 1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]
-  push_cast
-  rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity

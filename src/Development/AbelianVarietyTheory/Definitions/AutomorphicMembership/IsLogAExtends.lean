@@ -2,7 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import ReciprocityTheory.DualLattices.ExistsPrimitiveRoot
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApproxStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMaps
 import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMapsLoc
 import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
@@ -74,15 +75,6 @@ theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
   obtain ⟨ε, h⟩ := exists_tilt ζ h0 hs
   exact ⟨ε, isEps_of_root h0 h1 h⟩
 
-theorem not_isEps_one : ¬ IsEps (1 : Per.Fl l) := fun h => h.2 (by simp)
-
-theorem core_isEps (C : Core l) : IsEps C.ε := isEps_of_root C.ζ_zero C.ζ_one C.ε_root
-
-theorem exists_chi (l : ℕ) [Fact l.Prime] : ∃ χ : GQ l →* ℤ_[l]ˣ, ∀ (g : GQ l) (m : ℕ) (x : Om l),
-    x ^ (l ^ m) = 1 → g x = x ^ (PadicInt.toZModPow m (χ g : ℤ_[l])).val :=
-  ⟨(cyclotomicCharacter (Om l) l).comp (MulSemiringAction.toRingAut (GQ l) (Om l)),
-    fun g m x hx => cyclotomicCharacter.spec l (n := m) (MulSemiringAction.toRingAut (GQ l) (Om l) g) x hx⟩
-
 theorem mu_eq (e : Per.Fl l) : mu e = xi e * mu ((frobeniusEquiv (Per.Fl l) l).symm e) := by
   rw [xi, mu, mu, geom_sum_mul, ← map_pow]
   congr 2
@@ -95,15 +87,6 @@ theorem theta_xi {e : Per.Fl l} (h : IsEps e) : Per.θ l (xi e) = 0 := by
   have h1 := congrArg (Per.θ l) (mu_eq e)
   rw [map_mul, theta_mu, theta_mu, h.1, sub_self] at h1
   exact (mul_eq_zero.1 h1.symm).resolve_right (sub_ne_zero.2 h.2)
-
-theorem core_isCrisDR (C : Core l) : Per.IsCrisDR l C.ι := by
-  obtain ⟨ι, hι⟩ := GlobalTheory.CrisIncl.exists_incl l
-  obtain ⟨j, h1, h2, h3⟩ := GlobalTheory.CrisIncl.exists_restrict l ι hι
-  have e : j = C.j := (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris).1 j ⟨h2, h3⟩
-  have e' : C.ι = ι := GlobalTheory.RingIface.bcris_ext l fun x => by rw [C.ι_j, h1, e]
-  rwa [e']
-
-theorem isLogA_one : IsLogA (1 : Per.Fl l) 0 := fun r => ⟨0, fun n _ => ⟨0, by simp [mu], 0, by simp⟩⟩
 
 theorem mem_pc (R : Type) [CommRing R] (r : ℕ) (x : GlobalTheory.AdicMaps.PHat l R) :
     x ∈ ((Ideal.span {(l : R)}) ^ r • ⊤ : Submodule R (GlobalTheory.AdicMaps.PHat l R)) ↔
@@ -238,13 +221,5 @@ theorem isLogA_phiA {e : Per.Fl l} {y : Per.Acris l} (hy : IsLogA e y) : IsLogA 
 theorem isLogA_sigA (g : Per.Gq l) {e : Per.Fl l} {y : Per.Acris l} (hy : IsLogA e y) :
     IsLogA (Per.σF g e) (sigA g y) :=
   isLogA_extends (GlobalTheory.CrisMaps.sigA_extends g) (GlobalTheory.RingIface.sigA_teich l g e) hy
-
-theorem exists_part (l : ℕ) [Fact l.Prime] : ∃ (ζ : ℕ → Om l) (ε : Per.Fl l) (t : Per.Acris l),
-    ζ 0 = 1 ∧ (∀ m, ζ (m + 1) ^ l = ζ m) ∧ ζ 1 ≠ 1 ∧
-    (∀ m, (rootT ε m : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (ζ m)) ∧ IsLogA ε t := by
-  obtain ⟨ζ, h0, hs, h1⟩ := exists_zeta l
-  obtain ⟨ε, h⟩ := exists_tilt ζ h0 hs
-  obtain ⟨t, ht⟩ := exists_isLogA (isEps_of_root h0 h1 h).1
-  exact ⟨ζ, ε, t, h0, hs, h1, h, ht⟩
 
 end GlobalTheory.MemLoc.Model

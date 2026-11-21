@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorsTrivialIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpreadTorsorToEtaleAlgebraStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalOverClosedPointClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionStrictHenselisationClosedFibrePointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecialisationToStrictlyHenselianStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionStrictHenselisationClosedFibrePoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecialisationToStrictlyHenselian
 open IsLocalRing Polynomial
 
 noncomputable section
@@ -56,13 +56,13 @@ private theorem section_at_closedPt : GlobalTheory.LocAcyc.KeyClosedPts →
       GlobalTheory.LocAcyc.LocPiecesEtale E S ∧
       ∃ s : DE →+* GlobalTheory.LocAcyc.GenFib T S,
         ∀ e : E, s (algebraMap (GlobalTheory.LocAcyc.GenFib T E) DE (algebraMap E _ e)) =
-          algebraMap S (GlobalTheory.LocAcyc.GenFib T S) (algebraMap E S e) := GlobalTheory.T.exists_section_strictHenselisation_closedFibre_point
+          algebraMap S (GlobalTheory.LocAcyc.GenFib T S) (algebraMap E S e) := _root_.GlobalTheory.LocAcyc.exists_section_strictHenselisation_at_closed
 private theorem specialisation_map : ∀ (R S O : Type) [CommRing R] [CommRing S] [IsLocalRing S] [CommRing O]
     [HenselianLocalRing O] [IsSepClosed (IsLocalRing.ResidueField O)] [Algebra R S] [Algebra R O]
     (Q y : Ideal R) [Q.IsPrime] [y.IsPrime], Q ≤ y →
     (IsLocalRing.maximalIdeal S).comap (algebraMap R S) = y →
     (IsLocalRing.maximalIdeal O).comap (algebraMap R O) = Q →
-    Module.Flat R S → GlobalTheory.LocAcyc.LocPiecesEtale R S → Nonempty (S →ₐ[R] O) := GlobalTheory.T.exists_specialisation_to_strictlyHenselian
+    Module.Flat R S → GlobalTheory.LocAcyc.LocPiecesEtale R S → Nonempty (S →ₐ[R] O) := _root_.GlobalTheory.Specialise.specialisation_exists
 
 theorem keyGeneric_of_keyClosedPts : KeyClosedPts → KeyGeneric := by
   intro hC T O _ _ _ _ _ _ _ _ hAIC P _ φ hφ hSH hP hPeq q hq hqu

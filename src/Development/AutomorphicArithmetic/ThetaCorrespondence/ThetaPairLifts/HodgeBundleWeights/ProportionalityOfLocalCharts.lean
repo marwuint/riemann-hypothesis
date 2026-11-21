@@ -1,4 +1,4 @@
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
+import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffCartierCompl
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.Hypotheses2
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.BaseWeightLineBundleIsNef
@@ -11,13 +11,6 @@ open Filter
 set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CompProport
-section Flag
-open GlobalTheory.VarFlag
-open GlobalTheory.ShFam (EigFrame FlagCpt FlagTor)
-open GlobalTheory.Toroidal (gen genι genStr genBd genBdIdeal HasToricChart)
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-  {Xo : Moduli Dw l} {c : Coeff l}
-end Flag
 section Good
 open Formalism.BasicNotions Formalism.L2.Theta GlobalTheory.CovTop GlobalTheory.HSApp GlobalTheory.DegCmp
 open GlobalTheory.Toroidal (genBd HasToricChart)
@@ -45,7 +38,7 @@ theorem growth_eq_top_self_intersection (hP : _root_.GlobalTheory.CovTop.Hypothe
     (fun m => vanBd TF.X Z (m • la)) fun _ _ => Iff.rfl, CompHt.growthOn]
   congr 1
   funext m
-  have h1 := GlobalTheory.T.cuspForms_extend_vanish_compactifiedFlagSpace D T j Y e o hY hf Z TF (m • la)
+  have h1 := _root_.GlobalTheory.CompHS.cusp_extends_comp D T j Y e o hY hf Z TF (m • la)
   have h2 := le_antisymm h1.space_le (vanBd_le_space D T j Y e o hY hf Z TF (m • la))
   rw [CompHt.nsmul_wtOf, smul_zero, ← h2]
   exact congrArg _ h1.equiv.rank_eq

@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TranscendenceTraces.IsolateSpec
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImageCochainExists
 
@@ -30,7 +32,7 @@ theorem UpperTheory.Gal.TranscendenceTraces.rpBasic_of :
   intro R _ I X n
   have ev_lin := GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)
   have key := fun (α : Cocycle ((chains R).obj (sch.obj X)) I n) =>
-    (GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X I (n - 1) n (n + 1) (by ring) rfl).2 α
+    (_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R X I (n - 1) n (n + 1) (by ring) rfl).2 α
   have h0 : -((0 : ℕ) : ℤ) + n = n := by simp
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro x

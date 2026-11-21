@@ -1,5 +1,5 @@
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Actions
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.LinSubstIsHomogeneous
+import Formalism.SatakeDualWeyl.Statement
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
 
 noncomputable section
@@ -7,12 +7,6 @@ noncomputable section
 open Matrix TensorProduct
 
 namespace Formalism.UG
-
-def stdRep (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n] :
-    Representation O (GL n O) (n → O) where
-  toFun := stdAct O n
-  map_one' := (P.standard_action_mul_holds O n 1 1).2
-  map_mul' g h := (P.standard_action_mul_holds O n g h).1
 
 def tensRep (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n] (k : ℕ) :
     Representation O (GL n O) (⨂[O]^k (n → O)) where
@@ -28,43 +22,6 @@ def polyRep (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n] :
     rfl
   map_mul' g h := by
     rw [(P.polynomial_action_mul_holds O n g h).1, AlgHom.comp_toLinearMap]
-    rfl
-
-def nablaRep (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n] (k : ℕ) :
-    Representation O (GL n O) (nabla O n k) where
-  toFun g := (polyAct O n g).toLinearMap.restrict (fun P hP => Formalism.UG.P.nabla_subspace_stable O n k g P hP)
-  map_one' := by
-    apply LinearMap.ext
-    intro P
-    apply Subtype.ext
-    change polyAct O n 1 (P : MvPolynomial n O) = (P : MvPolynomial n O)
-    rw [(Formalism.UG.P.polynomial_action_mul_holds O n 1 1).2]
-    rfl
-  map_mul' g h := by
-    apply LinearMap.ext
-    intro P
-    apply Subtype.ext
-    change polyAct O n (g * h) (P : MvPolynomial n O) = polyAct O n g (polyAct O n h P)
-    rw [(Formalism.UG.P.polynomial_action_mul_holds O n g h).1]
-    rfl
-
-def weylRep (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n] (k : ℕ) :
-    Representation O (GL n O) (weylSub O n k) where
-  toFun g := (polyAct O n g).toLinearMap.restrict
-    (fun P hP => Formalism.UG.P.weyl_module_stable O n k g P hP)
-  map_one' := by
-    apply LinearMap.ext
-    intro P
-    apply Subtype.ext
-    change polyAct O n 1 (P : MvPolynomial n O) = (P : MvPolynomial n O)
-    rw [(Formalism.UG.P.polynomial_action_mul_holds O n 1 1).2]
-    rfl
-  map_mul' g h := by
-    apply LinearMap.ext
-    intro P
-    apply Subtype.ext
-    change polyAct O n (g * h) (P : MvPolynomial n O) = polyAct O n g (polyAct O n h P)
-    rw [(Formalism.UG.P.polynomial_action_mul_holds O n g h).1]
     rfl
 
 def ratEquiv {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : Type} [Fintype n]

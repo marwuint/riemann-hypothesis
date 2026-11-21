@@ -9,12 +9,6 @@ open NumberField IntermediateField
 
 namespace GroundTheory.Global.Artin
 
-section Group
-
-variable {G α : Type*} [Group G] [MulAction G α]
-
-end Group
-
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L] (H : Subgroup Gal(L/K))
 

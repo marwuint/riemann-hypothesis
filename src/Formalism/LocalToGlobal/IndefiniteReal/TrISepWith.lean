@@ -9,7 +9,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.STiesR
 import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.FramesOK
 import Formalism.LocalToGlobal.IndefiniteReal.FrameExistence.NormalFrameClauses
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal
-import Formalism.LocalToGlobal.IndefiniteReal.RealSeparation.SEEPinC
+import Formalism.LocalToGlobal.IndefiniteReal.AutomorphicEvaluation
+import Formalism.LocalToGlobal.IndefiniteReal.EvalTieTOne
+import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Formalism.LocalToGlobal.IndefiniteReal.RationalEmbedding
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.UnipotentInLevelSubgroup
 
@@ -185,8 +187,6 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   (R : RealT Rc P Dcf Spf Zscf S Ks)
 
 abbrev F (_R : RealT Rc P Dcf Spf Zscf S Ks) : Face3 D P.A3 := faceT P Dcf Spf Zscf
-
-def FramesEx : Prop := Formalism.IndefR.Seed.Frm.FramesExistDiagonal D R.Rl.Pg
 
 end RealT
 

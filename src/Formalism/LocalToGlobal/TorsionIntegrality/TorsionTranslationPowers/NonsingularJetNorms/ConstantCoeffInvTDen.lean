@@ -23,12 +23,6 @@ def ball (K : Type) [NormedField K] [IsUltrametricDist K] : Subring K where
 theorem mem_ball {K : Type} [NormedField K] [IsUltrametricDist K] {a : K} :
     a ∈ ball K ↔ ‖a‖ ≤ 1 := Iff.rfl
 
-section Alg
-
-variable {R : Type} [CommRing R] (W : WeierstrassCurve R) (xP yP : R)
-
-end Alg
-
 section Pts
 
 variable {K : Type} [Field K] [DecidableEq K] (W : WeierstrassCurve K)
@@ -37,12 +31,6 @@ theorem px_neg (Q : W.toAffine.Point) : px W (-Q) = px W Q := by
   cases Q <;> rfl
 
 end Pts
-
-section Nrm
-
-variable {K : Type} [NormedField K] [IsUltrametricDist K]
-
-end Nrm
 
 end Shape
 

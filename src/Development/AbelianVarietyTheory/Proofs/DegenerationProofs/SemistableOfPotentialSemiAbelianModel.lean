@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyTorusExtOfSplit
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSemiAbelianTorusExtensionOfPotentialModelStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSemiAbelianTorusExtensionOfPotentialModel
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.GenericFiberGluing.SemistableCompleteSplit
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
@@ -19,12 +19,12 @@ theorem semistable_of_potModel_semiAbelian : (∀ (V : Type) [CommRing V] [IsDom
   refine ⟨?_, ?_⟩
   · intro V _ _ _ _ K _ _ _ _ A _ hA
     obtain ⟨K', i1, i2, i3, V', i4, i5, i6, i7, i8, i9, i10, h1, h2, h3, G, i11, hG, he, hT⟩ :=
-      GlobalTheory.T.exists_semiAbelian_torusExtension_of_potentialModel V K A (h V K A hA)
+      _root_.GlobalTheory.SS.exists_semiAbelian_model_torusExtension_of_potModel V K A (h V K A hA)
     exact ⟨K', i1, i2, i3, V', i4, i5, i6, i8, i9, i10, h1, h2, h3, G, i11,
       hG.comm, hG.smooth, hG.separated, hG.quasiCompact, he, GlobalTheory.SplitExtTorus.nonempty_torusExt_of_split _ _ hT⟩
   · intro V _ _ _ _ K _ _ _ _ A _ hA
     obtain ⟨K', i1, i2, i3, V', i4, i5, i6, i7, i8, i9, i10, h1, h2, h3, G, i11, hG, he, hT⟩ :=
-      GlobalTheory.T.exists_semiAbelian_torusExtension_of_potentialModel V K A (h V K A hA)
+      _root_.GlobalTheory.SS.exists_semiAbelian_model_torusExtension_of_potModel V K A (h V K A hA)
     exact ⟨K', i1, i2, i3, V', i4, i5, i6, i7, i8, i9, i10, inferInstance, h3, G, i11, hG, he, hT⟩
 
 end GlobalTheory.SS

@@ -30,15 +30,4 @@ theorem integrableOn_exp_logCone (c : ℝ) {s : Fin r → ℝ} (hs : ∀ k, part
   rw [integrableOn_Ici_iff_integrableOn_Ioi]
   exact integrableOn_exp_mul_Ioi (hs k) c
 
-theorem integral_exp_logCone (c : ℝ) {s : Fin r → ℝ} (hs : ∀ k, partialSum s k < 0) :
-    ∫ x in logCone r c, exp (∑ i, s i * x i) =
-      ∏ k, exp (partialSum s k * c) / (-partialSum s k) := by
-  rw [setIntegral_logCone]
-  show ∫ y in lowerBox r c, (fun y : Fin r → ℝ => exp (∑ i, s i * tailSum y i)) y = _
-  rw [exp_sum_mul_tailSum_eq, lowerBox, volume_pi, Measure.restrict_pi_pi,
-    integral_fintype_prod_eq_prod (E := fun _ => ℝ)
-      (fun (k : Fin r) (t : ℝ) => exp (partialSum s k * t))]
-  refine Finset.prod_congr rfl fun k _ => ?_
-  rw [integral_Ici_eq_integral_Ioi, integral_exp_mul_Ioi (hs k), neg_div, div_neg]
-
 end ReciprocityTheory.ThetaSummability.Est

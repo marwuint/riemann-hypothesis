@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverExtAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocalRingOfIdem
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyLeftMulBasis
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparableCharpolyInvAlgBaseChangeUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegerMapIsIntegralUnramifiedInvolutionExStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrFractionFieldAddValNormUnramifiedLocalExtStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueGeneratesUnramifiedExtResidueFieldStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotIsRootResidueCofactorUnramifiedExtStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeparableCharpolyInvAlgBaseChangeUnramified
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegerMapIsIntegralUnramifiedInvolutionEx
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrFractionFieldAddValNormUnramifiedLocalExt
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueGeneratesUnramifiedExtResidueField
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NotIsRootResidueCofactorUnramifiedExt
 
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr Polynomial
 
@@ -16,10 +16,10 @@ namespace GlobalTheory.UnitLemma.Unr.ResVal
 
 theorem int_lift : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ →
     ∃ φO : K.O →+* K'.O, (∀ x, algebraMap K'.O K'.E (φO x) = φ (algebraMap K.O K.E x)) ∧
-      @Algebra.IsIntegral K.O K'.O _ _ φO.toAlgebra := GlobalTheory.T.exists_integerMap_isIntegral_unramifiedInvolutionExt
+      @Algebra.IsIntegral K.O K'.O _ _ φO.toAlgebra := _root_.GlobalTheory.UnitLemma.Unr.intMap_isIntegral_of_unr
 
 theorem val_norm : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → ∀ y : K'.E,
-    val K.O (@Algebra.norm K.E K'.E _ _ φ.toAlgebra y) = (d : ℤ) * val K'.O y := GlobalTheory.T.dvrFractionFieldAddVal_norm_unramifiedLocalExt
+    val K.O (@Algebra.norm K.E K'.E _ _ φ.toAlgebra y) = (d : ℤ) * val K'.O y := _root_.GlobalTheory.UnitLemma.Unr.NormValU.val_norm
 
 theorem res_gen : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ →
     ∀ (B : InvAlg K) (ψ : K'.E →+* B.A), (∀ e, ψ (φ e) = algebraMap K.E B.A e) → Nontrivial B.A →
@@ -28,7 +28,7 @@ theorem res_gen : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K'
     Q.map (IsLocalRing.residue K'.O) = (X - C (IsLocalRing.residue K'.O s)) ^ Q.natDegree →
     ∀ y : K'.O, ∃ f : K.O[X], ∃ z ∈ IsLocalRing.maximalIdeal K'.O,
       algebraMap K'.O K'.E y = f.eval₂ (φ.comp (algebraMap K.O K.E)) (algebraMap K'.O K'.E s) +
-        algebraMap K'.O K'.E z := GlobalTheory.T.residue_generates_unramifiedExt_residueField
+        algebraMap K'.O K'.E z := _root_.GlobalTheory.UnitLemma.Unr.residue_generates
 
 theorem res_mult : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → ∀ s : K'.O,
     (∀ y : K'.O, ∃ f : K.O[X], ∃ z ∈ IsLocalRing.maximalIdeal K'.O,
@@ -38,7 +38,7 @@ theorem res_mult : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K
     r.map (IsLocalRing.residue K'.O) = (X - C (IsLocalRing.residue K'.O s)) ^ r.natDegree →
     p.natDegree = d * r.natDegree →
     p.map (φ.comp (algebraMap K.O K.E)) = (r * c).map (algebraMap K'.O K'.E) →
-    ¬ (c.map (IsLocalRing.residue K'.O)).IsRoot (IsLocalRing.residue K'.O s) := GlobalTheory.T.not_isRoot_residue_cofactor_unramifiedExt
+    ¬ (c.map (IsLocalRing.residue K'.O)).IsRoot (IsLocalRing.residue K'.O s) := _root_.GlobalTheory.UnitLemma.Unr.ResMult.not_isRoot_cofactor
 
 theorem val_neg_one_pow {K : UQ} (k : ℕ) (x : K.E) : val K.O ((-1) ^ k * x) = val K.O x := by
   rcases neg_one_pow_eq_or K.E k with h | h <;> simp [h, val, Valuation.map_neg]
@@ -141,7 +141,7 @@ theorem val_resultant_unr : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsU
     exact isIntegral_trans (R := K.O) _ h2
   have hs₂ : B₂.P.Separable := hsep.of_mul_right
   obtain ⟨p₂, hp₂m, hp₂⟩ := GlobalTheory.UnitLemma.Orbit.exists_monic_map_eq_charpoly₂ B₂ hs₂ hg₂
-  have hs₂' : B₂'.P.Separable := GlobalTheory.T.separable_charpoly_invAlgBaseChangeUnramified K K' d φ hU B₂ ψ₂ h₂ h₂' hs₂
+  have hs₂' : B₂'.P.Separable := _root_.GlobalTheory.UnitLemma.Unr.charpoly_overExt_separable K K' d φ hU B₂ ψ₂ h₂ h₂' hs₂
   have hcomp : ∀ (A : Type) [CommRing A] [Algebra K.E A] [Algebra K.O A] [IsScalarTower K.O K.E A] (ψ : K'.E →+* A),
       (∀ e, ψ (φ e) = algebraMap K.E A e) → (ψ.comp (algebraMap K'.O K'.E)).comp φO = algebraMap K.O A := by
     intro A _ _ _ _ ψ hψ

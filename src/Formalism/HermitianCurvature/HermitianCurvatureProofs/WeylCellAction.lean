@@ -103,6 +103,4 @@ end Formalism.FourierDecayAlt.P.PBN
 
 namespace Formalism.FourierDecayAlt.P
 
-open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PBN
-
 end Formalism.FourierDecayAlt.P

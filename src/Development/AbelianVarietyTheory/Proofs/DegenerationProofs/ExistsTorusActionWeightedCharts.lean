@@ -8,7 +8,8 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsClosedImmers
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsClosedImmersionAbelianPartBundleStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsPartPartSec
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.EqOfWeightEq
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPureWeightSectionNeZeroAtStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPureWeightSectionNeZeroAt
+import Development.AbelianVarietyTheory.Definitions.Degenerations.PullChartIsLB
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPointTranslatePure
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsBasisUniqueMinAndSumsSeparated
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsIsPowGrpSplitTorus
@@ -393,7 +394,7 @@ theorem exists_split : Out.Laws → Out.Laws2 → ∀ (k : Type) [Field k] [IsAl
   · have := hasWt_map f.toAddMonoidHom (hasWt_ratio Φ (pure _ (hb' n) j hj) (pure0 a) (hW a).1.le ((hW a).2 j))
     rwa [hf] at this
   · have hU := eq_top_of_points Φ (⨆ j : {i // Ch.wt i = cl (b n)}, nonzeroLocus (F' (e j.1))) fun y => by
-      obtain ⟨φ, hφ, hy⟩ := GlobalTheory.T.exists_pureWeight_section_ne_zero_at hL hL2 k Φ N hB.four π (b n) y
+      obtain ⟨φ, hφ, hy⟩ := _root_.GlobalTheory.ZH.FibPre.exists_pure_ne_zero_at hL hL2 k Φ N hB.four π (b n) y
       obtain ⟨a, ha⟩ := span _ (hb' n) _ rfl φ hφ
       exact fun z hz => TopologicalSpace.Opens.mem_iSup.2 (exists_mem_of_isLin ha (hy hz))
     obtain ⟨j, hj⟩ := TopologicalSpace.Opens.mem_iSup.1 (hU.ge (show x ∈ ⊤ from trivial))

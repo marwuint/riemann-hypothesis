@@ -1,14 +1,11 @@
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SumSupportEq
-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EventualValue
+import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LocPairValLinear
+
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.ValLin
-
-variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : Type} [DecidableEq K]
-  {ι : K → Type} {σ : Type}
 
 end GlobalTheory.CompanionTheory.Ar.Num.ValLin
 

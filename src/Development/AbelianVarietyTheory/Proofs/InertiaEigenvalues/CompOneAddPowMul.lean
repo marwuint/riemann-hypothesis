@@ -77,16 +77,6 @@ theorem comp_pow_mul {i j : ℕ} (hi : i < l) (hj : j < l) (a : k⸨X⸩) :
       have := Int.eq_zero_of_abs_lt_dvd this (by rw [abs_lt]; constructor <;> omega)
       omega
 
-theorem eq_of_comp_eq {y z : k⸨X⸩} (h : ∀ i < l, comp l hl i y = comp l hl i z) : y = z := by
-  ext m
-  have hl' : (0 : ℤ) < l := by exact_mod_cast hl
-  have h0 := Int.emod_nonneg m hl'.ne'
-  have h1 := Int.emod_lt_of_pos m hl'
-  have := congrArg (fun w => w.coeff (m / l)) (h (m % l).toNat (by omega))
-  simp only [comp_coeff] at this
-  rw [Int.toNat_of_nonneg h0, Int.mul_ediv_add_emod] at this
-  exact this
-
 theorem comp_one_add_pow_mul {i j : ℕ} (hi : i < l) (hj : j < l) (a : k⸨X⸩) :
     comp l hl i ((1 + (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩)) ^ j * φ a)
       = (j.choose i) • a := by
@@ -106,34 +96,6 @@ theorem comp_one_add_pow_mul {i j : ℕ} (hi : i < l) (hj : j < l) (a : k⸨X⸩
   · rfl
   · rw [Nat.choose_eq_zero_of_lt (by simpa using h), zero_smul]
 
-theorem existsUnique_decomp (y : k⸨X⸩) :
-    ∃! x : Fin l → k⸨X⸩, y = ∑ j : Fin l,
-      (1 + (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩)) ^ j.val * φ (x j) := by
-  let M : Matrix (Fin l) (Fin l) k⸨X⸩ := fun i j => (j.val.choose i.val : k⸨X⸩)
-  have hM : IsUnit M := by
-    rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_of_upperTriangular]
-    · simp [M]
-    · intro i j hij
-      have : j.val < i.val := hij
-      simp [M, Nat.choose_eq_zero_of_lt this]
-  have hb : Function.Bijective M.mulVec :=
-    ⟨Matrix.mulVec_injective_iff_isUnit.2 hM, Matrix.mulVec_surjective_iff_isUnit.2 hM⟩
-  have key : ∀ (x : Fin l → k⸨X⸩) (i : Fin l), comp l hl i (∑ j : Fin l,
-      (1 + (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩)) ^ j.val * φ (x j)) = M.mulVec x i := by
-    intro x i
-    rw [map_sum, Matrix.mulVec, dotProduct]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    rw [comp_one_add_pow_mul l hl φ hφ i.2 j.2, nsmul_eq_mul]
-  have := hb.existsUnique (fun i : Fin l => comp l hl i y)
-  refine (existsUnique_congr fun x => ?_).1 this
-  constructor
-  · intro h
-    refine eq_of_comp_eq l hl φ hφ fun i hi => ?_
-    rw [key x ⟨i, hi⟩, h]
-  · intro h
-    funext i
-    rw [← key, ← h]
-
 end
 
 noncomputable def psi (l : ℕ) (hl : 0 < l) : k⸨X⸩ →ₗ[k] k⸨X⸩ :=
@@ -142,63 +104,5 @@ noncomputable def psi (l : ℕ) (hl : 0 < l) : k⸨X⸩ →ₗ[k] k⸨X⸩ :=
 theorem psi_apply (l : ℕ) (hl : 0 < l) (y : k⸨X⸩) :
     psi l hl y = ∑ i ∈ Finset.range l, ((-1 : ℤ) ^ i) • comp l hl i y := by
   simp only [psi, LinearMap.sum_apply, LinearMap.smul_apply]
-
-theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ {k : Type} [Field k] (l : ℕ) (_ : 0 < l) (φ : k⸨X⸩ →+* k⸨X⸩), (∀ (x : k⸨X⸩) (m : ℤ), (φ x).coeff m = if (l : ℤ) ∣ m then x.coeff (m / l) else 0) → let p : k⸨X⸩ := HahnSeries.single 1 1; (∀ y : k⸨X⸩, ∃! x : Fin l → k⸨X⸩, y = ∑ j : Fin l, (1 + p) ^ j.val * φ (x j)) ∧ ∃ ψ : k⸨X⸩ →ₗ[k] k⸨X⸩, (∀ a, ψ (φ a) = a) ∧ (∀ (a) (j : ℕ), 0 < j → j < l → ψ ((1 + p) ^ j * φ a) = 0) ∧ ∀ s : ℤ, ψ '' {x | ∃ b : k⟦X⟧, x = p ^ s * (b : k⸨X⸩)} = {x | ∃ b : k⟦X⟧, x = p ^ (s / l) * (b : k⸨X⸩)} := by
-  intro k _ l hl φ hφ p
-  have hl' : (0 : ℤ) < l := by exact_mod_cast hl
-  have hpow : ∀ j < l, ∀ a, psi l hl (p ^ j * φ a) = ((-1 : ℤ) ^ j) • a := by
-    intro j hj a
-    rw [psi_apply, Finset.sum_eq_single j]
-    · congr 1
-      exact (comp_pow_mul l hl φ hφ hj hj a).trans (if_pos rfl)
-    · intro i hi hij
-      have := (comp_pow_mul l hl φ hφ (Finset.mem_range.1 hi) hj a).trans (if_neg hij.symm)
-      rw [this, smul_zero]
-    · intro h; exact absurd (Finset.mem_range.2 hj) h
-  refine ⟨existsUnique_decomp l hl φ hφ, psi l hl, fun a => ?_, fun a j hj0 hj => ?_, fun s => ?_⟩
-  · simpa using hpow 0 hl a
-  · rw [psi_apply]
-    have : ∀ i ∈ Finset.range l, ((-1 : ℤ) ^ i) • comp l hl i ((1 + p) ^ j * φ a)
-        = ((-1 : ℤ) ^ i * (j.choose i : ℤ)) • a := by
-      intro i hi
-      have := comp_one_add_pow_mul l hl φ hφ (Finset.mem_range.1 hi) hj a
-      rw [this]
-      rw [mul_smul, natCast_zsmul]
-    rw [Finset.sum_congr rfl this, ← Finset.sum_smul,
-      ← Finset.sum_subset (Finset.range_subset_range.2 (show j + 1 ≤ l from hj)),
-      Int.alternating_sum_range_choose_of_ne hj0.ne', zero_smul]
-    intro i _ hi
-    rw [Nat.choose_eq_zero_of_lt (by simpa using hi)]
-    simp
-  · have h0 := Int.emod_nonneg s hl'.ne'
-    have h1 := Int.emod_lt_of_pos s hl'
-    have h2 := Int.mul_ediv_add_emod s l
-    ext z
-    simp only [Set.mem_image, Set.mem_setOf_eq, p, mem_iff]
-    constructor
-    · rintro ⟨y, hy, rfl⟩ m hm
-      rw [psi_apply, HahnSeries.coeff_sum]
-      refine Finset.sum_eq_zero fun i hi => ?_
-      have hi' : (i : ℤ) < l := by exact_mod_cast Finset.mem_range.1 hi
-      have : (comp l hl i y).coeff m = 0 := by
-        rw [comp_coeff]
-        apply hy
-        nlinarith
-      rw [HahnSeries.coeff_smul, this, smul_zero]
-    · intro hz
-      refine ⟨p ^ (l - 1) * φ (((-1 : ℤ) ^ (l - 1)) • z), fun m hm => ?_, ?_⟩
-      · rw [p_pow, HahnSeries.coeff_single_mul, one_mul, hφ]
-        split_ifs with hd
-        · obtain ⟨c, hc⟩ := hd
-          rw [hc, Int.mul_ediv_cancel_left _ hl'.ne', HahnSeries.coeff_smul, hz, smul_zero]
-          have : ((l - 1 : ℕ) : ℤ) = l - 1 := by omega
-          rw [this] at hc
-          nlinarith
-        · rfl
-      · rw [hpow _ (by omega), smul_smul, ← mul_pow]
-        simp
-
-theorem main : ∀ {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (φ : k⸨X⸩ →ₐ[k] k⸨X⸩), (∀ (x : k⸨X⸩) (m : ℤ), (φ x).coeff m = if (l : ℤ) ∣ m then x.coeff (m / l) else 0) → let p : k⸨X⸩ := HahnSeries.single 1 1; (∀ y : k⸨X⸩, ∃! x : Fin l → k⸨X⸩, y = ∑ j : Fin l, (1 + p) ^ j.val * φ (x j)) ∧ ∃ ψ : k⸨X⸩ →ₗ[k] k⸨X⸩, (∀ a, ψ (φ a) = a) ∧ (∀ (a) (j : ℕ), 0 < j → j < l → ψ ((1 + p) ^ j * φ a) = 0) ∧ ∀ s : ℤ, ψ '' {x | ∃ b : k⟦X⟧, x = p ^ s * (b : k⸨X⸩)} = {x | ∃ b : k⟦X⟧, x = p ^ (s / l) * (b : k⸨X⸩)} :=
-  fun l hp _ φ hφ => finiteRing_sq_sub_mul_sq_eq_of_card l hp.out.pos φ.toRingHom hφ
 
 end GlobalTheory.PsiBasis

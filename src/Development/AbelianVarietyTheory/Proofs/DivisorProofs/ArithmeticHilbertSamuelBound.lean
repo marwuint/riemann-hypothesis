@@ -1,9 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HermSysHypOneLeLambdaZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExplicitArithmeticHilbertSamuelBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BertiniNumberFieldOfHilbertSamuelQuotedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SlopeLowerBoundTopLatticeOffHypersurfaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExplicitArithmeticHilbertSamuelBound
+import Development.AbelianVarietyTheory.Definitions.Divisors.InclEquiv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BertiniNumberFieldOfHilbertSamuel
+import Development.AbelianVarietyTheory.Definitions.Divisors.AevalEqZeroOfMemConeIdeal
+import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SlopeLowerBoundTopLatticeOffHypersurface
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormHeightEqHt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRightInvOfSpan
 open CategoryTheory AlgebraicGeometry NumberField
@@ -17,6 +20,6 @@ open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 namespace GlobalTheory.HSShort
 
 theorem geoBound_of_quoted' : Quoted → GeoBound := fun hQ =>
-  GlobalTheory.T.explicit_arithmetic_hilbertSamuel_bound hQ (GlobalTheory.T.bertiniNumberField_of_hilbertSamuel₂ hQ) (GlobalTheory.HeightTieProof.heightTie GlobalTheory.HSShort.htMul) GlobalTheory.T.slopeLowerBound_topLattice_offHypersurface
+  _root_.GlobalTheory.HSShortTop.geoBound_of_abstract hQ (_root_.GlobalTheory.HSShort.bertiniNumberField_of_hilbertSamuel hQ) (GlobalTheory.HeightTieProof.heightTie GlobalTheory.HSShort.htMul) _root_.GlobalTheory.HSShort.SlopeTop.slopeBound
 
 end GlobalTheory.HSShort

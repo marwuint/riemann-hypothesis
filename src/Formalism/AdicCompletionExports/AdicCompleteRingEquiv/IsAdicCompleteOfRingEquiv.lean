@@ -1,4 +1,15 @@
-import Formalism.WachLatticeTwists.RealDisplaySplitting.GaloisTheoremWithGenerator
+import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapSecondPlace
+import Formalism.WachLatticeTwists.SplitClassesAll.Statement
+import Formalism.WachLatticeTwists.SplitLocalLifts.Statement
+import Formalism.WachLatticeTwists.HerrComplexInjectivity.Statement
+import Formalism.WachLatticeTwists.CharacterSplitJumps.WachTwistTheoremFromTorsionBound
+import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
+import Formalism.WachLatticeTwists.Statement
+import Formalism.WachLatticeTwists.SandwichH1Classes.HypothesisWGivesUnitCongruence
+import Formalism.WachLatticeTwists.SandwichH1Classes.ComparisonMatrixIntertwinesEndomorphisms
+import Formalism.WachLatticeTwists.DenseTopActions.Statement
+import Formalism.WachLatticeTwists.RamifiedBlockRings.ChainFromPrimitiveData
+import Formalism.WachLatticeTwists.RealDisplaySplitting.SurjectionRankOneIdempotent
 import ReciprocityTheory.GaloisValuations.Global
 
 noncomputable section
@@ -7,12 +18,6 @@ open Formalism.RepresentationBoundsCohomology.ringDataObjects (AbsIrr BlockDiago
 open Formalism.RepresentationBoundsCohomology.FIN (IsCycG)
 
 namespace Formalism.AdicCompletionExports
-
-section Mat
-
-variable {k k' : Type*} [Field k] [Field k'] (σ : k ≃+* k')
-
-end Mat
 
 theorem isCycG_cycZ (l : ℕ) [Fact l.Prime] (Ek Ω O : Type) [Field Ek] [NumberField Ek] [Field Ω] [Algebra Ek Ω]
     [IsAlgClosure Ek Ω] [CommRing O] (f : ℤ_[l] →+* O) :

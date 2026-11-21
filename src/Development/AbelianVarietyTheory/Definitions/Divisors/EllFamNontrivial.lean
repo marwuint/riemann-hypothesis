@@ -21,43 +21,6 @@ structure Fam (I : Type) [Fintype I] (g : ℕ) (Λ : Type) [AddCommGroup Λ] whe
   τ : Λ →+ ((I → ℂ) → Fin g → ℂ)
   hol : ∀ l, AnalyticOnNhd ℂ (τ l) V
 
-def ellFam : Fam (Fin 1) 1 (ℤ × ℤ) where
-  V := ⟨{z | 0 < (z 0).im}, isOpen_lt continuous_const (Complex.continuous_im.comp (continuous_apply 0))⟩
-  τ := { toFun := fun l z _ ↦ l.1 * z 0 + l.2
-         map_zero' := by ext; simp
-         map_add' := fun l m ↦ by ext; simp; ring }
-  hol l := fun z _ ↦ by
-    refine AnalyticAt.pi fun _ ↦ ?_
-    change AnalyticAt ℂ (fun z : Fin 1 → ℂ ↦ (l.1 : ℂ) * z 0 + l.2) z
-    exact (analyticAt_const.mul ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 ↦ ℂ) 0).analyticAt z)).add
-      analyticAt_const
-
-theorem ellFam_nontrivial : (fun _ ↦ Complex.I) ∈ ellFam.V ∧
-    ellFam.τ (1, 0) (fun _ ↦ Complex.I) = (fun _ ↦ Complex.I) ∧ ellFam.τ (0, 1) (fun _ ↦ Complex.I) = fun _ ↦ 1 := by
-  refine ⟨?_, ?_, ?_⟩
-  · change (0 : ℝ) < Complex.I.im
-    simp
-  · funext i
-    simp [ellFam]
-  · funext i
-    simp [ellFam]
-
-theorem ellFam_free (l : ℤ × ℤ) (z : Fin 1 → ℂ) (hz : z ∈ ellFam.V) (h : ellFam.τ l z = 0) : l = 0 := by
-  have hz' : 0 < (z 0).im := hz
-  have h0 : ((l.1 : ℂ) * z 0 + l.2) = 0 := by
-    have := congrFun h 0
-    simpa [ellFam] using this
-  have him : (l.1 : ℝ) * (z 0).im = 0 := by
-    have := congrArg Complex.im h0
-    simpa using this
-  have h1 : l.1 = 0 := by
-    have : (l.1 : ℝ) = 0 := (mul_eq_zero.1 him).resolve_right hz'.ne'
-    exact_mod_cast this
-  have h2 : l.2 = 0 := by
-    rw [h1] at h0
-    simpa using h0
-  exact Prod.ext h1 h2
-
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
 
 def Fam.shift (F : Fam I g Λ) (l : Λ) (p : Tot I g) : Tot I g := (p.1, p.2 + F.τ l p.1)
@@ -311,17 +274,6 @@ def ptHom {l : Λ} {k : K.K} (T : K.Obj) (h : K.le l T.k k) : K.triv k ⟶ T :=
 
 end Charts
 
-theorem Fam.allCharts_based (F : Fam I g Λ) : F.allCharts.Based := by
-  exact ⟨F.totChart, fun z hz ↦ hz⟩
-
-theorem Fam.allCharts_rich (F : Fam I g Λ) : F.allCharts.Rich := by
-  refine ⟨fun p hp ↦ ⟨F.totChart, hp⟩, fun l k₁ k₂ p h₁ h₂ ↦ ?_⟩
-  have hopen : IsOpen ((k₁.1 : Set (Tot I g)) ∩ F.shift l ⁻¹' (k₂.1 : Set (Tot I g))) :=
-    (F.shift_analytic l k₁.2).continuousOn.isOpen_inter_preimage k₁.1.isOpen k₂.1.isOpen
-  refine ⟨⟨⟨_, hopen⟩, fun q hq ↦ k₁.2 q hq.1⟩, ⟨h₁, h₂⟩, fun q hq ↦ ?_, fun q hq ↦ hq.2⟩
-  rw [F.shift_zero]
-  exact hq.1
-
 def Fam.transl (F : Fam I g Λ) (l : Λ) : F.allCharts.triv F.totChart ⟶ F.allCharts.triv F.totChart :=
   Charts.ptHom (l := l) (F.allCharts.triv F.totChart) (fun _ h ↦ h)
 
@@ -343,49 +295,5 @@ theorem Charts.dualAt_J_ne_bot {F : Fam I g Λ} (K : Charts F) (k : K.K) (p : To
   intro h
   have := congrArg TrivSqZeroExt.snd h
   simp at this
-
-def tangentAt {W : Opens (Tot I g)} (a : Fin g) (p : Tot I g) (hp : p ∈ W) : Hol W →+* DualNumber ℂ where
-  toFun h := TrivSqZeroExt.inl (Hol.ev p hp h) + TrivSqZeroExt.inr (Hol.ev p hp (dw a h))
-  map_one' := by simp
-  map_mul' x y := by
-    refine TrivSqZeroExt.ext ?_ ?_
-    · simp
-    · simp [Derivation.leibniz, mul_comm]
-  map_zero' := by simp
-  map_add' x y := by
-    refine TrivSqZeroExt.ext ?_ ?_ <;> simp
-
-theorem step_tangentAt {W : Opens (Tot I g)} (a : Fin g) (p : Tot I g) (hp : p ∈ W) :
-    Step (Ideal.span {DualNumber.eps}) ((algebraMap ℂ (DualNumber ℂ)).comp (Hol.ev p hp).toRingHom)
-      (tangentAt a p hp) := by
-  refine ⟨Pi.single a DualNumber.eps, fun b ↦ ?_, fun b c ↦ ?_, fun h ↦ ?_⟩
-  · rcases eq_or_ne b a with rfl | hb
-    · simp
-    · simp [hb]
-  · simp only [Pi.single_apply]
-    split_ifs <;> simp
-  · simp [tangentAt, Pi.single_apply]
-    rw [Algebra.smul_def]
-    rfl
-
-def Charts.tangentHom {F : Fam I g Λ} (K : Charts F) (k : K.K) (a : Fin g) (p : Tot I g) (hp : p ∈ K.W k) :
-    K.triv k ⟶ K.dualAt k p hp :=
-  Charts.fromTriv (K.dualAt k p hp) (K.le_refl k) (tangentAt a p hp)
-    (fun f ↦ by
-      change (TrivSqZeroExt.inl (Hol.ev p hp (K.cst k f)) + TrivSqZeroExt.inr (Hol.ev p hp (dw a (K.cst k f))) :
-        DualNumber ℂ) = TrivSqZeroExt.inl (Hol.ev p hp (K.cst k f))
-      rw [Charts.dw_cst]; simp)
-    (by
-      rw [show (K.dualAt k p hp).ρ.comp (Charts.sh (K.le_refl k)) = (K.dualAt k p hp).ρ from
-        RingHom.ext fun f ↦ congrArg (K.dualAt k p hp).ρ (Charts.sh_refl _ f)]
-      exact Relation.ReflTransGen.single (step_tangentAt a p hp))
-
-example : ∃ (T T' : ellFam.allCharts.Obj) (f : T ⟶ T'), T'.J ≠ ⊥ ∧ f.deg = (0, 1) :=
-  ⟨_, _, ellFam.transl (0, 1) ≫
-      ellFam.allCharts.tangentHom ellFam.totChart 0 (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1,
-    Charts.dualAt_J_ne_bot _ _ _ _, add_zero _⟩
-
-example (F : Fam I g Λ) (per : Λ →+ Hol F.V) (l : Λ) :
-    (F.allCharts.perZ per).1 _ _ (F.transl l) = F.allCharts.cst F.totChart (per l) := rfl
 
 end GlobalTheory.AnPer

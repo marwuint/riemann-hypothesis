@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelFamilyClassifiesPrincipalAnyFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassifiedOfSmallStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelFamilyClassifiesPrincipalAnyField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassifiedOfSmall
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelObjectPullbackExistsAndPrincipal
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -58,7 +58,7 @@ theorem main : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g
   intro C _ _ _ hN β c hc
   by_cases hm : IsLocalRing.maximalIdeal C = ⊥
   · letI : Field C := (IsLocalRing.isField_iff_maximalIdeal_eq.mpr hm).toField
-    exact GlobalTheory.T.siegel_family_classifies_principal_any_field g n hg hn hodd F C β c hc
+    exact _root_.GlobalTheory.SiegField.classify g n hg hn hodd F C β c hc
   obtain ⟨e, he0, hem, hann⟩ := exists_socle C hm
   set I : Ideal C := Ideal.span {e}
   have hIt : I ≠ ⊤ := by
@@ -86,7 +86,7 @@ theorem main : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g
   have hb0 : 0 < b := by exact_mod_cast hpos
   have hNM : N = b + M := by exact_mod_cast hsum
   have hlt : M < N := by omega
-  refine GlobalTheory.T.exists_siegPB_lift_of_quotient_lift g n hg hn hodd F C e hem hann β c hc ?_
+  refine _root_.GlobalTheory.SmallClassify.classified_of_small g n hg hn hodd F C e hem hann β c hc ?_
   intro c₀ hpb
   have hcomm : spMap (Ideal.Quotient.mk I) ≫ spMap β = spMap ((Ideal.Quotient.mk I).comp β) := by
     simp only [spMap, ← Spec.map_comp]

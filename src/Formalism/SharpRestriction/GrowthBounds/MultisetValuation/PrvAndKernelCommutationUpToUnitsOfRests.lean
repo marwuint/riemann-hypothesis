@@ -110,6 +110,4 @@ theorem stmt_proved (D : Formalism.BasicNotions.D7) : Stmt D :=
 theorem stmtAt_proved (D : Formalism.BasicNotions.D7) : ErrorExponentStatement D :=
   fun _ _ _ _ _ Y _ hA => packet_statements_hold D Y hA
 
-theorem stmtF_proved {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : KudlaFamilyStatement Fm := fun x i => stmt_proved (Fm.D x i)
-
 end Formalism.MainNotions.FormalGroupSystem.Pf

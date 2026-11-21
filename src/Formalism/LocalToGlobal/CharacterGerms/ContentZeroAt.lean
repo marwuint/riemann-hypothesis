@@ -90,12 +90,6 @@ def CHSupply : Prop :=
 def monDegAll (X : RowData C V d I J) (g : Fin 2) (e : ZMod d → ℕ → ℕ) (N : ℕ) : ℕ :=
   ∑ a : ZMod d, monDeg N (X.rkF g a) (e a)
 
-def UBSupply : Prop :=
-  ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)]
-    [∀ g, Fintype (J g)] (X : RowData C V d I J) (F : Flag X), X.Alt → 5 ≤ V.l → 1 ≤ X.n →
-    ∀ g a, X.big g a → ∀ y : ℕ, y + X.n ≤ V.l - 1 →
-      (GlobalTheory.bi g a 1 y).Attains X F (2 * (X.m : ℝ) * y)
-
 def MONSupply : Prop :=
   ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)]
     [∀ g, Fintype (J g)] (X : RowData C V d I J) (F : Flag X) (g : Fin 2) (e : ZMod d → ℕ → ℕ)
@@ -115,9 +109,6 @@ def ValBlocks {Orb : Type} [Fintype Orb] {I J : Orb → Fin 2 → Type} [∀ o g
 def restDeg (bgr : ZMod d → Fin 2) (n : ℕ) (ga : Fin 2 → ZMod d → ℕ → ℕ) (K : ℕ) : ℕ :=
   ∑ g : Fin 2, ∑ a : ZMod d, ∑ k ∈ Finset.Icc 1 K, if g = bgr a ∧ k = n then 0 else k * ga g a k
 
-def totDeg (ga : Fin 2 → ZMod d → ℕ → ℕ) (K : ℕ) : ℕ :=
-  ∑ g : Fin 2, ∑ a : ZMod d, ∑ k ∈ Finset.Icc 1 K, k * ga g a k
-
 structure WtHyp {Orb : Type} (k K : ℕ) (Z : Finset Orb) (bgr : ZMod d → Fin 2)
     (rk : Orb → Fin 2 → ZMod d → ℕ) (ga : Orb → Fin 2 → ZMod d → ℕ → ℕ) (Wa ea : Orb → ZMod d → ℕ)
     (rest : ℝ) : Prop where
@@ -135,14 +126,5 @@ def ValBlocksC {C : Type} [Field C] {V : VF C} {Orb : Type} [Fintype Orb] {I J :
     2 * (∑ o, ((L o).map fun p => p.1.what₂ (X o).n).sum) ≤ nW →
     (∀ o s k, ((L o).map fun p => p.1.wt (X o) 0 s k + p.1.wt (X o) 1 (s + 1) k).sum = gaC o s k) →
     ν ≤ ∑ o, ((L o).map Prod.snd).sum
-
-def ContentZeroAt : Prop :=
-  ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (Orb : Type) [Fintype Orb]
-    (I J : Orb → Fin 2 → Type) [∀ o g, Fintype (I o g)] [∀ o g, Fintype (J o g)]
-    (X : ∀ o, RowData C V d (I o) (J o)) (F : ∀ o, Flag (X o)) (Z : Finset Orb)
-    (ga : Orb → Fin 2 → ZMod d → ℕ → ℕ) (K nW : ℕ) (ν : ℝ),
-    (∀ z ∈ Z, ∀ g a k, ga z g a k ≠ 0 → 1 ≤ k ∧ k ≤ (X z).rkF g a ∧ k ≤ K) →
-    2 * K * Z.card ≤ nW →
-    (∑ z ∈ Z, totDeg (ga z) K) < V.l → ValBlocks X F Z nW ga ν → ν ≤ 0
 
 end Formalism.L2.FormalSeriesBounds.RF

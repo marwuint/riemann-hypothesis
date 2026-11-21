@@ -36,6 +36,4 @@ theorem main : ∀ {z : ℂ}, (∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 :
     rw [div_lt_iff₀ hpos] at hk; linarith
   linarith
 
-example : ∀ {z : ℂ}, (∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) → z = (1 : ℂ) := main
-
 end GlobalTheory.InductiveNormBound

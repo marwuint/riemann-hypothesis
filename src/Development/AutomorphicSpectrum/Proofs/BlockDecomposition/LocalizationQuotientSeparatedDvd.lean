@@ -113,27 +113,4 @@ theorem localization_quotient_separated_dvd {F : Type} [Field F] (ord : F → �
   · exact (e₃ _ _ hij.symm).elim
   · exact congrArg _ (e₂ _ _ hij)
 
-theorem main : TwistedDoubleCosetStrictDiagonal → P_asmReg := by
-  intro hs1 E _ _ _ hU w hw n a ha b hb ϖ hϖ x hx hc y hy
-  obtain ⟨s, -, hs⟩ := Finset.exists_ne_zero_of_sum_ne_zero hy
-  by_cases h0 : s.card = a / 2 ∧ sᶜ.card = (n - a) / 2 ∧ a % 2 + (n - a) % 2 = n % 2
-  swap
-  · exact absurd (dif_neg h0) hs
-  rw [dif_pos h0] at hs
-  by_cases h1 : (symIdx n (a % 2 = 1) s).card = a
-  swap
-  · exact absurd (dif_neg h1) hs
-  rw [dif_pos h1] at hs
-  by_cases h2 : (symIdx n ((n - a) % 2 = 1) sᶜ).card = n - a
-  swap
-  · exact absurd (dif_neg h2) hs
-  rw [dif_pos h2] at hs
-  have hd1 : dcos a w (tdiag ϖ (restr x _ h1)) y.1 ≠ 0 := fun h => hs (by rw [h]; simp)
-  have hd2 : dcos (n - a) w (tdiag ϖ (restr x _ h2)) y.2 ≠ 0 := fun h => hs (by rw [h]; simp)
-  obtain ⟨-, -, u₁, hQ₁, hu₁⟩ := hs1 hU w hw ϖ hϖ a _ (restr_strictAnti hx _ h1) y.1 ⟨1, by simpa using hd1⟩
-  obtain ⟨-, -, u₂, hQ₂, hu₂⟩ := hs1 hU w hw ϖ hϖ (n - a) _ (restr_strictAnti hx _ h2) y.2 ⟨1, by simpa using hd2⟩
-  rw [hQ₁, hQ₂]
-  exact localization_quotient_separated_dvd (fun z => ordL z) hx _ _ h1 h2 (symIdx_rev n _ s) (symIdx_rev n _ sᶜ)
-    (symIdx_disj n _ _ s (by have := h0.2.2; omega)) u₁ u₂ (fun j => (hu₁ j).2) (fun j => (hu₂ j).2)
-
 end GlobalTheory.CompanionTheory.SymmetricIndexRegularity

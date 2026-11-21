@@ -11,13 +11,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {F : Type} [Field F] [NumberField F] [IsCMField F]
 
-def InfUniv {D : Datum F} {p N : ℕ} {X : Scheme.{0}} {s : X ⟶ Sp (D.OEp p)} (univ : Obj D p N s) : Prop :=
-  ∀ (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀),
-    Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
-    ∀ (t : Sp C ⟶ Sp (D.OEp p)) (o : Obj D p N t) (o₀ : Obj D p N (spMap π ≫ t)) (x₀ : Sp C₀ ⟶ X),
-      x₀ ≫ s = spMap π ≫ t → Nonempty (ObjMap o₀ o (spMap π)) → Nonempty (ObjMap o₀ univ x₀) →
-      ∃! x : Sp C ⟶ X, spMap π ≫ x = x₀ ∧ x ≫ s = t ∧ Nonempty (ObjMap o univ x)
-
 section KS
 
 variable {k H O : Type*} [Field k] [AddCommGroup H] [Module k H] [Ring O]

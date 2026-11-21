@@ -119,10 +119,6 @@ theorem subst_sub' {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.HasSubst 
     MvPowerSeries.subst b (f - g) = MvPowerSeries.subst b f - MvPowerSeries.subst b g := by
   rw [← MvPowerSeries.coe_substAlgHom hb, map_sub]
 
-theorem subst_zero' {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.HasSubst b) :
-    MvPowerSeries.subst b (0 : MvPowerSeries σ K) = 0 := by
-  rw [← MvPowerSeries.coe_substAlgHom hb, map_zero]
-
 end Subst
 
 theorem hasSubst_XeV (l d : ℕ) [Fact l.Prime] [NeZero d] :

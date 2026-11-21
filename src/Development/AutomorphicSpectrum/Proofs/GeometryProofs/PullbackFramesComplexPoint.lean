@@ -11,8 +11,8 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlag
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsValFam
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombMatrixMulStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombIdentityMatrixStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombMatrixMul
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombIdentityMatrix
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiChangeOfBasisDetStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiNeZeroOfLinIndepStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationTangentCombStatement
@@ -69,8 +69,8 @@ theorem frame_det {P : Type} [CommRing P] {act : OAct P G} {σ : P →+* F} {n :
   have : ∀ i, ∃ cf, IsComb cf v' (v i) := fun i => (hv'.2 _ (hv.1 i)).exists
   choose C hC using this
   have ht : ∀ i, IsTanAt G x (v i) := fun i => (hv.1 i).1
-  have h1 := GlobalTheory.T.is_comb_matrix_mul S G F x n n n v v' v (Matrix.of C) A ht hA hC
-  have h2 := GlobalTheory.T.is_comb_identity_matrix S G F x n v ht
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.CombMul.isComb_mul S G F x n n n v v' v (Matrix.of C) A ht hA hC
+  have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isComb_unit_row S G F x n v ht
   have h3 : Matrix.of C * A = 1 := by
     ext i j
     have := (hv.2 _ (hv.1 i)).unique (h1 i) (h2 i)

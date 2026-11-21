@@ -28,11 +28,6 @@ def LemmaHStatement : Prop :=
     ∀ x : ∀ s, Matrix (Fin (p s)) (Fin (p s)) ℂ, (∀ s, (x s).det ≠ 0) →
       (∀ s j, colNormSq (x s) j ≤ R ^ 2) → ‖P x‖ ≤ C * R ^ (∑ s, ∑ i, a s i)
 
-def BalancedSchwarzStatement : Prop :=
-  ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (s : Set E) (g : E → ℂ) (M : ℝ),
-    IsOpen s → Balanced ℂ s → DifferentiableOn ℂ g s → (∀ w ∈ s, ‖g w‖ ≤ M) →
-    ∀ z ∈ s, ‖g z - g 0‖ ≤ (M + ‖g 0‖) * gauge s z
-
 def TorsionNonvanishStatement : Prop :=
   ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     (θ : V → ℂ) (Λ : AddSubgroup V) (ρ : ℝ) (n : ℕ),
@@ -130,29 +125,13 @@ def OnePolyGrowthStatement : Prop :=
 def IsHoloGL {p : ℕ} (P : Matrix (Fin p) (Fin p) ℂ → ℂ) : Prop :=
   DifferentiableOn ℂ (fun y : Fin p → Fin p → ℂ => P (Matrix.of y)) {y | (Matrix.of y).det ≠ 0}
 
-def IsBW {p : ℕ} (a : Fin p → ℕ) (P : Matrix (Fin p) (Fin p) ℂ → ℂ) : Prop :=
-  IsHoloGL P ∧ IsTriEquivariant a P ∧ ∀ x : Matrix (Fin p) (Fin p) ℂ, x.det = 0 → P x = 0
-
 def leadMinor {p : ℕ} (x : Matrix (Fin p) (Fin p) ℂ) (i : Fin p) : ℂ :=
   (Matrix.of fun a b : Fin (i + 1) => x (Fin.castLE i.isLt a) (Fin.castLE i.isLt b)).det
-
-def nextExp {p : ℕ} (a : Fin p → ℕ) (i : Fin p) : ℕ :=
-  if h : (i : ℕ) + 1 < p then a ⟨i + 1, h⟩ else 0
-
-def minorProd {p : ℕ} (a : Fin p → ℕ) (x : Matrix (Fin p) (Fin p) ℂ) : ℂ :=
-  if x.det = 0 then 0 else ∏ i, leadMinor x i ^ (a i - nextExp a i)
 
 def BWPolyStatement : Prop :=
   ∀ (p : ℕ) (a : Fin p → ℕ) (P : Matrix (Fin p) (Fin p) ℂ → ℂ), IsHoloGL P →
     IsTriEquivariant a P →
     ∃ F : MvPolynomial (Fin p × Fin p) ℂ, F.IsHomogeneous (∑ i, a i) ∧
       ∀ x : Matrix (Fin p) (Fin p) ℂ, x.det ≠ 0 → P x = MvPolynomial.eval (fun ij => x ij.1 ij.2) F
-
-def BWIrredStatement : Prop :=
-  ∀ (p : ℕ) (a : Fin p → ℕ),
-    (Antitone a → IsBW a (minorProd a)) ∧
-    ∀ S : Submodule ℂ (Matrix (Fin p) (Fin p) ℂ → ℂ), (∀ P ∈ S, IsBW a P) →
-      (∀ g : Matrix (Fin p) (Fin p) ℂ, g.det ≠ 0 → ∀ P ∈ S, (fun x => P (g * x)) ∈ S) →
-      S ≠ ⊥ → ∀ P, IsBW a P → P ∈ S
 
 end ReciprocityTheory.MultiplicativeHeights

@@ -1,7 +1,19 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.FibSandwich
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmTypeExteriorLatticeComparison
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniversalLieModelPullbackStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSumStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniversalLieModelPullback
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSum
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GermSys
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasisStatement
 
 open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain MvPolynomial
@@ -266,7 +278,7 @@ theorem frame_vals {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
     obtain ⟨w', h1, h2⟩ := val_of_comb 𝔐.M hc (fun a => j (b a)) w hw (T' k)
     rw [← hT' k] at h1
     rwa [LieModel.ValAt.unique hξ (hvb k) h1]
-  obtain ⟨W, _, _, Mu, Mz, act, hMu, -, hsame⟩ := GlobalTheory.T.universal_lie_model_pullback E H D l Xo c O β Y L y₀
+  obtain ⟨W, _, _, Mu, Mz, act, hMu, -, hsame⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieTransport.main E H D l Xo c O β Y L y₀
   choose e he using fun a => Mu.onto (v a) (hve.1 a).1
   obtain rfl : v = fun a => Mu.pt (e a) := funext fun a => (he a).symm
   have hwe : ∀ a, (w a).left ≫ 𝔐.m.φ = (Mz.pt (e a)).left := fun a => by
@@ -286,7 +298,7 @@ theorem frame_vals {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   have hAd : A.det = ρ T'.det := (RingHom.map_det ρ T').symm
   refine ⟨gm T.det, ρ T.det, A, fun k => Mu.pt (e' k), by rw [hAd, ← map_mul, hdet, map_one], ⟨hc, T.det, rfl, rfl⟩, ?_,
     (GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ L _ _ W Mu _ Xo.univ.t.act act σ n e' hMu).2 ⟨fun k => ?_, fun x hx => ?_⟩,
-    fun k => (GlobalTheory.T.is_comb_tangent_iff_linear_sum _ L _ _ W Mu n e _ _).2 rfl, fun k => ⟨Mz.pt (e' k), hsame _, ?_⟩⟩
+    fun k => (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.isComb_lieModel_pt_iff _ L _ _ W Mu n e _ _).2 rfl, fun k => ⟨Mz.pt (e' k), hsame _, ?_⟩⟩
   · have e := GlobalTheory.alternating_map_sum_smul_eq_det_smul (exteriorPower.ιMulti Ω n (M := 𝔐.Li)) (gm.mapMatrix T) bp
     have e2 : (fun k => j (b k)) = fun a => ∑ k, (gm.mapMatrix T) a k • bp k := funext hT
     rw [e2, e, RingHom.map_det]
@@ -298,7 +310,7 @@ theorem frame_vals {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
       exact hcf
     · have : Matrix.vecMul cf' A = cf := hu _ (hcf'.trans (hsum cf'))
       rw [← this, Matrix.vecMul_vecMul, hAB, Matrix.vecMul_one]
-  · exact comb_push 𝔐.m.cart hz hwe (hcomb k) ((GlobalTheory.T.is_comb_tangent_iff_linear_sum _ L _ _ W Mz n e _ _).2 rfl)
+  · exact comb_push 𝔐.m.cart hz hwe (hcomb k) ((_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.isComb_lieModel_pt_iff _ L _ _ W Mz n e _ _).2 rfl)
 
 end VP
 
@@ -317,13 +329,13 @@ theorem valuePhi : ValuePhi := by
     exact ⟨p, q, hq0, div_mul_cancel₀ _ hq0⟩
   obtain ⟨y₀, hz, hU, hs, h, hT⟩ := exists_point E H D l Xo c Y U Z S Ω K J y 𝔐 i j s z hc ht hint hcst
   have hτ : τ.1 (H.rt : E) = H.rt0 := τ.2
-  obtain ⟨hv1, hv2, -⟩ := GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c _ _ Y U Z τ.1 hβ hτ
+  obtain ⟨hv1, hv2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c _ _ Y U Z τ.1 hβ hτ
   obtain ⟨W₁, hW₁, b₁, -, hb₁⟩ := hv1 _ hT
   have hb₁x := hb₁ _ hT hW₁
   obtain ⟨W₂, hW₂, b₂, -, hb₂⟩ := hv2 _ hT
   have hb₂x := hb₂ _ hT hW₂
-  obtain ⟨v, hvv, hve⟩ := GlobalTheory.T.component_point_cm_eigen_frame E H D l Xo c _ _ Y U Z τ.1 hβ hτ L s y₀ hs hU h τ.1 D.p b₁ hb₁x
-  obtain ⟨w, hwv, hwe⟩ := GlobalTheory.T.component_point_cm_eigen_frame E H D l Xo c _ _ Y U Z τ.1 hβ hτ L s y₀ hs hU h
+  obtain ⟨v, hvv, hve⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.Rep.valFam_eigFrame E H D l Xo c _ _ Y U Z τ.1 hβ hτ L s y₀ hs hU h τ.1 D.p b₁ hb₁x
+  obtain ⟨w, hwv, hwe⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.Rep.valFam_eigFrame E H D l Xo c _ _ Y U Z τ.1 hβ hτ L s y₀ hs hU h
     (ComplexEmbedding.conjugate τ.1) D.q b₂ hb₂x
   have hfr : IsFramed U τ.1 s y₀ v w := ⟨hs, hU, hve, hwe⟩
   obtain ⟨-, -, hgen⟩ := hg
@@ -331,7 +343,7 @@ theorem valuePhi : ValuePhi := by
   obtain ⟨α₀, ha₀⟩ := coeff_of_span hA₁ (hw1.symm.trans (WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ _ _ _ _ hb₁x).1)
   obtain ⟨κ₀, hb₀⟩ := coeff_of_span hB₁ (hw2.symm.trans (WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ _ _ _ _ hb₂x).1)
   have hRep := hr L s y₀ v w b₁ b₂ α₀ κ₀ hfr ha₀ hb₀ hvv hwv
-  obtain ⟨-, hst1, hst2⟩ := GlobalTheory.T.cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j ht ⟨centre z, hc⟩ (mem_genFibre _ z hc)
+  obtain ⟨-, hst1, hst2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CptStalk.main E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j ht ⟨centre z, hc⟩ (mem_genFibre _ z hc)
   have hcen : centre (y₀ ≫ Y.j) = 𝔐.f (centre z) := by rw [← hz]; rfl
   have h' : genPt (Z.ξ₀ ≫ Y.j) ⤳ 𝔐.f (centre z) := hcen ▸ h
   have hpt : (⟨centre (y₀ ≫ Y.j), h⟩ : Cpt (Z.ξ₀ ≫ Y.j)) = ⟨𝔐.f (centre z), h'⟩ := Subtype.ext hcen

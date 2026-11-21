@@ -202,9 +202,4 @@ theorem admissible_second_at_place : Adm2cAt := by
   rw [hY]
   exact beta_property_of_weight D cc δ p g hLT hAt h5 hin hM hB
 
-theorem beProp_of_beW {D : Formalism.BasicNotions.D7} (hW : beW D) {cc : Ideal (NumberField.RingOfIntegers D.host.K)} {δ : ℂ} {p : ℕ}
-    [Fact p.Prime] {g : G1 p} (hLT : LTIso g) (hAt : At D cc δ g) (h5 : 5 ≤ p) (hin : InertK D p)
-    (hM : ModelOverW g.lam g.abelian₂ g.C) : Formalism.MainNotions.FormalGroupSystem.BeProp p (beLT hLT) :=
-  beta_property_of_weight D cc δ p g hLT hAt h5 hin hM (hW p cc δ g hAt h5 hin hM)
-
 end Formalism.L2.KerInert

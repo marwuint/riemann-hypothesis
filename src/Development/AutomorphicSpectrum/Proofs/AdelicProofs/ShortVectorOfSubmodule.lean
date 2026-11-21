@@ -6,9 +6,9 @@ import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
 import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PLineDegreeBundle
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.BaseChangeIndex
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.GramMat
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IdealNormPrincipalInExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IdealLineLatticeIndexStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.GramMatrixPosDefConjugateStatement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IdealNormPrincipalInExtension
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IdealLineLatticeIndex
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.GramMatrixPosDefConjugate
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LinearIndependentCoordinatesDenominatorStatement
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.HermitianLatticeDegreeEqBundleDegreeStatement
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SpanBaseChangeCoordinatesStatement
@@ -101,8 +101,8 @@ theorem lattice_line (K : Type) [Field K] [NumberField K] (n : ℕ) (F : HermLat
     Submodule.span (𝓞 K') ((fun (w : Fin n → K) j => algebraMap K K' (w j)) '' F.lattice) with hMdef
   have hfg : M.FG := ext_span_fg F.lattice F.fg
   have htop : Submodule.span K' (M : Set (Fin n → K')) = ⊤ := ext_span_top F.lattice F.span_eq
-  obtain ⟨I, d, hI, hd, hIv, hidx⟩ := GlobalTheory.T.ideal_line_lattice_index K' n M hfg htop v hv
-  obtain ⟨K'', _, _, _, y, hy0, hyI, hyN⟩ := GlobalTheory.T.ideal_norm_principal_in_extension K' I hI
+  obtain ⟨I, d, hI, hd, hIv, hidx⟩ := _root_.GlobalTheory.CompanionTheory.Adelic.SatLine.saturatedLine_eq_ideal_div K' n M hfg htop v hv
+  obtain ⟨K'', _, _, _, y, hy0, hyI, hyN⟩ := _root_.GlobalTheory.CompanionTheory.Lines.exists_principal_extension K' I hI
   letI algK : Algebra K K'' := ((algebraMap K' K'').comp (algebraMap K K')).toAlgebra
   haveI tower : IsScalarTower K K' K'' := IsScalarTower.of_algebraMap_eq fun _ => rfl
   have hdL : (d : K') ≠ 0 := by rwa [Ne, RingOfIntegers.coe_eq_zero_iff]
@@ -258,7 +258,7 @@ theorem short_vector_of_submodule : LineOfLargeDegree.Statement → ∀ (L : Typ
   have hf : LinearIndependent (𝓞 L) f := (HermitianBundle.exists_linearIndependent_rank B F).choose_spec
   have hf' : LinearIndependent (𝓞 L) (fun j => (f j : B.carrier)) := hf.map' F.subtype (Submodule.ker_subtype F)
   obtain ⟨c, hcinj, hcf, hcD⟩ := GlobalTheory.T.linear_independent_coordinates_denominator L F i f hf rfl
-  obtain ⟨hpos, hconj⟩ := GlobalTheory.T.gram_matrix_pos_def_conjugate L B i _ hf'
+  obtain ⟨hpos, hconj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Lines.gramMat_posDef_and_conj L B i _ hf'
   have hspan : Submodule.span L ((LinearMap.range c : Submodule (𝓞 L) (Fin i → L)) : Set (Fin i → L)) = ⊤ := by
     rw [eq_top_iff, ← (Pi.basisFun L (Fin i)).span_eq]
     refine Submodule.span_le.mpr ?_

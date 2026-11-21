@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IsTripleAtOfConj
 
 set_option synthInstance.maxHeartbeats 200000
@@ -27,8 +27,6 @@ structure GalSideAlt (D : D7) : Type 1 where
   lamTie : GlobalTheory.LamTie.IsLamTie D.ntw lam
   rank : 100 ≤ D.R.r
   primes : ∀ k, 2 * D.R.r ≤ D.host.g k
-section Abstract
-end Abstract
 end GlobalTheory.TwInputs
 end
 end

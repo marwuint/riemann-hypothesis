@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOf
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IterDifferentiableOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticGroupLawBoundedCommutatorStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.AnalyticDoublingMapLocalInverseStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.DoublingLimitLocalLogarithmStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalLogarithmHomomorphismStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.DoublingLimitLocalLogarithm
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalLogarithmHomomorphism
 open Set Filter Topology Metric
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
@@ -160,7 +160,7 @@ theorem exists_local_log_of_commutative_law : ∀ (n g : ℕ) (b₀ : Fin n → 
     have h1 := hcontr b hb s hs
     have h2 : ‖h (b, s)‖ ≤ ‖s‖ := by linarith [norm_nonneg s]
     gcongr
-  obtain ⟨L, hLu, hLb⟩ := GlobalTheory.T.doubling_limit_local_logarithm b₀ h ρ C hρ hCpos.le hcontr hquad
+  obtain ⟨L, hLu, hLb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.LocalLog.koenigs_limit b₀ h ρ C hρ hCpos.le hcontr hquad
   have hdiffh : DifferentiableOn ℂ h (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) ρ) := by
     rintro ⟨b, s⟩ ⟨hb, hs⟩
     exact (hq b hb s hs).2.1.differentiableAt.differentiableWithinAt
@@ -194,7 +194,7 @@ theorem exists_local_log_of_commutative_law : ∀ (n g : ℕ) (b₀ : Fin n → 
       _ ≤ c * ‖s‖ := by gcongr
   · have hpt : ∀ b ∈ ball b₀ ρ, ∀ s ∈ ball (0 : Fin g → ℂ) ρ, Tendsto (fun k : ℕ => (2 : ℂ) ^ k • GlobalTheory.CompanionTheory.Ar.Flat.LocalLog.iter h k (b, s)) atTop (𝓝 (L (b, s))) :=
       fun b hb s hs => hLu.tendsto_at ⟨hb, hs⟩
-    have hadd := GlobalTheory.T.local_logarithm_homomorphism b₀ h μ L ρ C hρ hCpos.le hcontr hboundρ hhomρ hpt
+    have hadd := _root_.GlobalTheory.CompanionTheory.Ar.Flat.LocalLog.koenigs_limit_additive_for_law b₀ h μ L ρ C hρ hCpos.le hcontr hboundρ hhomρ hpt
     have hμs : ∀ᶠ p in 𝓝 ((b₀, 0, 0) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)), μ p ∈ ball (0 : Fin g → ℂ) ρ := by
       filter_upwards [hμ.continuousAt (ball_mem_nhds (μ (b₀, 0, 0)) hρ)] with p hp
       simpa [hμ0] using hp

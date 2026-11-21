@@ -112,20 +112,4 @@ theorem exists_lowInv_mul_upperUni_of_leadingMinors :
     | last => simpa using hdu
     | cast i' => simpa using hL₀d i'
 
-theorem exists_inCell_of_leadingMinors_isUnit {m : ℕ} (M : Matrix (Fin m) (Fin m) R) (w : Equiv.Perm (Fin m))
-    (h : ∀ (k : ℕ) (hk : k ≤ m), IsUnit ((M.submatrix id w).submatrix (Fin.castLE hk) (Fin.castLE hk)).det) :
-    ∃ a, InCell M w a := by
-  obtain ⟨L, U, hL, hUz, hUd, hLU⟩ := exists_lowInv_mul_upperUni_of_leadingMinors m (M.submatrix id w) h
-  refine ⟨fun p => U p.1.1 p.1.2, L, hL, ?_⟩
-  have hU : upMat (fun p : Above m => U p.1.1 p.1.2) = U := by
-    ext i j
-    unfold upMat
-    by_cases hij : i < j
-    · rw [dif_pos hij]
-    · rw [dif_neg hij]
-      by_cases e : i = j
-      · subst e; rw [if_pos rfl, hUd]
-      · rw [if_neg e, hUz i j (lt_of_le_of_ne (not_lt.1 hij) (Ne.symm e))]
-  rw [hU]; exact hLU
-
 end GlobalTheory.ShFam.Cell

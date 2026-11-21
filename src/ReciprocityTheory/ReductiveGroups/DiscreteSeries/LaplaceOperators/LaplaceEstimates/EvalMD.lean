@@ -12,16 +12,6 @@ section Alg
 
 variable {𝒰 : Type*} [Ring 𝒰] [Algebra ℂ 𝒰]
 
-theorem cminor_reindex {n n' : ℕ} (F : Fin n → Fin n → 𝒰) (e : Fin n' → Fin n) (he : Function.Injective e)
-    {p : ℕ} (R C : Fin p → Fin n') (x : ℂ) :
-    cminor (fun a b => F (e a) (e b)) R C x = cminor F (e ∘ R) (e ∘ C) x := by
-  unfold cminor capEntry
-  simp only [Function.comp_apply, he.eq_iff]
-
-theorem cminor_cast {n p p' : ℕ} (h : p = p') (F : Fin n → Fin n → 𝒰) (R C : Fin p' → Fin n) (x : ℂ) :
-    cminor F (R ∘ Fin.cast h) (C ∘ Fin.cast h) x = cminor F R C x := by
-  subst h; rfl
-
 theorem sign_mul_self_C {p : ℕ} (σ : Equiv.Perm (Fin p)) :
     ((Equiv.Perm.sign σ : ℤˣ) : ℂ) * ((Equiv.Perm.sign σ : ℤˣ) : ℂ) = 1 := by
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]; simp
@@ -149,30 +139,6 @@ theorem frameE_glRep {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : Q * Q⁻¹
     (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) : IsGlRep (frameE Q E) := by
   rw [frameE_eq_frameAB]
   exact EvalC.frameAB_glRel _ _ (by rw [← Matrix.transpose_mul, hQ, Matrix.transpose_one]) E hE
-
-theorem frameE_cov {m : ℕ} (Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hQ : Q⁻¹ * Q = 1)
-    (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (hE : IsGlRep E) (α γ : Fin (m + 1) → ℂ) (x : ℂ) :
-    ∑ d : Fin (m + 1), ∑ c : Fin (m + 1), (α d * γ c * (-1 : ℂ) ^ ((d : ℕ) + (c : ℕ))) •
-        Capelli.cminor (frameE Q E) d.succAbove c.succAbove x =
-      ∑ d : Fin (m + 1), ∑ c : Fin (m + 1), ((Qᵀ *ᵥ α) d * (Q⁻¹ *ᵥ γ) c * (-1 : ℂ) ^ ((d : ℕ) + (c : ℕ))) •
-        Capelli.cminor E d.succAbove c.succAbove x := by
-  have hcov := capelliCov (Module.End ℂ M) m E Q⁻¹ Q x hE hQ
-  have e : ∀ d c : Fin (m + 1), (α d * γ c * (-1 : ℂ) ^ ((d : ℕ) + (c : ℕ))) •
-      Capelli.cminor (frameE Q E) d.succAbove c.succAbove x =
-      (α d * γ c) • ∑ d' : Fin (m + 1), ∑ c' : Fin (m + 1),
-        (Q d d' * Q⁻¹ c' c * (-1 : ℂ) ^ ((d' : ℕ) + (c' : ℕ))) • Capelli.cminor E d'.succAbove c'.succAbove x := by
-    intro d c; rw [mul_smul, ← hcov d c]; rfl
-  simp only [e, Finset.smul_sum, smul_smul]
-  rw [EvalC.sum_four_swap_pairs_alt (fun d' c' d c => (α d * γ c * (Q d d' * Q⁻¹ c' c * (-1 : ℂ) ^ ((d' : ℕ) + (c' : ℕ)))) •
-    Capelli.cminor E d'.succAbove c'.succAbove x)]
-  refine Finset.sum_congr rfl fun d' _ => Finset.sum_congr rfl fun c' _ => ?_
-  simp only [← Finset.sum_smul]
-  congr 1
-  simp only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_mul]
-  refine Finset.sum_congr rfl fun d _ => ?_
-  rw [Finset.mul_sum, Finset.sum_mul]
-  refine Finset.sum_congr rfl fun c _ => ?_
-  ring
 
 end Frame
 

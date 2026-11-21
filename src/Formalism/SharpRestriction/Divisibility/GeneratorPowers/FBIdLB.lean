@@ -72,25 +72,6 @@ theorem corr_scaleGenG {φ : K → (Y ⟶ t.G.left)} {ε : K → ℤ} {φ' : K' 
   dsimp only
   erw [res_top_mul, res_top_mul, e]
 
-theorem scale_eq_of_corr (hL : t.PP.L.IsLB) {φ : K → (Y ⟶ t.G.left)} {ε : K → ℤ}
-    {φ' : K' → (Y ⟶ t.G.left)} {ε' : K' → ℤ}
-    {g : LB.Gen (LB.LinComb t.PP.L φ ε)} {g' : LB.Gen (LB.LinComb t.PP.L φ' ε')}
-    (hc : LB.Gen.Corr t.PP.L φ ε φ' ε' g g') {v v' : Γ(Y, ⊤)ˣ}
-    (h : LB.Gen.Corr t.PP.L φ ε φ' ε' (scaleGenG t φ ε v g) (scaleGenG t φ' ε' v' g')) : v = v' := by
-  refine DVR.units_ext_cover ⊤ (fun ρ => ⊤ ⊓ DVR.piece t.PP.L φ φ' ρ) (fun _ => inf_le_left)
-    (DVR.le_iSup_piece t.PP.L φ φ' hL ⊤) v v' fun ρ => ?_
-  have hj : LB.Coh t.PP.L φ (ρ ∘ φ) := fun k₁ k₂ e => by simp [e]
-  have hj' : LB.Coh t.PP.L φ' (ρ ∘ φ') := fun k₁ k₂ e => by simp [e]
-  have hm : ∀ k k', φ k = φ' k' → (ρ ∘ φ) k = (ρ ∘ φ') k' := fun k k' e => by simp [e]
-  have e1 := h _ _ hj hj' hm
-  have e2 := hc _ _ hj hj' hm
-  unfold scaleGenG at e1
-  dsimp only at e1
-  erw [res_top_mul, res_top_mul, e2, mul_left_inj] at e1
-  have e3 := congrArg (res (show ⊤ ⊓ DVR.piece t.PP.L φ φ' ρ ≤
-    LB.wchart t.PP.L φ (ρ ∘ φ) ⊓ LB.wchart t.PP.L φ' (ρ ∘ φ') from inf_le_right)) e1
-  simpa only [DVR.res_res'] using e3
-
 variable {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
 
 theorem unitΓ_homAt {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] (f : A →ₐ[S] B)
@@ -101,13 +82,5 @@ theorem unitΓ_homAt {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algeb
     RingHom.toMonoidHom_eq_coe]
   rw [← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality]
   rfl
-
-theorem unitΓ_injective {A : Type} [CommRing A] : Function.Injective (unitΓ (A := A)) := by
-  intro u u' h
-  ext
-  have h1 := congrArg Units.val h
-  simp only [unitΓ, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, toΓ] at h1
-  have h2 := congrArg (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom h1
-  simpa using h2
 
 end Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdLB

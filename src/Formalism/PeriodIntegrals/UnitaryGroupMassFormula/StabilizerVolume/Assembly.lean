@@ -14,8 +14,22 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoMu
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.EventuallyStruct
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocExOf
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.ExOmTOfSteps
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.NuNeDone
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.NuNeLam
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.UnfoldMain
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.VolStabFromSWS
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.ExStabSt
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.PosNear
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoMeas
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.HformSmulRight
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.UnimodStab
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoClose
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.ExStabU
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InvInvSt
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.MeasOrbSt
+import Formalism.PeriodIntegrals.WeilQuotMeas
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.StepBruhat
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.LintegralMulAvgComm
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientMeasure.Bruhat
+import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotMeasUniq
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensSt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensQ
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibDis
@@ -26,9 +40,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.SdTest
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.SdDual
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.RestrProdAlt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DetAdm
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.InvariantStabilizerAssembly
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.AdmCpt
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.OrbProper
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.OrbTupFin
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoGram
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensTop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.Unimod
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensPos
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocPosV
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.ArchPosHolds
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensHTop
@@ -55,13 +72,6 @@ theorem nuInv_holds : NuInv := nuInv_of_pin detAdm_holds compG_holds fibPin_clos
 
 theorem volStabFromSW_of_nuNe (hN : NuNeZero) : PI.VolStabS.VolStabFromSWS := volStabFromSW_of exChar_holds exOmT_holds (exStab_of_nu nuInv_holds nuFin_holds hN)
     exFDStab_holds sWeqOm_closed unfold_holds posTest_holds
-
-theorem volStabFromSW_of_open_orb (hOP : OrbProper) (hFV : FinVolStab) :
-    PI.VolStabS.VolStabFromSWS := volStabFromSW_of_nuNe (nuNeZero_of_dens archPos_holds locPos_holds
-    (densAA_of_open volAA_holds hensAA_holds idxH_holds cntAA_holds) qvSum_holds)
-
-theorem volStabFromSW_of_finVol (h : FinVolStab) : PI.VolStabS.VolStabFromSWS := volStabFromSW_of_nuNe (nuNeZero_of_dens archPos_holds locPos_holds
-    (densAA_of_open volAA_holds hensAA_holds idxH_holds cntAA_holds) qvSum_holds)
 
 theorem volStabFromSW_of_open_dens (hDA : DensAA) : PI.VolStabS.VolStabFromSWS := volStabFromSW_of_nuNe (nuNeZero_of_dens archPos_holds locPos_holds hDA qvSum_holds)
 

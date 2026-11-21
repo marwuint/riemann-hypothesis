@@ -215,7 +215,7 @@ open GlobalTheory.SmoothForms
 
 theorem continuousOn_secInf {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp D) :
     ContinuousOn (secInf θ V) {u | sigInf V u * u = 1} := by
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   have h := GlobalTheory.RealLift.continuousOn_prodAt hθ V Finset.univ.toList
   refine ContinuousOn.congr (h.mono fun u hu => (unit_iff R u).1 hu) fun u hu => ?_
   refine R.2.2.1 _ (secInf_spec R hu).1 _ (GlobalTheory.RealLift.prodAt_mem θ V _ u) fun τ => ?_
@@ -224,7 +224,7 @@ theorem continuousOn_secInf {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp 
 
 theorem mem_smFun_of_closed : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D), ∀ 𝒮 : Set (GA D V → ℂ), (∀ φ ∈ 𝒮, Continuous φ) → (∀ φ ∈ 𝒮, ∀ τ, ∀ X ∈ lieAt V τ, ∃ φ' ∈ 𝒮, ∀ g, HasDerivAt (fun t : ℝ => φ (g * oneP θ V τ X t)) (φ' g) 0) → ∀ φ ∈ 𝒮, φ ∈ SmFun θ V := by
   intro D θ hθ V 𝒮 hc hd φ hφ
-  have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
+  have R := (_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V
   have : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
   have hT : Submodule.span ℝ {Y : LieN V | ∃ τ X, Y = atPlace V τ X} = ⊤ := by
     rw [eq_top_iff]

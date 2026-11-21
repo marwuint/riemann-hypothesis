@@ -29,14 +29,4 @@ theorem map_uniR {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) {m : �
   simp only [Matrix.map_apply, uniR_apply]
   split_ifs <;> simp
 
-def pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} {m : ℕ} (e : Fin m → Γ(E, U))
-    {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) (M : Matrix (Fin m) (Fin m) Γ(Y, V)) (j : Fin m) :
-    Γ((Scheme.Modules.pullback π).obj E, V) :=
-  ∑ l, M l j • pullbackSections π E hV (e l)
-
-def Spans {X : Scheme.{0}} {F : X.Modules} {m : ℕ} (fl : Vert.Flag F m) (V : X.Opens)
-    (v : Fin m → Γ(F, V)) : Prop :=
-  ∀ l : Fin (m + 1), ∃ s : Fin l → Γ(fl.F l, V), IsFrame s ∧
-    ∀ j, (fl.ι l).app V (s j) = v (Fin.castLE l.is_le j)
-
 end GlobalTheory.FlagCell

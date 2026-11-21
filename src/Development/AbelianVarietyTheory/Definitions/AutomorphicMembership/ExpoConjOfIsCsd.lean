@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AutomorphicArithmetic.IntegralCasts.Imports
+import Development.AutomorphicArithmetic.IntegralCasts.IsOpenStabOfMemNhds
+import Development.AutomorphicArithmetic.IntegralCasts.RegAlgFam
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EvalProd
 import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
@@ -741,33 +742,10 @@ theorem IsCsd.twist {π : CG L a} {χ : HChar L} (hχ : (ofChar χ).IsCsd) (h : 
   induction π using Quotient.inductionOn
   exact CuspSub.IsCsd.twist h (thetaInv_of h1 h2)
 
-theorem expo_conj_of_isCsd {χ : HChar L} (hχ : (ofChar χ).IsCsd) (τ : L →+* ℂ) :
-    expo χ (ComplexEmbedding.conjugate τ) = -expo χ τ := by
-  obtain ⟨-, h2⟩ := (thetaInv_one_iff χ).1 ((isCsd_ofChar χ).1 hχ)
-  have e : star (atEmb τ 1) = atEmb τ 1 := by
-    classical
-    funext w
-    by_cases h : w = InfinitePlace.mk τ
-    · subst h; simp [atEmb]
-    · simp [atEmb, h]
-  have e' : atEmb τ (-Complex.I) = -atEmb τ Complex.I := by
-    rw [atEmb_eq]; simp
-  have h3 := h2 (atEmb τ 1)
-  rw [e, map_neg] at h3
-  simp only [expo, atEmb_conj, map_one, Complex.conj_I, e', map_neg]
-  linear_combination -h3 / 2
-
 end CM
 
 theorem expo_one (τ : E →+* ℂ) : expo (1 : HChar E) τ = 0 :=
   expo_eq_of_exp 1 τ 0 0 fun z => by simp [chiInf]
-
-example : (ofChar (1 : HChar E)).IsRegAlg := (isRegAlg_ofChar 1).2 fun τ => ⟨0, by simp [expo_one]⟩
-
-example (χ : HChar E) (τ : E →+* ℂ)
-    (h : ∀ z, ((chiInf χ (expU (atEmb τ z)) : ℂˣ) : ℂ) = Complex.exp z * starRingEnd ℂ (Complex.exp z)) :
-    (ofChar χ).infChar τ = {1} := by
-  rw [infChar_ofChar, expo_eq_of_exp χ τ 1 1 fun z => by rw [h, ← Complex.exp_conj, ← Complex.exp_add]; simp]
 
 end CG
 
@@ -780,8 +758,5 @@ theorem host_complexConj {R : Formalism.BasicNotions.Ranks} (H : Formalism.Basic
   apply H.φ₀.injective
   rw [NumberField.IsCMField.complexEmbedding_complexConj]
   exact (H.toHostAx.conjE_apply H.φ₀ z).symm
-
-abbrev HostCG {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (a : ℕ) : Type :=
-  haveI := host_isCMField H; CG H.E a
 
 end GlobalTheory.CuspRep

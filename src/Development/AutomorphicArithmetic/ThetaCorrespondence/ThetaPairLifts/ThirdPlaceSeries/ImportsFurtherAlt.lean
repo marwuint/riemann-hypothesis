@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetPointGood
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BoundAtTwoThreeFamilyFon
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormChoiceFacts
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ImportsMoreExtraStatement
@@ -35,10 +35,10 @@ theorem main_alt_alt : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : P
     galois_condition_five_of D i (X.r i) fa.Conclusion2.1 hHG hR.good,
     (GlobalTheory.TameDesign.main D i).2,
     galois_condition_six_of D i (X.r i) fa.Conclusion2.2.1 hHG hR.good,
-    GlobalTheory.T.blochKato_localCondition_all_localizations hP.bk hP.tate hP.euler D i,
+    _root_.GlobalTheory.AdmBK.admBK_loc_of_blochKato_tateDuality_euler hP.bk hP.tate hP.euler D i,
     continuous_family_of D i (X.r i) hR.good,
     semisimple_family_of D i (X.r i) hR.good,
-    hdec, hR.eps, GlobalTheory.T.completion_comparison_admissible_every_place_over D i, hR.shape, GlobalTheory.FontaineAdm.fontaineProperties_all_places D i,
-    GlobalTheory.T.integral_tate_H2_top hP.tate D i, GlobalTheory.T.unramifiedClassFieldBound_of_artin hP.artin D i⟩
+    hdec, hR.eps, _root_.GlobalTheory.BridgeTie.localCoefficientCompatibility D i, hR.shape, GlobalTheory.FontaineAdm.fontaineProperties_all_places D i,
+    _root_.GlobalTheory.IntTateTop.admH2_of_duality hP.tate D i, _root_.GlobalTheory.UnramifiedHomBound.unramified_homs_bounded_by_class_number_of_artin hP.artin D i⟩
 end GlobalTheory.SetPtOff
 end

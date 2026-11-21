@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FreeCell
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WeilSiegel.Free GlobalTheory.CompanionTheory.WeilSiegel.HypStep GlobalTheory.CompanionTheory.WeilSiegel.HypStage
@@ -208,7 +209,7 @@ theorem coordHerm_equiv {F E : Type} [Field F] [NumberField F] [Field E] [Number
       (∀ S, h S = HaarCoord.hermCoord R σ m S) ∧
       MeasurePreserving h (coordHerm R σ b lam m)
         ((Measure.pi fun _ : Fin m => lam).prod (Measure.pi fun _ : UT m => coordK R b lam)) := by
-  obtain ⟨t1, t2, t3, t4, t5, t6, -, -, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+  obtain ⟨t1, t2, t3, t4, t5, t6, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   have h2 : Module.finrank F E = 2 := hcm.2.2.1
   obtain ⟨hinv, δ, hδ, hσδ⟩ := HaarCoord.conj_facts hcm
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
@@ -232,13 +233,13 @@ theorem hermSplit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   haveI := l2
   haveI := l3
   haveI := l4
-  obtain ⟨t1, t2, t3, t4, t5, t6, -, -, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+  obtain ⟨t1, t2, t3, t4, t5, t6, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   obtain ⟨hinv, -⟩ := HaarCoord.conj_facts hcm
   obtain ⟨hK, -, hH⟩ := coord_measures_haar F E σ hcm R d b lam hlam
   haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
   haveI : SigmaFinite (coordK R b lam) := inferInstance
-  obtain ⟨a1, a2, a3, a4, -⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hcm R 1
-  obtain ⟨c1, c2, c3, c4, -⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hcm R n
+  obtain ⟨a1, a2, a3, a4, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hcm R 1
+  obtain ⟨c1, c2, c3, c4, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hcm R n
   haveI : (coordHerm R σ b lam 1).IsAddHaarMeasure := hH 1
   haveI : (coordHerm R σ b lam n).IsAddHaarMeasure := hH n
   haveI : SigmaFinite (coordW R b lam 1 n) := by

@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsRealDifferentGeneratorStatement
+import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
+import Development.WeilBound.CoreStatements.SesquilinearFractions.DifferentIdealEqTopOfUnramified
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -47,7 +49,7 @@ theorem exists_local_generator (E : Type) [Field E] [NumberField E] [IsCMField E
     ∃ δ : E, δ ≠ 0 ∧ ∀ j : E →+* ℂ_[ℓ],
       Real.log ‖j δ‖ = logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖j (H.rt : E)‖ ∧
       Real.log ‖j (IsCMField.complexConj E δ)‖ = Real.log ‖j δ‖ := by
-  obtain ⟨δ₀, -, hδ₀, hconj, hlog⟩ := GlobalTheory.T.exists_real_different_generator E H.unram ℓ
+  obtain ⟨δ₀, -, hδ₀, hconj, hlog⟩ := _root_.PositivityTheory.Xgf.exists_real_different_generator E H.unram ℓ
   have hrt : (H.rt : E) ≠ 0 := rt_ne_zero H
   have hδ₀E : (δ₀ : E) ≠ 0 := by exact_mod_cast hδ₀
   refine ⟨(δ₀ : E) / (H.rt : E), div_ne_zero hδ₀E hrt, fun j => ⟨?_, ?_⟩⟩

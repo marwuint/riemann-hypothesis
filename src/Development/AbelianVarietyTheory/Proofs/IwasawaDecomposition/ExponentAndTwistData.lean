@@ -549,21 +549,6 @@ def SigData.unit (hm : 1 ≤ D.R.m) (σ₀ : D.what₂.FT) : SigData D T where
   hEig := fun _ _ _ _ => 1
   rowS := fun _ _ => σ₀
 
-def WtData.triv : WtData D T where
-  Wt := fun i _ _ => FractionRing (T.O i)
-  rhoW := fun i _ _ => Representation.trivial (FractionRing (T.O i)) (GQ D.host.E D.R.nV) (FractionRing (T.O i))
-
-def LevT.ofPlaces (i : T.Tw) (k : ℕ) (sp : PlE D.host → SplitPlace D.host.E)
-    (redG : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk),
-      (sp (NX.pG D kv)).v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1)) :
-    LevT D T i k where
-  J := ⊤
-  χ := 1
-  QP := ∅
-  DP := ∅
-  sp := sp
-  redG := redG
-
 end Extra
 
 end GlobalTheory.HeightCounting.FormsStep

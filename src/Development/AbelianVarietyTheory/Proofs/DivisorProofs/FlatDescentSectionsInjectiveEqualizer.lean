@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppInjectiveDescentOfAffineOpensStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppTopInjectiveOfSurjectiveIntegralToSpecDomainStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRangeAppTopOfFibreSquareProjectionsEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppInjectiveDescentOfAffineOpens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppTopInjectiveOfSurjectiveIntegralToSpecDomain
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRangeAppTopOfFibreSquareProjectionsEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppInjectiveAffineOpenFlatBaseChangeProperStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRangeAppOfFlatBaseChangeEqualisedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRangeAppOfFlatBaseChangeEqualised
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -25,13 +25,13 @@ theorem isPullback_fibreSquare_baseChange : ∀ (R : Type) [CommRing R] (S Y Z :
 
 theorem descend_of_equalised_fibreSquare : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (S Y Z : Scheme.{0}) (π : S ⟶ Sp R) (y : Y ⟶ Sp R) (p : Z ⟶ Y) (q : Z ⟶ S), IsProper π → Surjective π → IsIntegral S → Flat y → IsPullback p q y π → ∀ V : Y.Opens, Function.Injective (p.app V).hom ∧ ∀ f : Γ(Z, p ⁻¹ᵁ V), (∀ h : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V), ((pullback.fst p p).app _).hom f = ((pullback.snd p p).appLE _ _ h.ge).hom f) → f ∈ Set.range (p.app V).hom := by
   intro R _ _ _ _ S Y Z π y p q hπ hs hS hy H
-  have hinj := GlobalTheory.T.appTop_injective_of_surjective_integral_toSpecDomain R S π hs hS
-  have heq := GlobalTheory.T.mem_range_appTop_of_fibreSquare_projections_eq R S π hπ hS hinj
+  have hinj := _root_.GlobalTheory.appTop_injective_of_surjective_toSpec_domain R S π hs hS
+  have heq := _root_.GlobalTheory.Mum.mem_range_appTop_of_fst_eq_snd R S π hπ hS hinj
   let r : pullback p p ⟶ pullback π π := pullback.map p p π π q q y H.w H.w
   have h1 : r ≫ pullback.fst π π = pullback.fst p p ≫ q := pullback.lift_fst _ _ _
   have h2 : r ≫ pullback.snd π π = pullback.snd p p ≫ q := pullback.lift_snd _ _ _
   have hP := isPullback_fibreSquare_baseChange R S Y Z π y p q H r h1 h2
-  exact GlobalTheory.T.app_injective_descent_of_affineOpens Y Z p fun V hV => ⟨GlobalTheory.T.app_injective_affineOpen_flat_baseChange_proper R S Y Z π y p q hπ hy H hinj V hV,
-    GlobalTheory.T.mem_range_app_of_flat_baseChange_equalised R S Y Z π y p q hπ hy H r h1 h2 hP heq V hV⟩
+  exact _root_.GlobalTheory.Mum.app_injective_and_descent_of_affineOpens Y Z p fun V hV => ⟨GlobalTheory.T.app_injective_affineOpen_flat_baseChange_proper R S Y Z π y p q hπ hy H hinj V hV,
+    _root_.GlobalTheory.Mum.AffDesc.mem_range_app_of_flat R S Y Z π y p q hπ hy H r h1 h2 hP heq V hV⟩
 
 end GlobalTheory

@@ -57,18 +57,6 @@ theorem meas_conjM (h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) 
   rw [e]
   exact mulMt_meas (mulMt_meas measurable_const measurable_id) measurable_const
 
-theorem meas_nxmn (x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
-    Measurable fun p : (Mt k r × Mt k r) × Mt k r =>
-      (fun i j => (Matrix.of p.1.1 * x * Matrix.of p.1.2 * (Matrix.of p.2)⁻¹) i j : Mt k r) := by
-  have e : (fun p : (Mt k r × Mt k r) × Mt k r =>
-      (fun i j => (Matrix.of p.1.1 * x * Matrix.of p.1.2 * (Matrix.of p.2)⁻¹) i j : Mt k r)) = fun p =>
-      (fun i j => (Matrix.of (fun i j => (Matrix.of (fun i j => (Matrix.of p.1.1 * Matrix.of (x : Mt k r)) i j : Mt k r) *
-        Matrix.of p.1.2) i j : Mt k r) * Matrix.of (fun i j => ((Matrix.of p.2)⁻¹) i j : Mt k r)) i j : Mt k r) := by
-    funext p; rfl
-  rw [e]
-  exact mulMt_meas (mulMt_meas (mulMt_meas (measurable_fst.comp measurable_fst) measurable_const)
-    (measurable_snd.comp measurable_fst)) (invMt_meas measurable_snd)
-
 theorem meas_hnxhn :
     Measurable fun p : ((((Mt k r × Mt k r) × Mt k r) × Mt k r) × Mt k r) =>
       (fun i j => (Matrix.of p.1.1.1.2 * Matrix.of p.1.2 * Matrix.of p.1.1.1.1 *
@@ -267,11 +255,6 @@ theorem jacConst_nonneg {T T' a a' κ : ℝ} (hT : 0 < T) (hT' : 0 < T') (ha : 0
     0 ≤ jacConst k r T T' a a' κ := by
   have hV := volU_pos (k - 1)
   unfold jacConst; positivity
-
-theorem wbConst_nonneg {T T' a a' : ℝ} (hT : 0 < T) (hT' : 0 < T') (ha : 0 < a) (ha' : 0 < a') :
-    0 ≤ wbConst k T T' a a' := by
-  have hV := volU_pos (k - 1)
-  unfold wbConst; positivity
 
 theorem sphere_null (t : ℝ) (ht : 0 ≤ t) : (volume : Measure ℂ) {ζ | Complex.normSq ζ = t} = 0 := by
   have e : {ζ : ℂ | Complex.normSq ζ = t} = Metric.sphere 0 (Real.sqrt t) := by

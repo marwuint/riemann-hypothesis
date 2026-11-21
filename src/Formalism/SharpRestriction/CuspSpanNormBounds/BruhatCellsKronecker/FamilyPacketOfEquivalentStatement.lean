@@ -29,42 +29,6 @@ theorem d_hsNormSq_eq (A : V →L[ℂ] W) :
 theorem d_hsNormSq_nonneg (A : V →L[ℂ] W) : 0 ≤ hsNormSq A := by
   rw [d_hsNormSq_eq]; positivity
 
-theorem d_norm_hsInner_le (A B : V →L[ℂ] W) :
-    ‖hsInner A B‖ ≤ Real.sqrt (hsNormSq A) * Real.sqrt (hsNormSq B) := by
-  rw [d_hsNormSq_eq, d_hsNormSq_eq]
-  unfold hsInner
-  calc ‖∑ i, ⟪B (stdOrthonormalBasis ℂ V i), A (stdOrthonormalBasis ℂ V i)⟫_ℂ‖
-      ≤ ∑ i, ‖⟪B (stdOrthonormalBasis ℂ V i), A (stdOrthonormalBasis ℂ V i)⟫_ℂ‖ := norm_sum_le _ _
-    _ ≤ ∑ i, ‖A (stdOrthonormalBasis ℂ V i)‖ * ‖B (stdOrthonormalBasis ℂ V i)‖ :=
-        Finset.sum_le_sum fun i _ => by rw [mul_comm]; exact norm_inner_le_norm _ _
-    _ ≤ _ := Real.sum_mul_le_sqrt_mul_sqrt _ _ _
-
-theorem d_sum_norm_sq_basis [FiniteDimensional ℂ W] {ι κ : Type*} [Fintype ι] [Fintype κ]
-    (b : OrthonormalBasis ι ℂ V) (c : OrthonormalBasis κ ℂ W) (A : V →L[ℂ] W) :
-    haveI := FiniteDimensional.complete ℂ V
-    haveI := FiniteDimensional.complete ℂ W
-    ∑ i, ‖A (b i)‖ ^ 2 = ∑ j, ‖(ContinuousLinearMap.adjoint A) (c j)‖ ^ 2 := by
-  have := FiniteDimensional.complete ℂ V
-  have := FiniteDimensional.complete ℂ W
-  calc ∑ i, ‖A (b i)‖ ^ 2 = ∑ i, ∑ j, ‖⟪c j, A (b i)⟫_ℂ‖ ^ 2 := by
-        simp_rw [c.sum_sq_norm_inner_right]
-    _ = ∑ j, ∑ i, ‖⟪c j, A (b i)⟫_ℂ‖ ^ 2 := Finset.sum_comm
-    _ = ∑ j, ∑ i, ‖⟪(ContinuousLinearMap.adjoint A) (c j), b i⟫_ℂ‖ ^ 2 := by
-        simp_rw [ContinuousLinearMap.adjoint_inner_left]
-    _ = _ := by simp_rw [b.sum_sq_norm_inner_left]
-
-theorem d_hsNormSq_comp_isom [FiniteDimensional ℂ W] (A : V →L[ℂ] W) (U : V →L[ℂ] V)
-    (hU : ∀ x, ‖U x‖ = ‖x‖) : hsNormSq (A.comp U) = hsNormSq A := by
-  let li : V →ₗᵢ[ℂ] V := ⟨U.toLinearMap, hU⟩
-  let e : V ≃ₗᵢ[ℂ] V := li.toLinearIsometryEquiv rfl
-  have he : ∀ x, e x = U x := fun x => rfl
-  rw [d_hsNormSq_eq, d_hsNormSq_eq]
-  have h1 := d_sum_norm_sq_basis ((stdOrthonormalBasis ℂ V).map e) (stdOrthonormalBasis ℂ W) A
-  have h2 := d_sum_norm_sq_basis (stdOrthonormalBasis ℂ V) (stdOrthonormalBasis ℂ W) A
-  rw [h2, ← h1]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  simp [he]
-
 end HS
 
 section Pair
@@ -77,17 +41,6 @@ theorem aT_nonneg (X : TermTie D) {u u' : D.what₂.Word} (t : D.s.Term u u') : 
 
 def wP (X : TermTie D) {u u' : D.what₂.Word} (p : D.s.Pair u u') : ℝ :=
   X.wRow p * (aT X (D.s.pfst p) * aT X (D.s.psnd p))
-
-theorem placeWeight_nonneg (X : TermTie D) {u u' : D.what₂.Word} (p : D.s.Pair u u') : 0 ≤ wP X p :=
-  mul_nonneg (X.wRow_pos p).le (mul_nonneg (aT_nonneg _ _) (aT_nonneg _ _))
-
-theorem norm_pval_le (X : TermTie D) {u u' : D.what₂.Word} (p : D.s.Pair u u') : ‖D.s.pval p‖ ≤ wP X p := by
-  rw [X.pval_eq p, norm_mul, norm_mul, X.chi_norm p, mul_one, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_pos (X.wRow_pos p)]
-  unfold wP aT
-  refine mul_le_mul_of_nonneg_left ?_ (X.wRow_pos p).le
-  have h := d_norm_hsInner_le ((X.Jt (D.s.pfst p)).comp (X.piB p)) (X.Jt (D.s.psnd p))
-  rwa [d_hsNormSq_comp_isom _ _ (X.piB_unit p)] at h
 
 theorem gaG_nonneg (D : D7) : 0 ≤ gaG D := by
   unfold gaG
@@ -110,15 +63,6 @@ def RowBound (Q : D.s.Pair u u' → Prop) (B : ℝ) : Prop :=
   ∀ S : Finset (D.s.Pair u u'), (∀ p ∈ S, Q p) →
     ∑ p ∈ S, wP X p ≤ massRows D Y.F0 Y.what₂ * dimPi (hc := D.hcW) u * B
 
-theorem gaG_sum_le (hF : UnitaryVolumeMass.FormAt D u) {Q : D.s.Pair u u' → Prop} {B : ℝ} (h : RowBound X Y Q B)
-    (S : Finset (D.s.Pair u u')) (hS : ∀ p ∈ S, Q p) :
-    gaG D * ∑ p ∈ S, ‖D.s.pval p‖ ≤ (D.duS u : ℝ) * B := by
-  have h1 : ∑ p ∈ S, ‖D.s.pval p‖ ≤ ∑ p ∈ S, wP X p := Finset.sum_le_sum fun p _ => norm_pval_le X p
-  have h2 := hF Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero Y.what₂ Y.isRows
-  calc gaG D * ∑ p ∈ S, ‖D.s.pval p‖ ≤ gaG D * (massRows D Y.F0 Y.what₂ * dimPi (hc := D.hcW) u * B) :=
-        mul_le_mul_of_nonneg_left (h1.trans (h S hS)) (gaG_nonneg D)
-    _ = (D.duS u : ℝ) * B := by rw [← h2]; ring
-
 def ndP (p : D.s.Pair u u') : Prop :=
   BNondeg (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (X.fl' (D.s.psnd p)) (X.beta p)
 
@@ -131,63 +75,6 @@ def clsDeg (s : ℕ) (p : D.s.Pair u u') : Prop :=
 def clsOne (p : D.s.Pair u u') : Prop :=
   D.s.Gterm (D.s.pfst p) ≠ 0 ∧ D.s.Gterm (D.s.psnd p) ≠ 0 ∧
     D.s.generic (D.s.pfst p) ∧ D.s.generic (D.s.psnd p) ∧ D.s.s0 p = 1 ∧ ¬ D.s.scalarPair p
-
-theorem pair_index_le_rank (X : TermTie D) (p : D.s.Pair u u') : D.s.s0 p ≤ D.R.k := by
-  rw [X.s0_eq p]; unfold Lat.s0; exact Nat.sub_le _ _
-
-theorem rowBound_loop {Bn Bd : ℕ → ℝ} {B1 : ℝ}
-    (hn : ∀ s, 2 ≤ s → s ≤ D.R.k → RowBound X Y (clsND X s) (Bn s))
-    (hd : ∀ s, 2 ≤ s → s ≤ D.R.k → RowBound X Y (clsDeg X s) (Bd s))
-    (h1 : RowBound X Y clsOne B1) :
-    RowBound X Y (loopP D.s) ((∑ s ∈ Finset.Icc 2 D.R.k, Bn s) + (∑ s ∈ Finset.Icc 2 D.R.k, Bd s) + B1) := by
-  intro S hS
-  set M := massRows D Y.F0 Y.what₂ * dimPi (hc := D.hcW) u with hM
-  have key : ∀ p ∈ S, wP X p ≤
-      (∑ s ∈ Finset.Icc 2 D.R.k, if clsND X s p then wP X p else 0) +
-      (∑ s ∈ Finset.Icc 2 D.R.k, if clsDeg X s p then wP X p else 0) +
-      (if clsOne p then wP X p else 0) := by
-    intro p hp
-    have h0 := placeWeight_nonneg X p
-    have n1 : 0 ≤ ∑ s ∈ Finset.Icc 2 D.R.k, (if clsND X s p then wP X p else 0) :=
-      Finset.sum_nonneg fun s _ => by split_ifs <;> simp [h0]
-    have n2 : 0 ≤ ∑ s ∈ Finset.Icc 2 D.R.k, (if clsDeg X s p then wP X p else 0) :=
-      Finset.sum_nonneg fun s _ => by split_ifs <;> simp [h0]
-    have n3 : 0 ≤ (if clsOne p then wP X p else 0) := by split_ifs <;> simp [h0]
-    obtain ⟨g1, g2, hc⟩ := hS p hp
-    rcases hc with hc | ⟨a, b, c, d⟩
-    · have hmem : D.s.s0 p ∈ Finset.Icc 2 D.R.k := Finset.mem_Icc.2 ⟨hc, pair_index_le_rank X p⟩
-      by_cases hnd : ndP X p
-      · have := Finset.single_le_sum (f := fun s => if clsND X s p then wP X p else 0)
-          (fun s _ => by split_ifs <;> simp [h0]) hmem
-        have hc1 : clsND X (D.s.s0 p) p := ⟨g1, g2, rfl, hnd⟩
-        rw [if_pos hc1] at this
-        linarith
-      · have := Finset.single_le_sum (f := fun s => if clsDeg X s p then wP X p else 0)
-          (fun s _ => by split_ifs <;> simp [h0]) hmem
-        have hc1 : clsDeg X (D.s.s0 p) p := ⟨g1, g2, rfl, hnd⟩
-        rw [if_pos hc1] at this
-        linarith
-    · have hc1 : clsOne p := ⟨g1, g2, a, b, c, d⟩
-      rw [if_pos hc1]
-      linarith
-  calc ∑ p ∈ S, wP X p ≤ ∑ p ∈ S, ((∑ s ∈ Finset.Icc 2 D.R.k, if clsND X s p then wP X p else 0) +
-      (∑ s ∈ Finset.Icc 2 D.R.k, if clsDeg X s p then wP X p else 0) +
-      (if clsOne p then wP X p else 0)) := Finset.sum_le_sum key
-    _ = (∑ s ∈ Finset.Icc 2 D.R.k, ∑ p ∈ S.filter (clsND X s), wP X p) +
-        (∑ s ∈ Finset.Icc 2 D.R.k, ∑ p ∈ S.filter (clsDeg X s), wP X p) +
-        ∑ p ∈ S.filter clsOne, wP X p := by
-      rw [Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_comm,
-        Finset.sum_comm (s := S) (t := Finset.Icc 2 D.R.k)]
-      simp only [Finset.sum_filter]
-    _ ≤ (∑ s ∈ Finset.Icc 2 D.R.k, M * Bn s) + (∑ s ∈ Finset.Icc 2 D.R.k, M * Bd s) + M * B1 := by
-      refine add_le_add (add_le_add ?_ ?_) ?_
-      · exact Finset.sum_le_sum fun s hs => hn s (Finset.mem_Icc.1 hs).1 (Finset.mem_Icc.1 hs).2 _
-          (fun p hp => (Finset.mem_filter.1 hp).2)
-      · exact Finset.sum_le_sum fun s hs => hd s (Finset.mem_Icc.1 hs).1 (Finset.mem_Icc.1 hs).2 _
-          (fun p hp => (Finset.mem_filter.1 hp).2)
-      · exact h1 _ (fun p hp => (Finset.mem_filter.1 hp).2)
-    _ = M * ((∑ s ∈ Finset.Icc 2 D.R.k, Bn s) + (∑ s ∈ Finset.Icc 2 D.R.k, Bd s) + B1) := by
-      rw [← Finset.mul_sum, ← Finset.mul_sum]; ring
 
 end Rows
 
@@ -390,93 +277,11 @@ def RowsOne (C : ℝ) : Prop := RowBound X Y clsOne (oneB D large₂ C * rDD D u
 
 end Main
 
-theorem row_bound_of_rows_hypotheses (C : ℝ) (hC : 1 ≤ C) : ∃ K₀ : ℝ, ∀ {D : D7} {large₂ : SizeData₂ D} (X : TermTie D) {u u' : D.what₂.Word}
-    {C1 : ℝ} (Y : LoopTie D large₂ X u u' C1) {C' Cl Cg cb Cu cT CT C0 A : ℝ},
-    Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A → 4 ≤ D.R.m → 1 ≤ Cl → CT ≤ C → large₂.CGam ≤ C →
-    K₀ * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L ≤ D.R.k →
-    6 * Real.log (3 * C0) ≤ (D.R.k : ℝ) * D.R.f * Real.log D.R.k →
-    UnitaryVolumeMass.FormAt D u → LatticeSumBounds.XiHyp C D.R.k D.R.m D.R.f large₂.sc.b D.host.v (NT D u) (XiB D large₂ u C) →
-    RowsND X Y C → RowsDeg X Y C → RowsOne X Y C → ∀ c : ℝ, c ≤ 1 / 3 → UnitaryVolumeMass.LoopPairSumBound D u u' c := by
-  obtain ⟨K1, H1⟩ := Formalism.HermitianLatticeCounting.P.sumNondegenerateRowsLe C hC
-  obtain ⟨K2, H2⟩ := Formalism.HermitianLatticeCounting.P.sumDegenerateRowsLe C hC
-  obtain ⟨K3, H3⟩ := Formalism.HermitianLatticeCounting.P.singleRowBound C hC
-  refine ⟨max K1 (max K2 K3), ?_⟩
-  intro D large₂ X u u' C1 Y C' Cl Cg cb Cu cT CT C0 A hH hm hCl hCT hG hK hx hF hXi hn hd h1 c hc S hS
-  have hL := d_one_le_L D large₂
-  have hmfL : 0 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L := by positivity
-  have hKi : ∀ K : ℝ, K ≤ max K1 (max K2 K3) → K * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L ≤ D.R.k := by
-    intro K hKle
-    refine le_trans ?_ hK
-    have := mul_le_mul_of_nonneg_right hKle hmfL
-    nlinarith
-  have P1 := parameters_of_hypotheses D large₂ hH.1 u hm hCl hCT hG (hKi K1 (le_max_left _ _))
-  have P2 := parameters_of_hypotheses D large₂ hH.1 u hm hCl hCT hG (hKi K2 (le_trans (le_max_left _ _) (le_max_right _ _)))
-  have P3 := parameters_of_hypotheses D large₂ hH.1 u hm hCl hCT hG (hKi K3 (le_trans (le_max_right _ _) (le_max_right _ _)))
-  have E1 := H1 _ _ _ _ _ _ _ _ _ P1 hXi
-  have E2 := H2 _ _ _ _ _ _ _ _ _ P2 hXi
-  have e := d_m_eq D
-  rw [e] at P3
-  have E3 := H3 _ _ _ _ _ _ _ _ P3
-  have hk1 : 1 ≤ D.R.k := by have := D.R.m_add_three_le_k; omega
-  have hb := d_two_le_b D large₂
-  have E1' := Formalism.HermitianLatticeCounting.P.invSqrtPowLeExp D.R.k D.R.f large₂.sc.b (gg D) hk1 (by linarith) P1.2.2.2.2.1
-
-  obtain ⟨_, _, _, _, _, _, _, _, _, h10, _⟩ := hH.1.2.1
-  have hC0 : 1 ≤ C0 := hH.1.2.2
-  have hD := d_Dstar_pos D
-  have hw : (GamS D large₂ ^ 2)⁻¹ ≤ C0 * rDD D u' := by
-    have h := (h10 u').1
-    rw [d_GamP_eq D large₂ u'] at h
-    have e2 : GamS D large₂ ^ (-2 : ℤ) = (GamS D large₂ ^ 2)⁻¹ := by
-      rw [zpow_neg]; norm_cast
-    rw [e2, div_le_iff₀ (by linarith)] at h
-    unfold rDD
-    rw [mul_div_assoc', le_div_iff₀ hD]
-    linarith
-  have hr : 0 ≤ rDD D u' := by unfold rDD; positivity
-  have tot := gaG_sum_le X Y hF (rowBound_loop X Y hn hd h1) S hS
-  rw [← Finset.sum_mul] at tot
-  set x : ℝ := (D.R.k : ℝ) * D.R.f * Real.log D.R.k with hxdef
-  have hx0 : 0 ≤ x := by
-    have : 0 ≤ Real.log (D.R.k : ℝ) := Real.log_nonneg (by exact_mod_cast hk1)
-    positivity
-  have T := Formalism.HermitianLatticeCounting.P.expSumLe' C0 x hC0 hx
-  have B : (∑ s ∈ Finset.Icc 2 D.R.k,
-        LatticeSumBounds.ndRow C D.R.k D.R.m D.R.f s large₂.sc.b (gg D) D.host.v (GamS D large₂) (XiB D large₂ u C)) * rDD D u' +
-      (∑ s ∈ Finset.Icc 2 D.R.k,
-        LatticeSumBounds.degRow C D.R.k D.R.m D.R.f s large₂.sc.b (gg D) D.host.v (GamS D large₂) (XiB D large₂ u C)) +
-      oneB D large₂ C * rDD D u' ≤ Real.exp (-x / 3) * rDD D u' := by
-    have a1 := mul_le_mul_of_nonneg_right (E1.trans E1') hr
-    have a2 : (∑ s ∈ Finset.Icc 2 D.R.k,
-        LatticeSumBounds.degRow C D.R.k D.R.m D.R.f s large₂.sc.b (gg D) D.host.v (GamS D large₂) (XiB D large₂ u C)) ≤
-        Real.exp (-x / 2) * (C0 * rDD D u') :=
-      E2.trans (mul_le_mul_of_nonneg_left hw (Real.exp_pos _).le)
-    have a3 : oneB D large₂ C * rDD D u' ≤ Real.exp (-x) * rDD D u' := mul_le_mul_of_nonneg_right E3 hr
-    have T' := mul_le_mul_of_nonneg_right T hr
-    have p1 : 0 ≤ Real.exp (-4 * x) * rDD D u' := mul_nonneg (Real.exp_pos _).le hr
-    have p3 : 0 ≤ Real.exp (-x) * rDD D u' := mul_nonneg (Real.exp_pos _).le hr
-    nlinarith
-  have hdu : (0 : ℝ) ≤ (D.duS u : ℝ) := Nat.cast_nonneg _
-  calc gaG D * ∑ p ∈ S, ‖D.s.pval p‖ ≤ (D.duS u : ℝ) * (Real.exp (-x / 3) * rDD D u') :=
-        tot.trans (mul_le_mul_of_nonneg_left B hdu)
-    _ ≤ (D.duS u : ℝ) * (Real.exp (-(c * (D.R.k : ℝ) * (D.R.f : ℝ) * Real.log (D.R.k : ℝ))) * rDD D u') := by
-        refine mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (Real.exp_le_exp.2 ?_) hr) hdu
-        have : c * x ≤ 1 / 3 * x := mul_le_mul_of_nonneg_right hc hx0
-        rw [hxdef] at this ⊢
-        nlinarith
-    _ = _ := by unfold rDD; ring
-
 section Fam
 
 variable {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) (X : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
   (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word),
     LoopTie (Fm.D x i) (Fm.L x i) (X x hx i) u u' C1)
-
-def RowsF : Prop :=
-  ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, OwnEv Fm fun C' Cl x i => ∀ (hx : Fm.x1 < x) u u',
-    Cnt.Hyp (Fm.D x i) (Fm.L x i) u u' C' Cl Cg cb Cu cT CT C0 A →
-      RowsND (X x hx i) (Y x hx i u u') C ∧ RowsDeg (X x hx i) (Y x hx i u u') C ∧
-        RowsOne (X x hx i) (Y x hx i u u') C
 
 theorem d_CkLow_pos : 0 < Fm.CkLow := by
   obtain ⟨x, -, hx1, -, ⟨i⟩⟩ := Fm.toFamCore.exists_pt 0
@@ -501,65 +306,6 @@ theorem ev_kLow (K : ℝ) : ∃ x0 : ℝ, Fm.x1 < x0 ∧ ∀ x ≥ x0, ∀ i : F
   have e5 : ((Fm.D x i).R.m : ℝ) ^ LevelStarExponents.jG = ((Fm.D x i).R.m : ℝ) ^ 5 := rfl
   rw [e5] at h
   nlinarith
-
-theorem family_conclusion_of_row_bounds (hCl : 1 ≤ sCl Fm)
-    (h8 : ∀ Cg cb Cu cT CT C0 A : ℝ, VanishingOnXAndXPlus.admF8 Fm Cg cb Cu cT CT C0 A)
-    (h16 : ∀ Cg cb Cu cT CT C0 A : ℝ, VanishingOnXAndXPlus.FamilySixteenthHypothesis Fm Cg cb Cu cT CT C0 A)
-    (hR : RowsF Fm C1 X Y) {c : ℝ} (hc0 : 0 < c) (hc : c ≤ 1 / 3) : VanishingOnXAndXPlus.OrbitValuationBound Fm c := by
-  refine ⟨hc0, fun Cg cb Cu cT CT C0 A => ?_⟩
-  obtain ⟨x8, H8⟩ := h8 Cg cb Cu cT CT C0 A
-  obtain ⟨CX, cX, x16, CyclotomicCharacterContinuous⟩ := h16 Cg cb Cu cT CT C0 A
-  obtain ⟨C₀, HR⟩ := hR Cg cb Cu cT CT C0 A
-  set C : ℝ := max (max C₀ 1) (max (max CT Fm.CGam) (|CX| * max 1 |cX|)) with hCdef
-  have c1 : C₀ ≤ C := le_trans (le_max_left _ _) (le_max_left _ _)
-  have c2 : 1 ≤ C := le_trans (le_max_right _ _) (le_max_left _ _)
-  have c3 : CT ≤ C := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)
-  have c4 : Fm.CGam ≤ C := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)
-  have c5 : |CX| * max 1 |cX| ≤ C := le_trans (le_max_right _ _) (le_max_right _ _)
-  obtain ⟨xR, HRr⟩ := HR C c1
-  obtain ⟨K₀, HB⟩ := row_bound_of_rows_hypotheses C c2
-  obtain ⟨xm, _, Hm⟩ := ev_m Fm 4
-  obtain ⟨xk, _, Hk⟩ := ev_k Fm (max 3 (6 * Real.log (3 * C0)))
-  obtain ⟨xl, _, Hl⟩ := ev_kLow Fm K₀
-  refine ownEv_intro Fm (max (max x8 x16) (max (max xR xm) (max xk xl))) fun x hx hx1 i u u' => ?_
-  have g8 : x8 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have g16 : x16 ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have gR : xR ≤ x := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have gm : xm ≤ x := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have gk : xk ≤ x := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hx
-  have gl : xl ≤ x := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx
-  intro hH
-  have hm4 : 4 ≤ (Fm.D x i).R.m := by exact_mod_cast Hm x gm i
-  have hk := Hk x gk i
-  have hk3 : (3 : ℝ) ≤ (Fm.D x i).R.k := le_trans (le_max_left _ _) hk
-  have hlog : 1 ≤ Real.log ((Fm.D x i).R.k : ℝ) := by
-    rw [Real.le_log_iff_exp_le (by linarith)]
-    have := Real.exp_one_lt_d9
-    linarith
-  have hf1 : (1 : ℝ) ≤ (Fm.D x i).R.f := by
-    have : 1 ≤ (Fm.D x i).R.f := by
-      have h1 : (Fm.D x i).R.f = 2 * (Fm.D x i).R.ord := rfl
-      have := (Fm.D x i).R.ord_pos
-      omega
-    exact_mod_cast this
-  have hx6 : 6 * Real.log (3 * C0) ≤ ((Fm.D x i).R.k : ℝ) * (Fm.D x i).R.f * Real.log (Fm.D x i).R.k := by
-    have h1 : 6 * Real.log (3 * C0) ≤ ((Fm.D x i).R.k : ℝ) := le_trans (le_max_right _ _) hk
-    have h2 : ((Fm.D x i).R.k : ℝ) ≤ ((Fm.D x i).R.k : ℝ) * (Fm.D x i).R.f := le_mul_of_one_le_right (by linarith) hf1
-    have h3 : ((Fm.D x i).R.k : ℝ) * (Fm.D x i).R.f ≤
-        ((Fm.D x i).R.k : ℝ) * (Fm.D x i).R.f * Real.log (Fm.D x i).R.k :=
-      le_mul_of_one_le_right (by positivity) hlog
-    linarith
-  obtain ⟨r1, r2, r3⟩ := HRr x gR i hx1 u u' hH
-  exact HB (X x hx1 i) (Y x hx1 i u u') hH hm4 hCl c3 (by rw [Fm.CGam_eq]; exact c4) (Hl x gl i) hx6
-    ((H8 x g8 i u u') hH) (xiHyp_of_stX _ _ hH (CyclotomicCharacterContinuous x g16 i u u') c5 c2) r1 r2 r3 c hc
-
-theorem family_packet_of_row_bounds (hCl : 1 ≤ sCl Fm) (hR : RowsF Fm C1 X Y) {c : ℝ} (hc0 : 0 < c) (hc : c ≤ 1 / 3) :
-    VanishingOnXAndXPlus.KudlaFamilyStatement Fm C1 X Y c := by
-  intro hA
-  obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hA'⟩ := hA
-  exact family_conclusion_of_row_bounds Fm C1 X Y hCl
-    (fun Cg cb Cu cT CT C0 A => (hA' Cg cb Cu cT CT C0 A).2.2.2.2.2.2.2.2.2.2.1)
-    (fun Cg cb Cu cT CT C0 A => (hA' Cg cb Cu cT CT C0 A).2.2.2.2.2.2.2.2.2.2.2.2.2.1) hR hc0 hc
 
 end Fam
 
@@ -665,41 +411,6 @@ theorem d_dims {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : Cnt.Hyp0 D large₂ C' Cl C
   rw [ha τ u _ (Y.W τ).z (Y.W τ).π (Y.goodW τ).1]
   exact (hb hH u τ).symm
 
-theorem term_L2 {C' Cl Cg cb Cu cT CT C0 A C : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
-    (hL2 : VanishingOnXAndXPlus.L2HilbertSchmidtPointwise D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C) (ha : VanishingOnXAndXPlus.PlaneWaveLetters D)
-    (hb : VanishingOnXAndXPlus.PlaneWaveIsometry D large₂ C' Cl Cg cb Cu cT CT C0) (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0)
-    (hrel : D.s.relevant t) :
-    (∏ τ, nV D (Tu D u) (Tu D u') (ZhatL (X.fl t) (X.fl' t)) τ) * aT X t ^ 2 / dimPi (hc := D.hcW) u ≤
-      Y.volR t ^ 2 * (∏ τ, lossV large₂.sc.b C D.R.m (Y.W τ).z (Y.W τ).z' (Y.γ t τ) (Y.pt t τ)) *
-        (∏ τ, tvPr D τ u' ^ D.R.k)⁻¹ := by
-  have hrd := d_rdE_pos hH.1
-  have hTT := d_hypTT hH.2.1
-  have each : ∀ τ, nV D (Tu D u) (Tu D u') (ZhatL (X.fl t) (X.fl' t)) τ *
-      hsNormSq ((Y.A τ).J (Y.νR t τ) (Y.γ t τ)) / (Module.finrank ℂ (Y.W τ).Wp : ℝ) ≤
-      lossV large₂.sc.b C D.R.m (Y.W τ).z (Y.W τ).z' (Y.γ t τ) (Y.pt t τ) * (tvPr D τ u' ^ D.R.k)⁻¹ := by
-    intro τ
-    obtain ⟨r1, r2, r3⟩ := Y.rel t hG hrel τ
-    rw [← d_nV_eq Y hrd t τ]
-    exact hL2 τ u u' hTT Y.θ Y.θ_win (Y.W τ) (Y.goodW τ) (Y.A τ) (Y.goodS τ) (Y.deg_eq τ) (Y.γ t τ) (Y.pt t τ) r1
-      (Y.θR t τ) r2 (Y.νR t τ) r3 hH
-  have nn : ∀ τ, 0 ≤ nV D (Tu D u) (Tu D u') (ZhatL (X.fl t) (X.fl' t)) τ *
-      hsNormSq ((Y.A τ).J (Y.νR t τ) (Y.γ t τ)) / (Module.finrank ℂ (Y.W τ).Wp : ℝ) := by
-    intro τ
-    have h1 : 0 ≤ nV D (Tu D u) (Tu D u') (ZhatL (X.fl t) (X.fl' t)) τ := by
-      unfold nV; exact D.R.k_even.pow_nonneg _
-    exact div_nonneg (mul_nonneg h1 (d_hsNormSq_nonneg _)) (Nat.cast_nonneg _)
-  have P := Finset.prod_le_prod (s := Finset.univ) (fun τ _ => nn τ) (fun τ _ => each τ)
-  rw [Finset.prod_div_distrib, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_inv_distrib,
-    d_dims Y hH.1 ha hb] at P
-  have e : aT X t ^ 2 = Y.volR t ^ 2 * ∏ τ, hsNormSq ((Y.A τ).J (Y.νR t τ) (Y.γ t τ)) := by
-    unfold aT
-    rw [Real.sq_sqrt (d_hsNormSq_nonneg _), Y.J_norm t hG hrel]
-  have hv : 0 ≤ Y.volR t ^ 2 := by positivity
-  have Q := mul_le_mul_of_nonneg_left P hv
-  calc _ = Y.volR t ^ 2 * ((∏ τ, nV D (Tu D u) (Tu D u') (ZhatL (X.fl t) (X.fl' t)) τ) *
-        (∏ τ, hsNormSq ((Y.A τ).J (Y.νR t τ) (Y.γ t τ))) / dimPi (hc := D.hcW) u) := by rw [e]; ring
-    _ ≤ _ := by rw [mul_assoc]; exact Q
-
 theorem aT_irr (Y : LoopTie D large₂ X u u' C1) (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) (hrel : ¬ D.s.relevant t) : aT X t = 0 := by
   unfold aT
   rw [Y.J_irr t hG hrel]
@@ -782,43 +493,6 @@ def LatticeDeterminantFactorization : Prop :=
 
 variable {X}
 
-theorem term_L2_global {C' Cl Cg cb Cu cT CT C0 A C C2 Ch CV δ : ℝ}
-    (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
-    (hL2 : VanishingOnXAndXPlus.L2HilbertSchmidtPointwise D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C) (ha : VanishingOnXAndXPlus.PlaneWaveLetters D)
-    (hb : VanishingOnXAndXPlus.PlaneWaveIsometry D large₂ C' Cl Cg cb Cu cT CT C0)
-    (hp : VanishingOnXAndXPlus.L2LossProductBound D large₂ C' Cl Cg cb Cu cT CT C0 A C C2 Ch)
-    (h6 : VanishingOnXAndXPlus.adm6 D large₂ C' Cl Cg cb Cu cT CT C0 δ) (hδ : 0 ≤ δ)
-    (hV : VanishingOnXAndXPlus.TermVolumeSmallCellBound D large₂ X u u' C1 Y C' Cl Cg cb Cu cT CT C0 A CV) (hT : TermPtsTie X Y)
-    (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) (hrel : D.s.relevant t) :
-    (∏ τ, nV D (Tu D u) (Tu D u') (ZhatL (X.fl t) (X.fl' t)) τ) * aT X t ^ 2 / dimPi (hc := D.hcW) u ≤
-      (HHZ D large₂.sc.b CV (ZhatL (X.fl t) (X.fl' t)) ^ (CV * (D.R.rS : ℝ) ^ 2)) ^ 2 *
-        (GamS D large₂ * (∏ τ, sizeV (scalePowQuadraticExponent D large₂ Ch) (Y.W τ).z (Y.W τ).z' (Y.γ t τ)) ^ (C2 * (D.R.m : ℝ) ^ 2)) *
-        ((1 + δ) * rDD D u') := by
-  have h1 := term_L2 Y hH hL2 ha hb t hG hrel
-  have h2 := hp u u' _ _ _ _ (hT t hG hrel) hH Finset.univ
-  have h3 := d_tprod_inv hH.1 h6 hδ u'
-  have h4 := hV hH t hG hrel
-  have v0 := (Y.volR_pos t).le
-  have i0 : 0 ≤ (∏ τ, tvPr D τ u' ^ D.R.k)⁻¹ :=
-    inv_nonneg.2 (Finset.prod_nonneg fun τ _ => D.R.k_even.pow_nonneg _)
-  have s0 : 0 ≤ ∏ τ, sizeV (scalePowQuadraticExponent D large₂ Ch) (Y.W τ).z (Y.W τ).z' (Y.γ t τ) :=
-    Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun l _ => le_trans zero_le_one (le_max_left _ _)
-  have L0 : 0 ≤ GamS D large₂ * (∏ τ, sizeV (scalePowQuadraticExponent D large₂ Ch) (Y.W τ).z (Y.W τ).z' (Y.γ t τ)) ^ (C2 * (D.R.m : ℝ) ^ 2) :=
-    mul_nonneg (by unfold GamS; exact (Real.exp_pos _).le) (Real.rpow_nonneg s0 _)
-  have v2 : Y.volR t ^ 2 ≤ (HHZ D large₂.sc.b CV (ZhatL (X.fl t) (X.fl' t)) ^ (CV * (D.R.rS : ℝ) ^ 2)) ^ 2 :=
-    pow_le_pow_left₀ v0 h4 2
-  refine h1.trans ?_
-  calc Y.volR t ^ 2 * (∏ τ, lossV large₂.sc.b C D.R.m (Y.W τ).z (Y.W τ).z' (Y.γ t τ) (Y.pt t τ)) *
-        (∏ τ, tvPr D τ u' ^ D.R.k)⁻¹
-      ≤ Y.volR t ^ 2 * (GamS D large₂ * (∏ τ, sizeV (scalePowQuadraticExponent D large₂ Ch) (Y.W τ).z (Y.W τ).z' (Y.γ t τ)) ^
-          (C2 * (D.R.m : ℝ) ^ 2)) * (∏ τ, tvPr D τ u' ^ D.R.k)⁻¹ :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h2 (by positivity)) i0
-    _ ≤ (HHZ D large₂.sc.b CV (ZhatL (X.fl t) (X.fl' t)) ^ (CV * (D.R.rS : ℝ) ^ 2)) ^ 2 *
-          (GamS D large₂ * (∏ τ, sizeV (scalePowQuadraticExponent D large₂ Ch) (Y.W τ).z (Y.W τ).z' (Y.γ t τ)) ^
-          (C2 * (D.R.m : ℝ) ^ 2)) * (∏ τ, tvPr D τ u' ^ D.R.k)⁻¹ :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right v2 L0) i0
-    _ ≤ _ := mul_le_mul_of_nonneg_left h3 (mul_nonneg (by positivity) L0)
-
 end Missing
 
 section Size
@@ -876,25 +550,6 @@ theorem rowBound_relevant {Q : D.s.Pair u u' → Prop}
   exact h _ fun p hp => ⟨hS p (Finset.mem_filter.1 hp).1, (Finset.mem_filter.1 hp).2⟩
 
 end Size
-
-section AuxiliaryNormPrimes
-
-variable {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) (X : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
-  (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word),
-    LoopTie (Fm.D x i) (Fm.L x i) (X x hx i) u u' C1)
-
-theorem family_statement_of_equivalent_packet {c : ℝ} (h : VanishingOnXAndXPlus.OrbitValuationBound Fm c) : AuxiliaryNormPrimes.KudlaFamilyStatement Fm C1 X Y c := fun _ => h
-
-theorem family_packet_of_equivalent_statement {c : ℝ} (h : AuxiliaryNormPrimes.OrbitValuationBound Fm c) : VanishingOnXAndXPlus.KudlaFamilyStatement Fm C1 X Y c := fun _ => h
-
-theorem family_statement_of_row_bounds (hCl : 1 ≤ sCl Fm)
-    (h16 : ∀ Cg cb Cu cT CT C0 A : ℝ, VanishingOnXAndXPlus.FamilySixteenthHypothesis Fm Cg cb Cu cT CT C0 A)
-    (hR : RowsF Fm C1 X Y) {c : ℝ} (hc0 : 0 < c) (hc : c ≤ 1 / 3) : AuxiliaryNormPrimes.KudlaFamilyStatement Fm C1 X Y c := by
-  intro hA
-  obtain ⟨_, _, _, _, _, _, _, hA'⟩ := hA
-  exact family_conclusion_of_row_bounds Fm C1 X Y hCl (fun Cg cb Cu cT CT C0 A => (hA' Cg cb Cu cT CT C0 A).2.2.1) h16 hR hc0 hc
-
-end AuxiliaryNormPrimes
 
 end Formalism.MainNotions.BridgeLemma
 

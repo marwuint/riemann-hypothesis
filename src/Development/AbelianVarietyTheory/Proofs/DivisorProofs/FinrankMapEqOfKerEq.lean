@@ -21,15 +21,6 @@ def ksForm (φ : LinearMap.BilinForm k H) (Fil : Submodule k H) :
 @[simp] theorem ksForm_apply (φ : LinearMap.BilinForm k H) (Fil : Submodule k H) (g : H →ₗ[k] H)
     (x y : Fil) : ksForm φ Fil g x y = φ (g x) y := rfl
 
-def blockSym {E ι : Type*} [AddCommGroup E] [Module k E] (W : ι → Submodule k E) (c : ι → ι) :
-    Submodule k (LinearMap.BilinForm k E) where
-  carrier := {B | (∀ x y, B x y = B y x) ∧ ∀ i j, j ≠ c i → ∀ x ∈ W i, ∀ y ∈ W j, B x y = 0}
-  zero_mem' := ⟨by simp, by simp⟩
-  add_mem' {B C} hB hC := ⟨fun x y => by simp [hB.1 x y, hC.1 x y],
-    fun i j hij x hx y hy => by simp [hB.2 i j hij x hx y hy, hC.2 i j hij x hx y hy]⟩
-  smul_mem' a B hB := ⟨fun x y => by simp [hB.1 x y],
-    fun i j hij x hx y hy => by simp [hB.2 i j hij x hx y hy]⟩
-
 theorem ksDim_finrank [FiniteDimensional k H] (ρ : O →+* Module.End k H) (φ : LinearMap.BilinForm k H)
     (Fil Z : Submodule k H) : KSDim ρ φ Fil Z (finrank k ((ksSub ρ φ Fil Z).map (cls Fil))) := by
   set M := (ksSub ρ φ Fil Z).map (cls Fil) with hM

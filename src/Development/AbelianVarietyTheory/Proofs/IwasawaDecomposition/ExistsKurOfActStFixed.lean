@@ -61,30 +61,4 @@ theorem exists_kur_of_actSt_fixed (K : FinExt l)
         rw [map_mul, h4]
         linear_combination a' * h2 + ((kummer P g : ℚ_[l]) • P.tB) * haa
 
-theorem isPst_one_of_kummer (l : ℕ) [Fact l.Prime] (P : LocPrime l)
-    (h : ∀ (K : FinExt l) (b : P.R.B), ¬ ∀ g ∈ GK K, P.actQ g b - b = (kummer P g : ℚ_[l]) • P.tB)
-    (K : FinExt l) : IsPst P (1 : Representation ℚ_[l] ↥(GK K) ℚ_[l]) := by
-  have := nontrivial_B P
-  rw [IsPst, rank_self, rank_eq_one_iff]
-  have hmem : ((1 : ℚ_[l]) ⊗ₜ[ℚ_[l]] (1 : Bst P)) ∈ Dpst P (1 : Representation ℚ_[l] ↥(GK K) ℚ_[l]) :=
-    (mem_Dpst P _).mpr ⟨K, fun g _ => by simp⟩
-  refine ⟨toUr P _ ⟨_, hmem⟩, fun h0 => ?_, fun x => ?_⟩
-  · have h1 : ((1 : ℚ_[l]) ⊗ₜ[ℚ_[l]] (1 : Bst P)) = 0 := congrArg Subtype.val h0
-    have h2 := congrArg (TensorProduct.lid ℚ_[l] (Bst P)) h1
-    simp at h2
-  · obtain ⟨⟨x, hx⟩, rfl⟩ := (toUr P _).surjective x
-    obtain ⟨p, rfl⟩ := (TensorProduct.lid ℚ_[l] (Bst P)).symm.surjective x
-    obtain ⟨K', hK'⟩ := (mem_Dpst P _).mp hx
-    obtain ⟨c, hc⟩ := exists_kur_of_actSt_fixed P (supExt K K') (h _) p fun g hg => by
-      have h1 := hK' ⟨g, GK_le (K' := supExt K K') le_sup_left hg⟩
-        (GK_le (K' := supExt K K') le_sup_right hg)
-      rw [lid_symm_apply, stRep_tmul] at h1
-      simpa using congrArg (TensorProduct.lid ℚ_[l] (Bst P)) h1
-    refine ⟨c, ?_⟩
-    rw [smul_toUr]
-    congr 1
-    apply Subtype.ext
-    rw [coe_mulD]
-    simp [hc]
-
 end GlobalTheory.Pst

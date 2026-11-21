@@ -58,20 +58,6 @@ end GlobalTheory.HenQ.Regroup
 
 namespace GlobalTheory.HenQ.Regroup
 
-theorem exists_above (E : Type) [Field E] [NumberField E]
-    (v : HeightOneSpectrum (𝓞 ℚ)) : ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 ℚ) = v := by
-  haveI := v.isMaximal
-  obtain ⟨P, hPm, hP⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal
-  have hne : P ≠ ⊥ := by
-    intro h
-    apply v.ne_bot
-    rw [hP.over, h]
-    exact Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 ℚ) (𝓞 E))
-  refine ⟨⟨P, hPm.isPrime, hne⟩, ?_⟩
-  ext1
-  rw [HeightOneSpectrum.under_asIdeal]
-  exact hP.over.symm
-
 open IsDedekindDomain NumberField in
 theorem _root_.GlobalTheory.HenQ.Regroup.two_le_absNorm {K : Type} [Field K] [NumberField K]
     (p : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K)) :
@@ -318,62 +304,5 @@ theorem _root_.GlobalTheory.HenQ.Regroup.fac_inert (B' : Multiset ℂ) (X : ℂ)
       ring
     rw [hfac]
     ring
-
-theorem core (E : Type) [Field E] [NumberField E] (hE : Module.finrank ℚ E = 2)
-    (SQ : Set (HeightOneSpectrum (𝓞 ℚ))) (SE : Set (HeightOneSpectrum (𝓞 E)))
-    (BQ : HeightOneSpectrum (𝓞 ℚ) → Multiset ℂ) (BE : HeightOneSpectrum (𝓞 E) → Multiset ℂ) (c₀ : ℝ) (r : ℕ)
-    (hSE : ∀ w : HeightOneSpectrum (𝓞 E), w ∈ SE ↔ w.under (𝓞 ℚ) ∈ SQ)
-    (hBE : ∀ w : HeightOneSpectrum (𝓞 E), w ∉ SE → Multiset.card (BE w) ≤ r ∧
-      ∀ b ∈ BE w, ‖b‖ ≤ (Ideal.absNorm w.asIdeal : ℝ) ^ c₀)
-    (hloc : ∀ w : HeightOneSpectrum (𝓞 E), w ∉ SE →
-      (Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 ℚ)).asIdeal ∧ ∃ w' : HeightOneSpectrum (𝓞 E), w' ≠ w ∧
-        w'.under (𝓞 ℚ) = w.under (𝓞 ℚ) ∧ BQ (w.under (𝓞 ℚ)) = BE w + BE w') ∨
-      (Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 ℚ)).asIdeal ^ 2 ∧ ∃ B' : Multiset ℂ,
-        BE w = B'.map (· ^ 2) ∧ BQ (w.under (𝓞 ℚ)) = B' + B'.map Neg.neg))
-    (s : ℂ) (hs : c₀ + 1 < s.re) : eulerL ℚ BQ SQ s = eulerL E BE SE s := by
-  classical
-  classical
-  have hE' := (multipliable_E E SE BE c₀ r hBE s hs).hasProd
-  let e : (Σ p : {p : HeightOneSpectrum (𝓞 ℚ) // p ∉ SQ},
-      {w : HeightOneSpectrum (𝓞 E) // w.under (𝓞 ℚ) = p.1}) ≃ {w : HeightOneSpectrum (𝓞 E) // w ∉ SE} :=
-    { toFun := fun x => ⟨x.2.1, by rw [hSE, x.2.2]; exact x.1.2⟩
-      invFun := fun w => ⟨⟨w.1.under (𝓞 ℚ), (hSE w.1).not.mp w.2⟩, ⟨w.1, rfl⟩⟩
-      left_inv := by rintro ⟨⟨p, hp⟩, ⟨w, hw⟩⟩; simp only at hw; subst hw; rfl
-      right_inv := by intro w; rfl }
-  have h2 := (e.hasProd_iff).mpr hE'
-  refine (h2.sigma (g := fun p : {p : HeightOneSpectrum (𝓞 ℚ) // p ∉ SQ} =>
-    ((BQ p.1).map fun b => (1 - b * ((Ideal.absNorm p.1.asIdeal : ℕ) : ℂ) ^ (-s))⁻¹).prod) ?_).tprod_eq
-  rintro ⟨p, hp⟩
-  obtain ⟨w, rfl⟩ := exists_above E p
-  have hwS : w ∉ SE := by rw [hSE]; exact hp
-  rcases hloc w hwS with ⟨hN, w', hne, hw', hBQ⟩ | ⟨hN, B', hBE', hBQ⟩
-  · have hN' : Ideal.absNorm w'.asIdeal = Ideal.absNorm (w.under (𝓞 ℚ)).asIdeal := by
-      rcases hloc w' (by rw [hSE, hw']; exact hp) with ⟨h, -⟩ | ⟨h, -⟩
-      · rw [h, hw']
-      · exact absurd (fiber_inert E hE w' w h hw'.symm) (Ne.symm hne)
-    let a : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)} := ⟨w, rfl⟩
-    let a' : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)} := ⟨w', hw'⟩
-    have hall : ∀ c : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)}, c ∈ ({a, a'} : Finset _) := by
-      intro c
-      rcases fiber_split E hE w w' c.1 hw' c.2 hne with h | h
-      · simp [Subtype.ext_iff, h, a]
-      · simp [Subtype.ext_iff, h, a']
-    have hne' : a ≠ a' := fun h => hne (congrArg Subtype.val h).symm
-    convert hasProd_prod_of_ne_finset_one (L := SummationFilter.unconditional _) (s := ({a, a'} : Finset _)) (fun c hc => absurd (hall c) hc) using 1
-    rw [Finset.prod_pair hne']
-    dsimp only [e, Equiv.coe_fn_mk, a, a', Function.comp_apply]
-    rw [hBQ, Multiset.map_add, Multiset.prod_add, hN, hN']
-  · let a : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)} := ⟨w, rfl⟩
-    have hall : ∀ c : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)}, c ∈ ({a} : Finset _) := by
-      intro c
-      have := fiber_inert E hE w c.1 hN c.2
-      simp [Subtype.ext_iff, this, a]
-    convert hasProd_prod_of_ne_finset_one (L := SummationFilter.unconditional _) (s := ({a} : Finset _)) (fun c hc => absurd (hall c) hc) using 1
-    rw [Finset.prod_singleton]
-    dsimp only [e, Equiv.coe_fn_mk, a, Function.comp_apply]
-    have hX : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-s) =
-        (((Ideal.absNorm (w.under (𝓞 ℚ)).asIdeal : ℕ) : ℂ) ^ (-s)) ^ 2 := by
-      rw [hN, pow_two, Nat.cast_mul, Complex.natCast_mul_natCast_cpow, pow_two]
-    rw [hX, hBE', hBQ, fac_inert]
 
 end GlobalTheory.HenQ.Regroup

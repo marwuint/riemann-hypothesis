@@ -12,23 +12,6 @@ namespace CrystallineSemistableComparison.CupAbs
 
 universe w₁ w₂ w₃ u₁ u₂ u₃
 
-section BC
-
-variable {R : Type} [CommRing R] (A : Type) [CommRing A] [Algebra R A]
-  {M : Type u₁} {N : Type u₂} {P : Type u₃} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
-  [AddCommGroup P] [Module R P]
-
-def bc (f : M →ₗ[R] N →ₗ[R] P) : A ⊗[R] M →ₗ[A] A ⊗[R] N →ₗ[A] A ⊗[R] P :=
-  TensorProduct.AlgebraTensorModule.curry
-    ((LinearMap.baseChange A (TensorProduct.lift f)).comp
-      (TensorProduct.AlgebraTensorModule.distribBaseChange R A M N).symm.toLinearMap)
-
-theorem bc_tmul (f : M →ₗ[R] N →ₗ[R] P) (m : M) (n : N) :
-    bc A f ((1 : A) ⊗ₜ[R] m) ((1 : A) ⊗ₜ[R] n) = (1 : A) ⊗ₜ[R] f m n := by
-  simp [bc]
-
-end BC
-
 section Lim
 
 variable {R : Type} [CommRing R] {S₁ : Sys.{w₁} R} {S₂ : Sys.{w₂} R} {S₃ : Sys.{w₃} R}

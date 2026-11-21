@@ -4,10 +4,17 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializesOfUnits
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsJoinBlocksStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGenericStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompatStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackMapStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsJoinBlocks
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGeneric
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeDominantCompat
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.AdelicGroupAlgebraActionInjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackMap
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
@@ -32,7 +39,7 @@ theorem exists_join {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {
   let s : (Σ k, J₁ k) → Ω' := fun q => match q with
     | ⟨.inl k, a⟩ => i (y ⟨k, a⟩)
     | ⟨.inr _, _⟩ => 1
-  have h1 := GlobalTheory.T.coords_join_blocks X' Ω' ξ' K' J' y' (K ⊕ Unit) J₁ s hT' (by
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.AddBlockMulti.add_block_multi X' Ω' ξ' K' J' y' (K ⊕ Unit) J₁ s hT' (by
     rintro (k | k) p
     · obtain ⟨hsp, hreg, -⟩ := GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' g i hd p
       obtain ⟨c, hc⟩ := hT.cover ⟨g p.1, hsp⟩
@@ -77,8 +84,8 @@ theorem flag_zero [∀ k, Fintype (J k)] (B : HodgeCpt Y S y) (d : ℕ) (hc : B.
     refine hb.symm.trans ?_
     rw [Set.range_eq_empty, Submodule.span_empty]
   obtain ⟨Li₀, _, _, ⟨M₀⟩⟩ := GlobalTheory.CompanionTheory.Ar.lieModel_exists Y.X Y.t.G B.Ω₀ B.ξ₀
-  obtain ⟨j, hj⟩ := GlobalTheory.T.lie_model_pullback_map Y.X B.X B.Ω₀ Ω B.ξ₀ B.ξ B.f B.fn Y.t.G B.t.G B.m.φ Li₀ B.Li M₀ B.M B.fn_over B.m.cart
-  obtain ⟨hext, -, -⟩ := GlobalTheory.T.lie_lattice_dominant_compat Y.X B.X B.Ω₀ Ω B.ξ₀ B.ξ B.f B.fn Y.t.G B.t.G B.m.φ Li₀ B.Li M₀ B.M j B.gen₀
+  obtain ⟨j, hj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieJ.exists_map Y.X B.X B.Ω₀ Ω B.ξ₀ B.ξ B.f B.fn Y.t.G B.t.G B.m.φ Li₀ B.Li M₀ B.M B.fn_over B.m.cart
+  obtain ⟨hext, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LiePull.main Y.X B.X B.Ω₀ Ω B.ξ₀ B.ξ B.f B.fn Y.t.G B.t.G B.m.φ Li₀ B.Li M₀ B.M j B.gen₀
     B.tie.gen B.fn_over B.m.cart Y.t.semi.smooth hj
   refine ⟨{ b := fun _ => isEmptyElim, sub := fun s p _ => ?_, Li₀ := Li₀, M₀ := M₀, j := j, j_pt := hj,
             V₀ := fun _ => ⊥, V₀_mem := fun s e => ?_, deg := d, generic := ?_ }⟩

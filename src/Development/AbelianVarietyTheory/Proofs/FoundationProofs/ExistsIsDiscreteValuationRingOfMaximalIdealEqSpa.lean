@@ -308,16 +308,6 @@ theorem isUnit_adjoinRoot_mk_of_aeval_ne_zero {θ : K} (hθ : IsIntegral (Residu
 
 end LocalForms
 
-section LocalHenselian
-
-universe u
-
-variable {B W : Type u} {K : Type*} [CommRing B] [CommRing W] [Field K] [HenselianLocalRing B]
-  [Algebra B W] [Algebra B K] [Algebra (ResidueField B) K] [IsScalarTower B (ResidueField B) K]
-  [Algebra.IsSeparable (ResidueField B) K]
-
-end LocalHenselian
-
 section DiscreteValuation
 
 theorem exists_isDiscreteValuationRing_of_maximalIdeal_eq_span {B : Type*} [CommRing B]

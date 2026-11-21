@@ -92,7 +92,4 @@ theorem simpLab_of_isBaryStage_zero (ψ lab φ : InvFun O) (hlab : IsCarrierDim 
     rw [h, Fin.sum_univ_add]
     simp [hv0, toReal_zero']
 
-example : ∀ (O : Type) [CommRing O] (bar : O → O) (q : ℕ) (ψ lab φ : InvFun O), IsCarrierDim bar q ψ lab →
-    IsBaryStage bar q ψ lab φ 0 → SimpLab bar q φ lab := fun O _ bar q => simpLab_of_isBaryStage_zero O bar q
-
 end GlobalTheory.PolFan.BaryFin

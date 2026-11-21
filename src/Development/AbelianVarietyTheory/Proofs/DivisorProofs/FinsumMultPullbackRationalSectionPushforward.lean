@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimAddOneLeOfSsubset
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArithStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointClosureDimLeAndResidueDegreeNeZeroIffStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumSchemeOrdPullbackResidueDegreeCodimOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPointClosureDimBasicProjArithAmbient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoheightOneIffPointClosureDimProjArith
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointClosureDimLeAndResidueDegreeNeZeroIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumSchemeOrdPullbackResidueDegreeCodimOne
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -77,8 +77,8 @@ theorem degree_ne_zero_and_coheight (hp : IsAmb p) (hq : IsAmb q) (hg : g ≫ p 
   have hw1 := CartierDiv.coheight_eq_one_of_mult_ne_zero hw
   have hgw := map_ne_genericPoint g hη' hB hr w hw
   have hwY : w ≠ genericPoint Y := fun e => hw (e ▸ mult_genericPoint _)
-  have AY := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hq
-  have AX := GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hp
+  have AY := _root_.GlobalTheory.MixHt.hasDim_basic k Y q hq
+  have AX := _root_.GlobalTheory.MixHt.hasDim_basic k X p hp
   obtain ⟨mY, hmY⟩ := AY.1
   obtain ⟨mX, hmX⟩ := AX.1
   obtain ⟨dY, -, hdY⟩ := hmY (genericPoint Y)
@@ -86,19 +86,19 @@ theorem degree_ne_zero_and_coheight (hp : IsAmb p) (hq : IsAmb q) (hg : g ≫ p 
   have hlt : dw < dY := hasDim_lt (genericPoint_specializes w) hwY hdw hdY
   obtain ⟨e, rfl⟩ : ∃ e, dY = e + 1 := ⟨dY - 1, by omega⟩
   have hYdim : topologicalKrullDim Y = ((e + 1 : ℕ) : WithBot ℕ∞) := (AY.2.2.2.2.2 Y (e + 1)).1 hdY
-  have hwe : HasDim w e := ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq e hYdim).1 w).1 hw1
+  have hwe : HasDim w e := ((_root_.GlobalTheory.MixHt.dimOne k Y q hq e hYdim).1 w).1 hw1
   obtain ⟨dgw, -, hdgw⟩ := hmX (g w)
   obtain ⟨dX, -, hdX⟩ := hmX (genericPoint X)
-  have h1 := GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg w e dgw hwe hdgw
+  have h1 := _root_.GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg w e dgw hwe hdgw
   have hdX' : HasDim (g (genericPoint Y)) dX := by rw [hη]; exact hdX
-  have h2 := GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg (genericPoint Y) (e + 1) dX hdY hdX'
+  have h2 := _root_.GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg (genericPoint Y) (e + 1) dX hdY hdX'
   have h3 : dgw < dX := hasDim_lt (genericPoint_specializes (g w)) hgw hdgw hdX
   have he : e = dgw := h1.2.1 hd
   have hXe : dX = e + 1 := by omega
   refine ⟨h2.2.2 hXe.symm, ?_⟩
   have hXdim : topologicalKrullDim X = ((e + 1 : ℕ) : WithBot ℕ∞) :=
     (AX.2.2.2.2.2 X (e + 1)).1 (hXe ▸ hdX)
-  exact ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k X p hp e hXdim).1 (g w)).2 (he ▸ hdgw)
+  exact ((_root_.GlobalTheory.MixHt.dimOne k X p hp e hXdim).1 (g w)).2 (he ▸ hdgw)
 
 end GlobalTheory.PushDiv
 
@@ -120,7 +120,7 @@ theorem fiber_sum (hp : IsAmb p) (hq : IsAmb q) (hg : g ≫ p = q)
     (g.residueDegree (genericPoint Y) : ℤ) * (divOfRatSec hB hr).mult z := by
   by_cases h : g.residueDegree (genericPoint Y) ≠ 0 ∧ Order.coheight z = 1
   · obtain ⟨i, hi⟩ := exists_chart hB z
-    have H := GlobalTheory.T.sum_schemeOrd_pullback_residueDegree_codimOne k X Y p q hp hq g hg hη h.1 z h.2 (r i : X.functionField) (r i).ne_zero
+    have H := _root_.GlobalTheory.OrdPull.sum_ord_pull k X Y p q hp hq g hg hη h.1 z h.2 (r i : X.functionField) (r i).ne_zero
     have H2 : ∑ᶠ w ∈ g ⁻¹' {z},
         (divOfRatSec (LB.isLB_pull hB g) (MultPull.isRatSec_pull_map g hη' hr)).mult w *
           (g.residueDegree w : ℤ) =

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsIsAdelicChain
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonNonzeroOfPolynomialOnRealLinesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothPureTensorsSeparateTensorProductStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothPureTensorsSeparateTensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta GlobalTheory.Mem.Th MeasureTheory IsDedekindDomain NumberField Matrix
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -125,7 +125,7 @@ theorem exists_pairing_ne {P : Type} [AddCommGroup P] [Module ℂ P] (It : P →
     refine h (LinearMap.ext fun φ => ?_)
     exact PiTensorProduct.ext (MultilinearMap.ext fun v => hn φ v)
   obtain ⟨φ, v, hv⟩ := this
-  obtain ⟨w, hw⟩ := GlobalTheory.T.smoothPureTensors_separate_tensorProduct D V S M _ hv
+  obtain ⟨w, hw⟩ := _root_.GlobalTheory.Mem.PureSep.exists_ellT_ne_zero D V S M _ hv
   exact ⟨φ, w, v, hw⟩
 
 theorem exists_common (U : Type) [AddCommGroup U] [Module ℂ U] (ι : Type) [Finite ι] (f : ι → U → ℂ)

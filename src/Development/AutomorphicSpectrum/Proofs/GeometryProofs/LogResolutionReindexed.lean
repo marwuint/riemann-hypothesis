@@ -6,11 +6,12 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemAbLocusIff
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionCompatiblePullbackStatement
 import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInhab
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsGoodStatementStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsGoodStatement
+import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyReindexedStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicElementHomogRelationStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ImplicitRootAnalyticStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HomogRelationRatioReindexStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HomogRelationRatioReindex
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.Chg
@@ -188,7 +189,7 @@ theorem exists_local_section {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZer
         ∀ w ∈ V, ∀ τ ∈ W, ∑ j ∈ Finset.range (n q (r q.1) + 1),
           eval w (map (Int.castRingHom ℂ) (c q (r q.1) j)) * τ ^ j = 0 → τ = g w := by
     intro q
-    have h1 := GlobalTheory.T.homog_relation_ratio_reindex K₀ K J₀ J Ω₀ Ω y₀ y bk bx i q (r q.1) (n q (r q.1)) (c q (r q.1)) (a q (r q.1)) hy rfl
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Rel.ratio_relation_at_complex_points K₀ K J₀ J Ω₀ Ω y₀ y bk bx i q (r q.1) (n q (r q.1)) (c q (r q.1)) (a q (r q.1)) hy rfl
       (hyr _) (hc _ _) (hsum _ _) z hz (hrr _) w₀ hr
     exact GlobalTheory.T.implicit_root_analytic _ (n q (r q.1)) (fun j w => eval w (map (Int.castRingHom ℂ) (c q (r q.1) j))) w₀ _
       (fun j => AnalyticOnNhd.eval_mvPolynomial _ _ (Set.mem_univ _)) h1
@@ -209,7 +210,7 @@ theorem exists_local_section {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZer
   · rintro z'' ⟨hz1, hz2⟩ w ⟨hw1, -⟩ hR
     refine ⟨fun k => (z'' (r k))⁻¹, fun k => inv_ne_zero (hz1 (r k)).1, ?_⟩
     funext q
-    have h1 := GlobalTheory.T.homog_relation_ratio_reindex K₀ K J₀ J Ω₀ Ω y₀ y bk bx i q (r q.1) (n q (r q.1)) (c q (r q.1)) (a q (r q.1)) hy rfl
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Rel.ratio_relation_at_complex_points K₀ K J₀ J Ω₀ Ω y₀ y bk bx i q (r q.1) (n q (r q.1)) (c q (r q.1)) (a q (r q.1)) hy rfl
       (hyr _) (hc _ _) (hsum _ _) z'' hz2 (hz1 q).1 w hR
     have h2 := huniq q w (Set.mem_iInter.1 hw1 q) _ (hz1 q).2 h1
     show g q w = (z'' (r q.1))⁻¹ * z'' q
@@ -225,7 +226,7 @@ theorem exists_count {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZero Ω] (y
         (ptsOverPt (mCoordIdeal y) (blkV bk bx) w).ncard = d := by
   have himg := imageZ_eq i bx hbk hy
   obtain ⟨Gf, ch, hch, hf⟩ := GlobalTheory.T.arith_variety_reindexed K₀ K J₀ J Ω₀ Ω y₀ y bk bx i D d hbk hy hA₀ hA hB₀ hB hfin hd
-  obtain ⟨G, a, hG, hGn, hc⟩ := GlobalTheory.T.generic_points_good_statement K₀ J₀ K J bk (blkV bk bx) (mCoordIdeal y) D Gf ch
+  obtain ⟨G, a, hG, hGn, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ggeo.blockProjection_genericPoints_good K₀ J₀ K J bk (blkV bk bx) (mCoordIdeal y) D Gf ch
     (isBlockMap_blkV bx hbk) hA (by rw [himg]; exact hA₀) hch
   rw [himg] at hGn hc
   exact ⟨G, a, hG, hGn, fun w hw h0 => (hc w hw h0).trans hf⟩

@@ -4,8 +4,8 @@ import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar
 import GroundTheory.AutomorphicForms.HarishChandraInvariance.Compact
 import GroundTheory.AutomorphicForms.DixmierMalliavin
 import GroundTheory.AutomorphicForms.GKModules.ParametricIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivExpGLineEqRightDerivPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValueAtZeroEqSumIntegralKernelIteratedDerivStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedDerivExpGLineEqRightDerivPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValueAtZeroEqSumIntegralKernelIteratedDeriv
 
 open MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff
@@ -106,7 +106,7 @@ theorem exists_rep {ε : ℝ} (hε : 0 < ε) : ∀ (n : ℕ) (X : Fin n → 𝔤
       simp [IsExpLieAlgebra.prodExp, hv]
   | d + 1, X => by
     obtain ⟨N, l, K, hK, hrep⟩ := exists_rep hε d (Fin.tail X)
-    obtain ⟨a, ha, hu⟩ := GlobalTheory.T.exists_kernels_eval_zero_eq_sum_integral_iteratedDeriv ε hε
+    obtain ⟨a, ha, hu⟩ := _root_.GlobalTheory.value_at_zero_eq_sum_integral_kernel_iteratedDeriv ε hε
     refine ⟨3 * N,
       fun j => l (finProdFinEquiv.symm j).2 ++ List.replicate (finProdFinEquiv.symm j).1 (X 0),
       fun j t => a (finProdFinEquiv.symm j).1 (t 0) * K (finProdFinEquiv.symm j).2 (Fin.tail t),
@@ -116,7 +116,7 @@ theorem exists_rep {ε : ℝ} (hε : 0 < ε) : ∀ (n : ℕ) (X : Fin n → 𝔤
     · rw [← finProdFinEquiv.sum_comp]
       simp only [Equiv.symm_apply_apply, List.foldr_append]
       rw [Fintype.sum_prod_type]
-      have h0 := hu _ (GlobalTheory.T.iteratedDeriv_expG_line_eq_foldr_rightDeriv 𝔸 G 𝔤 h f hf (X 0) g 0).1
+      have h0 := hu _ (_root_.GlobalTheory.iteratedDeriv_expG_line_eq_rightDeriv_pow 𝔸 G 𝔤 h f hf (X 0) g 0).1
       simp only [zero_smul, h.expG_zero, mul_one] at h0
       rw [h0]
       refine Finset.sum_congr rfl fun p _ => ?_
@@ -124,7 +124,7 @@ theorem exists_rep {ε : ℝ} (hε : 0 < ε) : ∀ (n : ℕ) (X : Fin n → 𝔤
       rw [sum_integral_cons h X hε.le (ha p).1 (ha p).2 (fun i => (hK i).1) (fun i => (hK i).2)
         (fun i => continuous_of_isSmoothFun h (isSmoothFun_foldr h hp (l i))) (hrep _ hp) g]
       congr 1; funext s
-      rw [(GlobalTheory.T.iteratedDeriv_expG_line_eq_foldr_rightDeriv 𝔸 G 𝔤 h f hf (X 0) g p).2 s]
+      rw [(_root_.GlobalTheory.iteratedDeriv_expG_line_eq_rightDeriv_pow 𝔸 G 𝔤 h f hf (X 0) g p).2 s]
 
 end SobolevRep
 

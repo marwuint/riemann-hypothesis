@@ -1,11 +1,16 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasisStatement
-import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.CyclotomicCupTwoCochainLocallyConstantStatement
+import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.CyclotomicCupTwoCochainLocallyConstant
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegralCyclotomicChar
+
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module GlobalTheory.CompanionTheory.LocDual
 
 noncomputable section
@@ -241,63 +246,5 @@ theorem mk_mul_int {LL O : Type} [Field LL] [Algebra ℚ_[l] LL] [CommRing O] [A
   rfl
 
 end Int
-
-theorem main : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l),
-    TopInj ((D.loc l).PD K) := by
-  intro hT D l _ K LL _ _ _ O _ _ hO L1 hL1 ϖ hϖ r z hz hcob
-  obtain ⟨-, hFin, -, ⟨e, hl, -⟩, -, hZ⟩ := GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ
-  obtain ⟨⟨hD, hDVR, hFr⟩, -⟩ := hO
-  haveI := hD
-  haveI := hDVR
-  haveI := hFr
-  haveI := K.2
-  haveI : CompactSpace ↥(GK K) :=
-    isCompact_iff_compactSpace.1 (IntermediateField.fixingSubgroup_isClosed K.1).isCompact
-  obtain ⟨F, ⟨hF, -⟩, hFz⟩ := hcob
-  obtain ⟨s, hrs, hFs⟩ := exists_tor_range L1.T hF.range_finite hϖ hL1 r
-  obtain ⟨χZ, hχZ, hχc, -⟩ := GlobalTheory.Cyc.exists_integral_cyclotomicChar l (D.loc l)
-  have hlpos : l ≠ 0 := (Fact.out : l.Prime).ne_zero
-  haveI : NeZero (l ^ (s + 1)) := ⟨pow_ne_zero _ hlpos⟩
-  let χ : ↥(GK K) →* (ZMod (l ^ (s + 1)))ˣ :=
-    (Units.map (PadicInt.toZModPow (s + 1) : ℤ_[l] →+* ZMod (l ^ (s + 1))).toMonoidHom).comp
-      (χZ.comp (GK K).subtype)
-  have hχv : ∀ g, (χ g : ZMod (l ^ (s + 1))) = PadicInt.toZModPow (s + 1) ((χZ (g : GQ l) : ℤ_[l]ˣ) : ℤ_[l]) :=
-    fun _ => rfl
-  have hχlc : IsLocallyConstant fun g => (χ g : ZMod (l ^ (s + 1))) :=
-    (lc_toZModPow (s + 1)).comp_continuous
-      (Units.continuous_val.comp (hχc.comp continuous_subtype_val))
-  have hcyc : ∀ g : ↥(GK K), ((cycLL ((D.loc l).PD K) LL g : LLˣ) : LL) =
-      algebraMap ℚ_[l] LL (((χZ (g : GQ l) : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) := fun g => by
-    rw [hχZ, ← (D.loc l).PD_χ K g]
-    rfl
-  have hS : ∀ q ∈ tor L1.T ϖ s, (l ^ (s + 1)) • q = 0 := fun q hq => by
-    obtain ⟨c, hc⟩ := Ideal.mem_span_singleton.1 hl
-    rw [mem_tor] at hq
-    have h1 : (l : O) ^ (s + 1) = (ϖ * c ^ (s + 1)) * ϖ ^ s := by rw [hc]; ring
-    rw [← Nat.cast_smul_eq_nsmul O, Nat.cast_pow, h1, mul_smul, hq, smul_zero]
-  have hact : ∀ g, ∀ q ∈ tor L1.T ϖ s, repD L1 g q = (χ g : ZMod (l ^ (s + 1))).val • q := fun g q hq => by
-    obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective L1.T q
-    rw [hχv, ← mk_mul_int L1.T hZ (s + 1) _ x (hS _ hq), ← hcyc]
-    rfl
-  letI : Module (ZMod (l ^ (s + 1))) ↥(tor L1.T ϖ r) :=
-    AddCommGroup.zmodModule fun m => Subtype.ext (hS _ (tor_mono L1.T hrs m.2))
-  haveI := finite_tor L1.T hL1 hϖ hFin r
-  obtain ⟨f, hf, hfM, hfe⟩ := descent (fun g => (repD L1 g).toAddMonoidHom)
-    (fun g h q => by
-      change repD L1 (g * h) q = repD L1 g (repD L1 h q)
-      rw [map_mul, Module.End.mul_apply])
-    χ hχlc (tor L1.T ϖ r) (tor L1.T ϖ s) (tor_mono L1.T hrs) hS hact F hF hFs
-    (fun p => Submodule.Quotient.mk (z p)) (fun g h => congrFun hFz (g, h))
-    (fun p => (mk_mem_tor L1.T).2 (hz p))
-    (fun zz h1 h2 h3 => GlobalTheory.T.cyclotomic_cup_two_cochain_locally_constant hT D l K (s + 1) χ (Nat.succ_pos s)
-      (fun g => ⟨(χZ (g : GQ l) : ℤ_[l]ˣ), by rw [hχZ, ← (D.loc l).PD_χ K g], rfl⟩) ↥(tor L1.T ϖ r) zz h1 h2 h3)
-  choose x hx using fun g => Submodule.Quotient.mk_surjective L1.T (f g)
-  refine ⟨x, fun g => (mk_mem_tor L1.T).1 (by rw [hx]; exact hfM g), ?_, fun p => ?_⟩
-  · simpa only [hx] using hf
-  · have h1 : (Submodule.Quotient.mk (ReciprocityTheory.Def.d1 (charRep (cycLL ((D.loc l).PD K) LL)) x p) : LL ⧸ L1.T) =
-        repD L1 p.1 (Submodule.Quotient.mk (x p.2)) - Submodule.Quotient.mk (x (p.1 * p.2)) +
-          Submodule.Quotient.mk (x p.1) := rfl
-    rw [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, h1, hx, hx, hx, sub_eq_zero]
-    exact hfe p.1 p.2
 
 end GlobalTheory.CompanionTheory.LocDual.TI

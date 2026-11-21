@@ -79,22 +79,6 @@ def ThreeForms : Prop :=
       ((∀ W : Submodule K Z, (lix w (cut W A) (cut W B) : ℝ) ≤ (E : ℝ) * (finrank K W : ℝ) + r) ↔
         (lix w A (A ⊓ sc a⁻¹ B) : ℝ) ≤ r)
 
-def ThreeFormsSum : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (Z : Type) [AddCommGroup Z] [Module K Z]
-    [Module (𝓞 K) Z] [IsScalarTower (𝓞 K) K Z] [FiniteDimensional K Z]
-    (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) Z),
-    IsLatIn ⊤ A → IsLatIn ⊤ B → B ≤ A → ∀ (a : K), a ≠ 0 → 0 ≤ vw w a →
-      lix w (sc a A ⊔ B) B = lix w A (A ⊓ sc a⁻¹ B)
-
-def IdxFull : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (Z : Type) [AddCommGroup Z] [Module K Z]
-    [Module (𝓞 K) Z] [IsScalarTower (𝓞 K) K Z] [FiniteDimensional K Z]
-    (w : HeightOneSpectrum (𝓞 K)) (M Th ThK : Submodule (𝓞 K) Z),
-    IsLatIn ⊤ M → IsLatIn ⊤ Th → IsLatIn ⊤ ThK → Th ≤ M →
-    ∀ (σ : K), σ ≠ 0 → Th ≤ sc σ ThK →
-    ∀ (E r : ℝ), (lix w M Th : ℝ) ≤ (finrank K Z : ℝ) * E + r →
-      (lix w M ThK : ℝ) ≤ (finrank K Z : ℝ) * (E - (vw w σ : ℝ)) + r
-
 def IdxPsiGood : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (Z : Type) [AddCommGroup Z] [Module K Z]
     [Module (𝓞 K) Z] [IsScalarTower (𝓞 K) K Z] [FiniteDimensional K Z]
@@ -160,23 +144,6 @@ def MirabolicIsMackey : Prop :=
       (∀ h : GL (Fin (n + 1)) k, h ∈ P ↔ IsMirab (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) →
       (∀ h : P, h ∈ U ↔ IsUniU ((h : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) →
       IsMackey U (fun h : P => ψ (supd ((h : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)))
-
-def DataTrace : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (Z : Type) [AddCommGroup Z] [Module K Z]
-    [Module (𝓞 K) Z] [IsScalarTower (𝓞 K) K Z]
-    (U : Type) [Group U] [Fintype U] (ρ : Representation K U Z) (ψ : U →* 𝓞 K)
-    (X : Type) [Fintype X] [DecidableEq X] [MulAction U X], (∀ (u : U) (x : X), u • x = x → u = 1) →
-    ∀ Θ : (X → 𝓞 K) →ₗ[𝓞 K] Z, (∀ (u : U) (φ : X → 𝓞 K), ρ u (Θ φ) = Θ (fun x => φ (u⁻¹ • x))) →
-    ∀ z ∈ LinearMap.range Θ, (∀ u : U, ρ u z = ((ψ u : 𝓞 K) : K) • z) →
-      ((Fintype.card U : ℕ) : K) • z ∈
-        Submodule.span (𝓞 K) {y | ∃ x₀ : X, y = Θ (fun x => ∑ u : U, if x = u⁻¹ • x₀ then ψ u else 0)}
-
-def LengthRamified : Prop :=
-  ∀ (O O' : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing O'] [IsDomain O']
-    [IsDiscreteValuationRing O'] [Algebra O O'] [Module.Flat O O'] (e : ℕ),
-    Ideal.map (algebraMap O O') (IsLocalRing.maximalIdeal O) = IsLocalRing.maximalIdeal O' ^ e →
-    ∀ (M : Type) [AddCommGroup M] [Module O M], Module.length O M ≠ ⊤ →
-      Module.length O' (TensorProduct O O' M) = (e : ℕ∞) * Module.length O M
 
 def OnLocal : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (Z : Type) [AddCommGroup Z] [Module K Z]

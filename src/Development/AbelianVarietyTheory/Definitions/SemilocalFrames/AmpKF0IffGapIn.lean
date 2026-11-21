@@ -2,7 +2,29 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AmpKFIff
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.UniqGapOfUniq
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DecLowAndDecInfAndKFinSmooth
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AmpOrbClosed
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AmpOrbPf
+import Formalism.SharpRestriction.CuspSpanNormBounds.FamilyDoubleCosetBesselBoundOfGap
+import Formalism.SharpRestriction.CuspSpanNormBounds.NearParameterGap
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.BesselIntegrability.BesselFunctionBound
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.L2NormScaling
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbConvDDOfDecDD
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PhiRegOf
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ZeroOfAe
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ReproducingFormulaReduction
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.FdegOfSchur
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.AeSS
+import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.DecLowPf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.DecInfPf
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.OneParameterDerivatives.Admissible
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.GgExistsAddCharNeOne
+import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.HzOfInWb
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.GapOfHypotheses
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.NonzeroKFinite
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.CellConvergence
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.FlipOneTwo
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.DecayZeroRight.NormDec
+import Formalism.SharpRestriction.CuspSpanNormBounds.KFinOfLowUnitH
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.RStabInv
 
 open MeasureTheory Matrix
 open scoped InnerProductSpace ENNReal NNReal
@@ -12,72 +34,6 @@ noncomputable section
 namespace GlobalTheory.NoPr.Model
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.FourierDecayAlt.ThreeDimData
-
-theorem aOf_mono (r : ℕ) {h h' : ℝ} (hh : h ≤ h') : aOf r h ≤ aOf r h' := by
-  unfold aOf
-  exact div_le_div_of_nonneg_right hh (by positivity)
-
-theorem gapOK_mono {k r : ℕ} {h h' : ℝ} (hh : h ≤ h') (H : GapOK k r h) : GapOK k r h' :=
-  ⟨H.1, H.2.1.trans hh, H.2.2.1.trans (aOf_mono r hh), H.2.2.2.trans (aOf_mono r hh)⟩
-
-theorem exists_gapOK (k r : ℕ) (hk : 1 ≤ k) : ∃ h : ℝ, GapOK k r h := by
-  set c : ℝ := 8 * Real.sqrt (2 * ((r : ℝ) + 1)) with hc
-  have hc0 : 0 < c := by positivity
-  set A : ℝ := 2 * Mexp r * (AS k r + AG k r) + AG k r + 3
-  set B : ℝ := 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 3 * AG k r + 3
-  refine ⟨max (120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3) (max (A * c) (B * c)), hk, le_max_left _ _, ?_, ?_⟩
-  · show A ≤ _ / c
-    rw [le_div_iff₀ hc0]
-    exact (le_max_left _ _).trans (le_max_right _ _)
-  · show B ≤ _ / c
-    rw [le_div_iff₀ hc0]
-    exact (le_max_right _ _).trans (le_max_right _ _)
-
-theorem exists_gp (k r : ℕ) (hk : 1 ≤ k) (ε : Fin (2 * r + k + 1) → Bool) :
-    ∃ mu : Fin (2 * r + k + 1) → ℝ, IsHCParam mu ∧ Gp k r ε mu := by
-  obtain ⟨h, hh⟩ := exists_gapOK k r hk
-  obtain ⟨N, hN⟩ := exists_nat_ge h
-  refine ⟨fun a => (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 - ((N : ℝ) + 1) * ((a : ℕ) : ℝ), ⟨?_, ?_⟩, h, ?_, hh⟩
-  · intro a b hab
-    have : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ) := by exact_mod_cast hab
-    have hN0 : (0 : ℝ) < (N : ℝ) + 1 := by positivity
-    have := mul_lt_mul_of_pos_left this hN0
-    simp only
-    linarith
-  · intro a
-    refine ⟨-(((N : ℤ) + 1) * ((a : ℕ) : ℤ)), ?_⟩
-    simp only [Int.cast_neg, Int.cast_mul, Int.cast_add, Int.cast_natCast, Int.cast_one]
-    ring
-  · intro a b hab
-    have hne : (a : ℕ) ≠ (b : ℕ) := fun e => hab (by rw [Fin.ext e])
-    have h1 : (1 : ℝ) ≤ |((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)| := by
-      have : (1 : ℤ) ≤ |((b : ℕ) : ℤ) - ((a : ℕ) : ℤ)| := Int.one_le_abs (by omega)
-      exact_mod_cast this
-    have e : (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 - ((N : ℝ) + 1) * ((a : ℕ) : ℝ) -
-        ((((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 - ((N : ℝ) + 1) * ((b : ℕ) : ℝ)) =
-        ((N : ℝ) + 1) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) := by ring
-    simp only
-    rw [e, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < (N : ℝ) + 1)]
-    have hN0 : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
-    nlinarith
-
-theorem gp_gap {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} (H : Gp k r ε mu) :
-    1 ≤ k ∧ ∀ a b, ε a ≠ ε b → 120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ |mu a - mu b| := by
-  obtain ⟨h, h1, h2⟩ := H
-  exact ⟨h2.1, fun a b hab => h2.2.1.trans (h1 a b hab)⟩
-
-theorem not_gp_small : ¬ Gp 1 0 (fun i => decide (i = 0)) (fun i => if i = 0 then 1 / 2 else -1 / 2) := by
-  intro H
-  have := (gp_gap H).2 0 1 (by decide)
-  have h10 : (1 : Fin (2 * 0 + 1 + 1)) ≠ 0 := by decide
-  simp only [if_true, if_neg h10] at this
-  norm_num at this
-
-theorem not_gp_zero (r : ℕ) (ε : Fin (2 * r + 0 + 1) → Bool) (mu : Fin (2 * r + 0 + 1) → ℝ) : ¬ Gp 0 r ε mu :=
-  fun H => absurd (gp_gap H).1 (by decide)
-
-theorem gp_of_onePlace {k r : ℕ} {L : LocBessel k r} {h : ℝ} {μG : Measure (Mt k r)} {w0 : L.Hs} {l : L.Hs → L.Wp}
-    {l' : L.Hs → L.Wq} (H : GlobalTheory.CellAmp.OnePlaceKF L h μG w0 l l') : Gp k r L.ε L.lam := ⟨h, H.1.1, H.1.2.1⟩
 
 theorem ampKF0_iff_gapIn : AmpKF0 ↔ GlobalTheory.GapIn.AmpKF0 := Iff.rfl
 

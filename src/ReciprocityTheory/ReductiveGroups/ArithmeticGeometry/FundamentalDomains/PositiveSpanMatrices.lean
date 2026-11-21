@@ -11,9 +11,6 @@ noncomputable section
 
 def kap {n p : ℕ} (hp : p ≤ n) (a : Fin (n - p)) : Fin n := ⟨p + a, by have := a.isLt; omega⟩
 
-def ext0 {M : Type*} [AddCommMonoid M] {n : ℕ} (F : Fin n → M) (i : ℕ) : M :=
-  if h : i < n then F ⟨i, h⟩ else 0
-
 lemma sum_split {M : Type*} [AddCommMonoid M] {n p : ℕ} (hp : p ≤ n) (F : Fin n → M) :
     ∑ c : Fin n, F c = ∑ b : Fin p, F (Fin.castLE hp b) + ∑ a : Fin (n - p), F (kap hp a) := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hp

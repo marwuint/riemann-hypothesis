@@ -2,15 +2,24 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamil
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyCriticalLevelLowerBound
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.DegreeRatioFormulaStatement
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyFormalDegreeLowerBound
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SplitsCompletelyIff
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LocalFormOfHypotheses
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.NcardPrimesOverOfSplitsCompl
+import Formalism.SharpRestriction.CuspSpanNormBounds.PExtra
+import Formalism.HermitianCurvature.StatementSz
+import Formalism.HermitianCurvature.PrimeToDifferent
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.OwnEvIntro
+import Formalism.SharpRestriction.CuspSpanNormBounds.MassAndBranchingHypotheses
+import Formalism.SharpRestriction.CuspSpanNormBounds.AmplitudeAndVolumeBounds
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.DecayHypothesisOfLargeConstants
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilySeparationBound
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.PairTermsOfFlagRigidity
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds
+import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdLift
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.NormAdditiveCharacterTypePrimeEqOne
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyPacketOfEquivalentStatement
-import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.WeightedProjectionSumSelfAdjoint
+import Formalism.SharpRestriction.CuspSpanNormBounds.ThresholdCubicInequalitySignPattern
+import Mathlib
+import Formalism.SharpRestriction.CuspSpanNormBounds.StandingNumericalData
+import Formalism.FrobeniusOrbits.RealSubfieldLeCompositum
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalL1StatementOfProjectors
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalFunctionIntegrableOfLocal
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SphericalFunctionConvolutionIdentity
@@ -75,47 +84,9 @@ def CountAllPointsClass {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (n₀ 
 def CountRowsClassFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (n₀ : ℕ) (A C c cb : ℝ) : Prop :=
   0 < c ∧ 0 < cb ∧ ∀ x (i : Fm.Ix x), CountRowsClass P (Fm.D x i) n₀ A C c cb
 
-def CountFamilyClassStatement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Cres : ℝ) (n₀ : ℕ) (A Cb C c cb : ℝ) : Prop :=
-  admF4 Fm ∧ admF5 Fm ∧ admF6 Fm ∧ admF7 Fm Cres ∧ admF8 Fm → FamilyDiscreteSeriesDecay Fm → ConclusionF2 Fm n₀ A Cb →
-    CountAllPointsClass P Fm n₀ A C c cb
-
-def ShareFamilyAtConstant {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Cres : ℝ) (n₀ : ℕ) (A Cb C c cb : ℝ) : Prop :=
-  AdmF Fm Cres →
-    FamilyLowestKTypeFormula Fm ∧ FamilyDiscreteSeriesDecay Fm ∧ FamilyMatrixCoefficientL1 Fm ∧ FamilyAbstractProjectorEveryMember Fm ∧ FamilyLocalProjectorEveryMember Fm ∧ ConclusionF2 Fm n₀ A Cb ∧ CountAllPointsClass P Fm n₀ A C c cb
-
 theorem count_class_of_count {D : Formalism.BasicNotions.D7} {n₀ : ℕ} {A C c cb : ℝ} (h : PointsLemma D n₀ A C c cb) : CountIdempotentsClass P D n₀ A C c cb := by
   intro I b lam g g₀ e H _ _ _ σ w Hs _ _ _ σs tens μf _ fund R Re h' hS _ hc hg h1 h2 h3
   exact h I b lam g g₀ e H σ w Hs σs tens μf fund R Re h' hS hc hg h1 h2 h3
-
-theorem count_family_class_of_count {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {Cres : ℝ} {n₀ : ℕ} {A Cb C c cb : ℝ}
-    (h : FlatLineDegreeFamilyStatement Fm Cres n₀ A Cb C c cb) : CountFamilyClassStatement P Fm Cres n₀ A Cb C c cb := fun hA h1 h2 =>
-  let h3 := h hA h1 h2
-  ⟨h3.1, h3.2.1, fun x i => count_class_of_count P (h3.2.2 x i)⟩
-
-theorem family_statement_class_of_general {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {Cres : ℝ} {n₀ : ℕ} {A Cb C c cb : ℝ}
-    (h : KudlaFamilyStatement Fm Cres n₀ A Cb C c cb) : ShareFamilyAtConstant P Fm Cres n₀ A Cb C c cb := fun hA =>
-  let h' := h hA
-  ⟨h'.1, h'.2.1, h'.2.2.1, h'.2.2.2.1, h'.2.2.2.2.1, h'.2.2.2.2.2.1,
-    h'.2.2.2.2.2.2.1, h'.2.2.2.2.2.2.2.1, fun x i => count_class_of_count P (h'.2.2.2.2.2.2.2.2 x i)⟩
-
-theorem family_link_count_class {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) {Cres : ℝ} {n₀ : ℕ} {A Cb C c cb : ℝ} (i0 : FamilyFormulaStatement Fm)
-    (i5 : DeterminantValueFamily Fm n₀ A Cb) (i6 : CountFamilyClassStatement P Fm Cres n₀ A Cb C c cb) : ShareFamilyAtConstant P Fm Cres n₀ A Cb C c cb := by
-  intro hA
-  have a1 : admF1 Fm := fun x i => (hA x i).1
-  have a2 : admF2 Fm := fun x i => (hA x i).2.1
-  have a3 : admF3 Fm := fun x i => (hA x i).2.2.1
-  have a4 : admF4 Fm := fun x i => (hA x i).2.2.2.1
-  have a5 : admF5 Fm := fun x i => (hA x i).2.2.2.2.1
-  have a6 : admF6 Fm := fun x i => (hA x i).2.2.2.2.2.1
-  have a7 : admF7 Fm Cres := fun x i => (hA x i).2.2.2.2.2.2.1
-  have a8 : admF8 Fm := fun x i => (hA x i).2.2.2.2.2.2.2
-  have p0 := i0 ⟨a2, a3⟩
-  have p1 := BridgeLemma.family_decay_of_formula Fm p0
-  have p2 := BridgeLemma.family_spherical_L1_statement Fm a2 p1
-  have p3 := BridgeLemma.family_abstract_projector_statement Fm
-  have p4 := BridgeLemma.family_projector_section_local Fm a1 p2 p3
-  have p5 := i5 ⟨a1, a6, a8⟩ p1 p4
-  exact ⟨p0, p1, p2, p3, p4, p5, i6 ⟨a4, a5, a6, a7, a8⟩ p1 p5⟩
 
 section Count
 
@@ -182,103 +153,6 @@ theorem count_rows_class_of_count_class (n₀ : ℕ) (A C c cb : ℝ) (hp : Coun
   ring
 
 end Count
-
-section Family
-
-variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
-
-theorem countOwn_of_rowsP (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ) (hC : 0 ≤ C) (hA : 2 * Cg ≤ A)
-    (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
-    (hR : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, RowsTieP P (Fm.D x i) X)
-    (h30 : CountRowsClassFamily P Fm n0 A C c cb7) : CountOwn Fm Cg cb Cu cT CT C0 c := by
-  obtain ⟨-, hcb, h30⟩ := h30
-  have hG := cGam_pos Fm
-  obtain ⟨Y1, hY1, HY1⟩ := linear_le_pow_eight_eventually (8 * Fm.CGam) n0 (by positivity)
-  obtain ⟨Y2, -, HY2⟩ := linear_le_pow_eight_eventually (cb7 * (8 * Fm.CGam)) 8 (by positivity)
-  obtain ⟨x4, hx4⟩ := ev_y Fm (max Y1 Y2)
-  refine ⟨max (Fm.x1 + 1) x4, fun x hx i hH => ?_⟩
-  have hx1 : Fm.x1 < x := by
-    have := le_trans (le_max_left _ _) hx
-    linarith
-  have hy := hx4 x (le_trans (le_max_right _ _) hx)
-  set y : ℝ := x ^ (eps / 8) with hydef
-  have hy1 : 1 ≤ y := le_trans hY1 (le_trans (le_max_left _ _) hy)
-  have a1 := HY1 y (le_trans (le_max_left _ _) hy)
-  have a2 := HY2 y (le_trans (le_max_right _ _) hy)
-  have hL := scL_eq Fm x hx1 i
-  have hh : AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 (sC' Fm) (sCl Fm) Cg cb Cu cT CT := ⟨hH.2.1, hH.1, hH.2.2⟩
-  have hk8 := k_ge_of_hyp (Fm.L x i) hh
-  rw [hL, Fm.CGam_eq x i] at hk8
-  obtain ⟨X, hX⟩ := hR x hx1 i
-  refine admissibility_ten_of_rows_class P (Fm.L x i) X hX n0 A C cb7 c (h30 x i)
-    (count_parameters_of_hyp (Fm.L x i) C0 _ _ Cg cb Cu cT CT n0 A C cb7 hC hcb hA ?_ hCl2 hCl3 ?_ hh)
-  · have : (n0 : ℝ) ≤ n0 * y := le_mul_of_one_le_right (Nat.cast_nonneg _) hy1
-    linarith
-  · rw [hL, Real.log_pow]
-    have h1 : Real.log y ≤ y := Real.log_le_self (by linarith)
-    have h2 : cb7 * (8 * Fm.CGam * y ^ 8) ≤ cb7 * ((Fm.D x i).R.k : ℝ) := mul_le_mul_of_nonneg_left hk8 hcb.le
-    push_cast
-    nlinarith
-
-theorem linkS_of_thmSP (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 : ℝ) (h1 : 1 ≤ C0) (hC : 0 ≤ C)
-    (hA : 2 * Cg ≤ A) (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
-    (hS0 : StandingHypothesesWithConstants Fm Cg cb Cu cT CT C0)
-    (hR : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, RowsTieP P (Fm.D x i) X)
-    (hT : ThmSOwn Fm Cg cb Cu cT CT C0)
-    (S30 : ShareFamilyAtConstant P Fm Cres n0 A Cb C c7 cb7) (A30 : PlaceDegreeData.AdmF Fm Cres) : Formalism.MainNotions.LinkS Fm C0 := by
-  have h30 : CountAllPointsClass P Fm n0 A C c7 cb7 := (S30 A30).2.2.2.2.2.2
-  have h30R : CountRowsClassFamily P Fm n0 A C c7 cb7 :=
-    ⟨h30.1, h30.2.1, fun x i => count_rows_class_of_count_class P n0 A C c7 cb7 (h30.2.2 x i)⟩
-  exact linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT
-    (countOwn_of_rowsP P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)
-
-theorem countOwn_of_rowsP' (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ) (hC : 0 ≤ C) (hA : 2 * Cg ≤ A)
-    (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
-    (hR : ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, RowsTieP P (Fm.D x i) X)
-    (h30 : CountRowsClassFamily P Fm n0 A C c cb7) : CountOwn Fm Cg cb Cu cT CT C0 c := by
-  obtain ⟨x0, hR0⟩ := hR
-  obtain ⟨-, hcb, h30⟩ := h30
-  have hG := cGam_pos Fm
-  obtain ⟨Y1, hY1, HY1⟩ := linear_le_pow_eight_eventually (8 * Fm.CGam) n0 (by positivity)
-  obtain ⟨Y2, -, HY2⟩ := linear_le_pow_eight_eventually (cb7 * (8 * Fm.CGam)) 8 (by positivity)
-  obtain ⟨x4, hx4⟩ := ev_y Fm (max Y1 Y2)
-  refine ⟨max (max (Fm.x1 + 1) x4) x0, fun x hx i hH => ?_⟩
-  have hx1 : Fm.x1 < x := by
-    have := le_trans (le_max_left _ _) (le_trans (le_max_left _ _) hx)
-    linarith
-  have hy := hx4 x (le_trans (le_max_right _ _) (le_trans (le_max_left _ _) hx))
-  set y : ℝ := x ^ (eps / 8) with hydef
-  have hy1 : 1 ≤ y := le_trans hY1 (le_trans (le_max_left _ _) hy)
-  have a1 := HY1 y (le_trans (le_max_left _ _) hy)
-  have a2 := HY2 y (le_trans (le_max_right _ _) hy)
-  have hL := scL_eq Fm x hx1 i
-  have hh : AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 (sC' Fm) (sCl Fm) Cg cb Cu cT CT := ⟨hH.2.1, hH.1, hH.2.2⟩
-  have hk8 := k_ge_of_hyp (Fm.L x i) hh
-  rw [hL, Fm.CGam_eq x i] at hk8
-  obtain ⟨X, hX⟩ := hR0 x (le_trans (le_max_right _ _) hx) hx1 i
-  refine admissibility_ten_of_rows_class P (Fm.L x i) X hX n0 A C cb7 c (h30 x i)
-    (count_parameters_of_hyp (Fm.L x i) C0 _ _ Cg cb Cu cT CT n0 A C cb7 hC hcb hA ?_ hCl2 hCl3 ?_ hh)
-  · have : (n0 : ℝ) ≤ n0 * y := le_mul_of_one_le_right (Nat.cast_nonneg _) hy1
-    linarith
-  · rw [hL, Real.log_pow]
-    have h1 : Real.log y ≤ y := Real.log_le_self (by linarith)
-    have h2 : cb7 * (8 * Fm.CGam * y ^ 8) ≤ cb7 * ((Fm.D x i).R.k : ℝ) := mul_le_mul_of_nonneg_left hk8 hcb.le
-    push_cast
-    nlinarith
-
-theorem linkS_of_thmSP' (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 : ℝ) (h1 : 1 ≤ C0) (hC : 0 ≤ C)
-    (hA : 2 * Cg ≤ A) (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
-    (hS0 : StandingHypothesesWithConstants Fm Cg cb Cu cT CT C0)
-    (hR : ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, RowsTieP P (Fm.D x i) X)
-    (hT : ThmSOwn Fm Cg cb Cu cT CT C0)
-    (S30 : ShareFamilyAtConstant P Fm Cres n0 A Cb C c7 cb7) (A30 : PlaceDegreeData.AdmF Fm Cres) : Formalism.MainNotions.LinkS Fm C0 := by
-  have h30 : CountAllPointsClass P Fm n0 A C c7 cb7 := (S30 A30).2.2.2.2.2.2
-  have h30R : CountRowsClassFamily P Fm n0 A C c7 cb7 :=
-    ⟨h30.1, h30.2.1, fun x i => count_rows_class_of_count_class P n0 A C c7 cb7 (h30.2.2 x i)⟩
-  exact linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT
-    (countOwn_of_rowsP' P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)
-
-end Family
 
 abbrev PLev : ∀ I : AutInst, Measure I.Gf → ℕ → (I.Gf → ℂ) → Prop := fun I μf g₀ e => I.IsLevelCharIdem μf g₀ e
 

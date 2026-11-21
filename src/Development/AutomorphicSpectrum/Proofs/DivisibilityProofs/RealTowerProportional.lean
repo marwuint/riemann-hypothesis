@@ -3,9 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeWeightFormula
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PolarizationPolynomialCoeffBoundStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeLinearFunctionalsStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerGeometricAgreementStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PolarizationPolynomialCoeffBound
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeLinearFunctionals
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerGeometricAgreement
 
 noncomputable section
 
@@ -18,7 +19,7 @@ namespace RealProp
 theorem map_monomial_eq_zero {J : Type} [Fintype J] [DecidableEq J] (d : ℕ) (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ)
     (h : ∀ c : J → ℝ, Φ ((-∑ x, C (c x) * X x) ^ d) = 0) (m : J →₀ ℕ) (hm : m.degree = d) :
     Φ (monomial m 1) = 0 := by
-  obtain ⟨Pl, -, hev, hco, -⟩ := GlobalTheory.T.polarization_polynomial_coeff_bound J d Φ
+  obtain ⟨Pl, -, hev, hco, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.polarisation_functional J d Φ
   have hP : Pl = 0 := MvPolynomial.funext fun c => by rw [hev c, h c, map_zero]
   have h0 := hco m hm
   rw [hP, coeff_zero] at h0
@@ -133,7 +134,7 @@ theorem exists_geoFun_eq (hProp : PB.Proportional) (hI : PB.Inputs) (II : Inters
   have hnR : (0 : ℝ) < (R.n c : ℝ) := by exact_mod_cast RealTie_n_pos (R.tie 0 c)
   refine ⟨PB.volOf ((R.Sys c).comap some) * c0 / ((R.n c : ℝ) * cf),
     div_pos (mul_pos hvol hc0) (mul_pos hnR hcf), fun B lam => ?_⟩
-  have key := GlobalTheory.T.real_tower_geometric_agreement hI II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) lam 0
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.Top.geoFun_linA_pow_of_realTie hI II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) lam 0
   rw [zero_div, ← toA_linRoot_pow] at key
   have e1 : eval (PB.gapS (fun x : Ψ × Fin N => lam x.1 x.2) 0) (R.Sys c).degPoly
       = PB.volOf ((R.Sys c).comap some) * c0 * eval (fun x : Ψ × Fin N => lam x.1 x.2) (antisymDelta Ψ N) := by
@@ -161,7 +162,7 @@ theorem rootTower_proportional_of_unif : PB.Proportional → PB.Inputs → ∀ I
     obtain ⟨κ, hκ, h⟩ := exists_geoFun_eq hProp hI II hII R hU c
     refine ⟨κ, hκ, ?_, h⟩
     rw [RootTower.vol, h, mul_div_assoc, div_self hrho.ne', mul_one]
-  obtain ⟨Φd, hΦd⟩ := (GlobalTheory.T.flag_degree_linear_functionals Ψ N).1
+  obtain ⟨Φd, hΦd⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Top.degFl_Sh_Tot_linear Ψ N).1
   refine ⟨fun c => ?_, fun B c F => ?_, fun B B' c => ?_⟩
   · obtain ⟨κ, hκ, hv, -⟩ := hvol c
     rw [hv]
@@ -184,7 +185,7 @@ theorem rootTower_proportional_of_unif : PB.Proportional → PB.Inputs → ∀ I
       · simp only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply,
           hΦd, smul_eq_mul, rename_monomial]
         rw [geoFun_monomial_of_ne _ _ (by rwa [degree_mapDomain_some]),
-          (GlobalTheory.T.flag_degree_linear_functionals Ψ N).2.2.2 _ _ (isHomogeneous_monomial _ rfl) hm, mul_zero, sub_zero]
+          (_root_.GlobalTheory.CompanionTheory.Ar.Top.degFl_Sh_Tot_linear Ψ N).2.2.2 _ _ (isHomogeneous_monomial _ rfl) hm, mul_zero, sub_zero]
     have h2 := LinearMap.congr_fun hL F
     simp only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply,
       hΦd, smul_eq_mul, LinearMap.zero_apply] at h2
@@ -197,9 +198,9 @@ theorem rootTower_proportional_of_unif : PB.Proportional → PB.Inputs → ∀ I
       by_cases hm : m.degree = dimFl Ψ N
       · refine map_monomial_eq_zero (dimFl Ψ N) _ (fun a => ?_) m hm
         rw [LinearMap.sub_apply, sub_eq_zero, neg_sum_eq_linA]
-        have k1 := GlobalTheory.T.real_tower_geometric_agreement hI II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c)
+        have k1 := _root_.GlobalTheory.CompanionTheory.Ar.Top.geoFun_linA_pow_of_realTie hI II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c)
           (fun τ i => a (some (τ, i))) (-a none)
-        have k2 := GlobalTheory.T.real_tower_geometric_agreement hI II hII Ψ N (T.M B' c) (R.Sys c) (R.n c) (R.tie B' c)
+        have k2 := _root_.GlobalTheory.CompanionTheory.Ar.Top.geoFun_linA_pow_of_realTie hI II hII Ψ N (T.M B' c) (R.Sys c) (R.n c) (R.tie B' c)
           (fun τ i => a (some (τ, i))) (-a none)
         rw [R.kA_eq B B' c, ← k2] at k1
         exact mul_left_cancel₀ hnR.ne' k1

@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleIffV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleIdentityIso
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmpleVanishing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmplePosPowAffineBaseStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H1VanishingAffineBaseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmplePosPowAffineBase
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CharChPartZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H1VanishingAffineBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundlePowH1VanishesGeometricFibreAllStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -38,12 +40,12 @@ theorem isProjBy_of_openImmersion {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : 
 theorem fieldVanishing : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B] (M : LB B.left), IsAbelianScheme B → M.IsLB → RelAmple B M → ∀ a : ℕ, 1 ≤ a → GlobalTheory.AbLaw.FirstCohomologyVanishes (GlobalTheory.AbLaw.pw M (a : ℤ)) := by
   intro K _ _ B _ _ M hB hM hA a ha
   have hM' := isLB_pw hM (a : ℤ)
-  have hR := GlobalTheory.T.relAmple_pos_pow_affine_base K B M hM hA a ha
+  have hR := _root_.GlobalTheory.PowAmple.relAmple_pw K B M hM hA a ha
   have hP : IsProper B.hom := hB.proper
   have : CompactSpace B.left := by
     have : QuasiCompact B.hom := inferInstance
     exact (quasiCompact_iff_compactSpace B.hom).1 this
-  exact GlobalTheory.T.firstCohomologyVanishes_of_isRelAcyclic_over_spec K B.left B.hom _ hM' this (GlobalTheory.AmpleGen.ampleVanishing K B hB _ hM' hR)
+  exact _root_.GlobalTheory.CxForm.firstCohomologyVanishes_of_isRelAcyclic_affine K B.left B.hom _ hM' this (GlobalTheory.AmpleGen.ampleVanishing K B hB _ hM' hR)
 
 theorem geomVanishing : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB → RelAmple A L → ∀ a : ℕ, 1 ≤ a → ∀ (T : Over S) (K : Type) [Field K] [IsAlgClosed K] (q : Spec (CommRingCat.of K) ⟶ T.left), ∃ (X' : Scheme.{0}) (π : X' ⟶ (T ⊗ A).left) (f' : X' ⟶ Spec (CommRingCat.of K)), IsPullback π f' (fst T A).left q ∧ GlobalTheory.AbLaw.FirstCohomologyVanishes ((LPow A L (a : ℤ) T).pull π) :=
   GlobalTheory.T.lineBundlePow_h1Vanishes_geometricFibre_all fieldVanishing

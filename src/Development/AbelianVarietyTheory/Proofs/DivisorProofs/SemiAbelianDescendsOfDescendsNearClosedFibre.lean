@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumOfDescendedMultiplicationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianDescendsNearClosedFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemiAbelianDescentAlongProperSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumOfDescendedMultiplication
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianDescendsNearClosedFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemiAbelianDescentAlongProperSurjective
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -19,9 +19,9 @@ theorem descend_of_near : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing 
   intro R _ _ _ hA S π hP hS hI G' _ _ hG' N hL
   have hNoeth : IsNoetherianRing R := hA.1
   have hIC : IsIntegrallyClosed R := hA.2.2.1
-  obtain ⟨φ, hφ⟩ := GlobalTheory.T.exists_descentDatum_of_descendedMultiplication R hA S π hP hS hI G' hG' N hL
-  obtain ⟨G, β, i, hsm, hpb, hop, hu, hc⟩ := GlobalTheory.T.semiAbelian_descends_near_closedFibre R hA S π hP hS hI G' hG' N hL φ hφ
-  obtain ⟨g, c, hsa, hgp⟩ := GlobalTheory.T.exists_semiAbelian_descent_along_proper_surjective R S π hP hS hI G' hG' G β hsm hpb φ hφ.1 hc
+  obtain ⟨φ, hφ⟩ := _root_.GlobalTheory.Mum.Desc.exists_datum R hA S π hP hS hI G' hG' N hL
+  obtain ⟨G, β, i, hsm, hpb, hop, hu, hc⟩ := _root_.GlobalTheory.Mum.descends_near_closed_fibre R hA S π hP hS hI G' hG' N hL φ hφ
+  obtain ⟨g, c, hsa, hgp⟩ := _root_.GlobalTheory.DescGrp.exists_semiAbelian_descent R S π hP hS hI G' hG' G β hsm hpb φ hφ.1 hc
   exact ⟨G, g, c, β, i, hsa, hgp, hop, hu⟩
 
 end GlobalTheory.Mum

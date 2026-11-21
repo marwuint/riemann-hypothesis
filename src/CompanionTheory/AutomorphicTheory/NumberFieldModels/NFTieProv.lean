@@ -23,10 +23,6 @@ def tr (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (e : M.Ty P → ℂ → 
     (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : M.Ty P → MA.SmQ P.r P.TT :=
   fun ρ => MA.toSm P (rawR P Bs.μsec e (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ)
 
-def Tied (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
-    (a : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) (am : MA.A P (MA.DQ P)) : Prop :=
-  ∀ Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', tr P Bs e (a.1 Φ) = MA.actA P am (tr P Bs e Φ)
-
 end defs
 
 structure GenRel {A A' : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Ring A'] [StarRing A'] [Algebra ℂ A'] {r : ℕ}
@@ -43,25 +39,6 @@ structure GenRel {A A' : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Ring A'] [
   GGi : (L.GGi, L'.GGi) ∈ Rl
   QQ : ∀ Y : ℂ, star Y = Y → ∀ a b, (st.QQ Y a b, st'.QQ Y a b) ∈ Rl
   xi : ∀ Y : ℂ, star Y = Y → Y ∈ st.inv → Y ∈ st'.inv → (st.xi Y, st'.xi Y) ∈ Rl
-
-def AlgTie : Prop :=
-  ∀ (A A' S : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Ring A'] [StarRing A'] [Algebra ℂ A']
-    [StarModule ℂ A'] [Fintype S] [DecidableEq S] (r : ℕ) (Rl : Subalgebra ℂ (A × A'))
-    (L : R.LevelData A r) (st : Fr.Start A) (L' : R.LevelData A' r) (st' : Fr.Start A') (w : List (Wd.Letter ℂ S)),
-    GenRel Rl L st L' st' → Fr.IsStarLevel L → Fr.IsLevelStart L st → Fr.IsStarLevel L' → Fr.IsLevelStart L' st' →
-    Fr.admitted st w → Fr.admitted st' w →
-    ∀ e e' : Wd.Ix S, (((Fr.ofWord L st w).F * TL.bTA L w) e e', ((Fr.ofWord L' st' w).F * TL.bTA L' w) e e') ∈ Rl
-
-def NFTieProv : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
-    (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)) (Lm : R.LevelData (MA.A P (MA.DQ P)) P.r),
-    IsFrameB P p.T.base e → GaugeQQ P p.T.base e → MA.IsModelLevel P (MA.DQ P) Lm →
-    ∀ w : List C.Letter, KB.CutWord P p.l0 w → ∀ (a : Wd.Ix (Fin w.length)) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)),
-      KB.CptCoef p.T.base F →
-      trJB P p.T.base e (B.JF p.T.base (p.Θ.Θ w a F)) =
-        MA.actA P (((Fr.ofWord Lm (MA.startM P (MA.DQ P) p.l0) (D.positionted w)).F * TL.bTA Lm (D.positionted w)) a Wd.e1)
-          (trJB P p.T.base e (B.JF p.T.base F))
 
 end
 

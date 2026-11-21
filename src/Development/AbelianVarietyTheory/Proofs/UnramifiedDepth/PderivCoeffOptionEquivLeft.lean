@@ -1,7 +1,12 @@
 import Mathlib
 import Formalism.LocalToGlobal.CharacterGerms.NondegenerateCharts
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.InvariantDerivIntegral
+import Formalism.LocalToGlobal.CharacterGerms.RowTieFB
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalSecondPointDerivativeSecondCoordinate
+import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.FormalExpMulFormalExpNeg
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.IntegralFamilyFirstZeroSecond
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AddCurveStableOfIntegralGaugedFormalGroupLaw
 
 set_option autoImplicit false
@@ -13,9 +18,6 @@ open MvPowerSeries Formalism.L2.FormalSeriesBounds ReciprocityTheory.ChartRestri
 
 namespace GlobalTheory.CurveJet
 
-def cob {k : Type} [CommRing k] {dd : ℕ} (F : Fin dd → PS k 2 dd) (b : PS k 1 dd) : PS k 2 dd :=
-  ev (n := 2) ![addOf F (pt k dd 0) (pt k dd 1)] b - ev (n := 2) ![pt k dd 0] b - ev (n := 2) ![pt k dd 1] b
-
 variable {C : Type} [Field C] {dd m : ℕ}
 
 def inT (σ : Type) (f : PowerSeries C) : MvPowerSeries (Option σ) C :=
@@ -25,12 +27,6 @@ def cvPt (γ : Fin dd → PowerSeries C) (m : ℕ) (p : Fin (m + 1) × Fin dd) :
     MvPowerSeries (Option (Fin m × Fin dd)) C :=
   Fin.cases (motive := fun _ => MvPowerSeries (Option (Fin m × Fin dd)) C) (inT _ (γ p.2))
     (fun j => X (some (j, p.2))) p.1
-
-def jetS (γ : Fin dd → PowerSeries C) (F : PS C (m + 1) dd) : PowerSeries (PS C m dd) :=
-  optionEquivLeft (Fin m × Fin dd) C (subst (cvPt γ m) F)
-
-def jet (γ : Fin dd → PowerSeries C) (n : ℕ) (F : PS C (m + 1) dd) : PS C m dd :=
-  PowerSeries.coeff n (jetS γ F)
 
 theorem cvPt_zero (γ : Fin dd → PowerSeries C) (i : Fin dd) : cvPt γ m (0, i) = inT _ (γ i) := rfl
 
@@ -46,13 +42,6 @@ theorem constantCoeff_inT (σ : Type) {f : PowerSeries C} (hf : PowerSeries.cons
     constantCoeff (inT σ f) = 0 := by
   rw [inT_eq_rename, constantCoeff_rename]
   exact hf
-
-theorem cvPt_const {γ : Fin dd → PowerSeries C} (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0)
-    (p : Fin (m + 1) × Fin dd) : constantCoeff (cvPt γ m p) = 0 := by
-  obtain ⟨j, i⟩ := p
-  induction j using Fin.cases with
-  | zero => rw [cvPt_zero]; exact constantCoeff_inT _ (hγ i)
-  | succ j => rw [cvPt_succ]; exact constantCoeff_X _
 
 theorem optionEquivLeft_inT (σ : Type) (f : PowerSeries C) :
     optionEquivLeft σ C (inT σ f) = PowerSeries.map (MvPowerSeries.C : C →+* MvPowerSeries σ C) f := by
@@ -107,10 +96,5 @@ theorem pderiv_coeff_optionEquivLeft {σ : Type} (f : MvPowerSeries (Option σ) 
     ext t
     cases t <;> simp [Finsupp.single_apply]
   rw [key, Finsupp.optionElim_apply_some]
-
-def jetHom {γ : Fin dd → PowerSeries C} (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) (m : ℕ) :
-    PS C (m + 1) dd →ₐ[C] PowerSeries (PS C m dd) :=
-  (optionEquivLeft (Fin m × Fin dd) C).toAlgHom.comp
-    (substAlgHom (hasSubst_of_constantCoeff_zero (cvPt_const (m := m) hγ)))
 
 end GlobalTheory.CurveJet

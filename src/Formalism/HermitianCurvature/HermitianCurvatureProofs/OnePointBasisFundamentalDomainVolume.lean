@@ -168,10 +168,6 @@ def GridOK (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (Y : Finset ℝ) (Λ : ℝ) (K
     Real.sqrt (((ysOf grid n).map nn).prod * ((ysOf grid n).map fun y => nn (y + 1)).prod /
       ((ysOf grid n).map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted w) (y : ℂ)).re).prod) ≤ Λ ^ K
 
-theorem ysOf_length {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (n : Fin K → Fin (d + 1)) :
-    (ysOf grid n).length = K := by
-  simp [ysOf]
-
 theorem ysOf_mem {K d : ℕ} {Y : Finset ℝ} (grid : Fin K → Fin (d + 1) → ℝ) (hY : ∀ a i, grid a i ∈ Y)
     (n : Fin K → Fin (d + 1)) : ∀ y ∈ ysOf grid n, y ∈ Y := by
   intro y hy
@@ -380,93 +376,6 @@ theorem lp_fourier (E : ℂ → ℝ) (τ : Fin 1 → ℂ) :
   congr 1
   funext z
   simp [MeasurableEquiv.funUnique, mul_comm]
-
-theorem lp_inj (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (z₀ : ℂ) :
-    Function.Injective (fun ab : ℤ × ℤ => (fun _ : Fin 1 => z₀ + (ab.1 : ℂ) * ω₁ + (ab.2 : ℂ) * ω₂)) := by
-  intro ab ab' h
-  have h0 := congrFun h 0
-  simp only at h0
-  obtain ⟨hs, ht⟩ := real_linear_independent_of_im_ne_zero ω₁ ω₂ hω ((ab.1 - ab'.1 : ℤ) : ℝ) ((ab.2 - ab'.2 : ℤ) : ℝ)
-    (by push_cast; linear_combination h0)
-  have h1 : ab.1 - ab'.1 = 0 := by exact_mod_cast hs
-  have h2 : ab.2 - ab'.2 = 0 := by exact_mod_cast ht
-  exact Prod.ext (by omega) (by omega)
-
-theorem lattice_poisson (E : ℂ → ℝ) (hE0 : ∀ z, 0 ≤ E z) (hEl : LowerSemicontinuous E) (hEi : Integrable E)
-    (ω₁ ω₂ z₀ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
-    ENNReal.ofReal (|(conj ω₁ * ω₂).im| / Real.pi) *
-        ∑' ab : ℤ × ℤ, ENNReal.ofReal (E (z₀ + (ab.1 : ℂ) * ω₁ + (ab.2 : ℂ) * ω₂)) ≤
-      ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ},
-        (‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ.1 z * (E z : ℂ)‖₊ : ℝ≥0∞) := by
-  have hpi : 0 < Real.pi := Real.pi_pos
-  have hN0 : ∀ z : crystallineComparison.V 1, 0 ≤ (fun z : crystallineComparison.V 1 => E (z 0)) z := fun z => hE0 _
-  have hNl : LowerSemicontinuous (fun z : crystallineComparison.V 1 => E (z 0)) :=
-    LowerSemicontinuous.comp (f := E) (g := fun z : crystallineComparison.V 1 => z 0) hEl (continuous_apply 0)
-  have hNi : Integrable (fun z : crystallineComparison.V 1 => E (z 0)) := by
-    have h := (volume_preserving_funUnique (Fin 1) ℂ).integrable_comp_emb
-      (MeasurableEquiv.measurableEmbedding _) (g := E)
-    exact h.2 hEi
-  have hPD : crystallineComparison.PDOn (crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω)))) (fun _ => (0 : ℂ)) := by
-    intro S c _
-    simp
-  set J : ℂ → ℂ := fun σ => ∫ z : ℂ, P5.fsv σ z * (E z : ℂ) with hJ
-  have hF : ∀ τ : crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))),
-      ‖crystallineComparison.fourier (fun z : crystallineComparison.V 1 => E (z 0)) τ + (fun _ => (0 : ℂ)) (τ : crystallineComparison.V 1)‖ =
-        (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} => ‖J σ.1‖) ((lp_eqv ω₁ ω₂ hω).symm τ) := by
-    intro τ
-    simp only [add_zero, hJ]
-    rw [lp_fourier]
-    rfl
-  by_cases hs : Summable (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} => ‖J σ.1‖)
-  · have hs' : Summable (fun τ : crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))) =>
-        ‖crystallineComparison.fourier (fun z : crystallineComparison.V 1 => E (z 0)) τ + (fun _ => (0 : ℂ)) (τ : crystallineComparison.V 1)‖) := by
-      simp_rw [hF]
-      exact (lp_eqv ω₁ ω₂ hω).symm.summable_iff.2 hs
-    have hR : ∀ T : Finset (ℤ × ℤ), |(conj ω₁ * ω₂).im| * ∑ ab ∈ T, E (z₀ + (ab.1 : ℂ) * ω₁ + (ab.2 : ℂ) * ω₂) ≤
-        ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ}, ‖J σ.1‖ := by
-      intro T
-      have h1 := Formalism.FourierDecayAlt.P.latticeHerglotzBound_statement 1 (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω)))
-        (fun z : crystallineComparison.V 1 => E (z 0)) (fun _ => 0) hN0 hNl hNi hPD hs' (fun _ => z₀)
-        (T.image (fun ab : ℤ × ℤ => (fun _ : Fin 1 => z₀ + (ab.1 : ℂ) * ω₁ + (ab.2 : ℂ) * ω₂))) (by
-          intro z hz
-          obtain ⟨ab, -, rfl⟩ := Finset.mem_image.1 hz
-          refine (lp_mem ω₁ ω₂ hω _).2 ⟨ab.1, ab.2, ?_⟩
-          funext i
-          simp only [Pi.sub_apply]
-          ring)
-      rw [lp_covol, Finset.sum_image (fun x _ y _ h => lp_inj ω₁ ω₂ hω z₀ h)] at h1
-      simp_rw [hF] at h1
-      rw [(lp_eqv ω₁ ω₂ hω).symm.tsum_eq (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} => ‖J σ.1‖)] at h1
-      exact h1
-    have hrhs : ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ},
-        (‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ.1 z * (E z : ℂ)‖₊ : ℝ≥0∞) =
-          ENNReal.ofReal (Real.pi⁻¹ * ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ}, ‖J σ.1‖) := by
-      rw [← tsum_mul_left, ENNReal.ofReal_tsum_of_nonneg (fun _ => by positivity) (hs.mul_left _)]
-      congr 1
-      funext σ
-      rw [← ENNReal.ofReal_coe_nnreal, coe_nnnorm, norm_mul]
-      simp [hJ, abs_of_pos hpi]
-    rw [hrhs, ENNReal.tsum_eq_iSup_sum, ENNReal.mul_iSup]
-    refine iSup_le fun T => ?_
-    rw [← ENNReal.ofReal_sum_of_nonneg (fun _ _ => hE0 _), ← ENNReal.ofReal_mul (by positivity)]
-    apply ENNReal.ofReal_le_ofReal
-    rw [div_eq_inv_mul, mul_assoc]
-    exact mul_le_mul_of_nonneg_left (hR T) (by positivity)
-  · have htop : ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ},
-        (‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ.1 z * (E z : ℂ)‖₊ : ℝ≥0∞) = ⊤ := by
-      by_contra hne
-      apply hs
-      have h2 := ENNReal.tsum_coe_ne_top_iff_summable.1 hne
-      have h3 : Summable (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} =>
-          ‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ.1 z * (E z : ℂ)‖) := by
-        rw [← NNReal.summable_coe] at h2
-        simpa using h2
-      have h4 := h3.mul_left Real.pi
-      refine h4.congr fun σ => ?_
-      rw [norm_mul]
-      simp [hJ, abs_of_pos hpi, hpi.ne']
-    rw [htop]
-    exact le_top
 
 end
 
@@ -932,19 +841,6 @@ section germ
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
-def GermAt (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (K N : ℕ) :
-    Prop :=
-  ∀ b s : ℕ, 1 ≤ b → 2 ≤ s → b + s - 1 ≤ P.r + 1 → ∀ h : C.LPt, D.IsLocPt h (b - 1) → ∀ w, TBB.AdmW P p.l0 Y w →
-    w.length + K ≤ N →
-    (∀ w', TBB.IsExt P p.l0 Y N K w w' →
-      BddAbove (Set.range fun t : {t : ℂ // t ≠ 0} => TBB.Ew p nn F (b + s - 2) w' (h ++ [(s - 1, t.1)]))) →
-    ContinuousOn (fun z : ℂ => TBB.Ew p nn F (b + s - 1) w (h ++ [(s, z)])) {0}ᶜ ∧
-    Integrable (fun z : ℂ => TBB.Ew p nn F (b + s - 1) w (h ++ [(s, z)])) ∧
-    ∀ σ : ℂ, (‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ z * (TBB.Ew p nn F (b + s - 1) w (h ++ [(s, z)]) : ℂ)‖₊ :
-        ℝ≥0∞) ≤
-      limsup (fun t : ℂ =>
-        (‖TBB.NP p nn F (b + s - 2) w (h ++ [(s - 1, t)]) (h ++ [(s - 1, (t⁻¹ + σ)⁻¹)])‖₊ : ℝ≥0∞)) (𝓝[≠] 0)
-
 theorem gm_ew_zero (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (i : ℕ)
     (w : List C.Letter) (h : C.LPt) (s : ℕ) : TBB.Ew p nn F i w (h ++ [(s, 0)]) = 0 := by
   have hn : ¬ (D.IsLocPt (h ++ [(s, 0)]) i ∧ D.IsLocPt (h ++ [(s, 0)]) i) := by
@@ -953,24 +849,6 @@ theorem gm_ew_zero (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r →
   unfold TBB.Ew TBB.NP KB.Pl.RR D.RRplace
   rw [dif_neg hn]
   simp
-
-theorem integral_five_at_place_of_parts (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
-    (K N : ℕ) (hP : TBB.PosAt p nn F Y N) (hG : GermAt p nn F Y K N) : TBB.BlockGrowthBound p nn F Y K N := by
-  intro b s hb hs hbs h hh w hw hN hBdd ω₁ ω₂ z₀ hω
-  obtain ⟨hcont, hint, htr⟩ := hG b s hb hs hbs h hh w hw hN hBdd
-  set E : ℂ → ℝ := fun z => TBB.Ew p nn F (b + s - 1) w (h ++ [(s, z)]) with hEdef
-  have hE0 : ∀ z, 0 ≤ E z := fun z => hP (b + s - 1) w (h ++ [(s, z)]) hw (by omega)
-  have hEz : E 0 = 0 := gm_ew_zero p nn F (b + s - 1) w h s
-  have hlsc : LowerSemicontinuous E := by
-    intro z
-    by_cases hz : z = 0
-    · subst hz
-      intro y hy
-      rw [hEz] at hy
-      exact Filter.Eventually.of_forall fun z' => lt_of_lt_of_le hy (hE0 z')
-    · exact (hcont.continuousAt (isOpen_compl_singleton.mem_nhds hz)).lowerSemicontinuousAt
-  refine ⟨fun σ => (Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ z * (E z : ℂ), ?_, fun σ _ => htr σ⟩
-  exact lattice_poisson E hE0 hlsc hint ω₁ ω₂ z₀ hω
 
 end germ
 
@@ -997,12 +875,6 @@ def IntegralFourFromComponents : Prop :=
     (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (Λ : ℝ) (K N : ℕ),
     KB.CptCoef p.T.base F → (∀ y, 0 < nn y) → LiftGrid p nn Y Λ K N → TBB.KernelArgumentHypothesisScalar p nn F Y Λ K N
 
-def IntegralFiveFromComponents : Prop :=
-  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
-    (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (K N : ℕ),
-    TBB.PosAt p nn F Y N → GermAt p nn F Y K N → TBB.BlockGrowthBound p nn F Y K N
-
 theorem integral_three_of_parts_holds : CurvatureIntegralOfParts := by
   intro hA hPS hVI hSS hDW hFP Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N Cb hCb hF hnn hgrid
   exact integral_three_at_place_of_parts hA hPS hVI hSS hDW p nn F Y Λ K N Cb hCb (formNonneg_of hA hFP p) hF hnn hgrid
@@ -1010,10 +882,6 @@ theorem integral_three_of_parts_holds : CurvatureIntegralOfParts := by
 theorem integral_four_of_parts_holds : IntegralFourFromComponents := by
   intro hA hSS hDL hFP Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N hF hnn hgrid
   exact integral_four_at_place_of_parts hA hSS hDL p nn F Y Λ K N (formNonneg_of hA hFP p) hF hnn hgrid
-
-theorem integral_five_of_parts_holds : IntegralFiveFromComponents := by
-  intro Wp Wq _ _ _ _ _ _ P p nn F Y K N hP hG
-  exact integral_five_at_place_of_parts p nn F Y K N hP hG
 
 end Formalism.FourierDecayAlt.P.TBBx5
 
@@ -1034,10 +902,5 @@ theorem integral_four_at_place (hA : P5.ThmPActual) (hSS : KB.SizeStd) (hDL : KB
     (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (Λ : ℝ) (K N : ℕ)
     (hF : KB.CptCoef p.T.base F) (hnn : ∀ y, 0 < nn y) (hgrid : TBBx5.LiftGrid p nn Y Λ K N) :
     Formalism.FourierDecayAlt.TBB.KernelArgumentHypothesisScalar p nn F Y Λ K N := TBBx5.integral_four_of_parts_holds hA hSS hDL hFP Wp Wq P p nn F Y Λ K N hF hnn hgrid
-
-theorem integral_five_at_place {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par} (p : KB.Pl P Wp Wq)
-    (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (K N : ℕ) (hP : Formalism.FourierDecayAlt.TBB.PosAt p nn F Y N)
-    (hG : TBBx5.GermAt p nn F Y K N) : Formalism.FourierDecayAlt.TBB.BlockGrowthBound p nn F Y K N := TBBx5.integral_five_of_parts_holds Wp Wq P p nn F Y K N hP hG
 
 end Formalism.FourierDecayAlt.P

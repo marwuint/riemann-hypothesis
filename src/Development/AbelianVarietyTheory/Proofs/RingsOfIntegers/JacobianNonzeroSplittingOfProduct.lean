@@ -3,15 +3,15 @@ import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogChain
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.CoeffEqZeroOfMemSpanPow
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsPowSpanXLeSpanFormalModuleMatrixStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MvPowerSeriesSubstConstTermsLocalAlgHomSpecStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsFiniteBasisPowerSeriesSubstFiniteColengthStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.InvariantsAndTraceFiniteFreeDomainEndomorphismsStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalSeriesDescendsOfSplitKernelInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MvPowerSeriesSubstConstTermsLocalAlgHomSpec
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsFiniteBasisPowerSeriesSubstFiniteColength
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.InvariantsAndTraceFiniteFreeDomainEndomorphisms
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalSeriesDescendsOfSplitKernelInvariant
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DetJacobianFormalModuleMatrixEqConstMulUnitStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalMatrixKernelFiniteNcardEqRankStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalModuleMatrixApplyPointsActionLawsStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupTranslateAutomorphismAndMatrixKernelStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConstantDvdTraceOfJacobianFiniteColengthStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupTranslateAutomorphismAndMatrixKernel
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConstantDvdTraceOfJacobianFiniteColength
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ImportsTer
 
 set_option autoImplicit false
@@ -69,7 +69,7 @@ theorem sum_tower {A₀ A₁ R : Type} [CommRing A₀] [IsDomain A₀] [CommRing
   have hcard : (Finset.univ.map ⟨G, hGi⟩).card = Module.finrank A₀ R := by
     rw [Finset.card_map, Module.finrank_eq_card_basis e'']
     simp [hS]
-  have key := (GlobalTheory.T.invariants_and_trace_finite_free_domain_endomorphisms A₀ R _ hcard).2 (ψ x)
+  have key := (_root_.GlobalTheory.PlaceInt.invariants_and_trace_of_card_eq_finrank A₀ R _ hcard).2 (ψ x)
   rw [Finset.sum_map] at key
   have h1 : ∑ α ∈ S, g α (ψ x) = ∑ α : S, G α (ψ x) := by
     simp only [hG]
@@ -157,7 +157,7 @@ theorem crd_const (p : Matrix (Fin n) (Fin n) O) (s : Fin n × Fin d) : MvPowerS
   (GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p p _ _ pt_small pt_small).2.2.2.2.2.1 s.1 s.2
 
 theorem pullM_eq (p : Matrix (Fin n) (Fin n) O) (f : PS V n d) : pullM B p f = MvPowerSeries.subst (crd B p) f :=
-  (GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V _ _ Unit (crd B p) fun j => by rw [crd_const]; exact zero_mem _).2.2.1 (crd_const B p) f
+  (_root_.GlobalTheory.PlaceInt.evC_spec V _ _ Unit (crd B p) fun j => by rw [crd_const]; exact zero_mem _).2.2.1 (crd_const B p) f
 
 theorem crd_mul (p q : Matrix (Fin n) (Fin n) O) (s : Fin n × Fin d) :
     crd B (p * q) s = MvPowerSeries.subst (crd B q) (crd B p s) := by
@@ -203,22 +203,22 @@ theorem sum_shift_kerM_mul : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscret
   have hjp : jacM B p ≠ 0 := fun h => hj (by rw [hjm, h, zero_mul])
   have hjq : jacM B q ≠ 0 := fun h => hj (by rw [hjm, h, mul_zero])
   have hsq := splitKer_right B p q hsp
-  obtain ⟨f', rfl⟩ := GlobalTheory.T.formalSeries_descends_of_splitKernel_invariant V d O B hB n q _ N hN hq hjq hsq f hf
+  obtain ⟨f', rfl⟩ := _root_.GlobalTheory.PlaceInt.descends_of_invariant V d O B hB n q _ N hN hq hjq hsq f hf
   obtain ⟨hfin, hcard⟩ := GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n (p * q) s N hN h1 hj hsp
   obtain ⟨-, hcardq⟩ := GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n q _ N hN hq hjq hsq
   have cp := GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n p _ N hN hp
-  obtain ⟨r, b, -, hb⟩ := GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B p) (crd_const B p) cp
-  obtain ⟨r', b', hr', hb'⟩ := GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B q) (crd_const B q) (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n q _ N hN hq)
-  obtain ⟨r'', b'', hr'', hb''⟩ := GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B (p * q)) (crd_const B _)
+  obtain ⟨r, b, -, hb⟩ := _root_.GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V _ (crd B p) (crd_const B p) cp
+  obtain ⟨r', b', hr', hb'⟩ := _root_.GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V _ (crd B q) (crd_const B q) (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n q _ N hN hq)
+  obtain ⟨r'', b'', hr'', hb''⟩ := _root_.GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V _ (crd B (p * q)) (crd_const B _)
     (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n _ s N hN h1)
   refine ⟨hfin, ?_⟩
   choose M hM using fun j => (hb (f' * b j)).exists
   obtain ⟨U, hU⟩ := GlobalTheory.T.det_jacobian_formal_module_matrix_eq_const_mul_unit V d O B n p
-  obtain ⟨g, hg⟩ := GlobalTheory.T.constant_dvd_trace_of_jacobian_finite_colength V _ (crd B p) (crd_const B p) cp _ U hjp hU r b hb f' (Matrix.of fun i j => M j i) hM
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.C_dvd_trace_of_jacobian V _ (crd B p) (crd_const B p) cp _ U hjp hU r b hb f' (Matrix.of fun i j => M j i) hM
   refine ⟨g, ?_⟩
   haveI : IsDomain (PS V n d) := NoZeroDivisors.to_isDomain _
   have hsm : ∀ α ∈ hfin.toFinset, ∀ b, Small (α b) := fun α hα => (hfin.mem_toFinset.1 hα).1
-  have hsh := (GlobalTheory.T.formalGroupTranslate_automorphism_and_matrixKernel V d O B n (p * q)).2.2
+  have hsh := (_root_.GlobalTheory.PlaceInt.shift_kerM V d O B n (p * q)).2.2
   have key := sum_tower (pullHom B p : PS V n d →+* PS V n d) (pullHom B q : PS V n d →+* PS V n d) b b' b''
     (by simpa only [RingHom.coe_coe, pullHom_apply] using hb)
     (by simpa only [RingHom.coe_coe, pullHom_apply] using hb')

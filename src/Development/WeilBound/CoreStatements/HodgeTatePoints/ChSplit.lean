@@ -1,5 +1,7 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenProjectorsSplitActionStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenProjectorsSplitAction
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
 import Development.WeilBound.CoreStatements.HodgeTatePoints.DegLeOfEquiv
 
 open GlobalTheory.CompanionTheory.Ar.Crv

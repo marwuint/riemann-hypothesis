@@ -246,12 +246,6 @@ instance : (isDiscreteRep.{w} k G).IsClosedUnderFiniteProducts where
 
 noncomputable instance : Abelian (DiscreteRep.{w} k G) := inferInstance
 
-omit [IsTopologicalGroup G] in
-
-theorem isDiscreteRep_X₁_of_shortExact {S : ShortComplex (Rep.{w} k G)} (hS : S.ShortExact)
-    [IsDiscreteRep S.X₂] : IsDiscreteRep S.X₁ :=
-  (isDiscreteRep k G).prop_X₁_of_shortExact hS ‹_›
-
 theorem isDiscreteRep_X₃_of_shortExact {S : ShortComplex (Rep.{w} k G)} (hS : S.ShortExact)
     [IsDiscreteRep S.X₂] : IsDiscreteRep S.X₃ :=
   (isDiscreteRep k G).prop_X₃_of_shortExact hS ‹_›

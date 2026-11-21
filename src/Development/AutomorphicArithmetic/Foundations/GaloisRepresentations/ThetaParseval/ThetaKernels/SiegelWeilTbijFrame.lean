@@ -11,10 +11,6 @@ open scoped TensorProduct NNReal Matrix
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
 namespace PositivityTheory.SiegelWeilFormula.TBij
 attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
-section Gen
-variable {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] (c : E' →ₐ[R] E') {α β : Type} [Fintype α]
-  [DecidableEq α] [Fintype β] [DecidableEq β]
-end Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 namespace Adp
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)

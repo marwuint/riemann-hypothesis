@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.GaloisRepOfPolarizedCuspidal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageLinearTranslateConstStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageLinearTranslateConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMul
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.BCT
 open scoped Classical TensorProduct
 
@@ -222,7 +222,7 @@ theorem orbTerm_inv (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ)
   rw [conj_cpt _ ht] at e2
   rw [map_conj_mul_three_subgroup_of_mem K hk, e1, e2, fun_inv θ K δ f ht hk x]
   congr 1
-  exact (GlobalTheory.T.subgroupAverage_linear_translate_const K (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) 0 ⟨k, hk⟩ (hf x) (hf x)).2.2.1
+  exact (_root_.GlobalTheory.AvgLin.avg_linear_translate_const K (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) 0 ⟨k, hk⟩ (hf x) (hf x)).2.2.1
 
 end Orb
 
@@ -245,7 +245,7 @@ theorem orbTerm_prod (θ : G →* G) (θ' : G' →* G') (K : Subgroup G) (K' : S
   rw [twCent_prod, map_conj_prod, prod_inf_prod, cptPart_prod, relIndex_prod_prod, Nat.cast_mul,
     mul_mul_mul_comm]
   congr 1
-  have hA := GlobalTheory.T.subgroupAverage_prod_mul_eq_mul K K' (fun k : K => f ((x * k)⁻¹ * δ * θ (x * k)))
+  have hA := _root_.GlobalTheory.AvgProd.avg_prod K K' (fun k : K => f ((x * k)⁻¹ * δ * θ (x * k)))
     (fun k : K' => f' ((x' * k)⁻¹ * δ' * θ' (x' * k))) hf hf'
   rw [← hA, ← avg_comp_equiv (Subgroup.prodEquiv K K')]
   rfl

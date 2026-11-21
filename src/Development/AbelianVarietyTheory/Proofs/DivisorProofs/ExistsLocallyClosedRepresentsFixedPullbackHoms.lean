@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyHomFixRepTr
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WchartCompLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleSectionsProductBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomomorphismMatrixUniqueFixedPullbackStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomomorphismsSameMatrixIsomorphicTestDataStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomomorphismMatrixUniqueFixedPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomomorphismsSameMatrixIsomorphicTestData
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocallyClosedUniversalHomMatrixSchemeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTestPullbackStatement
 
@@ -52,7 +52,7 @@ theorem exists_locClosed_homFix : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRin
   rw [hh, hmatc] at hm₂
   rw [hh] at ht₂
 
-  have hpd := GlobalTheory.T.homomorphisms_same_matrix_isomorphic_test_data Rg A B L M k mA mB bA bB eA eB hyp R t A₂ B₂ φA₂ φB₂ Φ₂ A' B' φA' φB' Φ' c
+  have hpd := _root_.GlobalTheory.HomFixMat.mat_determines Rg A B L M k mA mB bA bB eA eB hyp R t A₂ B₂ φA₂ φB₂ Φ₂ A' B' φA' φB' Φ' c
     ht₂ ht hm₂ hc'
   have hfin := IsPullD.comp hp₂ hpd
   rw [Category.id_comp] at hfin
@@ -64,7 +64,7 @@ theorem exists_locClosed_homFix : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRin
   have hm' := hmat R h' A' B' φA' φB' Φ' ht' hpd'
   rw [hh'] at hm'
   have heq : matOf (h' ≫ i ≫ cE) = c :=
-    GlobalTheory.T.homomorphism_matrix_unique_fixed_pullback Rg A B L M k mA mB bA bB eA eB hyp R t A' B' φA' φB' Φ' _ _ ht hm' hc'
+    _root_.GlobalTheory.HomFixUniq.mat_unique Rg A B L M k mA mB bA bB eA eB hyp R t A' B' φA' φB' Φ' _ _ ht hm' hc'
   have hg : h' ≫ i ≫ cE = h ≫ i ≫ cE := by
     apply hom_ext_affine
     · simp only [Category.assoc]

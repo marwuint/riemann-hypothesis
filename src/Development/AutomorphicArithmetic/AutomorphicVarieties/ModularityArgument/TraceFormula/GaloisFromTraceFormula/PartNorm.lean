@@ -31,7 +31,7 @@ private theorem sum_inf_zero {a : ℕ} (ρ : CuspSub E a) (hn : GlobalTheory.Dis
     exact hx (Subtype.ext (Subtype.ext (funext hcon)))
   have hlie : lie E a (oneL E a) (x : Sm E a) = (∑ τ : E →+* ℂ, ((CG.mk ρ).infChar τ).sum) • (x : Sm E a) := by
     rw [GlobalTheory.T.lie_central_element_trace E a, LinearMap.sum_apply,
-      Finset.sum_congr rfl fun τ _ => GlobalTheory.T.trace_operator_eigenvalue_sum E a ρ τ _ (GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk ρ) τ) x x.2,
+      Finset.sum_congr rfl fun τ _ => _root_.GlobalTheory.CompanionTheory.CapelliTrace.trace_Eop_eq E a ρ τ _ (GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk ρ) τ) x x.2,
       ← Finset.sum_smul]
   refine GlobalTheory.CompanionTheory.TotalTrace.eq_zero_of_exp_mul_eq_one fun t => ?_
   have h1 := GlobalTheory.T.central_eigen_exponential E a _ _ hlie t g₀

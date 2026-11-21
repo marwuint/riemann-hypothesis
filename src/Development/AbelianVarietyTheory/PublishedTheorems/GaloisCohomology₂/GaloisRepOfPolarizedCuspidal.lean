@@ -93,13 +93,6 @@ def GaloisRepOfPolarizedCuspidal : Prop :=
     ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → IsPolarized π χ →
       ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ), IsGalRepOf π χ ι r wt HT
 
-theorem GaloisRepOfPolarizedCuspidal.of_isCsd (H : GaloisRepOfPolarizedCuspidal) {E : Type} (Ω : Type) [Field E]
-    [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
-    {a : ℕ} (ha : 1 ≤ a) {π : CuspSub E a} (hr : (CG.mk π).IsRegAlg) (hc : π.IsCsd) :
-    ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ),
-      IsGalRepOf π (quadChar E ^ a) ι r wt HT :=
-  H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)
-
 end GlobalTheory.Published
 
 namespace GlobalTheory.GalOfCusp
@@ -121,11 +114,5 @@ theorem IsGalRepOf.wdOf_eq (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpect
     (hσ : π.IsLocComp w σ) :
     wdOf h hl ι r = (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).lpTw ((1 - (a : ℝ)) / 2) :=
   ((H.away w hl A h rc hrc σ hσ).wdOf_eq hl).trans (rec_algNorm hrc σ)
-
-theorem IsGalRepOf.tempered_wdOf (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
-    (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω} (h : IsPlaceOver A w) :
-    ((wdOf h hl ι r).lpTw ((wt : ℝ) / 2)).tempered := by
-  obtain ⟨x, h1, h2⟩ := H.pure w hl A h
-  rwa [h1.wdOf_eq hl]
 
 end GlobalTheory.GalOfCusp

@@ -14,15 +14,6 @@ variable {K : Type*} [Field K] [NumberField K]
 
 namespace Modulus
 
-omit [NumberField K] in
-
-theorem ext' {𝔪 𝔫 : Modulus K} (hi : 𝔪.ideal = 𝔫.ideal) (hr : 𝔪.real = 𝔫.real) : 𝔪 = 𝔫 := by
-  cases 𝔪
-  cases 𝔫
-  cases hi
-  cases hr
-  rfl
-
 instance : Dvd (Modulus K) :=
   ⟨fun 𝔪 𝔫 ↦ 𝔪.ideal ∣ 𝔫.ideal ∧ 𝔪.real ⊆ 𝔫.real⟩
 

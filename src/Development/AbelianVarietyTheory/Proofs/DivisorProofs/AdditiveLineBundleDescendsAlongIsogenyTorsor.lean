@@ -5,8 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorSquare
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SecBaseChangeOfPerf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescCocycle
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleDescentFiniteFlatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumAdditiveLineBundleIsogenyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleDescentFiniteFlat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumAdditiveLineBundleIsogeny
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -44,8 +44,8 @@ theorem descend_torsor : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' B N : Ov
     have z := congrArg (CechPic.pull (lift (fst T B ≫ n) (snd T B)).left) ((triv_ev_iff hP _ _).1 hN)
     rw [pull_evc, map_zero, lift_fst_assoc, lift_snd, Category.assoc] at z
     exact z
-  obtain ⟨φ, hc, hco⟩ := GlobalTheory.T.exists_descentDatum_additive_lineBundle_isogeny K A A' B q P hA hA' hB hq hfin hflat hsurj hP hadd hzero hker
-  obtain ⟨P₀, hP₀, hiso⟩ := GlobalTheory.T.exists_lineBundle_descent_finiteFlat _ _ (q ▷ B).left P hP φ hc hco
+  obtain ⟨φ, hc, hco⟩ := _root_.GlobalTheory.DescNorm.descentDatum_of_additive K A A' B q P hA hA' hB hq hfin hflat hsurj hP hadd hzero hker
+  obtain ⟨P₀, hP₀, hiso⟩ := _root_.GlobalTheory.LBDescent.exists_descent _ _ (q ▷ B).left P hP φ hc hco
   refine ⟨P₀, hP₀, (cls_eq_iff (pull_isLB hP₀ _) hP).1 ?_⟩
   refine Eq.trans ?_ ((cls_eq_iff hP (pull_isLB hP₀ _)).2 hiso).symm
   rw [cls_ev hP₀, evc, cls_pull hP₀, ← lift_whiskerRight, lift_fst_snd, Category.id_comp]

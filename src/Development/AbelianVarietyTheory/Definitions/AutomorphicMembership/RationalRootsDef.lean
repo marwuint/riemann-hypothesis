@@ -31,10 +31,6 @@ structure MuIsW (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (Wt : Set X.B.pl
   sub : ∀ w ∈ Wt, X.B.places.resChar w ∈ T.pl
   supp : ∀ w, w ∉ Wt → T.psi w = 1
 
-theorem muIsW_of_muIs {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {xi : X.C.Tup → HChar X.B.host.E} (h : MuIs X f T xi) :
-    MuIsW X f T {w | X.B.places.resChar w ∈ T.pl} xi :=
-  ⟨h.inj, h.range, h.mu0, h.star, h.star', h.tw, h.on, h.off, fun _ hw => hw, fun w hw => (T.off w hw).1⟩
-
 structure Core (K : Ctx) (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) : Type 1 where
   isOver : K.Over X.B.toPre
   xi : X.C.Tup → HChar X.B.host.E
@@ -68,22 +64,6 @@ structure KsCond (KP : ∀ B : Base, Fr B.toPre → Prop) : Prop where
     (∀ F F₀, ∀ z ∈ S₂ F F₀, IsAlgebraic ℚ z) →
     ∃ (B : Base) (f : Fr B.toPre), B.toPre = B₀.toPre ∧ HEq f f₀ ∧ KP B f ∧ Has₂ B (S₁ B.KsC) (S₂ B.KsC B.fixedCoefficientFieldInComplex)
   enl : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre), Enl B B' → HEq f' f → KP B f → KP B' f'
-
-def ExTrue (KP : ∀ B : Base, Fr B.toPre → Prop) (Q : Slot) : Prop :=
-  EvLg fun K B f T => KP B f → ∃ (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W) (G : GJStage B C)
-    (c : Core K ⟨B, C, W, V, S, N, G⟩ f T), Q K ⟨B, C, W, V, S, N, G⟩ f T c
-
-def Export (Q : Slot) : Prop :=
-  Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : Core K X f T), Q K X f T c → ExportAt X.toD7 c.O.nch c.O.xd
-
-def Retwist (Q Q' : Slot) : Prop :=
-  Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : Core K X f T), Q K X f T c → ExportAt X.toD7 c.O.nch c.O.xd →
-    ∀ (A : ℕ → Finset ℕ) (S₂ : ∀ B : Pre, Fr B → Set (HChar B.host.E) → Finset ℂ), (∀ B f Ξ, ∀ z ∈ S₂ B f Ξ, IsAlgebraic ℚ z) →
-      ∃ (B' : Base) (f' : Fr B'.toPre) (T' : TwDat B'), Enl X.B B' ∧ HEq f' f ∧ T'.pl = T.pl ∧ T'.Avoids A ∧
-        (∀ z ∈ S₂ B'.toPre f' (T'.set f'), ∃ x : B'.LL, B'.embLL x = z) ∧
-        ∀ (C : Cols B') (W : RowsRest B' C) (V : DivStage B' C W) (S : SStage B' C W) (N : NStage B' C W) (G : GJStage B' C)
-          (c' : Core K ⟨B', C, W, V, S, N, G⟩ f' T'), Q K ⟨B', C, W, V, S, N, G⟩ f' T' c' →
-          DQ.TwAllAt (assemble B' C W V S N G) c'.O.nch c'.O.xd ∧ Q' K ⟨B', C, W, V, S, N, G⟩ f' T' c'
 
 def FromCore (Q : Slot) (D : D7) (Y : Lay D) : Prop :=
   ∃ (K : Ctx) (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : Core K X f T), Q K X f T c ∧

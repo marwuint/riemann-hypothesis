@@ -146,9 +146,9 @@ theorem simil : Scal → Simil := by
       exact SWIsom.map_actTup (evalV F v) (g1 x hx) (projFin X) a i
   have hfin : ∀ v, (cfac E v • m v (hermScal (Fv F v) σ (algebraMap F _ β'))) (latV b v) < ⊤ := by
     intro v
-    have := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 1 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v)
+    have := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hcm 1 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v)
       (hermScal (Fv F v) σ (algebraMap F _ β'))).1
-    have h2 := ((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.1 v).1.measure_lt_top
+    have h2 := ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 1).2.2.2.1 v).1.measure_lt_top
       (μ := m v (hermScal (Fv F v) σ (algebraMap F _ β')))
     rw [Measure.smul_apply]
     exact ENNReal.mul_lt_top ENNReal.coe_lt_top h2

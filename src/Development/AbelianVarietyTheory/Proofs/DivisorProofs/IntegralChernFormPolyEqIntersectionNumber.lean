@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasTopFormIntegralFiniteAdditiveHomogeneous
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralChernFormPolynomialEqIntersectionNumberStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDensityHermitianFormsEqZeroOffDegreeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralChernFormPolynomialEqIntersectionNumber
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDensityHermitianFormsEqZeroOffDegree
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.L2DbarEstimates (V)
@@ -57,8 +57,8 @@ theorem integral_evalF_c1W_eq_interPoly : GlobalTheory.Published.ChernDegree →
           simp only [evalF, LineForm.fld, map_add, Subalgebra.coe_add]
           exact LineForm.TopInt.dens_add _ _ }
     refine eq_homogeneousComponent f X.dim (fun d hd Q hQ => ?_) P
-    exact GlobalTheory.T.topDensity_hermitianForms_eq_zero_offDegree X.dim κ _ d Q hQ hd
-  rw [hR, ← GlobalTheory.T.integral_chernForm_polynomial_eq_intersectionNumber hC F σ X κ Δ L r ψ hψ _ (homogeneousComponent_isHomogeneous _ P)]
+    exact _root_.GlobalTheory.ChernCalc.dens_aeval_ofValues_offDeg X.dim κ _ d Q hQ hd
+  rw [hR, ← _root_.GlobalTheory.ChernCalc.integral_evalF_c1W_eq_interPoly hC F σ X κ Δ L r ψ hψ _ (homogeneousComponent_isHomogeneous _ P)]
   simp only [HolAtlas.integral, LineForm.TopInt.part_congr _ hL]
 
 end GlobalTheory.ChernLine

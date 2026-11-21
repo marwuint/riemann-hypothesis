@@ -24,17 +24,4 @@ theorem tu_ne_zero (D : D7) (u : D.what₂.Word) : ((Tu D u : ℕ) : D.host.E) �
   rw [Ne, Nat.cast_eq_zero]
   exact (D.mem u).A.T_prime.ne_zero
 
-theorem scalarEquiv_of_gen (h : ScalarEquivG) (D : D7) (u u' : D.what₂.Word) : ScalarEquiv D u u' := by
-  intro F0 Λ hΛ
-  obtain ⟨_, hfix, _⟩ := hΛ
-  obtain ⟨hlat, _, hlift, _⟩ := hfix
-  have key := h D.host.E (VS D) D.R.rS D.R.k (gS D) (finrank_VS D) Λ hlat
-    ((Tu D u : ℕ) : D.host.E) ((Tu D u' : ℕ) : D.host.E) (tu_ne_zero D u) (tu_ne_zero D u')
-    (lf D F0) hlift
-  refine ⟨fun x => ?_, fun {x y} hxy => ?_, fun {x y z} h1 h2 => ?_⟩
-  · exact key.refl ⟨x.1.1, x.1.2.1, x.2⟩
-  · exact key.symm (x := ⟨x.1.1, x.1.2.1, x.2⟩) (y := ⟨y.1.1, y.1.2.1, y.2⟩) hxy
-  · exact key.trans (x := ⟨x.1.1, x.1.2.1, x.2⟩) (y := ⟨y.1.1, y.1.2.1, y.2⟩)
-      (z := ⟨z.1.1, z.1.2.1, z.2⟩) h1 h2
-
 end PI.UnitaryGroupMassFormula.ScalarEquivalenceHermitianSpace

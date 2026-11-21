@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaClosureComponentTrdegGeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothGenericFibreOfIndependentAndTangentBoundStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothGenericFibreOfAffineOpensStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaClosureComponentTrdegGe
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothGenericFibreOfIndependentAndTangentBound
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothGenericFibreOfAffineOpens
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
@@ -28,9 +29,9 @@ theorem finiteType_of_isQProjOver_affineOpen {o : Type} [CommRing o] {X : Scheme
 theorem ThetaFam.smooth_genericFibre : Out.Laws → Out.Laws2 → ∀ (g n N' : ℕ) (J : Type) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (w w' : J) (o : Type) [CommRing o] (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (d : ℕ) (F : ThetaFam n em C), ArBase em → GoodClass em C Mat κ w w' d → (∀ (R : Type) [CommRing R] [Algebra o R] [Algebra o ℂ] [Algebra R ℂ] [IsScalarTower o R ℂ] (x : Sp R ⟶ F.MM), IsOpenImmersion x → x ≫ F.s = spMap (algebraMap o R) → algebraMap o ℂ = em → Module.finrank ℂ (Derivation o R ℂ) ≤ d) → SmoothOfRelativeDimension d (pullback.snd F.s (spMap (algebraMap o (FractionRing o)))) := by
   intro h1 h2 g n N' J Mat κ w w' o _ b em C d F hb hC ht
   have : IsDedekindDomain o := hb.1
-  refine GlobalTheory.T.smooth_genericFibre_of_affine_opens o F.MM F.s d fun R _ _ x hx hxs => ?_
-  exact GlobalTheory.T.smooth_genericFibre_of_independent_and_tangent_bound o em R d hb.2.2 (finiteType_of_isQProjOver_affineOpen F.qproj R x hxs)
-    (GlobalTheory.T.thetaClosure_component_trdeg_ge h1 h2 n g N' J Mat κ w w' o b em C d F hb hC R x hx hxs)
+  refine _root_.GlobalTheory.smoothOfRelativeDimension_genericFibre_of_affine o F.MM F.s d fun R _ _ x hx hxs => ?_
+  exact _root_.GlobalTheory.smoothOfRelativeDimension_genericFibre_of_independent_of_finrank_derivation_le o em R d hb.2.2 (finiteType_of_isQProjOver_affineOpen F.qproj R x hxs)
+    (_root_.GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent h1 h2 n g N' J Mat κ w w' o b em C d F hb hC R x hx hxs)
     (fun he => ht R x hx hxs he)
 
 end GlobalTheory.ZM

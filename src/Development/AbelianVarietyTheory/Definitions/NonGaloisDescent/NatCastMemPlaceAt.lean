@@ -186,10 +186,6 @@ def IsHkQuot (𝔓 : Ideal (𝓞 E)) (q i : ℕ) (z : FrPt Xo c (PAt φ)) (C : H
 
 end Points
 
-example (p : ℕ) [Fact p.Prime] : ((p : ℕ) : 𝓞 ℚ) ∈ (placeAt (Rat.castHom ℂ_[p])).asIdeal ∧
-    (1 : 𝓞 ℚ) ∉ (placeAt (Rat.castHom ℂ_[p])).asIdeal :=
-  ⟨natCast_mem_placeAt _, by simp [mem_placeAt]⟩
-
 end GlobalTheory.GeoTie
 
 end

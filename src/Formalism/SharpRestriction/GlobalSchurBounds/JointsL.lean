@@ -178,42 +178,6 @@ theorem logGam_le {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm
   rw [div_le_one (by nlinarith), (Fm.L x i).Gam_eq u]
   nlinarith
 
-theorem Xpp_eq (s : Scale) (n : ℕ) (hn : 0 < n) : s.X'' n = s.x * n * s.X' := by
-  have hx : 0 < s.x := lt_trans one_pos s.one_lt_alt
-  have hb : 0 < s.b := Real.exp_pos _
-  have hX : 0 < s.X' := Real.exp_pos _
-  have hn' : (0 : ℝ) < n := by exact_mod_cast hn
-  unfold Scale.X'' Scale.w'' Scale.b' Scale.a
-  field_simp
-
-theorem mL_le_Xpp (R : Ranks) (s : Scale) : (R.m : ℝ) * s.L ≤ 2 * s.X'' R.n := by
-  have hx1 := s.one_lt_alt
-  have hn : 0 < R.n := by unfold Ranks.n; positivity
-  have hn' : (1 : ℝ) ≤ R.n := by exact_mod_cast hn
-  have hX : 1 ≤ s.X' := Real.one_le_exp (Real.rpow_nonneg (by linarith) _)
-  have hL : s.L ≤ s.x := by
-    have : s.x ^ s.eps ≤ s.x ^ (1 : ℝ) :=
-      Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith [s.eps_lt])
-    rwa [Real.rpow_one] at this
-  have hL0 : 0 ≤ s.L := Real.rpow_nonneg (by linarith) _
-  have hm : (R.m : ℝ) ≤ 2 * R.n := by
-    have h2 : R.m ≤ 2 * R.n := by unfold Ranks.n; exact R.m_le_f
-    exact_mod_cast h2
-  rw [Xpp_eq s R.n hn]
-  have h3 : (R.m : ℝ) * s.L ≤ 2 * R.n * s.x := mul_le_mul hm hL hL0 (by linarith)
-  have h4 : s.x * R.n ≤ s.x * R.n * s.X' := le_mul_of_one_le_right (by nlinarith) hX
-  linarith
-
-theorem muTu_of_countF {eps : ℝ} (Fm : FamP eps) (h : Lnk.CountF Fm) : J.MuTu Fm := by
-  obtain ⟨C, x0, hC, h⟩ := h
-  refine ⟨2 * C, x0, fun x hx i u => ?_⟩
-  have h1 := (h x hx i u).2.1
-  have h2 := mL_le_Xpp (Fm.D x i).R (Fm.L x i).sc
-  calc _ ≤ C * (Fm.D x i).R.m * (Fm.L x i).sc.L := h1
-    _ = C * (((Fm.D x i).R.m : ℝ) * (Fm.L x i).sc.L) := by ring
-    _ ≤ C * (2 * (Fm.L x i).sc.X'' (Fm.D x i).R.n) := mul_le_mul_of_nonneg_left h2 hC
-    _ = 2 * C * (Fm.L x i).sc.X'' (Fm.D x i).R.n := by ring
-
 theorem exists_le_rpow (θ : ℝ) (hθ : 0 < θ) (C : ℝ) : ∃ x0 : ℝ, 1 ≤ x0 ∧ ∀ x, x0 ≤ x → C ≤ x ^ θ := by
   refine ⟨(max C 1) ^ (1 / θ), Real.one_le_rpow (le_max_right _ _) (by positivity), fun x hx => ?_⟩
   have h0 : 0 ≤ (max C 1) ^ (1 / θ) := Real.rpow_nonneg (le_trans zero_le_one (le_max_right _ _)) _
@@ -221,22 +185,6 @@ theorem exists_le_rpow (θ : ℝ) (hθ : 0 < θ) (C : ℝ) : ∃ x0 : ℝ, 1 ≤
   rw [← Real.rpow_mul (le_trans zero_le_one (le_max_right _ _)), one_div, inv_mul_cancel₀ hθ.ne',
     Real.rpow_one] at h1
   exact le_trans (le_max_left _ _) h1
-
-theorem sizeTu_of_countF {eps : ℝ} (heps : 0 < eps) (Fm : FamP eps) (h : Lnk.CountF Fm) :
-    ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, SizeTu (Fm.L x i) := by
-  obtain ⟨C, x0, -, h⟩ := h
-  obtain ⟨x1', -, h1⟩ := exists_le_rpow (eps / 100) (by positivity) C
-  refine ⟨max x0 x1', fun x hx hxx i u => ?_⟩
-  have h2 := (h x (le_trans (le_max_left _ _) hx) i u).2.1
-  have h3 := h1 x (le_trans (le_max_right _ _) hx)
-  have hL0 : 0 ≤ (Fm.L x i).sc.L :=
-    Real.rpow_nonneg (le_trans zero_le_one (Fm.L x i).sc.one_lt_alt.le) _
-  have hm0 : 0 ≤ ((Fm.D x i).R.m : ℝ) := Nat.cast_nonneg _
-  unfold szTh
-  rw [Fm.L_x x i hxx, Fm.L_eps x i]
-  calc _ ≤ C * (Fm.D x i).R.m * (Fm.L x i).sc.L := h2
-    _ ≤ x ^ (eps / 100) * (Fm.D x i).R.m * (Fm.L x i).sc.L :=
-      mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h3 hm0) hL0
 
 theorem m_large {eps : ℝ} (Fm : FamP eps) (K : ℝ) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, K ≤ ((Fm.D x i).R.m : ℝ) := by
@@ -392,12 +340,6 @@ theorem tuSize_of {eps : ℝ} (Fm : FamP eps) (C0 C x0 : ℝ)
       _ = C * (((Fm.D x i).R.m : ℝ) * (Fm.L x i).sc.L) := by ring
       _ ≤ Fm.CTu * (((Fm.D x i).R.m : ℝ) * (Fm.L x i).sc.L) := mul_le_mul_of_nonneg_right hC hmL
       _ = Fm.CTu * (Fm.D x i).R.m * (Fm.L x i).sc.L := by ring
-
-theorem _root_.Formalism.MainNotions.ShortIntervalPrimes.log_height_family_of_gap_data {eps : ℝ} (Fm : FamP eps) (C0 : ℝ) (h : StandardLattice.PartFiveFamilyBounds Fm)
-    (hB : ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x,
-      ∃ (Δ : ℝ) (w : ℕ → (Fm.D x i).what₂.Tau → ℝ), StandardLattice.DataB (Fm.D x i) (Fm.L x i).sc C0 Δ w) :
-    ShortIntervalPrimes.proportionalityInputFamily Fm :=
-  ShortIntervalPrimes.log_height_family_of_data Fm C0 h hB (m_large Fm)
 
 namespace JGD
 
@@ -567,10 +509,6 @@ theorem _root_.Formalism.MainNotions.GlobalTheoryTheory.gram0Def (D : D7) : Gram
 end
 
 end JGD
-
-theorem _root_.Formalism.MainNotions.StandardLattice.column_lemma_family_holds {eps : ℝ} (Fm : FamP eps) (C₄ C₅ : ℝ) (h : UnusedSlot33.ConclusionOnFamily Fm C₄ C₅) :
-    StandardLattice.FamilyLevelConditionAdmitted Fm :=
-  StandardLattice.column_lemma_family_of_definite Fm C₄ C₅ h (fun _ _ => gram0Def _)
 
 namespace JDB
 
@@ -938,16 +876,6 @@ theorem db_xS {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) :
   have h3 : 3 * L.sc.x ≤ D.R.k := by nlinarith
   nlinarith
 
-theorem db_xk {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) : 3 * L.sc.x ≤ D.R.k := by
-  obtain ⟨-, -, hK, -⟩ := S
-  have hx1 : 1 ≤ L.sc.x := by linarith
-  have hk1 : L.sc.x ^ (9 / 2 + 10 * L.sc.eps - szTh L) ≤ (D.R.k : ℝ) := hK.1
-  have hth : szTh L = L.sc.eps / 100 := rfl
-  have h2 : L.sc.x ^ (2 : ℝ) ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps - szTh L) :=
-    Real.rpow_le_rpow_of_exponent_le hx1 (by rw [hth]; linarith [L.sc.eps_pos])
-  rw [Real.rpow_two] at h2
-  nlinarith
-
 theorem db_win {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) (ρ : D.what₂.Tau) (j : ℕ)
     (hj : j < D.R.m) : L.sc.w'' D.R.n ≤ wj D (j + 1) ρ ∧ wj D (j + 1) ρ ≤ 2 * L.sc.b := by
   obtain ⟨hL1, hLx, hb2, hkb, hvb, hlx⟩ := db_basic L S hx
@@ -1112,35 +1040,6 @@ theorem gBig_of {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
   have h2 : 2 * D.R.f * D.R.k + 1 < D.host.g 0 := by exact_mod_cast h1
   omega
 
-theorem m_ge {D : D7} (L : SizeData₂ D) (S : SizesAt L) : L.sc.x ^ ((1 : ℝ) / 4) ≤ D.R.m := by
-  obtain ⟨-, hM, -⟩ := S
-  have h1 : L.sc.x ^ (-szTh L) * Real.sqrt (L.sc.x * L.sc.delta1) ≤ (D.R.m : ℝ) := hM.1
-  have hx1 := L.sc.one_lt_alt
-  have hx0 : 0 < L.sc.x := by linarith
-  have e0 : L.sc.x * L.sc.delta1 = L.sc.x ^ (1 + -(L.sc.eps / 8)) := by
-    unfold Scale.delta1
-    rw [Real.rpow_add hx0, Real.rpow_one]
-  have e : L.sc.x ^ (-szTh L) * Real.sqrt (L.sc.x * L.sc.delta1) =
-      L.sc.x ^ (-szTh L + (1 + -(L.sc.eps / 8)) * (1 / 2)) := by
-    rw [e0, Real.sqrt_eq_rpow, ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]
-  rw [e] at h1
-  have h2 : L.sc.x ^ ((1 : ℝ) / 4) ≤ L.sc.x ^ (-szTh L + (1 + -(L.sc.eps / 8)) * (1 / 2)) :=
-    Real.rpow_le_rpow_of_exponent_le hx1.le (by unfold szTh; linarith [L.sc.eps_lt, L.sc.eps_pos])
-  linarith
-
-theorem m_large_fam {eps : ℝ} (Fm : FamP eps) (K : ℝ) :
-    ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, K ≤ ((Fm.D x i).R.m : ℝ) := by
-  refine ⟨(max K 0) ^ 4, fun x hx hx1 i => ?_⟩
-  have h1 := m_ge (Fm.L x i) (Fm.sizes x hx1 i)
-  rw [Fm.L_x x i hx1] at h1
-  have hK0 : 0 ≤ max K 0 := le_max_right _ _
-  have h3 : ((max K 0) ^ 4) ^ ((1 : ℝ) / 4) ≤ x ^ ((1 : ℝ) / 4) :=
-    Real.rpow_le_rpow (by positivity) hx (by norm_num)
-  have h4 : ((max K 0) ^ 4) ^ ((1 : ℝ) / 4) = max K 0 := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul hK0]
-    norm_num
-  linarith [le_max_left K 0]
-
 theorem gBig_fam {eps : ℝ} (Fm : FamP eps) (x : ℝ) (h3 : 3 ≤ x) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     StandardLattice.GBig (Fm.D x i) :=
   gBig_of (Fm.L x i) (Fm.sizes x hx i) (by rw [Fm.L_x x i hx]; exact h3)
@@ -1154,12 +1053,6 @@ theorem countF_fam {eps : ℝ} (Fm : FamP eps) (h : StandardLattice.PartFiveFami
     ⟨3, fun x h3 hx i => ⟨_, JDB.dataB_fam Fm x h3 hx i⟩⟩
     ⟨0, fun x _ hx i u => logGam_le Fm x hx i u⟩
 
-theorem muTu_fam {eps : ℝ} (Fm : FamP eps) (h : StandardLattice.PartFiveFamilyBounds Fm) : J.MuTu Fm :=
-  muTu_of_countF Fm (countF_fam Fm h)
-
-theorem _root_.Formalism.MainNotions.ShortIntervalPrimes.log_height_family_of_part_five {eps : ℝ} (Fm : FamP eps) (h : StandardLattice.PartFiveFamilyBounds Fm) : ShortIntervalPrimes.proportionalityInputFamily Fm :=
-  ShortIntervalPrimes.log_height_family_of_gap_data Fm (max 5 (Fm.CYL + 1)) h ⟨3, fun x h3 hx i => ⟨_, _, JDB.dataB_fam Fm x h3 hx i⟩⟩
-
 theorem tuSize_fam {eps : ℝ} (Fm : FamP eps) (C x0 : ℝ)
     (h : ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x,
       StandardLattice.Conclusion5₂ (Fm.D x i) (Fm.L x i).sc (max 5 (Fm.CYL + 1)) C)
@@ -1170,40 +1063,6 @@ theorem _root_.Formalism.MainNotions.flipTwoThree.stabiliser_family_of_column_le
     (hP : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev) :
     flipTwoThree.admF3 Fm :=
   flipTwoThree.stabiliser_family_of_definite Fm C₄ C₅ h (fun _ _ => gram0Def _) hP ⟨3, fun x h3 hx i => JDB.gBig_fam Fm x h3 hx i⟩
-
-def IncidenceTransportConditions (D : D7) (u : D.what₂.Word) : Prop :=
-  product_first_zeroth_parts.UpDownIncidenceInverse D u ∧ product_first_zeroth_parts.admT D u ∧ product_first_zeroth_parts.admB D u ∧ ∃ P : product_first_zeroth_parts.Pend D u, product_first_zeroth_parts.ArchimedeanSignatureMatching P
-
-theorem _root_.Formalism.MainNotions.product_first_zeroth_parts.AdmF_of {eps : ℝ} (Fm : FamP eps) (C22 C₄ C₅ : ℝ) (h22 : TaylorLogMetric.ConclusionOnFamily Fm C22)
-    (h59 : UnusedSlot33.ConclusionOnFamily Fm C₄ C₅)
-    (hP : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev)
-    (hT : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), IncidenceTransportConditions (Fm.D x i) u) :
-    product_first_zeroth_parts.AdmF Fm := by
-  obtain ⟨x0, hT⟩ := hT
-  refine ⟨max x0 (max 3 (Fm.x1 + 1)), fun x hx i u => ?_⟩
-  have hxa : x0 ≤ x := le_trans (le_max_left _ _) hx
-  have hx3 : 3 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx
-  have hx1 : Fm.x1 < x := by
-    have := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx
-    linarith
-  obtain ⟨h0, hTr, hBs, P, h4⟩ := hT x hxa i u
-  obtain ⟨G, g1, g2, g3⟩ := product_first_zeroth_parts.theta_conditions_of_theta_theorem (Fm.D x i) C22 (h22 x i)
-  exact ⟨P, G, h0, product_first_zeroth_parts.stabiliser_admissible_of_level _ (Fm.ex x hx1 i).lev u (h59 x hx1 i).2.2.2.2.2.2.2.1 (gram0Def _)
-    (hP x hx1 i u) (JDB.gBig_fam Fm x hx3 hx1 i), g1, g2, g3, h4, hTr, hBs⟩
-
-theorem levels_pro_g_along_family {eps : ℝ} (Fm : FamP eps) (C3 : ℝ) (h : StandardLattice.FamilyPartFour Fm C3) (x : ℝ) (hx : Fm.x1 < x)
-    (i : Fm.Ix x) : StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev :=
-  (h x hx i).2.2.2.1
-
-theorem _root_.Formalism.MainNotions.flipTwoThree.stabiliser_family_of_levels {eps : ℝ} (Fm : FamP eps) (C₄ C₅ C3 : ℝ) (h : UnusedSlot33.ConclusionOnFamily Fm C₄ C₅)
-    (h24 : StandardLattice.FamilyPartFour Fm C3) : flipTwoThree.admF3 Fm :=
-  flipTwoThree.stabiliser_family_of_column_lemma Fm C₄ C₅ h (levels_pro_g_along_family Fm C3 h24)
-
-theorem _root_.Formalism.MainNotions.product_first_zeroth_parts.AdmF_of_pk {eps : ℝ} (Fm : FamP eps) (C22 C₄ C₅ C3 : ℝ) (h22 : TaylorLogMetric.ConclusionOnFamily Fm C22)
-    (h59 : UnusedSlot33.ConclusionOnFamily Fm C₄ C₅) (h24 : StandardLattice.FamilyPartFour Fm C3)
-    (hT : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), IncidenceTransportConditions (Fm.D x i) u) :
-    product_first_zeroth_parts.AdmF Fm :=
-  product_first_zeroth_parts.AdmF_of Fm C22 C₄ C₅ h22 h59 (levels_pro_g_along_family Fm C3 h24) hT
 
 theorem two_lt_level_prime (D : D7) (u : D.what₂.Word) (h : product_first_zeroth_parts.HidaSetting D u) : 2 < (D.mem u).A.T := by
   have h1 := h.1
@@ -1219,104 +1078,6 @@ theorem two_lt_level_prime (D : D7) (u : D.what₂.Word) (h : product_first_zero
   have h3 : 2 * D.R.f * D.R.N D.R.m = 2 * (D.R.f * D.R.N D.R.m) := by ring
   omega
 
-theorem jnt_duS_pos (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (h4f : StandardLattice.Conclusion4f D Lv)
-    (hg : StandardLattice.GBig D) (hs : ∀ i, StandardLattice.SplitsF D (D.host.g i)) (hsT : StandardLattice.SplitsF D (D.mem u).A.T)
-    (hM : StandardLattice.Mu0Tie D u) (hDu : StandardLattice.FactDuStar D) (hT : 2 < (D.mem u).A.T) : 0 < D.duS u := by
-  have h := h4f hg hs u hsT hM
-  have h1 : (0 : ℝ) < StandardLattice.duStarU D u := by
-    rw [← hDu u]
-    exact_mod_cast (D.mem u).A.duStar_pos
-  have hT' : (1 : ℝ) < ((D.mem u).A.T : ℝ) := by exact_mod_cast (by omega : 1 < (D.mem u).A.T)
-  have hk : D.R.k ≠ 0 := by
-    have := D.R.m_add_three_le_k
-    omega
-  have h2 : (0 : ℝ) < ((D.mem u).A.T : ℝ) ^ D.R.k - 1 := by
-    have := one_lt_pow₀ hT' hk
-    linarith
-  have h3 : (0 : ℝ) < ((D.duS u : ℕ) : ℝ) := by
-    show (0 : ℝ) < ((haveI := (D.mem u).A.Mu0_fd; Module.finrank ℂ (D.mem u).A.Mu0 : ℕ) : ℝ)
-    rw [h]
-    positivity
-  exact_mod_cast h3
-
-theorem jnt_du_pos (D : D7) (u : D.what₂.Word) (h2 : product_first_zeroth_parts.Conclusion2 D u) (hS : 0 < D.duS u)
-    (hT : 2 < (D.mem u).A.T) : 0 < (D.mem u).A.du := by
-  have h := h2.1
-  have hT' : (2 : ℚ) < ((D.mem u).A.T : ℚ) := by exact_mod_cast hT
-  have h1 : (0 : ℚ) < 1 - 1 / (((D.mem u).A.T : ℚ) - 1) := by
-    rw [sub_pos, div_lt_one (by linarith)]
-    linarith
-  have h3 : (0 : ℚ) < ((D.mem u).A.du : ℚ) := by
-    rw [h]
-    have : (0 : ℚ) < (D.duS u : ℚ) := by exact_mod_cast hS
-    positivity
-  exact_mod_cast h3
-
-theorem jnt_rank_pos (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (hN : D.NuFull)
-    (hSet : product_first_zeroth_parts.HidaSetting D u) (h2 : product_first_zeroth_parts.Conclusion2 D u) (h4f : StandardLattice.Conclusion4f D Lv)
-    (hg : StandardLattice.GBig D) (hs : ∀ i, StandardLattice.SplitsF D (D.host.g i)) (hsT : StandardLattice.SplitsF D (D.mem u).A.T)
-    (hM : StandardLattice.Mu0Tie D u) (hDu : StandardLattice.FactDuStar D) : 0 < (D.div.Nu u).rank := by
-  have hT := two_lt_level_prime D u hSet
-  have h1 : (D.div.Nu u).rank = (D.mem u).A.du := hN.rank u
-  rw [h1]
-  exact jnt_du_pos D u h2 (jnt_duS_pos D Lv u h4f hg hs hsT hM hDu hT) hT
-
-def RankCondF {eps : ℝ} (Fm : FamP eps) : Prop :=
-  ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x,
-    StandardLattice.GBig (Fm.D x i) ∧ (∀ j, StandardLattice.SplitsF (Fm.D x i) ((Fm.D x i).host.g j)) ∧
-    ∀ u, StandardLattice.SplitsF (Fm.D x i) ((Fm.D x i).mem u).A.T ∧ StandardLattice.Mu0Tie (Fm.D x i) u
-
-theorem muRank_of {eps : ℝ} (Fm : FamP eps) (crystallineComparison C3 : ℝ) (hN : NuFullF Fm)
-    (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hS : SettingEventually Fm) (h24 : StandardLattice.FamilyPartFour Fm C3) (hR : RankCondF Fm) :
-    J.MuRank Fm := by
-  obtain ⟨a0, hN⟩ := hN
-  obtain ⟨a1, h10⟩ := h10
-  obtain ⟨a2, hS⟩ := hS
-  obtain ⟨a3, hR⟩ := hR
-  refine ⟨max (max a0 a1) (max (max a2 a3) (Fm.x1 + 1)), fun x hx i u => ?_⟩
-  have b0 : a0 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have b1 : a1 ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have b2 : a2 ≤ x := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have b3 : a3 ≤ x := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have b4 : Fm.x1 < x := by
-    have := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx
-    linarith
-  obtain ⟨hg, hs, hu⟩ := hR x b3 b4 i
-  have hSet := hS x b2 b4 i u
-  exact jnt_rank_pos (Fm.D x i) (Fm.ex x b4 i).lev u (hN x b0 i) hSet (h10 x b1 i u hSet).2.1
-    (h24 x b4 i).2.2.2.2.2.2.2.1 hg hs (hu u).1 (hu u).2 (StandardLattice.factDuStar_fam Fm x b4 i)
-
-theorem gBig_of_dataB (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ)
-    (h : StandardLattice.DataB D sc C0 Δ w) : StandardLattice.GBig D := by
-  obtain ⟨-, -, -, -, -, hg, -⟩ := h
-  have h0 := (hg 0).1
-  have hk3 : (3 : ℝ) ≤ D.R.k := by
-    have := D.R.m_add_three_le_k
-    exact_mod_cast (by omega : 3 ≤ D.R.k)
-  have hfk : (D.R.f : ℝ) ≤ D.R.k := by
-    have := D.R.f_le_k
-    unfold Ranks.f Ranks.n
-    exact_mod_cast this
-  have hb : (1 : ℝ) ≤ sc.b := by
-    have hL : 0 ≤ sc.L := (Real.rpow_pos_of_pos (by linarith [sc.one_lt_alt]) _).le
-    exact Real.one_le_exp hL
-  have hkb : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * sc.b := le_mul_of_one_le_right (by linarith) hb
-  have h1 : (D.R.k : ℝ) ^ 8 ≤ ((D.R.k : ℝ) * sc.b) ^ 8 := pow_le_pow_left₀ (by linarith) hkb 8
-  have hy : (9 : ℝ) ≤ (D.R.k : ℝ) ^ 2 := by nlinarith
-  have hy3 : (729 : ℝ) ≤ ((D.R.k : ℝ) ^ 2) ^ 3 := by
-    have := pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 9) hy 3
-    norm_num at this
-    exact this
-  have h2 : 729 * (D.R.k : ℝ) ^ 2 ≤ (D.R.k : ℝ) ^ 8 := by
-    have : (D.R.k : ℝ) ^ 8 = ((D.R.k : ℝ) ^ 2) ^ 3 * (D.R.k : ℝ) ^ 2 := by ring
-    rw [this]
-    exact mul_le_mul_of_nonneg_right hy3 (by positivity)
-  have h3 : 2 * (D.R.f : ℝ) * D.R.k + 1 < (D.host.g 0 : ℝ) := by
-    have : 2 * (D.R.f : ℝ) * D.R.k ≤ 2 * (D.R.k : ℝ) ^ 2 := by nlinarith
-    nlinarith
-  have h4 : 2 * D.R.f * D.R.k + 1 < D.host.g 0 := by exact_mod_cast h3
-  exact ⟨0, by omega⟩
-
 theorem jnt_duS_pos_of_proviso {D : D7} (L : SizeData₂ D) (C0 : ℝ) (hC0 : 0 < C0) (h : ChProviso_at L C0)
     (u : D.what₂.Word) : 0 < D.duS u := by
   rcases Nat.eq_zero_or_pos (D.duS u) with h0 | h0
@@ -1326,43 +1087,6 @@ theorem jnt_duS_pos_of_proviso {D : D7} (L : SizeData₂ D) (C0 : ℝ) (hC0 : 0 
     simp at h1
     linarith
   · exact h0
-
-theorem muRank_of_chosen {eps : ℝ} (Fm : FamP eps) {C0 CH : ℝ} (crystallineComparison : ℝ) (hC0 : 0 < C0)
-    (hCh : ChosenE Fm C0 CH) (hN : NuFullF Fm) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hS : SettingEventually Fm) :
-    J.MuRank Fm := by
-  obtain ⟨C5, c6, Cb, -, -, -, hCh⟩ := hCh
-  obtain ⟨a3, hP⟩ := hCh.2.2.2.2.2.1
-  obtain ⟨a0, hN⟩ := hN
-  obtain ⟨a1, h10⟩ := h10
-  obtain ⟨a2, hS⟩ := hS
-  refine ⟨max (max a0 a1) (max (max a2 a3) (Fm.x1 + 1)), fun x hx i u => ?_⟩
-  have b0 : a0 ≤ x := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx
-  have b1 : a1 ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
-  have b2 : a2 ≤ x := le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have b3 : a3 ≤ x := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx
-  have b4 : Fm.x1 < x := by
-    have := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx
-    linarith
-  have hSet := hS x b2 b4 i u
-  have h1 : ((Fm.D x i).div.Nu u).rank = ((Fm.D x i).mem u).A.du := (hN x b0 i).rank u
-  rw [h1]
-  exact jnt_du_pos _ u (h10 x b1 i u hSet).2.1 (jnt_duS_pos_of_proviso (Fm.L x i) C0 hC0 (hP x b3 i) u)
-    (two_lt_level_prime _ u hSet)
-
-def DGamMink (D : D7) (C : ℝ) : Prop :=
-  ∃ Mk : ℕ, 0 < Mk ∧ (∀ u, (D.mem u).C.DGam ∣ Mk) ∧
-    Real.log (Mk : ℝ) ≤ C * D.R.f * D.R.N D.R.m * Real.log ((D.R.f : ℝ) * D.R.N D.R.m)
-
-theorem factDGam_of (D : D7) (C : ℝ) (hb : DGamMink D C) : FactDGam D C := by
-  obtain ⟨Mk, hMk, h1, h3⟩ := hb
-  intro u
-  have hle : ((D.mem u).C.DGam : ℝ) ≤ (Mk : ℝ) := by exact_mod_cast Nat.le_of_dvd hMk (h1 u)
-  exact (Real.log_le_log (by exact_mod_cast (D.mem u).C.DGam_pos) hle).trans h3
-
-theorem muDGam_of {eps : ℝ} (Fm : FamP eps)
-    (h : ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, DGamMink (Fm.D x i) C) : J.MuDGam Fm := by
-  obtain ⟨C, x0, h⟩ := h
-  exact J.muDGam_of_fact Fm ⟨C, x0, fun x hx i => factDGam_of _ C (h x hx i)⟩
 
 namespace JSL
 

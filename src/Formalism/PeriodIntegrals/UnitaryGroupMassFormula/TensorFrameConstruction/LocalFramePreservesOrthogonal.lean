@@ -20,9 +20,6 @@ lemma hJ_add_left (x x' y : Fin n → ℂ) : hJ ε (x + x') y = hJ ε x y + hJ �
 lemma hJ_add_right (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   first | simp only [hJ, Matrix.mulVec_add, dotProduct_add] | simp [hJ, Matrix.mulVec_add, dotProduct_add]
 
-lemma hJ_sub_left (x x' y : Fin n → ℂ) : hJ ε (x - x') y = hJ ε x y - hJ ε x' y := by
-  first | simp only [hJ, star_sub, sub_dotProduct] | simp [hJ, sub_dotProduct]
-
 lemma hJ_sub_right (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
   first | simp only [hJ, Matrix.mulVec_sub, dotProduct_sub] | simp [hJ, Matrix.mulVec_sub, dotProduct_sub]
 
@@ -67,9 +64,6 @@ lemma hJ_nondeg_right (y : Fin n → ℂ) (h : ∀ x, hJ ε x y = 0) : y = 0 := 
   rw [e] at h1
   simp only [Pi.zero_apply]
   split_ifs at h1 <;> simpa using h1
-
-lemma hJ_nondeg_left (x : Fin n → ℂ) (h : ∀ y, hJ ε x y = 0) : x = 0 :=
-  hJ_nondeg_right ε x fun y => by rw [hJ_conj, h y, star_zero]
 
 lemma hJ_unitary {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) (x y : Fin n → ℂ) :
     hJ ε (g *ᵥ x) (g *ᵥ y) = hJ ε x y := by
@@ -214,9 +208,6 @@ lemma e_mem (a : Fin r) : L.e a ∈ L.X :=
 
 lemma spanLt_le (a : ℕ) (ha : a ≤ r) : spanLt L.e a ≤ L.X :=
   Submodule.span_mono (Set.image_mono fun b _ => b.isLt)
-
-lemma sum_mem_X (c : Fin r → ℂ) : ∑ a, c a • L.e a ∈ L.X :=
-  Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (L.e_mem a)
 
 lemma hJ_X_left {x y : Fin n → ℂ} (hx : x ∈ L.X) (h : ∀ a, hJ ε (L.e a) y = 0) : hJ ε x y = 0 :=
   hJ_span_left ε (S := L.e '' {b | b.1 < r}) hx (by rintro _ ⟨a, _, rfl⟩; exact h a)

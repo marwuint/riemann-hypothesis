@@ -2,7 +2,7 @@ import Formalism.ThetaLogCoordinates.PartnerMeanCoordinates.TheoremMXB
 
 namespace Formalism.InvariantFactorPaths.MC
 
-open Formalism.GM Formalism.GM.TM Formalism.GM.M Formalism.InvariantFactorPaths.OddLevelGainBounds.TB MvPolynomial Finset
+open Formalism.GM Formalism.GM.TM Formalism.GM.M MvPolynomial Finset
 
 theorem theoremMXB_of_point (hMG : MeanGamX) (hMono : WeightSpaceDimMonotone) (hCount : MonoCount) (hSmith : SmithZp)
     (hAd : AdaptedBasisExists) (hPW : PointMX) : TheoremMXB := by

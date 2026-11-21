@@ -8,9 +8,13 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDVal
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointBaseChangeLaws
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHomStatement
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsVtOverIsUUOverBaseChange
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HarmonicValueBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InZhGeoInjStableStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsotropicSumIndependentOfChoicesLocalStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HarmonicValueBaseChange
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.InZhGeoInjStable
+import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.VtUniq
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IsotropicSumIndependentOfChoicesLocal
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpTie
+import Formalism.LocalToGlobal.ProjectiveLattices.IsExpChart
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
@@ -57,7 +61,7 @@ theorem exists_pull (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (
   have hpull : ∀ q i b, IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (h ▷ Xo.univ.t.G)
       (whiskerRight_snd _ _) (F q i b) (GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) h (F q i b)) :=
     fun q i b => GlobalTheory.VVRank.isPullSec_pullS _ _ h _
-  obtain ⟨hZ, -, hG, -⟩ := GlobalTheory.T.inZh_geoInj_stable_alt E H Dw l Xo n Λ N
+  obtain ⟨hZ, -, hG, -⟩ := _root_.GlobalTheory.inZh_geoInj_stable E H Dw l Xo n Λ N
   refine ⟨fun i b => h ≫ z i b, fun q b => h ≫ tp q b,
     fun q i b => GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) h (F q i b),
     fun i => hZ _ _ h _ (hz i), hG S T y.x w.x ψ.toRingHom h hh _ z hg, fun q b => ⟨?_, ?_⟩,
@@ -74,7 +78,7 @@ theorem exists_pull (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (
     rw [Category.assoc, hj x hx, MonObj.comp_one]
   · rw [map_sum]
     refine Finset.sum_congr rfl fun i _ => ?_
-    exact GlobalTheory.T.harmonicValue_baseChange_alt hC E H Dw l Xo c nab hnab S T ψ y w hm h hh a n P hP N (F q i)
+    exact _root_.GlobalTheory.harmonicValue_baseChange hC E H Dw l Xo c nab hnab S T ψ y w hm h hh a n P hP N (F q i)
       (fun b => GlobalTheory.VVRank.pullS Xo.univ.t.G ((N : ℤ) ^ 2) h (F q i b)) (hpull q i)
 
 theorem eq_of_local {K T : Type} [Field K] [CommRing T] [Algebra K T] (u v : T)
@@ -98,7 +102,7 @@ theorem shortSum_eq_of_witnesses : Laws → ChartIndepSt2 → ∀ (E : Type) [Fi
     exists_pull hC nab hnab Λ N a P hP (κ.comp ψ1) y1 yU hU1 z1 tp1 F1 hz1 hg1 ht1 hF1
   obtain ⟨z2', tp2', F2', hz2', hg2', ht2', hF2', hs2⟩ :=
     exists_pull hC nab hnab Λ N a P hP (κ.comp ψ2) y2 yU hU2 z2 tp2 F2 hz2 hg2 ht2 hF2
-  have key := GlobalTheory.T.isotropicSum_independent_of_choices_local hL E H Dw l Xo c nab hnab n Λ N hUn hTr hLev P U yU z1' tp1' F1' z2' tp2' F2'
+  have key := _root_.GlobalTheory.shortSum_indep_local hL E H Dw l Xo c nab hnab n Λ N hUn hTr hLev P U yU z1' tp1' F1' z2' tp2' F2'
     hz1' hg1' ht1' hF1' hz2' hg2' ht2' hF2' q
   have h1 := hs1 q
   have h2 := hs2 q

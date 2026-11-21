@@ -1,15 +1,55 @@
 import ReciprocityTheory.L2DbarEstimates.JacobianInterpolationStatement
 import ReciprocityTheory.L2DbarEstimates.NormFibrations.Imports
-import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.InhHasFDerivAtNormSq
-import ReciprocityTheory.L2DbarEstimates.Mollifiers.Imports
-import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.Imports
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.TsupportDbSubset
+import ReciprocityTheory.L2DbarEstimates.Mollifiers.HasCompactSupport
+import ReciprocityTheory.L2DbarEstimates.Mollifiers.MollEnormSqLe
+import ReciprocityTheory.L2DbarEstimates.Mollifiers.MollTendstoOfContinuous
+import ReciprocityTheory.L2DbarEstimates.Mollifiers.FderivMollApply
+import ReciprocityTheory.L2DbarEstimates.Mollifiers.MollGraph
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.MeasurableEmbeddingRotAbout
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.MvDivIntegrand
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.ExtNull
+import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.RegBall
-import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.HilbertLemmas
-import ReciprocityTheory.L2DbarEstimates.BasicIdentity.ImportsAlt
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.CvxOfConvex
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.MinimalSolution
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.HormanderLemma
+import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.OntoWithBoundTop
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.BasicIdentityStatement
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.HalfSumNormSubSq
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.HasCompactSupportDTw
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.WIbpLeft
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.ImportsBis
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.ImportsTer
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.HasCompactSupportOfVanish
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.TstarNormSq
+import ReciprocityTheory.L2DbarEstimates.BasicIdentity.Imports
 import ReciprocityTheory.L2DbarEstimates.HormanderEstimate.HStatementOf
 import ReciprocityTheory.L2DbarEstimates.HormanderEstimate.Closed
-import ReciprocityTheory.L2DbarEstimates.SkodaWeights.Imports
-import ReciprocityTheory.L2DbarEstimates.LeviForms.Imports
+import ReciprocityTheory.L2DbarEstimates.SkodaWeights.Matrix
+import ReciprocityTheory.L2DbarEstimates.SkodaWeights.VolProdFinApply
+import ReciprocityTheory.L2DbarEstimates.LeviForms.TwBound
+import ReciprocityTheory.L2DbarEstimates.LeviForms.Bergman
+import ReciprocityTheory.L2DbarEstimates.LeviForms.BergmanExistsStatement
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ChartSymmEventuallyEq
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.CommFderivApply
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.MeasurableSetImageOfIsLocalHomeomorph
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ExistsChartPartition
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.IntegralFderivApplyEqZero
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.IsLocalHomeomorphCompFst
+import ReciprocityTheory.L2DbarEstimates.LeviForms.BasicExpBound
+import ReciprocityTheory.L2DbarEstimates.LeviForms.AddLogPosOfThreeQuartersLe
+import ReciprocityTheory.L2DbarEstimates.LeviForms.Cutoff
+import ReciprocityTheory.L2DbarEstimates.LeviForms.PolarBallReal
+import ReciprocityTheory.L2DbarEstimates.LeviForms.CovDet
+import ReciprocityTheory.L2DbarEstimates.LeviForms.ShellA
+import ReciprocityTheory.L2DbarEstimates.LeviForms.Vanish
+import ReciprocityTheory.L2DbarEstimates.LeviForms.FxExpNegWgtLeShell
+import ReciprocityTheory.L2DbarEstimates.LeviForms.DetMonoDetOneAdd
+import ReciprocityTheory.L2DbarEstimates.LeviForms.MacofFderivApplyContDiffOn
+import ReciprocityTheory.L2DbarEstimates.LeviForms.DetUpdateColEq
+import ReciprocityTheory.L2DbarEstimates.LeviForms.ImportsAlt
 
 universe u
 
@@ -35,25 +75,5 @@ theorem skoda (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
 theorem tw (n : ℕ) (M : Type u) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : TWStatement n M :=
   I.tw n M (hormander n M) (F.holoClosedNeed n M (regMAll n M))
-
-theorem ot0 (n : ℕ) (M : Type u) [TopologicalSpace M] [T2Space M]
-    [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : JacobianInterpolationStatement n M := by
-  have hB := I.basic n M
-  have hTL : I.TwistLeviStatement n M :=
-    I.twistLevi n M (I.logLevi n M (I.evLevi n M) (chain n M)) (chain n M) hB
-  have hA : I.ApplyStatement n M := I.applyTw n M (tw n M) hTL (I.dual n M hTL hB) hB
-  have hF : I.FixedStatement n M :=
-    I.fixed n M hA hB (I.vanish n C.mv C.mvDiv) (F.holoClosedNeed n M (regMAll n M))
-      (F.evalNeed n M C.mv) (fun H _ _ _ => cvx H)
-  exact I.ot0 n M hF (I.shellBound n M (I.polar n) (I.cov n)) (I.localData n M) I.cutoff
-
-theorem ma (n : ℕ) : MAStatement n :=
-  I.ma n (I.maCof n)
-
-theorem detMono (n : ℕ) : DetMonoStatement n :=
-  I.maDet n
-
-theorem inhabited (n : ℕ) : InhabitedStatement n :=
-  etaleStein_nonempty n
 
 end ReciprocityTheory.L2DbarEstimates

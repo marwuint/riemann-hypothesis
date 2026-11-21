@@ -6,8 +6,45 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.OverLaUnique
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumFundCoMulSumIic
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFormDefiningValueStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodOriginRootWeightBoundStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFormDefiningValue
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodOriginRootWeightBound
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CInfGood
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BcMapBcVec
+import Formalism.LocalToGlobal.ProjectiveLattices.FamilyUniformisationBasePointOrthogonalBis
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.OnbMat
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.WeightFunctionOnFrames
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.InterpolationModelInequalities
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspidalExponentialDecay
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.QuotientIsHausdorff
+import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.TorusAt
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.UnitaryHaarVolume
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NonvanishingNearMaximum
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.OneLeAbsNormOfLeOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ProdMulLeDetIdeal
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ValuationLeOfEqAlgebraMap
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.AbsNormSpanGalois
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.DetValuationLeOne
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ExistsEvalNeZeroOfTotalDegreeLt
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.ExistsMonicIrreducibleCardGt
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.FiniteDetAddSmulOneEqZero
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.LargeResidueExtensionLemma
+import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.HermitianFormGramBlockBasis
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+import Formalism.LocalToGlobal.ProjectiveLattices.PartitionExtendByZeroAntitone
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
+import Formalism.LocalToGlobal.Divisibility.Frames
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.ThmFlatA
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Formalism.MeanHeightDescent.CombinedAverageDegreeBound
+import Formalism.MonomialMeanResidues.FilteredDegree
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GoodOver
+import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.HSClaim
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.SpecFirstDetFormNeZero
 open NumberField IsDedekindDomain Filter Topology
 open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec GlobalTheory.CompanionTheory.Ar.Plug
@@ -249,8 +286,8 @@ theorem vs_mult : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     have := hu τ h
     simpa [reW] using this
   obtain ⟨q₀, n₀, ε, w, C, s₀, hq₀, hn₀, hε0, hεm, hw, hC, hs₀, hI⟩ :=
-    GlobalTheory.T.good_origin_root_weight_bound E H Dw l Xo c Y T o B b (reW u) (nOf u) hn' hreg
-  obtain ⟨e, he, hev⟩ := GlobalTheory.T.exists_form_defining_value _ _ _ (T.M B b).y (T.M B b).birational (T.M B b).arith.2.1.2.2
+    _root_.GlobalTheory.CompanionTheory.Ar.Small.good_origin_root_coefficients E H Dw l Xo c Y T o B b (reW u) (nOf u) hn' hreg
+  obtain ⟨e, he, hev⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Small.exists_form_hasVal _ _ _ (T.M B b).y (T.M B b).birational (T.M B b).arith.2.1.2.2
     (Top.combLine ((T.M B b).line 1) n₀).a ε
   obtain ⟨N₀, hN₀⟩ := exists_nat_gt (1 / s₀)
   have hform : Small.IsFormOff (mCoordIdeal (T.M B b).y) (w * e) := by

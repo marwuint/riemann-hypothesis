@@ -19,10 +19,6 @@ theorem vsup_ne_zero (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} {b : K}
   rw [h0] at h1
   exact hi ((Valuation.zero_iff _).1 (le_antisymm h1 zero_le))
 
-theorem vdeg_ne_zero (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (a : K → ℤ) :
-    vdeg O y a ≠ 0 :=
-  Finset.prod_ne_zero_iff.2 fun b _ => zpow_ne_zero _ (vsup_ne_zero O (h b))
-
 @[simp] theorem vdeg_zero (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) : vdeg O y 0 = 1 := by simp [vdeg]
 
 theorem vdeg_add (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (a a' : K → ℤ) :
@@ -30,22 +26,6 @@ theorem vdeg_add (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b,
   unfold vdeg
   rw [← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun b _ => zpow_add₀ (vsup_ne_zero O (h b)) _ _
-
-theorem vdeg_neg (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (a : K → ℤ) : vdeg O y (-a) = (vdeg O y a)⁻¹ := by
-  unfold vdeg
-  rw [← Finset.prod_inv_distrib]
-  exact Finset.prod_congr rfl fun b _ => zpow_neg _ _
-
-theorem vdeg_sub (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (a a' : K → ℤ) :
-    vdeg O y (a - a') = vdeg O y a / vdeg O y a' := by
-  rw [sub_eq_add_neg, vdeg_add O h, vdeg_neg, div_eq_mul_inv]
-
-theorem vdeg_sum (O : ValuationSubring Ω) {y : (Σ b, ι b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) {T : Type} (s : Finset T)
-    (a : T → K → ℤ) : vdeg O y (∑ t ∈ s, a t) = ∏ t ∈ s, vdeg O y (a t) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | insert t s ht ih => rw [Finset.sum_insert ht, Finset.prod_insert ht, vdeg_add O h, ih]
 
 theorem vdeg_join (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a : K → ℤ) (a' : K' → ℤ) :
     vdeg O (joinPt y y') (Sum.elim a a') = vdeg O y a * vdeg O y' a' := by
@@ -58,11 +38,6 @@ theorem vdeg_join_inl (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : 
 
 theorem vdeg_join_inr (O : ValuationSubring Ω) (y : (Σ b, ι b) → Ω) (y' : (Σ b, ι' b) → Ω) (a' : K' → ℤ) :
     vdeg O (joinPt y y') (Sum.elim 0 a') = vdeg O y' a' := by rw [vdeg_join, vdeg_zero, one_mul]
-
-theorem joinPt_ne {y : (Σ b, ι b) → Ω} {y' : (Σ b, ι' b) → Ω} (h : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (h' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) :
-    ∀ b, ∃ i, joinPt y y' ⟨b, i⟩ ≠ 0
-  | .inl b => h b
-  | .inr b => h' b
 
 namespace ValEq
 
@@ -92,15 +67,6 @@ theorem add (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b
   obtain ⟨ρ', h0', h'⟩ := h'
   refine ⟨ρ * ρ', mul_ne_zero h0 h0', fun O hO => ?_⟩
   rw [vdeg_add O hy, vdeg_add O hy', h O hO, h' O hO, map_mul, mul_mul_mul_comm]
-
-theorem neg {a : K → ℤ} {a' : K' → ℤ} (h : ValEq k y a y' a') : ValEq k y (-a) y' (-a') := by
-  obtain ⟨ρ, h0, h⟩ := h
-  exact ⟨ρ⁻¹, inv_ne_zero h0, fun O hO => by rw [vdeg_neg, vdeg_neg, h O hO, map_inv₀, mul_inv]⟩
-
-theorem sub (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {a b : K → ℤ} {a' b' : K' → ℤ}
-    (h : ValEq k y a y' a') (h' : ValEq k y b y' b') : ValEq k y (a - b) y' (a' - b') := by
-  rw [sub_eq_add_neg, sub_eq_add_neg]
-  exact add hy hy' h h'.neg
 
 theorem sum (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {T : Type} (s : Finset T) {a : T → K → ℤ}
     {a' : T → K' → ℤ} (h : ∀ t ∈ s, ValEq k y (a t) y' (a' t)) : ValEq k y (∑ t ∈ s, a t) y' (∑ t ∈ s, a' t) := by

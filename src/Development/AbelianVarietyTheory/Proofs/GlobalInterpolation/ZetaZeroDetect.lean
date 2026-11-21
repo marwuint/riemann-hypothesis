@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumTruncConv
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormRiemannZetaSubPartialSumLeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormRiemannZetaSubPartialSumLe
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 
 namespace GlobalTheory.ZeroDetect
@@ -75,7 +75,7 @@ theorem zeta_zero_detect : ∃ Q₀ : ℕ, ∀ Q : ℕ, Q₀ ≤ Q → ∀ ρ : 
     · intro d hd
       obtain ⟨hd1, hdD⟩ := Finset.mem_Icc.mp hd
       have hN : 1 ≤ Q ^ 6 / d := Nat.div_pos (hdD.trans hDX) hd1
-      have ht := GlobalTheory.T.norm_riemannZeta_sub_partial_sum_le ρ hσ hρ1 _ hN
+      have ht := _root_.GlobalTheory.ZetaPartialSum.norm_zeta_sub_sum_le ρ hσ hρ1 _ hN
       have hy : Q ^ 6 ≤ 2 * (d * (Q ^ 6 / d)) := by
         have h1 := Nat.div_add_mod (Q ^ 6) d
         have h2 := Nat.mod_lt (Q ^ 6) hd1

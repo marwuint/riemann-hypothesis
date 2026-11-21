@@ -55,15 +55,6 @@ theorem not_isUnit {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (p : �
   have : W.valuation p * W.valuation ((v : c.F) : ℂ) < 1 := mul_lt_one_of_lt_of_le hW h2
   exact this.ne h3
 
-theorem exists_lift {l : Level H} {Xo : Moduli D l} {c : Coeff l} (W : ValuationSubring ℂ)
-    (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (b : 𝓞 c.F →+* c.V W)
-    (hb : ∀ x, ((b x : c.V W) : c.F) = (x : c.F)) :
-    ∃ a : Xo.XF c ⟶ pullback Y.s (spMap b), a ≫ pullback.fst _ _ = Y.j := by
-  have hc : (c.V W).subtype.comp b = algebraMap (𝓞 c.F) c.F := RingHom.ext hb
-  refine ⟨pullback.lift Y.j (pullback.snd _ _ ≫ spMap (c.V W).subtype) ?_, pullback.lift_fst _ _ _⟩
-  rw [Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over, Category.assoc,
-    ← Spec.map_comp, ← CommRingCat.ofHom_comp, hc]
-
 theorem goodAt_of_coprime (l : Level H) (a b : ℕ) (ha : 3 ≤ a) (hb : 3 ≤ b) (hab : a.Coprime b)
     (hM : l.M = a * b) (p : ℕ) (hp : p.Prime) : l.GoodAt p := by
   unfold Level.GoodAt
@@ -74,12 +65,6 @@ theorem goodAt_of_coprime (l : Level H) (a b : ℕ) (ha : 3 ≤ a) (hb : 3 ≤ b
   · refine key b hb (hM ▸ dvd_mul_left _ _) fun h' => hp.one_lt.ne' ?_
     exact Nat.eq_one_of_dvd_coprimes hab h h'
   · exact key a ha (hM ▸ dvd_mul_right _ _) h
-
-theorem not_goodAt_pow (l : Level H) (p k : ℕ) (hp : p.Prime) (hM : l.M = p ^ k) : ¬ l.GoodAt p := by
-  unfold Level.GoodAt
-  rw [hM, Nat.factorization_pow, Finsupp.smul_apply, hp.factorization_self, smul_eq_mul, mul_one,
-    Nat.div_self (pow_pos hp.pos k)]
-  omega
 
 theorem exists_good_level (H : Host E) : ∃ l : Level H, l.A = 1 ∧ ∀ p : ℕ, p.Prime → l.GoodAt p := by
   have hd := H.d_mod

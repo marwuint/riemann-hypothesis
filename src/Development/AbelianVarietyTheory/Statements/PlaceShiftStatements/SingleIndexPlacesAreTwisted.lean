@@ -95,116 +95,6 @@ end Point
 def AtPts (Q : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop) : Prop :=
   Closed FamHyp fun Fm _ => EvPt Fm fun x hx i p => More p → Q Fm x hx i p
 
-def AtRuns (Q : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i) (r : TwoRuns p.T p.P.Gp),
-    RunsOk (fw2 p) r → Prop) : Prop :=
-  AtPts fun Fm x hx i p => ∀ (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r), OwnPin r → Q Fm x hx i p r h
-
-def AtRec (Q : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i) (c : OnConst),
-    Obj p c → Prop) : Prop :=
-  Closed FamHyp fun Fm _ => ∃ c0 : ℝ, ∀ c : OnConst, c0 ≤ c.C → OnPage.ConstBad c →
-    EvPt Fm fun x hx i p => More p → ∀ (r : TwoRuns p.T p.P.Gp) (O : Obj p c), RecAt p (Fm.parT x hx i) r O → Q Fm x hx i p c O
-
-def RunsSt : Prop := AtPts fun _ _ _ _ p => ∃ r : TwoRuns p.T p.P.Gp, RunsOk (fw2 p) r ∧ OwnPin r
-
-def RatSt : Prop := AtPts fun _ _ _ _ p => TwistedRational (R2 p) (F2 p) fun _ => 1
-
-def ExportSt : Prop := AtPts fun Fm x hx i p => ∀ v ∈ p.R.twPl, ∀ j,
-  GlobalTheory.TwistIndex.ExportTie p.P.A3.A (Fm.ex x hx i).nch (twE Fm x hx i) (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)
-
-def MaxSt : Prop := AtPts fun Fm x _ i p => ∀ v ∈ p.R.twPl, ∀ j,
-  GlobalTheory.TraceClassRank.SpanOverClasses (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)
-
-def FullSt : Prop := AtPts fun Fm x _ i p => ∀ v ∈ p.R.twPl, ∀ j,
-  GlobalTheory.TraceClassRank.ClassFullRank (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)
-
-def CmpSt : Prop := AtRuns fun Fm x _ i p r h => ∀ v ∈ p.R.twPl, ∀ j,
-  letI : Algebra (r.used v).full.J.Q.c.F (Fm.D x i).what₂.LL := p.alg
-  GlobalTheory.TraceClassRank.CompareOffOwn (T := (r.used v).full) (R := R2 p) (h.laws v).p (fw2 p) j (r.lev j) (F2 p).P0 (F2 p).ψ0⁻¹ 1 v
-               (ownAt (Fm.D x i) v) ∧
-    GlobalTheory.TraceClassRank.CompareSpan (T := (r.used v).full) (R := R2 p) (h.laws v).p (fw2 p) j (r.lev j) (F2 p).P0 (F2 p).ψ0⁻¹ 1 v
-      (ownAt (Fm.D x i) v)
-
-def OwnSt : Prop := AtRuns fun Fm x _ i p r h => ∀ v ∈ p.R.twPl, ∀ j,
-  letI : Algebra (r.used v).full.J.Q.c.F (Fm.D x i).what₂.LL := p.alg
-  GlobalTheory.TraceClassRank.CompareAtOwn (T := (r.used v).full) (R := R2 p) (h.laws v).p (fw2 p) j (r.lev j) (F2 p).P0 (F2 p).ψ0⁻¹ 1 v
-    (ownAt (Fm.D x i) v)
-
-def GeoSt : Prop := AtRec fun _ _ _ _ p _ O => LeafSup O ∧ LeafSpan O ∧ LeafLemmaS O ∧ LeafData O ∧ HasIndexBound O ∧
-  ∀ C CH, LeafDepthGood ((R2 p).num (F2 p) C CH) O ∧ LeafDepthRam ((R2 p).num (F2 p) C CH) O ∧
-    LeafDepth2 ((R2 p).num (F2 p) C CH) O ∧ LeafDepthLevel ((R2 p).num (F2 p) C CH) O
-
-def RankSt : Prop := AtRec fun _ _ _ _ _ _ O => LeafRankJ O
-
-def RankLocSt : Prop := AtRec fun _ _ _ _ _ _ O => GlobalTheory.TraceClassRank.RankAtPlaces O
-
-def CmpOffSt : Prop := AtRuns fun Fm x _ i p r h => ∀ v ∈ p.R.twPl, ∀ j,
-  letI : Algebra (r.used v).full.J.Q.c.F (Fm.D x i).what₂.LL := p.alg
-  GlobalTheory.TraceClassRank.CompareOffOwn (T := (r.used v).full) (R := R2 p) (h.laws v).p (fw2 p) j (r.lev j) (F2 p).P0 (F2 p).ψ0⁻¹ 1 v
-    (ownAt (Fm.D x i) v)
-
-def ExportSt0 : Prop := Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ (i : Fm.Ix x) (p : Pt Fm x hx i),
-  p.R.toRealDat.ExAt → JEvBar p.T p.R.toRealDat p.κ → GeoAct p.T p.R.toRealDat p.κ p.v₀ → EvInj p.T p.R.toRealDat p.v₀ →
-  IoExt p.R.toRealDat → (∀ j, OneMapRowR p.T p.R.toRealDat p.κ p.v₀ p.O (phEff p.R) j) → PrimRows3 p.R p.F → p.P.A3.fam3.Ok3 1 →
-  Formalism.IndefR.Mi.FramesOKg2 p.R → PsiPPTie (Fm.D x i) p.P.P0 p.P.ψ0 p.P.Ps p.P.ψs p.P.I.eG → More p → ∀ v ∈ p.R.twPl, ∀ j,
-    GlobalTheory.TwistIndex.ExportTie p.P.A3.A (Fm.ex x hx i).nch (twE Fm x hx i) (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)
-
-theorem ExportSt0.exportSt (h : ExportSt0) : ExportSt :=
-  Closed.imp h fun _ _ _ ⟨x0, H⟩ => ⟨x0, fun x hx h0 i p r => H x hx h0 i p r.exAt r.jEvBar r.geoAct r.evInj r.ioExt r.oneMap r.prim r.ok
-    r.framesOK r.psi⟩
-
-def TwistSt : Prop := AtRec fun _ _ _ _ _ _ O => HasTwistBound O
-
-def ShareSt : Prop := AtRec fun _ _ _ _ _ _ O => LeafShareI O
-
-def BadSt : Prop := AtRec fun _ _ _ _ _ _ O => LeafBadShare O
-
-def ExpSt : Prop := AtRec fun _ _ _ _ p _ O => ∀ C CH, HasExpBound ((R2 p).num (F2 p) C CH) O
-
-def PageSt : Prop := AtRec fun Fm x _ i p _ O => LeafPage O ∧ LeafSizes O ∧ LeafX O ∧ LeafBad O ∧
-  LeafLevelSq O (Res (R2 p)) (Fm.D x i).R.f ∧ LeafYBound O ∧ O.b = (Fm.L x i).sc.b ∧ 0 ≤ p.Z.E1u ∧
-    ∀ C CH, ErrorConstantMatchesDefinition ((R2 p).num (F2 p) C CH) O C
-
-def OntoX : Prop := Closed FamHyp fun Fm CH => DIVinN Fm →
-  ∃ C0 : ℝ, 0 ≤ C0 ∧ EvPt Fm fun _ _ _ p => More p → ∀ C, C0 ≤ C → (p.S false).ON (p.N C CH)
-
-def AdelSt : Prop := Closed FamHyp fun Fm _ => EvPt Fm fun _ _ _ p => SingleIndexPlacesAreTwisted p →
-  GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.AdelicLiftScalar (R2 p) (F2 p)
-
-def GalSt : Prop := Closed FamHyp fun Fm _ => EvPt Fm fun _ _ _ p => SingleIndexPlacesAreTwisted p →
-  GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.GalLiftFor p.T (R2 p) (F2 p) p.κ p.v₀ (om2 p) fun _ => 1
-
-def LowNumSt : Prop := Closed FamHyp fun Fm _ => EvPt Fm fun x _ i p =>
-  (∀ j, GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.Sizes (Fm.D x i) j (Fm.L x i).sc.b) ∧ GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.PrimeToHost (R2 p) p.P.A3.A.μ0 ∧
-    ∀ j, p.Z.l6m j ≤ lowB (Fm.D x i) j (Fm.L x i).sc.b
-
-def LamLowX : Prop := Closed FamHyp fun Fm CH => EvPt Fm fun _ _ _ p => SingleIndexPlacesAreTwisted p → ∀ C, (p.S true).L6 (p.N C CH)
-
-theorem ontoX_of_onto (h : Onto) : OntoX :=
-  Closed.imp h fun _ _ _ H hD => by
-    obtain ⟨C0, h0, x0, hx⟩ := H hD
-    exact ⟨C0, h0, x0, fun x h1 h2 i p hp _ => hx x h1 h2 i p hp⟩
-
-theorem OntoX.at_sel (h : OntoX) {𝒞 : FamClass} (h𝒞 : ∀ {eps : ℝ} (Fm : FamP eps), 𝒞 Fm → FamHyp Fm)
-    (Sel : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop)
-    (hS : Closed 𝒞 fun Fm _ => EvPt Fm fun x hx i p => Sel Fm x hx i p → More p) :
-    Closed 𝒞 fun Fm CH => DIVinN Fm →
-      ∃ C0 : ℝ, 0 ≤ C0 ∧ EvPt Fm fun x hx i p => Sel Fm x hx i p → ∀ C, C0 ≤ C → (p.S false).ON (p.N C CH) := by
-  have h' : Closed 𝒞 fun Fm CH => DIVinN Fm →
-      ∃ C0 : ℝ, 0 ≤ C0 ∧ EvPt Fm fun _ _ _ p => More p → ∀ C, C0 ≤ C → (p.S false).ON (p.N C CH) := by
-    obtain ⟨a, ha, H⟩ := h
-    refine ⟨a, ha, fun e he hle => ?_⟩
-    obtain ⟨K, hK⟩ := H e he hle
-    exact ⟨K, fun Fm CH hc hL => hK Fm CH (h𝒞 Fm hc) hL⟩
-  refine (h'.and hS).imp fun Fm CH _ H hD => ?_
-  obtain ⟨C0, h0, x0, hx⟩ := H.1 hD
-  obtain ⟨x1, hx1⟩ := H.2
-  exact ⟨C0, h0, max x0 x1, fun x h1 h2 i p hp hs =>
-    hx x h1 ((le_max_left _ _).trans h2) i p hp (hx1 x h1 ((le_max_right _ _).trans h2) i p hp hs)⟩
-
-theorem lamLowX_iff : LamLowX ↔ LamLow :=
-  ⟨fun h => Closed.imp h fun _ _ _ ⟨x0, hx⟩ => ⟨x0, fun x h1 h2 i p hp => hx x h1 h2 i p hp hp.w1⟩,
-    fun h => Closed.imp h fun _ _ _ ⟨x0, hx⟩ => ⟨x0, fun x h1 h2 i p hp _ => hx x h1 h2 i p hp⟩⟩
-
 section Checks
 
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.SeriesTie
@@ -213,40 +103,7 @@ open scoped TensorProduct
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (Y : NExp D.R D.host D.what₂ D.LL0 N X)
   {G : Type} [Group G] (e : G ≃* G0g N) (U : Subgroup G) (ψ : U →* D.what₂.LLˣ)
 
-def smallChar (h : ∀ u, ((ψ u : D.what₂.LLˣ) : D.what₂.LL) ∈ D.LL0) : U →* D.LL0 where
-  toFun u := ⟨_, h u⟩
-  map_one' := Subtype.ext (by simp)
-  map_mul' u v := Subtype.ext (by simp)
-
-def withLevel (h : ∀ u, ((ψ u : D.what₂.LLˣ) : D.what₂.LL) ∈ D.LL0) : NExp D.R D.host D.what₂ D.LL0 N X :=
-  { Y with
-    U := U.comap e.symm.toMonoidHom
-    psiU := fun i b => (((sideEmb X i b).toMonoidHom.comp (smallChar U ψ h)).toHomUnits).comp
-      (e.symm.toMonoidHom.subgroupComap U) }
-
-theorem levelIs_withLevel (h : ∀ u, ((ψ u : D.what₂.LLˣ) : D.what₂.LL) ∈ D.LL0) : LevelIs (withLevel Y e U ψ h) e U ψ := by
-  refine ⟨fun g => ?_, fun i b u hu => ⟨smallChar U ψ h u, rfl, ?_⟩⟩
-  · change e.symm (e g) ∈ U ↔ _
-    rw [e.symm_apply_apply]
-  · change sideEmb X i b (smallChar U ψ h ⟨e.symm (e u), _⟩) = _
-    simp only [e.symm_apply_apply]
-
-def typedData (i : X.Tw) (j : ℕ) (b : Bool) : Set (Y.Dat i j b) :=
-  {a | ∀ u : Y.U, Y.actG i j b u (Y.th i j b a) =
-    ((Y.psiU i b u : (FractionRing (X.O i))ˣ) : FractionRing (X.O i)) • Y.th i j b a}
-
-theorem exists_allData (D : D7) : (∃ T : ThData D, AllData D.nexp T.xd0) ∧ ∀ T : ThData D, AllData D.nexp T.xd0 →
-    ∀ i (j : Fin D.R.m) b, T.xd0 i ((j : ℕ) + 1) b = typedData D.nexp i _ b :=
-  ⟨⟨⟨typedData D.nexp, fun _ _ _ _ h => h⟩, fun _ _ _ _ h => h⟩,
-    fun T h i j b => Set.ext fun a => ⟨T.thetaBase_invariant_action i _ b a, h i j b a⟩⟩
-
 variable {Y e U ψ}
-
-theorem joint_withAll {ρ : Setup X} (hρ : ρ.Good) (rd : Rds Y ρ) (hF : ∀ i j b, Faithful (rd i j b)) (hL : ρ.LatFG)
-    (hU : ρ.LevelOf Y) (h : LevelIs Y e U ψ) :
-    Nonempty (FullTie hρ (Y := withAll hρ rd hF hL) rd) ∧ LevelIs (withAll hρ rd hF hL) e U ψ ∧
-      AllData (withAll hρ rd hF hL) (typedData _) :=
-  ⟨⟨fullTieWithAll hρ rd hF hL hU⟩, h, fun _ _ _ _ h => h⟩
 
 theorem types_of_true (C : Formalism.L2.Host.CharFrame D) (h : GlobalTheory.Mem.Top.TypesTrue D.ntypes C.P C.W) :
     GlobalTheory.DimPartsCompare.TameTie D C.W.om := (GlobalTheory.DimPartsCompare.tameTie_of_typesTrue h).2.1
@@ -291,9 +148,6 @@ variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} {p : PtAt ex Csz}
 
 theorem RecTies.eSer (h : RecTies p) : GlobalTheory.GLq.ESerTie D := h.types.eSerTie
-
-theorem RecTies.coverField (h : RecTies p) (hc : (R2 p).Char (F2 p)) : GlobalTheory.TwistField.CoverField p.T (R2 p) :=
-  GlobalTheory.TwistField.coverField_of_containsRayField _ _ _ _ _ p.T (R2 p) p.fw.laws hc.lev p.qGuard h.rayQ
 
 theorem RecTies.psi_read (h : RecTies p) (w : D.what₂.places.Pl) (hw : D.what₂.muAt w ≠ D.what₂.mu0) (v : PlE D.host)
     (hQ : v ∉ ex.nch.Q w) (hl : v ∉ Formalism.BasicNotions.placesOver D.host.E (D.what₂.places.resChar w)) (B : ValuationSubring D.nd.Om)

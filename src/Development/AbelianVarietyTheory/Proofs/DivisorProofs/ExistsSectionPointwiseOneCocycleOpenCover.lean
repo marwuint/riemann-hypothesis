@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDatNeZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenCoverAlgebraPointLiesInCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechFirstCohomologyAwayNaturalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointwiseCocycleLocalSectionsGlueBasicOpenCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenCoverAlgebraPointLiesInCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechFirstCohomologyAwayNatural
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointwiseCocycleLocalSectionsGlueBasicOpenCover
 
 set_option autoImplicit false
 
@@ -48,7 +48,7 @@ open GlobalTheory.PtExt.CocSec in
 
 theorem GlobalTheory.PtExt.CocSec.exists_section : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens), ⨆ i, W i = ⊤ → ∀ u : Fn1 X, IsCoc W u → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D), ∃ σ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E, ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E'), Sm W (spOver ψ ≫ x) → σ E' (θ.comp ψ) - θ (σ E ψ) = u E E' θ (spOver ψ ≫ x) := by
   intro R _ X K W hW u hu D _ _ x
-  obtain ⟨n, s, hs, hsm⟩ := GlobalTheory.T.exists_basicOpen_cover_algebraPoint_liesInCover R X K W hW D x
+  obtain ⟨n, s, hs, hsm⟩ := _root_.GlobalTheory.PtExt.exists_away_cover_sm R X K W hW D x
   classical
   let k : Fin n → ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E := fun a E _ _ ψ ↦
     if h : IsUnit (ψ (s a)) then
@@ -63,14 +63,14 @@ theorem GlobalTheory.PtExt.CocSec.exists_section : ∀ (R : Type) [CommRing R] (
     rw [← comp_liftU (s a) ψ h θ, hu _ _ _ (liftU (s a) ψ h) θ _ (hsm a), ← Category.assoc,
       spOver_comp, liftU_comp]
     ring
-  obtain ⟨e, he1, he2⟩ := GlobalTheory.T.cech_first_cohomology_away_natural R D n s hs (fun a b E _ _ ψ ↦ k a E ψ - k b E ψ)
+  obtain ⟨e, he1, he2⟩ := _root_.GlobalTheory.CechAway.cech_one_away_natural R D n s hs (fun a b E _ _ ψ ↦ k a E ψ - k b E ψ)
     (fun a b E _ _ E' _ _ ψ θ ha hb ↦ by
       have h1 := hk a E E' ψ θ ha
       have h2 := hk b E E' ψ θ hb
       simp only [map_sub]
       linear_combination h1 - h2)
     (fun a b c E _ _ ψ _ _ _ ↦ by ring)
-  obtain ⟨σ, hσ⟩ := GlobalTheory.T.pointwiseCocycle_local_sections_glue_basicOpen_cover R X K W u hu D x n s hs (fun a E _ _ ψ ↦ k a E ψ + e a E ψ)
+  obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.PtExt.glue_sections R X K W u hu D x n s hs (fun a E _ _ ψ ↦ k a E ψ + e a E ψ)
     (fun a E _ _ E' _ _ ψ θ ha ↦ by
       have h1 := hk a E E' ψ θ ha
       have h2 := he1 a E E' ψ θ ha

@@ -24,11 +24,6 @@ theorem eq_ofA_of_injective [NeZero a] (hinj : Function.Injective (algebraMap (A
   apply hinj
   rw [hy, ← hat_coe_A, hat_mul l e (E_pow_mem_RpiE _) (invE_A_le_RpiE l e (P.mxInv_mem τ j i)), hat_E_pow]
 
-theorem algebraMap_AhatE_injective :
-    Function.Injective (algebraMap (Ahat O K l e) (AhatE O K l e)) :=
-  IsLocalization.injective (M := Submonoid.powers (Ehat O K l e)) _
-    (Submonoid.powers_le.2 (Ehat_mem_nonZeroDivisors O K l e))
-
 end Gen
 
 end GlobalTheory.BK.CoordInv

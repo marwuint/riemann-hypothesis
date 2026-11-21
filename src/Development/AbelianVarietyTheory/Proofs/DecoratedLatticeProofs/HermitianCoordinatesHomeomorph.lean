@@ -38,38 +38,6 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   (R : Type) [CommRing R] [Algebra F R]
 
-def invMat (σ : E →ₐ[F] E) {n : ℕ} (x : (Fin n → R) × ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E)) :
-    Matrix (Fin n) (Fin n) (R ⊗[F] E) :=
-  fun a b => if h : a < b then x.2 ⟨(a, b), h⟩ else if h' : b < a then sigR R σ (x.2 ⟨(b, a), h'⟩)
-    else algebraMap R (R ⊗[F] E) (x.1 a)
-
-theorem invMat_mem (h : IsCMExt F E σ) {n : ℕ} (x : (Fin n → R) × ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E)) :
-    invMat R σ x ∈ HermR R σ n := by
-  intro a b
-  rcases lt_trichotomy a b with hab | hab | hab
-  · simp [invMat, hab, not_lt.2 hab.le, sigR_sigR R h]
-  · subst hab; simp only [invMat, lt_self_iff_false, ↓reduceDIte]; exact sigR_algebraMap R _
-  · simp [invMat, hab, not_lt.2 hab.le]
-
-def coordEquiv (h : IsCMExt F E σ) (n : ℕ) :
-    HermR R σ n ≃+ ((Fin n → R) × ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E)) where
-  toFun := hermCoord R σ
-  invFun x := ⟨invMat R σ x, invMat_mem R h x⟩
-  left_inv S := by
-    apply Subtype.ext
-    funext a b
-    rcases lt_trichotomy a b with hab | hab | hab
-    · simp [invMat, hab, hermCoord]
-    · subst hab; simpa [invMat, hermCoord] using fixed_eq R h (S.2 a a)
-    · simpa [invMat, hab, not_lt.2 hab.le, hermCoord] using S.2 a b
-  right_inv x := by
-    refine Prod.ext (funext fun a => ?_) (funext fun p => ?_)
-    · simpa [hermCoord, invMat] using half_trace R h (x.1 a)
-    · simp [hermCoord, invMat, p.2]
-  map_add' S T := by
-    refine Prod.ext (funext fun a => ?_) (funext fun p => rfl)
-    simp [hermCoord, mul_add]
-
 theorem pair_eq (h : IsCMExt F E σ) {n : ℕ} (S T : HermR R σ n) :
     pairHerm R σ n S T = coordPair R σ n (hermCoord R σ S) (hermCoord R σ T) := by
   unfold pairHerm coordPair

@@ -107,11 +107,6 @@ theorem frame_e : D.frame.e = D.e := rfl
 
 theorem hH_eq (a : D.frame.MA) : D.frame.hH a = D.p1 (D.iso a) := rfl
 
-theorem iso_generator : D.iso (D.frame.iota D.frame.a0) = D.gen := by
-  have h := Frame.ofGroup_generator D.e D.hA D.hA_surj (Additive.ofMul D.gen) D.hA_ker
-  show (D.isoA D.frame.a0).toMul = D.gen
-  exact congrArg Additive.toMul h
-
 theorem ord_eq : D.frame.ord = Nat.card D.R := by
   rw [frame, Frame.ofGroup_ord, ← Nat.card_eq_fintype_card]
   rfl
@@ -149,15 +144,6 @@ theorem mem_cusp_forms_iff_automorphic_compact (t : D.frame.A) : t ∈ D.frame.A
     refine ⟨k, D.isoA.injective ?_⟩
     rw [map_zsmul, ha0, ← ofMul_zpow, hk]
     rfl
-
-theorem range_xiA : D.xiA.range = D.ξ.range := by
-  ext b
-  constructor
-  · rintro ⟨a, rfl⟩
-    obtain ⟨u, rfl⟩ := D.toA_surj a
-    exact ⟨u, (D.xiA_toA u).symm⟩
-  · rintro ⟨u, rfl⟩
-    exact ⟨D.toA u, D.xiA_toA u⟩
 
 theorem o_eq : D.frame.o = Nat.card D.ξ.range := by
   have hker : D.p2.ker = Subgroup.zpowers D.gen := by

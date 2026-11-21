@@ -295,18 +295,6 @@ theorem exists_coprime_smul_cohomology_eq_zero (M : Rep.{0} (ULift.{0} ℤ) G) [
     rw [hd, mul_comm, ← smul_smul, hNm, smul_zero]
   rw [← map_nsmul, hz, map_zero]
 
-omit [TotallyDisconnectedSpace G] in
-
-theorem eq_zero_of_pow_smul_eq_zero_of_coprime (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M] (ℓ : ℕ)
-    (hM : ∀ m : M.V, ∃ N : ℕ, N.Coprime ℓ ∧ N • m = 0) (n : ℕ) (x : cohomology M n) (k : ℕ)
-    (hx : ℓ ^ k • x = 0) : x = 0 := by
-  obtain ⟨N, hN, hNx⟩ := exists_coprime_smul_cohomology_eq_zero M ℓ hM n x
-  have h1 : addOrderOf x ∣ N := addOrderOf_dvd_of_nsmul_eq_zero hNx
-  have h2 : addOrderOf x ∣ ℓ ^ k := addOrderOf_dvd_of_nsmul_eq_zero hx
-  have h3 : addOrderOf x = 1 :=
-    Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left h1 (hN.pow_right k)) h2
-  exact AddMonoid.addOrderOf_eq_one_iff.1 h3
-
 variable {I : Type} {H : I → Type} [∀ i, Group (H i)] [∀ i, TopologicalSpace (H i)]
   [∀ i, IsTopologicalGroup (H i)] [∀ i, CompactSpace (H i)] [∀ i, TotallyDisconnectedSpace (H i)]
   (φ : ∀ i, H i →* G) (hφ : ∀ i, Continuous (φ i))

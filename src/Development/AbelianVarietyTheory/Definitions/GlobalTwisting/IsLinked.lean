@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ColumnCompati
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ToSTiesRPin
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DivisionPairOfAdelicFormsFaceColumnsData
 import Formalism.LocalToGlobal.CarriedPlMap
-import Formalism.LocalToGlobal.SelSideN
+import Formalism.LocalToGlobal.SelSide
+import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.TwistedCharacterValue
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwArgs
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DivRows3GIff
 import Formalism.LocalToGlobal.Divisibility.ColPins
@@ -76,14 +77,6 @@ structure BWit (q : WPt p.s K) {c : ℝ} (b : GlobalTheory.Fc.Bundle (q.w.D q.Z)
   d3b : HEq y.HD.d3b q.x.pin.d3b
   side : Formalism.L2.SelSideRT b.R (R3.divisionPairOfAdelicFormsFaceColumnsData x) (R3.realTOf y.y) (R3.realRecOf y.r) y.HD q.core.a.Pq
   colPins : Formalism.L2.DIV.ColPins b.C.toS
-
-def IsLinked (p : Prm hL) : GlobalTheory.Fc.LkT GlobalTheory.Fc.Bundle :=
-  linkOf (𝒮 := p.s) (Bd := GlobalTheory.Fc.Bundle) fun _ q _ b => Nonempty (BWit (p := p) q b)
-
-def BunU (p : Prm hL) : Prop :=
-  GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (R : Formalism.L2.RecT q.O.ex), RecPinE q R → ∀ (c : ℝ)
-    (_ : {n : ℕ × ℕ // (q.w.D q.Z).s.Del = (n.1 : ℚ) ∧ q.O.L.etaSz = ((q.w.D q.Z).R.m : ℝ) * (n.2 : ℝ)}),
-    q.O.L.sc = K.s → Val K.C K.cD K.ch q.O.L → ∃ b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c, b.R = R ∧ Nonempty (BWit q b)
 
 end GlobalTheory.Mem.Top.Bl
 

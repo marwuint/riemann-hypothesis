@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualMapCompDualMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoboundarySndTr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantFormAbelianVarietyTranslateValue
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogChernCocycleContractionInvariantFieldTrivialiStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogChernCocycleContractionInvariantFieldTriviali
 
 set_option autoImplicit false
 
@@ -271,7 +271,7 @@ theorem isRep_chern_tanVal : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj 
   classical
   have hcov : ⨆ i, L.U i = ⊤ := hL.1
   obtain ⟨i0, hi0, u, ℓ, hu, hℓ, hz⟩ := hch
-  obtain ⟨N, hN, hNd⟩ := GlobalTheory.T.logChernCocycle_contraction_invariantField_trivialised K A L hL i0 hi0 u ℓ.1 hu hℓ v hv
+  obtain ⟨N, hN, hNd⟩ := _root_.GlobalTheory.CechKS.prism_trivialised K A L hL i0 hi0 u ℓ.1 hu hℓ v hv
   obtain ⟨β, hβ, hℓ1⟩ := chern_cob_lemma_10 c ω ℓ hz
   obtain ⟨G3, hG3⟩ := GlobalTheory.CocInv.exists_coboundary_snd_tr K A hA L.ι L.U hcov
     (fun P Q φ ↦ if hP : ∃ i, P.In (L.U i) then chernRepEv1 β φ.triv hP else 0)

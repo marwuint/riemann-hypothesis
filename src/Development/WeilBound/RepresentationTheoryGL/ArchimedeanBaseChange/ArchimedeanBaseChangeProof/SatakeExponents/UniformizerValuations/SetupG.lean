@@ -54,15 +54,6 @@ theorem boundAt_of (β : ∀ s, H s →L[ℂ] H s) (m : ℕ) (u : Vd →L[ℂ] V
               (by positivity)
     _ = _ := by rw [Finset.sum_mul, Finset.sum_mul]
 
-theorem bound_of {Γ : Type} (gen : Γ → Prod' H d) (a₀ : Γ) (β : ∀ s, H s →L[ℂ] H s) (m : ℕ) (u : Vd →L[ℂ] Vd)
-    (h : ∀ a ∈ StarAlgebra.adjoin ℂ (Set.range gen), (∃ b ∈ StarAlgebra.adjoin ℂ (Set.range gen), a = b * gen a₀) →
-      ∃ (t : ι → ℕ → ℂ) (j : ℕ), TraceSplit u a t ∧ BlockBound β m a t j) :
-    ∀ a ∈ StarAlgebra.adjoin ℂ (Set.range gen), (∃ b ∈ StarAlgebra.adjoin ℂ (Set.range gen), a = b * gen a₀) →
-      BoundAt β m u a := by
-  intro a ha hb
-  obtain ⟨t, j, h1, h2⟩ := h a ha hb
-  exact boundAt_of β m u a t j h1 h2
-
 end PositivityTheory.Rg.BcB.F.SG
 
 end

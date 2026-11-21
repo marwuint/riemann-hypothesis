@@ -112,9 +112,6 @@ theorem gpUni : GP (IsUpUni : Matrix (Fin k) (Fin k) A → Prop) where
 def Par (P : Matrix (Fin k) (Fin k) A → Prop) (x : Matrix (Idx r k) (Idx r k) A) : Prop :=
   IsUpUni (b11 x) ∧ IsUpUni (b33 x) ∧ b21 x = 0 ∧ b31 x = 0 ∧ b32 x = 0 ∧ ∃ h, P h ∧ b22 x = midEmb h
 
-def Emb (P : Matrix (Fin k) (Fin k) A → Prop) (x : Matrix (Idx r k) (Idx r k) A) : Prop :=
-  ∃ h, P h ∧ x = hEmb r h
-
 variable {P : Matrix (Fin k) (Fin k) A → Prop}
 
 theorem uni_unit {n : ℕ} {u : Matrix (Fin n) (Fin n) A} (hu : IsUpUni u) : IsUnit u.det := by
@@ -196,19 +193,6 @@ def parG (hP : GP P) : Subgroup (GL (Idx r k) A) where
     intro a ha
     refine par_rinv hP ha ?_
     rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
-
-def embG (hP : GP P) : Subgroup (GL (Idx r k) A) where
-  carrier := {g | Emb P (g : Matrix (Idx r k) (Idx r k) A)}
-  one_mem' := ⟨1, hP.one, by simp [hEmb_one]⟩
-  mul_mem' := by
-    rintro a b ⟨h, hh, ea⟩ ⟨g, hg, eb⟩
-    exact ⟨h * g, hP.mul hh hg, by rw [Units.val_mul, ea, eb, hEmb_mul]⟩
-  inv_mem' := by
-    rintro a ⟨h, hh, ea⟩
-    refine ⟨h⁻¹, hP.inv hh, ?_⟩
-    rw [Matrix.coe_units_inv, ea]
-    refine Matrix.inv_eq_right_inv ?_
-    rw [hEmb_mul, Matrix.mul_nonsing_inv h (hP.unit hh), hEmb_one]
 
 end Blocks
 

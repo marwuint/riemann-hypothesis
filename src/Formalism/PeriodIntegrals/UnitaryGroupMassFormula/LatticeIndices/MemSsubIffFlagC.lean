@@ -9,52 +9,6 @@ namespace MassDataIdxStIm
 open Matrix Formalism.FourierDecayAlt.S3 Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub MassDataIdxSpl
 open scoped TensorProduct
 
-section Reindex
-
-variable {K : Type} [Field K] {n ι : Type} [Fintype n] [DecidableEq n] [Fintype ι] [DecidableEq ι] {m : ℕ}
-
-private theorem linearEquiv_mem_span_image_of_mem_span {𝕜 A B : Type} [Field 𝕜] [AddCommGroup A] [Module 𝕜 A]
-    [AddCommGroup B] [Module 𝕜 B] (f : A ≃ₗ[𝕜] B) (T : Set A) (x : A)
-    (hx : x ∈ Submodule.span 𝕜 T) : f x ∈ Submodule.span 𝕜 (f '' T) := by
-  have h : Submodule.span 𝕜 T ≤ (Submodule.span 𝕜 (f '' T)).comap (f : A →ₗ[𝕜] B) := by
-    rw [Submodule.span_le]
-    intro t ht
-    show f t ∈ Submodule.span 𝕜 (f '' T)
-    exact Submodule.subset_span ⟨t, ht, rfl⟩
-  exact h hx
-
-theorem flagC_reindex (e : n ≃ ι) (M : Matrix n n K) (v : Fin m → n → K) :
-    FlagC (Matrix.reindex e e M) (fun b => v b ∘ e.symm) ↔ FlagC M v := by
-  have hmv : ∀ w : n → K, Matrix.reindex e e M *ᵥ (w ∘ e.symm) = (M *ᵥ w) ∘ e.symm := by
-    intro w
-    funext i
-    simp only [Matrix.mulVec, dotProduct, Matrix.reindex_apply, Matrix.submatrix_apply,
-      Function.comp_apply]
-    exact Fintype.sum_equiv e.symm _ _ (fun _ => rfl)
-  let L : (n → K) ≃ₗ[K] (ι → K) := LinearEquiv.funCongrLeft K K e.symm
-  have hL : ∀ w : n → K, L w = w ∘ e.symm := fun _ => rfl
-  unfold FlagC
-  apply forall_congr'
-  intro b
-  show Matrix.reindex e e M *ᵥ (v b ∘ e.symm) - v b ∘ e.symm ∈
-      Submodule.span K ((fun c => v c ∘ e.symm) '' {a | a < b}) ↔
-      M *ᵥ v b - v b ∈ Submodule.span K (v '' {a | a < b})
-  have himg : (fun c => v c ∘ e.symm) '' {a | a < b} = L '' (v '' {a | a < b}) := by
-    rw [Set.image_image]
-    try rfl
-  have hw : Matrix.reindex e e M *ᵥ (v b ∘ e.symm) - v b ∘ e.symm = L (M *ᵥ v b - v b) := by
-    rw [hmv, map_sub, hL, hL]
-  rw [himg, hw]
-  constructor
-  · intro h
-    have h2 := linearEquiv_mem_span_image_of_mem_span L.symm _ _ h
-    first
-      | rwa [LinearEquiv.symm_apply_apply, LinearEquiv.symm_image_image] at h2
-      | simpa [Set.image_image] using h2
-  · exact linearEquiv_mem_span_image_of_mem_span L _ _
-
-end Reindex
-
 section Split
 
 variable {F E R : Type} [Field F] [Field E] [Algebra F E] [Field R] [Algebra F R]

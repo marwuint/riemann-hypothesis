@@ -3,22 +3,23 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoun
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
-import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExists
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagStatement
-import Development.AutomorphicSpectrum.Statements.GeometryStatements.TrivFlagHodgeStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeComparisonCompatibility
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpSt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NumberField
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsCompactifiedModel
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeMetricFrameProperties
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsRegularizationSettingStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsRegularizationOfHodgeMetricStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.NonemptyComponentModel
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.MuFrameNormLine
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsRegularizationSetting
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsTiedRegularSetting
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionSystemWeightLeftStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspIntersectionPositiveStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspIntersectionLimitStatement
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
@@ -29,10 +30,10 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.cusp_weight_regularisations_ti
   obtain ⟨U, hU, h0, hT, hC, -⟩ := GlobalTheory.T.intersection_system_weight_left hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or
   obtain ⟨hp1, -, hp2, hc2⟩ := GlobalTheory.T.cusp_intersection_positive hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U hU
   obtain ⟨hb, -⟩ := GlobalTheory.T.cusp_chart_log_growth_bounds hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U hU
-  obtain ⟨-, -, hL, hO⟩ := GlobalTheory.CompanionTheory.Relay.hodge_metric_frame_properties K J II (CMType H) Ω W Dc Hd
-  obtain ⟨M⟩ := GlobalTheory.CompanionTheory.Relay.exists_compactified_model K J II (CMType H) Ω W Dc
-  obtain ⟨S, hS⟩ := GlobalTheory.T.exists_regularization_of_hodge_metric K J II (CMType H) Ω W Dc Hd M hp1
-  obtain ⟨S', hS', hJ⟩ := GlobalTheory.T.exists_regularization_setting K J II (CMType H) Ω W Dc Hd M (corrW Hd U)
+  obtain ⟨-, -, hL, hO⟩ := _root_.LevelTowerAlt.mu_frame_norm_line K J II (CMType H) Ω W Dc Hd
+  obtain ⟨M⟩ := _root_.LevelTowerAlt.nonempty_component_model K J II (CMType H) Ω W Dc
+  obtain ⟨S, hS⟩ := _root_.LevelTowerAlt.exists_tied_regular_setting K J II (CMType H) Ω W Dc Hd M hp1
+  obtain ⟨S', hS', hJ⟩ := _root_.GlobalTheory.CompanionTheory.Relay.exists_regularization_setting K J II (CMType H) Ω W Dc Hd M (corrW Hd U)
     (fun z hz a ha => by
       have := hL z hz a ha
       simp only [corrW, hT z a ha, this]

@@ -26,22 +26,6 @@ def kernelBound_sq (N : NumDatum) (δ : Code N) (T : ℕ) (CK : ℝ) (j : ℕ) (
 
 def IsTopPl (N : NumDatum) (z : RPl N.R) : Prop := z.1 = false ∧ z.2 ∈ N.TT
 
-def SizeRows (N : NumDatum) (δ : Code N) (T : ℕ) : Prop :=
-  (Real.log N.rd ≤ N.sc.L ∧ Real.log N.q ≤ N.sc.L ∧ Real.log N.d ≤ N.sc.L ∧ Real.log (4 * N.sc.x) ≤ N.sc.L ∧
-    |N.logDerivativeAtOne| ≤ N.sc.L) ∧
-  (∀ i, ((N.R.k : ℝ) * N.sc.b) ^ 8 ≤ N.g i ∧ Real.log (N.g i) ≤ 9 * N.sc.L + 1) ∧
-  Real.log T ≤ 25 * N.R.m * N.sc.L ∧
-  (N.R.f : ℝ) * N.Nm ≤ N.sc.b ∧
-  (∀ j ∈ N.lifts, ∀ z, ∀ i < N.R.N (j - 1), 0 ≤ N.nu δ j z i ∧ ((N.nu δ j z i : ℚ) : ℝ) ≤ 3 * N.sc.a) ∧
-  (∀ z i j, |(((N.hc z).b i - (N.hc z).e j : ℚ) : ℝ)| ≤ N.eta) ∧
-  (∀ z i, 0 ≤ (N.hc z).v i ∧ (((N.hc z).v i : ℚ) : ℝ) ≤ N.Sc) ∧
-  (∀ z (i : Fin N.R.k), 1 ≤ i.1 → i.1 + 1 < N.R.k → 0 ≤ N.uW δ z i ∧ ((N.uW δ z i : ℚ) : ℝ) ≤ N.Sc) ∧
-  (∀ t ∈ N.TT, N.sc.b' ≤ ((N.bT t : ℚ) : ℝ) ∧ ((N.bT t : ℚ) : ℝ) ≤ 2 * N.sc.b') ∧
-  ∀ z, ¬ IsTopPl N z → ∀ hk : 2 ≤ N.R.k,
-    (N.hc z).u ⟨N.R.k - 1, by omega⟩ = (N.hc z).v ⟨N.R.k - 2, by omega⟩ - 1 / 2 ∧
-    N.Sc ≤ (((N.hc z).u ⟨0, by omega⟩ - (N.hc z).v ⟨0, by omega⟩ : ℚ) : ℝ) ∧
-    (((N.hc z).u ⟨0, by omega⟩ : ℚ) : ℝ) ≤ 3 * N.Sc
-
 section Arch
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {dl : ℂ} (B : Base D cc dl) (cD : D.what₂.Tau → ℂ)
@@ -176,45 +160,7 @@ def liftBound_sq (CK : ℝ) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] 
     (classNumberAt W Ch sel mu I u (j - 1)) (classNumberAt W Ch sel mu I u j)
     (indexCount sel mu cst I (j - 1)) (indexCount sel mu cst I j)
 
-def KernelNorms (Q : KerChain X.K) (CK C : ℝ) : Prop :=
-  (∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ ThetaFieldData B cD s.σ₀ N.R M) ∧
-  ∀ (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (hM : ThetaFieldData B cD s.σ₀ N.R M),
-    (∀ ρ : M →ₐ[ℚ] ℂ,
-      (∀ i, i + 2 < N.R.m →
-        StepBound_sq Q i (placeUnder s.σ₀ hM.1 ρ) (liftBound_sq N s W Ch sel mu cst I B cD pl u δ CK M ρ (i + 1))) ∧
-      CplBound_sq Q (placeUnder s.σ₀ hM.1 ρ)
-        (liftBound_sq N s W Ch sel mu cst I B cD pl u δ CK M ρ (N.R.m - 1) +
-          liftBound_sq N s W Ch sel mu cst I B cD pl u δ CK M ρ N.R.m)) ∧
-    ∀ j ∈ N.lifts,
-      (∑ ρ : M →ₐ[ℚ] ℂ, liftBound_sq N s W Ch sel mu cst I B cD pl u δ CK M ρ j) / (Module.finrank ℚ M : ℝ) ≤ N.hB C δ j
-
-def PeriodNorm (hP : (mtildeGSD W Ch sel mu (rPsymF Ch)).Ok) (hE : (evGSD W Ch sel mu (rPsymF Ch) u).Ok) (C : ℝ) : Prop :=
-  ∀ (v : InfinitePlace X.K) (ψ : (evGSD W Ch sel mu (rPsymF Ch) u).EqFun) (F : MtildeV W Ch sel mu (rPsymF Ch)),
-    v (PtilE W Ch sel mu (rPsymF Ch) hP u ψ F) ^ 2 ≤
-      Real.exp (N.hA C (Pr.T u)) * ((evGSD W Ch sel mu (rPsymF Ch) u).ipAt hE v ψ ψ).re *
-        ((mtildeGSD W Ch sel mu (rPsymF Ch)).ipAt hP v F F).re
-
 end Concl
-
-def ColumnNormsWith (CK C : ℝ) : Prop :=
-  ∀ (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m)
-    (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg)
-    (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K)))
-    (dl : ℂ) (B : Base D D.host.ccK dl) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau)
-    (u : Pr.Word) (δ : Code N) (b : I.β (N.R.m - 2 + 1)) (hY : YbHyp (R := N.R) sel mu cst I u (N.R.m - 2) b)
-    (hK : KerEquivC W Ch sel mu cst I (ambOf s B χ cD) u (N.R.m - 2) b hY (rPsymF Ch))
-    (hF : ∀ j, (chF W sel mu I u j).Ok) (hE : (evGSD W Ch sel mu (rPsymF Ch) u).Ok)
-    (hP : (mtildeGSD W Ch sel mu (rPsymF Ch)).Ok),
-    HostTie N s Pr → WeightTie N W pl u δ → CharTie N s W Ch G sel → AnalyticTie D dl χ cD →
-    mu = 1 → cst.sharp = true → I.Ok Ch sel mu cst G (N.R.m - 2) →
-    FieldOfDefinition W sel mu cst u (ambOf s B χ cD) →
-    Sizes Pr W N.sc.a → SizeRows N δ (Pr.T u) →
-      KernelNorms N s W Ch sel mu cst I B cD pl u δ
-          (KerChain.ofCol W Ch sel mu cst I (chKerC W Ch sel mu cst I (ambOf s B χ cD) u (N.R.m - 2) b hY (rPsymF Ch) hK) hF hE)
-          CK C ∧
-        PeriodNorm N W Ch sel mu u hP hE C
-
-def ColumnNorms : Prop := ∃ CK C : ℝ, 0 ≤ CK ∧ 0 ≤ C ∧ ColumnNormsWith CK C
 
 theorem StepBound_sq.mono {K : Type} [Field K] [NumberField K] [StarRing K] {Q : KerChain K} {i : ℕ} {v : InfinitePlace K}
     {t t' : ℝ} (h : StepBound_sq Q i v t) (ht : t ≤ t') (hpos : ∀ φ, 0 ≤ (famIpAt (Q.F i) (Q.hF i) v φ φ).re) :

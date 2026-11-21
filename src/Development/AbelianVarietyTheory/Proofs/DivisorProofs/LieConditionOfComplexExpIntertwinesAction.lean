@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.Uniformised
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTangentCoordsBaseChangeSmoothCommGroupStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieMultIffFinrankCommonEigenspaceCoords
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValSpMapComp
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieRepresentationSpectralProjectorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieRepresentationSpectralProjectors
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeSpecDecomp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TanScalDecomp
 
@@ -66,7 +66,7 @@ theorem GlobalTheory.UPel.HT.lie_of_complexExp : ∀ (p : ℕ) [Fact p.Prime] (D
     · simp only [Matrix.mulVec_smul, hsc]
     · simp only
       rw [hact _ (act.hom a), Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.map_mul, ← Matrix.map_mul, hMP]
-  obtain ⟨E, hE1, hE2, hE3, hE4, hE5⟩ := GlobalTheory.T.lie_representation_spectral_projectors p D R b σ ρ hty
+  obtain ⟨E, hE1, hE2, hE3, hE4, hE5⟩ := _root_.GlobalTheory.UPel.HT.LieProj.lie_projectors p D R b σ ρ hty
   have hroot : σ b.ρ ^ 2 - D.tr * σ b.ρ + D.nm = 0 := by
     have := congrArg σ b.ρ_root
     simpa using this

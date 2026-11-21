@@ -117,16 +117,6 @@ theorem subsingleton_cohomology_localField (M : Rep (ULift.{0} ℤ) Gal(Ksep/K))
     Subsingleton (cohomology M r) :=
   subsingleton_cohomology_galois_top K Ksep hM M (fun _ => card_nsmul_eq_zero') r hr
 
-theorem finite_cohomology_cartierDual_localField (M : Rep (ULift.{0} ℤ) Gal(Ksep/K))
-    [IsDiscreteRep M] [Finite M] (hM : (Nat.card M : K) ≠ 0) (r : ℕ) :
-    Finite (cohomology (cartierDual K Ksep M) r) := by
-  have hkill : ∀ f : cartierDual K Ksep M, Nat.card M • f = 0 := fun f => by
-    let f' : M →ₗ[ULift.{0} ℤ] galUnits.{0} K Ksep := f
-    change Nat.card M • f' = 0
-    refine LinearMap.ext fun m => ?_
-    rw [LinearMap.smul_apply, LinearMap.zero_apply, ← map_nsmul, card_nsmul_eq_zero', map_zero]
-  exact finite_cohomology_galois_top K Ksep hM _ hkill r
-
 theorem bijective_localDualityPairing (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M]
     [Finite M] (hM : (Nat.card M : K) ≠ 0) {r s : ℕ} (h : r + s = 2) :
     Function.Bijective (localDualityPairing K Ksep M h) := by
@@ -142,43 +132,6 @@ theorem bijective_localDualityPairing (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsD
     (nsmul_cohomology_eq_zero _ (nsmul_dualRep_eq_zero hD) s)
     (fun x y => localDualityPairing_cohomologyMap M hM hMn h x y)
     ((localDualityHypotheses hM).bijective_dualityMap_of_group M hMn h)
-
-theorem bijective_localDualityPairing_flip (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M]
-    [Finite M] (hM : (Nat.card M : K) ≠ 0) {r s : ℕ} (h : r + s = 2) :
-    Function.Bijective (localDualityPairing K Ksep M h).flip := by
-  set n := Nat.card M
-  have : NeZero n := ⟨ne_zero_of_natCast_ne_zero' hM⟩
-  have hMn : ∀ m : M, n • m = 0 := fun _ => card_nsmul_eq_zero'
-  have hD : ∀ d : galRootsOfUnity.{0} K Ksep n, n • d = 0 :=
-    nsmul_eq_zero_of_nonempty_addEquiv (nonempty_addEquiv_galRootsOfUnity hM)
-  have : Finite (galRootsOfUnity.{0} K Ksep n) :=
-    finite_of_nonempty_addEquiv (nonempty_addEquiv_galRootsOfUnity hM)
-  have : Finite (dualRep (galRootsOfUnity.{0} K Ksep n) M) := finite_dualRep
-  have hfin : Finite (cohomology (dualRep (galRootsOfUnity.{0} K Ksep n) M) s) :=
-    finite_cohomology_galois_top K Ksep hM _ (nsmul_dualRep_eq_zero hD) s
-  have hΨ := (localDualityHypotheses (Ksep := Ksep) hM).bijective_dualityMap_of_group M hMn h
-  have hflip := bijective_of_bijective_flip (X := cohomology (dualRep (galRootsOfUnity.{0} K Ksep n) M) s)
-    (nsmul_cohomology_eq_zero _ (nsmul_dualRep_eq_zero hD) s)
-    (bilinAddHom (cupPairing (evalPairing (galRootsOfUnity.{0} K Ksep n) M) h)).flip
-    (localDualityHypotheses (Ksep := Ksep) hM).tTop hΨ
-  refine bijective_of_zmodToQZ
-    (dualityMap (galRootsOfUnity.{0} K Ksep n) h (localDualityHypotheses (Ksep := Ksep) hM).tTop M).flip
-    (localDualityPairing K Ksep M h).flip
-    (cohomologyAddEquivOfIso (dualRepRootsOfUnityIso K Ksep M n hMn) s) (AddEquiv.refl _)
-    (nsmul_cohomology_eq_zero M hMn r)
-    (fun y x => localDualityPairing_cohomologyMap M hM hMn h x y) ?_
-  convert hflip using 1
-  funext y
-  exact AddMonoidHom.ext fun x => rfl
-
-theorem tate_local_duality (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M] [Finite M]
-    (hM : (Nat.card M : K) ≠ 0) {r s : ℕ} (h : r + s = 2) :
-    Finite (cohomology M r) ∧ Finite (cohomology (cartierDual K Ksep M) s) ∧
-      Function.Bijective (localDualityPairing K Ksep M h) ∧
-      Function.Bijective (localDualityPairing K Ksep M h).flip ∧
-      ∀ t, 3 ≤ t → Subsingleton (cohomology M t) := by
-  exact ⟨finite_cohomology_localField M hM r, finite_cohomology_cartierDual_localField M hM s, bijective_localDualityPairing M hM h,
-    bijective_localDualityPairing_flip M hM h, subsingleton_cohomology_localField M hM⟩
 
 end Local
 

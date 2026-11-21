@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.GhostFrobenius
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAlgebraResiduePointIdempotentsOverOCStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupResidueFieldTateLevelSectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAlgebraResiduePointIdempotentsOverOC
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupResidueFieldTateLevelSection
 
 open CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 
@@ -405,8 +405,8 @@ end Endo2
 
 theorem exists_idempotent_constPart : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] [IsLocalRing O], v.Integers O → ∀ G : PDivGroup p O, ∃ u : G ⟶ G, u ≫ u = u ∧ (∀ (n : ℕ) (c : G.A n →ₐ[O] IsLocalRing.ResidueField O) (a : G.A n), c (u.app n a) = c a) ∧ ∀ n, ∃ N : ℕ, Nonempty ((u.app n : G.A n →ₐ[O] G.A n).range ≃ₐ[O] (Fin N → O)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ hv G
-  have H : HasIdem O := fun A _ _ _ => GlobalTheory.T.finiteAlgebra_residuePoint_idempotents_over_OC p C v O hv A
-  obtain ⟨hpt, s, hs, hw⟩ := GlobalTheory.T.pDivGroup_residueField_tate_level_section p C v O hv G
+  have H : HasIdem O := fun A _ _ _ => _root_.GlobalTheory.FiniteAlgIdem.idempotents_at_residue_points p C v O hv A
+  obtain ⟨hpt, s, hs, hw⟩ := _root_.GlobalTheory.TateResidue.main p C v O hv G
   have hH : ∀ n, Finite (G.A n →ₐ[O] IsLocalRing.ResidueField O) ∧
       ∃ e, IdemData (G.A n) e := fun n => H (G.A n)
   choose hfin e he using hH

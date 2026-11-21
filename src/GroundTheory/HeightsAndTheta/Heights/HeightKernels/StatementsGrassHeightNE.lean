@@ -32,40 +32,6 @@ theorem anchor_minor {R : Type*} [CommRing R] (j m : ℕ) (Z : Matrix (Fin j) (F
     rw [this, Fin.append_left]
   rw [this, Matrix.det_one]
 
-theorem rootCoord_mem {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) :
-    rootCoord ζ ∈ mcPts (rootPointIdeal ζ) := by
-  refine ⟨fun k => ⟨plAnchor j m, ?_⟩, fun g hg => ?_⟩
-  · simp [rootCoord, anchor_minor]
-  · have h : mConeMap (rootCoord ζ) g = 0 := hg
-    have h2 := congrArg (MvPolynomial.eval (fun _ : Fin f => (1 : ℂ))) h
-    have key : (MvPolynomial.eval (fun _ : Fin f => (1 : ℂ))).comp
-        (mConeMap (rootCoord ζ) : MRing (plBlocks f j m) →+* MvPolynomial (Fin f) ℂ) =
-        (eval (rootCoord ζ)).comp (map (Int.castRingHom ℂ)) := by
-      apply MvPolynomial.ringHom_ext
-      · intro r; simp
-      · intro i; simp [mConeMap]
-    have := congrArg (fun φ => φ g) key
-    simp only [RingHom.comp_apply, RingHom.coe_coe, h, map_zero] at this
-    exact this.symm
-
-example : IsMultiHomogIdeal (⊥ : Ideal (MRing (fun _ : Unit => Unit))) :=
-  ⟨∅, by simp, by simp⟩
-
-theorem finite_mcClasses_bot_unit : Finite (McClasses (⊥ : Ideal (MRing (fun _ : Unit => Unit)))) := by
-  haveI : Subsingleton (McClasses (⊥ : Ideal (MRing (fun _ : Unit => Unit)))) := by
-    constructor
-    intro x y
-    induction x using Quot.ind with | mk z => ?_
-    induction y using Quot.ind with | mk z' => ?_
-    apply Quot.sound
-    obtain ⟨⟨⟩, hz⟩ := z.2.1 ()
-    obtain ⟨⟨⟩, hz'⟩ := z'.2.1 ()
-    refine ⟨fun _ => z'.1 ⟨(), ()⟩ / z.1 ⟨(), ()⟩, fun _ => div_ne_zero hz' hz, ?_⟩
-    funext p
-    rcases p with ⟨⟨⟩, ⟨⟩⟩
-    field_simp
-  exact Finite.of_subsingleton
-
 end
 
 end GroundTheory.Heights₂.Heights

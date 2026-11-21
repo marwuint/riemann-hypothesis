@@ -12,13 +12,22 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLeadIdealDim
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLinearFormCut
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PHomogDimZeroPow
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PUnitaryZariskiDense
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BranchProperAtPointHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BranchProperAtPointHolds
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchProperAtPoint
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchIntDecompose
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranchInt
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceBranches
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCurveBranchLength
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StBranchNormalisation
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegBallMass
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegLelongMono
+import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSmallSetBallCover
 set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.Ar
 
 theorem branchIntDecompose : GroundTheory.Heights₂.Heights.BranchIntDecompose.Statement :=
-  GroundTheory.Heights₂.Heights.BranchIntDecompose.proof GlobalTheory.T.branch_proper_at_point_holds
+  GroundTheory.Heights₂.Heights.BranchIntDecompose.proof _root_.GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint
     (GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.proof
       (GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.proof
         GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.proof

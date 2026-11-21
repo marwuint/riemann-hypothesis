@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.AdmissibleColumnsLeAndHarmonicMapCover
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ConjugateSectionValuesSemilinearStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ShortSeriesValueTwistedEqConjugateValueStatement
-import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LevelFourierTransformAutAndHomogeneousStatement
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ConjugateSectionValuesSemilinear
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ShortSeriesValueTwistedEqConjugateValue
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.LevelFourierTransformAutAndHomogeneous
 
 set_option autoImplicit false
 
@@ -33,9 +33,9 @@ theorem thLa_conj (hC : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndep
     thLaValAt d.Xo₂ d.c₂ d.nab₂ (fun q => d.eF (w' q)) La N
       (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) (MvPolynomial.map (ta : c.F →+* c.F) P)) y₂
       (algebraMap d.c₂.F k (d.eF u⁻¹) * v.val) := by
-  have h1 := GlobalTheory.T.shortSeriesValue_twisted_eq_conjugate_value hC E H Dw d.l₂ d.Xo₂ d.c₂ (covAut d ta) h₂ d.nab₂ hN n a _
+  have h1 := _root_.GlobalTheory.GalTw.shortValAt_conj hC E H Dw d.l₂ d.Xo₂ d.c₂ (covAut d ta) h₂ d.nab₂ hN n a _
     ((GlobalTheory.admissible_columns_le_and_harmonic_map_cover E H Dw l Xo c n d).2 a P hP) _ La 1 N k y₂ v hv
-  have h3 := (GlobalTheory.T.level_fourier_transform_aut_and_homogeneous E H Dw d.l₂ d.Xo₂ d.c₂ n).2.2 d.nab₂ _ La _ (d.eF u⁻¹) N _ k y₂ _ h1
+  have h3 := (_root_.GlobalTheory.GalTw.phiHat_aut_and_mul E H Dw d.l₂ d.Xo₂ d.c₂ n).2.2 d.nab₂ _ La _ (d.eF u⁻¹) N _ k y₂ _ h1
   have e1 : (fun q => d.eF u⁻¹ * covAut d ta (d.eF (w q))) = fun q => d.eF (w' q) := by
     funext q
     rw [covAut_eF, hw, ← map_mul, ← mul_assoc, inv_mul_cancel₀ hu, one_mul]
@@ -50,8 +50,8 @@ theorem isThClsD_galRul : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartInd
   intro hC E _ _ _ H Dw l Xo c ta h n d h₂ hN hδ cx ka u hka hu hcx Cl _ w w' La Nc gam vol ep Vs _ _ io a hio hw
     x x' hx m f hf hT
   obtain ⟨_, hN⟩ := hN
-  obtain ⟨hs, hv⟩ := (GlobalTheory.T.conjugateSection_values_semilinear E H Dw l Xo c ta h).1 a m f hf
-  have hv₂ := ((GlobalTheory.T.conjugateSection_values_semilinear E H Dw d.l₂ d.Xo₂ d.c₂ (covAut d ta) h₂).1 0 0 d.cδ hδ).2
+  obtain ⟨hs, hv⟩ := (_root_.GlobalTheory.GalTw.galRul_sec_val_semilinear E H Dw l Xo c ta h).1 a m f hf
+  have hv₂ := ((_root_.GlobalTheory.GalTw.galRul_sec_val_semilinear E H Dw d.l₂ d.Xo₂ d.c₂ (covAut d ta) h₂).1 0 0 d.cδ hδ).2
   refine ⟨Submodule.smul_mem _ _ hs, ?_⟩
   intro k _ _ A A₂ hk y y₂ hy
   letI A₂' : Algebra d.c₂.F k := A₂

@@ -36,43 +36,18 @@ instance : LinearMapClass (HermForm R M) R M (M →ₗ⋆[R] R) where
 @[ext] theorem ext {h h' : HermForm R M} (H : ∀ x y, h x y = h' x y) : h = h' :=
   DFunLike.ext _ _ fun x => LinearMap.ext (H x)
 
-theorem toSesq_injective : Function.Injective (toSesq : HermForm R M → SesqForm R M) :=
-  fun _ _ H => ext fun x y => congrArg (fun B : SesqForm R M => B x y) H
-
 variable (h : HermForm R M)
 
 @[simp] theorem star_apply (x y : M) : star (h x y) = h y x := h.star_apply' x y
 
 @[simp] theorem conj_apply (x y : M) : starRingEnd R (h x y) = h y x := h.star_apply' x y
 
-theorem isSelfAdjoint_apply_self (x : M) : IsSelfAdjoint (h x x) := h.star_apply x x
-
 theorem add_left (x y z : M) : h (x + y) z = h x z + h y z := by simp
-theorem add_right (x y z : M) : h x (y + z) = h x y + h x z := by simp
-theorem sub_left (x y z : M) : h (x - y) z = h x z - h y z := by simp
-theorem sub_right (x y z : M) : h x (y - z) = h x y - h x z := by simp
-theorem neg_left (x y : M) : h (-x) y = -h x y := by simp
-theorem neg_right (x y : M) : h x (-y) = -h x y := by simp
 theorem zero_left (y : M) : h 0 y = 0 := by simp
-theorem zero_right (x : M) : h x 0 = 0 := by simp
-
 theorem smul_left (a : R) (x y : M) : h (a • x) y = a * h x y := by simp
 
 theorem smul_right (a : R) (x y : M) : h x (a • y) = star a * h x y := by
   rw [map_smulₛₗ]; rfl
-
-theorem sum_left {ι : Type*} (s : Finset ι) (f : ι → M) (y : M) :
-    h (∑ i ∈ s, f i) y = ∑ i ∈ s, h (f i) y := by simp [LinearMap.sum_apply]
-
-theorem sum_right {ι : Type*} (s : Finset ι) (x : M) (f : ι → M) :
-    h x (∑ i ∈ s, f i) = ∑ i ∈ s, h x (f i) := by simp
-
-theorem apply_eq_zero_comm (x y : M) : h x y = 0 ↔ h y x = 0 := by
-  rw [← h.star_apply x y, star_eq_zero]
-
-theorem isRefl : h.toSesq.IsRefl := fun x y => (h.apply_eq_zero_comm x y).1
-
-theorem isSymm_flip : h.toSesq.flip.IsSymm := ⟨fun x y => h.star_apply y x⟩
 
 def ofFun (f : M → M → R) (add_left : ∀ x y z, f (x + y) z = f x z + f y z)
     (smul_left : ∀ (a : R) x y, f (a • x) y = a * f x y)
@@ -108,44 +83,10 @@ def Nondegenerate : Prop := h.toSesq.Nondegenerate
 
 def Unimodular : Prop := Function.Bijective h.toDual
 
-theorem nondegenerate_iff_left : h.Nondegenerate ↔ ∀ x, (∀ y, h x y = 0) → x = 0 :=
-  ⟨fun H => H.1, fun H => ⟨H, fun y hy => H y fun x => (h.apply_eq_zero_comm x y).1 (hy x)⟩⟩
-
-theorem nondegenerate_iff_right : h.Nondegenerate ↔ ∀ y, (∀ x, h x y = 0) → y = 0 :=
-  ⟨fun H => H.2, fun H => ⟨fun x hx => H x fun y => (h.apply_eq_zero_comm x y).1 (hx y), H⟩⟩
-
-theorem nondegenerate_iff_injective : h.Nondegenerate ↔ Function.Injective h.toDual := by
-  rw [nondegenerate_iff_right, injective_iff_map_eq_zero]
-  simp [LinearMap.ext_iff]
-
-theorem unimodular_iff :
-    h.Unimodular ↔ h.Nondegenerate ∧ ∀ φ : Module.Dual R M, ∃ y, ∀ x, h x y = φ x := by
-  rw [nondegenerate_iff_injective]
-  refine and_congr_right fun _ => forall_congr' fun φ => exists_congr fun y => ?_
-  simp [LinearMap.ext_iff]
-
 variable {h}
 
 theorem Nondegenerate.eq_zero_left (H : h.Nondegenerate) {x : M} (hx : ∀ y, h x y = 0) : x = 0 :=
   H.1 x hx
-
-theorem Nondegenerate.eq_zero_right (H : h.Nondegenerate) {y : M} (hy : ∀ x, h x y = 0) : y = 0 :=
-  H.2 y hy
-
-theorem Nondegenerate.ext_left (H : h.Nondegenerate) {x x' : M} (hx : ∀ y, h x y = h x' y) :
-    x = x' :=
-  sub_eq_zero.1 (H.eq_zero_left fun y => by rw [sub_left, hx, sub_self])
-
-theorem Nondegenerate.ext_right (H : h.Nondegenerate) {y y' : M} (hy : ∀ x, h x y = h x y') :
-    y = y' :=
-  sub_eq_zero.1 (H.eq_zero_right fun x => by rw [sub_right, hy, sub_self])
-
-theorem Unimodular.nondegenerate (H : h.Unimodular) : h.Nondegenerate :=
-  (h.unimodular_iff.1 H).1
-
-theorem Unimodular.exists_eq (H : h.Unimodular) (φ : Module.Dual R M) :
-    ∃ y, ∀ x, h x y = φ x :=
-  (h.unimodular_iff.1 H).2 φ
 
 noncomputable def Unimodular.toDualEquiv (H : h.Unimodular) : M ≃ₗ⋆[R] Module.Dual R M :=
   LinearEquiv.ofBijective h.toDual H
@@ -160,23 +101,10 @@ noncomputable def Unimodular.toDualEquiv (H : h.Unimodular) : M ≃ₗ⋆[R] Mod
 def IsIsometry (h₁ : HermForm R M) (h₂ : HermForm R N) (f : M →ₗ[R] N) : Prop :=
   ∀ x y, h₂ (f x) (f y) = h₁ x y
 
-theorem isIsometry_iff_comap {h₁ : HermForm R M} {h₂ : HermForm R N} {f : M →ₗ[R] N} :
-    h₁.IsIsometry h₂ f ↔ h₂.comap f = h₁ :=
-  ⟨fun H => ext H, fun H x y => by rw [← H]; rfl⟩
-
-theorem IsIsometry.id (h : HermForm R M) : h.IsIsometry h LinearMap.id := fun _ _ => rfl
-
-theorem IsIsometry.comp {h₁ : HermForm R M} {h₂ : HermForm R N} {h₃ : HermForm R P}
-    {g : N →ₗ[R] P} {f : M →ₗ[R] N} (hg : h₂.IsIsometry h₃ g) (hf : h₁.IsIsometry h₂ f) :
-    h₁.IsIsometry h₃ (g ∘ₗ f) := fun x y => (hg _ _).trans (hf x y)
-
 theorem IsIsometry.injective {h₁ : HermForm R M} {h₂ : HermForm R N} {f : M →ₗ[R] N}
     (hf : h₁.IsIsometry h₂ f) (H : h₁.Nondegenerate) : Function.Injective f := by
   rw [injective_iff_map_eq_zero]
   exact fun x hx => H.eq_zero_left fun y => by rw [← hf, hx, zero_left]
-
-theorem isIsometry_subtype (h : HermForm R M) (W : Submodule R M) :
-    (h.restrict W).IsIsometry h W.subtype := fun _ _ => rfl
 
 structure IsometryEquiv (h₁ : HermForm R M) (h₂ : HermForm R N) extends M ≃ₗ[R] N where
   map_app' : ∀ x y, h₂ (toFun x) (toFun y) = h₁ x y
@@ -208,9 +136,6 @@ instance : LinearEquivClass (h₁.IsometryEquiv h₂) R M N where
 @[simp] theorem map_app (f : h₁.IsometryEquiv h₂) (x y : M) : h₂ (f x) (f y) = h₁ x y :=
   f.map_app' x y
 
-theorem isIsometry (f : h₁.IsometryEquiv h₂) : h₁.IsIsometry h₂ f.toLinearEquiv.toLinearMap :=
-  f.map_app'
-
 @[refl] def refl (h : HermForm R M) : h.IsometryEquiv h :=
   ⟨LinearEquiv.refl R M, fun _ _ => rfl⟩
 
@@ -239,33 +164,11 @@ theorem isIsometry (f : h₁.IsometryEquiv h₂) : h₁.IsIsometry h₂ f.toLine
 @[simp] theorem toLinearEquiv_symm (f : h₁.IsometryEquiv h₂) :
     f.symm.toLinearEquiv = f.toLinearEquiv.symm := rfl
 
-theorem map_app_left (f : h₁.IsometryEquiv h₂) (x : M) (y : N) :
-    h₂ (f x) y = h₁ x (f.symm y) := by rw [← f.map_app, apply_symm_apply]
-
-theorem map_app_right (f : h₁.IsometryEquiv h₂) (x : N) (y : M) :
-    h₂ x (f y) = h₁ (f.symm x) y := by rw [← f.map_app, apply_symm_apply]
-
-theorem nondegenerate (f : h₁.IsometryEquiv h₂) (H : h₁.Nondegenerate) : h₂.Nondegenerate := by
-  rw [nondegenerate_iff_left]
-  intro x hx
-  have : f.symm x = 0 := H.eq_zero_left fun y => by rw [← f.map_app_right, hx]
-  simpa using congrArg f this
-
-theorem unimodular (f : h₁.IsometryEquiv h₂) (H : h₁.Unimodular) : h₂.Unimodular := by
-  refine h₂.unimodular_iff.2 ⟨f.nondegenerate H.nondegenerate, fun φ => ?_⟩
-  obtain ⟨y, hy⟩ := H.exists_eq (φ ∘ₗ f.toLinearEquiv.toLinearMap)
-  exact ⟨f y, fun x => by rw [f.map_app_right, hy]; simp⟩
-
 end IsometryEquiv
-
-def comapIsometryEquiv (h : HermForm R M) (e : N ≃ₗ[R] M) :
-    (h.comap e.toLinearMap).IsometryEquiv h := ⟨e, fun _ _ => rfl⟩
 
 namespace Isometric
 
 variable {h₁ : HermForm R M} {h₂ : HermForm R N} {h₃ : HermForm R P}
-
-@[refl] theorem refl (h : HermForm R M) : h.Isometric h := ⟨.refl h⟩
 
 @[symm] theorem symm (H : h₁.Isometric h₂) : h₂.Isometric h₁ := H.elim fun f => ⟨f.symm⟩
 
@@ -297,12 +200,6 @@ theorem smul_def (g : h.unitaryGroup) (x : M) : g • x = (g : M ≃ₗ[R] M) x 
 
 @[simp] theorem smul_app (g : h.unitaryGroup) (x y : M) : h (g • x) (g • y) = h x y := g.2 x y
 
-theorem smul_app_left (g : h.unitaryGroup) (x y : M) : h (g • x) y = h x (g⁻¹ • y) := by
-  rw [← smul_app g x, smul_inv_smul]
-
-theorem smul_app_right (g : h.unitaryGroup) (x y : M) : h x (g • y) = h (g⁻¹ • x) y := by
-  rw [← smul_app g _ y, smul_inv_smul]
-
 @[ext] theorem ext {g g' : h.unitaryGroup}
     (H : ∀ x, (g : M ≃ₗ[R] M) x = (g' : M ≃ₗ[R] M) x) : g = g' :=
   Subtype.ext (LinearEquiv.ext H)
@@ -321,9 +218,6 @@ def toEnd : h.unitaryGroup →* Module.End R M where
 
 @[simp] theorem toEnd_apply (g : h.unitaryGroup) (x : M) :
     toEnd h g x = (g : M ≃ₗ[R] M) x := rfl
-
-theorem toEnd_injective : Function.Injective (toEnd h) :=
-  fun _ _ H => ext fun x => congrArg (fun f : Module.End R M => f x) H
 
 end unitaryGroup
 
@@ -355,21 +249,6 @@ section Field
 variable {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   [FiniteDimensional K V] {h : HermForm K V}
 
-theorem Nondegenerate.unimodular (H : h.Nondegenerate) : h.Unimodular := by
-  let b := Module.finBasis K V
-  let σ : V ≃ₗ⋆[K] V :=
-    (b.equivFun.trans (starLinearEquiv K (A := Fin (Module.finrank K V) → K))).trans
-      b.equivFun.symm
-  let φ : V →ₗ[K] Module.Dual K V := h.toDual.comp σ.toLinearMap
-  have hinj : Function.Injective φ := (h.nondegenerate_iff_injective.1 H).comp σ.injective
-  have hsurj : Function.Surjective φ :=
-    (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
-      (Subspace.dual_finrank_eq).symm).1 hinj
-  exact ⟨h.nondegenerate_iff_injective.1 H, Function.Surjective.of_comp (g := σ) hsurj⟩
-
-theorem unimodular_iff_nondegenerate : h.Unimodular ↔ h.Nondegenerate :=
-  ⟨Unimodular.nondegenerate, Nondegenerate.unimodular⟩
-
 noncomputable def IsIsometry.toUnitary {f : V →ₗ[K] V} (hf : h.IsIsometry h f)
     (H : h.Nondegenerate) : h.unitaryGroup :=
   ⟨LinearEquiv.ofInjectiveEndo f (hf.injective H), hf⟩
@@ -391,19 +270,7 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V] (h : HermForm ℂ V)
 
 def PosDef : Prop := ∀ x, x ≠ 0 → 0 < (h x x).re
 
-def NegDef : Prop := ∀ x, x ≠ 0 → (h x x).re < 0
-
 variable {h}
-
-theorem PosDef.nondegenerate (H : h.PosDef) : h.Nondegenerate :=
-  h.nondegenerate_iff_left.2 fun x hx => by
-    by_contra hne
-    simpa [hx x] using H x hne
-
-theorem NegDef.nondegenerate (H : h.NegDef) : h.Nondegenerate :=
-  h.nondegenerate_iff_left.2 fun x hx => by
-    by_contra hne
-    simpa [hx x] using H x hne
 
 end Complex
 
@@ -442,12 +309,6 @@ instance (K : Type u) [Field K] [StarRing K] : CoeSort (HermSpace.{u, v} K) (Typ
 instance {K : Type u} [Field K] [CharZero K] [StarRing K] (V : HermSpace.{u, v} K) :
     Module ℚ V := Module.compHom V (algebraMap ℚ K)
 
-abbrev HermSpace.toHermModule {K : Type u} [Field K] [StarRing K] (V : HermSpace.{u, v} K) :
-    HermModule.{u, v} K := ⟨V, V.form⟩
-
-theorem HermSpace.unimodular {K : Type u} [Field K] [StarRing K] (V : HermSpace.{u, v} K) :
-    V.form.Unimodular := V.nondegenerate.unimodular
-
 class IsStarFixed (F E : Type*) [CommSemiring F] [CommSemiring E] [StarRing E] [Algebra F E] :
     Prop where
   star_algebraMap : ∀ a : F, star (algebraMap F E a) = algebraMap F E a
@@ -484,45 +345,12 @@ def starAlgEquiv : E ≃ₐ[F] E :=
 
 variable {F E}
 
-theorem IsStarFixed.star_smul (a : F) (x : E) : star (a • x) = a • star x :=
-  map_smul (starAlgEquiv F E) a x
-
 end IsStarFixed
-
-theorem IsStarFixed.isIntegral_star {F E : Type*} [CommRing F] [CommRing E] [StarRing E]
-    [Algebra F E] [IsStarFixed F E] {x : E} (hx : IsIntegral F x) : IsIntegral F (star x) :=
-  hx.map (starAlgEquiv F E)
-
-theorem starModule_toAlgebra {R S : Type*} [CommSemiring R] [CommSemiring S] [StarRing R]
-    [StarRing S] (φ : R →+* S) (hφ : ∀ x, φ (star x) = star (φ x)) :
-    letI := φ.toAlgebra
-    StarModule R S :=
-  letI := φ.toAlgebra
-  ⟨fun r s => by
-    change star (φ r * s) = φ (star r) * star s
-    rw [star_mul', hφ]⟩
 
 theorem starModule_of_algebraMap {R S : Type*} [CommSemiring R] [CommSemiring S] [StarRing R]
     [StarRing S] [Algebra R S] (hφ : ∀ x, algebraMap R S (star x) = star (algebraMap R S x)) :
     StarModule R S :=
   ⟨fun r s => by rw [Algebra.smul_def, Algebra.smul_def, star_mul', hφ]⟩
-
-theorem HermForm.smul_right_of_isStarFixed {F R M : Type*} [CommRing F] [CommRing R] [StarRing R]
-    [Algebra F R] [IsStarFixed F R] [AddCommGroup M] [Module R M] [Module F M]
-    [IsScalarTower F R M] (h : HermForm R M) (a : F) (x y : M) : h x (a • y) = a • h x y := by
-  rw [← algebraMap_smul R a y, h.smul_right, IsStarFixed.star_algebraMap, Algebra.smul_def]
-
-theorem HermForm.smul_left_of_tower {S R M : Type*} [CommRing S] [CommRing R] [StarRing R]
-    [Algebra S R] [AddCommGroup M] [Module R M] [Module S M]
-    [IsScalarTower S R M] (h : HermForm R M) (a : S) (x y : M) :
-    h (a • x) y = algebraMap S R a * h x y := by
-  rw [← algebraMap_smul R a x, h.smul_left]
-
-theorem HermForm.smul_right_of_tower {S R M : Type*} [CommRing S] [CommRing R] [StarRing R]
-    [Algebra S R] [AddCommGroup M] [Module R M] [Module S M]
-    [IsScalarTower S R M] (h : HermForm R M) (a : S) (x y : M) :
-    h x (a • y) = star (algebraMap S R a) * h x y := by
-  rw [← algebraMap_smul R a y, h.smul_right]
 
 def StarTensor (F E A : Type*) [CommRing F] [CommRing E] [CommRing A] [Algebra F E]
     [Algebra F A] : Type _ := E ⊗[F] A
@@ -580,22 +408,9 @@ theorem one_def : (1 : StarTensor F E A) = tmul F 1 1 := rfl
     tmul F e a * tmul F e' a' = tmul F (e * e') (a * a') :=
   Algebra.TensorProduct.tmul_mul_tmul e e' a a'
 
-theorem tmul_eq_mul (e : E) (a : A) :
-    tmul F e a = algebraMap E (StarTensor F E A) e * algebraMap A (StarTensor F E A) a := by
-  simp [algebraMap_left, algebraMap_right]
-
-theorem add_tmul (e e' : E) (a : A) : tmul F (e + e') a = tmul F e a + tmul F e' a :=
-  TensorProduct.add_tmul e e' a
-
-theorem tmul_add (e : E) (a a' : A) : tmul F e (a + a') = tmul F e a + tmul F e a' :=
-  TensorProduct.tmul_add e a a'
-
 @[simp] theorem zero_tmul (a : A) : tmul F (0 : E) a = 0 := TensorProduct.zero_tmul E a
 
 @[simp] theorem tmul_zero (e : E) : tmul F e (0 : A) = 0 := TensorProduct.tmul_zero A e
-
-theorem smul_tmul (c : F) (e : E) (a : A) : tmul F (c • e) a = tmul F e (c • a) :=
-  TensorProduct.smul_tmul c e a
 
 @[simp] theorem left_smul_tmul (c e : E) (a : A) : c • tmul F e a = tmul F (c * e) a := by
   simp [Algebra.smul_def, algebraMap_left]
@@ -608,13 +423,6 @@ theorem induction_on {motive : StarTensor F E A → Prop} (x : StarTensor F E A)
     (zero : motive 0) (tmul : ∀ e a, motive (tmul F e a))
     (add : ∀ x y, motive x → motive y → motive (x + y)) : motive x :=
   TensorProduct.induction_on (motive := motive) x zero tmul add
-
-theorem ringHom_ext {C : Type*} [Semiring C] {f g : StarTensor F E A →+* C}
-    (hE : ∀ e, f (algebraMap E _ e) = g (algebraMap E _ e))
-    (hA : ∀ a, f (algebraMap A _ a) = g (algebraMap A _ a)) : f = g :=
-  RingHom.ext fun x => x.induction_on (by simp)
-    (fun e a => by rw [tmul_eq_mul, map_mul, map_mul, hE, hA])
-    (fun x y hx hy => by rw [map_add, map_add, hx, hy])
 
 instance isPushout : Algebra.IsPushout F E A (StarTensor F E A) :=
   TensorProduct.isPushout (R := F) (S := E) (T := A)
@@ -655,10 +463,6 @@ theorem algebraMap_left_injective [Module.Flat F E] (hA : Function.Injective (al
     Function.Injective (algebraMap E (StarTensor F E A)) :=
   Algebra.TensorProduct.includeLeft_injective (S := F) hA
 
-theorem algebraMap_right_injective [Module.Flat F A] (hE : Function.Injective (algebraMap F E)) :
-    Function.Injective (algebraMap A (StarTensor F E A)) :=
-  Algebra.TensorProduct.includeRight_injective hE
-
 variable {B C : Type*} [CommRing B] [CommRing C] [Algebra F B] [Algebra F C]
 
 variable (E) in
@@ -674,11 +478,6 @@ noncomputable def map (f : A →ₐ[F] B) : StarTensor F E A →ₐ[E] StarTenso
 
 @[simp] theorem map_id : map E (AlgHom.id F A) = AlgHom.id E _ :=
   Algebra.TensorProduct.map_id
-
-theorem map_comp (g : B →ₐ[F] C) (f : A →ₐ[F] B) :
-    map E (g.comp f) = (map E g).comp (map E f) :=
-  AlgHom.ext fun x => x.induction_on (by simp) (fun _ _ => rfl)
-    (fun x y hx hy => by rw [map_add, map_add, hx, hy])
 
 noncomputable def lift {D : Type*} [CommRing D] (f : E →+* D) (g : A →+* D)
     (hfg : ∀ c : F, f (algebraMap F E c) = g (algebraMap F A c)) : StarTensor F E A →+* D :=
@@ -741,35 +540,7 @@ instance (S : Type*) [CommSemiring S] [StarRing S] [Algebra S E] [SMulCommClass 
 @[simp] theorem star_algebraMap_left (e : E) :
     star (algebraMap E (StarTensor F E A) e) = algebraMap E _ (star e) := rfl
 
-theorem map_star_of {C : Type*} [CommRing C] [StarRing C] (φ : StarTensor F E A →+* C)
-    (hE : ∀ e, φ (algebraMap E _ (star e)) = star (φ (algebraMap E _ e)))
-    (hA : ∀ a, star (φ (algebraMap A _ a)) = φ (algebraMap A _ a)) (x : StarTensor F E A) :
-    φ (star x) = star (φ x) :=
-  DFunLike.congr_fun (ringHom_ext (f := φ.comp (starRingEnd _)) (g := (starRingEnd C).comp φ)
-    hE (fun a => by simpa [starRingEnd_apply] using (hA a).symm)) x
-
 variable {B : Type*} [CommRing B] [Algebra F B]
-
-theorem map_star (f : A →ₐ[F] B) (x : StarTensor F E A) : map E f (star x) = star (map E f x) :=
-  x.induction_on (by simp) (fun _ _ => rfl) (fun x y hx hy => by simp [hx, hy])
-
-theorem lift_star {D : Type*} [CommRing D] [StarRing D] (f : E →+* D) (g : A →+* D) (hfg)
-    (hf : ∀ e, f (star e) = star (f e)) (hg : ∀ a, star (g a) = g a)
-    (x : StarTensor F E A) : lift f g hfg (star x) = star (lift f g hfg x) :=
-  x.induction_on (by simp) (fun _ _ => by simp [hf, hg]) (fun x y hx hy => by simp [hx, hy])
-
-theorem rid_star (x : StarTensor F E F) : rid F E (star x) = star (rid F E x) :=
-  x.induction_on (by simp) (fun _ _ => by simp [IsStarFixed.star_smul])
-    (fun x y hx hy => by simp [hx, hy])
-
-theorem add_star_mem_range (hE : ∀ e : E, e + star e ∈ (algebraMap F E).range)
-    (x : StarTensor F E A) : x + star x ∈ (algebraMap A (StarTensor F E A)).range := by
-  refine x.induction_on (by simp) (fun e a => ?_) (fun x y hx hy => ?_)
-  · obtain ⟨c, hc⟩ := hE e
-    refine ⟨c • a, ?_⟩
-    rw [star_tmul, ← add_tmul, ← hc, algebraMap_right, ← smul_tmul, Algebra.algebraMap_eq_smul_one]
-  · rw [star_add, add_add_add_comm]
-    exact add_mem hx hy
 
 end Star
 
@@ -806,32 +577,10 @@ theorem star_eq_complexConj (x : E) : star x = IsCMField.complexConj E x := rfl
 
 instance : IsStarFixed (maximalRealSubfield E) E := ⟨(IsCMField.complexConj E).commutes⟩
 
-theorem starAlgEquiv_eq_complexConj :
-    starAlgEquiv (maximalRealSubfield E) E = IsCMField.complexConj E := AlgEquiv.ext fun _ => rfl
-
 variable {E}
 
 @[simp] theorem complexEmbedding_star (τ : E →+* ℂ) (x : E) : τ (star x) = star (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
-
-theorem star_eq_self_iff_mem (x : E) : star x = x ↔ x ∈ maximalRealSubfield E :=
-  IsCMField.complexConj_eq_self_iff E x
-
-theorem add_star_mem (x : E) : x + star x ∈ maximalRealSubfield E :=
-  (star_eq_self_iff_mem _).1 (by rw [star_add, star_star, add_comm])
-
-theorem mul_star_mem (x : E) : x * star x ∈ maximalRealSubfield E :=
-  (star_eq_self_iff_mem _).1 (by rw [star_mul, star_star])
-
-variable (E) in
-
-theorem exists_star_ne : ∃ x : E, star x ≠ x := by
-  by_contra! H
-  exact IsCMField.complexConj_ne_one E (AlgEquiv.ext H)
-
-theorem HermForm.apply_self_mem {V : Type*} [AddCommGroup V] [Module E V] (h : HermForm E V)
-    (x : V) : h x x ∈ maximalRealSubfield E :=
-  (star_eq_self_iff_mem _).1 (h.star_apply x x)
 
 noncomputable instance : StarRing (𝓞 E) where
   star := IsCMField.ringOfIntegersComplexConj E
@@ -856,10 +605,6 @@ instance : IsStarFixed (𝓞 (maximalRealSubfield E)) (𝓞 E) :=
 instance {K L : Type*} [Field K] [CommRing L] [StarRing L] [Algebra K L] [IsStarFixed K L] :
     IsStarFixed (𝓞 K) L :=
   .of_isScalarTower K L (𝓞 K)
-
-theorem ringOfIntegers_star_eq_self_iff (x : 𝓞 E) :
-    star x = x ↔ x ∈ (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)).range :=
-  IsCMField.ringOfIntegersComplexConj_eq_self_iff E x
 
 variable (E) in
 
@@ -890,31 +635,12 @@ instance isPushout : Algebra.IsPushout (maximalRealSubfield E) E A (CMTensor E A
 instance isPushout' : Algebra.IsPushout (maximalRealSubfield E) A E (CMTensor E A) :=
   StarTensor.isPushout'
 
-theorem finrank_right [StrongRankCondition A] : Module.finrank A (CMTensor E A) = 2 := by
-  rw [(StarTensor.commRight _ E A).toLinearEquiv.finrank_eq, Module.finrank_baseChange,
-    Algebra.IsQuadraticExtension.finrank_eq_two]
-
-theorem algebraMap_right_injective : Function.Injective (algebraMap A (CMTensor E A)) :=
-  StarTensor.algebraMap_right_injective (RingHom.injective _)
-
 theorem algebraMap_left_injective [Nontrivial A] :
     Function.Injective (algebraMap E (CMTensor E A)) :=
   StarTensor.algebraMap_left_injective (RingHom.injective _)
 
 instance [Nontrivial A] : Nontrivial (CMTensor E A) :=
   (algebraMap_left_injective (E := E) (A := A)).nontrivial
-
-theorem star_eq_self_iff (x : CMTensor E A) :
-    star x = x ↔ x ∈ (algebraMap A (CMTensor E A)).range := by
-  refine ⟨fun hx => ?_, ?_⟩
-  · obtain ⟨a, ha⟩ := StarTensor.add_star_mem_range
-      (fun e : E => ⟨⟨_, add_star_mem e⟩, rfl⟩) x
-    refine ⟨(2 : maximalRealSubfield E)⁻¹ • a, ?_⟩
-    rw [Algebra.smul_def, map_mul, ha, hx, ← IsScalarTower.algebraMap_apply, ← two_mul,
-      ← mul_assoc, ← map_ofNat (algebraMap (maximalRealSubfield E) (CMTensor E A)) 2, ← map_mul,
-      inv_mul_cancel₀ two_ne_zero, map_one, one_mul]
-  · rintro ⟨a, rfl⟩
-    exact IsStarFixed.star_algebraMap a
 
 end CMTensor
 

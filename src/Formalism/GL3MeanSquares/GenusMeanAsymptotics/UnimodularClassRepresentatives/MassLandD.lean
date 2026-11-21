@@ -70,16 +70,6 @@ theorem imF_coe (w : K) (hw : star w = -w) (a : cmF K) : imF w hw (a : K) = 0 :=
   show ((a : K) - star (a : K)) / (2 * w) = 0
   rw [star_coe_cmF, sub_self, zero_div]
 
-theorem reF_star (x : K) : reF (star x) = reF x := by
-  apply Subtype.ext
-  show (star x + star (star x)) / 2 = (x + star x) / 2
-  rw [star_star, add_comm]
-
-theorem imF_star (w : K) (hw : star w = -w) (x : K) : imF w hw (star x) = -imF w hw x := by
-  apply Subtype.ext
-  show (star x - star (star x)) / (2 * w) = -((x - star x) / (2 * w))
-  rw [star_star]; ring
-
 theorem reF_mul (w : K) (hw0 : w ≠ 0) (hw : star w = -w) (x y : K) :
     reF (x * y) = reF x * reF y + skewSq w hw * (imF w hw x * imF w hw y) := by
   apply Subtype.ext
@@ -164,26 +154,6 @@ def ιK : K →ₐ[cmF K] KEd d (skewSq w hw) where
 theorem ιK_apply (x : K) : ιK w hw d x = algebraMap (cmF K) (KEd d (skewSq w hw)) (reF x) +
     algebraMap (cmF K) (KEd d (skewSq w hw)) (imF w hw x) *
       AdjoinRoot.root (polKE d (skewSq w hw)) := rfl
-
-theorem gal_KEd_algebraMap (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw)) (a : cmF K) :
-    τ (algebraMap (cmF K) (KEd d (skewSq w hw)) a) = algebraMap (cmF K) (KEd d (skewSq w hw)) a :=
-  τ.commutes (algebraMap (cmF K) (Ed d) a)
-
-theorem gal_KEd_ιK_of_neg (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw))
-    (h : τ (AdjoinRoot.root (polKE d (skewSq w hw))) = -AdjoinRoot.root (polKE d (skewSq w hw)))
-    (x : K) : τ (ιK w hw d x) = ιK w hw d (star x) := by
-  rw [ιK_apply, ιK_apply, map_add, map_mul, gal_KEd_algebraMap, gal_KEd_algebraMap, h, reF_star,
-    imF_star, map_neg]
-  ring
-
-theorem gal_KEd_ιK (τ : KEd d (skewSq w hw) ≃ₐ[Ed d] KEd d (skewSq w hw)) :
-    (∀ x : K, τ (ιK w hw d x) = ιK w hw d x) ∨ ∀ x : K, τ (ιK w hw d x) = ιK w hw d (star x) := by
-  rcases QuadAdj.gal_root (algebraMap (cmF K) (Ed d) (skewSq w hw)) τ with h | h
-  · left
-    intro x
-    rw [ιK_apply, map_add, map_mul, gal_KEd_algebraMap, gal_KEd_algebraMap, h]
-  · right
-    exact gal_KEd_ιK_of_neg w hw d τ h
 
 end
 

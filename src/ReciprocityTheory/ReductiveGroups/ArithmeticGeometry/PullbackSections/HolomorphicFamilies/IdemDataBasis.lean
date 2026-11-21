@@ -45,11 +45,6 @@ theorem trace_dual_mul {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Bas
   · subst hki; simp
   · rw [if_neg hki, Finsupp.single_apply, if_neg (Ne.symm hki)]
 
-theorem trace_mul_dual {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℚ E) (k i : ι) :
-    Algebra.trace ℚ E (b k * TB.trDual b i) = if k = i then 1 else 0 := by
-  rw [mul_comm]
-  exact trace_dual_mul b i k
-
 theorem idem_data_basis {k V : Type} [Field k] [CommRing V] [Algebra V k] (ψ : E →+* k)
     (hint : ∀ x : 𝓞 E, ∃ v : V, algebraMap V k v = ψ (algebraMap (𝓞 E) E x)) (w : V)
     (hw : algebraMap V k w * (((discr E).natAbs : ℕ) : k) = 1) :

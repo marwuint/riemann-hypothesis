@@ -2,15 +2,6 @@ import Mathlib
 
 namespace KStar.Cstarloc
 
-@[reducible] def starRingOfInvolution {R : Type*} [CommRing R] (c : R ≃+* R)
-    (hc : Function.Involutive c) : StarRing R where
-  star := c
-  star_involutive := hc
-  star_mul a b := by
-    change c (a * b) = c b * c a
-    rw [map_mul, mul_comm]
-  star_add a b := map_add c a b
-
 structure UnramDatum (R : Type*) [CommRing R] [StarRing R] : Prop where
   trace_one : ∃ e : R, e + star e = 1
   norm_onto : ∀ u : R, IsUnit u → star u = u → ∃ a : R, a * star a = u
@@ -27,14 +18,6 @@ def IsUnimod (h : Sesq R M) : Prop := Function.Bijective (h.flip : M → Module.
 def gram {ι : Type*} (h : Sesq R M) (b : ι → M) : Matrix ι ι R := Matrix.of fun i j => h (b i) (b j)
 
 def IsOrthonormal {ι : Type*} [DecidableEq ι] (h : Sesq R M) (b : ι → M) : Prop := gram h b = 1
-
-def IsDualPair {ι : Type*} [DecidableEq ι] (h : Sesq R M) (b b' : ι → M) : Prop :=
-  ∀ i j, h (b i) (b' j) = if i = j then 1 else 0
-
-def IsHyperbolic {ι : Type*} [DecidableEq ι] (h : Sesq R M) (b : ι ⊕ ι → M) : Prop :=
-  gram h b = Matrix.fromBlocks 0 1 1 0
-
-def IsIsotropic (h : Sesq R M) (N : Submodule R M) : Prop := ∀ x ∈ N, ∀ y ∈ N, h x y = 0
 
 def perp (h : Sesq R M) (x : M) : Submodule R M := LinearMap.ker (h.flip x)
 

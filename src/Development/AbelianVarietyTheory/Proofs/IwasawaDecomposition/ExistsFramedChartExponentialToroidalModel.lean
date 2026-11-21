@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLatBasisZero
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanPeriodLatticeComplexSemiAbelianEqTopStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSncCoordinatesComplexPointSmoothVarietyStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealIndependentBasisLatticeFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicFibreExponentialsNearCentreStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentialKernelsIsHolomorphicLatticeFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExponentialChartRescaleFrameChangeStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanPeriodLatticeComplexSemiAbelianEqTop
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSncCoordinatesComplexPointSmoothVariety
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRealIndependentBasisLatticeFamily
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicFibreExponentialsNearCentre
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentialKernelsIsHolomorphicLatticeFamily
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExponentialChartRescaleFrameChange
 
 set_option autoImplicit false
 
@@ -218,7 +219,7 @@ theorem span_of_isExpAt {X : Scheme.{0}} (t : SAB H X) (y : Sp ℂ ⟶ X) {g : �
     rw [add_zero] at h2
     exact left_eq_mul.1 h2
   have hl : (e 0).left = (1 : Over.mk y ⟶ t.G).left := by rw [h1]
-  refine GlobalTheory.T.span_periodLattice_complexSemiAbelian_eq_top X t.G y g e t.semi ⟨he.1, hs, hh, fun w => ?_, fun v hv => ?_⟩
+  refine _root_.GlobalTheory.PeriodSpan.span_ker_eq_top X t.G y g e t.semi ⟨he.1, hs, hh, fun w => ?_, fun v hv => ?_⟩
   · obtain ⟨v, ⟨hv, hd⟩, hu⟩ := he.2.1 w
     refine ⟨Over.homMk v hv.1, hd, fun v' hv' => ?_⟩
     have h3 : v'.left = v := hu _ ⟨⟨Over.w v', hv'.1.trans hl⟩, hv'⟩
@@ -238,14 +239,14 @@ theorem exists_chart_sections {n : ℕ} (e0 : OpenPartialHomeomorph (CxPts (genS
       IsLatBasis {w | ex (e0.symm 0) w = 1} (ζ 0) ∧ AnalyticOnNhd ℂ ζ (ball 0 (2 * ρ)) ∧
       ∀ z ∈ ball (0 : Fin n → ℂ) (2 * ρ), (∀ i, ex (e0.symm z) (ζ z i) = 1) ∧
         LinearIndependent ℝ (ζ z) ∧ IsUnit (colMat κ (ζ z)).det := by
-  obtain ⟨g, ρ₁, ex, hρ₁, hball, hhol2, hexp⟩ := GlobalTheory.T.exists_holomorphic_fibre_exponentials_near_centre E H Dw l Xo c O β Z σ _ e0 h0t hsymm
+  obtain ⟨g, ρ₁, ex, hρ₁, hball, hhol2, hexp⟩ := _root_.GlobalTheory.ShFam.Hor.LogCh.exists_expMaps_near_chart_centre E H Dw l Xo c O β Z σ _ e0 h0t hsymm
   have hfib : ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ₁, e0.symm b ∈ e0.source ∧ ‖e0 (e0.symm b)‖ < ρ₁ := fun b hb =>
     ⟨e0.map_target (hball hb), by rw [e0.right_inv (hball hb)]; exact mem_ball_zero_iff.1 hb⟩
   have hfam : IsLatFam (Metric.ball (0 : Fin n → ℂ) ρ₁) (fun b => {w | ex (e0.symm b) w = 1}) :=
-    GlobalTheory.T.exponentialKernels_isHolomorphicLatticeFamily E H _ Z.t _ g (Metric.ball 0 ρ₁) (fun b => (e0.symm b).1 ≫ genι Z) (fun b => ex (e0.symm b))
+    _root_.GlobalTheory.ShFam.Hor.LogCh.isLatFam_ker E H _ Z.t _ g (Metric.ball 0 ρ₁) (fun b => (e0.symm b).1 ≫ genι Z) (fun b => ex (e0.symm b))
       Metric.isOpen_ball hhol2 fun b hb => (hexp _ (hfib b hb).1 (hfib b hb).2).2
   have h00 := Metric.mem_ball_self (x := (0 : Fin n → ℂ)) hρ₁
-  obtain ⟨r, b, hb⟩ := GlobalTheory.T.exists_real_independent_basis_lattice_family _ g _ _ 0 hfam h00
+  obtain ⟨r, b, hb⟩ := _root_.GlobalTheory.ShFam.Hor.LogCh.exists_isLatBasis_of_isLatFam _ g _ _ 0 hfam h00
   have hsurj := (hexp _ (hfib 0 h00).1 (hfib 0 h00).2).1
   have hspan : Submodule.span ℂ {w | ex (e0.symm 0) w = 1} = ⊤ := by
     refine span_of_isExpAt Z.t _ (ex (e0.symm 0)) hsurj ?_ (hexp _ (hfib 0 h00).1 (hfib 0 h00).2).2
@@ -280,7 +281,7 @@ theorem exists_framed_of_chart {n a : ℕ} (e0 : OpenPartialHomeomorph (CxPts (g
       have hd : DifferentiableAt ℂ ζ z := (han z (hsubρ hz')).differentiableAt
       exact (differentiableAt_pi.1 (differentiableAt_pi.1 hd (κ j)) i).differentiableWithinAt
     exact h
-  obtain ⟨e, ex', hch, hsrc, hee, hex'⟩ := GlobalTheory.T.exists_exponentialChart_rescale_frameChange E H Dw l Xo c O β Z σ n g e0 ex ρ
+  obtain ⟨e, ex', hch, hsrc, hee, hex'⟩ := _root_.GlobalTheory.ShFam.Hor.LogCh.exists_isExpChart_rescale E H Dw l Xo c O β Z σ n g e0 ex ρ
     (fun z => colMat κ (ζ z)) hρ (hsubρ.trans hball) hhol hsymm
     (LocLift.isHolTo_mono hhol2 (isOpen_ball.prod isOpen_univ) (Set.prod_mono hsubρ subset_rfl))
     (fun x hx hn => (hexp x hx (by linarith)).2) hdiff (fun z hz' => hdet z (hsubρ hz'))
@@ -339,7 +340,7 @@ end Main
 theorem exists_framed_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (σ : c.F →+* ℂ) (x₀ : CxPts (genStr T.Z) σ), ∃ (n a g r₀ : ℕ) (e : OpenPartialHomeomorph (CxPts (genStr T.Z) σ) (Fin n → ℂ)) (ex : ExpMaps T.Z σ g) (ζ : (Fin n → ℂ) → Fin r₀ → Fin g → ℂ), x₀ ∈ e.source ∧ e x₀ = 0 ∧ IsExpChart e ex ∧ (∀ x ∈ e.source, Inner x ↔ ∀ k : Fin n, (k : ℕ) < a → e x k ≠ 0) ∧ Function.Surjective (ex x₀) ∧ AnalyticOnNhd ℂ ζ (Metric.ball 0 1) ∧ (∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, LinearIndependent ℝ (ζ z)) ∧ (∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ i, ex (e.symm z) (ζ z i) = 1) ∧ IsLatBasis {w | ex x₀ w = 1} (ζ 0) ∧ (∃ C : ℝ, ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ‖ζ z‖ ≤ C) ∧ ∀ j : Fin g, ∃ i, ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ζ z i = Pi.single j 1 := by
   intro E _ _ _ H Dw l Xo c O _ β Y T σ x₀
   obtain ⟨a, e0, hx₀, he0, hhol, hsymm, hbd⟩ :=
-    GlobalTheory.T.exists_snc_coordinates_complexPoint_smoothVariety c.F (gen T.Z) (genStr T.Z) Dw.dim (genBd T.Z) σ T.smooth T.snc x₀
+    _root_.GlobalTheory.SncChart.exists_coords c.F (gen T.Z) (genStr T.Z) Dw.dim (genBd T.Z) σ T.smooth T.snc x₀
   have hsym0 : e0.symm 0 = x₀ := by rw [← he0]; exact e0.left_inv hx₀
   have h0t : (0 : Fin Dw.dim → ℂ) ∈ e0.target := he0 ▸ e0.map_source hx₀
   obtain ⟨g, r₀, e, ex, ζ, h⟩ := exists_framed_of_chart (a := a) e0 h0t hhol hsymm hbd

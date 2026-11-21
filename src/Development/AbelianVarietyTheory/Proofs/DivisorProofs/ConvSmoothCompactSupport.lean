@@ -4,8 +4,8 @@ import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar
 import GroundTheory.AutomorphicForms.HarishChandraInvariance.Compact
 import GroundTheory.AutomorphicForms.DixmierMalliavin
 import GroundTheory.AutomorphicForms.GKModules.ParametricIntegral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralInvLeOfSupportCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothFunIntegralMulRightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralInvLeOfSupportCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothFunIntegralMulRight
 open MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff
 
@@ -33,7 +33,7 @@ theorem isSmoothFun_density {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ �
     have : ∀ y ∈ Lᶜ, (p y : ENNReal) = 0 := fun y hy => by simp [hpL y hy]
     rw [setLIntegral_congr_fun hL.isClosed.measurableSet.compl this]
     simp
-  have key := GlobalTheory.T.isSmoothFun_integral_mul_right' 𝔸 G 𝔤 h ν L hL hνL κ hκ
+  have key := _root_.GlobalTheory.isSmoothFun_integral_mul_right 𝔸 G 𝔤 h ν L hL hνL κ hκ
   convert key using 2 with z
   rw [hν, integral_withDensity_eq_integral_smul hp]
   congr 1
@@ -60,7 +60,7 @@ theorem conv_smooth_compactSupport : ∀ (𝔸 : Type) [NormedRing 𝔸] [Normed
     have hbm : Measurable b := ha.comp measurable_inv
     have hbK : ∀ y ∉ K⁻¹, b y = 0 := fun y hy => haK _ (by simpa [Set.mem_inv] using hy)
     have hbi : Integrable b μ := by
-      obtain ⟨B, hB⟩ := GlobalTheory.T.lintegral_inv_le_of_support_compact_alt G μ hμ K hK
+      obtain ⟨B, hB⟩ := _root_.GlobalTheory.lintegral_inv_le_of_support_compact G μ hμ K hK
       refine ⟨hbm.aestronglyMeasurable, ?_⟩
       have h1 := hB (fun x => ‖a x‖ₑ) ha.enorm (fun x hx => by simp [haK x hx])
       exact lt_of_le_of_lt h1 (ENNReal.mul_lt_top ENNReal.coe_lt_top hai.2)

@@ -15,10 +15,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SchurOrthogonalitySquareIntegrable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PartW
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedThetaLiftInnerProductFormulaOfPublishedStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorMatrixCoefficientFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLevelIndexMulSchwartzNormFormulaStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDatumSourceLevelCharacterLawStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedThetaLiftInnerProductFormulaOfHyp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorMatrixCoefficientFormula
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfLinearCocycle
+import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.HeckeCharacterParameters
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLevelIndexMulSchwartzNormFormula
+import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LocalIntegralGL
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDatumSourceLevelCharacterLaw
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteZetaIntegralThetaLiftEqPartialLValueStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowestKTypeCoefficientsSqIntegrable
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PrimeToHostCore
@@ -44,11 +47,11 @@ theorem aFormL : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Pub
   have hHM := GlobalTheory.HarmModule.harmonicModule_of GlobalTheory.FockDecay.harmonicDecay GlobalTheory.CartanInt.coshIntegral
   have hPM := GlobalTheory.PlaceTensor.placeModels D
   exact GlobalTheory.LiftScalarL.aForm R F
-    (GlobalTheory.T.finiteDatum_sourceLevelCharacter_law GlobalTheory.SingleBlock.localIntegralSingleBlock R F hPM)
-    (GlobalTheory.T.twistedThetaLift_innerProductFormula_of_hypotheses hCusp hWS hSE R F hG.params)
-    (GlobalTheory.T.fockVector_matrixCoefficient_formula hHM R F hPM)
+    (_root_.GlobalTheory.SourceLaw.sourceLevelLaw GlobalTheory.SingleBlock.localIntegralSingleBlock R F hPM)
+    (_root_.GlobalTheory.innerProductFormula_of_hypotheses hCusp hWS hSE R F hG.params)
+    (_root_.GlobalTheory.FockCoeffImage.fockCoefficientC hHM R F hPM)
     (GlobalTheory.T.finiteZetaIntegral_thetaLift_eq_partialLValue hCusp hBZ hUD R F)
-    (GlobalTheory.T.thetaLevelIndex_mul_schwartzNorm_formula GlobalTheory.SingleBlock.localIntegralSingleBlock R F hPM)
+    (_root_.GlobalTheory.LevelIndex.levelIndexNormC GlobalTheory.SingleBlock.localIntegralSingleBlock R F hPM)
     (GlobalTheory.RealCoefSq.lowestKType_coefficients_sq_integrable R F hG.core)
     hG hc SF hSF
 

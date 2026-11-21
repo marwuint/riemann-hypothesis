@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueOpenChartsAdditiveFamiliesRepresentingStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueOpenChartsAdditiveFamiliesRepresenting
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsAdditiveLineBundleFamiliesUniqueIsoStatement
 
@@ -84,7 +84,7 @@ theorem zariski_glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianSc
   have hrep' : ∀ i, ∃ (B : Over S) (b : B ⟶ Over.mk (V i).ι) (P : LB (A ⊗ B).left),
       Rep A b P ∧ GlobalTheory.DualCon.Good (g i) b.left := hrep
   choose Bi bi Pi hRi hGi using hrep'
-  obtain ⟨B, P, j, hR, -, -, -⟩ := GlobalTheory.T.glue_openCharts_additiveFamilies_representing S A hA Ix Bi Pi
+  obtain ⟨B, P, j, hR, -, -, -⟩ := _root_.GlobalTheory.PicGlue.glue S A hA Ix Bi Pi
     (fun i => isChart_of_rep (V i) (bi i) (hRi i)) (by
       intro K _ _ s N hN
       obtain ⟨i, hi⟩ := hcov (s (default : Sp K))

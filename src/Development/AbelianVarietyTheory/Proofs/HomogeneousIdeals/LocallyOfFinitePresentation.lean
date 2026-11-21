@@ -19,9 +19,6 @@ theorem algHom_surjective : Function.Surjective p :=
 theorem flat_algebra [Module.Flat R B] : Module.Flat R A :=
   Module.Flat.of_retract s.toLinearMap p.toLinearMap (LinearMap.ext fun a ↦ congr($h a))
 
-theorem finite_algebra [Module.Finite R B] : Module.Finite R A :=
-  Module.Finite.of_surjective p.toLinearMap (algHom_surjective s p h)
-
 theorem finiteType_algebra [Algebra.FiniteType R B] : Algebra.FiniteType R A :=
   Algebra.FiniteType.of_surjective p (algHom_surjective s p h)
 
@@ -70,9 +67,6 @@ theorem smooth_algebra [Algebra.Smooth R B] : Algebra.Smooth R A :=
 theorem etale_algebra [Algebra.Etale R B] : Algebra.Etale R A :=
   ⟨formallyEtale_algebra s p h, finitePresentation_algebra s p h⟩
 
-theorem quasiFinite_algebra [Algebra.QuasiFinite R B] : Algebra.QuasiFinite R A :=
-  Algebra.QuasiFinite.of_surjective_algHom p (algHom_surjective s p h)
-
 end Algebra
 
 section Local
@@ -105,17 +99,6 @@ theorem exists_affine_le (hir : i ≫ r = 𝟙 X) (x : X) (O : X.Opens) (hx : x 
     rwa [apply_apply hir]
   · rw [hV]
     exact inf_le_right
-
-theorem exists_affine (hir : i ≫ r = 𝟙 X) (hr : r ≫ f = g) (x : X) :
-    ∃ (U : X.Opens) (V : Y.Opens) (W : S.Opens),
-      IsAffineOpen U ∧ IsAffineOpen V ∧ IsAffineOpen W ∧ x ∈ U ∧
-      U ≤ i ⁻¹ᵁ V ∧ V ≤ r ⁻¹ᵁ U ∧ U ≤ f ⁻¹ᵁ W ∧ V ≤ g ⁻¹ᵁ W := by
-  obtain ⟨W, hW, hxW, -⟩ := Opens.isBasis_iff_nbhd.mp S.isBasis_affineOpens (Opens.mem_top (f x))
-  obtain ⟨U, V, hU, hV, hxU, hUW, hUV, hVU⟩ := exists_affine_le hir x (f ⁻¹ᵁ W) hxW
-  refine ⟨U, V, W, hU, hV, hW, hxU, hUV, hVU, hUW, ?_⟩
-  subst hr
-  intro y hy
-  exact hUW (hVU hy)
 
 theorem appLE_comp_appLE (hir : i ≫ r = 𝟙 X) {U : X.Opens} {V : Y.Opens}
     (hUV : U ≤ i ⁻¹ᵁ V) (hVU : V ≤ r ⁻¹ᵁ U) :
@@ -220,16 +203,6 @@ theorem etale [hg : Etale g] : Etale f :=
     rw [RingHom.etale_algebraMap] at H ⊢
     exact etale_algebra s p h) hir hr hg
 
-theorem formallyUnramified [hg : FormallyUnramified g] : FormallyUnramified f :=
-  of_hasRingHomProperty @FormallyUnramified (fun s p h H ↦ by
-    rw [RingHom.formallyUnramified_algebraMap] at H ⊢
-    exact formallyUnramified_algebra s p h) hir hr hg
-
-theorem locallyQuasiFinite [hg : LocallyQuasiFinite g] : LocallyQuasiFinite f :=
-  of_hasRingHomProperty @LocallyQuasiFinite (fun s p h H ↦ by
-    rw [RingHom.quasiFinite_algebraMap] at H ⊢
-    exact quasiFinite_algebra s p h) hir hr hg
-
 end RingHomProperty
 
 section Absolute
@@ -240,30 +213,11 @@ include hir
 theorem surjective_retraction : Surjective r :=
   ⟨fun x ↦ ⟨i x, apply_apply hir x⟩⟩
 
-theorem surjective_of_isPullback {T Z : Scheme.{u}} {t : T ⟶ X} {a : Z ⟶ Y} {r' : Z ⟶ T}
-    (h : IsPullback a r' r t) : Surjective r' :=
-  MorphismProperty.of_isPullback (P := @Surjective) h (surjective_retraction hir)
-
 theorem mono_section : Mono i :=
   (SplitMono.mk r hir).mono
 
 theorem connectedSpace [ConnectedSpace Y] : ConnectedSpace X :=
   (surjective_retraction hir).surj.connectedSpace r.continuous
-
-theorem irreducibleSpace [IrreducibleSpace Y] : IrreducibleSpace X :=
-  (surjective_retraction hir).surj.irreducibleSpace r.continuous
-
-theorem isReduced [IsReduced Y] : IsReduced X := by
-  refine ⟨fun U ↦ ?_⟩
-  have hUV : U ≤ i ⁻¹ᵁ r ⁻¹ᵁ U := fun x hx ↦ by
-    change r (i x) ∈ U
-    rwa [apply_apply hir]
-  refine isReduced_of_injective (r.appLE U (r ⁻¹ᵁ U) le_rfl).hom
-    (Function.LeftInverse.injective (g := (i.appLE (r ⁻¹ᵁ U) U hUV).hom) fun a ↦ ?_)
-  exact congr($(appLE_comp_appLE hir hUV le_rfl).hom a)
-
-theorem isIntegral [IsIntegral Y] : IsIntegral X :=
-  (isIntegral_iff_irreducibleSpace_and_isReduced X).mpr ⟨irreducibleSpace hir, isReduced hir⟩
 
 end Absolute
 
@@ -279,21 +233,12 @@ theorem isClosedImmersion_section [IsSeparated g] : IsClosedImmersion i := by
   have : IsClosedImmersion (i ≫ r) := by rw [hir]; infer_instance
   exact IsClosedImmersion.of_comp i r
 
-theorem surjective [Surjective g] : Surjective f := by
-  subst hr
-  exact Surjective.of_comp r f
-
 theorem quasiCompact [QuasiCompact g] : QuasiCompact f := by
   subst hr
   refine ⟨fun U hU hU' ↦ ?_⟩
   have := (QuasiCompact.isCompact_preimage (f := r ≫ f) U hU hU').image r.continuous
   rwa [Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp,
     Set.image_preimage_eq _ (surjective_retraction hir).surj] at this
-
-theorem quasiSeparated [QuasiSeparated g] : QuasiSeparated f := by
-  have := mono_section hir
-  rw [← section_comp hir hr]
-  infer_instance
 
 theorem isSeparated [IsSeparated g] : IsSeparated f := by
   have := mono_section hir
@@ -306,11 +251,6 @@ theorem universallyClosed [UniversallyClosed g] : UniversallyClosed f := by
   exact UniversallyClosed.of_comp_surjective r f
 
 theorem isProper [IsProper g] : IsProper f := by
-  have := isClosedImmersion_section hir hr
-  rw [← section_comp hir hr]
-  infer_instance
-
-theorem isAffineHom [IsAffineHom g] : IsAffineHom f := by
   have := isClosedImmersion_section hir hr
   rw [← section_comp hir hr]
   infer_instance
@@ -329,15 +269,6 @@ theorem geometrically (P : ObjectProperty Scheme.{u})
 
 theorem geometricallyConnected [hg : GeometricallyConnected g] : GeometricallyConnected f :=
   ⟨geometrically hir hr _ (fun _ _ h _ ↦ connectedSpace h) hg.1⟩
-
-theorem geometricallyIrreducible [hg : GeometricallyIrreducible g] : GeometricallyIrreducible f :=
-  ⟨geometrically hir hr _ (fun _ _ h _ ↦ irreducibleSpace h) hg.1⟩
-
-theorem geometricallyReduced [hg : GeometricallyReduced g] : GeometricallyReduced f :=
-  ⟨geometrically hir hr _ (fun _ _ h _ ↦ isReduced h) hg.1⟩
-
-theorem geometricallyIntegral [hg : GeometricallyIntegral g] : GeometricallyIntegral f :=
-  ⟨geometrically hir hr _ (fun _ _ h _ ↦ isIntegral h) hg.1⟩
 
 theorem properties :
     (LocallyOfFiniteType g → LocallyOfFiniteType f) ∧

@@ -1,8 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPowDivPrimeZpowIntegralClosureUnitStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPowDivPrimeZpowIntegralClosureUnit
+import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricFixedMemClosureFiniteAlgZpStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerParameterNotPowModMaximalIdealAdjoinAlgebraStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerParameterNotPowModMaximalIdealAdjoinAlgebra
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ResidueTowerPowersLinearIndependentStatement
 open GlobalTheory.K5
 
@@ -162,7 +163,7 @@ theorem orth : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 
   by_contra hne
   push_neg at hne
   obtain ⟨l, hlalg, ⟨m0, hm0, hlsm⟩, hlint, j0, hj0, hj0ns⟩ :=
-    normalize h (GlobalTheory.T.exists_pow_div_prime_zpow_integralClosure_unit p Ω h) (p ^ N) c hne
+    normalize h (_root_.GlobalTheory.K5.exists_pow_div_p_zpow_isInt p Ω h) (p ^ N) c hne
   choose S hSalg hSmem using fun j => GlobalTheory.T.geometric_fixed_mem_closure_finite_algZp p Ω h (c j) (hfix j)
   let S' : Finset Ω := insert l ((Finset.range (p ^ N)).biUnion S)
   have hS'alg : ∀ s ∈ S', IsAlgZp p s := by
@@ -190,7 +191,7 @@ theorem orth : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 
     refine ⟨m0, hm0, ?_⟩
     rw [hsum, mul_pow, mul_div_right_comm]
     exact hlsm.mul (hint.pow m0)
-  have := GlobalTheory.T.residue_tower_powers_linearIndependent p Ω h E hrange (GlobalTheory.T.towerParameter_not_pow_mod_maximalIdeal_adjoin_algebraic p Ω h S' hS'alg) T N (fun j => l * c j)
+  have := GlobalTheory.T.residue_tower_powers_linearIndependent p Ω h E hrange (_root_.GlobalTheory.K5.NotPow.not_pow_mod_max p Ω h S' hS'alg) T N (fun j => l * c j)
     (fun j hj => ⟨E.mul_mem hlE (hcE j hj), hlint j hj⟩) hsmall j0 hj0
   exact hj0ns this
 

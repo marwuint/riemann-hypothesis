@@ -86,9 +86,6 @@ def HoweAlg {T : Type} {R S : T → ℕ} {V : Type} [AddCommGroup V] [Module ℂ
   (∃ L : ℕ, ∀ (m : ℕ) (N : Fin m → Submodule ℂ V), StrictMono N → (∀ k, (∀ w, Stab (a w) (N k)) ∧ C ≤ N k) → m ≤ L) ∧
   ∀ N N' : Submodule ℂ V, (∀ w, Stab (a w) N) → C ≤ N → N ≠ ⊤ → (∀ w, Stab (a w) N') → C ≤ N' → N' ≠ ⊤ → N ⊔ N' ≠ ⊤
 
-example : IsGl (fun _ _ : Fin 2 => (0 : Module.End ℂ ℂ)) ∧ cas (fun _ : Fin 2 => true) (fun _ _ => (0 : Module.End ℂ ℂ)) = 0 := by
-  refine ⟨fun a b c d => by simp, by simp [cas]⟩
-
 end GlobalTheory.HoweR
 
 end

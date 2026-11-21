@@ -60,31 +60,10 @@ theorem vPsiAt_eq (A : DatAt Y P) (χ : A.Ylat) : (∃ r, PsiCoord A.U.D.toPre �
   simp only [vPsiAt, dif_pos hex]
   rw [hu, map_mul, norm_mul, h4, one_mul]
 
-theorem natCast_mem (hp : 1 < p) (A : DatAt Y P) : (p : A.R) ∈ maximalIdeal A.R := by
-  rw [mem_maximalIdeal, mem_nonunits_iff]
-  intro hu
-  obtain ⟨u, hu'⟩ := hu.exists_right_inv
-  have h := congrArg (fun x => ‖fC A x‖) hu'
-  simp only [map_mul, map_natCast, map_one, norm_mul, norm_one, C.norm_p] at h
-  have hp' : (1 : ℝ) < p := by exact_mod_cast hp
-  have h4 : (p : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ hp'
-  have h5 : (0 : ℝ) < (p : ℝ)⁻¹ := by positivity
-  nlinarith [norm_le A u]
-
 theorem betaAdd (Y : Model Xo c β) (p : ℕ) : BetaAdd Y p := fun _ _ A =>
   (BetaAdd.main A.R A.U.D _ _ p A.normal (norm_le A) (coord_ne_zero A)).1
 
 theorem beta_balanced (A : DatAt Y P) (x : 𝓞 E) (a b : A.Ylat) : A.beta (x • a) b = A.beta a (H.bar x • b) :=
   PeriodBalance.betaAt_balanced E H A.R A.t A.U _ _ p A.normal (norm_le A) (coord_ne_zero A) x a b
-
-theorem beta_self_pos (hp : 1 < p) (A : DatAt Y P) (a : A.Ylat) (ha : a ≠ 0) : 0 < A.beta a a := by
-  have h := (BetaAdd.main A.R A.U.D _ _ p A.normal (norm_le A) (coord_ne_zero A)).2 a
-  obtain ⟨⟨r, hr, -, hm, -⟩, -⟩ := PsiCoordLocal.main A.R A.U.D A.normal a
-  have h1 : ‖fC A r‖ < 1 := A.f_loc r (hm ha)
-  have h2 : 0 < ‖fC A r‖ := norm_pos_iff.2 (coord_ne_zero A a r hr)
-  have h3 := Real.logb_neg (b := p) (by exact_mod_cast hp) h2 h1
-  have h4 := (vPsiAt_eq A a).2 r hr
-  change 0 < betaAt A.U.D.toPre (fC A) p a a
-  rw [h, h4]; linarith
 
 end GlobalTheory.DatAtCheck

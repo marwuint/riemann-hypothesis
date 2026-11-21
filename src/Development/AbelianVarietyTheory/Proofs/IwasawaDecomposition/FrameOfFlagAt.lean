@@ -238,6 +238,4 @@ end GlobalTheory.LocM.Cht.FamPf
 
 namespace GlobalTheory.LocM.Cht
 
-open GlobalTheory.LocM.Cht.FamPf
-
 end GlobalTheory.LocM.Cht

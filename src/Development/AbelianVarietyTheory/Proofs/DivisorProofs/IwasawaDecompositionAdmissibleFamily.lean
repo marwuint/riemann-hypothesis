@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleAdelicMatrixFamilyOrdersFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdmissibleAdelicMatrixFamilyOrdersFinite
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
@@ -35,7 +35,7 @@ lemma val_sign (v : Place k F) {n : ℕ} (σ : Equiv.Perm (Fin n)) : v.1 ((Equiv
 
 lemma exists_u (v : Place k F) {r : ℕ} (y : Fin (r+1) → F) (hy : y ≠ 0) :
     ∃ u : Matrix (Fin (r+1)) (Fin (r+1)) F, Unimod v u ∧ ∀ a : Fin r, (u *ᵥ y) a.succ = 0 := by
-  obtain ⟨-, -, -, -, -, -, hmax, -⟩ := GlobalTheory.T.functionFieldPlaceOrder_calculus k F v
+  obtain ⟨-, -, -, -, -, -, hmax, -⟩ := _root_.GlobalTheory.Nef.ord_calculus k F v
   obtain ⟨i, hi, -, -, hle⟩ := hmax (r+1) y hy
   set c : Fin (r+1) → F := fun j => if j = i then 0 else y j / y i with hc
   set u0 : Matrix (Fin (r+1)) (Fin (r+1)) F := 1 + Matrix.vecMulVec (-c) (Pi.single i 1) with hu0
@@ -86,8 +86,8 @@ lemma unimod_ae [IsAlgClosed k] [CharZero k] (hF : IsFF k F) {n : ℕ} (h : Matr
     intro c
     by_cases hc : c = 0
     · simp [hc]
-    · exact (GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hF c hc).1.subset fun v hv h1 => hv (le_of_eq h1)
-  refine ((GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hF _ hd).1.union (Set.finite_iUnion fun p : Fin n × Fin n => fin1 (h p.1 p.2))).subset ?_
+    · exact (_root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k F hF c hc).1.subset fun v hv h1 => hv (le_of_eq h1)
+  refine ((_root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k F hF _ hd).1.union (Set.finite_iUnion fun p : Fin n × Fin n => fin1 (h p.1 p.2))).subset ?_
   intro v hv
   simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_iUnion]
   by_contra hc; push_neg at hc
@@ -109,7 +109,7 @@ lemma unimod_pull {E : Type} [Field E] [Algebra k E] [Algebra F E] (ρ : Place k
 lemma ordVec_pull {E : Type} [Field E] [Algebra k E] [Algebra F E] (ρ : Place k E → Place k F) (hρ : IsRes ρ)
     {n : ℕ} (u g h : Place k F → Matrix (Fin n) (Fin n) F) (hu : ∀ v, Unimod v (u v)) (p : Place k E) (w : Fin n → E) :
     ordVec p (pullAd ρ (fun v => u v * g v * h v) p *ᵥ w) = ordVec p (pullAd ρ g p *ᵥ ((h (ρ p)).map (algebraMap F E) *ᵥ w)) := by
-  obtain ⟨-, -, -, -, -, -, -, -, hnrm, -⟩ := GlobalTheory.T.functionFieldPlaceOrder_calculus k E p
+  obtain ⟨-, -, -, -, -, -, -, -, hnrm, -⟩ := _root_.GlobalTheory.Nef.ord_calculus k E p
   simp only [pullAd, Matrix.map_mul]
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
   simp only [ordVec, hnrm _ _ _ (unimod_pull ρ hρ p _ (hu (ρ p)))]
@@ -143,7 +143,7 @@ theorem GlobalTheory.iwasawa_family : ∀ (k F : Type) [Field k] [IsAlgClosed k]
 
   have hov : ∀ v, ordVec v (g v *ᵥ x) = ord v ((u v * g v * h) 0 0) := by
     intro v
-    obtain ⟨-, -, -, -, -, -, hmax, -, hnrm, -⟩ := GlobalTheory.T.functionFieldPlaceOrder_calculus k F v
+    obtain ⟨-, -, -, -, -, -, hmax, -, hnrm, -⟩ := _root_.GlobalTheory.Nef.ord_calculus k F v
     have hzne : u v *ᵥ (g v *ᵥ x) ≠ 0 := fun h0 => hdu v (Matrix.exists_mulVec_eq_zero_iff.1 ⟨_, hy v, h0⟩)
     obtain ⟨i, hi, -, hoi, -⟩ := hmax _ _ hzne
     have hi0 : i = 0 := by
@@ -157,17 +157,17 @@ theorem GlobalTheory.iwasawa_family : ∀ (k F : Type) [Field k] [IsAlgClosed k]
 
   have hpt : ∀ v, ord v (g v).det + ord v h.det = ord v ((u v * g v * h) 0 0) + ord v ((u v * g v * h).submatrix Fin.succ Fin.succ).det := by
     intro v
-    obtain ⟨hmul, -, -, hord1, -⟩ := GlobalTheory.T.functionFieldPlaceOrder_calculus k F v
+    obtain ⟨hmul, -, -, hord1, -⟩ := _root_.GlobalTheory.Nef.ord_calculus k F v
     have e1 := hmul _ _ (h00 v) (hdS v)
     rw [← hdetA, Matrix.det_mul, Matrix.det_mul, hmul _ _ (mul_ne_zero (hdu v) (hg.1 v)) hdet,
       hmul _ _ (hdu v) (hg.1 v), (hord1 _ (hdu v)).1 (hu v).2, zero_add] at e1
     exact e1
-  have fg : (Function.support fun v => ord v (g v).det).Finite := (GlobalTheory.T.admissibleAdelicMatrixFamily_orders_finite k F hF _ g hg).1
+  have fg : (Function.support fun v => ord v (g v).det).Finite := (_root_.GlobalTheory.Nef.lineFin k F hF _ g hg).1
   have fh : (Function.support fun v : Place k F => ord v h.det).Finite := by
-    refine (GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hF _ hdet).1.subset fun v hv h1 => hv ?_
-    exact ((GlobalTheory.T.functionFieldPlaceOrder_calculus k F v).2.2.2.1 _ hdet).1 h1
+    refine (_root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k F hF _ hdet).1.subset fun v hv h1 => hv ?_
+    exact ((_root_.GlobalTheory.Nef.ord_calculus k F v).2.2.2.1 _ hdet).1 h1
   have fc : (Function.support fun v => ord v ((u v * g v * h) 0 0)).Finite := by
-    refine ((GlobalTheory.T.admissibleAdelicMatrixFamily_orders_finite k F hF _ g hg).2 x hx).1.subset fun v hv h1 => hv ?_
+    refine ((_root_.GlobalTheory.Nef.lineFin k F hF _ g hg).2 x hx).1.subset fun v hv h1 => hv ?_
     show ord v ((u v * g v * h) 0 0) = 0
     rw [← hov, ordVec, h1]; simp
   have fd : (Function.support fun v => ord v ((u v * g v * h).submatrix Fin.succ Fin.succ).det).Finite := by
@@ -183,12 +183,12 @@ theorem GlobalTheory.iwasawa_family : ∀ (k F : Type) [Field k] [IsAlgClosed k]
   · refine ((hg.2).union (GlobalTheory.IwaFam.unimod_ae hF h hdet)).subset fun v hv => ?_
     by_contra hc
     simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc hv
-    obtain ⟨-, -, -, -, -, -, -, -, -, hprod⟩ := GlobalTheory.T.functionFieldPlaceOrder_calculus k F v
+    obtain ⟨-, -, -, -, -, -, -, -, -, hprod⟩ := _root_.GlobalTheory.Nef.ord_calculus k F v
     exact hv ((hprod _ _ _ ((hprod _ _ _ (hu v) hc.1).1) hc.2).1)
   · refine ((hg.2).union (GlobalTheory.IwaFam.unimod_ae hF h hdet)).subset fun v hv => ?_
     by_contra hc
     simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc hv
-    obtain ⟨-, -, -, -, -, -, -, -, -, hprod⟩ := GlobalTheory.T.functionFieldPlaceOrder_calculus k F v
+    obtain ⟨-, -, -, -, -, -, -, -, -, hprod⟩ := _root_.GlobalTheory.Nef.ord_calculus k F v
     have hA := (hprod _ _ _ ((hprod _ _ _ (hu v) hc.1).1) hc.2).1
     refine hv ⟨fun i j => hA.1 i.succ j.succ, ?_⟩
     have e := hA.2
@@ -196,7 +196,7 @@ theorem GlobalTheory.iwasawa_family : ∀ (k F : Type) [Field k] [IsAlgClosed k]
     exact GlobalTheory.IwaFam.eq_one_of_mul (hA.1 0 0)
       (GlobalTheory.IwaFam.val_det_le_one v _ fun i j => hA.1 i.succ j.succ) e
   · unfold deg
-    rw [← hline, ← finsum_add_distrib fc fd, ← add_zero (∑ᶠ v, ord v (g v).det), ← (GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hF _ hdet).2,
+    rw [← hline, ← finsum_add_distrib fc fd, ← add_zero (∑ᶠ v, ord v (g v).det), ← (_root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k F hF _ hdet).2,
       ← finsum_add_distrib fg fh]
     exact finsum_congr hpt
   · intro b hb E _ _ _ _ _ ρ hρ w hw

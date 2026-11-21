@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PermMMulTranspose
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentHaarRealSUOfMap
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianHaarLeOneOfDimZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentNormalizedHaarLeTwoMulLieHaarStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameBallSubsetExpChartImageFrameBoxStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianLieMeasureFrameBoxLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianHaarLeOneOfDimZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentNormalizedHaarLeTwoMulLieHaar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameBallSubsetExpChartImageFrameBox
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianLieMeasureFrameBoxLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianHaarIndependentOfOrthonormalFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalCongruenceConjMemArithmeticGroup
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpqLocallyCompactGroup
@@ -105,7 +105,7 @@ theorem riemHaar_frBall_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   by_cases hd : Ψ.card * (r ^ 2 - 1) = 0
   · refine ⟨1, one_pos, fun ε _ _ => ?_⟩
     rw [hd, pow_zero, ENNReal.ofReal_one]
-    exact GlobalTheory.T.riemannianHaar_le_one_of_dim_zero E r Ψ G x hr hx hd _
+    exact _root_.GlobalTheory.SUVol.Degenerate.riemHaar_le_one E r Ψ G x hr hx hd _
   have hΨ : 0 < Ψ.card := Nat.pos_of_ne_zero fun h => hd (by rw [h, zero_mul])
   obtain ⟨τ₀, hτ₀⟩ := Finset.card_pos.1 hΨ
   have hG : G.det ≠ 0 := (isIdent_det hI ⟨τ₀, hτ₀⟩).2
@@ -116,8 +116,8 @@ theorem riemHaar_frBall_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     omega
   have hd3 : 3 ≤ Ψ.card * (r ^ 2 - 1) := le_trans hr2 (Nat.le_mul_of_pos_left _ hΨ)
   obtain ⟨lam, hlam, hmap⟩ := exists_lam Ψ G x hx
-  obtain ⟨δ, hδ, hup⟩ := GlobalTheory.T.tangentNormalizedHaar_le_two_mul_lieHaar E r Ψ G hG lam
-  obtain ⟨ε₀, hε₀, hcov⟩ := GlobalTheory.T.frameBall_subset_expChart_image_frameBox E r Ψ G x hG hx δ hδ
+  obtain ⟨δ, hδ, hup⟩ := _root_.GlobalTheory.CovTop.VolUp.UpDens.tangentHaar_le_two_mul_lam E r Ψ G hG lam
+  obtain ⟨ε₀, hε₀, hcov⟩ := _root_.GlobalTheory.CovTop.VolUp.BallCover.frBall_subset_chartExp_image E r Ψ G x hG hx δ hδ
   refine ⟨ε₀, hε₀, fun ε hε hεε => ?_⟩
   set S : Set (Ψ → Fin r → Fin r → ℂ) :=
     {X | ∀ τ a b, ‖((mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ) a b‖ < 2 * ε} with hS
@@ -144,7 +144,7 @@ theorem riemHaar_frBall_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have h2 : lam s ≤ riemLie Ψ G x S := by
     rw [← hmap, Measure.map_apply measurable_subtype_coe hSm, hs']
     exact measure_mono Set.inter_subset_right
-  have h3 := GlobalTheory.T.riemannianLieMeasure_frameBox_le E r κ p q Ψ G x σ A e hr hI (2 * ε) (by positivity)
+  have h3 := _root_.GlobalTheory.CovTop.VolUp.FrameBox.riemLie_frameBox_le E r κ p q Ψ G x σ A e hr hI (2 * ε) (by positivity)
   have h4 : 2 * lam s ≤ 2 * ENNReal.ofReal ((3 * (2 * ε)) ^ (Ψ.card * (r ^ 2 - 1))) := by
     gcongr; exact h2.trans h3
   refine h1.trans (h4.trans ?_)

@@ -2,7 +2,8 @@ import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.FormZeroEqSlotPairingOfLe
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.MemLevelZeroOfMemGroup
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ExistsNormBoundThreeFamilies
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RadialModuleFormOfXiExists
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelFormSesquilinearFiniteClass
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BetaIntegrandIntegrableOfXiExists
 
 namespace GlobalTheory.ListDuality
 
@@ -271,9 +272,6 @@ theorem listDuality_cpt (hRMF : Formalism.FourierDecayAlt.JC.RadialModuleForm) :
   refine final_ineq Cst _ _ _ _ _ hQ (fun z hz => ?_) hAi hBi hdk
   obtain ⟨y, hy, rfl⟩ := List.mem_map.1 hz
   exact hqpos y hy
-
-theorem listDuality_cpt_of_bessel (h : GlobalTheory.HCXi.BesselXiIntegrable) : Formalism.FourierDecayAlt.KB.SizeStdCpt :=
-  listDuality_cpt (GlobalTheory.RadialModule.radialModuleForm_of_bessel h)
 
 end
 

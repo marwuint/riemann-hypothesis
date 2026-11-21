@@ -285,9 +285,6 @@ theorem splitEquiv_val (g : GLoc σ J v) : (splitEquiv h hJ τ g).1 = (matHom _ 
 
 theorem splitEquiv_symm_apply (x : GL (Fin n) (Fv F v)) : (splitEquiv h hJ τ).symm x = splitLift h hJ τ x := rfl
 
-theorem splitEquiv_comp (g : GLoc σ J v) :
-    splitEquiv h hJ (τ.comp σ) g = dualConj (splitGram hJ τ) (splitEquiv h hJ τ g) := splitHom_comp hJ τ g
-
 theorem splitEquiv_ratLoc (γ : GRat σ J) : (splitEquiv h hJ τ (ratLoc σ J v γ)).1 = γ.1.1.map τ :=
   Matrix.ext fun i j => splitProj_inclR τ (γ.1.1 i j)
 
@@ -595,9 +592,6 @@ theorem splitRed_eq_one_iff (k : stabLoc σ J L v) : splitRed h hJ hL hβ k = 1 
   rw [hβ.mem_stabLocOne_iff, and_iff_right k.2, ← splitEquivIn_apply h hJ, ← bc_stabLocEquiv h hJ hL hβ]
   exact bc_residue_eq_one_iff
 
-theorem ker_splitRed : (splitRed h hJ hL hβ).ker = (stabLocOne σ J τ L).subgroupOf (stabLoc σ J L v) :=
-  Subgroup.ext (splitRed_eq_one_iff h hJ hL hβ)
-
 end Red
 
 section Swap
@@ -813,42 +807,6 @@ theorem exists_split_place (h : IsCMExt F E σ) : ∃ v : HeightOneSpectrum (�
 omit [NumberField F] [NumberField E] in
 theorem isHermND_one (σ : E →ₐ[F] E) (n : ℕ) : IsHermND σ (1 : Matrix (Fin n) (Fin n) E) :=
   ⟨fun i j => by by_cases e : i = j <;> simp [Matrix.one_apply, e, eq_comm], by simp⟩
-
-theorem exists_split_data (h : IsCMExt F E σ) (n : ℕ) :
-    ∃ (v : HeightOneSpectrum (𝓞 F)) (τ : E →ₐ[F] Fv F v), IsHermND σ (1 : Matrix (Fin n) (Fin n) E) ∧
-      IsSelfDualAt σ 1 (stdLattice E n) v ∧ IsSplitBasis τ (stdLattice E n) 1 := by
-  obtain ⟨v, ⟨τ⟩⟩ := exists_split_place h
-  exact ⟨v, τ, isHermND_one σ n, isSelfDualAt_stdLattice_one σ v, isSplitBasis_stdLattice τ h⟩
-
-example : ∃ v : HeightOneSpectrum (𝓞 (maximalRealSubfield (CyclotomicField 4 ℚ))),
-    Nonempty (CyclotomicField 4 ℚ →ₐ[maximalRealSubfield (CyclotomicField 4 ℚ)] Fv _ v) :=
-  haveI : IsCMField (CyclotomicField 4 ℚ) := IsCyclotomicExtension.Rat.isCMField _ (S := {4}) ⟨4, rfl, by norm_num⟩
-  exists_split_place (isCMExt_of_isCMField _)
-
-example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (g : GLoc σ (1 : Matrix (Fin n) (Fin n) E) v) :
-    (splitEquiv h (isHermND_one σ n) (τ.comp σ) g).1 = ((splitEquiv h (isHermND_one σ n) τ g)⁻¹).1ᵀ := by
-  have e : splitGram (isHermND_one σ n) τ = 1 := Units.ext (Matrix.map_one _ (map_zero τ) (map_one τ))
-  rw [splitEquiv_comp, e, dualConj_one_val]
-
-example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) :
-    stabLocOne σ 1 τ (stdLattice E 2) ≠ stabLoc σ (1 : Matrix (Fin 2) (Fin 2) E) (stdLattice E 2) v := fun e => by
-  obtain ⟨k, hk⟩ := splitRed_surjective h (isHermND_one σ 2) (isSelfDualAt_stdLattice_one σ v)
-    (isSplitBasis_stdLattice τ h) (Matrix.GeneralLinearGroup.mkOfDetNeZero !![1, 1; 0, 1] (by simp))
-  rw [(splitRed_eq_one_iff _ _ _ _ k).2 (e.ge k.2)] at hk
-  simpa using congrArg (fun x => x.1 0 1) hk
-
-example (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) :
-    stabLoc σ (1 : Matrix (Fin 1) (Fin 1) E) (stdLattice E 1) v ≠ ⊤ := fun e => by
-  obtain ⟨p, hp⟩ := HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (1 : ℤ))
-  have h0 : p ≠ 0 := fun e => WithZero.exp_ne_zero (hp.symm.trans ((congrArg _ e).trans (map_zero _)))
-  obtain ⟨g, hg⟩ := (splitEquivIn h (isHermND_one σ 1) τ 1).surjective
-    (Matrix.GeneralLinearGroup.mkOfDetNeZero !![p] (by simpa using h0))
-  have h1 := (mem_stabLoc_iff_GLint h (isHermND_one σ 1) (isSelfDualAt_stdLattice_one σ v)
-    (isSplitBasis_stdLattice τ h)).1 (e ▸ Subgroup.mem_top g)
-  rw [hg] at h1
-  have h2 : Valued.v p ≤ 1 := (mem_GLint_iff.1 h1).1 0 0
-  rw [hp, ← WithZero.exp_zero, WithZero.exp_le_exp] at h2
-  omega
 
 end Inhab
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieBase
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagSpaceComponentCarriesEveryFrameFlagStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFlagComponentPointOverGeometricBasePointStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagSpaceComponentCarriesEveryFrameFlag
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFlagComponentPointOverGeometricBasePoint
 
 set_option autoImplicit false
 
@@ -56,12 +56,12 @@ theorem carries_everywhere : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have tr : ∀ (C : FlagCpt Z e) (p : Sp K ⟶ C.Y.X) (a b : Sp K ⟶ Z.X) (h : a = b) (g₀ : EigFrame Z χ a),
       C.Carries p g₀ → C.Carries p (h ▸ g₀) := by
     intro C p a b h g₀ hg; subst h; exact hg
-  obtain ⟨p, hp⟩ := GlobalTheory.T.exists_flagComponent_point_over_geometricBasePoint E H Dw l Xo c O β Z F e σ N U Φ k X j hj hstr f hf (GlobalTheory.T.flagSpaceComponent_carries_every_frame_flag E H Dw l Xo c O β Z F e σ N U Φ)
+  obtain ⟨p, hp⟩ := _root_.GlobalTheory.FlagCptBase.exists_pt_over_base E H Dw l Xo c O β Z F e σ N U Φ k X j hj hstr f hf (_root_.GlobalTheory.FlagFibre.carries_every E H Dw l Xo c O β Z F e σ N U Φ)
     (fun i K _ χ p h => carry_some E H Dw l Xo c O β Z F e (Φ.C i) K χ p h) K χ x hx
   have hπ : p ≫ (Φ.C k).π = x ≫ j := by rw [← hf, ← Category.assoc, hp]
   obtain ⟨g₀, hg₀⟩ := carry_some E H Dw l Xo c O β Z F e (Φ.C k) K χ p (by rw [← Category.assoc, hπ, Category.assoc]; exact hx)
   have h1 : p ≫ (Φ.C k).π ≫ genι Z = (x ≫ j) ≫ genι Z := by rw [← Category.assoc, hπ]
-  obtain ⟨p', hp', hc⟩ := GlobalTheory.T.flagSpaceComponent_carries_every_frame_flag E H Dw l Xo c O β Z F e σ N U Φ k K χ (x ≫ j) hx' (h1 ▸ g₀) g p hπ (tr _ p _ _ h1 g₀ hg₀)
+  obtain ⟨p', hp', hc⟩ := _root_.GlobalTheory.FlagFibre.carries_every E H Dw l Xo c O β Z F e σ N U Φ k K χ (x ≫ j) hx' (h1 ▸ g₀) g p hπ (tr _ p _ _ h1 g₀ hg₀)
   obtain ⟨q, -, hqu⟩ := Φ.lifts K χ (x ≫ j) hx' g
   have e' := hqu ⟨k, p'⟩ ⟨hp', hc⟩
   refine ⟨p', ⟨(cancel_mono j).1 (by rw [Category.assoc, hf, hp']), hc⟩, fun p₂ ⟨h₂, c₂⟩ => ?_⟩

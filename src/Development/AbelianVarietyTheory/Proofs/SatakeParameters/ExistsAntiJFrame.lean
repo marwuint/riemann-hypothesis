@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.InertPlaceSetting
-import Development.AbelianVarietyTheory.BlockTheory.ThetaLiftGeometry.SphericalThetaInertPlaces
+import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+import Formalism.SatakeDualWeyl.StatementF
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertPlaceHeckeDoubleCosetsInverseRepsLabel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryDivisorDualLabel
 
@@ -341,7 +343,7 @@ theorem exists_antiJ_frame (hU : IsUnramInv ϖ σ q) (n : ℕ) :
     show (B * B).map ι = (1 : Matrix _ _ _).map ι
     rw [Matrix.map_mul, hBι, GlobalTheory.DualDivU.antiJ_sq, Matrix.map_one _ (map_zero ι) (map_one ι)])
   obtain ⟨p, hp⟩ := GlobalTheory.UnitaryDoubleCoset.exists_poly_norm hc
-    (GlobalTheory.T.exists_norm_eq_X_mod_monic_of_adicComplete_involution (v.adicCompletionIntegers K) _ c hc hI hω) hB (IsUnit.of_mul_eq_one _ hBB)
+    (_root_.GlobalTheory.InertNorm.exists_dvd_mul_map_sub_X (v.adicCompletionIntegers K) _ c hc hI hω) hB (IsUnit.of_mul_eq_one _ hBB)
   have h1 : (B * cT c (Polynomial.aeval B p)) * Polynomial.aeval B p = 1 := by rw [Matrix.mul_assoc, hp, hBB]
   refine ⟨bc ι ⟨Polynomial.aeval B p, _, mul_eq_one_comm.1 h1, h1⟩, ⟨_, rfl⟩, ?_⟩
   show cT σ ((Polynomial.aeval B p).map ι) * 1 * (Polynomial.aeval B p).map ι = _
@@ -364,28 +366,6 @@ theorem dc_GU (hU : IsUnramInv ϖ σ q) {g g' : GU σ n} {a b : GL (Fin n) (v.ad
   simp only [Subgroup.coe_mul, e₁, e₂]
   calc (g' : GL (Fin n) (v.adicCompletion K)) = h⁻¹ * (h⁻¹⁻¹ * g' * h⁻¹) * h := by group
     _ = _ := by rw [e']; group
-
-theorem divInd_eq_labInd (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) :
-    GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.divInd σ n ϖ d = GlobalTheory.IndefiniteRowSideFullHecke.InertPlaceSetting.labInd σ n ϖ d := by
-  funext g
-  unfold GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.divInd GlobalTheory.IndefiniteRowSideFullHecke.InertPlaceSetting.labInd
-  split_ifs with hg
-  · obtain ⟨k₁, k₂, e⟩ := hg
-    obtain ⟨t, ht⟩ := exists_diag hU h
-    obtain ⟨l₁, m₁, l₂, m₂, e'⟩ := dc_GU hU (g := t) (g' := g) (a := bc (intL _).subtype k₁)
-      (b := bc (intL _).subtype k₂) ⟨k₁, rfl⟩ ⟨k₂, rfl⟩ (Units.ext (by
-        simp only [Units.val_mul, ht]
-        exact e))
-    refine (Set.indicator_of_mem (f := (1 : GU σ n → ℂ)) ?_).symm
-    refine ⟨l₁, m₁, l₂, m₂, ?_⟩
-    rw [e']
-    simp only [Subgroup.coe_mul, Units.val_mul, ht]
-  · refine (Set.indicator_of_notMem ?_ _).symm
-    rintro ⟨l₁, ⟨-, k₁, e₁⟩, l₂, ⟨-, k₂, e₂⟩, e⟩
-    refine hg ⟨k₁, k₂, e.trans ?_⟩
-    congr 2
-    · exact congrArg Units.val e₁.symm
-    · exact congrArg Units.val e₂.symm
 
 theorem good_of_unitary (hU : IsUnramInv ϖ σ q) {π : v.adicCompletion K} (hπ : Valued.v π = WithZero.exp (-1 : ℤ))
     {d : List ℤ} (h1 : d.length = n) (h2 : d.Pairwise fun a b => b ≤ a) {g : GL (Fin n) (v.adicCompletion K)}
@@ -419,87 +399,6 @@ theorem good_of_unitary (hU : IsUnramInv ϖ σ q) {π : v.adicCompletion K} (hπ
       _ = _ := by rw [← e']; simp only [Units.val_mul, Matrix.mul_assoc]
 
 end Completion
-
-section Par
-
-open GlobalTheory.IndefiniteRowSideFullHecke.InertPlaceSetting
-
-theorem exists_fun_of_card {m : ℕ} (M : Multiset ℂ) (h : M.card = m) :
-    ∃ β : Fin m → ℂ, Finset.univ.val.map β = M := by
-  induction M using Quotient.inductionOn with
-  | h l =>
-    obtain rfl : l.length = m := h
-    exact ⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩
-
-theorem strPar_eq (q t : ℕ) : strPar q t = GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.strPar q t := by
-  simp only [strPar, GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.strPar, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton,
-    Multiset.map_map, Function.comp_def]
-
-theorem strPar_add_two (q t : ℕ) :
-    strPar q (t + 2) = strPar q t + {(q : ℂ) ^ ((t : ℤ) + 1)} + {((q : ℂ) ^ ((t : ℤ) + 1))⁻¹} := by
-  rw [strPar_eq, strPar_eq]
-  unfold GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.strPar
-  have e : Multiset.range (t + 1) = 0 ::ₘ (Multiset.range t).map (· + 1) := by
-    show ((List.range (t + 1) : List ℕ) : Multiset ℕ) = _
-    rw [List.range_succ_eq_map]
-    rfl
-  rw [Multiset.range_succ, e, Multiset.map_cons, Multiset.map_cons, Multiset.map_map, ← zpow_neg,
-    ← Multiset.singleton_add, ← Multiset.singleton_add]
-  have e1 : -(((t + 2 : ℕ) : ℤ) - 1 - 2 * ((t + 1 : ℕ) : ℤ)) = (t : ℤ) + 1 := by push_cast; ring
-  have e2 : -(((t + 2 : ℕ) : ℤ) - 1 - 2 * ((0 : ℕ) : ℤ)) = -((t : ℤ) + 1) := by push_cast; ring
-  rw [e1, e2, Multiset.map_congr rfl (g := fun l : ℕ => (q : ℂ) ^ (-((t : ℤ) - 1 - 2 * (l : ℤ)))) fun l _ => by
-    simp only [Function.comp]
-    congr 1
-    push_cast
-    ring]
-  abel
-
-theorem strPar_split {q : ℕ} (hq : q ≠ 0) (t : ℕ) : ∃ H : Multiset ℂ, H.card = t / 2 ∧ (0 : ℂ) ∉ H ∧
-    strPar q t = H + H.map (·⁻¹) + if Odd t then {1} else 0 := by
-  induction t using Nat.twoStepInduction with
-  | zero => exact ⟨0, rfl, by simp, by simp [strPar]⟩
-  | one => exact ⟨0, rfl, by simp, by simp [strPar]⟩
-  | more t ih _ =>
-    obtain ⟨H, h1, h2, h3⟩ := ih
-    refine ⟨H + {(q : ℂ) ^ ((t : ℤ) + 1)}, by simp [h1], ?_, ?_⟩
-    · rw [Multiset.mem_add, Multiset.mem_singleton]
-      exact fun h => h.elim h2 (zpow_ne_zero _ (Nat.cast_ne_zero.2 hq)).symm
-    · rw [strPar_add_two, h3, Multiset.map_add, Multiset.map_singleton]
-      simp only [Nat.odd_add, Nat.not_odd_iff_even.2 even_two, even_two, iff_true]
-      abel
-
-theorem exists_partner {q : ℕ} (hq : q ≠ 0) (a t : ℕ) (α : Fin (a / 2) → ℂ) (hα : ∀ l, α l ≠ 0) :
-    ∃ β : Fin ((a + t) / 2) → ℂ, (∀ l, β l ≠ 0) ∧ twPar (a + t) a β = twPar a (a + t) α + strPar q t := by
-  obtain ⟨H, h1, h2, h3⟩ := strPar_split hq t
-  obtain ⟨β, hβ⟩ := exists_fun_of_card (m := (a + t) / 2)
-    ((Finset.univ.val.map α).map (fun z => (-1) ^ t * z) + H.map (fun z => (-1) ^ a * z) +
-      if Odd a ∧ Odd t then {-1} else 0) (by
-    simp only [Multiset.card_add, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, h1,
-      Nat.odd_iff]
-    split_ifs with h
-    · rw [Multiset.card_singleton]; omega
-    · rw [Multiset.card_zero]; omega)
-  refine ⟨β, fun l h0 => ?_, ?_⟩
-  · have : (0 : ℂ) ∈ Finset.univ.val.map β := Multiset.mem_map.2 ⟨l, Finset.mem_univ_val l, h0⟩
-    rw [hβ] at this
-    simp only [Multiset.mem_add, Multiset.mem_map, mul_eq_zero, pow_eq_zero_iff', neg_eq_zero, one_ne_zero,
-      false_and, false_or] at this
-    rcases this with (⟨_, ⟨l, -, rfl⟩, h⟩ | ⟨_, h, rfl⟩) | h
-    · exact hα l h
-    · exact h2 h
-    · split_ifs at h <;> simp at h
-  · have e : ∀ {m : ℕ} (γ : Fin m → ℂ),
-        Finset.univ.val.map (fun l => (γ l)⁻¹) = (Finset.univ.val.map γ).map (·⁻¹) := fun γ => by
-      rw [Multiset.map_map]; rfl
-    unfold twPar bcPar
-    rw [e, e, hβ, h3]
-    generalize Finset.univ.val.map α = A
-    rcases Nat.even_or_odd a with ha | ha <;> rcases Nat.even_or_odd t with ht | ht <;>
-      simp [pow_add, ha, ht, Nat.odd_add, Nat.not_odd_iff_even.2, Nat.not_even_iff_odd.2, Even.neg_one_pow,
-        Odd.neg_one_pow, Multiset.map_map, inv_neg] <;>
-      (try simp only [← Multiset.singleton_add]) <;> abel
-
-end Par
 
 end GlobalTheory.InertThetaCompare
 

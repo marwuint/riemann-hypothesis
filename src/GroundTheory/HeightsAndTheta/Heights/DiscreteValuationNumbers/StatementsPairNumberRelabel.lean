@@ -22,20 +22,6 @@ def PairNumberRelabel.Statement : Prop :=
         pairNum (P.map (rename σ)) x x' (fun i => rename σ (f i)) (fun i => rename σ (g i)) Gs Q =
           pairNum P (fun i => x i ∘ e) (fun i => x' i ∘ e) f g Gs (Q.map (· ∘ e)))
 
-section Examples
-
-def swapFactors : (Σ _ : Fin 2, Fin 2) ≃ (Σ _ : Fin 2, Fin 2) where
-  toFun v := ⟨Equiv.swap 0 1 v.1, v.2⟩
-  invFun v := ⟨Equiv.swap 0 1 v.1, v.2⟩
-  left_inv := by
-    rintro ⟨a, b⟩
-    simp
-  right_inv := by
-    rintro ⟨a, b⟩
-    simp
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

@@ -150,6 +150,4 @@ theorem isogenyWeierstrassP_of_ellipticNoPole (hN : EllipticNoPole) : IsogenyP :
   rw [Finset.sum_sub_distrib]
   linear_combination hfz
 
-theorem isogeny_weierstrass_p : IsogenyP := isogenyWeierstrassP_of_ellipticNoPole elliptic_no_pole_const
-
 end Formalism.L2.Th1.F

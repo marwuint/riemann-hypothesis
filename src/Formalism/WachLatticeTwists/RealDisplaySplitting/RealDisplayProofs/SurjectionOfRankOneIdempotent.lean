@@ -172,15 +172,4 @@ theorem surjection_of_rank_one_idempotent (O : Type) [CommRing O] [IsDomain O] [
     rw [show ∑ j, u i * w j * v j = u i * ∑ j, w j * v j by
       rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring, hwv, mul_one]
 
-theorem scalar_action_on_block (O : Type) [CommRing O] (A : Type) [Ring A] [Algebra O A] (M : Type) [AddCommGroup M] [Module A M]
-    [Module O M] [IsScalarTower O A M] (E : A) (δO : O) (hE : ∀ m : M, E • m = δO • m)
-    (hsc : ∀ c : A, ∃ y : O, ∀ m : M, c • m = y • m) : ScalarActionOnBlock O A M E δO := by
-  refine ⟨fun c => ?_, fun x hx => ?_⟩
-  · obtain ⟨y, hy⟩ := hsc c
-    refine ⟨y * δO, Ideal.mul_mem_left _ y (Ideal.mem_span_singleton_self δO), fun m => ?_⟩
-    rw [mul_smul, hE, hy, mul_smul]
-  · obtain ⟨a, rfl⟩ := Ideal.mem_span_singleton'.1 hx
-    refine ⟨algebraMap O A a, fun m => ?_⟩
-    rw [mul_smul, hE, algebraMap_smul, mul_smul]
-
 end Formalism.RepresentationBoundsCohomology.SF

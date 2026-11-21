@@ -27,10 +27,6 @@ def InCen (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (W : Submodule A (Fin n
     (Y : Matrix (Fin n) (Fin n) A) : Prop :=
   InNil s J W Y ∧ ∀ u ∈ perpSet s J W, Y *ᵥ u = 0
 
-theorem inCen_zero (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (W : Submodule A (Fin n → A)) :
-    InCen s J W 0 := by
-  refine ⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩ <;> simp [IsSkew, perpSet, Formalism.UG.hform]
-
 end Lie
 
 variable (I : AutInst)
@@ -57,23 +53,5 @@ def diagEmb (Y : Matrix (Fin I.n) (Fin I.n) I.E) : InfinitePlace I.F → Matrix 
 
 def normAt (x : I.GA) (Y : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ) : ℝ :=
   Real.sqrt (∑ v, Formalism.REAL.hs (uMat (x.1 v)⁻¹ * (I.P v)⁻¹ * Y v * I.P v * uMat (x.1 v)))
-
-theorem normAt_zero (x : I.GA) : normAt I x 0 = 0 := by
-  simp [normAt, Formalism.REAL.hs]
-
-def nextSize {a : ℕ} (τ : Fin a → ℝ) (i : Fin a) : ℝ :=
-  if h : (i : ℕ) + 1 < a then τ ⟨(i : ℕ) + 1, h⟩ else 1 / 2
-
-example : nextSize ![(1 : ℝ) / 8, 1 / 4] 0 = 1 / 4 ∧ nextSize ![(1 : ℝ) / 8, 1 / 4] 1 = 1 / 2 := by
-  constructor <;> simp [nextSize]
-
-def CoveringRadii : Prop :=
-  ∀ (I : AutInst) (x : I.GA) (a : ℕ) (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (τ : Fin a → ℝ),
-    HasFlag I x S τ → ∀ (i : Fin a) (ρ : ℝ), 0 < ρ → τ i ≤ ρ * nextSize τ i → τ i ^ 2 ≤ ρ / 4 →
-      (∀ Y ∈ nilReal I (S i.succ), ∃ Y₀ ∈ nilInt I x (S i.succ), ∃ Z ∈ cenReal I (S i.succ),
-        normAt I x (Y - diagEmb I Y₀ - Z) ≤
-          ((I.n : ℝ) ^ 2 * I.f) / 8 * I.rd * ρ / Real.sqrt (2 * I.f)) ∧
-      (∀ Z ∈ cenReal I (S i.succ), ∃ Z₀ ∈ cenInt I x (S i.succ),
-        normAt I x (Z - diagEmb I Z₀) ≤ ((I.n : ℝ) ^ 2 * I.f) * I.rd * ρ / (16 * Real.sqrt I.f))
 
 end GlobalTheory.IndefiniteRowSideFullHecke.CenteredPerpendicularSets

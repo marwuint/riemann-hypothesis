@@ -10,9 +10,12 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinPlainP
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinRootPolyNum
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwinDivDiffExpansion
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairNumberExpansionIndependence
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommuteStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelValueIndependentStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelRootIndependentStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.VerticalDivisorsCommute
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Statements
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelValueIndependent
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitBis
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelRootIndependent
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InhabitAlt
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)
@@ -51,7 +54,7 @@ theorem ck_rootNum_eq_pairNum_on_flagPair : ∀ (O : Type) [CommRing O] [IsDomai
       rfl
     unfold ck
     rw [dif_pos hne]
-    refine (GlobalTheory.T.flag_model_value_independent O Ω K ι x d N V E E' hW hEE'
+    refine (_root_.GlobalTheory.CompanionTheory.CommAlg.FlagModelValue.main O Ω K ι x d N V E E' hW hEE'
       (Classical.choice hne) F₀ _ _ (ChernClassOnFlagPair.fieldNum_spec _ _) hI (psum (Fin N) ℤ k)
       (psum_isSymmetric _ _ k) q L L (fun _ => 1) (fun _ => 1)
       (fun l => ChernClassOnFlagPair.isVertDiv_one hprime _ (sub_self _)) k Q hk2
@@ -65,7 +68,7 @@ theorem ck_rootNum_eq_pairNum_on_flagPair : ∀ (O : Type) [CommRing O] [IsDomai
       rw [ChernClassOnFlagPair.length_classList, Finsupp.degree_eq_weight_one]
       have : Finsupp.weight (fun _ => 1) μ = Finsupp.weight 1 μ := rfl
       omega
-    rw [PairNumberExpansionIndependence.proof GlobalTheory.T.vertical_divisors_commute O ϖ hϖ (K ⊕ K') (Sum.elim ι ι')
+    rw [PairNumberExpansionIndependence.proof _root_.GlobalTheory.CompanionTheory.CommAlg.VerticalDivisors.verticalDivisorsCommute O ϖ hϖ (K ⊕ K') (Sum.elim ι ι')
       (pointIdeal O (joinCoord x z)) d hB' N b b' f g hfp.vertical k (psum (Fin N) ℤ k)
       (isHomogeneous_psum N k) _ (psumExpansion N k)
       (dividedDifferenceExpansion.proof N k _ (isHomogeneous_psum N k)) (isPairExpansion_psum N k)
@@ -82,7 +85,7 @@ theorem ck_rootNum_eq_pairNum_on_flagPair : ∀ (O : Type) [CommRing O] [IsDomai
     have hne : Nonempty (FlagModel O x d N E E) := ⟨F₀⟩
     unfold rootNum
     rw [dif_pos hne]
-    refine (GlobalTheory.T.flag_model_root_independent O Ω K ι x d N V E E hW hsame
+    refine (_root_.GlobalTheory.CompanionTheory.Ar.RootIndep.main O Ω K ι x d N V E E hW hsame
       (Classical.choice hne) F₀ _ _ (ChernClassOnFlagPair.fieldNum_spec _ _) hI c G hsym hG hc q L Q hQ a
       ha).trans ?_
     have h6 := RootPolynomialNumber.proof O (K ⊕ K') (Sum.elim ι ι') (pointIdeal O (joinCoord x z)) d N b

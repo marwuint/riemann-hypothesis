@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NsmulApplyMem
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemOfMemSpanFraction
 import ReciprocityTheory.SemistableReduction.ExistsIntSmulMemSpan
 import ReciprocityTheory.SemistableReduction.SemiDegCE
-import ReciprocityTheory.DualLattices.WedgeNeZeroOfLinearIndependent
+import ReciprocityTheory.DualLattices.SmallLevelClassSet
 
 namespace GlobalTheory.TensorLat
 
@@ -83,28 +83,6 @@ theorem exists_reps_of_relIndex_ne_zero {M : Type*} [AddCommGroup M] {A B : AddS
     rintro r ⟨hr, h⟩
     obtain ⟨q, -, rfl⟩ := Finset.mem_image.1 hr
     rw [(key q).1 h]
-
-section Period
-
-variable {E : Type} [Field E] [NumberField E]
-
-end Period
-
-section Index
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
-
-end Index
-
-section Modulus
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-
-variable [IsGalois ℚ E]
-
-variable {K : Type*} [Field K] [Algebra E K]
-
-end Modulus
 
 section IndexIdeal
 
@@ -221,52 +199,8 @@ theorem exists_coe_eq_span_det {Λ Λ' : Submodule (𝓞 K) (Fin n → K)} (hle 
     refine mul_right_cancel₀ (right_ne_zero_of_mul (hN ▸ hn0)) ?_
     linear_combination -hN'
 
-theorem smul_coe_fractionalIdeal (𝔫 : Ideal (𝓞 K)) (J : FractionalIdeal (𝓞 K)⁰ K) :
-    𝔫 • (J : Submodule (𝓞 K) K) =
-      (((𝔫 : FractionalIdeal (𝓞 K)⁰ K) * J : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) := by
-  rw [FractionalIdeal.coe_mul]
-  refine le_antisymm (Submodule.smul_le.2 fun a ha x hx => ?_)
-    (Submodule.mul_le.2 fun a ha x hx => ?_)
-  · rw [Algebra.smul_def]
-    exact Submodule.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem _ ha) hx
-  · obtain ⟨b, hb, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 ha
-    rw [← Algebra.smul_def]
-    exact Submodule.smul_mem_smul hb hx
-
-theorem exists_indexIdeal_span_det {Λ Λ' : Submodule (𝓞 K) (Fin n → K)} (hle : Λ ≤ Λ')
-    (hfg : Λ'.FG) (hsp : Submodule.span K (Λ : Set (Fin n → K)) = ⊤) :
-    ∃ 𝔫 : Ideal (𝓞 K), 𝔫 ≠ ⊥ ∧ Ideal.absNorm 𝔫 = Λ.toAddSubgroup.relIndex Λ'.toAddSubgroup ∧
-      ∀ 𝔪 : Ideal (𝓞 K), Submodule.span (𝓞 K)
-          {d | ∃ v : Fin n → Fin n → K, (∀ i, v i ∈ Λ) ∧ d = (Matrix.of v).det} =
-        𝔪 • Submodule.span (𝓞 K)
-          {d | ∃ v : Fin n → Fin n → K, (∀ i, v i ∈ Λ') ∧ d = (Matrix.of v).det} ↔ 𝔪 = 𝔫 := by
-  obtain ⟨J, J', h0, h0', hJ, hJ', hN⟩ := exists_coe_eq_span_det hle hfg hsp
-  have hJJ : J ≤ J' := by
-    rw [← FractionalIdeal.coe_le_coe, hJ, hJ']
-    exact Submodule.span_mono fun _ ⟨v, hv, h⟩ => ⟨v, fun i => hle (hv i), h⟩
-  have h1 : J * J'⁻¹ ≤ 1 := by
-    rw [← mul_inv_cancel₀ h0']
-    gcongr
-  obtain ⟨𝔫, h𝔫⟩ := FractionalIdeal.le_one_iff_exists_coeIdeal.1 h1
-  have h2 : J = 𝔫 * J' := by rw [h𝔫, inv_mul_cancel_right₀ h0']
-  refine ⟨𝔫, ?_, ?_, fun 𝔪 => ?_⟩
-  · rintro rfl
-    simp [h0] at h2
-  · rw [h2, map_mul, FractionalIdeal.coeIdeal_absNorm] at hN
-    exact_mod_cast mul_right_cancel₀ (FractionalIdeal.absNorm_eq_zero_iff.not.2 h0') hN
-  · rw [← hJ, ← hJ', smul_coe_fractionalIdeal, FractionalIdeal.coeToSubmodule_inj, h2,
-      mul_left_inj' h0', FractionalIdeal.coeIdeal_inj, eq_comm]
-
 attribute [local instance] extModR
 
 end IndexIdeal
-
-section Main
-
-open ReciprocityTheory.PGsh
-
-attribute [local instance] extModR
-
-end Main
 
 end GlobalTheory.TensorLat

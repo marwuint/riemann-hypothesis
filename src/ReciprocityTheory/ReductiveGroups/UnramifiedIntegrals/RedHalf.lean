@@ -70,9 +70,6 @@ theorem IsHalfReps.injOn (h : IsHalfReps L α T) : Set.InjOn L.weierstrassP (T :
   intro P hP Q hQ hPQ
   exact h.2.1 P hP Q hQ ((pInjective L P Q (h.notMem hP) (h.notMem hQ)).mp hPQ)
 
-theorem IsHalfReps.card_xsOf (h : IsHalfReps L α T) : (xsOf L T).card = T.card :=
-  Finset.card_image_of_injOn h.injOn
-
 theorem IsHalfReps.fW_ne (h : IsHalfReps L α T) {x : ℂ} (hx : x ∈ xsOf L T) : fW L.g₂ L.g₃ x ≠ 0 := by
   obtain ⟨P, hP, rfl⟩ := Finset.mem_image.mp hx
   have hPL := h.notMem hP

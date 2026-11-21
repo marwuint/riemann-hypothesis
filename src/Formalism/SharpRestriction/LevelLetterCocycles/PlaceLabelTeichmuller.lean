@@ -1,59 +1,14 @@
 import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev
-import Formalism.SharpRestriction.LevelLetterCocycles.StatementFamilies.ArithmeticCylinders
+import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
+import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
+import Formalism.SharpRestriction.ParConsts
 import Formalism.PadicSubsetSums.StableGradedCounts.FixedByAutomorphismInField
 import Formalism.PadicSubsetSums.StableGradedCounts.IRRGoodDualStable
 
 noncomputable section
 
 namespace Formalism.MainNotions.N.PlaceLabelTeichmuller
-
-section BoundedBy'
-
-open Formalism.BasicNotions Formalism.MainNotions
-
-section Len
-
-variable {R : Type} [CommRing R]
-
-end Len
-
-section Drop
-
-variable {O K V X : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field K] [Algebra O K]
-    [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
-    [FiniteDimensional K V] [DecidableEq X]
-    (T : Subalgebra O (X → O)) (act : T →ₐ[O] (V →ₗ[K] V))
-
-omit [IsPrincipalIdealRing O] [DecidableEq X] in
-
-theorem exists_sep (hsep : ∀ x y : X, x ≠ y → ∃ t : T, (t : X → O) x ≠ (t : X → O) y) (π : X)
-    (S : Finset X) (hπ : π ∉ S) :
-    ∃ s : T, (∀ y ∈ S, (s : X → O) y = 0) ∧ (s : X → O) π ≠ 0 := by
-  classical
-  have hne : ∀ y : {y // y ∈ S}, (y : X) ≠ π := fun y h => hπ (h ▸ y.2)
-  choose t ht using fun y : {y // y ∈ S} => hsep y π (hne y)
-  have key : ∀ (u : T) (c : O) (x : X), ((u - algebraMap O T c : T) : X → O) x = (u : X → O) x - c :=
-    fun u c x => by first | rfl | simp
-  refine ⟨∏ y : {y // y ∈ S}, (t y - algebraMap O T ((t y : X → O) y)), ?_, ?_⟩
-  · intro y hy
-    rw [SubmonoidClass.coe_finset_prod, Finset.prod_apply]
-    refine Finset.prod_eq_zero (Finset.mem_univ ⟨y, hy⟩) ?_
-    simp only [key]
-    exact sub_self _
-  · rw [SubmonoidClass.coe_finset_prod, Finset.prod_apply]
-    refine Finset.prod_ne_zero_iff.mpr (fun y _ => ?_)
-    simp only [key]
-    exact sub_ne_zero.mpr (Ne.symm (ht y))
-
-omit [IsDomain O] [IsPrincipalIdealRing O] [IsFractionRing O K] [FiniteDimensional K V] [DecidableEq X] in
-theorem act_comm (s t : T) (x : V) : act s (act t x) = act t (act s x) := by
-  have h : act s * act t = act t * act s := by rw [← map_mul, ← map_mul, mul_comm]
-  exact LinearMap.congr_fun h x
-
-end Drop
-
-end BoundedBy'
 
 section Tensor
 
@@ -459,17 +414,6 @@ theorem e0_eq : D.ntypes.e0 = eGood (ESer D) (goodVec D) := by
   refine Finset.sum_congr (by first | rfl | (congr 1; exact Subsingleton.elim _ _) | convert rfl) (fun p _ => ?_)
   split_ifs <;> rfl
 
-open Classical in
-
-theorem typeIdempotent_coeff_across_layers (g : G0g D.nd) :
-    D.ntypes.e0.coeff g = ∑ p : (∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fin D.R.r → ZMod (D.host.g kv.1)),
-      if goodVec D p then ∏ kv, (ESer D kv (p kv)).coeff (g kv) else 0 := by
-  rw [e0_eq D]
-  unfold eGood
-  rw [coeff_sum_lemma_3]
-  refine Finset.sum_congr (by first | rfl | (congr 1; exact Subsingleton.elim _ _) | convert rfl) (fun p _ => ?_)
-  split_ifs <;> rfl
-
 theorem atPlace_eq (k : Fin 2) (v : D.nd.PlG k) (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))) :
     ArithmeticCylinders.atPlace D k v a =
       plc (G := fun kv : (Σ k : Fin 2, D.nd.PlG k) => GL (Fin D.R.r) (ZMod (D.host.g kv.1))) ⟨k, v⟩ a := by
@@ -682,55 +626,17 @@ theorem good_of {PP J : Type} (N : ℕ) (f : PP → (ZMod g)[X]) (χ : PP → J 
 
 end GoodTr
 
-theorem exists_exp (τ : ℂ ≃+* ℂ) (n : ℕ) (hn : 0 < n) :
-    ∃ a : ℕ, a.Coprime n ∧ ∀ z : ℂ, z ^ n = 1 → τ z = z ^ a := by
-  haveI : NeZero n := ⟨hn.ne'⟩
-  obtain ⟨ζ, hζ⟩ : ∃ ζ : ℂ, IsPrimitiveRoot ζ n := ⟨_, Complex.isPrimitiveRoot_exp n hn.ne'⟩
-  have hτζ : IsPrimitiveRoot (τ ζ) n := by
-    first
-    | exact hζ.map_of_injective τ.injective
-    | exact hζ.map_of_injective (f := τ) τ.injective
-    | exact hζ.map_of_injective (f := (τ : ℂ →+* ℂ)) τ.injective
-  have hpow : ∀ ξ : ℂ, ξ ^ n = 1 → ∃ i : ℕ, ζ ^ i = ξ := by
-    intro ξ hξ
-    obtain ⟨i, -, hi⟩ := hζ.eq_pow_of_pow_eq_one hξ
-    exact ⟨i, hi⟩
-  obtain ⟨a, ha⟩ := hpow (τ ζ) hτζ.pow_eq_one
-  have hcop : a.Coprime n := by
-    have h' : IsPrimitiveRoot (ζ ^ a) n := by rw [ha]; exact hτζ
-    first
-    | exact (hζ.pow_iff_coprime hn a).mp h'
-    | exact (hζ.pow_iff_coprime hn.ne' a).mp h'
-  refine ⟨a, hcop, fun z hz => ?_⟩
-  obtain ⟨k, rfl⟩ := hpow z hz
-  rw [map_pow, ← ha]
-  first
-  | ring
-  | rw [← pow_mul, ← pow_mul, mul_comm]
-
 end ClauseA
 
 section DualAmb
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Polynomial
 
-section Poly
-
-variable {g : ℕ} [Fact g.Prime]
-
-end Poly
-
 variable (D : D7)
 
 local instance factGd (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
 
 local instance neZeroGd (k : Fin 2) : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩
-
-def dualT (σ' : D.ntypes.Par) (k : Fin 2) (v : D.nd.PlG k) : (ZMod (D.host.g k))[X] :=
-  ArithmeticCylinders.dualLab D k (D.ntypes.labPar k σ' v)
-
-def dualVec (σ' : D.ntypes.Par) (kv : Σ k : Fin 2, D.nd.PlG k) : Fin D.R.r → ZMod (D.host.g kv.1) :=
-  fun i => (dualT D σ' kv.1 kv.2).coeff i
 
 end DualAmb
 
@@ -744,48 +650,9 @@ local instance factG'' (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prim
 
 local instance neZeroG'' (k : Fin 2) : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩
 
-theorem teich_zero (k : Fin 2) : D.ntypes.teichC k 0 = 0 := by
-  classical
-  by_contra h
-  have h1 : ∀ x, D.ntypes.teichC k x = 1 := by
-    intro x
-    have h2 : D.ntypes.teichC k 0 * D.ntypes.teichC k x = D.ntypes.teichC k 0 := by
-      rw [← map_mul, zero_mul]
-    exact mul_left_cancel₀ h (by rw [h2, mul_one])
-  obtain ⟨y, hy⟩ := Infinite.exists_notMem_finset ({0, 1} : Finset (Formalism.CyclotomicNorms.Fbar (D.host.g k)))
-  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hy
-  exact hy.2 (D.ntypes.teichC_inj k y 1 hy.1 one_ne_zero (by rw [h1 y, h1 1]))
-
-theorem teich_ne_zero (k : Fin 2) (x : Formalism.CyclotomicNorms.Fbar (D.host.g k)) (hx : x ≠ 0) :
-    D.ntypes.teichC k x ≠ 0 := by
-  intro h
-  have h1 : D.ntypes.teichC k x * D.ntypes.teichC k x⁻¹ = 1 := by
-    rw [← map_mul, mul_inv_cancel₀ hx, map_one]
-  rw [h, zero_mul] at h1
-  exact zero_ne_one h1
-
-theorem teich_inj (k : Fin 2) : Function.Injective (D.ntypes.teichC k) := by
-  intro x y hxy
-  by_cases hx : x = 0
-  · by_cases hy : y = 0
-    · rw [hx, hy]
-    · rw [hx, teich_zero] at hxy
-      exact absurd hxy.symm (teich_ne_zero D k y hy)
-  · by_cases hy : y = 0
-    · rw [hy, teich_zero] at hxy
-      exact absurd hxy (teich_ne_zero D k x hx)
-    · exact D.ntypes.teichC_inj k x y hx hy hxy
-
-def ActsBy (τ : ℂ ≃+* ℂ) (k : Fin 2) (a : ℕ) : Prop :=
-  ∀ z : ℂ, z ^ bigM (D.host.g k) D.R.r = 1 → τ z = z ^ a
-
 variable {D}
 
 variable (D)
-
-def actVec (τ : ℂ ≃+* ℂ) (p : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fin D.R.r → ZMod (D.host.g kv.1)) :
-    ∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fin D.R.r → ZMod (D.host.g kv.1) :=
-  fun kv i => (ArithmeticCylinders.labAct D τ kv.1 (Formalism.CyclotomicNorms.monicOf (p kv))).coeff i
 
 variable {D}
 

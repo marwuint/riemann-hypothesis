@@ -35,10 +35,6 @@ omit [TopologicalSpace X] in
 theorem mem_vanishingOn {Z : Set X} {f : X → ℂ} : f ∈ vanishingOn Z ↔ ∀ x ∈ Z, f x = 0 :=
   Iff.rfl
 
-omit [TopologicalSpace X] in
-theorem vanishingOn_anti {Z Z' : Set X} (h : Z ⊆ Z') : vanishingOn Z' ≤ vanishingOn Z :=
-  fun _ hf x hx => hf x (h hx)
-
 theorem isClosed_support_of_isLocallyConstant {f : X → ℂ} (hf : IsLocallyConstant f) :
     IsClosed (Function.support f) := by
   have : Function.support f = (f ⁻¹' {0})ᶜ := by

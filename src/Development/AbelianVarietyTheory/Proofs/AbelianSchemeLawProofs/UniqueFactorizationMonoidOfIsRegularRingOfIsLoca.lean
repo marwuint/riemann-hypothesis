@@ -10,20 +10,6 @@ namespace GlobalTheory
 
 namespace RegularFactorial
 
-open IsLocalRing
-
-theorem isRegularRing_of_isLocalization {R : Type*} [CommRing R] [IsRegularRing R]
-    (M : Submonoid R) (S : Type*) [CommRing S] [Algebra R S] [IsLocalization M S] :
-    IsRegularRing S := by
-  have : IsNoetherianRing S := IsLocalization.isNoetherianRing M S inferInstance
-  rw [isRegularRing_iff]
-  intro P hP
-  have h := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M
-    (Localization.AtPrime P) P
-  exact IsRegularLocalRing.of_ringEquiv
-    (IsLocalization.algEquiv (P.comap (algebraMap R S)).primeCompl
-      (Localization.AtPrime (P.comap (algebraMap R S))) (Localization.AtPrime P)).toRingEquiv
-
 end RegularFactorial
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in

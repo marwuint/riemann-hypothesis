@@ -142,40 +142,4 @@ def IotaDictC : Prop :=
       (iotaOf Y.TR (Y.cs u) (Y.cs u') s₁ = iotaOf Y.TR (Y.cs u) (Y.cs u') s₂ ↔
         IotaCompat s₁.lam (lf D (X.Fu u)) s₁.frame s₂.frame (s₂.lin * s₁.lin⁻¹) (gS D))
 
-def RatIotaC : Prop :=
-  ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
-    (s₁ s₂ : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')),
-    s₁.G ≠ 0 → s₂.G ≠ 0 → s₁.generic → s₂.generic → s₁.lam = s₂.lam → s₁.lam' = s₂.lam' →
-      (IotaCompat s₁.lam (lf D (X.Fu u)) s₁.frame s₂.frame (s₂.lin * s₁.lin⁻¹) (gS D) ↔
-        RatTriv u X s₁.lam (s₂.lin * s₁.lin⁻¹))
-
-def IotaBridgeC : Prop :=
-  ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u : D.what₂.Word)
-    (Λ : Submodule (𝓞 D.host.E) (VS D).V), Λ ∈ Y.what₂ u →
-    ∀ (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (b : X.B.I.GA), RatLink X b β →
-      (((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)⁻¹ * b.2 * (((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)
-        ∈ X.B.I.Kset →
-      NCong X ((((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)⁻¹ * b.2 *
-        (((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)) →
-      (AdTriv X ((((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)⁻¹ * b.2 *
-        (((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)) ↔ RatTriv u X Λ β)
-
-theorem iotaDictC_of (h3 : RatIotaC) (h4 : IotaBridgeC) : IotaDictC := by
-  intro D X Y u u' s₁ s₂ hG1 hG2 hg1 hg2 hl hl'
-  obtain ⟨hgood, hN, heq⟩ := iotaOf_split Y s₁ s₂ hl hl'
-  rw [h3 D X Y u u' s₁ s₂ hG1 hG2 hg1 hg2 hl hl', heq]
-  have hlink : RatLink X (s₂.pt * s₁.pt⁻¹) (s₂.lin * s₁.lin⁻¹) := ratLink_mul X s₂.rep.2.1 (ratLink_inv X s₁.rep.2.1)
-  have hB := h4 D X Y u s₁.lam s₁.mem (s₂.lin * s₁.lin⁻¹) (s₂.pt * s₁.pt⁻¹) hlink hgood.1.1 hN
-  have hc : iotaOf Y.TR (Y.cs u) (Y.cs u') s₁ = levi Y.TR ((((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) *
-      X.xu u)⁻¹ * (s₂.pt.2 * s₁.pt.2⁻¹) * (((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) * X.xu u)) *
-      iotaOf Y.TR (Y.cs u) (Y.cs u') s₁ ↔ levi Y.TR ((((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) *
-      X.xu u)⁻¹ * (s₂.pt.2 * s₁.pt.2⁻¹) * (((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) * X.xu u)) = 1 := by
-    constructor
-    · intro h
-      have h' := congrArg (· * (iotaOf Y.TR (Y.cs u) (Y.cs u') s₁)⁻¹) h
-      simpa using h'.symm
-    · intro h
-      rw [h, one_mul]
-  exact hc.trans ((levi_one_iff Y.TR hgood).trans hB)
-
 end Formalism.L2.SG.Pf

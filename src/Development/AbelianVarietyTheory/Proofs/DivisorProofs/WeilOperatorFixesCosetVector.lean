@@ -5,10 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpanRationa
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ApplyAt0Smul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionRationalTranslateMem
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMovesOfSelfDual
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisFix
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompDet
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VlLeOfMemHatId
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdealMatrixApproxCongruentOneTranslate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPointMemStandardAndSkewLatticeOfEntriesMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulConjSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompDet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitInertFactor
 
 noncomputable section
@@ -77,46 +77,5 @@ theorem iop_facts (hI : Inp D) {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) 
   exact fix_of_prop P (VacMove.vac_TT hI.g1 P.crv P.vac.1) (c := c) (by rw [hc]; funext z; rfl)
 
 variable {T : Type} {L : LevCh D T} {sc : Consts}
-
-theorem vac_fix_split (G : GridData L sc) (i j : Fin D.R.m) {μ₀ : T} (hL : L.Is μ₀) {δ t0 : ℂ} {Q : ℕ}
-    {P P' : Pair D ⊤ δ t0 Q} (h : IsBottom G μ₀ i j (condE G.pl) P P') {k : GA D P.a} (hk : k ∈ intG D P.a)
-    (hk' : CongOne D (condE G.pl) k) (hs : SuppSplit D (k : GL (Fin P.a) (AE D))) : P.W.Om k 1 P.e0 = P.e0 := by
-  obtain ⟨x, hxu, hxi, hx, h1, h2⟩ := GlobalTheory.FunObj.NormUniq.SplitDet.exists_splitComp_det hk hk' hs
-  have hm : Moves D (k : GL (Fin P.a) (AE D)) (stdL D P.a) := by
-    simpa using VacMove.moves_mul_int hk (VacMove.moves_one D P.a)
-  have e := P.W.split k 1 x 1 (stdL D P.a) (stdL D P.d) hs (fun q _ _ => trivAt_one q)
-    (fun q hq hi => ⟨hxi q hq hi, by simpa using zeroAt_zero (D := D) q⟩) hx (by simp) hm (VacMove.moves_one D P.d)
-  have hc : P.W.chV'.f x ^ P.W.ep' = 1 := by
-    rw [h.chars.2 x]
-    show ((nuH G μ₀ i j).1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D x))⁻¹ = 1
-    rw [GlobalTheory.NuTrivSq.nuH_finIdl_eq_one G i j hL x hxu h1 h2, inv_one]
-  rw [e, map_one, one_zpow, hc, one_mul,
-    show La D (tor0 D ⊤ δ) (stdL D P.a) (stdL D P.d) = La0 D (tor0 D ⊤ δ) P.a P.d from rfl,
-    VacMove.iop_self D _ (La0 D (tor0 D ⊤ δ) P.a P.d) P.vac.1]
-  funext z
-  simp
-
-theorem vac_fix (G : GridData L sc) (i j : Fin D.R.m) (hI : Inp D) {μ₀ : T} (hL : L.Is μ₀) {δ t0 : ℂ} {Q : ℕ}
-    {P P' : Pair D ⊤ δ t0 Q} (h : IsBottom G μ₀ i j (condE G.pl) P P') {k : GA D P.a} (hk : k ∈ intG D P.a)
-    (hk' : CongOne D (condE G.pl) k) : P.W.Om k 1 P.e0 = P.e0 := by
-  obtain ⟨ks, ki, rfl, hs, hi, hs', hss, hii⟩ := GlobalTheory.CongSplitFactor.exists_split_inert_factor hk hk'
-  have hT := VacMove.vac_TT hI.g1 P.crv P.vac.1
-  have h1 : P.W.Om ki 1 P.e0 = P.e0 :=
-    P.W.inert ki 1 ((mem_intG ki).1 hi) ((mem_intG 1).1 (one_mem _)) hii (fun q _ _ => trivAt_one q)
-  have e := P.W.mul ks ki 1 1 P.e0 hT
-  rw [mul_one] at e
-  rw [e, h1, vac_fix_split G i j hL h hs hs' hss]
-
-theorem cosetVec_fix (G : GridData L sc) (i j : Fin D.R.m) (hI : Inp D) {μ₀ : T} (hL : L.Is μ₀) {δ t0 : ℂ} {Q : ℕ}
-    {P P' : Pair D ⊤ δ t0 Q} (h : IsBottom G μ₀ i j (condE G.pl) P P') {k : GA D P.a} (hk : k ∈ intG D P.a)
-    (hk' : CongOne D (condE G.pl) k) : P.W.Om k 1 (cosetVec P (condE G.pl) 0) = cosetVec P (condE G.pl) 0 := by
-  obtain ⟨hHT, hfix⟩ := iop_facts hI P (condE_ne_bot G.pl)
-  have hH := hfix k (vac_fix G i j hI hL h hk hk')
-  have hW := GlobalTheory.HeisFix.heis_fix hI P (condE_ne_bot G.pl) 0 hk hk' hHT hH
-  have hWT := GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT P.crv one_pos (by rw [one_smul]; exact pt_unitBlock_mem δ 0 P.a P.d) hHT
-  unfold cosetVec
-  rw [P.W.smul _ _ _ _ hWT, hW]
-
-example : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (i j : Fin D.R.m), Inp D → ∀ {μ₀ : T}, L.Is μ₀ → ∀ {δ t0 : ℂ} {Q : ℕ} {P P' : Pair D ⊤ δ t0 Q}, IsBottom G μ₀ i j (condE G.pl) P P' → ∀ {k : GA D P.a}, k ∈ intG D P.a → CongOne D (condE G.pl) k → P.W.Om k 1 (cosetVec P (condE G.pl) 0) = cosetVec P (condE G.pl) 0 := @cosetVec_fix
 
 end GlobalTheory.FunObj.CosetFix

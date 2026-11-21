@@ -532,18 +532,6 @@ end Inv
 
 end Fgl2
 
-theorem formal_group_invariant : FglInvariant.{u} := by
-  intro R _ W
-  refine ⟨?_, ?_⟩
-  · have h := Fgl2.Dm_fgl' W 0
-    unfold Fgl2.Dm at h
-    rw [mul_comm]
-    exact h
-  · have h := Fgl2.Dm_fgl' W 1
-    unfold Fgl2.Dm at h
-    rw [mul_comm]
-    exact h
-
 theorem formal_group_logarithm : FglLog.{u} := by
   intro K _ _ W
   refine ⟨Fgl2.log_fgl W, ?_⟩
@@ -551,11 +539,6 @@ theorem formal_group_logarithm : FglLog.{u} := by
   have hF : PowerSeries.HasSubst (fgl W) := PowerSeries.HasSubst.of_constantCoeff_zero (Fgl1.fgl_cc W)
   have hL : PowerSeries.HasSubst (logSer W) := PowerSeries.HasSubst.of_constantCoeff_zero (Fgl2.formal_logarithm_spec K W).1
   rw [← Fgl2.log_fgl W, ← PowerSeries.subst_comp_subst_apply hL hF, hE.2.2.2.1, PowerSeries.subst_X hF]
-
-theorem formal_logarithm_base_change : FglLogBase.{u, v} := by
-  intro R K _ _ _ φ W
-  rw [formal_group_map R K φ W]
-  exact Fgl2.log_fgl (W.map φ)
 
 theorem formal_group_group_law : FglGroup.{u} := by
   intro R _ W

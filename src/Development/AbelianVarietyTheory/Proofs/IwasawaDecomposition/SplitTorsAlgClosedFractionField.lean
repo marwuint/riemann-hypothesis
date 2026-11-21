@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionFlatLocallyQuasiFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionFlatLocallyQuasiFinite
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EqOneOfPowEqOneOfCompEqOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegrallyClosedInFractionFieldPowerSeries
 
@@ -14,7 +14,7 @@ namespace GlobalTheory.LineNorm
 
 theorem splitTors_of_isAlgClosed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (R : Type) [CommRing R] [IsDomain R] [IsAlgClosed (FractionRing R)] (x : Sp R ⟶ X) (q : ℕ), q ≠ 0 → SplitTors t x q := by
   intro E _ _ _ H X _ t R _ _ _ x q hq Ω _ io w hw
-  have hqf : LocallyQuasiFinite (torsion t.G q).hom := (GlobalTheory.T.torsion_flat_locallyQuasiFinite X t.G t.semi q hq).2
+  have hqf : LocallyQuasiFinite (torsion t.G q).hom := (_root_.GlobalTheory.FibreFlatGen.flat_and_locallyQuasiFinite_torsion X t.G t.semi q hq).2
   let _ : Algebra (FractionRing R) Ω := io.toAlgebra
   have hic : IsIntegrallyClosedIn (FractionRing R) Ω := by
     rw [isIntegrallyClosedIn_iff]

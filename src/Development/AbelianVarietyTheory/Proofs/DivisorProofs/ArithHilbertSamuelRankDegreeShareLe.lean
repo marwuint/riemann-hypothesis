@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IntegralBound
 import Formalism.HarderNarasimhan.StatementPl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalSectionRankLowerBoundOfHilbertSamuelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlobalSectionRankLowerBoundOfHilbertSamuel
 
 open CategoryTheory AlgebraicGeometry NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
@@ -20,6 +20,6 @@ theorem share_le_of_rankLow (h : RankLow) (F : Type) [Field F] [NumberField F] (
 
 theorem share_le : Quoted → ∀ (F : Type) [Field F] [NumberField F] (X : Data F),
     IsNef F X.LA → IsBig F X.LA → (X.R : ℤ) * X.del ≤ X.d :=
-  fun q => share_le_of_rankLow (GlobalTheory.T.globalSectionRankLowerBound_of_hilbertSamuel q)
+  fun q => share_le_of_rankLow (_root_.GlobalTheory.HSCore.RankBound.rankLow q)
 
 end GlobalTheory.HSCore

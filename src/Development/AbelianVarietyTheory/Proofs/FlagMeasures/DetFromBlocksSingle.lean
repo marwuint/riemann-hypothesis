@@ -74,36 +74,4 @@ end Det
 
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : HermSpace K V} {r : ℕ}
 
-theorem B_e_e (F : FlagD H r) (a b : Fin (r + 1)) :
-    H.B (F.e a) (F.e b) = diagonal (fun a => if a = Fin.last r then -F.T else 0) a b := by
-  induction a using Fin.lastCases <;> induction b using Fin.lastCases
-  · simp [F.zz]
-  · rename_i b
-    simp [B_eq_zero_comm.1 (F.zperp b), diagonal_apply, (Fin.castSucc_ne_last b).symm]
-  · rename_i a
-    simp [F.zperp a, diagonal_apply, Fin.castSucc_ne_last]
-  · rename_i a b
-    simp [F.iso a b, diagonal_apply, Fin.castSucc_ne_last]
-
-theorem gram_eq_fromBlocks (F F' : FlagD H r) :
-    Gram F F' = fromBlocks (diagonal fun a => if a = Fin.last r then -F.T else 0) (Zhat F F') (Zhat F F')ᴴ
-      (diagonal fun a => if a = Fin.last r then -F'.T else 0) := by
-  ext (a | a) (b | b)
-  · exact B_e_e F a b
-  · rfl
-  · exact (H.herm _ _).symm
-  · exact B_e_e F' a b
-
-theorem det_gram (F F' : FlagD H r) : (Gram F F').det = (-1) ^ (r + 1) * Gval F F' := by
-  rw [gram_eq_fromBlocks, det_fromBlocks_last, ← conjTranspose_submatrix, det_conjTranspose, det_conjTranspose]
-  rfl
-
-theorem gram_det_statement : LemmaG := fun _ _ _ _ _ _ _ _ F F' => det_gram F F'
-
-theorem isTransv_iff_gval : ∀ (K V : Type) [Field K] [StarRing K] [AddCommGroup V] [Module K V]
-    [FiniteDimensional K V] (H : HermSpace K V) (r : ℕ) (F F' : FlagD H r), IsTransv F F' ↔ Gval F F' ≠ 0 := by
-  intro K V _ _ _ _ _ H r F F'
-  rw [isTransv_iff_gram, det_gram]
-  simp
-
 end GlobalTheory.SA.TransvG

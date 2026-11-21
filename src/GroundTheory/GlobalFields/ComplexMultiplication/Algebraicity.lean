@@ -94,19 +94,5 @@ theorem ELL.isAlgebraic_j (x : ELL K) : IsAlgebraic ℚ (ELL.j x) :=
 
 end Quadratic
 
-omit [NumberField K] in
-
-theorem CMCurve.exists_model (E : CMCurve K) :
-    ∃ (W : WeierstrassCurve ℚ⟮E.curve.j⟯) (_ : W.IsElliptic) (C : VariableChange ℂ),
-      C • W.baseChange ℂ = E.curve := by
-  classical
-  set W := WeierstrassCurve.ofJ (⟨E.curve.j, mem_adjoin_simple_self ℚ _⟩ : ℚ⟮E.curve.j⟯)
-  refine ⟨W, inferInstance, ?_⟩
-  have hj : (W.baseChange ℂ).j = E.curve.j := by
-    show (W.map (algebraMap ℚ⟮E.curve.j⟯ ℂ)).j = _
-    rw [map_j, ofJ_j]
-    rfl
-  exact exists_variableChange_of_j_eq _ _ hj
-
 end Elliptic
 end GroundTheory.Global

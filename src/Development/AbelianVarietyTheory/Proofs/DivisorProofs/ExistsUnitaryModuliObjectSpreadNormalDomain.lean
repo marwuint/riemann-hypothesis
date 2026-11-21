@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaCore
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeterminantConditionSpreadsFromGeometricPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelIsometryOfPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelIsometryOfPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackSelf
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsPELTripleOfDenseFibres
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PushEquivSymmLeft
@@ -185,7 +185,7 @@ theorem exists_tateIso {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     rw [e]
     exact PELFamily.weilIs_lower P hL.weil hm u' hy hy' h
   · have hn := Nat.mul_pos hN hm
-    obtain ⟨ζ, ev, k₁, k₂, k₃, k₄, k₅, k₆, k₇⟩ := GlobalTheory.T.exists_levelIsometry_of_point_alt E H D A P act z κ lam pt (N * m) m N hn hN ⟨q⟩ hz hpt
+    obtain ⟨ζ, ev, k₁, k₂, k₃, k₄, k₅, k₆, k₇⟩ := _root_.GlobalTheory.exists_levelIsometry_of_point E H D A P act z κ lam pt (N * m) m N hn hN ⟨q⟩ hz hpt
       hact ⟨K₀, inferInstance, g₀, I₀.ζ (N * m), I₀.ev (N * m), I₀.ζ_prim _ hn, I₀.add _,
         fun v => (I₀.onto _ hn _).2 ⟨v, rfl⟩, I₀.lin _, I₀.isom _ hn,
         by rw [← h₁, ← I₀.ζ_pow N m hN hm, Units.val_pow_eq_pow_val],

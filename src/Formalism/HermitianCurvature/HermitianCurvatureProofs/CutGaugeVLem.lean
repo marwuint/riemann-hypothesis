@@ -40,8 +40,6 @@ theorem famR_sub {Φ Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)} (hΦ : FamR P Bs Dc Φ
   rw [sub_eq_add_neg]
   exact famR_add hΦ (famR_neg hΨ)
 
-theorem famR_zero (hΦ : FamR P Bs Dc (fun _ _ => 0)) : FamR P Bs Dc 0 := hΦ
-
 theorem famR_opL {Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)} (hΦ : FamR P Bs Dc Φ) (a : Fin P.r) (j : Fin 6) :
     FamR P Bs Dc (Q.crd (opL a j) Φ) :=
   ⟨hΦ.1, hΦ.2.1, hΦ.2.2.1, Formalism.FourierDecayAlt.P.family_operators Wp Wq P.k P.r Bs.z Bs.z' Bs.π Bs.π' (Fin.last P.r) Dc Φ

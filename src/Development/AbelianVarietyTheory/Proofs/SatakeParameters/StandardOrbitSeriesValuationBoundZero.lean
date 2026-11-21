@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementB
 import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.HurwitzSubstituteTwoSeries
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OrthogonalGaussModels.OfClosedInt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntegralOrbitSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AddCoordExponentIntegralJetsUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AddCoordExponentIntegralJetsUnramified
 
 noncomputable section
 
@@ -103,10 +103,6 @@ theorem hur_exp : Hur R ((PowerSeries.exp K : PowerSeries K) : MvPowerSeries Uni
   simp [this]
 
 end Gen
-
-theorem hur_mvExp {K : Type} [NormedField K] [CharZero K] (R : Subring K) {τ : Type} [Finite τ] {h : MvPowerSeries τ K}
-    (h0 : MvPowerSeries.constantCoeff h = 0) (hh : Hur R h) : Hur R (Formalism.DworkPowerSeriesWeights.mvExp h) :=
-  hur_psubst R h0 hh (hur_exp R)
 
 section Cp
 
@@ -365,7 +361,7 @@ theorem kvalGe_zero : ∀ (Lc : product_zeroth_first_parts.Loc) (ep : ℂ_[Lc.l]
   obtain ⟨U0, hU, hTh⟩ := GlobalTheory.T.exists_integral_orbit_series Lc ep σ F be0 om oms ζ hD hB
   obtain ⟨hσ, hF, h1, h2, hO, hT, -⟩ := hD
   have hb0 : MvPowerSeries.constantCoeff be0 = 0 := h1.1 0 (Or.inl rfl)
-  have hH := hur_theta (d := Lc.d) (N0 := Lc.N0) (N1 := Lc.N1) σ hσ be0 hb0 (GlobalTheory.T.addCoord_exponent_integral_jets_unramified Lc.l σ F be0 hσ hF h1 h2) om oms hO.1 U0 hU
+  have hH := hur_theta (d := Lc.d) (N0 := Lc.N0) (N1 := Lc.N1) σ hσ be0 hb0 (_root_.GlobalTheory.AddJet.addC_integral_jets Lc.l σ F be0 hσ hF h1 h2) om oms hO.1 U0 hU
   rw [← hTh] at hH
   have hJ := jets_of_scaled ep hep Lc.Th hH
   intro I m

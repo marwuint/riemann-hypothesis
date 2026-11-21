@@ -75,62 +75,6 @@ theorem cA_incA (e : D.host.E) : cA D (incA D e) = incA D (D.sp.cm.sig e) := by
   rw [Algebra.TensorProduct.map_tmul]
   rfl
 
-theorem hHom_add_right (V W : HSp D) (x y y' : WA V W) :
-    hHom V W x (y + y') = hHom V W x y + hHom V W x y' := by
-  unfold hHom
-  split_ifs <;> simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
-
-theorem hHom_smul_right (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
-    hHom V W x (c • y) = c • hHom V W x y := by
-  unfold hHom
-  split_ifs <;> simp only [Matrix.smul_apply, mul_smul_comm, Finset.smul_sum]
-
-theorem hHom_add_left (V W : HSp D) (x x' y : WA V W) :
-    hHom V W (x + x') y = hHom V W x y + hHom V W x' y := by
-  unfold hHom
-  split_ifs <;> simp only [Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]
-
-theorem hHom_smul_left (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
-    hHom V W (c • x) y = c • hHom V W x y := by
-  unfold hHom
-  split_ifs <;> simp only [Matrix.smul_apply, cA_smul, smul_mul_assoc, Finset.smul_sum]
-
-theorem symplH_add_left (V W : HSp D) (x x' y : WA V W) :
-    symplH V W (x + x') y = symplH V W x y + symplH V W x' y := by
-  simp only [symplH, Formalism.L2.Theta.sympl, hHom_add_right, mul_add, map_add]
-
-theorem symplH_smul_left (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
-    symplH V W (c • x) y = c * symplH V W x y := by
-  simp only [symplH, Formalism.L2.Theta.sympl, hHom_smul_right, mul_smul_comm, map_smul, smul_eq_mul]
-  ring
-
-theorem symplH_add_right (V W : HSp D) (x y y' : WA V W) :
-    symplH V W x (y + y') = symplH V W x y + symplH V W x y' := by
-  simp only [symplH, Formalism.L2.Theta.sympl, hHom_add_left, mul_add, map_add]
-
-theorem symplH_smul_right (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
-    symplH V W x (c • y) = c * symplH V W x y := by
-  simp only [symplH, Formalism.L2.Theta.sympl, hHom_smul_left, mul_smul_comm, map_smul, smul_eq_mul]
-  ring
-
-def symplB (V W : HSp D) : WA V W →ₗ[AF D.host.F] WA V W →ₗ[AF D.host.F] AF D.host.F :=
-  LinearMap.mk₂ (AF D.host.F) (symplH V W) (symplH_add_left V W)
-    (fun c x y => by rw [symplH_smul_left, smul_eq_mul]) (symplH_add_right V W)
-    (fun c x y => by rw [symplH_smul_right, smul_eq_mul])
-
-def eV (V W : HSp D) (a : Ix V W) : WA V W :=
-  Matrix.single a.1 a.2.1 (incA D (Module.finBasis D.host.F D.host.E a.2.2))
-
-theorem sum_eV (V W : HSp D) (x : WA V W) : ∑ a, Co V W x a • eV V W a = x := by
-  ext i j
-  simp only [Matrix.sum_apply, Matrix.smul_apply, eV, Matrix.single_apply, Fintype.sum_prod_type, Co, Phi, smul_ite,
-    smul_zero, ite_and]
-  simp only [Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
-  conv_rhs => rw [← (bA D.host.F D.host.E).sum_repr (x i j)]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [Algebra.TensorProduct.basis_apply]
-  rfl
-
 end Sympl
 
 end Formalism.IndefR.PHeisTh

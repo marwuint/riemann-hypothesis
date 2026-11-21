@@ -306,10 +306,6 @@ theorem adel_conj_bE : H.conj (H.sqd) = - H.sqd := by
     | simp [Formalism.HC.HostRaw.conj, Formalism.HC.Frame.cc]
   rw [hc]; simp
 
-theorem adel_aE_sq : H.sqq ^ 2 = -(H.q : H.E) := H.sqq_sq
-
-theorem adel_bE_sq : H.sqd ^ 2 = -(H.d : H.E) := H.sqd_sq
-
 theorem adel_mem_F (x : H.E) (hx : H.conj x = x) : x ∈ H.F := by
   have key : ∀ φ : H.E →+* ℂ, starRingEnd ℂ (φ x) = φ x := fun φ => by
     have h1 := Formalism.HC.HostAx.conjE_apply (H := H.toHostAx) φ x
@@ -331,13 +327,6 @@ open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 open scoped TensorProduct
 
 variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
-
-theorem adel_bE_ne : (H.sqd : H.E) ≠ 0 := by
-  intro h
-  obtain ⟨-, hd, -, -, -⟩ := H.hyp
-  have h2 := H.sqd_sq
-  rw [h, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero] at h2
-  exact hd.ne_zero h2
 
 def adelBeta : H.F :=
   ⟨H.sqq / H.sqd, adel_mem_F H _ (by

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtL
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LawsAll
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnChainsSatisfyConditionsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeDataOkOfTrueColumnChoicesStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeDataOkOfTrueColumnChoices
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnsPeriodMapDatumOkAndOverLevelPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroClassesBijectiveSameDecoStatement
 
@@ -17,7 +17,7 @@ set_option maxHeartbeats 1600000 in
 theorem laws_of_ok : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → I.Laws := by
   intro B X I h
   have hch := GlobalTheory.T.trueColumn_chains_satisfy_conditions I h
-  have hlev := GlobalTheory.T.levelPrimeData_ok_of_trueColumnChoices I h
+  have hlev := _root_.GlobalTheory.Mem.Col2.LevelLaw.atIn_ok I h
   have hper := GlobalTheory.T.trueColumns_periodMapDatum_ok_and_over_levelPrime I h
   have hall := fun u a => laws_all (I.chIn u a) (I.atIn u a) B.fields.emb B.embLL (B.hcW u) (base_fOk B) (hch u a).1 (hlev u a)
     (I.perIn u a) (hper u a).1 B.places

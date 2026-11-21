@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.LiftFactorization.BcTopLOf
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.LiftFactorization.RamLiftOf
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LtOneOfContinuous
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RamificationTowerCompatible
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CsdScopeOfLift

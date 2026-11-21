@@ -21,8 +21,6 @@ instance instIsBezoutRobbaTilde : IsBezout T.RobbaTilde := T.isBezout_robbaTilde
 
 namespace TeichFrob
 
-variable (F : T.TeichFrob)
-
 end TeichFrob
 
 end TeichLift

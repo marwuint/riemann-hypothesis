@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.EqOfAgreeOnTorsion
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyFiniteCoverByTranslatePairsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyFiniteCoverByTranslatePairs
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GroupLawsOnCoverAgreeOnCommonPoints
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
@@ -21,7 +21,7 @@ theorem cover_geometric_fibre : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], Is
     obtain ⟨x, hxV, hx⟩ := hcov (default : PrimeSpectrum K)
     obtain ⟨p, hp, -⟩ := Scheme.exists_preimage_of_isPullback hpb.1 x _ hx
     exact ⟨p, by show pullback.fst A.hom ξ p ∈ V; rw [hp]; exact hxV⟩
-  obtain ⟨n, a', ha'⟩ := GlobalTheory.T.abelianVariety_finite_cover_by_translate_pairs K ((Over.pullback ξ).obj A) hA' (pullback.fst A.hom ξ ⁻¹ᵁ V) hne
+  obtain ⟨n, a', ha'⟩ := _root_.GlobalTheory.AbCover.cover K ((Over.pullback ξ).obj A) hA' (pullback.fst A.hom ξ ⁻¹ᵁ V) hne
   let a : Fin n → (Over.mk ξ ⟶ A) := fun i => Over.homMk ((a' i).left ≫ pullback.fst A.hom ξ) (by
     show ((a' i).left ≫ pullback.fst A.hom ξ) ≫ A.hom = ξ
     rw [Category.assoc, pullback.condition, ← Category.assoc]

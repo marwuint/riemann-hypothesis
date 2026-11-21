@@ -5,11 +5,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HypothesesAbsDet
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExistStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExist
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DOpDef
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorRightIntertwinesHeisenbergDerivativeStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOrbitCoefficientSmoothStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOrbitCoefficientSmooth
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffOfContinuousOneParameter
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffHeisenbergArchimedeanDiffOperatorFamily
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergArchimedeanDiffOperatorHasDerivAtFamil
 
@@ -39,7 +41,7 @@ theorem orbit_heis_real : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   have hstab : ∀ v : Matrix (Fin n) (Fin d) (AE F E), At (evI F) v → ∀ g ∈ M.Pol ψ τ,
       ∃ g₁ ∈ M.Pol ψ τ, ∀ y, g₁ y = dOp (archCo M.co v).1 (archCo M.co v).2 g y := by
     intro v hv g hg
-    obtain ⟨D, hD⟩ := GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ (incM F X.J) (incM F W.J)
+    obtain ⟨D, hD⟩ := _root_.GlobalTheory.HeisDer.derEx F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ (incM F X.J) (incM F W.J)
       M.co hψ
     have h0 : ∀ t, M.heisLine ψ v t 0 = 0 := fun t => by
       funext x
@@ -52,7 +54,7 @@ theorem orbit_heis_real : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   have hrel : ∀ t y, T t f₁ y = dOp (archCo M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1
       (archCo M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).2 (T t f) y := fun t =>
     GlobalTheory.T.weil_operator_right_intertwines_heisenberg_derivative M ψ χX χW om hψ hW (γ (Multiplicative.ofAdd t)) (T t) (hTa t) u hu f f₁ hf₁
-  obtain ⟨hφ, u', hu', hφd⟩ := GlobalTheory.T.heisenberg_orbit_coefficient_smooth M γ hγ u hu
+  obtain ⟨hφ, u', hu', hφd⟩ := _root_.GlobalTheory.HeisOrbitSmooth.archCo_orbit_smooth M γ hγ u hu
   have hfun : (fun p : ℝ × (Fin n × Fin d → mixedEmbedding.mixedSpace F) => T p.1 f₁ p.2) =
       fun p => dOp (archCo M.co (u * (mat (γ (Multiplicative.ofAdd p.1)))ᵀ)).1
         (archCo M.co (u * (mat (γ (Multiplicative.ofAdd p.1)))ᵀ)).2 (T p.1 f) p.2 :=

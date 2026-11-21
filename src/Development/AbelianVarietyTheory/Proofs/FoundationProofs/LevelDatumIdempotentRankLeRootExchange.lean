@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNont
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankLevelDatumIdempotentEqOfSameShapeStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SubgroupCharacterIdempotentPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LevelDatumSubgroupCharacterPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RepresentationRootSubgroupExchangeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RepresentationRootSubgroupExchange
 
 open Polynomial Classical GlobalTheory.BadShare
 
@@ -217,7 +217,7 @@ theorem exchange (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional �
         Matrix.one_apply_ne (by intro e; rw [← e] at hb; omega)]; simp
     · rw [chi_eq L hL _ _ hc i j hij (fun a b _ h => hD a b h), Matrix.vecMulVec_apply]
       simp
-  obtain ⟨w, hw, hw'⟩ := GlobalTheory.T.representation_root_subgroup_exchange (GG g N) M ρ (J ⊓ J') X Y L.chi
+  obtain ⟨w, hw, hw'⟩ := _root_.GlobalTheory.BadShare.root_exchange (GG g N) M ρ (J ⊓ J') X Y L.chi
     (by
       rintro x ⟨ξ, h, hx⟩ hB
       have : ξ = 0 := by

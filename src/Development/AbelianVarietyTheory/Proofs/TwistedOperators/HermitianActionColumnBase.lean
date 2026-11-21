@@ -1,5 +1,18 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.PositionOneOfUnique
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittSmallGroupEmbeddingMemPointwiseStabilizerIso
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.StandardOrderExtendedBasisApplyLowBlock
+import Development.AbelianVarietyTheory.Definitions.Foundations.GLintEqKOAndPrincEqKOne
+import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FourierJacobiAverage
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinPartIdemMulMemIff
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalBasic
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOfMemSB
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExDownExUpAndExUpExDown
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.SymplecticValTauCompat
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StandardAdelicCharacterLocalComponentNeOne
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MemLevelFunOfIsAutFun
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsHermitianAuxiliaryVectorSystemBesselVectors
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory IsDedekindDomain NumberField Matrix
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.SplitWeil GlobalTheory.LocFrame
 open GlobalTheory.EmbChart (idem)
@@ -45,54 +58,10 @@ theorem piW_cA (z : AE D) : piW τ (cA D z) = splitProj (τ.comp D.sp.cm.sig) (c
 
 def plcC (y : Fv D.host.F v) : AE D := cA D (idem τ) * algebraMap (AF D.host.F) (AE D) (atPlace v y)
 
-def plcW (y : Fv D.host.F v) : AE D := idem τ * algebraMap (AF D.host.F) (AE D) (atPlace v y)
-
 theorem piW_plcC (y) : piW τ (plcC τ y) = 0 := by rw [plcC, map_mul, piW_cA_idem, zero_mul]
 theorem piW_cA_plcC (y) : piW τ (cA D (plcC τ y)) = y := by
   rw [plcC, map_mul, cA_cA', cA_alg, map_mul, piW_idem, piW_alg, one_mul]
 
-theorem plcC_add (y y') : plcC τ (y + y') = plcC τ y + plcC τ y' := by
-  rw [plcC, plcC, plcC, map_add, map_add, mul_add]
-
-theorem continuous_piW : Continuous (piW τ) := by
-  have hev : Continuous (GlobalTheory.AdelicU.evFin D.host.F v) :=
-    (RestrictedProduct.continuous_eval v).comp continuous_snd
-  have h := GlobalTheory.AutFunCompare.continuous_tensNU (E := D.host.E) (GlobalTheory.AdelicU.evFin D.host.F v).toLinearMap
-    (fun a b => map_mul (GlobalTheory.AdelicU.evFin D.host.F v) a b) hev
-  exact (GlobalTheory.AdelicU.continuous_splitProj τ).comp h
-
 theorem idem_mul_self : idem τ * idem τ = idem τ := (GlobalTheory.EmbChart.isSplitIdem_idem τ).1
 
-def plcCH : Fv D.host.F v →+ AE D := AddMonoidHom.mk' (plcC τ) (plcC_add τ)
-
-section Frame
-
-variable (V : HSp D) {ι : Type} [Fintype ι] [DecidableEq ι] (β : LatFrame (Fv D.host.F v) ι (Fin V.rank))
-
-def rowL (y : Fin V.rank → D.host.E) : ι → Fv D.host.F v := (τ ∘ (star y ᵥ* V.gram)) ᵥ* cols β
-
-def crd (x : Fin V.rank → D.host.E) : ι → Fv D.host.F v := what₂ β *ᵥ (τ ∘ x)
-
-end Frame
-
-section FJ
-
-variable {V V₀ : HSp D} {σ : ℕ} (d : HypDec V V₀ (σ + 1)) {n : Type} [Fintype n] [DecidableEq n]
-  {γ : LatFrame (Fv D.host.F v) n (Fin V₀.rank)} {β : LatFrame (Fv D.host.F v) (n ⊕ Fin (2 * (σ + 1))) (Fin V.rank)}
-  {t : ℕ → Fv D.host.F v}
-
-variable {τ}
-
-open GlobalTheory.RootEx (colE rowE)
-
-variable (hβ : IsScaled V V₀ τ d.i₀ (fourierJacobiVectors d) γ β t)
-include hβ
-
-end FJ
-
-section Jac
-
-variable {V V₀ L : HSp D} {σ : ℕ} (d : HypDec V V₀ (σ + 1)) (ζ : Fin L.rank → D.host.E)
-
-end Jac
 end GlobalTheory.SrcHalfOne

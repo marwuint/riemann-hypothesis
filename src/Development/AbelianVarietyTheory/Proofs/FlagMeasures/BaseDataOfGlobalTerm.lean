@@ -6,10 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitriangularF
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitriangularChangeRationalFlagIffRationalUnipot
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalisedBaseFramesRelevantPairStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnsignedLocalTermRowLatticeIsTerm
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinitePlacesNotPrimeToBaseFrameInvariantsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinitePlacesNotPrimeToBaseFrameInvariants
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitriangularFrameChangeLocalScalings
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsDatumOfTwoCongruentFramesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameWitnessIntegralChangeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsDatumOfTwoCongruentFrames
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameWitnessIntegralChange
 
 noncomputable section
 
@@ -95,7 +95,7 @@ theorem base_data_of_global_term : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.wh
   obtain ⟨Pb, hPb, -⟩ := GlobalTheory.LocOver.tri_scaled D Z _ _ Bb hBb hBbc
   have hd : ∀ p, ∃ d : LocNG.Datum (FP p), LocNG.IsTermOver (FP p) d (locU Z p Λ (lf D F0) F' (Tu D u) (Tu D u')) := by
     intro p
-    refine GlobalTheory.T.exists_datum_of_two_congruent_frames (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p) _ (hIT p).1 ?_ ?_ ?_ ?_
+    refine _root_.GlobalTheory.LocOver.TermOver.exists_datum (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p) _ (hIT p).1 ?_ ?_ ?_ ?_
     · exact (hFPb p).2.2.1.symm
     · exact (hFPb p).2.2.2.symm
     · rw [(hFPb p).1]; exact ⟨Pa p, (hPa p).1, (hPa p).2⟩
@@ -107,7 +107,7 @@ theorem base_data_of_global_term : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.wh
   obtain ⟨Ab, hAb, hAbc⟩ := hTb
   obtain ⟨Qa, hQa, hQaf⟩ := GlobalTheory.LocOver.tri_scaled D Z _ _ Aa hAa hAac
   obtain ⟨Qb, hQb, hQbf⟩ := GlobalTheory.LocOver.tri_scaled D Z _ _ Ab hAb hAbc
-  have hPr := GlobalTheory.T.finite_places_not_primeTo_baseFrameInvariants D Z u u' F00 F'0 hG0 FP hFPb
+  have hPr := _root_.GlobalTheory.PrimeAlmostAll.primeTo_finite D Z u u' F00 F'0 hG0 FP hFPb
   refine ((hPr.union hQaf).union hQbf).subset ?_
   intro p hp
   simp only [Set.mem_setOf_eq] at hp
@@ -119,7 +119,7 @@ theorem base_data_of_global_term : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.wh
   refine ⟨hpr, ?_⟩
   have hsplit : (Z.M p).split = none := hpr.1
   have hth : LocNG.theta (Z.M p) = 1 := by unfold LocNG.theta; rw [hsplit]
-  refine GlobalTheory.T.hermitian_frame_witness_integral_change (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq p) (hFPr p) (d0 p)
+  refine _root_.GlobalTheory.LocOver.WitChange.witness_change (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq p) (hFPr p) (d0 p)
     (locU Z p Λ (lf D F0) F' (Tu D u) (Tu D u')) (hd0 p) (Qa p) (Qb p) _ _ (hQa p).1 (hQb p).1 ?_ (hQa p).2 ?_
   · intro a b
     refine ⟨hqa a b, hqb a b, ?_⟩

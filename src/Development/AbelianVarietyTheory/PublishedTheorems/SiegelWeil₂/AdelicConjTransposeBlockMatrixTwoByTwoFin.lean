@@ -1,6 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitarySchrodinger
-import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.AllHypothesesInhabited
+import Formalism.LocalRingCardinality.SpanPowerMembership.Spaces
+import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitaryConvergent
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.FirstClauseRankZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeOfIsotropicSignature
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumOfSplittingCharacters
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicIwasawaDoubledGroupSelfDualLattice
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubledCartanInvolutionCommuteMaximalCompact
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsAdelicMajorantFrameForCartanInvolutions
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsThetaFunNeZero
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.BoundedCommutantVacua
 
 noncomputable section
 
@@ -74,27 +84,6 @@ theorem exists_weyl : ∃ g : G D n, mat g = blk4 0 1 (-1) 0 := by
   · simp [submatrix_fromBlocks_mul, block_matrix_one]
   · simp [adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, adj_zero, adj_one, adj_neg]
 
-theorem weyl_unip_cube {R : Type} [CommRing R] :
-    (blk4 0 1 (-1) 0 * blk4 1 1 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) R) ^ 3 = 1 := by
-  simp [pow_succ, submatrix_fromBlocks_mul, block_matrix_one]
-
-theorem isWeilSch_rank_zero (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V : HSp D) (hV : V.rank = 0)
-    (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)) (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕) :
-    IsWeilSch ψ 1 θ V μ 1 := by
-  have hs : Subsingleton (Mx D V.rank n) := ⟨fun x y => by ext i; exact absurd i.2 (by omega)⟩
-  have hi : ∀ x y : Mx D V.rank n, inner V x y = 0 := fun x y => by
-    rw [Subsingleton.elim x 0, StdUnn.inner, adj_zero, Matrix.zero_mul]
-  have hu : μ Set.univ = 1 := by
-    rcases 𝓕.eq_empty_or_nonempty with h | h
-    · have := hμ.2.2; simp [h] at this
-    · rw [← hμ.2.2, Subsingleton.eq_univ_of_nonempty h]
-  refine ⟨fun g a _ Φ x => ?_, fun g b _ Φ x => ?_, fun g _ Φ x => ?_⟩
-  · simpa [npow, hV] using congrArg Φ.1 (Subsingleton.elim _ _)
-  · simp [hi, halfTr]
-  · simp only [hi, Matrix.trace_zero, map_zero, AddChar.map_zero_eq_one, mul_one]
-    rw [integral_congr_ae (g := fun _ => Φ.1 x) (.of_forall fun y => by rw [Subsingleton.elim y x])]
-    simp [Measure.real, hu]
-
 theorem lower_eq_zero {p : G D n} (hp : p ∈ P D n) (i j : Fin n) :
     mat p (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0 := by
   have h := (hp (Pi.single (finSumFinEquiv (.inl j)) 1)).1 (by
@@ -123,20 +112,6 @@ def levi : P D n →* GL (Fin n) (AE D) :=
 theorem continuous_mat : Continuous (mat : G D n → Mx D (n + n) (n + n)) :=
   Units.continuous_val.comp (isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous
 
-theorem continuous_levi : Continuous (levi (D := D) (n := n)) := by
-  have hA : Continuous fun g : G D n => blkA (mat g) :=
-    continuous_matrix fun i j => continuous_mat.matrix_elem _ _
-  rw [Units.continuous_iff]
-  refine ⟨hA.comp continuous_subtype_val, ?_⟩
-  refine (hA.comp (continuous_subtype_val.comp continuous_inv)).congr fun p => ?_
-  rw [← map_inv]; rfl
-
-theorem continuous_det : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n) (AE D) → (AE D)ˣ) := by
-  haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
-  rw [Units.continuous_iff]
-  refine ⟨Units.continuous_val.matrix_det, (Units.continuous_coe_inv.matrix_det).congr fun g => ?_⟩
-  rw [← map_inv]; rfl
-
 theorem isCompact_K : IsCompact (K D n : Set (G D n)) :=
   haveI : Submodule.IsLattice D.host.E (stdLattice D.host.E (n + n)) := isLattice_stdLattice
   isCompact_levelAll (isCMExt_host D) _ _ _
@@ -160,33 +135,6 @@ theorem isClosed_P : IsClosed (P D n : Set (G D n)) := by
   rw [this]
   exact isClosed_biInter fun x _ => (hU.preimage (continuous_mat.matrix_mulVec continuous_const)).inter
     (hU.preimage ((continuous_mat.comp continuous_inv).matrix_mulVec continuous_const))
-
-theorem exists_isHeight : ∃ H : G D n → ℝ≥0, IsHeight H := by
-  let δ : P D n →* ℝ≥0 := (absA D).comp (Matrix.GeneralLinearGroup.det.comp levi)
-  have hc : Continuous δ := continuous_absE.comp (continuous_det.comp continuous_levi)
-  haveI := t2Space_adeleRing' (F := D.host.F)
-  have ht := triv_of_isCompact (δ := δ) isClosed_P hc isCompact_K
-  refine ⟨iwAbs δ (K D n), fun p hp a ha k hk => ?_⟩
-  rw [show a = levi (D := D) (n := n) ⟨p, hp⟩ from Units.ext ha.symm]
-  exact iwAbs_mul_of_triv ht ⟨p, hp⟩ hk
-
-theorem data_inhabited (D : D7) : ∃ (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D)
-    (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)) (H : G D n → ℝ≥0) (l : D.what₂.Tau → ℝ)
-    (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (ν : Measure (GA D V)),
-    0 < Formalism.MainNotions.SchurIrreducible.wittIdx V ∧ n < V.rank ∧ V.rank ≤ 2 * n ∧ n + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank ∧ IsCharAF D.host.F ψ ∧
-      IsHeckeChar D χ ∧ ResEta D χ V.rank ∧ IsInfFam θ ∧ IsCovolOne (ratMx D V.rank n) μ 𝓕 ∧ IsHeight H ∧
-      HasRealPar ψ θ l ∧ (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) ∧ ν.IsHaarMeasure := by
-  obtain ⟨A, B, h0, h1, h2, h3⟩ := (GlobalTheory.SiegelWeilMiddle.Model.range_inhabited D).1
-  obtain ⟨ψ, χ, ω, a, -, -, s, -, -, ν, -, hω, -, -, -, -, hs, -, -, hν, -⟩ :=
-    GlobalTheory.SiegelWeilMiddle.Model.all_hypotheses_inhabited D A B
-  obtain ⟨θ, hθ⟩ := hω.std.2.1
-  obtain ⟨μ, 𝓕, hμ⟩ := GlobalTheory.MixModel.exists_isCovolOne D B.rank A.rank
-  obtain ⟨H, hH⟩ := exists_isHeight (D := D) (n := A.rank)
-  refine ⟨A.rank, B, ψ, χ, θ, μ, 𝓕, H, fun _ => -1, s, ν, h0, h1, h2, h3, hω.std.1, hω.hecT, hω.resT, hθ, hμ, hH,
-    fun x => ?_, hs, hν⟩
-  rw [hω.std.2.2 θ hθ x]
-  congr 1
-  simp [Finset.sum_neg_distrib]
 
 end GlobalTheory.StdUnn.Model
 

@@ -24,10 +24,4 @@ theorem norm_pderivIter_le_of_differentiable {F : (ι → ℂ) → V} {a : ι �
   norm_pderivIter_le_of_nonneg α hr hα isOpen_univ hF.differentiableOn
     (fun _ _ => Set.mem_univ _) hM
 
-section Holomorphic
-
-variable {F G : (ι → ℂ) → V} {U : Set (ι → ℂ)} {a : ι → ℂ}
-
-end Holomorphic
-
 end GlobalTheory

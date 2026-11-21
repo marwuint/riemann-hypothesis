@@ -82,13 +82,6 @@ theorem term_indep (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : Sem
   rw [hb]
   exact rep_shift T hS hG a.2 hab (-a + b).2 z
 
-theorem term_out (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} (hS : SemiChar T La₂)
-    {G : VC D N N' → ℂ} (hG : G ∈ ThSp D T La₁) (a : La₂) (z : VC D N N') :
-    al D T ((Quotient.out (a : La₂ ⧸ La₁.addSubgroupOf La₂) : La₂) : VC D N N') *
-        U D T ((Quotient.out (a : La₂ ⧸ La₁.addSubgroupOf La₂) : La₂) : VC D N N') G z =
-      al D T (a : VC D N N') * U D T (a : VC D N N') G z :=
-  term_indep T hS hG a _ (QuotientAddGroup.out_eq' _).symm z
-
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO
 
 namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO

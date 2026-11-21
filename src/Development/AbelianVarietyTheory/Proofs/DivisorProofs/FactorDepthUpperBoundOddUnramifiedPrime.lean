@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ESmall
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagStepCharactersOfColengthStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusOrbitOfUnramifiedPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusOrbitOfUnramifiedPrime
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCharactersBoundedMinorEigenspace
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.UnramifiedCompanionChartCharacters
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsIntegralChartIntegralFramedPoint
@@ -113,7 +113,7 @@ theorem nuFac_le_odd_unram : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have hp1 : 1 < p := (Fact.out : p.Prime).one_lt
   obtain ⟨X⟩ := GlobalTheory.CharDepth.nonempty_valExt T p hnu
   obtain ⟨Ch⟩ := (GlobalTheory.IntChartExists.intChart_exists E H Dw l Xo c).1 (fun _ => rfl) T io y
-  obtain ⟨hfot, horb⟩ := GlobalTheory.T.frobenius_orbit_of_unramified_prime E H l c p T io X hdisc
+  obtain ⟨hfot, horb⟩ := _root_.GlobalTheory.FrobOrbit.frobOnType_and_orbit E H l c p T io X hdisc
   obtain ⟨τ, i⟩ := f
   obtain ⟨h, hh, -, lab, hl0, hfr, hinj, -⟩ := horb τ
   haveI : NeZero h := ⟨hh.ne'⟩

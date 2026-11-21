@@ -52,35 +52,4 @@ theorem isIrreducible_of_norm_one {k G V : Type} [Field k] [CharZero k] [Group G
   rw [← h]
   exact (Representation.IntertwiningMap.equivAlgEnd (ρ := ρ)).toLinearEquiv.finrank_eq.symm
 
-theorem isAbsIrrChar_of_isIrr : ∀ (K : Type) [Field K] (σ : K →+* ℂ) (G : Type) [Group G] [Fintype G] (χ : G → K), IsIrr (fun t => σ (χ t)) → Formalism.L2.DIV.IsAbsIrrChar χ := by
-  intro K _ σ G _ _ χ h
-  obtain ⟨V, hV, hχ⟩ := h
-  haveI : CharZero K := σ.charZero
-  letI : Algebra K ℂ := σ.toAlgebra
-  let τ : AlgebraicClosure K →ₐ[K] ℂ := IsAlgClosed.lift
-  letI : Algebra (AlgebraicClosure K) ℂ := τ.toRingHom.toAlgebra
-  have hτ : ∀ x : K, algebraMap (AlgebraicClosure K) ℂ (algebraMap K (AlgebraicClosure K) x) = σ x :=
-    fun x => τ.commutes x
-  have hinj : Function.Injective (algebraMap (AlgebraicClosure K) ℂ) := RingHom.injective _
-  have hm : Nat.card G ≠ 0 := Nat.card_pos.ne'
-  haveI : NeZero (Nat.card G) := ⟨hm⟩
-  haveI : NeZero (Nat.card G : AlgebraicClosure K) := ⟨Nat.cast_ne_zero.2 hm⟩
-  obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure K) (Nat.card G)
-  have hch : GlobalTheory.BI.IsChar ℂ ℂ (fun t => σ (χ t)) := by
-    have h := (GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ G V V.ρ).1
-    have e : (fun t => σ (χ t)) = fun g => algebraMap ℂ ℂ (Representation.character V.ρ g) := by
-      funext g
-      exact (hχ g).symm
-    rw [e]
-    exact h
-  obtain ⟨n, ρ, hρ⟩ := GlobalTheory.BI.isChar_of_isPrimitiveRoot (AlgebraicClosure K) ℂ (Nat.card G) ζ hm hζ G
-    (fun g => pow_card_eq_one') _ hch
-  have hρ' : ∀ t, ρ.character t = algebraMap K (AlgebraicClosure K) (χ t) := fun t =>
-    hinj (by rw [hτ]; exact (hρ t).symm)
-  refine ⟨n, ρ, isIrreducible_of_norm_one ρ (hinj ?_), hρ'⟩
-  have hn := (FDRep.simple_iff_char_is_norm_one V).1 hV
-  rw [map_natCast, ← hn, map_sum]
-  refine Finset.sum_congr rfl fun g _ => ?_
-  rw [map_mul, hρ', hρ', hτ, hτ, hχ, hχ]
-
 end GlobalTheory.AbsIrrDescent

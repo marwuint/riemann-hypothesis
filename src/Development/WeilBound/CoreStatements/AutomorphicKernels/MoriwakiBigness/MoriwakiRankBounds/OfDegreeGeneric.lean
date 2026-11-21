@@ -46,7 +46,7 @@ theorem ShiftSectionsRankB.of_degreeGeneric (hDG : GroundTheory.Heights₂.Heigh
     have hNef : NefOnGenericDeg (mCoordIdeal y) N.a :=
       nefOnGenericDeg_of_semipos NefOnGenericOfSemipos.proof hDG hP0 hsN
     set a := N.a with ha
-    obtain ⟨hK, hS⟩ := (GlobalTheory.CompanionTheory.Relay.kleiman_input_nef_ample_section_count GlobalTheory.CompanionTheory.Relay.kleiman_genericPointSectionInput).2
+    obtain ⟨hK, hS⟩ := (_root_.PositivityTheory.HtPt.Ktw.k_twins _root_.PositivityTheory.HtPt.Kra.kleiman_input_universe_zero).2
     have : Nonempty K := hV.1
     have hI : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.genIdeal y = mIdealOver ℚ y := LiftBirationalNef.genIdeal_eq y
     have hP := isProjVarF_map_of_isArithVar hV

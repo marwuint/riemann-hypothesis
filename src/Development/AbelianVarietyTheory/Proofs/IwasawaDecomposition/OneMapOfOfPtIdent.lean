@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PlaceExtensionVa
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicCuspFormAutomorphicBoundedSquareIntegrable
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AdelicLinearIndependent
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsSpanOfOnto
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaDataLevelFormsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelMapExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaDataLevelForms
+import Formalism.LocalToGlobal.IndefiniteReal.FWTie
+import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelMapExtension
 
 noncomputable section
 
@@ -216,40 +218,6 @@ theorem pins_scaleXi (u : O.c'.F) (hu : u ≠ 0) {c0 : ℂ} (h : XiConst O ι x�
   refine ⟨hP.lift, hP.tuple, hP.act, hP.bad, hP.reps, hP.ep, hP.io, hP.w, fun t => ?_,
     ⟨_, hr, xiConst_scaleXi O u h⟩, hP.model₂⟩
   exact ⟨isLev_scale _ _ ((map_ne_zero _).2 hu) (hP.cov t).1, (hP.cov t).2⟩
-
-set_option maxHeartbeats 1600000 in
-
-theorem exists_retie {F : Face D A} (hR : R.Char F) (hP : O.Pins κ v₀ ι x₀)
-    (lev : G → (C.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (C.Q.Dw ((i : ℕ) + 1)).La)
-    (hlev : LevIs R i ι C.Q.l.M (Mfr C.Q.l) lev)
-    (hact : ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) C.Q.c fun g => (lev g, LinearMap.id)) {gramR c0R c0L}
-    (hT : Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ)
-      (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L) :
-    ∃ O' : OMDat C R i Tp tup, O'.c' = O.c' ∧ O'.Pins κ v₀ ι x₀ ∧ O'.lev = lev ∧ CoefficientBaseChange R i O'.jL (inC O'.c') (c0L i) O'.c0' := by
-  classical
-  obtain ⟨c1, hc1⟩ := exists_coef_ext (W := (R.cV i).W) O.jL hP.lift.field (lamV D i) (c0L i)
-  choose h J' h1 h2 h3 h4 using fun t => (hP.tuple t).reps
-  have hL : ThPinsR R i O.jL (inC O.c') v₀ c1 ι C.Q.l.M (Mfr C.Q.l) lev :=
-    ⟨hP.lift.field, hP.lift.std, hP.lift.v0, ⟨_, _, _, hT, hc1⟩, hlev⟩
-  have h0 : ∀ t y, (∀ k, (R.HV i (tup t)).e y (fin _ (h t k)) = 0) → onQ (Wc D i) (R.thF i (tup t) y v₀) = 0 := fun t y hy => by
-    have e1 := h3 t y 0 fun k => (hy k).trans (map_zero _).symm
-    have e2 := h3 t 0 0 fun k => by rw [map_zero]; exact (map_zero _).symm
-    rw [← e1, e2, map_zero]
-    rfl
-  refine ⟨{ O with
-    c0' := c1, lev := lev
-    thAd := fun t x => if hx : ∃ y, Place R i (tup t) (h t) c1 y x then onQ (Wc D i) (R.thF i (tup t) hx.choose v₀) else 0
-    Plc := fun t x => ∃ x₀, Place R i (tup t) (h t) c1 (jVx R i (tup t) x₀) x }, rfl,
-    ⟨hL, fun t => ⟨⟨h t, J' t, h1 t, GlobalTheory.RationalValues.placeEx_of_char R F hR i _ _ hL _ _, fun y x hy => ?_, fun x => Iff.rfl⟩,
-      (hP.tuple t).B, (hP.tuple t).xi, (hP.tuple t).phi, (hP.tuple t).half⟩,
-      ⟨hact, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hact).1⟩,
-      hP.bad, hP.reps, hP.ep, hP.io, hP.w, hP.cov, hP.cxi, hP.model₂⟩, rfl, hc1⟩
-  have hx : ∃ y, Place R i (tup t) (h t) c1 y x := ⟨y, hy⟩
-  refine (dif_pos hx).trans ?_
-  have h5 := h0 t (hx.choose - y) fun k => by
-    rw [map_sub, Pi.sub_apply, hx.choose_spec k, hy k, sub_self]
-  rw [map_sub] at h5
-  exact sub_eq_zero.1 h5
 
 end Change
 

@@ -52,13 +52,6 @@ def PiTLevel (D : D7) (lev : LevelData D) (X : ErrX D) : Prop :=
       ((X.piT u : 𝓞 D.host.E) : D.host.E) ⊗ₜ[D.host.F] (1 : (X.vPl u v).adicCompletion D.host.F) →
     ∀ y : (lev u).fM (X.vPl u v) (X.norm_mem_place_ideal u v), z • y = 0
 
-open scoped TensorProduct in
-
-theorem piT_mem_intV (D : D7) (X : ErrX D) (u : D.what₂.Word) (v : (D.mem u).A.vT) :
-    ((X.piT u : 𝓞 D.host.E) : D.host.E) ⊗ₜ[D.host.F] (1 : (X.vPl u v).adicCompletion D.host.F) ∈
-      intV D.host.E (X.vPl u v) :=
-  Subring.subset_closure (Or.inl ⟨⟨_, ⟨X.piT u, rfl⟩⟩, rfl⟩)
-
 def SeenDef (D : D7) (X : ErrX D) : Prop :=
   ∀ u (w : D.what₂.places.Pl), D.what₂.places.resChar w = (D.mem u).A.T →
     ((D.fm u).seenP w = true ↔ ∀ τ : D.what₂.Tau, (0 : WithTop ℤ) < D.what₂.places.val w (tauLL D τ (X.piT u : D.host.E)))
@@ -185,16 +178,6 @@ theorem Eval_above {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : Consts) (c : E
   unfold Eval
   simp only [if_neg h0, if_neg h1, if_neg hT, if_neg h2, if_neg h3, padicValNat.eq_zero_of_not_dvd hG]
   simp
-
-def SizeData₂.withEval {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : Consts) (c : ErrC)
-    (hs : ∀ u j w, w ∉ L.supp → Eval L X K c u j w = 0) : SizeData₂ D :=
-  { L with
-    E := fun u j w => Eval L X K c u j w
-    E_supp := hs }
-
-theorem SizeData₂.withEval_EDef {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : Consts) (c : ErrC)
-    (hs : ∀ u j w, w ∉ L.supp → Eval L X K c u j w = 0) : (L.withEval X K c hs).EDef X K c :=
-  fun _ _ _ _ => rfl
 
 theorem SizeData₂.EDef.zeroAbove {D : D7} {L : SizeData₂ D} {X : ErrX D} {K : Consts} {c : ErrC} (h : L.EDef X K c)
     (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (w : D.what₂.places.Pl)

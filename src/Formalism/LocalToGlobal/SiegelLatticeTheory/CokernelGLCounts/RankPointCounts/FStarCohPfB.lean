@@ -38,23 +38,4 @@ def CohIota : Prop :=
 
 variable {u u' F0 what₂}
 
-theorem cohResp_of (hLp : CohLp Zd u u' F0 what₂) (hIo : CohIota Zd u u' F0 what₂) : CohResp Zd u u' F0 what₂ := by
-  intro hP γ Z F'₂ φ' hH
-  refine ((hLp hP γ Z F'₂ φ' hH).union (hIo hP γ Z F'₂ φ' hH)).subset ?_
-  intro p hp
-  by_contra hn
-  simp only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not, ne_eq] at hn
-  obtain ⟨h3, h5⟩ := hn
-  apply hp
-  refine ⟨?_, ?_, h3, (hH.2.2.2 p).2.2.2.2.2, h5⟩
-  · exact Set.image_id _
-  · intro x x₂ hx hx₂
-    rw [one_smul, one_smul]
-    show (locH Zd p).mkW _ x = (locH Zd p).mkW _ x₂
-    exact congrArg _ (Subtype.ext (hx.trans hx₂.symm))
-
-theorem starCoh_of_P' (hGen : CohGen Zd u u' F0 what₂) (hLp : CohLp Zd u u' F0 what₂) (hIo : CohIota Zd u u' F0 what₂)
-    (hGood : CohGood Zd u u' F0 what₂) : CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
-  starCoh_of_P Zd hGen (cohResp_of Zd hLp hIo) hGood
-
 end Formalism.L2.SG.Pf.FrameGlobalPatching.FStar

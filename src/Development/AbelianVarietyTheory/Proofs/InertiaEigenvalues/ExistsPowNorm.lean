@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaussNormExtensionAcrisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisNormOfNonzeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomialStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisNormOfNonzero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
@@ -171,8 +171,8 @@ theorem norm_eq_zpow : ∀ (l : ℕ) [Fact l.Prime] (C : Core l) (a b : Per.Acri
     simp only [map_zero, mul_zero, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hx, map_one,
       one_mul] at this
     rw [← this, map_zero]
-  obtain ⟨r₁, c, k, hr₁, hr₁', hc, hNa⟩ := GlobalTheory.T.acris_gauss_norm_eventually_monomial l N hN a (GlobalTheory.T.acris_norm_of_nonzero l N hN a ha)
-  obtain ⟨r₂, c', k', hr₂, hr₂', hc', hNb⟩ := GlobalTheory.T.acris_gauss_norm_eventually_monomial l N hN b (GlobalTheory.T.acris_norm_of_nonzero l N hN b hb)
+  obtain ⟨r₁, c, k, hr₁, hr₁', hc, hNa⟩ := _root_.GlobalTheory.MemLoc.gauss_slope l N hN a (_root_.GlobalTheory.MemLoc.gauss_ne_zero l N hN a ha)
+  obtain ⟨r₂, c', k', hr₂, hr₂', hc', hNb⟩ := _root_.GlobalTheory.MemLoc.gauss_slope l N hN b (_root_.GlobalTheory.MemLoc.gauss_ne_zero l N hN b hb)
   obtain ⟨t, s, ht, hts⟩ := exists_pow_norm x hx
   obtain ⟨m, n, rfl⟩ : ∃ m n : ℕ, s = (m : ℤ) - n := ⟨s.toNat, (-s).toNat, by omega⟩
   have hl0 : ((l : ℕ) : Om l) ≠ 0 := by exact_mod_cast (Fact.out : l.Prime).ne_zero

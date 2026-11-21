@@ -193,14 +193,6 @@ theorem iota_periodT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) :
   rw [e]
   ring
 
-theorem periodT_ne_zero {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
-    (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) :
-    periodT hε ≠ 0 := by
-  intro h
-  have h1 := iota_periodT hε
-  rw [h, map_zero] at h1
-  exact fontaineT_ne_zero hε hζ h1.symm
-
 end Cp
 
 end ACris

@@ -178,10 +178,6 @@ structure IntegralChartA3 (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io)
   primT : IsPrimG I.G wPT
   gen : IsGenFibreChart ch I FT actT ph1T ph2T syT adT uvecT xT eT wPT
 
-def ChartDirectionsIntegral : Prop :=
-  ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (ℓ : Lt1 Dw) (i : Fin (chD C.ch)),
-    (letI := io.toAlgebra; C.ch.uvec ℓ i) ∈ (algebraMap T.V T.Fr).range
-
 def ChartSaturated : Prop :=
   ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (τ : E →+* ℂ),
     (∃ (w : Fin (chD C.ch) → Fin (chD C.ch) → T.V) (emb : Fin (Dw.mult τ) ↪ Fin (chD C.ch)),

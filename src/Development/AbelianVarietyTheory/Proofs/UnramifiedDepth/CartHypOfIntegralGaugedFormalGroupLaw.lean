@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AddCurveStableOfI
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntegralGaugeBilinearTermOfTypeNeStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusMemTypicalCurveSetStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ShiftedSumMemTypicalCurveSetStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPureTypicalCurveWithIntegralTangentStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPureTypicalCurveWithIntegralTangent
 
 open scoped BigOperators
 open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formalism.L2.Pj GlobalTheory.RowLaw ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
@@ -32,7 +32,7 @@ theorem cartHyp_of_rlaw : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero 
       sumV := GlobalTheory.T.shiftedSum_mem_typicalCurveSet C V d I κ X hL g
       t2 := X.val_nonneg_leading_coeff_of_mem_tySet V g hL.lin hh ?_ (GlobalTheory.T.integral_gaugeBilinearTerm_of_type_ne C V d I κ X hL g (hT g))
       t3 := X.const_mem_type_set_of_nonneg hlg0 hh V g
-      t4 := GlobalTheory.T.exists_pure_typical_curve_with_integral_tangent C V d I κ X hL hP g (hT g) }
+      t4 := _root_.GlobalTheory.RowLaw.exists_pure_typical C V d I κ X hL hP g (hT g) }
   obtain ⟨w, hw, huw⟩ := hL.sat g
   refine ⟨w, hw, fun c c' => ?_⟩
   split_ifs with h

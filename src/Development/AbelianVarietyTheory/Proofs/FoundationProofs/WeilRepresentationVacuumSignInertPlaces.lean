@@ -6,20 +6,20 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeTheta
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPeriodPairIdealCurveLattice
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTraceOneIntegerConjDiffPrimeToStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTripleConstantEqOneDistributiveStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTripleConstantEqNegOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTraceOneIntegerConjDiffPrimeTo
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTripleConstantEqOneDistributive
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTripleConstantEqNegOnePow
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KernelLatticesFormSelfDualTriplesStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeTriplesDistributiveStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTripleDataOfNeighbourTripleStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTripleDataOfNeighbourTriple
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTripleDiagonalDataOfSelfDualNeighbourTripleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTransvectionVectorsNeighbourStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryTransvectionMovesLatticeAtPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLocalComponentUnitaryMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTransvectionVectorsNeighbour
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryTransvectionMovesLatticeAtPrime
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLocalComponentUnitaryMatrix
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TrivialAtPrimeAdelicGLSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardParitySignLengthOfEqStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaFunctionsAllLevelsClosureStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationThetaMovedLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardParitySignLengthOfEq
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaFunctionsAllLevelsClosure
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationThetaMovedLattice
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationCommHeisenbergIntertwinerStatement
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.InertSign
@@ -94,13 +94,13 @@ theorem exists_move {D : D7} {n q : ℕ} (hq : q.Prime) (hi : InertQ D q) {P : I
         Moves D ((g * h : GA D n) : GL (Fin n) (AE D)) (nbr D B w)) ∧
       (SD D (nbr D B w) → SD D (nbr D B x) → Tri D P (nbr D B w) B (nbr D B x)) := by
   have hst := stable_of_inert hq hi hP hqP
-  obtain ⟨b, x', lam, m, hb, hx', hp, hθ, hw, hM, hl, hm, h1, h2⟩ := GlobalTheory.T.exists_transvection_vectors_neighbour D n q hq P hP hqP hst B x hB hx
+  obtain ⟨b, x', lam, m, hb, hx', hp, hθ, hw, hM, hl, hm, h1, h2⟩ := _root_.GlobalTheory.NbVec.exists_vectors D n q hq P hP hqP hst B x hB hx
   have hA : nbr D B (b + x') = nbM D B x ⊔ Submodule.span (𝓞 D.host.E) {b + x'} := by rw [nbr, hM]
-  obtain ⟨s, hs, hsA, hsB⟩ := GlobalTheory.T.unitaryTransvection_moves_lattice_at_prime D n q P hst (nbM D B x) b x' lam m hp
+  obtain ⟨s, hs, hsA, hsB⟩ := _root_.GlobalTheory.UnitaryTransvection.transvection D n q P hst (nbM D B x) b x' lam m hp
     (fun y hy => by rw [← hM] at hy; exact hy.2) hw.2.2 hl hm h1 h2
   rw [← hA] at hsA
   rw [← hb, ← hx'] at hsB
-  obtain ⟨g, hg, hmv⟩ := GlobalTheory.T.exists_local_component_unitary_matrix D n q hq s hs
+  obtain ⟨g, hg, hmv⟩ := _root_.GlobalTheory.LocalComponent.exists_local_component D n q hq s hs
   have hqs : ∀ (v : Fin n → D.host.E) (L : Lat D n), (∀ p ∈ P, p • v ∈ nbM D B x) →
       L = nbM D B x ⊔ Submodule.span (𝓞 D.host.E) {v} → ∀ y ∈ L, ((q : D.host.E) ^ 1) • y ∈ nbM D B x := by
     intro v L hv hL y hy
@@ -173,7 +173,7 @@ theorem core (hσ : σ * σ = 1) (hnz : e0 ≠ 0) (he0 : e0 ∈ ThSp D T (Λ (st
     set hA := g₂ * h
     have hAsd := sd_of_moves mhA
     have hCsd := sd_of_moves (mC h mh)
-    obtain ⟨w0, -, hw0⟩ := GlobalTheory.T.exists_traceOne_integer_conj_diff_prime_to D q hq
+    obtain ⟨w0, -, hw0⟩ := _root_.GlobalTheory.TraceOne.exists_trace_one D q hq
     have eA := hth hA _ mhA
     have hIA := hI _ _ hAsd hB _ eA
     have hIne : Iop D T (Λ (nbr D B w)) (Λ B) (ω hA e0) ≠ 0 := by
@@ -200,7 +200,7 @@ theorem core (hσ : σ * σ = 1) (hnz : e0 ≠ 0) (he0 : e0 ∈ ThSp D T (Λ (st
     by_cases hL : stdL D n = L
     · subst hL
       rw [pow_zero, one_smul, hII _ hsd0 _ he0, hwd 1 h _ (suppInert_one D n) sh (moves_one D n) mh, hone]
-    · obtain ⟨P, q, x, -, -, -, -, -, hlen⟩ := GlobalTheory.T.self_dual_lattices_neighbour_chain D n _ L hsd0 (sd_of_moves mh) hL
+    · obtain ⟨P, q, x, -, -, -, -, -, hlen⟩ := _root_.GlobalTheory.NearerNeighbour.exists_nearer D n _ L hsd0 (sd_of_moves mh) hL
       omega
   | succ k ih =>
     intro sh mh
@@ -208,7 +208,7 @@ theorem core (hσ : σ * σ = 1) (hnz : e0 ≠ 0) (he0 : e0 ∈ ThSp D T (Λ (st
       intro hL
       rw [← hL, lenQ, Submodule.comap_subtype_self, Module.length_eq_zero] at hl
       simp at hl
-    obtain ⟨P, q, x, hP, hq, hqP, hx0, hx, hlen⟩ := GlobalTheory.T.self_dual_lattices_neighbour_chain D n _ L hsd0 (sd_of_moves mh) hL
+    obtain ⟨P, q, x, hP, hq, hqP, hx0, hx, hlen⟩ := _root_.GlobalTheory.NearerNeighbour.exists_nearer D n _ L hsd0 (sd_of_moves mh) hL
     have hi : InertQ D q := by
       by_contra hi
       obtain ⟨s, hs, h1, -⟩ := eqAt_of_moves hq mh (sh q hq hi)
@@ -257,7 +257,7 @@ theorem GlobalTheory.InertSign.vacuum_inert : ∀ D : D7, odd3 D := by
   have hK : ∀ {L : Lat D N} {L' : Lat D N'}, SD D L → SD D L' → KLat D (tor0 D cc δ) (La D (tor0 D cc δ) L L') :=
     fun h h' => Or.inr ⟨_, _, h, h', rfl⟩
   obtain ⟨-, -, hII, htp⟩ := GlobalTheory.T.kernelLattices_form_selfDual_triples D cc δ hc N N'
-  obtain ⟨hTT, -⟩ := GlobalTheory.T.thetaFunctions_all_levels_closure D cc δ hc N N'
+  obtain ⟨hTT, -⟩ := _root_.GlobalTheory.ThetaLevels.levels_closed D cc δ hc N N'
   obtain ⟨d1, d2, d3⟩ := GlobalTheory.T.thetaLattice_triples_distributive D cc δ N N'
   have huni := GlobalTheory.theta_translation_intertwiner_unitary D cc δ hc N N'
   have hline := GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ hc N N'
@@ -277,7 +277,7 @@ theorem GlobalTheory.InertSign.vacuum_inert : ∀ D : D7, odd3 D := by
       Iop D (tor0 D cc δ) A₂ A₃ (Iop D (tor0 D cc δ) A₁ A₂ e) = Iop D (tor0 D cc δ) A₁ A₃ e := by
     intro A₁ A₂ A₃ k₁ k₂ k₃ hd e he hne
     obtain ⟨μ, hμ⟩ := htp A₁ A₂ A₃ k₁ k₂ k₃ e he hne
-    have h1 := GlobalTheory.T.thetaTripleConstant_eq_one_distributive D _ N N' _ _ _ e μ hμ hd
+    have h1 := _root_.GlobalTheory.DistTriple.const_eq_one D _ N N' _ _ _ e μ hμ hd
     rw [hμ.2.2.2.2.2.2.2.2.2, h1]
     funext z; rw [one_mul]
   have htr : ∀ A₁ A₂ A₃, KLat D (tor0 D cc δ) A₁ → KLat D (tor0 D cc δ) A₂ → KLat D (tor0 D cc δ) A₃ →
@@ -286,7 +286,7 @@ theorem GlobalTheory.InertSign.vacuum_inert : ∀ D : D7, odd3 D := by
       Iop D (tor0 D cc δ) A₂ A₃ (Iop D (tor0 D cc δ) A₁ A₂ e) = ((-1 : ℂ) ^ r) • Iop D (tor0 D cc δ) A₁ A₃ e := by
     intro A₁ A₂ A₃ k₁ k₂ k₃ P r hP hst ha hd e he hne
     obtain ⟨μ, hμ⟩ := htp A₁ A₂ A₃ k₁ k₂ k₃ e he hne
-    have h1 := GlobalTheory.T.thetaTripleConstant_eq_neg_one_pow D _ N N' _ _ _ e μ hμ P r hP hst ha hd
+    have h1 := _root_.GlobalTheory.TriangleSign.mu_eq_sign D _ N N' _ _ _ e μ hμ P r hP hst ha hd
     rw [hμ.2.2.2.2.2.2.2.2.2, h1]
     rfl
   have hsq : ∀ r : ℕ, (-1 : ℂ) ^ r * (-1) ^ r = 1 := fun r => by rw [← mul_pow]; simp
@@ -296,7 +296,7 @@ theorem GlobalTheory.InertSign.vacuum_inert : ∀ D : D7, odd3 D := by
     (fun a b => by rw [← W.mul a b 1 1 e0 he0T, one_mul])
     (fun a L hL F hF c => W.smul a 1 c F (hTT _ _ hL s0' F hF))
     (fun k a b => W.inert k 1 a i1' b (suppInert_one D N'))
-    (fun h L a => GlobalTheory.T.weilRepresentation_theta_moved_lattice D cc δ hc N N' e0 W h 1 1 1 _ _ _ _ (moves_one D N) (moves_one D N') (by rwa [mul_one]) m1' e0 he0)
+    (fun h L a => _root_.GlobalTheory.WeilTheta.om_mem_Th_moved D cc δ hc N N' e0 W h 1 1 1 _ _ _ _ (moves_one D N) (moves_one D N') (by rwa [mul_one]) m1' e0 he0)
     (fun a h k _ _ _ _ b c d e F hF => GlobalTheory.T.weilRepresentation_comm_heisenbergIntertwiner D cc δ hc hδ N N' e0 W a h k 1 1 1 _ _ _ _ _ _ _ _ b (moves_one D N') c m1' d
       (moves_one D N') e m1' F hF)
     (fun _ _ _ a b c d => hdist _ _ _ (hK a s0') (hK b s0') (hK c s0') (d2 _ _ _ _ a c d))
@@ -308,12 +308,12 @@ theorem GlobalTheory.InertSign.vacuum_inert : ∀ D : D7, odd3 D := by
     (fun a b => by rw [← W.mul 1 1 a b e0 he0T, one_mul])
     (fun a L hL F hF c => W.smul 1 a c F (hTT _ _ s0 hL F hF))
     (fun k a b => W.inert 1 k i1 a (suppInert_one D N) b)
-    (fun h L a => GlobalTheory.T.weilRepresentation_theta_moved_lattice D cc δ hc N N' e0 W 1 1 h 1 _ _ _ _ (moves_one D N) (moves_one D N') m1 (by rwa [mul_one]) e0 he0)
+    (fun h L a => _root_.GlobalTheory.WeilTheta.om_mem_Th_moved D cc δ hc N N' e0 W 1 1 h 1 _ _ _ _ (moves_one D N) (moves_one D N') m1 (by rwa [mul_one]) e0 he0)
     (fun a h k _ _ _ _ b c d e F hF => GlobalTheory.T.weilRepresentation_comm_heisenbergIntertwiner D cc δ hc hδ N N' e0 W 1 1 1 a h k _ _ _ _ _ _ _ _ (moves_one D N) b m1 c
       (moves_one D N) d m1 e F hF)
     (fun _ _ _ a b c d => hdist _ _ _ (hK s0 a) (hK s0 b) (hK s0 c) (d1 _ _ _ _ a c d))
     (fun P A B C a b c d => htr _ _ _ (hK s0 d.1) (hK s0 d.2.1) (hK s0 d.2.2.1) P N a b c
-      (GlobalTheory.T.thetaTripleData_of_neighbourTriple D cc δ hc.1.1 hδ N N' P a A B C d)) g' L₁' sg' mg'
+      (_root_.GlobalTheory.TriangleColumns.triDat_of_tri D cc δ hc.1.1 hδ N N' P a A B C d)) g' L₁' sg' mg'
   have sL := sd_of_moves mg
   have sL' := sd_of_moves mg'
   have h1 : W.Om g g' e0 = W.Om 1 g' (W.Om g 1 e0) := by rw [← W.mul 1 g g' 1 e0 he0T, one_mul, mul_one]

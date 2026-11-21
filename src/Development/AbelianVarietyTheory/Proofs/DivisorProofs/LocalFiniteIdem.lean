@@ -3,11 +3,11 @@ import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CutPMulCutP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFunctionTwistBounded
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CapelliDetBlockLeviCongrModUpperBlockIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuantumDetCentralCoeffsConj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RightDerivativeNilRadicalInvariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemNilRad
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetPolyMapMonic
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMemSubmoduleOfComplexPolyValuesMem
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialProductCoeffsCentral
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShiftedCapelliDeterminantSubleadingCoeffTraceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShiftedCapelliDeterminantSubleadingCoeffTrace
 
 noncomputable section
 
@@ -40,22 +40,11 @@ theorem exists_coef {k : ℕ} (E : Fin k → Fin k → A) (s : ℂ) {B : Subalge
   cases k with
   | zero => exact ⟨fun _ => 1, rfl, fun _ _ => one_mem _, fun u => by simp [qdet, qminor], Or.inl (by simp)⟩
   | succ m =>
-    obtain ⟨c, t, h1, h2, h3⟩ := GlobalTheory.T.shifted_capelli_determinant_subleading_coeff_trace A m E s
+    obtain ⟨c, t, h1, h2, h3⟩ := _root_.GlobalTheory.CapelliNext.qdet_shift_next_coeff A m E s
     refine ⟨c, h1, fun j hj => ?_, h3, Or.inr ⟨m, m.le_succ, -t, by rw [h2, neg_smul, add_neg_cancel_right]⟩⟩
     exact GlobalTheory.coeff_mem_of_poly_values_mem A (Subalgebra.toSubmodule B) _ c (fun u => h3 u ▸ hB _) j (Nat.lt_succ_of_le hj)
 
 end Alg
-
-section Loc
-variable {n : ℕ} {J p q : Matrix (Fin n) (Fin n) ℂ}
-
-def nilPQ (p q : Matrix (Fin n) (Fin n) ℂ) : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ) where
-  carrier := {Y | ∃ A B, Y = p * A * (1 - p) + (1 - q) * B * q}
-  add_mem' := fun ⟨A, B, e⟩ ⟨A', B', e'⟩ => ⟨A + A', B + B', by rw [e, e']; noncomm_ring⟩
-  zero_mem' := ⟨0, 0, by simp⟩
-  smul_mem' := fun c _ ⟨A, B, e⟩ => ⟨c • A, c • B, by rw [e]; simp⟩
-
-end Loc
 
 end GlobalTheory.CentreFin
 

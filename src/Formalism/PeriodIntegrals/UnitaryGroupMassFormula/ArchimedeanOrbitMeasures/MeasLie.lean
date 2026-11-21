@@ -1,10 +1,10 @@
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.IsInfEmb
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.InstTopologicalSpaceHA
 
 noncomputable section
 
 namespace HcS.L2.Fam.SG.Tau
 
-open NumberField IsDedekindDomain HcS.BasicNotions HcS.MainNotions HcS.MainNotions.StandardLattice HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes Matrix MeasureTheory Filter
+open NumberField IsDedekindDomain HcS.BasicNotions HcS.MainNotions HcS.MainNotions.GlobalTheoryTheory.GenusMassVolumes Matrix MeasureTheory Filter
 open scoped TensorProduct Topology ENNReal NNReal
 
 section Defs
@@ -38,16 +38,8 @@ def LieU : AddSubgroup (Matrix (Fin M) (Fin M) (R ⊗[F] E)) where
 
 instance measLie [TopologicalSpace R] : MeasurableSpace (LieU R σ J) := borel _
 
-def trF (X Y : LieU R σ J) : R :=
-  algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (Matrix.trace (X.1 * Y.1))
-
 def cay (U : Set (LieU R σ J)) : Set (HA R σ J) :=
   {g | ∃ X ∈ U, Units.val (HA.mat R σ J g) * ((1 + 1) - X.1) = (1 + 1) + X.1}
-
-def LocTam [TopologicalSpace R] (ψR : R → ℂ) (μ : Measure (HA R σ J)) : Prop :=
-  μ.IsHaarMeasure ∧ ∃ ν : Measure (LieU R σ J), SelfDual ν (fun X Y => ψR (trF R σ J X Y)) ∧
-    ∀ ε : ℝ≥0, 0 < ε → ∃ V ∈ 𝓝 (0 : LieU R σ J), ∀ U ⊆ V, MeasurableSet U →
-      μ (cay R σ J U) ≤ (1 + ε) * ν U ∧ ν U ≤ (1 + ε) * μ (cay R σ J U)
 
 variable {J} {J' : Matrix (Fin M) (Fin M) E} (g : GL (Fin M) (R ⊗[F] E))
 
@@ -56,12 +48,6 @@ variable [TopologicalSpace R] [IsTopologicalRing R]
 end Loc
 
 end Defs
-
-section Gaps
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E)
-
-end Gaps
 
 end HcS.L2.Fam.SG.Tau
 

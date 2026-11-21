@@ -142,19 +142,9 @@ def StandardMonomialSpanDomain : Prop :=
       {f | ∃ (K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r),
         shapeDeg sz = ν ∧ f = bideterminant B sz hsz I}
 
-def ColLexInitMinorOf : Prop := MinorExpLt → ColLexInitMinor
-def ColumnLexBideterminantOf : Prop := ColLexInitMinor → ColumnLexBideterminant
-def SSYTExistsOf : Prop := SSYTPeel → SSYTExists
-def PeelDegBoundOf : Prop := EvalDeg → PeelDegBound
-def TwoColumnOf : Prop := PeelDecomp → PeelHomog → PeelLead → PeelDegBound → TwoColumn
-def LeadInterlacedOf : Prop := CompDeg → LeadComp → TwoColumn → LeadInterlaced
-
 def SMSAssembly : Prop :=
   ColumnLexBideterminant → ColSums → SSYTExists → LeadInterlaced → StandardMonomialSpanDomain
 
 def StandardMonomialSpanOf : Prop := StandardMonomialSpanDomain → StandardMonomialSpan
-
-example : ((cmIdx 2 3 (1, 2) : Fin (3 * 2)) : ℕ) = 5 := by decide
-example : ((cmIdx 3 2 (2, 0) : Fin (2 * 3)) : ℕ) = 2 := by decide
 
 end Formalism.GradedWeylDivisibility

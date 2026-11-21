@@ -27,15 +27,6 @@ private theorem contDiffOn_vsq_gv_comp_chart_symm {M : Type*} [TopologicalSpace 
     h0.restrict_scalars ℝ
   exact (contDiff_norm_sq ℝ).comp_contDiffOn h1
 
-theorem near_smoothR_log {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ) (z : M → V n)
-    (hz : IsLocalHomeomorph z) {p : ℕ} (g : Fin p → M → ℂ) (hg : ∀ l, Holo n z (g l))
-    (hN : ∀ x, gv g x ≠ 0) : SmoothR n z (fun x => Real.log (vsq (gv g x))) := by
-  intro e he
-  have h1 := contDiffOn_vsq_gv_comp_chart_symm n z g hg e he
-  have h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => Real.log (vsq (gv g (e.symm y)))) e.target :=
-    h1.log fun y _ => (near_vsq_pos (gv g (e.symm y)) (hN (e.symm y))).ne'
-  exact Complex.ofRealCLM.contDiff.comp_contDiffOn h2
-
 theorem near_continuous_vsq {M : Type*} [TopologicalSpace M] {p : ℕ} (g : Fin p → M → ℂ)
     (hg : ∀ l, Continuous (g l)) : Continuous (fun x => vsq (gv g x)) := by
   unfold vsq gv

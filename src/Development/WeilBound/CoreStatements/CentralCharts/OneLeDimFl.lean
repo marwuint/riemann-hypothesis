@@ -1,9 +1,21 @@
 import Development.WeilBound.CoreStatements.CentralCharts.PshAt0LogNorm
 import Development.WeilBound.CoreStatements.CentralCharts.CommonMembers
 import Development.WeilBound.CoreStatements.CentralCharts.IsPosPotBlock
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsArithVarOfSncModelStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerBoundHeightOnBoundaryStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsClosedStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
+import Development.AutomorphicSpectrum.Statements.MetricStatements.ExistsFlagModelBaseMetric
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.OmHeightslockG
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsArith
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerBoundHeightOnBoundary
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPeriodAtRestrict
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFinsetOfMemNhds
 
 noncomputable section
@@ -61,9 +73,9 @@ theorem of_local (hI : PB.Inputs) {E : Type} [Field E] [NumberField E] [IsCMFiel
     ∃ A : G.An, (∃ inv : A.Sys.X → A.Re.R.X, ReciprocityTheory.AnForm.M.HoloMap A.Sys.A A.Re.R.A inv ∧
       ∀ x, inv (A.Re.π x) = x) := by
   classical
-  have harith := GlobalTheory.T.isArithVar_of_snc_model G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y _ G.bd (one_le_dimFl H (by omega)) G.𝔐.tie G.snc
-  obtain ⟨y1, y2, y3⟩ := GlobalTheory.T.boundary_points_closed G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y (abLocus G.𝔐.t.G) G.bd G.𝔐.tie G.bd_iff
-  obtain ⟨R, L, s, nb, m, W, hL, hs, snc, hn, hbd, hrc⟩ := GlobalTheory.T.lowerBound_height_on_boundary G.K G.J G.Ω G.y _ G.bd G.snc harith y1 y2 y3
+  have harith := _root_.PositivityTheory.Xgp.t_c_bm_exists_arith G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y _ G.bd (one_le_dimFl H (by omega)) G.𝔐.tie G.snc
+  obtain ⟨y1, y2, y3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BdSym.boundary_closed_torus_conj G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y (abLocus G.𝔐.t.G) G.bd G.𝔐.tie G.bd_iff
+  obtain ⟨R, L, s, nb, m, W, hL, hs, snc, hn, hbd, hrc⟩ := _root_.GlobalTheory.CompanionTheory.Relay.lowerBound_height_on_boundary G.K G.J G.Ω G.y _ G.bd G.snc harith y1 y2 y3
   have hmem : ∀ x, R.lift x x ∈ mcPts (mCoordIdeal G.y) := fun x => R.mem x x (R.mem_U x)
   have horb : ∀ z ∈ mcPts (mCoordIdeal G.y), ∀ z', SameOrbit z' z → z ∈ mcPts G.bd → z' ∈ mcPts G.bd := by
     rintro z hz z' ⟨c, hc, rfl⟩ h
@@ -85,7 +97,7 @@ theorem of_local (hI : PB.Inputs) {E : Type} [Field E] [NumberField E] [IsCMFiel
     ⟨R.isOpen_U, R.mem_U, R.holo, R.mem, R.compat, fun z hz => R.surj z hz (not_mem_top _),
       fun x x' h => R.inj x x' (not_mem_top _) h, fun x p hp j hj => R.immersion x (not_mem_top _) p hp j hj⟩
   have hpos : IsPosPot R.A (potOf R (fsHerm G.J (Pi.single G.k₀ 1))) := isPosPot_block R G.k₀ fun x p hp j hj =>
-    (GlobalTheory.T.holomorphic_atlas_coord_compat G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y G.k₀ G.𝔐.tie G.embeds _ R.X R.A R.U R.lift hemb (G.J G.k₀)
+    (_root_.GlobalTheory.CompanionTheory.Ar.ImmBlock.immersion_block G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y G.k₀ G.𝔐.tie G.embeds _ R.X R.A R.U R.lift hemb (G.J G.k₀)
       (Equiv.refl _) x p hp j hj).2
   let d : RootIx D → G.K → ℤ := fun r => -∑ k ∈ Finset.Iic r.2, (sing (r.1, k)).a
   let wt : RootIx D → ((Σ k, G.J k) → ℂ) → ℝ := fun r z =>

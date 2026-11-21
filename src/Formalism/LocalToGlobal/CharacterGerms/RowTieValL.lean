@@ -71,30 +71,6 @@ end VP
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} [NeZero d]
   {Orb : Type} [Fintype Orb]
 
-section Pairs
-
-variable {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
-
-def ProjPullSt (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : Prop :=
-  PairsSep Y p → ∀ (o : Orb) (g : Fin 2), ∃ π : Fin dd → PS C 1 dd, (∀ i, IntS V (π i)) ∧
-    (∀ i, MvPowerSeries.constantCoeff (π i) = 0) ∧ ∀ i, pull1 Y p (π i) = toAllS o ((Y.raw (p o)).expPt g i)
-
-theorem germLift_of (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V)
-    (hP : ProjPullSt Y p) (hT : ∀ o, RawChart.TCoordSt (H o).cartH) : GermLiftSt Y p H := by
-  intro hsep o S t hS F hF
-  have hA : ∀ q : Fin 1 × Fin dd, MvPowerSeries.constantCoeff (expAll Y p q.2) = 0 := fun q => VP.cc_expAll Y p q.2
-  have ht0 : ∀ g c, MvPowerSeries.constantCoeff (t g c) = 0 := fun g c => (hS g).1 c
-  have hTw : ∀ w : WV (I o), ∃ T : MvPowerSeries (Fin 1 × Fin dd) C, IntS V T ∧ MvPowerSeries.constantCoeff T = 0 ∧
-      MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) T = toAllS o (upG w.1 (t w.1 w.2)) := by
-    intro w
-    obtain ⟨π, hπi, hπ0, hπ⟩ := hP hsep o w.1
-    obtain ⟨T, hTi, hT0, hTe⟩ := hT o S t hS w.1 w.2
-    obtain ⟨T', h1, h2, h3⟩ := VP.tLift_gen hA o hπi hπ0 hπ hTi hT0
-    exact ⟨T', h1, h2, by rw [h3, hTe]⟩
-  exact VP.germLift_gen hA o t ht0 hTw F hF
-
-end Pairs
-
 section Self
 
 variable {I0 : Orb → Type} [∀ o, Fintype (I0 o)]

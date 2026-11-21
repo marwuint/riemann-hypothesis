@@ -32,18 +32,6 @@ theorem idem_mul_idem (T : Finset (Pl F)) : idem T * idem T = idem T := by
   refine Finset.sum_congr rfl fun v hv => ?_
   rw [GlobalTheory.ThK.LocalOps.liftV_one_mul, ← idem, evFin_idem, if_pos hv]
 
-theorem idem_insert {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) :
-    idem (insert v T) = GlobalTheory.LatVac.liftV v 1 + idem T := by
-  classical
-  rw [idem, Finset.sum_insert hv]; rfl
-
-theorem liftV_mul_idem {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) : GlobalTheory.LatVac.liftV v 1 * idem T = 0 := by
-  classical
-  rw [GlobalTheory.ThK.LocalOps.liftV_one_mul, evFin_idem, if_neg hv, map_zero]
-
-theorem idem_singleton (v : Pl F) : idem ({v} : Finset (Pl F)) = GlobalTheory.LatVac.liftV v 1 := by
-  simp [idem]
-
 def truncMat {n : ℕ} (e : AF F) (A : Matrix (Fin n) (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E) := 1 + e • (A - 1)
 
 theorem truncMat_mul {n : ℕ} {e : AF F} (he : e * e = e) {A B : Matrix (Fin n) (Fin n) (AE F E)} (h : A * B = 1) :
@@ -85,23 +73,5 @@ theorem mat_truncU (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
 
 theorem mat_truncU_inv (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) :
     mat (truncU T k)⁻¹ = truncMat (idem T) (mat k⁻¹) := rfl
-
-theorem truncU_insert {T : Finset (Pl F)} {v : Pl F} (hv : v ∉ T) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) :
-    truncU (insert v T) k = truncU {v} k * truncU T k := by
-  refine Subtype.ext (Units.ext ?_)
-  show truncMat (idem (insert v T)) (mat k) = truncMat (idem {v}) (mat k) * truncMat (idem T) (mat k)
-  have h0 : GlobalTheory.LatVac.liftV v 1 * idem T = 0 := liftV_mul_idem hv
-  rw [idem_insert hv, idem_singleton]
-  unfold truncMat
-  rw [Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h0,
-    zero_smul, add_zero, add_smul]
-  abel
-
-theorem truncU_mem_UAt (v : Pl F) {n : ℕ} {X : Spc F E n} (k : UA σ X.J) :
-    truncU {v} k ∈ UAt σ X (evFin F v) := by
-  intro u hu
-  rw [mat_truncU, idem_singleton]
-  simp only [truncMat, add_sub_cancel_left, smul_smul]
-  rw [mul_comm, GlobalTheory.ThK.LocalOps.liftV_one_mul, hu, map_zero, zero_smul]
 
 end GlobalTheory.TruncFix

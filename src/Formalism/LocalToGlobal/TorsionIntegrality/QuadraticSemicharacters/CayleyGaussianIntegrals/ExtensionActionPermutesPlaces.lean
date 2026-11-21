@@ -21,17 +21,6 @@ theorem wt_eq_cexp (H : Sesq V) (hH : IsHerm H) (z : V) :
 
 end SlopeTestRemainingChoices
 
-theorem diagonalTerm : DiagTerm := by
-  intro V _ _ H hH v z
-  rw [opU, kerK, wt_eq_cexp H hH, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]
-  congr 1
-  have hc : H z v = conj (H v z) := hH v z
-  have hw : conj (H v z) = H v z - 2 * Complex.I * ((H v z).im : ℂ) := by
-    apply Complex.ext <;> simp
-    all_goals ring
-  simp only [map_add, LinearMap.add_apply, hc, hw, altE]
-  ring
-
 theorem kernelTermShift : TermShift := by
   intro V _ _ H hH α δ Ae hI hA
   have hi : ∀ a b, H (δ a) (δ b) = H a b := fun a b => hI a b

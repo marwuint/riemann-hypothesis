@@ -208,11 +208,6 @@ abbrev thickObj (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) :=
   (Over.pullback (thick R I e)).obj G
 
-open scoped CategoryTheory.Obj in
-
-example (e : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] : GrpObj (thickObj R I e G) :=
-  inferInstance
-
 lemma thickTrans_comp (e : ℕ) : thickTrans R I e ≫ thick R I (e + 1) = thick R I e := by
   simp only [thick, thickTrans, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]
 

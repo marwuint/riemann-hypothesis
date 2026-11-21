@@ -17,7 +17,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleIffV
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SectionPull
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecSq
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsNeZeroClosedFibre
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSectionPrimitiveTwistTorusExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSectionPrimitiveTwistTorusExtension
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.UU
@@ -108,7 +108,7 @@ theorem exists_sec_special : Laws → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ 
   have : IsLocalRing (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1)) :=
     letI := Ideal.Quotient.field (IsLocalRing.maximalIdeal V ^ (0 + 1))
     inferInstance
-  obtain ⟨O, hO, hu, h₄⟩ := GlobalTheory.T.exists_section_primitive_twist_torus_extension hL.globalFns _ _ _ (t.l 0).Q _ (isLB_pw hM d) h₃
+  obtain ⟨O, hO, hu, h₄⟩ := _root_.GlobalTheory.exists_sec_primitive_twist hL.globalFns _ _ _ (t.l 0).Q _ (isLB_pw hM d) h₃
   have := isIntegral_special (t.l 0).Q.B (t.l 0).Q.isAb
   obtain ⟨σ, hσ⟩ := SymSec.exists_sec_sq _ (t.l 0).Q.B (t.l 0).D.M d O hO hu h₄
   exact ⟨2 * d, σ, by omega, hσ⟩

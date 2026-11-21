@@ -105,12 +105,6 @@ theorem classMapT_of (h : QFrameDeg D) : ClassMapT D := by
 
 end T
 
-theorem Link6F_of_frameDeg (h : ∀ D, QFrameDeg D) : Link6F := by
-  exact third_link_of_archimedean fun D => classMapT_of (h D)
-
-theorem packet_of_frame_degree (h : ∀ D, QFrameDeg D) : KudlaFamilyOfMinkowskiTransference := by
-  exact packetFamily_of_classMapT fun D => classMapT_of (h D)
-
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 
 end

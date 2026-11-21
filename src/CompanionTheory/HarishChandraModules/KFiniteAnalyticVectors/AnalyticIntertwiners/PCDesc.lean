@@ -66,10 +66,6 @@ theorem Jm_sqC : Formalism.REAL.Jm (epq p q) * Formalism.REAL.Jm (epq p q) = 1 :
   ext i j; simp only [Formalism.REAL.Jm, diagonal_mul_diagonal, diagonal_apply, one_apply]
   split_ifs <;> simp_all
 
-theorem Jm_ctC : (Formalism.REAL.Jm (epq p q))ᴴ = Formalism.REAL.Jm (epq p q) := by
-  ext i j; simp only [Formalism.REAL.Jm, diagonal_conjTranspose, diagonal_apply]
-  split_ifs <;> simp_all
-
 end Reindex
 
 section Cover

@@ -1,6 +1,12 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellJacquetMapSurjectiveWhittaker
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellJacquetIntegralVolumeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellJacquetIntegralVolume
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.LeibnizDerivatives.GenericProdIff
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenFns
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentRadicalDecompositionNormal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellUnipotentUniquenessClosed
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellFunctionCompactSupportUnipotent
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorCompactUnipotentFixerStatement
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir.Leib GlobalTheory.CompanionTheory.Rodier
 open scoped TensorProduct
@@ -25,10 +31,10 @@ theorem openJ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [
             f.1.1.1 (pm k (wOpen d hd) * u) = (whitChar ψ N ⟨u, hb⟩ : ℂ) • v) →
           (∀ u ∈ unipU k d hd, u ∉ L₀ → f.1.1.1 (pm k (wOpen d hd) * u) = 0) → J f = (vol L₀ : ℂ) • v := by
   intro k _ _ _ _ ψ hψ h N d hd W _ _ ρ hρ
-  obtain ⟨J, vol, hU, hL, hV⟩ := GlobalTheory.T.open_cell_jacquet_integral_volume k ψ hψ h N d hd ρ hρ
-  obtain ⟨hfac, -⟩ := GlobalTheory.T.unipotent_radical_decomposition_normal k h N d hd
-  obtain ⟨hl1, hl2⟩ := GlobalTheory.T.open_cell_levi_unipotent_conjugation k ψ h N d hd
-  obtain ⟨-, huniq, -⟩ := GlobalTheory.T.open_cell_unipotent_uniqueness_closed k h N d hd
+  obtain ⟨J, vol, hU, hL, hV⟩ := _root_.GlobalTheory.CompanionTheory.Rodier.radical_integral k ψ hψ h N d hd ρ hρ
+  obtain ⟨hfac, -⟩ := _root_.GlobalTheory.CompanionTheory.Rodier.unipB_eq_levi_mul_rad k h N d hd
+  obtain ⟨hl1, hl2⟩ := _root_.GlobalTheory.CompanionTheory.Rodier.LeviPart.levi_part k ψ h N d hd
+  obtain ⟨-, huniq, -⟩ := _root_.GlobalTheory.CompanionTheory.Rodier.unipU_open_cell k h N d hd
   have hUB : unipU k d hd ≤ unipB k (Fin N) := inf_le_left
   have hLB : unipL k d hd ≤ unipB k (Fin N) := inf_le_left
   have surj : Function.Surjective J := by
@@ -78,7 +84,7 @@ theorem openJ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [
   have bwd : ∀ f : openFns d hd ρ, f.1 ∈ twKer (parInd (stdBlocks d hd) ρ) (unipB k (Fin N)) (whitChar ψ N) →
       J f ∈ twKer ρ (unipM k d) (whitM d ψ) := by
     intro f hf
-    have hs := GlobalTheory.T.compact_unipotent_subgroup_finite_generation k ψ hψ h N d hd ρ (unipB k (Fin N)) le_rfl
+    have hs := _root_.GlobalTheory.CompanionTheory.Rodier.OpenExact.mem_span_openFns_of_mem_twKer k ψ hψ h N d hd ρ (unipB k (Fin N)) le_rfl
       (fun s hs => GlobalTheory.CompanionTheory.UnipExhaust.exists_compact_subgroup_of_finset k N s hs) (whitChar ψ N)
       (fun q hq => rfl) f.1 f.2 hf
     obtain ⟨_, h2⟩ := OpenCoinv.span_mem d hd ρ J (twKer ρ (unipM k d) (whitM d ψ)) _ (by
@@ -88,7 +94,7 @@ theorem openJ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [
   have key : ∀ f : openFns d hd ρ, J f = 0 →
       f.1 ∈ twKer (parInd (stdBlocks d hd) ρ) (unipB k (Fin N)) (whitChar ψ N) := by
     intro f hf
-    obtain ⟨L, hLU, hLc, hLO, hsupp⟩ := GlobalTheory.T.open_cell_function_compact_support_unipotent k h N d hd ρ hρ f.1 f.2
+    obtain ⟨L, hLU, hLc, hLO, hsupp⟩ := _root_.GlobalTheory.CompanionTheory.Rodier.exists_compact_open_support k h N d hd ρ hρ f.1 f.2
     have hLB' : L ≤ unipB k (Fin N) := hLU.trans hUB
     let θL : L →* ℂˣ := (whitChar ψ N).comp (Subgroup.inclusion hLB')
     have hopen : IsOpen (θL.ker : Set L) :=
@@ -104,7 +110,7 @@ theorem openJ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [
     have hf'o : f' ∈ openFns d hd ρ := fun g hg => by
       obtain ⟨p, hp, u, hu, e⟩ := hsupp' g hg
       exact ⟨p, hp, u, hLB' hu, e⟩
-    have hdiff := GlobalTheory.T.compact_unipotent_subgroup_finite_generation k ψ hψ h N d hd ρ L hLB' (fun s hs => ⟨L, le_rfl, hs, hLc⟩) θL
+    have hdiff := _root_.GlobalTheory.CompanionTheory.Rodier.OpenExact.mem_span_openFns_of_mem_twKer k ψ hψ h N d hd ρ L hLB' (fun s hs => ⟨L, le_rfl, hs, hLc⟩) θL
       (fun q hq => rfl) (f.1 - f') (sub_mem f.2 hf'o) hd1
     obtain ⟨hx, hJ0⟩ := OpenCoinv.span_mem d hd ρ J ⊥ _ (by
       rintro _ ⟨q, g, hg, rfl⟩

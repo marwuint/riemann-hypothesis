@@ -6,12 +6,12 @@ import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.SurjectiveAppTo
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.JetFramesDifferByUnitEachOrder
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsPowerSeriesLimitOfCompatibleJetPointsStatement
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SpecPowerSeriesHomExtOfJetsStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConstantSectionEqLimitChartPointStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConstantSectionEqLimitChartPoint
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsSymmetricLiftOddOrderLocalRingStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricLiftOrderSymmetryMultiplicativityStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricLiftOrderSymmetryMultiplicativity
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GermSymmetricTranslateFibreEqModelStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.EvalThetaSeriesMulQuadraticPartialsStatement
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.EvalIotaSeriesEqQuadraticInversionPartialsStatement
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.EvalThetaSeriesMulQuadraticPartials
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.EvalIotaSeriesEqQuadraticInversionPartials
 
 set_option autoImplicit false
 noncomputable section
@@ -494,7 +494,7 @@ theorem model_unit {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)}
   obtain ⟨X, hX⟩ := GlobalTheory.T.exists_powerSeries_limit_of_compatible_jetPoints V t.G d x hc.trunc
   let a : ∀ n, Sm B n := fun n => Sm.const B α hα
   have ha : ∀ n, toBase _ ≫ aV = ptOf X (a n) := fun n => Over.OverMorphism.ext
-    ((congrArg (· ≫ aV.left) (Category.comp_id _)).trans (GlobalTheory.T.constantSection_eq_limitChart_point V d _ B t.G x X hX α hα aV.left haV n).symm)
+    ((congrArg (· ≫ aV.left) (Category.comp_id _)).trans (_root_.GlobalTheory.TransUnit.ptOf_const_left V d _ B t.G x X hX α hα aV.left haV n).symm)
   have hak : aV ^ k = 1 := by
     have q : toBase (limO V d 0) ≫ aV ^ k = 1 := by
       rw [MonObj.comp_pow, ha]
@@ -538,7 +538,7 @@ theorem model_unit {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)}
         rw [homAt_id_comp] at this
         exact this)
       (fun i => by
-        have := GlobalTheory.T.symmetricLift_order_symmetry_multiplicativity E H _ t hs wP hP.1 k aV U hU (limO V d n) (toBase _) i.1 i.2.1 i.2.2.1
+        have := _root_.GlobalTheory.TransUnit.liftLaws_of_symLift E H _ t hs wP hP.1 k aV U hU (limO V d n) (toBase _) i.1 i.2.1 i.2.2.1
         rw [ha] at this
         exact this)
   have e₁ : ∀ n (z : Sm B n), u2 ε 1 z = 1 := fun n z => by
@@ -567,7 +567,7 @@ theorem model_unit {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)}
     exact congrArg (evV · f) (funext fun i => by fin_cases i; rfl)
   refine ⟨U, (u 1 (Sm.gen B 0)).val, hU, ⟨Units.isUnit _, ?_, ?_, ?_⟩, fun f σ σ' hg hact => ?_⟩
   · have q := congrArg Units.val ((TL 2).1 (Sm.gen B 0) (Sm.gen B 1))
-    have r := GlobalTheory.T.eval_thetaSeries_mul_quadratic_partials V d _ B K h H.w0 hh p₁ p₂ h₁ h₂ Θ hΘ 2 (Sm.gen B 0) (Sm.gen B 1) (a 2)
+    have r := _root_.GlobalTheory.TransUnit.evA_theta_mul_quadQ V d _ B K h H.w0 hh p₁ p₂ h₁ h₂ Θ hΘ 2 (Sm.gen B 0) (Sm.gen B 1) (a 2)
     rw [Units.val_mul, Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, ← Units.eq_inv_of_mul_eq_one_right r] at q
     rw [← evA_one (B := B), ev1]
     exact (congrArg (· * _) ((smallPointsSubstitutionAlgHom_single_point (Sm.gen B 0 * Sm.gen B 1) _).symm.trans (ev1 _))).trans (q.trans
@@ -583,7 +583,7 @@ theorem model_unit {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)}
         simp only [us, map_mul, map_pow, sa, Sm.sub_gen, Matrix.cons_val_zero, pow_succ, _root_.mul_assoc]
     rw [it, (TL 1).2.1, Units.val_one]
   · have q := congrArg Units.val (TL 0).2.2
-    have r := GlobalTheory.T.eval_iotaSeries_eq_quadratic_inversion_partials V d _ B K h H.w0 hh p₁ p₂ h₁ h₂ jo hjo 0 (a 0)
+    have r := _root_.GlobalTheory.TransUnit.evA_iota_eq_quadN V d _ B K h H.w0 hh p₁ p₂ h₁ h₂ jo hjo 0 (a 0)
     rw [Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, ← r] at q
     rw [← evA_one (B := B), ev1]
     exact (congrArg₂ (· * ·) (congrArg (_ * · ^ k) (smallPointsSubstitutionAlgHom_single_point (a 0) _).symm)

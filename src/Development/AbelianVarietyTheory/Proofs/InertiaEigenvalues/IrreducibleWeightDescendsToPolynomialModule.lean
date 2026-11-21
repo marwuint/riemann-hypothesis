@@ -4,13 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoFormsOff
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SubsetTwistExceptionalPlaces
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameEquivApply
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonzeroMatrixIntertwinerDescendsToSubfieldStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonzeroMatrixIntertwinerDescendsToSubfield
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraicWeightDominantIsoExistsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsotypicFactorOfIsIrreduciblePiFiniteGroups
 import Formalism.LocalToGlobal.Columns.MtAdWt
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAlgWeightOfContragredientHighestWeightStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIrreducibleAlgebraicWeightSubrepStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContragredientPolynomialWeightUniqueHighestWeighStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAlgWeightOfContragredientHighestWeight
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIrreducibleAlgebraicWeightSubrep
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContragredientPolynomialWeightUniqueHighestWeigh
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousCoeffBlockAct
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisConjDefiniteFormsSemilinearEquiv
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.StandardLattice Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host Formalism.L2.DIV Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.TwInputs GlobalTheory.SeriesTie GlobalTheory.ExportSeries NumberField IsDedekindDomain
@@ -47,11 +47,11 @@ theorem weight_descends : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L]
     show LinearMap.toMatrix' (Matrix.toLin' ((LinearMap.toMatrix b b (ρ γ)).map e)) = _
     rw [LinearMap.toMatrix'_toLin']
   have halg : Formalism.AUTREP.IsAlgWeight L n ρC :=
-    GlobalTheory.T.isAlgWeight_of_contragredient_highestWeight L n K e c hc W ρ (Fin N) b ρC hρC (emb t₀) (lam0 t₀) (hw t₀)
+    _root_.GlobalTheory.AlgWtDualRead.isAlgWeight_of_hwAtF_dual L n K e c hc W ρ (Fin N) b ρC hρC (emb t₀) (lam0 t₀) (hw t₀)
   haveI : Nontrivial W := GlobalTheory.PiIsotypic.nontrivial_of_isIrreducible ρ hρ
   have hN : 0 < N := Module.finrank_pos
   haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
-  obtain ⟨a, j, hj, hjρ⟩ := GlobalTheory.T.exists_irreducible_algebraicWeight_subrep L n (Fin N → ℂ) ρC halg
+  obtain ⟨a, j, hj, hjρ⟩ := _root_.GlobalTheory.AlgSubrep.exists_irreducible_algWt L n (Fin N → ℂ) ρC halg
   obtain ⟨lam, Tc, hTc⟩ := GlobalTheory.T.algebraic_weight_dominant_iso_exists L n ι (fun t => e.comp (emb t)) hinj hcm hcov a
   have hmatch : ∀ γ : ReciprocityTheory.Aut.GQ L n, (((γ : GAf L n) : GL (Fin n) (ReciprocityTheory.Aut.AL L)) :
       Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L)) =
@@ -105,7 +105,7 @@ theorem weight_descends : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L]
       ← LinearMap.toMatrix_eq_toMatrix', ← LinearMap.toMatrix_comp, ← LinearMap.toMatrix_comp]
     congr 1
     exact LinearMap.ext fun y => hM γ y
-  obtain ⟨XK, hXK0, hXK⟩ := GlobalTheory.T.nonzero_matrix_intertwiner_descends_to_subfield K e (ReciprocityTheory.Aut.GQ L n) (VVIdx lam) (Fin N) B A ⟨X, hX0, hXrel⟩
+  obtain ⟨XK, hXK0, hXK⟩ := _root_.GlobalTheory.matrix_intertwiner_descends K e (ReciprocityTheory.Aut.GQ L n) (VVIdx lam) (Fin N) B A ⟨X, hX0, hXrel⟩
   let Φ : VV K lam →ₗ[K] W := Matrix.toLin bK b XK
   have hΦ : ∀ γ x, Φ (rhoVr emb lam (mtwRat γ) x) = ρ γ (Φ x) := by
     intro γ x
@@ -152,7 +152,7 @@ theorem weight_descends : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L]
     refine GlobalTheory.PiIsotypic.isIrreducible_of_linearEquiv a.ρ _ Tc (fun γ v => ?_) a.irr
     rw [hTc γ (mtwRat γ) (hmatch γ)]
     rfl
-  refine ⟨lam, fun t => (GlobalTheory.T.contragredient_polynomialWeight_unique_highestWeight L n ι K e emb hinj hcm c hc lam hten W ρ Φb.symm hT t (lam0 t) (hw t)).symm,
+  refine ⟨lam, fun t => (_root_.GlobalTheory.mtRatDual_hw L n ι K e emb hinj hcm c hc lam hten W ρ Φb.symm hT t (lam0 t) (hw t)).symm,
     Φb.symm, fun γ γ₀ hm x => ?_⟩
   obtain rfl := mtwRat_eq_of_match γ γ₀ hm
   exact hT γ x

@@ -71,20 +71,10 @@ theorem φpow_mem (t : ℕ) {a : LetA O n} (ha : a ∈ W.AΔ) : (W.φA ^ t) a �
 
 theorem ps_mem (s : ℕ) : ps W s ∈ W.AΔ := φpow_mem W s (qA_mem W)
 
-theorem piPs_mem {f : LetA O n} (hf : f ∈ PiPs W) : f ∈ W.AΔ := by
-  have h : insert W.π₀ (Set.range (ps W)) ⊆ (W.AΔ.toSubmonoid : Set (LetA O n)) :=
-    Set.insert_subset_iff.2 ⟨π₀_mem W, Set.range_subset_iff.2 fun s => ps_mem W s⟩
-  exact (Submonoid.closure_le.2 h) hf
-
 theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
   rfl
-
-theorem smul_mem_NΔ (T : LocLat G Qp LL O) {a : LetA O n} (ha : a ∈ W.AΔ) {y : W.DD T}
-    (hy : y ∈ W.NΔ T) : a • y ∈ W.NΔ T := by
-  refine ⟨(W.N T).smul_mem a hy.1, fun δ hδ => ?_⟩
-  rw [γD_smulA, ha δ hδ, hy.2 δ hδ]
 
 theorem γA_letE (g : W.Gam) (c : ZMod n) : W.γA g (letE c) = letE c := by
   funext i
@@ -95,15 +85,6 @@ theorem γA_letE (g : W.Gam) (c : ZMod n) : W.γA g (letE c) = letE c := by
 
 theorem γE_ι (g : W.Gam) (a : LetA O n) :
     W.γE g (algebraMap (LetA O n) W.EE a) = algebraMap (LetA O n) W.EE (W.γA g a) := W.γE_ext g a
-
-theorem ι_φpow (t : ℕ) (a : LetA O n) :
-    algebraMap (LetA O n) W.EE ((W.φA ^ t) a) = (W.φE ^ t) (algebraMap (LetA O n) W.EE a) := by
-  induction t generalizing a with
-  | zero => simp
-  | succ t ih =>
-    rw [pow_succ, AlgHom.mul_apply, ih, pow_succ, AlgHom.mul_apply]
-    congr 1
-    exact (W.φE_ext a).symm
 
 theorem isUnit_p_add (x : W.EE) : IsUnit (((PD.p : ℕ) : W.EE) * x + 1) := by
   have := W.EE_complete

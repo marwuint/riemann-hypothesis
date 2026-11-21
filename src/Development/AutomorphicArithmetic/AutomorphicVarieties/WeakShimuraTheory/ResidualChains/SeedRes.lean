@@ -44,33 +44,3 @@ private theorem isPair_map {O Γ : Type} [CommRing O] [Group Γ] (Φ : Fr O Γ) 
 
 end
 
-theorem UpperTheory.V.Ws.Chain.seedRes :
-    ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (ι : PadicAlgCl l ≃+* ℂ) (𝔞 : Amb l) {c₁ : Coef l} (h : c.O ≤ c₁.O) (Q : PD T.ι (G T.F Ω) c₁.O),
-      T.SeedPair ι h Q → (T.fr ∅).IsRes (𝔞.red c) (Q.map (𝔞.red c₁)) ∧
-        (Fr.InV (Φ := T.fr ∅) (Q.map (residue c₁.O)) → Fr.InV (Φ := T.fr ∅) (Q.map (𝔞.red c₁))) ∧
-        ∀ w, Ent (Q.map (residue c₁.O)).r w → Ent (Q.map (𝔞.red c₁)).r w := by
-  intro Ω _ _ _ l _ c D T ι 𝔞 c₁ h Q hQ
-  have hj : Function.Injective (𝔞.j c₁) := (𝔞.j c₁).injective
-  have hjr : ∀ x, 𝔞.red c₁ x = 𝔞.j c₁ (residue c₁.O x) := fun x => rfl
-  have hQm : Q.map (𝔞.red c₁) = (Q.map (residue c₁.O)).map (𝔞.j c₁) := rfl
-  have ha : 𝔞.red c = (𝔞.j c₁).comp ((residue c₁.O).comp (inc h)) := by
-    ext x
-    change residue _ (𝔞.a c x) = residue _ (𝔞.a c₁ (Subalgebra.inclusion h x))
-    rw [𝔞.compat]
-  have hres : (T.fr ∅).IsRes ((residue c₁.O).comp (inc h)) (Q.map (residue c₁.O)) := by
-    refine ⟨isPair_map _ _ _ _ hQ.pair, hQ.res, fun i j N => ?_⟩
-    have h1 := hQ.cont i j 1
-    have h2 : IsLocallyConstant fun g => residue c₁.O (Q.r g i j) := by
-      have := h1.comp (Ideal.Quotient.factor (show maximalIdeal c₁.O ^ 1 ≤ maximalIdeal c₁.O by rw [pow_one]))
-      exact this
-    exact h2.comp _
-  refine ⟨?_, ?_, ?_⟩
-  · rw [ha, hQm]
-    exact (chainMap (T.fr ∅) _ (𝔞.j c₁) _).1.2 hres
-  · rintro ⟨h1, h2⟩
-    refine ⟨fun g i j hij hw => ?_, fun v => ⟨fun i j hij hw => ?_, fun h0 => (h2 v).2 ?_⟩⟩
-    · exact (congrArg (𝔞.j c₁) (h1 g i j hij hw)).trans (map_zero _)
-    · exact (congrArg (𝔞.j c₁) ((h2 v).1 i j hij hw)).trans (map_zero _)
-    · exact hj (h0.trans (map_zero _).symm)
-  · rintro w ⟨g, i, j, hw, hne⟩
-    exact ⟨g, i, j, hw, fun h0 => hne (hj (h0.trans (map_zero _).symm))⟩

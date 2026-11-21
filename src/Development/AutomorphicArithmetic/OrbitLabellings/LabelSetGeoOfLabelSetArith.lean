@@ -1,9 +1,11 @@
 import Mathlib
 import Development.AutomorphicArithmetic.OrbitLabellings.RowDefs
-import Formalism.LocalToGlobal.CharacterGerms.RowTieMemCFin
+import Formalism.LocalToGlobal.CharacterGerms.RowTieMemCHarm
 import Formalism.LocalToGlobal.CharacterGerms.RowTieFlagS
 import Formalism.LocalToGlobal.CharacterGerms.RowTieSelfCuts
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SeparatedEmbeddingsDirectionsTypedBasisStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SeparatedEmbeddingsDirectionsTypedBasis
+import Development.AbelianVarietyTheory.Definitions.Jets.IsSelfOf
+import Development.AbelianVarietyTheory.Definitions.Jets.TwoPlaces
 
 open scoped BigOperators
 open Classical
@@ -31,7 +33,7 @@ theorem UpperTheory.labelSetGeo_of_labelSetArith :
   have hsep1 : ∀ o (s s' : ZMod d), s ≠ s' →
       ∃ a : 𝓞 E, V.v (emA3 io ι (lab.tau o s) a - emA3 io ι (lab.tau o s') a) = 0 :=
     fun o s s' h => ha.sep (o, s) (o, s') fun e => h (Prod.mk.inj e).2
-  have hgeo := fun o => GlobalTheory.T.separatedEmbeddings_directions_typedBasis E H Dw lv Xo c hstar T io y C3 C V ι hι k Y hY (ZMod d) (lab.tau o) (hsep1 o)
+  have hgeo := fun o => _root_.GlobalTheory.SeparatedDirections.directions_typed_basis E H Dw lv Xo c hstar T io y C3 C V ι hι k Y hY (ZMod d) (lab.tau o) (hsep1 o)
   refine labSGeo_of hstar hι ha ⟨fun o x a => (hgeo o).2.1 x.1 x.2 a, fun o => ?_, fun o a v hv => ?_⟩
   · obtain ⟨w, h1, h2⟩ := (hgeo o).2.2.1
     exact ⟨w, h1, fun q q' => (h2 q q').trans (by congr)⟩

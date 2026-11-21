@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisBorderedMatrixNormalFormInvariantsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitInvariantMapProperStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisBorderedMatrixNormalFormInvariants
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitInvariantMapProper
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryActionHermitianInvariantsTransitiveStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantImageOpenClosedLocalSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDetStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantImageOpenClosedLocalSections
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDet
 
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
@@ -68,9 +68,9 @@ theorem isTest_orbG_integrand (F E : Type) [NontriviallyNormedField F] [Nontrivi
     (hY : Delta (inv Y) ≠ 0) :
     IsTest (fun g : GL (Fin r) F => f' (act g Y) * omega (act g Y)) := by
   haveI : IsUltrametricDist F := Unram.ultraF (E := E)
-  obtain ⟨-, hL1b, hL1c, hL1d, hL1e⟩ := GlobalTheory.T.jacquetRallis_borderedMatrix_normalForm_invariants F r
-  obtain ⟨hL6a, hL6b⟩ := GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det F r
-  obtain ⟨-, -, -, hL4⟩ := GlobalTheory.T.jacquetRallis_orbit_invariant_map_proper F E r
+  obtain ⟨-, hL1b, hL1c, hL1d, hL1e⟩ := _root_.GlobalTheory.JR.normalForm_invariants F r
+  obtain ⟨hL6a, hL6b⟩ := _root_.GlobalTheory.JR.transfer_factor_lemma F r
+  obtain ⟨-, -, -, hL4⟩ := _root_.GlobalTheory.JR.OrbitProper.main F E r
   have hC : (Cm Y).det ≠ 0 := by
     intro h0; apply hY; rw [Delta, ← hL1c Y, Matrix.det_mul, h0, zero_mul]
   have hld : (fun g : GL (Fin r) F => lastDet (act g Y)) = fun g =>
@@ -114,7 +114,7 @@ theorem isTest_orbU_integrand (F E : Type) [NontriviallyNormedField F] [Nontrivi
         (fun x => by rw [starAddEquiv_apply, Unram.norm_star (F := F), one_mul])
     exact this⟩
   obtain ⟨-, -, hL5c, -⟩ := GlobalTheory.T.unitary_action_hermitian_invariants_transitive F E r
-  obtain ⟨-, hL5iv⟩ := GlobalTheory.T.invariant_image_openClosed_local_sections F E r a ha
+  obtain ⟨-, hL5iv⟩ := _root_.GlobalTheory.JR.image_openClosed_section F E r a ha
   obtain ⟨Ω, s, -, -, haΩ, -, hs, hprop⟩ := hL5iv ⟨X, hX⟩
   obtain ⟨g₀, hg₀, -⟩ := hL5c (s a) X a ha (hs a haΩ).2 hX
   refine ⟨hf.1.comp_continuous (continuous_actU X), ?_⟩

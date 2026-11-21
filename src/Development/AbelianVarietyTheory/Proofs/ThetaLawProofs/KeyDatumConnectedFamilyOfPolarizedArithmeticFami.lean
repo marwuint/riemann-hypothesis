@@ -6,9 +6,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DualNumberRingHomExt
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyPBRing
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyDataNearTwoPrimesStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsThetaKeyFamilyUniversalFramesStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.GeomIntegralBaseChangeAndLocalizationStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyDataNearTwoPrimes
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsThetaKeyFamilyUniversalFrames
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.GeomIntegralBaseChangeAndLocalization
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
@@ -92,15 +92,15 @@ theorem connFam_of_polFam : Out.Laws → Out.Laws2 → PolFam → GlobalTheory.K
   letI : Algebra K K' := j.toAlgebra
   obtain ⟨i, s', s₀', hs', hs₀'⟩ := exists_points K K' R s s₀
   obtain ⟨Q', ψ, hQ'⟩ := polPB_exists hL.polBaseChange Q i
-  have hG' : GeomInt K' (K' ⊗[K] R) := (GlobalTheory.T.geom_integral_base_change_and_localization K K' R hG).1
+  have hG' : GeomInt K' (K' ⊗[K] R) := (_root_.GlobalTheory.KeyFam.geomInt_baseChange_and_away K K' R hG).1
   haveI := hG'.1
   haveI : IsNoetherianRing (K' ⊗[K] R) := Algebra.FiniteType.isNoetherianRing K' _
-  obtain ⟨r, hr, hr₀, y, χ, hy⟩ := GlobalTheory.T.exists_keyData_near_two_primes hL hL2 (K' ⊗[K] R) Q' ⟨RingHom.ker s', RingHom.ker_isPrime _⟩
+  obtain ⟨r, hr, hr₀, y, χ, hy⟩ := _root_.GlobalTheory.KeyFam.exists_keyIn_near_two hL hL2 (K' ⊗[K] R) Q' ⟨RingHom.ker s', RingHom.ker_isPrime _⟩
     ⟨RingHom.ker s₀'.toRingHom, RingHom.ker_isPrime _⟩ (by rw [hQ'.2.1, ← hP.2.1]; exact x.g_pos)
   have hu : IsUnit (s' r) := isUnit_iff_ne_zero.2 hr
   have hu₀ : IsUnit (s₀'.toRingHom r) := isUnit_iff_ne_zero.2 hr₀
   have hS : GeomInt K' (Localization.Away r) :=
-    (GlobalTheory.T.geom_integral_base_change_and_localization K' K' _ hG').2 r fun h => hr (h ▸ Ideal.zero_mem _)
+    (_root_.GlobalTheory.KeyFam.geomInt_baseChange_and_away K' K' _ hG').2 r fun h => hr (h ▸ Ideal.zero_mem _)
   let t : Localization.Away r →+* ℂ := IsLocalization.Away.lift r hu
   have ht : t.comp (algebraMap _ _) = s' := IsLocalization.Away.lift_comp r hu
   let u : Localization.Away r →+* K' := IsLocalization.Away.lift r hu₀
@@ -112,7 +112,7 @@ theorem connFam_of_polFam : Out.Laws → Out.Laws2 → PolFam → GlobalTheory.K
         exact (RingHom.congr_fun hu' _).trans (s₀'.commutes a) }
   have hyQ := polPB_comp rfl ⟨χ, hy⟩ ⟨ψ, hQ'⟩
   obtain ⟨φ₁, hφ₁⟩ := polPB_cancel (f' := t) (by rw [← RingHom.comp_assoc, ht, hs']) hyQ ⟨φ, hP⟩
-  obtain ⟨S', _, _, j', y', v, v₀, ψ', hS', hx, hy', hv₀⟩ := GlobalTheory.T.exists_thetaKeyFamily_universal_frames hL K' _ y x t φ₁ t₀ hS hφ₁
+  obtain ⟨S', _, _, j', y', v, v₀, ψ', hS', hx, hy', hv₀⟩ := _root_.GlobalTheory.KeyFam.exists_univ_frames hL K' _ y x t φ₁ t₀ hS hφ₁
   obtain ⟨y₀, hy₀⟩ := exists_keyPB_ring y' v₀.toRingHom
   have e₁ : v₀.toRingHom.comp j'.toRingHom = u := congrArg AlgHom.toRingHom hv₀
   have h₁ := polPB_comp e₁ (polPB_of_keyPB hy₀) ⟨ψ', hy'⟩

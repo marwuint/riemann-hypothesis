@@ -54,13 +54,6 @@ theorem cst_C (x : O) : Br.cst (C x) = algebraMap O (LetA O n) x := by
   show Br.ι (C x) = algebraMap O (LetA O n) x i
   rw [show (C x : PowerSeries O) = algebraMap O (PowerSeries O) x from rfl, AlgHom.commutes]
   rfl
-theorem cst_prod {ι' : Type*} (s : Finset ι') (F : ι' → PowerSeries O) :
-    Br.cst (∏ i ∈ s, F i) = ∏ i ∈ s, Br.cst (F i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => rw [Finset.prod_empty, Finset.prod_empty, Br.cst_one]
-  | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, Br.cst_mul, ih]
-
 theorem qA_eq : qA W = Br.cst X := by
   funext i
   show (W.π₀ + lA W) i = Br.ι X
@@ -97,27 +90,6 @@ theorem ps_eq (s : ℕ) : ps W s = Br.cst (Br.P.p s) := by
     show Br.cst (Br.P.φ ((Br.P.φ : PowerSeries O → PowerSeries O)^[s] X)) =
       Br.cst ((Br.P.φ : PowerSeries O → PowerSeries O)^[s + 1] X)
     rw [Function.iterate_succ_apply']
-
-theorem inFr_alg_iff (c : ZMod n) (N D G : PowerSeries O) :
-    InFr W c (Br.cst N) (Br.cst D) (algebraMap (LetA O n) W.EE (letE c * Br.cst G)) ↔
-      ∃ U : PowerSeries O, D * G = N * U := by
-  constructor
-  · rintro ⟨u, hu, h⟩
-    rw [← _root_.map_mul] at h
-    have h2 := congrFun (W.EE_inj h) c
-    obtain ⟨U, hU⟩ := Br.range u hu c
-    refine ⟨U, Br.inj ?_⟩
-    simp only [Pi.mul_apply, letE, Pi.single_eq_same, one_mul, cst] at h2
-    rw [_root_.map_mul, _root_.map_mul, ← hU, h2]
-  · rintro ⟨U, hU⟩
-    refine ⟨Br.cst U, Br.cst_mem U, ?_⟩
-    rw [← _root_.map_mul]
-    congr 1
-    funext i
-    have h := congrArg Br.ι hU
-    rw [_root_.map_mul, _root_.map_mul] at h
-    simp only [Pi.mul_apply, cst]
-    linear_combination (letE (O := O) c i) * h
 
 theorem inFr_const (c : ZMod n) {N₁ N₂ D : PowerSeries O} {f : W.EE} {κ : ℕ} {x : O}
     (hf : InFr W c (Br.cst N₁) (Br.cst D) f)

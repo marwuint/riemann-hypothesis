@@ -3,9 +3,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsLatticeF
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeFiniteProjectiveBaseChange
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartRingsNoetherianFractionStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeFamilyInjectiveModelFactsStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LineLatticeFamilyModelStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeFamilyInjectiveModelFacts
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LineLatticeFamilyModel
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChange
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLatticeData
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg restrictChart fnField ck rootNum SameGeneric LatLE IsPull IsPullBC)
@@ -71,9 +72,9 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
     · simp [(hχ τ).1]
     · simp [(hχ τ).2]
   have hbc := fun c (hc : mseg x c ≠ 0) =>
-    GlobalTheory.T.lattice_good_base_change (D c) (chartRing O (mseg x) c) p _ _ (hchar _) (hD.base c hc) (hG c hc)
-  have hfam := (GlobalTheory.T.lattice_family_injective_model_facts O Ω K ι x hinj p hp w χ φ D hD).2
-  obtain ⟨K', i1, i2, ι', i3, z, hz, hl⟩ := GlobalTheory.T.line_lattice_family_model O Ω K ι x d hx hfn (Sg × Fin n)
+    _root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main (D c) (chartRing O (mseg x) c) p _ _ (hchar _) (hD.base c hc) (hG c hc)
+  have hfam := (_root_.GlobalTheory.CompanionTheory.Ar.Num.FamConstr.main O Ω K ι x hinj p hp w χ φ D hD).2
+  obtain ⟨K', i1, i2, ι', i3, z, hz, hl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlattenLines.main O Ω K ι x d hx hfn (Sg × Fin n)
     (fun j c => (D c).xId (fun a => algebraMap O Ω (χ j.1 a)) j.2) fun j =>
       ⟨((hfam j.1).2.1 j.2).1, fun c hc =>
         ⟨ne_bot (((hbc c hc).1 j.1).2.2.2 j.2),

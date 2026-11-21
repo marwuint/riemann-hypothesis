@@ -18,66 +18,6 @@ namespace GlobalTheory.TupleNorm
 
 variable {L : Type} [Field L]
 
-open Polynomial in
-
-theorem pow_mem_forms (o : Type*) [CommRing o] {L : Type*} [Field L] [Algebra o L] {σ : Type*}
-    (t : σ → L) [IsDedekindDomain o] [CharZero L] [Algebra.EssFiniteType o L] [Fintype σ] {e : ℕ}
-    (he : 0 < e) (hv : ∀ j, 0 < j → piece o t (j * e) = piece o t e ^ j) {a : L}
-    (ha : a ∈ piece o t e) :
-    ∃ n, ∃ c : σ → L, (∀ i, c i ∈ piece o t e ^ n) ∧ a ^ (n + 1) = ∑ i, t i ^ e * c i := by
-  obtain ⟨d, hd, h⟩ := exists_piece_succ_eq o t
-  let A := integralClosure (cone o t) L[X]
-  let τ : σ → A := fun i =>
-    ⟨C (t i) * X, isIntegral_algebraMap (x := (⟨_, C_mul_X_mem_cone i⟩ : cone o t))⟩
-  let I : Ideal A := Ideal.span (Set.range fun i => τ i ^ e)
-  have h1 : ∀ m, ∀ b ∈ Submodule.span o (Set.range t) * piece o t m,
-      ∃ q : A, q ∈ I.radical ∧ (q : L[X]) = C b * X ^ (m + 1) := by
-    intro m b hb
-    induction hb using Submodule.mul_induction_on' with
-    | add x _ y _ hx hy =>
-      obtain ⟨q, hq, hx⟩ := hx
-      obtain ⟨q', hq', hy⟩ := hy
-      exact ⟨q + q', add_mem hq hq', by rw [AddMemClass.coe_add, hx, hy, map_add, add_mul]⟩
-    | mem_mul_mem x hx y hy =>
-      induction hx using Submodule.span_induction with
-      | mem x hx =>
-        obtain ⟨i, rfl⟩ := hx
-        have : τ i ∈ I.radical := ⟨e, Ideal.subset_span ⟨i, rfl⟩⟩
-        refine ⟨τ i * ⟨_, mem_piece.mp hy⟩, I.radical.mul_mem_right _ this, ?_⟩
-        change (C (t i) * X) * (C y * X ^ m) = _
-        rw [map_mul]; ring
-      | zero => exact ⟨0, zero_mem _, by simp⟩
-      | add x x' _ _ hx hx' =>
-        obtain ⟨q, hq, hx⟩ := hx
-        obtain ⟨q', hq', hy⟩ := hx'
-        exact ⟨q + q', add_mem hq hq',
-          by rw [AddMemClass.coe_add, hx, hy, add_mul, map_add, add_mul]⟩
-      | smul c x _ hx =>
-        obtain ⟨q, hq, hx⟩ := hx
-        refine ⟨algebraMap (cone o t) A (algebraMap o _ c) * q, I.radical.mul_mem_left _ hq, ?_⟩
-        rw [MulMemClass.coe_mul, hx]
-        change algebraMap o L[X] c * _ = _
-        rw [Algebra.smul_def, Polynomial.algebraMap_apply]; simp only [map_mul]; ring
-  obtain ⟨m, hm⟩ : ∃ m, (d + 1) * e = m + 1 := Nat.exists_eq_add_one.mpr (by positivity)
-  have hdm : d ≤ m := by nlinarith
-  have h3 : a ^ (d + 1) ∈ piece o t (m + 1) := by
-    rw [← hm, hv _ d.succ_pos]; exact Submodule.pow_mem_pow _ ha _
-  rw [h m hdm] at h3
-  obtain ⟨q, ⟨N, hN⟩, hq⟩ := h1 m _ h3
-  obtain ⟨p, hp⟩ := Ideal.mem_span_range_iff_exists_fun.mp
-    (I.pow_mem_of_pow_mem hN (Nat.le_add_right N 2))
-  obtain ⟨n, hn⟩ : ∃ n, (d + 1) * (N + 2) = n + 1 := Nat.exists_eq_add_one.mpr (by positivity)
-  have hn0 : 0 < n := by nlinarith
-  refine ⟨n, fun i => (p i : L[X]).coeff (n * e),
-    fun i => hv n hn0 ▸ isIntegral_cone_iff.mp (p i).2 _, ?_⟩
-  have h4 := congrArg (fun q : A => (q : L[X]).coeff (n * e + e)) hp
-  simp only [τ, hq, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, SubmonoidClass.coe_pow,
-    finsetSum_coeff, mul_pow, ← C_pow, ← pow_mul, ← mul_assoc, coeff_mul_X_pow, coeff_mul_C] at h4
-  rw [hn, ← hm, show (d + 1) * e * (N + 2) = n * e + e by rw [mul_right_comm, hn]; ring,
-    coeff_C_mul_X_pow, if_pos rfl] at h4
-  rw [← h4]
-  exact Finset.sum_congr rfl fun i _ => mul_comm _ _
-
 theorem isIntegralElem_iff_of_range_eq {o A : Type*} [CommRing o] [Algebra o L] [CommRing A]
     (φ : A →+* L) (S : Subalgebra o L) (h : Set.range φ = S) (a : L) :
     φ.IsIntegralElem a ↔ IsIntegral S a := by
@@ -198,22 +138,6 @@ theorem exists_hom_of_isIntegral {z : Fin (m + 1) → L} (hz : z ≠ 0)
   choose u hu using fun i k => (mem_range_valMap_iff rfl (hη i) _).2 (h i k)
   exact exists_hom_of_coords _ _ (nmPoint_str o t ht) _ (iSup_preimage_chart o t ht) hη hz c hc u
     fun i k => (valR_eq _ _ (hη i) _).trans (hu i k)
-
-theorem exists_hom_Cl_of_factor {z : Fin (m + 1) → L} (hz : z ≠ 0) {τ : Type*} (z' : τ → L)
-    (p : Fin (r + 1) ≃ Fin (m + 1) × τ) (hp : ∀ i, t i = z (p i).1 * z' (p i).2) :
-    ∃ φ : Nm o t ht ⟶ Cl o z hz, nmPoint o t ht ≫ φ = clPoint o z hz ∧
-      φ ≫ clι o z hz ≫ PSpace.str o m = str o t ht := by
-  obtain ⟨φ, h₁, h₂, -⟩ := exists_hom_of_isIntegral o t ht hz (fun i => (p i.1).1)
-    (fun i => left_ne_zero_of_mul (hp i.1 ▸ i.2)) fun i k => by
-      have : z k / z (p i.1).1 = t (p.symm (k, (p i.1).2)) / t i.1 := by
-        rw [hp, hp i.1, Equiv.apply_symm_apply,
-          mul_div_mul_right _ _ (right_ne_zero_of_mul (hp i.1 ▸ i.2))]
-      rw [this]
-      exact isIntegral_algebraMap
-        (x := (⟨_, Algebra.subset_adjoin ⟨_, rfl⟩⟩ : ratioRing o t i.1))
-  have := IsSchemeTheoreticallyDominant.of_isDominant (nmPoint o t ht)
-  refine ⟨closureLift _ φ (nmPoint o t ht) (𝟙 _) (by simpa using h₁), by simp, ?_⟩
-  rw [closureLift_imageι_assoc, h₂]
 
 def ratioField : Subfield L :=
   Subfield.closure (Set.range (algebraMap o L) ∪
@@ -403,66 +327,6 @@ theorem isProjOver_str : IsProjOver (str o t ht) := by
   obtain ⟨e, -, M, z, hz, -, -, -, ν, -, h, -⟩ := exists_iso_Cl o t ht
   exact ⟨M, ν.hom ≫ clι o z hz, inferInstance, h⟩
 
-theorem exists_pow_twist_veryAmple : ∃ (e : ℕ) (_ : 0 < e) (M : ℕ) (φ : Nm o t ht ⟶ PSpace o M),
-    IsClosedImmersion φ ∧ φ ≫ PSpace.str o M = str o t ht ∧
-      LBIso (lbPow (twist o t ht) e) ((O1 o M).pull φ) := by
-  obtain ⟨e, he, M, z, hz, -, -, -, ν, -, h, -, w, hw, -⟩ := exists_iso_Cl o t ht
-  exact ⟨e, he, M, ν.hom ≫ clι o z hz, inferInstance, h, w, hw⟩
-
 end Dedekind
-
-theorem normalization_closure_projective [IsDedekindDomain o] [CharZero o] [FaithfulSMul o L]
-    [FiniteDimensional (ratioField o t) L] :
-    (∀ p : Polynomial L, IsIntegral (cone o t) p ↔ ∀ n, p.coeff n ∈ piece o t n) ∧
-    Module.Finite (cone o t) (integralClosure (cone o t) (Polynomial L)) ∧
-    piece o t 0 = (integralClosure o L).toSubmodule ∧ (∀ n, (piece o t n).FG) ∧
-    IsIntegral (Nm o t ht) ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Nm o t ht) ∧
-    (∀ x, IsIso ((nmPoint o t ht).stalkMap x)) ∧ IsFinite (toCl o t ht) ∧
-    (∀ i, t i ≠ 0 → ∃ h : ⊤ ≤ nmPoint o t ht ⁻¹ᵁ (toProj o t ht ⁻¹ᵁ chart o r i),
-      Function.Injective (valMap (nmPoint o t ht) _ h).hom ∧
-      Set.range (valMap (nmPoint o t ht) _ h).hom = integralClosure (ratioRing o t i) L) ∧
-    IsProjOver (str o t ht) ∧
-    ∃ (e : ℕ) (_ : 0 < e) (M : ℕ) (z : Fin (M + 1) → L) (hz : z ≠ 0),
-      (∀ j, 0 < j → piece o t (j * e) = piece o t e ^ j) ∧
-      Submodule.span o (Set.range z) = piece o t e ∧ (∀ j, t j ^ e ∈ Set.range z) ∧
-      (∀ i, t i ≠ 0 → ∀ f, f ∈ Algebra.adjoin o (Set.range fun k => z k / t i ^ e) ↔
-        IsIntegral (ratioRing o t i) f) ∧
-      (∀ k, ∃ (n : ℕ) (c : Fin (r + 1) → L), (∀ i, c i ∈ Submodule.span o (Set.range z) ^ n) ∧
-        z k ^ (n + 1) = ∑ i, t i ^ e * c i) ∧
-      (⨆ k : {k // ∃ j, t j ≠ 0 ∧ z k = t j ^ e}, clι o z hz ⁻¹ᵁ chart o M k.1 = ⊤) ∧
-      ∃ ν : Nm o t ht ≅ Cl o z hz, nmPoint o t ht ≫ ν.hom = clPoint o z hz ∧
-        (ν.hom ≫ clι o z hz) ≫ PSpace.str o M = str o t ht ∧
-        (∀ j k, z k = t j ^ e →
-          (ν.hom ≫ clι o z hz) ⁻¹ᵁ chart o M k = toProj o t ht ⁻¹ᵁ chart o r j) ∧
-        LBIso (lbPow (twist o t ht) e) ((O1 o M).pull (ν.hom ≫ clι o z hz)) := by
-  have : CharZero L := charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective o L)
-  have := essFiniteType_of_finiteDimensional o t ht
-  obtain ⟨e, he, M, z, hz, h₁, h₂, h₃, ν, h₄, h₅, h₆, w, hw, -⟩ := exists_iso_Cl o t ht
-  have h₇ : ⨆ k : {k // ∃ j, t j ≠ 0 ∧ z k = t j ^ e}, clι o z hz ⁻¹ᵁ chart o M k.1 = ⊤ := by
-    refine top_le_iff.mp fun y _ => Opens.mem_iSup.mpr ?_
-    obtain ⟨x, rfl⟩ := ν.hom.surjective y
-    obtain ⟨i, hi⟩ := Opens.mem_iSup.1 ((iSup_preimage_chart o t ht).ge (Set.mem_univ x))
-    obtain ⟨k, hk⟩ := h₃ i.1
-    exact ⟨⟨k, i.1, i.2, hk⟩, (h₆ i.1 k hk).ge hi⟩
-  exact ⟨fun _ => isIntegral_cone_iff, finite_integralClosure_cone o t, piece_zero, piece_fg o t,
-    isIntegral_Nm o t ht, isNormalScheme_Nm o t ht, isIso_stalkMap_nmPoint o t ht,
-    isFinite_toCl o t ht, fun i hi => ⟨le_preimage_chart (nmPoint_toProj o t ht) hi,
-      valMap_injective _ _, Set.ext fun a => mem_range_valMap_iff rfl _ a⟩,
-    isProjOver_str o t ht, e, he, M, z, hz, h₁, h₂, h₃,
-    fun i hi f => (isIntegral_ratioRing_iff_mem_adjoin he h₂ h₁ hi).symm,
-    fun k => h₂ ▸ pow_mem_forms o t he h₁ (h₂ ▸ Submodule.subset_span ⟨k, rfl⟩), h₇,
-    ν, h₄, h₅, h₆, w, hw⟩
-
-example (K : Type) [Field K] [NumberField K] (t : Fin (r + 1) → K) (ht : t ≠ 0) :
-    IsProjOver (str ℤ t ht) :=
-  have : FiniteDimensional (ratioField ℤ t) K := Module.Finite.of_restrictScalars_finite ℚ _ _
-  (normalization_closure_projective ℤ t ht).2.2.2.2.2.2.2.2.2.1
-
-example : let K := FractionRing (Polynomial ℤ)
-    let x : K := algebraMap (Polynomial ℤ) K Polynomial.X
-    ∃ ht : ![1, x ^ 2, x ^ 3] ≠ 0, IsProjOver (str ℤ ![1, x ^ 2, x ^ 3] ht) := by
-  intro K x
-  have : Algebra.EssFiniteType ℤ K := .comp ℤ (Polynomial ℤ) K
-  exact ⟨Function.ne_iff.mpr ⟨0, one_ne_zero⟩, isProjOver_str _ _ _⟩
 
 end GlobalTheory.TupleNorm

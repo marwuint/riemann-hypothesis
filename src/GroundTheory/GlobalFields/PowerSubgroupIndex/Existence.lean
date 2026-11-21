@@ -23,10 +23,4 @@ theorem index_map_powerSubgroup (S : Finset (HeightOneSpectrum (𝓞 K)))
 
 end Power
 
-section Prime
-
-variable {K : Type u} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime] [HasEnoughRootsOfUnity K p]
-
-end Prime
-
 end GroundTheory.Global

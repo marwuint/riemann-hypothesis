@@ -3,7 +3,7 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSie
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsBlockMatrixTwoByTwoFinEq
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpanRangeComplementTransformStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SameSpanTransferMatricesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianBlockSolutionExistsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianBlockSolutionExists
 
 noncomputable section
 open scoped Matrix
@@ -127,7 +127,7 @@ theorem bruhat : Bruhat := by
   have hiso := isotropic_of_unitary σ hgu
   set U := Submodule.span K (Set.range C) with hU
   obtain ⟨T, L, hT, -, hLT⟩ := GlobalTheory.T.same_span_transfer_matrices C (c U) (hc U).1 (hc U).2
-  obtain ⟨b, hb, hcond⟩ := GlobalTheory.T.hermitian_block_solution_exists σ hσ (hr U) (c U) (a U) C D T L (ha U) hT hLT hiso
+  obtain ⟨b, hb, hcond⟩ := _root_.GlobalTheory.CompanionTheory.BruhatCell.exists_hermitian_lowerLeft σ hσ (hr U) (c U) (a U) C D T L (ha U) hT hLT hiso
   have hS := (siegel_rep_iff σ hσ b (a U) hb (ha U).1 A B C D).2 hcond
   refine ⟨⟨U, b, hb⟩, hS, ?_⟩
   rintro ⟨U', b', hb'⟩ hq

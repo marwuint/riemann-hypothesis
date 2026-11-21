@@ -394,13 +394,6 @@ theorem formOn_chart_inj (i : Fin (N + 1)) {n : ℕ} {f g : MvPolynomial (Fin (N
   obtain ⟨⟨_, m, rfl⟩, h1⟩ := h1
   exact ((isRegular_X (n := i)).pow n).left (((isRegular_X (n := i)).pow m).left h1)
 
-variable {R N} in
-
-theorem formSec_inj {n : ℕ} {f g : MvPolynomial (Fin (N + 1)) R}
-    (hf : f.IsHomogeneous n) (hg : g.IsHomogeneous n) : formSec n f hf = formSec n g hg ↔ f = g := by
-  refine ⟨fun h => (formOn_chart_inj R N 0 hf hg).1 ?_, fun h => by subst h; rfl⟩
-  exact congrArg (fun s : (lbPow (O1 R N) n).Sec => resG _ (On_U R N n fun _ => 0).ge (s.f fun _ => (0 : Fin (N + 1)))) h
-
 theorem aeval_ratio_surjective (i : Fin (N + 1)) :
     Function.Surjective (aeval (R := R) (ratio R N i)) := by
   intro s
@@ -582,14 +575,6 @@ theorem baseChangeIso_coord (k i : Fin (N + 1)) (j : PUnit → Fin (N + 1)) :
   exact (ratioOn_mul_ratioOn (hi := inf_le_left)
     (hj := inf_le_right.trans (pull_O1_chart N φ j).le)).symm.trans (congrArg (_ * resG _ _ ·) e.symm)
 
-theorem baseChange_id : baseChange N (RingHom.id R) = 𝟙 (PSpace R N) := by
-  refine (chartCover R N).hom_ext _ _ fun (i : Fin (N + 1)) => ?_
-  refine (chartι_baseChange N (RingHom.id R) i).trans ?_
-  have : (MvPolynomial.map (RingHom.id R) : MvPolynomial {j // j ≠ i} R →+* _) = RingHom.id _ :=
-    RingHom.ext map_id
-  rw [this]
-  exact (congrArg (· ≫ _) (Spec.map_id _)).trans ((Category.id_comp _).trans (Category.comp_id _).symm)
-
 theorem baseChange_comp {R'' : Type} [CommRing R''] (ψ : R' →+* R'') :
     baseChange N (ψ.comp φ) = baseChange N ψ ≫ baseChange N φ := by
   refine (chartCover R'' N).hom_ext _ _ fun (i : Fin (N + 1)) => ?_
@@ -602,27 +587,5 @@ theorem baseChange_comp {R'' : Type} [CommRing R''] (ψ : R' →+* R'') :
   rfl
 
 end BaseChange
-
-example : (coord R 1 1).f (0 : Fin 2) = chartAlgEquiv R 1 0 (X ⟨1, by decide⟩) ∧
-    (coord R 1 1).f (1 : Fin 2) = 1 ∧
-    ((O1 R 1).g (0 : Fin 2) (1 : Fin 2)).val = resG _ inf_le_left ((coord R 1 1).f (0 : Fin 2)) :=
-  ⟨(chartAlgEquiv_X R 1 0 ⟨1, by decide⟩).symm, ratioOn_self (hi := le_rfl), rfl⟩
-
-example [Nontrivial R] : nonzeroLocus (coord R 1 1) ≠ ⊤ := by
-  intro h
-  rw [nonzeroLocus_coord] at h
-  have h1 : (PSpace R 1).basicOpen (ratio R 1 0 1) = chart R 1 0 :=
-    basicOpen_ratioOn.trans ((congrArg (_ ⊓ ·) h).trans (inf_top_eq _))
-  have h2 : IsUnit (ratio R 1 0 1) := (PSpace R 1).toRingedSpace.isUnit_of_isUnit_germ _ _ fun x hx =>
-    ((PSpace R 1).mem_basicOpen _ x hx).1 (h1.ge hx)
-  rw [← chartAlgEquiv_X R 1 0 ⟨1, by decide⟩] at h2
-  have h3 := (h2.map (chartAlgEquiv R 1 0).symm).map constantCoeff
-  rw [AlgEquiv.symm_apply_apply, constantCoeff_X] at h3
-  exact not_isUnit_zero h3
-
-example (h : (X 0 * X 1 - X 2 ^ 2 : MvPolynomial (Fin 3) R).IsHomogeneous 2) :
-    formOn (chart R 2 0) 0 le_rfl 2 (X 0 * X 1 - X 2 ^ 2) h = ratio R 2 0 1 - ratio R 2 0 2 ^ 2 := by
-  rw [formOn_eq_aeval]
-  simp
 
 end GlobalTheory.ProjSpace

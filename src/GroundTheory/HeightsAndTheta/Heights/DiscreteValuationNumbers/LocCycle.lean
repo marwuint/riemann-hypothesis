@@ -60,10 +60,6 @@ def LocalCoeffRing.Statement : Prop :=
 
 end Lemmas
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

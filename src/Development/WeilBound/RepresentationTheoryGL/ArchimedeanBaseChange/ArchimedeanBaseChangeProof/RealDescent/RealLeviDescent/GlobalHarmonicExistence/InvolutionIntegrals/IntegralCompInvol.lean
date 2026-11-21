@@ -8,12 +8,6 @@ open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.UnitaryB
 
 namespace PositivityTheory.Rg.BcB.Desc.Tw
 
-section Haar
-
-variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
-
-end Haar
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 theorem map_thetaR' {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : A →+* A) (τ : B →+* B)

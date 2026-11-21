@@ -81,33 +81,6 @@ theorem isVal_valSet (la : HeightOneSpectrum (𝓞 c.F)) : ∀ v ∈ valSet Xo c
 
 variable (Xo c cls)
 
-def LiesTotal (PY : HeightOneSpectrum (𝓞 c.F) → Type)
-    (lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop) : Prop :=
-  ∀ la (T : CDVR) (ι : c.F →+* T.Fr) (e : ℕ), OverLa la T.V ι e → ∀ y : IntFr Xo c T ι, cls T ι y →
-    ∃ η, lies la T ι y η
-
 variable {Xo c cls}
-
-theorem nonneg_iff_of_liesTotal {PY : HeightOneSpectrum (𝓞 c.F) → Type}
-    {lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop}
-    (h : LiesTotal Xo c cls PY lies) (f : Rul Xo c) :
-    (∀ la, ∀ v ∈ valSet Xo c cls la, 0 ≤ v f) ↔
-      ∀ la (y : PtV Xo c cls (PY la) (lies la) la), 0 ≤ vAtV y f := by
-  constructor
-  · intro H la y
-    obtain ⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩ := y
-    have hg1 := congrArg Prod.fst heq
-    dsimp only at hg1
-    subst hg1
-    have hv := H la (vAtV (⟨profI Xo c Unit e y0 (), T, io, e, hO, y0, hcls, (), trivial, rfl⟩ :
-      PtV Xo c cls Unit (fun _ _ _ _ => True) la)) ⟨_, rfl⟩
-    exact hv
-  · rintro H la v ⟨y, rfl⟩
-    obtain ⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩ := y
-    have hg1 := congrArg Prod.fst heq
-    dsimp only at hg1
-    subst hg1
-    obtain ⟨η, hη⟩ := h la T io e hO y0 hcls
-    exact H la ⟨profI Xo c (PY la) e y0 η, T, io, e, hO, y0, hcls, η, hη, rfl⟩
 
 end Formalism.L2.PjFree

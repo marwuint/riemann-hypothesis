@@ -8,12 +8,6 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.GsFr
 open PI.UnitaryGroupMassFormula.DLm.Gram
 
-def StabCore : Prop :=
-  ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ), 1 ≤ k → 1 ≤ r → C2.StdZ k r z → C2.StdZ k r z' →
-    ∀ D0 : GfBaseD k r z z', ∀ y ∈ gfSig D0, ∀ α ∈ UWset k r z, ∀ β ∈ UWset k r z',
-      α *ᵥ D0.nu = D0.nu → β⁻¹ *ᵥ D0.nu' = D0.nu' →
-      α * y * β ∈ gfSig D0 → Rel z z' y (α * y * β)
-
 section eqv
 
 variable {k r : ℕ}
@@ -98,40 +92,6 @@ theorem omW'_UW {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' :
   rw [xcofL_UW hα hβ, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← mulVec_mulVec, ← mulVec_mulVec,
     xcofL_fix (Wz.inv_mem α hα), prW_UW hz' (Wz'.inv_mem β hβ)]
 
-lemma fix_of_pos {v w : Fin (2 * r + k + 1) → ℂ} (hw : herm (Hpk k r) w w = 1) (hv : herm (Hpk k r) v v = 1)
-    {t₁ t₂ : ℝ} (h1 : 0 < t₁) (h2 : 0 < t₂) (e : (t₁ : ℂ) • v = (t₂ : ℂ) • w) : v = w := by
-  have hsc : ∀ (t : ℝ) (u : Fin (2 * r + k + 1) → ℂ),
-      herm (Hpk k r) ((t : ℂ) • u) ((t : ℂ) • u) = ((t ^ 2 : ℝ) : ℂ) * herm (Hpk k r) u u := by
-    intro t u
-    simp only [herm, Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul,
-      Complex.star_def, Complex.conj_ofReal]
-    push_cast
-    ring
-  have h3 := congrArg (fun u => herm (Hpk k r) u u) e
-  rw [hsc, hsc, hv, hw, mul_one, mul_one] at h3
-  have h4 : t₁ ^ 2 = t₂ ^ 2 := by exact_mod_cast h3
-  have h5 : t₁ = t₂ := (pow_left_inj₀ h1.le h2.le two_ne_zero).mp h4
-  subst h5
-  exact smul_right_injective _ (by exact_mod_cast h1.ne') e
-
 end eqv
-
-theorem gfStab_of (hC : StabCore) : GfStab := by
-  intro k r z z' hk hr hz hz' D0 y hy α hα β hβ hay
-  have Wz' := Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z'
-  have hH := Formalism.QuantumDeterminants.hpkFacts k r
-  have hy2 := hy
-  have hay2 := hay
-  obtain ⟨_, _, ⟨t, ht, hom⟩, ⟨t', ht', hom'⟩, _⟩ := hy2
-  obtain ⟨_, _, ⟨s, hs, hos⟩, ⟨s', hs', hos'⟩, _⟩ := hay2
-  refine hC k r z z' hk hr hz hz' D0 y hy α hα β hβ ?_ ?_ hay
-  · rw [omW_UW hz hα hβ, hom, mulVec_smul] at hos
-    have hαu : herm (Hpk k r) (α *ᵥ D0.nu) (α *ᵥ D0.nu) = 1 := by
-      rw [Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hα.1]; exact D0.nu_unit
-    exact fix_of_pos D0.nu_unit hαu ht hs hos
-  · rw [omW'_UW hz hz' hα hβ, hom', mulVec_smul] at hos'
-    have hβu : herm (Hpk k r) (β⁻¹ *ᵥ D0.nu') (β⁻¹ *ᵥ D0.nu') = 1 := by
-      rw [Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH (Wz'.inv_mem β hβ).1]; exact D0.nu'_unit
-    exact fix_of_pos D0.nu'_unit hβu ht' hs' hos'
 
 end PI.UnitaryGroupMassFormula.GsFr

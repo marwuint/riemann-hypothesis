@@ -2,9 +2,21 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsFrameIff
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RelationsAreFunctions
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.GtOntoDivisibleKernel
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionIdentificationWithPairingStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevelStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaConstantValuationsUnitsEveryCosetStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionIdentificationWithPairing
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DataRigidSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DvrLem
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaVV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
+import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionMapsCompatibleInLevel
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaConstantValuationsUnitsEveryCoset
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.VRatioGtStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PeriodicValuation
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TwistBC
+import Development.AbelianVarietyTheory.Definitions.Uniformization.AllDV
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj BigOperators
@@ -55,15 +67,15 @@ theorem fromGt_mem_unitGrp : LL → TwistBCSpanStatement → TWM.VRatioGtStateme
       (φ : (nsmulAddMonoidHom (n ^ j) : GtPtF D.toPre F →+ GtPtF D.toPre F).ker →+ Additive M) t,
       Additive.toMul (φ t) ^ (n ^ j) = 1 := fun φ t => by
     rw [← toMul_nsmul, ← map_nsmul, show (n ^ j) • t = 0 from Subtype.ext t.2, map_zero, toMul_zero]
-  have ua := (GlobalTheory.T.theta_constant_valuations_units_every_coset hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN th ϑ hE hP _ hm hum).2 n hn.two_le hdvd
+  have ua := (_root_.GlobalTheory.UT.ThetaConstVal.main hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN th ϑ hE hP _ hm hum).2 n hn.two_le hdvd
   have fin : ∀ {M T : Type} [CommGroup M] (S : Subgroup M) (φ : T → M), (∀ t, φ t ^ (n ^ j) = 1) →
     (∀ t, ∃ s ∈ S, ∃ t', φ t = s * φ t' ^ n) → ∀ t, φ t ∈ S := fun S φ => mem_of_step S φ n j
   generalize n ^ j = m at *
   have m1 : 1 ≤ m := hm.pos
   have div := (gt_onto_divisible_kernel hL V _ hA D F).2.1
-  have lev := fun p q x => (GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL V _ hA D A G hG U F m m (m ^ 2) m1 m1 (pow_two m) p q x).2
-  obtain ⟨f, f₁, -, f₃, f₄, -⟩ := GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL V _ hA D A G hG U F m m1
-  obtain ⟨f', f₁', -, -, f₄', -⟩ := GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL V _ hA D A G hG U F (m ^ 2) (pow_pos hm.pos 2)
+  have lev := fun p q x => (_root_.GlobalTheory.LevelCompat.qkToAkU_level hL V _ hA D A G hG U F m m (m ^ 2) m1 m1 (pow_two m) p q x).2
+  obtain ⟨f, f₁, -, f₃, f₄, -⟩ := _root_.GlobalTheory.TorsionIso.torsion_eq hL V _ hA D A G hG U F m m1
+  obtain ⟨f', f₁', -, -, f₄', -⟩ := _root_.GlobalTheory.TorsionIso.torsion_eq hL V _ hA D A G hG U F (m ^ 2) (pow_pos hm.pos 2)
   obtain ⟨φ, hφ⟩ := exists_hom hB f f₄
   obtain ⟨φ', hφ'⟩ := exists_hom hB f' f₄'
   have mem : ∀ {k} (p : QkPt D.toPre F k), p.y = 0 →

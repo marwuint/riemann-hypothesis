@@ -3,17 +3,23 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsPeriodHom
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.FamUnif
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussManinPeriodsOfParts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamUnifHolds
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodsExistAffineZeroSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegrationOverCyclesHomStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PchernOfStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodHomPushEndStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePeriodEqFamilyPeriodValueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrationOverCyclesLiftsLieLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodsExistAffineZeroSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegrationOverCyclesHom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PchernOf
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GaussManinPeriods
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+import Development.AbelianVarietyTheory.Definitions.Divisors.AnalyticChartsRealizationCompPointEq
+import Development.AbelianVarietyTheory.Definitions.Divisors.FstTszeSec
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DpExpEqSumRangeOfVanish
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltration
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodHomPushEnd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePeriodEqFamilyPeriodValue
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrationOverCyclesLiftsLieLattice
 
 namespace GlobalTheory.AnPer
 
 theorem gaussManinPeriods_of_span_taylor : PSpan → PTaylor → GlobalTheory.Published.GaussManinPeriods :=
-  fun HS HT ↦ gaussManinPeriods_of_parts (-1) GlobalTheory.PeriodFamily.famUnif_holds GlobalTheory.T.periods_exist_affine_zero_section GlobalTheory.T.exists_integrationOverCyclesHom HS
-    GlobalTheory.T.integrationOverCycles_lifts_lieLattice GlobalTheory.T.periodHom_push_end' GlobalTheory.T.pChern_neg_one GlobalTheory.T.fibrePeriod_eq_familyPeriod_value HT
+  fun HS HT ↦ gaussManinPeriods_of_parts (-1) GlobalTheory.PeriodFamily.famUnif_holds _root_.GlobalTheory.AnPer.periods_exist _root_.GlobalTheory.AnPer.pHom HS
+    _root_.GlobalTheory.AnPer.pLie_holds _root_.GlobalTheory.AnPer.periodHom_push_end _root_.GlobalTheory.AnPer.ChernClause.pchern _root_.GlobalTheory.AnPer.period_fibre_eq_value HT
 
 end GlobalTheory.AnPer

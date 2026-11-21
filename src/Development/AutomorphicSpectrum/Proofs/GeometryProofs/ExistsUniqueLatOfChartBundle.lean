@@ -2,8 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermGenPtInjectiveRangeRegAtStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermGenPtInjectiveRangeRegAt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
@@ -71,7 +73,7 @@ theorem exists_chart (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) :
     exact h2
   have hUq : ∀ q : Cpt ξ, q.1 ∈ U ↔ InChart ξ x c q := fun q =>
     ⟨fun hq => by obtain ⟨_, h2⟩ := (hmem q.1).1 hq; exact h2, fun hq => (hmem q.1).2 ⟨q.2, hq⟩⟩
-  obtain ⟨hinj, hran⟩ := GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hT.gen U h hsp
+  obtain ⟨hinj, hran⟩ := _root_.GlobalTheory.CompanionTheory.Ar.regAt_sections X Ω ξ hT.gen U h hsp
   refine ⟨U, h, hU, hUq, hsp, hinj, fun a => ?_⟩
   rw [hT.ring c hc a]
   refine Iff.trans ?_ (hran a).symm
@@ -98,46 +100,9 @@ theorem exists_point (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) (P : Ideal
   have h3 : (s : Ω) = secVal ξ U h t := ht.symm
   rw [h3, ← h2, key, hst, Ideal.mem_comap, not_not]
 
-theorem chart_le_regAt (hT : CoordTie o ξ x) {c : κ} {p : Cpt ξ} (hp : InChart ξ x c p) {a : Ω}
-    (ha : a ∈ chartRing o x c) : a ∈ regAt ξ p :=
-  (hT.ring c hp.1 a).1 ha p hp
-
 theorem exists_den (hT : CoordTie o ξ x) {c : κ} {p : Cpt ξ} (hp : InChart ξ x c p) {a : Ω}
     (ha : a ∈ regAt ξ p) : ∃ s ∈ chartRing o x c, unitAt ξ p s ∧ s * a ∈ chartRing o x c :=
-  (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ o κ x hT c p hp a).1 ha
-
-theorem exists_pow_mul_mem (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) {f a : Ω} (hf : f ∈ chartRing o x c)
-    (h : ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p f → a ∈ regAt ξ p) :
-    ∃ n : ℕ, f ^ n * a ∈ chartRing o x c := by
-  let I : Ideal (chartRing o x c) :=
-    { carrier := {s | (s : Ω) * a ∈ chartRing o x c}
-      add_mem' := fun {u v} hu hv => by
-        show ((u + v : chartRing o x c) : Ω) * a ∈ chartRing o x c
-        have : ((u + v : chartRing o x c) : Ω) * a = (u : Ω) * a + (v : Ω) * a := by
-          push_cast; ring
-        rw [this]
-        exact add_mem hu hv
-      zero_mem' := by
-        show ((0 : chartRing o x c) : Ω) * a ∈ chartRing o x c
-        simp
-      smul_mem' := fun t u hu => by
-        show ((t • u : chartRing o x c) : Ω) * a ∈ chartRing o x c
-        have : ((t • u : chartRing o x c) : Ω) * a = (t : Ω) * ((u : Ω) * a) := by
-          simp [_root_.mul_assoc]
-        rw [this]
-        exact mul_mem t.2 hu }
-  have hrad : (⟨f, hf⟩ : chartRing o x c) ∈ I.radical := by
-    rw [Ideal.radical_eq_sInf, Ideal.mem_sInf]
-    rintro P ⟨hle, hP⟩
-    by_contra hfP
-    obtain ⟨p, hp, hs⟩ := exists_point hT hc P hP
-    have hu : unitAt ξ p f := by
-      by_contra hn
-      exact hfP ((hs ⟨f, hf⟩).2 hn)
-    obtain ⟨s, hsA, hsu, hsa⟩ := exists_den hT hp (h p hp hu)
-    exact (hs ⟨s, hsA⟩).1 (hle hsa) hsu
-  obtain ⟨n, hn⟩ := hrad
-  exact ⟨n, hn⟩
+  (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ o κ x hT c p hp a).1 ha
 
 variable {E : Type} [AddCommGroup E] [Module Ω E]
 
@@ -168,15 +133,6 @@ theorem exists_den_span (hT : CoordTie o ξ x) {c : κ} {p : Cpt ξ} (hp : InCha
     exact hM _ htr _ hsM
 
 end Chart
-
-section Bundle
-
-variable {κ : Type} {x : κ → Ω} {E : Type} [AddCommGroup E] [Module Ω E] {r : ℕ}
-
-noncomputable def latOf (ξ : Spec (CommRingCat.of Ω) ⟶ X) (W : ChartBundle ℤ x r E) : Lat ξ E := fun p =>
-  Submodule.span (regAt ξ p) {e | ∃ c, InChart ξ x c p ∧ e ∈ W.lat c}
-
-end Bundle
 
 end GlobalTheory.CompanionTheory.Ar.TieVB
 

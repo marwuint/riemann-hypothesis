@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsProdAbsSubGeOnSegment
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsInterpolationExteriorSmallCoeffsStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsInterpolationExteriorSmallCoeffs
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 
 namespace GlobalTheory
@@ -118,7 +118,7 @@ lemma core (N M : ℕ) (z : Fin N → ℂ) (i₁ : Fin N) (h1 : ‖z i₁‖ = 1
       rw [sub_eq_zero] at h
       rw [h] at hw; linarith
   set G : ℝ := (r ^ (M + 1) * D)⁻¹ with hG
-  obtain ⟨c, hc1, hc2⟩ := GlobalTheory.T.exists_interpolation_exterior_small_coeffs S.card (fun j => z (e j))
+  obtain ⟨c, hc1, hc2⟩ := _root_.GlobalTheory.ExteriorInterpolation.interpolation S.card (fun j => z (e j))
     (fun w => (w ^ (M + 1) * f w)⁻¹) r G hr0 hr1'
     (fun j => ⟨(hmemS _).1 (e j).2, hz _⟩)
     (by

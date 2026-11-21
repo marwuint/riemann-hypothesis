@@ -19,17 +19,6 @@ def RConvFExists : Prop :=
     ∀ R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund), I.IsRightReg μf fund R →
     ∀ f : I.Gf → ℂ, Integrable f μf → ∃ T : I.L2 μf fund →L[ℂ] I.L2 μf fund, I.IsRConvF μf fund R f T
 
-def recipN {g : ℕ} (f : (ZMod g)[X]) : (ZMod g)[X] := C (f.coeff 0)⁻¹ * f.reverse
-
-def SeriesConj : Prop :=
-  ∀ (g : ℕ) [Fact g.Prime] (teich : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ζ : ℕ → Formalism.CyclotomicNorms.Fbar g), Formalism.L2.NT.IsGenSys ζ →
-    ∀ (r : ℕ) (f : (ZMod g)[X]), f.Monic → ∀ x : GL (Fin r) (ZMod g),
-      star ((Formalism.L2.NT.eSerC teich ζ r f).coeff x) = (Formalism.L2.NT.eSerC teich ζ r (recipN f)).coeff x
-
-def GoodRecip : Prop :=
-  ∀ (N g : ℕ) [Fact g.Prime] {PP J : Type} (f : PP → (ZMod g)[X]) (χ : PP → J → (ZMod g)ˣ),
-    Formalism.CyclotomicNorms.IsGood N g f χ → Formalism.CyclotomicNorms.IsGood N g (fun v => recipN (f v)) (fun v j => (χ v j)⁻¹)
-
 section Red
 
 variable (I : AutInst)

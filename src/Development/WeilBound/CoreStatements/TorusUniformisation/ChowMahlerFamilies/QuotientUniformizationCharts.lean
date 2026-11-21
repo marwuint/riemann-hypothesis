@@ -4,8 +4,15 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFormNotInCoordIdeal
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjoinCoordsArithVarStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorusStableSncChartsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGenericStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorusStableSncCharts
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPeriodAtRestrict
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGeneric
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarOfBlockAlgebraicStatement
 import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Assembly
@@ -108,7 +115,7 @@ theorem exists_charts (hR : Geo.ResK.ResKStatement) [CharZero Ω] (y : (Σ k, J 
       (by rw [eL]; exact he) fun t ht => ?_
     rw [eL]
     exact isAlgebraic_algebraMap (⟨t, hfn ▸ ht⟩ : ReciprocityTheory.ChartRestriction.G.AI.I4.blockFnField y)
-  obtain ⟨nc, χ, hχ⟩ := GlobalTheory.T.exists_torus_stable_snc_charts _ _ Ω (joinVec y y') e I hsnc hA fun z hz b' hb' =>
+  obtain ⟨nc, χ, hχ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncCpt.exists_sncCharts _ _ Ω (joinVec y y') e I hsnc hA fun z hz b' hb' =>
     ⟨torus_mem hA.2.1.2.1 hz.1 b' hb', torus_mem hI hz.2 b' hb'⟩
   refine ⟨e, nc, fun i t p => (χ i).γ t (joinInl J (fun _ : Unit => Fin M) p), fun i => (χ i).a, fun i => (χ i).a_le,
     fun i => ?_, fun i t ht => ?_, fun i t ht hne h0 => ?_, fun x hx => ?_⟩
@@ -213,7 +220,7 @@ theorem exists_open {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     ∃ V : 𝔐.X.Opens, genPt 𝔐.ξ ∈ V ∧ ∀ z : Sp ℂ ⟶ 𝔐.X, centre z ∈ V → 𝔐.Interior z := by
   haveI := c.fin
   haveI : NumberField c.F := ⟨⟩
-  obtain ⟨-, ⟨x, hx⟩, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S Ω K J y 𝔐 (IsFractionRing.injective (𝓞 c.F) c.F)
+  obtain ⟨-, ⟨x, hx⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c _ _ Y S Ω K J y 𝔐 (IsFractionRing.injective (𝓞 c.F) c.F)
   haveI : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F)) :=
     IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))
   have hind : Topology.IsInducing (pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))) :=

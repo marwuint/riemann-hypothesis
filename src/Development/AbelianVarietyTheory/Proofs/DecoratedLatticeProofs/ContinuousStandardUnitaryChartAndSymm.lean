@@ -12,9 +12,6 @@ namespace GlobalTheory.StdUnn
 theorem continuous_mat_pt (D : D7) (n : ℕ) : Continuous (mat : G D n → _) :=
   Units.continuous_val.comp continuous_subtype_val
 
-theorem continuous_mat_pt_inv (D : D7) (n : ℕ) : Continuous (fun g : G D n => mat g⁻¹) :=
-  Units.continuous_coe_inv.comp continuous_subtype_val
-
 theorem continuous_of_mat_pt {D : D7} {n : ℕ} {X : Type} [TopologicalSpace X] {φ : X → G D n}
     (h : Continuous fun x => mat (φ x)) (h' : Continuous fun x => mat (φ x)⁻¹) : Continuous φ :=
   Continuous.subtype_mk (f := fun x => AdelicU.matHom _ D.sp.cm.sig (Jst D n) (φ x))

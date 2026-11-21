@@ -4,8 +4,8 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEtaleBasisModPowStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivariantMapBreuilKisinMatrixStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEtaleBasisModPow
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivariantMapBreuilKisinMatrix
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralElementsUnitFactorizationStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LadicDescentStepToOE
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc GlobalTheory.Pst GlobalTheory.BKLim GlobalTheory.Cong Matrix
@@ -156,10 +156,10 @@ theorem one_mem' {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) {d : ℕ} :
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ n, Pre bk N (tw.d' n) fun g => (tw.ρ' n g).val), ∃ T0 : Matrix (Fin d) (Fin d) (WCb l), IsUnit T0 ∧ ∀ n, ∃ (R : Matrix (Fin d) (Fin (tw.d' n)) (WCb l)) (R' : Matrix (Fin (tw.d' n)) (Fin d) (WCb l)), (∀ i j, R i j ∈ bk.OE) ∧ (∀ i j, R' i j ∈ bk.OE) ∧ (∀ i j, (l : WCb l) ^ n ∣ (zW (tw.Pi n) * (F n).T - T0 * R) i j) ∧ (∀ i j, (l : WCb l) ^ n ∣ (R * R' - (1 : Matrix (Fin d) (Fin d) (WCb l))) i j) := by
   intro l _ K bk τ hτ d N ρ tw F
   choose T R R' hTu hR hR' ha hb using fun k : ℕ =>
-    GlobalTheory.T.exists_etaleBasis_modPow l K bk τ hτ N d (tw.d' (k + 1)) (k + 1) ρ (tw.ρ' (k + 1)) (F (k + 1)) (tw.Pi (k + 1)) (by omega)
+    _root_.GlobalTheory.BKLim.etBasis_modPow l K bk τ hτ N d (tw.d' (k + 1)) (k + 1) ρ (tw.ρ' (k + 1)) (F (k + 1)) (tw.Pi (k + 1)) (by omega)
       (tw.onto (k + 1))
   choose Y hY using fun k : ℕ =>
-    GlobalTheory.T.exists_equivariantMap_breuilKisinMatrix l K bk τ hτ N N (tw.d' (k + 1 + 1)) (tw.d' (k + 1)) (fun g => (tw.ρ' (k + 1 + 1) g).val)
+    _root_.GlobalTheory.BKLim.EquivKisin.main l K bk τ hτ N N (tw.d' (k + 1 + 1)) (tw.d' (k + 1)) (fun g => (tw.ρ' (k + 1 + 1) g).val)
       (fun g => (tw.ρ' (k + 1) g).val) (F (k + 1 + 1)) (F (k + 1)) (tw.f (k + 1)) (fun g => tw.f_equi (k + 1) g)
   obtain ⟨U, hU⟩ : ∃ U : ℕ → Matrix (Fin d) (Fin d) (WCb l), ∀ k, U k = R k * (Y k).map bk.evW * R' (k + 1) :=
     ⟨_, fun _ => rfl⟩

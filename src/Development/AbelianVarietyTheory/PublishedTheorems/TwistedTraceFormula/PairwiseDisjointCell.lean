@@ -34,15 +34,6 @@ theorem coe_absRatio (p : siegel k n) : (absRatio k n p : ℝ) =
       nabs k (GeneralLinearGroup.det (p : GL (n ⊕ n) k)) := by
   simp [absRatio, nabs]
 
-theorem absRatio_eq (p : siegel k n) {a d : kˣ} (ha : (a : k) = (leviMat (Equiv.refl (n ⊕ n)) p.1.1).det)
-    (hd : (d : k) = (quotMat (Equiv.refl (n ⊕ n)) p.1.1).det) : (absRatio k n p : ℝ) = nabs k a / nabs k d := by
-  have h1 : GeneralLinearGroup.det (leviGL (Equiv.refl (n ⊕ n)) p) = a := Units.ext ha.symm
-  have h2 : GeneralLinearGroup.det (p : GL (n ⊕ n) k) = a * d :=
-    Units.ext (by rw [Units.val_mul, ha, hd]; exact (mem_stabGL_diagSub.1 p.2).det_eq)
-  have := (nabs_pos' k a).ne'
-  rw [coe_absRatio, h1, h2, nabs_mul']
-  field_simp
-
 theorem nabs_det_of_mem_KO {m : Type} [Fintype m] [DecidableEq m] {g : GL m k} (hg : g ∈ KO k m) :
     nabs k (GeneralLinearGroup.det g) = 1 := by
   obtain ⟨g, rfl⟩ := hg
@@ -112,15 +103,6 @@ theorem sphSection_left (s : ℂ) (p : siegel k n) (h : GL (n ⊕ n) k) :
 theorem sphSection_right (s : ℂ) (h : GL (n ⊕ n) k) {κ : GL (n ⊕ n) k} (hκ : κ ∈ KO k (n ⊕ n)) :
     sphSection k n s (h * κ) = sphSection k n s h := by
   rw [sphSection, isIwasawa.iwAbs_right _ hκ, sphSection]
-
-theorem sphSection_one (s : ℂ) : sphSection k n s 1 = 1 := by
-  rw [sphSection, isIwasawa.iwAbs_of_mem (one_mem _), one_npow]
-
-theorem eq_sphSection {s : ℂ} {Φ : GL (n ⊕ n) k → ℂ} (h1 : Φ 1 = 1)
-    (hl : ∀ (p : siegel k n) h, Φ (p * h) = npow (absRatio k n p) (s + (Fintype.card n : ℂ) / 2) * Φ h)
-    (hr : ∀ h, ∀ κ ∈ KO k (n ⊕ n), Φ (h * κ) = Φ h) : Φ = sphSection k n s := funext fun g => by
-  obtain ⟨p, κ, hκ, rfl⟩ := isIwasawa.1 g
-  rw [hr _ _ hκ, sphSection_right _ _ hκ, ← mul_one (p : GL (n ⊕ n) k), hl, sphSection_left, h1, sphSection_one]
 
 theorem sphSection_io_biinv (s : ℂ) (g : GL n k) {x y : GL n k} (hx : x ∈ KO k n) (hy : y ∈ KO k n) :
     sphSection k n s (io k n (x * g * y, 1)) = sphSection k n s (io k n (g, 1)) := by
@@ -341,16 +323,5 @@ theorem UnramifiedDoublingGL.hasSum (H : UnramifiedDoublingGL)
     rw [sphSection_io_biinv s g hx hy, zonal_biinv hω g hx hy]
   simp only [sphSection_torusElt hϖ, Fintype.card_fin] at this
   rwa [(h s hs).2] at this
-
-example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
-    {χ : kˣ →* ℂˣ} (h : IsUnram χ) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
-    ∃ α, HasSatake (detRep (Fin n) χ) α ∧
-      IsZonal (detRep (Fin n) χ) (KO k (Fin n)) fun g => (χ (GeneralLinearGroup.det g) : ℂ) := by
-  have key : ∀ g ∈ KO k (Fin n), χ (GeneralLinearGroup.det g) = 1 := fun g hg =>
-    h _ ((nabs_eq_one_iff _).1 (nabs_det_of_mem_KO hg))
-  refine ⟨_, hasSatake_detRep h hϖ, 1, fun g => ?_, LinearMap.id, fun g => ?_, rfl, fun g => by simp [detRep]⟩
-  · simp [detRep, key _ g.2]
-  · ext
-    simp [detRep, Module.Dual.transpose_apply, key _ g.2]
 
 end GlobalTheory.Published

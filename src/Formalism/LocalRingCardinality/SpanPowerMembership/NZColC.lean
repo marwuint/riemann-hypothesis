@@ -77,11 +77,6 @@ theorem maj_std (x : ι → K) :
   rw [Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re, InfinitePlace.norm_embedding_eq,
     InfinitePlace.apply]
 
-theorem normAt_std (v : InfinitePlace K) (x : ι → K) :
-    Formalism.HermitianLatticesTheory.normAt (stdHLat K ι).b (stdHLat K ι).X v x = Real.sqrt (∑ c, ‖v.embedding (x c)‖ ^ 2) := by
-  show Real.sqrt (∑ i : ι, ‖Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K ι) (fun _ => (1 : Matrix ι ι ℂ)) v x i‖ ^ 2) = _
-  simp only [fcoord_std]
-
 end Std
 
 section Member
@@ -152,10 +147,6 @@ theorem finrank_FK (ι : Type) [Fintype ι] : Module.finrank ℂ (FK ι) = Finty
 theorem atTN_rank : Module.finrank ℂ (atTN hc K T Dst hD du hdu Gam hG).Mu0 = Fintype.card (K.cls 0) := by
   show Module.finrank ℂ (⊤ : Submodule ℂ (FK (K.cls 0))) = _
   rw [finrank_top, finrank_FK]
-
-theorem atTN_du (hT2 : T ≠ 2) : (atTN hc K T Dst hD du hdu Gam hG).du = Fintype.card (K.cls 0) := by
-  unfold ColumnsAtT.du
-  rw [atTN_Mram hc K T Dst hD du hdu Gam hG hT2, finrank_top, finrank_FK]
 
 abbrev periodN (Mt : Type) [AddCommGroup Mt] [Module ℂ Mt] (per : FK (K.cls R.m) →ₗ[ℂ] Mt →ₗ[ℂ] ℂ) :
     PeriodMap R (chainN hc K) where

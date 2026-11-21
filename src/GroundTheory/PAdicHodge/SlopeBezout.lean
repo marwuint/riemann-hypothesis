@@ -115,13 +115,6 @@ theorem free_of_finite_of_isTorsionFree [Module.Finite R M] [IsTorsionFree R M] 
   obtain ⟨n, f, hf⟩ := exists_injective_linearMap_pi (R := R) (M := M)
   exact free_of_injective_linearMap_pi n M f hf
 
-theorem free_of_finite_of_noZeroSMulDivisors [Module.Finite R M] [NoZeroSMulDivisors R M] :
-    Module.Free R M :=
-  free_of_finite_of_isTorsionFree
-
-theorem free_iff_isTorsionFree [Module.Finite R M] : Module.Free R M ↔ IsTorsionFree R M :=
-  ⟨fun _ => inferInstance, fun _ => free_of_finite_of_isTorsionFree⟩
-
 end Bezout
 
 section Compl
@@ -170,18 +163,6 @@ theorem free_of_isTorsionFree_quotient [IsTorsionFree R M] : Module.Free R N := 
 
 end Saturated
 
-section Rank
-
-variable {R : Type*} [CommRing R] [IsDomain R]
-variable {M : Type*} [AddCommGroup M] [Module R M]
-
-theorem finrank_add_finrank_quotient [Module.Finite R M] (N : Submodule R M) :
-    finrank R N + finrank R (M ⧸ N) = finrank R M := by
-  rw [add_comm]
-  exact N.finrank_quotient_add_finrank
-
-end Rank
-
 section Saturation
 
 variable {R : Type*} [CommRing R] [IsDomain R]
@@ -209,9 +190,6 @@ variable (N) in
 
 theorem le_saturation : N ≤ saturation N := fun x hx => ⟨1, one_ne_zero, by simpa using hx⟩
 
-theorem saturation_mono (h : N₁ ≤ N₂) : saturation N₁ ≤ saturation N₂ :=
-  fun _ ⟨r, hr, hx⟩ => ⟨r, hr, h hx⟩
-
 variable (N) in
 
 @[simp]
@@ -230,73 +208,6 @@ instance isTorsionFree_quotient_saturation : IsTorsionFree R (M ⧸ saturation N
     simp only [Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq] at hab ⊢
     obtain ⟨s, hs, h⟩ := hab
     exact ⟨s * r, mul_ne_zero hs hr.ne_zero, by rw [mul_smul, smul_sub r x y]; exact h⟩
-
-theorem saturation_eq_self_iff : saturation N = N ↔ IsTorsionFree R (M ⧸ N) := by
-  constructor
-  · intro h
-    rw [← h]
-    infer_instance
-  · intro _
-    refine le_antisymm ?_ (le_saturation N)
-    rintro x ⟨r, hr, hx⟩
-    have h1 : r • (N.mkQ x) = r • 0 := by
-      rw [smul_zero, ← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-      exact hx
-    have h2 : N.mkQ x = 0 := smul_right_injective (M ⧸ N) hr h1
-    rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at h2
-
-theorem saturation_eq_self [IsTorsionFree R (M ⧸ N)] : saturation N = N :=
-  saturation_eq_self_iff.mpr inferInstance
-
-variable (N) in
-
-theorem rank_saturation : Module.rank R (saturation N) = Module.rank R N := by
-  let N₀ : Submodule R (saturation N) := N.comap (saturation N).subtype
-  have h0 : Module.rank R (saturation N ⧸ N₀) = 0 := by
-    rw [rank_eq_zero_iff]
-    intro q
-    obtain ⟨x, rfl⟩ := N₀.mkQ_surjective q
-    obtain ⟨r, hr, hx⟩ := x.2
-    refine ⟨r, hr, ?_⟩
-    rw [← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-    exact hx
-  have h := HasRankNullity.rank_quotient_add_rank N₀
-  rw [h0, zero_add] at h
-  rw [← h]
-  exact (Submodule.comapSubtypeEquivOfLe (le_saturation N)).rank_eq
-
-variable (N) in
-
-theorem finrank_saturation : finrank R (saturation N) = finrank R N := by
-  simp only [Module.finrank, rank_saturation N]
-
-theorem eq_of_le_of_finrank_eq [Module.Finite R M] [IsTorsionFree R (M ⧸ N)] {N' : Submodule R M}
-    (hle : N ≤ N') (hrank : finrank R N = finrank R N') : N = N' := by
-  have hfin : ∀ P : Submodule R M, Module.rank R P < Cardinal.aleph0 :=
-    fun P => lt_of_le_of_lt P.rank_le (Module.rank_lt_aleph0 (R := R) (M := M))
-  let N₀ : Submodule R N' := N.comap N'.subtype
-  have h := HasRankNullity.rank_quotient_add_rank N₀
-  rw [(Submodule.comapSubtypeEquivOfLe hle).rank_eq] at h
-  have heq : Module.rank R N = Module.rank R N' :=
-    Cardinal.toNat_injOn (hfin N) (hfin N') hrank
-  obtain ⟨m, hm⟩ := Cardinal.lt_aleph0.1 (hfin N)
-  rw [← heq, hm] at h
-  have hq : Module.rank R (N' ⧸ N₀) < Cardinal.aleph0 :=
-    lt_of_le_of_lt (le_self_add.trans_eq h) Cardinal.natCast_lt_aleph0
-  obtain ⟨j, hj⟩ := Cardinal.lt_aleph0.1 hq
-  rw [hj] at h
-  have hj0 : j = 0 := by
-    have : ((j + m : ℕ) : Cardinal) = m := by push_cast; exact h
-    have := Nat.cast_injective this
-    omega
-  have hzero : Module.rank R (N' ⧸ N₀) = 0 := by rw [hj, hj0, Nat.cast_zero]
-  rw [rank_eq_zero_iff] at hzero
-  refine le_antisymm hle ?_
-  intro x hx
-  obtain ⟨r, hr, hrx⟩ := hzero (N₀.mkQ ⟨x, hx⟩)
-  rw [← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hrx
-  rw [← saturation_eq_self (N := N)]
-  exact ⟨r, hr, hrx⟩
 
 end Saturation
 

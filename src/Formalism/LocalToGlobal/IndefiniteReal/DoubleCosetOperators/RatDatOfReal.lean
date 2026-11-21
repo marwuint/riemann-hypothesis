@@ -66,13 +66,6 @@ abbrev ratDatR (Rl : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃
     (hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap Ks D.what₂.LL x) : RatDat D.ntw :=
   ratDatOfReal Rl (Rl.eG.trans cG) kKs hk
 
-set_option synthInstance.maxHeartbeats 400000 in
-
-theorem bsupOfIff {O M N : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [AddCommGroup N] [Module O M] [Module O N]
-    (e : M →+ N) (B : Submodule O M) (B' : Submodule O N) (h : ∀ x, x ∈ B ↔ e x ∈ B') :
-    ∃ c : O, c ≠ 0 ∧ (∀ x, x ∈ B → c • e x ∈ B') ∧ (∀ x, e x ∈ B' → c • x ∈ B) :=
-  ⟨1, one_ne_zero, fun x hx => by rw [one_smul]; exact (h x).1 hx, fun x hx => by rw [one_smul]; exact (h x).2 hx⟩
-
 structure NExpRealS (Rl : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : RatDat D.ntw) where
   fi : ∀ i : Fin D.R.m, FormsIso (S.A ((i : ℕ) + 1)) (Rl.FW i)
 
@@ -86,23 +79,6 @@ structure NExpRealS (Rl : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.
     (∀ x : D.nexp.Fm i j b, eF i j b h1 h2 x ∈ Bsup S i j b → c • x ∈ D.nexp.Bsup i j b)
   act : ∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (g : G0g D.nd) (x : D.nexp.Fm i j b),
     eF i j b h1 h2 (D.nexp.actG i j b g x) = actG S i j b (rho j h1 h2) (chi j h1 h2) g (eF i j b h1 h2 x)
-
-def NExpThRowT (D : D7) (T : ThData D) : Prop :=
-  ∀ i j b (d : D.nexp.Dat i j b), d ∈ T.xd0 i j b → 1 ≤ j → j ≤ D.R.m →
-    ∃ f ∈ D.nexp.MtLat i j b 0 ∅ 1,
-      ((1 : D.ntw.Ok i 0) ⊗ₜ[D.ntw.O i] D.nexp.th i j b d : D.ntw.Ok i 0 ⊗[D.ntw.O i] D.nexp.Fm i j b) =
-        D.nexp.thP i j b 0 ∅ 1 f
-
-def NExpReal (Rl : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : RatDat D.ntw) : Prop :=
-  Nonempty (NExpRealS Rl cG S)
-
-set_option synthInstance.maxHeartbeats 400000 in
-
-structure NExpThRow (D : D7) where
-  thTr : ∀ i j b (d : D.nexp.Dat i j b), 1 ≤ j → j ≤ D.R.m →
-    ∃ f ∈ D.nexp.MtLat i j b 0 ∅ 1,
-      ((1 : D.ntw.Ok i 0) ⊗ₜ[D.ntw.O i] D.nexp.th i j b d : D.ntw.Ok i 0 ⊗[D.ntw.O i] D.nexp.Fm i j b) =
-        D.nexp.thP i j b 0 ∅ 1 f
 
 section Hecke
 

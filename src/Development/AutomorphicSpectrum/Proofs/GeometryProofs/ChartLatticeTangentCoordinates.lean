@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductMapIffStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductMapIff
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsRigTransport
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -59,7 +60,7 @@ theorem gramAt_of_isRiem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     (fun e => C.ψ z (x j e))) hv).2 fun _ _ => rfl
   have hF := hodgeForm_of_isHodgeGram C.t.PP.isLB (fun k => isTanAt_value C.M (C.ψ z) (x k) (v k) (hv k)) hG
   have e : ∀ k, (w k).left = (v k).left ≫ m.φ := fun k => by rw [hw k, hv k, Category.assoc]
-  exact ⟨w, hval, fun p q => (GlobalTheory.T.hodge_inner_product_map_iff E H X t (Sp C.R) C.t h m (spMap (C.ψ z)) (v p) (v q) (w p) (w q) _
+  exact ⟨w, hval, fun p q => (_root_.GlobalTheory.CompanionTheory.Ar.hodgeInnerProduct_tripleMap_iff E H X t (Sp C.R) C.t h m (spMap (C.ψ z)) (v p) (v q) (w p) (w q) _
     (e p) (e q)).1 (hodgeInnerProduct_iff_hodgeForm.2 (hF q p))⟩
 
 end GlobalTheory.CompanionTheory.Ar.RiemGram

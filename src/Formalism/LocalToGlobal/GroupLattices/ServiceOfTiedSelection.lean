@@ -33,14 +33,6 @@ theorem closed_imp_class {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → 
   obtain ⟨K, hK⟩ := hP eps he he1
   exact ⟨K, fun Fm CH hc hL => h Fm CH hc (hK Fm CH hc hL)⟩
 
-theorem service_of_tied_selection {𝒞 : FamClass} (sel : TSel 𝒞) (h : ServT 𝒞 sel) : SumOverPrimesHypotheses 𝒞 where
-  twU := h.twU
-  pdv := closed_imp_class h.pdv fun Fm _ hc hp => ⟨(sel Fm hc).1, fun x hx0 hx i => ⟨_, hp hc x hx hx0 i⟩⟩
-
-theorem servF_of_servT {𝒞 : FamClass} (sel : TSel 𝒞) (hD : Closed 𝒞 fun Fm _ => DGamSize Fm) (h : ServT 𝒞 sel) :
-    Closed 𝒞 fun Fm _ => WeilJacquetShalikaLaw.ServF Fm :=
-  sum_over_primes_service 𝒞 hD (service_of_tied_selection sel h)
-
 end Formalism.L2.G.ServT
 
 end

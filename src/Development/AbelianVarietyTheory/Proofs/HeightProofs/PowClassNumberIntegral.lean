@@ -12,37 +12,6 @@ namespace GlobalTheory.NormOneChar
 open NumberField IsDedekindDomain GlobalTheory.AdLat GlobalTheory.CharFin
 open scoped TensorProduct nonZeroDivisors
 
-theorem exists_char {G : Type} [CommGroup G] (N : Subgroup G) (x : G) (hx : x * x = 1) (hN : x ∉ N) :
-    ∃ χ : G →* ℂˣ, (∀ y ∈ N, χ y = 1) ∧ χ x ≠ 1 := by
-  classical
-  let _ : TopologicalSpace G := ⊥
-  have : DiscreteTopology G := ⟨rfl⟩
-  have h1 : x ≠ 1 := fun h => hN (h ▸ N.one_mem)
-  let H : Subgroup G :=
-    { carrier := {y | y = 1 ∨ y = x}
-      one_mem' := Or.inl rfl
-      mul_mem' := by rintro _ _ (rfl | rfl) (rfl | rfl) <;> simp [hx]
-      inv_mem' := by
-        rintro _ (rfl | rfl)
-        · simp
-        · exact Or.inr (inv_eq_of_mul_eq_one_right hx) }
-  let ψ : H →* Circle :=
-    { toFun := fun y => if (y : G) = 1 then 1 else -1
-      map_one' := by simp
-      map_mul' := by
-        rintro ⟨_, rfl | rfl⟩ ⟨_, rfl | rfl⟩ <;> simp [hx, h1] }
-  obtain ⟨χ, -, hχ, hψ⟩ := GlobalTheory.exists_continuous_circle_char_extension G H N ψ (isOpen_discrete _)
-    continuous_of_discreteTopology (by
-      rintro ⟨_, rfl | rfl⟩ h
-      · exact if_pos rfl
-      · exact absurd h hN)
-  refine ⟨Circle.toUnits.comp χ, fun y hy => by simp [hχ y hy], fun h => ?_⟩
-  have h2 := hψ ⟨x, Or.inr rfl⟩
-  simp only [ψ, MonoidHom.coe_mk, OneHom.coe_mk, if_neg h1] at h2
-  have h3 := congrArg (fun u : ℂˣ => (u : ℂ)) h
-  simp [h2] at h3
-  norm_num at h3
-
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 def diag : E →+* RA F E :=
@@ -133,46 +102,6 @@ theorem pow_classNumber (x : (RA F E)ˣ) : ∃ b : E, b ≠ 0 ∧ ∃ s t : hatR
   apply (isUnit_diag F E hN').mul_left_cancel
   rw [← mul_assoc, ← map_mul, mul_div_cancel₀ _ hN', map_pow, map_natCast, ← mul_pow]
   exact congrArg Subtype.val e
-
-theorem eq_zero_of_small {N : ℕ} (hN : 2 < N) (y : E) (w : RA F E) (hw : w ∈ hatRing F E)
-    (e : diag F E y = N * w) (hy : ∀ φ : E →+* ℂ, ‖φ y‖ ≤ 2) : y = 0 := by
-  have hN' : (N : E) ≠ 0 := by exact_mod_cast (by omega : N ≠ 0)
-  have h1 : diag F E (y / N) = w := by
-    apply (isUnit_nat F E (N := N) (by omega)).mul_left_cancel
-    rw [← e, ← map_natCast (diag F E), ← map_mul, mul_div_cancel₀ _ hN']
-  obtain ⟨r, hr⟩ := GlobalTheory.AdIdem.mem_range_of_one_tmul_mem F E (x := y / N) (by rw [← diag_apply, h1]; exact hw)
-  have hlt : ∀ z : InfinitePlace E, z r < 1 := fun z => by
-    have h2 : (2 : ℝ) < N := by exact_mod_cast hN
-    have h3 : (r : E) = y / N := hr
-    rw [← z.norm_embedding_eq, h3, map_div₀, map_natCast, norm_div, Complex.norm_natCast,
-      div_lt_one (by linarith)]
-    exact (hy _).trans_lt h2
-  by_contra h0
-  have hr0 : r ≠ 0 := by
-    rintro rfl
-    exact div_ne_zero h0 hN' (by rw [← hr, map_zero])
-  obtain ⟨z⟩ : Nonempty (InfinitePlace E) := inferInstance
-  exact absurd (InfinitePlace.one_le_of_lt_one hr0 fun z _ => hlt z) (not_le.2 (hlt z))
-
-omit [NumberField E] in
-
-theorem exists_idem_at (g p : ℕ) (h : Nat.Coprime g p) : ∃ a : FiniteAdeleRing (𝓞 F) F,
-    ∃ f ∈ hatRing F E, ∃ f' ∈ hatRing F E, a * a = a ∧
-      1 - a ⊗ₜ[F] (1 : E) = (p : RA F E) * f ∧ a ⊗ₜ[F] (1 : E) = (g : RA F E) * f' := by
-  obtain ⟨e, f, h1, h2, h3⟩ := RootNear.exists_idem
-    (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F) p
-  obtain ⟨a, b, hab⟩ := Nat.Coprime.cast
-    (R := ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F) h
-  obtain ⟨u, hu⟩ := (h3 (-b)).exists_right_inv
-  have h4 : e = g * (e * a * u) := by
-    linear_combination (-e) * hu - e * u * hab - p * b * u * h1
-  let κ := (RootNear.intHat F E).subtype.comp (RootNear.inclHat F E)
-  have hκ : ∀ z, κ z ∈ hatRing F E := fun z => (RootNear.inclHat F E z).2
-  refine ⟨RootNear.incl F e, κ f, hκ _, κ (e * a * u), hκ _, by rw [← map_mul, h1], ?_, ?_⟩
-  · have := congrArg κ h2
-    rwa [map_sub, map_one, map_mul, map_natCast] at this
-  · have := congrArg κ h4
-    rwa [map_mul, map_natCast] at this
 
 variable {F E} (c : E ≃ₐ[F] E)
 
@@ -278,49 +207,6 @@ theorem exists_exponent (hc : ∀ y, c (c y) = y) (N : ℕ) (hN : 0 < N) : ∃ m
   rw [pow_mul, hx2, mul_pow]
   exact Subgroup.mul_mem_sup (pow_mem hr k) huk
 
-theorem exists_involution (hc : ∀ (φ : E →+* ℂ) (y : E), φ (c y) = starRingEnd ℂ (φ y)) (g p : ℕ)
-    (hg : 2 < g) (hp : 2 < p) (h : Nat.Coprime g p) :
-    ∃ x : (RA F E)ˣ, x * x = 1 ∧ x ∈ congOne c g ∧ x ∉ ratOne c ⊔ congOne c (g * p) := by
-  obtain ⟨a, f, hf, f', hf', h1, h2, h3⟩ := exists_idem_at F E g p h
-  set e : RA F E := a ⊗ₜ[F] (1 : E) with he
-  have hee : e * e = e := by rw [he, Algebra.TensorProduct.tmul_mul_tmul, h1, mul_one]
-  have hbe : bar c e = e := by rw [he, bar_tmul, map_one]
-  have hsq : (1 - 2 * e) * (1 - 2 * e) = 1 := by linear_combination 4 * hee
-  have two : (2 : RA F E) ∈ hatRing F E := by exact_mod_cast natCast_mem (hatRing F E) 2
-  let x : (RA F E)ˣ := Units.mkOfMulEqOne _ _ hsq
-  have hx : (x : RA F E) = 1 - 2 * e := rfl
-  have hxg : x ∈ congOne c g := by
-    refine ⟨⟨-(2 * f'), neg_mem (mul_mem two hf'), ?_⟩, ?_⟩
-    · rw [hx]; linear_combination (-2) * h3
-    · rw [hx, map_sub, map_one, map_mul, map_ofNat, hbe, hsq]
-  refine ⟨x, Units.ext hsq, hxg, fun hm => ?_⟩
-  obtain ⟨r, ⟨⟨y, hy⟩, hr⟩, k, hk, hrk⟩ := Subgroup.mem_sup.1 hm
-  have hkg : k ∈ congOne c g := by
-    obtain ⟨⟨w, hw, ew⟩, hn⟩ := hk
-    exact ⟨⟨p * w, mul_mem (natCast_mem _ p) hw, by rw [ew, Nat.cast_mul, mul_assoc]⟩, hn⟩
-  have hrg : r ∈ congOne c g := by
-    rw [eq_mul_inv_of_mul_eq hrk]; exact mul_mem hxg (inv_mem hkg)
-  have : Nontrivial (RA F E) := nontrivial_of_ne 1 0 fun h0 => one_ne_zero
-    (eq_zero_of_small F E hg 1 0 (zero_mem _) (by rw [map_one, mul_zero, h0]) fun φ => by simp)
-  have hinj : Function.Injective (diag F E) := (diag F E).injective
-  have hyn : y * c y = 1 := hinj (by rw [map_mul, map_one, ← hr, hy]; rfl)
-  obtain ⟨⟨w, hw, ew⟩, -⟩ := hrg
-  have hy1 : y - 1 = 0 := eq_zero_of_small F E hg _ w hw (by rw [map_sub, map_one, ← hy, ew]) fun φ => by
-    have h4 := congrArg (fun z => ‖φ z‖) hyn
-    simp only [map_mul, hc, norm_mul, Complex.norm_conj, map_one, norm_one] at h4
-    have h5 : ‖φ y‖ = 1 := by nlinarith [norm_nonneg (φ y)]
-    rw [map_sub, map_one]
-    refine (norm_sub_le _ _).trans ?_
-    rw [h5, norm_one]; norm_num
-  have hr1 : r = 1 := Units.ext (by rw [hy, sub_eq_zero.1 hy1, map_one]; rfl)
-  rw [hr1, one_mul] at hrk
-  obtain ⟨⟨w', hw', ew'⟩, -⟩ := hk
-  rw [hrk, hx, Nat.cast_mul] at ew'
-  have h6 : (2 : E) = 0 := eq_zero_of_small F E hp _ (2 * f - g * w')
-    (sub_mem (mul_mem two hf) (mul_mem (natCast_mem _ g) hw'))
-    (by rw [map_ofNat]; linear_combination 2 * h2 - ew') fun φ => by simp [map_ofNat]
-  exact two_ne_zero h6
-
 theorem mem_of_pow_eq_one {K : IntermediateField ℚ ℂ} {m : ℕ} (hm : 0 < m)
     (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta m ∈ K) {z : ℂ} (hz : z ^ m = 1) : z ∈ K := by
   have : NeZero m := ⟨hm.ne'⟩
@@ -330,45 +216,5 @@ theorem mem_of_pow_eq_one {K : IntermediateField ℚ ℂ} {m : ℕ} (hm : 0 < m)
 end GlobalTheory.NormOneChar
 
 namespace GlobalTheory.NormOneChar
-
-open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.Theta GlobalTheory.FinalJoin
-open scoped TensorProduct
-
-theorem exists_xi : ∀ (D : D7) (p : ℕ), (p = D.host.pde ∨ p = D.host.pde') → ∃ (xi : (AfE D)ˣ →* ℂˣ) (m : ℕ), 0 < m ∧ (∀ (x : (AfE D)ˣ) (a : D.host.E), (x : AfE D) = 1 ⊗ₜ a → NormOne x → xi x = 1) ∧ (∀ x, NormOne x → CongOne (D.host.g 0 * D.host.g 1 * p) x → xi x = 1) ∧ (∃ x, NormOne x ∧ CongOne (D.host.g 0 * D.host.g 1) x ∧ xi x ≠ 1) ∧ (∀ x, NormOne x → xi x ^ m = 1) ∧ (zeta m ∈ FO D → XiOK D p xi) := by
-  intro D p hp
-  have hpp : p.Prime ∧ p % 15 = 1 ∧ ∀ i, p ≠ D.host.g i := by
-    rcases hp with rfl | rfl
-    · exact ⟨D.host.pde_prime, D.host.pde_mod.1, fun i => (D.host.pde_ne_g i).1⟩
-    · exact ⟨D.host.pde'_prime, D.host.pde_mod.2, fun i => (D.host.pde_ne_g i).2⟩
-  have h2 := hpp.1.two_le
-  have hp2 : 2 < p := by omega
-  have hg : 2 < D.host.g 0 * D.host.g 1 := by
-    nlinarith [(D.host.g_prime 0).two_le, (D.host.g_prime 1).two_le]
-  have hcop : Nat.Coprime (D.host.g 0 * D.host.g 1) p :=
-    Nat.Coprime.mul_left ((Nat.coprime_primes (D.host.g_prime 0) hpp.1).2 (hpp.2.2 0).symm)
-      ((Nat.coprime_primes (D.host.g_prime 1) hpp.1).2 (hpp.2.2 1).symm)
-  have hc : ∀ (φ : D.host.E →+* ℂ) (y : D.host.E), φ (GlobalTheory.Member.cF D y) = starRingEnd ℂ (φ y) :=
-    fun φ y => @IsCMField.complexEmbedding_complexConj D.host.E _ _
-      (D.host.isCMField_hostE) _ φ y
-  have hcc : ∀ y, GlobalTheory.Member.cF D (GlobalTheory.Member.cF D y) = y := fun y =>
-    D.host.φ₀.injective (by rw [hc, hc, Complex.conj_conj])
-  obtain ⟨m, hm, hexp⟩ := exists_exponent (GlobalTheory.Member.cF D) hcc (D.host.g 0 * D.host.g 1 * p) (by positivity)
-  obtain ⟨x₀, hsq, hx₀, hN⟩ := exists_involution (GlobalTheory.Member.cF D) hc _ p hg hp2 hcop
-  obtain ⟨χ, hχ, hχ₀⟩ := exists_char _ x₀ hsq hN
-  have hcong : ∀ (N : ℕ) (x : (AfE D)ˣ), x ∈ congOne (GlobalTheory.Member.cF D) N ↔ CongOne N x ∧ NormOne x := by
-    intro N x
-    unfold CongOne
-    simp only [GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers, nsmul_eq_mul]
-    exact Iff.rfl
-  have a1 : ∀ (x : (AfE D)ˣ) (a : D.host.E), (x : AfE D) = 1 ⊗ₜ a → NormOne x → χ x = 1 :=
-    fun x a h hn => hχ x (Subgroup.mem_sup_left ⟨⟨a, h⟩, hn⟩)
-  have a2 : ∀ x, NormOne x → CongOne (D.host.g 0 * D.host.g 1 * p) x → χ x = 1 :=
-    fun x hn h => hχ x (Subgroup.mem_sup_right ((hcong _ x).2 ⟨h, hn⟩))
-  have a3 : ∃ x, NormOne x ∧ CongOne (D.host.g 0 * D.host.g 1) x ∧ χ x ≠ 1 :=
-    ⟨x₀, ((hcong _ _).1 hx₀).2, ((hcong _ _).1 hx₀).1, hχ₀⟩
-  have a4 : ∀ x, NormOne x → χ x ^ m = 1 := fun x hn => by
-    rw [← map_pow]; exact hχ _ (hexp x hn)
-  refine ⟨χ, m, hm, a1, a2, a3, a4, fun hz => ⟨a1, a2, a3, ⟨m, hm, a4⟩, fun x hn => ?_⟩⟩
-  exact mem_of_pow_eq_one hm hz (by rw [← Units.val_pow_eq_pow_val, a4 x hn, Units.val_one])
 
 end GlobalTheory.NormOneChar

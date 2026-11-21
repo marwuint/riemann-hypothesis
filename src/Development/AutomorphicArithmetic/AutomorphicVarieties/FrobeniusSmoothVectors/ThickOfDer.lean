@@ -29,8 +29,6 @@ private theorem ev_mul {a b : Matrix (Fin 3) (Fin 3) R} (ha : Ev π D a) (hb : E
   ext i j
   fin_cases i <;> fin_cases j <;> simp [th, Matrix.mul_apply, Fin.sum_univ_three, *] <;> ring
 
-private theorem D_one : D 1 = 0 := by simpa using hD 1 1
-
 private theorem th_one : th π D 1 = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [th]

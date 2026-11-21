@@ -44,19 +44,4 @@ def AdelicUnitaryHaar : Prop :=
       ∀ x : Fin 1 → Fin M → E, hE σ J (x 0) (x 0) ≠ 0 →
         IsDiscreteWithDomains (HstabFin (AF F) σ J x)
 
-theorem isUnimodularLC_of_commGroup (G : Type) [CommGroup G] [TopologicalSpace G]
-    [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G]
-    [MeasurableSpace G] [BorelSpace G] : IsUnimodularLC G :=
-  ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance,
-    ⟨Measure.haar, inferInstance⟩, fun _ _ => inferInstance⟩
-
-example : @IsUnimodularLC Circle _ _ (borel Circle) :=
-  @isUnimodularLC_of_commGroup Circle _ _ _ _ _ _ (borel Circle) (@BorelSpace.mk _ _ (borel Circle) rfl)
-
-example (G : Type) [Group G] [TopologicalSpace G] [MeasurableSpace G] :
-    IsDiscreteWithDomains (⊥ : Subgroup G) := by
-  refine ⟨inferInstance, inferInstance, fun μ _ => ⟨Set.univ, MeasurableSet.univ, ?_⟩⟩
-  exact IsFundamentalDomain.mk' MeasurableSet.univ.nullMeasurableSet fun x =>
-    ⟨1, Set.mem_univ _, fun _ _ => Subsingleton.elim _ _⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure

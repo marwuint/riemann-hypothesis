@@ -117,9 +117,4 @@ theorem cj_ne (g : ℕ) (hg : 1 ≤ g) (hS : PI.ScRefExists.Sk.SplitG I g) (P : 
     have : θ ∈ (cj I x.1).asIdeal := by rw [mem_cj]; exact h
     rwa [hcxx] at this
 
-theorem ge_of_mem (g : ℕ) (y : 𝓞 I.E) (hy : y ∈ Ideal.span {(g : 𝓞 I.E)}) :
-    PI.ScRefExists.Sk.GE I g (y : I.E) := by
-  obtain ⟨a, rfl⟩ := Ideal.mem_span_singleton'.mp hy
-  exact ⟨a, by push_cast; ring⟩
-
 end PI.ScRefExists.TH

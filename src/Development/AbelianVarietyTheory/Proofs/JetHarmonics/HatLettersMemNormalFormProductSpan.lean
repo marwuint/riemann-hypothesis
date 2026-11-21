@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SameFns
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.R0MemNfSpanOfHatHypStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.R0MemNfSpanOfHatHyp
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormalFormProductSpanLeftMulClosedStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MinusHatsTaylorCoeffLeibnizRuleStatement
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PlusHatsTaylorCoeffLeibnizRuleStatement
@@ -63,13 +63,13 @@ theorem hats_mem_nfSpan : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Alge
       (fun i => by simpa using hT _ ⟨y i, hreg i, Or.inl rfl⟩) s
     simpa using this
   · have := key (fun s => d.L.R0 (0 + s)) Xr _ hyc hXr
-      (fun i => by simpa using hle (GlobalTheory.T.R0_and_R0v_mem_nfSpan_basics_of_xC_ne_zero P A d hd (y i) (hreg i)).1) s
+      (fun i => by simpa using hle (_root_.GlobalTheory.HatNF.r0_mem_nfSpan_basics P A d hd (y i) (hreg i)).1) s
     simpa using this
   · have := key (fun s => d.L.Ahatv (0 - s)) Va _ hyn hVa
       (fun i => by simpa using hT _ ⟨y i, hreg i, Or.inr (Or.inl rfl)⟩) (-s)
     simpa using this
   · have := key (fun s => d.L.R0v (0 - s)) Vr _ hyn hVr
-      (fun i => by simpa using hle (GlobalTheory.T.R0_and_R0v_mem_nfSpan_basics_of_xC_ne_zero P A d hd (y i) (hreg i)).2) (-s)
+      (fun i => by simpa using hle (_root_.GlobalTheory.HatNF.r0_mem_nfSpan_basics P A d hd (y i) (hreg i)).2) (-s)
     simpa using this
 
 end GlobalTheory.HatNF

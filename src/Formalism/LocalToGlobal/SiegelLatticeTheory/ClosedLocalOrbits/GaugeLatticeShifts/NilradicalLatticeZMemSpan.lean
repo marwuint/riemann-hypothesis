@@ -629,28 +629,15 @@ open Formalism.L2.SG.TermOp.Vanish
 theorem psiProd_all : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), Formalism.L2.SG.PoincareInHH.Cut.PsiProd X u :=
   fun _ X u => psiProd_holds X u
 
-theorem chiTrivialC_holds (hK : NilradicalConjLevel) (hCol : ColPass) : ChiTrivialC :=
-  chiTrivialC_of nLamNinf_holds nLamNfin_holds hK hCol psiProd_all
-
 theorem ooFundIndepC_of_chi (hC : ChiTrivialC) : Formalism.L2.SG.Full.OOFundIndepC :=
   ooFundIndepC_of nLamNinf_holds hC
-
-theorem ooFundIndepC_holds (hK : NilradicalConjLevel) (hCol : ColPass) : Formalism.L2.SG.Full.OOFundIndepC :=
-  ooFundIndepC_of_chi (chiTrivialC_holds hK hCol)
 
 theorem ampWellDefC_of_chi (hK : NilradicalConjLevel) (hC : ChiTrivialC) : Formalism.L2.SG.Full.AmpWellDefC :=
   ampWellDefC_of ratPt_holds nLamNinf_holds nLamNfin_holds hC hK psiProd_all
 
-theorem ampWellDefC_holds (hK : NilradicalConjLevel) (hCol : ColPass) : Formalism.L2.SG.Full.AmpWellDefC :=
-  ampWellDefC_of_chi hK (chiTrivialC_holds hK hCol)
-
 theorem lemmaVC_of_chi (hA : AvgCore) (hC : ChiTrivialC) (h3 : RCocompactC) (h4 : NonRelCharC) :
     Formalism.L2.SG.Full.LemmaVC :=
   lemmaVC_of hA ginfUnimod_holds nLamNinf_holds hC psiInfChar_holds rClosedC_holds roDiscreteC_holds h3 h4
-
-theorem lemmaVC_holds (hA : AvgCore) (hK : NilradicalConjLevel) (hCol : ColPass) (h3 : RCocompactC) (h4 : NonRelCharC) :
-    Formalism.L2.SG.Full.LemmaVC :=
-  lemmaVC_of_chi hA (chiTrivialC_holds hK hCol) h3 h4
 
 end Final
 

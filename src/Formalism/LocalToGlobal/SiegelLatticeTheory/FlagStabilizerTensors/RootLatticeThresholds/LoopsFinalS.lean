@@ -12,10 +12,6 @@ namespace Formalism.L2.SG.LoopsTies
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-section ThrS
-
-end ThrS
-
 section Point
 
 variable {D : D7} (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s (sOf hF)) (hCT : ConcTie X Y)
@@ -33,17 +29,6 @@ theorem hOf : TieHyp (wOf X) hI :=
     pairs := Formalism.L2.SG.Pf.pairTiesAll_holds _ _ Y hF (wOf X) hI }
 
 def aOf : AmpDat X := Classical.choose (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hCT.2.2.2.2.1)
-
-theorem hvOf : PvalForm (wOf X) hI (aOf X Y hF hI hCT) :=
-  Classical.choose_spec (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hCT.2.2.2.2.1)
-
-def atOf : TermTie D := termTieOf (wOf X) hI (hOf X Y hF hI) (aOf X Y hF hI hCT) (hvOf X Y hF hI hCT)
-
-def ccOf : ConcAt0 D (atOf X Y hF hI hCT) :=
-  ⟨X, Y, hF, hI,
-    jtPin_of (wOf X) hI (hOf X Y hF hI) (aOf X Y hF hI hCT) (hvOf X Y hF hI hCT) (Formalism.L2.SG.Pf.FibreCounting.AmpFibreConst_holds Y),
-    Formalism.L2.SG.Pf.WittFlags.WRowPin_holds hF hI (wOf X) (hOf X Y hF hI) (aOf X Y hF hI hCT) (hvOf X Y hF hI hCT),
-    Formalism.L2.SG.Pf.FibreCounting.FibreCount_holds Y⟩
 
 end Point
 

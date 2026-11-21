@@ -196,28 +196,6 @@ section Cases
 
 variable {D : D7} (L : SizeData₂ D) (j : ℕ) {p : ℕ}
 
-theorem FvalP_g (hg : p ∈ L.gTypes) : FvalP L j p = FTypeG D j := if_pos hg
-
-theorem FvalP_d (hg : p ∉ L.gTypes) (hd : D.host.cls p = PrimeClass.ramD) : FvalP L j p = FRamD D j := by
-  unfold FvalP
-  rw [if_neg hg, if_pos hd]
-
-theorem FvalP_inert (hg : p ∉ L.gTypes) (hc : IsResidueClassZero D p ∨ IsSg D p) (hX : (p : ℝ) ≤ L.sc.X'' D.R.n) :
-    FvalP L j p = FInert D j p := by
-  have hd : D.host.cls p ≠ PrimeClass.ramD := by
-    rcases hc with h | h <;> rw [h] <;> simp
-  unfold FvalP
-  rw [if_neg hg, if_neg hd, if_pos ⟨hc, hX⟩]
-
-theorem FvalP_split (hg : p ∉ L.gTypes) (hc : D.host.cls p = PrimeClass.splitK ∨ D.host.cls p = PrimeClass.ram2 ∨
-    D.host.cls p = PrimeClass.ramQ) : FvalP L j p = 0 := by
-  have hd : D.host.cls p ≠ PrimeClass.ramD := by
-    rcases hc with h | h | h <;> rw [h] <;> simp
-  have hi : ¬ ((IsResidueClassZero D p ∨ IsSg D p) ∧ (p : ℝ) ≤ L.sc.X'' D.R.n) := by
-    rintro ⟨h' | h', -⟩ <;> rcases hc with h | h | h <;> exact absurd (h'.symm.trans h) (by decide)
-  unfold FvalP
-  rw [if_neg hg, if_neg hd, if_neg hi]
-
 theorem FvalP_above (hX : L.sc.X'' D.R.n < (p : ℝ)) (hg : p ∉ L.gTypes) (hd : p ≠ D.host.d) : FvalP L j p = 0 := by
   unfold FvalP
   rw [if_neg hg, if_neg (fun h => hd (cls_ramD h)), if_neg (fun h => absurd h.2 (not_le.2 hX))]
@@ -265,30 +243,6 @@ theorem Fval_conj {D : D7} (L : SizeData₂ D) (j : ℕ) (w : D.what₂.places.P
     Fval L j (D.what₂.places.conj w) = Fval L j w := by
   unfold Fval
   rw [resChar_conj]
-
-def SizeData₂.withFval {D : D7} (L : SizeData₂ D) (hs : ∀ j w, w ∉ L.supp → Fval L j w = 0)
-    (hu : ∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ D.R.m → Fval L j w = 0) : SizeData₂ D :=
-  { L with
-    F := fun j w => Fval L j w
-    F_supp := hs
-    untwisted := fun w h j h1 h2 => ⟨(L.untwisted w h j h1 h2).1, hu w h j h1 h2⟩
-    F_conj := fun j w => Fval_conj L j w
-    F_above := fun j _ h1 h2 h3 => FvalP_above L j h1 h2 h3 }
-
-theorem SizeData₂.withFval_FDef {D : D7} (L : SizeData₂ D) (hs : ∀ j w, w ∉ L.supp → Fval L j w = 0)
-    (hu : ∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ D.R.m → Fval L j w = 0) :
-    (L.withFval hs hu).FDef := fun _ _ _ => rfl
-
-def SizeData₂.FockDegSize {D : D7} (L : SizeData₂ D) (C : ℝ) : Prop :=
-  ∀ j ∈ SizeData₂.lifts D, |(fockDeg D j : ℝ) - ∑ τ : D.what₂.Tau, ((D.R.k : ℝ) - 1) * wj D j τ| ≤
-    C * (D.R.f : ℝ) * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz)
-
-def SizeData₂.FRamDSize {D : D7} (L : SizeData₂ D) : Prop :=
-  ∀ j ∈ SizeData₂.lifts D, |FRamD D j| ≤ (D.R.f : ℝ) * D.R.k * L.sc.b'
-
-def FInertGe (D : D7) : Prop :=
-  ∀ j ∈ SizeData₂.lifts D, ∀ p : ℕ, p.Prime → (IsResidueClassZero D p ∨ IsSg D p) → (∀ τ : D.what₂.Tau, 0 ≤ wj D j τ) →
-    ∑ τ : D.what₂.Tau, ((D.R.k : ℝ) - 1) * wj D j τ / ((p : ℝ) ^ 2 - 1) ≤ FInert D j p
 
 end Formalism.BasicNotions
 

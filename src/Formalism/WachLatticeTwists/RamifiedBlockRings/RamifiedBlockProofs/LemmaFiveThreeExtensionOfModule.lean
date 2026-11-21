@@ -74,8 +74,6 @@ theorem any_residue_field_of_module_baseChange_of_big_residue_ext (hM : StatModu
   exact lemma_five_three_extension_of_module hM O X d G t ht bl T r π χ₁ ε g₀ eB e₁ s hP hA hI hX D hD Z NN g n hn hφ O' 1
     (fun y => by rw [he y, Nat.cast_one, one_mul]) hk
 
-theorem lemma_five_three_over_extension : LemmaFiveThreeOverExtension := lemma_five_three_extension_of_module moduleBc
-
 theorem lemma_five_three_any_residue_field : LemmaFiveThreeAnyResidueField := any_residue_field_of_module_baseChange_of_big_residue_ext moduleBc bigResidueExt
 
 end Formalism.RepresentationBoundsCohomology.ringDataObjects

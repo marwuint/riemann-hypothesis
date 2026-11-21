@@ -1,6 +1,8 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SqMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUniqueStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermDimensionUnique
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GaugeUniqB
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDJet
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -126,7 +128,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
       (fibPt t x (g.x (m + 1)) ≫ Q.q) = fibPt t x (g.x m) ≫ Q.q := fun m => by
     rw [← Category.assoc, homAt_fibPt, g.chart.trunc m]
   choose χ hχ hu using fun m =>
-    (GlobalTheory.T.formal_germ_dimension_unique E H hst (Sp k) Q.tB k (𝟙 (Sp k)) d' gB).2 (Fin 1 × Fin d) m _ (hy₀ m)
+    (_root_.GlobalTheory.CompanionTheory.Ar.GermUniv.germ_chart_universal E H hst (Sp k) Q.tB k (𝟙 (Sp k)) d' gB).2 (Fin 1 × Fin d) m _ (hy₀ m)
   have hc := chart_trunc (𝟙 (Sp k)) gB.x gB.chart.trunc (fun m => fibPt t x (g.x m) ≫ Q.q) hy₁ χ
     (fun m => (hχ m).1) (fun m => (hχ m).2) (fun m ψ h₁ h₂ => hu m ψ ⟨h₁, h₂⟩)
   choose Qs hQs using fun i : Fin d' => GaugeR.exists_ps_of_compat

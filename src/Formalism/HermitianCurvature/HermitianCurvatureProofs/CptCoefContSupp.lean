@@ -24,10 +24,6 @@ theorem cast_perm_val {m n : ℕ} (e : m = n) (σ : Equiv.Perm (Fin m)) (x : Fin
     ((e ▸ σ) x).val = (σ (Fin.cast e.symm x)).val := by
   subst e; rfl
 
-theorem cast_diag_apply {m n : ℕ} (e : m = n) (d : Fin m → ℂ) (x : Fin n) :
-    (e ▸ d) x = d (Fin.cast e.symm x) := by
-  subst e; rfl
-
 theorem ptSize_app (h : C.LPt) (n : ℕ) (hh : D.IsLocPt h n) (ζ : ℂ) : D.ptSize (h ++ [(1, ζ)]) = n + 1 := by
   rw [Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append, hh.2]
 

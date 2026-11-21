@@ -3,22 +3,23 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZ
 import Formalism.PairingDivisors.StatementH
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTaylorCoeffsAlgebraicAtComplexMultiplicatioStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackConstantSqEqDetStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackConstantSqEqDet
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdmissibleCharactersExistStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StandardPairLatticeLocallyOrthonormalBasisStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StandardPairLatticeLocallyOrthonormalBasis
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermitianPairingRationalValuesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermitianPairingRationalValues
+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticFormEqAlternatingForm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoordsAlongOrthonormalRealSubfieldBasisStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthoProductThetaMemThetaSpaceOfLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetAverageProdFundamentalDomainPlaneLatticePowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprimeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSizeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasisStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthonormalTransitionDetMulConjEqOneStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthoProductThetaMemThetaSpaceOfLattice
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetAverageProdFundamentalDomainPlaneLatticePow
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprime
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSize
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasis
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthonormalTransitionDetMulConjEqOne
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
@@ -120,7 +121,7 @@ theorem normSq_pullB (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hC : Crv 
     MeasureTheory.Measure.pi.isAddHaarMeasure _
   haveI h3 : (MeasureTheory.volume : MeasureTheory.Measure (VC D N N')).IsAddHaarMeasure :=
     MeasureTheory.Measure.pi.isAddHaarMeasure _
-  have key := GlobalTheory.T.setAverage_prod_fundamentalDomain_planeLattice_pow (lamOf D cc δ) hlat
+  have key := _root_.GlobalTheory.LatticeMean.mean_prod_eq_pow (lamOf D cc δ) hlat
     (fun z => ‖g z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2 / area (lamOf D cc δ)))
     (fun ω hω z => by rw [← norm_sq_mul_gaussian_latticeTranslate_eq_shifted, hg ω hω]) (VC D N N') MeasureTheory.volume r e
     (LaB D (tor0 D cc δ) b) hmem
@@ -190,7 +191,7 @@ theorem exists_kappa (D : D7) (N N' r : ℕ) (b₀ : Fin r → Matrix (Fin N') (
       ‖lamC lam κ‖ ^ 2 =
         ‖lam (phiQ D (((Matrix.of fun i j => hYY D (b j) (b₀ i)).det : D.host.K) : D.host.E))‖ := by
   have hG := (GlobalTheory.InducedType.induced_type D).1
-  obtain ⟨I, hI, hloc⟩ := GlobalTheory.T.exists_determinantIdeal_hermitianLattice_basis D N N' r _ b₀ (GlobalTheory.T.hermitian_pairing_integral_values D N N' _ _ hS hS') (fun i => by
+  obtain ⟨I, hI, hloc⟩ := _root_.GlobalTheory.NormSum.exists_detIdeal D N N' r _ b₀ (_root_.GlobalTheory.NormSum.TraceInt.hYY_integral D N N' _ _ hS hS') (fun i => by
     obtain ⟨s, hs, h⟩ := hl₀.2.1 i
     refine ⟨s, Nat.pos_of_ne_zero ?_, h⟩
     rintro rfl
@@ -198,13 +199,13 @@ theorem exists_kappa (D : D7) (N N' r : ℕ) (b₀ : Fin r → Matrix (Fin N') (
   have hI0 : I ≠ ⊥ := by
     obtain ⟨⟨s, hs, h⟩, -⟩ := hloc 2 b₀ hl₀
     rintro rfl
-    have hu := GlobalTheory.T.orthonormalTransition_det_mul_conj_eq_one D hG N N' r b₀ b₀ hb₀ hb₀
+    have hu := _root_.GlobalTheory.NormSum.det_onB_mul_conj D hG N N' r b₀ b₀ hb₀ hb₀
     rw [Submodule.mem_bot, mul_eq_zero] at h
     rcases h with h | h
     · have : s = 0 := by exact_mod_cast h
       subst this; simp at hs
     · rw [h] at hu; simp at hu
-  obtain ⟨h, α, hh, hα, hv⟩ := GlobalTheory.T.exists_generator_pow_fractionalIdeal_nonarch_size D.host.K I hI0 hI
+  obtain ⟨h, α, hh, hα, hv⟩ := _root_.GlobalTheory.exists_generator_pow_fractional_size D.host.K I hI0 hI
   have hαE : (α : D.host.E) ≠ 0 := by simpa using hα
   have hαE' : D.host.conj (α : D.host.E) ≠ 0 := by simpa using hα
   set β : Qbar := phiQ D ((α : D.host.E) / D.host.conj (α : D.host.E)) with hβ
@@ -242,7 +243,7 @@ theorem exists_kappa (D : D7) (N N' r : ℕ) (b₀ : Fin r → Matrix (Fin N') (
     have k1 := key ((lam.comp (phiQ D)).comp (algebraMap D.host.K D.host.E))
     have k2 := key (((lam.comp (phiQ D)).comp D.host.conj.toRingEquiv.toRingHom).comp
       (algebraMap D.host.K D.host.E))
-    have hu := congrArg (fun y => ‖lam (phiQ D y)‖) (GlobalTheory.T.orthonormalTransition_det_mul_conj_eq_one D hG N N' r b₀ b hb₀ hb)
+    have hu := congrArg (fun y => ‖lam (phiQ D y)‖) (_root_.GlobalTheory.NormSum.det_onB_mul_conj D hG N N' r b₀ b hb₀ hb)
     simp only [map_mul, norm_mul, map_one, norm_one] at hu
     change ‖lam (phiQ D (α : D.host.E))‖ = ‖lam (phiQ D (u : D.host.E))‖ ^ h at k1
     change ‖lam (phiQ D (D.host.conj (α : D.host.E)))‖ = ‖lam (phiQ D (D.host.conj (u : D.host.E)))‖ ^ h at k2
@@ -289,13 +290,13 @@ theorem exists_vacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Cr
       pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0) ∈ ThSp D (tor0 D cc δ) (LaB D (tor0 D cc δ) b) := by
     intro b hb
     obtain ⟨-, -, hpar, hmem, -⟩ := GlobalTheory.T.coords_along_orthonormal_realSubfield_basis D hG cc δ N N' _ b hb
-    exact GlobalTheory.T.orthoProductTheta_mem_thetaSpace_of_lattice D _ N N' _ b _ hpar hmem hd hth
-  obtain ⟨b₀, hb₀, hl₀⟩ := GlobalTheory.T.standardPairLattice_locally_orthonormal_basis D N N' hN 2 Nat.prime_two
+    exact _root_.GlobalTheory.ProdTheta.pullB_mem_ThSp D _ N N' _ b _ hpar hmem hd hth
+  obtain ⟨b₀, hb₀, hl₀⟩ := _root_.GlobalTheory.OddGenus.odd_one D N N' hN 2 Nat.prime_two
   obtain ⟨κ, hκ, hκv⟩ := exists_kappa D N N' _ b₀ hb₀ hl₀ (hSD N) (hSD N')
   obtain ⟨hκQ, hκ1⟩ := id hκ
   have hκn : ‖κ‖ = 1 := hκ1 (Qbar : IntermediateField ℚ ℂ).val.toRingHom
   have hκ0 : κ ≠ 0 := by rintro rfl; simp at hκn
-  obtain ⟨-, u1, u2, u3⟩ := GlobalTheory.T.intertwinerUnitary_all D cc δ hC N N' _ _ (hKb b₀ hb₀) hK0 _ (hP b₀ hb₀)
+  obtain ⟨-, u1, u2, u3⟩ := _root_.GlobalTheory.theta_translation_intertwiner_unitary D cc δ hC N N' _ _ (hKb b₀ hb₀) hK0 _ (hP b₀ hb₀)
   have hE : ThetaVectorUpToUnits D (tor0 D cc δ) t0 (stdL D N) (stdL D N') (fun z => κ * Iop D (tor0 D cc δ)
       (LaB D (tor0 D cc δ) b₀) (La0 D (tor0 D cc δ) N N')
       (pullB D (tor0 D cc δ) b₀ (GL3Theta.th0 (lamOf D cc δ) t0)) z) := ⟨b₀, κ, hb₀, hκ, rfl⟩
@@ -306,8 +307,8 @@ theorem exists_vacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Cr
     obtain ⟨m, -, hm⟩ := hth ω hω
     rw [← hm z, norm_mul, norm_zpow]; simp
   · intro p hp lam _
-    obtain ⟨b, hb, hl⟩ := GlobalTheory.T.standardPairLattice_locally_orthonormal_basis D N N' hN p hp.out
-    obtain ⟨c, ζ, m, hm, hζ, hc, hpull⟩ := GlobalTheory.T.thetaPullbackConstant_sq_eq_det D cc δ hC t0 ht N N' _ b₀ b hb₀ hb
+    obtain ⟨b, hb, hl⟩ := _root_.GlobalTheory.OddGenus.odd_one D N N' hN p hp.out
+    obtain ⟨c, ζ, m, hm, hζ, hc, hpull⟩ := _root_.GlobalTheory.UnitaryTheta.const_sq_eq_det D cc δ hC t0 ht N N' _ b₀ b hb₀ hb
     obtain ⟨μ, hμ, hI⟩ := GlobalTheory.T.admissible_characters_exist D cc δ hC N N' _ _ _ (hKb b₀ hb₀) (hKb b hb) hK0 _ (hP b₀ hb₀)
     have hζQ : ζ ∈ Qbar := mem_Qbar_of_pow hm (hζ ▸ one_mem _)
     have hμQ : μ ∈ Qbar := mem_Qbar_of_pow (n := 8) (by norm_num) (hμ ▸ one_mem _)
@@ -340,7 +341,7 @@ theorem exists_vacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Cr
     · rw [lamC_coe]
       simp only [ε, map_div₀, map_mul, norm_div, norm_mul, n2, n3, mul_one]
       exact div_self n4
-    · exact GlobalTheory.T.localBasisLattice_index_coprime D hG cc δ N N' _ _ _ b p hp.out
+    · exact _root_.GlobalTheory.NormSum.LocIndex.index_coprime D hG cc δ N N' _ _ _ b p hp.out
         (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hC N N' _ hK0).2.2.2.2.1 hl
     · rw [hpull, Iop_smul, hI, hε]
       funext z

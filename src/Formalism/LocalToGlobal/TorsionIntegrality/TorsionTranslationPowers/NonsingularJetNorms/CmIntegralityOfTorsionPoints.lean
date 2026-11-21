@@ -115,10 +115,4 @@ theorem cm_integrality_of_torsion_points (hP : PtOfInt) : CMIntegrality := by
     map_mul, map_inv₀, map_pow, hιc, inv_pow, inv_inv] at hy
   exact ⟨hx, hy⟩
 
-theorem cm_integrality_of_halves : CMTorsionValuesOfIntegralAndUnramified := by
-  intro hI hK d L hd hd4 hcm l _ hl hld ι lam hlam hk2 hk3 h2 h3 hD z N hN hlN hNz hz
-  obtain ⟨a, b⟩ := hK d L hd hd4 hcm l hl hld ι lam hlam hk2 hk3 h2 h3 hD z N hN hlN hNz hz
-  obtain ⟨c, e⟩ := hI L l hl ι lam hlam h2 h3 hD z N hN hlN hNz hz
-  exact ⟨a, b, c, e⟩
-
 end Formalism.L2.Th1.E

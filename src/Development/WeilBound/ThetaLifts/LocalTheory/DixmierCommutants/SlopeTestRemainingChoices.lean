@@ -100,49 +100,6 @@ theorem dixmier_commutant_scalar (ι V : Type) [AddCommGroup V] [Module ℂ V] (
 
 end
 
-section
-open PositivityTheory.KCo GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences GlobalTheory.RankStrataProof GlobalTheory.CompanionTheory.ThetaGLLen Matrix Topology GlobalTheory.SplitFlip
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ}
-
-theorem irrF' (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) {ν α : kˣ →* ℂˣ} (hnd : n ≤ d) (hν : USm ν)
-    (N : Submodule ℂ (Matrix (Fin n) (Fin d) k → ℂ)) (hA : augF n d ν α ≤ N)
-    (hN : ∀ h : GL (Fin d) k, ∀ Φ ∈ N, Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) → omB ν α 1 h Φ ∈ N) :
-    (∀ Φ, Full Φ → Φ ∈ N) ∨ ∀ Φ ∈ N, Full Φ → Φ ∈ augF n d ν α := by
-  obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hnd
-  have hμ : IsSmoothChar ν⁻¹ := IsSmoothChar.inv hν.2
-  obtain ⟨E⟩ := GlobalTheory.T.omega_equiv_induced_fibre k (Fin n) (Fin (n + t)) (Fin n) (Fin t) (stdSum rfl) n (Fintype.card_fin n).symm ν⁻¹ hμ
-  have hR : twRel ((omegaOn (Fin n) (Fin (n + t)) ν⁻¹ {n}).comp (MonoidHom.inl _ _)) 1 ≤
-      (augF n (n + t) ν α).comap extZ := Submodule.span_le.2 (by
-    rintro _ ⟨g, φ, rfl⟩
-    refine Submodule.subset_span ⟨g, extZ φ, ⟨extZ_mem φ, fun Y hY => extZ_neg φ (by rwa [rank_transpose])⟩, ?_⟩
-    rw [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]
-    congr 1
-    refine funext fun Y => (extZ_act _ g 1 φ Y).trans ?_
-    have n1 : nabs k 1 = 1 := by simp [nabs]
-    simp [omB, omChar, apow, val_absPow, n1])
-  rcases irr_equiv E (irr_ind hB n t hμ (fun y => by simp [hν.1 y])) (N.comap extZ) (hR.trans (Submodule.comap_mono hA)) (by
-    intro h φ hf
-    have h1 := hN (invT h) _ hf (extZ_mem φ)
-    rw [Submodule.mem_comap]
-    have c0 : (α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2) ≠ 0 :=
-      mul_ne_zero (Units.ne_zero _) (Units.ne_zero (absPow k ((n : ℂ) / 2) (gdet (invT h))))
-    convert N.smul_mem ((omChar (Fin n) (Fin (n + t)) ν⁻¹ (1, h) : ℂ) /
-      ((α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2))) h1 using 1
-    funext Y
-    have e1 : omB ν α 1 (invT h) (extZ φ) Y = (α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2) *
-        extZ φ ((1 : GL (Fin n) k).valᵀ * Y * (invT h).val) := by
-      simp [omB, apow, nabs]
-    rw [extZ_act, Pi.smul_apply, e1, smul_eq_mul, ← mul_assoc, div_mul_cancel₀ _ c0]) with h | h
-  · refine Or.inl fun Φ hΦ => ?_
-    obtain ⟨φ, rfl⟩ := exists_extZ hΦ
-    exact (h ▸ Submodule.mem_top : φ ∈ N.comap extZ)
-  · refine Or.inr fun Φ hm hΦ => ?_
-    obtain ⟨φ, rfl⟩ := exists_extZ hΦ
-    exact hR (h hm)
-
-end
-
 theorem rank_SB (V : Type) [TopologicalSpace V] [SecondCountableTopology V] [T2Space V] :
     Module.rank ℂ (GlobalTheory.WeilM.SB V) ≤ Cardinal.aleph0 := by
   classical

@@ -116,42 +116,4 @@ theorem bwG_change_mem (w : D.what₂.places.Pl) (hw : OverT D u w) (τ : D.what
   rw [bwE_mulVec_col, ← Units.val_mul] at h
   exact h
 
-theorem bwBasisInd_of_stab (Tt : FormsTied D u) (hS : ∀ w, OverT D u w → BwGLStab D w) : BwBasisInd D u Tt := by
-  intro w hw i hi c B B₂ hB hB₂ Q hQ
-  set N : D.what₂.Tau → Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) ℂ :=
-    fun τ => atInf (embT D) ((B⁻¹ * B₂ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) τ
-    with hN
-  set N' : D.what₂.Tau → Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) ℂ :=
-    fun τ => atInf (embT D) ((B₂⁻¹ * B : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) τ
-    with hN'
-  have hNN' : ∀ τ, N τ * N' τ = 1 := fun τ => by
-    simp only [hN, hN', atInf]
-    rw [← Matrix.map_mul, ← Units.val_mul]
-    have : (B⁻¹ * B₂ * (B₂⁻¹ * B) : GL (Fin (D.R.N i)) D.host.E) = 1 := by group
-    rw [this, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
-  refine ⟨MvPolynomial.C (∏ τ, (N τ).det ^ shiftOf (lamT u i) τ) * subP N Q,
-    bwG_intSpan_allSubP D w _ N _ (fun τ g hg => hS w hw _ _ _ (N τ) (N' τ) (hNN' τ)
-      (bwG_change_mem D u w hw τ hB₂ hB) (bwG_change_mem D u w hw τ hB hB₂) g hg) Q hQ, fun z => ?_⟩
-  rw [← fnOf_mul]
-  have hM : atInf (embT D) ((B⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) =
-      fun τ => N τ * atInf (embT D) ((B₂⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) τ := by
-    funext τ
-    simp only [hN, atInf]
-    rw [← Matrix.map_mul, ← Units.val_mul]
-    congr 2
-    group
-  rw [hM]
-
-theorem local_global_lattice_of_compatible_forms (Tt : FormsTied D u) : BwLocGlob D u Tt := bwLocGlob_of_ind (D := D) (u := u) Tt (bwBasisInd_of_stab D u Tt (fun w _ => local_GL_stabilises_lattice D w))
-
-theorem bwLocGlob_all : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwLocGlob D u Tt := fun D u Tt => local_global_lattice_of_compatible_forms D u Tt
-
-theorem lattice_inclusion_of_decomp
-    (h2 : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwDecomp D u Tt) : WeightLatticeInclusionFamily := lattice_inclusion_of_decomp_glob (fun D u Tt => local_bases_exist_of_compatible_forms (D := D) (u := u) Tt) h2
-    (fun D u Tt => local_global_lattice_of_compatible_forms D u Tt)
-
-theorem local_bases_exist_all : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwLocBases D u Tt := fun D u Tt => local_bases_exist_of_compatible_forms (D := D) (u := u) Tt
-
-theorem local_global_lattice_all : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwLocGlob D u Tt := fun D u Tt => local_global_lattice_of_compatible_forms D u Tt
-
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases

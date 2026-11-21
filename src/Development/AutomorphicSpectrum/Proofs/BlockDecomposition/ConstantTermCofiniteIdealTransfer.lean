@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteRtOfMemZalg
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRestrictionSmoothStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBoundStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBound
 
 open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl GlobalTheory.CompanionTheory.CTFin Matrix
 
@@ -63,7 +63,7 @@ theorem slice_mem_genSpace : ∀ (E : Type) [Field E] [NumberField E] [IsTotally
     exact hM (γ, 1) _
   ·
     obtain ⟨C, N, hb⟩ := hG (lev (Ad E) r s (g, m₂) * finGL E (r + s) t)
-    obtain ⟨B, hB0, hB⟩ := GlobalTheory.T.levi_embedding_height_bound E r s (Unitary.toUnits κ)
+    obtain ⟨B, hB0, hB⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.Slice1.height_lev_mul_le E r s (Unitary.toUnits κ)
     refine ⟨|C| * B ^ N, N, fun y => ?_⟩
     have e1 : G.1 (g * infGL E r y) = F.1 (lev (Ad E) r s (g, m₂) * finGL E (r + s) t *
         infGL E (r + s) (lev (Cinf E) r s (y, 1) * Unitary.toUnits κ)) := by

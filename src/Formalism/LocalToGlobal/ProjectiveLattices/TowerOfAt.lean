@@ -102,16 +102,6 @@ structure AtLevel (p : ℕ) (D : Datum H) where
   c : Coeff lv
   T : Tower p Xo c
 
-def ModelsAt (p : ℕ) (Xo : Moduli D l) (c : Coeff l) : Prop :=
-  Nonempty {A : AtLevel p D // l.Dvd A.lv ∧ A.lv.GoodAt p ∧ TowerAt A.T ∧
-    (l.GoodAt p → ∃ _ : A.lv = l, HEq A.Xo Xo ∧ HEq A.c c)}
-
-def towerOf {p : ℕ} {Xo : Moduli D l} {c : Coeff l} (h : ModelsAt p Xo c) : AtLevel p D :=
-  (Classical.choice h).1
-
-theorem towerOf_at {p : ℕ} {Xo : Moduli D l} {c : Coeff l} (h : ModelsAt p Xo c) : TowerAt (towerOf h).T :=
-  (Classical.choice h).2.2.2.1
-
 end Tower
 
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l}

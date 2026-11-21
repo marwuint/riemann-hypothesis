@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyExistsLiftSectionOfAmplePowFromClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyExistsLiftSectionOfAmplePowFromClosed
 open CategoryTheory AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -60,7 +60,7 @@ theorem exists_sections_restrict_basis :
   intro X _ _ p hp A z hA
   haveI hYi : IsIntegral (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme :=
     isIntegral_red isIrreducible_singleton.closure
-  obtain ⟨l₁, hl₁⟩ := eventually_atTop.1 (GlobalTheory.T.eventually_exists_lift_section_of_ample_pow_from_closed X p hp (toLB A) (Closeds.closure ({z} : Set X)) hA)
+  obtain ⟨l₁, hl₁⟩ := eventually_atTop.1 (_root_.GlobalTheory.LiftClosed.eventually_exists_secPull_eq X p hp (toLB A) (Closeds.closure ({z} : Set X)) hA)
   refine ⟨l₁, fun l hl => ?_⟩
   letI : Algebra ℂ Γ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme, ⊤) :=
     algebraΓOfHom (redι (Closeds.closure ({z} : Set X)) ≫ p)

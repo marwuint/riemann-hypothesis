@@ -10,9 +10,6 @@ noncomputable section
 
 namespace GlobalTheory.BetaCutLimit
 
-variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-  [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-
 end GlobalTheory.BetaCutLimit
 
 namespace GlobalTheory

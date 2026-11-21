@@ -1,10 +1,14 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalHHermScal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimilitudeBetweenNonemptySpheresStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaMeasureIndependentChoicesStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaMeasureSimilitudeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramFibreMeasureLocalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimilitudeScalingHermitianMeasureStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaMeasureIndependentChoices
+import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.MeanVal
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentForm
+import Development.WeilBound.CoreStatements.ThetaDilations.ThetaLint
+import Development.WeilBound.CoreStatements.ThetaDilations.SdTransport
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaMeasureSimilitude
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramFibreMeasureLocal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimilitudeScalingHermitianMeasure
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -31,18 +35,18 @@ theorem simil : PositivityTheory.Rg.Mass.Simil := by
   intro F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ _ hli hlam hμ h𝓕 hmi hm β β' hβ hβ' hs hs' c hc
   have hl0 : β' / β ≠ 0 := div_ne_zero hβ' hβ
   obtain ⟨γ, hγ⟩ := GlobalTheory.T.similitude_between_nonempty_spheres F E σ hcm J hJ β β' hβ hβ' hs hs'
-  obtain ⟨μ', 𝓕', hμ', h𝓕', hth⟩ := GlobalTheory.T.theta_measure_similitude F E σ hcm 2 J hJ μ 𝓕 hμ h𝓕 γ (β' / β) hl0 hγ
+  obtain ⟨μ', 𝓕', hμ', h𝓕', hth⟩ := _root_.GlobalTheory.CompanionTheory.SW.SimTheta.theta_simil F E σ hcm 2 J hJ μ 𝓕 hμ h𝓕 γ (β' / β) hl0 hγ
   have hT : (fun _ _ => algebraMap F E β' : Matrix (Fin 1) (Fin 1) E) =
       (algebraMap F E (β' / β)) • (fun _ _ => algebraMap F E β : Matrix (Fin 1) (Fin 1) E) := by
     funext a b'
     change algebraMap F E β' = algebraMap F E (β' / β) * algebraMap F E β
     rw [← map_mul, div_mul_cancel₀ _ hβ]
   have hth1 := hth 1 _ _ hT
-  have hind := GlobalTheory.T.theta_measure_independent_choices F E σ hcm 2 J hJ μ μ' 𝓕 𝓕' hμ h𝓕 hμ' h𝓕' 1 (fun _ _ => algebraMap F E β)
+  have hind := _root_.GlobalTheory.CompanionTheory.SW.ThetaIndep.thetaMeas_gram_indep F E σ hcm 2 J hJ μ μ' 𝓕 𝓕' hμ h𝓕 hμ' h𝓕' 1 (fun _ _ => algebraMap F E β)
   change (thetaMeas σ J μ' 𝓕' (PositivityTheory.Rg.Mass.sph σ J β)).map _ = thetaMeas σ J μ 𝓕 (PositivityTheory.Rg.Mass.sph σ J β') at hth1
   change thetaMeas σ J μ 𝓕 (PositivityTheory.Rg.Mass.sph σ J β) = thetaMeas σ J μ' 𝓕' (PositivityTheory.Rg.Mass.sph σ J β) at hind
-  obtain ⟨ai, a, hau, hai, hav⟩ := GlobalTheory.T.haar_modulus_gl_action_product_formula F E σ hcm 1 2 γ
-  obtain ⟨ci, cv, hcu, hci, hcv⟩ := GlobalTheory.T.similitude_scaling_hermitian_measure F E σ hcm (β' / β) hl0
+  obtain ⟨ai, a, hau, hai, hav⟩ := _root_.GlobalTheory.CompanionTheory.SW.PfAct.product_formula_actTup F E σ hcm 1 2 γ
+  obtain ⟨ci, cv, hcu, hci, hcv⟩ := _root_.GlobalTheory.CompanionTheory.SW.MassSimil.ScalModule.scal_module F E σ hcm (β' / β) hl0
   obtain ⟨-, -, -, -, hq, -⟩ := PositivityTheory.PlacePermOperatorBicommutantSpan.up_alg F ai ci a cv hau hcu
   obtain ⟨⟨i1, i2, i3⟩, -⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F
   have hLi : IsLocR (Ainf F) := GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1
@@ -57,9 +61,9 @@ theorem simil : PositivityTheory.Rg.Mass.Simil := by
         (algebraMap R (R ⊗[F] E) (algebraMap F R (β' / β))) • JR R J := fun R _ _ => JR_sim R σ J γ _ hγ
   have hunit : ∀ (R : Type) [CommRing R] [Algebra F R] [Nontrivial R], IsUnit (algebraMap F R (β' / β)) :=
     fun R _ _ _ => (IsUnit.mk0 _ hl0).map _
-  have sInf := GlobalTheory.T.gram_fibre_measure_local F E σ hcm 2 J hJ (Ainf F) hLi 1 _ _ mi hWi.1 hWi.2 hmi _ _ (hunit _) (hJR _) ai ci
+  have sInf := _root_.GlobalTheory.CompanionTheory.SW.FibSim.fib_similitude F E σ hcm 2 J hJ (Ainf F) hLi 1 _ _ mi hWi.1 hWi.2 hmi _ _ (hunit _) (hJR _) ai ci
     (hai _ hWi.1) (hci _ hWi.2)
-  have sV := fun v => GlobalTheory.T.gram_fibre_measure_local F E σ hcm 2 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v) _ _ (hunit _)
+  have sV := fun v => _root_.GlobalTheory.CompanionTheory.SW.FibSim.fib_similitude F E σ hcm 2 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v) _ _ (hunit _)
     (hJR _) (a v) (cv v) (hav v _ (hWv v).1) (hcv v _ (hWv v).2)
   have hS : ∀ (R : Type) [CommRing R] [Algebra F R], scalH R σ (algebraMap F R (β' / β))
       (hermScal R σ (algebraMap F R β)) = hermScal R σ (algebraMap F R β') := fun R _ _ => by
@@ -82,9 +86,9 @@ theorem simil : PositivityTheory.Rg.Mass.Simil := by
       exact SWIsom.map_actTup (evalV F v) γ (projFin X) a i
   have hfin : ∀ v, m v (hermScal (Fv F v) σ (algebraMap F _ β')) (latV b v) < ⊤ := by
     intro v
-    haveI := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 2 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v)
+    haveI := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hcm 2 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v)
       (hermScal (Fv F v) σ (algebraMap F _ β'))).1
-    exact ((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 2).2.2.2.1 v).1.measure_lt_top
+    exact ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 2).2.2.2.1 v).1.measure_lt_top
   have key := euler_move_c F E σ hcm d b 1 2 (thetaMeas σ J μ' 𝓕' (PositivityTheory.Rg.Mass.sph σ J β)) (mi (hermScal (Ainf F) σ (algebraMap F _ β)))
     (mi (hermScal (Ainf F) σ (algebraMap F _ β')))
     (fun v => m v (hermScal (Fv F v) σ (algebraMap F _ β)))

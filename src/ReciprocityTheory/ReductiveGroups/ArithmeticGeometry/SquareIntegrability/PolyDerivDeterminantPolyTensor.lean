@@ -96,17 +96,6 @@ theorem polyDeriv_determinantPoly_tensor (s : Fin n → (Fin 1 → Vsp X.dim) �
   rw [Pi.zero_apply, itD_col (hs k)]
   rfl
 
-open Classical in
-
-theorem colL_coe (T : Choice bs) (k : Fin n) :
-    ((colL (lst X bs T) k : List (Vsp X.dim)) : Multiset (Vsp X.dim)) =
-      ((Multiset.map (letter bs T) Finset.univ.val).filter (fun l => l.1 = k)).map
-        (fun l => EuclideanSpace.single l.2 (1 : ℂ)) := by
-  rw [colL, lst, List.filter_map, List.map_map, ← Multiset.map_coe]
-  conv_rhs => rw [← Multiset.coe_toList (Multiset.map (letter bs T) Finset.univ.val),
-    Multiset.filter_coe, Multiset.map_coe]
-  rfl
-
 end PD
 
 end

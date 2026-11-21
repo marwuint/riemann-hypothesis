@@ -130,64 +130,6 @@ theorem final_arith (P : M.Par) (ρ : M.Ty P) (A ζ : ℂ) (hζ : P.TT < Complex
   field_simp
   ring
 
-def GTCRefTraceOfCut : Prop :=
-  GTRMove → GTRConst → GTRTopNF → GTRTopAct → GTRRot → GTRInt → GTRTrans → GTCReal → GTCRefTrace
-
-theorem gTCRefTrace_of_cut : GTCRefTraceOfCut := by
-  intro hMove hConst hNF hAct hRot hInt hTrans hReal Wp Wq _ _ _ _ _ _ P Bs X d hyp
-  obtain ⟨hpl, hk, hcs, hL, hS, hR, hQ⟩ := hyp
-  have hcs0 := Formalism.FourierDecayAlt.P.TheSecStab.theSection_csec (k := P.k) (r := P.r) (by omega) Bs.z_mem Bs.z'_mem
-    Bs.T_pos Bs.T'_pos
-  set Bs0 := BsAt P Bs (TheSec.theSection P.k P.r Bs.z Bs.z') hcs0.1 with hBs0
-  have hyp0 : GTHyp P Bs0 X d := ⟨hpl, hk, hcs0, hL, hS, hR, hQ⟩
-  obtain ⟨e0, he0, hk0, hc0⟩ := hConst Wp Wq P Bs0 X d hyp0
-  obtain ⟨A, B, hAB, hC⟩ := gauge_locality_holds Wp Wq P Bs0 X d hyp0 e0 he0 hk0
-
-  obtain ⟨cA, hcA, sA, hsA⟩ := hAct Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk X
-  have hTT : d.L.TT = ((P.TT : ℝ) : ℂ) := by
-    rw [hL.2.2.2.2.2.2.2.2.2.2.2.2, hpl.2.2.2.1, hpl.2.2.2.2.1]
-    rfl
-  obtain ⟨cN, hcN, sN, hsN⟩ := hNF P _ d hpl.1 hk hS hR hTT
-  have hcoef : ∀ Y : ℂ, ∑ j ∈ Finset.range (P.k + 2), Y ^ j • cA j =
-      ∑ j ∈ Finset.range (P.k + 2), Y ^ j • (cN j).1 := by
-    intro Y
-    rw [← hcA Y]
-    have h1 : X.t Y 0 0 = (X.QQ Y 0 0).1 := rfl
-    rw [h1, hQ Y, hcN Y, pr_fst_sum]
-    exact Finset.sum_congr rfl fun j _ => pr_fst_smul _ _
-  have hk' := poly_coeff_eq (P.k + 2) cA (fun j => (cN j).1) hcoef P.k (by omega)
-  have hTh : (ThetaNF P d).1 = cA P.k - ((sN : ℂ)) • (1 : Module.End ℂ _) := by
-    rw [hk']
-    show (ThetaNF P d).1 = (cN P.k).1 - _
-    rw [hsN, pr_fst_add, pr_fst_smul, pr_fst_one, add_sub_cancel_right]
-  have hpt : ∀ (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z',
-      (((ThetaNF P d).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 =
-        (∑ a : Fin (Q.mdim P.k P.r (Fin.last P.r)),
-          Q.EH P.k P.r (Q.posL P.k P.r (Fin.last P.r) a) (Q.posL P.k P.r (Fin.last P.r) a)
-            ((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1) x.2) +
-          (((sA - sN : ℤ) : ℂ)) • (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 := by
-    intro Φ x hx
-    rw [hTh, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, Submodule.coe_sub,
-      Submodule.coe_smul, Pi.sub_apply, Pi.smul_apply, Pi.sub_apply, Pi.smul_apply, hsA Φ x hx]
-    push_cast
-    rw [sub_smul]
-    abel
-  obtain ⟨e, he, htr⟩ := hMove Wp Wq P Bs hpl hk _ hcs0.1 e0 he0
-  have htrF : trR P Bs e = trR P Bs0 e0 := funext htr
-  refine ⟨e, he, ?_, A, B, hAB, ?_, fun ρ => ?_⟩
-  · intro f Φ
-    rw [htrF]
-    exact hk0 f Φ
-  · intro Φ ρ
-    rw [htrF]
-    exact hC Φ ρ
-  · obtain ⟨m, hm⟩ := hRot Wp Wq P Bs0 X d hyp0 rfl e0 he0 hk0 hc0 (ThetaNF P d).1 (sA - sN) hpt ρ
-    obtain ⟨N, hN⟩ := hInt Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk ρ
-    refine ⟨N - m, fun ζ hζ => ?_⟩
-    have hT := hTrans Wp Wq P Bs0 X d hyp0 e0 he0 hk0 A B hAB hC ρ (m : ℂ) hm ζ hζ
-    rw [hReal Wp Wq P Bs0 X d hyp0 e0 he0 hk0 A B hAB hC ρ ζ hζ] at hT
-    exact final_arith P ρ (A ρ ζ) ζ hζ m N hN hT
-
 end
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

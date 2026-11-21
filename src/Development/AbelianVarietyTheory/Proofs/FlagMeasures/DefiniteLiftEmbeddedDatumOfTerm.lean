@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeOfLatMod
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummaryStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefinitePartLatticeDiscriminantEqQuotienStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsHermIsometryGraphModScalarFlagPairIotaStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefiniteThetaLatticeLeFixedIndexBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefiniteThetaLatticeLeFixedIndexBound
 
 open NumberField Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.DegCnt
 open scoped Pointwise ENNReal Classical
@@ -307,7 +307,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   obtain ⟨-, hLift, -, -, -, -, hwS, -, hPD, -, -, -⟩ := GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N
   obtain ⟨hdel, hdel', hgen, hM, hM', -⟩ := GlobalTheory.T.flagPairDefinitePartLattice_discriminant_eq_quotient K V H hK r N g Λ hg hT
   have hiso := GlobalTheory.T.isHermIsometryGraphModScalar_flagPairIota K V H hK r N g Λ hg hT
-  obtain ⟨hThLa, -, -, -, -, hgenLa, -, hTh⟩ := GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ hg hT
+  obtain ⟨hThLa, -, -, -, -, hgenLa, -, hTh⟩ := _root_.GlobalTheory.DegCnt.FixIdx.main K V H hK r N g Λ hg hT
   obtain ⟨H', hH, hPD'⟩ := exists_res H hPD
   have hd : N.Wt ⊓ II N.F N.F' = ⊥ := hLift.2.1
   have ho : ∀ y ∈ wSp N.F N.F', ∀ i ∈ II N.F N.F', H.B y i = 0 := fun y hy i hi =>

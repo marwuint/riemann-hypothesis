@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveBalancedFormPrimitiveAmongIntFormsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrimitiveIntBilinFormEqOfPositiveRealRayStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsMatchingPiecesOfCellStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveBalancedFormPrimitiveAmongIntForms
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrimitiveIntBilinFormEqOfPositiveRealRay
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMarkedFormPiecesRaysOfSimplicialCells
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsMatchingPiecesOfCell
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.CompanionTheory.Ar.Fan
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.OrbitMarkCoordinateBound
@@ -19,12 +20,12 @@ theorem orbMark_coord_lt_one : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] 
   intro O _ _ _ _ bar w0 hb φ hφ X₀ _ _ _ m₀ δ₀ h₀ hli₀ hprim₀ v t hv ht hvsum X _ _ _ m δ h hli hprim
     β _ _ hβ1 c hc hβsum j
   obtain ⟨p, -, hpos, hcells⟩ :=
-    GlobalTheory.T.exists_matching_pieces_of_cell O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv (fun i => (ht i).1) hvsum β hβ1
+    _root_.GlobalTheory.CompanionTheory.Ar.Fan.MatchingPieces.exists_pieces_match O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv (fun i => (ht i).1) hvsum β hβ1
   rcases (hc j).lt_or_eq with hcj | hcj
   · obtain ⟨i, hti, d, hd, hpd, hcd⟩ := (hcells m δ h hli c hc hβsum).2 j hcj
     have hpi := (hpos i hti).2.2.1
-    have hδj := GlobalTheory.T.isPrimitiveBalancedForm_primitive_among_intForms bar (δ j) (h.mem j) (hprim j)
-    have hd1 := (GlobalTheory.T.primitive_intBilinForm_eq_of_positive_real_ray (p i) (δ j) d hd hpi hδj hpd).2
+    have hδj := _root_.GlobalTheory.PolFan.isPrim_eq_one_of_smul_eq bar (δ j) (h.mem j) (hprim j)
+    have hd1 := (_root_.GlobalTheory.PrimRay.eq_of_toReal_eq_smul (p i) (δ j) d hd hpi hδj hpd).2
     rw [hcd, hd1, mul_one]
     exact (ht i).2
   · rw [← hcj]; exact zero_lt_one

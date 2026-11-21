@@ -25,13 +25,4 @@ theorem finiteDimensional_Ks_of_finExt {l : ℕ} [Fact l.Prime] (K : FinExt l) (
   unfold Ks
   exact IntermediateField.finiteDimensional_sup _ _
 
-theorem exists_good_situation (l : ℕ) [Fact l.Prime] :
-    ∀ (K : FinExt l) (s : ℕ), 1 ≤ s → (l = 2 → 2 ≤ s) → K.1 ≤ Ks K s →
-      ∃ L0 : FinExt l, ∀ LL : FinExt l, L0.1 ≤ LL.1 → Good K s LL := by
-  intro K s h1 h2 h3
-  have := finiteDimensional_Ks_of_finExt K s
-  refine ⟨⟨IntermediateField.normalClosure ℚ_[l] ↥(Ks K s) (Om l), inferInstance⟩,
-    fun LL hL => ⟨h1, h2, h3, fun τ x => hL ?_⟩⟩
-  exact AlgHom.fieldRange_le_normalClosure τ ⟨x, rfl⟩
-
 end GlobalTheory.MemLoc

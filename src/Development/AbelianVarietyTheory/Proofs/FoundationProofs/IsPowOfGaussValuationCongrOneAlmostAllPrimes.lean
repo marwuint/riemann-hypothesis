@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiagMod
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegrality
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubringGaloisStableOfKummerStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubringGaloisStableOfKummer
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RootFFiniteGaloisIsPGroupStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussValuationUniqueOnLthRootLevelFieldsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemModularUnitsOfRootMemKummerAdjoinStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaussValuationUniqueOnLthRootLevelFields
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemModularUnitsOfRootMemKummerAdjoin
 open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 
@@ -187,7 +187,7 @@ open GlobalTheory.KZ.ES.Exact in
 
 theorem GlobalTheory.KZ.ES.pow_of_gauss_congr_one : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ (l M₀ : ℕ), l.Prime → 0 < M₀ → l ∣ M₀ → ∃ S : Finset ℕ, ∀ q : ℕ, q.Prime → q ∉ S → ∀ V : ValuationSubring Ω, ((q : ℕ) : Ω) ∈ V.nonunits → ∀ W : ValuationSubring X.K, Gauss X.jK V W → ∀ (n k : ℕ) (U : X.Kˣ), U ∈ X.Un (l ^ n) → Lev X (M₀ * l ^ k) U → W.valuation ((U : X.K) - 1) < 1 → ∃ g : X.Kˣ, U = g ^ (l ^ n) := by
   intro Ω _ _ _ ε X hhol l M₀ hl hM₀ hlM
-  obtain ⟨S, hS⟩ := GlobalTheory.T.gaussValuation_unique_on_lthRoot_level_fields ε X hhol l M₀ hl hM₀
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.KZ.ES.UniqRoot.gauss_unique_root ε X hhol l M₀ hl hM₀
   refine ⟨insert l S, fun q hq hqS V hqV W hW n k U hU hlev hU1 => ?_⟩
   rw [Finset.mem_insert, not_or] at hqS
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -206,7 +206,7 @@ theorem GlobalTheory.KZ.ES.pow_of_gauss_congr_one : ∀ {Ω : Type} [Field Ω] [
   have hWL : ∀ x : L, algebraMap L (AlgebraicClosure X.K) x ∈ W' ↔ x ∈ WL := fun x => Iff.rfl
   haveI := normal_levF X M₀
   have hstab : ∀ (τ : L ≃ₐ[levF X M₀] L) (x : L), τ x ∈ WL ↔ x ∈ WL := by
-    refine GlobalTheory.T.mem_valuationSubring_galois_iff_of_kummer_stable l hl (levF X M₀) L h3 (hroot l hl.pos) WL ?_
+    refine _root_.GlobalTheory.valuationSubring_galois_stable_of_kummer l hl (levF X M₀) L h3 (hroot l hl.pos) WL ?_
     rintro θ hθ ⟨a, ha⟩ τ x hx
     obtain ⟨f, hf, hfa⟩ := (mem_levF X M₀ _).1 a.2
     have hθf : (θ : AlgebraicClosure X.K) ^ l = algebraMap X.K (AlgebraicClosure X.K) f := by
@@ -215,7 +215,7 @@ theorem GlobalTheory.KZ.ES.pow_of_gauss_congr_one : ∀ {Ω : Type} [Field Ω] [
       rintro rfl
       rw [map_zero] at hθf
       exact hθ (Subtype.ext (pow_eq_zero_iff hl.ne_zero |>.1 hθf))
-    have hfU : Units.mk0 f hf0 ∈ X.Un l := GlobalTheory.T.mem_modularUnits_of_root_mem_kummer_adjoin ε X (l ^ n) l hm hl.pos θ _
+    have hfU : Units.mk0 f hf0 ∈ X.Un l := _root_.GlobalTheory.KZ.UnRoot.mem_Un_of_root_mem_adjoin ε X (l ^ n) l hm hl.pos θ _
       (rootF_le X (fun g W hW => (GlobalTheory.T.overAffineJLine_comap_sl_gal ε X ε.injective hhol W hW).1 g) _ _ _ U hU θ θ.2) hθf
     let τ' := τ.liftNormal (AlgebraicClosure X.K)
     let σ : AlgebraicClosure X.K →ₐ[Ω] AlgebraicClosure X.K := (τ'.restrictScalars Ω : _ ≃ₐ[Ω] _)

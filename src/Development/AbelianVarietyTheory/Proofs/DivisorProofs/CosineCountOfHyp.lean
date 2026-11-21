@@ -55,24 +55,4 @@ theorem supp_subsingleton {μ₀ : T} (hL : L.Is μ₀) (S : GridChoice W U) (t 
     · rw [hQ] at h; exact absurd h (Finset.notMem_empty _)
   exact cosFam_apply_eq_of_mem_supp hL S t Φ hde hc hP hl hβ hβ'
 
-theorem cosK : GlobalTheory.FunPr.Hypotheses₂ → CosK := by
-  intro _
-  refine ⟨0, fun CF _ => ⟨0, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ => ?_⟩⟩⟩
-  intro Φ
-  have hL := s.core.lev
-  have hde := GlobalTheory.RowClaim.Test.pde_ne_q s
-  have hQ := GlobalTheory.LiftLower.Q_base hL
-  have hsub : (ch.S.supp A.μ0 Φ).Subsingleton := supp_subsingleton hL ch.S.toGridChoice A.μ0 Φ hde hQ
-  have h1 : ((ch.S.supp A.μ0 Φ).ncard : ℝ) ≤ 1 := by
-    haveI : Finite (ch.S.supp A.μ0 Φ) := hsub.finite.to_subtype
-    exact_mod_cast Set.ncard_le_one_iff_subsingleton.mpr hsub
-  have hb : 1 ≤ large₂.sc.b := Real.one_le_exp (Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _)
-  have hX := ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.VolVal.sig_nonneg ch.G
-  have hlog : 0 ≤ Real.log large₂.sc.b := Real.log_nonneg hb
-  have ha : 0 ≤ (D.R.m : ℝ) * aOne ch.G C large₂.sc.b := by
-    unfold aOne
-    have : (0 : ℝ) ≤ C := hC
-    positivity
-  exact h1.trans (Real.one_le_exp ha)
-
 end GlobalTheory.CosCount

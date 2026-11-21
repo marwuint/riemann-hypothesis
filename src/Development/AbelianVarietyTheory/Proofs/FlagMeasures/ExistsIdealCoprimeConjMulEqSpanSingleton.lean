@@ -1,6 +1,6 @@
 import Mathlib
 import Formalism.LocalRingCardinality.DataSpaces
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMemFractionalIdealPrimitiveLocalGeneratorAStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMemFractionalIdealPrimitiveLocalGeneratorA
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeMapComapOfLeConjMaximalCmDataStatement
 
 open NumberField IsDedekindDomain
@@ -16,7 +16,7 @@ theorem exists_ideal_coprime_conj_mul_eq_spanSingleton :
         ∃ α : E, (P : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) * c =
           FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) α := by
   intro F E _ _ _ _ _ _ hcm c hc N hN
-  obtain ⟨a, hac, hQ, hp⟩ := GlobalTheory.T.exists_mem_fractionalIdeal_primitive_local_generator' F E hcm.deg2 c hc N hN
+  obtain ⟨a, hac, hQ, hp⟩ := _root_.GlobalTheory.exists_mem_fractionalIdeal_primitive_local_generator F E hcm.deg2 c hc N hN
 
   have ha : a ≠ 0 := by
     rintro rfl

@@ -467,8 +467,4 @@ structure IndefFace where
 
 attribute [instance] IndefFace.fK IndefFace.nK IndefFace.sK IndefFace.tK
 
-def IndefLink (Ix : ℝ → Type) (F : ∀ x, Ix x → IndefFace) (CH : ℝ)
-    (Q : ∀ x (i : Ix x), ℝ → DefSub (F x i).A → (HeightOneSpectrum (𝓞 (F x i).K) → (F x i).Bs.Tup) → Prop) : Prop :=
-  ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ i : Ix x, ∃ P : IndefPkg (F x i).A (F x i).fc C CH, Q x i C P.Zs P.core.base.μ
-
 end Formalism.L2.Indef

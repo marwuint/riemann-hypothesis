@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioCover
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRulesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechOneCocycleAffineOpenIsCoboundaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationPreimageValueRules
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechOneCocycleAffineOpenIsCoboundary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfValEqZero
 
 set_option autoImplicit false
 
@@ -20,7 +20,7 @@ theorem exists_section_of_isReg_sub : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : �
     (∀ i j, IsReg u.ex (W i ⊓ W j) (h i - h j)) → ∀ U : A.left.affineOpens, ∃ k : (Fin g → ℂ) → ℂ,
     ∀ i, IsReg u.ex (U.1 ⊓ W i) (k - h i) := by
   intro A _ g L u hA K W h hcov hreg U
-  obtain ⟨-, -, -, -, hinf, -, -, -, hres, he, -, -⟩ := GlobalTheory.T.uniformisation_preimage_value_rules A g L u
+  obtain ⟨-, -, -, -, hinf, -, -, -, hres, he, -, -⟩ := _root_.GlobalTheory.CechPer.pre_val_rules A g L u
   have hres' : ∀ (V V' : A.left.Opens) (hle : V' ≤ V) (b : Γ(A.left, V)), ∀ z ∈ pre u.ex V',
       val u.ex V' ((A.left.presheaf.map (homOfLE hle).op).hom b) z = val u.ex V b z :=
     fun V V' hle b z hz ↦ hres V V' hle b z hz
@@ -63,7 +63,7 @@ theorem exists_section_of_isReg_sub : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : �
         (U.1 ⊓ W i) ⊓ (U.1 ⊓ W j) ⊓ (U.1 ⊓ W k) ≤ (U.1 ⊓ W i) ⊓ (U.1 ⊓ W k))).op).hom (f i k) := by
     intro i j k
     rw [← sub_eq_zero]
-    refine GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA _ _ fun z hz ↦ ?_
+    refine _root_.GlobalTheory.ValInj.eq_zero_of_val_eq_zero A g L u hA _ _ fun z hz ↦ ?_
     have hz3 := hz
     rw [hinf, hinf, hinf, hinf, hinf] at hz3
     rw [vsub _ _ _ z hz, vadd _ _ _ z hz, hres' _ _ _ _ z hz, hres' _ _ _ _ z hz, hres' _ _ _ _ z hz,
@@ -73,7 +73,7 @@ theorem exists_section_of_isReg_sub : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : �
     ring
   have hcov' : U.1 ≤ ⨆ i, U.1 ⊓ W i := by
     rw [← inf_iSup_eq, hcov, inf_top_eq]
-  obtain ⟨a, ha⟩ := GlobalTheory.T.cechOneCocycle_affineOpen_isCoboundary A.left U.1 U.2 K (fun i ↦ U.1 ⊓ W i) (fun i ↦ inf_le_left) hcov' f hcoc
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.CechPer.cech_one_cocycle_split A.left U.1 U.2 K (fun i ↦ U.1 ⊓ W i) (fun i ↦ inf_le_left) hcov' f hcoc
   have key : ∀ i j z, z ∈ pre u.ex (U.1 ⊓ W i) → z ∈ pre u.ex (U.1 ⊓ W j) →
       h i z - val u.ex _ (a i) z = h j z - val u.ex _ (a j) z := by
     intro i j z hi hj

@@ -6,8 +6,8 @@ import GroundTheory.AutomorphicForms.CuspidalDiscreteness.ExistsNormRconvLeSiege
 import GroundTheory.AutomorphicForms.ReductionSiegel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsCompactDetBandSiegelSetStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjFiniteUnipotentMemOpenSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjArchUnipotentMemNhdsOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalNormLeOfOscillationScaledUnipFDStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjArchUnipotentMemNhdsOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspidalNormLeOfOscillationScaledUnipFD
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 open scoped NumberField.AdeleRing
 
@@ -34,12 +34,12 @@ theorem infConj : ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (U : Set 
     ∃ δ : ℝ, 0 < δ ∧ ∀ (x : GA E a) (P : BlockIx a r → Ad E), (∀ p, (P p).2 = 0) →
       ‖GroundTheory.Automorphic.CuspidalSpectrum.archMat E a (((x⁻¹ : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) *
         GroundTheory.Automorphic.AutomorphicForm.blockEntry P * (x : Matrix (Fin a) (Fin a) (Ad E)))‖ ≤ δ →
-      x⁻¹ * unip P * x ∈ U := GlobalTheory.T.conj_archUnipotent_mem_nhds_one
+      x⁻¹ * unip P * x ∈ U := _root_.GlobalTheory.InfConj.conj_unip_mem_nhds
 
 theorem meanZero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ), 0 < r → r < a →
     ∀ φ : GA E a → ℂ, (∀ γ g, φ (ratGL E a γ * g) = φ g) → IsCuspidal φ → Continuous φ →
     ∀ M : ℕ, 0 < M → ∀ (x : GA E a) (B : ℝ),
-      (∀ X ∈ GroundTheory.Automorphic.scaledUnipFD E a r M, ‖φ (unip X * x) - φ x‖ ≤ B) → ‖φ x‖ ≤ B := GlobalTheory.T.cuspidal_norm_le_of_oscillation_scaledUnipFD
+      (∀ X ∈ GroundTheory.Automorphic.scaledUnipFD E a r M, ‖φ (unip X * x) - φ x‖ ≤ B) → ‖φ x‖ ≤ B := _root_.GlobalTheory.CuspTail.norm_le_of_osc_scaledUnipFD
 
 section Band
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}

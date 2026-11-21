@@ -135,26 +135,6 @@ def pureMon {ι : Type v} [DecidableEq ι] (l : ℕ) (i j : ι) (α β : ℕ) : 
 
 end Entries
 
-def LemmaR : Prop :=
-  ∀ (K : Type u) [NormedField K] [IsUltrametricDist K] [CharZero K] (l d N0 N1 : ℕ) [NeZero d],
-    l.Prime → Odd l → 2 ≤ d → Even d → ‖(l : K)‖ < 1 →
-    ∀ (K0 : Subfield K), Unram l K0 → ∀ ζ : K, IsPrimitiveRoot ζ (l ^ d - 1) →
-    ∀ be : MvPowerSeries (ZMod d) K, BHyp l d K0 ζ be →
-    ∀ (ι : Type v) [Fintype ι] [DecidableEq ι] (lt : ι → ZMod d) (M : ZV d N0 N1 → ι → K),
-      (∀ x i, ‖M x i‖ ≤ 1) → (∀ x i, M x i ≠ 0 → lt i = x.1) →
-    ∀ g : ZV d N0 N1 → MvPowerSeries (ZV d N0 N1) K, (∀ x, MvPowerSeries.constantCoeff (g x) = 0) →
-      (∀ x, MvPowerSeries.subst g (entLog (K := K) l x) = MvPowerSeries.X x) →
-    ∀ U : MvPowerSeries (ZV d N0 N1) K, Integral U →
-    ∀ (ε : K), (ε = 1 ∨ ε = -1) → ∀ (sig : ι → ℝ), (∀ i, 0 ≤ sig i) → ∀ κ : ι →₀ ℕ,
-      (∀ (i j : ι) (α β : ℕ), pureMon l i j α β ≤ κ →
-        ¬ MonoWtGe ‖(l : K)‖ (fun _ => rho l) (1 / ((l : ℝ) - 1)) (pureMon l i j α β)
-            (MvPowerSeries.coeff (pureMon l i j α β) (bSum M be)) →
-        1 ≤ (l : ℝ) ^ α * sig i + (l : ℝ) ^ β * sig j) →
-      ‖((mfact κ : ℕ) : K) * MvPowerSeries.coeff κ
-          (MvPowerSeries.subst (linSub M) (MvPowerSeries.subst g U) * mvExp (ε • bSum M be))‖ ≤
-        ‖(l : K)‖ ^ ((∑ i, (κ i : ℝ) * (gam l - sig i)) -
-          (Fintype.card ι : ℝ) * (Real.logb l (κ.degree : ℝ) + 1))
-
 def ThmARadii : Prop :=
   ∀ (l d : ℕ) [NeZero d], 3 ≤ l → 2 ≤ d → Even d →
     ∀ (TT : Finset (ZMod d)) (sig eps : ZMod d → ℝ), IsDualAll l d sig → (∀ s, 0 ≤ sig s) →

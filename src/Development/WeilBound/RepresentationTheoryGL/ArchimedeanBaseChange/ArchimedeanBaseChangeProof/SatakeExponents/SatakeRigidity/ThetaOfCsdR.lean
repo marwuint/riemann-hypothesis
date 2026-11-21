@@ -19,15 +19,8 @@ def StrSat : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N a
     (∀ k, (CG.mk (P.twist (ν k))).HasSat w (b k)) ∧ GlobalTheory.LGrp.IsSpherical (σ w).ρ (GlobalTheory.LFun.KGL w N) ∧
       GlobalTheory.LFun.HasSatGL w (σ w).ρ (∑ k, b k)
 
-def ThetaOfCsdR : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (D : Datum E n), (pre D).Reg →
-  (pre D).ThetaStable
-
 def RStrings : Prop := RegPart → Strings
 def RCuspCsd : Prop := GlobalTheory.Published.JacquetShalikaRigidity → StrSat → Strings → CuspCsd
-def RTheta : Prop := StrSat → Strings → ThetaOfCsdR
-def RSplit : Prop := WeightEx → StrSat → Strings → SplitSat
-def RGal : Prop := GlobalTheory.Published.GaloisRepOfPolarizedPair → GlobalTheory.Published.LocalLanglandsGL → GlobalTheory.Published.JacquetShalikaRigidity →
-  StrSat → Strings → CuspCsd → GalStep
 def RLoc : Prop := GlobalTheory.Published.JacquetShalikaRigidity → StrSat → Strings → LocRigid
 
 end PositivityTheory.Rg.BcB.F.Rig

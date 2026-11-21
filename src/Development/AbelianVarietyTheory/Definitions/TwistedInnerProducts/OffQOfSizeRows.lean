@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgrou
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.CuspAlongSmoothRows
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaSourceAction
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsThetaFam
-import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.OwnPrimeIntegralOfBqd
+import Formalism.LocalToGlobal.ProjectiveLattices.FullExists
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
 import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.FunKit
 
 noncomputable section
@@ -112,10 +113,6 @@ def CoreModels : Prop := All fun {D} _ _ {sc} {G} W _ => ∀ i, i ≤ D.R.m →
 def RowRapid : Prop := Gap fun {D} _ {L} _ _ W M => ∀ M₀ : DSModel (Yc D 0) (parB (Ptw D) 0), cart M₀ = W.cart (.grid 0 0) →
   ∀ t ∈ Rows L W.θ M₀, ∀ w, RapidRow W M (t w) ∧ ∀ ρ Φ, ThetaConv W M ρ Φ (t w)
 
-def Factor : Prop := Gap fun {D} _ {L} _ {G} W M => ∀ M₀ : DSModel (Yc D 0) (parB (Ptw D) 0), cart M₀ = W.cart (.grid 0 0) →
-  ∀ w : SmT M₀, ∃ a : G.RealVec → Module.Dual ℂ (coefPlus G W.θ).W → ℂ, ∀ t ∈ Rows L W.θ M₀, ∀ Ψ ∈ Cols G W.θ, ∀ Φ,
-    ∃ l : ℂ, ∀ ρ ξ, fPsiPhi W M ρ ξ Ψ Φ (t w) = a ρ ξ * l
-
 def PeriodNe : Prop := Ev fun {D} _ {L} {sc} {G} W M => ∀ (M₀ : DSModel (Yc D 0) (parB (Ptw D) 0))
   (MP : DSModel (G.V (.core 0)) (Node.par D sc.cGap (.core 0))), ∀ t ∈ Rows L W.θ M₀, t ≠ 0 → ∀ w : SmT M₀, w ≠ 0 →
     ∃ y ∈ CoreForms G W.θ 0 MP, ∃ v ∈ KF MP, per0 G M (y v) (t w) ≠ 0
@@ -137,12 +134,6 @@ theorem offQ_of_sizeRows {large₂ : SizeData₂ D} (h : SizeRows large₂) : Of
 
 theorem dep_vac (i : ℕ) (h : i < D.R.m) : Dep W (.chi i 0) (W.vac i) :=
   ⟨(W.vac_is i h).2.theta, fun u hu => (W.vac_is i h).2.lat.1 u hu.1, fun e he u hu => (W.vac_is i h).2.lat.2 e he u hu.1⟩
-
-theorem All.gap {Q : GP} (h : All Q) : Gap Q := fun D q _ T L μ0 hL sc _ G W M hM => h D q T L μ0 hL sc G W M hM
-
-theorem Gap.ev {Q : GP} (hs : SizeGap) (h : Gap Q) : Ev Q := fun ε _ _ => by
-  obtain ⟨x, hx⟩ := hs ε
-  exact ⟨x, fun D large₂ e a b T L μ0 hL G W M hM => h D (offQ_of_sizeRows b) (hx D large₂ e a b) T L μ0 hL _ rfl G W M hM⟩
 
 end GlobalTheory.SepRows
 

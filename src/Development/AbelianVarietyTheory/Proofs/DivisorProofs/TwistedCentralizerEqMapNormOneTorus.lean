@@ -100,7 +100,7 @@ theorem herm_sub_left (x y z w : B.A) : B.herm x (y - z) w = B.herm x y w - B.he
 
 theorem herm_nondeg (hP : B.P.Separable) (β : B.Aˣ) (x : B.A) (h : ∀ z, B.herm β x z = 0) : x = 0 := by
   have h0 : (β : B.A) * x = 0 := by
-    refine GlobalTheory.T.eq_zero_of_trace_mul_of_separable_generated K B hP (GlobalTheory.T.exists_aeval_eq_of_charpoly_separable_involution K B hP) _ fun y => ?_
+    refine _root_.GlobalTheory.UnitLemma.TraceNondeg.eq_zero_of_trace_mul_eq_zero K B hP (_root_.GlobalTheory.UnitLemma.InvAlg.exists_aeval_eq_of_separable K B hP) _ fun y => ?_
     have := h (B.σ y)
     simpa [InvAlg.herm, B.σ_σ] using this
   calc x = ((β⁻¹ : B.Aˣ) : B.A) * ((β : B.A) * x) := by rw [← mul_assoc, Units.inv_mul, one_mul]
@@ -132,7 +132,7 @@ theorem isometry_eq_mul (hP : B.P.Separable) (β : B.Aˣ) (ε : B.A) (hε : ε =
       exact neg_injective this
   have hall : ∀ c y, φ (c * y) = c * φ y := by
     intro c
-    obtain ⟨f, rfl⟩ := GlobalTheory.T.exists_aeval_eq_of_charpoly_separable_involution K B hP c
+    obtain ⟨f, rfl⟩ := _root_.GlobalTheory.UnitLemma.InvAlg.exists_aeval_eq_of_separable K B hP c
     induction f using Polynomial.induction_on with
     | C e =>
       intro y

@@ -536,13 +536,5 @@ end Formalism.FourierDecayAlt.P.Mx2
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem level_function_relations : Formalism.FourierDecayAlt.M.LevFns := Mx2.levFns
-theorem level_p_relations : Formalism.FourierDecayAlt.M.LevP := Mx2.levP
-theorem level_pb_relations : Formalism.FourierDecayAlt.M.LevPb := Mx2.levPb
-theorem level_pp_relations : Formalism.FourierDecayAlt.M.LevPP := Mx2.levPP
-theorem level_nabla_relations : Formalism.FourierDecayAlt.M.LevNab := Mx2.levNab
-theorem level_nabla_star_relations : Formalism.FourierDecayAlt.M.LevNabs := Mx2.levNabs
 theorem level_exists_model : Formalism.FourierDecayAlt.M.LevelExists := Mx2.levelExists
-theorem level_assemble : Formalism.FourierDecayAlt.M.LevelAssemble := Mx2.levelAssemble
-
 end Formalism.FourierDecayAlt.P

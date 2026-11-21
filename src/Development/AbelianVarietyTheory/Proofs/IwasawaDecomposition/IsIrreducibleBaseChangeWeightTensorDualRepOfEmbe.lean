@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInjective
 import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.TwistedCharacterValue
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsotypicFactorOfIsIrreduciblePiFiniteGroups
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContragredientIsIrreducibleFiniteDimensionalStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightTensorRepOfEmbeddingsIsIrreducibleStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContragredientIsIrreducibleFiniteDimensional
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightTensorRepOfEmbeddingsIsIrreducible
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 
@@ -208,9 +208,9 @@ theorem isIrreducible_bcRep_wtRepF : ∀ (L : Type) [Field L] [NumberField L] [I
       (Formalism.IndefR.NX.bcRep (K' := K') (GlobalTheory.AlgWtF.wtRepF emb lam)).IsIrreducible := by
   intro L _ _ _ n ι _ K _ _ emb lam hCM K' _ _
   haveI : CharZero K' := charZero_of_injective_algebraMap (algebraMap K K').injective
-  have h1 := GlobalTheory.T.weightTensorRepOfEmbeddings_isIrreducible L n ι K' (fun τ => (algebraMap K K').comp (emb τ)) lam (cmDist_comp emb hCM)
+  have h1 := _root_.GlobalTheory.AlgWtF.tenRepF_isIrreducible L n ι K' (fun τ => (algebraMap K K').comp (emb τ)) lam (cmDist_comp emb hCM)
   have h2 := isIrreducible_bcRep_tenRepF (K' := K') emb lam h1
-  have h3 := GlobalTheory.T.contragredient_isIrreducible_finiteDimensional K' _ _ _ h2
+  have h3 := _root_.GlobalTheory.contragredient_isIrreducible K' _ _ _ h2
   exact isIrreducible_bcRep_dual _ h3
 
 end GlobalTheory.AlgWtBC

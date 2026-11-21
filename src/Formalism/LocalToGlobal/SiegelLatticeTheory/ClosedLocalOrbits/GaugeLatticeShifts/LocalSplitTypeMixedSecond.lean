@@ -450,15 +450,6 @@ theorem modMat_apply' (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w :
   rw [ptEntry_eq, pSig_map, pTau_map _ _ _ _ (by rw [w.2.2]; exact a.2)]
   simp only [sgF, Fin.ext_iff]
 
-theorem cell_decomp (Y : TermTie D) {u u' : D.what₂.Word} (γ : D.s.Term u u') (hG : D.s.Gterm γ ≠ 0)
-    (hrel : D.s.relevant γ) :
-    ∃ L U : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, IsLo L ∧ IsUp U ∧
-      ZhatL (Y.fl γ) (Y.fl' γ) * Sg D.host.E D.R.rS = L * ptMat (D.s.ptOf γ) * U := by
-  obtain ⟨L, U, hL, hU, h⟩ := Y.pt_cell γ hG hrel
-  refine ⟨L, U, ⟨fun a => (hL a a).2 rfl, fun a b hab => (hL a b).1 hab⟩,
-    ⟨fun a => (hU a a).2 rfl, fun a b hab => (hU b a).1 hab⟩, ?_⟩
-  rw [← zhatOM_eq]; exact h
-
 theorem inv_pow_eq (Z : LocDat D) (p : PlF D) (k : ℕ) :
     Ring.inverse ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ k) =
       algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((yP Z p)⁻¹ ^ k) := by
@@ -947,10 +938,6 @@ theorem termLoc_atPt_frame {D : D7} (Z : LocDat D) (Λ : Submodule (𝓞 D.host.
   · exact atPt_ord Z Λ F F' Tn T'n w hcell p hR hM
   · exact atPt_typed Z Λ F F' Tn T'n w p sg hR g hM hAg.1 hAg.2 hcell
 
-theorem termLoc_atPtC {D : D7} (Z : LocDat D) (Y : TermTie D) (u u' : D.what₂.Word) : AtPtC D Z Y u u' := by
-  intro γ _ hG hrel p
-  exact termLoc_atPt_frame Z (Y.abelian₂ γ) (Y.fl γ) (Y.fl' γ) (Tu D u) (Tu D u') (D.s.ptOf γ) (Y.pt_cell γ hG hrel) p
-
 end Formalism.L2.SG.Pf
 
 namespace Formalism.L2.SG.Pf.AtPt
@@ -1052,39 +1039,8 @@ theorem dmin_eq' {m : ℕ} (w : Point D.host.E m) (l : ℕ) : Dmin w l = leadMin
 
 theorem conjF_star (x : D.host.E) : D.conjF x = star x := (D.conjF_eq x).trans (Formalism.BasicNotions.Examples₂.star_eq_conj (H := D.host) x).symm
 
-theorem gval_eq_aux (Y : TermTie D) {u u' : D.what₂.Word} (γ : D.s.Term u u') (hG : D.s.Gterm γ ≠ 0)
-    (hrel : D.s.relevant γ) : Gval (Y.fl γ) (Y.fl' γ) = Gpt (D.mem u).A.T (D.mem u').A.T (D.s.ptOf γ) := by
-  obtain ⟨L, U, hL, hU, hc⟩ := cell_decomp Y γ hG hrel
-  have key : ∀ l (hl : l ≤ D.R.rS + 1), leadMinorE (ZhatL (Y.fl γ) (Y.fl' γ)) l * epsL (D := D) D.R.rS l hl =
-      Dmin (D.s.ptOf γ) l := by
-    intro l hl
-    rw [← leadMinor_Sg, hc, leadMinor_LMU hL hU, dmin_eq']
-  have n1 := norm_eq_of _ _ _ (key (D.R.rS + 1) le_rfl) (epsL_sq _ _) (star_epsL _ _)
-  have n2 := norm_eq_of _ _ _ (key D.R.rS (Nat.le_succ _)) (epsL_sq _ _) (star_epsL _ _)
-  simp only [Gval, Gflag, Gpt, conjF_star]
-  unfold Dl
-  rw [n1, n2]
-  rfl
-
-variable (D) in
-
-def PtOfConv (u u' : D.what₂.Word) : Prop :=
-  ∀ γ : D.s.Term u u', ¬ (D.s.Gterm γ ≠ 0 ∧ D.s.relevant γ) → Gpt (D.mem u).A.T (D.mem u').A.T (D.s.ptOf γ) = 0
-
 end Formalism.L2.SG.Pf.AtPt
 
 namespace Formalism.L2.SG.Pf
-
-open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermLoc Formalism.L2.SG.Pf.AtPt
-
-theorem termLoc_gPtC_of {D : D7} (Y : TermTie D) (u u' : D.what₂.Word) (hconv : PtOfConv D u u') : GPtC D u u' := by
-  intro γ
-  constructor
-  · rintro ⟨hG, hrel⟩
-    rw [← gval_eq_aux Y γ hG hrel, ← Y.G_eq γ]
-    exact (map_ne_zero _).2 hG
-  · intro h
-    by_contra hn
-    exact h (hconv γ hn)
 
 end Formalism.L2.SG.Pf

@@ -137,13 +137,6 @@ private lemma isPSD_comp_of_isPSD_image {X Y : Type} {inst : DecidableEq Y} (F :
   rw [key]
   exact hk'
 
-theorem top_is_local_kernel : Formalism.FourierDecayAlt.J.TopIsLocalKernel := by
-  intro K _ R ψ E α _ m σ u τ₀ η Θ hΘ t c hc h h' hh hh'
-  have e : (topSys R ψ σ u τ₀ η Θ).N t t h h' = Θ ((u : K) * σ t - τ₀) (η h) (η h') := by
-    simp [topSys]
-  rw [e, ← hc]
-  exact hΘ c (η h) (η h') hh hh'
-
 open Classical in
 
 theorem top_unit_heads : Formalism.FourierDecayAlt.J.TopUnitHeads := by

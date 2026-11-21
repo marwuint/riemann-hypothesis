@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.DeterminantTwistRowA
 import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ClsRec
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.SelfDualAtColLevel
 import Formalism.LocalToGlobal.GroupLattices.TrivialTransfer.GramTotallyDefinite
-import Formalism.LocalToGlobal.GroupLattices.FockModels.WeylDim
+import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 import Formalism.LocalToGlobal.GroupLattices.FockModels.Cartan
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZLevB
 import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.WeylDimShift

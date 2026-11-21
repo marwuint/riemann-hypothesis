@@ -1,4 +1,7 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLevelOn
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import Development.AbelianVarietyTheory.Definitions.Divisors.Rosati
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToRingActOpOfRingAct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieRankAt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleLatticeTorsionHom
@@ -9,6 +12,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsAdditive
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveOfTrivAxes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveLiftIff
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT
 open GlobalTheory.ZM GlobalTheory.SiegelTor

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalSubgroupContainingHyperspecialEqTopUnramifStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.VacuumTranslateRelationMapPreservingVacuaStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalSubgroupContainingHyperspecialEqTopUnramif
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.VacuumTranslateRelationMapPreservingVacua
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
 open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx
@@ -29,7 +29,7 @@ theorem locPair_extend_vac : ∀ (L : Type) [Field L] [CharZero L] [Valued L (Wi
   have hker : LinearMap.ker T ≤ LinearMap.ker T' := by
     intro d hd
     rw [LinearMap.mem_ker] at hd ⊢
-    have key := GlobalTheory.T.vacuumTranslate_relation_map_preserving_vacua L ϖ σ q δ n n' JS JT ψ M ρ ω hP φ hφ (d.mapRange V.subtype (map_zero _))
+    have key := _root_.GlobalTheory.Hk3.locVac_rel_map L ϖ σ q δ n n' JS JT ψ M ρ ω hP φ hφ (d.mapRange V.subtype (map_zero _))
       (fun x => by rw [Finsupp.mapRange_apply]; exact (d x).2)
     rw [Finsupp.sum_mapRange_index (fun x => map_zero _), Finsupp.sum_mapRange_index (fun x => by simp)] at key
     exact key hd
@@ -146,9 +146,9 @@ theorem locPair_act_vac_comb : ∀ (L : Type) [Field L] [CharZero L] [Valued L (
     simp only [Module.End.mul_apply] at e1 e2 e3 e4 ⊢
     rw [e3, e1, hP.fix g h hg hh _ hBs, e2, hP.fix g h hg hh _ hs, e4]
   have hTop : N = ⊤ := by
-    have hS := GlobalTheory.T.normal_subgroup_containing_hyperspecial_eq_top_unramifiedUnitary L ϖ σ q n JS hP.unr hP.odd hP.intS hP.hermS (N.comap (MonoidHom.inl _ _)) (hN.comap _)
+    have hS := _root_.GlobalTheory.NormalHyp.normal_closure_hyp L ϖ σ q n JS hP.unr hP.odd hP.intS hP.hermS (N.comap (MonoidHom.inl _ _)) (hN.comap _)
       (fun g hg => Subgroup.mem_comap.mpr (hInt g 1 hg (by simpa using (Formalism.UG.GLint (Fin n') (Formalism.UG.intL L)).one_mem)))
-    have hT := GlobalTheory.T.normal_subgroup_containing_hyperspecial_eq_top_unramifiedUnitary L ϖ σ q n' JT hP.unr hP.odd hP.intT hP.hermT (N.comap (MonoidHom.inr _ _)) (hN.comap _)
+    have hT := _root_.GlobalTheory.NormalHyp.normal_closure_hyp L ϖ σ q n' JT hP.unr hP.odd hP.intT hP.hermT (N.comap (MonoidHom.inr _ _)) (hN.comap _)
       (fun h hh => Subgroup.mem_comap.mpr (hInt 1 h (by simpa using (Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)).one_mem) hh))
     rw [eq_top_iff]
     rintro ⟨g, h⟩ -

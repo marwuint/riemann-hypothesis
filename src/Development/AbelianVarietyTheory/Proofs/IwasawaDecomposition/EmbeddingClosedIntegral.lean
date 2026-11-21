@@ -38,15 +38,6 @@ theorem norm_le_one (f : O →+* PadicAlgCl l)
   rw [← norm_neg, ← h1, norm_pow] at h2
   exact lt_irrefl _ h2
 
-theorem norm_unit (f : O →+* PadicAlgCl l)
-    (hf : ∀ z : ℤ_[l], f (algebraMap ℤ_[l] O z) = algebraMap ℚ_[l] (PadicAlgCl l) (z : ℚ_[l]))
-    {a : O} (ha : IsUnit a) : ‖f a‖ = 1 := by
-  obtain ⟨b, hb⟩ := ha.exists_right_inv
-  have h : ‖f a‖ * ‖f b‖ = 1 := by rw [← norm_mul, ← map_mul, hb, map_one, norm_one]
-  refine le_antisymm (norm_le_one f hf a) ?_
-  calc (1 : ℝ) = ‖f a‖ * ‖f b‖ := h.symm
-    _ ≤ ‖f a‖ := mul_le_of_le_one_right (norm_nonneg _) (norm_le_one f hf b)
-
 open IsLocalRing Topology in
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 theorem _root_.GlobalTheory.CoefEmbed.norm_prime_lt_one : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by

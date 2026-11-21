@@ -216,25 +216,4 @@ theorem kr_rule (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ
 
 end rule
 
-section ring
-
-open Classical Formalism.FourierDecayAlt.P.CapelliWordSumExpansion
-
-variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-  [InnerProductSpace ℂ Wq]
-
-def KrW (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (U₀ : Set (B.Mat k r)) (hU₀ : IsOpen U₀)
-    (hK : ∀ g ∈ U₀, g ∈ B.GV k r → Loc (⊤ : ℕ∞) (Kr Bs F) g) : Wsm (E := Wq →L[ℂ] Wp) U₀ :=
-  ⟨fun g => if g ∈ U₀ ∧ g ∈ B.GV k r then Kr Bs F g else 0, fun g hg hgG =>
-    loc_of_eq (hK g hg hgG) hU₀ hg (fun x hx hxG => by simp [hx, hxG])⟩
-
-def LaK (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (U₀ : Set (B.Mat k r)) (hU₀ : IsOpen U₀)
-    (hK : ∀ g ∈ U₀, g ∈ B.GV k r → Loc (⊤ : ℕ∞) (Kr Bs F) g) (x₀ : B.Mat k r) :
-    Module.End ℂ (Wsm (E := Wq →L[ℂ] Wp) U₀) →ₗ[ℂ] (Wq →L[ℂ] Wp) where
-  toFun X := (X (KrW Bs F U₀ hU₀ hK)).1 x₀
-  map_add' X Y := rfl
-  map_smul' c X := rfl
-
-end ring
-
 end Formalism.FourierDecayAlt.P.PBG

@@ -1,7 +1,7 @@
 import Mathlib
 import GroundTheory.Brauer.Degree
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankIInfKerEqOfIsBaseChangeFamily
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixEqAevalOfCommuteStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixEqAevalOfCommute
 
 open Module Polynomial TensorProduct
 
@@ -96,7 +96,7 @@ theorem centralizer_eq_adjoin : ∀ (F B : Type) [Field F] [Ring B] [Algebra F B
     have hcomm : Commute (e y) N := by
       change e y * e x = e x * e y
       rw [← map_mul, ← map_mul, hy']
-    obtain ⟨q, hq⟩ := GlobalTheory.T.matrix_eq_aeval_of_commute_of_charpoly_separable k N (e y) hNsep hcomm
+    obtain ⟨q, hq⟩ := _root_.GlobalTheory.CentralizerSeparable.matrix_eq_aeval_of_commute k N (e y) hNsep hcomm
     have : y = aeval x q := by
       apply e.injective
       rw [hq, hN, ← aeval_algHom_apply]

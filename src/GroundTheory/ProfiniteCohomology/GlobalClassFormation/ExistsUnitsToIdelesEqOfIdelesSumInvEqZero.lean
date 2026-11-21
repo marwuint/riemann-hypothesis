@@ -144,12 +144,6 @@ theorem sumPlaceInv_eq_zero_iff (y : ⨁ v : Place K.1, localGaloisCohomology K 
   · rintro ⟨x, rfl⟩
     exact brauerSumInv_eq_zero ι x
 
-theorem albertBrauerHasseNoether :
-    Function.Injective (brauerLocal ι) ∧
-      (∀ y : ⨁ v : Place K.1, localGaloisCohomology K 2 v, sumPlaceInv K y = 0 ↔ ∃ x, brauerLocal ι x = y) ∧
-      Function.Surjective (sumPlaceInv K) :=
-  ⟨brauerLocal_injective ι, sumPlaceInv_eq_zero_iff ι, sumPlaceInv_surjective K⟩
-
 end
 
 end GroundTheory.ProfCoh

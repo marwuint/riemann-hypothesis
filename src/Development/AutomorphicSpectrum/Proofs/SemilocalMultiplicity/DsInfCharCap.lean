@@ -37,14 +37,6 @@ namespace GlobalTheory.CompanionTheory.TransS.InfChar
 
 open CompanionTheory.D.DSIC
 
-theorem hCAR : CAR := GlobalTheory.CompanionTheory.ChainCAR.car
-theorem hBdFacts : BdFacts := GlobalTheory.CompanionTheory.KoszulBd.bdFacts hCAR
-theorem hGFacts : GFacts := GlobalTheory.CompanionTheory.GopEntries.gFacts
-theorem hKoszul : Koszul := GlobalTheory.CompanionTheory.DSICKoszul.koszul hCAR
-theorem hVerma : Verma := GlobalTheory.CompanionTheory.DSVerma.verma
-theorem hCover : Cover := GlobalTheory.CompanionTheory.DSCover.cover hKoszul hVerma
-theorem hCO0 : CapelliDeterminantBlockProduct := GlobalTheory.CompanionTheory.CapelliBlocks.co0
-theorem hCO : CO := GlobalTheory.CompanionTheory.CasselmanOsborne.co_of hBdFacts hGFacts hCover hCO0
 theorem hLowSpan : LowSpan := GlobalTheory.CompanionTheory.KLowSpan.lowSpan_holds
 theorem hHWMap : HWMap := GlobalTheory.CompanionTheory.DSICHWMap.hwMap_of_lowSpan hLowSpan
 theorem hSmLin : SmLin := GlobalTheory.CompanionTheory.DSSmLin.smLin

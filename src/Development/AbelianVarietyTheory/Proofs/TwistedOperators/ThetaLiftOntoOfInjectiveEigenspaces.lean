@@ -1,9 +1,10 @@
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Formalism.LocalToGlobal.IndefiniteReal.NormalDecomposition.PairingCommutesLiftOperators
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfMemBoth
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodFormsLeRangeThetaAdjointBaseTupleStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KernelProjectionPreservesGoodFormsBaseLevelStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftInjectiveGoodPartJointEigenspaceStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodFormsLeRangeThetaAdjointBaseTuple
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KernelProjectionPreservesGoodFormsBaseLevel
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftInjectiveGoodPartJointEigenspace
 import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
 import Formalism.LocalToGlobal.IndefiniteReal.NormalDecomposition.LiftHeckeOperators
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
@@ -22,7 +23,7 @@ theorem onto_red : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Typ
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hok hC hEx hLI hUI hH hPG hLU hW hTh j
   exact GlobalTheory.OntoLinAlg.ontoParts_of _ (fun i x => hTh.intw j _ i x)
     (U2.adjoint_closed_lift_operators hH (RealDat3.kFormL_of hC.base.models) (RealDat3.jIsoL_of hC.base.models) j)
-    (GlobalTheory.T.good_forms_le_range_theta_adjoint_base_tuple R F hok hC hEx hUI hH hPG hLU j) (GlobalTheory.T.kernelProjection_preserves_good_forms_base_level R F hok hC hEx hH hPG j)
-    (GlobalTheory.T.thetaLift_injective_goodPart_jointEigenspace R F hok hC hEx hLI hH hPG j)
+    (_root_.GlobalTheory.LiftOntoGood.goodW_le_range R F hok hC hEx hUI hH hPG hLU j) (_root_.GlobalTheory.kerProj_goodL R F hok hC hEx hH hPG j)
+    (_root_.GlobalTheory.InjEigen.inj_eig R F hok hC hEx hLI hH hPG j)
 
 end GlobalTheory.LiftOntoRed

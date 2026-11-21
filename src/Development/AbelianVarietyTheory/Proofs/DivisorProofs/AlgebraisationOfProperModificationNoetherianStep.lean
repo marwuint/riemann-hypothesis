@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraiseSystemInAlgebraisingClosedSubschemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupportStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraiseSystemInAlgebraisingClosedSubscheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupport
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperInfIdealSheafImageStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafEqOfReductionAgreeOnAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafEqOfReductionAgreeOnAffineOpen
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.FormalAlg
 
@@ -21,7 +21,7 @@ theorem alg_of_modification : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (
 
   have hsys' : IsSystem (π ≫ f) I (fun e => (t e).comap π) := fun e => by
     simp only
-    rw [ht e, Scheme.IdealSheafData.comap_sup, (GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support).1]
+    rw [ht e, Scheme.IdealSheafData.comap_sup, (_root_.GlobalTheory.FormalAlg.baseIdeal_calculus).1]
   have hp' : ∀ e, IsProper (((t e).comap π).subschemeι ≫ π ≫ f) := fun e => by
     have h1 : ((t e).comap π).subschemeι ≫ π ≫ f =
         ((t e).comapIso π).hom ≫ pullback.snd π (t e).subschemeι ≫ (t e).subschemeι ≫ f := by
@@ -35,9 +35,9 @@ theorem alg_of_modification : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (
     exact ⟨⟨V, hV⟩, hx⟩
   obtain ⟨s, hs⟩ := isCompact_univ.elim_finite_subcover (fun V : W.affineOpens => (V.1 : Set W))
     (fun V => V.1.2) (fun x _ => Set.mem_iUnion.2 (hcov x))
-  choose k₀ hk₀ using GlobalTheory.T.idealSheaf_eq_of_reduction_agree_on_affineOpen R I W W' f π U hπ hiso K hK t ht
+  choose k₀ hk₀ using _root_.GlobalTheory.FormalAlg.ideal_eq_of_reduces_affine R I W W' f π U hπ hiso K hK t ht
   let k := s.sup k₀
-  obtain ⟨T'', hT''p, hT''r⟩ := GlobalTheory.T.algebraise_system_in_algebraising_closedSubscheme R I W f (K ^ k) (hAK k) t ht hp
+  obtain ⟨T'', hT''p, hT''r⟩ := _root_.GlobalTheory.FormalAlg.alg_of_closedSubscheme R I W f (K ^ k) (hAK k) t ht hp
   refine ⟨T'.map π ⊓ T'', GlobalTheory.T.isProper_inf_ideal_sheaf_image _ W W' f π hsep hlft T' T'' (by simpa using hT'p) hT''p, fun e => ?_⟩
   refine Scheme.IdealSheafData.ext_of_iSup_eq_top (ι := s) (fun V => V.1) ?_ fun V =>
     hk₀ V.1 k (Finset.le_sup V.2) T' T'' hT'r hT''r e

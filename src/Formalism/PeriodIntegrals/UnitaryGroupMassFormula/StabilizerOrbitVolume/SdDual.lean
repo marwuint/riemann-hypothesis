@@ -15,15 +15,6 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
-theorem exists_notMem_int : ∃ c : Fv F v, c ∉ v.adicCompletionIntegers F := by
-  obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
-  refine ⟨((π⁻¹ : F) : Fv F v), ?_⟩
-  rw [HeightOneSpectrum.notMem_adicCompletionIntegers,
-    HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀, hπ]
-  simp only [← WithZero.exp_neg, neg_neg]
-  rw [← WithZero.exp_zero]
-  exact WithZero.exp_lt_exp.2 one_pos
-
 variable {E : Type} [Field E] [Algebra F E] {d : ℕ} (b : Module.Basis (Fin d) F E)
 
 def latSub (a M : ℕ) : AddSubgroup (Fin a → Fin M → Fv F v ⊗[F] E) where
@@ -483,28 +474,5 @@ end SdDualW
 open scoped TensorProduct
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.AdicCompletionValuation
   PI.VolFromSW SdUniqW
-
-def DualHV : Prop := InCtx fun F E _ _ _ _ _ σ _M _J a _X0 _hT =>
-  ∀ v : HeightOneSpectrum (𝓞 F), DualAt v (pairHerm (Fv F v) σ a)
-
-theorem dualLatV_of (hH : DualHV) : DualLatV := by
-  intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet v
-  have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
-  have hσ : ∀ x, σ (σ x) = x := sigma_invol σ hCM.2.2.2
-  refine ⟨?_, hH F E σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet v⟩
-  exact SdDualW.dualAt_alt v (Module.finBasis F E) σ J
-    (fun Y hY => SdDualW.nondeg_BR v σ hσ J hJ.2 Y hY)
-
-theorem dualHV_holds : DualHV := by
-  intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet v
-  have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
-  exact SdDualW.dualAt_H v (Module.finBasis F E) σ (sigma_invol σ hCM.2.2.2) a
-
-theorem dualLatV_holds : DualLatV := dualLatV_of dualHV_holds
-
-theorem sdUniq_of_inf (hI : SdTestInf) : SdUniq := sdUniq_of_dual hI dualLatV_holds
-
-theorem sdUniq_of_H (hI : SdTestInf) (hH : DualHV) : SdUniq :=
-  sdUniq_of_dual hI (dualLatV_of hH)
 
 end PI.VolStabSW

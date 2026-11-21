@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesIntegralBoundedClosure
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesEvalTsumOpenPolydiscPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupNatMulSeriesEvalOpenDiscPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesEvalTsumOpenPolydiscProperties
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowerSeriesEvalTsumUnitDiscPropertiesAlt
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupNatMulSeriesEvalOpenDiscProperties
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFormalGroupHeightOneTorsionTowerStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupTorsionTowerExactOrderStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormFormalGroupHeightOneTorsionTowerStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormalGroupTorsionTowerExactOrder
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormFormalGroupHeightOneTorsionTower
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIntegralPolynomialTorsionCharacterLevelStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsLimitPowerSeriesAgreeOnAnnulusPointsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralMvPowerSeriesTwoEqZeroOfVanishOnSquaresStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsLimitPowerSeriesAgreeOnAnnulusPoints
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralMvPowerSeriesTwoEqZeroOfVanishOnSquares
 
 open GlobalTheory.ConvSer
 
@@ -75,9 +75,9 @@ theorem exists_iso_multiplicative (K : Type) [NormedField K] [IsUltrametricDist 
   classical
   obtain ⟨t, ht1, ht0, htne, htp⟩ := GlobalTheory.T.exists_formalGroup_heightOne_torsion_tower K p F hF h1 h2
   obtain ⟨ζ, hζ0, hζ1, hζp, hζn⟩ := exists_root_tower K p
-  obtain ⟨-, hpt⟩ := GlobalTheory.T.formalGroupNatMulSeries_eval_openDisc_properties K F hF
-  obtain ⟨ho1, -, ho3⟩ := GlobalTheory.T.formalGroup_torsionTower_exact_order K p F hF t ht1 ht0 htne htp
-  obtain ⟨hn1, hn2, hn3, hn4⟩ := GlobalTheory.T.norm_formalGroup_heightOne_torsion_tower K p F hF h1 h2 t ht1 ht0 htne htp
+  obtain ⟨-, hpt⟩ := _root_.GlobalTheory.ConvSer.nMul_point K F hF
+  obtain ⟨ho1, -, ho3⟩ := _root_.GlobalTheory.ConvSer.tower_exact_order K p F hF t ht1 ht0 htne htp
+  obtain ⟨hn1, hn2, hn3, hn4⟩ := _root_.GlobalTheory.ConvSer.TowerNorm.tower_norm K p F hF h1 h2 t ht1 ht0 htne htp
   choose g hgI hgv using fun n => GlobalTheory.T.exists_integral_polynomial_torsion_character_level K p F hF t ht1 ht0 htne htp n (ζ n) (hζn n)
   obtain ⟨bI, -, bP, bC, bX, -, -, bS, -, bf⟩ := GlobalTheory.BddAlg.bdd_alg K (Fin 2)
   obtain ⟨bI1, -, bP1, bC1, -⟩ := GlobalTheory.BddAlg.bdd_alg K Unit
@@ -119,9 +119,9 @@ theorem exists_iso_multiplicative (K : Type) [NormedField K] [IsUltrametricDist 
     exact tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hn2
   have hgev : ∀ n m j k, P m k = P n j → ev1 (g m : PowerSeries K) (P n j) = ζ m ^ k := by
     intro n m j k h
-    rw [((GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K _ (hPlt n j)).2.2.2.2.1 (g m)).2, ← h]
+    rw [((_root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K _ (hPlt n j)).2.2.2.2.1 (g m)).2, ← h]
     exact hgv m k
-  obtain ⟨φ, hφI, hφc, hφv⟩ := GlobalTheory.T.exists_limit_powerSeries_agree_on_annulus_points K G ‖t 1‖ hr0 (ht1 1).le hmono hGr hlim
+  obtain ⟨φ, hφI, hφc, hφv⟩ := _root_.GlobalTheory.ConvSer.exists_limit_of_agree_on_points K G ‖t 1‖ hr0 (ht1 1).le hmono hGr hlim
     (fun n => (g n : PowerSeries K))
     (fun n => (bf _).1.2 fun k => by rw [Polynomial.coeff_coe]; exact hgI n k)
     (by
@@ -145,7 +145,7 @@ theorem exists_iso_multiplicative (K : Type) [NormedField K] [IsUltrametricDist 
     · have : P n j = 0 := by
         rw [← hP0 n]
         exact (ho3 n _ _).2 ((Nat.modEq_zero_iff_dvd).2 hj)
-      rw [this, (GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K 0 hz).2.2.2.2.2.2.2.2.2.2 φ, hφ0]
+      rw [this, (_root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K 0 hz).2.2.2.2.2.2.2.2.2.2 φ, hφ0]
       obtain ⟨c, rfl⟩ := hj
       rw [pow_mul, hζn, one_pow]
     · rw [hφv n _ ((hmem _ _).2 ⟨j, hj, rfl⟩)]
@@ -158,7 +158,7 @@ theorem exists_iso_multiplicative (K : Type) [NormedField K] [IsUltrametricDist 
     rw [hf, map_sub, hφ0]; simp
   have hfP : ∀ n j, ev1 f (P n j) = ζ n ^ j - 1 := by
     intro n j
-    have h := GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K _ (hPlt n j)
+    have h := _root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K _ (hPlt n j)
     rw [hf, (h.2.1 φ _ ((bP1 _ 0).2.2 hφI) ((bP1 _ 0).2.2 hC1)).2.1, h.2.2.1, hφP]
   refine ⟨f, hfI, by simpa using hf0, ?_, ?_⟩
   · by_contra hne
@@ -169,7 +169,7 @@ theorem exists_iso_multiplicative (K : Type) [NormedField K] [IsUltrametricDist 
       rw [← h]
       congr 1
       exact ((hpt _ (ht1 1)).2.1).symm
-    have he := ((GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K _ (ht1 1)).2.2.2.2.2.2.1 f hfI).2.2
+    have he := ((_root_.GlobalTheory.ConvSer.powerSeriesEvalTsum_unitDisc_properties K _ (ht1 1)).2.2.2.2.2.2.1 f hfI).2.2
     rw [hv, hf0, sub_zero] at he
     have hlt2 : ‖ζ 1 - 1‖ < ‖t 1‖ := by
       have : ζ 1 - 1 = (ζ 1 - 1 - PowerSeries.coeff 1 f * t 1) + PowerSeries.coeff 1 f * t 1 := by
@@ -198,11 +198,11 @@ theorem exists_iso_multiplicative (K : Type) [NormedField K] [IsUltrametricDist 
     have iR := (bI _ _ i01 i01').1
     have bd : ∀ S : MvPowerSeries (Fin 2) K, Intg S → Bdd S := fun S h => (bP S 0).2.2 h
     rw [← sub_eq_zero]
-    refine GlobalTheory.T.integralMvPowerSeries_two_eq_zero_of_vanish_on_squares K G ‖t 1‖ hr0 (ht1 1).le hmono hGr hlim _ (bI _ _ iF iR).2.1 ?_
+    refine _root_.GlobalTheory.ConvSer.eq_zero_of_ev_vanish K G ‖t 1‖ hr0 (ht1 1).le hmono hGr hlim _ (bI _ _ iF iR).2.1 ?_
     intro n x hx y hy
     obtain ⟨i, -, rfl⟩ := (hmem n x).1 hx
     obtain ⟨j, -, rfl⟩ := (hmem n y).1 hy
-    obtain ⟨-, eA, -, eX, -, -, -, eS⟩ := GlobalTheory.T.mvPowerSeriesEvalTsum_openPolydisc_properties K (Fin 2) ![P n i, P n j]
+    obtain ⟨-, eA, -, eX, -, -, -, eS⟩ := _root_.GlobalTheory.ConvSer.ev_algebra K (Fin 2) ![P n i, P n j]
       (Fin.forall_fin_two.2 ⟨hPlt n i, hPlt n j⟩)
     have hs : ev F.toPowerSeries ![P n i, P n j] = P n (i + j) := (hpt _ (ht1 n)).2.2.2.1 i j
     rw [(eA _ _ (bd _ iF) (bd _ iR)).2.1, (eA _ _ (bd _ i01) (bd _ i01')).1,

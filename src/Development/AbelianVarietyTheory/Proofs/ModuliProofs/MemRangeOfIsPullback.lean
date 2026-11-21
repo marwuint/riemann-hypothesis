@@ -25,10 +25,6 @@ set_option backward.isDefEq.respectTransparency false
 theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ β : A →+* B, f = spMap β :=
   ⟨(Spec.preimage f).hom, by simp [spMap]⟩
 
-theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  simp [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
-
 theorem exists_geomPt (X : Scheme.{0}) (p : X) :
     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (y : Sp K ⟶ X), p ∈ Set.range y := by
   refine ⟨AlgebraicClosure (X.residueField p), inferInstance, inferInstance,

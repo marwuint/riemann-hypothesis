@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusHomOfIff
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TwistBaseChangeAndValuationStatements
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorsionPointEndomorphismImageEqMovedGtPoint
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionMapWelldefinedAdditiveCharactersStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuedConvolutionCancelInjectiveLatticeHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusExtensionMapWelldefinedAdditiveCharacters
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuedConvolutionCancelInjectiveLatticeHom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSectionCrossRelationIffOfThetaActionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCrossRelationSectionsAmpleSourcePowerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCrossRelationSectionsAmpleSourcePower
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrossRelationHomGivesExpansionTermConvolutionRelStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
@@ -59,8 +59,8 @@ theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing
   have CV := GlobalTheory.UT.CoefVal.main hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D₂ Q hQ F v hv
   have EV₁ := GlobalTheory.UT.EvalZero.value_at_origin hL V _ hA D₁ A₁ G₁ hG₁ U₁ F
   have EV₂ := GlobalTheory.UT.EvalZero.value_at_origin hL V _ hA D₂ A₂ G₂ hG₂ U₂ F
-  have LU₁ := GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL V _ hA D₁ A₁ G₁ hG₁ U₁ F
-  have LU₂ := GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL V _ hA D₂ A₂ G₂ hG₂ U₂ F
+  have LU₁ := _root_.GlobalTheory.LevelCompat.qkToAkU_level hL V _ hA D₁ A₁ G₁ hG₁ U₁ F
+  have LU₂ := _root_.GlobalTheory.LevelCompat.qkToAkU_level hL V _ hA D₂ A₂ G₂ hG₂ U₂ F
   have BJ₁ := (expBijF_and_expandsF_lin hL V _ hA D₁ A₁ G₁ hG₁ U₁).1 F
   have BJ₂ := (expBijF_and_expandsF_lin hL V _ hA D₂ A₂ G₂ hG₂ U₂).1 F
   have SV := fun Ix => AdicValSum.main V ϖ hϖ F v hv Ix
@@ -91,7 +91,7 @@ theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing
   have gu : ∀ (g : GtPtF D₂.toPre F) (a b : D₂.toPre.X →+ ℚ), GtV hϖ hv g a → GtV hϖ hv g b → a = b :=
     fun g a b ha hb => (CV g).1.unique ha hb
   have k0 : (0 : ℚ) < k := by exact_mod_cast hk
-  refine GlobalTheory.T.smallTorusPoint_keeping_ratios_isZero hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D₂ Q hQ F v hv k hk d 0 l ho hl (fun m => ?_) fun n j hn hj w₁ hw₁ => ?_
+  refine _root_.GlobalTheory.UT.SmallZero.main hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D₂ Q hQ F v hv k hk d 0 l ho hl (fun m => ?_) fun n j hn hj w₁ hw₁ => ?_
   · have e₁ := gu g' l' (l + l₁) hl' ((CV d).2.2.2.1 p₁.g g' l l₁ hd hl hl₁)
     have e₂ := gu p₁.g l₁ ((k : ℚ)⁻¹ • (Int.castAddHom ℚ).comp (QForm.bHom hϖ D₂ hQ p₁.y)) hl₁ (by
       have := (CV p₁.g).2.2.2.2.1 k hk p₁
@@ -120,7 +120,7 @@ theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing
   refine ⟨w, hw, fun S₁ S₂ hS => ?_⟩
   obtain ⟨T₁, hT₁, -⟩ := (BJ₂ j hj1 w₀₂ hw₀₂).2 S₁
   obtain ⟨T₂, hT₂, -⟩ := (BJ₂ j hj1 w₀₂ hw₀₂).2 S₂
-  obtain ⟨n', hn', CR⟩ := GlobalTheory.T.exists_crossRelation_sections_ample_source_power V A₁ A₂ F c hc j k hk
+  obtain ⟨n', hn', CR⟩ := _root_.GlobalTheory.Mum.Two.exists_crossH V A₁ A₂ F c hc j k hk
   obtain ⟨T₁', T₂', hC, hne⟩ := CR T₁ T₂
   have hj' : 1 ≤ k * n' := Nat.mul_pos hk hn'
   obtain ⟨S₁', hT₁', -⟩ := (BJ₁ _ hj' w₀₁ hw₀₁).1 T₁'
@@ -144,7 +144,7 @@ theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing
   have nl₁ : ∀ (g : GtPtF D₁.toPre F) (i : ℕ), 1 ≤ i → ∀ (u : Frm D₁.toPre F i g.b) (s : Fam D₁.toPre F i), u.IsGen →
       NullV v (coef s g u) := fun g i hi u s hu => ((CV₁ g).2.2.2.2.2.2 i hi u s hu).1
   have MX := GlobalTheory.T.crossRelation_hom_gives_expansionTerm_convolution_rel V _ hA D₁ D₂ A₁ A₂ G₁ G₂ hG₁ hG₂ U₁ U₂ a c b h hc hgen hlin hcoord F w₀₁ w₀₂ hw₀₁ hw₀₂
-  refine GlobalTheory.T.valuedConvolution_cancel_injective_latticeHom F v D₁.toPre.X D₂.toPre.X h hE (coef S₁ 0 w₁) (coef S₂ 0 w₁) (coef S₁ d w) (coef S₂ d w)
+  refine _root_.GlobalTheory.UT.sumV_cancel_hom F v D₁.toPre.X D₂.toPre.X h hE (coef S₁ 0 w₁) (coef S₂ 0 w₁) (coef S₁ d w) (coef S₂ d w)
     (coef S₁' 0 w₁') (coef S₂' 0 w₁') (nl₂ _ _ hj1 _ _ hw₁.1) (nl₂ _ _ hj1 _ _ hw₁.1) (nl₂ _ _ hj1 _ _ hw)
     (nl₂ _ _ hj1 _ _ hw) (nl₁ _ _ hj' _ _ hw₁'.1) (nl₁ _ _ hj' _ _ hw₁'.1)
     (fun α => (SV _ _ _ (MX j _ hj1 hj' _ _ _ _ _ _ _ _ hT₁ hT₂ hT₁' hT₂' hC 0 0 (act_zero₂ b h ho₁ ho) w₁ w₁'

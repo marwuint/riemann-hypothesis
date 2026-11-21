@@ -11,7 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeStabilize
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaLiftLevelsGoodPrimesProperties
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlaces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemGLintOfEntries
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryInBasisIntegralAtConjugatePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryInBasisIntegralAtConjugatePlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocCO
+import Development.AbelianVarietyTheory.Definitions.Divisors.BplusOfEquivariant
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlacesApart
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.LastVertexInv GlobalTheory.LastVertexMove
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
@@ -61,7 +64,7 @@ theorem levRow_mem_St (S : GridChoice W U) (t : T) (k : FinPt G (.grid D.R.m D.R
   · obtain ⟨w0, hw0, e⟩ := hw
     rcases GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e with rfl | rfl
     · exact hP w hw0
-    · exact GlobalTheory.T.unitaryInBasis_integral_at_conjugatePlace _ _ _ hfr (GlobalTheory.AdIsom.dualL_eq hsd) _ hU w0 (hP w0 hw0)
+    · exact _root_.GlobalTheory.ConjPlaceUnitary.inBasis_conjPl_mem_KO _ _ _ hfr (GlobalTheory.AdIsom.dualL_eq hsd) _ hU w0 (hP w0 hw0)
   · push_neg at hw
     exact Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h2 w) hw
 

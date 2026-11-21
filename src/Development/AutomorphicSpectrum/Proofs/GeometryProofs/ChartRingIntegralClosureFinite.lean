@@ -3,8 +3,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNot
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntegralClosureFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntegralClosureFinite
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtChartLocalization
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
@@ -29,7 +29,7 @@ theorem exists_eq_div_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Alg
   have hp : InChart M.ξ x c ⟨genPt M.ξ, specializes_rfl⟩ :=
     ⟨hc, fun c' => mem_regAt_genPt M.tie.gen _⟩
   obtain ⟨u, hu, v, hv, -, e⟩ :=
-    ((GlobalTheory.T.regAt_chart_localization o Ω κ x M c _ hp).2 a).1 (mem_regAt_genPt M.tie.gen a)
+    ((_root_.GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation o Ω κ x M c _ hp).2 a).1 (mem_regAt_genPt M.tie.gen a)
   exact ⟨u, hu, v, hv, e⟩
 
 theorem finite_integralClosure_chRing {o : Type} [CommRing o] [Algebra.EssFiniteType ℤ o] {Ω : Type}
@@ -79,6 +79,6 @@ theorem finite_integralClosure_chRing {o : Type} [CommRing o] [Algebra.EssFinite
     IsFractionRing.of_field _ _ fun z => by
       obtain ⟨u, hu, v, hv, rfl⟩ := exists_eq_div_chRing M hc z
       exact ⟨e ⟨u, hu⟩, e ⟨v, hv⟩, by rw [hmapΩ, hmapΩ]⟩
-  exact GlobalTheory.T.integral_closure_finite _ Ω Ω'
+  exact _root_.GlobalTheory.CompanionTheory.Ar.finite_integralClosure_of_essFiniteType_int _ Ω Ω'
 
 end GlobalTheory.CompanionTheory.Ar.ChartFinite

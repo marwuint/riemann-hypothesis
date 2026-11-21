@@ -179,12 +179,4 @@ theorem baseChange_of_finite_extension {E : Type} [Field E] [NumberField E] [IsC
   exact hx.trans ((congrArg (· ≫ _) e1).trans ((Category.assoc _ _ _).trans
     (congrArg (ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap f' ≫ ·) mx.symm)))
 
-theorem lies_of_finite_extension : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j), ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (S S' : CDVR) (io : T.Q.c.F →+* S.Fr) (φ : S.Fr →+* S'.Fr) (y : IntFr (T.Q.Xo j) T.Q.c S io) (y' : IntFr (T.Q.Xo j) T.Q.c S' (φ.comp io)) (e e' : ℕ), φ.Finite → OverLa la S.V io e → OverLa la S'.V (φ.comp io) e' → (∀ a : S.V, ∃ b : S'.V, algebraMap S'.V S'.Fr b = φ (algebraMap S.V S.Fr a)) → (letI := io.toAlgebra; letI := (φ.comp io).toAlgebra; FrMap ({ φ with commutes' := fun _ => rfl } : S.Fr →ₐ[T.Q.c.F] S'.Fr) y.1 y'.1) → ∀ eta, T.G.lies j la S io y eta → T.G.lies j la S' (φ.comp io) y' eta := by
-  intro D T _ j _ la S S' io φ y y' e e' hφ ho ho' hj hm eta hl hjm
-  obtain ⟨z, hz, hl'⟩ := hl hjm
-  obtain ⟨r, hr⟩ := IntegralFrameAllCompare.exists_scale (V := S.V) (W := S'.V) φ fun a => hj a
-  have hee := IntegralFrameAllCompare.index_eq ho ho' hr
-  have hr0 : 0 < r := Nat.pos_of_mul_pos_right (hee ▸ ho'.1)
-  exact ⟨z, hz, baseChange_of_finite_extension la _ S S' io φ y y' hφ hr0 hr hm.1 hm.2.1 z hl'⟩
-
 end GlobalTheory.LiesBaseChange

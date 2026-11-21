@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicGermPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowProperties
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicGermProperties
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 
@@ -25,12 +25,12 @@ theorem kum_smul (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X 
   obtain ⟨f, a, b, M, hM, hx, ⟨ha, hb, hb0, hr⟩, hrel⟩ := h
   set k := (PadicInt.toZModPow n c).val with hk
   refine ⟨f ^ k, fun z => a z ^ k, fun z => b z ^ k, M, hM, ?_, ⟨ha.pow k, hb.pow k, ?_, ?_⟩, ?_⟩
-  · rw [map_smul, hx, ((GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l n).2.2.2.2.1 c f)]
+  · rw [map_smul, hx, ((_root_.GlobalTheory.KZ.H3.cls_props Ω ε X l n).2.2.2.2.1 c f)]
   · intro h0
     apply hb0
-    have e1 := ((GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties).1 (fun z => b z ^ k) (fun _ => 0) (hb.pow k) (differentiableOn_const 0)).1 h0
+    have e1 := ((_root_.GlobalTheory.KZ.Germ.main).1 (fun z => b z ^ k) (fun _ => 0) (hb.pow k) (differentiableOn_const 0)).1 h0
     have e2 : ∀ z ∈ Hs, b z = 0 := fun z hz => (pow_eq_zero_iff' (M₀ := ℂ)).1 (e1 z hz) |>.1
-    exact ((GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties).1 b (fun _ => 0) hb (differentiableOn_const 0)).2 e2
+    exact ((_root_.GlobalTheory.KZ.Germ.main).1 b (fun _ => 0) hb (differentiableOn_const 0)).2 e2
   · have e : ∀ (g : ℂ → ℂ), ((fun z => g z ^ k : ℂ → ℂ) : Mero) = (g : Mero) ^ k := fun g => rfl
     rw [e, e, Units.val_pow_eq_pow_val, map_pow, ← pow_mul, mul_comm k, pow_mul, ← mul_pow, hr, ← pow_mul, ← pow_mul,
       mul_comm k]

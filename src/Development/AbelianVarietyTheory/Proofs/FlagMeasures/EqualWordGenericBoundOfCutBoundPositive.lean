@@ -28,6 +28,4 @@ theorem rowMainEqP_of_cut (hCh : PN.NGChain) (hMG : MeanAmpGen) (hc : GenCutP) :
   rw [hdd] at r
   exact r
 
-example : PN.NGChain → MeanAmpGen → GenCutP → GlobalTheory.SnPos.RowMainEqP := rowMainEqP_of_cut
-
 end GlobalTheory.SnPos

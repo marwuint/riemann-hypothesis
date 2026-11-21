@@ -5,14 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMu
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitIdempotentPrimeProjectionCorrespondenceStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DegreeOnePrimeReductionSplitPlaceDictionaryStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitIdempotentBaseFunctionIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaFunctionSplitProductDatumIsPureTensorStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaFunctionSplitProductDatumIsPureTensor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsLocalLevelAtPrimeOfLevelDatumStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelDatumValueEqProdLocalResidueValuesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistDatumValueEqProdLocalResidueValuesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelDatumValueEqProdLocalResidueValues
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistDatumValueEqProdLocalResidueValues
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalLevelDatumEqFunctionOfResidueReductionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTwistDatumEqFunctionOfResidueReductionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitHalfResidueReductionFunctionEqFrameLocalStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdResidueFunctionsHalfSumIdempotentsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTwistDatumEqFunctionOfResidueReduction
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitHalfResidueReductionFunctionEqFrameLocal
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdResidueFunctionsHalfSumIdempotents
 
 noncomputable section
 
@@ -77,17 +78,17 @@ theorem stepVecLocal : ∀ D : D7, StepVecLocal D := by
       rw [GlobalTheory.T.localLevelDatum_eq_function_of_residueReduction D (vP i) (φP i) i.1 (rP i) (hrP i) _ _ t ht LS _ _ J lam hJ mu (χ i.1) hmu y]
       simp only [ω, dif_pos hi]
     rw [h1]
-    exact GlobalTheory.T.splitHalf_residueReduction_function_eq_frameLocal D (vP i) (φP i) (es i.1) i.1 (rP i) (hφ i) (hpr i) (hrP i) S T βS βT (ω i.1)
+    exact _root_.GlobalTheory.StepVec.onHalf_viaRed_eq_locFn D (vP i) (φP i) (es i.1) i.1 (rP i) (hφ i) (hpr i) (hrP i) S T βS βT (ω i.1)
   have hcmpQ : ∀ (i : ↥s) (hi : i.1 ∈ Q) (mu : (Fv D.host.F (vP i))ˣ →* ℂˣ), LiftsChar (φP i) i.1 mu (ξ i.1)⁻¹ →
       onHalf (φP i) S T (frCo (φP i) βS) (frCo (φP i) βT) (es i.1) (phiQ (vP i) LS.r mu) = Φ i := by
     intro i hi mu hmu
     have hn : i.1 ∉ LS.Pg := fun h => Finset.disjoint_left.1 hdisj h hi
     have h1 : phiQ (vP i) LS.r mu = viaRed (b := T.rank) (a := S.rank) (rP i) (ω i.1) := by
       funext y
-      rw [GlobalTheory.T.thetaTwistDatum_eq_function_of_residueReduction D (vP i) (φP i) i.1 (rP i) (hrP i) _ _ LS.r mu (ξ i.1) hmu y]
+      rw [_root_.GlobalTheory.StepVec.phiQ_eq_viaRed_qLoc D (vP i) (φP i) i.1 (rP i) (hrP i) _ _ LS.r mu (ξ i.1) hmu y]
       simp only [ω, dif_neg hn]
     rw [h1]
-    exact GlobalTheory.T.splitHalf_residueReduction_function_eq_frameLocal D (vP i) (φP i) (es i.1) i.1 (rP i) (hφ i) (hpr i) (hrP i) S T βS βT (ω i.1)
+    exact _root_.GlobalTheory.StepVec.onHalf_viaRed_eq_locFn D (vP i) (φP i) (es i.1) i.1 (rP i) (hφ i) (hpr i) (hrP i) S T βS βT (ω i.1)
 
   have hunder : ∀ i : ↥s, (i.1).asIdeal.under (𝓞 D.host.F) = (vP i).asIdeal := fun i => (hsum.2 _ _ _ (hpr i)).1
   have hcross := GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es s
@@ -162,7 +163,7 @@ theorem stepVecLocal : ∀ D : D7, StepVecLocal D := by
     have hprod : ∀ y : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP),
         omegaG LS χ y * omegaQ Q LS.r ξ 1 y = ∏ PP ∈ s, ω PP (y PP) := by
       intro y
-      rw [← hs, Finset.prod_union hdisj, GlobalTheory.T.levelDatumValue_eq_prod_localResidueValues D _ _ LS χ Hl cl hP y, GlobalTheory.T.twistDatumValue_eq_prod_localResidueValues D _ _ LS.r Q ξ y,
+      rw [← hs, Finset.prod_union hdisj, _root_.GlobalTheory.StepVec.omegaG_eq_prod_gLoc D _ _ LS χ Hl cl hP y, _root_.GlobalTheory.StepVec.omegaQ_one_eq_prod_qLoc D _ _ LS.r Q ξ y,
         ← Finset.prod_coe_sort LS.Pg fun PP => ω PP (y PP)]
       congr 1
       · refine Finset.prod_congr rfl fun PP _ => ?_
@@ -170,10 +171,10 @@ theorem stepVecLocal : ∀ D : D7, StepVecLocal D := by
       · refine Finset.prod_congr rfl fun PP hq => ?_
         simp only [ω, dif_neg fun h => Finset.disjoint_left.1 hdisj h hq]
     rw [← hsumes] at hth
-    refine GlobalTheory.T.thetaFunction_splitProductDatum_isPureTensor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC ↥s Finset.univ vP (fun i => es i.1) (fun i _ => hsplit i)
+    refine _root_.GlobalTheory.PlaceTensor.SplitProduct.thetaAt_sum_isPure D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC ↥s Finset.univ vP (fun i => es i.1) (fun i _ => hsplit i)
       hinj.injOn Φ (fun i _ => hsb i) x f _ (fun i _ => hθ i) hoff ?_ ?_ hth
     · intro t' ht'
-      have h := GlobalTheory.T.prod_residueFunctions_half_sum_idempotents D S T βS βT s es hes ω t' (hsumes ▸ ht')
+      have h := _root_.GlobalTheory.StepVec.prod_locFn_half D S T βS βT s es hes ω t' (hsumes ▸ ht')
       have h2 : ∏ i : ↥s, Φ i (es i.1 • t') = ∏ PP ∈ s, locFn S T βS βT (es PP) PP (ω PP) (es PP • t') :=
         Finset.prod_coe_sort s fun PP => locFn S T βS βT (es PP) PP (ω PP) (es PP • t')
       show (if _ then _ else _) = ∏ i : ↥s, Φ i (es i.1 • t')

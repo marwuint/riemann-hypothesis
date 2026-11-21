@@ -15,9 +15,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvenThetaEqProdS
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MkLeContinuumOfDenseRange
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPTorsionIntegralAndDistinctMod
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateModifiedSigmaTwoMulAtZeroStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TranslateModifiedSigmaTwoMulAtZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormNatCastLe
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DuplicationFormulaMaxNormEqCpUnitDiscriminantStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeTranslateHalfPeriodSigmaStarPowEightMulEqStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeTranslateHalfPeriodSigmaStarPowEightMulEq
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.EvenTheta
 open scoped BigOperators
 
@@ -88,7 +89,7 @@ theorem mu_double (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K))
   have hv2 := lattice_torsion_two_mul hv
   obtain ⟨hP, hD⟩ := hwp v hv hv0
   obtain ⟨hP2, -⟩ := hwp (2 * v) hv2 h2v
-  have hdup := GlobalTheory.T.translate_modifiedSigma_two_mul_at_zero g.abelian₂ hlat v hv0
+  have hdup := _root_.GlobalTheory.SigmaDuplication.U1_two_mul_at_zero_eq_neg_wpD_mul_pow_four g.abelian₂ hlat v hv0
   have hsq := GlobalTheory.ThetaPar.ModelPoint.wpD_sq hlat hv0
   have hdbl := dbl_complex hlat hv0 h2v
   obtain ⟨hε, -⟩ := GlobalTheory.EvenTheta.DatumBasic.datum_basic p g hok hlat h2 h3 hdisc
@@ -138,9 +139,9 @@ theorem mu_two_tors (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K
   obtain ⟨hlat, h2, h3, hdisc, hwp, hU, hok⟩ := setup D p cc δ g hg
   obtain ⟨ι, hι⟩ := GlobalTheory.PadicComplexIso.exists_ringEquiv_extending p g.lam
   obtain ⟨hP, hD⟩ := hwp v hv hv0
-  have hdup := GlobalTheory.T.translate_modifiedSigma_two_mul_at_zero g.abelian₂ hlat v hv0
+  have hdup := _root_.GlobalTheory.SigmaDuplication.U1_two_mul_at_zero_eq_neg_wpD_mul_pow_four g.abelian₂ hlat v hv0
   have hsq := GlobalTheory.ThetaPar.ModelPoint.wpD_sq hlat hv0
-  have h8 := GlobalTheory.T.latticeTranslate_halfPeriod_sigmaStar_pow_eight_mul_eq_one g.abelian₂ hlat v hv0 h2v
+  have h8 := _root_.GlobalTheory.HalfPeriodValue.U1_sgStar_pow_eight g.abelian₂ hlat v hv0 h2v
   have h0 : U1 g.abelian₂ (2 * v) (sgStar g.abelian₂) 0 = 0 := by
     rw [hlat.sg_law h2v 0, (hlat.sg_eq_zero 0).2 (zero_mem _), mul_zero]
   have hD0 : wpD g.abelian₂ v = 0 := by

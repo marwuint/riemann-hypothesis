@@ -29,31 +29,6 @@ def MassProd : Prop := ∀ (G G' : Type) [Group G] [TopologicalSpace G] [IsTopol
   [IsTopologicalGroup G'] (θ : G →* G) (θ' : G' →* G') (Γ : Subgroup G) (Γ' : Subgroup G') (δ : G) (δ' : G'),
   mass (θ.prodMap θ') (Γ.prod Γ') (δ, δ') = mass θ Γ δ * mass θ' Γ' δ'
 
-def RestrTw : Prop := ∀ (ι G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (H : ι → Type) [∀ i, Group (H i)]
-  [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)] [∀ i, T2Space (H i)] (θ : G →* G) (θH : ∀ i, H i →* H i)
-  (p : ∀ i, G →* H i) (K : Subgroup G) (KH : ∀ i, Subgroup (H i)) (δ : G) (f : ∀ i, H i → ℂ),
-  (∀ i, Continuous (p i)) → (∀ i x, p i (θ x) = θH i (p i x)) → (∀ x y : G, (∀ i, p i x = p i y) → x = y) →
-  (∀ y : ∀ i, H i, (∀ᶠ i in cofinite, y i ∈ KH i) → ∃ x : G, ∀ i, p i x = y i) → (∀ x : G, ∀ᶠ i in cofinite, p i x ∈ KH i) →
-  (∀ x : G, x ∈ K ↔ ∀ i, p i x ∈ KH i) →
-  (∀ C : ∀ i, Set (H i), (∀ i, IsCompact (C i)) → (∀ᶠ i in cofinite, C i = KH i) → IsCompact {x : G | ∀ i, p i x ∈ C i}) →
-  (∀ i, IsCompact (KH i : Set (H i))) → (∀ i, IsOpen (KH i : Set (H i))) → (∀ i, Good (θH i) (KH i) (p i δ)) →
-  (∀ i (x : H i), (rStab fun k : KH i => f i ((x * k)⁻¹ * p i δ * θH i (x * k))).index ≠ 0) →
-  (∀ i, {q : DoubleCoset.Quotient (twCent (θH i) (p i δ) : Set (H i)) (KH i : Set (H i)) |
-    ∃ k ∈ KH i, f i ((Quotient.out q * k)⁻¹ * p i δ * θH i (Quotient.out q * k)) ≠ 0}.Finite) →
-  (∀ᶠ i in cofinite, p i δ ∈ KH i ∧ f i = (KH i : Set (H i)).indicator 1 ∧
-    (∀ g : H i, g⁻¹ * p i δ * θH i g ∈ KH i → ∃ t ∈ twCent (θH i) (p i δ), t⁻¹ * g ∈ KH i) ∧
-    cptPart (twCent (θH i) (p i δ)) ≤ KH i) →
-  twOrb θ K δ (fun x => ∏ᶠ i, f i (p i x)) = ∏ᶠ i, twOrb (θH i) (KH i) (p i δ) (f i)
-
-def SplitConv : Prop := ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (σ : H →* H) (K : Subgroup H),
-  (∀ g, σ (σ g) = g) → (∀ k ∈ K, σ k ∈ K) → IsOpen (K : Set H) → IsCompact (K : Set H) → ∀ (d d' : H) (f₁ f₂ : H → ℂ) (K' : Subgroup H),
-  IsOpen (K' : Set H) → K' ≤ K → (∀ k ∈ K', σ k ∈ K') → IsHecke K' f₁ → IsHecke K' f₂ →
-  Good (MonoidHom.id H) K (d * σ d') →
-  (∀ C : Set H, IsCompact C → {q : DoubleCoset.Quotient (twCent (MonoidHom.id H) (d * σ d') : Set H) (K : Set H) |
-    ∃ k ∈ K, (Quotient.out q * k)⁻¹ * (d * σ d') * (Quotient.out q * k) ∈ C}.Finite) →
-  twOrb ((MonoidHom.prodMap σ σ).comp (MulEquiv.prodComm : H × H ≃* H × H).toMonoidHom) (K.prod K) (d, d') (fun y => f₁ y.1 * f₂ (σ y.2)) =
-    twOrb (MonoidHom.id H) K (d * σ d') (fun y => hint K fun z => f₁ z * f₂ (z⁻¹ * y))
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 def UnitAE : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], GlobalTheory.BCT.Unr E → ∀ (a b : ℕ) (S : Set (Pl E)), IsSection S →
@@ -102,8 +77,6 @@ def EulerFin : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], G
       ∏ᶠ w ∈ S, twOrb ((thL a w).prodMap (thL b w)) (K2 a b w) (locEl a w δ₁, locEl b w δ₂) (seen φ₁ φ₂ w)
 
 def FinHalfOf : Prop := DcCount → MassProd → RatFin → SuppFin → EulerFin → KfOC → FinLevel → FinHalf
-
-def EulerFinOf : Prop := RestrTw → SplitConv → UnitAE → LocGood → LocSupp → KfOC → EulerFin
 
 def SuppFinOf : Prop := LocSupp → UnitAE → RatFin → LocGood → SuppFin
 

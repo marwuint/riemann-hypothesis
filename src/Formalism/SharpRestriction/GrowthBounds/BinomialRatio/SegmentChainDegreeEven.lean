@@ -204,21 +204,6 @@ theorem segBlock_ext (b b' : SegBlock s r) (h1 : b.rz = b'.rz) (h2 : b.ry = b'.r
   subst h1 h2 h3 h4 h5 h6
   rfl
 
-private theorem chainLetters_deg_eq_of_vec_eq_of_isChain {N r : ℕ} (L L' : ChainLetters N) (ka : Fin (N + 1) → Fin r → ℤ)
-    (hv : L.vec = L'.vec) (h : IsChain L ka) (h' : IsChain L' ka) (a : Fin N) : L.deg a = L'.deg a := by
-  have e := h.2 a
-  have e' := h'.2 a
-  rw [hv] at e
-  by_cases hva : L'.vec a = true
-  · rw [if_pos hva] at e e'
-    have q := e.2.2
-    have q' := e'.2.2
-    omega
-  · rw [if_neg hva] at e e'
-    have q := e.2.2
-    have q' := e'.2.2
-    omega
-
 theorem srcInjAt : SrcInjAt := by
   intro C0 CE1 CE2 X _ j m rz ry z z' hz hz' hka hjp
   obtain ⟨b, ⟨jl, jp⟩, ka⟩ := z

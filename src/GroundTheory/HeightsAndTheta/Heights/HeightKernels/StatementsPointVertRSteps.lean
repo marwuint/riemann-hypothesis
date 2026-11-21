@@ -51,12 +51,6 @@ def SectionIndexNorm.Statement : Prop :=
           Real.log (genIndex (Submodule.span (𝓞 K') (Set.range y)).toAddSubgroup
             (1 : Submodule (𝓞 K') K').toAddSubgroup)
 
-theorem chartRingZ_yPt (c : ∀ _ : Unit, PBlk 1 ()) :
-    chartRingZ IndefiniteRowSideFullHecke.HeightsSet.yPt c = ⊥ := by
-  refine eq_bot_iff.mpr (Algebra.adjoin_le ?_)
-  rintro _ ⟨p, rfl⟩
-  simp [IndefiniteRowSideFullHecke.HeightsSet.yPt]
-
 end
 
 end GroundTheory.Heights₂.Heights

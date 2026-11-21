@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculusStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRatOfHankelEventuallyZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HankelDeterminantIntegralOfQuotientStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRatOfHankelEventuallyZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HankelDeterminantIntegralOfQuotient
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
@@ -64,7 +64,7 @@ theorem ord_hankel_ge (v : Place k F) (φ : PowerSeries F) (u : F) (e ψ : Power
   have h1 : PowerSeries.map v.O.subtype e * PowerSeries.rescale u⁻¹ φ = PowerSeries.map v.O.subtype ψ := by
     have := congrArg (PowerSeries.rescale u⁻¹) heq
     simpa only [sc, RingHom.comp_apply, map_mul, hr] using this
-  obtain ⟨z, hz⟩ := GlobalTheory.T.hankelDeterminant_integral_of_quotient v.O F v.O.subtype e ψ (PowerSeries.rescale u⁻¹ φ) n h1
+  obtain ⟨z, hz⟩ := _root_.GlobalTheory.Nef.hankel_integral v.O F v.O.subtype e ψ (PowerSeries.rescale u⁻¹ φ) n h1
   have h2 : (fun i => PowerSeries.coeff i φ) = fun i => u ^ i * PowerSeries.coeff i (PowerSeries.rescale u⁻¹ φ) := by
     funext i
     rw [PowerSeries.coeff_rescale, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hu, one_pow, one_mul]
@@ -80,7 +80,7 @@ theorem ord_hankel_ge (v : Place k F) (φ : PowerSeries F) (u : F) (e ψ : Power
     intro h; apply he0; ext; simpa [hc] using h
   have hzne : (z : F) ≠ 0 := by rw [hz']; exact mul_ne_zero (pow_ne_zero _ hcne) hH0
   have hz1 : 0 ≤ ord v (z : F) :=
-    ((GlobalTheory.T.functionFieldPlaceOrder_calculus k F v).2.2.1 _ hzne).1 ((Valuation.mem_valuationSubring_iff _ _).1 z.2)
+    ((_root_.GlobalTheory.Nef.ord_calculus k F v).2.2.1 _ hzne).1 ((Valuation.mem_valuationSubring_iff _ _).1 z.2)
   have h5 := congrArg (ord v) h4
   rw [ord_mul' v (pow_ne_zero _ hcne) hH, ord_mul' v (pow_ne_zero _ hu) hzne, ord_pow', ord_pow'] at h5
   linarith
@@ -102,10 +102,10 @@ theorem isRat_of_adelic : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k
     exact (Valuation.isEquiv_valuation_valuationSubring v.1).eq_one_iff_eq_one.2 h1
   set δ := ∑ᶠ v, ord v (c v) with hδ
   set D := ∑ᶠ v, ord v (u v) with hD
-  apply GlobalTheory.T.isRat_of_hankel_eventually_eq_zero F φ ((2 * δ).toNat + 1)
+  apply _root_.GlobalTheory.Nef.isRat_of_hankel_eventually_zero F φ ((2 * δ).toNat + 1)
   intro n hn
   by_contra hH
-  obtain ⟨hHfin, hHsum⟩ := GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hFF _ hH
+  obtain ⟨hHfin, hHsum⟩ := _root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k F hFF _ hH
   set H := hankel (fun i => PowerSeries.coeff i φ) n with hHdef
   let T : Finset (Place k F) := hufin.toFinset ∪ hefin.toFinset ∪ hHfin.toFinset
   have sU : Function.support (fun v => ord v (u v)) ⊆ (T : Set (Place k F)) := by

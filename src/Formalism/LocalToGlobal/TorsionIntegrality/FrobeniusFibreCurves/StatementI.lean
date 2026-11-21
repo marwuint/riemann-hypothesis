@@ -14,12 +14,6 @@ open Formalism.G (unitBall)
 open Formalism.L2.Th1.C (wpShift HasSecondLogDeriv wTr IsLogPair mulBy EndInt PhNormAt IsBinomScalar)
 open Formalism.L2.Th1.A (fgl iSer logSer expSer wpReg g₂ g₃ IntModel)
 
-def NotReduce : Prop :=
-  ∀ (G : Type) [AddCommGroup G] (G1 : AddSubgroup G) (β β' : G →+ G),
-    (∀ x ∈ G1, β x ∈ G1) → (∀ x ∈ G1, β' x ∈ G1) → (∀ x ∈ G1, β x = 0 → x = 0) →
-    ∀ t0 t' t'' : G, t0 = t' + t'' → β' t' = 0 → β' t'' = t'' → t'' ≠ 0 → β t'' = 0 →
-    t0 ∉ G1 ∧ ∀ Q : G, β Q = t0 → Q ∉ G1
-
 def Th0Isogeny : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (g2 g3 s2 c0 xT al S : K) (P : PowerSeries K)
     (ι : Type) [Fintype ι] (c : ι → K) (wp wm : ι → PowerSeries K),
@@ -60,39 +54,6 @@ def ThetaZeroVanishing : Prop :=
     Simeq (ι := Unit) (phTw g2 s2 c0 xT P l) 0 ∧
       PowerSeries.constantCoeff (PowerSeries.subst l (thTw g2 s2 c0 xT P)) = 1 ∧
       Integral (ι := Unit) (PowerSeries.subst l (thTw g2 s2 c0 xT P))
-
-def TwoBridge : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (W : WeierstrassCurve K) (s2 xT yT : K),
-    W.toAffine.Equation xT yT → 2 * yT + W.a₁ * xT + W.a₃ = 0 →
-    wTr W xT yT = PowerSeries.C (e1W W xT) + PowerSeries.C (kapW W xT) * wOf (e1W W xT) (wpReg W) ∧
-      Formalism.L2.Th1.G.th0 W xT yT s2 = thZ s2 (e1W W xT) (kapW W xT) (wOf (e1W W xT) (wpReg W)) ∧
-      Formalism.L2.Th1.G.phT W xT yT s2 = evenSigmaLogAtTwoTorsion W s2 xT
-
-def CurveCubeTwo : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K)
-    (s2 xT yT : K), IntModel W → W.toAffine.Equation xT yT → 2 * yT + W.a₁ * xT + W.a₃ = 0 →
-    ‖xT‖ ≤ 1 → ‖yT‖ ≤ 1 →
-    Simeq (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT)) (beW W s2) ∧
-    DivAB (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT)) ∧
-    swap2 (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT)) = cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT) ∧
-    Simeq (d1 (fgl W) (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT))) 0 ∧
-    Simeq (d1 (fgl W) (swap2 (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT)))) 0
-
-def CurveTh0Vanish : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K)
-    (s2 xT yT al albar S : K) (ι : Type) [Fintype ι] (xQ yQ : ι → K),
-    IntModel W → W.toAffine.Equation xT yT → 2 * yT + W.a₁ * xT + W.a₃ = 0 →
-    ‖xT‖ ≤ 1 → ‖yT‖ ≤ 1 → (∀ Q, ‖xQ Q‖ ≤ 1) → IsFibreCurve W xT yT xQ yQ al S →
-    al * albar = 2 * (Fintype.card ι : K) → al * (al - albar) * s2 = S →
-    EndInt (unitBall K) (logSer W) (expSer W) al →
-    al ∈ closure (Set.range (fun n : ℤ => (n : K))) →
-    al ≠ 0 → al ≠ albar → albar ≠ 1 →
-    IsBinomScalar (unitBall K) (al * (al - albar))⁻¹ →
-    IsBinomScalar (unitBall K) (al * (1 - albar))⁻¹ →
-    Simeq (ι := Unit) (evenSigmaLogAtTwoTorsion W s2 xT) 0 ∧
-      PowerSeries.constantCoeff
-        (PowerSeries.subst (logSer W) (Formalism.L2.Th1.G.th0 W xT yT s2)) = 1 ∧
-      Integral (ι := Unit) (PowerSeries.subst (logSer W) (Formalism.L2.Th1.G.th0 W xT yT s2))
 
 def TwoAdicScalars : Prop :=
   ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] [NormedAlgebra ℚ_[2] K]

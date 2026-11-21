@@ -248,33 +248,6 @@ theorem mem_of_dual {ψ : AddChar (AF D.host.F) ℂ} (hε : IsPlaceIdem D v ε)
     rwa [← symplO_smul, (mem_half S T).1 hx] at this)
   rwa [(mem_half S T).1 hx] at this
 
-theorem placeModelExistsO : ∀ D : D7, PlaceModelExistsO D := by
-  intro D ψ hψ S T e v ε hs hε heq c f₀ hc _ hvac
-  have he := hs.1
-  have hec := hs.2.1
-  have he' : cA D e * cA D e = cA D e := by rw [← map_mul, he]
-  have heε : algebraMap (AF D.host.F) (AE D) ε * e = e := by rw [← heq]; linear_combination he + hec
-  have heε' : algebraMap (AF D.host.F) (AE D) ε * cA D e = cA D e := by rw [← heq]; linear_combination he' + hec
-  have hs' : IsSplitIdem D (cA D e) :=
-    ⟨he', by rw [cA_cA, mul_comm, hec], v, ε, hε, by rw [cA_cA, add_comm, heq]⟩
-  have hdual := (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ (isSelfDualC_latFrame S) (isSelfDualC_latFrame T)).1
-  have hfin := GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ (isSelfDualC_latFrame S).1.fg (isSelfDualC_latFrame T).1.fg fun w => w = v
-  rw [coe_latFrame, coe_latFrame] at hdual hfin
-  refine exists_placeModel ψ hec _
-    (fun u hu y hy => (hdual u (infPart_half hε heε hu.2)).1 (latO_le_top _ hu.1) y (latO_le_top _ hy.1))
-    (mem_of_dual hε hdual he heε heε') (fun y hy h => ?_) (fun k hk => ?_) hc f₀
-    (fun u hu => hvac.2 e hs u hu.1 ((isHalf_iff S T).2 hu.2))
-    (fun u hu => hvac.2 _ hs' u hu.1 ((isHalf_iff S T).2 hu.2))
-  · refine mem_of_dual hε hdual he' heε' (by rwa [cA_cA]) y hy fun u hu => ?_
-    rw [cA_cA] at hu
-    rw [symplO_skew, AddChar.map_neg_eq_inv, h u hu, inv_one]
-  · obtain ⟨R, hR, h⟩ := hfin k hk
-    refine ⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩
-    obtain ⟨r, hr, u, hu, htr⟩ := h t ht.1
-    refine ⟨_, ⟨r, hr, rfl⟩, e • u, idem_smul_mem hε he heε (latO_le_top _ hu), ?_⟩
-    have := (mem_half S T).1 ht.2
-    rw [← this, htr, smul_add, smul_comm e k u]
-
 end GlobalTheory.PlaceModel
 
 end

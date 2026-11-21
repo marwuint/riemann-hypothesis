@@ -1,12 +1,13 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinMapsOfForall
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemKAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FromBlocksMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledVacuumStabilizerGaussDecompositionBigCell
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInversePreservingAdelicLatticeAtPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInversePreservingAdelicLatticeAtPlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowIdempotentAdelicLatticeModPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraceZeroAdeleUnitLatticeAtInertPlaceStatement
-open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraceZeroAdeleUnitLatticeAtInertPlace
+
+open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped TensorProduct Matrix
 
 noncomputable section
@@ -306,7 +307,7 @@ theorem exists_skew_cayley : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   obtain ⟨h2v, h3, -⟩ := hT.base.inert v w hin
   have hp0 : 0 < Ideal.absNorm v.asIdeal := by omega
   have hpv : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) ∈ v.asIdeal := Ideal.absNorm_mem _
-  obtain ⟨β, b, up, um, hβat, hβσ, hsc⟩ := GlobalTheory.T.exists_traceZero_adele_unit_lattice_at_inert_place F E σ B hT.base (a + a') G.W v w hin
+  obtain ⟨β, b, up, um, hβat, hβσ, hsc⟩ := _root_.GlobalTheory.InertSph.exists_traceZero_unit F E σ B hT.base (a + a') G.W v w hin
   have hKK : mat k * mat k⁻¹ = 1 := by
     show mat (k * k⁻¹) = 1
     rw [mul_inv_cancel]; rfl
@@ -361,12 +362,12 @@ theorem exists_skew_cayley : ∀ (F E : Type) [Field F] [NumberField F] [Field E
     unfold SelfAdj at hsa
     rw [hYdef, Matrix.transpose_smul, Matrix.smul_mul, hsa, smul_map, hβσ, Matrix.mul_smul, ← AlgHom.mapMatrix_apply,
       neg_smul, add_neg_cancel]
-  · refine GlobalTheory.T.exists_inverse_preserving_adelicLatticeAtPlace F E (a + a') G.W hlat v _ hpv 1 isUnit_one _ ?_ (keepAdd keepOne hYk) s1
+  · refine _root_.GlobalTheory.InertSph.exists_inv_keeps_latAt F E (a + a') G.W hlat v _ hpv 1 isUnit_one _ ?_ (keepAdd keepOne hYk) s1
     rw [one_smul, add_sub_cancel_left]; exact hYat
-  · refine GlobalTheory.T.exists_inverse_preserving_adelicLatticeAtPlace F E (a + a') G.W hlat v _ hpv 1 isUnit_one _ ?_ (keepSub keepOne hYk) s2
+  · refine _root_.GlobalTheory.InertSph.exists_inv_keeps_latAt F E (a + a') G.W hlat v _ hpv 1 isUnit_one _ ?_ (keepSub keepOne hYk) s2
     intro u hu
     rw [one_smul, sub_sub_cancel_left, smul_neg, hYat u hu, neg_zero]
-  · refine GlobalTheory.T.exists_inverse_preserving_adelicLatticeAtPlace F E (a + a') G.W hlat v _ hpv 2 (isUnit_of_invertible _) _ ?_
+  · refine _root_.GlobalTheory.InertSph.exists_inv_keeps_latAt F E (a + a') G.W hlat v _ hpv 2 (isUnit_of_invertible _) _ ?_
       (keepAdd (keepAdd keepOne hYk) (keepMul hKk (keepSub keepOne hYk))) s3
     intro u hu
     have e : 1 + Y + mat k * (1 - Y) - (2 : AF F) • (1 : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) =

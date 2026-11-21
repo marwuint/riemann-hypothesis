@@ -1,11 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EvalVIndP
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticePlaceCutSmulMemOpenSubgroupStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeCompletionCutIntegralPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticePlaceCutSmulMemOpenSubgroup
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeCompletionCutIntegralProperties
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorDisjointSupportSmulAddStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLatticeVacuumOfCarriesLatticeCompletionsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CarriesLatticeCompletionOfTrivialAtPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CarriesLatticeCompletionOfTrivialAtPlaces
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMapsStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
 
 noncomputable section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FinPl GlobalTheory.MixPer
@@ -52,14 +54,14 @@ theorem latVac_of_places (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (LS : La
     · have hw' : w ∈ latO S T (LS : Set _) (LT : Set _) (· = v) :=
         latO_mono S T _ _ (fun v' h => h.2) hw
       exact ⟨(hv v hP).2.1 w hw', fun e he hh => (hv v hP).2.2 e he w hw' hh⟩
-    · have h0 : w = 0 := ((GlobalTheory.T.homLatticeCompletion_cut_integral_properties) D S T _ _ _ w hw).2.2.2 fun v' h => hP (h.2 ▸ h.1)
+    · have h0 : w = 0 := ((_root_.GlobalTheory.FinPl.latO_algebra) D S T _ _ _ w hw).2.2.2 fun v' h => hP (h.2 ▸ h.1)
       subst h0
       simp [heisO_zero]
   refine ⟨?_, ?_⟩
   · intro u hu
     obtain ⟨U, hUo, hU⟩ := hf.level
     have h2u : 2 • u ∈ latO S T (LS : Set _) (LT : Set _) P := AddSubgroup.nsmul_mem _ hu 2
-    obtain ⟨s, hs⟩ := (GlobalTheory.T.homLattice_placeCut_smul_mem_openSubgroup) D S T _ _ P U hUo (2 • u) h2u
+    obtain ⟨s, hs⟩ := (_root_.GlobalTheory.LatLevel.smul_mem_open_of_vanish) D S T _ _ P U hUo (2 • u) h2u
     have key : ∀ t : Finset (Pl D), t ⊆ s →
         heisO ψ S T (pairA D.host.F 0 (indP D (↑(s \ t) : Set (Pl D))ᶜ) • (2 • u)) f = f := by
       intro t
@@ -69,8 +71,8 @@ theorem latVac_of_places (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (LS : La
         have hγ : ∀ v ∈ s, evalV D.host.F v (indP D (↑(s \ ∅) : Set (Pl D))ᶜ) = 0 := by
           intro v hv; rw [evalV_indP]; simp [hv]
         have hm := hs _ (indicatorAdele_mem_integralAdeles _) hγ
-        have hl := ((GlobalTheory.T.homLatticeCompletion_cut_integral_properties) D S T _ _ P _ h2u).1 _ (indicatorAdele_mem_integralAdeles ((↑(s \ ∅) : Set (Pl D))ᶜ))
-        exact hU _ hm (((GlobalTheory.T.homLatticeCompletion_cut_integral_properties) D S T _ _ _ _ hl).2.2.1)
+        have hl := ((_root_.GlobalTheory.FinPl.latO_algebra) D S T _ _ P _ h2u).1 _ (indicatorAdele_mem_integralAdeles ((↑(s \ ∅) : Set (Pl D))ᶜ))
+        exact hU _ hm (((_root_.GlobalTheory.FinPl.latO_algebra) D S T _ _ _ _ hl).2.2.1)
       | insert v t hvt ih =>
         intro hts
         have hvs : v ∈ s := hts (Finset.mem_insert_self v t)
@@ -89,7 +91,7 @@ theorem latVac_of_places (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (LS : La
         have hprod : pairA D.host.F 0 (indP D {v}) * pairA D.host.F 0 (indP D (↑(s \ t) : Set (Pl D))ᶜ) = 0 := by
           rw [pairA_mul, indicatorAdele_singleton_mul_singleton, Set.disjoint_iff_inter_eq_empty.mp hdisj, indicatorAdele_empty, pairA_zero]
         rw [(GlobalTheory.T.heisenbergOperator_disjointSupport_smul_add) D ψ S T _ _ _ _ f hprod, ih']
-        have hw := ((GlobalTheory.T.homLatticeCompletion_cut_integral_properties) D S T _ _ P u hu).1 _ (indicatorAdele_mem_integralAdeles {v})
+        have hw := ((_root_.GlobalTheory.FinPl.latO_algebra) D S T _ _ P u hu).1 _ (indicatorAdele_mem_integralAdeles {v})
         have hw' : pairA D.host.F 0 (indP D {v}) • u ∈
             latO S T (LS : Set _) (LT : Set _) (fun v' => P v' ∧ v' = v) := by
           refine latO_mono S T _ _ (fun v' h => ⟨h.1, ?_⟩) hw
@@ -98,7 +100,7 @@ theorem latVac_of_places (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (LS : La
         exact (one v _ hw').1
     have := key s (subset_refl s)
     rwa [Finset.sdiff_self, Finset.coe_empty, Set.compl_empty, indicatorAdele_univ,
-      ((GlobalTheory.T.homLatticeCompletion_cut_integral_properties) D S T _ _ P _ h2u).2.1] at this
+      ((_root_.GlobalTheory.FinPl.latO_algebra) D S T _ _ P _ h2u).2.1] at this
   · intro e he u hu hh
     obtain ⟨hee, hec, v, ε, ⟨α, rfl, hα1, hα0⟩, hsum⟩ := he
     have hα : α ∈ intAf D.host.F := by
@@ -109,7 +111,7 @@ theorem latVac_of_places (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (LS : La
       ext i j
       show pairA D.host.F 0 α • u i j = u i j
       rw [Algebra.smul_def, ← hsum, ← hh i j, ← mul_assoc, add_mul, hee, mul_comm (cA D e) e, hec, add_zero]
-    have hw := ((GlobalTheory.T.homLatticeCompletion_cut_integral_properties) D S T _ _ P u hu).1 α hα
+    have hw := ((_root_.GlobalTheory.FinPl.latO_algebra) D S T _ _ P u hu).1 α hα
     rw [hfix] at hw
     refine (one v u (latO_mono S T _ _ (fun v' h => ⟨h.1, ?_⟩) hw)).2 e
       ⟨hee, hec, v, _, ⟨α, rfl, hα1, hα0⟩, hsum⟩ hh
@@ -122,7 +124,7 @@ theorem vac_loc : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (�
   · exact fun e he u hu => h.2.2 e he u (latO_mono S T _ _ (fun v' h' => h' ▸ hv) hu)
   · intro h g hg k hk
     exact (GlobalTheory.T.thetaLatticeVacuum_of_carriesLatticeCompletions) D ψ S T χS χT om hW LS LT hLS hLT P f h g k LS LT hLS hLT
-      ((GlobalTheory.T.carriesLatticeCompletion_of_trivialAtPlaces) D S LS P g hg) ((GlobalTheory.T.carriesLatticeCompletion_of_trivialAtPlaces) D T LT P k hk)
+      ((_root_.GlobalTheory.fixes_latV_of_mem_grpOff) D S LS P g hg) ((_root_.GlobalTheory.fixes_latV_of_mem_grpOff) D T LT P k hk)
   · intro h g k MS MT hMS hMT hg hk
     exact (GlobalTheory.T.thetaLatticeVacuum_of_carriesLatticeCompletions) D ψ S T χS χT om hW LS LT hLS hLT P f h g k MS MT hMS hMT hg hk
 

@@ -45,37 +45,6 @@ theorem lawA3'_of (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) →
     rfl
   · exact Or.inl ⟨hadm, hv⟩
 
-theorem divFin_of_lawA3' (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
-    (hord : ∀ Z v, d.ord Z v = ordC (δ Z v) v) (h : LawA3' d) : DivFin d := by
-  intro Z r hr
-  have hmem : AddMonoidAlgebra.single (0 : WTZ E) r ∈ AG Z 0 := by
-    refine Submodule.mem_span_singleton.mpr ⟨r, ?_⟩
-    first
-      | simp [AddMonoidAlgebra.smul_single']
-      | (rw [AddMonoidAlgebra.smul_single', mul_one])
-  have hne0 : AddMonoidAlgebra.single (0 : WTZ E) r ≠ 0 := by
-    first
-      | simpa using hr
-      | exact Finsupp.single_ne_zero.mpr hr
-  refine (h Z hmem hne0).subset ?_
-  rintro v ⟨hadm, hv⟩
-  refine ⟨hadm, ?_⟩
-  rw [hord]
-  unfold ordC
-  have hc : (AddMonoidAlgebra.single (0 : WTZ E) r).coeff 0 = r := by
-    first
-      | simp
-      | rfl
-  have hf0 : frW (δ Z v) (0 : WTZ E) = 0 := by
-    unfold frW
-    refine Finset.sum_eq_zero (fun i _ => ?_)
-    cases i <;> simp [exZ]
-  rw [hc, hf0, add_zero]
-  obtain ⟨n, hn⟩ := WithTop.ne_top_iff_exists.mp ((AddValuation.top_iff v).not.mpr hr)
-  rw [← hn, WithTop.untopD_coe]
-  rintro rfl
-  exact hv (by rw [← hn]; rfl)
-
 end Fin
 
 section Data

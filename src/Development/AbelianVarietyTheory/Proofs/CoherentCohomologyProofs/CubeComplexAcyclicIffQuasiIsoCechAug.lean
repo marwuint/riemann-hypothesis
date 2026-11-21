@@ -56,12 +56,6 @@ theorem lowerFaceMap_app {A B : Cube.{v} ι R} (φ : A ⟶ B) (s : Finset κ) :
 theorem upperFaceMap_app {A B : Cube.{v} ι R} (φ : A ⟶ B) (s : Finset κ) :
     (upperFaceMap e i φ).app s = φ.app (insert i (s.map e.toEmbedding)) := rfl
 
-@[reassoc]
-theorem faceMap_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
-    lowerFaceMap e φ ≫ faceMap e i B = faceMap e i A ≫ upperFaceMap e i φ := by
-  ext s x
-  exact (app_res φ (Finset.subset_insert i (s.map e.toEmbedding)) x).symm
-
 theorem cubeSign_map (s : Finset κ) (k : κ) :
     cubeSign (s.map e.toEmbedding) (e k) = cubeSign s k := by
   unfold cubeSign
@@ -81,23 +75,6 @@ theorem upperSign_mul_self (s : Finset κ) : upperSign e i s * upperSign e i s =
 theorem upperSign_smul_smul {M : Type*} [AddCommGroup M] (s : Finset κ) (x : M) :
     upperSign e i s • upperSign e i s • x = x := by
   rw [smul_smul, upperSign_mul_self, one_smul]
-
-theorem upperSign_eq_one (h : ∀ k, e k < i) (s : Finset κ) : upperSign e i s = 1 := by
-  have : (insert i (s.map e.toEmbedding)).filter (· < i) = s.map e.toEmbedding := by
-    rw [Finset.filter_insert, if_neg (lt_irrefl i), Finset.filter_true_of_mem]
-    intro j hj
-    obtain ⟨k, -, rfl⟩ := Finset.mem_map.1 hj
-    exact h k
-  rw [upperSign, cubeSign, this, Finset.card_map, ← mul_pow]; simp
-
-theorem upperSign_eq_pow (h : ∀ k, i ≤ e k) (s : Finset κ) :
-    upperSign e i s = (-1) ^ s.card := by
-  rw [upperSign, cubeSign_eq_one_of_forall_le, mul_one]
-  intro j hj
-  rcases Finset.mem_insert.1 hj with rfl | hj
-  · exact le_rfl
-  · obtain ⟨k, -, rfl⟩ := Finset.mem_map.1 hj
-    exact h k
 
 theorem totalD_map (A : Cube.{v} ι R) (x : ∀ t, A.obj t) (s : Finset κ) :
     totalD A x (s.map e.toEmbedding) =
@@ -389,19 +366,6 @@ variable {A} {B : Cube.{v} ι R} (φ : A ⟶ B)
 theorem termLower_termMap {p : ℕ} (x : Term A p) :
     termLower e B p (termMap φ p x) = termMap (lowerFaceMap e φ) p (termLower e A p x) := rfl
 
-theorem termUpper_termMap {p : ℕ} (x : Term A (p + 1)) :
-    termUpper he B p (termMap φ (p + 1) x) =
-      termMap (upperFaceMap e i φ) p (termUpper he A p x) :=
-  funext fun s => (map_zsmul (φ.app (insert i (s.1.map e.toEmbedding))).hom _ _).symm
-
-include he in
-
-theorem termMap_termIncl {p : ℕ} (y : Term (upperFace e i A) p) :
-    termMap φ (p + 1) (termIncl e i A p y) =
-      termIncl e i B p (termMap (upperFaceMap e i φ) p y) :=
-  term_ext_faces he B (by simp [termUpper_termMap])
-    (by simp [termLower_termMap, termLower_termIncl he])
-
 end Terms
 
 end Cube
@@ -520,20 +484,6 @@ noncomputable def cubeUpperIncl (A : Cube.{v} ι R) :
 theorem cubeUpperIncl_f_succ (A : Cube.{v} ι R) (p : ℕ) :
     (cubeUpperIncl he A).f (p + 1) = (shiftSuccXIso _ p).hom ≫ cubeInclX e i A p := rfl
 
-@[reassoc]
-theorem cubeUpperIncl_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
-    extendMap (cubeComplexMap (Cube.upperFaceMap e i φ)) succEmbedding ≫ cubeUpperIncl he B =
-      cubeUpperIncl he A ≫ cubeComplexMap φ := by
-  refine HomologicalComplex.hom_ext _ _ fun p => ?_
-  cases p with
-  | zero => exact (isZero_shiftSucc_X_zero _).eq_of_src _ _
-  | succ p =>
-    rw [comp_f, comp_f, cubeUpperIncl_f_succ, cubeUpperIncl_f_succ,
-      extendMap_f _ _ (succEmbedding_f p), Category.assoc, Category.assoc, Category.assoc,
-      Iso.inv_hom_id_assoc]
-    congr 1
-    exact ModuleCat.hom_ext (LinearMap.ext fun x => (Cube.termMap_termIncl he φ x).symm)
-
 noncomputable abbrev cubeFaceSequence (A : Cube.{v} ι R) :
     ShortComplex (CochainComplex (ModuleCat.{v} R) ℕ) :=
   ShortComplex.mk (cubeUpperIncl he A) (cubeLowerProj e A) (by
@@ -545,14 +495,6 @@ noncomputable abbrev cubeFaceSequence (A : Cube.{v} ι R) :
       have h : cubeInclX e i A p ≫ (cubeLowerProj e A).f (p + 1) = 0 :=
         ModuleCat.hom_ext (LinearMap.ext fun x => Cube.termLower_termIncl he A x)
       rw [h, comp_zero])
-
-noncomputable def cubeFaceSequenceMap {A B : Cube.{v} ι R} (φ : A ⟶ B) :
-    cubeFaceSequence he A ⟶ cubeFaceSequence he B where
-  τ₁ := extendMap (cubeComplexMap (Cube.upperFaceMap e i φ)) succEmbedding
-  τ₂ := cubeComplexMap φ
-  τ₃ := cubeComplexMap (Cube.lowerFaceMap e φ)
-  comm₁₂ := cubeUpperIncl_naturality he φ
-  comm₂₃ := cubeLowerProj_naturality φ
 
 noncomputable def cubeFaceSplitting (A : Cube.{v} ι R) : ∀ p : ℕ,
     ((cubeFaceSequence he A).map (eval _ _ p)).Splitting
@@ -633,74 +575,12 @@ theorem cubeFaceSequence_δ (A : Cube.{v} ι R) (p : ℕ) :
 
 end Cone
 
-section FiveLemma
-
-open ComposableArrows Abelian HomologySequence
-
-variable {C ι : Type*} [Category* C] [Abelian C] {c : ComplexShape ι}
-  {S₁ S₂ : ShortComplex (HomologicalComplex C c)} (φ : S₁ ⟶ S₂)
-  (hS₁ : S₁.ShortExact) (hS₂ : S₂.ShortExact)
-
-include hS₁ hS₂
-
-theorem mono_homologyMap_τ₂ (j : ι) (h₁ : Mono (homologyMap φ.τ₁ j))
-    (h₂ : Mono (homologyMap φ.τ₃ j)) (h₃ : ∀ i, c.Rel i j → Epi (homologyMap φ.τ₃ i)) :
-    Mono (homologyMap φ.τ₂ j) := by
-  by_cases hj : ∃ i, c.Rel i j
-  · obtain ⟨i, hij⟩ := hj
-    apply mono_of_epi_of_mono_of_mono
-      ((δ₀Functor ⋙ δ₀Functor).map (mapComposableArrows₅ φ hS₁ hS₂ i j hij))
-    · exact (composableArrows₅_exact hS₁ i j hij).δ₀.δ₀
-    · exact (composableArrows₅_exact hS₂ i j hij).δ₀.δ₀
-    · exact h₃ _ hij
-    · exact h₁
-    · exact h₂
-  · refine mono_of_mono_of_mono_of_mono (mapComposableArrows₂ φ j)
-      (composableArrows₂_exact hS₁ j) ?_ h₁ h₂
-    have := hS₂.mono_f
-    apply mono_homologyMap_of_mono_of_not_rel
-    simpa using hj
-
-theorem epi_homologyMap_τ₂ (i : ι) (h₁ : Epi (homologyMap φ.τ₁ i))
-    (h₂ : Epi (homologyMap φ.τ₃ i)) (h₃ : ∀ j, c.Rel i j → Mono (homologyMap φ.τ₁ j)) :
-    Epi (homologyMap φ.τ₂ i) := by
-  by_cases hi : ∃ j, c.Rel i j
-  · obtain ⟨j, hij⟩ := hi
-    apply epi_of_epi_of_epi_of_mono
-      ((δlastFunctor ⋙ δlastFunctor).map (mapComposableArrows₅ φ hS₁ hS₂ i j hij))
-    · exact (composableArrows₅_exact hS₁ i j hij).δlast.δlast
-    · exact (composableArrows₅_exact hS₂ i j hij).δlast.δlast
-    · exact h₁
-    · exact h₂
-    · exact h₃ _ hij
-  · refine epi_of_epi_of_epi_of_epi (mapComposableArrows₂ φ i)
-      (composableArrows₂_exact hS₂ i) ?_ h₁ h₂
-    have := hS₁.epi_g
-    apply epi_homologyMap_of_epi_of_not_rel
-    simpa using hi
-
-theorem quasiIso_τ₂ (h₁ : QuasiIso φ.τ₁) (h₃ : QuasiIso φ.τ₃) : QuasiIso φ.τ₂ := by
-  rw [quasiIso_iff]
-  intro i
-  rw [quasiIsoAt_iff_isIso_homologyMap]
-  have := mono_homologyMap_τ₂ φ hS₁ hS₂ i inferInstance inferInstance fun _ _ => inferInstance
-  have := epi_homologyMap_τ₂ φ hS₁ hS₂ i inferInstance inferInstance fun _ _ => inferInstance
-  apply isIso_of_mono_of_epi
-
-end FiveLemma
-
 section Corollaries
 
 variable {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {R : Type u} [Ring R]
   {e : κ ↪o ι} {i : ι} (he : Set.range e = {i}ᶜ)
 
 include he
-
-theorem quasiIso_cubeComplexMap_of_faces {A B : Cube.{v} ι R} (φ : A ⟶ B)
-    (h₀ : QuasiIso (cubeComplexMap (Cube.lowerFaceMap e φ)))
-    (h₁ : QuasiIso (cubeComplexMap (Cube.upperFaceMap e i φ))) : QuasiIso (cubeComplexMap φ) :=
-  quasiIso_τ₂ (cubeFaceSequenceMap he φ) (cubeFaceSequence_shortExact he A)
-    (cubeFaceSequence_shortExact he B) ((quasiIso_extendMap_iff _ _).2 h₁) h₀
 
 theorem cubeFaceSequence_δ_eq (A : Cube.{v} ι R) (p : ℕ) :
     (cubeFaceSequence_shortExact he A).δ p (p + 1) rfl =
@@ -772,78 +652,6 @@ theorem cubeComplex_acyclic_of_faces (A : Cube.{v} ι R)
 
 end Corollaries
 
-section DegreeZero
-
-variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
-
-theorem quasiIsoAt_zero_cubeComplexMap_iff {A B : Cube.{v} ι R} (φ : A ⟶ B) :
-    QuasiIsoAt (cubeComplexMap φ) 0 ↔ Set.BijOn (φ.app ∅).hom
-      (LinearMap.ker (Cube.aug A)) (LinearMap.ker (Cube.aug B)) := by
-  have h1 : QuasiIsoAt (cubeComplexMap φ) 0 ↔ IsIso (cyclesMap (cubeComplexMap φ) 0) := by
-    rw [quasiIsoAt_iff_isIso_homologyMap]
-    exact ((MorphismProperty.isomorphisms _).arrow_mk_iso_iff
-      (Arrow.isoMk (CochainComplex.isoHomologyπ₀ (cubeComplex A))
-        (CochainComplex.isoHomologyπ₀ (cubeComplex B))
-        (homologyπ_naturality (cubeComplexMap φ) 0))).symm
-  let j (X : Cube.{v} ι R) (x : (cubeComplex X).cycles 0) : X.obj ∅ :=
-    Cube.termZeroEquiv X (((cubeComplex X).iCycles 0).hom x)
-  have hj (X : Cube.{v} ι R) : Function.Injective (j X) :=
-    (Cube.termZeroEquiv X).injective.comp
-      ((ModuleCat.mono_iff_injective ((cubeComplex X).iCycles 0)).1 inferInstance)
-  have hr (X : Cube.{v} ι R) : Set.range (j X) = LinearMap.ker (Cube.aug X) := by
-    ext a
-    constructor
-    · rintro ⟨x, rfl⟩
-      have h := congr(($((cubeComplex X).iCycles_d 0 (0 + 1))).hom x)
-      rw [cubeComplex_d] at h
-      exact (Cube.d_zero_apply X _).symm.trans h
-    · intro ha
-      have ha' : (Cube.termZeroEquiv X).symm a ∈ LinearMap.ker (Cube.d X 0) := by
-        rw [LinearMap.mem_ker, Cube.d_zero_apply, LinearEquiv.apply_symm_apply]
-        exact ha
-      refine ⟨(cubeCyclesIso X 0).inv.hom ⟨_, ha'⟩, ?_⟩
-      have h := congr(($((Iso.inv_comp_eq _).2 (cubeCyclesIso_hom_subtype X 0).symm)).hom ⟨_, ha'⟩)
-      exact (congrArg (Cube.termZeroEquiv X) h).trans (LinearEquiv.apply_symm_apply _ a)
-  have hc (x : (cubeComplex A).cycles 0) :
-      j B ((cyclesMap (cubeComplexMap φ) 0).hom x) = (φ.app ∅).hom (j A x) :=
-    congrArg (Cube.termZeroEquiv B) congr(($(cyclesMap_i (cubeComplexMap φ) 0)).hom x)
-  rw [h1, ConcreteCategory.isIso_iff_bijective, ← hr, ← hr]
-  constructor
-  · intro h
-    refine ⟨?_, ?_, ?_⟩
-    · rintro _ ⟨x, rfl⟩
-      exact ⟨_, hc x⟩
-    · rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩ hxy
-      exact congrArg _ (h.1 (hj B ((hc x).trans (hxy.trans (hc y).symm))))
-    · rintro _ ⟨y, rfl⟩
-      obtain ⟨x, rfl⟩ := h.2 y
-      exact ⟨_, ⟨x, rfl⟩, (hc x).symm⟩
-  · intro h
-    refine ⟨fun x y hxy => hj A (h.injOn ⟨x, rfl⟩ ⟨y, rfl⟩
-      ((hc x).symm.trans ((congrArg (j B) hxy).trans (hc y)))), fun y => ?_⟩
-    obtain ⟨_, ⟨x, rfl⟩, hx⟩ := h.surjOn ⟨y, rfl⟩
-    exact ⟨x, hj B ((hc x).trans hx)⟩
-
-theorem cubeComplex_acyclic_of_faces_of_bijOn {κ : Type} [LinearOrder κ] {e : κ ↪o ι} {i : ι}
-    (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R)
-    (h₀ : ∀ p, (cubeComplex (Cube.lowerFace e A)).ExactAt (p + 1))
-    (h₁ : ∀ p, (cubeComplex (Cube.upperFace e i A)).ExactAt (p + 1))
-    (h : Set.BijOn ((Cube.faceMap e i A).app ∅).hom
-      (LinearMap.ker (Cube.aug (Cube.lowerFace e A)))
-      (LinearMap.ker (Cube.aug (Cube.upperFace e i A)))) : (cubeComplex A).Acyclic := by
-  rw [cubeComplex_acyclic_iff_quasiIso_faceMap he, quasiIso_iff]
-  intro p
-  cases p with
-  | zero => exact (quasiIsoAt_zero_cubeComplexMap_iff _).2 h
-  | succ p => exact (quasiIsoAt_iff_exactAt _ _ (h₀ p)).2 (h₁ p)
-
-theorem cubeComplex_acyclic_of_bijective (A : Cube.{v} ι R) (i : ι)
-    (hA : ∀ s : Finset ι, i ∉ s → Function.Bijective (Cube.res A (Finset.subset_insert i s))) :
-    (cubeComplex A).Acyclic :=
-  cubeComplex_exactAt_of_bijective A i hA
-
-end DegreeZero
-
 section Cech
 
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R]
@@ -887,47 +695,6 @@ noncomputable def cechHomologySuccIso (A : Cube.{v} ι R) (p : ℕ) :
   (cechComplex A).homologyIsoSc' p (p + 1) (p + 2) (by simp) (by simp) ≪≫
     ((cubeComplex A).homologyIsoSc' (p + 1) (p + 2) (p + 3) (by simp) (by simp)).symm
 
-theorem cubeComplex_acyclic_iff_cech (A : Cube.{v} ι R) :
-    (cubeComplex A).Acyclic ↔
-      IsIso (cechAugHomology A) ∧ ∀ p, IsZero ((cechComplex A).homology (p + 1)) := by
-  simp only [isIso_cechAugHomology_iff, ← exactAt_iff_isZero_homology,
-    cechComplex_exactAt_succ_iff_cube]
-  refine ⟨fun h => ⟨⟨h _, h _⟩, fun _ => h _⟩, fun h p => ?_⟩
-  match p with
-  | 0 => exact h.1.1
-  | 1 => exact h.1.2
-  | p + 2 => exact h.2 p
-
-theorem cubeComplex_acyclic_iff_exact (A : Cube.{v} ι R) :
-    (cubeComplex A).Acyclic ↔ Function.Injective (Cube.aug A) ∧
-      Function.Exact (Cube.aug A) (Cube.d A 1) ∧
-        ∀ p, Function.Exact (Cube.d A (p + 1)) (Cube.d A (p + 2)) := by
-  rw [cubeComplex_acyclic_iff_cech, isIso_cechAugHomology_iff, cubeComplex_exactAt_zero_iff,
-    cubeComplex_exactAt_one_iff, and_assoc]
-  simp only [← exactAt_iff_isZero_homology, cechComplex_exactAt_succ_iff]
-
-theorem quasiIsoAt_zero_cechAug_iff (A : Cube.{v} ι R) :
-    QuasiIsoAt (cechAug A) 0 ↔ (cubeComplex A).ExactAt 0 ∧ (cubeComplex A).ExactAt 1 := by
-  rw [CochainComplex.quasiIsoAt₀_iff, ShortComplex.quasiIso_iff_of_zeros _ rfl rfl rfl, and_comm,
-    cubeComplex_exactAt_zero_iff, cubeComplex_exactAt_one_iff,
-    ShortComplex.ShortExact.moduleCat_exact_iff_function_exact, ModuleCat.mono_iff_injective]
-  change Function.Injective ((cechAug A).f 0).hom ∧
-    Function.Exact ((cechAug A).f 0).hom ((cechComplex A).d 0 (0 + 1)).hom ↔ _
-  rw [cechComplex_d, cechAug_f_zero]
-  rfl
-
-theorem cubeComplex_acyclic_iff_quasiIso_cechAug (A : Cube.{v} ι R) :
-    (cubeComplex A).Acyclic ↔ QuasiIso (cechAug A) := by
-  rw [cubeComplex_acyclic_iff_cech, isIso_cechAugHomology_iff, ← quasiIsoAt_zero_cechAug_iff,
-    quasiIso_iff]
-  have h (p : ℕ) : QuasiIsoAt (cechAug A) (p + 1) ↔ IsZero ((cechComplex A).homology (p + 1)) := by
-    rw [quasiIsoAt_iff_exactAt _ _ (CochainComplex.exactAt_succ_single_obj _ p),
-      exactAt_iff_isZero_homology]
-  refine ⟨fun H p => ?_, fun H => ⟨H 0, fun p => (h p).1 (H _)⟩⟩
-  cases p with
-  | zero => exact H.1
-  | succ p => exact (h p).2 (H.2 p)
-
 end Cech
 
 section Main
@@ -939,32 +706,6 @@ abbrev otherDirections (i : ι) : {j : ι // j ≠ i} ↪o ι := OrderEmbedding.
 theorem range_otherDirections (i : ι) : Set.range (otherDirections i) = {i}ᶜ := by
   ext j
   exact ⟨by rintro ⟨k, rfl⟩; exact k.2, fun h => ⟨⟨j, h⟩, rfl⟩⟩
-
-theorem cube_cone_of_faces {κ : Type} [LinearOrder κ] {e : κ ↪o ι} {i : ι}
-    (he : Set.range e = {i}ᶜ) (A : Cube.{v} ι R) :
-    (∃ hS : (ShortComplex.mk (cubeUpperIncl he A) (cubeLowerProj e A)
-        (cubeFaceSequence he A).zero).ShortExact,
-      (∀ p, Nonempty ((cubeFaceSequence he A).map (eval _ _ p)).Splitting) ∧
-      ∀ p, hS.δ p (p + 1) rfl ≫
-          (shiftSuccHomologyIso (cubeComplex (Cube.upperFace e i A)) p).hom =
-        (-1 : ℤ) ^ p • homologyMap (cubeComplexMap (Cube.faceMap e i A)) p) ∧
-    ((∀ s : Finset ι, i ∉ s → Function.Bijective (Cube.res A (Finset.subset_insert i s))) →
-      (cubeComplex A).Acyclic) ∧
-    (∀ (B : Cube.{v} ι R) (φ : A ⟶ B), QuasiIso (cubeComplexMap (Cube.lowerFaceMap e φ)) →
-      QuasiIso (cubeComplexMap (Cube.upperFaceMap e i φ)) → QuasiIso (cubeComplexMap φ)) ∧
-    ((cubeComplex A).Acyclic ↔
-      IsIso (cechAugHomology A) ∧ ∀ p, IsZero ((cechComplex A).homology (p + 1))) :=
-  ⟨⟨cubeFaceSequence_shortExact he A, fun p => ⟨cubeFaceSplitting he A p⟩,
-      cubeFaceSequence_δ he A⟩,
-    cubeComplex_acyclic_of_bijective A i, fun _ φ => quasiIso_cubeComplexMap_of_faces he φ,
-    cubeComplex_acyclic_iff_cech A⟩
-
-example (A : Cube.{v} ι R) (i : ι) : (cubeFaceSequence (range_otherDirections i) A).ShortExact :=
-  cubeFaceSequence_shortExact _ A
-
-example {n : ℕ} (A : Cube.{v} (Fin (n + 1)) R) (i : Fin (n + 1)) :
-    (cubeFaceSequence (e := Fin.succAboveOrderEmb i) (Fin.range_succAbove i) A).ShortExact :=
-  cubeFaceSequence_shortExact _ A
 
 end Main
 

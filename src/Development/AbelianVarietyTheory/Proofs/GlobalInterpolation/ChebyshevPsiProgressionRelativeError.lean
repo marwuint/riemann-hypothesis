@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ZerosDisc
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumRpowZerosLeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RepulsionStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitFormulaDirichletZerosRightHalfStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExceptionalDirichletZeroUniqueZeroFreeRegionStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumRpowZerosLe
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.Repulsion
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitFormulaDirichletZerosRightHalf
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExceptionalDirichletZeroUniqueZeroFreeRegion
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology GlobalTheory.Lin
 open scoped Classical
 
@@ -292,12 +292,12 @@ lemma etaChoice (c d : ℝ) (hc : 0 < c) (hd : 0 < d) :
 set_option maxHeartbeats 1000000 in
 
 theorem psiAP_relative : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ : ℝ, 0 < c₁ → c₁ ≤ c₀ → ∃ c₂ c₃ C : ℝ, 0 < c₂ ∧ 0 < c₃ ∧ 0 < C ∧ ∀ (M : ℕ) [NeZero M] (b : ℕ) (θ : ℤ) (β u : ℝ), 3 ≤ M → Nat.Coprime b M → ExcData c₁ M b θ β → (M : ℝ) ^ c₂ ≤ u → |(M.totient : ℝ) * psiAP M b u - (u - θ * (u ^ β / β))| ≤ C * (Real.exp (-c₃ * Real.log u / Real.log M) + Real.exp (-Real.sqrt (c₃ * Real.log u))) * (u - θ * (u ^ β / β)) := by
-  obtain ⟨c₀, hc₀, hX⟩ := GlobalTheory.T.exceptionalDirichletZero_unique_zeroFreeRegion
+  obtain ⟨c₀, hc₀, hX⟩ := _root_.GlobalTheory.ExceptionalPair.main
   refine ⟨c₀, hc₀, fun c₁ hc₁ hc₁' => ?_⟩
   obtain ⟨c, hc, hX⟩ := hX c₁ hc₁ hc₁'
-  obtain ⟨d, hd, hD⟩ := GlobalTheory.T.one_sub_re_ge_of_exceptional_zero_repulsion
-  obtain ⟨Ce, hCe, hE⟩ := GlobalTheory.T.explicit_formula_dirichlet_zeros_right_half
-  obtain ⟨A, Ca, η₀, hA, hCa, hη₀, hZ⟩ := GlobalTheory.T.exists_sum_characters_finsum_zeros_rpow_re_sub_one_le
+  obtain ⟨d, hd, hD⟩ := _root_.GlobalTheory.Lin.Repulsion.repulsion
+  obtain ⟨Ce, hCe, hE⟩ := _root_.GlobalTheory.ExplicitFormulaRight.explicit_formula_right
+  obtain ⟨A, Ca, η₀, hA, hCa, hη₀, hZ⟩ := _root_.GlobalTheory.Lin.ZeroSum.sum_rpow_zeros_le
   obtain ⟨c', K, R₁, hc', hc'', hK, hη⟩ := etaChoice c d hc hd
   obtain ⟨c₂, c₃, C, hc₂, hc₃, hC, hR⟩ := realEnd Ce Ca η₀ c' K (min 1 c) (max (max R₁ A) 8) hCe hCa hη₀ hc'
     (by linarith) (by positivity)

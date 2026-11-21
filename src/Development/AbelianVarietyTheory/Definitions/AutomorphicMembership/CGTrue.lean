@@ -17,9 +17,6 @@ structure CGTrue (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : Gl
   inf : haveI := host_isCMField D.host; ∀ a (π : D.naut.CG a) τ, D.naut.infG π τ = (e a π).infChar τ
   csd : haveI := host_isCMField D.host; ∀ a (π : D.naut.CG a), D.naut.csd π ↔ (e a π).IsCsd
 
-def CGTrue.equiv {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T) (a : ℕ)
-    (h : 0 < a) : D.naut.CG a ≃ HostCGu D.host a := Equiv.ofBijective (C.e a) ⟨(C.e a).injective, C.surj a h⟩
-
 def wdCG {D : D7} (hE : IsEmpty D.nd.Loc) (K : CGK D.naut) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) :
     GlobalTheory.RowTie.WDTie (setCG D hE K).nd (setCG D hE K).naut := { T with }
 

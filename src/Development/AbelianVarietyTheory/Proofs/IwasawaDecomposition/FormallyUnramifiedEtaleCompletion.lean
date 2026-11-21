@@ -161,40 +161,4 @@ theorem exists_chars {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Hos
   · exact ⟨τ₀, τ', h, by rw [h', h]; exact fun e => hne e.symm⟩
   · exact ⟨τ', τ₀, by rw [h', h, neg_neg], by rw [h]; exact fun e => hne e.symm⟩
 
-theorem finrank_le_min : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : GMod Xo c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)), SABMap t Z.t ξ → ∀ P : PELUnif (maximalIdeal R) t, IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → P.TorsionIso → Module.finrank (𝓞 E) P.D.toPre.X ≤ min D.p D.q := by
-  intro E _ _ _ H D l Xo c Z R _ _ _ ξ t m P hCN hEt _ _
-  obtain ⟨hNoeth, -, -, hChar⟩ := hCN
-  haveI := hNoeth
-  haveI := hChar
-  haveI := c.fin
-  haveI : NumberField c.F := {}
-  obtain ⟨y, hy⟩ := DomFine.exists_generic_point (𝓞 c.F) c.F Z.X (Xo.XF c) Z.s Z.jQ Z.flat Z.proj Z.jQ_open
-    Z.jQ_dense ξ hEt.1
-  let K := AlgebraicClosure (FractionRing R)
-  let f : R →+* K := (algebraMap (FractionRing R) K).comp (algebraMap R (FractionRing R))
-  have hf : Function.Injective f :=
-    (algebraMap (FractionRing R) K).injective.comp (IsFractionRing.injective R (FractionRing R))
-  haveI : CharZero K := ⟨fun a b h => Nat.cast_injective (R := R) (hf (by simpa using h))⟩
-  let x' : Sp K ⟶ Xo.XF c := spMap (algebraMap (FractionRing R) K) ≫ y
-  have hx : x' ≫ Z.jQ ≫ pullback.fst _ _ = spMap f ≫ ξ := by
-    rw [← DomFine.spMap_comp', Category.assoc, hy]
-    rfl
-  obtain ⟨β₀, hβ₀⟩ := Spec.map_surjective
-    (x' ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s)
-  have hβ : x' ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap β₀.hom :=
-    hβ₀.symm
-  have hdet := (Z.oF.geom K x' β₀.hom hβ).1
-  have hr : (β₀.hom (baseKA l).ρ) ^ 2 = -(H.d : K) := by
-    rw [← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]
-  have bound : ∀ (τ : 𝓞 E →+* K) (N : ℕ), LieMult Z.oF.t.act x' τ N →
-      Module.finrank (𝓞 E) P.D.toPre.X ≤ N := by
-    intro τ N hN
-    have h₅ := (GlobalTheory.lieMult_iff_of_isGrpPullback Z.m.cart Z.oF.t.act Z.t.act Z.m.act x' τ N).1 hN
-    rw [hx] at h₅
-    have h₆ := (GlobalTheory.lieMult_iff_of_isGrpPullback m.cart t.act Z.t.act m.act (spMap f) τ N).2 h₅
-    obtain ⟨n, -, hn⟩ := lieMult_unif_loc H R t P K f hf τ N h₆
-    omega
-  obtain ⟨τ₁, τ₂, h₁, h₂⟩ := exists_chars H K _ hr
-  exact le_min (bound τ₁ _ ((hdet τ₁).1 h₁)) (bound τ₂ _ ((hdet τ₂).2 h₂))
-
 end GlobalTheory.CharRank

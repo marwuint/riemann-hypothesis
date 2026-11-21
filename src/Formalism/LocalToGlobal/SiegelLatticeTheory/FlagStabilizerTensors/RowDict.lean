@@ -134,17 +134,6 @@ variable {D : D7} (X : HidaSetting D)
 def RowDictTie (G : GoodOp X) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : Prop :=
   IsConjOnto (fun F : D.what₂.EE => ι (D.sEE F)) (conjHH X G)
 
-theorem finiteDimensional_HHX (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : FiniteDimensional ℂ (HHX X) := LinearEquiv.finiteDimensional ι.toLinearEquiv
-
-theorem dall_eq (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : D.what₂.Dall = Module.finrank ℂ (HHX X) := by
-  rw [← D.s_HH]
-  exact ι.toLinearEquiv.finrank_eq
-
-theorem drows_eq {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictTie X G ι) :
-    D.what₂.Drows = Module.finrank ℂ (EEC X G) := by
-  obtain ⟨j, -⟩ := h
-  rw [← j.toLinearEquiv.finrank_eq, Module.finrank_eq_card_basis D.what₂.onb.toBasis, Fintype.card_fin]
-
 theorem range_sEE {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictTie X G ι) (y : HHX X) :
     (y : L2X X) ∈ goodSub X G ↔ ∃ F : D.what₂.EE, ι (D.sEE F) = y := by
   obtain ⟨j, hj⟩ := h
@@ -161,46 +150,6 @@ theorem range_sEE {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDict
   · rintro ⟨F, rfl⟩
     rw [hj', conjHH_apply]
     exact (mem_EEC X G _).1 (j F).2
-
-def EEB (G : GoodOp X) : Submodule ℂ (L2X X) :=
-  (HHX X).comap (conjL (muX X)).toLinearEquiv.toLinearMap ⊓ LinearMap.ker ((G.Rg : L2X X →ₗ[ℂ] L2X X) - LinearMap.id)
-
-def RgReal (G : GoodOp X) : Prop := ∀ φ : L2X X, star (G.Rg φ) = G.Rg (star φ)
-
-theorem eec_eq_eeb (G : GoodOp X) (h : RgReal X G) : EEC X G = EEB X G := by
-  ext F
-  rw [mem_EEC]
-  simp only [EEB, goodSub, Submodule.mem_inf, Submodule.mem_comap, LinearMap.mem_ker]
-  refine and_congr Iff.rfl ?_
-  simp only [LinearMap.sub_apply, LinearMap.id_apply, ContinuousLinearMap.coe_coe, sub_eq_zero]
-  rw [← h]
-  exact star_inj
-
-theorem D_eq_of (hB : Formalism.L2.SG.RowsDef.RowsBij) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X)
-    (hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (X.B.I.ε v)) (X.B.σ v))
-    (hF : ∀ v, IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)))
-    (hw : ∀ v, ‖X.B.w v‖ = 1)
-    (hint : ∀ v, Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v)
-      (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v))) (Formalism.REAL.muG (X.B.I.ε v))) :
-    X.B.D = D.what₂.Dall := by
-  rw [dall_eq X ι]
-  exact (Formalism.L2.SG.RowsDef.RowsAut.D_eq_finrank_HH hB X.B _ hU hIrr hF hw hint X.Rph X.Rph_spec).1
-
-theorem D_eq_holds (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X)
-    (hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (X.B.I.ε v)) (X.B.σ v))
-    (hF : ∀ v, IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)))
-    (hw : ∀ v, ‖X.B.w v‖ = 1)
-    (hint : ∀ v, Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v)
-      (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v))) (Formalism.REAL.muG (X.B.I.ε v))) :
-    X.B.D = D.what₂.Dall :=
-  D_eq_of X Formalism.L2.SG.Closed.RowsBij_holds ι hU hIrr hF hw hint
-
-def DstarAgree : Prop :=
-  Formalism.MainNotions.StandardLattice.DstarD D =
-    X.B.I.Dstar (∏ v, fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) X.B.μf X.B.fund X.B.e
-
-theorem dstar_iff (hT : AutTie D X.B X.pl) : D.what₂.Dstar = Formalism.MainNotions.StandardLattice.DstarD D ↔ DstarAgree X := by
-  rw [hT.Dstar_eq, DstarAgree, eq_comm]
 
 end Comparison₂
 

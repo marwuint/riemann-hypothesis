@@ -12,9 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ESecCompOfIs
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsPullbackKernelBaseChange
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsCPMapCompCancel
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsNormalisedGen
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivLiftOfIsNilpotentStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivLiftOfIsNilpotent
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CubTrivDeltaAndEvenUnique
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsEvenCubicalTrivialisationLiftNilpotentStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsEvenCubicalTrivialisationLiftNilpotent
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsDescendThrough
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsCPMapDescends
 
@@ -132,7 +133,7 @@ theorem nonempty_biTriv (A : Type) [CommRing A] [IsLocalRing A] (hA : IsNilpoten
   obtain ⟨i₀, h₀, -⟩ := existsUnique_torusCompat (G' := (Over.pullback f).obj G) hF.1 i
   obtain ⟨_, _, _, _, _, _, _, hP⟩ := exists_isCPMap P (toBase_mul hF hF.1.w) _ (pull_isLB P.L.isLB _) _
     (pullIso_isGen P.L.isLB _)
-  exact T.nonempty_biTriv_of_nonempty_biTriv_reduction A _ hA X G _ _ _ hF P _ _ hP i i₀ hi (h₀.isMonHom hF) h₀
+  exact _root_.GlobalTheory.UU.biTriv_lift_of_isNilpotent A _ hA X G _ _ _ hF P _ _ hP i i₀ hi (h₀.isMonHom hF) h₀
     (BiextTriv.main _ X _ _ _ i₀ (h₀.isMonHom hF))
 
 theorem nonempty_desc (A : Type) [CommRing A] [IsLocalRing A] (hA : IsNilpotent (IsLocalRing.maximalIdeal A))
@@ -176,7 +177,7 @@ theorem exists_lift {A A' : Type} [CommRing A] [IsLocalRing A] [CommRing A'] [No
     obtain ⟨_, h₂⟩ := exists_congr h₁ hg rfl hF₀.1.w
     obtain ⟨σ, hσ⟩ := h
     have := Q₀.i_hom
-    exact T.exists_even_cubicalTrivialisation_lift_nilpotent A _ hN hJ X G _ _ _ hF₀ P _ _ h₂ Q.i Q₀.i Q.i_hom Q₀.i_hom hQ
+    exact _root_.GlobalTheory.CubeLift.exists_even_cubTriv A _ hN hJ X G _ _ _ hF₀ P _ _ h₂ Q.i Q₀.i Q.i_hom Q₀.i_hom hQ
       (nonempty_biTriv A hA G P Q.i Q.i_hom) (exists_even_pull hP₀ h₀ σ hσ)
 
 theorem exists_transition {S S' : Scheme.{0}} [ConnectedSpace S'] {f : S' ⟶ S} {X : Type} [AddCommGroup X]

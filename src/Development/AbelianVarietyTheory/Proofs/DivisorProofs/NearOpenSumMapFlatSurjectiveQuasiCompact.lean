@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentDatumOfDescendedMultiplicationImpor
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleSpaceOfSmoothFieldOfConnectedSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOpenPartGroupSchemeProductMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveOpenPartProductMapIrreducibleFibresStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NearOpenPullbackToSelfProductSurjectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveOpenPartProductMapIrreducibleFibres
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NearOpenPullbackToSelfProductSurjective
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -46,7 +46,7 @@ theorem sum_flat_surjective_quasiCompact : ∀ (R : Type) [CommRing R] [IsDomain
   have ho : IsOpenImmersion (emb N p hp).left := isOpenImmersion_embL N p hp
   have hfl : Flat ((Over.pullback p).obj G').hom := by
     change Flat (pullback.snd G'.hom p); infer_instance
-  refine ⟨GlobalTheory.T.flat_openPart_groupScheme_productMap _ _ _ _ ho hfl, GlobalTheory.T.surjective_openPart_productMap_irreducible_fibres _ _ _ _ ho (GlobalTheory.T.nearOpenPullbackToSelfProduct_surjective R S π hπ G' N) (irreducibleSpace_fibre_pullback S G' hG p), ?_⟩
+  refine ⟨GlobalTheory.T.flat_openPart_groupScheme_productMap _ _ _ _ ho hfl, _root_.GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres _ _ _ _ ho (_root_.GlobalTheory.Mum.Desc.surjective_UT_hom R S π hπ G' N) (irreducibleSpace_fibre_pullback S G' hG p), ?_⟩
   have : QuasiCompact (UT N ⊗ UT N).hom := by
     change QuasiCompact (pullback.fst (UT N).hom (UT N).hom ≫ (UT N).hom)
     have h1 : QuasiCompact (UT N).hom := by

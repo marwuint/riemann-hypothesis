@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.PowerSeriesHasSumAt
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstHasSumAndBoundsStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesConvergentSubstHasSumAndBounds
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MvPowerSeriesIntegralBoundedClosureStatement
 
 open GlobalTheory.ConvSer
@@ -14,9 +14,9 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K] [CompleteSpace K] {σ 
 theorem csub_add_of_bdd (hs : ∀ i, Small (s i)) {S T : MvPowerSeries σ K} (hS : Bdd S)
     (hT : Bdd T) : csub s (S + T) = csub s S + csub s T := by
   ext μ
-  have h1 := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s S hs hS).1 μ
-  have h2 := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s T hs hT).1 μ
-  have h3 := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s _ hs ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ).2.1 S T hS hT).1).1 μ
+  have h1 := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s S hs hS).1 μ
+  have h2 := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s T hs hT).1 μ
+  have h3 := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s _ hs ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ).2.1 S T hS hT).1).1 μ
   rw [map_add]
   refine h3.unique ?_
   simpa only [map_add, add_mul] using h1.add h2
@@ -24,9 +24,9 @@ theorem csub_add_of_bdd (hs : ∀ i, Small (s i)) {S T : MvPowerSeries σ K} (hS
 theorem csub_sub_of_bdd (hs : ∀ i, Small (s i)) {S T : MvPowerSeries σ K} (hS : Bdd S)
     (hT : Bdd T) : csub s (S - T) = csub s S - csub s T := by
   ext μ
-  have h1 := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s S hs hS).1 μ
-  have h2 := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s T hs hT).1 μ
-  have h3 := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s _ hs ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ).2.1 S T hS hT).2.1).1 μ
+  have h1 := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s S hs hS).1 μ
+  have h2 := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s T hs hT).1 μ
+  have h3 := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s _ hs ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ).2.1 S T hS hT).2.1).1 μ
   rw [map_sub]
   refine h3.unique ?_
   simpa only [map_sub, sub_mul] using h1.sub h2
@@ -35,7 +35,7 @@ theorem csub_mul_of_bdd (hs : ∀ i, Small (s i)) {S T : MvPowerSeries σ K} (hS
     (hT : Bdd T) : csub s (S * T) = csub s S * csub s T := by
   classical
   ext μ
-  have h3 := (GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s _ hs ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ).2.1 S T hS hT).2.2).1 μ
+  have h3 := (_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s _ hs ((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ).2.1 S T hS hT).2.2).1 μ
   refine h3.unique ?_
   haveI : NonarchimedeanRing K := ⟨NonarchimedeanAddGroup.is_nonarchimedean⟩
   have h4 : HasSum (fun p : (σ →₀ ℕ) × (σ →₀ ℕ) =>
@@ -44,8 +44,8 @@ theorem csub_mul_of_bdd (hs : ∀ i, Small (s i)) {S T : MvPowerSeries σ K} (hS
       (MvPowerSeries.coeff μ (csub s S * csub s T)) := by
     rw [MvPowerSeries.coeff_mul]
     have h5 := hasSum_sum (s := Finset.HasAntidiagonal.antidiagonal μ) (fun q _ =>
-      ((GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s S hs hS).1 q.1).mul_of_nonarchimedean
-        ((GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ τ s T hs hT).1 q.2))
+      ((_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s S hs hS).1 q.1).mul_of_nonarchimedean
+        ((_root_.GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ s T hs hT).1 q.2))
     convert h5 using 2 with p
     simp only [Finsupp.add_apply, pow_add, Finset.prod_mul_distrib, MvPowerSeries.coeff_mul,
       Finset.mul_sum]

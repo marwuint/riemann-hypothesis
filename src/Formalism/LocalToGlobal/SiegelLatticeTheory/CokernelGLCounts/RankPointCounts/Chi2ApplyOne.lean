@@ -68,13 +68,4 @@ theorem MassDataDstarX (L : LocIn (TypX X)) (A : AnIn) (hH : HypX X hb FdN FdN' 
   rw [hdeg, hvol, h3, hkpp, hKpp hH, h2]
   ring
 
-theorem massDataDstarC_of (L : LocIn (TypX X)) (A : AnIn) (hH : HypX X hb FdN FdN' u u')
-    (hKpp : KppVolAt X hb hK FdN FdN' u u' X0 L A) (h2 : FiniteLevelVolumeEquality X hb) (h3 : CovolTie X)
-    (hT : D.what₂.Dstar = Formalism.L2.SG.RowsConc.DstC X) :
-    MassDataDstarC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq := by
-  unfold MassDataDstarC
-  rw [hT]
-  exact MassDataDstarX (hH := hH) (hKpp := hKpp) (h2 := h2) (h3 := h3) (ψ := ψ) (T := T) (sd := sd) (C := C)
-    (Th := Th) (vR := vR) (Q := Q) (M := M) (δ := δ) (i0 := i0) (i0' := i0') (νq := νq)
-
 end Formalism.L2.SG.IntegralApproximation

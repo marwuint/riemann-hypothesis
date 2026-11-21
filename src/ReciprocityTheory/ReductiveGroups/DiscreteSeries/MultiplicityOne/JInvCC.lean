@@ -37,24 +37,6 @@ lemma CkOn_Rw (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) (m : ℕ) {f 
       rw [e]; exact hf
     exact CkOn_RdV (ih hq' (m + 1) h1) (hq X (by simp))
 
-lemma Lw_congr (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) {f₁ f₂ : Mat k r → ℂ}
-    (h : ∀ g ∈ GV k r, f₁ g = f₂ g) : ∀ g ∈ GV k r, q.foldr LdV f₁ g = q.foldr LdV f₂ g := by
-  induction q with
-  | nil => simpa using h
-  | cons X q ih =>
-    intro g hg
-    rw [List.foldr_cons, List.foldr_cons]
-    exact LdV_congr (ih (fun Y hY => hq Y (List.mem_cons_of_mem X hY))) (hq X (by simp)) hg
-
-lemma Rw_congr (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X) {f₁ f₂ : Mat k r → ℂ}
-    (h : ∀ g ∈ GV k r, f₁ g = f₂ g) : ∀ g ∈ GV k r, q.foldr RdV f₁ g = q.foldr RdV f₂ g := by
-  induction q with
-  | nil => simpa using h
-  | cons X q ih =>
-    intro g hg
-    rw [List.foldr_cons, List.foldr_cons]
-    exact RdV_congr (ih (fun Y hY => hq Y (List.mem_cons_of_mem X hY))) (hq X (by simp)) hg
-
 lemma comm1 (Y : Mat k r) (hY : inLie k r Y) (q : List (Mat k r)) (hq : ∀ X ∈ q, inLie k r X)
     (f : Mat k r → ℂ) (hf : CkOn ((q.length + 1 : ℕ) : ℕ∞) (GV k r) f) :
     ∀ g ∈ GV k r, RdV Y (q.foldr LdV f) g = q.foldr LdV (RdV Y f) g := by
@@ -117,11 +99,6 @@ lemma RdV_fsmul (a : ℝ) (X : Mat k r) (f : Mat k r → ℂ) : RdV X (a • f) 
   funext g
   simp only [RdV, Pi.smul_apply]
   exact deriv_const_smul_field (f := fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) a
-
-lemma Lw_fsmul (a : ℝ) (q : List (Mat k r)) (f : Mat k r → ℂ) : q.foldr LdV (a • f) = a • q.foldr LdV f := by
-  induction q with
-  | nil => rfl
-  | cons X q ih => simp only [List.foldr_cons, ih, LdV_fsmul]
 
 lemma Rw_fsmul (a : ℝ) (q : List (Mat k r)) (f : Mat k r → ℂ) : q.foldr RdV (a • f) = a • q.foldr RdV f := by
   induction q with

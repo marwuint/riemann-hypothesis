@@ -291,12 +291,6 @@ theorem normTrace_cyclotomicLayer_gal (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (y : 
     normTrace (cyclotomicLayer K n) (σ y) = σ (normTrace (cyclotomicLayer K n) y) :=
   normTrace_cyclotomicLayer_map K (σ.restrictScalars ℚ_[p]) (fun x hx => σ.commutes ⟨x, hx⟩) n y
 
-section Gamma
-
-variable {n : ℕ} (γ : Gal(PadicAlgCl p/cyclotomicLayer K n))
-
-end Gamma
-
 end
 
 end GroundTheory.PAdicHodge

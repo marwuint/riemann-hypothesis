@@ -14,10 +14,6 @@ def FormsThroughPoint.Statement : Prop :=
     ∀ x : Fin n → AlgebraicClosure F, x ≠ 0 → (∃ q ∈ Q, aeval x q ≠ 0) →
       ∃ u : Fin k × Fin n → AlgebraicClosure F, (∀ i, ∑ j, u (i, j) * x j = 0) ∧ u ∉ incidence Q k
 
-section Inhabitants
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -192,9 +192,6 @@ theorem proof (h : HermitianForm F E W) (v : Basis ι E W) (h1 : HermAtPlace.Sta
   change torusMat _ _ _ _ _ *ᵥ _ = _
   rw [torusMat_mulVec_Y hYY hXY, Units.val_inv_eq_inv_val, map_inv₀]
 
-theorem closed (h : HermitianForm F E W) (v : Basis ι E W) : TorusEmbedding.Statement h v :=
-  proof h v (HermAtPlace.proof h v) (GramAtData.proof h v)
-
 end Main
 
 end TorusEmbedding

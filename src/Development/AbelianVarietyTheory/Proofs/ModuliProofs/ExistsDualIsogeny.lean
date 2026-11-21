@@ -7,8 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientT
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsHeckeIsog
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianSchemeIdPowFiniteEtaleSurjective
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteAndEtaleOfCompOfFiniteEtaleCover
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueFactorThroughEtaleIsogenyReducedStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TrivOfAxesTrivPullbackEtaleIsogenyStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueFactorThroughEtaleIsogenyReduced
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TrivOfAxesTrivPullbackEtaleIsogeny
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
@@ -43,7 +43,7 @@ theorem exists_dual_isogeny : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   have := hB.proper
   have := hA.smooth
   have := hB.smooth
-  obtain ⟨π, hπ, hψπ, -⟩ := GlobalTheory.T.exists_unique_factor_through_etale_isogeny_reduced S o.t.G o'.t.G o.t.G ψ (𝟙 o.t.G ^ p ^ 2) hA hB inferInstance hψ hf he hs m1
+  obtain ⟨π, hπ, hψπ, -⟩ := _root_.GlobalTheory.HkFactor.exists_unique_factor S o.t.G o'.t.G o.t.G ψ (𝟙 o.t.G ^ p ^ 2) hA hB inferInstance hψ hf he hs m1
     fun k _ _ x z hz => by rw [MonObj.comp_pow, Category.comp_id, hker k x z hz]
   have hepi : Epi ψ.left := Flat.epi_of_flat_of_surjective _
   have canc : ∀ (Y : Over S) (f f' : o'.t.G ⟶ Y), ψ ≫ f = ψ ≫ f' → f = f' := fun Y f f' h =>
@@ -86,7 +86,7 @@ theorem exists_dual_isogeny : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
       rw [cls_div h₁ h₂, cls_cube_two hL, cls_cube_two hn', map_sub, pull_lam, pull_lam, lift_fst,
         lift_snd, lift_fst_assoc, lift_snd_assoc, cls_lbPow hM, lam_nsmul]
     have hN0 : cls _ hN = 0 := by
-      refine (cls_eq_zero_iff hN).2 (GlobalTheory.T.triv_of_axes_triv_pullback_etale_isogeny S o.t.G o'.t.G ψ o'.t.PP.L _ (p ^ 2) hA hB hM o'.ample hN hψ hf he hs
+      refine (cls_eq_zero_iff hN).2 (_root_.GlobalTheory.IsogenyBitriv.triv_of_triv_pull_isogeny S o.t.G o'.t.G ψ o'.t.PP.L _ (p ^ 2) hA hB hM o'.ample hN hψ hf he hs
         hn hu hker ?_ ?_ ?_)
       · refine (cls_eq_zero_iff (pull_isLB hN _)).1 ?_
         rw [cls_pull hN, val, MonObj.one_comp, lam_one_left, lam_one_left, nsmul_zero, sub_self]

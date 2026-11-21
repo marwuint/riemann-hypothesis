@@ -1,33 +1,34 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsVolData
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.OrbitQuotientTopology.IsClosedRStab
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueLayeredStrictFundamentalDomainStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueLayeredStrictFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrictFundamentalDomainMeasureEqStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagUnipotentBlockUpperUnitriangularStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagUnipotentBlockUpperUnitriangular
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasFlagDepthAtLeastOfFreeEntriesVanishStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentBlockEntriesMulOfHasFlagDepthAtLeastStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentBlockEntriesMulOfHasFlagDepthAtLeast
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ReAntidiagonalEntryEqZeroOfFlagDepthStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentModelProductActionMeasurePreservingStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureUnipotentTuplesFreeEntryBlocksStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureUnipotentTuplesFreeEntryBlocks
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieNilpotentCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentRadicalFormsUnitSubgroupStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentMemModelUnipotentAtPlaceStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentModelActionIsActionAndFaithfulStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentEntryMemInverseDifferentLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentCornerEntryMemIdealLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentMiddleRowMemHomLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentEntryMemInverseDifferentLattice
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentCornerEntryMemIdealLattice
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentMiddleRowMemHomLattice
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralUnipotentAntidiagonalMemSkewLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowEmbeddingMemIntegralOrthogonalGroupStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowIsometryEntriesInModelCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PiUnipotentModelMeasurableFullMeasureStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegralUnipotentLiftEntryStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LiftRowMiddleSpaceIntegralPointStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegralUnipotentLiftCornerStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegralUnipotentLiftAntidiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeInverseDifferentPowDivLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeInverseDifferentPowMulLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SkewLatticeInverseDifferentPowCovolumeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeMiddleLatticeHomLatticeIdealStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalBlockCovolumesProdStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowEmbeddingMemIntegralOrthogonalGroup
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowIsometryEntriesInModelCoordinates
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PiUnipotentModelMeasurableFullMeasure
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegralUnipotentLiftEntry
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LiftRowMiddleSpaceIntegralPoint
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegralUnipotentLiftCorner
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegralUnipotentLiftAntidiagonal
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeInverseDifferentPowDivLattice
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeInverseDifferentPowMulLattice
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SkewLatticeInverseDifferentPowCovolume
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeMiddleLatticeHomLatticeIdeal
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalBlockCovolumesProd
 
 noncomputable section
 
@@ -92,12 +93,12 @@ theorem covolume_N : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   obtain ⟨ha1, ha2, ha3⟩ := GlobalTheory.T.unipotentModelAction_isAction_and_faithful F E σ k r J Λ P f T A s hV
   have hmem := GlobalTheory.T.integralUnipotent_mem_modelUnipotentAtPlace F E σ k r J Λ P f T A s hV
   choose DU hDUm hDUf hDUv using fun p : UTr r =>
-    GlobalTheory.T.covolume_inverseDifferentPow_div_lattice F E σ h1 h2 (r - p.1.1.val) (r - p.1.2.val) (s p.1.1 / s p.1.2) (div_pos (h9 _) (h9 _))
+    _root_.GlobalTheory.SnMass.VolN.hasDom_ideLat_dInv_div F E σ h1 h2 (r - p.1.1.val) (r - p.1.2.val) (s p.1.1 / s p.1.2) (div_pos (h9 _) (h9 _))
   choose DC hDCm hDCf hDCv using fun p : UTr r =>
-    GlobalTheory.T.covolume_inverseDifferentPow_mul_lattice F E σ h1 h2 (r - p.1.1.val) (r - p.1.2.val) (s p.1.1 * s p.1.2) (mul_pos (h9 _) (h9 _))
-  choose DH hDHm hDHf hDHv using GlobalTheory.T.covolume_middleLattice_homLattice_ideal F E σ k r J Λ P f T A s hV
+    _root_.GlobalTheory.SnMass.VolN.CovMul.hasDom_ideLat_dInv_mul F E σ h1 h2 (r - p.1.1.val) (r - p.1.2.val) (s p.1.1 * s p.1.2) (mul_pos (h9 _) (h9 _))
+  choose DH hDHm hDHf hDHv using _root_.GlobalTheory.SnMass.VolN.CovH.covolume_homLat F E σ k r J Λ P f T A s hV
   choose DG hDGm hDGf hDGv using fun a : Fin r =>
-    GlobalTheory.T.skewLattice_inverseDifferentPow_covolume F E σ h1 h2 (r - a.val) (s a ^ 2) (pow_pos (h9 _) 2)
+    _root_.GlobalTheory.SnMass.SkewVol.skew_covol_dInv F E σ h1 h2 (r - a.val) (s a ^ 2) (pow_pos (h9 _) 2)
   let LB := blkSet (InfinitePlace E) k r
     (fun p => (ideLat (dInv E (r - p.1.1.val) * (dInv E (r - p.1.2.val))⁻¹) (s p.1.1 / s p.1.2) : Set _))
     (fun a => homLat (σ : E →+* E) J Λ P f A (dInv E (r - a.val)) (s a))
@@ -129,7 +130,7 @@ theorem covolume_N : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     GlobalTheory.T.hasFlagDepthAtLeast_of_free_entries_vanish k r _ d (hgm g w) fun β hβ => by
       have := congrFun (hg β hβ) w
       rwa [hρo] at this
-  have tw := GlobalTheory.T.existsUnique_layered_strictFundamentalDomain (V := fun β : Bk r => InfinitePlace E → VM k r β) ρ NN o (degB r)
+  have tw := _root_.GlobalTheory.SnMass.VolN.existsUnique_layered_fundamentalDomain (V := fun β : Bk r => InfinitePlace E → VM k r β) ρ NN o (degB r)
     (fun β x w => cM k r β (x w)) LB DB (fun w => by simpa [o] using PI.AmpOrbQuot.nset_one) hρ1 hρm hρN
     (by
       rintro (p | a | p | a)
@@ -149,7 +150,7 @@ theorem covolume_N : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
       · exact hDGf a v)
     (fun β => funext fun w => cM_one k r β)
     (fun d g hg x hx β hβ => funext fun w => by
-      have := GlobalTheory.T.unipotentBlockEntries_mul_of_hasFlagDepthAtLeast k r (gm g w) (Matrix.of (x w)) d (hdep g d hg w) (GlobalTheory.T.flagUnipotent_block_upper_unitriangular k r _ (hx w)) β hβ
+      have := _root_.GlobalTheory.SnMass.VolN.cM_mul_of_dep k r (gm g w) (Matrix.of (x w)) d (hdep g d hg w) (_root_.GlobalTheory.SnMass.VolN.DepOne.dep_one k r _ (hx w)) β hβ
       show cM k r β (ρ g x w) = cM k r β (x w) + cM k r β (ρ g o w)
       rw [hρo]
       exact this)
@@ -161,9 +162,9 @@ theorem covolume_N : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
       show (fun w => cM k r β (ρ g o w)) ∈ LB β
       rw [e]
       rcases β with p | a | p | a
-      · exact GlobalTheory.T.integralUnipotent_entry_mem_inverseDifferentLattice F E σ k r J Λ P f T A s hV _ hgN p
-      · exact GlobalTheory.T.integralUnipotent_middleRow_mem_homLattice F E σ k r J Λ P f T A s hV _ hgN a
-      · exact GlobalTheory.T.integralUnipotent_corner_entry_mem_idealLattice F E σ k r J Λ P f T A s hV _ hgN p
+      · exact _root_.GlobalTheory.SnMass.VolN.gM_entry_mem_ideLat F E σ k r J Λ P f T A s hV _ hgN p
+      · exact _root_.GlobalTheory.SnMass.VolN.row_mem_homLat F E σ k r J Λ P f T A s hV _ hgN a
+      · exact _root_.GlobalTheory.SnMass.VolN.corner_entry_mem_ideLat F E σ k r J Λ P f T A s hV _ hgN p
       · exact GlobalTheory.T.integralUnipotent_antidiagonal_mem_skewLattice F E σ k r J Λ P f T A s hV _ hgN a fun w =>
           GlobalTheory.T.re_antidiagonal_entry_eq_zero_of_flagDepth k r _ a (hgm g w) (hdep g _ hβ w))
     (by
@@ -178,15 +179,15 @@ theorem covolume_N : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
         · rw [hρo]; exact hl w
         · rw [hρo]; exact h0 β' h h' w
       rintro (p | a | p | a) l hl
-      · exact lift _ _ (GlobalTheory.T.exists_integral_unipotent_lift_entry F E σ k r J Λ P f T A s hV p l hl)
-      · exact lift _ _ (GlobalTheory.T.lift_row_middleSpace_integralPoint F E σ k r J Λ P f T A s hV a l hl)
-      · exact lift _ _ (GlobalTheory.T.exists_integral_unipotent_lift_corner F E σ k r J Λ P f T A s hV p l hl)
-      · exact lift _ _ (GlobalTheory.T.exists_integral_unipotent_lift_antidiagonal F E σ k r J Λ P f T A s hV a l hl))
+      · exact lift _ _ (_root_.GlobalTheory.SnMass.VolN.LiftEntry.lift_entry F E σ k r J Λ P f T A s hV p l hl)
+      · exact lift _ _ (_root_.GlobalTheory.SnMass.VolN.RowLift.lift_row F E σ k r J Λ P f T A s hV a l hl)
+      · exact lift _ _ (_root_.GlobalTheory.SnMass.VolN.LiftCorner.lift_corner F E σ k r J Λ P f T A s hV p l hl)
+      · exact lift _ _ (_root_.GlobalTheory.SnMass.VolN.exists_lift_antidiag F E σ k r J Λ P f T A s hV a l hl))
     (fun g hg => by
       have h1' : ∀ w, gm g w = 1 := fun w => eq_one_of_dep (hdep g _ (fun β _ => hg β) w)
       exact Subtype.ext (Units.ext (ha3 _ h1')))
-  obtain ⟨hNm, hN0⟩ := GlobalTheory.T.pi_unipotentModel_measurable_full_measure (InfinitePlace E) k r
-  obtain ⟨hDm, hDv⟩ := GlobalTheory.T.measure_unipotent_tuples_free_entry_blocks (InfinitePlace E) k r DU DH DC DG hDUm hDHm hDCm hDGm
+  obtain ⟨hNm, hN0⟩ := _root_.GlobalTheory.SnMass.VolN.pi_nset_full (InfinitePlace E) k r
+  obtain ⟨hDm, hDv⟩ := _root_.GlobalTheory.SnMass.VolN.BlockMeas.measure_blocks (InfinitePlace E) k r DU DH DC DG hDUm hDHm hDCm hDGm
   set Dset : Set (InfinitePlace E → Mt k r) := {x | (∀ w, Matrix.of (x w) ∈ Nset k r) ∧
     ∀ β : Bk r, (fun w => cM k r β (x w)) ∈ blkSet (InfinitePlace E) k r DU DH DC DG β} with hDset
   have hstrict : ∀ x ∈ NN, ∃! g : G, ρ g x ∈ Dset := fun x hx => by
@@ -215,7 +216,7 @@ theorem covolume_N : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   rw [hEq, hDv]
   simp only [hDUv, hDHv, hDCv, hDGv]
   have hd : 0 < |(NumberField.discr F : ℝ)| := abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero F)
-  rw [← GlobalTheory.T.unipotentRadical_blockCovolumes_prod _ (Fintype.card (InfinitePlace E)) k r s hd h9]
+  rw [← _root_.GlobalTheory.SnMass.VolN.covol_blocks_prod _ (Fintype.card (InfinitePlace E)) k r s hd h9]
   have nnU : ∀ p : UTr r, 0 ≤ (2⁻¹ : ℝ) ^ Fintype.card (InfinitePlace E) * |(NumberField.discr F : ℝ)| ^ (1 - 2 * ((r - p.1.1.val : ℕ) : ℝ) + 2 * ((r - p.1.2.val : ℕ) : ℝ)) * (s p.1.1 / s p.1.2) ^ (2 * Fintype.card (InfinitePlace E)) := fun p => by
     have := h9 p.1.1; have := h9 p.1.2; positivity
   have nnC : ∀ p : UTr r, 0 ≤ (2⁻¹ : ℝ) ^ Fintype.card (InfinitePlace E) * |(NumberField.discr F : ℝ)| ^ (1 - 2 * ((r - p.1.1.val : ℕ) : ℝ) - 2 * ((r - p.1.2.val : ℕ) : ℝ)) * (s p.1.1 * s p.1.2) ^ (2 * Fintype.card (InfinitePlace E)) := fun p => by

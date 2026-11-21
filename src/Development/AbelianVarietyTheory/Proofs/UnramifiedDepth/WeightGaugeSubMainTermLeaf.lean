@@ -7,8 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorizationLeFo
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightSubstNonneg
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CoeffLeafGaugeSubMainTermEqZeroOnFirstAxisStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PderivLeafGaugeEqPairingAddIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HPullWUpGTwoGroupEmbeddingEqRenameStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearSubstCoordinateWeightNonnegRadiusStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HPullWUpGTwoGroupEmbeddingEqRename
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LinearSubstCoordinateWeightNonnegRadius
 
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds GlobalTheory.MainTerm Classical
 
@@ -103,7 +103,7 @@ theorem weight_gauge_sub_main : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [N
   intro C _ V d _ I J _ _ X hA hl g a i hi hid S t ht N M e v' Φt he hv hv' hT hZ
   haveI := X.charZero
   have hl0 : V.l ≠ 0 := V.l_prime.ne_zero
-  have hpull := GlobalTheory.T.hPullW_upG_twoGroupEmbedding_eq_rename C I g (Fin N) (Fin M) e v'
+  have hpull := _root_.GlobalTheory.MainTerm.hPullW_upG_toW C I g (Fin N) (Fin M) e v'
   have key := GlobalTheory.weight_of_weight_pderiv C V.v V.l V.l_prime V.v_l hl i (Fin N) (Fin M)
     (X.hM g a i e v' - mainM V i (fun b c => ∑ κ : J g, ∑ k : I (1 - g), Φt c κ * X.pair g κ k * v' b k))
     hi.pos ?_ ?_
@@ -171,7 +171,7 @@ theorem weight_gauge_sub_main : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [N
           exact hinl _ (hT x)
         · simp only [hpull.2]
           refine wtNonneg_rename V.v Function.Embedding.inr ρ (1 / ((V.l : ℝ) - 1)) (fun _ => rfl) _ fun μ => ?_
-          have := GlobalTheory.T.linearSubst_coordinate_weight_nonneg_radius C V d _ _ (X.G (1 - g)) (S _) (t _) (ht _) M v' hv x μ
+          have := _root_.GlobalTheory.MainTerm.linPull_coord_weight_nonneg C V d _ _ (X.G (1 - g)) (S _) (t _) (ht _) M v' hv x μ
           unfold VF.Ge at this
           rw [mul_one_div]
           exact this

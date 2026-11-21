@@ -14,50 +14,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 def eps' (p : ℕ) {n : ℕ} (k : Fin n) : ℂ := if (k : ℕ) < p then 1 else -1
 
-lemma eps'_sq (p : ℕ) {n : ℕ} (k : Fin n) : eps' p k * eps' p k = 1 := by
-  unfold eps'
-  split_ifs <;> norm_num
-
-section Coord
-
-variable (X : Data E r) (τ : X.Ψ) {n : ℕ} (p : ℕ) (f : Fin n → Fin r → ℂ)
-  (hf : ∀ k l, hermC τ.1 X.Gm (f k) (f l) = if k = l then eps' p k else 0)
-include hf
-
-lemma hC_comb_f (y y' : Fin n → ℂ) :
-    hermC τ.1 X.Gm (∑ j, y' j • f j) (∑ l, y l • f l) = ∑ j, eps' p j * (conj (y j) * y' j) := by
-  have hsumR : ∀ (u : Fin r → ℂ) (w : Fin n → Fin r → ℂ),
-      hermC τ.1 X.Gm u (∑ l, w l) = ∑ l, hermC τ.1 X.Gm u (w l) := by
-    intro u w
-    simp only [hermC, Finset.sum_apply, map_sum, Finset.mul_sum]
-    calc _ = ∑ a, ∑ l, ∑ b, u a * τ.1 (X.Gm a b) * conj (w l b) :=
-          Finset.sum_congr rfl fun a _ => Finset.sum_comm
-      _ = _ := Finset.sum_comm
-  have hsmulR : ∀ (c : ℂ) (u w : Fin r → ℂ),
-      hermC τ.1 X.Gm u (c • w) = conj c * hermC τ.1 X.Gm u w := by
-    intro c u w
-    simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
-  rw [hermC_sum_left]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [hermC_smul_left, hsumR]
-  simp only [hsmulR, hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
-  ring
-
-lemma coord_f {v : Fin r → ℂ} (hv : v ∈ Submodule.span ℂ (Set.range f)) :
-    v = ∑ j, (eps' p j * hermC τ.1 X.Gm v (f j)) • f j := by
-  obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).mp hv
-  have key : ∀ j, hermC τ.1 X.Gm (∑ i, c i • f i) (f j) = c j * eps' p j := by
-    intro j
-    rw [hermC_sum_left]
-    simp only [hermC_smul_left, hf, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [key]
-  congr 1
-  linear_combination (-(c j)) * eps'_sq p j
-
-end Coord
-
 def uc (X : Data E r) (z0 : Frame X.Ψ r) (ξ : Fin r → E) (τ : X.Ψ) (v : Fin r → ℂ) : Fin r → ℂ :=
   v - (X.Hf z0 τ v (Data.emb τ.1 ξ) / X.Hf z0 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)) •
     Data.emb τ.1 ξ
@@ -113,11 +69,6 @@ lemma uc_perp (hξξ : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0
   simp only [hermC_sub_left, hsubR, hermC_smul_left, hsmulR, hv', hξξ, hsym, mul_zero, sub_zero]
 
 end Uc
-
-lemma emb_sum {n : ℕ} (τ : E →+* ℂ) (c : Fin n → E) (β : Fin n → Fin r → E) :
-    Data.emb τ (∑ k, c k • β k) = ∑ k, τ (c k) • Data.emb τ (β k) := by
-  funext a
-  simp [Data.emb, Finset.sum_apply, map_sum, smul_eq_mul]
 
 end
 

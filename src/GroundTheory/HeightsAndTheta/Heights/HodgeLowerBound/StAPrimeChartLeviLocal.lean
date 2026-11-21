@@ -21,8 +21,4 @@ def APrimeChartLeviLocal.Statement : Prop :=
           X.S.R.chart k (X.M.proj z) ∈ W → ∀ w v, IsChartVel X.M (X.S.R.chart k) z w v →
             levi (fun y => Real.log (D.A'.h y)) z w = levi f (X.S.R.chart k (X.M.proj z)) v
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.LowerBoundFree

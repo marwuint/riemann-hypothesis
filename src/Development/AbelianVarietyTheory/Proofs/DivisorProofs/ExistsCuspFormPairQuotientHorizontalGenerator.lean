@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResRdApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonzeroCuspFormParallelWeightEachComponentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalMultiplierOfComplexMultiplierStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsComponentFiniteDimensionalAndSpannedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonzeroCuspFormParallelWeightEachComponent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalMultiplierOfComplexMultiplier
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormsComponentFiniteDimensionalAndSpanned
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesOnEqModel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantWeightShiftFlatLineDetStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantWeightShiftFlatLineDet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HorizontalGeneratorZpowMulCuspFormMemSpanStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicRestrictionSubalgebraFrameDomainIsDomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicRestrictionSubalgebraFrameDomainIsDom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutingMultiplierEqConstSmulGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ReadingLinearIndependentAndInjective
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointReducedFromTestRing
@@ -116,8 +116,8 @@ theorem flat_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H), ∃ (G : WTZ E) (f g : Rul Xo c), Even G.2 ∧
       f ∈ cuspOn U Z G ∧ g ∈ cuspOn U Z (G + wtOf Dw (flatWt Dw τ) 0) ∧ f ≠ 0 ∧ IsFlatQuot U Z τ f g := by
   intro E _ _ _ H Dw l Xo c r U x hL Z τ
-  obtain ⟨a, n, hD, h2, hn, f0, hf0, hf0ne⟩ := GlobalTheory.T.exists_nonzero_cuspForm_parallelWeight_each_component E H Dw l Xo c r U x hL Z
-  obtain ⟨a', hD', h1', hex⟩ := GlobalTheory.T.exists_dominant_weight_shift_flatLineDet E H Dw a n τ hD h2
+  obtain ⟨a, n, hD, h2, hn, f0, hf0, hf0ne⟩ := _root_.GlobalTheory.FlatCore.NonzeroCusp.exists_cuspOn_ne_zero E H Dw l Xo c r U x hL Z
+  obtain ⟨a', hD', h1', hex⟩ := _root_.GlobalTheory.FlatShift.exists_shift E H Dw a n τ hD h2
   have h1 : ∀ ρ i, i < Dw.mult ρ → 1 ≤ a (ρ, i) := fun ρ i hi => le_trans (by norm_num) (h2 ρ i hi)
   have hT : AllTest Xo c :=
     GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c
@@ -149,9 +149,9 @@ theorem flat_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
       convert this using 1 <;> first | rfl | (funext y; simp [resRd_apply])
   obtain ⟨σ0, hσ0⟩ : ∃ σ, GoodEmb c σ := ⟨_, goodEmb_goodOf c c.F.val.toRingHom⟩
   haveI : FiniteDimensional c.F (cuspOn U Z (wtZ a n)) :=
-    (GlobalTheory.T.cuspForms_component_finiteDimensional_and_spanned E H Dw l Xo c r U x hL Z σ0 hσ0 a n hD h1 hn).1
+    (_root_.GlobalTheory.FlatCore.cuspOn_fd_and_span_rdU E H Dw l Xo c r U x hL Z σ0 hσ0 a n hD h1 hn).1
   haveI : FiniteDimensional c.F (cuspOn U Z (wtZ a' n)) :=
-    (GlobalTheory.T.cuspForms_component_finiteDimensional_and_spanned E H Dw l Xo c r U x hL Z σ0 hσ0 a' n hD' h1' hn).1
+    (_root_.GlobalTheory.FlatCore.cuspOn_fd_and_span_rdU E H Dw l Xo c r U x hL Z σ0 hσ0 a' n hD' h1' hn).1
   have hprod : ∀ f ∈ cuspOn U Z (wtZ a n), ∀ g ∈ cuspOn U Z (wtZ a' n),
       f * g ∈ sec Xo c (a + a') (n + n) ⊓ suppOn Z := by
     intro f hf g hg
@@ -164,7 +164,7 @@ theorem flat_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     rw [mul_comm]
     exact mul_mem_suppOn g (hsupp _ hf)
   obtain ⟨k0, hτ0, hk0, hA0, -⟩ := pk σ0 hσ0
-  obtain ⟨T, hT0, hTc⟩ := GlobalTheory.T.exists_rational_multiplier_of_complex_multiplier c.F (Rul Xo c) (↥((U σ0).X k0).dom → ℂ) σ0 (resRd (U σ0) hT k0)
+  obtain ⟨T, hT0, hTc⟩ := _root_.GlobalTheory.exists_rational_multiplier_of_complex c.F (Rul Xo c) (↥((U σ0).X k0).dom → ℂ) σ0 (resRd (U σ0) hT k0)
     (resRd_smul (U σ0) hT k0) (cuspOn U Z (wtZ a n)) (cuspOn U Z (wtZ a' n))
     (fun m b hb hli => by
       have hb' : ∀ i, b i ∈ sec Xo c (a + a') (n + n) ⊓ suppOn Z := fun i =>
@@ -180,7 +180,7 @@ theorem flat_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   refine ⟨wtZ a n, f0, T ⟨f0, hf0⟩, hEv, hf0, hVV' ▸ (T ⟨f0, hf0⟩).2, hf0ne, fun σ hσ => ?_⟩
   obtain ⟨k1, hτ, hk, hA, hA'⟩ := pk σ hσ
   obtain ⟨y0, -⟩ := (res_indep hL Z σ hσ k1 hk a n).2 f0 (hsec a hf0) (hsupp _ hf0) hf0ne
-  haveI := GlobalTheory.T.holomorphicRestrictionSubalgebraFrameDomain_isDomain E r ((U σ).X k1) ⟨y0.1, y0.2⟩
+  haveI := _root_.GlobalTheory.FlatPair.holAlg_isDomain E r ((U σ).X k1) ⟨y0.1, y0.2⟩
   obtain ⟨hh, hh', hne⟩ := horizGen_mem ((U σ).X k1) ⟨_, hτ⟩
   obtain ⟨α, hα, hαT⟩ := GlobalTheory.T.commuting_multiplier_eq_const_smul_generator_alt c.F (Rul Xo c) (↥((U σ).X k1).dom → ℂ) σ (resRd (U σ) hT k1)
     (resRd_smul _ _ _) (holAlg ((U σ).X k1)) (cuspOn U Z (wtZ a n)) (cuspOn U Z (wtZ a' n))

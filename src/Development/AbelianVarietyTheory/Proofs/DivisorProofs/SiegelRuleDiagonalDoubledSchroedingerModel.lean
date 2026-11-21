@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDiagInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalHeisenbergInvariantFormEqSmulDiagonalIntStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalThetaIntegralEqNonzeroMulDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalThetaIntegralSiegelRuleDoubledWeilStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalHeisenbergInvariantFormEqSmulDiagonalInt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalThetaIntegralEqNonzeroMulDiagonal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalThetaIntegralSiegelRuleDoubledWeil
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta
 open IsDedekindDomain NumberField
@@ -67,9 +67,9 @@ theorem GlobalTheory.DiagSiegel.siegelRule_ddr : ∀ (D : D7) (ψ : AddChar (AF 
     have h1 := hinv (co.e.symm (x, y)) Φ hΦ
     rw [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.DiagSiegel.dblD_diagCols, LinearEquiv.apply_symm_apply] at h1
     exact h1
-  obtain ⟨c, hc⟩ := GlobalTheory.T.diagonalHeisenbergInvariant_form_eq_smul_diagonalIntegral D ψ hψ κ l hl hinv' μ hμ
-  obtain ⟨c₂, hc₂0, hc₂⟩ := GlobalTheory.T.diagonalThetaIntegral_eq_nonzero_mul_diagonal D ψ hψ S T JA JB ξ hJA hξ κ co hco ν 𝓕 hν μ hμ
-  obtain ⟨hmem, hrule⟩ := GlobalTheory.T.diagonalThetaIntegral_siegelRule_doubledWeil D ψ hψ S T JA JB ξ hJA hξ κ co hco ν 𝓕 hν χS χT hS hT rS rT ωd hωd omd₀ htr p t hpt φ hφ
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.HostDiagUniq.eq_smul_diagInt D ψ hψ κ l hl hinv' μ hμ
+  obtain ⟨c₂, hc₂0, hc₂⟩ := _root_.GlobalTheory.DiagSiegelUnfold.diag_theta_integral D ψ hψ S T JA JB ξ hJA hξ κ co hco ν 𝓕 hν μ hμ
+  obtain ⟨hmem, hrule⟩ := _root_.GlobalTheory.DiagThetaRule.thetaDiagInt_omdOf D ψ hψ S T JA JB ξ hJA hξ κ co hco ν 𝓕 hν χS χT hS hT rS rT ωd hωd omd₀ htr p t hpt φ hφ
   rw [hc₂ _ hmem, hc₂ _ hφ] at hrule
   have e := mul_left_cancel₀ hc₂0 (hrule.trans (mul_left_comm _ _ _))
   show l (GlobalTheory.DblSchr.omdOf omd₀ p φ) = _

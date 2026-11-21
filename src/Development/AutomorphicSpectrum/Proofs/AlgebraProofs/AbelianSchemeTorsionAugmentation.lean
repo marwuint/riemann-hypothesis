@@ -15,7 +15,7 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TorsionPointsIsogeny
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TorsionPointsHomomorphismCompatibleStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TorsionPointsHopfOrderStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderPullbackAlongHomStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GenerationAlongInvariantsStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GenerationAlongInvariants
 
 noncomputable section
 
@@ -72,6 +72,6 @@ theorem sub_abelianScheme : QuotientByFiniteFlatStatement â†’ ZarhinStatement â†
   have hinv := GlobalTheory.T.hopf_order_pullback_along_hom p C v R hint hp N AA _ AP jN
     (by rw [hAA, hAP]; exact hpull) (by rw [hAA, hAP]; exact hid)
   rw [hAA, hAP, hK] at hinv
-  exact GlobalTheory.T.generation_along_invariants p C R N _ _ _ jN K hinv (gp_polAV hD p C v R hint hp hc P T' _ pt' hpt').1
+  exact _root_.GlobalTheory.CompanionTheory.Ar.GR.genAF_of_map_eq_invFun p C R N _ _ _ jN K hinv (gp_polAV hD p C v R hint hp hc P T' _ pt' hpt').1
 
 end GlobalTheory.CompanionTheory.Ar.GR

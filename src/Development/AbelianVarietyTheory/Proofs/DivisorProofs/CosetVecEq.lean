@@ -38,9 +38,6 @@ theorem congLev_le (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ) : congLev D 𝔪 N �
 theorem blockLev_le (𝔪 : Ideal (𝓞 D.host.E)) (d a : ℕ) : blockLev D 𝔪 d a ≤ intG D d :=
   (Subgroup.closure_le _).2 fun _ h => h.1
 
-example (N : ℕ) : blockLev D ⊤ N 0 = intG D N := by
-  refine le_antisymm (blockLev_le _ _ _) fun h hh => Subgroup.subset_closure ⟨hh, fun i j hj _ => absurd hj (Nat.not_lt_zero _)⟩
-
 end GlobalTheory.FunObj.StdDatum
 
 end

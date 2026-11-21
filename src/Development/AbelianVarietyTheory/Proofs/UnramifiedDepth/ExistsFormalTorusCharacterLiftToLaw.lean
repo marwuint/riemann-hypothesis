@@ -7,12 +7,12 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Cha
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalSeriesJacobianChainRuleLinearPart
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIsChOfTorsStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MultiplicativeFormalGroupLawPowerPTorsionFiniteFStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIsChOfTors
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.MultiplicativeFormalGroupLawPowerPTorsionFiniteF
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GmLawCharsMul
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IsAddUnitOfPow
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PointsAddCommMonoidStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupSeriesSeparatedByTorsionStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FormalGroupSeriesSeparatedByTorsion
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SubSurjectiveOfLinLeftInverse
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry TensorProduct Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
@@ -128,7 +128,7 @@ theorem exists_char_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [Is
   intro p _ C _ _ _ v O _ _ hv _ _ d r F hFH J A' hJ hA i
   obtain ⟨⟨Gl, hGl⟩, hch, -⟩ := GlobalTheory.ChF.gmLaw_chars_mul O r
   obtain ⟨hchi, hdl⟩ := hch i
-  have hFHG : FH p Gl.F := hGl ▸ GlobalTheory.T.multiplicativeFormalGroupLawPower_pTorsion_finiteFree p C v O hv r
+  have hFHG : FH p Gl.F := hGl ▸ _root_.GlobalTheory.ChF.fh_gmF p C v O hv r
   rw [← hGl] at hJ hchi
   obtain ⟨instF, hsF, h0F, hkF⟩ := GlobalTheory.T.exists_addCommMonoid_algHom_powerSeries_fgLaw p C v O hv d F
   obtain ⟨instG, hsG, h0G, hkG⟩ := GlobalTheory.T.exists_addCommMonoid_algHom_powerSeries_fgLaw p C v O hv r Gl
@@ -159,7 +159,7 @@ theorem exists_char_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [Is
     apply Units.ext
     rw [Units.val_mul, hχ, hχ, hχ, isCh_sum Gl.F _ hchi a b _ ((hsG _ _ _).2 rfl), map_mul]
   obtain ⟨κ, hκm, hκ0, hκj⟩ := GlobalTheory.CharExt.exists_extension _ _ j hinj C p (Fact.out : p.Prime).ne_zero χ hχm
-  obtain ⟨u, hu, huκ⟩ := GlobalTheory.T.exists_isCh_eq_character_on_torsion p C v O hv d F hFH (fun φ => (κ φ : C))
+  obtain ⟨u, hu, huκ⟩ := _root_.GlobalTheory.ChF.exists_isCh_of_tors p C v O hv d F hFH (fun φ => (κ φ : C))
     (by
       rintro φ φ' ψ ⟨k, hk⟩ ⟨k', hk'⟩ hs
       rw [(hsF _ _ _).1 hs, hκm φ φ' ⟨k, (hkF _ _).2 hk⟩ ⟨k', (hkF _ _).2 hk'⟩, Units.val_mul])
@@ -170,7 +170,7 @@ theorem exists_char_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [Is
       rw [this, hκ0, Units.val_one])
   refine ⟨u, hu, ?_⟩
   have heq : sub ![J] u - (1 + MvPowerSeries.X ((0 : Fin 1), i)) = 0 := by
-    apply (GlobalTheory.T.formalGroup_series_separated_by_torsion p C v O hv r Gl hFHG).2
+    apply (_root_.GlobalTheory.ChF.mem_span_mulF_of_killed_and_eq_zero_of_tors p C v O hv r Gl hFHG).2
     rintro φ ⟨k, hk⟩
     have h1 : p ^ k • φ = 0 := (hkG _ _).2 hk
     have h2 : p ^ k • j φ = 0 := by rw [← map_nsmul, h1, map_zero]

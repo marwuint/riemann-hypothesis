@@ -34,9 +34,6 @@ def HeckeRatioPos (D : D7) : Prop :=
 theorem IsPartialL.eq_lPartial {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {χ : (AE D)ˣ →* Circle} {Λ : ℂ → ℂ}
     (h : IsPartialL S χ Λ) {s : ℂ} (hs : 1 < s.re) : Λ s = lPartial S χ s := (h.2 s hs).tprod_eq.symm
 
-theorem IsFiniteL.eq_lEuler {χ : (AE D)ˣ →* Circle} {Λ : ℂ → ℂ} (h : IsFiniteL χ Λ) {s : ℂ} (hs : 1 < s.re) :
-    Λ s = Mi.lEuler χ s := (h.2 s hs).tprod_eq.symm
-
 theorem eq_of_eqOn_re {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Differentiable ℂ g)
     (h : ∀ s : ℂ, 1 < s.re → f s = g s) : f = g := by
   refine AnalyticOnNhd.eq_of_eventuallyEq (𝕜 := ℂ) (z₀ := 2) (fun z _ => hf.analyticAt z) (fun z _ => hg.analyticAt z) ?_
@@ -47,11 +44,6 @@ theorem eq_of_eqOn_re {f g : ℂ → ℂ} (hf : Differentiable ℂ f) (hg : Diff
 theorem IsPartialL.unique {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {χ : (AE D)ˣ →* Circle} {Λ Λ' : ℂ → ℂ}
     (h : IsPartialL S χ Λ) (h' : IsPartialL S χ Λ') : Λ = Λ' :=
   eq_of_eqOn_re h.1 h'.1 fun _ hs => (h.eq_lPartial hs).trans (h'.eq_lPartial hs).symm
-
-theorem IsFiniteL.unique {χ : (AE D)ˣ →* Circle} {Λ Λ' : ℂ → ℂ} (h : IsFiniteL χ Λ) (h' : IsFiniteL χ Λ') : Λ = Λ' :=
-  eq_of_eqOn_re h.1 h'.1 fun _ hs => (h.eq_lEuler hs).trans (h'.eq_lEuler hs).symm
-
-example (P : HeightOneSpectrum (𝓞 D.host.E)) : OffS D ∅ P := fun _ h => absurd h (Finset.notMem_empty _)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PartialLFunctionCharacter
 

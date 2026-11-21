@@ -10,9 +10,30 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselColu
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RestrictedBlockUnipotentSymmetric
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LevelHyperspecialTrivialCharacterSplitsOffPlaces
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelSubgroupConjFiniteMovesFrame
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralAdaptedElementStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CentralAdaptedElementPropertyStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CentralAdaptedElementValueStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralAdaptedElement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CentralAdaptedElementProperty
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StarCharacterSquareEq
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlagSupportSplitPlaces
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowLevelReductionCriterion
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpOfOrder
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IndexZeroLevelGeneratedByLocalUnipotents
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IndexZeroLevelCharacterEqBesselCharacter
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BaseChainCommutationValid
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnderEqOrSmulUnderEq
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StageY
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FrameTopAlt
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotBadPrimeBase
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationEqZeroOfRootOfSUnitRatio
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ChainParSucc
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleDiscreteSeriesOfHasParam
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrame
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsTypePlacesOfLevCh
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselAdaptedTranslateLevel
 
 noncomputable section
 
@@ -41,43 +62,6 @@ theorem oneBlock_lev {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fi
     exact absurd hPP (Finset.notMem_empty _)
   · unfold Lev.levChi levFn
     simp only [hs, hQ, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one]
-
-set_option maxHeartbeats 1000000 in
-
-theorem exists_isAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ u (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), Placed f B → GlobalTheory.MiTop.Framed B → ∃ a₀ a, IsAt f B a₀ a := by
-  intro D L hT Gi Gl Kc Yd cX ex W hW u f B hP hF
-  obtain ⟨a₀, ha₀⟩ := GlobalTheory.Core.Mi.PinModel.exists_transport_adelic_correction (W.S.tr u)
-  obtain ⟨a, haf, hac, hSt⟩ := GlobalTheory.T.exists_central_adapted_element W hW u f B hP hF a₀ ha₀
-  have hM := GlobalTheory.T.central_adapted_element_property W hW u f B hP a₀ ha₀ a haf hac hSt
-  have hC := GlobalTheory.T.central_adapted_element_value W hW u f B hP a₀ ha₀ a haf hac hSt
-  have hb : (show GA D (D.sp.Y 0) from f.g.b 0) ∈ GfC (D.sp.Y 0) := by
-    obtain ⟨k, _, _, _, _, ι, v, o, n, G, pl, -, hv, ht, -⟩ := hP
-    have h1 := hv.b 0
-    rw [ht.b 0] at h1
-    exact h1
-  have hx : (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) ∈ GfC (D.sp.Y 0) :=
-    (GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff W.S.X W.Q.instEq _).1 (by simp)
-  have htf : tOf f B a₀ a ∈ GfC (D.sp.Y 0) :=
-    mul_mem (mul_mem (inv_mem hx) (GlobalTheory.Core.Mi.CenAct.embA_mem_GfC B.d B.o (mul_mem ha₀.1 haf))) hb
-  have hn : (D.sp.Y 0).rank ≤ D.R.r := by
-    rw [rank_eq W.S.X W.Q.instEq, W.S.X.n_eq]
-  refine ⟨a₀, a, ha₀, haf, hac, htf, fun κ => ?_⟩
-  rw [inv_inv]
-  have h1 := GlobalTheory.FrameConj.levS_conj_frame (D.sp.Y 0) (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0)
-    (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W) (tOf f B a₀ a) htf κ
-  generalize tOf f B a₀ a * κ * (tOf f B a₀ a)⁻¹ = y at h1 ⊢
-  obtain ⟨h2, h3⟩ := oneBlock_lev (D.sp.Y 0) (GlobalTheory.LevZero.frAt f B a₀ a)
-    (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W) hn rfl rfl y
-  have h4 : κ ∈ rJ W ↔ y ∈ levS (D.sp.Y 0) (GlobalTheory.LevZero.frAt f B a₀ a)
-    (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W) := h1.1
-  have h5 : Lev.levChi (D.sp.Y 0) (GlobalTheory.LevZero.frAt f B a₀ a)
-    (show LevDat D.host.E ℂ (D.sp.Y 0).rank from GlobalTheory.LevZero.datZero W) y = rChi W κ := h1.2
-  rw [h2] at h4
-  refine ⟨h4.trans ⟨fun h => (hM y h.1 h.2.1).2 h.2.2, fun h => ?_⟩, fun hk => ?_⟩
-  · obtain ⟨hf, hs⟩ := (hSt y).2 ⟨h.1, h.2.1⟩
-    exact ⟨hf, hs, (hM y hf hs).1 h⟩
-  · obtain ⟨hf, hs, hp⟩ := h4.1 hk
-    exact (hC y hf hs hp ((hM y hf hs).2 hp)).trans (h3.symm.trans h5)
 
 end GlobalTheory.MiTop
 

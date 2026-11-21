@@ -34,32 +34,11 @@ theorem D_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df'
   cases hS
   rfl
 
-theorem base_rank_eq_of_realisation (Q : RealT Rc P Dcf Spf Zscf S Ks) :
-    D.what₂.D0 = (P.A3.A.fam.R P.A3.A.fam.μ0).dZ (P.A3.A.fam.lvl P.P0 P.ψ0) (P.Zs.Z P.A3.A.fam.μ0) := by
-  have hD := D_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0
-  have hz : (P.A3.side3 P.P0 P.ψ0 (Q.Rl.toCx3 (faceT P Dcf Spf Zscf)).zs).dQ P.A3.fam3.base3.μ0 =
-      (P.A3.side3 P.P0 P.ψ0 P.Zs).dQ P.A3.fam3.base3.μ0 := by rw [Q.zs]
-  rw [base_rank_eq_of_tied_level P, ← hD]
-  exact hz
-
 theorem mu_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df') {S0 : IndefData Df} {S1 : IndefData Df'}
     (hS : HEq S0 S1) : S0.μ = S1.μ := by
   subst h
   cases hS
   rfl
-
-theorem mu_eq (Q : RealT Rc P Dcf Spf Zscf S Ks) : Q.Rl.mu = P.S0.μ :=
-  mu_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0
-
-theorem tupAllUsed_of_real (Q : RealT Rc P Dcf Spf Zscf S Ks) : TupAllUsed P := by
-  apply tupAllUsed_of_cover
-  intro t
-  rcases Q.charW.tup.mu_used t with h | ⟨w, h⟩
-  · exact Or.inl h
-  · refine Or.inr ⟨D.plEq.symm w, ?_⟩
-    show t = P.S0.μ (D.plEq (D.plEq.symm w))
-    rw [← mu_eq Q, Equiv.apply_symm_apply]
-    exact h.symm
 
 end Formalism.IndefR.LevelRealisationRankEquality
 

@@ -59,16 +59,6 @@ theorem cochainOf_cocycleι_cyclesMap_cupCocycles (μ : A ⊗ B ⟶ C) (h : p + 
   rw [cochainOf_cocycleι_cyclesMap, cocycleι_cupCocycles, cochainOf_cupLocallyConstant]
   rfl
 
-theorem cochainOf_cocycleι_cyclesMap_pairingHom (β : A →ₗ[k] B →ₗ[k] C)
-    (hβ : ∀ (g : G) (a : A) (b : B), β (A.ρ g a) (B.ρ g b) = C.ρ g (β a b)) (h : p + q = n)
-    (x : cocycles A p) (y : cocycles B q) (s : Fin n → G) :
-    cochainOf C (cocycleι C n
-        (HomologicalComplex.cyclesMap (cochainsMap (pairingHom β hβ)) n (cupCocycles h x y))) s =
-      β (cochainOf A (cocycleι A p x) (fun i : Fin p => s ⟨i, by omega⟩))
-        (B.ρ (Fin.partialProd s ⟨p, by omega⟩)
-          (cochainOf B (cocycleι B q y) fun j : Fin q => s ⟨p + j, by omega⟩)) := by
-  rw [cochainOf_cocycleι_cyclesMap_cupCocycles, pairingHom_tmul]
-
 variable {A' B' C' : Rep.{u} k G} [IsDiscreteRep A'] [IsDiscreteRep B'] [IsDiscreteRep C']
 
 theorem cupPairing_cohomologyMap (μ : A ⊗ B ⟶ C) (f : A' ⟶ A) (g : B' ⟶ B) (h : p + q = n)

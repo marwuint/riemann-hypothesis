@@ -116,60 +116,6 @@ theorem InductionContragredient.nonempty_equiv (h : InductionContragredient k) (
   obtain ⟨Φ, -⟩ := h _ _ _ e Measure.haar W ρ hρ
   exact ⟨Φ⟩
 
-theorem JacquetFiniteLength.lower (h : JacquetFiniteLength k) (e : (Σ a, m a) ≃ n)
-    {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (hl : HasFiniteLength π) :
-    HasFiniteLength (jacLower e π) := by
-  have : jacLower e π = jac (opp e) π := MonoidHom.ext (jacLower_eq e π)
-  rw [this]
-  exact h _ _ _ (opp e) V π hπ hl
-
-theorem InductionFiniteLength.lower (h : InductionFiniteLength k) (e : (Σ a, m a) ≃ n)
-    {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) (hl : HasFiniteLength ρ) :
-    HasFiniteLength (parIndLower e ρ) := by
-  have key : ∀ χ : Levi k m →* ℂˣ, deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) = χ →
-      HasFiniteLength (smInd (parabLower k e) ((twist ρ χ).comp (leviProjLower k e))) := by
-    rintro _ rfl
-    exact h _ _ _ (opp e) W ρ hρ hl
-  exact key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)
-
-theorem InductionContragredient.lower (h : InductionContragredient k) (e : (Σ a, m a) ≃ n)
-    [MeasurableSpace (GL n k)] [BorelSpace (GL n k)] (μ : Measure (GL n k)) [μ.IsHaarMeasure]
-    {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) :
-    ∃ Φ : (parIndLower e (contra ρ)).Equiv (contra (parIndLower e ρ)),
-      ∀ (f' : IndSpLower e (contra ρ)) (f : IndSpLower e ρ),
-        (Φ f' : Module.Dual ℂ (IndSpLower e ρ)) f =
-          ∫ x in (KO k n : Set (GL n k)), (f'.1.1 x : Module.Dual ℂ W) (f.1.1 x) ∂μ := by
-  have key : ∀ χ : Levi k m →* ℂˣ, deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) = χ →
-      ∃ Φ : (smInd (parabLower k e) ((twist (contra ρ) χ).comp (leviProjLower k e))).Equiv
-          (contra (smInd (parabLower k e) ((twist ρ χ).comp (leviProjLower k e)))),
-        ∀ f' f, (Φ f').1 f =
-          ∫ x in (KO k n : Set (GL n k)), (f'.1.1 x : Module.Dual ℂ W) (f.1.1 x) ∂μ := by
-    rintro _ rfl
-    exact h _ _ _ (opp e) μ W ρ hρ
-  exact key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)
-
-section Two
-
-variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
-
-theorem JacquetFiniteLength.two (h : JacquetFiniteLength k) (e : a ⊕ b ≃ n)
-    {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (hl : HasFiniteLength π) :
-    HasFiniteLength (jac₂ e π) :=
-  (hasFiniteLength_comp_iff _ _ (leviTwo k a b).surjective).2 (h _ _ _ (SmGL.two e) V π hπ hl)
-
-end Two
-
-example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
-    IsSmooth (detRep n χ) ∧ (detRep n χ).IsIrreducible ∧ HasFiniteLength (detRep n χ) ∧
-      IsAdmissible (detRep n χ) :=
-  have h := (isSmooth_ofChar_iff _).2 (hχ.detChar (n := n))
-  ⟨h, isIrreducible_ofChar _, hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _), h,
-    fun _ _ _ => inferInstance⟩
-
-example : IsSmooth (ofChar (deltaHalf k m)) ∧ HasFiniteLength (ofChar (deltaHalf k m)) :=
-  ⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_deltaHalf k),
-    hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _)⟩
-
 end SmGL
 
 end GlobalTheory

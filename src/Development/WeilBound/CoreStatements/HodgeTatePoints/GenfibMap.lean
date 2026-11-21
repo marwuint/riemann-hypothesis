@@ -28,12 +28,6 @@ theorem dom_local : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Comm
         exact absurd h' not_isUnit_zero
     exact RegAtMono.unitAt_of_isUnit ξ ⟨f q, hp⟩ (isUnit_of_map_unit (f.stalkMap q).hom s hu)
 
-theorem genfib_map : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (f : X' ⟶ X), Dominates ξ' ξ f i → ∀ (p' : Cpt ξ') (h : genPt ξ ⤳ f p'.1) (n : ℕ), unitAt ξ' p' (n : Ω') ↔ unitAt ξ ⟨f p'.1, h⟩ (n : Ω) := by
-  intro X Ω _ ξ X' Ω' _ ξ' i f hd p' h n
-  obtain ⟨h', hc⟩ := dom_local X Ω ξ X' Ω' ξ' i f hd p'
-  have := IsCtrOf.unitAt_iff (i := i) (p := ⟨f p'.1, h⟩) (p' := p') hc (natCast_mem _ n)
-  rwa [map_natCast] at this
-
 theorem dom_comp {X X₁ X₂ : Scheme.{0}} {Ω Ω₁ Ω₂ : Type} [Field Ω] [Field Ω₁] [Field Ω₂]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ₁ : Spec (CommRingCat.of Ω₁) ⟶ X₁} {ξ₂ : Spec (CommRingCat.of Ω₂) ⟶ X₂}
     {f : X₁ ⟶ X} {g : X₂ ⟶ X₁} {i : Ω →+* Ω₁} {k : Ω₁ →+* Ω₂} (hf : Dominates ξ₁ ξ f i)
@@ -83,24 +77,5 @@ theorem iso_comp : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommR
       exact congrArg Subtype.val (hu ⟨_, h⟩ hq')
     · obtain ⟨h, -⟩ := dom_local _ _ ξ₁ _ _ ξ₂ _ g hg q
       rw [(hn ⟨_, h⟩ hq).regAt_eq q rfl, Subring.map_id, hf.regAt_eq ⟨_, h⟩ hq]
-
-theorem norm_iso : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X' : Scheme.{0}) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X) (p : Cpt ξ), NormAt ξ' f (RingHom.id Ω) p → (∀ a : Ω, IsIntegral (regAt ξ p) a → a ∈ regAt ξ p) → IsoAt ξ' f (RingHom.id Ω) p := by
-  intro X Ω _ ξ X' ξ' f p hN hp
-  have e : (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring = regAt ξ p := by
-    rw [Subring.map_id]
-    ext a
-    exact ⟨hp a, fun ha => isIntegral_algebraMap (x := (⟨a, ha⟩ : regAt ξ p))⟩
-  haveI loc : IsLocalRing (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring := by
-    rw [e]
-    exact NormAt.isLocalRing_regAt p
-  have hr : ∀ q : Cpt ξ', f q.1 = p.1 →
-      regAt ξ' q = (integralClosure ((regAt ξ p).map (RingHom.id Ω)) Ω).toSubring := fun q hq => by
-    obtain ⟨P, hP, h⟩ := hN.exists_max q hq
-    exact h.trans (NormAt.ofPrime_of_isLocalRing _ P hP)
-  refine ⟨?_, fun q hq => ?_, hN.dom⟩
-  · obtain ⟨q, hq, hu⟩ := hN.existsUnique _ (IsLocalRing.maximalIdeal.isMaximal _)
-    exact ⟨q, hq.1, fun q' hq' => hu q' ⟨hq', (hr q' hq').trans
-      (NormAt.ofPrime_of_isLocalRing _ _ (IsLocalRing.maximalIdeal.isMaximal _)).symm⟩⟩
-  · rw [hr q hq, e, Subring.map_id]
 
 end PositivityTheory.HtPt.Mb

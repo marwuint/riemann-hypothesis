@@ -20,10 +20,6 @@ theorem cg_refl (f : MvPowerSeries ι K) : Cg R pp f f := ⟨0, IntR_zero, by si
 
 theorem cg_of_eq {f g : MvPowerSeries ι K} (h : f = g) : Cg R pp f g := h ▸ cg_refl f
 
-theorem cg_symm {f g : MvPowerSeries ι K} (h : Cg R pp f g) : Cg R pp g f := by
-  obtain ⟨Y, hY, e⟩ := h
-  exact ⟨-Y, IntR_neg hY, by rw [e]; ring⟩
-
 theorem cg_trans {f g k : MvPowerSeries ι K} (h1 : Cg R pp f g) (h2 : Cg R pp g k) : Cg R pp f k := by
   obtain ⟨Y, hY, e⟩ := h1
   obtain ⟨Y', hY', e'⟩ := h2
@@ -34,12 +30,6 @@ theorem cg_add {f g f' g' : MvPowerSeries ι K} (h1 : Cg R pp f g) (h2 : Cg R pp
   obtain ⟨Y, hY, e⟩ := h1
   obtain ⟨Y', hY', e'⟩ := h2
   exact ⟨Y + Y', IntR_add hY hY', by rw [e, e']; ring⟩
-
-theorem cg_sub {f g f' g' : MvPowerSeries ι K} (h1 : Cg R pp f g) (h2 : Cg R pp f' g') :
-    Cg R pp (f - f') (g - g') := by
-  obtain ⟨Y, hY, e⟩ := h1
-  obtain ⟨Y', hY', e'⟩ := h2
-  exact ⟨Y + -Y', IntR_add hY (IntR_neg hY'), by rw [e, e']; ring⟩
 
 theorem cg_sum {α : Type} (s : Finset α) (F G : α → MvPowerSeries ι K) (h : ∀ a ∈ s, Cg R pp (F a) (G a)) :
     Cg R pp (∑ a ∈ s, F a) (∑ a ∈ s, G a) := by

@@ -1,13 +1,33 @@
 import Development.WeilBound.CoreStatements.VolumeEquality.PiecesOf
 import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifEx2
 import Development.WeilBound.CoreStatements.VolumeEquality.SheetPiecesComponent
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.CuspWeightIntegrableOnFundamentalSetStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullIntersectionGenericBoundStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.CuspWeightIntegrableOnFundamentalSet
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
+import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsProved
+import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FullIntersectionGenericBound
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPeriodAtRestrict
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilSt
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBoundsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositiveStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProportionalStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegrableOfResolutionStatementStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.AgreementPositive
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.AgreementPos
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.APrime
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PointsIntegrableOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
 
 noncomputable section
 
@@ -38,7 +58,7 @@ theorem degMu_eq (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : Cove
   have h := hκ E H D Xo l c Y II K J Ω W Dc Hd S₀ Or (Z.pieces hG hF) (fun _ => 1) (fun _ _ => 1) (fun _ _ _ _ => rfl)
     (fun _ _ _ => rfl) fun k => by
       simp only [one_mul]
-      exact (GlobalTheory.T.cusp_weight_integrable_on_fundamental_set E _ _ _ _ _ _ H (B.F k) (B.Γ k) (FF k) (B.arith k) (hF k) a1 a2).1
+      exact (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.fund_set_mean_cuspW E _ _ _ _ _ _ H (B.F k) (B.Γ k) (FF k) (B.arith k) (hF k) a1 a2).1
   refine h.trans (congrArg _ ?_)
   have := c.fin
   have : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }
@@ -65,14 +85,14 @@ theorem volEq_of (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : Cove
   obtain ⟨c₀, hc₀, hP⟩ := h9
   obtain ⟨B, hL⟩ := h6 hG E H D l (Xo l) c Y Sum.inr D.p D.q _ (by omega) (Or.inl ⟨rfl, rfl, rfl⟩) rfl
   obtain ⟨FF, hF⟩ := Classical.skolem.1 fun k =>
-    GlobalTheory.T.exists_fundamental_set E _ _ _ _ _ _ (B.F k) (GlobalTheory.T.exists_group_dictionary E _ _ _ _ _ _ H (B.F k)).some _ (B.arith k)
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.exists_isFundSet E _ _ _ _ _ _ (B.F k) (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.groupDict_nonempty E _ _ _ _ _ _ H (B.F k)).some _ (B.arith k)
   obtain ⟨v, hv⟩ : ∃ v, ∀ k, ∫ t in FF k, ballDens (B.F k).q t = v := by
     rcases isEmpty_or_nonempty (Fin B.np) with h | ⟨⟨k₀⟩⟩
     · exact ⟨0, h.elim⟩
     · exact ⟨_, fun k => h8 hG E H D l (Xo l) c Y _ B FF hq hN hF k k₀⟩
   have := c.fin
   have key : ∀ a, c₀ (Fintype.card (CMType H)) D.p D.q * T.vol a = κ (Fintype.card (CMType H)) D.p D.q * v := fun a => by
-    obtain ⟨K, _, J, _, Ω, _, _, W, _, _, Dc, Hd, Or, e1, e2, e3, e4, e5, e6⟩ := GlobalTheory.T.full_intersection_generic_bound hG Link.weilSt E H D Xo l c Y II hII hY
+    obtain ⟨K, _, J, _, Ω, _, _, W, _, _, Dc, Hd, Or, e1, e2, e3, e4, e5, e6⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_componentData_origin hG Link.weilSt E H D Xo l c Y II hII hY
       (by omega) hq _ (o.Or 2 a).𝔐.ξ₀ (o.Or 2 a).𝔐.gen₀ T.bad ∅ false (fun p hp => ((o.bad_iff p).1 hp).1) (by simp) (by simp)
       fun p hp hd => (o.bad_iff p).2 ⟨hp, (hd.mul_left 2).mul_right _⟩
     have eb : Or.bg = Sum.inl := e4
@@ -89,7 +109,7 @@ theorem volEq_of (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : Cove
     have ej' : Dc.j' = D.q := by have := Or.N_eq; unfold ComponentData.j'; omega
     have k1 := hκ E H D Xo l c Y II K J Ω W Dc Hd _ Or _ _ _ _ B FF v _ _ (o.Fx a).ξf (o.Or 2 a).g (o.Or 2 a).𝔐.cst es ej ej' Or.n_eq
       hq hN hL hF hv eg (by rw [← Category.assoc, ← (o.Or 2 a).g_over, Category.assoc, (o.Or 2 a).𝔐.cst_over]) (o.Or 2 a).g_const
-    have k2 := hP GlobalTheory.T.agreement_positive GlobalTheory.T.proportional' hC hG (GlobalTheory.T.points_integrable_of_resolution_statement hG.2.2.2.2.1) E H D Xo l c Y T o II hY hX hII (by omega) hq
+    have k2 := hP _root_.GlobalTheory.CompanionTheory.Ar.PB.agreementPos _root_.GlobalTheory.CompanionTheory.Ar.PB.proportional hC hG (_root_.GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegrable_of_resK hG.2.2.2.2.1) E H D Xo l c Y T o II hY hX hII (by omega) hq
       (by omega) a K J Ω W Dc Hd Or eb es e5 ⟨fun p hp => e6 p (by simpa using hp), fun p hp => by simp [e2] at hp⟩ e2 eg.symm
     have hd : (Or.deg : ℝ) * Module.finrank ℚ c.F ≠ 0 :=
       mul_ne_zero (Nat.cast_ne_zero.2 Or.cover.1.ne') (Nat.cast_ne_zero.2 Module.finrank_pos.ne')

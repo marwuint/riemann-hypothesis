@@ -2,7 +2,7 @@ import Mathlib
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ShiftAtRExistsEq
 import Formalism.HermitianCurvature.FrameExists2
 import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.WeylGroupActions.TypeExponentsDifferByIntegersStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.WeylGroupActions.TypeExponentsDifferByIntegers
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.CutBP2 Formalism.FourierDecayAlt.P.CutBPEq Matrix
 
@@ -16,7 +16,7 @@ theorem gap_eq_nat_add_one :
       ∀ i ∈ Finset.Icc 1 (k - 1), ∃ N : ℕ, u i - u (i + 1) = (N : ℝ) + 1 := by
   intro Wq _ _ _ k r z π u hz hT hty hdec i hi
   rw [Finset.mem_Icc] at hi
-  obtain ⟨N, hN⟩ := GlobalTheory.T.type_exponents_differ_by_integers Wq k r z π u hz hT hty i
+  obtain ⟨N, hN⟩ := _root_.GlobalTheory.CompanionTheory.GapInt.type_param_diff_int Wq k r z π u hz hT hty i
     (Finset.mem_Icc.2 ⟨hi.1, by omega⟩) (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)
   have h1 := hdec i (Finset.mem_Ico.2 ⟨hi.1, by omega⟩)
   have h2 : (1 : ℝ) ≤ (N : ℝ) := by linarith

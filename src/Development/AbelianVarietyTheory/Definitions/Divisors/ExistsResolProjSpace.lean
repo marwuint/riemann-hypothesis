@@ -442,27 +442,4 @@ theorem nrm_dataEquiv {j : ℕ} (hj : j ≤ T) (σ : F →+* ℂ) (s : S j) :
 
 end Data
 
-theorem exists_resol_projSpace (F : Type) [Field F] [NumberField F] {M : ℕ} (hM : 1 ≤ M) :
-    ∃ (W₁ : Submodule F (H0 (PSpace.str F M) (lbZPow (ProjSpace.O1 F M) 1) ⊤))
-      (W₂ : Submodule F (H0 (PSpace.str F M) (lbZPow (ProjSpace.O1 F M) 2) ⊤))
-      (R : Resol (Common.powers (ProjSpace.O1_isLB F M)) (ProjSpace.chart F M (Fin.last M)) M W₁ W₂),
-      nonzeroLocus R.Δ₁.t = R.opn ∧ nonzeroLocus R.Δ₂.t = R.opn ∧ R.opn ≠ ⊥ := by
-  have hv := projSys.isVariety F M hM
-  have : IsIntegral (PSpace F M) := hv.isIntegral
-  have hg := projSys.gen_mem F M (Fin.last M)
-  have e (n : ℕ) (hn : 1 ≤ n) := (nonzeroLocus_secToPow (ProjSpace.coord F M (Fin.last M)) hn).trans
-    (ProjSpace.nonzeroLocus_coord F M (Fin.last M))
-  let Δ (n : ℕ) (hn : 1 ≤ n) := Cartier.ofSec (Twist.isLB_lbZPow (ProjSpace.O1_isLB F M) n)
-    (secToPow (ProjSpace.coord F M (Fin.last M)) n) ((e n hn).ge hg)
-  exact ⟨_, _, ⟨Modif.refl hv.smooth hv.proj ((ProjSpace.chart F M _).isOpen.dense ⟨_, hg⟩),
-    { Δ 1 le_rfl with cut := (baseIdeal_span _ _).symm.trans (Scheme.IdealSheafData.comap_id _).symm },
-    { Δ 2 one_le_two with cut := (baseIdeal_span _ _).symm.trans (Scheme.IdealSheafData.comap_id _).symm }⟩,
-    e 1 le_rfl, e 2 one_le_two, fun h => h.le hg⟩
-
-example : ∃ f : LatFrame (fun (σ : F →+* ℂ) (x : Fin 2 → F) => frameNorm 1 fun j => σ (x j))
-    (Submodule.span (𝓞 F) (Set.range (Pi.basisFun F (Fin 2)))), f.N = 2 :=
-  ⟨⟨2, 2, Pi.basisFun F _, 1, fun _ => 1, congrArg (fun v => Submodule.span _ (Set.range v))
-    (funext fun k => by simp [Matrix.one_apply]), (Proj.isAlgebraicData F 1 le_rfl).spans,
-    by simp, fun σ x => by simp [frameNorm], fun _ _ => rfl⟩, rfl⟩
-
 end GlobalTheory.CompHS

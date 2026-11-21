@@ -14,8 +14,6 @@ theorem theta_operator_isometry : ∀ D : D7, ∀ cc : Ideal (𝓞 D.host.K), Is
     IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IopIso D (tor0 D cc δ) :=
   IopIso_of_parts hermitian_form_integral_values self_dual_lattice
 
-theorem theta_norm_indep_of_pair : LinkThIndep := LinkThIndep_of_arith' arithmetic_hermitian_form
-
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 end

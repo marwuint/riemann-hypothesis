@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIdempotentsOfComaximalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientRetractPiQuotientOfSummandStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordsRangeIdempotentOfRetractStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuotientRetractPiQuotientOfSummand
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordsRangeIdempotentOfRetract
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.InfUniv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupObjectLiftDividedPowers
@@ -32,7 +32,7 @@ theorem exists_eigen_coordinates_range_quot : ∀ {C : Type} [CommRing C] [IsLoc
     rintro rfl
     rw [Ideal.top_pow] at hI2
     exact top_ne_bot hI2
-  obtain ⟨m, s, r, hrs⟩ := GlobalTheory.T.quotient_retract_pi_quotient_of_summand I F hIF hEM
+  obtain ⟨m, s, r, hrs⟩ := _root_.GlobalTheory.quotient_retract_pi_quotient I F hIF hEM
   let σb : A →+* Module.End C (H ⧸ F) :=
     { toFun := fun c => F.mapQ F (σ c) (fun x hx => hσF c x hx)
       map_one' := Submodule.linearMap_qext _ (LinearMap.ext fun x => by simp)
@@ -95,7 +95,7 @@ theorem exists_eigen_coordinates_range_quot : ∀ {C : Type} [CommRing C] [IsLoc
     · exact he3 j i _ (Ne.symm h) (hpE i w)
   have hidem : ∀ i, p i * p i = p i := fun i => LinearMap.ext fun w => by
     rw [Module.End.mul_apply, hpp]; simp
-  choose n b f hb hfp hδ hinj using fun i => GlobalTheory.T.exists_coords_range_idempotent_of_retract I hItop m s r hrs (p i) (hidem i)
+  choose n b f hb hfp hδ hinj using fun i => _root_.GlobalTheory.idem_retract_coords I hItop m s r hrs (p i) (hidem i)
   obtain ⟨eqv⟩ : Nonempty ((Σ i, Fin (n i)) ≃ Fin (∑ i, n i)) := ⟨finSigmaFinEquiv⟩
   have hlift : ∀ i t, ∃ z ∈ LinearMap.range π, F.mkQ z = b i t := by
     intro i t

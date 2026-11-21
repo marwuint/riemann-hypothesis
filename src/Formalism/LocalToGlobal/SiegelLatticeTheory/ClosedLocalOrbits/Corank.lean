@@ -17,15 +17,6 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 def ScalRel (Λ : Submodule (𝓞 E) S.V) (g k : ℕ) {T T' : E} (F : LFlag S r T) (F' F'' : LFlag S r T') : Prop :=
   ∃ β : S.V ≃ₗ[E] S.V, IsPair Λ F F' F'' β g ∧ s0 Λ F F' F'' β k = 1 ∧ IsScalar Λ F F' F'' β
 
-def s0T (Λ : Submodule (𝓞 E) S.V) (g k : ℕ) {T T' : E} (F : LFlag S r T) (F' F'' : LFlag S r T') : ℕ :=
-  if h : ∃ β : S.V ≃ₗ[E] S.V, IsPair Λ F F' F'' β g then s0 Λ F F' F'' (Classical.choose h) k else 0
-
-theorem isPair_refl (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') :
-    IsPair Λ F F' F' (LinearEquiv.refl E S.V) g := by
-  refine ⟨⟨fun x y => rfl, ?_⟩, fun j => ?_, rfl, fun x' _ l _ => Iff.rfl⟩
-  · simp [Formalism.HermitianLatticesTheory.gmap]
-  · simp
-
 end Gen
 
 def CorankPosG : Prop :=
@@ -91,15 +82,6 @@ def Pair.isScalar (p : Pair D u u' F0 what₂) : Prop :=
 theorem Pair.scalarPair_iff (p : Pair D u u' F0 what₂) : p.scalarPair ↔ p.s0 = 1 ∧ p.isScalar :=
   Iff.rfl
 
-def reflPair (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Λ ∈ what₂)
-    (x : Carrier (PD D Λ (lf D F0) u')) (hx : Gval (lf D F0) x.1 ≠ 0) : Pair D u u' F0 what₂ :=
-  ⟨Λ, hΛ, x, x, hx, hx, LinearEquiv.refl _ _, isPair_refl _ _ _ _⟩
-
-theorem reflPair_terms (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Λ ∈ what₂)
-    (x : Carrier (PD D Λ (lf D F0) u')) (hx : Gval (lf D F0) x.1 ≠ 0) :
-    (reflPair Λ hΛ x hx).pfst = ⟨Λ, hΛ, TermDef.mk _ _ _ x⟩ ∧ (reflPair Λ hΛ x hx).psnd = ⟨Λ, hΛ, TermDef.mk _ _ _ x⟩ :=
-  ⟨rfl, rfl⟩
-
 end PairAttr
 
 variable (D)
@@ -156,12 +138,6 @@ def ScalarDr (u u' : D.what₂.Word) : Prop :=
       (Dr (lf D F0) p.fst.1 = 0 ↔ Dr (lf D F0) p.snd.1 = 0)
 
 variable {D}
-
-theorem corankPos_of_G (h : CorankPosG) (u u' : D.what₂.Word) : CorankPos D u u' := by
-  intro F0 what₂ hrows p
-  have hΛ := hrows.1 p.lam p.mem
-  exact h D.host.E (VS D) D.R.rS D.R.k (finrank_VS D) p.lam hΛ.2.1.1 _ _ (lf D F0) p.fst.1 p.snd.1 p.beta
-    hΛ.2.1.2.2.1 p.fst.2.1 p.G_fst
 
 theorem tu_ne_zero (u : D.what₂.Word) : ((Tu D u : ℕ) : D.host.E) ≠ 0 :=
   Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero

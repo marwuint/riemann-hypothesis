@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Polarization
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnifPolarizationSquareIso
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SiegelFamilyProperExtension
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SemiAbelianHomExtendsUniquelyOverDvr
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericFibrePullbackSiegelTraitModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleTraitFibreEqUniversalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericFibrePullbackSiegelTraitModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MumfordBundleTraitFibreEqUniversal
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH
@@ -81,7 +81,7 @@ theorem genFib (T : Trait F) {W : Type} [CommRing W] [IsDomain W] (f : T.V →+*
       IsGrpPullback ((Over.pullback (jK W)).obj ((Over.pullback (spMap f)).obj T.G)) T.A.A (spMap fK) κ ∧
       κ ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK T.V) =
         pullback.fst ((Over.pullback (spMap f)).obj T.G).hom (jK W) ≫ pullback.fst T.G.hom (spMap f) :=
-  GlobalTheory.T.exists_genericFibre_pullback_siegelTrait_model g n o ζ F T W f fK hfK
+  _root_.GlobalTheory.Poinc.GenFibre.exists_generic_pullback g n o ζ F T W f fK hfK
 
 theorem lamPull (T : Trait F) {W : Type} [CommRing W] [IsDomain W] (fK : FractionRing T.V →+* FractionRing W)
     (G'' : Over (Sp W)) [GrpObj G''] (β : G''.left ⟶ T.G.left)
@@ -91,7 +91,7 @@ theorem lamPull (T : Trait F) {W : Type} [CommRing W] [IsDomain W] (fK : Fractio
     (α₂ : (G2 ((Over.pullback (jK W)).obj G'')).left ⟶ (G2 F.univ.A).left) (hα₂ : IsSquare (κ ≫ T.α) α₂) :
     LBIso (abelian₂ ((Over.pullback (jK W)).obj G'') (T.U.LG.L.pull (pullback.fst G''.hom (jK W) ≫ β)))
       (F.univ.P.pull α₂) :=
-  GlobalTheory.T.mumfordBundle_trait_fibre_eq_universal g n o ζ F T W fK G'' β κ hκ hκβ α₂ hα₂
+  _root_.GlobalTheory.Poinc.lam_trait_fibre_eq_univ g n o ζ F T W fK G'' β κ hκ hκβ α₂ hα₂
 
 end GlobalTheory.Poinc.TraitUniq
 
@@ -120,10 +120,10 @@ theorem pull (T : Trait F) {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] 
   have gB := (isGrpPullback_pullback G'' (jK W)).comp hβ
   obtain ⟨hr, hs⟩ := GlobalTheory.T.rigidified_symmetric_lineBundle_groupPullback _ _ _ T.G _ _ gB T.U.LG T.U.symG T.U.symG_gen
   have hα := hκ.comp T.cart
-  obtain ⟨ha, hamp, hkt⟩ := GlobalTheory.T.principalPolarization_of_mumfordBundle_siegelFibre o ζ g n F _ (spMap fK ≫ T.y) _ (κ ≫ T.α) α₂ hα hα₂ _
+  obtain ⟨ha, hamp, hkt⟩ := _root_.GlobalTheory.SiegFibrePol.polAV_of_lam_univ o ζ g n F _ (spMap fK ≫ T.y) _ (κ ≫ T.α) α₂ hα hα₂ _
     (pull_isLB T.U.LG.isLB _) hr hs hΛ
   have hϖ : f T.ϖ ≠ 0 := fun h => T.irr.ne_zero (hf (h.trans (map_zero f).symm))
-  obtain ⟨D', A', U', ε, hL, hc⟩ := GlobalTheory.T.exists_uniformisation_baseChange_with_coordinates T.V W (isCN T) hW f hl T.G T.semi T.D T.A T.U
+  obtain ⟨D', A', U', ε, hL, hc⟩ := _root_.GlobalTheory.UnifCoordPull.exists_unif_psiCoord T.V W (isCN T) hW f hl T.G T.semi T.D T.A T.U
     {p | T.ϖ ∉ p.asIdeal} (PrimeSpectrum.isOpen_basicOpen (a := T.ϖ))
     (fun y => T.mono.psiUnitOn y fun p hp => by simpa using hp) (fun h => hϖ (RingHom.mem_ker.1 h)) G'' β hβ ha hr hs
     hamp hkt

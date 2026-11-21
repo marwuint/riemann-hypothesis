@@ -28,48 +28,17 @@ theorem inh_length_quot_maximal (W : Ideal R) [W.IsPrime] :
     isSimpleModule_iff_isCoatom]
   exact Ideal.isMaximal_def.mp inferInstance
 
-theorem inh_length_pow [IsDomain R] (x : R) (hx : x ≠ 0) [(Ideal.span {x}).IsPrime] (m : ℕ) :
-    Module.length (Localization.AtPrime (Ideal.span {x}))
-      (Localization.AtPrime (Ideal.span {x}) ⧸
-        (Ideal.span {x ^ m}).map (algebraMap R (Localization.AtPrime (Ideal.span {x})))) = m := by
-  set A := Localization.AtPrime (Ideal.span {x})
-  have hinj : Function.Injective (algebraMap R A) :=
-    IsLocalization.injective A (Ideal.span {x}).primeCompl_le_nonZeroDivisors
-  have : IsDomain A := inferInstance
-  have hx' : algebraMap R A x ∈ nonZeroDivisors A :=
-    mem_nonZeroDivisors_of_ne_zero fun h => hx (hinj (by rw [h, map_zero]))
-  rw [Ideal.map_span, Set.image_singleton, map_pow]
-  change Ring.ord A (algebraMap R A x ^ m) = m
-  rw [Ring.ord_pow hx', Ring.ord, ← Set.image_singleton, ← Ideal.map_span,
-    inh_length_quot_maximal]
-  simp
-
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 theorem inh_multAt_self (W : Ideal (MRingOver R ι)) [hW : W.IsPrime] : multAt W W = 1 := by
   rw [multAt, dif_pos hW, inh_length_locQuot, inh_length_quot_maximal]
   rfl
 
-theorem inh_multAt_pow [IsDomain R] (x : MRingOver R ι) (hx : x ≠ 0) [hW : (Ideal.span {x}).IsPrime]
-    (m : ℕ) : multAt (Ideal.span {x ^ m}) (Ideal.span {x}) = m := by
-  rw [multAt, dif_pos hW, inh_length_locQuot, inh_length_pow x hx]
-  simp
-
 end Len
 
 section Div
 
 variable {R : Type*} [CommRing R]
-
-theorem inh_minimalPrimes_eq {I Q : Ideal R} [hQ : Q.IsPrime] (hIQ : I ≤ Q)
-    (hmin : ∀ q : Ideal R, q.IsPrime → I ≤ q → Q ≤ q) : I.minimalPrimes = {Q} := by
-  ext W
-  simp only [Ideal.minimalPrimes, Set.mem_ofPred_eq, Set.mem_singleton_iff]
-  constructor
-  · intro h
-    exact le_antisymm (h.2 ⟨hQ, hIQ⟩ (hmin W h.1.1 h.1.2)) (hmin W h.1.1 h.1.2)
-  · rintro rfl
-    exact ⟨⟨hQ, hIQ⟩, fun y hy _ => hmin y hy.1 hy.2⟩
 
 theorem inh_minimalPrimes_top : (⊤ : Ideal R).minimalPrimes = ∅ := by
   ext W
@@ -109,33 +78,6 @@ theorem inh_divCycle_prime (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (Q 
   ext W
   simp only [divSupp, hQ, Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff,
     Set.mem_ofPred_eq]
-  constructor
-  · exact fun h => h.1
-  · rintro rfl; exact ⟨rfl, hrel⟩
-
-theorem inh_divCycle_irrel (P : Ideal (MRingOver F ι)) (s : MRingOver F ι) (Q : Ideal (MRingOver F ι))
-    [Q.IsPrime] (hQ : P ⊔ Ideal.span {s} = Q) (hrel : ¬ IsRelevant Q) : divCycle P s = 0 := by
-  apply inh_divCycle_of_supp_empty
-  ext W
-  simp only [divSupp, hQ, Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff,
-    Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]
-  rintro rfl; exact hrel
-
-theorem inh_divCycle_pow (x : MRingOver F ι) (hx : x ≠ 0) [(Ideal.span {x}).IsPrime]
-    (hrel : IsRelevant (Ideal.span {x})) (m : ℕ) :
-    divCycle ⊥ (x ^ m) = Finsupp.single (Ideal.span {x}) m := by
-  rcases m with _ | m
-  · simp [inh_divCycle_one]
-  have hm : (⊥ ⊔ Ideal.span {x ^ (m + 1)}).minimalPrimes = {Ideal.span {x}} := by
-    rw [bot_sup_eq]
-    apply inh_minimalPrimes_eq
-    · rw [Ideal.span_singleton_le_span_singleton]; exact dvd_pow_self x (Nat.succ_ne_zero m)
-    · intro q hq hle
-      rw [Ideal.span_singleton_le_iff_mem] at hle ⊢
-      exact hq.mem_of_pow_mem _ hle
-  rw [inh_divCycle_of_supp ⊥ _ (Ideal.span {x}), bot_sup_eq, inh_multAt_pow x hx]
-  ext W
-  simp only [divSupp, hm, Set.mem_singleton_iff, Set.mem_ofPred_eq]
   constructor
   · exact fun h => h.1
   · rintro rfl; exact ⟨rfl, hrel⟩
@@ -187,36 +129,9 @@ def inhQuotEquiv : (MvPolynomial σ F ⧸ inhV F S) ≃ₐ[F] MvPolynomial {s //
           (Ideal.subset_span (Set.mem_image_of_mem _ (Finset.mem_coe.mpr h)))).symm
       · rw [inhKill_X_nmem F S h, rename_X])
 
-theorem inhV_mem_iff (f : MvPolynomial σ F) : f ∈ inhV F S ↔ inhKill F S f = 0 := by
-  rw [← Ideal.Quotient.eq_zero_iff_mem]
-  have : inhKill F S f = inhQuotEquiv F S (Ideal.Quotient.mk _ f) := rfl
-  rw [this, map_eq_zero_iff _ (inhQuotEquiv F S).injective]
-
-theorem inhV_X_nmem {s : σ} (h : s ∉ S) : (X s : MvPolynomial σ F) ∉ inhV F S := by
-  rw [inhV_mem_iff, inhKill_X_nmem F S h]
-  exact X_ne_zero _
-
-theorem inhV_X_mem {s : σ} (h : s ∈ S) : (X s : MvPolynomial σ F) ∈ inhV F S :=
-  Ideal.subset_span ⟨s, h, rfl⟩
-
 instance inhV_isPrime : (inhV F S).IsPrime := by
   rw [← Ideal.Quotient.isDomain_iff_prime]
   exact (inhQuotEquiv F S).toRingEquiv.toMulEquiv.isDomain
-
-theorem inhV_dim [Finite σ] :
-    ringKrullDim (MvPolynomial σ F ⧸ inhV F S) = (Nat.card {s // s ∉ S} : WithBot ℕ∞) := by
-  rw [ringKrullDim_eq_of_ringEquiv (inhQuotEquiv F S).toRingEquiv,
-    MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]
-
-theorem inhV_insert (p : σ) : inhV F S ⊔ Ideal.span {X p} = inhV F (insert p S) := by
-  simp only [inhV, Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert]
-  exact sup_comm _ _
-
-theorem inhV_singleton (p : σ) : inhV F {p} = Ideal.span {X p} := by
-  simp [inhV]
-
-theorem inhV_empty : inhV F (∅ : Finset σ) = ⊥ := by
-  simp [inhV]
 
 end Kill
 
@@ -255,17 +170,6 @@ theorem inh_homog_one : IsMultiHomog (1 : MRingOver F ι) 0 := by
   simp
 
 variable [DecidableEq (Σ k, ι k)]
-
-theorem inhV_homogIdeal (S : Finset (Σ k, ι k)) : IsMultiHomogIdeal (inhV F S) :=
-  ⟨_, by rintro _ ⟨p, _, rfl⟩; exact ⟨_, inh_homog_X p⟩, rfl⟩
-
-theorem inhV_relevant (S : Finset (Σ k, ι k)) (h : ∀ k, ∃ i, (⟨k, i⟩ : Σ k, ι k) ∉ S) :
-    IsRelevant (inhV F S) :=
-  fun k => let ⟨i, hi⟩ := h k; ⟨i, inhV_X_nmem F S hi⟩
-
-theorem inhV_projVar (S : Finset (Σ k, ι k)) (d : ℕ) (h : ∀ k, ∃ i, (⟨k, i⟩ : Σ k, ι k) ∉ S)
-    (hc : Nat.card {s // s ∉ S} = d + Fintype.card K) : IsProjVarF (inhV F S) d :=
-  ⟨⟨inferInstance, inhV_homogIdeal S, inhV_relevant S h⟩, by rw [inhV_dim, hc]⟩
 
 end Homog
 

@@ -92,24 +92,6 @@ theorem pet_kerInf_left {ω : HChar E} (hω : ω.IsUnitary) {F ψ : GA E a → �
   refine integral_congr_ae (.of_forall fun x => ?_)
   simp only [(pet_eq_setIntegral hω (mul_right_mem_bddForms h _) h' hD).2, ← integral_const_mul, mul_assoc]
 
-theorem rspan_central {π : CuspSub E a} {ω : HChar E} (hπ : π.HasCentChar ω) {F : GA E a → ℂ} (hF : F ∈ rspan π)
-    (z : Ideles E) (g : GA E a) :
-    F (GeneralLinearGroup.scalar (Fin a) z * g) = ((ω.1 z : ℂˣ) : ℂ) * F g := by
-  have hc := CuspSub.hasCentral_iff.2 hπ
-  let S : Submodule ℂ (GA E a → ℂ) :=
-    { carrier := {F | ∀ (z : Ideles E) g, F (GeneralLinearGroup.scalar (Fin a) z * g) = ((ω.1 z : ℂˣ) : ℂ) * F g}
-      add_mem' := fun {F F'} hF hF' z g => by simp only [Pi.add_apply, hF z g, hF' z g, mul_add]
-      zero_mem' := fun z g => by simp
-      smul_mem' := fun c F hF z g => by simp only [Pi.smul_apply, smul_eq_mul, hF z g]; ring }
-  refine rspan_le (S := S) (fun φ hφ z g => hc.apply hφ z g) (fun F hF h z g => ?_)
-    (fun F hF X _ ν _ k γ _ z g => ?_) hF z g
-  · change F (GeneralLinearGroup.scalar (Fin a) z * g * h) = _ * F (g * h)
-    rw [mul_assoc]; exact hF z _
-  · change ∫ x, k x * F (GeneralLinearGroup.scalar (Fin a) z * g * infGL E a (γ x)) ∂ν =
-      _ * ∫ x, k x * F (g * infGL E a (γ x)) ∂ν
-    rw [← integral_const_mul]
-    congr 1; funext x; rw [mul_assoc, hF z]; ring
-
 theorem pet_rt_eq_zero {π : CuspSub E a} {ω : HChar E} (hω : ω.IsUnitary) (hπ : π.HasCentChar ω) {ψ : GA E a → ℂ}
     (hψ : ψ ∈ bddForms E a ω) (h0 : ∀ φ ∈ π.V, pet (latticeGL E a) μ φ.1 ψ = 0) {φ : Sm E a} (hφ : φ ∈ π.V)
     (h : GA E a) : pet (latticeGL E a) μ (fun g => φ.1 (g * h)) ψ = 0 := by
@@ -153,9 +135,5 @@ theorem rspan_bdd_pet_eq_zero {π : CuspSub E a} {ω : HChar E} (hω : ω.IsUnit
     exact pet_rt_eq_zero μ hω hπ hψ h0 hφ h⁻¹
   · rw [pet_kerInf_left μ hω hF.1 (hψh h) ν hk]
     exact integral_eq_zero_of_ae (.of_forall fun x => mul_eq_zero_of_right _ ((htr F hF _).2 h))
-
-example {π : CuspSub E a} {ω : HChar E} (hπ : π.HasCentChar ω) {φ : Sm E a} (hφ : φ ∈ π.V) (z : Ideles E) (g : GA E a) :
-    φ.1 (GeneralLinearGroup.scalar (Fin a) z * g) = ((ω.1 z : ℂˣ) : ℂ) * φ.1 g :=
-  rspan_central hπ (mem_rspan hφ) z g
 
 end GlobalTheory.JSW

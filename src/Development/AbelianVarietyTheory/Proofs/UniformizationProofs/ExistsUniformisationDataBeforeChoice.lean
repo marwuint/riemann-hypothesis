@@ -13,12 +13,12 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpa
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceOfSection
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsCPMapCompCancel
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EvenCubicUnitEqOne
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.NonemptyMumfordTorusQuotientTowerStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.NonemptyAlgebraisationAbelianQuotientTowerStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.NonemptyMumfordTorusQuotientTower
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.NonemptyAlgebraisationAbelianQuotientTower
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsWeightPoints
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorusCoordinatesCompatOfTorusCompatStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TorusCoordinatesCompatOfTorusCompat
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGtCoordOfTorusQuotient
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KTrivTorusQuotientTowerAlgebraisationStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KTrivTorusQuotientTowerAlgebraisation
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.UU
@@ -279,9 +279,9 @@ end
 
 theorem exists_preU : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g n : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (n : k) ≠ 0 → Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} = n ^ (2 * g)) → Laws → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∃ (D : DegPre V) (U : PreU (IsLocalRing.maximalIdeal V) D A G), U.P = s.P ∧ U.gen = s.gen := by
   intro hc L V _ _ _ A G _ _ s
-  obtain ⟨t⟩ := GlobalTheory.T.nonempty_mumfordTorusQuotientTower V A G s
-  obtain ⟨a⟩ := GlobalTheory.T.nonempty_algebraisation_abelian_quotient_tower hc L V A G s t
-  have hK := GlobalTheory.T.kTriv_torusQuotientTower_algebraisation hc L V A G s t a
+  obtain ⟨t⟩ := _root_.GlobalTheory.UU.TowerEx.nonempty_tower V A G s
+  obtain ⟨a⟩ := _root_.GlobalTheory.AlgTower.nonempty_alg hc L V A G s t
+  have hK := _root_.GlobalTheory.UU.Principal.kTriv_alg hc L V A G s t a
   obtain ⟨c, hadd, hrep⟩ := exists_weightPoints L V A G s t a hK
   obtain ⟨g, hg⟩ := AbelianDim.exists_relDim V a.B a.isAb
   have hsym : Sym a.B a.M.L.L := fun _ => ⟨⊤, trivial, by
@@ -309,7 +309,7 @@ theorem exists_preU : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)
   exact ⟨D,
     { semi := s.semi, gen := s.gen, gen_hom := s.gen_hom, P := s.P, wA := s.wA, wA_gen := s.wA_gen, gt := gt,
       gt_q := gq
-      gt_t := fun e => GlobalTheory.T.torusCoordinates_compat_of_torus_compat L.globalFns V _ D e G (gt e) (gt (e + 1)) (gq e) (by rw [hi, hi]; exact t.tor e)
+      gt_t := fun e => _root_.GlobalTheory.gtCoord_compat_of_torusCompat L.globalFns V _ D e G (gt e) (gt (e + 1)) (gq e) (by rw [hi, hi]; exact t.tor e)
       w := w, w_gen := w₁, w_vals := w₂, w_compat := w₃ }, rfl, rfl⟩
 
 end GlobalTheory.PreUnif

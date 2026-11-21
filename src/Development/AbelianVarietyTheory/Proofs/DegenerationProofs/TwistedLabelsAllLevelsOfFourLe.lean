@@ -69,9 +69,6 @@ theorem qEq_twist {j k m : ℕ} (β : N.Form j) {u r r' : Oˣ} (h₁ : r' ^ m = 
       clear hy hg hg' hy' ty ty' tb tb' ts ts' A6 A1 A2 A3 A4 A5
       module
 
-theorem rel_pow (J : NumD.Iso N N') {g : N.Gt} {g' : N'.Gt} (h : J.Rel g g') (n : ℕ) : J.Rel (g ^ n) (g' ^ n) :=
-  (NumD.Hom.ofIso_rel J _ _).1 (((NumD.Hom.ofIso_rel J _ _).2 h).pow n)
-
 theorem exists_image (J : NumD.Iso N N') {k : ℕ} (p : N.QT k) :
     ∃ q : N'.QT k, q.1.1.toAdd = J.e p.1.1.toAdd ∧ J.Rel p.1.2 q.1.2 := by
   let I := NumD.Hom.ofIso J

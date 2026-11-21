@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsLocSec
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolution
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg
@@ -12,7 +12,7 @@ theorem isNormFn_logNormSec_diagSec : ∀ (K : Type) [Fintype K] (ι : K → Typ
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL b hb hab hk hca hcb hW c
     x z₀ z₁ F h t h1 h2 h3 h4 h5 h6 h7 h8 h9
   have hd : IsPtData M τ a k₀ ca cb RW x z₀ z₁ F h t := ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩
-  have hno := GlobalTheory.T.flag_adjacent_twisted_resolution K ι Φ y Ψ N j M n e Rb τ a b k₀ ca cb hb hab hk hca hcb RW pr hW x z₀ z₁ F h t hd
+  have hno := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.not_sameOrbit_of_ptData K ι Φ y Ψ N j M n e Rb τ a b k₀ ca cb hb hab hk hca hcb RW pr hW x z₀ z₁ F h t hd
   obtain ⟨-, -, hx, -, -, -, hu, hiff, hnorm⟩ := hL x
   have hψ : ψ x x (i₀ x) ≠ 0 := fun h0 => hno ((hiff x hx).1 h0)
   have hn := hnorm x hx hψ z₀ z₁ F h t hd

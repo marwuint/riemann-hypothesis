@@ -65,17 +65,6 @@ theorem ratVal_eq_valAt {k : Type} [CommRing k] {q : Z ⟶ Sp k} {σ : k →+* �
   conv_rhs => rw [← he]
   exact (valAt_fnOf hf.exists_fnOf.choose_spec.choose _ _).symm
 
-theorem regAt_of_pow {x : Z} (hx : IsIntegrallyClosed (Z.presheaf.stalk x)) {n : ℕ} (hn : 0 < n)
-    (h : RegAt x (f ^ n)) : RegAt x f := by
-  haveI := hx
-  obtain ⟨a, ha⟩ := h
-  have hint : IsIntegral (Z.presheaf.stalk x) f := by
-    refine ⟨Polynomial.X ^ n - Polynomial.C a, Polynomial.monic_X_pow_sub_C a hn.ne', ?_⟩
-    simp [Polynomial.eval₂_sub, ha]
-  obtain ⟨b, hb⟩ := (IsIntegrallyClosed.isIntegral_iff (R := Z.presheaf.stalk x)
-    (K := Z.functionField)).1 hint
-  exact ⟨b, hb⟩
-
 end Val
 
 section Fn

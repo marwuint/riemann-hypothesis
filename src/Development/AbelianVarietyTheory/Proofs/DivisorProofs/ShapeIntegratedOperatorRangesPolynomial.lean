@@ -3,7 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RangeShape
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsLastRest
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolyEntriesConjLeftRightMul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OffDiagBlockNormContInv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactPseudoUnitaryOffDiagNormSublevelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactPseudoUnitaryOffDiagNormSublevel
+import Formalism.RealPlaceAnalysis.SmoothOnGVIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitarySignsHaarIsMulRightInvariant
 
 noncomputable section
@@ -88,7 +89,7 @@ theorem shape_cc {ε : Fin n → Bool} {d : ℕ} {φ : Mat n → ℂ} (hφ : φ 
         · exact continuous_star.comp ((continuous_apply x.2).comp ((continuous_apply x.1).comp hM))
       exact (Complex.continuous_ofReal.comp (hH.continuous.comp hr)).mul
         ((MvPolynomial.continuous_eval P).comp hent)
-    · refine HasCompactSupport.intro (GlobalTheory.T.isCompact_pseudoUnitary_offDiag_norm_sublevel n ε R) fun g hg => ?_
+    · refine HasCompactSupport.intro (_root_.GlobalTheory.isCompact_offDiag_sublevel n ε R) fun g hg => ?_
       have h : R ≤ rM ε (toM g) := (not_le.1 hg).le
       simp [bas, hR _ h]
   | zero => exact ⟨continuous_const, HasCompactSupport.zero⟩

@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GermDerivationIffDualNumberPointStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GermDerivationIffDualNumberPoint
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct ContDiff
@@ -105,7 +105,7 @@ theorem GlobalTheory.KS.ptDer_of_fibre : ∀ (Y : Over (Sp ℂ)) (R : Type) [Com
   intro Y R _ x₀ X p m hP y hy
   constructor
   · intro δ hδ h0
-    obtain ⟨v, ⟨hv, hvδ⟩, -⟩ := (GlobalTheory.T.germDerivation_iff_dualNumberPoint X (y ≫ m)).1 δ hδ
+    obtain ⟨v, ⟨hv, hvδ⟩, -⟩ := (_root_.GlobalTheory.KS.ptDer_iff_dualPoint X (y ≫ m)).1 δ hδ
     have hvp : v ≫ p = epsStr ≫ spMap x₀ := by
       refine comp_eq_const x₀ p v ?_ fun r => (hvδ ⊤ le_top _).trans (h0 r)
       rw [← Category.assoc, hv, Category.assoc, hP.w, ← Category.assoc, hy, Category.id_comp]
@@ -116,7 +116,7 @@ theorem GlobalTheory.KS.ptDer_of_fibre : ∀ (Y : Over (Sp ℂ)) (R : Type) [Com
       apply hP.hom_ext
       · rw [Category.assoc, hw₁, hv]
       · rw [Category.assoc, hw₂, epsPt_epsStr, hy]
-    obtain ⟨δ₀, hδ₀, hw⟩ := (GlobalTheory.T.germDerivation_iff_dualNumberPoint Y.left y).2 w hwy
+    obtain ⟨δ₀, hδ₀, hw⟩ := (_root_.GlobalTheory.KS.ptDer_iff_dualPoint Y.left y).2 w hwy
     refine ⟨δ₀, hδ₀, fun a => ?_, fun W f hW => ?_⟩
     · refine (hw ⊤ le_top _).symm.trans ?_
       exact congrArg TrivSqZeroExt.snd (ringVal_constFn w Y.hom _ hw₂ le_top a)
@@ -126,7 +126,7 @@ theorem GlobalTheory.KS.ptDer_of_fibre : ∀ (Y : Over (Sp ℂ)) (R : Type) [Com
       exact congrArg TrivSqZeroExt.snd
         ((ringVal_congr hw₁.symm W h1 h2 f).trans (ringVal_app w m W h2 h2 f).symm)
   · intro δ₀ hδ₀ h0 hm O f hO
-    obtain ⟨v, ⟨hv, hvδ⟩, -⟩ := (GlobalTheory.T.germDerivation_iff_dualNumberPoint Y.left y).1 δ₀ hδ₀
+    obtain ⟨v, ⟨hv, hvδ⟩, -⟩ := (_root_.GlobalTheory.KS.ptDer_iff_dualPoint Y.left y).1 δ₀ hδ₀
     have hvp : v ≫ Y.hom = epsStr := by
       have hid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ) := Spec.map_id _
       have := comp_eq_const (RingHom.id ℂ) Y.hom v (by rw [← Category.assoc, hv, hy, hid])
@@ -134,7 +134,7 @@ theorem GlobalTheory.KS.ptDer_of_fibre : ∀ (Y : Over (Sp ℂ)) (R : Type) [Com
       rwa [hid, Category.comp_id] at this
     have hz : PtDer (y ≫ m) (fun _ _ => 0) := ⟨by simp, by simp, by simp⟩
     have hvm : v ≫ m = epsStr ≫ y ≫ m := by
-      refine ((GlobalTheory.T.germDerivation_iff_dualNumberPoint X (y ≫ m)).1 _ hz).unique ⟨?_, fun W h g => ?_⟩ ⟨?_, fun W h g => ?_⟩
+      refine ((_root_.GlobalTheory.KS.ptDer_iff_dualPoint X (y ≫ m)).1 _ hz).unique ⟨?_, fun W h g => ?_⟩ ⟨?_, fun W h g => ?_⟩
       · rw [← Category.assoc, hv]
       · have hW : ⊤ ≤ (y ≫ m) ⁻¹ᵁ W := by
           have := top_le_epsPt _ W h

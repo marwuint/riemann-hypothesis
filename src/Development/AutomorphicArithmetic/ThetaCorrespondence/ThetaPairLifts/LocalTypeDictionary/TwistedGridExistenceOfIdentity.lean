@@ -12,8 +12,6 @@ open GlobalTheory.RowEx
 noncomputable section
 open scoped TensorProduct nonZeroDivisors Pointwise
 namespace GlobalTheory.RowEx.GridExPf
-open Formalism.L2.Col GlobalTheory.GridPlaces
-variable {D : D7}
 end GlobalTheory.RowEx.GridExPf
 namespace GlobalTheory.RowEx
 open GlobalTheory.RowEx.GridExPf

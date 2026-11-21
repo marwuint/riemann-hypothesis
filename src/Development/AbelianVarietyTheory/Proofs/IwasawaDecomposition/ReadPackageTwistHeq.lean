@@ -72,35 +72,11 @@ def inRat (Y : RdTw x N) (H : ∀ i y, x.r.Y.mj.eW i y = eWB Y i y) (n : InRat x
       lvl := (by with_unfolding_all exact (n.rat.lvl :))
       psi := (by with_unfolding_all exact (n.rat.psi :)) }
 
-def li {hL : GlobalTheory.Published.LocalLanglandsGL} (l : LI hL x) (m : Moved (oTw x N)) (hc : m.Copy) (hh : m.Coh) (r : ReadPk m (sideTw x N))
-    (hp : r.Pin) (e : HEq (repOf r.Y) (repOf x.r.Y)) (mt : InMt r.Y (cfOf (stTw x N m hc hh r hp)) w.I.xi (QOf P)) (rat : InRat r.Y m.z.cG) :
-    LI hL (stTw x N m hc hh r hp) where
-  a := (by with_unfolding_all exact ((stA N l.a ((by with_unfolding_all exact ((repOf r.Y) :))) ((by with_unfolding_all exact (e :)))) :))
-  Pq := (by with_unfolding_all exact (l.Pq :))
-  Pq_over := (by with_unfolding_all exact (l.Pq_over :))
-  sel := (by with_unfolding_all exact (l.sel :))
-  mt := (by with_unfolding_all exact (mt :))
-  rat := (by with_unfolding_all exact (rat :))
-  cusp := (by with_unfolding_all exact ((cusp N l.cusp) :))
-
 def inMt (Y : RdTw x N) (H : ∀ μ h i y, (x.r.Y.IL.jMt μ h i y).1 = jMtB Y μ h i y) (n : InMt x.r.Y (cfOf x) w.I.xi (QOf P)) :
     InMt Y ((N.cf (cfOf x))) w.I.xi (QOf P) where
   M := (by with_unfolding_all exact ((N.mt n.M) :))
   ad := (by with_unfolding_all exact ((mtAd Y H n.ad) :))
   mt := (by with_unfolding_all exact ((mtIn N n.mt) :))
-
-theorem li_copy : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : LI hL x) (N : TwNew (Dof x)) (m : Moved (oTw x N)) (hm : m.z = datTw x N) (hc : m.Copy) (hh : m.Coh) (r : ReadPk m (sideTw x N)) (hp : r.Pin), HEq (repOf r.Y) (repOf x.r.Y) → (∀ μ h i y, HEq (r.Y.IL.jMt μ h i y).1 (x.r.Y.IL.jMt μ h i y).1) → (∀ i y, HEq (r.Y.mj.eW i y) (x.r.Y.mj.eW i y)) → ∃ l' : LI hL (stTw x N m hc hh r hp), HEq l'.a.A.row (N.row l.a.A.row) ∧ HEq l'.Pq l.Pq ∧ HEq l'.rat.S (N.rat l.rat.S) ∧ HEq l'.rat.In.Sb l.rat.In.Sb ∧ HEq l'.rat.In.hL l.rat.In.hL ∧ HEq l'.rat.In.eig l.rat.In.eig ∧ HEq l'.rat.In.θ l.rat.In.θ := by
-  intro hL K B f T w P x l N m hm hc hh r hp e H1 H2
-  cases m
-  dsimp only at hm
-  subst hm
-  have G1 : ∀ μ h i y, (x.r.Y.IL.jMt μ h i y).1 = jMtB (N := N) ((by with_unfolding_all exact (r.Y :))) μ h i y := fun μ h i y =>
-    eq_of_heq ((by with_unfolding_all exact ((HEq.symm (H1 ((μ)) ((h)) ((i)) ((y)))) : _)))
-  have G2 : ∀ i y, x.r.Y.mj.eW i y = eWB (N := N) ((by with_unfolding_all exact (r.Y :))) i y := fun i y =>
-    eq_of_heq ((by with_unfolding_all exact ((HEq.symm (H2 ((i)) ((y)))) : _)))
-  refine Exists.intro (li l _ hc hh r hp e ((by with_unfolding_all exact ((inMt (N := N) ((r.Y)) ((G1)) l.mt) : _))) ((by with_unfolding_all exact ((inRat (N := N) ((r.Y)) ((G2)) l.rat) : _)))) ?_
-  exact (by with_unfolding_all exact ((And.intro (HEq.refl (N.row l.a.A.row)) (And.intro (HEq.refl l.Pq) (And.intro (HEq.refl (N.rat l.rat.S))
-    (And.intro (HEq.refl l.rat.In.Sb) (And.intro (HEq.refl l.rat.In.hL) (And.intro (HEq.refl l.rat.In.eig) (HEq.refl l.rat.In.θ))))))) :))
 
 end GlobalTheory.HeightCounting.Up.LiTw
 

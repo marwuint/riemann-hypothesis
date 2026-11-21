@@ -2,7 +2,9 @@ import Formalism.SharpRestriction.GrowthBounds.StatementOfDegreeAndBound
 import Mathlib
 import Formalism.ThetaLogCoordinates.JacobiPathWeights.PathBasisTheorem
 import Formalism.ThetaLogCoordinates.JacobiPathWeights.JacobiMinorProofs.UnitAndFieldPowerLemmas
-import Formalism.ThetaLogCoordinates.JacobiPathWeights.JacobiMinorProofs.MemSpanImageIff
+import Formalism.ThetaLogCoordinates.JacobiPathWeights.CorA3primeB
+import Formalism.ThetaLogCoordinates.JacobiPathWeights.JacobiMinorProofs.PathBasisOfCount
+import Formalism.ThetaLogCoordinates.JacobiPathWeights.JacobiMinorProofs.LeIffLtColHeight
 
 noncomputable section
 

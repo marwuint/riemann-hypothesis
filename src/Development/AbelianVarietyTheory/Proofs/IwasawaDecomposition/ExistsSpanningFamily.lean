@@ -18,23 +18,11 @@ def ev (τ : F →ₐ[Q] LL) : LL ⊗[Q] F →ₗ[LL] LL :=
 @[simp] theorem ev_tmul (τ : F →ₐ[Q] LL) (a : LL) (c : F) : ev τ (a ⊗ₜ[Q] c) = a * τ c := by
   simp [ev]
 
-def e (τ : F →ₐ[Q] LL) : LL ⊗[Q] F := (exists_idem τ).choose
-
 end Ev
 end GlobalTheory.PhtSpan
 
 namespace GlobalTheory.PhtSpan
-open GlobalTheory.DRFil
-
-section Mod
-variable {Q F LL : Type} [Field Q] [CharZero Q] [Field F] [Algebra Q F] [FiniteDimensional Q F]
-  [Field LL] [Algebra Q LL] {B : Type} [CommRing B] [Algebra Q B] [Algebra F B] [IsScalarTower Q F B]
-  {V : Type} [AddCommGroup V] [Module LL V] [Module Q V] [IsScalarTower Q LL V]
-
-end Mod
 end GlobalTheory.PhtSpan
 
 namespace GlobalTheory.PhtSpan
-open GlobalTheory.DRFil
-
 end GlobalTheory.PhtSpan

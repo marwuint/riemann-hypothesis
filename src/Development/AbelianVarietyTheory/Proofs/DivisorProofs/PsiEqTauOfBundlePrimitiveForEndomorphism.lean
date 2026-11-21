@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRescalePsiW0
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiFunctionEqThetaOfPrimitiveLineBundle
@@ -15,9 +15,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.GenP
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.TWFinal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.RepsXSt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymmetricThetaElementLevelFourSquareStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationBundleSymmetricPullbackOfUniformisatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisationBundleSymmetricPullbackOfUniformisat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetrySignsTwoTorsionRelationOfLbIsoStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiEqTauFromSignRelationFourTorsionStatement
+
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 open scoped CategoryTheory.Obj
@@ -288,7 +289,7 @@ theorem exists_act : AllUF fun {R} _ _ {_} {D} {A} {G} _ _ U F _ _ => ∀ (O : T
   have hT := GlobalTheory.twistBaseChange
   obtain ⟨E, eG, eA, -, -, eact⟩ := GlobalTheory.T.exists_uniformizationEndomorphism_of_linear hL R I hI D A G hG U O o oA oG hlin a
   obtain ⟨E', eG', -, -, eh', -⟩ := GlobalTheory.T.exists_uniformizationEndomorphism_of_linear hL R I hI D A G hG U O o oA oG hlin (star a)
-  obtain ⟨b₁, b₂⟩ := GlobalTheory.T.uniformisation_adjoint_endomorphisms_commute hL (twistBCSpan_of hT) TWM.vRatioGt (TWM.tw_of_laws hL.1 hT) (UUA.uu hL.1 hT) R I hI D A G hG U F E E'
+  obtain ⟨b₁, b₂⟩ := _root_.GlobalTheory.Balanced.main hL (twistBCSpan_of hT) TWM.vRatioGt (TWM.tw_of_laws hL.1 hT) (UUA.uu hL.1 hT) R I hI D A G hG U F E E'
     (by rw [eG, eG']; exact hadj a)
   obtain ⟨ex, add, -⟩ := GlobalTheory.T.uniformizationEndomorphism_calculus hL R I hI D A G hG U F E E E
   choose f hf _ using ex
@@ -307,7 +308,7 @@ theorem psi_eq_tau_of_bundle_primitive_for_endomorphism : ∀ (R : Type) [CommRi
   have := o.onB.hom w
   have := oA.hom w
   let F := AlgebraicClosure (FractionRing R)
-  obtain ⟨u₀, hu₀⟩ := GlobalTheory.T.polarisationBundle_symmetric_pullback_of_uniformisation R _ hR.1 D A G hG U O o oA oG hlin w hprim
+  obtain ⟨u₀, hu₀⟩ := _root_.GlobalTheory.PrimDescent.isPrim_of_unif R _ hR.1 D A G hG U O o oA oG hlin w hprim
   obtain ⟨u, hu, hn⟩ := GlobalTheory.PsiRescale.exists_normalised D.toPre.P.isLB (o.onB.act w) u₀ hu₀
   obtain ⟨σ, hσ, nσ, vσ⟩ := GlobalTheory.T.symmetry_signs_two_torsion_relation_of_lbIso R _ hR.1 D A G hG U O o oA oG hlin w hprim
   obtain ⟨gam, hgam, key⟩ := sign_eq R _ hR.1 D A G hG U F

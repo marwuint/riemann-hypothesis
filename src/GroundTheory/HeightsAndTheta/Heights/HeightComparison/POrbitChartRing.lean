@@ -51,10 +51,6 @@ theorem OrbitChartRing.proof : OrbitChartRing.Statement := by
       rw [← hab, div_mul_cancel₀ _ hb0]
   · rw [Subtype.val_injective h]
 
-example : Algebra.FiniteType ℤ (chartRing samplePoint (fun _ ↦ 0)) ∧
-    IsFractionRing (chartRing samplePoint (fun _ ↦ 0)) (ratioField samplePoint) :=
-  OrbitChartRing.proof Unit _ samplePoint _ fun _ ↦ by simp [samplePoint]
-
 end
 
 end GroundTheory.Heights₂.Heights

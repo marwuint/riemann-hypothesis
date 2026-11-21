@@ -15,7 +15,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.HostEx
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.LogarithmicNormBounds.HostUnl
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.WeightInfinitesimalCharacters.FreeCU
-import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.GaloisRepresentationTypes.IsIrrOfMatIrr
 
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing UpperTheory.V.Pr.IsCD.complete
   UpperTheory.V.Pr.IsCD.fin UpperTheory.V.Pr.IsCD.isLocalHom
@@ -442,54 +441,3 @@ end Glob
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.HV GlobalTheory.GalOfCusp UpperTheory.V.Th UpperTheory.V.Z.J
 open Matrix UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 
-theorem UpperTheory.V.Z.J.hostRigidUE :
-    Af.HypothesesH → Th.AdL → UnlEndLogNorm → UnitaryThreeInertia.HostRigid := by
-  intro hH hL hU K _ _ _ hK Ω _ _ _ l _ c N _ e ψ o₁ hD S A F hF ι g₁ hg r hr hB y r' hyc hy hd hN ⟨h, hh⟩ hSb
-  have hN' := hH.litN
-  have hP : Loc.LocalPublishedTheorems :=
-    ⟨hN'.coh.lfK, hN'.coh.ltK, hN'.coh.leK, hN'.coh.lf, hN'.coh.lt, hN'.coh.le, hN'.coh.bk⟩
-  have ok := hostFrame_ok Ω c e ψ o₁ hD S A F hF
-  haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω
-  haveI hcl := isClosed_NS Ω (S : Set Pl)
-  haveI : TotallyDisconnectedSpace (Gam Ω S) := totDisc_quot _ hcl
-  obtain ⟨hm, -, hc, -⟩ := isCharZeroPt_basic F ok g₁ hg r hr
-  have hz := selmer_h1_vanishes_at_rigid_point hH hL hU K hK Ω l c N e ψ o₁ hD S A F hF ι g₁ hg r hr hm hc hB
-  have hZ : (fun s => y (F.π s)) ∈ Z1 (adRep (r.comp F.π)) := ⟨hyc.comp ok.π_cont, fun g k => by
-    simp only [map_mul]
-    exact hy _ _⟩
-  have hsurj : Function.Surjective F.π := by
-    rw [hF.π]
-    exact QuotientGroup.mk_surjective
-  have hb := hz _ hZ ⟨fun w hw => ?_, fun τ => ?_⟩
-  · obtain ⟨m, hm⟩ := (mem_coboundaries1 _ _).1 hb
-    refine ⟨-m, fun g => ?_⟩
-    obtain ⟨s, rfl⟩ := hsurj g
-    rw [hm s, cob, map_neg, neg_sub_neg]
-    rfl
-  · by_cases hS : w ∈ S
-    · refine ⟨A ⟨w, hS⟩, hF.isOver _, ?_⟩
-      rw [← hF.I]
-      exact rig_away F ok r hm y r' hy hd hN hSb ⟨w, hS⟩ fun h => hw (by
-        have := hF.vl
-        rwa [← h] at this)
-    · obtain ⟨B, hB⟩ := exists_isPlaceOver Ω w
-      refine ⟨B, hB, 0, fun s hs => ?_⟩
-      have h1 : F.π s = 1 := by
-        rw [hF.π]
-        refine (QuotientGroup.eq_one_iff s).2 ?_
-        refine Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)
-        simp only [Set.mem_iUnion]
-        exact ⟨w, hS, B, hB, hs⟩
-      have h2 := hy 1 1
-      rw [mul_one, map_one, Module.End.one_apply, left_eq_add] at h2
-      simp only [h1, h2, map_zero, sub_zero]
-  · obtain ⟨j, hj⟩ := (Loc.decEmb (F := ℚ) (Ω := Ω) (v := l)).1 _ _ (hF.isOver F.vl) hF.vl
-    refine ⟨j, Subsingleton.elim _ _, ?_⟩
-    obtain ⟨φ, h1, h2, h3, h4⟩ : ∃ φ : F.D F.vl →* Formalism.BasicNotions.Loc.GQ l, Topology.IsOpenEmbedding φ ∧
-        (∀ g x, φ g (j x) = j ((g : G ℚ Ω) x)) ∧ (∀ g, φ g ∈ Loc.Iq l → (g : G ℚ Ω) ∈ F.I F.vl) ∧
-        ∀ g, Loc.cyc l l (φ g) = cycZ ℚ Ω l (g : G ℚ Ω) := by
-      rw [hF.D, hF.I, ← hj]
-      obtain ⟨-, φ, a1, a2, -, a3, a4, -⟩ := (Loc.decEmb (F := ℚ) (Ω := Ω) (v := l)).2 j
-      exact ⟨φ, a1, a2, fun g => (a3 g).1, a4 l⟩
-    exact (Loc.bkAbove j φ (F.D F.vl).subtype h1 h2 _ _ hZ).1
-      (rig_above hP Ω c e ψ o₁ hD S A F hF g₁ r hr hm hc y r' hyc hy hd h hh φ h1 h3 h4)

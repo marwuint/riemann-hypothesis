@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsStrictlySemistable
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsIntegrallyClosedOfReducedQuotientLocalizationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableModelRingIsDomainStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableSpecialFibrePropertyStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableGenericFibreLocalizationStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsIntegrallyClosedOfReducedQuotientLocalization
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableModelRingIsDomain
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableSpecialFibreProperty
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemistableGenericFibreLocalization
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.BocksteinBaseChange.SmoothGaloisGeometry.NormLtOneOfIrreducible
 
 noncomputable section
@@ -19,7 +19,7 @@ variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : 
   (m r : ℕ) (h1 : 1 ≤ r) (h2 : r ≤ m)
 
 include hϖ h1 h2 in
-theorem ssModel_isDomain : IsDomain (GlobalTheory.Et.ssModel O ϖ m r) := GlobalTheory.T.semistable_model_ring_isDomain O ϖ hϖ m r h1 h2
+theorem ssModel_isDomain : IsDomain (GlobalTheory.Et.ssModel O ϖ m r) := _root_.GlobalTheory.CompanionTheory.SemistableLocal.isDomain_quotient_prod_X_sub_C O ϖ hϖ m r h1 h2
 
 include hϖ h1 h2 in
 theorem ssModel_algebraMap_ne_zero : algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ ≠ 0 := by
@@ -47,8 +47,8 @@ theorem ssModel_normal (F : Type) [Field F] [Algebra O F] [IsLocalization.Away �
   have hd := ssModel_isDomain O ϖ hϖ m r h1 h2
   refine ⟨hd, ?_⟩
   have ht := ssModel_algebraMap_ne_zero O ϖ hϖ m r h1 h2
-  have hred := GlobalTheory.T.semistable_special_fibre_property O ϖ hϖ m r h1 h2
-  have hs := GlobalTheory.T.semistable_generic_fibre_localization O ϖ hϖ m r h1 h2 F
+  have hred := _root_.GlobalTheory.CompanionTheory.SemistableSpecial.special_fibre_isReduced O ϖ hϖ m r h1 h2
+  have hs := _root_.GlobalTheory.CompanionTheory.Semistable.smooth_generic_fibre O ϖ hϖ m r h1 h2 F
   haveI : Smooth (Spec.map (CommRingCat.ofHom (IsLocalization.Away.map F
       (Localization.Away (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ)) (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r)) ϖ))) :=
     HasRingHomProperty.Spec_iff.mpr hs
@@ -58,7 +58,7 @@ theorem ssModel_normal (F : Type) [Field F] [Algebra O F] [IsLocalization.Away �
     IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors ht)
   have hic := (GlobalTheory.IsNormalScheme.spec_iff_of_isDomain
     (CommRingCat.of (Localization.Away (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ)))).mp hn
-  exact GlobalTheory.T.isIntegrallyClosed_of_reduced_quotient_localization _ _ ht hred hic
+  exact _root_.GlobalTheory.CompanionTheory.IntClosedAway.isIntegrallyClosed_of_away _ _ ht hred hic
 
 include hϖ h1 h2 in
 theorem ssModel_flat : Module.Flat O (GlobalTheory.Et.ssModel O ϖ m r) := by

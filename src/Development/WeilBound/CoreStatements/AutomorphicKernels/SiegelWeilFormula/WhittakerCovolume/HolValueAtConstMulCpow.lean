@@ -20,17 +20,6 @@ theorem holValueAt_const_mul_cpow (c : ℂ) {C : ℝ} (hC : 0 < C) (s₀ : ℂ) 
   convert h using 1
   simp
 
-theorem coreStep : CoreStep := by
-  intro hT hA hS hU hW hD F E _ _ _ _ _ σ d R hnm hE Φ hΦ hP x hx nb lam 𝓖 hcd ε w hw T hTnd
-  obtain ⟨dd, J, T', bs, ψ, θ, l, εs, fr, g, P, lv, L₁, L₂, Φg, Φf, Φv, μ, ν, c, C, hDat, hC, ⟨t, ht⟩, μH, 𝓕, hH, hF,
-    horb⟩ := hD hT hA F E σ d R hnm Φ hΦ hP x hx nb lam 𝓖 hcd ε w hw T hTnd
-  obtain ⟨t', ht'⟩ := hU F E σ d (s0 d.m d.n) (d.sec0 Φ) (hS F E σ d Φ hΦ) (hE Φ hΦ)
-  have hG := hW F E σ d.m d.n dd J T' bs ψ (InfinitePlace F) θ l εs fr g P lv L₁ L₂ Φg Φf Φv μ ν hDat
-    ⟨max t t', fun z hz => (ht z (lt_of_le_of_lt (le_max_left _ _) hz)).1
-      ((ht' z (lt_of_le_of_lt (le_max_right _ _) hz) nb lam 𝓖 hcd ε w hw x).1)⟩ μH 𝓕 hH hF
-  rw [horb]
-  exact ((holValueAt_const_mul_cpow c hC (s0 d.m d.n)).mul hG).congr ⟨t, fun z hz => ((ht z hz).2).symm⟩
-
 end PositivityTheory.SiegelWeilFormula.KWhit
 
 end

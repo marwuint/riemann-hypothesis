@@ -15,9 +15,6 @@ variable {R M V : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGrou
 def IsLagSection (ω : LinearMap.BilinForm R M) (π : M →ₗ[R] V) (σ : V →ₗ[R] M) : Prop :=
   (∀ z, π (σ z) = z) ∧ ∀ z w, ω (σ z) (σ w) = 0
 
-def KerIsotropic (ω : LinearMap.BilinForm R M) (π : M →ₗ[R] V) : Prop :=
-  ∀ m m', π m = 0 → π m' = 0 → ω m m' = 0
-
 def beta (ω : LinearMap.BilinForm R M) (σ σ' : V →ₗ[R] M) : LinearMap.BilinForm R V :=
   LinearMap.compl₁₂ ω σ σ'
 
@@ -204,14 +201,5 @@ theorem beta_secH_secL {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
   rw [beta_secH_secL' hτ hY, imC_inv hY]
 
 end Concrete
-
-section General
-
-variable {R M V : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup V] [Module R V]
-  {ω : LinearMap.BilinForm R M} {π : M →ₗ[R] V} {σ σ' σ'' : V →ₗ[R] M}
-
-variable {O : Type*} [CommRing O] [StarRing O] [Module O M] [Module O V]
-
-end General
 
 end GlobalTheory.LagSplit

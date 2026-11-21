@@ -53,9 +53,6 @@ theorem toTerm_act (q : {Λ // Λ ∈ Y.what₂ u'}) (γ : Formalism.L2.SG.Pf.Ac
     (act Y q γ t).toTerm = t.toTerm :=
   Formalism.L2.SG.Pf.SatGramActR.toTerm_tmap _ _ _ _ t
 
-theorem lam_act (q : {Λ // Λ ∈ Y.what₂ u'}) (γ : Formalism.L2.SG.Pf.Act.GamL (Y.cs u') q) (t : TT Y u u') :
-    (act Y q γ t).lam = t.lam ∧ (act Y q γ t).lam' = t.lam' := ⟨rfl, rfl⟩
-
 theorem iota_act (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC) (q : {Λ // Λ ∈ Y.what₂ u'})
     (γ : Formalism.L2.SG.Pf.Act.GamL (Y.cs u') q) (t : TT Y u u') (ht : t.lam' = q.1) :
     iotaOf Y.TR (Y.cs u) (Y.cs u') (act Y q γ t) =

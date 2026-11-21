@@ -195,7 +195,7 @@ theorem sgnW_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {r
       (1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * hRat S T γ (w • γ)))) := by
     rw [symplOH, symplO_finTens, one_mul, one_mul, RingHom.map_mul]
     exact Prod.ext (mul_zero _) rfl
-  rw [h2, h1, sgnW, incA_smul_finTens, h3, GlobalTheory.T.stdChar_finitePart_rational_eq_exp_trace D ψ hψ, ← Complex.exp_add,
+  rw [h2, h1, sgnW, incA_smul_finTens, h3, _root_.GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ, ← Complex.exp_add,
     show (1 / 2 : D.host.F) = algebraMap ℚ D.host.F (1 / 2) by simp, ← Algebra.smul_def, map_smul,
     Algebra.trace_trace, smul_eq_mul]
   refine Eq.trans (congrArg cexp ?_) Complex.exp_zero

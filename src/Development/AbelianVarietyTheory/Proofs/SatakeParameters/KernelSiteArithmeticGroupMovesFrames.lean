@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingY
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteArithmeticGroupMoveStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteLatticeTuplePairsAdmissibleStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteArithmeticGroupMove
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelSiteLatticeTuplePairsAdmissible
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SitePlaceInducesPositionEmbeddings
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ModelsOK
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConstructedPointClassesEventuallyWorking
@@ -12,7 +13,7 @@ namespace GlobalTheory.TwV
 
 theorem move_at_site : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → S.Move) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD
-  exact GlobalTheory.T.kernelSite_arithmeticGroup_move S hD ⟨J.alg0, J.alg⟩ (pos_at_site S) (GlobalTheory.T.kernelSite_latticeTuplePairs_admissible S hD)
+  exact _root_.GlobalTheory.TwV.Xc.site_move S hD ⟨J.alg0, J.alg⟩ (pos_at_site S) (_root_.GlobalTheory.pairOK_allSites S hD)
 
 end GlobalTheory.TwV
 

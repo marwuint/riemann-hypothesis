@@ -10,20 +10,12 @@ universe u
 namespace ProjectiveLinePlaces
 variable {R : Type u} [CommRing R] {A B : Cx R}
 
-theorem cls_eq_zero (A : Cx R) (n : ℕ) (x : A.X n) (hx) : A.cls n x hx = 0 ↔ x ∈ A.B n := by
-  unfold Cx.cls; rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]; rfl
-
 theorem mem_B_zero (A : Cx R) (x : A.X 0) : x ∈ A.B 0 ↔ x = 0 := Submodule.mem_bot R
 theorem mem_B_succ (A : Cx R) (n : ℕ) (x : A.X (n+1)) : x ∈ A.B (n+1) ↔ ∃ y, A.d n y = x :=
   LinearMap.mem_range
 
 theorem H_cls (φ : Hom A B) (n : ℕ) (x : A.X n) (hx) :
     φ.H n (A.cls n x hx) = B.cls n (φ.f n x) (by rw [← φ.comm, hx, map_zero]) := rfl
-
-theorem fib_d_snd_zero (φ : Hom A B) (x : (fib φ).X 0) : (((fib φ).d 0 x).2 : B.X 0) = φ.f 0 x.1 := by
-  have h : (show B.X 0 from B.up.d 0 x.2) = 0 := rfl
-  show φ.f 0 x.1 + (show B.X 0 from B.up.d 0 x.2) = _
-  rw [h, add_zero]
 
 theorem fib_d_snd_succ (φ : Hom A B) (n : ℕ) (x : (fib φ).X (n+1)) :
     (((fib φ).d (n+1) x).2 : B.X (n+1)) = φ.f (n+1) x.1 - B.d n x.2 := by
@@ -35,9 +27,6 @@ theorem fib_d_succ_iff (φ : Hom A B) (n : ℕ) (x : (fib φ).X (n+1)) :
   constructor
   · intro h; exact ⟨congrArg Prod.fst h, sub_eq_zero.mp ((fib_d_snd_succ φ n x).symm.trans (congrArg Prod.snd h))⟩
   · rintro ⟨h1, h2⟩; exact Prod.ext h1 ((fib_d_snd_succ φ n x).trans (sub_eq_zero.mpr h2))
-
-theorem cls_congr (A : Cx R) (n : ℕ) {x y : A.X n} (hx hy) (e : x = y) : A.cls n x hx = A.cls n y hy := by
-  subst e; rfl
 
 def fibIncl (φ : Hom A B) (n : ℕ) : B.Z n →ₗ[R] (fib φ).Z (n+1) where
   toFun b := ⟨(0, b.1), (fib_d_succ_iff φ n _).mpr ⟨map_zero _, by
@@ -64,36 +53,6 @@ def fibδ (φ : Hom A B) (n : ℕ) : B.H n →ₗ[R] (fib φ).H (n + 1) :=
 
 theorem fibδ_cls (φ : Hom A B) (n : ℕ) (b : B.X n) (hb) (h) :
     fibδ φ n (B.cls n b hb) = (fib φ).cls (n + 1) (0, b) h := rfl
-
-def upMap {B B' : Cx R} (β : Hom B B') : ∀ n, B.up.X n →ₗ[R] B'.up.X n
-  | 0 => 0
-  | m + 1 => β.f m
-
-def fibMap {A B A' B' : Cx R} (φ : Hom A B) (φ' : Hom A' B') (α : Hom A A') (β : Hom B B')
-    (hsq : ∀ n x, β.f n (φ.f n x) = φ'.f n (α.f n x)) : Hom (fib φ) (fib φ') where
-  f n := (α.f n).prodMap (upMap β n)
-  comm n x := by
-    refine Prod.ext (α.comm n x.1) ?_
-    cases n with
-    | zero =>
-      exact (congrArg (β.f 0) (fib_d_snd_zero φ x)).trans ((hsq 0 x.1).trans (fib_d_snd_zero φ' ((α.f 0).prodMap (upMap β 0) x)).symm)
-    | succ m =>
-      refine (congrArg (β.f (m+1)) (fib_d_snd_succ φ m x)).trans ?_
-      refine Eq.trans ?_ (fib_d_snd_succ φ' m _).symm
-      show β.f (m+1) (φ.f (m+1) x.1 - B.d m x.2) = φ'.f (m+1) (α.f (m+1) x.1) - B'.d m (β.f m x.2)
-      rw [map_sub, hsq]
-      exact congrArg (fun t => φ'.f (m+1) (α.f (m+1) x.1) - t) (β.comm m x.2)
-
-def kerMap {A B C : Cx R} (i : Hom A B) (p : Hom B C) (hs : SES i p) : Hom A (fib p) where
-  f n := (i.f n).prod 0
-  comm n x := by
-    refine Prod.ext (i.comm n x) ?_
-    cases n with
-    | zero => exact ((fib_d_snd_zero p _).trans ((hs.exact 0).apply_apply_eq_zero x)).symm
-    | succ m =>
-      refine ((fib_d_snd_succ p m _).trans ?_).symm
-      show p.f (m+1) (i.f (m+1) x) - C.d m 0 = 0
-      rw [map_zero, sub_zero]; exact (hs.exact _).apply_apply_eq_zero x
 
 end ProjectiveLinePlaces
 

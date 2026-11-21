@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LinearUniformisationTorsionIsomorphism
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompatibleIsometriesCoisotropicKernelsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateIsoLatticePartSurjectiveCoisotropicKernelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivLatticePartZeroIffMemNsmulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankLeMinStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivLatticePartZeroIffMemNsmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankLeMin
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelIsometryGenericFibreBoundaryChartStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelIsometryExtensionAlgClosedStatement
 
@@ -83,7 +83,7 @@ theorem GlobalTheory.LowFilt.exists_filt : ∀ {E : Type} [Field E] [NumberField
     simp only [smul_sub, smul_smul]
     abel
   have hM : 0 < l.M' := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
-  obtain ⟨Z, hZ, hZr, g, hgi, hgt, hgN, hker⟩ := GlobalTheory.T.exists_compatible_isometries_coisotropic_kernels Dw y hcois htow (GlobalTheory.T.finrank_uChart_le_min_signature Xo c R hR C) l.M' hM
+  obtain ⟨Z, hZ, hZr, g, hgi, hgt, hgN, hker⟩ := GlobalTheory.T.exists_compatible_isometries_coisotropic_kernels Dw y hcois htow (_root_.GlobalTheory.UChart.Fam.finrank_le_min Xo c R hR C) l.M' hM
   refine ⟨Z, hZ, hZr, tK, m1, m2, fun F _ _ _ => ?_⟩
   let I₁ := twistI hB I₀ g hgi hgt
   have hI₁ : XFLevel C tK m1 m2 F₀ I₁ := by
@@ -101,7 +101,7 @@ theorem GlobalTheory.LowFilt.exists_filt : ∀ {E : Type} [Field E] [NumberField
     exact ⟨j • e, by rw [smul_smul, ← hj]; exact he⟩
   obtain ⟨I, hIl, hIy⟩ := GlobalTheory.T.exists_levelIsometry_extension_algClosed Xo c R hR C tK m1 m2 I₁ hI₁ F
   refine ⟨I, hIl, fun n hn a => ?_⟩
-  rw [GlobalTheory.T.exists_equiv_latticePart_zero_iff_mem_nsmul R _ hB F n hn, hIy, ← hker n hn a]
+  rw [_root_.GlobalTheory.LowFilt.exists_equiv_y_eq_zero_iff R _ hB F n hn, hIy, ← hker n hn a]
   obtain ⟨e, he⟩ := hy n hn (g n a)
   change (∃ e, (I₀.ev n (g n a)).y = n • e) ↔ _
   constructor

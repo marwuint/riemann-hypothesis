@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Glues
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Matched
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleGeneratorOffClosedSubschemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatchingLineBundleGeneratorsNearPinchingPoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchingSquareGlueLineBundleOfLocalGeneratorsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleGeneratorOffClosedSubscheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMatchingLineBundleGeneratorsNearPinchingPo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchingSquareGlueLineBundleOfLocalGenerators
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.DualCon
 open scoped CategoryTheory.Obj
@@ -16,9 +16,9 @@ set_option autoImplicit false
 namespace GlobalTheory.PinchLift
 
 theorem exists_pic_patch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), IsPullback i' p' p i → IsAffineHom p → IsClosedImmersion i → GlobalTheory.PinchLift.Glues p i i' p' → ∀ (a : Pic X') (b : Pic Z), GlobalTheory.CechPic.pull i' a = GlobalTheory.CechPic.pull p' b → ∃ e : Pic X, GlobalTheory.CechPic.pull p e = a ∧ GlobalTheory.CechPic.pull i e = b := by
-  have hA1 := GlobalTheory.T.exists_lineBundle_generator_off_closed_subscheme
-  have hA2 := GlobalTheory.T.exists_matching_lineBundle_generators_near_pinching_point
-  have hB := GlobalTheory.T.pinchingSquare_glue_lineBundle_of_local_generators
+  have hA1 := _root_.GlobalTheory.PinchLift.exists_gen_away_of_closed
+  have hA2 := _root_.GlobalTheory.PinchLift.near_matched
+  have hB := _root_.GlobalTheory.PinchLift.assemble
   intro X X' Z Z' p i i' p' hsq hp hi hgl a b hab
   obtain ⟨L', hL', rfl⟩ := cls_surj a
   obtain ⟨LZ, hLZ, rfl⟩ := cls_surj b

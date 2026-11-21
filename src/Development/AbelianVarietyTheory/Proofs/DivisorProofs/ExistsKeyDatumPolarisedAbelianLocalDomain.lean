@@ -22,9 +22,9 @@ theorem exists_keyIn_local : ∀ (W : Type) [CommRing W] [IsDomain W] [IsNoether
   intro W _ _ _ _ P hg
   have hL := GlobalTheory.abelianSchemeLaws_all
   let m : PrimeSpectrum W := IsLocalRing.closedPoint W
-  obtain ⟨th, a, ha, -, hth⟩ := GlobalTheory.T.exists_principalPolarization_section_nonzero_near_two_primes hL.1 hL.2 W P m m
+  obtain ⟨th, a, ha, -, hth⟩ := _root_.GlobalTheory.TwoPrimeSection.main hL.1 hL.2 W P m m
   have c : IsCommMonObj P.A := P.isAb.comm
-  obtain ⟨b, hb, -, v, hv⟩ := GlobalTheory.T.exists_lieBasis_away_avoiding_two_primes W P.A P.g P.smoothDim m m
+  obtain ⟨b, hb, -, v, hv⟩ := _root_.GlobalTheory.LieTwo.lie_free_near_two_primes W P.A P.g P.smoothDim m m
   have hbu : IsUnit b := (IsLocalRing.mem_maximalIdeal b).not.mp hb |> not_not.mp
   let g : Localization.Away b →+* W := IsLocalization.Away.lift (g := RingHom.id W) b hbu
   have hgf : g.comp (algebraMap W (Localization.Away b)) = RingHom.id W := by

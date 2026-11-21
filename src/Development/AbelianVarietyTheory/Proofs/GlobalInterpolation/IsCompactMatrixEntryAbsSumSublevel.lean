@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqEqOfOmegaDens
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqIsMulRightInvariant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpqLocallyCompactGroup
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryExpLieBallComparableEntryGaugeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TendstoSublevelDensityProdMeasureStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TendstoSublevelDensityProdMeasure
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianNormFibreMeasureEqPolarCoordinatesStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadricPointGaugePolarCoordinatesCompareTangentGStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryLieVolumeBallSplitBasisVectorStatement
@@ -17,10 +17,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsTangent
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadricPointGaugeSectionMulBlockCompareStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUnitaryBlockEmbeddingOntoStabiliserStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianNormFibreMeasureFiniteInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvariantMeasureQuadricMulHaarStabilizerStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvariantMeasureQuadricMulHaarStabilizer
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIsOrthogonalComplementIsometryEmbeddingTraStatement
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrthogonalComplementUnitaryEmbeddingConjBlockStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PositiveDefiniteUnitSphereMassProofStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PositiveDefiniteUnitSphereMassProof
 
 noncomputable section
 
@@ -186,7 +186,7 @@ theorem const_mul_density (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   set ν := fib (sg (e none)) with hν
   haveI : IsFiniteMeasureOnCompacts ν := (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1
   haveI : IsLocallyFiniteMeasure ν := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts
-  have h1 := GlobalTheory.T.tendsto_sublevel_density_prod_measure _ _ _ _ ν volume μ' lam' (ptGauge e) tanGauge gauge
+  have h1 := _root_.GlobalTheory.SublevelDensity.tendsto_prod_density _ _ _ _ ν volume μ' lam' (ptGauge e) tanGauge gauge
     (fun X => l1 (X : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ)) _ a'
     (continuous_ptGauge e).measurable continuous_tanGauge.measurable continuous_gauge.measurable
     (continuous_matrixEntryAbsSum.comp continuous_subtype_val).measurable (ptGauge_nonneg e) tanGauge_nonneg
@@ -263,7 +263,7 @@ theorem formula_base (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕
   haveI := c.haar (P' + Q') 0
   haveI := c.prob (P' + Q')
   haveI := c.prob (P + Q)
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.invariant_measure_quadric_mul_haar_stabilizer P Q P' Q' _ _ j _ _ _ hjc hjr (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.QuadricHaar.quadric_haar P Q P' Q' _ _ j _ _ _ hjc hjr (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1
     (GlobalTheory.RealPlaceCompare.ae_qf hf _) (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero (e none))).2
     (c.haar P Q) (c.haar P' Q')
   have k1 := const_mul_density e he hf j hj hjc.continuous
@@ -278,8 +278,8 @@ theorem formula_base (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕
     · exact i.elim0
   have he₀ : SignCompat e₀ := fun i => by rw [sg0, sg0]
   obtain ⟨j₀, hj₀, hjc₀, hjr₀⟩ := GlobalTheory.T.exists_unitaryBlockEmbedding_onto_stabiliser _ _ _ _ e₀ he₀
-  obtain ⟨⟨fib₀, hf₀⟩, hmass⟩ := GlobalTheory.T.positiveDefiniteUnitSphereMass_proof (P + Q) (by omega)
-  obtain ⟨κ₀, hκ₀⟩ := GlobalTheory.T.invariant_measure_quadric_mul_haar_stabilizer _ _ _ _ _ _ j₀ _ _ _ hjc₀ hjr₀
+  obtain ⟨⟨fib₀, hf₀⟩, hmass⟩ := _root_.GlobalTheory.SphereMassProof.sphereMass (P + Q) (by omega)
+  obtain ⟨κ₀, hκ₀⟩ := _root_.GlobalTheory.QuadricHaar.quadric_haar _ _ _ _ _ _ j₀ _ _ _ hjc₀ hjr₀
     (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant _ _ fib₀ _ hf₀ (sg_ne_zero _)).1
     (GlobalTheory.RealPlaceCompare.ae_qf hf₀ _) (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant _ _ fib₀ _ hf₀ (sg_ne_zero (e₀ none))).2
     (c.haar (P + Q) 0) (c.haar (P' + Q') 0)

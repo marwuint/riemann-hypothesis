@@ -64,11 +64,6 @@ end GlobalTheory.GalLift.Transl
 
 namespace GlobalTheory.GalLift
 
-theorem act_eq_translation : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), (∀ g, ∃ k, IsLiftW R i g k) ∧ ∀ (σ : D.what₂.LL →+* ℂ), (∀ g k, IsLiftW R i g k → ∀ y v h, (R.HW i σ).e (R.gW i σ g y) v h = (R.HW i σ).e y v (h * k)) ∧ ∀ y v, R.eWf i σ ((R.HW i σ).e y v) = (R.HW i σ).e (∑ g, RealDat.eC (A := A) σ g • R.gW i σ g y) v := by
-  intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i
-  exact ⟨fun g => Transl.lifts R i hC.lev (R.eG g), fun σ =>
-    ⟨Transl.transl R i hC.models.HW hC.models.gW σ, Transl.proj R i hC.models.gW σ⟩⟩
-
 end GlobalTheory.GalLift
 
 end

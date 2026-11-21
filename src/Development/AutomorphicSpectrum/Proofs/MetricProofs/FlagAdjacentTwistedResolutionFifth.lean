@@ -7,7 +7,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticProjectio
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFunctorialHolomorphic
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentPluckerOrbit
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagPointInMultiprojectivePoints
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionThirdStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionThird
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseChartHolomorphicCompositionStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentArithVarietyFirstStatement
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
@@ -267,7 +267,7 @@ theorem charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (�
   haveI : Nonempty FA.Re.R.X := by
     obtain ⟨x⟩ := ‹Nonempty FA.S.X›
     exact (hbi.2 x).elim fun r _ => ⟨r⟩
-  haveI : Nonempty RW.X := GlobalTheory.T.flag_adjacent_twisted_resolution_third K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hba hab hk₀ hca hcb RW
+  haveI : Nonempty RW.X := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.anLogRes_W_nonempty K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hba hab hk₀ hca hcb RW
   have hO : ∀ w ∈ Un, bp w ∈ BM.O l := fun w hw => (hOk w hw).1.1
   have hfl : ∀ w ∈ Un, ∀ t τ', IsBlockDiag j (hfam H τ ca cb w t τ') ∧ (hfam H τ ca cb w t τ').det ≠ 0 :=
     fun w hw t => flags_ok (hOk w hw).2 τ hsb hne t

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvaturePowerPullbackHolomorphicStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvaturePowerPullbackHolomorphic
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.L2DbarEstimates (V)
@@ -31,7 +31,7 @@ def connectionMatrixDifferenceLinearMap {n : ℕ} {r : Type} [Fintype r] [Decida
 
 theorem transAt_comp_holo : ∀ (n n' : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (φ : V n' → V n) (w : V n'), ContDiffAt ℂ 2 φ w → MContDiffAt ∞ G (φ w) → IsUnit (G (φ w)).det → MContDiffAt ∞ G' (φ w) → IsUnit (G' (φ w)).det → ∀ k, transAt (fun x => G (φ x)) (fun x => G' (φ x)) w k = pull (fderiv ℂ φ w) (transAt G G' (φ w) k) := by
   intro n n' r _ _ G G' φ w hφ hG hGu hG' hG'u k
-  have hI := (GlobalTheory.T.curvature_power_pullback_holomorphic n n' r G' φ w hφ hG' hG'u).1
+  have hI := (_root_.GlobalTheory.ChernCalc.curv_pow_chern_comp_holo n n' r G' φ w hφ hG' hG'u).1
   have hφ1 : DifferentiableAt ℂ φ w := hφ.differentiableAt two_ne_zero
   have h1 : MContDiffAt 1 G (φ w) := hG.of_le (by exact_mod_cast le_top)
   have h1' : MContDiffAt 1 G' (φ w) := hG'.of_le (by exact_mod_cast le_top)

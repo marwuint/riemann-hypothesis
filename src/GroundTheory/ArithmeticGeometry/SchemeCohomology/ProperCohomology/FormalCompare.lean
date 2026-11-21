@@ -42,11 +42,6 @@ lemma formalπ_comm (n : ℕ) :
   refine LinearMap.ext fun x => Subtype.ext ?_
   exact (formalδ_naturality I F q n x).symm
 
-lemma surjective_formalτP (n : ℕ) : Function.Surjective (formalτP I F q n) := by
-  intro x
-  obtain ⟨h, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-  exact ⟨Submodule.Quotient.mk h, rfl⟩
-
 variable {I F q}
 
 theorem mem_range_formalβ_of_mem_towerLimit {c : ℕ}
@@ -64,13 +59,6 @@ theorem mem_range_formalβ_of_mem_towerLimit {c : ℕ}
   change formalβ I F q n h = formalι I F q n (p.1 n)
   rw [← hh]
   rfl
-
-theorem range_towerComp_formalτE_eq {c : ℕ} (hQ : ∀ n, towerComp (E := fun m => formalQ I F q m) (formalτQ I F q) n c = 0)
-    (n k : ℕ) (hk : c ≤ k) :
-    LinearMap.range (towerComp (E := fun m => Sheaf.H.{u} (modulesAb (quotPow I F m)) q) (formalτE I F q) n k) = LinearMap.range (formalβ I F q n) := by
-  rw [range_towerComp_eq_of_exact (formalτP I F q) (formalτE I F q) (formalτQ I F q)
-    (formalι I F q) (formalπ I F q) (formalι_comm I F q) (formalπ_comm I F q)
-    (range_formalι I F q) (surjective_formalτP I F q) hQ n k hk, formalι, Submodule.range_liftQ]
 
 end
 

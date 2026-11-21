@@ -2,12 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FilProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothSectionsMonoReductionAffineInf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCohomologyComputedOnAffinePairsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineFormsRestrictionAffineLiftBijectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCohomologyComputedOnAffinePairs
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishingH1InvertingMorphisms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineFormsRestrictionAffineLiftBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomSpecPointsLevelsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineForgetFormsBijectiveSiteAndPairsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H1BijectiveOfExhaustingFiltrationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveRestrictionFourTermComplexOfExhaustionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.H1BijectiveOfExhaustingFiltration
+import Development.AbelianVarietyTheory.Definitions.Divisors.PullbackBijectiveDegreesOneTwo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveRestrictionFourTermComplexOfExhaustion
 
 set_option autoImplicit false
 
@@ -58,13 +60,13 @@ theorem Lift.resMap_toE_pullbackBijectiveDegreesOneTwo (D : Data) (Λ : Lift D) 
         ((LevE D.κ D.t D.i N).lift Λ.toE h)).Bij := by
     intro N hN
     obtain ⟨n, rfl⟩ : ∃ n, N = n + 1 := ⟨N - 1, by omega⟩
-    exact ⟨fun U ↦ hN₀ _ (by omega) U, GlobalTheory.T.crystallineForms_restriction_affineLift_bijective D Λ n _⟩
-  exact ⟨GlobalTheory.T.h1_resMap_bijective_of_exhausting_properties _ _ _ _ Λ.toE (N₀ + 1) mono exh lev, GlobalTheory.T.bijective_restriction_fourTermComplex_of_exhaustion _ _ _ _ Λ.toE (N₀ + 1) mono exh lev⟩
+    exact ⟨fun U ↦ hN₀ _ (by omega) U, _root_.GlobalTheory.PDForm.levLift_resMap_bij D Λ n _⟩
+  exact ⟨_root_.GlobalTheory.CxCoh.restriction_h1_bijective_of_exhaustion _ _ _ _ Λ.toE (N₀ + 1) mono exh lev, _root_.GlobalTheory.CxTowerTwo.tower_two _ _ _ _ Λ.toE (N₀ + 1) mono exh lev⟩
 
 theorem Lift.resMap_lift_pullbackBijectiveDegreesOneTwo : ∀ (D : Data) (Λ : Lift D), ((KK D.κ D.t).resMap Λ.L).PullbackBijectiveDegreesOneTwo := by
   intro D Λ
   have hp := GlobalTheory.T.fnMap_pullbackBijective12_kk_and_res D.R D.I D.κ _ D.t _ D.i
-  have hg := GlobalTheory.T.pullbackBijective12_resMap_of_affine_inter D.R D.I D.κ _ D.t _ D.i D.smooth_mono_inf.2.2
+  have hg := _root_.GlobalTheory.PDForm.crystallineCohomology_computed_on_affinePairs D.R D.I D.κ _ D.t _ D.i D.smooth_mono_inf.2.2
   exact resMap_comp_bij12 (KK D.κ D.t) (pE D.κ D.t D.i) Λ.toE
     (resMap_bij12_of_fnMap _ _ hp.1 hp.2 hg) (Lift.resMap_toE_pullbackBijectiveDegreesOneTwo D Λ)
 

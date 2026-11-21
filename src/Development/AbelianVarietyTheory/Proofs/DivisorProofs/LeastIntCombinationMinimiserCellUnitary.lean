@@ -3,11 +3,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericI
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontrivial
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinitelyManyIsoClassesProjectiveNumberField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingOfIntegersProjectiveModuleIntFinrank
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinFormSymmBilinEqSumLiftsOddStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteConesPolarizedFanLevelStructureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvFunEqMinIntLinearFormsOnConesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMinimiserSystemsBalancedFormsUptoAutStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportClassMinimisersAlongLinearEquivStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinFormSymmBilinEqSumLiftsOdd
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteConesPolarizedFanLevelStructure
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvFunEqMinIntLinearFormsOnCones
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMinimiserSystemsBalancedFormsUptoAut
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportClassMinimisersAlongLinearEquiv
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZH GlobalTheory.Poinc
@@ -21,9 +22,9 @@ namespace GlobalTheory.UPoinc.FinTypes
 theorem single : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (Y : Type) [AddCommGroup Y] [Module O Y] [Module.Finite O Y] [Module.Projective O Y], IsPolFanOn bar φ Y → ∀ (n N : ℕ) [NeZero N], 3 ≤ N → Odd N → ∀ (eb : Y ≃ₗ[ℤ] (Fin n → ℤ)) (μ : (Fin n → ZMod N) → Y), (∀ cl i, ((eb (μ cl) i : ℤ) : ZMod N) = cl i) → ∀ b₀ ∈ balForms bar Y, (∀ x, x ≠ 0 → 0 < b₀ x x) → (∀ cl (α : Y), (∀ i, ((eb α i : ℤ) : ZMod N) = cl i) → b₀ (μ cl) (μ cl) ≤ b₀ α α) → ∃ (ι : ℕ) (L : Finset ((Fin n → ZMod N) → ℤ)), 1 ≤ ι ∧ ∀ b' ∈ balForms bar Y, (∀ x, 0 ≤ b' x x) → (∀ cl (α : Y), (∀ i, ((eb α i : ℤ) : ZMod N) = cl i) → b' (μ cl) (μ cl) ≤ b' α α) → (∀ ν ∈ L, (ι : ℝ) * φ.evalZ b' ≤ ∑ cl, (ν cl : ℝ) * b' (μ cl) (μ cl)) ∧ ∃ ν ∈ L, (ι : ℝ) * φ.evalZ b' = ∑ cl, (ν cl : ℝ) * b' (μ cl) (μ cl) := by
   classical
   intro O _ bar φ Y _ _ _ _ hY n N _ hN3 hNo eb μ hμ b₀ hb₀ hpos hmin
-  obtain ⟨p, m, γ, hcone, hcov⟩ := GlobalTheory.T.exists_finite_cones_polarized_fan_level_structure O bar φ Y hY n N hN3 eb μ hμ b₀ hb₀ hpos hmin
-  obtain ⟨Nℓ, ℓ, hNℓ, hℓ⟩ := GlobalTheory.T.exists_invFun_eq_min_intLinearForms_on_cones O bar φ Y p m γ hcone
-  choose D ν hD hν using fun i : Fin p => GlobalTheory.T.linForm_symmBilin_eq_sum_lifts_odd Y n N hN3 hNo eb μ hμ (ℓ i)
+  obtain ⟨p, m, γ, hcone, hcov⟩ := _root_.GlobalTheory.UPoinc.CellCones.exists_finite_cones O bar φ Y hY n N hN3 eb μ hμ b₀ hb₀ hpos hmin
+  obtain ⟨Nℓ, ℓ, hNℓ, hℓ⟩ := _root_.GlobalTheory.PolFan.cones_eq_min_linear O bar φ Y p m γ hcone
+  choose D ν hD hν using fun i : Fin p => _root_.GlobalTheory.Poinc.linForm_eq_sum_lifts Y n N hN3 hNo eb μ hμ (ℓ i)
   obtain ⟨E, hDE⟩ : ∃ E : Fin p → ℕ, ∀ i, D i * E i = ∏ j, D j :=
     ⟨fun i => ∏ j ∈ Finset.univ.erase i, D j, fun i => Finset.mul_prod_erase _ _ (Finset.mem_univ i)⟩
   have hDp : 0 < ∏ j, D j := Finset.prod_pos (fun j _ => hD j)
@@ -60,7 +61,7 @@ theorem single : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (Y 
 theorem P1 : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (Y : Type) [AddCommGroup Y] [Module O Y] [Module.Finite O Y] [Module.Projective O Y], IsPolFanOn bar φ Y → ∀ (n N : ℕ) [NeZero N], 3 ≤ N → Odd N → ∀ (ebY : Y ≃ₗ[ℤ] (Fin n → ℤ)), ∃ (ι : ℕ) (𝓛₀ : Finset (Finset ((Fin n → ZMod N) → ℤ))), 1 ≤ ι ∧ ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (ebX : X ≃ₗ[ℤ] (Fin n → ℤ)) (f : X ≃ₗ[O] Y), ∀ b ∈ balForms bar X, (∀ x, x ≠ 0 → 0 < b x x) → ∀ μ : (Fin n → ZMod N) → X, (∀ cl i, ((ebX (μ cl) i : ℤ) : ZMod N) = cl i) → (∀ cl (α : X), (∀ i, ((ebX α i : ℤ) : ZMod N) = cl i) → b (μ cl) (μ cl) ≤ b α α) → ∃ L ∈ 𝓛₀, ∀ b' ∈ balForms bar X, (∀ x, 0 ≤ b' x x) → (∀ cl (α : X), (∀ i, ((ebX α i : ℤ) : ZMod N) = cl i) → b' (μ cl) (μ cl) ≤ b' α α) → (∀ ν ∈ L, (ι : ℝ) * φ.evalZ b' ≤ ∑ cl, (ν cl : ℝ) * b' (μ cl) (μ cl)) ∧ ∃ ν ∈ L, (ι : ℝ) * φ.evalZ b' = ∑ cl, (ν cl : ℝ) * b' (μ cl) (μ cl) := by
   classical
   intro O _ bar φ Y _ _ _ _ hY n N _ hN3 hNo ebY
-  obtain ⟨S, hS⟩ := GlobalTheory.T.finite_minimiser_systems_balanced_forms_upto_aut O bar φ Y hY n N hN3 ebY
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.Poinc.MinSysTypeBal.finite_minimiser_systems_upTo_aut O bar φ Y hY n N hN3 ebY
   have hP : ∀ μ' : (Fin n → ZMod N) → Y,
       ((∀ cl i, ((ebY (μ' cl) i : ℤ) : ZMod N) = cl i) ∧ ∃ b₀ ∈ balForms bar Y, (∀ x, x ≠ 0 → 0 < b₀ x x) ∧
         (∀ cl (α : Y), (∀ i, ((ebY α i : ℤ) : ZMod N) = cl i) → b₀ (μ' cl) (μ' cl) ≤ b₀ α α)) →
@@ -80,7 +81,7 @@ theorem P1 : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (Y : Ty
     simpa using hbp (f.symm x) (by simpa using hx)
   obtain ⟨e, he⟩ := hS _ hbY hbYp
   set g : Y ≃ₗ[O] X := e.trans f.symm with hg
-  obtain ⟨σ, hσ1, hσ2⟩ := GlobalTheory.T.transport_classMinimisers_along_linearEquiv O Y X n N ebY ebX g μ hμ
+  obtain ⟨σ, hσ1, hσ2⟩ := _root_.GlobalTheory.transport_minimisers O Y X n N ebY ebX g μ hμ
   set μ' : (Fin n → ZMod N) → Y := fun c => g.symm (μ (σ c)) with hμ'
   have hpull : ∀ β : LinearMap.BilinForm ℤ X, pull e.toLinearMap (pull f.symm.toLinearMap β) = pull g.toLinearMap β :=
     fun β => LinearMap.ext₂ fun x y => rfl

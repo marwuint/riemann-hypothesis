@@ -2,15 +2,15 @@ import Mathlib
 import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowAndImp
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScaleStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowPpDimToLeRpowStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceWindowRankConditionsStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceWindowRankLePolyBoundStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTOLowerStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowRankPolysLeTOStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTOPPLeBStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowDelTOGapStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoicePolynomialLeBaseSizeStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScale
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowPpDimToLeRpow
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceWindowRankConditions
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceWindowRankLePolyBound
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTOLower
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowRankPolysLeTO
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowTOPPLeB
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowDelTOGap
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoicePolynomialLeBaseSize
 
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
 
@@ -55,7 +55,7 @@ theorem nodeGap_blockLength_poly (x T t P Dy f m N k c h : ℝ) (hx : 6 ≤ x)
 
 theorem szRow_nodeGap_blockLength : SzRow (fun C D L => (4 * ((TOv L.sc : ℕ) : ℝ) ^ 2 + 2 * D.R.t ≤ h0 L) ∧ ((C.T.CP * zBase L ^ C.T.eP) * (D.R.f * D.R.r.choose 2 : ℕ) * D.R.f * (D.R.m : ℝ) ^ 2 * (D.R.N D.R.m : ℝ) * (TOv L.sc : ℕ) ≤ h0 L) ∧ ((C.T.CP * zBase L ^ C.T.eP) * ((D.R.f : ℝ) * D.R.m * D.R.k) ^ 3 * D.R.k / D.R.m ≤ h0 L) ∧ (C.T.ChT * (TOv L.sc : ℕ) * (D.R.N D.R.m : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * (D.R.f * D.R.r.choose 2 : ℕ) * (C.T.CP * zBase L ^ C.T.eP) ≤ h0 L)) := by
   intro eps he he' C hC
-  obtain ⟨x1, hx1⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'
+  obtain ⟨x1, hx1⟩ := _root_.GlobalTheory.EX.rank_basic_bounds eps he he'
   have heP : C.T.eP = 12 := hC.2.2.2.2.2.2.2.2.1
   have hCP : 1000 ≤ C.T.CP := hC.2.2.2.2.2.2.2.2.2.2.2.2.2.1
   refine ⟨0, fun cD _ => ⟨1000, fun ch hch => ⟨max (max x1 6) (max C.T.CP C.T.ChT), ?_⟩⟩⟩
@@ -115,9 +115,9 @@ theorem szRow_nodeGap_blockLength : SzRow (fun C D L => (4 * ((TOv L.sc : ℕ) :
 theorem szRow_blockLengthParams : SzRow (fun C D L => ∀ P : ParameterChoice' D L, P.CnW = C.P.CnW → ∃ T : ParamsT D L P,
     [T.CP, T.eP, T.Cp, T.Cb, T.cTO, T.ChT, T.CbN] = C.PT ∧ T.eP = C.T.eP) := by
   have hand := szRow_and_imp.1
-  have hall := hand _ _ GlobalTheory.T.sizes_PP_and_dim_and_TOv_le_x_rpow_Ct <| hand _ _ GlobalTheory.T.explicitChoice_windowRank_conditions <| hand _ _ GlobalTheory.T.explicitChoice_windowRank_le_polyBound <|
-    hand _ _ GlobalTheory.T.sizes_PP_pow_mul_dim_pow_div_le_TOv <| hand _ _ GlobalTheory.T.sizes_rank_and_poly_counts_le_TOv <| hand _ _ GlobalTheory.T.sizes_TOv_mul_PP_le_b_and_sqrt_b <|
-    hand _ _ GlobalTheory.T.sizes_TOv_sq_le_del_and_gap_mul_le_del <| hand _ _ szRow_nodeGap_blockLength GlobalTheory.T.explicitChoice_polynomial_le_baseSize
+  have hall := hand _ _ _root_.GlobalTheory.EX.szRow_pp_dim_to_le_rpow <| hand _ _ _root_.GlobalTheory.EX.szRow_nW <| hand _ _ _root_.GlobalTheory.EX.szRow_nW_le_PP <|
+    hand _ _ _root_.GlobalTheory.EX.szRow_TO_lower <| hand _ _ _root_.GlobalTheory.EX.szRow_rank_polys_le_TO <| hand _ _ _root_.GlobalTheory.EX.szRow_TO_PP_le_b <|
+    hand _ _ _root_.GlobalTheory.EX.szRow_Del_TO_gap <| hand _ _ szRow_nodeGap_blockLength _root_.GlobalTheory.EX.szRow_poly_le_b
   refine szRow_and_imp.2 _ _ hall ?_
   rintro C cD ch D L hS - ⟨⟨a1, a2, a3⟩, ⟨b1, b2, b3, b4, b5, b6, b7, b8⟩, ⟨c1, c2⟩, ⟨d1, d2⟩,
     ⟨e1, e2, e3, e4⟩, ⟨f1, f2, f3, f4⟩, ⟨g1, g2⟩, ⟨h1, h2, h3, h4⟩, ⟨i1, i2, i3⟩⟩ P hP

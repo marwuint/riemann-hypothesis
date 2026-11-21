@@ -47,10 +47,6 @@ def HoweSpan (ι : Type) [Fintype ι] : Prop :=
     ∃ (m : ℕ) (y' : Fin m → ι → Matrix (Fin b) (Fin b) ℂ) (s : Fin m → ℂ), (∀ j, IsInv (y' j)) ∧
       ∀ F ∈ Vn lam n, Q F = ∑ j, s j • subY hab (y' j) F
 
-example : IsUni (fun _ : ι => (1 : Matrix (Fin a) (Fin a) ℂ)) := fun _ => one_mem _
-
-example : IsInv (fun _ : ι => (1 : Matrix (Fin a) (Fin a) ℂ)) := fun _ => by simp
-
 omit [Fintype ι] in
 
 theorem evalAt_lft (g y : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a) :

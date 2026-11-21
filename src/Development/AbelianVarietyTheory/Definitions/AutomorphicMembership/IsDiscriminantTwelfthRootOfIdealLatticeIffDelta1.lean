@@ -186,21 +186,6 @@ theorem VacIn.eNat_rec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) (χ : T
 
 end Record
 
-example (Λ : AddSubgroup ℂ) {N N' : ℕ} (c : ℂ) (z w : VC ι N N') : Hf Λ (c • z) w = c * Hf Λ z w := by
-  simp only [Hf, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, mul_div_assoc]
-
-example (Λ : AddSubgroup ℂ) {N N' : ℕ} (G : VC ι N N' → ℂ) : Iop H Λ ⊥ ⊥ G = G := by
-  funext z
-  have h0 : ∀ q : (⊥ : AddSubgroup (VC ι N N')) ⧸ (⊥ : AddSubgroup (VC ι N N')).addSubgroupOf ⊥,
-      ((Quotient.out q : (⊥ : AddSubgroup (VC ι N N'))) : VC ι N N') = 0 := fun q => AddSubgroup.mem_bot.1 (Quotient.out q).2
-  have hU : Unique ((⊥ : AddSubgroup (VC ι N N')) ⧸ (⊥ : AddSubgroup (VC ι N N')).addSubgroupOf ⊥) :=
-    ⟨⟨QuotientAddGroup.mk 0⟩, fun q => by
-      obtain ⟨x, rfl⟩ := QuotientAddGroup.mk_surjective q
-      rw [Subsingleton.elim x 0]
-      rfl⟩
-  simp only [Iop, h0, finsum_unique]
-  simp [al, U, Hf]
-
 theorem perAA_top : perAA H ⊤ = (H.AA0 : Submodule (𝓞 H.E) H.E) := by
   apply le_antisymm
   · refine Submodule.span_le.2 ?_

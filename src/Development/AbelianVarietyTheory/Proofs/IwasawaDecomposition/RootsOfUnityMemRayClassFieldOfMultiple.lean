@@ -13,18 +13,6 @@ namespace GlobalTheory.Mem.RayZeta
 variable {K M L : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Field L] [NumberField L]
   [Algebra K M] [Algebra K L] [Algebra M L] [IsScalarTower K M L]
 
-omit [NumberField M] [NumberField L] in
-
-theorem isFrob_restrictNormal [Normal K M] {v : HeightOneSpectrum (𝓞 K)} {σ : L ≃ₐ[K] L} (h : GlobalTheory.NT.IsFrob L v σ) :
-    GlobalTheory.NT.IsFrob M v (σ.restrictNormal M) := by
-  obtain ⟨P, hP, hPo, hx⟩ := h
-  refine ⟨P.under (𝓞 M), inferInstance, inferInstance, fun x => ?_⟩
-  have h1 : algebraMap (𝓞 M) (𝓞 L) (σ.restrictNormal M • x) = σ • algebraMap (𝓞 M) (𝓞 L) x := by
-    apply RingOfIntegers.ext
-    exact σ.restrictNormal_commutes M x
-  rw [Ideal.under, Ideal.mem_comap, map_sub, map_pow, h1]
-  exact hx _
-
 open NumberField IsDedekindDomain in
 open scoped nonZeroDivisors IntermediateField in
 variable {K M L : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Field L] [NumberField L]

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyFormulaEvenDegenerationGlobalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinateDividesOnNonzeroLocusSectionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedThetaSectionNonzeroEveryFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianExtensionAbelianLocusNonemptyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KeyFormulaEvenDegenerationGlobal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinateDividesOnNonzeroLocusSection
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedThetaSectionNonzeroEveryFibre
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianExtensionAbelianLocusNonempty
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.KeyCl GlobalTheory.Ex GlobalTheory.KeyEven
@@ -36,10 +36,10 @@ theorem unifAlong_of_zhOut : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra 
 
 theorem key_zh : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), 1 ≤ S.g → S.Over₀ M U₀ → IsOpen (abLocus Zh.G) → ∀ (δ : LB M.Z) (t : S.Gam → δ.Sec), δ.IsLB → (⨆ a, nonzeroLocus (t a)) = ⊤ → ZM.SecCoord δ t M.pt S.th → LBIso (lbPow δ 8) (lbPow (GlobalTheory.SiegelTor.hodge Zh.G S.g) 4) := by
   intro o Ω _ _ _ _ S ρ M U₀ EE Zh hg hO hab δ t hδ hcov hsc
-  obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_glued_thetaSection_nonzero_every_fibre o Ω S ρ M U₀ EE Zh hO δ t hδ hcov hsc
-    (fun a z hz => GlobalTheory.T.coordinate_divides_on_nonzeroLocus_section o Ω M δ t S.th hδ hsc a z hz)
-  exact GlobalTheory.T.keyFormula_evenDegeneration_global M.Z (M.s ≫ spMap (algebraMap ℤ o)) Zh.G S.g Zh.L δ σ hg inferInstance hO.normal
-    (lft_of_arithBase o Ω M) (charZero_of_arithBase o Ω M) Zh.semi Zh.dim (GlobalTheory.T.semiAbelianExtension_abelianLocus_nonempty o Ω S ρ M U₀ EE Zh hO) hab
+  obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.KeyTheta.exists_nzFib o Ω S ρ M U₀ EE Zh hO δ t hδ hcov hsc
+    (fun a z hz => _root_.GlobalTheory.ThetaDiv.div_of_mem_nonzeroLocus o Ω M δ t S.th hδ hsc a z hz)
+  exact _root_.GlobalTheory.KeyEvenClosing.keyGlob M.Z (M.s ≫ spMap (algebraMap ℤ o)) Zh.G S.g Zh.L δ σ hg inferInstance hO.normal
+    (lft_of_arithBase o Ω M) (charZero_of_arithBase o Ω M) Zh.semi Zh.dim (_root_.GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty o Ω S ρ M U₀ EE Zh hO) hab
     Zh.sym hδ Zh.pol (unifAlong_of_zhOut o Ω S ρ M U₀ EE Zh) hσ
 
 end GlobalTheory.KeyZh

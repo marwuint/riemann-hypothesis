@@ -50,9 +50,6 @@ instance : BorelSpace (SG hU) :=
 private theorem continuous_matrix_of_Mt : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) :=
   continuous_matrix (fun i j => (continuous_apply j).comp (continuous_apply i))
 
-theorem continuous_val : Continuous (fun g : SG hU => g.1) := by
-  exact continuous_subtype_val
-
 theorem continuous_mat : Continuous (fun g : SG hU => mat g) := by
   exact continuous_matrix_of_Mt.comp continuous_subtype_val
 

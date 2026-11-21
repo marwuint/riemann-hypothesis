@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementRe
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemPerpSpan
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLatticesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLattices
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLatticesStatement
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
@@ -75,9 +75,6 @@ lemma inTh_iff (Λ : Submodule M.L.O V) (x : V) :
     exact ⟨z, (mem_lat c _ _).1 hw, c.e.injective (by rw [h, map_smul])⟩
   · rintro ⟨z, hz, rfl⟩
     exact ⟨c.e z, (mem_lat c _ _).2 hz, by rw [map_smul]⟩
-
-lemma h_add_right (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
-  rw [H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
 lemma X_le_perp (Fr : LocNG.FrameD H r) : H.X Fr.f ≤ H.perp (H.X Fr.f) := by
   unfold HermSp.X
@@ -185,7 +182,7 @@ theorem isTermW_iff : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpac
   letI := hM.loc
   haveI := hM.char0
   obtain ⟨hth, hN, hN', -⟩ := GlobalTheory.HL.CoordUnip.transport M hM H r k P S c
-  obtain ⟨-, iA, -, sA⟩ := GlobalTheory.T.hermitianFrameCoordinates_transport_innerLattices M hM H r k P S c
+  obtain ⟨-, iA, -, sA⟩ := _root_.GlobalTheory.HL.CoordInnerFst.transport M hM H r k P S c
   obtain ⟨-, iB, -, sB⟩ := GlobalTheory.T.framePairCoordinates_transport_innerLattices M hM H r k P S c
   have hA := (iA d.L).1 d.hL
   have hB := (iB d.L').1 d.hL'

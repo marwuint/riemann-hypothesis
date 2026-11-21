@@ -22,10 +22,6 @@ theorem grad_mul (a b : MvPolynomial σ ℂ) :
   ext i
   simp only [grad_apply, Derivation.leibniz, smul_eq_mul, map_add, map_mul, Pi.add_apply, Pi.smul_apply]
 
-theorem grad_C (c : ℂ) : grad w (C c : MvPolynomial σ ℂ) = 0 := by
-  ext i
-  simp [grad_apply]
-
 theorem grad_X_sub_C [DecidableEq σ] (j : σ) : grad w (X j - C (w j)) = Pi.single j 1 := by
   ext i
   rw [grad_apply, map_sub, pderiv_C, sub_zero, pderiv_X]
@@ -39,21 +35,6 @@ theorem grad_mul_of_eval_eq_zero (r p : MvPolynomial σ ℂ) (hp : eval w p = 0)
 
 def linPart [Fintype σ] (c : σ → ℂ) : MvPolynomial σ ℂ :=
   ∑ i, C (c i) * (X i - C (w i))
-
-theorem eval_linPart [Fintype σ] (c : σ → ℂ) : eval w (linPart w c) = 0 := by
-  simp [linPart]
-
-theorem grad_linPart [Fintype σ] (c : σ → ℂ) : grad w (linPart w c) = c := by
-  classical
-  ext i
-  rw [linPart, map_sum, Finset.sum_apply]
-  simp [grad_mul, grad_C, grad_X_sub_C, Pi.single_apply]
-
-theorem linPart_single [Fintype σ] [DecidableEq σ] (j : σ) : linPart w (Pi.single j 1) = X j - C (w j) := by
-  rw [linPart, Finset.sum_eq_single j]
-  · simp
-  · intro b _ hb; simp [hb]
-  · simp
 
 theorem sub_C_eval_mem_span (p : MvPolynomial σ ℂ) :
     p - C (eval w p) ∈ Ideal.span (Set.range fun i => (X i - C (w i) : MvPolynomial σ ℂ)) := by

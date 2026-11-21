@@ -1,6 +1,12 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.CharpolyFromTrace.NumberField
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeaklyAttachedGaloisRepresentationBaseChangeRest
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspRepSatakeParametersUniqueStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspRepSatakeParametersUnique
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RegPolOfRepOf
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.CyclicBaseChangeC
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.IsAlgChar
+import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -33,7 +39,7 @@ theorem UpperTheory.Gal.NearKilling.weakRes :
     have h2 := GlobalTheory.AttResTower.normV_under_pow (K := E) w
     set f := w.asIdeal.inertiaDeg (𝓞 E)
     obtain ⟨B', hB', hP⟩ := hW f h2
-    have hBB : B' = B := GlobalTheory.T.cuspRep_satakeParameters_unique E a (CG.mk π) (w.under (𝓞 E)) B' B hB' hB
+    have hBB : B' = B := _root_.GlobalTheory.AboveL.cg_hasSat_unique E a (CG.mk π) (w.under (𝓞 E)) B' B hB' hB
     subst hBB
     refine ⟨B'.map (· ^ f), hP, ?_⟩
     have h3 := (UpperTheory.frobenius_power_compatibility E M Ω l ι w f h2).1 a r _ hF

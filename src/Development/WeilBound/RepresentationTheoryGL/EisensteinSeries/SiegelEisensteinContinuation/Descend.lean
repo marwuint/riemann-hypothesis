@@ -16,11 +16,4 @@ def Scale : Prop := ForRep fun {G} _ _ {_W} _ _ K ρ => ∀ (Γ P P' : Subgroup 
   IsHt Γ K ⊤ l → HasWall Γ K P P' c η η' β ρ →
   HasWall Γ K P P' c (fun g => s * (η g + l g)) (fun g => s * (η' g - l g)) β ρ
 
-def Descend : Prop := ForRep fun {G} _ _ {_W} _ _ K ρ => ∀ (G₁ : Type) [Group G₁] [TopologicalSpace G₁]
-  [IsTopologicalGroup G₁] [T2Space G₁] [LocallyCompactSpace G₁] (j : G₁ →* G) (Γ P : Subgroup G) (Γ₁ K₁ : Subgroup G₁)
-  (c : G → ℂ) (η η' β : G → ℝ) (s : P → G₁), Continuous j → IsCompact (K₁ : Set G₁) → K₁.map j = K → Γ₁.map j = Γ →
-  Continuous s → (∀ p, j (s p) = p) → IsPar Γ K P c → IsHt Γ K P η → IsHt Γ K P η' → IsHt Γ K P β →
-  (AllRep K₁ fun ρ₁ => HasWall Γ₁ K₁ (P.comap j) (P.comap j) (c ∘ j) (η ∘ j) (η' ∘ j) (β ∘ j) ρ₁) →
-  HasWall Γ K P P c η η' β ρ
-
 end PositivityTheory.RgEis

@@ -28,24 +28,9 @@ theorem gv_crd (y : (VS D).V) : gv X (X.crd y) = y := by
   simp only [RingEquiv.apply_symm_apply, ← Module.Basis.equivFun_apply]
   exact X.bas.equivFun.symm_apply_apply y
 
-abbrev sO : 𝓞 D.host.E →+* 𝓞 X.B.I.E := (RingOfIntegers.mapRingEquiv X.ιE.symm : 𝓞 D.host.E →+* 𝓞 X.B.I.E)
-
 abbrev sO' : 𝓞 X.B.I.E →+* 𝓞 D.host.E := (RingOfIntegers.mapRingEquiv X.ιE : 𝓞 X.B.I.E →+* 𝓞 D.host.E)
 
 abbrev sE : X.B.I.E →+* D.host.E := (X.ιE : X.B.I.E →+* D.host.E)
-
-def crdO : (VS D).V →ₛₗ[sO X] (Fin X.B.I.n → X.B.I.E) where
-  toFun := X.crd
-  map_add' y z := by
-    funext i
-    show X.ιE.symm (X.bas.repr (y + z) i) = X.ιE.symm (X.bas.repr y i) + X.ιE.symm (X.bas.repr z i)
-    rw [map_add, Finsupp.add_apply, map_add]
-  map_smul' a y := by
-    funext i
-    show X.ιE.symm (X.bas.repr (a • y) i) = (sO X a) • X.ιE.symm (X.bas.repr y i)
-    have ha : a • y = (a : D.host.E) • y := (algebraMap_smul D.host.E a y).symm
-    rw [ha, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Algebra.smul_def]
-    rfl
 
 def gvO : (Fin X.B.I.n → X.B.I.E) →ₛₗ[sO' X] (VS D).V where
   toFun := gv X

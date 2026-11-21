@@ -56,10 +56,6 @@ def zeroFun (O : Type) [CommRing O] : InvFun O where
   simp only [InvFun.evalZ, (zeroFun O).eval_eq hr]
   rfl
 
-example : LinOnCells id 1 (InvFun.minVal ℤ) (InvFun.minVal ℤ) := linOnCells_self _
-
-example : Subordinate id 1 (InvFun.minVal ℤ) (InvFun.minVal ℤ) := Subordinate.refl _
-
 end Inhab
 
 end GlobalTheory.PolFan

@@ -54,29 +54,4 @@ def WeierstrassBiadditiveModEquiv : Prop :=
     DivAB (beW W s2) ∧ swap2 (beW W s2) = beW W s2 ∧
       Simeq (d1 (fgl W) (beW W s2)) 0 ∧ Simeq (d1 (fgl W) (swap2 (beW W s2))) 0
 
-def CurveJets : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K) (s2 : K),
-    IntModel W → ‖(2 : K)‖ = 1 →
-    ∀ n : ℕ, n = 1 ∨ 3 ≤ n →
-      ‖PowerSeries.constantCoeff ((Dinv (logSer W))^[n] (phW W s2))‖ ≤ 1
-
-def CurveTwo : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K)
-    (s2 xT yT : K), IntModel W → W.toAffine.Equation xT yT → 2 * yT + W.a₁ * xT + W.a₃ = 0 →
-    ‖xT‖ ≤ 1 → ‖yT‖ ≤ 1 →
-    kapW W xT = 3 * xT ^ 2 + 2 * W.a₂ * xT + W.a₄ - W.a₁ * yT ∧
-    4 * e1W W xT ^ 3 - g₂ W * e1W W xT - g₃ W = 0 ∧
-    PowerSeries.subst (iSer W) (evenSigmaLogAtTwoTorsion W s2 xT) = evenSigmaLogAtTwoTorsion W s2 xT ∧
-    Simeq (par (fgl W) (iSer W) (evenSigmaLogAtTwoTorsion W s2 xT)) 0 ∧
-    Simeq (ι := Unit) (2 * evenSigmaLogAtTwoTorsion W s2 xT) (2 * phW W s2)
-
-def CurveTwoOdd : Prop :=
-  ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (W : WeierstrassCurve K)
-    (s2 xT yT : K), IntModel W → W.toAffine.Equation xT yT → 2 * yT + W.a₁ * xT + W.a₃ = 0 →
-    ‖xT‖ ≤ 1 → ‖yT‖ ≤ 1 → ‖(2 : K)‖ = 1 →
-    Simeq (ι := Unit) (evenSigmaLogAtTwoTorsion W s2 xT) (phW W s2) ∧
-    DivAB (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT)) ∧
-    Simeq (d1 (fgl W) (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT))) 0 ∧
-    Simeq (d1 (fgl W) (swap2 (cob (fgl W) (evenSigmaLogAtTwoTorsion W s2 xT)))) 0
-
 end Formalism.L2.Th1.B

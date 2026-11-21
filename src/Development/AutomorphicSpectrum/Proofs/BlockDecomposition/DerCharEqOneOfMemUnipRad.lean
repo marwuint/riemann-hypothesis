@@ -15,26 +15,6 @@ section Abstract
 variable {M V X Y : Type} [Group M] [AddCommGroup V] [Module ℂ V] [AddCommGroup X] [Module ℂ X]
   [AddCommGroup Y] [Module ℂ Y]
 
-theorem equiv_of_common_quotient (ρ : Representation ℂ M X) (σ : Representation ℂ M Y) (T : M → V → V)
-    (p : V →ₗ[ℂ] X) (q : V →ₗ[ℂ] Y) (hp : Function.Surjective p) (hq : Function.Surjective q)
-    (hk : LinearMap.ker p = LinearMap.ker q) (hpT : ∀ m v, p (T m v) = ρ m (p v))
-    (hqT : ∀ m v, q (T m v) = σ m (q v)) : Nonempty (ρ.Equiv σ) := by
-  let e : X ≃ₗ[ℂ] Y := (p.quotKerEquivOfSurjective hp).symm.trans
-    ((Submodule.quotEquivOfEq _ _ hk).trans (q.quotKerEquivOfSurjective hq))
-  have he : ∀ v, e (p v) = q v := by
-    intro v
-    have h1 : (p.quotKerEquivOfSurjective hp).symm (p v) = Submodule.Quotient.mk v := by
-      rw [LinearEquiv.symm_apply_eq]
-      rfl
-    show q.quotKerEquivOfSurjective hq (Submodule.quotEquivOfEq _ _ hk
-      ((p.quotKerEquivOfSurjective hp).symm (p v))) = q v
-    rw [h1]
-    rfl
-  refine ⟨Representation.Equiv.mk e fun m => LinearMap.ext fun x => ?_⟩
-  obtain ⟨v, rfl⟩ := hp x
-  show e (ρ m (p v)) = σ m (e (p v))
-  rw [← hpT, he, he, hqT]
-
 theorem ker_comp_mkQ (K₁ K : Submodule ℂ V) (q : (V ⧸ K₁) →ₗ[ℂ] X) (e : LinearMap.ker q = K.map K₁.mkQ)
     (hle : K₁ ≤ K) : LinearMap.ker (q ∘ₗ K₁.mkQ) = K := by
   rw [LinearMap.ker_comp, e, Submodule.comap_map_eq, Submodule.ker_mkQ, sup_eq_left.2 hle]
@@ -100,11 +80,6 @@ theorem emb_inr_inr {n t N : ℕ} (h : n + t = N) (g : GL (Fin n) k × GL (Fin t
   rw [val_emb₂]
   simp [reindex_apply, submatrix_apply]
 
-theorem one_inl_inl {n t N : ℕ} (h : n + t = N) (i j : Fin n) :
-    (1 : Matrix (Fin N) (Fin N) k) (stdSum h (Sum.inl i)) (stdSum h (Sum.inl j)) =
-      (1 : Matrix (Fin n) (Fin n) k) i j := by
-  simp [one_apply]
-
 theorem one_inr_inr {n t N : ℕ} (h : n + t = N) (i j : Fin t) :
     (1 : Matrix (Fin N) (Fin N) k) (stdSum h (Sum.inr i)) (stdSum h (Sum.inr j)) =
       (1 : Matrix (Fin t) (Fin t) k) i j := by
@@ -118,193 +93,7 @@ theorem one_inr_inl {n t N : ℕ} (h : n + t = N) (i : Fin t) (j : Fin n) :
     (1 : Matrix (Fin N) (Fin N) k) (stdSum h (Sum.inr i)) (stdSum h (Sum.inl j)) = 0 := by
   simp [one_apply]
 
-theorem unipRad_entries {n t N : ℕ} (h : n + t = N) {g : GL (Fin N) k} (hg : g ∈ unipRad k (two (stdSum h)))
-    (i j : Fin N) (hij : ¬ ((i : ℕ) < n ∧ n ≤ (j : ℕ))) :
-    (g : Matrix (Fin N) (Fin N) k) i j = (1 : Matrix (Fin N) (Fin N) k) i j := by
-  obtain ⟨hP, hD⟩ := mem_unipRad.1 hg
-  obtain ⟨x, rfl⟩ := (stdSum h).surjective i
-  obtain ⟨y, rfl⟩ := (stdSum h).surjective j
-  rcases x with x | x <;> rcases y with y | y
-  · rw [one_inl_inl]
-    exact hD false x y
-  · simp at hij
-  · rw [one_inr_inl]
-    exact mem_parab_iff.1 hP true false x y (by decide)
-  · rw [one_inr_inr]
-    exact hD true x y
-
-theorem unipRad_le_derUnip {n t N : ℕ} (h : n + t = N) : unipRad k (two (stdSum h)) ≤ derUnip k N n := by
-  intro g hg
-  have hE := unipRad_entries h hg
-  refine Subgroup.mem_inf.2 ⟨(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩,
-    (GlobalTheory.CompanionTheory.BZMirStep.mem_colFix_iff _).2 fun i j hj => hE i j (by omega)⟩
-  · have := Fin.lt_def.1 hji
-    rw [hE i j (by omega), one_apply_ne (ne_of_gt hji)]
-  · rw [hE i i (by omega), one_apply_eq]
-
-theorem emb_mem_derUnip {n t N : ℕ} (h : n + t = N) (a : rightUnip k n t) :
-    emb₂ k (stdSum h) (a : GL (Fin n) k × GL (Fin t) k) ∈ derUnip k N n := by
-  obtain ⟨⟨a1, a2⟩, ha⟩ := a
-  obtain ⟨h1, h2⟩ := Subgroup.mem_prod.1 ha
-  have h1' : a1 = 1 := Subgroup.mem_bot.1 h1
-  subst h1'
-  obtain ⟨u1, u2⟩ := (mem_unipB k).1 h2
-  refine Subgroup.mem_inf.2 ⟨(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩,
-    (GlobalTheory.CompanionTheory.BZMirStep.mem_colFix_iff _).2 fun i j hj => ?_⟩
-  · obtain ⟨x, rfl⟩ := (stdSum h).surjective i
-    obtain ⟨y, rfl⟩ := (stdSum h).surjective j
-    have hlt := Fin.lt_def.1 hji
-    rcases x with x | x <;> rcases y with y | y
-    · rw [emb_inl_inl]
-      refine one_apply_ne fun e => ?_
-      subst e
-      exact lt_irrefl _ hlt
-    · simp at hlt
-      have := x.2
-      omega
-    · exact emb_inr_inl h _ x y
-    · rw [emb_inr_inr]
-      refine u1 x y (Fin.lt_def.2 ?_)
-      simp at hlt
-      exact hlt
-  · obtain ⟨x, rfl⟩ := (stdSum h).surjective i
-    rcases x with x | x
-    · rw [emb_inl_inl]
-      simp
-    · rw [emb_inr_inr]
-      exact u2 x
-  · obtain ⟨x, rfl⟩ := (stdSum h).surjective i
-    obtain ⟨y, rfl⟩ := (stdSum h).surjective j
-    rcases y with y | y
-    · rcases x with x | x
-      · rw [emb_inl_inl, one_inl_inl]
-        rfl
-      · rw [emb_inr_inl, one_inr_inl]
-    · simp at hj
-
-theorem derUnip_decomp {n t N : ℕ} (h : n + t = N) (u : derUnip k N n) :
-    ∃ u₁ : unipRad k (two (stdSum h)), ∃ a : rightUnip k n t,
-      (u : GL (Fin N) k) = u₁ * emb₂ k (stdSum h) (a : GL (Fin n) k × GL (Fin t) k) := by
-  obtain ⟨hB, hC⟩ := Subgroup.mem_inf.1 u.2
-  rw [mem_unipB] at hB
-  rw [GlobalTheory.CompanionTheory.BZMirStep.mem_colFix_iff] at hC
-  have hP : (u : GL (Fin N) k) ∈ parab k (two (stdSum h)) := by
-    refine mem_parab_iff.2 ?_
-    rintro (_ | _) (_ | _) i j hab
-    · exact absurd hab (by decide)
-    · exact absurd hab (by decide)
-    · show ((u : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (stdSum h (Sum.inr i)) (stdSum h (Sum.inl j)) = 0
-      rw [hC _ _ (by simp), one_inr_inl]
-    · exact absurd hab (by decide)
-  let p : parab k (two (stdSum h)) := ⟨u, hP⟩
-  let L := leviProj k (two (stdSum h)) p
-  have hL1 : L false = 1 := by
-    ext i j
-    show ((u : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (stdSum h (Sum.inl i)) (stdSum h (Sum.inl j)) = _
-    rw [hC _ _ (by simp), one_inl_inl]
-    rfl
-  have hL2 : L true ∈ unipB k (Fin t) := by
-    refine (mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩
-    · show ((u : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (stdSum h (Sum.inr i)) (stdSum h (Sum.inr j)) = 0
-      refine hB.1 _ _ (Fin.lt_def.2 ?_)
-      have := Fin.lt_def.1 hji
-      simp
-      exact this
-    · exact hB.2 _
-  have hLL : leviTwo k (Fin n) (Fin t) (L false, L true) = L := (leviTwo k (Fin n) (Fin t)).apply_symm_apply L
-  let q : parab k (two (stdSum h)) := ⟨_, leviEmb_mem_parab k (two (stdSum h)) L⟩
-  have hq : (q : GL (Fin N) k) = emb₂ k (stdSum h) (L false, L true) := by
-    show leviEmb k (two (stdSum h)) L = leviEmb k (two (stdSum h)) (leviTwo k (Fin n) (Fin t) (L false, L true))
-    rw [hLL]
-  have hm : ((p * q⁻¹ : parab k (two (stdSum h))) : GL (Fin N) k) ∈ unipRad k (two (stdSum h)) := by
-    refine (coe_mem_unipRad k _).2 ?_
-    rw [map_mul, map_inv, leviProj_leviEmb]
-    exact mul_inv_cancel _
-  refine ⟨⟨_, hm⟩, ⟨(L false, L true), Subgroup.mem_prod.2 ⟨Subgroup.mem_bot.2 hL1, hL2⟩⟩, ?_⟩
-  show (u : GL (Fin N) k) = ((p * q⁻¹ : parab k (two (stdSum h))) : GL (Fin N) k) * emb₂ k (stdSum h) (L false, L true)
-  rw [← hq]
-  simp [p]
-
 end Concrete
-
-section ConcreteChar
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-
-theorem derChar_eq_one_of_mem_unipRad {n t N : ℕ} (ψ : AddChar k Circle) (h : n + t = N)
-    (u : derUnip k N n) (hu : (u : GL (Fin N) k) ∈ unipRad k (two (stdSum h))) : derChar k ψ N n u = 1 := by
-  have hE := unipRad_entries h hu
-  show Circle.toUnits _ = 1
-  rw [Finset.sum_eq_zero, AddChar.map_zero_eq_one, map_one]
-  intro p hp
-  obtain ⟨h1, h2⟩ := (Finset.mem_filter.1 hp).2
-  refine (hE p.1 p.2 (by omega)).trans (one_apply_ne fun e => ?_)
-  rw [e] at h1
-  omega
-
-theorem derChar_emb {n t N : ℕ} (ψ : AddChar k Circle) (h : n + t = N) (a : rightUnip k n t) :
-    derChar k ψ N n ⟨_, emb_mem_derUnip h a⟩ = rightWhit k ψ n t a := by
-  obtain ⟨⟨a1, a2⟩, ha⟩ := a
-  show Circle.toUnits (ψ _) = Circle.toUnits (ψ _)
-  congr 2
-  symm
-  refine Finset.sum_nbij (fun q => (stdSum h (Sum.inr q.1), stdSum h (Sum.inr q.2))) ?_ ?_ ?_ ?_
-  · intro q hq
-    have hc := (Finset.mem_filter.1 hq).2
-    refine Finset.mem_filter.2 ⟨Finset.mem_univ _, ?_, ?_⟩
-    · simp only [stdSum_inr]
-      omega
-    · simp only [stdSum_inr]
-      omega
-  · rintro ⟨a, b⟩ _ ⟨c, d⟩ _ e
-    simpa using e
-  · rintro ⟨i, j⟩ hp
-    obtain ⟨h1, h2⟩ := (Finset.mem_filter.1 (Finset.mem_coe.1 hp)).2
-    obtain ⟨x, rfl⟩ := (stdSum h).surjective i
-    obtain ⟨y, rfl⟩ := (stdSum h).surjective j
-    rcases x with x | x
-    · simp only [stdSum_inl] at h2
-      have := x.2
-      omega
-    rcases y with y | y
-    · simp only [stdSum_inl, stdSum_inr] at h1
-      have := y.2
-      omega
-    refine ⟨(x, y), Finset.mem_coe.2 (Finset.mem_filter.2 ⟨Finset.mem_univ _, ?_⟩), rfl⟩
-    simp only [stdSum_inr] at h1
-    show (y : ℕ) = x + 1
-    omega
-  · intro q _
-    exact (emb_inr_inr (k := k) h (a1, a2) q.1 q.2).symm
-
-theorem emb_stab {n t N : ℕ} (h : n + t = N) (m : GL (Fin n) k × GL (Fin t) k) (x : unipRad k (two (stdSum h))) :
-    ∃ hh : emb₂ k (stdSum h) m * (x : GL (Fin N) k) * (emb₂ k (stdSum h) m)⁻¹ ∈ unipRad k (two (stdSum h)),
-      (1 : unipRad k (two (stdSum h)) →* ℂˣ) ⟨_, hh⟩ = (1 : unipRad k (two (stdSum h)) →* ℂˣ) x := by
-  have hm : leviEmb k (two (stdSum h)) (leviTwo k (Fin n) (Fin t) m) ∈
-      Subgroup.normalizer (unipRad k (two (stdSum h)) : Set (GL (Fin N) k)) :=
-    leviEmb_mem_normalizer k (two (stdSum h)) _
-  exact ⟨(Subgroup.mem_normalizer_iff.1 hm (x : GL (Fin N) k)).1 x.2, by simp only [MonoidHom.one_apply]⟩
-
-theorem jacU₂_eq_twAct {n t N : ℕ} (h : n + t = N) {V : Type} [AddCommGroup V] [Module ℂ V]
-    (π : Representation ℂ (GL (Fin N) k) V) :
-    jacU₂ (stdSum h) π = twAct π (unipRad k (two (stdSum h))) 1 (emb₂ k (stdSum h)) (emb_stab h) :=
-  MonoidHom.ext fun _ => rfl
-
-theorem derRep_quotient {n t N : ℕ} (ψ : AddChar k Circle) (h : n + t = N) {V : Type} [AddCommGroup V] [Module ℂ V]
-    (π : Representation ℂ (GL (Fin N) k) V) :
-    ∃ q : V →ₗ[ℂ] TwJacquet (jacU₂ (stdSum h) π) (rightUnip k n t) (rightWhit k ψ n t), Function.Surjective q ∧
-      LinearMap.ker q = twKer π (derUnip k N n) (derChar k ψ N n) ∧
-      ∀ g v, q (π (emb₂ k (stdSum h) (g, 1)) v) = derRep k ψ h π g (q v) := by
-  obtain ⟨e, hle⟩ := GlobalTheory.CompanionTheory.BZMirStep.twKer_twAct_eq_map π (unipRad k (two (stdSum h))) 1 (emb₂ k (stdSum h))
-    (emb_stab h) (rightUnip k n t) (rightWhit k ψ n t) (derUnip k N n) (derChar k ψ N n)
-    (fun u => ⟨unipRad_le_derUnip h u.2, derChar_eq_one_of_mem_unipRad ψ h _ u.2⟩)
-    (fun a => ⟨emb_mem_derUnip h a, derChar_emb ψ h a⟩) (derUnip_decomp h)
-  rw [← jacU₂_eq_twAct h π] at e
-  refine ⟨Submodule.mkQ _ ∘ₗ Submodule.mkQ _, (Submodule.mkQ_surjective _).comp (Submodule.mkQ_surjective _), ?_,
-    fun g v => rfl⟩
-  exact ker_comp_mkQ _ _ _ ((Submodule.ker_mkQ _).trans e) hle
-
-end ConcreteChar
 
 section Entries
 
@@ -359,20 +148,6 @@ theorem iotaM_eq_emb (n j : ℕ) (g : GL (Fin n) k) :
     rfl
 
 end Entries
-
-theorem deriv_equiv_derRep : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
-    [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n j : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
-    (π : Representation ℂ (GL (Fin (n + j + 1)) k) V),
-    Nonempty ((deriv k ψ j π).Equiv (derRep k ψ (rfl : n + (j + 1) = n + j + 1) π)) := by
-  intro k _ _ _ _ ψ n j V _ _ π
-  obtain ⟨p, hp, hpk, hpi⟩ := iterPhi_quotient ψ n j (resM k π)
-  obtain ⟨q, hq, hqk, hqi⟩ := derRep_quotient ψ (rfl : n + (j + 1) = n + j + 1) π
-  refine equiv_of_common_quotient (deriv k ψ j π) (derRep k ψ (rfl : n + (j + 1) = n + j + 1) π)
-    (fun g v => π (emb₂ k (stdSum (rfl : n + (j + 1) = n + j + 1)) (g, 1)) v) p q hp hq ?_ ?_ hqi
-  · exact hpk.trans ((GlobalTheory.CompanionTheory.BZMirDer.twKer_resM_derUnipM k ψ (n + j) n V π).trans hqk.symm)
-  · intro g v
-    rw [← iotaM_eq_emb]
-    exact hpi g v
 
 end GlobalTheory.CompanionTheory.BZMirJac
 

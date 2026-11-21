@@ -121,7 +121,7 @@ theorem arithIdx : ArithIdx := by
     rintro _ ⟨τ, rfl⟩
     exact (hs' τ).elim fun A => sig_of_sgI _ _ A
   obtain ⟨P, hP, hPG⟩ := (GlobalTheory.selfDual_lattices_one_genus hG hG' hd hd' hL hL' (Or.inr ⟨ξ, hξ, hc, hS, hS'⟩)).2.2
-    GlobalTheory.QNorm.landherr_and_landherrSt.1 GlobalTheory.T.hasse_norm_theorem_quadratic_extension (Set.range s) hΨ fun u hu => ⟨j, t u hu, t' u hu⟩
+    GlobalTheory.QNorm.landherr_and_landherrSt.1 _root_.GlobalTheory.QNorm.hasseNormSt (Set.range s) hΨ fun u hu => ⟨j, t u hu, t' u hu⟩
   let a : GL (Fin (j + j')) E := Matrix.GeneralLinearGroup.mkOfDetNeZero P hP
   have ha : (a : Matrix (Fin (j + j')) (Fin (j + j')) E)ᵀ * G *
       (a : Matrix (Fin (j + j')) (Fin (j + j')) E).map (ccH E) = G' := hPG.symm

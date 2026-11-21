@@ -11,10 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFiniteEtaleS
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GenericPartDenseProOpen
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueLiftOfDensePart
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDescOfIsFiniteOfDensePartStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSemiAbelianTripleMapExtendingModelMapStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDescOfIsFiniteOfDensePart
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSemiAbelianTripleMapExtendingModelMap
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleSurjectiveLevelMapStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MapToUniversalObjectUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MapToUniversalObjectUnique
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmModelCoefficientSubringDedekindCompatibleEmbedStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmModelCoefficientInclusionsEtaleOpenImmersionStatement
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -211,7 +211,7 @@ theorem baseModel_above : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscret
   have sq : r₁ ≫ B.r = B'.r ≫ r := by
     obtain ⟨m₁, hm₁⟩ := levComp_comp hdB hd₁ B.lev hlev₁
     obtain ⟨m₂, hm₂⟩ := levComp_comp hd hdB' hlev B'.lev
-    refine (GlobalTheory.T.map_to_universalObject_unique L₁ L₂ L₃ E H D l₀ B'.l₁ (Xo l₀) _ _ _ _ (Xo B'.l₁).univ _ _ m₁ m₂
+    refine (_root_.GlobalTheory.LevUniq.map_to_univ_unique L₁ L₂ L₃ E H D l₀ B'.l₁ (Xo l₀) _ _ _ _ (Xo B'.l₁).univ _ _ m₁ m₂
       (isReduced_open B'.C₁ dO₁') ?_ hm₁ hm₂).1
     have := mono_spMap dO
     rw [← cancel_mono (spMap B.β)]
@@ -235,14 +235,14 @@ theorem baseModel_above : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscret
     have : IsDominant (B'.C₁.j ≫ B'.above.π) := by rw [B'.above.j_comm]; infer_instance
     have : IsDominant B'.above.π := IsDominant.of_comp B'.C₁.j _
     exact surjective_of_isDominant_of_isClosed_range _ B'.above.π.isClosedMap.isClosed_range
-  obtain ⟨f, hf₁, hf₂⟩ := GlobalTheory.T.exists_desc_of_dense_preimmersion _ _ _ _ _ _ B'.above.π B'.C₁.j B'.C.j B'.r (B'.C.s ≫ spMap b) B.C.s
+  obtain ⟨f, hf₁, hf₂⟩ := _root_.GlobalTheory.exists_desc_of_isFinite_of_densePart _ _ _ _ _ _ B'.above.π B'.C₁.j B'.C.j B'.r (B'.C.s ≫ spMap b) B.C.s
     (h ≫ B.above.π) (r ≫ B.C.j) B'.C.normal red₁' fπ' sπ' rs dom₁' qc₁' pre' fl' dom' qc' inferInstance
     inferInstance B'.above.j_comm
     (by rw [← Category.assoc, h₁, Category.assoc, B.above.j_comm, ← Category.assoc, sq, Category.assoc]) hf
     (by rw [Category.assoc, hrs])
   have fo : f ≫ B.C.s = B'.C.s ≫ spMap b :=
     ext_of_isDominant B'.C.j (by rw [← Category.assoc, hf₁, Category.assoc, hrs])
-  obtain ⟨mu, hmu⟩ := GlobalTheory.T.exists_semiAbelianTripleMap_extending_modelMap hR E H _ _ _ _ _ _ _ _ _ _ _ _ B.C B'.C r ν f dO' ft' (Xo l₀').univ.proper hf₁
+  obtain ⟨mu, hmu⟩ := _root_.GlobalTheory.Models.exists_sabMap_extending hR E H _ _ _ _ _ _ _ _ _ _ _ _ B.C B'.C r ν f dO' ft' (Xo l₀').univ.proper hf₁
   refine ⟨b, r, ν, hb, hlev, ⟨⟨f, fo, isFinite_lift _ _ _ _ fo ?_, mu, hf₁, hmu⟩⟩⟩
   have fq : ∀ z, (B'.q ⁻¹' {z}).Finite := by
     have := (((GlobalTheory.T.cmModelCoefficient_inclusions_etale_openImmersion E H n _ N N e hS' hN0 (Dvd.intro _ rfl) dvd_rfl).2 B'.b' B'.b'_inc).2 rfl).1

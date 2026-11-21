@@ -141,10 +141,6 @@ def ev [IsAdicComplete (maximalIdeal O) O] (a : maximalIdeal O) : O⟦X⟧ →�
 @[simp] theorem ev_C [IsAdicComplete (maximalIdeal O) O] (a : maximalIdeal O) (r : O) : ev a (C r) = r :=
   lift_C _ a r
 
-def upow [IsAdicComplete (maximalIdeal O) O] {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O]
-    (u : oneUnits O) (s : ℤ_[l]) : O :=
-  ev (pt u) (binomialSeries O s)
-
 end Local
 
 section MuLam
@@ -179,24 +175,13 @@ variable {R : Type*} [CommRing R]
 def locLen (P : Ideal R) [P.IsPrime] (M : Type*) [AddCommGroup M] [Module R M] : ℕ∞ :=
   Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl M)
 
-def IsChar (M : Type*) [AddCommGroup M] [Module R M] (f : R) : Prop :=
-  f ≠ 0 ∧ ∀ (p : R) (P : Ideal R) [P.IsPrime], p ≠ 0 → P = Ideal.span {p} → locLen P M = emultiplicity p f
-
-def IsPseudoIso {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
-    (φ : M →ₗ[R] N) : Prop :=
-  Module.length R (LinearMap.ker φ) ≠ ⊤ ∧ Module.length R (N ⧸ LinearMap.range φ) ≠ ⊤
-
 def coinvLen (g : R) (M : Type*) [AddCommGroup M] [Module R M] : ℕ∞ :=
   Module.length R (QuotSMulTop g M)
 
 def invLen (g : R) (M : Type*) [AddCommGroup M] [Module R M] : ℕ∞ :=
   Module.length R (Submodule.torsionBy R M g)
 
-def interLen (f g : R) : ℕ∞ := Module.length R (R ⧸ Ideal.span {f, g})
-
 end Char
-
-example (l : ℕ) [Fact l.Prime] (a : maximalIdeal ℤ_[l]) : ev a (1 + X) = 1 + a := by simp
 
 end UpperTheory.V.abelian₂
 

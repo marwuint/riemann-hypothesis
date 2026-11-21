@@ -41,27 +41,6 @@ theorem mem_shaSubmodule_cohomologyAddEquivOfEquiv_iff (n : ℕ) (x : cohomology
 
 end Scalars
 
-section Card
-
-variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-  {ι : Type} {Hv : ι → Type} [∀ v, Group (Hv v)] [∀ v, TopologicalSpace (Hv v)]
-  [∀ v, IsTopologicalGroup (Hv v)] (φ : ∀ v, Hv v →ₜ* G) (ℓ : ℕ) [Fact ℓ.Prime]
-  (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M] (hM : ∀ m : M, ℓ • m = 0)
-
-theorem natCard_ptSha_eq_pow_finrank (r : ℕ) [Finite (cohomology M r)] :
-    Nat.card (ptSha φ M r) = ℓ ^ Module.finrank (ZMod ℓ) (shaSubmodule φ (zmodRepOfTorsion ℓ M hM) r) := by
-  let E := cohomologyZModEquiv ℓ M hM r
-  have hmem : ∀ x, x ∈ ptSha φ M r ↔ E x ∈ shaSubmodule φ (zmodRepOfTorsion ℓ M hM) r := fun x => by
-    rw [mem_ptSha_iff_mem_shaSubmodule]
-    exact (mem_shaSubmodule_cohomologyAddEquivOfEquiv_iff φ (zmodRepOfTorsionEquiv ℓ M hM) (fun _ _ => rfl)
-      r x).symm
-  have hc : Nat.card (ptSha φ M r) = Nat.card (shaSubmodule φ (zmodRepOfTorsion ℓ M hM) r) :=
-    Nat.card_congr (E.toEquiv.subtypeEquiv hmem)
-  have : Finite (cohomology (zmodRepOfTorsion ℓ M hM) r) := Finite.of_equiv _ E.toEquiv
-  rw [hc, natCard_eq_pow_finrank_zmod ℓ]
-
-end Card
-
 section KummerZMod
 
 attribute [local instance 2000] Rep.hV2
@@ -191,23 +170,6 @@ theorem finrank_shaSubmodule_two_eq_finrank_invariants (hℓS : ∀ v ∉ S, ((�
     (mem_shaSubmodule_iff_mem_range_kummerModNZMod _ (gsKummer_shortExact S ℓ hℓS) (nsmul_galRootsOfUnity_eq_zero ℓ)
       (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs)) 1
       (mem_ptSha_mackey_iff_exists_kummerModN hL ιs hℓ hℓS hK))
-
-theorem natCard_ptSha_two_gs [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
-    (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
-    (hMℓ : ∀ m : M, ℓ • m = 0) :
-    Nat.card (ptSha (gsFinFamily S ιs) M 2) =
-      ℓ ^ Module.finrank (ZMod ℓ) (shaSubmodule (gsFinFamily S ιs) (zmodRepOfTorsion ℓ M hMℓ) 2) := by
-  have : Finite (zmodRepOfTorsion ℓ M hMℓ) := inferInstanceAs (Finite M)
-  have hS' : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card M : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S := by
-    intro v hv
-    by_contra h
-    apply hℓS v h
-    have hc : Nat.card M = ℓ ^ Module.finrank (ZMod ℓ) (zmodRepOfTorsion ℓ M hMℓ) :=
-      natCard_eq_pow_finrank_zmod ℓ (zmodRepOfTorsion ℓ M hMℓ)
-    rw [hc, Nat.cast_pow] at hv
-    exact v.isPrime.mem_of_pow_mem _ hv
-  have := finite_cohomology_gs K S M hS' 2 le_rfl
-  exact natCard_ptSha_eq_pow_finrank (gsFinFamily S ιs) ℓ M hMℓ 2
 
 end GS
 

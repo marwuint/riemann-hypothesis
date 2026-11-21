@@ -106,11 +106,6 @@ theorem resG_tr [IsFinite f] {V W : Y.Opens} (hV : IsAffineOpen V) (hW : IsAffin
 
 variable [IsFinite f] [Flat f] [LocallyOfFinitePresentation f]
 
-omit [Flat f] [LocallyOfFinitePresentation f] in
-
-theorem isAffineOpen_preimage {V : Y.Opens} (hV : IsAffineOpen V) : IsAffineOpen (f ⁻¹ᵁ V) :=
-  hV.preimage f
-
 theorem exists_finFree_app_of_finitePresentation {y : Y} {U : Y.Opens} (hy : y ∈ U) :
     ∃ V : Y.Opens, IsAffineOpen V ∧ y ∈ V ∧ V ≤ U ∧ FinFree (f.app V).hom := by
   obtain ⟨V, hV, hyV, hle⟩ := exists_isAffineOpen_mem_and_subset hy
@@ -269,8 +264,6 @@ theorem resG_cst_comp {V : Y.Opens} {V' : X.Opens} (e : f ⁻¹ᵁ V ≤ V') (r 
   rw [Scheme.Hom.app_eq_appLE, appLE_cst (comp_eq_comp_id f q) (le_refl (f ⁻¹ᵁ V)) r]
   exact rs_cst (f ≫ q) e r
 
-theorem natCast_eq_cst (V : Y.Opens) (r : ℕ) : cst q V (r : R) = (r : Γ(Y, V)) := map_natCast _ r
-
 variable [IsFinite f] [Flat f] [LocallyOfFinitePresentation f] {L : LB Y}
 
 variable (L) in
@@ -323,36 +316,10 @@ theorem exactAt_of_isIso_comp {R : Type} [CommRing R] {C D : CochainComplex (Mod
     rw [← Category.assoc, ← HomologicalComplex.homologyMap_comp, IsIso.hom_inv_id]
   rw [e, hD.eq_of_tgt (HomologicalComplex.homologyMap i n) 0, zero_comp]
 
-def smulCube {R : Type} [CommRing R] {κ : Type} (A : GlobalTheory.Cube.{0} κ R) (u : Rˣ) : A ≅ A :=
-  GlobalTheory.Cube.isoMk (fun _ => LinearEquiv.smulOfUnit u) fun h x => ((GlobalTheory.Cube.res A h).map_smul (u : R) x).symm
-
 section Cech
 
 variable {X Y : Scheme.{0}} (f : X ⟶ Y) {R : Type} [CommRing R] (q : Y ⟶ Spec (CommRingCat.of R))
   [IsFinite f] [Flat f] [LocallyOfFinitePresentation f]
-
-theorem pullCube_trCube (r : ℕ) (hr : ∀ V : Y.Opens, IsAffineOpen V → FinFree (f.app V).hom →
-      Nontrivial Γ(Y, V) → (letI := (f.app V).hom.toAlgebra; Module.finrank Γ(Y, V) Γ(X, f ⁻¹ᵁ V)) = r)
-    (hu : IsUnit (r : R)) (L : LB Y) {κ : Type} (D : κ → Y.Opens) :
-    pullCube f q L D ≫ trCube f q L D = (smulCube (secCube q L D) hu.unit).hom := by
-  ext s x
-  obtain ⟨y, rfl⟩ : ∃ y : SecOn L (⨅ i ∈ s, D i), y = x := ⟨x, rfl⟩
-  change trSec f _ (SecOn.restrict (L.pull f) (preimage_biInf D f s).le
-    (SecOn.pullLE L f _ _ (preimage_biInf D f s).ge y)) = ((hu.unit : R)) • (show SecOnR q L _ from y)
-  rw [SecOn.restrict_pullLE]
-  erw [SecOn.pullLE_self, trSec_pull f r hr]
-  rw [IsUnit.unit_spec, SecOnR.smul_def, natCast_eq_cst]
-  rfl
-
-theorem cechLB_exactAt_of_pull (r : ℕ) (hr : ∀ V : Y.Opens, IsAffineOpen V → FinFree (f.app V).hom →
-      Nontrivial Γ(Y, V) → (letI := (f.app V).hom.toAlgebra; Module.finrank Γ(Y, V) Γ(X, f ⁻¹ᵁ V)) = r)
-    (hu : IsUnit (r : R)) (L : LB Y) {κ : Type} [LinearOrder κ] (D : κ → Y.Opens) (n : ℕ)
-    (h : (cechLB (f ≫ q) (L.pull f) (fun i => f ⁻¹ᵁ D i)).ExactAt n) : (cechLB q L D).ExactAt n := by
-  haveI : IsIso ((cechFunctor κ R).map (pullCube f q L D) ≫ (cechFunctor κ R).map (trCube f q L D)) := by
-    rw [← Functor.map_comp, pullCube_trCube f q r hr hu]
-    infer_instance
-  exact exactAt_of_isIso_comp ((cechFunctor κ R).map (pullCube f q L D))
-    ((cechFunctor κ R).map (trCube f q L D)) h
 
 omit [IsFinite f] [Flat f] [LocallyOfFinitePresentation f] in
 
@@ -402,11 +369,6 @@ theorem cechLB_retract_and_exactAt (r : ℕ) (hr : ∀ y, f.finrank y = r) (hu :
     rw [cechLB_retract f q r hr hu]
     infer_instance
   exact exactAt_of_isIso_comp (cechPull f q L D) (cechTr f q L D ≫ cechSMul q (hu.unit⁻¹).val L D) h
-
-theorem cechLB_exactAt_of_pull_of_finrank (r : ℕ) (hr : ∀ y, f.finrank y = r)
-    (hu : IsUnit (r : Γ(Y, ⊤))) (L : LB Y) {κ : Type} [LinearOrder κ] (D : κ → Y.Opens) (n : ℕ)
-    (h : (cechLB (f ≫ q) (L.pull f) (fun i => f ⁻¹ᵁ D i)).ExactAt n) : (cechLB q L D).ExactAt n :=
-  (cechLB_retract_and_exactAt f q r hr hu L D).2 n h
 
 end Cech
 

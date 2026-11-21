@@ -68,45 +68,6 @@ structure Iwa (G : Type) [Group G] where
 
 namespace Iwa
 
-def triv (G : Type) [CommGroup G] : Iwa G where
-  Nf := ⊥
-  Tf := ⊤
-  N := ⊥
-  T := ⊤
-  Tc _ := ⊤
-  Nm _ := ⊥
-  P := ⊥
-  z := 1
-  N_le := le_rfl
-  T_le := le_rfl
-  P_le _ _ := trivial
-  z_mem := Submonoid.one_mem _
-  Tc_le _ := le_rfl
-  Tc_anti _ _ _ := le_rfl
-  Nm_anti _ _ _ := le_rfl
-  comm s _ t _ := mul_comm s t
-  Tf_Nf t _ x hx := by simpa using hx
-  T_N t _ x hx := by simpa using hx
-  T_Nm _ t _ x hx := by simpa using hx
-  P_N t _ x hx := by simpa using hx
-  P_Nm _ t _ x hx := by
-    have : x = 1 := by simpa using hx
-    simp [this]
-  z_Nm _ x hx := by simpa using hx
-  swap _ y hy x hx := ⟨x, hx, 1, trivial, y, hy, by rw [mul_one, mul_comm]⟩
-  uniq x hx t _ y hy h := by
-    have h1 : x = 1 := by simpa using hx
-    have h2 : y = 1 := by simpa using hy
-    simpa [h1, h2] using h
-  fin_N _ _ := by simp
-  fin_Nm _ := by simp
-  fin_Tc _ := by simp
-  exh x hx := ⟨0, by simpa using hx⟩
-  exists_pow_mul_inv_mem a ha := ⟨0, by
-    have : a = 1 := by simpa using ha
-    simp [this]⟩
-  gen t _ := ⟨t, trivial, 1, Submonoid.one_mem _, 1, Submonoid.one_mem _, by simp⟩
-
 variable {G : Type} [Group G] (I : Iwa G)
 
 def Iw (c : ℕ) : Subgroup G := I.N ⊔ I.T ⊔ I.Nm c
@@ -285,23 +246,6 @@ structure WtRep {G : Type} [Group G] (I : Iwa G) (O Ω : Type) [CommRing O] [IsL
   central : ∀ t : I.Tf, (t : G) ∈ Subgroup.center G → ∀ i j, ξ t i j = if i = j then (χ t : Ω) else 0
 
 private theorem fin1 (i j : Fin (0 + 1)) : i = j := Subsingleton.elim (α := Fin 1) i j
-
-def WtRep.triv {G : Type} [Group G] (I : Iwa G) (O Ω : Type) [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] :
-    WtRep I O Ω where
-  d := 0
-  ξ := 1
-  χ := 1
-  c0 := 0
-  int_N _ _ i j := ⟨1, by simp [fin1 i j]⟩
-  integral_torusCharacter _ _ i j := ⟨1, by simp [fin1 i j]⟩
-  int_Nm _ _ i j := ⟨1, by simp [fin1 i j]⟩
-  int_P _ _ i j := ⟨1, by simp [fin1 i j]⟩
-  row_N _ _ j := by simp [fin1 j 0]
-  torusAction _ j := by simp [fin1 j 0]
-  nilpotent_central_action _ j hj := absurd (fin1 j 0) hj
-  cont_Nm _ := ⟨0, fun _ _ i j => ⟨0, zero_mem _, by simp [fin1 i j]⟩⟩
-  continuous_torusCharacter _ := ⟨0, fun _ _ => ⟨0, zero_mem _, by simp⟩⟩
-  central _ _ i j := by simp [fin1 i j]
 
 namespace Frame
 

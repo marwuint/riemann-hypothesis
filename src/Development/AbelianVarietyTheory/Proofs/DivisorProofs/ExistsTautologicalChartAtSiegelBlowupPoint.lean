@@ -5,19 +5,23 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
 import Development.AbelianVarietyTheory.Definitions.Divisors.PullData
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember
 import Development.AbelianVarietyTheory.Definitions.Divisors.TateProductRigidificationTrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelModuliTraitThroughCompactificationPtStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDegenerationDataTautologicalChartOfTraitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnifPullbackOfCanonicalOnStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelLevelStructureMumfordFamilyTautologiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtNormalisedBlowupStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelModuliTraitThroughCompactificationPt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDegenerationDataTautologicalChartOfTrait
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnifPullbackOfCanonicalOn
+import Development.AbelianVarietyTheory.Definitions.Divisors.OfFactorE
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMumfordFamily
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentFactorUniformisedGroupsBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusEndOfPadd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinHomIffLinEnd
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelLevelStructureMumfordFamilyTautologi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtNormalisedBlowup
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProjOverLocallyOfFiniteType
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithmeticCurveIsAffineAndFiniteInt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularLocalRingAndIsRelParam
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplAtFactorOfIsAdicComplete
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDataFrom
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitChartGenericFibresSameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelAbelianLocusToroidalChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitChartGenericFibresSame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelAbelianLocusToroidalChart
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.SiegJoin GlobalTheory.TChart
@@ -127,13 +131,13 @@ end GlobalTheory.ChartHit
 theorem GlobalTheory.TChart.exists_chart_at : ∀ g : ℕ, 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ → NoSelfInt id g φ → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z) (d : ℕ) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), MinAt5 F z i OZ → BlowAt F z i φ d π j BD → ∀ x : S, ∃ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) (_ : GrpObj G₁) (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (ξ : Sp C.R ⟶ S), C.IsFam F G₁ y α₁ ∧ y ≫ j = jK C.R ≫ ξ ∧ ξ (closedPoint C.R) = x := by
   intro g hg φ hφ hns n hn hodd F Z z i OZ d S π j _ BD hMin hBlow x
   obtain ⟨hsep, hlft, hln, hdense, hjs⟩ := GlobalTheory.ChartHit.setup F Z z i OZ φ d S π j BD hMin hBlow
-  obtain ⟨T, ξT, b, hx, hTj, hTb⟩ := GlobalTheory.T.exists_siegelModuli_trait_through_compactification_pt F S (π ≫ z) j hn hdense hjs x
+  obtain ⟨T, ξT, b, hx, hTj, hTb⟩ := _root_.GlobalTheory.TChart.exists_trait_at F S (π ≫ z) j hn hdense hjs x
   have hyb : T.y ≫ F.s = jK T.V ≫ spMap b := by
     rw [← hjs, ← Category.assoc, ← hTj, Category.assoc, hTb]
   obtain ⟨L, m, N, ε, V', _, _, _, f, κ, sv, D', e, G', _, _, πG, A', U', hgen, hcone, hdef, hV', hdvr, hfi, hff, hfl,
-    hκl, hκb, hs1, hs2, hU, hD⟩ := GlobalTheory.T.exists_degeneration_data_tautologicalChart_of_trait g hg φ hφ n hn hodd F T b hyb
+    hκl, hκb, hs1, hs2, hU, hD⟩ := _root_.GlobalTheory.TChart.exists_degFrom_of_trait g hg φ hφ n hn hodd F T b hyb
   obtain ⟨C, θ, e', hθl, hθs, hθb, hD'⟩ := GlobalTheory.ChartHit.chart φ hn L m N ε V' κ sv D' e hgen hcone hdef hV' hκl hs1 hs2 hD
-  obtain ⟨G₁, _, _, P, hMP, hCan, hab, htors⟩ := GlobalTheory.T.exists_mumford_family g n φ hn hodd C
+  obtain ⟨G₁, _, _, P, hMP, hCan, hab, htors⟩ := _root_.GlobalTheory.TChart.Taut.exists_family g n φ hn hodd C
   have hle : nonZeroDivisors T.V ≤ (nonZeroDivisors V').comap f := nonZeroDivisors_le_comap_nonZeroDivisors_of_injective f hfi
   let fK : FractionRing T.V →+* FractionRing V' := IsLocalization.map (FractionRing V') f hle
   have hfK : ∀ a, fK (algebraMap T.V _ a) = algebraMap V' _ (f a) := fun a => IsLocalization.map_eq hle a
@@ -147,7 +151,7 @@ theorem GlobalTheory.TChart.exists_chart_at : ∀ g : ℕ, 1 ≤ g → ∀ φ : 
   let κ' : Localization.Away (∏ k, C.t k) →+* FractionRing V' := IsLocalization.Away.lift (∏ k, C.t k) hunit
   have hκ' : κ'.comp (algebraMap C.R (Localization.Away (∏ k, C.t k))) = (algebraMap V' (FractionRing V')).comp θ :=
     IsLocalization.Away.lift_comp (∏ k, C.t k) hunit
-  have hSF := GlobalTheory.T.trait_chart_generic_fibres_same F C G₁ P hMP hCan T V' θ f fK hV' hθl hθs hfK D' e' hD' G' πG A' U' hU
+  have hSF := _root_.GlobalTheory.TChart.sameFib_trait_chart F C G₁ P hMP hCan T V' θ f fK hV' hθl hθs hfK D' e' hD' G' πG A' U' hU
   have hx₀ : (spMap fK ≫ T.y) ≫ F.s = spMap ((κ'.comp (algebraMap C.R (Localization.Away (∏ k, C.t k)))).comp C.b) := by
     rw [Category.assoc, hyb, hκ', RingHom.comp_assoc, hθb, hκb]
     simp only [jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -155,9 +159,9 @@ theorem GlobalTheory.TChart.exists_chart_at : ∀ g : ℕ, 1 ≤ g → ∀ φ : 
     ext a
     simp [hfK]
   rw [← hκ'] at hSF
-  obtain ⟨c, hc, hiso, hpt⟩ := GlobalTheory.T.exists_level_abelianLocus_toroidalChart hn hodd F C G₁ P hMP hab htors (FractionRing V') κ' (spMap fK ≫ T.y) hx₀ hSF
-  obtain ⟨y, α₁, yU, l, hFam, hSPB, hl, hyl⟩ := GlobalTheory.T.exists_siegelLevelStructure_mumfordFamily_tautological g n φ hn hodd F C G₁ P hMP hab c hc hiso
-  obtain ⟨ξ, hξ⟩ := GlobalTheory.T.exists_ext_normalised_blowup g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hMin hBlow C G₁ y α₁ hFam
+  obtain ⟨c, hc, hiso, hpt⟩ := _root_.GlobalTheory.TChart.AbLevel.exists_level hn hodd F C G₁ P hMP hab htors (FractionRing V') κ' (spMap fK ≫ T.y) hx₀ hSF
+  obtain ⟨y, α₁, yU, l, hFam, hSPB, hl, hyl⟩ := _root_.GlobalTheory.TChart.Taut.exists_isFam_of_siegPre g n φ hn hodd F C G₁ P hMP hab c hc hiso
+  obtain ⟨ξ, hξ⟩ := _root_.GlobalTheory.TChart.Taut.exists_ext_normBl g hg φ hφ hns n hn hodd F Z z i OZ d S π j BD hMin hBlow C G₁ y α₁ hFam
   have hsA : spMap l ≫ spMap (algebraMap C.R (Localization.Away (∏ k, C.t k))) = jK C.R := by
     simp only [jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hl]
   have hyUs : yU ≫ F.s = spMap ((algebraMap C.R (Localization.Away (∏ k, C.t k))).comp C.b) := by

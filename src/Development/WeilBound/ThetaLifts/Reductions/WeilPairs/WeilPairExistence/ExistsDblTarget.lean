@@ -1,15 +1,15 @@
 import Mathlib
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.RowsStackRight
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.Imports
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.ImportsAlt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairExistence.ExistsIsWeilDatumOF
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.ExistsWeilTransportAdelicSchwartzCmExtensionImpo
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.TransportedWeilDatumCMPreservesSchwartzHeisenber
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.WeilDatumTransportCmPreservesAdmissibleFormsImpo
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.IsUnitaryOnWeilDatumTransportAdelicSchwartz2
-import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairData.ContinuousTransportWeilDatumCmExtensionImports
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumDoubledTargetSiegelRuleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledTargetWeilTransportRestrictFirstFactorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilTransportAdelicSchwartzCmExtensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumCMPreservesSchwartzHeisenberStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumTransportCmPreservesAdmissibleForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitaryOnWeilDatumTransportAdelicSchwartz
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTransportWeilDatumCmExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumDoubledTargetSiegelRule
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledTargetWeilTransportRestrictFirstFactor
 
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
@@ -51,15 +51,15 @@ theorem exists_dbl_target : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     hBm (κ ⊕ κ) (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) hrat'
   have k2 := GlobalTheory.T.transportedWeilDatum_CM_preserves_schwartz_heisenberg F E σ B hB nS (nT + nT) JS _ hJS hJTd ξ₀ hξ0 hσξ χS 1 hS h1 rS r1 ωd hωd _ JB ξ rfl
     hBm (κ ⊕ κ) (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) hrat' omp hmp
-  have k3 := GlobalTheory.T.weilDatumTransport_cm_preserves_admissibleForms F E σ B hB nS (nT + nT) JS _ hJS hJTd ξ₀ hξ0 hσξ χS 1 hS h1 rS r1 ωd hωd _ JB ξ rfl
+  have k3 := _root_.GlobalTheory.WeilAdmCM.transport_adm F E σ B hB nS (nT + nT) JS _ hJS hJTd ξ₀ hξ0 hσξ χS 1 hS h1 rS r1 ωd hωd _ JB ξ rfl
     hBm (κ ⊕ κ) (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) hrat' omp hmp
-  have k4 := GlobalTheory.T.isUnitaryOn_weilDatum_transport_adelicSchwartz F E σ B hB nS (nT + nT) JS _ hJS hJTd ξ₀ hξ0 hσξ χS 1 hS h1 rS r1 ωd hωd _ JB ξ rfl
+  have k4 := _root_.GlobalTheory.WeilUnitaryTransportF.isUnitaryOn_transportF F E σ B hB nS (nT + nT) JS _ hJS hJTd ξ₀ hξ0 hσξ χS 1 hS h1 rS r1 ωd hωd _ JB ξ rfl
     hBm (κ ⊕ κ) (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) hrat' omp hmp
-  have k5 := GlobalTheory.T.continuous_transport_weil_datum_cm_extension F E σ B hB nS (nT + nT) JS _ hJS hJTd ξ₀ hξ0 hσξ χS 1 hS h1 rS r1 ωd hωd _ JB ξ rfl
+  have k5 := _root_.GlobalTheory.WeilContF.continuous_transportF F E σ B hB nS (nT + nT) JS _ hJS hJTd ξ₀ hξ0 hσξ χS 1 hS h1 rS r1 ωd hωd _ JB ξ rfl
     hBm (κ ⊕ κ) (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) hrat' omp hmp
   have hsp : IsUSplitting (adeleClass F) B.ψ (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) (actAB (cA σ)) omp :=
     ⟨⟨k2.1, k2.2, k3⟩, k4, k5⟩
-  have hsg := GlobalTheory.T.weilDatum_doubledTarget_siegelRule F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ0 hσξ χS hS rS JB ξ hBm (κ ⊕ κ)
+  have hsg := _root_.GlobalTheory.WeilSchrodinger.DblTargetF.siegelRule_dblTarget F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ0 hσξ χS hS rS JB ξ hBm (κ ⊕ κ)
     (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) hrat' ωd hωd omp hmp
   have t1 := GlobalTheory.WeilSchrodinger.DblTarget.isDblCoord_transD co
   have t2 : IsLagr (cA σ) (dbl (incM F JA)) (diagCols (Fin nT)) := isLagr_diagCols _ _
@@ -70,7 +70,7 @@ theorem exists_dbl_target : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     (GlobalTheory.WeilSchrodinger.DblTarget.dblRows co) _ (GlobalTheory.WeilSchrodinger.DblTargetF.reindex_dbl_incM hA) χS _ hsg
   refine ⟨_, _, t1, ⟨t2, t4, t5⟩, ?_⟩
   intro g gd hgd φ₁ hφ₁ φ₂ hφ₂
-  have key := GlobalTheory.T.doubled_target_weil_transport_restrict_first_factor F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ0 hσξ χS χT hS hT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
+  have key := _root_.GlobalTheory.DblTargetRestrict.restrict_boxFun F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ0 hσξ χS χT hS hT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
     ωd hωd omp hmp g (GlobalTheory.WeilSchrodinger.DblTargetF.ugDbl hA gd)
     (by rw [GlobalTheory.WeilSchrodinger.DblTargetF.ugDbl_coe, hgd]) φ₁ hφ₁ φ₂ hφ₂
   rw [MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.inl_apply]

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlge
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpHomAlgebraisationOfReductions
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PureEndomorphismHomLiftSquareZeroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PureEndomorphismHomLiftSquareZero
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniformBaseChange.PullGt
@@ -91,7 +91,7 @@ theorem existsUnique_hom (hF : GlobalTheory.Published.FormalAlgebraisation) (hM 
         thickMap T I e A ≫ k.left = f.1.left ≫ thickMap T I e B → k = f'.1 := by
     intro e f
     have := f.2.1
-    obtain ⟨k, h₁, h₂, h₃, h₄⟩ := GlobalTheory.T.pure_endomorphism_hom_lift_square_zero hM p hp _ _
+    obtain ⟨k, h₁, h₂, h₃, h₄⟩ := _root_.GlobalTheory.pureLift_step hM p hp _ _
       (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)) : I ^ (e + 1 + 1) ≤ I ^ (e + 1)))
       ⟨e + 1 + 1, by
         rw [← map_natCast (Ideal.Quotient.mk (I ^ (e + 1 + 1))), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]

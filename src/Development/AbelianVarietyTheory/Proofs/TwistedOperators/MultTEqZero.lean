@@ -309,10 +309,6 @@ private theorem sum_smul_T_map_eq_zero_of_sum_eq_zero {D : D7} {θ : D.what₂.T
       exact h1
   simpa using step Finset.univ
 
-theorem slots {T : MMap M} (hT : IsMultMap θ M J χ T) (A : ∀ τ, M.sm τ →ₗ[ℂ] M.sm τ) {ι : Type} [Fintype ι]
-    (c : ι → ℂ) (v : ι → M.Vec) (h : ∑ i, c i • T (v i) = 0) : ∑ i, c i • T (fun τ => A τ (v i τ)) = 0 := by
-  exact sum_smul_T_map_eq_zero_of_sum_eq_zero hT.equiv hT.cont A c v h
-
 private theorem sobCont_zero_twisted_operators {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (Lie : Set (Matrix (Fin n) (Fin n) ℂ)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     Sobolev₂ Lie σ (0 : H →ₗ[ℂ] ℂ) :=

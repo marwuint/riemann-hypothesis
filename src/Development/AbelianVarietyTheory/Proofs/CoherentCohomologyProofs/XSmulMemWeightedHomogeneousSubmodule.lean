@@ -190,18 +190,6 @@ theorem exists_bound_proj (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (G :
       (fun g _ => Finset.sum_nonneg (fun i _ => abs_nonneg i)) hg
   linarith
 
-theorem inf_range_eq_map (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (𝒩 : ℤ → Submodule R N)
-    [Decomposition 𝒩] (f : M →ₗ[R] N) (d : ℤ) (hf : ∀ n, ∀ m ∈ ℳ n, f m ∈ 𝒩 (n + d))
-    (n : ℤ) : 𝒩 (n + d) ⊓ LinearMap.range f = (ℳ n).map f := by
-  ext y
-  simp only [Submodule.mem_inf, LinearMap.mem_range, Submodule.mem_map]
-  constructor
-  · rintro ⟨hy, x, rfl⟩
-    refine ⟨proj ℳ n x, proj_mem ℳ n x, ?_⟩
-    rw [← proj_map ℳ 𝒩 f d hf n x, proj_of_mem 𝒩 hy]
-  · rintro ⟨x, hx, rfl⟩
-    exact ⟨hf n x hx, x, rfl⟩
-
 variable {ι : Type*} [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M]
 
 noncomputable abbrev mul (M : Type*) [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M]
@@ -579,53 +567,6 @@ theorem IsHilbertPoly.unique {ℳ : ℤ → Submodule k M} {P Q : ℚ[X]} (hP : 
   filter_upwards [hP.eventually_eq, hQ.eventually_eq] with n h1 h2
   rw [← h1, ← h2]
 
-theorem IsHilbertPoly.shift {ℳ : ℤ → Submodule k M} {P : ℚ[X]} (hP : IsHilbertPoly ℳ P)
-    (d : ℤ) : IsHilbertPoly (fun n => ℳ (n + d)) (P.comp (X + C (d : ℚ))) where
-  finite n := hP.finite (n + d)
-  eventually_eq := by
-    filter_upwards [(Filter.tendsto_atTop_add_const_right atTop d Filter.tendsto_id).eventually
-      hP.eventually_eq] with n hn
-    simp only [id_eq] at hn
-    rw [hn, eval_comp]
-    simp
-
-theorem finrank_eq_add_of_exact (ℳ' : ℤ → Submodule k M') [Decomposition ℳ']
-    (ℳ : ℤ → Submodule k M) [Decomposition ℳ] (f : M' →ₗ[k] M) (g : M →ₗ[k] M'') (d : ℤ)
-    (hf : ∀ n, ∀ m ∈ ℳ' n, f m ∈ ℳ (n + d)) (hinj : Function.Injective f)
-    (hfg : Function.Exact f g) (n : ℤ) [Module.Finite k (ℳ (n + d))] :
-    finrank k (ℳ (n + d)) = finrank k (ℳ' n) + finrank k ((ℳ (n + d)).map g) := by
-  have h := finrank_map_add_finrank_inf_ker g (ℳ (n + d))
-  have hker : LinearMap.ker g = LinearMap.range f := by
-    ext y
-    rw [LinearMap.mem_ker, LinearMap.mem_range]
-    exact hfg y
-  rw [hker, inf_range_eq_map ℳ' ℳ f d hf n,
-    LinearEquiv.finrank_eq (Submodule.equivMapOfInjective f hinj (ℳ' n)).symm] at h
-  omega
-
-theorem IsHilbertPoly.coker {ℳ' : ℤ → Submodule k M'} [Decomposition ℳ']
-    {ℳ : ℤ → Submodule k M} [Decomposition ℳ] {P' P : ℚ[X]} (hP' : IsHilbertPoly ℳ' P')
-    (hP : IsHilbertPoly ℳ P) (f : M' →ₗ[k] M) (g : M →ₗ[k] M'') (d : ℤ)
-    (hf : ∀ n, ∀ m ∈ ℳ' n, f m ∈ ℳ (n + d)) (hinj : Function.Injective f)
-    (hfg : Function.Exact f g) :
-    IsHilbertPoly (fun n => (ℳ n).map g) (P - P'.comp (X - C (d : ℚ))) where
-  finite n := by
-    have := hP.finite n
-    infer_instance
-  eventually_eq := by
-    filter_upwards [hP.eventually_eq,
-      (Filter.tendsto_atTop_add_const_right atTop (-d) Filter.tendsto_id).eventually
-        hP'.eventually_eq] with n h1 h2
-    simp only [id_eq] at h2
-    have := hP.finite
-    have h := finrank_eq_add_of_exact ℳ' ℳ f g d hf hinj hfg (n + -d)
-    rw [neg_add_cancel_right] at h
-    rw [eval_sub, eval_comp, ← h1, h]
-    simp only [eval_sub, eval_X, eval_C]
-    rw [show (n : ℚ) - d = ((n + -d : ℤ) : ℚ) by push_cast; ring, ← h2]
-    push_cast
-    ring
-
 variable {ι : Type*} [Module (MvPolynomial ι k) M'] [IsScalarTower k (MvPolynomial ι k) M']
   [Module (MvPolynomial ι k) M] [IsScalarTower k (MvPolynomial ι k) M]
   [Module (MvPolynomial ι k) M''] [IsScalarTower k (MvPolynomial ι k) M'']
@@ -644,20 +585,6 @@ theorem exists_isHilbertPoly [Fintype ι] [Module.Finite (MvPolynomial ι k) M]
   rw [← hn, Submodule.restrictScalars_top, Submodule.restrictScalars_bot, top_inf_eq, bot_inf_eq,
     finrank_bot]
   simp
-
-noncomputable def gradedHilbertPoly [Fintype ι] [Module.Finite (MvPolynomial ι k) M]
-    (ℳ : ℤ → Submodule k M) [Decomposition ℳ]
-    (hX : ∀ (i : ι) (n : ℤ), ∀ m ∈ ℳ n, (MvPolynomial.X i : MvPolynomial ι k) • m ∈ ℳ (n + 1)) :
-    ℚ[X] :=
-  (exists_isHilbertPoly ℳ hX).choose
-
-section
-
-variable [Fintype ι] [Module.Finite (MvPolynomial ι k) M] (ℳ : ℤ → Submodule k M)
-  [Decomposition ℳ]
-  (hX : ∀ (i : ι) (n : ℤ), ∀ m ∈ ℳ n, (MvPolynomial.X i : MvPolynomial ι k) • m ∈ ℳ (n + 1))
-
-end
 
 theorem coeff_sub_comp_X_sub_C {K : Type*} [Field K] (P : K[X]) (r : K) (e : ℕ)
     (hP : P.degree ≤ (e + 1 : ℕ)) :

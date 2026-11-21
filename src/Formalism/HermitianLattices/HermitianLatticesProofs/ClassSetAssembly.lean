@@ -21,10 +21,6 @@ theorem classSetAssembly_tr_sub_left (h : V →ₗ⋆[K] V →ₗ[K] K) (x y z :
     Algebra.trace ℚ K (h (x - y) z) = Algebra.trace ℚ K (h x z) - Algebra.trace ℚ K (h y z) := by
   simp only [map_sub, LinearMap.sub_apply]
 
-theorem classSetAssembly_tr_add_right (h : V →ₗ⋆[K] V →ₗ[K] K) (x y z : V) :
-    Algebra.trace ℚ K (h z (x + y)) = Algebra.trace ℚ K (h z x) + Algebra.trace ℚ K (h z y) := by
-  simp only [map_add]
-
 theorem classSetAssembly_ratCast_mul (q : ℚ) (a : K) :
     Algebra.trace ℚ K ((q : K) * a) = q * Algebra.trace ℚ K a := by
   have e : (q : K) * a = q • a := by

@@ -18,44 +18,17 @@ def ClozelCohC : Prop :=
     ∀ (π : CuspSub E a) (Ξ : GlobalTheory.GKCoh.AlgRep E a),
       (∀ τ, ∃ m, π.HasInfChar τ m ∧ AlgInfChar Ξ τ (m.map Neg.neg)) → GlobalTheory.GKCoh.IsCohFor π Ξ
 
-def ClozelCohR : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), 1 ≤ a →
-    ∀ (π : TR.CuspSub F a) (Ξ : TR.AlgRep F a),
-      (∀ v, ∃ m, π.HasInfChar v m ∧ Ξ.HasInfChar v (m.map Neg.neg)) → TR.IsCohFor π Ξ
-
 def ClozelConjC : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a →
     ∀ (π : CuspSub E a), (CG.mk π).IsRegAlg → ∀ σ : ℂ ≃+* ℂ,
       ∃ (π' : CuspSub E a) (τ τ' : SmIrr (GL (Fin a) (Af E))), IsFinComp π τ ∧ IsFinComp π' τ' ∧ IsConjBy σ τ τ' ∧
         ∀ (φ : E →+* ℂ) (m : Multiset ℂ), π.HasInfChar φ m → π'.HasInfChar (σ.toRingHom.comp φ) m
 
-def ClozelConjR : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), 1 ≤ a →
-    ∀ (π : TR.CuspSub F a), π.IsRegAlg → ∀ σ : ℂ ≃+* ℂ,
-      ∃ (π' : TR.CuspSub F a) (τ τ' : SmIrr (GL (Fin a) (Af F))), π.IsFinComp τ ∧ π'.IsFinComp τ' ∧ IsConjBy σ τ τ' ∧
-        ∀ (φ : F →+* ℂ) (m : Multiset ℂ), π.HasInfChar (InfinitePlace.mk φ) m →
-          π'.HasInfChar (InfinitePlace.mk (σ.toRingHom.comp φ)) m
-
 def BorelInjC : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a →
     ∀ (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) → IsCompact (U : Set (GL (Fin a) (Af E))) →
     ∀ (Ξ : GlobalTheory.GKCoh.AlgRep E a) (S : Finset (CuspSub E a)), (∀ π ∈ S, ∀ π' ∈ S, π.Iso π' → π = π') →
       (∀ π ∈ S, GlobalTheory.GKCoh.IsCohFor π Ξ ∧ HasFixed π.finPart U) → (S.card : Cardinal) ≤ cohDim ⊤ U (ratC Ξ)
-
-def BorelInjR : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), 1 ≤ a →
-    ∀ (U : Subgroup (GL (Fin a) (Af F))), IsOpen (U : Set (GL (Fin a) (Af F))) → IsCompact (U : Set (GL (Fin a) (Af F))) →
-    ∀ (Ξ : TR.AlgRep F a) (S : Finset (TR.CuspSub F a)), (∀ π ∈ S, ∀ π' ∈ S, π.Iso π' → π = π') →
-      (∀ π ∈ S, TR.IsCohFor π Ξ ∧ HasFixed π.finPart U) → (S.card : Cardinal) ≤ cohDim (TR.GLplus F a) U Ξ.rat
-
-def IsFL (Γ : Type) [Group Γ] : Prop :=
-  ∃ r : ℕ → ℕ, (∀ᶠ i in Filter.atTop, r i = 0) ∧ ∃ P : ProjectiveResolution (Rep.trivial ℂ Γ ℂ),
-    ∀ i, Nonempty (P.complex.X i ≅ Rep.free ℂ Γ (Fin (r i)))
-
-def BorelSerreFL : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] (a : ℕ) (Γ : Subgroup (GL (Fin a) F)),
-    Subgroup.Commensurable Γ (Matrix.GeneralLinearGroup.map (n := Fin a) (algebraMap (𝓞 F) F)).range →
-    (∀ γ ∈ Γ, IsOfFinOrder γ → γ = 1) → IsFL ↥Γ
 
 section Real
 
@@ -86,12 +59,6 @@ structure IsGalRepOfR (π : TR.CuspSub F a) (ι : Qbar l ≃+* ℂ) (r : G F Ω 
       ∀ σ, π.IsLocComp w σ → GlobalTheory.SmGL.IsSpherical σ.ρ → IsCrysAt P Bw (r.comp (Dec (F := F) A).subtype)
 
 end Real
-
-def GaloisRepReal : Prop :=
-  ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
-    (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a →
-    ∀ (π : TR.CuspSub F a) (χ : HChar F), π.IsRegAlg → π.Polarized χ →
-      ∃ (r : G F Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (F →+* Qbar l) → Multiset ℤ), IsGalRepOfR π ι r wt HT
 
 def StrongMultOneReal : Prop :=
   ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), 1 ≤ a → ∀ π π' : TR.CuspSub F a,
@@ -140,21 +107,6 @@ structure IsBC (π : TR.CuspSub F a) (P : CuspSub E a) : Prop where
       ∃ B, π.HasSat v B ∧ (CG.mk P).HasSat w (B.map (· ^ f))
 
 end BC
-
-def QuadBaseChange : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E],
-    Module.finrank F E = 2 → ∀ (a : ℕ), 1 ≤ a → ∀ π : TR.CuspSub F a,
-      (∃ η : HChar F, IsQuadCharOf E η ∧ IsoTwist π η) ∨ ∃ P : CuspSub E a, IsBC π P
-
-def ThorneAdjoint : Prop :=
-  ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
-    (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (n : ℕ), 2 ≤ n →
-    ∀ (π : CuspSub F n) (χ : HChar (maximalRealSubfield F)), (CG.mk π).IsRegAlg → GlobalTheory.ContraPair.PolarizedPair π χ →
-    ∀ (r : G F Ω →* GL (Fin n) (Qbar p)), Continuous r → AttC ι r π → IsIrr (r.comp (cycBar F Ω p).ker.subtype) →
-    ∀ (μ : G (maximalRealSubfield F) Ω →* (Qbar p)ˣ), IsLAdicCharOf ι χ μ →
-    ∀ ρ : Representation (Qbar p) (G (maximalRealSubfield F) Ω) (Matrix (Fin n) (Fin n) (Qbar p)),
-      IsAdOf r (cycBar F Ω p ^ (1 - (n : ℤ)) * μ.comp (AlgEquiv.restrictScalarsHom (maximalRealSubfield F))) ρ →
-      BlochKatoSelmerVanishes p ρ
 
 def NewformRep : Prop :=
   ∀ (k : ℕ), 2 ≤ k → ∀ (f : Newform k) (j : ℤ), ∃ π : TR.CuspSub ℚ 2,

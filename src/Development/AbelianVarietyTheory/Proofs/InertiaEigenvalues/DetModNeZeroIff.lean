@@ -67,13 +67,4 @@ theorem card_sup_eq_top [Finite k] (r t : ℕ) (R : Submodule k (Fin (r + t) →
 
 end Field
 
-section Local
-
-variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-variable {F : Type} [Field F] [Algebra O F] [IsFractionRing O F]
-
-variable [Finite (ResidueField O)]
-
-end Local
-
 end GlobalTheory.AdaptedLocalData

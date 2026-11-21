@@ -2,14 +2,21 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DegVand
 import Formalism.LocalRingCardinality.DataTies
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryQuotientCompactness.MaximalCompactIsCompact
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsHaarOnBesselSubgroupProdMapStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsHaarOnBesselSubgroupProdMap
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniqueHaarDensityAtIdentityStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralHilbertSchmidtNormSqBesselAmplitudeLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelSchurOfFormalDegreeDensityStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralHilbertSchmidtNormSqBesselAmplitudeLe
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
+import Formalism.PeriodIntegrals.QuotInv
+import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+import Formalism.LocalRingCardinality.DataCD
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelSchurOfFormalDegreeDensity
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselDoubleCosetMeasureBigCellEqStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableHsNormSqAmplitudeBesselUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalDataBothAmplitudeSidesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeSizeConsequencesOfWordIndependentHypsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableHsNormSqAmplitudeBesselUnitary
+import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
+import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalDataBothAmplitudeSides
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudeSizeConsequencesOfWordIndependentHyps
 
 open MeasureTheory Matrix Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp
 open scoped InnerProductSpace ENNReal
@@ -172,7 +179,7 @@ theorem schurSt_of_big_tie : ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C₀ : ℝ, ∀
   refine ⟨2 * |CT| + 2 * C1, fun C hC => ⟨0, ?_⟩⟩
   intro D large₂ C' Cl hBig hTie hBS hLI hZ τ w w' hTT θ hθw W hW A hA μsec hsec
   obtain ⟨-, -, hb, hm, hr, -, -, hmk, hv, -, -, -, -, -, -, -, hTr, -, -⟩ :=
-    GlobalTheory.T.amplitudeSizeConsequences_of_wordIndependentHyps D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ
+    _root_.GlobalTheory.Amp.SizesProof.sizes_of_hyp D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ
   have hb2 : (2 : ℝ) ≤ large₂.sc.b := by have := Real.add_one_le_exp (1 : ℝ); linarith
   have hb0 : 0 < large₂.sc.b := by linarith
   have hk1 : 1 ≤ D.R.k := by
@@ -194,21 +201,21 @@ theorem schurSt_of_big_tie : ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C₀ : ℝ, ∀
   obtain ⟨-, -, hz, hz', hTz, hTz', hμG, hμW, hμW1, hμW', hμW'1, hμN, -, -⟩ := hW0
   have hA0 := hA
   obtain ⟨-, -, hB, hB', hsm, hv0ne, -, hcN, hl2, hl2', P, hCay, hFdeg⟩ := hA0
-  obtain ⟨hUR, hIR, -, hOS, hOS'⟩ := GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W (lamD D τ) A hθ0 hv0 hTT hW hA
+  obtain ⟨hUR, hIR, -, hOS, hOS'⟩ := _root_.GlobalTheory.Amp.Side.both_sides D τ w w' θ W (lamD D τ) A hθ0 hv0 hTT hW hA
   obtain ⟨-, -, hnt, hπU, hπI, -, -, -, hμNH, hQ, -, -, hΦc, -, -⟩ := hOS
   obtain ⟨-, -, hnt', hπU', hπI', -, -, -, -, hQ', -, -, hΦc', -, -⟩ := hOS'
   obtain ⟨hM, hM', hDec⟩ := hLI hZ τ w w' θ W hTT hW A hA
   have hTzp : 0 < Tz D.R.k D.R.rS W.z := by rw [hTz]; exact hTw
   have hTzp' : 0 < Tz D.R.k D.R.rS W.z' := by rw [hTz']; exact hTw'
   have hSide : SideIrr W.z W.π (muProd W.μW W.μN) :=
-    ⟨⟨hz, hTzp, hπU, GlobalTheory.T.isHaarOn_besselSubgroup_prod_map _ _ _ _ _ hz hTzp hμW hμNH, inferInstance⟩, hπI, hnt⟩
+    ⟨⟨hz, hTzp, hπU, _root_.GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map _ _ _ _ _ hz hTzp hμW hμNH, inferInstance⟩, hπI, hnt⟩
   have hSide' : SideIrr W.z' W.π' (muProd W.μW' W.μN) :=
-    ⟨⟨hz', hTzp', hπU', GlobalTheory.T.isHaarOn_besselSubgroup_prod_map _ _ _ _ _ hz' hTzp' hμW' hμNH, inferInstance⟩, hπI', hnt'⟩
+    ⟨⟨hz', hTzp', hπU', _root_.GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map _ _ _ _ _ hz' hTzp' hμW' hμNH, inferInstance⟩, hπI', hnt'⟩
 
   obtain ⟨c, hc0, hcD, -⟩ := GlobalTheory.T.exists_unique_haarDensity_at_identity (2 * D.R.rS + D.R.k + 1) (GG D.R.k D.R.rS) W.μG
     (PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group D.R.k D.R.rS) hμG
 
-  have hSch := GlobalTheory.T.besselModel_schur_of_formalDegree_density D.R.k D.R.rS A.σ (epsSH D.R) D.cd (D.s.cdScale _ (epsSH D.R)) P A.deg c W.μG
+  have hSch := _root_.GlobalTheory.FdegDens.schur_of_dens D.R.k D.R.rS A.σ (epsSH D.R) D.cd (D.s.cdScale _ (epsSH D.R)) P A.deg c W.μG
     (fun p q e h1 h2 S hS => hTie _ _ p q e h1 h2 S hS) hCay hFdeg hc0 hμG hcD
   have hVn := volUn_pos (2 * D.R.rS + D.R.k + 1)
   have hdeg : 0 < A.deg := by
@@ -241,7 +248,7 @@ theorem schurSt_of_big_tie : ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C₀ : ℝ, ∀
   rw [hN, hTz, hTz'] at hDis
   rw [hTz, hTz'] at hφ
 
-  have hF := GlobalTheory.T.measurable_hsNormSq_amplitude_besselUnitary D.R.k D.R.rS W.μG A.cN A.Φ A.Φ' hμG hΦc hΦc'
+  have hF := _root_.GlobalTheory.Amp.AmpMeas.measurable_hsNormSq_ampJ D.R.k D.R.rS W.μG A.cN A.Φ A.Φ' hμG hΦc hΦc'
   have hX : 0 < (2 * D.host.v) ^ (D.R.rS * D.R.k) := pow_pos h2v _
   have hP : 0 < (Tr D w * Tr D w') ^ (D.R.k - 1) := pow_pos (mul_pos hTw hTw') _
   have ha : 0 < c * 2 ^ (D.R.rS + 1) * volUn D.R.k ^ 2 / volUn (D.R.k - 1) / (Tr D w * Tr D w') ^ D.R.k /
@@ -258,7 +265,7 @@ theorem schurSt_of_big_tie : ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C₀ : ℝ, ∀
       refine measure_mono_null ?_ hDis.2.1
       intro x hx hG
       exact hx (Greg_subset _ _ hG)) hF
-  have hBound := GlobalTheory.T.lintegral_hilbertSchmidtNormSq_besselAmplitude_le D.R.k D.R.rS A.σ A.v0 _ _ A.cN W.μG (muProd W.μW W.μN) (muProd W.μW' W.μN)
+  have hBound := _root_.GlobalTheory.Amp.SchurNorm.lintegral_hsNormSq_ampJ_le D.R.k D.R.rS A.σ A.v0 _ _ A.cN W.μG (muProd W.μW W.μN) (muProd W.μW' W.μN)
     W.νS W.νS' _ W.z W.z' _ _ W.π W.π' A.B A.B' hv0ne hStd hSide hSide' hQ hQ' hM hM' hB hB' hcN hl2 hl2'
     hIso hIso' hDis
   have key : ENNReal.ofReal (c * 2 ^ (D.R.rS + 1) * volUn D.R.k ^ 2 / volUn (D.R.k - 1) /

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenScaledInt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodicTemperedDistPoissonStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodicTemperedDistPoisson
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicCharacterNontrivialAtPlaces
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix TensorProduct Classical
@@ -76,7 +76,7 @@ theorem transfer {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDi
     intro y
     rw [hC, hC, hg]
     simp only [hΦs]
-  obtain ⟨c, hc⟩ := GlobalTheory.T.periodic_tempered_dist_poisson n (T.comp C) t1 t2
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.IntComb.dirac_comb_unique n (T.comp C) t1 t2
   refine ⟨c, fun f => ?_⟩
   have hf : C (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ Φ f) = f := by
     ext y; rw [hC]; simp

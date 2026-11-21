@@ -13,15 +13,6 @@ variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountable
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
   (A : WeightedAtlas n Y ι La)
 
-theorem dbarAt_eq (j : ι) (F : ι → Y → ℂ) (y : Y) (ξ : Fin n → ℂ) :
-    A.dbarAt j F y ξ = dbv (fderiv ℝ (F j ∘ (A.chart j).symm) (A.chart j y)) (WithLp.toLp 2 ξ) := by
-  unfold dbarAt; rw [← sum_wdb_eq]
-
-theorem dbarAt_eq_zero_of_holo (j : ι) (F : ι → Y → ℂ) (y : Y) {G : V n → ℂ}
-    (hF : (F j ∘ (A.chart j).symm) =ᶠ[𝓝 (A.chart j y)] G) (hG : DifferentiableAt ℂ G (A.chart j y))
-    (ξ : Fin n → ℂ) : A.dbarAt j F y ξ = 0 := by
-  rw [dbarAt_eq, hF.fderiv_eq, dbv_holo hG]
-
 theorem mem_ovl {j i : ι} {y : Y} (hj : y ∈ (A.chart j).source) (hi : y ∈ (A.chart i).source) :
     A.chart j y ∈ ovl A.chart j i :=
   ⟨(A.chart j).map_source hj, by simp [(A.chart j).left_inv hj, hi]⟩
@@ -77,38 +68,6 @@ theorem levi_transfer (la : La) (f : Y → ℝ) (hf : A.SmoothFn f) (j i : ι) {
   have hc := leviV_comp (f := fun u => ((h u : ℝ) : ℂ)) (Φ := Φ) (y := v0) ?_ hΦ ξ
   · rw [show (fun v => ((h (Φ v) : ℝ) : ℂ)) = (fun u => ((h u : ℝ) : ℂ)) ∘ Φ from rfl, hc, hΦv]
   · exact Complex.ofRealCLM.contDiff.contDiffAt.comp _ hh
-
-theorem dbar_local (β : V n → ℝ) (hβ : ContDiff ℝ ∞ β) (la' : La) (j i : ι) {y : Y}
-    (hj : y ∈ (A.chart j).source) (hi : y ∈ (A.chart i).source) (F : ι → Y → ℂ) (c : ℂ)
-    (hF : (F j ∘ (A.chart j).symm) =ᶠ[𝓝 (A.chart j y)] fun v =>
-      c * (A.chiC i β ((A.chart j).symm v) : ℂ) * A.g la' j i ((A.chart j).symm v))
-    (ξ : Fin n → ℂ) :
-    A.dbarAt j F y ξ = c * A.g la' j i y *
-      dbv (fderiv ℝ (fun u => (β u : ℂ)) (A.chart i y))
-        (fderiv ℂ ((A.chart i) ∘ (A.chart j).symm) (A.chart j y) (WithLp.toLp 2 ξ)) := by
-  set Φ := (A.chart i) ∘ (A.chart j).symm
-  set v0 := (A.chart j) y
-  have hv0 := A.mem_ovl hj hi
-  have hO : ovl A.chart j i ∈ 𝓝 v0 := (A.isOpen_ovl j i).mem_nhds hv0
-  have hΦ : DifferentiableAt ℂ Φ v0 := (A.trans_contDiffAt hj hi).differentiableAt (by norm_num)
-  have hΦv : Φ v0 = (A.chart i) y := by simp [Φ, v0, (A.chart j).left_inv hj]
-  set G := A.g la' j i ∘ (A.chart j).symm
-  have hG : DifferentiableAt ℂ G v0 :=
-    (A.holo_g la' j i).differentiableAt hO
-  set βc : V n → ℂ := fun u => (β u : ℂ)
-  have hβc : ContDiff ℝ ∞ βc := Complex.ofRealCLM.contDiff.comp hβ
-  have hβd : DifferentiableAt ℝ βc (Φ v0) := hβc.differentiable (by norm_cast) _
-  have hf1 : DifferentiableAt ℝ (fun v => c * (βc ∘ Φ) v) v0 :=
-    (hβd.comp v0 (hΦ.restrictScalars ℝ)).const_mul c
-  have hev : (F j ∘ (A.chart j).symm) =ᶠ[𝓝 v0] fun v => c * (βc ∘ Φ) v * G v := by
-    filter_upwards [hF, hO] with v hv hvO
-    rw [hv, A.chiC_of_mem hvO.2]
-    simp only [Function.comp, βc, G, Φ]
-  rw [dbarAt_eq, hev.fderiv_eq, fderiv_fun_mul hf1 (hG.restrictScalars ℝ), dbv_add, dbv_smul,
-    dbv_smul, dbv_holo hG, mul_zero, zero_add, fderiv_const_mul (hβd.comp v0 (hΦ.restrictScalars ℝ)),
-    dbv_smul, dbv_comp hβd hΦ, hΦv]
-  simp only [G, Function.comp, v0, (A.chart j).left_inv hj]
-  ring
 
 end WeightedAtlas
 

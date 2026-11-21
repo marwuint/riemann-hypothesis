@@ -56,13 +56,6 @@ def divisorLevel (l : Level H) (m : ℕ) (hm : m ∣ l.M) (h3 : 3 ≤ m) : Level
   A := 1
   A_pos := one_pos
 
-theorem level_ext {l l' : Level H} (h₁ : l.M = l'.M) (h₂ : l.Mb = l'.Mb) (h₃ : l.A = l'.A) : l = l' := by
-  cases l
-  cases l'
-  simp only at h₁ h₂ h₃
-  subst h₁ h₂ h₃
-  rfl
-
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} in

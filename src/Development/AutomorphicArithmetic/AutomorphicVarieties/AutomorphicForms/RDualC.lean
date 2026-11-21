@@ -156,9 +156,6 @@ theorem isAutForm_dualFn {φ : Sm E a} (h : IsAutForm φ) : IsAutForm (dualFn E 
 theorem isCuspForm_dualFn {φ : Sm E a} (h : IsCuspForm φ) : IsCuspForm (dualFn E a φ) :=
   ⟨isAutForm_dualFn h.1, isCuspidal_invT h.1.left h.2⟩
 
-theorem dualFn_mulChi (χ : HChar E) (φ : Sm E a) : dualFn E a (mulChi a χ φ) = mulChi a χ⁻¹ (dualFn E a φ) :=
-  Subtype.ext <| funext fun g => by simp only [dualFn_apply, mulChi_apply, chiDet_invT]
-
 variable (π : CuspSub E a)
 
 def dual : CuspSub E a where
@@ -200,11 +197,6 @@ theorem locRep_toDual (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCo
   ext φ
   rw [mem_dual, mem_dual, dualFn_dualFn]
 
-theorem dual_twist (χ : HChar E) : dual (π.twist χ) = (dual π).twist χ⁻¹ := CuspSub.ext <| by
-  change (π.V.map _).map _ = (π.V.map _).map _
-  rw [← Submodule.map_comp, ← Submodule.map_comp]
-  exact congrArg (fun f => π.V.map f) (LinearMap.ext (dualFn_mulChi χ))
-
 variable {π} {π' : CuspSub E a}
 
 theorem iso_dual (h : π.Iso π') : (dual π).Iso (dual π') := by
@@ -213,52 +205,9 @@ theorem iso_dual (h : π.Iso π') : (dual π).Iso (dual π') := by
   obtain ⟨φ, rfl⟩ := (toDual π).surjective φ
   simp only [op_toDual, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hT]
 
-theorem hasInfChar_dual {τ : E →+* ℂ} {m : Multiset ℂ} (h : π.HasInfChar τ m) :
-    (dual π).HasInfChar τ (m.map Neg.neg) := by
-  refine ⟨by rw [Multiset.card_map, h.1], ?_⟩
-  rintro u _ ⟨φ, hφ, rfl⟩
-  change cap τ u (dualFn E a φ) = _ • dualFn E a φ
-  rw [cap_dualFn, h.2 _ φ hφ, map_smul, smul_smul, Multiset.map_map]
-  congr 1
-  rw [← h.1, ← Multiset.prod_replicate, ← Multiset.map_const', ← Multiset.prod_map_mul]
-  congr 2
-  funext z
-  simp only [Function.comp_apply]; ring
-
 theorem hasSatGL_dual {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : GlobalTheory.LFun.HasSatGL w (π.locRep w) B) :
     GlobalTheory.LFun.HasSatGL w ((dual π).locRep w) (B.map (·⁻¹)) :=
   hasSatGL_invT (toDual π) (locRep_toDual π w) h
-
-theorem isLocComp_dual {w : HeightOneSpectrum (𝓞 E)} {σ : SmIrr (GL (Fin a) (w.adicCompletion E))}
-    (h : π.IsLocComp w σ) : (dual π).IsLocComp w (smIrrInvT σ) := by
-  obtain ⟨f, h0, hf⟩ := h
-  refine ⟨(toDual π).toLinearMap ∘ₗ f, fun h => h0 (LinearMap.ext fun v => (toDual π).injective ?_), fun g v => ?_⟩
-  · rw [LinearMap.zero_apply, map_zero]; exact LinearMap.congr_fun h v
-  · change toDual π (f (σ.ρ (invT a _ g) v)) = (dual π).locRep w g (toDual π (f v))
-    rw [locRep_toDual]
-    exact congrArg _ (hf _ v)
-
-theorem hasFixed_dual {U : Subgroup (GL (Fin a) (Af E))} (hU : ∀ u ∈ U, invT a (Af E) u ∈ U)
-    (h : Af.HasFixed π.finPart U) : Af.HasFixed (dual π).finPart U :=
-  hasFixed_invT (toDual π) (finPart_toDual π) hU h
-
-theorem hasFixed_KLev_dual {M : ℕ} (h : Af.HasFixed π.finPart (Af.KLev E a M)) :
-    Af.HasFixed (dual π).finPart (Af.KLev E a M) := hasFixed_dual (fun _ => invT_mem_KLev) h
-
-theorem hasSat_dual {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : (CG.mk π).HasSat w B) :
-    (CG.mk (dual π)).HasSat w (B.map (·⁻¹)) := hasSatGL_dual h
-
-theorem paired_dual (h : Paired π π' invTOp) : Paired π (dual π') id := by
-  obtain ⟨B, h1, h2, hf, hc, hl⟩ := h
-  have e : ∀ o ψ, (toDual π').symm ((dual π').op o ψ) = π'.op (invTOp o) ((toDual π').symm ψ) := fun o ψ => by
-    obtain ⟨ψ, rfl⟩ := (toDual π').surjective ψ
-    rw [op_toDual, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]
-  refine ⟨B.compl₂ (toDual π').symm.toLinearMap, fun φ h => h1 φ fun ψ => by simpa using h (toDual π' ψ),
-    fun ψ h => (map_eq_zero_iff _ (toDual π').symm.injective).1 (h2 _ h), fun k φ ψ => ?_, fun k φ ψ => ?_,
-    fun X φ ψ => ?_⟩
-  · exact (congrArg (B _) (e _ ψ)).trans (hf k φ _)
-  · exact (congrArg (B _) (e _ ψ)).trans (hc k φ _)
-  · exact (congrArg (fun y => _ + B _ y) (e _ ψ)).trans (hl X φ _)
 
 def dualCG (π : CG E a) : CG E a :=
   Quotient.map (sa := CuspSub.setoid E a) (sb := CuspSub.setoid E a) dual (fun _ _ h => iso_dual h) π

@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.EffCartierIffForallCartAt
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocPrincipalSpan
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalFiniteProjectiveOfSmoothStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalFiniteProjectiveOfSmooth
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfConormalRankOneStatement
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalRankOneOfLocallyPrincipalStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfCartierAtStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CartierAtOfLocallyPrincipalStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfCartierAt
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CartierAtOfLocallyPrincipal
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsSmoothAffinePresentationPairStatement
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace
@@ -19,7 +19,7 @@ theorem locPrincipal_locally_const {k A : Type} [Field k] [CommRing A] [IsDomain
     (hp : I ≤ p.asIdeal) :
     ∃ s, s ∉ p.asIdeal ∧ ∀ q : PrimeSpectrum A, s ∉ q.asIdeal → I ≤ q.asIdeal →
       (LocPrincipal I q.asIdeal ↔ LocPrincipal I p.asIdeal) := by
-  obtain ⟨hfin, hproj⟩ := GlobalTheory.T.conormal_finite_projective_of_smooth φ I hφ hI
+  obtain ⟨hfin, hproj⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Conormal.finite_projective_cotangent φ I hφ hI
   have hnoeth : IsNoetherianRing A := by
     algebraize [φ]
     have : Algebra.FiniteType k A := inferInstance
@@ -101,8 +101,8 @@ theorem isClosed_cartAt : ∀ {k : Type} [Field k] {X : Scheme.{0}} (g : X ⟶ S
     intro y hy hyZ
     obtain ⟨q, rfl⟩ := hrange y (X.basicOpen_le s hy)
     have := h q ((fromSpec_mem_basicOpen_iff U' q s).1 hy) (hIq q hyZ)
-    exact ⟨fun hc => GlobalTheory.T.cartier_at_of_locally_principal Z U' q0 (this.1 (GlobalTheory.T.locally_principal_of_cartier_at Z U' q hc)),
-      fun hc => GlobalTheory.T.cartier_at_of_locally_principal Z U' q (this.2 (GlobalTheory.T.locally_principal_of_cartier_at Z U' q0 hc))⟩
+    exact ⟨fun hc => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.cartAt_of_locPrincipal Z U' q0 (this.1 (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.locPrincipal_of_cartAt Z U' q hc)),
+      fun hc => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.cartAt_of_locPrincipal Z U' q (this.2 (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.locPrincipal_of_cartAt Z U' q0 hc))⟩
   have hC : IsClosed (Z.support : Set X) := Z.support.isClosed
   refine ⟨isClosed_of_locally_iff hC _ key, isClosed_of_locally_iff hC _ fun x hx => ?_⟩
   obtain ⟨V, hV, hxV, hy⟩ := key x hx

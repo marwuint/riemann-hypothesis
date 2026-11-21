@@ -75,7 +75,7 @@ theorem exists_finiteDimensional_kill (ha : IsGK a) (hA : AdmGK R.HK)
     ∃ E : Submodule ℂ R.HK.V, FiniteDimensional ℂ E ∧
       ∀ y, (∀ x ∈ E, inner ℂ (R.ι y) (R.ι x) = 0) → B P y = 0 := by
   obtain ⟨W₀, hW, hP, hst⟩ := ha.2.1 P
-  obtain ⟨E, hE, hE'⟩ := GlobalTheory.T.exists_finiteDimensional_forall_map_mem' p q R.HK hA _ a
+  obtain ⟨E, hE, hE'⟩ := _root_.GlobalTheory.KHomFinite.exists_finiteDimensional_forall_map_mem p q R.HK hA _ a
     (fun Y Z _ _ => ha.1 Y Z) W₀ hW hst (fun v _ => ha.2.2 v)
   refine ⟨E, hE, fun y hy => ?_⟩
   rw [← Module.forall_dual_apply_eq_zero_iff ℂ]

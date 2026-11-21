@@ -4,8 +4,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDerived
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointExistsUniqueEmbeddingStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnitSectionDivisorEqStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VerticalStatementHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatHermUnitSectionAvoidStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.VerticalStatementHolds
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatHermUnitSectionAvoid
 
 noncomputable section
 
@@ -82,10 +82,10 @@ theorem FlatHerm.inter_eq_neg_integral : ∀ (K : Type) [Fintype K] (ι : K → 
 
   obtain ⟨C, hC, hCa, hCh, hCI⟩ := exists_tensorPow_last hI hW hL hB (m := S.M) S.M_pos
   obtain ⟨f', g', df', dg', hf', hg', hdeg, hfW, hgW, -, hun, hnorm⟩ :=
-    GlobalTheory.T.flat_herm_unit_section_avoid K ι Ω F y φ A S d W hY hP hA hW.2.1 hPW
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.FlatHerm.exists_rep K ι Ω F y φ A S d W hY hP hA hW.2.1 hPW
   have hunW := IsUnitSec.mono hun hPW
   obtain ⟨c1, c2, c3⟩ := GlobalTheory.T.unit_section_divisor_eq K ι W f' g' hunW
-  have hvert := GlobalTheory.T.vertical_statement_holds K ι I hI W n L C f' g' hW hL hC
+  have hvert := _root_.GlobalTheory.CompanionTheory.Ar.Flat.vertical_holds K ι I hI W n L C f' g' hW hL hC
     ⟨df', dg', hf', hg', hfW, hgW, fun k => by rw [hdeg k, hCa k, hBa k]⟩
     (fun W' _ => by rw [c1]) (fun W' _ hm => c2 W' hm) (fun z hz => by
       have hzP : z ∈ mcPts (mCoordIdeal y) := ⟨hz.1, fun f hf => hz.2 f (hPW hf)⟩

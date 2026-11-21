@@ -1,5 +1,7 @@
 import Mathlib
-import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.GaloisCuspidalOfInput
+import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ClsSum
+import Formalism.SharpRestriction.Divisibility.PlaceRankTwoOne
+import Formalism.QuotientMetricDivisors.Statement
 import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ExistsFrameOfSig
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionSecondStep
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.TruncatedLatticeHolds

@@ -5,14 +5,14 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsWeilFormulas
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSeriesFactorizableRestrictionFinite
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MoveRationalInvariant
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergTranslateThetaContinuousDifferentiable
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNonnegativeSchwartzBumpStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TamagawaFourierIntegrableStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCoordinatesTracePairingStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNonnegativeSchwartzBump
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TamagawaFourierIntegrable
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCoordinatesTracePairing
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveOnSubspaceOpenStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositivityPullsBackToSubspaceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramMapContinuousHermitianStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramMapContinuousHermitian
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianScalarSequenceTendsZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NonrepresentedSignatureObstructionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NonrepresentedSignatureObstruction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfHermEBijective
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory
@@ -74,10 +74,10 @@ theorem vanish_generic (F : Type) [Field F] [NumberField F] (hF : NumberField.Is
   haveI := hμ.1
   refine vanish_ring ψ hψ.1 hψ.2.1 κ μ Y ν φ g hg N hN ?_ z₀ hz
   intro hφ hJ N' hN' hsub z₁ hz₁
-  obtain ⟨Φ, hΦ, hΦ0, hΦN, hΦ1⟩ := GlobalTheory.T.exists_nonnegative_schwartz_bump F κ N' hN' z₁ hz₁
+  obtain ⟨Φ, hΦ, hΦ0, hΦN, hΦ1⟩ := _root_.GlobalTheory.CompanionTheory.AdelicBump.exists_bump F κ N' hN' z₁ hz₁
   obtain ⟨hΦc, -, hΦi⟩ := GlobalTheory.SplitSvN.schA_facts hF hΦ
   exact ⟨Φ, hΦc, hΦi μ hμ.1, hΦ0, hΦN, hΦ1,
-    GlobalTheory.T.tamagawa_fourier_integrable F hF ψ hψ κ μ hμ Y ν φ g hφ hg hJ Φ hΦ (fun y => hΦN _ fun h' => hgN y (hsub h'))⟩
+    _root_.GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.pair_vanish F hF ψ hψ κ μ hμ Y ν φ g hφ hg hJ Φ hΦ (fun y => hΦN _ fun h' => hgN y (hsub h'))⟩
 
 end GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
@@ -130,8 +130,8 @@ theorem W_eq_zero_of_obstruction (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D V.rank r
   haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩
   haveI : μ.IsAddHaarMeasure := hF.1
-  obtain ⟨n, c, u, R, hu, hR, hRu, hcu, hTam⟩ := GlobalTheory.T.hermitian_coordinates_trace_pairing D r lam 𝓖 hG
-  have hin := GlobalTheory.T.gram_map_continuous_hermitian D θ hθ V r ρ
+  obtain ⟨n, c, u, R, hu, hR, hRu, hcu, hTam⟩ := _root_.GlobalTheory.CompanionTheory.HermCoord.coords D r lam 𝓖 hG
+  have hin := _root_.GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Gram.inner_facts D θ hθ V r ρ
   let g : Mx D V.rank r → Fin n → AF D.host.F := fun y => u (inner V y y)
   have hgc : Continuous g := hu.comp hin.1
   let N : Set (Fin n → AF D.host.F) := {w | PosOn ε (compAt θ ρ (R w)) S}
@@ -192,7 +192,7 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
 theorem noFrame : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (ν : Measure (GA D V)) (φ : Mx D V.rank r → ℂ), Hyp D r V ψ θ μ lam ν φ → ∀ (t : ℕ) (β : HermE D r), GlobalTheory.CompanionTheory.WeilSiegel.Deg.IsBlockNF t β → (¬ ∃ x : Matrix (Fin V.rank) (Fin r) D.host.E, x.rank = r ∧ gramQ V x = β.1) → IfrB V ν φ β = W ψ V μ lam φ β := by
   intro D r V ψ θ μ lam ν φ h t β hβ hno
-  obtain ⟨ρ, ε, S, hε, hS, hT⟩ := GlobalTheory.T.nonrepresented_signature_obstruction D r V h.1 t β hβ hno
+  obtain ⟨ρ, ε, S, hε, hS, hT⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.exists_obstruction D r V h.1 t β hβ hno
   rw [W_eq_zero_of_obstruction r V ψ θ μ lam ν φ h β ρ ε S hε hS hT]
   haveI hemp : IsEmpty {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β.1} :=
     ⟨fun x => hno ⟨x.1, x.2⟩⟩

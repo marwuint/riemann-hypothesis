@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.BasicLiftAll
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsPolyDiffOpRadialPartEqShiftedOperatorStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MirrorTodaRadialOperatorPolynomialCoefficientLifStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PolyLiftConjLastMinorMulRadialPairTermStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PolynomialLiftDualOperatorCombinationStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsPolyDiffOpRadialPartEqShiftedOperator
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MirrorTodaRadialOperatorPolynomialCoefficientLif
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PolyLiftConjLastMinorMulRadialPairTerm
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PolynomialLiftDualOperatorCombination
 
 namespace GlobalTheory.HatNF
 
@@ -20,9 +20,9 @@ theorem mem_nfSpan_zero_zero_one_of_mem {A : Type} [Ring A] [StarRing A] [Algebr
 theorem basicLiftAll_zero : BasicLiftAll (fun _ => 0) := by
   intro Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d hD hN x hx
   obtain ⟨y, -, h | h | h | h⟩ := hx
-  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ GlobalTheory.T.exists_polyDiffOp_radialPart_eq_shiftedOperator Wp Wq P Bs X μ L st l0 d hD hN y)
-  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ GlobalTheory.T.mirrorTodaRadialOperator_polynomialCoefficient_lift Wp Wq P Bs X μ L st l0 d hD hN y)
-  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ GlobalTheory.T.polyLift_conjLastMinor_mul_radialPairTerm Wp Wq P Bs X μ L st l0 d hD hN y)
-  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ GlobalTheory.T.polynomial_lift_dual_operator_combination Wp Wq P Bs X μ L st l0 d hD hN y)
+  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ _root_.GlobalTheory.HatNF.polyLift_ahat Wp Wq P Bs X μ L st l0 d hD hN y)
+  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ _root_.GlobalTheory.MirrorToda.polyLift_ahatv Wp Wq P Bs X μ L st l0 d hD hN y)
+  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ _root_.GlobalTheory.HatNF.LiftR.polyLift_rh Wp Wq P Bs X μ L st l0 d hD hN y)
+  · exact mem_nfSpan_zero_zero_one_of_mem d _ (h ▸ _root_.GlobalTheory.HatNF.MirrorLift.polyLift_rhv Wp Wq P Bs X μ L st l0 d hD hN y)
 
 end GlobalTheory.HatNF

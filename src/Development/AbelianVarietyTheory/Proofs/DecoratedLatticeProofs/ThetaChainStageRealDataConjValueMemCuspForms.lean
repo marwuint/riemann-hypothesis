@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLowerWittT
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ComplexConjugationMapsMultiplicitySpace
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SignEquivInl
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MaximalCompactSortedFrameActsThroughModelCompactStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MultiplicityMapRightTranslateRealPointStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteDimensionalSpanMultilinearValuesStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MaximalCompactSortedFrameActsThroughModelCompact
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MultiplicityMapRightTranslateRealPoint
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FiniteDimensionalSpanMultilinearValues
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
 open scoped TensorProduct InnerProductSpace ComplexConjugate
@@ -120,15 +120,15 @@ theorem isKFinite_value (θ : InfFam D) (hθ : IsInfFam θ) (M : DSModel V S) (h
     refine Module.Finite.of_injective (LinearMap.codRestrict (W τ) ((M.sm τ).subtype.comp (W' τ).subtype)
       fun x => x.2) fun x y h => ?_
     exact Subtype.ext (Subtype.ext (congrArg (fun z : W τ => (z : M.H τ)) h))
-  have hfd := GlobalTheory.T.finiteDimensional_span_multilinear_values' (fun τ => M.sm τ) (GA D V → ℂ) T W' hW'
+  have hfd := _root_.GlobalTheory.finiteDimensional_span_multilinear_values (fun τ => M.sm τ) (GA D V → ℂ) T W' hW'
   refine GlobalTheory.Doubling.isKFinite_iff.2 ⟨_, hfd, fun k hk => ?_⟩
-  obtain ⟨v', hv', hx⟩ := GlobalTheory.T.multiplicity_map_right_translate_real_point D θ hθ V S M J χ T hT k (GlobalTheory.Cusp.Kinf_le hk) v
+  obtain ⟨v', hv', hx⟩ := _root_.GlobalTheory.RealPointMove.translate_eq_move D θ hθ V S M J χ T hT k (GlobalTheory.Cusp.Kinf_le hk) v
   have e : (fun g => T v (g * k)) = T v' := funext hx
   rw [e]
   refine Submodule.subset_span ⟨v', fun τ => ?_, rfl⟩
   show ((v' τ : M.sm τ) : M.H τ) ∈ W τ
   rw [hv' τ]
-  exact hWK τ _ (GlobalTheory.T.maximal_compact_sorted_frame_acts_through_model_compact D θ V S M hV k hθ hk τ) _ (hvW τ)
+  exact hWK τ _ (_root_.GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf D θ V S M hV k hθ hk τ) _ (hvW τ)
 
 theorem conj_multiplicityValue_mem_cuspFormsArchimedeanKFinite (θ : InfFam D) (hθ : IsInfFam θ) (M : DSModel V S) (hV : V.SigOK) {J : Set (GA D V)}
     {χ : GA D V → ℂ} (F : SmT M →ₗ[ℂ] (GA D V → ℂ)) (hF : F ∈ MultT θ M J χ) (w : SmT M)

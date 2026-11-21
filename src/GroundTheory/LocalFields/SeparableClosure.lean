@@ -371,18 +371,4 @@ theorem coe_homeomorphOfIsAlgebraic (σ : Ω ≃ₐ[K] Ω) : ⇑(homeomorphOfIsA
 
 end Finite
 
-section Check
-
-variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  (L : IntermediateField K (SeparableClosure K)) [FiniteDimensional K L]
-
-example : IsNonarchimedeanLocalField L := inferInstance
-example : ValuativeExtension K L := inferInstance
-example : ValuativeExtension L (SeparableClosure K) := inferInstance
-example (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : SeparableClosure K) :
-    valuation (SeparableClosure K) (σ x) = valuation (SeparableClosure K) x :=
-  valuation_algEquiv_apply_of_isAlgebraic σ x
-
-end Check
-
 end GroundTheory.LocalField

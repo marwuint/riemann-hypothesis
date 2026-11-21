@@ -40,12 +40,6 @@ theorem kGL_smul_I (w : ℂ) (hw : w ≠ 0) : kGL w hw • I = I := by
   rw [num]
   apply Complex.ext <;> simp
 
-theorem kGL_mul (w₁ w₂ : ℂ) (hw₁ : w₁ ≠ 0) (hw₂ : w₂ ≠ 0) :
-    kGL w₁ hw₁ * kGL w₂ hw₂ = kGL (w₁ * w₂) (mul_ne_zero hw₁ hw₂) := by
-  refine Matrix.GeneralLinearGroup.ext fun i j => ?_
-  rw [Units.val_mul, coe_kGL, coe_kGL, coe_kGL]
-  fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
-
 def borelGL (z : ℍ) : GL (Fin 2) ℝ :=
   Matrix.GeneralLinearGroup.mkOfDetNeZero !![z.im, z.re; 0, 1] (by
     rw [Matrix.det_fin_two_of]

@@ -153,5 +153,3 @@ theorem reproducing_formula_holds : WlocSk.ReprodG := by
 
 end WlocSk.DecayR
 
-section Check
-end Check

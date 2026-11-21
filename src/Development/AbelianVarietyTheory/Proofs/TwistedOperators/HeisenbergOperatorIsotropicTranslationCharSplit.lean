@@ -1,8 +1,19 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocIsoRefl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceAdelicMatrixGivenComponentsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceAdelicMatrixGivenComponents
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.UnifModGrowthOfIsUnifModerate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftPRouteSmall
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatesEqPrimFrameLat
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacFn
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicCharacterNontrivialAtPlaces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicTraceSupportedAtSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTensorSkewHermitianSplitSymplecticPairStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTensorSkewHermitianSplitSymplecticPair
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodinger
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
@@ -92,7 +103,7 @@ theorem symp_bar {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n d : ℕ} (X : Sp
   unfold GlobalTheory.WeilM.symp
   rw [GlobalTheory.T.adelicTrace_supportedAtSplitPlace hcm v t _ (at_neg_hTens _ _ x u hx)]
   rw [map_mul, map_mul, map_neg, map_neg, map_one, map_one, neg_one_mul, neg_one_mul, ← neg_add,
-    GlobalTheory.T.hermitianTensor_skewHermitian_split_symplectic_pair hcm t X.J Y.J hX hY x u hx0 hu1]
+    _root_.GlobalTheory.HTensSplitPair.hTens_split_pair hcm t X.J Y.J hX hY x u hx0 hu1]
   show psiLoc ψ v _ = psiLoc ψ v _
   congr 1
   congr 1
@@ -117,7 +128,7 @@ theorem symp_lin {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n d : ℕ} (X : Sp
   unfold GlobalTheory.WeilM.symp
   rw [GlobalTheory.T.adelicTrace_supportedAtSplitPlace hcm v (t.comp σ) _ (at_neg_hTens _ _ x u hx)]
   rw [map_mul, map_mul, map_neg, map_neg, map_one, map_one, neg_one_mul, neg_one_mul, ← neg_add,
-    GlobalTheory.T.hermitianTensor_skewHermitian_split_symplectic_pair hcm (t.comp σ) X.J Y.J hX hY x u hx0 (by rw [hss]; exact hu1), hss]
+    _root_.GlobalTheory.HTensSplitPair.hTens_split_pair hcm (t.comp σ) X.J Y.J hX hY x u hx0 (by rw [hss]; exact hu1), hss]
   show psiLoc ψ v _ = psiLoc ψ v _
   congr 1
   have hA : (X.J.map (t.comp σ))ᵀ = X.J.map t := by
@@ -155,7 +166,7 @@ theorem heis_trans_char : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
       (∀ ι, M.IsLinW ψ t b c ι → ∀ Z, ι φ₁ Z = psiLoc ψ v (pairM Z (coY σ X Y t b c u)) * ι φ (Z + coX t b c u)) ∧
       ∀ ι, M.IsLinBar ψ t b c ι → ∀ Z, ι φ₁ Z = psiLoc ψ v (-pairM Z (coX t b c u)) * ι φ (Z + coY σ X Y t b c u) := by
   intro F E _ _ _ _ _ σ hcm n d X Y hX hY hdX hdY M ψ hψ v t b c u hu hpair φ hφ φ₁ hφ₁ hact
-  choose U hUat hU0 hU1 using fun (P₀ P₁ : Matrix (Fin n) (Fin d) (Fv F v)) => GlobalTheory.T.exists_splitPlace_adelicMatrix_given_components hcm v t P₀ P₁
+  choose U hUat hU0 hU1 using fun (P₀ P₁ : Matrix (Fin n) (Fin d) (Fv F v)) => _root_.GlobalTheory.SplitComps.exists_mat_comps hcm v t P₀ P₁
 
   set u₁ := U (u.map (piW t)) 0 with hu₁def
   set u₂ := u - u₁ with hu₂def

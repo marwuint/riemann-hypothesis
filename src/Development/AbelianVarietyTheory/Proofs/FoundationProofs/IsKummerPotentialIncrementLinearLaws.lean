@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.EigenOfTwoStep
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralConjugateSL2IntLawsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelAddZeroCongrStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelIntegralMatrixConjStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralConjugateSL2IntLaws
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelAddZeroCongr
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelIntegralMatrixConj
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsKummerCharacterAtLevelPadicIntSmulStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLawsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusBasicLaws
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 
@@ -32,7 +32,7 @@ theorem isKummerPotentialIncrement_linear_laws : ∀ (Ω : Type) [Field Ω] [Alg
   · intro x x' h h' hx hx' n
     obtain ⟨χ, hK, M, hM, hI⟩ := hx n
     obtain ⟨χ', hK', M', hM', hI'⟩ := hx' n
-    refine ⟨χ + χ', ((GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).1 x x' χ χ' hK hK'), M * M', Nat.mul_pos hM hM', ?_⟩
+    refine ⟨χ + χ', ((_root_.GlobalTheory.KZ.H3.KumAdd.kum_add_zero_near Ω ε X l n).1 x x' χ χ' hK hK'), M * M', Nat.mul_pos hM hM', ?_⟩
     intro δ hδ z hz
     have e1 := hI δ (gamma_mem_of_dvd (dvd_mul_right M M') hδ) z hz
     have e2 := hI' δ (gamma_mem_of_dvd (dvd_mul_left M' M) hδ) z hz
@@ -40,7 +40,7 @@ theorem isKummerPotentialIncrement_linear_laws : ∀ (Ω : Type) [Field Ω] [Alg
       simp only [Pi.add_apply]; ring
     rw [this, map_add, e1, e2, Pi.add_apply]
   · intro n
-    refine ⟨0, (GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).2.1, 1, Nat.one_pos, ?_⟩
+    refine ⟨0, (_root_.GlobalTheory.KZ.H3.KumAdd.kum_add_zero_near Ω ε X l n).2.1, 1, Nat.one_pos, ?_⟩
     intro δ _ z _
     simp
   · intro c x h hx n
@@ -52,7 +52,7 @@ theorem isKummerPotentialIncrement_linear_laws : ∀ (Ω : Type) [Field Ω] [Alg
     rw [this, map_mul, hI δ hδ z hz]
   · intro m x h hm hx n
     obtain ⟨χ, hK, M, hM, hI⟩ := hx n
-    refine ⟨fun δ => χ (cj m δ), GlobalTheory.T.isKummerCharacterAtLevel_integral_matrix_conj Ω ε X l n m x χ hm hK, M * m.det.natAbs,
+    refine ⟨fun δ => χ (cj m δ), _root_.GlobalTheory.KZ.H3.kum_kmap_sl Ω ε X l n m x χ hm hK, M * m.det.natAbs,
       Nat.mul_pos hM (Int.natAbs_pos.mpr hm.ne'), ?_⟩
     intro δ hδ z hz
     obtain ⟨hc1, hc2⟩ := GlobalTheory.T.integralConjugateSL2Int_laws.1 m M hm δ hδ

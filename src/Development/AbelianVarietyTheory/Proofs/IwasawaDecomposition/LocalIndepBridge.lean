@@ -142,11 +142,6 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
 variable (LL V) in
 
-def conjB (g : GQ l) : V ⊗[ℚ_[l]] P.R.B ≃ₗ[LL] V ⊗[ℚ_[l]] P.R.B :=
-  AlgebraTensorModule.congr (LinearEquiv.refl LL V) (P.actQ g).toLinearEquiv
-
-variable (LL V) in
-
 def conjdR (g : GQ l) : V ⊗[ℚ_[l]] P.R.BdR ≃ₗ[LL] V ⊗[ℚ_[l]] P.R.BdR :=
   AlgebraTensorModule.congr (LinearEquiv.refl LL V) (P.actQdR g).toLinearEquiv
 
@@ -337,10 +332,6 @@ theorem repE_conj (L : FinExt l) {m : ℕ} (r : ↥Gw →* GL (Fin m) ↥L.1) (h
 end Bridges
 
 variable {l : ℕ} [Fact l.Prime]
-
-def pullExt {K K' : FinExt l} (g : GQ l) (hK : ∀ x, x ∈ K.1 ↔ g x ∈ K'.1) : ↥K'.1 →ₐ[ℚ_[l]] ↥K.1 :=
-  ((g⁻¹ : GQ l).toAlgHom.comp K'.1.val).codRestrict K.1.toSubalgebra fun c =>
-    (hK _).2 (by show g (g⁻¹ (c : Om l)) ∈ K'.1; rw [show g (g⁻¹ (c : Om l)) = c from g.apply_symm_apply _]; exact c.2)
 
 end BridgeInd
 

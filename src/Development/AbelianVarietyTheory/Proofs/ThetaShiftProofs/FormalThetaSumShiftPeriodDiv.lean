@@ -47,9 +47,6 @@ variable {O : Type} [CommRing O] [StarRing O] (A : AnArc O)
 
 theorem e_def (x : ℂ) : eTwoPi x = Complex.exp (2 * Real.pi * Complex.I * x) := rfl
 
-theorem e_neg (x : ℂ) : eTwoPi (-x) = (eTwoPi x)⁻¹ := by
-  rw [e_def, e_def, mul_neg, Complex.exp_neg]
-
 theorem chi_ne_zero (l : A.abelian₂) : A.chi l ≠ 0 := fun h => by
   have := A.chi_norm l
   simp [h] at this
@@ -58,20 +55,6 @@ theorem H_sub_H (l m : A.abelian₂) : A.H l m - A.H m l = 2 * Complex.I * A.Ef 
   have h : ((A.Ef l m : ℤ) : ℂ) = ((A.H l m).im : ℂ) := by rw [← Ef_eq_im]; simp
   rw [h, ← A.H_conj l m, Complex.sub_conj]
   push_cast; ring
-
-theorem ah_cocycle (l m : A.abelian₂) (z : Fin A.gB → ℂ) : A.ah (l + m) z = A.ah l (z + m) * A.ah m z := by
-  have h : ((hermForm A.Hm l m).im : ℂ) = ((A.Ef l m : ℤ) : ℂ) := by rw [← A.Ef_eq]; simp
-  have h2 := A.H_sub_H l m
-  have h3 : Complex.exp (Real.pi * Complex.I * (A.Ef l m : ℤ)) *
-      Complex.exp (Real.pi * A.H z (l + m : A.abelian₂) + Real.pi / 2 * A.H (l + m : A.abelian₂) (l + m : A.abelian₂)) =
-      Complex.exp (Real.pi * A.H (z + m) l + Real.pi / 2 * A.H l l) *
-        Complex.exp (Real.pi * A.H z m + Real.pi / 2 * A.H m m) := by
-    rw [← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]
-    refine ⟨A.Ef l m, ?_⟩
-    simp only [Submodule.coe_add, H_add_left, H_add_right]
-    linear_combination (Real.pi / 2 : ℂ) * h2
-  rw [ah, ah, ah, A.chi_add, h, mul_assoc, h3]
-  ring
 
 def lin (la : A.La) : A.V →ₗ[ℂ] ℂ where
   toFun v := Real.pi * A.H v.2 la.l - 2 * Real.pi * Complex.I * v.1 la.y
@@ -82,11 +65,6 @@ def lin (la : A.La) : A.V →ₗ[ℂ] ℂ where
 
 theorem lin_apply (la : A.La) (v : A.V) :
     A.lin la v = Real.pi * A.H v.2 la.l - 2 * Real.pi * Complex.I * v.1 la.y := rfl
-
-theorem lin_add (la la' : A.La) : A.lin (la + la') = A.lin la + A.lin la' := by
-  refine LinearMap.ext fun v => ?_
-  simp only [lin_apply, LinearMap.add_apply, La.add_l, La.add_y, Submodule.coe_add, H_add_right, map_add]
-  ring
 
 @[simp] theorem lin_zero : A.lin 0 = 0 := LinearMap.ext fun v => by simp [lin_apply]
 
@@ -126,74 +104,16 @@ theorem perFactor_eq_exp (w : ℂ) (la : A.La) (v : A.V) : A.perFactor w la v = 
     Complex.exp_log (A.psi _).ne_zero, e_def]
   ring
 
-theorem perFactor_add_right (w : ℂ) (la : A.La) (v v' : A.V) :
-    A.perFactor w la (v + v') = A.perFactor w la v * Complex.exp (A.lin la v') := by
-  rw [perFactor_eq_exp, perFactor_eq_exp, ← Complex.exp_add, L, L, map_add]; congr 1; ring
-
-theorem differentiable_perFactor (w : ℂ) (la : A.La) : Differentiable ℂ (A.perFactor w la) := by
-  have : A.perFactor w la = fun v => Complex.exp ((A.lin la).toContinuousLinearMap v + A.logConst w la) :=
-    funext fun v => A.perFactor_eq_exp w la v
-  rw [this]
-  fun_prop
-
 @[simp] theorem perFactor_zero (w : ℂ) (v : A.V) : A.perFactor w 0 v = 1 := by simp [perFactor, ah]
 
 theorem perFactor_of_y_eq_zero (w : ℂ) {la : A.La} (h : la.y = 0) (v : A.V) : A.perFactor w la v = A.ah la.l v.2 := by
   simp [perFactor, h]
-
-theorem perFactor_cocycle (w : ℂ) (la la' : A.La) (v : A.V) :
-    A.perFactor w (la + la') v = A.perFactor w la (v + A.Pw w la') * A.perFactor w la' v := by
-  have h1 : (v + A.Pw w la').1 la.y = v.1 la.y + A.T la.y la'.y + la'.n la.y +
-      -(A.H (A.ct la.y) la'.l / (2 * Complex.I)) + w * A.be la.y la'.y := by
-    rw [Prod.fst_add, AddMonoidHom.add_apply, Pw_fst_apply, A.T_symm, A.be_symm]; ring
-  have h2 : (v + A.Pw w la').2 + A.ct la.y = v.2 + A.ct (la.y + la'.y) + la'.l := by
-    simp only [Prod.snd_add, Pw_snd, map_add]; abel
-  have h3 : v.2 + A.ct (la.y + la'.y) = v.2 + A.ct la'.y + A.ct la.y := by rw [map_add]; abel
-  have h4 : A.ah la'.l (v.2 + A.ct (la.y + la'.y)) =
-      A.ah la'.l (v.2 + A.ct la'.y) * Complex.exp (Real.pi * A.H (A.ct la.y) la'.l) := by rw [h3, ah_add]
-  rw [perFactor, perFactor, perFactor, ← div_eq_mul_inv, ← div_eq_mul_inv, ← div_eq_mul_inv, h1, h2, La.add_l, La.add_y, ah_cocycle, h4, psi_add, q_add, map_add v.1]
-  push_cast
-  simp only [mul_add, e_add, e_intCast, e_neg_div, Complex.exp_neg]
-  have := e_ne_zero
-  have := Complex.exp_ne_zero (Real.pi * A.H (A.ct la.y) la'.l)
-  have := (A.psi la.y).ne_zero
-  have := (A.psi la'.y).ne_zero
-  field_simp
-
-theorem perFactor_comm (w : ℂ) (la la' : A.La) (v : A.V) :
-    A.perFactor w la (v + A.Pw w la') * A.perFactor w la' v = A.perFactor w la' (v + A.Pw w la) * A.perFactor w la v := by
-  rw [← perFactor_cocycle, ← perFactor_cocycle, add_comm]
-
-theorem L_comm (w : ℂ) (la la' : A.La) (v : A.V) :
-    (A.L w la (v + A.Pw w la') + A.L w la' v) - (A.L w la' (v + A.Pw w la) + A.L w la v) =
-      -(2 * Real.pi * Complex.I * A.EF la la') := by
-  rw [← A.lin_Pw_sub w]; simp only [L, map_add]; ring
-
-theorem summable_add_Pw_iff {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (w : ℂ)
-    (la : A.La) (v : A.V) :
-    (Summable fun μ => A.term j α th μ (v + A.Pw w la) * eTwoPi (w * A.exponent j α μ)) ↔
-      Summable fun μ => A.term j α th μ v * eTwoPi (w * A.exponent j α μ) := by
-  simp only [A.term_add_period h]
-  rw [summable_mul_left_iff (pow_ne_zero _ (A.perFactor_ne_zero w la v))]
-  exact (Equiv.addRight la.y).summable_iff
-    (f := fun μ => A.term j α th μ v * eTwoPi (w * A.exponent j α μ))
-
-theorem hasSum_add_Pw {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (w : ℂ)
-    (la : A.La) (v : A.V) {s : ℂ} (hs : HasSum (fun μ => A.term j α th μ v * eTwoPi (w * A.exponent j α μ)) s) :
-    HasSum (fun μ => A.term j α th μ (v + A.Pw w la) * eTwoPi (w * A.exponent j α μ)) (A.perFactor w la v ^ j * s) := by
-  simp only [A.term_add_period h]
-  exact ((Equiv.addRight la.y).hasSum_iff.2 hs).mul_left _
 
 theorem term_add_P0 {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) {la : A.La}
     (hy : la.y = 0) (μ : A.X) (v : A.V) :
     A.term j α th μ (v + A.P0 la) = A.ah la.l v.2 ^ j * A.term j α th μ v := by
   have := A.term_add_period h 0 la μ v
   simpa [Pw_zero, hy, A.perFactor_of_y_eq_zero 0 hy] using this
-
-theorem formal_theta_sum_quasi_periodic {j : ℕ} [NeZero j] {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) {la : A.La}
-    (hy : la.y = 0) (v : A.V) : A.FSum j α th (v + A.P0 la) = A.ah la.l v.2 ^ j • A.FSum j α th v := by
-  ext n
-  simp only [coeff_FSum, HahnSeries.coeff_smul, smul_eq_mul, A.term_add_P0 h hy, Finset.mul_sum]
 
 theorem term_add (j : ℕ) (α : A.X) (th th' : (Fin A.gB → ℂ) → ℂ) (μ : A.X) (v : A.V) :
     A.term j α (th + th') μ v = A.term j α th μ v + A.term j α th' μ v := by
@@ -202,16 +122,6 @@ theorem term_add (j : ℕ) (α : A.X) (th th' : (Fin A.gB → ℂ) → ℂ) (μ 
 theorem term_smul (j : ℕ) (α : A.X) (c : ℂ) (th : (Fin A.gB → ℂ) → ℂ) (μ : A.X) (v : A.V) :
     A.term j α (c • th) μ v = c * A.term j α th μ v := by
   simp only [term, Pi.smul_apply, smul_eq_mul]; ring
-
-theorem Sum_smul (j : ℕ) (α : A.X) (c : ℂ) (th : (Fin A.gB → ℂ) → ℂ) (w : ℂ) (v : A.V) :
-    A.Sum j α (c • th) w v = c * A.Sum j α th w v := by
-  simp only [Sum, term_smul, mul_assoc, tsum_mul_left]
-
-theorem Sum_add {j : ℕ} {α : A.X} {th th' : (Fin A.gB → ℂ) → ℂ} {w : ℂ} {v : A.V}
-    (h : Summable fun μ => A.term j α th μ v * eTwoPi (w * A.exponent j α μ))
-    (h' : Summable fun μ => A.term j α th' μ v * eTwoPi (w * A.exponent j α μ)) :
-    A.Sum j α (th + th') w v = A.Sum j α th w v + A.Sum j α th' w v := by
-  simp only [Sum, term_add, add_mul, h.tsum_add h']
 
 theorem FSum_smul (j : ℕ) [NeZero j] (α : A.X) (c : ℂ) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
     A.FSum j α (c • th) v = c • A.FSum j α th v := by
@@ -236,15 +146,6 @@ theorem term_add_index (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (�
   simp only [e_add, e_nat_mul, mul_pow]
   ring
 
-theorem Sum_eq_translate (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (y : A.X) (w : ℂ) (v : A.V) :
-    A.Sum j α th w v = (A.psi y : ℂ) ^ j * eTwoPi (A.T y α) * eTwoPi (w * A.exponent j α y) *
-      A.Sum j (α + j • y) (fun z => th (z + A.ct y)) w v := by
-  rw [Sum, Sum, ← tsum_mul_left, ← (Equiv.addRight y).tsum_eq]
-  refine tsum_congr fun μ => ?_
-  rw [Equiv.coe_addRight, term_add_index, exponent_add]
-  push_cast
-  rw [mul_add, e_add]; ring
-
 theorem FSum_eq_translate (j : ℕ) [NeZero j] (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (y : A.X) (v : A.V) :
     A.FSum j α th v = HahnSeries.single (A.exponent j α y) ((A.psi y : ℂ) ^ j * eTwoPi (A.T y α)) *
       A.FSum j (α + j • y) (fun z => th (z + A.ct y)) v := by
@@ -255,28 +156,6 @@ theorem FSum_eq_translate (j : ℕ) [NeZero j] (α : A.X) (th : (Fin A.gB → �
   refine Finset.sum_equiv (Equiv.addRight y) (fun μ => ?_) fun μ _ => ?_
   · simp [exponent_add]
   · rw [Equiv.coe_addRight, term_add_index]
-
-theorem neg_mem_Theta {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) :
-    (fun z => th (-z)) ∈ A.Theta j (-α) :=
-  ⟨h.1.comp differentiable_id.neg, fun l z => by
-    have := h.2 (-l) (-z)
-    simp only [ah, A.chi_neg, Submodule.coe_neg, H_neg_left, H_neg_right, neg_neg] at this
-    show th (-(z + l)) = _ * _ * th (-z)
-    rw [neg_add, this, ah, map_neg, H_neg_left]⟩
-
-theorem term_neg (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (μ : A.X) (v : A.V) :
-    A.term j α th μ (-v) = A.term j (-α) (fun z => th (-z)) (-μ) v := by
-  have h1 : -α + j • -μ = -(α + j • μ) := by rw [smul_neg]; abel
-  have h2 : -(v.2 + A.ct (-μ)) = -v.2 + A.ct μ := by rw [map_neg]; abel
-  rw [term, term, h1, h2, A.psi_neg]
-  simp only [map_neg, AddMonoidHom.neg_apply, neg_neg, Prod.fst_neg, Prod.snd_neg]
-
-theorem exponent_neg (j : ℕ) (α μ : A.X) : A.exponent j (-α) (-μ) = A.exponent j α μ := by simp [exponent]
-
-theorem Sum_neg (j : ℕ) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (w : ℂ) (v : A.V) :
-    A.Sum j α th w (-v) = A.Sum j (-α) (fun z => th (-z)) w v := by
-  rw [Sum, Sum, ← (Equiv.neg A.X).tsum_eq fun μ => A.term j (-α) _ μ v * _]
-  exact tsum_congr fun μ => by rw [Equiv.neg_apply, term_neg, exponent_neg]
 
 section Shift
 
@@ -350,16 +229,6 @@ theorem shift_injective (la : A.La) (α : A.X) : Function.Injective (A.shift k l
   rw [h, map_zero, neg_add_cancel, shift_zero] at this
   exact (smul_eq_zero.1 this.symm).resolve_left (Complex.exp_ne_zero _)
 
-theorem shift_bijOn (la : A.La) (α : A.X) :
-    Set.BijOn (A.shift k la α) (A.Theta k α) (A.Theta k (α + la.y)) := by
-  refine ⟨fun th h => A.shift_mem_Theta h la, (A.shift_injective k la α).injOn, fun th h => ?_⟩
-  have h1 := A.shift_mem_Theta h (-la)
-  have h2 := A.shift_shift k la (-la) (α + la.y) th
-  rw [La.neg_y, add_neg_cancel_right] at h1 h2
-  rw [add_neg_cancel, shift_zero] at h2
-  refine ⟨_, (A.Theta k α).smul_mem (Complex.exp (-(A.lin (-la) (A.P0 la) / k)))⁻¹ h1, ?_⟩
-  rw [map_smul, h2, inv_smul_smul₀ (Complex.exp_ne_zero _)]
-
 theorem term_add_P0_div (la : A.La) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (μ : A.X) (v : A.V) :
     A.term k α th μ (v + (k : ℂ)⁻¹ • A.P0 la) =
       Complex.exp (A.lin la v) * A.term k (α + la.y) (A.shift k la α th) μ v := by
@@ -406,24 +275,10 @@ theorem term_add_Pw_div (w : ℂ) (la : A.La) (α : A.X) (th : (Fin A.gB → ℂ
   rw [mul_add w, e_add]
   ring
 
-theorem summable_add_Pw_div_iff (w : ℂ) (la : A.La) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
-    (Summable fun μ => A.term k α th μ (v + (k : ℂ)⁻¹ • A.Pw w la) * eTwoPi (w * A.exponent k α μ)) ↔
-      Summable fun μ => A.term k (α + la.y) (A.shift k la α th) μ v * eTwoPi (w * A.exponent k (α + la.y) μ) := by
-  simp only [term_add_Pw_div]
-  exact summable_mul_left_iff (mul_ne_zero (Complex.exp_ne_zero _) (e_ne_zero _))
-
 theorem Sum_add_Pw_div (w : ℂ) (la : A.La) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
     A.Sum k α th w (v + (k : ℂ)⁻¹ • A.Pw w la) = Complex.exp (A.lin la v) * eTwoPi (w * A.be la.y α / k) *
       A.Sum k (α + la.y) (A.shift k la α th) w v := by
   simp only [Sum, term_add_Pw_div, tsum_mul_left]
-
-theorem Sum_add_Pw_div_mul (w : ℂ) (la : A.La) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
-    A.Sum k α th w (v + (k : ℂ)⁻¹ • A.Pw w la) * eTwoPi (v.1 la.y) =
-      Complex.exp (Real.pi * A.H v.2 la.l) * eTwoPi (w * A.be la.y α / k) *
-        A.Sum k (α + la.y) (A.shift k la α th) w v := by
-  have := e_ne_zero (v.1 la.y)
-  rw [Sum_add_Pw_div, exp_lin]
-  field_simp
 
 theorem FSumShift_eq (la : A.La) {α : A.X} {m : ℤ} (hm : A.be la.y α = k * m) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
     A.FSumShift k α th la v =
@@ -432,11 +287,6 @@ theorem FSumShift_eq (la : A.La) {α : A.X} {m : ℤ} (hm : A.be la.y α = k * m
   rw [coeff_FSumShift, hm, Int.mul_ediv_cancel_left _ (NeZero.ne (k : ℤ))]
   conv_rhs => rw [← sub_add_cancel n m, HahnSeries.coeff_single_mul_add, coeff_FSum, Finset.mul_sum]
   exact Finset.sum_congr rfl fun μ _ => A.term_add_P0_div k la α th μ v
-
-theorem formal_theta_sum_shift_period_div {la : A.La} (hy : la.y = 0) (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) :
-    A.FSum k α th (v + (k : ℂ)⁻¹ • A.P0 la) = Complex.exp (A.lin la v) • A.FSum k α (A.shift k la α th) v := by
-  ext n
-  simp only [coeff_FSum, HahnSeries.coeff_smul, smul_eq_mul, term_add_P0_div, hy, add_zero, Finset.mul_sum]
 
 end Shift
 
@@ -613,14 +463,6 @@ theorem linearIndependent_FSum_sigma [NeZero j] (hrep : ∀ c c' μ, rep c = rep
 
 variable [Fintype C] [∀ c, Fintype (I c)]
 
-theorem eq_zero_of_sum_Sum (hj : j ≠ 0) (hrep : ∀ c c' μ, rep c = rep c' + j • μ → c = c')
-    {th : ∀ c, I c → (Fin A.gB → ℂ) → ℂ} (hth : ∀ c, LinearIndependent ℂ (th c)) {w : ℂ}
-    (hs : ∀ c i z, Summable fun μ => A.term j (rep c) (th c i) μ (0, z) * eTwoPi (w * A.exponent j (rep c) μ))
-    {r : ∀ c, I c → ℂ} (h : ∀ v, ∑ c, ∑ i, r c i * A.Sum j (rep c) (th c i) w v = 0) (c : C) (i : I c) :
-    r c i = 0 :=
-  Fintype.linearIndependent_iff.1 (A.linearIndependent_Sum_sigma hj hrep hth w hs) (fun p => r p.1 p.2)
-    (funext fun v => by simpa [Finset.sum_apply, Fintype.sum_sigma] using h v) ⟨c, i⟩
-
 theorem eq_zero_of_sum_FSum [NeZero j] (hrep : ∀ c c' μ, rep c = rep c' + j • μ → c = c')
     {th : ∀ c, I c → (Fin A.gB → ℂ) → ℂ} (hth : ∀ c, LinearIndependent ℂ (th c))
     {r : ∀ c, I c → LaurentSeries ℂ} (h : ∀ v, ∑ c, ∑ i, r c i * A.FSum j (rep c) (th c i) v = 0) (c : C) (i : I c) :
@@ -640,56 +482,6 @@ theorem exists_FSum_ne_zero (j : ℕ) [NeZero j] (α : A.X) {th : (Fin A.gB → 
     ∃ v, A.FSum j α th v ≠ 0 :=
   Function.ne_iff.1 ((A.linearIndependent_FSum j (fun _ : Unit => α) (fun _ _ _ _ => rfl) (fun _ => th)
     (fun _ => (linearIndependent_unique_iff.2 h).linearIndepOn _)).ne_zero ())
-
-theorem quasiPeriodic_and_independent :
-    ((∀ w la v, A.perFactor w la v = Complex.exp (A.lin la v + A.logConst w la)) ∧
-      (∀ w la la' v, A.perFactor w (la + la') v = A.perFactor w la (v + A.Pw w la') * A.perFactor w la' v) ∧
-      (∀ w la la' v, A.perFactor w la (v + A.Pw w la') * A.perFactor w la' v = A.perFactor w la' (v + A.Pw w la) * A.perFactor w la v) ∧
-      (∀ w la la', A.lin la (A.Pw w la') - A.lin la' (A.Pw w la) = -(2 * Real.pi * Complex.I * A.EF la la')) ∧
-      ∀ j α, ∀ th ∈ A.Theta j α, ∀ w la v,
-        ((Summable fun μ => A.term j α th μ (v + A.Pw w la) * eTwoPi (w * A.exponent j α μ)) ↔
-          Summable fun μ => A.term j α th μ v * eTwoPi (w * A.exponent j α μ)) ∧
-        A.Sum j α th w (v + A.Pw w la) = A.perFactor w la v ^ j * A.Sum j α th w v) ∧
-    (∀ (k : ℕ) [NeZero k],
-      (∀ la α th z, A.shift k la α th z =
-        eTwoPi ((A.T la.y α + la.n α - A.H (A.ct α) la.l / (2 * Complex.I)) / k) *
-          Complex.exp (-(Real.pi * A.H z la.l)) * th (z + (k : ℂ)⁻¹ • (A.ct la.y + la.l))) ∧
-      (∀ la α, Set.BijOn (A.shift k la α) (A.Theta k α) (A.Theta k (α + la.y))) ∧
-      (∀ la la' α th, A.shift k la (α + la'.y) (A.shift k la' α th) =
-        eTwoPi (-(A.EF la la' / k)) • A.shift k la' (α + la.y) (A.shift k la α th)) ∧
-      (∀ w la α th v,
-        ((Summable fun μ => A.term k α th μ (v + (k : ℂ)⁻¹ • A.Pw w la) * eTwoPi (w * A.exponent k α μ)) ↔
-          Summable fun μ =>
-            A.term k (α + la.y) (A.shift k la α th) μ v * eTwoPi (w * A.exponent k (α + la.y) μ)) ∧
-        A.Sum k α th w (v + (k : ℂ)⁻¹ • A.Pw w la) * eTwoPi (v.1 la.y) =
-          Complex.exp (Real.pi * A.H v.2 la.l) * eTwoPi (w * A.be la.y α / k) *
-            A.Sum k (α + la.y) (A.shift k la α th) w v) ∧
-      ∀ (la : A.La) α (m : ℤ), A.be la.y α = k * m → ∀ th v, A.FSumShift k α th la v =
-        HahnSeries.single m (Complex.exp (A.lin la v)) * A.FSum k (α + la.y) (A.shift k la α th) v) ∧
-    ∀ (j : ℕ) [NeZero j] (C : Type) (I : C → Type) [Fintype C] [∀ c, Fintype (I c)] (rep : C → A.X),
-      (∀ c c' μ, rep c = rep c' + j • μ → c = c') →
-      ∀ th : ∀ c, I c → (Fin A.gB → ℂ) → ℂ, (∀ c, LinearIndependent ℂ (th c)) →
-        (∀ r : ∀ c, I c → LaurentSeries ℂ,
-          (∀ v, ∑ c, ∑ i, r c i * A.FSum j (rep c) (th c i) v = 0) → ∀ c i, r c i = 0) ∧
-        ∀ w : ℂ, (∀ c i v, Summable fun μ => A.term j (rep c) (th c i) μ v * eTwoPi (w * A.exponent j (rep c) μ)) →
-          ∀ r : ∀ c, I c → ℂ, (∀ v, ∑ c, ∑ i, r c i * A.Sum j (rep c) (th c i) w v = 0) → ∀ c i, r c i = 0 :=
-  ⟨⟨A.perFactor_eq_exp, A.perFactor_cocycle, A.perFactor_comm, A.lin_Pw_sub,
-      fun _ _ _ h w la v => ⟨A.summable_add_Pw_iff h w la v, A.Sum_add_period h w la v⟩⟩,
-    fun k _ => ⟨A.shift_apply k, A.shift_bijOn k, A.shift_comm k,
-      fun w la α th v => ⟨A.summable_add_Pw_div_iff k w la α th v, A.Sum_add_Pw_div_mul k w la α th v⟩,
-      fun la _ _ hm th v => A.FSumShift_eq k la hm th v⟩,
-    fun j _ _ _ _ _ _ hrep _ hth => ⟨fun _ h => A.eq_zero_of_sum_FSum hrep hth h,
-      fun _ hs _ h => A.eq_zero_of_sum_Sum (NeZero.ne j) hrep hth (fun c i _ => hs c i _) h⟩⟩
-
-example (τ₀ : ℂ) : LinearIndependent (LaurentSeries ℂ)
-    fun p : Σ _ : Fin 2, Unit => (tate τ₀).FSum 2 ((p.1 : ℕ) : ℤ) 1 :=
-  (tate τ₀).linearIndependent_FSum_sigma (I := fun _ : Fin 2 => Unit) (rep := fun c => ((c : ℕ) : ℤ))
-    (th := fun _ _ => 1)
-    (fun c c' (μ : ℤ) h => by
-      have h' : ((c : ℕ) : ℤ) = ((c' : ℕ) : ℤ) + (2 : ℕ) • μ := h
-      rw [nsmul_eq_mul] at h'
-      omega)
-    fun _ => linearIndependent_unique_iff.2 one_ne_zero
 
 end AnArc
 

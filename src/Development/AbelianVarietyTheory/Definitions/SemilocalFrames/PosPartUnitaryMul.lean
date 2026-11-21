@@ -109,86 +109,8 @@ def stdRep (y : Matrix (Fin n) (Fin n) ℂ) : EuclideanSpace ℂ (Fin n) →L[�
 theorem stdRep_apply (y : Matrix (Fin n) (Fin n) ℂ) (v : EuclideanSpace ℂ (Fin n)) (i : Fin n) :
     stdRep y v i = ∑ j, y i j * v j := rfl
 
-theorem mem_Kset_allPos {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Matrix.unitaryGroup (Fin n) ℂ) :
-    g ∈ Formalism.REAL.Kset (allPos n) := by
-  refine ⟨hg, ?_⟩
-  simp [Formalism.REAL.Jm, allPos]
-
-theorem stdRep_irred (S : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (hS : IsKStableOn (allPos n) stdRep S) :
-    S = ⊥ ∨ S = ⊤ := by
-  classical
-  rw [or_iff_not_imp_left]
-  intro hne
-  obtain ⟨v, hv, hv0⟩ := (Submodule.ne_bot_iff S).1 hne
-  obtain ⟨i, hi⟩ : ∃ i, v i ≠ 0 := by
-    by_contra h
-    push_neg at h
-    exact hv0 (by ext j; simpa using h j)
-  have hD : Matrix.diagonal (fun a => if a = i then (-1 : ℂ) else 1) ∈ Matrix.unitaryGroup (Fin n) ℂ := by
-    rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose,
-      Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-    congr 1
-    funext a
-    by_cases h : a = i <;> simp [h]
-  have h1 := S.smul_mem (2 * v i)⁻¹ (S.sub_mem hv (hS _ (mem_Kset_allPos hD) v hv))
-  have e1 : (2 * v i)⁻¹ • (v - stdRep (Matrix.diagonal (fun a => if a = i then (-1 : ℂ) else 1)) v) =
-      EuclideanSpace.single i (1 : ℂ) := by
-    ext j
-    by_cases h : j = i
-    · subst h
-      simp [stdRep_apply, Matrix.diagonal_apply]
-      field_simp
-      ring
-    · simp [stdRep_apply, Matrix.diagonal_apply, h]
-  rw [e1] at h1
-  have h2 : ∀ j, EuclideanSpace.single j (1 : ℂ) ∈ S := by
-    intro j
-    have hP : (Equiv.swap i j).permMatrix ℂ ∈ Matrix.unitaryGroup (Fin n) ℂ := by
-      rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_permMatrix,
-        ← Matrix.permMatrix_mul]
-      simp
-    have := hS _ (mem_Kset_allPos hP) _ h1
-    convert this using 1
-    ext a
-    simp [stdRep_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.swap_apply_eq_iff, Pi.single_apply]
-  rw [eq_top_iff]
-  intro x _
-  rw [← (EuclideanSpace.basisFun (Fin n) ℂ).sum_repr x]
-  exact S.sum_mem fun j _ => S.smul_mem _ (by simpa using h2 j)
-
-theorem isTau_std (n : ℕ) :
-    IsTau (allPos (n + 1)) (-Pi.single (Fin.last n) (1 : ℝ)) stdRep
-      (EuclideanSpace.single (Fin.last n) (1 : ℂ)) := by
-  refine ⟨inferInstance, ⟨?_, ?_⟩, ?_, ?_, stdRep_irred, by simp, ?_, ?_⟩
-  · exact map_one (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ))
-  · intro a _ b _
-    exact map_mul (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) a b
-  · intro u v
-    apply Differentiable.differentiableOn
-    simp only [PiLp.inner_apply, stdRep_apply, Matrix.of_apply, RCLike.inner_apply]
-    fun_prop
-  · intro y _ u v
-    have : stdRep yᴴ = ContinuousLinearMap.adjoint (stdRep y) :=
-      map_star (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) y
-    rw [this, ContinuousLinearMap.adjoint_inner_right]
-  · intro θ _
-    ext i
-    by_cases h : i = Fin.last n <;> simp [stdRep_apply, Matrix.diagonal_apply, Pi.single_apply, h]
-  · intro y _ hy
-    ext i
-    by_cases h : i = Fin.last n
-    · simp [stdRep_apply, Pi.single_apply, h, (hy _ _).2 rfl]
-    · simp [stdRep_apply, Pi.single_apply, h, (hy i _).1 (Fin.lt_last_iff_ne_last.2 h)]
-
 theorem IsZEigen.smooth {ε : Fin n → Bool} {χ : Fin n → ℂ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : IsZEigen ε χ f) : Formalism.REAL.SmoothOnG ε f := h.1
-
-theorem IsZFinite.smooth {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
-    (h : IsZFinite ε f) : Formalism.REAL.SmoothOnG ε f := h.1
-
-theorem IsZEigen.isZFinite {ε : Fin n → Bool} {χ : Fin n → ℂ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
-    (h : IsZEigen ε χ f) : IsZFinite ε f :=
-  ⟨h.1, fun m => ⟨1, fun _ => gelfVal χ (m + 1), fun g hg => by simpa using h.2 m g hg⟩⟩
 
 theorem gelfVal_succ (χ : Fin n → ℂ) (k : ℕ) :
     gelfVal χ (k + 1) = ∑ a, ((Formalism.REAL.Amat (fun c => χ c + ((n : ℂ) - 1) / 2) ^ k) *ᵥ
@@ -213,10 +135,6 @@ theorem gelfVal_succ (χ : Fin n → ℂ) (k : ℕ) :
   rw [← h, Matrix.mulVec_mulVec, ← pow_succ]
   simp [gelfVal, Matrix.mulVec, dotProduct]
 
-theorem gelfVal_rho (k : ℕ) : gelfVal (fun a => (Formalism.QuantumDeterminants.rhoStd n a : ℂ)) (k + 1) = 0 := by
-  rw [gelfVal_succ]
-  simp [Matrix.mulVec, dotProduct]
-
 theorem Eword_const (ε : Fin n → Bool) (c : ℂ) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     Formalism.REAL.Eword ε (p :: w) (fun _ => c) = fun _ => 0 := by
   induction w generalizing p with
@@ -226,52 +144,6 @@ theorem Eword_const (ε : Fin n → Bool) (c : ℂ) (p : Fin n × Fin n) (w : Li
     rw [Formalism.REAL.Eword]
     simp only [ih q]
     simp [Formalism.REAL.Eab, Formalism.REAL.Ec, Formalism.REAL.Rd]
-
-section Smooth
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
-
-theorem isZEigen_const (ε : Fin n → Bool) (c : ℂ) :
-    IsZEigen ε (fun a => (Formalism.QuantumDeterminants.rhoStd n a : ℂ)) (fun _ => c) := by
-  refine ⟨fun g _ => ⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ?_⟩
-  intro m g _
-  simp [gelf, cycWord, List.ofFn_succ, Eword_const, gelfVal_rho]
-
-end Smooth
-
-theorem isSqIntIrr_std (n : ℕ) : IsSqIntIrr (allPos (n + 1)) stdRep := by
-  have hU : ∀ g, g ∈ UJset (allPos (n + 1)) ↔ g ∈ Formalism.REAL.Kset (allPos (n + 1)) := by
-    intro g
-    simp [UJset, Formalism.REAL.inUJ, Formalism.REAL.Kset, Formalism.REAL.Jm, allPos, Matrix.mem_unitaryGroup_iff',
-      Matrix.star_eq_conjTranspose]
-  have hc : ∀ v, Continuous fun g : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ => stdRep g v := by
-    intro v
-    refine (PiLp.continuous_toLp 2 _).comp (f := fun g : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ =>
-      fun i => ∑ j, g i j * v j) ?_
-    fun_prop
-  refine ⟨inferInstance, inferInstance, ⟨⟨(isTau_std n).2.1.1, fun a _ b _ => ?_⟩, ?_,
-    fun v => (hc v).continuousOn⟩, ?_, ?_⟩
-  · exact map_mul (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) a b
-  · intro g hg v
-    have h1 : gᴴ * g = 1 := Unitary.star_mul_self_of_mem ((hU g).1 hg).1
-    have h2 : stdRep gᴴ = ContinuousLinearMap.adjoint (stdRep g) :=
-      map_star (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) g
-    apply (ContinuousLinearMap.norm_map_iff_adjoint_comp_self _).2
-    rw [← h2]
-    have := map_mul (Matrix.toEuclideanCLM (n := Fin (n + 1)) (𝕜 := ℂ)) gᴴ g
-    rw [h1, map_one] at this
-    exact this.symm
-  · intro S _ hS
-    exact stdRep_irred S fun g hg => hS g ((hU g).2 hg)
-  · intro v w
-    have hemb := Formalism.REAL.isClosedEmbeddingMatrix (n + 1) (allPos (n + 1))
-    haveI : CompactSpace (Formalism.REAL.UJ (allPos (n + 1))) := by
-      rw [← isCompact_univ_iff, hemb.1.isEmbedding.isCompact_iff, Set.image_univ, hemb.2]
-      convert (Formalism.REAL.maximal_compact_facts (n + 1) (allPos (n + 1))).2.1 using 1
-      exact Set.ext hU
-    have hf : Continuous (coefOn (ε := allPos (n + 1)) stdRep v w) :=
-      continuous_const.inner ((hc v).comp hemb.1.continuous)
-    exact hf.memLp_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 open scoped MatrixOrder in
 
@@ -313,9 +185,5 @@ theorem Phi_at_one (lam : Fin n → ℝ) : Phi lam 1 = 1 := by
   refine Finset.prod_eq_one fun i _ => ?_
   rw [Matrix.submatrix_one _ (Fin.castLE_injective _)]
   simp
-
-example (lam : Fin 2 → ℝ) (z : Matrix (Fin 2) (Fin 2) ℂ) :
-    Phi lam z = z 0 0 ^ (-(muInt lam 0 - muInt lam 1)) * z.det ^ (-(muInt lam 1)) := by
-  simp [Phi, Fin.prod_univ_two, leadMinor, sInt]
 
 end GlobalTheory.Dec

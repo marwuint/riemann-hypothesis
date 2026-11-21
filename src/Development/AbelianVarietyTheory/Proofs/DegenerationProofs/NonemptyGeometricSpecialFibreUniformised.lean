@@ -8,16 +8,16 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsPartPartSec
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KbIsAlgClosedAndConj
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TwistedPrincipalPolarisationSectionsBaseChange
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TestFieldFiniteOverPadicStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistedPowerSectionBasisBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TwistedPowerSectionBasisBaseChange
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGtDatumOfTorusCoordsStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsGtDatumBaseChangeMapsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPrincipalPolarisationAbelianFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAffineRefinementSplitExtChartsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSectionPullbackMulGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsLinCombIffPullbackMulGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SameCoordsOfGermsCommonUnitStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsPurePullbackSectionMulWeightGeneratorStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPureWeightSectionReductionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPrincipalPolarisationAbelianFibre
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAffineRefinementSplitExtCharts
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSectionPullbackMulGenerator
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsLinCombIffPullbackMulGenerator
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SameCoordsOfGermsCommonUnit
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsPurePullbackSectionMulWeightGenerator
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsPureWeightSectionReduction
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdExpPf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.SectionScalarValuation
 
@@ -41,7 +41,7 @@ theorem exists_fibre {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (D : Deg
       (∀ χ, GenWt Φ.D.i (LB.pullGen D.P.L _ _ (g.t (xe χ)) r₀) χ) ∧ Nonempty (ChartPull Φ.N₀ (npw D.P.L N) π) := by
   obtain ⟨E, xe, d, π, h₁, h₂, h₃, h₄⟩ := GlobalTheory.T.exists_gtDatum_of_torusCoords R I D e G g
   obtain ⟨E', xe', d', π', k₁, k₂, k₃, k₄⟩ := GlobalTheory.T.exists_gtDatum_baseChange_maps' _ _ f E _ d
-  obtain ⟨N₀, n₁, n₂, n₃, n₄⟩ := GlobalTheory.T.exists_affine_refinement_splitExtCharts _ E' _ (npw D.P.L N) (npw_isLB D.P.isLB N) (π' ≫ π)
+  obtain ⟨N₀, n₁, n₂, n₃, n₄⟩ := _root_.GlobalTheory.ZH.UFib.exists_affine_refinement _ E' _ (npw D.P.L N) (npw_isLB D.P.isLB N) (π' ≫ π)
   choose ch hch using n₃
   have : IsCommMonObj (thickObj R I e G) := Functor.isCommMonObj_obj
   have : IsCommMonObj ((Over.pullback f).obj (thickObj R I e G)) := Functor.isCommMonObj_obj
@@ -154,7 +154,7 @@ theorem nonempty_fibOf : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [
   obtain ⟨Φ, r₀, xe, π, h₁, h₂, h₃, h₄, h₅, ⟨c⟩⟩ :=
     exists_fibre (IsLocalRing.maximalIdeal u.V) u.D.toPre 0 u.G (u.U.gt 0) (kb p) (spMap f₀) N
   rw [hf] at h₂
-  obtain ⟨pol, hpol⟩ := GlobalTheory.T.exists_principalPolarisation_abelianFibre hLL.1.polBaseChange _ Φ _ u.D.toPre _ π h₂ xe h₄ N ⟨c⟩
+  obtain ⟨pol, hpol⟩ := _root_.GlobalTheory.ZH.UFib.exists_pol hLL.1.polBaseChange _ Φ _ u.D.toPre _ π h₂ xe h₄ N ⟨c⟩
   let t := fun α : u.D.toPre.X => LB.pullGen u.D.toPre.P.L _ _ ((u.U.gt 0).t α) r₀
   have ht : ∀ α, (t α).IsGen := fun α => DVR.pullGen_isGen _ _ _ _ ((u.U.gt 0).t_gen α) r₀
   have hw : ∀ α, GenWt Φ.D.i (t α) (xe.symm α) := fun α => by
@@ -164,9 +164,9 @@ theorem nonempty_fibOf : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [
   have hF := fun α => formEq_fam u.D.toPre (u.U.gt 0).pG α N r₀ Φ.D.q.left π h₃
   let pb := fun α (β : u.D.toPre.SecB N α) => DVR.pullSec u.D.toPre.P.L (u.D.toPre.famφB α) (DegPre.famε N) β π
   choose red hred using fun α (β : u.D.toPre.SecB N α) =>
-    GlobalTheory.T.exists_section_pullback_mul_generator _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) (hF α) (pb α β)
+    _root_.GlobalTheory.ZH.UFib.exists_red _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) (hF α) (pb α β)
   have hpure : ∀ α β, Φ.Pure (xe.symm α) (red α β) := fun α β =>
-    GlobalTheory.T.isPure_pullbackSection_mul_weightGenerator _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) _ (hw α) _ _ (hred α β)
+    _root_.GlobalTheory.ZH.UFib.pure_of_red _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) _ (hw α) _ _ (hred α β)
   refine ⟨{
     Φ := Φ
     r := r₀ ≫ pullback.fst _ _
@@ -179,12 +179,12 @@ theorem nonempty_fibOf : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [
     lin := fun α I _ β a gm₀ h => ?_
     basis := fun α I _ β hβ ψ hψ => ?_
     exp := fun J σ f hσ => ?_ }⟩
-  · exact (GlobalTheory.T.isLinComb_iff_pullback_mul_generator _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) I _ _ _ _ _ (fun i => hred α (β i)) (hred α gm₀)).1
+  · exact (_root_.GlobalTheory.ZH.UFib.isLin_iff_of_red _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) I _ _ _ _ _ (fun i => hred α (β i)) (hred α gm₀)).1
       (isLin_pullSec φ _ _ _ _ _ π h₂.1.w β a gm₀ h)
-  · obtain ⟨b, hb⟩ := GlobalTheory.T.exists_pureWeight_section_reduction _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) (hF α) _ (hw α) ψ hψ
-    exact (existsUnique_congr fun a => GlobalTheory.T.isLinComb_iff_pullback_mul_generator _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) I _ _ _ _ a
+  · obtain ⟨b, hb⟩ := _root_.GlobalTheory.ZH.UFib.exists_red_of_pure _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) (hF α) _ (hw α) ψ hψ
+    exact (existsUnique_congr fun a => _root_.GlobalTheory.ZH.UFib.isLin_iff_of_red _ Φ _ _ hL π N c _ _ _ _ _ _ (t α) (ht α) I _ _ _ _ a
       (fun i => hred α (β i)) hb).1
-      (GlobalTheory.T.twistedPower_sectionBasis_baseChange GlobalTheory.twistBaseChange u.V u.D.toPre N hN α _ φ _ _ π h₂.1 I β hβ b)
+      (_root_.GlobalTheory.ZH.BasisBaseChange.basis_pullback GlobalTheory.twistBaseChange u.V u.D.toPre N hN α _ φ _ _ π h₂.1 I β hβ b)
   · choose T hT using fun i => DVR.expandsAt_val u.U.toUnifPre 0 N (σ i) (f i) (hσ i)
     have hv : ∀ α (β : u.D.toPre.SecB N α) (Z : Scheme.{0}) (r : Z ⟶ Φ.G.left) (z : Z) J', Good u.D.toPre.P.L z J' →
         ∀ l, r z ∈ Φ.D.q.left ⁻¹ᵁ Φ.N₀.U l → J' (r ≫ Φ.D.q.left ≫ π) = c.idx l →
@@ -200,7 +200,7 @@ theorem nonempty_fibOf : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [
       obtain ⟨J', hJ, e⟩ := exists_good_at hL y (𝟙 _ ≫ Φ.D.q.left ≫ π) (c.idx l) (c.le l hy)
       refine (hv α _ _ (𝟙 _) y J' hJ l hy e).trans (Eq.trans ?_ (DVR.gs_zero (𝟙 _) y _ hy).symm)
       rw [(hT i _ _ y J' hJ).1 α hα, zero_mul]
-    · refine GlobalTheory.T.sameCoords_of_germs_common_unit _ _ _ _ _ (DVR.linComb_isLB _ u.U.LG.isLB _ _) J _ σ x.left _ (fun z l l' hl hl' => ?_) v
+    · refine _root_.GlobalTheory.ZH.UFib.crd_of_germs_unit _ _ _ _ _ (DVR.linComb_isLB _ u.U.LG.isLB _ _) J _ σ x.left _ (fun z l l' hl hl' => ?_) v
       obtain ⟨J', hJ, e⟩ := exists_good_at hL z (x.left ≫ Φ.D.q.left ≫ π) (c.idx l) (c.le l hl)
       obtain ⟨jL, rfl⟩ : ∃ jL, l' = fun _ => jL := ⟨l' 0, funext fun i => congrArg l' (Subsingleton.elim i 0)⟩
       refine ⟨DVR.wv u.U.toUnifPre 0 (x.left ≫ r₀) z (J' ((x.left ≫ r₀) ≫ DVR.pGl u.U.toUnifPre 0)) jL ^ N,

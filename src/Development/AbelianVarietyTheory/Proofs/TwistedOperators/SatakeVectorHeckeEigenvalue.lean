@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumHeckeEigenvalueGeneratingSeriesGLStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumHeckeEigenvalueGeneratingSeriesGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SatakeParametersOfTwist
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeValuesSameParameters
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeltaHalfMulUnrTorus
@@ -114,7 +114,7 @@ theorem hasSum_twisted_hecke_eigenvalues : GlobalTheory.Published.UnramifiedDoub
   have hc' : ∀ d, heckeVec (twistRep ρ z) (KGL w r) (dosetInd ℂ (KGL w r) (T d)) x =
       ((z : ℂ) ^ (∑ i, d i) * c d) • x := fun d => by
     rw [heckeVec_twistRep, hc d, ordDet_of_diagonal hϖ (hT d), smul_smul]
-  obtain ⟨δ, h0, h⟩ := GlobalTheory.T.hasSum_heckeEigenvalue_generatingSeries_GL hP E w r V (twistRep ρ z) x _ (isSatVecGL_twistRep hx z) ϖ hϖ T hT _ hc'
+  obtain ⟨δ, h0, h⟩ := _root_.GlobalTheory.FinZeta.GLSeries.hasSum_hecke_eigenvalues hP E w r V (twistRep ρ z) x _ (isSatVecGL_twistRep hx z) ϖ hϖ T hT _ hc'
   refine ⟨δ, h0, fun X h1 h2 => ?_⟩
   have := h X h1 h2
   rw [Multiset.map_map] at this

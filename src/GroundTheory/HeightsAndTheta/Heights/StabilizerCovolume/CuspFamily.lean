@@ -155,31 +155,9 @@ namespace CuspFamily
 
 variable {D : ComponentData II Ψ K ι Ω E} (F : CuspFamily D)
 
-def Nz (z : (Σ k, ι k) → ℂ) (I : Submodule (F.O (F.comp z)) (F.abelian₂ (F.comp z))) : ℝ :=
-  (F.cusp (F.comp z)).Nz z I
-
 def Uat (z : (Σ k, ι k) → ℂ) : ℝ := (F.cusp (F.comp z)).cuspWeight z
 
-open Classical in
-
-theorem Uat_eq_sum (z : (Σ k, ι k) → ℂ) :
-    F.Uat z = ∑ c, if F.comp z = c then (F.cusp c).cuspWeight z else 0 := by
-  rw [Finset.sum_eq_single (F.comp z) (fun c _ hc => if_neg (Ne.symm hc)) (fun h => absurd (Finset.mem_univ _) h),
-    if_pos rfl]
-  rfl
-
 variable (H : HodgeData D)
-
-open Classical in
-
-def vol (c : F.Comp) : ℝ :=
-  ptsIntegral (e := D.n) (mCoordIdeal D.y) (fun _ => phMu H) fun z => if F.comp z = c then 1 else 0
-
-open Classical in
-
-def meanUOn (c : F.Comp) : ℝ :=
-  ptsIntegral (e := D.n) (mCoordIdeal D.y) (fun _ => phMu H)
-      (fun z => if F.comp z = c then (F.cusp c).cuspWeight z else 0) / F.vol H c
 
 def meanU : ℝ :=
   ptsIntegral (e := D.n) (mCoordIdeal D.y) (fun _ => phMu H) F.Uat / degMu H
@@ -239,13 +217,6 @@ def StokesLimitFam.Hyp {D : ComponentData II Ψ K ι Ω E} (X : ComponentFamilyS
     ((D.n + 1 : ℕ) : ℝ) * (a - (p : ℝ) / q * D.KA) * geomDegMUc X.H X.S' B p q t' ≤
       topMUc X.H X.S' B p q t'
 
-def StokesLimitFam.Statement : Prop :=
-  ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type)
-    [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)]
-    [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (X : ComponentFamilySetting D) (B : ℕ) (a : ℝ),
-    IsIntersectionSystem II → 4 * D.f + 2 ≤ B → ArLimExists X.H X.S B → StokesLimitFam.Hyp X B a →
-      ((D.n + 1 : ℕ) : ℝ) * (a - X.F.meanU X.H / 2) * degMu X.H ≤ arLim X.H X.S B
-
 section Bridge
 
 variable [DecidableEq Ψ] {D : ComponentData II Ψ K ι Ω E} {O Lt : Type} [CommRing O] [AddCommGroup Lt] [Module O Lt]
@@ -269,32 +240,9 @@ omit [DecidableEq Ψ] in
 theorem StokesLimit.hyp_iff_fam (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) (B : ℕ) (a : ℝ) :
     StokesLimit.Hyp X B a ↔ StokesLimitFam.Hyp (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) B a := Iff.rfl
 
-theorem StokesLimit.of_fam (h : StokesLimitFam.Statement) (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) (B : ℕ)
-    (a : ℝ) (hII : IsIntersectionSystem II) (hB : 4 * D.f + 2 ≤ B) (hlim : ArLimExists X.H X.S B)
-    (hyp : StokesLimit.Hyp X B a) :
-    ((D.n + 1 : ℕ) : ℝ) * (a - meanU X.H X.Cd / 2) * degMu X.H ≤ arLim X.H X.S B :=
-  h II Ψ K ι Ω E D (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) B a hII hB hlim hyp
-
 end Bridge
 
 namespace Line
-
-open GroundTheory.Heights₂.Heights.LowerBoundFree.Line
-
-variable (II : IntersectionSystem)
-  (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
-
-theorem lineData_Xo_nonempty : (lineData II hII).Xo.Nonempty :=
-  ⟨fun _ => 1, mem_mcPts_line.2 ⟨0, one_ne_zero⟩, Set.notMem_empty _⟩
-
-def planeFamily : CuspFamily (lineData II hII) :=
-  CuspFamily.const (planeCusp II hII) (lineData_Xo_nonempty II hII)
-
-theorem planeFamily_isotropic (z : (Σ _ : Unit, Fin 2) → ℂ) :
-    ∃ I : Submodule ((planeFamily II hII).O ((planeFamily II hII).comp z))
-        ((planeFamily II hII).abelian₂ ((planeFamily II hII).comp z)),
-      I ≠ ⊥ ∧ IsSaturated I ∧ IsIsoSub ((planeFamily II hII).cusp _).form I ∧ 0 < (planeFamily II hII).Nz z I :=
-  ⟨planeLine, planeLine_ne_bot, planeLine_saturated, planeLine_isIso, planeCusp_Nz_pos II hII z⟩
 
 end Line
 

@@ -89,35 +89,6 @@ def ContrTensor : Prop :=
 
 def Contraction : Prop := ContrHilbert ∧ ContrTensor
 
-section Models
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-def ContrTensorModels : Prop :=
-  ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S')
-    (Itl : ∀ τ, MvPolynomial (Fin W.rank × Fin V.rank) ℂ →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.sm τ),
-    ∃ It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M,
-      (∀ (P : D.what₂.Tau → MvPolynomial (Fin W.rank × Fin V.rank) ℂ) (v : M'.Vec),
-        It (∏ τ, MvPolynomial.rename (fun s => (τ, s)) (P τ)) (PiTensorProduct.tprod ℂ v) =
-          PiTensorProduct.tprod ℂ fun τ => Itl τ (P τ) (v τ)) ∧
-      ((∀ τ, Itl τ ≠ 0) → It ≠ 0)
-
-theorem contrTensorModels_of (h : ContrTensor) : ContrTensorModels := fun D V W _ _ M M' Itl =>
-  h D.what₂.Tau (fun _ => Fin W.rank × Fin V.rank) _ (Equiv.sigmaEquivProd _ _) (fun τ => M'.sm τ)
-    (fun τ => M.sm τ) Itl
-
-end Models
-
-example (a b x y : ℂ) : LinearMap.mul ℂ ℂ (a * x) (b * y) = (a * b) * LinearMap.mul ℂ ℂ x y := by
-  simp only [LinearMap.mul_apply']; ring
-
-example (It : ℂ →ₗ[ℂ] ℂ →ₛₗ[starRingEnd ℂ] ℂ) (h : IsContr (LinearMap.mul ℂ ℂ) It) (φ y : ℂ) :
-    It φ y = φ * starRingEnd ℂ y := by
-  have := h φ y 1
-  simpa using this
-
 theorem contrProps_of {H₁ H₂ FF : Type}
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]
     [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [CompleteSpace H₂]
@@ -202,16 +173,6 @@ theorem contrProps_of {H₁ H₂ FF : Type}
       rw [← Set.range_comp]; congr 1; funext k; simp [he]
     rw [this, ← Submodule.map_span]
     infer_instance
-
-def contrMul : ℂ →ₗ[ℂ] ℂ →ₛₗ[starRingEnd ℂ] ℂ :=
-  LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun φ y => φ * starRingEnd ℂ y)
-    (fun a b y => by ring) (fun c a y => by simp [mul_assoc]) (fun a y z => by simp [mul_add])
-    (fun c a y => by simp; ring)
-
-def circ : Circle →* (ℂ ≃ₗᵢ[ℂ] ℂ) where
-  toFun a := { LinearEquiv.smulOfNeZero ℂ ℂ (a : ℂ) a.coe_ne_zero with norm_map' := fun z => by simp [Circle.norm_coe a] }
-  map_one' := by ext; simp
-  map_mul' a b := by ext; simp [mul_assoc]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ContractionTensorModels
 

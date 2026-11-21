@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FamMod
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ScalCompSpecMap
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationEqIffExpansionEqStatement
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationEqIffExpansionEq
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.HasBasisOfBasis
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -68,7 +68,7 @@ theorem expBij_of_onto : SecBaseChangeSt → ∀ (R : Type) [CommRing R] [IsDoma
       resTop W (scal (pullback.snd G.hom (jK R)) r) = scalRes (pullback.snd G.hom (jK R)) W r :=
     fun W r => (GlobalTheory.ExpandsLinear.scalOn_apply _ W r).trans rfl
 
-  have huniq := GlobalTheory.T.uniformisation_eq_iff_expansion_eq R I hR D A G U k
+  have huniq := _root_.GlobalTheory.eq_iff_expansion_eq R I hR D A G U k
   have htot : ∀ s : U.SecK k, ∃ F, U.Expands k s F := by
     intro s
     refine total_of_onto (K := FractionRing R) (f := fun (s : U.SecK k) j => s.f j)

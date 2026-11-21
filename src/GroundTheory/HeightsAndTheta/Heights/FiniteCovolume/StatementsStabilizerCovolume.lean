@@ -19,12 +19,6 @@ def StabilizerCovolumeFinite.Statement (h : HermitianForm F E W) (v : Basis ι E
       IsFundamentalDomain ((vecStabGroup h v La x₀).subgroupOf (vecFixGroup h v x₀)) FD₀ ν ∧
       0 < ν FD₀ ∧ ν FD₀ < ⊤
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

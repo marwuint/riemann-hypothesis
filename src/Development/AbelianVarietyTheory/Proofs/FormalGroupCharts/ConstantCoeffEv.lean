@@ -29,12 +29,6 @@ def evHom {a : Fin m → Pt k n d} (ha : CZ a) : PS k m d →+* PS k n d :=
 theorem evHom_apply {a : Fin m → Pt k n d} (ha : CZ a) (f : PS k m d) : evHom ha f = ev a f := by
   simp [evHom, ev]
 
-theorem ev_sub {a : Fin m → Pt k n d} (ha : CZ a) (f g : PS k m d) : ev a (f - g) = ev a f - ev a g := by
-  simp only [← evHom_apply ha, map_sub]
-
-theorem ev_neg {a : Fin m → Pt k n d} (ha : CZ a) (f : PS k m d) : ev a (-f) = -ev a f := by
-  simp only [← evHom_apply ha, map_neg]
-
 theorem ev_sum {a : Fin m → Pt k n d} (ha : CZ a) {ι : Type} (s : Finset ι) (f : ι → PS k m d) :
     ev a (∑ x ∈ s, f x) = ∑ x ∈ s, ev a (f x) := by
   simp only [← evHom_apply ha, map_sum]
@@ -53,9 +47,6 @@ theorem ev_zero' {a : Fin m → Pt k n d} (ha : CZ a) : ev a (0 : PS k m d) = 0 
 theorem constantCoeff_ev {a : Fin m → Pt k n d} (ha : CZ a) {f : PS k m d} (hf : constantCoeff f = 0) :
     constantCoeff (ev a f) = 0 :=
   constantCoeff_subst_eq_zero ha.hasSubst (fun p => ha p.1 p.2) hf
-
-theorem CZ.ev {a : Fin m → Pt k n d} (ha : CZ a) {l : ℕ} {b : Fin l → Pt k m d} (hb : CZ b) :
-    CZ (fun j i => ev a (b j i)) := fun j i => constantCoeff_ev ha (hb j i)
 
 theorem ev_ev {l : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) {b : Fin l → Pt k m d} (hb : CZ b) (f : PS k l d) :
     ev a (ev b f) = ev (fun j i => ev a (b j i)) f := by

@@ -2,12 +2,19 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlingenDeligneRibet
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TendstoTailInfiniteProductOneStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.WeightSumAsFiniteDifferencesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesSummableRightHalfPlaneStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummationDecompositionFiniteDifferencesStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RealDifferenceConeBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PeriodicWeightBoundedStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TendstoTailInfiniteProductOne
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PeriodicWeightBounded
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.WeightSumAsFiniteDifferences
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniValuesNegativeIntegersRationalStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceConeTermEq
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SizePowerLeInverseSquareProductStatement
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummableInverseSquareProduct
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HighDifferenceVanishesNegativeInteger
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesSummableRightHalfPlane
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummationDecompositionFiniteDifferences
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeValuesNegativeIntegerRational
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeTilingBySignRegions
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RealDifferenceConeBound
 
 set_option autoImplicit false
 noncomputable section
@@ -21,11 +28,11 @@ theorem stage (ι : Type) [Fintype ι] (r l : ℕ) (a : ι → Fin r → ℝ) (b
       ∀ p : ℕ, p < k → (∀ m : Fin r → ℕ, ∃ q : ℚ, ∏ j, (b j + ∑ i, a j i * (m i : ℝ)) ^ p = (q : ℝ)) →
         ∃ q : ℚ, G (-(p : ℂ)) = (q : ℂ) := by
   classical
-  obtain ⟨Q, x, cs, u, hu, hcs, hsum⟩ := GlobalTheory.T.weight_sum_as_finite_differences r l (Fintype.card ι * k + 2) w hl hw
+  obtain ⟨Q, x, cs, u, hu, hcs, hsum⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.expansion_all_variables r l (Fintype.card ι * k + 2) w hl hw
   refine ⟨fun s => ∑ q, ∑' m, (u q m : ℂ) * DL (cs q) (coneTerm a b s) m, ?_, ?_, ?_⟩
   · have h : ∀ q ∈ (Finset.univ : Finset Q), DifferentiableOn ℂ
         (fun s => ∑' m, (u q m : ℂ) * DL (cs q) (coneTerm a b s) m) {s : ℂ | -(k : ℝ) < s.re} :=
-      fun q _ => GlobalTheory.T.cone_series_differentiable_left_strip ι r a b ha hb k (Fintype.card ι * k + 2) (cs q) (u q) le_rfl (hu q) (hcs q)
+      fun q _ => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.differentiableOn_tsum_weighted_DL_halfplane ι r a b ha hb k (Fintype.card ι * k + 2) (cs q) (u q) le_rfl (hu q) (hcs q)
     have h2 := DifferentiableOn.sum h
     have h3 : (fun s : ℂ => ∑ q, ∑' m, (u q m : ℂ) * DL (cs q) (coneTerm a b s) m) =
         ∑ q, fun s : ℂ => ∑' m, (u q m : ℂ) * DL (cs q) (coneTerm a b s) m := by
@@ -34,12 +41,12 @@ theorem stage (ι : Type) [Fintype ι] (r l : ℕ) (a : ι → Fin r → ℝ) (b
     rw [h3]
     exact h2
   · intro s hs
-    exact (hsum (coneTerm a b s) (GlobalTheory.T.cone_series_summable_right_half_plane ι r a b hr ha hb s hs)).symm
+    exact (hsum (coneTerm a b s) (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable ι r a b hr ha hb s hs)).symm
   · intro p hp hrat
     have hN : Fintype.card ι * p < Fintype.card ι * k + 2 := by
       have := Nat.mul_le_mul_left (Fintype.card ι) hp.le
       omega
-    choose q hq using fun t => GlobalTheory.T.shintani_values_negative_integers_rational ι r a b (u t) (cs t) (Fintype.card ι * k + 2) p hN (hcs t) hrat
+    choose q hq using fun t => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.series_value_rational ι r a b (u t) (cs t) (Fintype.card ι * k + 2) p hN (hcs t) hrat
     refine ⟨∑ t, q t, ?_⟩
     simp only [Rat.cast_sum]
     exact Finset.sum_congr rfl fun t _ => hq t
@@ -47,7 +54,7 @@ theorem stage (ι : Type) [Fintype ι] (r l : ℕ) (a : ι → Fin r → ℝ) (b
 theorem abelContinuation : AbelContinuation := by
   intro ι _ r l a b w hr hl ha hb hw
   choose G hG hGeq hGrat using fun k : ℕ => stage ι r l a b w hr hl ha hb hw k
-  obtain ⟨T, hT, hTG⟩ := GlobalTheory.T.analytic_continuation_from_strips (fun s => ∑' m, (w m : ℂ) * coneTerm a b s m) G hG hGeq
+  obtain ⟨T, hT, hTG⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.Glue.entire_of_halfPlane_continuations (fun s => ∑' m, (w m : ℂ) * coneTerm a b s m) G hG hGeq
   refine ⟨T, hT, ?_, ?_⟩
   · intro s hs
     have hs0 : -((0 : ℕ) : ℝ) < s.re := by
@@ -57,8 +64,8 @@ theorem abelContinuation : AbelContinuation := by
     have hper : ∀ (i : Fin r) (m : Fin r → ℕ), w (m + Pi.single i l) = w m := by
       obtain ⟨h1, -⟩ := hw
       exact fun i m => h1 m i
-    obtain ⟨C, hC⟩ := GlobalTheory.T.periodic_weight_bounded r l w hl hper
-    have hcone := GlobalTheory.T.cone_series_summable_right_half_plane ι r a b hr ha hb s hs
+    obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.bddW_of_periodic r l w hl hper
+    have hcone := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable ι r a b hr ha hb s hs
     refine Summable.hasSum (Summable.of_norm ?_)
     refine Summable.of_nonneg_of_le (fun m => norm_nonneg _) (fun m => ?_) (hcone.norm.mul_left C)
     have hwm : ‖(w m : ℂ)‖ ≤ C := by simpa using hC m

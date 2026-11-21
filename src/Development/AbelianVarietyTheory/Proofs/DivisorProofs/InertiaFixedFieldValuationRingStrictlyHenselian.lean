@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaFixedFieldMaximalIdealDvdUniformizerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotMemDivUniformizerPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HenselianLocalRingFixedFieldInertiaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueFieldInertiaFixedIsAlgClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertiaFixedFieldMaximalIdealDvdUniformizer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotMemDivUniformizerPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HenselianLocalRingFixedFieldInertia
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueFieldInertiaFixedIsAlgClosed
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -72,8 +72,8 @@ theorem inertiaFixed_strictlyHenselian : ∀ (R K Ω : Type) [CommRing R] [IsDom
       push_neg at hne
       have ha : ((a : K') : Ω) ∈ V.nonunits := by_contra fun h => hne.1 (unitV' a h)
       have hb : ((b : K') : Ω) ∈ V.nonunits := by_contra fun h => hne.2 (unitV' b h)
-      have h1 := GlobalTheory.T.inertiaFixedField_maximalIdeal_dvd_uniformizer R K Ω V hV π hπ _ (a : K').2 ha
-      have h2 := GlobalTheory.T.inertiaFixedField_maximalIdeal_dvd_uniformizer R K Ω V hV π hπ _ (b : K').2 hb
+      have h1 := _root_.GlobalTheory.FixInertUnram.div_uniformizer_mem R K Ω V hV π hπ _ (a : K').2 ha
+      have h2 := _root_.GlobalTheory.FixInertUnram.div_uniformizer_mem R K Ω V hV π hπ _ (b : K').2 hb
       have hab' : algebraMap K Ω (algebraMap R K π) = ((a : K') : Ω) * ((b : K') : Ω) := by
         rw [← hf, hab]; simp
       apply hinv π hπ
@@ -87,7 +87,7 @@ theorem inertiaFixed_strictlyHenselian : ∀ (R K Ω : Type) [CommRing R] [IsDom
     have hx0 : ((x : K') : Ω) ≠ 0 := by
       intro h; apply hx; apply Subtype.ext; apply Subtype.ext; simpa using h
     classical
-    have hex := GlobalTheory.T.not_mem_div_uniformizer_pow_alt R K Ω V hV π hπ _ hx0
+    have hex := _root_.GlobalTheory.not_mem_div_uniformizer_pow R K Ω V hV π hπ _ hx0
     have hn := Nat.find_spec hex
     have hn0 : Nat.find hex ≠ 0 := by
       intro h; rw [h] at hn; apply hn; simpa using (memV' x).1 x.2
@@ -100,7 +100,7 @@ theorem inertiaFixed_strictlyHenselian : ∀ (R K Ω : Type) [CommRing R] [IsDom
     have hyV' : y ∈ V' := by rw [memV', hyΩ]; exact hmin
     have hyU : (y : Ω) ∉ V.nonunits := by
       intro hyn
-      have := GlobalTheory.T.inertiaFixedField_maximalIdeal_dvd_uniformizer R K Ω V hV π hπ _ y.2 hyn
+      have := _root_.GlobalTheory.FixInertUnram.div_uniformizer_mem R K Ω V hV π hπ _ y.2 hyn
       apply hn
       rw [hm, hyΩ] at *
       convert this using 1
@@ -111,6 +111,6 @@ theorem inertiaFixed_strictlyHenselian : ∀ (R K Ω : Type) [CommRing R] [IsDom
       IntermediateField.coe_pow]
     rw [hf, hyΩ]
     field_simp [pow_ne_zero m (hc0 π hπ)]
-  exact ⟨⟨hdvr, GlobalTheory.T.henselianLocalRing_fixedField_inertia_alt R K Ω V hV, GlobalTheory.T.residueField_inertiaFixed_isAlgClosed_alt R K Ω V hV, inferInstance⟩, f, hf, hfπ⟩
+  exact ⟨⟨hdvr, _root_.GlobalTheory.henselianLocalRing_fixedField_inertia R K Ω V hV, _root_.GlobalTheory.InertiaRes.residueField_inertiaFixed_isAlgClosed R K Ω V hV, inferInstance⟩, f, hf, hfπ⟩
 
 end GlobalTheory.InertiaFixedSH

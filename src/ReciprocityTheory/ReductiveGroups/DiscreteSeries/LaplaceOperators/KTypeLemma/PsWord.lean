@@ -42,14 +42,6 @@ lemma diffAt {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
     (hx : x ∈ s) : DifferentiableAt ℂ f x := by
   exact (h.contDiffAt (hs.mem_nhds hx)).differentiableAt (by simp)
 
-lemma contDiffAt_zpow {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {f : X → ℂ} {x : X}
-    (hf : ContDiffAt ℂ ω f x) (hx : f x ≠ 0) (m : ℤ) : ContDiffAt ℂ ω (fun y => f y ^ m) x := by
-  rcases Int.eq_nat_or_neg m with ⟨k, rfl | rfl⟩
-  · simp only [zpow_natCast]
-    exact hf.pow k
-  · simp only [_root_.zpow_neg, zpow_natCast]
-    exact (hf.pow k).inv (pow_ne_zero _ hx)
-
 private theorem contDiff_det_k_type {m : ℕ} {k : WithTop ℕ∞} :
     ContDiff ℂ k (fun z : Fin m → Fin m → ℂ => Matrix.det z) := by
   have h : (fun z : Fin m → Fin m → ℂ => Matrix.det z) =
@@ -166,14 +158,6 @@ lemma hasFDerivAt_G (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) (k : KG
     (hx : psi k x ∈ (Om : Set WW)) : HasFDerivAt (fun y => G T μ D y k) (G' T μ D x k) x := by
   exact ((diffAt (contDiffOn_Fw μ D) isOpen_Om hx).hasFDerivAt.comp x
     (hasFDerivAt_psi k x)).smul_const _
-
-lemma continuousOn_G (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) :
-    ContinuousOn (fun p : 𝕄 × KG ε => G T μ D p.1 p.2) (Ps1.Uset ε ×ˢ Set.univ) := by
-  have hop : Continuous fun k : KG ε => T.op k := continuous_subtype_val.comp T.cont
-  have hC : Continuous fun k : KG ε => T.op k * projW T * T.op k⁻¹ :=
-    (hop.mul continuous_const).mul (hop.comp continuous_inv)
-  exact ((contDiffOn_Fw μ D).continuousOn.comp continuous_psi.continuousOn
-    (fun ⦃p⦄ hp => hp.1 p.2)).smul (hC.comp continuous_snd).continuousOn
 
 lemma continuousOn_G' (T : KType ε Λ) (μ : Fin n → ℤ) (D : List MM) :
     ContinuousOn (fun p : 𝕄 × KG ε => G' T μ D p.1 p.2) (Ps1.Uset ε ×ˢ Set.univ) := by

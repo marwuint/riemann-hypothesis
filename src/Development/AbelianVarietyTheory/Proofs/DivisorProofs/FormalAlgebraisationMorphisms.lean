@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlgebraisation
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalAlgebraisationTowerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckExistenceClosedSubschemesSeparatedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MorphismEqOfEqOnThickeningsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoOfProperIsIsoOnReductionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalAlgebraisationTower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckExistenceClosedSubschemesSeparated
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MorphismEqOfEqOnThickenings
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoOfProperIsIsoOnReductions
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.FormalAlg
@@ -45,7 +46,7 @@ theorem formalAlgebraisation_morphisms : GlobalTheory.Published.FormalAlgebraisa
     MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) (IsPullback.of_hasPullback X.hom Z.hom).flip hZl
   haveI : QuasiCompact (pullback.fst X.hom Z.hom) :=
     MorphismProperty.of_isPullback (P := @QuasiCompact) (IsPullback.of_hasPullback X.hom Z.hom).flip hZq
-  have hAlg : Alg fW I := GlobalTheory.T.grothendieck_existence_closedSubschemes_separated R I hI _ fW inferInstance inferInstance inferInstance
+  have hAlg : Alg fW I := _root_.GlobalTheory.FormalAlg.alg_of_isSeparated R I hI _ fW inferInstance inferInstance inferInstance
 
   have hcomm : ∀ e, b e ≫ X.hom = f e ≫ Z.hom := fun e => by rw [(hb e).w, hf e]
   let j : ∀ e, (Y e).left ⟶ pullback X.hom Z.hom := fun e => pullback.lift (b e) (f e) (hcomm e)
@@ -65,7 +66,7 @@ theorem formalAlgebraisation_morphisms : GlobalTheory.Published.FormalAlgebraisa
     · rw [Category.assoc, hj₂, hj₂, hfβ]
   have hYp : ∀ e, IsProper (Y e).hom := fun e =>
     MorphismProperty.of_isPullback (P := @IsProper) (hb e) hX
-  obtain ⟨T, i, c, hi, hip, hci, hcpb⟩ := GlobalTheory.T.formal_algebraisation_tower R I _ fW hAlg Y β
+  obtain ⟨T, i, c, hi, hip, hci, hcpb⟩ := _root_.GlobalTheory.FormalAlg.alg_tower R I _ fW hAlg Y β
     (isPullback_trans X Y β b hb hβ) hYp j hjci hjf hjβ
 
   let φ : T ⟶ X.left := i ≫ pullback.fst X.hom Z.hom
@@ -75,7 +76,7 @@ theorem formalAlgebraisation_morphisms : GlobalTheory.Published.FormalAlgebraisa
   have hcφ : ∀ e, c e ≫ φ = b e := fun e => by
     simp only [φ]
     rw [← Category.assoc, hci, hj₁]
-  haveI hφiso : IsIso φ := GlobalTheory.T.isIso_of_proper_isIso_on_reductions R I hIj T X.left φ X.hom inferInstance hX Y c
+  haveI hφiso : IsIso φ := _root_.GlobalTheory.FormalAlg.isIso_of_isIso_reductions R I hIj T X.left φ X.hom inferInstance hX Y c
     (fun e => by rw [hφX]; exact hcpb e) (fun e => by rw [hcφ]; exact hb e)
 
   let gl : X.left ⟶ Z.left := inv φ ≫ i ≫ pullback.snd X.hom Z.hom
@@ -87,7 +88,7 @@ theorem formalAlgebraisation_morphisms : GlobalTheory.Published.FormalAlgebraisa
   · show b e ≫ gl = f e
     simp only [gl]
     rw [← hcφ e, Category.assoc, IsIso.hom_inv_id_assoc, ← Category.assoc, hci, hj₂]
-  · refine GlobalTheory.T.morphism_eq_of_eq_on_thickenings R I hIj X Z hX hZs Y b hb g' _ fun e => ?_
+  · refine _root_.GlobalTheory.FormalAlg.hom_eq_of_reductions_eq R I hIj X Z hX hZs Y b hb g' _ fun e => ?_
     rw [hg' e]
     show f e = b e ≫ gl
     simp only [gl]

@@ -182,16 +182,4 @@ theorem isEtaT_of_conj {D : D7} {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) {
   have := hχ.mul_cls hξ
   rwa [mul_comm χ', mul_inv_cancel_left] at this
 
-theorem resEta_hasInfExp_of_isEtaConj : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∀ η', IsEtaConj σ R.eta η' → ResEta D η' 1 ∧ ∀ ρ, HasInfExp D η' ρ (1 / 2) := by
-  intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR _ σ hσ η' hη
-  obtain ⟨χ', hc⟩ := GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D η' hη.1
-  have h := isEtaT_of_conj hσ hR.lev.eta hc R.C.isEta hη
-  have he := GlobalTheory.Mem.EtaTilde.isEta_res D η' χ' hc h
-  refine ⟨⟨⟨_, he⟩, fun η hη' a => ?_⟩, fun τ => ⟨1, by norm_num, ?_, fun θ hθ x hx hx' => ?_⟩⟩
-  · rw [(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique hη' he, pow_one, MonoidHom.comp_apply]
-  · obtain ⟨⟨θ', hθ'⟩, -⟩ := GlobalTheory.Member.infiniteAdele_bijective D
-    exact ⟨fun τ => θ' (tauE D τ), fun τ => hθ' _⟩
-  · rw [GlobalTheory.Mem.EtaTilde.val_infinite D η' χ' hc h.unr _ h.inf θ hθ x hx,
-      Finset.prod_eq_single τ (fun τ' _ hτ => by rw [hx' τ' hτ]; simp) (by simp)]
-
 end GlobalTheory.EtaConjType

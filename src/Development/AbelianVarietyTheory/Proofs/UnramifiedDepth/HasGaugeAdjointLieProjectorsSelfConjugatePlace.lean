@@ -7,10 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.BiextCoeffSecondLinear
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IsIntegralGaugedFormalGroupLawSelfConjugateSquarStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralEndOfLadicActionLimitStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralEndOfLadicActionLimit
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IsGaugeAdjointIntegralEndPairAddStatement
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugeAdjointEndPairElementaryBlockStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LimitIdempotentRangeLeSumEigenspacesStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LimitIdempotentRangeLeSumEigenspaces
 
 open scoped BigOperators
 open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formalism.L2.Pj GlobalTheory.RowLaw ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
@@ -315,12 +315,12 @@ theorem exists_pair : ∃ b : (Fin dd → C) → I0 → C, ∀ φ : ZMod d → C
   have := Y.algClosed
   obtain ⟨L, hL, hLi⟩ := exists_lin Y
   obtain ⟨ε, h0, h1, hP⟩ := p.em_unr
-  obtain ⟨E, -, -, -, hE, -⟩ := GlobalTheory.T.exists_integralEnd_of_ladic_action_limit C V O dd Y 0 _ (rawOne Y) rfl rfl rfl (fun n => ε ^ (V.l ^ n))
+  obtain ⟨E, -, -, -, hE, -⟩ := _root_.GlobalTheory.ActionLimit.exists_isEnd_of_limit_raw C V O dd Y 0 _ (rawOne Y) rfl rfl rfl (fun n => ε ^ (V.l ^ n))
     (idem_cauchy h0)
   simp only [← hL] at hE
   have hb : ∀ v, ∃ b : I0 → C, E.mulVec v = ∑ c, b c • p.e c := by
     intro v
-    obtain ⟨w, hw, hv⟩ := GlobalTheory.T.limitIdempotent_range_le_sum_eigenspaces C V O (Fin dd) L hLi d p.em p.em_int p.em_frob ε h0 hP E hE v
+    obtain ⟨w, hw, hv⟩ := _root_.GlobalTheory.IdemRange.limit_idempotent_range C V O (Fin dd) L hLi d p.em p.em_int p.em_frob ε h0 hP E hE v
     choose b _ hb using fun a => p.e_full a (w a) fun x => by rw [← hL, hw]
     refine ⟨fun c => ∑ a, b a c, ?_⟩
     rw [hv]
@@ -330,7 +330,7 @@ theorem exists_pair : ∃ b : (Fin dd → C) → I0 → C, ∀ φ : ZMod d → C
   choose b hb using hb
   refine ⟨b, fun φ hφ => ?_⟩
   obtain ⟨s, hs, hsd, hsl⟩ := exists_seq p.em p.em_int h0 h1 hP φ hφ
-  obtain ⟨M, M', e1, e2, hM, hM'⟩ := GlobalTheory.T.exists_integralEnd_of_ladic_action_limit C V O dd Y 0 _ (rawOne Y) rfl rfl rfl s hs
+  obtain ⟨M, M', e1, e2, hM, hM'⟩ := _root_.GlobalTheory.ActionLimit.exists_isEnd_of_limit_raw C V O dd Y 0 _ (rawOne Y) rfl rfl rfl s hs
   simp only [← hL] at hM hM'
   have hst : (V.l : O) ∣ ε * star ε - star ε := by
     obtain ⟨y, hy⟩ := hP (1 - star ε) fun a => by

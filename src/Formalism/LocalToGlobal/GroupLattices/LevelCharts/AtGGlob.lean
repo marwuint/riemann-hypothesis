@@ -43,15 +43,6 @@ def prodChar {Z : Type} [CommGroup Z] (S : Finset (HeightOneSpectrum (𝓞 F)))
   ∏ v ∈ S.attach, (lam v.1 v.2).comp
     (((bc (prV (E := E) v.1)).subgroupComap (Uloc v.1)).comp (Subgroup.inclusion (h v.1 v.2)))
 
-theorem prodChar_apply {Z : Type} [CommGroup Z] (S : Finset (HeightOneSpectrum (𝓞 F)))
-    (Uloc : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL (Fin N) (E ⊗[F] v.adicCompletion F)))
-    (lam : ∀ v, v ∈ S → (Uloc v →* Z)) (Up : Subgroup (GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))
-    (h : ∀ v ∈ S, Up ≤ (Uloc v).comap (bc (prV (E := E) v))) (x : Up) :
-    prodChar S Uloc lam Up h x =
-      ∏ v ∈ S.attach, lam v.1 v.2 ⟨bc (prV (E := E) v.1) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), h v.1 v.2 x.2⟩ := by
-  simp only [prodChar, MonoidHom.finsetProd_apply]
-  rfl
-
 end Prod
 
 end Formalism.L2.G

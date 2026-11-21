@@ -77,10 +77,6 @@ theorem blkM_add : blkM hN A B C D + blkM hN A' B' C' D' =
   obtain ⟨q, rfl⟩ := (eN hN).surjective y
   rcases p with p | p <;> rcases q with q | q <;> simp [blkM]
 
-theorem blkM_one : blkM hN (1 : Matrix (Fin a) (Fin a) K) 0 0 1 = 1 := by
-  unfold blkM
-  rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
-
 theorem blkM_det_low : (blkM hN A 0 C D).det = A.det * D.det := by
   unfold blkM
   rw [Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₁₂]

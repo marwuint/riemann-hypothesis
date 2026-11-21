@@ -49,9 +49,6 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [F
 private theorem uf_om {s : G ℚ Ω} (h : cycMod ℚ Ω l 1 s = -1) : omO Ω l O s = -1 := by
   simp [omO, GC.cycF, h]
 
-private theorem omega_eq_one_of_cyclotomic_one {s : G ℚ Ω} (h : cycMod ℚ Ω l 1 s = 1) : omO Ω l O s = 1 := by
-  simp [omO, GC.cycF, h]
-
 private theorem uf_cc {σ : G ℚ Ω} (h : IsCC σ) : cycMod ℚ Ω l 1 σ = -1 := by
   obtain ⟨j, hj⟩ := h
   have hc : IsConjOm (σ : Ω ≃+* Ω) := ⟨j, hj⟩

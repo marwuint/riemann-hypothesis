@@ -1,5 +1,5 @@
 import Mathlib
-import Formalism.PeriodIntegrals.StrongApproxE
+import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
 
 noncomputable section
 
@@ -32,11 +32,6 @@ def LocInt : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (sig : E →ₐ[F] E)
     (p : HeightOneSpectrum (𝓞 F)) (L : LocAt F E sig p) (z : F) (e : E), p.valuation F z ≤ 1 → IsIntegral ℤ e →
     L.ιF z • L.ιE e ∈ L.O
-
-def LocOpen : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (sig : E →ₐ[F] E)
-    (p : HeightOneSpectrum (𝓞 F)) (L : LocAt F E sig p) (U : AddSubgroup L.Ep), IsOpen (U : Set L.Ep) →
-    ∀ (n : ℕ) (w : Fin n → L.Ep), ∃ V : AddSubgroup L.Fp, IsOpen (V : Set L.Fp) ∧ ∀ α ∈ V, ∀ i, α • w i ∈ U
 
 def LocSpan : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (sig : E →ₐ[F] E)

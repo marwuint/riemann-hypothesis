@@ -418,14 +418,6 @@ theorem monge_ampere_density_cofactor : MaDensCofStatement := by
     ring
   rw [hsum]
 
-def insL {n : ℕ} (j : Fin (n + 1)) : (Fin n → ℂ) →L[ℝ] (Fin (n + 1) → ℂ) :=
-  LinearMap.toContinuousLinearMap
-    { toFun := fun y => Fin.insertNth (α := fun _ => ℂ) j 0 y
-      map_add' := fun x y => by
-        ext i; refine Fin.succAboveCases j ?_ (fun l => ?_) i <;> simp
-      map_smul' := fun c x => by
-        ext i; refine Fin.succAboveCases j ?_ (fun l => ?_) i <;> simp }
-
 end
 
 end ReciprocityTheory.AnForm.A

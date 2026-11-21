@@ -13,13 +13,14 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentHomQuo
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDescentLinearisedLineBundleGaloisCover
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ConstGen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGaloisCoverGrpSchemeSquareProductMapStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGaloisCoverGrpSchemeSquareProductMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompEqOneOfTransl
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearisationBirigidifiedPowerIsotropicSecStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBirigidifiedBundleOfDescentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendedBirigidifiedBundleSymmetricStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiInvolutionOfGaloisIsogenyDescentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleDiagonalDescendedBundleGaloisCoverStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendedBundleKernelKilledByIntegerPrimeToPStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendedBirigidifiedBundleSymmetric
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RosatiInvolutionOfGaloisIsogenyDescent
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelAmpleDiagonalDescendedBundleGaloisCover
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescendedBundleKernelKilledByIntegerPrimeToP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCoefficientsCongruence
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeSectionsIsotropicCommutatorPairingPowerStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTateSimilitudeHeckeTranslateLatticeSystemStatement
@@ -70,7 +71,7 @@ theorem exists_isTranslA : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type)
   obtain ⟨u₀, hu₀, hcoc⟩ := GlobalTheory.T.exists_linearisation_birigidifiedPower_isotropicSections S o.A o.ab o.P o.isLB o.rig₁ o.rig₂ (k ^ 2 / c)
     (GlobalTheory.UPel.HT.HeckeAd.heckeSubA o f N) (fun g hg => (hker g hg).1) (fun g hg => (hker g hg).2)
     (GlobalTheory.T.heckeSections_isotropic_commutatorPairing_power p D R b h u c k N hc hk hN hNp hck hlin hcomp hsim honto S s o)
-  have hGC := GlobalTheory.T.isGaloisCover_prod_sq2_of_isGaloisCover S o.A A' (GlobalTheory.UPel.HT.HeckeAd.heckeSubA o f N) ψ hψ hgal
+  have hGC := _root_.GlobalTheory.UPel.HT.Hecke.isGaloisCover_grpSchemeSquareProductMap S o.A A' (GlobalTheory.UPel.HT.HeckeAd.heckeSubA o f N) ψ hψ hgal
   obtain ⟨P₀, hP₀, w₀⟩ := GlobalTheory.LinDescent.exists_descent_of_isGaloisCover _ _ (GlobalTheory.UPel.HT.Hecke.sq2 ψ) _ _
     (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) hGC (DVR.linComb_isLB _ o.isLB _ _) u₀ hu₀ hcoc
   obtain ⟨P', hP', r1, r2, w⟩ := GlobalTheory.T.exists_birigidified_bundle_of_descent p D R b (N * k) S s o A' ψ hψ _ P₀ hP₀ w₀
@@ -79,10 +80,10 @@ theorem exists_isTranslA : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type)
   have hm1 : 1 ≤ k ^ 2 / c := Nat.div_pos (Nat.le_of_dvd hk2 hck) hc0
   have hmp : (k ^ 2 / c).Coprime p :=
     Nat.Coprime.coprime_dvd_left (Nat.div_dvd_of_dvd hck) (hk.pow_left 2)
-  have hsym := GlobalTheory.T.descended_birigidified_bundle_symmetric p D R b (N * k) S s o A' ψ _ hA' hψ hgal _ P' hP' w r1 r2
-  have hamp := GlobalTheory.T.relAmple_diagonal_descended_bundle_galois_cover p D R b (N * k) S s o A' ψ _ hA' hψ hgal _ hm1 P' hP' w
-  have hkerP := GlobalTheory.T.descendedBundle_kernel_killed_by_integer_prime_to_p p D R b (N * k) S s o A' ψ _ hA' hψ hgal _ hmp P' hP' w
-  have hros := GlobalTheory.T.rosati_involution_of_galois_isogeny_descent p D R b (N * k) S s o A' act' ψ _ hA' hψ hgal hcomp' _ P' hP' w r1 r2
+  have hsym := _root_.GlobalTheory.HeckeSym.descended_symm p D R b (N * k) S s o A' ψ _ hA' hψ hgal _ P' hP' w r1 r2
+  have hamp := _root_.GlobalTheory.HeckeAmple.relAmple_diag_of_galois p D R b (N * k) S s o A' ψ _ hA' hψ hgal _ hm1 P' hP' w
+  have hkerP := _root_.GlobalTheory.UPel.HT.Hecke.kernel_descent p D R b (N * k) S s o A' ψ _ hA' hψ hgal _ hmp P' hP' w
+  have hros := _root_.GlobalTheory.UPel.HT.Hecke.rosati_of_descent p D R b (N * k) S s o A' act' ψ _ hA' hψ hgal hcomp' _ P' hP' w r1 r2
   obtain ⟨hlie, hlieR⟩ := GlobalTheory.UPel.HT.EtaleLie.lie_of_etale p D R b (N * k) S s o A' act' ψ _ _ hA' hψ hgal hcomp'
   have hgeom := GlobalTheory.T.exists_tateSimilitude_heckeTranslate_latticeSystem p D R b h u c k N hc hk hN hNp hck hlin hcomp hsim honto S s o A' act' ψ hA' hψ hgal
     hcomp' P' hP' r1 r2 w

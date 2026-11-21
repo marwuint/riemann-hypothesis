@@ -97,11 +97,6 @@ private theorem appTop_baseFieldToGlobalSections (k : Type u) [Field k] {X Y : S
   rw [baseFieldToGlobalSections_apply, baseFieldToGlobalSections_apply, Scheme.Hom.comp_appTop,
     CommRingCat.comp_apply]
 
-private theorem baseFieldToGlobalSections_neg (k : Type u) [Field k] {X : Scheme.{u}}
-    (p : X ⟶ Spec (CommRingCat.of k)) (a : k) :
-    baseFieldToGlobalSections k p (-a) = -baseFieldToGlobalSections k p a :=
-  map_neg (baseFieldToGlobalSections k p) a
-
 theorem translateLastCoord_comp_translateLastCoord_neg (k : Type u) [Field k] (M : ℕ) (a : k) :
     translateLastCoord k M a ≫ translateLastCoord k M (-a) = 𝟙 (affineSpaceTimesLine k M) := by
   have hstruct : ∀ b : k,

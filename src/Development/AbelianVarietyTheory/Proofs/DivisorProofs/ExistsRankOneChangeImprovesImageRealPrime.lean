@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmHostUnitAddConjEqOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearFormFactorThroughTraceGeneratorStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearFormFactorThroughTraceGenerator
 
 noncomputable section
 
@@ -53,7 +53,7 @@ theorem exists_improves_of_real {E : Type} [Field E] [NumberField E] [IsCMField 
 
   obtain ⟨x, ⟨z, hz, rfl⟩, hx⟩ := Set.not_subset.1 hZ
   have hs0 : s ≠ 0 := fun h0 => hs (h0 ▸ 𝔭.zero_mem)
-  obtain ⟨ℓ₂, hℓ₂⟩ := GlobalTheory.T.exists_linearForm_factor_through_traceGenerator D Z' θ s hs0 hgen z
+  obtain ⟨ℓ₂, hℓ₂⟩ := _root_.GlobalTheory.LowFilt.exists_linear_theta_factor D Z' θ s hs0 hgen z
   have hζ₂ : ζ ℓ₂ = H.bar s • z := by
     obtain ⟨c, -, hu⟩ := h.symm.2.2.1 (θ.comp ℓ₂.toAddMonoidHom)
     have e1 := hu ⟨ζ ℓ₂, hζZ ℓ₂⟩ fun a => by simpa using hζ ℓ₂ a

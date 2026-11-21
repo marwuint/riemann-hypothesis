@@ -1,8 +1,9 @@
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnivChar
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaTranslateRangeGap
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProjectedLiftUnipotentTypeBaseLevelFormStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProjectedThetaLiftExtremalVectorEqClassSumStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexFormsBaseLevelLeSpanIntegralStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProjectedLiftUnipotentTypeBaseLevelForm
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProjectedThetaLiftExtremalVectorEqClassSum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexFormsBaseLevelLeSpanIntegral
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links IsDedekindDomain NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.ExportSeries GlobalTheory.SeriesTie GlobalTheory.TwInputs GlobalTheory.TwSys GlobalTheory.TwAll GlobalTheory.SupLaw GlobalTheory.LiftLeaf
 open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ BasisOf)
 open scoped TensorProduct
@@ -25,8 +26,8 @@ theorem goodModel_eq_classSum : ∀ (D : D7) (X : RealSide D) (E : IntegralHecke
   obtain ⟨t, hxi, hQ⟩ := hB j b
   obtain ⟨y0, rfl⟩ : w ∈ LinearMap.range (X.R.thG j t) := by
     rw [hG j t]; exact hw
-  obtain ⟨y, hlaw, heq⟩ := GlobalTheory.T.projectedLift_unipotentType_baseLevelForm D X E Y i j b t hxi hQ y0 hty
-  obtain ⟨F, hF, hsum⟩ := GlobalTheory.T.projectedThetaLift_extremalVector_eq_classSum D X E Y i j b t hxi hQ y hlaw
-  exact ⟨F, GlobalTheory.T.complex_forms_base_level_le_span_integral D X E Y i j b F hF, heq.symm.trans hsum⟩
+  obtain ⟨y, hlaw, heq⟩ := _root_.GlobalTheory.AvgLevel.avg_level D X E Y i j b t hxi hQ y0 hty
+  obtain ⟨F, hF, hsum⟩ := _root_.GlobalTheory.LiftClassSum.exists_projected_thetaLift_eq_sum D X E Y i j b t hxi hQ y hlaw
+  exact ⟨F, _root_.GlobalTheory.BaseSpan.formsC_le_span_mt D X E Y i j b F hF, heq.symm.trans hsum⟩
 
 end GlobalTheory.TypeClassSum

@@ -90,35 +90,6 @@ def toSecond (Y : Model Xo c β) : Model₂ Xo c β where
   toModel := Y.m
   ab y := Set.ext_iff.1 Y.ab_gen y
 
-def ofSecond (Y : Model₂ Xo c β) : Model Xo c β where
-  X := Y.X
-  s := Y.s
-  normal := Y.normal
-  proj := Y.proj
-  flat := Y.flat
-  jQ := Y.j
-  jQ_over := Y.j_over
-  jQ_open := Y.j_open
-  jQ_dense := Y.j_dense
-  t := Y.t
-  oF := objOfSABMap Xo.univ Y.toUniv
-  m0 := objMapOfSABMap Xo.univ Y.toUniv
-  m := Y.toModel
-  ab_gen := Set.ext Y.ab
-
-def modelEquiv (Xo : Moduli D l) (c : Coeff l) {O : Type} [CommRing O] (β : O →+* c.F) :
-    Model Xo c β ≃ Model₂ Xo c β where
-  toFun := toSecond
-  invFun := ofSecond
-  left_inv Y := by
-    obtain ⟨X, s, _, _, _, jQ, _, _, _, t, ⟨t₀, _, _, _, eta, _, _, etaA, _, _, _⟩, ⟨m0, h₁, h₂⟩, m, _⟩ := Y
-    change SABMap t₀ Xo.univ.t (pullback.fst _ _) at m0
-    change SABMap t₀ t (jQ ≫ pullback.fst _ _) at m
-    obtain rfl : eta = fun a => secPull m0.cart (Xo.univ.eta a) := funext fun a => sec_eq_secPull m0 (h₁ a)
-    obtain rfl : etaA = fun a => secPull m0.cart (Xo.univ.etaA a) := funext fun a => sec_eq_secPull m0 (h₂ a)
-    rfl
-  right_inv _ := rfl
-
 variable (Y : Model Xo c β)
 
 def secEquiv : (𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) ≃
@@ -135,46 +106,6 @@ def secEquiv : (𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) ≃
 theorem secEquiv_left (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
     (secEquiv Y σ).left = σ.left ≫ Y.m0.toSABMap.φ := rfl
 
-theorem secMap_secEquiv (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
-    (toSecond Y).secMap (secEquiv Y σ) = σ.left ≫ Y.m.φ :=
-  congrArg (fun x : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G => x.left ≫ Y.m.φ) ((secEquiv Y).left_inv σ)
-
-theorem extends_iff_of_subset (U : Y.X.Opens) (hU : Set.range Y.j ⊆ (U : Set Y.X))
-    (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) : Y.Extends U σ ↔ (toSecond Y).Extends (secEquiv Y σ) U := by
-  rw [ModelScope.extends_iff_of_subset Y U hU]
-  unfold IndefiniteRowSideFullHecke.OpenModelSections.Model.Extends
-  rw [secMap_secEquiv]
-  show _ ↔ ∃ τ : Over.mk U.ι ⟶ Y.t.G, (Y.j ∣_ U) ≫ τ.left = (Y.j ⁻¹ᵁ U).ι ≫ σ.left ≫ Y.m.φ
-  constructor
-  · rintro ⟨j', σ', h₀, h₁, h₂⟩
-    refine ⟨Over.homMk σ' h₁, ?_⟩
-    have e : Y.j ∣_ U = (Y.j ⁻¹ᵁ U).ι ≫ j' := by
-      rw [← cancel_mono U.ι, morphismRestrict_ι, Category.assoc, h₀]
-    rw [e, Category.assoc, ← h₂]
-    rfl
-  · rintro ⟨τ, hτ⟩
-    have hr : Set.range (𝟙 (Xo.XF c) : _ ⟶ _) ⊆ Set.range (Y.j ⁻¹ᵁ U).ι := by
-      rw [Scheme.Opens.range_ι]
-      rintro _ ⟨x, rfl⟩
-      exact hU ⟨x, rfl⟩
-    have hi := IsOpenImmersion.lift_fac (Y.j ⁻¹ᵁ U).ι (𝟙 _) hr
-    refine ⟨IsOpenImmersion.lift (Y.j ⁻¹ᵁ U).ι (𝟙 _) hr ≫ Y.j ∣_ U, τ.left, ?_, Over.w τ, ?_⟩
-    · rw [Category.assoc, morphismRestrict_ι, ← Category.assoc, hi, Category.id_comp]
-    · rw [Category.assoc, hτ, ← Category.assoc, hi, Category.id_comp]
-
-theorem extends_iff (U : Y.X.Opens) (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
-    Y.Extends U σ ↔ (Set.range Y.j ⊆ (U : Set Y.X) → (toSecond Y).Extends (secEquiv Y σ) U) := by
-  by_cases hU : Set.range Y.j ⊆ (U : Set Y.X)
-  · rw [extends_iff_of_subset Y U hU]
-    exact ⟨fun h _ => h, fun h => h hU⟩
-  · exact ⟨fun _ h => (hU h).elim, fun _ => ModelScope.extends_of_not_subset Y U hU σ⟩
-
 end Model
-
-section Push
-
-variable {X : Scheme.{0}} {G : Over X} {L : LB G.left}
-
-end Push
 
 end GlobalTheory.ModelCompare

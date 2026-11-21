@@ -3,12 +3,12 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Geometrica
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLocModelIsPrimeOf
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
 import Development.AbelianVarietyTheory.Definitions.Divisors.DominatesIffIsLocalHom
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundaryEffectiveUpEtaleTowerNormalLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegrallyClosedOfIsEtaleTowerOverNormalLocalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientLastCoordinateEtaleTowerNormalLocaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleTowerTrBasisAppendCoordinatesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundaryEffectiveUpEtaleTowerNormalLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegrallyClosedOfIsEtaleTowerOverNormalLocal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientLastCoordinateEtaleTowerNormalLoca
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleTowerTrBasisAppendCoordinates
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceDiscKaehlerWedgePermNegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KltOfKltRestrictStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KltOfKltRestrict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingEquivTransportsVarietyPairDataStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -99,10 +99,6 @@ theorem mapDomain_nonneg {α β : Type} (v : α →₀ ℚ) (hv : ∀ a ∈ v.su
   · exact hv a ha
   · exact le_rfl
 
-example (K : Type) [Field K] (R : Subring K) : Algebra R K := inferInstance
-example (K : Type) [Field K] (R : Subring K) : FaithfulSMul R K := inferInstance
-example (K : Type) [Field K] (R : Subring K) (a : R) : algebraMap R K a = (a : K) := rfl
-
 end GlobalTheory.FieldPair.SpecTower
 
 namespace GlobalTheory.FieldPair.SpecTower
@@ -183,7 +179,7 @@ theorem klt_of_tower (hP : GlobalTheory.Published.Principalisation) (r : ℕ) :
     classical
     intro K L _ _ cK cL n R T ι ψ τ x φ θ h hx hφ hθ hE hk
     obtain ⟨L', _, cL', T', π, ι', ψ', hπs, hker, hf0, h', hψπ, hπι, hcst⟩ :=
-      GlobalTheory.T.exists_quotient_lastCoordinate_etaleTowerNormalLocal cK cL r R T ι ψ τ h
+      _root_.GlobalTheory.FieldPair.IsEtTower.exists_quotient_last cK cL r R T ι ψ τ h
     have hψπ' : ∀ t, ψ' (π t) = ψ t := fun t => RingHom.congr_fun hψπ t
     have hπι' : ∀ a, π (ι a) = ι' a := fun a => RingHom.congr_fun hπι a
 
@@ -240,7 +236,7 @@ theorem klt_of_tower (hP : GlobalTheory.Published.Principalisation) (r : ℕ) :
       exact ih'
     have hloc : IsLocModel cL' ψr.range := hrange ▸ h'.top
     have htr : TrBasis cL' (fun i => ψr (w i)) :=
-      hw ▸ GlobalTheory.T.etaleTower_trBasis_append_coordinates cK cL' n r R T' ι' ψ' _ x h' hx
+      hw ▸ _root_.GlobalTheory.FieldPair.TowerTrdeg.trBasis_append cK cL' n r R T' ι' ψ' _ x h' hx
     have hsupp : ∀ g ∈ θr.support, ψr g ≠ 0 := by
       intro g hg
       rcases Finset.mem_union.1 (Finsupp.support_add hg) with hg | hg
@@ -269,14 +265,14 @@ theorem klt_of_tower (hP : GlobalTheory.Published.Principalisation) (r : ℕ) :
       rfl
     have hθL : ∀ g ∈ θ.support, (g : L) ≠ 0 ∧ 0 ≤ θ g := fun g hg =>
       ⟨fun e => (hθ g hg).1 (by rw [show g = 0 from Subtype.ext e, map_zero]), (hθ g hg).2⟩
-    have hEff := GlobalTheory.T.boundaryEffective_up_etale_tower_normal_local cK cL n (r + 1) R T ι ψ τ x φ θ h hx hφ hθL hE
+    have hEff := _root_.GlobalTheory.FieldPair.effAt_etTower cK cL n (r + 1) R T ι ψ τ x φ θ h hx hφ hθL hE
     have hEff' : EffAt cL (r + n + 1) T
         (dForm cL (Fin.cons ((τ (Fin.last r) : T) : L) (fun i => (w i : L)) : Fin (r + n + 1) → L))
         (Finsupp.mapDomain (fun g : T => (g : L)) θr) := by
       rw [hcons, hDL]
       exact (effAt_comp_equiv cL σ _ T _).2 hEff
-    have hres := GlobalTheory.T.klt_of_klt_restrict_alt hP cL cL' (r + n) T h.top ψr (τ (Fin.last r)) w θr
-      (GlobalTheory.T.isIntegrallyClosed_of_isEtaleTowerOverNormalLocal cK cL (r + 1) R T ι ψ τ h) hcst hkerr hf0 hloc htr hsupp hEff' hklt'
+    have hres := _root_.GlobalTheory.FieldPair.klt_of_klt_restrict hP cL cL' (r + n) T h.top ψr (τ (Fin.last r)) w θr
+      (_root_.GlobalTheory.FieldPair.isIntegrallyClosed_of_isEtTower cK cL (r + 1) R T ι ψ τ h) hcst hkerr hf0 hloc htr hsupp hEff' hklt'
     rw [hcons, hDL] at hres
     exact (klt_comp_equiv cL σ _ T _).1 hres
 

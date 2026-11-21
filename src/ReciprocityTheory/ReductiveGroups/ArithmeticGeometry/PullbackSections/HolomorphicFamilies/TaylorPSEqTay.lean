@@ -1,5 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.Taylor
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.AnChart
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ThetaValCSteps
 
 set_option autoImplicit false
 

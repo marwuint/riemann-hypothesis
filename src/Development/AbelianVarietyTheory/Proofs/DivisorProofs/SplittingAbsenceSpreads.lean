@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NoCommonZeroSpreadsConstructibleNbhdStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NoCommonZeroSpreadsConstructibleNbhd
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
 
@@ -164,6 +164,6 @@ theorem GlobalTheory.splitting_absence_spreads : ∀ (A : Type) [CommRing A] (σ
   have h0 : ¬ ∃ z : GlobalTheory.SplitSpread.Var σ D → Ω, ∀ j,
       MvPolynomial.eval₂ φ z (GlobalTheory.SplitSpread.eqs A D f g j) = 0 := by
     rw [GlobalTheory.SplitSpread.bad_iff]; exact hbad
-  obtain ⟨a, I, ha, hI, hk⟩ := GlobalTheory.T.no_common_zero_spreads_constructible_nbhd A _ _ (GlobalTheory.SplitSpread.eqs A D f g) Ω φ h0
+  obtain ⟨a, I, ha, hI, hk⟩ := _root_.GlobalTheory.NoCommonZeroSpread.no_common_zero_spreads A _ _ (GlobalTheory.SplitSpread.eqs A D f g) Ω φ h0
   refine ⟨a, I, ha, hI, fun k _ ψ hψa hψI hb => hk k ψ hψa hψI ?_⟩
   exact (GlobalTheory.SplitSpread.bad_iff f g D k ψ).mpr hb

@@ -166,13 +166,6 @@ theorem emb_mem_KsphC (x : GLoc D.sp.cm.sig V.gram v) :
   rw [KsphC_eq]
   exact ⟨fun h => by simpa using (mem_levelOff.1 h).2.2 v (by simp), emb_mem_levelOff (by simp)⟩
 
-theorem suppF_and_mem_KsphC {ε : AF D.host.F} (h : IsPlaceIdem D v ε) (g : GA D V) :
-    (SuppF V (algebraMap (AF D.host.F) (AE D) ε) g ∧ g ∈ KsphC V ∅) ↔
-      g ∈ (stabLoc D.sp.cm.sig V.gram (frameLat V) v).map (emb D.sp.cm.sig V.gram v) := by
-  rw [suppF_iff_mem_range V h]
-  exact ⟨fun ⟨⟨x, e⟩, hk⟩ => ⟨x, (emb_mem_KsphC V x).1 (e ▸ hk), e⟩,
-    fun ⟨x, hx, e⟩ => ⟨⟨x, e⟩, e ▸ (emb_mem_KsphC V x).2 hx⟩⟩
-
 theorem fj_singleV (y : Fv D.host.F v) :
     fj D (singleV D.host.F v y) = singleTens D.host.E v (y ⊗ₜ[D.host.F] (1 : D.host.E)) := rfl
 

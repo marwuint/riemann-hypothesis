@@ -1,6 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialOperatorFderivFormula
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasTemperateGrowthElim
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClmSupBound
 

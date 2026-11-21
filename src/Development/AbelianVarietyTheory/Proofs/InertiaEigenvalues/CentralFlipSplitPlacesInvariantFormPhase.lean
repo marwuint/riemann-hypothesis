@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFlipDet
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipIdxNeZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdemSumMulOfSubset
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralConjugateFlipScalarFiniteAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilOperatorInvCentralFlipInvariantFormEqStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralConjugateFlipScalarFiniteAdelic
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilOperatorInvCentralFlipInvariantFormEq
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding Level Host
@@ -97,7 +97,7 @@ theorem centralFlip_phase : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W :
       refine cflip_flipElt_add m hab (cflip_mul_cA_eq_zero hT heA heB) ?_ (by rw [← map_mul, hab, map_zero])
       rw [mul_comm]
       exact cflip_mul_cA_eq_zero hT heB heA
-    obtain ⟨zP, -, -, hzP⟩ := GlobalTheory.T.exists_central_conjugateFlipScalar_finiteAdelic D V {P} m (es P) hSa hm
+    obtain ⟨zP, -, -, hzP⟩ := _root_.GlobalTheory.LevelSeries.flip_central_exists D V {P} m (es P) hSa hm
 
     have h1 : Formalism.L2.Theta.mt V zP * Formalism.L2.Theta.mt V zP⁻¹ = 1 := by
       rw [← GlobalTheory.IdemSupport.mt_mul, mul_inv_cancel, GlobalTheory.IdemSupport.mt_one]
@@ -127,7 +127,7 @@ theorem centralFlip_phase : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W :
       exact cflip_unit_split hx0
     have hxaD : IsFlipDet V (es P) m xa := hxa
     have hxbD : IsFlipDet V (∑ Q ∈ T', es Q) m xb := hxb
-    obtain ⟨rP, hrP, hPstep⟩ := GlobalTheory.T.weilOperator_inv_centralFlip_invariantForm_eq D ψ V W χV χW om hW P (es P) m zP xa ℓ hesP hm hzP hxaD
+    obtain ⟨rP, hrP, hPstep⟩ := _root_.GlobalTheory.LevelSeries.FlipScalStep.om_inv_flip_eq D ψ V W χV χW om hW P (es P) m zP xa ℓ hesP hm hzP hxaD
       (fun y hy φ hφ => hℓ y (cflip_isHalf_mono heA hy) φ hφ)
     obtain ⟨r', hr', hrest⟩ := ih (∑ Q ∈ T', es Q) m (z * zP⁻¹) xb ℓ hSb hm hz' hxbD
       (fun y hy φ hφ => hℓ y (cflip_isHalf_mono heB hy) φ hφ)

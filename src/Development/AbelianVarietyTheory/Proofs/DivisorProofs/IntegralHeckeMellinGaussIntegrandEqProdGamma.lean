@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CompletedLStripB
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormWt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTerm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GammaIntegralExpSubstitutionRealLineStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GammaIntegralExpSubstitutionRealLine
 open NumberField MeasureTheory
 
 noncomputable section
@@ -63,7 +63,7 @@ namespace GlobalTheory.HeckeMellinProd
 
 theorem fac_int (w : ℂ) (hw : 0 < w.re) (r : ℝ) (hr : 0 < r) :
     Integrable (fac w r) ∧ ∫ t, fac w r t = Complex.Gamma w * ((2 * Real.pi * r : ℝ) : ℂ) ^ (-w) :=
-  GlobalTheory.T.gamma_integral_exp_substitution_real_line r hr w hw
+  _root_.GlobalTheory.HeckeMellin.gamma_integral_exp_substitution r hr w hw
 
 theorem norm_fac_int (w : ℂ) (hw : 0 < w.re) (r : ℝ) (hr : 0 < r) :
     ∫ t, ‖fac w r t‖ = Real.Gamma w.re * (2 * Real.pi * r) ^ (-w.re) := by

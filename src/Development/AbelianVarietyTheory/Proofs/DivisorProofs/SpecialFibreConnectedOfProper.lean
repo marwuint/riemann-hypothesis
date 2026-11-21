@@ -3,7 +3,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SpecialFibreUnit
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlgebraisation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecialFibreConnected
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClopenBasicOpenSpecProdSelfFirstIdempotent
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomSpecProdSelfPreimageEqClopenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomSpecProdSelfPreimageEqClopen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentOfClopen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentEqOfBasicOpenEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomExtSpecProdSelfOfBasicOpenPreimageEqStatement
 
 set_option autoImplicit false
@@ -80,7 +82,7 @@ theorem connectedSpace_specialFibre_of_morphisms : GlobalTheory.Published.Formal
   have hclo : ∀ n, IsClopen (GlobalTheory.SpecialConn.thickι f n ⁻¹' A) := fun n =>
     ⟨hA.preimage (GlobalTheory.SpecialConn.thickι f n).continuous,
       by rw [← isClosed_compl_iff, hAB n]; exact hB.preimage (GlobalTheory.SpecialConn.thickι f n).continuous⟩
-  choose h hhp hhU using fun n => GlobalTheory.T.exists_hom_specProdSelf_preimage_eq_clopen O (GlobalTheory.SpecialConn.thickFib f n)
+  choose h hhp hhU using fun n => _root_.GlobalTheory.exists_hom_spec_prod_self_preimage_eq_clopen O (GlobalTheory.SpecialConn.thickFib f n)
     (GlobalTheory.SpecialConn.thickι f n ≫ f) _ (hclo n)
   haveI : IsProper (Over.mk f).hom := hP
   haveI : IsProper (Over.mk (twoπ O)).hom := isProper_twoπ O

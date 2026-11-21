@@ -1,12 +1,16 @@
 import Mathlib
-import ReciprocityTheory.L2DbarEstimates.Imports
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.Hormander
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.MvBlowup
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.LseSmoothRIffReal
+import ReciprocityTheory.L2DbarEstimates.NormFibrations.ImportsAlt
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PshNormalFrameQuadraticComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPeakSectionSmallDbarEnergyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PshNormalFrameQuadraticComparison
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPeakSectionSmallDbarEnergy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinSumSmoothSectionDbarEnergyLeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosLowerBoundOnFinset
+
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
@@ -35,7 +39,7 @@ theorem peak_sections_finite : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2
         A.ph H (A.pick P) ((A.chart (A.pick P)).symm v) - 2 * (q v).re ≤
           C * ‖v - A.chart (A.pick P) P‖ ^ 2 := by
     intro P
-    refine GlobalTheory.T.psh_normal_frame_quadratic_comparison n _ (fun v => A.ph H (A.pick P) ((A.chart (A.pick P)).symm v)) _
+    refine _root_.GlobalTheory.psh_normal_frame n _ (fun v => A.ph H (A.pick P) ((A.chart (A.pick P)).symm v)) _
       ((A.chart (A.pick P)).isOpen_inter_preimage_symm (hU P).2) ?_
       ((A.smooth_ph H (A.pick P)).mono Set.inter_subset_left) ?_
     · refine ⟨(A.chart (A.pick P)).map_source (A.mem_pick P), ?_⟩
@@ -59,7 +63,7 @@ theorem peak_sections_finite : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2
     exact mul_le_mul_of_nonneg_right
       (Finset.single_le_sum (f := Cc) (fun Q _ => (hC Q).le) hP) (by positivity)
   · intro G p hp
-    have h9 := fun P : Y => GlobalTheory.T.exists_peak_section_small_dbar_energy n Y ι La A C H G (A.pick P) (A.chart (A.pick P) P)
+    have h9 := fun P : Y => _root_.GlobalTheory.OTY.peak_section n Y ι La A C H G (A.pick P) (A.chart (A.pick P) P)
       (ρ P) (c P) (q P) (p P) (hρ P) (hc P) ((hsub P).trans Set.inter_subset_left) (hq P) (hp P)
       (fun v hv => (hb P v hv).1)
     choose K hK F hF using h9

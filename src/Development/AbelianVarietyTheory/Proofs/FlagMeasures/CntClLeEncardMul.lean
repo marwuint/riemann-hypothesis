@@ -9,10 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardBiUnionLe
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdxNOneMulAbsNorm
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneLeProdReal
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardSublatticesBoundedDetLeSum
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountTermsGramClassOverSublatticeStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountTermsGramClassOverSublattice
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormPowLeCardFlagQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExponentBookkeepingDivisorSumLeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClassNumberRootDiscFactorLeHHZStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExponentDivisorSumLe
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClassNumberRootDiscFactorLeHHZ
 import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
 
 namespace GlobalTheory.LoopC.GenericMean
@@ -177,8 +177,8 @@ theorem prod_nV (D : D7) (u u' : D.what₂.Word) (Z : GramM D) (hg : gS D ≠ 0)
 
 theorem main : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → (Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A → ∀ F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u → ∀ what₂ : Finset (LatV D), IsRowReps D F0 what₂ → ∀ de : ℕ, 1 ≤ de → ∀ HH : ℝ, (de : ℝ) ≤ HH → NT D u ≤ HH → MeanLe D F0 what₂ (fun Λ => cntPrim (D.sp.X 0).hT (L0X D Λ (lf D F0)) (D.R.k - 1) de) (((de : ℝ) / NT D u) ^ (D.R.k - 1) * (Real.exp 1 * Real.pi / (D.R.k * D.host.v)) ^ (D.R.k * D.R.f) * (((2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2)) ^ D.R.f * (classNumber D.host.E : ℝ) * 2 ^ D.R.f) * HH ^ (11 + 3 * Real.logb 2 D.R.f)))) → Formalism.MainNotions.S.UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
   intro Cg cb Cu cT CT C0 A
-  obtain ⟨C1, h1⟩ := GlobalTheory.T.count_terms_gramClass_over_sublattice Cg cb Cu cT CT C0 A
-  obtain ⟨C3, h3⟩ := GlobalTheory.T.classNumber_rootDisc_factor_le_HHZ Cg cb Cu cT CT C0 A
+  obtain ⟨C1, h1⟩ := _root_.GlobalTheory.LoopC.TermsOver.main Cg cb Cu cT CT C0 A
+  obtain ⟨C3, h3⟩ := _root_.GlobalTheory.LoopC.SizeQ.main Cg cb Cu cT CT C0 A
   refine ⟨max (max C1 CT) (max C3 60), fun D large₂ u u' C' Cl hCl hP hH F0 he hz what₂ hrows Z hZ => ?_⟩
   set C := max (max C1 CT) (max C3 60) with hC
   have c1 : C ≥ C1 := (le_max_left _ _).trans (le_max_left _ _)
@@ -254,7 +254,7 @@ theorem main : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, ∀ (D : D7) (large�
     have := Real.pi_pos
     positivity
   have hrd : 0 ≤ D.host.rdE := zero_le_one.trans (GlobalTheory.real_places_facts D).2.2.2.2.1
-  have key := GlobalTheory.T.exponent_divisor_sum_le D.R.k D.R.f D.R.rS G (NT D u) H _
+  have key := _root_.GlobalTheory.exponent_sum_le D.R.k D.R.f D.R.rS G (NT D u) H _
     ((2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2)) ^ D.R.f * (classNumber D.host.E : ℝ) * 2 ^ D.R.f) C hk hs.1 hf
     hlog hG1 hN hGH z1 ha (by positivity) z3 c4
   refine (Finset.sum_le_sum fun de hde => mul_le_mul_left

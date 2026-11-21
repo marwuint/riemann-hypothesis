@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSubquotientCompMulSingle
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducibleStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducible
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmRep
 
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
@@ -36,7 +37,7 @@ theorem UpperTheory.Lit.Cas.cells :
       (j : Fin 2) → (i : Fin h) × Fin (b.1 i j) ≃ Fin (x j).1 := fun b j =>
     stdBlocks (fun i => b.1 i j) (by simpa using b.2.2 j)
   have hτirr : (piTensor fun j => (x j).rep).IsIrreducible :=
-    GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k (Fin 2) (fun j => Fin (x j).1) (fun j => (x j).snd.rep)
+    _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k (Fin 2) (fun j => Fin (x j).1) (fun j => (x j).snd.rep)
   have hsm : IsSmooth (piTensor fun i => (δ i).rep) := isSmooth_piTensor (fun i => (δ i).snd.rep.smooth)
   have hne' : jhMult (piTensor fun j => (x j).rep) (jac (stdBlocks (fun j => (x j).1) hx)
       (parInd (stdBlocks (fun i => (δ i).1) hd) (piTensor fun i => (δ i).rep))) ≠ 0 := hne

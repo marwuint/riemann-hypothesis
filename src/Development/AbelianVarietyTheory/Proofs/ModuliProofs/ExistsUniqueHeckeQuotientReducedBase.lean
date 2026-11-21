@@ -3,9 +3,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.KerScheme
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyHeckeCorrespondenceSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsogenyPullbackHeckeModuliObjectStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientClassifyingMapIsogenyUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyHeckeCorrespondenceScheme
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsogenyPullbackHeckeModuliObject
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientClassifyingMapIsogenyUnique
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGeomPtRangeEq
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
@@ -37,12 +37,12 @@ theorem kerSet_of_isPullback {S : Scheme.{0}} {G G' C : Over S} [GrpObj G'] {ψ 
 theorem existsUnique_heckeQuot :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp (KA l)) (o : Ob D l s) (C : Over S) (j : C ⟶ o.t.G), 1 ≤ D.p + D.q → admitted l 𝔓 p → IsReduced S → IsFinite C.hom → Etale C.hom → IsClosedImmersion j.left → HeckeSet D o.t 𝔓 p i (Set.range j.left) → ∃! f : S ⟶ Xo.X, f ≫ Xo.s = s ∧ ∃ (o' : Ob D l s) (_ : ObjMap o' Xo.univ f) (ψ : o.t.G ⟶ o'.t.G), IsIsog o o' p ψ ∧ IsPullback j (toUnit C) ψ η[o'.t.G] := by
   intro E _ _ _ H D l Xo 𝔓 p i S s o C j hD hA hS hf he hj hK
-  obtain ⟨Z⟩ := GlobalTheory.T.nonempty_heckeCorrespondenceScheme E H D l Xo 𝔓 p i hD hA
+  obtain ⟨Z⟩ := _root_.GlobalTheory.HkFam.corr_nonempty E H D l Xo 𝔓 p i hD hA
   obtain ⟨h, ⟨hs, n, hn⟩, -⟩ := Z.rep S s hS o (Set.range j.left) ⟨C, j, hf, he, hj, rfl⟩ hK
   have hid : spMap (RingHom.id (KA l)) = 𝟙 _ := Spec.map_id _
   obtain ⟨o', ⟨n'⟩⟩ := GlobalTheory.obj_pull E H D l (KA l) (KA l) (baseKA l) (baseKA l) (RingHom.id _) _ _
     (Z.π₁ ≫ Xo.s) s h rfl rfl (by rw [hid, Category.comp_id, hs]) Z.o₂
-  obtain ⟨⟨ψ, hψ, -⟩, hall⟩ := GlobalTheory.T.exists_isogeny_pullback_heckeModuliObject E H D l p _ _ _ _ h Z.o₁ Z.o₂ o o' n n' Z.ψ
+  obtain ⟨⟨ψ, hψ, -⟩, hall⟩ := _root_.GlobalTheory.HkFam.isog_pull E H D l p _ _ _ _ h Z.o₁ Z.o₂ o o' n n' Z.ψ
   obtain ⟨hi, hk⟩ := hall ψ hψ
   have hi := hi Z.isog
   have hk := hk Z.K Z.isog.1.1 Z.ker
@@ -53,7 +53,7 @@ theorem existsUnique_heckeQuot :
   refine ⟨h ≫ Z.π₂, ⟨hfs, o', m, ψ, hi, ?_⟩, ?_⟩
   · exact (etSet_of_kerSet S _ _ ψ _ inferInstance hi.1.2.1 hi.1.2.2.1 hk).2 hS C j he hj rfl
   · rintro f ⟨hf₁, o₁, m₁, ψ₁, hi₁, hP⟩
-    exact (GlobalTheory.T.heckeQuotient_classifyingMap_isogeny_unique E H D l Xo 𝔓 p i S s o o₁ o' ψ₁ ψ _ f _ m₁ m hA hK hf₁ hfs hi₁ hi
+    exact (_root_.GlobalTheory.heckeQuot_unique E H D l Xo 𝔓 p i S s o o₁ o' ψ₁ ψ _ f _ m₁ m hA hK hf₁ hfs hi₁ hi
       (kerSet_of_isPullback hP) hk).1
 
 end GlobalTheory.HkFam

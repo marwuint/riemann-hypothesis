@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSigmaFiniteHaarFiniteAdelicUnitary
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianVolumeDependsOnlyOnFieldSignatureStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeExistsPosUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutInstDegreeRootDiscriminantRankStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassRatioRankFactorStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianVolumeDependsOnlyOnFieldSignature
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeExistsPosUnique
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutInstDegreeRootDiscriminantRank
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassRatioRankFactor
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 
@@ -153,12 +154,12 @@ theorem step (hstep : VolumeStep) (I : AutInst) (P Q : ℕ) (h : HasSig I P Q) (
         (c' : InfinitePlace I'.F → ℝ) (μf' : Measure I'.Gf) [SigmaFinite μf'] [μf'.IsHaarMeasure],
         IsGaugeAll I c → IsGaugeAll I' c' →
         gaugeVol I c μf = gaugeVol I' c' μf' * ENNReal.ofReal (rankFac I.E (P + Q)) := by
-  obtain ⟨hf, -, -, -, -, hpq⟩ := GlobalTheory.T.autInst_degree_rootDiscriminant_rank I
+  obtain ⟨hf, -, -, -, -, hpq⟩ := _root_.GlobalTheory.FlagMeas.instance_numbers I
   have hn := hpq P Q h
   obtain ⟨I', e, x, A, he, hn', -, -, -, hsig, hv⟩ := hstep I P Q h (by omega) s hs
   refine ⟨I', ⟨e, he⟩, hsig, ?_⟩
   intro c μf _ _ c' μf' _ _ hc hc'
-  have hR := GlobalTheory.T.mass_ratio_rank_factor I.E I.n (by omega)
+  have hR := _root_.GlobalTheory.FlagMeas.mass_ratio_mul_unitary_volume I.E I.n (by omega)
   rw [hf, show I.n - 1 = I'.n by omega] at hR
   rw [hn]
   exact ennreal_volume_ratio_step_cancel _ _ _ _ _ _ (rankFac_nonneg _) (pow_pos (volU_pos _) _) (pow_pos (volU_pos _) _) hR
@@ -172,7 +173,7 @@ theorem volumeRatio_of_volumeStep : VolumeStep → VolumeRatio := by
     refine ⟨⟨I, ⟨RingEquiv.refl _, fun _ => rfl⟩, hsig⟩, ?_⟩
     intro I₀ hI hsig₀ c μf _ _ c₀ μ₀ _ _ hc hc₀
     rw [Finset.Ioc_self, Finset.prod_empty, ENNReal.ofReal_one, mul_one]
-    exact GlobalTheory.T.hermitian_volume_depends_only_on_field_signature I I₀ _ _ hI hsig hsig₀ c μf c₀ μ₀ hc hc₀
+    exact _root_.GlobalTheory.VolInvariant.volumeInvariant I I₀ _ _ hI hsig hsig₀ c μf c₀ μ₀ hc hc₀
   · obtain ⟨I', p', q', hI', hsig', hp', hq', hsum, hv⟩ : ∃ (I' : AutInst) (p' q' : ℕ), SameField I I' ∧
         HasSig I' p' q' ∧ p₀ ≤ p' ∧ q₀ ≤ q' ∧ p' + q' + 1 = p + q ∧
         ∀ (c : InfinitePlace I.F → ℝ) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure]
@@ -188,7 +189,7 @@ theorem volumeRatio_of_volumeStep : VolumeStep → VolumeRatio := by
     refine ⟨⟨I₁, sameField_trans hI' hI₁, hsig₁⟩, ?_⟩
     intro I₀ hI hsig₀ c μf _ _ c₀ μ₀ _ _ hc hc₀
     obtain ⟨μ', hH, hS⟩ := GlobalTheory.CongTop.exists_haar_sigmaFinite I'
-    choose c' _ hc' _ using fun v : InfinitePlace I'.F => GlobalTheory.T.riemannianHaarGauge_exists_pos_unique I'.n (I'.ε v)
+    choose c' _ hc' _ using fun v : InfinitePlace I'.F => _root_.GlobalTheory.GaugeConst.gauge_exists_pos_unique I'.n (I'.ε v)
     have hg' : IsGaugeAll I' c' := hc'
     rw [hv c μf c' μ' hc hg', hrat I₀ (sameField_trans (sameField_symm hI') hI) hsig₀ c' μ' c₀ μ₀ hg' hc₀,
       ← hsum, Finset.prod_Ioc_succ_top (by omega),

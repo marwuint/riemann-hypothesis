@@ -84,51 +84,6 @@ def famRes {U U' : T.Opens} (h : U' ≤ U) : fam D U →+ fam D U' where
 @[simp] theorem famRes_val {U U' : T.Opens} (h : U' ≤ U) (m : fam D U) (W : AffIn U') :
     (famRes D h m).1 W = m.1 ⟨W.1, W.2.1, W.2.2.trans h⟩ := rfl
 
-theorem famRes_smul {U U' : T.Opens} (h : U' ≤ U) (a : Γ(T, U)) (m : fam D U) :
-    famRes D h (a • m) = resG T h a • famRes D h m :=
-  Subtype.ext <| funext fun W => by
-    change resG T (W.2.2.trans h) a • m.1 ⟨W.1, W.2.1, W.2.2.trans h⟩ =
-      resG T W.2.2 (resG T h a) • m.1 ⟨W.1, W.2.1, W.2.2.trans h⟩
-    rw [resG_resG']
-
-def famPresheaf : TopCat.Presheaf Ab.{0} T where
-  obj U := AddCommGrpCat.of (fam D U.unop)
-  map f := AddCommGrpCat.ofHom (famRes D (leOfHom f.unop))
-  map_id _ := by ext; rfl
-  map_comp _ _ := by ext; rfl
-
-def toModules (hD : (famPresheaf D).IsSheaf) : T.Modules :=
-  letI : ∀ U, Module (T.ringCatSheaf.obj.obj U) ((famPresheaf D).obj U) :=
-    fun U => famModule D U.unop
-  { val := PresheafOfModules.ofPresheaf (famPresheaf D) fun _ _ f r m =>
-      famRes_smul D (leOfHom f.unop) r m
-    isSheaf := hD }
-
-def ofAff {V : T.Opens} (hV : IsAffineOpen V) (x : D.M V hV) : fam D V :=
-  ⟨fun W => D.ρ hV W.2.1 W.2.2 x, fun W W' h => D.ρ_ρ hV W.2.1 W'.2.1 W.2.2 h x⟩
-
-def affEquiv {V : T.Opens} (hV : IsAffineOpen V) : fam D V ≃ₗ[Γ(T, V)] D.M V hV where
-  toFun m := m.1 ⟨V, hV, le_rfl⟩
-  invFun := ofAff D hV
-  map_add' _ _ := rfl
-  map_smul' a m := by
-    change resG T le_rfl a • m.1 ⟨V, hV, le_rfl⟩ = a • m.1 ⟨V, hV, le_rfl⟩
-    congr 1
-    change (T.presheaf.map (homOfLE le_rfl).op).hom a = a
-    rw [show (homOfLE (le_rfl : V ≤ V)).op = 𝟙 (op V) from rfl, T.presheaf.map_id]
-    rfl
-  left_inv m := Subtype.ext <| funext fun W => fam_rel D m ⟨V, hV, le_rfl⟩ W W.2.2
-  right_inv x := D.ρ_self hV le_rfl x
-
 variable {D}
-
-def secEquiv (hD : (famPresheaf D).IsSheaf) {V : T.Opens} (hV : IsAffineOpen V) :
-    Γ(toModules D hD, V) ≃ₗ[Γ(T, V)] D.M V hV :=
-  affEquiv D hV
-
-theorem secEquiv_resM (hD : (famPresheaf D).IsSheaf) {V V' : T.Opens} (hV : IsAffineOpen V)
-    (hV' : IsAffineOpen V') (h : V' ≤ V) (s : Γ(toModules D hD, V)) :
-    secEquiv hD hV' (GlobalTheory.Twist.resM (toModules D hD) h s) = D.ρ hV hV' h (secEquiv hD hV s) :=
-  (fam_rel D (show fam D V from s) ⟨V, hV, le_rfl⟩ ⟨V', hV', h⟩ h).symm
 
 end GlobalTheory.AffGlue

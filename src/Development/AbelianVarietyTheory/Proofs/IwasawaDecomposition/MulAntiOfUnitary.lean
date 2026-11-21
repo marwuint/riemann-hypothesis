@@ -8,9 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.RightDerivativeAlong
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryLieGeneratorsRep
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOneP
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalEigenspaceSumSqInvariantFieldsAStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalEigenspaceSumSqInvariantFieldsA
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalKerAevalOfEigenspacesStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothOfFiniteDimensionalTranslationStableStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothOfFiniteDimensionalTranslationStable
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.QuadraticGelfandInvariantEqNegSumSqDefiniteStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteHermitianEqPmGramUnitaryCompactStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntertwineAeval
@@ -129,7 +129,7 @@ theorem finite_ker (H : IsLieData σ j s) (hl : HasLog σ j) (hc : IsCompact {a 
   have : FiniteDimensional ℝ L := FiniteDimensional.of_injective j H.inj
   have H' := isLieData_toU H
   refine GlobalTheory.T.finiteDimensional_ker_aeval_of_eigenspaces' _ _ (fun lam => ?_) p hp
-  refine GlobalTheory.T.finiteDimensional_eigenspace_sum_sq_invariantFields_alt (uGrp H) L _ (fun f hf => ?_) (expMap j (toU H)) (fun Y => ?_) ?_ (fun r hr => ?_) _
+  refine _root_.GlobalTheory.finiteDimensional_eigenspace_sum_sq_invariantFields (uGrp H) L _ (fun f hf => ?_) (expMap j (toU H)) (fun Y => ?_) ?_ (fun r hr => ?_) _
     (derOp_add _ hl) (derOp_smul _ hl) (fun Y f x t => hasDerivAt_sm H' f.2 Y x t) ι X hX lam
   · refine ((continuousOn_of_sm H' hl hf 1).comp_continuous (continuous_val H) fun k => k.2).congr fun k => ?_
     simp only [Function.comp, one_mul, toU_coe]
@@ -319,7 +319,7 @@ theorem sm_of_kfin (hθ : IsInfFam θ) (hs : V.SigOK) (hd : V.IsDefinite) {φ : 
     | zero => exact zero_mem _
     | add x y _ _ hx hy => exact add_mem hx hy
     | smul c x _ hx => exact M.smul_mem c hx
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.deriv_mem_and_contDiff_of_translation_stable (GA D V) M (Σ τ, LieAt V τ) (fun i t => oneP θ V i.1 i.2.1 t)
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.smooth_of_finiteDimensional_translation_stable (GA D V) M (Σ τ, LieAt V τ) (fun i t => oneP θ V i.1 i.2.1 t)
     (fun i a b => by
       simp only [oneP_eq R]
       exact expMap_add (isLieData R) _ a b)

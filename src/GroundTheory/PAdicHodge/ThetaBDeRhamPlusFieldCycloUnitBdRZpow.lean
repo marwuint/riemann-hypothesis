@@ -16,11 +16,6 @@ variable {p : ℕ} [Fact p.Prime]
 local notation "𝔹" => BDeRhamPlus (normInteger ℂ_[p]) p
 local notation "𝔹dR" => BDeRham (normInteger ℂ_[p]) p
 
-theorem isLocalization_away_tBdR : IsLocalization.Away (tBdR p) 𝔹dR :=
-  IsPerfectoidField.isLocalization_away_bDeRham maximalIdeal_eq_span_tBdR
-
-theorem isField_bDeRham : IsField 𝔹dR := Field.toIsField _
-
 theorem algebraMap_tBdR_ne_zero : algebraMap 𝔹 𝔹dR (tBdR p) ≠ 0 :=
   IsPerfectoidField.algebraMap_ne_zero_of_maximalIdeal_eq_span maximalIdeal_eq_span_tBdR
 
@@ -78,20 +73,6 @@ theorem grMap_tBdR_gal_smul (σ : Gal(PadicAlgCl p/L)) {i : ℤ}
   have e2 : x = ⟨_, hmemx⟩ := Subtype.ext hb
   rw [e1, IsPerfectoidField.grMap_mk, e2, IsPerfectoidField.grMap_mk, map_mul,
     thetaBDeRhamPlusField_cycloUnitBdR_zpow, thetaBDeRhamPlusField_gal_smul, cpTwistRep_apply]
-
-theorem grEquiv_tBdR_gal_smul (σ : Gal(PadicAlgCl p/L)) {i : ℤ}
-    (x : IsPerfectoidField.fil ℂ_[p] p i) :
-    IsPerfectoidField.grEquiv maximalIdeal_eq_span_tBdR i
-        (Submodule.Quotient.mk ⟨σ • (x : 𝔹dR), gal_smul_mem_fil σ x.2⟩) =
-      cpTwistRep L i σ
-        (IsPerfectoidField.grEquiv maximalIdeal_eq_span_tBdR i (Submodule.Quotient.mk x)) := by
-  rw [IsPerfectoidField.grEquiv_mk, IsPerfectoidField.grEquiv_mk, grMap_tBdR_gal_smul]
-
-theorem gal_smul_sub_mem_fil_succ (σ : Gal(PadicAlgCl p/L)) {i : ℤ} {x y : 𝔹dR}
-    (h : x - y ∈ IsPerfectoidField.fil ℂ_[p] p (i + 1)) :
-    σ • x - σ • y ∈ IsPerfectoidField.fil ℂ_[p] p (i + 1) := by
-  rw [← smul_sub]
-  exact gal_smul_mem_fil σ h
 
 end Galois
 

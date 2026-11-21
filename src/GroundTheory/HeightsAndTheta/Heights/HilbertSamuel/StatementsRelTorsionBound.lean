@@ -17,12 +17,6 @@ def RelTorsionBound.Statement : Prop :=
           (∏ k, y ⟨k, c k⟩) ^ D * f = y ⟨k0, c0 k0⟩ * g) →
         ∃ g ∈ relSecM R y b, f = y ⟨k0, c0 k0⟩ * g
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

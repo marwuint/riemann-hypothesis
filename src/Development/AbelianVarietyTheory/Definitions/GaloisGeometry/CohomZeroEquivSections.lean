@@ -89,97 +89,17 @@ def pull (f : X ⟶ Y) (c : (res R f).obj G ⟶ F) (u : T.left ⟶ T'.left) (hu 
   map_add' z w := (pullExt f c u hu n).map_add z w
   map_smul' r z := (pullExt f c u hu n).map_smul (ULift.up r : ULift.{1} R) z
 
-def secPull (f : X ⟶ Y) (c : (res R f).obj G ⟶ F) (u : T.left ⟶ T'.left) (hu : u ≫ T'.hom = T.hom ≫ f) :
-    Sec G T' →ₗ[R] Sec F T where
-  toFun s := (G.obj.map (overHom f u hu).op ≫ c.hom.app (op T)).hom s
-  map_add' s t := map_add _ _ _
-  map_smul' r s := map_smul _ (ULift.up r : ULift.{1} R) _
-
 variable (R) [TopologicalSpace R] [IsTopologicalRing R]
 
-abbrev coef (X : Scheme.{0}) : Shv R X := (GlobalTheory.Et.coef R).over X
-
-variable {R} in
-
-def IsLisse (F : Shv R X) : Prop :=
-  ∃ S ∈ Scheme.proetaleTopology.{0} X, ∀ ⦃U : Scheme.{0}⦄ (u : U ⟶ X), S u →
-    ∃ r : ℕ, Nonempty ((res R u).obj F ≅ ∏ᶜ fun _ : Fin r => coef R U)
-
 end GlobalTheory.Et.Rel
 
 end
-
-noncomputable section
-
-open CategoryTheory Limits AlgebraicGeometry Opposite
 
 namespace GlobalTheory.Et.Rel
 
-variable (R : Type) [CommRing R] {X Y : Scheme.{0}}
-
-def cohomZeroEquivSections (F : Shv R X) (T : Over X) : H F 0 T ≃ₗ[R] Sec F T where
-  toEquiv := (Abelian.Ext.linearEquiv₀ (R := ULift.{1} R) (X := (free R X).obj T) (Y := F)).toEquiv.trans
-    (freeEquiv R T F)
-  map_add' z w :=
-    (congrArg (freeEquiv R T F)
-      ((Abelian.Ext.linearEquiv₀ (R := ULift.{1} R) (X := (free R X).obj T) (Y := F)).map_add z w)).trans rfl
-  map_smul' r z :=
-    (congrArg (freeEquiv R T F)
-      ((Abelian.Ext.linearEquiv₀ (R := ULift.{1} R) (X := (free R X).obj T) (Y := F)).map_smul
-        (ULift.up r : ULift.{1} R) z)).trans rfl
-
-abbrev resId (F : Shv R X) : (res R (𝟙 X)).obj F ⟶ F :=
-  (Scheme.proetaleTopology.{0}.overMapPullbackId (ModuleCat.{1} (ULift.{1} R)) X).hom.app F
-
-variable [TopologicalSpace R] [IsTopologicalRing R]
-
-def secCoef (T : Over X) : Sec (coef R X) T ≃ₗ[R] C(T.left, R) where
-  toAddEquiv := (((isoSheafify _ (GlobalTheory.Et.H0.sh R)).app (op T.left)).symm.toLinearEquiv).toAddEquiv.trans AddEquiv.ulift
-  map_smul' r s := (congrArg AddEquiv.ulift (LinearEquiv.map_smul
-    (((isoSheafify _ (GlobalTheory.Et.H0.sh R)).app (op T.left)).symm.toLinearEquiv) (ULift.up r) s)).trans rfl
-
-def resCoef (f : X ⟶ Y) : (res R f).obj (coef R Y) ≅ coef R X :=
-  (Functor.sheafPushforwardContinuousComp' (Over.mapForget f) (ModuleCat.{1} (ULift.{1} R))
-    (Scheme.proetaleTopology.{0}.over X) (Scheme.proetaleTopology.{0}.over Y) Scheme.proetaleTopology.{0}).app
-    (GlobalTheory.Et.coef R)
-
-theorem isLisse_pi_coef (X : Scheme.{0}) (r : ℕ) : IsLisse (∏ᶜ fun _ : Fin r => coef R X) :=
-  ⟨⊤, GrothendieckTopology.top_mem _ _, fun _ u _ =>
-    ⟨r, ⟨PreservesProduct.iso (res R u) _ ≪≫ Pi.mapIso fun _ => resCoef R u⟩⟩⟩
-
-theorem isLisse_coef (X : Scheme.{0}) : IsLisse (coef R X) :=
-  ⟨⊤, GrothendieckTopology.top_mem _ _, fun U u _ =>
-    ⟨1, ⟨resCoef R u ≪≫ (productUniqueIso fun _ : Fin 1 => coef R U).symm⟩⟩⟩
-
 end GlobalTheory.Et.Rel
-
-end
-
-noncomputable section
-
-open CategoryTheory Limits AlgebraicGeometry Opposite
 
 namespace GlobalTheory.Et.Rel
 
-section Examples
-
-variable {X : Scheme.{0}}
-
-example : IsGrothendieckAbelian.{1} (Shv ℚ X) := inferInstance
-
-example (F : Shv ℚ X) (T : Over X) : H F 0 T ≃ₗ[ℚ] Sec F T := cohomZeroEquivSections ℚ F T
-
-example (T : Over X) : Sec (coef ℚ X) T ≃ₗ[ℚ] C(T.left, ℚ) := secCoef ℚ T
-
-example : IsLisse (coef ℚ X) := isLisse_coef ℚ X
-
-example : IsLisse (∏ᶜ fun _ : Fin 3 => coef ℚ X) := isLisse_pi_coef ℚ X 3
-
-example (F : Shv ℚ X) (T : Over X) (q : ℚ) (z : H F 0 T) : cohomZeroEquivSections ℚ F T (q • z) = q • cohomZeroEquivSections ℚ F T z :=
-  map_smul _ q z
-
-end Examples
-
 end GlobalTheory.Et.Rel
 
-end

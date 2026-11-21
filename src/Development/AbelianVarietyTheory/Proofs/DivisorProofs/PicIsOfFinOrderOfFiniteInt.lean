@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOfFinOrderOfIsOfFinOrderMapRingHomStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOfFinOrderOfIsOfFinOrderMapRingHom
 
 set_option autoImplicit false
 open NumberField
@@ -118,7 +118,7 @@ theorem isOfFinOrder_of_numberField (K : Type) [Field K] [Algebra B K] [IsFracti
     · have := neg_mem (hNmem x)
       rwa [h, Int.cast_neg, Int.cast_natCast, neg_mul, neg_neg] at this
   haveI : Finite (CommRing.Pic (𝓞 K)) := Finite.of_equiv _ (ClassGroup.equivPic (𝓞 K)).toEquiv
-  exact GlobalTheory.T.isOfFinOrder_of_isOfFinOrder_pic_mapRingHom B (𝓞 K) φ N.natAbs hinj hn0 hcond M (isOfFinOrder_of_finite _)
+  exact _root_.GlobalTheory.isOfFinOrder_of_isOfFinOrder_mapRingHom B (𝓞 K) φ N.natAbs hinj hn0 hcond M (isOfFinOrder_of_finite _)
 
 theorem isOfFinOrder_of_charZero (M : CommRing.Pic B) : IsOfFinOrder M := by
   haveI : CharZero (FractionRing B) := IsFractionRing.charZero_of_isFractionRing B

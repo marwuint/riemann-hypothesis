@@ -1,5 +1,5 @@
 import Formalism.LocalToGlobal.SelSide
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LayerTwoFamilyClass
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LinkedFamiliesKernelFrame
 
@@ -11,7 +11,6 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain
 open scoped TensorProduct
 namespace Formalism.L2
 namespace SelJ
-variable {D : D7} {X : Col.Fields}
 end SelJ
 section
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {K : MainNotions.G.Consts} {Y : DivX D}

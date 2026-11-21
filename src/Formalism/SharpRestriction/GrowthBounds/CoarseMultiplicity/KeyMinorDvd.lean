@@ -223,6 +223,4 @@ theorem key3Ord : CoarseMultiplicityOrderBound := by
   intro X _ O _ _ _ _ S hsq hD j i g hg
   exact ⟨kS_ord X O S hsq hD j i g hg, fun c => kW_ord X O S hsq hD j i g hg c.succ⟩
 
-theorem key3At : CoarseMultiplicityBoundAtIdentity := third_key_of_order key3Ord
-
 end Formalism.MainNotions.ColumnSystems.Pf

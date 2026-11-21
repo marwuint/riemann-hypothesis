@@ -1,12 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRationalPair
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LinearUniformisationTorsionIsomorphism
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QValPullbackMulRamificationCompleteDvrStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCdvrExtensionQkPointsRationalStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QValPullbackMulRamificationCompleteDvr
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsRosatiGen
+import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsRootOfIsAlgClosed
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCdvrExtensionQkPointsRational
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GenericLieMultiplicitiesUniformisedGroupStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsGrpPullbackGenericFibre
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PsiUnitOnRescaleUniformizerOfQValStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialOfNotRangeSubsetAbLocusStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PsiUnitOnRescaleUniformizerOfQVal
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialOfNotRangeSubsetAbLocus
 
 noncomputable section
 
@@ -138,7 +143,7 @@ theorem exists_arcIn_of_unif {V : ValuationSubring c.F} (Y : Model Xo c V.subtyp
             nontriv := hX
             even := psiEven_twist ht _ P.D.psi_even
             bimult := tauBimult_twist hw ht hB
-            gen := fun y => GlobalTheory.T.psiUnitOn_rescale_uniformizer_of_qVal T P.D.toPre ϖ hϖ y _ (hQ y) _ (by
+            gen := fun y => _root_.GlobalTheory.TauTwist.psiUnitOn_rescale_of_qVal T P.D.toPre ϖ hϖ y _ (hQ y) _ (by
               beta_reduce; rw [htf, ← zpow_neg, Units.val_zpow_eq_zpow_val]; rfl)
             w0 := psi_weight_zero_twist hw ht P.w0
             be := be
@@ -248,11 +253,11 @@ theorem exists_arcIn_of_bad_reduction : ∀ (E : Type) [Field E] [NumberField E]
   let T₁ : CDVR := { V := W.W }
   let g₁ : T.V →+* T₁.V := algebraMap Pt.V W.W
   have f₁ : g₁.Finite := RingHom.finite_algebraMap.2 W.fin
-  have hX : Nontrivial P.D.toPre.X := GlobalTheory.T.nontrivial_X_of_not_range_subset_abLocus E H _ Y.t T T₁ g₁ y' t m P W.inj f₁ hbad
+  have hX : Nontrivial P.D.toPre.X := _root_.GlobalTheory.BadReductionLattice.nontrivial_of_not_range_subset_abLocus E H _ Y.t T T₁ g₁ y' t m P W.inj f₁ hbad
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible T₁.V
   have hM' : 0 < l.M' := Nat.lcm_pos (lt_of_lt_of_le (by decide) l.three_le) l.A_pos
   obtain ⟨T', g₂, ϖ, e, i₂, f₂, hϖ, he, hass, rat⟩ :=
-    GlobalTheory.T.exists_cdvr_extension_qkPoints_rational T₁ P.D.toPre P.D.tau_bimult (2 * l.M') (by omega) π hπ
+    _root_.GlobalTheory.QkRationalExt.exists_cdvr_ext_rational T₁ P.D.toPre P.D.tau_bimult (2 * l.M') (by omega) π hπ
   have loc : IsLocalHom g₂ := f₂.to_isIntegral.isLocalHom i₂
   obtain ⟨t', m₀, P', hD, -⟩ := ArcDataDescent.exists_pelUnif_pull h₃.cubePull h₁.polBaseChange h₄.unifBaseChange h₅
     (I' := IsLocalRing.maximalIdeal T'.V) ⟨inferInstance, inferInstance, inferInstance, hc⟩
@@ -273,7 +278,7 @@ theorem exists_arcIn_of_bad_reduction : ∀ (E : Type) [Field E] [NumberField E]
       rw [Category.assoc, hj, ← Category.assoc, ← Category.assoc]
       exact congrArg (· ≫ y') (ArcPointDescent.sp_sq (f' := g) (g' := algebraMap T'.V T'.Fr) hgam))
     t' m' P' hD.xe.toEquiv.nontrivial hϖ (Q := fun y => e * Q (hD.xe y))
-    (fun y => GlobalTheory.T.qVal_pullback_mul_ramification_complete_dvr T₁ T' g₂ _ _ hD π ϖ e i₂ hπ hϖ hass y _ (hQ _))
+    (fun y => _root_.GlobalTheory.QValPull.main T₁ T' g₂ _ _ hD π ϖ e i₂ hπ hϖ hass y _ (hQ _))
     (fun y => Dvd.dvd.mul_right (by exact_mod_cast he) _)
     fun k hk => rat _ hD P'.D.tau_bimult k (hk.mul_left 2)
   exact ⟨T', g, ϖ, a, ig, f₂.comp f₁, hϖ, hϖ.maximalIdeal_eq ▸ ha⟩

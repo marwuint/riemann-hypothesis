@@ -1,6 +1,8 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.CuspidalContribution.LevShrink
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.CuspidalSupport.CuspSupportOf
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiscriminantIdentityStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiscriminantIdentity
+import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.InfinitesimalCharacterGlue
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.ReproOf
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.IsoEq
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
@@ -69,4 +71,4 @@ private theorem cuspFin_of (hF : FinDisc) : CuspFin := by
 
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.cuspFin :
     CuspFin :=
-  cuspFin_of GlobalTheory.T.finite_discriminant_identity
+  cuspFin_of _root_.GlobalTheory.CompanionTheory.FinDiscP.main

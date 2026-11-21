@@ -159,5 +159,3 @@ theorem isHopfOrder_of_flat_local :
 
 end PositivityTheory.HtPt.Htat.HopfOrderFlatLocal
 
-theorem PositivityTheory.HtPt.Htat.bt_hopf_descent : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] [IsNoetherianRing R] (A : Subalgebra R (T → R)), (∃ d : R, d ≠ 0 ∧ ∀ f : T → R, d • f ∈ A) → (∀ P : Ideal R, P.IsMaximal → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (_ : Algebra R R'), Module.Flat R R' ∧ (IsLocalRing.maximalIdeal R').comap (algebraMap R R') = P ∧ IsHopfOrder (extOrder (algebraMap R R') A)) → IsHopfOrder A :=
-  @PositivityTheory.HtPt.Htat.HopfOrderFlatLocal.isHopfOrder_of_flat_local

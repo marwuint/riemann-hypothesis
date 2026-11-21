@@ -35,7 +35,7 @@ theorem exists_isVacO {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) 
   have : BorelSpace (WO S T) := ⟨rfl⟩
   have h1 := (hf 1).1
   simp only [one_mul] at h1
-  obtain ⟨⟨μ, 𝓕, hμ⟩, c, hc⟩ := GlobalTheory.T.exists_normalise_meanSquare_of_cocompact' (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by
+  obtain ⟨⟨μ, 𝓕, hμ⟩, c, hc⟩ := _root_.GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by
     rintro _ ⟨g, rfl⟩ w
     have e := h1.quasi g w
     have e' := congrArg norm e

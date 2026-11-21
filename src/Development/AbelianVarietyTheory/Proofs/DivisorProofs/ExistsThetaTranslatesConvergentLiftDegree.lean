@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTriple
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.UnifModGrowthOfIsUnifModerate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftPRouteSmall
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslationCombIntegrableThetaKernelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallRouteCombinationMulLiftByDegreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallRouteSumTranslatedOuterIntegralsEqStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslationCombIntegrableThetaKernel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallRouteCombinationMulLiftByDegree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallRouteSumTranslatedOuterIntegralsEq
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.IndefR.Links
 open IsDedekindDomain NumberField MeasureTheory Matrix
@@ -27,9 +27,9 @@ theorem exists_translates_lift : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : C
     zdeg z * liftT W M (routeSmall t i j) Θ' F g₁ = ∫ g in M.fd (.grid i (j + 1)), F g * ∫ u in M.fd (.grid i j),
       translates z (kerSmall W Θ' g g₁) u ∂M.ν (.grid i j) ∂M.ν (.grid i (j + 1)) := by
   intro D T L sc G hWC hK hP μ₀ hL W B ρ t i j hT M hM Θ Θ' hΘ F hF hFc hFl hB g₁
-  obtain ⟨z, hz, h1, hJ⟩ := GlobalTheory.T.exists_translation_comb_integrable_thetaKernel hK hP hL W B ρ t i j hT M hM Θ Θ' hΘ F hF hFc hFl hB g₁
-  obtain ⟨hI, h2⟩ := GlobalTheory.T.smallRoute_combination_mul_lift_by_degree hL W B ρ t i j M hM Θ Θ' hΘ F hF hB g₁ z
-  exact ⟨z, hz, Filter.Eventually.of_forall h1, h2.trans (GlobalTheory.T.smallRoute_sum_translated_outerIntegrals_eq hL W t i j M hM Θ' F hB g₁ z hI hJ)⟩
+  obtain ⟨z, hz, h1, hJ⟩ := _root_.GlobalTheory.ZConv.zconv hK hP hL W B ρ t i j hT M hM Θ Θ' hΘ F hF hFc hFl hB g₁
+  obtain ⟨hI, h2⟩ := _root_.GlobalTheory.SmallRoute.zdeg_mul_liftT hL W B ρ t i j M hM Θ Θ' hΘ F hF hB g₁ z
+  exact ⟨z, hz, Filter.Eventually.of_forall h1, h2.trans (_root_.GlobalTheory.SmallRoute.sum_integral_translates_outer_eq hL W t i j M hM Θ' F hB g₁ z hI hJ)⟩
 
 end GlobalTheory.SmallRoute
 

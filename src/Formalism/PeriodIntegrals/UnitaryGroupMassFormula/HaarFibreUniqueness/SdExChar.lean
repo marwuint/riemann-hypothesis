@@ -76,15 +76,6 @@ theorem psi_zero : ψ0 0 = 1 := by
   exact sub_eq_zero.mp ((mul_eq_zero.mp h2).resolve_left hne)
 
 include hψa hψn in
-theorem psi_sum {ι : Type} (s : Finset ι) (f : ι → Fv F v) :
-    ψ0 (∑ i ∈ s, f i) = ∏ i ∈ s, ψ0 (f i) := by
-  classical
-  induction s using Finset.induction_on
-  · simp [psi_zero v ψ0 hψa hψn]
-  · rename_i a s ha ih
-    rw [Finset.sum_insert ha, hψa, ih, Finset.prod_insert ha]
-
-include hψa hψn in
 theorem psi_natCast_mul (m : ℕ) (t : Fv F v) : ψ0 ((m : Fv F v) * t) = ψ0 t ^ m := by
   induction m with
   | zero => simp [psi_zero v ψ0 hψa hψn]

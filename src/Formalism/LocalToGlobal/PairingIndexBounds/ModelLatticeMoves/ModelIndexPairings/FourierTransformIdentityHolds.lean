@@ -20,16 +20,9 @@ theorem IsBichar.map_zero_left (hc : IsBichar c) (a : A) : c 0 a = 1 := by
   rw [add_zero] at h
   exact mul_left_cancel₀ (hc.1 0 a) (by rw [mul_one]; exact h.symm)
 
-theorem IsBichar.map_neg_right (hc : IsBichar c) (b : B) (a : A) : c b (-a) = (c b a)⁻¹ := by
-  apply eq_inv_of_mul_eq_one_left
-  rw [← hc.2.2, neg_add_cancel, hc.map_zero_right]
-
 theorem IsBichar.map_neg_left (hc : IsBichar c) (b : B) (a : A) : c (-b) a = (c b a)⁻¹ := by
   apply eq_inv_of_mul_eq_one_left
   rw [← hc.2.1, neg_add_cancel, hc.map_zero_left]
-
-theorem IsBichar.map_sub_right (hc : IsBichar c) (b : B) (a a' : A) : c b (a - a') = c b a * (c b a')⁻¹ := by
-  rw [sub_eq_add_neg, hc.2.2, hc.map_neg_right]
 
 theorem IsBichar.map_sub_left (hc : IsBichar c) (b b' : B) (a : A) : c (b - b') a = c b a * (c b' a)⁻¹ := by
   rw [sub_eq_add_neg, hc.2.1, hc.map_neg_left]
@@ -151,10 +144,6 @@ theorem model_moves_hold : ModelMoves := by
 
 section Heisenberg₂
 variable {c : B → A → k} {WA : A → T →ₗ[k] T} {WB : B → T →ₗ[k] T}
-
-theorem IsHeis.WA_zero (hW : IsHeis c WA WB) (x : T) : WA 0 x = x := by rw [hW.1]; rfl
-
-theorem IsHeis.WB_zero (hW : IsHeis c WA WB) (x : T) : WB 0 x = x := by rw [hW.2.2.1]; rfl
 
 theorem IsHeis.WA_add (hW : IsHeis c WA WB) (a a' : A) (x : T) : WA (a + a') x = WA a (WA a' x) := by
   rw [hW.2.1]; rfl
@@ -429,93 +418,5 @@ theorem lattice_moves_hold : Moves := by
   obtain ⟨h, hval⟩ := Xi_of_eq_sum hXi (SA ×ˢ SB) (fun _ => (SB.card : k)⁻¹) Prod.fst Prod.snd _ hexp
   refine ⟨h, ?_⟩
   rw [hval, ← Finset.smul_sum, smul_smul, mul_inv_cancel₀ hcard, one_smul, Finset.sum_product]
-
-theorem IsXi.fixed {c : B → A → k} {WA : A → T →ₗ[k] T} {WB : B → T →ₗ[k] T} {A₀ : AddSubgroup A} {θ : T}
-    {Xi : Sch c A₀ →ₗ[k] T} (hXi : IsXi c WA WB A₀ θ Xi) (hc : IsBichar c) (hW : IsHeis c WA WB) (a : A)
-    (ha : a ∈ A₀) : WA a θ = θ := by
-  have e : gen c A₀ a 0 = gen c A₀ 0 0 := by
-    funext t
-    rw [gen_apply, gen_apply, hc.map_zero_left, hc.map_zero_left, add_zero]
-    by_cases ht : t ∈ A₀
-    · rw [ind_of_mem (show t ∈ (A₀ : Set A) from ht), ind_of_mem (show t + a ∈ (A₀ : Set A) from A₀.add_mem ht ha)]
-    · have : t + a ∉ (A₀ : Set A) := by
-        intro h
-        apply ht
-        have := A₀.sub_mem h ha
-        rwa [add_sub_cancel_right] at this
-      rw [ind_of_not_mem (show t ∉ (A₀ : Set A) from ht), ind_of_not_mem this]
-  have h1 := hXi a 0
-  have h2 := hXi 0 0
-  have e' : (⟨gen c A₀ a 0, gen_mem c A₀ a 0⟩ : Sch c A₀) = ⟨gen c A₀ 0 0, gen_mem c A₀ 0 0⟩ := Subtype.ext e
-  rw [e', h2, hW.WB_zero, hW.WA_zero] at h1
-  exact h1.symm
-
-theorem fourier_transform_identity_holds : Fourier := by
-  intro k _ A B T _ _ _ _ c WA WB hc hW A₀ A₂ B₀ B₂ θ Xi hXi h20 hB₀ hB₂ hA SA SB hSA hSB hcard Φ hsupp hinv
-  have hreps0 : IsRepsG A₀ A₂ ({0} : Finset A) := by
-    refine ⟨?_, ?_, ?_⟩
-    · intro x hx
-      rw [Finset.mem_singleton] at hx
-      rw [hx]; exact A₂.zero_mem
-    · intro x hx y hy _
-      rw [Finset.mem_singleton] at hx hy
-      rw [hx, hy]
-    · intro y hy
-      exact ⟨0, Finset.mem_singleton_self 0, by rw [sub_zero]; exact h20 hy⟩
-  have hM : ∑ b ∈ SB, gen c A₀ 0 b = (SB.card : k) • ind (A₂ : Set A) := by
-    have := model_moves_hold k A B c hc A₀ A₂ B₀ B₂ hB₀ (fun b hb a ha => (hB₂ b).mp hb a ha) hA {0} SB hreps0 hSB
-    rwa [Finset.sum_singleton] at this
-  have hexp : Φ = ∑ i ∈ SA ×ˢ SB, (Φ i.1 * (SB.card : k)⁻¹) • gen c A₀ (-i.1) i.2 := by
-    funext u
-    rw [Finset.sum_product, Finset.sum_apply]
-    have hin : ∀ t : A, (∑ b ∈ SB, (Φ t * (SB.card : k)⁻¹) • gen c A₀ (-t) b) u = Φ t * ind (A₂ : Set A) (u - t) := by
-      intro t
-      have h1 := congrFun hM (u - t)
-      rw [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1
-      rw [← Finset.smul_sum, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]
-      have h2 : ∑ b ∈ SB, gen c A₀ (-t) b u = ∑ b ∈ SB, gen c A₀ 0 b (u - t) := by
-        refine Finset.sum_congr rfl fun b _ => ?_
-        rw [gen_apply, gen_apply, add_zero, sub_eq_add_neg]
-      rw [h2, h1, mul_assoc, ← mul_assoc _ (SB.card : k), inv_mul_cancel₀ hcard, one_mul]
-    rw [Finset.sum_congr rfl (fun t _ => hin t)]
-    by_cases hu : u ∈ A₀
-    · obtain ⟨x, hxS, hx⟩ := hSA.2.2 u hu
-      rw [Finset.sum_eq_single x]
-      · rw [ind_of_mem (show u - x ∈ (A₂ : Set A) from hx), mul_one]
-        have := hinv x (u - x) hx
-        rwa [add_sub_cancel] at this
-      · intro t htS htx
-        have : u - t ∉ (A₂ : Set A) := by
-          intro h
-          apply htx
-          apply hSA.2.1 t htS x hxS
-          have := A₂.sub_mem hx h
-          have e : u - x - (u - t) = t - x := by abel
-          rwa [e] at this
-        rw [ind_of_not_mem this, mul_zero]
-      · intro h; exact absurd hxS h
-    · rw [hsupp u hu]
-      symm
-      apply Finset.sum_eq_zero
-      intro t ht
-      have : u - t ∉ (A₂ : Set A) := by
-        intro h
-        apply hu
-        have := A₀.add_mem (h20 h) (hSA.1 t ht)
-        rwa [sub_add_cancel] at this
-      rw [ind_of_not_mem this, mul_zero]
-  obtain ⟨h, hval⟩ := Xi_of_eq_sum hXi (SA ×ˢ SB) (fun i => Φ i.1 * (SB.card : k)⁻¹) (fun i => -i.1) Prod.snd _ hexp
-  refine ⟨h, ?_⟩
-  rw [hval, Finset.sum_product_right]
-  refine Finset.sum_congr rfl fun b _ => ?_
-  rw [Finset.mul_sum, Finset.sum_smul]
-  refine Finset.sum_congr rfl fun t ht => ?_
-  rw [hW.comm, hXi.fixed hc hW (-t) (A₀.neg_mem (hSA.1 t ht)), hc.map_neg_right, smul_smul]
-  congr 1
-  ring
-
-theorem Moves_of (_h1 : ModelMoves) (_h3 : XiInter) : Moves := lattice_moves_hold
-
-theorem Fourier_of (_h1 : ModelMoves) (_h3 : XiInter) : Fourier := fourier_transform_identity_holds
 
 end Formalism.L2.PairingIndexBounds.Mv

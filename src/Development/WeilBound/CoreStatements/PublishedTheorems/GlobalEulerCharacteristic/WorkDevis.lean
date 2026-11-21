@@ -52,7 +52,4 @@ theorem ratioOne_of_killed_l (ℓ : ℕ) [Fact ℓ.Prime] (P : FiniteSubfield �
       (gsEulerRatio_eq_of_iso S (M.subrepresentation ⊤ hD) ιr (subrepresentationTopIso M hD)).symm
     rw [htop, hmul, h1, h3, mul_one]
 
-theorem ratioOne_of_killed (P : FiniteSubfield → Prop) (h : RatioOneKilled 2 P) : RatioOne 2 P :=
-  ratioOne_of_killed_l 2 P h
-
 end PositivityTheory.Lit1.GEN.W_devis

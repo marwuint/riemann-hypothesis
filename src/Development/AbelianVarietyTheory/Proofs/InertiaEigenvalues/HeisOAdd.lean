@@ -21,9 +21,6 @@ namespace GlobalTheory.DownLift.GenFinite
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
-def Ann (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) : Set (WO (Vc D i) (Wc D i) → ℂ) :=
-  {φ | IsThetaFunO R.ψ (Vc D i) (Wc D i) φ ∧ ∀ l g, downInt R i t y φ l g = 0}
-
 def Gen (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : Set (WO (Vc D i) (Wc D i) → ℂ) :=
   {φ | ∃ (g : GA D (Wc D i)) (f : WO (Vc D i) (Wc D i) → ℂ), FinLike R i t f ∧ φ = R.ωP i t (1, g) f}
 

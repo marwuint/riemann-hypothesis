@@ -69,7 +69,7 @@ theorem hom_gen (N : ℕ) (ψ : (AE D)ˣ →* ℂˣ) (h1 : ∀ u, IntU D u → �
     obtain ⟨hev, hfix, hmov⟩ := GlobalTheory.InertResidue.norm_prime D P hPm
     refine ⟨hev, fun y hy => ?_⟩
     by_cases hi : D.host.conj • P = P
-    · obtain ⟨t, B, ht0, htc, e⟩ := GlobalTheory.T.exists_real_span_eq_conjFixedPrime_mul_relNorm D P hPp hP0 hi
+    · obtain ⟨t, B, ht0, htc, e⟩ := _root_.GlobalTheory.FixedPrimeNorm.exists_span_eq_prime_mul_norm D P hPp hP0 hi
       have hneg := GlobalTheory.NormSignInert.norm_neg D t P B ht0 htc hPm hi e
       have hB : B ≠ ⊥ := by
         rintro rfl

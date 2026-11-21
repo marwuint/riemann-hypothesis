@@ -4,7 +4,10 @@ import Formalism.LocalToGlobal.Divisibility.ColumnFamilyPlaceCharacterComap
 import Formalism.LocalToGlobal.Divisibility.TiedLemmas
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.InGeoIff
-import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.VolumeLeOfTrivialFirstPair
+import Formalism.LocalToGlobal.IndefiniteReal.LiftGoodPartComplexEqRangeFamily
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.OrZeroOf
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RestrictedCharacterDataValid
+import Formalism.LocalToGlobal.IndefiniteReal.PackageFromPrimitiveStatements
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.InclUInjective
 
 noncomputable section
@@ -150,16 +153,6 @@ theorem pins_resR (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') (e : z.R.toRealDat.Ex
   exact Res.pins (A3 := famR X I hX (usedOf I T Wt) z.Xg z.tr) (Ks := z.core.Q.c.F) (f := inclU I (usedOf_mono I T h))
     (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R) (P0 := lev0 I) (ψ0 := chr0 I) (P1 := lev1 I) (ψ1 := chr1 I) (mu := z.resMu h) (tw := z.resTw Wt')
     (inclU_injective (usedOf_mono I T h)) (cG := z.cG) hp e hB (z.newTup h hc)
-
-set_option maxHeartbeats 2000000 in
-
-theorem holds_resR (h : Wt' ⊆ Wt) (hH : Holds z.R z.F) : Holds (z.resR h) (face0 X I hX (usedOf I T Wt') z.Xg z.tr) := by
-  have hp := z.pins.char
-  have hH' : Holds z.R (face0 X I hX (usedOf I T Wt) z.Xg z.tr) := hH
-  rw [columnChoiceReferenceFace_eq_bareFaceTwoLevels] at hp hH' ⊢
-  exact Res.intersectionNumber_baseChange (A3 := famR X I hX (usedOf I T Wt) z.Xg z.tr) (Ks := z.core.Q.c.F) (f := inclU I (usedOf_mono I T h))
-    (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R) (P0 := lev0 I) (ψ0 := chr0 I) (P1 := lev1 I) (ψ1 := chr1 I) (z.resMu h) (z.resTw Wt')
-    (inclU_injective (usedOf_mono I T h)) hp hH'
 
 set_option maxHeartbeats 2000000 in
 

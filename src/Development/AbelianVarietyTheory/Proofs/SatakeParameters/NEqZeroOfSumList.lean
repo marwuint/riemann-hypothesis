@@ -24,11 +24,6 @@ def IsTw {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : V →ₗ[ℂ] V') : Prop :=
   ∀ (σ : Weil h) (v : V), f ((((normV w : ℕ) : ℂ) ^ deg σ) • a.ρ σ v) = b.ρ σ (f v)
 
-def NoTw (X Y : WD h) : Prop :=
-  ∀ (V V' : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V'] (a : WDRep h V) (b : WDRep h V'),
-    WD.mk a = X → WD.mk b = Y → ∀ f : V →ₗ[ℂ] V', IsTw a b f → f = 0
-
 section
 variable {V V' W W' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
   [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
@@ -52,18 +47,6 @@ theorem IsTw.inr {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensiona
       (((normV w : ℕ) : ℂ) ^ deg σ) • (a1.sum a2).ρ σ (LinearMap.inr ℂ V V2 v) := by
     ext <;> simp
   rw [LinearMap.comp_apply, this, hg]; rfl
-
-theorem IsTw.fst {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
-    {a : WDRep h W} {b1 : WDRep h V} {b2 : WDRep h V2} {g : W →ₗ[ℂ] V × V2}
-    (hg : IsTw a (b1.sum b2) g) : IsTw a b1 (LinearMap.fst ℂ V V2 ∘ₗ g) := by
-  intro σ v
-  rw [LinearMap.comp_apply, hg]; rfl
-
-theorem IsTw.snd {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
-    {a : WDRep h W} {b1 : WDRep h V} {b2 : WDRep h V2} {g : W →ₗ[ℂ] V × V2}
-    (hg : IsTw a (b1.sum b2) g) : IsTw a b2 (LinearMap.snd ℂ V V2 ∘ₗ g) := by
-  intro σ v
-  rw [LinearMap.comp_apply, hg]; rfl
 
 end
 

@@ -4,16 +4,18 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsC
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GenericPartDenseProOpen
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AmplePointsLocalizedModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeDvrDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsHodgeLatticeGermSystemStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGermSystemStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HermitianSignatureCharacterStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermSystemHeightFreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeTransportEquivStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ModelFibresPowerFreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowFnsOfAbelianGenericStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueEquivStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperNormalCompactificationStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeDvrDegree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsHodgeLatticeGermSystem
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGermSystem
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HermitianSignatureCharacter
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermSystemHeightFree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeTransportEquiv
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ModelFibresPowerFree
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowFnsOfAbelianGeneric
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueEquiv
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProperNormalCompactification
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Fl
 open scoped CategoryTheory.Obj
@@ -193,21 +195,21 @@ theorem hodgeLat_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain ⟨hLN, -, -, -, -, hdom, -⟩ := GlobalTheory.genericPart_dense_proOpen O c.F Y.X (Xo.XF c) Y.s Y.jQ Y.flat Y.proj
     Y.jQ_open Y.jQ_dense
   have hdense : Dense (Set.range Y.j) := hdom.denseRange
-  have hFib := GlobalTheory.T.model_fibres_power_free E H D l Xo c O β Y hdense hsplit hN3
+  have hFib := _root_.GlobalTheory.CompanionTheory.Ar.ModelFib.model_fibPF E H D l Xo c O β Y hdense hsplit hN3
   haveI : ∀ x : Y.X, _root_.IsReduced (Y.X.presheaf.stalk x) := fun x => by
     have := (Y.normal x).1
     infer_instance
   have hred : AlgebraicGeometry.IsReduced Y.X := isReduced_of_isReduced_stalk Y.X
-  have hPow : PowFns Y.t := GlobalTheory.T.powFns_of_abelian_generic E H Y.X Y.t hred hLN (fun z hz => generic_mem_abLocus (O := O) Y z hz)
+  have hPow : PowFns Y.t := _root_.GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian E H Y.X Y.t hred hLN (fun z hz => generic_mem_abLocus (O := O) Y z hz)
   haveI : CharZero Z.Ω := charZero_of_injective_ringHom Z.inc.injective
   obtain ⟨hcard, hfac⟩ := emb_factor (E := E) c Z.inc
-  have facts := fun τ' h => GlobalTheory.T.proper_normal_compactification E H D l Xo c O β Y U Z τ' hβ hfrac h
+  have facts := fun τ' h => _root_.GlobalTheory.CompanionTheory.Ar.Flat.model_cpt_facts E H D l Xo c O β Y U Z τ' hβ hfrac h
   have hτ₀ : ∃ τ₀ : E →+* ℂ, τ₀ (H.rt : E) = H.rt0 := (rt_cases τ).elim (fun h => ⟨τ, h⟩) fun h => ⟨_, h⟩
   obtain ⟨τ₀, hτ₀⟩ := hτ₀
   obtain ⟨hprop, -, hover, -, hfd, -, -⟩ := facts τ₀ hτ₀
   haveI : IsProper Y.s := hprop
-  obtain ⟨d, M, ⟨S⟩⟩ := GlobalTheory.T.exists_germ_system E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) hPow Z.gen
-  obtain ⟨e, he, -⟩ := GlobalTheory.T.lie_model_existsUnique_equiv Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) (Fin d → Z.Ω) Z.V M Z.M
+  obtain ⟨d, M, ⟨S⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.germSys_exists E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) hPow Z.gen
+  obtain ⟨e, he, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_existsUnique_equiv Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) (Fin d → Z.Ω) Z.V M Z.M
   let ρ' : 𝓞 E →+* Module.End Z.Ω (Fin d → Z.Ω) := (e.symm.conjRingEquiv : _ ≃+* _).toRingHom.comp Z.ρ
   have hρ' : ∀ a v, e (ρ' a v) = Z.ρ a (e v) := fun a v => by
     simp [ρ', LinearEquiv.conjRingEquiv, LinearEquiv.conj_apply]
@@ -231,10 +233,10 @@ theorem hodgeLat_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
         simp [ComplexEmbedding.conjugate_coe_eq]
       rw [hcc] at e2
       rw [e1, e2, add_comm]
-  have hC : HChar S.g₀.B (D.p + D.q) := GlobalTheory.T.hermitian_signature_character E Z.Ω d (D.p + D.q) S.g₀.B ρ' hrho hcard hsum
-  have hfree := GlobalTheory.T.germ_system_height_free E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) d (D.p + D.q) M S hPow Z.gen hC
+  have hC : HChar S.g₀.B (D.p + D.q) := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hChar_of_eigSp_ranks E Z.Ω d (D.p + D.q) S.g₀.B ρ' hrho hcard hsum
+  have hfree := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hfree_at_component_stalks E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) d (D.p + D.q) M S hPow Z.gen hC
     (fun q p' hp' h => hFib p' hp' q.1 h)
-  obtain ⟨𝓗, hG⟩ := GlobalTheory.T.exists_hodge_lattice_germ_system E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) d (D.p + D.q) M S ρ' Z.gen hact hfree
+  obtain ⟨𝓗, hG⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.germ_gives_hodgeLat E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) d (D.p + D.q) M S ρ' Z.gen hact hfree
   letI algΩ : Algebra O Z.Ω := (Z.inc.comp β).toAlgebra
   have hint : ∀ (s' : E →+* Z.Ω) (a : 𝓞 E), s' (a : E) ∈ (algebraMap O Z.Ω).range := by
     intro s' a
@@ -247,9 +249,9 @@ theorem hodgeLat_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     rw [hτ', ← hy]
     rfl
   have hdeg : ∀ σ : E →+* Z.Ω, 𝓗.DegZero σ (Z.inc (β ϖ)) := fun σ =>
-    GlobalTheory.T.hodge_lattice_dvr_degree E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) d (D.p + D.q) M S ρ' 𝓗 O Y.s ϖ p σ hϖ hp hdvd hover Z.gen
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.germ_degZero E H hstar Y.X Y.t Z.Ω (Z.ξ₀ ≫ Y.j) d (D.p + D.q) M S ρ' 𝓗 O Y.s ϖ p σ hϖ hp hdvd hover Z.gen
       hPow hG (fun q h => hFib p hp q.1 h) hcard hint
-  have htr := GlobalTheory.T.hodge_lattice_transport_equiv Y.X Z.Ω (Z.ξ₀ ≫ Y.j) E (Fin d → Z.Ω) Z.V e M.lat ρ' Z.ρ H.bar (D.p + D.q) 𝓗 hρ'
+  have htr := _root_.GlobalTheory.CompanionTheory.Ar.Flat.hodgeLat_transport Y.X Z.Ω (Z.ξ₀ ≫ Y.j) E (Fin d → Z.Ω) Z.V e M.lat ρ' Z.ρ H.bar (D.p + D.q) 𝓗 hρ'
   rw [lat_map M Z.M e he] at htr
   obtain ⟨𝓗', h'⟩ := htr
   exact ⟨𝓗', fun σ => h' σ _ (hdeg σ)⟩

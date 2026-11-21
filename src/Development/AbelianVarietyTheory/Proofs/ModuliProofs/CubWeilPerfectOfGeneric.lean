@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsReducedTorsionGeom
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FinRepExistsIsPullbackSpec
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAlgHomLocalizationAugmentation
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardAlgHomReducedTraceSum
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsUnitDetPairingOfBicharacterOfDvdTraceStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsUnitDetPairingOfBicharacterOfDvdTrace
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Pdiv GlobalTheory.AbLaw
@@ -220,7 +220,7 @@ theorem cubWeil_perfect_of_generic : ∀ (O K : Type) [CommRing O] [IsDomain O] 
     rw [← (GlobalTheory.finite_card_trace_algHom_of_isReduced_baseChange O H K hred).2.1, ← Nat.card_eq_of_bijective pt hbij]
     exact hcard
   have hdet : IsUnit D.det := by
-    refine GlobalTheory.T.isUnit_det_pairing_of_bicharacter_of_dvd_trace O H K Γ _ b D pt X ((n : O) ^ g) hinj hred hbij (fun _ _ => rfl)
+    refine _root_.GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace O H K Γ _ b D pt X ((n : O) ^ g) hinj hred hbij (fun _ _ => rfl)
       (fun a a' => (hX a a').isUnit.ne_zero) (fun a a' d => (hX _ _).unique ((hX a d).mul_left (hX a' d)))
       (fun a d d' => (hX _ _).unique ((hX a d).mul_right (hX a d'))) (fun a ha => Subtype.ext ?_) (fun h0 => ?_) ?_
       (GlobalTheory.pow_dvd_trace_torsion O A n H y g hsm hy hu)

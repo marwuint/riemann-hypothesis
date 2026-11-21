@@ -4,12 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModQPrin
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModJTau
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModBasic
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EisensteinDeltaQExpansionIntegralityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelCoeffAndFunctionUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EisensteinDeltaQExpansionIntegrality
+import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelCoeffAndFunctionUnique
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionCoeffsInSubringRingClosedStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinAlgebraicPowerSeriesCoeffClosureStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralOverJInvariantOfHasSomeLevelOverStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolynomialRelationPassesToQExpansionsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinAlgebraicPowerSeriesCoeffClosure
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralOverJInvariantOfHasSomeLevelOver
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolynomialRelationPassesToQExpansions
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
@@ -61,8 +62,8 @@ theorem qall_clearCoeff (R : Subring ℂ) (N : ℕ) (hN : 0 < N) (n M w : ℕ) (
     (hc : ∀ (i : Fin n) (k : ℕ), k ≤ M → (c i).coeff k ∈ R) (i : ℕ) :
     QAll (· ∈ R) N (clearCoeff n M w c i) := by
   obtain ⟨hcst, -, -, hmul, hpow, hsum⟩ := GlobalTheory.T.qExpansionCoeffsInSubring_ring_closed R N hN
-  have hDD : QAll (· ∈ R) N DD := ((GlobalTheory.T.eisenstein_delta_qExpansion_integrality N hN DD (Or.inr (Or.inr rfl))).2.1) R
-  have hE : QAll (· ∈ R) N ⇑E₄ := ((GlobalTheory.T.eisenstein_delta_qExpansion_integrality N hN ⇑E₄ (Or.inl rfl)).2.1) R
+  have hDD : QAll (· ∈ R) N DD := ((_root_.GlobalTheory.QFam.eis_q N hN DD (Or.inr (Or.inr rfl))).2.1) R
+  have hE : QAll (· ∈ R) N ⇑E₄ := ((_root_.GlobalTheory.QFam.eis_q N hN ⇑E₄ (Or.inl rfl)).2.1) R
   by_cases h : i < n
   · have hf : clearCoeff n M w c i = fun τ => DD τ ^ (w * (n - i)) *
         ∑ k ∈ Finset.range (M + 1), (c ⟨i, h⟩).coeff k * (E₄ τ ^ (3 * k) * DD τ ^ (M - k)) := by
@@ -86,7 +87,7 @@ theorem qcoeff_finitelyGenerated : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ
   intro Ω _ ε N w f a hN hLv hF
   classical
   haveI : CharZero Ω := ε.charZero
-  obtain ⟨n, c, hc, hrel⟩ := GlobalTheory.T.integral_over_jInvariant_of_hasSomeLevelOver ε.range f ⟨N, w, hN, hLv⟩
+  obtain ⟨n, c, hc, hrel⟩ := _root_.GlobalTheory.FN.integral_over_jT ε.range f ⟨N, w, hN, hLv⟩
   set M := ∑ i, (c i).natDegree with hMdef
   have hM : ∀ i, (c i).natDegree ≤ M := fun i =>
     Finset.single_le_sum (f := fun i => (c i).natDegree) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
@@ -100,7 +101,7 @@ theorem qcoeff_finitelyGenerated : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ
       ⟨(i, ⟨k, Nat.lt_succ_of_le hk⟩), Finset.mem_univ _, rfl⟩)), he i k⟩
   have hP : ∀ i, QAll (· ∈ R) N (clearCoeff n M w c i) := qall_clearCoeff R N hN n M w c hcR
   choose c' hc'Q hc'R using hP
-  have hser := GlobalTheory.T.polynomial_relation_passes_to_qExpansions N n (fun τ => DD τ ^ w * f τ) (fun k => ε (a k)) (clearCoeff n M w c) c' hN hF hc'Q
+  have hser := _root_.GlobalTheory.QFam.polyRel_qSeries N n (fun τ => DD τ ^ w * f τ) (fun k => ε (a k)) (clearCoeff n M w c) c' hN hF hc'Q
     (sum_clearCoeff_eq_zero n M w c hM f hrel)
   have hpre2 : ∀ i k, ∃ x ∈ A, ε x = c' i k := fun i k => Subring.mem_map.1 (hc'R i k)
   choose d hdA hd using hpre2
@@ -131,14 +132,14 @@ theorem qcoeff_finitelyGenerated : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ
     have hPn : clearCoeff n M w c n = fun τ => DD τ ^ M := by funext τ; simp [clearCoeff]
     rw [hPn, hc0] at hq
     have hz : HasQ N (fun _ : ℍ => (0 : ℂ)) (0 : ℕ → ℂ) := fun τ => by simpa using hasSum_zero
-    have := (GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique).2 N _ _ 0 hq hz
+    have := (_root_.GlobalTheory.QFam.hasQ_unique_both).2 N _ _ 0 hq hz
     exact pow_ne_zero M (ReciprocityTheory.ChartRestriction.L1.DD_ne_zero UpperHalfPlane.I) (congrFun this UpperHalfPlane.I)
   have hcA : ∀ i k, PowerSeries.coeff k (Q.coeff i) ∈ A := fun i k => by
     rw [hcoef i]
     split_ifs
     · rw [PowerSeries.coeff_mk]; exact hdA i k
     · simp
-  obtain ⟨S₁, hS₁⟩ := GlobalTheory.T.eisenstein_algebraic_powerSeries_coeff_closure Ω A (PowerSeries.mk a) Q hQne hcA hQ
+  obtain ⟨S₁, hS₁⟩ := _root_.GlobalTheory.AlgPowerSeries.exists_finset_coeff_mem_closure Ω A (PowerSeries.mk a) Q hQne hcA hQ
   refine ⟨S₀ ∪ S₁, fun k => ?_⟩
   have hk := hS₁ k
   rw [PowerSeries.coeff_mk] at hk

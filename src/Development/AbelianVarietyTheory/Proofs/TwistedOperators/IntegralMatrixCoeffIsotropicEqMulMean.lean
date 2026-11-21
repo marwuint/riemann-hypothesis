@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeanXMulStarRat
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalSymplecticPointsSelfAnnihilator
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalDualComplementSandwichStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralFundamentalDomainEqIteratedDecompStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierInversionZeroCompactQuotientSummableStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaMatrixCoeffSmearContinuousPeriodicFubiniStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IteratedIntegralDecompContinuousPeriodicStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalDualComplementSandwich
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralFundamentalDomainEqIteratedDecomp
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierInversionZeroCompactQuotientSummable
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaMatrixCoeffSmearContinuousPeriodicFubini
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IteratedIntegralDecompContinuousPeriodic
 
 noncomputable section
 
@@ -86,7 +86,7 @@ theorem integral_coef_eq_mul_meanX : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P :
   have := hSC
   have := hT2
   have := hDisc
-  obtain ⟨P', Q', hc1, hc2, hc3, hc4⟩ := GlobalTheory.T.exists_rational_dual_complement_sandwich D V W a b P Q hP hQ ψ hψ
+  obtain ⟨P', Q', hc1, hc2, hc3, hc4⟩ := _root_.GlobalTheory.PerfectCompl.exists_dual_complement D V W a b P Q hP hQ ψ hψ
   have hψc : IsCharAF D.host.F ψ := hψ.1
   have hcX := continuous_emb_twisted_operators V W P Q
   have hcX' := continuous_emb_twisted_operators V W P' Q'
@@ -134,13 +134,13 @@ theorem integral_coef_eq_mul_meanX : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P :
       rwa [add_assoc, add_sub_cancel_left] at h2
     · rintro ⟨hs, hz, hy⟩
       exact (ratL W V).add_mem ((ratL W V).add_mem (hratX P' Q' s hs) (hratZ z hz)) (hratX P Q y hy)
-  obtain ⟨κ, hκ0, hκ⟩ := GlobalTheory.T.integral_fundamentalDomain_eq_iterated_decomp D V W a b k (emb V W P' Q') (emb V W P Q) (cplx V W B) hcX'
+  obtain ⟨κ, hκ0, hκ⟩ := _root_.GlobalTheory.CoordUnfold.integral_fundamentalDomain_eq_iterated D V W a b k (emb V W P' Q') (emb V W P Q) (cplx V W B) hcX'
     (continuous_cplx V W B) hcX (emb_add V W P' Q') (cplx_add V W B) (emb_add V W P Q) hspan hdir3 hriff
     μ 𝓨 hμ η 𝓩 hη h𝓩 ν 𝓕 hν h𝓕
   refine ⟨(κ : ℂ), by exact_mod_cast hκ0.ne', ?_⟩
   intro G G' hG hG'
-  obtain ⟨hTc, hTper, hTfub⟩ := GlobalTheory.T.thetaMatrixCoeff_smear_continuous_periodic_fubini D V W a b P Q ψ hψ μ 𝓨 hμ ν 𝓕 hν h𝓕 G G' hG hG'
-  obtain ⟨hΦc, hΦper⟩ := GlobalTheory.T.iteratedIntegral_decomp_continuous_periodic D V W a b k (emb V W P' Q') (emb V W P Q) (cplx V W B) hcX'
+  obtain ⟨hTc, hTper, hTfub⟩ := _root_.GlobalTheory.IsoMeanSmear.smear D V W a b P Q ψ hψ μ 𝓨 hμ ν 𝓕 hν h𝓕 G G' hG hG'
+  obtain ⟨hΦc, hΦper⟩ := _root_.GlobalTheory.IsoMean.iterInt_continuous_periodic D V W a b k (emb V W P' Q') (emb V W P Q) (cplx V W B) hcX'
     (continuous_cplx V W B) hcX (emb_add V W P' Q') (hratX P' Q') μ 𝓨 hμ η 𝓩 hη h𝓩 _ hTc hTper
   beta_reduce at hΦc hΦper
 
@@ -200,7 +200,7 @@ theorem integral_coef_eq_mul_meanX : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P :
     simp_rw [MeasureTheory.integral_const_mul]
   have hκne : (κ : ℂ) ≠ 0 := by exact_mod_cast hκ0.ne'
   have hsum := (summable_mul_left_iff hκne).1 (by simpa only [hterm] using hHS.summable)
-  have hF := GlobalTheory.T.fourierInversion_zero_compactQuotient_summable (Mx D a b) (GlobalTheory.MixModel.ratMx D a b) K hK hKc (↥(GlobalTheory.MixModel.ratMx D a b))
+  have hF := _root_.GlobalTheory.SeparatingCharacters.tsum_coefficients_eq_value_zero (Mx D a b) (GlobalTheory.MixModel.ratMx D a b) K hK hKc (↥(GlobalTheory.MixModel.ratMx D a b))
     (fun γ s => ψ (symplO V W (emb V W P' Q' s) (emb V W P Q γ)))
     (fun γ => hψc.1.comp (continuous_symplO_comp V W hcX' continuous_const))
     (by intro γ x y; simp only [emb_add, symplO_add_left_twisted_operators, AddChar.map_add_eq_mul])

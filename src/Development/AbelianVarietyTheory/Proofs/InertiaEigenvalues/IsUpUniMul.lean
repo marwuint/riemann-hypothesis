@@ -22,8 +22,4 @@ theorem isUpUni_mul {K : Type} [Field K] {n : ℕ} {A B : Matrix (Fin n) (Fin n)
       · rw [(hB k i).1 h, mul_zero]
     · intro h; exact absurd (Finset.mem_univ i) h
 
-theorem main : ∀ {K : Type} [inst : Field K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K},
-    Formalism.MainNotions.S.IsUpUni A → Formalism.MainNotions.S.IsUpUni B → Formalism.MainNotions.S.IsUpUni (A * B) :=
-  fun hA hB => isUpUni_mul hA hB
-
 end GlobalTheory.UpperUnipotentMul

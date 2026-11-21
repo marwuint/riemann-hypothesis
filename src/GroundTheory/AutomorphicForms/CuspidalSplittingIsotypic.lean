@@ -221,26 +221,6 @@ theorem apply_mem_isotypicPart (t : Representation.IntertwiningMap π ρ) (x : V
   (le_iSup (fun t : Representation.IntertwiningMap π ρ => LinearMap.range t.toLinearMap) t)
     ⟨x, rfl⟩
 
-omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
-
-theorem isotypicPart_stable (g : GL (Fin n) F) {u : U} (hu : u ∈ isotypicPart π ρ) :
-    ρ g u ∈ isotypicPart π ρ := by
-  have hle : isotypicPart π ρ ≤ (isotypicPart π ρ).comap (ρ g) := by
-    refine iSup_le fun t => ?_
-    rintro _ ⟨x, rfl⟩
-    rw [Submodule.mem_comap, Representation.IntertwiningMap.toLinearMap_apply,
-      ← Representation.IntertwiningMap.isIntertwining]
-    exact apply_mem_isotypicPart t (π g x)
-  exact hle hu
-
-omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
-
-theorem isotypicKernel_stable (g : GL (Fin n) F) {u : U} (hu : u ∈ isotypicKernel π ρ) :
-    ρ g u ∈ isotypicKernel π ρ := by
-  rw [mem_isotypicKernel] at hu ⊢
-  intro Fm
-  rw [Representation.IntertwiningMap.isIntertwining, hu, map_zero]
-
 variable [π.IsIrreducible] (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
   (hωπ : HasCentralChar π ω) (hρ : IsSmooth ρ) (hωρ : HasCentralChar ρ ω)
 include hπ hsc hωπ hρ hωρ

@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralKernelLiftsFubiniSigmaFinite
-import Mathlib
+
 open MeasureTheory
 open scoped ComplexConjugate ENNReal
 set_option maxHeartbeats 1000000 in

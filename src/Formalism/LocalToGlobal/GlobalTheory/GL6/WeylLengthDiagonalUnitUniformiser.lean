@@ -1,5 +1,8 @@
 import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg
-import Formalism.GL3MeanSquares.PrimeOrderRamificationResults
+import Formalism.GL3MeanSquares.HookFormulaTorsion.ConditionIffDualEqFunctional
+import Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar
+import Formalism.GL3MeanSquares.HookFormulaTorsion.LengthQuotientBoundGeneral
+import Formalism.GL3MeanSquares.HookFormulaTorsion.LemmaCTwistRamified
 import Mathlib
 import Formalism.GL3MeanSquares.HookFormulaTorsion.DoubleCosetDecompositionAll
 import Formalism.GL3MeanSquares.HookFormulaTorsion.InvariantKernelTraceVanishes
@@ -520,23 +523,6 @@ theorem dominant_natWeight_sum {N : ℕ} (lam : DomWeight N) :
   rw [Nat.cast_sum, Finset.sum_congr rfl (fun a _ => h a), Finset.sum_sub_distrib]
   simp
 
-theorem dominant_weight_basis_row_weights {N : ℕ} (lam : DomWeight N) :
-    ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ (delSq ℤ N lam)) (μ : ι → Fin N → ℕ),
-      (∀ i, IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.rowW N N) ((b i : delSq ℤ N lam) : MvPolynomial (Fin N × Fin N) ℤ) (μ i)) ∧
-      (∀ i, ∑ a, μ i a = ∑ a, lam.natW a) ∧
-      ∀ j, (N : ℚ) * ∑ i, ((μ i j : ℚ) + lam.detShift) = (Fintype.card ι : ℚ) * ((∑ a, lam.w a : ℤ) : ℚ) := by
-  obtain ⟨ι, hι, b, μ, hh, hs, hc⟩ := weyl_homogeneous_basis le_rfl lam.natW (dominant_natWeight_antitone lam)
-  refine ⟨ι, hι, b, μ, hh, fun i => by rw [hs i]; simp [rowNu_self_alt], fun j => ?_⟩
-  have havg := weyl_weight_average le_rfl lam.natW (dominant_natWeight_antitone lam) μ hs hc j
-  simp only [rowNu_self_alt] at havg
-  have hq : ((N * ∑ i, μ i j : ℕ) : ℚ) = ((Fintype.card ι * ∑ a, lam.natW a : ℕ) : ℚ) := by rw [havg]
-  have hsum := dominant_natWeight_sum lam
-  have hsumQ : ((∑ a, lam.natW a : ℕ) : ℚ) = ((∑ a, lam.w a : ℤ) : ℚ) - N * lam.detShift := by
-    exact_mod_cast hsum
-  push_cast at hq hsumQ ⊢
-  rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_add, hq, hsumQ]
-  ring
-
 end abelian₂
 
 section Diag
@@ -672,80 +658,6 @@ theorem prod_update_pow_alt {R : Type} [CommRing R] (j : Fin r) (p : R) (μ : Fi
     simp [Function.update_apply, hb]
   · intro h
     exact absurd (Finset.mem_univ j) h
-
-theorem weyl_length_diagonal_uniformiser (hν : Antitone ν) (K : Type) [Field K] [CharZero K] (O : Subring K)
-    [IsDiscreteValuationRing O] (ϖ : O) (hϖ : Irreducible ϖ) (j : Fin r) (a : ℕ) :
-    ∃ N : ℕ, Module.length O (bwA_span O hn ν ⧸ ((bwA_span O hn ν).map
-        ((Formalism.GradedWeylDivisibility.rowAct K (Matrix.diagonal (Function.update 1 j ((ϖ : K) ^ a)))).toLinearMap.restrictScalars O)).comap
-          (bwA_span O hn ν).subtype) = N ∧
-      r * N = a * Module.finrank ℤ (Formalism.GradedWeylDivisibility.weyl ℤ r n hn ν) * ∑ c, Formalism.GradedWeylDivisibility.rowNu (r := r) ν c := by
-  classical
-  obtain ⟨ι, hι, b, μ, hh, hs, hc⟩ := weyl_homogeneous_basis hn ν hν
-  set Λ := bwA_span O hn ν with hΛ
-  set e : ι → MvPolynomial (Fin r × Fin n) K := fun i =>
-    MvPolynomial.map (Int.castRingHom K) ((b i : Formalism.GradedWeylDivisibility.weyl ℤ r n hn ν) : MvPolynomial (Fin r × Fin n) ℤ) with he
-  have hliK : LinearIndependent K e := weyl_basis_lin_indep_field hn ν hν K b
-  have hinjO : Function.Injective fun c : O => c • (1 : K) := by
-    intro x y h; simpa using h
-  have hliO : LinearIndependent O e := hliK.restrict_scalars hinjO
-  have hspan : Submodule.span O (Set.range e) = Λ := by
-    apply le_antisymm
-    · rw [Submodule.span_le]
-      rintro _ ⟨i, rfl⟩
-      exact Submodule.subset_span ⟨_, (b i).2, rfl⟩
-    · rw [hΛ, bwA_span, Submodule.span_le]
-      rintro _ ⟨x, hx, rfl⟩
-      have hxx : x = ∑ i, b.repr ⟨x, hx⟩ i • ((b i : Formalism.GradedWeylDivisibility.weyl ℤ r n hn ν) : MvPolynomial (Fin r × Fin n) ℤ) := by
-        have h1 := congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)
-        rw [Submodule.coe_sum] at h1
-        simp only [Submodule.coe_smul] at h1
-        exact h1.symm
-      rw [hxx, map_sum]
-      refine Submodule.sum_mem _ fun i _ => ?_
-      have : MvPolynomial.map (Int.castRingHom K) (b.repr ⟨x, hx⟩ i • ((b i : Formalism.GradedWeylDivisibility.weyl ℤ r n hn ν) :
-          MvPolynomial (Fin r × Fin n) ℤ)) = ((b.repr ⟨x, hx⟩ i : ℤ) : O) • e i := by
-        rw [map_zsmul, Int.cast_smul_eq_zsmul]
-      try dsimp only
-      rw [this]
-      exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
-  let bS : Module.Basis ι O (Submodule.span O (Set.range e)) := Module.Basis.span hliO
-  let bΛ : Module.Basis ι O Λ := bS.map (LinearEquiv.ofEq _ _ hspan)
-  have hbΛ : ∀ i, ((bΛ i : Λ) : MvPolynomial (Fin r × Fin n) K) = e i := by
-    intro i
-    simp [bΛ, bS, Module.Basis.span_apply]
-  set φ := (Formalism.GradedWeylDivisibility.rowAct K (Matrix.diagonal (Function.update 1 j ((ϖ : K) ^ a)))).toLinearMap.restrictScalars O
-  have hφe : ∀ i, φ (e i) = (ϖ ^ (a * μ i j) : O) • e i := by
-    intro i
-    have hom := weighted_homogeneous_map (Int.castRingHom K) _ (μ i) (hh i)
-    show Formalism.GradedWeylDivisibility.rowAct K _ (e i) = _
-    rw [row_action_diagonal_homogeneous K _ (e i) (μ i) hom, prod_update_pow_alt, ← pow_mul]
-    rw [Subring.smul_def]
-    simp
-  set W : Submodule O Λ := Submodule.span O (Set.range fun i => ϖ ^ (a * μ i j) • bΛ i) with hW
-  have hmapW : W.map Λ.subtype = Λ.map φ := by
-    rw [hW, Submodule.map_span]
-    conv_rhs => rw [← hspan, Submodule.map_span]
-    congr 1
-    ext y
-    simp only [Set.mem_image, Set.mem_range, exists_exists_eq_and]
-    constructor
-    · rintro ⟨i, rfl⟩
-      refine ⟨i, ?_⟩
-      rw [hφe]
-      simp [hbΛ]
-    · rintro ⟨i, rfl⟩
-      refine ⟨i, ?_⟩
-      rw [hφe]
-      simp [hbΛ]
-  have hcomap : (Λ.map φ).comap Λ.subtype = W := by
-    rw [← hmapW, Submodule.comap_map_eq_of_injective (Submodule.injective_subtype _)]
-  refine ⟨∑ i, a * μ i j, ?_, ?_⟩
-  · rw [hcomap, hW]
-    exact length_quotient_dvr_basis O ϖ hϖ bΛ (fun i => a * μ i j)
-  · have havg := weyl_weight_average hn ν hν μ hs hc j
-    rw [Module.finrank_eq_card_basis b, ← Finset.mul_sum]
-    calc r * (a * ∑ i, μ i j) = a * (r * ∑ i, μ i j) := by ring
-      _ = _ := by rw [havg]; ring
 
 theorem weyl_length_diagonal_unit_uniformiser (hν : Antitone ν) (K : Type) [Field K] [CharZero K] (O : Subring K)
     [IsDiscreteValuationRing O] (ϖ : O) (hϖ : Irreducible ϖ) (u : Oˣ) (j : Fin r) (a : ℕ) :

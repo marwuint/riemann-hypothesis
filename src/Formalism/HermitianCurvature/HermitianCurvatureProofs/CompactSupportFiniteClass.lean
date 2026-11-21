@@ -218,9 +218,4 @@ theorem compact_support_finite_class : Formalism.FourierDecayAlt.P.JFxG.CptInCC 
     rw [h0, norm_zero, mul_zero]
     positivity
 
-theorem jf_radAdj_of_parts : Formalism.FourierDecayAlt.P.JFxG.Exhaust → Formalism.FourierDecayAlt.JF.JDom → Formalism.FourierDecayAlt.P.JFxG.JThetaAdjC →
-    Formalism.FourierDecayAlt.P.JFxG.BetaAdjC → Formalism.FourierDecayAlt.JF.RadAdj := by
-  intro hE hJ hA hB
-  exact radial_adjoint_of_parts hE (theta_conj_of_parts hJ compact_support_finite_class hA) hB
-
 end Formalism.FourierDecayAlt.P

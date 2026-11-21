@@ -71,14 +71,4 @@ theorem fi_lower {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i
       linarith)
   simpa only [one_mul] using h
 
-theorem fi_upper {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) (h1 : rhoP z ≤ 1) :
-    Fi (pmat z) i ≤ Vi (pmat z) i := by
-  rw [fi_pmat_eq_fi_one_smul_pmat, fi_eq_lse z hi, ← lemma3d z hi]
-  have h := lse_upper (wS z hi) (fun S => yS z S.1) (wS_nonneg' z hi) (lemma3b z hi) (lemma3c z hi)
-    (fun S => by
-      have := abs_sum_pev_le z S.1
-      unfold yS
-      linarith)
-  simpa only [one_mul] using h
-
 end ReciprocityTheory.ChartRestriction.DS

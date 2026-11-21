@@ -29,11 +29,6 @@ theorem level_gm_le_on_family_scales (Λ : Level) :
     ChebyshevInequalityOnWindows (Fam := FamP) (fun Fm => Fm.toFamCore) (fun Fm => ChainTied Fm) Λ :=
   windowInequality_of_artinInputs (fun Fm => tiedCore_of_chainTied Fm) Λ
 
-theorem zeroFreeOn_of_chainTied {Q : PChar → Prop}
-    (hW : ∀ ψ, Q ψ → ∃ (Λ : Level) (la : ℝ), ψ ∈ Λ.KEPT ∧ 1 < la ∧
-      ChebyshevInequalityAtWindowScale (Fam := FamP) (fun Fm => Fm.toFamCore) (fun Fm => ChainTied Fm) la Λ) : ZeroFreeOn Q :=
-  zeroFreeOn_of_core (fun Fm => tiedCore_of_chainTied Fm) hW
-
 end UpperTheory.Comparison₂
 
 end

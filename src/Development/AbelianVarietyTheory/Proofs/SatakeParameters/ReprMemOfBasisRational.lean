@@ -130,28 +130,6 @@ theorem lifts_dcOp_mem_cmMax (R : RealDat D A Ks) (h : R.fam_tie) (j : Fin D.R.m
   exact (dcOp_matrix_mem_cmMax (Vc D j) (R.cV j).coef (R.βV j) (R.datVt j t) (R.B.L j t).pres (hT.coefL j t) (hT.mapL j)
     (fun g i k => (coefAction_repr_mem_subfield (labLL D) _ _ labLL_mem_cmMax g i k).2) B U hU).2 a b
 
-theorem hecke_opMat_mem_cmMax : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → (∀ t i a b, (A.fam.R t).opMat i a b ∈ Formalism.DivisionValues.cmMax D.what₂.LL) ∧ ∀ j t i a b, (A.fam.L j t).opMat i a b ∈ Formalism.DivisionValues.cmMax D.what₂.LL := by
-  intro D G _ _ Pl0 T A Ks _ _ _ R F hC
-  refine ⟨fun t i a b => ?_, fun j t i a b => ?_⟩
-  · obtain ⟨P, k⟩ := i
-    show LinearMap.toMatrix (A.MtildeCSD t).basis (A.MtildeCSD t).basis (A.heckeR t (P, k)) a b ∈ _
-    rcases Nat.eq_zero_or_pos k with rfl | hk
-    · rw [(hC.fam.degR t P).1]
-      exact toMatrix_one_mem _ _ _ _
-    rcases le_or_gt k D.sp.X'.rank with hk' | hk'
-    · exact rows_dcOp_mem_cmMax R hC.fam.tie t _ _ ((R.B.R t).hecke.op_eq (P, k) ⟨hk, hk'⟩) a b
-    · rw [(hC.fam.degR t P).2 k hk', map_zero]
-      exact Subfield.zero_mem _
-  · obtain ⟨P, k⟩ := i
-    show LinearMap.toMatrix (A.MtCSD j t).basis (A.MtCSD j t).basis (A.heckeL j t (P, k)) a b ∈ _
-    rcases Nat.eq_zero_or_pos k with rfl | hk
-    · rw [(hC.fam.degL j t P).1]
-      exact toMatrix_one_mem _ _ _ _
-    rcases le_or_gt k (Vc D j).rank with hk' | hk'
-    · exact lifts_dcOp_mem_cmMax R hC.fam.tie j t _ _ ((R.B.L j t).hecke.op_eq (P, k) ⟨hk, hk'⟩) a b
-    · rw [(hC.fam.degL j t P).2 k hk', map_zero]
-      exact Subfield.zero_mem _
-
 end GlobalTheory.HeckeRational
 
 end

@@ -1,15 +1,15 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatFrameApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerChangeOfTangentFrameStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerChangeOfTangentFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransposeMulSymPairMemSpanBalancedTensorsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenToFunctionFieldInjectiveAndFractionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentCombinationPreservedByBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentBasisAffineOpenRestrictBasicOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericTangentCoefficientsUniqueAffineOpenBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombAtZeroSectionEigenBlockFlattenedFrameStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogDerivationExtensionBasicOpenStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerConditionRestrictBasicOpenOfAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCmOrderActionMatrixOnAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenToFunctionFieldInjectiveAndFraction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentCombinationPreservedByBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentBasisAffineOpenRestrictBasicOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericTangentCoefficientsUniqueAffineOpenBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombAtZeroSectionEigenBlockFlattenedFrame
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogDerivationExtensionBasicOpen
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerConditionRestrictBasicOpenOfAffine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCmOrderActionMatrixOnAffineOpen
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
@@ -157,27 +157,27 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   have hfacU : ρ = ρW.comp (TF.Y.X.presheaf.map (homOfLE hWU).op).hom := rho_fac U W hWU ρ ρW (hρ.trans hρW.symm)
   have hfacU' : ρ' = ρW.comp (TF.Y.X.presheaf.map (homOfLE hWU').op).hom :=
     rho_fac U' W hWU' ρ' ρW (hρ'.trans hρW.symm)
-  obtain ⟨hinj, hfr⟩ := GlobalTheory.T.affineOpen_to_functionField_injective_and_fraction TF.Y.X (barComp TF.Y Z) W (hWU.trans hU) ρW hρW
+  obtain ⟨hinj, hfr⟩ := _root_.GlobalTheory.GenFrac.injective_and_frac TF.Y.X (barComp TF.Y Z) W (hWU.trans hU) ρW hρW
   have hcr := chart_res U W hWU
   have hcr' := chart_res U' W hWU'
   obtain ⟨hfu, hfloc⟩ := basic_loc U W hWU f hWf
   obtain ⟨hfu', hfloc'⟩ := basic_loc U' W hWU' f' hWf'
-  have hv'WB := GlobalTheory.T.tangentBasis_affineOpen_restrict_basicOpen E H TF.Y.X TF.Y.t U' W hWU' f' hWf' n' v' hvT' hvB'
-  choose DlW hDlW hDlWc using fun j => GlobalTheory.T.exists_logDerivation_extension_basicOpen TF.Y.X c.F TF.Y.s
+  have hv'WB := _root_.GlobalTheory.LogKSDiv.tanBasis_basicOpen E H TF.Y.X TF.Y.t U' W hWU' f' hWf' n' v' hvT' hvB'
+  choose DlW hDlW hDlWc using fun j => _root_.GlobalTheory.LogDerLoc.exists_logDer_basicOpen TF.Y.X c.F TF.Y.s
     (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U W hWU f hWf (Dl j).1 (Dl j).2
-  choose Dl'W hDl'W hDl'Wc using fun k => GlobalTheory.T.exists_logDerivation_extension_basicOpen TF.Y.X c.F TF.Y.s
+  choose Dl'W hDl'W hDl'Wc using fun k => _root_.GlobalTheory.LogDerLoc.exists_logDer_basicOpen TF.Y.X c.F TF.Y.s
     (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U' W hWU' f' hWf' (Dl' k).1 (Dl' k).2
-  have hKS0 := fun j => GlobalTheory.T.kodairaSpencer_condition_restrict_basicOpen_of_affine E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) U W hWU f hWf n v (Dl j).1 (DlW j)
+  have hKS0 := fun j => _root_.GlobalTheory.LogKSLoc.isKS_basicOpen E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) U W hWU f hWf n v (Dl j).1 (DlW j)
     (symPair e (ε j)) (hDlWc j) (hKS j)
-  have hKS0' := fun k => GlobalTheory.T.kodairaSpencer_condition_restrict_basicOpen_of_affine E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) U' W hWU' f' hWf' n' v' (Dl' k).1 (Dl'W k)
+  have hKS0' := fun k => _root_.GlobalTheory.LogKSLoc.isKS_basicOpen E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) U' W hWU' f' hWf' n' v' (Dl' k).1 (Dl'W k)
     (symPair e' (ε' k)) (hDl'Wc k) (hKS' k)
   simp only [RingHom.mapMatrix_apply, map_symPair] at hKS0 hKS0'
   generalize (TF.Y.X.presheaf.map (homOfLE hWU).op).hom = resU at hfacU hcr hfu hfloc hDlWc hKS0
   generalize (TF.Y.X.presheaf.map (homOfLE hWU').op).hom = resU' at hfacU' hcr' hfu' hfloc' hv'WB hDl'Wc hKS0'
   let vW : Fin n → (Sp (DualNumber Γ(TF.Y.X, W.1)) ⟶ TF.Y.t.G.left) := fun a => spMap (dualMap resU) ≫ v a
   let v'W : Fin n' → (Sp (DualNumber Γ(TF.Y.X, W.1)) ⟶ TF.Y.t.G.left) := fun c => spMap (dualMap resU') ≫ v' c
-  have hbc := GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ resU (GlobalTheory.LogKS.chart U) (GlobalTheory.LogKS.chart W) hcr
-  have hbc' := GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ resU' (GlobalTheory.LogKS.chart U') (GlobalTheory.LogKS.chart W) hcr'
+  have hbc := _root_.GlobalTheory.TanBaseChange.tan_comb_baseChange E H TF.Y.X TF.Y.t _ _ resU (GlobalTheory.LogKS.chart U) (GlobalTheory.LogKS.chart W) hcr
+  have hbc' := _root_.GlobalTheory.TanBaseChange.tan_comb_baseChange E H TF.Y.X TF.Y.t _ _ resU' (GlobalTheory.LogKS.chart U') (GlobalTheory.LogKS.chart W) hcr'
   have hvWT : ∀ a, IsTanAtG TF.Y.t (GlobalTheory.LogKS.chart W) (vW a) := fun a => hbc.1 _ (hvT a)
   have hv'WT : ∀ c, IsTanAtG TF.Y.t (GlobalTheory.LogKS.chart W) (v'W c) := fun c => hbc'.1 _ (hvT' c)
   obtain ⟨B, hB⟩ : ∃ B : Matrix (Fin n) (Fin n') Γ(TF.Y.X, W.1),
@@ -186,11 +186,11 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   have htan' : ∀ τ k, IsTanAtG TF.Y.t (spMap ρW ≫ GlobalTheory.LogKS.chart W) (w' τ k) := by
     intro τ k
     rw [hw']
-    exact (GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ ρ' (GlobalTheory.LogKS.chart U') (spMap ρW ≫ GlobalTheory.LogKS.chart W)
+    exact (_root_.GlobalTheory.TanBaseChange.tan_comb_baseChange E H TF.Y.X TF.Y.t _ _ ρ' (GlobalTheory.LogKS.chart U') (spMap ρW ≫ GlobalTheory.LogKS.chart W)
       (hρ'.trans hρW.symm)).1 _ (hvT' _)
   have hgen : ∀ τ i c, ρW (B (e ⟨τ, i⟩) c) = flatFrame A e e' (e ⟨τ, i⟩) c := by
     intro τ i
-    have h1 := (GlobalTheory.T.tangent_combination_preserved_by_baseChange E H TF.Y.X TF.Y.t _ _ ρW (GlobalTheory.LogKS.chart W) (spMap ρW ≫ GlobalTheory.LogKS.chart W) rfl).2 _ v'W
+    have h1 := (_root_.GlobalTheory.TanBaseChange.tan_comb_baseChange E H TF.Y.X TF.Y.t _ _ ρW (GlobalTheory.LogKS.chart W) (spMap ρW ≫ GlobalTheory.LogKS.chart W) rfl).2 _ v'W
       (B (e ⟨τ, i⟩)) (vW (e ⟨τ, i⟩)) (hB (e ⟨τ, i⟩))
     have hvw : spMap (dualMap ρW) ≫ vW (e ⟨τ, i⟩) = w τ i := by
       rw [hw, hfacU, dualMap_comp', spMap_comp', Category.assoc]
@@ -198,9 +198,9 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       funext c
       rw [hw', Sigma.eta, Equiv.apply_symm_apply, hfacU', dualMap_comp', spMap_comp', Category.assoc]
     rw [hvw, hv'w] at h1
-    have h2 := GlobalTheory.T.isCombAtZeroSection_eigenBlock_flattened_frame E H Dw TF.Y.X TF.Y.t _ (spMap ρW ≫ GlobalTheory.LogKS.chart W) n n' e e' w' A τ i (w τ i) htan'
+    have h2 := _root_.GlobalTheory.LogKSDiv.isCombAtG_flatFrame E H Dw TF.Y.X TF.Y.t _ (spMap ρW ≫ GlobalTheory.LogKS.chart W) n n' e e' w' A τ i (w τ i) htan'
       (by rw [hρW]; exact hA τ i)
-    have h3 := GlobalTheory.T.generic_tangentCoefficients_unique_affineOpen_basis E H TF.Y.X TF.Y.t W _ ρW hinj hfr n' v'W hv'WT hv'WB _ _ (w τ i) (hv'w ▸ h1) (hv'w ▸ h2)
+    have h3 := _root_.GlobalTheory.LogKSDiv.generic_coeff_unique E H TF.Y.X TF.Y.t W _ ρW hinj hfr n' v'W hv'WT hv'WB _ _ (w τ i) (hv'w ▸ h1) (hv'w ▸ h2)
     exact fun c => congrFun h3 c
 
   have hρB : ∀ a c, ρW (B a c) = flatFrame A e e' a c := by
@@ -217,8 +217,8 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   choose cfs hcfs using fun j => GlobalTheory.T.transpose_mul_symPair_mem_span_balancedTensors E H Dw _ n n' e e' ε' B hBd (ε j)
   let LW : Matrix (Fin Dw.dim) (Fin Dw.dim) Γ(TF.Y.X, W.1) := Matrix.of fun k j => cfs j k
   have hKSW := fun j =>
-    GlobalTheory.T.kodairaSpencer_change_of_tangent_frame E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) W n n' vW v'W B (DlW j) _ hvWT hv'WT hB (hKS0 j)
-  obtain ⟨Aact, hAact⟩ := GlobalTheory.T.existsUnique_cmOrderActionMatrix_on_affineOpen E H TF.Y.X TF.Y.t W n' v'W hv'WT hv'WB
+    _root_.GlobalTheory.KSFrameChange.isKS_frame_change E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) W n n' vW v'W B (DlW j) _ hvWT hv'WT hB (hKS0 j)
+  obtain ⟨Aact, hAact⟩ := _root_.GlobalTheory.ActMatrix.actMatrix E H TF.Y.X TF.Y.t W n' v'W hv'WT hv'WB
   obtain ⟨eW, heW⟩ := TF.logKS W n' v'W Aact hv'WT hv'WB hAact
   have hrel : ∀ j, DlW j = ∑ k, LW k j • Dl'W k := by
     intro j

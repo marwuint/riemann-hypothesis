@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodTopBot
 import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.WeylDualWeylLatticesAgreeOfLowestAlcove
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RowPolarizationOperatorsRelationsDivPowBaseChangStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RowPolarizationOperatorsRelationsDivPowBaseChang
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions GlobalTheory.Alc
 
 noncomputable section
@@ -95,7 +95,7 @@ theorem rowE_mem_of_isGLSubmodule : ∀ (k : Type) [Field k] (N : ℕ) (lam : Do
   intro k _ N lam M hM a b hab f hf
   have h1 := coeff_polyOfMv_mem k _ M _ (hM (Polynomial k) (transvGL k a b hab) f hf) 1
   rw [polyOfMv_sqAct_transv] at h1
-  rw [((GlobalTheory.T.rowPolarizationOperators_relations_divPow_baseChange k N N).2.1 a b f)]
+  rw [((_root_.GlobalTheory.Alc.rowOperators_main k N N).2.1 a b f)]
   exact h1
 
 end GlobalTheory.Alc

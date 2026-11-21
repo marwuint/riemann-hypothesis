@@ -50,14 +50,6 @@ theorem unitOff_prod {N : ℕ} {ι : Type*} (s : Finset ι) (f : ι → ℂ) (h 
     rw [Finset.prod_insert ha]
     exact unitOff_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
-theorem unitOff_conj {N : ℕ} {u : ℂ} (hu : UnitOff N u) : UnitOff N (starRingEnd ℂ u) := by
-  obtain ⟨hu0, n, hn1, hn2⟩ := hu
-  refine ⟨(map_ne_zero _).2 hu0, n, ?_, ?_⟩
-  · have := hn1.map (RingHom.toIntAlgHom (starRingEnd ℂ))
-    simpa [map_mul, map_pow, map_natCast] using this
-  · have := hn2.map (RingHom.toIntAlgHom (starRingEnd ℂ))
-    simpa [map_mul, map_pow, map_natCast, map_inv₀] using this
-
 theorem unitOff_of_pow {N : ℕ} {u : ℂ} {k : ℕ} (hk : 0 < k) (hu : UnitOff N (u ^ k)) : UnitOff N u := by
   obtain ⟨hu0, n, hn1, hn2⟩ := hu
   have hN : IsIntegral ℤ ((N : ℂ) ^ (n * (k - 1))) := by

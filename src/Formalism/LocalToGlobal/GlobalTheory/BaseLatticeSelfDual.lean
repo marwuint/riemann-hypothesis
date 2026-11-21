@@ -62,52 +62,8 @@ theorem Coord.isLat_lat (K : Coord hc S n) {L : Submodule (𝓞 E) S.V} (hL : Su
   rw [LinearEquiv.apply_symm_apply, Submodule.map_span] at h2
   exact h2
 
-theorem Coord.exists_lat (K : Coord hc S n) {M : Submodule (𝓞 E) (n → E)} (hM : IsLat M) :
-    ∃ L : Submodule (𝓞 E) S.V, Submodule.IsLattice E L ∧ K.lat L = M := by
-  refine ⟨M.map ((K.κ.symm : (n → E) →ₗ[E] S.V).restrictScalars (𝓞 E)), ⟨(Module.Finite.iff_fg.1 hM.1).map _, ?_⟩, ?_⟩
-  · rw [eq_top_iff]
-    intro x _
-    have h1 : K.κ x ∈ Submodule.span E (M : Set (n → E)) := by rw [hM.2]; trivial
-    have h2 : K.κ.symm (K.κ x) ∈ (Submodule.span E (M : Set (n → E))).map (K.κ.symm : (n → E) →ₗ[E] S.V) := ⟨_, h1, rfl⟩
-    rw [LinearEquiv.symm_apply_apply, Submodule.map_span] at h2
-    exact h2
-  · ext y
-    rw [K.mem_lat]
-    constructor
-    · rintro ⟨z, hz, hzy⟩
-      have : z = y := K.κ.symm.injective hzy
-      rwa [← this]
-    · intro hy
-      exact ⟨y, hy, rfl⟩
-
 theorem star_int (r : 𝓞 E) : star (algebraMap (𝓞 E) E r) ∈ Set.range (algebraMap (𝓞 E) E) :=
   ⟨⟨_, Formalism.HermitianLatticesTheory.majDual_star_int r⟩, rfl⟩
-
-theorem Coord.isLat_dl (K : Coord hc S n) (M : Submodule (𝓞 E) (n → E)) (hM : IsLat M) : IsLat (dl hc.sig K.J M) := by
-  obtain ⟨L, hL, rfl⟩ := K.exists_lat hM
-  rw [← K.lat_dual]
-  exact K.isLat_lat (Formalism.HermitianLatticesTheory.dualLattice (𝓞 E) E S.V S.hT S.herm S.nondeg star_int L hL).1
-
-theorem Coord.lat_companion (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) (a : 𝓞 E) :
-    K.lat (L ⊔ Ideal.span {a} • Formalism.HermitianLatticesTheory.dual S.hT L) =
-      K.lat L ⊔ Ideal.span {a} • dl hc.sig K.J (K.lat L) := by
-  rw [← K.lat_dual]
-  unfold Coord.lat
-  rw [Submodule.map_sup, Submodule.map_smul'']
-
-theorem Coord.companion (K : Coord hc S n) {L : Submodule (𝓞 E) S.V} (hL : Submodule.IsLattice E L)
-    {Λb : Submodule (𝓞 E) (n → E)} (hΛb : IsLat Λb) (g : GL n 𝒜)
-    (hg : g ∈ UPts hc.sig K.J (FiniteAdeleRing (𝓞 F) F))
-    (hyl : ∀ u : n → 𝒜, u ∈ hat F (K.lat L) ↔ ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ u ∈ hat F Λb)
-    {a : 𝓞 E} (ha : a ≠ 0) (hbase : Λb ⊔ Ideal.span {a} • dl hc.sig K.J Λb = K.lat S.L0) :
-    K.lat (L ⊔ Ideal.span {a} • Formalism.HermitianLatticesTheory.dual S.hT L) = globLat g (K.lat S.L0) := by
-  rw [K.lat_companion, eq_glob_of_hat (K.isLat_lat hL) g hyl, ← hbase,
-    glob_companion hc.sig K.J K.isLat_dl hΛb ha g hg]
-
-theorem Coord.base_lattice_self_dual (K : Coord hc S n) : dl hc.sig K.J (K.lat S.L0) = K.lat S.L0 := by
-  rw [← K.lat_dual]
-  have : Formalism.HermitianLatticesTheory.dual S.hT S.L0 = S.L0 := S.baseLattice_isUnimodular
-  rw [this]
 
 end Formalism.L2.GlobalTheoryTheory.Comp
 

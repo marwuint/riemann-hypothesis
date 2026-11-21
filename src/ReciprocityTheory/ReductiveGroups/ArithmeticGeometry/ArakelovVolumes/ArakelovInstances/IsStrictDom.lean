@@ -1,5 +1,5 @@
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.BasePsiLeviLowerBound
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.FirstMinimumPos
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Inst
 
@@ -41,26 +41,8 @@ def IsStrictDom (X : Data E r) (la : Wt X.Ψ r) : Prop :=
 
 variable (X : Data E r) [T2Space (Yq X)] [SecondCountableTopology (Yq X)]
 
-def secOf (A : WeightedAtlas (nd X) (Yq X) X.dom (Wt X.Ψ r)) (P : Frame X.Ψ r → ℂ) :
-    X.dom → Yq X → ℂ :=
-  fun i y => P (cpt X i.1 (A.chart i y))
-
 def lift (A : WeightedAtlas (nd X) (Yq X) X.dom (Wt X.Ψ r)) (y : Yq X) : Frame X.Ψ r :=
   cpt X (A.pick y).1 (A.chart (A.pick y) y)
-
-def la1Y (A : WeightedAtlas (nd X) (Yq X) X.dom (Wt X.Ψ r)) (y : Yq X) : ℝ := X.la1 (lift X A y)
-
-def vanY (A : WeightedAtlas (nd X) (Yq X) X.dom (Wt X.Ψ r)) (la : Wt X.Ψ r) (c : ℝ)
-    (s : X.dom → Yq X → ℂ) : Prop :=
-  ∃ P ∈ X.SSgt la c, ∀ i y, y ∈ (A.chart i).source → s i y = secOf X A P i y
-
-def Fits (A : WeightedAtlas (nd X) (Yq X) X.dom (Wt X.Ψ r)) : Prop :=
-  (∀ i : X.dom, q X i ∈ (A.chart i).source ∧ A.chart i (q X i) = 0 ∧
-    ∀ z ∈ (A.chart i).target, ∃ h : cpt X i.1 z ∈ X.dom, (A.chart i).symm z = q X ⟨_, h⟩) ∧
-  A.kap = kapW X ∧
-  (∀ la P, X.IsSec la P → A.IsSec la (secOf X A P)) ∧
-  (∀ la s, A.IsSec la s → ∃ P, X.IsSec la P ∧ ∀ i y, y ∈ (A.chart i).source → s i y = secOf X A P i y) ∧
-  ∀ la P, X.IsSec la P → ∀ x : X.dom, A.nsq la (secOf X A P) (q X x) = X.pnorm la P x ^ 2
 
 end
 

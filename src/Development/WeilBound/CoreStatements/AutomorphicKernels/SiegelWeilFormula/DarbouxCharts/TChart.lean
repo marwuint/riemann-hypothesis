@@ -1,7 +1,11 @@
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.THeis
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaBijections.JjMulJj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordinateChangeRealisedWithDoubleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZeroStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordinateChangeRealisedWithDouble
+import Development.AbelianVarietyTheory.Definitions.Divisors.DblActId
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZero
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 
 noncomputable section
 
@@ -57,7 +61,7 @@ theorem T_chart (d : SD σ) : ∃ (τ : d.κ ≃ Ix d) (S0 : ((d.κ → AF F) �
     ∀ Φ ∈ d.sch, ∀ X, d.T Φ X = C * S0 Φ (fun k => d.crd X (τ k)) := by
   have hψ : IsStd d.B.ψ := d.ok.good.std
   obtain ⟨τ, d', hrat, he'⟩ := exists_chart d
-  obtain ⟨S0, S0', hS⟩ := GlobalTheory.T.darbouxCoordinateChange_realised_with_double F E σ d.ok.good.cm d.B.ψ hψ (Fin d.m) (Fin d.n ⊕ Fin d.n) d.κ d.κ _ d.dd d'
+  obtain ⟨S0, S0', hS⟩ := _root_.GlobalTheory.TowU.darboux_change F E σ d.ok.good.cm d.B.ψ hψ (Fin d.m) (Fin d.n ⊕ Fin d.n) d.κ d.κ _ d.dd d'
     (by exact d.ok.dbl.rat) hrat
   have hop := hS.1
   have hs : (fun w => d'.e (d.dd.e.symm w)) = fun w => c0 d τ (d.dd.e.symm w) := funext fun w => he' _
@@ -83,7 +87,7 @@ theorem T_chart (d : SD σ) : ∃ (τ : d.κ ≃ Ix d) (S0 : ((d.κ → AF F) �
       rw [hw]; funext x; simp [schr]
     rw [e1, hl', LinearMap.comp_apply, rhoS' _ φ hφ, LinearMap.comp_apply]
     exact d.ok.dbl.kill Z _ (hop.pres' φ hφ)
-  obtain ⟨c, hc⟩ := GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F d.B.ψ hψ d.κ l' hadm hinv
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CharInvForm.main F d.B.ψ hψ d.κ l' hadm hinv
   refine ⟨τ, S0, S0', c, hop, fun Φ hΦ X => ?_⟩
   have hΨ : d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) Φ ∈ schA F d.κ :=
     GlobalTheory.HeisSchA.schr_mem_schA d.B.ψ hψ _ _ hΦ

@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateNeSelf
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalUnitaryCoordinateZeroOfRationalPointsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalUnitaryCoordinateZeroOfRationalPoints
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
 open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField GlobalTheory.AlgWtHW
 
 noncomputable section
@@ -110,14 +111,14 @@ theorem evM_mul : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : �
         evM P (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) * evM P (upt Y) := by
     intro γ₀ h₀ Y hY
     ext i j
-    have e := GlobalTheory.T.eval_unitaryCoordinate_zero_of_rational_points L n (MvPolynomial.bind₁ (substL (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) (P i j) -
+    have e := _root_.GlobalTheory.UDense.eval_eq_zero_of_rat L n (MvPolynomial.bind₁ (substL (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) (P i j) -
         ∑ m, MvPolynomial.C (evM P (upt (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) i m) * P m j)
       (fun γ₁ h₁ => by rw [defectL_eval, hrat γ₀ h₀ γ₁ h₁, sub_self]) Y hY
     rw [defectL_eval, sub_eq_zero] at e
     exact e
   refine ⟨h1, fun X Y hX hY => ?_⟩
   ext i j
-  have e := GlobalTheory.T.eval_unitaryCoordinate_zero_of_rational_points L n (MvPolynomial.bind₁ (substR Y) (P i j) -
+  have e := _root_.GlobalTheory.UDense.eval_eq_zero_of_rat L n (MvPolynomial.bind₁ (substR Y) (P i j) -
       ∑ m, P i m * MvPolynomial.C (evM P (upt Y) m j))
     (fun γ₀ h₀ => by rw [defectR_eval, hL γ₀ h₀ Y hY, sub_self]) X hX
   rw [defectR_eval, sub_eq_zero] at e

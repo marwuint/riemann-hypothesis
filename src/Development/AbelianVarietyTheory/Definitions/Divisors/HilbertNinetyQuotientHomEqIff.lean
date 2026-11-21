@@ -37,11 +37,6 @@ def realClass : TestClass ℝ where
   adm κ _ := {l | ∃ T : SchwartzMap (κ → ℝ) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (κ → ℝ) ℂ, l (f : (κ → ℝ) → ℂ) = T f}
   modu := distribHaarChar ℝ
 
-def complexClass : TestClass ℂ where
-  sp κ _ := schFun (κ → ℂ)
-  adm κ _ := {l | ∃ T : SchwartzMap (κ → ℂ) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (κ → ℂ) ℂ, l (f : (κ → ℂ) → ℂ) = T f}
-  modu := distribHaarChar ℂ
-
 section Unitary
 
 variable {R : Type} [CommRing R] {κ : Type} [Fintype κ] {G : Type} [Group G]
@@ -62,10 +57,6 @@ theorem IsContOn.comp [TopologicalSpace G] {C : TestClass R} {om : G →* Module
     IsContOn C (om.comp f) :=
   fun l hl φ hφ => (h l hl φ hφ).comp hf
 
-theorem IsContOn.of_isLocallyConstant [TopologicalSpace G] {C : TestClass R} {om : G →* Module.End ℂ ((κ → R) → ℂ)}
-    (h : ∀ φ ∈ C.sp κ, IsLocallyConstant fun g => om g φ) : IsContOn C om :=
-  fun l _ φ hφ => ((h φ hφ).comp l).continuous
-
 theorem norm_eq_one_of_lintegral_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ} {a : ℂ}
     (h : ∫⁻ x, ‖(a • f) x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ) (h0 : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ ≠ 0)
     (h1 : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ ≠ ⊤) : ‖a‖ = 1 := by
@@ -74,15 +65,6 @@ theorem norm_eq_one_of_lintegral_eq {X : Type} [MeasurableSpace X] {μ : Measure
   have h2 : ‖a‖ₑ ^ 2 = 1 := (ENNReal.mul_left_inj h0 h1).mp (h.trans (one_mul _).symm)
   rw [enorm_eq_nnnorm, ← ENNReal.coe_pow, ENNReal.coe_eq_one, pow_eq_one_iff_of_nonneg zero_le' two_ne_zero] at h2
   exact congrArg NNReal.toReal h2
-
-theorem IsUnitaryOn.norm_eq_one [TopologicalSpace R] {C : TestClass R} {om om' : G →* Module.End ℂ ((κ → R) → ℂ)}
-    (h : IsUnitaryOn C om) (h' : IsUnitaryOn C om') {μ : @Measure (κ → R) (borel _)}
-    (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) {φ : (κ → R) → ℂ} (hφ : φ ∈ C.sp κ)
-    (h0 : ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ ≠ 0) (h1 : ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ ≠ ⊤) {g : G} {a : ℂ} (ha : om' g φ = a • om g φ) :
-    ‖a‖ = 1 := by
-  have e := h μ hμ g φ hφ
-  refine @norm_eq_one_of_lintegral_eq _ (borel _) μ (om g φ) a ?_ (e ▸ h0) (e ▸ h1)
-  rw [← ha, e, h' μ hμ g φ hφ]
 
 end Unitary
 
@@ -181,38 +163,12 @@ def h90 : Eˣ →* Eˣ := MonoidHom.id Eˣ / Units.map (c : E →* E)
 
 def normOne : Subgroup Eˣ := (MonoidHom.id Eˣ * Units.map (c : E →* E)).ker
 
-def IsTilde (χ : Eˣ →* Circle) (u : Eˣ) (t : Circle) : Prop := ∃ z : Eˣ, (u : E) * c z = z ∧ t = χ z
-
-def tilde (χ : Eˣ →* Circle) (hχ : ∀ z : Eˣ, c z = z → χ z = 1) : (h90 c).range →* Circle :=
-  (h90 c).rangeRestrict.liftOfSurjective (h90 c).rangeRestrict_surjective ⟨χ, fun z hz => hχ z (by
-    rw [MonoidHom.ker_rangeRestrict] at hz
-    exact (congrArg Units.val (div_eq_one.mp hz)).symm)⟩
-
 variable {c}
 
 theorem mem_normOne {u : Eˣ} : u ∈ normOne c ↔ (u : E) * c u = 1 := Units.ext_iff
 
 theorem hilbertNinetyQuotientHom_eq_iff {z u : Eˣ} : h90 c z = u ↔ (u : E) * c z = z :=
   div_eq_iff_eq_mul.trans (Units.ext_iff.trans eq_comm)
-
-theorem tilde_norm_quotient (χ : Eˣ →* Circle) (hχ : ∀ z : Eˣ, c z = z → χ z = 1) (z : Eˣ) :
-    tilde c χ hχ ⟨h90 c z, z, rfl⟩ = χ z :=
-  MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ z
-
-theorem isTilde_iff (χ : Eˣ →* Circle) (hχ : ∀ z : Eˣ, c z = z → χ z = 1) (u : Eˣ) (t : Circle) :
-    IsTilde c χ u t ↔ ∃ hu : u ∈ (h90 c).range, t = tilde c χ hχ ⟨u, hu⟩ := by
-  constructor
-  · rintro ⟨z, hz, rfl⟩
-    obtain rfl := hilbertNinetyQuotientHom_eq_iff.mpr hz
-    exact ⟨⟨z, rfl⟩, (tilde_norm_quotient χ hχ z).symm⟩
-  · rintro ⟨⟨z, rfl⟩, rfl⟩
-    exact ⟨z, hilbertNinetyQuotientHom_eq_iff.mp rfl, tilde_norm_quotient χ hχ z⟩
-
-theorem IsTilde.unique {χ : Eˣ →* Circle} (hχ : ∀ z : Eˣ, c z = z → χ z = 1) {u : Eˣ} {t t' : Circle}
-    (h : IsTilde c χ u t) (h' : IsTilde c χ u t') : t = t' := by
-  obtain ⟨_, rfl⟩ := (isTilde_iff χ hχ u t).mp h
-  obtain ⟨_, rfl⟩ := (isTilde_iff χ hχ u t').mp h'
-  rfl
 
 namespace IsQuad
 
@@ -234,14 +190,6 @@ theorem invol (z : E) : c (c z) = z := by
   obtain ⟨a, b, rfl⟩ := h.exists_eq z
   simp [h.anti]
 
-theorem range_h90_le_normOne : (h90 c).range ≤ normOne c := by
-  rintro u ⟨z, hz⟩
-  have h1 := hilbertNinetyQuotientHom_eq_iff.mp hz
-  have h2 := congrArg c h1
-  rw [map_mul, h.invol] at h2
-  refine mem_normOne.mpr (z.isUnit.mul_right_cancel ?_)
-  rw [mul_assoc, h2, h1, one_mul]
-
 variable [Invertible (2 : R)]
 
 theorem exists_of_fixed {z : E} (hz : c z = z) : ∃ a : R, z = algebraMap R E a := by
@@ -262,11 +210,6 @@ theorem exists_unit_of_fixed {z : Eˣ} (hz : c z = z) : ∃ a : Rˣ, z = Units.m
   have : a * a' = 1 := h.algebraMap_injective (by rw [map_mul, ← ha, ← ha', Units.mul_inv, map_one])
   exact ⟨Units.mkOfMulEqOne a a' this, Units.ext ha⟩
 
-theorem triv_fixed {χ : Eˣ →* Circle} (hχ : ∀ a : Rˣ, χ (Units.map (algebraMap R E : R →* E) a) = 1) (z : Eˣ)
-    (hz : c z = z) : χ z = 1 := by
-  obtain ⟨a, rfl⟩ := h.exists_unit_of_fixed hz
-  exact hχ a
-
 theorem algebraMap_norm (z : E) : algebraMap R E (Algebra.norm R z) = z * c z := by
   obtain ⟨x, y, rfl⟩ := h.exists_eq z
   obtain ⟨d, hd⟩ := h.exists_of_fixed (z := ξ * ξ) (by rw [map_mul, h.anti, neg_mul_neg])
@@ -281,43 +224,6 @@ theorem algebraMap_norm (z : E) : algebraMap R E (Algebra.norm R z) = z * c z :=
   ring
 
 end IsQuad
-
-theorem IsQuad.h90_range_eq_normOne_of_isQuad {R : Type} [Field R] [Invertible (2 : R)] {E : Type} [CommRing E] [Algebra R E] {c : E →ₐ[R] E}
-    {ξ : E} (h : IsQuad c ξ) : (h90 c).range = normOne c := by
-  refine le_antisymm h.range_h90_le_normOne fun u hu => ?_
-  have hu := mem_normOne.mp hu
-  obtain ⟨a, b, hab⟩ := h.exists_eq u
-  have hc : c u = algebraMap R E a - algebraMap R E b * ξ := by rw [hab]; simp [h.anti, sub_eq_add_neg]
-  by_cases ha : 1 + a = 0
-  · have ha' : 1 + algebraMap R E a = 0 := by simpa using congrArg (algebraMap R E) ha
-    have hb : algebraMap R E (b * b) * (ξ * ξ) = 0 := by
-      rw [hc, hab] at hu
-      rw [map_mul]
-      linear_combination -hu + (algebraMap R E a - 1) * ha'
-    have hb0 : b = 0 := mul_self_eq_zero.mp (h.algebraMap_injective (by
-      rw [(h.unit.mul h.unit).mul_left_eq_zero.mp hb, map_zero]))
-    refine ⟨h.unit.unit, hilbertNinetyQuotientHom_eq_iff.mpr ?_⟩
-    rw [IsUnit.unit_spec, h.anti, hab, hb0, map_zero]
-    linear_combination (-ξ) * ha'
-  · have hz : IsUnit ((1 + (u : E)) * (1 + c u)) := by
-      have : (1 + (u : E)) * (1 + c u) = algebraMap R E (2 * (1 + a)) := by
-        rw [map_mul, map_add, map_one, map_ofNat]
-        linear_combination hu + hab + hc
-      rw [this]
-      exact (Ne.isUnit (mul_ne_zero (Invertible.ne_zero 2) ha)).map _
-    refine ⟨(isUnit_of_mul_isUnit_left hz).unit, hilbertNinetyQuotientHom_eq_iff.mpr ?_⟩
-    rw [IsUnit.unit_spec, map_add, map_one]
-    linear_combination hu
-
-theorem det_mem_normOne {ι : Type} [Fintype ι] [DecidableEq ι] {J : Matrix ι ι E} (hJ : IsHerm c J) (g : UG c J) :
-    Matrix.GeneralLinearGroup.det (g : GL ι E) ∈ normOne c := by
-  have h := congrArg Matrix.det (show ((g : GL ι E) : Matrix ι ι E)ᵀ * J * ((g : GL ι E) : Matrix ι ι E).map c = J from g.2)
-  rw [det_mul, det_mul, det_transpose,
-    show (((g : GL ι E) : Matrix ι ι E).map c).det = c ((g : GL ι E) : Matrix ι ι E).det from
-      (c.toRingHom.map_det _).symm] at h
-  refine mem_normOne.mpr (hJ.2.mul_left_cancel ?_)
-  rw [Matrix.GeneralLinearGroup.val_det_apply]
-  linear_combination h
 
 variable (c)
 
@@ -473,18 +379,6 @@ theorem IsUWeilPair.isUSplitting (h : IsUWeilPair c C ψ ξ JA JB d χA χB om) 
 end Top
 
 end Pair
-
-example {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (x x₁ y : Unit → R) (φ : (Unit → R) → ℂ) :
-    schr ψ (x₁, 0) φ x = φ (x + x₁) ∧ schr ψ (0, y) φ x = ψ (x () * y ()) * φ x := by
-  simp [schr, dotProduct]
-
-example (χ : ℂˣ →* Circle) : IsTilde (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) χ (Units.mk0 Complex.I Complex.I_ne_zero)
-    (χ (Units.mk0 (1 + Complex.I) (by simp [Complex.ext_iff]))) :=
-  ⟨_, by simp [Complex.ext_iff], rfl⟩
-
-example (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] :
-    IsModuleTopology ℝ ℂ ∧ IsModuleTopology R (R × R) :=
-  ⟨isModuleTopologyOfFiniteDimensional, inferInstance⟩
 
 end GlobalTheory.WeilM
 

@@ -5,9 +5,9 @@ import Formalism.LocalToGlobal.CharacterGerms.BlockAdmissibleChart
 import Formalism.LocalToGlobal.CharacterGerms.NegMem
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugedFormalGroupCurveLogarithmsAddSubgroupRescaStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CurveLogarithmsInvNatCastSmulMemStatement
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowExponentPartMemGaugedCurveLogarithmsStatement
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugedFormalGroupCurveLogarithmsAddSubgroupResca
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CurveLogarithmsInvNatCastSmulMem
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowExponentPartMemGaugedCurveLogarithms
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AdjointEndPairMemGaugedCurveLogarithmsStatement
 
 noncomputable section
@@ -156,7 +156,7 @@ theorem exists_start (hR : RLaw X V) (hP : HasProj X V) (g : Fin 2) (w : I g →
       fun _ => rfl, fun _ => rfl⟩
   have h1 := GlobalTheory.T.adjointEndPair_mem_gaugedCurveLogarithms C V d I κ X hR g (M g) (M (1 - g)) (fun _ => 1) hEnd (fun _ => VF.Ge.one)
     (fun q => by rw [one_smul]; exact hfix (1 - g) q) _ h0
-  have h2 := GlobalTheory.T.powExponentPart_mem_gaugedCurveLogarithms C V d I κ X hR g _ h1
+  have h2 := _root_.GlobalTheory.RowLaw.typ_mem_Cv C V d I κ X hR g _ h1
   have hA1 : ∀ i, PowerSeries.coeff 1 (alongCv γ (X.lg i)) = v i := by
     intro i
     rw [coeff_alongCv_low le_rfl hγ0 (hlg0 i)]
@@ -200,7 +200,7 @@ theorem pure_mem (hR : RLaw X V) {g : Fin 2} (hT : HasTeich X V g) (a : ZMod d) 
   classical
   have hl := V.l_prime.two_le
   obtain ⟨N, ζ, M, M', hN, hζN, hinj, hζl, hEnd, hM, hM'⟩ := hT
-  obtain ⟨hzero, hadd, -, hres⟩ := GlobalTheory.T.gaugedFormalGroupCurveLogarithms_addSubgroup_rescale C V d I κ X hR g
+  obtain ⟨hzero, hadd, -, hres⟩ := _root_.GlobalTheory.RowLaw.cv_group C V d I κ X hR g
   have hNC : (N : C) ≠ 0 := by
     intro h0
     rw [h0, V.v.map_zero] at hN
@@ -255,7 +255,7 @@ theorem pure_mem (hR : RLaw X V) {g : Fin 2} (hT : HasTeich X V g) (a : ZMod d) 
       simp only [Finset.sum_range_succ, add_mul]
       rw [emb_add X hl]
       exact hadd _ ih _ (hpow n)
-  have hdiv := GlobalTheory.T.curveLogarithms_inv_natCast_smul_mem C V d I κ X hR g N hN _ (hsum N)
+  have hdiv := _root_.GlobalTheory.RowLaw.cv_inv_natCast_smul_mem C V d I κ X hR g N hN _ (hsum N)
   rw [← emb_smul X hl] at hdiv
   simp only [← mul_assoc, mean_pow hNC (hζN _) (hζN _), hinj.eq_iff, ite_mul, one_mul, zero_mul] at hdiv
   exact hdiv

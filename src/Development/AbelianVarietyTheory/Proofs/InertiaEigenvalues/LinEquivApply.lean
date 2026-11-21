@@ -46,19 +46,6 @@ def incl (T : QLat LL) : ↥T.L.T →ₗ[ℤ_[l]] T.V where
       ← algebraMap_smul ↥LL.1 (algebraMap ℤ_[l] ℚ_[l] z) (x : T.V)]
     rfl
 
-theorem exists_pow_mul_mem (LL : FinExt l) (a : ↥LL.1) :
-    ∃ k : ℕ, (l : ↥LL.1) ^ k * a ∈ OL LL := by
-  haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
-  have h1 : IsAlgebraic ℚ_[l] a := Algebra.IsAlgebraic.isAlgebraic a
-  have h2 : IsAlgebraic ℤ_[l] a := (IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL.1).2 h1
-  obtain ⟨y, hy, hi⟩ := h2.exists_integral_multiple
-  obtain ⟨k, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy
-    (PadicInt.irreducible_p (p := l))
-  refine ⟨k, ?_⟩
-  have h3 := hi.smul ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l])
-  rw [smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast] at h3
-  exact h3
-
 theorem exists_pow_smul_mem (T : QLat LL) (v : T.V) :
     ∃ n : ℕ, (l : ↥LL.1) ^ n • v ∈ T.L.T := by
   first

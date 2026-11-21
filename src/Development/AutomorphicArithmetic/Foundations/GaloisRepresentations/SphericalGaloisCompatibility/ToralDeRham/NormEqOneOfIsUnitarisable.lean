@@ -119,6 +119,3 @@ theorem GlobalTheory.RoadU.window : UpperTheory.Gal.ToralGalois.Inq → ∀ (E :
 
 end
 
-section
-
-end

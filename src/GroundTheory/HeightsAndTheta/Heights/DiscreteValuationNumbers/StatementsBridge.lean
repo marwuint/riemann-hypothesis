@@ -47,10 +47,6 @@ def IntNumIsFieldIntersection.Statement : Prop :=
     [∀ k, Fintype (ι k)],
     ReciprocityTheory.ChartRestriction.G.AI.I1.IsFieldIntersection (F := F) (ι := ι) (fun V _ L => intNum F V L)
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

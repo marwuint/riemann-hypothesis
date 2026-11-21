@@ -107,11 +107,6 @@ theorem projFin_ofFin (y : GFin hc V) : IndefiniteRowSideFullHecke.AdelicUnitary
   mapH_extH_self _ _ _ _ _ (fun _ => rfl) y
 theorem projInf_ofFin (y : GFin hc V) : IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projInf hc V (ofFin hc V y) = 1 :=
   mapH_extH_zero _ _ _ _ _ (fun _ => rfl) y
-theorem projInf_ofInf (y : GInf hc V) : IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projInf hc V (ofInf hc V y) = y :=
-  mapH_extH_self _ _ _ _ _ (fun _ => rfl) y
-theorem projFin_ofInf (y : GInf hc V) : IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V (ofInf hc V y) = 1 :=
-  mapH_extH_zero _ _ _ _ _ (fun _ => rfl) y
-
 theorem eq_of_proj {g h : GA hc V} (h1 : IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projInf hc V g = IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projInf hc V h)
     (h2 : IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V g = IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V h) : g = h := by
   rw [← mul_inv_eq_one]
@@ -122,15 +117,6 @@ theorem eq_of_proj {g h : GA hc V} (h1 : IndefiniteRowSideFullHecke.AdelicUnitar
 
 theorem ofFin_projFin {g : GA hc V} (h : g ∈ finPts hc V) : ofFin hc V (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V g) = g :=
   eq_of_proj hc V ((projInf_ofFin hc V _).trans (Eq.symm h)) (projFin_ofFin hc V _)
-
-theorem ofInf_projInf {g : GA hc V} (h : g ∈ realPts hc V) : ofInf hc V (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projInf hc V g) = g :=
-  eq_of_proj hc V (projInf_ofInf hc V _) ((projFin_ofInf hc V _).trans (Eq.symm h))
-
-theorem continuous_ofFin : Continuous (ofFin hc V) :=
-  continuous_extH _ _ _ _ (continuous_const.prodMk continuous_id)
-
-theorem continuous_projFin : Continuous (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V) :=
-  continuous_mapH _ _ _ continuous_snd
 
 def infEmb (τ : E →+* ℂ) : Ainf F ⊗[F] E →+* ℂ :=
   (locMap hc τ).comp (Algebra.TensorProduct.map
@@ -183,28 +169,6 @@ theorem sgW_mul (w : InfinitePlace F) (a b : w.Completion) : sgW w (a * b) = sgW
   classical
   exact Pi.single_mul w a b
 
-theorem realComp_atReal (τ : E →+* ℂ) (u : GReal V τ) : realComp hc V τ (atReal hc V τ u) = u := by
-  classical
-  show realCompInf hc V τ (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projInf hc V (ofInf hc V (atRealInf hc V τ u))) = u
-  rw [projInf_ofInf]
-  refine Subtype.ext (Units.ext (Matrix.ext fun r s => ?_))
-  show locMap hc τ ((HA.mat _ _ _ (mapH hc.sig V.gram (evW (placeOf F τ))
-    (extH hc.sig V.gram (sgW (placeOf F τ)) (sgW_mul _) _))).1 r s) = _
-  rw [mapH_extH_self _ _ _ _ _ (fun a => Pi.single_eq_same _ a)]
-  exact (locEquiv hc τ).apply_symm_apply _
-
-theorem realComp_atReal_ne (τ τ' : E →+* ℂ) (h : placeOf F τ' ≠ placeOf F τ) (u : GReal V τ) :
-    realComp hc V τ' (atReal hc V τ u) = 1 := by
-  classical
-  show realCompInf hc V τ' (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projInf hc V (ofInf hc V (atRealInf hc V τ u))) = 1
-  rw [projInf_ofInf]
-  refine Subtype.ext (Units.ext (Matrix.ext fun r s => ?_))
-  show locMap hc τ' ((HA.mat _ _ _ (mapH hc.sig V.gram (evW (placeOf F τ'))
-    (extH hc.sig V.gram (sgW (placeOf F τ)) (sgW_mul _) _))).1 r s) = _
-  rw [mapH_extH_zero _ _ _ _ _ (fun a => Pi.single_eq_of_ne h a)]
-  show locMap hc τ' ((1 : Matrix _ _ _) r s) = (1 : Matrix _ _ ℂ) r s
-  by_cases e : r = s <;> simp [Matrix.one_apply, e]
-
 omit [NumberField E] [StarRing E] in
 theorem infTens_ext {z z' : Ainf F ⊗[F] E} (h : ∀ w : InfinitePlace F,
     Algebra.TensorProduct.map (evW w) (AlgHom.id F E) z =
@@ -224,56 +188,6 @@ theorem infTens_ext {z z' : Ainf F ⊗[F] E} (h : ∀ w : InfinitePlace F,
       rw [← hx, ← hy]
   rw [key z, key z']
   exact Finset.sum_congr rfl fun w _ => by rw [h w]
-
-theorem eq_of_realComp {ι : Type} (t : ι → (E →+* ℂ)) (ht : ∀ w, ∃ i, placeOf F (t i) = w)
-    {g h : GA hc V} (h1 : IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V g = IndefiniteRowSideFullHecke.AdelicUnitaryGroups.projFin hc V h)
-    (h2 : ∀ i, realComp hc V (t i) g = realComp hc V (t i) h) : g = h := by
-  refine eq_of_proj hc V (HA_ext _ _ fun r s => infTens_ext fun w => ?_) h1
-  obtain ⟨i, rfl⟩ := ht w
-  exact (locMap_bijective hc (t i)).1 (congrArg (fun x : GReal V (t i) => x.1.1 r s) (h2 i))
-
-include hc in
-theorem eq_or_conj_of_placeOf {τ τ' : E →+* ℂ} (h : placeOf F τ = placeOf F τ') :
-    τ = τ' ∨ τ = τ'.comp (starRingEnd E) := by
-  have hF : ∀ a : F, τ (algebraMap F E a) = τ' (algebraMap F E a) := by
-    have e1 := InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (placeOf_isReal hc τ))
-    have e2 := InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (placeOf_isReal hc τ'))
-    intro a
-    exact RingHom.congr_fun (e1.symm.trans ((congrArg InfinitePlace.embedding h).trans e2)) a
-  have hfix : ∀ x : E, star x = x → τ x = τ' x := fun x hx => by
-    obtain ⟨a, rfl⟩ := (hc.fixed x).1 hx
-    exact hF a
-  by_cases h0 : τ = τ'
-  · exact Or.inl h0
-  right
-  obtain ⟨x, hx⟩ : ∃ x, τ x ≠ τ' x := by
-    by_contra hcon
-    push Not at hcon
-    exact h0 (RingHom.ext hcon)
-  have a1 := hfix (x + star x) (by simp [add_comm])
-  have a2 := hfix ((x - star x) * (x - star x)) (by simp only [star_mul, star_sub, star_star]; ring)
-  simp only [map_add, map_mul, map_sub] at a1 a2
-  have a3 : τ x - τ (star x) = -(τ' x - τ' (star x)) := by
-    rcases mul_self_eq_mul_self_iff.1 a2 with e | e
-    · exact absurd (by linear_combination (a1 + e) / 2) hx
-    · exact e
-  have a4 : τ' x - τ' (star x) ≠ 0 := fun e => hx (by linear_combination (a1 + a3) / 2 - e)
-  ext y
-  have b1 := hfix (y + star y) (by simp [add_comm])
-  have b2 := hfix ((y - star y) * (x - star x)) (by simp only [star_mul, star_sub, star_star]; ring)
-  simp only [map_add, map_mul, map_sub] at b1 b2
-  rw [a3] at b2
-  have b3 : τ y - τ (star y) = -(τ' y - τ' (star y)) :=
-    mul_right_cancel₀ a4 (by linear_combination -b2)
-  show τ y = τ' (star y)
-  linear_combination (b1 + b3) / 2
-
-include hc in
-theorem placeOf_conj (τ : E →+* ℂ) : placeOf F (τ.comp (starRingEnd E)) = placeOf F τ := by
-  unfold placeOf
-  congr 1
-  ext a
-  exact congrArg τ ((hc.fixed _).2 ⟨a, rfl⟩)
 
 end Groups
 

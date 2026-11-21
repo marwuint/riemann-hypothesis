@@ -469,7 +469,7 @@ theorem markSumC_regroup (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) (w : 
       (Quot.out q).trivAf.choose_spec.choose_spec L.K.toSubgroup f K' f'
       (Classical.choose (ConjClasses.exists_rep c)))
     formCls (fun q Q => phi q Q) ?_ ?_ ?_ ?_
-  · apply (GlobalTheory.T.finite_markedPairClasses_degreeOne_term_ne_zero p G ha L f hf hreg K' f' hf').subset
+  · apply (_root_.GlobalTheory.LKCx.FiniteClassIntegralRoots.finite_cls_term_one_a_one p G ha L f hf hreg K' f' hf').subset
     intro Q hQ
     rw [Function.mem_support] at hQ
     unfold markTerm at hQ

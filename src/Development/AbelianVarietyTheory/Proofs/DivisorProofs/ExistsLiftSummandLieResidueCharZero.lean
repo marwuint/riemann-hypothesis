@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.InfUniv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupObjectLiftDividedPowers
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorModOfTmul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSeparabilityElementOfTraceNondegenerateStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSeparabilityElementOfTraceNondegenerate
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingOfIntegersTraceMulLeftNondegenerateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorOrderTraceFormNondegenerateStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthogonalEigenIdempotentsOfSeparabilityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentSeparabilityAverageStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorOrderTraceFormNondegenerate
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthogonalEigenIdempotentsOfSeparability
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentSeparabilityAverage
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
@@ -33,10 +33,10 @@ theorem liftSummand_residueCharZero : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTh
     obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg N
     · exact_mod_cast hunitN n (by rintro rfl; simp at hN)
     · push_cast; exact (hunitN n (by rintro rfl; simp at hN)).neg
-  obtain ⟨NF, kF, u, v, hNF, huv, hcomF⟩ := GlobalTheory.T.exists_separability_element_of_trace_nondegenerate' (𝓞 D.F) (GlobalTheory.T.ringOfIntegers_eq_zero_of_trace_mulLeft_eq_zero D.F)
+  obtain ⟨NF, kF, u, v, hNF, huv, hcomF⟩ := _root_.GlobalTheory.exists_separability_element_of_trace_nondegenerate (𝓞 D.F) (GlobalTheory.T.ringOfIntegers_eq_zero_of_trace_mulLeft_eq_zero D.F)
   haveI := D.freeO; haveI := D.finO
-  obtain ⟨NO, kO, x, y, hNO, hxy, hcomO⟩ := GlobalTheory.T.exists_separability_element_of_trace_nondegenerate' D.O (GlobalTheory.T.harrisTaylorOrder_traceForm_nondegenerate p D)
-  obtain ⟨φ, hφc, hφφ, hφcomm, hφF, hφmod⟩ := GlobalTheory.T.exists_orthogonal_eigen_idempotents_of_separability R C (𝓞 D.F) tR D.a b.t b.comax NF kF u v huv hcomF
+  obtain ⟨NO, kO, x, y, hNO, hxy, hcomO⟩ := _root_.GlobalTheory.exists_separability_element_of_trace_nondegenerate D.O (_root_.GlobalTheory.HTOrderTrace.trace_order_nondeg p D)
+  obtain ⟨φ, hφc, hφφ, hφcomm, hφF, hφmod⟩ := _root_.GlobalTheory.lie_idempotents R C (𝓞 D.F) tR D.a b.t b.comax NF kF u v huv hcomF
     (hunitZ NF hNF) H (ρ.comp (algebraMap (𝓞 D.F) D.O))
   have hFO' : ∀ c, ∀ z ∈ F, (ρ.comp (algebraMap (𝓞 D.F) D.O)) c z ∈ F := fun c z hz => hFO _ z hz
   set f : Module.End C H := ∑ i, φ i with hfdef
@@ -68,7 +68,7 @@ theorem liftSummand_residueCharZero : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTh
       _ = f * (ρ c * e) := by rw [hρf, _root_.mul_assoc]
       _ = f * e * ρ c := by rw [heρ, _root_.mul_assoc]
   have hFε : ∀ z ∈ F, ε z ∈ F := fun z hz => hfF _ (heF z hz)
-  obtain ⟨π, hππ, hπρ, hπε, hεπ, hA, hB⟩ := GlobalTheory.T.exists_idempotent_separability_average C D.O I hI NO kO x y hxy hcomO (hunitZ NO hNO) H ρ ε hε hρε
+  obtain ⟨π, hππ, hπρ, hπε, hεπ, hA, hB⟩ := _root_.GlobalTheory.SepAverage.exists_idempotent_average C D.O I hI NO kO x y hxy hcomO (hunitZ NO hNO) H ρ ε hε hρε
     F hIF hFO hFε hE'
   have hεε : ∀ z, ε (ε z) = ε z := fun z => LinearMap.congr_fun hε z
   have hπε' : ∀ z, π (ε z) = π z := fun z => LinearMap.congr_fun hπε z

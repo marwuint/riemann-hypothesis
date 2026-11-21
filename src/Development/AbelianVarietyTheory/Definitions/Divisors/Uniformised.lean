@@ -42,9 +42,6 @@ def Base.IsType {D : Datum p} {R : Type} [CommRing R] (b : Base D R) (σ : R →
     ∑ τ ∈ Finset.univ.filter (fun τ : D.F →+* ℂ => τ (D.ω : D.F) ≠ σ b.ρ), (D.n : ℂ) * τ (c : D.F) -
     ∑ i, (starRingEnd ℂ) (σ (b.t i c)))
 
-def Base.Matches {D : Datum p} {R : Type} [CommRing R] (b : Base D R) (σ : R →+* ℂ) : Prop :=
-  σ b.ρ = D.ρc ∧ ∀ i (c : 𝓞 D.F), σ (b.t i c) = D.tau i (c : D.F)
-
 def Obj.fam {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R}
     (o : Obj b N s) (h : SmoothOfRelativeDimension D.g o.A.hom) (hL : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB) :
     Fam R D.O D.La D.g where

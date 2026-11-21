@@ -17,6 +17,4 @@ theorem lowT_mem_kfin (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSM
   rintro T hT x hx
   exact Submodule.subset_span ⟨T, hT.1, hx, hT.2.1⟩
 
-example : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (v : lowT M τ), ((v : M.sm τ) : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ := lowT_mem_kfin
-
 end GlobalTheory.LowKFin

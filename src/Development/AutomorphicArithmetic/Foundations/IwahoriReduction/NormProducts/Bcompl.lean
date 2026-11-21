@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProducts.LUnH
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUnitEvalEqKummerClassStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUnitEvalEqKummerClass
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiagMod
 
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
 open scoped Matrix MatrixGroups
@@ -93,7 +94,7 @@ private theorem memA (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {x : ℕ → X.K
   refine Submodule.subset_span fun n => ?_
   obtain ⟨y, hy⟩ := hs n
   obtain ⟨φ, hφ, hd⟩ := X.j_hol
-  obtain ⟨f, hf, e⟩ := GlobalTheory.T.exists_unit_eval_eq_kummer_class ε X ⟨φ, hd, hφ⟩ l n
+  obtain ⟨f, hf, e⟩ := _root_.GlobalTheory.KZ.ES.exists_un_eval_eq_cls ε X ⟨φ, hd, hφ⟩ l n
     (∑ k ∈ Finset.range n, (l : ℤ_[l]) ^ k • x k)
     (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hx k))
   refine ⟨f, hf, ?_⟩

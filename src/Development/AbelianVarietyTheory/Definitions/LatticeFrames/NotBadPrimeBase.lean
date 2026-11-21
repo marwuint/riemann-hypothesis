@@ -227,25 +227,10 @@ def ReadsG {S : D.what₂.Tau → SPar} {MX : DSModel D.sp.X' S} (eW : Pm.Wrow �
   ∀ (c : M.clsP) (v : SmT MX) (h : GA D D.sp.X'), GlobalTheory.Core.Rk.Top.HasMat h (K.y c).1 →
     f v (h * x) = (Nat.card (M.stabilizer₂ c) : ℂ) * Pm.period (eW.symm (Pi.single c (j v))) G
 
-theorem LevG.one_mem {x : GA D D.sp.X'} {J : Set (GA D D.sp.X')} {χ : GA D D.sp.X' → ℂ} (h : LevG K x J χ) : 1 ∈ J ∧ χ 1 = 1 := by
-  have h1 : GlobalTheory.Core.Rk.Top.HasMat (1 : GA D D.sp.X') (1 : K.lev.U).1 := by
-    refine ⟨Subgroup.one_mem _, fun i j => ?_⟩
-    simp [Matrix.one_apply]
-  have e : x⁻¹ * 1 * x = 1 := by group
-  refine ⟨e ▸ (h.1 1).2 ⟨1, h1⟩, ?_⟩
-  have := h.2 1 1 h1
-  rw [e] at this
-  simpa using this
-
-example (x : GA D D.sp.X') (χ : GA D D.sp.X' → ℂ) : ¬ LevG K x ∅ χ := fun h => (h.one_mem K).1
-
 theorem levG_one_iff (K₀ : ClsPTied u) (J : Set (GA D D.sp.X')) (χ : GA D D.sp.X' → ℂ) :
     LevG K₀.toG 1 J χ ↔ GlobalTheory.Core.Rk.Top.TopLev K₀ J χ := by
   simp only [LevG, GlobalTheory.Core.Rk.Top.TopLev, inv_one, one_mul, mul_one]
   rfl
-
-theorem readsG_zero {S : D.what₂.Tau → SPar} {MX : DSModel D.sp.X' S} (eW : Pm.Wrow ≃ₗ[ℂ] (M.clsP → FrP D → ℂ))
-    (j : SmT MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X') : ReadsG K eW j x 0 0 := fun c v h _ => by simp
 
 end Read
 
@@ -278,8 +263,6 @@ def TopReadAt (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D → ℂ
     ∀ (F : Fin ((W.P.A3.side3 W.P.Ps W.P.ψs W.P.Zs).nV t) → D.what₂.LL) (F' : Fin ((W.Q.F.fc (cxW W).zs).Df1.nV t) → D.what₂.LL),
       HEq F F' → Reads W u j x (W.P.I.tup t) (W.P.I.jA t ((rV0 D W.P.A3.A W.P.Ps W.P.ψs t).mulVec F)) (topOf W t F')
 
-def TopRead : Prop := ∃ x, ∀ u, ∃ j, TopReadAt W u j x
-
 def tailOf (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X') (μ : D.what₂.Tup)
     (ψ : (D.chTw u μ).cls D.R.m → (D.chTw u μ).Y D.R.m → ℂ) (f : SmT (pk W).MX →ₗ[ℂ] (GA D D.sp.X' → ℂ)) : ℂ :=
   if h : ∃ G, Reads W u j x μ G f then
@@ -300,76 +283,8 @@ variable {W} {u : D.what₂.Word} (f : FamCh W u)
 
 abbrev FamCh.c : Comm D := commOf (pk W) u f.g
 
-abbrev FamCh.B : Base f.c := baseOf (pk W) (lvP W) u f.g
-
 abbrev FamCh.t (t : W.P.T) : Tup f.c :=
   tupOf (pk W) (lvP W) u f.g t (f.row t) (f.col t) fun ψ F => tailOf W u f.j f.g.bT (W.P.I.tup t) ψ F.1
-
-def badPrime (W : RealPack ex) (_u : D.what₂.Word) (t : W.P.T) (p : ℕ) : Prop :=
-  ∃ PP ∈ (pk W).Q t, ((p : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal
-
-theorem not_badPrime_base (W : RealPack ex) (u : D.what₂.Word) (p : ℕ) : ¬ badPrime W u W.P.A3.A.μ0 p := by
-  rintro ⟨PP, hP, -⟩
-  have lev := W.Q.charW.base.lev
-  refine (lev.Q_ram _ PP).2 (Or.inl hP) fun x _ => ?_
-  rw [show W.Q.Rl.xiH W.P.A3.A.μ0 = 1 from lev.xi_base]
-  rfl
-
-theorem exists_badPrime (W : RealPack ex) (u : D.what₂.Word) (t : W.P.T) (h : ((pk W).Q t).Nonempty) :
-    ∃ p : ℕ, p.Prime ∧ badPrime W u t p := by
-  obtain ⟨PP, hP⟩ := h
-  refine ⟨Formalism.EigenvalueLevelCeiling.plc PP, Formalism.EigenvalueLevelCeiling.plc_prime PP, PP, hP, ?_⟩
-  have := (ringChar.spec ((𝓞 D.host.E) ⧸ PP.asIdeal) (Formalism.EigenvalueLevelCeiling.plc PP)).2 dvd_rfl
-  exact Ideal.Quotient.eq_zero_iff_mem.1 (by simpa using this)
-
-open Formalism.L2.Host Formalism.L2 Formalism.L2.Rows in
-
-theorem badPrime_notMem (W : RealPack ex) (u : D.what₂.Word) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) (p : ℕ) (hp : p.Prime)
-    (h : badPrime W u (W.Q.Rl.mu w) p) : (p : 𝓞 D.what₂.LL) ∉ w.asIdeal := by
-  obtain ⟨PP, hP, h1⟩ := h
-  intro h2
-  have lev := W.Q.charW.base.lev
-  have hr : ¬ (W.Q.Rl.xiH (W.Q.Rl.mu w)).UnrAt PP := (lev.Q_ram _ PP).2 (Or.inl hP)
-  have hl : Formalism.EigenvalueLevelCeiling.plc w = p :=
-    (Nat.prime_dvd_prime_iff_eq (Formalism.EigenvalueLevelCeiling.plc_prime w) hp).1
-      ((ringChar.spec _ p).1 (by simpa using Ideal.Quotient.eq_zero_iff_mem.2 h2))
-  by_cases hw : w ∈ W.Q.Rl.twPl
-  · obtain ⟨ψ, Q, hψ, e⟩ := W.Q.charW.tup.mu_on w hw
-    have e' : W.Q.Rl.xiH (W.Q.Rl.mu w) = W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w) * ψ := e
-    have key : ∀ q : ℕ, q.Prime → OverP D.host q PP → q = p := fun q hq ho => by
-      by_contra hne
-      have hc : IsCoprime ((q : ℕ) : 𝓞 D.host.E) ((p : ℕ) : 𝓞 D.host.E) :=
-        Nat.Coprime.cast ((Nat.coprime_primes hq hp).2 hne)
-      obtain ⟨a, b, hab⟩ := hc
-      have ho' : ((q : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := ho
-      exact PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
-        (hab ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ ho') (PP.asIdeal.mul_mem_left _ h1)))
-    have hd : (W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).UnrAt PP := by
-      unfold CharFrame.delAt
-      split_ifs with hh
-      · refine W.Q.Rl.C.isDel'.unr PP fun ho => D.host.pde_ne ?_
-        rw [← hh, hl, key _ D.host.pde'_prime ho]
-      · exact W.Q.Rl.C.isDel.unr PP fun ho => hh (by rw [hl, key _ D.host.pde_prime ho])
-    refine hr fun x hx => ?_
-    have a1 := hd x hx
-    have a2 := hψ.atl PP (hl ▸ h1) x
-    rw [e']
-    change (W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).loc PP x * ψ.loc PP x = 1
-    rw [a1, a2, mul_one]
-  · have e : W.Q.Rl.mu w = W.P.A3.A.μ0 := W.Q.charW.tup.mu_off w hw
-    exact not_badPrime_base W u p ⟨PP, e ▸ hP, h1⟩
-
-example (W : RealPack ex) (t : W.P.T) :
-    (W.P.A3.side3 W.P.Ps W.P.ψs W.P.Zs).nV t = (W.Q.F.fc (cxW W).zs).Df1.nV t := rfl
-
-theorem reads_zero (W : RealPack ex) (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X') (μ : D.what₂.Tup) :
-    Reads W u j x μ 0 0 := by
-  refine ⟨fun h => ?_, fun h => ?_⟩
-  · subst h
-    rw [map_zero]
-    exact readsG_zero _ _ _ _
-  · rw [map_zero]
-    exact readsG_zero _ _ _ _
 
 end Real
 

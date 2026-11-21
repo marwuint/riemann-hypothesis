@@ -145,42 +145,4 @@ theorem parAt_fst {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : 
       congr 1
       omega
 
-theorem params_match : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → ∀ (i : Fin D.R.m) (M₀ : DSModel (Yc D 0) (parA (Ptw D) 0)), ∃ (hr : (Wc D i).rank = (Yc D 0).rank) (lam : D.what₂.Tau → Fin (Yc D 0).rank → ℤ), Odd (Yc D 0).rank ∧ (∀ ρ, Gap (lam ρ)) ∧ (∀ ρ a, M₀.lam ρ a = lam ρ a) ∧ ∀ ρ a, (R.MW i (sg0 D A)).lam ρ a = lam ρ (a.cast hr) := by
-  intro D G _ _ Pl0 T A Ks _ _ _ R F hG i M₀
-  have hY : (Yc D 0).rank = D.R.r := by
-    rw [D.sp.Y_rank _ (min_le_right _ _), Nat.zero_min]
-    simp [Ranks.rankY]
-  have hW : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
-  have key : ∀ ρ (n : ℕ), (((⌊Formalism.L2.NTheta.lamAt (D.hc ρ) n⌋ : ℤ) : ℚ)) = Formalism.L2.NTheta.lamAt (D.hc ρ) n := by
-    intro ρ n
-    obtain ⟨z, hz⟩ := Formalism.L2.NTheta.lamAt_int (D.hc ρ) n
-    rw [hz, Int.floor_intCast]
-  have keyR : ∀ ρ (n : ℕ), (((⌊Formalism.L2.NTheta.lamAt (D.hc ρ) n⌋ : ℤ) : ℝ)) = ((Formalism.L2.NTheta.lamAt (D.hc ρ) n : ℚ) : ℝ) := by
-    intro ρ n
-    obtain ⟨z, hz⟩ := Formalism.L2.NTheta.lamAt_int (D.hc ρ) n
-    rw [hz, Int.floor_intCast, Rat.cast_intCast]
-  refine ⟨hW.trans hY.symm, fun ρ a => ⌊Formalism.L2.NTheta.lamAt (D.hc ρ) (a : ℕ)⌋, hY ▸ Formalism.L2.NTheta.odd_r D.R, ?_, ?_, ?_⟩
-  · intro ρ a b hab
-    have hb : (b : ℕ) < D.R.r := lt_of_lt_of_eq b.2 hY
-    have h1 := hG.gapR ρ a (by omega)
-    rw [← hab] at h1
-    have hr1 : ((Yc D 0).rank : ℚ) ≤ 100 * (D.R.r : ℚ) ^ 4 := by
-      rw [hY]
-      have : D.R.r ≤ 100 * D.R.r ^ 4 := by
-        have := Nat.le_self_pow (by norm_num : (4 : ℕ) ≠ 0) D.R.r
-        omega
-      exact_mod_cast this
-    have : ((Yc D 0).rank : ℚ) ≤ ((⌊Formalism.L2.NTheta.lamAt (D.hc ρ) (a : ℕ)⌋ - ⌊Formalism.L2.NTheta.lamAt (D.hc ρ) (b : ℕ)⌋ : ℤ) : ℚ) := by
-      push_cast
-      rw [key, key]
-      linarith
-    exact_mod_cast this
-  · intro ρ a
-    rw [enum_fst (M₀.enum ρ) (fun a : Fin (Yc D 0).rank => Formalism.L2.NTheta.lamAt (D.hc ρ) a)
-      (lamAt_anti_fin _ hY.le) (parA_fst D ρ hY) a, keyR]
-  · intro ρ a
-    rw [enum_fst ((R.MW i (sg0 D A)).enum ρ) (fun a : Fin (Wc D i).rank => Formalism.L2.NTheta.lamAt (D.hc ρ) a)
-      (lamAt_anti_fin _ hW.le) (parAt_fst R i ρ hW) a]
-    exact (keyR ρ (a : ℕ)).symm
-
 end GlobalTheory.ParamMatch

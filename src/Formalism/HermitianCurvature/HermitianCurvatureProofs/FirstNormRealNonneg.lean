@@ -108,10 +108,6 @@ theorem σ_or (S : HidaSetting E Wp Wq) (v : Fin S.f) :
   · exact Or.inl h.symm
   · exact Or.inr h.symm
 
-theorem norm_σ (S : HidaSetting E Wp Wq) (v : Fin S.f) (t : E) : ‖S.σ v t‖ = S.pl v t := by
-  rw [← S.hemb v]
-  exact (NumberField.InfinitePlace.apply (S.emb v) t).symm
-
 open Classical in
 
 def cj (S : HidaSetting E Wp Wq) : J.CV E ≃ₗᵢ[ℝ] J.CV E :=
@@ -153,38 +149,6 @@ theorem re_cj (S : HidaSetting E Wp Wq) (c : J.CV E) (l : E) (v : Fin S.f) :
       ring
 
 theorem cj_mp (S : HidaSetting E Wp Wq) : MeasurePreserving (cj S) := (cj S).measurePreserving
-
-theorem mem_comap_cj (S : HidaSetting E Wp Wq) (L : Submodule ℤ E) (x : J.CV E) :
-    x ∈ ZLattice.comap ℝ (J.eLat E L 1) (cj S).toLinearEquiv.toLinearMap ↔
-      ∃ t ∈ L, ∀ v, x (S.pl v) = S.σ v t := by
-  have hinv : ∀ c : J.CV E, cj S (cj S c) = c := by
-    intro c
-    ext w
-    obtain ⟨v, rfl⟩ := S.pl.surjective w
-    by_cases h : S.σ v = (S.pl v).embedding
-    · rw [(cj_apply S _ v).1 h, (cj_apply S _ v).1 h]
-    · rw [(cj_apply S _ v).2 h, (cj_apply S _ v).2 h, Complex.conj_conj]
-  have hs : ∀ t : E, (J.semb E 1).toIntLinearMap t = J.cemb E t := fun t => by
-    simp [J.semb]
-  change cj S x ∈ J.eLat E L 1 ↔ _
-  simp only [J.eLat, Submodule.mem_map, hs]
-  constructor
-  · rintro ⟨t, ht, he⟩
-    refine ⟨t, ht, fun v => ?_⟩
-    rw [← hinv x, ← he, cj_cemb]
-  · rintro ⟨t, ht, he⟩
-    refine ⟨t, ht, ?_⟩
-    rw [← hinv (J.cemb E t)]
-    congr 1
-    ext w
-    obtain ⟨v, rfl⟩ := S.pl.surjective w
-    rw [cj_cemb, he]
-
-theorem covolume_comap_cj (S : HidaSetting E Wp Wq) (L : Submodule ℤ E) [DiscreteTopology (J.eLat E L 1)]
-    [IsZLattice ℝ (J.eLat E L 1)] :
-    ZLattice.covolume (ZLattice.comap ℝ (J.eLat E L 1) (cj S).toLinearEquiv.toLinearMap) =
-      ZLattice.covolume (J.eLat E L 1) :=
-  ZLattice.covolume_comap (J.eLat E L 1) volume volume (e := (cj S).toContinuousLinearEquiv) (cj_mp S)
 
 theorem first_norm_real_nonneg (S : HidaSetting E Wp Wq) (hP : ThmPPos S) (ε : ℝ) (hε : 0 < ε) (i : ℕ)
     (hi : i ≤ S.G.r + 1) (w : S.W) (Y : Finset (TB.Pt E)) (κ : TB.Pt E → TB.Pt E → ℂ)

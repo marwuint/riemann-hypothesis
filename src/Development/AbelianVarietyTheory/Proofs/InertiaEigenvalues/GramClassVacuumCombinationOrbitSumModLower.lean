@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInert
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfInjective
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStd
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumEqConstMulPeterssonStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumEqConstMulPetersson
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TypeOrthOfAvTied
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDimensionalForms
 
@@ -16,7 +16,7 @@ namespace GlobalTheory.TypeOrthClassSum
 theorem typeOrth_of_classSum : ∀ (D : D7) (M : MtFam D), AVTied D M → ∀ i : D.nd.Loc, ClassSum (M.loc i) → TypeOrth D i := by
   intro D M V i hC
   obtain ⟨hbd, β, T, c, hβ, hT, hc, hin⟩ := hC
-  obtain ⟨B, hB, hBc⟩ := GlobalTheory.T.class_sum_eq_const_mul_petersson D.host.E D.R.nV (M.loc i).wt β hβ
+  obtain ⟨B, hB, hBc⟩ := _root_.GlobalTheory.ClassPet.classSum_eq_pet D.host.E D.R.nV (M.loc i).wt β hβ
   obtain ⟨c', hc', hcc⟩ := hBc (M.loc i).J (M.loc i).χ T hbd (M.loc i).J_open hT
   have hreal : ∀ x, (M.loc i).real x ∈ NG.TypeSp (M.loc i).wt.ρ (M.loc i).J (M.loc i).χ := fun x => by
     rw [← (M.loc i).real_range]; exact LinearMap.mem_range_self _ x

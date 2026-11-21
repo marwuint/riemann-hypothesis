@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsGenO
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubeTheoremAndSectionsFiniteGrowthAbelianVariety
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemNonzeroLocusIffChart
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolarisationSectionNonemptyNonvanishingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointMemTranslatesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointMemTranslates
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic ReciprocityTheory.ChartRestriction.G.H1.SquareUnits
@@ -67,7 +67,7 @@ theorem exists_sec_twist_mem_nonzeroLocus : ∀ (S : Scheme.{0}) (P : PolAV S) (
   intro S P K _ _ t c a p
   have hI := isIntegral_fibre P t
   obtain ⟨θ, hθ⟩ := GlobalTheory.T.exists_polarisation_section_nonempty_nonvanishing S P K t hI
-  obtain ⟨u, h₁, h₂⟩ := GlobalTheory.T.exists_point_mem_translates' S P K t inferInstance (nonzeroLocus θ) hθ a c p
+  obtain ⟨u, h₁, h₂⟩ := _root_.GlobalTheory.AlgClosedFibre.exists_point_mem_translates S P K t inferInstance (nonzeroLocus θ) hθ a c p
   obtain ⟨g, hg⟩ := unitAt_square P t (c * u) u⁻¹ ((lift (𝟙 (Over.mk t)) a).left p)
   have hF : FormEq (Sum.elim (Sum.elim (fun k => (trY P t (c * u)).left ≫ ![(snd (Over.mk t) P.A).left] k)
       (fun k => (trY P t u⁻¹).left ≫ ![(snd (Over.mk t) P.A).left] k))

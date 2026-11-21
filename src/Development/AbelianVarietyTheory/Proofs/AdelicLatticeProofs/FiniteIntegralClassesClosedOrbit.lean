@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsMinNormTensorOfIsClosedTensorSLOrbitStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MinNormTensorStabilizerConjTransposeInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRealTranslateIsMinNormTensorInOrbitStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TensorSLOrbitMapProperOfIsClosedStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MinNormTensorStabilizerConjTransposeInvariant
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRealTranslateIsMinNormTensorInOrbit
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TensorSLOrbitMapProperOfIsClosed
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SiegelCoverStatement
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BorelHarishChandraStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MatrixKroneckerPowerTensorActionAlgebraStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MatrixKroneckerPowerTensorActionAlgebra
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 
@@ -43,12 +43,12 @@ theorem finite_bdd_denominator_vectors {κ : Type} [Fintype κ] (D : ℕ) (hD : 
 theorem finite_integral_classes_closed_orbit : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ) (t : TIdx ι d → ℚ), IsClosed (orb d (fun k => ((t k : ℚ) : ℂ))) → ∀ D : ℕ, 0 < D → ∃ Z : Finset (TIdx ι d → ℚ), ∀ h : Matrix ι ι ℚ, h.det = 1 → (∀ k, ∃ z : ℤ, (D : ℚ) * act d t h k = z) → ∃ γ : Matrix ι ι ℤ, γ.det = 1 ∧ act d t (h * γ.map (Int.cast : ℤ → ℚ)) ∈ Z := by
   intro ι _ _ m d t hcl D hD
   letI : LinearOrder ι := LinearOrder.lift' (Fintype.equivFin ι) (Fintype.equivFin ι).injective
-  have hC := (GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℂ).2 m d
-  have hQ := (GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℚ).2 m d
+  have hC := (_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d
+  have hQ := (_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℚ).2 m d
   set tC : TIdx ι d → ℂ := fun k => ((t k : ℚ) : ℂ) with htC
   have htR : (fun k => (((t k : ℚ) : ℝ) : ℂ)) = tC := by
     funext k; simp [htC]
-  obtain ⟨g, hg, hmin⟩ := GlobalTheory.T.exists_real_translate_isMinNormTensorInOrbit ι m d (fun k => ((t k : ℚ) : ℝ))
+  obtain ⟨g, hg, hmin⟩ := _root_.GlobalTheory.ClassFin.exists_real_translate_isMinVec ι m d (fun k => ((t k : ℚ) : ℝ))
     (by rw [htR]; exact GlobalTheory.T.exists_minNormTensor_of_isClosed_tensorSLOrbit ι m d tC hcl)
   rw [htR] at hmin
   have hmap : ∀ x y : Matrix ι ι ℝ, (x * y).map (fun r : ℝ => (r : ℂ)) =
@@ -71,8 +71,8 @@ theorem finite_integral_classes_closed_orbit : ∀ (ι : Type) [Fintype ι] [Dec
       refine ⟨gC.adjugate * y, by rw [det_mul, det_adjugate, hgCd, hy, one_pow, one_mul], ?_⟩
       rw [hv, ← (hC tC).2.1, ← mul_assoc, hgCadj, one_mul]
   obtain ⟨C, hSieg⟩ := GlobalTheory.T.exists_siegel_decomposition_mul_int_matrix_of_det_eq_one ι
-  obtain ⟨B, hB⟩ := GlobalTheory.T.nsq_act_le_of_isSiegel_of_entries_zero_or_ge ι m d v (GlobalTheory.T.tensorSLOrbit_map_proper_of_isClosed ι m d v (horb ▸ hcl))
-    (GlobalTheory.T.minNormTensor_stabilizer_conjTranspose_invariant ι m d v hmin) C (1 / D) (by positivity)
+  obtain ⟨B, hB⟩ := GlobalTheory.T.nsq_act_le_of_isSiegel_of_entries_zero_or_ge ι m d v (_root_.GlobalTheory.ClassFin.orbit_proper_of_isClosed ι m d v (horb ▸ hcl))
+    (_root_.GlobalTheory.ClassFin.act_conjTranspose_of_isMinVec ι m d v hmin) C (1 / D) (by positivity)
   refine ⟨(finite_bdd_denominator_vectors (κ := TIdx ι d) D hD B).toFinset, ?_⟩
   intro h hh hint
   have hhR : (h.map (fun q : ℚ => (q : ℝ))).det = 1 := by

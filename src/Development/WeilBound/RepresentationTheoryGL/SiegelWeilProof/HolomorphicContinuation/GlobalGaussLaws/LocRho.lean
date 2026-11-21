@@ -108,7 +108,7 @@ theorem lIrho : LIrho := by
     show (phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) R).1 ∈ fockA θ V n l s
     rw [phiS_val (hmem R).1]
     exact (hmem R).2
-  have hfd := GlobalTheory.T.fockVector_schrodingerModel_isKFinite D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl s hC.hs (jL P) (hjmem P)
+  have hfd := _root_.GlobalTheory.StdUnn.KFin.fock_kfinite D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl s hC.hs (jL P) (hjmem P)
   set S := Submodule.span ℂ {Ψ' : schwartzA θ V.rank n | ∃ k ∈ K D n, Ψ' = ω k (jL P)} with hS
   have hSstab : ∀ κ ∈ K D n, ∀ x ∈ S, ω κ x ∈ S := by
     intro κ hκ x hx

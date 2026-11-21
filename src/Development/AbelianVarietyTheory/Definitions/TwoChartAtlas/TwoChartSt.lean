@@ -287,8 +287,6 @@ theorem Related.refl {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d 
   · simp only [ev_one, c, e2, _root_.mul_one]
   · simp only [ev_one, c, e2, _root_.mul_one]
 
-example : ∑ i, primε i = 1 := by decide
-
 end Basic₂
 
 end GlobalTheory.JetSer

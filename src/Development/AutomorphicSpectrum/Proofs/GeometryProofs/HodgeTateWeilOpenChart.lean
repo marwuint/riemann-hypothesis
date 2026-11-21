@@ -4,7 +4,8 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHTFormOver
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NatCastSmulMemHtLat
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionLiftIsClosedImmersion
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -113,7 +114,7 @@ theorem exists_denom {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G] [
     { toFun := j
       map_add' := jadd
       map_smul' := jsmul }
-  have hbc : IsBaseChange O β := (GlobalTheory.T.lie_model_finite_base_change X G R x L₀ M₀).2.2 O L' M' β hjl
+  have hbc : IsBaseChange O β := (_root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X G R x L₀ M₀).2.2 O L' M' β hjl
   have hloc : IsLocalizedModule S β := (isLocalizedModule_iff_isBaseChange S O β).2 hbc
   obtain ⟨e', he'⟩ := M'.onto v hv
   obtain ⟨⟨b, u⟩, hb⟩ := IsLocalizedModule.surj S β e'

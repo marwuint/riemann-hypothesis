@@ -24,7 +24,4 @@ def EigenLatDifferent.Statement : Prop :=
     ∀ (N : ℕ) (I : Submodule (𝓞 Em) (Fin N → Em)), I.FG → ∀ s : Em →+* K,
       eigenLat I s = diffLat s I
 
-example : (∀ σ : Gauss.Em →+* ℂ, ∃ t : Gauss.Em →+* Gauss.Em, Gauss.φ₀.comp t = σ) ∧ Gauss.isoLine.FG :=
-  ⟨Gauss.split Gauss.φ₀, Submodule.fg_span_singleton _⟩
-
 end GroundTheory.Heights₂.Heights.NineStatements

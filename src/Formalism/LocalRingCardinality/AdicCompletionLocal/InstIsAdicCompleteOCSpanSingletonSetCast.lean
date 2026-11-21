@@ -12,11 +12,6 @@ namespace Formalism.Per
 
 open Reformulated.AutPerF
 
-section General
-variable {R S : Type} [CommRing R] [CommRing S]
-def compMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (h : I ≤ J.comap f) : AdicCompletion I R →+* AdicCompletion J S := adicMap I J f h
-end General
-
 section Cp
 abbrev Qb (p : ℕ) [Fact p.Prime] : Type := PadicAlgCl p
 abbrev Gq (p : ℕ) [Fact p.Prime] : Type := PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p

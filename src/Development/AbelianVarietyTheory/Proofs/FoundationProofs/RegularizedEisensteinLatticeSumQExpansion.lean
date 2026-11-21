@@ -1,12 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffEisensteinSeriesTwistedQExpansionDoubleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableRegularizedEisensteinLatticeTermStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LipschitzWeightOnePeriodicMeanZeroStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LipschitzFormulaPeriodicWeightStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffEisensteinSeriesTwistedQExpansionDouble
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableRegularizedEisensteinLatticeTerm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LipschitzWeightOnePeriodicMeanZero
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LipschitzFormulaPeriodicWeight
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TendstoAtTopOfCofinite
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -88,7 +89,7 @@ theorem latF_ndvd (L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (x : ℤ × 
 theorem row_summable (j L : ℕ) (hj : 1 ≤ j) (hL : 0 < L) (A : ℤ → ℂ) (hA : ∃ C : ℝ, ∀ d, ‖A d‖ ≤ C) (τ : ℍ) (c : ℤ) :
     Summable fun d : ℤ => A d * dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) (c, d) := by
   obtain ⟨C, hC⟩ := hA
-  have hs := (GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L (0, 1) τ hj hL).prod_factor c
+  have hs := (_root_.GlobalTheory.LatSumZ.latsum_summable j L (0, 1) τ hj hL).prod_factor c
   refine (hs.mul_left C).of_norm_bounded (fun d => ?_)
   rw [norm_mul]
   exact mul_le_mul_of_nonneg_right (hC d) (norm_nonneg _)
@@ -113,9 +114,9 @@ theorem lip_all (j L : ℕ) (φ : ZMod L → ℂ) (z : ℂ) (hj : 1 ≤ j) (hL :
       (𝓝 ((-2 * π * Complex.I / L) ^ j / (j - 1).factorial *
         ∑' m : ℕ, ((m + 1 : ℕ) : ℂ) ^ (j - 1) * hat φ (m + 1 : ℕ) * cexp (2 * π * Complex.I * (m + 1 : ℕ) * z / L))) := by
   rcases (show j = 1 ∨ 2 ≤ j by omega) with rfl | hj2
-  · convert GlobalTheory.T.lipschitz_weight_one_periodic_mean_zero L φ z hL hz h0 using 2
+  · convert _root_.GlobalTheory.EisM.LipOne.lipschitz_one L φ z hL hz h0 using 2
     simp
-  · exact GlobalTheory.T.lipschitz_formula_periodic_weight j L φ z hj2 hL hz
+  · exact _root_.GlobalTheory.EisM.lipschitz_periodic j L φ z hj2 hL hz
 
 theorem row_pos (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hj : 1 ≤ j) (hL : 0 < L) (h0 : hat φ 0 = 0)
     (τ : ℍ) (n : ℕ) :
@@ -216,12 +217,12 @@ theorem lat_qexp : ∀ (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ), 1 �
   obtain ⟨K, hK⟩ : ∃ K : ℂ, ∀ τ : ℍ, ∑' d : ℤ, latF L b φ ((0 : ℤ) * L, d) *
       dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) ((0 : ℤ) * L, d) = K :=
     ⟨_, fun τ => row_zero_indep j L b φ τ UpperHalfPlane.I⟩
-  refine ⟨K / (2 * κ), (GlobalTheory.T.coeffEisensteinSeriesTwisted_qExpansion_double j _ (hat φ) b (hat_bounded L φ) hb).1, fun τ => ?_⟩
-  have hq := (GlobalTheory.T.coeffEisensteinSeriesTwisted_qExpansion_double j (K / (2 * κ)) (hat φ) b (hat_bounded L φ) hb).2.2 τ
+  refine ⟨K / (2 * κ), (_root_.GlobalTheory.EisM.eis_qseries j _ (hat φ) b (hat_bounded L φ) hb).1, fun τ => ?_⟩
+  have hq := (_root_.GlobalTheory.EisM.eis_qseries j (K / (2 * κ)) (hat φ) b (hat_bounded L φ) hb).2.2 τ
   obtain ⟨CΦ, hCΦ⟩ := latF_bounded L hL b φ hb
   have hs : Summable fun x : ℤ × ℤ => latF L b φ x *
       dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) x := by
-    refine ((GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L (0, 1) τ hj hL).mul_left CΦ).of_norm_bounded (fun x => ?_)
+    refine ((_root_.GlobalTheory.LatSumZ.latsum_summable j L (0, 1) τ hj hL).mul_left CΦ).of_norm_bounded (fun x => ?_)
     rw [norm_mul]; exact mul_le_mul_of_nonneg_right (hCΦ x) (norm_nonneg _)
   have hrows := tsum_rows L hL (fun k => ∑' d : ℤ, latF L b φ (k, d) *
       dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) (k, d)) κ _ _ hs.prod

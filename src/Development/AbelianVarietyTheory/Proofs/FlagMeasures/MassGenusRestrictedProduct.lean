@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitMassEqOfFiniteDoubleCosetsStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrbitMassEqOfFiniteDoubleCosets
+import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarInvVolumeRelIndexPiUnivEqFinprod
 open GlobalTheory.HL
 open scoped ENNReal Classical
@@ -140,7 +141,7 @@ theorem mass_restricted_product : ∀ {ι : Type} (G : ι → Type) [∀ i, Grou
     have := hγ
     simp only [hKA, Subgroup.mem_subgroupOf, Subgroup.mem_pi, Set.mem_univ, forall_const] at this
     simpa [hφ'] using this i
-  obtain ⟨V0, hV0, hmass⟩ := GlobalTheory.T.orbit_mass_eq_of_finite_double_cosets Γ K0 hDC hFin
+  obtain ⟨V0, hV0, hmass⟩ := _root_.GlobalTheory.HL.mass_orbit_eq_of_finite_double_cosets Γ K0 hDC hFin
   refine ⟨V0, hV0, fun x hx hxae => ?_⟩
 
   have hAx : {i | A i ≠ MulAction.stabilizer (G i) (x i)}.Finite := by

@@ -27,36 +27,6 @@ theorem isFiniteLength_of_isTorsion [IsNoetherianRing R] [Ring.KrullDimLE 1 R]
   exact ⟨inferInstance,
     isArtinian_of_surjective_algebraMap (R := R ⧸ Ideal.span {r}) Ideal.Quotient.mk_surjective⟩
 
-section Submodules
-
-variable (T : Submonoid R) (S : Type*) [CommRing S] [Algebra R S] [IsLocalization T S]
-
-variable {V : Type*} [AddCommGroup V] [Module R V] [Module S V] [IsScalarTower R S V]
-
-end Submodules
-
 end General
-
-section Dedekind
-
-variable {O : Type*} [CommRing O] [IsDedekindDomain O]
-
-section Torsion
-
-variable {X : Type*} [AddCommGroup X] [Module O X] [Module.Finite O X]
-
-variable [Ring.HasFiniteQuotients O]
-
-variable [Module.Free ℤ O]
-
-end Torsion
-
-section Lattices
-
-variable [Ring.HasFiniteQuotients O] [Module.Free ℤ O]
-
-end Lattices
-
-end Dedekind
 
 end GlobalTheory

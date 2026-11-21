@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndEStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldOneVariableTranscendentalFiniteAndE
 
 open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
@@ -45,7 +45,7 @@ theorem functionFieldPlace_exists_const_sub_lt_one {k F : Type} [Field k] [IsAlg
     have := hq q hq0
     rw [hqx, map_zero] at this
     exact zero_ne_one this
-  haveI hfin : FiniteDimensional k⟮x⟯ F := (GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k F hF).1 x htr
+  haveI hfin : FiniteDimensional k⟮x⟯ F := (_root_.GlobalTheory.Nef.isFF_main k F hF).1 x htr
   have hK : ∀ y ∈ k⟮x⟯, v.1 y ≤ 1 := by
     intro y hy
     obtain ⟨r, s, rfl⟩ := (IntermediateField.mem_adjoin_simple_iff k y).1 hy

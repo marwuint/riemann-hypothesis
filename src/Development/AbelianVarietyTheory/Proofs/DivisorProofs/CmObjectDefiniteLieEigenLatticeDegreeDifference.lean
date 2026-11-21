@@ -1,6 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmDifferentFromIdeal
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmDefiniteLieIndexIdealEqNormIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmDefiniteLieIndexIdealEqNormIdeal
+import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM
 
@@ -28,10 +29,10 @@ theorem cmDiff_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   have hM : ∀ j : Fin p ⊕ Fin 0, ∃ M, (FA j.isLeft).IsDiffOf F (X.φ j) M := fun j =>
     (DiffCoord.existsUnique_isDiffOf K _ (FA j.isLeft) _ F (X.φ j) (X.lin j).1).1.exists
   choose M hM using hM
-  obtain ⟨gP, gQ, hg⟩ := GlobalTheory.T.exists_gramMatrices_cmUnitaryShimuraObject E H K ρ σ₁ p 0 X
+  obtain ⟨gP, gQ, hg⟩ := _root_.GlobalTheory.FlatCM.GramExists.exists_isGram E H K ρ σ₁ p 0 X
   have hD : IsDiffs (FA true) (FA false) F (fun a => M (.inl a)) (fun a => M (.inr a)) :=
     ⟨fun a => hM (.inl a), fun a => hM (.inr a)⟩
-  obtain ⟨𝔫, h𝔫₀, hid₀⟩ := GlobalTheory.T.cmDefinite_lieIndex_ideal_eq_norm_ideal E H hH K ρ σ₁ p X gP gQ hg
+  obtain ⟨𝔫, h𝔫₀, hid₀⟩ := _root_.GlobalTheory.FlatCM.IdealZero.idealSt_zero E H hH K ρ σ₁ p X gP gQ hg
   have hQd : gQ.det = 1 := Matrix.det_fin_zero
   have h𝔫 : 𝔫 * 𝔫.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {gP.det * gQ.det} := by
     rw [hQd, mul_one]; exact h𝔫₀
@@ -41,7 +42,7 @@ theorem cmDiff_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     rw [hQd, map_one, Ideal.span_singleton_one, Ideal.mul_top, idxZero, Ideal.mul_top]
     exact hid₀ (FA true) F (fun a => M (.inl a)) hD.1 τ hτ
   obtain ⟨hP0, hQ0, hdP, hdQ⟩ :=
-    GlobalTheory.T.degree_images_eigenLines_cmUnitaryShimuraObject GlobalTheory.cmCurve_closed GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1
+    _root_.GlobalTheory.FlatCM.ImageDeg.deg_images GlobalTheory.cmCurve_closed GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1
       GlobalTheory.homExtension_semiAbelian_dvr_unconditional E H K ρ σ₁ p 0 X χ hχ gP gQ hg (FA true) (FA false) F _ _ hD h hF τ hτ
   obtain ⟨hle, hrk1, -, hind, -⟩ :=
     GlobalTheory.CM.Indep.letters_independent GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1 E H K ρ σ₁ p 0 X FA F M hM
@@ -88,8 +89,8 @@ theorem cmDiff_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       (iSupIndep.comp hind (f := fun a : Fin 0 => ((Sum.inr a : Fin p ⊕ Fin 0), τb))
       fun a b e => by simpa using e)).trans ?_
     simp
-  obtain ⟨hneP, hdegP⟩ := GlobalTheory.T.lattice_degree_eq_sublattice_degree_add_log_index K _ h p _ _ hsubP (hfg τ) hrkP hrsP
-  obtain ⟨hneQ, hdegQ⟩ := GlobalTheory.T.lattice_degree_eq_sublattice_degree_add_log_index K _ h 0 _ _ hsubQ (hfg τb) hrkQ hrsQ
+  obtain ⟨hneP, hdegP⟩ := _root_.GlobalTheory.LatIndexDeg.deg_eq_deg_add_log_absNorm_idx K _ h p _ _ hsubP (hfg τ) hrkP hrsP
+  obtain ⟨hneQ, hdegQ⟩ := _root_.GlobalTheory.LatIndexDeg.deg_eq_deg_add_log_absNorm_idx K _ h 0 _ _ hsubQ (hfg τb) hrkQ hrsQ
   rw [hdegP, hdegQ, hdP, hdQ]
   have hdvd := (GlobalTheory.T.absNorm_map_ringOfIntegers_hom' E K τ ⊥).1
   have hfE : 0 < Module.finrank ℚ E := Module.finrank_pos

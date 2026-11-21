@@ -32,11 +32,6 @@ theorem prod_apow_finset (ϖ : kˣ) {α : Type*} (s : Finset α) (f : α → ℂ
   | empty => simp
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, ← apow_add]
 
-theorem cast_list_sum {α : Type*} (l : List α) (f : α → ℤ) : (((l.map f).sum : ℤ) : ℂ) = (l.map fun b => (f b : ℂ)).sum := by
-  induction l with
-  | nil => simp
-  | cons b l ih => simp [ih]
-
 end Generic
 end GlobalTheory.OriginBox
 

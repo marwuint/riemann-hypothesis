@@ -4,21 +4,53 @@ import Development.AutomorphicSpectrum.Statements.MetricStatements.ExistsFlagMod
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.RootOnFund
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.OmHeightslockG
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdaptedAtlasSncSectionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsClosedSectionBoundaryStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsClosedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdaptedAtlasSncSection
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordProportionality
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.SimilitudeFactorFormGroupBoundedOfTestSupport
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetMeasStatement
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.MetricsProjectionFormulaNef
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoordAtConstMulIff
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivComp
+import Formalism.LocalToGlobal.ProjectiveLattices.CompSplitPfD
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.NoCommonZeroSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.ThValDescIn
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexPointsNonemptyDenseVariety
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ToroidalBoundaryMetricData
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NotIsBettiZero
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FlagComponentFramedPointFrame
+import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStalkFactor
+import Development.AbelianVarietyTheory.Definitions.Divisors.AnalyticOnNhdFinChartIff
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnIffGeneratesAtInv
+import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
+import ReciprocityTheory.AnalyticForms.LeviForms.TailBoundA
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsClosedSectionBoundary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SelM
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPeriodAtRestrict
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CmHostRankBoundsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsArithVarOfSncModelStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerBoundHeightOnBoundaryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFiniteFrameCoverStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelFrameHeightComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelGlobalHeightIdentityStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.CutoffFunctionOnCompatibleAtlasStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockGBlockDiagPosDefStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsLocalHoloIsPeriodGramBlockGBaseGramStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelHeightLowerEstimateStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelResolutionIntegrabilityStatement
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsArith
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerBoundHeightOnBoundary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFiniteFrameCover
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsGram
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelGlobalHeightIdentity
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsIsFramePeriodsNoGlobal
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.CutoffFunctionOnCompatibleAtlas
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockGBlockDiagPosDef
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsPeriod
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsImmersion
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsHom
 
 noncomputable section
 
@@ -38,7 +70,7 @@ theorem card_cmType_pos : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
 
 theorem exists_coordsAt_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (M : FlagModel y (CMType H) (D.p + D.q) D.p) (𝔐 : HodgeCpt Y S M.x) (n : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (x : Rb.X), ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ M.x z (Rb.lift x x) := by
   intro E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 n Rb x
-  obtain ⟨z, -, hz⟩ := (GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐.tie _).1 (Rb.mem x x (Rb.mem_U x))
+  obtain ⟨z, -, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐.tie _).1 (Rb.mem x x (Rb.mem_U x))
   exact ⟨z, hz⟩
 
 theorem mem_bdry_conj_iff : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] (x₀ : (Σ k, J k) → Ω) (n : ℕ) (bd : Ideal (MRing J)) (Rb : AnLogRes (mCoordIdeal x₀) ⊤ n) (s : Rb.X → Rb.X → ℂ), (∀ p, p ∈ bdry s ↔ Rb.lift p p ∈ mcPts bd) → (∀ z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul c z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd) → (∀ z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd, GroundTheory.Heights₂.Heights.LowerBoundFree.conjVec z ∈ mcPts (mCoordIdeal x₀) ∩ mcPts bd) → ∀ p p', SameOrbit (Rb.lift p' p') (fun q => starRingEnd ℂ (Rb.lift p p q)) → (p' ∈ bdry s ↔ p ∈ bdry s) := by
@@ -123,27 +155,27 @@ theorem baseMetricExists_of_given : Given → PB.BaseMetricExists := by
     have : 0 < Fintype.card (CMType H) := card_cmType_pos E H
     exact Nat.mul_pos (Nat.mul_pos this hp) hq
   obtain ⟨bd, hbd, hint⟩ := hsnc
-  have harith := GlobalTheory.T.isArithVar_of_snc_model 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x n bd hn1 𝔐.tie hbd
-  obtain ⟨hcl, htor, hconj⟩ := GlobalTheory.T.boundary_points_closed 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x
+  have harith := _root_.PositivityTheory.Xgp.t_c_bm_exists_arith 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x n bd hn1 𝔐.tie hbd
+  obtain ⟨hcl, htor, hconj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BdSym.boundary_closed_torus_conj 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x
     (abLocus 𝔐.t.G) bd 𝔐.tie hint
   obtain ⟨Rb, L, s, nb, m, W, potL, sec, snc, norm_le, hbdry, hrconj⟩ :=
-    GlobalTheory.T.lowerBound_height_on_boundary (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x n bd hbd harith hcl htor hconj
-  obtain ⟨Bat, adapted⟩ := GlobalTheory.T.adapted_atlas_snc_section Rb.A L s m W potL sec snc norm_le
+    _root_.GlobalTheory.CompanionTheory.Relay.lowerBound_height_on_boundary (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x n bd hbd harith hcl htor hconj
+  obtain ⟨Bat, adapted⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Adapt.exists_adaptedAtlas Rb.A L s m W potL sec snc norm_le
   have hInt : ∀ (x : Rb.X) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X), CoordsAt 𝔐.ξ M.x z (Rb.lift x x) →
       (x ∉ bdry s ↔ 𝔐.Interior z) := fun x z hz => by
     rw [hbdry x, hint z _ hz, not_not]
-  have hZ : IsClosed (bdry s) := GlobalTheory.T.isClosed_section_boundary n Rb.X Rb.A L s sec
+  have hZ : IsClosed (bdry s) := _root_.GlobalTheory.CompanionTheory.Ar.PB.CWeight.isClosed_bdry_of_isSection n Rb.X Rb.A L s sec
   obtain ⟨q, O, F, hO, hOc, hF, hgood⟩ :=
-    GlobalTheory.T.exists_finite_frame_cover K ι Φ y (CMType H) (D.p + D.q) D.p n M Rb
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.BMx.Frames.exists_finite_good_frames K ι Φ y (CMType H) (D.p + D.q) D.p n M Rb
   have hgood' : ∀ l, ∀ x ∈ O l, M.GoodAt (F l) (mCoordIdeal (Rb.lift x x)) :=
     fun l x hx => hgood l x (subset_closure hx)
   have hr : ∀ x, x ∉ bdry s → Real.exp 1 ≤ rW L s x := fun x _ => by
     have := norm_le x
     unfold rW
     linarith
-  have hb := fun (i : Fin q) (τ : CMType H) => GlobalTheory.T.cutoff_function_on_compatible_atlas n D.p D.q Rb.X Rb.A Bat (bdry s) (closure (O i)) (O i) (rW L s)
+  have hb := fun (i : Fin q) (τ : CMType H) => _root_.GlobalTheory.CompanionTheory.Metric.blockG_bounds_of_local_gram_bounds n D.p D.q Rb.X Rb.A Bat (bdry s) (closure (O i)) (O i) (rW L s)
     (baseGram tie (F i) τ Rb) adapted.1 adapted.2.1 adapted.2.2.1 hZ isClosed_closure (hO i) subset_closure hr
-    (fun k w₀ hw₀ hc => GlobalTheory.T.flagModel_global_height_identity hG E H D Xo l c Y S K ι Φ y M 𝔐 tie n Rb L s Bat potL sec norm_le adapted hInt (F i)
+    (fun k w₀ hw₀ hc => _root_.GlobalTheory.CompanionTheory.Ar.PB.BMx.exists_gram_logBounds_noGlobal hG E H D Xo l c Y S K ι Φ y M 𝔐 tie n Rb L s Bat potL sec norm_le adapted hInt (F i)
       (hF i) τ k w₀ hw₀ (hgood i _ hc))
   choose C₀ hC₀ using fun i τ => (hb i τ).2
   obtain ⟨Cst, hCst⟩ : ∃ Cst : ℝ, ∀ i τ, C₀ i τ ≤ Cst := by
@@ -155,17 +187,17 @@ theorem baseMetricExists_of_given : Given → PB.BaseMetricExists := by
   have hcoords : ∀ x : Rb.X, ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ M.x z (Rb.lift x x) := exists_coordsAt_lift E H D Xo l c Y S K ι Φ y M 𝔐 n Rb
   have hgr := fun (i : Fin q) (τ : CMType H) (x : Rb.X) (hx : x ∈ O i \ bdry s) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X)
       (hz : CoordsAt 𝔐.ξ M.x z (Rb.lift x x)) =>
-    GlobalTheory.T.flagModel_frame_height_comparison E H D Xo l c Y S K ι Φ y M 𝔐 tie (F i) (hF i) τ (Rb.lift x x) z hz ((hInt x z hz).1 hx.2) (hgood' i x hx.1)
-  obtain ⟨hom, hdeg, hind, hconjH⟩ := GlobalTheory.T.flagModel_resolution_integrability E H D Xo l c Y S K ι Φ y M 𝔐 tie n Rb s hInt q O F hOc hF hgood'
+    _root_.PositivityTheory.Xgp.t_c_bm_exists_gram E H D Xo l c Y S K ι Φ y M 𝔐 tie (F i) (hF i) τ (Rb.lift x x) z hz ((hInt x z hz).1 hx.2) (hgood' i x hx.1)
+  obtain ⟨hom, hdeg, hind, hconjH⟩ := _root_.PositivityTheory.Xgp.t_c_bm_exists_hom E H D Xo l c Y S K ι Φ y M 𝔐 tie n Rb s hInt q O F hOc hF hgood'
   have hper : ∀ i, ∀ x ∈ O i \ bdry s, ∃ V Pi, x ∈ V ∧
       IsPeriodOn Rb.A D.p V Pi (fun τ x' => blockG (baseGram tie (F i) τ Rb x')) := by
     intro i x hx
-    have := fun τ => GlobalTheory.T.exists_local_holo_isPeriodGram_blockG_baseGram hG E H D Xo l c Y S K ι Φ y M 𝔐 tie hp hq n Rb s hInt hZ (F i) (hF i) τ x hx.2 (hgood' i x hx.1)
+    have := fun τ => _root_.PositivityTheory.Xgp.t_c_bm_exists_period hG E H D Xo l c Y S K ι Φ y M 𝔐 tie hp hq n Rb s hInt hZ (F i) (hF i) τ x hx.2 (hgood' i x hx.1)
     choose V P hV hxV hP hPG using this
     refine ⟨⋂ τ, V τ, P, Set.mem_iInter.2 hxV, isOpen_iInter_of_finite hV, fun τ a b => ?_, fun τ x' hx' => hPG τ x' (Set.mem_iInter.1 hx' τ)⟩
     intro k
     exact (hP τ a b k).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.iInter_subset _ τ)))
-  obtain ⟨lI, xI, hxI, VI, PiI, hxV, hPer, himm⟩ := GlobalTheory.T.flagModel_height_lower_estimate hG E H D Xo l c Y S K ι Φ y M 𝔐 tie hp hq d hcov Rb s hInt hZ q O F hO hOc hF hgood'
+  obtain ⟨lI, xI, hxI, VI, PiI, hxV, hPer, himm⟩ := _root_.PositivityTheory.Xgp.t_c_bm_exists_immersion hG E H D Xo l c Y S K ι Φ y M 𝔐 tie hp hq d hcov Rb s hInt hZ q O F hO hOc hF hgood'
   refine ⟨{ Rb := Rb, L := L, s := s, nb := nb, m := m, W := W, potL := potL, sec := sec, snc := snc, norm_le := norm_le,
             Bat := Bat, adapted := adapted, q := q, O := O, O_open := hO, O_cover := hOc, F := F, isFrame := hF, good := hgood'
             G := fun i τ x => blockG (baseGram tie (F i) τ Rb x)
@@ -178,7 +210,7 @@ theorem baseMetricExists_of_given : Given → PB.BaseMetricExists := by
             hom := hom, hom_deg := hdeg, induced := hind }, ?_, ?_⟩
   · intro i τ x hx
     obtain ⟨z, hz⟩ := hcoords x
-    exact GlobalTheory.T.blockG_blockDiag_posDef D.p D.q _ (hgr i τ x hx z hz).2.1
+    exact _root_.GlobalTheory.CompanionTheory.Ar.PB.BMx.blockG_isBlockDiag_posDef D.p D.q _ (hgr i τ x hx z hz).2.1
   · refine ⟨hInt, fun i τ x hx z hz => ?_, fun i τ x hx z hz => ?_⟩
     · exact gramAt_wFrame tie (F i) τ (hgr i τ x hx z hz).1
     · exact dualGramAt_omFrame tie (F i) τ (hgr i τ x hx z hz).1 (hgr i τ x hx z hz).2.1 (hgr i τ x hx z hz).2.2

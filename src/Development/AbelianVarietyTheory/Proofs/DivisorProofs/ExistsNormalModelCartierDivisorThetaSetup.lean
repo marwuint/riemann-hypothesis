@@ -7,10 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocTuplesThet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffCartierOfOrders
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvdOfForallCompleteDvrDominating
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCdvrDominating
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleProjectiveThetaModelOverModelStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubsingletonCharacterLatticeOfGoodReductionTraitStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitModuliOfStalkCompleteDVRStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitOrdersEffectiveCartierExtendFromGenericStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleProjectiveThetaModelOverModel
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubsingletonCharacterLatticeOfGoodReductionTrait
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitModuliOfStalkCompleteDVR
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitOrdersEffectiveCartierExtendFromGeneric
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.ZH
@@ -63,7 +63,7 @@ theorem exists_trait [CharZero Ω] (y₀ : Sp Ω ⟶ F.X) (x : M.Z) (V : Type) [
     ∃ (T : Trait F) (f : V →+* T.V) (ξ : Sp T.V ⟶ M.Z) (γ : Ω →+* FractionRing T.V), Function.Injective f ∧ IsLocalHom f ∧
       ξ (closedPoint T.V) = x ∧ jK T.V ≫ ξ = spMap γ ≫ M.pt ∧ T.y = spMap γ ≫ y₀ ∧
       ∀ a, γ (M.stalkHom x a) = algebraMap T.V (FractionRing T.V) (f (θ a)) := by
-  obtain ⟨T, f, γ, hf, hl, h₁, h₂, h₃⟩ := GlobalTheory.T.exists_trait_moduli_of_stalk_completeDVR g n o ζ F o' Ω M y₀ x V hV θ hθ
+  obtain ⟨T, f, γ, hf, hl, h₁, h₂, h₃⟩ := _root_.GlobalTheory.Poinc.exists_trait_of_stalk_dvr g n o ζ F o' Ω M y₀ x V hV θ hθ
   exact ⟨T, f, _, γ, hf, hl, centre (f.comp θ), h₂, h₃, h₁⟩
 
 theorem exists_trait_centre [ArithBase o' Ω] (y₀ : Sp Ω ⟶ F.X) (x : M.Z) :
@@ -138,7 +138,7 @@ theorem glue : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ
     have hr' : Set.range ξ ⊆ Set.range V.ι := by rwa [Scheme.Opens.range_ι]
     have e : jK T.V ≫ IsOpenImmersion.lift V.ι ξ hr' = spMap γ ≫ IsOpenImmersion.lift V.ι M.pt hpt := by
       rw [← cancel_mono V.ι, Category.assoc, Category.assoc, IsOpenImmersion.lift_fac, IsOpenImmersion.lift_fac, h₁]
-    haveI := GlobalTheory.T.subsingleton_characterLattice_of_goodReduction_trait g n o ζ F T (IsOpenImmersion.lift V.ι ξ hr' ≫ v) (by
+    haveI := _root_.GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends g n o ζ F T (IsOpenImmersion.lift V.ι ξ hr' ≫ v) (by
       rw [← Category.assoc, e, Category.assoc, hv _ (IsOpenImmersion.lift_fac _ _ _), h₂])
     rw [InvFun.evalZ, InvFun.eval_of_subsingleton, mul_zero] at ha
     exact_mod_cast ha
@@ -209,7 +209,7 @@ theorem GlobalTheory.Poinc.exists_model_divisor_of_orders : ∀ (g n : ℕ), 1 �
   intro g n hg hn hodd F Z z i hθ φ hφ W8 hW hTI X₁
   obtain ⟨ι, K, _, Jk, _, t, hι, ht, hloc⟩ := GlobalTheory.Poinc.exists_locTuples_theta_of_adm g n hg hn hodd F φ hφ W8 hW
     X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.u X₁.big X₁.sharp X₁.gen
-  obtain ⟨Y, πY, U₀, EE, FinalForm, hhom, hprop, hAdm, hEE, hdiv⟩ := GlobalTheory.T.exists_admissible_projective_theta_model_over_model X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.big X₁.M X₁.projM K Jk t ht
+  obtain ⟨Y, πY, U₀, EE, FinalForm, hhom, hprop, hAdm, hEE, hdiv⟩ := _root_.GlobalTheory.Poinc.exists_admissible_projective_theta_model X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.big X₁.M X₁.projM K Jk t ht
   haveI := X₁.imm
   let V : Y.Z.Opens := (πY ≫ X₁.π) ⁻¹ᵁ i.opensRange
   have hV : Set.range (V.ι ≫ πY ≫ X₁.π) ⊆ Set.range i := by
@@ -249,6 +249,6 @@ theorem GlobalTheory.Poinc.exists_model_divisor_of_orders : ∀ (g n : ℕ), 1 �
     show (πY ≫ X₁.π) ((jK T.V ≫ ξ) w) ∈ Set.range i
     rw [← Scheme.Hom.comp_apply, Category.assoc, hξ, Scheme.Hom.comp_apply]
     exact ⟨_, rfl⟩
-  refine GlobalTheory.T.traitOrders_effectiveCartier_extend_from_generic g n hn F φ hφ W8 hW X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.u X₁.sharp Y U₀ EE FinalForm hAdm.1 V v hcomp D ι hsupp hord T ξ
+  refine _root_.GlobalTheory.Poinc.Extend.orders_extend g n hn F φ hφ W8 hW X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.u X₁.sharp Y U₀ EE FinalForm hAdm.1 V v hcomp D ι hsupp hord T ξ
     ⟨IsOpenImmersion.lift V.ι _ hr, IsOpenImmersion.lift_fac _ _ _, ?_⟩
   rw [Category.comp_id, ← cancel_mono i, Category.assoc, hv, ← Category.assoc, IsOpenImmersion.lift_fac, Category.assoc, hξ]

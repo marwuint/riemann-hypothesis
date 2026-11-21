@@ -42,11 +42,6 @@ private lemma rpow_le_exp_three_halves_of_le_log (q : ℕ) (hq : 3 ≤ q) (x t :
   have h3 : Real.log (3 * q) * (3 / (2 * Real.log (3 * q))) = 3 / 2 := by field_simp; try ring
   linarith
 
-lemma rpow_le_exp_near_one (q : ℕ) (hq : 3 ≤ q) (x : ℝ) (hx : 1 ≤ x) (hxq : x ≤ q) :
-    x ^ (3 / (2 * Real.log (3 * q))) ≤ Real.exp (3 / 2) := by
-  have hqR : (0 : ℝ) ≤ q := by positivity
-  exact rpow_le_exp_three_halves_of_le_log q hq x _ hx (by linarith) le_rfl
-
 lemma rpow_neg_le_exp_inv_near_one (q : ℕ) (hq : 3 ≤ q) (x : ℝ) (hx : 1 ≤ x) (hxq : x ≤ q) (r : ℝ)
     (hr : 1 - 3 / (2 * Real.log (3 * q)) ≤ r) :
     x ^ (-r) ≤ Real.exp (3 / 2) * x⁻¹ := by

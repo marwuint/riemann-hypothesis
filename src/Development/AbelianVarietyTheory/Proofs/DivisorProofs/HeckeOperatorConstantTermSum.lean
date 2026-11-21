@@ -223,12 +223,6 @@ theorem finsum_Tj_levi {r s N j : ℕ} (h : r + s = N) (hj : j ≤ N) (F : GL (F
 
 end Local
 
-section Global
-
-variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
-
-end Global
-
 end GlobalTheory.ResW.HeckeCT
 
 end

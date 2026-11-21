@@ -1,18 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetMapCoeffSpaceOfJetStepPartitionTriplesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetOperatorBoundAtEmbeddingOfComplexOpNormSqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivAtZeroReindexEqTaylorCoefficientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetFinsetLinearCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgebraicNumbersExtensionConjVacuumNormSqStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTorsionTranslateCombinationEntireGaussianGroStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetMapCoeffSpaceOfJetStepPartitionTriples
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetOperatorBoundAtEmbeddingOfComplexOpNormSq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivAtZeroReindexEqTaylorCoefficient
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetFinsetLinearCombination
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgebraicNumbersExtensionConjVacuumNormSq
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTorsionTranslateCombinationEntireGaussianGro
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PresentationClosedUnderBoundedCombinationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDualStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetIndicatorThetaTorsionTranslatesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSemilocalHomLatticeClassesModStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatSumThIndRegroupStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVacuumMovedThetaVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientGramPosSemidefAndNormAtPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetIndicatorThetaTorsionTranslates
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSemilocalHomLatticeClassesMod
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatSumThIndRegroup
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVacuumMovedThetaVacuum
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefficientGramPosSemidefAndNormAtPlace
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms
 open scoped ComplexOrder
@@ -23,8 +23,8 @@ namespace GlobalTheory.ColNorms
 
 theorem sqAt_nonneg {X : Fields} {n : ℕ} (lam : X.Tau → DomWeight n) (σ : X.K →+* ℂ) (x : Formalism.L2.DIV.VV X.K lam) :
     0 ≤ sqAt σ lam x := by
-  rw [← (GlobalTheory.T.coefficientGram_posSemidef_and_normAtPlace X.E X.K X.Tau X.emb n lam σ).2 x]
-  have h := (GlobalTheory.T.coefficientGram_posSemidef_and_normAtPlace X.E X.K X.Tau X.emb n lam (InfinitePlace.mk σ).embedding).1.dotProduct_mulVec_nonneg
+  rw [← (_root_.GlobalTheory.ColNorms.gram_posSemidef_and_sqAt X.E X.K X.Tau X.emb n lam σ).2 x]
+  have h := (_root_.GlobalTheory.ColNorms.gram_posSemidef_and_sqAt X.E X.K X.Tau X.emb n lam (InfinitePlace.mk σ).embedding).1.dotProduct_mulVec_nonneg
     fun i => (InfinitePlace.mk σ).embedding ((bVV X.K lam).repr x i)
   refine le_of_le_of_eq (Complex.le_def.1 h).1 ?_
   congr 1
@@ -58,12 +58,12 @@ theorem jetOp_sum {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ} (lam
 theorem jetC_const_mul {ι : Type} [Fintype ι] {a b : ℕ} (cD : ι → ℂ) (κ : ℂ) (F : VCx ι a b → ℂ)
     (h : Differentiable ℂ fun z => κ * F z) (m : DVar ι a b →₀ ℕ) : jetC cD (fun z => κ * F z) m = κ * jetC cD F m := by
   by_cases hκ : κ = 0
-  · have := GlobalTheory.T.jet_finset_linear_combination ι a b cD Unit ∅ (fun _ => 0) (fun _ => F) (by simp) m
+  · have := _root_.GlobalTheory.ColNorms.jetC_sum_mul ι a b cD Unit ∅ (fun _ => 0) (fun _ => F) (by simp) m
     simpa [hκ] using this
   · have hF : Differentiable ℂ F := by
       have := h.const_mul κ⁻¹
       simpa [← mul_assoc, inv_mul_cancel₀ hκ] using this
-    have := GlobalTheory.T.jet_finset_linear_combination ι a b cD Unit {()} (fun _ => κ) (fun _ => F) (fun _ _ => hF) m
+    have := _root_.GlobalTheory.ColNorms.jetC_sum_mul ι a b cD Unit {()} (fun _ => κ) (fun _ => F) (fun _ _ => hF) m
     simpa using this
 
 theorem cj_coe (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (x : M) : StandardLatticesGL3.cj M ρ (x : ℂ) = ρ x := by
@@ -88,19 +88,19 @@ theorem block : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.BlockBou
   set σ : X.K →+* ℂ := (ρ : M →+* ℂ).comp (s.σ₀.codRestrict M hK) with hσ
   set κ := (A.chiF a b L L')⁻¹ with hκ
   have hβ : 0 ≤ β := (norm_nonneg _).trans (hΞ.2.2 σ 0)
-  obtain ⟨sd0, sdL⟩ := GlobalTheory.T.hermitianLatticeTransport_preserves_selfDual D X s hs a
-  obtain ⟨sd0', sdL'⟩ := GlobalTheory.T.hermitianLatticeTransport_preserves_selfDual D X s hs b
-  have hmv := GlobalTheory.T.thetaVectorUpToUnits_thMoved_of_thZero D cc dl B t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hE0
-  obtain ⟨ρ', hρ', hlam, harea, hnorm⟩ := GlobalTheory.T.exists_algebraicNumbers_extension_conj_vacuum_normSq D cc dl t0 hcrv ht0 M ρ hD
+  obtain ⟨sd0, sdL⟩ := _root_.GlobalTheory.SeamSelfDual.seam_selfDual D X s hs a
+  obtain ⟨sd0', sdL'⟩ := _root_.GlobalTheory.SeamSelfDual.seam_selfDual D X s hs b
+  have hmv := _root_.GlobalTheory.MovedVacuum.isVacuum_movedThetaVacuum D cc dl B t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hE0
+  obtain ⟨ρ', hρ', hlam, harea, hnorm⟩ := _root_.GlobalTheory.ConjVacuumNorm.exists_extension_normSq_eq D cc dl t0 hcrv ht0 M ρ hD
   have hnorm' := hnorm a b _ _ _ _ (sdL L hL) (sdL' L' hL') sd0 sd0' hev _ _ hmv hE0 hco
   have hdiff : ∀ (c₁ : ℕ) (x : HomE X.E a b), 0 < c₁ → Differentiable ℂ fun z => κ * A.thInd S L L' c₁ x z := by
     intro c₁ x h₁
-    have h2 := (GlobalTheory.T.conj_torsionTranslateCombination_entire_gaussianGrowth D cc dl t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hev _ _ _ hmv
-      (GlobalTheory.T.cosetIndicatorTheta_torsionTranslates D X s cc dl B χ cD hX hs hcrv a b S L L' c₁ x hL hL' h₁) ρ').1
+    have h2 := (_root_.GlobalTheory.ConjComb.conj_pres D cc dl t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hev _ _ _ hmv
+      (_root_.GlobalTheory.ColNorms.IndPres.pres_thInd D X s cc dl B χ cD hX hs hcrv a b S L L' c₁ x hL hL' h₁) ρ').1
     have h3 := diff_back s _ h2
     rwa [toHost_back] at h3
 
-  haveI := (GlobalTheory.T.finite_semilocal_hom_lattice_classes_mod X.E a b S L L' cA (c * c') hL.1 hL'.1 hcA (Nat.mul_pos hc hc')).1
+  haveI := (_root_.GlobalTheory.SemilocalClasses.finite_card_classes X.E a b S L L' cA (c * c') hL.1 hL'.1 hcA (Nat.mul_pos hc hc')).1
   let Qt := ↥(divLat cA (homAt S L L')) ⧸ (mulLat (c * c') (homAt S L L')).comap (divLat cA (homAt S L L')).subtype
   letI : Fintype Qt := Fintype.ofFinite Qt
   let rep : Qt → ↥(divLat cA (homAt S L L')) := Function.surjInv (Submodule.Quotient.mk_surjective _)
@@ -126,7 +126,7 @@ theorem block : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.BlockBou
   let F : VCx X.Tau a b → ℂ := fun z => ∑ q : Qt, s.σ₀ (Ξ (rep q)) * (κ * A.thInd S L L' (c * c') (rep q) z)
   have hJF : ∀ e, (∀ τ, ((degAt e τ : ℕ) : ℤ) = ∑ i, (nu τ).w i) → s.σ₀ (J e) = jetC A.cD F e := by
     intro e he
-    rw [GlobalTheory.T.jet_finset_linear_combination X.Tau a b A.cD Qt Finset.univ _ _ (fun q _ => hdiff _ _ (Nat.mul_pos hc hc')) e, map_sum]
+    rw [_root_.GlobalTheory.ColNorms.jetC_sum_mul X.Tau a b A.cD Qt Finset.univ _ _ (fun q _ => hdiff _ _ (Nat.mul_pos hc hc')) e, map_sum]
     refine Finset.sum_congr rfl fun q _ => ?_
     rw [map_mul, jetC_const_mul _ _ _ (hdiff _ _ (Nat.mul_pos hc hc'))]
     congr 1
@@ -137,7 +137,7 @@ theorem block : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.BlockBou
     unfold Amb.jetK desc
     rw [dif_pos h1]
     exact h1.choose_spec
-  obtain ⟨R, hRc, hR⟩ := GlobalTheory.T.exists_finset_latSum_thInd_eq_sum X A a b S L L' cA c c' (fun x => s.σ₀ (Ξ x)) hInd hL hL' hcA hc hc'
+  obtain ⟨R, hRc, hR⟩ := _root_.GlobalTheory.latSum_thInd_regroup X A a b S L L' cA c c' (fun x => s.σ₀ (Ξ x)) hInd hL hL' hcA hc hc'
     (fun x hx => hΞ.1 x fun h => hx (by rw [h, map_zero])) (fun x y hy => by rw [hΞ.2.1 x y hy])
   have hF : toHost s F = fun w => ∑ x ∈ R, s.σ₀ (Ξ x) * toHost s (fun z => κ * A.thInd S L L' c x z) w := by
     funext w
@@ -148,13 +148,13 @@ theorem block : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.BlockBou
     exact congrArg _ h1
   have hKQ : ∀ k, s.σ₀ k ∈ TaylorLogMetric.Qbar := fun k => (hρ' _ (hK k)).1
   have hpres := GlobalTheory.T.presentation_closed_under_bounded_combination D (TaylorLogMetric.tor0 D cc dl) a b (s.lat L) (s.lat L') _ _ R (fun x => s.σ₀ (Ξ x)) _ _ β hβ
-    (fun x _ => GlobalTheory.T.cosetIndicatorTheta_torsionTranslates D X s cc dl B χ cD hX hs hcrv a b S L L' c x hL hL' hc)
+    (fun x _ => _root_.GlobalTheory.ColNorms.IndPres.pres_thInd D X s cc dl B χ cD hX hs hcrv a b S L L' c x hL hL' hc)
     (fun x _ => ⟨hKQ _, fun ρ₁ => by
       have h1 := hΞ.2.2 ((ρ₁ : TaylorLogMetric.Qbar →+* ℂ).comp (s.σ₀.codRestrict TaylorLogMetric.Qbar hKQ)) x
       have h2 := cj_coe TaylorLogMetric.Qbar ρ₁ ⟨s.σ₀ (Ξ x), hKQ _⟩
       exact h2 ▸ h1⟩)
   rw [← hF] at hpres
-  obtain ⟨hFd, hFQ, F', hF'd, hF't, hF'b⟩ := GlobalTheory.T.conj_torsionTranslateCombination_entire_gaussianGrowth D cc dl t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hev _ _ _ hmv hpres ρ'
+  obtain ⟨hFd, hFQ, F', hF'd, hF't, hF'b⟩ := _root_.GlobalTheory.ConjComb.conj_pres D cc dl t0 hcrv ht0 a b _ _ (sdL L hL) (sdL' L' hL') hev _ _ _ hmv hpres ρ'
   rw [hnorm', hlam] at hF'b
   set ar := TaylorLogMetric.area (TaylorLogMetric.lamConj M ρ (TaylorLogMetric.lamOf D cc dl)) with har
   let cD' : X.Tau → ℂ := fun τ => ρ (TaylorLogMetric.liftM M (cD (s.iT τ)))
@@ -171,7 +171,7 @@ theorem block : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.BlockBou
       exact (cj_coe M ρ ⟨_, hK _⟩).symm
     rw [h1, hJF e he, ← toHost_back s F]
     unfold jetC
-    rw [GlobalTheory.T.derivAtZero_reindex_eq_taylor_coefficient D X.Tau s.iT a b _ hFd, GlobalTheory.T.derivAtZero_reindex_eq_taylor_coefficient D X.Tau s.iT a b _ hF'd, hF't]
+    rw [_root_.GlobalTheory.DerivReindex.derivAt0_reindex D X.Tau s.iT a b _ hFd, _root_.GlobalTheory.DerivReindex.derivAt0_reindex D X.Tau s.iT a b _ hF'd, hF't]
     have hq : ∀ τ, cD (s.iT τ) ∈ TaylorLogMetric.Qbar := fun τ => (hρ' _ (hcM _)).1
     have h2 := cj_coe TaylorLogMetric.Qbar ρ' ((e.prod fun k n => (⟨cD (s.iT k.1), hq _⟩ : TaylorLogMetric.Qbar) ^ n) *
       ((e.prod fun _ n => (n.factorial : TaylorLogMetric.Qbar)) * ⟨_, hFQ (Finsupp.equivMapDomain (s.iT.prodCongr (Equiv.refl (Fin b × Fin a))) e)⟩))
@@ -226,8 +226,8 @@ theorem block : GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.BlockBou
         _ = _ := by
             rw [mul_pow _ (Real.exp _), mul_pow _ (Real.exp _), mul_pow _ (Real.sqrt _), e2, e2, Real.sq_sqrt hsup]
             ring)
-  have hbc := GlobalTheory.T.jetOperatorBound_at_embedding_of_complexOpNormSq X.K σ X.Tau a b lam nu lam' hst (GlobalTheory.T.jetMap_coeffSpace_of_jetStepPartitionTriples X.K X.Tau a b hab lam nu lam' hst)
-    (GlobalTheory.T.jetMap_coeffSpace_of_jetStepPartitionTriples ℂ X.Tau a b hab lam nu lam' hst) J _ hJ' _ hblock
+  have hbc := _root_.GlobalTheory.coefOpLe_jetOp_of_opNormSqLe X.K σ X.Tau a b lam nu lam' hst (_root_.GlobalTheory.ColNorms.jetInVV_of_stepWeights X.K X.Tau a b hab lam nu lam' hst)
+    (_root_.GlobalTheory.ColNorms.jetInVV_of_stepWeights ℂ X.Tau a b hab lam nu lam' hst) J _ hJ' _ hblock
   intro x
   rw [hker, LinearMap.smul_apply, sqAt_smul]
   refine le_trans ?_ (hbc x)

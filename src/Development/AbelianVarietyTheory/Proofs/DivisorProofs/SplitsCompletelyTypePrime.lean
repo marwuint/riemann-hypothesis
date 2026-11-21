@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunModel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryUnipotentModIdealModConjIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryUnipotentModIdealModConjIdeal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentModIdealOfTrivialModHalfStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelChangeUnitriangularUnipotentModPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeOverTypePrimeFixedPlaceOrConjStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelChangeUnitriangularUnipotentModPlace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeOverTypePrimeFixedPlaceOrConj
 
 set_option autoImplicit false
 
@@ -68,11 +68,11 @@ theorem levelCondition_restrict_of_halfUnipotent (p : PtAt ex Csz) (r : TwoRuns 
     intro v w hw
     obtain ⟨n, hn⟩ := hd2 c u huc'
     rw [Units.val_mul]
-    exact GlobalTheory.T.unipotent_mod_ideal_of_trivial_mod_half _ _ _ (half_le_plGw p r h k v) (φ c) (r.lev i u) n (GlobalTheory.T.levelChange_unitriangular_unipotent_modPlace p r h i u k v (hk u u.2 v)) _ _ (fun w hw => (hγL w).1 hw)
+    exact GlobalTheory.T.unipotent_mod_ideal_of_trivial_mod_half _ _ _ (half_le_plGw p r h k v) (φ c) (r.lev i u) n (_root_.GlobalTheory.ShareOn.UnipLevel.levUnip_mod_place p r h i u k v (hk u u.2 v)) _ _ (fun w hw => (hγL w).1 hw)
       (hd1 c γ hγ) hn w hw
-  obtain ⟨v, rfl | rfl⟩ := GlobalTheory.T.prime_over_typePrime_fixedPlace_or_conj D k P hP hgP
+  obtain ⟨v, rfl | rfl⟩ := _root_.GlobalTheory.TypePrimesOnto.prime_eq_plGw_or_conj D k P hP hgP
   · exact half v
-  · refine GlobalTheory.T.unitary_unipotent_mod_ideal_mod_conjIdeal (M.comp c) (γ * M.tr u c) ?_ ?_ _ (half v)
+  · refine _root_.GlobalTheory.UnipConjIdeal.pow_sub_one_mem_conj_ideal_smul (M.comp c) (γ * M.tr u c) ?_ ?_ _ (half v)
     · intro a b
       rw [Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ((M.comp c).Γ_stab γ hγ).1, M.comp_Gm c, M.tr_herm]
     · intro a

@@ -211,7 +211,4 @@ theorem qnTPres_of (hT : TInvariant) : TPreservesFF := by
       exact hW x hx h hh h' hh'
     rw [← e, tl_local hD z z' Y p q _ _ hloc g hg, tl_clm hD z z' Y p q L J hs g hg, hLx]
 
-theorem qnTPres_of' (hT : TInvariant) (_ : EabPres) : TPreservesFF := by
-  exact qnTPres_of hT
-
 end Formalism.FourierDecayAlt.Q.TPresMain

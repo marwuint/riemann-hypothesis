@@ -1,6 +1,7 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
-import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.LinearWeights
+import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.AnalyticLimit
@@ -18,11 +19,5 @@ def ListMono.Statement : Prop :=
       MIntegrable A (fun i => potForm Om.pot (u i)) g →
       MIntegrable A (fun i => potForm (th i) (u i)) g ∧
         mInt A (fun i => potForm (th i) (u i)) g ≤ mInt A (fun i => potForm Om.pot (u i)) g
-
-section Inhabitants
-
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData)
-
-end Inhabitants
 
 end GroundTheory.Heights₂.Heights.AnalyticLimit

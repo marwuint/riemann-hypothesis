@@ -32,12 +32,6 @@ def wv (i : Fin (k - 1)) : Fin (2 * n + k + 1) → ℂ := bvec (wp k n i)
 
 theorem wp_val (i : Fin (k - 1)) : (wp k n i).val = n + (i.val + 1) := rfl
 
-theorem sg_wp (i : Fin (k - 1)) : sg k n (wp k n i).val = (wp k n i).val := by
-  have hi := i.isLt
-  rw [wp_val]
-  unfold sg
-  rw [if_neg (by omega)]
-
 private theorem Hpk_apply_wp_eq_ite (i : Fin (k - 1)) (j : Fin (2 * n + k + 1)) :
     Hpk k n (wp k n i) j = if wp k n i = j then 1 else 0 := by
   have hi := i.isLt

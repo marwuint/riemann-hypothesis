@@ -100,57 +100,6 @@ theorem IsRayField.of_algEquiv {𝔮 : Ideal (𝓞 K)} (h : IsRayField K L 𝔮)
     congr 1
     exact MonoidHom.ext fun σ => (congrArg χ (e.autCongr.symm_apply_apply σ)).symm
 
-theorem isRayField_rat_top : IsRayField ℚ ℚ ⊤ := by
-  refine ⟨inferInstance, fun _ _ σ _ => Subsingleton.elim _ _, Subsingleton.elim _ _, fun I hI _ => ?_⟩
-  refine iff_of_true (fun χ => ?_) ?_
-  · rw [Subsingleton.elim χ 1]
-    simp [heckeIdeal, heckeVal_one]
-  · have : IsPrincipalIdealRing (𝓞 ℚ) :=
-      IsPrincipalIdealRing.of_surjective (Rat.ringOfIntegersEquiv.symm : ℤ ≃+* 𝓞 ℚ).toRingHom
-        Rat.ringOfIntegersEquiv.symm.surjective
-    obtain ⟨a, rfl⟩ := (IsPrincipalIdealRing.principal I).principal
-    have ha : a ≠ 0 := fun h => hI (by simp [h])
-    have ha' : (a : ℚ) ≠ 0 := fun h => ha (RingOfIntegers.ext h)
-    have hc : ∀ J : Ideal (𝓞 ℚ), IsCoprime J ⊤ := fun J => by
-      rw [← Ideal.one_eq_top]; exact isCoprime_one_right
-    rcases lt_or_gt_of_ne ha' with h | h
-    · refine ⟨-a, 1, ⟨neg_ne_zero.2 ha, one_ne_zero, hc _, hc _, trivial, fun φ => ?_⟩, ?_⟩
-      · simpa using h
-      · simp [Ideal.span_singleton_neg]
-    · refine ⟨a, 1, ⟨ha, one_ne_zero, hc _, hc _, trivial, fun φ => ?_⟩, ?_⟩
-      · simpa using h
-      · simp
-
-theorem not_isRayField_rat_three : ¬ IsRayField ℚ ℚ (Ideal.span {3}) := by
-  intro h
-  let e := Rat.ringOfIntegersEquiv
-  have hco : IsCoprime (2 : 𝓞 ℚ) 3 := ⟨-1, 1, by norm_num⟩
-  obtain ⟨α, β, ⟨-, -, -, hβ, hm, hpos⟩, hI⟩ := (h.2.2.2 (Ideal.span {2}) (by simp)
-    ((Ideal.isCoprime_span_singleton_iff _ _).2 hco)).1 fun χ => by
-      rw [Subsingleton.elim χ 1]
-      simp [heckeIdeal, heckeVal_one]
-  rw [Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_eq_span_singleton] at hI
-  have h1 := Int.associated_iff.1 (hI.map e)
-  have h2 := ((Ideal.isCoprime_span_singleton_iff _ _).1 hβ).map e.toRingHom
-  have h3 := map_dvd e (Ideal.mem_span_singleton.1 hm)
-  have h4 : (0 : ℚ) < ((e α * e β : ℤ) : ℚ) := by
-    have := hpos (algebraMap ℚ ℝ)
-    rw [← map_mul, eq_ratCast, Rat.cast_pos] at this
-    rwa [Int.cast_mul, Rat.ringOfIntegersEquiv_apply_coe, Rat.ringOfIntegersEquiv_apply_coe]
-  have h5 : 0 < e α * e β := by exact_mod_cast h4
-  rw [map_mul, map_ofNat] at h1
-  rw [map_sub, map_ofNat] at h3
-  rw [map_ofNat] at h2
-  have h6 : ¬ (3 : ℤ) ∣ e β := fun hd => by
-    have := h2.isUnit_of_dvd' hd dvd_rfl
-    rw [Int.isUnit_iff] at this
-    omega
-  rcases h1 with h1 | h1
-  · omega
-  · have : e α = -(2 * e β) := by omega
-    rw [this] at h5
-    nlinarith [sq_nonneg (e β)]
-
 end Ray
 
 section Sub
@@ -234,8 +183,6 @@ theorem exists_isRayFieldIn (h : RayField) {𝔮 : Ideal (𝓞 E)} (h𝔮 : 𝔮
   obtain ⟨L, _, _, _, hL⟩ := rayField_iff.1 h E 𝔮 h𝔮
   exact hL.exists_isRayFieldIn φ
 
-example : ∃ M, IsRayFieldIn (algebraMap ℚ ℂ) ⊤ M := isRayField_rat_top.exists_isRayFieldIn _
-
 variable (E) in
 
 abbrev natIdeal (n : ℕ) : Ideal (𝓞 E) := Ideal.span {(n : 𝓞 E)}
@@ -276,19 +223,6 @@ theorem kummerField_mono {h h' : ℕ} (h0 : h' ≠ 0) (hd : h ∣ h') : kummerFi
   rintro z ⟨y, hy, hz⟩
   exact mem_kummerField φ (pow_mem_powIdealElts hy k) (by rw [pow_mul, hz, map_pow])
 
-theorem kummerField_one : kummerField φ 1 = imField φ := by
-  refine le_antisymm ((kummerField_le_iff φ).2 ⟨fun x => ⟨x, rfl⟩, ?_, fun y _ z hz => ⟨y, ?_⟩⟩)
-    (imField_le_kummerField φ 1)
-  · have h : rootOne 1 = 1 := (pow_one _).symm.trans (Complex.isPrimitiveRoot_exp 1 one_ne_zero).pow_eq_one
-    exact h ▸ one_mem _
-  · rw [pow_one] at hz
-    exact hz.symm
-
-example : Complex.I ∈ kummerField φ 2 :=
-  mem_kummerField φ (y := -1) ⟨by simp, 1, by
-    rw [one_pow, ← FractionalIdeal.spanSingleton_one, FractionalIdeal.spanSingleton_eq_spanSingleton]
-    exact ⟨-1, by simp⟩⟩ (by simp)
-
 def valueSet (χ : HChar E) (s : ℝ) : Set ℂ := {z | ∃ v, χ.UnrAt v ∧ z = χ.valTw s v}
 
 def valueField (χ : HChar E) (s : ℝ) : IntermediateField ℚ ℂ := IntermediateField.adjoin ℚ (valueSet χ s)
@@ -318,20 +252,6 @@ theorem torsionCoords_mono (W : WeierstrassCurve ℂ) {n n' : ℕ} (h : n ∣ n'
   obtain ⟨k, rfl⟩ := h
   exact ⟨x, y, hxy, by rw [mul_comm, mul_smul, h0, smul_zero], hz⟩
 
-theorem torsionCoords_one (W : WeierstrassCurve ℂ) : torsionCoords W 1 = ∅ := by
-  refine Set.eq_empty_of_forall_notMem ?_
-  rintro z ⟨x, y, hxy, h0, -⟩
-  rw [one_smul] at h0
-  exact WeierstrassCurve.Affine.Point.some_ne_zero hxy h0
-
-example : Complex.I ∈ torsionCoords ⟨0, 0, 0, 1, 0⟩ 12 := by
-  refine torsionCoords_mono _ (show 2 ∣ 12 by norm_num) ⟨Complex.I, 0, ?_, ?_, Or.inl rfl⟩
-  · rw [WeierstrassCurve.Affine.nonsingular_iff, WeierstrassCurve.Affine.equation_iff]
-    simp [pow_succ]
-    norm_num
-  · rw [two_smul]
-    exact WeierstrassCurve.Affine.Point.add_self_of_Y_eq (by simp [WeierstrassCurve.Affine.negY])
-
 def hilbertField (d : ℕ) (F : IntermediateField ℚ ℂ) : IntermediateField ℚ ℂ := ℚ⟮sqrtNegNat d⟯ ⊔ F
 
 variable (d : ℕ) {F : IntermediateField ℚ ℂ} (A : WeierstrassCurve F)
@@ -352,18 +272,6 @@ theorem discField_le_iff {M : IntermediateField ℚ ℂ} : discField d A ≤ M �
     Set.singleton_subset_iff, SetLike.mem_coe]
   rfl
 
-theorem discField_eq_of_mem {u : ℂ} (hu : u ∈ torsionField d A) (h0 : u ≠ 0) :
-    torsionField d A ⊔ IntermediateField.adjoin ℚ {z : ℂ | z ^ 12 = u ^ 12 * (A.Δ : ℂ)} = discField d A := by
-  refine le_antisymm (sup_le le_sup_left ?_) (sup_le le_sup_left ?_) <;> rw [IntermediateField.adjoin_le_iff]
-  · intro z (hz : z ^ 12 = _)
-    have h1 : z / u ∈ discField d A :=
-      ((discField_le_iff d A).1 le_rfl).2.2.2 _ (by rw [div_pow, hz]; field_simp)
-    simpa [h0] using mul_mem h1 (torsionField_le_discField d A hu)
-  · intro z (hz : z ^ 12 = _)
-    have h1 := (le_sup_right : _ ≤ torsionField d A ⊔ _) (IntermediateField.subset_adjoin ℚ
-      {z : ℂ | z ^ 12 = u ^ 12 * (A.Δ : ℂ)} (show (u * z) ^ 12 = _ by rw [mul_pow, hz]))
-    simpa [h0] using mul_mem (inv_mem ((le_sup_left : torsionField d A ≤ _) hu)) h1
-
 variable {d A} in
 
 theorem hilbertField_eq (h : IsGoodCMCurve d F A) {L : PeriodPair} (hL : IsIntegersLattice d L) :
@@ -381,16 +289,8 @@ variable {R : Ranks} (H : Host R)
 
 def typeNorm (p q : ℕ) (γ : H.E) : H.E := ∏ g : Tau R, (H.sigmaOf g γ ^ p * H.sigmaOf g (H.conj γ) ^ q)
 
-theorem typeNorm_mul (p q : ℕ) (γ γ' : H.E) : typeNorm H p q (γ * γ') = typeNorm H p q γ * typeNorm H p q γ' := by
-  rw [typeNorm, typeNorm, typeNorm, ← Finset.prod_mul_distrib]
-  exact Finset.prod_congr rfl fun g _ => by rw [map_mul, map_mul, map_mul]; ring
-
 theorem typeNorm_ne_zero (p q : ℕ) {γ : H.E} (h : γ ≠ 0) : typeNorm H p q γ ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun g _ => mul_ne_zero (pow_ne_zero _ (by simpa using h)) (pow_ne_zero _ (by simpa using h))
-
-theorem typeNorm_natCast (p q n : ℕ) : typeNorm H p q (n : H.E) = (n : H.E) ^ (R.f * (p + q)) := by
-  simp only [typeNorm, map_natCast, Finset.prod_const, Finset.card_univ, card_Tau H, ← pow_add, ← pow_mul]
-  rw [mul_comm]
 
 def kPsiField (b : ClassBasis H.E) (p q : ℕ) : IntermediateField ℚ ℂ :=
   imField H.φ₀ ⊔ cycField (classNumber H.E) ⊔
@@ -459,9 +359,6 @@ def hstar : ℕ := degOver P.host.φ₀ D.ray D.isRay.emb_mem
 
 theorem hstar_pos : 0 < D.hstar := degOver_pos _ _ _
 
-theorem finrank_mul_hstar : Module.finrank ℚ P.host.E * D.hstar = Module.finrank ℚ D.ray :=
-  finrank_mul_degOver _ _ _
-
 def M : IntermediateField ℚ ℂ := torsionField P.host.d D.curve
 
 def M' : IntermediateField ℚ ℂ := discField P.host.d D.curve
@@ -483,10 +380,6 @@ theorem cycField_le_Om : cycField (rootOrder P) ≤ D.Om := le_sup_right.trans l
 theorem V_le_Om : D.V ≤ D.Om := le_sup_right
 
 theorem imField_le_Om : imField P.host.φ₀ ≤ D.Om := (imField_le_kummerField _ _).trans D.V_le_Om
-
-example : rootOne 15 ∈ D.Om :=
-  cycField_le_iff.1 ((cycField_mono (rootOrder_ne_zero P)
-    ((show 15 ∣ 3 ^ 4 * 5 ^ 4 by norm_num).trans (Nat.dvd_lcm_right _ _))).trans D.cycField_le_Om)
 
 end FieldDat
 
@@ -551,18 +444,11 @@ theorem fixedField_le_coefficientField : B.fixedCoefficientFieldInComplex ≤ B.
 theorem imField_KstoC : imField B.KstoC = B.KsC :=
   le_antisymm (fun _ ⟨x, h⟩ => ⟨x.1, x.2, h⟩) fun _ ⟨x, hx, h⟩ => ⟨⟨x, hx⟩, h⟩
 
-theorem imField_LL0toC : imField B.AutomorphicRingToComplex = B.fixedCoefficientFieldInComplex :=
-  le_antisymm (fun _ ⟨x, h⟩ => ⟨x.1, x.2, h⟩) fun _ ⟨x, hx, h⟩ => ⟨⟨x, hx⟩, h⟩
-
 def KsEquiv : B.Ks ≃ₐ[ℚ] B.KsC := B.Ks.equivMap B.embLL.toRatAlgHom
 
 instance numberField_KsC : NumberField B.KsC :=
   have : FiniteDimensional ℚ B.KsC := B.KsEquiv.toLinearEquiv.finiteDimensional
   NumberField.of_module_finite ℚ _
-
-theorem finrank_KsC : Module.finrank ℚ B.KsC = Module.finrank ℚ B.Ks := B.KsEquiv.toLinearEquiv.finrank_eq.symm
-
-theorem discr_KsC : discr B.KsC = discr B.Ks := (discr_eq_discr_of_algEquiv _ B.KsEquiv).symm
 
 theorem imField_le_KsC : imField B.host.φ₀ ≤ B.KsC :=
   (imField_le_iff _).2 fun x => ⟨B.embE x, B.E_le_Ks x, RingHom.congr_fun B.embE_φ₀ x⟩
@@ -599,65 +485,14 @@ def LowerOK : Prop := B.RayIn D ∧ B.CurveIn D ∧ B.ValIn C ∧ B.RootsIn c M 
 
 def FieldsOK : Prop := B.LowerOK D C c M ∧ B.KsLeOm D
 
-theorem valIn_iff : B.ValIn C ↔ charField C ≤ B.KsC ∧ valueField C.chiPsi 0 ≤ B.fixedCoefficientFieldInComplex := by
-  simp only [ValIn, charField, valuesIn_iff, imField_KstoC, imField_LL0toC, sup_le_iff, iSup_le_iff, and_assoc,
-    IntermediateField.adjoin_le_iff]
-  refine and_congr_right' (and_congr_right' (and_congr_right' (and_congr_right' (and_congr_left' ?_))))
-  exact ⟨fun h z ⟨k, a, hz⟩ => hz ▸ h k a, fun h k a => h ⟨k, a, rfl⟩⟩
-
-theorem lowerOK_iff : B.LowerOK D C c M ↔
-    listField D C ≤ B.KsC ∧ valueField C.chiPsi 0 ≤ B.fixedCoefficientFieldInComplex ∧ B.RootsIn c M ∧ B.RayInLL := by
-  rw [LowerOK, RayIn, valIn_iff, listField_le_iff]
-  exact ⟨fun ⟨⟨h1, h2⟩, h3, ⟨h4, h5⟩, h6, h7⟩ => ⟨⟨B.imField_le_KsC, h3, h1, B.rootsField_le_KsC, h4, h7⟩, h5, h6, h2⟩,
-    fun ⟨⟨_, h3, h1, _, h4, h7⟩, h5, h6, h2⟩ => ⟨⟨h1, h2⟩, h3, ⟨h4, h5⟩, h6, h7⟩⟩
-
-theorem fieldsOK_iff : B.FieldsOK D C c M ↔ (listField D C ≤ B.KsC ∧ B.KsC ≤ D.Om) ∧
-    valueField C.chiPsi 0 ≤ B.fixedCoefficientFieldInComplex ∧ B.RootsIn c M ∧ B.RayInLL := by
-  rw [FieldsOK, lowerOK_iff, KsLeOm]
-  tauto
-
 variable {B D C c M}
-
-theorem ValIn.characterValues_mem_fixedField (h : B.ValIn C) :
-    (∀ j, (C.mu0 j).ValuesIn 0 B.AutomorphicRingToComplex) ∧ C.eta.ValuesIn (1 / 2) B.AutomorphicRingToComplex ∧ C.chiPsi.ValuesIn 0 B.AutomorphicRingToComplex ∧
-      C.del.ValuesIn 0 B.AutomorphicRingToComplex ∧ C.del'.ValuesIn 0 B.AutomorphicRingToComplex := by
-  have key : ∀ {χ : HChar B.host.E} {s : ℝ}, χ.ValuesIn s B.KstoC → χ.ValuesIn s B.AutomorphicRingToComplex := fun hχ v hv => by
-    obtain ⟨y, hy⟩ := hχ v hv
-    exact ⟨⟨y.1, B.Ks_le y.2⟩, hy⟩
-  exact ⟨fun j => key (h.1 j), key h.2.1, h.2.2.2.2.2, key h.2.2.1, key h.2.2.2.1⟩
-
-theorem RootsIn.mono (h : B.RootsIn c M) {c' M' : ℕ} (hc : c' ≤ c) (hM : M' ≤ M) : B.RootsIn c' M' := by
-  have key : ∀ {p a a' : ℕ}, p ≠ 0 → a' ≤ a → rootOne (p ^ a) ∈ B.fixedCoefficientFieldInComplex → rootOne (p ^ a') ∈ B.fixedCoefficientFieldInComplex :=
-    fun hp ha h => cycField_le_iff.1 ((cycField_mono (pow_ne_zero _ hp) (pow_dvd_pow _ ha)).trans (cycField_le_iff.2 h))
-  exact ⟨key (by norm_num) hc h.1, key B.host.pde_prime.ne_zero (by omega) h.2.1,
-    key B.host.pde'_prime.ne_zero (by omega) h.2.2⟩
 
 theorem KsExact.lower (h : B.KsExact D C) :
     D.ray ≤ B.KsC ∧ B.CurveIn D ∧ charField C ≤ B.KsC ∧ B.KummerIn D := by
   obtain ⟨-, h1, h2, -, h3, h4⟩ := (listField_le_iff D C).1 h.ge
   exact ⟨h2, h1, h3, h4⟩
 
-theorem KsExact.ksLeOm_iff (h : B.KsExact D C) : B.KsLeOm D ↔ listField D C ≤ D.Om := by
-  rw [KsLeOm, show B.KsC = listField D C from h]
-
 namespace FieldsOK
-
-variable (h : B.FieldsOK D C c M)
-include h
-
-theorem rayIn : B.RayIn D := h.1.1
-
-theorem curveIn : B.CurveIn D := h.1.2.1
-
-theorem valIn : B.ValIn C := h.1.2.2.1
-
-theorem rootsIn : B.RootsIn c M := h.1.2.2.2.1
-
-theorem kummerIn : B.KummerIn D := h.1.2.2.2.2
-
-theorem ksLeOm : B.KsLeOm D := h.2
-
-theorem listField_le : listField D C ≤ B.KsC := ((B.fieldsOK_iff D C c M).1 h).1.1
 
 end FieldsOK
 

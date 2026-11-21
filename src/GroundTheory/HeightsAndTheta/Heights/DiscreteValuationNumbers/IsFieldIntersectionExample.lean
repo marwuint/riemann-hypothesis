@@ -22,12 +22,6 @@ namespace Numbers
 
 abbrev Statement : Prop := IntNumIsFieldIntersection.Statement.{u}
 
-theorem proof (hBase : FieldNumbers.IntNumBase.Statement.{u})
-    (hCut : FieldNumbers.CutRational.Statement.{u}) : Statement.{u} :=
-  IntNumIsFieldIntersection.proof VocabMultiHomog.proof
-    (VocabMultiHomogIdeal.proof VocabMultiHomog.proof) VocabDivCycle.proof
-    (IntNumPoint.proof hBase) (IntNumRatSection.proof hCut)
-
 variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
   [∀ k, Fintype (ι k)]
 

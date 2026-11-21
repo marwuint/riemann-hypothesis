@@ -123,14 +123,4 @@ theorem indepDescent_holds : IndepDescentSt := by
   apply LinearIndependent.of_comp (LinearMap.funLeft ℂ ℂ (fun y : S => (y : Pt)))
   exact hC
 
-example (h : IndepDescentSt) :
-    LinearIndependent ℂ (fun _ : Fin 1 => (fun _ => ((1 : ℚ) : ℂ) : Unit → ℂ)) := by
-  have hv : Function.Injective (LinearMap.pi (fun _ : Unit => LinearMap.id) : ℚ →ₗ[ℚ] (Unit → ℚ)) := by
-    intro x y hxy
-    simpa using congrFun hxy ()
-  have := h ℚ ℚ (Rat.castHom ℂ) ℚ Unit (LinearMap.pi fun _ => LinearMap.id) (fun _ y => y)
-    (fun _ => Function.bijective_id) (fun g f y => by simp) hv 1 (fun _ => 1)
-    (linearIndependent_unique_iff.mpr one_ne_zero)
-  simpa using this
-
 end ReciprocityTheory.ChartRestriction.G.TB

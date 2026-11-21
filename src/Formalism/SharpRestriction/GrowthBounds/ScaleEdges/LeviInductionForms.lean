@@ -29,8 +29,6 @@ theorem xx_mono (mg : ℤ → ℤ) (th o : ℤ → ℝ) (hmg : ∀ x, 0 ≤ mg x
     fun v hv => le_trans (WithTop.coe_le_coe.mpr (by linarith [hmg x])) hv
   exact ⟨fun he => ⟨(h1 he).1, key _ (h1 he).2⟩, fun he => ⟨(h2 he).1, key _ (h2 he).2⟩, h3⟩
 
-def segW : ℤ × Fin (r + K) → (ℤ → ℕ) := fun v => Pi.single v.1 1
-
 end XX
 
 section Comp

@@ -24,61 +24,9 @@ def jtR (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] (σ : E →�
 def latO {d n : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) : Set (Fin n → Fv F v ⊗[F] E) :=
   {y | ∀ a k, (Algebra.TensorProduct.basis (Fv F v) bs).repr (y a) k ∈ v.adicCompletionIntegers F}
 
-def nuV {d n : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fin n → Fv F v ⊗[F] E))
-    (σ : E →ₐ[F] E) (b : HermR (Fv F v) σ n) : ℝ :=
-  (lam {x | ∃ y ∈ latO bs v, ∃ y' ∈ latO bs v,
-      x = y + (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).mulVec y'} / lam (latO bs v)).toReal
-
-def hInf (σ : E →ₐ[F] E) {n : ℕ} (b : HermR (Ainf F) σ n) : ℝ :=
-  ∏ τ : InfinitePlace F, ‖Algebra.norm (Ainf F)
-    ((1 + (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))).det) τ‖
-
 def IsSchwartzInf {n M : ℕ} (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) : Prop :=
   ∀ (N : ℕ) (e : (Fin n → Fin M → Ainf F ⊗[F] E) ≃+ (Fin N → ℝ)), Continuous e → Continuous e.symm →
     ∃ f : SchwartzMap (Fin N → ℝ) ℂ, ∀ x, f x = Φinf (e.symm x)
-
-def LocFin : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
-  ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, n < M →
-  ∀ (d : ℕ) (bs : Module.Basis (Fin d) F E) (ψ : AddChar (AF F) ℂ), HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F ψ →
-  ∀ (v : HeightOneSpectrum (𝓞 F)) (μv : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (νv : Measure (HermR (Fv F v) σ n))
-    (lam : Measure (Fin n → Fv F v ⊗[F] E)),
-    SdW F E σ M J (Fv F v) (psiV F ψ v) n μv → SdHerm F E σ (Fv F v) (psiV F ψ v) n νv → lam.IsAddHaarMeasure →
-  ∀ (Φv : (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ), IsSB Φv →
-  ∀ g : HermR (Fv F v) σ n → ℂ,
-    IsContDensityOn μv (gramR (Fv F v) σ J) Subtype.val νv
-      {S | IsUnit (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det} Φv g →
-  ∀ T : HermR (Fv F v) σ n, IsUnit (T : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det →
-    HolValueAt (fun z => ∫ b, ((nuV bs v lam σ b : ℝ) : ℂ) ^ (-(z - ((M : ℂ) - n) / 2)) *
-        jtR (Fv F v) σ J (psiV F ψ v) μv Φv b *
-        psiV F ψ v (-trPair (Fv F v) (T : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) b) ∂νv)
-      (((M : ℂ) - n) / 2) (g T)
-
-def SiegelDensitiesLow : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
-  ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
-  ∀ (n : ℕ), n < M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b),
-    T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E)
-    (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ)
-    (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ)
-    (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ),
-    IsSchwartzInf Φinf → IsPureFin b Φf Φv → IsProdInfFin Φ Φinf Φf →
-    AllSome (IsHaarH F E σ M J) fun μ => AllSome (IsFDH F E σ M J μ) fun 𝓕 =>
-    AllSome (HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F) fun ψ =>
-    AllSome (SdW F E σ M J (Ainf F) (psiInf F ψ) n) fun μinf =>
-    AllSome (SdHerm F E σ (Ainf F) (psiInf F ψ) n) fun νinf =>
-    AllSome (fun μv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E) =>
-      ∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) n (μv v)) fun μv =>
-    AllSome (fun νv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (HermR (Fv F v) σ n) =>
-      ∀ v, SdHerm F E σ (Fv F v) (psiV F ψ v) n (νv v)) fun νv =>
-    ∃ (ginf : HermR (Ainf F) σ n → ℂ) (gv : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ n → ℂ),
-      IsContDensityOn μinf (gramR (Ainf F) σ J) Subtype.val νinf
-        {S | IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det} Φinf ginf ∧
-      (∀ v, IsContDensityOn (μv v) (gramR (Fv F v) σ J) Subtype.val (νv v)
-        {S | IsUnit (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det} (Φv v) (gv v)) ∧
-      Multipliable (fun v => gv v (hermOf (Fv F v) σ T hT)) ∧
-      meanC μ 𝓕 (thetaS F E σ M J Φ {X | gramE σ J X = T}) =
-        ginf (hermOf (Ainf F) σ T hT) * ∏' v, gv v (hermOf (Fv F v) σ T hT)
 
 end PositivityTheory.PfSWUS.Loc
 
@@ -110,8 +58,6 @@ def NDOfWhit : Prop := Unfold → ThetaCoef → WhitNDg → CoefND
 end PositivityTheory.PfSWUS
 
 namespace PositivityTheory.PfSWUS
-
-def WhitNDgOfLocal : Prop := Loc.LocFin → PositivityTheory.Rg.Sw.WR.WRSt → Loc.SiegelDensitiesLow → WhitNDg
 
 end PositivityTheory.PfSWUS
 

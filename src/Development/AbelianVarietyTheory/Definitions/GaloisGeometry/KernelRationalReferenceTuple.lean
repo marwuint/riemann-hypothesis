@@ -219,10 +219,6 @@ theorem antitone_kernelChain_nuT (D : D7) : ∀ u i τ, i < D.R.m → Antitone (
   unfold nuT
   exact Nat.floor_mono (nuRow_anti_le D u i hi τ r.1 s.1 hrs s.2)
 
-theorem wtTie_exists {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC}
-    {ex : Extra D L hT Gi Gl K Y cX} (t : KerEntTied ex) : ∃ lam sh n, t.WtTie lam sh n :=
-  ⟨_, _, _, wtTie_meet (antitone_kernelChain_nuT D) t⟩
-
 end Wt
 
 section Rat
@@ -277,11 +273,6 @@ theorem kmapRat_of_vqU (t : KerEntTied ex) (lam : ∀ (_ : D.what₂.Word) (i : 
   obtain ⟨v', hv'⟩ := hmem
   exact ⟨v', by rw [hv', hv, key2]⟩
 
-theorem kmapRat_of_ex (t : KerEntTied ex) (h : ∃ lam sh n, VQTieU t lam sh ∧ t.WtTie lam sh n) (hRK : t.RK) :
-    OrbitPlaces.KmapRat t.ent := by
-  obtain ⟨lam, sh, n, hV, hW⟩ := h
-  exact kmapRat_of_vqU t lam sh n hV hW hRK
-
 theorem kmapRat_of_vq (t : KerEntTied ex) (hVQ : VQTieU t (lam (antitone_kernelChain_nuT D)) (shh D)) (hRK : t.RK) : OrbitPlaces.KmapRat t.ent :=
   kmapRat_of_vqU t _ _ (nn D) hVQ (wtTie_meet (antitone_kernelChain_nuT D) t) hRK
 
@@ -289,55 +280,6 @@ theorem kmapRat_of_vqAll (t : KerEntTied ex) (hVQ : t.VQTie (lam (antitone_kerne
   kmapRat_of_vq t (vqTieU_of t hVQ) hRK
 
 end Rat
-
-section Fi
-
-variable {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRing LL] {embLL : LL →+* ℂ}
-  {Pl : Rows.Places LL} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R}
-  {C : ColumnChain R Tau hc} {A : ColumnsAtT R C} {P : PeriodMap R C}
-
-theorem emb_mem_Fi (M : MemberForms LL embLL Pl Tau hc C A P) (i : ℕ) (x : (M.lat i).V) : M.emb i x ∈ M.Fi i := by
-  rw [← (M.emb_basis i).2, ← (M.lat i).b.sum_repr x, map_sum]
-  exact Submodule.sum_mem _ (fun a _ => by
-    rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
-
-theorem fi_of_kRat (M : MemberForms LL embLL Pl Tau hc C A P) (i : ℕ) (h : M.KRat i) :
-    ∀ φ ∈ M.Fi i, C.K i φ ∈ M.Fi (i + 1) := by
-  have key : ∀ φ ∈ M.Fi i, C.Klin i φ ∈ M.Fi (i + 1) := by
-    intro φ hφ
-    rw [← (M.emb_basis i).2] at hφ
-    induction hφ using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨a, rfl⟩ := hx
-      obtain ⟨y, hy⟩ := h ((M.lat i).b a)
-      have e : C.Klin i (M.emb i ((M.lat i).b a)) = C.K i (M.emb i ((M.lat i).b a)) := rfl
-      rw [e, ← hy]; exact emb_mem_Fi M (i + 1) y
-    | zero => rw [map_zero]; exact Submodule.zero_mem _
-    | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
-    | smul r x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
-  exact key
-
-end Fi
-
-theorem K_heq {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C1 C2 : ColumnChain R ι hc} (h : C1 = C2) (i : ℕ)
-    {f1 : C1.cls i → C1.Y i → ℂ} {f2 : C2.cls i → C2.Y i → ℂ} (hf : HEq f1 f2) : HEq (C1.K i f1) (C2.K i f2) := by
-  subst h
-  cases eq_of_heq hf
-  exact HEq.rfl
-
-theorem kernelRational_referenceTuple (D : D7) (T : TwForms D) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (h : (D.fm u).KRat i) :
-    (T.fm u D.what₂.mu0).KRat i := by
-  intro x
-  obtain ⟨y, hy⟩ := h ((T.eMu0 u i hi.le).symm x)
-  refine ⟨T.eMu0 u (i + 1) hi y, ?_⟩
-  have e1 := T.eMu0_emb u (i + 1) hi y
-  have e2 := T.eMu0_emb u i hi.le ((T.eMu0 u i hi.le).symm x)
-  rw [LinearEquiv.apply_symm_apply] at e2
-  exact eq_of_heq (e1.trans ((heq_of_eq hy).trans (K_heq (D.memberColumns_twistedChain_base u) i e2).symm))
-
-theorem kFi_of_kRat (D : D7) (T : TwForms D) (h0 : ∀ u, ∀ i < D.R.m, (D.fm u).KRat i)
-    (h1 : ∀ u μ, DV.Used D μ → ∀ i < D.R.m, (T.fm u μ).KRat i) : OrbitPlaces.KFi D T :=
-  ⟨fun u i hi => fi_of_kRat (D.fm u) i (h0 u i hi), fun u μ hU i hi => fi_of_kRat (T.fm u μ) i (h1 u μ hU i hi)⟩
 
 section VQ
 
@@ -677,10 +619,6 @@ section VQK2
 
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Y : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl K Y cX}
-
-theorem vqTie_kerEntC' (t : KerEntTied ex) (P : Examples₂.EntPl D) (B : PlaceMatrixFamily D) (hK : KerEntHyp P t.O B Y ex.tw)
-    (he : t.ent = kerEntC P t.O B hK) : t.VQTie (lam (antitone_kernelChain_nuT D)) (shh D) :=
-  vqTie_kerEntC frameWeightPolyDivByDet_proof t P B hK he
 
 theorem kmapRat_kerEntC' (t : KerEntTied ex) (P : Examples₂.EntPl D) (B : PlaceMatrixFamily D) (hK : KerEntHyp P t.O B Y ex.tw)
     (he : t.ent = kerEntC P t.O B hK) (hRK : t.RK) : OrbitPlaces.KmapRat t.ent :=

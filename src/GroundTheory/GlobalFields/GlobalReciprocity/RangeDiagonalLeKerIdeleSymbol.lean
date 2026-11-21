@@ -90,11 +90,6 @@ theorem abstractSymbol_mk (x : IdeleGroup K.1) :
   change f x = g x
   rw [hx, map_mul, map_mul, hfN, hgN, (hle hh : f h = g h)]
 
-theorem abstractSymbol_comp_mk :
-    (abstractSymbol K L).comp (IdeleClassGroup.mk K.1) =
-      Abelianization.of.comp (ideleSymbol K.1 L.1) :=
-  MonoidHom.ext (abstractSymbol_mk K L)
-
 theorem ideleSymbol_diagonal (a : K.1ˣ) : ideleSymbol K.1 L.1 (diagonal K.1 a) = 1 := by
   apply Abelianization.of_injective_of_isMulCommutative
   rw [← abstractSymbol_mk, IdeleClassGroup.mk_diagonal, map_one, map_one]
@@ -116,9 +111,6 @@ theorem abstractSymbol_eq_classSymbol :
   refine MonoidHom.ext fun c ↦ ?_
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K.1 c
   exact abstractSymbol_mk K L x
-
-theorem continuous_classSymbol : Continuous (classSymbol K L) :=
-  CyclotomicSymbol.continuous_ideleClassSymbol _
 
 theorem classSymbol_surjective : Function.Surjective (classSymbol K L) :=
   CyclotomicSymbol.ideleClassSymbol_surjective _

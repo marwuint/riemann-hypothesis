@@ -1,8 +1,25 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobPullHomExtAffine
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntEmbCoe
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsTo
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIffAlt
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDeRhamDuality
+import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZeroSectionBase
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheaf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIff
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniqueTangentOfValues
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExactAndSurjectiveAppOfExactOfEpi
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ConjugateFiltration
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDualPullback
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsoDualOfAffinePairing
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RestrictPullbackIsoHomAppPullbackSections
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback
+
 open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.DeRham GlobalTheory.DeRhamSheaf GlobalTheory.AbDual GlobalTheory.Cris GlobalTheory.AbDatum
+open GlobalTheory GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.DeRham GlobalTheory.DeRhamSheaf GlobalTheory.AbDual GlobalTheory.Cris
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
@@ -21,21 +38,5 @@ theorem frobDR_primPull (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] (hR : (
   exact (GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) f) (frobMor p R hR A (cast_left p R hR A)) k (fun _ ↦ rfl)
     (GlobalTheory.VB.frob_naturality p _ f.left _) c).trans
     (GrpMor.pull_pull (frobMor p R hR B (cast_left p R hR B)) (homMor (dp0 R) (𝟙 _) f) k (fun _ ↦ rfl) rfl c).symm
-
-theorem linFrob_isEquivariant : ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A] (i : OAct O A) (H : T.Modules)
-    (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV))
-    (p : ℕ) [Fact p.Prime] (h0 : (p : Γ(T, ⊤)) = 0) (ρ : O →+* End H) (Ψ : (frobPull p h0).obj H ⟶ H),
-    IsDRAct e i ρ → IsLinFrob e p h0 Ψ → IsEquivariant (pullAct ρ (frob T p h0)) ρ Ψ := by
-  intro O _ T A _ i H e p _ h0 ρ Ψ hρ hΨ x
-  refine frobPull_hom_ext_affine p h0 fun V hV s ↦ (e V hV).injective ?_
-  have e1 : (VB.act (pullAct ρ (frob T p h0)) x ≫ Ψ).app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) s) =
-      Ψ.app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) ((VB.act ρ x).app V s)) :=
-    congrArg (Ψ.app V) (QCoh.pullback_map_app_pullbackSections (frob T p h0) (VB.act ρ x) (le_refl V) s)
-  have e2 : (Ψ ≫ VB.act ρ x).app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) s) =
-      (VB.act ρ x).app V (Ψ.app V (QCoh.pullbackSections (frob T p h0) H (le_refl V) s)) := rfl
-  refine (congrArg (e V hV) e1).trans (Eq.trans ?_ (congrArg (e V hV) e2).symm)
-  rw [hΨ V hV, hρ x V hV, hρ x V hV, hΨ V hV]
-  haveI := i.hom x
-  exact frobDR_primPull p _ (A := onAff A hV) (B := onAff A hV) ((Over.pullback hV.fromSpec).map (i.act x)) _
 
 end GlobalTheory.AbDatum

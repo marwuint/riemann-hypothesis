@@ -12,7 +12,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRangeOfForallHeightEqOneOfIsReflexive
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiUnitOnOfFixedOverUnramifiedExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnramifiedExtTorsionPointsGoodReductionStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnramifiedExtTorsionPointsGoodReduction
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.QkToAkUInvariantUnderFieldEmbeddingStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationTorsionIdentificationWithPairing
 
@@ -282,7 +282,7 @@ theorem psiUnitOn_abLocus : Laws → Laws2 → Laws3 → Laws4 → Laws5 → ∀
         (IsLocalRing.le_maximalIdeal (PrimeSpectrum.isPrime x).ne_top hr')
     exact ((PrimeSpectrum.le_iff_specializes (spMap (algebraMap R T) x) P).mp le).mem_open hO hP
   have hk : 1 ≤ n ^ j := Nat.one_le_pow _ _ (by omega)
-  obtain ⟨T', hT', hπ, hx⟩ := GlobalTheory.T.exists_unramified_ext_torsion_points_good_reduction h₁ h₂ T _ (IsSemiAbelian.pullback _ G hG) hab F hinj (n ^ j)
+  obtain ⟨T', hT', hπ, hx⟩ := _root_.GlobalTheory.exists_unramified_torsion_points h₁ h₂ T _ (IsSemiAbelian.pullback _ G hG) hab F hinj (n ^ j)
     (by simpa using (hu.map (algebraMap R T)).pow j)
   refine ⟨T'.toSubring, hT', algebraMap T T', fun r => RingHom.congr_fun hcomp r, hπ, fun σ hσ p q hpq => ?_⟩
   have hσR : ∀ r : R, σ (algebraMap (FractionRing R) F (algebraMap R _ r)) =

@@ -1,18 +1,23 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerRingInjective
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueBtOrderEmbeddingStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueBtOrderEmbedding
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.TranslateMemIndOrder
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+import GroundTheory.PAdicHodge.FiniteFlat
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.FormallyUnramifiedOfTangentMapInjective
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EmbeddingBaseChangeCompatStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EmbeddingBaseChangeCompat
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GeEmbSub
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderScalarExtensionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HenselianQuasiFiniteFinitePartStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFinOpenSubOfFiniteStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderFlatBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatLocalExtensionExistsStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HopfOrderScalarExtension
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HenselianQuasiFiniteFinitePart
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFinOpenSubOfFinite
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderFlatBaseChange
+import Development.WeilBound.CoreStatements.HodgeTatePoints.MiOpen
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualLatticePointUniversalStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HomAddMulOfUnitSectionStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderValueEvalStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BtOrderValueEval
 
 noncomputable section
 namespace PositivityTheory.HtPt.Ge.Tan
@@ -272,7 +277,7 @@ theorem val_of_emb {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T]
     (f : Γ.btOrder ⊤) (s : Γ(Γ.G.left, ⊤)) (hs : Γ.HasValues s (f : T → R))
     {B : Type} [CommRing B] (y : Spec (CommRingCat.of B) ⟶ Γ.G.left) (ρ : (Γ.btOrder ⊤) →+* B)
     (h : y ≫ j = Spec.map (CommRingCat.ofHom ρ)) : valAt y ⊤ le_top s = ρ f :=
-  GlobalTheory.T.bt_order_value_eval R T Γ j hj f s hs B y ρ h
+  _root_.GlobalTheory.CompanionTheory.Ar.BT.ValEmb.val_emb R T Γ j hj f s hs B y ρ h
 
 theorem dual_eq_smul {R L : Type} [CommRing R] [AddCommGroup L] [Module R L] [Module.Projective R L] (N : ℕ)
     (d : Module.Dual R L) (h : ∀ e, Ideal.Quotient.mk (Ideal.span {(N : R)}) (d e) = 0) :

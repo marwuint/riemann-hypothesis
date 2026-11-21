@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisEqZeroOfF
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAcrisLogOneAdd
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalLogDefect
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LogDefectCoeffEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FactorialTruncatedLogAdditivityDefectCoeffDvdStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FactorialTruncatedLogAdditivityDefectCoeffDvd
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
 open scoped Formalism.Per
@@ -28,7 +28,7 @@ theorem defect_mem {R : Type} [CommRing R] (S : Subring R) (a b : R)
     · have := GlobalTheory.T.coeff_logDefect_eq_zero_of_add_lt n (d 0) (d 1) h
       rw [hd] at this
       exact ⟨0, by rw [this]; simp⟩
-    · obtain ⟨D, hD⟩ := GlobalTheory.T.factorialTruncatedLogAdditivityDefect_coeff_dvd n (d 0) (d 1) (by omega)
+    · obtain ⟨D, hD⟩ := _root_.GlobalTheory.LogUIntg.logDefect_coeff_dvd n (d 0) (d 1) (by omega)
       rw [hd] at hD
       exact ⟨D, hD⟩
   choose D hD using hD

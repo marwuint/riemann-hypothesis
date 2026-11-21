@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PhiTopAgree
 import Formalism.LocalToGlobal.Columns.ColumnsProofs.ChainCounts
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnfoldingIntegralEqFiniteSumOverNumberFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnfoldingIntegralEqFiniteSumOverNumberField
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymLevelTestFunctionsAgreeRationalPointsStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ResiduesOfCompletionAtPrimeWithUniformizerStatement
 
@@ -229,7 +229,7 @@ theorem entry_agree : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X
   have hpsi : ∀ a, IntAt P.1 a → (S.ψ (ι (a / (qOf P.1 : X.E))) : ℂ) = σ₀ (cst.psi P (a / (qOf P.1 : X.E))) := by
     intro a ha
     rw [hA.tie.psi a ha, hA.psi0 a ha]
-  have hsum := GlobalTheory.T.unfoldingIntegral_eq_finiteSum_overNumberField X.E X.K k P.1 (qOf P.1) ι S.ϖ σ₀ S.ψ ν (cst.psi P) hA.tie.compl S.unif S.cond hν hpsi
+  have hsum := _root_.GlobalTheory.UnfoldSum.sumAgree X.E X.K k P.1 (qOf P.1) ι S.ϖ σ₀ S.ψ ν (cst.psi P) hA.tie.compl S.unif S.cond hν hpsi
     (XIx (Fin R.k) (Fin R.t) j) (XIx (Fin R.k) (Fin R.t) (j + 1)) (c + 1) (R.N j) (cOf R j) (R.N (j + 1)) (cOf R (j + 1))
     cst.A cst.B (by omega) hcj hcj1 (by omega) hA.ok.B_pos e' e E' E hE'0 hE0 _ _ hΦE
     (fun x hx => phi_supp S (Fin R.t) j (c + 1) (by omega) x hx)

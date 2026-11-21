@@ -7,11 +7,11 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.Hermiti
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentForm
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentTarget
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneDetHermitianGram
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeOfCongruentFormStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeOfCongruentForm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeOfCongruentMatrixStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeExtendByScalarBlockStatement
-import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.ZeroBlockCoefficientRankIncreaseStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeZeroRankOneOfThreeLeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeExtendByScalarBlock
+import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.ZeroBlockCoefficientRankIncrease
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeZeroRankOneOfThreeLe
 import Development.WeilBound.CoreStatements.ThetaDilations.ContinuousPm
 
 noncomputable section
@@ -467,7 +467,7 @@ theorem swFree_singular : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
     by_cases h0 : T = 0
     · subst h0
       rcases n with _ | n
-      · exact GlobalTheory.T.siegelWeilFree_zero_rank_one_of_three_le F E σ hCM M J hJ (by omega) hT ⟨X, hX⟩
+      · exact _root_.GlobalTheory.CompanionTheory.SW.OneZero.one_vector_zero F E σ hCM M J hJ (by omega) hT ⟨X, hX⟩
       · obtain ⟨M₁, rfl⟩ : ∃ M₁, M = M₁ + 2 := ⟨M - 2, by omega⟩
         have hx0 : X 0 ≠ 0 := hX.1.ne_zero 0
         have hxx : hE σ J (X 0) (X 0) = 0 := congrFun (congrFun hX.2 0) 0
@@ -488,8 +488,8 @@ theorem swFree_singular : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
         have h₀ : ∀ a b : Fin (n + 1), σ ((0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) b a) =
             (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) a b := fun a b => by simp
         have hSW := ih M₁ J₁ hJ₁ 0 h₀ Matrix.det_zero (by omega) ⟨_, hfr₁⟩
-        exact GlobalTheory.T.siegelWeilFree_of_congruent_form F E σ hCM (M₁ + 2) J hJ g _ hb (n + 1 + 1) 0 hT
-          (GlobalTheory.T.zero_block_coefficient_rank_increase F E σ hCM M₁ J₁ hJ₁ (n + 1) (by omega) (by omega) h₀ hT ⟨_, hfr₁⟩ hSW)
+        exact _root_.GlobalTheory.CompanionTheory.WeilSiegel.Free.Iso.swFree_of_isometry F E σ hCM (M₁ + 2) J hJ g _ hb (n + 1 + 1) 0 hT
+          (_root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hyp_step F E σ hCM M₁ J₁ hJ₁ (n + 1) (by omega) (by omega) h₀ hT ⟨_, hfr₁⟩ hSW)
     · obtain ⟨t, x, ht, hx⟩ := exists_value σ hCM T hT h0
       have hta : algebraMap F E t ≠ 0 := by simpa using ht
       obtain ⟨g, T₁, hT₁, hb⟩ := split_herm σ hσ T hT _ x hta hx
@@ -525,8 +525,8 @@ theorem swFree_singular : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
       have hfr₁ := frames_tail_aniso σ J₁ T₁ _ hta _ hX₂ hfirst
       have hSW := ih M₁ J₁ hJ₁ T₁ hT₁ hd₁ (by omega) ⟨_, hfr₁⟩
       refine GlobalTheory.T.siegelWeilFree_of_congruent_matrix F E σ hCM (M₁ + 1) J hJ (n + 1) T hT g _ hT' hb ?_
-      exact GlobalTheory.T.siegelWeilFree_of_congruent_form F E σ hCM (M₁ + 1) J hJ g' _ hb' (n + 1) _ hT'
-        (GlobalTheory.T.siegelWeilFree_extend_by_scalar_block F E σ hCM M₁ J₁ hJ₁ t ht n (by omega) T₁ hT₁ hT' ⟨_, hfr₁⟩ hSW)
+      exact _root_.GlobalTheory.CompanionTheory.WeilSiegel.Free.Iso.swFree_of_isometry F E σ hCM (M₁ + 1) J hJ g' _ hb' (n + 1) _ hT'
+        (_root_.GlobalTheory.CompanionTheory.WeilSiegel.Free.Aniso.aniso_step F E σ hCM M₁ J₁ hJ₁ t ht n (by omega) T₁ hT₁ hT' ⟨_, hfr₁⟩ hSW)
 
 theorem swFree_block : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ J → ∀ (n t : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), IsBlockM t T → 2 * n < M → (framesE σ J T).Nonempty → SWFree σ J T hT := by
   intro F E _ _ _ _ _ σ hCM M J hJ n t T hT hB hM hfr

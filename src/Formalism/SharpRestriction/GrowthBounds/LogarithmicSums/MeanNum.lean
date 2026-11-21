@@ -344,8 +344,6 @@ theorem big_le_b' (s : Scale) (n : ℕ) (u : ℝ) (h : n * Real.log s.x + u + s.
   rw [this, ← Real.exp_add]
   exact Real.exp_le_exp.2 (by linarith)
 
-theorem rpow_nat_lit (x : ℝ) (n : ℕ) : x ^ ((n : ℕ) : ℝ) = x ^ n := Real.rpow_natCast x n
-
 theorem parameter_product_le_arith (x k Y2 Yb N La la X' : ℝ) (hx : 2 ≤ x) (hk0 : 0 ≤ k) (hYb0 : 0 ≤ Yb) (hN0 : 0 ≤ N) (hLa0 : 0 ≤ La)
     (hla0 : 0 ≤ la) (hk : k ≤ x ^ 6) (hY2 : Y2 = x ^ 26) (hYb : Yb ≤ x) (hN : N ≤ x ^ 3) (hLa : La ≤ x) (hla : la ≤ 2 * x)
     (hX : x ^ 39 ≤ X') : k * Y2 * Yb * N * La * la ≤ X' := by

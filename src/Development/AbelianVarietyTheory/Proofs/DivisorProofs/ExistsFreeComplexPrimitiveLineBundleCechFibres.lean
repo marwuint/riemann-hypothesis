@@ -48,7 +48,7 @@ theorem exists_free_complex_of_primitive_cech : ∀ (A : Type) [CommRing A] [IsN
       exact cechLB_exactAt_of_dim_lt K B'.left B'.hom g _
         (MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) sq hg) hP' inferInstance hF' _ _ ha hc i hi
     · obtain ⟨U, ⟨c⟩⟩ := GtBaseChange.exists_lamChart t B F
-      exact GlobalTheory.T.cechComplex_acyclic_primitive_nontrivial_algClosed K B' hB' hP' _ hF' ⟨_, GtBaseChange.genPull_isGen c hu⟩
+      exact _root_.GlobalTheory.PrimVan.acyclic_cechLB_of_primitive K B' hB' hP' _ hF' ⟨_, GtBaseChange.genPull_isGen c hu⟩
         (fun h => hi (CubeOpen.triv_comp (hX.isoIsPullback _ _ sq).hom (hX.isoIsPullback_hom_fst _ _ sq) h))
         _ _ ha hc i
   · intro K _ φ X' π f' hX κ _ _ D hDa hDc i

@@ -31,13 +31,6 @@ theorem cpost_add (K : Cx R) {I J : Cx R} (f g : I ⟶ J) (n : ℤ) (x : Cohomol
   congr 1
   all_goals (ext p q hpq; simp [zcomp, Cochain.ofHom_add, Cochain.comp_add])
 
-theorem cpost_id (K : Cx R) (I : Cx R) (n : ℤ) (x : CohomologyClass K I n) :
-    cpost K (Cocycle.ofHom (𝟙 I)) n n (add_zero n) x = x := by
-  obtain ⟨α, rfl⟩ := x.mk_surjective
-  rw [cpost_mk]
-  congr 1
-  all_goals (ext p q hpq; simp [zcomp])
-
 theorem cpost_comp (K : Cx R) {I J L : Cx R} (f : I ⟶ J) (g : J ⟶ L) (n : ℤ) (x : CohomologyClass K I n) :
     cpost K (Cocycle.ofHom (f ≫ g)) n n (add_zero n) x =
       cpost K (Cocycle.ofHom g) n n (add_zero n) (cpost K (Cocycle.ofHom f) n n (add_zero n) x) := by
@@ -52,10 +45,6 @@ theorem post_eq (K : Cx R) {F G : Shv R} (φ : F ⟶ G)
     HK.post R K φ n x = cpost K (Cocycle.ofHom (HomologicalComplex.extendMap g ComplexShape.embeddingUpNat)) n n (add_zero n) x :=
   cpost_homotopy K ((InjectiveResolution.descHomotopy φ _ g (InjectiveResolution.desc_commutes _ _ _) hg).extend
     ComplexShape.embeddingUpNat) n x
-
-theorem post_id (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) : HK.post R K (𝟙 F) n x = x := by
-  rw [post_eq K (𝟙 F) (𝟙 _) (by simp), HomologicalComplex.extendMap_id]
-  exact cpost_id K _ n x
 
 theorem post_add (K : Cx R) {F G : Shv R} (φ ψ : F ⟶ G) (n : ℤ) (x : HK R K F n) :
     HK.post R K (φ + ψ) n x = HK.post R K φ n x + HK.post R K ψ n x := by
@@ -85,14 +74,5 @@ theorem post_nsmul (K : Cx R) {F G : Shv R} (f : F ⟶ G) (n : ℤ) (k : ℕ) (x
   induction k with
   | zero => rw [zero_nsmul, zero_nsmul, post_zero]
   | succ k ih => rw [succ_nsmul, succ_nsmul, post_add, ih]
-
-theorem post_nsmul_id (K : Cx R) (F : Shv R) (n : ℤ) (k : ℕ) (x : HK R K F n) : HK.post R K (k • 𝟙 F) n x = k • x := by
-  induction k with
-  | zero =>
-    rw [zero_nsmul, zero_nsmul]
-    have h := post_add K (0 : F ⟶ F) 0 n x
-    rw [add_zero] at h
-    exact add_left_cancel (h.symm.trans (add_zero _).symm)
-  | succ k ih => rw [succ_nsmul, succ_nsmul, post_add, ih, post_id]
 
 end CrystallineSemistableComparison.PostcompositionHomotopy

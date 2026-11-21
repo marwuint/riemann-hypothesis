@@ -87,11 +87,6 @@ def HStableSt : Prop :=
     [Algebra R k], IsRQ (R := R) k → ∀ (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h →
     ∀ (a : O) ξ, ξ ∈ Hset (R := R) k h → OactH k B a ξ ∈ Hset (R := R) k h
 
-def BetaIntSt : Prop :=
-  ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k]
-    [Algebra R k], IsRQ (R := R) k → ∀ (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h →
-    ∀ ξ η, ξ ∈ Hset (R := R) k h → η ∈ Hset (R := R) k h → betaH k ξ η ∈ (algebraMap R k).range
-
 def secondOrder {ι : Type} [Fintype ι] (c : ι → ι → k) (P : MvPolynomial ι k) : MvPolynomial ι k :=
   ∑ l, ∑ l', MvPolynomial.C (c l l') * MvPolynomial.pderiv l (MvPolynomial.pderiv l' P)
 
@@ -106,32 +101,5 @@ def AdmissibilitySecond : Prop :=
     secondOrder k (fun l l' => dotProduct (u l) ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l'))) +
       dotProduct (u l') ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l)))) P = 0 →
     ∀ f : PS k 1 d, B.nabVal k h w0 m f u P = B.nabVal k h' w0 m f u P
-
-theorem isRQ_int : IsRQ (R := ℤ) ℚ := by
-  unfold IsRQ
-  refine ⟨(algebraMap ℤ ℚ).injective_int, fun y => ⟨y.num, y.den, Nat.pos_of_ne_zero y.den_nz, ?_⟩⟩
-  rw [eq_intCast]
-  exact Rat.den_mul_eq_num y
-
-def fglZero (R : Type) [CommRing R] : FGLaw R 0 where
-  F := fun i => i.elim0
-  const := fun i => i.elim0
-  unit := fun i => i.elim0
-  comm := fun i => i.elim0
-  assoc := fun i => i.elim0
-
-def oactZero (R : Type) [CommRing R] : OAct ℤ (fglZero R) where
-  act := fun _ i => i.elim0
-  const := fun _ i => i.elim0
-  hom := fun _ => funext fun i => i.elim0
-  add_act := fun _ _ => funext fun i => i.elim0
-  mul_act := fun _ _ => funext fun i => i.elim0
-  one_act := funext fun i => i.elim0
-
-def fbZero : FB ℤ 0 ℤ := FB.triv (fglZero ℤ) (oactZero ℤ)
-
-theorem zero_mem_Hset (h : PS ℚ 2 0) : (0 : (Fin 0 → ℚ) × (Fin 0 → ℚ)) ∈ Hset (R := ℤ) ℚ h := by
-  simp only [Hset, Set.mem_setOf_eq]
-  exact ⟨0, 0, Prod.ext (funext fun i => i.elim0) (funext fun i => i.elim0)⟩
 
 end ReciprocityTheory.ChartRestriction.G.TB

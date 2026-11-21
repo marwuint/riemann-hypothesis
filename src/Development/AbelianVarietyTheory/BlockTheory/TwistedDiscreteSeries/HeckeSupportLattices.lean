@@ -82,8 +82,6 @@ def hkC {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : R
     (P : Formalism.L2.DIV.Pl D.host.E) (k : ℕ) : ℂ :=
   ((((R.C.mu0 i).val P : ℂˣ) : ℂ) ^ k)⁻¹ * (((Nat.card (kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹
 
-theorem two_mul_half : 2 * (D.R.nV / 2) = D.R.nV := Nat.two_mul_div_two_of_even (kapDom D).2
-
 def IsHkData {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
     (P : Formalism.L2.DIV.Pl D.host.E) (k : ℕ) (α : GA D (Wc D i)) (Rc : Finset (GA D (Wc D i))) : Prop :=
   Bridge.SplitOff P (R.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) ∧
@@ -129,11 +127,5 @@ def HkSupAt (i : Fin D.R.m) : Prop :=
       HeckeJ.IsHkJ (sg0 D A) ((R.FW i).j (sg0 D A)) (R.HW i (sg0 D A)).e (heckeOn (R.MW i (sg0 D A)) Rc) (hkC R i P k) hL →
       ∀ (hW : ∀ x ∈ (R.FW i).WK, hL x ∈ (R.FW i).WK) (la : HeightOneSpectrum (𝓞 T.Q.c.F)), OffChar P la →
         Keeps (R.FW i) la hL hW
-
-def HkSup : Prop :=
-  ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
-    (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A), R.Char F →
-    ∀ (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
-      (_fw : FWTie T R κ v₀) (i : Fin D.R.m), ReadAt0 T R κ v₀ i → HkSupAt T R i
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls

@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepAtBIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCorrectionApproximateIdealSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCorrectionApproximateIdealSections
+import Development.AbelianVarietyTheory.Definitions.Divisors.OrdGeOfForall
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PhiDivisorArcBlowup
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolarizationTransferModels
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.CoeNonzeroLocusCanonicalEqComplRange
@@ -30,7 +33,7 @@ theorem exists_corr : ∀ (Z M S₁ : Scheme.{0}) [IsIntegral M] [IsIntegral S�
     rw [idlAlong, this, Ideal.map_span, Set.image_singleton]
   intro D e
   obtain ⟨E, hE⟩ := EffCartierData.exists_idealSheaf_eq (CoverElements.effCartier_pow hEC D)
-  obtain ⟨e', he'⟩ := GlobalTheory.T.exists_correction_approximate_ideal_sections M S₁ sM p₁ hN U₁ hU E z₁ e
+  obtain ⟨e', he'⟩ := _root_.GlobalTheory.ApproxCorr.exists_correction M S₁ sM p₁ hN U₁ hU E z₁ e
   refine ⟨e', fun f hf => ?_⟩
   have hm := he' f (fun V _ _ _ _ hc ξ' ev' hl hc' hr => by
     rw [hE, TorRef.idlAlong_pow]

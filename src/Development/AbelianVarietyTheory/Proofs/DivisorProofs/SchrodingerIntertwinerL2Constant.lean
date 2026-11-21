@@ -5,11 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzFunctionalIntegralCommStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerRepSchwartzPolynomialBoundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixCoeffContinuousRapidDecayStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixCoeffContinuousRapidDecay
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerOrthogonalityRelationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormConstMulInnerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianFormConstMulInner
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerRepUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RhoInvariantFormConstMulInnerStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RhoInvariantFormConstMulInner
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPairingCoordinatesSchrodingerFolland
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRealAdEqZero
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory GlobalTheory.RealWeil
 open scoped Matrix ENNReal SchwartzMap
@@ -37,12 +39,12 @@ theorem step (n : ℕ) (B : Sch (Fin n) → Sch (Fin n) → ℂ)
   obtain ⟨L, hL⟩ := hB f'
   set ip : ℂ := ∫ x, f x * starRingEnd ℂ (g x) with hip
   set c : (Fin n ⊕ Fin n → ℝ) → ℂ := fun w => starRingEnd ℂ (∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)) with hc
-  have hcc : Continuous c := Complex.continuous_conj.comp (GlobalTheory.T.matrix_coeff_continuous_rapid_decay n g g').1
+  have hcc : Continuous c := Complex.continuous_conj.comp (_root_.GlobalTheory.matrixCoeff_continuous_rapidDecay n g g').1
   have hint : ∀ k m : ℕ, Integrable (fun w => ‖c w‖ * SchwartzMap.seminorm ℂ k m (G w)) := by
     intro k m
     obtain ⟨C, N, hC⟩ := hGb k m
     set d : ℕ := Module.finrank ℝ (Fin n ⊕ Fin n → ℝ)
-    obtain ⟨C', hC'⟩ := (GlobalTheory.T.matrix_coeff_continuous_rapid_decay n g g').2 (N + (d + 1))
+    obtain ⟨C', hC'⟩ := (_root_.GlobalTheory.matrixCoeff_continuous_rapidDecay n g g').2 (N + (d + 1))
     have hsc : Continuous fun w => SchwartzMap.seminorm ℂ k m (G w) :=
       ((schwartz_withSeminorms ℂ (EuclideanSpace ℝ (Fin n)) ℂ).continuous_seminorm (k, m)).comp hGc
     have hI : Integrable (fun w : Fin n ⊕ Fin n → ℝ => (1 + ‖w‖) ^ (-((d + 1 : ℕ) : ℝ))) :=
@@ -87,7 +89,7 @@ theorem core : ∀ (n : ℕ) (B : GlobalTheory.RealWeil.Sch (Fin n) → GlobalTh
       ⇑g' = GlobalTheory.RealWeil.rhoFun w ⇑h' → B g g' = B h h') →
     ∃ c : ℝ, 0 ≤ c ∧ ∀ h h', B h h' = c * ∫ x, h x * starRingEnd ℂ (h' x) := by
   intro n B hB hherm hpos hinv
-  refine GlobalTheory.T.hermitian_form_const_mul_inner n B hherm hpos fun f f' g g' => ?_
+  refine _root_.GlobalTheory.hermitian_form_eq_smul_l2 n B hherm hpos fun f f' g g' => ?_
   obtain ⟨G, hGc, hG, hGb⟩ := GlobalTheory.T.schrodinger_rep_schwartz_polynomial_bound n f
   obtain ⟨G', hG'c, hG', hG'b⟩ := GlobalTheory.T.schrodinger_rep_schwartz_polynomial_bound n f'
   have s1 := step n B hB f f' g g' G hGc hG hGb
@@ -134,6 +136,6 @@ theorem schrodinger_intertwiner_l2_const : ∀ (F : Type) [Field F] [NumberField
       ∃ c : ℝ, 0 ≤ c ∧ ∀ μ : @Measure (κ → mixedEmbedding.mixedSpace F) (borel _),
         @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ f f' : SInf F κ,
           @integral _ ℂ _ _ (borel _) μ (fun x => T f x * starRingEnd ℂ (T f' x)) =
-            (c : ℂ) * @integral _ ℂ _ _ (borel _) μ (fun x => f x * starRingEnd ℂ (f' x)) := GlobalTheory.T.rho_invariant_form_const_mul_inner core
+            (c : ℂ) * @integral _ ℂ _ _ (borel _) μ (fun x => f x * starRingEnd ℂ (f' x)) := _root_.GlobalTheory.ArchUniq.FormTransport.const_of_euclidean core
 
 end GlobalTheory.SvNForm

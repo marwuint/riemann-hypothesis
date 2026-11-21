@@ -53,10 +53,4 @@ def cxF (G : HTGroup p) (v : InfinitePlace G.F) (wt : Polynomial G.F → ℂ) (�
       wt (minpoly G.F (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C))
   else 0
 
-example (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
-    (hx : Triv G (AfP p) β x t) (Kf : Subgroup G.GAf) (K' : Subgroup (Gr G 1)) :
-    Nonempty (Ys G v β x t hx Kf K') :=
-  ⟨(LeftCosets.mk _ _ 1, (Projectivization.mk ℂ (Pi.single ⟨0, G.n_pos⟩ 1)
-    (by simp [Pi.single_eq_zero_iff]) : Projectivization ℂ (Fin G.n → ℂ)))⟩
-
 end GlobalTheory.CxUnfold

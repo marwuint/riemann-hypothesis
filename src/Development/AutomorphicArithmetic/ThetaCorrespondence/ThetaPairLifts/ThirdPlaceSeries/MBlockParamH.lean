@@ -1,9 +1,9 @@
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CharPolLpCharOfUnr
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.GoodLem
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedNeBotOfMemSupport
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Laws
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AlAwayRepsum
+import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TypeConditions.EtaPiece
 import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.RecLawsH
 
 set_option synthInstance.maxHeartbeats 200000
@@ -42,7 +42,7 @@ theorem split_local_of_blockVec {rc : ∀ n, Irr k n → WD h} (hB : BlockSplit 
       ∀ σ, b.charPol (ineIncl h σ) = (X - C (c σ)) ^ t := by
   classical
   rcases hB r t χ π v hχ ht hv hvb with ⟨π₁, π₂, hsph, e⟩ | ⟨s, d, σ, hsupp, hcard⟩
-  · have hg : GoodI π₂ := GlobalTheory.AVGood.good_of_isSpherical GlobalTheory.T.bernstein_zelevinsky_finiteness _
+  · have hg : GoodI π₂ := GlobalTheory.AVGood.good_of_isSpherical _root_.GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness _
       (fixed_ne_bot_of_equiv (equivRep ⟨π₂.V, π₂.π, π₂.smooth, π₂.irr⟩) hsph)
     have h1 := _root_.UpperTheory.One.M.RecLawsH.twist hrc t χ (detIrr 1 χ hχ) π₂ (twistIrr π₂ χ hχ) hg ⟨.refl _⟩ ⟨.refl _⟩
     have hu := (hrc.sph t π₂).2 hsph

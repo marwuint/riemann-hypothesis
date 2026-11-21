@@ -94,11 +94,4 @@ theorem exists_fd {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
   obtain ⟨F, hF, hex⟩ := exists_sfd Λ
   exact ⟨F, hF, fun μ => IsFundamentalDomain.mk' hF.nullMeasurableSet hex⟩
 
-theorem fundamental_domain_exists : FDExG := by
-  unfold FDExG
-  intro X _ _ _ _ Γ K hK hD
-  obtain ⟨hlc, hsc, ht2, htg⟩ := hK
-  obtain ⟨hcount, hdisc⟩ := hD
-  exact exists_fd (ratG Γ K)
-
 end PI.VolSemiDirect.W

@@ -111,23 +111,4 @@ def CarrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I)) : Parts X u u' whe
   Ll := Mo.Ll
   Ll' := Mo.Ll'
 
-theorem pins_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I))
-    (hr : I.G.r = D.R.rS) (hk : I.G.k = D.R.k) (hg1 : I.G.g1 = D.host.g 0) (hg2 : I.G.g2 = D.host.g 1)
-    (hf : I.nf = D.R.f) : (CarrierOf I Mo).Pins I.CA I.G I.de I.de' I.l :=
-  ⟨rfl, rfl, rfl, rfl, rfl, hr, hk, hg1, hg2, rfl, rfl, hf⟩
-
-theorem built_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I))
-    (hsg : ∀ v, I.sg v = Formalism.FourierDecayAlt.M.sgn (Formalism.FourierDecayAlt.D.parOf (sOf I) v) ((sOf I).l + 1))
-    (hrest : Formalism.FourierDecayAlt.C6.IsCut0 I.χ ∧ ∀ v,
-      Formalism.FourierDecayAlt.D.TowerNormalised (I.T v) ∧ Formalism.FourierDecayAlt.D.IsBaseFrame (I.T v).base (I.ν' v) (I.m₀ v) ∧
-      Formalism.FourierDecayAlt.Q.IsPlace (Formalism.FourierDecayAlt.D.parOf (sOf I) v) (I.T v).base.z (I.T v).base.z' (I.T v).base.π (I.T v).base.π' ∧
-      (∀ m : ℕ, Formalism.FourierDecayAlt.B.InCC I.A₀ m (I.fc v)) ∧
-      ∀ Y : ℝ, ∀ g ∈ Formalism.FourierDecayAlt.B.GV I.G.k I.G.r, Formalism.FourierDecayAlt.Q.CV I.G.k I.G.r (Y : ℂ) (I.fc v) g =
-        (((sOf I).P v Y : ℝ) : ℂ) • I.fc v g) :
-    (CarrierOf I Mo).Built := by
-  refine ⟨hrest.1, fun v => ⟨?_, (hrest.2 v).1, (hrest.2 v).2.1, (hrest.2 v).2.2.1,
-    (hrest.2 v).2.2.2.1, (hrest.2 v).2.2.2.2⟩⟩
-  exact congrArg (fun t => Formalism.FourierDecayAlt.D.componentFamilySetting_ofSetting (I.T v) (I.fc v) I.χ t (I.ν' v) (I.m₀ v) (I.top v)
-    ((I.G.g1 * I.G.g2 : ℕ) : ℝ) (Formalism.FourierDecayAlt.S6.rd D.host.E) 1) (hsg v)
-
 end Formalism.L2.SG.Pf.Carrier

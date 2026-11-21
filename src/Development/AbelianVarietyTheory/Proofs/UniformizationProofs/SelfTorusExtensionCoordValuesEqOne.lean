@@ -496,47 +496,8 @@ theorem expBij (hG : GlobalFnsSt) [IsNoetherianRing R] (hI : I ≤ Ideal.jacobso
 
 end Exp
 
-theorem exists_degData (hC : CubeSt) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
-    (I : Ideal R) (P : PolAV (Spec (CommRingCat.of R))) :
-    ∃ D : DegData R I, D.toPre.P = P ∧ Subsingleton D.toPre.X := by
-  obtain ⟨rig, hrig⟩ := P.rigid
-  obtain ⟨cub⟩ := (hC _ P ⟨P.L, rig, P.isLB, hrig⟩ rfl).1
-  obtain ⟨sym, hsym, hsr⟩ := exists_sym P
-  let D : DegPre R :=
-    { P := P, rig := rig, rig_gen := hrig, cub := cub, sym := sym, sym_gen := hsym, sym_rig := hsr, X := PUnit
-      c := fun _ => η[P.A]
-      c_add := fun _ _ => by
-        have : η[P.A] = (1 : 𝟙_ _ ⟶ P.A) := by simp [Hom.one_def]
-        rw [this]; exact (_root_.mul_one _).symm
-      psi := fun _ => LB.invGen P.L _ _ (LB.pullGen P.L _ _ rig (toUnit (TK R)).left)
-      psi_gen := fun _ => DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hrig _) }
-  have vp : ∀ (a : D.X) y J, val (D.psi a) (𝟙 _) y J = (val D.rigK (𝟙 _) y J)⁻¹ := fun a y J => val_inv _ _
-  have vt : ∀ (a b : D.X) y J, Good P.L y J → val (D.tau a b) (𝟙 _) y J = 1 := fun a b y J hJ => by
-    refine (val_mul hJ _ _ _).trans ?_
-    rw [val_mul hJ, val_mul hJ, val_inv, val_inv, vp (a + b)]
-    simp
-  refine ⟨⟨D, fun χ => corr_of_val P.isLB fun y J hJ => ?_, fun a a' b => corr_of_val P.isLB fun y J hJ => ?_,
-    fun χ h => (h rfl).elim, fun n => Set.toFinite _⟩, rfl, ⟨fun _ _ => rfl⟩⟩
-  · have a := (val_pull hJ _ _ _).symm.trans ((val_corr hJ hsr (toUnit (TK R)).left).trans (val_one _))
-    refine (val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans ?_)).trans (_root_.mul_one _))
-    rw [Category.id_comp]
-    exact a
-  · have c := val_cub cub (𝟙 (TK R)) hJ (toUnit _ ≫ η[P.A]) (toUnit _ ≫ η[P.A]) (toUnit _ ≫ η[P.A])
-    rw [Category.id_comp] at c
-    have c' := c.trans ((isCub_cubV cub hJ).face _ _)
-    exact ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vt _ _ y J hJ) c')).trans
-      ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vt _ _ y J hJ) (vt _ _ y J hJ))).symm
-
 end GlobalTheory.SelfUnif
 
 namespace GlobalTheory
-
-open SelfUnif in
-
-theorem exists_unif_abelianScheme : GlobalFnsSt → SecBaseChangeSt → CubeSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R] (P : PolAV (Spec (CommRingCat.of R))) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (eA : (Over.pullback (jK R)).obj P.A ≅ A.A), IsMonHom eA.hom → (∃ w : LB.Iso (A.L.pull eA.hom.left) (P.L.pull (pullback.fst P.A.hom (jK R))), w.IsGen) → ∃ D : DegData R I, D.toPre.P = P ∧ Subsingleton D.toPre.X ∧ Nonempty (Unif I D A P.A) := by
-  intro hG _ hC R _ _ _ _ I _ P A eA hA hw
-  obtain ⟨D, rfl, hX⟩ := exists_degData hC I P
-  exact ⟨D, rfl, hX, ⟨⟨selfPre D A eA hA hw, fun k _ =>
-    expBij D A eA hA hw hG (IsAdicComplete.le_jacobson_bot I) k⟩⟩⟩
 
 end GlobalTheory

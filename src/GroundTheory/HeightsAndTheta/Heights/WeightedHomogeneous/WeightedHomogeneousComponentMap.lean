@@ -1,9 +1,12 @@
 import Mathlib
-import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Statements
+import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Objects
+import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.DualModel
+import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Reading
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyCN
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PConservationOfNumberLE
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PGenericCycleCorresp
 import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumBaseChange
+
 set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
@@ -172,143 +175,6 @@ theorem charZero_fractionRing (O : Type) [CommRing O] [IsDomain O]
   exact (IsFractionRing.injective O (FractionRing O)).comp h
 
 end WeightedDegree
-
-theorem WeightedDegree.proof : WeightedDegree.Statement := by
-  intro ι _ _ n P D hdim a p hp
-  classical
-  let ι' : ι → Type := fun k ↦ Fin (n k + 1)
-  let PI : Ideal (MRing ι' ℤ) := P.ideal
-  have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp.out
-  set 𝔭 : Ideal ℤ := Ideal.span {(p : ℤ)} with h𝔭def
-  have h𝔭max : 𝔭.IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hpZ.irreducible
-  have h𝔭 : 𝔭.IsPrime := h𝔭max.isPrime
-  have h𝔭0 : 𝔭 ≠ ⊥ := by
-    rw [h𝔭def, Ne, Ideal.span_singleton_eq_bot]
-    exact hpZ.ne_zero
-  let O := Localization.AtPrime 𝔭
-  have : IsDiscreteValuationRing O :=
-    IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain ℤ h𝔭0 O
-  let ϖ : O := (p : O)
-  have hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ} := by
-    rw [← IsLocalization.AtPrime.map_eq_maximalIdeal 𝔭 O]
-    change Ideal.map (algebraMap ℤ O) (Ideal.span {(p : ℤ)}) = _
-    rw [Ideal.map_span, Set.image_singleton]
-    simp [ϖ]
-  have hϖ : Irreducible ϖ := (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mpr hmax
-  let M : Submonoid (MRing ι' ℤ) := 𝔭.primeCompl.map (C (σ := Σ k, ι' k))
-  let φ := algebraMap (MRing ι' ℤ) (MRing ι' O)
-  let P' : Ideal (MRing ι' O) := PI.map φ
-
-  have hPdisj : Disjoint (M : Set (MRing ι' ℤ)) PI := by
-    rw [Set.disjoint_left]
-    rintro _ ⟨r, hr, rfl⟩ hrP
-    have h0 := P.horizontal r hrP
-    rw [h0] at hr
-    exact hr 𝔭.zero_mem
-  have hP'prime : P'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint M (MRing ι' O) PI P.isPrime hPdisj
-  have hP'comap : P'.comap φ = PI :=
-    IsLocalization.under_map_of_isPrime_disjoint M (MRing ι' O) P.isPrime hPdisj
-  have hmp : IsMultiProjPrime P' :=
-    { isPrime := hP'prime
-      multiHomog := WeightedDegree.isMultiHomogIdeal_map 𝔭.primeCompl (fun f hf m ↦ P.homogeneous f hf m)
-      relevant := fun k ↦ by
-        obtain ⟨i, hi⟩ := P.relevant k
-        refine ⟨i, fun h ↦ hi ?_⟩
-        have h' : φ (X ⟨k, i⟩) ∈ P' := by
-          rw [show φ (X ⟨k, i⟩) = X ⟨k, i⟩ from map_X _ _]
-          exact h
-        have h'' : (X ⟨k, i⟩ : MRing ι' ℤ) ∈ P'.comap φ := h'
-        rw [hP'comap] at h''
-        exact h'' }
-  have hnt : P'.comap (C : O →+* MRing ι' O) = ⊥ := by
-    rw [eq_bot_iff]
-    intro x hx
-    rw [Ideal.mem_comap] at hx
-    rw [Ideal.mem_bot]
-    obtain ⟨⟨m, s⟩, hms⟩ := IsLocalization.surj 𝔭.primeCompl x
-    simp only at hms
-    have hmem : φ (C m) ∈ P' := by
-      rw [show φ (C m) = C (algebraMap ℤ O m) from map_C _ _, ← hms, map_mul]
-      exact P'.mul_mem_right _ hx
-    have hmem' : (C m : MRing ι' ℤ) ∈ P'.comap φ := hmem
-    rw [hP'comap] at hmem'
-    have hm0 : m = 0 := P.horizontal m hmem'
-    rw [hm0, map_zero] at hms
-    exact ((IsLocalization.map_units O s).mul_left_eq_zero).mp hms
-  have hdimle : ringKrullDim (MRing ι' O ⧸ P') ≤ ((D + 1 + Fintype.card ι : ℕ) : WithBot ℕ∞) :=
-    (WeightedDegree.ringKrullDim_quotient_map_le 𝔭.primeCompl PI).trans_eq hdim
-
-  have key := ConservationOfNumberLE.proof.{0} IntNumAssoc.full SpecialCycleEval.full
-    SpecialPieceRank.full GenericPieceRank.full SpecialIdealMultiHomog.full O ϖ hϖ ι ι' P' D hmp hnt
-    hdimle a
-
-  have hinjO : Function.Injective (Int.castRingHom O) := by
-    rw [RingHom.ext_int (Int.castRingHom O) (algebraMap ℤ O)]
-    exact IsLocalization.injective O 𝔭.primeCompl_le_nonZeroDivisors
-  have : CharZero (FractionRing O) := WeightedDegree.charZero_fractionRing O hinjO
-  have hgen : gNum P' a = intNum ℚ (P.ideal.map (MvPolynomial.map (Int.castRingHom ℚ))) a := by
-    have hcomp : genFib P' = (PI.map (MvPolynomial.map (Int.castRingHom ℚ))).map
-        (MvPolynomial.map (algebraMap ℚ (FractionRing O))) := by
-      unfold genFib
-      rw [Ideal.map_map, Ideal.map_map]
-      congr 1
-      refine RingHom.ext fun x ↦ ?_
-      change MvPolynomial.map _ (MvPolynomial.map _ x) = MvPolynomial.map _ (MvPolynomial.map _ x)
-      rw [MvPolynomial.map_map, MvPolynomial.map_map]
-      exact congrArg (fun g ↦ MvPolynomial.map g x) (RingHom.ext_int _ _)
-    unfold gNum
-    rw [hcomp]
-    exact (FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 ℚ (FractionRing O) ι ι' _).2 D a
-
-  have : CharP (IsLocalRing.ResidueField O) p :=
-    (CharP.charP_iff_prime_eq_zero hp.out).mpr (by
-      rw [show ((p : ℕ) : IsLocalRing.ResidueField O) = IsLocalRing.residue O ϖ by simp [ϖ],
-        IsLocalRing.residue_eq_zero_iff, hmax]
-      exact Ideal.subset_span rfl)
-  let : Algebra (ZMod p) (IsLocalRing.ResidueField O) :=
-    (ZMod.castHom (dvd_refl p) (IsLocalRing.ResidueField O)).toAlgebra
-  have hspec : ∀ W : Ideal (MRing ι' ℤ), vNum (W.map φ) a =
-      intNum (ZMod p) (W.map (MvPolynomial.map (Int.castRingHom (ZMod p)))) a := by
-    intro W
-    have hcomp : specialIdeal (W.map φ) = (W.map (MvPolynomial.map (Int.castRingHom (ZMod p)))).map
-        (MvPolynomial.map (algebraMap (ZMod p) (IsLocalRing.ResidueField O))) := by
-      unfold specialIdeal
-      rw [Ideal.map_map, Ideal.map_map]
-      congr 1
-      refine RingHom.ext fun x ↦ ?_
-      change MvPolynomial.map _ (MvPolynomial.map _ x) = MvPolynomial.map _ (MvPolynomial.map _ x)
-      rw [MvPolynomial.map_map, MvPolynomial.map_map]
-      exact congrArg (fun g ↦ MvPolynomial.map g x) (RingHom.ext_int _ _)
-    unfold vNum
-    rw [hcomp]
-    exact (FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 (ZMod p) (IsLocalRing.ResidueField O) ι ι' _).2 D a
-
-  have hWdisj : ∀ W ∈ (PI ⊔ Ideal.span {(C (p : ℤ) : MRing ι' ℤ)}).minimalPrimes,
-      Disjoint (M : Set (MRing ι' ℤ)) W := by
-    intro W hW
-    have : W.IsPrime := hW.1.1
-    rw [Set.disjoint_left]
-    rintro _ ⟨r, hr, rfl⟩ hrW
-    have hle : 𝔭 ≤ W.comap (C : ℤ →+* MRing ι' ℤ) := by
-      rw [h𝔭def, Ideal.span_le, Set.singleton_subset_iff]
-      exact hW.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))
-    have heq := h𝔭max.eq_of_le (Ideal.comap_isPrime (C : ℤ →+* MRing ι' ℤ) W).ne_top hle
-    have hr' : r ∈ W.comap (C : ℤ →+* MRing ι' ℤ) := hrW
-    rw [← heq] at hr'
-    exact hr hr'
-  have hmain := WeightedDegree.cycEval_divCycle_map (R' := O) 𝔭.primeCompl PI (C (p : ℤ)) hWdisj
-    (fun W' : Ideal (MRing ι' O) ↦ vNum W' a)
-  have hCp : (C ϖ : MRing ι' O) = φ (C (p : ℤ)) := by
-    rw [show φ (C (p : ℤ)) = C (algebraMap ℤ O (p : ℤ)) from map_C _ _]
-    simp [ϖ]
-  calc intNum ℚ (P.ideal.map (MvPolynomial.map (Int.castRingHom ℚ))) a = gNum P' a := hgen.symm
-    _ = cycEval (fun W ↦ vNum W a) (divCycle P' (C ϖ)) := key.symm
-    _ = cycEval (fun W ↦ vNum W a) (divCycle P' (φ (C (p : ℤ)))) := by rw [hCp]
-    _ = cycEval (fun W ↦ vNum (W.map φ) a) (divCycle PI (C (p : ℤ))) := hmain.symm
-    _ = _ := by
-      congr 1
-      funext W
-      exact hspec W
 
 end
 

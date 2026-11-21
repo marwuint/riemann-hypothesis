@@ -144,14 +144,6 @@ structure ThetaChrTied (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTie
   chrOf : ∀ μ (j : Fin D.R.m), eChr (X.chrOf μ (j.1 + 1)) = Tp.tup μ j
   etaT : eChr X.etaT = C.eta
 
-theorem ThetaChrTied.carY {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} {X : ThetaX D}
-    (T : ThetaChrTied D C nch Tp X) (μ : D.what₂.Tup) (j : Fin D.R.m) (i : ℕ) :
-    T.eChr (X.carY μ (j.1 + 1) i) = if Even i then Tp.tup μ j * C.eta⁻¹ else Tp.tup μ j := by
-  unfold ThetaX.carY
-  split_ifs
-  · rw [map_mul, map_inv, T.chrOf, T.etaT]
-  · exact T.chrOf μ j
-
 end GlobalTheory.Mem.Chr
 
 end

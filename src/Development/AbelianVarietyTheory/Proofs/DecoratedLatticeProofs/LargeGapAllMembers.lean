@@ -129,16 +129,6 @@ theorem bigGap_of_val {C : FC} {cD ch : ℝ} {D : D7} {L : SizeData₂ D} (h : V
   push_cast
   linarith
 
-theorem rowE_bigGap : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL),
-    GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => GlobalTheory.Core.Rk.BigGap D) := by
-  intro hL p
-  refine ⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ =>
-    ⟨11311, fun ch hch _ => ⟨300000 * 4 ^ 30, fun K hK hx β _ _ _ _ => ?_⟩⟩⟩⟩⟩
-  show BigGap β.X.toD7
-  refine bigGap_of_val β.val ?_ ?_
-  · rw [hK.2.2.1]; exact hch
-  · rw [β.sc]; exact hx
-
 end GlobalTheory.Core.Rk.GapAt
 
 end

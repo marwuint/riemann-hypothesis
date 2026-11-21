@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralProperties
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteEllipticCharpolyCompactSectionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteEllipticCharpolyCompactSection
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
@@ -63,7 +63,7 @@ theorem finite_pairs : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], U
     rintro _ ⟨_, ⟨y, hy, rfl⟩, rfl⟩
     rw [hw] at hy
     exact nrmL_mem_KGL hU b w (mem_prod_of_mem_tsupport hU a b w hy).2
-  refine ((GlobalTheory.T.finite_ellipticCharpoly_compact_section E a S hS C₁ hC₁ hK₁).prod (GlobalTheory.T.finite_ellipticCharpoly_compact_section E b S hS C₂ hC₂ hK₂)).subset ?_
+  refine ((_root_.GlobalTheory.FinChar.finite_ell_charpoly E a S hS C₁ hC₁ hK₁).prod (_root_.GlobalTheory.FinChar.finite_ell_charpoly E b S hS C₂ hC₂ hK₂)).subset ?_
   rintro p ⟨h₁, h₂, h⟩
   refine ⟨⟨h₁, fun w hw => ?_⟩, ⟨h₂, fun w hw => ?_⟩⟩
   · obtain ⟨y, hy, e₁, -⟩ := h w hw

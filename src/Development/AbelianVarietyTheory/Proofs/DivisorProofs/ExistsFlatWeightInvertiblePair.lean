@@ -25,7 +25,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDominantWeigh
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicRestrictionSubalgebraFrameDomainIsDom
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutingMultiplierEqConstSmulGenerator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegerExponentSectionEqZeroOfIncreasingFlag
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonzeroCuspSectionLargeEvenScalarWeightStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonzeroCuspSectionLargeEvenScalarWeight
 
 set_option autoImplicit false
 
@@ -88,7 +88,7 @@ theorem holSub0_le_span_cusp_upto : Formalism.MainNotions.ModuliIntegralCharts.H
   refine (GlobalTheory.LargeCover.holSub0_le_span_shortGen_upto hC E H Dw l Xo c n d σ r (U σ) hσ (hU σ hσ) hr hA hG hlev hnab hunit h3
     (fun _ => ⟨ph, 1, x₀, hpin⟩) nab 1 0 a Nat.one_pos hdom hn hP hχ htot).trans
     (Submodule.span_mono (Set.image_mono ?_))
-  exact GlobalTheory.T.short_thetaSeries_dominant_weight_isCuspForm hC E H Dw l Xo c n d r U hr hU hlev hnab hunit (fun _ => ⟨ph, 1, x₀, hpin⟩) nab 1 0 a hdom hlast
+  exact _root_.GlobalTheory.Dict.shortInCusp_cusp hC E H Dw l Xo c n d r U hr hU hlev hnab hunit (fun _ => ⟨ph, 1, x₀, hpin⟩) nab 1 0 a hdom hlast
 
 theorem princUpTo_of_det {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (M : ℕ) (hM : 3 ≤ M)
     (hdet : ∀ γ ∈ X.Γ, (γ : Matrix (Fin r) (Fin r) E).det = 1)
@@ -304,7 +304,7 @@ theorem exists_model_cusp {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hL : Neat
         if ((U σ).X k).p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ) := fun n => by
       funext τ j
       simp [laU]
-    obtain ⟨n, hn, hev, P, hPm, y, hy, hne⟩ := GlobalTheory.T.exists_nonzero_cuspSection_large_evenScalarWeight E r ((U σ).X k) (by omega) (by omega)
+    obtain ⟨n, hn, hev, P, hPm, y, hy, hne⟩ := _root_.GlobalTheory.ScalarPoin.exists_cusp_ne_some E r ((U σ).X k) (by omega) (by omega)
       (fun n hn γ hγ => by rw [← hla]; exact hL.chi σ hσ 0 n ⟨fun _ => antitone_const, hn⟩ k γ hγ) 1
     exact ⟨n, hn, hev, P, hla n ▸ hPm, y, hy, hne⟩
 
@@ -496,7 +496,7 @@ theorem exists_flat_pair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     rw [mul_comm]
     exact mul_mem_suppOn g (hsupp _ hf)
   obtain ⟨k0, hτ0, hk0, hA0, -⟩ := pk σ0 hσ0
-  obtain ⟨T, hT0, hTc⟩ := GlobalTheory.T.exists_rational_multiplier_of_complex_multiplier c.F (Rul Xo c) (↥((U σ0).X k0).dom → ℂ) σ0 (resRd (U σ0) hT k0)
+  obtain ⟨T, hT0, hTc⟩ := _root_.GlobalTheory.exists_rational_multiplier_of_complex c.F (Rul Xo c) (↥((U σ0).X k0).dom → ℂ) σ0 (resRd (U σ0) hT k0)
     (resRd_smul (U σ0) hT k0) (cuspOn U Z (wtZ a n)) (cuspOn U Z (wtZ a' n))
     (fun m b hb hli => by
       have hb' : ∀ i, b i ∈ sec Xo c (a + a') (n + n) ⊓ suppOn Z := fun i =>
@@ -755,33 +755,5 @@ theorem GlobalTheory.FlatAnyLevel.neatUnf_of_good (D : D7) (T : Core D) (j : ℕ
     exact ⟨(hW k).1.trans (hW k').1.symm, (hW k).2.trans (hW k').2.symm⟩
   · obtain ⟨th, hrk, hth, hD⟩ := hG.dictU σ hσ
     exact GlobalTheory.LevLaws.det_eq_one _ hrk hr (Y.U σ).X (Y.dict σ) Y.Kf th hth hD (hG.unit σ hσ) _ hN hG.levelK k γ hγ
-
-open GlobalTheory.FlatCore GlobalTheory.FlatLine GlobalTheory.AllWt in
-
-theorem GlobalTheory.FlatAnyLevel.exists_flat_unit_bdd : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∃ N : ℕ, 0 < N ∧ ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (τ : Psi T.Q.H), ∃ s i : Rul Y.d.Xo₂ Y.d.c₂, s ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) ((N : ℤ) • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) ∧ i ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (-Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) ((N : ℤ) • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) ∧ GlobalTheory.FlatLine.idem Z * s = s ∧ GlobalTheory.FlatLine.idem Z * i = i ∧ s * i = GlobalTheory.FlatLine.idem Z ∧ (∀ σ, GoodEmb Y.d.c₂ σ → ∃ C : ℝ, ∀ z ∈ framesOn (Y.U σ) Z, GlobalTheory.AllWt.homN (Y.U σ) (xiR D) (wtOf (T.Q.Dw j) ((N : ℤ) • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0) s z ≤ C ∧ GlobalTheory.AllWt.homN (Y.U σ) (xiR D) (-(wtOf (T.Q.Dw j) ((N : ℤ) • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) i z ≤ C) := by
-  intro _ D T j Y e o hG _
-  refine ⟨1, one_pos, fun Z τ => ?_⟩
-  obtain ⟨A⟩ := GlobalTheory.FlatAnyLevel.archEx (GlobalTheory.FlatAnyLevel.neatUnf_of_good D T j Y e o hG) (xiR D) Z τ
-  simp only [Nat.cast_one, one_smul]
-  refine ⟨A.sig, A.inv, A.sig_mem, A.inv_mem, A.idem_sig, A.idem_inv, A.mul_inv, fun σ hσ => ?_⟩
-  have hg : goodOf Y.d.c₂ σ = σ := if_pos hσ
-  have hn := A.norm_inf σ
-  rw [hg] at hn
-  refine ⟨max (A.cInf σ) (A.cInf σ)⁻¹, fun z hz => ?_⟩
-  have hs : homN (Y.U σ) (xiR D) (wtOf (T.Q.Dw j) (flatWt (T.Q.Dw j) τ) 0) A.sig z = A.cInf σ := by
-    have := hn ▸ Set.mem_image_of_mem _ hz
-    exact this
-  obtain ⟨hdom, hlies⟩ := hz
-  have hpos := A.cInf_pos σ
-  have ht := tested_of_homN_ne (U := Y.U σ) (x := xiR D) hdom (hs.trans_ne hpos.ne')
-  have hi := homN_idem (U := Y.U σ) (x := xiR D) hdom hlies ht
-  have hm := homN_mul (Y.U σ) (xiR D) (G := wtOf (T.Q.Dw j) (flatWt (T.Q.Dw j) τ) 0)
-    (G' := -(wtOf (T.Q.Dw j) (flatWt (T.Q.Dw j) τ) 0)) ⟨0, by simp [wtOf_snd]⟩ ⟨0, by simp [wtOf_snd]⟩ A.sig A.inv z hdom
-  rw [add_neg_cancel, A.mul_inv, hi, hs] at hm
-  refine ⟨hs ▸ le_max_left _ _, ?_⟩
-  have : homN (Y.U σ) (xiR D) (-(wtOf (T.Q.Dw j) (flatWt (T.Q.Dw j) τ) 0)) A.inv z = (A.cInf σ)⁻¹ := by
-    field_simp
-    linarith
-  rw [this]; exact le_max_right _ _
 
 end Cover

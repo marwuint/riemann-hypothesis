@@ -74,10 +74,6 @@ theorem degZeroLoc.algebraMap_contract_coe (P' : Ideal (MRing ι' F)) [P'.IsPrim
 
 end Fibre
 
-section Example
-
-end Example
-
 end
 
 end GroundTheory.Heights₂.Heights.FieldNumbers

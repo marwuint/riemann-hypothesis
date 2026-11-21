@@ -1,6 +1,6 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPosNatSmulMemOfFgAndSpanningLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPosNatSmulMemOfFgAndSpanningLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteRelIndexStabilizerCommensurableLattiStatement
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD
@@ -96,8 +96,8 @@ theorem relIndex_map_conj_ne_zero : ∀ {E : Type} [Field E] [NumberField E] [Is
   set Λ' := X₂.Λ.map (moveLin δ) with hΛ'
   have hfg : Λ'.FG := X₂.Λ_fg.map _
   have hsp := span_map_moveLin δ X₂.Λ X₂.Λ_span
-  obtain ⟨n₁, hn₁, h₁⟩ := GlobalTheory.T.exists_pos_nat_smul_mem_of_fg_and_spanning_lattice X.Λ Λ' hfg X.Λ_span
-  obtain ⟨n₂, hn₂, h₂⟩ := GlobalTheory.T.exists_pos_nat_smul_mem_of_fg_and_spanning_lattice Λ' X.Λ X.Λ_fg hsp
+  obtain ⟨n₁, hn₁, h₁⟩ := _root_.GlobalTheory.exists_pos_nat_smul_mem_of_fg_of_span_eq_top X.Λ Λ' hfg X.Λ_span
+  obtain ⟨n₂, hn₂, h₂⟩ := _root_.GlobalTheory.exists_pos_nat_smul_mem_of_fg_of_span_eq_top Λ' X.Λ X.Λ_fg hsp
   have hnat : ∀ (L : Submodule (𝓞 E) (Fin r → E)) (k : ℕ) (v : Fin r → E), v ∈ L →
       (k : E) • v ∈ L := by
     intro L k v hv

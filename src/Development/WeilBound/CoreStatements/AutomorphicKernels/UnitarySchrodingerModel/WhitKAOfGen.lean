@@ -59,8 +59,6 @@ def DictKA : Prop :=
           IfrB V ν (fun x => (ω k Φ).1 (HMul.hMul x a.1)) β = ∑ j, vals j ∧
       ∀ j, MatchGenA ψ V μ lam nb w H (φs j) (adj a.1 * β.1.map (incA D) * a.1) k β (vals j)
 
-def WhitKAOfGen : Prop := PositivityTheory.SiegelWeilFormula.Gen.WhitGen → DictKA → WhitKA
-
 end PositivityTheory.PfSWUS
 
 end

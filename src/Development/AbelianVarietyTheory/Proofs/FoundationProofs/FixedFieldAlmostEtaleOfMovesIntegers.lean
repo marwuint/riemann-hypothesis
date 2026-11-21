@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SeparatingFamilySumClosedUnderProdStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SeparatingFamilySumClosedUnderProd
 open GlobalTheory.AlmostEt
 open scoped NNReal
 
@@ -55,7 +55,7 @@ theorem almostSep_of_moves : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) 
   let x : G ⧸ N → L := fun q => q.out • y q
   have hxF : ∀ q, x q ∈ Fix L N := fun q => smul_mem_fix N _ (hyF q)
   have hxv : ∀ q, v (x q) ≤ 1 := fun q => by simp only [x, hv]; exact hyv q
-  obtain ⟨n, a, b, hab, hsum⟩ := GlobalTheory.T.separating_family_sum_closed_under_prod L v G (Fix L N) (G ⧸ N) s x y
+  obtain ⟨n, a, b, hab, hsum⟩ := _root_.GlobalTheory.sepFamily_prod L v G (Fix L N) (G ⧸ N) s x y
     (fun j _ => ⟨hxF j, hyF j, hxv j, hyv j⟩)
   refine ⟨n, a, b, ∏ q ∈ s, (x q - y q), ?_, ?_⟩
   · refine

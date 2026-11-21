@@ -1,6 +1,35 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.MoriwakiBigness.HilbertSamuelApplications.SmallGeneratedCountUpperOfUse
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HilbertSamuelG3OfMoriwaki
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.MoriwakiSt
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsArith
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsPieceDegree
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEmbeddingPieces
+import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.SmallSectionCountLeOfInjOn
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLocalRep
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PConstantShift
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSmallSectionPointHeight
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSectionOrderAtPoint
+import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PBoundedSectionTransfer
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGenOnFibres
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsAmpleOfGenTwist
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBridgeFull
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedProductNonneg
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedRestrict
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGeneratedEffectiveSection
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefAmpleFibre
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSemiampleNef
+import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.GeoNum
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingAlt
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
+
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
@@ -12,6 +41,6 @@ theorem selfIntersection_le_of_boundedInjection_use :
       GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.proof
       GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.proof
       (GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeBig.of_moriwakiBig_only hBig)
-      hU.g7 GlobalTheory.T.packing'
+      hU.g7 _root_.GlobalTheory.CompanionTheory.Ar.Small.packing
 
 end GlobalTheory.CompanionTheory.Ar.Giv

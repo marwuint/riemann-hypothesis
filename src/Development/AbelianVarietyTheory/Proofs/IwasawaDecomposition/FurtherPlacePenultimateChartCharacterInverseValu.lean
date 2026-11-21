@@ -77,10 +77,10 @@ theorem chi_embU_mul_valV : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok
   have hm : B.R.m - 1 < B.R.m := by omega
   have hlast : B.R.m - 1 + 1 = B.R.m := by omega
   let y0 : SBof I a → Sp B.fields.E (B.R.N (B.R.m - 1)) := fun P =>
-    ((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a _ ((I.stp u a _).rep c) P).2 hlast).1.some
+    ((_root_.GlobalTheory.Mem.Col2.AdT.CosShape.cosShape I hOk u a _ ((I.stp u a _).rep c) P).2 hlast).1.some
   have H := lev_mid hOk hPins hR c hfb (hFin _) hm y0
     (Rel := fun P g z => MidAt I hm c.1 P g z ∧ (B.R.m - 1 + 1 = B.R.m → GlobalTheory.TwU.SameCoset I.sel (I.tup a) (I.cst a) P (g (y0 P)) (y0 P)))
-    (fun _ P => ((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a _ ((I.stp u a _).rep c) P).2 hlast).1.some_mem) (fun _ _ _ => Iff.rfl)
+    (fun _ P => ((_root_.GlobalTheory.Mem.Col2.AdT.CosShape.cosShape I hOk u a _ ((I.stp u a _).rep c) P).2 hlast).1.some_mem) (fun _ _ _ => Iff.rfl)
   have hx : bc (prV (E := (I.rec7 l Z).host.E) v) (GlobalTheory.Mem.Col2.ChartLevel.emb v x.1) ∈ (K (chOf c)).lev.Uloc v := by
     rw [GlobalTheory.Mem.Col2.ChartLevel.emb_self]; exact x.2
   have key : ∀ (P : SBof I a) (j : ℕ), j = B.R.m - 2 + 1 → ∀ b, (I.idx a).h j b P = 1 := by

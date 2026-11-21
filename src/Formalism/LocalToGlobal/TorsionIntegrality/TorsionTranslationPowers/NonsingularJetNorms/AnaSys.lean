@@ -382,8 +382,6 @@ end AnaSys
 
 theorem PtOfZero_of : PtOfZero := fun l _ L ι t => AnaSys.ptOf_zero_iff l L ι t
 
-theorem WpBridge_of : WpBridge := AnaSys.wpBridge
-
 theorem AnalyticSys_of (hT : TransWpBridge) : AnalyticSys := by
   intro l _ L ι π hπ
   refine ⟨?_, ?_, ?_⟩
@@ -405,9 +403,5 @@ theorem AnalyticSys_of (hT : TransWpBridge) : AnalyticSys := by
     by_cases hP : P ∈ L.lattice
     · exact AnaSys.prod_mem l L ι P Q hQ' hP
     · exact AnaSys.prod_notMem l L ι hT P Q hQ' hP
-
-theorem TransWpBridge_of : TransWpBridge := AnaSys.transWpBridge
-
-theorem analytic_translate_system : AnalyticSys := AnalyticSys_of TransWpBridge_of
 
 end Formalism.L2.Th1.E

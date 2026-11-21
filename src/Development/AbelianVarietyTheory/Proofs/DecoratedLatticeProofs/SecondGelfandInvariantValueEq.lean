@@ -24,6 +24,4 @@ theorem gelfVal_two (n : ℕ) (lam : Fin n → ℂ) :
   rw [GlobalTheory.CasimirEigen.gelfVal_two_eq, sum_rhoStd_sq]
   simp only [sq]
 
-example : ∀ (n : ℕ) (lam : Fin n → ℂ), GlobalTheory.Dec.gelfVal lam 2 = ∑ a, lam a ^ 2 - ((rhoSq n : ℚ) : ℂ) := gelfVal_two
-
 end GlobalTheory.GelfandTwo

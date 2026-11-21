@@ -18,7 +18,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitEntries
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralOfMulVec
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GenericLocalTermsSelfDualLatticesStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryComplementMovesHermitianTermsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDataWithTermSingleOrbitPrimeToStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDataWithTermSingleOrbitPrimeTo
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.AtBase
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
 
@@ -243,6 +244,6 @@ theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E
     exact ⟨LocNG.img g Λ0, hmem, fun Λ hΛ => huniq d _ _ hΛ hmem⟩
   · obtain ⟨t, ht⟩ := ht
     obtain ⟨t0, ht0⟩ := hd0
-    exact GlobalTheory.T.hermitianData_with_term_single_orbit_primeTo M hM H r k P hdim hrel hpt d0 d t0 t ht0 ht
+    exact _root_.GlobalTheory.HL.PrimeToOrbit.main M hM H r k P hdim hrel hpt d0 d t0 t ht0 ht
 
 end GlobalTheory.HL.GoodFrames

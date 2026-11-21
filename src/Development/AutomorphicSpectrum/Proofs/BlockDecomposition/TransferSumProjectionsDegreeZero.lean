@@ -1,23 +1,23 @@
 import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.HodgeWedgeFields.H1CommutesBaseChange
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Cup1CoboundaryMemBoundaries
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShuffleCoboundaryFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShuffleCoboundaryFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShuffleCoboundaryDegreeZeroStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShuffleCup1FormulaPositiveDegreeStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShuffleCup1DegreeZeroFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BisimplicialValueOfFactorPullbacksStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegenerateFaceOfOneCocycleEqZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractionNaturalInFaceMapsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegenerateFaceOfOneCocycleEqZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractionNaturalInFaceMaps
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractionMulLeftRightAndOneStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractionLinearInFunctionalStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitUniversalEqPullbackBoxEvaluationStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoxEvaluationPullbackLeftRightStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractionLoweringDerivationFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LowDegreeCocyclesLiftToNerveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LowDegreeComparisonIndependentOfChoiceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupProductCompatibleWithComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SteinCocyclesDegreeZeroAreConstantsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteFunctorCategoryOfMeetLatticeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LowDegreeComparisonIndependentOfChoice
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupProductCompatibleWithComparison
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SteinCocyclesDegreeZeroAreConstants
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteFunctorCategoryOfMeetLattice
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VectorSpaceHasBasisOfDimensionStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExteriorSquareTransportAlongEquivStatement
 
@@ -36,12 +36,12 @@ section Slant
 
 theorem Con_prB {p q q' : ℕ} [Finite (Fin (p + 1) ⥤ C)] (Ξ : Cn F p →ₗ[R] R) (e : Fin (q + 1) →o Fin (q' + 1))
     (B : Bi F p q) : Con F Ξ q' (prB F e B) = pr F e (Con F Ξ q B) :=
-  (GlobalTheory.T.contraction_natural_in_face_maps F Ξ Ξ e OrderHom.id).1 B
+  (_root_.GlobalTheory.CompanionTheory.HopfC.ConPr.con_pr F Ξ Ξ e OrderHom.id).1 B
 
 theorem Con_prA {p p' q : ℕ} [Finite (Fin (p + 1) ⥤ C)] [Finite (Fin (p' + 1) ⥤ C)] (Ξ : Cn F p' →ₗ[R] R)
     (e : Fin (p + 1) →o Fin (p' + 1)) (B : Bi F p q) :
     Con F Ξ q (prA F e B) = Con F (Ξ ∘ₗ (pr F e).toLinearMap) q B :=
-  (GlobalTheory.T.contraction_natural_in_face_maps (q := q) (q' := q) F (Ξ ∘ₗ (pr F e).toLinearMap) Ξ OrderHom.id e).2 B
+  (_root_.GlobalTheory.CompanionTheory.HopfC.ConPr.con_pr (q := q) (q' := q) F (Ξ ∘ₗ (pr F e).toLinearMap) Ξ OrderHom.id e).2 B
 
 theorem Con_dn {p n : ℕ} [Finite (Fin (p + 1) ⥤ C)] (Ξ : Cn F p →ₗ[R] R) (B : Bi F p n) :
     Con F Ξ (n + 1) (∑ j : Fin (n + 1 + 1), ((-1 : R) ^ (j : ℕ)) • prB F (dl j) B) = dn F n (Con F Ξ n B) := by
@@ -86,7 +86,7 @@ theorem TT_dn (Ξ : Cn F 1 →ₗ[R] R) (n : ℕ) (w : Cn (box F) (n + 1)) :
     TT F Ξ (n + 1) (dn (box F) (n + 1) w) = UU F (Ξ ∘ₗ dn F 0) (n + 1) w - dn F n (TT F Ξ n w) := by
   change GlobalTheory.CompanionTheory.HopfC.Con F Ξ (n + 1) (GlobalTheory.CompanionTheory.HopfC.Sh F (n + 1) (MainStatements.Hodge.dn (MainStatements.Hodge.box F) (n + 1) w)) =
     GlobalTheory.CompanionTheory.HopfC.UU F (Ξ ∘ₗ MainStatements.Hodge.dn F 0) (n + 1) w - MainStatements.Hodge.dn F n (GlobalTheory.CompanionTheory.HopfC.Con F Ξ n (GlobalTheory.CompanionTheory.HopfC.Sh F n w))
-  rw [GlobalTheory.T.shuffle_coboundary_formula, map_sub, map_sub, GlobalTheory.CompanionTheory.HopfC.Con_dn, GlobalTheory.CompanionTheory.HopfC.UU_comp_dn]
+  rw [_root_.GlobalTheory.CompanionTheory.HopfC.Prism.Sh_dn, map_sub, map_sub, GlobalTheory.CompanionTheory.HopfC.Con_dn, GlobalTheory.CompanionTheory.HopfC.UU_comp_dn]
 
 theorem bv_cst_one (n : ℕ) (w : Cn (box F) n) :
     bv F (cst n 1) OrderHom.id w = prA F (dl 0) (S0 F n w) := by
@@ -100,14 +100,14 @@ theorem bvL_front {x : Cn F 1} (n : ℕ) :
 theorem bvL_back {x : Cn F 1} (hx : dn F 1 x = 0) (n : ℕ) :
     bv F (cst 1 (0 : Fin (1 + 1))) (fr n) (pulln (boxL F) 1 x) = (0 : Bi F 1 (n + 1)) := by
   rw [(GlobalTheory.T.bisimplicial_value_of_factor_pullbacks F _ _ x).1,
-    GlobalTheory.T.degenerate_face_of_one_cocycle_eq_zero F x hx (GlobalTheory.CompanionTheory.HopfC.cst 1 (0 : Fin (1 + 1))) rfl]
+    _root_.GlobalTheory.CompanionTheory.HopfC.pr_eq_zero_of_degenerate F x hx (GlobalTheory.CompanionTheory.HopfC.cst 1 (0 : Fin (1 + 1))) rfl]
   funext a b
   exact TensorProduct.zero_tmul _ _
 
 theorem bvR_front {x : Cn F 1} (hx : dn F 1 x = 0) (n : ℕ) :
     bv F OrderHom.id (cst 1 0) (pulln (boxR F) 1 x) = (0 : Bi F 1 n) := by
   rw [(GlobalTheory.T.bisimplicial_value_of_factor_pullbacks F _ _ x).2,
-    GlobalTheory.T.degenerate_face_of_one_cocycle_eq_zero F x hx (GlobalTheory.CompanionTheory.HopfC.cst 1 (0 : Fin (n + 1))) rfl]
+    _root_.GlobalTheory.CompanionTheory.HopfC.pr_eq_zero_of_degenerate F x hx (GlobalTheory.CompanionTheory.HopfC.cst 1 (0 : Fin (n + 1))) rfl]
   funext a b
   exact TensorProduct.tmul_zero _ _
 
@@ -371,29 +371,29 @@ theorem package (hR : IsField R) [∀ p, Finite (Fin (p + 1) ⥤ C)] (F : C ⥤ 
 
 theorem hopfFieldSt : CxSt → DictSt → LowSt → HopfFieldSt := by
   intro hcc hdict _ R _ P _ _ F g hR hStein hfree hexact hHopf
-  haveI : ∀ p, Finite (Fin (p + 1) ⥤ Pᵒᵖ) := fun p => GlobalTheory.T.finite_functor_category_of_meet_lattice p
+  haveI : ∀ p, Finite (Fin (p + 1) ⥤ Pᵒᵖ) := fun p => _root_.GlobalTheory.CompanionTheory.HopfC.finite_chains_semilattice p
   obtain ⟨D, _, G, π, m, hπ, hprimc, hb⟩ := hHopf
   obtain ⟨T₀, ε, hcc'⟩ := hb trivial
   obtain ⟨u₁, u₂, hF1, hF2, sF1, sF2⟩ := GlobalTheory.T.low_degree_cocycles_lift_to_nerve hdict F
   obtain ⟨u₁E, u₂E, hE1, hE2, conjLinearRankOne, sE2⟩ := GlobalTheory.T.low_degree_cocycles_lift_to_nerve hdict (MainStatements.Hodge.box F)
   obtain ⟨u₁G, u₂G, hG1, hG2, sG1, sG2⟩ := GlobalTheory.T.low_degree_cocycles_lift_to_nerve hdict G
-  have nm := GlobalTheory.T.low_degree_comparison_independent_of_choice F G m u₁.toLinearMap u₁G.toLinearMap u₂.toLinearMap u₂G.toLinearMap
+  have nm := _root_.GlobalTheory.CompanionTheory.HopfC.dictionary_pull F G m u₁.toLinearMap u₁G.toLinearMap u₂.toLinearMap u₂G.toLinearMap
     hF1 hG1 hF2 hG2 sF1 sF2
-  have nπ := GlobalTheory.T.low_degree_comparison_independent_of_choice (MainStatements.Hodge.box F) G π u₁E.toLinearMap u₁G.toLinearMap
+  have nπ := _root_.GlobalTheory.CompanionTheory.HopfC.dictionary_pull (MainStatements.Hodge.box F) G π u₁E.toLinearMap u₁G.toLinearMap
     u₂E.toLinearMap u₂G.toLinearMap hE1 hG1 hE2 hG2 conjLinearRankOne sE2
-  have nl := GlobalTheory.T.low_degree_comparison_independent_of_choice F (MainStatements.Hodge.box F) (MainStatements.Hodge.boxL F) u₁.toLinearMap
+  have nl := _root_.GlobalTheory.CompanionTheory.HopfC.dictionary_pull F (MainStatements.Hodge.box F) (MainStatements.Hodge.boxL F) u₁.toLinearMap
     u₁E.toLinearMap u₂.toLinearMap u₂E.toLinearMap hF1 hE1 hF2 hE2 sF1 sF2
-  have nr := GlobalTheory.T.low_degree_comparison_independent_of_choice F (MainStatements.Hodge.box F) (MainStatements.Hodge.boxR F) u₁.toLinearMap
+  have nr := _root_.GlobalTheory.CompanionTheory.HopfC.dictionary_pull F (MainStatements.Hodge.box F) (MainStatements.Hodge.boxR F) u₁.toLinearMap
     u₁E.toLinearMap u₂.toLinearMap u₂E.toLinearMap hF1 hE1 hF2 hE2 sF1 sF2
-  have ne := GlobalTheory.T.low_degree_comparison_independent_of_choice (MainStatements.Hodge.box F) F (MainStatements.Hodge.boxE F T₀ ε)
+  have ne := _root_.GlobalTheory.CompanionTheory.HopfC.dictionary_pull (MainStatements.Hodge.box F) F (MainStatements.Hodge.boxE F T₀ ε)
     u₁E.toLinearMap u₁.toLinearMap u₂E.toLinearMap u₂.toLinearMap hE1 hF1 hE2 hF2 conjLinearRankOne sE2
-  have hcomm := GlobalTheory.T.cup_product_compatible_with_comparison F u₁.toLinearMap u₂.toLinearMap hF1 hF2 sF1
+  have hcomm := _root_.GlobalTheory.CompanionTheory.HopfC.dict_cup F u₁.toLinearMap u₂.toLinearMap hF1 hF2 sF1
   simp only [LinearEquiv.coe_coe] at nm nπ nl nr ne hcomm
   have hcF := hcc R Pᵒᵖ F
   have hdd : ∀ f : MainStatements.Hodge.Cn F 0,
       MainStatements.Hodge.dn F 1 (MainStatements.Hodge.dn F 0 f) = 0 :=
     fun f => LinearMap.congr_fun (hcF.1 0) f
-  obtain ⟨hS, hS0⟩ := GlobalTheory.T.stein_cocycles_degree_zero_are_constants hdict F hStein
+  obtain ⟨hS, hS0⟩ := _root_.GlobalTheory.CompanionTheory.HopfC.stein_cn hdict F hStein
   have hprim : ∀ x : GlobalTheory.CompanionTheory.HopfC.HH F 1, GlobalTheory.CompanionTheory.HopfC.pullH m 1 x =
       GlobalTheory.CompanionTheory.HopfC.pullH π 1 (GlobalTheory.CompanionTheory.HopfC.pullH (MainStatements.Hodge.boxL F) 1 x + GlobalTheory.CompanionTheory.HopfC.pullH (MainStatements.Hodge.boxR F) 1 x) := by
     intro x

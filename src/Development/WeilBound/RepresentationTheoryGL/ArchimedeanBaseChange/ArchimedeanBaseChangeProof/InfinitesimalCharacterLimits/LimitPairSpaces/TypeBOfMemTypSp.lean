@@ -42,10 +42,6 @@ theorem typSp_le {N : ℕ} (K : Subgroup (GL (Fin N) (Af E))) (W : Submodule ℂ
     (U : Submodule ℂ (Sm E N)) : TypSp K W U ≤ U :=
   Submodule.span_le.2 fun _ h => h.1
 
-theorem typSp_mono {N : ℕ} {K K' : Subgroup (GL (Fin N) (Af E))} {W W' : Submodule ℂ (Kinf E N → ℂ)}
-    {U U' : Submodule ℂ (Sm E N)} (hK : K' ≤ K) (hW : W ≤ W') (hU : U ≤ U') : TypSp K W U ≤ TypSp K' W' U' :=
-  Submodule.span_mono fun _ h => ⟨hU h.1, fun u hu g => h.2.1 u (hK hu) g, fun g => hW (h.2.2 g)⟩
-
 theorem tensor_span_mono {a b : ℕ} {U₁ U₁' : Submodule ℂ (Sm E a)} {U₂ U₂' : Submodule ℂ (Sm E b)} (h₁ : U₁ ≤ U₁')
     (h₂ : U₂ ≤ U₂') : tens2 U₁ U₂ ≤ tens2 U₁' U₂' :=
   Submodule.span_mono fun _ ⟨φ₁, hφ₁, φ₂, hφ₂, e⟩ => ⟨φ₁, h₁ hφ₁, φ₂, h₂ hφ₂, e⟩

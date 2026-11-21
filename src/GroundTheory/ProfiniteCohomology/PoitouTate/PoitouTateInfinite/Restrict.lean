@@ -69,30 +69,6 @@ theorem gsRes_surjective (h : T ⊆ S) : Function.Surjective (gsRes (Ω := Ω) h
     rw [gsRes_restrictNormalHom]
     exact (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω T) Ω τ).choose_spec⟩
 
-theorem gsRes_gsRes (hTS : T ⊆ S) (hUT : U ⊆ T) (σ : galUnramifiedOutside K Ω S) :
-    gsRes hUT (gsRes hTS σ) = gsRes (hUT.trans hTS) σ := by
-  apply AlgEquiv.ext
-  intro x
-  apply Subtype.val_injective
-  rw [gsRes_apply hUT, gsRes_apply hTS, gsRes_apply]
-
-theorem mem_ker_gsRes (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) :
-    σ ∈ (gsRes (Ω := Ω) h).ker ↔
-      ∀ x : maxUnramifiedOutside K Ω T, σ ⟨x, maxUnramifiedOutside_mono h x.2⟩ =
-        ⟨x, maxUnramifiedOutside_mono h x.2⟩ := by
-  rw [MonoidHom.mem_ker]
-  constructor
-  · intro hσ x
-    apply Subtype.val_injective
-    have := gsRes_apply h σ x
-    rw [hσ] at this
-    exact this.symm
-  · intro hσ
-    apply AlgEquiv.ext
-    intro x
-    apply Subtype.val_injective
-    rw [gsRes_apply, hσ x, AlgEquiv.one_apply]
-
 theorem continuous_gsRes (h : T ⊆ S) : Continuous (gsRes (Ω := Ω) h) := by
   have hq : Topology.IsQuotientMap
       (AlgEquiv.restrictNormalHom (F := K) (K₁ := Ω) (maxUnramifiedOutside K Ω S)) :=
@@ -111,13 +87,6 @@ def gsResCont (h : T ⊆ S) : galUnramifiedOutside K Ω S →ₜ* galUnramifiedO
 @[simp]
 theorem gsResCont_apply (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) : gsResCont h σ = gsRes h σ :=
   rfl
-
-section Local
-
-variable {Kv Ωv : Type u} [Field Kv] [Field Ωv] [Algebra K Kv] [Algebra Kv Ωv] [Algebra K Ωv]
-  [IsScalarTower K Kv Ωv]
-
-end Local
 
 end
 

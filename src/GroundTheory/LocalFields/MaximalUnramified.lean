@@ -543,30 +543,6 @@ theorem dense_zpowers_ofAdd_one :
   rw [h]
   exact Multiplicative.ofAdd.surjective.denseRange.dense_image continuous_ofAdd denseRange_intCast
 
-theorem dense_zpowers_maximalUnramifiedExtensionFrobenius :
-    Dense (Subgroup.zpowers (maximalUnramifiedExtensionFrobenius K Ω) :
-      Set (maximalUnramifiedExtension K Ω ≃ₐ[K] maximalUnramifiedExtension K Ω)) := by
-  have h : (Subgroup.zpowers (maximalUnramifiedExtensionFrobenius K Ω) :
-      Set (maximalUnramifiedExtension K Ω ≃ₐ[K] maximalUnramifiedExtension K Ω)) =
-      (maximalUnramifiedExtensionGaloisEquiv K Ω).symm ''
-        (Subgroup.zpowers (Multiplicative.ofAdd (1 : ℤ̂)) : Set (Multiplicative ℤ̂)) := by
-    ext ρ
-    simp only [SetLike.mem_coe, Subgroup.mem_zpowers_iff, Set.mem_image]
-    constructor
-    · rintro ⟨k, rfl⟩
-      exact ⟨_, ⟨k, rfl⟩, by rw [map_zpow]; rfl⟩
-    · rintro ⟨_, ⟨k, rfl⟩, rfl⟩
-      exact ⟨k, by rw [map_zpow]; rfl⟩
-  rw [h]
-  exact (maximalUnramifiedExtensionGaloisEquiv K Ω).symm.surjective.denseRange.dense_image
-    (maximalUnramifiedExtensionGaloisEquiv K Ω).symm.continuous dense_zpowers_ofAdd_one
-
-theorem topologicalClosure_zpowers_maximalUnramifiedExtensionFrobenius :
-    (Subgroup.zpowers (maximalUnramifiedExtensionFrobenius K Ω)).topologicalClosure = ⊤ :=
-  SetLike.coe_injective (by
-    rw [Subgroup.topologicalClosure_coe, dense_zpowers_maximalUnramifiedExtensionFrobenius.closure_eq,
-      Subgroup.coe_top])
-
 end MaximalUnramified
 
 section SeparableClosure

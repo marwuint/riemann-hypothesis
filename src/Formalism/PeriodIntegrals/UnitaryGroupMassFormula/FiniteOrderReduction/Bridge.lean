@@ -56,16 +56,6 @@ theorem valued_natCast (p : ℕ) (hp : p.Prime) (hU : Unram E p)
   simp only [map_natCast] at h1
   exact h1
 
-theorem natCast_ne_zero (p : ℕ) (hp : p.Prime) (hU : Unram E p)
-    (P : HeightOneSpectrum (𝓞 E)) (hpP : (p : 𝓞 E) ∈ P.asIdeal) :
-    ((p : ℕ) : OP E P) ≠ 0 := by
-  intro h
-  have h1 := valued_natCast p hp hU P hpP
-  have h2 := congrArg (fun z : OP E P => (z : P.adicCompletion E)) h
-  push_cast at h2
-  rw [h2, map_zero] at h1
-  exact exp_ne_zero h1.symm
-
 theorem maximalIdeal_eq (p : ℕ) (hp : p.Prime) (hU : Unram E p)
     (P : HeightOneSpectrum (𝓞 E)) (hpP : (p : 𝓞 E) ∈ P.asIdeal) :
     IsLocalRing.maximalIdeal (OP E P) = span {((p : ℕ) : OP E P)} := by
@@ -100,15 +90,5 @@ theorem maximalIdeal_eq (p : ℕ) (hp : p.Prime) (hU : Unram E p)
     push_cast
     rw [hvp, ← exp_zero, Ne, exp_inj]
     omega
-
-theorem eq_zero_of_forall_dvd (p : ℕ) (hp : p.Prime) (hU : Unram E p)
-    (P : HeightOneSpectrum (𝓞 E)) (hpP : (p : 𝓞 E) ∈ P.asIdeal) (x : OP E P)
-    (hx : ∀ k : ℕ, ((p : ℕ) : OP E P) ^ k ∣ x) : x = 0 := by
-  have hne : IsLocalRing.maximalIdeal (OP E P) ≠ ⊤ := (IsLocalRing.maximalIdeal.isMaximal _).ne_top
-  have hK := Ideal.iInf_pow_eq_bot_of_isLocalRing (IsLocalRing.maximalIdeal (OP E P)) hne
-  rw [← Ideal.mem_bot, ← hK, Ideal.mem_iInf]
-  intro k
-  rw [maximalIdeal_eq p hp hU P hpP, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
-  exact hx k
 
 end PI.FinOrdRedOne.Bridge

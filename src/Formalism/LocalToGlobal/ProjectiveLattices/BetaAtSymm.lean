@@ -12,15 +12,6 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 def ordPsi (D : DegPre R) (χ : D.X) : ℕ∞ :=
   ⨆ (n : ℕ) (_ : D.PsiIn χ (IsLocalRing.maximalIdeal R ^ n)), (n : ℕ∞)
 
-def betaZ (D : DegPre R) (a b : D.X) : ℤ :=
-  ((ordPsi D (a + b)).toNat : ℤ) - ((ordPsi D a).toNat : ℤ) - ((ordPsi D b).toNat : ℤ)
-
-def ordNat (R : Type) [CommRing R] [IsLocalRing R] (n : ℕ) : ℕ∞ :=
-  ⨆ (k : ℕ) (_ : (n : R) ∈ IsLocalRing.maximalIdeal R ^ k), (k : ℕ∞)
-
-def betaP (D : DegPre R) (p : ℕ) (a b : D.X) : ℝ :=
-  (betaZ D a b : ℝ) / ((ordNat R p).toNat : ℝ)
-
 section At
 
 variable {R : Type} [CommRing R] [IsDomain R]

@@ -1,4 +1,5 @@
-import Development.EtaleCohomology.TateTwists.HypercoverCechComparison
+import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
+import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial TensorProduct GlobalTheory.EtC
 
@@ -8,6 +9,3 @@ def LateralTheory.EtaleFoundations.EtaleCechConerveImageIsoCechNerveOfPreservesW
     ∃ e : ((Arrow.mk g).cechConerve ⋙ Ψ).leftOp ≅ (Arrow.mk (Ψ.map g).unop).cechNerve,
       lev Ψ (coAug g) = e.hom ≫ (Arrow.mk (Ψ.map g).unop).augmentedCechNerve.hom
 
-def LateralTheory.EtaleFoundations.CechQuasiIsoOfLocallySurjective : Prop :=
-  ∀ (R : Type) [CommRing R] (P Q : PSh) (f : P ⟶ Q), Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} f →
-    QuasiIso ((chains R).map (Arrow.mk f).augmentedCechNerve.hom)

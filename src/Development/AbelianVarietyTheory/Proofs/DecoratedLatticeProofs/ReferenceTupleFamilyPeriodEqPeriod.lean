@@ -1,10 +1,15 @@
-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RatioOKOfRootOfUnity
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PairForm
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.NotBadPrimeBase
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValuationEqZeroOfRootOfSUnitRatio
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.DiscreteSeriesClassificationIff
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.ThmSOwn
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TopLevExists
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ExistsIntegralPendingObjectSymmetricFormsLevel
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdmissiblePeriodZeroOfClassPeriodDecompositionAl
+
 open scoped InnerProductSpace TensorProduct
 open Formalism.BasicNotions Formalism.MainNotions Formalism.DivisionValues Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Cx Formalism.IndefR.Links
 open Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory NumberField IsDedekindDomain
@@ -34,14 +39,6 @@ theorem rec_chain {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (
 
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : D.what₂.Word}
-
-theorem tcol (f : FamCh W u) (t : W.P.T) (i : ℕ) (ψ : (f.t t).Col 0) :
-    (f.t t).col i ψ = Formalism.ThetaLiftIndependence.chainOpM (D.chTw u (W.P.I.tup t)).wt (D.chTw u (W.P.I.tup t)).Kmap i ψ := by
-  induction i with
-  | zero => rfl
-  | succ i ih =>
-    show (f.t t).K i ((f.t t).col i ψ) = _
-    rw [ih]; rfl
 
 end GlobalTheory.MiTop.TailColumnRecursion
 
@@ -224,39 +221,6 @@ theorem referenceTuple_familyPeriod_eq_period (u : D.what₂.Word) (μ : D.what�
 end GlobalTheory.MiTop.TailColumnRecursion
 
 namespace GlobalTheory.MiTop
-open Classical
-open GlobalTheory.MiTop.TailColumnRecursion Formalism.L2.Forms
-
-theorem linkTail_of_topReadAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), ∀ u (f : FamCh W u), TopReadAt W u f.j f.g.bT → (∀ t, W.P.I.tup t = D.what₂.mu0 → ∀ φ : D.what₂.Mu u, HEq (col0 f t φ) (D.eMu u φ).1) → LinkTail f := by
-  intro D L hT Gi Gl Kc Yd cX ex W u f hTR h0 n h t φ F F' hFF G hG
-  obtain ⟨hJ, -, hall⟩ := hTR
-  have hR := (hall t).2 F F' hFF
-  have hex : ∃ G0, Reads W u f.j f.g.bT (W.P.I.tup t) G0 (topOf W t F') := ⟨_, hR⟩
-  have hspec := hex.choose_spec
-  show tailOf W u f.j f.g.bT (W.P.I.tup t)
-    (Eq.rec (motive := fun n _ => (D.chTw u (W.P.I.tup t)).cls n → (D.chTw u (W.P.I.tup t)).Y n → ℂ)
-      ((f.t t).col (2 * n) (col0 f t φ)) h) G.1 = _
-  rw [hG, tcol, rec_chain]
-  unfold tailOf
-  rw [dif_pos hex]
-  by_cases hμ : W.P.I.tup t = D.what₂.mu0
-  · rw [dif_pos hμ]
-    refine referenceTuple_familyPeriod_eq_period u _ hμ _ φ (h0 t hμ φ) _ _ ?_
-    have hv : ∀ z ∈ (D.fm u).ptC, ∀ c, (W.R.T.cols.forms u).valP.eW z c ∈ LinearMap.range f.j := by
-      intro z hz c
-      rw [hJ.range]
-      exact fic_val _ _ _ _ (((W.R.T.cols.forms u).valP.ptC z).1 hz) c
-    exact reads_uniq _ _ _ _ (W.R.T.cols.forms u).jM hv (W.R.T.cols.forms u).per.2.1 (W.R.T.cols.forms u).per.2.2
-      (pos_0 (W.R.T.cols.forms u)) (hspec.1 hμ) (hR.1 hμ)
-  · rw [dif_neg hμ, D.perCol_tie u _ hμ, PeriodMap.PtilCol, PeriodMap.Ptil, PeriodMap.Ptil]
-    have hv : ∀ z ∈ (ex.tw.fm u (W.P.I.tup t)).ptC, ∀ c, (W.R.T.tw.pt.val u _ hμ).eW z c ∈ LinearMap.range f.j := by
-      intro z hz c
-      rw [hJ.range, ← sg_eq (W.R.T.tw.pt.val u _ hμ) (W.R.T.cols.forms u).valP]
-      exact fic_val _ _ _ _ (((W.R.T.tw.pt.val u _ hμ).ptC z).1 hz) c
-    rw [reads_uniq _ _ _ _ (W.R.T.tw.ptE.jM u _) hv (W.R.T.tw.ptE.per u _ hμ).2.1 (W.R.T.tw.ptE.per u _ hμ).2.2
-      (pos_G (W.R.T.tw.pt.val u _ hμ)) (hspec.2 hμ) (hR.2 hμ)]
-    rfl
-
 end GlobalTheory.MiTop
 
 end

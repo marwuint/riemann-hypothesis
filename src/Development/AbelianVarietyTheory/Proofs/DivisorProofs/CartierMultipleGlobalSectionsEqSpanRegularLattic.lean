@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallMemRegularChartIffHeightOnePrimesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemCodimOneRegularChartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForallMemRegularChartIffHeightOnePrimes
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowMulMemCodimOneRegularChart
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef
@@ -88,11 +88,11 @@ theorem GlobalTheory.Desc.sec_eq_spanBy_N : ∀ (σ : Setup) (k : ℕ), Sec σ.D
   ext u
   constructor
   · intro hu
-    choose m hm using fun p : Sp σ.R => GlobalTheory.T.exists_pow_mul_mem_codimOne_regular_chart' σ p u
+    choose m hm using fun p : Sp σ.R => _root_.GlobalTheory.Desc.exists_pow_mul_mem_codimOne_regular_chart σ p u
     let M := ∑ p ∈ (finite_vert σ).toFinset, m p
     let v := σ.c₀ (σ.f ^ M) * u
     have hv : v ∈ σ.N k := by
-      refine ⟨sec_mul hu fun x => by rw [hc₀]; exact regAt_cst _ _ _, (GlobalTheory.T.forall_mem_regularChart_iff_heightOne_primes σ v).2 fun p h1 hf => ?_⟩
+      refine ⟨sec_mul hu fun x => by rw [hc₀]; exact regAt_cst _ _ _, (_root_.GlobalTheory.Desc.Setup.forall_mem_W_iff σ v).2 fun p h1 hf => ?_⟩
       have hle : m p ≤ M := Finset.single_le_sum (fun _ _ => Nat.zero_le _)
         ((finite_vert σ).mem_toFinset.2 ⟨h1, hf⟩)
       have e : v = σ.c₀ (σ.f ^ (M - m p)) * (σ.c₀ σ.f ^ m p * u) := by

@@ -28,36 +28,6 @@ namespace GlobalTheory.TripleModel
 
 open GlobalTheory.PrimNorm GlobalTheory.MulPull
 
-section Charts
-
-variable {Y Y' : Scheme.{0}}
-
-def chartQuotOut (M N : LB Y) (f : Y' ⟶ Y) :
-    ChartPull ((LB.div M N).pull f) (LB.div (M.pull f) (N.pull f)) (𝟙 Y') :=
-  have le : ∀ J : PUnit → M.ι × N.ι, ((LB.div M N).pull f).U J ≤
-      (M.pull f).U (fun _ => (J PUnit.unit).1) ⊓ (N.pull f).U (fun _ => (J PUnit.unit).2) := fun J y hy =>
-    ⟨mem_pull.2 ((mem_pull (L := LB.div M N)).1 hy).1, mem_pull.2 ((mem_pull (L := LB.div M N)).1 hy).2⟩
-  { idx := fun J => (fun _ => (J PUnit.unit).1, fun _ => (J PUnit.unit).2)
-    le := le
-    g := fun y J J' hJ hJ' => by
-      refine (gm_pull_g (LB.div M N) f (𝟙 Y') y J J' hJ hJ').trans ((gm_div N M (𝟙 Y' ≫ f) y _ _
-        ⟨(mem_pull (L := LB.div M N)).1 hJ, (mem_pull (L := LB.div M N)).1 hJ'⟩).trans (Eq.symm
-          ((gm_div (N.pull f) (M.pull f) (𝟙 Y') y (fun _ => (J PUnit.unit).1, fun _ => (J PUnit.unit).2)
-          (fun _ => (J' PUnit.unit).1, fun _ => (J' PUnit.unit).2) ⟨le J hJ, le J' hJ'⟩).trans ?_)))
-      exact congrArg₂ (fun a b => a * b⁻¹) (gm_pull_g M f (𝟙 Y') y _ _ (le J hJ).1 (le J' hJ').1)
-        (gm_pull_g N f (𝟙 Y') y _ _ (le J hJ).2 (le J' hJ').2) }
-
-def chartQuotIn (M N : LB Y) (f : Y' ⟶ Y) :
-    ChartPull (LB.div (M.pull f) (N.pull f)) ((LB.div M N).pull f) (𝟙 Y') :=
-  have le : ∀ p : (PUnit → M.ι) × (PUnit → N.ι), (M.pull f).U p.1 ⊓ (N.pull f).U p.2 ≤
-      ((LB.div M N).pull f).U (fun _ => (p.1 PUnit.unit, p.2 PUnit.unit)) := fun p y hy =>
-    (mem_pull (L := LB.div M N)).2 ⟨mem_pull.1 hy.1, mem_pull.1 hy.2⟩
-  { idx := fun p _ => (p.1 PUnit.unit, p.2 PUnit.unit)
-    le := le
-    g := fun y p q hp hq => ((chartQuotOut M N f).g y _ _ (le p hp) (le q hq)).symm }
-
-end Charts
-
 section Cubical
 
 theorem isPullCubical_of_lbIso (hG : Out.GlobalFnsSt) {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G']
@@ -112,41 +82,5 @@ theorem isPullCubical_of_lbIso (hG : Out.GlobalFnsSt) {S S' : Scheme.{0}} {G' : 
     simp
 
 end Cubical
-
-section Ample
-
-variable {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
-
-end Ample
-
-section Extend
-
-variable {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
-  {A : Over (Sp R)} [GrpObj A] {B : Over (Sp K)} [GrpObj B] {φ : B.left ⟶ A.left} {L : LB A.left} {L' : LB B.left}
-
-end Extend
-
-section Points
-
-variable {S S' : Scheme.{0}} {A : Over S} [GrpObj A] {B : Over S'} [GrpObj B] {j : S' ⟶ S} {φ : B.left ⟶ A.left}
-
-abbrev fibre (T : Over S) (j : S' ⟶ S) : Over S' := Over.mk (pullback.snd T.hom j)
-
-abbrev fibreProj (T : Over S) (j : S' ⟶ S) : Over.mk ((fibre T j).hom ≫ j) ⟶ T :=
-  Over.homMk (pullback.fst T.hom j) pullback.condition
-
-end Points
-
-section Triple
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
-  {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
-  (hLaws : Out.Laws) (t₀ : SAB H (Sp K)) {A : Over (Sp R)} [GrpObj A] {φ : t₀.G.left ⟶ A.left}
-  (hA : IsAbelianScheme A) (gp : IsGrpPullback t₀.G A (spMap (algebraMap R K)) φ)
-  {L : LB A.left} (hL : L.IsLB) (hr : Out.Rigidified A L) (i : LBIso t₀.PP.L (L.pull φ))
-
-include hLaws hA gp hL hr i
-
-end Triple
 
 end GlobalTheory.TripleModel

@@ -3,12 +3,20 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegre
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsPresents
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JoinCol
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianWeightTotalMassStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SigmaCompactDisjointRefinementStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableLocalZeroCountStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SigmaCompactDisjointRefinement
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAreaMultiplicityWeight
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableLocalZeroCount
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableZeroCountStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RandomSectionZeroCount
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussianDetLeviIntegralStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexHessianLogFubiniStudyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexHessianLogDehomogeniseStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChangeVariablesZeroCountStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LintegralSplitColumn
 open CategoryTheory AlgebraicGeometry TopologicalSpace MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
-open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.Published.ArDegreeModel GlobalTheory.CompanionTheory.FSCrofton
+open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.CompanionTheory.FSCrofton
 open scoped ENNReal
 
 namespace GlobalTheory.CompanionTheory.FSCrofton
@@ -59,7 +67,7 @@ theorem crofton : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fn�
     obtain ⟨c, hc⟩ := AlgChart.exists_mem_source (D := Y.dim) (p := Y.str) (σ := RingHom.id ℂ) y
     obtain ⟨j, hj⟩ := exists_mem_ptsIn hb y
     exact Set.mem_iUnion.2 ⟨⟨c, pick hL y, j⟩, hc, mem_pick hL y, hj⟩
-  obtain ⟨m, l, A, hdis, hun, hsub, hσ⟩ := GlobalTheory.T.sigma_compact_disjoint_refinement _ ι S hSo hSc
+  obtain ⟨m, l, A, hdis, hun, hsub, hσ⟩ := _root_.GlobalTheory.CompanionTheory.CroftonPartition.exists_sigmaCompact_partition _ ι S hSo hSc
   set G : ℝ≥0∞ := ENNReal.ofReal (Real.pi ^ (Y.dim * n)) with hG
   have hGpos : G ≠ 0 := by
     rw [hG, Ne, ENNReal.ofReal_eq_zero, not_le]
@@ -74,7 +82,7 @@ theorem crofton : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fn�
   have hpiece : ∀ t, Measurable (fun C => (((P t C).encard : ℕ∞) : ℝ≥0∞)) ∧
       ∫⁻ C, gW Y.dim (Fin n) C * (((P t C).encard : ℕ∞) : ℝ≥0∞) =
         G * φ.chernPart Y.dim 1 (A t) := fun t =>
-    GlobalTheory.T.measurable_local_zero_count Y L hL n b hb (l t).1 (l t).2.1 (l t).2.2 (A t)
+    _root_.GlobalTheory.CompanionTheory.FSCrofton.crofton_chart Y L hL n b hb (l t).1 (l t).2.1 (l t).2.2 (A t)
       (fun y hy => (hsub t hy).1) (fun y hy => (hsub t hy).2.1)
       (fun y hy => (secVal_ne_zero_iff _ (hsub t hy).2.1).2 (hsub t hy).2.2) (hσ t)
   have hZ : ∀ C, (((Z C).encard : ℕ∞) : ℝ≥0∞) = ∑ t, (((P t C).encard : ℕ∞) : ℝ≥0∞) := by

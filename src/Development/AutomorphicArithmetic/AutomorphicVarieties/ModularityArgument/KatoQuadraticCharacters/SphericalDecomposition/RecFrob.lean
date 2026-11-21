@@ -61,8 +61,3 @@ private theorem algNorm_diag {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLo
 
 end UpperTheory.V.Z.Kato.WeilSphericalRecords
 
-theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.recFrob :
-    Af.Hypotheses₂ → RecFrob := by
-  intro _ E Ω _ _ _ _ _ A w h rc ⟨a, ha, L⟩ n σ B _ hB φ hd z hz
-  obtain ⟨α, rfl, e⟩ := algNorm_diag L σ B hB
-  exact root_diag α _ e φ hd z hz

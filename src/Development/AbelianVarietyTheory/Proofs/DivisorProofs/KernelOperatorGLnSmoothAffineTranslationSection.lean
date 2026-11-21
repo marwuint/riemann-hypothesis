@@ -1,11 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OnMatInfOfIsUnit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SandCLMInfApply
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRapidSuperpositionCharactersStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRapidSuperpositionCharacters
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableToGLEntry
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanMatrixSmoothingModerateGrowthStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzIntegralBoundSmoothStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanRapidKernelOperatorCompRapidFamilyStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothingAffineFamilyEqIntegralKernelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothingAffineFamilyEqIntegralKernel
 
 noncomputable section
 
@@ -39,8 +40,8 @@ theorem kerOpInf_section : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (Z
     rcases not_and_or.1 hp with h | h
     · simp [image_eq_zero_of_notMem_tsupport h]
     · simp [image_eq_zero_of_notMem_tsupport h]
-  obtain ⟨X, _, ν, _, κ, τ, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_rapid_superposition_characters' _ _ hΦ hΦc
-  obtain ⟨R, hR⟩ := GlobalTheory.T.smoothing_affine_family_eq_integral_kernel E n Z σ₀ L χ α hχc hσ hαc hαs X ν κ τ h1 h2 h3 (fun z a => h4 (z, a))
+  obtain ⟨X, _, ν, _, κ, τ, h1, h2, h3, h4⟩ := _root_.GlobalTheory.JSW.exists_rapid_superposition_characters _ _ hΦ hΦc
+  obtain ⟨R, hR⟩ := _root_.GlobalTheory.JSW.MirCinf.smoothMatInf_affine_eq_integral_secKInf E n Z σ₀ L χ α hχc hσ hαc hαs X ν κ τ h1 h2 h3 (fun z a => h4 (z, a))
   exact GlobalTheory.T.archimedeanRapidKernelOperator_comp_rapidFamily E n Z T hT _ _ _ _ _ (GlobalTheory.T.schwartz_integral_bound_smooth E n Z X ν κ τ h1 h2 h3 R σ₀ L) (smoothMatInf α) _ χ
     (GlobalTheory.T.archimedeanMatrixSmoothing_moderateGrowth E n α hα.continuous hαc hαs) hR
 

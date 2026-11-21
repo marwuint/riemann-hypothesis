@@ -30,19 +30,4 @@ variable (T : ℕ) [hT : Fact T.Prime] (Ts : ℝ) (hTs : 0 < Ts) (Gam : ℝ) (hG
   (hcong : (pz - 1) ∈ Ideal.span {((H.QS * H.q * H.d * (H.g 0 * H.g 1) ^ 2 : ℕ) : 𝓞 H.E)})
   (G : LocalGap H)
 
-abbrev normalisedGenericRecord (hu : ∀ τ, FdegUniq R (hc τ)) : D7 :=
-  rankRecord H hc Del hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _)
-      (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G
-
-def d7Tw (hu : ∀ τ, FdegUniq R (hc τ))
-    (C : @TwCore R H (normalisedGenericRecord H hc Del hDel hgap hlet etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G hu).what₂ (inferInstanceAs (NumberField H.E)) H.cmStar
-      (normalisedGenericRecord H hc Del hDel hgap hlet etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G hu).LL0 (normalisedGenericRecord H hc Del hDel hgap hlet etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G hu).nd) : D7 :=
-  withTw (normalisedGenericRecord H hc Del hDel hgap hlet etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G hu) (TwCore.toGap _ ⟨fun i => Empty.elim i⟩
-    (fun g => newtypes_idempotent_zero H _ _ ht G.tame g) C)
-
-theorem ties_d7Tw (hu C) : Ties (d7Tw H hc Del hDel hgap hlet etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G hu C) :=
-  ties_withTw _ _ rfl (fun τ V _ _ σ d h1 h2 => (hu τ).choose_spec.2 V σ d h1 h2)
-    (fun _ _ _ _ => rfl) (fun _ _ _ => rfl)
-    ⟨fun σ => Empty.elim σ⟩
-
 end Formalism.BasicNotions.Examples₂

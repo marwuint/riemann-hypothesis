@@ -4,7 +4,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDe
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMonHomOfClassifying
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDualOfIso
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeIsIsoOfMonoSameDimensionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeIsIsoOfMonoSameDimension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoOfIsClosedImmersion
 
 set_option autoImplicit false
 noncomputable section
@@ -89,7 +90,7 @@ theorem abelianDeRham_duality : GlobalTheory.Published.CubeTheorem → GlobalThe
   · rw [hform]
     exact orth a ha _ (push_mem_Fil x hb)
   · have mx : Mono x := mono_of_isPerfect' h1 (isPerfect_lam hL hK) x hx
-    have ix : IsIso x := GlobalTheory.T.abelianScheme_isIso_of_mono_same_dimension (Sp R) A B hA hB g hg hgB x hmx mx
+    have ix : IsIso x := _root_.GlobalTheory.AbMonoIsoAny.isIso_of_mono (Sp R) A B hA hB g hg hgB x hmx mx
     have hd : IsDual A A (abelian₂ A L) := GlobalTheory.AbDual.transport (Sp R) A A B (abelian₂ A L) P h1 hP x ix hmx hx
     exact (hPD R A A g hA hA hg hg (abelian₂ A L) hd φ' hψ').1
 

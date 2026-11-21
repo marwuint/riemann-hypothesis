@@ -4,7 +4,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelToro
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecCmp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.VRatioGtStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetrySecondDifferenceEqCubicalRatioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TauPeriodValNegCubicalRatioStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TauPeriodValNegCubicalRatio
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg
@@ -83,7 +85,7 @@ theorem exists_evenDefect_hom : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoet
   obtain ⟨J, hJ⟩ := GlobalTheory.UU.exists_good_pt D.P.isLB z
   refine gm_unitOn_inj z ?_
   have g1 := GlobalTheory.T.symmetry_secondDifference_eq_cubical_ratio R D (TK R) (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b) z J hJ
-  have g2 := GlobalTheory.T.tau_period_val_neg_cubical_ratio R D hB a b z J hJ
+  have g2 := _root_.GlobalTheory.TauNeg.val_tau_neg R D hB a b z J hJ
   rw [← pt_neg, ← pt_neg, ← pt_add] at g1
   rw [val_tau D a b hJ, val_tau D (-a) (-b) hJ, ← neg_add] at g2
   have e₀ := hh (a + b) z J hJ

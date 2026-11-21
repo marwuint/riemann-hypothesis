@@ -17,10 +17,6 @@ def BrEqv (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → 
       ∀ Φ ∈ ValC G lam, ∀ Φ' : Frames G → ℂ, (∀ y y', IsTr kt y y' → Φ' y = Φ y') →
         ∀ z z', IsTr k z z' → T Φ' z = T Φ z'
 
-example (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight N)
-    (sg : ι → DomWeight n) : BrEqv hN G G' lam sg 0 :=
-  ⟨fun _ _ => Submodule.zero_mem _, fun _ _ _ _ _ _ _ _ _ _ _ => rfl⟩
-
 end GlobalTheory.KJInf
 
 end

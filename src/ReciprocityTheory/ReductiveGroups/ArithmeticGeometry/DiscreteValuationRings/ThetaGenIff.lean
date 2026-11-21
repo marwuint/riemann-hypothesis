@@ -14,10 +14,6 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.TG
 
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor IsLocalRing QForm SectionScalarValuation
 
-section Scale
-
-end Scale
-
 section Integral
 
 open IsLocalRing
@@ -76,48 +72,6 @@ theorem integral_exp [IsDiscreteValuationRing R] (hI : I = maximalIdeal R) (U : 
     rw [h1, _root_.one_mul]
     exact e2
   exact ⟨F, g', hF0, hexp', hgF⟩
-
-theorem nonzero_of_isTheta [IsDiscreteValuationRing R] (hI : I = maximalIdeal R) (U : Unif I D A G)
-    {ϑ : H0 U.LG.L 1} (hϑ : IsTheta U ϑ) : NonzeroOnSpecial U ϑ := by
-  subst hI
-  classical
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible R
-  have := flat_B (D := D)
-  obtain ⟨f, hexp, hgen⟩ := hϑ 0
-  by_contra hnz
-  have hvan : ∀ j, ((fstG (maximalIdeal R) 0 G).left.app _).hom (ϑ.f j) = 0 := fun j => by
-    by_contra h
-    exact hnz ⟨j, h⟩
-  have hpG := ReciprocityTheory.ChartRestriction.G.Out.WeightPf.weightIndep R (maximalIdeal R) D A G U.toUnifPre 0 1 ϑ f hvan hexp
-  have hB : ∀ j, (pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0)).app _ ((f 0).f j) = 0 := by
-    intro j
-    have := (U.gt 0).q_flat
-    have := (U.gt 0).q_surj
-    apply app_injective_of_flat_surj (U.gt 0).q.left
-    rw [map_zero]
-    have h := hpG 0 j
-    have e : (U.gt 0).pG.left = (U.gt 0).q.left ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0) := rfl
-    rw [e, Scheme.Hom.comp_app] at h
-    exact h
-  obtain ⟨g0, hg0⟩ := sec_div D.toPre.P.A.hom (f 0) hϖ.ne_zero (J := maximalIdeal R ^ (0 + 1))
-    (by rw [zero_add, pow_one, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ]) hB
-  obtain ⟨a, ha, -⟩ := hgen g0
-  have hf0 : ∀ j, (f 0).f j = 0 := by
-    intro j
-    have h1 : toW D.toPre.P.A.hom _ (1 - ϖ * a) * (f 0).f j = 0 := by
-      rw [map_sub, map_one, map_mul, sub_mul, _root_.one_mul, _root_.mul_assoc]
-      have := ha j
-      rw [resTop_scal] at this
-      rw [← this, ← hg0 j, sub_self]
-    refine toW_mul_eq_zero D.toPre.P.A.hom _ ?_ h1
-    intro h
-    apply hϖ.not_isUnit
-    have h' : ϖ * a = 1 := by linear_combination -h
-    exact ⟨⟨ϖ, a, h', by rw [mul_comm]; exact h'⟩, rfl⟩
-  obtain ⟨b, -, hb⟩ := hgen (f 0)
-  have e1 := hb 1 fun j => by rw [hf0 j, mul_zero]
-  have e0 := hb 0 fun j => by rw [hf0 j, mul_zero]
-  exact one_ne_zero (e1.trans e0.symm)
 
 end Integral
 

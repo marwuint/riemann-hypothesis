@@ -2,15 +2,15 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotentStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicDoubleCosetDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCompactModParabolicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenRightInvarianceLocalCoefficientStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCompactModParabolic
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenRightInvarianceLocalCoefficient
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjShiftedEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentCommuteShiftedEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantUnipotentActionTrivialStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantLeviActionModulusStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusMirabolicBlockFactorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentCommuteShiftedEmbedding
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantUnipotentActionTrivial
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantLeviActionModulus
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusMirabolicBlockFactor
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralLinearChangeModulusStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalConstancyTwistedTranslateStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalConstancyTwistedTranslate
 
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG
 open scoped TensorProduct
@@ -20,10 +20,10 @@ namespace GlobalTheory.CompanionTheory.BZPhiPG.MemC
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 theorem cocompact (i t : ℕ) : ∃ C : Set (Mir k ((i + 1) + t)), IsCompact C ∧
-    ∀ g : Mir k ((i + 1) + t), ∃ h ∈ MirabolicParabolic k (i + 1) t, ∃ c ∈ C, g = h * c := GlobalTheory.T.mirabolic_compact_mod_parabolic k i t
+    ∀ g : Mir k ((i + 1) + t), ∃ h ∈ MirabolicParabolic k (i + 1) t, ∃ c ∈ C, g = h * c := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Coc.hgp_cocompact k i t
 
 theorem smooth_eC {i t : ℕ} (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ) :
-    IsOpen {g : Mir k ((i + 1) + t) | ∀ m, eC ψ f (m * g) = eC ψ f m} := GlobalTheory.T.isOpen_right_invariance_local_coefficient k i t ψ τ σ f
+    IsOpen {g : Mir k ((i + 1) + t) | ∀ m, eC ψ f (m * g) = eC ψ f m} := _root_.GlobalTheory.CompanionTheory.BZPhiPG.EcSmooth.isOpen_eC_invariant k i t ψ τ σ f
 
 theorem conj_data {i t : ℕ} (h : MirabolicParabolic k (i + 1) t) :
     ∃ η : HPG k (i + 1) (t + 1), (η : Mir k ((i + 1) + t + 1)) = sEmb k ((i + 1) + t) (h : Mir k ((i + 1) + t)) ∧
@@ -34,11 +34,11 @@ theorem conj_d {i t : ℕ} (h : MirabolicParabolic k (i + 1) t) (d : Fin (t + 1)
     ∃ u : HPG k (i + 1) (t + 1), (pgProj k (i + 1) (t + 1) u).1 ∈ MirUin k (i + 1) ∧ (pgProj k (i + 1) (t + 1) u).2 = 1 ∧
       dEmb k i t d * sEmb k ((i + 1) + t) (h : Mir k ((i + 1) + t)) =
         sEmb k ((i + 1) + t) (h : Mir k ((i + 1) + t)) * (u : Mir k ((i + 1) + t + 1)) *
-          dEmb k i t (((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d) := GlobalTheory.T.unipotent_commute_shifted_embedding k i t h d
+          dEmb k i t (((((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k)⁻¹ : GL (Fin (t + 1)) k).val *ᵥ d) := _root_.GlobalTheory.CompanionTheory.BZPhiPG.DConj.dEmb_mul_sEmb k i t h d
 
 theorem qC_sigX_unip {i t : ℕ} (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (u : HPG k (i + 1) (t + 1))
     (h1 : (pgProj k (i + 1) (t + 1) u).1 ∈ MirUin k (i + 1)) (h2 : (pgProj k (i + 1) (t + 1) u).2 = 1)
-    (w : τ.V ⊗[ℂ] σ.V) : qC τ σ (sigX τ σ u w) = qC τ σ w := GlobalTheory.T.coinvariant_unipotent_action_trivial k i t τ σ u h1 h2 w
+    (w : τ.V ⊗[ℂ] σ.V) : qC τ σ (sigX τ σ u w) = qC τ σ w := _root_.GlobalTheory.CompanionTheory.BZPhiPG.qC_sigX_unip k i t τ σ u h1 h2 w
 
 theorem qC_sigX_levi {i t : ℕ} (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (h : MirabolicParabolic k (i + 1) t) (η : HPG k (i + 1) (t + 1))
     (hη : pgProj k (i + 1) (t + 1) η = (levi k (i + 1) (gpProj k (i + 1) t h).1,
@@ -46,12 +46,12 @@ theorem qC_sigX_levi {i t : ℕ} (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (h 
     qC τ σ (sigX τ σ η w) =
       ((dpow (i + 1) (1 / 2) (gpProj k (i + 1) t h).1 *
         dpow (t + 1) (-1 / 2) (((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k) : ℂˣ) : ℂ) •
-      sigC τ σ h (qC τ σ w) := GlobalTheory.T.coinvariant_levi_action_modulus k i t τ σ h η hη w
+      sigC τ σ h (qC τ σ w) := _root_.GlobalTheory.CompanionTheory.BZPhiPG.QLevi.qC_sigX k i t τ σ h η hη w
 
 theorem dpowM_hgp {i t : ℕ} (s : ℝ) (h : MirabolicParabolic k (i + 1) t) :
     dpowM ((i + 1) + t) s (h : Mir k ((i + 1) + t)) =
       dpow (i + 1) s (gpProj k (i + 1) t h).1 *
-        dpow (t + 1) s (((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k) := GlobalTheory.T.modulus_mirabolic_block_factor k i t s h
+        dpow (t + 1) s (((gpProj k (i + 1) t h).2 : Mir k t) : GL (Fin (t + 1)) k) := _root_.GlobalTheory.CompanionTheory.BZPhiPG.dpowM_hgp k i t s h
 
 theorem smInt_scale {t : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (A : GL (Fin t) k) (φ : (Fin t → k) → W)
     (l : IsLocallyConstant φ) (c : HasCompactSupport φ) :
@@ -61,7 +61,7 @@ theorem smInt_scale {t : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (A : GL
 theorem integrand_lc {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)}
     (f : XS τ σ) (y : Mir k ((i + 1) + t + 1)) :
     IsLocallyConstant (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) ∧
-    HasCompactSupport (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) := GlobalTheory.T.local_constancy_twisted_translate k i t ψ hψ τ σ f y
+    HasCompactSupport (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) := _root_.GlobalTheory.CompanionTheory.BZPhiPG.TwFibre.twisted_fibre_isLocallyConstant_hasCompactSupport k i t ψ hψ τ σ f y
 
 theorem dpow_add (n : ℕ) (a b : ℝ) (g : GL (Fin n) k) : dpow n (a + b) g = dpow n a g * dpow n b g := by
   unfold dpow

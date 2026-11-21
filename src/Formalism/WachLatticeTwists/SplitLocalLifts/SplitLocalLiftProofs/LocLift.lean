@@ -76,30 +76,4 @@ theorem colFun : StatColFun := by
   rw [e]
   exact h
 
-theorem rowLift : StatRowLift := by
-  intro O _ _ _ H₁ Cs _ _ _ _ Hf₁ Fs g ℓ e' hL
-  have h1 : ∀ x : Fs, ((ℓ : O) ^ e') • x ∈ (Hf₁.map g).comap Fs.subtype := by
-    intro x
-    rw [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul]
-    exact hL _ x.2
-  refine ⟨h1, ?_⟩
-  intro hfin
-  exact Formalism.RepresentationBoundsCohomology.rowColength O Fs _ ℓ e' h1
-
-theorem rowIm : StatRowIm := by
-  intro O Dw T₁ T₂ _ _ _ _ _ _ ρ₁ ρ₂ π hπ C₁ Hf₁ Fs hFun hC
-  refine ⟨?_, ?_⟩
-  · rintro x ⟨y, hy, rfl⟩
-    obtain ⟨a, ha, rfl⟩ := hC y hy
-    refine ⟨(a : Dw → T₁), a.2, ha, ?_⟩
-    have hm : (fun g => π ((a : Dw → T₁) g)) ∈ coZ1s ρ₂ := (cocycles1MapOfEquivariant ρ₁ ρ₂ π hπ a).2
-    unfold clsOf
-    rw [dif_pos hm]
-    rfl
-  · rintro x ⟨y, hy, rfl⟩
-    exact hFun y hy
-
-theorem locLift : StatLocLift := by
-  refine ⟨?_, ?_⟩ <;> intros <;> exact Iff.rfl
-
 end Formalism.RepresentationBoundsCohomology.JL

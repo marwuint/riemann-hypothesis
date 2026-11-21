@@ -1,11 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.DepthPays
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableScalarActionMultiplicityMapValuesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableScalarActionMultiplicityMapValues
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryEmbeddingContinuousMulRational
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdelicUnitaryHaarEqMapProdRealFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CongruencePreimageVolumeFiniteStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdelicUnitaryHaarEqMapProdRealFinite
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryAdelicInfFinSplitPeriodsUnimodular
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CongruencePreimageVolumeFinite
+import Development.AbelianVarietyTheory.Definitions.Divisors.NatCastSmulMemHatL
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemIdealSmulAdelicPointRationalLatticeStatement
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.L2.DIV
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.Grow
@@ -346,18 +348,18 @@ namespace GlobalTheory.SepPer.AdelicFromReal
 
 theorem adelicAt_of_real : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S') (M : DSModel V S) (p : Pack M₀ M) (Q : ℝ), p.Is θ d Q → ∀ (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → zv d ∈ Λ → ∀ (J : Set (GA D Y)), (∀ k ∈ GfC Y, Lev.finE V (stabilizerEmbedding d k) ∈ congLev D.sp.cm V.gram Λ 𝔪 → k ∈ J) → ∀ t ∈ MultT θ M₀ J 1, ∀ ν : Measure (GA D Y), ν.IsHaarMeasure → ∃ c, p.AdelicAt θ d Q Λ 𝔪 ν (t (PiTensorProduct.tprod ℂ p.w)) c := by
   intro hP D θ hθ Y V d S S' M₀ M p Q hp Λ 𝔪 hΛ h𝔪 hz J hJ t ht ν hν
-  obtain ⟨m, μ, hm, hμ, hmσ, hμσ, hemb, hνe⟩ := GlobalTheory.T.adelicUnitaryHaar_eq_map_prod_real_finite D Y ν hν
+  obtain ⟨m, μ, hm, hμ, hmσ, hμσ, hemb, hνe⟩ := _root_.GlobalTheory.HaarSplit.haar_eq_map_prod D Y ν hν
   haveI := hmσ
   haveI := hμσ
   obtain ⟨c₀, hc⟩ := hp.2 m hm
-  obtain ⟨hK'm, hK'0, hK'top⟩ := GlobalTheory.T.congruence_preimage_volume_finite D Y V d Λ 𝔪 hΛ h𝔪 μ hμ
+  obtain ⟨hK'm, hK'0, hK'top⟩ := _root_.GlobalTheory.UnitaryEmbeddingVolume.vol_pos_lt_top D Y V d Λ 𝔪 hΛ h𝔪 μ hμ
   have hκ := ENNReal.toReal_pos hK'0.ne' hK'top.ne
   have hα : Integrable (fun h : GinfC Y => coefR θ M (p.v θ) (p.v θ) (stabilizerEmbedding d h)) m := by
     simpa using (hc.far 1).1
   refine ⟨_, mul_ne_zero (Complex.ofReal_ne_zero.2 hκ.ne') hc.ne, fun x => ?_, fun x γ z _ hzγ => ?_⟩
   · exact one_clause θ d M _ (p.v θ) _ ν m μ hemb hνe _ (fun _ => Iff.rfl) hK'm
       (fun b hb g => multT_lev θ M₀ J ht p.w (hJ _ b.2 hb) g) c₀
-      (fun x => GlobalTheory.T.integrable_scalar_action_multiplicityMap_values hP D θ hθ Y S' M₀ J 1 t ht p.w m hm _ c₀ hα hc.act x) x
+      (fun x => _root_.GlobalTheory.ValAct.integral_mul_multT_eq hP D θ hθ Y S' M₀ J 1 t ht p.w m hm _ c₀ hα hc.act x) x
   · exact term_clause θ hθ d M (p.v θ) p.B Q Λ 𝔪 hΛ hz ν m μ hemb hνe _ (fun _ => Iff.rfl) hK'm hK'top c₀ hc.far x γ z hzγ
 
 end GlobalTheory.SepPer.AdelicFromReal

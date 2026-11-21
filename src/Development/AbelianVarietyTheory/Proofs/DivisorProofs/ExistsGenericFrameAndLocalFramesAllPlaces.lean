@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCentreFunctionFieldPlaceCurveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCentreFunctionFieldPlaceCurve
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePlacesCentreOutsideOpenStatement
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -66,7 +66,7 @@ theorem exists_frame_locFrames : ∀ (k K : Type) [Field k] [IsAlgClosed k] [Cha
   obtain ⟨V₀, s, hη, hs⟩ := hW (x (IsLocalRing.closedPoint K))
   have hV₀ : (V₀ : Set C).Nonempty := ⟨_, hη⟩
   have hcen : ∀ v : Place k K, ∃ b : Sp v.O ⟶ C, spMap v.O.subtype ≫ b = x := fun v => by
-    obtain ⟨b, hb, -⟩ := GlobalTheory.T.existsUnique_centre_functionFieldPlace_curve k K K C x hx v
+    obtain ⟨b, hb, -⟩ := _root_.GlobalTheory.Nef.existsUnique_centre k K K C x hx v
     exact ⟨b, hb.trans hxx⟩
   choose b hb using hcen
   have key : ∀ v, ∃ gv : Matrix (Fin r) (Fin r) K,

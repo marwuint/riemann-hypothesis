@@ -134,7 +134,7 @@ theorem level_spreads : ∀ {o₁ Ω₁ : Type} [CommRing o₁] [Field Ω₁] [A
   have := GenSpread.isFractionRing_of_forall_div hfr₂
   have := GenSpread.isNoetherianRing_of_fg hR₂
   have := P₂.isAb.proper
-  obtain ⟨d, hd, Hi⟩ := GlobalTheory.T.exists_pointIndependence_spread_to_geometricFibres R₂ Ω₂ P₂.A Q.A φ₂ inferInstance hQ₂ _ K y lev.pt hy fun c c' h => by
+  obtain ⟨d, hd, Hi⟩ := _root_.GlobalTheory.GenSpread.exists_forall_linComb_injective R₂ Ω₂ P₂.A Q.A φ₂ inferInstance hQ₂ _ K y lev.pt hy fun c c' h => by
     refine lev.indep (AlgebraicClosure Ω₂) (spMap (algebraMap Ω₂ _)) c c' ?_
     rw [← GenSpread.comp_linComb, ← GenSpread.comp_linComb, h]
   obtain ⟨R₃, g₃, le₃, hR₃, c₃, u₃, -, -, -⟩ :=
@@ -167,7 +167,7 @@ theorem level_spreads : ∀ {o₁ Ω₁ : Type} [CommRing o₁] [Field Ω₁] [A
   have := GenSpread.isFractionRing_of_forall_div hfr₃
   have := GenSpread.isNoetherianRing_of_fg hR₃
   have hgg : 2 * P₃.g = 2 * Q.g := congrArg (2 * ·) hg.symm
-  obtain ⟨lev', -⟩ := GlobalTheory.T.isLevelStructure_of_generic_of_fibrewise_indep abelianSchemeLaws_all.1 R₃ Ω₂ P₃ Q φ₃ hQ₃ eQ₃ hg.symm K
+  obtain ⟨lev', -⟩ := _root_.GlobalTheory.level_of_generic_of_indep abelianSchemeLaws_all.1 R₃ Ω₂ P₃ Q φ₃ hQ₃ eQ₃ hg.symm K
     (Units.map (algebraMap o₂ R₃ : o₂ →* R₃) ze) (Units.map (algebraMap o₂ Ω₂ : o₂ →* Ω₂) ze)
     (by simpa using hK.map (algebraMap o₂ R₃)) rfl lev (fun i => y' (Fin.cast hgg i))
     (fun i₀ i hi => by obtain rfl : i₀ = Fin.cast hgg i := Fin.ext hi; exact hy₃ _)

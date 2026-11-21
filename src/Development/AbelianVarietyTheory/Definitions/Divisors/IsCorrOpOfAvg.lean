@@ -61,10 +61,6 @@ def galTotRep {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Sc
   map_one' := galTot_one l Ω p
   map_mul' := galTot_mul l Ω p
 
-def CDeg {Y X : Scheme.{0}} (f : Y ⟶ X) (d : ℕ) : Prop :=
-  ∃ (U : Scheme.{0}) (u : U ⟶ X), Etale u ∧ Surjective u ∧
-    ∃ e : ∐ (fun _ : Fin d => U) ≅ pullback f u, e.hom ≫ pullback.snd f u = Limits.Sigma.desc (fun _ => 𝟙 U)
-
 def Splits {Z Y W : Scheme.{0}} (s : Y ⟶ Z) (c : W ⟶ Z) {J : Type} (σ : J → (W ⟶ Y)) : Prop :=
   ∃ h : ∀ j, σ j ≫ s = c,
     IsIso (Limits.Sigma.desc (fun j => pullback.lift (σ j) (𝟙 W) (by rw [h j, Category.id_comp])) :
@@ -85,46 +81,6 @@ def genEig {H : Type*} [AddCommGroup H] [Module ℚ_[l] H] (L : Type*) [Field L]
   ⨅ j, Module.End.maxGenEigenspace ((T j).baseChange L) (θ j)
 
 variable (l)
-
-theorem isGalois_id (X : Scheme.{0}) : IsGalois (𝟙 X) Unit (fun _ => 𝟙 X) := by
-  refine ⟨inferInstance, inferInstance, inferInstance, rfl, fun _ _ => (Category.comp_id _).symm,
-    fun _ => Category.comp_id _, ?_⟩
-  have hd : IsIso (Sigma.desc (fun _ : Unit => 𝟙 X)) :=
-    ⟨⟨Sigma.ι (fun _ : Unit => X) (), by ext j; cases j; simp, by simp⟩⟩
-  refine (isIso_comp_right_iff _ (pullback.fst (𝟙 X) (𝟙 X))).mp ?_
-  convert hd using 1
-  ext j
-  simp
-  exact pullback.lift_fst _ _ _
-
-theorem splits_fold (X : Scheme.{0}) (J : Type) :
-    Splits (Sigma.desc fun _ : J => 𝟙 X) (𝟙 X) (Sigma.ι (fun _ : J => X)) := by
-  refine ⟨fun _ => by simp, ?_⟩
-  refine (isIso_comp_right_iff _ (pullback.fst (Sigma.desc fun _ : J => 𝟙 X) (𝟙 X))).mp ?_
-  convert (inferInstance : IsIso (𝟙 (∐ fun _ : J => X))) using 1
-  ext j
-  simp
-  exact pullback.lift_fst _ _ _
-
-theorem isCorrOp_fold {X Z' : Scheme.{0}} {J : Type} [Fintype J] (f : J → (X ⟶ Z')) :
-    IsCorrOp l (Sigma.desc fun _ : J => 𝟙 X) (Sigma.desc f) (∑ j, pullTot l (sch.map (f j))) := by
-  refine ⟨X, 𝟙 X, Unit, inferInstance, inferInstance, fun _ => 𝟙 X, J, inferInstance, Sigma.ι (fun _ : J => X),
-    isGalois_id X, splits_fold X J, fun x => ?_⟩
-  rw [CategoryTheory.Functor.map_id, pullTot_id, LinearMap.id_apply, LinearMap.sum_apply]
-  simp only [Sigma.ι_desc]
-
-example (X : Scheme.{0}) : IsCorrOp l (𝟙 X) (𝟙 X) LinearMap.id := by
-  refine ⟨X, 𝟙 X, Unit, inferInstance, inferInstance, fun _ => 𝟙 X, Unit, inferInstance, fun _ => 𝟙 X,
-    isGalois_id X, ⟨fun _ => Category.id_comp _, ?_⟩, fun x => ?_⟩
-  · exact (isGalois_id X).2.2.2.2.2.2
-  · simp [pullTot_id]
-
-example {X Z' : Scheme.{0}} (f : Fin 2 → (X ⟶ Z')) :
-    IsCorrOp l (Sigma.desc fun _ : Fin 2 => 𝟙 X) (Sigma.desc f) (pullTot l (sch.map (f 0)) + pullTot l (sch.map (f 1))) := by
-  simpa [Fin.sum_univ_two] using isCorrOp_fold l f
-
-example {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) :
-    galTotRep l Ω p 1 = LinearMap.id := map_one _
 
 end GlobalTheory.GalV
 

@@ -7,15 +7,6 @@ open scoped UpperHalfPlane
 
 namespace GlobalTheory.Sieg.Model
 
-theorem admissible_example_alt : admitted 5 ![1 / 3, 0] := by
-  refine ⟨by norm_num, by norm_num, ?_⟩
-  rintro ⟨⟨n, hn⟩, -⟩
-  simp at hn
-  have h : (3 * n : ℤ) = 5 := by
-    have : (3 * (n : ℚ)) = 5 := by rw [hn]; norm_num
-    exact_mod_cast this
-  omega
-
 theorem exponent_exact {c : ℕ} (h : Nat.Coprime c 6) :
     12 * ((c ^ 2 - 1) / 12) + 1 = c ^ 2 ∧ 2 * (((c : ℤ) - (c : ℤ) ^ 2) / 2) = (c : ℤ) - (c : ℤ) ^ 2 := by
   constructor
@@ -136,24 +127,6 @@ theorem multipliable_and_sg_ne_zero {c : ℕ} {x : Fin 2 → ℚ} (h : admitted 
   have e2 : -ee (pt x τ) ≠ 0 := neg_ne_zero.2 (ee_ne_zero _)
   refine mul_ne_zero (div_ne_zero (mul_ne_zero (mul_ne_zero (pow_ne_zero _ e1) (zpow_ne_zero _ e2)) (pow_ne_zero _ h2)) h1) ?_
   exact mul_ne_zero (mul_ne_zero (pow_ne_zero _ hA) (pow_ne_zero _ hB)) (inv_ne_zero (mul_ne_zero hC hD))
-
-theorem sg_translate (c : ℕ) (x : Fin 2 → ℚ) (τ τ' : ℍ) (h : (τ' : ℂ) = τ + 1) :
-    sg c x τ' = sg c ![x 0, x 0 + x 1] τ := by
-  have e1 : ee 1 = 1 := by simp [ee]
-  unfold sg
-  congr 1
-  · rw [h, ee_add, e1, mul_one]
-  · congr 1; simp [pt, h]; ring
-
-theorem f_zero_two_eq (b : ℚ) : f0 2 ![0, b] = -1 / 12 := by
-  simp [f0, Polynomial.bernoulli_eval_zero, bernoulli_eq_bernoulli'_of_ne_one]
-  norm_num
-
-theorem f_zero_one_third (b : ℚ) : f0 1 ![4 / 3, b] = 1 / 6 := by
-  have : Int.fract (4 / 3 : ℚ) = 1 / 3 := by
-    rw [Int.fract_eq_iff]; exact ⟨by norm_num, by norm_num, 1, by norm_num⟩
-  simp [f0, this]
-  norm_num
 
 theorem summable_exp_abs {a : ℝ} (ha : 0 < a) : Summable fun n : ℤ => Real.exp (-(a * |(n : ℝ)|)) := by
   have hs : Summable fun n : ℕ => Real.exp (-(a * n)) := by

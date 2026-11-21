@@ -76,13 +76,6 @@ theorem relNorm_self {E : IntermediateField K Ω} (h : E ≤ E) {y : Ω} (hy : y
   rw [key, Algebra.norm_self]
   rfl
 
-theorem relNorm_mul {E E' : IntermediateField K Ω} (h : E ≤ E') {y z : Ω} (hy : y ∈ E')
-    (hz : z ∈ E') : relNorm h (y * z) = relNorm h y * relNorm h z := by
-  letI := inclAlgebra h
-  rw [relNorm_of_mem h (mul_mem hy hz), relNorm_of_mem h hy, relNorm_of_mem h hz]
-  rw [← IntermediateField.coe_mul, ← map_mul]
-  rfl
-
 end Def
 
 section Tower

@@ -1,23 +1,23 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCIndValue
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapIntertwinesRestrictionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapIntertwinesRestriction
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetKernelSpanTwistedCharacterStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapInducedSurjectiveIntertwinerStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicUnipotentLeParabolicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjUnipotentCharacterCompatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnipotentLiftParabolicProjStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjUnipotentCharacterCompat
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnipotentLiftParabolicProj
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemParabolicIffMemEmbeddedStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjEmbeddingCompatStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicDoubleCosetDichotomyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjEmbeddingCompat
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicDoubleCosetDichotomy
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsClosedParabolicMulEmbeddedMirabolicStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbeddedSmallNeighbourhoodFactorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousParabolicProjStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMirabolicEmbeddingStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicUnipotentNormalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactInductionTwistEquivStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousParabolicProj
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMirabolicEmbedding
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicUnipotentNormal
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactInductionTwistEquiv
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactInductionCongrEquivStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeFunctorTwistEquivStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusParabolicProjFactorStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusParabolicProjFactor
 
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib Topology
 open scoped TensorProduct
@@ -46,7 +46,7 @@ theorem coinv_cInd (H U : Subgroup G) (hUH : U ≤ H) (hUn : U.Normal) (θ : U �
     (hcomp : ∃ K' ∈ 𝓝 (1 : G'), IsCompact K') :
     Nonempty ((twAct (cInd H σ) U θ ι hstab).Equiv (cInd H' σ')) := by
   classical
-  have hex := GlobalTheory.T.quotient_map_intertwines_restriction H H' ι σ σ' q hι hH' hq hcl hemb hcomp
+  have hex := _root_.GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_restrict H H' ι σ σ' q hι hH' hq hcl hemb hcomp
   choose T hT using hex
   have hext : ∀ F F' : cIndSpace H' σ', (∀ x, F.1.1.1 x = F'.1.1.1 x) → F = F' := fun F F' h =>
     Subtype.ext (Subtype.ext (Subtype.ext (funext h)))
@@ -124,7 +124,7 @@ theorem phiMinus_prodGP (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ}
   classical
   have hsm : IsSmooth ((extTensor a b).comp (gpProj k m (j + 1))) := by
     intro w
-    exact (isSmooth_extTensor ha hb w).preimage (GlobalTheory.T.continuous_parabolic_proj k m (j + 1))
+    exact (isSmooth_extTensor ha hb w).preimage (_root_.GlobalTheory.CompanionTheory.LeibPhi.continuous_gpProj_phi k m (j + 1))
   have hUH : MirUin k (m + (j + 1)) ≤ MirabolicParabolic k m (j + 1) := GlobalTheory.T.mirabolic_unipotent_le_parabolic k m (j + 1)
   let q : V ⊗[ℂ] W →ₗ[ℂ] V ⊗[ℂ] (TwJacquet b (MirUin k (j + 1)) (mirChar k ψ j)) :=
     LinearMap.lTensor V (twKer b (MirUin k (j + 1)) (mirChar k ψ j)).mkQ
@@ -137,7 +137,7 @@ theorem phiMinus_prodGP (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ}
     | zero => simp
     | add x y hx hy => simp only [map_add, hx, hy]
     | tmul v w =>
-      have e := GlobalTheory.T.parabolic_proj_embedding_compat k m j h hh
+      have e := _root_.GlobalTheory.CompanionTheory.LeibPhi.IotaProj.gpProj_iotaM k m j h hh
       show q (extTensor a b (gpProj k m (j + 1) ⟨_, hh⟩) (v ⊗ₜ w)) =
         extTensor a (phiMinus k ψ b) (gpProj k m j h) (q (v ⊗ₜ w))
       rw [e]
@@ -170,8 +170,8 @@ theorem phiMinus_prodGP (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ}
           exact Submodule.smul_mem _ c hx
         | mem x hx =>
           obtain ⟨n, w', rfl⟩ := hx
-          obtain ⟨u, hh, e⟩ := GlobalTheory.T.exists_unipotent_lift_parabolic_proj k m j n
-          obtain ⟨-, hv, hθ⟩ := GlobalTheory.T.parabolic_proj_unipotent_character_compat k ψ m j u hh
+          obtain ⟨u, hh, e⟩ := _root_.GlobalTheory.CompanionTheory.LeibPhi.exists_mirUin_gpProj_lift k m j n
+          obtain ⟨-, hv, hθ⟩ := _root_.GlobalTheory.CompanionTheory.LeibPhi.gpProj_mirUin_char k ψ m j u hh
           refine Submodule.subset_span ⟨u, v ⊗ₜ w', ?_⟩
           have e2 : (⟨_, hv⟩ : MirUin k (j + 1)) = n := Subtype.ext (congrArg Prod.snd e)
           rw [e2] at hθ
@@ -185,7 +185,7 @@ theorem phiMinus_prodGP (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ}
       | smul c x _ hx => rw [map_smul, hx, smul_zero]
       | mem x hx =>
         obtain ⟨u, y, rfl⟩ := hx
-        obtain ⟨e1, hv, hθ⟩ := GlobalTheory.T.parabolic_proj_unipotent_character_compat k ψ m j u (hUH u.2)
+        obtain ⟨e1, hv, hθ⟩ := _root_.GlobalTheory.CompanionTheory.LeibPhi.gpProj_mirUin_char k ψ m j u (hUH u.2)
         induction y using TensorProduct.induction_on with
         | zero => simp
         | add x y hx hy =>
@@ -205,12 +205,12 @@ theorem phiMinus_prodGP (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ}
             rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
             exact Submodule.subset_span ⟨⟨_, hv⟩, w, rfl⟩
           rw [this, TensorProduct.tmul_zero]
-  refine coinv_cInd (MirabolicParabolic k m (j + 1)) (MirUin k (m + (j + 1))) hUH (GlobalTheory.T.mirabolic_unipotent_normal k _) (mirChar k ψ (m + j))
-    (embedding₂ k (m + j)) (GlobalTheory.T.continuous_mirabolic_embedding k _) (levi_stab ψ (m + j)) (MirabolicParabolic k m j) (GlobalTheory.T.mem_parabolic_iff_mem_embedded k m j)
+  refine coinv_cInd (MirabolicParabolic k m (j + 1)) (MirUin k (m + (j + 1))) hUH (_root_.GlobalTheory.CompanionTheory.LeibPhi.UNorm.mirUin_normal k _) (mirChar k ψ (m + j))
+    (embedding₂ k (m + j)) (_root_.GlobalTheory.CompanionTheory.LeibPhi.continuous_iotaM k _) (levi_stab ψ (m + j)) (MirabolicParabolic k m j) (GlobalTheory.T.mem_parabolic_iff_mem_embedded k m j)
     ((extTensor a b).comp (gpProj k m (j + 1))) hsm ((extTensor a (phiMinus k ψ b)).comp (gpProj k m j)) q
     hqs hq hker ?_ (GlobalTheory.T.isClosed_parabolic_mul_embedded_mirabolic k m j) (GlobalTheory.T.embedded_small_neighbourhood_factor k m j) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k _) ?_
   · intro g
-    rcases GlobalTheory.T.mirabolic_double_coset_dichotomy k ψ hψ1 m j g with h | ⟨u, hx, h1, h2⟩
+    rcases _root_.GlobalTheory.CompanionTheory.LeibPhi.Dich.dichotomy k ψ hψ1 m j g with h | ⟨u, hx, h1, h2⟩
     · exact Or.inl h
     · refine Or.inr ⟨u, hx, fun w => ?_, h2⟩
       simp [h1]
@@ -269,7 +269,7 @@ theorem tw_rep {m j : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddComm
   | tmul v w =>
     show (dpowM (m + j) r (h : Mir k (m + j)) : ℂ) • extTensor a c (gpProj k m j h) (v ⊗ₜ w) =
       extTensor (twist a (dpow m r)) (twist c (dpowM j r)) (gpProj k m j h) (v ⊗ₜ w)
-    rw [extTensor_tmul, extTensor_tmul, twist_apply, twist_apply, GlobalTheory.T.modulus_parabolic_proj_factor k m j r h, Units.val_mul,
+    rw [extTensor_tmul, extTensor_tmul, twist_apply, twist_apply, _root_.GlobalTheory.CompanionTheory.LeibPhi.dpowM_hgp k m j r h, Units.val_mul,
       TensorProduct.smul_tmul_smul]
 
 theorem cInd_of_eq {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
@@ -279,7 +279,7 @@ theorem cInd_of_eq {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
 theorem twist_prodGP {m j : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (a : Representation ℂ (GL (Fin m) k) V) (c : Representation ℂ (Mir k j) W) (r : ℝ) :
     Nonempty ((twist (prodGP a c) (dpowM (m + j) r)).Equiv (prodGP (twist a (dpow m r)) (twist c (dpowM j r)))) := by
-  have A2 := GlobalTheory.T.compactInduction_twist_equiv (MirabolicParabolic k m j) ((extTensor a c).comp (gpProj k m j)) (dpowM (m + j) r) (isOpen_ker_dpowM _ _)
+  have A2 := _root_.GlobalTheory.CompanionTheory.TwCInd.nonempty_twist_cInd_equiv (MirabolicParabolic k m j) ((extTensor a c).comp (gpProj k m j)) (dpowM (m + j) r) (isOpen_ker_dpowM _ _)
   have B := cInd_of_eq (MirabolicParabolic k m j) (tw_rep a c r)
   obtain ⟨A2⟩ := A2
   obtain ⟨B⟩ := B

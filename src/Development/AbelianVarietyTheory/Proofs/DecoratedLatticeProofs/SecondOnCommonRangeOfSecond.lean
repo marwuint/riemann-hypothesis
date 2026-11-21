@@ -4,11 +4,16 @@ import Development.AbelianVarietyTheory.BlockTheory.SiegelEisenstein.GramMatrixA
 import Development.AbelianVarietyTheory.Definitions.Foundations.MemL2OfBoundedContinuousInvariant
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsSchwartzBruhatAdelicMatrixOfMemAdelicSchwartz
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatAdelicMatrixContinuousLeMajorantStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSummableBoundSchwartzMajorantRationalTransStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualOfCovolumeOneStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSummableBoundSchwartzMajorantRationalTrans
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SchwartzBruhatMixedFamilies
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RealSizeNonneg
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HeckeFormNSOfHeckeForm
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualOfCovolumeOne
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierInversionZeroCompactQuotient
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RationalAdelicMatricesSelfAnnihilatorStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaDecompositionUnitary
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryUnnSubgroupEqTopOfLeviUnipotentWeylStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryUnnSubgroupEqTopOfLeviUnipotentWeyl
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SiegelParabolicUnnMatrixBlockUpperTriangular
 
 noncomputable section
@@ -27,7 +32,7 @@ variable {D : D7} {n : ℕ}
 
 theorem summable_rat {θ : InfFam D} (hθ : IsInfFam θ) {m : ℕ} (φ : schwartzA θ m n) :
     Summable fun ξ : Matrix (Fin m) (Fin n) D.host.E => ‖φ.1 (ξ.map (incA D))‖ := by
-  obtain ⟨N, hN⟩ := GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ m n
+  obtain ⟨N, hN⟩ := _root_.GlobalTheory.Unf.MajLoc.summable_bound D θ hθ m n
   obtain ⟨-, K, hK, hC⟩ := GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ m n φ.1
     (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ m n φ.1 φ.2)
   obtain ⟨C, hC⟩ := hC N
@@ -57,7 +62,7 @@ theorem selfDual_of_covolOne {m : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (hT
     congr 2
     simp only [Matrix.trace, map_sum]
     rfl
-  refine GlobalTheory.T.selfDual_of_fundamentalDomain_volume_eq_one _ (ratMx D m n) K hK hKc _ (fun y => ?_) hs (fun x x' y => ?_) (fun x y => hψ.2.1 _) h1 h2 μ 𝓕
+  refine _root_.GlobalTheory.CovolumeOneSelfDual.selfDual_of_covolume_one _ (ratMx D m n) K hK hKc _ (fun y => ?_) hs (fun x x' y => ?_) (fun x y => hψ.2.1 _) h1 h2 μ 𝓕
     hμ.1 hμ.2.1 hμ.2.2
   · simp only [hs _ y]
     haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -132,7 +137,7 @@ def resG (ω : GramMatrixBlocks.Rep θ n V.gram) : G D n →* Module.End ℂ (sc
 
 theorem isWeilSch_unique {μ : Measure (Mx D V.rank n)} {ω ω' : G D n →* Module.End ℂ (schwartzA θ V.rank n)}
     (h : IsWeilSch ψ χ θ V μ ω) (h' : IsWeilSch ψ χ θ V μ ω') : ω = ω' := by
-  have := GlobalTheory.T.unitaryUnn_subgroup_eq_top_of_leviUnipotentWeyl D n (ω.toHomUnits.eqLocus ω'.toHomUnits)
+  have := _root_.GlobalTheory.StdUnn.eq_top_of_levi_unip_weyl D n (ω.toHomUnits.eqLocus ω'.toHomUnits)
     (fun g a hg => Units.ext (LinearMap.ext fun Φ => Subtype.ext (funext fun x =>
       (h.levi g a hg Φ x).trans (h'.levi g a hg Φ x).symm)))
     (fun g b hg => Units.ext (LinearMap.ext fun Φ => Subtype.ext (funext fun x =>
@@ -168,29 +173,6 @@ theorem leftInv_theta (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (
   have : mt V (γ * h)⁻¹ = mt V h⁻¹ * mt V γ⁻¹ := by rw [mul_inv_rev]; rfl
   rw [this, hu, Matrix.mul_assoc, ← rat_mul]
   rfl
-
-def ContinuesAt {m : ℕ} {T : Matrix (Fin m) (Fin m) D.host.E} (α : GramMatrixBlocks.GG D n → ℝ≥0) (ω : GramMatrixBlocks.Rep θ n T)
-    (Φ : GramMatrixBlocks.Sch θ m n) (g : GramMatrixBlocks.GG D n) : Prop :=
-  ∃ E : ℂ → ℂ, MeromorphicOn E Set.univ ∧ ∀ s : ℂ, (n : ℝ) / 2 < s.re → E s = ∑' γ, GramMatrixBlocks.eisTerm α ω Φ g s γ
-
-def SecondOnCommonRange : Prop :=
-  ∀ (D : D7) (n : ℕ) (V : HSp D), n < V.rank → V.rank ≤ 2 * n → n + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank →
-    GramMatrixBlocks.FormulaFor n V.gram
-
-def WeilExists : Prop :=
-  ∀ (D : D7) (n : ℕ) (V : HSp D), n < V.rank → V.rank ≤ 2 * n → n + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank →
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D),
-    IsCharAF D.host.F ψ → IsHeckeChar D χ → ResEta D χ V.rank → IsInfFam θ →
-    ∃ ω : GramMatrixBlocks.Rep θ n V.gram, GramMatrixBlocks.IsWeil ψ χ ω
-
-def PlaneContinuation : Prop :=
-  ∀ (D : D7) (n : ℕ) (V : HSp D), n < V.rank → V.rank ≤ 2 * n → n + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank →
-  ∀ (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D),
-    IsCharAF D.host.F ψ → IsHeckeChar D χ → ResEta D χ V.rank → IsInfFam θ →
-  ∀ ω : GramMatrixBlocks.Rep θ n V.gram, GramMatrixBlocks.IsWeil ψ χ ω → ∀ α : GramMatrixBlocks.GG D n → ℝ≥0, GramMatrixBlocks.IsAbsLevi α →
-  ∀ c : D.what₂.Tau → ℝ, GramMatrixBlocks.IsRealPart ψ θ c →
-  ∀ s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, IsCartanInv (V.gram.map (tauE D τ)) (s τ)) →
-  ∀ Φ : GramMatrixBlocks.Sch θ V.rank n, Φ.1 ∈ GramMatrixBlocks.fockSpace θ n V.gram c s → ∀ g, ContinuesAt α ω Φ g
 
 end GlobalTheory.SiegelWeilLitCompare
 

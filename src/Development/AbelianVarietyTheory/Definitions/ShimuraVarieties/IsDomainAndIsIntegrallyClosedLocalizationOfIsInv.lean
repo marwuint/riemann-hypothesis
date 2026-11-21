@@ -277,10 +277,6 @@ theorem isAffineQuotient_spec [Finite G] (B A : Type u) [CommRing B] [CommRing A
   ⟨specAction_comp G B A, inferInstance, Scheme.Hom.app_injective _,
     mem_range_spec_app_of_isInvariant G B A⟩
 
-example (K L : Type u) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] :
-    IsAffineQuotient (specAction Gal(L/K) L) (Spec.map (CommRingCat.ofHom (algebraMap K L))) :=
-  isAffineQuotient_spec K L
-
 theorem epi_of_surjective_of_app_injective (π : X ⟶ Y) [Surjective π]
     (h : ∀ W, Function.Injective (π.app W)) : Epi π := ⟨fun {Z} a b hab ↦ by
   have hb : a.base = b.base := by
@@ -326,11 +322,6 @@ include h
 
 theorem preimage_le (W : Y.Opens) (g : G) : π ⁻¹ᵁ W ≤ (ρ g).hom ⁻¹ᵁ π ⁻¹ᵁ W :=
   preimage_le_of_invariant ρ π h.comp_eq W g
-
-theorem range_app (W : Y.Opens) :
-    Set.range (π.app W) = {s | IsInvariantSection ρ (π ⁻¹ᵁ W) s} :=
-  Set.ext fun s ↦ ⟨by rintro ⟨t, rfl⟩; exact isInvariantSection_app ρ π h.comp_eq W t,
-    h.mem_range_app W s⟩
 
 theorem isSchemeTheoreticallyDominant : IsSchemeTheoreticallyDominant π :=
   have := h.isAffineHom
@@ -576,11 +567,6 @@ theorem IsFreeAction.of_isAlgClosed {ρ : G →* Aut X}
   h (AlgebraicClosure k) (Spec.map (CommRingCat.ofHom (algebraMap k _)) ≫ x) g
     (by rw [Category.assoc, hx])
 
-theorem IsFreeAction.eq_one {ρ : G →* Aut X} (h : IsFreeAction ρ) {T : Scheme.{u}} [Nonempty T]
-    (x : T ⟶ X) {g : G} (hx : x ≫ (ρ g).hom = x) : g = 1 :=
-  h (T.residueField (Classical.arbitrary T)) (T.fromSpecResidueField _ ≫ x) g
-    (by rw [Category.assoc, hx])
-
 theorem IsFreeAction.of_equivariant {ρ : G →* Aut X} (h : IsFreeAction ρ) {ρ' : G →* Aut Y}
     (p : Y ⟶ X) (hp : ∀ g, (ρ' g).hom ≫ p = p ≫ (ρ g).hom) : IsFreeAction ρ' := fun k _ x g hx ↦
   h k (x ≫ p) g (by rw [Category.assoc, ← hp, reassoc_of% hx])
@@ -661,23 +647,6 @@ theorem etale_of_isFreeAction : Etale π := by
   obtain ⟨_, _, _⟩ := h.isInvariant W
   rw [Scheme.Hom.appLE_eq_app]
   exact FreeQuotient.etale Γ(Y, W) (hρ.isFreeRingAction (hW.preimage π) (h.preimage_le W))
-
-theorem finrank_of_isFreeAction (y : Y) : π.finrank y = Nat.card G := by
-  have := h.isFinite_of_isFreeAction hρ
-  have := h.etale_of_isFreeAction hρ
-  obtain ⟨_, ⟨W, hW, rfl⟩, hy, -⟩ :=
-    Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ
-  have hW : IsAffineOpen W := hW
-  let := sectionsAction ρ _ (h.preimage_le W)
-  let := (π.app W).hom.toAlgebra
-  obtain ⟨_, _, _⟩ := h.isInvariant W
-  have hf := hρ.isFreeRingAction (hW.preimage π) (h.preimage_le W)
-  obtain ⟨_, _⟩ := FreeQuotient.finite_and_projective Γ(Y, W) hf
-  obtain ⟨z, rfl⟩ : y ∈ Set.range hW.fromSpec := by rwa [hW.range_fromSpec]
-  rw [← Scheme.Hom.finrank_of_isPullback _ _ _ _
-    (isPullback_fromSpec_app π hW (hW.preimage π)),
-    ← FreeQuotient.rankAtStalk_eq_card Γ(Y, W) hf z]
-  exact Scheme.Hom.finrank_SpecMap_algebraMap Γ(Y, W) Γ(X, π ⁻¹ᵁ W) _
 
 end IsAffineQuotient
 

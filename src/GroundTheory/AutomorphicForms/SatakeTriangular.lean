@@ -35,9 +35,6 @@ theorem DomLE.eq_of_ell_eq {l ν : Fin n → ℤ} (h : DomLE l ν) (he : ell l =
   refine eq_of_tailSum_eq fun m hm => ?_
   exact (hall ⟨m, Nat.lt_succ_iff.2 hm⟩ (Finset.mem_univ _)).symm
 
-theorem DomLE.antisymm {l ν : Fin n → ℤ} (h₁ : DomLE l ν) (h₂ : DomLE ν l) : l = ν :=
-  h₁.eq_of_ell_eq (le_antisymm h₂.ell_le h₁.ell_le)
-
 theorem domLE_iwasawaExponent {ν : Fin n → ℤ} (hν : Cartan.IsDominant ν) {g : GL (Fin n) F}
     (hg : g ∈ DoubleCoset.doubleCoset (Cartan.diagPow F n ν)
       (integralGL F n : Set (GL (Fin n) F)) (integralGL F n)) :

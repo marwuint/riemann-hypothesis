@@ -1,5 +1,9 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsNormalisedCutoffStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsNormalisedCutoff
+import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+import Formalism.PeriodIntegrals.QuotSetU
+import Formalism.PeriodIntegrals.QuotInv
 
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
@@ -113,7 +117,7 @@ theorem lintegral_eq_cutoff {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} {
 
 theorem quotInv : PI.QuotInv := by
   intro m G S μG μS ν h F hF hFS g hg
-  obtain ⟨φ, hφ, hφ1⟩ := GlobalTheory.T.exists_normalised_cutoff' m G S μS h.1 h.2.1 h.2.2.1 h.2.2.2.2.1 h.2.2.2.2.2.2.1
+  obtain ⟨φ, hφ, hφ1⟩ := _root_.GlobalTheory.exists_normalised_cutoff m G S μS h.1 h.2.1 h.2.2.1 h.2.2.2.2.1 h.2.2.2.2.2.2.1
   have hG : IsMatGroup G := h.1
   have hxg : ∀ x : MtM m, Matrix.of x ∈ G →
       Matrix.of (fun i j => (Matrix.of x * g) i j : MtM m) ∈ G := fun x hx => hG.2.2.1 _ hx _ hg

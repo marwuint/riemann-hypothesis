@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.PowerSeriesOneAddConstMulXMulInv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NabBijectiveWindow
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GenEigenMultiplicityQuotientAdditiveChainStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenMultiplicityShiftLatticeVariablePowStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenMultiplicityShiftLatticeVariablePow
 
 noncomputable section
 namespace GlobalTheory.PhiGam.Range
@@ -60,7 +60,7 @@ theorem qmult_sh_range : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [Char
     exact gmult_self _ _ _
   | succ m ih =>
     have hf := finite_quot_of_map (finite_sh hN a (m + 1))
-    rw [Finset.sum_range_succ, ← ih, ← GlobalTheory.T.senMultiplicity_shift_lattice_variablePow R g hg N hN hC (a + m) x, sen, sh_sh_eq,
+    rw [Finset.sum_range_succ, ← ih, ← _root_.GlobalTheory.PhiGam.SenShift.sen_sh R g hg N hN hC (a + m) x, sen, sh_sh_eq,
       add_comm (1 : ℤ)]
     rw [Nat.cast_succ, ← add_assoc] at hf ⊢
     exact GlobalTheory.T.genEigenMultiplicityQuotient_additive_chain (nab g) _ _ _ (fun y hy => Window.sh_succ_le _ _ hy)

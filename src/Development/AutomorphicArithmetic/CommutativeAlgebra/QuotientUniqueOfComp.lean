@@ -1,13 +1,14 @@
 import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.IntegralStructures.GeometricFlagBases.FinModel
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorModuliObjectPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorModuliObjectPullback
+import Development.AbelianVarietyTheory.Definitions.Divisors.Uniformised
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorPullbackAbelianMapUniqueStatement
 open CategoryTheory UpperTheory.Gal.Int.Geo
 
 theorem UpperTheory.quotient_unique_of_comp :
     QComp → QUniq := by
   intro hQ q _ D R R' _ _ _ b gb N N₀ c h3 hc X X₁ s s₁ o u f n n'
-  obtain ⟨u', ⟨m⟩⟩ := GlobalTheory.T.exists_harrisTaylorModuliObject_pullback q D R b N₀ X₁ X s₁ (f ≫ s₁) f rfl u
+  obtain ⟨u', ⟨m⟩⟩ := _root_.GlobalTheory.HTPullEvery.exists_objMap q D R b N₀ X₁ X s₁ (f ≫ s₁) f rfl u
 
   have down : ∀ k : QMap o u f c, ∃ k₁ : QMap o u' (𝟙 X) c, k.φ = k₁.φ ≫ m.φ := by
     intro k

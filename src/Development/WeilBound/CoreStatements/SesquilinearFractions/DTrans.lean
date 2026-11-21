@@ -1,5 +1,6 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitianStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitian
 import Development.WeilBound.CoreStatements.SesquilinearFractions.ExistsNsmulMemSpanFullFamily
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -12,7 +13,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
 
 theorem sesq_zero_left' (y : D.La) : sesq D 0 y = 0 := by
-  have h := (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.1 0 0 y
+  have h := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.1 0 0 y
   rw [add_zero] at h
   linear_combination -h
 
@@ -22,10 +23,10 @@ theorem sesq_sum_smul_left {I : Type} [Fintype I] (c : I → 𝓞 E) (e : I → 
   induction (Finset.univ : Finset I) using Finset.induction_on with
   | empty => simp [sesq_zero_left']
   | insert j s hj ih =>
-    rw [Finset.sum_insert hj, Finset.sum_insert hj, (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.1, (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.1, ih]
+    rw [Finset.sum_insert hj, Finset.sum_insert hj, (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.1, (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.1, ih]
 
 theorem sesq_zero_right' (x : D.La) : sesq D x 0 = 0 := by
-  have h := (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.1 x 0 0
+  have h := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.1 x 0 0
   rw [add_zero] at h
   linear_combination -h
 
@@ -35,7 +36,7 @@ theorem sesq_sum_smul_right {I : Type} [Fintype I] (c : I → 𝓞 E) (e : I →
   induction (Finset.univ : Finset I) using Finset.induction_on with
   | empty => simp [sesq_zero_right']
   | insert j s hj ih =>
-    rw [Finset.sum_insert hj, Finset.sum_insert hj, (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.1, (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1, ih]
+    rw [Finset.sum_insert hj, Finset.sum_insert hj, (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.1, (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.1, ih]
 
 end
 
@@ -53,9 +54,9 @@ theorem exists_transition_matrix_gram : ∀ (E : Type) [Field E] [NumberField E]
   have hST : ∀ a b, (S a b : E) = n * T a b := fun a b => by
     simp only [hT, Matrix.of_apply]; field_simp
   have hsn : ∀ (z y : D.La), sesq D (n • z) y = (n : E) * sesq D z y := fun z y => by
-    rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.1]; simp
+    rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.1]; simp
   have hsn' : ∀ (z y : D.La), sesq D z (n • y) = (n : E) * sesq D z y := fun z y => by
-    rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1]; simp
+    rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.1]; simp
   have htrans : IsTransition D x e T := by
     intro m y
     have h := congrArg (fun z => sesq D z y) (hSx m)

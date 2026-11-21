@@ -166,9 +166,6 @@ instance instCR (h : Hyp ε E) : CommRing (Q ε E h) :=
 
 instance instQA (h : Hyp ε E) : Algebra ℚ (Q ε E h) := Algebra.compHom _ (algebraMap ℚ ℂ)
 
-example (h : Hyp ε E) (A4' : A4) (N : Matrix (Fin n) (Fin n) (Q ε E h)) (hN : ∀ k, (N ^ (k + 1)).trace = 0) :
-    N ^ n = 0 := A4' (Q ε E h) n N hN
-
 variable (h : Hyp ε E)
 
 def L (j : ℕ) (x : Module.End ℂ V) (hx : x ∈ U E j) : Rr ε E h :=

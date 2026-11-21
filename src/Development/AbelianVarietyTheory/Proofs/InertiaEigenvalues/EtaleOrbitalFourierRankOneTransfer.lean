@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KirillovVanishingOfLimitStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JHypMemInducedFourierWeylStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedWhittakerJHypEqOrbitalIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KirillovVanishingOfLimit
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JHypMemInducedFourierWeyl
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedWhittakerJHypEqOrbitalIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilRepEvalZeroMemInducedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedWhittakerWeilRepEventuallyStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedWhittakerWeilRepEventually
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFactsStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FourierTransformKProdLocallyConstantCompactSuppoStatement
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
@@ -169,9 +169,9 @@ theorem rankOne : RankOne := by
     (GlobalTheory.T.weilRep_evalZero_mem_induced F E A ψ hψ x' _ _ _ (hW x' ((hmem x').1 hx')) _ (hφ x' ((hmem x').1 hx'))).1
   have hjw : ∀ x' ∈ Sf, A.InI (jw x') := fun x' hx' =>
     (GlobalTheory.T.weilRep_evalZero_mem_induced F E A ψ hψ x' _ _ _ (hW x' ((hmem x').1 hx')) _ (hφw x' ((hmem x').1 hx'))).1
-  have h14 := GlobalTheory.T.jHyp_mem_induced_fourier_weyl F E A ψ hψ m.μK m.sdK φ' hφ'
+  have h14 := _root_.GlobalTheory.JR.HypJ.main F E A ψ hψ m.μK m.sdK φ' hφ'
   have hF' : IsTest (A.fourK m.μK ψ φ') := GlobalTheory.T.fourierTransformKProd_locallyConstantCompactSupport F E A ψ hψ m.μK m.sdK φ' hφ'
-  have h14F := GlobalTheory.T.jHyp_mem_induced_fourier_weyl F E A ψ hψ m.μK m.sdK _ hF'
+  have h14F := _root_.GlobalTheory.JR.HypJ.main F E A ψ hψ m.μK m.sdK _ hF'
   have hΨ : A.InI Ψ := inI_comb F E A _ _ κ (inI_sum A Sf r jx hjx) h14.1
 
   have hlim : ∀ a : A.K, IsUnit a → Tendsto (A.abelian₂ m.μK ψ a Ψ) (𝓝[≠] 0) (𝓝 0) := by
@@ -179,13 +179,13 @@ theorem rankOne : RankOne := by
     obtain ⟨x₀, ⟨hx₀, y₀, hy₀, ha₀⟩, -⟩ := hS ha.unit
     have ha₀' : a = x₀ * A.NL y₀ := by simpa using ha₀
     have hne : ∀ᶠ c in 𝓝[≠] (0 : F), c ≠ 0 := self_mem_nhdsWithin
-    have h14b := GlobalTheory.T.truncatedWhittaker_jHyp_eq_orbitalIntegral F E A ψ hψ m.μK m.sdK φ' hφ' a ha
+    have h14b := _root_.GlobalTheory.whittaker_jHyp_eq_orbK F E A ψ hψ m.μK m.sdK φ' hφ' a ha
     have h15 : ∀ᶠ c in 𝓝[≠] (0 : F), ∀ x' ∈ Sf,
         A.abelian₂ m.μK ψ a (jx x') c = if x' = x₀ then γ x₀ * A.orbL m.ν (φ x₀) y₀ else 0 := by
       rw [Finset.eventually_all]
       intro x' hx'
       have hx'S := (hmem x').1 hx'
-      have := GlobalTheory.T.truncatedWhittaker_weilRep_eventually F E A ψ hψ m x' _ _ (hW x' hx'S) _ (hφ x' hx'S) a ha
+      have := _root_.GlobalTheory.JR.WhitX.lam_weil_eventually F E A ψ hψ m x' _ _ (hW x' hx'S) _ (hφ x' hx'S) a ha
       by_cases hxx : x' = x₀
       · subst hxx
         simpa using this.1 y₀ hy₀ ha₀'
@@ -212,7 +212,7 @@ theorem rankOne : RankOne := by
         field_simp
         ring
     exact tendsto_const_nhds.congr' (hev.mono fun c hc => hc.symm)
-  have h13 := (GlobalTheory.T.kirillov_vanishing_of_limit F E A ψ hψ m.μK m.sdK Ψ hΨ hlim).2
+  have h13 := (_root_.GlobalTheory.JR.kirillov_vanishing_l2 F E A ψ hψ m.μK m.sdK Ψ hΨ hlim).2
 
   have hΨw : (fun h => Ψ (h * wS A.K)) = fun g => (∑ x' ∈ Sf, r x' * jw x' g) +
       κ * A.jHyp m.μK ψ (A.fourK m.μK ψ φ') g := by
@@ -227,13 +227,13 @@ theorem rankOne : RankOne := by
   set a := (x : A.K) * A.NL y with hadef
   have ha : IsUnit a := x.isUnit.mul (hy.map (Algebra.norm A.K))
   have hne : ∀ᶠ c in 𝓝[≠] (0 : F), c ≠ 0 := self_mem_nhdsWithin
-  have h14b := GlobalTheory.T.truncatedWhittaker_jHyp_eq_orbitalIntegral F E A ψ hψ m.μK m.sdK _ hF' a ha
+  have h14b := _root_.GlobalTheory.whittaker_jHyp_eq_orbK F E A ψ hψ m.μK m.sdK _ hF' a ha
   have h15 : ∀ᶠ c in 𝓝[≠] (0 : F), ∀ x' ∈ Sf,
       A.abelian₂ m.μK ψ a (jw x') c = if x' = x then γ x * A.orbL m.ν (φw x) y else 0 := by
     rw [Finset.eventually_all]
     intro x' hx'
     have hx'S := (hmem x').1 hx'
-    have := GlobalTheory.T.truncatedWhittaker_weilRep_eventually F E A ψ hψ m x' _ _ (hW x' hx'S) _ (hφw x' hx'S) a ha
+    have := _root_.GlobalTheory.JR.WhitX.lam_weil_eventually F E A ψ hψ m x' _ _ (hW x' hx'S) _ (hφw x' hx'S) a ha
     by_cases hxx : x' = x
     · subst hxx
       simpa using this.1 y hy rfl

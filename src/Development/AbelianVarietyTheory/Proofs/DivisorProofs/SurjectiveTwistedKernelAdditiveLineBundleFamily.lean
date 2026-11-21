@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRepOfPublished
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveLineBundleEqMumfordLambdaOfAmpleAlgCloseStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveLineBundleEqMumfordLambdaOfAmpleAlgClose
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasProperSmoothDualRepresentativeGrpPullbackIff
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSquareUnique
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsProjBySmoothIsProperGeometricallyIntegral
@@ -33,7 +33,7 @@ theorem exists_point_geom : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbel
     GlobalTheory.AmpleBaseChange.relAmple_of_isPullback hL hAmp hφ.1
   have hs : 𝟙 (Sp K) ≫ ξ = ξ := Category.id_comp ξ
   have hN' : Fam A' (M.pull (BaseChange.toBase hφ hs)) := BaseChange.fam_toBase hφ hs hM
-  obtain ⟨a', ha'⟩ := GlobalTheory.T.additiveLineBundle_eq_mumfordLambda_of_ample_algClosed K A' hA' (L.pull φ) hL' hAmp' _ hN'
+  obtain ⟨a', ha'⟩ := _root_.GlobalTheory.AddLineField.additive_eq_lam_of_ample K A' hA' (L.pull φ) hL' hAmp' _ hN'
   refine ⟨GlobalTheory.AbDual.pushP hφ hs a', ?_⟩
 
   obtain hsq := GlobalTheory.LamPull.exists_isSquare (G := A) (G' := A') (f := ξ) (φ := φ) hφ.1.w

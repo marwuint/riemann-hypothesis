@@ -1,4 +1,4 @@
-import Formalism.PieriBlockIdeals.StatementLW
+import Mathlib
 import Formalism.PieriBlockIdeals.WEChain
 
 noncomputable section

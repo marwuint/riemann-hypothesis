@@ -70,27 +70,8 @@ theorem jointAmplitudeRotated_generic (Y : Full X) (u : D.what₂.Word) (large�
     rw [ENNReal.ofReal_one, one_mul, ← ENNReal.ofReal_prod_of_nonneg (fun τ _ => hnn τ), hprod]
     exact le_rfl
 
-theorem rowBDataGR_of_rest {large₂ : SizeData₂ D} {Y : Full X} {u : D.what₂.Word}
-    {ν : X.B.I.Ginf → Measure X.B.I.Ginf} {C1 Cn Ire : ℝ} (h : RowRestR large₂ Y u u ν C1 Cn Ire) :
-    RowBDataGR large₂ Y u ν C1 Cn Ire := by
-  obtain ⟨hIre, θ, C, hB, h0, hw, hl, hM, hP, hT, hN⟩ := h
-  exact ⟨hIre, θ, C, hB, h0, hw, hl, 1, zero_le_one,
-    fun νL ng => jointAmplitudeRotated_generic Y u large₂ C1 C hB ν νL ng (Formalism.L2.SG.Pf.RelPtR.relPtExPR_holds C u u) hM hP hT,
-    fun sec hs => by rw [ENNReal.ofReal_one, one_mul]; exact hN sec hs⟩
-
-theorem rowBDataUnifGR_of (h : RowRestUnifR) : RowBDataUnifGR := by
-  intro Cg cb Cw cT CT C0
-  obtain ⟨C1, Cn, a, b, h2⟩ := h Cg cb Cw cT CT C0
-  exact ⟨C1, Cn, a, b, fun C' Cl h1 h3 D large₂ X Y u hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hO ν hp =>
-    rowBDataGR_of_rest (h2 C' Cl h1 h3 D large₂ X Y u u hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hO ν hp)⟩
-
 end Formalism.L2.SG.Pf.ThmBChainG
 
 namespace Formalism.L2.SG.Pf
-
-open Formalism.L2.SG.Pf.ThmBChainG
-
-theorem theoremB_generic_final (hB : JointNormBoundRotatedUniform) (hA : AmpUnif) (hR : RowRestUnifR) : StepThmBG :=
-  stepThmBG_ofR hB hA Formalism.L2.SG.PointUniformity.ptUnifG (rowBDataUnifGR_of hR)
 
 end Formalism.L2.SG.Pf

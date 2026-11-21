@@ -45,9 +45,6 @@ theorem hd_sub' (n : ℕ) (F G : (Fin (n + 1) → X) → V) (x : Fin (n + 2) →
     hd n (fun y => F y - G y) x = hd n F x - hd n G x := by
   simp [hd, smul_sub, Finset.sum_sub_distrib]
 
-theorem hd_zero_fun (n : ℕ) (x : Fin (n + 2) → X) : hd n (fun _ : Fin (n + 1) → X => (0 : V)) x = 0 := by
-  simp [hd]
-
 theorem hd_comp' (n : ℕ) (F : (Fin (n + 1) → Y) → V) (c : X → Y) (x : Fin (n + 2) → X) :
     hd n (fun y => F fun i => c (y i)) x = hd n F (fun i => c (x i)) := rfl
 

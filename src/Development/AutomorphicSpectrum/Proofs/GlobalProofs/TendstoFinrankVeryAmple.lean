@@ -4,11 +4,20 @@ import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.NefRR
 import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.ProjLineLimit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartLatticeLeSpanNorm
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartLatticeSpanTwistShift
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinrankChartLatQShiftLe
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGeneric
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsShiftSectionBound
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.GeneratedModOfSubsingleton
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PQuotPartGraded
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBridgeFull
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsAmpleOfGenTwist
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.AmpleSt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDimensionalChartLattice
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCoordNeZero
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KleimanGenericPointSectionInput
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KleimanInputNefAmpleSectionCount
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.TargetSt
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsFieldSubalgebraSelf
+import Development.WeilBound.CoreStatements.HodgeTatePoints.KleimanInputUniverseZero
 import Development.WeilBound.CoreStatements.HodgeTatePoints.KTwins
 import Development.WeilBound.CoreStatements.HodgeTatePoints.SiuaKodOf
 import Development.WeilBound.CoreStatements.HodgeTatePoints.SiubOf
@@ -649,111 +658,10 @@ theorem shiftSectionBound : ShiftSectionBound.Statement :=
     (HyperplaneQuotientBound.proof HyperplaneRegularSection.full DiagonalSectionDifference.proof hL)
     HyperplaneRegularSection.full)
 
-theorem tendsto_div_of_squeeze {f g : ℕ → ℝ} {L C : ℝ} {d : ℕ}
-    (hf : Tendsto (fun τ : ℕ => f τ / (τ : ℝ) ^ (d + 1)) atTop (𝓝 L))
-    (h1 : ∀ τ, f τ ≤ g τ) (h2 : ∀ᶠ τ : ℕ in atTop, g τ ≤ f τ + C * (τ : ℝ) ^ d) :
-    Tendsto (fun τ : ℕ => g τ / (τ : ℝ) ^ (d + 1)) atTop (𝓝 L) := by
-  have hz : Tendsto (fun τ : ℕ => f τ / (τ : ℝ) ^ (d + 1) + C * (1 / (τ : ℝ))) atTop (𝓝 L) := by
-    simpa using hf.add ((tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul C)
-  refine tendsto_of_tendsto_of_tendsto_of_le_of_le' hf hz ?_ ?_
-  · exact Eventually.of_forall fun τ => div_le_div_of_nonneg_right (h1 τ) (by positivity)
-  · filter_upwards [h2, eventually_gt_atTop 0] with τ hτ hpos
-    have hτ0 : (0 : ℝ) < τ := by exact_mod_cast hpos
-    have e : f τ / (τ : ℝ) ^ (d + 1) + C * (1 / (τ : ℝ)) =
-        (f τ + C * (τ : ℝ) ^ d) / (τ : ℝ) ^ (d + 1) := by
-      rw [pow_succ]
-      field_simp
-    rw [e]
-    exact div_le_div_of_nonneg_right hτ (by positivity)
-
 end Final
-
-theorem nefRR_succ {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
-    (y : (Σ k, ι k) → Ω) (d : ℕ) (a : K → ℤ) (hV : IsArithVar (mCoordIdeal y) (d + 1 + 1))
-    (hB : Birational y) (hN : NefOnGenericDeg (mCoordIdeal y) a) :
-    (∀ τ, FiniteDimensional ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω))) ∧
-      Tendsto (fun τ : ℕ => ((d + 1).factorial : ℝ) *
-        (Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) : ℝ) / (τ : ℝ) ^ (d + 1)) atTop
-        (𝓝 (genDeg (mCoordIdeal y) (d + 1) a : ℝ)) := by
-  classical
-  obtain ⟨hK, hS⟩ := (GlobalTheory.CompanionTheory.Relay.kleiman_input_nef_ample_section_count GlobalTheory.CompanionTheory.Relay.kleiman_genericPointSectionInput).2
-  have : Nonempty K := hV.1
-  have hI : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.genIdeal y = mIdealOver ℚ y := LiftBirationalNef.genIdeal_eq y
-  have hP := isProjVarF_map_of_isArithVar hV
-  have hnz := GlobalTheory.CompanionTheory.Ar.Relevant.exists_coord_ne_zero K ι Ω y (d + 1) hV
-  have hdim : FieldNumbers.relDim (mIdealOver ℚ y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ)) :=
-    hI ▸ (FieldNumbers.CutRegular.relDim_eq_natCast_iff _ (d + 1)).2 hP.2
-  have hnef : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.IsNef ℚ y a := fun W hW hle hW1 =>
-    NefPlusAmpleDegree.nefOnF_of_nefOnGenericDeg hN W
-      ⟨(Bridge.isMultiProjPrime_iff W).mp hW, (FieldNumbers.CutRegular.relDim_eq_natCast_iff W 1).1 hW1⟩
-      (hI.le.trans hle)
-  have hfinQ : ∀ b, FiniteDimensional ℚ (chartLatQ y b 1) := fun b =>
-    GlobalTheory.CompanionTheory.GenericFibre.finiteDimensional_chartLatQ K ι Ω y (d + 1) b hV
-  have hfd : ∀ b, FiniteDimensional ℚ (secOver ℚ y b) := fun b => by
-    rw [← chartLatQ_eq_secOver]
-    exact hfinQ b
-  have hsh : ∀ M : ℕ, ∃ C : ℝ, ∀ᶠ n : ℕ in atTop,
-      (Module.finrank ℚ (secOver ℚ y ((n : ℤ) • a + fun _ => (M : ℤ))) : ℝ) ≤
-        (Module.finrank ℚ (secOver ℚ y ((n : ℤ) • a)) : ℝ) + C * (n : ℝ) ^ d := by
-    intro M
-    obtain ⟨C, hC⟩ := shiftSectionBound K ι Ω y (d + 1) a M (by omega) hV hB
-    refine ⟨C, hC.mono fun n hn => ?_⟩
-    have h := hn.2
-    rw [Nat.add_sub_cancel, chartLatQ_eq_secOver, chartLatQ_eq_secOver] at h
-    exact h
-  have hlim := tendsto_finrank_nef hK hS hnz hdim hnef hfd hsh
-  obtain ⟨e, c, hc0, hcond⟩ := GlobalTheory.CompanionTheory.Conductor.exists_conductor_section K ι Ω y (d + 1) hV hB
-
-  let φ : ∀ τ : ℕ, Submodule.span ℚ (chartLatNm y a τ : Set Ω) →ₗ[ℚ]
-      chartLatQ y ((τ : ℤ) • a + fun k => (e k : ℤ)) 1 := fun τ =>
-    { toFun := fun s => ⟨c * s.1, hcond a τ s.1 s.2⟩
-      map_add' := fun s t => Subtype.ext (mul_add _ _ _)
-      map_smul' := fun r s => Subtype.ext (mul_smul_comm _ _ _) }
-  have hφ : ∀ τ, Function.Injective (φ τ) := fun τ s t hst =>
-    Subtype.ext (mul_left_cancel₀ hc0 (congrArg Subtype.val hst))
-  have hfinS : ∀ τ, FiniteDimensional ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) := fun τ => by
-    have := hfinQ ((τ : ℤ) • a + fun k => (e k : ℤ))
-    exact FiniteDimensional.of_injective (φ τ) (hφ τ)
-  refine ⟨hfinS, ?_⟩
-  set M : ℕ := ∑ k, e k with hM
-  have heM : ∀ k, e k ≤ M := fun k => Finset.single_le_sum (f := e) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)
-  obtain ⟨C, hC⟩ := hsh M
-  have hup : ∀ τ : ℕ, Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) ≤
-      Module.finrank ℚ (secOver ℚ y ((τ : ℤ) • a + fun _ => (M : ℤ))) := fun τ => by
-    have h1 : Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) ≤
-        Module.finrank ℚ (chartLatQ y ((τ : ℤ) • a + fun k => (e k : ℤ)) 1) := by
-      have := hfinQ ((τ : ℤ) • a + fun k => (e k : ℤ))
-      exact LinearMap.finrank_le_finrank_of_injective (hφ τ)
-    have h2 := GlobalTheory.CompanionTheory.ChartSections.finrank_chartLatQ_shift_le K ι Ω y ((τ : ℤ) • a) e M hnz heM (hfinQ _)
-    rw [← chartLatQ_eq_secOver]
-    exact h1.trans h2
-  have hlow : ∀ τ : ℕ, Module.finrank ℚ (secOver ℚ y ((τ : ℤ) • a)) ≤
-      Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) := fun τ => by
-    have := hfinS τ
-    rw [← chartLatQ_eq_secOver, chartLatQ_smul]
-    exact Submodule.finrank_mono (GlobalTheory.CompanionTheory.Ar.ChartDenom.chartLatQ_le_span_chartLatNm K ι Ω y a τ)
-  have hg := tendsto_div_of_squeeze (C := C) (g := fun τ : ℕ =>
-      (Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) : ℝ)) hlim
-    (fun τ => Nat.cast_le.2 (hlow τ))
-    (hC.mono fun τ hτ => le_trans (Nat.cast_le.2 (hup τ)) hτ)
-  have hfac : ((d + 1).factorial : ℝ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos _).ne'
-  have hgen : (genDeg (mCoordIdeal y) (d + 1) a : ℝ) =
-      ((d + 1).factorial : ℝ) * ((NumbersDVR.intNum ℚ (mIdealOver ℚ y) (fun _ : Fin (d + 1) => a) : ℝ) /
-        ((d + 1).factorial : ℝ)) := by
-    rw [mul_div_cancel₀ _ hfac, ← hI]
-    rfl
-  rw [hgen]
-  simp only [mul_div_assoc]
-  exact hg.const_mul _
 
 end GlobalTheory.CompanionTheory.Hypotheses₂.NefVolume
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
-
-theorem nefRR : GlobalTheory.CompanionTheory.Ar.Pub.NefRR := by
-  intro K _ ι _ Ω _ _ y D a hV hB hN
-  cases D with
-  | zero => exact GlobalTheory.CompanionTheory.Ar.Pub.NefRRModel.nefRR_dimZero y a hV hB
-  | succ d => exact NefVolume.nefRR_succ y d a hV hB hN
 
 end GlobalTheory.CompanionTheory.Hypotheses₂

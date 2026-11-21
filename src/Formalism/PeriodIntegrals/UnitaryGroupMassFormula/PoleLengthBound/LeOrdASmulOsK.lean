@@ -34,8 +34,6 @@ theorem rD_sum (β : Idx D j G.N →₀ ℕ) {ι : Type*} (s : Finset ι) (f : �
     rD G la β (∑ i ∈ s, f i) = ∑ i ∈ s, rD G la β (f i) :=
   map_sum (rDh G la β) f s
 
-theorem rD_zero (β : Idx D j G.N →₀ ℕ) : rD G la β 0 = 0 := (rDh G la β).map_zero
-
 theorem hasse_smul_Op (β : Idx D j G.N →₀ ℕ) (r : Op X la G.N) (x : ↥(HK X la G.w wF)) :
     hasse X la G.w β ((algebraMap (Op X la G.N) (Kp X la G.N) r • x : ↥(HK X la G.w wF)) : Lw X la G.w) =
       ∑ q ∈ antidiagonal β, algebraMap (Op X la G.N) (Kp X la G.N) (hasseOp X la G.N q.1 r) •

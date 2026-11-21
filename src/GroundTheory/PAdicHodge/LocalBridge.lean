@@ -113,37 +113,6 @@ instance valuativeExtension_intermediateField {F : Type*} [Field F] [Algebra F (
     ValuativeExtension E L :=
   ⟨fun a b => by rw [subfield_vle_iff_norm_le, subfield_vle_iff_norm_le]; rfl⟩
 
-section Unique
-
-variable (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-
-end Unique
-
-section Inclusion
-
-variable {K L : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L)
-
-theorem valuativeExtension_inclusion :
-    letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
-    ValuativeExtension K L := by
-  let := (IntermediateField.inclusion h).toRingHom.toAlgebra
-  exact ⟨fun a b => by rw [subfield_vle_iff_norm_le, subfield_vle_iff_norm_le]; rfl⟩
-
-theorem isScalarTower_inclusion :
-    letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
-    IsScalarTower ℚ_[p] K L := by
-  let := (IntermediateField.inclusion h).toRingHom.toAlgebra
-  exact IsScalarTower.of_algebraMap_eq fun _ => rfl
-
-theorem finiteDimensional_inclusion [FiniteDimensional ℚ_[p] L] :
-    letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
-    FiniteDimensional K L := by
-  let := (IntermediateField.inclusion h).toRingHom.toAlgebra
-  have := isScalarTower_inclusion h
-  exact Module.Finite.of_restrictScalars_finite ℚ_[p] K L
-
-end Inclusion
-
 section Galois
 
 variable (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (L : IntermediateField K (PadicAlgCl p))
@@ -161,35 +130,6 @@ instance fixingSubgroup_normal : L.fixingSubgroup.Normal := by
   rw [← ker_restrictNormalHom K L]
   exact MonoidHom.normal_ker _
 
-def galQuotientEquiv : Gal(PadicAlgCl p/K) ⧸ L.fixingSubgroup ≃* Gal(L/K) :=
-  QuotientGroup.liftEquiv _ (restrictNormalHom_surjective K L) L.restrictNormalHom_ker.symm
-
 end Galois
-
-section Examples
-
-variable (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
-  (L : IntermediateField K (PadicAlgCl p)) [FiniteDimensional K L]
-
-example : IsNonarchimedeanLocalField K := inferInstance
-example : ValuativeExtension ℚ_[p] K := inferInstance
-example : IsNonarchimedeanLocalField L := inferInstance
-example : ValuativeExtension K L := inferInstance
-example : Algebra 𝒪[K] 𝒪[L] := inferInstance
-example : Algebra.IsSeparable K L := inferInstance
-example : Normal K (PadicAlgCl p) := inferInstance
-example (i : ℤ) : Subgroup Gal(L/K) := GroundTheory.LocalField.lowerRamificationGroup K L i
-example : ℕ := GroundTheory.LocalField.differentExponent K L
-example : differentIdeal 𝒪[K] 𝒪[L] = 𝓂[L] ^ GroundTheory.LocalField.differentExponent K L :=
-  GroundTheory.LocalField.differentIdeal_eq_maximalIdeal_pow K L
-example [IsGalois K L] (v : ℝ) : Subgroup Gal(L/K) := GroundTheory.LocalField.upperRamificationGroup K L v
-example {K' L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K' ≤ L') [FiniteDimensional ℚ_[p] K']
-    [FiniteDimensional ℚ_[p] L'] : ℕ :=
-  letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
-  haveI := valuativeExtension_inclusion h
-  haveI := finiteDimensional_inclusion h
-  GroundTheory.LocalField.differentExponent K' L'
-
-end Examples
 
 end GroundTheory.PAdicHodge

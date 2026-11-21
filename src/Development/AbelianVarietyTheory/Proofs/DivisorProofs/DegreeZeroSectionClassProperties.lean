@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafSectionsExactStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSec
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
 namespace GlobalTheory.EtC.SectionClass
@@ -15,14 +15,14 @@ theorem exists_cocycle (s : Sec F X) :
     ∃ α : Cocycle ((chains R).obj (sch.obj X)) (res R F) 0, ev α.1 0 0 (by simp) X (𝟙 X) = Sec.map (resι R F) s := by
   have hz : Sec.map ((res R F).d 0 1) (Sec.map (resι R F) s) = 0 :=
     ((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F X).1 _).2 ⟨s, rfl⟩
-  obtain ⟨α, h0, -⟩ := (GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X (res R F) (-1) 0 1 (by norm_num) (by norm_num)).1 _ hz
+  obtain ⟨α, h0, -⟩ := (_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R X (res R F) (-1) 0 1 (by norm_num) (by norm_num)).1 _ hz
   refine ⟨α, (h0 X (𝟙 X)).trans ?_⟩
   simp [Sec.res]
 
 theorem mk_eq_iff (α β : Cocycle ((chains R).obj (sch.obj X)) (res R F) 0) :
     CohomologyClass.mk α = CohomologyClass.mk β ↔
       ev α.1 0 0 (by simp) X (𝟙 X) = ev β.1 0 0 (by simp) X (𝟙 X) := by
-  have h2 := ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X (res R F) (-1) 0 1 (by norm_num) (by norm_num)).2 (α - β)).2
+  have h2 := ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R X (res R F) (-1) 0 1 (by norm_num) (by norm_num)).2 (α - β)).2
   have hsub : ev (α - β).1 0 0 (by simp) X (𝟙 X) = ev α.1 0 0 (by simp) X (𝟙 X) - ev β.1 0 0 (by simp) X (𝟙 X) := by
     have := ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := res R F) (n := 0)).1 α.1 β.1 0 0 (by simp) X (𝟙 X)).2.1
     simpa using this
@@ -62,7 +62,7 @@ theorem GlobalTheory.EtC.secClass_props : ∀ (R : Type) [CommRing R] (F : Shv R
     exact (GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F X).2.1 (h2.symm.trans h3)
   · intro c
     obtain ⟨α, rfl⟩ := c.mk_surjective
-    have hd := ((GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X (res R F) (-1) 0 1 (by norm_num) (by norm_num)).2 α).1
+    have hd := ((_root_.GlobalTheory.EtC.sch_cls_cocycle_sec R X (res R F) (-1) 0 1 (by norm_num) (by norm_num)).2 α).1
     obtain ⟨a, ha⟩ := ((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F X).1 _).1 hd
     exact ⟨a, ((spec_iff R F X a α).1 ha.symm).symm⟩
   · intro s t

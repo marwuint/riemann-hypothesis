@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ToroidalBoundaryMetricData
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.HolomorphicHomDetermined
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemiAbelianExponentialAlongDiscStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanPeriodLatticeComplexSemiAbelianEqTopStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBaseChange
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemiAbelianExponentialAlongDisc
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SpanPeriodLatticeComplexSemiAbelianEqTop
 
 noncomputable section
 
@@ -228,7 +228,7 @@ open LatSec in
 
 theorem exists_lattice_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : ℂ → (A →+* ℂ)) (r : ℝ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)), IsArc Z σ φ x ψ r → ∃ (ρ : ℝ) (n : ℕ) (lam : Fin n → ℂ → (Fin g → ℂ)), 0 < ρ ∧ ρ ≤ r ∧ (∀ j, ContinuousOn (lam j) (Metric.ball 0 ρ)) ∧ Submodule.span ℂ (Set.range fun j => lam j 0) = ⊤ ∧ ∀ u ∈ Metric.ball (0 : ℂ) ρ, ∀ ex : (Fin g → ℂ) → (Over.mk (spMap (ψ u) ≫ x ≫ genι Z) ⟶ Z.t.G), (∀ z w, ex (z + w) = ex z * ex w) → IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ Z.t.G.left from (ex z).left)) → (∀ j, IsDerivAt0 (fun z => (ex z).left) (Pi.single j 1) (spMap (dualMap (ψ u)) ≫ fr.v (e j).1 (e j).2)) → ∀ j, ex (lam j u) = 1 := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ r g e harc
-  obtain ⟨g', ρ, e', hρ, hρr, hol, hexp, hdef⟩ := GlobalTheory.T.exists_semi_abelian_exponential_along_disc Z.X Z.t.G (fun u => spMap (ψ u) ≫ x ≫ genι Z) r
+  obtain ⟨g', ρ, e', hρ, hρr, hol, hexp, hdef⟩ := _root_.GlobalTheory.RelExp.exists_exp_along_disc Z.X Z.t.G (fun u => spMap (ψ u) ≫ x ≫ genι Z) r
     Z.t.semi harc.1.1 (isHolTo_spMap harc.1 _)
   have hA : ∀ u ∈ Metric.ball (0 : ℂ) ρ, HolAt (fun z => (e' u z).left) 0 := fun u hu =>
     holAt_of_isHolTo (hexp u hu).2.2.1 trivial
@@ -237,7 +237,7 @@ theorem exists_lattice_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCM
         (spMap (dualMap (ψ u)) ≫ fr.v (e j).1 (e j).2) := fun u => by
     by_cases hu : u ∈ Metric.ball (0 : ℂ) ρ
     · obtain ⟨D, hD⟩ := exists_lieEquiv Z.t (hexp u hu).1 (hA u hu) (hexp u hu).2.2.2.2
-      obtain ⟨f, hf⟩ := GlobalTheory.T.exists_eigFrame_baseChange' E H Dw l Xo c O β Z A ℂ φ _ fr (ψ u)
+      obtain ⟨f, hf⟩ := _root_.GlobalTheory.ShFam.EigFrame.exists_baseChange E H Dw l Xo c O β Z A ℂ φ _ fr (ψ u)
       obtain ⟨b, hb⟩ := exists_basis f
       refine ⟨((b.reindex e.symm).equivFun.symm.trans D.symm).toContinuousLinearEquiv, fun _ => ⟨⟨_, rfl⟩, fun j => ?_⟩⟩
       have h1 := hD (D.symm (f.vec (e j).1 (e j).2))
@@ -260,7 +260,7 @@ theorem exists_lattice_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   have h0 : (0 : ℂ) ∈ Metric.ball (0 : ℂ) ρ := Metric.mem_ball_self hρ
   obtain ⟨s, hs, hfin, hspan⟩ : ∃ s ⊆ {z | e' 0 z = 1}, s.Finite ∧ Submodule.span ℂ s = ⊤ := by
     obtain ⟨s, h1, h2, h3⟩ := exists_linearIndependent ℂ {z | e' 0 z = 1}
-    exact ⟨s, h1, h3.set_finite_of_isNoetherian, h2.trans (GlobalTheory.T.span_periodLattice_complexSemiAbelian_eq_top _ _ _ _ _ Z.t.semi (hexp 0 h0))⟩
+    exact ⟨s, h1, h3.set_finite_of_isNoetherian, h2.trans (_root_.GlobalTheory.PeriodSpan.span_ker_eq_top _ _ _ _ _ Z.t.semi (hexp 0 h0))⟩
   obtain ⟨n, z, -, rfl⟩ := hfin.fin_param
   choose ζ hζ0 hζa hζ using fun j => hdef (z j) (hs ⟨j, rfl⟩)
   obtain ⟨ρ', hρ', hball⟩ := Metric.eventually_nhds_iff_ball.1 ((eventually_all.2 hζ).and

@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubPairRight
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningAffinePreimageStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningRestrictionCompatibleOpensStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningAffinePreimage
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThickeningRestrictionCompatibleOpens
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.AbLaw PositivityTheory.FormalThickening
 open GlobalTheory.ProjSpace GlobalTheory.QCoh.Qcqs GlobalTheory.Cartier GlobalTheory.CompanionTheory.FormalAlg GlobalTheory.CompanionTheory.FormalAlg.Lift
 
@@ -73,7 +73,7 @@ theorem lift_of_cech_pairs : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ 
           (resT I Y N D (d : ℤ) hDm (e + 1) t h x) =
         resT I Y N D (d : ℤ) hDm e t h
           (red I Y N D β hβ v hN (fun e S => (hDβ e S).ge) ((d : ℤ) * t) e S x) :=
-    fun S S' h x => GlobalTheory.T.thickening_restriction_compatible_opens R I Y β hβ (fun e => pw (N e) ((d : ℤ) * t))
+    fun S S' h x => _root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.redL_restrict R I Y β hβ (fun e => pw (N e) ((d : ℤ) * t))
       (fun e => pullPow (v e) ((d : ℤ) * t)) hLp e (D (e + 1) S) (D (e + 1) S') (D e S) (D e S')
       (hDβ e S).ge (hDβ e S').ge (hDm (e + 1) S S' h) (hDm e S S' h) x
   have hrr : ∀ (e : ℕ) (S S' S'' : Finset (Fin (m + 1))) (h : S ⊆ S') (h' : S' ⊆ S'')
@@ -89,7 +89,7 @@ theorem lift_of_cech_pairs : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ 
 
   have hlift : ∀ i, ∃ b : Tm I Y N D (d : ℤ) (e + 1) t {i},
       red I Y N D β hβ v hN (fun e S => (hDβ e S).ge) ((d : ℤ) * t) e {i} b = σS {i} :=
-    fun i => (GlobalTheory.T.thickening_affine_preimage R I Y β hβ (fun e => pw (N e) ((d : ℤ) * t))
+    fun i => (_root_.GlobalTheory.CompanionTheory.FormalAlg.Lift.redL_surjective_ker R I Y β hβ (fun e => pw (N e) ((d : ℤ) * t))
       (fun e => pullPow (v e) ((d : ℤ) * t)) hLp e (D (e + 1) {i}) (D e {i}) (hDβ e {i})
       (hDa (e + 1) {i} (Finset.singleton_nonempty i))).1 (σS {i})
   choose b hb using hlift

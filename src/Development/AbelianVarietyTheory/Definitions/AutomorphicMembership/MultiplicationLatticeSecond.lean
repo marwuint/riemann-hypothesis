@@ -183,23 +183,7 @@ def trans (φ : a.GIso F₁ F₂) (ψ : a.GIso F₂ F₃) : a.GIso F₁ F₃ := 
 
 @[simp] theorem symm_symm (φ : a.GIso F₁ F₂) : φ.symm.symm = φ := rfl
 
-def equivIso (h₁ : a.IsInv F₁) (h₂ : a.IsInv F₂) :
-    a.GIso F₁ F₂ ≃ (F₁.toMod.restrict Z.genO.ι ≅ F₂.toMod.restrict Z.genO.ι) where
-  toFun := iso
-  invFun φ := mk φ h₁ h₂
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 end GIso
-
-example {Z : a.Mdl} (F : a.Sh Z) (f : a.Sec F) (y : a.Pt Z) : 0 ≤ a.nrm F f y := by
-  refine Real.sSup_nonneg ?_
-  rintro r ⟨U, -, h, k, g, lam, -, rfl⟩
-  positivity
-
-example {Z : a.Mdl} (y : a.Pt Z) (c : 𝓞 D.host.E) (u : a.Ylat y) : c • a.phi y u = a.phi y (A.H.bar c • u) := rfl
-
-example (σ : D.host.E →+* ℂ) (i : Fin (S.Dw.mult σ)) : a.expo 0 σ i = 0 := by simp [expo]
 
 end At
 
@@ -720,8 +704,6 @@ def loc : ModuliIntegralCharts.Loc D N j p where
   Pm_nonneg := @CrDSt.Pm_nonneg _ _ _ _ _ _ _ _ st.cd
   degLie := @CrDSt.degLie _ _ _ _ _ _ _ _ st.cd
   degLdR := @CrDSt.degLdR _ _ _ _ _ _ _ _ st.cd
-
-theorem bs_loc (b : Option ℕ) : bs st.loc b = ct.B.X b := by cases b <;> rfl
 
 def ex : ModuliIntegralCharts.ExtA D st.loc where
   FlagData := @FlgSt.FlagData _ _ _ _ _ _ _ _ st.fg

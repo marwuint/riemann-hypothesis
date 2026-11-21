@@ -33,24 +33,6 @@ lemma norm_finsum_le {α : Type v} {g : α → K} {C : ℝ} (hC : 0 ≤ C) (hg :
   · rw [finsum_of_infinite_support hfin]
     simpa using hC
 
-lemma bd_add {τ : Type w} {C : ℝ} {A B : MvPowerSeries τ K} (hA : Bd C A) (hB : Bd C B) :
-    Bd C (A + B) := fun d => by rw [map_add]; exact norm_add_le_of (hA d) (hB d)
-
-lemma bd_mul_left {τ : Type w} {C : ℝ} (hC : 0 ≤ C) {A B : MvPowerSeries τ K}
-    (hA : IntegralMv A) (hB : Bd C B) : Bd C (A * B) := by
-  classical
-  intro d
-  rw [MvPowerSeries.coeff_mul]
-  refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC fun x _ => ?_
-  rw [norm_mul]
-  calc ‖MvPowerSeries.coeff x.1 A‖ * ‖MvPowerSeries.coeff x.2 B‖ ≤ 1 * C :=
-        mul_le_mul (hA _) (hB _) (norm_nonneg _) zero_le_one
-    _ = C := one_mul C
-
-lemma bd_mul_right {τ : Type w} {C : ℝ} (hC : 0 ≤ C) {A B : MvPowerSeries τ K}
-    (hA : Bd C A) (hB : IntegralMv B) : Bd C (A * B) := by
-  rw [mul_comm]; exact bd_mul_left hC hB hA
-
 lemma bd_prod_sub {τ : Type w} {ι : Type v} {C : ℝ} (hC : 0 ≤ C) (X Y : ι → MvPowerSeries τ K)
     (s : Finset ι) (hX : ∀ i ∈ s, IntegralMv (X i)) (hY : ∀ i ∈ s, IntegralMv (Y i))
     (hXY : ∀ i ∈ s, Bd C (X i - Y i)) :

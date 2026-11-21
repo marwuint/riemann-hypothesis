@@ -18,11 +18,6 @@ theorem dominanceOrder_refl {n : ℕ} (a : Fin n → ℤ) : DomLE a a := ⟨fun 
 theorem dominanceOrder_trans {n : ℕ} {a b c : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b c) : DomLE a c :=
   ⟨fun x => (h1.1 x).trans (h2.1 x), h1.2.trans h2.2⟩
 
-theorem dominanceOrder_antisymm {n : ℕ} {a b : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b a) : a = b := by
-  have h1' := (dominanceOrder_iff a b).1 h1
-  have h2' := (dominanceOrder_iff b a).1 h2
-  exact (Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.domLe_eq h1' (Finset.sum_le_sum fun j _ => h2'.2 j)).symm
-
 theorem dominanceOrder_add_negative_root {n : ℕ} (ν : Fin n → ℤ) {c d : Fin n} (h : d < c) : DomLE (ν + rootW c d) ν := by
   classical
   constructor

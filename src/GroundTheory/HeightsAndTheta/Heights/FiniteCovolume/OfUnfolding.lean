@@ -74,13 +74,6 @@ theorem ArchimedeanUnitaryEquiv.full : ArchimedeanUnitaryEquiv.Statement h v :=
 theorem AdelicLatticeDictionary.full : AdelicLatticeDictionary.Statement h v :=
   AdelicLatticeDictionary.proof h v
 
-theorem MahlerCompactness.full : MahlerCompactness.Statement h v :=
-  MahlerCompactness.full_of h v ReducedBasisBound.full (ArchCovolumeBound.full h v)
-    (MajorantTransport.full h v)
-
-theorem AdaptedReduction.full [FiniteDimensional E W] : AdaptedReduction.Statement h :=
-  AdaptedReduction.full_of h (LineNormalForm.full h) (ComplementLattice.full h)
-
 end OneSpace
 
 theorem LatticeOrbitsFiniteBelow.full (N : ℕ) : LatticeOrbitsFiniteBelow.{u} F E N :=

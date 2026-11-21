@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SameFns
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LetterLiftOfParts
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HatLettersPassDiGIBoundedFactorsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordLDecompositionNfSpanStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HatLettersPassDiGIBoundedFactors
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordLDecompositionNfSpan
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WordMDecompositionSelfAdjointStatement
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr Formalism.REAL Formalism.QuantumDeterminants MeasureTheory GlobalTheory.HatNF
@@ -93,7 +93,7 @@ theorem letterCol_mem : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebr
      fun e => hd l' hl' 2 (by norm_num) (by push_cast; linear_combination e),
      fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e)⟩)
   have hr : star l.pt = l.pt := hre l (by simp)
-  obtain ⟨-, hb, -⟩ := GlobalTheory.T.hatLetters_pass_Di_gI_boundedFactors P A d hd0
+  obtain ⟨-, hb, -⟩ := _root_.GlobalTheory.HatNF.Den.hat_den P A d hd0
   obtain ⟨ep, epb, ec, eci, ecb, ecbi, eζ, eζi, eζb, eζbi, eG, eGi, -⟩ := hT.2.1
   have eT : L.Tprod l.pt = d.L.Tprod l.pt := by
     unfold LevelData.Tprod LevelData.Tl; rw [ep, ec, eci]
@@ -126,7 +126,7 @@ theorem letterCol_mem : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebr
       rw [TL.aP, eζi, eA, j1]
       exact gen_mem d (one_mem _) hA1
     · simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero]
-      obtain ⟨E, hE, hl⟩ := GlobalTheory.T.word_l_decomposition_nf_span P A d hd0 L st s hT S w hAw l.pt m0 m1
+      obtain ⟨E, hE, hl⟩ := _root_.GlobalTheory.HatNF.WordL.word_l_shape P A d hd0 L st s hT S w hAw l.pt m0 m1
       rw [hl, eζbi, eG, eA, eB, kapL]
       refine col_mem ?_ (fun f f' => ?_) e e'
       · have := gen_mem d hβ hR1

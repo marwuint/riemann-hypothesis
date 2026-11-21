@@ -79,14 +79,4 @@ theorem card_sG (K : Type) [Field K] [Fintype K] (r k : ℕ) :
         Nat.card_congr (parGEquiv (r := r) (gpUnit (A := K) (k := k)))
     _ = _ := by rw [card_par, hcN, hG]
 
-theorem card_nuG_zmod (g : ℕ) [Fact g.Prime] (r k : ℕ) :
-    Nat.card (nuG (ZMod g) r k) = nnC r k g * ukC k g := by
-  haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
-  exact card_nuG (ZMod g) r k
-
-theorem card_sG_zmod (g : ℕ) [Fact g.Prime] (r k : ℕ) :
-    Nat.card (sG (ZMod g) r k) = glkC k g * nnC r k g := by
-  haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
-  exact card_sG (ZMod g) r k
-
 end MassDataIdxStIm

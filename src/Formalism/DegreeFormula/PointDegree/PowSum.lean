@@ -202,6 +202,4 @@ namespace Formalism.DegreeFormula
 
 theorem degreePowerSumMulEqZero : DegFlPowerSum := PPowSum.degFlPowerSum
 theorem degreeEsymmMulEqZero : DegFlEsymm := PPowSum.degFlEsymm
-theorem degreeHomogeneousEqZero : DegFlHomog := PPowSum.degFlHomog
-
 end Formalism.DegreeFormula

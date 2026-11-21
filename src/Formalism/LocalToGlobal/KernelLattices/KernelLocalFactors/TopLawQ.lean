@@ -323,75 +323,7 @@ theorem det_castQ {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (F : ℕ → �
   subst h
   rfl
 
-theorem hq_LLz {k : Type} [CommRing k] {n r d : ℕ} {M : GL (Fin n) k} (hM : M ∈ HQ k n r d) :
-    LLz r (M : Matrix (Fin n) (Fin n) k) := by
-  intro i j hi hj
-  refine (mem_btG.1 hM) i j ?_
-  rw [coarse_of_lt hj, coarse_of_le hi]
-  omega
-
-theorem blkDet_br {k : Type} [CommRing k] {n r d : ℕ} (hn : n = r + d) (M : ↥(HQ k n r d)) :
-    ((blkDet n k (coarse r [d]) 1 M : kˣ) : k) = ((M.1 : Matrix (Fin n) (Fin n) k).submatrix (brI hn) (brI hn)).det := by
-  subst hn
-  rw [blkDet_val]
-  have hc : ∀ i : Fin (r + d), coarse r [d] i.1 = 1 ↔ r ≤ i.1 := by
-    intro i
-    constructor
-    · intro h
-      by_contra h'
-      rw [coarse_of_lt (Nat.not_le.mp h')] at h
-      omega
-    · intro h
-      rw [coarse_of_le h]
-      have h2 : i.1 - r < d := by have := i.2; omega
-      simp [blkIdx, h2]
-  let e : Fin d ≃ {i : Fin (r + d) // coarse r [d] i.1 = 1} :=
-    { toFun := fun s => ⟨brI rfl s, (hc _).2 (Nat.le_add_right _ _)⟩
-      invFun := fun i => ⟨i.1.1 - r, by have h1 := i.1.2; have h2 := (hc i.1).1 i.2; omega⟩
-      left_inv := fun s => Fin.ext (by simp [brI])
-      right_inv := fun i => Subtype.ext (Fin.ext (by
-        have h2 := (hc i.1).1 i.2
-        show r + (i.1.1 - r) = i.1.1
-        omega)) }
-  rw [← Matrix.det_submatrix_equiv_self e]
-  rfl
-
-theorem det_padM {k : Type} [CommRing k] {n : ℕ} (A : Matrix (Fin n) (Fin n) k) : (padM k n A).det = A.det := by
-  have hL : LLz n (padM k n A) := by
-    intro i j hi hj
-    have hi' : i = Fin.last n := Fin.ext (by have := i.2; show i.1 = n; omega)
-    subst hi'
-    obtain ⟨j', rfl⟩ : ∃ j' : Fin n, j = Fin.castSucc j' := ⟨⟨j.1, hj⟩, rfl⟩
-    simp [padM]
-  rw [det_LLz (padM k n A) hL]
-  have e1 : (padM k n A).submatrix (Fin.castAdd 1) (Fin.castAdd 1) = A := by
-    ext i j
-    show padM k n A (Fin.castSucc i) (Fin.castSucc j) = A i j
-    simp [padM]
-  have e2 : ((padM k n A).submatrix (Fin.natAdd n) (Fin.natAdd n)).det = 1 := by
-    rw [Matrix.det_fin_one]
-    show padM k n A (Fin.last n) (Fin.last n) = 1
-    simp [padM]
-  rw [e1, e2, mul_one]
-
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {K : Type} [Field K]
-
-theorem det_extGH {N n : ℕ} (hN : N = n + 1) {SG : Finset (HeightOneSpectrum (𝓞 E))} (h : GLG E n SG) (w : SG) :
-    ((extGH hN h w : GL (Fin N) (𝓞 E ⧸ w.1.asIdeal)) : Matrix (Fin N) (Fin N) (𝓞 E ⧸ w.1.asIdeal)).det =
-      ((h w : GL (Fin n) (𝓞 E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 E ⧸ w.1.asIdeal)).det := by
-  subst hN
-  show ((extG h w : GL (Fin (n + 1)) (𝓞 E ⧸ w.1.asIdeal)).1).det = _
-  rw [extG_apply]
-  exact det_padM _
-
-theorem red_symmQ {N : ℕ} {κ : Sp E N ≃ₗ[E] Sp E N} (hκ : κ ∈ GLint E N P) {H : GL (Fin N) (𝓞 E ⧸ P.asIdeal)}
-    (hred : ∀ x ∈ stdAt E N P, redV P (κ x) = (H⁻¹).1.mulVec (redV P x)) :
-    ∀ x ∈ stdAt E N P, redV P (κ.symm x) = H.1.mulVec (redV P x) := by
-  intro x hx
-  have hx' : κ.symm x ∈ stdAt E N P := (hκ (κ.symm x)).1 (by rw [LinearEquiv.apply_symm_apply]; exact hx)
-  have h1 := hred _ hx'
-  rw [LinearEquiv.apply_symm_apply] at h1
-  rw [h1, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 theorem jq_LLz {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) {kj n c : ℕ} {g : Sp E n ≃ₗ[E] Sp E n}
     {rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hr : rr ∈ LocE.JQ P q kj n c)
@@ -465,133 +397,12 @@ theorem kj_midQ {m2 : ℕ} (hm : R.m = m2 + 2) : R.k + (m2 + 1) = R.r := by
   unfold Ranks.r
   omega
 
-open Classical in
-
-theorem rowTy_inv_lamQ (P : LevFam X.E X.K R.r Pr.vGs) (w : rowSG Pr sel mu) (hw : w.1 ∉ Pr.vGs)
-    (H : GL (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) (hH : H ∈ ((rowTy Ch sel mu P).inv w).H) :
-    ∃ hH' : H ∈ HQ (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.r (R.m * R.t),
-      ((rowTy Ch sel mu P).inv w).lam ⟨H, hH⟩ =
-        lamQ (resChar (mu : Chr X.F X.E X.K) w.1) (R.N R.m - 1) R.r (R.m * R.t) ⟨H, hH'⟩ := by
-  have e : rowTy Ch sel mu P w = rowTyQ R (mu : Chr X.F X.E X.K) (QE sel (mu : Chr X.F X.E X.K))
-      ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩ := LevFam.glue_of_not _ _ w hw
-  revert hH
-  show ∀ hH : H ∈ ((rowTy Ch sel mu P w).inv).H, ∃ hH' : H ∈ HQ (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.r (R.m * R.t),
-    ((rowTy Ch sel mu P w).inv).lam ⟨H, hH⟩ = lamQ (resChar (mu : Chr X.F X.E X.K) w.1) (R.N R.m - 1) R.r (R.m * R.t) ⟨H, hH'⟩
-  rw [e]
-  intro hH
-  refine ⟨hH, ?_⟩
-  show ((lamQP (mu : Chr X.F X.E X.K) w.1 (R.N R.m - 1) R.r (R.m * R.t))⁻¹)⁻¹ ⟨H, hH⟩ = _
-  rw [inv_inv]
-  rfl
-
-open Classical in
-
-theorem top_local_law_at_Q_primes {G : ChGlob X R.m} {m2 : ℕ} (hOk : L.Ok Ch sel mu cst G m2) (hU : QUnif sel mu)
-    (P : LevFam X.E X.K R.r Pr.vGs) (b : L.β (m2 + 1)) : TopLawQ Ch sel mu cst L P m2 b := by
-  intro w hw c h₁ hh₁ κr κt hκr hκt y
-  have hm := hOk.hm
-  have hwQ : w.1 ∈ QE sel (mu : Chr X.F X.E X.K) := (Finset.mem_union.mp w.2).resolve_left hw
-  have hq : ((qOf w.1 : ℕ) : 𝓞 X.E) ∈ w.1.asIdeal := qOf_memB w.1
-  have hu := hU w.1 hwQ
-  have hq0 := ciQ_ne_zero hu
-  have hn' := rank_midQ (R := R) hm
-  have hn := rank_X'_eq R
-  have hkj := kj_midQ (R := R) hm
-  have hr' : R.r ≤ R.N (m2 + 1) := by rw [hn']; exact Nat.le_add_right _ _
-  have hgrp : ∀ c' : ↥(GLint X.E (R.N (m2 + 1)) w.1), c' ∈ (L.levQ (m2 + 1) b ⟨w.1, hwQ⟩).H →
-      ∃ rr : AutY X R (m2 + 1), rr ∈ LocE.JQ w.1 (qOf w.1) (R.k + (m2 + 1)) (R.N (m2 + 1)) (cOf R (m2 + 1)) ∧
-        rr ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp (m2 + 1) w.1) (L.h (m2 + 1) b ⟨w.1, Finset.mem_union_right _ hwQ⟩) ∧
-        ∀ x, rr (Loc.inX X.E (R.N (m2 + 1)) (cOf R (m2 + 1)) x) = Loc.inX X.E (R.N (m2 + 1)) (cOf R (m2 + 1)) (c'.1 x) := by
-    intro c' h1
-    rw [hOk.grpQ (m2 + 1) b ⟨w.1, hwQ⟩, Subgroup.mem_subgroupOf] at h1
-    unfold prCat at h1
-    obtain ⟨rr, hrr, hx⟩ := h1
-    refine ⟨rr, ?_, hrr, hx⟩
-    have h2 := hrr.2
-    rw [hOk.last_h] at h2
-    have h3 : rr ∈ Jat (Pr := Pr) (R := R) cst.sharp (m2 + 1) w.1 := by simpa [MulAut.conj_apply] using h2
-    unfold Jat at h3
-    rwa [if_neg hw] at h3
-  obtain ⟨rc, hJc, hCc, hxc⟩ := hgrp c.1 c.2
-  obtain ⟨ri, hJi, -, hxi⟩ := hgrp c.1⁻¹ (Subgroup.inv_mem _ c.2)
-  have lC : LLz R.r (redMQ w.1 c.1.1.toLinearMap) := by
-    have := jq_LLz hq hq0 hJc hxc
-    rwa [hkj] at this
-  have lB : LLz R.r (redMQ w.1 (c.1⁻¹).1.toLinearMap) := by
-    have := jq_LLz hq hq0 hJi hxi
-    rwa [hkj] at this
-  have h2 : redMQ w.1 (c.1⁻¹).1.toLinearMap * redMQ w.1 c.1.1.toLinearMap = 1 := redMQ_mul_inv w.1 c.1.2
-  obtain ⟨hH', hlamR⟩ := rowTy_inv_lamQ Ch sel mu P w hw (h₁ w) hh₁
-  have lA : LLz R.r ((h₁ w : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) := hq_LLz hH'
-  have lAi : LLz R.r (((h₁ w)⁻¹ : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) :=
-    hq_LLz (Subgroup.inv_mem _ hH')
-  have h1 : (((h₁ w)⁻¹ : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) * ((h₁ w : GL _ _) : Matrix _ _ _) = 1 := by
-    rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
-  have hA := red_symmQ κr.2 hκr
-  have hs1 : rhoS Ch sel mu (m2 + 1) w (LinearEquiv.det (c.1⁻¹).1 : X.Eˣ) =
-      xiZ (resChar (mu : Chr X.F X.E X.K) w.1)⁻¹ (redMQ w.1 (c.1⁻¹).1.toLinearMap).det := by
-    unfold rhoS
-    rw [if_neg hw, unitV_eq, redP_detEquiv w.1 (c.1⁻¹).2]
-  have hs2 : rhoT Ch sel mu (m2 + 1) w (LinearEquiv.det κt.1 : X.Eˣ) =
-      xiZ (resChar (mu : Chr X.F X.E X.K) w.1)
-        (((h₁ w)⁻¹ : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)).det := by
-    unfold rhoT
-    rw [if_neg hw, unitV_eq, redP_detEquiv w.1 κt.2, redMQ_of w.1 κt.1.toLinearMap _ hκt, ← Pi.inv_apply, ← map_inv, det_extGH]
-    rfl
-  have hl1 : (((((rowTy Ch sel mu P).inv w).lam ⟨h₁ w, hh₁⟩)⁻¹ : X.Kˣ) : X.K) =
-      (xiZ (resChar (mu : Chr X.F X.E X.K) w.1)
-        (((h₁ w : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)).submatrix (brI hn) (brI hn)).det)⁻¹ := by
-    rw [Units.val_inv_eq_inv_val, hlamR, lamQ_apply, ← xiZ_unit, blkDet_br hn]
-  have hl2 : ((((L.levQ (m2 + 1) b ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩).lam c)⁻¹ : X.Kˣ) : X.K) =
-      xiZ (resChar (mu : Chr X.F X.E X.K) w.1) ((redMQ w.1 c.1.1.toLinearMap).submatrix (brI hn') (brI hn')).det := by
-    rw [Units.val_inv_eq_inv_val, hOk.chrQ (m2 + 1) b ⟨w.1, hwQ⟩ c rc hCc hxc]
-    unfold chiInv
-    rw [hOk.last_h]
-    have hrange : Finset.range (cOf R (m2 + 1) - 1) = ∅ := by
-      rw [cOf_topB hm]
-      rfl
-    have hn1 : Loc.n1Arg rc = 0 := by
-      unfold Loc.n1Arg
-      rw [hrange, Finset.sum_empty]
-    have hone : ((1 : AutY X R (m2 + 1))⁻¹ * rc * 1 : AutY X R (m2 + 1)) = rc := by simp
-    rw [hn1, hOk.cst_ok.psi_int _ 0 ciIntAt_zero, inv_one, one_mul, hone]
-    unfold lamRow
-    rw [if_neg hw, lamQB_eq _ hkj hn' c.1.2 hxc, inv_inv]
-  have hP1 : PhiTop Ch mu cst.sharp m2 w.1 (κr.1.symm.toLinearMap ∘ₗ y ∘ₗ (c.1⁻¹).1.toLinearMap ∘ₗ
-        LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) =
-      xiZ (resChar (mu : Chr X.F X.E X.K) w.1)
-          (((h₁ w : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)).submatrix
-            (Fin.castLE (r_le_X' R)) (Fin.castLE (r_le_X' R))).det *
-        xiZ (resChar (mu : Chr X.F X.E X.K) w.1) ((redMQ w.1 (c.1⁻¹).1.toLinearMap).submatrix (Fin.castLE hr') (Fin.castLE hr')).det *
-        PhiTop Ch mu cst.sharp m2 w.1 (y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) := by
-    unfold PhiTop
-    rw [if_neg hw]
-    exact phiQ_law hq hu _ R.k R.r (cOf R (m2 + 1)) (R.N (m2 + 1)) (R.N R.m - 1) (cOf_topB hm) hr' (r_le_X' R)
-      (c.1⁻¹).2 ((GLint X.E (R.N R.m - 1) w.1).inv_mem κr.2) _ _ _ hA lA lAi lB lC h1 h2 y
-  have hS := scal_law (resChar (mu : Chr X.F X.E X.K) w.1) hn hn' (r_le_X' R) hr' _ _ _ _ lA lC h1 h2
-  rw [hs1, hs2, hl1, hl2, hP1, ← hS]
-  ring
-
 end Main
 
 section FtYQ
 
 variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
-
-open Classical in
-
-theorem ybSet_diffQ {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp X.E n)} (hY : Y ∈ ybSet sel mu cst N)
-    (w : rowSG Pr sel mu) (hw : w.1 ∉ Pr.vGs) :
-    ∀ a ∈ Y, ∀ a' ∈ Y, ((qOf w.1 : X.E) ^ cst.M)⁻¹ • (a - a') ∈ localization₂ w.1.asIdeal N := by
-  obtain ⟨y0, hy0, rfl⟩ := hY
-  intro a ha a' ha'
-  have h1 := (mem_locLat _ _ _ (a - y0)).1 ha w
-  have h2 := (mem_locLat _ _ _ (a' - y0)).1 ha' w
-  simp only [if_neg hw, zpow_natCast] at h1 h2
-  have e : a - a' = (a - y0) - (a' - y0) := by abel
-  rw [e, smul_sub]
-  exact sub_mem h1 h2
 
 theorem ftY_moveQ (hcst : cst.Ok) (w : rowSG Pr sel mu) (hw : w.1 ∉ Pr.vGs) (hD : 2 * cst.M ≤ cst.D w) {n : ℕ} (κ : ↥(GLint X.E n w.1))
     (η : Sp X.E n →ₗ[X.E] X.E) (y y₁ : Sp X.E n) (hδ : ((qOf w.1 : X.E) ^ cst.M)⁻¹ • (κ.1 y₁ - y) ∈ stdAt X.E n w.1)
@@ -680,40 +491,6 @@ theorem prod_uSG_dite {α M : Type} [CommMonoid M] {A B : Finset α} (hd : ∀ P
 
 end ProdU
 
-section InvQ
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) {u : Pr.Word}
-
-open Classical in
-
-theorem xiCpl2_invQ (hPr : Pr.Ok) (hcst : cst.Ok) (hDQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P) (hR : PosT sel mu u)
-    {m2 : ℕ} (hTI : TopInvAt Ch sel mu cst m2)
-    (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (d : RowPt Pr R sel mu)
-    (x z : HomE X.E (R.N (m2 + 1)) (R.N R.m)) (hYm : Y ∈ ybSet sel mu cst p.deco.1.N)
-    (hz : z ∈ mulLat (cBof sel mu cst u) (homAt (Sall sel mu u) p.deco.1.N (tilQ sel mu u d).1.N)) :
-    XiCpl2 Ch sel mu cst m2 p Y d (x + z) = XiCpl2 Ch sel mu cst m2 p Y d x := by
-  obtain ⟨w0, hw0, rfl⟩ := (mem_mulLat _ _ _).1 hz
-  have hphi : phiT X.K p.deco.1 (tilQ sel mu u d).1 (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w0) =
-      phiT X.K p.deco.1 (tilQ sel mu u d).1 x := by
-    refine phiT_add_mul X.K p.deco (tilQ sel mu u d) (Sall sel mu u) (fun P => Finset.mem_union_left _ P.2) (Pr.T u) (fun P => ?_) x _ ?_
-    · have h1 : Pr.piT u ∈ P.1.asIdeal := mem_asIdeal_of_mem_divs P.2
-      rw [← hPr.piT_norm u]
-      exact P.1.asIdeal.mul_mem_right _ h1
-    · refine (mem_mulLat _ _ _).2 ⟨(((∏ P : rowSG Pr sel mu, Col.qOf P.1) ^ cst.B : ℕ) : 𝓞 X.E) • w0,
-        Submodule.smul_mem _ _ hw0, ?_⟩
-      rw [smul_smul]
-      unfold cBof
-      push_cast
-      rfl
-  have hoff := offCoupling_top_invariance Ch sel mu cst hTI hPr hcst hDQ hR p Y d hYm x w0 (fun P hP => hw0 P (Finset.mem_union_right _ hP))
-  unfold offCpl2 at hoff
-  unfold XiCpl2
-  rw [hphi, hoff]
-
-end InvQ
-
 section Cp2Q
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
@@ -739,177 +516,9 @@ theorem frsF_smulQ {j : ℕ} (p : ChPt (R := R) sel mu u j)
     rw [dif_neg hw, dif_neg hw]
     rfl
 
-open Classical in
-
-theorem coupled_scalar_at_Q_primes (hS : QSep Pr sel mu) (b : L.β (m2 + 1)) (P : LevFam X.E X.K R.r Pr.vGs)
-    (g : FrmG (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b)) (g₁ : ↥(rowTy Ch sel mu P).inv.grp) :
-    ((((rowTy Ch sel mu P).inv.chr g₁)⁻¹ * (((L.levG (m2 + 1) b).chr g.2.1)⁻¹ * ((L.levQ (m2 + 1) b).chr g.2.2)⁻¹) : X.Kˣ) : X.K) =
-      ∏ w : rowSG Pr sel mu,
-        (((((rowTy Ch sel mu P).inv w).lam ⟨(g₁.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) w, g₁.2 w (Set.mem_univ w)⟩)⁻¹ : X.Kˣ) : X.K) *
-          (if hw : w.1 ∈ Pr.vGs then
-            ((((L.levG (m2 + 1) b ⟨w.1, hw⟩).lam ⟨(g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs) ⟨w.1, hw⟩, g.2.1.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K)
-          else
-            ((((L.levQ (m2 + 1) b ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩).lam
-              ⟨(g.2.2 : GLQ X.E (R.N (m2 + 1)) (QE sel (mu : Chr X.F X.E X.K))) ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩,
-                g.2.2.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K)) := by
-  rw [Finset.prod_mul_distrib, prod_uSG_dite hS
-    (fun w => ((((L.levG (m2 + 1) b w).lam ⟨(g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs) w, g.2.1.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K))
-    (fun Q => ((((L.levQ (m2 + 1) b Q).lam ⟨(g.2.2 : GLQ X.E (R.N (m2 + 1)) (QE sel (mu : Chr X.F X.E X.K))) Q, g.2.2.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K))]
-  rw [Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, levFam_chr_apply_coe, levFam_chr_apply_coe]
-  have hq : (((L.levQ (m2 + 1) b).chr g.2.2 : X.Kˣ) : X.K) =
-      ∏ Q, (((L.levQ (m2 + 1) b Q).lam ⟨(g.2.2 : GLQ X.E (R.N (m2 + 1)) (QE sel (mu : Chr X.F X.E X.K))) Q, g.2.2.2 _ (Set.mem_univ _)⟩ : X.Kˣ) : X.K) :=
-    piChar_apply_coe' _ _ g.2.2
-  rw [hq]
-  simp only [Units.val_inv_eq_inv_val, Finset.prod_inv_distrib]
-
 variable {u m2}
 
-theorem coupled_kernel_local_identity (w : rowSG Pr sel mu) (κ : ↥(GLint X.E (R.N (m2 + 1)) w.1)) (κr : ↥(GLint X.E (R.N R.m - 1) w.1)) (s c₀ : X.K)
-    (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (d : RowPt Pr R sel mu)
-    (γ : UF X.E (R.N (m2 + 1))) (γ₁ : UF X.E (R.N R.m - 1)) (x : HomE X.E (R.N (m2 + 1)) (R.N R.m)) (hne : Y.Nonempty)
-    (key : ∀ y : HomE X.E (R.N (m2 + 1)) (R.N R.m - 1),
-      s * PhiTop Ch mu cst.sharp m2 w.1 (κr.1.symm.toLinearMap ∘ₗ y ∘ₗ κ.1.toLinearMap ∘ₗ
-          LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) =
-        c₀ * PhiTop Ch mu cst.sharp m2 w.1 (y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))))
-    (hft : ∀ (η : Sp X.E (R.N (m2 + 1)) →ₗ[X.E] X.E), ∀ a ∈ Y,
-      ftY sel mu cst w (η ∘ₗ κ.1.toLinearMap) (κ.1.symm ((frsF sel mu p w).symm a)) = ftY sel mu cst w η ((frsF sel mu p w).symm (repY Y))) :
-    s * (PhiTop Ch mu cst.sharp m2 w.1
-        ((γ₁.1 * d.1.liftFr w * κr.1).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ
-          ((extUH (N_m_succ R) γ₁).1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) ∘ₗ
-            (γ.1 * frsF sel mu p w * κ.1).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) *
-      ftY sel mu cst w ((((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ
-          ((extUH (N_m_succ R) γ₁).1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) ∘ₗ (γ.1 * frsF sel mu p w * κ.1).toLinearMap)
-        ((γ.1 * frsF sel mu p w * κ.1).symm (repY ((fun v => γ.1 v) '' Y)))) =
-    c₀ * (PhiTop Ch mu cst.sharp m2 w.1 ((d.1.liftFr w).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p w).toLinearMap ∘ₗ
-          LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) *
-      ftY sel mu cst w ((((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ x ∘ₗ (frsF sel mu p w).toLinearMap)
-        ((frsF sel mu p w).symm (repY Y))) := by
-  obtain ⟨a, ha, hra⟩ : repY ((fun v => γ.1 v) '' Y) ∈ (fun v => γ.1 v) '' Y := representative_mem (hne.image _)
-  have hra' : repY ((fun v => γ.1 v) '' Y) = γ.1 a := hra.symm
-  have e2 : (γ.1 * frsF sel mu p w * κ.1).symm (γ.1 a) = κ.1.symm ((frsF sel mu p w).symm a) := by
-    rw [LinearEquiv.symm_apply_eq]
-    simp only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply]
-  have hA : (γ₁.1 * d.1.liftFr w * κr.1).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ
-        ((extUH (N_m_succ R) γ₁).1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) ∘ₗ
-          (γ.1 * frsF sel mu p w * κ.1).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) =
-      κr.1.symm.toLinearMap ∘ₗ
-        ((d.1.liftFr w).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p w).toLinearMap) ∘ₗ κ.1.toLinearMap ∘ₗ
-          LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) := by
-    refine LinearMap.ext fun v => ?_
-    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
-    rw [LinearEquiv.symm_apply_eq]
-    simp only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply, LinearEquiv.symm_apply_apply, prXp_extUH2]
-  have hη : ((((Pr.piT u : 𝓞 X.E) : X.E))⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ
-        ((extUH (N_m_succ R) γ₁).1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) ∘ₗ (γ.1 * frsF sel mu p w * κ.1).toLinearMap =
-      (((((Pr.piT u : 𝓞 X.E) : X.E))⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ x ∘ₗ (frsF sel mu p w).toLinearMap) ∘ₗ
-        κ.1.toLinearMap := by
-    refine LinearMap.ext fun v => ?_
-    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply,
-      LinearMap.smul_apply, atNL_extUH2]
-  rw [hA, hη, hra', e2, hft _ a ha, ← mul_assoc,
-    key ((d.1.liftFr w).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p w).toLinearMap), mul_assoc]
-  rfl
-
-theorem ftY_frame (hcst : cst.Ok) (hDQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P)
-    (w : rowSG Pr sel mu) (κ : ↥(GLint X.E (R.N (m2 + 1)) w.1))
-    (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (hYm : Y ∈ ybSet sel mu cst p.deco.1.N)
-    (η : Sp X.E (R.N (m2 + 1)) →ₗ[X.E] X.E) (a : Sp X.E (R.N (m2 + 1))) (ha : a ∈ Y) :
-    ftY sel mu cst w (η ∘ₗ κ.1.toLinearMap) (κ.1.symm ((frsF sel mu p w).symm a)) = ftY sel mu cst w η ((frsF sel mu p w).symm (repY Y)) := by
-  have hFst : ∀ z, z ∈ localization₂ w.1.asIdeal p.deco.1.N → (frsF sel mu p w).symm z ∈ stdAt X.E (R.N (m2 + 1)) w.1 := by
-    intro z hz
-    apply (frsF_isFr sel mu p w _).1
-    rw [LinearEquiv.apply_symm_apply]
-    exact hz
-  have hr0 : repY Y ∈ Y := representative_mem ⟨a, ha⟩
-  by_cases hw : w.1 ∈ Pr.vGs
-  · obtain ⟨-, hdiff, hqm⟩ := ybSet_props2 sel mu cst hYm w hw
-    refine ftY_move2 sel mu cst hcst w hw κ _ _ _ ?_ ?_
-    · rw [LinearEquiv.apply_symm_apply, ← map_sub]
-      exact hFst _ (hdiff _ ha _ hr0)
-    · rw [← LinearEquiv.map_smul]
-      exact hFst _ (hqm _ hr0)
-  · obtain ⟨-, hqm⟩ := coupling_index_scaled_mem_local sel mu cst hYm w hw
-    refine ftY_moveQ sel mu cst hcst w hw (hDQ w hw) κ _ _ _ ?_ ?_
-    · rw [LinearEquiv.apply_symm_apply, ← map_sub, ← LinearEquiv.map_smul]
-      exact hFst _ (ybSet_diffQ sel mu cst hYm w hw _ ha _ hr0)
-    · rw [← LinearEquiv.map_smul]
-      exact hFst _ (hqm _ hr0)
-
 variable (u m2)
-
-open Classical in
-
-theorem cp2EquivOn_ofQ (hS : QSep Pr sel mu) (hR : PosT sel mu u) (hDQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P)
-    (hT : 0 < Pr.T u) (hPr : Pr.Ok) (hcst : cst.Ok)
-    (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
-    (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel mu cst L u m2 b) (P : LevFam X.E X.K R.r Pr.vGs)
-    (hTI : TopInvAt Ch sel mu cst m2)
-    (hTop : TopLaw Ch sel mu cst L P m2 b) (hTopQ : TopLawQ Ch sel mu cst L P m2 b) :
-    Cp2EquivOn W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) b hY P := by
-  intro g g₁ p Y d hYm
-  change Y ∈ ybSet sel mu cst p.deco.1.N at hYm
-  choose κ hκ hκr hκQ using fun w : rowSG Pr sel mu =>
-    frsF_smulQ sel mu u p (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g w
-  have hfr : frsF sel mu (g • p) = fun w => g.1.1 * frsF sel mu p w * (κ w).1 := funext hκ
-  have hTc : ∀ Q : Pr.vT u, cO X.E (Pr.piT u) ∉ Q.1.asIdeal := conj_piT_notMem hPr u
-  have hGc : ∀ w : rowSG Pr sel mu, Pr.piT u ∉ w.1.asIdeal := fun w hw =>
-    ((hR ⟨w.1, (mem_divs (hPr.piT_ne_zero u) w.1).2 hw⟩).sg w).1 rfl
-  have hgd : g₁ • d = ((g₁.1, (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) :
-      UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) • d := rfl
-  have htil : tilQ sel mu u (g₁ • d) = (extUH (N_m_succ R) g₁.1, extGH (N_m_succ R) (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) •
-      tilQ sel mu u d := by
-    rw [hgd]
-    exact DecoSet.tilH_smul (N_m_succ R) _ d hTc hGc
-  choose κt hκt hκtr using fun w : rowSG Pr sel mu =>
-    liftFr_smul (tilQ sel mu u d) (extUH (N_m_succ R) g₁.1, extGH (N_m_succ R) (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) w
-  have hfrT : frsT sel mu u (g₁ • d) = fun w => (extUH (N_m_succ R) g₁.1).1 * frsT sel mu u d w * (κt w).1 := by
-    funext w
-    unfold frsT
-    rw [htil]
-    exact hκt w
-  choose κr hκr' hκrr using fun w : rowSG Pr sel mu =>
-    liftFr_smul d ((g₁.1, (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) :
-      UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) w
-  have hlr : ∀ w, (g₁ • d).1.liftFr w = g₁.1.1 * d.1.liftFr w * (κr w).1 := fun w => hκr' w
-  have hN : IsSdLat p.deco.1.N := ⟨p.deco.2.lat, p.deco.2.uni⟩
-  have hN' : IsSdLat (tilQ sel mu u d).1.N := ⟨(tilQ sel mu u d).2.lat, (tilQ sel mu u d).2.uni⟩
-  have hdeco : (g • p).deco = (g.1, (g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs)) • p.deco := rfl
-  have hYm1 : (fun v => g.1.1 v) '' Y ∈ ybSet sel mu cst (gmap g.1.1 p.deco.1.N) :=
-    (ybSet_gmap sel mu cst p.deco.1.N g.1.1 Y).2 hYm
-  have hne : Y.Nonempty := by
-    obtain ⟨y0, -, rfl⟩ := hYm
-    exact ⟨y0, by rw [Set.mem_ofPred_eq, sub_self]; exact zero_mem _⟩
-  unfold cp2K
-  split_ifs with h1 h2 <;> first | exact absurd hYm1 h1 | exact absurd hYm h2 | skip
-  rw [hfr, hfrT, htil]
-  refine (kerOf_move hOk.top (cBof_pos sel mu cst u hT) hN hN' (frsF sel mu p) (frsT sel mu u d) g.1 (extUH (N_m_succ R) g₁.1) κ κt
-    _ _ ((((rowTy Ch sel mu P).inv.chr g₁.2)⁻¹ * (((L.levG (m2 + 1) b).chr g.2.1)⁻¹ * ((L.levQ (m2 + 1) b).chr g.2.2)⁻¹) : X.Kˣ) : X.K)
-    (fun x z hz => xiCpl2_invQ Ch sel mu cst hPr hcst hDQ hR hTI p Y d x z hYm hz) ?_).trans ?_
-  · intro x
-    unfold XiCpl2
-    rw [hdeco, htil, phiT_smul]
-    simp only [hfr, hlr]
-    rw [coupled_scalar_at_Q_primes Ch sel mu L m2 hS b P g g₁.2]
-    refine prod_mul_eq_of_forall_cross_mul_eq _ _ _ _ _ fun w => ?_
-    refine coupled_kernel_local_identity Ch sel mu cst w (κ w) (κr w) _ _ p Y d g.1 g₁.1 x hne ?_
-      (fun η a ha => ftY_frame sel mu cst hcst hDQ w (κ w) p Y hYm η a ha)
-    intro y
-    by_cases hw : w.1 ∈ Pr.vGs
-    · rw [dif_pos hw]
-      exact hTop w hw ⟨(g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs) ⟨w.1, hw⟩, g.2.1.2 _ (Set.mem_univ _)⟩
-        (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) (g₁.2.2 w (Set.mem_univ w)) (κ w) (κr w) (κt w) (hκr w hw) (hκrr w) (hκtr w) y
-    · have key := hTopQ w hw ⟨(g.2.2 : GLQ X.E (R.N (m2 + 1)) (QE sel (mu : Chr X.F X.E X.K))) ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩,
-          g.2.2.2 _ (Set.mem_univ _)⟩
-        (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) (g₁.2.2 w (Set.mem_univ w)) (κr w) (κt w) (hκrr w) (hκtr w) y
-      rw [← hκQ w hw] at key
-      rw [dif_neg hw]
-      exact key
-  · show _ = (evRho W Ch sel mu P u g₁) ∘ₗ _ ∘ₗ (frmRho (colValF W sel mu u (m2 + 1)) (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g⁻¹)
-    simp only [evRho, frmRho, MonoidHom.coe_mk, OneHom.coe_mk, Prod.fst_inv, Prod.snd_inv, map_inv,
-      LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
-    congr 1
-    simp only [Units.val_mul, Units.val_inv_eq_inv_val]
-    ring
 
 end Cp2Q
 
@@ -919,14 +528,6 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
-
-theorem cp2EquivOn_of_ok {G : ChGlob X R.m} (hL : L.Ok Ch sel mu cst G m2) (hS : QSep Pr sel mu) (hU : QUnif sel mu) (hR : PosT sel mu u)
-    (hT : 0 < Pr.T u) (hPr : Pr.Ok) (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
-    (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel mu cst L u m2 b) (P : LevFam X.E X.K R.r Pr.vGs)
-    (hTop : TopLaw Ch sel mu cst L P m2 b) :
-    Cp2EquivOn W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) b hY P :=
-  cp2EquivOn_ofQ W Ch sel mu cst L A u m2 hS hR hL.depthQ hT hPr hL.cst_ok hOk b hY P (phiTop_inv Ch sel mu cst hL.hm) hTop
-    (top_local_law_at_Q_primes Ch sel mu cst L hL hU P b)
 
 theorem qSep_of (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : ∀ i, Pr.g i ∈ S) : QSep Pr sel mu :=
   fun P hP hw => QE_disj mu hPr hsel hS P hw hP
@@ -939,23 +540,6 @@ theorem qUnif_of (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) : QUnif sel mu :
 end Close
 
 namespace Test
-
-section T1
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {K : Type} [Field K]
-
-def inclQ (E : Type) [Field E] (n' n : ℕ) : HomE E n' n :=
-  LinearMap.pi fun l : Fin n => if h : l.1 < n' then LinearMap.proj ⟨l.1, h⟩ else 0
-
-end T1
-
-section T2
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
-
-end T2
 
 end Test
 

@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTraitSpecialisationOfMemClosureThetaPointsStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFullObjectOfThetaPointInAlgClosedSubfieldStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsProperOfThetaUnitInEveryCosetStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTraitSpecialisationOfMemClosureThetaPoints
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFullObjectOfThetaPointInAlgClosedSubfield
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsProperOfThetaUnitInEveryCoset
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecialisationWithThetaPointStatement
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -28,7 +28,7 @@ theorem exists_full_of_closure_of_cosets :
     obtain ⟨x, hx⟩ := hcos 0
     exact hx (by rw [h]; rfl)
   obtain ⟨C, _, _, _, _, _, S, κ, _, _, res, i, o, M, v', r', z', hnorm, hS, hres, hth, hv', hr', hρ,
-    hz', hz⟩ := GlobalTheory.T.exists_trait_specialisation_of_mem_closure_thetaPoints h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K (n ^ j) ρ z v hm hc hv0 hvan
+    hz', hz⟩ := _root_.GlobalTheory.ThetaClosure.exists_trait h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K (n ^ j) ρ z v hm hc hv0 hvan
   have hunit : ∀ x, v x ≠ 0 → ‖(v' x : C)‖ = 1 := by
     intro x hx
     have hle : ‖(v' x : C)‖ ≤ 1 := (hS _).1 (v' x).2
@@ -37,14 +37,14 @@ theorem exists_full_of_closure_of_cosets :
     rw [hv' x] at h0
     exact hx (i.injective (by rw [h0, map_zero]))
   have hprop : IsProper M.t.G.hom :=
-    GlobalTheory.T.isProper_of_theta_unit_in_every_coset h1 h2 h3 h4 h5 h6 h7 E H D C o M n j hn hodd (hnorm n hn.pos) hj
+    _root_.GlobalTheory.CosetGood.isProper_of_unit_in_cosets h1 h2 h3 h4 h5 h6 h7 E H D C o M n j hn hodd (hnorm n hn.pos) hj
       (fun x => v' x) hth (fun x => (hS _).1 (v' x).2)
       (fun x => (hcos x).imp fun h hh => hunit _ hh)
   obtain ⟨o', hρ', hζ', hth'⟩ := GlobalTheory.T.exists_specialisation_with_thetaPoint h1 h2 h3 h4 h5 h6 h7 E H D C hnorm o M hprop S hS κ res
     hres (n ^ j) v' hm hm3 hth (by
       obtain ⟨x, hx⟩ := hcos 0
       exact ⟨_, by rw [hv']; exact (map_ne_zero i).2 hx⟩)
-  refine GlobalTheory.T.exists_fullObject_of_thetaPoint_in_algClosed_subfield h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K κ i (n ^ j) ρ z v o' hm hc
+  refine _root_.GlobalTheory.Ex.ThetaDescent.exists_full_of_theta_in_subfield h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K κ i (n ^ j) ρ z v o' hm hc
     ((hρ' r' hr').trans hρ) ((hζ' _ (by positivity) z' hz').trans hz) ?_
   have : (fun x => res (v' x)) = fun x => i (v x) := funext hv'
   rwa [this] at hth'

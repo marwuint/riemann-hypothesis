@@ -63,11 +63,6 @@ theorem mk_eq_mk_iff {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvert
     apply Units.ext
     exact h
 
-theorem exists_mk (p : Pic X) : ∃ (L : X.Modules) (hL : IsInvertibleSheaf L), mk L hL = p := by
-  obtain ⟨v, L, hL, hv⟩ := p
-  refine ⟨L, hL, Subtype.ext (Units.ext ?_)⟩
-  exact hv
-
 theorem mk_tensor {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvertibleSheaf M) :
     mk (L ⊗ M) (hL.tensor hM) = mk L hL * mk M hM := by
   apply Subtype.ext
@@ -78,12 +73,6 @@ theorem mk_unit : mk (𝟙_ X.Modules) isInvertibleSheaf_unit = 1 := by
   apply Subtype.ext
   apply Units.ext
   rfl
-
-theorem mk_dualSheaf {L : X.Modules} (hL : IsInvertibleSheaf L) :
-    mk (dualSheaf L) hL.dual = (mk L hL)⁻¹ := by
-  rw [eq_inv_iff_mul_eq_one, ← mk_tensor, ← mk_unit, mk_eq_mk_iff]
-  have := isIso_dualEval hL
-  exact ⟨asIso (dualEval L)⟩
 
 theorem mk_eq_one_iff {L : X.Modules} (hL : IsInvertibleSheaf L) :
     mk L hL = 1 ↔ Nonempty (L ≅ 𝟙_ X.Modules) := by

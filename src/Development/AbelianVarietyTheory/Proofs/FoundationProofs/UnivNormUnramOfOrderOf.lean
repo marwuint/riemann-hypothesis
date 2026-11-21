@@ -170,17 +170,6 @@ theorem sum_eq_orderOf_smul {X C : Type} [Group X] [Fintype X] [AddCommMonoid C]
   refine Finset.sum_congr rfl fun ω _ => ?_
   simp only [h1 _ _ (Subtype.prop _), Finset.sum_const, Finset.card_univ, Fintype.card_zpowers]
 
-theorem sum_level : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (M : Type) [AddCommMonoid M] (Y : ∀ r : ℕ, Γ → (ZMod (l ^ r))ˣ → M), (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ r s, Y 0 s 1 = ∑ x, Y r s x := by
-  intro l _ Γ _ M _ Y h r s
-  induction r with
-  | zero =>
-    have : Subsingleton (ZMod (l ^ 0)) := by rw [pow_zero]; infer_instance
-    have : Subsingleton (ZMod (l ^ 0))ˣ := ⟨fun a b => Units.ext (Subsingleton.elim _ _)⟩
-    exact (Fintype.sum_subsingleton (fun x => Y 0 s x) 1).symm
-  | succ r ih =>
-    rw [ih, h r s]
-    exact Finset.sum_fiberwise _ _ _
-
 theorem eq_zero_of_gen : ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (l : ℕ) [Fact l.Prime] (ρ : Γ →* GL (Fin 2) (Qbar l)) (z : Γ → Fin 2 → Qbar l) (I J : Subgroup Γ) (γ : Γ), IsClosed (I : Set Γ) → J ≤ I → γ ∈ I → (∀ i, Continuous fun s => z s i) → (∀ s ∈ I, ∀ t ∈ I, z (s * t) = z s + (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)) *ᵥ z t) → z γ = 0 → (∀ j ∈ J, z j = 0) → I ≤ (Subgroup.zpowers γ ⊔ J).topologicalClosure → ∀ s ∈ I, z s = 0 := by
   intro Γ _ _ _ l _ ρ z I J γ hI hJI hγ hz hc h0 hJ hgen s hs
   have h1 : z 1 = 0 := hJ 1 J.one_mem
@@ -267,45 +256,6 @@ theorem exists_conj_norm : ∀ (Γ : Type) [Group Γ] (K : Type) [Field K] (X : 
     rw [← Matrix.mulVec_mulVec]
     exact this
 
-theorem mem_of_orbit_sums : ∀ (l : ℕ) [Fact l.Prime] (u : ∀ r : ℕ, (ZMod (l ^ r))ˣ), (∀ k : ℕ, ∃ r, l ^ k ∣ orderOf (u r)) → ∀ (Wo : Submodule (Qbar l) (Fin 2 → Qbar l)) (T : Matrix (Fin 2) (Fin 2) (Qbar l)), (∀ w ∈ Wo, T *ᵥ w ∈ Wo) → ∀ (b : Fin 2 → Qbar l) (a : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), (∀ r x i, ‖a r x i‖ ≤ 1) → (∀ r x, a r (x * u r) - T *ᵥ a r x ∈ Wo) → (∀ r, b - ∑ x, a r x ∈ Wo) → b ∈ Wo := by
-  classical
-  intro l _ u hu Wo T hT b a ha hrel hb
-  let S : Module.End (Qbar l) ((Fin 2 → Qbar l) ⧸ Wo) := Wo.mapQ Wo (Matrix.toLin' T) fun w hw => hT w hw
-  obtain ⟨E, hE, hfix⟩ := exists_pow_fix S
-  have h1 : ∀ r n x, Wo.mkQ (a r (x * u r ^ n)) = (S ^ n) (Wo.mkQ (a r x)) := fun r n x => by
-    induction n with
-    | zero => simp
-    | succ n ih =>
-      rw [pow_succ, ← mul_assoc, pow_succ', Module.End.mul_apply, ← ih]
-      exact (Submodule.Quotient.eq Wo).2 (hrel r _)
-  have h2 : ∀ r x, Wo.mkQ (a r (x * u r ^ E)) = Wo.mkQ (a r x) := fun r x => by
-    rw [h1]
-    refine hfix (orderOf (u r)) (orderOf_pos _) _ ?_
-    rw [← h1, pow_orderOf_eq_one, mul_one]
-  have hE0 : 0 < ‖(E : Qbar l)‖ := norm_pos_iff.2 (Nat.cast_ne_zero.2 hE.ne')
-  refine (isClosed_submodule Wo).closure_subset (Metric.mem_closure_iff.2 fun ε hε => ?_)
-  obtain ⟨k, hk⟩ := exists_pow_lt_of_lt_one (mul_pos hE0 hε) (norm_l_lt_one (l := l))
-  obtain ⟨r, hr⟩ := hu k
-  let : Fintype ((ZMod (l ^ r))ˣ ⧸ Subgroup.zpowers (u r ^ E)) := Fintype.ofFinite _
-  have h3 := sum_eq_orderOf_smul (u r ^ E) (fun x => Wo.mkQ (a r x)) (h2 r)
-  set o := orderOf (u r ^ E) with ho
-  set y := ∑ ω : (ZMod (l ^ r))ˣ ⧸ Subgroup.zpowers (u r ^ E), a r ω.out with hy
-  have h4 : l ^ k ∣ E * o := hr.trans (orderOf_dvd_of_pow_eq_one (by rw [pow_mul, pow_orderOf_eq_one]))
-  have h5 : ‖(o : Qbar l)‖ < ε := by
-    obtain ⟨m, hm⟩ := h4
-    have : ‖(E : Qbar l)‖ * ‖(o : Qbar l)‖ ≤ ‖(l : Qbar l)‖ ^ k := by
-      rw [← norm_mul, ← Nat.cast_mul, hm, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow]
-      exact mul_le_of_le_one_right (by positivity) (IsUltrametricDist.norm_natCast_le_one _ m)
-    exact lt_of_mul_lt_mul_left (this.trans_lt hk) hE0.le
-  refine ⟨b - o • y, ?_, ?_⟩
-  · rw [← map_sum, ← map_sum, ← map_nsmul] at h3
-    have := Wo.add_mem (hb r) ((Submodule.Quotient.eq Wo).1 h3)
-    rwa [sub_add_sub_cancel] at this
-  · rw [dist_eq_norm, sub_sub_cancel, ← Nat.cast_smul_eq_nsmul (Qbar l), norm_smul]
-    refine (mul_le_of_le_one_right (norm_nonneg _) ((pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_)).trans_lt h5
-    rw [hy, Finset.sum_apply]
-    exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun ω _ => ha r _ i
-
 theorem frob_mulVec_cob : ∀ (Γ : Type) [Group Γ] (K : Type) [Field K] (ρ : Γ →* GL (Fin 2) K) (J : Subgroup Γ) (γ φ : Γ) (N : ℕ), (∃ j ∈ J, φ * γ * φ⁻¹ = γ ^ N * j) → ∀ u : Fin 2 → K, (∀ j ∈ J, ((ρ j : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u = u) → (((ρ φ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) * ∑ i ∈ Finset.range N, ((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) ^ i) *ᵥ (((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u - u) = ((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (((ρ φ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u) - ((ρ φ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u := by
   intro Γ _ K _ ρ J γ φ N ⟨j, hj, e⟩ u hu
   have e1 : ((ρ γ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ u - u =
@@ -370,83 +320,6 @@ theorem sub_mem_cobSp {Γ K : Type} [Group Γ] [Field K] {ρ : Γ → Matrix (Fi
   refine ⟨v' - v, fun j hj => ?_, ?_⟩
   · rw [Matrix.mulVec_sub, eq_add_of_sub_eq (h j hj)]; abel
   · rw [Matrix.mulVec_sub]; abel
-
-theorem univNorm_unram_of_orderOf : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (κ : ∀ r : ℕ, G ℚ Ω →* (ZMod (l ^ r))ˣ) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), (∀ r s, orderOf (κ r s) = orderOf (cycMod ℚ Ω l r s)) → Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc (mat W) (κ r) (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ ∃ v : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, Y 0 s 1 = mat W s *ᵥ v - v := by
-  intro l _ Ω _ _ _ W c κ Y hκo hW hWO hYc hYO hSh hpush q hq
-  obtain ⟨B, hB⟩ := exists_isPlaceOver (F := ℚ) Ω q
-  obtain ⟨φ, hφ⟩ := exists_isFrob hB
-  obtain ⟨-, hJn, hJcop, -, ⟨γ, hγ⟩, hrel⟩ := GlobalTheory.Published.TameQuotient_holds ℚ Ω l B q hB hq
-  obtain ⟨-, hcj, -⟩ := hrel ⟨φ, hφ.1⟩ ⟨γ, Ine_le_Dec B hγ.1⟩ hφ hγ
-  have hJI := GlobalTheory.TameQuot.ineKer_le_Ine (F := ℚ) B l
-  have hγI := hγ.1
-  have hgen := hγ.2
-  set J := GlobalTheory.TameQuot.ineKer ℚ B l with hJ
-  have hc1 : ∀ j ∈ J, φ * j * φ⁻¹ ∈ J := fun j hj =>
-    hJn.conj_mem ⟨j, Ine_le_Dec B (hJI hj)⟩ hj ⟨φ, hφ.1⟩
-  have hc2 : ∃ j ∈ J, φ * γ * φ⁻¹ = γ ^ normV q * j :=
-    ⟨(γ ^ normV q)⁻¹ * (φ * γ * φ⁻¹), by simpa using hcj, by rw [mul_inv_cancel_left]⟩
-  have hκ : ∀ r, ∀ s ∈ Ine (F := ℚ) B, κ r s = 1 := fun r s hs => by
-    rw [← orderOf_eq_one_iff, hκo, GlobalTheory.StringRepresentationDecomposition.cycMod_eq_one_of_mem_Ine r hq hB hs, orderOf_one]
-  have hu : ∀ r, ((cycMod ℚ Ω l r φ : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) = (normV q : ZMod (l ^ r)) := fun r => by
-    change PadicInt.toZModPow r ((cycZ ℚ Ω l φ : ℤ_[l]ˣ) : ℤ_[l]) = _
-    rw [cycZ_of_isFrob hq hB hφ, map_natCast]
-  have hW1 : ∀ s i k, ‖mat W s i k‖ ≤ 1 := fun s i k => norm_le_one_of_mem_coefO c ⟨_, hWO s i k⟩
-  have hY1 : ∀ r s x i, ‖Y r s x i‖ ≤ 1 := fun r s x i => norm_le_one_of_mem_coefO c ⟨_, hYO r s x i⟩
-  have hWc : ∀ i k, Continuous fun s => mat W s i k := fun i k =>
-    Continuous.matrix_elem (A := fun s => mat W s) (Units.continuous_val.comp hW) i k
-  have hcoc : ∀ r x, ∀ s ∈ Ine (F := ℚ) B, ∀ t, Y r (s * t) x = Y r s x + mat W s *ᵥ Y r t x := fun r x s hs t => by
-    rw [hSh r s t x, hκ r s hs, mul_one]
-  have hmul : ∀ s t, mat W (s * t) = mat W s * mat W t := fun s t => by
-    simp only [mat, map_mul, Units.val_mul]
-  choose v hv1 hv using fun r x => exists_cob_of_coprime (G ℚ Ω) l W (fun s => Y r s x) J hJcop hWc hW1 (hYc r x)
-    (fun s i => hY1 r s x i) (fun s hs t _ => hcoc r x s (hJI hs) t)
-  have hb : Y 0 γ 1 - (mat W γ *ᵥ v 0 1 - v 0 1) ∈ cobSp (mat W) J γ := by
-    refine mem_of_orbit_sums l (fun r => κ r φ) (fun k => by
-        simpa only [hκo] using exists_pow_dvd_orderOf l (normV q) (GlobalTheory.WeilDeligne.one_lt_normV q) (fun r => cycMod ℚ Ω l r φ) hu k) _
-      (mat W φ⁻¹ * ∑ i ∈ Finset.range (normV q), mat W γ ^ i) ?_ _
-      (fun r x => Y r γ x - (mat W γ *ᵥ v r x - v r x)) ?_ ?_ ?_
-    · rintro _ ⟨u, hu', rfl⟩
-      refine ⟨mat W φ⁻¹ *ᵥ u, fun j hj => ?_, frob_mulVec_cob (G ℚ Ω) (Qbar l) W J γ φ _ hc2 u hu'⟩
-      have e : j * φ⁻¹ = φ⁻¹ * (φ * j * φ⁻¹) := by group
-      rw [Matrix.mulVec_mulVec, ← hmul, e, hmul, ← Matrix.mulVec_mulVec, hu' _ (hc1 j hj)]
-    · intro r x i
-      exact norm_sub_le_one (hY1 r γ x i) (norm_sub_le_one (norm_mulVec_le (hW1 γ) (hv1 r x) i) (hv1 r x i))
-    · intro r x
-      obtain ⟨v', h1, h2⟩ := exists_conj_norm (G ℚ Ω) (Qbar l) _ W (κ r) (Y r) (Ine (F := ℚ) B) J γ φ (normV q) x
-        (v r x) (hSh r) (hκ r) hJI hγI hc1 hc2 (hv r x)
-      have h3 := sub_mem_cobSp (ρ := mat W) (γ := γ) (Y r γ (x * κ r φ))
-        (fun j hj => (hv r (x * κ r φ) j hj).symm.trans (h1 j hj))
-      rw [h2] at h3
-      exact h3
-    · intro r
-      have hs := sum_level l (G ℚ Ω) _ Y hpush r
-      have e : ∀ s, mat W s *ᵥ (∑ x, v r x) - ∑ x, v r x = ∑ x, (mat W s *ᵥ v r x - v r x) := fun s => by
-        rw [Matrix.mulVec_sum, Finset.sum_sub_distrib]
-      have h3 := sub_mem_cobSp (ρ := mat W) (γ := γ) (J := J) (v := v 0 1) (v' := ∑ x, v r x) (Y 0 γ 1)
-        (fun j hj => by
-          rw [e, ← hv 0 1 j hj]
-          exact (hs j).trans (Finset.sum_congr rfl fun x _ => hv r x j hj))
-      rw [Finset.sum_sub_distrib, ← hs, ← e]
-      exact h3
-  obtain ⟨w, hw, hb⟩ := hb
-  refine ⟨B, hB, v 0 1 + w, fun s hs => sub_eq_zero.1 ?_⟩
-  refine eq_zero_of_gen (G ℚ Ω) l W (fun s => Y 0 s 1 - (mat W s *ᵥ (v 0 1 + w) - (v 0 1 + w))) (Ine (F := ℚ) B) J γ
-    (isClosed_Ine B) hJI hγI (fun i => ?_) (fun s hs t _ => ?_) ?_ (fun j hj => ?_) hgen s hs
-  · show Continuous fun s => Y 0 s 1 i - (∑ k, mat W s i k * (v 0 1 + w) k - (v 0 1 + w) i)
-    exact (hYc 0 1 i).sub ((continuous_finset_sum _ fun k _ => (hWc i k).mul continuous_const).sub continuous_const)
-  · show _ = _ + mat W s *ᵥ _
-    rw [hcoc 0 1 s hs t, hmul, ← Matrix.mulVec_mulVec, Matrix.mulVec_sub, Matrix.mulVec_sub]; abel
-  · show Y 0 γ 1 - _ = 0
-    rw [eq_add_of_sub_eq hb, Matrix.mulVec_add]; abel
-  · show Y 0 j 1 - _ = 0
-    rw [hv 0 1 j hj, Matrix.mulVec_add, hw j hj]; abel
-
-theorem univNorm_unram : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc (mat W) (cycMod ℚ Ω l r)⁻¹ (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ ∃ v : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, Y 0 s 1 = mat W s *ᵥ v - v :=
-  fun l _ Ω _ _ _ W c Y => univNorm_unram_of_orderOf l Ω W c (fun r => (cycMod ℚ Ω l r)⁻¹) Y
-    (fun r s => by rw [MonoidHom.inv_apply, orderOf_inv])
-
-theorem univNorm_unram' : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc (mat W) (cycMod ℚ Ω l r) (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → ∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ ∃ v : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, Y 0 s 1 = mat W s *ᵥ v - v :=
-  fun l _ Ω _ _ _ W c Y => univNorm_unram_of_orderOf l Ω W c (fun r => cycMod ℚ Ω l r) Y (fun _ _ => rfl)
 
 end GlobalTheory.KA.UnivNorm
 

@@ -99,31 +99,4 @@ def coord (k : Fin 2) :
     (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) →ₗ[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F :=
   (basisT I).coord k
 
-theorem sum_coord (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
-    ∑ k, coord I k t ⊗ₜ[I.F] basisE I k = t := by
-  conv_rhs => rw [← (basisT I).sum_repr t]
-  simp [coord, basisT, Module.Basis.coord_apply, Algebra.TensorProduct.basis_apply,
-    TensorProduct.smul_tmul']
-
-theorem continuous_coord (k : Fin 2) : Continuous (coord I k) := by
-  haveI : Module.Finite (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) := Module.Finite.of_basis (basisT I)
-  exact IsModuleTopology.continuous_of_linearMap (coord I k)
-
-theorem thetaV_eq (v : InfinitePlace I.F) (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
-    thetaV I v t = ∑ k, evV I v (coord I k t) * I.φ v (basisE I k) := by
-  conv_lhs => rw [← sum_coord I t]
-  rw [map_sum]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rfl
-
-theorem tauF_eq (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
-    tauF I t = ∑ k, basisE I k ⊗ₜ[I.F] (coord I k t).2 := by
-  conv_lhs => rw [← sum_coord I t]
-  rw [map_sum]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  show (1 : I.E) ⊗ₜ[I.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA I.F (coord I k t) *
-      (basisE I k ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F)) = _
-  rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]
-  rfl
-
 end PI.InvTopW

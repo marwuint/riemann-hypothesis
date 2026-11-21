@@ -33,11 +33,6 @@ theorem mem_clsCrd_iff {u : D.what₂.Word} (c : (D.mem u).C.cls 0) (z : Fin (D.
 def vcol (Y : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (a : Fin (D.R.N 0)) : (D.sp.X 0).V :=
   (eqv D).symm fun r => Y r a
 
-theorem crd_vcol (Y : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (a : Fin (D.R.N 0)) :
-    crd (vcol Y a) = fun r => Y r a := by
-  rw [← eqv_apply]
-  exact (eqv D).apply_symm_apply _
-
 variable {u : D.what₂.Word} (B : ColBase D u)
 
 theorem sum_gamma (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (Y : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)

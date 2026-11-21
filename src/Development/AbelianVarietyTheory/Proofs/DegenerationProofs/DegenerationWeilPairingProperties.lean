@@ -20,17 +20,6 @@ theorem _root_.GlobalTheory.Ex.WpPairing.s_nsmul (g : N.Gt) (n : ℕ) (y : N.X) 
     rw [← N.c_nsmul, ← mul_assoc, mul_right_comm, hm]
     exact mul_right_comm _ _ _
 
-theorem tk_mul_left {k : ℕ} (p p' p'' : N.QT k) :
-    N.tk (p * p') p'' * N.θ p''.1.2.b p.1.2.b p'.1.2.b ^ k = N.tk p p'' * N.tk p' p'' := by
-  have e := N.cub.N_add k 1 p''.1.2.b p.1.2.b p'.1.2.b
-  rw [N.cub.face, mul_one, one_mul, N.QT_pow_b] at e
-  change (p.1.2 * p'.1.2).s p''.1.1.toAdd * cubN N.θ k 1 p''.1.2.b (p.1.2.b * p'.1.2.b) * _ = _
-  rw [NumD.Gt.mul_s, NumD.tk, NumD.tk]
-  apply Additive.ofMul.injective
-  replace e := congrArg Additive.ofMul e
-  simp only [ofMul_mul, ofMul_div] at e ⊢
-  linear_combination (norm := abel) e
-
 open scoped BigOperators in
 variable {O : Type} [CommRing O] (N : _root_.GlobalTheory.Ex.NumD O) in
 private lemma cubN_one_mul_mul_pow_eq {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U}

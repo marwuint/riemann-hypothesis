@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MonodromyZeroOfWeilDeligneRepClassIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyEqOfTracePowersStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharpolyEqOfTracePowers
 
 noncomputable section
 
@@ -119,7 +119,7 @@ theorem GlobalTheory.WeilDeligne.VirtualTrace.prod_zpow_eq_one_of_trace_zero :
       f (WD.mk (listSum h (L fun i => (-c i).toNat)).2) :=
     hf2 _ _ fun σ => by
       rw [WD.charPol_mk, WD.charPol_mk]
-      exact GlobalTheory.T.charpoly_eq_of_trace_powers _ _ _ _ (htr σ)
+      exact _root_.GlobalTheory.TracePowCharpoly.charpoly_eq_of_trace_pow_eq _ _ _ _ (htr σ)
   rw [hfL, hfL] at hPQ
   have hz : ∀ i, f (WD.mk (a i)) ^ c i =
       f (WD.mk (a i)) ^ (c i).toNat * (f (WD.mk (a i)) ^ (-c i).toNat)⁻¹ := fun i => by

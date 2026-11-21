@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubNatCompSubIncl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineInterFiniteBasicOpenCoverStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineInterFiniteBasicOpenCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAdjoinRestrictedSectionsOfLocalStatement
 open AlgebraicGeometry CategoryTheory Limits Opposite GlobalTheory.QcSub
 
@@ -43,7 +44,7 @@ end GlobalTheory.SubChoose
 
 theorem GlobalTheory.sub_choose_finite : ∀ (X : Scheme.{0}), IsNoetherian X → ∀ (F : X.Opensᵒᵖ ⥤ CommRingCat) (α : X.presheaf ⟶ F), ((Scheme.AffineZariskiSite.toOpensFunctor X).op.whiskerLeft α).Coequifibered → ∀ {ι : Type} [Finite ι] (V : ι → X.Opens), (∀ j, IsAffineOpen (V j)) → ∀ (S : ∀ j, Set (F.obj (op (V j)))), (∀ j, (S j).Finite) → ∃ T : ∀ j, Set (F.obj (op (V j))), (∀ j, (T j).Finite) ∧ ∀ i, S i ⊆ sub F α V T (V i) := by
   intro X hX F α hα ι _ V hV S hS
-  choose s hs1 hs2 using fun i j => GlobalTheory.T.exists_finset_basicOpen_cover_inf_of_isAffineOpen X hX (V j) (V i) (hV j) (hV i)
+  choose s hs1 hs2 using fun i j => _root_.GlobalTheory.affine_inter_finite_basicOpen_cover X hX (V j) (V i) (hV j) (hV i)
   have hDi : ∀ i j, ∀ h ∈ s i j, X.basicOpen h ≤ V i := by
     intro i j h hh
     obtain ⟨r, hr⟩ := hs1 i j h hh

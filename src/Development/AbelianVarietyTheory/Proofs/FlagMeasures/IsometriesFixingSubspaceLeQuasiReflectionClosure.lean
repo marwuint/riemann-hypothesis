@@ -71,11 +71,6 @@ theorem exists_qrefl (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h
   simp only [hf_add_l, hf_add_r, hf_smul_l, hf_smul_r, map_mul, hf_cj L h]
   linear_combination hf L Hm v a * hf L Hm a w * hc
 
-theorem unit_of_fix (L : LocE F E) {z : E} (hz : L.cj z = z) (h0 : z ≠ 0) : IsUnit z := by
-  obtain ⟨a, rfl⟩ := (L.cj_fix z).1 hz
-  have : a ≠ 0 := by rintro rfl; simp at h0
-  exact (IsUnit.mk0 a this).map _
-
 theorem nontriv (L : LocE F E) : Nontrivial E := by
   by_contra h
   rw [not_nontrivial_iff_subsingleton] at h

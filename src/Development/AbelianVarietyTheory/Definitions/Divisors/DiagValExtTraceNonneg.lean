@@ -156,17 +156,6 @@ theorem extTrace_comp_holo {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ
     (hφ.continuousAt.eventually hp), extTrace_eq h hp]
   simp only [secondFormAdj, secondForm, conn_comp_holo h hd]
 
-theorem diagVal_extTrace_smul (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (c : ℂ)
-    (ξ : E) : diagVal (extTrace K z) (c • ξ) = ‖c‖ ^ 2 * diagVal (extTrace K z) ξ := by
-  have e : secondForm K z (c • ξ) = c • secondForm K z ξ := by
-    rw [secondForm_eq, secondForm_eq, conn_smul_vec]; rfl
-  rw [diagVal, diagVal, extTrace_eq h hp, extTrace_eq h hp, ← Complex.re_ofReal_mul]
-  congr 1
-  simp only [secondFormAdj, adj, e, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul,
-    trace_smul, smul_eq_mul, Complex.star_def, ← Complex.normSq_eq_norm_sq,
-    Complex.normSq_eq_conj_mul_self]
-  ring
-
 end HermFrame
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ σ' : k →+* ℂ}
@@ -452,51 +441,6 @@ theorem bcDens_eq (H : h.IsCInf) (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ 
     h.bcDens hS h₁ h₃ c y = 2 * diagVal (h.bcForm a c y) (EuclideanSpace.single 0 1) := by
   rw [bcDens, bcForm_eq hS a _ c H hy ha (exists_adapted hS h₁ h₃ y).choose_spec]
 
-theorem bcDens_nonneg (H : h.IsCInf) (hy : y ∈ c.e.source) : 0 ≤ h.bcDens hS h₁ h₃ c y :=
-  have ha := (exists_adapted hS h₁ h₃ y).choose_spec
-  mul_nonneg zero_le_two (diagVal_extTrace_nonneg
-    (((H.gram _ ha).mContDiffAt c hy).of_le (by norm_cast)) (h.eventually_posDef hS _ c hy ha) _)
-
-theorem bcDens_trans (H : h.IsCInf) (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
-    h.bcDens hS h₁ h₃ c y = ‖ChartGlue.transDet c.e c'.e y‖ ^ 2 * h.bcDens hS h₁ h₃ c' y := by
-  obtain ⟨a, ha⟩ := exists_adapted hS h₁ h₃ y
-  have ho := ChartGlue.isOpen_over c.e c'.e.open_source
-  have hm := ho.mem_nhds (ChartGlue.mem_over c.e hy hy')
-  have e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y := congrArg c'.e (c.e.left_inv hy)
-  have hd := ((H.gram a.frame ha).mContDiffAt c' hy').of_le (j := 1) (by norm_cast)
-  have hp := h.eventually_posDef hS _ c' hy' ha
-  have hl (L : V 1 →L[ℂ] V 1) :
-      L (EuclideanSpace.single 0 1) = L.det • EuclideanSpace.single 0 1 := by
-    rw [ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin 1) ℂ).toBasis,
-      det_unique]
-    ext i
-    simp [LinearMap.toMatrix_apply, Subsingleton.elim i 0]
-  rw [bcDens_eq hS h₁ h₃ a c H hy ha, bcDens_eq hS h₁ h₃ a c' H hy' ha, bcForm, bcForm,
-    extTrace_congr (K' := fun v => h.gram a.frame (c'.e.symm ((c'.e ∘ c.e.symm) v))) (eventually_of_mem hm fun v hv => by
-      simp only [Function.comp_apply, c'.e.left_inv hv.2]), ChartGlue.transDet, mul_left_comm,
-    ← diagVal_extTrace_smul hd hp, ← hl, diagVal, diagVal,
-    extTrace_comp_holo (K := fun v => h.gram a.frame (c'.e.symm v)) (e₂ ▸ hd) (e₂ ▸ hp)
-      (contDiffAt_euclidean.2 fun i => ((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn 1 _ _ ho
-        (differentiableOn_euclidean.1 (c.holo_trans c') i)).contDiffAt hm).of_le (by norm_cast)), e₂]
-
-theorem bcMeas_apply [SecondCountableTopology (CxPts p σ)] (H : h.IsCInf) {T : Set (CxPts p σ)}
-    (hT : MeasurableSet T) (hc : T ⊆ c.e.source) : h.bcMeas hS h₁ h₃ T =
-      ∫⁻ v in c.e '' T, ENNReal.ofReal (h.bcDens hS h₁ h₃ c (c.e.symm v)) := by
-  rw [bcMeas, ChartGlue.glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => by
-    rw [bcDens_trans hS h₁ h₃ c c' H hy hy', ENNReal.ofReal_mul (sq_nonneg _)]) c hT hc,
-    ChartGlue.chartMeas_apply_of_subset _ _ hT hc]
-
-theorem bcMeas_eq_zero (H : ∀ (c : AlgChart p σ 1), ∀ y ∈ c.e.source, h.bcDens hS h₁ h₃ c y = 0) :
-    h.bcMeas hS h₁ h₃ = 0 := by
-  refine le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le
-  rw [ChartGlue.chartMeas_apply _ _ MeasurableSet.univ, inter_univ, c.e.image_source_eq_target]
-  refine setLIntegral_eq_zero c.e.open_target.measurableSet fun v hv => ?_
-  simp [H c _ (c.e.map_target hv)]
-
-theorem bcMeas_rank_zero {h : Met p σ S.X₂ (0 + s)} (h₁ : IsVB S.X₁ 0) : h.bcMeas hS h₁ h₃ = 0 :=
-  bcMeas_eq_zero hS h₁ h₃ fun c y _ => by
-    simp [bcDens, bcForm, diagVal, extTrace, Matrix.mul_apply, trace]
-
 end Met
 
 namespace VMetric
@@ -555,43 +499,6 @@ theorem IsCInf.grMet (H : h.IsCInf) : (h.grMet fl i).IsCInf :=
 
 def grLB (H : h.IsCInf) : HermLB p := det (H.grMet fl i)
 
-theorem flagBc_rank_one (h : VMetric p E 1) (fl : Vert.Flag E 1) :
-    h.FlagBcFinite fl ∧ h.flagBc fl = 0 := by
-  have e (σ) : ((h.stepMet fl 0).met σ).bcMeas (stepSeq_shortExact fl 0) (fl.isVB (Fin.castSucc 0))
-      (fl.isVB_gr 0) = 0 := Met.bcMeas_rank_zero _ _ _
-  refine ⟨fun i σ => ?_, ?_⟩
-  · rw [Subsingleton.elim i 0, e]; simp
-  · simp only [flagBc, bcInt, Fin.sum_univ_one, e]; simp
-
 end VMetric
-
-example : 2 * diagVal (extTrace tautPairGram 0) 1 = 1 / Real.pi := by
-  have hc : ContDiff ℝ 1 fun z : ℂ => starRingEnd ℂ z := Complex.conjCLE.contDiff
-  have h : MContDiffAt 1 tautPairGram 0 := by
-    rintro (_ | _) (_ | _)
-    exacts [contDiffAt_const.add (contDiffAt_id.mul hc.contDiffAt), contDiffAt_id, hc.contDiffAt,
-      contDiffAt_const]
-  have hp : ∀ᶠ x in 𝓝 (0 : ℂ), (tautPairGram x).PosDef := .of_forall fun x => by
-    have := posDef_chg (A := fromBlocks (1 : Matrix Unit Unit ℂ) 0 (of fun _ _ => x) (1 : Matrix Unit Unit ℂ))
-      (H := 1)
-      ((isUnit_iff_isUnit_det _).2 (by rw [det_fromBlocks_zero₁₂]; simp)) PosDef.one
-    convert this using 1
-    ext (_ | _) (_ | _) <;> simp [chg, tautPairGram, mul_apply]
-  have h0 : tautPairGram 0 = 1 := by
-    ext (_ | _) (_ | _) <;> simp [tautPairGram]
-  have hb : secondForm tautPairGram 0 1 = 1 := by
-    ext
-    rw [secondForm_eq, conn, h0, transpose_one, inv_one, Matrix.one_mul]
-    change del (fun z : ℂ => z) 0 1 = _
-    rw [del_eq_fderiv differentiableAt_fun_id]
-    simp
-  have e : -Complex.I * kappa = ((1 / (2 * Real.pi) : ℝ) : ℂ) := by
-    rw [kappa, ← mul_div_assoc, neg_mul, Complex.I_mul_I]; simp
-  have hs : subGram (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) = 1 := by ext; simp [subGram, toBlocks₁₁]
-  have hq : quotGram (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) = 1 := by
-    ext; simp [quotGram, toBlocks₂₁, toBlocks₂₂, mul_apply]
-  rw [diagVal, extTrace_eq h hp, ← mul_assoc, e, Complex.re_ofReal_mul, secondFormAdj, hb, h0, hs, hq]
-  simp [adj]
-  ring
 
 end GlobalTheory

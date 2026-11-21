@@ -45,8 +45,4 @@ def firstSummandRep (O : Type*) [CommRing O] [Algebra O A] (r : G →* A) (χ : 
 
 end T1
 
-theorem t1 : FirstSummandRepresentation := by
-  intro O A T' G _ _ _ _ _ _ r χ e₁ ε
-  exact ⟨firstSummandRep O r χ e₁ ε, fun g b => rfl⟩
-
 end Formalism.RepresentationBoundsCohomology.BR

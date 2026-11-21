@@ -3,11 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormLeIncInf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinHasTemperateGrowth
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdaptedPlaneModelRestrictionCompatible
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanAdeleCMPrescribedEmbeddingValue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalCompactOneParameterLinesOfLieLines
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneVectorCcOfSiegelWeil
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.TrSumOf
+
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
@@ -17,19 +17,6 @@ open GlobalTheory.ThK.EvAt0.PolD
 noncomputable section
 
 namespace GlobalTheory.ThK.EvAt0.PlaneQ
-
-section Complex
-
-def qLoc {n : ℕ} (k : ℝ) (J θ : Matrix (Fin n) (Fin n) ℂ) : LinearMap.BilinForm ℝ (Fin n → ℂ) :=
-  LinearMap.mk₂ ℝ (fun s t => 2 * k * (s ⬝ᵥ J *ᵥ star (θ *ᵥ t)).re)
-    (fun s s' t => by rw [add_dotProduct, Complex.add_re]; ring)
-    (fun c s t => by rw [smul_dotProduct, Complex.smul_re, smul_eq_mul, smul_eq_mul]; ring)
-    (fun s t t' => by rw [Matrix.mulVec_add, star_add, Matrix.mulVec_add, dotProduct_add, Complex.add_re]; ring)
-    (fun c s t => by
-      rw [Matrix.mulVec_smul, star_smul, Matrix.mulVec_smul, dotProduct_smul, Complex.smul_re, smul_eq_mul, smul_eq_mul,
-        star_trivial]; ring)
-
-end Complex
 
 section Adelic
 
@@ -75,17 +62,6 @@ theorem rho_trace [IsTotallyReal F] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) 
   simp only [map_add, piInf_cA hCM, piInf_algebraMap, Complex.ofReal_re, Complex.add_re] at h2
   rw [← h2]
   simp [two_mul]
-
-def phi [IsTotallyReal F] (h2 : Module.finrank F E = 2) {n : ℕ} {w : InfinitePlace F} (τ : EmbOver E w) :
-    (Fin n × Fin 2 → mixedEmbedding.mixedSpace F) →ₗ[ℝ] (Fin n → ℂ) where
-  toFun t i := ∑ r, ((rho w (t (i, r)) : ℝ) : ℂ) * piInf τ (tb F E h2 r)
-  map_add' t t' := by
-    funext i
-    simp only [Pi.add_apply, map_add, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]
-  map_smul' c t := by
-    funext i
-    simp only [Pi.smul_apply, map_smul, smul_eq_mul, Complex.ofReal_mul, RingHom.id_apply, Complex.real_smul,
-      Finset.mul_sum, mul_assoc]
 
 end Adelic
 

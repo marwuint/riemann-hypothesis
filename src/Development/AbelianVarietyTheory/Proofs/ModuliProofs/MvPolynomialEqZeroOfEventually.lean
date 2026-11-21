@@ -163,39 +163,6 @@ theorem _root_.GlobalTheory.CountableFibres.exists_injective_fderiv {E F : Type}
     ⟨0, Metric.mem_ball_self hε⟩
   exact hxS hx
 
-theorem exists_rows {d : ℕ} {I : Type} (L : (Fin d → ℂ) →ₗ[ℂ] (I → ℂ))
-    (hL : Function.Injective L) :
-    ∃ a : Fin d → I, ∀ x, (∀ i, L x (a i) = 0) → x = 0 := by
-  let φ : I → Module.Dual ℂ (Fin d → ℂ) := fun b => (LinearMap.proj b) ∘ₗ L
-  obtain ⟨κ, a, -, hspan, hli⟩ := exists_linearIndependent' ℂ φ
-  have : Finite κ := hli.finite
-  let _ : Fintype κ := Fintype.ofFinite κ
-  have hker : ∀ x, (∀ k, L x (a k) = 0) → x = 0 := by
-    intro x hx
-    apply hL
-    rw [map_zero]
-    funext b
-    have hb : φ b ∈ Submodule.span ℂ (Set.range (φ ∘ a)) := by
-      rw [hspan]
-      exact Submodule.subset_span ⟨b, rfl⟩
-    have hle : Submodule.span ℂ (Set.range (φ ∘ a)) ≤
-        LinearMap.ker (Module.Dual.eval ℂ (Fin d → ℂ) x) := by
-      rw [Submodule.span_le]
-      rintro _ ⟨k, rfl⟩
-      exact hx k
-    exact hle hb
-  have h1 : Fintype.card κ ≤ d := by
-    simpa using hli.fintype_card_le_finrank
-  have h2 : d ≤ Fintype.card κ := by
-    have : Function.Injective (LinearMap.funLeft ℂ ℂ a ∘ₗ L) := by
-      rw [injective_iff_map_eq_zero]
-      intro x hx
-      exact hker x fun k => congrFun hx k
-    simpa using LinearMap.finrank_le_finrank_of_injective this
-  let e : Fin d ≃ κ := (Fintype.equivFinOfCardEq (le_antisymm h1 h2)).symm
-  refine ⟨a ∘ e, fun x hx => hker x fun k => ?_⟩
-  simpa using hx (e.symm k)
-
 open Filter Topology in
 
 theorem _root_.GlobalTheory.CountableFibres.exists_independent_ratios :

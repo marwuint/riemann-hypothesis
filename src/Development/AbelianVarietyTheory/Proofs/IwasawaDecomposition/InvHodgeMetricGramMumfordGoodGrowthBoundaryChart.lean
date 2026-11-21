@@ -3,14 +3,14 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieB
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgePeriodGram
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeChartBoundsOfSchurLemW
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeMetricGramMatrixLocalHolomorphicImPart
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmulInvMulPosSemidefUniformBoundStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchurComplementBlockQuadraticLowerBoundStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmulInvMulPosSemidefUniformBound
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchurComplementBlockQuadraticLowerBound
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InvEntryNormLeOfSubSmulOnePosSemidefStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDetOfRealLeFactorialMulPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernCurvatureInverseRealSymmetricGramStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDetOfRealLeFactorialMulPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernCurvatureInverseRealSymmetricGram
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HolomorphicDerivChernConnectionInverseSymmetricGStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PoincareNormCoordinateVectorMulLengthLeFiveStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PuncturedPolydiscSumNegLogEqAndGeLogTwoStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PoincareNormCoordinateVectorMulLengthLeFive
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PuncturedPolydiscSumNegLogEqAndGeLogTwo
 
 open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.LieBase
 open Classical
@@ -70,7 +70,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram GlobalTheory.HermFr
 theorem inv_hodgeGram_goodBound : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ), GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.IsPeriodChart rk τ₀ B → ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 / 2 ∧ ∃ (c : ℝ) (N : ℕ), ∀ v : ReciprocityTheory.L2DbarEstimates.V n, v.ofLp ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.punctured ha ρ → (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram ha τ₀ B v.ofLp).PosDef ∧ (∀ i k, ContDiffAt ℝ 2 (fun u : ReciprocityTheory.L2DbarEstimates.V n => (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram ha τ₀ B u.ofLp)⁻¹ i k) v) ∧ GlobalTheory.GoodMetric.GoodBound (Finset.univ.map (Fin.castLEEmb ha)) c N (fun u : ReciprocityTheory.L2DbarEstimates.V n => (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram ha τ₀ B u.ofLp)⁻¹) v := by
   intro n a ha g rk τ₀ B hP
   obtain ⟨ρ, c₀, C, hρ0, hρ2, hc₀, h1, h2, h3, h4⟩ :=
-    GlobalTheory.HodgeChartRow.hodgeChartBounds_of_schur_lemW GlobalTheory.T.schur_complement_block_quadratic_lower_bound GlobalTheory.T.exists_uniform_bound_smul_inv_add_sum_mul_mulVec n a g rk ha τ₀ B hP
+    GlobalTheory.HodgeChartRow.hodgeChartBounds_of_schur_lemW _root_.GlobalTheory.schur_block_lower_bound _root_.GlobalTheory.smul_inv_mul_posSemidef_uniform_bound n a g rk ha τ₀ B hP
   have hl2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
   have hl2' : Real.log 2 < 1 := by
     have := Real.log_two_lt_d9; linarith
@@ -128,7 +128,7 @@ theorem inv_hodgeGram_goodBound : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (�
   have hw0 : ∀ k, 0 ≤ poinWt S v k := fun k => by
     unfold poinWt; split_ifs <;> positivity
   have hKw : ∀ k, Kf k * poinWt S v k ≤ 5 * C' := fun k => by
-    have h5 := GlobalTheory.T.poincareNorm_coordinateVector_mul_length_le_five n a ha ρ hρ2 v hv k
+    have h5 := _root_.GlobalTheory.PoinLen.gnorm_mul_poinWt_le_five n a ha ρ hρ2 v hv k
     calc Kf k * poinWt S v k = C' * (gnorm (poincareGram a z) (Pi.single k 1) * poinWt S v k) := by
           simp only [hKf]; ring
       _ ≤ C' * 5 := mul_le_mul_of_nonneg_left h5 hC'0
@@ -138,12 +138,12 @@ theorem inv_hodgeGram_goodBound : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (�
   have hcG : ∀ ξ, conn (fun u : ReciprocityTheory.L2DbarEstimates.V n => (Y u.ofLp)⁻¹) v ξ = -(conn Yv v ξ)ᵀ :=
     conn_inv Yv v (hYv2.of_le one_le_two) hu hevS
   have hcurvG : ∀ ξ η, curv (fun u : ReciprocityTheory.L2DbarEstimates.V n => (Y u.ofLp)⁻¹) v ξ η =
-      -((conn Yv v η)ᵀᴴ * conn Yv v ξ)ᵀ := GlobalTheory.T.chernCurvature_inverse_realSymmetric_gram Yv v hYv2 hu hevS hevH hddv
+      -((conn Yv v η)ᵀᴴ * conn Yv v ξ)ᵀ := _root_.GlobalTheory.RealGram.curv_inv_of_real Yv v hYv2 hu hevS hevH hddv
   have hdelG : ∀ ξ η, mdel (fun x => conn (fun u : ReciprocityTheory.L2DbarEstimates.V n => (Y u.ofLp)⁻¹) x η) v ξ -
       mdel (fun x => conn (fun u : ReciprocityTheory.L2DbarEstimates.V n => (Y u.ofLp)⁻¹) x ξ) v η =
       -(conn Yv v η * conn Yv v ξ - conn Yv v ξ * conn Yv v η)ᵀ := GlobalTheory.T.holomorphicDeriv_chernConnection_inverseSymmetricGram Yv v hYv2 hu hevS
 
-  obtain ⟨hts, hlog⟩ := GlobalTheory.T.puncturedPolydisc_sum_negLog_eq_and_ge_logTwo n a ha ρ hρ2 v hv
+  obtain ⟨hts, hlog⟩ := _root_.GlobalTheory.Proof.puncturedPolydisc_sum_negLog_eq_and_ge_logTwo.tlog_sum_eq_and_log_two_le n a ha ρ hρ2 v hv
   have hs0 : 0 ≤ s := Finset.sum_nonneg fun _ _ => abs_nonneg _
   have hc0 : 0 ≤ c := (by positivity : (0:ℝ) ≤ 5 * C').trans ((le_max_left _ _).trans (le_max_right _ _))
   have hcA : (1 / c₀) * (1 / Real.log 2) ^ g ≤ c := (le_max_left _ _).trans (le_max_left _ _)
@@ -208,7 +208,7 @@ theorem inv_hodgeGram_goodBound : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (�
       ext i j
       simp only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
       ring
-    have hdet := GlobalTheory.T.norm_det_ofReal_le_factorial_mul_pow g (imPeriod ha τ₀ B z) _ (mul_nonneg hC'0 hT0) hPSD hMPSD
+    have hdet := _root_.GlobalTheory.det_map_ofReal_norm_le g (imPeriod ha τ₀ B z) _ (mul_nonneg hC'0 hT0) hPSD hMPSD
     refine hdet.trans ?_
     rw [hts]; exact hE.2
   · rw [hcG, Matrix.neg_apply, transpose_apply, norm_neg]

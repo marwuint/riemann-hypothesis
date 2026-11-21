@@ -5,10 +5,14 @@ import GroundTheory.HeightsAndTheta.Heights.KernelsLattice
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.StatementsBundles
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueUniqueBaseChangeStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TopLeOfClosedPoint
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeIdealExtensionLocalDomainStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GroupSchemeIntegralNoetherianStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleSectionDivisibleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointValuationRingLiftStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeIdealExtensionLocalDomain
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GroupSchemeIntegralNoetherian
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIntegralNthRootTestModelPoint
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAmpleCubSpFibre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleSectionDivisible
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointValuationRingLift
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SemiAbelianTorsionFiniteAndClosedPointFiniteOrde
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianTorsionFiniteAndMulNSurjective
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicPointOverNumberFieldStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointLineBundleUnitStatement
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.JacobsonClosedPointsToolsInt
@@ -65,7 +69,7 @@ theorem point_bound (D : PPData H L) (n : ℕ) (s : Out.H0 D.t.PP.L n) (d : 𝓞
     have h1 : w ∈ D.t.G.left.basicOpen b ↔ (⟨m, hm.isPrime⟩ : PrimeSpectrum Γ(D.t.G.left, W)) ∈ hW.fromSpec ⁻¹ᵁ D.t.G.left.basicOpen b := Iff.rfl
     rw [h1, hW.fromSpec_preimage_basicOpen]
     rfl
-  obtain ⟨N, O, ρ, y, hN, hyN, hyw, hρ⟩ := GlobalTheory.T.torsion_point_valuation_ring_lift L D.t.G hS w hwc
+  obtain ⟨N, O, ρ, y, hN, hyN, hyw, hρ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Reg.exists_torsion_point_reducing_to L D.t.G hS w hwc
   let C := AlgebraicClosure L
   let yO : Sp O ⟶ D.t.G.left := y.left
   have hyO : yO ≫ D.t.G.hom = spMap ρ := Over.w y
@@ -161,7 +165,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.Reg
 theorem section_dvd_of_torsVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (n : ℕ) (s : Out.H0 D.t.PP.L n) (d : 𝓞 L), d ≠ 0 → (∀ (K : Type) [Field K] [NumberField K] (c : 𝓞 L →+* K) (y : Over.mk (spMap c) ⟶ D.t.G) (N : ℕ) (T : K), TorsVal D.t.PP s y N T → IsIntegral ℤ (T / c d ^ (N ^ 2))) → ∃ s' : Out.H0 D.t.PP.L n, ∀ j, s.f j = constFn D.t.G.hom _ d * s'.f j := by
   intro E _ _ _ H L _ _ D n s d hd Hy
   have hS := D.t.semi
-  obtain ⟨hInt, hring⟩ := GlobalTheory.T.group_scheme_integral_noetherian L D.t.G hS
+  obtain ⟨hInt, hring⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Reg.semiAb_props L D.t.G hS
   haveI := hInt
   have hδ : sc D.t.G.hom ⊤ d ≠ 0 := by
     intro h0
@@ -172,13 +176,13 @@ theorem section_dvd_of_torsVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     have := valR_sc e D.t.G.hom (RingHom.id _) he ⊤ (fun _ _ => trivial) d
     rw [h0, map_zero] at this
     exact hd this.symm
-  obtain ⟨s', hs'⟩ := GlobalTheory.T.line_bundle_section_divisible D.t.G.left (𝓞 L) D.t.G.hom _ s d hδ (by
+  obtain ⟨s', hs'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Reg.Glue.sec_eq_smul_of_local D.t.G.left (𝓞 L) D.t.G.hom _ s d hδ (by
     intro j W hWU hW
     obtain ⟨i₀, rfl⟩ : ∃ i₀, j = fun _ => i₀ := ⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩
     by_cases hne : (W : Set D.t.G.left).Nonempty
     · obtain ⟨hNo, hft, hp⟩ := hring W hW
       haveI : Nonempty W := hne.to_subtype
-      exact GlobalTheory.T.prime_ideal_extension_local_domain (𝓞 L) Γ(D.t.G.left, W) (sc D.t.G.hom W) hft hp _ d hd fun m hm =>
+      exact _root_.GlobalTheory.CompanionTheory.Ggeo.RegularDvd.dvd_of_local (𝓞 L) Γ(D.t.G.left, W) (sc D.t.G.hom W) hft hp _ d hd fun m hm =>
         point_bound D n s d hd Hy i₀ W hW hWU m hm
     · have hW0 : W = ⊥ := by
         ext x

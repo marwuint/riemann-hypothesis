@@ -1,17 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFieldPt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFaithfullyFlatFactorThroughLocalSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenOfSaturatedLocalSchemeBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackOfOpenBaseChangeEqPreimageStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFaithfullyFlatFactorThroughLocalScheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenOfSaturatedLocalSchemeBaseChange
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackOfOpenBaseChangeEqPreimage
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteTypeAwayOfAtPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothNhdsOfSmoothOverLocalSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpUnitsAndInversesAgreeOfLawsAgreeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartGrpLawAgreesWithAbelianSchemeLawStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocallyOfFiniteTypeNearGenerisationOfPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentMorphismToLocalSchemeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpreadMorphismBasicOpenAgreeFlatStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjOfLawUnitInverseAgreeAwayStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothNhdsOfSmoothOverLocalScheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpUnitsAndInversesAgreeOfLawsAgree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartGrpLawAgreesWithAbelianSchemeLaw
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocallyOfFiniteTypeNearGenerisationOfPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentMorphismToLocalScheme
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpreadMorphismBasicOpenAgreeFlat
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjOfLawUnitInverseAgreeAway
 
 noncomputable section
 
@@ -61,8 +61,8 @@ theorem exists_ext {R : Type} [CommRing R] [IsDomain R] {f : R} (hf : f ≠ 0) (
     ∃ g : R, g ∉ x.asIdeal ∧ ∀ (Y : Scheme.{0}) (a : Y ⟶ B), (∀ y : Y, g ∉ (pB (a y)).asIdeal) →
       ∃ u' : Y ⟶ Z, u' ≫ pZ = a ≫ pB ∧
         ∀ (T : Scheme.{0}) (t₀ : T ⟶ B₀) (t : T ⟶ Y), t₀ ≫ φ₀ = t ≫ a → t₀ ≫ u₀ = t ≫ u' := by
-  obtain ⟨u, hu, hu'⟩ := GlobalTheory.T.exists_descent_morphism_to_local_scheme R f hf x S₁ B Z B₀ B₁ ξ' ‹_› ‹_› ‹_› pB pZ ‹_› ‹_› φ₀ q₀ u₀ φ₁ q₁ u₁ h₀ h₁ w₁ ag
-  exact GlobalTheory.T.exists_spread_morphism_basicOpen_agree_flat R x B Z B₀ pB pZ ‹_› ‹_› ‹_› ‹_› ‹_› φ₀ u₀
+  obtain ⟨u, hu, hu'⟩ := _root_.GlobalTheory.Desc.exists_desc_specStalk R f hf x S₁ B Z B₀ B₁ ξ' ‹_› ‹_› ‹_› pB pZ ‹_› ‹_› φ₀ q₀ u₀ φ₁ q₁ u₁ h₀ h₁ w₁ ag
+  exact _root_.GlobalTheory.Desc.exists_spread_basicOpen_agree R x B Z B₀ pB pZ ‹_› ‹_› ‹_› ‹_› ‹_› φ₀ u₀
     (MorphismProperty.of_isPullback (P := @Flat) h₀.flip inferInstance) w₀ u hu hu'
 
 theorem not_mem_of_dvd {R : Type} [CommRing R] {g g' : R} (hg : g' ∣ g) {Y B : Scheme.{0}} {a : Y ⟶ B} {pB : B ⟶ Sp R}
@@ -74,7 +74,7 @@ theorem not_mem_of_dvd {R : Type} [CommRing R] {g g' : R} (hg : g' ∣ g) {Y B :
 
 theorem exists_grp_near : ∀ (R : Type) [CommRing R] [IsDomain R] (f : R), f ≠ 0 → ∀ (x : Sp R) (S₁ X : Scheme.{0}) (ξ' : S₁ ⟶ Spec ((Sp R).presheaf.stalk x)), Flat ξ' → Surjective ξ' → QuasiCompact ξ' → ∀ q : X ⟶ Sp R, Smooth q → QuasiCompact q → IsSeparated q → ∀ (A : Over (Sp (Localization.Away f))) [GrpObj A], IsCommMonObj A → ∀ (G : Over S₁) [GrpObj G] (i : A.left ⟶ X) (e : G.left ⟶ X), IsPullback i A.hom q (awayMap f) → IsPullback e G.hom q (ξ' ≫ (Sp R).fromSpecStalk x) → MulAgree G A e i → ∃ g : R, g ∉ x.asIdeal ∧ ∃ (H : Over (Sp (Localization.Away g))) (_ : GrpObj H) (h : H.left ⟶ X), IsPullback h H.hom q (awayMap g) ∧ MulAgree H A h i := by
   intro R _ _ f hf x S₁ X ξ' _ _ _ q _ _ _ A _ hc G _ i e hi he hm
-  obtain ⟨hone, hinv⟩ := GlobalTheory.T.grpUnits_and_inverses_agree_of_laws_agree _ _ _ X q _ _ A G i e hi he.w hm
+  obtain ⟨hone, hinv⟩ := _root_.GlobalTheory.Desc.oneAgree_invAgree_of_mulAgree _ _ _ X q _ _ A G i e hi he.w hm
   obtain ⟨g₁, hg₁, H₁⟩ := exists_ext hf x ξ' (pullback.fst q q ≫ q) q ((μ[A]).left ≫ i) ((μ[G]).left ≫ e)
     (isPullback_sq hi) (isPullback_sq he)
     (by rw [(isPullback_sq hi).w, Category.assoc, hi.w, Over.w_assoc]; rfl)
@@ -119,7 +119,7 @@ theorem exists_grp_near : ∀ (R : Type) [CommRing R] [IsDomain R] (f : R), f �
   obtain ⟨m', hm'⟩ := L (H ⊗ H) m (hm₁.trans (isPullback_sq hH).w)
   obtain ⟨n', hn'⟩ := L H n (hn₁.trans hH.w)
   obtain ⟨o', ho'⟩ := L (𝟙_ _) o (ho₁.trans ((Category.comp_id _).trans (Category.id_comp _).symm))
-  obtain ⟨_, hfin⟩ := GlobalTheory.T.grpObj_of_law_unit_inverse_agree_away R f g hf X q inferInstance ‹_› A hc i hi H h hH m' n' o'
+  obtain ⟨_, hfin⟩ := _root_.GlobalTheory.Desc.SpreadGrp.grpObj_of_agree R f g hf X q inferInstance ‹_› A hc i hi H h hH m' n' o'
     (fun T t₁ t₀ a b a' b' k₁ k₂ => by
       have := hm₂ T (lift a' b').left (lift a b).left (by
         apply pullback.hom_ext
@@ -189,10 +189,10 @@ theorem exists_open (σ : Setup) (E : Emb σ) (hC : σ.Common) (x : Sp σ.R)
   obtain ⟨hw, hop⟩ := E.openIn x
   have sat := fst_mem_U_iff_range σ E hC x hw
   have hx : spMap (σ.ρ x) (closedPoint _) = x := by rw [← σ.hρ]; exact (σ.C x).centre
-  obtain ⟨V', hV'⟩ := GlobalTheory.T.exists_open_of_saturated_local_scheme_baseChange _ _ _ E.p x ξ' _ hξ ‹_› ‹_› ‹_› _
+  obtain ⟨V', hV'⟩ := _root_.GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange _ _ _ E.p x ξ' _ hξ ‹_› ‹_› ‹_› _
     (pullback.lift (E.emb x) (σ.C x).G.hom hw).isOpenEmbedding.isOpen_range
     (fun w w' h hm => by rw [← sat] at hm ⊢; rwa [← h])
-  obtain ⟨e', he', pb'⟩ := GlobalTheory.T.isPullback_of_open_baseChange_eq_preimage _ _ _ _ E.p _ _ _ hw hop V' hV'
+  obtain ⟨e', he', pb'⟩ := _root_.GlobalTheory.Desc.isPullback_of_open_part_eq_preimage _ _ _ _ E.p _ _ _ hw hop V' hV'
   have hG : Smooth (σ.C x).G.hom := (σ.C x).semi.smooth
   have hGq : QuasiCompact (σ.C x).G.hom := (σ.C x).semi.quasiCompact
   have hA : Smooth σ.A.hom := σ.ab.smooth
@@ -214,8 +214,8 @@ theorem exists_open (σ : Setup) (E : Emb σ) (hC : σ.Common) (x : Sp σ.R)
       rw [← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]
       conv_rhs => rw [← hx]
       exact Ideal.comap_mono (f := σ.ρ x) (le_maximalIdeal ((σ.C x).G.hom y).isPrime.ne_top)
-    obtain ⟨W₁, a₁, b₁, c₁⟩ := GlobalTheory.T.locallyOfFiniteType_near_generisation_of_point σ.R σ.f E.P σ.A.left E.p E.ιA σ.A.hom E.cartA inferInstance x V' inferInstance _ h1 h2
-    obtain ⟨W₂, a₂, b₂, c₂⟩ := GlobalTheory.T.exists_smooth_nhds_of_smooth_over_local_scheme σ.R E.P E.p x V' W₁ b₁ hsm c₁ _ a₁ h2
+    obtain ⟨W₁, a₁, b₁, c₁⟩ := _root_.GlobalTheory.USpread.locally_finiteType_near σ.R σ.f E.P σ.A.left E.p E.ιA σ.A.hom E.cartA inferInstance x V' inferInstance _ h1 h2
+    obtain ⟨W₂, a₂, b₂, c₂⟩ := _root_.GlobalTheory.Desc.exists_smooth_nhds_of_smooth_fromSpecStalk σ.R E.P E.p x V' W₁ b₁ hsm c₁ _ a₁ h2
     obtain ⟨W, a, b, c : W ≤ W₂⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.mp E.P.isBasis_affineOpens a₂
     refine ⟨W, a, b, c.trans (b₂.trans b₁), ?_⟩
     rw [← E.P.homOfLE_ι c, Category.assoc]
@@ -245,7 +245,7 @@ theorem exists_open (σ : Setup) (E : Emb σ) (hC : σ.Common) (x : Sp σ.R)
       obtain ⟨y', hy', h⟩ := Set.mem_iUnion₂.1 (hs (Set.mem_univ y))
       exact Or.inl ⟨⟨y', hy'⟩, by rw [hemb]; exact h⟩
   refine ⟨V, smooth_of_forall _ _ fun z hz => ?_, ?_, fun z hz => (hmem z).2 (Or.inr hz),
-    fun w h => (hV w).2 ((sat w).1 h), GlobalTheory.T.isPullback_of_open_baseChange_eq_preimage _ _ _ _ E.p _ _ _ hw hop V hV⟩
+    fun w h => (hV w).2 ((sat w).1 h), _root_.GlobalTheory.Desc.isPullback_of_open_part_eq_preimage _ _ _ _ E.p _ _ _ hw hop V hV⟩
   · rcases (hmem z).1 hz with ⟨y, hy⟩ | h
     · exact ⟨_, hy, hWs _⟩
     · refine ⟨E.ιA.opensRange, h, ?_⟩
@@ -266,7 +266,7 @@ open Spread in
 theorem Emb.exists_locGrp : ∀ (σ : Setup) (E : Emb σ), σ.Common → ∀ x : Sp σ.R, ∃ g : σ.R, g ∉ x.asIdeal ∧ ∃ (H : Over (Sp (Localization.Away g))) (_ : GrpObj H) (h : H.left ⟶ E.P), E.LocGrp g H h ∧ ∀ z : E.P, z ∈ E.U → x.asIdeal ≤ (E.p z).asIdeal → (E.p z).asIdeal ≤ x.asIdeal → z ∈ Set.range h := by
   intro σ E hC x
   have hx : spMap (σ.ρ x) (closedPoint _) = x := by rw [← σ.hρ]; exact (σ.C x).centre
-  obtain ⟨ξ', hξ, _, _, _⟩ := GlobalTheory.T.exists_faithfullyFlat_factor_through_local_scheme _ (σ.C x).R (spMap (σ.ρ x)) x hx
+  obtain ⟨ξ', hξ, _, _, _⟩ := _root_.GlobalTheory.Desc.exists_faithfullyFlat_factor_localScheme _ (σ.C x).R (spMap (σ.ρ x)) x hx
     ((HasRingHomProperty.Spec_iff (P := @Flat)).2 (σ.flat x))
   obtain ⟨V, hs, hq, hA, hU, e, he, pb⟩ := exists_open σ E hC x ξ' hξ
   have := E.sep
@@ -277,7 +277,7 @@ theorem Emb.exists_locGrp : ∀ (σ : Setup) (E : Emb σ), σ.Common → ∀ x :
   obtain ⟨g, hg, H, _, h, ph, hm⟩ := exists_grp_near σ.R σ.f σ.hf x _ _ ξ' ‹_› ‹_› ‹_› (V.ι ≫ E.p) hs hq inferInstance σ.A σ.ab.comm
     (σ.C x).G i e pA (by rwa [hξ]) (fun T t₁ t₂ a b a' b' h₁ h₂ => by
       rw [← cancel_mono V.ι, Category.assoc, Category.assoc, he, hi]
-      refine GlobalTheory.T.chart_grpLaw_agrees_with_abelian_scheme_law σ E x T t₁ t₂ a b a' b' ?_ ?_
+      refine _root_.GlobalTheory.Desc.ChartLaw.chart_mulAgree σ E x T t₁ t₂ a b a' b' ?_ ?_
       · rw [← he, ← hi, reassoc_of% h₁]
       · rw [← he, ← hi, reassoc_of% h₂])
   have : IsOpenImmersion h := MorphismProperty.of_isPullback (P := @IsOpenImmersion) ph.flip inferInstance

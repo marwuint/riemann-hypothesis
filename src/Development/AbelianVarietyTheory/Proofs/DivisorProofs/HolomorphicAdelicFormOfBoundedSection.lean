@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegativeFrameDomainProductOpenPreconnectedStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanLiftUnitaryGroupProduct
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagDomainFramesEqGramFramesUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagDomainFramesEqGramFramesUnitary
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR GlobalTheory.HolDict
 open scoped TensorProduct InnerProductSpace ContDiff Topology
@@ -67,7 +67,7 @@ theorem continuous_of_holAd {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S :
   haveI := topGroup V
   obtain ⟨L, hL1, -, hLc, hUG, hLa, -, hdec, hcomm, -⟩ := GlobalTheory.RealLift.exists_real_lift D θ V hθ
   have horth : ∀ τ, OrthFr (gramAt D V τ) (nNeg (M.ε τ)) (x0Mat M τ) := fun τ =>
-    ((GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.2.2 hM).1
+    ((_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.2.2 hM).1
   obtain ⟨-, -, hst, hx0⟩ := GlobalTheory.HolDict.frDoms_open_preconnected_stable V.rank D.what₂.Tau (gramAt D V) (fun τ => nNeg (M.ε τ)) (x0Mat M) horth
   rw [continuous_iff_continuousAt]
   intro h
@@ -185,7 +185,7 @@ theorem holSec_of_isSec {E : Type} [Field E] [NumberField E] [IsCMField E] {n : 
 theorem holForm_adel : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (r : ℕ) (hr : V.rank = r) (Comp : Type) (X : Comp → ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r) (la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (X k).Ψ r) (dict : GA D V → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame (X k).Ψ r) (mu : GA D V → ℂ) (c : Comp → ℂ) (Kf : Subgroup (GA D V)), HolShape M → GoodDict θ M w hr X la dict mu c Kf → ∀ P : FDSec X, (∀ k, (X k).IsBddSec (la k) (P k)) → HolForm θ M w (Kf : Set (GA D V)) (fun _ => 1) (adel V dict (muPin V dict mu c) P) := by
   classical
   intro D θ V S M w r hr Comp X la dict mu c Kf hM G P hP
-  have hfd := GlobalTheory.T.flagDomain_frames_eq_gramFrames_unitary D θ V S M w r hr Comp X la dict mu c Kf hM G
+  have hfd := _root_.GlobalTheory.HolDict.FdDom.dom_iff_frDoms D θ V S M w r hr Comp X la dict mu c Kf hM G
   subst hr
   obtain ⟨th, -, hl, hk, -, hdom, -⟩ := G.unif
   obtain ⟨hmul, hnorm, hrat, hunit⟩ := G.muUnit
@@ -201,7 +201,7 @@ theorem holForm_adel : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.T
   have hhol : HolAd θ M w (adel V dict (muPin V dict mu c) P) := by
     obtain ⟨L, -, -, -, hUG, -⟩ := GlobalTheory.RealLift.exists_real_lift D θ V G.inf
     have horth : ∀ τ, OrthFr (gramAt D V τ) (nNeg (M.ε τ)) (x0Mat M τ) := fun τ =>
-      ((GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ).2.2.2 hM).1
+      ((_root_.GlobalTheory.HolDict.ModelRep.model_rep D V S M τ).2.2.2 hM).1
     obtain ⟨-, -, hst, hx0⟩ := GlobalTheory.HolDict.frDoms_open_preconnected_stable V.rank D.what₂.Tau (gramAt D V) (fun τ => nNeg (M.ε τ)) (x0Mat M) horth
     have hst' : ∀ u ∈ UG (gramAt D V), ∀ x ∈ frDoms (gramAt D V) (fun τ => nNeg (M.ε τ)),
         (fun τ => (u τ * Matrix.of (x τ) : Mt V.rank)) ∈ frDoms (gramAt D V) (fun τ => nNeg (M.ε τ)) := by

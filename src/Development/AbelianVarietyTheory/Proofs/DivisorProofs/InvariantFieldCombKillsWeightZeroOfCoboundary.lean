@@ -4,8 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogDerivPolarizationRaynaudEqPullback
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianPartConst
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorEqZeroOfLogDerivCoboundaryStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudCechRelationDlogDescendsToAbelianPartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorEqZeroOfLogDerivCoboundary
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaynaudCechRelationDlogDescendsToAbelianPart
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -40,11 +40,11 @@ theorem comb_kills_weight_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
       (d' := fun _ => δ) (fun _ => hδ) (fun _ => 1) (by simp) U s W hW
     have h1 : constFn Q.P.A.hom U (1 : R) = 1 := by simp [constFn]
     simpa [h1] using h
-  obtain ⟨Vs, b, hVcov, hVle, hb⟩ := GlobalTheory.T.raynaud_cech_relation_dlog_descends_to_abelian_part R Q O oa Y dw δ hpull K Wk jk hWk hcov hjk P hP
+  obtain ⟨Vs, b, hVcov, hVle, hb⟩ := _root_.GlobalTheory.Heat.AbDescent.descent R Q O oa Y dw δ hpull K Wk jk hWk hcov hjk P hP
     (fun k k' Wo hWo => by
       rw [hcob k k' Wo hWo]
       simp only [dlg, hcomb, Finset.sum_mul, _root_.mul_assoc])
-  have hw0 : GlobalTheory.Heat.LiePush.pushL Y.q (∑ a, e a • v a) = 0 := GlobalTheory.T.tangentVector_eq_zero_of_logDeriv_coboundary R Q.P _ δ hδ K Vs jk hVcov hVle b hb
+  have hw0 : GlobalTheory.Heat.LiePush.pushL Y.q (∑ a, e a • v a) = 0 := _root_.GlobalTheory.LieRigid.lie_inj R Q.P _ δ hδ K Vs jk hVcov hVle b hb
   have hδ0 : ∀ (U : Q.P.A.left.Opens) (s : Γ(Q.P.A.left, U)), δ U s = 0 := by
     intro U s
     have h := GlobalTheory.Heat.LiePush.isInv_pbT (𝟙 Q.P.A) hδ (g := 0) (w := Fin.elim0) (d' := Fin.elim0)

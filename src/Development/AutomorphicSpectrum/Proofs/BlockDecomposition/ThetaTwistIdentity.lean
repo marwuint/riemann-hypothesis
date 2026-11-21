@@ -36,9 +36,6 @@ theorem pr_add_right (b₀ : HermE D ρ) (u v v' : Mx D ρ p) : pr b₀ u (v + v
 theorem pr_neg_left (b₀ : HermE D ρ) (u v : Mx D ρ p) : pr b₀ (-u) v = -pr b₀ u v := by
   simp only [pr_def, adj_neg, Matrix.neg_mul]
 
-theorem pr_neg_right (b₀ : HermE D ρ) (u v : Mx D ρ p) : pr b₀ u (-v) = -pr b₀ u v := by
-  simp only [pr_def, Matrix.mul_neg]
-
 theorem adj_pr (b₀ : HermE D ρ) (u v : Mx D ρ p) : adj (pr b₀ u v) = pr b₀ v u := by
   simp only [pr_def, adj_mul, adj_adj, adj_B, Matrix.mul_assoc]
 

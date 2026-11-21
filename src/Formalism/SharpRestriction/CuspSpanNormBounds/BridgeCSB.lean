@@ -1234,34 +1234,7 @@ end Formalism.MainNotions.BridgeCSB
 
 end
 
-section
-
-open MeasureTheory
-open scoped ENNReal
-
 namespace Formalism.MainNotions.BridgeCSB
-
-open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.BasicNotions
-
-theorem muSHaar_of (D : D7) : Formalism.MainNotions.S.Bridge.MuSHaar D := by
-  intro τ w w' θ W hW
-  obtain ⟨_, _, hz, _, _, _, hG, hUW, _, _, _, hN, hQ, _⟩ := hW
-  have hκtop : kapN D θ ≠ ⊤ := ENNReal.ofReal_ne_top
-  have hκ0 : kapN D θ ≠ 0 := by
-    intro h0
-    have hμN : W.μN = 0 := by rw [hN, h0]; unfold haarLie; rw [zero_smul]
-    have hS : muS W.μW W.μN = 0 := by unfold muS; rw [hμN, Measure.prod_zero, Measure.map_zero]
-    have h1 := hQ (fun _ => 1) measurable_const
-    rw [hS] at h1
-    simp at h1
-    exact hG.2.1 h1
-  have hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN := by rw [hN]; exact haarLieN _ _ _ hκ0 hκtop
-  exact haarS hz hUW hNH
-
-def vmOfGm (V0 : ∀ r, ValMap 0 r) (Gm : Formalism.MainNotions.HereditaryPositivity.GM) : ∀ k r, ValMap k r
-  | 0, r => V0 r
-  | k0 + 1, r => (Gm k0 r).toValMap
 
 end Formalism.MainNotions.BridgeCSB
 
-end

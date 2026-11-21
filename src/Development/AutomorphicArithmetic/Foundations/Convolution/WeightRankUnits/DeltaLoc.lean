@@ -1,10 +1,12 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.WeightRankUnits.DeltaProdAlt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryHeckeCharCMSplitPlaceMulConjPlaceEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsHalfConjugatePlaceEqStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryHeckeCharCMSplitPlaceMulConjPlaceEqOne
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsHalfConjugatePlaceEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOrEqOfUnderMaximalRealSubfieldEqCMFieldStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryHeckeCharCMLocKNonsplitEqNegOnePowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjResultantOfEllPolysStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsHalfMulAndAbsHalfNegOneStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryHeckeCharCMLocKNonsplitEqNegOnePow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjResultantOfEllPolys
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsHalfMulAndAbsHalfNegOne
 
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
@@ -19,7 +21,7 @@ private theorem muAt_unit {E : Type} [Field E] [NumberField E] [IsCMField E] (μ
 
 private theorem absHalf_sign {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (n : ℕ) :
     absHalf w ((-1 : w.adicCompletion E) ^ n) = 1 := by
-  obtain ⟨hm, hn⟩ := GlobalTheory.T.absHalf_mul_and_absHalf_neg_one E w
+  obtain ⟨hm, hn⟩ := _root_.GlobalTheory.AbsHalf.absHalf_mul_neg_one E w
   have h1 : absHalf w (1 : w.adicCompletion E) = 1 := by
     have := hm (-1) (-1) (neg_ne_zero.2 one_ne_zero) (neg_ne_zero.2 one_ne_zero)
     rwa [neg_mul_neg, one_mul, hn, one_mul] at this
@@ -40,7 +42,7 @@ theorem UpperTheory.ConvolutionTheory.G2.deltaLoc :
     exact Polynomial.resultant_map_map P₁ P₂ _ _ _
   have hres' : resultant (atPl w P₁) (atPl w P₂) a b = algebraMap E (w.adicCompletion E) (resultant P₁ P₂) := by
     rw [← hres, hdeg₁, hdeg₂]
-  have hconj := GlobalTheory.T.conj_resultant_of_ell_polys E a b P₁ P₂ h₁ h₂
+  have hconj := _root_.GlobalTheory.ResConj.conj_resultant E a b P₁ P₂ h₁ h₂
   set R := resultant P₁ P₂ with hRdef
   set D : E := ((-1) ^ a * P₁.coeff 0) ^ b * ((-1) ^ b * P₂.coeff 0) ^ a with hD
   have hDw : ((-1) ^ a * (atPl w P₁).coeff 0) ^ b * ((-1) ^ b * (atPl w P₂).coeff 0) ^ a =
@@ -58,10 +60,10 @@ theorem UpperTheory.ConvolutionTheory.G2.deltaLoc :
       rintro (rfl | rfl)
       · rfl
       · exact huw
-    rw [hfib, finprod_mem_pair (Ne.symm hu), hmu w, hmu u, GlobalTheory.T.absHalf_conjugatePlace_eq E w u hu huw R]
+    rw [hfib, finprod_mem_pair (Ne.symm hu), hmu w, hmu u, _root_.GlobalTheory.BCT.AbsHalfConj.absHalf_conjPl E w u hu huw R]
     let kc : Eˣ := Units.map (MonoidHomClass.toMonoidHom (IsCMField.complexConj E)) k
     have hkc : (kc : E) = IsCMField.complexConj E R := rfl
-    have hloc : μ.locK u k * μ.locK w kc = 1 := GlobalTheory.T.unitaryHeckeCharCM_splitPlace_mul_conjPlace_eq_one E μ e hμ w u hu huw k
+    have hloc : μ.locK u k * μ.locK w kc = 1 := _root_.GlobalTheory.BCT.SplitChar.locK_mul_locK_conj E μ e hμ w u hu huw k
     have hs2 : ((-1 : E) ^ (a * b)) * (-1) ^ (a * b) = 1 := by
       rw [← mul_pow, neg_mul_neg, one_mul, one_pow]
     have hsD : (-1) ^ (a * b) * D * (kc : E) = R := by
@@ -89,7 +91,7 @@ theorem UpperTheory.ConvolutionTheory.G2.deltaLoc :
       rw [div_eq_iff hD0]
       rw [hkc] at hsD
       linear_combination (-(-1 : E) ^ (a * b) * R) * hconj - R ^ 2 * hs2
-    obtain ⟨hm, -⟩ := GlobalTheory.T.absHalf_mul_and_absHalf_neg_one E w
+    obtain ⟨hm, -⟩ := _root_.GlobalTheory.AbsHalf.absHalf_mul_neg_one E w
     have hA : ∀ x : E, x ≠ 0 → algebraMap E (w.adicCompletion E) x ≠ 0 := fun x hx => (_root_.map_ne_zero _).2 hx
     have hcR : IsCMField.complexConj E R ≠ 0 := (_root_.map_ne_zero _).2 hR
     have hsecond : absHalf w (algebraMap E (w.adicCompletion E) R ^ 2 / algebraMap E (w.adicCompletion E) D) =
@@ -109,7 +111,7 @@ theorem UpperTheory.ConvolutionTheory.G2.deltaLoc :
         exact hsp ⟨x, hxw, hx⟩
       · rintro rfl
         rfl
-    rw [hfib, finprod_mem_singleton, hmu w, GlobalTheory.T.unitaryHeckeCharCM_locK_nonsplit_eq_neg_one_pow E μ e hμ w hsp k]
+    rw [hfib, finprod_mem_singleton, hmu w, _root_.GlobalTheory.BCT.inertChar_muLocK E μ e hμ w hsp k]
     unfold delta
     simp only [hres]
     rw [if_neg hsp]

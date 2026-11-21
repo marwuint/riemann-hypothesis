@@ -1,5 +1,5 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAbsoluteValueCompleteSpaceOfDvrStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAbsoluteValueCompleteSpaceOfDvr
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSpectralValuationAlgebraicExtensionStatement
 open scoped NNReal TensorProduct
 
@@ -16,7 +16,7 @@ theorem valuation_le_one_iff_isIntegral_of_complete_dvr :
   haveI : IsScalarTower R (FractionRing R) Ω := FractionRing.isScalarTower_liftAlgebra R Ω
   haveI : Algebra.IsAlgebraic (FractionRing R) Ω :=
     Algebra.IsAlgebraic.extendScalars (IsFractionRing.injective R (FractionRing R))
-  obtain ⟨f, hna, hnt, hball, hcomp⟩ := GlobalTheory.T.exists_absoluteValue_completeSpace_of_dvr R (FractionRing R)
+  obtain ⟨f, hna, hnt, hball, hcomp⟩ := _root_.GlobalTheory.KLC.exists_absoluteValue_completeSpace_of_isDiscreteValuationRing R (FractionRing R)
   obtain ⟨v, -, hv⟩ := GlobalTheory.T.exists_spectral_valuation_algebraic_extension (FractionRing R) Ω f hna hnt hcomp
   refine ⟨v, fun x => ?_⟩
   rw [hv]

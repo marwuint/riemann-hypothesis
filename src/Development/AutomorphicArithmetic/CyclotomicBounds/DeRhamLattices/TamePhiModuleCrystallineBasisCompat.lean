@@ -4,7 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanOfPowMu
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BdRpToBdR
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ImageDeRhamEqEisensteinPowMulOfComponents
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoordEPowBasis
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinLatticeExponentsAinfComparisonStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinLatticeExponentsAinfComparison
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExponents
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
@@ -40,7 +44,7 @@ theorem _root_.UpperTheory.KN.tame_phiModule_crystalline_basis_compat :
     rfl
   obtain ⟨-, β, -, hβ⟩ := P.exists_exponents
   obtain ⟨δ, hδ, hδ1⟩ := hε.2
-  obtain ⟨-, hK2, -, -⟩ := GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι P T I α β hα hβ ε δ hε hδ
+  obtain ⟨-, hK2, -, -⟩ := _root_.GlobalTheory.BKExp.exponents l a e O K t ϖ ι P T I α β hα hβ ε δ hε hδ
   obtain ⟨z, hz⟩ := hK2 (inclV l O ι c) ⟨c, rfl⟩
   set m : OA l O := (1 : O) ⊗ₜ[ℤ_[l]] (muOf δ ^ α) with hm
   have hV : inclV l O ι (fun i => m * c i) = inclO l O m • inclV l O ι c := by

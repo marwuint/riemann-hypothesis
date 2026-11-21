@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Rr
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TranslatedLengthBoundedDerivativeStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothMonotoneCutoffExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralRrEqZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveTimeReversalStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothMonotoneCutoffExists
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralRrEqZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveTimeReversal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasimirRightLaplacianFormulaStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EnergyIdentityOfLengthFunctionStatement
 
@@ -66,7 +66,7 @@ theorem speed_pos (hL : LgFacts) (hR : RCalc) {n : ℕ} (C₁ : ℝ) (hC₁ : 0 
     exact mul_ne_zero hxi hy
   have hbp : ∀ Ψ : Mat n → ℝ, ContDiffOn ℝ ∞ Ψ (GLs n) → (∃ R : ℝ, ∀ y ∈ GLs n, R < lg (x⁻¹ * y) → Ψ y = 0) → ∀ X : Mat n, ∫ y : G n, Rr X Ψ y.val ∂μ = 0 := by
     intro Ψ hΨ ⟨R, hRΨ⟩ X
-    refine GlobalTheory.T.integral_right_derivative_zero_alt hR μ Ψ hΨ ⟨R + lg x, fun y hy hlt => hRΨ y hy ?_⟩ X
+    refine _root_.GlobalTheory.CompanionTheory.WaveSpd.integral_Rr_eq_zero hR μ Ψ hΨ ⟨R + lg x, fun y hy hlt => hRΨ y hy ?_⟩ X
     have := (hL n).1 x hx _ (hmul y hy)
     rw [← mul_assoc, hxx', one_mul] at this
     linarith
@@ -84,7 +84,7 @@ theorem speed_pos (hL : LgFacts) (hR : RCalc) {n : ℕ} (C₁ : ℝ) (hC₁ : 0 
 theorem asmSpeed : AsmSpeed := by
   intro hL hU hR n
   obtain ⟨C₁, hC₁, hlg⟩ := GlobalTheory.T.translated_length_bounded_derivative hL n
-  obtain ⟨χ, h1, h2, h3, h4, h5⟩ := GlobalTheory.T.smooth_monotone_cutoff_exists
+  obtain ⟨χ, h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.CompanionTheory.SmoothCut.exists_smooth_antitone_cut
   set C := C₁ * (1 + Fintype.card (Ix n)) with hCdef
   have hC0 : 0 ≤ C := by positivity
   have hl0 : 0 ≤ lg (1 : Mat n) := by
@@ -103,7 +103,7 @@ theorem asmSpeed : AsmSpeed := by
   intro E u hu t x hx h0
   rcases le_total 0 t with ht | ht
   · exact key E u hu t ht x hx (by rwa [abs_of_nonneg ht] at h0)
-  · have := key E _ (GlobalTheory.T.wave_time_reversal E u hu) (-t) (by linarith) x hx (by
+  · have := key E _ (_root_.GlobalTheory.CompanionTheory.WaveSpd.isWave_time_refl E u hu) (-t) (by linarith) x hx (by
       intro y hy hle
       simp only [neg_zero]
       exact h0 y hy (by rwa [abs_of_nonpos ht]))

@@ -18,12 +18,6 @@ def SectionProduct.Statement : Prop :=
       ∀ c c' : ℝ, IsBoundedH (mCoordIdeal y) y A n c s → IsBoundedH (mCoordIdeal y) y B 1 c' t →
         IsBoundedH (mCoordIdeal y) y C τ (c * c' ^ j) (s * t ^ j)
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

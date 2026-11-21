@@ -23,20 +23,6 @@ end GlobalTheory.DescentLocal
 
 namespace GlobalTheory.DescentLocal
 
-variable {X U Y X' : Scheme.{0}} (u : U ⟶ X) (p : Y ⟶ U) (j : X' ⟶ X)
-
-def Natural {X U Y : Scheme.{0}} {u : U ⟶ X} {p : Y ⟶ U} (θ : Datum u p) : Prop :=
-  ∀ (T T' : Scheme.{0}) (w : T' ⟶ T) (a b : T ⟶ U) (h : a ≫ u = b ≫ u) (y : {y : T ⟶ Y // y ≫ p = a}),
-    (θ T' (w ≫ a) (w ≫ b) (by rw [Category.assoc, Category.assoc, h]) ⟨w ≫ y.1, by rw [Category.assoc, y.2]⟩).1 =
-      w ≫ (θ T a b h y).1
-
-def Unital {X U Y : Scheme.{0}} {u : U ⟶ X} {p : Y ⟶ U} (θ : Datum u p) : Prop :=
-  ∀ (T : Scheme.{0}) (a : T ⟶ U) (y : {y : T ⟶ Y // y ≫ p = a}), θ T a a rfl y = y
-
-def Cocycle {X U Y : Scheme.{0}} {u : U ⟶ X} {p : Y ⟶ U} (θ : Datum u p) : Prop :=
-  ∀ (T : Scheme.{0}) (a b c : T ⟶ U) (hab : a ≫ u = b ≫ u) (hbc : b ≫ u = c ≫ u) (y : {y : T ⟶ Y // y ≫ p = a}),
-    θ T b c hbc (θ T a b hab y) = θ T a c (hab.trans hbc) y
-
 end GlobalTheory.DescentLocal
 
 namespace GlobalTheory.DescentLocal

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvcCompOfIso
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionWhiskerLeftRangePreimageSnd
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardEqZeroOfTrivialOnDisjointCoverStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardEqZeroOfTrivialOnDisjointCover
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfHasRepUnit
 
 set_option autoImplicit false
@@ -85,7 +85,7 @@ theorem rep_exists {S : Scheme.{0}} (A : Over S) [GrpObj A] {κ : Type} [Finite 
     rw [Scheme.Opens.range_ι]
     rfl
   rw [← sub_eq_zero]
-  refine GlobalTheory.T.cechPicard_eq_zero_of_trivial_on_disjoint_cover (fun i ↦ (A ◁ w i).left) ?_ ?_ _ fun i ↦ ?_
+  refine _root_.GlobalTheory.PicDisj.eq_zero_of_pull_eq_zero (fun i ↦ (A ◁ w i).left) ?_ ?_ _ fun i ↦ ?_
   · refine eq_top_iff.2 fun z _ ↦ ?_
     have : t.left ((snd A T).left z) ∈ ⨆ i, V i := hV ▸ trivial
     obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 this

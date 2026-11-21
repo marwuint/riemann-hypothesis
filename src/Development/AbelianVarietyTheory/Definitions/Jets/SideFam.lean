@@ -1,7 +1,5 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
-import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.DSExist
-import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Zuckerman
 import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeries₂.Poulsen
 import Formalism.PeriodIntegrals.DSInfCharCap
 import Formalism.PeriodIntegrals.LowCyc
@@ -15,10 +13,6 @@ noncomputable section
 namespace BranchingSupport
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
-
-def Hyps : Prop :=
-  ThreeDimData.Inputs ∧ PI.SmoothCyc ∧ PI.DSInfCharCap.DSInfCharCap ∧ DSExist ∧ Zuckerman ∧ Poulsen ∧
-    GlobalTheory.FormalDegree.HarishChandra
 
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]

@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecializesIsLocalization
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonDenominatorRationalSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorSectionsNonvanishingFiniteSetStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InductiveMixedHeightTensorAdditiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InductiveMixedHeightReciprocityTwoSectionsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonDenominatorRationalSections
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorSectionsNonvanishingFiniteSet
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InductiveMixedHeightTensorAdditive
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InductiveMixedHeightReciprocityTwoSections
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InductiveArakelovFormulaRhsTensorAdditiveStatement
 open CategoryTheory AlgebraicGeometry TopologicalSpace MvPolynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -26,7 +26,7 @@ theorem recVal_indep_sec : ArchInteg → ArchRecip → ∀ (k : Type) [CommRing 
     intro P t t' ht ht'
     have hS := (GlobalTheory.ZH.finite_notMem_coheight_le_one (nonzeroLocus t) ⟨_, ht⟩).union
       (GlobalTheory.ZH.finite_notMem_coheight_le_one (nonzeroLocus t') ⟨_, ht'⟩)
-    obtain ⟨A, s, u, hs, hu⟩ := GlobalTheory.T.exists_tensor_sections_nonvanishing_finite_set k Y q hq (L 0) _ (hS.insert (genericPoint Y))
+    obtain ⟨A, s, u, hs, hu⟩ := _root_.GlobalTheory.MixHt.exists_tens_sec_finite_subset_nonzeroLocus k Y q hq (L 0) _ (hS.insert (genericPoint Y))
     have hgs : genericPoint Y ∈ nonzeroLocus s := hs (Set.mem_insert _ _)
     have hgu : genericPoint Y ∈ nonzeroLocus u := hu (Set.mem_insert _ _)
     have cs : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus t ∨ z ∈ nonzeroLocus s := fun z hz => by
@@ -45,15 +45,15 @@ theorem recVal_indep_sec : ArchInteg → ArchRecip → ∀ (k : Type) [CommRing 
       by_cases h : z ∈ nonzeroLocus t'
       · exact Or.inl h
       · exact Or.inr (hu (Set.mem_insert_of_mem _ (Or.inr ⟨h, hz.le⟩)))
-    have r1 := GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P ((L 0).tens A) (Fin.tail L) t s ht hgs cs
-    have r1' := GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P ((L 0).tens A) (Fin.tail L) t' s ht' hgs cs'
-    have r2 := GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P A (Fin.tail L) t u ht hgu cu
-    have r2' := GlobalTheory.T.inductiveMixedHeight_reciprocity_two_sections hR k Y q hq e hd T hT P A (Fin.tail L) t' u ht' hgu cu'
-    have a1 := GlobalTheory.T.inductiveMixedHeight_tensor_additive hI k Y q hq e hd T hT P _ (isRatSec_ratOfSec t ht) (L 0) A (Fin.tail L)
-    have a1' := GlobalTheory.T.inductiveMixedHeight_tensor_additive hI k Y q hq e hd T hT P _ (isRatSec_ratOfSec t' ht') (L 0) A (Fin.tail L)
+    have r1 := _root_.GlobalTheory.MixHt.recVal_cons_recip hR k Y q hq e hd T hT P ((L 0).tens A) (Fin.tail L) t s ht hgs cs
+    have r1' := _root_.GlobalTheory.MixHt.recVal_cons_recip hR k Y q hq e hd T hT P ((L 0).tens A) (Fin.tail L) t' s ht' hgs cs'
+    have r2 := _root_.GlobalTheory.MixHt.recVal_cons_recip hR k Y q hq e hd T hT P A (Fin.tail L) t u ht hgu cu
+    have r2' := _root_.GlobalTheory.MixHt.recVal_cons_recip hR k Y q hq e hd T hT P A (Fin.tail L) t' u ht' hgu cu'
+    have a1 := _root_.GlobalTheory.MixHt.recVal_tens_cons hI k Y q hq e hd T hT P _ (isRatSec_ratOfSec t ht) (L 0) A (Fin.tail L)
+    have a1' := _root_.GlobalTheory.MixHt.recVal_tens_cons hI k Y q hq e hd T hT P _ (isRatSec_ratOfSec t' ht') (L 0) A (Fin.tail L)
     rw [← Fin.cons_self_tail L]
     linarith
-  obtain ⟨A, u, t, t', hu, ht, ht', hrel⟩ := GlobalTheory.T.exists_common_denominator_rational_sections k Y q hq N r r' hr hr'
+  obtain ⟨A, u, t, t', hu, ht, ht', hrel⟩ := _root_.GlobalTheory.MixHt.exists_common_denom k Y q hq N r r' hr hr'
   have v1 := GlobalTheory.T.inductiveArakelovFormula_rhs_tensor_additive hI k Y q hq (e + 1) hd (T (e + 1) L) L N A r hr _ (isRatSec_ratOfSec u hu) _
     (isRatSec_ratOfSec t ht) fun i j hi hj => (hrel i j hi hj).1
   have v2 := GlobalTheory.T.inductiveArakelovFormula_rhs_tensor_additive hI k Y q hq (e + 1) hd (T (e + 1) L) L N A r' hr' _ (isRatSec_ratOfSec u hu) _

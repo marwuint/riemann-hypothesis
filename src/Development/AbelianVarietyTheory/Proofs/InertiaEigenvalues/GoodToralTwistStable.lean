@@ -23,13 +23,6 @@ theorem Good.tw {x : IrrGL k} (hx : Good x) (χ : kˣ →* ℂˣ) (hχ : IsSmoot
   obtain ⟨y', hy', rfl⟩ := Multiset.mem_map.1 hy
   exact (hg y' hy').tw χ hχ
 
-theorem Toral.tw {x : IrrGL k} (hx : Toral x) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : Toral (x.tw χ hχ) := by
-  obtain ⟨s, hs, hg⟩ := hx
-  refine ⟨s.map (·.tw χ hχ), (hs.tw χ hχ).of_equiv (x.twEquiv χ hχ), ?_⟩
-  intro y hy
-  obtain ⟨y', hy', rfl⟩ := Multiset.mem_map.1 hy
-  exact hg y' hy'
-
 theorem good_tw_iff (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : Good (x.tw χ hχ) ↔ Good x :=
   ⟨fun h => by simpa only [IrrGL.tw_tw_inv] using h.tw χ⁻¹ hχ.inv, fun h => h.tw χ hχ⟩
 

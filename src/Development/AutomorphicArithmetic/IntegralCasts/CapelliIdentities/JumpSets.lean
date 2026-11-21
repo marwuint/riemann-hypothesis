@@ -24,16 +24,6 @@ noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.hostE.{u_1} :
     {L : Type u_1} → [inst : Field L] → [inst_1 : Algebra ℚ L] → L → L → L → IntermediateField ℚ L :=
     fun {L : Type u_1} [Field L] [Algebra ℚ L] (ζ a b : L) ↦ UpperTheory.Reformulated.B.JumpSetsAlt.E0 a b ⊔ UpperTheory.Reformulated.B.JumpSetsAlt.F1 ζ
 
-theorem UpperTheory.Reformulated.B.JumpSetsAlt.aux6 :
-    ∀ (L : Type) [inst : Field L] [inst_1 : NumberField L] (ζ a b : L), CharZero ↥(UpperTheory.Reformulated.B.JumpSetsAlt.hostE ζ a b) := by
-  intro L _ _ ζ a b
-  infer_instance
-
-theorem UpperTheory.Reformulated.B.JumpSetsAlt.aux7 :
-    ∀ (L : Type) [inst : Field L] [inst_1 : NumberField L], IsScalarTower ℚ ℚ L := by
-  intro L _ _
-  infer_instance
-
 @[reducible] noncomputable def UpperTheory.Reformulated.B.JumpSetsAlt.G0 :
     Type :=
     ℤˣ × ℤˣ

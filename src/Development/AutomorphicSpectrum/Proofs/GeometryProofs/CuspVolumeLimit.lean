@@ -2,13 +2,21 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionSystemWeightRightStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionSystemWeightRight
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataIntersectionBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataHodgeFourth
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductAdjoint
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarisedStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncChartLocalNormalForm
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartPshPhMu
 import Development.AbelianVarietyTheory.Statements.PrincipalLattices.PrimeSpectrumDualEq
@@ -222,7 +230,7 @@ theorem phMu_eq_ballPot_half : GlobalTheory.CompanionTheory.Ar.Top.Given → ∀
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or g Λ _ _ F V z gm hV hVb hgm hpt hlat t ht
   classical
   obtain ⟨hco, hin, -⟩ := hpt t ht
-  obtain ⟨⟨d⟩, hall⟩ := (GlobalTheory.T.intersection_system_weight_right hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or (z t) (gm t) hco)
+  obtain ⟨⟨d⟩, hall⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.phMu_eq_log_small_blocks_abelian hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or (z t) (gm t) hco)
   obtain ⟨⟨s, hs⟩, hP⟩ := hall d
   obtain ⟨-, hv0, -⟩ := hP s hs
 
@@ -265,7 +273,7 @@ theorem phMu_eq_ballPot_half : GlobalTheory.CompanionTheory.Ar.Top.Given → ∀
     obtain ⟨v, hv, hf⟩ := hxe.self_of_nhds
     have hg := (hfib t ht v hv hf).2 τ
     haveI : CharZero Ω := algebraRat.charZero Ω
-    have hpol := GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 (z t) hin
+    have hpol := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 (z t) hin
     have e1 := HodgeMetric.gramAt_unique_of_polarisedAt E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 (z t) _ (s τ) _ _ hpol
       hg (hΓ₀ τ)
     have h2 := PhMuFree.det_re_pos (hp₀ τ)
@@ -287,7 +295,7 @@ theorem phMu_eq_ballPot_half : GlobalTheory.CompanionTheory.Ar.Top.Given → ∀
   have hHa := MuPsh.analyticAt_eval hq ph
   have htie : CoordTie ℤ Or.𝔐.ξ (fun c' : (k : K) → J k => ∏ k, Dc.y ⟨k, c' k⟩) := Or.𝔐.tie
   have hmem : ∀ t' ∈ V, gm t' ∈ mcPts (mCoordIdeal Dc.y) := fun t' h =>
-    (GlobalTheory.T.complex_points_iff_centres Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie (gm t')).2 ⟨z t', Or.𝔐.all _, (hpt t' h).1⟩
+    (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie (gm t')).2 ⟨z t', Or.𝔐.all _, (hpt t' h).1⟩
   have hval0 : v₀ ≠ 0 := by
     have e1 : GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y d.u (gm t) = v₀ :=
       valAt_eq (hmem t ht) ⟨dg, pg, ph, hpg, hph, hne, heq, hhne, hv₀⟩
@@ -313,7 +321,7 @@ theorem phMu_eq_ballPot_half : GlobalTheory.CompanionTheory.Ar.Top.Given → ∀
     hFc.continuousAt.eventually_ne hFc0, hQa.continuousAt.eventually_ne hQ0] with
     t' ⟨v, hv, hf⟩ h1 ⟨hxpos, hsum⟩ hlg dom hph' hF1 hQ1
   obtain ⟨hco', hin', -⟩ := hpt t' h1
-  obtain ⟨-, hall'⟩ := GlobalTheory.T.intersection_system_weight_right hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or (z t') (gm t') hco'
+  obtain ⟨-, hall'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.phMu_eq_log_small_blocks_abelian hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or (z t') (gm t') hco'
   let d' : MuFrameAt Hd (gm t') := { d with inDom := dom }
   obtain ⟨-, hP'⟩ := hall' d'
   obtain ⟨-, -, hform⟩ := hP' s hs

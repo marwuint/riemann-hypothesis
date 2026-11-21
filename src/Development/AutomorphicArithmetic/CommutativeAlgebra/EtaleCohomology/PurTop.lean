@@ -126,6 +126,4 @@ theorem UpperTheory.Et.purAll : LateralTheory.CohomologicalPurity.LeafTube ∧ L
   have h_cohomological_purity : LateralTheory.CohomologicalPurity.Goal := by apply LateralTheory.CohomologicalPurity.goal_of <;> assumption
   exact ⟨h_EPur_LeafTube, h_EPur_LeafGysin, h_cohomological_purity⟩
 
-theorem UpperTheory.Et.purTube : LateralTheory.CohomologicalPurity.LeafTube := UpperTheory.Et.purAll.1
 theorem UpperTheory.Et.purGysin : LateralTheory.CohomologicalPurity.LeafGysin := UpperTheory.Et.purAll.2.1
-theorem UpperTheory.Et.purGoal : LateralTheory.CohomologicalPurity.Goal := UpperTheory.Et.purAll.2.2

@@ -29,9 +29,6 @@ theorem levFam_eq_cast {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ
   funext w
   exact h w w.2
 
-def decoCast {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (e : SG = SG') (d : DecoSet E n ∅ SG) :
-    DecoSet E n ∅ SG' := e ▸ d
-
 variable {SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (e : Pr.vGs = SG') (A : LevFam X.E X.K (R.N R.m - 1) Pr.vGs)
   (Λ' : LevFam X.E X.K (R.N R.m - 1) SG')
 

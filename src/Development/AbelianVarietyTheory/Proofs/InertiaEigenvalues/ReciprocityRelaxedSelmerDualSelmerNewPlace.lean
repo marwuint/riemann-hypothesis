@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CocycleUnramifiedOutsideVanishOnKernel
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroup
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PairingEquivariantStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocyclePowStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameCupProductInvariantUnramifiedHomStatement
@@ -218,8 +218,8 @@ theorem reciprocity : PoitouTateTotallyComplex → TameLocal → ∀ (D : Formal
       rw [antiHom_cConj X hanti, show κ g = 1 from hg.2, inv_one]⟩
   have hHt : ∀ g ∈ H, (∀ m, repOn (Tgl i s) κ Y g m = m) ∧ (∀ m, repOn ρ κ⁻¹ Y' g m = m) ∧
       cycMod D.host.E N.Om (X.l i) (nu X i + 1) g = 1 := fun g hg => by
-    have h1 := GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z (by omega) hS A κ ρ hK hρ Y g hg.1
-    have h2 := GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z (by omega) hS A κ⁻¹ ρ hK hρ Y' g hg.1
+    have h1 := _root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl2 M L z (by omega) hS A κ ρ hK hρ Y g hg.1
+    have h2 := _root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl2 M L z (by omega) hS A κ⁻¹ ρ hK hρ Y' g hg.1
     have h3 : κ g = 1 := hg.2
     refine ⟨fun m => ?_, fun m => ?_, h1.2.2⟩
     · rw [h1.1, h3, Units.val_one, one_smul]

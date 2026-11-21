@@ -1,6 +1,8 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.PlaceShiftSt
 import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsLatBasisHtLatIffSpanEq
+import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EigenvectorLieDegree
 import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsLocalRingTrivSqZeroExt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMapToModel

@@ -14,10 +14,6 @@ noncomputable def coordEquiv {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     EuclideanSpace ℝ (Fin d) ≃L[ℝ] 𝔤 :=
   (EuclideanSpace.equiv (Fin d) ℝ).trans b.equivFun.symm.toContinuousLinearEquiv
 
-theorem coordEquiv_apply {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (x : EuclideanSpace ℝ (Fin d)) :
-    coordEquiv b x = ∑ j, x j • b j := by
-  simp [coordEquiv, Module.Basis.equivFun_symm_apply]
-
 theorem coordEquiv_zero {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) : coordEquiv b 0 = 0 :=
   map_zero _
 

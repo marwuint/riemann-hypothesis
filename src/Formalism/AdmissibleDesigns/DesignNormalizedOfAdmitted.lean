@@ -335,14 +335,6 @@ theorem design_normalized_of_admitted (hA : LargeLevelLemmas.adm51 i r ρ π) (h
   obtain ⟨S, hG⟩ := hA hZ
   exact design_normalized i r ρ π S hG
 
-theorem inputs_normalized (hA : LargeLevelLemmas.admitted i r ρ π) (hZ : π ∈ D.nd.Z i) :
-    NormAt D.nd (rN i r ρ π) ρ π ∧
-      (∀ (γ : GE D.nd) (k : ℕ), (fun x : D.nd.X i => ((rO D.nd i (rN i r ρ π) x γ).charpolyRev).coeff k) ∈ D.nd.T i) ∧
-      Submodule.span (kk D.nd i) (Set.range (mapM (IsLocalRing.residue (D.nd.O i)) (rhoO D.nd i ρ π))) = ⊤ ∧
-      InertiaElementIdempotentChoice D.nd (rN i r ρ π) π := by
-  obtain ⟨a51, -, -, -, g1, -, g3, -, -, -, -, -, -, -, -, -, dcm, -⟩ := hA
-  exact ⟨normAt_rN i r ρ π, admG1_rN i r ρ π dcm g1, g3.2.2, design_normalized_of_admitted i r ρ π a51 hZ⟩
-
 end D51b
 
 end Formalism.MainNotions.N.K.Norm

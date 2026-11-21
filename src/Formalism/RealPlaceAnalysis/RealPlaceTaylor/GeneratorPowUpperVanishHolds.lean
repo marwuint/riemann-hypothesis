@@ -43,28 +43,4 @@ theorem generatorTraceCentral_holds : EtrCentral := by
   simp only [h1, Finset.sum_neg_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq',
     Finset.mem_univ, if_true, sub_self, neg_zero]
 
-theorem generatorPowUpperVanish_holds : UpperKill := by
-  intro V _ _ n E ν v hE hv k
-  obtain ⟨hd, hu⟩ := hv
-  induction k with
-  | zero => intro a b hab; simp [epow, ne_of_lt hab]
-  | succ k ih =>
-    intro a b hab
-    simp only [epow, LinearMap.sum_apply]
-    apply Finset.sum_eq_zero
-    intro c _
-    rw [Module.End.mul_apply]
-    rcases lt_trichotomy c b with hcb | hcb | hcb
-    · rw [hu c b hcb, map_zero]
-    · subst hcb
-      rw [hd c, map_smul, ih a c hab, smul_zero]
-    · have hcov := generatorPowCovariance_holds (Module.End ℂ V) n E hE k a c c b
-      rw [if_neg (ne_of_gt hab), if_pos rfl, zero_sub] at hcov
-      have h2 : epow E k a c * E c b = E c b * epow E k a c + epow E k a b := by
-        rw [← neg_neg (epow E k a b), ← hcov]
-        abel
-      have h3 : (epow E k a c) (E c b v) = (epow E k a c * E c b) v := rfl
-      rw [h3, h2, LinearMap.add_apply, Module.End.mul_apply, ih a c (hab.trans hcb), map_zero, ih a b hab,
-        zero_add]
-
 end Formalism.REAL

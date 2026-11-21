@@ -9,21 +9,8 @@ namespace GlobalTheory.DieudonneTest
 
 open PDivGroup Sandwich Dieudonne
 
-theorem setting_inhabited (p : ℕ) [Fact p.Prime] :
-    ∃ (C : Type) (_ : Field C) (_ : IsAlgClosed C) (_ : CharZero C) (v : Valuation C NNReal)
-      (O : Type) (_ : CommRing O) (_ : Algebra O C) (_ : v.Integers O)
-      (_ : Fact ¬IsUnit (p : O)) (_ : IsAdicComplete (span {(p : O)}) O) (ε : PreTilt O p),
-      IsPrimitiveRoot (root ε).untilt p := by
-  obtain ⟨h1, h2, ε, hv, hε⟩ := PadicComplexHost.main p
-  exact ⟨ℂ_[p], inferInstance, inferInstance, inferInstance, Valued.v, _, inferInstance,
-    inferInstance, hv, h1, h2, ε, hε⟩
-
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O]
-
-theorem xi_dvd_of_eigen {ε : PreTilt O p} {a : Ainf p O}
-    (h : WittVector.frobenius a = WittVector.frobenius (xi ε) * a) : xi ε ∣ a :=
-  ⟨phiInv p O a, frobenius_injective (by rw [map_mul, frobenius_phiInv, h])⟩
 
 open WittVector Ideal CategoryTheory Opposite Function in
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
@@ -144,59 +131,5 @@ theorem _root_.GlobalTheory.DieudonneTest.eigen_step [IsDomain (PreTilt O p)] {�
   rw [hb, map_mul, map_natCast] at h4
   rw [h4]
   ring
-
-theorem eigen_approx [IsDomain (PreTilt O p)] {ε : PreTilt O p}
-    (hε : IsPrimitiveRoot (root ε).untilt p) (n : ℕ) {a : Ainf p O}
-    (h : WittVector.frobenius a = WittVector.frobenius (xi ε) * a) :
-    ∃ c : ℤ, (p : Ainf p O) ^ n ∣ a - c * Sandwich.mu ε := by
-  induction n generalizing a with
-  | zero => exact ⟨0, by simp⟩
-  | succ n ih =>
-    obtain ⟨c, b, rfl, hb⟩ := eigen_step hε h
-    obtain ⟨d, e, he⟩ := ih hb
-    refine ⟨c + p * d, e, ?_⟩
-    rw [pow_succ', mul_assoc, ← he]
-    push_cast
-    ring
-
-theorem finrank_add [IsDomain O] {ε : PreTilt O p} (h : CovariantDieudonneAt ε)
-    (G : PDivGroup p O) :
-    Module.finrank O G.dual.omega + Module.finrank O G.Lie = G.height := by
-  obtain ⟨M, H, ψ, r, ι, π, -, -, -, -, -, -, hex, -, -, hf, -⟩ := h
-  obtain ⟨⟨-, h2, h3⟩, -, -⟩ := hf G
-  obtain ⟨hι, he, hπ⟩ := hex G
-  have h4 := Submodule.finrank_quotient_add_finrank (LinearMap.ker (π G))
-  rw [((π G).quotKerEquivOfSurjective hπ).finrank_eq, he.linearMap_ker_eq,
-    LinearMap.finrank_range_of_inj hι, h3] at h4
-  omega
-
-theorem map_const_mu_mem {ε : PreTilt O p} (h : CovariantDieudonneAt ε) :
-    ∃ M : PDivGroup p O ⥤ ModuleCat.{0} (Ainf p O),
-      Module.finrank (Ainf p O) (M.obj (const p O)) = 1 ∧
-      Module.finrank (Ainf p O) (M.obj (PDivGroup.mu p O)) = 1 ∧
-      ∀ (f : const p O ⟶ PDivGroup.mu p O) (m : M.obj (const p O)),
-        ∃ n, M.map f m = xi ε • n := by
-  obtain ⟨M, H, ψ, r, ι, π, -, hM, -, -, hr, nr, hex, nι, nπ, -⟩ := h
-  refine ⟨M, (hM _).2.2, (hM _).2.2, fun f m => ((hr _).2 _).1 ?_⟩
-  rw [← nr]
-  obtain ⟨w, hw⟩ := ((hex _).2.1 (r _ m)).1 (Subsingleton.elim _ _)
-  rw [← hw, nι, Subsingleton.elim (omegaDualMap _ _ f w) 0, map_zero]
-
-def trivialGroup : PDivGroup p O where
-  height := 0
-  A _ := O
-  rank_eq n q := by
-    have := q.nontrivial
-    simp [Module.rankAtStalk_eq_finrank_of_free]
-  res _ := BialgHom.id O O
-  res_surjective _ := surjective_id
-  ker_res n := le_antisymm (fun a ha => by rw [show a = 0 from ha]; exact zero_mem _)
-    ((PDiv.kerIdeal_le_ker_iff _ (AlgHom.id O O)).2 fun a => by
-      simpa using (PDiv.mulBy O O (p ^ n)).toAlgHom.commutes a)
-
-theorem trivialGroup_id : 𝟙 (trivialGroup : PDivGroup p O) = 0 :=
-  hom_ext fun n => BialgHom.ext fun a =>
-    ((Hom.app (𝟙 (trivialGroup : PDivGroup p O)) n).toAlgHom.commutes a).trans
-      ((Hom.app (0 : (trivialGroup : PDivGroup p O) ⟶ trivialGroup) n).toAlgHom.commutes a).symm
 
 end GlobalTheory.DieudonneTest

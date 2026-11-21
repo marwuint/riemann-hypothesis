@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMinAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelToroidalPolCharts
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemClosureModuliFibreOfMonomialPeriodPreChartStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeBundlePowerIsoMinimalSiegelCompactificationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGloballyGeneratedAmplePowerToroidalPullbacStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemClosureModuliFibreOfMonomialPeriodPreChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeBundlePowerIsoMinimalSiegelCompactification
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGloballyGeneratedAmplePowerToroidalPullbac
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteTypeCycAway
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPolarisedChartOfMonomialPreChartSemiAbelianExStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasPolarisedChartOfMonomialPreChartSemiAbelianEx
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.SiegJoin
@@ -36,15 +36,15 @@ theorem GlobalTheory.SiegJoin.siegelToroidalPolCharts_of_steps5
   haveI := hsm
   haveI : Smooth (π ≫ z) := SmoothOfRelativeDimension.smooth (g * (g + 1) / 2) _
   haveI : QuasiSeparated G.hom := by haveI := hGs.separated; infer_instance
-  obtain ⟨a, N, ha, hN, hiso⟩ := GlobalTheory.T.hodgeBundle_power_iso_minimalSiegelCompactification g n F Z z i OZ S π j G e hMA
+  obtain ⟨a, N, ha, hN, hiso⟩ := _root_.GlobalTheory.HodgeMin.hodge_pow_iso_pull_pow_of_minimal_compactification g n F Z z i OZ S π j G e hMA
     (fun x => ⟨hBl.1.isDomain_stalk x, hBl.1.isIntegrallyClosed_stalk x⟩) hP hjd hji hGs hGd hGe
-  obtain ⟨N'', hN'', hgen, k, hk⟩ := GlobalTheory.T.exists_globallyGenerated_ample_power_toroidalPullback (cycAway n) Z S z π OZ (hodge G g) (GlobalTheory.CechPic.dual BD.lb) a N
+  obtain ⟨N'', hN'', hgen, k, hk⟩ := _root_.GlobalTheory.PullPowGen.exists_isGenerated_and_isAmpleLB (cycAway n) Z S z π OZ (hodge G g) (GlobalTheory.CechPic.dual BD.lb) a N
     hZp hOZ hOZa (isLB_hodge G g) (GlobalTheory.CechPic.isLB_dual BD.isLB_lb) ha hN hiso ⟨k₀, hk₀⟩
   refine ⟨F, S, π ≫ z, j, hj, G, inferInstance, e, BD, d, N'', hP, hsm, by rw [← Category.assoc, hji, hiz], ?_,
     hGs, hGd, hGe, hGab, hd, ?_, hN'', hgen, k, hk⟩
   · intro x
-    exact GlobalTheory.T.mem_closure_moduliFibre_of_monomialPeriodPreChart F (π ≫ z) j φ BD d x (hpre x)
+    exact _root_.GlobalTheory.FibreDense.mem_closure_fibre F (π ≫ z) j φ BD d x (hpre x)
   · intro x
-    exact GlobalTheory.T.hasPolarisedChart_of_monomialPreChart_semiAbelianExt F (π ≫ z) j G e φ BD d x hn0 hGs hGd hGe hGab (hpre x)
+    exact _root_.GlobalTheory.PolDeg.hasPolChart_of_preChart_of_extension F (π ≫ z) j G e φ BD d x hn0 hGs hGd hGe hGab (hpre x)
 
 end

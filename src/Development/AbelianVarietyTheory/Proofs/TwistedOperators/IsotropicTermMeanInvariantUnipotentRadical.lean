@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilCompatibleOfSameSplittingCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalTargetPreservesIsotropicMeanStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilCompatibleOfSameSplittingCharacter
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WittTowerRestrictionUnipotentRadicalInvariant
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalTargetPreservesIsotropicMean
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaRestrictIsotropicQuotientWittTowerPropertieStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumOfSplittingCharactersStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsEtaTildeUnramified
@@ -232,7 +232,7 @@ theorem term_eq_aux (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin 
   have step1 : heisO ψ V W (Lm ⬝ₘ K) (ω ((n : GA D V), 1) F) =
       ω ((n : GA D V), 1) (heisO ψ V W (Lm ⬝ₘ K ⬝ₘ mt V (n : GA D V)) F) := by
     rw [hω.om_heis (n : GA D V) 1 _ F hF, hact]
-  have step2 := GlobalTheory.T.wittTower_restriction_unipotentRadical_invariant D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hY n _ hFu
+  have step2 := _root_.GlobalTheory.UnipRes.res_unip D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hY n _ hFu
   have hM : (mt V (n : GA D V) - 1) ⬝ₘ (C.map (incA D) : Matrix (Fin V.rank) (Fin r) (AE D)) = 0 := by
     rw [Matrix.sub_mul, mt_mul_frame V C n.2, Matrix.one_mul, sub_self]
   have hdec := decomp V V' W C C' B (map_frame_decomp V V' C C' B hs h1 h2 h3) Lm K (mt V (n : GA D V)) hM
@@ -293,7 +293,7 @@ theorem mean_isoTerm_invariant : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' :
   have hstd := hω.std
   obtain ⟨ω', hω'⟩ := GlobalTheory.T.exists_weilDatum_of_splittingCharacters D ψ hstd V' W χS χT (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) hω.hecS
     hω.hecT (Formalism.L2.Theta.resEta_parity hω.resS (by rw [hs.rank]; omega)) hω.resT
-  have hcomp := GlobalTheory.T.weilCompatible_of_sameSplittingCharacter D V V' W r C B hs ψ χS χT χT ω ω' hω hω' μ 𝓨 hY
+  have hcomp := _root_.GlobalTheory.SameCharCompat.compatibleOfSameChar D V V' W r C B hs ψ χS χT χT ω ω' hω hω' μ 𝓨 hY
   obtain ⟨μ', 𝓐, hA, hmean⟩ := GlobalTheory.T.unipotentRadicalMean_eq_volume_mul_rationalMean D V V' r C C' B hs h1 h2 h3 κ 𝓝 hκ h𝓝 s m hm
   have hres := (GlobalTheory.T.thetaRestrictIsotropicQuotient_wittTower_properties D V V' W r C B hs ψ hstd μ 𝓨 hY).1
   have hw₀ : isoPart V W C' (Matrix.map (L * m) (incA D)) =
@@ -332,7 +332,7 @@ theorem mean_isoTerm_invariant : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' :
           ((L.map (incA D) : Matrix (Fin W.rank) (Fin s) (AE D)) ⬝ₘ
           ((m * adj D C' * V.gram).map (incA D) : Matrix (Fin s) (Fin V.rank) (AE D))) f))
           ((L.map (incA D) : Matrix (Fin W.rank) (Fin s) (AE D)) ⬝ₘ a) ∂μ' := by
-        rw [GlobalTheory.T.unipotentRadical_target_preserves_isotropic_mean D V' W s L hL ψ χS χT ω' hω' μ' 𝓐 hA n' _ hG0]
+        rw [_root_.GlobalTheory.UnipMean.mean_target D V' W s L hL ψ χS χT ω' hω' μ' 𝓐 hA n' _ hG0]
     _ = ∫ n in 𝓝, (res V V' W C B μ 𝓨 (heisO ψ V W
           ((L.map (incA D) : Matrix (Fin W.rank) (Fin s) (AE D)) ⬝ₘ
           ((m * adj D C' * V.gram).map (incA D) : Matrix (Fin s) (Fin V.rank) (AE D))) f))

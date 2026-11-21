@@ -34,13 +34,6 @@ theorem LinearNoetherNormalization.exists_nat_of_le {x : WithBot ℕ∞} {d : �
       exact absurd (WithBot.coe_le_coe.mp h1) (by simp)
     | coe e => exact ⟨e, by exact_mod_cast hd, rfl⟩
 
-theorem LinearNoetherNormalization.pullback_comp_rename {d e n : ℕ} (h : e ≤ d)
-    (A : Matrix (Fin d) (Fin n) ℂ) :
-    (pullback A).comp (rename (Fin.castLE h)) = pullback (A.submatrix (Fin.castLE h) id) := by
-  apply MvPolynomial.algHom_ext
-  intro i
-  simp [pullback, linPoly, Matrix.submatrix]
-
 theorem LinearNoetherNormalization.exists_monic_of_prefix {d e n : ℕ} (h : e ≤ d)
     (A : Matrix (Fin d) (Fin n) ℂ) (P : Ideal (MvPolynomial (Fin n) ℂ))
     (hP : IsFiniteProjection P (A.submatrix (Fin.castLE h) id)) (j : Fin n) :

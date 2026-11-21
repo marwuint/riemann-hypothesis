@@ -180,14 +180,6 @@ theorem up_zero {n : ℕ} {y : Matrix (Fin n) (Fin n) K} (hy : IsUpUni y) {i j :
   | exact hy.1 h
   | (unfold IsUpUni at hy; done)
 
-theorem eq_one_of_low_up {n : ℕ} {m : Matrix (Fin n) (Fin n) K} (h1 : IsLowUni m)
-    (h2 : IsUpUni m) : m = 1 := by
-  ext i j
-  rcases lt_trichotomy i j with h | rfl | h
-  · rw [low_zero h1 h, Matrix.one_apply_ne h.ne]
-  · rw [h1.2 i, Matrix.one_apply_eq]
-  · rw [up_zero h2 h, Matrix.one_apply_ne h.ne']
-
 theorem mul_inv_one_low {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) :
     x * x⁻¹ = 1 := by
   have hd : IsUnit x.det := by
@@ -209,13 +201,6 @@ theorem mul_inv_one_up {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x)
     simp [hx.2]
   exact Matrix.mul_nonsing_inv x hd
 
-theorem inv_mul_one_up {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) :
-    x⁻¹ * x = 1 := by
-  have hd : IsUnit x.det := by
-    rw [Matrix.det_of_isUpperTriangular hx.1]
-    simp [hx.2]
-  exact Matrix.nonsing_inv_mul x hd
-
 theorem simple_add_zero {n : ℕ} {y z : Matrix (Fin n) (Fin n) K} (hy : IsUpUni y)
     (hz : IsUpUni z) (hyz : y * z = 1) (j k : Fin n) (hk : (k : ℕ) = j + 1) :
     y j k + z j k = 0 := by
@@ -236,51 +221,6 @@ theorem simple_add_zero {n : ℕ} {y z : Matrix (Fin n) (Fin n) K} (hy : IsUpUni
         show (k : ℕ) < c
         omega
       rw [up_zero hz hkc, mul_zero]
-
-private lemma isLowUni_mul' {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x)
-    (hy : IsLowUni y) : IsLowUni (x * y) := by
-  have h1 : (x * y).IsLowerTriangular := Matrix.BlockTriangular.mul hx.1 hy.1
-  unfold IsLowUni
-  refine ⟨h1, fun a => ?_⟩
-  rw [Matrix.mul_apply, Finset.sum_eq_single a]
-  · rw [hx.2 a, hy.2 a, one_mul]
-  · intro b _ hb
-    rcases lt_or_gt_of_ne hb with h | h
-    · rw [low_zero hy h, mul_zero]
-    · rw [low_zero hx h, zero_mul]
-  · simp
-
-private lemma isLowUni_inv' {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) :
-    IsLowUni x⁻¹ := by
-  have hd : IsUnit x.det := by
-    rw [Matrix.det_of_isLowerTriangular x hx.1]
-    simp [hx.2]
-  letI := Matrix.invertibleOfIsUnitDet x hd
-  have h1 : x⁻¹.IsLowerTriangular := Matrix.blockTriangular_inv_of_blockTriangular hx.1
-  unfold IsLowUni
-  refine ⟨h1, fun a => ?_⟩
-  have h := congrFun (congrFun (mul_inv_one_low hx) a) a
-  rw [Matrix.mul_apply, Finset.sum_eq_single a, hx.2 a, one_mul, Matrix.one_apply_eq] at h
-  · exact h
-  · intro b _ hb
-    rcases lt_or_gt_of_ne hb with h' | h'
-    · have hz : x⁻¹ b a = 0 := h1 (show OrderDual.toDual a < OrderDual.toDual b from h')
-      rw [hz, mul_zero]
-    · rw [low_zero hx h', zero_mul]
-  · simp
-
-private lemma isUpUni_mul' {n : ℕ} {x y : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x)
-    (hy : IsUpUni y) : IsUpUni (x * y) := by
-  have h1 : (x * y).IsUpperTriangular := Matrix.BlockTriangular.mul hx.1 hy.1
-  unfold IsUpUni
-  refine ⟨h1, fun a => ?_⟩
-  rw [Matrix.mul_apply, Finset.sum_eq_single a]
-  · rw [hx.2 a, hy.2 a, one_mul]
-  · intro b _ hb
-    rcases lt_or_gt_of_ne hb with h | h
-    · rw [up_zero hx h, zero_mul]
-    · rw [up_zero hy h, mul_zero]
-  · simp
 
 private lemma isUpUni_inv_lower_unipotent_orbits {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsUpUni x) :
     IsUpUni x⁻¹ := by
@@ -420,140 +360,8 @@ def bdiag (s : List ℕ) (x : Matrix (Fin s.sum) (Fin s.sum) K) : Matrix (Fin s.
 private lemma bdiag_apply (s : List ℕ) (x : Matrix (Fin s.sum) (Fin s.sum) K)
     (a c : Fin s.sum) : bdiag s x a c = if blk s a = blk s c then x a c else 0 := rfl
 
-theorem bdiag_low (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx : IsLowUni x) :
-    IsLowUni (bdiag s x) := by
-  unfold IsLowUni
-  constructor
-  · intro i j h
-    have h' : i < j := h
-    rw [bdiag_apply]
-    split_ifs
-    · exact low_zero hx h'
-    · rfl
-  · intro a
-    rw [bdiag_apply, if_pos rfl, hx.2 a]
-
-theorem bdiag_inv_blk (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx : IsLowUni x)
-    {a c : Fin s.sum} (h : blk s a ≠ blk s c) : (bdiag s x)⁻¹ a c = 0 := by
-  have hBinv : bdiag s x * (bdiag s x)⁻¹ = 1 := mul_inv_one_low (bdiag_low s hx)
-  have hP : bdiag s x * bdiag s (bdiag s x)⁻¹ = 1 := by
-    ext a' c'
-    have h1 := congrFun (congrFun hBinv a') c'
-    rw [Matrix.mul_apply] at h1
-    rw [Matrix.mul_apply]
-    by_cases hac : blk s a' = blk s c'
-    · rw [← h1]
-      refine Finset.sum_congr rfl fun b _ => ?_
-      by_cases hab : blk s a' = blk s b
-      · rw [bdiag_apply s ((bdiag s x)⁻¹), if_pos (hab.symm.trans hac)]
-      · rw [bdiag_apply s x, if_neg hab, zero_mul, zero_mul]
-    · rw [Matrix.one_apply_ne (fun h' => hac (by rw [h']))]
-      refine Finset.sum_eq_zero fun b _ => ?_
-      by_cases hab : blk s a' = blk s b
-      · rw [bdiag_apply s ((bdiag s x)⁻¹), if_neg (fun h' => hac (hab.trans h')), mul_zero]
-      · rw [bdiag_apply s x, if_neg hab, zero_mul]
-  rw [Matrix.inv_eq_right_inv hP, bdiag_apply, if_neg h]
-
-theorem mul_inv_blockDiag_apply_same_block (s : List ℕ) {x : Matrix (Fin s.sum) (Fin s.sum) K} (hx : IsLowUni x)
-    {a c : Fin s.sum} (hac : blk s a = blk s c) :
-    (x * (bdiag s x)⁻¹) a c = (1 : Matrix (Fin s.sum) (Fin s.sum) K) a c := by
-  have hBinv := mul_inv_one_low (bdiag_low s hx)
-  rw [← hBinv, Matrix.mul_apply, Matrix.mul_apply]
-  refine Finset.sum_congr rfl fun b _ => ?_
-  by_cases hbc : blk s b = blk s c
-  · rw [bdiag_apply s x a b, if_pos (hac.trans hbc.symm)]
-  · rw [bdiag_inv_blk s hx hbc, mul_zero, mul_zero]
-
-theorem section_exists (s : List ℕ) (t : ℕ → Kˣ) {x y : Matrix (Fin s.sum) (Fin s.sum) K}
-    (hx : IsLowUni x) (hy : IsUpUni y) :
-    ∃ v u h : Matrix (Fin s.sum) (Fin s.sum) K, IsLowUni v ∧ IsLowUni h ∧
-      v * pt s t = pt s t * h ∧ IsUpUni u ∧ v * pt s t * u = x * pt s t * y := by
-  have hv1 : IsLowUni (x * (bdiag s x)⁻¹) := isLowUni_mul' hx (isLowUni_inv' (bdiag_low s hx))
-  have hW : IsUpUni (ptI s t * bdiag s x * pt s t) := by
-    unfold IsUpUni
-    constructor
-    · intro a c hca
-      have hca' : c < a := hca
-      rw [conj_apply]
-      have hw : bdiag s x (revF s a) (revF s c) = 0 := by
-        rw [bdiag_apply]
-        by_cases hb : blk s a = blk s c
-        · rw [if_pos (show blk s (revF s a) = blk s (revF s c) by rw [blk_revF, blk_revF, hb]),
-            low_zero hx (revF_lt_of_blk_eq s hb.symm hca')]
-        · rw [if_neg (show ¬ blk s (revF s a) = blk s (revF s c) by
-            rw [blk_revF, blk_revF]; exact hb)]
-      rw [hw, mul_zero, zero_mul]
-    · intro a
-      rw [conj_apply, bdiag_apply, if_pos rfl, hx.2, mul_one, Units.inv_mul]
-  refine ⟨x * (bdiag s x)⁻¹, ptI s t * bdiag s x * pt s t * y,
-    ptI s t * (x * (bdiag s x)⁻¹) * pt s t, hv1, ?_, ?_, isUpUni_mul' hW hy, ?_⟩
-  · unfold IsLowUni
-    constructor
-    · intro a c hac
-      have hac' : a < c := hac
-      rw [conj_apply]
-      have hv : (x * (bdiag s x)⁻¹) (revF s a) (revF s c) = 0 := by
-        by_cases hb : blk s a = blk s c
-        · rw [mul_inv_blockDiag_apply_same_block s hx (a := revF s a) (c := revF s c) (by rw [blk_revF, blk_revF, hb]),
-            Matrix.one_apply_ne (fun h' => (ne_of_lt hac') (revF_inj s h'))]
-        · exact low_zero hv1 (revF_lt_of_blk_lt s (blk_lt_of_lt_of_ne s hac' hb))
-      rw [hv, mul_zero, zero_mul]
-    · intro a
-      rw [conj_apply, mul_inv_blockDiag_apply_same_block s hx (a := revF s a) (c := revF s a) rfl, Matrix.one_apply_eq,
-        mul_one, Units.inv_mul]
-  · simp only [← Matrix.mul_assoc, pt_mul_ptI, Matrix.one_mul]
-  · calc x * (bdiag s x)⁻¹ * pt s t * (ptI s t * bdiag s x * pt s t * y)
-        = x * ((bdiag s x)⁻¹ * ((pt s t * ptI s t) * bdiag s x)) * pt s t * y := by
-          simp only [Matrix.mul_assoc]
-      _ = x * pt s t * y := by
-          rw [pt_mul_ptI, Matrix.one_mul, inv_mul_one_low (bdiag_low s hx), Matrix.mul_one]
-
-theorem section_unique (s : List ℕ) (t : ℕ → Kˣ) {v u h v' u' h' : Matrix (Fin s.sum) (Fin s.sum) K}
-    (hh : IsLowUni h) (hh' : IsLowUni h') (hu : IsUpUni u) (hu' : IsUpUni u')
-    (hvw : v * pt s t = pt s t * h) (hvw' : v' * pt s t = pt s t * h')
-    (heq : v' * pt s t * u' = v * pt s t * u) : v' = v ∧ u' = u := by
-  have e1 : h' * u' = h * u := by
-    have e0 : pt s t * (h' * u') = pt s t * (h * u) := by
-      rw [← Matrix.mul_assoc, ← hvw', ← Matrix.mul_assoc, ← hvw, heq]
-    calc h' * u' = ptI s t * (pt s t * (h' * u')) := by
-          rw [← Matrix.mul_assoc, ptI_mul_pt, Matrix.one_mul]
-      _ = ptI s t * (pt s t * (h * u)) := by rw [e0]
-      _ = h * u := by rw [← Matrix.mul_assoc, ptI_mul_pt, Matrix.one_mul]
-  have e2 : h⁻¹ * h' = u * u'⁻¹ := by
-    calc h⁻¹ * h' = h⁻¹ * h' * (u' * u'⁻¹) := by rw [mul_inv_one_up hu', Matrix.mul_one]
-      _ = h⁻¹ * (h' * u') * u'⁻¹ := by simp only [Matrix.mul_assoc]
-      _ = h⁻¹ * (h * u) * u'⁻¹ := by rw [e1]
-      _ = u * u'⁻¹ := by rw [← Matrix.mul_assoc h⁻¹ h, inv_mul_one_low hh, Matrix.one_mul]
-  have hl : IsLowUni (h⁻¹ * h') := isLowUni_mul K (isLowUni_inv K hh) hh'
-  have hup : IsUpUni (u * u'⁻¹) := isUpUni_mul K hu (isUpUni_inv K hu')
-  have e3 : h⁻¹ * h' = 1 := eq_one_of_low_up hl (e2 ▸ hup)
-  have e4 : u * u'⁻¹ = 1 := e2 ▸ e3
-  have hheq : h' = h := by
-    calc h' = h * (h⁻¹ * h') := by rw [← Matrix.mul_assoc, mul_inv_one_low hh, Matrix.one_mul]
-      _ = h := by rw [e3, Matrix.mul_one]
-  have hueq : u' = u := by
-    calc u' = u * u'⁻¹ * u' := by rw [e4, Matrix.one_mul]
-      _ = u := by rw [Matrix.mul_assoc, inv_mul_one_up hu', Matrix.mul_one]
-  refine ⟨?_, hueq⟩
-  calc v' = v' * pt s t * ptI s t := by rw [Matrix.mul_assoc, pt_mul_ptI, Matrix.mul_one]
-    _ = pt s t * h' * ptI s t := by rw [hvw']
-    _ = v * pt s t * ptI s t := by rw [hheq, hvw]
-    _ = v := by rw [Matrix.mul_assoc, pt_mul_ptI, Matrix.mul_one]
-
-theorem section_main : SectionBij := by
-  unfold SectionBij
-  intro K _ s t x y hx hy
-  obtain ⟨v, u, h, hv, hh, hvw, hu, heq⟩ := section_exists s t hx hy
-  refine ⟨(v, u), ⟨⟨hv, h, hh, hvw⟩, hu, heq⟩, ?_⟩
-  rintro ⟨v', u'⟩ ⟨⟨hv', h', hh', hvw'⟩, hu', heq'⟩
-  obtain ⟨e1, e2⟩ := section_unique s t hh hh' hu hu' hvw hvw' (heq'.trans heq.symm)
-  simp only [Prod.mk.injEq]
-  exact ⟨e1, e2⟩
-
 end Phase
 
 theorem phaseWellDef : Formalism.DoubleCosetMeasures.PhaseWellDef := Phase.phase_main
-
-theorem sectionBij : Formalism.DoubleCosetMeasures.SectionBij := Phase.section_main
 
 end Formalism.DoubleCosetMeasures.P

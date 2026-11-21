@@ -67,12 +67,4 @@ theorem hfin_countable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M
   exact Function.Injective.countable (f := g) fun γ γ' h =>
     Subtype.ext (Subtype.ext (by rw [← hg γ, ← hg γ', h]))
 
-theorem tup_cocompact (M n : ℕ) : ∃ K : Set (Fin n → Fin M → AF F ⊗[F] E), IsCompact K ∧
-    ∀ Y, ∃ X : Fin n → Fin M → E, Y - ratTup (F := F) (AF F) X ∈ K := by
-  obtain ⟨K, hK, hKy⟩ := tns_cocompact (F := F) (E := E)
-  refine ⟨Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => K,
-    isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK, fun Y => ?_⟩
-  choose X hX using fun a i => hKy (Y a i)
-  exact ⟨X, fun a _ i _ => hX a i⟩
-
 end Formalism.IndefR.Eqv.G5

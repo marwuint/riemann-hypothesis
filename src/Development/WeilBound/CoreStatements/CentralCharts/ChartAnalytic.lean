@@ -1,11 +1,24 @@
 import Development.WeilBound.CoreStatements.CentralCharts.AnalyticAtEval
 import Development.WeilBound.CoreStatements.CentralCharts.PshAt0LogNorm
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagWeightedDegreeSection
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootLinesFlagDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalPairSumGramBoundStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrameStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameDomainInSegreChartStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootLinesFlagDegree
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DomBy
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SlopeBoundSt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagLabelBasesExist
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NotIsGenericFlagSelf
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalPairSumGramBound
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrame
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameDomainInSegreChart
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Metric
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 
 noncomputable section
 
@@ -64,7 +77,7 @@ theorem label_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeC
   obtain ⟨V, hV, b, hflag, hb⟩ := Fl.sub s ⟨centre z₀, hgen⟩ trivial
   have hb0 := hb ⟨centre z₀, hgen⟩ trivial hV
   obtain ⟨cc, f, hdom, -, hsub⟩ := exists_basic 𝔐.tie hz₀ hgen V hV
-  obtain ⟨hVd, -, -⟩ := GlobalTheory.T.hodge_cpt_away_from_primes E H D l (Xo l) c _ _ Y S Ω K J y 𝔐 hβ ⟨centre z₀, hgen⟩
+  obtain ⟨hVd, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeChar0.lattices_of_char_zero E H D l (Xo l) c _ _ Y S Ω K J y 𝔐 hβ ⟨centre z₀, hgen⟩
     fun r hr => GrNorm.not_inFibre 𝔐.tie.gen hgen hr
   have hmem : ∀ k, b k ∈ 𝔐.Vgen s ⊔ 𝔐.Vgen s := fun k => by
     have h1 : b k ∈ 𝔐.V s ⟨centre z₀, hgen⟩ := by
@@ -74,7 +87,7 @@ theorem label_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeC
     exact Submodule.mem_sup_left h1.2
   let bb : Fin (labelRk D s) → ↥(𝔐.Vgen s ⊔ 𝔐.Vgen s) := fun k => ⟨b k, hmem k⟩
   obtain ⟨a₀, g, Λ, _, L, π, ρ, U, hρ, hρ1, hU, hli, ha, hP⟩ :=
-    GlobalTheory.T.global_pair_sum_gram_bound hG E H D Xo l c Y S Ω K J y 𝔐 hGl s s _ bb n Bd χ 0 cc f hBd (Metric.mem_ball_self one_pos)
+    _root_.GlobalTheory.CompanionTheory.Ar.FramePeriods.exists_isFramePeriods hG E H D Xo l c Y S Ω K J y 𝔐 hGl s s _ bb n Bd χ 0 cc f hBd (Metric.mem_ball_self one_pos)
       (fun p h1 h2 => frame_sup (𝔐.V s) _ bb p (hb p trivial (hsub p h1 h2))) hdom
   let M : ℕ → (Fin n → ℂ) → ℝ := fun m t =>
     Real.log (leadMinor (HodgeMetric.periodGram L U (HodgeMetric.uncentre 0 ρ π t)) m)
@@ -103,12 +116,12 @@ theorem label_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeC
       obtain ⟨i, hi, h0⟩ := (χ.boundary t h1).1 h
       exact hoff i hi h0
     have hi : 𝔐.Interior z := by_contra fun h => hnb ((hBd z _ hz).2 h)
-    have hc := GlobalTheory.T.frame_domain_in_segre_chart 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z _ cc f (𝔐.all _) hz h2
+    have hc := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.inChart_unitAt_of_inFrameDomain 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z _ cc f (𝔐.all _) hz h2
     have hfr := hb _ trivial (hsub _ hc.1 hc.2)
     have hΓ := h4 (h3.1 hnb) z hz
     obtain ⟨Γ, g1, g2⟩ := RootGram.exists_gram 𝔐 hi s hfr
-    have e := GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S Ω K J y 𝔐 z _ b _ _
-      (GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S Ω K J y 𝔐 z hi) g1 hΓ
+    have e := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.gramAt_unique_of_polarisedAt E H D l (Xo l) c Y S Ω K J y 𝔐 z _ b _ _
+      (_root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l (Xo l) c Y S Ω K J y 𝔐 z hi) g1 hΓ
     refine ⟨hi, hfr, Γ, g1, g2, fun m _ => ?_⟩
     rw [e]
 
@@ -126,7 +139,7 @@ theorem root_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeCp
           (M (HodgeCpt.rootIdx D r).1 (((HodgeCpt.rootIdx D r).2 : ℕ) + 1) t -
             M (HodgeCpt.rootIdx D r).1 ((HodgeCpt.rootIdx D r).2 : ℕ) t) := by
   have pts : ∀ w ∈ mcPts (mCoordIdeal y), ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z w := fun w hw => by
-    obtain ⟨z, -, hz⟩ := (GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie w).1 hw
+    obtain ⟨z, -, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie w).1 hw
     exact ⟨z, hz⟩
   obtain ⟨z₀, hz₀⟩ := pts _ (χ.mem 0 (Metric.mem_ball_self one_pos))
   have hgen : genPt 𝔐.ξ ⤳ centre z₀ := 𝔐.all _
@@ -144,7 +157,7 @@ theorem root_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeCp
       (x := b _ (HodgeCpt.rootIdx D r).2) (by
         rw [← hflag]
         exact Submodule.subset_span ⟨_, Nat.lt_succ_self _, rfl⟩)
-    have hu := GlobalTheory.T.root_lines_flag_degree E H D l (Xo l) c Y S Ω K J y 𝔐 Fl xdeg e r _ cc _ τ hroot hch (hflag _) (hb0 _) hτ
+    have hu := _root_.GlobalTheory.CompanionTheory.Ar.OrVert.rootLine_unitAt E H D l (Xo l) c Y S Ω K J y 𝔐 Fl xdeg e r _ cc _ τ hroot hch (hflag _) (hb0 _) hτ
     obtain ⟨v, hv0, hv⟩ := exists_val_ne hgen hu
     have hv' := CxVal.inv hv hv0
     rw [inv_div] at hv'

@@ -256,17 +256,6 @@ theorem IsPt.comp {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (
 theorem eval_map_eq_aeval (z : (Σ k, ι k) → ℂ) (f : MRing ι) : eval z (map (Int.castRingHom ℂ) f) = aeval z f := by
   rw [eval_map, aeval_def]; rfl
 
-theorem isPt_iff_mem_mcPts {z : (Σ k, ι k) → ℂ} : IsPt y z ↔ z ∈ mcPts (mCoordIdeal y) := by
-  simp only [IsPt, mcPts, Set.mem_setOf_eq, eval_map_eq_aeval]
-
-theorem hasVal_valAt {z : (Σ k, ι k) → ℂ} (hz : IsPt y z) {s : Φ} (hs : RegAt y (mCoordIdeal z) s) :
-    HasVal y z s (valAt y s z) := by
-  obtain ⟨v, d, g, h, hg, hh, h0, e, ev⟩ := exists_hasVal_of_regAt hs
-  have : IsValueAt y s z v := ⟨d, g, h, hg, hh, hz.aeval_ne hh h0, e, by rwa [eval_map_eq_aeval], by
-    rw [eval_map_eq_aeval, eval_map_eq_aeval, ev, mul_div_cancel_right₀ _ h0]⟩
-  rw [valAt_eq (isPt_iff_mem_mcPts.1 hz) this]
-  exact ⟨d, g, h, hg, hh, h0, e, ev⟩
-
 section Flag
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} (M : FlagModel y Ψ N j)

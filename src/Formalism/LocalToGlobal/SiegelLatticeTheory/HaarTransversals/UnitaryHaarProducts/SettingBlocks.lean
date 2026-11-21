@@ -334,8 +334,6 @@ def CoefWeightedLoc : Prop :=
 
 variable (D : D7)
 
-def InstExists : Prop := Nonempty (UnitaryGroupInstance D)
-
 def LatExists : Prop := Nonempty (UnitaryLatticeData D)
 
 def PsiExists : Prop := ∀ A : UnitaryGroupInstance D, Nonempty (AdditiveCharacterData A)
@@ -351,51 +349,15 @@ def PiExists : Prop := ∀ (A : UnitaryGroupInstance D) (L : UnitaryLatticeData 
 
 def MuExists : Prop := ∀ (A : UnitaryGroupInstance D) (L : UnitaryLatticeData D), Nonempty (MuBlocks A L)
 
-def WExists : Prop :=
-  GapHyp D → ∀ (A : UnitaryGroupInstance D) (L : UnitaryLatticeData D) (P : AdditiveCharacterData A) (Rf : ReferenceFrame A L) (Xu : TransportData A L Rf)
-    (Bu : AutomorphicBundle A P Rf) (Pi : RepresentationData A L) (Mu : MuBlocks A L),
-    ∃ Wb : WBlk A L Bu Pi Mu, ∀ Mb : MBlk A L, Formalism.L2.SG.WuDecay.WuDecay (mk A L P Rf Xu Bu Pi Mu Wb Mb)
-
 def MExists : Prop :=
   ∀ (A : UnitaryGroupInstance D) (L : UnitaryLatticeData D) (P : AdditiveCharacterData A) (Rf : ReferenceFrame A L) (Xu : TransportData A L Rf)
     (Bu : AutomorphicBundle A P Rf) (Pi : RepresentationData A L) (Mu : MuBlocks A L) (Wb : WBlk A L Bu Pi Mu),
     ∃ Mb : MBlk A L, ∃ hb : Formalism.L2.SG.AdBridge.AdBridgeIso A.I,
       (mk A L P Rf Xu Bu Pi Mu Wb Mb).MeasTie hb
 
-theorem settingExists_of_steps (hC : CoefWeightedLoc) (h1 : InstExists D) (h2 : LatExists D) (h3 : PsiExists D)
-    (h4 : RefExists D) (h5 : XuExists D) (h6 : BunExists D) (h7 : PiExists D) (h8 : MuExists D)
-    (h9 : WExists D) (h10 : MExists D) : ConcreteSettingExists D := by
-  intro hG
-  obtain ⟨A⟩ := h1
-  obtain ⟨L⟩ := h2
-  obtain ⟨P⟩ := h3 A
-  obtain ⟨Rf⟩ := h4 A L
-  obtain ⟨Xu⟩ := h5 A L Rf
-  obtain ⟨Bu⟩ := h6 hC hG A L P Rf
-  obtain ⟨Pi⟩ := h7 A L
-  obtain ⟨Mu⟩ := h8 A L
-  obtain ⟨Wb, hW⟩ := h9 hG A L P Rf Xu Bu Pi Mu
-  obtain ⟨Mb, hb, hM⟩ := h10 A L P Rf Xu Bu Pi Mu Wb
-  exact ⟨mk A L P Rf Xu Bu Pi Mu Wb Mb, hb, hM, hW Mb, Bu.ph_int⟩
-
 end Formalism.L2.SG.SplitPrimeNormLemmas
 
 namespace Formalism.L2.SG.SplitPrimeNormLemmas
-
-def StrongApproxSU : Prop :=
-  ∀ I : AutInst, 2 ≤ I.n → (∃ v i j, I.ε v i = true ∧ I.ε v j = false) →
-    ∀ U : Set I.Gf, IsOpen U → ∀ x ∈ U, (I.fmat x).det = 1 →
-      ∃ γ : Formalism.UG.UJ (I.cm.sig : I.E →+* I.E) I.J,
-        ((γ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E).det = 1 ∧
-          Formalism.L2.SG.ColsDim.ratHom I.cm.sig I.J (Af I.F) γ ∈ U
-
-def HCReprodDS : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsDS ε lam σ →
-    ∀ w ∈ lowKSub ε lam σ, ∀ U ∈ nhds (1 : Formalism.REAL.UJ ε),
-      ∃ α : Formalism.REAL.UJ ε → ℂ, Continuous α ∧ HasCompactSupport α ∧ Function.support α ⊆ U ∧
-        Integrable (fun g => α g • σ (uMat g) w) (Formalism.REAL.muG ε) ∧
-        ∫ g, α g • σ (uMat g) w ∂(Formalism.REAL.muG ε) = w
 
 end Formalism.L2.SG.SplitPrimeNormLemmas
 
@@ -453,17 +415,5 @@ def WlocExists : Prop :=
 def GapBigOfGapHyp (D : D7) : Prop :=
   ∀ hm : D.R.m = 2 * D.R.rS + 2, Formalism.L2.SG.ConcreteSettingExists.GapHyp D → ∀ τ : D.what₂.Tau,
     GapBig D.R.k D.R.rS (fun j => ((D.hc τ).b (Fin.cast hm.symm j) : ℝ))
-
-def WFromLoc (D : D7) : Prop := BesselNVGap → CoefWeightedLoc → WlocExists → GapBigOfGapHyp D → WExists D
-
-theorem wExists_of_loc (D : D7) (hF : WFromLoc D) (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
-    (hG : GapBigOfGapHyp D) : WExists D :=
-  hF hB hC hW hG
-
-theorem settingExists_of_inputs (D : D7) (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
-    (hG : GapBigOfGapHyp D) (hF : WFromLoc D) (h1 : InstExists D) (h2 : LatExists D) (h3 : PsiExists D)
-    (h4 : RefExists D) (h5 : XuExists D) (h6 : BunExists D) (h7 : PiExists D) (h8 : MuExists D)
-    (h10 : MExists D) : Formalism.L2.SG.ConcreteSettingExists.ConcreteSettingExists D :=
-  settingExists_of_steps D hC h1 h2 h3 h4 h5 h6 h7 h8 (wExists_of_loc D hF hB hC hW hG) h10
 
 end Formalism.L2.SG.SplitPrimeNormLemmas

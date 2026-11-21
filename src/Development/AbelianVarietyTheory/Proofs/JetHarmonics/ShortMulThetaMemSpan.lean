@@ -9,7 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CoeffMoreColumns
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsBetaUnitBlock
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ShortSeriesBlockProduct
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsSimInducing
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StandardCoverShortValueEqThetaValueStatement
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StandardCoverShortValueEqThetaValue
+import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.BaseClassMove
 import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.ZeroNotAdmissibleOfRankPos
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardLatticeQuotientHalfLevel
@@ -301,7 +302,7 @@ theorem mul_mem_span (hC : ChartIndepSt2) [StarRing (𝓞 E)] {nab : NabV Xo c} 
       (fun q : Fin m → LevQ Dw d.l₂ => if q = fun b => Submodule.Quotient.mk ((d.pd : 𝓞 E) • x b) then
         (Nat.card (Fin m → LevQ Dw d.l₂) : d.c₂.F) else 0) 1).1 k y₂
     have e₂ : v₂ = evR Xo c f y :=
-      GlobalTheory.T.standardCover_shortValue_eq_thetaValue hC E H Dw l Xo c nab n d hd hn hn₂ m N a' x P _ hu₂ hP
+      _root_.GlobalTheory.shortValAt_std_cover_eq_thValAt hC E H Dw l Xo c nab n d hd hn hn₂ m N a' x P _ hu₂ hP
         (fun b => (eq_mk_iff d hd (x b) _).1 rfl) k hk y y₂ hy v₂ _ hv₂
         ((GlobalTheory.thetaRule_exists_and_eval hC E H Dw l Xo c nab hn a' m x P hP).2 f hfr k y)
     have n₁ : d.eF (betaH (Dw := Dw) c Λ) ≠ 0 := (map_ne_zero _).2 b₁.1

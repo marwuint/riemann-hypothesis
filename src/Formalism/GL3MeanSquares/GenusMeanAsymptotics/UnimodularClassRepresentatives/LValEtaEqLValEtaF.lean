@@ -110,8 +110,4 @@ theorem lValEta_eq_lValEtaF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
         {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}))
     (multipliable_eulerFac hK M hM) (Regroup.hasProd_fibre hK hF M (by omega))
 
-theorem eulerEta : EulerEta := by
-  intro K F _ _ _ _ _ _ hK hF M hM
-  exact ⟨multipliable_eulerFac hK M hM, lValEta_pos hK M hM, lValEta_eq_lValEtaF hK hF M hM⟩
-
 end Formalism.HermitianLattices.Ext.L3

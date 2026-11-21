@@ -5,52 +5,6 @@ namespace ReciprocityTheory.CA
 
 open IsLocalRing
 
-theorem height_add_height_Ici_le {α : Type*} [PartialOrder α] {a b : α} (hab : a ≤ b) :
-    Order.height a + Order.height (⟨b, hab⟩ : Set.Ici a) ≤ Order.height b := by
-  rcases eq_or_ne (Order.height b) ⊤ with hb | hb
-  · rw [hb]; exact le_top
-  have hmono : StrictMono (Subtype.val : Set.Ici a → α) := fun _ _ h => h
-  have h1 : Order.height a ≠ ⊤ := ne_top_of_le_ne_top hb (Order.height_mono hab)
-  have h2 : Order.height (⟨b, hab⟩ : Set.Ici a) ≠ ⊤ :=
-    ne_top_of_le_ne_top hb (Order.height_le_height_apply_of_strictMono _ hmono ⟨b, hab⟩)
-  obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.mp h1
-  obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.mp h2
-  obtain ⟨s, hsl, hsn⟩ := Order.exists_series_of_le_height a (n := n) hn.le
-  obtain ⟨t, htl, htm⟩ := Order.exists_series_of_le_height (⟨b, hab⟩ : Set.Ici a) (n := m) hm.le
-  rw [← hn, ← hm]
-  let t' : LTSeries α := t.map Subtype.val hmono
-  have ht'l : t'.last = b := by
-    show ((t.last : Set.Ici a) : α) = b
-    rw [htl]
-  have ht'len : t'.length = m := htm
-  have hhead : a ≤ t'.head := t.head.2
-  rcases hhead.eq_or_lt with he | hlt
-  ·
-    have hc : s.last = t'.head := hsl.trans he
-    have hlen : (s.smash t' hc).length = n + m := by
-      show s.length + t'.length = n + m
-      rw [hsn, ht'len]
-    have hlast : (s.smash t' hc).last = b := by
-      first
-      | (rw [RelSeries.last_smash]; exact ht'l)
-      | (rw [RelSeries.smash_last]; exact ht'l)
-      | simp [ht'l]
-    calc ((n : ℕ∞) + (m : ℕ∞)) = ((s.smash t' hc).length : ℕ∞) := by rw [hlen]; norm_cast
-      _ ≤ Order.height b := Order.length_le_height hlast.le
-  ·
-    have hc : s.last < t'.head := by rw [hsl]; exact hlt
-    have hlen : (s.append t' hc).length = n + m + 1 := by
-      show s.length + t'.length + 1 = n + m + 1
-      rw [hsn, ht'len]
-    have hlast : (s.append t' hc).last = b := by
-      first
-      | (rw [RelSeries.last_append]; exact ht'l)
-      | (rw [RelSeries.append_last]; exact ht'l)
-      | simp [ht'l]
-    calc ((n : ℕ∞) + (m : ℕ∞)) ≤ ((n + m + 1 : ℕ) : ℕ∞) := by exact_mod_cast Nat.le_succ (n + m)
-      _ = ((s.append t' hc).length : ℕ∞) := by rw [hlen]
-      _ ≤ Order.height b := Order.length_le_height hlast.le
-
 private theorem height_eq_order_height_lemma {R : Type*} [CommRing R] (I : Ideal R)
     [hI : I.IsPrime] : I.height = Order.height (⟨I, hI⟩ : PrimeSpectrum R) := by
   have hmin : I.minimalPrimes = {I} := Ideal.minimalPrimes_eq_subsingleton_self
@@ -61,38 +15,6 @@ private theorem height_eq_order_height_lemma {R : Type*} [CommRing R] (I : Ideal
     have hJI : J = I := by rw [hmin] at hJ; exact hJ
     subst hJI
     exact le_rfl
-
-theorem height_add_height_map_quotient_le {P : Type*} [CommRing P] (p q : Ideal P) [p.IsPrime]
-    [q.IsPrime] (hpq : p ≤ q) : p.height + (q.map (Ideal.Quotient.mk p)).height ≤ q.height := by
-  haveI hq' : (q.map (Ideal.Quotient.mk p)).IsPrime :=
-    Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hpq)
-  rw [height_eq_order_height_lemma p, height_eq_order_height_lemma q,
-    height_eq_order_height_lemma (q.map (Ideal.Quotient.mk p))]
-  have hpq' : (⟨p, ‹_›⟩ : PrimeSpectrum P) ≤ ⟨q, ‹_›⟩ := hpq
-
-  let f : PrimeSpectrum (P ⧸ p) → Set.Ici (⟨p, ‹_›⟩ : PrimeSpectrum P) := fun x =>
-    ⟨⟨Ideal.comap (Ideal.Quotient.mk p) x.asIdeal, inferInstance⟩, fun z hz => by
-      show z ∈ Ideal.comap (Ideal.Quotient.mk p) x.asIdeal
-      rw [Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hz]
-      exact x.asIdeal.zero_mem⟩
-  have hf : StrictMono f := by
-    intro x y hxy
-    show Ideal.comap (Ideal.Quotient.mk p) x.asIdeal < Ideal.comap (Ideal.Quotient.mk p) y.asIdeal
-    refine lt_of_le_of_ne (Ideal.comap_mono (show x.asIdeal ≤ y.asIdeal from hxy.le)) fun e => ?_
-    exact hxy.ne (PrimeSpectrum.ext
-      (Ideal.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective e))
-  have hfq : f ⟨q.map (Ideal.Quotient.mk p), hq'⟩ = ⟨⟨q, ‹_›⟩, hpq'⟩ := by
-    apply Subtype.ext
-    apply PrimeSpectrum.ext
-    show Ideal.comap (Ideal.Quotient.mk p) (q.map (Ideal.Quotient.mk p)) = q
-    ext z
-    rw [Ideal.mem_comap]
-    first
-    | exact Ideal.mem_quotient_iff_mem hpq
-    | exact Ideal.mem_quotient_iff_mem_sup.trans (by rw [sup_eq_left.mpr hpq])
-  have hle := Order.height_le_height_apply_of_strictMono f hf ⟨q.map (Ideal.Quotient.mk p), hq'⟩
-  rw [hfq] at hle
-  exact (add_le_add le_rfl hle).trans (height_add_height_Ici_le hpq')
 
 private theorem comap_map_mk_lemma_4 {R : Type*} [CommRing R] (I J : Ideal R) (h : I ≤ J) :
     Ideal.comap (Ideal.Quotient.mk I) (J.map (Ideal.Quotient.mk I)) = J := by

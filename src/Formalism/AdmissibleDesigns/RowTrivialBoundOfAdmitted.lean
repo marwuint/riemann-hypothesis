@@ -36,10 +36,6 @@ def TrivialBoundAtRows (cB : ℕ) : Prop :=
     Formalism.MainNotions.N.TBAt (Br.PD D.loc D.nbr i w hw) (O := ↥(OL (TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL)) (Br.inert D.nbr i w hw)
       (Jr i r π (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)) D.R.t cB
 
-theorem row_trivial_bound_of_admitted (cB : ℕ) (hG : SelfGood i) (h : TruncatedSeriesCountingIdentities.admTB i r π cB) : TrivialBoundAtRows i dc r π cB := by
-  intro w hw _
-  exact h w hw _ (hG w hw)
-
 theorem eW_symm_cont {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
     Continuous (eW i dc hw).symm := by
   have h1 : Continuous (D.nbr i w hw).e.symm := (D.nbr i w hw).e_symm_cont

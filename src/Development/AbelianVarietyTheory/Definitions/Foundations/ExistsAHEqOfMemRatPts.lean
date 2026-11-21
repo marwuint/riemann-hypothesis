@@ -42,10 +42,6 @@ abbrev siegelH : Subgroup (HA R σ Q) := siegelOf finSumFinEquiv (matHom R σ Q)
 
 abbrev aH : siegelH R σ Q →* (R ⊗[F] E)ˣ := aOf finSumFinEquiv (matHom R σ Q)
 
-abbrev unipH : Subgroup (HA R σ Q) := unipOf finSumFinEquiv (matHom R σ Q)
-
-abbrev leviH : Subgroup (HA R σ Q) := leviSubOf finSumFinEquiv (matHom R σ Q)
-
 def detH (J : Matrix (Fin m) (Fin m) E) : HA R σ J →* (R ⊗[F] E)ˣ := Matrix.GeneralLinearGroup.det.comp (matHom R σ J)
 
 variable {R σ Q} (h : Q = dblGram finSumFinEquiv J)
@@ -57,14 +53,6 @@ theorem matHom_ioH (g g' : HA R σ J) :
 
 theorem ioH_one : ioH R σ h (1, 1) = 1 := by
   exact map_one (ioH R σ h)
-
-theorem ioH_injective : Function.Injective (ioH R σ h) := by
-  rintro ⟨g, g'⟩ ⟨k, k'⟩ hx
-  have e1 := congrArg (matHom R σ Q) hx
-  rw [matHom_ioH, matHom_ioH] at e1
-  have e2 := blkGL_injective _ e1
-  simp only [Prod.mk.injEq] at e2
-  exact Prod.ext (matHom_injective R σ J e2.1) (matHom_injective R σ J e2.2)
 
 theorem continuous_ioH [TopologicalSpace R] : Continuous (ioH R σ h) := by
   rw [(isEmbedding_matHom R σ Q).continuous_iff]

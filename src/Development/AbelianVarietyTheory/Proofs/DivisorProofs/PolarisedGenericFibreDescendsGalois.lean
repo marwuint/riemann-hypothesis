@@ -3,14 +3,14 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FracMapAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ProperRelAmpleKTrivOfFieldExtension
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FixedMemRangeFractionFieldMapGaloisInvariantsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FractionFieldMapFiniteOfFiniteInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackGenericFibreFractionFieldMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleGaloisDescentAbelianVarietyFinitStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FixedMemRangeFractionFieldMapGaloisInvariants
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FractionFieldMapFiniteOfFiniteInjective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsGrpPullbackGenericFibreFractionFieldMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleGaloisDescentAbelianVarietyFinit
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaloisConjugateGenericBundleIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedSymmetricOfSymmetricFieldExtensionPullStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalPolarisationOfGroupSchemeIsoStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianOfFieldExtensionPullbackProperStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidifiedSymmetricOfSymmetricFieldExtensionPull
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalPolarisationOfGroupSchemeIso
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianOfFieldExtensionPullbackProper
 
 noncomputable section
 
@@ -27,19 +27,19 @@ theorem polarisedGeneric : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
   intro R _ _ _ _ R' _ _ _ ρ hfin hgal D D' hD A' G' _ _ _ U' a G _ _ β hG hpb hinv
   have hρ : Function.Injective ρ := hfin.2.1
   haveI := hgal.1
-  have hκ := GlobalTheory.T.isGrpPullback_genericFibre_fractionFieldMap R R' ρ hρ G' G β hpb
+  have hκ := _root_.GlobalTheory.Mum.GenDesc.isGrpPullback_genMap R R' ρ hρ G' G β hpb
   let L' := U'.LG.L.pull (pullback.fst G'.hom (jK R'))
   have hL' : L'.IsLB := pull_isLB U'.LG.isLB _
   have hiso : LBIso L' (A'.L.pull U'.gen.hom.left) := LBIso.symm U'.ext
   have := U'.gen_hom
-  obtain ⟨hP', hdim', hsym', hamp', hkt'⟩ := GlobalTheory.T.principalPolarisation_of_groupScheme_iso _ A' _ U'.gen U'.gen_hom L' hL' hiso
+  obtain ⟨hP', hdim', hsym', hamp', hkt'⟩ := _root_.GlobalTheory.polarisation_of_iso _ A' _ U'.gen U'.gen_hom L' hL' hiso
   have hsemi : IsSemiAbelian ((Over.pullback (jK R)).obj G) := Geo.Tor.IsSemiAbelian.pullback (jK R) G hG
-  obtain ⟨hab, hdim⟩ := GlobalTheory.T.abelian_of_fieldExtension_pullback_proper _ _ (fracMap ρ hρ) ((Over.pullback (jK R)).obj G) _ _ A'.g hsemi hκ hP' hdim'
-  obtain ⟨L, hL, hLL⟩ := GlobalTheory.T.exists_lineBundle_galoisDescent_abelianVariety_finite (FractionRing R) (FractionRing R') (fracMap ρ hρ)
-    (GlobalTheory.T.fractionFieldMap_finite_of_finite_injective R R' ρ hρ hfin.2.2) (Gal ρ) (fun σ => fracAut σ.1) (fun σ x => fracAut_fracMap hρ σ x)
-    (GlobalTheory.T.fixed_mem_range_fractionFieldMap_galoisInvariants R R' ρ hρ hgal) ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R')).obj G') _ hab hκ L' hL'
+  obtain ⟨hab, hdim⟩ := _root_.GlobalTheory.Mum.GenDesc.abelian_of_field_of_pullback _ _ (fracMap ρ hρ) ((Over.pullback (jK R)).obj G) _ _ A'.g hsemi hκ hP' hdim'
+  obtain ⟨L, hL, hLL⟩ := _root_.GlobalTheory.Mum.GenDesc.exists_lb_descent_of_finite_aut (FractionRing R) (FractionRing R') (fracMap ρ hρ)
+    (_root_.GlobalTheory.Mum.GenDesc.fracMap_finite R R' ρ hρ hfin.2.2) (Gal ρ) (fun σ => fracAut σ.1) (fun σ x => fracAut_fracMap hρ σ x)
+    (_root_.GlobalTheory.Mum.GenDesc.fixed_mem_range R R' ρ hρ hgal) ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R')).obj G') _ hab hκ L' hL'
     (GlobalTheory.T.exists_galoisConjugate_genericBundle_iso R R' ρ hρ D D' hD A' G' U' a G β hpb.1.w hinv)
-  obtain ⟨hrig, hsym⟩ := GlobalTheory.T.rigidified_symmetric_of_symmetric_fieldExtension_pullback _ _ (fracMap ρ hρ) _ _ _ hab hκ L L' hL hL' hLL hsym'
+  obtain ⟨hrig, hsym⟩ := _root_.GlobalTheory.Mum.GenDesc.rigidified_and_sym_of_field_extension _ _ (fracMap ρ hρ) _ _ _ hab hκ L L' hL hL' hLL hsym'
   have := hsemi.quasiCompact
   have := hsemi.separated
   have := hsemi.smooth

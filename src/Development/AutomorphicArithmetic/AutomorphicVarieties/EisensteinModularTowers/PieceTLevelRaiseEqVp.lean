@@ -1,4 +1,6 @@
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPieceUnitSetLevelSuccEqStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPieceUnitSetLevelSuccEq
+import Development.AbelianVarietyTheory.Definitions.Foundations.PieceEqPieceT
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.IsThBIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLamOfLSmulIff
 import Development.AutomorphicArithmetic.AutomorphicVarieties.EisensteinModularTowers.SmoothedEisensteinCongrOfModEq
@@ -31,7 +33,7 @@ theorem UpperTheory.pieceT_level_raise_eq_vp :
     · exact UpperTheory.smoothedEisenstein_congr_of_modEq _ _ _ _ M0 hζ.pow_eq_one (key _ h3) (key _ h4)
   | succ n ih =>
     intro ζ v v' u u' hζ h1 h2 h3 h4 r
-    have hX := GlobalTheory.T.eisensteinPiece_unitSet_level_succ_eq l N (m + n) m k K (1 : DirichletCharacter K (l ^ m)) c d ((l : ℤ) * v.1, (l : ℤ) * v.2) ((l : ℤ) * v'.1, (l : ℤ) * v'.2) v v' ζ
+    have hX := _root_.GlobalTheory.KummerEisensteinGalois.pieceT_unitSet_level_succ l N (m + n) m k K (1 : DirichletCharacter K (l ^ m)) c d ((l : ℤ) * v.1, (l : ℤ) * v.2) ((l : ℤ) * v'.1, (l : ℤ) * v'.2) v v' ζ
       ((unitSet l (m + n)).filter fun γ : GL (Fin 2) (ZMod (l ^ (m + n))) => (((γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ (m + n)))).det.val : ℕ) : ZMod (l ^ m)) = z₀)
       hζ hN hlN hm (Nat.le_add_right m n) hk hc hd rfl rfl rfl rfl (fun γ hγ => by
         simpa [unitSet] using (Finset.mem_filter.1 hγ).1) r

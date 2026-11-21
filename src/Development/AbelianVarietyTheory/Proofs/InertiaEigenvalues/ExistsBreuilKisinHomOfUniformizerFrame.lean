@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DeltaStructureOfWittLengthTwoSection
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanSingletonClosedOfBoundedTorsionStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemNonZeroDivisorsOfInvertibleSpanSingletonStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeltaRingHomPowerSeriesOfRankOneImageStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowerSeriesRingHomOfIsAdicCompleteStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWittVectorLiftOfIsAdicCompleteStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorRingHomEqOfSubMemStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemNonZeroDivisorsOfInvertibleSpanSingleton
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeltaRingHomPowerSeriesOfRankOneImage
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowerSeriesRingHomOfIsAdicComplete
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWittVectorLiftOfIsAdicComplete
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorRingHomEqOfSubMem
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
@@ -36,7 +36,7 @@ theorem isHausdorff_quot {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (P : O
     (hd : P.I = Ideal.span {d}) : IsHausdorff ((JJ P).map (Ideal.Quotient.mk P.I)) (P.A ⧸ P.I) := by
   have hinv := P.inv
   rw [hd] at hinv
-  have hnzd : d ∈ nonZeroDivisors P.A := GlobalTheory.T.mem_nonZeroDivisors_of_invertible_span_singleton' P.A d hinv
+  have hnzd : d ∈ nonZeroDivisors P.A := _root_.GlobalTheory.BSP.mem_nonZeroDivisors_of_invertible_span_singleton P.A d hinv
   obtain ⟨N, hN⟩ := P.bdd
   have hbdd : ∀ (x : P.A) (m : ℕ), (l : P.A) ^ m * x ∈ Ideal.span {d} →
       (l : P.A) ^ N * x ∈ Ideal.span {d} := by
@@ -144,17 +144,17 @@ theorem exists_hom_of_frame : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : 
     rw [map_natCast, ← map_natCast (Ideal.Quotient.mk J) l]
     exact Ideal.Quotient.eq_zero_iff_mem.2 hlJ
   obtain ⟨ψ, hψ⟩ := exists_lift_coeff_zero f0 hl0
-  obtain ⟨ω, hω⟩ := GlobalTheory.T.exists_wittVector_lift_of_isAdicComplete' l (Fq l bk.a) P.A J hlJ P.complete ψ
+  obtain ⟨ω, hω⟩ := _root_.GlobalTheory.exists_wittVector_lift_of_isAdicComplete l (Fq l bk.a) P.A J hlJ P.complete ψ
   obtain ⟨q, hq⟩ := bk.X_pow_eq_sub
   generalize bk.Ep.natDegree = e at hq
   have hve : v ^ e ∈ J := pow_mem_of_eq_sub hIJ hlJ τ hq hτE hτX
-  obtain ⟨σ, hσC, hσX⟩ := GlobalTheory.T.exists_powerSeries_ringHom_of_isAdicComplete (Wq l bk.a) P.A J P.complete ω v _ hve
-  have hσδ := GlobalTheory.T.isDeltaRingHom_powerSeries_of_rank_one_image l bk.a P.A P.D J hlJ P.complete.toIsHausdorff σ _ (by rw [hσX]; exact hve)
+  obtain ⟨σ, hσC, hσX⟩ := _root_.GlobalTheory.PowerSeriesEval.exists_ringHom_powerSeries (Wq l bk.a) P.A J P.complete ω v _ hve
+  have hσδ := _root_.GlobalTheory.sdelta_of_rank_one l bk.a P.A P.D J hlJ P.complete.toIsHausdorff σ _ (by rw [hσX]; exact hve)
     (by rw [hσX]; exact hδ)
   have hH := isHausdorff_quot P d hd
   have hlJ' := natCast_mem_map_quot (I := P.I) hlJ
   have hωC : (Ideal.Quotient.mk P.I).comp ω = τ.comp PowerSeries.C := by
-    refine GlobalTheory.T.wittVector_ringHom_eq_of_sub_mem' l (Fq l bk.a) (P.A ⧸ P.I) (J.map (Ideal.Quotient.mk P.I)) hlJ' hH _ _ ?_
+    refine _root_.GlobalTheory.wittVector_ringHom_eq_of_sub_mem l (Fq l bk.a) (P.A ⧸ P.I) (J.map (Ideal.Quotient.mk P.I)) hlJ' hH _ _ ?_
     intro w
     refine sub_mem_map_of_mk_eq hIJ (ω w) (τ (PowerSeries.C w)) ((hω w).trans ((hψ w).trans ?_))
     rw [hf0]

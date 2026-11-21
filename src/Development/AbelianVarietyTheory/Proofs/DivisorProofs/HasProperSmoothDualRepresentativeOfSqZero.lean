@@ -4,17 +4,20 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrys
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsThickId
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdditiveLineBundleFamilyOfGeometricFibresStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentingSchemeOfFiniteSurjectiveLiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianStructureCohomologyStatementStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianStructureCohomologyStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveClassDegreeTwoStructureSheafVanishStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveDegreeTwoExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveClassDegreeTwoVanishAffineBasesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatCoefficientExtensionH2ClassStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCocycleCorrectionSquareZeroIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallAffineBasisAndTransitionUnitsLiftStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftOfStrictCocycleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicativeRelationOfPullbackIsoThickeningStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineChartSmoothLiftSqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveFamilyReductionLiftsLineBundleStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveClassDegreeTwoVanishAffineBases
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatCoefficientExtensionH2Class
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCocycleCorrectionSquareZeroIdeal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallAffineBasisAndTransitionUnitsLift
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleLiftOfStrictCocycle
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultiplicativeRelationOfPullbackIsoThickening
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineChartSmoothLiftSqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveFamilyReductionLiftsLineBundle
 
 set_option autoImplicit false
 noncomputable section
@@ -31,11 +34,11 @@ open GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.Obs
 theorem abLift_of_prim (hP : PrimitiveExtendedDegTwoVanish) : AbLift := by
   intro R _ I hI A _ g hA hg X₀ Y₀ i i' ψ₀ ψ₁ ψ₂ hi hi' e₀ e₁ e₂ c hc
   obtain ⟨L, hL, rfl⟩ := cls_surj c
-  obtain ⟨hB, ⟨u, hu⟩, hall⟩ := GlobalTheory.T.small_affine_basis_and_transition_units_lift R I hI _ _ A.hom i L hi hL
+  obtain ⟨hB, ⟨u, hu⟩, hall⟩ := _root_.GlobalTheory.LBLift.small_basis_lift R I hI _ _ A.hom i L hi hL
   obtain ⟨hun, hdef, hnear⟩ := hall u hu
-  obtain ⟨T, _, _, H, K₀, K₁, K₂, le₀, le₁, le₂, v, hH, hv, hrel⟩ := GlobalTheory.T.multiplicative_relation_of_pullback_iso_thickening R I hI _ _ _ _ A.hom (A ⊗ A).hom i i'
+  obtain ⟨T, _, _, H, K₀, K₁, K₂, le₀, le₁, le₂, v, hH, hv, hrel⟩ := _root_.GlobalTheory.LBLift.IsoRel.mulRel_of_iso R I hI _ _ _ _ A.hom (A ⊗ A).hom i i'
     _ _ _ (overW μ[A]) (overW (fst A A)) (overW (snd A A)) ψ₀ ψ₁ ψ₂ L hL u hi' hB hu e₀ e₁ e₂ hc
-  obtain ⟨R₁, _, _, q, hq, hprim⟩ := GlobalTheory.T.flat_coefficient_extension_H2_class R I
+  obtain ⟨R₁, _, _, q, hq, hprim⟩ := _root_.GlobalTheory.PrimIdeal.primI_of_ext R I
   haveI : Smooth A.hom := SmoothOfRelativeDimension.smooth g _
   haveI : Smooth (A ⊗ A).hom := by
     rw [← Over.w (fst A A)]
@@ -47,13 +50,13 @@ theorem abLift_of_prim (hP : PrimitiveExtendedDegTwoVanish) : AbLift := by
       inferInstanceAs (Module.Flat R (Sec A.hom ((smallG i L).obj t).unop.1)))
     (fun t ↦ haveI := GlobalTheory.LiftSys.smooth_sec_affine (A ⊗ A).hom (H.obj t).unop
       inferInstanceAs (Module.Flat R (Sec (A ⊗ A).hom (H.obj t).unop.1)))
-    (GlobalTheory.T.additiveClassDegreeTwo_vanish_affineBases_alt hP R R₁ q hq A g hA hg _ T _ H K₀ K₁ K₂ le₀ le₁ le₂ hB hH)
-  obtain ⟨u', h1, h2⟩ := GlobalTheory.T.exists_cocycle_correction_square_zero_ideal R I hI _ _ _ _ _ _ _ hpi u v hun hdef hv hrel
-  exact GlobalTheory.T.exists_lineBundle_lift_of_strict_cocycle R _ _ A.hom i L hL u' hB (hnear u' h1) (hall u' (hnear u' h1)).1 h2
+    (_root_.GlobalTheory.Obs.additiveClassDegreeTwo_vanish_affineBases hP R R₁ q hq A g hA hg _ T _ H K₀ K₁ K₂ le₀ le₁ le₂ hB hH)
+  obtain ⟨u', h1, h2⟩ := _root_.GlobalTheory.LBLift.cocycle_of_sqZero R I hI _ _ _ _ _ _ _ hpi u v hun hdef hv hrel
+  exact _root_.GlobalTheory.LBLift.exists_pic_of_strict_lift R _ _ A.hom i L hL u' hB (hnear u' h1) (hall u' (hnear u' h1)).1 h2
 
 theorem abLift : AbLift :=
   abLift_of_prim (GlobalTheory.T.primitive_degree_two_extension (GlobalTheory.T.additiveClassDegreeTwo_structureSheaf_vanish fun R _ A _ g hA hg ↦
-    ⟨(GlobalTheory.T.abelian_structure_cohomology_statement R A g hA hg).1, (GlobalTheory.T.abelian_structure_cohomology_statement R A g hA hg).2.1⟩))
+    ⟨(_root_.GlobalTheory.AbCoh.oStr R A g hA hg).1, (_root_.GlobalTheory.AbCoh.oStr R A g hA hg).2.1⟩))
 
 end
 
@@ -99,12 +102,12 @@ theorem hasRep_of_sqZero : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A :
     exact inferInstanceAs (IsFinite (spMap (Ideal.Quotient.mk J)))
   · exact GlobalTheory.LiftSys.surjective_spMap_sqZero _ Ideal.Quotient.mk_surjective hJ
       fun _ h ↦ Ideal.Quotient.eq_zero_iff_mem.1 h
-  obtain ⟨C, _, σ, j, hs, hj, ho, hx⟩ := GlobalTheory.T.exists_affine_chart_smooth_lift_sqZero R J hJ g B b hb.smooth x
+  obtain ⟨C, _, σ, j, hs, hj, ho, hx⟩ := _root_.GlobalTheory.LBLift.exists_chart_lift R J hJ g B b hb.smooth x
   have hN : (ev P (fst A _) (snd A _ ≫ j)).IsLB := pull_isLB hP.fam.isLB _
   have ha : IsAdditive (ev P (fst A _) (snd A _ ≫ j)) := (isAdditive_iff hN).2 fun Y a a' y ↦ by
     simp only [evc_ev hP.fam.isLB, lift_fst, lift_snd_assoc]
     exact (isAdditive_iff hP.fam.isLB).1 hP.fam.add Y a a' _
-  obtain ⟨c, hc⟩ := GlobalTheory.T.additiveFamily_reduction_lifts_lineBundle abLift R J hJ A g hA hg C σ _ hN ha
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.AddFamLift.main abLift R J hJ A g hA hg C σ _ hN ha
   haveI : Smooth (spMap σ) := SmoothOfRelativeDimension.smooth g _
   haveI : IsLocallyNoetherian (Over.mk (spMap σ)).left :=
     LocallyOfFiniteType.isLocallyNoetherian (spMap σ)

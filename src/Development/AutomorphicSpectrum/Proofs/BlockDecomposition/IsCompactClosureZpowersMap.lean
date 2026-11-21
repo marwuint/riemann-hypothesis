@@ -20,12 +20,6 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.TwSide
 
-section Generic
-
-variable {G : Type} [Group G]
-
-end Generic
-
 section Diag
 
 variable {L : Type} [Field L]

@@ -51,8 +51,4 @@ theorem neg_v_lt_b {R : Ranks} (P : HCParam R) (i : Fin (R.k - 1)) (j : Fin R.m)
   simp only [h5] at h2
   linarith
 
-def ent {R : Ranks} (P : HCParam R) : Fin (R.k - 1) ⊕ Fin R.m → ℚ × Bool
-  | .inl i => (-P.v i, true)
-  | .inr j => (P.b j, decide (Even j.1))
-
 end GlobalTheory.ContragredientPar

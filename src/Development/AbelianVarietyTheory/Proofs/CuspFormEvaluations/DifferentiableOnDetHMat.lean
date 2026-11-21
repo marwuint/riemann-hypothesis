@@ -491,9 +491,6 @@ theorem differentiableOn_tauMat (hs : IsSympl X bas) (i j : Fin g) :
   exact DifferentiableOn.fun_sum fun l _ =>
     (differentiableOn_hMat idx hs i l).mul (differentiableOn_per X _ _)
 
-example : (tauMat HyperbolicCusp.flagData Gauss.bas Gauss.idx Gauss.one).IsSymm :=
-  tauMat_isSymm _ Gauss.isSympl_bas Gauss.one_mem
-
 end
 
 end GlobalTheory.ThFr

@@ -276,29 +276,6 @@ theorem local_diamonds_exist_all (Tf : FormsTied D u) : LocalDiamondElementsExis
 theorem diamond_elements_exist_all (Tf : FormsTied D u) : DiamondElementsExist Tf := by
   exact diamond_elements_of_local Tf (local_diamonds_exist_all Tf)
 
-theorem DiaMul_tied (Tf : FormsTied D u) : Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u := by
-  exact diamond_mul_of_local_diamonds Tf (local_diamonds_exist_all Tf)
-
-theorem TrIso_tied (Tf : FormsTied D u) : Formalism.MainNotions.product_first_zeroth_parts.TrIso D u := by
-  exact transport_iso_of_diamond_elements Tf (diamond_elements_exist_all Tf)
-
 end Tied
-
-theorem admissible_of_round_trips
-    (hR : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → Formalism.MainNotions.product_first_zeroth_parts.RoundUp D u ∧ Formalism.MainNotions.product_first_zeroth_parts.RoundDn D u) :
-    LinkAdmT := by
-  exact admissible_of_diamonds_and_round_trips (fun _ _ Tf _ => diamond_elements_exist_all Tf) hR
-
-theorem hecke_identities_no_kernel_of_split
-    (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u →
-      (∀ i, i ≤ D.R.m → ∀ v, ∀ φ ∈ Formalism.MainNotions.product_first_zeroth_parts.MramI D u i,
-        Formalism.MainNotions.product_first_zeroth_parts.FFop D u i v φ = Formalism.MainNotions.product_first_zeroth_parts.Dop D u i v (Formalism.MainNotions.product_first_zeroth_parts.Gs D u i v φ)) ∧
-      (∀ i, i ≤ D.R.m → ∀ v, ∀ φ ∈ Formalism.MainNotions.product_first_zeroth_parts.MramI D u i,
-        Formalism.MainNotions.product_first_zeroth_parts.FFop D u i v φ ∈ Formalism.MainNotions.product_first_zeroth_parts.MramI D u i) ∧
-      (∀ i, i ≤ D.R.m → ∀ v, ∀ φ ∈ Formalism.MainNotions.product_first_zeroth_parts.MramI D u i, ∀ ψ ∈ Formalism.MainNotions.product_first_zeroth_parts.MramI D u i,
-        (D.fm u).ipC i (Formalism.MainNotions.product_first_zeroth_parts.FFop D u i v φ) (Formalism.MainNotions.product_first_zeroth_parts.FFop D u i v ψ) =
-          ((D.mem u).A.T : ℂ) ^ D.R.N i * (D.fm u).ipC i φ ψ)) :
-    FrobeniusNoKernelFamily := by
-  exact frobenius_no_kernel_of_frobenius_similitude (fun _ _ Tf _ => diamond_elements_exist_all Tf) h
 
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases

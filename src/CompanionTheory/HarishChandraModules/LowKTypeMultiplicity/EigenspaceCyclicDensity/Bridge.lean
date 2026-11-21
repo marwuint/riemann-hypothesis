@@ -1,6 +1,9 @@
 import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.EigenspaceCyclicDensity.LowKMultOneP
 import Formalism.SharpRestriction.CuspSpanNormBounds.DiscreteSeriesWeylDimension
-import Formalism.LocalToGlobal.IndefiniteReal.FockTheta.DiscreteSeriesUnitary
+import Mathlib
+import Formalism.RealPlaceAnalysis.InstMeasurableSpaceUJ
+import Formalism.FormalDegreeBessel.StatementDS
+import Formalism.FormalDegreeBessel.StatementRP
 
 namespace CompanionTheory.D.LK
 

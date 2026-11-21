@@ -2,18 +2,14 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermitianFormCharPolyStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermitianFormCharPoly
+
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 noncomputable section
 namespace GlobalTheory.ExInertUnit
-
-theorem globalForm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (P : E[X]), P ∈ Ell E n →
-    ∃ M G : Matrix (Fin n) (Fin n) E, M.charpoly = P ∧ IsUnit G ∧
-      cT (IsCMField.complexConj E).toRingEquiv.toRingHom G = G ∧
-      cT (IsCMField.complexConj E).toRingEquiv.toRingHom M * G * M = G := GlobalTheory.T.exists_hermitian_form_char_poly
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
@@ -125,22 +121,5 @@ theorem local_step (hE : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (M G : Matrix (
   · show (k.val * hMwu.unit.val * (k⁻¹ : GLw n w).val).charpoly = _
     rw [Matrix.coe_units_inv, Matrix.charpoly_units_conj, IsUnit.unit_spec]
     exact Matrix.charpoly_map M f
-
-theorem exists_integral_unitary_charpoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
-    ∀ P ∈ Ell E n, ∀ᶠ w in cofinite, ¬ IsSplitAt w → ∃ γ : UL n w, γ ∈ KL n w ∧ γ.1.val.charpoly = atPl w P := by
-  intro E _ _ _ hE n _ P hP
-  obtain ⟨M, G, hMP, hG, hGh, hMG⟩ := globalForm E n P hP
-  have h1 : ∀ᶠ w : Pl E in cofinite, ∀ i j,
-      algebraMap E (w.adicCompletion E) (M i j) ∈ w.adicCompletionIntegers E :=
-    eventually_all.2 fun i => eventually_all.2 fun j => eventually_mem_integers _
-  have h2 : ∀ᶠ w : Pl E in cofinite, ∀ i j,
-      algebraMap E (w.adicCompletion E) (G i j) ∈ w.adicCompletionIntegers E :=
-    eventually_all.2 fun i => eventually_all.2 fun j => eventually_mem_integers _
-  have h3 : ∀ᶠ w : Pl E in cofinite, ∀ i j,
-      algebraMap E (w.adicCompletion E) (G⁻¹ i j) ∈ w.adicCompletionIntegers E :=
-    eventually_all.2 fun i => eventually_all.2 fun j => eventually_mem_integers _
-  filter_upwards [h1, h2, h3] with w hw1 hw2 hw3 hw
-  obtain ⟨γ, hγ, hc⟩ := local_step hE w hw M G hG hGh hMG hw1 hw2 hw3
-  exact ⟨γ, hγ, by rw [hc, hMP]⟩
 
 end GlobalTheory.ExInertUnit

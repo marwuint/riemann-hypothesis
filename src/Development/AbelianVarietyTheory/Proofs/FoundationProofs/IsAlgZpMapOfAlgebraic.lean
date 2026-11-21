@@ -1,10 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsValuationSubringPullbackIntegralElementsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsConjOverPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlgebraicNumberCongrModPrimePowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlgClosureAutomorphismRestrictingLocalStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsValuationSubringPullbackIntegralElements
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsConjOverPrime
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlgebraicNumberCongrModPrimePow
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlgClosureAutomorphismRestrictingLocal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLocalAutFixingTowerParamOfStabilizesStatement
 open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
@@ -61,8 +61,8 @@ theorem exists_cusp_embedding : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsA
   haveI : CharZero Ωl := GlobalTheory.K5.Basic.charZero_of_isClo hcl
   haveI : IsAlgClosed Ωl := hcl.clo
   let j0 : Ω →+* Ωl := (IsAlgClosed.lift : Ω →ₐ[ℚ] Ωl).toRingHom
-  obtain ⟨B, hBp, hB⟩ := GlobalTheory.T.exists_valuationSubring_pullback_integral_elements p Ωl hcl j0
-  obtain ⟨σ, hσ⟩ := GlobalTheory.T.exists_algEquiv_map_valuationSubring_over_prime p A B hA hBp
+  obtain ⟨B, hBp, hB⟩ := _root_.GlobalTheory.K5.exists_valuationSubring_isInt_comap p Ωl hcl j0
+  obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.ValConjClosure.exists_conj_over_prime p A B hA hBp
   let j : Ω →+* Ωl := j0.comp σ.toRingEquiv.toRingHom
   have hint : ∀ x, x ∈ A ↔ IsInt p (j x) := fun x => (hσ x).symm.trans (hB _)
   have hl : 0 < p := (Fact.out : p.Prime).pos
@@ -74,7 +74,7 @@ theorem exists_cusp_embedding : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsA
       q0 := T0.q0, qpow := T0.qpow }
   refine ⟨Ωl, inferInstance, inferInstance, hcl, T, j, ?_⟩
   exact { int := hint, alg := isAlgZp_map_of_algebraic p Ωl j, root := fun n => rfl,
-          dense := GlobalTheory.T.exists_algebraicNumber_congr_mod_prime_pow p A Ωl hcl j hint, down := GlobalTheory.T.exists_algClosure_automorphism_restricting_local p A Ωl hcl j hint,
+          dense := _root_.GlobalTheory.K5.DenseAlg.exists_mem_cong p A Ωl hcl j hint, down := _root_.GlobalTheory.CuspDown.exists_restrict p A Ωl hcl j hint,
           up := fun n s hs => GlobalTheory.T.exists_local_aut_fixing_tower_param_of_stabilizes p A Ωl hcl j hint T n s hs }
 
 end GlobalTheory.Glue

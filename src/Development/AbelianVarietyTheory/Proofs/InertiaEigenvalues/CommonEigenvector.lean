@@ -49,15 +49,6 @@ private lemma exists_common_eigenspace_of_commuting {V : Type u_1} {ι : Type u_
   rw [← hEq] at hx
   exact ((hmem x).1 hx).2
 
-theorem main {V : Type u_1} {ι : Type u_2} [AddCommGroup V] [Module ℂ V] [Fintype ι]
-    (H : ι → Module.End ℂ V) (hc : ∀ (i j : ι), H i * H j = H j * H i)
-    (E : Submodule ℂ V) [FiniteDimensional ℂ ↥E] (hE : ∀ (i : ι), ∀ x ∈ E, (H i : V → V) x ∈ E)
-    (hne : E ≠ ⊥) :
-    ∃ v ∈ E, v ≠ (0 : V) ∧ ∀ (i : ι), ∃ (c : ℂ), (H i : V → V) v = c • v := by
-  obtain ⟨W, hWE, hW0, hW⟩ := exists_common_eigenspace_of_commuting H hc E hE hne
-  obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hW0
-  exact ⟨v, hWE hv, hv0, fun i => (hW i).imp fun c h => h v hv⟩
-
 theorem common_eigenvector : ∀ {V : Type u_1} {ι : Type u_2} [inst : AddCommGroup V] [inst_1 : Module ℂ V] [Fintype ι] (H : ι → Module.End ℂ V), (∀ (i j : ι), H i * H j = H j * H i) → ∀ (E : Submodule ℂ V) [FiniteDimensional ℂ ↥E], (∀ (i : ι), ∀ x ∈ E, (H i : V → V) x ∈ E) → E ≠ ⊥ → ∃ v ∈ E, v ≠ (0 : V) ∧ ∀ (i : ι), ∃ (c : ℂ), (H i : V → V) v = c • v := by
   intro V ι _ _ _ H hc E _ hE hne
 

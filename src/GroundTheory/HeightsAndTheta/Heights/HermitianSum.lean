@@ -84,16 +84,6 @@ variable {σ E F}
 theorem fibreProd_tmul (z : ComplexAt σ) (e : E) (f : F) :
     fibreProd σ E F (z ⊗ₜ (e, f)) = (z ⊗ₜ e, z ⊗ₜ f) := rfl
 
-theorem fibreProd_conjMap (x : Fibre σ (E × F)) :
-    fibreProd (conjugate σ) E F (conjMap σ (E × F) x) =
-      (conjMap σ E (fibreProd σ E F x).1, conjMap σ F (fibreProd σ E F x).2) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [map_zero, Prod.fst_zero, Prod.snd_zero, Prod.mk_zero_zero]
-  | tmul z v => rfl
-  | add x y hx hy =>
-    rw [map_add, map_add, hx, hy, map_add, Prod.fst_add, Prod.snd_add, map_add, map_add,
-      Prod.mk_add_mk]
-
 end Split
 
 variable [NumberField K]
@@ -101,19 +91,6 @@ variable [NumberField K]
 variable {E F : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K) E]
   [Module.Projective (𝓞 K) E] [AddCommGroup F] [Module (𝓞 K) F] [Module.Finite (𝓞 K) F]
   [Module.Projective (𝓞 K) F]
-
-def HermitianMetric.prod (hE : HermitianMetric K E) (hF : HermitianMetric K F) :
-    HermitianMetric K (E × F) where
-  form σ := coreComap (coreProd (hE.form σ) (hF.form σ)) (fibreProd σ E F).toLinearMap
-    (fibreProd σ E F).injective
-  form_conj σ x y := by
-    simp only [coreComap_inner, coreProd_inner, LinearEquiv.coe_coe, fibreProd_conjMap,
-      hE.form_conj, hF.form_conj, map_add]
-
-def HermitianBundle.prod (A B : HermitianBundle K) : HermitianBundle K :=
-  ⟨A.carrier × B.carrier, A.metric.prod B.metric⟩
-
-example : HermitianBundle GaussianField := gaussianIntegers.prod (gaussianStandard 2)
 
 end
 

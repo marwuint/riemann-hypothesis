@@ -260,14 +260,4 @@ structure UnifPre (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegDat
   ph_compat : ∀ e, isoPull LG.L D.toPre.P.L (thickMap R I e G) (thickMap_toG I e)
     (thickMap_toB (j e) (j (e + 1)) (j_q e)) (ph (e + 1)) = ph e
 
-example {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
-    {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {e : ℕ}
-    (j : CanonicalRigidImages.GtIso D I e G) : (toB j).F = (CanonicalRigidImages.down D I e j.q).left := rfl
-
-example {R : Type} [CommRing R] {I : Ideal R} (h : AdmBase R I) : I ≠ ⊤ := by
-  rintro rfl
-  obtain ⟨_, hd, _, hc⟩ := h
-  have : (1 : R) = 0 := hc.toIsHausdorff.haus 1 fun n => by simp [SModEq.zero, Ideal.top_pow]
-  exact one_ne_zero this
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SeparatedSymmetricModel

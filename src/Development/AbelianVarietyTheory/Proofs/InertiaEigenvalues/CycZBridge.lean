@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostFieldImageMemUnramifiedAdjoinRootsOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostFieldImageMemUnramifiedAdjoinRootsOfUnity
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInertiaCycZEq
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormSubLtOneOfFixAlt
 import Development.AutomorphicArithmetic.CyclotomicBounds.FactorizationConductorLeLocalLevel
@@ -81,7 +81,7 @@ theorem epsAll : ∀ (D : D7) (i : D.nd.Loc), EpsAll D i := by
         exact (MulAction.stabilizer (GQ (D.nd.l i)) y).zpow_mem hy k
       refine sup_le (fun y hy => hm y (hσK y hy)) (IntermediateField.adjoin_le_iff.2 fun y hy => hm y ?_)
       exact fix_roots σ _ z (by rw [hσu, hu]) y hy
-    exact hle (GlobalTheory.T.hostField_image_mem_unramified_adjoin_rootsOfUnity D i w hw x) ⟨σ, Subgroup.mem_zpowers σ⟩
+    exact hle (_root_.GlobalTheory.HostImage.host_image_mem D i w hw x) ⟨σ, Subgroup.mem_zpowers σ⟩
   set g := (D.nbr i w hw).e.symm ⟨σ, hσ⟩ with hg
   have he : (((D.nbr i w hw).e g : ↥(GK (D.nbr i w hw).Kw)) : GQ (D.nd.l i)) = σ := by
     rw [hg, MulEquiv.apply_symm_apply]

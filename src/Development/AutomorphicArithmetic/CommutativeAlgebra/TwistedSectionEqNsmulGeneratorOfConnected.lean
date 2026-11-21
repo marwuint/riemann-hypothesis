@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistSectionsLocallyGeneratedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocallyIffAffineEtalePointCover
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
@@ -71,7 +71,7 @@ theorem UpperTheory.twisted_section_eq_nsmul_generator_of_connected :
     exact (mod_eq_of_nsmul_eq _ (e1.symm.trans e2)).symm
   obtain ⟨x0⟩ : Nonempty X := inferInstance
   have hconst : ∀ x, c x % q = c x0 % q := fun x => hlc.apply_eq_of_preconnectedSpace x x0
-  refine ⟨c x0, (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) (tw q i) X).1 _ _ ?_⟩
+  refine ⟨c x0, (_root_.GlobalTheory.EtC.sec_ext_glue (ZMod q) (tw q i) X).1 _ _ ?_⟩
   refine (loc_iff_etale_affine_points X _ ?_).2 fun x => ⟨V x, g x, hA x, hE x, hx x, ?_⟩
   · intro V W g k h
     rw [res_comp, res_comp, h]

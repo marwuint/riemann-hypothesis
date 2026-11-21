@@ -3,20 +3,27 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothHermCom
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnSourceIffOfDensity
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeA
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionaryStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackIsPotentialStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionary
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridge
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackIsPotential
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionFiniteOpenCoverStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogNormContinuousOffDivisorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticoneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticone
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulticonePointDescendsToSubvarietyStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnderOfSameOrbitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnderOfSameOrbit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicLiftGivesHolomorphicSectionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZeroLocusRegularFunctionNullStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureZeroSetAvoidedByHolomorphicMapStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypersurfaceComplexPointsMeasurableNullStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightsIntegralPullbackFormulaStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZeroLocusRegularFunctionNull
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureZeroSetAvoidedByHolomorphicMap
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackChartFormula
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DehomogenizedEvalEqRatio
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictedFormNonzeroOnGenericPointStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypersurfaceComplexPointsMeasurableNull
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightsIntegralPullbackFormula
 set_option autoImplicit false
 open CategoryTheory AlgebraicGeometry Limits TopologicalSpace MvPolynomial MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -37,9 +44,9 @@ theorem exists_modif (hK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSta
       MeasurableSet Z ∧ (∀ c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D, volume (c.e.target ∩ c.e.symm ⁻¹' Z) = 0) ∧
       (∀ y, y ∉ Z → ∃ x, F x = y) ∧ (∀ x x', F x ∉ Z → F x = F x' → x = x') := by
   have hC := hX.charZero
-  obtain ⟨-, hp₃, hp₄, -⟩ := GlobalTheory.T.mixed_cycle_point_dictionary m n X i (D + 1) hX.dim_eq
+  obtain ⟨-, hp₃, hp₄, -⟩ := _root_.GlobalTheory.CompanionTheory.MixZ.ptDict m n X i (D + 1) hX.dim_eq
   have hP := hp₄ (hp₃.2 hC)
-  obtain ⟨J, ⟨R⟩⟩ := ReciprocityTheory.ChartRestriction.G.Geo.exists_anLogRes (GlobalTheory.T.resolution_exists_of_resolution_statement hK) hP
+  obtain ⟨J, ⟨R⟩⟩ := ReciprocityTheory.ChartRestriction.G.Geo.exists_anLogRes (_root_.GlobalTheory.CompanionTheory.Ar.Giv.resExists_of_resK hK) hP
   obtain ⟨S, hS, hJ⟩ := R.homog
   obtain ⟨f, hfS, hfP⟩ : ∃ f ∈ S, f ∉ ptIdeal (i (genericPoint X)) := by
     by_contra h
@@ -50,7 +57,7 @@ theorem exists_modif (hK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSta
   have hJz : ∀ z ∈ mcPts J, eval z (map (Int.castRingHom ℂ) f) = 0 := fun z hz => hz.2 f hfJ
   choose F hF' using fun x => GlobalTheory.T.multicone_point_descends_to_subvariety m n X i (R.lift x x) (R.mem x x (R.mem_U x))
   have hU : ∀ x, ∀ y ∈ R.U x, IsUnder (PtsOver.map i rfl _ (F y)) (R.lift x y) := fun x y hy =>
-    GlobalTheory.T.isUnder_of_same_orbit m n _ _ _ (hF' y) (R.compat x y y ⟨hy, R.mem_U y⟩)
+    _root_.GlobalTheory.CompanionTheory.MixZ.Orbit.isUnder_of_sameOrbit m n _ _ _ (hF' y) (R.compat x y y ⟨hy, R.mem_U y⟩)
   have key (x : R.X) (j : Fin R.A.n) := GlobalTheory.T.holomorphic_lift_gives_holomorphic_section m n X i D
     ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x) (fun v => R.lift x ((R.A.chart j).symm v))
     (F ∘ (R.A.chart j).symm) ((R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x))
@@ -69,7 +76,7 @@ theorem exists_modif (hK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSta
     simp only [Function.comp_apply, (R.A.chart j).left_inv hw]
   refine ⟨R.X, inferInstance, inferInstance, inferInstance, R.A, F,
     {y | ∃ z, IsUnder (PtsOver.map i rfl _ y) z ∧ eval z (map (Int.castRingHom ℂ) f) = 0}, hFc, ?_,
-    (GlobalTheory.T.hypersurface_complex_points_measurable_null m n X i D f a ha hfP).1, (GlobalTheory.T.hypersurface_complex_points_measurable_null m n X i D f a ha hfP).2, ?_, ?_⟩
+    (_root_.GlobalTheory.CompanionTheory.MixZ.zeroLocus_measurable_null m n X i D f a ha hfP).1, (_root_.GlobalTheory.CompanionTheory.MixZ.zeroLocus_measurable_null m n X i D f a ha hfP).2, ?_, ?_⟩
   · intro W g j v hv
     set x := (R.A.chart j).symm v with hx
     have hvO : v ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x := ⟨hv.1, R.mem_U x⟩
@@ -80,7 +87,7 @@ theorem exists_modif (hK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSta
     have hd := (key x j).2 W g
     exact (SCV.analyticOnNhd_iff_differentiableOn hO').2 hd v ⟨hvO, hv.2⟩
   · intro y hy
-    obtain ⟨z, hz, hyz⟩ := GlobalTheory.T.complex_point_lifts_to_multicone m n X i y
+    obtain ⟨z, hz, hyz⟩ := _root_.GlobalTheory.CompanionTheory.MPDict.exists_mem_mcPts_isUnder m n X i y
     have hzJ : z ∉ mcPts J := fun h => hy ⟨z, hyz, hJz z h⟩
     obtain ⟨x, hx⟩ := R.surj z hz hzJ
     exact ⟨x, (GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ (hF' x) hyz).2 hx⟩
@@ -121,7 +128,7 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
     rw [hZ'def, Set.preimage_union, Set.inter_union_distrib_left, Set.preimage_iUnion, Set.inter_iUnion]
     refine measure_union_null (hZ0 c) (measure_iUnion_null fun l => ?_)
     obtain ⟨h, hne⟩ := hd l
-    exact GlobalTheory.T.zero_locus_regular_function_null X q σ D c (W l) h (d l) hne
+    exact _root_.GlobalTheory.CompanionTheory.MixZ.volume_chart_zeroSet_fnOf X q σ D c (W l) h (d l) hne
   have hne : Nonempty (ChartPartition A) := existsPartition A
   set Pt := hne.some
   have hKK (j : Fin A.n) := image_closed_compact (A.chart j) (isClosed_tsupport (Pt.χ j)) (Pt.tsupport_subset j)
@@ -133,10 +140,10 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
       simp [h] at this
     have hx : x ∈ tsupport (Pt.χ j) := subset_tsupport _ hj
     exact ⟨j, _, ⟨x, hx, rfl⟩, (A.chart j).left_inv (Pt.tsupport_subset j hx)⟩
-  have hle := GlobalTheory.T.measure_zero_set_avoided_by_holomorphic_map A F hF H Z' hZ'm hZ'0 (fun y hy => hs y fun h => hy (Or.inl h))
+  have hle := _root_.GlobalTheory.CompanionTheory.ArchDom.chernPart_le_sum_map A F hF H Z' hZ'm hZ'0 (fun y hy => hs y fun h => hy (Or.inl h))
     (fun x x' hx => hi x x' fun h => hx (Or.inl h)) φ hφ ε (fun j => (A.chart j) '' tsupport (Pt.χ j))
     (fun j => (hKK j).1) (fun j => (hKK j).2) hcovK
-  have hfin (j : Fin A.n) := GlobalTheory.T.lintegral_indicator_mul_locDens_pullback_lt_top A F hF H φ hφ ψ hψ g S Z' W b a d hcov hWb
+  have hfin (j : Fin A.n) := _root_.GlobalTheory.CompanionTheory.MixZ.lintegral_logNorm_locDens_lt_top A F hF H φ hφ ψ hψ g S Z' W b a d hcov hWb
     (fun l y hy hyS hyZ => hf l y hy hyS fun h0 => hyZ (Or.inr (Set.mem_iUnion.2 ⟨l, hy, h0⟩))) hSo hgc hZ'm j
     _ (hKK j).2 (hKK j).1
   refine ⟨hgc.aestronglyMeasurable hSo.measurableSet, ?_⟩
@@ -158,7 +165,7 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
       (volume.restrict ((A.chart j) '' tsupport (Pt.χ j) \ (F ∘ (A.chart j).symm) ⁻¹' Z')) :=
     (hc.aemeasurable hT).mono_measure (Measure.restrict_mono hsub le_rfl)
   have hdc := locDensCont A (fun _ => φ.locPot.pullback F hF)
-    (fun _ => GlobalTheory.T.smooth_weight_pullback_is_potential A F hF H φ hφ) j
+    (fun _ => _root_.GlobalTheory.CompanionTheory.MixZ.isPotential_pullback_locPot A F hF H φ hφ) j
   have hρ : AEMeasurable (fun u => ENNReal.ofReal |locDens A (fun _ => φ.locPot.pullback F hF) j u|)
       (volume.restrict ((A.chart j) '' tsupport (Pt.χ j) \ (F ∘ (A.chart j).symm) ⁻¹' Z')) :=
     ((ENNReal.continuous_ofReal.comp_continuousOn hdc.abs).aemeasurable hT).mono_measure

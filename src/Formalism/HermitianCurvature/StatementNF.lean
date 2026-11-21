@@ -141,56 +141,6 @@ namespace PreLevel
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ}
 
-def ofLevel (L : R.LevelData A r) : PreLevel A r where
-  p := L.p
-  pb := L.pb
-  c := L.c
-  ci := L.ci
-  cb := L.cb
-  cbi := L.cbi
-  ζ := L.ζ
-  ζi := L.ζi
-  ζb := L.ζb
-  ζbi := L.ζbi
-  GG := L.GG
-  GGi := L.GGi
-  TT := L.TT
-  fns_comm := L.fns_comm
-  c_ci := L.c_ci
-  ci_c := L.ci_c
-  cb_cbi := L.cb_cbi
-  cbi_cb := L.cbi_cb
-  ζ_ζi := L.ζ_ζi
-  ζi_ζ := L.ζi_ζ
-  ζb_ζbi := L.ζb_ζbi
-  ζbi_ζb := L.ζbi_ζb
-  GG_GGi := L.GG_GGi
-  GGi_GG := L.GGi_GG
-  GG_def := L.GG_def
-  p_c := L.p_c
-  p_ci := L.p_ci
-  p_cb := L.p_cb
-  p_cbi := L.p_cbi
-  p_ζ := L.p_ζ
-  p_ζi := L.p_ζi
-  p_ζb := L.p_ζb
-  p_ζbi := L.p_ζbi
-  p_GG := L.p_GG
-  p_GGi := L.p_GGi
-  pb_cb := L.pb_cb
-  pb_cbi := L.pb_cbi
-  pb_c := L.pb_c
-  pb_ci := L.pb_ci
-  pb_ζ := L.pb_ζ
-  pb_ζi := L.pb_ζi
-  pb_ζb := L.pb_ζb
-  pb_ζbi := L.pb_ζbi
-  pb_GG := L.pb_GG
-  pb_GGi := L.pb_GGi
-  p_p := L.p_p
-  p_pb := L.p_pb
-  pb_pb := L.pb_pb
-
 variable (L0 : PreLevel A r)
 
 def fns : Set A :=
@@ -265,10 +215,6 @@ def SHyp (P : M.Par) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (L0 : PreL
     QQ Y 0 1 * L0.ζ = L0.ζ * QQ Y 0 1 ∧ QQ Y 0 1 * L0.ζb = L0.ζb * QQ Y 0 1 + QQ Y 1 1 ∧
     QQ Y 1 0 * L0.ζb = L0.ζb * QQ Y 1 0 ∧ QQ Y 1 1 * L0.ζb = L0.ζb * QQ Y 1 1) ∧
   (∀ Y (a b : Fin 2), ∀ g ∈ L0.crdOps, Commute (QQ Y a b) g)
-
-def ModelSHyp : Prop :=
-  ∀ (P : M.Par) (L : R.LevelData (M.A P) P.r), P.OK → M.IsModelLevel P L →
-    SHyp P (PreLevel.ofLevel L) (M.QQr P) (M.kap P)
 
 def SForm (P : M.Par) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (L0 : PreLevel A P.r)
     (QQ : ℂ → Matrix (Fin 2) (Fin 2) A) (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (b : M.Ty P → A) (SS : ℕ → A) : Prop :=

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyCuspFrame
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothOfAlgClosedUnif
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesExist
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIsoOfIsProperOfExistsUniqueFieldPointOfIsInteg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundlePointFlagsUniqueFlagCoverPointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlagModelPointOfFlagBundleFieldPointStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundlePointFlagsUniqueFlagCoverPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlagModelPointOfFlagBundleFieldPoint
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 set_option autoImplicit false
@@ -21,7 +21,7 @@ theorem isIso_restrict_Vo : ∀ {E : Type} [Field E] [NumberField E] [IsCMField 
     fun K _ w => ?_
   have hp : ∀ s, (w ≫ (GlobalTheory.VarFlag.Vo C).ι) s ∈ GlobalTheory.VarFlag.Vo C := fun s => by
     rw [Scheme.Hom.comp_apply]; exact (w s).2
-  obtain ⟨z₀, hz₀⟩ := GlobalTheory.T.exists_flagModel_point_of_flagBundle_fieldPoint X Z hF C hT B j f hπ hB K _ hp
+  obtain ⟨z₀, hz₀⟩ := _root_.GlobalTheory.VarFlag.exists_rel_of_mem_Vo X Z hF C hT B j f hπ hB K _ hp
   have e₀ : z₀ ≫ h = w ≫ (GlobalTheory.VarFlag.Vo C).ι := (hU K z₀).unique (hH K z₀) hz₀
   have P := (isPullback_morphismRestrict h (GlobalTheory.VarFlag.Vo C)).flip
   refine ⟨P.lift z₀ w e₀, P.lift_snd _ _ _, fun y hy => ?_⟩
@@ -31,7 +31,7 @@ theorem isIso_restrict_Vo : ∀ {E : Type} [Field E] [NumberField E] [IsCMField 
       rw [Category.assoc, ← morphismRestrict_ι, ← Category.assoc, hy]
     have hr := hH K (y ≫ (h ⁻¹ᵁ GlobalTheory.VarFlag.Vo C).ι)
     rw [ey] at hr
-    have := GlobalTheory.T.flagBundle_point_flags_unique_flagCover_point X C hF hT K _ _ _ hp hr hz₀
+    have := _root_.GlobalTheory.VarFlag.rel_unique X C hF hT K _ _ _ hp hr hz₀
     exact (cancel_mono (GlobalTheory.CompHS.inc₀ X Z)).1 this
   · rw [P.lift_snd]; exact hy
 

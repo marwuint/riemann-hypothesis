@@ -125,11 +125,6 @@ lemma permutationMatrix_eq_permMatrix' (σ : Equiv.Perm (Fin p)) : wP σ = σ.pe
   ext a b
   simp [wP, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]
 
-lemma det_hMat_ne (hd : ∀ i, d i ≠ 0) : (hMat σ d).det ≠ 0 := by
-  rw [hMat, Matrix.det_mul, permutationMatrix_eq_permMatrix', Matrix.det_permutation, Matrix.det_diagonal]
-  refine mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun i _ => hd i)
-  rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
-
 private lemma det_one_add_strictLower {q : ℕ} (M : Matrix (Fin q) (Fin q) ℂ) (h : ∀ a b, a ≤ b → M a b = 0) :
     (1 + M).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]

@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidChart
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageTrQ
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantVectorFieldCommutesPointTranslationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRaynaudTorusWeightPullbackPointTranslationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFunctionRelOfTranslateSectionValuesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRaynaudTorusWeightPullbackPointTranslation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFunctionRelOfTranslateSectionValues
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField IsLocalRing
 open scoped CategoryTheory.Obj Matrix TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
@@ -66,23 +67,23 @@ theorem GlobalTheory.HeatTrans.exists_heat_translate : ∀ (R : Type) [CommRing 
     rw [hSTq, h.glue k i i' _ hSO, GlobalTheory.KS.pbT_mul, pbT_pow T hOO, pbT_pbT T Y.q.left hg hOO]
   · intro i
     obtain ⟨⟨V, hV⟩, hp, hp', hd⟩ := hB i
-    refine ⟨?_, GlobalTheory.T.isRaynaudTorusWeight_pullback_pointTranslation R Q O oa Y x 0 _ _ le_rfl _ hp, GlobalTheory.T.isRaynaudTorusWeight_pullback_pointTranslation R Q O oa Y x 0 _ _ le_rfl _ hp', ?_⟩
+    refine ⟨?_, _root_.GlobalTheory.HeatTransWt.isWt_pbT_tr R Q O oa Y x 0 _ _ le_rfl _ hp, _root_.GlobalTheory.HeatTransWt.isWt_pbT_tr R Q O oa Y x 0 _ _ le_rfl _ hp', ?_⟩
     · exact ⟨_, (congrArg (T ⁻¹ᵁ ·) hV).trans (preimage_tr_q Y x V)⟩
     · intro α V₁ hV₁ f hf
       obtain ⟨V₂, hV₂⟩ : ∃ V₂, S ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V₁) = Y.q.left ⁻¹ᵁ V₂ := ⟨_, preimage_tr_q Y x⁻¹ V₁⟩
       have hle : S ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V₁) ≤ h.W i := (S.preimage_mono hV₁).trans (hpre _).le
       have hf' : IsWt Y α (S ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V₁)) (pbT S f (S ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V₁))) :=
-        GlobalTheory.T.isRaynaudTorusWeight_pullback_pointTranslation R Q O oa Y x⁻¹ α _ _ le_rfl f hf
+        _root_.GlobalTheory.HeatTransWt.isWt_pbT_tr R Q O oa Y x⁻¹ α _ _ le_rfl f hf
       have gen : ∀ (U : Y.H.left.Opens), U = Y.q.left ⁻¹ᵁ V₂ → ∀ g : Γ(Y.H.left, U), U ≤ h.W i → IsWt Y α U g →
           IsWt Y α U (h.d i U g) := by
         rintro U rfl g hU hg
         exact hd α V₂ hU g hg
-      exact GlobalTheory.T.isRaynaudTorusWeight_pullback_pointTranslation R Q O oa Y x α _ _ (hpre' _).ge _ (gen _ hV₂ _ hle hf')
+      exact _root_.GlobalTheory.HeatTransWt.isWt_pbT_tr R Q O oa Y x α _ _ (hpre' _).ge _ (gen _ hV₂ _ hle hf')
   · intro k τ τ' σ σ' hσ hσ' hA i
     have hW : S ⁻¹ᵁ (T ⁻¹ᵁ h.W i) ≤ h.W i := (hpre _).le
     show rsT (σ'.f fun _ => h.j i) (T ⁻¹ᵁ h.W i) = op Y.H dd h.Θ h.u (conjF T S (h.d i)) (pbT T (h.p i) (T ⁻¹ᵁ h.W i))
       (pbT T (h.p' i) (T ⁻¹ᵁ h.W i)) k (T ⁻¹ᵁ h.W i) (rsT (σ.f fun _ => h.j i) (T ⁻¹ᵁ h.W i))
-    rw [GlobalTheory.T.chartFunction_rel_of_translate_section_values R Q O oa Y x k σ' τ' hσ' (h.j i) (h.W i) (h.le i), GlobalTheory.T.chartFunction_rel_of_translate_section_values R Q O oa Y x k σ τ hσ (h.j i) (h.W i) (h.le i),
+    rw [_root_.GlobalTheory.HeatTrans.chart_rel_of_sval R Q O oa Y x k σ' τ' hσ' (h.j i) (h.W i) (h.le i), _root_.GlobalTheory.HeatTrans.chart_rel_of_sval R Q O oa Y x k σ τ hσ (h.j i) (h.W i) (h.le i),
       op_conjF Y.H dd hTS hST hT hdd h.Θ h.u (h.d i) (h.p i) (h.p' i) k (le_rfl : T ⁻¹ᵁ h.W i ≤ T ⁻¹ᵁ h.W i),
       pbT_pbT S T le_rfl le_rfl, hST, pbT_id hW,
       op_rsT Y.H dd (fun a => (hinv a).1) h.Θ h.u (h.d i) (h.lift i).1 (h.p i) (h.p' i) k hW le_rfl,

@@ -4,7 +4,9 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasChr
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumDoubledOfSchrodingerFormulas
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompactAverageProjectionThetaSchrodingerStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IkedaMapSchrodingerPartialIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchrodingerThetaEqSchwartzBruhatStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchrodingerThetaEqSchwartzBruhat
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HeckeFormNSOfHeckeForm
 
 noncomputable section
 
@@ -75,7 +77,7 @@ theorem main (D : D7) (A : HSp D) (t : ℕ) (B W : HSp D) (d : HypDec B W t) (ψ
       exact GlobalTheory.StdUnn.WeylStd.main D ψ₀ A W χ⁻¹ omW homW μW 𝓕W hμW θ hθ μ' hsk κ hκ omS hS lam hl g hg Φ x
   obtain rfl := GlobalTheory.SiegelWeilLitCompare.isWeilSch_unique hW hWS
   obtain ⟨g, rfl⟩ := κ.surjective g
-  obtain ⟨f, hf, hfΦ⟩ := (GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ₀ h₀ θ hθ A B μB 𝓕B hμB).2.1 Φ.1 Φ.2
+  obtain ⟨f, hf, hfΦ⟩ := (_root_.GlobalTheory.SchSchwartzAll.schSchwartz D ψ₀ h₀ θ hθ A B μB 𝓕B hμB).2.1 Φ.1 Φ.2
   obtain ⟨μ₁, 𝓕₁, hμ₁⟩ := GlobalTheory.MixModel.exists_isCovolOne D t (dblSp A).rank
   obtain ⟨𝓕₂, hμ₂⟩ := I.cov₁
   have hK := LIkSch.isCompact_K d I.good
@@ -86,7 +88,7 @@ theorem main (D : D7) (A : HSp D) (t : ℕ) (B W : HSp D) (d : HypDec B W t) (ψ
   have e1 : ∀ φ, IsThetaFunO ψ₀ (dblSp A) B φ →
       ikp I (GlobalTheory.Core.Rk.SW.sch ψ₀ A B μB 𝓕B φ) = GlobalTheory.Core.Rk.SW.sch ψ₀ A W μW 𝓕W (ikeda ψ₀ d μ₁ 𝓕₁ (projK omB I.νK φ)) := fun φ hφ => by
     rw [(hI _ (hP φ hφ).1).2, (hP φ hφ).2]; rfl
-  have hmix := (GlobalTheory.T.mixedModelFormulas_wittTarget D ψ₀ (dblSp A) B W t d 1 χ⁻¹ omB omW homB homW μ₁ 𝓕₁ hμ₁ _ (hP f hf).1).source g 0
+  have hmix := (_root_.GlobalTheory.MixTargetProof.mixedTarget D ψ₀ (dblSp A) B W t d 1 χ⁻¹ omB omW homB homW μ₁ 𝓕₁ hμ₁ _ (hP f hf).1).source g 0
   rw [Matrix.mul_zero] at hmix
   rw [hTB g f hf Φ hfΦ.symm, e1 _ hgf, projK_comm homB _ hK I.νK f hf (hP f hf).1 g,
     hS g _ (hI _ (hP f hf).1).1 Ψ (by rw [hΨ, ← hfΦ, e1 f hf])]

@@ -1,14 +1,16 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqMulProdOfPartial
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitaryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitary
+import Formalism.SharpRestriction.Divisibility.SchurIrreducible
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluingLawHoldsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFockPolynomialIsoUnitaryPairStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesPureInnerProductsTensorProduct
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealIntertwinerContractionOnePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealIntertwinerContractionOnePlace
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealIntertwinerContractionValuesKFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCoverKFinitePairingOfRealIntertwinerStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CovariantPairingUniqueUpToScalarStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCoverKFinitePairingOfRealIntertwiner
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CovariantPairingUniqueUpToScalar
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Matrix GlobalTheory.Chain GlobalTheory.Chain.RealIt GlobalTheory.Chain.RealLine
 open scoped TensorProduct InnerProductSpace
@@ -88,7 +90,7 @@ theorem loc_line_of_matches {M : DSModel V S} {M' : DSModel W S'} {τ : D.what�
   have key : ∀ A, LocW M M' τ aS aT A → ∃ c : ℂ, ∀ P (x : R₂.HK.V) (y : M'.sm τ),
       U' (y : M'.H τ) = R₂.ι x → U (A P y) = c • R₁.ι (B₀ (κ P) x) := by
     intro A hA
-    obtain ⟨B, hB, hBA⟩ := GlobalTheory.T.exists_cover_kFinite_pairing_of_realIntertwiner D V W S S' M M' τ p q r s T₁ T₂ R₁ R₂ e e' m m' aS aT U U' κ A
+    obtain ⟨B, hB, hBA⟩ := _root_.GlobalTheory.Chain.RealLine.CoverFromLocal.exists_coverW D V W S S' M M' τ p q r s T₁ T₂ R₁ R₂ e e' m m' aS aT U U' κ A
       hm hm' hU hU' hκ hA
     obtain ⟨c, hc⟩ := hB₀ B hB
     refine ⟨c, fun P x y hy => ?_⟩
@@ -149,7 +151,7 @@ theorem loc_line {X : ProvA} (hX : ChosenSeries X) (h3 : Formalism.MainNotions.S
     ∃ A₀ : LPol W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.H τ, ∀ A, LocW M M' τ aS aT A → ∃ c : ℂ, A = c • A₀ := by
   obtain ⟨hSB, hTB⟩ := hB
   have hA := hd.1
-  have hI := GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hA
+  have hI := _root_.GlobalTheory.LowestTypes.lowest_types t al be ga de hA
   have hlen : (block t).length = t := by simp [block]
 
   have hsetS : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.HidaSetting X (al.length + be.length) (ga.length + de.length) (al ++ be) (ga ++ de)
@@ -178,7 +180,7 @@ theorem loc_line {X : ProvA} (hX : ChosenSeries X) (h3 : Formalism.MainNotions.S
   have hadm : Formalism.MainNotions.SchurIrreducible.AdmGK R₁.HK :=
     (((GlobalTheory.Published.HarishChandraModules.admQ5_of_harishChandraModules hH X) _ _ hpq).1 R₁.U ⟨R₁.nontriv, R₁.irred⟩).2.2 R₁.HK R₁.ι
       ⟨R₁.ι_inj, R₁.ι_range, R₁.der⟩ |>.1
-  obtain ⟨B₀, hB₀⟩ := GlobalTheory.T.covariant_pairing_unique_up_to_scalar X _ _ _ _ _ _ hadm (h3.1 t al be ga de hd).2.2
+  obtain ⟨B₀, hB₀⟩ := _root_.GlobalTheory.PairingLine.pairing_line X _ _ _ _ _ _ hadm (h3.1 t al be ga de hd).2.2
   exact loc_line_of_matches hm hm' hUm hUm' hκ hB₀
 
 theorem itLine (D : D7) (X : ProvA) (hX : ChosenSeries X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (hV : VacChar D)
@@ -222,7 +224,7 @@ theorem itLine (D : D7) (X : ProvA) (hX : ChosenSeries X) (h3 : Formalism.MainNo
           (PiTensorProduct.tprod ℂ fun ρ => (Function.update a τ z ρ).2.1))) = c * ⟪z.2.2, A₀ τ z.1 z.2.1⟫_ℂ := by
       intro τ a
       have hVτ := hV V W _ _ M M' θ ψ χS χT ω f τ (expS D k τ) (expT D k τ) hθ hW (hexp τ).1 (hexp τ).2 hf
-      obtain ⟨A, hSemi, hA⟩ := GlobalTheory.T.exists_realIntertwiner_contraction_one_place D V W _ _ M M' θ ψ ω f τ (expS D k τ) (expT D k τ) I hθ hVτ.2.1
+      obtain ⟨A, hSemi, hA⟩ := _root_.GlobalTheory.Chain.RealLine.Semi.exists_semiW D V W _ _ M M' θ ψ ω f τ (expS D k τ) (expT D k τ) I hθ hVτ.2.1
         hVτ.2.2 hI (fun ρ => (a ρ).2.1) (fun ρ => (a ρ).2.2)
       obtain ⟨j, hj⟩ := exists_ins (fun ρ => (a ρ).1) τ
       obtain ⟨c, hc⟩ := hA₀ τ (A ∘ₗ j) (locW_of_semiW hSemi hj)

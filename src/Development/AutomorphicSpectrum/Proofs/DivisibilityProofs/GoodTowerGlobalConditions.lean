@@ -13,20 +13,28 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSmoothHermTrivLine
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrobeniusLabelsShapeStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCompRootModelPrimesStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrobeniusLabelsShape
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCompRootModelPrimes
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPreFamilyOfLatticeFamilyTwo
+import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNormComparison
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootModelBlockPullbackStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsIsometricHermLineStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerConvI2Statement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptBirationalArithVarStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsIsometricHermLine
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerConvI2
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptBirationalArithVar
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ImageCptReflOfGenPt
 import GroundTheory.HeightsAndTheta.Heights.Intersections.PBlockRatioAlg
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArMonoReline
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginComparisonSubsetStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagHeightBoundOfArithVarStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginHeightComparisonThreeStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginHeightComparisonTwoStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArMonoEqRelinedIsometricVertStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginComparisonSubset
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitComps
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagHeightBoundOfArithVar
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginHeightComparisonThree
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RootOriginHeightComparisonTwo
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ArMonoEqRelinedIsometricVert
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSetting degMu ArLimExists slX)
 open MvPolynomial Filter Topology
@@ -84,22 +92,22 @@ theorem link_step (hSeg : GroundTheory.Heights₂.Heights.NumbersDVR.NumericalSe
       R.IsChange ((S \ S₀).preimage (fun p : Nat.Primes => (p : ℕ)) Subtype.val_injective.injOn) ∧
       R.LocalAtPlaces D.p ((S \ S₀).preimage (fun p : Nat.Primes => (p : ℕ)) Subtype.val_injective.injOn) φ := by
   obtain ⟨Ω, _, _, K, _, J, _, y, κ₀, v₀, κ₁, v₁, κR, vR, i₀, i₁, iR, 𝔐, Fl, hv₀, hv₁, hvR, hy₀, hy₁, hyR, hg₀, hg₁,
-    hd0, hdeq, ⟨h, hvb, hsub, hl₀⟩, hl₁, hfr⟩ := GlobalTheory.T.root_origin_comparison_subset E H D l Xo c Y S₀ S M₀ M₁ Rf Sys Fx o₀ o₁ oR hS hdisc hom₀ hom₁ hR hdeg
+    hd0, hdeq, ⟨h, hvb, hsub, hl₀⟩, hl₁, hfr⟩ := _root_.GlobalTheory.CompanionTheory.Ar.OrLinked.common E H D l Xo c Y S₀ S M₀ M₁ Rf Sys Fx o₀ o₁ oR hS hdisc hom₀ hom₁ hR hdeg
   have hβ : Function.Injective (algebraMap (𝓞 c.F) c.F) := RingOfIntegers.coe_injective
   haveI : Nonempty K := ⟨κ₀ o₀.k₀⟩
-  obtain ⟨hbir, harith⟩ := GlobalTheory.T.hodge_cpt_birational_arith_var E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl hβ
+  obtain ⟨hbir, harith⟩ := _root_.GlobalTheory.CompanionTheory.Ar.flagged_model_dim E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl hβ
   have ha : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar (mCoordIdeal y) (dimFl (CMType H) (D.p + D.q) + 1) := harith
   have hδ : 0 < IntermediateField.relfinrank (blockFnField (y ∘ v₀)) (blockFnField y) * M₀.δ :=
     Nat.mul_pos (Nat.pos_of_ne_zero hd0) M₀.δ_pos
   let M : RootModel (CMType H) (D.p + D.q) := pullModel M₀ y ha hbir hv₀ _ hδ
-  obtain ⟨f, g, hfg, hvert⟩ := GlobalTheory.T.flag_height_bound_of_arith_var E H D l Xo c (𝓞 c.F) (algebraMap _ _) Y S Ω K J y 𝔐 _ ha Fl S₀ h hvb hsub _ _ _ _ hl₀ hl₁
+  obtain ⟨f, g, hfg, hvert⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.rootLines_vert_ratio E H D l Xo c (𝓞 c.F) (algebraMap _ _) Y S Ω K J y 𝔐 _ ha Fl S₀ h hvb hsub _ _ _ _ hl₀ hl₁
   let Sp : Finset Nat.Primes := (S \ S₀).preimage (fun p : Nat.Primes => (p : ℕ)) Subtype.val_injective.injOn
   let Tr : CMType H × Fin (D.p + D.q) → LocPair J ℤ Unit := fun r =>
     ⟨fun _ => pullDeg κ₀ (M₀.xdeg r), fun _ => pullDeg κ₁ (M₁.xdeg r), fun _ => f r, fun _ => g r⟩
   have hTr : ∀ r, (Tr r).IsVertOff (mCoordIdeal y) Sp := fun r _ => hvert r
   have htw : ∀ (t : ℝ) (r : CMType H × Fin (D.p + D.q)), ∃ A' : HermLine J, IsSmoothHerm A' ∧ IsConjInvariantH A' ∧
       (Tr r).IsIsometric (mCoordIdeal y) (fun _ => M.x t r) (fun _ => A') := fun t r =>
-    GlobalTheory.T.exists_isometric_herm_line K J (mCoordIdeal y) _ ha Sp (Tr r) (hTr r) (M.x t r) (M.x_deg t r) (M.x_smooth t r) (M.x_conj t r)
+    _root_.GlobalTheory.CompanionTheory.Ar.Num.twist_line K J (mCoordIdeal y) _ ha Sp (Tr r) (hTr r) (M.x t r) (M.x_deg t r) (M.x_smooth t r) (M.x_conj t r)
   choose tw tws twc twi using htw
   have ht₀ : 0 < Sys.t₀ := (Sys.reg none).1
   let x' : ℝ → CMType H × Fin (D.p + D.q) → HermLine J := fun t r =>
@@ -128,7 +136,7 @@ theorem link_step (hSeg : GroundTheory.Heights₂.Heights.NumbersDVR.NumericalSe
   have hTL : Fl.TwoLevels S₀ (⟨fun r => pullDeg κ₀ (M₀.xdeg r), fun r => pullDeg κ₁ (M₁.xdeg r), f, g⟩ :
       LocPair J ℤ (CMType H × Fin (D.p + D.q))) :=
     ⟨h, hvb, hsub, _, _, hl₀, hl₁, hfg, hvert⟩
-  obtain ⟨hvert', hloc⟩ := GlobalTheory.T.hodge_comp_root_model_primes hSeg hM3 hTv E H D l Xo c _ _ Y S S₀ M 𝔐 Fl R hTL
+  obtain ⟨hvert', hloc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.linked_two_levels hSeg hM3 hTv E H D l Xo c _ _ Y S S₀ M 𝔐 Fl R hTL
     (fun p hp hp' => ⟨hfr p hp, h2 p hp hp', fun hd => hp' (hdisc p (𝔐.S_prime p hp) hd)⟩) φ hφ
   have hIso : ∀ t, 0 < t → R.pairs.IsIsometric M.P (M.x t) (R.x t) := fun t ht r => by
     refine ⟨M.x_deg t r, R.x_deg t r, fun z hz => ?_⟩
@@ -139,7 +147,7 @@ theorem link_step (hSeg : GroundTheory.Heights₂.Heights.NumbersDVR.NumericalSe
         simp only [x', if_pos (And.intro ht ht')]
         rfl
       rw [e1]
-      exact GlobalTheory.T.root_origin_height_comparison_three E H D l Xo c Y S₀ S M₀ M₁ Rf Sys Fx o₀ o₁ oR Ω K J y κ₀ v₀ κ₁ v₁ κR vR i₀ i₁ iR hv₀ hv₁ hvR hy₀ hy₁ hyR hg₀ hg₁
+      exact _root_.GlobalTheory.CompanionTheory.Ar.OrIso.root_isometric E H D l Xo c Y S₀ S M₀ M₁ Rf Sys Fx o₀ o₁ oR Ω K J y κ₀ v₀ κ₁ v₁ κR vR i₀ i₁ iR hv₀ hv₁ hvR hy₀ hy₁ hyR hg₀ hg₁
         hJ₀ hJ₁ hJR hdeg ha r (f r) (g r) bf bg hbf hbg hb hfP hgP (hfg r) t ht ht' z hz
     · have e1 : R.x t r = tw t r := by
         show x' t r = _
@@ -147,7 +155,7 @@ theorem link_step (hSeg : GroundTheory.Heights₂.Heights.NumbersDVR.NumericalSe
       rw [e1]
       exact ((twi t r) ()).2.2 z hz
 
-  obtain ⟨T, hTx, hTx', hTv', hTi⟩ := GlobalTheory.T.root_origin_height_comparison_two E H D l Xo c Y S₀ S M₀ M₁ Sys Fx o₀ o₁ Ω K J y κ₀ v₀ κ₁ v₁ i₀ i₁ hv₀ hv₁ hy₀ hy₁
+  obtain ⟨T, hTx, hTx', hTv', hTi⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Top.LineUnit.lines_isometric E H D l Xo c Y S₀ S M₀ M₁ Sys Fx o₀ o₁ Ω K J y κ₀ v₀ κ₁ v₁ i₀ i₁ hv₀ hv₁ hy₀ hy₁
     (by rw [hg₀, hg₁]) ha
   have hAs := Chg.isSmoothHerm_pull hv₁ M₁.A_smooth
   have hAc := Chg.isConj_pull hv₁ M₁.A_conj
@@ -170,7 +178,7 @@ theorem link_step (hSeg : GroundTheory.Heights₂.Heights.NumbersDVR.NumericalSe
       | some r => exact ⟨rfl, fun _ => rfl⟩) hkA hdeq
   have hev : ∀ m, ∀ᶠ t in 𝓝[>] (0 : ℝ), M₁'.arMono II t m = Rm.arMono II t m := fun m => by
     filter_upwards [Ioo_mem_nhdsGT ht₀] with t ht
-    rw [GlobalTheory.T.arMono_eq_relined_isometric_vert _ _ Rm II hII (pullHerm hv₁ M₁.A) hAs hAc T hTv' hTi t m]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Num.Link.arMono_swapA _ _ Rm II hII (pullHerm hv₁ M₁.A) hAs hAc T hTv' hTi t m]
     refine arMono_reline Rm II t m (fun r => ?_) rfl
     show pullHerm hv₁ (M₁.x t r) = x' t r
     simp only [x', if_pos (And.intro ht.1 ht.2.le)]
@@ -197,10 +205,10 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.Link
 theorem goodOrigin_linked : GlobalTheory.CompanionTheory.Ar.Cmp.CmpSt → PB.AgreementPos → HodgeLatticeFlagBound → TrivFlagOnHodge → Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : RootTower (CMType H) (D.p + D.q)) (o : GoodOrigin Y T) (II : IntersectionSystem), IsGlobal Xo l c Y → o.Extra → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → ∃ φ : ℕ → Equiv.Perm (CMType H ⊕ CMType H), FrobShape (fun p τ n => (φ p ^ (n + 1)) (Sum.inl τ)) ∧ Num.LinkedTower T II φ := by
   intro _ hA hM3 hTv hG E _ _ _ _ H D Xo l c Y _ T o II _ hX hII _ _
   obtain ⟨-, -, -, hSeg, -, -, -, -, -, hIn, -⟩ := hG
-  obtain ⟨φ, hφ, hsh⟩ := GlobalTheory.T.frobenius_labels_shape E (fun a b => IsMulCommutative.is_comm.comm a b) H l c
+  obtain ⟨φ, hφ, hsh⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.exists_frob_labels E (fun a b => IsMulCommutative.is_comm.comm a b) H l c
   refine ⟨φ, hsh, ?_⟩
   intro B₀ B h2 hB a
-  have hConv : T.Conv II := (GlobalTheory.T.real_tower_conv_I2 hA hIn II hII _ _ T (realOf o.toTowerOrigin)).1
+  have hConv : T.Conv II := (_root_.GlobalTheory.CompanionTheory.Ar.Top.real_tower_convergence_I2 hA hIn II hII _ _ T (realOf o.toTowerOrigin)).1
   have hmem : ∀ (B' p : ℕ), p ∈ o.S B' ↔ p.Prime ∧ (p ≤ B' ∨ p ∈ T.bad) := fun B' p => o.S_iff B' p
   have hsub : o.S B₀ ⊆ o.S B := fun p hp => by
     obtain ⟨h1, h3⟩ := (hmem _ _).1 hp

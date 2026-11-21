@@ -104,8 +104,6 @@ def deg {A B : AbVar K} (f : A ⟶ B) : ℕ := if IsIsogeny f then f.hom.left.fi
 def IsSimple (A : AbVar K) : Prop :=
   A.dim ≠ 0 ∧ ∀ (B : AbVar K) (i : B ⟶ A), IsClosedImmersion i.hom.left → B.dim = 0 ∨ B.dim = A.dim
 
-abbrev Hom0 (A B : AbVar K) : Type := ℚ ⊗[ℤ] (A ⟶ B)
-
 abbrev End0 (A : AbVar K) : Type := ℚ ⊗[ℤ] End A
 
 def toEnd0 (A : AbVar K) : End A →+* End0 A := Algebra.TensorProduct.includeRight.toRingHom
@@ -146,10 +144,6 @@ theorem tmap_comp {A B C : AbVar K} (f : A ⟶ B) (g : B ⟶ C) :
 theorem tmap_id (A : AbVar K) : tmap l A A (𝟙 A) = LinearMap.id :=
   LinearMap.ext fun t => Tate.ext fun n => Category.comp_id (t.lev n)
 
-theorem tmap_galT {A B : AbVar K} (f : A ⟶ B) (σ : Gal K) :
-    tmap l A B f ∘ₗ galT l A σ = galT l B σ ∘ₗ tmap l A B f :=
-  LinearMap.ext fun t => Tate.ext fun n => Category.assoc (specAut σ) (t.lev n) f.hom
-
 def vmap {A B : AbVar K} (f : A ⟶ B) : Vl l A →ₗ[ℚ_[l]] Vl l B := (tmap l A B f).baseChange ℚ_[l]
 
 def tend (A : AbVar K) : End A →+* Module.End ℤ_[l] (Tl l A) where
@@ -158,31 +152,6 @@ def tend (A : AbVar K) : End A →+* Module.End ℤ_[l] (Tl l A) where
   map_mul' f g := tmap_comp l g f
   map_zero' := map_zero (tmap l A A)
   map_add' f g := map_add (tmap l A A) f g
-
-def vend (A : AbVar K) : End0 A →ₐ[ℚ] Module.End ℚ_[l] (Vl l A) :=
-  Algebra.TensorProduct.lift (Algebra.ofId ℚ _)
-    { toRingHom := (Module.End.baseChangeHom ℤ_[l] ℚ_[l] (Tl l A)).toRingHom.comp (tend l A)
-      commutes' := fun n => by simp }
-    fun a _ => Algebra.commutes a _
-
-def tateHom (A B : AbVar K) : ℤ_[l] ⊗[ℤ] (A ⟶ B) →ₗ[ℤ_[l]] (Tl l A →ₗ[ℤ_[l]] Tl l B) :=
-  (tmap l A B).toIntLinearMap.liftBaseChange ℤ_[l]
-
-def tateHomQ (A B : AbVar K) : ℚ_[l] ⊗[ℤ] (A ⟶ B) →ₗ[ℚ_[l]] (Vl l A →ₗ[ℚ_[l]] Vl l B) :=
-  (AddMonoidHom.mk' (fun f : A ⟶ B => vmap l f) fun f g => by
-    simp only [vmap, map_add, LinearMap.baseChange_add]).toIntLinearMap.liftBaseChange ℚ_[l]
-
-def galHomT (A B : AbVar K) : Submodule ℤ_[l] (Tl l A →ₗ[ℤ_[l]] Tl l B) where
-  carrier := {φ | ∀ σ : Gal K, φ ∘ₗ galT l A σ = galT l B σ ∘ₗ φ}
-  add_mem' ha hb σ := by rw [LinearMap.add_comp, LinearMap.comp_add, ha σ, hb σ]
-  zero_mem' σ := by rw [LinearMap.zero_comp, LinearMap.comp_zero]
-  smul_mem' c _ h σ := by rw [LinearMap.smul_comp, LinearMap.comp_smul, h σ]
-
-def galHomV (A B : AbVar K) : Submodule ℚ_[l] (Vl l A →ₗ[ℚ_[l]] Vl l B) where
-  carrier := {φ | ∀ σ : Gal K, φ ∘ₗ galV l A σ = galV l B σ ∘ₗ φ}
-  add_mem' ha hb σ := by rw [LinearMap.add_comp, LinearMap.comp_add, ha σ, hb σ]
-  zero_mem' σ := by rw [LinearMap.zero_comp, LinearMap.comp_zero]
-  smul_mem' c _ h σ := by rw [LinearMap.smul_comp, LinearMap.comp_smul, h σ]
 
 end Tate
 
@@ -208,9 +177,6 @@ def lam {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A.X) : P
 
 def IsAdj {A B : AbVar K} (c : Pic A.X.left) (d : Pic B.X.left) (f : A ⟶ B) (n : ℤ) (h : B ⟶ A) : Prop :=
   n • lam d (fst A.X B.X ≫ f.hom) (snd A.X B.X) = lam c (fst A.X B.X) (snd A.X B.X ≫ h.hom)
-
-def IsRosati {A : AbVar K} (c : Pic A.X.left) (r : End0 A →ₗ[ℚ] End0 A) : Prop :=
-  ∀ (f h : End A) (n : ℤ), n • r (toEnd0 A f) = toEnd0 A h → IsAdj (A := A) (B := A) c c f n h
 
 def IsAmpleCls {A : AbVar K} (c : Pic A.X.left) : Prop :=
   ∃ (L : LB A.X.left) (hL : L.IsLB), Out.RelAmple A.X L ∧ cls L hL = c
@@ -244,8 +210,6 @@ def prodSnd (A B : AbVar K) : prod A B ⟶ B := Hom.mk (A := prod A B) (snd A.X 
 def prodLift {T A B : AbVar K} (f : T ⟶ A) (g : T ⟶ B) : T ⟶ prod A B :=
   Hom.mk (B := prod A B) (lift f.hom g.hom) (h := inferInstanceAs (IsMonHom (lift f.hom g.hom)))
 
-def prodDesc {A B T : AbVar K} (f : A ⟶ T) (g : B ⟶ T) : prod A B ⟶ T := prodFst A B ≫ f + prodSnd A B ≫ g
-
 def prodList (s : List (AbVar K)) : AbVar K := s.foldr prod (zero K)
 
 @[simp] theorem prodList_nil : prodList ([] : List (AbVar K)) = zero K := rfl
@@ -272,21 +236,8 @@ def inter (A : AbVar K) {J : Type} [Fintype J] (c : J → Pic A.X.left) : ℤ :=
   letI := A.algΓ
   multiDiff c (chiPic K (structureModule A.X.left)) 0
 
-def IsWeilForm (l : ℕ) [Fact l.Prime] {A : AbVar K} (L : LB A.X.left)
-    (E : Tl l A →ₗ[ℤ_[l]] Tl l A →ₗ[ℤ_[l]] Tate l (AlgebraicClosure K)ˣ) : Prop :=
-  ∀ (s t : Tl l A) (n : ℕ), Out.WeilIs A.X L ((l ^ n : ℕ) : ℤ) (s.lev n) (t.lev n) (unitOn ((E s t).lev n))
-
-def galMu (l : ℕ) [Fact l.Prime] (σ : Gal K) :
-    Tate l (AlgebraicClosure K)ˣ →ₗ[ℤ_[l]] Tate l (AlgebraicClosure K)ˣ :=
-  Tate.map l (Units.map (σ : AlgebraicClosure K →* AlgebraicClosure K))
-
 def IsDualPair (A B : AbVar K) (P : LB (A.X ⊗ B.X).left) : Prop :=
   AbDual.IsDual A.X B.X P ∧ AbDual.IsDual B.X A.X (AbDual.swap P)
-
-def IsWeilPairing (l : ℕ) [Fact l.Prime] {A B : AbVar K} (P : LB (A.X ⊗ B.X).left)
-    (e : Tl l A →ₗ[ℤ_[l]] Tl l B →ₗ[ℤ_[l]] Tate l (AlgebraicClosure K)ˣ) : Prop :=
-  ∀ (s : Tl l A) (t : Tl l B) (n : ℕ), Out.WeilIs (A.X ⊗ B.X) P ((l ^ n : ℕ) : ℤ) (lift (s.lev n) 1)
-    (lift 1 (t.lev n)) (unitOn ((e s t).lev n))
 
 open GlobalTheory.WeierstrassCurve in
 
@@ -295,27 +246,6 @@ def ell (W : WeierstrassCurve K) [W.IsElliptic] : AbVar K where
   ab := (ellPolAV W).isAb
   dim := 1
   smooth := (ellPolAV W).smoothDim
-
-open GlobalTheory.WeierstrassCurve in
-
-theorem ell_isAmpleCls (W : WeierstrassCurve K) [W.IsElliptic] :
-    IsAmpleCls (A := ell W) (cls (ellPolAV W).L (ellPolAV W).isLB) :=
-  ⟨_, _, (ellPolAV W).ample, rfl⟩
-
-open Classical in
-
-theorem exists_dim_eq_one (K : Type) [Field K] : ∃ A : AbVar K, A.dim = 1 :=
-  ⟨ell (WeierstrassCurve.ofJ (0 : K)), rfl⟩
-
-theorem exists_dim_one (K : Type) [Field K] : ∃ A : AbVar K, A.dim = 1 := exists_dim_eq_one K
-
-theorem isIsogeny_id (A : AbVar K) : IsIsogeny (𝟙 A) :=
-  ⟨inferInstanceAs (IsFinite (𝟙 _)), inferInstanceAs (Surjective (𝟙 _))⟩
-
-theorem deg_id (A : AbVar K) : deg (𝟙 A) = 1 := by
-  have : IsIso (Hom.hom (𝟙 A)).left := inferInstanceAs (IsIso (𝟙 _))
-  rw [deg, if_pos (isIsogeny_id A), Scheme.Hom.finrank_eq_one_of_isIso]
-  rfl
 
 theorem lam_eq {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A.X) :
     lam c x y = CechPic.lam c x y := by
@@ -326,9 +256,6 @@ theorem lam_eq {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A
       have : (toUnit Y).left z = IsLocalRing.closedPoint K := Subsingleton.elim (α := PrimeSpectrum K) _ _
       rw [this]; exact hV) hc
   rw [lam, CechPic.lam, h, add_zero]
-
-example : (zero ℚ).dim = 0 := rfl
-example : (ell (WeierstrassCurve.ofJ (0 : ℚ))).dim = 1 := rfl
 
 end AbVar
 

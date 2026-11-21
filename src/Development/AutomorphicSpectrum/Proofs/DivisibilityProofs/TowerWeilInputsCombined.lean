@@ -1,16 +1,25 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.RefLinked
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyBoundaryDimensionDropStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyBoundaryDimensionDrop
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.APrime
+import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsFibreLocal
+import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestHeightBoundStatement
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagHeightLabelInvariantStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagHeightTestBoundStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MeanSlopeProportionalVolumeStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagHeightTestBound
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.MeanSlopeProportionalVolume
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerT2Statement
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerTheoremBStatement
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerTheoremBAveragedStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerWeilTheoremStatement
-import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerI3OfSemipositiveNefStatement
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerWeilTheorem
+import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
+import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerI3OfSemipositiveNef
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagHeightI9PropertiesStatement
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerT1LimitStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DivSuppArithHolds
@@ -30,19 +39,19 @@ theorem chain_tower : PB.FlagHeight → PB.Inputs → SuccessiveMinimaLowerBound
   intro hFH hIn hZ1 hZ2 hAP hG II hII Ψ _ _ N _ T frob C C' rd Lval hC hC' hrd hfs hP hI1 hI2 hA1 hM1 hM2 hAN
     hI5 hI6 hI7 hI8 hP6 hPA hPF hVol hSL
   have hN : 2 ≤ N := by have := T.j_pos; have := T.j_lt; omega
-  have hI3 : T.I3 := GlobalTheory.T.tower_I3_of_semipositive_nef Ψ N T hA1 hM1 hM2 hAN
+  have hI3 : T.I3 := _root_.GlobalTheory.CompanionTheory.Ar.Top.RootTower.tower_I3_of_nef_inputs Ψ N T hA1 hM1 hM2 hAN
   have hT1 : T.T1 II := GlobalTheory.T.tower_T1_limit II Ψ N T hP hI2 hI3
-  have hW : T.ThmW II := GlobalTheory.T.tower_weil_theorem hIn.2.2.2.2.2.1 GlobalTheory.T.exists_unique_rational_statement GlobalTheory.CompanionTheory.Ar.Link.divSuppArith_holds hZ1 hZ2
+  have hW : T.ThmW II := _root_.GlobalTheory.CompanionTheory.Ar.Top.thmW_tower hIn.2.2.2.2.2.1 GlobalTheory.T.exists_unique_rational_statement GlobalTheory.CompanionTheory.Ar.Link.divSuppArith_holds hZ1 hZ2
     II hII Ψ N T hP hI1 hI2 hI3 hI5 hI6 hI7
   have hI9 : I9 (Ψ := Ψ) (N := N) (hhFl Ψ N II) := GlobalTheory.T.flag_height_I9_properties hFH hIn II hII Ψ N hN
   have hB : T.ThmB II (hhFl Ψ N II) := GlobalTheory.T.tower_theorem_B hAP II Ψ N T (hhFl Ψ N II) hP hW hI8 hI9
   have he : GroundTheory.Heights₂.Heights.antisymDegree Ψ N = dimFl Ψ N := by
     simp [GroundTheory.Heights₂.Heights.antisymDegree, dimFl, Nat.choose_two_right]
-  have hAr := (GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1
+  have hAr := (_root_.GlobalTheory.CompanionTheory.Ar.PB.flag_isArithVar_and_image Ψ N hN).1
   rw [he] at hAr
   have hLab : LabelInv (Ψ := Ψ) (N := N) (hhFl Ψ N II) := GlobalTheory.T.flag_height_label_invariant II hII Ψ N hN hAr
   have hBA : T.ThmBA II (hhFl Ψ N II) := GlobalTheory.T.tower_theorem_B_averaged II Ψ N T (hhFl Ψ N II) hB hPA hLab
-  have hTest : HhTestBound T.j (hhFl Ψ N II) := GlobalTheory.T.flag_height_test_bound hG hIn II hII Ψ N T.j T.j_pos T.j_lt
+  have hTest : HhTestBound T.j (hhFl Ψ N II) := _root_.GlobalTheory.CompanionTheory.Ar.Top.HhTestProof.hhTestBound_hhFl hG hIn II hII Ψ N T.j T.j_pos T.j_lt
   have hA0 : T.LowerBoundAtBase II (hhFl Ψ N II) frob (2 * (C + C') + 3) rd Lval :=
     GlobalTheory.T.test_height_bound II Ψ N T (hhFl Ψ N II) frob C C' rd Lval hC hC' hrd hP hI9 hPF hSL hTest
   have hK : (0 : ℝ) ≤ 2 * (C + C') + 3 := by linarith
@@ -50,6 +59,6 @@ theorem chain_tower : PB.FlagHeight → PB.Inputs → SuccessiveMinimaLowerBound
     hBA hPF hA0
   have hEq : 2 * (C + C') + 3 + C' + 2 = 2 * C + 3 * C' + 5 := by ring
   rw [hEq] at hT2'
-  exact ⟨hT1, hB, hT2', GlobalTheory.T.mean_slope_proportional_volume II Ψ N T _ rd Lval hP hVol hT2'⟩
+  exact ⟨hT1, hB, hT2', _root_.GlobalTheory.CompanionTheory.Ar.Top.mean_slope_of_volume_eq II Ψ N T _ rd Lval hP hVol hT2'⟩
 
 end GlobalTheory.CompanionTheory.Ar.Top

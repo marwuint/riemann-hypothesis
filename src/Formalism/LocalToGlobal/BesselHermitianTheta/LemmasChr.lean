@@ -46,16 +46,6 @@ theorem resEta_inv (h : ResEta D χ n) : ResEta D χ⁻¹ n := by
   have h2 := eta_sq hη b
   exact inv_eq_of_mul_eq_one_right (by rw [← sq]; exact h2)
 
-theorem resEta_not_both (h0 : ResEta D χ 0) (h1 : ResEta D χ 1) : False := by
-  obtain ⟨η, hη⟩ := h0.1
-  apply hη.2.2.2
-  refine MonoidHom.ext fun a => ?_
-  have e0 := h0.2 η hη a
-  have e1 := h1.2 η hη a
-  rw [pow_zero] at e0
-  rw [pow_one] at e1
-  rw [MonoidHom.one_apply, ← e1, e0]
-
 variable {X : ThetaX D}
 
 theorem col_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ D.R.m) (n : ℕ) (hn : Even n) :
@@ -74,8 +64,6 @@ theorem carY_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s
     exact resEta_parity (resEta_mul (T.chrOf_res μ s h1 h2) (resEta_inv T.etaT_res)) (by rw [hn'])
   · exact col_ok T μ s h1 h2 n (hn.2 (Nat.not_even_iff_odd.1 hi))
 
-theorem rank_X (X : ThetaX D) (j : ℕ) (hj : j ≤ D.R.m) : (D.sp.X j).rank = D.R.k + j * (D.R.t + 1) := D.sp.X_rank j hj
-
 theorem rank_Y (X : ThetaX D) (i : ℕ) (hi : i ≤ D.R.m) : (D.sp.Y i).rank = D.R.r + i * D.R.t := D.sp.Y_rank i hi
 
 theorem r_odd (D : D7) : Odd D.R.r := by
@@ -85,12 +73,6 @@ theorem r_odd (D : D7) : Odd D.R.r := by
   refine ⟨a + b - 1, ?_⟩
   show D.R.k + D.R.m - 1 = 2 * (a + b - 1) + 1
   omega
-
-theorem col_lift_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ D.R.m) (j : ℕ) (hj : j ≤ D.R.m) :
-    ResEta D (T.eChr (X.chrOf μ s)) (D.sp.X j).rank := by
-  apply col_ok T μ s h1 h2
-  rw [rank_X X j hj]
-  exact D.R.k_even.add (D.R.t_odd.add_one.mul_left j)
 
 theorem row_lift_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 ≤ s) (h2 : s ≤ D.R.m) (i : ℕ) (hi : i ≤ D.R.m) :
     ResEta D (T.eChr (X.carY μ s i)) (D.sp.Y i).rank := by
@@ -105,11 +87,6 @@ theorem row_lift_ok (T : ThetaTied D X) (μ : D.what₂.Tup) (s : ℕ) (h1 : 1 �
     exact (Nat.not_even_iff_odd.2 (hr.add_even (hi'.mul_right _))) he
   · intro ho
     exact hr.add_odd (ho.mul ht)
-
-theorem rank_X_ne (X : ThetaX D) (j : ℕ) (hj : j < D.R.m) : (D.sp.X j).rank ≠ (D.sp.X (j + 1)).rank := by
-  rw [rank_X X j hj.le, rank_X X (j + 1) hj, Nat.succ_mul]
-  generalize j * (D.R.t + 1) = q
-  omega
 
 theorem rank_Y_ne (X : ThetaX D) (j : ℕ) (hj : j < D.R.m) : (D.sp.Y (j + 1)).rank ≠ (D.sp.Y j).rank := by
   rw [rank_Y X (j + 1) hj, rank_Y X j hj.le, Nat.succ_mul]

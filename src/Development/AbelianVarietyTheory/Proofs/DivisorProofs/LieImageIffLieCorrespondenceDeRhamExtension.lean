@@ -11,8 +11,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigOfOmegaInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdicCompleteSpanNatCastOfIsNilpotent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectiveOfRangeSupSmulTopEqTop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OmegaLevelBijectiveOfPowEqZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHodgeFiltrationToPDivOmegaLinearMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveHodgeToOmegaSpanModMaximalStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHodgeFiltrationToPDivOmegaLinearMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveHodgeToOmegaSpanModMaximal
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct WithConv
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap epsR IsTangent IsGrpPullback)
 open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB CubicalStr Theta thφ thε thK x3)
@@ -39,11 +39,11 @@ theorem isLieImage_iff_lieCorr : GlobalTheory.Published.AbelianHodgeDeRham → �
   constructor
   · rintro ⟨hv, hh⟩
     obtain ⟨x', hx', -⟩ := t.existsUnique_lieCorr hv
-    obtain ⟨ψ, hψ⟩ := T.exists_hodgeFiltration_to_pDivOmega_linearMap p R N hN A hA G t
+    obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.PtExt.exists_hodge_to_omega p R N hN A hA G t
     haveI : Module.Finite R G.omega := .equiv (LinearEquiv.ofBijective _
       (PDivGroup.omegaLevel_bijective_of_pow_eq_zero p R N hN G N le_rfl)).symm
     have hs := surjective_of_range_sup_smul_top_eq_top R _ _ ψ
-      (T.primitive_hodge_to_omega_span_mod_maximal hHdR p R N hN A g hA hsm G t ψ hψ)
+      (_root_.GlobalTheory.PtExt.psi_sup_smul_top_eq_top hHdR p R N hN A g hA hsm G t ψ hψ)
     suffices e : x' = G.lieUnivToLie (E.symm.dualMap h) by rw [← e]; exact hx'
     refine LinearMap.ext fun w => ?_
     obtain ⟨c, rfl⟩ := hs w

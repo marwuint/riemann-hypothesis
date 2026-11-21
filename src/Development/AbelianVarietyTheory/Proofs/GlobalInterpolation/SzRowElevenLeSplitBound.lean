@@ -2,16 +2,16 @@ import Mathlib
 import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowAndImp
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowRankSizesStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeKRelStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowCondQdPdeStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowLaRhoBotStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceSizeEtaStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceSizeNodesStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceSizeLstarStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeDelStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeWSizeBmSizeXppStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeGSizeWordsStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowRankSizes
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeKRel
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowCondQdPde
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowLaRhoBot
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceSizeEta
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceSizeNodes
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitChoiceSizeLstar
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeDel
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeWSizeBmSizeXpp
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SzRowSizeGSizeWords
 
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
 
@@ -36,8 +36,8 @@ private theorem szRow_eleven_le_splitBound : SzRow (fun _ D _ => 11 ≤ D.host.s
   exact h4.trans hH.split_tie
 
 theorem szRow_sizesAt : SzRow (fun _ _ L => SizesAt L) := by
-  have h := ((((((((((GlobalTheory.T.sizes_sizeN_sizeM_sizeK_sizeT_sizeTT_sizeDe2_sizeLw.and GlobalTheory.T.sizes_sizeKRel).and GlobalTheory.T.sizes_sizeCond_sizeQD_sizePde).and GlobalTheory.T.sizes_sizeLa_sizeRho_sizeBot).and GlobalTheory.T.explicitChoice_sizeEta).and
-    GlobalTheory.T.explicitChoice_sizeNodes).and GlobalTheory.T.explicitChoice_sizeLstar).and GlobalTheory.T.sizes_sizeDel).and GlobalTheory.T.sizes_sizeW_sizeBm_sizeXpp).and GlobalTheory.T.sizes_sizeG_sizeWords).and
+  have h := ((((((((((GlobalTheory.T.sizes_sizeN_sizeM_sizeK_sizeT_sizeTT_sizeDe2_sizeLw.and _root_.GlobalTheory.EX.szRow_sizeKRel).and _root_.GlobalTheory.EX.szRow_cond_qd_pde).and _root_.GlobalTheory.EX.szRow_la_rho_bot).and _root_.GlobalTheory.EX.szRow_sizeEta).and
+    _root_.GlobalTheory.EX.szRow_sizeNodes).and _root_.GlobalTheory.EX.szRow_sizeLstar).and _root_.GlobalTheory.EX.szRow_sizeDel).and _root_.GlobalTheory.EX.szRow_sizeW_sizeBm_sizeXpp).and _root_.GlobalTheory.EX.szRow_sizeG_sizeWords).and
     szRow_eleven_le_splitBound)
   refine h.imp ?_
   rintro C cD ch D L - - ⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨hN, hM, hK, hT, hTT, hDe, hLw⟩, hKR⟩, hCo, hQD, hP⟩, hLa, hRho, hBot⟩, hEta⟩,

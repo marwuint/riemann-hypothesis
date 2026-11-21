@@ -17,15 +17,6 @@ lemma pullbackSection_smul (g : T ⟶ U) (N : U.Modules) (a : Γ(U, ⊤)) (n : �
     pullbackSection g N (a • n) = g.appTop a • pullbackSection g N n :=
   Scheme.Modules.Hom.app_smul _ a n
 
-lemma pullbackSection_naturality (g : T ⟶ U) {N N' : U.Modules} (φ : N ⟶ N') (n : Γ(N, ⊤)) :
-    ((Scheme.Modules.pullback g).map φ).app ⊤ (pullbackSection g N n) =
-      pullbackSection g N' (φ.app ⊤ n) := by
-  have := (Scheme.Modules.pullbackPushforwardAdjunction g).unit.naturality φ
-  have h := congrArg (fun ψ => (Scheme.Modules.Hom.app ψ ⊤).hom n) this
-  simp only [Functor.id_map, Functor.comp_map, Scheme.Modules.Hom.comp_app,
-    AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at h
-  exact h.symm
-
 lemma pullbackComp_inv_pullbackSection (f : W ⟶ T) (g : T ⟶ U) (N : U.Modules) (n : Γ(N, ⊤)) :
     ((Scheme.Modules.pullbackComp f g).inv.app N).app ⊤ (pullbackSection (f ≫ g) N n) =
       pullbackSection f _ (pullbackSection g N n) := by

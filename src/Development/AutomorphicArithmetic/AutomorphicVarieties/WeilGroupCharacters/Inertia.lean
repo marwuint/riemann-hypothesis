@@ -56,17 +56,6 @@ def Resid.Ok : Prop :=
   (∀ v (g : Fin n → F.Gv v) (h : F.G₀), r.Dbar.tr (MonoidAlgebra.single h 1 * F.oEl v (r.psib v) g) = 0) ∧
     ∀ v i (g : F.mu v), r.psib v i g = Units.map (residue O : O →* ResidueField O) (r.th v i g)
 
-structure IsGPair {A : Type} [CommRing A] [Algebra O A] [IsLocalRing A] [IsLocalHom (algebraMap O A)]
-    (D : GDet n A F.G₀) (ψ : ∀ v, Fin n → F.Gv v →* Aˣ) : Prop where
-  cont : D.IsCont (maximalIdeal A)
-  red : D.map (residue A) = r.Dbar.map (ResidueField.map (algebraMap O A))
-  ψ_cont : ∀ v i, AdicCont (maximalIdeal A) fun g => ((ψ v i g : Aˣ) : A)
-  ψ_red : ∀ v i g, residue A (ψ v i g) = ResidueField.map (algebraMap O A) (r.psib v i g)
-  ψ_mu : ∀ v i (g : F.mu v), ((ψ v i g : Aˣ) : A) = algebraMap O A (r.th v i g)
-  P : ∀ i g, D.lam i (F.star O A n (MonoidAlgebra.single g 1)) = D.lam i (MonoidAlgebra.single g 1)
-  Ord : ∀ v (g : Fin n → F.Gv v) (h : F.G₀), D.tr (MonoidAlgebra.single h 1 * F.oEl v (ψ v) g) = 0
-  I : ∀ u, ∀ g ∈ r.Ip u, ∀ h : F.G₀, D.tr (MonoidAlgebra.single h 1 * (MonoidAlgebra.single g 1 - 1)) = 0
-
 structure FHom (F' F : GFrame l) where
   π : F'.Γ →* F.Γ
   π_cont : Continuous π

@@ -60,7 +60,7 @@ theorem measDict_of_k (hH : MeasP.HermCovol) (hT : MeasP.TupCovol) : _root_.Posi
     obtain ⟨hνH, 𝓖, hG, hG1⟩ := hνc
     haveI := hνH; haveI := hH'
     exact ⟨hemb, hemb.measurable, @MeasG.covol_unique _ _ _ _ _ _ _ _ d.ratM _ _ _ hνH hH' _ _ hG hfd hG1 h1⟩
-theorem measDict_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.MeasDict_k := _root_.PositivityTheory.SiegelWeilFormula.KWhit.measDict_of_k GlobalTheory.T.hermitian_covolume_formula GlobalTheory.T.tuple_space_covolume_formula
+theorem measDict_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.MeasDict_k := _root_.PositivityTheory.SiegelWeilFormula.KWhit.measDict_of_k GlobalTheory.T.hermitian_covolume_formula _root_.GlobalTheory.CompanionTheory.SiegelND.TupCovolume.tupCovol
 end PositivityTheory.SiegelWeilFormula.KWhit
 end
 end

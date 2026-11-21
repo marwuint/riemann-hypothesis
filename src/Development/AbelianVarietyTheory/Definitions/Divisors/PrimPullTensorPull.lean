@@ -46,12 +46,6 @@ def comp (X : DRChain.{u} C n) : ∀ i : Fin (n + 1), X.M 0 →ₗ[C] X.M i :=
 
 theorem comp_eq_chainComp (X : DRChain.{0} C n) : X.comp = chainComp X.f := rfl
 
-def ofLMPoint {ϖ : C} [NeZero n] (P : LMPoint C ϖ n) : DRChain.{0} C n where
-  M _ := Fin n → C
-  f i := stdStep ϖ i
-  g := LinearMap.id
-  ω i := P.ℓ ⟨(i : ℕ) % n, Nat.mod_lt _ (NeZero.pos n)⟩
-
 end DRChain
 
 end GlobalTheory.SSG
@@ -74,9 +68,6 @@ theorem primPull_mul (f g : B ⟶ B') [IsMonHom f] [IsMonHom g] [IsMonHom (f * g
     primPull (dp0 C) (𝟙 _) (f * g) = primPull (dp0 C) (𝟙 _) f + primPull (dp0 C) (𝟙 _) g :=
   LinearMap.ext fun c ↦ Subtype.ext (c.2 B f g)
 
-theorem primPull_id : primPull (dp0 C) (𝟙 _) (𝟙 B) = LinearMap.id :=
-  LinearMap.ext fun c ↦ Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)
-
 variable [IsCommMonObj B] [IsCommMonObj B'] [IsCommMonObj B'']
 
 def opPull (ρ : RingAct B O) (x : O) : Module.End C (primDR B) :=
@@ -88,10 +79,6 @@ theorem opPull_add (ρ : RingAct B O) (x y : O) : opPull ρ (x + y) = opPull ρ 
   have e : ρ.act (x + y) = ρ.act x * ρ.act y := ρ.map_add x y
   haveI : IsMonHom (ρ.act x * ρ.act y) := e ▸ ρ.hom _
   exact (primPull_congr e).trans (primPull_mul _ _)
-
-theorem opPull_one (ρ : RingAct B O) : opPull ρ 1 = 1 := by
-  haveI := ρ.hom
-  exact (primPull_congr ρ.map_one).trans primPull_id
 
 def opPullHom (ρ : RingAct B O) : O →+ Module.End C (primDR B) :=
   AddMonoidHom.mk' (opPull ρ) (opPull_add ρ)
@@ -193,113 +180,11 @@ instance close_isMonHom (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) : IsMonHom (
       _ = (X.π i ⊗ₘ X.π i) ≫ (X.close i ha ⊗ₘ X.close i ha) ≫ μ := by
           rw [← Category.assoc, tensorHom_comp_tensorHom, e]
 
-theorem close_isLin (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) (hc : ∀ x, a * x = x * a) :
-    IsLin (X.act i) ρ (X.close i ha) := by
-  refine ⟨X.close_isMonHom i ha, fun x ↦ ?_⟩
-  have h := X.π_deg i
-  have := h.flat
-  have := h.surj
-  haveI := GlobalTheory.FlatQuotient.epi_of_flat_surjective (X.π i)
-  rw [← cancel_epi (X.π i), ← Category.assoc, ← (X.π_lin i).comm, Category.assoc, X.π_close,
-    ← Category.assoc, X.π_close, ← ρ.map_mul, ← ρ.map_mul, hc]
-
-theorem isLin_eqToHom {i j : Fin (n + 1)} (h : i = j) :
-    IsLin (X.act i) (X.act j) (eqToHom (congrArg X.B h)) := by
-  subst h
-  simpa using IsLin.id (X.act i)
-
-def stepRev (j : Fin n) : X.B (Fin.rev j.succ) ⟶ X.B (Fin.rev j.castSucc) :=
-  eqToHom (congrArg X.B (Fin.rev_succ j)) ≫ X.φ (Fin.rev j) ≫
-    eqToHom (congrArg X.B (Fin.rev_castSucc j).symm)
-
-theorem stepRev_isLin (j : Fin n) : IsLin (X.act _) (X.act _) (X.stepRev j) :=
-  (X.isLin_eqToHom (Fin.rev_succ j)).comp ((X.φ_lin _).comp (X.isLin_eqToHom (Fin.rev_castSucc j).symm))
-
-def closeRev {a : O} (ha : a ∈ 𝔴) : X.B (Fin.rev 0) ⟶ X.B (Fin.rev (Fin.last n)) :=
-  eqToHom (congrArg X.B (Fin.rev_zero n)) ≫ X.close (Fin.last n) ha ≫ X.π 0 ≫
-    eqToHom (congrArg X.B (Fin.rev_last n).symm)
-
-theorem closeRev_isLin {a : O} (ha : a ∈ 𝔴) (hc : ∀ x, a * x = x * a) :
-    IsLin (X.act _) (X.act _) (X.closeRev ha) :=
-  (X.isLin_eqToHom (Fin.rev_zero n)).comp ((X.close_isLin _ ha hc).comp
-    (X.π_zero_lin.comp (X.isLin_eqToHom (Fin.rev_last n).symm)))
-
-open GlobalTheory.DeRham in
-
-def drChain {K : Type} [CommRing K] [Algebra K O] (χ : K →+* C) (ε : C ⊗[ℤ] O) {a : O} (ha : a ∈ 𝔴)
-    (hc : ∀ x, a * x = x * a) : GlobalTheory.SSG.DRChain.{1} C n where
-  M j := epsPart (X.act (Fin.rev j)) χ ε
-  f j := pullPart χ ε (X.stepRev j) (X.stepRev_isLin j)
-  g := pullPart χ ε (X.closeRev ha) (X.closeRev_isLin ha hc)
-  ω j := (PrimitiveSubmodule (X.B (Fin.rev j))).comap (epsPart (X.act (Fin.rev j)) χ ε).subtype
-
 end Chain
-
-section HT
-
-open GlobalTheory.UPel.HT
-
-variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
-  {C : Type} [CommRing C] {σ : R →+* C}
-
-def HTIw.drChain {o : Obj b N (spMap σ)} {w : Ideal (𝓞 D.F)} (c : HTIw o w) (i : Fin D.a)
-    (ε : C ⊗[ℤ] D.O) {a : 𝓞 D.F} (ha : a ∈ w) : GlobalTheory.SSG.DRChain.{1} C D.n :=
-  Chain.drChain c (σ.comp (b.t i)) ε (Ideal.mem_map_of_mem (algebraMap (𝓞 D.F) D.O) ha)
-    (fun x ↦ Algebra.commutes a x)
-
-end HT
 
 end GlobalTheory.IwLevel
 
 namespace GlobalTheory.UPel.HT
 
-variable {p : ℕ} [Fact p.Prime]
-
-def Datum.splitIdem (D : Datum p) {C : Type} [CommRing C] (e : ℤ_[p] →+* C) : C ⊗[ℤ] D.O :=
-  TensorProduct.comm ℤ D.O C (TensorProduct.map LinearMap.id e.toAddMonoidHom.toIntLinearMap
-    (D.splitP.some.symm (Matrix.single ⟨0, D.m_pos⟩ ⟨0, D.m_pos⟩ 1)))
-
 end GlobalTheory.UPel.HT
 
-section Basic₂
-
-open GlobalTheory.SSG
-
-variable {C : Type} [CommRing C]
-
-example (n : ℕ) [NeZero n] : (DRChain.ofLMPoint (LMPoint.worst (C := C) n)).g = LinearMap.id := rfl
-
-example : (DRChain.ofLMPoint (LMPoint.worst (C := C) 1)).comp (Fin.last 1) (fun _ ↦ 1) = 0 := by
-  rw [show (Fin.last 1 : Fin 2) = (0 : Fin 1).succ from rfl, DRChain.comp_succ]
-  change stdStep (0 : C) (0 : Fin 1) (fun _ ↦ 1) = 0
-  funext j
-  fin_cases j
-  simp only [stdStep, LinearMap.coe_mk, AddHom.coe_mk]
-  simp
-
-example {O : Type} [Ring O] {B : Over (Sp C)} [GrpObj B] [IsCommMonObj B] (ρ : RingAct B O) :
-    GlobalTheory.DeRham.tensorPull ρ (1 ⊗ₜ 1) = 1 := by
-  rw [GlobalTheory.DeRham.tensorPull_tmul, GlobalTheory.DeRham.opPull_one, one_smul]
-
-end Basic₂
-
-section ExampleHT
-
-open GlobalTheory.UPel.HT GlobalTheory.IwLevel
-
-variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
-  {C : Type} [CommRing C] {σ : R →+* C}
-
-example {o : Obj b N (spMap σ)} {w : Ideal (𝓞 D.F)} (c : HTIw o w) (i : Fin D.a) (ε : C ⊗[ℤ] D.O)
-    {a : 𝓞 D.F} (ha : a ∈ w) (j : Fin (D.n + 1)) :
-    (c.drChain i ε ha).M j = GlobalTheory.DeRham.epsPart (c.act (Fin.rev j)) (σ.comp (b.t i)) ε := rfl
-
-example {o : Obj b N (spMap σ)} {w : Ideal (𝓞 D.F)} (c : HTIw o w) (i : Fin D.a) (ε : C ⊗[ℤ] D.O)
-    {a : 𝓞 D.F} (ha : a ∈ w) (j : Fin D.n)
-    (h : GlobalTheory.DeRham.epsPart (c.act (Fin.rev j.castSucc)) (σ.comp (b.t i)) ε) :
-    haveI := (Chain.stepRev_isLin c j).hom
-    ((show GlobalTheory.DeRham.epsPart (c.act (Fin.rev j.succ)) (σ.comp (b.t i)) ε from (c.drChain i ε ha).f j h) :
-      GlobalTheory.DeRham.primDR (c.B (Fin.rev j.succ))) =
-      GlobalTheory.DeRham.primPull (GlobalTheory.Cris.dp0 C) (𝟙 _) (Chain.stepRev c j) (h : GlobalTheory.DeRham.primDR _) := rfl
-
-end ExampleHT

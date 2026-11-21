@@ -22,8 +22,6 @@ namespace GlobalTheory.Poinc.GalTrans
 section Cong
 variable {X : Type} [AddCommGroup X]
 
-theorem cm_refl (N : ℕ) (x : X) : CongMod N x x := ⟨0, by simp⟩
-
 theorem cm_symm {N : ℕ} {x y : X} (h : CongMod N x y) : CongMod N y x := by
   obtain ⟨w, hw⟩ := h
   exact ⟨-w, by rw [hw, smul_neg]; abel⟩

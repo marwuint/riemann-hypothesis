@@ -37,13 +37,6 @@ theorem exists_comap_eq_of_isIntegral {K A B : Type*} [Field K] [IsAlgClosed K] 
   change e.symm (Ideal.Quotient.mk Q (φ a)) = p a
   rw [hcomp, AlgEquiv.commutes]; rfl
 
-theorem surjective_comap_of_isIntegral {K A B : Type*} [Field K] [IsAlgClosed K] [CommRing A]
-    [Algebra K A] [CommRing B] [Algebra K B] (φ : A →ₐ[K] B) (hφ : φ.toRingHom.IsIntegral)
-    (hinj : Function.Injective φ) :
-    Function.Surjective (comap φ : (B →ₐ[K] K) → (A →ₐ[K] K)) := fun p =>
-  exists_comap_eq_of_isIntegral φ hφ p fun a ha => by
-    rw [(injective_iff_map_eq_zero φ).1 hinj a ha, map_zero]
-
 theorem finite_fiber_comap {R A B K : Type*} [CommRing R] [CommRing A] [Algebra R A] [CommRing B]
     [Algebra R B] [Field K] [Algebra R K] (φ : A →ₐ[R] B) (hφ : φ.Finite) (p : A →ₐ[R] K) :
     ((comap φ : (B →ₐ[R] K) → (A →ₐ[R] K)) ⁻¹' {p}).Finite := by

@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HasSumPolyDerivMulProdAddMatrix
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSymplOfSelfDual
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PeriodCoordinateThetaOfSignedHeisenbergVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelOneThetaEqSmulOfSelfDualLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PeriodCoordinateThetaOfSignedHeisenbergVacuum
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelOneThetaEqSmulOfSelfDualLattice
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Complex
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr
@@ -193,7 +193,7 @@ theorem prod_eq_mul_thA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   intro E _ _ _ r X g bas idx n hs hn w hw hw1 L hL v hv x hxd θ hθ
   obtain ⟨b, hbL, hb⟩ := GlobalTheory.Dict.VacNorm.exists_sympl_of_selfD hs hL
   obtain ⟨c₁, c₂, C, hC, hc₁, hc₂, H⟩ :=
-    GlobalTheory.T.periodCoordinateTheta_of_signedHeisenbergVacuum E r X g bas idx n hs hn w hw hw1 L hL v hv b hbL hb
+    _root_.GlobalTheory.Dict.VacForm.thA_vacuum E r X g bas idx n hs hn w hw hw1 L hL v hv b hbL hb
   obtain ⟨hdet, hτ, hhx, heps, hthA⟩ := H x hxd _ _ rfl rfl
   clear H
   set M₁ : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun i k => pv X idx x (b (Sum.inl k)) i with hM₁
@@ -271,7 +271,7 @@ theorem prod_eq_mul_thA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     simp only [hFdef, Pi.zero_apply, Matrix.mulVec_mulVec, hh, Matrix.nonsing_inv_mul _ hM₁u,
       Matrix.one_mulVec] at hz
     simpa using hz
-  obtain ⟨a, rfl⟩ := GlobalTheory.T.levelOne_theta_eq_smul_of_selfDual_lattice E r X g bas idx n hs hn w hw hw1 L hL x hxd θ F hθ hF hF0
+  obtain ⟨a, rfl⟩ := _root_.GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1 E r X g bas idx n hs hn w hw hw1 L hL x hxd θ F hθ hF hF0
   have hCd : C * h.det ^ (n / 2) ≠ 0 := mul_ne_zero hC (pow_ne_zero _ hdet.ne_zero)
   refine ⟨a ^ n * (C * h.det ^ (n / 2))⁻¹, fun z => ?_⟩
   rw [hthA z, _root_.mul_assoc (a ^ n), inv_mul_cancel_left₀ hCd]

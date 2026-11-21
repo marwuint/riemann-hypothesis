@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeQuotientClosedImmersionIdealSheafStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafDataMapSupComapClosedImmersionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeQuotientClosedImmersionIdealSheaf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafDataMapSupComapClosedImmersion
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.FormalAlg
 
@@ -12,9 +12,9 @@ theorem baseIdeal_comp_eq_comap (R : Type) [CommRing R] (J : Ideal R) {W T : Sch
     (f : W ⟶ Spec (CommRingCat.of R)) (i : T ⟶ W) :
     baseIdeal (i ≫ f) J = (baseIdeal f J).comap i := by
   set m := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))
-  obtain ⟨h0c, h0k, -⟩ := GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J W _ f (pullback.fst f m) (pullback.snd f m)
+  obtain ⟨h0c, h0k, -⟩ := _root_.GlobalTheory.FormalAlg.baseChange_quotient R J W _ f (pullback.fst f m) (pullback.snd f m)
     (IsPullback.of_hasPullback f m)
-  obtain ⟨-, h1k, -⟩ := GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J T _ (i ≫ f) (pullback.fst (i ≫ f) m) (pullback.snd (i ≫ f) m)
+  obtain ⟨-, h1k, -⟩ := _root_.GlobalTheory.FormalAlg.baseChange_quotient R J T _ (i ≫ f) (pullback.fst (i ≫ f) m) (pullback.snd (i ≫ f) m)
     (IsPullback.of_hasPullback (i ≫ f) m)
   haveI := h0c
   rw [← h1k, ← h0k, ← Scheme.IdealSheafData.ker_fst_of_isClosedImmersion,
@@ -23,7 +23,7 @@ theorem baseIdeal_comp_eq_comap (R : Type) [CommRing R] (J : Ideal R) {W T : Sch
 theorem map_baseIdeal_comp (R : Type) [CommRing R] (J : Ideal R) {W T : Scheme.{0}}
     (f : W ⟶ Spec (CommRingCat.of R)) (i : T ⟶ W) (hi : IsClosedImmersion i) :
     (baseIdeal (i ≫ f) J).map i = i.ker ⊔ baseIdeal f J := by
-  have h := (GlobalTheory.T.idealSheafData_map_sup_comap_closedImmersion T W i hi ⊥ (baseIdeal f J)).1
+  have h := (_root_.GlobalTheory.ClosedImmIdeal.map_sup_comap_and_comap_map T W i hi ⊥ (baseIdeal f J)).1
   rw [bot_sup_eq, Scheme.IdealSheafData.map_bot] at h
   rw [baseIdeal_comp_eq_comap, h]
 
@@ -33,11 +33,11 @@ theorem reduces_iff_ker_eq : ∀ (R : Type) [CommRing R] (J : Ideal R) (W T Y : 
   haveI := hj
   constructor
   · rintro ⟨b, hb, hpb⟩
-    obtain ⟨-, hbk, -⟩ := GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J T Y (i ≫ f) b q hpb
+    obtain ⟨-, hbk, -⟩ := _root_.GlobalTheory.FormalAlg.baseChange_quotient R J T Y (i ≫ f) b q hpb
     rw [← hb, Scheme.Hom.ker_comp, hbk, map_baseIdeal_comp R J f i hi]
   · intro hk
     set m := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))
-    obtain ⟨h1c, h1k, -⟩ := GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J T _ (i ≫ f) (pullback.fst (i ≫ f) m)
+    obtain ⟨h1c, h1k, -⟩ := _root_.GlobalTheory.FormalAlg.baseChange_quotient R J T _ (i ≫ f) (pullback.fst (i ≫ f) m)
       (pullback.snd (i ≫ f) m) (IsPullback.of_hasPullback (i ≫ f) m)
     haveI := h1c
     have hker : (pullback.fst (i ≫ f) m ≫ i).ker = j.ker := by

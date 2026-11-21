@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuation
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsFiniteLengthOfIsArtinianRingAnnihilator
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordinateFunctionalsFunctionFieldExtensioStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenTraceCoefficientsNonvanishingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPowAmpleForallLocalConditionStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordinateFunctionalsFunctionFieldExtensio
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenTraceCoefficientsNonvanishing
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionPowAmpleForallLocalCondition
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankSectionsPullbackLeMulTwistDominantStatement
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits Filter
@@ -27,19 +27,19 @@ theorem globalSectionsDim_pullback_le_generically_finite : ∀ (F : Type) [Field
       ∀ B : LB W, B.IsLB → (letI := algebraΓOfHom (f ≫ p); lbH0 F (B.pull f)) ≤
         r * (letI := algebraΓOfHom p; lbH0 F (tens B A)) := by
   intro F _ M W _ _ p f hp hfp _ hdeg
-  obtain ⟨r, co, hco, hinj⟩ := GlobalTheory.T.exists_coordinateFunctionals_functionField_extension M W f hdeg
+  obtain ⟨r, co, hco, hinj⟩ := _root_.GlobalTheory.functionField_coords M W f hdeg
   obtain ⟨hpp, H, hH⟩ := (isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp
   obtain ⟨hfpp, L, hL⟩ := (isProjOver_iff_isProper_and_exists_isAmpleLB (f ≫ p)).1 hfp
   haveI := hpp
   haveI := hfpp
   haveI : IsProper f := IsProper.of_comp f p
   haveI : IsNoetherian W := isNoetherian_of_isProjOver hp
-  obtain ⟨n, hn, t, ht, htP⟩ := GlobalTheory.T.exists_section_pow_ample_forall_local_condition W H hH
+  obtain ⟨n, hn, t, ht, htP⟩ := _root_.GlobalTheory.exists_sec_forall_local_condition W H hH
     (fun y c => ∀ (V' : W.Opens), y ∈ V' → ∀ (h : genericPoint M ∈ f ⁻¹ᵁ V')
       (z : Γ(M, f ⁻¹ᵁ V')) (j : Fin r), RegAt y (c * co j (fnOf (f ⁻¹ᵁ V') h z)))
     (fun y c c' hc hc' V' hy h z j => by rw [mul_assoc]; exact hc'.mul (hc V' hy h z j))
     (fun y => by
-      obtain ⟨V, hy, d, hd, hd'⟩ := GlobalTheory.T.exists_open_trace_coefficients_nonvanishing M W f L hL co hco y
+      obtain ⟨V, hy, d, hd, hd'⟩ := _root_.GlobalTheory.ProperDenom.exists_local_denom M W f L hL co hco y
       exact ⟨V, hy, d, hd, fun y' hy' V' hV' h z j => hd' y' hy' V' hV' h z j⟩)
   exact ⟨r, lbPow H n, (isAmpleLB_pow_iff hH.isLB hn).2 hH, fun B hB =>
     GlobalTheory.T.finrank_sections_pullback_le_mul_twist_of_dominant F M W p f hp co hco hinj (lbPow H n) (isLB_lbPow hH.isLB n) t ht

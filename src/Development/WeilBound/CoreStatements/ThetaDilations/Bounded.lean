@@ -1,13 +1,15 @@
 import Development.WeilBound.CoreStatements.ThetaDilations.OrbitAdelic
 import Development.WeilBound.CoreStatements.ThetaDilations.ProdRho
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ReductionToSiegelDomainStatement
+import Mathlib
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ReductionToSiegelDomain
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionModularityStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionAutomorphyStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionCuspExpansionStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionGrowthBoundStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionCuspExpansion
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionGrowthBound
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaAverageExpectedCountStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaAverageIntegralFormulaStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaSeriesSummableStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaAverageIntegralFormula
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaSeriesSummable
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
@@ -24,9 +26,9 @@ theorem bounded : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F
   obtain ⟨𝒟, h𝒟⟩ : ∃ 𝒟 : ((ι → A F) → ℂ) → (InfinitePlace F → ℂ) → ℂ, ∀ φ τ,
     𝒟 φ τ = (∫ ω, theta B ρ P (gf ω) (gi ω) φ τ ∂Pr) - eis ψ lf B ρ P φ τ := ⟨_, fun _ _ => rfl⟩
   have hUD := fun ω => GlobalTheory.T.theta_function_modularity F ψ hψ ι M B ρ P hQ _ _ (hO ω)
-  have hei := GlobalTheory.T.theta_function_cusp_expansion F lf hlf h1 ψ hψ ι M B ρ P hQ hM
-  have heb := GlobalTheory.T.summable_norm_eiTerm_and_wt_mul_tsum_le F lf hlf h1 ψ hψ ι M B ρ P hQ hM
-  have hti := GlobalTheory.T.theta_average_integral_formula F lf hlf h1 ψ hψ ι M B ρ P hQ Ω Pr gf gi hC
+  have hei := _root_.GlobalTheory.CompanionTheory.SW.Core.EiInv.ei_inv F lf hlf h1 ψ hψ ι M B ρ P hQ hM
+  have heb := _root_.GlobalTheory.CompanionTheory.SW.Core.EiBound.ei_bound F lf hlf h1 ψ hψ ι M B ρ P hQ hM
+  have hti := _root_.GlobalTheory.CompanionTheory.SW.Core.ThetaIntegral.main F lf hlf h1 ψ hψ ι M B ρ P hQ Ω Pr gf gi hC
   have hsm : ∀ φ τ, SB φ → (∀ w, 0 < (τ w).im) → ∀ c : ℂ, 𝒟 (c • φ) τ = c * 𝒟 φ τ := fun φ τ hφ hτ c => by
     simp only [h𝒟, fun ω => (hUD ω φ τ).2.2 c, (hei φ hφ τ hτ).2.2.2 c, integral_const_mul, mul_sub]
   have good := good_ex hlf h1 hψ hQ (𝒟 := 𝒟) fun φ τ hφ hτ =>
@@ -39,7 +41,7 @@ theorem bounded : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F
     obtain ⟨w₀, hw₀⟩ := Finite.exists_min fun w => (τ w).im
     have e1 : ∀ ω, theta B ρ P (gf ω) (gi ω) (φ + φ') τ =
         theta B ρ P (gf ω) (gi ω) φ τ + theta B ρ P (gf ω) (gi ω) φ' τ := fun ω => by
-      have hs := (GlobalTheory.T.theta_series_summable F ι M B ρ P hQ _ _ (hO ω) τ hτ).1
+      have hs := (_root_.GlobalTheory.CompanionTheory.SW.ThetaSum.theta_summable_and_ne_zero F ι M B ρ P hQ _ _ (hO ω) τ hτ).1
       rw [theta, theta, theta, ← (hs φ hφ).of_norm.tsum_add (hs φ' hφ').of_norm]
       simp only [thTerm, Pi.add_apply, add_mul]
     have e2 : ∀ b, eiTerm ψ lf B ρ P (φ + φ') τ b = eiTerm ψ lf B ρ P φ τ b + eiTerm ψ lf B ρ P φ' τ b := fun b => by
@@ -51,7 +53,7 @@ theorem bounded : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F
     simp only [h𝒟, e1, eis, e2, Pi.add_apply, integral_add (hti φ τ hφ hτ).1 (hti φ' τ hφ' hτ).1,
       (s1 τ hw₀).1.of_norm.tsum_add (s2 τ hw₀).1.of_norm]
     ring
-  obtain ⟨S, κ, t, hκ, ht, hred⟩ := GlobalTheory.T.reduction_to_siegel_domain F hQ.1 ρ hQ.2.2.2.2.1
+  obtain ⟨S, κ, t, hκ, ht, hred⟩ := _root_.GlobalTheory.CompanionTheory.SW.Red.reduction F hQ.1 ρ hQ.2.2.2.2.1
   have hwt : ∀ τ : InfinitePlace F → ℂ, 0 ≤ wt M τ := fun τ => Finset.prod_nonneg fun _ _ => by positivity
   have hS : ∀ φ, SB φ → ∃ C : ℝ, 0 ≤ C ∧ ∀ τ : InfinitePlace F → ℂ, (∀ w, t ≤ (τ w).im) →
       (∀ v w, κ * (τ w).im ≤ (τ v).im) → wt M τ * ‖𝒟 φ τ‖ ≤ C := fun φ hφ => by

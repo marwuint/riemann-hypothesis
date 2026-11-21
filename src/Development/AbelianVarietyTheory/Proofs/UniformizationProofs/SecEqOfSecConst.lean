@@ -128,9 +128,6 @@ theorem scal_specMap (p : Y ⟶ Spec (CommRingCat.of B)) (φ : A →+* B) (r : A
 theorem scal_mul (p : Y ⟶ Spec (CommRingCat.of A)) (r s : A) : scal p (r * s) = scal p r * scal p s := by
   simp only [scal, map_mul]
 
-theorem scal_zero (p : Y ⟶ Spec (CommRingCat.of A)) : scal p 0 = 0 := by
-  simp only [scal, map_zero]
-
 theorem scal_bijective (p : Y ⟶ Spec (CommRingCat.of A)) [IsIso p] : Function.Bijective (scal p) :=
   (ConcreteCategory.bijective_of_isIso (p.app ⊤)).comp
     (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv)

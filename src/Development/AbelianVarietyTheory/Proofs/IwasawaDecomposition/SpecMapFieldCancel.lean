@@ -28,5 +28,3 @@ theorem GlobalTheory.spec_map_field_cancel {K C : Type} [Field K] [Field C] (gam
     simpa using this
   rw [h4]
 
-theorem GlobalTheory.spec_map_field_epi : ∀ {K C : Type} [Field K] [Field C] (gam : K →+* C) {X : Scheme} (y y' : Sp K ⟶ X), spMap gam ≫ y = spMap gam ≫ y' → y = y' :=
-  fun gam _ y y' h => GlobalTheory.spec_map_field_cancel gam y y' h

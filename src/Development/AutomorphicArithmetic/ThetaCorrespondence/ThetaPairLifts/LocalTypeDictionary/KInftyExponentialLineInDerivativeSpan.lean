@@ -3,15 +3,15 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaPairCompact
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.MemPolarizationStabilizerOfDualPair
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.FockVectorsKFinite
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaPairCompactActionStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolActs
 
 section
 open NumberField IsDedekindDomain
 noncomputable section
 namespace GlobalTheory.KExpLine
-section Abstract
-variable {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y]
-end Abstract
 end GlobalTheory.KExpLine
 namespace GlobalTheory.KExpLine
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
@@ -27,7 +27,7 @@ theorem sub_mem_span_kInfty_exp_derivatives : _root_.GlobalTheory.FunPr.ThetaLoc
         GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (fun t => om (γ (Multiplicative.ofAdd t), 1)) g g₁} := by
   intro hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP k hk f hf f₁ hact
   obtain ⟨hDer, hOp, -, -⟩ := _root_.GlobalTheory.T.dualPair_preserves_polarization hPr F E σ B n d X W M χX χW om r s r' s' hP
-  obtain ⟨γ, hγL, hγ1, hγK⟩ := GlobalTheory.T.exists_oneParameter_in_unitaryArchimedeanMaxCompact F E σ B n X r s hP.base hP.herm k hk
+  obtain ⟨γ, hγL, hγ1, hγK⟩ := _root_.GlobalTheory.CompactLine.exists_line_in_kInf F E σ B n X r s hP.base hP.herm k hk
   obtain ⟨S, hSfin, hS⟩ := _root_.GlobalTheory.T.fock_vectors_kFinite hPr F E σ B n d X W M χX χW om r s r' s' hP f hf
   haveI := hSfin
   obtain ⟨Dg, hDgP, hDg⟩ := hDer γ hγL

@@ -169,8 +169,8 @@ theorem pull_eq_gauss_smul_intertwiner : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K
   have : (volume : Measure (Fin N' → Fin N → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   have : (volume : Measure (VC D N N')).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   have t₁ := discrete_of_selfDual (isHerm_sesqOf D (tor0 D cc δ) N N') d₁ f₁
-  obtain ⟨L, hL⟩ := GlobalTheory.T.exists_periodPair_idealCurveLattice D cc δ hc
-  have hH := isPosHerm_formV D (tor0 D cc δ) N N' (GlobalTheory.T.latticeCovolume_pos_and_selfDual L _ hL).1
+  obtain ⟨L, hL⟩ := _root_.GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc
+  have hH := isPosHerm_formV D (tor0 D cc δ) N N' (_root_.GlobalTheory.PlaneLattice.area_pos_and_selfDual L _ hL).1
   have hα : IsSemichar (formV D (tor0 D cc δ) N N') A (al D (tor0 D cc δ)) := by
     refine ⟨c₁.1, i₁, fun x hx y hy => ?_⟩
     rw [c₁.2 x hx y hy]

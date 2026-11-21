@@ -69,16 +69,6 @@ theorem exists_sub_mem_integralFiniteAdeles (a : FiniteAdeleRing R K) :
       simpa using hv
     exact Subring.sub_mem _ hav ((coe_mem_adicCompletionIntegers_iff v k).mpr (hkn v hv))
 
-theorem range_algebraMap_sup_integralFiniteAdeles :
-    (algebraMap K (FiniteAdeleRing R K)).range.toAddSubgroup ⊔
-      (integralFiniteAdeles R K).toAddSubgroup = ⊤ := by
-  refine eq_top_iff.mpr fun a _ => ?_
-  obtain ⟨k, hk⟩ := exists_sub_mem_integralFiniteAdeles a
-  have : a = algebraMap K (FiniteAdeleRing R K) k + (a - algebraMap K (FiniteAdeleRing R K) k) := by
-    abel
-  rw [this]
-  exact AddSubgroup.add_mem_sup ⟨k, rfl⟩ hk
-
 instance : T2Space (FiniteAdeleRing R K) :=
   inferInstanceAs (T2Space
     (Πʳ v : HeightOneSpectrum R, [v.adicCompletion K, v.adicCompletionIntegers K]))

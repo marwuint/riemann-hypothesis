@@ -144,18 +144,6 @@ def cntIp (φ φ' : Form k n ℂ) : ℂ := ∑ᶠ P, φ P * (starRingEnd ℂ) (�
 def IsAdj (A B : Module.End ℂ (Form k n ℂ)) : Prop :=
   ∀ φ φ' : Form k n ℂ, (Function.support φ).Finite → (Function.support φ').Finite → cntIp (A φ) φ' = cntIp φ (B φ')
 
-theorem dia_sub_mem_Mram (c : 𝓀[k]ˣ) : dia c φ - φ ∈ Mram k n M := by
-  letI := Fintype.ofFinite 𝓀[k]ˣ
-  refine (mem_Mram _).2 fun P => ?_
-  simp only [Pi.sub_apply, dia_apply, Finset.sum_sub_distrib, smul_smul, sub_eq_zero]
-  exact Equiv.sum_comp (Equiv.mulLeft c) fun d => φ (d • P)
-
-theorem dia_smul_eq_iff {c : 𝓀[k]ˣ} {P : Pair k n} : c • P = P ↔ c = 1 := by
-  refine ⟨fun h => ?_, fun h => by simp [h]⟩
-  have := Pair.dia_hasVal.1 (h.symm ▸ P.hasVal_vec : (c • P).HasVal P.vec 1)
-  have h2 := this.unique P.hasVal_vec
-  simpa using h2
-
 section Equivariance
 variable [Fintype n] [DecidableEq n]
 
@@ -603,27 +591,11 @@ def sphVecs (L₀ : Submodule 𝒪[k] (n → k)) : Submodule ℂ A where
   zero_mem' g _ := by simp
   smul_mem' c v h g hg := by simp [h g hg]
 
-def vecAt {L₀ : Submodule 𝒪[k] (n → k)} [L₀.IsLattice k] (v : sphVecs σ L₀) (L : Submodule 𝒪[k] (n → k))
-    [L.IsLattice k] : A := σ (exists_smul_lat L₀ L).choose v
-
 variable {L₀ : Submodule 𝒪[k] (n → k)} [L₀.IsLattice k] (v : sphVecs σ L₀)
 
 end Spherical
 
 section Examples
-
-example [Fintype n] [DecidableEq n] (P : Pair k n) : phiOne P P 1 = 1 :=
-  if_pos (maps_iff_hasVal.2 fun y a h => by simpa using h)
-
-example [Fintype n'] (P : Pair k n') (Q : Pair k n) : phiOne P Q 0 = 0 :=
-  if_neg fun h => by
-    have h1 := maps_iff_hasVal.1 h _ _ P.hasVal_vec
-    rw [zero_mulVec] at h1
-    exact one_ne_zero (h1.unique (Pair.mem_ker.1 (zero_mem _)))
-
-example [Fintype n] (i : n) (x : n → k) :
-    x ∈ (stdPair k i).ker ↔ ∃ h : ∀ j, x j ∈ 𝒪[k], (⟨x i, h i⟩ : 𝒪[k]) ∈ maximalIdeal 𝒪[k] := by
-  simp only [Pair.mem_ker, stdPair_hasVal, residue_eq_zero_iff]
 
 theorem scalar_smul_eq [Fintype n] [DecidableEq n] (g : GL n k) (s : 𝒪[k]ˣ) (hg : ∀ x : n → k, g • x = (s : 𝒪[k]) • x)
     (P : Pair k n) : g • P = (Units.map (residue 𝒪[k]).toMonoidHom s)⁻¹ • P := by
@@ -636,21 +608,6 @@ theorem scalar_smul_eq [Fintype n] [DecidableEq n] (g : GL n k) (s : 𝒪[k]ˣ) 
   convert this using 1
   change a = _ * (residue 𝒪[k] s * a)
   rw [← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]
-
-theorem Mram_ne_bot [Fintype n] [Nonempty n] {c : 𝓀[k]ˣ} (hc : c ≠ 1) : Mram k n ℂ ≠ ⊥ := by
-  classical
-  obtain ⟨P⟩ : Nonempty (Pair k n) := inferInstance
-  intro h
-  have h1 := dia_sub_mem_Mram (k := k) (n := n) (Pi.single P (1 : ℂ)) c
-  rw [h, Submodule.mem_bot] at h1
-  have h2 := congrFun h1 P
-  simp [dia_smul_eq_iff, hc] at h2
-
-example (P : Pair k n) (q : Unif k) (x : n → k) : inX k n 0 x ∈ P.glued q 0 1 ↔ x ∈ P.lat := by
-  rw [Pair.glued, mem_gluedLat, Pair.mem_lat_iff]
-  simp [inX, Pair.hasVal_iff P.hasVal_vec]
-
-example (r : ℕ) : Nonempty (GluePair k (Fin (r + 1))) := ⟨(stdPair k 0).toGlue⟩
 
 end Examples
 

@@ -15,19 +15,6 @@ theorem mem_Zgood {i : (cut D c).nd.Loc} {x : (cut D c).nd.X i} : x ∈ (cut D c
   classical
   exact Finset.mem_subtype
 
-theorem mem_ZgoodN {i : (cut D c).nd.Loc} {x : (cut D c).nd.X i} :
-    x ∈ ZgoodN (cut D c).nd (cut D c).naut i ↔ x.1 ∈ ZgoodN D.nd D.naut i.1 :=
-  ((cut D c).Zgood_tie i x).symm.trans (mem_Zgood.trans (D.Zgood_tie i.1 x.1))
-
-theorem CutD.Good.hG (h : c.Good) (i : (cut D c).nd.Loc) : HG (cut D c).nd (cut D c).naut i := by
-  obtain ⟨x, hx⟩ := (h.keep i.1).1 i.2
-  exact ⟨⟨x, h.good _ x hx⟩, mem_ZgoodN.2 ((D.Zgood_tie i.1 x).1 hx)⟩
-
-abbrev qc (c : CutD D) (i : (cut D c).nd.Loc) :
-    FractionRing (D.nd.O i.1) ⊗[D.nd.O i.1] D.nd.Mt i.1 →ₗ[FractionRing (D.nd.O i.1)]
-      FractionRing (D.nd.O i.1) ⊗[D.nd.O i.1] cutM (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1) :=
-  qK (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1)
-
 theorem eta_le (h : c.Good) (i : (cut D c).nd.Loc) : D.nd.etaLoc i.1 ≤ (cut D c).nd.etaLoc i +
     (∑ x ∈ D.nd.Zgood i.1, D.nd.mult i.1 x : ℕ) * (padicValNat (D.nd.l i.1) D.what₂.restRowsFiniteGroupCard : ℚ) := by
   classical

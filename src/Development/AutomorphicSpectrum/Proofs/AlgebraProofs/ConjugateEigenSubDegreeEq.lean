@@ -4,9 +4,9 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExa
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShortExactFirstTermBundle
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LinearIndependentMapVec
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSplitInjectiveAndExists
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShortExactEigenSubDegreeStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenspaceFrobeniusTwistStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualEigenSubDegreeTransposeStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShortExactEigenSubDegree
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenspaceFrobeniusTwist
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualEigenSubDegreeTranspose
 
 open GlobalTheory.CompanionTheory.Ar.Crv
 
@@ -64,14 +64,14 @@ theorem hodge_eq (hχ : IsSplit χ) (hk : ∀ i (c : k), C.v i (algebraMap k K c
       subDeg C D.lie (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ s a))) -
       subDeg C D.lie (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ t a))) := by
   classical
-  have h1 := GlobalTheory.T.short_exact_eigen_sub_degree K C _ _ _ (dotDual C D.lie) D.H D.lie (LinearMap.inr K _ _)
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.eigen_ses_subDeg K C _ _ _ (dotDual C D.lie) D.H D.lie (LinearMap.inr K _ _)
     (LinearMap.fst K _ _) O k S χ hχ hk (fun a => Matrix.toLin' (D.ρ (star a)).transpose) D.ρH
     (fun a => Matrix.toLin' (D.ρ a)) D.H_bun D.ρH_hom D.hodge
     (fun a x => by simpa using (D.ρH_inr a x).symm) (fun a y => by simpa using D.ρH_fst a y) s
   have h2 := eig_star (K := K) (fun a => Matrix.toLin' (D.ρ a).transpose)
     (fun a => algebraMap k K (χ s a)) (fun a => algebraMap k K (χ t a))
     (fun a => by rw [hst])
-  have h3 := GlobalTheory.T.dual_eigen_sub_degree_transpose K C d D.lie O k S χ hχ hk D.ρ D.lie_bun (lie_hom C D) t
+  have h3 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg K C d D.lie O k S χ hχ hk D.ρ D.lie_bun (lie_hom C D) t
   rw [h1, h2, h3]
   ring
 
@@ -82,20 +82,20 @@ theorem conj_eq [Fact p.Prime] [CharP K p] (hχ : IsSplit χ)
       p * (subDeg C D.lie (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ s a))) -
       subDeg C D.lie (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ t a)))) := by
   classical
-  have h1 := GlobalTheory.T.short_exact_eigen_sub_degree K C _ _ _ (frobLat C p D.lie) D.H (frobLat C p (dotDual C D.lie))
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.eigen_ses_subDeg K C _ _ _ (frobLat C p D.lie) D.H (frobLat C p (dotDual C D.lie))
     D.α D.β O k S χ hχ hk (fun a => Matrix.toLin' ((D.ρ a).map (· ^ p))) D.ρH
     (fun a => Matrix.toLin' ((D.ρ (star a)).transpose.map (· ^ p))) D.H_bun D.ρH_hom D.conj
     (fun a x => by simpa using D.α_act a x) (fun a y => by simpa using D.β_act a y) u
   have hc : (fun a => algebraMap k K (χ u a)) = fun a => algebraMap k K (χ s a) ^ p := by
     funext a
     rw [hu, map_pow]
-  have h2 := GlobalTheory.T.eigenspace_frobenius_twist K p d O (fun a => D.ρ a) (fun a => algebraMap k K (χ s a))
-  have h3 := GlobalTheory.T.eigenspace_frobenius_twist K p d O (fun a => (D.ρ (star a)).transpose)
+  have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.eig_frobenius_twist K p d O (fun a => D.ρ a) (fun a => algebraMap k K (χ s a))
+  have h3 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.eig_frobenius_twist K p d O (fun a => (D.ρ (star a)).transpose)
     (fun a => algebraMap k K (χ s a))
   have h4 := eig_star (K := K) (fun a => Matrix.toLin' (D.ρ a).transpose)
     (fun a => algebraMap k K (χ s a)) (fun a => algebraMap k K (χ t a))
     (fun a => by rw [hst])
-  have h5 := GlobalTheory.T.dual_eigen_sub_degree_transpose K C d D.lie O k S χ hχ hk D.ρ D.lie_bun (lie_hom C D) t
+  have h5 := _root_.GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg K C d D.lie O k S χ hχ hk D.ρ D.lie_bun (lie_hom C D) t
   rw [h1, hc, h2, h3, SubFrob.subDeg_frob K C p d _ _ D.lie_bun,
     SubFrob.subDeg_frob K C p d _ _ (dual_bun C D), h4, h5]
   ring

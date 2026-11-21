@@ -359,13 +359,4 @@ theorem stepNormOne_of
     have hE := PtPf.blockEndMinors_of_cell _ (PtPf.zhatOM_isIntegral _ _ hun hF hF') _ hcell
     exact ⟨o, ho, by rw [e, endMin_eq], (hE a).2⟩
 
-open Formalism.L2.SG.TermOp.Vanish in
-
-theorem stepNormOne_of_leaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
-    (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)
-    (hAt : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
-      (t : Formalism.L2.SG.TermDef.Term D u u' (X.Fu u) (Y.what₂ u)), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w) :
-    Formalism.L2.SG.NGCut.StepNormOne :=
-  stepNormOne_of (fun _ _ Y _ _ t ht => ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht) hAt
-
 end Formalism.L2.SG.NGCut.LeadingMinorIntegrality

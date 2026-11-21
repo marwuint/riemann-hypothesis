@@ -155,10 +155,6 @@ structure IsTheta (I : Ideal R) {B B₀ B' : Type} [CommRing B] [Algebra R B] [C
   der : ∀ b, θ (D R₀ B₀ (p b)) = α b - β b
   mem : ∀ w, θ w ∈ I.map (algebraMap R B')
 
-theorem isTheta_zero (I : Ideal R) {B B₀ B' : Type} [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀]
-    [CommRing B'] [Algebra R B'] (p : B →+* B₀) (α : B →ₐ[R] B') : IsTheta (R₀ := R₀) I p α α 0 :=
-  ⟨fun _ _ ↦ by simp, fun _ ↦ by simp, fun _ ↦ by simp⟩
-
 def Sys.LocIso.IsDefect {S S' : Sys I π s₀} (Φ : S.LocIso S')
     (θ : ∀ (U V : AffOp X₀) (_ : U ⟶ V), Ω[Sec s₀ U.unop.1⁄R₀] →+ S'.F.obj V) : Prop :=
   ∀ (U V : AffOp X₀) (a : U ⟶ V), IsTheta I (S.p U) ((mp S'.F a).comp (Φ.φ U : S.F.obj U →ₐ[R] S'.F.obj U))
@@ -209,28 +205,6 @@ theorem smooth_sec_affine [Smooth s] (U : X.affineOpens) : Algebra.Smooth R (Sec
   have h : Smooth (affPt s U ≫ s) := inferInstance
   rw [affPt_w] at h
   exact RingHom.smooth_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Smooth)).1 h)
-
-def Sys.self [Smooth s] : Sys (⊥ : Ideal R) (RingHom.id R) s where
-  F := OAff s
-  p _ := RingHom.id _
-  semi _ := fun _ _ ↦ rfl
-  nat _ _ := rfl
-  surj _ := Function.surjective_id
-  ker U b := by simp [Ideal.map_bot]
-  smooth U := smooth_sec_affine s U.unop
-
-def Sys.selfPresents [Smooth s] : (Sys.self s).Presents s (𝟙 X) :=
-  Sys.Presents.ofSurjective _ inferInstance (fun U ↦ affPt s U.unop)
-    (fun U ↦ IsAffineOpen.isOpenImmersion_fromSpec U.unop.2) (fun U ↦ affPt_w s U.unop)
-    (fun _ _ a ↦ affPt_res s (leOfHom a.unop)) fun U ↦ by
-      change spMap (RingHom.id _) ≫ affPt s U.unop = affPt s U.unop ≫ 𝟙 X
-      rw [Category.comp_id, Cris.spMap_id, Category.id_comp]
-
-example [Smooth s] : (Sys.LocIso.refl (Sys.self s)).IsDefect (fun _ _ _ ↦ 0) := fun _ _ _ ↦ isTheta_zero _ _ _
-
-example [Smooth s] {Y : Scheme.{0}} (t : Y ⟶ Sp R) (i : X ⟶ Y) (hi : ¬ Surjective i) :
-    IsEmpty ((Sys.self s).Presents t i) :=
-  ⟨fun P ↦ hi (P.surjective _ (by simp))⟩
 
 end Self
 

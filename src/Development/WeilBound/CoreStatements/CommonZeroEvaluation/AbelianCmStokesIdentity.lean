@@ -37,8 +37,7 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PTopNMixedExpand
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.POmNVbInt
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PStokesLimitTTop
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PMuMeasureLimit
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsStokesLimitTVbTrunc
-import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsStokesLimitTVbTail
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsStokesGeo
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PNbarChartSemipos
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PNbarSemipos
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PTpCuspIntegrable
@@ -47,8 +46,9 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PBoundaryNull
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsModelPtsIntegrable
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StAPrimeChartMargin
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StNbarLeviChartReg
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChartStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LeviChartRegularityStatementHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalOrbitChart
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsLocalOrbitChart
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LeviChartRegularityStatementHolds
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PAPrimeChartMargin
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PAPrimeChartLevi
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.PAPrimeChartLeviLocal
@@ -58,10 +58,15 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PInjectiveHolomo
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PInjectiveHolomorphicJacobianNeZero
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PHolomorphicKernelFibre
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCriticalFlatNotInjective
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.ModelPointsIntegrableStatementHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.TopMixedLimitOfResolutionStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.StokesLimitStatementHoldsStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasureLimitStatementHoldsStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.ModelPointsIntegrableStatementHolds
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.TopMixedLimitOfResolution
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.StokesLimitStatementHolds
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsStokesLimitTVb
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasureLimitStatementHolds
+import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsMuMeasureLimit
+
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp MeasureTheory
@@ -112,7 +117,7 @@ theorem stokes_of_statements (hOrb : LocalOrbitChart.Statement)
   exact StokesLimitPos.proof hG hTel hNs hTp hT hEps II (CMType H) K J Ω W Dc O Lt X B a hFull.1 hPos hB hAr hyp
 
 theorem stokes_of_model : PB.Inputs → Prov.An → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → Flat.GagaSections → GlobalTheory.Published.SemiAbelianHomExtension → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (B₁ : ℕ) (U : ((Σ k, J k) → ℂ) → ℝ), IsFullIntersectionSystem II → admitted Xo l c Y Or B₁ → Or.𝔐.IsCuspWeight Or.sm U → ∀ [DecidableEq (CMType H)] (O Lt : Type) [CommRing O] [AddCommGroup Lt] [Module O Lt] (X : ComponentSetting Dc O Lt), X.H = Hd → (∀ z ∈ Dc.Xo, X.Cd.cuspWeight z = U z) → CuspBundlePos X → ∀ B : ℕ, 4 * Dc.f + 2 ≤ B → ArLimExists X.H X.S B → Top.StokesAt X B :=
-  stokes_of_statements GlobalTheory.T.local_orbit_chart_statement_holds GlobalTheory.T.levi_chart_regularity_statement_holds (margin_of_orbit GlobalTheory.T.local_orbit_chart_statement_holds) GlobalTheory.T.model_points_integrable_statement_holds GlobalTheory.T.top_mixed_limit_of_resolution GlobalTheory.T.stokes_limit_statement_holds GlobalTheory.T.measure_limit_statement_holds
+  stokes_of_statements _root_.GlobalTheory.CompanionTheory.Ar.Giv.localOrbitChart _root_.GlobalTheory.CompanionTheory.Ar.Giv.nbarLeviChartReg (margin_of_orbit _root_.GlobalTheory.CompanionTheory.Ar.Giv.localOrbitChart) _root_.GlobalTheory.CompanionTheory.Ar.Giv.modelPtsIntegrable _root_.GlobalTheory.CompanionTheory.Ar.Giv.mixed_limit _root_.GlobalTheory.CompanionTheory.Ar.Giv.VbLimit.stokesLimitTVb _root_.GlobalTheory.CompanionTheory.Ar.Giv.muMeasureLimit
 
 end ModelDimension.OrbitMargin
 

@@ -216,30 +216,6 @@ theorem mem_invDifferentAdeles {x : 𝔸[K]} :
     x ∈ invDifferentAdeles K ↔ x.2 ∈ finiteInvDifferent K := by
   exact ⟨fun h => h.2, fun h => ⟨AddSubgroup.mem_top _, h⟩⟩
 
-variable (K) in
-
-theorem isOpen_invDifferentAdeles : IsOpen (invDifferentAdeles K : Set 𝔸[K]) := by
-  have : (invDifferentAdeles K : Set 𝔸[K]) =
-      Prod.snd ⁻¹' (finiteInvDifferent K : Set (FiniteAdeleRing (𝓞 K) K)) := by
-    ext x
-    exact mem_invDifferentAdeles
-  rw [this]
-  exact (isOpen_finiteInvDifferent K).preimage continuous_snd
-
-theorem exists_sub_mem_invDifferentAdeles (x : 𝔸[K]) :
-    ∃ k : K, x - algebraMap K 𝔸[K] k ∈ invDifferentAdeles K := by
-  obtain ⟨k, hk⟩ := exists_sub_mem_finiteInvDifferent x.2
-  exact ⟨k, mem_invDifferentAdeles.mpr hk⟩
-
-theorem algebraMap_mem_invDifferentAdeles_iff (k : K) :
-    algebraMap K 𝔸[K] k ∈ invDifferentAdeles K ↔
-      k ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 K) K) := by
-  rw [mem_invDifferentAdeles, Submodule.mem_traceDual]
-  refine (algebraMap_mem_finiteInvDifferent_iff k).trans ⟨fun h a ha => ?_, fun h a => ?_⟩
-  · obtain ⟨b, rfl⟩ := Submodule.mem_one.mp ha
-    simpa [Algebra.traceForm_apply] using h b
-  · simpa [Algebra.traceForm_apply] using h _ (Submodule.mem_one.mpr ⟨a, rfl⟩)
-
 theorem fourierChar_infiniteTrace_eq (x : InfiniteAdeleRing K) (a : FiniteAdeleRing (𝓞 K) K)
     {k k' : K} (hk : a - algebraMap K _ k ∈ finiteInvDifferent K)
     (hk' : a - algebraMap K _ k' ∈ finiteInvDifferent K) :

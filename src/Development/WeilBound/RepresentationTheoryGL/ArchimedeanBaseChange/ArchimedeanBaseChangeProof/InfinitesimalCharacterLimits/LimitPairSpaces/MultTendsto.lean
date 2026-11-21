@@ -1,7 +1,9 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.LimitPairSpaces.TensorSpanEqPairSpace
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatNodeFunctionStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatNodeFunction
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinStable
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NodeFunctionLeviDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TendstoAbsoluteCharacterOneStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TendstoAbsoluteCharacterOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatAbsoluteCharacterStatement
 
 noncomputable section
@@ -30,7 +32,7 @@ theorem mul_mem_Sm' {N : ℕ} {f g : GA E N → ℂ} (hf : f ∈ Sm E N) (hg : g
 theorem mult_flat {N : ℕ} (b : Tr E N) (γ : ℕ → ℂ) : GlobalTheory.CompanionTheory.LimV.FlatFn (mult b γ) := by
   induction b generalizing γ with
   | leaf V z => exact GlobalTheory.T.flat_absolute_character _ _
-  | node t₁ t₂ ih₁ ih₂ => exact GlobalTheory.T.flat_node_function _ _ (ih₁ _) (ih₂ _)
+  | node t₁ t₂ ih₁ ih₂ => exact _root_.GlobalTheory.CompanionTheory.LimV.NodeFlat.flatFn_nodeFn _ _ (ih₁ _) (ih₂ _)
 
 theorem mult_rinv {N : ℕ} (b : Tr E N) (γ : ℕ → ℂ) (x : GA E N) (k : Kinf E N) {c : GL (Fin N) (Af E)}
     (hc : c ∈ Cint E N) : mult b γ (x * InducedTensorMap.cf N k c) = mult b γ x :=
@@ -48,7 +50,7 @@ theorem mult_ne {N : ℕ} (b : Tr E N) (γ : ℕ → ℂ) (x : GA E N) : mult b 
 theorem mult_tendsto {N : ℕ} (b : Tr E N) (γ : ℕ → ℕ → ℂ) (hγ : ∀ i, Tendsto (fun k => γ k i) atTop (𝓝 0))
     (x : GA E N) : Tendsto (fun k => mult b (γ k) x) atTop (𝓝 1) := by
   induction b generalizing γ with
-  | leaf V z => exact GlobalTheory.T.tendsto_absolute_character_one _ x (fun k => γ k 0) (hγ 0)
+  | leaf V z => exact _root_.GlobalTheory.CompanionTheory.LimV.absFn_tendsto_one _ x (fun k => γ k 0) (hγ 0)
   | node t₁ t₂ ih₁ ih₂ =>
     have h := (ih₁ γ hγ (GlobalTheory.CompanionTheory.LimV.leviOf x).1).mul
       (ih₂ (fun k i => γ k (i + t₁.twists.length)) (fun i => hγ _) (GlobalTheory.CompanionTheory.LimV.leviOf x).2)

@@ -8,8 +8,6 @@ noncomputable section
 
 namespace Formalism.MainNotions.BridgeCS3d
 
-open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions Formalism.MainNotions.OnePlaceEstimates Formalism.MainNotions.BridgeLemma₄
-
 namespace BM
 
 end BM

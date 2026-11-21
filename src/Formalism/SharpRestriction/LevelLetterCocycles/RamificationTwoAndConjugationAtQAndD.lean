@@ -1,5 +1,11 @@
 import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoDuality
-import Formalism.WachLatticeTwists.LatticeDualFibres.PropLocContOfLattices
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.LocDualOrth
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.QuotLen
+import Formalism.WachLatticeTwists.LatticeDualFibres.Statement
+import ReciprocityTheory.GaloisValuations.ContinuousConstSMulQuotient
+import Formalism.WachLatticeTwists.LatticeDualFibres.FibreDualStable
+import Formalism.WachLatticeTwists.LatticeDualFibres.StatDualFibreLattice
+import Formalism.WachLatticeTwists.LatticeDualFibres.LatticeDualProofs.ExistsBasisOfLattice
 import Formalism.WeaklyAdmissibleFiltrations.PhtGalois
 
 noncomputable section
@@ -1361,11 +1367,6 @@ theorem zl_int (hO : GoodO (Qp := ℚ_[l]) LL O) (c : ℚ_[l]) (hc : ‖c‖ ≤
 end CycTop
 
 end Br
-
-theorem frobenius_lifting (D : Formalism.BasicNotions.D7) : Stmt D := by
-  rintro ⟨h1, h2, h3, h4, h5, h6⟩
-  exact ⟨fun l _ K => Br.absorption_over_period _ (h1 l K) (h2 l K) (h4 l K) (h6 l K),
-    fun l _ K => Br.length_bound_over_period _ (h1 l K) (h2 l K) (h3 l K) (h4 l K) (h5 l K) (h6 l K)⟩
 
 theorem low_degree_admissible_holds (D : Formalism.BasicNotions.D7) : ArchimedeanSignatureMatching D := by
   intro l _ K LL _ _ _ O _ _ hO

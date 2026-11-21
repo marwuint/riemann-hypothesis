@@ -44,25 +44,6 @@ theorem split_symm_inl (a : Fin (2 * r' + k + 1)) :
 theorem split_symm_inr (b : Fin (2 * i)) :
     ((split k i r').symm (Sum.inr b)).val = if b.val < i then b.val else b.val + (2 * r' + k + 1) := rfl
 
-theorem split_in (p : Fin (2 * (i + r') + k + 1)) (a : Fin (2 * r' + k + 1)) (h : p.val = a.val + i) :
-    split k i r' p = Sum.inl a := by
-  apply (split k i r').symm.injective
-  rw [Equiv.symm_apply_apply]
-  apply Fin.ext
-  rw [split_symm_inl]
-  exact h
-
-theorem split_out (p : Fin (2 * (i + r') + k + 1)) (h : ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)) :
-    ∃ b, split k i r' p = Sum.inr b := by
-  rcases hs : split k i r' p with a | b
-  · exfalso
-    have hp : p = (split k i r').symm (Sum.inl a) := by rw [← hs, Equiv.symm_apply_apply]
-    have hv := congrArg Fin.val hp
-    rw [split_symm_inl] at hv
-    have := a.isLt
-    omega
-  · exact ⟨b, rfl⟩
-
 theorem ιLev_eq (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     ιLev k i r' g = (fromBlocks g 0 0 1).submatrix (split k i r') (split k i r') := by
   ext p q

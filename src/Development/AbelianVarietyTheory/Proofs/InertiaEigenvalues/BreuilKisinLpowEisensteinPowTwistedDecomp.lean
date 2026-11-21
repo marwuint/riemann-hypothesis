@@ -1,7 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsAlgebraMapEqRoot
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinZetaFineBoundSecondBasisStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinIntegralityComputationStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinZetaFineBoundSecondBasis
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinIntegralityComputation
+import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomialAction
 
 noncomputable section
 
@@ -31,8 +32,8 @@ theorem lpow_Epow_twistedMon_decomp : ∀ (O K : Type) [CommRing O] [NormedField
   haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective
   have hr : ((l : K) ^ (3 * H)) ≠ 0 :=
     pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
-  have IC := GlobalTheory.T.breuilKisin_integrality_computation O K l e a ι η H D h2 h4
-  obtain ⟨p₁, hp₁, f₁, hf₁, h₁⟩ := GlobalTheory.T.breuilKisin_zeta_fine_bound_second_basis O K l e a ι η H D h1 h2 h3 y' hy'
+  have IC := _root_.GlobalTheory.IntegralityComp.integralityComputation O K l e a ι η H D h2 h4
+  obtain ⟨p₁, hp₁, f₁, hf₁, h₁⟩ := _root_.GlobalTheory.BK.zeta_Y'_fine_bound O K l e a ι η H D h1 h2 h3 y' hy'
   obtain ⟨p', hp', f', hf', h'⟩ := IC.1 _ hc
   have hy : y' + D.phi m ∈ D.EM η := by
     refine add_mem ((D.desc.Y'_le_Y η hy').1 : y' ∈ D.EM η) ?_

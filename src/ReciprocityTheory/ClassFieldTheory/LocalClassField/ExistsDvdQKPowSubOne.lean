@@ -144,10 +144,6 @@ theorem isFrob_frobK (hK : FiniteDimensional ℚ_[p] K) : IsFrob p K (frobK p K)
 theorem IsFrob.isFrobOn {σ : GK p K} (h : IsFrob p K σ) (n : ℕ) : IsFrobOn p K n σ :=
   fun x _ hx => h x hx
 
-theorem IsFrob.eqOn (hK : FiniteDimensional ℚ_[p] K) {σ τ : GK p K} (hσ : IsFrob p K σ) (hτ : IsFrob p K τ)
-    {x : PadicAlgCl p} (hx : x ∈ MaximalUnramifiedExtension p K) : σ x = τ x :=
-  eqOn_Kur (fun ζ m hm hζ => by rw [(isFrob_iff hK σ).1 hσ ζ m hm hζ, (isFrob_iff hK τ).1 hτ ζ m hm hζ]) hK hx
-
 theorem mk_eq_mk_iff {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (σ τ : GK p K) :
     (QuotientGroup.mk σ : GalLK p K M) = QuotientGroup.mk τ ↔ ∀ x ∈ M, σ x = τ x := by
   rw [QuotientGroup.eq, mem_subG_iff]
@@ -159,10 +155,6 @@ theorem mk_eq_mk_iff {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (σ τ : GK 
   · intro h x hx
     rw [AlgEquiv.mul_apply, ← h x hx, ← AlgEquiv.mul_apply, inv_mul_cancel]
     rfl
-
-theorem IsFrob.mk_eq (hK : FiniteDimensional ℚ_[p] K) {σ : GK p K} (h : IsFrob p K σ) :
-    (QuotientGroup.mk σ : GalLK p K (MaximalUnramifiedExtension p K)) = frobLK p K (MaximalUnramifiedExtension p K) :=
-  (mk_eq_mk_iff σ (frobK p K)).2 fun _ hx => IsFrob.eqOn hK h (isFrob_frobK hK) hx
 
 theorem mem_subG_Kur_iff (hK : FiniteDimensional ℚ_[p] K) (σ : GK p K) :
     σ ∈ subG p K (MaximalUnramifiedExtension p K) ↔ ∀ x : PadicAlgCl p, ‖x‖ ≤ 1 → ‖σ x - x‖ < 1 := by
@@ -206,18 +198,6 @@ theorem mem_zpowers_frobLK_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn :
   change frobLK p K (Kn p K n) ^ (i : ℤ) = _
   rw [zpow_natCast, frobLK_pow]
   exact ((mk_eq_mk_iff _ _).2 hi).symm
-
-theorem frobLK_Kn_pow_eq_one_iff (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) (i : ℕ) :
-    frobLK p K (Kn p K n) ^ i = 1 ↔ n ∣ i := by
-  rw [frobLK_pow, ← IsFrobOn.pow_fixes_iff p K hK hn ((isFrob_frobK hK).isFrobOn n) i,
-    ← QuotientGroup.mk_one, mk_eq_mk_iff]
-  rfl
-
-theorem orderOf_frobLK_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
-    orderOf (frobLK p K (Kn p K n)) = n := by
-  apply Nat.dvd_antisymm
-  · exact orderOf_dvd_of_pow_eq_one ((frobLK_Kn_pow_eq_one_iff hK hn n).2 dvd_rfl)
-  · exact (frobLK_Kn_pow_eq_one_iff hK hn _).1 (pow_orderOf_eq_one _)
 
 theorem mem_of_frobK_fixed (hK : FiniteDimensional ℚ_[p] K) {x : PadicAlgCl p} (hx : x ∈ MaximalUnramifiedExtension p K)
     (h : frobK p K x = x) : x ∈ K := by

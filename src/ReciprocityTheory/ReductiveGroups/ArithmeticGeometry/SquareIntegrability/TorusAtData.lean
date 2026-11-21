@@ -51,11 +51,6 @@ def TorusAtExistsStatement : Prop :=
         Algebra.trace ℚ E (X.ξ0 * herm X.Gm u v) = 2 * k) →
     ∀ x ∈ X.dom, ∃ A : TorusAt X x, A.w0 = w0
 
-def thAn {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) (q n : ℕ)
-    (π : Vsp A.T.dim →ₗ[ℂ] Vsp A.T.dim) (b : Fin n → Vsp A.T.dim)
-    (P : MvPolynomial (Letter n A.T.dim) ℂ) : ℂ :=
-  polyDeriv P dir (A.T.U q b (s0 A.T π A.s)) 0 / (Real.sqrt (A.T.l2 1 A.s) : ℂ) ^ n
-
 def TorusAtIsStatement : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r)
     (A : TorusAt X x), IsTorusAt X x A.T

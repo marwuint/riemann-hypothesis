@@ -28,12 +28,12 @@ theorem exists_goodCover_galois (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T
       GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.GoodCover T R i C n := by
   have hσ : GoodEmb T.Q.c T.σ₀ := T.toCore.good_σ₀
   obtain ⟨hodd, -, -, hcop, -⟩ := id haux
-  have hnum := GlobalTheory.T.numerical_consequences_of_pins D T.Q hJ.toLawsM.pins
+  have hnum := _root_.GlobalTheory.PinNum.numerics_of_pins D T.Q hJ.toLawsM.pins
   have hA : T.Q.l.A = 1 := hnum.2.1
   have hpq : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q := by
     have := hnum.2.2.2.2.2.2 _ hj; omega
   obtain ⟨l₂, hd, hM, hMb, hA₂⟩ := (GlobalTheory.exists_level_mul_split _ T.Q.H T.Q.l).1 pd I hodd hcop hK hprod hsup
-  obtain ⟨Xo₂⟩ := GlobalTheory.T.exists_moduli_scheme_polarized_abelian_level _ T.Q.H (T.Q.Dw ((i : ℕ) + 1)) l₂ hpq
+  obtain ⟨Xo₂⟩ := _root_.GlobalTheory.Moduli.moduli_scheme_exists _ T.Q.H (T.Q.Dw ((i : ℕ) + 1)) l₂ hpq
   let c' : Coeff T.Q.l :=
     { F := L, fin := inferInstance, conj := fun τ a => hle (T.Q.c.conj τ a)
       zeta_mem := hle T.Q.c.zeta_mem, le := T.Q.c.le.trans hle }
@@ -50,7 +50,7 @@ theorem exists_goodCover_galois (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T
   have hσ₂ : σ₂.comp ((d.eF : c'.F →+* d.c₂.F).comp (incF T.Q.c c' hle)) = T.σ₀ := by
     rw [← hσ']; ext x; simp [σ₂, incF]
   have hA1 : d.l₂.A = 1 := by rw [hdl, hA₂, hA]
-  obtain ⟨U₂, dict₂, hU⟩ := GlobalTheory.T.exists_levelCover_uniformisation_dictionary D T hJ _ hj T.σ₀ hσ c' hle d σ₂ hlev hA1 hσ₂
+  obtain ⟨U₂, dict₂, hU⟩ := _root_.GlobalTheory.CoverUnif.exists_unf_dict D T hJ _ hj T.σ₀ hσ c' hle d σ₂ hlev hA1 hσ₂
 
   have hrange : (σ'.toRatAlgHom).fieldRange = L := fieldRange_of_normal L σ'
   have hsurj : ∀ y : L, ∃ z : d.c₂.F, σ₂ z = (y : ℂ) := by

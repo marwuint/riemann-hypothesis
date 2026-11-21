@@ -1,10 +1,10 @@
 import Mathlib
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOrbitalIntegralEqInvDegSmulStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IintEquivariantStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompactStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRepStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOrbitalIntegralEqInvDegSmul
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IintEquivariant
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompact
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRep
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWNStatement
 
 noncomputable section
@@ -145,11 +145,11 @@ theorem subset_rmul_image {t : Mt k r} (ht : IsUnit (Matrix.of t : Mat k r).det)
 theorem hsNormSq_Iint_le_liminf : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) (z' : Fin (2 * r + k + 1) → ℂ) (c' : Fin r → ℂ) (π' : Mat k r → (Wq →L[ℂ] Wq)) (μS' : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → Side z' π' μS' → ∀ Om Om' : ℕ → Set (Mt k r), IsFolner (Sset k r z) μS Om → IsFolner (Sset k r z') μS' Om' → ∀ x ∈ DD σ w, ∀ y ∈ DD σ w, ∀ (ξ : Wp) (ξ' : Wq), ∀ γ ∈ Greg k r z z', ENNReal.ofReal (hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' μS μS' σ x y ξ ξ' γ)) ≤ Filter.liminf (fun j => (∫⁻ p, ENNReal.ofReal (hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict (Om j)) (μS'.restrict (Om' j)) σ x y ξ ξ' (Matrix.of (act2 γ p)))) ∂(μS.prod μS')) / (μS (Om j) * μS' (Om' j))) Filter.atTop := by
   intro k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hStd hS hS' Om Om' hF hF'
     x hx y hy ξ ξ' γ hγ
-  have hint := (GlobalTheory.T.besselOrbitalIntegral_eq_inv_deg_smul k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' y hy x hx ξ ξ' γ hγ).1
-  have hcl := (GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hS.1 hS.2.1).2.2.2.1
-  have hcl' := (GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hS'.1 hS'.2.1).2.2.2.1
-  have hP := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hS.1 hS.2.1 hS.2.2.1
-  have hP' := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z' c' π' hS'.1 hS'.2.1 hS'.2.2.1
+  have hint := (_root_.GlobalTheory.SgInf.OO_eq_inv_deg_smul_Iint k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' y hy x hx ξ ξ' γ hγ).1
+  have hcl := (_root_.GlobalTheory.SgInf.closedSub_groups k r z hS.1 hS.2.1).2.2.2.1
+  have hcl' := (_root_.GlobalTheory.SgInf.closedSub_groups k r z' hS'.1 hS'.2.1).2.2.2.1
+  have hP := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z c π hS.1 hS.2.1 hS.2.2.1
+  have hP' := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z' c' π' hS'.1 hS'.2.1 hS'.2.2.1
   have hinv := ((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hS.1 hS.2.1 μS).1 hS.2.2.2.1).2
   have hinv' := ((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z' hS'.1 hS'.2.1 μS').1 hS'.2.2.2.1).2
   haveI := hS.2.2.2.1.1
@@ -184,7 +184,7 @@ theorem hsNormSq_Iint_le_liminf : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup
   refine ENNReal.ofReal_le_ofReal ?_
   have hu : IsUnit (Matrix.of p.1 : Mat k r).det := WeylGroupFacts.isUnit_of_uh (hcl.1 hp.1)
   have hu' : IsUnit (Matrix.of p.2 : Mat k r).det := WeylGroupFacts.isUnit_of_uh (hcl'.1 hp.2)
-  have heq := GlobalTheory.T.Iint_equivariant_alt k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' x y ξ ξ' (Om j) (Om' j)
+  have heq := _root_.GlobalTheory.SgInf.Equivar.Iint_equivariant k r σ w a μG d z c π μS z' c' π' μS' hStd hS hS' x y ξ ξ' (Om j) (Om' j)
     (hF.1 j).1 (hF'.1 j).1 γ hγ.1 _ hp.1 _ hp.2
   have ha : (Matrix.of (act2 γ p) : Mat k r) = Matrix.of p.1 * γ * (Matrix.of p.2)⁻¹ := rfl
   rw [ha, heq, hs_unitary _ (hP.2.1.2.1 _ hp.1)]

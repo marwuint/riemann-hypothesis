@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNotPrimePow
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionZeroFreeRegionStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionUniqueSimpleExceptionalZeroStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassFamilyPsiWithExceptionalZeroStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRayClassLFunctionRealZeroFarFromOneStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionZeroFreeRegion
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionUniqueSimpleExceptionalZero
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassFamilyPsiWithExceptionalZero
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRayClassLFunctionRealZeroFarFromOne
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem
 open scoped Classical
 
@@ -21,9 +21,9 @@ lemma zeros : ∃ c₀ A c : ℝ, 0 < c₀ ∧ c₀ ≤ 1 / 20 ∧ 0 < A ∧ 0 <
     ∃ Z : AddChar 𝓕.G ℂ → Finset ℝ, (∀ χ, 𝓕.ExcZ χ c₀ (Z χ)) ∧
       (∀ χ ψ β β', β ∈ Z χ → β' ∈ Z ψ → χ = ψ ∧ β = β') ∧
       ∀ χ, ∀ β ∈ Z χ, 3 / 4 ≤ β ∧ c / 𝓕.B ^ A ≤ 1 - β := by
-  obtain ⟨c4, hc4, h4⟩ := GlobalTheory.T.rayClassLFunction_zero_free_region
-  obtain ⟨c5, hc5, h5⟩ := GlobalTheory.T.rayClassLFunction_unique_simple_exceptional_zero
-  obtain ⟨A, c9, hA, hc9, h9⟩ := GlobalTheory.T.exists_rayClassLFunction_real_zero_far_from_one
+  obtain ⟨c4, hc4, h4⟩ := _root_.GlobalTheory.Hk.ZeroFree.zero_free_region
+  obtain ⟨c5, hc5, h5⟩ := _root_.GlobalTheory.Hk.RealZero.main
+  obtain ⟨A, c9, hA, hc9, h9⟩ := _root_.GlobalTheory.Hk.LFam.real_zero_far_from_one
   refine ⟨min (1 / 20) (min c4 c5), A, min c9 1, by positivity, min_le_left _ _, hA, by positivity,
     min_le_right _ _, fun 𝓕 => ?_⟩
   set c₀ := min (1 / 20) (min c4 c5) with hc₀
@@ -217,7 +217,7 @@ lemma err_le {B A c c₇ c₉ C L h : ℝ} (hB : 4 ≤ B) (hA : 0 < A) (hc : 0 <
 
 theorem trivialClass_shortInterval : ∃ A c c' : ℝ, 0 < A ∧ 0 < c ∧ 0 < c' ∧ ∀ (𝓕 : LFam) (X h : ℝ), 1 ≤ X → Real.log 𝓕.B ≤ c * Real.sqrt (Real.log X) → Real.exp (-c * Real.sqrt (Real.log X)) ≤ h → h ≤ 1 → c' * h * X / 𝓕.B ^ A ≤ ∑ n ∈ Finset.Ioc ⌊X⌋₊ ⌊X * (1 + h)⌋₊, 𝓕.lam 0 n := by
   obtain ⟨c₀, A, c₉, hc₀, hc₀', hA, hc₉, hc₉', hz⟩ := zeros
-  obtain ⟨c₇, C, hc₇, hC, h7⟩ := GlobalTheory.T.rayClassFamily_psi_with_exceptional_zero c₀ hc₀ hc₀'
+  obtain ⟨c₇, C, hc₇, hC, h7⟩ := _root_.GlobalTheory.Hk.PsiExc.psi_exceptional c₀ hc₀ hc₀'
   refine ⟨A + 1, min 1 (min (c₇ / 2 / (A + 2)) (c₇ * c₉ / (24 * C))), c₉ / 4, by positivity,
     by positivity, by positivity, ?_⟩
   set c := min 1 (min (c₇ / 2 / (A + 2)) (c₇ * c₉ / (24 * C))) with hcdef

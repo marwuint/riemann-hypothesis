@@ -72,26 +72,4 @@ theorem exists_finite_split {R : Ranks} (H : Host R) :
   have := v.asIdeal.sub_mem h2 h1
   simpa using this
 
-theorem dense_frob (hC : GlobalTheory.TwSys.Cheb) {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
-    (i : N.Loc) : Dense {σ : GE N | ∃ w, SplitOut N i w ∧ ∃ B : ValuationSubring N.Om,
-      Formalism.ConjugateSelfDual.IsPlaceOver (F := H.E) B w ∧ Formalism.ConjugateSelfDual.IsFrob (F := H.E) B (Formalism.ConjugateSelfDual.normV w) σ} := by
-  classical
-  rw [dense_iff_inter_open]
-  rintro W hW ⟨g, hg⟩
-  have hV : IsOpen {s : G H.E N.Om | s * g ∈ W} := hW.preimage (continuous_mul_const g)
-  have : IsGalois H.E N.Om := {}
-  obtain ⟨U, hU⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV (by simpa using hg)
-  obtain ⟨A, hA, hsp⟩ := exists_finite_split H
-  have hl : (placesOver H.E (N.l i)).Finite := by
-    have h0 : ((N.l i : ℕ) : 𝓞 H.E) ≠ 0 := Nat.cast_ne_zero.2 (N.lPrime i).out.ne_zero
-    refine (Ideal.finite_factors (I := Ideal.span {((N.l i : ℕ) : 𝓞 H.E)})
-      (by simpa [Ideal.span_singleton_eq_bot] using h0)).subset fun v hv => ?_
-    exact Ideal.dvd_span_singleton.2 hv
-  obtain ⟨v, hv, hd, -, B, hB, -, σ, hσ, hU'⟩ := hC H.E N.Om U.toSubgroup U.isOpen U.isNormal' g
-    (hA.toFinset ∪ hl.toFinset ∪ N.S i ∪ N.Q i)
-  simp only [Finset.mem_union, Set.Finite.mem_toFinset, not_or] at hv
-  have := hU hU'
-  simp only [Set.mem_ofPred_eq, inv_mul_cancel_right] at this
-  exact ⟨σ, this, v, ⟨hsp v hv.1.1.1 hd, hv.1.1.2, hv.1.2, hv.2⟩, B, hB, hσ⟩
-
 end GlobalTheory.FrobDense

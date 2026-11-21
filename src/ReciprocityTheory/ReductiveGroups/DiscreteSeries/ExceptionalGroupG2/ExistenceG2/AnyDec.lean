@@ -33,13 +33,6 @@ noncomputable section
 open Finset Matrix
 
 namespace ReciprocityTheory.ChartRestriction.DS.G2
-section Gen
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-  {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
-
-end Gen
-
 section Main
 
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -128,26 +121,6 @@ theorem anyF (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε la
   refine ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun v' => ?_
   rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right,
     ContinuousLinearMap.comp_apply, hkey g hg v v']
-
-theorem anyDec (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) {h : ℝ}
-    (hdec : ∀ (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ), inP ε X →
-      ‖Ψ (S7.toMK k * NormedSpace.exp X)‖ ≤
-        Real.exp (-(h / 8) * min (S7.hs X) (Real.sqrt (S7.hs X) / Real.sqrt (2 * S7.q0 ε)))) :
-    ∀ E : H →L[ℂ] H, Formalism.MainNotions.S.IsOrthProjOnto E (Formalism.MainNotions.S.lowKSub ε lam σ) →
-      ∀ k X : Matrix (Fin n) (Fin n) ℂ, k ∈ Formalism.REAL.Kset ε → Formalism.REAL.inP ε X →
-        ‖E.comp ((σ (k * NormedSpace.exp X)).comp E)‖ ≤
-          Real.exp (-(h / 8) * min (Formalism.REAL.hs X)
-            (Real.sqrt (Formalism.REAL.hs X) / Real.sqrt (2 * ((min (pOf ε) (qOf ε) : ℕ) : ℝ)))) := by
-  obtain ⟨j, hiso, -, hran, hF⟩ := anyF hDS hgap hP
-  intro E hE k X hk hX
-  rw [mir_Kset_eq] at hk
-  obtain ⟨k', rfl⟩ := ffa_Kset hk
-  have hX' : inP ε X := (mir_inP_iff ε X).1 hX
-  have hg : S7.toMK k' * NormedSpace.exp X ∈ UJset ε :=
-    rq_UJ_mul (ffa_toMK_mem k') (by simpa using rq_exp_mem ε X hX'.1 1)
-  refine (anyf_comp_norm_le j hiso E _ _ hE hran).trans ?_
-  rw [hF _ hg]
-  exact hdec k' X hX'
 
 end Main
 

@@ -243,15 +243,4 @@ theorem rowsDatum_at {L : CntLocal.LocSp D M} (h : CutAt M δ L u u' F0 what₂)
 
 end Pass
 
-theorem rowsDatum_of {D : Formalism.BasicNotions.D7}
-    (h : (VS D).SigOK → ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
-      (∀ p, Agree δ M p) → ∀ (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),
-      (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Formalism.MainNotions.S.Lat.gS D) ^ 2] →
-      ∀ (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)),
-        IsRowReps D F0 what₂ → CutAt M δ L u u' F0 what₂) :
-    RowsDatum D := by
-  intro hsig δ M hA L u u' hc F0 what₂ hRo ϖ hϖ nc hnc
-  exact rowsDatum_at (h hsig δ M hA L u u' hc F0 what₂ hRo)
-    (eligFinite_of (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') hsig hRo) hRo ϖ hϖ nc hnc
-
 end Formalism.L2.SG.LsDatumB

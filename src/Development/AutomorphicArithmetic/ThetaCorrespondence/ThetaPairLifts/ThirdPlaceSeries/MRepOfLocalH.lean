@@ -1,5 +1,10 @@
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalRepOfReadingLaws
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AlgebraicModularFormsStrongMultiplicityOneStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNonsplitPlaceWithInertDatum
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSatakeParameterAtInertPlaceOfSphericalStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitarySatakeEqOfSameUnramifiedBaseChange
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSplitPlaceOfSplitPlaceRealSubfieldHost
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CharacterChoiceData
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Laws
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeOpen
@@ -21,14 +26,14 @@ theorem repOfLocal_h_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D 
   apply P.H.av.inj i P₁ P₂
   refine GlobalTheory.T.algebraic_modular_forms_strong_multiplicity_one D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i P₁) (P.H.av.S i P₂) (P.H.av.irr i P₁) (P.H.av.irr i P₂) ?_ ?_
   · intro s
-    have hw := GlobalTheory.T.isSplitPlace_of_splitPlace_realSubfield_host D s
+    have hw := _root_.GlobalTheory.SplitPlaceConj.isSplitPl_w D s
     refine ⟨((S i s.w hw).rep P₁).toIrrRep, ((S i s.w hw).rep P₂).toIrrRep, hT.rep i s hw P₁, hT.rep i s hw P₂, ?_⟩
     have e1 := (S i s.w hw).locV P₁
     have e2 := (S i s.w hw).locV P₂
     rw [hsplit s.w hw, e2] at e1
     exact (_root_.UpperTheory.One.M.RecLawsH.iso (hLaws i s.w hw) _ _ _ (_root_.UpperTheory.One.M.good_cls_of_isLocS_av P i P₂ s _ (hT.rep i s hw P₂))).1 e1.symm
   · intro v hv
-    obtain ⟨w, hO, hns', ⟨Dv⟩⟩ := GlobalTheory.T.exists_nonsplit_place_with_inertDatum D D.R.nV v hv
+    obtain ⟨w, hO, hns', ⟨Dv⟩⟩ := _root_.GlobalTheory.InertDatumExist.exists_inertDatum D D.R.nV v hv
     have hsph : ∀ Q : D.naut.AV i, (P.H.av.rep i Q).SphericalAtPlace v := fun Q => by
       have h := D.nbc.embAV_sph i Q w hns'
       rw [P.H.emb i Q] at h
@@ -42,7 +47,7 @@ theorem repOfLocal_h_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D 
     refine ⟨w, Dv, α₁, hO, hα₁, ?_⟩
     obtain ⟨f, hf, hf0, U, hU, hUv, hh⟩ := hα₂
     refine ⟨f, hf, hf0, U, hU, hUv, fun h hh' => ?_⟩
-    rw [GlobalTheory.T.unitarySatake_eq_of_same_unramifiedBaseChange _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α₁ α₂ hu h hh']
+    rw [_root_.GlobalTheory.SatBcZero.satU_eq_of_ubc_eq _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α₁ α₂ hu h hh']
     exact hh h hh'
 end UpperTheory.One.M
 end

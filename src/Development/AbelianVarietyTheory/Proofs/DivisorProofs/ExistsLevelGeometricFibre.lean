@@ -2,7 +2,6 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDefiniteDatumGoodObj
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorModuliWithSymplecticLevelRepresentab
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveLevelFamily
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsAlternatingSkewNatural
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
 
@@ -68,8 +67,5 @@ theorem exists_eq_of_count {La G : Type} [AddCommGroup La] [Module.Finite ℤ La
 end GlobalTheory.UPel.GeometricLevelExistence
 
 namespace GlobalTheory.UPel.GeometricLevelExistence
-
-open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 end GlobalTheory.UPel.GeometricLevelExistence

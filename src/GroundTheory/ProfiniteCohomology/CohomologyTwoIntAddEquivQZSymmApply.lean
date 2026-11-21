@@ -71,26 +71,4 @@ theorem evalCharacterEquiv_apply [IsTopologicalGroup G] {σ : G} (hσ : IsZHatGe
 
 end Eval
 
-section H2
-
-variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
-  [TotallyDisconnectedSpace G] {σ : G}
-
-noncomputable def cohomologyTwoIntIsoQZ (hσ : IsZHatGenerator σ) :
-    cohomology (Rep.trivial ℤ G ℤ) 2 ≅ ModuleCat.of ℤ QZ :=
-  cohomologyTwoIntIso G ≪≫ (evalCharacterEquiv hσ).toIntLinearEquiv.toModuleIso
-
-noncomputable def cohomologyTwoIntAddEquivQZ (hσ : IsZHatGenerator σ) :
-    cohomology (Rep.trivial ℤ G ℤ) 2 ≃+ QZ :=
-  (cohomologyTwoIntAddEquiv G).trans (evalCharacterEquiv hσ)
-
-theorem cohomologyTwoIntAddEquivQZ_δ (hσ : IsZHatGenerator σ) (χ : Additive G →ₜ+ QZ) :
-    cohomologyTwoIntAddEquivQZ hσ
-      ((δ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl).hom
-        ((cohomologyOneRatModIntIso G).inv.hom χ)) = χ (Additive.ofMul σ) := by
-  rw [← cohomologyTwoIntAddEquiv_symm_apply, cohomologyTwoIntAddEquivQZ, AddEquiv.trans_apply,
-    AddEquiv.apply_symm_apply, evalCharacterEquiv_apply]
-
-end H2
-
 end GroundTheory.ProfCoh

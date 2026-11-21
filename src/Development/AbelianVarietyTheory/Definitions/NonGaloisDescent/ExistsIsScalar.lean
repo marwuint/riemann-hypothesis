@@ -181,40 +181,9 @@ def full : FullTie Z.good Z.rd := ⟨Z.tie, Z.hecke, Z.univ⟩
 
 theorem heckeRead {i j b} (h : RatHecke (Z.rd i j b)) : HeckeRead (Z.rd i j b) := (Z.hecke i j b).heckeRead h
 
-include Z in
-
-theorem delU_ine (i : D.ntw.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) (hQ : Formalism.MainNotions.NAdm.AdmQ D.ntw i Q M) (P : Pl D.host.E)
-    (hP : P ∈ Q) : (∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P →
-      Function.Surjective fun σ : Ine (F := D.host.E) A => Multiplicative.toAdd (D.nexp.delU i Q M σ) ⟨P, hP⟩) ∧
-    ∀ P' ∈ Q, P' ≠ P → ¬ IsConjPl D.host P P' → ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P' →
-      ∀ σ ∈ Ine (F := D.host.E) A, Multiplicative.toAdd (D.nexp.delU i Q M σ) ⟨P, hP⟩ = 0 :=
-  GlobalTheory.UnivCharIne.delU_ine D Z.univ i Q M hQ P hP
-
-include Z in
-
-theorem delUTie (hK : GlobalTheory.TwSys.K1 D.ntw) : GlobalTheory.TwSys.DelUTie D.nexp := GlobalTheory.UnivChar.delUTie_of_isUnivChar _ hK Z.univ
-
 theorem rat {i j b} (h : RatRow YS v₀ Z.good i j b) : Rat Z.good (Z.rd i j b) := (Z.scalar i j b).rat h
 
-include Z in
-
-theorem thU_empty (i : D.ntw.Tw) (j : ℕ) (b : Bool) (M : ℕ) (d : D.nexp.Dat i j b) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
-    D.nexp.thU i j b ∅ M d = D.nexp.th i j b d ⊗ₜ[D.ntw.O i] 1 := by
-  obtain ⟨n, rfl⟩ := Nat.exists_eq_add_of_le' h1
-  exact (Z.tie i ⟨n, h2⟩ b).thU_empty M d
-
-theorem exists_dat {i j b} (h : RatRow YS v₀ Z.good i j b) {s g P} (hd : Z.ρ.IsDatum i j b s g P) :
-    ∃ d, (Z.tie i j b).cls d = g ∧ (Z.tie i j b).coef d = P ∧ Z.rd i j b (D.nexp.th i _ b d) = Z.ρ.theta i j b g P := by
-  obtain ⟨d, -, rfl, rfl⟩ := (Z.tie i j b).dat_onto s g P hd ((Z.rat h).1 s g P hd)
-  exact ⟨d, rfl, rfl, (Z.tie i j b).th_eq d⟩
-
 end ExportTie
-
-example (i : D.ntw.Tw) (b : Bool) : NX.readLL0 S i b = sideEmb D.ntw i b := rfl
-
-example (i : D.ntw.Tw) : Formalism.MainNotions.BlochKatoReduction.Gen.psiAt false (D.ntw.delta i) = (D.ntw.delta i)⁻¹ := rfl
-
-example : normProd (∅ : Finset (Pl D.host.E)) = 1 := rfl
 
 end GlobalTheory.SeriesTie
 

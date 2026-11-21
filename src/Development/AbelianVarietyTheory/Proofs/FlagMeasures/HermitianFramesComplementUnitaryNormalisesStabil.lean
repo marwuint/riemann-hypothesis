@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormAdditiveCharacterTypePrimeEqOne
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnessesStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFactsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameUnipotentExchangingDualIsotropicStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameUnipotentExchangingDualIsotropic
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
@@ -227,7 +227,7 @@ theorem inner_transport (g : Fin (r + 1) → S.V) (gs : Fin r → S.V) (t : E)
   have hd2 : ∀ a j, hf L S.Hm (g a) (h (gs j)) = if a = j.castSucc then 1 else 0 := fun a j => by
     rw [← hfix a, hI', hd]
   have hi2 : ∀ i j, hf L S.Hm (h (gs i)) (h (gs j)) = 0 := fun i j => by rw [hI']; exact hi i j
-  obtain ⟨m, hm, mfix, mgs, mA⟩ := GlobalTheory.T.exists_frameUnipotent_exchanging_dual_isotropic L r k S g t gs (fun j => h (gs j)) hg hd hd2 hi hi2
+  obtain ⟨m, hm, mfix, mgs, mA⟩ := _root_.GlobalTheory.FrameDual.exists_unip_change_dual L r k S g t gs (fun j => h (gs j)) hg hd hd2 hi hi2
   have b1 : ∀ x ∈ S.spanTo g r, x ∈ h • A := fun x hx => by
     rw [← fix_span S g h hfix r x hx]
     exact (mem_smul_iff S h A x).2 (a1 x hx)
@@ -352,8 +352,8 @@ theorem GlobalTheory.HL.FixFrames.unitary_complement_acts : ∀ {F : Type} [Fiel
     rw [ifixf']
     exact fix S hh (spanTo_le_ME' S (r + 1)
       (spanTo_map S S.f' _ S.gram' _ hn' (r + 1) _ (Submodule.subset_span ⟨b, b.2, rfl⟩)))
-  obtain ⟨o1, -⟩ := GlobalTheory.T.term_invariants_independent_of_witnesses L r k S _ _ _ _ W1
-  obtain ⟨o0, -⟩ := GlobalTheory.T.term_invariants_independent_of_witnesses L r k S _ _ _ _ (wit_spec S d Λ H)
+  obtain ⟨o1, -⟩ := _root_.GlobalTheory.HL.WitIndep.witness_independence L r k S _ _ _ _ W1
+  obtain ⟨o0, -⟩ := _root_.GlobalTheory.HL.WitIndep.witness_independence L r k S _ _ _ _ (wit_spec S d Λ H)
   obtain ⟨p1, p2, -⟩ := GlobalTheory.FramePsi.psi_unitary_character L r k S
   have q1 : S.psi (h * (S.wit d Λ).1 * h⁻¹ * m) = S.psi (S.wit d Λ).1 := by
     rw [p1 _ (nN _ hn) _ hm]

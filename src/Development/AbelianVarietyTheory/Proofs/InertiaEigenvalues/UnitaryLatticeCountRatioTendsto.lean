@@ -1,12 +1,12 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualStableLatticeUnitOrbitsFiniteStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FullLatticeSandwichBetweenIntegralElementsStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualStableLatticeUnitOrbitsFinite
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FullLatticeSandwichBetweenIntegralElements
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorusOrbitLatticeCountBoundedByRhoStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UUEqSumOverTorusOrbitsStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorusModIntegralUnitsStructureAndIntegralityStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteAlgebraInvolutionRhoPowEqCardBoxStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UUEqSumOverTorusOrbits
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorusModIntegralUnitsStructureAndIntegrality
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteAlgebraInvolutionRhoPowEqCardBox
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TendstoRatioBoxCountsProdOneStatement
 
 open GlobalTheory.UnitLemma Polynomial Filter Topology
@@ -14,12 +14,12 @@ open GlobalTheory.UnitLemma Polynomial Filter Topology
 namespace GlobalTheory.UnitLemma
 
 theorem unitaryLimit : UnitaryLimit := by
-  have L0 := GlobalTheory.T.selfDual_stable_lattice_unit_orbits_finite
-  have S1 := GlobalTheory.T.fullLattice_sandwich_between_integral_elements
+  have L0 := _root_.GlobalTheory.UnitLemma.OrbitFinite.orbits_finite
+  have S1 := _root_.GlobalTheory.UnitLemma.lattice_sandwich
   have S2 := GlobalTheory.T.torus_orbit_lattice_count_bounded_by_rho
-  have S3 := GlobalTheory.T.UU_eq_sum_over_torus_orbits
-  have S4 := GlobalTheory.T.torus_mod_integralUnits_structure_and_integrality
-  have S5 := GlobalTheory.T.finiteAlgebraInvolution_rho_pow_eq_card_box
+  have S3 := _root_.GlobalTheory.UnitLemma.UU_eq_sum_orbits
+  have S4 := _root_.GlobalTheory.UnitLemma.torus_mod_intUnits_structure
+  have S5 := _root_.GlobalTheory.UnitLemma.rho_pow_eq_card_box
   have S6 := GlobalTheory.T.tendsto_ratio_box_counts_prod_one
 
   intro K B hB a ha x hx

@@ -1,5 +1,23 @@
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.DiscreteSpectrumResidualClassification
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopGridStagePolynomialExists
+import Mathlib
+import Development.AbelianVarietyTheory.Definitions.Divisors.RegConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaAtMove
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TupleMatch
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridFramesDoublingPolynomialExists
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfUnit
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NegIdxOfIsStd
+import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaIntegralsAgree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEquivOfKer
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TowerStageSeesawDictionaryFramesSignatures
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStandingTripleThetaSecond
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.XiAwayIm
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowClose
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsRestRest
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlResidueSurjective
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.ThetaParameterDictionaryBijective
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.StageUniqueOfArchimedeanTriple
@@ -61,12 +79,12 @@ theorem thetaFlip_tuple_match (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) 
     rw [← k] at k2
     rw [h5 w hw _ (hT'.geo.hM.vac _).1 0 k2.1, k2.2]
   have vB : ∏ w ∈ locPl G t, ιB w (Γ.M'.vac _) 0 = ∏ w ∈ locPl G t, ι' w (Γ.M'.vac _) 0 := Finset.prod_congr rfl fun w hw => by
-    have k := GlobalTheory.T.mixedModel_vacuum_eq_smul_integralMatrix_indicator hL W B t i j M hst e Bs Γ X om om' h hT' hti w hw _ (h4 w hw)
+    have k := _root_.GlobalTheory.TopFlip.MixVacSmall.mixVac_eq_indicator hL W B t i j M hst e Bs Γ X om om' h hT' hti w hw _ (h4 w hw)
     have k2 := fourierSum_ind (A := Fin ((locGrid G t w).rank (i, j))) (psiAt W w) (isUnif_unifAt w)
       (Assignment.one.block (Fin ((locGrid G t w).rank (i, j + 1))) (Fin ((locGrid G t w).rank (i + 1, j)))) (ι' w (Γ.M'.vac _) 0)
     rw [← k] at k2
     rw [h6 w hw _ (hT'.geo.hM'.vac _).1 0 k2.1, k2.2]
-  have la := GlobalTheory.T.negW_local_functions_theta_pure_tensor hL W B t i j M hst e Bs Γ X om om' h hT' hti.1 ρ f
+  have la := _root_.GlobalTheory.TopFlip.LinGlob.isDatum_linA hL W B t i j M hst e Bs Γ X om om' h hT' hti.1 ρ f
     (datumA_vac ρ i j t ▸ GlobalTheory.SquareIdent.isDatum_of_isDatumA f3) ιA h1
   have lb := GlobalTheory.TopFlip.LinSmall.isDatum_linB hL W B t i j M hst e Bs Γ X om om' h hT' hti ρ f'
     (datumB_vac ρ i j t ▸ GlobalTheory.SquareIdent.isDatum_of_isDatumB g3) ιB h2

@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanon
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageOfIsPullback
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 import Development.AbelianVarietyTheory.Definitions.Divisors.SameDiv
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsEtaleCoordinatesOnOpenRestrictAffineOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsEtaleCoordinatesOnOpenRestrictAffineOpen
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.EtaleCoordinatesKaehlerBasis
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendLinearIndependentDifferentialsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendLinearIndependentDifferentials
 import GroundTheory.PAdicHodge.ACrisGalois
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -69,7 +69,7 @@ theorem exists_chart : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ S
   letI : Algebra R Γ(X, U) := (cstOn f U).toAlgebra
   obtain ⟨hd, hli⟩ := H
   have : Algebra.Smooth R Γ(X, U) := smooth_cstOn f hU
-  obtain ⟨t, e', het, htli⟩ := GlobalTheory.T.extend_linear_independent_differentials R Γ(X, U) K d
+  obtain ⟨t, e', het, htli⟩ := _root_.GlobalTheory.kaehler_baseChange_independent_extend R Γ(X, U) K d
     {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0}
     (fun i => resG X (hc i.1) ((σ i.1).f (c i.1))) hd hli
   obtain ⟨h, hh, het2⟩ := GlobalTheory.T.etale_coordinates_kaehler_basis R Γ(X, U) K d t hd htli
@@ -93,7 +93,7 @@ theorem exists_chart : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ S
     · simp
     · exact hj
   have hgU : X.basicOpen g ≤ U := X.basicOpen_le g
-  have hEt := GlobalTheory.T.isEtaleCoordinatesOnOpen_restrict_affineOpen R X f (X.basicOpen h) (X.basicOpen g) hgW d _ (hU.basicOpen h) (hU.basicOpen g) hV
+  have hEt := _root_.GlobalTheory.LogPair.isEtCoord_res R X f (X.basicOpen h) (X.basicOpen g) hgW d _ (hU.basicOpen h) (hU.basicOpen g) hV
   have hunit : ∀ i, algebraMap Γ(X, U) K (sf i) ≠ 0 → IsUnit (resG X hgU (sf i)) := by
     intro i hi
     have h1 : IsUnit (resG X (X.basicOpen_le (sf i)) (sf i)) := X.toRingedSpace.isUnit_res_basicOpen (sf i)

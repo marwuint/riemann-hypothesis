@@ -45,12 +45,6 @@ theorem form_sub_left (H : Matrix n n ℂ) (v v' w : n → ℂ) :
 theorem form_sub_right (H : Matrix n n ℂ) (v w w' : n → ℂ) :
     form H v (w - w') = form H v w - form H v w' := by simp [form, mulVec_sub]
 
-theorem form_add (H K : Matrix n n ℂ) (v w : n → ℂ) :
-    form (H + K) v w = form H v w + form K v w := by simp [form, add_mulVec]
-
-theorem form_smul (c : ℂ) (H : Matrix n n ℂ) (v w : n → ℂ) :
-    form (c • H) v w = c * form H v w := by simp [form, smul_mulVec]
-
 theorem conj_form {H : Matrix n n ℂ} (hH : H.IsHermitian) (v w : n → ℂ) :
     conj (form H v w) = form H w v := by
   simp only [form_eq_sum, map_sum, map_mul, conj_conj]
@@ -173,11 +167,6 @@ theorem gnorm_mulVec_le (hH : H.PosDef) (hK : K.PosSemidef) (T : Matrix n m ℂ)
     rw [← div_le_iff₀ hp]
     exact le_csInf (exists_bound hH hK T) fun C hC => (div_le_iff₀ hp).2 (hC.2 v)
 
-theorem opNorm_le_iff (hH : H.PosDef) (hK : K.PosSemidef) {T : Matrix n m ℂ} {C : ℝ} :
-    opNorm H K T ≤ C ↔ 0 ≤ C ∧ ∀ v, gnorm K (T *ᵥ v) ≤ C * gnorm H v :=
-  ⟨fun h => ⟨(opNorm_nonneg H K T).trans h, fun v => (gnorm_mulVec_le hH hK T v).trans
-    (mul_le_mul_of_nonneg_right h (gnorm_nonneg _ _))⟩, fun h => opNorm_le_of_bound h.1 h.2⟩
-
 @[simp] theorem opNorm_zero (H : Matrix m m ℂ) (K : Matrix n n ℂ) : opNorm H K 0 = 0 :=
   le_antisymm (opNorm_le_of_bound le_rfl fun v => by simp) (opNorm_nonneg _ _ _)
 
@@ -193,13 +182,6 @@ theorem opNorm_smul_le (hH : H.PosDef) (hK : K.PosSemidef) (c : ℂ) (T : Matrix
   opNorm_le_of_bound (mul_nonneg (norm_nonneg _) (opNorm_nonneg _ _ _)) fun v => by
     rw [smul_mulVec, gnorm_smul hK, mul_assoc]
     exact mul_le_mul_of_nonneg_left (gnorm_mulVec_le hH hK T v) (norm_nonneg _)
-
-theorem opNorm_mul_le (hH : H.PosDef) (hK : K.PosDef) (hL : L.PosSemidef) (S : Matrix l n ℂ)
-    (T : Matrix n m ℂ) : opNorm H L (S * T) ≤ opNorm K L S * opNorm H K T :=
-  opNorm_le_of_bound (mul_nonneg (opNorm_nonneg _ _ _) (opNorm_nonneg _ _ _)) fun v => by
-    rw [← mulVec_mulVec, mul_assoc]
-    exact (gnorm_mulVec_le hK hL S _).trans
-      (mul_le_mul_of_nonneg_left (gnorm_mulVec_le hH hK.posSemidef T v) (opNorm_nonneg _ _ _))
 
 theorem le_two_mul_of_forall_scale {x c a b : ℝ} (hc : 0 ≤ c) (ha : 0 ≤ a) (hb : 0 ≤ b)
     (h : ∀ s, 0 < s → x ≤ c * (s * a ^ 2 + b ^ 2 / s)) : x ≤ 2 * c * a * b := by
@@ -252,12 +234,6 @@ theorem opNorm_le_of_selfAdjoint (hH : H.PosSemidef) {T : Matrix m m ℂ}
   · rw [← h0]; exact mul_nonneg hc (gnorm_nonneg _ _)
   · nlinarith
 
-theorem norm_form_mulVec_le (hH : H.PosDef) (T : Matrix m m ℂ) (v : m → ℂ) :
-    ‖form H (T *ᵥ v) v‖ ≤ opNorm H H T * gnorm H v ^ 2 := by
-  refine (norm_form_le hH.posSemidef _ _).trans ?_
-  rw [sq, ← mul_assoc]
-  exact mul_le_mul_of_nonneg_right (gnorm_mulVec_le hH hH.posSemidef T v) (gnorm_nonneg _ _)
-
 end OpNorm
 
 section Sesq
@@ -273,9 +249,6 @@ structure IsSesq (F : V → V → M) : Prop where
   add_right : ∀ x y y', F x (y + y') = F x y + F x y'
 
   smul_right : ∀ (c : ℂ) x y, F x (c • y) = conj c • F x y
-
-theorem isSesq_form (H : Matrix n n ℂ) : IsSesq (form H) :=
-  ⟨form_add_left H, form_smul_left H, form_add_right H, form_smul_right H⟩
 
 theorem IsSesq.polarisation {F : V → V → M} (hF : IsSesq F) (x y : V) :
     F x y = (1 / 4 : ℂ) • ((F (x + y) (x + y) + (-1 : ℂ) • F (x - y) (x - y)) +
@@ -446,67 +419,5 @@ theorem posDef_quotGram (h : H.PosDef) : (quotGram H).PosDef := by
   rw [← one_mulVec q, ← quotMap_mul_orthLift H, ← mulVec_mulVec, h0, mulVec_zero]
 
 end Blocks
-
-section FinFrame
-
-variable {N : ℕ}
-
-def splitFin {k : ℕ} (hk : k ≤ N) : Fin k ⊕ Fin (N - k) ≃ Fin N :=
-  finSumFinEquiv.trans (finCongr (Nat.add_sub_cancel' hk))
-
-def adapt {k : ℕ} (hk : k ≤ N) (T : Matrix (Fin N) (Fin N) ℂ) :
-    Matrix (Fin k ⊕ Fin (N - k)) (Fin k ⊕ Fin (N - k)) ℂ :=
-  T.submatrix (splitFin hk) (splitFin hk)
-
-def firstGram {k : ℕ} (hk : k ≤ N) (H : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin k) (Fin k) ℂ :=
-  H.submatrix (Fin.castLE hk) (Fin.castLE hk)
-
-def lastGram {k : ℕ} (hk : k ≤ N) (H : Matrix (Fin N) (Fin N) ℂ) :
-    Matrix (Fin (N - k)) (Fin (N - k)) ℂ := quotGram (adapt hk H)
-
-def stepGram (H : Matrix (Fin N) (Fin N) ℂ) (i : Fin N) :
-    Matrix (Fin i ⊕ Unit) (Fin i ⊕ Unit) ℂ :=
-  H.submatrix (Sum.elim (Fin.castLE i.2.le) fun _ => i) (Sum.elim (Fin.castLE i.2.le) fun _ => i)
-
-def gradedGram (H : Matrix (Fin N) (Fin N) ℂ) (i : Fin N) : Matrix Unit Unit ℂ :=
-  quotGram (stepGram H i)
-
-theorem det_firstGram_succ (H : Matrix (Fin N) (Fin N) ℂ) (i : Fin N)
-    (hu : IsUnit (firstGram i.2.le H).det) :
-    (firstGram (k := i + 1) i.2 H).det = (firstGram i.2.le H).det * gradedGram H i () () := by
-  have h := det_eq_det_subGram_mul (H := stepGram H i) hu
-  rw [det_unique (quotGram _)] at h
-  rw [← det_submatrix_equiv_self
-    ((Equiv.sumCongr (Equiv.refl _) (Equiv.ofUnique Unit (Fin 1))).trans finSumFinEquiv)]
-  refine Eq.trans ?_ h
-  congr 1
-  ext (a | a) (b | b) <;> rfl
-
-theorem posDef_gradedGram {H : Matrix (Fin N) (Fin N) ℂ} (h : H.PosDef) (i : Fin N) :
-    (gradedGram H i).PosDef := by
-  refine posDef_quotGram (h.submatrix ?_)
-  rintro (a | a) (b | b) hab
-  · exact congrArg _ (Fin.castLE_injective i.2.le hab)
-  · exact absurd (congrArg Fin.val hab) a.2.ne
-  · exact absurd (congrArg Fin.val hab) b.2.ne'
-  · rfl
-
-end FinFrame
-
-example : form (1 : Matrix Unit Unit ℂ) (fun _ => I) (fun _ => 1) = I := by simp [form_eq_sum]
-
-example : quotGram (fromBlocks (1 : Matrix Unit Unit ℂ) (of fun _ _ => I) (of fun _ _ => -I)
-    (of fun _ _ => 3) : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) () () = 2 := by
-  simp [quotGram, mul_apply]; norm_num
-
-example : opNorm (1 : Matrix Unit Unit ℂ) 1 ((2 : ℂ) • (1 : Matrix Unit Unit ℂ)) ≤ 2 ∧
-    ¬ opNorm (1 : Matrix Unit Unit ℂ) 1 ((2 : ℂ) • (1 : Matrix Unit Unit ℂ)) ≤ 1 := by
-  have h : ∀ v : Unit → ℂ, gnorm 1 (((2 : ℂ) • (1 : Matrix Unit Unit ℂ)) *ᵥ v) = 2 * gnorm 1 v :=
-    fun v => by rw [smul_mulVec, one_mulVec, gnorm_smul PosSemidef.one]; simp
-  simp only [opNorm_le_iff PosDef.one PosSemidef.one, h]
-  refine ⟨⟨by norm_num, fun v => le_rfl⟩, fun h' => ?_⟩
-  have := gnorm_pos (H := (1 : Matrix Unit Unit ℂ)) PosDef.one (v := fun _ => 1)
-    (fun h0 => one_ne_zero (congrFun h0 ()))
-  linarith [h'.2 fun _ => 1]
 
 end GlobalTheory.HermFrame

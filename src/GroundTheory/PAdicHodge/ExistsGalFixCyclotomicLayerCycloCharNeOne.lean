@@ -299,13 +299,6 @@ theorem cpTwistRep_invariants_eq_bot {j : ℤ} (hj : j ≠ 0) : (cpTwistRep K j)
   rw [ContRepresentation.mem_invariants] at hx
   exact (Submodule.mem_bot K).2 (eq_zero_of_forall_twistScalar_mul_smul_eq K hj hx)
 
-noncomputable def continuousCohomologyZeroEquiv :
-    continuousCohomology 0 (cpTwist K 0) ≃ₗ[K] K :=
-  (ContinuousCohomology.zeroIso (cpTwist K 0)).toContinuousLinearEquiv.toLinearEquiv ≪≫ₗ
-    LinearEquiv.ofEq _ _ (cpTwistRep_invariants_zero K) ≪≫ₗ
-    (LinearEquiv.ofInjective (Algebra.linearMap K ℂ_[p])
-      (FaithfulSMul.algebraMap_injective K ℂ_[p])).symm
-
 end Invariants
 
 end GroundTheory.PAdicHodge

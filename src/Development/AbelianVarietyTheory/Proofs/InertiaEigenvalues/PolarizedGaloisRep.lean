@@ -174,35 +174,6 @@ theorem norm_lt_one {ϖ : O} (hϖ : Irreducible ϖ) : ‖φ ϖ‖ < 1 := by
   by_contra h
   exact absurd hl (not_lt.2 (one_le_pow₀ (not_lt.1 h)))
 
-theorem mem_pow_iff (hinj : Function.Injective φ) {ϖ : O} (hϖ : Irreducible ϖ) (k : ℕ) (x : O) :
-    x ∈ IsLocalRing.maximalIdeal O ^ k ↔ ‖φ x‖ ≤ ‖φ ϖ‖ ^ k := by
-  rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
-  have h0 : 0 < ‖φ ϖ‖ := norm_pos_iff.2 ((map_ne_zero_iff φ hinj).2 hϖ.ne_zero)
-  constructor
-  · rintro ⟨y, rfl⟩
-    rw [map_mul, norm_mul, map_pow, norm_pow]
-    exact mul_le_of_le_one_right (by positivity) (norm_le_one φ hφ y)
-  · intro h
-    by_cases hx : x = 0
-    · simp [hx]
-    obtain ⟨j, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ
-    rw [map_mul, norm_mul, norm_unit φ hφ, one_mul, map_pow, norm_pow,
-      pow_le_pow_iff_right_of_lt_one₀ h0 (norm_lt_one φ hφ hϖ)] at h
-    exact Dvd.dvd.mul_left (pow_dvd_pow _ h) _
-
-theorem isInducing [TopologicalSpace O] [IsTopologicalRing O] (had : IsAdic (IsLocalRing.maximalIdeal O))
-    (hinj : Function.Injective φ) : Topology.IsInducing φ := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  have h0 : 0 < ‖φ ϖ‖ := norm_pos_iff.2 ((map_ne_zero_iff φ hinj).2 hϖ.ne_zero)
-  have h1 := norm_lt_one φ hφ hϖ
-  rw [IsTopologicalAddGroup.isInducing_iff_nhds_zero]
-  refine had.hasBasis_nhds_zero.eq_of_same_basis ?_
-  have hb : (nhds (0 : Qbar l)).HasBasis (fun _ : ℕ => True) (fun k => Metric.closedBall 0 (‖φ ϖ‖ ^ k)) :=
-    Metric.nhds_basis_closedBall_pow h0 h1
-  convert hb.comap φ using 2 with k
-  ext x
-  simp [mem_pow_iff φ hφ hinj hϖ]
-
 end Topology
 
 theorem mem_range_iff {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
@@ -239,28 +210,6 @@ theorem mem_range_iff {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [IsDoma
   rw [← inv_inv x, ← hy, hu]
   simp
 
-theorem isClosed_submodule {O X : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [Fintype X]
-    [TopologicalSpace O] [IsTopologicalRing O] (had : IsAdic (IsLocalRing.maximalIdeal O))
-    (T : Submodule O (X → O)) : IsClosed (T : Set (X → O)) := by
-  classical
-  refine isClosed_of_closure_subset fun f hf => ?_
-  have key := Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := (X → O) ⧸ T) (IsLocalRing.maximalIdeal O)
-    (IsLocalRing.maximalIdeal.isMaximal O).ne_top
-  show f ∈ T
-  rw [← Submodule.Quotient.mk_eq_zero, ← Submodule.mem_bot O, ← key, Submodule.mem_iInf]
-  intro k
-  have ho : IsOpen {t : X → O | ∀ x, f x - t x ∈ IsLocalRing.maximalIdeal O ^ k} := by
-    rw [Set.setOf_forall]
-    exact isOpen_iInter_of_finite fun x =>
-      (((isAdic_iff.1 had).1 k).preimage (by fun_prop : Continuous fun t : X → O => f x - t x))
-  obtain ⟨t, ht, htT⟩ := mem_closure_iff.1 hf _ ho (by simp)
-  have h1 : (Submodule.Quotient.mk f : (X → O) ⧸ T) = T.mkQ (f - t) := by
-    rw [map_sub, Submodule.mkQ_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero T).2 htT, sub_zero]
-  rw [h1, pi_eq_sum_univ (f - t), map_sum]
-  refine Submodule.sum_mem _ fun x _ => ?_
-  rw [map_smul]
-  exact Submodule.smul_mem_smul (ht x) Submodule.mem_top
-
 theorem isSplitPl_of_degree_one {R : Ranks} (H : Host R) (v : PlE H) (hf : v.asIdeal.inertiaDeg ℤ = 1)
     (he : v.asIdeal.ramificationIdx ℤ = 1) : IsSplitPl H v := by
   have hG : IsGalois ℚ H.E := H.hostE_isGalois
@@ -293,10 +242,6 @@ theorem isSplitPl_of_degree_one {R : Ranks} (H : Host R) (v : PlE H) (hf : v.asI
   have h5 : H.d = 0 := by exact_mod_cast h4
   have := H.qd_big.2
   omega
-
-def frobSet (D : D7) (i : D.nd.Loc) : Set (GE D.nd) :=
-  {σ | ∃ w, SplitOut D.nd i w ∧ ∃ B : ValuationSubring D.nd.Om,
-    IsPlaceOver (F := D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ}
 
 theorem isSSRep_of_prod {Γ k : Type} [Group Γ] [Field k] {n a b : ℕ} {ρ : Γ →* GL (Fin n) k}
     {ρ₁ : Γ →* GL (Fin a) k} {ρ₂ : Γ →* GL (Fin b) k} (e : (Fin n → k) ≃ₗ[k] (Fin a → k) × (Fin b → k))
@@ -409,12 +354,6 @@ theorem Realised.sum {m m' : ℕ} {L L' : ∀ w, D.naut.LP w} (h : Realised D i 
     Multiset.map_add, Multiset.prod_add]
 
 end Construction
-
-def GaloisRepOfPolarizedF {eps : ℝ} (Fm : FamP eps) : Prop :=
-  ∀ x : ℝ, Fm.x1 < x → ∀ p : Fm.Ix x, GaloisRepOfPolarized_at (Fm.D x p)
-
-def GaloisRepOfPolarized (C : FamClass) : Prop :=
-  Closed C (fun Fm _ => GaloisRepOfPolarizedF Fm)
 
 end GlobalTheory.Proof.SemisimpleRepresentationIntegralConjugate
 

@@ -5,8 +5,6 @@ open AlgebraicGeometry.StructureSheaf CategoryTheory Limits AlgebraicGeometry Op
 
 namespace LateralTheory.E.LeafGlueGenericPf
 
-example (A : Type) [CommRing A] : Sp A = Spec (CommRingCat.of A) := rfl
-
 def eta (A : Type) [CommRing A] [IsDomain A] : Sp A := ⟨⊥, Ideal.isPrime_bot⟩
 
 theorem eta_generic (A : Type) [CommRing A] [IsDomain A] : IsGenericPoint (eta A) (⊤ : Set (Sp A)) := by
@@ -31,8 +29,6 @@ def psi0 {A L : Type} [CommRing A] [IsDomain A] [Field L] [Algebra A L] [IsFract
 theorem fractionFieldToGenericStalk_algebraMap_eq {A L : Type} [CommRing A] [IsDomain A] [Field L] [Algebra A L] [IsFractionRing A L] (a : A) :
     psi0 (L := L) (algebraMap A L a) = StructureSheaf.toStalk A (etaT A) a := by
   unfold psi0; simp only [IsLocalization.lift_eq]; rfl
-
-example {A : Type} [CommRing A] [IsDomain A] : (structurePresheafInCommRingCat A).stalk (etaT A) = (Sp A).presheaf.stalk (eta A) := rfl
 
 theorem glued_curve_generic_point_maps_to_function_field : LeafGlueGeneric := by
   intro Ω L _ _ _ A B u h G

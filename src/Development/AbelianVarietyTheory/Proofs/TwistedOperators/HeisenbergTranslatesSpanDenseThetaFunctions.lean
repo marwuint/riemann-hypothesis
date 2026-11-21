@@ -237,7 +237,7 @@ theorem approx_uniform {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdCha
   have hann : ∀ x : WO S T, (∀ γ ∈ ratL T S, ψ (symplOH S T x γ + symplOH S T x γ) = 1) ↔ x ∈ ratL T S := by
     intro x
     simp only [hdbl]
-    exact GlobalTheory.T.rationalSymplecticPoints_self_annihilator D ψ hψ S T x
+    exact _root_.GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ S T x
   exact approx_abstract (G := WO S T) (ratL T S) K hK hcov ψ hψc hψn (symplOH S T) hl hr halt hcont hann f₀ f
     h₀.cont hf.cont (GlobalTheory.HeisTotal.quasi_of_mem h₀) (GlobalTheory.HeisTotal.quasi_of_mem hf) hne _ (fun _ _ => rfl) ε hε
 

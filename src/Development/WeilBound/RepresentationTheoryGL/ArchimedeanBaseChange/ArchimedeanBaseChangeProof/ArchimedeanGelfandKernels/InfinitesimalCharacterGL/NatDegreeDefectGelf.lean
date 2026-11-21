@@ -1,8 +1,10 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.InfinitesimalCharacterGL.EopW
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CapelliOfGelfand
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorPolyMap
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverseStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminor
+import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverse
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetPolyMapMonicStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementGelfandPolynomialFormula
 
@@ -86,7 +88,7 @@ theorem natDegree_capQ (m : ℕ) (χ : Fin (m + 1) → ℂ) : (∏ s, (X + C (χ
 theorem coeff_defect_gelf (m : ℕ) (χ : Fin (m + 1) → ℂ) (N : ℕ) :
     (defect (GlobalTheory.Dec.gelfVal χ) m N (∏ s, (X + C (χ s - (m : ℂ) / 2)))).coeff (m + 1) = 0 := by
   set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP
-  have hG := GlobalTheory.T.trace_element_gelfand_polynomial_formula m χ N
+  have hG := _root_.GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton m χ N
   rw [← hP] at hG
   set G : ℂ[X] := (X - C (m : ℂ)) ^ (N + 1) * (P.comp (X + 1) - P) -
     P * ∑ k ∈ range N, C ((-1) ^ k * GlobalTheory.Dec.gelfVal χ k) * (X - C (m : ℂ)) ^ (N - k) with hGd
@@ -147,8 +149,8 @@ theorem natDegree_defect_op (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ)
   set Rp := GlobalTheory.CapelliNewton.polyOf m Rc f v with hRp
   have key : defect t m N Q = -(C ((-1 : ℂ) ^ N) * Rp) := by
     refine Polynomial.funext fun w => ?_
-    have h1 := congrArg (fun T : Module.End ℂ V => f (T v)) (GlobalTheory.T.traced_qminor_comatrix_truncated_inverse (Module.End ℂ V) m M hM w N)
-    rw [← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor', hR] at h1
+    have h1 := congrArg (fun T : Module.End ℂ V => f (T v)) (_root_.GlobalTheory.TracedComatrix.traced_comatrix (Module.End ℂ V) m M hM w N)
+    rw [← _root_.GlobalTheory.qdet_add_one_sub_eq_sum_qminor, hR] at h1
     have h2 : (qdet M w * ∑ k ∈ range (N + 1), algebraMap ℂ (Module.End ℂ V) ((-1) ^ k * (w - m) ^ (N - k)) * etr M k) v
         = (∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * t k) • qdet M w v := by
       rw [Module.End.mul_apply, LinearMap.sum_apply, map_sum, sum_smul]

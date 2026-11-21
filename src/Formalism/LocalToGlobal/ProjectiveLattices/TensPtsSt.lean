@@ -27,19 +27,6 @@ def tup {T : Over X} : (k : ℕ) → (Fin k → (T ⟶ A)) → (T ⟶ powO A k)
 
 variable [GrpObj A] [IsCommMonObj A] {O : Type} [CommRing O] (act : OAct O A)
 
-structure DualPres (O : Type) [CommRing O] (La : Type) [AddCommGroup La] [Module O La] where
-
-  k : ℕ
-
-  gen : Fin k → La
-
-  coord : Fin k → Module.Dual O La
-
-  recon : ∀ x, (∑ j, coord j x • gen j) = x
-
-def DualPres.e {La : Type} [AddCommGroup La] [Module O La] (D : DualPres O La) (i j : Fin D.k) : O :=
-  D.coord i (D.gen j)
-
 def matMap {k : ℕ} (e : Fin k → Fin k → O) : powO A k ⟶ powO A k :=
   tup A k fun i => psum A (fun j => prj A k j ≫ act.act (e i j)) Finset.univ
 
@@ -55,37 +42,11 @@ def tensIncl {k : ℕ} (e : Fin k → Fin k → O) : tensO A act e ⟶ powO A k 
 def tcoord {k : ℕ} (e : Fin k → Fin k → O) (j : Fin k) : tensO A act e ⟶ A :=
   tensIncl A act e ≫ prj A k j
 
-def IsTensPt {k : ℕ} (e : Fin k → Fin k → O) {T : Over X} (a : Fin k → (T ⟶ A)) : Prop :=
-  ∀ i, psum A (fun j => a j ≫ act.act (e i j)) Finset.univ = a i
-
-def TensPtsSt {k : ℕ} (e : Fin k → Fin k → O) : Prop :=
-  ∀ (T : Over X),
-    (∀ b : T ⟶ tensO A act e, IsTensPt A act e fun j => b ≫ tcoord A act e j) ∧
-    ∀ a : Fin k → (T ⟶ A), IsTensPt A act e a → ∃! b : T ⟶ tensO A act e, ∀ j, b ≫ tcoord A act e j = a j
-
 abbrev tensIx {k : ℕ} (h : Fin k → Fin k → O) : Type :=
   {p : Fin k × Fin k // h p.1 p.2 ≠ 0} × ULift.{0} (Finset (Fin 2))
 
 open Classical in
 instance {k : ℕ} (h : Fin k → Fin k → O) : Fintype (tensIx h) :=
   inferInstanceAs (Fintype ({p : Fin k × Fin k // h p.1 p.2 ≠ 0} × ULift.{0} (Finset (Fin 2))))
-
-def tensφ {k : ℕ} (e : Fin k → Fin k → O) (h : Fin k → Fin k → O) (w0 : O) :
-    tensIx h → ((tensO A act e).left ⟶ A.left) :=
-  fun q => (psum A ![tcoord A act e q.1.1.1, tcoord A act e q.1.1.2 ≫ act.act (h q.1.1.1 q.1.1.2 * w0)]
-    q.2.down).left
-
-def tensε {k : ℕ} (h : Fin k → Fin k → O) : tensIx h → ℤ := fun q => (-1) ^ (2 - q.2.down.card)
-
-def tensLB (PP : RigLB A) {k : ℕ} (e : Fin k → Fin k → O) (h : Fin k → Fin k → O) (w0 : O) :
-    LB (tensO A act e).left :=
-  LB.LinComb PP.L (tensφ A act e h w0) (tensε h)
-
-def tensOf {La : Type} [AddCommGroup La] [Module O La] (D : DualPres O La) : Over X :=
-  tensO A act D.e
-
-def tensLBOf (PP : RigLB A) {La : Type} [AddCommGroup La] [Module O La] (D : DualPres O La)
-    (hf : La → La → O) (w0 : O) : LB (tensOf A act D).left :=
-  tensLB A act PP D.e (fun j j' => hf (D.gen j) (D.gen j')) w0
 
 end Formalism.L2.Pj

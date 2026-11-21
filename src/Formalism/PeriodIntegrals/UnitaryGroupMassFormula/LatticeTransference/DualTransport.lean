@@ -36,21 +36,6 @@ def PoissonGauss : Prop :=
         c * t ^ (-(finrank ℝ E : ℝ) / 2) *
           ∑' y : dualLat Λ, Real.exp (-π * ‖(y : E)‖ ^ 2 / t) * Real.cos (2 * π * inner ℝ (y : E) v)
 
-def PoissonBasis : Prop :=
-  ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    (ι : Type) [Fintype ι] [DecidableEq ι] (b : Basis ι ℝ E) (b' : ι → E),
-    (∀ i j, inner ℝ (b i) (b' j) = if i = j then (1 : ℝ) else 0) →
-    (∀ t : ℝ, 0 < t → ∀ v : E,
-      Summable fun k : ι → ℤ => Real.exp (-π * t * ‖(∑ i, (k i : ℝ) • b i) + v‖ ^ 2)) ∧
-    (∀ t : ℝ, 0 < t → Summable fun m : ι → ℤ => Real.exp (-π * ‖∑ i, (m i : ℝ) • b' i‖ ^ 2 / t)) ∧
-    ∃ c : ℝ, 0 < c ∧ ∀ t : ℝ, 0 < t → ∀ v : E,
-      ∑' k : ι → ℤ, Real.exp (-π * t * ‖(∑ i, (k i : ℝ) • b i) + v‖ ^ 2) =
-        c * t ^ (-(finrank ℝ E : ℝ) / 2) *
-          ∑' m : ι → ℤ, Real.exp (-π * ‖∑ i, (m i : ℝ) • b' i‖ ^ 2 / t) *
-            Real.cos (2 * π * inner ℝ (∑ i, (m i : ℝ) • b' i) v)
-
-def DualTransport : Prop := PoissonBasis → PoissonGauss
-
 def KeyDim (P : ℕ → Prop) : Prop :=
   ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     (Λ : Submodule ℤ E) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (lam : ℝ) (u : E), P (finrank ℝ E) →

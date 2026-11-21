@@ -18,12 +18,6 @@ def ArithmeticVolumeDegreeZero.Statement : Prop :=
 
 namespace ArithmeticVolumeDegreeZero
 
-def trivLine {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] : HermLine ι where
-  a := 0
-  h _ := 1
-  pos _ _ := one_pos
-  smul c z hc := by simp
-
 end ArithmeticVolumeDegreeZero
 
 end

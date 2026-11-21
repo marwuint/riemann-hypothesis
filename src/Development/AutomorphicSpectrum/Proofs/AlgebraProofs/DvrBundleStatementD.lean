@@ -7,10 +7,10 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.SameGeneric
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PScalarQuotient
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagDifferenceStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChainStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparisonStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtensionUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ScalarQuotientStatementStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChain
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparison
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtensionUnique
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ScalarQuotientStatement
 open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.Heights.NumbersDVR
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)
@@ -50,7 +50,7 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
       exact ⟨_, hg, E.stable s _ (Subalgebra.algebraMap_mem _ _) _
         (E.stable s _ (Subalgebra.algebraMap_mem _ _) _ he)⟩⟩
   obtain ⟨K', _, _, ι', _, z, EB, w, b, hJ, hbir, hall⟩ :=
-    GlobalTheory.T.same_generic_bundle_chain O Ω K ι x d hmod N 1 V ![E, E'] (by
+    _root_.GlobalTheory.CompanionTheory.Ar.CommonFlag.main O Ω K ι x d hmod N 1 V ![E, E'] (by
       intro j
       fin_cases j
       · exact fun s hs => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩,
@@ -58,12 +58,12 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
       · exact hsame)
   have p0 : IsPull O x z E (EB 0) := (hall 0).1
   have p1 : IsPull O x z E' (EB 1) := (hall 1).1
-  have hpull := GlobalTheory.T.chart_bundle_base_extension_unique O Ω K ι x N V E E' K' ι' z (EB 0) (EB 1) p0 p1
+  have hpull := _root_.GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve O Ω K ι x N V E E' K' ι' z (EB 0) (EB 1) p0 p1
   have hsameJ := hpull.2.1 hsame
   have hscJ := hpull.2.2 _ hlat
   have hmodJ : IsModelOver (pointIdeal O (joinCoord x z)) d :=
     ((BundleExamples.isModelOver_iff O _ d).1 hJ).2
-  obtain ⟨-, f, f', hpair⟩ := GlobalTheory.T.same_generic_flag_comparison O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d hmodJ N V
+  obtain ⟨-, f, f', hpair⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagPairOfFrames.main O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d hmodJ N V
     (EB 0) (EB 1) hsameJ w w (b 0) (b 1) (hall 0).2 (hall 1).2 (fun i j hij => by
       simp [Module.Basis.repr_self, hij.ne])
   have hnum := GlobalTheory.T.same_generic_flag_difference O Ω K ι x ϖ hϖ d hmod N V E E' hsame K' ι' z hJ hbir (EB 0) (EB 1) p0 p1
@@ -90,7 +90,7 @@ theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   refine ⟨?_, ?_⟩
   · rw [hnum.1 k hk1 hk2 q L Q hQ, hdiv, hroot _ hϖ.ne_zero, Finset.mul_sum, Finset.mul_sum]
     refine Finset.sum_congr rfl fun μ hμ => ?_
-    rw [GlobalTheory.T.scalar_quotient_statement O ϖ hϖ Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) d hmodJ N V (EB 0) (EB 1) n u
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Num.ScalarFlags.main O ϖ hϖ Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) d hmodJ N V (EB 0) (EB 1) n u
       hscJ w w (b 0) (b 1) f f' hpair k (psumExpansion N k) (isPairExpansion_psum N k) _
       (by rw [length_classList _ hQ hμ]; omega)]
     ring

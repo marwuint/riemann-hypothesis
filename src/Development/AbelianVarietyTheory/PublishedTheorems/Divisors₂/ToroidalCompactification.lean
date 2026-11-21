@@ -47,64 +47,6 @@ def IsNabla (D : Derivation ℤ R R) (h k : HdR A) : Prop :=
 
 variable {D : Derivation ℤ R R}
 
-theorem isNabla_zero_zero (D : Derivation ℤ R R) : IsNabla D (0 : HdR A) 0 :=
-  ⟨0, fun _ ↦ (map_zero (derHom D)).symm, fun _ ↦ by
-    rw [LinearMap.zero_apply, LinearMap.zero_apply, TrivSqZeroExt.inl_zero, TrivSqZeroExt.inr_zero, add_zero]⟩
-
-theorem IsNabla.add {h k h' k' : HdR A} (e : IsNabla D h k) (e' : IsNabla D h' k') :
-    IsNabla D (h + h') (k + k') := by
-  obtain ⟨d, a, b⟩ := e
-  obtain ⟨d', a', b'⟩ := e'
-  refine ⟨d + d', fun c ↦ ?_, fun c ↦ ?_⟩
-  · rw [LinearMap.add_apply, a, a', LinearMap.add_apply, map_add]
-  · rw [LinearMap.add_apply, b, b']
-    ext <;> simp
-
-theorem IsNabla.smul {h k : HdR A} (e : IsNabla D h k) (r : R) : IsNabla D (r • h) (r • k + D r • h) := by
-  obtain ⟨d, a, b⟩ := e
-  refine ⟨derHom D r • d, fun c ↦ ?_, fun c ↦ ?_⟩
-  · rw [LinearMap.smul_apply, a, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]
-  · rw [LinearMap.smul_apply, b, derHom_apply]
-    ext <;> simp [mul_comm]
-
-theorem IsNabla.push {B : Over (Sp R)} [GrpObj B] {h k : HdR A} (e : IsNabla D h k) (f : A ⟶ B) [IsMonHom f] :
-    IsNabla D (push (dp0 R) (𝟙 _) f h) (push (dp0 R) (𝟙 _) f k) := by
-  obtain ⟨d, a, b⟩ := e
-  refine ⟨DeRham.push _ _ f d, GrpMor.Corr.push (derMor B D) f f (by simp) a, fun c ↦ ?_⟩
-  have m := (homMor (dp0 R) (𝟙 _) f).comp (constMor A)
-  have e1 : primPull _ _ f ((constMor B).pull c) = m.pull c :=
-    GrpMor.pull_pull (constMor B) (homMor _ _ f) m (fun _ ↦ rfl) (by simp) c
-  have e2 : (constMor A).pull (primPull _ _ f c) = m.pull c :=
-    GrpMor.pull_pull (homMor _ _ f) (constMor A) m (fun _ ↦ rfl) rfl c
-  rw [push_apply, push_apply, push_apply, e1, ← e2, b]
-
-theorem IsNabla.unique (H : Submodule.span (DualNumber R) (Set.range (derMor A D).pull) = ⊤) {h k k' : HdR A}
-    (e : IsNabla D h k) (e' : IsNabla D h k') : k = k' := by
-  obtain ⟨d, a, b⟩ := e
-  obtain ⟨d', a', b'⟩ := e'
-  obtain rfl : d = d' := LinearMap.ext_on_range H fun c ↦ (a c).trans (a' c).symm
-  refine LinearMap.ext fun c ↦ ?_
-  simpa using congrArg TrivSqZeroExt.snd ((b c).symm.trans (b' c))
-
-theorem derMor_zero_pull (c : primDR A) : (derMor A 0).pull c = (constMor A).pull c :=
-  (GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) (𝟙 A)) (derMor A 0) (derMor A 0) (fun _ ↦ rfl) (by simp) c).symm.trans
-    (GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) (𝟙 A)) (derMor A 0) (constMor A)
-      (fun r ↦ by ext <;> simp [derHom_apply, TrivSqZeroExt.algebraMap_eq_inl]) (by simp) c)
-
-theorem IsNabla.eq_zero {h k : HdR A} (e : IsNabla 0 h k) : k = 0 := by
-  obtain ⟨d, a, b⟩ := e
-  refine LinearMap.ext fun c ↦ ?_
-  have := a c
-  rw [derMor_zero_pull, b] at this
-  simpa [derHom_apply] using congrArg TrivSqZeroExt.snd this
-
-theorem isNabla_zero (H : (constMor A).IsBC) (h : HdR A) : IsNabla 0 h 0 := by
-  obtain ⟨d, hd⟩ := H.exists h
-  refine ⟨d, fun c ↦ ?_, fun c ↦ ?_⟩
-  · rw [derMor_zero_pull, hd c]
-    ext <;> simp [derHom_apply, TrivSqZeroExt.algebraMap_eq_inl]
-  · rw [hd c, LinearMap.zero_apply, TrivSqZeroExt.inr_zero, add_zero, TrivSqZeroExt.algebraMap_eq_inl]
-
 end Nabla
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}}
@@ -139,48 +81,12 @@ theorem exists_chart (t : SAB H X) (U : X.affineOpens) (h : IsAffineOpen (U.1 �
   · rw [e]; infer_instance
   · rw [e]; exact h.range_fromSpec
 
-theorem exists_chart_mem (t : SAB H X)
-    (h : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal V.compl)) (x : X) :
-    ∃ c : Chart t V, x ∈ c.U.1 := by
-  obtain ⟨-, U, hx, n, f, J, -, hI⟩ := h x
-  have e : U.1 ⊓ V = X.basicOpen (∏ i ∈ J, f i) := by
-    ext y
-    constructor
-    · rintro ⟨hU, hV⟩
-      by_contra hy
-      have : y ∈ (Scheme.IdealSheafData.vanishingIdeal V.compl).support := by
-        rw [Scheme.IdealSheafData.mem_support_iff_of_mem hU, hI, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]
-        exact hy
-      rw [← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal] at this
-      exact this hV
-    · intro hy
-      have hU : y ∈ U.1 := X.basicOpen_le _ hy
-      refine ⟨hU, by_contra fun hV ↦ ?_⟩
-      have : y ∈ (Scheme.IdealSheafData.vanishingIdeal V.compl).support := by
-        rw [← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]
-        exact hV
-      rw [Scheme.IdealSheafData.mem_support_iff_of_mem hU, hI, Scheme.zeroLocus_span,
-        Scheme.zeroLocus_singleton] at this
-      exact this hy
-  obtain ⟨c, rfl⟩ := exists_chart t U (V := V) (e ▸ U.2.basicOpen _)
-  exact ⟨c, hx⟩
-
 namespace Chart
 
 variable (c : Chart t V)
 
 def HasImage (h : HdR c.A) (v : Sp (DualNumber Γ(X, c.U.1)) ⟶ t.G.left) : Prop :=
   ∃ w : epsR c.S ⟶ c.A, w.left ≫ c.φ = spMap (dualMap (algebraMap Γ(X, c.U.1) c.S)) ≫ v ∧ IsLieImage h w
-
-variable {c} in
-
-theorem HasImage.sub_mem {h h' : HdR c.A} {v : Sp (DualNumber Γ(X, c.U.1)) ⟶ t.G.left} (e : c.HasImage h v)
-    (e' : c.HasImage h' v) : h - h' ∈ Fil c.A := by
-  obtain ⟨w, a, b⟩ := e
-  obtain ⟨w', a', b'⟩ := e'
-  obtain rfl : w = w' :=
-    Over.OverMorphism.ext (c.cart.1.hom_ext (a.trans a'.symm) ((Over.w w).trans (Over.w w').symm))
-  exact b.sub_mem b'
 
 def coLie (ψ : LinearMap.BilinForm c.S (HdR c.A)) : Submodule Γ(X, c.U.1) (HdR c.A) where
   carrier := {f | f ∈ Fil c.A ∧ ∀ h v, IsTanAtG t (chart c.U) v → c.HasImage h v →
@@ -218,20 +124,6 @@ def IsCanExt {K : Type} [CommRing K] (s : X ⟶ Sp K)
       (m : GrpMor (dp0 c.S) (𝟙 _) c.A (dp0 c'.S) (𝟙 _) c'.A σ (spMap σ) q), q ≫ c.φ = c'.φ →
       L c' = Submodule.span Γ(X, c'.U.1) {h' | ∃ h ∈ L c, m.Corr h h'}
 
-theorem IsCanLattice.eq_top {K : Type} [CommRing K] {s : X ⟶ Sp K} {c : Chart t V}
-    {L : Submodule Γ(X, c.U.1) (HdR c.A)} (h : IsCanLattice s c L)
-    (hs : Function.Surjective (algebraMap Γ(X, c.U.1) c.S)) : L = ⊤ := by
-  refine eq_top_iff.2 fun x _ ↦ ?_
-  have hx : x ∈ Submodule.span c.S (L : Set (HdR c.A)) := h.2.2.1 ▸ Submodule.mem_top
-  induction hx using Submodule.span_induction with
-  | mem y hy => exact hy
-  | zero => exact zero_mem _
-  | add y z _ _ hy hz => exact add_mem (hy trivial) (hz trivial)
-  | smul a y _ hy =>
-    obtain ⟨r, rfl⟩ := hs a
-    rw [algebraMap_smul]
-    exact L.smul_mem r (hy trivial)
-
 end GlobalTheory.LogDR
 
 namespace GlobalTheory.Published
@@ -245,9 +137,5 @@ def DeRhamCanonicalExtension : Prop :=
         SmoothOfRelativeDimension Dw.dim Y.s ∧ ReciprocityTheory.AnForm.R.FinalTheorems.Snc (boundary Y) ∧
           HasLogKS Y.t Y.s (interior Y) ∧
           ∃ L : ∀ ch : Chart Y.t (interior Y), Submodule Γ(Y.X, ch.U.1) (HdR ch.A), IsCanExt Y.s L
-
-theorem DeRhamCanonicalExtension.toroidalCompactification (h : DeRhamCanonicalExtension) :
-    ToroidalCompactification := fun E _ _ _ H Dw hr l Xo c ↦
-  (h E H Dw hr l Xo c).imp fun _ hY ↦ ⟨hY.1, hY.2.1, hY.2.2.1⟩
 
 end GlobalTheory.Published

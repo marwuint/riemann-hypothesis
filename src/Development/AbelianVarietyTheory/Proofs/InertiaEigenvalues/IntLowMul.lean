@@ -27,11 +27,4 @@ theorem intLow_mul {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   · rw [Matrix.mul_apply]
     exact Subring.sum_mem _ fun c _ => Subring.mul_mem _ (h3 a c) (h3' c b)
 
-theorem main : ∀ {F E : Type} [inst : Field F] [inst_1 : ValuativeRel F] [inst_2 : TopologicalSpace F] [inst_3 : CommRing E]
-    [inst_4 : Algebra F E] [inst_5 : TopologicalSpace E] [inst_6 : MeasurableSpace E] (Mp : Formalism.MainNotions.S.Loc.Model F E)
-    {n : ℕ} {l l' : Matrix (Fin n) (Fin n) E},
-    Formalism.MainNotions.S.TieN.IntLow Mp l → Formalism.MainNotions.S.TieN.IntLow Mp l' → Formalism.MainNotions.S.TieN.IntLow Mp (l * l') := by
-  intro F E _ _ _ _ _ _ _ Mp n l l' hl hl'
-  exact intLow_mul Mp hl hl'
-
 end GlobalTheory.LowerIntegralMul

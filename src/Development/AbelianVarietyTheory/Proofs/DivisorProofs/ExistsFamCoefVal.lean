@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 import Development.AbelianVarietyTheory.Definitions.Uniformization.SeriesFrame
@@ -20,62 +20,26 @@ noncomputable section
 
 namespace GlobalTheory.PeriodsAnyChar
 
-def AnyDV (p : ∀ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (_ : Irreducible ϖ)
-    (D : DegData V (maximalIdeal V)) (_ : D.toPre.X → ℤ) {F : Type} [Field F] [Algebra (FractionRing V) F]
-    {v : AddValuation F (WithTop ℚ)} (_ : ValOver ϖ F v), Prop) : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V], IsAdicComplete (maximalIdeal V) V →
-    ∀ (ϖ : V) (hϖ : Irreducible ϖ) (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q →
-    ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)) (hv : ValOver ϖ F v),
-      p hϖ D Q hv
-
-def AnyUV (p : ∀ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (_ : Irreducible ϖ)
-    {D : DegData V (maximalIdeal V)} (_ : D.toPre.X → ℤ) {F : Type} [Field F] [Algebra (FractionRing V) F]
-    {v : AddValuation F (WithTop ℚ)} (_ : ValOver ϖ F v) {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
-    {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G], Unif (maximalIdeal V) D A G → Prop) : Prop :=
-  AnyDV fun {V} _ _ _ {_} hϖ D Q {_} _ _ {_} hv => ∀ (A : PolAV (Spec (CommRingCat.of (FractionRing V))))
-    (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G →
-    ∀ U : Unif (maximalIdeal V) D A G, p hϖ Q hv U
-
 end GlobalTheory.PeriodsAnyChar
 
 open GlobalTheory.PeriodsAnyChar
 
 namespace GlobalTheory.UT.CoefVal
-open TWM TWO CoefBasic
-
 end GlobalTheory.UT.CoefVal
 
 namespace GlobalTheory.UT.CoefUnit
-open GlobalTheory.UT.CoefBasic
-
 end GlobalTheory.UT.CoefUnit
 
 namespace GlobalTheory.UT.SmallPoint
-open CoefBasic
-
 end GlobalTheory.UT.SmallPoint
 
 namespace GlobalTheory.UT.SmallZero
-open CoefBasic SmallPoint
-
 end GlobalTheory.UT.SmallZero
 
 namespace GlobalTheory.UT.EvalZero
-open GlobalTheory.UT.CoefBasic GlobalTheory.ExpansionValueZero GlobalTheory.BoxExpansion
-
 end GlobalTheory.UT.EvalZero
 
 namespace GlobalTheory.UT.MixedConv
-open GlobalTheory.FieldBaseChange
-
-section Core
-variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
-  {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
-  {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {U : UnifPre I D A G} (E : EndU U)
-  {F : Type} [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F]
-
-end Core
-
 end GlobalTheory.UT.MixedConv
 
 namespace GlobalTheory.UT
@@ -191,15 +155,9 @@ theorem _root_.GlobalTheory.PeriodsAnyChar.qkToAkU_level : LL → AnyUF fun {R} 
 end GlobalTheory.LevelCompat
 
 namespace GlobalTheory.UT.EndTors
-open GlobalTheory.TorusExt GlobalTheory.UT.CoefBasic
-attribute [local instance] gtGroup
-
 end GlobalTheory.UT.EndTors
 
 namespace GlobalTheory.UT.EndBaseChange
-open GlobalTheory.ArcPull GlobalTheory.PullLinear
-open GlobalTheory.PsiEvenPull (proj)
-
 end GlobalTheory.UT.EndBaseChange
 
 end

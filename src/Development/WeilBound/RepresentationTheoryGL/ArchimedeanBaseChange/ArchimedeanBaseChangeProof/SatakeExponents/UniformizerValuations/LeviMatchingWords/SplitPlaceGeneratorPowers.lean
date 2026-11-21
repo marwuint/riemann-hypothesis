@@ -40,17 +40,6 @@ def RegPowT : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Un
 def SepPowT : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (d : LocData E n), d.Ok → MOk d →
   ∀ (m : ℕ), ∀ w ∈ d.T, ∀ y, d.gU (m + 1) w y ≠ 0 → y.1.val.charpoly.Separable
 
-def MacInv : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (d : LocData E n), d.Ok → MOk d →
-  ∀ (a : ℕ) (ha : a ≤ n), ∀ w ∈ d.S₀, ∀ x y : d.kap w, IsHecke (d.L a w) ((d.betaL a ha).m w x y) ∧
-    ∀ m : ℕ, PositivityTheory.Rg.BcN.F2.mconv ((((d.fixL a).mul (pw (d.betaL a ha) m)).tr d.P d.one w)) (idem (d.L a w)) =
-      ((d.fixL a).mul (pw (d.betaL a ha) m)).tr d.P d.one w
-
-def SplitPlaceGeneratorPowers : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (d : LocData E n), d.Ok → MOk d →
-  ∀ w ∈ d.S₀, ∀ (N : ℕ) (u : UL n w), d.gU (N + 1) w u = MS.gpow (d.e w) N (u : GLw n w)
-
-def MacInvOf : Prop := (∀ (E : Type) [Field E] [NumberField E] [IsCMField E], PositivityTheory.Rg.BcN.F2.LocOpUniformizer E) → IdemAlg → MacInv
-def SplitPowersOfIdempotents : Prop := IdemAlg → SplitPlaceGeneratorPowers
-
 def MatchLMB3Of : Prop := MT.MatchT → MS.MatchSplitPlace → MB.MatchBadS → MB.MatchBadI → MB.FixIdem → IdemAlg → MatchLMB2
 
 end PositivityTheory.Rg.BcB.F.MLM

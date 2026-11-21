@@ -35,9 +35,6 @@ theorem kd_at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] {z : M} : At (ev
 theorem at_sgl_smul {M : Type} [AddCommGroup M] [Module (AF F) M] (x : Fv F v) (z : M) : At (evFin F v) (sgl v x • z) :=
   fun u hu => by rw [smul_smul, mul_sgl, hu, zero_mul, map_zero, zero_smul]
 
-theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At.kd_eq_sgl {z : AF F} (h : At (evFin F v) z) : z = sgl v (evFin F v z) := by
-  rw [← kd_at_iff.1 h, smul_eq_mul, mul_comm, mul_sgl, mul_one, ev_sgl]
-
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At.kd_map {M N : Type} [AddCommGroup M] [Module (AF F) M] [AddCommGroup N] [Module (AF F) N] (f : M →ₗ[AF F] N) {z : M}
     (h : At (evFin F v) z) : At (evFin F v) (f z) := fun u hu => by rw [← map_smul, h u hu, map_zero]
 

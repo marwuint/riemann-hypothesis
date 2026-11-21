@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructure
 import Development.AbelianVarietyTheory.Definitions.Divisors.NonUnitAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotOrdGeOfNotMem
 import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitModuliOfStalkCompleteDVRStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelPointLatticePeriodsTraitsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDvrWithProportionalValuationsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitModuliOfStalkCompleteDVR
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelPointLatticePeriodsTraits
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDvrWithProportionalValuations
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCdvrDominating
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalHomAdicCompletionExtend
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdealAlongStalkPointEqMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelTraitCharacterGroupFinrankLeGenusThree
@@ -92,7 +93,7 @@ theorem orders_extend : ∀ (g n : ℕ), 3 ≤ n → ∀ (F : SFam g n (zetaAway
   haveI := M.lft
   haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s
   obtain ⟨R, _, _, _, j, Λ, _, p, c, hR, hj, hc, hper⟩ :=
-    GlobalTheory.T.thetaModel_point_lattice_periods_traits g n _ _ F W hW o' Ω S ρ u hu M U₀ EE FinalForm hU V v hv (ξ (closedPoint T.V))
+    _root_.GlobalTheory.Poinc.Periods.main g n _ _ F W hW o' Ω S ρ u hu M U₀ EE FinalForm hU V v hv (ξ (closedPoint T.V))
   haveI := hR.1.1
   haveI := hR.2
   obtain ⟨jinj, jloc, jext⟩ := isCpl_props hj
@@ -119,11 +120,11 @@ theorem orders_extend : ∀ (g n : ℕ), 3 ≤ n → ∀ (F : SFam g n (zetaAway
   haveI := T.D.toPre.finX
   obtain ⟨N, b, hb⟩ := Module.Finite.exists_fin (R := ℤ) (M := T.D.toPre.X)
   obtain ⟨A, _, _, _, ϖ', ψ', m, m', k', hA, hϖ', ψ'inj, ψ'loc, hm, hm', hk''⟩ :=
-    GlobalTheory.T.exists_complete_dvr_with_proportional_valuations R T.V T.ϖ T.irr ψ ψloc (Option (Fin N × Fin N))
+    _root_.GlobalTheory.PropDvr.exists_cdvr_proportional R T.V T.ϖ T.irr ψ ψloc (Option (Fin N × Fin N))
       (fun i => i.elim (j d) fun ii => p (e.symm (b ii.1 + b ii.2)))
       (fun i => i.elim a fun ii => k (e.symm (b ii.1 + b ii.2)))
       (by rintro (_ | ii); exacts [hda, hk' _])
-  obtain ⟨T', f, γ, finj, floc, -, hγ, hy⟩ := GlobalTheory.T.exists_trait_moduli_of_stalk_completeDVR g n _ _ F o' Ω M (spMap S.R.val.toRingHom ≫ u)
+  obtain ⟨T', f, γ, finj, floc, -, hγ, hy⟩ := _root_.GlobalTheory.Poinc.exists_trait_of_stalk_dvr g n _ _ F o' Ω M (spMap S.R.val.toRingHom ≫ u)
     (ξ (closedPoint T.V)) A hA (ψ'.comp j) (ψ'inj.comp jinj)
   have hrange : Set.range M.pt ⊆ Set.range V.ι := by
     rw [Scheme.Opens.range_ι]

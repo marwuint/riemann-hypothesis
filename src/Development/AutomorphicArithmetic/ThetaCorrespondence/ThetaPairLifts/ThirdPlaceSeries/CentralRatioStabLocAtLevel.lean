@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlacedBesselPairScalar
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.RealPack
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.STiesR
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.IndefRRealT
@@ -34,7 +34,7 @@ theorem centralRatio_stabLoc_atLevel_alt : ∀ {D : D7} {L : SizeData₂ D} {hT 
   have hkSt := (GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D (Yc D 0) (W.Q.Rl.βY 0) ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0) hfr k).1
     (GlobalTheory.FinZeta.LevelOff.finE_mem_St_of_mem_levG hk) v
   obtain ⟨e, α, hl⟩ := _root_.GlobalTheory.T.level_place_frame_exists_alt W hW hrS v hv
-  obtain ⟨ζ, hζ⟩ := GlobalTheory.T.center_adelicUnitaryGroup_scalar_at_finitePlace D (D.sp.Y 0) z hzc v
+  obtain ⟨ζ, hζ⟩ := _root_.GlobalTheory.UnitaryCentreLoc.scalar_at_finite_place D (D.sp.Y 0) z hzc v
   have hpos : 0 < (D.sp.Y 0).rank := by
     have := B.d.rank_add
     omega

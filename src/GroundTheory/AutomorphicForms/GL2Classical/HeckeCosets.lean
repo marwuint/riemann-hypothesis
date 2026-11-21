@@ -34,10 +34,6 @@ theorem intCast_mem_levelIdeal {N : ℕ} {m : ℤ} (hm : (N : ℤ) ∣ m) : (m :
   obtain ⟨t, rfl⟩ := hm
   exact ⟨t, intCast_mem_integralFiniteAdeles t, by push_cast; ring⟩
 
-theorem natCast_mul_mem_levelIdeal (N : ℕ) {x : 𝔸f} (hx : x ∈ integralFiniteAdeles (𝓞 ℚ) ℚ) :
-    (N : 𝔸f) * x ∈ levelIdeal N :=
-  ⟨x, hx, rfl⟩
-
 theorem natCast_mul_mem_levelIdeal' {N m : ℕ} {x : 𝔸f} (hx : x ∈ levelIdeal N) :
     (m : 𝔸f) * x ∈ levelIdeal N :=
   mul_mem_levelIdeal (natCast_mem _ m) hx
@@ -421,15 +417,6 @@ theorem mul_mem_heckeSet_left {k g : FiniteAdelicGL ℚ 2} (hk : k ∈ Gamma0Lev
     exact ⟨k⁻¹ * k₁, mul_mem (inv_mem hk) hk₁, k₂, hk₂, by rw [mul_assoc, mul_assoc, ← mul_assoc k₁, ← he, inv_mul_cancel_left]⟩
   · rintro ⟨k₁, hk₁, k₂, hk₂, rfl⟩
     exact ⟨k * k₁, mul_mem hk hk₁, k₂, hk₂, by simp only [mul_assoc]⟩
-
-omit [Fact p.Prime] in
-theorem mul_mem_heckeSet_right {k g : FiniteAdelicGL ℚ 2} (hk : k ∈ Gamma0Level N) :
-    g * k ∈ heckeSet N p ↔ g ∈ heckeSet N p := by
-  constructor
-  · rintro ⟨k₁, hk₁, k₂, hk₂, he⟩
-    exact ⟨k₁, hk₁, k₂ * k⁻¹, mul_mem hk₂ (inv_mem hk), by rw [← mul_assoc, ← he, mul_inv_cancel_right]⟩
-  · rintro ⟨k₁, hk₁, k₂, hk₂, rfl⟩
-    exact ⟨k₁, hk₁, k₂ * k, mul_mem hk₂ hk, by simp only [mul_assoc]⟩
 
 end GL2Classical
 

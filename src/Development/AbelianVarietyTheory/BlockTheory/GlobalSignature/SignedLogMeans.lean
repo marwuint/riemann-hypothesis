@@ -60,8 +60,4 @@ def Theta0PosMean : Prop :=
 
 def Theta0Mean : Prop := Theta0SignedMean ∧ Theta0PosMean
 
-example (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] :
-    Fintype.card (M →ₐ[ℚ] ℂ) = Module.finrank ℚ M ∧ 0 < Module.finrank ℚ M :=
-  ⟨AlgHom.card ℚ M ℂ, Module.finrank_pos⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SignedLogMeans

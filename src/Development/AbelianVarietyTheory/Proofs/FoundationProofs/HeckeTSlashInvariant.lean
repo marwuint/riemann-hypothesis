@@ -2,11 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMulPetProd
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorsOnHalfPlaneFunctionsAgreeExplicit
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperTriangularMulEqMulUpperTriangularGamma1InteStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperMulEqMulDiamondDiagGamma1InterGamma0Statement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondDiagMulEqMulOfDvdLowerLeftGamma1InterGammStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondDiagMulEqMulUpperTriangularOfNotDvdLowerLStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTqRepresentativesCosetsDistinctStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperTriangularMulEqMulUpperTriangularGamma1Inte
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperMulEqMulDiamondDiagGamma1InterGamma0
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondDiagMulEqMulOfDvdLowerLeftGamma1InterGamm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondDiagMulEqMulUpperTriangularOfNotDvdLowerL
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTqRepresentativesCosetsDistinct
 open UpperHalfPlane ModularForm CongruenceSubgroup MeasureTheory
 open scoped MatrixGroups ModularForm Manifold
 
@@ -20,19 +20,19 @@ theorem reps (N l q : ℕ) (σ γ : SL(2, ℤ)) (hq : q.Prime) (hqN : ¬ q ∣ N
   · have e : tqFam q σ i = !![(1 : ℤ), ((i : ℕ) : ℤ); 0, (q : ℤ)] := by rw [tqFam, if_pos hi]
     rw [e]
     by_cases hd : (q : ℤ) ∣ mat γ 0 0 + ((i : ℕ) : ℤ) * mat γ 1 0
-    · obtain ⟨γ', h1, h2⟩ := GlobalTheory.T.upper_mul_eq_mul_diamond_diag_gamma1InterGamma0 N l q i σ γ hq hqN hσ hi hγ hd
+    · obtain ⟨γ', h1, h2⟩ := _root_.GlobalTheory.Hk.upper_mul_eq_mul_diamond_diag N l q i σ γ hq hqN hσ hi hγ hd
       refine ⟨Fin.last q, γ', h1, ?_⟩
       rw [h2, tqFam, if_neg (by simp)]
-    · obtain ⟨j', hj', γ', h1, h2⟩ := GlobalTheory.T.upperTriangular_mul_eq_mul_upperTriangular_gamma1InterGamma0 N l q i γ hq hqN hi hγ hd
+    · obtain ⟨j', hj', γ', h1, h2⟩ := _root_.GlobalTheory.Hk.tinv_fin_fin N l q i γ hq hqN hi hγ hd
       refine ⟨⟨j', by omega⟩, γ', h1, ?_⟩
       rw [h2, tqFam, if_pos (by simpa using hj')]
   · have e : tqFam q σ i = mat σ * dg q 1 := by rw [tqFam, if_neg hi]
     rw [e]
     by_cases hd : (q : ℤ) ∣ mat γ 1 0
-    · obtain ⟨γ', h1, h2⟩ := GlobalTheory.T.diamond_diag_mul_eq_mul_of_dvd_lowerLeft_gamma1InterGamma0 N l q σ γ hq hqN hσ hγ hd
+    · obtain ⟨γ', h1, h2⟩ := _root_.GlobalTheory.Hk.dia_diag_mul_of_dvd_lowerLeft N l q σ γ hq hqN hσ hγ hd
       refine ⟨Fin.last q, γ', h1, ?_⟩
       rw [h2, tqFam, if_neg (by simp)]
-    · obtain ⟨j', hj', γ', h1, h2⟩ := GlobalTheory.T.diamond_diag_mul_eq_mul_upperTriangular_of_not_dvd_lowerLeft N l q σ γ hq hqN hσ hγ hd
+    · obtain ⟨j', hj', γ', h1, h2⟩ := _root_.GlobalTheory.HkInvFin.sigma_dg_mul_eq N l q σ γ hq hqN hσ hγ hd
       refine ⟨⟨j', by omega⟩, γ', h1, ?_⟩
       rw [h2, tqFam, if_pos (by simpa using hj')]
 
@@ -46,7 +46,7 @@ theorem perm (N l q : ℕ) (σ γ : SL(2, ℤ)) (hq : q.Prime) (hqN : ¬ q ∣ N
     have e1 := he i₁
     have e2 := he i₂
     rw [h] at e1
-    apply GlobalTheory.T.heckeTqRepresentatives_cosets_distinct q σ (g i₁ * (g i₂)⁻¹) i₁ i₂ hq
+    apply _root_.GlobalTheory.tqFam_cosets_distinct q σ (g i₁ * (g i₂)⁻¹) i₁ i₂ hq
     have hγi : mat γ * mat γ⁻¹ = 1 := by
       rw [← Matrix.SpecialLinearGroup.coe_mul, mul_inv_cancel, Matrix.SpecialLinearGroup.coe_one]
     have hgi : mat (g i₂)⁻¹ * mat (g i₂) = 1 := by

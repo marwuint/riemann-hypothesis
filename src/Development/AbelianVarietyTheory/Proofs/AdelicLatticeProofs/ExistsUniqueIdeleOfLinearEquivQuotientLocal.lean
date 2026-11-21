@@ -243,15 +243,8 @@ theorem smul_def (t : 𝔸ᶠ[R, K]ˣ) (I : FractionalIdeal R⁰ K) : t • I = 
 
 theorem smul_one_eq (t : 𝔸ᶠ[R, K]ˣ) : t • (1 : FractionalIdeal R⁰ K) = idealOf t := mul_one _
 
-theorem smul_mul (t : 𝔸ᶠ[R, K]ˣ) (I J : FractionalIdeal R⁰ K) : t • (I * J) = (t • I) * J :=
-  (mul_assoc _ _ _).symm
-
 theorem smul_ne_zero (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) : t • I ≠ 0 :=
   mul_ne_zero (idealOf_ne_zero t) hI
-
-theorem smul_le_smul (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ K} (h : I ≤ J) :
-    t • I ≤ t • J := by
-  rw [smul_def, smul_def]; gcongr
 
 theorem count_smul (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (v : HeightOneSpectrum R) :
@@ -269,18 +262,6 @@ theorem mul_mem_localIdeal_smul (t : 𝔸ᶠ[R, K]ˣ) (I : FractionalIdeal R⁰ 
 theorem mul_mem_adelicIdeal_smul (t : 𝔸ᶠ[R, K]ˣ) (I : FractionalIdeal R⁰ K) (a : 𝔸ᶠ[R, K]) :
     (t : 𝔸ᶠ[R, K]) * a ∈ adelicIdeal (t • I) ↔ a ∈ adelicIdeal I := by
   simp_rw [mem_adelicIdeal, adele_mul_apply, mul_mem_localIdeal_smul]
-
-theorem mem_smul_iff (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (x : K) :
-    x ∈ t • I ↔ ∃ a ∈ adelicIdeal I, (t : 𝔸ᶠ[R, K]) * a = algebraMap K 𝔸ᶠ[R, K] x := by
-  rw [← algebraMap_mem_adelicIdeal (smul_ne_zero t hI)]
-  constructor
-  · intro h
-    refine ⟨(t⁻¹ : 𝔸ᶠ[R, K]ˣ) * algebraMap K 𝔸ᶠ[R, K] x, ?_, by simp⟩
-    rw [← mul_mem_adelicIdeal_smul t]
-    simpa using h
-  · rintro ⟨a, ha, h⟩
-    rw [← h, mul_mem_adelicIdeal_smul]
-    exact ha
 
 theorem idealOf_unitEmbedding (x : Kˣ) :
     idealOf (FiniteAdeleRing.unitEmbedding R K x) = FractionalIdeal.spanSingleton R⁰ (x : K) :=
@@ -523,63 +504,6 @@ theorem mulEquiv_mk_eq_mk_iff (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ 
         algebraMap K (v.adicCompletion K) y ∈ localIdeal v J :=
   mulEquiv_mk_eq_mk_iff_adelic t hI h x y
 
-theorem mulEquiv_one {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (h : I = (1 : 𝔸ᶠ[R, K]ˣ) • I) :
-    mulEquiv 1 hI h = LinearEquiv.refl R _ := by
-  refine LinearEquiv.ext fun q => ?_
-  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  rw [LinearEquiv.refl_apply, mulEquiv_mk_eq_mk_iff_adelic]
-  simp
-
-theorem mulEquiv_mul (t s : 𝔸ᶠ[R, K]ˣ) {I J L : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
-    (h : J = s • I) (h' : L = t • J) (h'' : L = (t * s) • I) :
-    mulEquiv (t * s) hI h'' = (mulEquiv s hI h).trans (mulEquiv t hJ h') := by
-  have hL : L ≠ 0 := h' ▸ smul_ne_zero t hJ
-  refine LinearEquiv.ext fun q => (quotEquivAdelic hL).injective ?_
-  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  rw [LinearEquiv.trans_apply, quotEquivAdelic_mulEquiv, quotEquivAdelic_mulEquiv,
-    quotEquivAdelic_mulEquiv]
-  simp [mul_assoc]
-
-theorem mulEquiv_unitEmbedding_mk (c : Kˣ) {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
-    (h : J = FiniteAdeleRing.unitEmbedding R K c • I) (x : K) :
-    mulEquiv (FiniteAdeleRing.unitEmbedding R K c) hI h (Submodule.Quotient.mk x) =
-      Submodule.Quotient.mk ((c : K) * x) := by
-  rw [mulEquiv_mk_eq_mk_iff_adelic]
-  simp
-
-theorem mulEquiv_mk_mul (t : 𝔸ᶠ[R, K]ˣ) {I J I' J' : FractionalIdeal R⁰ K} (hI : I ≠ 0)
-    (hI' : I' ≠ 0) (h : J = t • I) (h' : J' = t • I') {c : K} (hc : ∀ z ∈ I, c * z ∈ I') {x y : K}
-    (hxy : mulEquiv t hI h (Submodule.Quotient.mk x) = Submodule.Quotient.mk y) :
-    mulEquiv t hI' h' (Submodule.Quotient.mk (c * x)) = Submodule.Quotient.mk (c * y) := by
-  rw [mulEquiv_mk_eq_mk_iff] at hxy ⊢
-  intro v
-  subst h h'
-  have key : ∀ z ∈ localIdeal v I, algebraMap K (v.adicCompletion K) c * z ∈ localIdeal v I' := by
-    intro z hz
-    induction hz using Submodule.span_induction with
-    | mem z hz =>
-      obtain ⟨z, hz, rfl⟩ := hz
-      exact Submodule.subset_span ⟨c * z, hc z hz, map_mul _ _ _⟩
-    | zero => simp
-    | add a b _ _ ha hb => rw [mul_add]; exact add_mem ha hb
-    | smul a b _ hb => rw [mul_smul_comm]; exact Submodule.smul_mem _ _ hb
-  have ht := idele_apply_ne_zero t v
-  have h1 := hxy v
-  rw [← mul_div_cancel₀ (_ - _) ht, mul_mem_localIdeal_smul] at h1 ⊢
-  convert key _ h1 using 1
-  rw [map_mul, map_mul]
-  ring
-
-theorem mulEquiv_mem_iff (t : 𝔸ᶠ[R, K]ˣ) {I J I' : FractionalIdeal R⁰ K} (hI : I ≠ 0)
-    (h : J = t • I) (hle : I ≤ I') {x y : K}
-    (hxy : mulEquiv t hI h (Submodule.Quotient.mk x) = Submodule.Quotient.mk y) :
-    y ∈ t • I' ↔ x ∈ I' := by
-  have hI' : I' ≠ 0 := fun h0 => hI (le_antisymm (h0 ▸ hle) (FractionalIdeal.zero_le I))
-  have := mulEquiv_mk_mul t hI hI' h rfl (c := 1) (fun z hz => by simpa using hle hz) hxy
-  rw [one_mul, one_mul] at this
-  rw [← FractionalIdeal.mem_coe, ← FractionalIdeal.mem_coe, ← Submodule.Quotient.mk_eq_zero,
-    ← Submodule.Quotient.mk_eq_zero, ← this, LinearEquiv.map_eq_zero_iff]
-
 theorem mem_adelicIdeal_one_iff {a : 𝔸ᶠ[R, K]} :
     a ∈ adelicIdeal (1 : FractionalIdeal R⁰ K) ↔ ∀ v, Valued.v (a v) ≤ 1 := by
   simp_rw [mem_adelicIdeal, mem_localIdeal_one_iff, mem_adicCompletionIntegers]
@@ -790,53 +714,5 @@ theorem existsUnique_mulEquiv {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
 end GlobalTheory.Idele
 
 namespace GlobalTheory
-
-open NumberField GlobalTheory.Idele
-
-theorem existsUnique_idele_of_linearEquiv_quotient {K : Type*} [Field K] [NumberField K]
-    (𝔞 : FractionalIdeal (𝓞 K)⁰ K)
-    (φ : (K ⧸ ((1 : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) →ₗ[𝓞 K]
-      (K ⧸ (𝔞 : Submodule (𝓞 K) K))) (hφ : Function.Bijective φ) :
-    ∃! t : (FiniteAdeleRing (𝓞 K) K)ˣ, ∃ h : 𝔞 = t⁻¹ • (1 : FractionalIdeal (𝓞 K)⁰ K),
-      ∀ q, φ q = mulEquiv t⁻¹ one_ne_zero h q := by
-  obtain ⟨t, ⟨h, ht⟩, huniq⟩ :=
-    existsUnique_mulEquiv (one_ne_zero (α := FractionalIdeal (𝓞 K)⁰ K)) (LinearEquiv.ofBijective φ hφ)
-  refine ⟨t⁻¹, ?_, ?_⟩
-  · simp only [inv_inv]
-    exact ⟨h, fun q => LinearEquiv.congr_fun ht q⟩
-  · rintro s ⟨h', hs⟩
-    rw [← huniq s⁻¹ ⟨h', LinearEquiv.ext hs⟩, inv_inv]
-
-theorem existsUnique_idele_of_linearEquiv_quotient_local {K : Type*} [Field K] [NumberField K]
-    (𝔞 : FractionalIdeal (𝓞 K)⁰ K)
-    (φ : (K ⧸ ((1 : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) →ₗ[𝓞 K]
-      (K ⧸ (𝔞 : Submodule (𝓞 K) K))) (hφ : Function.Bijective φ) :
-    ∃! t : (FiniteAdeleRing (𝓞 K) K)ˣ,
-      (∀ x : K, x ∈ 𝔞 ↔ ∀ v, (t : FiniteAdeleRing (𝓞 K) K) v * algebraMap K (v.adicCompletion K) x
-        ∈ v.adicCompletionIntegers K) ∧
-      ∀ x y : K, φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk y ↔
-        ∀ v, ((t⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) v *
-          algebraMap K (v.adicCompletion K) x - algebraMap K (v.adicCompletion K) y ∈
-            localIdeal v 𝔞 := by
-  have h1 : (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0 := one_ne_zero
-  have key : ∀ (t : (FiniteAdeleRing (𝓞 K) K)ˣ) (x : K),
-      x ∈ t⁻¹ • (1 : FractionalIdeal (𝓞 K)⁰ K) ↔
-        ∀ v, (t : FiniteAdeleRing (𝓞 K) K) v * algebraMap K (v.adicCompletion K) x
-          ∈ v.adicCompletionIntegers K := by
-    intro t x
-    rw [← algebraMap_mem_adelicIdeal (Idele.smul_ne_zero _ h1), ← mul_mem_adelicIdeal_smul t,
-      smul_inv_smul, mem_adelicIdeal]
-    simp_rw [mem_localIdeal_one_iff]
-    rfl
-  obtain ⟨t, ⟨h, ht⟩, huniq⟩ := existsUnique_idele_of_linearEquiv_quotient 𝔞 φ hφ
-  refine ⟨t, ⟨fun x => by rw [← key, ← h], fun x y => by rw [ht, mulEquiv_mk_eq_mk_iff]⟩, ?_⟩
-  rintro s ⟨hs, hs'⟩
-  have h' : 𝔞 = s⁻¹ • (1 : FractionalIdeal (𝓞 K)⁰ K) := by
-    ext x; rw [hs, key]
-  refine huniq s ⟨h', fun q => ?_⟩
-  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-  obtain ⟨y, hy⟩ := Submodule.Quotient.mk_surjective _ (φ (Submodule.Quotient.mk x))
-  rw [← hy, eq_comm, mulEquiv_mk_eq_mk_iff]
-  exact (hs' x y).1 hy.symm
 
 end GlobalTheory

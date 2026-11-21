@@ -187,12 +187,4 @@ structure IsLoc [IsDomain O] [IsDiscreteValuationRing O] (Δ : K) : Prop where
 
 end Lattice
 
-example : IsDat (K := ℚ) (Δ := -1) (τ := 0) 1 ⟨⟨1 / 2, 1 / 2⟩, ⟨1 / 2, 1 / 2⟩⟩ 1 where
-  reg := by norm_num
-  c_ne := one_ne_zero
-  d_norm := by ext <;> simp [sigL, ofE] <;> norm_num
-  m_unit := isUnit_one
-  m_star := by ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
-  m_sig := by ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> norm_num
-
 end UpperTheory.V.Z.Sym.Loc

@@ -22,26 +22,6 @@ theorem qW_nonneg {s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} (hW : PosW W) {X : 
     exact_mod_cast Finset.sum_nonneg fun u _ => hβ _
   exact_mod_cast (mul_nonneg hc0.le h2).trans (hc X β hs hβ y)
 
-theorem lin_nonneg {s l : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} (hW : PosW W) {X : Type} [AddCommGroup X]
-    {β : LinearMap.BilinForm ℤ X} (hs : ∀ a b, β a b = β b a) (hβ : ∀ y, 0 ≤ β y y) (a : Fin l × Fin s → X) :
-    0 ≤ lin W a β :=
-  Finset.sum_nonneg fun _ _ => qW_nonneg hW hs hβ _
-
-example {V : Type} [CommRing V] (t : V) :
-    mono !![1] (fun _ : Fin 1 => t) (fun _ => LinearMap.mul ℤ ℤ) (fun _ => (2 : ℤ)) = t ^ 4 := by
-  simp [mono, qW]
-
-example : lin (l := 2) !![1] (fun p => ![(1 : ℤ), 2] p.1) (LinearMap.mul ℤ ℤ) = 5 := by
-  simp [lin, qW, Fin.sum_univ_two]
-
-example : PosW !![1] := by
-  unfold PosW
-  have : ((!![1] + (!![1] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => 2 := by
-    ext i j
-    fin_cases i; fin_cases j; simp
-  rw [this, Matrix.posDef_diagonal_iff]
-  intro _; norm_num
-
 structure Dominant {O : Type} [CommRing O] (bar : O → O) (φ : InvFun O) (d N₁ : ℕ) {s l : ℕ} (W : Matrix (Fin s) (Fin s) ℤ)
     {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] {r : ℕ} (γ : Fin r → LinearMap.BilinForm ℤ X)
     (a : Fin l × Fin s → X) : Prop where
@@ -103,24 +83,7 @@ namespace VSys
 variable {O : Type} [CommRing O] {bar : O → O} {q s : ℕ} {W : Matrix (Fin s) (Fin s) ℤ} {N₁ : ℕ} {A : Type} [CommRing A]
   [IsLocalRing A] (Φ : VSys bar q W N₁ A)
 
-theorem qW_nonneg (y : Φ.Y) (i : Fin (Φ.m y)) (μ : Fin s → Φ.X y) : 0 ≤ qW W (Φ.δ y i) μ :=
-  GlobalTheory.Poinc.qW_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) μ
-
-theorem lin_nonneg (y : Φ.Y) (i : Fin (Φ.m y)) {l : ℕ} (a : Fin l × Fin s → Φ.X y) : 0 ≤ lin W a (Φ.δ y i) :=
-  GlobalTheory.Poinc.lin_nonneg Φ.posW (Φ.bal y i).1 (Φ.nonneg y i) a
-
 def monoT (y : Φ.Y) {l : ℕ} (a : Fin l × Fin s → Φ.X y) : Φ.V y := ∏ i, mono W (Φ.t y) (Φ.δ y) fun v => a (i, v)
-
-theorem monoT_eq (y : Φ.Y) {l : ℕ} (a : Fin l × Fin s → Φ.X y) :
-    Φ.monoT y a = ∏ j, Φ.t y j ^ (lin W a (Φ.δ y j)).toNat := by
-  simp only [monoT, mono]
-  rw [Finset.prod_comm]
-  refine Finset.prod_congr rfl fun j _ => ?_
-  rw [Finset.prod_pow_eq_pow_sum]
-  congr 1
-  apply Int.natCast_inj.1
-  rw [Int.toNat_of_nonneg (Φ.lin_nonneg y j a), lin, Nat.cast_sum]
-  exact Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (Φ.qW_nonneg y j _)
 
 def coefT (y : Φ.Y) {l : ℕ} (a : Fin l × Fin s → Φ.X y) (c : Fin l → Φ.Q) : Φ.V y := ∏ i, Φ.u y (fun v => a (i, v)) (c i)
 

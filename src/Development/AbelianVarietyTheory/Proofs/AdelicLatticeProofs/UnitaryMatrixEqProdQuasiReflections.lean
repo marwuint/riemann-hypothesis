@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnitaryQuasiReflectionLawsStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsAnisotropicOrthogonalBasisHermitianStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsQuasiReflectionProdMulVecEqStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsAnisotropicOrthogonalBasisHermitian
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsQuasiReflectionProdMulVecEq
 
 open NumberField IsDedekindDomain GlobalTheory.AdLat GlobalTheory.UnRep
 open scoped TensorProduct Matrix
@@ -89,7 +89,7 @@ theorem exists_fix (hG : IsHermForm c G) {γ : Matrix (Fin n) (Fin n) E} (hγ : 
     by_cases hk : k < n
     · have hU := isUnE_mul (isUnE_prod hG l hl) hγ
       set δ := (l.map fun p => refl c G p.1 p.2).prod * γ with hδ
-      obtain ⟨m, hm, hmx⟩ := GlobalTheory.T.exists_quasiReflection_prod_mulVec_eq F E c n G hG (x ⟨k, hk⟩) (δ *ᵥ x ⟨k, hk⟩) (h1 _) (hU _ _)
+      obtain ⟨m, hm, hmx⟩ := _root_.GlobalTheory.UnRep.exists_refl_prod_mulVec_eq F E c n G hG (x ⟨k, hk⟩) (δ *ᵥ x ⟨k, hk⟩) (h1 _) (hU _ _)
       refine ⟨m ++ l, ?_, ?_⟩
       · intro p hp
         rcases List.mem_append.1 hp with hp | hp
@@ -111,7 +111,7 @@ end GlobalTheory.UnRep.ReflGen
 
 theorem GlobalTheory.UnRep.isUnE_eq_prod_refl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E), IsHermForm c G → ∀ γ, IsUnE c G γ → ∃ l : List ((Fin n → E) × E), (∀ p ∈ l, hermE c G p.1 p.1 ≠ 0 ∧ p.2 * c p.2 = 1) ∧ γ = (l.map fun p => refl c G p.1 p.2).prod := by
   intro F E _ _ _ _ _ c n G hG γ hγ
-  obtain ⟨x, h1, h2, h3⟩ := GlobalTheory.T.exists_anisotropic_orthogonal_basis_hermitian F E c n G hG
+  obtain ⟨x, h1, h2, h3⟩ := _root_.GlobalTheory.UnRep.exists_anisotropic_orthogonal_basis F E c n G hG
   obtain ⟨l, hl, hfix⟩ := ReflGen.exists_fix hG hγ x h1 h2 n
   obtain ⟨l', hl', hinv⟩ := ReflGen.exists_inv hG l hl
   refine ⟨l', hl', ?_⟩

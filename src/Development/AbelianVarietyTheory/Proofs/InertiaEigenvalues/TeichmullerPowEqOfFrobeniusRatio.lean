@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ImportsTerFurther
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisMulEqZeroStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisMulEqZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisValuationRadiusLawsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjective
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapAinfInvPrimeBdRPlusInjective
@@ -37,13 +37,13 @@ theorem teich_eq_of_phi_ratio : ∀ (l : ℕ) [Fact l.Prime] (w' : Formalism.Per
   have hφ : φc l w' ≠ 0 := ((GlobalTheory.T.acrisValuation_radius_laws l 1 one_pos le_rfl).2.1 w' hw).1
   have hprod : w' * φc l w' ≠ 0 := by
     intro h0
-    rcases GlobalTheory.T.acris_eq_zero_or_eq_zero_of_mul_eq_zero l _ _ h0 with h0 | h0
+    rcases _root_.GlobalTheory.PMon.Gauss.acris_mul_eq_zero l _ _ h0 with h0 | h0
     · exact hw h0
     · exact hφ h0
   rw [map_mul, frob_teich] at h
   have h' : (tc l (ζ ^ l) - tc l ζ) * (w' * φc l w') = 0 := by
     linear_combination h
-  rcases GlobalTheory.T.acris_eq_zero_or_eq_zero_of_mul_eq_zero l _ _ h' with h0 | h0
+  rcases _root_.GlobalTheory.PMon.Gauss.acris_mul_eq_zero l _ _ h' with h0 | h0
   · exact tc_injective l (sub_eq_zero.1 h0)
   · exact absurd h0 hprod
 

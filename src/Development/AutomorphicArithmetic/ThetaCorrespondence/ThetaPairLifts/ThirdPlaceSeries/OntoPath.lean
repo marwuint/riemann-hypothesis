@@ -1,5 +1,17 @@
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectivityFromAllEstimates
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
+import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SingleIndexPlacesAreTwisted
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsRec
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubOrthProjPerpMem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodLiftOntoOfBase
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OnOfOnWithCanonical
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OnClausesWithErrorOfSplitPartStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecondLinkOfWeightRows
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedPlacesBoundChainTwoRunChain
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsDeltaDelAtOwnAt
+import Formalism.LocalToGlobal.Divisibility.NumbersLemmas
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.DepthCond
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceLatticeLeThetaLatticeAtPlace
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GoodLiftOnto
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Links2OfRowsStatement
@@ -65,7 +77,7 @@ theorem onto_path_alt : _root_.GlobalTheory.BigOn.TwoRunsStatement → _root_.Gl
   have hI := GlobalTheory.ClassSumIdentity.leafIdentity_of_isRec _ _ _ _ _ _ (R2 p) (F2 p) _ _ (fw2 p) _ _ _ _ _ r c O hO 1 hOk hC hU hrat
   have hT2 := GlobalTheory.BaseTwistIncl.leafTW2_of_isRec _ _ _ _ _ _ (R2 p) (F2 p) _ _ (fw2 p) _ _ _ _ _ r c O hO 1 hOk hC hU hBL hrat
   obtain ⟨dG, dR, d2, dL⟩ := gDepth c.CE CH
-  obtain ⟨err, herr⟩ := GlobalTheory.T.twistedPlacesBoundChain_twoRunChain _ _ _ _ _ _ (R2 p) (F2 p) _ _ (fw2 p) _ _ _ _ _ r c O hO 1
+  obtain ⟨err, herr⟩ := _root_.GlobalTheory.OnAtPlacesBase.on_base_atPlaces _ _ _ _ _ _ (R2 p) (F2 p) _ _ (fw2 p) _ _ _ _ _ r c O hO 1
     ((R2 p).num (F2 p) c.CE CH) c.CE hOk hC.grp.levels hC.grp.chiW hC.models hC.tup.mu_conj hC.thP.thG hU hBL hrat hRR
     pLev pY gSup gSpan gLem gIdx gData kRank hI hT2 tTw sSh bBad dG dR d2 dL pPage pSizes pX pBad (eExp c.CE CH) le_rfl
     (pTie c.CE CH)

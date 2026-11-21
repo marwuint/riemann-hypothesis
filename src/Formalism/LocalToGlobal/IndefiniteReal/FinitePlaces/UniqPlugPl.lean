@@ -70,10 +70,6 @@ theorem mul_jI (w : InfinitePlace F) (a : AF F) (y : w.Completion) : a * jI w y 
   · show a.2 v * (jI w y).2 v = (jI w (piI w a * y)).2 v
     rw [jI_snd, jI_snd, mul_zero]
 
-theorem continuous_piF (v : HeightOneSpectrum (𝓞 F)) : Continuous (piF v) := (RestrictedProduct.continuous_eval v).comp continuous_snd
-
-theorem continuous_piI (w : InfinitePlace F) : Continuous (piI w) := (continuous_apply w).comp continuous_fst
-
 theorem tendsto_fin {α : Type*} {l : Filter α} (z : α → Af F)
     (h : ∀ N : ℕ, N ≠ 0 → ∀ᶠ t in l, ∀ v, ‖z t v‖ ≤ ‖(N : v.adicCompletion F)‖) : Tendsto z l (𝓝 0) := by
   intro U hU
@@ -199,26 +195,6 @@ theorem tendsto_etaS (a : AF F) :
       fun S => etaS S * a := funext fun S => Prod.ext (h1 S).symm rfl
   rw [h4] at h3
   exact h3
-
-theorem not_sq_inf {E : Type} [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] (δ : E) (hδ0 : δ ≠ 0)
-    (hδ : ∀ φ : E →+* ℂ, starRingEnd ℂ (φ δ) = -φ δ) (Δ : F) (hΔ : algebraMap F E Δ = δ * δ)
-    (w : InfinitePlace F) (s : w.Completion) : s * s ≠ algebraMap F w.Completion Δ := by
-  intro hs
-  let ρ : w.Completion →+* ℝ := InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w)
-  let ψ : F →+* ℂ := Complex.ofRealHom.comp (ρ.comp (algebraMap F w.Completion))
-  let φ : E →+* ℂ := ComplexEmbedding.lift E ψ
-  have h1 : φ δ * φ δ = ((ρ s * ρ s : ℝ) : ℂ) := by
-    rw [← map_mul, ← hΔ, ← map_mul, hs]
-    exact ComplexEmbedding.lift_algebraMap_apply E ψ Δ
-  have h2 : (φ δ).re = 0 := by
-    have := congrArg Complex.re (hδ φ)
-    rw [Complex.conj_re, Complex.neg_re] at this
-    linarith
-  have h3 : (φ δ).im = 0 := by
-    have := congrArg Complex.re h1
-    rw [Complex.mul_re, h2, Complex.ofReal_re] at this
-    nlinarith [mul_self_nonneg (ρ s), mul_self_nonneg (φ δ).im]
-  exact (map_ne_zero φ).2 hδ0 (Complex.ext h2 h3)
 
 end Formalism.IndefR.Fin.Refl
 

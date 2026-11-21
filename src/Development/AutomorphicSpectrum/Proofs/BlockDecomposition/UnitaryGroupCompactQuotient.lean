@@ -40,14 +40,6 @@ theorem continuous_toGLH (H : Matrix (Fin n) (Fin n) E) : Continuous (toGLH H) :
     Continuous.units_map _ (continuous_id.matrix_map continuous_finAdEquiv)
   exact h1.comp continuous_subtype_val
 
-theorem toGLH_mem (H : Matrix (Fin n) (Fin n) E) (g : HH H) :
-    toGLH H g ∈ UJ (conjFin (cc E)) (H.map (algebraMap E (Af E))) := by
-  have hg : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AFr E) (sg E)) g.1.val * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AFr E) H * g.1.val =
-      Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AFr E) H := g.2
-  have h := herm_map (AEq (E := E)) _ _ AEq_sig _ _ hg
-  rw [JR_map] at h
-  exact h
-
 theorem exists_toGLH (H : Matrix (Fin n) (Fin n) E) (y : GL (Fin n) (Af E))
     (hy : y ∈ UJ (conjFin (cc E)) (H.map (algebraMap E (Af E)))) : ∃ t : HH H, toGLH H t = y := by
   let A' : Af E →+* AFr E ⊗[Fr E] E := ((finAdEquiv (Fr E) E).symm : Af E →+* AFr E ⊗[Fr E] E)

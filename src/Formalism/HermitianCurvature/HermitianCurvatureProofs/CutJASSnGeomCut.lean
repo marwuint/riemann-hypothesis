@@ -1,6 +1,6 @@
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJABddSSn
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJABddScalBound
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.GramSchmidtFramesLocal
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.WbPartOfInWb
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSchmidtFrames.GsFramesOfIso
 
 open Formalism.FourierDecayAlt

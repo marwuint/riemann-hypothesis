@@ -90,8 +90,6 @@ abbrev NExt (hL : GlobalTheory.Published.LocalLanglandsGL) : Type 2 :=
 def NX (hL : GlobalTheory.Published.LocalLanglandsGL) (E : NExt hL) : NCondition := fun K B f T w Z Wt p0 t nch n xd =>
   Σ c : NCore hL t n, E K B f T w Z Wt p0 t nch n xd c
 
-def NExt.none (hL : GlobalTheory.Published.LocalLanglandsGL) : NExt hL := fun _ _ _ _ _ _ _ _ _ _ _ _ _ => PUnit
-
 end GlobalTheory.Mem.Top.Bl
 
 end

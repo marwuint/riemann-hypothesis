@@ -337,9 +337,4 @@ theorem MeanSimeqL_of : TilInvariantL → MeanSimeqL := by
   rw [e]
   exact hlam
 
-theorem TilInvariant_of : TilInvariantL → LetterShift → TilInvariant := by
-  intro hTI hLS K _ _ _ l d _ σ hU hd2 hd F hF be0 hF1 hF2 ι _ _ om oms hOw hT u hu
-  exact hTI K l d σ hU hd2 hd F hF be0 hF1 hF2 ι om oms hOw hT u hu (ZMod d) (letLog l)
-    (hLS K l d σ hU.1).2.1
-
 end Formalism.L2.Th1.D

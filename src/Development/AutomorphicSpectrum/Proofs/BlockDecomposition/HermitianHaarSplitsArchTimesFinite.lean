@@ -2,7 +2,8 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaPartD
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermInf
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.SiegelND
@@ -132,8 +133,8 @@ theorem continuous_tm {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {R R' : Type} 
     [SecondCountableTopology R'] [T2Space R'] (f : R →ₐ[F] R') (hf : Continuous f) :
     Continuous (tm E f) := by
   haveI := finite_of_cm hCM
-  have h1 := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R).2.2.2.2.2.2.1 _ (Module.finBasis F E)
-  have h2 := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R').2.2.2.2.2.2.1 _ (Module.finBasis F E)
+  have h1 := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R).2.2.2.2.2.2.1 _ (Module.finBasis F E)
+  have h2 := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R').2.2.2.2.2.2.1 _ (Module.finBasis F E)
   rw [h2.isEmbedding.continuous_iff]
   refine continuous_pi fun k => ?_
   simp only [Function.comp_def, repr_tm]
@@ -144,9 +145,9 @@ theorem continuous_joinT {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {d : ℕ} (
     (hf : Continuous f) (hg : Continuous g) : Continuous fun x => joinT b (f x) (g x) := by
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F
-  have h0 := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)).2.2.2.2.2.2.1 _ b
-  have h1 := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)).2.2.2.2.2.2.1 _ b
-  have h2 := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)).2.2.2.2.2.2.1 _ b
+  have h0 := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)).2.2.2.2.2.2.1 _ b
+  have h1 := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Ainf F)).2.2.2.2.2.2.1 _ b
+  have h2 := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Af F)).2.2.2.2.2.2.1 _ b
   rw [h0.isEmbedding.continuous_iff]
   refine continuous_pi fun k => ?_
   simp only [Function.comp_def, repr_joinT]
@@ -157,7 +158,7 @@ theorem herm_facts {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (n : ℕ) (R : Ty
     [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] :
     IsTopologicalAddGroup (HermR R σ n) ∧ LocallyCompactSpace (HermR R σ n) ∧
       SecondCountableTopology (HermR R σ n) ∧ T2Space (HermR R σ n) := by
-  obtain ⟨h1, h2, h3, h4, -, -, -, -, h9, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R
+  obtain ⟨h1, h2, h3, h4, -, -, -, -, h9, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R
   haveI : IsTopologicalRing (R ⊗[F] E) := h1
   haveI : LocallyCompactSpace (R ⊗[F] E) := h2
   haveI : SecondCountableTopology (R ⊗[F] E) := h3

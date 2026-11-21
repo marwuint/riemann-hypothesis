@@ -7,12 +7,12 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthonormalBasisAndO
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualInterSelfDualHermitianLatticeSubspace
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvVolMulPosLeConj
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeStabilizerCommensurableUnramifiedHermitiaStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruenceSubgroupLatticeStabilizerStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommensurableCosetUnionContentIndependentNonnegStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruenceSubgroupLatticeStabilizer
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommensurableCosetUnionContentIndependentNonneg
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MatrixCongruentOneModUniformizerPowGroupAndOrbitStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ThickOrbitSelfDualUnramifiedLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalisedContentThickenedSetIndependentOfLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContentThickenedTupleOrbitNormalSubgroupStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormalisedContentThickenedSetIndependentOfLevel
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContentThickenedTupleOrbitNormalSubgroup
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryGroupOrthogonalComplementUnimodularStatement
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
@@ -86,10 +86,10 @@ theorem cont_inf (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n : ℕ}
         (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ) : ℝ) =
       ((isomG L Hm ⊓ stabL L Λ').relIndex (isomG L Hm ⊓ stabL L Λ) : ℝ) *
         cont (tupLat L Λs m) (thick L ϖ (torb (isomG L Hm ⊓ (stabL L Λ ⊓ stabL L Λ')) x) i) := by
-  obtain ⟨N, hN⟩ := (GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ hΛ.1 1).2.2 Λ' hΛ'
-  have hN' := (GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ' hΛ' 1).2.1 le_rfl
-  obtain ⟨C, hC, hCi, hCn⟩ := (GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ hΛ.1 (max N 1)).1
-  have hC1 := (GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ hΛ.1 (max N 1)).2.1 (le_max_right _ _)
+  obtain ⟨N, hN⟩ := (_root_.GlobalTheory.HL.congruence_subgroup_facts L ϖ hϖ Λ hΛ.1 1).2.2 Λ' hΛ'
+  have hN' := (_root_.GlobalTheory.HL.congruence_subgroup_facts L ϖ hϖ Λ' hΛ' 1).2.1 le_rfl
+  obtain ⟨C, hC, hCi, hCn⟩ := (_root_.GlobalTheory.HL.congruence_subgroup_facts L ϖ hϖ Λ hΛ.1 (max N 1)).1
+  have hC1 := (_root_.GlobalTheory.HL.congruence_subgroup_facts L ϖ hϖ Λ hΛ.1 (max N 1)).2.1 (le_max_right _ _)
   obtain ⟨e, he⟩ := exists_pow_smul L ϖ hϖ hΛ.1 x
   obtain ⟨i0, hi0, hth⟩ := GlobalTheory.T.thick_orbit_selfDual_unramified_lattice L ϖ hϖ Hm hH Λs hs Λ hΛ m _ hx (max N 1) e
   refine ⟨i0, fun i hi => ?_⟩
@@ -119,9 +119,9 @@ theorem cont_inf (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n : ℕ}
       ext g; simp only [Subgroup.mem_inf]; tauto, Subgroup.inf_relIndex_right]
   obtain ⟨hco, hst⟩ := hth i hi (U ⊓ C) (h12.trans h1)
     (fun g hg hg' => ⟨hg, (hC g).2 ⟨hC1 g hg', hg'⟩⟩) x he rfl
-  have e1 := GlobalTheory.T.content_thickenedTupleOrbit_normalSubgroup L ϖ hϖ Hm hH Λs hs m x hx (U ⊓ stabL L Λ) (U ⊓ C) inf_le_left
+  have e1 := _root_.GlobalTheory.HL.cont_thick_torb_normal L ϖ hϖ Hm hH Λs hs m x hx (U ⊓ stabL L Λ) (U ⊓ C) inf_le_left
     (h12.trans h1) hnorm (hfin U _ le_rfl) i (hi0.trans hi) hst hco
-  have e2 := GlobalTheory.T.content_thickenedTupleOrbit_normalSubgroup L ϖ hϖ Hm hH Λs hs m x hx (U ⊓ (stabL L Λ ⊓ stabL L Λ')) (U ⊓ C)
+  have e2 := _root_.GlobalTheory.HL.cont_thick_torb_normal L ϖ hϖ Hm hH Λs hs m x hx (U ⊓ (stabL L Λ ⊓ stabL L Λ')) (U ⊓ C)
     inf_le_left h12 (fun a ha => hnorm a (h1 ha)) (hfin U _ inf_le_left) i (hi0.trans hi) hst hco
   have hHi : ∀ T, H ⊓ (U ⊓ T) = H ⊓ T := fun T => by rw [← inf_assoc, inf_eq_left.2 hHU]
   rw [← hHdef] at e1 e2
@@ -168,10 +168,10 @@ theorem mass_eq_const_mul_content : ∀ {F : Type} [Field F] [ValuativeRel F] [T
   obtain ⟨e, he⟩ := exists_pow_smul L ϖ hϖ hs.1 x
   obtain ⟨j, hj, hth⟩ := GlobalTheory.T.thick_orbit_selfDual_unramified_lattice L ϖ hϖ Hm hH Λs hs Λs hs m _ hx 1 e
   have hth' := fun i hi => hth i hi (isomG L Hm ⊓ stabL L Λs) le_rfl
-    (fun g hg hg' => ⟨hg, (GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λs hs.1 1).2.1 le_rfl g hg'⟩) x he rfl
+    (fun g hg hg' => ⟨hg, (_root_.GlobalTheory.HL.congruence_subgroup_facts L ϖ hϖ Λs hs.1 1).2.1 le_rfl g hg'⟩) x he rfl
   have h1K := fun i hi => GlobalTheory.T.matrixCongruentOneModUniformizerPow_group_and_orbits L ϖ hϖ m i hi
   have hcpos : 0 < cont (tupLat L Λs m) (thick L ϖ (torb (isomG L Hm ⊓ stabL L Λs) x) j) :=
-    (GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg _ _).2.2.2 (hth' j le_rfl).1
+    (_root_.GlobalTheory.HL.cont_independent_pos _ _).2.2.2 (hth' j le_rfl).1
       ⟨_, _, ⟨1, Subgroup.one_mem _, rfl⟩, 1, (h1K j hj).1, rfl⟩
   have hhpos := ((h1K j hj).2.2 _ hΓ hx).2
   set H := fixG L Hm (Submodule.span E (Set.range x)) with hHdef
@@ -191,7 +191,7 @@ theorem mass_eq_const_mul_content : ∀ {F : Type} [Field F] [ValuativeRel F] [T
   have k2 := k2 i ((le_max_right _ _).trans ((le_max_right _ _).trans hi))
   rw [← hHdef] at k1 k2
   rw [inf_comm (stabL L Λs) (stabL L Λ), ← relIndex_symm L hH hΛ hs] at k2
-  have lev := GlobalTheory.T.normalisedContent_thickenedSet_independent_of_level L ϖ hϖ Hm hH Λs hs m _ hΓ hx (torb (isomG L Hm ⊓ stabL L Λs) x)
+  have lev := _root_.GlobalTheory.ThickLevel.main L ϖ hϖ Hm hH Λs hs m _ hΓ hx (torb (isomG L Hm ⊓ stabL L Λs) x)
     (by
       rintro _ ⟨g, hg, rfl⟩
       ext a b

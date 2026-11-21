@@ -41,14 +41,6 @@ theorem intAlg_span {s : Set (Rul Xo c)} (hs : ∀ f ∈ s, IntAlg f) {f : Rul X
   | add x y _ _ hx hy => exact intAlg_add hx hy
   | smul a x _ hx => exact intAlg_smul a hx
 
-variable (Xo c) in
-
-def RegularityR1ValuedPoints (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c))
-    (cls : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → Prop) (PY : HeightOneSpectrum (𝓞 c.F) → Type)
-    (lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop) : Prop :=
-  ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ C a n, IntAlg f →
-    ∀ la (y : PtV Xo c cls (PY la) (lies la) la), 0 ≤ vAtV y f
-
 theorem ramIdx_nonneg {Ω : Type} [Field Ω] [Algebra c.F Ω] {v : AddValuation Ω (WithTop ℤ)}
     {la : HeightOneSpectrum (𝓞 c.F)} (ho : IsOver (K := c.F) v la) : 0 ≤ ramIdx (K := c.F) v la := by
   unfold ramIdx
@@ -66,23 +58,6 @@ variable (h : GenFrEx Xo c) (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTo
   (C : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Submodule c.F (Rul Xo c))
   (cls : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → Prop) (PY : HeightOneSpectrum (𝓞 c.F) → Type)
   (lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop)
-
-theorem ord_nonneg_of [Nonempty (HeightOneSpectrum (𝓞 c.F))]
-    (hT : OrdTie h δ cls PY lies) (hTQ : OrdTieQ h δ) (hR1 : RegularityR1ValuedPoints Xo c C cls PY lies) (hR1Q : RegularityR1Quotient Xo c C)
-    {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {F : Rul Xo c} (hFs : F ∈ sec Xo c a n) (hFC : F ∈ C a n) (hF : IntAlg F)
-    {Z : Comp Xo c} {v : AddValuation (Om Z) (WithTop ℤ)} (hd : IsNormDiscrete v)
-    (hv : (∃ la, IsOver (K := c.F) v la) ∨ IsTrivOn c.F v) (hne : evC h Z F ≠ 0) :
-    0 ≤ ordC (δ Z v) v (wtZ a n) (valC h a n F Z) := by
-  have key : (0 : EReal) ≤ (((ordC (δ Z v) v (wtZ a n) (valC h a n F Z) : ℤ) : ℝ) : EReal) := by
-    rcases hv with ⟨la, ho⟩ | ht
-    · obtain ⟨y, hy⟩ := hT Z v la hd ho
-      rw [hy a n F hFs hne]
-      exact mul_nonneg (by exact_mod_cast ramIdx_nonneg ho) (hR1 a n F hFC hF la y)
-    · obtain ⟨q, hq⟩ := hTQ Z v hd ht
-      rw [hq a n F hFs hne]
-      obtain ⟨la⟩ := ‹Nonempty (HeightOneSpectrum (𝓞 c.F))›
-      exact hR1Q a n F hFC ⟨la, hF la⟩ q
-  exact_mod_cast key
 
 theorem mem_of_mem_span_int (S : Submodule c.F (Rul Xo c)) {s : Set (Rul Xo c)} (hs : s ⊆ S) {F : Rul Xo c}
     (hF : F ∈ Submodule.span (𝓞 c.F) s) : F ∈ S := by
@@ -114,65 +89,5 @@ theorem exists_of_mem_span_valG {u : WtR E} {ι : Type} {R : ι → Rul Xo c} {x
     refine (Algebra.smul_def a (valG h u F Z)).trans ?_
     rw [IsScalarTower.algebraMap_apply (𝓞 c.F) c.F (AC Z)]
     exact (valC_smul_ct h u.1 u.2 (a : c.F) F Z).symm
-
-section LawA2Of
-
-variable [Fintype (Comp Xo c)]
-    (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
-    (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P)))
-    (Dd N T i g0 : ℕ) (cc : ℝ) (uL uF uka ude uet uta1 uta2 : WtR E)
-    (wR : Fin (N + 1) → Rul Xo c) (jc : Comp Xo c → Fin (N + 1))
-    (np : ℕ) (thpR : Fin np → Rul Xo c) (n0 : ℕ) (th0R : Fin n0 → Rul Xo c) (uF0 : WtR E)
-    (nk : ℕ) (thkR : Fin nk → Rul Xo c) (MR : Set (Rul Xo c)) (etR ta1R ta2R : Rul Xo c)
-    (nu : HeightOneSpectrum (𝓞 c.F) → ℝ)
-    (ip : (c.F →+* ℂ) → (∀ Z : Comp Xo c, AC Z) → (∀ Z : Comp Xo c, AC Z) → ℂ)
-    (wsize : WTZ E → ℝ) (DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r : ℝ)
-
-theorem lawA2_of_data [Nonempty (HeightOneSpectrum (𝓞 c.F))]
-    (hT : OrdTie h δ cls PY lies) (hTQ : OrdTieQ h δ) (hR1 : RegularityR1ValuedPoints Xo c C cls PY lies) (hR1Q : RegularityR1Quotient Xo c C)
-    (hwS : ∀ k, wR k ∈ sec Xo c uL.1 uL.2) (hwC : ∀ k, wR k ∈ C uL.1 uL.2) (hwI : ∀ k, IntAlg (wR k))
-    (hpS : ∀ k, thpR k ∈ sec Xo c uF.1 uF.2) (hpC : ∀ k, thpR k ∈ C uF.1 uF.2) (hpI : ∀ k, IntAlg (thpR k))
-    (heS : etR ∈ sec Xo c uet.1 uet.2) (heC : etR ∈ C uet.1 uet.2) (heI : IntAlg etR) (heN : NZAt h etR)
-    (h1S : ta1R ∈ sec Xo c uta1.1 uta1.2) (h1C : ta1R ∈ C uta1.1 uta1.2) (h1I : IntAlg ta1R) (h1N : NZAt h ta1R)
-    (h2S : ta2R ∈ sec Xo c uta2.1 uta2.2) (h2C : ta2R ∈ C uta2.1 uta2.2) (h2I : IntAlg ta2R) (h2N : NZAt h ta2R)
-    (huet : wtZ uet.1 uet.2 = (i * g0) • wtZ ude.1 ude.2)
-    (huta1 : wtZ uta1.1 uta1.2 = (2 : ℕ) • (wtZ uL.1 uL.2 - wtZ ude.1 ude.2))
-    (huta2 : wtZ uta2.1 uta2.2 = (Dd + 4 : ℕ) • wtZ uL.1 uL.2 - wtZ uF.1 uF.2) :
-    A2RegularityOrders (dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r) := by
-  have cases' : ∀ {Z : Comp Xo c} {v : AddValuation (Om Z) (WithTop ℤ)},
-      (dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu
-        ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r).admitted Z v →
-      IsNormDiscrete v ∧ ((∃ la, IsOver (K := c.F) v la) ∨ IsTrivOn c.F v) := by
-    intro Z v hA
-    obtain ⟨hd, hc⟩ := hA
-    exact ⟨hd, hc.imp (fun h' => let ⟨la, ho, _⟩ := h'; ⟨la, ho⟩) (fun h' => h'.1)⟩
-  refine ⟨fun Z v hA x hx hx0 => ?_, fun Z v hA x hx hx0 => ?_, fun Z v hA => ?_, fun Z v hA => ?_,
-    fun Z v hA => ?_⟩
-  · obtain ⟨hd, hc⟩ := cases' hA
-    obtain ⟨F, hF, rfl⟩ := exists_of_mem_span_valG h hx
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q
-      (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hwC) hF)
-      (intAlg_span (Set.forall_mem_range.2 hwI) hF) hd hc (evC_ne_zero_of_valC hx0)
-    exact h0
-  · obtain ⟨hd, hc⟩ := cases' hA
-    obtain ⟨F, hF, rfl⟩ := exists_of_mem_span_valG h hx
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q
-      (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpS) hF) (mem_of_mem_span_int _ (Set.range_subset_iff.2 hpC) hF)
-      (intAlg_span (Set.forall_mem_range.2 hpI) hF) hd hc (evC_ne_zero_of_valC hx0)
-    exact h0
-  · obtain ⟨hd, hc⟩ := cases' hA
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q heS heC heI hd hc (heN Z)
-    rw [huet] at h0
-    exact h0
-  · obtain ⟨hd, hc⟩ := cases' hA
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q h1S h1C h1I hd hc (h1N Z)
-    rw [huta1] at h0
-    exact h0
-  · obtain ⟨hd, hc⟩ := cases' hA
-    have h0 := ord_nonneg_of h δ C cls PY lies hT hTQ hR1 hR1Q h2S h2C h2I hd hc (h2N Z)
-    rw [huta2] at h0
-    exact h0
-
-end LawA2Of
 
 end Formalism.L2.Pj

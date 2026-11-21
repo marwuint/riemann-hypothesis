@@ -1,11 +1,11 @@
 import Mathlib
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.IntegralUnitBaseChange.Development
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOneAddJacobsonTensorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFiniteAlgebraJacobsonRadicalStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteModuleAdicCompleteStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorIdealMapInjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormMapCongruenceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CyclicAlgebraHilbertNinetyStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFiniteAlgebraJacobsonRadical
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteModuleAdicComplete
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorIdealMapInjective
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormMapCongruence
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CyclicAlgebraHilbertNinety
 
 open scoped TensorProduct
 open IsLocalRing
@@ -113,7 +113,7 @@ theorem step [Module.Finite O O'] [Module.Free O O'] [Nontrivial O'] {ℓ : ℕ}
   have hrm : r ∈ (⊥ : Ideal R).jacobson ^ m := by
     have h' := h
     rw [← hr] at h'
-    exact GlobalTheory.T.tensor_ideal_map_injective O O' R _ r h'
+    exact _root_.GlobalTheory.CompanionTheory.Descent.mem_of_includeRight_mem_map O O' R _ r h'
   have hvr : v * r ∈ (⊥ : Ideal R).jacobson ^ m := Ideal.mul_mem_left _ v hrm
   have hsplit : a ⊗ₜ[O] (v * r) = (a ⊗ₜ[O] (1 : R)) * (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) (v * r) := by
     simp only [GlobalTheory.CompanionTheory.UnitNorm.inc, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul,
@@ -165,11 +165,11 @@ theorem norm_units_surjective : PositivityTheory.Rg.Tf.Loc.N1 → PositivityTheo
     exact ⟨1, Subsingleton.elim _ _⟩
   haveI := hO'
   obtain ⟨hfixS, a, ha1, hcong⟩ := hConj O O' R ℓ τ hℓ hτ hfix hbasis
-  obtain ⟨hle, N, hN⟩ := GlobalTheory.T.local_finite_algebra_jacobson_radical O R
+  obtain ⟨hle, N, hN⟩ := _root_.GlobalTheory.CompanionTheory.LocalFinite.map_maximalIdeal_le_jacobson_and_pow_le O R
   haveI : IsAdicComplete (IsLocalRing.maximalIdeal O) (O' ⊗[O] R) :=
-    GlobalTheory.T.finite_module_adic_complete O (O' ⊗[O] R)
+    _root_.GlobalTheory.CompanionTheory.FiniteComplete.isAdicComplete_of_finite O (O' ⊗[O] R)
   obtain ⟨P₁, hP₁⟩ :=
-    GlobalTheory.T.cyclic_algebra_hilbert_ninety hInt O O' R ℓ τ hℓ hτ hfix hbasis ⟨a, ha1⟩ r
+    _root_.GlobalTheory.CompanionTheory.FirstApprox.main hInt O O' R ℓ τ hℓ hτ hfix hbasis ⟨a, ha1⟩ r
   have h2 : ∀ k : ℕ, Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ (N * k + 1)) ≤
       Ideal.map (algebraMap O (O' ⊗[O] R)) (IsLocalRing.maximalIdeal O ^ k) := by
     intro k
@@ -189,7 +189,7 @@ theorem norm_units_surjective : PositivityTheory.Rg.Tf.Loc.N1 → PositivityTheo
       Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ 1) := by
     rw [pow_one, ← neg_sub]
     exact neg_mem hP₁
-  obtain ⟨L, hL⟩ := GlobalTheory.T.norm_map_congruence O (O' ⊗[O] R)
+  obtain ⟨L, hL⟩ := _root_.GlobalTheory.CompanionTheory.AdicApprox.exists_unit_eq_of_successive_approximation O (O' ⊗[O] R)
     (IsLocalRing.maximalIdeal O)
     (fun m => Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ m)) N
     (GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ) ((GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) (r : R)) P₁

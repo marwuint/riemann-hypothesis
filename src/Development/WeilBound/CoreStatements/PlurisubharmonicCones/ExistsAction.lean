@@ -1,6 +1,9 @@
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.ExistsSmulMemOfEig
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuesOfFrame
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartIntegralPointAltBis
+import Mathlib
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocRatio
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsValues
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianHomLieExtends
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 
@@ -25,7 +28,7 @@ theorem finrank_eig' (h : 𝔐.IsLinPtOf z P MV A) (s : CMType H ⊕ CMType H) :
   have h1 := hb _ trivial hU
   have h2 : (𝔐.dR s).IsFrameAt b ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), 𝔐.all _⟩ :=
     ⟨h1.1, (Lat.patch_of_not _ _ _ fun p hp => PtHt.FrameVal.not_inFibre _ _ p (𝔐.S_prime p hp)).symm.trans h1.2⟩
-  obtain ⟨sL, -, hi, hs⟩ := GlobalTheory.T.abelian_part_integral_point_alt E H D l Xo c Y S Ω K J y 𝔐 L z P V MV A s _ b h h2
+  obtain ⟨sL, -, hi, hs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.FrameVal.values_of_frame E H D l Xo c Y S Ω K J y 𝔐 L z P V MV A s _ b h h2
   rw [← hs, finrank_span_eq_card hi, Fintype.card_fin]
 
 omit [∀ k, Fintype (J k)] in

@@ -124,6 +124,4 @@ theorem s55 : LateralTheory.E.D2.LeafLine := @_root_.LateralTheory.E.D2.LeafLine
 theorem s56 : LateralTheory.E.D2.LeafNewton := @_root_.LateralTheory.E.LeafNewtonPf.LeafNewton_of
 theorem s57 : LateralTheory.E.EtaleChapterDTwo := @_root_.LateralTheory.E.D2.goal_of s42 s43 s44 s54 s55 s56
 
-theorem intersectionNumber_baseChange : LateralTheory.E.EtaleChapterDTwo := s57
-
 end LateralTheory.Fix.EtaleChapterDTwo

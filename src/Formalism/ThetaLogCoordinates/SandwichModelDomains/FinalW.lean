@@ -50,25 +50,4 @@ theorem sandwichDomain : SandwichDomain := sandwichDomain_of sandwichZ ascentDom
 theorem sandwichLocal : SandwichLocal := by
   intro p hp r n hn ν hν l hL O _ _ _ hpu
   exact sandwichDomain p r n hn ν hν l hL O (unitsOfLocal p O hpu)
-theorem sandwichModel : SandwichModel := by
-  intro p hp O Kf _ _ _ _ hO m lam hlam
-  have hanti : Antitone (fun t : Fin (m + 1) => (lam t - lam (Fin.last m)).toNat) := by
-    intro s t hst
-    exact Int.toNat_le_toNat (sub_le_sub_right (hlam hst) _)
-  have hL : LBound (m + 1) (fun t : Fin (m + 1) => (lam t - lam (Fin.last m)).toNat)
-      ((lam 0 - lam (Fin.last m)).toNat) := by
-    left
-    intro t
-    exact Int.toNat_le_toNat (sub_le_sub_right (hlam (Fin.zero_le t)) _)
-  obtain ⟨h1, h2⟩ := sandwichDomain p (m + 1) (m + 1) le_rfl _ hanti _ hL O hO
-  refine ⟨?_, Submodule.map_mono h2⟩
-  intro x hx
-  obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.1 hx
-  refine Submodule.mem_map.2 ⟨_, h1 y hy, ?_⟩
-  rw [map_smul]
-  all_goals rfl
-theorem sandwichModelLocal : SandwichModelLocal := by
-  intro p hp O Kf _ _ _ _ _ hpu m lam hlam
-  exact sandwichModel p O Kf (unitsOfLocal p O hpu) m lam hlam
-
 end Formalism.InvariantFactorPaths.INST.Top

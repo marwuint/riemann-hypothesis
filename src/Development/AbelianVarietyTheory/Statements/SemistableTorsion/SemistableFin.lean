@@ -20,18 +20,8 @@ def PotModel (V K : Type) [CommRing V] [Field K] [Algebra V K] (A : Over (Sp K))
     IsLocalHom (algebraMap V W) ∧ IsAdicComplete (IsLocalRing.maximalIdeal W) W ∧
     ∃ (G : Over (Sp W)) (_ : GrpObj G), IsModel (L := L) A G ∧ Q W G
 
-def SSRedFor (C : ∀ (k : Type) [Field k], Prop)
-    (Q : ∀ (W : Type) [CommRing W] [IsLocalRing W] (G : Over (Sp W)) [GrpObj G], Prop) : Prop :=
-  ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V]
-    [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K], C (IsLocalRing.ResidueField V) →
-    ∀ (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → PotModel V K A Q
-
 def SplitSemi (W : Type) [CommRing W] [IsLocalRing W] (G : Over (Sp W)) [GrpObj G] : Prop :=
   IsSemiAbelian G ∧ ∃ E : SplitExt (Sp (IsLocalRing.ResidueField W)), E.IsGt (spFibre G)
-
-def SemistableAll : Prop := SSRedFor (fun _ _ => True) SplitSemi
-
-def SemistableFin : Prop := SSRedFor (fun k _ => Finite k) SplitSemi
 
 def SemistablePol : Prop :=
   ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V]

@@ -1,7 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleIdentityIso
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.H1algStatement
+import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
+import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
+import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.OEOsInjective
 import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.CombBound4Of
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.IsMixedOver
 
@@ -73,14 +75,6 @@ def SecTieF (q : ℕ) (σ : P.U.toUnifPre.SecGF F q)
           ((gv (isoCast (congrArg RigLB.L P.bundle).symm I.m2.φ I.w2) r z (fun _ => J₂ (r ≫ I.m2.φ)) j').val) ^ q
 variable {I P F xF}
 
-theorem PtTieF.base {x : TFK (R := T.V) F ⟶ P.A.A} {b : ptO Xo xF ⟶ Xo.univ.t.G} (h : PtTieF I P F xF x b) :
-    xF = spMap (algebraMap T.Fr F) ≫ (letI := io.toAlgebra; y.x) := by
-  letI := io.toAlgebra
-  obtain ⟨r, h1, h2, -⟩ := h
-  have hw : I.m1.φ ≫ Xo.univ.t.G.hom = I.t'.G.hom ≫ y.x := I.m1.cart.1.w
-  have hb : b.left ≫ Xo.univ.t.G.hom = xF := Over.w b
-  rw [← hb, ← h2, Category.assoc, hw, ← Category.assoc, h1]
-
 theorem SecTieF.base {q : ℕ} {σ : P.U.toUnifPre.SecGF F q}
     {hh : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L (q : ℤ) (ptO Xo xF))} (h : SecTieF I P F xF q σ hh) :
     xF = spMap (algebraMap T.Fr F) ≫ (letI := io.toAlgebra; y.x) := h.1
@@ -103,7 +97,6 @@ def ShortBasis {X : Type} [AddCommGroup X] (Q : X → ℤ) (r : ℕ) (Φ M0 : �
   0 ≤ Φ ∧ ∃ b : Module.Basis (Fin r) ℤ X, (∀ j, (Q (b j) : ℝ) ≤ Φ) ∧
     ∀ j z, |((Q (b j + z) - Q (b j) - Q z : ℤ) : ℝ)| ≤ M0 * Q z
 
-theorem nrm_zero (Dw : Datum H) (c : Coeff l) (α : 𝓞 E) : nrm Dw c 0 α = 1 := by simp [nrm]
 end Num
 
 section Run
@@ -117,27 +110,6 @@ def RunNum (D : D7) {j : ℕ} (w : WeightFamilies.Wt D j) (c : ℝ) : Prop :=
     (j < D.R.m → ∀ i, (WeightAlgebra.DF w : ℝ) * (2 * Real.sqrt (2 * D.R.f * D.R.m)) < (D.host.g i : ℝ) ∧
       rr0 D * ((2 * D.R.f * D.R.m : ℝ) ^ 4 * w.n + 2 * (2 * D.R.f * D.R.m : ℝ) ^ 3) * (WeightAlgebra.DF w : ℝ) ^ 2 / (D.host.g i : ℝ) ≤ c)
 
-theorem runNum_cc (D : D7) (L : SizeData₂ D) {j : ℕ} (w : WeightFamilies.Wt D j) (C2 A2 CR : ℝ) (h1 : w.LastPos)
-    (h2 : D.R.f * D.R.r * (D.R.r + 1) ≤ w.n) (h3 : ∀ i, 4 * WeightAlgebra.DF w + 4 ≤ D.host.g i)
-    (h4 : rr0 D ≤ WeightFamilies.RRv D CR)
-    (h5 : (2 * D.R.f * D.R.m : ℝ) ^ 4 * w.n + 2 * (2 * D.R.f * D.R.m : ℝ) ^ 3 ≤ WeightFamilies.PPv D L C2 A2)
-    (h6 : ∀ i, (WeightAlgebra.DF w : ℝ) * (2 * Real.sqrt (2 * D.R.f * D.R.m)) < (D.host.g i : ℝ)) :
-    RunNum D w (WeightAlgebra.cc D L C2 A2 CR w) := by
-  have r0 : 0 ≤ rr0 D := by unfold rr0; positivity
-  have p0 : (0 : ℝ) ≤ (2 * D.R.f * D.R.m : ℝ) ^ 4 * w.n + 2 * (2 * D.R.f * D.R.m : ℝ) ^ 3 := by positivity
-  have hR := r0.trans h4
-  have hP := p0.trans h5
-  refine ⟨h1, ?_, h3, by unfold WeightAlgebra.cc; positivity, fun _ i => ⟨h6 i, ?_⟩⟩
-  · refine le_trans ?_ h2
-    rcases Nat.eq_zero_or_pos D.R.r with h | h
-    · simp [h]
-    · nlinarith [Nat.mul_le_mul_left (D.R.f * D.R.r) (show 2 ≤ D.R.r + 1 by omega)]
-  · have hq : WeightAlgebra.qq D ≤ D.host.g i := by
-      fin_cases i
-      exacts [min_le_left _ _, min_le_right _ _]
-    have hq0 : 0 < WeightAlgebra.qq D := lt_min (by have := h3 0; omega) (by have := h3 1; omega)
-    unfold WeightAlgebra.cc
-    gcongr
 variable {D : D7}
 
 def Oriented (T : Top D) (EX : ErrX D) : Prop := ∀ i, T.Q.l.Mb ≤ Ideal.span {piBarO EX i}

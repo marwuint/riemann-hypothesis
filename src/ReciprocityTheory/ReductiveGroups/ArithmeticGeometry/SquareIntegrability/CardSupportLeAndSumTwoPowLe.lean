@@ -40,10 +40,6 @@ theorem mul_le_sqrt_mul_sqrt_mul_avg {u v A B P Q t : ℝ} (hv : 0 ≤ v) (hA : 
     _ = Real.sqrt A * Real.sqrt B * (Real.sqrt P * Real.sqrt Q) := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_left hPQ (by positivity)
 
-theorem sqrt_exp_neg_div_eight (x : ℝ) : Real.sqrt (Real.exp (-x / 8)) = Real.exp (-x / 16) := by
-  rw [show -x / 8 = -x / 16 + -x / 16 by ring, Real.exp_add,
-    Real.sqrt_mul_self (Real.exp_pos _).le]
-
 theorem fockInner_self_re_eq_coeffNormSq {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (F : EuclideanSpace ℂ (Fin g) → ℂ)
     (hF : ∀ z, F z = MvPolynomial.eval (fun i => z i) p) : (fockIP F F).re = fa1N p := by
   unfold fockIP

@@ -2,18 +2,19 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.Chapter
-import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeVOperatorRaisesLevelStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormConjugateCoefficientsInvCharStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructureStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinDirichletSeriesIdentityHeckeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedLvalueNeZeroEdgeStatement
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeVOperatorRaisesLevel
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormConjugateCoefficientsInvChar
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructure
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinDirichletSeriesIdentityHecke
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TwistedLvalueNeZeroEdge
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffEisensteinSeriesTwistedHeckeUHeckeVStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffEisensteinSeriesTwistedQExpansionDoubleStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DepletedCuspEigenformHeckeRelationsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinMeanSquareCuspFormStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinUnfoldingPeterssonEisensteinLatticeSumStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinIntegralTendstoAtZeroStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffEisensteinSeriesTwistedQExpansionDouble
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DepletedCuspEigenformHeckeRelations
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinMeanSquareCuspForm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinUnfoldingPeterssonEisensteinLatticeSum
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RankinIntegralTendstoAtZero
+
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
@@ -64,12 +65,12 @@ theorem rankin_values_at_zero : ∀ (e N l : ℕ) (χ θ : DirichletCharacter �
   set h : ℕ → ℂ := fun n => conj (g n) with hhdef
   set Φ := latF (N * l) (fun _ => 1) φ with hΦdef
   have hCFg : CF (2 * e + 1) N (ch χ) g := hg.cf
-  have hCFh0 : CF (2 * e + 1) N (ch χ⁻¹) h := (GlobalTheory.T.cuspForm_conjugate_coefficients_inv_char (2 * e + 1) N χ g).1 hCFg
+  have hCFh0 : CF (2 * e + 1) N (ch χ⁻¹) h := (_root_.GlobalTheory.EisM.ConjForm.conj_form (2 * e + 1) N χ g).1 hCFg
   have hCFh : CF (2 * e + 1) (N * l) (ch χ⁻¹) h :=
-    (GlobalTheory.T.modularFormCoeffSeq_linear_structure (2 * e + 1) N (ch χ⁻¹)).2.2.2.2.2 (N * l) h hNL hCFh0
+    (_root_.GlobalTheory.EisM.mf_linear (2 * e + 1) N (ch χ⁻¹)).2.2.2.2.2 (N * l) h hNL hCFh0
   have hCFVh : CF (2 * e + 1) (N * l) (ch χ⁻¹) (Vo l h) :=
-    (GlobalTheory.T.coeffHeckeVOperator_raises_level (2 * e + 1) N l (ch χ⁻¹) h hl.pos).2 hCFh0
-  obtain ⟨hPolyb, hbbd, -⟩ := GlobalTheory.T.coeffEisensteinSeriesTwisted_qExpansion_double e c₀ (ch ψ) (ch θ) (RankinZero.ch_bdd ψ) (RankinZero.ch_bdd θ)
+    (_root_.GlobalTheory.Vo_level (2 * e + 1) N l (ch χ⁻¹) h hl.pos).2 hCFh0
+  obtain ⟨hPolyb, hbbd, -⟩ := _root_.GlobalTheory.EisM.eis_qseries e c₀ (ch ψ) (ch θ) (RankinZero.ch_bdd ψ) (RankinZero.ch_bdd θ)
   have hΦbd : ∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C := by
     refine ⟨1, fun x => ?_⟩
     simp only [hΦdef, latF]
@@ -109,10 +110,10 @@ theorem rankin_values_at_zero : ∀ (e N l : ℕ) (χ θ : DirichletCharacter �
       DirichletCharacter.norm_le_one θ _⟩
   have hhecke : ∀ m n : ℕ, 0 < m → 0 < n → g m * g n =
       ∑ δ ∈ (Nat.gcd m n).divisors, χ (δ : ZMod N) * (δ : ℂ) ^ (2 * e) * g (m * n / δ ^ 2) := by
-    have := (GlobalTheory.T.depletedCuspEigenform_heckeRelations (2 * e + 1) N χ g (by omega) hN hg).2.2
+    have := (_root_.GlobalTheory.EisM.hecke_relations (2 * e + 1) N χ g (by omega) hN hg).2.2
     simpa using this
   have hsum : ∀ t : ℝ, 0 < t → Summable fun n : ℕ => ‖g n‖ ^ 2 / (n : ℝ) ^ (((2 * e + 1 : ℕ) : ℝ) + t) :=
-    fun t ht => (GlobalTheory.T.rankin_mean_square_cuspForm (2 * e + 1) N (ch χ) g (by omega) hCFg).2.2.1 t ht
+    fun t ht => (_root_.GlobalTheory.rankin_mean_square (2 * e + 1) N (ch χ) g (by omega) hCFg).2.2.1 t ht
   have hbform : ∀ n, n ≠ 0 → b n = ∑ p ∈ n.divisorsAntidiagonal,
       ψ (p.1 : ZMod l) * (p.1 : ℂ) ^ (e - 1) * θ (p.2 : ZMod N) := by
     intro n hn
@@ -136,8 +137,8 @@ theorem rankin_values_at_zero : ∀ (e N l : ℕ) (χ θ : DirichletCharacter �
           (LSeries (fun n => ψ (n : ZMod l) * g n) ((e + 1 : ℝ) + s : ℝ) *
             LSeries (fun n => θ (n : ZMod N) * g n) ((2 * (e : ℝ) + s : ℝ) : ℂ)) := by
     intro s hs
-    rw [GlobalTheory.T.rankin_unfolding_petersson_eisensteinLatticeSum e (N * l) N χ⁻¹ φ (fun d => ch ψ d * ch θ d) ρ h b s he hs hLpos hNL hρ hφ1 hCFh hb hmult hbbd]
-    have hd := GlobalTheory.T.rankin_dirichlet_series_identity_hecke e (fun n => χ (n : ZMod N)) (fun n => ψ (n : ZMod l)) (fun n => θ (n : ZMod N)) g s he hs
+    rw [_root_.GlobalTheory.EisM.rankin_unfold e (N * l) N χ⁻¹ φ (fun d => ch ψ d * ch θ d) ρ h b s he hs hLpos hNL hρ hφ1 hCFh hb hmult hbbd]
+    have hd := _root_.GlobalTheory.EisM.rankin_dirichlet_identity e (fun n => χ (n : ZMod N)) (fun n => ψ (n : ZMod l)) (fun n => θ (n : ZMod N)) g s he hs
       hψmul hθmul hnorm hhecke hsum b hbform
     have hgb : (fun n => conj (h n) * b n) = fun n => g n * b n := by
       funext n; simp [hhdef]
@@ -149,19 +150,19 @@ theorem rankin_values_at_zero : ∀ (e N l : ℕ) (χ θ : DirichletCharacter �
         θ (l : ZMod N) / (l : ℂ) ^ (((2 * (e : ℝ) + s : ℝ)) : ℂ) *
           pet (2 * e + 1) ρ (qs h) (fun τ => qs b τ * lat (e + 1) s (N * l) (0, 1) Φ τ * ((τ.im ^ s : ℝ) : ℂ)) := by
     intro s hs
-    rw [GlobalTheory.T.rankin_unfolding_petersson_eisensteinLatticeSum e (N * l) N χ⁻¹ φ (fun d => ch ψ d * ch θ d) ρ (Vo l h) b s he hs hLpos hNL hρ hφ1 hCFVh hb hmult hbbd,
-      GlobalTheory.T.rankin_unfolding_petersson_eisensteinLatticeSum e (N * l) N χ⁻¹ φ (fun d => ch ψ d * ch θ d) ρ h b s he hs hLpos hNL hρ hφ1 hCFh hb hmult hbbd,
+    rw [_root_.GlobalTheory.EisM.rankin_unfold e (N * l) N χ⁻¹ φ (fun d => ch ψ d * ch θ d) ρ (Vo l h) b s he hs hLpos hNL hρ hφ1 hCFVh hb hmult hbbd,
+      _root_.GlobalTheory.EisM.rankin_unfold e (N * l) N χ⁻¹ φ (fun d => ch ψ d * ch θ d) ρ h b s he hs hLpos hNL hρ hφ1 hCFh hb hmult hbbd,
       RankinZero.lseries_Vo l hl.pos _ h b hbl]
     ring
 
-  have hlim := GlobalTheory.T.rankinIntegral_tendsto_at_zero (2 * e + 1) (e + 1) (N * l) (N * l) N χ⁻¹ Φ ρ h b (by omega) (by omega) hLpos hLpos hNL
+  have hlim := _root_.GlobalTheory.EisM.rankin_tendsto (2 * e + 1) (e + 1) (N * l) (N * l) N χ⁻¹ Φ ρ h b (by omega) (by omega) hLpos hLpos hNL
     hρ hCFh hPolyb hΦbd
-  have hlim' := GlobalTheory.T.rankinIntegral_tendsto_at_zero (2 * e + 1) (e + 1) (N * l) (N * l) N χ⁻¹ Φ ρ (Vo l h) b (by omega) (by omega) hLpos hLpos
+  have hlim' := _root_.GlobalTheory.EisM.rankin_tendsto (2 * e + 1) (e + 1) (N * l) (N * l) N χ⁻¹ Φ ρ (Vo l h) b (by omega) (by omega) hLpos hLpos
     hNL hρ hCFVh hPolyb hΦbd
   have he1 : (1 : ℝ) ≤ e := by exact_mod_cast he
-  obtain ⟨-, v₁, hv₁, hL₁⟩ := GlobalTheory.T.odd_chi_and_tendsto_twisted_LSeries_ne_zero_of_prim (2 * e + 1) N l χ ψ g ((e : ℝ) + 1) (odd_two_mul_add_one e) hN hl.pos hg
+  obtain ⟨-, v₁, hv₁, hL₁⟩ := _root_.GlobalTheory.EisM.twisted_lvalue_ne_zero_edge (2 * e + 1) N l χ ψ g ((e : ℝ) + 1) (odd_two_mul_add_one e) hN hl.pos hg
     (by push_cast; linarith)
-  obtain ⟨-, v₂, hv₂, hL₂⟩ := GlobalTheory.T.odd_chi_and_tendsto_twisted_LSeries_ne_zero_of_prim (2 * e + 1) N N χ θ g (2 * (e : ℝ)) (odd_two_mul_add_one e) hN hN hg
+  obtain ⟨-, v₂, hv₂, hL₂⟩ := _root_.GlobalTheory.EisM.twisted_lvalue_ne_zero_edge (2 * e + 1) N N χ θ g (2 * (e : ℝ)) (odd_two_mul_add_one e) hN hN hg
     (by push_cast; linarith)
   have hΓ : Tendsto (fun s : ℝ => ((Real.Gamma (2 * (e : ℝ) + s) / (4 * π) ^ (2 * (e : ℝ) + s) : ℝ) : ℂ)) (𝓝[>] 0)
       (𝓝 ((Real.Gamma (2 * (e : ℝ)) / (4 * π) ^ (2 * (e : ℝ)) : ℝ) : ℂ)) := by

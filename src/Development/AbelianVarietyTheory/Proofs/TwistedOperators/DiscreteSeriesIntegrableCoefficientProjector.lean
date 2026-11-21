@@ -3,7 +3,8 @@ import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HighestWeightGeneratedWeightsBelow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjectorOfIntegrableDiscreteSeriesCoefficientStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarJacLeExpStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarJacLeExp
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Matrix MeasureTheory
 
@@ -269,7 +270,7 @@ theorem integrable_eFun (X : ProvA) (h2 : DiscreteSeriesPositivity X) (h6 : Cove
     have e2 : polJ Y = polJ (aOf p q t) := by
       rw [ht]; exact hinv k hk _ (pOf_mem _)
     rw [e1, e2, hJ]
-    exact GlobalTheory.T.polarJac_le_exp_hsNorm p q t
+    exact _root_.GlobalTheory.PolarJacBound.polarJac_le_exp p q t
   refine le_trans (mul_le_mul' b1 (ENNReal.ofReal_le_ofReal b2)) ?_
   rw [← ENNReal.ofReal_mul (by positivity), Real.enorm_of_nonneg (by positivity)]
   refine ENNReal.ofReal_le_ofReal ?_

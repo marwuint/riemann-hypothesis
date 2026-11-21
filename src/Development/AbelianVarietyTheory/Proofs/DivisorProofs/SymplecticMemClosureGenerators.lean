@@ -24,9 +24,6 @@ theorem sInv_mul {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) : sInv g * g
   have h : J F κ * gᵀ * J F κ * g = J F κ * (gᵀ * J F κ * g) := by simp only [Matrix.mul_assoc]
   rw [sInv, Matrix.neg_mul, h, hg, J_mul_J, neg_neg]
 
-theorem mul_sInv {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) : g * sInv g = 1 :=
-  mul_eq_one_comm.mp (sInv_mul hg)
-
 theorem Sp.mul {g h : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) (hh : Sp h) : Sp (g * h) := by
   unfold Sp at *
   rw [Matrix.transpose_mul]
@@ -38,9 +35,6 @@ theorem Sp.of_mul_eq_one {g s : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) (h
   calc sᵀ * J F κ * s = sᵀ * (gᵀ * J F κ * g) * s := by rw [hg]
     _ = (g * s)ᵀ * J F κ * (g * s) := by rw [Matrix.transpose_mul]; simp only [Matrix.mul_assoc]
     _ = J F κ := by rw [h1]; simp
-
-theorem Sp.sInv {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : Sp g) : Sp (sInv g) :=
-  Sp.of_mul_eq_one hg (mul_sInv hg)
 
 theorem sp_of_mem_gens {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : g ∈ GlobalTheory.AdelicSvN.gens F κ) : Sp g := by
   rcases hg with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | hw
@@ -103,14 +97,6 @@ theorem mem_closure_of_lower {k : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hk : Sp k) 
   refine Submonoid.mul_mem _ (Submonoid.subset_closure ?_) (Submonoid.subset_closure ?_)
   · exact Or.inl (Or.inl ⟨A, hdet, rfl⟩)
   · exact Or.inl (Or.inr ⟨-(Aᵀ * c), hsym, rfl⟩)
-
-def vert : (κ → F) →ₗ[F] (κ ⊕ κ → F) where
-  toFun y := Sum.elim 0 y
-  map_add' a b := by funext i; cases i <;> simp
-  map_smul' c a := by funext i; cases i <;> simp
-
-def halves : (κ ⊕ κ → F) →ₗ[F] (κ → F) × (κ → F) :=
-  LinearMap.prod (LinearMap.funLeft F F Sum.inl) (LinearMap.funLeft F F Sum.inr)
 
 private theorem exists_symm_isUnit_det_sub_mul_of_finrank_ker (b : Matrix κ κ F) :
     ∀ (n : ℕ) (d : Matrix κ κ F), Module.finrank F (LinearMap.ker d.mulVecLin) = n →

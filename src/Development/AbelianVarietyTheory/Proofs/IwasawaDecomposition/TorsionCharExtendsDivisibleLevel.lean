@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFlagFrame
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionCharEqOfEqOnTorsionStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalFiniteTorsionSplittingStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionCharacterCocycleDescentStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitTorsAlgClosedFractionFieldStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorsionCharacterCocycleDescent
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitTorsAlgClosedFractionField
 
 set_option autoImplicit false
 
@@ -107,7 +107,7 @@ theorem exists_char_of_finPart {R R' : Type} [CommRing R] [CommRing R'] [IsDomai
       spMap σ.toRingHom ≫ u.left = w.left → pt σ = pull t _ hP w := fun σ w h => by
     ext1
     rw [pull_left, pull_left, ← h, sp_comp, Category.assoc]
-  obtain ⟨b, hb₁, hb₂⟩ := GlobalTheory.T.torsion_character_cocycle_descent E H X t R' (spMap (e : R →+* R') ≫ x) q B u hu
+  obtain ⟨b, hb₁, hb₂⟩ := _root_.GlobalTheory.LineNorm.exists_groupLike_unit_of_isFinPart E H X t R' (spMap (e : R →+* R') ≫ x) q B u hu
     (fun σ => Units.map (e : R →* R') (κ (pt σ))) (fun σ σ' σ'' w w' h h' h'' => by
       rw [hpt _ _ h, hpt _ _ h', hpt _ _ h'', map_mul, map_mul, map_mul])
   let χ : ∀ (S : Type) [CommRing S] [Algebra R S] [Module.Finite R S],
@@ -165,7 +165,7 @@ theorem exists_char [IsLocallyNoetherian X] {R : Type} [CommRing R] [IsDomain R]
     [IsLocalRing R] [IsAlgClosed (FractionRing R)] (x : Sp R ⟶ X) (q : ℕ) (hq : q ≠ 0)
     (κ : (Over.mk (spMap (algebraMap R R) ≫ x) ⟶ t.G) →* Rˣ) :
     ∃ c : TorsChar t x q, ∀ w, w ^ q = 1 → c.χ R w = κ w := by
-  obtain ⟨f, B, _, _, u, hf, hu, hfib⟩ := GlobalTheory.T.exists_local_finite_torsion_splitting E H X t R x q hq (GlobalTheory.T.splitTors_algClosed_fraction_field E H X t R x q hq)
+  obtain ⟨f, B, _, _, u, hf, hu, hfib⟩ := GlobalTheory.T.exists_local_finite_torsion_splitting E H X t R x q hq (_root_.GlobalTheory.LineNorm.splitTors_of_isAlgClosed E H X t R x q hq)
     (IsLocalRing.maximalIdeal R) inferInstance
   have hf' : IsUnit f := by simpa using hf
   let e : R ≃+* Localization.Away f :=

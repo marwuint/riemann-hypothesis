@@ -19,16 +19,6 @@ theorem pt_realise (la : HeightOneSpectrum (𝓞 T.Q.c.F))
   obtain ⟨η', hη'⟩ := T.G.liesTotal h.points_condition h.bc66 hj la S io e ho z hz
   exact ⟨PtV.mk la ho z hz η' hη', fun _ => rfl⟩
 
-theorem regularity_R1_extended_points : RegularityR1 (recPJ h j hj) (extAll h j hj) := by
-  intro w F hF la y'
-  rw [extAll_vAt_inc]
-  refine (h.reg j hj).int (dom_wtA w) (cutR_le T.C j w F.2) ?_ la y'.1 y'.2
-  rintro la' _ ⟨y, rfl⟩
-  obtain ⟨y', hy'⟩ := pt_realise h j hj la' y
-  have := hF la' y'
-  rw [recPJ_vAt_inc, hy'] at this
-  exact this
-
 theorem ereal_lin (a c : ℝ) (v : EReal) (h0 : 0 ≤ v) (ht : v ≠ ⊤) :
     (((a + c * v.toReal : ℝ)) : EReal) = (a : EReal) + (c : EReal) * v := by
   have hb : v ≠ ⊥ := fun hb => by simp [hb] at h0

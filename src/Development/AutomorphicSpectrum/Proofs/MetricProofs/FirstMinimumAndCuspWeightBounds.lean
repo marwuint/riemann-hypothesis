@@ -3,8 +3,8 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeGramDeterminantStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeCovolumePositiveStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicEigencomponentConjugateFormStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.IsotropicSubmoduleNonzeroFamily
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.EigenProjectionConjugateInner
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.LinearIndependentRealOfIntOfDiscrete
 import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.PMinkowskiCovolumeBound
 import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.PCuspWeightBound
@@ -203,7 +203,7 @@ theorem eigComp_mem_alt (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (s : 
 
 theorem card_le_of_isNzFamily {σ : Ψ → (𝓞 E →+* ℂ)} {m : ℕ} (hm : R.HasRank σ m) (τ : Ψ)
     {I : Submodule (𝓞 E) Λ} (hI : IsIsoSub R.form I) {r : ℕ} {v : Fin r → Λ} (hv : IsNzFamily I r v) : r ≤ m := by
-  have hli := (GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Ψ R I hI (σ τ)).2 r v hv.2.1 hv.2.2.1
+  have hli := (_root_.LevelTowerAlt.eigen_projection_conjugate_inner E g Λ Ψ R I hI (σ τ)).2 r v hv.2.1 hv.2.2.1
   let w : Fin r → eigSp R.B (σ τ) := fun a => ⟨eigComp R.B (σ τ) (R.P (v a)), eigComp_mem_alt _ _ _⟩
   have hw : LinearIndependent ℂ w := LinearIndependent.of_comp (eigSp R.B (σ τ)).subtype hli
   have := hw.fintype_card_le_finrank
@@ -225,7 +225,7 @@ theorem neg_log_covolume_le {σ : Ψ → (𝓞 E →+* ℂ)} {m : ℕ} (hσ : Is
     -Real.log (R.nz σ I) ≤ Fintype.card Ψ * m * (2 * max 0 (Real.log (1 / R.lam1)) +
         Real.log (2 * Fintype.card Ψ * m * (|(discr E : ℝ)| ^ (1 / (Module.finrank ℚ E : ℝ))))) ∧
       Module.finrank (𝓞 E) I ≤ m := by
-  obtain ⟨⟨r, v, hv⟩, hall⟩ := GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ R σ I hσ hI hI0
+  obtain ⟨⟨r, v, hv⟩, hall⟩ := _root_.LevelTowerAlt.isotropic_submodule_nonzero_family E g Λ Ψ R σ I hσ hI hI0
   obtain ⟨-, hN, hr⟩ := hall r v hv
   have hrm : r ≤ m := R.card_le_of_isNzFamily hm τ hI hv
   refine ⟨?_, hr ▸ hrm⟩

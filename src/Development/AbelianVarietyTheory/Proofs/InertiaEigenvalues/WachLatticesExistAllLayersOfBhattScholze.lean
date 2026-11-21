@@ -71,7 +71,7 @@ theorem build_prism (BS : GlobalTheory.Published.BhattScholzeCrystallineLattices
   have hE := coord_EE I a c ψ π hψ hπ hcu (by rw [hp]; exact WittVector.isAdicCompleteIdealSpanP) o hRW hA
   choose κ hκ using hκ
   choose ρ C j hR hρ using hreal
-  choose q b cb hcb h1 h2 h3 h4 using fun T hT => GlobalTheory.T.prismaticFCrystal_value_localPrism_ainf_wittTensor l F PS PW ev ioH gH π Q ψ hψ1 hio hev hker
+  choose q b cb hcb h1 h2 h3 h4 using fun T hT => _root_.GlobalTheory.Prism.LocalValue.main l F PS PW ev ioH gH π Q ψ hψ1 hio hev hker
     (hI ▸ Ideal.mem_span_singleton_self Q) hloc hQ0 _ _ _ _ (hR T hT)
   have hκs := fun T => kappa_smul c (κ T) (hκ T)
   have hκφ : ∀ T y, κ T (TensorProduct.map (frobW l).toLinearMap LinearMap.id y) = TWmap φR T (κ T y) :=
@@ -109,7 +109,7 @@ theorem build_prism (BS : GlobalTheory.Published.BhattScholzeCrystallineLattices
   refine build E a z c ψ π Q hψ ha hinj hunit hπ hQ hz d o hA hE L ?_ ?_ ?_ ?_ ?_ hone e₀ he₀ ?_
   · intro T hT
     have hbas := kappa_basis c (κ T) (hκ T) (cb T hT)
-    obtain ⟨A, hAu, hAφ⟩ := GlobalTheory.T.exists_isUnit_matrix_of_pow_smul_span_invert PS.A R.EE (WCb l) RW (TW RW T) ((algebraMap _ R.EE).comp a)
+    obtain ⟨A, hAu, hAφ⟩ := _root_.GlobalTheory.exists_isUnit_matrix_of_pow_smul_span PS.A R.EE (WCb l) RW (TW RW T) ((algebraMap _ R.EE).comp a)
       I.ioE.toRingHom c ψ Q hinj hψ hQu _ (fun i => κ T (cb T hT i)) (fun i => TWmap φR T (κ T (cb T hT i)))
       (fun w hw => (hbas 0).unique hw.symm (by simp))
       (fun i => by
@@ -176,7 +176,7 @@ theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices →
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → WachEx AI := by
   intro BS l _ P AI tied K s LL hG Γ R I hW E
   obtain ⟨PS, PW, ev, ioH, gH, a, z, π, Q, ha, hio, -, hγ, hioH, hev, hπ, -, hker, hI, hQ, hz, hloc, -, hS, hA⟩ :=
-    GlobalTheory.T.exists_wach_prism_over_integers l P AI K s LL hG Γ R I hW
+    _root_.GlobalTheory.PrismS.exists_prism l P AI K s LL hG Γ R I hW
   obtain ⟨hinj, hunit, -, -⟩ := GlobalTheory.T.wachInclusion_injective_saturated_inter l P AI K s LL hG Γ R I hW
   obtain ⟨d, ⟨o⟩⟩ := exists_basis_OL LL
   have := LL.2
@@ -192,7 +192,7 @@ theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices →
     (fun x => ?_) ha hinj hunit hγ hioH hev hπ hker hI hQ hloc hS o (hA d o) (coord_tensor o)
     (fun w => isUnit_of_one_tmul w) (fun w => ?_) (fun g w => ?_) (GlobalTheory.T.exists_wittTilt_lattice_tensor_cancel l K LL) (fun T hT => ?_)
     (fun g => P.χQ (g : GQ l) = 1) (fun g hg => resΓ_eq_one Γ hO g ?_)
-    (GlobalTheory.T.witt_twist_invariant_basis_change l P AI K s LL hG Γ R I hW E)
+    (_root_.GlobalTheory.HWL.EtMem.fixed_mem_range l P AI K s LL hG Γ R I hW E)
   · rw [I.ioE_ext, hio]
     exact Algebra.TensorProduct.map_tmul _ _ _ _
   · exact Algebra.TensorProduct.map_tmul _ _ _ _

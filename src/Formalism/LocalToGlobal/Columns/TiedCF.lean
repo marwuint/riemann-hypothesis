@@ -65,10 +65,6 @@ variable {D}
 def lamT (u : D.what₂.Word) (i : ℕ) : D.what₂.Tau → DomWeight (D.R.N i) :=
   fun τ => shW ((D.fm u).lam i τ) ((i * (D.R.t + 1) / 2 : ℕ) : ℤ)
 
-theorem lamT_zero (u : D.what₂.Word) : lamT u 0 = (D.fm u).lam 0 := by
-  funext τ
-  simp [lamT, shW_zero]
-
 set_option maxHeartbeats 1000000 in
 
 structure ClsTied (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m) where

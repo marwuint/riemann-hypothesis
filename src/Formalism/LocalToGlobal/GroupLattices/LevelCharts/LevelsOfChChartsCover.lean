@@ -1,4 +1,4 @@
-import Formalism.LocalToGlobal.GroupLattices.LevelCharts.LevelsOfTie
+import Formalism.LocalToGlobal.GroupLattices.LevelCharts.LevelsOfCh
 
 noncomputable section
 
@@ -58,113 +58,8 @@ variable {p nV : ℕ} {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq]
   [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} {m : ℕ}
 
-set_option maxHeartbeats 2000000 in
-
-def levelsOfCh_tie (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
-    (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
-    (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ)
-    (y : compL L p → UPts sp.cm.sig sp.gram0 (Formalism.L2.Herm.Af F)) [Finite (compL L p)] (e : ℕ)
-    (hy : ∀ i, (Quotient.mk'' (y i) : compL L p) = i)
-    (hyp : ∀ i (w' : HeightOneSpectrum (𝓞 F)), ((p : ℕ) : 𝓞 F) ∈ w'.asIdeal →
-      bc (prV (E := E) w') (y i : GL (Fin R.k) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1)
-    (Fl : Fills (gatOfLevel L hS nV r lam0 dom hk I ψ y e)) (M : ℕ) (Nj : ℕ → ℕ)
-    (hN : ∀ i, i < M → m + (i + 1) * (Fl.t + 1) + 1 = Nj i) (Ch : ∀ i, i < M → Type) [∀ i h, Finite (Ch i h)]
-    (St : ∀ i (h : i < M), Ch i h → StepAt I O (Nj i)) (i : ℕ) (hi : i < M) (β : Ch i hi) :
-    GChartTie (gatOfLevel_tie L hS nV r lam0 dom hk I ψ y e hy hyp)
-      (levelsOfCh hS r lam0 dom hk I ψ y e Fl M Nj hN Ch St) i (fun a : (St i hi β).comp => ⟨hi, β, a⟩)
-      (St i hi β).J (St i hi β).Lb (St i hi β).Uloc (St i hi β).ψ (St i hi β).eps where
-  em_inj := fun a b hab => by
-    simpa using hab
-  rk := hN i hi
-  fr := (St i hi β).fr.fr
-  fr_lat := (St i hi β).fr.fr_lat
-  yG := fun c => (St i hi β).rep c
-  yG_p := fun c w' h => repG_over sp.cm.sig (St i hi β).J (St i hi β).Uloc p c w' h
-  yG_bij := ⟨fun a b hab => by
-      have h1 := repG_mk sp.cm.sig (St i hi β).J (St i hi β).Uloc p a
-      have h2 := repG_mk sp.cm.sig (St i hi β).J (St i hi β).Uloc p b
-      rw [← h1, ← h2]; exact hab,
-    fun c => ⟨c, repG_mk sp.cm.sig (St i hi β).J (St i hi β).Uloc p c⟩⟩
-  gamI := fun c => (gamC sp.cm.sig (St i hi β).J (St i hi β).Up
-    ((St i hi β).rep c : GL (Fin (Nj i)) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))).subtype
-  gamI_inj := fun c => Subtype.val_injective
-  gamI_range := by
-    intro c γ
-    constructor
-    · rintro ⟨g, rfl⟩
-      exact g.2
-    · intro h
-      exact ⟨⟨γ, h⟩, rfl⟩
-  act_eq := by
-    intro c v w' h hw γ a b a' b' ha hb
-    subst h
-    have h1 := levC_act sp.cm.sig (St i hi β).J (St i hi β).Up hS nV r
-      (fun v s => liftWt Fl.t m (lam0 v s) (fun a => Fl.w v a s) (i + 1)) (Fl.domJ (i + 1)) (hN i hi) I.iw (St i hi β).fr.frQ
-      (St i hi β).ψ ((St i hi β).rep c : GL (Fin (Nj i)) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) v γ
-    have h2 : ∀ g : GL (Fin (m + (i + 1) * (Fl.t + 1) + 1)) Qq,
-        (g : Matrix (Fin (m + (i + 1) * (Fl.t + 1) + 1)) (Fin (m + (i + 1) * (Fl.t + 1) + 1)) Qq) a b =
-        (castGL (hN i hi) Qq g : Matrix (Fin (Nj i)) (Fin (Nj i)) Qq) a' b' := by
-      intro g
-      rw [castGL_apply]
-      have ea : a = Fin.cast (hN i hi).symm a' := Fin.ext ha
-      have eb : b = Fin.cast (hN i hi).symm b' := Fin.ext hb
-      rw [ea, eb]
-    have h3 : ((St i hi β).fr.frQ v)⁻¹ * bc (I.iw v) (gamMat sp.cm.sig (St i hi β).J (St i hi β).Up
-          ((St i hi β).rep c : GL (Fin (Nj i)) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) γ) * (St i hi β).fr.frQ v =
-        bc (I.eQ v).symm.toRingHom (((St i hi β).fr.fr (I.pl v).1 (I.pl v).2)⁻¹ *
-          bc ((RingHom.fst _ _).comp (I.spl (I.pl v).1 (I.pl v).2).toRingHom)
-            (bc (inclE (F := F) ((I.pl v).1.adicCompletion F)) (gamMat sp.cm.sig (St i hi β).J (St i hi β).Up
-              ((St i hi β).rep c : GL (Fin (Nj i)) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) γ)) *
-                (St i hi β).fr.fr (I.pl v).1 (I.pl v).2) := by
-      rw [map_mul, map_mul, map_inv]
-      rfl
-    show I.eQ v _ = _
-    rw [h2 (((levelsOfCh hS r lam0 dom hk I ψ y e Fl M Nj hN Ch St).levS i ⟨hi, β, c⟩).act v γ)]
-    erw [h1]
-    rw [h3]
-    show I.eQ v ((I.eQ v).symm _) = _
-    rw [RingEquiv.apply_symm_apply]
-    rfl
-  chi_eq := by
-    intro c γ x hx
-    show (St i hi β).ψ (gamToUp sp.cm.sig (St i hi β).J (St i hi β).Up
-      ((St i hi β).rep c : GL (Fin (Nj i)) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) γ) * (St i hi β).eps γ.1 =
-        (St i hi β).ψ x * (St i hi β).eps γ.1
-    congr 2
-    apply Subtype.ext
-    rw [hx]
-    show (MulAut.conj ((St i hi β).rep c : GL (Fin (Nj i)) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))⁻¹) _ = _
-    rw [MulAut.conj_apply, inv_inv]
-    rfl
-
-theorem levelsOfCh_cover (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
-    (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
-    (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ)
-    (y : compL L p → UPts sp.cm.sig sp.gram0 (Formalism.L2.Herm.Af F)) [Finite (compL L p)] (e : ℕ)
-    (Fl : Fills (gatOfLevel L hS nV r lam0 dom hk I ψ y e)) (M : ℕ) (Nj : ℕ → ℕ)
-    (hN : ∀ i, i < M → m + (i + 1) * (Fl.t + 1) + 1 = Nj i) (Ch : ∀ i, i < M → Type) [∀ i h, Finite (Ch i h)]
-    (St : ∀ i (h : i < M), Ch i h → StepAt I O (Nj i)) (i : ℕ) (hi : i < M)
-    (c : (levelsOfCh hS r lam0 dom hk I ψ y e Fl M Nj hN Ch St).compS i) :
-    ∃! x : Σ β : Ch i hi, (St i hi β).comp, c = ⟨hi, x.1, x.2⟩ :=
-  ⟨c.2, rfl, fun x hx => by rw [hx]⟩
-
 def ChartsCover {p : ℕ} {G : GAtP p} {Fl : Fills G} (Lv : Levels Fl) (i : ℕ) {Cb : Type} {cmp : Cb → Type}
     (em : ∀ β, cmp β → Lv.compS i) : Prop :=
   Function.Bijective (fun x : Σ β, cmp β => em x.1 x.2)
-
-theorem levelsOfCh_chartsCover (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
-    (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
-    (I : LocId L p nV W Qq) (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ)
-    (y : compL L p → UPts sp.cm.sig sp.gram0 (Formalism.L2.Herm.Af F)) [Finite (compL L p)] (e : ℕ)
-    (Fl : Fills (gatOfLevel L hS nV r lam0 dom hk I ψ y e)) (M : ℕ) (Nj : ℕ → ℕ)
-    (hN : ∀ i, i < M → m + (i + 1) * (Fl.t + 1) + 1 = Nj i) (Ch : ∀ i, i < M → Type) [∀ i h, Finite (Ch i h)]
-    (St : ∀ i (h : i < M), Ch i h → StepAt I O (Nj i)) (i : ℕ) (hi : i < M) :
-    ChartsCover (levelsOfCh hS r lam0 dom hk I ψ y e Fl M Nj hN Ch St) i
-      (fun (β : Ch i hi) (a : (St i hi β).comp) => ⟨hi, β, a⟩) :=
-  ⟨fun x x' h => by
-      obtain ⟨b, a⟩ := x
-      obtain ⟨b', a'⟩ := x'
-      simpa using h,
-    fun c => ⟨c.2, rfl⟩⟩
 
 end Formalism.L2.G

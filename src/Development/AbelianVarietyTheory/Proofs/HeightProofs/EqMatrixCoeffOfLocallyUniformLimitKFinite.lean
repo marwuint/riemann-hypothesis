@@ -11,11 +11,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOn
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefBoundOfCasselmanWallach
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.NotMemOfMulExp
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContinuousOnRightDerivativeFamilyModerateGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CoeffSumSmoothRightDerivWordsStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CoeffSumSmoothRightDerivWords
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.RightDerivativeRelationOfLocallyUniformLimitStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsMapsOfRelationsStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsMapsOfRelations
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSobolevContinuousFormOfModerateGrowthMapStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CoeffWordModerateGrowthBoundStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CoeffWordModerateGrowthBound
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Matrix
 open Formalism.REAL GlobalTheory.SmoothGlob GlobalTheory.TypeSum
 open scoped TensorProduct
@@ -44,7 +44,7 @@ theorem GlobalTheory.TypeSum.CoefClos.eq_coef_of_closure : GlobalTheory.Publishe
     intro m c u hcu
     have hA := GlobalTheory.T.rightDerivativeRelation_of_locallyUniformLimit n ε h hCh m c u (fun C hC δ hδ => by
       obtain ⟨L, hL, hLa⟩ := happ C hC δ hδ
-      obtain ⟨hB1, hB2⟩ := GlobalTheory.T.coeffSum_smooth_rightDerivWords n ε H σ hstd d L hL w hwS
+      obtain ⟨hB1, hB2⟩ := _root_.GlobalTheory.TypeSum.CoefClos.coefSum_cSm_wordF n ε H σ hstd d L hL w hwS
       refine ⟨_, hB1, hLa, fun y hy => ?_⟩
       simp only [fun i => hB2 (u i) y hy]
       rw [← Finset.sum_eq_zero (s := (Finset.univ : Finset (Fin d))) (f := fun a => L a (σ y (∑ i, c i • wordV σ (u i) (w a))))
@@ -62,14 +62,14 @@ theorem GlobalTheory.TypeSum.CoefClos.eq_coef_of_closure : GlobalTheory.Publishe
       have := (wordE ltrM (u i) (⟨h0, hm0⟩ : Smo ε)).2.1 g hg
       rw [coe_wordE] at this
       rw [this, mul_zero]
-  obtain ⟨T, hT1, hT2, hT3⟩ := GlobalTheory.T.exists_maps_of_relations_alt hHC n ε H σ hstd d w hw (Smo ε) ltrM ⟨h0, hm0⟩ hrel
+  obtain ⟨T, hT1, hT2, hT3⟩ := _root_.GlobalTheory.TypeSum.CoefClos.exists_maps_of_relations hHC n ε H σ hstd d w hw (Smo ε) ltrM ⟨h0, hm0⟩ hrel
   have hD : ∀ a, ∃ L : H →ₗ[ℂ] ℂ, Sobolev₂ (lieSet ε) σ L ∧ ∀ v, IsKFin ε σ v → ∀ y ∈ UJset ε,
       ((Smo ε).subtype ∘ₗ T a) v y = L (σ y v) := by
     intro a
     refine GlobalTheory.T.exists_sobolevContinuous_form_of_moderateGrowthMap hCW n ε H σ hstd N ((Smo ε).subtype ∘ₗ T a) (fun v hv => ?_) (fun v hv k hk g hg => ?_)
       (fun v hv X hX g hg => ?_)
     · obtain ⟨m, c, u, e⟩ := hT3 a v hv
-      have hb := fun i => GlobalTheory.T.coeffWord_moderateGrowth_bound n ε N h Φ hΦ0 hΦD hΦG (u i)
+      have hb := fun i => _root_.GlobalTheory.TypeSum.CoefClos.wordF_growth n ε N h Φ hΦ0 hΦD hΦG (u i)
       choose C hC using hb
       refine ⟨∑ i, ‖c i‖ * C i, fun g hg => ?_⟩
       simp only [LinearMap.comp_apply, Submodule.subtype_apply, e, Submodule.coe_sum, Submodule.coe_smul, coe_wordE,

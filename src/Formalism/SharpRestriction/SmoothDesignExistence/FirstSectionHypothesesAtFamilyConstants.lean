@@ -1,4 +1,6 @@
-import Formalism.SharpRestriction.SmoothDesignExistence.ClosedLinkSOfClosedPeriodAndFiltration
+import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
+import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
+import Formalism.SharpRestriction.SmoothDesignExistence.DGamSmooth
 
 noncomputable section
 

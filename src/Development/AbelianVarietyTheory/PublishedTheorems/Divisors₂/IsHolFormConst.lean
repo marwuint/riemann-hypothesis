@@ -144,25 +144,6 @@ def mul (r : Rule Q R₀ k) (s : Rule Q R₀ l) : Rule Q R₀ (k + l) where
   baseChange R R' _ _ _ _ σ X hX X' hX' φ δ δ' h h' := by
     rw [map_mul, r.baseChange R R' σ X hX X' hX' φ δ δ' h h', s.baseChange R R' σ X hX X' hX' φ δ δ' h h']
 
-def restrict (r : Rule Q R₀ k) (h : ∀ (R : Type) [CommRing R] (X : Obj F 𝔠 (Sp R)), Q' R X → Q R X) :
-    Rule Q' R₀ k where
-  val R _ _ X hX δ := r.val R X (h R X hX) δ
-  homog R _ _ X hX := r.homog R X (h R X hX)
-  baseChange R R' _ _ _ _ σ X hX X' hX' := r.baseChange R R' σ X (h R X hX) X' (h R' X' hX')
-
-def extend (r : Rule Q R₀ k) (R₁ : Type) [CommRing R₁] [Algebra R₀ R₁] : Rule Q R₁ k where
-  val R _ _ X hX δ :=
-    letI : Algebra R₀ R := ((algebraMap R₁ R).comp (algebraMap R₀ R₁)).toAlgebra
-    r.val R X hX δ
-  homog R _ _ X hX δ δ' c h :=
-    letI : Algebra R₀ R := ((algebraMap R₁ R).comp (algebraMap R₀ R₁)).toAlgebra
-    r.homog R X hX δ δ' c h
-  baseChange R R' _ _ _ _ σ X hX X' hX' φ δ δ' h h' :=
-    letI : Algebra R₀ R := ((algebraMap R₁ R).comp (algebraMap R₀ R₁)).toAlgebra
-    letI : Algebra R₀ R' := ((algebraMap R₁ R').comp (algebraMap R₀ R₁)).toAlgebra
-    r.baseChange R R' { (σ : R →+* R') with commutes' := fun x ↦ σ.commutes (algebraMap R₀ R₁ x) }
-      X hX X' hX' φ δ δ' h h'
-
 end Rule
 
 variable (F) in
@@ -186,9 +167,6 @@ def qPower (ξ : F) (z : (F →+* ℝ) → ℂ) : ℂ :=
 
 def HasFourier (𝔞 𝔟 : FracId F) (g : ((F →+* ℝ) → ℂ) → ℂ) (a : (𝔞 * 𝔟).elt → ℂ) : Prop :=
   ∀ z ∈ halfSpace F, HasSum (fun ξ : (𝔞 * 𝔟).elt ↦ a ξ * qPower (ξ : F) z) (g z)
-
-theorem isHolForm_const (𝔞 𝔟 : FracId F) (x : ℂ) : IsHolForm 𝔞 𝔟 0 (fun _ ↦ x) :=
-  ⟨differentiableOn_const x, fun _ _ _ _ _ _ _ ↦ by simp⟩
 
 def IsTorusPoint (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)) (𝔞 𝔟 : FracId F) (z : (F →+* ℝ) → ℂ)
     (X : Obj F (𝔞 * 𝔟⁻¹) (Sp ℂ)) (δ : X.DetOmega) : Prop :=

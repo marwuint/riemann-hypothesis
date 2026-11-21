@@ -142,59 +142,6 @@ variable {A : FamIn K G Pl0 T m} {P0 : Subgroup G} {ψ0 : P0 →* Kˣ} {P1 : Sub
   {Dc : ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs)} {Sp : ∀ Zs : DefSub A.fam.amb, SPer (Dc Zs)}
   {Zsc : DefSub A.fam.amb → IndefScale A.fam.base}
 
-theorem crdZ_of (X : CxData A.fam.amb) (b : Bool) : X.CrdZ (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b := by
-  intro t x
-  cases b
-  · exact BlockGood.toF_mem _ _ _ _
-  · exact BlockGood.toF_mem _ _ _ _
-
-theorem coordinates_in_good_part_of_definite (X : CxData A.fam.amb) (b : Bool) :
-    X.CoordinatesInGoodPart (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf A P0 ψ0 P1 ψ1) b := by
-  intro t x
-  cases b
-  · exact BlockGood.toF_mem_goodR _ _ _ _
-  · exact BlockGood.toF_mem_goodR _ _ _ _
-
-theorem crdZL_of (X : CxData A.fam.amb) (b : Bool) : X.CrdZL (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b := by
-  intro j t x
-  cases b
-  · exact BlockGood.toF_mem _ _ _ _
-  · exact BlockGood.toF_mem _ _ _ _
-
-theorem lift_coordinates_in_good_part_of_definite (X : CxData A.fam.amb) (b : Bool) :
-    X.LiftCoordinatesInGoodPart (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf A P0 ψ0 P1 ψ1) b := by
-  intro j t x
-  cases b
-  · exact BlockGood.toF_mem_goodR _ _ _ _
-  · exact BlockGood.toF_mem_goodR _ _ _ _
-
-def NPTie (X : CxData A.fam.amb) (P0 P1 : Subgroup G) : Prop :=
-  X.nP false = (Nat.card P0 : ℝ) ∧ X.nP true = (Nat.card P1 : ℝ)
-
-theorem isoR_of {X : CxData A.fam.amb} {s : ℕ} (hok : A.fam.Ok s) (hJ : X.JIsoR (cvOf A P0 ψ0 P1 ψ1))
-    (hn : NPTie X P0 P1) (b : Bool) : X.IsoR (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b := by
-  intro t x y
-  rw [hJ t]
-  cases b
-  · rw [hn.1]
-    exact BlockGood.csum_toF_at (A.fam.R t) hok.conj (hok.what₂ t) (A.fam.lvl P0 ψ0) hok.irr (X.zs.Z t) x y
-  · rw [hn.2]
-    exact BlockGood.csum_toF_at (A.fam.R t) hok.conj (hok.what₂ t) (A.fam.lvl P1 ψ1) hok.irr (X.zs.Z t) x y
-
-theorem isoL_of {X : CxData A.fam.amb} {s : ℕ} (hok : A.fam.Ok s) (hJ : X.JIsoL (cvOf A P0 ψ0 P1 ψ1))
-    (hn : NPTie X P0 P1) (b : Bool) : X.IsoL (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b := by
-  intro j t x y
-  rw [hJ j t]
-  cases b
-  · rw [hn.1]
-    exact BlockGood.csum_toF_at (A.fam.L j t) hok.conj (hok.lifts j t) (A.fam.lvlA P0 ψ0) hok.irr (X.zs.Zl j t) x y
-  · rw [hn.2]
-    exact BlockGood.csum_toF_at (A.fam.L j t) hok.conj (hok.lifts j t) (A.fam.lvlA P1 ψ1) hok.irr (X.zs.Zl j t) x y
-
-def HeckeRatAllR (A : FamIn K G Pl0 T m) : Prop := ∀ t, (A.fam.R t).OkH
-
-def HeckeRatAllL (A : FamIn K G Pl0 T m) : Prop := ∀ j t, (A.fam.L j t).OkH
-
 theorem csum_act_inv {B : BlockDat K G Pl0} (h : B.S.ActGood B.r) (g : G) (f f' : B.S.Forms) :
     B.S.csum (B.r g f : B.S.Cl → B.S.V) (f' : B.S.Cl → B.S.V) =
       B.S.csum (f : B.S.Cl → B.S.V) (B.r g⁻¹ f' : B.S.Cl → B.S.V) := by
@@ -205,24 +152,6 @@ theorem csum_act_inv {B : BlockDat K G Pl0} (h : B.S.ActGood B.r) (g : G) (f f' 
     rfl
   rw [h2] at h1
   exact h1
-
-theorem adjClosedR_of {X : CxData A.fam.amb} {s : ℕ} (hok : A.fam.Ok s) (hH : HeckeRatAllR A) (hK : X.KFormR)
-    (hJ : X.JIsoR (cvOf A P0 ψ0 P1 ψ1)) : X.AdjClosedR := by
-  intro t i
-  rcases i with p | g
-  · obtain ⟨p', hp'⟩ := (hH t).adj p
-    exact ⟨Sum.inl p', X.opC_adjoint hK (cvOf A P0 ψ0 P1 ψ1) hJ t (Sum.inl p) (Sum.inl p') fun f f' => hp' f f'⟩
-  · exact ⟨Sum.inr g⁻¹, X.opC_adjoint hK (cvOf A P0 ψ0 P1 ψ1) hJ t (Sum.inr g) (Sum.inr g⁻¹)
-      fun f f' => csum_act_inv (hok.what₂ t).act g f f'⟩
-
-theorem adjClosedL_of {X : CxData A.fam.amb} {s : ℕ} (hok : A.fam.Ok s) (hH : HeckeRatAllL A) (hK : X.KFormL)
-    (hJ : X.JIsoL (cvOf A P0 ψ0 P1 ψ1)) : X.AdjClosedL := by
-  intro j t i
-  rcases i with p | g
-  · obtain ⟨p', hp'⟩ := (hH j t).adj p
-    exact ⟨Sum.inl p', X.opLC_adjoint hK (cvOf A P0 ψ0 P1 ψ1) hJ j t (Sum.inl p) (Sum.inl p') fun f f' => hp' f f'⟩
-  · exact ⟨Sum.inr g⁻¹, X.opLC_adjoint hK (cvOf A P0 ψ0 P1 ψ1) hJ j t (Sum.inr g) (Sum.inr g⁻¹)
-      fun f f' => csum_act_inv (hok.lifts j t).act g f f'⟩
 
 end Concrete
 

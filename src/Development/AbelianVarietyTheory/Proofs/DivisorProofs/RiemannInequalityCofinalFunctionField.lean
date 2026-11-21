@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceIsDVRAndResidueEqGroundStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsManyBoundedByPowStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldZerosFiniteSumOrderEqFinrankStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceIsDVRAndResidueEqGround
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsManyBoundedByPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldZerosFiniteSumOrderEqFinrank
 
 open scoped IntermediateField Polynomial RatFunc
 
@@ -88,8 +88,8 @@ theorem riemann_cofinal : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k
     (IntermediateField.adjoin_simple_le_iff.2 (inv_mem (IntermediateField.mem_adjoin_simple_self k t)))
     (IntermediateField.adjoin_simple_le_iff.2
       (by simpa using inv_mem (IntermediateField.mem_adjoin_simple_self k t⁻¹)))
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_linearIndependent_bounded_by_pow_of_transcendental k F hFF t ht
-  obtain ⟨hPfin, hPdeg⟩ := GlobalTheory.T.functionField_zeros_finite_sum_order_eq_finrank k F hFF t⁻¹ hti
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.Nef.exists_many_bounded_by_pow k F hFF t ht
+  obtain ⟨hPfin, hPdeg⟩ := _root_.GlobalTheory.Nef.zeros_finite_sum_eq_degree k F hFF t⁻¹ hti
   rw [hadj] at hPdeg
   refine ⟨c * Module.finrank k⟮t⟯ F, fun D => ?_⟩
 
@@ -99,7 +99,7 @@ theorem riemann_cofinal : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k
     constructor <;> intro <;> omega
 
   have hres : ∀ v : Place k F, v.1 t ≤ 1 → ∃ a : k, v.1 (t - algebraMap k F a) < 1 :=
-    fun v => (GlobalTheory.T.functionFieldPlace_isDVR_and_residue_eq_ground k F hFF v).2 t
+    fun v => (_root_.GlobalTheory.Nef.place_isDVR_residue k F hFF v).2 t
   obtain ⟨r, hr⟩ : ∃ r : Place k F → k, ∀ v : Place k F, v.1 t ≤ 1 → v.1 (t - algebraMap k F (r v)) < 1 :=
     ⟨fun v => if h : v.1 t ≤ 1 then (hres v h).choose else 0, fun v h => by
       simp only [dif_pos h]; exact (hres v h).choose_spec⟩
@@ -114,7 +114,7 @@ theorem riemann_cofinal : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k
     intro w
     rw [hh, ord_prod w _ _ (fun v _ => pow_ne_zero _ (hlin0 _))]
     exact Finset.sum_congr rfl fun v _ => ord_pow w _ _
-  obtain ⟨hhfin, hhsum⟩ := GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hFF h hh0
+  obtain ⟨hhfin, hhsum⟩ := _root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k F hFF h hh0
   obtain ⟨n, f, hli, hn, hf⟩ := hc (2 * M)
   obtain ⟨P, hP⟩ : ∃ P : Place k F → ℤ,
       P = {v : Place k F | v.1 t⁻¹ < 1}.indicator fun v => ord v t⁻¹ := ⟨_, rfl⟩

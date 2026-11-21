@@ -60,32 +60,10 @@ structure ModelO (O : Type) [CommRing O] where
   U_iff : ∀ x : Z, x ∈ U ↔ (CharZero (Z.residueField x) ∧ AbelianAt G x)
   U_dense : Dense (U : Set Z)
 
-theorem ModelO.ab_open {O : Type} [CommRing O] (M : ModelO O) : ∀ x ∈ M.U, AbelianAt M.G x :=
-  fun x hx => ((M.U_iff x).1 hx).2
-
-def ModelO.toG {O : Type} [CommRing O] [IsLocalRing O] (M : ModelO O) : ModelG O := ⟨M.Z, M.str, M.G⟩
-
 structure PtOver {O : Type} [CommRing O] (M : ModelO O) (C : Type) [NormedField C] [IsUltrametricDist C] where
   alg : O →+* intO C
   x : Spec (CommRingCat.of (intO C)) ⟶ M.Z
   comm : x ≫ M.str = Spec.map (CommRingCat.ofHom alg)
   gen_open : x (genPt (intO C)) ∈ M.U
-
-def PtM (p : ℕ) {O : Type} [CommRing O] (M : ModelO O) : Type :=
-  Σ c : SCF p, PtOver M c.S
-
-def PtM.fld {p : ℕ} {O : Type} [CommRing O] {M : ModelO O} (y : PtM p M) : Formalism.MainNotions.ModuliIntegralCharts.CF p := y.1.toCF
-
-abbrev ChartM {O : Type} [CommRing O] (M : ModelO O) (OK : Type) [CommRing OK] : Type :=
-  Spec (CommRingCat.of (PowerSeries OK)) ⟶ M.Z
-
-def ChartM.IsOpenPart {O : Type} [CommRing O] {M : ModelO O} {OK : Type} [CommRing OK] [IsLocalRing OK]
-    (χ : ChartM M OK) : Prop :=
-  ∀ q : PrimeSpectrum (PowerSeries OK), PowerSeries.X ∉ q.asIdeal →
-    (∃ a ∈ IsLocalRing.maximalIdeal OK, PowerSeries.C a ∉ q.asIdeal) → χ q ∈ M.U
-
-def ChartM.AbExact {O : Type} [CommRing O] {M : ModelO O} {OK : Type} [CommRing OK]
-    (χ : ChartM M OK) : Prop :=
-  ∀ q : PrimeSpectrum (PowerSeries OK), AbelianAt (bchG χ M.G) q ↔ (PowerSeries.X ∉ q.asIdeal)
 
 end Formalism.MainNotions.DIV.Cons

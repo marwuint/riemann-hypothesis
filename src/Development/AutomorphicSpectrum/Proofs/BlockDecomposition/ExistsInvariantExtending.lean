@@ -3,7 +3,8 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WtRInjective
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryEuclideanModelStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactLieActionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightTensorDecompositionStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightTensorDecomposition
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeUnitaryActionStatement
 
 noncomputable section
@@ -138,7 +139,7 @@ theorem exists_multi {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ 
     ∃ T : H →ₗ[ℂ] V, (∀ i ∈ M, ∀ x : Hs i, T x = f i x) ∧ ∀ a b w, T (D a b w) = D' a b (T w) := by
   classical
   choose P hP1 hP2 hP3 using fun i => exists_proj hD hU (hHs i)
-  choose T hT1 hT2 using fun i => GlobalTheory.T.highest_weight_tensor_decomposition H V D D' (wt i) hD hD' hU hU' (Hs i) (hHs i) (f i) (hf i)
+  choose T hT1 hT2 using fun i => _root_.GlobalTheory.CompanionTheory.RealCount.ExtHw.kmap_extend H V D D' (wt i) hD hD' hU hU' (Hs i) (hHs i) (f i) (hf i)
   refine ⟨∑ i ∈ M, (T i).comp (P i), ?_, ?_⟩
   · intro i hi x
     rw [LinearMap.sum_apply, Finset.sum_eq_single i]

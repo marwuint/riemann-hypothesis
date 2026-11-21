@@ -69,22 +69,6 @@ include hpl hk he
 theorem tr_add (Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : tr P Bs e (Φ + Ψ) = tr P Bs e Φ + tr P Bs e Ψ :=
   trR_add _ _ _ _ (fun ρ => smR hpl hk he (famR_rad hpl Φ) ρ) (fun ρ => smR hpl hk he (famR_rad hpl Ψ) ρ)
 
-def tiedAlg : Subalgebra ℂ (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') × MA.A P (MA.DQ P)) where
-  carrier := {x | Tied P Bs e x.1 x.2}
-  mul_mem' := by
-    intro x y hx hy Φ
-    show tr P Bs e (x.1.1 (y.1.1 Φ)) = MA.actA P (x.2 * y.2) _
-    rw [actA_mul, hx, hy]
-  add_mem' := by
-    intro x y hx hy Φ
-    show tr P Bs e (x.1.1 Φ + y.1.1 Φ) = MA.actA P (x.2 + y.2) _
-    rw [actA_add, tr_add hpl hk he, hx, hy]
-  algebraMap_mem' := by
-    intro z Φ
-    show tr P Bs e (z • Φ) = MA.actA P (algebraMap ℂ _ z) _
-    rw [actA_algebraMap]
-    exact trR_smul _ _ z _
-
 theorem tr_mul (T : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) (f : (Fin P.r → ℂ) × Q.Mx P.k P.r → ℂ)
     (hT : ∀ Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z',
       (T Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = f x • (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2)

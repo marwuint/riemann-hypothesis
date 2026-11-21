@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SplitPart
 import Development.AbelianVarietyTheory.Definitions.Foundations.ForallEventuallyFinLocIff
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardPairAlongChainStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardPairAlongChain
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacuumCharacterPositiveDefiniteSource
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormalisedFamilySatisfiesEquivarianceLaws
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasInfExpIffHasInfQ
@@ -289,16 +289,5 @@ theorem move_rat {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} 
 
 theorem curveIdeal_top (D : D7) : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D ⊤ :=
   ⟨top_ne_bot, by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _⟩
-
-theorem moveAt_rat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∀ c₀ g h, g ∈ GfC _ → h ∈ GfC _ → A.MoveAt θ i hi c₀ g h → ∀ r r', IsRatFin _ r → IsRatFin _ r' → A.MoveAt θ i hi c₀ (r * g) (r' * h) := by
-  intro B X I l Z w u A ψ θ hA i hi c₀ g h hg hh H r r' hr hr'
-  have hp := (GlobalTheory.T.standard_pair_along_chain I l Z w u A ψ θ hA i hi).1
-  choose e he using fun τ => (B.hc τ).e_int ⟨i, hi⟩
-  have hexp := (GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ (I.rec7 l Z) _ _ _ (hA.chr ⟨i, hi⟩)).2 (I.C.isMu0 ⟨i, hi⟩).inf
-  have hv := (hA.vac i hi).2
-  exact move_rat _ _ hp (hA.om i hi) (fun τ => -e τ) (fun τ => by
-      have e1 : ((-e τ : ℤ) : ℚ) = -(B.hc τ).e ⟨i, hi⟩ := by rw [Int.cast_neg, ← he τ]
-      exact e1 ▸ hexp τ) ⟨hv.theta, hv.fock⟩ (Th.VacIn.toRec (D := I.rec7 l Z) I.J.V)
-    (curveIdeal_top _) w.ok.amb_ok.delta c₀ hg hh H hr hr'
 
 end GlobalTheory.AdForm.RatMove

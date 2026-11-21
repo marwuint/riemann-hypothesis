@@ -1,5 +1,6 @@
 import Mathlib
-import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GodementJacquetZeta
+import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocallyConstantOrbit
 
@@ -73,31 +74,5 @@ theorem _root_.GlobalTheory.InertSupp.unipRad_eq_unipOf {e : (Σ a, m a) ≃ n}
   simp only [h]
 
 end Blocks
-
-section Local
-
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-  {n : Type} [Fintype n] [DecidableEq n] {V : Type} [AddCommGroup V] [Module ℂ V]
-
-def NoInert (π : Representation ℂ (GL n k) V) (θ : kˣ →* ℂˣ) : Prop :=
-  ∀ (c : n → ℤ) (i : n), (∀ j, c j = c i → j = i) → ∀ v : V,
-    (∀ u : kˣ, valuation k (u : k) = 1 →
-      π (diagT k n (Pi.mulSingle i u)) v - (θ u : ℂ) • v ∈ twKer π (unipOf k c) 1) →
-    v ∈ twKer π (unipOf k c) 1
-
-def cut (I : Finset n) : n → ℤ := fun i => if i ∈ I then 0 else 1
-
-variable [MeasurableSpace k] [BorelSpace k]
-
-def zetaIntegrand (Φ : Matrix n n k → ℂ) (c : GL n k → ℂ) (s : ℂ) (g : GL n k) : ℂ :=
-  Φ g.val * c g * (absPow k (s + ((Fintype.card n : ℂ) - 1) / 2) (GeneralLinearGroup.det g) : ℂ)
-
-def IsLaurent (ν : Measure k) (c : GL n k → ℂ) : Prop :=
-  ∀ Φ ∈ SB (Matrix n n k), ∃ (b : ℝ) (N : ℕ) (Q : Polynomial ℂ), ∀ s : ℂ, b < s.re →
-    Integrable (zetaIntegrand Φ c s) (volGL ν n) ∧
-    (∫ g, zetaIntegrand Φ c s g ∂(volGL ν n)) * ((resCard k : ℂ) ^ (-s)) ^ N =
-      Q.eval ((resCard k : ℂ) ^ (-s))
-
-end Local
 
 end GlobalTheory.InertSupp

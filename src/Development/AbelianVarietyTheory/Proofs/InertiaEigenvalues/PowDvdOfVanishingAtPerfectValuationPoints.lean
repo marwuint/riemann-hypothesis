@@ -1,7 +1,7 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BoundedPowersOrExistsValuationSubringDvdStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicCompletionValuationRingCompleteValuationDomaStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicCompletionPrincipalPerfectStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BoundedPowersOrExistsValuationSubringDvd
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicCompletionValuationRingCompleteValuationDoma
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicCompletionPrincipalPerfect
 open scoped NNReal
 
 namespace GlobalTheory
@@ -28,14 +28,14 @@ theorem s_points_kpt : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (u x
       (f : R →+* O), f u ≠ 0 → ¬ IsUnit (f u) → IsAdicComplete (Ideal.span {f u}) O → f x = 0) →
     ∀ M : ℕ, ∃ c : ℕ, ∀ n : ℕ, u ^ (M * n) ∣ u ^ c * x ^ n := by
   intro l _ R _ u x hl hu hrad H M
-  rcases GlobalTheory.T.pow_dvd_bound_or_exists_valuationSubring_dvd R u x M hu hrad with h | ⟨L, _, _, V, f, hfu, hfnu, hdvd⟩
+  rcases _root_.GlobalTheory.bounded_powers_or_exists_valuationSubring_dvd R u x M hu hrad with h | ⟨L, _, _, V, f, hfu, hfnu, hdvd⟩
   · exact h
   exfalso
   haveI : CharP V l := (CharP.charP_iff_prime_eq_zero Fact.out).2 (by
     rw [← map_natCast f, hl, map_zero])
   haveI : PerfectRing V l := perfectRing_valuationSubring_of_isAlgClosed l V
-  obtain ⟨hdom, hpre, hne, hnu, hcomp⟩ := GlobalTheory.T.adicCompletion_valuationRing_complete_valuationDomain V (f u) hfu hfnu
-  obtain ⟨hl', hbij⟩ := GlobalTheory.T.adicCompletion_principal_perfect l V (f u)
+  obtain ⟨hdom, hpre, hne, hnu, hcomp⟩ := _root_.GlobalTheory.adicCompletion_valuationRing_props V (f u) hfu hfnu
+  obtain ⟨hl', hbij⟩ := _root_.GlobalTheory.PerfectCompletion.perfect l V (f u)
   set O := AdicCompletion (Ideal.span {f u}) V
   haveI : IsDomain O := hdom
   haveI : ValuationRing O := { toPreValuationRing := hpre }

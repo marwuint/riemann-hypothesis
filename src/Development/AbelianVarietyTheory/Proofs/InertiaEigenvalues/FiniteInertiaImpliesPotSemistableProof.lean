@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedOverFinExtOfFiniteInertiaImageStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCrystallinePeriodUnramifiedRepStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedOverFinExtOfFiniteInertiaImage
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCrystallinePeriodUnramifiedRep
 
 noncomputable section
 
@@ -12,7 +12,7 @@ namespace GlobalTheory.PMon
 
 theorem unrStep_holds : UnrStep := by
   intro l _ P AI T n _ _ K r ρ hρ hfin
-  obtain ⟨K', hK, hI, hc⟩ := GlobalTheory.T.unramified_over_finExt_of_finite_inertia_image l n K r ρ hρ hfin
+  obtain ⟨K', hK, hI, hc⟩ := _root_.GlobalTheory.PMon.unr_of_finite_inertia l n K r ρ hρ hfin
   let ι : ↥(GK K') →* ↥(GK K) := Subgroup.inclusion (GK_le hK)
   let ρ' : ↥(GK K') →* GL n ↥(MaximalUnramifiedExtension l) := ρ.comp ι
   have hι : Continuous ι := continuous_subtype_val.subtype_mk _
@@ -21,7 +21,7 @@ theorem unrStep_holds : UnrStep := by
       le := fun c hc => hK (hρ.le c hc)
       rat := fun g i j => hρ.rat (ι g) i j
       cont := fun i j => (hρ.cont i j).comp hι }
-  obtain ⟨Q, hQ⟩ := GlobalTheory.T.exists_crystalline_period_unramified_rep l P AI T n K' r ρ' hρ' (fun g hg => hI g hg) (fun g i j => hc g i j)
+  obtain ⟨Q, hQ⟩ := _root_.GlobalTheory.UnrPer.exists_period_unramified l P AI T n K' r ρ' hρ' (fun g hg => hI g hg) (fun g i j => hc g i j)
   refine ⟨K', hK, Units.map (RingHom.mapMatrix (Polynomial.C : P.R.B →+* Bst P)).toMonoidHom Q, fun g => ?_⟩
   have h1 : ((Units.map (RingHom.mapMatrix (Polynomial.C : P.R.B →+* Bst P)).toMonoidHom Q : GL n (Bst P)) :
       Matrix n n (Bst P)) = (Q : Matrix n n P.R.B).map Polynomial.C := rfl

@@ -10,20 +10,6 @@ variable {σ : Type} [Fintype σ]
 noncomputable def extC (𝔭 : Ideal (MvPolynomial σ ℚ)) : Ideal (MvPolynomial σ ℂ) :=
   Ideal.map (MvPolynomial.map (algebraMap ℚ ℂ)) 𝔭
 
-theorem extC_isRadical (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime] : (extC 𝔭).IsRadical := by
-  rw [Ideal.isRadical_iff_quotient_reduced]
-  have hA : IsDomain (MvPolynomial σ ℚ ⧸ 𝔭) := Ideal.Quotient.isDomain 𝔭
-  have hK : IsReduced (TensorProduct ℚ (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭)) ℂ) :=
-    BaseChangeC.isReduced_tensor_of_essFiniteType _ ℂ
-  have hK' : IsReduced (TensorProduct ℚ ℂ (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭))) :=
-    isReduced_of_injective (Algebra.TensorProduct.comm ℚ ℂ _) (Algebra.TensorProduct.comm ℚ ℂ _).injective
-  have hinj : Function.Injective (Algebra.TensorProduct.map (1 : ℂ →ₐ[ℚ] ℂ)
-      (IsScalarTower.toAlgHom ℚ (MvPolynomial σ ℚ ⧸ 𝔭) (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭)))) :=
-    Module.Flat.lTensor_preserves_injective_linearMap _
-      (IsFractionRing.injective (MvPolynomial σ ℚ ⧸ 𝔭) (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭)))
-  have hT : IsReduced (TensorProduct ℚ ℂ (MvPolynomial σ ℚ ⧸ 𝔭)) := isReduced_of_injective _ hinj
-  exact isReduced_of_injective (BaseChangeC.quotExtEquiv 𝔭).symm (BaseChangeC.quotExtEquiv 𝔭).symm.injective
-
 theorem comap_of_mem_minimalPrimes_extC (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime]
     (Q : Ideal (MvPolynomial σ ℂ)) (hQ : Q ∈ (extC 𝔭).minimalPrimes) :
     Q.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = 𝔭 := by

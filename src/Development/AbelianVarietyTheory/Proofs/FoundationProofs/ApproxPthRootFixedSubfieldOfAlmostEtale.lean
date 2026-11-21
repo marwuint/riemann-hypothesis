@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.CosetTrace
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPthPowerScaleThinShellStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowMulApproxPowOfAlmostEtaleSeparatingFamilyStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowMulApproxPowOfAlmostEtaleSeparatingFamily
 
 open GlobalTheory.AlmostEt
 open scoped NNReal
@@ -35,7 +35,7 @@ theorem approxRoot_fix_of_almostSep : ∀ (L : Type) [Field L] (v : Valuation L 
   have hdN : d ∈ Fix L N := fun σ => hdF ⟨σ.1, Subgroup.mem_top _⟩
   have hx'N : x * d ^ p ∈ Fix L N := mul_mem hx (pow_mem hdN p)
   obtain ⟨w, hwN, hw⟩ :=
-    GlobalTheory.T.pow_mul_approx_pow_of_almostEtaleSeparatingFamily L v p hp G hinv N θ hθ1.le hθ n a b c hc (x * d ^ p) hx'N hd1
+    _root_.GlobalTheory.AlmostEt.cpow_mul_approx_pow_of_isSep L v p hp G hinv N θ hθ1.le hθ n a b c hc (x * d ^ p) hx'N hd1
   have hc0 : c ≠ 0 := by
     intro h
     rw [h, map_zero] at hrc

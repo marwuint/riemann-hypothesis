@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Statements.ThetaLevelCharacters.MemTheta
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.GenMove
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyNormalFormDetRatioTwoTorsionTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueKnownOfPolarizedPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ThetaFrameValueKnownOfPolarizedPullback
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DualNumberRingHomExt
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsKeyPBRing
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNormalisedIsoPullbackMulByM
@@ -362,7 +362,7 @@ theorem known_of_translate : Out.Laws → ThetaUnifAV → ∀ (K : Type) [Field 
     rw [b]
     exact GlobalTheory.T.keyNormalFormDetRatio_twoTorsion_translate laws hU x x' p _ _ hp a
   obtain ⟨φ, hφ⟩ := polPB_of_eq hP
-  exact GlobalTheory.T.thetaFrameValueKnown_of_polarizedPullback laws K y₁ y' φ hφ k₁
+  exact _root_.GlobalTheory.KnownScale.known_of_polPB laws K y₁ y' φ hφ k₁
 
 end GlobalTheory.KnownTwist
 end

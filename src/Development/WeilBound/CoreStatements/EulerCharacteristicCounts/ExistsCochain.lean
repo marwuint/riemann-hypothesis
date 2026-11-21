@@ -1,7 +1,11 @@
 import Mathlib
 import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-import Formalism.SharpRestriction.LevelLetterCocycles.ChainRows
+import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsGenerators
+import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
 import Development.AutomorphicSpectrum.Definitions.NonGaloisLines.TopLine
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlochKatoCocycleOfCrysDeRhamPair
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineCoboundaryLift
@@ -244,9 +248,5 @@ theorem orthL_tied (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
   orthL_of (P.PD K) (fun LL _ _ => GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI T K LL LL)
     (fun LL _ _ _ O _ _ hO A => GlobalTheory.CobCrisLift.coboundary_lift l P AI T K LL O hO A)
     (GlobalTheory.FundCont.contCore_tied l P AI T K)
-
-theorem tdOrth : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l),
-    GlobalTheory.CompanionTheory.LocDual.OrthL ((D.loc l).PD K) :=
-  fun D l _ K => orthL_tied l (D.loc l) (D.locA l) (D.locT l) K
 
 end PositivityTheory.LocalTateOrthogonality.Orth

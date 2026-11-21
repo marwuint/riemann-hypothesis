@@ -19,15 +19,6 @@ theorem fullLat {D : D7} (T : Core D) (hT : LawsM T) {j : ℕ} (hj : InR D j) (w
   (GlobalTheory.IndefiniteRowSideFullHecke.SupremumLattice.supIn_full_iff _ _ _).1
     (GlobalTheory.SupFull.fullAt_of_pins D T hT.pins j hj (hT.unf j hj _ T.good_σ₀) w hn)
 
-theorem integralCuspFormsFullLattice : GlobalTheory.IndefiniteRowSideFullHecke.SupremumLattice.IntegralCuspFormsFullLattice := fun D hK hn T hT j hj => by
-  have h := GlobalTheory.SupFull.fullAt_of_pins D T hT.pins j hj (hT.unf j hj _ T.good_σ₀) (DIV.Cons.kaWt D hK hn j)
-    (by rw [DIV.Cons.kaWt_n]; exact nV_pos D)
-  have h' : GlobalTheory.IndefiniteRowSideFullHecke.SupremumLattice.SupLatticeFullAt T j (GlobalTheory.IndefiniteRowSideFullHecke.SupremumLattice.kappaExp D hK hn j) (DIV.Cons.kaWt D hK hn j).n := h
-  rwa [DIV.Cons.kaWt_n] at h'
-
-theorem mLat : GlobalTheory.IndefiniteRowSideFullHecke.GoodBasisCentralIdempotents.MLat :=
-  GlobalTheory.GoodLat.Road.mLat_of_fullLattice integralCuspFormsFullLattice
-
 section Real
 
 open Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links

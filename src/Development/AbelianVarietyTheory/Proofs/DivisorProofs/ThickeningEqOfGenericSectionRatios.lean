@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.FormalEnd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecRatioEqRefl
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordConstruction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FstGenericAppInjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecRatioAppRestrict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalEndSecCoNonzeroLift
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemBasicOpenOfSectionRatioEqBasePointStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupMorphismsAgreeOfSectionRatiosStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianThickeningHomEqOfEqOnOpenStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemBasicOpenOfSectionRatioEqBasePoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedGroupMorphismsAgreeOfSectionRatios
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianThickeningHomEqOfEqOnOpen
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -64,15 +64,15 @@ theorem thick_eq_of_ratios : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRi
       (hGrat k s₁ s₂)
     rwa [Category.comp_id, ← hxc] at this
   have hxmon : IsMonHom ((Over.pullback (thick R (maximalIdeal R) e)).map g) := inferInstance
-  obtain ⟨k₀, hk₀, hnear⟩ := GlobalTheory.T.uniformisedGroup_morphisms_agree_of_sectionRatios R hB D A G hG U
+  obtain ⟨k₀, hk₀, hnear⟩ := _root_.GlobalTheory.Mum.agree_near_of_ratios R hB D A G hG U
   obtain ⟨s₀, hs₀⟩ := hC k₀ hk₀
 
   obtain ⟨y, i'', i', hy1, hy2⟩ :=
     formalEnd_secCoNonzero_lift R hB D A G hG U a h' b hb k₀ (N * k₀) s₀ (S k₀ s₀) hs₀ e
-  obtain ⟨i, hy0⟩ := GlobalTheory.T.mem_basicOpen_of_sectionRatioEq_basePoint R hB D A G hG U e k₀ (N * k₀) hk₀
+  obtain ⟨i, hy0⟩ := _root_.GlobalTheory.Mum.mem_basicOpen_of_secRatioEq R hB D A G hG U e k₀ (N * k₀) hk₀
     ((Over.pullback (thick R (maximalIdeal R) e)).map g) (S k₀) (hxrat k₀) y s₀ i' hy2
   obtain ⟨W, hyW, hW⟩ := hnear e k₀ (N * k₀) le_rfl ((Over.pullback (thick R (maximalIdeal R) e)).map g) (b e)
     (S k₀) (hxrat k₀) (fun s₁ s₂ => hS k₀ e s₁ s₂) y s₀ i i' i'' hy0 hy2 hy1
-  exact GlobalTheory.T.semiAbelian_thickening_hom_eq_of_eq_on_open R hB D A G hG U e _ (b e) hxmon (hb.1 e) W y hyW hW
+  exact _root_.GlobalTheory.MumAgree.eq_of_eq_on_open R hB D A G hG U e _ (b e) hxmon (hb.1 e) W y hyW hW
 
 end GlobalTheory.Mum

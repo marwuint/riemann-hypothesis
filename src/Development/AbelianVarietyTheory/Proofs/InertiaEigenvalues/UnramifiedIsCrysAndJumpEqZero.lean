@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormSubLtOneOfFix
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBasisOfSubmodule
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Hilbert90MatrixCoboundaryCharPFiniteLevelStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWittVectorTraceOneFiniteLevelStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWittVectorTraceOneFiniteLevel
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvariantMatrixLiftOfAdicCompleteStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysOfSplitStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodDataComparisonStatement
@@ -128,7 +128,7 @@ theorem exists_witt_matrix
     {N | ∃ m, 0 < m ∧ N = fixer ρ p m}
     (by
       rintro _ ⟨m, hm, rfl⟩
-      exact ⟨normal_fixer ρ p m, hfin m hm, GlobalTheory.T.exists_wittVector_trace_one_finiteLevel p G R ρ m hm (hfin m hm)⟩)
+      exact ⟨normal_fixer ρ p m, hfin m hm, _root_.GlobalTheory.UnramifiedCrys.exists_witt_trace_one p G R ρ m hm (hfin m hm)⟩)
     (by
       rintro _ ⟨a, ha, rfl⟩ k
       obtain ⟨b, hb, h⟩ := exists_fixer_dvd ρ hopen M hM hJ k

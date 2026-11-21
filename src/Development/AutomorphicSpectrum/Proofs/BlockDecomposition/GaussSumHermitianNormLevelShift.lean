@@ -2,7 +2,7 @@ import Mathlib
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.LocalDefs
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FixedNondeg
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCardStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCard
 open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens GlobalTheory.CompanionTheory.SiegLoc Filter Topology
 
 noncomputable section
@@ -239,8 +239,8 @@ theorem GlobalTheory.CompanionTheory.GaussRec.gauss_recursion : ∀ (R : Type) [
   have h1 := sum_stationary hR hψ j ha
   rw [sum_filter_eq hR hψ j ha ha1] at h1
   have hc : Fintype.card (R ⧸ lev ϖ (j + 1)) = q ^ 2 * Fintype.card (R ⧸ lev ϖ j) := by
-    have e1 := GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR (j + 1)
-    have e2 := GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR j
+    have e1 := _root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε hR (j + 1)
+    have e2 := _root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε hR j
     rw [Nat.card_eq_fintype_card] at e1 e2
     rw [e1, e2, ← pow_add]
     congr 1

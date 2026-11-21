@@ -1,7 +1,17 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolarisationExtendsOverDvrGoodReductionStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolarisationExtendsOverDvrGoodReduction
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
+import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
+import Development.AbelianVarietyTheory.Statements.SemistableTorsion.UTorsSt
+import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
@@ -49,7 +59,7 @@ theorem exists_pat (h₁ : Laws) (h₂ : Laws2) {C : Type} [NormedField C] (o : 
     exact LBIso.chartPull (chartPullSec _ _ _ hi) (chartPullSame _ _ _ _ _ fun _ => rfl) e
   obtain ⟨N, hN⟩ := AbPackage.exists_cp h₁.globalFns hA M.t.PP ⟨M.t.cub.t, M.t.cub.isGen⟩ (by
     rw [← M.P.bundle]; exact ⟨M.P.U.symG, M.P.U.symG_gen⟩)
-  obtain ⟨ha, hk⟩ := GlobalTheory.T.polarisation_extends_over_dvr_goodReduction h₁ h₂ M.W (FractionRing M.W) M.P.A M.t.G N ψ hA hψ (by rw [hN]; exact hL)
+  obtain ⟨ha, hk⟩ := _root_.GlobalTheory.polarisation_extends_dvr h₁ h₂ M.W (FractionRing M.W) M.P.A M.t.G N ψ hA hψ (by rw [hN]; exact hL)
   rw [hN] at ha hk
   obtain ⟨g, hg⟩ := AbelianDim.exists_relDim M.W M.t.G hA
   have hs : Out.Sym M.t.G M.t.PP.L := by

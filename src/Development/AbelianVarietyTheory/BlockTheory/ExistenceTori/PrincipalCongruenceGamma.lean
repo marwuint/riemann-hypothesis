@@ -54,18 +54,7 @@ variable {D : D7}
 def GamAt (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) : Prop :=
   ∀ k : (T.U j σ).Comp, princ ((T.U j σ).X k) T.Q.l.M ≤ ((T.U j σ).X k).Γ
 
-def GamEqAt (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) : Prop :=
-  ∀ k : (T.U j σ).Comp, ((T.U j σ).X k).Γ = princ ((T.U j σ).X k) T.Q.l.M
-
 def Gam (T : Core D) : Prop :=
   ∀ j, InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → GamAt T j σ
-
-def GamEq (T : Core D) : Prop :=
-  ∀ j, InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → GamEqAt T j σ
-
-theorem GamEqAt.gamAt {T : Core D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (h : GamEqAt T j σ) : GamAt T j σ :=
-  fun k => (h k).ge
-
-theorem GamEq.gam {T : Core D} (h : GamEq T) : Gam T := fun j hj σ hσ => (h j hj σ hσ).gamAt
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PrincipalCongruenceGamma

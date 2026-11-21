@@ -8,13 +8,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.PowEqScaleAndExistsUniqueTorsion
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubeProjectiveAbelianSchemeAffineBaseStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubeProjectiveAbelianSchemeAffineBase
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalStrOfTrivTheta
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FiniteFlatSurjectiveMulByNAbelianSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FiniteFlatSurjectiveMulByNAbelianScheme
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RatioTranslate
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubWeilPerfectOfGenericStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubWeilPerfectOfGeneric
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FiniteSections
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KTrivOfGeometricPointsAndTangentsStatement
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KTrivOfGeometricPointsAndTangents
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CubWeilOfGen
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleIffVeryAmpleBy
@@ -163,7 +163,7 @@ theorem kTriv_of_generic : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomain 
   have := hA.comm
   obtain ⟨d, -, m, s, hs⟩ := (Unif.relAmple_iff_veryAmpleBy O A M hM).1 hamp
   have hproj : IsProjBy A.hom := ⟨_, isLB_pw hM d, m, s, hs⟩
-  obtain ⟨L, rfl, ⟨c⟩⟩ := Moduli.cubicalStr_of_triv_theta hL _ A hA M hM hrig (GlobalTheory.T.theorem_of_cube_projective_abelianScheme_affineBase hL O A hA hproj M hM)
+  obtain ⟨L, rfl, ⟨c⟩⟩ := Moduli.cubicalStr_of_triv_theta hL _ A hA M hM hrig (_root_.GlobalTheory.AbLaw.CubeAffine.triv_theta_of_isProjBy hL O A hA hproj M hM)
   have := smoothOfRelativeDimension_isStableUnderBaseChange.{0} g
   have hgP : P.g = g := H1.dim_unique P.A.hom P.smoothDim
     (MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) h.1 hg)
@@ -172,8 +172,8 @@ theorem kTriv_of_generic : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomain 
       x = 1 := by
     intro n hn T x hxn hx
     have hnK : (n : K) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
-    obtain ⟨f₁, f₂, f₃⟩ := GlobalTheory.T.finite_flat_surjective_mul_by_n_abelianScheme hL O A hA L.L hM hamp n hn
-    refine GlobalTheory.T.eq_one_of_cubWeil_trivial_of_generic O K hi A g hg L c n hn f₁ f₂ ?_ ?_ T x hxn fun T' ρ y hy => ?_
+    obtain ⟨f₁, f₂, f₃⟩ := _root_.GlobalTheory.MulAmple.finite_flat_surjective_pow hL O A hA L.L hM hamp n hn
+    refine _root_.GlobalTheory.cubWeil_perfect_of_generic O K hi A g hg L c n hn f₁ f₂ ?_ ?_ T x hxn fun T' ρ y hy => ?_
     · rw [← hgP, ← (hL.mulN _ P n hn).2.2.2.2 K (𝟙 _) hnK]
       exact card_torsion h (𝟙 _) (Category.id_comp _).symm n
     · intro y hy hp
@@ -182,7 +182,7 @@ theorem kTriv_of_generic : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomain 
     · refine UU.KerPair.cubWeil_of_gen hL.globalFns _ A hA L c n T' _ y ?_ hy
         (ArtinReduction.exists_isGen_translDiff_comp A L.L ρ x hx)
       rw [← MonObj.comp_pow, hxn, MonObj.comp_one]
-  refine GlobalTheory.T.kTriv_of_geometric_points_and_tangents hL O A hA hproj L.L hM fun k _ _ _ => ⟨fun x hx => ?_, fun x hx₀ hx => ?_⟩
+  refine _root_.GlobalTheory.KCriterion.kTriv_of_points_of_tangents hL O A hA hproj L.L hM fun k _ _ _ => ⟨fun x hx => ?_, fun x hx₀ hx => ?_⟩
   · obtain ⟨n, hn, hxn⟩ := field_torsion hL A hA hM hamp _ (Category.id_comp _).symm x hx
     exact tors n hn _ x hxn hx
   · by_cases hk : RingHom.ker (algebraMap O k) = ⊥

@@ -152,8 +152,8 @@ theorem pull_term (hL : LL) (hT : TwistBCSpanStatement) (hVR : TWM.VRatioGtState
   obtain ⟨wt, hwt⟩ := (GlobalTheory.UT.SymFrame.main hL V _ hA D F (m ^ 2) hm.pow (qkMk hB 0 g z₂)).1
   obtain ⟨κ, hκ⟩ := ThetaConstVal.exists_kap D.toPre hL.1.mulPull m
   obtain ⟨w', hw', e⟩ := ThetaConstVal.exists_frm D.toPre m g.b (m • g).b (nsmul_b m g) wt hwt.1 κ hκ.1
-  have a₀ := (GlobalTheory.T.valuations_symmetricFrame_and_terms hL hT hVR hTW hUU V hcp ϖ hϖ D Q hQ F v hv).1 _ hm2 _ wt hwt
-  obtain ⟨a₁, a₂, -⟩ := (GlobalTheory.T.valuations_symmetricFrame_and_terms hL hT hVR hTW hUU V hcp ϖ hϖ D Q hQ F v hv).2 m hm.pos _ wt hwt _ hg κ hκ w' hw' e
+  have a₀ := (_root_.GlobalTheory.UT.TxVal.main hL hT hVR hTW hUU V hcp ϖ hϖ D Q hQ F v hv).1 _ hm2 _ wt hwt
+  obtain ⟨a₁, a₂, -⟩ := (_root_.GlobalTheory.UT.TxVal.main hL hT hVR hTW hUU V hcp ϖ hϖ D Q hQ F v hv).2 m hm.pos _ wt hwt _ hg κ hκ w' hw' e
   have hb := hv₂ w' _ _ hw' a₂ a₁
   simp only [qkMk_y, QForm.Q_zero hϖ D hQ, bOf_zero_left hϖ hQ, Int.cast_zero, zero_div, add_zero] at hb a₀
   have hϑ := (expBijF_and_expandsF_lin hL V _ hA D A G hG U).2 _ 1 w₀ th₀ th₀ th ϑ ϑ (c - 1) hexp hexp fun j => by

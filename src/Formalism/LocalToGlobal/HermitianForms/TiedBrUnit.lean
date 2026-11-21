@@ -66,33 +66,4 @@ theorem iXm_mulVec_injective : Function.Injective (iXm D).mulVec := by
 
 variable {D}
 
-theorem vector_quotient_not_in_range {u : D.what₂.Word} (Tf : FormsTied D u) (x : Fin (D.R.N D.R.m - 1) → D.host.E) :
-    iXm D *ᵥ x ≠ fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E) := by
-  letI := D.host.cmStar
-  obtain ⟨a, ha⟩ := Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line
-  have hT : ((D.mem u).A.T : D.host.E) ≠ 0 := Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero
-  have ha0 : a ≠ 0 := by
-    rintro rfl
-    have h := Tf.til.hermitianForm_lastCoordinateUniformizerVector_self
-    rw [ha, zero_smul] at h
-    simp [Formalism.UG.hform] at h
-    exact hT h.symm
-  intro hx
-  simp only [iXm, LinearMap.toMatrix'_mulVec] at hx
-  have hc : iXc D x = (a / ((D.mem u).A.T : D.host.E)) • zc D := by
-    rw [hx]; funext i; rw [ha]; simp [Pi.smul_apply, smul_eq_mul]; ring
-  unfold iXc zc at hc
-  simp only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, ← map_smul,
-    EmbeddingLike.apply_eq_iff_eq] at hc
-  have h1 := D.sp.z_orth ((D.sp.X'.frame.equivFun.trans
-      (LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (rankP D)).symm)).symm x)
-  rw [hc, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul] at h1
-  rcases mul_eq_zero.mp h1 with h2 | h2
-  · exact div_ne_zero ha0 hT ((map_eq_zero _).mp h2)
-  · exact D.sp.z_anis h2
-
-theorem bZ_isUnit {u : D.what₂.Word} (Tf : FormsTied D u) : IsUnit (bZ u Tf.til.z0).det :=
-  isUnit_det_cols (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) (iXm D) (fun i => Tf.til.z0 i / ((D.mem u).A.T : D.host.E))
-    (iXm_mulVec_injective D) (vector_quotient_not_in_range Tf)
-
 end Formalism.L2.Forms

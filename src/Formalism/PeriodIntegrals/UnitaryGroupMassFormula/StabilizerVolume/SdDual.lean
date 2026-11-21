@@ -15,15 +15,6 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
-theorem exists_notMem_int : ∃ c : Fv F v, c ∉ v.adicCompletionIntegers F := by
-  obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
-  refine ⟨((π⁻¹ : F) : Fv F v), ?_⟩
-  rw [HeightOneSpectrum.notMem_adicCompletionIntegers,
-    HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀, hπ]
-  simp only [← WithZero.exp_neg, neg_neg]
-  rw [← WithZero.exp_zero]
-  exact WithZero.exp_lt_exp.2 one_pos
-
 variable {E : Type} [Field E] [Algebra F E] {d : ℕ} (b : Module.Basis (Fin d) F E)
 
 def latSub (a M : ℕ) : AddSubgroup (Fin a → Fin M → Fv F v ⊗[F] E) where
@@ -503,8 +494,5 @@ theorem dualHV_holds : DualHV := by
 theorem dualLatV_holds : DualLatV := dualLatV_of dualHV_holds
 
 theorem sdUniq_of_inf (hI : SdTestInf) : SdUniq := sdUniq_of_dual hI dualLatV_holds
-
-theorem sdUniq_of_H (hI : SdTestInf) (hH : DualHV) : SdUniq :=
-  sdUniq_of_dual hI (dualLatV_of hH)
 
 end PI.VolStabS

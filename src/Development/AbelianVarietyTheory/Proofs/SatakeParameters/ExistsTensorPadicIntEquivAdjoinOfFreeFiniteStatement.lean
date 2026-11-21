@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTensorPadicIntEquivAdjoinOfFreeFinite
-import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreCompat
+
 open NumberField GlobalTheory.LKInvGood
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in

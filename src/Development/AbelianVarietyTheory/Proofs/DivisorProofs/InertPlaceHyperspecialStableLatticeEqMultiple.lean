@@ -16,10 +16,16 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompletedLattice
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertPlaceHeckeDoubleCosetsInverseRepsLabel
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicUnitarySupportedAtFinitePlaceEqLocalUnitarStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StabilisesCompletedLatticeIffLocalMatrixIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsComplexConjIsometryInertCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRingEquivTensorInertAdicCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableLatticeEqZpowStdInertCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalOrderCompletionSurjectiveFromIntegralAdelesStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsComplexConjIsometryInertCompletion
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
+import Formalism.SatakeDualWeyl.StatementG
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRingEquivTensorInertAdicCompletion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableLatticeEqZpowStdInertCompletion
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalOrderCompletionSurjectiveFromIntegralAdeles
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIdemOfAlgebraMap
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIntegralSplitIdempotentOverTwo
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Polynomial
@@ -101,8 +107,8 @@ theorem GlobalTheory.InertLatMult.lattice_eq_mult : ∀ {D : D7} (V : HSp D) (P 
   obtain ⟨x0, y, hy, hy1, hy2⟩ := GlobalTheory.SphLabelOps.exists_real_unif D P
   have hin := GlobalTheory.InertDoubleCoset.inert_of_idem (E := D.host.E) hI hP ⟨x0, y, hy, hy1, hy2⟩
   haveI := GlobalTheory.PlaceComp.unramified (E := D.host.E) D.sp.cm
-  obtain ⟨σ, π, hσE, hσσ, hσv, hσx, hσπ, hπ⟩ := GlobalTheory.T.exists_complexConj_isometry_inert_completion D.host.E v P hin
-  obtain ⟨ψ, hψE, hψσ, hψO⟩ := GlobalTheory.T.exists_ringEquiv_tensor_inert_adicCompletion D.host.E v P hin σ hσE hσv
+  obtain ⟨σ, π, hσE, hσσ, hσv, hσx, hσπ, hπ⟩ := _root_.GlobalTheory.InertConj.exists_conj_completion D.host.E v P hin
+  obtain ⟨ψ, hψE, hψσ, hψO⟩ := _root_.GlobalTheory.InertCompletion.exists_ringEquiv_completion D.host.E v P hin σ hσE hσv
   obtain ⟨h, hfr, hon⟩ := GlobalTheory.PlaceComp.exists_orthonormal D.sp.cm V v
   obtain ⟨s1, -, s3⟩ := GlobalTheory.T.adelicUnitary_supportedAtFinitePlace_eq_localUnitary _ D.host.E D.sp.cm V v _ hI
   set e : Formalism.L2.Theta.AE D := algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (pairA D.host.F 0 α) with he_def
@@ -199,7 +205,7 @@ theorem GlobalTheory.InertLatMult.lattice_eq_mult : ∀ {D : D7} (V : HSp D) (P 
   have hint : ∀ a : P.adicCompletion D.host.E, Valued.v a ≤ 1 → ∃ t ∈ intAE D, ψ' (evF D.host.E v t) = a := by
     intro a ha
     have h0 : ψ.symm a ∈ ordAt D.host.E v := (mem_ordAt_iff v _).2 ((hψO _).2 (by rwa [ψ.apply_symm_apply]))
-    obtain ⟨t, ht, et⟩ := GlobalTheory.T.localOrderCompletion_surjective_from_integralAdeles D.host.F D.host.E v _ h0
+    obtain ⟨t, ht, et⟩ := _root_.GlobalTheory.OrdLift.ordAt_lift D.host.F D.host.E v _ h0
     exact ⟨t, ht, by show ψ (evF D.host.E v t) = a; rw [et]; exact ψ.apply_symm_apply a⟩
   have hinc : ∀ x : D.host.E, ψ' (evF D.host.E v (finPart D (incA D x))) = algebraMap D.host.E _ x := fun x => by
     show ψ _ = _
@@ -221,7 +227,7 @@ theorem GlobalTheory.InertLatMult.lattice_eq_mult : ∀ {D : D7} (V : HSp D) (P 
   have hyv : Valued.v (algebraMap D.host.E (P.adicCompletion D.host.E) (y : D.host.E)) = WithZero.exp (-1 : ℤ) := by
     rw [GlobalTheory.Idele.valued_algebraMap, ← GlobalTheory.UnramCompletion.intValuation_eq_of_notMem_sq P hy1 hy2]
     exact HeightOneSpectrum.valuation_of_algebraMap P y
-  obtain ⟨k, hk⟩ := GlobalTheory.T.stable_lattice_eq_zpow_std_inert_completion D.host.E P σ hσσ hσv hσx _ hyv V.rank L _ hN0
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std D.host.E P σ hσσ hσv hσx _ hyv V.rank L _ hN0
     (by
       rintro a ha _ ⟨z, hz, rfl⟩
       obtain ⟨t, ht, et⟩ := hint a ha

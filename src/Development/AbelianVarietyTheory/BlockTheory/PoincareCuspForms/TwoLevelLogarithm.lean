@@ -81,10 +81,6 @@ def res (F : C → Frame M.Ψ r → ℂ) : C → M.dom → ℂ := fun c x => F c
 
 def cusp (la : Wt M.Ψ r) : Submodule ℂ (C → M.dom → ℂ) := Submodule.span ℂ (M.res '' M.SS la)
 
-def cuspPsi (la : Wt M.Ψ r) (ψ : U →* ℂˣ) : Submodule ℂ (C → M.dom → ℂ) :=
-  Submodule.span ℂ (M.res '' {F | F ∈ M.SS la ∧
-    ∀ h c, ∀ x ∈ M.dom, M.pull h F c x = ((ψ h : ℂˣ) : ℂ) * F c x})
-
 def detTr [Fintype U] [DecidableEq U] (F : C → Frame M.Ψ r → ℂ) (c : C) (x : Frame M.Ψ r) : ℂ :=
   (Matrix.of fun h h' : U => M.pull (h * h') F c x).det
 
@@ -102,117 +98,7 @@ def IndependentTranslates (E : Type) [Field E] [NumberField E] [IsCMField E] : P
     ∀ s : ℕ, Even s → 2 * r + 50 * r ^ 2 * M.dimX + 1 ≤ s →
       ∃ u0 ∈ M.SS (deMul M.Ψ r M.p0 s), ∀ c : C, ∃ x ∈ M.dom, M.detTr u0 c x ≠ 0
 
-def sqSum (X : Data E r) (la : Wt X.Ψ r) {n : ℕ} (w : Fin n → Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) : ℝ :=
-  ∑ k, X.pnorm la (w k) x ^ 2
-
-def IsFlat (X : Data E r) (L Fp : Wt X.Ψ r) {N : ℕ} (w : Fin N → Frame X.Ψ r → ℂ) : Prop :=
-  ∃ (w0 : Frame X.Ψ r → ℂ) (s : Fin (nd X) → Frame X.Ψ r → ℂ) (Δ : MvPolynomial (Fin (nd X)) ℂ)
-    (thp : Frame X.Ψ r → ℂ),
-    (∃ a : Fin N → ℂ, ∀ x ∈ X.dom, w0 x = ∑ j, a j * w j x) ∧
-    (∀ k, ∃ a : Fin N → ℂ, ∀ x ∈ X.dom, s k x = ∑ j, a j * w j x) ∧
-    (∃ x ∈ X.dom, ∀ k, s k x = 0) ∧
-    (∀ x ∈ X.dom, (∀ k, s k x = 0) → w0 x ≠ 0) ∧
-    (∀ O : Set (Frame X.Ψ r), IsOpen O → (∀ x ∈ X.dom, (∀ k, s k x = 0) → x ∈ O) →
-      (∀ x ∈ O, ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ O) →
-      ∃ K : ℝ, ∀ x ∈ X.dom, x ∉ O → sqSum X L w x ≤ K * sqSum X L s x) ∧
-    (∃ K : ℝ, ∀ x ∈ X.dom, sqSum X L w x ≤ K * (X.pnorm L w0 x ^ 2 + sqSum X L s x)) ∧
-    MvPolynomial.constantCoeff Δ ≠ 0 ∧
-    (∀ x ∈ X.dom, w0 x ≠ 0 → MvPolynomial.eval (fun k => s k x / w0 x) Δ ≠ 0 →
-      (fderiv ℂ (fun z : V (nd X) => (WithLp.toLp 2 fun k =>
-        s k (cpt X x z) / w0 (cpt X x z) : V (nd X))) 0).det ≠ 0 ∧ thp x ≠ 0) ∧
-    (∀ K : Set (Fin (nd X) → ℂ), IsCompact K → (∀ z ∈ K, MvPolynomial.eval z Δ ≠ 0) →
-      ∃ Q : Set (Frame X.Ψ r), IsCompact Q ∧ Q ⊆ X.dom ∧ ∀ x ∈ X.dom, w0 x ≠ 0 →
-        (fun k => s k x / w0 x) ∈ K → ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ Q) ∧
-    thp ∈ X.SS Fp
-
-def ThetaInputs (X : Data E r) (L Fp : Wt X.Ψ r) (T : ℕ) : Prop :=
-  ∃ (N : ℕ) (w : Fin N → Frame X.Ψ r → ℂ) (th1 th2 η : Frame X.Ψ r → ℂ) (φ : Frame X.Ψ r → ℝ)
-    (i g0 : ℕ) (c : ℝ),
-    (∀ j, w j ∈ X.SS L) ∧ (∀ x ∈ X.dom, ∃ j, w j x ≠ 0) ∧ IsFlat X L Fp w ∧
-    X.IsBddSec (2 • L - deMul X.Ψ r X.p0 2) th1 ∧ (∃ x ∈ X.dom, th1 x ≠ 0) ∧
-    X.IsBddSec ((nd X + 4) • L - Fp) th2 ∧ (∃ x ∈ X.dom, th2 x ≠ 0) ∧
-    1 ≤ i ∧ 1 ≤ g0 ∧ Even g0 ∧ 0 < c ∧ (T : ℝ) * c * g0 ≤ 1 ∧
-    X.IsSec (deMul X.Ψ r X.p0 (i * g0)) η ∧ (∃ x ∈ X.dom, η x ≠ 0) ∧
-    (∀ x ∈ X.dom, 0 ≤ φ x) ∧
-    (∃ K : ℝ, ∀ x ∈ X.dom,
-      X.pnorm (deMul X.Ψ r X.p0 (i * g0)) η x ≤ K * Real.exp (-(i * φ x))) ∧
-    ∃ K : ℝ, ∀ x ∈ X.dom, Real.exp (-(2 * c * φ x)) ≤ K * sqSum X L w x
-
 def kLog (Ψ : Finset (E →+* ℂ)) (r : ℕ) : Wt Ψ r := fun _ a => 2 * (a : ℤ) - ((r : ℤ) - 1)
-
-def ShareIndefinite (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
-  ∀ (r : ℕ) (U C : Type) [Group U] [Finite U] [Finite C] [MulAction U C]
-    (M : TwoLevels E r U C), LevelHyp M → 0 < M.p0 → M.p0 < r →
-    ∀ (L Fp : Wt M.Ψ r) (T s : ℕ),
-      2 ≤ M.dimY → 11 * M.dimY ^ 2 ≤ T →
-      Even s → 2 * r + 50 * r ^ 2 * M.dimX + 1 ≤ s → s ≤ T →
-      GapsGe M.p0 L 1 → PairGe L (1.9 * T) →
-      GapsGe M.p0 (Fp - kLog M.Ψ r - (M.dimY + 2) • L) 0 →
-      PairGe (Fp - kLog M.Ψ r - (M.dimY + 2) • L) 1 →
-      (∀ c, ThetaInputs (M.comp c).toData (castWt (M.comp_Ψ c) L) (castWt (M.comp_Ψ c) Fp) T) →
-      ∀ ψ : U →* ℂˣ,
-        Module.Finite ℂ (M.cusp (Fp + T • L)) ∧
-        (1 - (M.dimY : ℝ) * (M.dimY + 6) / T) * Module.finrank ℂ (M.cusp (Fp + T • L)) ≤
-          (Nat.card U : ℝ) * Module.finrank ℂ (M.cuspPsi (Fp + T • L) ψ)
-
-def ShareDefinite (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
-  ∀ (r : ℕ) (U C : Type) [Group U] [Finite U] [Finite C] [MulAction U C]
-    (M : TwoLevels E r U C), LevelHyp M → (M.p0 = 0 ∨ M.p0 = r) →
-    ∀ (κ : Wt M.Ψ r) (ψ : U →* ℂˣ),
-      Module.Finite ℂ (M.cusp κ) ∧
-      Nat.card U * Module.finrank ℂ (M.cuspPsi κ ψ) = Module.finrank ℂ (M.cusp κ)
-
-def EpsBound : Prop :=
-  ∀ (f k D T : ℕ) (P : ℝ), 2 ≤ f * k → 6 ≤ D → ((f * k : ℕ) : ℝ) ≤ P →
-    P ^ 3 * (D : ℝ) ^ 3 * k * f ≤ T →
-    (D : ℝ) * (D + 6) / T ≤ (((f * k : ℕ) : ℝ) ^ 3)⁻¹ / 4
-
-def Statement (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
-  IndependentTranslates E ∧ ShareIndefinite E ∧ ShareDefinite E ∧ EpsBound
-
-def TwoLevels.regular (X : DataX E r) (U : Type) [Group U]
-    (hχ : ∀ la, ∀ γ ∈ X.Γ, X.χ la γ = 1)
-    (hL : ∀ γ ∈ X.Γ, ∀ v, v ∈ X.L' ↔ Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) v ∈ X.L') :
-    TwoLevels E r U U where
-  Ψ := X.Ψ
-  Gm := X.Gm
-  p0 := X.p0
-  ξ0 := X.ξ0
-  comp := fun _ => X
-  comp_Ψ := fun _ => rfl
-  comp_Gm := fun _ => rfl
-  comp_basePoint := fun _ => rfl
-  comp_ξ0 := fun _ => rfl
-  χ_one := fun _ => hχ
-  Γ_L' := fun _ => hL
-  tr := fun _ _ => 1
-  tr_herm := by intro u c v w; simp
-  tr_Λ := by intro u c v; simp
-  tr_L' := by intro u c v; simp
-  tr_conj := by intro u c γ; simp
-  tr_mul := by intro u v c; simp
-  tr_faithful := by intro u c h _; simpa using h
-
-theorem epsBound : EpsBound := by
-  intro f k D T P h2 h6 hP hT
-  have h2' : (2 : ℝ) ≤ ((f * k : ℕ) : ℝ) := by exact_mod_cast h2
-  have h6' : (6 : ℝ) ≤ D := by exact_mod_cast h6
-  have hkf : (k : ℝ) * f = ((f * k : ℕ) : ℝ) := by push_cast; ring
-  set a : ℝ := ((f * k : ℕ) : ℝ) with ha
-  have ha0 : 0 < a := by linarith
-  have h3 : a ^ 3 ≤ P ^ 3 := pow_le_pow_left₀ ha0.le hP 3
-  have hT' : a ^ 3 * ((D : ℝ) ^ 3 * a) ≤ T := by
-    calc a ^ 3 * ((D : ℝ) ^ 3 * a) ≤ P ^ 3 * ((D : ℝ) ^ 3 * a) := by gcongr
-      _ = P ^ 3 * (D : ℝ) ^ 3 * k * f := by rw [← hkf]; ring
-      _ ≤ T := hT
-  have hD : 4 * ((D : ℝ) * (D + 6)) ≤ (D : ℝ) ^ 3 * a := by
-    have : (D : ℝ) ^ 3 * 2 ≤ (D : ℝ) ^ 3 * a := by gcongr
-    nlinarith [mul_nonneg (sub_nonneg.2 h6') (sq_nonneg (D : ℝ)), sq_nonneg (D : ℝ)]
-  have hT0 : (0 : ℝ) < T := lt_of_lt_of_le (by positivity) hT'
-  rw [div_le_iff₀ hT0, inv_eq_one_div, div_div, div_mul_eq_mul_div, one_mul,
-    le_div_iff₀ (by positivity)]
-  have : a ^ 3 * (4 * ((D : ℝ) * (D + 6))) ≤ a ^ 3 * ((D : ℝ) ^ 3 * a) := by gcongr
-  linarith
 
 end
 

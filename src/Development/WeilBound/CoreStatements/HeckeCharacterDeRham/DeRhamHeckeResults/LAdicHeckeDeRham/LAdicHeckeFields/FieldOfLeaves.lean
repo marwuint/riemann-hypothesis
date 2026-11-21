@@ -4,21 +4,21 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.DeRhamJ
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasPeriods
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvalMod
 import Development.WeilBound.CoreStatements.CrystallinePeriodRings.MaximalIdealEqSpanT
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateIterateLimitCongruenceStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateIterateLimitCongruence
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateScaledIterateTendsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateSeriesCommuteLinearStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateCommutingSeriesUniqueStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateIterateEventuallyZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateTorsionApproximationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateLimitKernelZeroStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateSeriesCommuteLinear
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateCommutingSeriesUnique
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateIterateEventuallyZero
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateTorsionApproximation
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateLimitKernelZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemFBOfNear
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerNearPowerExistsStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateSeriesDeRhamPeriodStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TeichmullerNearPowerExists
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateSeriesDeRhamPeriod
 import Development.WeilBound.CoreStatements.HeckeCharacterDeRham.DeRhamHeckeResults.LAdicHeckeDeRham.LAdicHeckeFields.Reduce
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateNormCyclotomicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateEndomorphismSeriesExistsStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LubinTateEndomorphismSeriesExists
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterValuesIntegralStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerPropertiesResidueStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerPropertiesResidue
 
 noncomputable section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
@@ -109,7 +109,7 @@ theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)�
     (hD : LTData K χ π z) (hc : Continuous (fun g => (((χ g : (↥K.1)ˣ) : ↥K.1) : Om l)))
     (μ : ↥K.1 →ₐ[ℚ_[l]] Om l) : ∃ t, PrePer K χ μ t := by
   have hπ : Irreducible π := hD.1
-  obtain ⟨hq2, hlq, hπl, hnπ, hnμ⟩ := GlobalTheory.T.uniformizer_properties_residue K π hπ
+  obtain ⟨hq2, hlq, hπl, hnπ, hnμ⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.uniformiser_facts K π hπ
   haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2
   let K' : IntermediateField ℚ_[l] (Om l) := IntermediateField.normalClosure ℚ_[l] ↥K.1 (Om l)
   haveI : FiniteDimensional ℚ_[l] K' := inferInstance
@@ -137,14 +137,14 @@ theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)�
     simp
   have hvS : ∀ n, tch l (v n) ∈ S := fun n => hW _
   have hvB : ∀ n, tch l (v (n + 1)) ^ q = tch l (v n) := fun n => by rw [← tch_pow, hvq]
-  obtain ⟨Q, hQS, hQ⟩ := GlobalTheory.T.lubin_tate_iterate_limit_congruence E q hq2 hqd (fun n => tch l (v n)) hvS hvB
+  obtain ⟨Q, hQS, hQ⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.QLim.exists_limit E q hq2 hqd (fun n => tch l (v n)) hvS hvB
   have hθϖ : ‖thB l ϖ‖ < 1 := by
     rw [← hϖe, thB_rB]; exact hnμ μ
   have hθϖ0 : thB l ϖ ≠ 0 := by
     rw [← hϖe, thB_rB]
     exact (map_ne_zero_iff (UniformSpace.Completion.coeRingHom : Om l →+* ℂ_[l])
       (RingHom.injective _)).2 hne
-  have hnil0 := GlobalTheory.T.teichmuller_near_power_exists S hW ϖ hθϖ0 (v 0) hv1
+  have hnil0 := _root_.GlobalTheory.CompanionTheory.LTPer.TopNil.main S hW ϖ hθϖ0 (v 0) hv1
   have hQ0 : ∃ s ∈ S, Q - tch l (v 0) = ϖ * s := by
     obtain ⟨a, ha, e⟩ := hQ 0
     exact ⟨a, ha, by simpa [ltIter] using e⟩
@@ -161,14 +161,14 @@ theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)�
     rw [FB, pow_one, RingHom.mem_ker]
   refine ⟨t, ?_, ?_, ?_⟩
   · rintro rfl
-    obtain ⟨n, hn⟩ := GlobalTheory.T.lubin_tate_iterate_eventually_zero E ϖ' hϖ' (thB l) hkerF hI hθϖ q hq2 Q hQS hnilQ ht
+    obtain ⟨n, hn⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.exists_ltIter_eq_zero_of_tends E ϖ' hϖ' (thB l) hkerF hI hθϖ q hq2 Q hQS hnilQ ht
     obtain ⟨-, s, hs, e⟩ := iter_near E.mem q hQS (hvS 0) hQ0 n
     rw [hn, zero_sub, ← tch_pow] at e
     refine hnot (v 0 ^ (q ^ n)) (pow_ne_zero _ hv0) (-s) (S.neg_mem hs) ?_
     rw [mul_neg, ← e, neg_neg]
   · intro g hg hfix
     obtain ⟨a, ha⟩ := GlobalTheory.T.character_values_integral K χ hc ⟨g, hg⟩
-    obtain ⟨φ, hφ0, hφ1, hφc⟩ := GlobalTheory.T.lubin_tate_endomorphism_series_exists K π hπ a
+    obtain ⟨φ, hφ0, hφ1, hφc⟩ := _root_.GlobalTheory.CompanionTheory.LTPer.exists_series_comm K π hπ a
     have hφ1' : ((PowerSeries.coeff 1 φ : ↥(OL K)) : ↥K.1) = ((χ ⟨g, hg⟩ : (↥K.1)ˣ) : ↥K.1) := by
       rw [hφ1, ha]
     have hσϖ : actB g ϖ = ϖ := by
@@ -185,11 +185,11 @@ theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)�
       exact absurd h2 (not_lt.2 (one_le_pow₀ (not_lt.1 h3)))
     have hev1 : ∀ n, EvalMod S (FB l) ϖ (oB K μ) φ (tch l (v n)) (actB g (tch l (v n))) 1 := fun n => by
       rw [actB_tch]
-      exact GlobalTheory.T.lubin_tate_series_de_rham_period K μ π S hW hoB E hπl r hr (v n) (actT g (v n)) (hnil n) φ
+      exact _root_.GlobalTheory.CompanionTheory.LTPer.Glue.evalMod_teichmuller K μ π S hW hoB E hπl r hr (v n) (actT g (v n)) (hnil n) φ
         (fun D => hrg g hg φ hφ0 hφ1' hφc n D)
-    have hevQ := GlobalTheory.T.lubin_tate_commuting_series_unique E (oB K μ) hoB π rfl q hq2 hqd φ hφ0 hφc (actB g) (hG g) (fun k x hx => actB_FB g k x hx)
+    have hevQ := _root_.GlobalTheory.CompanionTheory.LTPer.evalMod_sigma_of_congr E (oB K μ) hoB π rfl q hq2 hqd φ hφ0 hφc (actB g) (hG g) (fun k x hx => actB_FB g k x hx)
       hσϖ (fun n => tch l (v n)) hvS hvB hnil0 Q hQS hQ hev1
-    have := GlobalTheory.T.lubin_tate_series_commute_linear E ϖ' hϖ' (oB K μ) hoB π rfl q hq2 hqd φ hφ0 hφc (actB g) (hG g)
+    have := _root_.GlobalTheory.CompanionTheory.LTPer.galois_log E ϖ' hϖ' (oB K μ) hoB π rfl q hq2 hqd φ hφ0 hφc (actB g) (hG g)
       (fun k x hx => actB_FB g k x hx) hσϖ Q hQS hnilQ hevQ t ht
     rw [this]
     congr 1
@@ -197,7 +197,7 @@ theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)�
     congr 2
   · intro hμ
     have hθQ : thB l Q = 0 := by
-      refine GlobalTheory.T.lubin_tate_torsion_approximation E (thB l) hI hθϖ0 hθϖ q hq2 ?_ (fun n => tch l (v n)) hvS (fun n => ((z n : Om l) : ℂ_[l])) ?_ ?_ ?_ Q hQS hQ
+      refine _root_.GlobalTheory.CompanionTheory.LTPer.theta_eq_zero_of_congr_torsion E (thB l) hI hθϖ0 hθϖ q hq2 ?_ (fun n => tch l (v n)) hvS (fun n => ((z n : Om l) : ℂ_[l])) ?_ ?_ ?_ Q hQS hQ
       · obtain ⟨s, hs, e⟩ := hqd
         rw [← map_natCast (thB l), e, map_mul, norm_mul]
         exact mul_le_of_le_one_right (norm_nonneg _) (hI s hs)
@@ -216,7 +216,7 @@ theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)�
           rw [← hϖe, thB_rB, hμ]; rfl
         rw [e]
         exact hrz hμ n
-    exact GlobalTheory.T.lubin_tate_limit_kernel_zero E ϖ' hϖ' (thB l) hkerF hI hθϖ q hq2 Q hθQ t ht
+    exact _root_.GlobalTheory.CompanionTheory.LTPer.theta_period_eq_zero_of_theta_eq_zero E ϖ' hϖ' (thB l) hkerF hI hθϖ q hq2 Q hθQ t ht
 
 end PositivityTheory.SecR.Hladr2
 

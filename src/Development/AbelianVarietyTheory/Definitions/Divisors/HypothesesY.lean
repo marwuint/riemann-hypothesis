@@ -19,6 +19,4 @@ structure HypothesesY : Prop where
 
   perfd : GlobalTheory.Published.PrismaticDieudonnePerfd
 
-example (h : HypothesesY) : GlobalTheory.Published.RegularAlteration ∧ GlobalTheory.Published.PrismaticDieudonnePerfd := ⟨h.alt, h.perfd⟩
-
 end GlobalTheory.CovHt

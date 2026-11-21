@@ -34,16 +34,9 @@ def smCx (p : ℕ) : Cx ℂ (smForms A) :=
 
 abbrev HSm (m : ℤ) : Type := (smCx A 0).H m
 
-def FSm (p : ℕ) (m : ℤ) : Submodule ℂ (HSm A m) :=
-  (((smCx A p).Z m).submoduleOf ((smCx A 0).Z m)).map (Submodule.mkQ _)
-
 structure FormOn (S : Set M) (α : A.Fld) : Prop where
   smooth : ∀ i T, ContDiffOn ℝ ∞ (fun v => (bas n).repr (A.loc α i v) T) ((A.e i).target ∩ (A.e i).symm ⁻¹' S)
   compat : ∀ x x' : A.Pt, x.pt ∈ S → x.pt = x'.pt → α x = pull (fderiv ℂ (x'.ch ∘ x.ch.symm) x.crd) (α x')
-
-def fnC (g : M → ℂ) : A.Fld := fun x => algebraMap ℂ _ (g x.pt)
-
-def cint [MeasurableSpace M] (α : A.Fld) : ℂ := (A.integral α : ℂ) - Complex.I * (A.integral (Complex.I • α) : ℂ)
 
 variable {ι : Type} [LinearOrder ι]
 
@@ -57,22 +50,12 @@ section Scheme
 
 variable {k : Type} [Field k] {X : Scheme.{0}} (p : X ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ)
 
-abbrev atl [SmoothOfRelativeDimension d p] : HolAtlas (CxPts p σ) d := algAtlas p d σ
-
 variable [IsIntegral X]
 
 @[reducible] def ffAlg : Algebra k X.functionField :=
   ((X.presheaf.germ ⊤ (genericPoint X) trivial).hom.comp (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)).toAlgebra
 
 variable [Algebra k X.functionField]
-
-def IsVal [SmoothOfRelativeDimension d p] (g : DR k X.functionField → (atl p σ d).Fld) : Prop :=
-  algebraMap k X.functionField = @algebraMap k X.functionField _ _ (ffAlg p) ∧
-  ∀ (U : X.Opens) [Nonempty U] (J : Type) [Fintype J] (q : ℕ) (f₀ : J → Γ(X, U)) (f : J → Fin q → Γ(X, U)) (y : (atl p σ d).Pt),
-    y.pt ∈ ptsIn p σ U →
-    g (∑ l, X.germToFunctionField U (f₀ l) • ExteriorAlgebra.ιMulti X.functionField q
-        fun j => D k X.functionField (X.germToFunctionField U (f l j))) y =
-      ∑ l, ev p σ U (f₀ l) y.pt • (List.ofFn fun j => dF (atl p σ d) (fnC _ (ev p σ U (f l j))) y).prod
 
 omit σ in
 
@@ -136,17 +119,6 @@ theorem mem_smCx_B_nat {k : ℕ} {α : smForms A} : α ∈ (smCx A 0).B k ↔ α
 
 variable (A)
 
-theorem isCx_smCx (p : ℕ) : (smCx A p).IsCx := by
-  intro m α hα
-  refine ⟨?_, (A.isDga).d_d α⟩
-  rcases lt_or_ge m 0 with hm | hm
-  · rw [smCx_C_neg hm, Submodule.mem_bot] at hα
-    rw [hα, map_zero]
-    exact zero_mem _
-  · lift m to ℕ using hm
-    rw [mem_smCx_C_nat] at hα
-    exact (mem_smCx_C_nat (k := m + 1)).2 ⟨hα.1.dExt, hα.2.dExt⟩
-
 def zEquiv (k : ℕ) : (smCx A 0).Z k ≃ₗ[ℂ] A.closedForms k where
   toFun α := ⟨α.1.1, (mem_smCx_Z_nat.1 α.2).1⟩
   invFun α := ⟨⟨α.1, α.2.1⟩, mem_smCx_Z_nat.2 ⟨α.2, fun _ _ _ => Nat.zero_le _⟩⟩
@@ -166,75 +138,6 @@ def hsmEquiv (k : ℕ) : HSm A k ≃ₗ[ℂ] A.HSm k :=
 theorem hsmEquiv_mk (k : ℕ) (α : (smCx A 0).Z k) :
     hsmEquiv A k (Submodule.Quotient.mk α) = HolAtlas.HSm.mk A k (zEquiv A k α) := rfl
 
-theorem mem_FSm_iff (p k : ℕ) (c : HSm A k) : c ∈ FSm A p k ↔ hsmEquiv A k c ∈ HolAtlas.HSm.fil A p k := by
-  constructor
-  · rintro ⟨α, hα, rfl⟩
-    exact ⟨zEquiv A k α, (mem_smCx_Z_nat.1 hα).2, rfl⟩
-  · rintro ⟨β, hβ, e⟩
-    refine ⟨(zEquiv A k).symm β, mem_smCx_Z_nat.2 ⟨β.2, hβ⟩, (hsmEquiv A k).injective ?_⟩
-    exact e
-
-theorem map_FSm (p k : ℕ) : (FSm A p k).map (hsmEquiv A k).toLinearMap = HolAtlas.HSm.fil A p k := by
-  ext c
-  rw [Submodule.mem_map_equiv, mem_FSm_iff, LinearEquiv.apply_symm_apply]
-
 end Compare
-
-section Basic₂
-
-variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
-
-example : dL A 0 = 0 := map_zero _
-
-example (m : ℤ) : Module ℂ (HSm A m) := inferInstance
-
-example (m : ℤ) : (0 : HSm A m) ∈ FSm A 3 m := Submodule.zero_mem _
-
-example : Module.finrank ℂ (HSm (HolAtlas.std 0) (0 : ℕ)) = 1 :=
-  (hsmEquiv _ 0).finrank_eq.trans HolAtlas.HSm.finrank_std₀
-
-example : dF (HolAtlas.std 1) HolAtlas.zFld ≠ 0 := HolAtlas.dExt_zFld_ne_zero
-
-end Basic₂
-
-section Inhab
-
-variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
-
-theorem FormOn.of_isForm {α : A.Fld} (h : A.IsForm α) (S : Set M) : FormOn A S α where
-  smooth i T := (h.smooth i T).mono Set.inter_subset_left
-  compat x x' _ hx := h.compat x x' hx
-
-theorem FormOn.zero (S : Set M) : FormOn A S 0 := by
-  have h := (HolAtlas.isForm_algebra M n A).1
-  have h0 := ((HolAtlas.isForm_algebra M n A).2 0 1 1 h h).2.2
-  rw [zero_smul] at h0
-  exact FormOn.of_isForm A h0 S
-
-example (S : Set M) : FormOn A S 1 := FormOn.of_isForm A (HolAtlas.isForm_algebra M n A).1 S
-
-theorem isAffCover_spec (K : Type) [Field K] :
-    letI := ffAlg (𝟙 (Sp K))
-    IsAffCover (𝟙 (Sp K)) (fun _ : Unit => (⊤ : (Sp K).Opens)) (fun _ => ⊤) := by
-  letI := ffAlg (𝟙 (Sp K))
-  have hinf : ∀ I : Finset Unit, I.inf (fun _ : Unit => (⊤ : (Sp K).Opens)) = ⊤ := fun I => by simp
-  refine ⟨rfl, fun I _ => ?_, ?_, fun I => ?_, fun I _ y => ?_⟩
-  · rw [hinf]; exact isAffineOpen_top _
-  · simp
-  · rw [hinf]; trivial
-  · change y ∈ (⊤ : Subalgebra K (Sp K).functionField) ↔ _
-    simp only [Algebra.mem_top, true_iff]
-    have key : ∀ (V : (Sp K).Opens) (hV : V = ⊤) (h : genericPoint (Sp K) ∈ V),
-        Function.Surjective ((Sp K).presheaf.germ V (genericPoint (Sp K)) h).hom := by
-      intro V hV h
-      subst hV
-      haveI : Nonempty (⊤ : (Sp K).Opens) := ⟨⟨genericPoint (Sp K), trivial⟩⟩
-      have hF := functionField_isFractionRing_of_isAffineOpen (Sp K) ⊤ (isAffineOpen_top _)
-      have hK : IsField Γ(Sp K, ⊤) :=
-        (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField K)
-      exact (IsFractionRing.surjective_iff_isField (R := Γ(Sp K, ⊤)) (K := (Sp K).functionField)).2 hK
-    exact key _ (hinf I) _ y
-
-end Inhab
 
 end GlobalTheory.PD

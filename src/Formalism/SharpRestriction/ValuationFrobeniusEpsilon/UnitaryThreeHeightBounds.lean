@@ -105,13 +105,6 @@ def adm8 : Prop := Formalism.MainNotions.GradedPowerSeriesLemmas.Conclusion2 D V
 def admitted : Prop :=
   adm1 D V ∧ adm2 D V ∧ adm3 D V ∧ ArchimedeanSignatureMatching D V ∧ adm5 D V ∧ adm6 D V ∧ adm8 D V
 
-theorem first_hypothesis_of_lifting (h : Formalism.MainNotions.UnusedSlot38.Conclusion1 D V) : adm1 D V := fun _ _ _ _ _ _ _ _ _ T => h T.P
-theorem second_hypothesis_of_lifting (h : Formalism.MainNotions.UnusedSlot38.Conclusion2 D V) : adm2 D V := ⟨h.1, fun _ _ _ _ _ _ _ _ _ T => h.2 T.P⟩
-theorem integrality_of_commutation (h : Formalism.MainNotions.UnusedSlot38.PointsLemma D V) : adm3 D V := h
-theorem fourth_hypothesis_of_lifting (h : Formalism.MainNotions.UnusedSlot38.Conclusion5 D V) : ArchimedeanSignatureMatching D V :=
-  fun _ _ _ _ _ _ _ _ _ T hL => (Formalism.MainNotions.UnusedSlot38.lifting_lemma_of_literature h T.P hL).1
-theorem lemma_M_prime_hypothesis (h : Formalism.MainNotions.GradedPowerSeriesLemmas.Conclusion2 D V) : adm8 D V := h
-
 def Conclusion1 : Prop := Formalism.MainNotions.GradedPowerSeriesLemmas.Conclusion1 D V
 
 open Classical in
@@ -141,13 +134,6 @@ def Conclusion2 (C₁ C₂ : ℝ) : Prop := GaussianCaseHeightBound D V C₁ ∧
 def Conclusion₂ (C₁ C₂ : ℝ) : Prop := Conclusion1 D V ∧ Conclusion2 D V C₁ C₂
 
 def ConclusionE₂ (C₁ C₂ : ℝ) (bD : ℕ) : Prop := Conclusion1 D V ∧ GaussianCaseHeightBound D V C₁ ∧ InertBoundExponent D V C₂ bD
-
-def Stmt (C₁ C₂ : ℝ) : Prop := admitted D V → Conclusion₂ D V C₁ C₂
-
-def GaussianCaseConjugationInvariant : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (χ χ'' : Chi D) (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K],
-    ChiConj D χ χ'' → Formalism.MainNotions.V.UnitaryThreeData V l e χ K → Formalism.MainNotions.V.UnitaryCaseGaussian V l e χ K →
-    Formalism.MainNotions.V.UnitaryThreeData V l e χ'' K ∧ Formalism.MainNotions.V.UnitaryCaseGaussian V l e χ'' K
 
 section Lit
 
@@ -197,18 +183,6 @@ def IrredOn {l : ℕ} [Fact l.Prime] {n : ℕ} {H : Subgroup GQ} (H' : Subgroup 
     (∀ σ : H, (σ : GQ) ∈ H' → ∀ w ∈ W, (ρ σ : Matrix (Fin n) (Fin n) (QbarL l)).mulVec w ∈ W) →
     W = ⊥ ∨ W = ⊤
 
-def Thorne : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K],
-    Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ π : (V.spec K n).Rep,
-    ∀ ρ : K.fixingSubgroup →* GL (Fin n) (QbarL l), Continuous ρ →
-    ∀ κ : K.fixingSubgroup →* (QbarL l)ˣ, Continuous κ →
-    V.IsRi π (VData.toRecRep (Formalism.MainNotions.V.twistRep ρ κ)) →
-    IrredOn (eps l).ker ρ →
-    ∀ (μ : GQ →* (QbarL l)ˣ) (r : GQ → Matrix (Fin n) (Fin n) (QbarL l)), Continuous μ → IsGGn K μ r →
-    (∀ g : K.fixingSubgroup, r g = (ρ g : Matrix (Fin n) (Fin n) (QbarL l))) →
-    ∀ Ad : GQ →* GL (Fin (n * n)) (QbarL l), IsAd K r Ad →
-      Subsingleton (V.finiteCohomology l (n * n) ⊤ (Formalism.MainNotions.V.onTop Ad))
-
 def Thorne2 : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K],
     Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ π : (V.spec K 2).Rep,
@@ -220,9 +194,6 @@ def Thorne2 : Prop :=
     (∀ g : K.fixingSubgroup, r g = (ρ g : Matrix (Fin 2) (Fin 2) (QbarL l))) →
     ∀ Ad : GQ →* GL (Fin (2 * 2)) (QbarL l), IsAd K r Ad →
       Subsingleton (V.finiteCohomology l (2 * 2) ⊤ (Formalism.MainNotions.V.onTop Ad))
-
-variable {V} in
-theorem Thorne.two (h : Thorne V) : Thorne2 V := fun l _ => h l 2
 
 namespace Adj
 
@@ -352,12 +323,6 @@ def LocGlobWt3 : Prop :=
       ({-(e : ℤ), 0, (e : ℤ)} : Multiset ℤ)) →
     ∀ (τ : K →+* ℂ) (i : Fin 3), (V.spec K 3).wt π τ i = ![(e : ℤ) + 1, 1, 1 - (e : ℤ)] i
 
-def Ram2 (l : ℕ) [Fact l.Prime] (W : GQ →* GL (Fin 2) (QbarL l)) (M : ℕ) : Prop :=
-  (∀ q : ℕ, q.Prime → q ≠ l → ∀ σ : GQ, σ ∈ V.Iq q → σ ∈ FixMu M → W σ = 1) ∧
-    (∃ (a : ℕ) (K' : IntermediateField ℚ QbarQ), ((l - 1) ∣ a ∨ l ∣ M) ∧ V.Iq l ≤ K'.fixingSubgroup ∧
-      V.Crys l 2 (HcrSub l a (V.Dq l ⊓ K'.fixingSubgroup)) (V.plc l)
-        (W.comp (HcrSub l a (V.Dq l ⊓ K'.fixingSubgroup)).subtype))
-
 def LocGlob2G : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (ι : QbarL l ≃+* ℂ) (π : (V.spec ℚ 2).Rep) (W : GQ →* GL (Fin 2) (QbarL l)),
     Continuous W →
@@ -367,15 +332,6 @@ def LocGlob2G : Prop :=
       V.Crys l 2 (HcrSub l a (V.Dq l ⊓ K'.fixingSubgroup)) (V.plc l)
         (W.comp (HcrSub l a (V.Dq l ⊓ K'.fixingSubgroup)).subtype)) →
     (V.spec ℚ 2).level π M
-
-def ClozelAut : Prop :=
-  ∀ (F : Type) [Field F] [NumberField F] (n : ℕ) (π : (V.spec F n).Rep) (σ : ℂ ≃+* ℂ),
-    ∃ π' : (V.spec F n).Rep,
-      (∀ M : ℕ, (V.spec F n).level π M ↔ (V.spec F n).level π' M) ∧
-      (∀ M : ℕ, (V.spec F n).level π M → ∀ v : HeightOneSpectrum (𝓞 F), ((M : ℕ) : 𝓞 F) ∉ v.asIdeal →
-        (V.spec F n).hecke π' v = ((V.spec F n).hecke π v).map σ.toRingHom) ∧
-      (∀ τ : F →+* ℂ, (V.spec F n).wt π' (σ.toRingHom.comp τ) = (V.spec F n).wt π τ) ∧
-      (V.IsRACSDC F n π → V.IsRACSDC F n π')
 
 def CAut (F : Type) [Field F] [NumberField F] (n : ℕ) : Prop :=
   ∀ (π : (V.spec F n).Rep) (σ : ℂ ≃+* ℂ), ∃ π' : (V.spec F n).Rep,
@@ -425,8 +381,6 @@ def DimFormulaE (cD : ℝ) (aD : ℕ) : Prop :=
     ({π | (V.spec ℚ 2).level π M ∧ (V.spec ℚ 2).wt π = w} : Set (V.spec ℚ 2).Rep).Finite ∧
     (({π | (V.spec ℚ 2).level π M ∧ (V.spec ℚ 2).wt π = w} : Set (V.spec ℚ 2).Rep).ncard : ℝ) ≤
       cD * k * (M : ℝ) ^ aD
-
-def DimFormula (cD : ℝ) : Prop := DimFormulaE V cD 4
 
 def Sig2 (M e : ℕ) : Set (V.spec ℚ 2).Rep :=
   {π | (V.spec ℚ 2).level π M ∧ (V.spec ℚ 2).wt π = fun _ => ![2 * (e : ℤ), 0]}
@@ -721,8 +675,6 @@ def lit7 (X : SymSp) : Prop := ClozelAutR V ∧ ClozelCoh V X
 def lit8E (X : SymSp) (β cP cD : ℝ) (aD : ℕ) : Prop :=
   Gelander X β ∧ Prasad X cP ∧ ClassNoBound ∧ DimFormulaE V cD aD
 
-def lit8 (X : SymSp) (β cP cD : ℝ) : Prop := lit8E D V X β cP cD 4
-
 def lit9 : Prop := (OrdReg D V ∧ InitialPointOrdinaryClosure D V) ∧ TangentCocyclesFlat D V ∧ OrdOpen D V ∧ TypeConst D V
 
 def LocalGlobalChebotarev : Prop :=
@@ -754,61 +706,13 @@ def ExponentFormsStatement (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C₂ : 
 theorem stmtLE_four (X : SymSp) (β cP cD C₁ C₂ : ℝ) :
     ExponentFormsStatement D V X β cP cD 4 C₁ C₂ ↔ LiftingLemmasStatement D V X β cP cD C₁ C₂ := Iff.rfl
 
-theorem Gelander.max_zero {X : SymSp} {β : ℝ} (h : Gelander X β) : Gelander X (max β 0) := by
-  intro K _ h2 hc M hM h3
-  exact (h K h2 hc M hM h3).trans (mul_le_mul_of_nonneg_right (le_max_left β 0) (X.vol_nonneg K M))
-
-theorem LitE.max_zero {D : D7} {V : VData D} {X : SymSp} {β cP cD : ℝ} {aD : ℕ} (h : LitE D V X β cP cD aD) :
-    LitE D V X (max β 0) cP cD aD :=
-  let ⟨h0, h1, h2, h3, h4, h5, h6, h7, ⟨g, r⟩, h9⟩ := h
-  ⟨h0, h1, h2, h3, h4, h5, h6, h7, ⟨g.max_zero, r⟩, h9⟩
-
-theorem Lit.max_zero {D : D7} {V : VData D} {X : SymSp} {β cP cD : ℝ} (h : Lit D V X β cP cD) :
-    Lit D V X (max β 0) cP cD := LitE.max_zero h
-
 end Lit
-
-def UniformConstantStatement : Prop :=
-  ∀ β cP cD : ℝ, ∃ C₁ C₂ : ℝ, ∀ (D : D7) (V : VData D) (X : SymSp), LiftingLemmasStatement D V X β cP cD C₁ C₂
-
-def UniformExponentFormsStatement : Prop :=
-  ∀ (β cP cD : ℝ) (aD : ℕ), aD ≤ 18 → ∃ C₁ C₂ : ℝ, ∀ (D : D7) (V : VData D) (X : SymSp),
-    ExponentFormsStatement D V X β cP cD aD C₁ C₂
-
-theorem UniformExponentFormsStatement.abs (h : UniformExponentFormsStatement) : UniformConstantStatement := fun β cP cD => h β cP cD 4 (by norm_num)
 
 section Fam
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (VF : ∀ x (i : Fm.Ix x), VData (Fm.D x i))
 
 def OrbitValuationBound (C₁ C₂ : ℝ) : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Conclusion₂ (Fm.D x i) (VF x i) C₁ C₂
-def AdmF : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, admitted (Fm.D x i) (VF x i)
-def LitF (X : SymSp) (β cP cD : ℝ) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Lit (Fm.D x i) (VF x i) X β cP cD
-def KudlaFamilyStatement (C₁ C₂ : ℝ) : Prop := AdmF Fm VF → OrbitValuationBound Fm VF C₁ C₂
-def FamilyLiftingStatement (X : SymSp) (β cP cD C₁ C₂ : ℝ) : Prop :=
-  LitF Fm VF X β cP cD → AdmF Fm VF → OrbitValuationBound Fm VF C₁ C₂
-
-def FamilyExponentFormsBound (C₁ C₂ : ℝ) (bD : ℕ) : Prop := ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ConclusionE₂ (Fm.D x i) (VF x i) C₁ C₂ bD
-def LitFE (X : SymSp) (β cP cD : ℝ) (aD : ℕ) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, LitE (Fm.D x i) (VF x i) X β cP cD aD
-def FamilyExponentFormsStatement (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C₂ : ℝ) : Prop :=
-  LitFE Fm VF X β cP cD aD → AdmF Fm VF → FamilyExponentFormsBound Fm VF C₁ C₂ (max 6 (aD + 1))
-
-theorem family_exponent_forms_of (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C₂ : ℝ)
-    (h : ∀ x (i : Fm.Ix x), ExponentFormsStatement (Fm.D x i) (VF x i) X β cP cD aD C₁ C₂) :
-    FamilyExponentFormsStatement Fm VF X β cP cD aD C₁ C₂ := by
-  rintro ⟨a, hL⟩ ⟨b, hA⟩
-  exact ⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i)
-    (hA x (le_trans (le_max_right a b) hx) i)⟩
-
-theorem family_statement_of_records (X : SymSp) (β cP cD C₁ C₂ : ℝ)
-    (h : ∀ x (i : Fm.Ix x), LiftingLemmasStatement (Fm.D x i) (VF x i) X β cP cD C₁ C₂) :
-    FamilyLiftingStatement Fm VF X β cP cD C₁ C₂ := by
-  rintro ⟨a, hL⟩ ⟨b, hA⟩
-  exact ⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i)
-    (hA x (le_trans (le_max_right a b) hx) i)⟩
-
 end Fam
 
 section X
@@ -837,50 +741,6 @@ def OrdFixAbove {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω
   ∀ v : HeightOneSpectrum (𝓞 F), ((l : ℕ) : 𝓞 F) ∈ v.asIdeal → ∀ A, Formalism.ConjugateSelfDual.IsPlaceOver A v → OrdFixAt ρ A k M
 
 variable {D}
-
-def LocGlob3N : Prop :=
-  ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K],
-    Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ π : (V.spec K 3).Rep, V.IsRACSDC K 3 π →
-    ∀ (ι : QbarL l ≃+* ℂ) (ρ : K.fixingSubgroup →* GL (Fin 3) (QbarL l)), Continuous ρ →
-    Formalism.ConjugateSelfDual.Irred (VData.toRecRep ρ) → IsCSDOne (VData.toRecRep ρ) → ∀ k : Fin 3 → ℤ, StrictAnti k →
-    ∀ M : ℕ, 0 < M → OrdFixAbove (VData.toRecRep ρ) k M → ∀ j : ℤ,
-    (∀ (τ : K →+* ℂ) (i : Fin 3), (V.spec K 3).wt π τ i = -k i.rev - j) →
-    IsRiAt V ι π (VData.toRecRep (Formalism.MainNotions.V.twistRep ρ (((epsL l).comp K.fixingSubgroup.subtype) ^ j))) →
-    Ram3 V l K ρ M → (V.spec K 3).level π M
-
-theorem LocGlob3G.toN {D : D7} {V : VData D} (h : LocGlob3G V) : LocGlob3N V :=
-  fun l _ _ K _ h2 hc π hπ ι ρ hρ _ _ _ _ M hM _ j _ hri hr => h l ι K h2 hc π hπ ρ hρ j hri M hM hr.1 hr.2
-
-def Sig3CountE (C : ℝ) (B : ℕ) : Prop :=
-  ∀ (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
-    ∀ M e : ℕ, 0 < M → 1 ≤ e → (Sig3 V K M e).Finite ∧
-      ((Sig3 V K M e).ncard : ℝ) ≤ C * (|(NumberField.discr K : ℝ)| * (M : ℝ) * (e : ℝ)) ^ B
-
-def Sig2CountE (C : ℝ) (B : ℕ) : Prop :=
-  ∀ (M k : ℕ), 0 < M → ∀ w : (ℚ →+* ℂ) → Fin 2 → ℤ, (∀ τ, w τ 0 - w τ 1 = (k : ℤ) - 1) →
-    ({π | (V.spec ℚ 2).level π M ∧ (V.spec ℚ 2).wt π = w} : Set (V.spec ℚ 2).Rep).Finite ∧
-    (({π | (V.spec ℚ 2).level π M ∧ (V.spec ℚ 2).wt π = w} : Set (V.spec ℚ 2).Rep).ncard : ℝ) ≤
-      C * ((M : ℝ) * (k : ℝ)) ^ B
-
-theorem DimFormulaE.toSig2 {D : D7} {V : VData D} {cD : ℝ} {aD : ℕ} (h : DimFormulaE V cD aD) :
-    Sig2CountE V (max cD 0) (max aD 1) := by
-  intro M k hM w hw
-  refine ⟨(h M k hM w hw).1, (h M k hM w hw).2.trans ?_⟩
-  have hM1 : (1 : ℝ) ≤ M := by exact_mod_cast hM
-  rcases Nat.eq_zero_or_pos k with rfl | hk
-  · have h1 : max aD 1 ≠ 0 := by have := le_max_right aD 1; omega
-    simp [h1]
-  · have hk1 : (1 : ℝ) ≤ k := by exact_mod_cast hk
-    have e1 : (k : ℝ) ≤ (k : ℝ) ^ (max aD 1) := by
-      calc (k : ℝ) = (k : ℝ) ^ 1 := (pow_one _).symm
-        _ ≤ (k : ℝ) ^ (max aD 1) := pow_le_pow_right₀ hk1 (le_max_right _ _)
-    have e2 : (M : ℝ) ^ aD ≤ (M : ℝ) ^ (max aD 1) := pow_le_pow_right₀ hM1 (le_max_left _ _)
-    have e3 : (k : ℝ) * (M : ℝ) ^ aD ≤ ((M : ℝ) * (k : ℝ)) ^ (max aD 1) := by
-      rw [mul_pow, mul_comm]
-      exact mul_le_mul e2 e1 (by positivity) (by positivity)
-    calc cD * k * (M : ℝ) ^ aD = cD * ((k : ℝ) * (M : ℝ) ^ aD) := by ring
-      _ ≤ max cD 0 * ((k : ℝ) * (M : ℝ) ^ aD) := mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)
-      _ ≤ max cD 0 * ((M : ℝ) * (k : ℝ)) ^ (max aD 1) := mul_le_mul_of_nonneg_left e3 (le_max_right _ _)
 
 variable (D)
 
@@ -912,44 +772,11 @@ theorem free_exponents_eighteen_seven_iff (C₁ C₂ : ℝ) (bD : ℕ) : HeightB
 
 theorem free_exponents_six_eighteen_seven_iff (C₁ C₂ : ℝ) : HeightBoundsFreeExponents D V C₁ C₂ 6 18 7 ↔ Conclusion₂ D V C₁ C₂ := Iff.rfl
 
-def lit6N : Prop := Purity V ∧ LocGlob3N V ∧ LocGlobWt3 V ∧ LocGlob2G V
-
-theorem lit6.toN {D : D7} {V : VData D} (h : lit6 D V) : lit6N D V := ⟨h.1, h.2.1.toN, h.2.2⟩
-
 def DeJong : Prop := ForallUnitaryThreeLiftingProblems D V fun l _ _ _ _ _ T => ∀ (W : V1.TR T.P.O) [IsDomain W.C], ((l : ℕ) : W.C) ≠ 0 →
   ∀ F : W.C, F ≠ 0 →
     ∃ y : W.C →+* QbarL l, (∀ x : T.P.O, y (algebraMap T.P.O W.C x) = V.jO l (T.eO x)) ∧ y F ≠ 0
 
-def DeJongGenericFibrePoints : Prop := DeJong D V
-
-def LitGeo : Prop :=
-  lit0 D V ∧ lit1 D V ∧ lit2 D V ∧ lit3 D V ∧ lit4 D V ∧ lit5 D V ∧ lit6N D V ∧ lit9 D V ∧ LitB D V ∧ DeJongGenericFibrePoints D V
-
-def LitX (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) : Prop :=
-  LitGeo D V ∧ ClozelAutR V ∧ Sig3CountE V C₃ B₃ ∧ Sig2CountE V C₂ B₂
-
-theorem LitE.toX {D : D7} {V : VData D} {X : SymSp} {β cP cD : ℝ} {aD : ℕ} (h : LitE D V X β cP cD aD)
-    (h16 : DeJongGenericFibrePoints D V) {C₃ : ℝ} {B₃ : ℕ} (h3 : Sig3CountE V C₃ B₃) : LitX D V C₃ B₃ (max cD 0) (max aD 1) :=
-  let ⟨h0, h1, h2, h3', h4, h5, h6, h7, h8, h9, hB⟩ := h
-  ⟨⟨h0, h1, h2, h3', h4, h5, h6.toN, h9, hB, h16⟩, h7.1, h3, h8.2.2.2.toSig2⟩
-
-def FreeExponentStatement (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) (C₁ C₂' : ℝ) : Prop :=
-  LitX D V C₃ B₃ C₂ B₂ → admitted D V → HeightBoundsFreeExponents D V C₁ C₂' (max B₃ B₂ + 1) (max B₃ B₂) (max B₃ B₂ + 1)
-
 end X
-
-def UniformFreeExponentOnClass (𝒞 : ∀ D : D7, VData D → Prop) : Prop :=
-  ∀ (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ), ∃ C₁ C₂' : ℝ, ∀ (D : D7) (V : VData D), 𝒞 D V →
-    FreeExponentStatement D V C₃ B₃ C₂ B₂ C₁ C₂'
-
-def UniformFreeExponentAllRecords : Prop :=
-  ∀ (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ), ∃ C₁ C₂' : ℝ, ∀ (D : D7) (V : VData D), FreeExponentStatement D V C₃ B₃ C₂ B₂ C₁ C₂'
-
-theorem UniformFreeExponentAllRecords.on (h : UniformFreeExponentAllRecords) (𝒞 : ∀ D : D7, VData D → Prop) : UniformFreeExponentOnClass 𝒞 :=
-  fun C₃ B₃ C₂ B₂ => let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V _ => h' D V⟩
-
-theorem stmtLAbsXOn_true : UniformFreeExponentOnClass (fun _ _ => True) ↔ UniformFreeExponentAllRecords :=
-  ⟨fun h C₃ B₃ C₂ B₂ => let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V => h' D V trivial⟩, fun h => h.on _⟩
 
 section FamX
 
@@ -957,25 +784,7 @@ variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (VF : ∀ x (i : Fm.I
 
 def FamilyFreeExponentBound (C₁ C₂ : ℝ) (bD bN be : ℕ) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, HeightBoundsFreeExponents (Fm.D x i) (VF x i) C₁ C₂ bD bN be
-def LitFX (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) : Prop :=
-  ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, LitX (Fm.D x i) (VF x i) C₃ B₃ C₂ B₂
-def FamilyFreeExponentStatement (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) (C₁ C₂' : ℝ) : Prop :=
-  LitFX Fm VF C₃ B₃ C₂ B₂ → AdmF Fm VF → FamilyFreeExponentBound Fm VF C₁ C₂' (max B₃ B₂ + 1) (max B₃ B₂) (max B₃ B₂ + 1)
-
 theorem family_bound_text_iff (C₁ C₂ : ℝ) : FamilyFreeExponentBound Fm VF C₁ C₂ 6 18 7 ↔ OrbitValuationBound Fm VF C₁ C₂ := Iff.rfl
-
-theorem family_free_exponent_of (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) (C₁ C₂' : ℝ)
-    (h : ∀ x (i : Fm.Ix x), FreeExponentStatement (Fm.D x i) (VF x i) C₃ B₃ C₂ B₂ C₁ C₂') :
-    FamilyFreeExponentStatement Fm VF C₃ B₃ C₂ B₂ C₁ C₂' := by
-  rintro ⟨a, hL⟩ ⟨b, hA⟩
-  exact ⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i)
-    (hA x (le_trans (le_max_right a b) hx) i)⟩
-
-theorem UniformFreeExponentOnClass.fam {𝒞 : ∀ D : D7, VData D → Prop} (h : UniformFreeExponentOnClass 𝒞) (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) :
-    ∃ C₁ C₂' : ℝ, ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (VF : ∀ x (i : Fm.Ix x), VData (Fm.D x i)),
-      (∀ x (i : Fm.Ix x), 𝒞 (Fm.D x i) (VF x i)) → FamilyFreeExponentStatement Fm VF C₃ B₃ C₂ B₂ C₁ C₂' :=
-  let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂
-  ⟨C₁, C₂', fun Fm VF hc => family_free_exponent_of Fm VF C₃ B₃ C₂ B₂ C₁ C₂' fun x i => h' _ _ (hc x i)⟩
 
 end FamX
 

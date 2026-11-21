@@ -42,14 +42,6 @@ theorem jE_basis : LinearIndependent ℂ (fun i => jE σ ((stdHLat LL ι).b i)) 
   rw [h2, Submodule.map_top, LinearEquiv.range] at h3
   exact h3.symm
 
-theorem norm_jE (x : ι → LL) :
-    Formalism.HermitianLatticesTheory.normAt (stdHLat LL ι).b (stdHLat LL ι).X (InfinitePlace.mk σ) x = ‖jE σ x‖ := by
-  rw [normAt_std, EuclideanSpace.norm_eq]
-  congr 1
-  refine Finset.sum_congr rfl fun c _ => ?_
-  rw [InfinitePlace.norm_embedding_eq, InfinitePlace.apply]
-  rfl
-
 end
 
 section Rec

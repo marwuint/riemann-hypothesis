@@ -2,9 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ConstC
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.NormalizingConstantEq
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselLowestVectorLocalMassEqTransportedStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentHaarEqConstMulTransportedProductStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarMeasureBesselUnitaryEqPullbackProductStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ProdLocalQuotientMassEqMeasureRatioStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentHaarEqConstMulTransportedProduct
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarMeasureBesselUnitaryEqPullbackProduct
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ProdLocalQuotientMassEqMeasureRatio
 noncomputable section
 open scoped Classical ENNReal
 open MeasureTheory Matrix NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.LocWSOf GlobalTheory.TypeAsm
@@ -37,9 +37,9 @@ theorem constC : ConstC := by
     unfold sclOf
     rw [e, Real.sqrt_one, Complex.ofReal_one]
   ·
-    obtain ⟨cN, hN0, hNT, hN⟩ := GlobalTheory.T.unipotentHaar_eq_const_mul_transported_product D X C hB hG u
-    obtain ⟨cH, hH0, hHT, hHu, hH⟩ := GlobalTheory.T.haarMeasure_besselUnitary_eq_pullback_product D X C hB hG u
-    have hP := GlobalTheory.T.prod_localQuotientMass_eq_measureRatio D X C hB hG u cN cH hN0 hNT hH0 hHT hN hH
+    obtain ⟨cN, hN0, hNT, hN⟩ := _root_.GlobalTheory.muN_eq_const_mul_pi_trI D X C hB hG u
+    obtain ⟨cH, hH0, hHT, hHu, hH⟩ := _root_.GlobalTheory.PullHaarW.pullH D X C hB hG u
+    have hP := _root_.GlobalTheory.UnitW.prod_l2SG_eq D X C hB hG u cN cH hN0 hNT hH0 hHT hN hH
     have hP' : ∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ) = cN * cH := by
       rw [← hP]; exact Finset.prod_congr rfl fun τ _ => GlobalTheory.T.l2SG_phiOf_eq_l2SG_wT_of_goodLoc D X C hB hG u τ
     have hFN : MeasurableSet (Y.FN u) := (Y.FN_fund u).1

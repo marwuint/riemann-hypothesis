@@ -123,6 +123,4 @@ end GlobalTheory.CechPic
 
 namespace GlobalTheory
 
-open CechPic
-
 end GlobalTheory

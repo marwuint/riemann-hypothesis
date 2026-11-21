@@ -82,8 +82,6 @@ theorem isEx_of_separates (hS : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlu
   exact ⟨M, ρ', ξ', cv, rm, S, rp, n, e, c, hS0,
     hbase.is_withReal (inj_of_sep_conv hset.core.models hsep hconv)⟩
 
-example : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → LinB → BaseEx → IsEx := isEx_of_separates
-
 end GlobalTheory.RowEx
 
 end

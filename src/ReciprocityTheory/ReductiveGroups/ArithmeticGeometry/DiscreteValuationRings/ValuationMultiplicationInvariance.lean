@@ -83,13 +83,6 @@ def Val0 (k : ℕ) (α : D.toPre.X)
       ((TF (R := V) F).left.presheaf.map (homOfLE le_top).op).hom
           ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom x) * (τ.s j).val
 
-def SumTo (x : D.toPre.X → F) (w : F) : Prop :=
-  ∀ q : ℚ, ∃ S : Finset D.toPre.X, ∀ T : Finset D.toPre.X, S ⊆ T →
-    ((q : ℚ) : WithTop ℚ) ≤ v (w - ∑ α ∈ T, x α)
-
-def ValAt0 (k : ℕ) (s : Fam D.toPre F k) (w : F) : Prop :=
-  ∃ x : D.toPre.X → F, (∀ α, Val0 D F k α (s.s α) (x α)) ∧ SumTo D F v x w
-
 def FamIsAdd {k : ℕ} (s s' s'' : Fam D.toPre F k) : Prop :=
   ∀ (α : D.toPre.X) (j : Fin 4 → D.toPre.P.L.ι), (s''.s α).f j = (s.s α).f j + (s'.s α).f j
 
@@ -113,27 +106,6 @@ def PositiveValuationMaximalIdeal : Prop :=
         ∃ (ζ : F) (s' : Fam D.toPre F k), (0 : WithTop ℚ) < v ζ ∧ NuGe D Q F v k s' 0 ∧
           Fam.IsSmul D.toPre F ζ s' s)
 
-def ThetaSectionValuationZero : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →
-    ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), IsQ D.toPre ϖ Q →
-    ∀ (vK : AddValuation (FractionRing V) (WithTop ℚ)), ValOver ϖ (FractionRing V) vK →
-    ∀ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V)))
-      [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G) (ϑ : H0 U.LG.L 1), IsTheta U ϑ →
-      ∀ s : U.SecK 1,
-        GeneratorPullback.SecScal U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK V)) (fun _ => ((1 : ℕ) : ℤ)) s
-          (fun _ : Fin 1 => 𝟙 G.left) (fun _ => ((1 : ℕ) : ℤ)) ϑ (pullback.fst G.hom (jK V)) 1 →
-      ∀ E : Fam D.toPre (FractionRing V) 1, U.Expands 1 s E →
-        NuGe D Q (FractionRing V) vK 1 E 0 ∧ ¬ ∃ r : ℚ, 0 < r ∧ NuGe D Q (FractionRing V) vK 1 E r
-
-def ValuationMultiplicationInvariance : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →
-    ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), IsQ D.toPre ϖ Q →
-    ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v →
-    ∀ (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (oa : D.toPre.OAct O) (a : O) (N : ℕ),
-      1 ≤ N → a * star a = (N : O) → star a * a = (N : O) →
-      ∀ k : ℕ, 1 ≤ k → ∀ (s : Fam D.toPre F k) (s' : Fam D.toPre F (k * N)),
-        PullAl D F oa a k N s s' → ∀ r : ℚ, NuGe D Q F v k s r ↔ NuGe D Q F v (k * N) s' r
-
 def FiniteOrderValuationInvariance : Prop :=
   ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →
     ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), IsQ D.toPre ϖ Q →
@@ -143,29 +115,6 @@ def FiniteOrderValuationInvariance : Prop :=
       w.IsGen → ∀ ζ : F, ζ ≠ 0 → FinOrd D F k p w ζ →
       ∀ s t s' : Fam D.toPre F k, PhiRel D.toPre F k p w s t → Fam.IsSmul D.toPre F ζ t s' →
         ∀ r : ℚ, NuGe D Q F v k s r ↔ NuGe D Q F v k s' r
-
-def ValuationBoundAtZero : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →
-    ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), IsQ D.toPre ϖ Q →
-    ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v →
-    ∀ m : ℕ, 1 ≤ m → ∀ (R' : ℕ) (β : D.toPre.X) (s : Fam D.toPre F m),
-      (∀ α : D.toPre.X, (∀ z : D.toPre.X, α ≠ β + R' • z) → ∀ j, (s.s α).f j = 0) →
-      NuGe D Q F v m s 0 → ∀ w : F, ValAt0 D F v m s w →
-      ∀ q : ℚ, (∀ z : D.toPre.X, q ≤ (Q (β + R' • z) : ℚ) / m) → ((q : ℚ) : WithTop ℚ) ≤ v w
-
-def NuAddStatement : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-    (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ)
-    (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)) (k : ℕ)
-    (s s' s'' : Fam D.toPre F k) (r : ℚ), FamIsAdd D F s s' s'' →
-      NuGe D Q F v k s r → NuGe D Q F v k s' r → NuGe D Q F v k s'' r
-
-def NuSmulStatement : Prop :=
-  ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
-    (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ)
-    (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)) (k : ℕ)
-    (ζ : F) (q r : ℚ) (s s' : Fam D.toPre F k), ((q : ℚ) : WithTop ℚ) ≤ v ζ →
-      Fam.IsSmul D.toPre F ζ s s' → NuGe D Q F v k s r → NuGe D Q F v k s' (r + q)
 
 def GermIntegrality : Prop :=
   ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →

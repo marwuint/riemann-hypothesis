@@ -47,60 +47,6 @@ theorem grSq_tri (M : Matrix (Fin m) (Fin m) ℂ) {T : Matrix (Fin m) (Fin m) �
   congr 1
   field_simp
 
-theorem grSq_map_conj (M : Matrix (Fin m) (Fin m) ℂ) (i : Fin m) : grSq (M.map (starRingEnd ℂ)) i = grSq M i := by
-  rw [grSq, ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_map_conj, ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_map_conj, ← map_div₀,
-    Complex.conj_re, grSq]
-
-theorem grSq_diagonal {d : Fin m → ℝ} (hd : ∀ a, d a ≠ 0) (i : Fin m) : grSq (diagonal fun a => (d a : ℂ)) i = d i := by
-  have hT : ∀ a c, c < a → (diagonal fun a => (d a : ℂ)) a c = 0 := fun a c h => diagonal_apply_ne _ h.ne'
-  have h0 : lminor (diagonal fun a => (d a : ℂ)) i.castSucc ≠ 0 := by
-    rw [lminor_eq_prod hT]
-    exact Finset.prod_ne_zero_iff.2 fun a _ => by simpa using hd _
-  rw [grSq, lminor_tri hT, mul_div_cancel_left₀ _ h0, diagonal_apply_eq, Complex.ofReal_re]
-
-theorem isLeast_grSq {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) (i : Fin m) :
-    IsLeast {a | ∃ v : Fin m → ℂ, v i = 1 ∧ (∀ k, i < k → v k = 0) ∧ a = (star v ⬝ᵥ M *ᵥ v).re} (grSq M i) := by
-  set U := (LDL.lowerInv h)ᴴ with hU
-  have hT : ∀ a c, c < a → U a c = 0 := fun a c hc => by simp [hU, LDL.lowerInv_triangular h hc]
-  have hu : IsUnit U.det := by
-    rw [hU, det_conjTranspose]; exact (isUnit_det_of_invertible _).star
-  have hd : ∀ a, U a a ≠ 0 := fun a => by
-    rw [det_of_upperTriangular (M := U) fun _ _ h => hT _ _ h] at hu
-    exact Finset.prod_ne_zero_iff.1 hu.ne_zero a (Finset.mem_univ _)
-  have hD : Uᴴ * M * U = diagonal (LDL.diagEntries h) := by
-    rw [hU, conjTranspose_conjTranspose]; exact (LDL.diag_eq_lowerInv_conj h).symm
-  have hp : ∀ a, 0 < LDL.diagEntries h a := posDef_diagonal_iff.1
-    (hD ▸ h.conjTranspose_mul_mul_same (mulVec_injective_of_isUnit ((isUnit_iff_isUnit_det _).2 hu)))
-  obtain ⟨d, hd0, hD⟩ : ∃ d : Fin m → ℝ, (∀ a, 0 < d a) ∧ Uᴴ * M * U = diagonal fun a => (d a : ℂ) :=
-    ⟨fun a => (LDL.diagEntries h a).re, fun a => (Complex.pos_iff.1 (hp a)).1, hD.trans (congrArg _ (funext fun a =>
-      Complex.ext rfl (Complex.pos_iff.1 (hp a)).2.symm))⟩
-  have e1 : d i = ‖U i i‖ ^ 2 * grSq M i := by rw [← grSq_tri M hT hd, hD, grSq_diagonal fun a => (hd0 a).ne']
-  have e2 (w : Fin m → ℂ) : (star (U *ᵥ w) ⬝ᵥ M *ᵥ (U *ᵥ w)).re = ∑ a, d a * ‖w a‖ ^ 2 := by
-    rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hD, dotProduct, Complex.re_sum]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    rw [mulVec_diagonal, mul_left_comm, Complex.re_ofReal_mul, Pi.star_apply, mul_comm (star _), RCLike.star_def,
-      Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
-  have e3 (w : Fin m → ℂ) (hw : ∀ k, i < k → w k = 0) : (U *ᵥ w) i = U i i * w i :=
-    Finset.sum_eq_single (s := Finset.univ) (f := fun a => U i a * w a) i (fun a _ ha => ha.lt_or_gt.elim (fun h => by rw [hT _ _ h, zero_mul])
-      fun h => by rw [hw _ h, mul_zero]) (by simp)
-  have e4 {z : ℂ} (hz : U i i * z = 1) : d i * ‖z‖ ^ 2 = grSq M i := by
-    rw [e1, mul_right_comm, ← mul_pow, ← norm_mul, hz]; simp
-  constructor
-  · refine ⟨U *ᵥ Pi.single i (U i i)⁻¹, ?_, fun k hk => by simp [hT k i hk], ?_⟩
-    · simp [hd i]
-    · rw [e2, Finset.sum_eq_single i (fun a _ ha => by simp [ha]) (by simp), Pi.single_eq_same,
-        e4 (mul_inv_cancel₀ (hd i))]
-  · rintro _ ⟨v, h1, h2, rfl⟩
-    have := invertibleOfIsUnitDet U hu
-    have hi : U⁻¹.BlockTriangular id := blockTriangular_inv_of_blockTriangular fun _ _ h => hT _ _ h
-    have hv : v = U *ᵥ (U⁻¹ *ᵥ v) := by rw [mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]
-    have hw : ∀ k, i < k → (U⁻¹ *ᵥ v) k = 0 := fun k hk => Finset.sum_eq_zero (s := Finset.univ)
-      (f := fun a => U⁻¹ k a * v a) fun a _ =>
-      (lt_or_ge a k).elim (fun h => by rw [hi h, zero_mul]) fun h => by rw [h2 a (hk.trans_le h), mul_zero]
-    rw [hv, e2, ← e4 (z := (U⁻¹ *ᵥ v) i) (by rw [← e3 _ hw, ← hv, h1])]
-    exact Finset.single_le_sum (f := fun a => d a * ‖(U⁻¹ *ᵥ v) a‖ ^ 2)
-      (fun a _ => mul_nonneg (hd0 a).le (sq_nonneg _)) (Finset.mem_univ i)
-
 def mix (s : ℝ) (M₀ M : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ := ((1 - s : ℝ) : ℂ) • M₀ + (s : ℂ) • M
 
 def mixDual (s : ℝ) (M₀ M : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ :=
@@ -120,10 +66,6 @@ theorem mixDual_posDef (hs : s ∈ Set.Icc (0 : ℝ) 1) (h₀ : M₀.PosDef) (h 
 theorem dualGram_dualGram (h : IsUnit M.det) : dualGram (dualGram M) = M := by
   rw [dualGram, dualGram, ← transpose_nonsing_inv, transpose_transpose, nonsing_inv_nonsing_inv _ h]
 
-theorem dualGram_mixDual (hs : s ∈ Set.Icc (0 : ℝ) 1) (h₀ : M₀.PosDef) (h : M.PosDef) :
-    dualGram (mixDual s M₀ M) = mix s (dualGram M₀) (dualGram M) :=
-  dualGram_dualGram ((isUnit_iff_isUnit_det _).1 (mix_posDef hs (dualGram_posDef h₀) (dualGram_posDef h)).isUnit)
-
 theorem mix_conj (T : Matrix (Fin m) (Fin m) ℂ) : mix s (Tᴴ * M₀ * T) (Tᴴ * M * T) = Tᴴ * mix s M₀ M * T := by
   simp only [mix, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]
 
@@ -131,29 +73,6 @@ theorem mixDual_conj {T : Matrix (Fin m) (Fin m) ℂ} (hT : IsUnit T.det) :
     mixDual s (Tᴴ * M₀ * T) (Tᴴ * M * T) = Tᴴ * mixDual s M₀ M * T := by
   rw [mixDual, dualGram_conj, dualGram_conj, mix_conj, dualGram_conj]
   rw [show T⁻¹ᵀ⁻¹ᵀ = T from dualGram_dualGram hT, mixDual]
-
-theorem mix_values : mix 0 M₀ M = M₀ ∧ mix 1 M₀ M = M ∧ mix s M M = M := by
-  refine ⟨by simp [mix], by simp [mix], ?_⟩
-  rw [mix, ← add_smul]; simp
-
-theorem mixDual_values (h₀ : IsUnit M₀.det) (h : IsUnit M.det) :
-    mixDual 0 M₀ M = M₀ ∧ mixDual 1 M₀ M = M ∧ mixDual s M M = M := by
-  rw [mixDual, mixDual, mixDual, (mix_values (s := s)).1, (mix_values (s := s)).2.1, (mix_values (M₀ := M₀)).2.2]
-  exact ⟨dualGram_dualGram h₀, dualGram_dualGram h, dualGram_dualGram h⟩
-
-example : mix (1 / 2) (1 : Matrix (Fin 1) (Fin 1) ℂ) ((3 : ℂ) • 1) = (2 : ℂ) • 1 ∧
-    mixDual (1 / 2) (1 : Matrix (Fin 1) (Fin 1) ℂ) ((3 : ℂ) • 1) = (3 / 2 : ℂ) • 1 := by
-  have e (a b : ℂ) : mix (1 / 2) (a • (1 : Matrix (Fin 1) (Fin 1) ℂ)) (b • 1) = ((a + b) / 2) • 1 := by
-    rw [mix, smul_smul, smul_smul, ← add_smul]; congr 1; push_cast; ring
-  constructor
-  · simpa [show (1 + 3 : ℂ) / 2 = 2 by norm_num] using e 1 3
-  · rw [mixDual, ← one_smul ℂ (1 : Matrix (Fin 1) (Fin 1) ℂ), smul_smul, dualGram_smul_one one_ne_zero,
-      dualGram_smul_one (by norm_num), e, dualGram_smul_one (by norm_num), smul_smul]
-    norm_num
-
-example : grSq !![1, 1; 1, 2] 1 = 1 := by
-  simp [grSq, lminor, det_fin_two]
-  norm_num
 
 end GlobalTheory.GradedNorm
 
@@ -268,19 +187,6 @@ def interp (s : CxPts (genStr Z) σ → ℝ) (hs : ∀ y, s y ∈ Set.Icc (0 : �
 
 variable {s : CxPts (genStr Z) σ → ℝ} {hs : ∀ y, s y ∈ Set.Icc (0 : ℝ) 1} {G₀ G : EigMet Z σ} {y : CxPts (genStr Z) σ}
   (f : EigFrame Z σ (y.1 ≫ genι Z)) {τ : E →+* ℂ}
-
-theorem interp_gram (h : τ (H.rt : E) = H.rt0) :
-    (interp s hs G₀ G).gram y f τ = mix (s y) (G₀.gram y f τ) (G.gram y f τ) := if_pos h
-
-theorem dualGram_interp_gram (h : τ (H.rt : E) ≠ H.rt0) : dualGram ((interp s hs G₀ G).gram y f τ) =
-    mix (s y) (dualGram (G₀.gram y f τ)) (dualGram (G.gram y f τ)) :=
-  (congrArg dualGram (if_neg h)).trans (dualGram_mixDual (hs y) (G₀.pos y f τ) (G.pos y f τ))
-
-theorem interp_gram_zero (h : s y = 0) : (interp s hs G₀ G).gram y f τ = G₀.gram y f τ := by
-  simp only [interp, h]
-  split_ifs
-  exacts [(mix_values (s := 0)).1, (mixDual_values (s := 0) ((isUnit_iff_isUnit_det _).1 (G₀.pos y f τ).isUnit)
-    ((isUnit_iff_isUnit_det _).1 (G.pos y f τ).isUnit)).1]
 
 variable (G) in
 
@@ -466,49 +372,6 @@ theorem pn_met {s : Y.Y.Fn} {a : ℂ} (h : IsCoord Y p.1 g n s a) :
   rw [pn_eq (prodPow_mem n ha.mem_eqnSet), met_h G n ha, fval, ← map_mul, ← h4, hv, norm_mul]
   simp only [prodPow, _root_.zpow_neg, Finset.prod_inv_distrib, Units.val_inv_eq_inv_val, norm_inv]
   ring
-
-theorem posSet_met : (Y.met G n).posSet = Set.univ := Set.eq_univ_of_forall fun p => by
-  obtain ⟨q, h1, h2⟩ := Y.exists_adapted p
-  rw [Met.mem_posSet_iff (prodPow_mem n h1), met_h G n h2]
-  exact div_pos (Y.genSq_pos G n _) (pow_pos (norm_pos_iff.2 (Units.ne_zero _)) _)
-
-theorem met_congr {G' : EigMet Z (embOf e σ)} (h : ∀ g τ, G.gram (Y.down p) g τ = G'.gram (Y.down p) g τ) (a : Y.Y.Fnˣ) :
-    (Y.met G n).h a p = (Y.met G' n).h a p := by
-  simp only [met, genSq, h]
-
-theorem met_add_h {a a' : Y.Y.Fnˣ} (h : p ∈ eqnSet σ (divOf Y n) a) (h' : p ∈ eqnSet σ (divOf Y n') a') :
-    (Y.met G (n + n')).h (a * a') p = (Y.met G n).h a p * (Y.met G n').h a' p := by
-  have e1 (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) : prodPow t (n + n') = prodPow t n * prodPow t n' := by
-    simp only [prodPow, Pi.add_apply, _root_.zpow_add, Finset.prod_mul_distrib]
-  have e2 (g : Y.FrameAt p) : Y.genSq G (n + n') g = Y.genSq G n g * Y.genSq G n' g := by
-    simp only [genSq, Pi.add_apply, zpow_add₀ (grSq_pos (G.pos _ _ _) _).ne', Finset.prod_mul_distrib]
-  simp only [met]
-  rw [e1, e2, tv_mul_mul h (prodPow_mem n (Y.exists_adapted p).choose_spec.1), norm_mul]
-  ring
-
-variable (Y) in
-
-theorem divOf_add : divOf Y (n + n') = divOf Y n + divOf Y n' := by
-  simp only [divOf, Pi.add_apply, add_smul, Finset.sum_add_distrib]
-
-theorem pn_met_add : pn Y.Y σ _ (Y.met G (n + n')) = pn Y.Y σ _ (mAdd Y.Y σ _ _ (Y.met G n) (Y.met G n')) := by
-  funext f p
-  have h := mem_eqnSet (divOf Y n) p
-  have h' := mem_eqnSet (divOf Y n') p
-  have h₂ : p ∈ eqnSet σ (divOf Y n + divOf Y n') _ := CartierDiv.IsEqn.add h h'
-  rw [pn_eq h₂, pn_eq (Y.divOf_add n n' ▸ h₂), mAdd_h h h', met_add_h G n n' h h']
-
-example : pn Y.Y σ _ (Y.met G 0) (Y.Y.cx σ 1) p = 1 := by
-  obtain ⟨q, -, φ, f, h1, h2⟩ := Y.exists_adapted p
-  rw [pn_met G 0 (a := 1) ⟨_, _, φ, f, _, _, 1, (Y.spMap_evStalk p).symm, h1, h2, by simp, by simp⟩]
-  simp [genSq]
-
-example [DecidableEq (Letter Dw)] (h : Y.Adapted p t g 1) (z : Letter Dw) :
-    (Y.met G (Pi.single z 1)).h (t z.1 z.2) p = grSq (G.gram _ g z.1) z.2 := by
-  have := met_h G (Pi.single z 1) h
-  rw [genSq, prodPow, Finset.prod_eq_single z (fun b _ hb => by simp [hb]) (by simp),
-    Finset.prod_eq_single z (fun b _ hb => by simp [hb]) (by simp)] at this
-  simpa [prodPow] using this
 
 end FlagCpt
 

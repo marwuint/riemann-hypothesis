@@ -10,10 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletion
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealDivisibleEqZero
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramePeriods
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsInverseUnitTower
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMemberDictionaryContextGoodEmbeddingStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLatticeEqAdelicCompletionAndGramStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeSelfDualTraceFormStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMemberDictionaryContextGoodEmbedding
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLatticeEqAdelicCompletionAndGram
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeSelfDualTraceForm
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryEqRealMulFiniteSplitStatement
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
@@ -134,12 +134,12 @@ theorem onto_marking_sub (F : Type) {E : Type} [Field F] [NumberField F] [Field 
 theorem exists_finite_mark : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ k, ∃ h ∈ GfC V, C.Mark h k 1 := by
   intro D H Dw l Xo c σ V r C hC k
   obtain rfl : V.rank = r := C.hr
-  have hneg := (GlobalTheory.T.exists_memberDictionaryContext_goodEmbedding D H Dw l Xo c σ V _ rfl C.ι hC.iota hC.pos hC.lA hC.good).2.1 C hC
+  have hneg := (_root_.GlobalTheory.Member.exists_ctx D H Dw l Xo c σ V _ rfl C.ι hC.iota hC.pos hC.lA hC.good).2.1 C hC
   obtain ⟨Pf, -, -, hPf, -⟩ := GlobalTheory.exists_framePeriods D.host.E H Dw l Xo c σ C.g C.e C.F _ C.M hC.good hC.base hneg k
   obtain ⟨x, hx⟩ := onto_dom_nonempty (C.M.X k)
   obtain ⟨f, h1, h2, h3, h4⟩ := GlobalTheory.familyUnif_lattice_genus D.host.E H Dw l Xo _ C.g _ C.F k (Pf x) (hPf x hx)
-  obtain ⟨-, hfv, -, -, -, hcc, -, -, -, hT, -⟩ := GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D V
-  obtain ⟨hL, hLs, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V 1
+  obtain ⟨-, hfv, -, -, -, hcc, -, -, -, hT, -⟩ := _root_.GlobalTheory.Member.latHat_eq_hat_and_gram D V
+  obtain ⟨hL, hLs, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V 1
   let ι : Dw.La ≃ₗ[𝓞 D.host.E] latG V 1 :=
     (LinearEquiv.ofInjective C.ι hC.iota.emb.1).trans (LinearEquiv.ofEq _ _ hC.iota.emb.2)
   have hι : ∀ a, (ι a : Fin V.rank → D.host.E) = C.ι a := fun a => rfl
@@ -150,7 +150,7 @@ theorem exists_finite_mark : ∀ (D : D7) (H : ReciprocityTheory.ChartRestrictio
   have hxi : (C.M.X k).ξ0 = -D.host.xi0 := (hC.modelW k).2
   obtain ⟨g, hg1, hg2, hg3⟩ := onto_adelic_of_tower D.host.F D.host.E V.rank (latG V 1) (C.M.X k).Λ hL hLs
     (C.M.X k).Λ_fg (C.M.X k).Λ_span ι (C.M.φ k) (fun a b => Dw.EF a b) (fun a b => (C.F.Di k).EF a b) f
-    (cF D) V.gramᵀ D.host.xi0 _ (GlobalTheory.T.adelicUnitaryLattice_selfDual_traceForm D V 1 _ rfl).1
+    (cF D) V.gramᵀ D.host.xi0 _ (_root_.GlobalTheory.Member.latG_selfDual D V 1 _ rfl).1
     (fun x y => by
       have halt : Dw.EF y x = -Dw.EF x y := by
         have := Dw.alt (x + y)
@@ -161,7 +161,7 @@ theorem exists_finite_mark : ∀ (D : D7) (H : ReciprocityTheory.ChartRestrictio
       rw [hherm, hC.base.ef k x y, hGm, hxi, neg_neg, mul_neg, map_neg])
     h1 h2 h3
   obtain ⟨h, hh, rfl⟩ := (GlobalTheory.T.adelicUnitary_eq_real_mul_finite_split D V).2.2.2.1 g hg3
-  obtain ⟨-, -, hlat, hhat, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V h
+  obtain ⟨-, -, hlat, hhat, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V h
   have hcap := (GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank (C.M.X k).Λ (C.M.X k).Λ_fg
     (C.M.X k).Λ_span).1
   rw [hg1] at hhat

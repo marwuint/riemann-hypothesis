@@ -83,29 +83,4 @@ theorem exists_isom_map_of_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
   refine ⟨WittTransvections.transvEquiv h (x - y) hξ, fun v w => WittTransvections.transvEquiv_isom hs _ hξ v w, ?_⟩
   rw [WittTransvections.transvEquiv_apply, inv_mul_cancel₀ hux, one_smul, sub_sub_cancel]
 
-theorem exists_isom_map_unit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
-    (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n)
-    {x y : V} (hx : h x x = 1) (hy : h y y = 1) : ∃ g ∈ Formalism.HermitianLatticesTheory.isom h, g x = y := by
-  have hd : IsTotPosDef h := by
-    obtain ⟨e, -, hsp, -, he⟩ := hL
-    intro x hx φ
-    have hxs : x ∈ Submodule.span K (Set.range e) := by rw [hsp]; exact Submodule.mem_top
-    obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hxs
-    have hval : h (∑ i, c i • e i) (∑ i, c i • e i) = ∑ i, star (c i) * c i := by
-      simp [map_sum, he, Finset.mul_sum, mul_ite, ite_mul, smul_eq_mul]
-      exact Finset.sum_congr rfl fun i _ => by rw [starRingEnd_apply, mul_comm]
-    rw [hval, map_sum, Complex.re_sum]
-    have hc : ∃ i, c i ≠ 0 := by
-      by_contra hne
-      push_neg at hne
-      exact hx (by simp [hne])
-    obtain ⟨i0, hi0⟩ := hc
-    refine Finset.sum_pos' (fun i _ => ?_) ⟨i0, Finset.mem_univ _, ?_⟩
-    · rw [map_mul, hK.2.1, ← Complex.normSq_eq_conj_mul_self]
-      exact Complex.normSq_nonneg _
-    · rw [map_mul, hK.2.1, ← Complex.normSq_eq_conj_mul_self]
-      exact Complex.normSq_pos.2 ((map_ne_zero φ).2 hi0)
-  have hx0 : x ≠ 0 := by rintro rfl; simp at hx
-  exact exists_isom_map_of_eq hK hs hd hx0 (by rw [hx, hy])
-
 end Formalism.HermitianLattices.Ext.L3

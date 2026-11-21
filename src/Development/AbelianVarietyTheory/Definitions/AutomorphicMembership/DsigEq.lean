@@ -15,10 +15,6 @@ structure GoodO (D : D7) (nch : NChoice D) (xd : ThData D) : Prop where
   tw : ∃ I : TwIn D, I.E = twEOf xd ∧ DQ.GoodAllAt D nch I ∧ GlobalTheory.HeightCounting.GoodCl D nch I
   sep : ∀ v v', D.what₂.muAt v ≠ D.what₂.mu0 → D.what₂.muAt v' ≠ D.what₂.mu0 → nch.twI v ≠ nch.twI v' → Disjoint (nch.Q v) (nch.Q v')
 
-def GoodC (𝒮 : Slots) : CP := fun K B f T w Z c => BuiltC 𝒮 K B f T w Z c ∧ GoodO (w.D Z) c.O.nch c.O.xd
-
-def IsGood (𝒮 : Slots) : V4.Slot := positionOf (GoodC 𝒮)
-
 variable {B : Base} {f : Fr B.toPre} {T : TwDat B}
 
 structure Wit (𝒮 : Slots) (K : Ctx) (w : ColW B f T) (Z : w.Lt) (O : Obj2 (w.D Z)) : Type 1 where
@@ -70,8 +66,6 @@ abbrev PinT (𝒮 : Slots) (Bd : GlobalTheory.Fc.BdT) : Type 1 := ∀ (K : Ctx) 
 def linkOf {𝒮 : Slots} {Bd : GlobalTheory.Fc.BdT} (P : PinT 𝒮 Bd) : GlobalTheory.Fc.LkT Bd := fun K β c b =>
   ∃ (p : WPt 𝒮 K) (b' : Bd (p.w.D p.Z) p.O c), P K p c b' ∧
     (⟨β.D, β.O, b⟩ : Σ (D : D7) (O : Obj D), Bd D O c) = ⟨p.w.D p.Z, p.O, b'⟩
-
-def WitEx (𝒮 : Slots) : Prop := ∀ (K : Ctx) (β : GlobalTheory.Fc.BPt K), β.Is (IsGood 𝒮) → ∃ p : WPt 𝒮 K, p.Is β.D β.O
 
 end GlobalTheory.Mem.Top.Bl
 

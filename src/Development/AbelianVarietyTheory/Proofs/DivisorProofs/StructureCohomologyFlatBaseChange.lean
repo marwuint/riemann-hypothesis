@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.AxesVanishingStructureSheafDegOne
 import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrderedCechFiniteAffineCoverModelsStructureSheafStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrderedCechFiniteAffineCoverModelsStructureSheaf
 
 set_option autoImplicit false
 
@@ -112,7 +112,7 @@ theorem exists_fin_affine_cover {R : Type} [CommRing R] {X : Scheme.{0}} (s : X 
 theorem flat_baseChange_HO : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap R R'))), IsSeparated s → QuasiCompact s → (∃ e : R' ⊗[R] HO1 s ≃ₗ[R'] HO1 s', ∀ c, e (1 ⊗ₜ c) = pullHO1 h.w c) ∧ ∃ e : R' ⊗[R] HO2 s ≃ₗ[R'] HO2 s', ∀ c, e (1 ⊗ₜ c) = pullHO2 h.w c := by
   intro R R' _ _ _ _ X X' s s' φ h hsep hqc
   obtain ⟨n, D, hD, hcov⟩ := exists_fin_affine_cover s
-  obtain ⟨M⟩ := GlobalTheory.T.orderedCech_finiteAffineCover_models_structureSheafCohomology R X s (Fin n) D hsep hD hcov
+  obtain ⟨M⟩ := _root_.GlobalTheory.CechPoset.model_cechLB R X s (Fin n) D hsep hD hcov
   generalize GlobalTheory.AbLaw.cechLB s (LB.triv X) D = K at M
   have h0 : IsPullback (𝟙 X) s s (spMap (algebraMap R R)) := by
     have e : spMap (algebraMap R R) = 𝟙 _ := spMap_id R

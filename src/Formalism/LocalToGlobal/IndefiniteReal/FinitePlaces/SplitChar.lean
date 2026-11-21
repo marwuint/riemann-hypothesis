@@ -44,9 +44,6 @@ theorem exists_splitIdem_D (D : D7) : ∃ e, IsSplitIdem D e := by
 
 variable {D : D7}
 
-theorem ga_ext (V : HSp D) {g g' : GA D V} (h : mt V g = mt V g') : g = g' :=
-  Subtype.ext (Units.ext h)
-
 def RA (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E) :
     Matrix (Fin V.rank) (Fin V.rank) (AE D) :=
   proj (cA D) (V.gram.map (incA D)) (fun i => incA D (u i)) (incA D ainv)
@@ -58,17 +55,6 @@ theorem haA (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
 
 theorem hainvA (ainv : D.host.E) (hainv : flipTwoThree.sigE D ainv = ainv) : cA D (incA D ainv) = incA D ainv := by
   rw [flipTwoThree.cA_incA', hainv]
-
-theorem RA_idem (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
-    (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) : RA V u ainv * RA V u ainv = RA V u ainv :=
-  proj_idem' _ _ _ _ (haA V u ainv ha)
-
-theorem mul_aux {n : Type} [Fintype n] [DecidableEq n] (R : Matrix n n (AE D)) (hRR : R * R = R)
-    (a b : AE D) : (1 + (a - 1) • R) * (1 + (b - 1) • R) = 1 + (a * b - 1) • R := by
-  simp only [add_mul, mul_add, one_mul, mul_one]
-  rw [smul_mul_smul_comm, hRR, show a * b - 1 = (b - 1) + ((a - 1) + (a - 1) * (b - 1)) by ring, add_smul,
-    add_smul]
-  abel
 
 def secM (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E) (x : AE D) :
     Matrix (Fin V.rank) (Fin V.rank) (AE D) :=
@@ -96,19 +82,6 @@ def secG (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
 theorem mt_secG (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
     (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) (hainv : flipTwoThree.sigE D ainv = ainv) (x : FirstPropositionFrame D) :
     mt V (secG V u ainv ha hainv x) = secM V u ainv ((x : (AE D)ˣ) : AE D) := rfl
-
-def secHom (V : HSp D) (u : Fin V.rank → D.host.E) (ainv : D.host.E)
-    (ha : ainv * hsq (flipTwoThree.sigE D) V.gram u = 1) (hainv : flipTwoThree.sigE D ainv = ainv) : FirstPropositionFrame D →* GA D V where
-  toFun := secG V u ainv ha hainv
-  map_one' := by
-    apply ga_ext V
-    rw [mt_secG, flipTwoThree.mt_one']
-    simp [secM]
-  map_mul' x y := by
-    apply ga_ext V
-    rw [flipTwoThree.mt_mul', mt_secG, mt_secG, mt_secG]
-    simp only [secM, Subgroup.coe_mul, Units.val_mul]
-    exact (mul_aux _ (RA_idem V u ainv ha) _ _).symm
 
 end SplitChar
 

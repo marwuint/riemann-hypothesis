@@ -75,12 +75,4 @@ theorem squareStanding_of_setting {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {
     simp only [Nat.cast_mul, w.isPrime.mul_mem_iff_mem_or_mem, not_or] at h1 h2 ⊢
     tauto
 
-theorem commutesWith_all : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
-    GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch =>
-      ∀ (t : T) (i j : Fin D.R.m), CommutesWith ch.W ch.S.B ch.rm t i j (ch.c i j t) := by
-  intro hPr hWC hK
-  refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ t i j => ?_⟩⟩
-  exact commutesWith_of_isSquareConst hWC hK hPr.cuspDecayBound s.core.lev
-    (squareStanding_of_setting s s.size.2.1.eleven_le ch.G t) (hch.const i j t)
-
 end GlobalTheory.SquareComm

@@ -17,12 +17,6 @@ def SpanStepHomog.Statement : Prop :=
       ∀ (n : ℕ), ∀ s ∈ chartLat y a n, ∀ j, w j ≠ 0 →
         ∃ D : ℕ, s * w j ^ D ∈ gradedSpan w (fun _ => m) t (n + D)
 
-section Inhabitants
-
-open ProjLine
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel

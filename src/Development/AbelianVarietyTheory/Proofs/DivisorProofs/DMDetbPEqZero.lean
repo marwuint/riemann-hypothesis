@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.TCoefMInMMul
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationDetEqDoubleSumAdjugateEntryStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivationDetEqDoubleSumAdjugateEntry
 open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 
 namespace GlobalTheory.PsCo.Cw2a
@@ -13,7 +13,7 @@ theorem modeDerivation_det_eq_zero : GlobalTheory.PsCo.Cw2a.T_dM_detb := by
     intro i j
     simp only [dM, dZ, Mx, W, Matrix.of_apply, mkDerivation_X, Sum.elim_inr, Matrix.sub_apply,
       Matrix.mul_apply, Matrix.map_apply, Finset.sum_sub_distrib]
-  have key := GlobalTheory.T.derivation_det_eq_double_sum_adjugate_entry (dM ε x) Mx
+  have key := _root_.GlobalTheory.DetDeriv.main (dM ε x) Mx
   have hdet : detbP n = Mx.det := rfl
   rw [hdet, key]
   simp_rw [hD]

@@ -1,8 +1,8 @@
 import Mathlib
 import Formalism.LocalToGlobal.GlobalTheory.GL5.PClassDecomp
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsHermitianSpaceSelfDualLatticeSignatureStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VolumeRatioUpPositiveLineStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsHermitianSpaceSelfDualLatticeSignature
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VolumeRatioUpPositiveLine
 open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -12,8 +12,8 @@ theorem vol_eq_massI_step (D : D7) (hT : VolTie D) (h2 : Conclusion2 D) (hv : De
     (W : HSpace D.host.E) (P Q : ℕ) (hW : W.SigOK) (hs : ∀ τ, W.sig τ = (P, Q)) (hPQ : 2 ≤ P + Q)
     (hup : ∀ U : HSpace D.host.E, U.SigOK → (∀ τ, U.sig τ = (P + 1, Q)) → D.vol U = massI D (P + Q + 1)) :
     D.vol W = massI D (P + Q) := by
-  obtain ⟨U, hU, hUs⟩ := GlobalTheory.T.exists_hermitianSpace_with_signature D (P + 1) Q
-  have hr := GlobalTheory.T.volume_ratio_up_positive_line D hT h2 W P Q hW hs hPQ U hU hUs
+  obtain ⟨U, hU, hUs⟩ := _root_.GlobalTheory.exists_hSpace_sigOK_sig D (P + 1) Q
+  have hr := _root_.GlobalTheory.VolRatioUp.volRatio_up D hT h2 W P Q hW hs hPQ U hU hUs
   have hb := massRatio_of_definiteVolume D h2 hv (P + Q + 1) (by omega)
   have e : P + Q + 1 - 1 = P + Q := by omega
   rw [e] at hb

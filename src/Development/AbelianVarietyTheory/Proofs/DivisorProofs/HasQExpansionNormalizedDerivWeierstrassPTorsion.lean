@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointRowsSumEqDivisorSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowSumsTwoThreeClosedFormRealNonIntegerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumRowsInvCubeDerivWeierstrassPStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointRowsSumEqDivisorSeries
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowSumsTwoThreeClosedFormRealNonInteger
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasSumRowsInvCubeDerivWeierstrassP
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate
 open GlobalTheory.QFam GlobalTheory.WpFam
@@ -47,7 +47,7 @@ theorem row_eq (N : ℕ) [NeZero N] (j : ZMod N) :
       congr 1
       ring
     rw [hc]
-    exact (GlobalTheory.T.rowSums_two_three_closedForm_real_nonInteger w him hnot).2
+    exact (_root_.GlobalTheory.WpFam.RowReal.row_real w him hnot).2
 
 theorem main : ∀ (N : ℕ) [NeZero N] (x : Fin 2 → ZMod N), HasQ N (wpd N x) (cD N x) := by
   intro N _ x
@@ -55,7 +55,7 @@ theorem main : ∀ (N : ℕ) [NeZero N] (x : Fin 2 → ZMod N), HasQ N (wpd N x)
   intro τ
   have hπ : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0 := by
     simp [Real.pi_ne_zero, Complex.I_ne_zero]
-  obtain ⟨T, hT, hS⟩ := GlobalTheory.T.torsionPoint_rows_sum_eq_divisor_series N 2 τ x _ (by norm_num) (GlobalTheory.T.hasSum_rows_inv_cube_derivWeierstrassP τ (tors N τ x))
+  obtain ⟨T, hT, hS⟩ := _root_.GlobalTheory.WpFam.RowsSummed.main N 2 τ x _ (by norm_num) (_root_.GlobalTheory.WpFam.hasSum_rows_derivWeierstrassP τ (tors N τ x))
   set q := Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) with hq
   set c0 : ℂ := if x 0 = 0 then ch N (x 1) * (1 + ch N (x 1)) / (1 - ch N (x 1)) ^ 3 else 0 with hc0
   have h0 : cSum N 2 (-1) x 0 = 0 := by simp [cSum]

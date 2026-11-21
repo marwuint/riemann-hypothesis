@@ -122,27 +122,10 @@ def MUD : Prop :=
           NN ϖ p H b kind V ell ν ∧
           y = abelian₂ p H ell • cst lam + (α * LamLess p H ell s₁ (b s₁)) • cst lam' + ν
 
-def DUConst : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ →
-    ∀ (ℓ : ℕ) (p : ℕ → PowerSeries O) (I : Finset ℕ) (b : ℕ → ℕ) (g B y N : ℕ) (c : O)
-      (a : PowerSeries O),
-      (∀ s ∈ insert g I, UnitDist ϖ (ℓ ^ s) (p s)) →
-      ∑ s ∈ I, b s * ℓ ^ s < B * ℓ ^ g →
-      PowerSeries.C (ϖ ^ N) * (PowerSeries.C c * ∏ s ∈ I, p s ^ b s - PowerSeries.C (ϖ ^ y) * a) ∈
-        Ideal.span {p g ^ B} →
-      ϖ ^ y ∣ c
-
 def KillerShift : Prop :=
   ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (γ : Module.End R M)
     (U : Submodule R M), (∀ u ∈ U, γ u ∈ U) →
     ∀ (P : Polynomial R) (w : M), γ w - w ∈ U → Polynomial.aeval γ P w - P.eval 1 • w ∈ U
-
-def InvConst : Prop :=
-  ∀ (k V : Type) [Field k] [AddCommGroup V] [Module k V] (γ : Module.End k V)
-    (U : Submodule k V), (∀ u ∈ U, γ u ∈ U) →
-    ∀ Q₀ : Polynomial k, Q₀.eval 1 ≠ 0 →
-      (∀ v : V, Polynomial.aeval γ ((Polynomial.X - 1) * Q₀) v = 0) →
-      ∀ w : V, γ w - w ∈ U → ∃ w₀ u : V, γ w₀ = w₀ ∧ u ∈ U ∧ w = w₀ + u
 
 def CutPlace : Prop :=
   ∀ (n j : ℕ) [NeZero n] (thick : ZMod n → Prop) [DecidablePred thick], 1 ≤ j → j + 1 ≤ n →

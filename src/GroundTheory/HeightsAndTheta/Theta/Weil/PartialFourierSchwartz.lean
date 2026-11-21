@@ -301,10 +301,6 @@ def partialFourierSndSchwartz (F : 𝓢(V₁ × (EuclideanSpace ℝ ι), E)) : �
   smooth' := contDiff_infty.mpr fun n ↦ contDiff_partialFourierSnd n E F
   decay' k n := exists_bound_iteratedFDeriv_partialFourierSnd n E F k
 
-theorem partialFourierSndSchwartz_apply (F : 𝓢(V₁ × (EuclideanSpace ℝ ι), E)) (x : V₁) (w : (EuclideanSpace ℝ ι)) :
-    partialFourierSndSchwartz F (x, w) = ∫ v, 𝐞 (-inner ℝ v w) • F (x, v) :=
-  partialFourierSnd_apply _ _ _
-
 end
 
 end GroundTheory.Heights₂.Theta

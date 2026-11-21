@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ActWOneApply
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarFundamentalDomainOrthogonalSum
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitExtensionFundamentalDomainStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainFibrationVolumeStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitExtensionFundamentalDomain
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainFibrationVolume
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StabiliserSplittingAdelicStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalUnitaryMovesIsotropicFrameStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalUnitaryMovesIsotropicFrame
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FramesSumByFirstVectorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsotropicFramesSumByOrbitStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsotropicFramesSumByOrbit
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FramesSumInvariantUnderStabiliserStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicFramesUnitaryStableStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicFramesUnitaryStable
 
 noncomputable section
 
@@ -63,9 +63,9 @@ theorem meanP : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   haveI := i1
   haveI := i2
   haveI := i3
-  obtain ⟨hJb, -, -⟩ := GlobalTheory.T.hyperbolic_frames_unitary_stable F E σ hσ M J hJ
-  obtain ⟨tg, lc, sc, t2, bs, act⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ (M + 2) _ hJb (AF F)
-  obtain ⟨tg₁, lc₁, sc₁, t2₁, bs₁, act₁⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)
+  obtain ⟨hJb, -, -⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Unf.Basic.hypOne_basic F E σ hσ M J hJ
+  obtain ⟨tg, lc, sc, t2, bs, act⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ (M + 2) _ hJb (AF F)
+  obtain ⟨tg₁, lc₁, sc₁, t2₁, bs₁, act₁⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ (AF F)
   haveI := tg
   haveI := lc
   haveI := sc
@@ -113,7 +113,7 @@ theorem meanP : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
     refine Subtype.ext (hU1 _ hγU ?_)
     exact (mem_HFinIn_iff _ σ _ _).1 hγ
   obtain ⟨ν, 𝓕N, μP, 𝓕P, hν, h𝓕N, hν0, hνf, hμP, h𝓕P, hPf, hform⟩ :=
-    GlobalTheory.T.split_extension_fundamental_domain (stabilizer₂ (AF F) σ J) (HA (AF F) σ J) ι π hιc hπc hπι (ratP (AF F) σ J) Γ₁
+    _root_.GlobalTheory.CompanionTheory.SplitExtLat.exists_haar_fundamentalDomain (stabilizer₂ (AF F) σ J) (HA (AF F) σ J) ι π hιc hπc hπι (ratP (AF F) σ J) Γ₁
       hUP hι1 hπ1 μ₁ 𝓕₁ h𝓕₁ hfin hK
   refine ⟨μP, 𝓕P, hμP, h𝓕P, hPf, fun g => ?_⟩
   haveI := hν
@@ -191,7 +191,7 @@ theorem meanP : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
     intro u
     rw [lintegral_congr (hterm u), lintegral_tsum, ← ENNReal.tsum_mul_left]
     · refine tsum_congr fun Y => ?_
-      exact GlobalTheory.T.fundamental_domain_fibration_volume π.ker ν ((ratP (AF F) σ J).subgroupOf π.ker) 𝓕N h𝓕N hνf
+      exact _root_.GlobalTheory.CompanionTheory.SW.PeriodisedMean.setLIntegral_tsum_comp_inv_eq π.ker ν ((ratP (AF F) σ J).subgroupOf π.ker) 𝓕N h𝓕N hνf
         (Fin 1 → Fin n → AF F ⊗[F] E) dA (ratA (F := F) (E := E) n) D hD hD1 (ll Y) (hlc Y) (hladd Y)
         (hlsurj Y) (fun γ hγ => hlrat Y γ (Subgroup.mem_subgroupOf.1 hγ)) _ (hslice _)
     · intro Y
@@ -209,7 +209,7 @@ theorem meanP : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
     have := hform (fun _ => 1) measurable_const
     simpa [mul_comm] using this
   rw [hform _ hfm, lintegral_congr hinner, lintegral_const_mul' _ _ hνf.ne, hvol, hyp g⁻¹,
-    GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ M J hJ μ₁ 𝓕₁ hμ₁ h𝓕₁ n _ K hKm, ENNReal.mul_inv (Or.inl hν0) (Or.inl hνf.ne)]
+    _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ M J hJ μ₁ 𝓕₁ hμ₁ h𝓕₁ n _ K hKm, ENNReal.mul_inv (Or.inl hν0) (Or.inl hνf.ne)]
   calc _ = (ν 𝓕N)⁻¹ * ν 𝓕N * ((μ₁ 𝓕₁)⁻¹ * ∫⁻ u in 𝓕₁, ∑' Y : framesE σ J (0 : Matrix (Fin n) (Fin n) E), K (actW (AF F) σ J u⁻¹ (ratTup (AF F) Y.1)) ∂μ₁) := by ring
     _ = _ := by rw [ENNReal.inv_mul_cancel hν0 hνf.ne, one_mul]
 
@@ -221,8 +221,8 @@ theorem unfold_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   haveI := i1
   haveI := i2
   haveI := i3
-  obtain ⟨hJb, he0, hgq⟩ := GlobalTheory.T.hyperbolic_frames_unitary_stable F E σ hσ M J hJ
-  obtain ⟨tg, lc, sc, t2, bs, act⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ (M + 2) _ hJb (AF F)
+  obtain ⟨hJb, he0, hgq⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Unf.Basic.hypOne_basic F E σ hσ M J hJ
+  obtain ⟨tg, lc, sc, t2, bs, act⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ (M + 2) _ hJb (AF F)
   haveI := tg
   haveI := lc
   haveI := sc
@@ -255,7 +255,7 @@ theorem unfold_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     exact hinj.countable
   have hW : ∀ q : framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E),
       ∃ g : UJ (σ : E →+* E) (hypOne J), gact σ g q.1 = e0 E M :=
-    fun q => GlobalTheory.T.global_unitary_moves_isotropic_frame F E σ hσ M J hJ q.1 q.2
+    fun q => _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.WittOne.exists_unitary_e0 F E σ hσ M J hJ q.1 q.2
   choose rr hrr using hW
   let r := fun q => ratH (AF F) σ (hypOne J) (rr q)
   have hφ : Measurable (phiA σ J n Φ) := by
@@ -324,18 +324,18 @@ theorem unfold_frames : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         (u'⁻¹).2
       rw [h6, hmul, h7, e3, hfix, hrinv]
     rw [← e1, ← e2]
-  have key := GlobalTheory.T.quotient_measure_tower _ _ (stabilizer₂ (AF F) σ J).subtype hPc.isClosedEmbedding_subtypeVal μ μP Γ
+  have key := _root_.GlobalTheory.CompanionTheory.SW.Averaging.lintegral_sum_cosets_average _ _ (stabilizer₂ (AF F) σ J).subtype hPc.isClosedEmbedding_subtypeVal μ μP Γ
     (ratP (AF F) σ J) 𝓕 𝓕P h𝓕 h𝓕P hPf hΓ _ r (fun q => ratH_mem _ σ _ _) huniq (phiA σ J n Φ) hφ hinv
   have hA : ∀ h : HA (AF F) σ (hypOne J),
       ∑' Y : framesE σ (hypOne J) (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E),
         Φ (actW (AF F) σ _ h⁻¹ (ratTup (AF F) Y.1)) = ∑' q, phiA σ J n Φ (r q * h) := by
     intro h
-    rw [GlobalTheory.T.isotropic_frames_sum_by_orbit F E σ M J n rr hrr (fun Y => Φ (actW (AF F) σ _ h⁻¹ (ratTup (AF F) Y)))]
+    rw [_root_.GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Unf.tsum_framesOne F E σ M J n rr hrr (fun Y => Φ (actW (AF F) σ _ h⁻¹ (ratTup (AF F) Y)))]
     refine tsum_congr fun q => tsum_congr fun X => ?_
     have e3 : (r q)⁻¹ = ratH (AF F) σ _ (rr q)⁻¹ := ratH_inv _ σ _ _
     rw [mul_inv_rev, hmul, e3, actW_ratH']
-  rw [GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ (M + 2) _ hJb μ 𝓕 hμ h𝓕 (n + 1) _ Φ hΦ,
-    GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ (M + 2) _ hJb μ 𝓕 hμ h𝓕 1 _ Ψ hΨ]
+  rw [_root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ (M + 2) _ hJb μ 𝓕 hμ h𝓕 (n + 1) _ Φ hΦ,
+    _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ (M + 2) _ hJb μ 𝓕 hμ h𝓕 1 _ Ψ hΨ]
   congr 1
   calc _ = ∫⁻ h in 𝓕, ∑' q, phiA σ J n Φ (r q * h) ∂μ := lintegral_congr hA
     _ = _ := key

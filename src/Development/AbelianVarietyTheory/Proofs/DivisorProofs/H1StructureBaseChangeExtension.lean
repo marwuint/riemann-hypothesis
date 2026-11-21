@@ -1,13 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensHomTmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsPullForm
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictStructureSheafAffineBasisPull1BijectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenPreimageEqBaseChangeSqZeroAugmentationStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeTensorSectionsHomBijectiveStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictStructureSheafAffineBasisPull1Bijective
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenPreimageEqBaseChangeSqZeroAugmentation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeTensorSectionsHomBijective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NaturalBijectiveCoefficientsPull1BijectiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpensPreimageBaseChangeIsBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffinePairPreimageBaseChangeFstIsBasisStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeCoefficientComparisonCommPairPullbackStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpensPreimageBaseChangeIsBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffinePairPreimageBaseChangeFstIsBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeCoefficientComparisonCommPairPullback
 import Development.AbelianVarietyTheory.Definitions.Divisors.PrimitiveStructureSheafDegTwoVanish
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUnobstructed
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
@@ -32,13 +32,13 @@ theorem isAffineHom_of_isPullback {X₀ X₁ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R
 theorem res_bijective (q : R₁ →ₐ[R₀] R₀) (hq : ∀ y y', q y = 0 → q y' = 0 → y * y' = 0) {X₀ X₁ : Scheme.{0}}
     {s₀ : X₀ ⟶ Sp R₀} {s₁ : X₁ ⟶ Sp R₁} {pr : X₁ ⟶ X₀} (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)))
     [IsAffineHom pr] : Function.Bijective (CoefMap.restrict (OAff s₁) (preAff pr)).pull1 :=
-  have H := GlobalTheory.T.affineOpensPreimage_baseChange_isBasis X₀ X₁ pr (GlobalTheory.T.exists_open_preimage_eq_baseChange_sqZero_augmentation R₀ R₁ q hq X₀ X₁ s₀ s₁ pr hp)
-  GlobalTheory.T.restrict_structureSheaf_affineBasis_pull1_bijective R₁ X₁ s₁ _ (preAff pr) H.1 H.2
+  have H := _root_.GlobalTheory.Obs.BC.preAff_basis X₀ X₁ pr (_root_.GlobalTheory.SqZeroBC.preimage_surj R₀ R₁ q hq X₀ X₁ s₀ s₁ pr hp)
+  _root_.GlobalTheory.Obs.BasisO.restrict_bijective_one R₁ X₁ s₁ _ (preAff pr) H.1 H.2
 
 theorem tens_bijective {X₀ X₁ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} {s₁ : X₁ ⟶ Sp R₁} {pr : X₁ ⟶ X₀}
     (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) [IsAffineHom pr] :
     Function.Bijective (tensCoef hp.w).pull1 := by
-  exact GlobalTheory.T.natural_bijective_coefficients_pull1_bijective R₁ _ _ _ _ (tensCoef hp.w).naturality (tensCoef hp.w).smul fun U ↦ GlobalTheory.T.baseChangeTensorSectionsHom_bijective R₀ R₁ X₀ X₁ s₀ s₁ pr hp U.unop _
+  exact GlobalTheory.T.natural_bijective_coefficients_pull1_bijective R₁ _ _ _ _ (tensCoef hp.w).naturality (tensCoef hp.w).smul fun U ↦ _root_.GlobalTheory.Obs.BC.tensHom_bijective R₀ R₁ X₀ X₁ s₀ s₁ pr hp U.unop _
 
 def trEquiv (q : R₁ →ₐ[R₀] R₀) (hq : ∀ y y', q y = 0 → q y' = 0 → y * y' = 0) (X₀ X₁ : Scheme.{0})
     (s₀ : X₀ ⟶ Sp R₀) (s₁ : X₁ ⟶ Sp R₁) (pr : X₁ ⟶ X₀) (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) :
@@ -97,8 +97,8 @@ theorem extendedCoefficients_pullback_compat (q : R₁ →ₐ[R₀] R₀) (hq : 
     intro x x' hx
     obtain ⟨y, rfl⟩ := (pairRes_bijective f₁ t₁).1.2 x
     obtain ⟨y', rfl⟩ := (pairRes_bijective f₁ t₁).1.2 x'
-    have HH := GlobalTheory.T.affinePairPreimage_baseChange_fst_isBasis X₀ X₁ Y₀ Y₁ pr pr' f₀ f₁ e (GlobalTheory.T.exists_open_preimage_eq_baseChange_sqZero_augmentation R₀ R₁ q hq Y₀ Y₁ t₀ t₁ pr' hp')
-    have B := GlobalTheory.T.restrict_structureSheaf_affineBasis_pull1_bijective R₁ Y₁ t₁ _ (pairBC pr pr' e ⋙ pairFst f₁) HH.1 HH.2
+    have HH := _root_.GlobalTheory.Obs.BC.pairBC_fst_basis X₀ X₁ Y₀ Y₁ pr pr' f₀ f₁ e (_root_.GlobalTheory.SqZeroBC.preimage_surj R₀ R₁ q hq Y₀ Y₁ t₀ t₁ pr' hp')
+    have B := _root_.GlobalTheory.Obs.BasisO.restrict_bijective_one R₁ Y₁ t₁ _ (pairBC pr pr' e ⋙ pairFst f₁) HH.1 HH.2
     have k : ∀ z, Φ.pull1 ((pairRes f₁ t₁).pull1 z) =
         (CoefMap.restrict (OAff t₁) (pairBC pr pr' e ⋙ pairFst f₁)).pull1 z := by
       intro z; obtain ⟨z, rfl⟩ := H1.mk_surjective _ z; rfl
@@ -113,7 +113,7 @@ theorem extendedCoefficients_pullback_compat (q : R₁ →ₐ[R₀] R₀) (hq : 
     refine CoefMap.pullCohomologyOne_eq_of_natTrans ((tensCoef hp.w).comp (pullBC e h₁))
       ((extMap R₁ (pairPull h₀)).comp (tensPair hp'.w e)) (𝟙 (pairSnd f₀)) (fun p b ↦ ?_) _
     refine (congrArg _ (mp_id (ext R₁ (OAff s₀)) _ b)).trans ?_
-    exact GlobalTheory.T.baseChange_coefficient_comparison_comm_pairPullback R₀ R₁ X₀ X₁ Y₀ Y₁ s₀ s₁ pr t₀ t₁ pr' hp.w hp'.w f₀ f₁ h₀ h₁ e p b
+    exact _root_.GlobalTheory.Obs.BC.tensPair_extMap_pairPull R₀ R₁ X₀ X₁ Y₀ Y₁ s₀ s₁ pr t₀ t₁ pr' hp.w hp'.w f₀ f₁ h₀ h₁ e p b
   have k2 : Φ.pull1 ((pairRes f₁ t₁).pull1 c') = (tensPair hp'.w e).pull1 ((extMap R₁ (pairRes f₀ t₀)).pull1
       (trEquiv q hq Y₀ Y₁ t₀ t₁ pr' hp' c')) := by
     have a2 : Φ.pull1 ((pairRes f₁ t₁).pull1 c') =

@@ -21,7 +21,4 @@ theorem base_fields_primes_ok : ∀ (B : Base) (X : PreX B.toPre),
   ⟨GlobalTheory.Mem.FieldsLaws.fields_ok B, (GlobalTheory.BasePrimes.primes_ok B X).1, B.wts_isOk, base_fOk B,
     (B.primes_sizes X).g_big 0⟩
 
-example (B : Base) (X : PreX B.toPre) : letI := B.fields.starE; FOk B.fields.emb B.embLL :=
-  (base_fields_primes_ok B X).2.2.2.1
-
 end GlobalTheory.Mem.Col2

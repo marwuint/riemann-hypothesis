@@ -1,8 +1,10 @@
 import Mathlib
 import Formalism.LocalToGlobal.KernelLattices.TopPin
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsPin
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelOperatorMapsStabiliserEquivariantFormsStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClassSumTermLawStabiliserTargetStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelOperatorMapsStabiliserEquivariantForms
+import Formalism.LocalToGlobal.KernelLattices.FirstKernelLawReading
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FormsAre
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClassSumTermLawStabiliserTarget
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KerTieEntire
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemberFormsStableOfReferenceTuple
 
@@ -16,9 +18,9 @@ theorem kFi_of_tie : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.I
   have second : ∀ u μ, DV.Used D μ → ∀ i < D.R.m, ∀ φ ∈ (ex.tw.fm u μ).Fi i, (D.chTw u μ).K i φ ∈ (ex.tw.fm u μ).Fi (i + 1) := by
     intro u μ hμ
     obtain ⟨G, hFA, hSP⟩ := hF u μ hμ
-    exact GlobalTheory.T.kernelOperator_maps_stabiliserEquivariant_forms D u (D.chTw u μ) _ _ (ex.tw.fm u μ) (t.O u μ) G hFA (t.unf u μ)
+    exact _root_.GlobalTheory.KerJ.FiCore.K_mem_Fi D u (D.chTw u μ) _ _ (ex.tw.fm u μ) (t.O u μ) G hFA (t.unf u μ)
       (fun i hi c c' => GlobalTheory.KerTieEntire.kerTie_entire D L hT Gi Gl K Y cX ex t u μ i hi c c')
-      (GlobalTheory.T.classSum_term_law_stabiliser_target D L hT Gi Gl K Y cX ex t hC u μ G hSP)
+      (_root_.GlobalTheory.KerJ.term_law D L hT Gi Gl K Y cX ex t hC u μ G hSP)
   have h0 : DV.Used D D.what₂.mu0 := by
     unfold DV.Used
     exact Or.inl rfl

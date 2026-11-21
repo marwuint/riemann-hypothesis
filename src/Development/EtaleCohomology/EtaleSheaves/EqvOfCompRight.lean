@@ -63,13 +63,6 @@ theorem eqv_of_comp_left {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hf : 
   rw [h] at this
   exact (Function.Bijective.of_comp_iff' (hf n) _).1 this
 
-theorem eqv_of_comp_right {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hg : Eqv R g F) (hfg : Eqv R (f ≫ g) F) :
-    Eqv R f F := fun n => by
-  have h : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x
-  have := hfg n
-  rw [h] at this
-  exact (Function.Bijective.of_comp_iff _ (hg n)).1 this
-
 end
 
 theorem CechSigma_of (hL : LevelIso) : ZariskiLocalCech.CechSigma := by

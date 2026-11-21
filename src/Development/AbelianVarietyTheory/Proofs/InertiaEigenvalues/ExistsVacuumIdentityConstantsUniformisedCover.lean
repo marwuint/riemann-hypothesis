@@ -2,7 +2,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValRingLocRing
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesFirst
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartIndependenceUnconditional
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UniformisedCoverIsDictionaryFrameCompatibleStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UniformisedCoverIsDictionaryFrameCompatible
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCcIsEquivAtSerOfOneMapRowOfFive
 open NumberField Matrix Complex IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTheory.ClsVal
@@ -38,7 +38,7 @@ theorem exists_ccIs_cover : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T
     exact ⟨hT.laws.muVal _ (inR i) _ hσ0, fun γ hγ h => (hu.1 γ h).trans (by rw [hu.2.2.1 γ hγ, one_mul]; rfl)⟩
   obtain ⟨hmu, hmuQ⟩ := hcast _ hV
   obtain ⟨-, -, -, -, -, -, hr1, hrt, -, -, hdom, -⟩ := hM (T.dict ((i : ℕ) + 1) T.σ₀ 1).1
-  obtain ⟨hD, hFT, -, hσ₂⟩ := GlobalTheory.T.uniformisedCover_isDictionary_frameCompatible D G Pl0 T0 A T R F κ v₀ hL hlev hgrp hfam hmods hthP hT i hstd hV C hC
+  obtain ⟨hD, hFT, -, hσ₂⟩ := _root_.GlobalTheory.LevelSeries.cover_dict_frameTie D G Pl0 T0 A T R F κ v₀ hL hlev hgrp hfam hmods hthP hT i hstd hV C hC
   exact GlobalTheory.AdTh.CcEx.exists_ccIs_of_pair GlobalTheory.chartIndependence_unconditional hP (hχ ▸ hmu) hmuQ (rank_Wc i) hrt
     C.U₂ hσ₂ hC.2.2.2.1 hr1 hC.2.1 hdom hV0 h1 h2 h3 h4 h5 _ _ hD.2.2.1 (fun k τ => hD.2.2.2.1 k τ.1 τ.2)
     (fun k => (hFT k).1) (hC5.thP.vP i A.μ0).1 _

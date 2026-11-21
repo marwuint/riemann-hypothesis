@@ -2,8 +2,8 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasDerivAtZeroAndIsTheta
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CmAdeleIdempotentOfPlacePropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitianStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CmAdeleIdempotentOfPlaceProperties
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitian
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasDerivAtHeisenbergMatrixCoeffRealLineSkewStatement
 
 noncomputable section
@@ -36,7 +36,7 @@ theorem wAt_eq_lineAt (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (w : 
     wAt (.inr τ) w = lineAt θ τ (compAt θ τ w) 1 := by
   obtain ⟨σ, hσ⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hθ
   obtain ⟨-, hfin, hcomp⟩ := GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ (compAt θ τ w)
-  obtain ⟨-, -, -, -, hfi, -, hth⟩ := GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D
+  obtain ⟨-, -, -, -, hfi, -, hth⟩ := _root_.GlobalTheory.PlaceTensor.idem_spec D
   ext i j
   rw [← sub_eq_zero]
   apply hσ.ext
@@ -105,7 +105,7 @@ private theorem flow_lemma {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hψ : 
       Complex.exp (-(phase lam S T (lineAt θ τ z 1) (lineAt θ τ z 1) +
         Complex.I * phase lam S T (lineAt θ τ (Complex.I • (sT * z * sS)) 1) (lineAt θ τ z 1)) / 2) *
         ipO μ 𝓕 f g := by
-  have U := GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ
+  have U := _root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ
   set J := Complex.I • (sT * z * sS) with hJ
   obtain ⟨hLc, hL0, -⟩ := GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ z
   obtain ⟨hLc', hL0', -⟩ := GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ J
@@ -170,7 +170,7 @@ theorem compress : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
       Complex.I * phase lam S T (lineAt θ τ (Complex.I • (sT * compAt θ τ w * sS)) 1)
         (lineAt θ τ (compAt θ τ w) 1)) / 2)), ?_⟩
   intro f g hf hg hvf hvg
-  have U := GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ
+  have U := _root_.GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T μ 𝓕 hψ hμ
   obtain ⟨-, hL0, -⟩ := GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ (compAt θ τ w)
   have h1 := GlobalTheory.WeilVacMove.isTheta_heisO_real hψ (hL0 1) hf
   rw [wAt_eq_lineAt hθ τ w, (U _ g h1 hg).2.1, (U f g hf hg).2.1,

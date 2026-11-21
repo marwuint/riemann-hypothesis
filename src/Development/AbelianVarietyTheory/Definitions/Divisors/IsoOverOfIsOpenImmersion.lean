@@ -236,9 +236,6 @@ def toSec (f : H0 p B ⊤) : B.Sec := (Equiv.ofBijective _ (bijective_ofSec_top 
 @[simp] theorem ofSec_toSec (f : H0 p B ⊤) : ofSec p ⊤ (toSec f) = f := by
   exact (Equiv.ofBijective _ (bijective_ofSec_top (p := p) (B := B))).apply_symm_apply f
 
-theorem ofSec_toSec' (O : Y.Opens) (f : H0 p B ⊤) : ofSec p O (toSec f) = restr le_top f := by
-  rw [← restr_ofSec (le_top : O ≤ ⊤), ofSec_toSec]
-
 theorem ger_toSec (f : H0 p B ⊤) (i : B.ι) (y : Y) (hi : y ∈ B.U i) :
     ger y hi ((toSec f).f i) = germ i y (memTop y) hi f := by
   rw [← germ_ofSec (p := p) i y (memTop y) hi, ofSec_toSec]
@@ -308,17 +305,6 @@ def comap (f : Λ' → Λ) (hf : ∀ a b, f (a + b) = f a + f b) : Common fun a 
   idx a := C.idx (f a)
   mem a := C.mem (f a)
   add a b y j j' h h' := (congrArg (fun x => C.θ x y j j') (hf a b)).trans (C.add _ _ y j j' h h')
-
-def powers {L : LB Y} (hL : L.IsLB) : Common (lbZPow L) where
-  isLB := Twist.isLB_lbZPow hL
-  J := L.ι
-  U := L.U
-  cover := exists_chart hL
-  idx _ j _ := j
-  mem _ _ _ := mem_zpow_U
-  add a b y j j' h h' := by
-    rw [tr_zpow L _ y (mem_zpow_U.2 h) (mem_zpow_U.2 h'), tr_zpow L _ y (mem_zpow_U.2 h) (mem_zpow_U.2 h'),
-      tr_zpow L _ y (mem_zpow_U.2 h) (mem_zpow_U.2 h'), zpow_add]
 
 abbrev addChart {a b s : Λ} (h : a + b = s) : ProdChart (B a) (B b) (B s) where
   isLB₁ := C.isLB a
@@ -422,37 +408,10 @@ theorem ideal_ext_stalk {I I' : Y.IdealSheafData} (h : ∀ y, stalkId I y = stal
 
 def baseIdeal (W : Submodule k (H0 p B ⊤)) : Y.IdealSheafData := cutIdeal hB fun s : W => toSec s.1
 
-theorem stalkId_baseIdeal (W : Submodule k (H0 p B ⊤)) (i : B.ι) (y : Y) (hi : y ∈ B.U i) :
-    stalkId (baseIdeal hB W) y = Ideal.span (Set.range fun s : W => germ i y (memTop y) hi s.1) := by
-  rw [baseIdeal, stalkId_cutIdeal hB _ i y hi]
-  congr 2
-  funext s
-  exact ger_toSec s.1 i y hi
-
 theorem mem_support_baseIdeal (W : Submodule k (H0 p B ⊤)) (y : Y) :
     y ∈ (baseIdeal hB W).support ↔ ∀ s ∈ W, y ∉ nonzeroLocus (toSec s) := by
   rw [baseIdeal, mem_support_cutIdeal]
   exact ⟨fun h s hs => h ⟨s, hs⟩, fun h s => h s.1 s.2⟩
-
-theorem baseIdeal_span {ι : Type} (v : ι → B.Sec) :
-    baseIdeal hB (Submodule.span k (Set.range fun i => ofSec p ⊤ (v i))) = cutIdeal hB v := by
-  refine ideal_ext_stalk fun y => ?_
-  obtain ⟨j, hj⟩ := exists_chart hB y
-  rw [stalkId_baseIdeal hB _ j y hj, stalkId_cutIdeal hB v j y hj]
-  apply le_antisymm
-  · rw [Ideal.span_le]
-    rintro _ ⟨⟨s, hs⟩, rfl⟩
-    show germ j y (memTop y) hj s ∈ _
-    induction hs using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨i, rfl⟩ := hx
-      exact Ideal.subset_span ⟨i, (germ_ofSec j y (memTop y) hj (v i)).symm⟩
-    | zero => rw [map_zero]; exact Ideal.zero_mem _
-    | add a b _ _ ha hb => rw [map_add]; exact Ideal.add_mem _ ha hb
-    | smul c a _ ha => rw [germ_smul]; exact Ideal.mul_mem_left _ _ ha
-  · rw [Ideal.span_le]
-    rintro _ ⟨i, rfl⟩
-    exact Ideal.subset_span ⟨⟨ofSec p ⊤ (v i), Submodule.subset_span ⟨i, rfl⟩⟩, germ_ofSec j y (memTop y) hj (v i)⟩
 
 theorem stalkId_comap_baseIdeal (W : Submodule k (H0 p B ⊤)) (r : T ⟶ Y) (j : (B.pull r).ι) (z : T)
     (hj : z ∈ (B.pull r).U j) : stalkId ((baseIdeal hB W).comap r) z =
@@ -694,17 +653,5 @@ def trans (M' : Modif M.str M.opn D) : Modif p U D where
   dense := M'.dense
 
 end Modif
-
-example : ∃ (W : Submodule ℚ (H0 (PSpace.str ℚ 1) (ProjSpace.O1 ℚ 1) ⊤))
-    (M : Modif (PSpace.str ℚ 1) (ProjSpace.chart ℚ 1 1) 1)
-    (Δ : Cartier ((baseIdeal (ProjSpace.O1_isLB ℚ 1) W).comap M.σ)), nonzeroLocus Δ.t = M.opn ∧ M.opn ≠ ⊤ := by
-  have hv := Adelic.projSys.isVariety ℚ 1 le_rfl
-  have : IsIntegral (PSpace ℚ 1) := hv.isIntegral
-  have hg := Adelic.projSys.gen_mem ℚ 1 1
-  have e := ProjSpace.nonzeroLocus_coord ℚ 1 1
-  let M := Modif.refl hv.smooth hv.proj ((ProjSpace.chart ℚ 1 1).isOpen.dense ⟨_, hg⟩)
-  let Δ := Cartier.ofSec (ProjSpace.O1_isLB ℚ 1) (ProjSpace.coord ℚ 1 1) (e.ge hg)
-  exact ⟨_, M, { Δ with cut := (baseIdeal_span _ _).symm.trans (Scheme.IdealSheafData.comap_id _).symm }, e,
-    fun h => AmpleModel.coord_ne_top ℚ (e.trans h)⟩
 
 end GlobalTheory.CompHS

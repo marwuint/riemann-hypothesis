@@ -66,6 +66,4 @@ theorem latBasO_holds (a : ℕ) (Y : TupV (E := E) v n a) : LatBasO σ J ψ v Λ
   subst hm
   exact ⟨b, hli, hmem⟩
 
-theorem resIdx_holds' : ResIdx v := resIdx_holds v
-
 end PI.OmLocU

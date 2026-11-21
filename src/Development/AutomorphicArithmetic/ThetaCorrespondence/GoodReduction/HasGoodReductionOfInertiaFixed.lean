@@ -1,11 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrCongrOfResidueFixedByDecompositionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDiscreteValuationRingFixedFieldInertiaStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformizerOfValuationRingFixedFieldInertiaStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvrCongrOfResidueFixedByDecomposition
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDiscreteValuationRingFixedFieldInertia
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformizerOfValuationRingFixedFieldInertia
 import Development.AutomorphicArithmetic.ThetaCorrespondence.GoodReduction.ExistsSchemeModelDescentUnramified
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasGoodReductionOfUnramifiedAbelianSchemeModelStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasGoodReductionOfUnramifiedAbelianSchemeModel
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
 open scoped CategoryTheory.Obj CategoryTheory.MonObj Pointwise
@@ -57,7 +57,7 @@ theorem UpperTheory.Lit.Nos.C5.hasGoodReduction_of_inertiaFixed : ∀ (R K Ω : 
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA hgood
   set K' := IntermediateField.fixedField (inertia K V) with hK'
   set W := V.comap (algebraMap K' Ω) with hW
-  haveI : IsDiscreteValuationRing W := GlobalTheory.T.isDiscreteValuationRing_fixedField_inertia_alt R K Ω V hV
+  haveI : IsDiscreteValuationRing W := _root_.GlobalTheory.InertiaFixedDVR.isDiscreteValuationRing_fixedField_inertia R K Ω V hV
   have memW : ∀ z : K', z ∈ W ↔ algebraMap K' Ω z ∈ V := fun z => ValuationSubring.mem_comap
   have e1 : ∀ a : K, algebraMap K' Ω (algebraMap K K' a) = algebraMap K Ω a :=
     fun a => (IsScalarTower.algebraMap_apply K K' Ω a).symm
@@ -79,7 +79,7 @@ theorem UpperTheory.Lit.Nos.C5.hasGoodReduction_of_inertiaFixed : ∀ (R K Ω : 
       rw [UpperTheory.Lit.Nos.C5.val_lt_one_iff W hx, UpperTheory.Lit.Nos.C5.val_lt_one_iff V hx', memW, map_inv₀]
   have hunr : (maximalIdeal R).map (algebraMap R W) = maximalIdeal W := by
     obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R
-    obtain ⟨hlt, hdiv⟩ := GlobalTheory.T.uniformizer_of_valuationRing_fixedField_inertia R K Ω V hV π hπ
+    obtain ⟨hlt, hdiv⟩ := _root_.GlobalTheory.InertiaFixedUniformizer.uniformizer_fixedField_inertia R K Ω V hV π hπ
     rw [hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]
     apply le_antisymm
     · rw [Ideal.span_le, Set.singleton_subset_iff]
@@ -126,7 +126,7 @@ theorem UpperTheory.Lit.Nos.C5.hasGoodReduction_of_inertiaFixed : ∀ (R K Ω : 
   have hres : ∀ x : W, (∀ σ : K' ≃ₐ[K] K', σ ∈ D → ∀ y : W, σ (algebraMap W K' x) = algebraMap W K' y → y - x ∈ maximalIdeal W) →
       ∃ r : R, x - algebraMap R W r ∈ maximalIdeal W := by
     intro x H
-    obtain ⟨r, hr⟩ := GlobalTheory.T.exists_dvr_congr_of_residue_fixed_by_decomposition R K Ω V hV (algebraMap K' Ω x) ((memW x).1 x.2) (fun σ hσ => by
+    obtain ⟨r, hr⟩ := _root_.GlobalTheory.ResidueFixed.residue_fixed_mem R K Ω V hV (algebraMap K' Ω x) ((memW x).1 x.2) (fun σ hσ => by
       have hτD : res σ hσ ∈ D := ⟨σ, hσ, fun _ => rfl⟩
       have hy : (res σ hσ x : K') ∈ W := by
         rw [memW]; exact (hσmem σ hσ _).2 ((memW x).1 x.2)
@@ -136,4 +136,4 @@ theorem UpperTheory.Lit.Nos.C5.hasGoodReduction_of_inertiaFixed : ∀ (R K Ω : 
     exact hr
   obtain ⟨G, _, hG, e, he⟩ := hgood
   obtain ⟨X, a, g, ha, hg, hc⟩ := UpperTheory.Lit.Nos.C4.exists_scheme_model_descent_unramified R K W K' hunr D hD1 hD2 hres A hA G hG e he
-  exact GlobalTheory.T.hasGoodReduction_of_unramified_abelianScheme_model R K W K' hunr A hA G hG e he X a g ha hg hc
+  exact _root_.GlobalTheory.GoodDescW.hasGoodReduction_of_model R K W K' hunr A hA G hG e he X a g ha hg hc

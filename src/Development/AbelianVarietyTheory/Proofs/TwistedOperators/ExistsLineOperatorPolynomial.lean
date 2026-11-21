@@ -3,9 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchSchwartzDerivativeHeisenbergLineStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionUnitaryCompactStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineActionSumStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchSchwartzDerivativeHeisenbergLine
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionUnitaryCompact
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilLineActionSum
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
@@ -28,9 +29,9 @@ theorem pairDer (hP : GlobalTheory.FunPr.Hypotheses₂) {F E : Type} [Field F] [
     ∀ γ ∈ Lines σ W, ∃ δ : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d), ∀ f ∈ M.Pol ψ τ,
       δ f ∈ M.Pol ψ τ ∧ ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f (δ f) := by
   intro γ hγ
-  obtain ⟨m, u, v, c, c₀, hat, hQ⟩ := GlobalTheory.T.weil_line_action_sum hP M ψ χX χW om hcm hψ hW γ hγ
-  choose Du hDu using fun i => GlobalTheory.T.exists_archSchwartz_derivative_heisenbergLine M ψ hψ (u i) (hat i).1
-  choose Dv hDv using fun i => GlobalTheory.T.exists_archSchwartz_derivative_heisenbergLine M ψ hψ (v i) (hat i).2
+  obtain ⟨m, u, v, c, c₀, hat, hQ⟩ := _root_.GlobalTheory.OscQuad.deriv_line_quad hP M ψ χX χW om hcm hψ hW γ hγ
+  choose Du hDu using fun i => _root_.GlobalTheory.HeisDeriv.exists_actsD_heisLine M ψ hψ (u i) (hat i).1
+  choose Dv hDv using fun i => _root_.GlobalTheory.HeisDeriv.exists_actsD_heisLine M ψ hψ (v i) (hat i).2
   have closed : ∀ w, At (evI F) w → ∀ D : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d),
       (∀ f : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ w) f (D f)) → ∀ f ∈ M.Pol ψ τ, D f ∈ M.Pol ψ τ := by
     intro w hw D hD f hf
@@ -43,7 +44,7 @@ theorem pairDer (hP : GlobalTheory.FunPr.Hypotheses₂) {F E : Type} [Field F] [
     refine Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ hf)
     exact closed _ (hat i).1 _ (hDu i) _ (closed _ (hat i).2 _ (hDv i) _ hf)
   · intro r hr x
-    choose F₁ hF₁ using fun t : ℝ => GlobalTheory.T.weil_action_unitary_compact hP M ψ χX χW om hcm hψ hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f
+    choose F₁ hF₁ using fun t : ℝ => _root_.GlobalTheory.ArchLocality.acts_arch hP M ψ χX χW om hcm hψ hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f
     have hd := hQ f (fun i => Dv i f) (fun i => Du i (Dv i f)) (fun i => hDv i f) (fun i => hDu i _) F₁ hF₁
       (fun i => evI F (x i))
     have e : (fun t => om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) f r) x) =

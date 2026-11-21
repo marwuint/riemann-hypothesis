@@ -3,9 +3,9 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.Pull1
 import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularWeightMonotoneRegularization
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlatWeightExtends
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagBundlePartialBlockMapStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagBundlePartialBlockMap
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncAdaptedAtlasProjection
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PartialFlagBundleMetricLineStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PartialFlagBundleMetricLine
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFunctorialHolomorphic
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFubiniStudyPositive
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothFunctionAsDegreeZeroMetric
@@ -83,13 +83,13 @@ theorem step_member (hR : RegGlobalStatement) (hP : PullbackStatement) [Fintype 
     ∃ (ph : R.X → ℝ) (phT : ℝ → R.X → ℝ) (line : ℝ → HermLine ι) (C₅ C t₀ : ℝ),
       IsStepMember BM R pr hp p ph phT line C₅ C t₀ := by
   have hv := isBlockMap_stepV M p
-  obtain ⟨e', Rp, -, prp, hq, hpts, hch⟩ := GlobalTheory.T.flag_bundle_partial_block_map K ι Φ y Ψ N j M n e BM.Rb hdim (· = p) (PartialFlagBlocks M p)
+  obtain ⟨e', Rp, -, prp, hq, hpts, hch⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.main K ι Φ y Ψ N j M n e BM.Rb hdim (· = p) (PartialFlagBlocks M p)
     (stepIdx M p) Subtype.val (stepV M p) hv (mem_range_step M p)
   obtain ⟨pL', sL', nL', B, hB⟩ := GlobalTheory.CompanionTheory.Ar.PB.SncPull.pullback_projection e' n Rp.X BM.Rb.X Rp.A BM.Rb.A BM.Bat prp hq BM.L BM.s BM.nb BM.m
     BM.W BM.potL BM.sec BM.snc BM.norm_le hch
   have hkeep : ∀ k, ((∀ p', M.blk p' ≠ some k) ∨ M.blk p = some k) →
       k ∈ Set.range (Subtype.val : PartialFlagBlocks M p → K) := fun k hk => ⟨⟨k, hk⟩, rfl⟩
-  obtain ⟨ph', C₅, hw1, -, hsw, hgb⟩ := GlobalTheory.T.partial_flag_bundle_metric_line K ι Φ y Ψ N j M n e BM p (PartialFlagBlocks M p) (stepIdx M p)
+  obtain ⟨ph', C₅, hw1, -, hsw, hgb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.stepWeight_exists K ι Φ y Ψ N j M n e BM p (PartialFlagBlocks M p) (stepIdx M p)
     Subtype.val (stepV M p) hv hkeep e' Rp prp hq B hpts pL' sL' nL' hB
   have hn' : ∀ x, logNormSec (BM.L.pullback prp hq.1) (fun x y => BM.s (prp x) (prp y)) x ≤ 0 :=
     fun x => BM.norm_le (prp x)
@@ -358,7 +358,7 @@ theorem flagAn_of_res (hR : RegGlobalStatement) (hP : PullbackStatement) [Fintyp
 
 theorem flagAn_exists : Inputs → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n), IsArithVar (mCoordIdeal y) (d + 2) → d + 1 = n + Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) → Nonempty (FlagAn BM d) := by
   intro hI K _ ι _ Φ _ y Ψ _ _ N j M n d BM harith hd
-  obtain ⟨e, R, he, pr, hp, hpts, hch⟩ := GlobalTheory.T.flag_bundle_partial_block_map K ι Φ y Ψ N j M n (d + 1) BM.Rb hd (fun _ => True) K ι id id
+  obtain ⟨e, R, he, pr, hp, hpts, hch⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.main K ι Φ y Ψ N j M n (d + 1) BM.Rb hd (fun _ => True) K ι id id
     isBlockMap_id (fun k => ⟨fun _ => by
       by_cases h : ∀ p', M.blk p' ≠ some k
       · exact Or.inl h

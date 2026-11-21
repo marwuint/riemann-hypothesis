@@ -1,8 +1,8 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.InFrameStabilizer
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsFieldOrExistsSwappedIdempotentOfQuadraticEtaleStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittExtensionHermitianFramesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittFreeTuplesSplitQuadraticEtaleStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittExtensionHermitianFrames
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittFreeTuplesSplitQuadraticEtale
 
 open GlobalTheory.SgAlg Matrix
 
@@ -14,8 +14,8 @@ theorem witt_free_tuples_fin {E : Type} [CommRing E] (σ : E →+* E) (hσ : IsQ
     ∃ g, IsUn σ J g ∧ g * Y = Y' := by
   rcases GlobalTheory.T.isField_or_exists_swapped_idempotent_of_quadraticEtale σ hσ with hF | hS
   · letI := hF.toField
-    exact GlobalTheory.T.witt_extension_hermitian_frames σ hσ J hJ Y Y' hY hY' hP
-  · exact GlobalTheory.T.witt_free_tuples_split_quadratic_etale σ hσ hS J hJ Y Y' hY hY' hP
+    exact _root_.GlobalTheory.SgAlg.witt_free_field σ hσ J hJ Y Y' hY hY' hP
+  · exact _root_.GlobalTheory.SgAlg.WittSplit.witt_split σ hσ hS J hJ Y Y' hY hY' hP
 
 theorem free_reindex {E : Type} [CommRing E] {n : ℕ} {a b : Type} [Fintype a] [DecidableEq a]
     [Fintype b] [DecidableEq b] (e : b ≃ a) {X : Matrix (Fin n) a E} (hX : Free X) :

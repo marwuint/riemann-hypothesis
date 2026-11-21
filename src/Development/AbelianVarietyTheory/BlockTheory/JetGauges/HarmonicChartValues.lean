@@ -41,11 +41,4 @@ def NabUnique : Prop :=
       (F : Fin n → SecAt Xo c y k) (P : MvPolynomial (LtN Dw n) c.F), IsHarmonic c P →
         sysVal Xo c nab y k F P = sysVal Xo c nab' y k F P
 
-example {n : ℕ} (x : LtN Dw n) : IsHarmonic c (MvPolynomial.X x : MvPolynomial (LtN Dw n) c.F) := by
-  classical
-  intro τ i i'
-  refine Finset.sum_eq_zero fun b _ => ?_
-  rw [MvPolynomial.pderiv_X, Pi.single_apply]
-  split_ifs <;> simp
-
 end GlobalTheory.IndefiniteRowSideFullHecke.HarmonicSystemChartValues

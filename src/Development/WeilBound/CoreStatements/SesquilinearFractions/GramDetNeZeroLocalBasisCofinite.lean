@@ -1,6 +1,7 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitianStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqUnimodularDualStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitian
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqUnimodularDual
 import Development.WeilBound.CoreStatements.SesquilinearFractions.DTrans
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -37,15 +38,15 @@ theorem gram_det_ne_zero_local_basis_cofinite : ∀ (E : Type) [Field E] [Number
       intro x
       obtain ⟨S, hS⟩ := (Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 (hsp x)
       have h1 : sesq D z (n • x) = (n : E) * sesq D z x := by
-        rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1]; simp
+        rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.1]; simp
       have h2 : sesq D z (n • x) = 0 := by
         rw [← hS, sesq_sum_smul_right]
         exact Finset.sum_eq_zero fun j _ => by rw [hzj j, mul_zero]
       have h3 : sesq D z x = 0 := by
         rw [h2] at h1
         exact (mul_eq_zero.1 h1.symm).resolve_left (by exact_mod_cast hn.ne')
-      rw [(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.1 z x, h3, map_zero, neg_zero]
-    have hzz : z = 0 := (GlobalTheory.T.sesq_unimodular_dual E H D).1 z hz0
+      rw [(_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.2.1 z x, h3, map_zero, neg_zero]
+    have hzz : z = 0 := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq E H D).1 z hz0
     have hu0 := (Fintype.linearIndependent_iff.1 he) u (by rw [← hz]; exact hzz)
     apply hv0
     funext m

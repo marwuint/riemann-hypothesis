@@ -1,18 +1,18 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePowStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlmostGaloisCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceTowerAlmostDualBasesAdjoinKummerRootStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePow
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlmostGaloisCoordinates
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceTowerAlmostDualBasesAdjoinKummerRoot
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationModIntegralExtensionPCubeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationModIntegralAlmostDualPSqIsIntStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRootsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationModIntegralAlmostDualPSqIsInt
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRoots
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerGaloisFixedEqDivLevelElementsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelAdjoinRootsIntegrallyClosedQuotientStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDlogDerivationsTowerLevelModIntegralStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelAdjoinRootsIntegrallyClosedQuotient
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDlogDerivationsTowerLevelModIntegral
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDlogDerivationsGluedTowerLevelsStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KaehlerRelationDerivationModIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerGnExponentsKummerCochainsStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerGnExponentsKummerCochains
 
 open GlobalTheory.K5
 
@@ -22,7 +22,7 @@ variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 theorem emb_mem_Lev {T : Tower p Ω} {n : ℕ} {ι : On p n →ₐ[O0 p] Ω} (hΩ : IsClo p Ω) (hn : 1 ≤ n)
     (hι : IsEmb T n ι) (x : On p n) : ι x ∈ Lev T n := by
-  rw [← (GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hΩ T n hn ι hι).2]; exact ⟨x, rfl⟩
+  rw [← (_root_.GlobalTheory.K5.LevEmb.emb_inj_range p Ω hΩ T n hn ι hι).2]; exact ⟨x, rfl⟩
 
 theorem p_ne (T : Tower p Ω) : (p : Ω) ≠ 0 := by
   have h := (T.prim 1).neZero'
@@ -34,7 +34,7 @@ theorem conj_mem_Hinf {T : Tower p Ω} {n : ℕ} {lz lq : Gal p Ω → ZMod (p ^
     {g h : Gal p Ω} (hg : g ∈ Gn T n) (hh : h ∈ Hinf T) : g⁻¹ * h * g ∈ Hinf T := by
   rw [mem_Hinf] at hh ⊢
   intro m
-  obtain ⟨i, j, -, -, e1, e2, -⟩ := GlobalTheory.T.towerGn_exponents_kummer_cochains p Ω T n (m + 2 * n) (by omega) lz lq hz hq g hg
+  obtain ⟨i, j, -, -, e1, e2, -⟩ := _root_.GlobalTheory.KumExpo.exponents p Ω T n (m + 2 * n) (by omega) lz lq hz hq g hg
   have k1 : (g⁻¹ * h * g) (T.ζ (m + 2 * n)) = T.ζ (m + 2 * n) := by
     show g.symm (h (g _)) = _
     rw [AlgEquiv.symm_apply_eq, e1, map_pow, (hh _).1]
@@ -63,7 +63,7 @@ theorem fix_mem_Lev (hΩ : IsClo p Ω) (T : Tower p Ω) :
     ∀ x ∈ FixI (Hinf T), ∃ m : ℕ, x ∈ Lev T m := by
   intro x hx
   obtain ⟨m, a, ha, b, hb, hb0, rfl⟩ := GlobalTheory.T.towerGaloisFixed_eq_div_levelElements p Ω hΩ T x hx.2
-  exact ⟨m + 1, GlobalTheory.T.towerLevelAdjoinRoots_integrallyClosed_quotient p Ω hΩ T (m + 1) (by omega) a (Lev_mono T (by omega) ha) b
+  exact ⟨m + 1, _root_.GlobalTheory.K5.LevClosed.lev_closed p Ω hΩ T (m + 1) (by omega) a (Lev_mono T (by omega) ha) b
     (Lev_mono T (by omega) hb) hb0 hx.1⟩
 
 theorem der_zeta_pow {T : Tower p Ω} {C : Subalgebra (O0 p) Ω} {D : Ω → Ω} (hD : IsDer C D)
@@ -87,10 +87,10 @@ theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ
         (1 + p ^ n * ((lz g).val : Ω) + p ^ (2 * n) * s) * g (Dz r) -
         (p ^ n * ((lq g).val : Ω) + p ^ (2 * n) * t) * g (Dq r))) := by
   have hH : ∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r := fun h hh => ⟨_, ha h (Hinf_le T n hh)⟩
-  obtain ⟨ι, _, u, v, hu, hv, huv, h0⟩ := GlobalTheory.T.exists_almostGalois_coordinates p hp2 Ω hΩ T n r hr hH
-  obtain ⟨tr, hd⟩ := GlobalTheory.T.traceTower_almostDualBases_adjoin_kummer_root p Ω T n r hr hH ι u v hu hv huv h0
+  obtain ⟨ι, _, u, v, hu, hv, huv, h0⟩ := _root_.GlobalTheory.KumDlog.almostGal_coord p hp2 Ω hΩ T n r hr hH
+  obtain ⟨tr, hd⟩ := _root_.GlobalTheory.traceTower_dualData p Ω T n r hr hH ι u v hu hv huv h0
   obtain ⟨dz, dq, hdz, hdq, hval⟩ := GlobalTheory.T.exists_dlog_derivations_glued_tower_levels p Ω hΩ T _ (fix_mem_Lev hΩ T)
-    (fun m hm => GlobalTheory.T.exists_dlog_derivations_towerLevel_mod_integral p Ω hΩ T m hm)
+    (fun m hm => _root_.GlobalTheory.LevDer.exists_levDer p Ω hΩ T m hm)
   obtain ⟨Dz, hDz, ez⟩ := GlobalTheory.T.exists_derivationModIntegral_extension_p_cube p Ω _ _ ι u v tr hd dz hdz
   obtain ⟨Dq, hDq, eq⟩ := GlobalTheory.T.exists_derivationModIntegral_extension_p_cube p Ω _ _ ι u v tr hd dq hdq
   have hC := hd.2.1
@@ -115,7 +115,7 @@ theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ
   obtain ⟨m, hm2, hmM⟩ : ∃ m, 2 * n ≤ m ∧ ∀ kl, M kl ≤ m :=
     ⟨max (2 * n) (Finset.univ.sup M), le_max_left _ _, fun kl =>
       le_trans (Finset.le_sup (f := M) (Finset.mem_univ kl)) (le_max_right _ _)⟩
-  obtain ⟨i, j, s, t, e1, e2, hi, hj⟩ := GlobalTheory.T.towerGn_exponents_kummer_cochains p Ω T n m hm2 lz lq hz hq g hg
+  obtain ⟨i, j, s, t, e1, e2, hi, hj⟩ := _root_.GlobalTheory.KumExpo.exponents p Ω T n m hm2 lz lq hz hq g hg
   obtain ⟨y1, y2, y3, y4⟩ := V m (by omega)
   have zC := hd.1 (hLB m (zeta_mem_Lev T m))
   have qC := hd.1 (hLB m (qq_mem_Lev T m))
@@ -136,7 +136,7 @@ theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ
       refine int_congr (int_sub (int_sub a3 (int_mul (int_nat i) y2)) (int_mul (int_nat j) y4)) ?_
       simp only [map_sub, map_mul, map_div₀, map_pow, map_natCast, AlgEquiv.symm_apply_apply]
       ring)
-  have hU := GlobalTheory.T.derivationModIntegral_almostDual_p_sq_isInt p Ω _ _ ι u v tr hd _ hD' r hrC
+  have hU := _root_.GlobalTheory.KumDlog.der_dual_p_sq_int p Ω _ _ ι u v tr hd _ hD' r hrC
     (fun k l => hvan _ (Lev_mono T (hmM (k, l)) (hM (k, l))))
   refine ⟨s, t, int_congr (int_gal g hU) ?_⟩
   have hi' : (i : Ω) = 1 + p ^ n * ((lz g).val : Ω) + p ^ (2 * n) * s := by
@@ -275,7 +275,7 @@ theorem kummer_eq_dlog : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, 
   obtain ⟨x2, i2, e2⟩ := core hp2 hΩ T n hn ι hι (xn p n - 1) 0 (xn p n) (by
     simp [mul_comm]) hs' hb hz hq
   have hpπ : IsInt p ((p : Ω) / (T.ζ n - 1)) := by
-    simpa using GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T n 1 hn (Nat.totient_pos.2 (ppow_pos n))
+    simpa using _root_.GlobalTheory.K5.PDiv.pdiv p Ω T n 1 hn (Nat.totient_pos.2 (ppow_pos n))
   have j1 := int_mul (int_nat (Ω := Ω) (p := p) p) (hI (↑w⁻¹ : On p n))
   have j2 := int_mul (int_int (Ω := Ω) (p := p) k) hpπ
   refine ⟨_, int_add (int_mul j1 i1) (int_mul j2 i2), fun g hg => ?_⟩

@@ -30,9 +30,6 @@ lemma s_star {f : E → ℂ} (hf : Sm f s) : Sm (fun x => star (f x)) s := by
 lemma s_re {f : E → ℂ} (hf : Sm f s) : Sm (fun x => (f x).re) s := by
   exact Complex.reCLM.contDiff.comp_contDiffOn hf
 
-lemma s_ofReal {f : E → ℝ} (hf : Sm f s) : Sm (fun x => ((f x : ℝ) : ℂ)) s := by
-  exact Complex.ofRealCLM.contDiff.comp_contDiffOn hf
-
 lemma s_mulVec {m : ℕ} {M : E → Matrix (Fin m) (Fin m) ℂ} {v : E → Fin m → ℂ} (hM : Sm M s) (hv : Sm v s) :
     Sm (fun x => M x *ᵥ v x) s := by
   rw [sv_iff]

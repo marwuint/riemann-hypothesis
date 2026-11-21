@@ -2,10 +2,10 @@ import Mathlib
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.RowsStackRight
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 import Formalism.LocalToGlobal.IndefiniteReal.DatumF
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroConjNegOfCmExtensionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramOfHermitianSelfDualLatticeSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramSkewHermitianSignatureStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHermitianNondegenerateNegTraceZeroSmulInvSkewHStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroConjNegOfCmExtension
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramOfHermitianSelfDualLatticeSpace
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramSkewHermitianSignature
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHermitianNondegenerateNegTraceZeroSmulInvSkewH
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticPowOfRestrictsToQuadraticSigStatement
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairExistence.ExistsIsWeilDatumOF
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairExistence.ExistsIsUWeilPairCm
@@ -25,11 +25,11 @@ theorem exists_isWeil : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
       ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χX n →
       ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χW d → ∃ om, M.IsWeil B.ψ χX χW om := by
   intro F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW M hM χX χW hcX hcW rX rW
-  obtain ⟨ξ₀, hξ, hσξ⟩ := GlobalTheory.T.exists_ne_zero_conj_neg_of_cmExtension F E σ B hB
-  have hXu := GlobalTheory.T.isUnit_det_gram_of_hermitianSelfDualLatticeSpace F E σ B n X r s hX
-  have hWu := GlobalTheory.T.isUnit_det_gram_skewHermitian_signature F E σ B d W r' s' hW
+  obtain ⟨ξ₀, hξ, hσξ⟩ := _root_.GlobalTheory.CMTraceZero.exists_ne_zero_conj_neg F E σ B hB
+  have hXu := _root_.GlobalTheory.isUnit_det_of_isHerm F E σ B n X r s hX
+  have hWu := _root_.GlobalTheory.SkewUnit.isUnit_det_of_isSkew F E σ B d W r' s' hW
   have hT : IsHermND σ X.Jᵀ := ⟨fun i j => by simpa using hX.herm j i, by rw [Matrix.det_transpose]; exact hXu.ne_zero⟩
-  have hS : IsHermND σ (-ξ₀ • W.J⁻¹) := GlobalTheory.T.isHermitianNondegenerate_neg_traceZero_smul_inv_skewHermitian F E σ d W.J hW.skew hWu ξ₀ hξ hσξ
+  have hS : IsHermND σ (-ξ₀ • W.J⁻¹) := _root_.GlobalTheory.skew_dual_isHermND F E σ d W.J hW.skew hWu ξ₀ hξ hσξ
   have hLat : PositivityTheory.ThKW.LatH σ (-ξ₀ • W.J⁻¹) X.Jᵀ ξ₀ := PositivityTheory.ThKW.latH_of hB.cm hX hW hXu hWu hξ
   obtain ⟨ω, hω⟩ := PositivityTheory.ThKW.S.exists_isWeilDatumOF F E σ B hB d n (-ξ₀ • W.J⁻¹) X.Jᵀ hS hT ξ₀ hξ hσξ hLat χW χX hcW hcX
     (GlobalTheory.T.restrictsToQuadraticPow_of_restrictsToQuadraticSignPow F E σ B hB χW d rW) (GlobalTheory.T.restrictsToQuadraticPow_of_restrictsToQuadraticSignPow F E σ B hB χX n rX)

@@ -310,16 +310,6 @@ theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T) (C : H
 theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) : IsTraceClass (T†) := by
   rw [IsTraceClass, traceNorm_adjoint]; exact hT
 
-variable (H) in
-
-def traceClass : Submodule ℂ (H →L[ℂ] H) where
-  carrier := {T | IsTraceClass T}
-  add_mem' hS hT := hS.add hT
-  zero_mem' := by
-    show traceNorm (0 : H →L[ℂ] H) < ∞
-    rw [traceNorm_zero]; exact ENNReal.zero_lt_top
-  smul_mem' c _ hT := hT.smul c
-
 theorem two_mul_traceNorm_comp_le (A B : H →L[ℂ] H) :
     2 * traceNorm (A.comp B) ≤ hsNormSq A + hsNormSq B := by
   obtain ⟨V, hV1, -, hV⟩ := exists_polar (A.comp B)

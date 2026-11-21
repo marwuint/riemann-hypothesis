@@ -1,6 +1,10 @@
 import Mathlib
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KleimanInputNefAmpleSectionCountStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.KleimanGenericPointSectionInputStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.TargetSt
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.GenericPointSectionHypotheses
+import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.IsFieldSubalgebraSelf
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsKodairaGeneric
+import Development.WeilBound.CoreStatements.HodgeTatePoints.KTwins
+import Development.WeilBound.CoreStatements.HodgeTatePoints.KleimanInputUniverseZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.AmpleSt
 import Development.WeilBound.CoreStatements.HodgeTatePoints.A12
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PAmpleOfGenTwist
@@ -25,7 +29,7 @@ open GroundTheory.Heights₂.Heights
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2 (IsNef IsGenerated KAt baseDeg)
 open GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization (segreJoin)
 
-theorem kAt_all (d : ℕ) : KAt d := (GlobalTheory.T.kleiman_input_nef_ample_section_count GlobalTheory.T.kleiman_genericPointSectionInput).2.1 d
+theorem kAt_all (d : ℕ) : KAt d := (_root_.PositivityTheory.HtPt.Ktw.k_twins _root_.PositivityTheory.HtPt.Kra.kleiman_input_universe_zero).2.1 d
 
 theorem genTwistVanish : HilbertSamuel.GenTwistVanish.Statement :=
   HilbertSamuel.GenTwistVanish.proof PositivityTheory.HtPt.Ktw.a11 HilbertSamuel.QuotPartGraded.full

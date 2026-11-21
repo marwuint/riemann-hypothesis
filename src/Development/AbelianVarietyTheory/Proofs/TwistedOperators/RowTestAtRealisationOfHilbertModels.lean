@@ -1,7 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestHilbertModelsOfChoiceClaimsStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestComplexSideOfHilbertModelsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestComplexSideOfHilbertModels
+import Formalism.LocalToGlobal.IndefiniteReal.LinksLemmas
+import Formalism.LocalToGlobal.IndefiniteReal.LinksExistW
+import Formalism.LocalToGlobal.IndefiniteReal.RationalAdjoints.RatZOfTests
+import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
+import Formalism.LocalToGlobal.IndefiniteReal.FWExist
+import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RationalRowTestKernel
 import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
@@ -16,4 +22,4 @@ theorem GlobalTheory.RowTest.rowTest_realisation : GlobalTheory.Published.CuspRa
   refine ⟨CF0, fun ε CF hCF => ?_⟩
   obtain ⟨x₀, hx₀⟩ := hCF0 ε CF hCF
   refine ⟨x₀, fun D large₂ hε hx G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hSet hch => ?_⟩
-  exact GlobalTheory.T.rowTest_complexSide_of_hilbert_models D G Pl0 I0 T0 A3 Ks R F (hx₀ D large₂ hε hx G Pl0 T0 _ Ks R.toRealDat F.lv2 hSet hch)
+  exact _root_.GlobalTheory.Twist.rowTest_complexSide_of_hilbert_models.rowTest_toCx3 D G Pl0 I0 T0 A3 Ks R F (hx₀ D large₂ hε hx G Pl0 T0 _ Ks R.toRealDat F.lv2 hSet hch)

@@ -18,25 +18,6 @@ theorem exists_continuous_cexp_eq {f : V → ℂ} (hf : Continuous f) (h0 : ∀ 
     hf.continuousOn (by rintro ⟨v, -, hv⟩; exact h0 v hv)
   exact ⟨q, continuousOn_univ.1 hq, fun v => hq' (mem_univ v)⟩
 
-theorem differentiable_of_continuous_of_cexp {q : V → ℂ} (hq : Continuous q)
-    (hf : Differentiable ℂ fun v => cexp (q v)) : Differentiable ℂ q := by
-  intro x
-  have hc : Continuous fun v => (q v - q x).im := by fun_prop
-  have hev : ∀ᶠ v in 𝓝 x, (q v - q x).im ∈ Ioo (-Real.pi) Real.pi :=
-    hc.continuousAt.eventually_mem (isOpen_Ioo.mem_nhds (by simp [Real.pi_pos]))
-  have he : q =ᶠ[𝓝 x] fun v => q x + log (cexp (q v) * cexp (-q x)) := by
-    filter_upwards [hev] with v hv
-    rw [← exp_add, ← sub_eq_add_neg, log_exp hv.1 hv.2.le]
-    ring
-  refine DifferentiableAt.congr_of_eventuallyEq ?_ he
-  refine DifferentiableAt.const_add _ (DifferentiableAt.clog ((hf x).mul_const _) ?_)
-  simp [← exp_add]
-
-theorem exists_differentiable_cexp_eq {f : V → ℂ} (hf : Differentiable ℂ f) (h0 : ∀ v, f v ≠ 0) :
-    ∃ q : V → ℂ, Differentiable ℂ q ∧ ∀ v, cexp (q v) = f v := by
-  obtain ⟨q, hq, hq'⟩ := exists_continuous_cexp_eq hf.continuous h0
-  exact ⟨q, differentiable_of_continuous_of_cexp hq (by simpa only [hq'] using hf), hq'⟩
-
 theorem apply_eq_of_continuous_of_cexp_eq_one {X : Type*} [TopologicalSpace X]
     [PreconnectedSpace X] {φ : X → ℂ} (hφ : Continuous φ) (h : ∀ x, cexp (φ x) = 1) (x y : X) :
     φ x = φ y := by

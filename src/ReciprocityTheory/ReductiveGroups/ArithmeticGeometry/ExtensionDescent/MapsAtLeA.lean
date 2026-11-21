@@ -109,14 +109,6 @@ structure UnifPowOf {j : ℕ} {D D' : DegData R I}
     (U'.gt e).q ≫ (Over.pullback (thick R I e)).map (pD.pw.pr i) =
       (Over.pullback (thick R I e)).map (pG.pr i) ≫ (U.gt e).q
 
-def UnifPowSt : Prop :=
-  ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R))))
-    (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Unif I D A G) (j : ℕ)
-    (D' : DegData R I) (A' : PolAV (Spec (CommRingCat.of (FractionRing R))))
-    (G' : Over (Spec (CommRingCat.of R))) [GrpObj G'] [IsCommMonObj G']
-    (pD : IsPowDeg D'.toPre D.toPre j) (pA : IsPowPolAV A' A j) (pG : IsPowGrp G' G j),
-    ∃ U' : Unif I D' A' G', Nonempty (UnifPowOf pD pA pG U' U)
-
 end UnifPow
 
 end ReciprocityTheory.ChartRestriction.G.Out

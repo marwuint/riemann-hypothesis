@@ -289,10 +289,6 @@ theorem omegaAt_add (P Q : (E.baseChange L).toAffine.Point) :
 noncomputable def omegaHom : (E.baseChange L).toAffine.Point →+ Ω[L⁄F] :=
   AddMonoidHom.mk' (omegaAt E) (omegaAt_add E)
 
-theorem omegaAt_zsmul (n : ℤ) (P : (E.baseChange L).toAffine.Point) :
-    omegaAt E (n • P) = n • omegaAt E P :=
-  map_zsmul (omegaHom E) n P
-
 end Add
 
 section Push
@@ -494,18 +490,6 @@ theorem isogenyPullback_invariantDifferential_eq_smul (φ : Isogeny E E') :
     isogenyPullback φ (invariantDifferential E') = isogCoeff φ • invariantDifferential E := by
   rw [isogenyPullback_invariantDifferential, isogCoeff, homCoeff_smul]
 
-theorem isogenyPullback_add {φ ψ χ : Isogeny E E'} (h : χ.1 = φ.1 + ψ.1) :
-    isogenyPullback χ (invariantDifferential E') =
-      isogenyPullback φ (invariantDifferential E') + isogenyPullback ψ (invariantDifferential E') := by
-  rw [isogenyPullback_invariantDifferential, isogenyPullback_invariantDifferential,
-    isogenyPullback_invariantDifferential, h, omegaAt_add]
-
-theorem isogCoeff_add {φ ψ χ : Isogeny E E'} (h : χ.1 = φ.1 + ψ.1) :
-    isogCoeff χ = isogCoeff φ + isogCoeff ψ := by
-  have e : (⟨χ.1, χ.respectsAdd⟩ : isogHom E E') = ⟨φ.1, φ.respectsAdd⟩ + ⟨ψ.1, ψ.respectsAdd⟩ :=
-    Subtype.ext h
-  rw [isogCoeff, isogCoeff, isogCoeff, e, map_add]
-
 variable (E) in
 
 noncomputable def homIdentity : isogHom E E := ⟨genericPoint E, respectsAdd_genericPoint⟩
@@ -516,16 +500,6 @@ theorem homCoeff_zsmul_homIdentity (n : ℤ) : homCoeff E E (n • homIdentity E
   rw [map_zsmul]
   show n • invCoeff E (invariantDifferential E) = _
   rw [invCoeff_invariantDifferential, zsmul_one]
-
-variable (E) in
-
-theorem isogenyPullback_mulIsogeny (n : ℤ) (hn : n ≠ 0) :
-    isogenyPullback (mulIsogeny E n hn) (invariantDifferential E) =
-      (n : E.toAffine.FunctionField) • invariantDifferential E := by
-  rw [isogenyPullback_invariantDifferential]
-  show omegaAt E (n • genericPoint E) = _
-  rw [omegaAt_zsmul, Int.cast_smul_eq_zsmul]
-  rfl
 
 variable (E) in
 theorem isogCoeff_mulIsogeny (n : ℤ) (hn : n ≠ 0) : isogCoeff (mulIsogeny E n hn) = n :=

@@ -23,16 +23,27 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.APerTw
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.EventuallyAllScaleContextsAndOfBoth
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NotGeoClFalse
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.UpLReStage
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHostDatumOfPlaceDataStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HostPlacesRayFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StandardLatticesDiagonalStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowsOfHeqDataStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnParametersInstanceDataStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHostDatumOfPlaceData
+import Formalism.LocalToGlobal.UnitaryNorms.DatumS
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.HostPins
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HostPlacesRayField
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ThetaChr
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StandardLatticesDiagonal
+import Formalism.LocalToGlobal.IndefiniteReal.LinksLemmas
+import Formalism.LocalToGlobal.IndefiniteReal.IsFDiagIffDiagonal
+import Formalism.LocalToGlobal.IndefiniteReal.FrameExistence.FramesExistOfDiagonalTypePlaces
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CmQuadraticFormEqAlternatingForm
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRowsOfHeqData
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwArgs
+import Formalism.LocalToGlobal.IndefiniteReal.NonzeroIndexPlaceIndepConstants
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnParamsInstanceData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTwExtend
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowPartFormsAndNonzeroVectorsEveryPlaceStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowPartFormsAndNonzeroVectorsEveryPlace
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StableIffCarrierEq
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinksAnalyticHypothesesOfWeilRepHarishChandra
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GoodGenericCharacterOfSeriesTypes
 import Formalism.LocalToGlobal.IndefiniteReal.HeckeNonvanishing.Imports
+
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl NumberField IsDedekindDomain
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
@@ -214,7 +225,7 @@ theorem selection_group_ambient_tie (hC : GlobalTheory.Published.DiscreteSeriesC
   obtain ⟨κ, sE, hκ, hsE⟩ := exists_places t.r.z.R.toRealDat t.r.z.F.lv2 X Gd ι g c
     (twAt (w.st Z).toD7.what₂.embLL (famT t).A.v0) t.r.z.pins.char.base.models.HE hc hev
   obtain ⟨sEE, hsEE⟩ := see_cast (ex := ex) (t := t) X hK Gd pw _ _ wU bij eNu hSp sE
-  obtain ⟨a, haDc, haSp, haZsc, haSEE, haWU, haENu, -⟩ := GlobalTheory.T.column_params_instance_data hC K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t hA hM hG hp
+  obtain ⟨a, haDc, haSp, haZsc, haSEE, haWU, haENu, -⟩ := _root_.GlobalTheory.Mem.R3.twArgs_exists hC K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t hA hM hG hp
     Dc Sp₀ Zsc₀ C₀ Sp (zscRaw (famT t) t.r.z.F L' Del h0 c') sEE
   obtain ⟨x, hx⟩ : ∃ x : R3.TwIn ex, HEq a.x x := ⟨a.x, HEq.rfl⟩
   have hW : HEq x.C.wU C₀.wU := by
@@ -233,60 +244,7 @@ theorem selection_group_ambient_tie (hC : GlobalTheory.Published.DiscreteSeriesC
 
 end Args
 
-set_option maxHeartbeats 1000000 in
-
-theorem parts (hWR : GlobalTheory.Published.WeilRepresentationUnitaryPair) (hDSE : GlobalTheory.Published.DiscreteSeriesExists)
-    (hHCF : GlobalTheory.Published.HarishChandraFinite) (hCRD : GlobalTheory.Published.CuspRapidDecay) {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx}
-    (q : WPt p.s K) (hMult : GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat) :
-    ∀ p', q.x.what₂.r.z.R.EEp3 p' ≠ ⊥ → ∀ i, q.x.what₂.r.z.R.Wp3 i p' ≠ ⊥ ∧
-      ∀ v, v ≠ (famT q.x.what₂).A.v0 → q.x.what₂.r.z.R.PartAt q.x.what₂.r.z.F i p' v :=
-  GlobalTheory.T.rowPart_forms_and_nonzero_vectors_every_place _ _ _ _ _ _ _ q.x.what₂.r.z.R q.x.what₂.r.z.F q.x.what₂.r.z.cG
-    (GlobalTheory.LinksInputs.inputs_of_hypotheses hWR hDSE hHCF hCRD _) q.x.what₂.r.z.pins q.x.what₂.r.intersectionNumber_baseChange hMult
-    (GlobalTheory.GoodGenericSer.goodGenericCharacter_of_seriesTypes q.x.what₂.r.z.R q.x.what₂.r.z.F q.x.what₂.r.z.pins.char 1 q.x.what₂.r.intersectionNumber_baseChange.ok
-      (fun k => ⟨_, q.core.a.all.types.O k, q.core.a.all.types.eSer_def k⟩)).1
-
-set_option maxHeartbeats 1000000 in
-
-theorem ev_at {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx} (q : WPt p.s K) (R : Formalism.L2.RecT q.O.ex) (hR : RecPinE q R)
-    (sP : GlobalTheory.Mem.SRe.SPack (q.w.D q.Z) fun u => (R.T.cols.forms u).to0) (hsP : HEq sP q.sat.P) :
-    EvalTieT (Formalism.L2.SG.RowsJoinPinned.MP q.x.what₂.r.z.R.toRealDat) q.x.what₂.r.z.R.toRealDat.ν0
-      q.x.what₂.r.z.R.toRealDat.fd0 (Formalism.L2.SG.RowsJoinPinned.EP q.x.what₂.r.z.R.toRealDat q.x.what₂.r.z.F.lv2) sP.X sP.G
-      (Formalism.L2.SG.RowsJoinPinned.iotaX sP.X sP.inst).toMulEquiv q.sat.t q.sat.c := by
-  have hF0 : (fun u => (R.T.cols.forms u).to0) = (fun u => (q.x.col.C.forms u).to0) := (by with_unfolding_all exact (congrArg (fun (C : type_of% q.x.col.C) u => (C.forms u).to0) hR.s.cols :))
-  exact (by with_unfolding_all exact (pack_move (D := (q.w.st q.Z).toD7) (F0 := fun u => (R.T.cols.forms u).to0) (F0' := fun u => (q.x.col.C.forms u).to0)
-    ((hF0)) (P := (sP)) (P' := (q.sat.P)) ((hsP))
-    (fun _ P => EvalTieT (Formalism.L2.SG.RowsJoinPinned.MP q.x.what₂.r.z.R.toRealDat) q.x.what₂.r.z.R.toRealDat.ν0
-      q.x.what₂.r.z.R.toRealDat.fd0 (Formalism.L2.SG.RowsJoinPinned.EP q.x.what₂.r.z.R.toRealDat q.x.what₂.r.z.F.lv2) P.X P.G
-      (Formalism.L2.SG.RowsJoinPinned.iotaX P.X P.inst).toMulEquiv q.sat.t q.sat.c) ((q.sat.ev)) : _))
-
-theorem rx_at {hL : GlobalTheory.Published.LocalLanglandsGL} {N : NExt hL} {Γ : GeoP} {p : Prm hL} (hp : p = prmR N SExt.none Γ) {K : Ctx}
-    (q : WPt p.s K) : Nonempty (RXs q.x.what₂) := by
-  subst hp
-  exact (by with_unfolding_all exact (Nonempty.intro q.x.rx :))
-
 end GlobalTheory.Mem.R3.SelectionPairing
 
 end
 
-open GlobalTheory.Mem.R3.SelectionPairing in
-set_option maxHeartbeats 2000000 in
-
-theorem GlobalTheory.Mem.R3.SelectionPairing.exists_semilinearMap_mul_norm_sq_eq_norm_sq : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (Γ : GeoP) (p : Prm hL), p = prmR N SExt.none Γ → (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c)) → ∀ (K : Ctx) (q : WPt p.s K), (∀ X : GlobalTheory.Mem.Stages, K.Over X.B.toPre → HostHyp X.toD7 ∧ X.toD7.host.F = maximalRealSubfield X.toD7.host.E ∧ (∀ i, IsFDiag (Wc X.toD7 i) ∧ IsFDiag (Vc X.toD7 i)) ∧ (∀ i, (Vc X.toD7 i).IsPosDef) ∧ (∀ j, Formalism.IndefR.Seed.FrmC.StdLat (X.toD7.sp.Y j) ∧ Formalism.IndefR.Seed.FrmC.StdLat (X.toD7.sp.V j) ∧ (1 ≤ j → j ≤ X.toD7.R.m → Formalism.IndefR.Seed.FrmC.StdLat (X.toD7.sp.W j))) ∧ Formalism.IndefR.Seed.FrmC.StdLat X.toD7.sp.X' ∧ (∀ i, (∀ a b, (Vc X.toD7 i).hT ((Vc X.toD7 i).frame a) ((Vc X.toD7 i).frame b) = if a = b then 1 else 0) ∧ (Vc X.toD7 i).L0 = Submodule.span (𝓞 X.toD7.host.E) (Set.range (Vc X.toD7 i).frame)) ∧ ((∀ a b, X.toD7.sp.X'.hT (X.toD7.sp.X'.frame a) (X.toD7.sp.X'.frame b) = if a = b then 1 else 0) ∧ X.toD7.sp.X'.L0 = Submodule.span (𝓞 X.toD7.host.E) (Set.range X.toD7.sp.X'.frame))) → GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat → ∀ (R : Formalism.L2.RecT q.O.ex), RecPinE q R → ∀ (sP : GlobalTheory.Mem.SRe.SPack (q.w.D q.Z) fun u => (R.T.cols.forms u).to0) (sS : GlobalTheory.Mem.SRe.SRest sP), HEq sP q.sat.P → HEq sS q.sat.S → ∀ (Del h0 : ℕ) (c : ℝ) (hin : ∀ u, Formalism.L2.SG.PoincareInHH.PoincareSetting.InHH (sS.toSTiesR R).X u (sS.toSTiesR R).Y.hK), ∃ (a : TwArgs q.O.ex q.x.what₂) (x : TwIn q.O.ex), HEq a.x x ∧ ∃ C : GlobalTheory.Cp.SquareIntegrableColumnsCompatible R.T (divisionPairOfAdelicFormsFaceColumnsData x), HEq (fun Zs => C.c.face Zs) x.F.Dc ∧ HEq C.Sp x.F.Sp ∧ HEq C.c.W q.B.wts ∧ HEq C.c.Xg q.x.what₂.r.z.Xg ∧ Formalism.L2.DIV.ColPins C.toS ∧ x.F.Zsc = GlobalTheory.Fc.zsc (divisionPairOfAdelicFormsFaceColumnsData x) Del h0 c ∧ HEq (x.F.Sp (zsOf x.R x.F)) (Formalism.IndefR.Cx.spOf (X := (sS.toSTiesR R).X) (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) (x.F.Dc (zsOf x.R x.F)) (sS.toSTiesR R).Y.hK (sS.toSTiesR R).G x.wd (fun m => pwOf (sS.toSTiesR R) hin (x.wd m)) x.bR) ∧ ∃ (κ : ℝ) (sEEc : Tw (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) x.R.HE.H →ₗ⋆[ℂ] Tw (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) (Formalism.L2.SG.PoincareInHH.PoincareSetting.HHX (sS.toSTiesR R).X)), HEq x.sEE sEEc ∧ 0 < κ ∧ ∀ (v : Tw (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) x.R.HE.H) (hx : x.R.HE.e (Tw.out v) ∈ (x.R.toRealDat.EEat (x.R.toRealDat.levR x.F.lv2 true))), sEEc v = Tw.mk (twAt (q.w.D q.Z).what₂.embLL x.A3.A.v0) (((1 : ℂ) * (κ : ℂ)) • (Formalism.IndefR.AutomorphicEvaluation.sEEofTT (x.R.MY 0) x.R.ν0 x.R.fd0 (x.R.toRealDat.EEat (x.R.toRealDat.levR x.F.lv2 true)) (sS.toSTiesR R).X (sS.toSTiesR R).G (Formalism.L2.SG.RowsJoinPinned.iotaX sP.X sP.inst).toMulEquiv q.sat.t q.sat.c) ⟨x.R.HE.e (Tw.out v), hx⟩) ∧ RealDat.nP x.F.lv2 true * ‖sEEc v‖ ^ 2 = ‖v‖ ^ 2 := by
-  intro hDS hHC hCW hWR hDSE hHCF hCRD hGAR hRay hL N Γ p hp hNEb K q hHost hMult R hR sP sS hsP hsS Del h0 c hin
-  have hRX : Nonempty (RXs q.x.what₂) := rx_at hp q
-  have h := GlobalTheory.T.exists_rows_of_heq_data _ K q R.T.ker hR.k hRX
-  refine h.elim fun Dc h => h.elim fun Sp₀ h => h.elim fun Zsc₀ h => h.elim fun C₀ hC => ?_
-  have hcore := selection_group_ambient_tie (K := K) (w := q.w) (Z := q.Z) (Wt := q.x.Wt) (ex := q.O.ex) (t := q.x.what₂)
-    ⟨hDS, hHC, hCW, hHCF, hCRD⟩ ((by with_unfolding_all exact (q.x.obj.amb :))) ((by with_unfolding_all exact (q.x.obj.mjH :))) ((by with_unfolding_all exact (q.core.row.grp :)))
-    ((by with_unfolding_all exact ((parts hWR hDSE hHCF hCRD q hMult) :))) Dc Sp₀ Zsc₀ ((by with_unfolding_all exact (C₀ :))) (sS.toSTiesR R).X ((by with_unfolding_all exact ((sS.toSTiesR R).Y.hK :)))
-    ((by with_unfolding_all exact ((sS.toSTiesR R).G :))) ((by with_unfolding_all exact ((pwOf (sS.toSTiesR R) hin) :)))
-    ((by with_unfolding_all exact ((Formalism.L2.SG.RowsJoinPinned.iotaX sP.X sP.inst).toMulEquiv :))) ((by with_unfolding_all exact (q.sat.t :))) q.sat.c q.sat.c_pos
-    ((by with_unfolding_all exact ((ev_at q R hR sP hsP) :))) q.O.L Del h0 c
-  refine hcore.elim fun a h => h.elim fun x h => ?_
-  have hc := hC R.T rfl a x h.1 ((by with_unfolding_all exact (h.2.1 :))) ((by with_unfolding_all exact (h.2.2.1 :))) ((by with_unfolding_all exact (h.2.2.2.1 :)))
-  refine hc.elim fun C c' => ?_
-  refine Exists.intro a (Exists.intro x (And.intro h.1 (Exists.intro C (And.intro c'.1 (And.intro c'.2.1 (And.intro c'.2.2.1
-    (And.intro c'.2.2.2.1 (And.intro c'.2.2.2.2 (And.intro ?_ (And.intro ?_ ?_))))))))))
-  · exact (by with_unfolding_all exact (h.2.2.2.2.1 :))
-  · exact (by with_unfolding_all exact (h.2.2.2.2.2.1 :))
-  · exact (by with_unfolding_all exact (h.2.2.2.2.2.2 :))

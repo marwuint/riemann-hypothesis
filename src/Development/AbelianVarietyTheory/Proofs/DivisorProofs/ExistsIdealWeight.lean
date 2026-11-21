@@ -30,40 +30,6 @@ theorem relIndex_unipLat {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ 
 theorem v_eq_exp {x : L} (hx : x ≠ 0) : Valued.v x = WithZero.exp (-ordL x) := by
   rw [ordL_eq, neg_neg, WithZero.exp_log (by simpa using hx)]
 
-theorem ord_rev {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (t : torusU σ n) (i : Fin n) :
-    ordL (t.1 i.rev : L) = -ordL (t.1 i : L) := by
-  have h := (mem_GU_iff σ n _).1 t.2 i i
-  rw [← map_inv, diagHom_val, diagHom_val, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq] at h
-  have := congrArg Valued.v h
-  rw [hσ] at this
-  simp [ordL_eq, ← this]
-
-theorem isWeight_ord {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (t : torusU σ n) :
-    IsWeight fun i j : Fin n => ordL (t.1 i : L) - ordL (t.1 j : L) :=
-  ⟨fun i j => by simp only [ord_rev hσ]; ring, fun i j k _ _ => by simp⟩
-
-theorem conj_entry (t : Fin n → Lˣ) (u : GL (Fin n) L) (i j : Fin n) :
-    ((diagHom L (Fin n) t * u * (diagHom L (Fin n) t)⁻¹).val - 1) i j = t i * (u.val - 1) i j * (t j : L)⁻¹ := by
-  rw [← map_inv, Units.val_mul, Units.val_mul, diagHom_val, diagHom_val]
-  by_cases h : i = j
-  · subst h
-    simp [mul_sub, sub_mul]
-  · simp [Matrix.one_apply, h]
-
-theorem conj_mem_iff {σ : L →+* L} [LocallyCompactSpace (GU σ n)] (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
-    (t : torusU σ n) (u : (borelU σ n).U) :
-    conjAut (borelU σ n).U ⟨(borelU σ n).s t, (borelU σ n).Q_le_normalizer ((borelU σ n).s_mem _)⟩ u ∈
-      unipLat hσ (isWeight_ord hσ t) ↔ u ∈ unipLat hσ isWeight_zero := by
-  rw [mem_unipLat, mem_unipLat, mem_upLat, mem_upLat]
-  have e : ∀ i j, ((conjAut (borelU σ n).U
-      ⟨(borelU σ n).s t, (borelU σ n).Q_le_normalizer ((borelU σ n).s_mem _)⟩ u).1.1.val - 1) i j =
-      t.1 i * (u.1.1.val - 1) i j * (t.1 j : L)⁻¹ := conj_entry t.1 u.1.1
-  simp only [e]
-  refine and_congr (forall₃_congr fun i j _ => by simp) (forall₃_congr fun i j _ => ?_)
-  rw [map_mul, map_mul, map_inv₀, v_eq_exp (t.1 i).ne_zero, v_eq_exp (t.1 j).ne_zero, mul_right_comm,
-    ← WithZero.exp_neg, ← WithZero.exp_add, neg_zero, WithZero.exp_zero, neg_sub', sub_eq_add_neg]
-  exact mul_le_iff_le_one_right WithZero.exp_pos
-
 theorem exists_idealWeight {c : Fin n → Fin n → ℤ} :
     ∃ C : Fin n → Fin n → ℤ, IsWeight C ∧ IsIdealWeight c C ∧ IsIdealWeight (fun _ _ => 0) C := by
   obtain ⟨M, hM⟩ : ∃ M : ℕ, ∀ i j, |c i j| ≤ M := by

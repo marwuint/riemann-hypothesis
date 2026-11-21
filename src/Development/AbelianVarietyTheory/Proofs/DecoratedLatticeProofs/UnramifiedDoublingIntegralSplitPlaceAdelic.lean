@@ -3,8 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.PairwiseDisjointCell
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LvTwDivDvSplit
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalParameterBoundSplitPlaceStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumQuotientTransportStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosetsStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumQuotientTransport
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosets
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOfBasis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
@@ -89,13 +90,13 @@ theorem localZetaOn_split : GlobalTheory.Published.UnramifiedDoublingGL →
     have hk' : ioAt A v k ∈ KFin D.sp.cm.sig (dblSp A).gram L v :=
       (ioH_mem_KFin (gram_hdbl A)).2 ⟨hk, one_mem _⟩
     rw [e1, hφ.2.1 _ hk', hcx, hcx, map_mul, Module.End.mul_apply, hfix k hk]
-  have hsum' := GlobalTheory.T.hasSum_quotient_of_hasSum_mulEquiv_quotient _ _ e (stabLoc D.sp.cm.sig A.gram L v) (KGL w A.rank) he.2
+  have hsum' := _root_.GlobalTheory.hasSum_quotient_transport _ _ e (stabLoc D.sp.cm.sig A.gram L v) (KGL w A.rank) he.2
     (fun y => φ (ioAt A v y) * c y) hinv _ (by
       refine hsum.congr_fun ?_
       intro a
       simp [hcx])
   haveI : Submodule.IsLattice D.host.E L := hL.1
-  obtain ⟨hI, hE⟩ := GlobalTheory.T.integral_right_invariant_eq_sum_open_subgroup_cosets (Gv A v) μ (stabLoc D.sp.cm.sig A.gram L v)
+  obtain ⟨hI, hE⟩ := _root_.GlobalTheory.InertZeta.cosetIntegral_holds (Gv A v) μ (stabLoc D.sp.cm.sig A.gram L v)
     (GlobalTheory.AdelicU.isOpen_stabLoc _ _ _ v) hK (fun y => φ (ioAt A v y) * c y) _ hinv hsum'
   refine ⟨hI, ?_⟩
   rw [hE, hval, hcx, map_one, Module.End.one_apply]

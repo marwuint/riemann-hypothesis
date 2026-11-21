@@ -85,12 +85,6 @@ def ParabolicDecomposition.Statement (h : HermitianForm F E W) (v : Basis ι E W
       ∀ w, ∃ c : ℂ, (((p : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w) =
         c • vecAt v x₀ w
 
-section Inhabitants
-
-open GaussianPlane
-
-end Inhabitants
-
 end
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

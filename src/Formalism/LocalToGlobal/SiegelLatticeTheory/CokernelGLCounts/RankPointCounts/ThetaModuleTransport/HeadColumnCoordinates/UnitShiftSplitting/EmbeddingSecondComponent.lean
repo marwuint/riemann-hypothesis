@@ -150,14 +150,6 @@ theorem iotaTwo_add (l w : Fin (r + 1) → M.R) : iota2 hs (l + w) = iota2 hs l 
     Subring.coe_add, map_add]
   ext <;> simp
 
-def splitE : (Ix r → M.L.O) ≃+ (Fin (r + 1) → M.R) × (Fin (r + 1) → M.R) where
-  toFun Y := (cmp1 hs Y, cmp2 hs Y)
-  invFun p := iota1 hs p.1 + iota2 hs p.2
-  left_inv Y := iota_cmp hs Y
-  right_inv p := by
-    simp only [map_add, firstComponent_iotaOne, secondComponent_iotaOne, firstComponent_iotaTwo, secondComponent_iotaTwo, add_zero, zero_add]
-  map_add' Y W := by simp only [map_add, Prod.mk_add_mk]
-
 theorem firstComponent_smul (c : M.L.O) (Y : Ix r → M.L.O) : cmp1 hs (c • Y) = dgR hs (c1 g c) • cmp1 hs Y := by
   funext a
   apply Subtype.ext

@@ -1,6 +1,8 @@
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.RestValBdG
 import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.LeCubeMul
-import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.ImportsAlt
+import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.ValLamOfSubset
+import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MemSupportSumMonomial
+import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.TwistSliceCoeff
 import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeMapFractionField
 
 noncomputable section

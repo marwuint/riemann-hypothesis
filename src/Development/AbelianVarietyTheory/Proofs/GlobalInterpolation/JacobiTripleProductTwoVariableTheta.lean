@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DifferentiableOddTheta
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MultipliableTpFactor
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JacobiTripleFiniteProductStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JacobiTripleProductLimitStatement
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JacobiTripleProductLimit
 
 open Complex
 open UpperHalfPlane hiding I
@@ -25,7 +25,7 @@ theorem tripleProduct : GlobalTheory.ThetaWeberRoad.TripleProduct := by
   have ht1 : ‖s ^ 2‖ < 1 := by
     rw [norm_pow]; nlinarith [norm_nonneg s]
   obtain ⟨hP, hP0, -⟩ := qPoch_tendsto (s ^ 2) ht1
-  have hT := GlobalTheory.T.jacobi_triple_product_limit (τ : ℂ) z hτ
+  have hT := _root_.GlobalTheory.JacobiTriple.tendsto_finCoeff_sum_jacobiTheta₂ (τ : ℂ) z hτ
   rw [(multipliable_tpFactor τ z).hasProd_iff_tendsto_nat]
   have key : ∀ n : ℕ, ∏ k ∈ Finset.range n, GlobalTheory.ThetaWeberRoad.tpFactor τ z k =
       qPoch (s ^ 2) n * ∑ j ∈ Finset.Icc (-(n : ℤ)) n,

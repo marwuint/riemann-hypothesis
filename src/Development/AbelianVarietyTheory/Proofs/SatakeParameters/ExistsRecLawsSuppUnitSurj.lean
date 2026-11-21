@@ -33,29 +33,4 @@ theorem cls_eq_ofChar (χ : (w.adicCompletion E)ˣ →* ℂˣ) (c : Irr (w.adicC
     ext; simp [Matrix.GeneralLinearGroup.scalar]
   exact ⟨h3 ▸ h1.comp _ h2, congrArg (Sigma.mk 1) (IrrRep.cl_eq_iff.2 ⟨φ⟩)⟩
 
-theorem IsRec.recSupp {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) :
-    RecSupp fun _ (π : Irr (w.adicCompletion E) _) => rc (cls (toIrrRep π)) := by
-  obtain ⟨a, ha, ε, -, H⟩ := H
-  intro n s π d σ hs g
-  have h1 := (hasSupport_of_isCuspSupport hs).of_equiv (equivRep (toIrrRep π))
-  have h2 := H.supp (cls (toIrrRep π)) _ h1 g
-  rw [Multiset.map_map] at h2
-  exact h2
-
-theorem IsRec.recUnit {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) :
-    RecUnit fun _ (π : Irr (w.adicCompletion E) _) => rc (cls (toIrrRep π)) := by
-  obtain ⟨a, ha, ε, -, H⟩ := H
-  intro χ c hu hc g α hα
-  obtain ⟨hχ, e⟩ := cls_eq_ofChar χ c hc
-  simp only [e, H.one, eig_lpOfChar, Multiset.mem_singleton] at hα
-  rw [hα]
-  exact hu _
-
-theorem IsRec.surj {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) (n : ℕ) (y : WD h)
-    (hy : y.lpDim = n) : ∃ π : Irr (w.adicCompletion E) n, rc (cls (toIrrRep π)) = y := by
-  obtain ⟨a, ha, ε, -, H⟩ := H
-  subst hy
-  obtain ⟨π, hπ⟩ := H.exists_rep y
-  exact ⟨Irr.ofIrrRep π, hπ⟩
-
 end GlobalTheory.LocLanglands

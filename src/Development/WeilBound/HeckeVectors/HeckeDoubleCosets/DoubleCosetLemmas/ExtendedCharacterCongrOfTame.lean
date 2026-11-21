@@ -35,9 +35,6 @@ omit [Fintype b] in
 theorem SmM.add {X' : Matrix a b (Cv v)} (hX : SmM X) (hX' : SmM X') : SmM (X + X') :=
   fun i j => Valuation.map_add_lt _ (hX i j) (hX' i j)
 
-omit [Fintype b] in
-theorem SmM.neg (hX : SmM X) : SmM (-X) := fun i j => by simpa using hX i j
-
 end Ent
 
 theorem prod_congr_lt {ι : Type} (s : Finset ι) (f g : ι → Cv v) (hf : ∀ i, Valued.v (f i) ≤ 1)
@@ -74,25 +71,7 @@ theorem det_congr (hX : IntM X) (hY : IntM Y) (h : SmM (X - Y)) : Valued.v (X.de
   rw [← mul_sub, map_mul, v_sign, one_mul]
   exact (prod_congr_lt _ _ _ (fun i => hX (σ i) i) (fun i => hY (σ i) i) fun i => h (σ i) i).2
 
-theorem intM_one : IntM (1 : Matrix n n (Cv v)) := fun i j => by
-  rw [Matrix.one_apply]; split_ifs <;> simp
-
-theorem v_det_eq_one (hX : IntM X) (hY : IntM Y) (h : SmM (X * Y - 1)) :
-    Valued.v X.det = 1 ∧ Valued.v Y.det = 1 := by
-  have h1 := det_congr (hX.mul hY) intM_one h
-  rw [det_mul, det_one] at h1
-  have h2 : Valued.v (X.det * Y.det) = 1 := by
-    have := Valuation.map_one_add_of_lt Valued.v h1
-    rwa [add_sub_cancel] at this
-  rw [map_mul] at h2
-  exact ⟨le_antisymm hX.det (h2.ge.trans (mul_le_of_le_one_right' hY.det)),
-    le_antisymm hY.det (h2.ge.trans (mul_le_of_le_one_left' hX.det))⟩
-
 end Det
-
-theorem intM_of_mem {n : ℕ} {k : GL (Fin n) (Cv v)} (hk : k ∈ KGL v n) : IntM k.1 := by
-  obtain ⟨k₀, rfl⟩ := hk
-  exact fun i j => (k₀.1 i j).2
 
 section Blocks
 
@@ -111,17 +90,6 @@ theorem bDA_mul : bDA (x * y) = bDA x * bAA y + bDD x * bDA y := by
 theorem bDD_mul : bDD (x * y) = bDA x * bAD y + bDD x * bDD y := by
   ext i j; simp [bDD, bAD, bDA, Matrix.mul_apply, Fin.sum_univ_add]
 
-theorem bAA_one : bAA (1 : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1 := by
-  ext i j; simp [bAA, Matrix.one_apply]
-
-theorem bDD_one : bDD (1 : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1 := by
-  ext i j; simp [bDD, Matrix.one_apply]
-
-theorem blocks_pEl (m₁ : GL (Fin r) F) (B : Matrix (Fin r) (Fin c) F) (m₂ : GL (Fin c) F) :
-    bAA (pEl m₁ B m₂).1 = m₁.1 ∧ bAD (pEl m₁ B m₂).1 = B ∧ bDA (pEl m₁ B m₂).1 = 0 ∧
-      bDD (pEl m₁ B m₂).1 = m₂.1 := by
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;> simp [pEl, bAA, bAD, bDA, bDD]
-
 end Blocks
 
 theorem unitCharExtendedByZero_mul {F : Type} [Field F] (δ : Fˣ →* ℂˣ) (x y : F) :
@@ -134,9 +102,6 @@ theorem unitCharExtendedByZero_mul {F : Type} [Field F] (δ : Fˣ →* ℂˣ) (x
   congr 2
   exact Units.ext rfl
 
-theorem extendedCharacter_units {F : Type} [Field F] (δ : Fˣ →* ℂˣ) (x : Fˣ) : chi0 δ x = δ x := by
-  simp [chi0]
-
 theorem extendedCharacter_congr_of_tame {δ : (Cv v)ˣ →* ℂˣ} (hδ : IsTame v δ) {x y : Cv v} (hy : Valued.v y = 1)
     (h : Valued.v (x - y) < 1) : chi0 δ x = chi0 δ y := by
   have hy0 : y ≠ 0 := fun h0 => by simp [h0] at hy
@@ -148,28 +113,6 @@ theorem extendedCharacter_congr_of_tame {δ : (Cv v)ˣ →* ℂˣ} (hδ : IsTame
   rw [← div_mul_cancel₀ x hy0, unitCharExtendedByZero_mul, h2, one_mul]
 
 variable {r c : ℕ} {J : Subgroup (GL (Fin (r + c)) (Cv v))}
-
-theorem IsPar.v_det (hJ : IsPar v r c J) {k} (hk : k ∈ J) :
-    Valued.v (bAA k.1).det = 1 ∧ Valued.v (bDD k.1).det = 1 := by
-  have hi := intM_of_mem ((hJ _).1 (inv_mem hk)).1
-  have h := intM_of_mem ((hJ _).1 hk).1
-  have hs : SmM (bDA k.1) := ((hJ _).1 hk).2
-  have e1 := bAA_mul (k⁻¹).1 k.1
-  have e2 := bDD_mul k.1 (k⁻¹).1
-  rw [Units.inv_mul, bAA_one] at e1
-  rw [Units.mul_inv, bDD_one] at e2
-  refine ⟨(v_det_eq_one (X := bAA (k⁻¹).1) (Y := bAA k.1) (fun i j => hi _ _)
-      (fun i j => h _ _) ?_).2,
-    (v_det_eq_one (X := bDD k.1) (Y := bDD (k⁻¹).1) (fun i j => h _ _)
-      (fun i j => hi _ _) ?_).1⟩
-  · rw [e1, sub_add_cancel_left]
-    exact (IntM.mul_sm (fun i j => hi _ _) hs).neg
-  · rw [e2, sub_add_cancel_right]
-    exact (hs.mul_int fun i j => hi _ _).neg
-
-theorem lamD_blk (δ : (Cv v)ˣ →* ℂˣ) (m : GL (Fin c) (Cv v)) :
-    lamD v δ (blk v r m) = δ (GeneralLinearGroup.det m) := by
-  rw [lamD, blk, (blocks_pEl _ _ _).2.2.2, ← extendedCharacter_units]; rfl
 
 end CompanionTheory.D.Upq.DoubleCosetLemmas
 

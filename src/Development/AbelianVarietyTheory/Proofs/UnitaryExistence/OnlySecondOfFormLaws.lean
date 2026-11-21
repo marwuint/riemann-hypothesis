@@ -1,9 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ContinuousIffCrdA
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroupStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.InvariantProbabilityLatticeQuotientUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LactMul
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.InvariantProbabilityLatticeQuotientUnique
+import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
+import Formalism.SatakeDualWeyl.Statement
 
 noncomputable section
 
@@ -27,7 +28,7 @@ def DatumSign {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (
 theorem invProb_iff (V : HSp D) (hP : VolPairEx V) (hV : FinVol V) (ν : Measure (AutQ V)) :
     IsProbabilityMeasure ν ∧ RightInv V ν ↔ ν = muQ1 V := by
   have hp := volPair_isVolPair V hP
-  obtain ⟨i1, i2, i3⟩ := GlobalTheory.T.lcsc_adelic_unitary_group _ _ D.sp.cm.sig _ V.gram
+  obtain ⟨i1, i2, i3⟩ := _root_.GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary _ _ D.sp.cm.sig _ V.gram
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram
   have : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram
@@ -39,7 +40,7 @@ theorem invProb_iff (V : HSp D) (hP : VolPairEx V) (hV : FinVol V) (ν : Measure
   constructor
   · rintro ⟨h1, h2⟩
     rw [hq]
-    exact GlobalTheory.T.invariant_probability_lattice_quotient_unique _ (GQ V) _ _ hp.2 hV'.2 ν h2
+    exact _root_.GlobalTheory.LatticeQuotUniq.invariant_prob_eq _ (GQ V) _ _ hp.2 hV'.2 ν h2
   · rintro rfl
     refine ⟨inferInstance, fun h ρ hρ s hs => ?_⟩
     have hm := autMk_measurable V
@@ -65,63 +66,9 @@ theorem invProb_iff (V : HSp D) (hP : VolPairEx V) (hV : FinVol V) (ν : Measure
     ext g
     simp
 
-def numsOf (D : D7) : ConjugateFieldNorm.Nums D.host.E where
-  k := D.R.k
-  m := D.R.m
-  g := D.host.g
-  g_prime := D.host.g_prime
-  g_ne := D.host.g_ne
-  Nc := Ideal.absNorm D.host.ccK
-  Nc_pos := Nat.pos_of_ne_zero (mt Ideal.absNorm_eq_zero_iff.1 D.host.ccK_ne_bot)
-  AA := D.host.AA
-  Os := D.what₂.phiO.range
-
 def SpaceW (T : Core D) : Prop := ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → T.V j σ = D.sp.W j
 
-def spW (D : D7) (j : (numsOf D).J) : ConjugateFieldNorm.HSpace D.host.E D.R.r := spOf (D.sp.W j) (D.sp.W_rank j j.2.1 j.2.2)
-
 variable {T : Core D} (hW : SpaceW T)
-
-def psi (j : (numsOf D).J) {σ} (hσ : GoodEmb T.Q.c σ) : ConjugateFieldNorm.GA D.host.F (spW D j) ≃* GA D (T.V j σ) :=
-  (exists_isCoord (T.V j σ) (hW j j.2 σ hσ) (D.sp.W_rank j j.2.1 j.2.2)).choose
-
-def parOf (π : Fin 2 → 𝓞 D.host.E) : ConjugateFieldNorm.CorePar D.host.F (numsOf D) where
-  H := T.Q.H
-  l := T.Q.l
-  c := T.Q.c
-  Dw j := T.Q.Dw j
-  Xo j := T.Q.Xo j
-  U j σ := Formalism.L2.PjFree.Unf.ofPj (T.U j σ)
-  V j := spW D j
-  dict j σ hσ g := T.dict j σ (psi hW j hσ g)
-  mu j σ hσ g := T.mu j σ (psi hW j hσ g)
-  Kf j := (T.Kf j T.σ₀).comap (psi hW j T.good_σ₀).toMonoidHom
-  pi := π
-
-def GenBy (T : Core D) (π : Fin 2 → 𝓞 D.host.E) : Prop :=
-  ∀ k, (T.pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = Ideal.span {T.Q.H.bar (π k)}
-
-def RecTies : Prop :=
-  T.Q.H.d = D.host.d ∧ (T.Q.H.rt : D.host.E) = D.host.sqrtMinusD ∧ T.Q.PinField ∧
-    ∀ (j : (numsOf D).J) σ (hσ : GoodEmb T.Q.c σ),
-      (T.Kf j σ).comap (psi hW j hσ).toMonoidHom = (T.Kf j T.σ₀).comap (psi hW j T.good_σ₀).toMonoidHom
-
-def ArchEquiv (T : Core D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) : Prop :=
-  ∃ th hr, (∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) ∧
-    ∃ x0 : ∀ c, Frame ((T.U j σ).X c).Ψ D.R.r, (∀ c, x0 c ∈ ((T.U j σ).X c).dom ∧ ∃ g, T.dict j σ g = ⟨c, x0 c⟩) ∧
-      ∀ g, ∀ h ∈ GinfC (T.V j σ), ∃ γ' ∈ ((T.U j σ).X (T.dict j σ g).1).Γ,
-        T.dict j σ (g * h) = ⟨(T.dict j σ g).1,
-          lact γ' (rmul (T.dict j σ g).2 (archMat (T.V j σ) th hr x0 h (T.dict j σ g).1))⟩
-
-def OnlyFirst (T : Core D) : Prop :=
-  ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → Continuous (T.mu j σ) ∧ ArchEquiv T j σ
-
-def OnlySecond (π : Fin 2 → 𝓞 D.host.E) : Prop :=
-  (∀ i, π i ∈ Algebra.adjoin ℤ {T.Q.H.w0} ∧ π i * T.Q.H.bar (π i) = (D.host.g i : 𝓞 D.host.E)) ∧
-  ∀ j : (numsOf D).J, ((∃ ε, DatumSign (T.Q.Dw j) (spW D j) ε) → DatumSign (T.Q.Dw j) (spW D j) 1) ∧
-    (∀ σ (hσ : GoodEmb T.Q.c σ), (IsUnf (T.U j σ) → (parOf hW π).PinDict j σ hσ) ∧
-      ∀ g : ConjugateFieldNorm.GA D.host.F (spW D j), g.1.1.val.det = 1 → g.2.1.val.det = 1 → (parOf hW π).mu j σ hσ g = 1) ∧
-    AutomorphismGroupTopologies.WeightField (parOf hW π) j ∧ AutomorphismGroupTopologies.FrameExt (parOf hW π) j ∧ AutomorphismGroupTopologies.PtOnComp (parOf hW π) j
 
 variable (π : Fin 2 → 𝓞 D.host.E)
 

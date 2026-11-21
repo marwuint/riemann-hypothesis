@@ -81,19 +81,6 @@ lemma hermitian_xi_orthogonal (k r : ℕ) {z : Fin (2 * r + k + 1) → ℂ} (hz 
 lemma T_ne {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : StdZ k r z) : ((Tz k r z : ℝ) : ℂ) ≠ 0 := by
   exact Complex.ofReal_ne_zero.mpr hz.2.ne'
 
-lemma nEich_heis {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : StdZ k r z) (ξ : Fin r → ℂ)
-    (u : Fin (2 * r + k + 1) → ℂ) :
-    nEich k r z ξ *ᵥ u = u - herm (Hpk k r) u (((1 : ℂ) / ((Tz k r z : ℝ) : ℂ)) • z) • xiV k r ξ +
-      herm (Hpk k r) u (xiV k r ξ) • (((1 : ℂ) / ((Tz k r z : ℝ) : ℂ)) • z +
-        ((1 : ℂ) / (2 * ((Tz k r z : ℝ) : ℂ))) • xiV k r ξ) := by
-  rw [nEich_mulVec, Formalism.FourierDecayAlt.P.B2x4.herm_smul_right]
-  have hc : star ((1 : ℂ) / ((Tz k r z : ℝ) : ℂ)) = (1 : ℂ) / ((Tz k r z : ℝ) : ℂ) := by
-    simp [Complex.star_def]
-  rw [hc]
-  funext i
-  simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply, Pi.smul_apply, smul_eq_mul]
-  ring
-
 theorem neFacts : NEFacts := by
   intro k r z hz ξ
   have hT := T_ne hz

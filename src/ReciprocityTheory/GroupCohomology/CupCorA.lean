@@ -9,12 +9,6 @@ noncomputable section
 
 universe u
 
-section HomLemmas
-
-variable {R : Type u} [CommRing R] {A B C : Cx R}
-
-end HomLemmas
-
 section Retr
 
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (U : Subgroup G)
@@ -28,10 +22,6 @@ theorem rep_mul (x : U) (g : G) : rep U ((x : G) * g) = rep U g := by
   congr 1
   rw [mkR_eq]
   simpa [mul_inv_rev] using U.inv_mem x.2
-
-theorem mk_rep (g : G) : (Quotient.mk (QuotientGroup.rightRel U) (rep U g)) = Quotient.mk _ g := by
-  unfold rep
-  exact Quotient.out_eq _
 
 theorem retr_mul (x : U) (g : G) : retr U ((x : G) * g) = x * retr U g := by
   apply Subtype.ext
@@ -133,45 +123,7 @@ theorem normF_hd (n : ℕ) (F : (Fin (n + 1) → G) → M.V) :
   simp only [normF_eq, hd, map_sum, map_zsmul, Finset.smul_sum]
   exact Finset.sum_comm
 
-theorem normF_add (n : ℕ) (F F' : (Fin (n + 1) → G) → M.V) :
-    normF M U n (F + F') = normF M U n F + normF M U n F' := by
-  classical
-  haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _
-  funext x
-  simp only [Pi.add_apply, normF_eq, map_add, Finset.sum_add_distrib]
-
-theorem normF_smul (n : ℕ) (r : R) (F : (Fin (n + 1) → G) → M.V) :
-    normF M U n (r • F) = r • normF M U n F := by
-  classical
-  haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _
-  funext x
-  simp only [Pi.smul_apply, normF_eq, map_smul, Finset.smul_sum]
-
-def normL (n : ℕ) : hcoch (M.resSub U) G n →ₗ[R] hcoch M G n where
-  toFun F := ⟨normF M U n F.1, normF_mem M U n F.1 F.2⟩
-  map_add' F F' := by
-    classical
-    haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _
-    refine Subtype.ext (funext fun x => ?_)
-    exact congrFun (normF_add M U n F.1 F'.1) x
-  map_smul' r F := by
-    classical
-    haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _
-    refine Subtype.ext (funext fun x => ?_)
-    exact congrFun (normF_smul M U n r F.1) x
-
 variable {M U}
-
-def normCx (A : Cx R) (eA : ∀ n, A.X n ≃ₗ[R] hcoch (M.resSub U) G n) (hA : IsHomog (M.resSub U) G A eA)
-    (eG : ∀ n, M.coch.X n ≃ₗ[R] hcoch M G n) (hG : IsHomog M G M.coch eG) : Hom A M.coch where
-  f n := ((eG n).symm.toLinearMap.comp (normL M U n)).comp (eA n).toLinearMap
-  comm n F := by
-    apply (eG (n + 1)).injective
-    apply Subtype.ext
-    rw [hG]
-    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]
-    show normF M U (n + 1) (eA (n + 1) (A.d n F)).1 = hd n (normF M U n (eA n F).1)
-    rw [hA]; exact normF_hd M U n _
 
 end Norm
 

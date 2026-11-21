@@ -1,5 +1,5 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaAtSmallPlace
-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+import Mathlib
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SmallnessCondition
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
 
@@ -12,10 +12,6 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped TensorProduct
 open Formalism.CohomologicalDescent.LogSmallConstantBounds (Par)
 namespace GlobalTheory.FrameOf
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-section Int
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {l : ℕ} [Fact l.Prime]
-end Int
 end GlobalTheory.FrameOf
 namespace GlobalTheory.FrameOf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar

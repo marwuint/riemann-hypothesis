@@ -28,7 +28,7 @@ theorem eq_zero_of_orthogonal_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) �
   have hann : ∀ x : WO S T, (∀ γ ∈ ratL T S, ψ (symplOH S T x γ + symplOH S T x γ) = 1) ↔ x ∈ ratL T S := by
     intro x
     simp only [hdbl]
-    exact GlobalTheory.T.rationalSymplecticPoints_self_annihilator D ψ hψ S T x
+    exact _root_.GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ S T x
   have hq' : ∀ γ ∈ ratL T S, ∀ w, q (γ + w) = ψ (-(symplOH S T γ w)) * q w := by
     intro γ hγ w
     obtain ⟨γ', rfl⟩ := hγ

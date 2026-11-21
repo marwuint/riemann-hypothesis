@@ -82,19 +82,4 @@ theorem archSize_smul_sq {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (x
     GlobalTheory.Adelic.archSize (c • A) x ^ 2 = ‖c‖ ^ 2 * GlobalTheory.Adelic.archSize A x ^ 2 := by
   rw [GlobalTheory.Adelic.archSize, GlobalTheory.Adelic.archSize, Real.sq_sqrt (by positivity), Real.sq_sqrt (by positivity), sum_smul]
 
-theorem log_step {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (r : ℝ) {c : ℂ} (hc : c ≠ 0) (v : Fin m → ℂ)
-    (h : 0 < ∑ a, ‖∑ k, (((Real.exp r : ℝ) : ℂ) • M) k a * v k‖ ^ 2) :
-    Real.log (∑ a, ‖∑ k, M k a * (c * v k)‖ ^ 2) + 2 * r =
-      Real.log (∑ a, ‖∑ k, (((Real.exp r : ℝ) : ℂ) • M) k a * v k‖ ^ 2) + Real.log (‖c‖ ^ 2) := by
-  have e : ∑ a, ‖∑ k, M k a * (c * v k)‖ ^ 2 = ‖c‖ ^ 2 * ∑ a, ‖∑ k, M k a * v k‖ ^ 2 := by
-    rw [← sum_smul]
-    simp only [Matrix.smul_apply, smul_eq_mul, mul_assoc, mul_left_comm c]
-  rw [sum_smul] at h ⊢
-  have h0 : ∑ a, ‖∑ k, M k a * v k‖ ^ 2 ≠ 0 := fun h0 => by rw [h0, mul_zero] at h; exact lt_irrefl _ h
-  have h1 : ‖c‖ ^ 2 ≠ 0 := pow_ne_zero _ (norm_ne_zero_iff.2 hc)
-  rw [e, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos r).le, Real.log_mul h1 h0,
-    Real.log_mul (pow_ne_zero _ (Real.exp_pos r).ne') h0, Real.log_pow (Real.exp r), Real.log_exp]
-  push_cast
-  ring
-
 end PositivityTheory.UnitarySelfGeneration.FrameHeightScaling

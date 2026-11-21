@@ -10,12 +10,6 @@ open scoped Classical
 
 variable {g : ℕ} [Fact g.Prime]
 
-theorem entN_lt {n : ℕ} (M : Mt g n) {i j : ℕ} (hi : i < n) (hj : j < n) : entN M i j = M ⟨i, hi⟩ ⟨j, hj⟩ := by
-  simp [entN, hi, hj]
-
-theorem entN_fin {n : ℕ} (M : Mt g n) (i j : Fin n) : entN M i j = M i j := by
-  simp [entN]
-
 open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
@@ -24,27 +18,6 @@ theorem _root_.GlobalTheory.GLm.OpenCell.coe_toG {n : ℕ} {M : _root_.GlobalThe
   unfold _root_.GlobalTheory.GLq.toG
   rw [dif_pos h]
   rfl
-
-theorem pm_coe {n : ℕ} (σ : Equiv.Perm (Fin n)) :
-    ((pm g σ : Gn g n) : Mt g n) = Matrix.of fun r j : Fin n => if r = σ j then 1 else 0 := by
-  refine coe_toG (M := Matrix.of fun r j : Fin n => if r = σ j then 1 else 0) ?_
-  refine IsUnit.of_mul_eq_one (Matrix.of fun r j : Fin n => if j = σ r then (1 : ZMod g) else 0) ?_
-  ext i j
-  simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]
-  rw [Finset.sum_eq_single (σ.symm i)]
-  · simp [eq_comm]
-  · intro k _ hk
-    have : i ≠ σ k := fun h => hk (by simp [h])
-    simp [this]
-  · simp
-
-theorem conj_pm {n : ℕ} (σ : Equiv.Perm (Fin n)) (x : Gn g n) (i j : Fin n) :
-    (((pm g σ)⁻¹ * x * pm g σ : Gn g n) : Mt g n) i j = (x : Mt g n) (σ i) (σ j) := by
-  have h1 : pm g σ * ((pm g σ)⁻¹ * x * pm g σ) = x * pm g σ := by group
-  have h2 := congrArg (fun z : Gn g n => (z : Mt g n) (σ i) j) h1
-  generalize (pm g σ)⁻¹ * x * pm g σ = y at h2 ⊢
-  simp only [Units.val_mul, pm_coe, Matrix.mul_apply, Matrix.of_apply] at h2
-  simpa using h2
 
 open Polynomial in
 open scoped Classical in
@@ -67,30 +40,6 @@ def bd (n : ℕ) {a b : ℕ} (u : Mt g a) (v : Mt g b) : Mt g n := fun i j =>
 
 def Good (b : ℕ) {n : ℕ} (M : Mt g n) : Prop :=
   IsUniUp M ∧ ∀ i j : ℕ, i < b → b ≤ j → j < n → entN M i j = 0
-
-section
-variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
-  (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a)
-include hσ
-
-theorem entN_conj (x : Gn g (a + b)) {i j : ℕ} (hi : i < a + b) (hj : j < a + b) :
-    entN (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b)) i j =
-      entN (x : Mt g (a + b)) (if i < a then b + i else i - a) (if j < a then b + j else j - a) := by
-  rw [entN_lt _ hi hj, conj_pm, ← entN_fin (x : Mt g (a + b)), hσ, hσ]
-
-theorem good_iff (x : Gn g (a + b)) :
-    (IsUniUp (x : Mt g (a + b)) ∧ InPar a (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b))) ↔
-      Good b (x : Mt g (a + b)) := by
-  refine and_congr_right fun _ => ⟨fun h i j hi hj hj' => ?_, fun h i j hj hi => ?_⟩
-  · have h1 := h ⟨a + i, by omega⟩ ⟨j - b, by omega⟩ (by show j - b < a; omega) (by show a ≤ a + i; omega)
-    rw [← entN_lt (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b)), entN_conj hσ x (by omega) (by omega), if_neg (by omega), if_pos (by omega),
-      Nat.add_sub_cancel_left, show b + (j - b) = j by omega] at h1
-    exact h1
-  · have hi' := i.2
-    rw [← entN_fin (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b)), entN_conj hσ x i.2 j.2, if_neg (by omega), if_pos hj]
-    exact h _ _ (by omega) (by omega) (by omega)
-
-end
 
 open Polynomial in
 open scoped Classical in

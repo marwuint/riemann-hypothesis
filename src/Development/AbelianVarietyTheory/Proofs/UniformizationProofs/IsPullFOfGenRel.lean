@@ -147,10 +147,6 @@ theorem prod_gtT {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ : D.
     h (1 : T ⟶ D.P.A).left ^ (-1 : ℤ) = _
   simp only [zpow_neg, zpow_one]
 
-theorem gtφT_hom {T : Over (Spec (CommRingCat.of R))} (b : T ⟶ D.P.A) (χ : D.X) (i : Fin 4) :
-    DegPre.gtφT D T b χ i ≫ D.P.A.hom = T.hom := by
-  fin_cases i <;> exact Over.w _
-
 theorem gtφT_push (gp : IsGrpPullback D'.P.A D.P.A (spMap f) Φ) {χ : D.X} {χ' : D'.X}
     (hc : (D'.c χ').left ≫ Φ = spMap f ≫ (D.c χ).left) {T : Over (Sp R)} {T' : Over (Sp R')} (h : T'.left ⟶ T.left)
     {b' : T' ⟶ D'.P.A} {b : T ⟶ D.P.A} (hb : b'.left ≫ Φ = h ≫ b.left) (i : Fin 4) :

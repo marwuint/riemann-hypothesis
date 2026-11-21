@@ -3,8 +3,8 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ChainPa
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalOperatorEigenvaluesDeterminedByParams
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaChainStageLevelSphericalOffSet
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IdemOfIsPrimeIdem
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConjStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityVanishingAndSameParamsSubspaceStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityValuesContinuousBoundedHeckeConj
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MultiplicityVanishingAndSameParamsSubspace
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TransferOn
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
@@ -40,7 +40,7 @@ theorem lift_compMultilinearMap' {ι : Type*} [Fintype ι] {Mi : ι → Type*} [
 
 theorem valPart_mem : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, MetEx D → ForStage D fun c _ s => ∀ (u : s.CC c) w B, PiLocalization₂.val u w ≠ 0 → ParFun c s (PiLocalization₂.val u w) B → ∃ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ partFull c.θ s.M (s.J : Set (GA D s.V)) 1 c.S e := by
   intro hCRD D hMet c hc j hj s hs u w B hw hB
-  have hconjH := (GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hCRD D c hc j hj s hs).2
+  have hconjH := (_root_.GlobalTheory.EvenOnto.ConjVal.values_conj_hecke hCRD D c hc j hj s hs).2
   have hBV : GlobalTheory.LFun.IsParamFunV s.V c.S (fun g => conj (PiLocalization₂.val u w g)) B := hB
   obtain ⟨a, ha⟩ := GlobalTheory.ParamEigen.eig_of_param D s.V (s.J : Set (GA D s.V)) (1 : GA D s.V → ℂ) c.S
     hs.sph B
@@ -83,7 +83,7 @@ theorem valPart_mem : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, MetE
     simp only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply]
     rw [sub_eq_zero]
     exact heig P d R hR
-  have hx0 := (GlobalTheory.T.multiplicity_vanishing_and_same_params_subspace D hMet).1 c hc j hj s hs x w hw0 hx
+  have hx0 := (_root_.GlobalTheory.EvenOnto.vanish_and_parLin D hMet).1 c hc j hj s hs x w hw0 hx
   have h3 : PiTensorProduct.lift (heckeOn s.M R T - conj (a P d) • T) = 0 := congrArg Subtype.val hx0
   have h4 : heckeOn s.M R T - conj (a P d) • T = 0 := by
     have h := congrArg PiTensorProduct.lift.symm h3

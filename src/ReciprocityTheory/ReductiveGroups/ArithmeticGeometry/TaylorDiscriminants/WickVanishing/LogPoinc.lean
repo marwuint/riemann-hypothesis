@@ -75,8 +75,4 @@ theorem pderiv_prim (ω : τ → MvPowerSeries τ k)
   rw [mul_assoc, hsum, ← mul_assoc, ← map_natCast (algebraMap ℚ k) n.degree, ← map_mul,
     inv_mul_cancel₀ hD, map_one, one_mul]
 
-theorem exists_prim (ω : τ → MvPowerSeries τ k) (hω : ∀ a c, pderiv k c (ω a) = pderiv k a (ω c)) :
-    ∃ ℓ : MvPowerSeries τ k, constantCoeff ℓ = 0 ∧ ∀ v, pderiv k v ℓ = ω v :=
-  ⟨prim ω, constantCoeff_prim ω, pderiv_prim ω hω⟩
-
 end ReciprocityTheory.ChartRestriction.G.TB.LogPf

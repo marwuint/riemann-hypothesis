@@ -17,8 +17,4 @@ def FibreDimensionZero.Statement : Prop :=
     IsProjVarF (imageVar (ZMod p) v (W'.map (MvPolynomial.map (Int.castRingHom (ZMod p))))) n →
     ∀ G' : GenFibre v W', IsProjVarF (fibreIdeal κ G') 0
 
-section Inhabitants
-
-end Inhabitants
-
 end GroundTheory.Heights₂.Heights.Inter

@@ -80,86 +80,12 @@ namespace Line
 
 open GaussianInt
 
-def gaussEquiv : GaussianInt ≃ₗ[ℤ] (Fin 2 → ℤ) where
-  toFun v := ![v.re, v.im]
-  invFun f := ⟨f 0, f 1⟩
-  map_add' v w := by ext i; fin_cases i <;> simp
-  map_smul' n v := by
-    ext i; fin_cases i <;> simp [zsmul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]
-  left_inv v := by simp
-  right_inv f := by ext i; fin_cases i <;> simp
-
-def gaussBasis : Module.Basis (Fin 2) ℤ GaussianInt := Module.Basis.ofEquivFun gaussEquiv
-
-theorem gaussBasis_zero : gaussBasis 0 = ⟨1, 0⟩ := by
-  simp [gaussBasis, gaussEquiv, Module.Basis.coe_ofEquivFun]
-
-theorem gaussBasis_one : gaussBasis 1 = ⟨0, 1⟩ := by
-  simp [gaussBasis, gaussEquiv, Module.Basis.coe_ofEquivFun]
-
 def gaussForm : GaussianInt →ₗ[ℤ] GaussianInt →ₗ[ℤ] ℤ :=
   LinearMap.mk₂ ℤ (fun v w => v.re * w.im - v.im * w.re)
     (fun v v' w => by simp; ring) (fun n v w => by simp [zsmul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]; ring)
     (fun v w w' => by simp; ring) (fun n v w => by simp [zsmul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]; ring)
 
 theorem gaussForm_apply (v w : GaussianInt) : gaussForm v w = v.re * w.im - v.im * w.re := rfl
-
-theorem normSq_toComplex (v : GaussianInt) : Complex.normSq (toComplex v) = (v.re : ℝ) ^ 2 + (v.im : ℝ) ^ 2 := by
-  rw [toComplex_def₂, Complex.normSq_mk]
-  ring
-
-theorem eq_zero_of_isIsoSub {I : Submodule GaussianInt GaussianInt} (hI : IsIsoSub gaussForm I) {v : GaussianInt}
-    (hv : v ∈ I) : v = 0 := by
-  have h := hI v hv (⟨0, 1⟩ • v) (I.smul_mem _ hv)
-  rw [gaussForm_apply, smul_eq_mul] at h
-  simp [Zsqrtd.re_mul, Zsqrtd.im_mul] at h
-  have h2 : v.re * v.re + v.im * v.im = 0 := by linarith
-  have hre : v.re = 0 := by nlinarith [mul_self_nonneg v.re, mul_self_nonneg v.im]
-  have him : v.im = 0 := by nlinarith [mul_self_nonneg v.re, mul_self_nonneg v.im]
-  exact Zsqrtd.ext hre him
-
-def gaussCusp (II : IntersectionSystem)
-    (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2]) :
-    CuspData (lineData II hII) GaussianInt GaussianInt where
-  rank := 2
-  basis := gaussBasis
-  form := gaussForm
-  alt v := by rw [gaussForm_apply]; ring
-  unimod := by
-    have : (Matrix.of fun a b => gaussForm (gaussBasis a) (gaussBasis b)).det = 1 := by
-      rw [Matrix.det_fin_two]
-      simp [gaussForm_apply, gaussBasis_zero, gaussBasis_one]
-    rw [this]
-    exact isUnit_one
-  emb _ := toComplex
-  normSq _ v := Complex.normSq (toComplex v)
-  normSq_pos _ _ v hv := Complex.normSq_pos.2 fun h => hv (toComplex_injective (by rw [h, map_zero]))
-  form_le _ _ v w := by
-    rw [gaussForm_apply, normSq_toComplex, normSq_toComplex]
-    push_cast
-    nlinarith [sq_nonneg ((v.re : ℝ) * w.re + v.im * w.im)]
-  lie _ _ v _ := toComplex v
-  lie_add _ _ v w := by funext c; simp
-  lie_smul _ _ a v := by funext c; simp [smul_eq_mul]
-  lie_le _ _ v := by
-    simp only [Finset.univ_unique, Finset.sum_singleton, Complex.sq_norm]
-    show ∑ _c : Fin 1, Complex.normSq (toComplex v) ≤ Complex.normSq (toComplex v)
-    simp
-  inj _ _ _ I hI ρ v hv hli := by
-    rcases Nat.eq_zero_or_pos ρ with rfl | hρ
-    · exact linearIndependent_empty_type
-    · exact absurd (eq_zero_of_isIsoSub hI (hv ⟨0, hρ⟩)) (hli.ne_zero ⟨0, hρ⟩)
-  torus _ _ _ _ := ⟨rfl, rfl⟩
-
-theorem cuspWeight_gauss (II : IntersectionSystem) (hII) (z : (Σ _ : Unit, Fin 2) → ℂ) :
-    (gaussCusp II hII).cuspWeight z = 0 := by
-  have : {x | ∃ I : Submodule GaussianInt GaussianInt, I ≠ ⊥ ∧ IsSaturated I ∧
-      IsIsoSub (gaussCusp II hII).form I ∧ x = -Real.log ((gaussCusp II hII).Nz z I)} = ∅ := by
-    ext x
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_exists, not_and]
-    intro I hI _ hiso _
-    exact hI ((Submodule.eq_bot_iff I).2 fun v hv => eq_zero_of_isIsoSub hiso hv)
-  rw [CuspData.cuspWeight, this, Real.sSup_empty, max_self]
 
 end Line
 

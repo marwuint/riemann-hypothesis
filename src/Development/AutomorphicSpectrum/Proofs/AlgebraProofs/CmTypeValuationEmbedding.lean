@@ -1,14 +1,14 @@
 import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LinearIndependentEigProj
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigCoordApply
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StatementUnavailableOneStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.StatementUnavailableOne
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SumEigenProjectionsEqSelfStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CmTypePolynomialVanishingCriterionStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeSpanIntersectionBasisStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeLatticeDualEigenDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualModuleConjugateEigenActionStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CmTypePolynomialVanishingCriterion
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeSpanIntersectionBasis
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeLatticeDualEigenDecomposition
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualModuleConjugateEigenAction
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ValuationLatticeMatrixReductionStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ConjugateEmbeddingsValuationRankBoundStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ConjugateEmbeddingsValuationRankBound
 
 open scoped NNReal
 open AlgebraicGeometry CategoryTheory Limits NumberField GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Flat.ExG
@@ -29,7 +29,7 @@ theorem targetO : TargetO := by
   let emb : (E →+* C) → (𝓞 E →+* ν.valuationSubring) := fun s =>
     (s.comp (algebraMap (𝓞 E) E)).codRestrict ν.valuationSubring (fun a => hint s a)
   have hemb : ∀ s (a : 𝓞 E), ((emb s a : ν.valuationSubring) : C) = s (a : E) := fun s a => rfl
-  obtain ⟨π, hπ1, hπ2⟩ := GlobalTheory.T.statement_unavailable_one E ν.valuationSubring C emb (fun s a => hemb s a) hcard σ
+  obtain ⟨π, hπ1, hπ2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.block_monogenic_of_residual_character E ν.valuationSubring C emb (fun s a => hemb s a) hcard σ
   let D : (E →+* C) → Prop := fun s => ∀ a, ¬ IsUnit (emb s a - emb σ a)
   let S := {s // D s}
   have hDσ : D σ := fun a => by simp
@@ -116,7 +116,7 @@ theorem targetO : TargetO := by
     · intro s _ hs
       exact HT.LatBasic.eigProj_of_ne (fun e => hs (Subtype.ext e).symm) (gmem _ _)
     · simp
-  have hblk := GlobalTheory.T.cm_type_polynomial_vanishing_criterion E C ν emb (fun s a => hemb s a) hcard' D π hmono _ ρH HV (p + q) x hfree
+  have hblk := _root_.GlobalTheory.CompanionTheory.Ar.Flat.ExG.Block.block_freeLattice E C ν emb (fun s a => hemb s a) hcard' D π hmono _ ρH HV (p + q) x hfree
   obtain ⟨hb1, hb2⟩ := hblk
   have sumFst : ∀ f : S → Fin (p + q) → C, (∑ s, T s (f s)).1 = ∑ s, g s (f s) := by
     intro f
@@ -134,7 +134,7 @@ theorem targetO : TargetO := by
         obtain ⟨z, rfl⟩ := Tsurj s y h1
         exact ⟨z, h2, rfl⟩
     change _ = rk (sbar s.1)
-    rw [← hrk, ← GlobalTheory.T.dual_module_conjugate_eigen_action E C bar s.1 (sbar s.1) W ρ ρH hsumW (hsbar s.1) hbar hinr, ← e1]
+    rw [← hrk, ← _root_.GlobalTheory.CompanionTheory.Ar.Flat.ExG.DualRank.finrank_eigSp_inf_ker_fst E C bar s.1 (sbar s.1) W ρ ρH hsumW (hsbar s.1) hbar hinr, ← e1]
     exact (Submodule.equivMapOfInjective _ (Tinj s) _).finrank_eq
   have hspanLie : Submodule.span C (Lie : Set W) = ⊤ := by
     rw [eq_top_iff]
@@ -173,7 +173,7 @@ theorem targetO : TargetO := by
     intro y
     rw [hws, hwsp]
     exact Iff.rfl
-  have hφ := GlobalTheory.T.lattice_span_intersection_basis ν.valuationSubring C W Lie q w hLieFG hspanLie hw hsat
+  have hφ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_dual_integral_of_saturated_free_part ν.valuationSubring C W Lie q w hLieFG hspanLie hw hsat
   have hσbar : sbar σ = σ' := IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))
     (RingHom.ext fun b => (hsbar σ b).trans (hσ' b).symm)
   have hrτ : r τ = q := by
@@ -212,7 +212,7 @@ theorem targetO : TargetO := by
     · ext z
       rw [hTmemSpan]
       simp only [hU]
-      rw [GlobalTheory.T.hodge_lattice_dual_eigen_decomposition E ν.valuationSubring C bar σ σ' W ρ ρH HV Lie q w (fun j => u (Fin.natAdd p j)) hsumW hσ' hbar hfst hinr
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.Flat.ExG.DualFil.span_iff_proj E ν.valuationSubring C bar σ σ' W ρ ρH HV Lie q w (fun j => u (Fin.natAdd p j)) hsumW hσ' hbar hfst hinr
         hfil hwsp (fun j => (hwLie j).1) (fun j => ⟨had.1 _, (had.2.2 j).1, (had.2.2 j).2⟩) hφ]
       constructor
       · rintro ⟨φ, h1, h2⟩
@@ -299,6 +299,6 @@ end GlobalTheory.CompanionTheory.Ar.Flat.ExG
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 theorem det_adapted_eq_unit_mul_const : ∀ (E : Type) [Field E] [NumberField E] (V C : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [CharZero C] [Algebra V C] [IsFractionRing V C] (bar : 𝓞 E ≃+* 𝓞 E) (σ σ' : E →+* C) (rk : (E →+* C) → ℕ) (p q : ℕ) (ν : Valuation C NNReal), ν.Integers V → (∃ ℓ : C, 0 < ν ℓ ∧ ν ℓ < 1) → (∀ (s : E →+* C) (a : 𝓞 E), s (a : E) ∈ (algebraMap V C).range) → Nat.card (E →+* C) = Module.finrank ℚ E → (∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) → (∀ a, bar (bar a) = a) → ∃ γ : C, γ ≠ 0 ∧ ∀ (W : Type) [AddCommGroup W] [Module C W] [Module V W] [IsScalarTower V C W] [FiniteDimensional C W] (ρ : 𝓞 E →+* Module.End C W) (ρH : 𝓞 E →+* Module.End C (W × Module.Dual C W)) (HV : Submodule V (W × Module.Dual C W)) (Lie : Submodule V W) (x : Fin (p + q) → W × Module.Dual C W) (v : Fin p → W) (w : Fin q → W) (u : Fin (p + q) → W × Module.Dual C W) (A : Matrix (Fin (p + q)) (Fin (p + q)) C), (∀ a y, (ρH a y).1 = ρ a y.1) → (∀ a φ, ρH a (0, φ) = (0, φ ∘ₗ ρ (bar a))) → HV.map ((LinearMap.fst C W (Module.Dual C W)).restrictScalars V) = Lie → (∀ φ : Module.Dual C W, (0, φ) ∈ HV ↔ ∀ e ∈ Lie, φ e ∈ (algebraMap V C).range) → HT.IsFreeOn ρH HV x → (∀ s, Module.finrank C (HT.eigSp ρ s) = rk s) → LinearIndependent C v → Submodule.span V (Set.range v) = HT.eigSub ρ σ Lie → LinearIndependent C w → Submodule.span V (Set.range w) = HT.eigSub ρ σ' Lie → IsAdapted ρH σ v w u → LinearIndependent C (fun i => ∑ j, A i j • u j) → Submodule.span V (Set.range fun i => ∑ j, A i j • u j) = HT.eigQuot ρH σ HV → ∃ ε : Vˣ, A.det = algebraMap V C ε * γ :=
-  GlobalTheory.T.conjugate_embeddings_valuation_rank_bound ExG.targetO
+  _root_.GlobalTheory.CompanionTheory.Ar.Flat.ExG.Red.targetV ExG.targetO
 
 end GlobalTheory.CompanionTheory.Ar.Flat

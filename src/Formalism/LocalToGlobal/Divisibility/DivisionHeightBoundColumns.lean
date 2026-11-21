@@ -3,7 +3,10 @@ import Formalism.LocalToGlobal.Divisibility.LiftLatInst
 import Formalism.LocalToGlobal.Divisibility.LiftLatLemmas
 import Formalism.LocalToGlobal.Columns.RowFormsRat
 import Formalism.LocalToGlobal.Columns.WmLemmas
-import Formalism.LocalToGlobal.Columns.AnisotropicOfPositiveDefinite
+import Formalism.LocalToGlobal.Columns.WmpNatCardQuotEqPowFinrank
+import Formalism.LocalToGlobal.Columns.NonDeg
+import Formalism.LocalToGlobal.Columns.RowFormsGood
+import Formalism.LocalToGlobal.Columns.PathCountSymmetricHolds
 import Formalism.LocalToGlobal.Divisibility.DivisionHeightBoundStatement
 
 open Module NumberField IsDedekindDomain
@@ -84,36 +87,6 @@ theorem heckeCSD_split (hs : Col.HeckeFieldsIn c S0) : Col.SplitOver (heckeCSD S
   intro x
   exact conjE_iSup_maxGen (S.res h) _ (hs _)
 
-theorem heckeCSD_rat (R : S.Rat) (x : offSub ST SG SG' S0 × ℕ) (a b : Fin (S.toCSD h).dim) :
-    LinearMap.toMatrix (S.toCSD h).basis (S.toCSD h).basis (heckeCSD S h c SG S0 x) a b ∈ cmMax K := by
-  have hR : (S.toCSD h).Rat := S.toCSDOf_rat h R S.outSec
-  have hb := Col.csd_hasRatBasis _ hR
-  rw [LinearMap.toMatrix_apply]
-  refine Col.CSDRat.repr_mem _ hR hb (S.det_H_ne_zero R h) _ ?_ a
-  intro cl i
-  have hf := (S.toCSD h).basis_rat hb b
-  show S.bV.repr ((((Col.heckeD c x.1.1.1.asIdeal x.2).op ((S.res h).symm ((S.toCSD h).basis b)) : S.EqFun) :
-    S.D → S.V) (S.outSec.rep cl)) i ∈ cmMax K
-  rw [Col.heckeD_op_apply]
-  simp only [map_sum, Finsupp.coe_finsetSum, Finset.sum_apply]
-  refine sum_mem fun e _ => ?_
-  show S.bV.repr (S.ρ (S.outSec.mv e) ((((S.toCSD h).basis b).1 : S.Cl → S.V) (S.cls e))) i ∈ cmMax K
-  exact S.rho_mem R _ _ (hf _) i
-
-theorem heckeCSD_adj (x : offSub ST SG SG' S0 × ℕ) :
-    ∃ y, ∀ f g : (S.toCSD h).Forms,
-      (S.toCSD h).csum (heckeCSD S h c SG S0 x f : (S.toCSD h).Cl → (S.toCSD h).V) (g : (S.toCSD h).Cl → (S.toCSD h).V) =
-        (S.toCSD h).csum (f : (S.toCSD h).Cl → (S.toCSD h).V)
-          (heckeCSD S h c SG S0 y g : (S.toCSD h).Cl → (S.toCSD h).V) := by
-  let P' : Col.LevOff ST SG' S0 := Col.conjugateSplitOff ⟨x.1.1.1, x.1.2⟩
-  let Q : Col.LevOff ST SG S0 := Col.conjugateSplitOff x.1.1
-  have hQ : Q ∈ offSub ST SG SG' S0 := P'.2
-  refine ⟨(⟨Q, hQ⟩, x.2), fun f g => ?_⟩
-  have e := Col.heckeOperator_adjoint_conj c h x.1.1.1 x.2 ((S.res h).symm f) ((S.res h).symm g)
-  conv_lhs => rw [← LinearEquiv.apply_symm_apply (S.res h) g]
-  conv_rhs => rw [← LinearEquiv.apply_symm_apply (S.res h) f]
-  exact e
-
 end Gen
 
 section Tr
@@ -186,15 +159,6 @@ structure ColHyp (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
 
   splitL : ∀ (j : Fin R.m) (τ : TupF TU), Col.HeckeFieldsIn (liftPts W Ch sel τ.1 (j.1 + 1)) S0
 
-theorem exists_isConjAt (hX : X.Ok) : ∃ v0 : InfinitePlace X.K, IsConjAt v0 := by
-  obtain ⟨σ₀, h⟩ := hX.conjK
-  refine ⟨InfinitePlace.mk σ₀, ?_⟩
-  intro a
-  rcases InfinitePlace.embedding_mk_eq σ₀ with h1 | h1
-  · rw [h1]
-    exact h a
-  · rw [h1, ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, h a]
-
 variable (hX : X.Ok) (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
   (Xg : Finset (Col.G0 X.E Pr.vGs R.r → X.K)) (S0 : Set (HeightOneSpectrum (𝓞 X.E)))
   (xiVal : Tup X.F X.E X.K S → HeightOneSpectrum (𝓞 X.E) → X.Kˣ)
@@ -243,28 +207,6 @@ theorem colFam_ok (hH : ColHyp W Ch sel v0 TU Xg S0) : (colFam W Ch sel hX v0 TU
   what₂ := colFam_rows_ok W Ch sel hX v0 TU Xg S0 xiVal hH.commR hH.splitR
   lifts := colFam_lifts_ok W Ch sel hX v0 TU Xg S0 xiVal hH.commL hH.splitL
 
-theorem colFam_okH_rows (τ : TupF TU) : ((colFam W Ch sel hX v0 TU Xg S0 xiVal).R τ).OkH where
-  rat := fun i a b => heckeCSD_rat _ _ _ _ _ (Col.mtildeK_rat W Ch sel τ.1 hX) i a b
-  adj := fun i => heckeCSD_adj _ _ _ _ _ i
-
-theorem colFam_okH_lifts (j : Fin R.m) (τ : TupF TU) : ((colFam W Ch sel hX v0 TU Xg S0 xiVal).L j τ).OkH where
-  rat := fun i a b => heckeCSD_rat _ _ _ _ _ (Col.mtK_rat W Ch sel τ.1 hX (j.1 + 1)) i a b
-  adj := fun i => heckeCSD_adj _ _ _ _ _ i
-
-theorem colFam_okH :
-    (∀ τ, ((colFam W Ch sel hX v0 TU Xg S0 xiVal).R τ).OkH) ∧
-      ∀ j τ, ((colFam W Ch sel hX v0 TU Xg S0 xiVal).L j τ).OkH :=
-  ⟨fun τ => colFam_okH_rows W Ch sel hX v0 TU Xg S0 xiVal τ,
-    fun j τ => colFam_okH_lifts W Ch sel hX v0 TU Xg S0 xiVal j τ⟩
-
-theorem colFam_typesSep : (colFam W Ch sel hX v0 TU Xg S0 xiVal).TypesSep := by
-  unfold colFam
-  refine FamIn.typesSep_of' (A := colIn W Ch sel hX v0 TU Xg S0 xiVal) (fun P => ?_) (fun P => ?_)
-  · first
-      | exact Col.SplitOff.q_ne_zero _
-      | exact_mod_cast Col.SplitOff.q_ne_zero _
-  · exact heckeCSD_zero _ _ _ _ _ P
-
 end Inst
 
 section Xi
@@ -282,29 +224,6 @@ open Classical in
 def unifVal (ξ : Chr F E L) (P : HeightOneSpectrum (𝓞 E)) : Lˣ :=
   if h : ∃ u, IsUnifIdele (F := F) P u then ξ h.choose else 1
 
-theorem unifVal_of (ξ : Chr F E L) (P : HeightOneSpectrum (𝓞 E)) (h : ∃ u, IsUnifIdele (F := F) P u) :
-    unifVal ξ P = ξ h.choose ∧ IsUnifIdele P h.choose := by
-  refine ⟨?_, h.choose_spec⟩
-  rw [unifVal, dif_pos h]
-
-theorem tilde_character_norm_quotient (σ : E →ₐ[F] E) (ξ : Chr F E L) (hξ : (h90 σ).ker ≤ ξ.ker) (u : (AfE F E)ˣ) :
-    tilde σ ξ ((h90 σ).rangeRestrict u) = ξ u := by
-  unfold tilde
-  rw [dif_pos hξ]
-  first
-    | exact MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ u
-    | exact MonoidHom.liftOfSurjective_comp_apply _ _ _ u
-    | simp
-
-theorem det_twist_of_norm_quotient (σ : E →ₐ[F] E) (ξ : Chr F E L) (hξ : (h90 σ).ker ≤ ξ.ker) {n : ℕ}
-    (g : GL (Fin n) (AfE F E)) (u : (AfE F E)ˣ) (hg : Matrix.GeneralLinearGroup.det g = h90 σ u) :
-    detTw σ ξ g = ξ u := by
-  have hmem : Matrix.GeneralLinearGroup.det g ∈ (h90 σ).range := ⟨u, hg.symm⟩
-  unfold detTw
-  rw [dif_pos hmem]
-  have hsub : (⟨_, hmem⟩ : (h90 σ).range) = (h90 σ).rangeRestrict u := Subtype.ext hg
-  rw [hsub, tilde_character_norm_quotient σ ξ hξ u]
-
 end Xi
 
 section XiCol
@@ -317,57 +236,6 @@ def xiVal (τ : Tup X.F X.E X.K S) (P : HeightOneSpectrum (𝓞 X.E)) : X.Kˣ :=
 variable (hX : X.Ok) (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
   (Xg : Finset (Col.G0 X.E Pr.vGs R.r → X.K)) (S0 : Set (HeightOneSpectrum (𝓞 X.E)))
 
-def colInX : FamIn X.K (Col.G0 X.E Pr.vGs R.r) (Col.LevOff ∅ Pr.vGs S0) (TupF TU) R.m :=
-  colIn W Ch sel hX v0 TU Xg S0 xiVal
-
-theorem colInX_ok (hH : ColHyp W Ch sel v0 TU Xg S0) : (colInX W Ch sel hX v0 TU Xg S0).fam.Ok 1 :=
-  colFam_ok W Ch sel hX v0 TU Xg S0 xiVal hH
-
-theorem colInX_typesSep : (colInX W Ch sel hX v0 TU Xg S0).fam.TypesSep :=
-  colFam_typesSep W Ch sel hX v0 TU Xg S0 xiVal
-
 end XiCol
-
-section LinkCol
-
-variable {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word R) (Ch : Col.Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (hX : X.Ok) (v0 : InfinitePlace X.K)
-  (TU : Finset (Tup X.F X.E X.K S)) (Xg : Finset (Col.G0 X.E Pr.vGs R.r → X.K)) (S0 : Set (HeightOneSpectrum (𝓞 X.E)))
-
-open Formalism.L2.Col in
-
-theorem division_height_bound_columns (hH : ColHyp W Ch sel v0 TU Xg S0)
-    (P0 : Subgroup (Col.G0 X.E Pr.vGs R.r)) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup (Col.G0 X.E Pr.vGs R.r)) (ψ1 : P1 →* X.Kˣ)
-    {P : LevFam X.E X.K R.r Pr.vGs} {m2 : ℕ} {Gc : ChGlob X R.m}
-    {Sg : Set ℕ} (mu : (colInX W Ch sel hX v0 TU Xg S0).fam.base.Tup → Tup X.F X.E X.K Sg) (cst : ∀ t, LocCst X (rowSG Pr sel (mu t)))
-    (L : ∀ t, ChIdx X Pr R (QE sel (mu t : Chr X.F X.E X.K))) (hL : ∀ t, (L t).Ok Ch sel (mu t) (cst t) Gc m2)
-    (hP : ∀ t, (mtildeGSD W Ch sel (mu t) P).Ok) (Mem : Type) (wd : Mem → Pr.Word) (b : ∀ t, Mem → (L t).β (m2 + 1))
-    (hY : ∀ t x, YbHyp (R := R) sel (mu t) (cst t) (L t) (wd x) m2 (b t x))
-    (Ak : ∀ t x, ChKer W Ch sel (mu t) (cst t) (L t) P (wd x) m2 (b t x) (hY t x))
-    (hF : ∀ t x j, (chF W sel (mu t) (L t) (wd x) j).Ok) (hE : ∀ x, (evGSD W Ch sel (mu (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0) P (wd x)).Ok)
-    (ev : ∀ (Zs : DefSub (colInX W Ch sel hX v0 TU Xg S0).fam.amb) t, (Fin (((colInX W Ch sel hX v0 TU Xg S0).side P1 ψ1 Zs).nV t) → X.K) →ₗ[X.K] V0X W Ch sel (mu t) Xg P)
-    (Sp : ∀ Zs : DefSub (colInX W Ch sel hX v0 TU Xg S0).fam.amb, SPer (colFace hX ((colInX W Ch sel hX v0 TU Xg S0).side P1 ψ1 Zs) Xg mu cst L hL hP Mem wd b hY Ak hF (ev Zs)))
-    (Zsc : DefSub (colInX W Ch sel hX v0 TU Xg S0).fam.amb → IndefScale (colInX W Ch sel hX v0 TU Xg S0).fam.base) (C CH : ℝ)
-    (Pk : IndefPkg (colInX W Ch sel hX v0 TU Xg S0).fam.amb
-      (faceOf (colInX W Ch sel hX v0 TU Xg S0) P0 ψ0 P1 ψ1 (fun Zs => colFace hX ((colInX W Ch sel hX v0 TU Xg S0).side P1 ψ1 Zs) Xg mu cst L hL hP Mem wd b hY Ak hF (ev Zs)) Sp Zsc) C CH)
-    {Pl : Type} [Fintype Pl] [DecidableEq Pl] (Rn : RecNums (colInX W Ch sel hX v0 TU Xg S0).fam.base.J Pl) (x : Mem)
-    (Nu : Submodule (𝓞 X.K) (Fin (ramDim W Ch hX (wd x)) → X.K)) (sg : HeightOneSpectrum (𝓞 X.K) → ℝ)
-    (I : DivInputs Pk.core Rn x Nu sg)
-    (hQ : ChainTie I.ch (memQ (A := Ak) (hF := hF) hE (x := x))) (h0 : FirstCols hE hQ) (hPL : LastPer hE hQ) :
-    DivClauses Pk.core Rn x Nu sg ∧
-      (∀ y : Fin (I.ch.c 0) → X.K,
-        hQ.coL ((chainMat I.ch.Kj ⟨(memQ (A := Ak) (hF := hF) hE (x := x)).n + 1, by have := hQ.hmm; omega⟩).mulVec y) =
-          colC (Ak (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0 x) (hF (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0 x) (hL (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0)
-            (colOfCoord W Ch hX (wd x) fun i => y (Fin.cast I.ch.c0.symm i))) ∧
-      ∀ (φ : Fin (ramDim W Ch hX (wd x)) → X.K) (F : Fin (((colInX W Ch sel hX v0 TU Xg S0).side P1 ψ1 Pk.Zs).nV (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0) → X.K),
-        I.ch.PtL ((chainMat I.ch.Kj (Fin.last I.ch.mm)).mulVec fun i => φ (Fin.cast I.ch.c0 i)) F =
-          colPerL (hP (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0) Xg (wd x) (ev Pk.Zs (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0)
-            (colC (Ak (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0 x) (hF (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0 x) (hL (colInX W Ch sel hX v0 TU Xg S0).fam.base.μ0) (colOfCoord W Ch hX (wd x) φ)) F := by
-  haveI := hX.cplxK
-  exact division_height_bound (colInX W Ch sel hX v0 TU Xg S0) (colInX_ok W Ch sel hX v0 TU Xg S0 hH)
-    (colInX_typesSep W Ch sel hX v0 TU Xg S0) P0 ψ0 P1 ψ1 hX Xg mu cst L hL hP Mem wd b hY Ak hF hE ev Sp Zsc C CH Pk
-    Rn x Nu sg I hQ h0 hPL
-
-end LinkCol
 
 end Formalism.L2.DIV

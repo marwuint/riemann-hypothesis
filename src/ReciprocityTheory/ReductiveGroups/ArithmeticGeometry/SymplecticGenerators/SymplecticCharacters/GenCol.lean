@@ -63,15 +63,6 @@ theorem low_entries {k : ℕ} {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) �
   · simpa [Matrix.J, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, hij] using e2
   · simpa [Matrix.J] using e1
 
-theorem J_mul_inl (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (j : Fin g) (q : Fin g ⊕ Fin g) :
-    (J (Fin g) ℤ * M) (Sum.inl j) q = -M (Sum.inr j) q := by
-  exact J_mul_apply_inl M j q
-
-theorem col_single_entry {M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
-    (hM : M ∈ symplecticGroup (Fin g) ℤ) {p r0 : Fin g ⊕ Fin g} (h : ∀ r, r ≠ r0 → M r p = 0)
-    (q : Fin g ⊕ Fin g) : M r0 p * (J (Fin g) ℤ * M) r0 q = J (Fin g) ℤ p q := by
-  exact symplectic_entry_mul_J_mul_of_single_column_entry hM h q
-
 theorem eJ_apply (j i l : Fin g) : eJ j i l = if j = i ∧ j = l then 1 else 0 := rfl
 
 theorem sum_eJ (j i : Fin g) (x : Fin g → ℤ) :
@@ -90,18 +81,6 @@ theorem spTransl_mul_inl (S : Matrix (Fin g) (Fin g) ℤ) (M : Matrix (Fin g ⊕
 theorem spTransl_mul_inr (S : Matrix (Fin g) (Fin g) ℤ) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (i : Fin g) (p : Fin g ⊕ Fin g) : (spTransl S * M) (Sum.inr i) p = M (Sum.inr i) p := by
   simp [spTransl, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
-
-theorem spPJ_mul_inl (j : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g)
-    (p : Fin g ⊕ Fin g) :
-    (spPJ j * M) (Sum.inl i) p = if i = j then M (Sum.inr j) p else M (Sum.inl i) p := by
-  simp only [spPJ, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁,
-    Matrix.fromBlocks_apply₁₂, Matrix.sub_apply, sub_mul, Finset.sum_sub_distrib, sum_eJ]
-  simp only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ,
-    if_true]
-  split_ifs with h
-  · subst h
-    ring
-  · ring
 
 theorem spPJ_mul_inr (j : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g)
     (p : Fin g ⊕ Fin g) :
@@ -150,16 +129,6 @@ theorem rkU_val (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0) :
 theorem rkU_inv_val (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0) :
     (((rkU u v h)⁻¹ : (Matrix (Fin g) (Fin g) ℤ)ˣ) : Matrix (Fin g) (Fin g) ℤ) =
       1 - vecMulVec u v := rfl
-
-theorem spDiag_rk_mul_inl (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0)
-    (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :
-    (spDiag (rkU u v h) * M) (Sum.inl i) p = M (Sum.inl i) p + u i * ∑ l, v l * M (Sum.inl l) p := by
-  simp only [spDiag, rkU_val, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁,
-    Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero,
-    Matrix.add_apply, Matrix.one_apply, Matrix.vecMulVec_apply, add_mul, Finset.sum_add_distrib,
-    ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
-  rw [Finset.mul_sum]
-  exact congrArg _ (Finset.sum_congr rfl fun l _ => by ring)
 
 theorem spDiag_rk_mul_inr (u v : Fin g → ℤ) (h : v ⬝ᵥ u = 0)
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (i : Fin g) (p : Fin g ⊕ Fin g) :

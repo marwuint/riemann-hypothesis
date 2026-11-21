@@ -158,28 +158,4 @@ theorem eq_of_prod_zpow {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasi
   refine div_eq_one.1 (eq_one_of_prod_zpow hε (fun k => s k / s' k) (fun x y => ?_) k)
   simp_rw [div_zpow, Finset.prod_div_distrib, h, div_self']
 
-theorem pow_eq_pow_of_prod {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε) [Module.Free ℤ X] [Module.Finite ℤ X]
-    (n : ℕ) (s s' : ι → G) (h : ∀ x y, ∏ k, s k ^ ((n : ℤ) * ε k x y) = ∏ k, s' k ^ ((n : ℤ) * ε k x y)) (k : ι) :
-    s k ^ n = s' k ^ n := by
-  have := congrFun (eq_of_prod_zpow hε (fun k => s k ^ n) (fun k => s' k ^ n) fun x y => by
-    simp_rw [← zpow_natCast, ← zpow_mul]; exact h x y) k
-  exact this
-
-theorem isSymBasis_mul : IsSymBasis (fun _ : Fin 1 => (LinearMap.mul ℤ ℤ : LinearMap.BilinForm ℤ ℤ)) := by
-  refine ⟨fun _ x y => mul_comm x y, ?_, fun β _ => ?_⟩
-  · rw [linearIndependent_unique_iff]
-    intro h
-    have := LinearMap.congr_fun₂ h 1 1
-    simp at this
-  · refine (Submodule.mem_span_range_iff_exists_fun ℤ).2 ⟨fun _ => β 1 1, ?_⟩
-    refine LinearMap.ext fun x => LinearMap.ext fun y => ?_
-    simp only [Finset.univ_unique, Finset.sum_singleton, LinearMap.smul_apply, LinearMap.mul_apply', smul_eq_mul]
-    have hx : x = x • (1 : ℤ) := by simp
-    have hy : y = y • (1 : ℤ) := by simp
-    rw [hx, hy, LinearMap.map_smul₂, LinearMap.map_smul]
-    simp only [smul_eq_mul]; ring
-
-example (s s' : ℚˣ) (h : ∀ x y : ℤ, s ^ ((3 : ℤ) * (x * y)) = s' ^ ((3 : ℤ) * (x * y))) : s ^ 3 = s' ^ 3 :=
-  pow_eq_pow_of_prod isSymBasis_mul 3 (fun _ => s) (fun _ => s') (fun x y => by simpa using h x y) 0
-
 end GlobalTheory.PerRoot

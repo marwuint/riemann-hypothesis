@@ -13,12 +13,6 @@ namespace GlobalTheory.TensAct
 
 open GlobalTheory.Mum
 
-section Hom
-
-variable {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H]
-
-end Hom
-
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
 def matAct (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) : D'.P.A ⟶ D'.P.A :=

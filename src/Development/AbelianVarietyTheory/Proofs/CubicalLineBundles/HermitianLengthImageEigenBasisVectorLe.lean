@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.CMLattices.LamLetters
 import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsLieBasisIffIsUnitDet
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueDifferentialMonHomLieBasisStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HermitianMetricDifferentialEqOfPairingRelationStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HermitianMetricDifferentialEqOfPairingRelation
 
 set_option autoImplicit false
 
@@ -41,7 +41,7 @@ theorem form_image_le : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [N
   obtain ⟨⟨N, hN, -⟩, g₀, -, eg, hg₀⟩ := GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P F g hg
   have h1 := diff_single_eq F F' ef (hf₀ M hM) i hU ew'
   have h2 := diff_single_eq F F eg (hg₀ N hN) i hw ew.symm
-  have h3 := GlobalTheory.T.hermitianMetric_differential_eq_of_pairing_relation hT hL K P F P' F' h h' f g M N hh hh' hf hg hlam hM hN s (Pi.single i 1) (Pi.single i 1)
+  have h3 := _root_.GlobalTheory.HermHom.form_diff_eq hT hL K P F P' F' h h' f g M N hh hh' hf hg hlam hM hN s (Pi.single i 1) (Pi.single i 1)
   have h4 : (Pi.single i t : Fin F.P₀.g → K) = t • (Pi.single i 1 : Fin F.P₀.g → K) := by
     rw [← Pi.single_smul, smul_eq_mul, _root_.mul_one]
   rw [h1, h2, h4] at h3

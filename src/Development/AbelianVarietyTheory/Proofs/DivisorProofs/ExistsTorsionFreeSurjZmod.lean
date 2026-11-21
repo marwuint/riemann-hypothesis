@@ -2,12 +2,13 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsIntegralOpW
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMatrixNoInvariantSubspaceFiniteFieldStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAddHomZmodPrimePowOneOfNotIsUnitStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMatrixNoInvariantSubspaceFiniteField
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsAddHomZmodPrimePowOneOfNotIsUnit
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCongruenceKernelTraceCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PrincipalCongruencePrimePowTorsionFreeStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntegralUnitPairingOfIrreducibleReductionAStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JacquetModuleCoinvariantsSubsingletonOfCharConjStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PrincipalCongruencePrimePowTorsionFree
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntegralUnitPairingOfIrreducibleReductionA
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JacquetModuleCoinvariantsSubsingletonOfCharConj
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnipotentRadicalFlagStabilizerStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdicCompletionCongruenceSubgroupsOpenCompactSmalStatement
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLocalComponentEigenvectorSplitPlaceStatement
@@ -197,12 +198,12 @@ theorem exists_type_surj : ∀ (E : Type) [Field E] [NumberField E] (w : HeightO
     exact Subtype.ext this
 
   have hc : ((l : w.adicCompletionIntegers E) ^ m) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 hl.ne_zero)
-  obtain ⟨B₀, hB₀⟩ := GlobalTheory.T.exists_matrix_no_invariant_subspace_finite_field (IsLocalRing.ResidueField (w.adicCompletionIntegers E)) a ha
+  obtain ⟨B₀, hB₀⟩ := _root_.GlobalTheory.exists_matrix_no_invariant_subspace (IsLocalRing.ResidueField (w.adicCompletionIntegers E)) a ha
   let B : Matrix (Fin a) (Fin a) (w.adicCompletionIntegers E) :=
     B₀.map (Function.surjInv IsLocalRing.residue_surjective)
   have hB : B.map (IsLocalRing.residue _) = B₀ := by
     ext i j; exact Function.surjInv_eq _ _
-  obtain ⟨φ, hφ1, hφ0⟩ := GlobalTheory.T.exists_addHom_zmod_prime_pow_one_of_not_isUnit (w.adicCompletionIntegers E) l m hl hlR
+  obtain ⟨φ, hφ1, hφ0⟩ := _root_.GlobalTheory.exists_addHom_zmod_pow_one_of_not_isUnit (w.adicCompletionIntegers E) l m hl hlR
   obtain ⟨lam₀, hlam₀⟩ := GlobalTheory.T.exists_congruenceKernel_trace_character (w.adicCompletionIntegers E) (ZMod (l ^ m)) a
     ((l : w.adicCompletionIntegers E) ^ m) hc φ hφ0 B
   let K₀ := (Matrix.GeneralLinearGroup.map (n := Fin a)
@@ -217,7 +218,7 @@ theorem exists_type_surj : ∀ (E : Type) [Field E] [NumberField E] (w : HeightO
     have h1 : g₀ ^ n = 1 := hι (by rw [map_pow, hpow, map_one])
     have h2 : (1 + ((l : w.adicCompletionIntegers E) ^ m) • x) ^ n = 1 := by
       rw [← hx, ← Units.val_pow_eq_pow_val, h1, Units.val_one]
-    have h3 := GlobalTheory.T.principalCongruence_prime_pow_torsionFree _ l m a hl hlR hm2 x n hn h2
+    have h3 := _root_.GlobalTheory.principalCongruence_torsionFree _ l m a hl hlR hm2 x n hn h2
     have : g₀ = 1 := Units.ext (by rw [hx, h3, smul_zero, add_zero, Units.val_one])
     rw [this, map_one]
   ·
@@ -238,7 +239,7 @@ theorem exists_type_surj : ∀ (E : Type) [Field E] [NumberField E] (w : HeightO
       obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 h0
       have := congrFun hc i1
       simp [hne] at this
-    obtain ⟨wv, f, hw, hf, hu⟩ := GlobalTheory.T.exists_integral_unit_pairing_of_irreducible_residue (w.adicCompletionIntegers E) (w.adicCompletion E) a B
+    obtain ⟨wv, f, hw, hf, hu⟩ := _root_.GlobalTheory.Cong.exists_integral_unit_pairing_of_irreducible_reduction (w.adicCompletionIntegers E) (w.adicCompletion E) a B
       (by rw [hB]; exact hB₀) W' hW'0 hW'T
     have hinj := IsFractionRing.injective (w.adicCompletionIntegers E) (w.adicCompletion E)
     have hfw : f ⬝ᵥ wv = 0 := by
@@ -277,7 +278,7 @@ theorem exists_type_surj : ∀ (E : Type) [Field E] [NumberField E] (w : HeightO
     haveI : Fact (1 < l ^ m) := ⟨Nat.one_lt_pow (by omega) hl.one_lt⟩
     refine ⟨σ.smooth, fun s d e' he => ?_⟩
     obtain ⟨W, hW0, hWT, hWcrit⟩ := GlobalTheory.T.unipotent_radical_flag_stabilizer (w.adicCompletion E) a s d e' he
-    refine GlobalTheory.T.jacquetModuleCoinvariants_subsingleton_of_char_conj (GL (Fin a) (w.adicCompletion E)) σ.V σ.ρ σ.irred
+    refine _root_.GlobalTheory.jacquet_subsingleton_of_char_nontrivial_on_conj (GL (Fin a) (w.adicCompletion E)) σ.V σ.ρ σ.irred
       (GlobalTheory.SmGL.unipRad (w.adicCompletion E) e') (K₀.map ι)
       ((powChar (l ^ m) ζ hζ).comp (lam₀.comp e.symm.toMonoidHom)) v hv (fun h => hev h) ?_
     intro g
@@ -299,7 +300,7 @@ theorem exists_type_surj : ∀ (E : Type) [Field E] [NumberField E] (w : HeightO
       have : ((g⁻¹ : GL _ _) : Matrix _ _ _) *ᵥ y ∈ W' := htop ▸ Submodule.mem_top
       rw [hmem, Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec] at this
       exact this
-    obtain ⟨wv, f, hw, hf, hu⟩ := GlobalTheory.T.exists_integral_unit_pairing_of_irreducible_residue (w.adicCompletionIntegers E) (w.adicCompletion E) a B
+    obtain ⟨wv, f, hw, hf, hu⟩ := _root_.GlobalTheory.Cong.exists_integral_unit_pairing_of_irreducible_reduction (w.adicCompletionIntegers E) (w.adicCompletion E) a B
       (by rw [hB]; exact hB₀) W' hW'0 hW'T
     have hinj := IsFractionRing.injective (w.adicCompletionIntegers E) (w.adicCompletion E)
     have hfw : f ⬝ᵥ wv = 0 := by

@@ -370,7 +370,7 @@ theorem X_det : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A
       (∀ PP ∈ Q, χ.TameAt PP ∧ IsRes χ PP (ρ PP)) → (∀ PP ∈ Q, GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing.UnitOff N ((χ.locK PP u : ℂˣ) : ℂ)) →
       GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing.UnitOff N ((c x : Circle) : ℂ) := by
     intro c χ ρ hc h1 h2
-    have e1 := GlobalTheory.T.heckeCharacter_conjHalfIdele_eq_prod_local D _ _ (isIdemSum_conj he) (u ^ m) y (by rw [Formalism.L2.Theta.cA_cA]; exact hy) c χ hc
+    have e1 := _root_.GlobalTheory.IdemSumChar.char_eq_prod D _ _ (isIdemSum_conj he) (u ^ m) y (by rw [Formalism.L2.Theta.cA_cA]; exact hy) c χ hc
     have e2 := GlobalTheory.TameSplitChar.char_eq_prod_res D c χ Q e ρ hc he h1 (y⁻¹ * x) a ⟨d, hd⟩ (fun PP => (hun PP).unit) hx' ha.symm
       fun _ _ => rfl
     rw [← mul_inv_cancel_left y x, map_mul, Circle.coe_mul, e1, e2]
@@ -641,9 +641,9 @@ theorem om_model {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χ
   have hfix' : ∀ u ∈ latAll S T ΛS ΛT, (IsHalf (cA D e) u ∨ IsHalf (cA D (cA D e)) u) → heisO ψ S T u f = f :=
     fun u hu h => hfix u hu (by rw [hcc] at h; exact h.symm)
   refine ⟨_, hRc, fun Tm hTm Φ hΦ => ?_⟩
-  have hom := GlobalTheory.T.weilOperator_idempotentSum_vacuum_normalised_sum D ψ S T _ _ _ hW ΛS ΛT hS hT _ _ he' g x hg' (by rw [hcc]; exact hx) Rr
+  have hom := _root_.GlobalTheory.SumHecke.om_eq_sum_idemSum D ψ S T _ _ _ hW ΛS ΛT hS hT _ _ he' g x hg' (by rw [hcc]; exact hx) Rr
     (by rw [hcc]; exact hR1) (by rw [hcc]; exact hR2) (by rw [hcc]; exact l1) f hθ hfix'
-  have hsum := GlobalTheory.T.sum_heisenbergTranslates_baseVector_eq_card_smul D ψ hW.std S T ΛS ΛT hS hT _ _ he' g l3 Rr
+  have hsum := _root_.GlobalTheory.HeisTranslSum.sum_heisO_base_eq D ψ hW.std S T ΛS ΛT hS hT _ _ he' g l3 Rr
     (by rw [hcc]; exact hR1) (by rw [hcc]; exact hR2) (by rw [hcc]; exact l1) f Tm hTm
   have hvac : om (g, 1) f = ((((χT x : Circle) : ℂ))⁻¹ * ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ)) •
       Tm (actPull (g, (1 : GA D T)) (halfInd (cA D e) (latAll S T ΛS ΛT))) := by
@@ -656,7 +656,7 @@ theorem om_model {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χ
     by_cases h0 : ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ) = 0
     · rw [h0]; simp
     · field_simp
-  exact GlobalTheory.T.weilRep_apply_eq_smul_of_halfIndicator_base D ψ S T _ _ _ hW ΛS ΛT hS hT _ _ he' f hθ hfix' Tm hTm (g, 1) _ (isSBHalf_actPull hN l3 l4) hvac Φ hΦ
+  exact _root_.GlobalTheory.PullModelLaw.om_apply_eq_smul_pull D ψ S T _ _ _ hW ΛS ΛT hS hT _ _ he' f hθ hfix' Tm hTm (g, 1) _ (isSBHalf_actPull hN l3 l4) hvac Φ hΦ
 
 section Real
 
@@ -681,7 +681,7 @@ theorem base_facts (hC : GlobalTheory.Hk3.Core R F) (hG : QGuard R) {i : Fin D.R
       heisO R.ψ (Vc D i) (Wc D i) u b = b := by
   have hk := kerDat_tuple (i := i) hC.lev hC.thP t
   have hsp := splitSet_tuple hC i t
-  obtain ⟨hSV, hSW, hθ, hfix0⟩ := GlobalTheory.T.tameKernel_typePlaceThetaVector_latticeFixed D G Pl0 T0 A Ks R F hC hG i hV _ _ _ _ _ _ hk ⟨t, subset_rfl⟩ eg
+  obtain ⟨hSV, hSW, hθ, hfix0⟩ := _root_.GlobalTheory.KerTypeVec.typeVec_fixed D G Pl0 T0 A Ks R F hC hG i hV _ _ _ _ _ _ hk ⟨t, subset_rfl⟩ eg
     (idem (R.Q t)) fg heg hsp.isIdemSum hfg
   have hfix : ∀ {e : AE D} {P : Finset (Pl D.host.E)}, P ⊆ R.Q t → IsIdemSum e P →
       ∀ u ∈ latAll (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i), (IsHalf e u ∨ IsHalf (cA D e) u) →

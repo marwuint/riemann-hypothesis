@@ -4,7 +4,7 @@ import GroundTheory.HeightsAndTheta.Heights.Regularisation.BoundedStatements
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.GramAtLocalLog
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.ContDiffAtSqrtQuotNormSq
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeMetricFramePropertiesStatement
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.MuFrameNormLine
 import Development.WeilBound.CoreStatements.PlurisubharmonicCones.SubmatrixGram
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField Matrix Filter Topology
@@ -88,7 +88,7 @@ theorem local_form (Hd : HodgeData D) (a : Fin D.nCharts) {t₀ : (Fin (Fintype.
           (Real.log ((S τ t)ᴴ * (D.h τ).gram (l τ) ((D.chart a).γ t) * S τ t).det.re -
             Real.log (((S τ t)ᴴ * (D.h τ).gram (l τ) ((D.chart a).γ t) * S τ t).submatrix
               (headIdx D.j_le_N) (headIdx D.j_le_N)).det.re) / 2 := by
-  obtain ⟨hex, heq, -, -⟩ := GlobalTheory.T.hodge_metric_frame_properties K J II Ψ Ω W D Hd
+  obtain ⟨hex, heq, -, -⟩ := _root_.LevelTowerAlt.mu_frame_norm_line K J II Ψ Ω W D Hd
   have hγ : ContinuousAt (D.chart a).γ t₀ := ((D.chart a).analytic t₀ hball).continuousAt
   have hz₀ : (D.chart a).γ t₀ ∈ mcPts (mCoordIdeal D.y) := (D.chart a).mem t₀ hball
   obtain ⟨d⟩ := hex _ hz₀

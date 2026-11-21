@@ -1,10 +1,11 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.SpecializesGenericImage
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontrivial
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryThetaSystemClassicalTraitsClosedPoiStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryClassicalTraitsFourierTermsAllLevelsStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryThetaSystemClassicalTraitsClosedPoi
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryClassicalTraitsFourierTermsAllLevels
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongModOfSpan
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSupportingTupleSmoothConeCmFieldStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSupportingTupleSmoothConeCmField
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonModule
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SqLeOfForallNonneg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniformStrictnessAndFaceCutBounds
@@ -87,7 +88,7 @@ theorem sc_evalZ_eq {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z}
 
 theorem exists_hasSupports_cm (q : ℕ) (φ : InvFun (𝓞 E)) (hpol : IsPolFan H.bar q φ) :
     ∃ d, 1 ≤ d ∧ HasSupports (H.bar : 𝓞 E → 𝓞 E) q φ d :=
-  exists_hasSupports (𝓞 E) H.bar q φ hpol fun X _ _ _ _ hX r γ hγ => GlobalTheory.T.exists_supportingTuple_smoothCone_cmField E H φ X (hpol X hX) r γ hγ
+  exists_hasSupports (𝓞 E) H.bar q φ hpol fun X _ _ _ _ hX r γ hγ => _root_.GlobalTheory.Poinc.exists_supports_cm E H φ X (hpol X hX) r γ hγ
 
 end GlobalTheory.UPoinc.GApprox
 
@@ -106,8 +107,8 @@ theorem GlobalTheory.UPoinc.exists_uApproxAt : ∀ (E : Type) [Field E] [NumberF
   refine ⟨((!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ) 0 0).toNat * d₀, by rw [hW1]; omega, ?_⟩
   intro p _ z₁ t₀ e
   have hcl : IsClosed ({z₁} : Set X₁.M.Z) := t₀.cen ▸ isClosed_singleton_cPt t₀.y
-  obtain ⟨Φ, hM, hL, hR⟩ := GlobalTheory.T.exists_unitaryThetaSystem_classicalTraits_closedPoint E H Dw hpq l Xo c C X₁ p z₁ hcl
-  have hF := GlobalTheory.T.unitary_classicalTraits_fourierTerms_all_levels E H Dw hpq l Xo c C X₁ p z₁ Φ hR
+  obtain ⟨Φ, hM, hL, hR⟩ := _root_.GlobalTheory.UPoinc.PreSys.main E H Dw hpq l Xo c C X₁ p z₁ hcl
+  have hF := _root_.GlobalTheory.UPoinc.four_of_classical E H Dw hpq l Xo c C X₁ p z₁ Φ hR
   haveI : IsDedekindDomain X₁.o₁ := X₁.ar.ded
   haveI := X₁.M.lft
   haveI : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s

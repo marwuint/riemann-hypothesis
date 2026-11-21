@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedDualVectorPairingBoundedMajorantStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedDualVectorPairingBoundedMajorant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantFlagLengthsInvarianceTorusPositivity
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicLeviEmbeddingHomomorphismProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure
@@ -350,7 +350,7 @@ theorem section_coord_le (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 
     (h2 : Sg k r z (g₀ * (sEl k r j β q * (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m))) ≤ R₀) :
     (∀ p, ‖q.2 p‖ ≤ R₀ ^ (2 * r) * De) ∧ (∀ b, eucl (m⁻¹ *ᵥ q.1.1 b) ≤ R₀ ^ (2 * r) * De) ∧
       (∀ p, ‖q.1.2.1 p‖ ≤ 2 * r * (R₀ ^ (2 * r) * De) ^ 2) ∧ ∀ b, |q.1.2.2 b| ≤ 2 * r * (R₀ ^ (2 * r) * De) ^ 2 := by
-  have key := GlobalTheory.T.moved_dual_vector_pairing_bounded_majorant k r j hj z z' g₀ β c hz hz' hT hN De R₀ hD hR m hm q a ha h1 h2
+  have key := _root_.GlobalTheory.Amp.NfComp.herm_sEl_inv_le k r j hj z z' g₀ β c hz hz' hT hN De R₀ hD hR m hm q a ha h1 h2
   have hM : 1 ≤ R₀ ^ (2 * r) * De := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hR) hD.1
   generalize R₀ ^ (2 * r) * De = M at key hM ⊢
   obtain ⟨B, hB⟩ : ∃ B : Fin r → Fin (k + 1) → ℂ, B = fun a => if h : a.val < j then q.1.1 ⟨a, h⟩ else 0 := ⟨_, rfl⟩

@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralEqOfNorms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FderivCompress
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeisenbergSmoothVectorDerivativeCalculus
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfPderivStable
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormCreationAnnihilationWordLeNumberOperatorPowStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormCreationAnnihilationWordLeNumberOperatorPow
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeylNumberOperatorCommutationStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PowSubCreationVacuumFockBoundStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroAtOneOfIteratedDerivsVanishOfGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VacuumProjectorRangeAnnihilatedStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsEuclideanCoordsHermitianCartanInvolutionStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockCreationPreservesFockVectorsTwoFramesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VacuumProjectorRangeAnnihilated
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsEuclideanCoordsHermitianCartanInvolution
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockCreationPreservesFockVectorsTwoFrames
 
 noncomputable section
 
@@ -153,7 +153,7 @@ theorem dense_zero (hρ : ∀ w, ∀ f ∈ S, ρ w f ∈ S) (hP : ∀ f ∈ S, p
     refine e.symm.trans (integral_eq_zero_of_ae (Filter.Eventually.of_forall fun w => ?_))
     let v : S := ⟨proj h (ρ (-w) f), hP _ (hρ _ _ f.2)⟩
     have ha : ∀ z, aE J hS hD z v = 0 := fun z =>
-      (aE_eq_zero hS hD z v).2 (GlobalTheory.T.vacuumProjector_range_annihilated V B J ρ hJ h _ z)
+      (aE_eq_zero hS hD z v).2 (_root_.GlobalTheory.Mem.Lift.VacAnn.proj_annihilated V B J ρ hJ h _ z)
     exact inner_translate hJ h hΦ hS hD K hK (hK0 v ha) ha
       (fun x hx => (Submodule.mem_orthogonal' _ _).1 hy _ ⟨x, hx, rfl⟩) w
   obtain ⟨_, ⟨g, hg, rfl⟩, hd⟩ := Metric.mem_closure_iff.1 hf δ hδ
@@ -211,7 +211,7 @@ theorem exists_number {ι : Type} [Fintype ι] (u : ι → V) (d : ℕ) : ∃ M 
     rw [hM, add_mul, r2, mul_add _ (N + _), smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
   have m3 : ∀ z, M * aE J hS hD z = aE J hS hD z * (M - ((8 * π : ℝ) : ℂ) • 1) := fun z => by
     rw [hM, add_mul, r3, add_sub_cancel_right, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, sub_add_cancel]
-  have hb := GlobalTheory.T.norm_creationAnnihilation_word_le_numberOperator_pow S H _ ((Φ : B →ₗ[ℂ] H) ∘ₗ S.subtype) (fun j => aE J hS hD (e j)) (fun j => cE J hS hD (e j)) M
+  have hb := _root_.GlobalTheory.norm_word_le_number_pow S H _ ((Φ : B →ₗ[ℂ] H) ∘ₗ S.subtype) (fun j => aE J hS hD (e j)) (fun j => cE J hS hD (e j)) M
     (8 * π) (4 * π) (by linarith [Real.pi_gt_three]) (by linarith [Real.pi_pos]) (fun j => adjoint h hΦ hS hD _)
     (fun j => by rw [r1, e.orthonormal.1 j, one_pow, mul_one]) (by rw [hM, hN]) (fun j => m3 _) fun j => m2 _
   have hw : ∀ (l : List ι) (x : S), ((l.map fun i => dE hS hD (u i)).prod x : B) =
@@ -306,7 +306,7 @@ theorem dense_coord {κ : Type} [Fintype κ] [DecidableEq κ] {Q s : Matrix κ �
     (hF : ∀ z, ∀ f ∈ S, f ∈ F → dH ρ z f - I • dH ρ (I • s *ᵥ z) f ∈ F) {ι : Type} [Fintype ι] (u : ι → κ → ℂ) (d : ℕ)
     {f : B} (hf : f ∈ S) {δ : ℝ≥0∞} (hδ : 0 < δ) :
     ∃ g ∈ F, g ∈ S ∧ wordSum (fun i => dH ρ (u i)) (fun x => ‖Φ x‖ₑ) d (f - g) < δ := by
-  obtain ⟨E, J, hJ, hE, hom⟩ := GlobalTheory.T.exists_euclideanCoords_hermitian_cartanInvolution κ Q s hQ hs hp
+  obtain ⟨E, J, hJ, hE, hom⟩ := _root_.GlobalTheory.Twist.EuclidCoord.exists_coord κ Q s hQ hs hp
   have hρ : IsHeis (omJ J) fun v => ρ (E v) :=
     UnitaryOsc.isHeis_comp h (E : EuclideanSpace ℂ κ →L[ℝ] (κ → ℂ)) fun x y => hom x y
   exact dense_transport hJ E (J' := fun z => I • s *ᵥ z) hE hρ hΦ T hT F hS hF0 hF u d hf hδ
@@ -394,7 +394,7 @@ theorem crea_mem (A : Fr V) (B : Fr W) (U : AddSubgroup (WO V W)) (τ : D.what�
   induction hg using Submodule.span_induction with
   | mem g hg =>
     obtain ⟨f, P, h1, h2, rfl⟩ := hg
-    obtain ⟨Q, hQ⟩ := GlobalTheory.T.fockCreation_preserves_fockVectors_two_frames D V W A B θ ψ hψ h.inf f h1.1 τ z P
+    obtain ⟨Q, hQ⟩ := _root_.GlobalTheory.FockCreaDir.crea_ptF D V W A B θ ψ hψ h.inf f h1.1 τ z P
     exact ⟨GlobalTheory.Chain.InnerSteps.theta_pureTensorO hψ h.inf _ _ _ _ h1.1 P, Submodule.subset_span ⟨f, Q, h1, h2, hQ⟩⟩
   | zero =>
     have e := fun y => GlobalTheory.FockIndep.dRho_smul hψ h.inf τ y 0 (theta_zero (ψ := ψ) (S := V) (T := W))

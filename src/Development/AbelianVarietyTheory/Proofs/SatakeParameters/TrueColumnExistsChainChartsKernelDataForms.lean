@@ -4,12 +4,12 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsIn
 import Formalism.LocalToGlobal.GroupLattices.Joint0
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JointCmpEmbeddingYAlt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnChoiceGoodChartsEveryStageStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnOrthonormalCoordsEqGivenStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompanionLatticeTrueColumnBaseLatticeEqStandardStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnOrthonormalCoordsEqGiven
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompanionLatticeTrueColumnBaseLatticeEqStandard
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HServTwoSidesJoint0
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnTupleKernelsRationalStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelCoefficientFieldLeCoefficientFieldStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PlaceUnderTwistPrimeOverTupleRamifiedPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TrueColumnTupleKernelsRational
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelCoefficientFieldLeCoefficientField
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PlaceUnderTwistPrimeOverTupleRamifiedPrime
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnKernelDataCompatibleStepChartsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianChartComplexRationalIntegralForms
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PointDeterminantEqNormOneClassOfLevel
@@ -68,8 +68,8 @@ theorem GlobalTheory.Port.jIn_nonempty_true : ∀ {B : Base} {X : PreX B.toPre} 
       ch0 := hCh0
       y0 := ?y0
       fr0 := ?fr0
-      rat := fun j hj => GlobalTheory.T.trueColumnTupleKernels_rational I hI hP l Z l0 ex.tw hJets hex u a j hj
-      kin := GlobalTheory.T.kernelCoefficientField_le_coefficientField I hI hP l Z L hT Gi Gl K Y cX ex t hSK
+      rat := fun j hj => _root_.GlobalTheory.TwU.AtTrue.tuple_kernels_rational I hI hP l Z l0 ex.tw hJets hex u a j hj
+      kin := _root_.GlobalTheory.TwU.kerField_le_rec I hI hP l Z L hT Gi Gl K Y cX ex t hSK
       chiD := hchiD }⟩
   case val =>
     intro i hi
@@ -79,8 +79,8 @@ theorem GlobalTheory.Port.jIn_nonempty_true : ∀ {B : Base} {X : PreX B.toPre} 
   case base =>
     intro i hi β
     obtain ⟨k, hR, _⟩ := (hK i hi).2.2.1
-    rw [GlobalTheory.T.trueColumn_orthonormalCoords_eq_given I hI hP l Z L hT Gi Gl K Y cX ex t u a _ Ch chOf eY Kc full.1.base.dt A hSK (fun i hi => (hK i hi).2.1) hpins i hi]
-    exact GlobalTheory.T.companionLattice_trueColumn_baseLattice_eq_standard I hI hP l Z u i hi _ (fun x => hR.lb β x)
+    rw [_root_.GlobalTheory.TwU.AtTrue.crd_eq_one I hI hP l Z L hT Gi Gl K Y cX ex t u a _ Ch chOf eY Kc full.1.base.dt A hSK (fun i hi => (hK i hi).2.1) hpins i hi]
+    exact _root_.GlobalTheory.TwU.latCo_base_eq_stdL I hI hP l Z u i hi _ (fun x => hR.lb β x)
   case e0Tw =>
     intro φ c y
     change φ ((I.eCls0 l u a).symm (I.eCls0 l u a c)) y = φ c y
@@ -93,7 +93,7 @@ theorem GlobalTheory.Port.jIn_nonempty_true : ∀ {B : Base} {X : PreX B.toPre} 
     intro c
     obtain ⟨κ, h1, h2, h3⟩ := hy0 c
     refine ⟨κ, h1, h2, fun v hv => h3 v fun hvQ => ?_⟩
-    obtain ⟨q, hq, hqv⟩ := GlobalTheory.T.placeUnderTwistPrime_over_tupleRamifiedPrime I hI hP l Z L hT Gi Gl K Y cX ex t hSK a v ((hQ v).1 hvQ)
+    obtain ⟨q, hq, hqv⟩ := _root_.GlobalTheory.TwU.UnderQp.underQ_qp I hI hP l Z L hT Gi Gl K Y cX ex t hSK a v ((hQ v).1 hvQ)
     exact hv q hq hqv
   case fr0 =>
     rw [hf]

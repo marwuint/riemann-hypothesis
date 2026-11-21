@@ -17,10 +17,6 @@ def FockRMap : Prop :=
   ∀ (σ R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (f g : MvPolynomial σ R),
     fockR (map φ f) (map φ g) = φ (fockR f g)
 
-def FockRMonomial : Prop :=
-  ∀ (σ R : Type) [CommRing R] (m m' : σ →₀ ℕ) (a b : R),
-    fockR (monomial m a) (monomial m' b) = if m = m' then a * b * ((∏ k ∈ m.support, (m k).factorial : ℕ) : R) else 0
-
 def FockRBlock : Prop :=
   ∀ (K S : Type) [CommRing K] [Fintype S] (k n : ℕ) (F G : S → MvPolynomial (Fin k × Fin n) K),
     fockR (∏ s, blockEmb K s (F s)) (∏ s, blockEmb K s (G s)) = ∏ s, fockR (F s) (G s)

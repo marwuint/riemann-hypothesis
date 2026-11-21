@@ -100,7 +100,7 @@ theorem emb_moderate {θ : InfF D} (hθ : IsInfFam θ) (hc : Continuous (emb hι
     {φ : GA D A → ℂ} (hφ : IsAutFunSm θ A φ) :
     ∃ (N : ℕ) (C : ℝ), ∀ g, ‖φ (emb hι g)‖ ≤ C * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ B g : ℝ) ^ N := by
   obtain ⟨U, hU, hUφ⟩ := hφ.level
-  obtain ⟨S, C₀, M, hS⟩ := GlobalTheory.SmoothForms.reduction hθ ((GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ B) (U.comap (emb hι)) (hU.preimage hc)
+  obtain ⟨S, C₀, M, hS⟩ := GlobalTheory.SmoothForms.reduction hθ ((_root_.GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ B) (U.comap (emb hι)) (hU.preimage hc)
   obtain ⟨N, hN⟩ := hφ.growth
   choose C hC using hN [] (by simp)
   obtain ⟨c, hc0, hc⟩ := normInf_emb hι θ

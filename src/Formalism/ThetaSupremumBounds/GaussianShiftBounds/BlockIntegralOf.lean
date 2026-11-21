@@ -1,5 +1,4 @@
 import Mathlib
-import Formalism.LogFactorialBounds.LogFactorialSandwich
 import Formalism.ThetaSupremumBounds.StatementA
 
 open Finset MeasureTheory

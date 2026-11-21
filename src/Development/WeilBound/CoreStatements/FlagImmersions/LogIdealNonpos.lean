@@ -1,11 +1,15 @@
 import Development.WeilBound.CoreStatements.FlagImmersions.FibSandwich
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.NearRecordOfValue
 import Development.AutomorphicSpectrum.Proofs.AdelicProofs.NormEqOneOfValuationEqOne
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsExtDegreeAdelicStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.DifferentIdealLogSumRootDiscriminantStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElementStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumEmbeddingsBaseChangeStatement
-import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SqrtDiscriminantBoundsCmFieldStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LogNormsExtDegreeAdelic
+import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.DifferentIdealLogSumRootDiscriminant
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElement
+import Development.AutomorphicSpectrum.Proofs.AdelicProofs.SumEmbeddingsBaseChange
+import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+import Development.WeilBound.CoreStatements.SesquilinearFractions.SqrtDiscriminantBoundsCmField
 
 noncomputable section
 
@@ -87,7 +91,7 @@ theorem place_eq {F : Type} [Field F] [NumberField F] {p : ℕ} [Fact p.Prime] (
 
 theorem logIdeal_nonpos {E : Type} [Field E] [NumberField E] (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]) :
     logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) ≤ 0 := by
-  obtain ⟨a, -, -, -, e⟩ := GlobalTheory.T.padic_logIdeal_max_element E ℓ (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))
+  obtain ⟨a, -, -, -, e⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_logIdeal_attained E ℓ (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))
     (j.injective.comp RingOfIntegers.coe_injective) differentIdeal_ne_bot
   rw [e]
   refine Real.log_nonpos (norm_nonneg _) ?_
@@ -115,7 +119,7 @@ theorem numerics : Numerics := by
   have hgoal : ((r.sum fun v x => (x : ℝ) * Real.log (Ideal.absNorm v.asIdeal)) - ∑ s : F' →+* ℂ, N.inf (s.comp ι)) /
       (Module.finrank ℚ F' : ℝ) = N'.deg := hdeg'.symm
   rw [hgoal]
-  obtain ⟨hext, hextA⟩ := GlobalTheory.T.logNorms_ext_degree_adelic F F' ι N
+  obtain ⟨hext, hextA⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.logNorms_ext_deg_isAdelic F F' ι N
   have hAdx : (N.ext ι).IsAdelic := hextA.2 hAd
   have hl := fun (ℓ : Nat.Primes) (κ' : F' →+* ℂ_[ℓ]) =>
     hloc ℓ κ' (placeOf κ') (π _) (valuation_placeOf_le_one_iff κ') (hπ _)
@@ -157,7 +161,7 @@ theorem numerics : Numerics := by
       have := H.d_mod
       have : 7 ≤ H.d := by omega
       exact_mod_cast this
-    have h1 := (GlobalTheory.T.sqrt_discriminant_bounds_cm_field E H).2
+    have h1 := (_root_.PositivityTheory.Xgf.sqrt_discriminant_bounds_cm_field E H).2
     rw [hrd, ← Real.log_sqrt (by norm_num)]
     exact Real.log_le_log (Real.sqrt_pos.2 (by norm_num)) ((Real.sqrt_le_sqrt h7).trans h1)
   · intro n hn
@@ -166,11 +170,11 @@ theorem numerics : Numerics := by
     refine ⟨div_nonneg (div_nonneg (hw0 ℓ) hnE.le) (hlog ℓ).le, ?_⟩
     have hk : ∀ κ' : F' →+* ℂ_[ℓ], |N'.fin ℓ κ' - (N.ext ι).fin ℓ κ'| ≤ ((p + q : ℕ) : ℝ) * (cP ℓ * Real.log (ℓ : ℕ) -
         logIdeal ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))) := fun κ' => by
-      obtain ⟨a, ha, ha0, -, e⟩ := GlobalTheory.T.padic_logIdeal_max_element E ℓ ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))
+      obtain ⟨a, ha, ha0, -, e⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_logIdeal_attained E ℓ ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))
         ((κ'.comp f).injective.comp RingOfIntegers.coe_injective) differentIdeal_ne_bot
       rw [e, RingHom.comp_apply, RingHom.comp_apply, hf]
       exact (hl ℓ κ').2 hn a ha ha0
-    have hfib := GlobalTheory.T.sum_embeddings_base_change E F' ℂ_[ℓ] f
+    have hfib := _root_.GlobalTheory.CompanionTheory.Ar.Fl.finrank_mul_sum_comp_eq E F' ℂ_[ℓ] f
       fun j => logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))
     have hs : |N'.finSum ℓ - (N.ext ι).finSum ℓ| ≤ ((p + q : ℕ) : ℝ) * (Module.finrank ℚ F' * (cP ℓ * Real.log (ℓ : ℕ)) -
         ∑ κ' : F' →+* ℂ_[ℓ], logIdeal ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))) := by
@@ -193,7 +197,7 @@ theorem numerics : Numerics := by
     ring
   · rw [hBs]
     simp only [extendFromPrimes_coe]
-    obtain ⟨hfin, hsum⟩ := GlobalTheory.T.different_ideal_log_sum_root_discriminant E
+    obtain ⟨hfin, hsum⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.different_sum_eq_neg_finrank_mul_log_rootDiscr E
     have hwf : (Function.support w).Finite := hfin.subset fun ℓ hℓ => fun h => hℓ (by simp only [w]; rw [h, neg_zero])
     have hws : ∑ᶠ ℓ, w ℓ = Module.finrank ℚ E * Real.log (rootDiscr E) := by
       simp only [w]

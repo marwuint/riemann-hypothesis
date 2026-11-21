@@ -20,8 +20,6 @@ theorem hasseW_of_mul_eq (β : Idx D j N →₀ ℕ) {s x : Rp X la N} {y : Lw X
     ∑ q ∈ antidiagonal β, algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N q.1 s) * hasseW X la w q.2 y =
       algebraMap (Rp X la N) (Lw X la w) (hasseRp X la N β x) := hasse_of_mul_eq X la w β h
 
-theorem hasseW_zero (x : Lw X la w) : hasseW X la w 0 x = x := hasse_zero X la w x
-
 theorem hasse_frac_succ_mem {u : WeightFamilies.Wt D j} {m : ℕ} {g : Rp X la N} (hg : g ∈ Vw X la N (addL u wL (m + 1)))
     (β : Idx D j N →₀ ℕ) : hasseW X la w β (frac X la w (m + 1) g) ∈ Hfr X la w u := by
   induction hn : Finsupp.degree β using Nat.strong_induction_on generalizing β with

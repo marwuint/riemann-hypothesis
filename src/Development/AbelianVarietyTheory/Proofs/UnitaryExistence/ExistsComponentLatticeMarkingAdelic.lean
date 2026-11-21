@@ -13,12 +13,12 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralTmulOneM
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SelfDualLatticeOccurs
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtension
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLatticeEqAdelicCompletionAndGramStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePartPreservesFormDetNormOneStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLatticeEqAdelicCompletionAndGram
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinitePartPreservesFormDetNormOne
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RationalPointsAdelicUnitaryEqUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletionStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeSelfDualTraceFormStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeRationalTranslateInvarianceStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeSelfDualTraceForm
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryLatticeRationalTranslateInvariance
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj
 open scoped TensorProduct Matrix Topology
@@ -122,11 +122,11 @@ theorem GlobalTheory.Member.exists_mark : ∀ (D : D7) (H : ReciprocityTheory.Ch
   subst hr
   obtain ⟨⟨-, -, ⟨hinj, hrange⟩, hisom⟩, -, hA, hgood, hbase, hW, -, -⟩ := hC
   dsimp only at hinj hrange hisom hbase hW
-  obtain ⟨-, hfv, -, -, -, hcc, -, hGc, hGdet, hT, -⟩ := GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D V
-  obtain ⟨hfg1, hsp1, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V 1
-  obtain ⟨hfg, hsp, hlat, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V h
-  obtain ⟨hJ, hsd1, -⟩ := GlobalTheory.T.adelicUnitaryLattice_selfDual_traceForm D V 1 _ rfl
-  obtain ⟨-, -, hsd⟩ := GlobalTheory.T.adelicUnitaryLattice_selfDual_traceForm D V h _ rfl
+  obtain ⟨-, hfv, -, -, -, hcc, -, hGc, hGdet, hT, -⟩ := _root_.GlobalTheory.Member.latHat_eq_hat_and_gram D V
+  obtain ⟨hfg1, hsp1, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V 1
+  obtain ⟨hfg, hsp, hlat, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V h
+  obtain ⟨hJ, hsd1, -⟩ := _root_.GlobalTheory.Member.latG_selfDual D V 1 _ rfl
+  obtain ⟨-, -, hsd⟩ := _root_.GlobalTheory.Member.latG_selfDual D V h _ rfl
   obtain ⟨f, hf1, hf2, hf3⟩ := GlobalTheory.AdLat.exists_linear_approx_tower D.host.F D.host.E V.rank (latG V 1)
     (finHom V h) (latG V h) hfg1 hsp1 hlat
   let ε : Dw.La ≃ₗ[𝓞 D.host.E] latG V 1 :=
@@ -161,7 +161,7 @@ theorem GlobalTheory.Member.exists_mark : ∀ (D : D7) (H : ReciprocityTheory.Ch
       obtain ⟨w, hw, ew⟩ := hf1 n hn (ε a)
       obtain ⟨w', hw', ew'⟩ := hf1 n hn (ε a')
       obtain ⟨z, hz, ez⟩ := form_congr (latG V 1) (cF D) V.gramᵀ _ _
-        (fun x hx => (hsd1 x).2 hx) (GlobalTheory.T.finitePart_preserves_form_det_norm_one D V h).1 hn (ε a).2 (ε a').2 hw hw' ew ew'
+        (fun x hx => (hsd1 x).2 hx) (_root_.GlobalTheory.Member.finHom_herm_det D V h).1 hn (ε a).2 (ε a').2 hw hw' ew ew'
       obtain ⟨t, ht⟩ := (hJ z).1 hz 1
       refine ⟨-t, ?_⟩
       simp only [hcc, hε] at ez
@@ -174,8 +174,8 @@ theorem GlobalTheory.Member.exists_mark : ∀ (D : D7) (H : ReciprocityTheory.Ch
       simp)
   obtain ⟨hQ, -, hex, -, hfin⟩ := GlobalTheory.T.rational_points_adelicUnitary_eq_unitary D V
   obtain ⟨γ, hγ⟩ := hex γ' hu
-  obtain ⟨hmv, -⟩ := (GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).1 γ γ' h hγ
-  obtain ⟨-, -, -, hhat1, hhat2, -⟩ := GlobalTheory.T.adelicElementLattice_full_and_completion D V (γ * h)
+  obtain ⟨hmv, -⟩ := (_root_.GlobalTheory.Member.latG_move D V).1 γ γ' h hγ
+  obtain ⟨-, -, -, hhat1, hhat2, -⟩ := _root_.GlobalTheory.Member.latG_lattice_and_completion D V (γ * h)
   have hΛ : ∀ v, v ∈ (M.X k).Λ ↔ v ∈ latG V (γ * h) := fun v => by
     have e : v = γ'.val *ᵥ ((γ'⁻¹).val *ᵥ v) := by
       rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]

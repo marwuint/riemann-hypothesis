@@ -126,11 +126,6 @@ theorem Cont.mem_of_pow_mul_mem {ϖ : O} (hϖ : Irreducible ϖ) {g : O⟦X⟧} (
       exact mul_left_cancel₀ (Cont.C_unif_ne_zero hϖ) h1
     · exact absurd hg' (Cont.not_C_dvd hϖ hg)
 
-theorem Cont.smul_mk (g : O⟦X⟧) (r : O) (a : O⟦X⟧) :
-    r • Ideal.Quotient.mk (Ideal.span {g}) a = Ideal.Quotient.mk (Ideal.span {g}) (C r * a) := by
-  rw [Algebra.smul_def, ← Ideal.Quotient.mk_algebraMap, ← map_mul]
-  rfl
-
 variable {ϖ : O} (hϖ : Irreducible ϖ)
 include hϖ
 
@@ -153,109 +148,5 @@ theorem C2' {g : O⟦X⟧} (hg : IsDist g) (f : O⟦X⟧) (k : ℕ) :
 theorem mem_iff_le_cont {g : O⟦X⟧} (hg : IsDist g) (f : O⟦X⟧) (k : ℕ) :
     f ∈ Ideal.span {C ϖ ^ k, g} ↔ (k : ℕ∞) ≤ cont ϖ g f := by
   exact Cont.mem_iff_le ϖ g f k
-
-theorem C0 {g : O⟦X⟧} (hg : IsDist g) {ι : Type*} [Fintype ι]
-    (b : Module.Basis ι O (O⟦X⟧ ⧸ Ideal.span {g})) (f : O⟦X⟧) :
-    cont ϖ g f = ⨅ i, IsDiscreteValuationRing.addVal O (b.repr (Ideal.Quotient.mk _ f) i) := by
-  have key : ∀ k : ℕ, f ∈ Ideal.span {C ϖ ^ k, g} ↔
-      ∀ i, ϖ ^ k ∣ b.repr (Ideal.Quotient.mk (Ideal.span {g}) f) i := by
-    intro k
-    constructor
-    · intro h
-      obtain ⟨a, d, had⟩ := Ideal.mem_span_pair.mp h
-      have hq : Ideal.Quotient.mk (Ideal.span {g}) f = ϖ ^ k • Ideal.Quotient.mk (Ideal.span {g}) a := by
-        rw [Cont.smul_mk, Ideal.Quotient.eq, Ideal.mem_span_singleton']
-        exact ⟨d, by rw [map_pow]; linear_combination had⟩
-      intro i
-      rw [hq, map_smul, Finsupp.smul_apply, smul_eq_mul]
-      exact dvd_mul_right _ _
-    · intro h
-      choose c hc using h
-      obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (b.equivFun.symm c)
-      have hx : Ideal.Quotient.mk (Ideal.span {g}) f = ϖ ^ k • Ideal.Quotient.mk (Ideal.span {g}) a := by
-        apply b.repr.injective
-        ext i
-        have e1 := congrFun (b.equivFun.apply_symm_apply c) i
-        rw [Module.Basis.equivFun_apply] at e1
-        rw [map_smul, Finsupp.smul_apply, smul_eq_mul, hc i, ha, e1]
-      rw [Cont.smul_mk, Ideal.Quotient.eq, Ideal.mem_span_singleton'] at hx
-      obtain ⟨d, hd⟩ := hx
-      rw [map_pow] at hd
-      exact Ideal.mem_span_pair.mpr ⟨a, d, by linear_combination hd⟩
-  have key2 : ∀ k : ℕ, (k : ℕ∞) ≤ cont ϖ g f ↔
-      (k : ℕ∞) ≤ ⨅ i, IsDiscreteValuationRing.addVal O (b.repr (Ideal.Quotient.mk _ f) i) := by
-    intro k
-    rw [← Cont.mem_iff_le ϖ g f k, key k, le_iInf_iff]
-    apply forall_congr'
-    intro i
-    rw [← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_pow,
-      IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one]
-  exact le_antisymm (Cont.enat_le_of_forall fun k hk => (key2 k).mp hk)
-    (Cont.enat_le_of_forall fun k hk => (key2 k).mpr hk)
-
-theorem m1 {g g' : O⟦X⟧} (hg : IsDist g) (hg' : IsDist g') (hdvd : g ∣ g') (f : O⟦X⟧) :
-    cont ϖ g' f ≤ cont ϖ g f := by
-  apply Cont.enat_le_of_forall
-  intro k hk
-  have h1 := (Cont.mem_iff_le ϖ g' f k).2 hk
-  apply (Cont.mem_iff_le ϖ g f k).1
-  refine (Ideal.span_le.2 ?_) h1
-  intro x hx
-  rcases hx with rfl | rfl
-  · exact Ideal.subset_span (by simp)
-  · obtain ⟨c, rfl⟩ := hdvd
-    exact Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))
-
-theorem m2 {g : O⟦X⟧} (hg : IsDist g) (k f : O⟦X⟧) : cont ϖ g f ≤ cont ϖ g (k * f) := by
-  apply Cont.enat_le_of_forall
-  intro j hj
-  exact (Cont.mem_iff_le ϖ g _ j).1 (Ideal.mul_mem_left _ k ((Cont.mem_iff_le ϖ g f j).2 hj))
-
-theorem m3 {g f : O⟦X⟧} (hg : IsDist g) (hf : IsDist f) (hlt : wdeg f < wdeg g) :
-    cont ϖ g f = 0 := by
-  by_contra hne
-  have h1 : ((1 : ℕ) : ℕ∞) ≤ cont ϖ g f := by
-    rw [Nat.cast_one]
-    exact ENat.one_le_iff_ne_zero.2 hne
-  have h2 := (Cont.mem_iff_le ϖ g f 1).2 h1
-  obtain ⟨u, v, huv⟩ := Ideal.mem_span_pair.1 h2
-  have hmap : f.map (IsLocalRing.residue O) =
-      v.map (IsLocalRing.residue O) * g.map (IsLocalRing.residue O) := by
-    rw [← huv, map_add, map_mul, map_mul, pow_one, PowerSeries.map_C, Cont.residue_unif hϖ, map_zero,
-      mul_zero, zero_add]
-  have hord : (g.map (IsLocalRing.residue O)).order ≤ (f.map (IsLocalRing.residue O)).order := by
-    rw [hmap, PowerSeries.order_mul]
-    exact le_add_self
-  have hf0 : (f.map (IsLocalRing.residue O)).order ≠ ⊤ := fun h => hf (PowerSeries.order_eq_top.1 h)
-  have h3 := ENat.toNat_le_toNat hord hf0
-  unfold wdeg at hlt
-  omega
-
-omit hϖ in
-
-theorem m5 {R : Type*} [CommRing R] (x x' t : R) (a s : ℕ) (hs : 1 ≤ s)
-    (h : x - x' ∈ Ideal.span {t}) : x ^ (a + s - 1) ∈ Ideal.span {x' ^ a, t ^ s} := by
-  obtain ⟨y, hy⟩ := Ideal.mem_span_singleton'.1 h
-  have hx : x = x' + t * y := by linear_combination (-1 : R) * hy
-  rw [hx, add_pow]
-  apply Ideal.sum_mem
-  intro m hm
-  rw [Finset.mem_range] at hm
-  by_cases ham : a ≤ m
-  · have e : x' ^ m = x' ^ a * x' ^ (m - a) := by rw [← pow_add, Nat.add_sub_cancel' ham]
-    rw [e]
-    apply Ideal.mul_mem_right
-    apply Ideal.mul_mem_right
-    apply Ideal.mul_mem_right
-    exact Ideal.subset_span (by simp)
-  · push_neg at ham
-    have hs' : s ≤ a + s - 1 - m := by omega
-    have e : (t * y) ^ (a + s - 1 - m) = t ^ s * (t ^ (a + s - 1 - m - s) * y ^ (a + s - 1 - m)) := by
-      rw [mul_pow, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hs']
-    rw [e]
-    apply Ideal.mul_mem_right
-    apply Ideal.mul_mem_left
-    apply Ideal.mul_mem_right
-    exact Ideal.subset_span (by simp)
 
 end Formalism.MainNotions.N.FrobeniusPowerSeries

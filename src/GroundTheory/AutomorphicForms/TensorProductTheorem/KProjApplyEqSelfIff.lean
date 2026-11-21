@@ -38,13 +38,6 @@ theorem kProj_mem_component (v : X) : (kProj hσ hc v : σ.asModule) ∈ c := by
 theorem kProj_kProj (v : X) : kProj hσ hc (kProj hσ hc v) = kProj hσ hc v :=
   (kProj_apply_eq_self_iff hσ hc).2 (kProj_mem_component hσ hc v)
 
-theorem kProj_σ (k : K) (v : X) : kProj hσ hc (σ k v) = σ k (kProj hσ hc v) := by
-  haveI := isSemisimpleModule_asModule hσ
-  show σ.asModuleEquiv (isoProj hc (σ.asModuleEquiv.symm (σ k v))) =
-    σ k (σ.asModuleEquiv (isoProj hc (σ.asModuleEquiv.symm v)))
-  rw [Representation.asModuleEquiv_symm_map_rho, map_smul, Representation.asModuleEquiv_map_smul,
-    MonoidAlgebra.of_apply, Representation.asAlgebraHom_single_one]
-
 theorem kProj_comm {T : End ℂ X} (hT : ∀ k, T * σ k = σ k * T) (v : X) :
     kProj hσ hc (T v) = T (kProj hσ hc v) := by
   haveI := isSemisimpleModule_asModule hσ

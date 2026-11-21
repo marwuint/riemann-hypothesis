@@ -79,13 +79,6 @@ theorem hasDerivAt_rad' (e : ℂ) (r : ℝ) :
   have h2 := (((contDiff_fderiv1 hu).differentiable one_ne_zero) _).hasFDerivAt.comp_hasDerivAt r hp
   simpa using h2.clm_apply (hasDerivAt_const r e)
 
-theorem hasDerivAt_ang (r θ : ℝ) :
-    HasDerivAt (fun θ : ℝ => u (a + r • ee θ))
-      (fderiv ℝ u (a + r • ee θ) (r • (Complex.I * ee θ))) θ := by
-  have hp : HasDerivAt (fun θ : ℝ => a + r • ee θ) (r • (Complex.I * ee θ)) θ :=
-    ((hasDerivAt_ee θ).const_smul r).const_add a
-  exact ((hu.differentiable (by norm_num)) _).hasFDerivAt.comp_hasDerivAt θ hp
-
 theorem hasDerivAt_ang' (r θ : ℝ) :
     HasDerivAt (fun θ : ℝ => fderiv ℝ u (a + r • ee θ) (r • (Complex.I * ee θ)))
       (fderiv ℝ (fderiv ℝ u) (a + r • ee θ) (r • (Complex.I * ee θ)) (r • (Complex.I * ee θ))

@@ -1,12 +1,13 @@
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.HermitianPerpSubgroup
-import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.ColumnDimensionRational
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MulVecMemHatSmul
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Formalism.LocalToGlobal.Columns.GenericUnipotentCharacter
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.FrameLats
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIrreducible
 
 open NumberField IsDedekindDomain MeasureTheory Matrix
 open scoped TensorProduct ENNReal Pointwise
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.SgAlg GlobalTheory.SgGlob GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.ColCmp
+open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.SgAlg GlobalTheory.SgGlob GlobalTheory.IndefiniteRowSideFullHecke
 
 namespace GlobalTheory.SplitResidue
 

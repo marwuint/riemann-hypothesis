@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KbIsAlgClosedAndConj
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAlgEquivLiftResiduePadicAlgClStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingEquivExtendingOfKerLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingEquivExtendingOfKerLe
 
 namespace GlobalTheory.ResidueLift
 
@@ -41,7 +41,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (L : IntermediateField ℚ_[l] (Padi
     rw [MvPolynomial.coeff_map]
     exact ⟨(MvPolynomial.coeff n q).2, (GlobalTheory.ZH.mem_OO_iff _).1 (((MvPolynomial.coeff n q : As) : O).2)⟩
   haveI := GlobalTheory.ZJ.isAlgClosed_kb (p := l)
-  obtain ⟨φ, hφR, hφ⟩ := GlobalTheory.T.exists_ringEquiv_extending_of_ker_le' _ GlobalTheory.ZJ.exists_pow_eq_one_kb R J _ _ hII
+  obtain ⟨φ, hφR, hφ⟩ := _root_.GlobalTheory.exists_ringEquiv_extending_of_ker_le _ GlobalTheory.ZJ.exists_pow_eq_one_kb R J _ _ hII
   obtain ⟨g, hg⟩ := GlobalTheory.T.exists_algEquiv_lift_residue_padicAlgCl l L φ fun x hx => hφR _ ⟨⟨x, hx⟩, rfl⟩
   exact ⟨g, fun j => hg (a' j) (b' j) (hφ j).symm⟩
 

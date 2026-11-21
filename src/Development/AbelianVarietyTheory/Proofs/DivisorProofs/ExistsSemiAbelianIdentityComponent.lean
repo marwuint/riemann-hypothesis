@@ -15,27 +15,6 @@ noncomputable section
 
 namespace GlobalTheory.SemiStableId
 
-def transportExt {K : Type} [Field K] {G₁ H : Over (Spec (.of K))} [GrpObj G₁] [GrpObj H]
-    (E : TorusExtension G₁) (e : G₁ ≅ H) [IsMonHom e.hom] : TorusExtension H where
-  X := E.X
-  addCommGroup := E.addCommGroup
-  free := E.free
-  finite := E.finite
-  B := E.B
-  grpB := E.grpB
-  isAbelian := E.isAbelian
-  q := e.inv ≫ E.q
-  q_hom := by have := E.q_hom; infer_instance
-  q_flat := by have := E.q_flat; have : IsIso e.inv.left := inferInstanceAs (IsIso ((Over.forget _).map e.inv)); show Flat (e.inv.left ≫ E.q.left); infer_instance
-  q_surjective := by have := E.q_surjective; have : IsIso e.inv.left := inferInstanceAs (IsIso ((Over.forget _).map e.inv)); show Surjective (e.inv.left ≫ E.q.left); infer_instance
-  q_quasiCompact := by
-    have := E.q_quasiCompact; have : IsIso e.inv.left := inferInstanceAs (IsIso ((Over.forget _).map e.inv)); show QuasiCompact (e.inv.left ≫ E.q.left); infer_instance
-  i := E.i ≫ e.hom
-  i_hom := by have := E.i_hom; infer_instance
-  isKernel := by
-    have h2 : IsPullback e.hom E.q (e.inv ≫ E.q) (𝟙 _) := IsPullback.of_horiz_isIso ⟨by simp⟩
-    simpa using E.isKernel.paste_horiz h2
-
 end GlobalTheory.SemiStableId
 
 namespace GlobalTheory.SemiStableId

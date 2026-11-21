@@ -222,7 +222,4 @@ end GlobalTheory.BigOn.Exp
 
 namespace GlobalTheory.BigOn.Exp
 
-theorem canEx_holds : CanEx :=
-  ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p _ _ w _ j => canEx_at p w j⟩⟩⟩
-
 end GlobalTheory.BigOn.Exp

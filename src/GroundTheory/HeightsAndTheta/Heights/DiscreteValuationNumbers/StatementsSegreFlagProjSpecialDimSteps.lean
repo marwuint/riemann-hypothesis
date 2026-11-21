@@ -36,10 +36,6 @@ def FlagProjTrdegLe.Statement : Prop :=
           pointIdeal O (flagProjPt secondFactorBlocks y w e φ φ' t k)) ≤
         Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y) + (k : Cardinal)
 
-section Examples
-
-end Examples
-
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

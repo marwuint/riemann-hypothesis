@@ -3,7 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 import Development.AbelianVarietyTheory.Definitions.Divisors.RigidForFan
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolAVInterior
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCechOneCoboundaryOfRefinementStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCechOneCoboundaryOfRefinement
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PreimageTranslate
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitExtendOfGeneric
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelLabelExtendsOfOrthogonalToExtended
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GradedLineBundleExists
@@ -111,7 +113,7 @@ theorem theta_eq_fibre (P₀ : Out.PolAV (Sp K)) {n : ℕ} (u : Fin n → (epsR 
       linear_combination E1 - E2 - E3 + E4
   funext a
   refine sub_eq_zero.1 (hcob (θ a - θ' a) ?_)
-  refine GlobalTheory.T.isCechOneCoboundary_of_refinement (fun i => m ⁻¹ᵁ L.U i) (lc P₀.A.hom (θ a - θ' a) φ) (isCoc_lc _ _ _ hcoc)
+  refine _root_.GlobalTheory.KS.Refine.isCob_of_refine (fun i => m ⁻¹ᵁ L.U i) (lc P₀.A.hom (θ a - θ' a) φ) (isCoc_lc _ _ _ hcoc)
     (fun p => m ⁻¹ᵁ Wp p) (fun p => j p.1) (fun p => m.preimage_mono (inf_le_left.trans (hWj p.1))) ?_
     (fun p => -(h p a) - ∑ b, constFn P₀.A.hom _ (θ' a b) * rsT (φ b (j' p.2) (j p.1)) (m ⁻¹ᵁ Wp p)) ?_
   · refine eq_top_iff.2 fun z _ => ?_

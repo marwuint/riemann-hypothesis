@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOneTmulOfSurjective
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOfForallFinsetSubsetFlatStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOfForallFinsetSubsetFlat
 
 open IsLocalRing
 
@@ -11,7 +11,7 @@ open StrictHensOfHens
 theorem exists_strictHenselisation_of_henselian : ∀ (R : Type) [CommRing R] [HenselianLocalRing R] (Ω : Type) [Field Ω] [Algebra (ResidueField R) Ω] [IsSepClosure (ResidueField R) Ω], ∃ (S : Type) (_ : CommRing S) (_ : Algebra R S) (_ : HenselianLocalRing S) (_ : IsLocalHom (algebraMap R S)), IsSepClosed (ResidueField S) ∧ Module.Flat R S ∧ (maximalIdeal R).map (algebraMap R S) = maximalIdeal S ∧ Nonempty (ResidueField S ≃ₐ[ResidueField R] Ω) ∧ (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R S), Monotone Si ∧ (∀ s : S, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i)) := by
   intro R _ _ Ω _ _ _
   have hflat : Module.Flat R (SH R Ω) := by
-    refine GlobalTheory.T.flat_of_forall_finset_subset_flat_submodule R (SH R Ω) fun s => ?_
+    refine _root_.GlobalTheory.flat_of_forall_finset_subset_flat R (SH R Ω) fun s => ?_
     obtain ⟨E, hE⟩ := exists_ofA_finset s
     let e := AlgEquiv.ofInjective (ofA R Ω E) (ofA_injective E)
     haveI : Module.Flat R (Lift R Ω E) := Algebra.Smooth.flat _ _

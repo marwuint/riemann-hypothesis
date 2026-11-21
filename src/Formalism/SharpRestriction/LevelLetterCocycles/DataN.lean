@@ -184,23 +184,12 @@ namespace NData
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
 
-def Bj_rank : Prop := ∀ i, Module.finrank (N.O i) (N.Bj i) = Module.finrank ℂ (what₂.Mj (N.j i))
-
 def ShaFin : Prop := ∀ (p : ℕ) [Fact p.Prime] (e : ℕ), 0 < e → e < R.t →
   Formalism.GaloisCohomology.shaLen (N.ldat p) (e : ℤ) ≠ ⊤
-
-def ShaFinOdd : Prop := ∀ (p : ℕ) [Fact p.Prime] (e : ℕ), p ≠ 2 → 0 < e → e < R.t →
-  Formalism.GaloisCohomology.shaLen (N.ldat p) (e : ℤ) ≠ ⊤
-
-def ShaFinTwo : Prop := ∀ (e : ℕ), 0 < e → e < R.t → Formalism.GaloisCohomology.shaLen (N.ldat 2) (e : ℤ) ≠ ⊤
 
 def EigSpan : Prop := ∀ i, ⨆ x, heckeEig (N.T i) (N.act i) x = ⊤
 
 def ZgoodSub : Prop := ∀ i, N.Zgood i ⊆ N.Z i
-
-def LocsCover : Prop := ∀ j' w', 1 ≤ j' → j' ≤ R.m → what₂.muAt w' ≠ what₂.mu0 →
-  ∑ i ∈ N.locs j' w', Module.finrank (N.O i) (N.Mt i) =
-    Module.finrank what₂.LL (what₂.MtL (what₂.muTw w') j')
 
 def MtIn (i : N.Loc) : Submodule (N.O i) (TensorProduct (N.O i) (FractionRing (N.O i)) (N.Mt i)) :=
   LinearMap.range (TensorProduct.mk (N.O i) (FractionRing (N.O i)) (N.Mt i) 1)
@@ -440,13 +429,6 @@ def sig_eig : Prop := ∀ i s, ∃ x : TensorProduct (X.O i) (FractionRing (X.O 
       ((X.hk i (X.jS i s) (X.side i s) k P).lTensor (FractionRing (X.O i))) x =
       algebraMap (X.O i) (FractionRing (X.O i)) (X.hEig i s k P) • x
 
-def sig_allB : Prop := ∀ i j b (x : TensorProduct (X.O i) (FractionRing (X.O i)) (X.B i j b))
-      (ev : ℕ → HeightOneSpectrum (𝓞 H.E) → FractionRing (X.O i)), x ≠ 0 →
-    (∀ k P, 1 ≤ k → k ≤ R.r → IsSplitPl H P → P ∉ X.S0 i → ((X.hk i j b k P).lTensor (FractionRing (X.O i))) x = ev k P • x) →
-    ∃ s : X.Sig i, X.jS i s = j ∧ X.side i s = b ∧
-      ∀ k P, 1 ≤ k → k ≤ R.r → IsSplitPl H P → P ∉ X.S0 i →
-        algebraMap (X.O i) (FractionRing (X.O i)) (X.hEig i s k P) = ev k P
-
 def TwCover : Prop := ∀ p : ℕ, p.Prime → ∀ w : HeightOneSpectrum (𝓞 ↥LL0), ((p : ℕ) : 𝓞 ↥LL0) ∈ w.asIdeal →
   ∃ i, X.l i = p ∧ ∀ x : 𝓞 ↥LL0, x ∈ w.asIdeal ↔
     ∃ y ∈ IsLocalRing.maximalIdeal (X.O0 i),
@@ -457,24 +439,6 @@ def NonzeroIndexPlace (i : X.Tw) : Prop :=
     (∃ y ∈ IsLocalRing.maximalIdeal (X.O0 i),
       algebraMap (X.O0 i) (FractionRing (X.O0 i)) y = X.emb0 i (x : ↥LL0)) ↔
     0 < what₂.places.val w' ((x : ↥LL0) : what₂.LL)
-
-def CoverAtSplitPlaces : Prop := ∀ p : ℕ, p.Prime → ∀ w : HeightOneSpectrum (𝓞 ↥LL0), ((p : ℕ) : 𝓞 ↥LL0) ∈ w.asIdeal →
-  (∃ w' : what₂.places.Pl, what₂.muAt w' ≠ what₂.mu0 ∧
-    ∀ x : 𝓞 ↥LL0, x ∈ w.asIdeal ↔ 0 < what₂.places.val w' ((x : ↥LL0) : what₂.LL)) →
-  ∃ i, X.l i = p ∧ ∀ x : 𝓞 ↥LL0, x ∈ w.asIdeal ↔
-    ∃ y ∈ IsLocalRing.maximalIdeal (X.O0 i),
-      algebraMap (X.O0 i) (FractionRing (X.O0 i)) y = X.emb0 i (x : ↥LL0)
-
-theorem levelLetterCocycles_of_fact (h : X.TwCover) : X.CoverAtSplitPlaces := fun p hp w hw _ => h p hp w hw
-
-def ThetaFull : Prop :=
-  ∀ i j b, Module.finrank (X.O i) (X.Theta i j b) = Module.finrank (X.O i) (X.B i j b)
-
-def sigEig (i : X.Tw) (s : X.Sig i) : Submodule (FractionRing (X.O i))
-    (TensorProduct (X.O i) (FractionRing (X.O i)) (X.B i (X.jS i s) (X.side i s))) :=
-  ⨅ (k : ℕ) (P : HeightOneSpectrum (𝓞 H.E)) (_ : 1 ≤ k ∧ k ≤ R.r ∧ IsSplitPl H P ∧ P ∉ X.S0 i),
-    Module.End.eigenspace ((X.hk i (X.jS i s) (X.side i s) k P).baseChange (FractionRing (X.O i)))
-      (algebraMap (X.O i) (FractionRing (X.O i)) (X.hEig i s k P))
 
 def SigSpan : Prop := ∀ i j b, 1 ≤ j → j ≤ R.m →
   Submodule.span (FractionRing (X.O i))
@@ -748,13 +712,6 @@ structure NBC {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H wh
   embAV_sph : ∀ i (P : A.AV i) w, ¬ IsSplitPl H w → sphAU (N.j i) (embAV i P) w
   embAV_inf : ∀ i (P : A.AV i), A.infWt i = infW (N.j i) (wtAU (N.j i) (embAV i P))
 
-def NBC.AU_ext {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N} (B : NBC A) : Prop :=
-  ∀ j (π π' : B.AU j), (∀ w, IsSplitPl H w → B.locAU j π w = B.locAU j π' w) →
-    (∀ w, ¬ IsSplitPl H w → B.sphAU j π w ∧ B.sphAU j π' w ∧
-      B.satAU j π w + (B.satAU j π w).map (·⁻¹) + (if Odd R.nV then ({1} : Multiset ℂ) else 0) =
-        B.satAU j π' w + (B.satAU j π' w).map (·⁻¹) + (if Odd R.nV then ({1} : Multiset ℂ) else 0)) →
-    B.wtAU j π = B.wtAU j π' → π = π'
-
 section Exp
 open scoped TensorProduct
 
@@ -861,34 +818,12 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.L
   {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} {tw : NTw R H what₂ LL0 N}
   (Y : NExp R H what₂ LL0 N tw)
 
-def embB_hk : Prop :=
-  ∀ i j b k P, P ∉ tw.S0 i → ∀ x, Y.embB i j b (tw.hk i j b k P x) = Y.hkF i j b k P (Y.embB i j b x)
-
-def eH_comm : Prop := ∀ i j b k P, P ∉ tw.S0 i → Y.eH i j b * Y.hkF i j b k P = Y.hkF i j b k P * Y.eH i j b
-
-def eH_eig : Prop := ∀ i j b (x : Y.Fm i j b) (ev : ℕ → PlE H → FractionRing (tw.O i)), x ≠ 0 →
-    (∀ k P, 1 ≤ k → k ≤ R.r → IsSplitPl H P → P ∉ tw.S0 i → Y.hkF i j b k P x = ev k P • x) →
-    (Y.eH i j b x = x ∧ ∃ s : tw.Sig i, tw.jS i s = j ∧ tw.side i s = b ∧ ∀ k P, 1 ≤ k → k ≤ R.r →
-        IsSplitPl H P → P ∉ tw.S0 i →
-        algebraMap (tw.O i) (FractionRing (tw.O i)) (tw.hEig i s k P) = ev k P) ∨
-    (Y.eH i j b x = 0 ∧ ¬ ∃ s : tw.Sig i, tw.jS i s = j ∧ tw.side i s = b ∧ ∀ k P, 1 ≤ k → k ≤ R.r →
-        IsSplitPl H P → P ∉ tw.S0 i →
-        algebraMap (tw.O i) (FractionRing (tw.O i)) (tw.hEig i s k P) = ev k P)
-
 def sig_all : Prop := ∀ i j b (x : Y.Fm i j b) (ev : ℕ → PlE H → FractionRing (tw.O i)), x ≠ 0 →
     MonoidAlgebra.lift (FractionRing (tw.O i)) (Module.End (FractionRing (tw.O i)) (Y.Fm i j b)) (G0g N)
       (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (Y.actG i j b)) (Y.eAlg i b) x = x →
     (∀ k P, 1 ≤ k → k ≤ R.r → IsSplitPl H P → P ∉ tw.S0 i → Y.hkF i j b k P x = ev k P • x) →
     ∃ s : tw.Sig i, tw.jS i s = j ∧ tw.side i s = b ∧ ∀ k P, 1 ≤ k → k ≤ R.r → IsSplitPl H P →
       P ∉ tw.S0 i → algebraMap (tw.O i) (FractionRing (tw.O i)) (tw.hEig i s k P) = ev k P
-
-def ThetaDef : Prop := ∀ i j b, (tw.Theta i j b).map (Y.embB i j b) =
-  Submodule.span (tw.O i) (Set.range fun d : Y.Dat i j b => Y.eH i j b (Y.th i j b d))
-
-def ThetaPsiDef : Prop := ∀ i j b k Q ψ,
-  (tw.ThetaPsi i j b k Q ψ).map ((Y.embB i j b).baseChange (tw.Ok i k)) =
-    Submodule.span (tw.Ok i k) (⋃ d : Y.Dat i j b,
-      (((Y.eH i j b).restrictScalars (tw.O i)).baseChange (tw.Ok i k)) '' Y.thPsi i j b k Q ψ d)
 
 end NExp
 
@@ -1006,10 +941,6 @@ def e0 : MonoidAlgebra ℂ (G0g N) :=
       (open Classical in if X.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩)) then
         ∏ kv : (Σ k : Fin 2, N.PlG k), (X.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (a kv))).coeff (g kv) else 0)
 
-def Qchi : IntermediateField ℚ ℂ :=
-  IntermediateField.adjoin ℚ {z | ∃ (k : Fin 2) (v : N.PlG k) (j : Fin R.m), haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
-    z = X.teichC k (algebraMap (ZMod (H.g k)) (Formalism.CyclotomicNorms.Fbar (H.g k)) ((N.chiT k v j : ZMod (H.g k))))}
-
 def goodPar (σ : X.Par) : Prop := X.goodTuple (fun k v => X.labPar k σ v)
 
 def onAmb (μ : what₂.Tup) (z : MonoidAlgebra ℂ (G0g N)) : Module.End ℂ (what₂.Amb μ) :=
@@ -1110,18 +1041,6 @@ structure NTh (R : Ranks) (H : Host R) (what₂ : Rows.Data R) [NumberField what
     Submodule.span (tw.O i) {f | f ∈ FmUr i j b ∧ ∀ y, ‖ev i j b f y‖ ≤ 1}
 
 attribute [instance] NTh.acgLt NTh.modLt NTh.freeLt NTh.finLt NTh.finLet NTh.grpKq NTh.finHk
-
-def NTh.EmbBRange {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
-    {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} {tw : NTw R H what₂ LL0 N}
-    {ex : NExp R H what₂ LL0 N tw} (T : NTh R H what₂ LL0 N tw ex) : Prop :=
-  ∀ i j b, (∀ k, tw.l i ≠ H.g k) → ∀ f : ex.Fm i j b,
-    f ∈ LinearMap.range (ex.embB i j b) ↔ ∃ f', (∀ y, ‖T.ev i j b f' y‖ ≤ 1) ∧ f = ex.eH i j b f'
-
-def NTh.ThEv {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
-    {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} {tw : NTw R H what₂ LL0 N}
-    {ex : NExp R H what₂ LL0 N tw} (T : NTh R H what₂ LL0 N tw ex) : Prop :=
-  ∀ i j b (d : ex.Dat i j b) (y : T.Pt i j),
-    T.ev i j b (ex.th i j b d) y = T.thV i j (T.datPhi i j b d) (T.datP i j b d) y
 
 end Formalism.BasicNotions
 

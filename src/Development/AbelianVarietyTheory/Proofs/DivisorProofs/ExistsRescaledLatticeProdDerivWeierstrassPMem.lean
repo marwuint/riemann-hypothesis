@@ -3,10 +3,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DatumOfIsIntegersLa
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDiscreteValuationRingValuationSubringAtPrime
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZeroOfEventually
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsScaledPeriodPairInvariantsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardSqModPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdDerivWeierstrassPOverSquaresNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdDerivWeierstrassPOverSquaresSqMemStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsScaledPeriodPairInvariants
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardSqModPrime
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdDerivWeierstrassPOverSquaresNeZero
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdDerivWeierstrassPOverSquaresSqMemStable
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
@@ -18,10 +18,10 @@ theorem exists_datum_sqProd_mem :
         (latticeCurve L').j = (latticeCurve L).j ∧ sqProd p L' t' ∈ F := by
   intro p F L t hp h4 h3 hD
   set c := sqProd p L t with hc
-  have hc0 : c ≠ 0 := (GlobalTheory.T.prodDerivWeierstrassPOverSquares_ne_zero p F L t hp h4 h3 hD).2
-  have hc2 : c ^ 2 ∈ F := (GlobalTheory.T.prodDerivWeierstrassPOverSquares_sq_mem_stable p F L t hp h4 h3 hD).1
-  obtain ⟨L', hlat, hg₂, hg₃, hder, hj⟩ := GlobalTheory.T.exists_scaled_periodPair_invariants L c hc0
-  obtain ⟨hcard, -⟩ := GlobalTheory.T.two_mul_card_sq_add_one_eq_and_odd_of_mod_four_eq_three p hp h4
+  have hc0 : c ≠ 0 := (_root_.GlobalTheory.CMModel.SqNe.sqPt_and_sqProd_ne_zero p F L t hp h4 h3 hD).2
+  have hc2 : c ^ 2 ∈ F := (_root_.GlobalTheory.CMModel.sqProd_sq_mem_and_stable p F L t hp h4 h3 hD).1
+  obtain ⟨L', hlat, hg₂, hg₃, hder, hj⟩ := _root_.GlobalTheory.CMModel.exists_scaled_periodPair L c hc0
+  obtain ⟨hcard, -⟩ := _root_.GlobalTheory.CMModel.card_sq_mod_prime p hp h4
   refine ⟨L', c * t, ⟨?_, ?_, ?_, ?_, ?_⟩, hj, ?_⟩
   · intro ω hω
     have hz : c * (c⁻¹ * ω) ∈ L'.lattice := by rwa [← mul_assoc, mul_inv_cancel₀ hc0, one_mul]
@@ -52,7 +52,7 @@ theorem exists_datum_sqProd_mem :
     rw [hprod]
     set n := Fintype.card (Sq p) with hn
     have : ((c ^ 3)⁻¹) ^ n * c = ((c ^ 2) ^ (3 * ((n - 1) / 2) + 1))⁻¹ := by
-      obtain ⟨m, hm⟩ : Odd n := (GlobalTheory.T.two_mul_card_sq_add_one_eq_and_odd_of_mod_four_eq_three p hp h4).2
+      obtain ⟨m, hm⟩ : Odd n := (_root_.GlobalTheory.CMModel.card_sq_mod_prime p hp h4).2
       rw [hm]
       have : (2 * m + 1 - 1) / 2 = m := by omega
       rw [this]

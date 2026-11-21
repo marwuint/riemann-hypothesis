@@ -15,11 +15,6 @@ structure IsHalf (D : D7) (Mb : Ideal (𝓞 D.host.E)) : Prop where
   prod : Mb * Mb.map (bH D) = Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)}
   coprime : Mb ⊔ Mb.map (bH D) = ⊤
 
-theorem isHalf_levelG (D : D7) : IsHalf D (MbOf D [D.host.g 0, D.host.g 1]) where
-  fromK := MbOf_fromK D _
-  prod := by simpa [MbProdLaw] using MbProd_of D _ (splitG D)
-  coprime := MbCop_of D _ (splitG D)
-
 theorem three_le_g (D : D7) (k : Fin 2) : 3 ≤ D.host.g k := by
   have := (D.host.g_prime k).two_le
   have := g_ne_two D k
@@ -86,37 +81,10 @@ def parAt (D : D7) (hF : OFull D) (hz : OZeta D) (hN : N1ab) (Mb : Ideal (𝓞 D
   parWith D hF hz Mb h fun j =>
     Classical.choice (hN D.host.E (hostOfRecord D) (datAt D j) (levelAt D Mb h) (datAt_rank_pos D j))
 
-def IsParAt (D : D7) (Mb : Ideal (𝓞 D.host.E)) (Q : Par D) : Prop :=
-  Q.Pins ∧ Q.l.Mb = Mb ∧ ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q
-
 def PrimesOver (D : D7) (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) : Prop :=
   ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (pb k).asIdeal
 
 def halfOf (D : D7) (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) : Ideal (𝓞 D.host.E) :=
   ∏ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))
-
-def HalfOfPrimes (D : D7) : Prop :=
-  ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K), PrimesOver D pb → IsHalf D (halfOf D pb)
-
-theorem halfOfPrimes_iff (D : D7) : HalfOfPrimes D ↔
-    ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K), PrimesOver D pb →
-      ∃ l : Level (hostOfRecord D), l.M = D.host.g 0 * D.host.g 1 ∧ l.A = 1 ∧ l.Mb = halfOf D pb := by
-  refine forall₂_congr fun pb _ => ⟨fun h => ⟨levelAt D _ h, rfl, rfl, rfl⟩, ?_⟩
-  rintro ⟨l, hM, -, hb⟩
-  rw [← hb]
-  exact ⟨l.fromK, hM ▸ l.prod, l.coprime⟩
-
-theorem isParAt_parWith (D : D7) (hF : OFull D) (hz : OZeta D) (Mb : Ideal (𝓞 D.host.E)) (h : IsHalf D Mb)
-    (Xo : ∀ j, Moduli (datAt D j) (levelAt D Mb h)) : IsParAt D Mb (parWith D hF hz Mb h Xo) := by
-  refine ⟨⟨⟨rfl, rfl, rfl, tauEmb_sqrt D⟩, ⟨rfl, rfl⟩, eOf_spec D hF, fun j hj => ?_⟩, rfl, datAt_rank_pos D⟩
-  show IsDatW D j (datAt D j)
-  unfold datAt
-  rw [dif_pos hj]
-  unfold datumW datumOfRecord
-  exact isDatW_datumOf D _ j _ _
-
-theorem isParAt_parAt (D : D7) (hF : OFull D) (hz : OZeta D) (hN : N1ab) (Mb : Ideal (𝓞 D.host.E))
-    (h : IsHalf D Mb) : IsParAt D Mb (parAt D hF hz hN Mb h) :=
-  isParAt_parWith D hF hz Mb h _
 
 end GlobalTheory.IndefiniteRowSideFullHecke.HalfLevelCoefficients

@@ -3,7 +3,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrAtEmb
 import Development.AbelianVarietyTheory.Definitions.Divisors.MarkAd
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormPeriodRelation
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EtaCharacterUnramified
+import Formalism.LocalToGlobal.IndefiniteReal.FWTie
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPairCharactersAtLevel
+import Development.AbelianVarietyTheory.Definitions.Divisors.GenReads
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsHeckeCharMulInv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstRelIffTwistFactorAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesThird
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaAtOfIsEtaConj
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormSqOfMulConjEqDifferentIdeal
@@ -199,7 +205,7 @@ theorem exists_ideal_conj (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = 
   classical
   obtain ⟨ι, h1, h2, h3⟩ := GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D
   have h4 := GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3
-  obtain ⟨hid, hcj⟩ := GlobalTheory.T.placeIdempotent_components_conj_valuation D ι h1 h2 h4
+  obtain ⟨hid, hcj⟩ := _root_.GlobalTheory.ConjVal.components_and_conj_valuation D ι h1 h2 h4
   obtain ⟨ev, hev⟩ : ∃ ev : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), AE D →+* Q.adicCompletion D.host.E,
       ∀ Q z, ev Q z = ι (finPart D z) Q :=
     ⟨fun Q => ((GlobalTheory.CharLocProd.evalAt Q).comp ι.toRingHom).comp (finPart D), fun _ _ => rfl⟩
@@ -247,7 +253,7 @@ theorem exists_ideal_conj (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = 
     by_contra hn
     rw [Finset.mem_coe, Finset.mem_union, not_or] at hn
     exact hQ (δ0 Q hn.1 fun h => hn.2 (Finset.mem_image.2 ⟨_, h, GlobalTheory.ClassScalarValue.cP_cP Q⟩))
-  obtain ⟨cc, c0, c1, c2, c3, c4⟩ := GlobalTheory.T.exists_numeratorIdeal_of_antiInvariant_divisor D.host.E (GlobalTheory.IdemSupport.cO D) GlobalTheory.IdemSupport.cP GlobalTheory.IdemSupport.cO_cO GlobalTheory.IdemSupport.mem_cP δ hfin δ1
+  obtain ⟨cc, c0, c1, c2, c3, c4⟩ := _root_.GlobalTheory.NumeratorIdeal.exists_numerator D.host.E (GlobalTheory.IdemSupport.cO D) GlobalTheory.IdemSupport.cP GlobalTheory.IdemSupport.cO_cO GlobalTheory.IdemSupport.mem_cP δ hfin δ1
   have hy' : (y : AE D) = e * d + (1 - e) := hd ▸ hy
   have y0 : infPart D (y : AE D) = 1 := by
     rw [hy', RingHom.map_add, RingHom.map_mul, RingHom.map_sub, e0, RingHom.map_one, zero_mul, zero_add, sub_zero]
@@ -276,7 +282,7 @@ theorem exists_ideal_conj (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = 
       rw [← a, ← a Q, ← hcj _ Q, GlobalTheory.IdemSupport.cA_incA]
     rw [GlobalTheory.ClassScalarValue.onId_eq χ _ δ c2 P hP δ0 δ1 fun Q hQ => GlobalTheory.ClassScalarValue.val_mul_val hv χ (fun a => hP Q hQ (a.symm ▸ hQ))
       (hr Q fun a => hP Q hQ (a.symm ▸ hQ)) (hu Q (hb Q hQ)) (hu _ fun a => hb Q hQ ((hbc Q).1 a))]
-    exact GlobalTheory.T.idelicCharacter_eq_prod_unramifiedValue_zpow D ι h1 h2 h4 c χ hc y y0 P δ (fun Q hQ => ⟨hu Q (hb Q hQ), y1 Q hQ⟩) y2
+    exact _root_.GlobalTheory.CharUnramVal.char_eq_prod_val_zpow D ι h1 h2 h4 c χ hc y y0 P δ (fun Q hQ => ⟨hu Q (hb Q hQ), y1 Q hQ⟩) y2
   · obtain ⟨es', hes'⟩ : ∃ es' : HeightOneSpectrum (𝓞 D.host.E) → AE D, ∀ Q, IsPlIdem D (es' Q) Q :=
       ⟨fun Q => (h4 Q).choose, fun Q => (h4 Q).choose_spec.1⟩
     let xs : HeightOneSpectrum (𝓞 D.host.E) → (AE D)ˣ := fun Q => locU (hes' Q).1 (unif Q)

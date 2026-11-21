@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary�
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittExtensionTotallyDefiniteHermitianStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeDiscriminantOrderNeZeroUnimodulaStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeQuotientGensAndIntermediateCountStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeQuotientGensAndIntermediateCount
 
 open NumberField Matrix GlobalTheory.Mass Formalism.HermitianLatticesTheory
 open scoped ENNReal Classical
@@ -180,7 +180,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   · rw [discN, dW, ← mW]
     exact Nat.mul_le_mul (Nat.le_of_dvd (Nat.pos_of_ne_zero nU) dvU)
       (Nat.le_of_dvd (Nat.pos_of_ne_zero nL) (idx_map_dvd W q L _))
-  · obtain ⟨s, hs1, hs2⟩ := (GlobalTheory.T.lattice_quotient_gens_and_intermediate_count K W _ _ (latIn_le W q hq1 L)
+  · obtain ⟨s, hs1, hs2⟩ := (_root_.GlobalTheory.Mass.LatticeGens.gens_and_count K W _ _ (latIn_le W q hq1 L)
       (ne_zero_of_dvd_ne_zero nU dvU)).1 (hL.1.fg.map _)
     obtain ⟨s', h1, h2⟩ := gens_swap U W p q hp1 hpq L s hs2
     refine ⟨s' ∪ t.image p, (Finset.card_union_le _ _).trans

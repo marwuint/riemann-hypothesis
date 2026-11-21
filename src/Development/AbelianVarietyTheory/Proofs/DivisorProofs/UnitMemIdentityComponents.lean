@@ -1,9 +1,9 @@
 import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IdentityComponentOpen
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdentityComponentsSmoothGroupSchemeMulMemStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdentityComponentsSmoothGroupSchemeMulMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvMemConnectedComponentInFibreStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenSubgroupSchemeOfIsOpenStableStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenIdentityComponentsSmoothGroupSchemeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenSubgroupSchemeOfIsOpenStable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenIdentityComponentsSmoothGroupScheme
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
 
@@ -23,9 +23,9 @@ theorem unit_mem_identityComponents (S : Scheme.{0}) (G : Over S) [GrpObj G] (s 
 
 theorem identityComponentOpen : GlobalTheory.Published.IdentityComponentOpen := by
   intro S G _ hG
-  obtain ⟨G₀, i, j, h1, h2, h3⟩ := GlobalTheory.T.exists_openSubgroupScheme_of_isOpen_stable S G
+  obtain ⟨G₀, i, j, h1, h2, h3⟩ := _root_.GlobalTheory.OpenSubgroup.exists_open_subgroup S G
     {x : G.left | x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x))}
-    (GlobalTheory.T.isOpen_identityComponents_smooth_groupScheme S G hG) (unit_mem_identityComponents S G) (GlobalTheory.T.identityComponents_smooth_groupScheme_mul_mem S G hG) (GlobalTheory.T.inv_mem_identity_component_fibre S G)
+    (_root_.GlobalTheory.IdCompOpen.isOpen_identityComponent S G hG) (unit_mem_identityComponents S G) (_root_.GlobalTheory.IdCompMul.mul_mem S G hG) (GlobalTheory.T.inv_mem_identity_component_fibre S G)
   refine ⟨G₀, i, j, h1, h2, fun x => ?_⟩
   rw [h3]
   rfl

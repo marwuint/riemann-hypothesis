@@ -89,22 +89,11 @@ theorem anyFromNorm : LemmaBNorm → IntNormB → LemmaBAny := by
     exact h3 UU Θ hU hS hC F F' hF1 hF2 hs1 hs2 hI1 hI2 hI3 hI4
       (fun p hp T hT i j hij hj => (hIC p hp T hT i j hij hj).smul_measure_nnreal)
 
-theorem AB_pos (k r : ℕ) : 0 < AB k r := by
-  unfold AB
-  positivity
-
 end Formalism.FourierDecayAlt.P.BesselScaling
 
 namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
-
-theorem doubleB_of_components_true : Formalism.FourierDecayAlt.B2.LemmaBDoubleFromParts := by
-  intro hC hJ hD hI hX k r Wp Wq _ _ _ _ _ _ D A hA hF
-  have hAB : AB k r ≤ A := by
-    have := Formalism.FourierDecayAlt.P.BesselScaling.AB_pos k r
-    linarith
-  exact hC hX k r Wp Wq D A hAB hF (hJ k r Wp Wq D) (hD k r Wp Wq D) (hI hX k r Wp Wq D A hA)
 
 theorem lemma_b_from_xi_of_parts : Formalism.FourierDecayAlt.B2.LemmaBFromXiFromParts := by
   intro hC hJ hD hI hB hX

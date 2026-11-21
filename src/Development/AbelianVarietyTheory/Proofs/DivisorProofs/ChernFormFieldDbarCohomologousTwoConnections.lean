@@ -1,7 +1,7 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ChernDegreeComplex
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarCohomologousEvenFormsAlgebraClosedStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarCohomologousEvenFormsAlgebraClosed
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvaturePowerSumsDbarCohomologousStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernFormNewtonIdentitiesCurvaturePowerSumsStatement
 open CategoryTheory AlgebraicGeometry MvPolynomial MeasureTheory Filter Topology
@@ -15,7 +15,7 @@ namespace GlobalTheory.ChernCalc
 theorem dbarCoh_chernFld : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (r : Type) [Fintype r]
     [DecidableEq r] (G G' : M → M → Matrix r r ℂ), IsGramPair A G G' → ∀ j, DbarCoh A (chernFld A G j) (chernFld A G' j) := by
   intro M _ n A r _ _ G G' hG j
-  obtain ⟨h1, -, halg⟩ := GlobalTheory.T.dbarCohomologousEvenForms_algebra_closed M n A
+  obtain ⟨h1, -, halg⟩ := _root_.GlobalTheory.ChernCalc.dbarCoh_algebra M n A
   have hpow := GlobalTheory.T.curvaturePowerSums_dbarCohomologous M n A r G G' hG
   have hzero : DbarCoh A 0 0 := by
     have := (halg 0 1 1 1 1 h1 h1).1
@@ -49,7 +49,5 @@ theorem dbarCoh_chernFld : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : Ho
       refine hsum _ _ _ fun i hi => ?_
       refine (halg _ _ _ _ _ ?_ h1).1
       exact (halg 0 _ _ _ _ (hpow (i + 1)) (ih _ (by simp at hi; omega))).2.2
-
-example : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (r : Type) [Fintype r] [DecidableEq r] (G G' : M → M → Matrix r r ℂ), IsGramPair A G G' → ∀ j, DbarCoh A (chernFld A G j) (chernFld A G' j) := dbarCoh_chernFld
 
 end GlobalTheory.ChernCalc

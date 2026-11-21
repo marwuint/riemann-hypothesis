@@ -6,8 +6,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactOpenSubg
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitarisableDegenerateSeries
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NontrivialSubrepresentation
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleUnitarySemisimpleStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetInducedTwoCharactersStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedTwoCharactersNotScalarStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetInducedTwoCharacters
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedTwoCharactersNotScalar
 open GlobalTheory.PRep GlobalTheory.SmGL
 open scoped TensorProduct
 
@@ -33,7 +33,7 @@ theorem prod₂_detRep_isIrreducible :
   have hW' : W' ≠ ⊥ := by
     rintro rfl
     exact h.2 (eq_top_of_isCompl_bot hc)
-  exact GlobalTheory.T.induced_two_characters_not_scalar k a b χ₁ χ₂ W W' hc h.1 hW'
-    (GlobalTheory.T.jacquet_induced_two_characters k a b χ₁ χ₂ (hJ k) s₁ s₂ u₁ u₂ hne)
+  exact _root_.GlobalTheory.CompanionTheory.SplitFrob.not_dichotomy_det k a b χ₁ χ₂ W W' hc h.1 hW'
+    (_root_.GlobalTheory.CompanionTheory.SmGL.Bernstein.mackey_maps_proportional k a b χ₁ χ₂ (hJ k) s₁ s₂ u₁ u₂ hne)
 
 end GlobalTheory.CompanionTheory.SmGL.Bernstein

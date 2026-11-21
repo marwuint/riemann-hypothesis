@@ -6,8 +6,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobN
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactAverageKFiniteFiniteRank
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAndHasSumKAvg
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SobBdSeminorm
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KFiniteApproximateIdentity
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KAverageSmoothFunctional
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsCompactFiniteApproxIdentity
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyGrpData
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ModelsAreCoverSeries
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructure
@@ -20,18 +20,6 @@ open scoped Topology
 namespace GlobalTheory.CWGeneral
 
 variable {n : ℕ} {ε : Fin n → Bool}
-
-section Sub
-
-variable {E : Type} [AddCommGroup E] [Module ℂ E] [TopologicalSpace E] [IsTopologicalAddGroup E]
-
-open Classical in
-
-def subOp (π : Mx n → (E →L[ℂ] E)) (S : Set (Mx n)) (F : Submodule ℂ E)
-    (hinv : ∀ g ∈ S, ∀ x ∈ F, π g x ∈ F) (g : Mx n) : F →L[ℂ] F :=
-  if hg : g ∈ S then ((π g).comp F.subtypeL).codRestrict F (fun x => hinv g hg x x.2) else 0
-
-end Sub
 
 section KFin
 

@@ -77,38 +77,6 @@ theorem mem_of_ind_mem (hN : ∀ x, ∀ Φ ∈ N, (fun t => Φ (t + x)) ∈ N) (
         · exact ⟨s', hs', hu⟩
     simpa using add_mem this hm
 
-theorem exists_map_wave₂ {V : Type} [AddCommGroup V] [Module ℂ V] (h : IsBichar χ) {L L' : AddSubgroup G}
-    (hLL' : ∀ u ∈ L, ∀ y ∈ L', χ u y = 1) (hY : ∀ y, (∀ u ∈ L, χ u y = 1) → y ∈ L')
-    (ρ σ : G → V →ₗ[ℂ] V) (hρ : ∀ x x' f, ρ x (ρ x' f) = ρ (x + x') f) (hσ : ∀ x x' f, σ x (σ x' f) = σ (x + x') f)
-    (hc : ∀ x y f, ρ x (σ y f) = χ x y • σ y (ρ x f))
-    (f₀ : V) (hf : ∀ u ∈ L, ρ u f₀ = f₀) (hf' : ∀ u ∈ L', σ u f₀ = f₀) :
-    ∃ T : (G → ℂ) →ₗ[ℂ] V, ∀ x y, T (wave χ L x y) = ρ x (σ y f₀) := by
-  have hli := linearIndependent_wave (X := ⊤) (Y := ⊤) (L := L) (L' := L') h fun y _ => hY y
-  obtain ⟨T, hT⟩ := LinearMap.exists_extend ((Module.Basis.span hli).constr ℂ
-    fun i => ρ (i.1.out : (⊤ : AddSubgroup G)) (σ (i.2.out : (⊤ : AddSubgroup G)) f₀))
-  have hT' : ∀ i : ((⊤ : AddSubgroup G) ⧸ L.addSubgroupOf ⊤) × ((⊤ : AddSubgroup G) ⧸ L'.addSubgroupOf ⊤),
-      T (wave χ L (i.1.out : (⊤ : AddSubgroup G)) (i.2.out : (⊤ : AddSubgroup G))) =
-        ρ (i.1.out : (⊤ : AddSubgroup G)) (σ (i.2.out : (⊤ : AddSubgroup G)) f₀) := fun i => by
-    have := LinearMap.congr_fun hT (Module.Basis.span hli i)
-    rw [Module.Basis.constr_basis] at this
-    simpa using this
-  refine ⟨T, fun x y => ?_⟩
-  let p : (⊤ : AddSubgroup G) ⧸ L.addSubgroupOf ⊤ := QuotientAddGroup.mk ⟨x, trivial⟩
-  let q : (⊤ : AddSubgroup G) ⧸ L'.addSubgroupOf ⊤ := QuotientAddGroup.mk ⟨y, trivial⟩
-  have hp : -((p.out : (⊤ : AddSubgroup G)) : G) + x ∈ L :=
-    (QuotientAddGroup.eq (s := L.addSubgroupOf ⊤) (a := p.out) (b := ⟨x, trivial⟩)).1 p.out_eq'
-  have hq : -((q.out : (⊤ : AddSubgroup G)) : G) + y ∈ L' :=
-    (QuotientAddGroup.eq (s := L'.addSubgroupOf ⊤) (a := q.out) (b := ⟨y, trivial⟩)).1 q.out_eq'
-  have := hT' (p, q)
-  simp only at this
-  generalize ((p.out : (⊤ : AddSubgroup G)) : G) = x0 at *
-  generalize ((q.out : (⊤ : AddSubgroup G)) : G) = y0 at *
-  have ex : x = x0 + (-x0 + x) := by abel
-  have ey : y = y0 + (-y0 + y) := by abel
-  generalize -x0 + x = l at *
-  generalize -y0 + y = l' at *
-  rw [ex, ey, wave_add h hLL' _ _ hp hq, map_smul, this, ← hρ, ← hσ, hf' _ hq, hc l, hf _ hp, map_smul]
-
 end Abstract
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
@@ -154,70 +122,6 @@ theorem sb_le {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) {N : Su
     exact invariant_of_tsupport (fun u hu => (ha u hu).1) u hu _
   · obtain ⟨r, hr, h⟩ := hR _ ht
     exact Or.inr ⟨_, Finset.mem_image_of_mem _ hr, by convert h using 1; abel⟩
-
-theorem ind_box_mem (a : kˣ) : ind (box Y Y' a) ∈ SB (Matrix Y Y' k) := by
-  have hcl : IsClopen (box Y Y' a : Set (Matrix Y Y' k)) := ⟨AddSubgroup.isClosed_of_isOpen _ (isOpen_box a), isOpen_box a⟩
-  have e : ind (box Y Y' a) = (box Y Y' a : Set (Matrix Y Y' k)).indicator fun _ => (1 : ℂ) := by
-    funext t
-    by_cases ht : t ∈ box Y Y' a <;> simp [ind, ht]
-  rw [e]
-  exact ⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) hcl).isLocallyConstant,
-    HasCompactSupport.intro (isCompact_box a) fun x hx => Set.indicator_of_notMem hx _⟩
-
-theorem exists_embedding {V : Type} [AddCommGroup V] [Module ℂ V] {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
-    (ρ σ : Matrix Y Y' k → V →ₗ[ℂ] V) (hρ : ∀ x x' f, ρ x (ρ x' f) = ρ (x + x') f)
-    (hσ : ∀ x x' f, σ x (σ x' f) = σ (x + x') f)
-    (hc : ∀ x y f, ρ x (σ y f) = pairing ψ x y • σ y (ρ x f)) (P : Submodule ℂ V)
-    (hP : ∀ x, ∀ f ∈ P, ρ x f ∈ P) (hP' : ∀ y, ∀ f ∈ P, σ y f ∈ P) {g : V} (hg : g ∈ P) (g0 : g ≠ 0)
-    (hg1 : ∀ x ∈ box Y Y' (1 : kˣ), ρ x g = g)
-    (hg2 : ∀ y, (∀ x ∈ box Y Y' (1 : kˣ), pairing ψ x y = 1) → σ y g = g) :
-    ∃ T : (Matrix Y Y' k → ℂ) →ₗ[ℂ] V, ∀ Φ ∈ SB (Matrix Y Y' k), (T Φ = 0 → Φ = 0) ∧ T Φ ∈ P ∧
-      (∀ x, T (fun t => Φ (t + x)) = ρ x (T Φ)) ∧ ∀ y, T (fun t => pairing ψ t y * Φ t) = σ y (T Φ) := by
-  obtain ⟨d, hd⟩ := exists_hasConductor_of_continuous ψ hψ h1
-  have hb := isBichar_pairing (Y := Y) (Y' := Y') ψ
-  obtain ⟨T, hT⟩ := exists_map_wave₂ hb (L := box Y Y' 1) (L' := box Y Y' (d / 1))
-    (fun u hu y hy => pairing_box hd hu hy)
-    (fun y hy => by_contra fun hn => by
-      obtain ⟨x, hx, hne⟩ := exists_sep hd _ hn
-      rw [div_one, div_self'] at hx
-      exact hne ((pairing_comm ψ y x).trans (hy x hx)))
-    ρ σ hρ hσ hc g hg1 fun u hu => hg2 u fun x hx => pairing_box hd hx hu
-  have h0 : T (ind (box Y Y' 1)) = g := by
-    rw [← wave_zero hb, hT, hg2 0 fun x _ => hb.zero_right x, hg1 0 (zero_mem _)]
-  have hne : ind (box Y Y' (1 : kˣ)) ≠ 0 := fun e => g0 (by rw [← h0, e, map_zero])
-  have key : ∀ Φ ∈ waveSpan (pairing ψ) ⊤ ⊤ (box Y Y' (1 : kˣ)), T Φ ∈ P ∧
-      (∀ x, T (fun t => Φ (t + x)) = ρ x (T Φ)) ∧ ∀ y, T (fun t => pairing ψ t y * Φ t) = σ y (T Φ) := fun Φ hΦ => by
-    induction hΦ using Submodule.span_induction with
-    | mem _ hh =>
-      obtain ⟨a, -, b, -, rfl⟩ := hh
-      refine ⟨hT a b ▸ hP _ _ (hP' _ _ hg), fun x => ?_, fun y => ?_⟩
-      · rw [wave_trans, hT, hT, hρ]
-      · rw [wave_modul hb, map_smul, hT, hT, ← hσ, hc a y, smul_smul, hb.neg_mul, one_smul]
-    | zero =>
-      refine ⟨by rw [map_zero]; exact P.zero_mem, fun x => ?_, fun y => ?_⟩
-      · rw [map_zero, map_zero]; exact map_zero T
-      · rw [map_zero, map_zero, ← map_zero T]; congr 1; funext t; simp
-    | add f g _ _ hf hg =>
-      refine ⟨by rw [map_add]; exact P.add_mem hf.1 hg.1, fun x => ?_, fun y => ?_⟩
-      · rw [map_add, map_add, ← hf.2.1 x, ← hg.2.1 x, ← map_add]; rfl
-      · rw [map_add, map_add, ← hf.2.2 y, ← hg.2.2 y, ← map_add]; congr 1; funext t; simp [mul_add]
-    | smul c f _ hf =>
-      refine ⟨by rw [map_smul]; exact P.smul_mem c hf.1, fun x => ?_, fun y => ?_⟩
-      · rw [map_smul, map_smul, ← hf.2.1 x, ← map_smul]; rfl
-      · rw [map_smul, map_smul, ← hf.2.2 y, ← map_smul]; congr 1; funext t; simp [mul_left_comm]
-  have hle : SB (Matrix Y Y' k) ≤ waveSpan (pairing ψ) ⊤ ⊤ (box Y Y' (1 : kˣ)) :=
-    sb_le hd (fun x _ h => trans_mem h trivial) (fun y _ h => modul_mem hb h trivial) (ind_box_mem 1) hne
-      (Submodule.subset_span ⟨0, trivial, 0, trivial, (wave_zero hb).symm⟩)
-  refine ⟨T, fun Φ hΦ => ⟨fun hz => by_contra fun hn => g0 ?_, key Φ (hle hΦ)⟩⟩
-  have := sb_le hd (N := waveSpan (pairing ψ) ⊤ ⊤ (box Y Y' (1 : kˣ)) ⊓ LinearMap.ker T)
-    (fun x Ψ h => ⟨trans_mem h.1 trivial, by
-      change T _ = 0
-      rw [(key Ψ h.1).2.1, show T Ψ = 0 from h.2, map_zero]⟩)
-    (fun y Ψ h => ⟨modul_mem hb h.1 trivial, by
-      change T _ = 0
-      rw [(key Ψ h.1).2.2, show T Ψ = 0 from h.2, map_zero]⟩) hΦ hn ⟨hle hΦ, hz⟩ (ind_box_mem 1)
-  rw [← h0]
-  exact this.2
 
 end GlobalTheory.LocMod.Inhab
 end

@@ -1,5 +1,9 @@
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.TwistedConjugationNorms.HilbertNinetyNorms.ContrId
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantCosetTwistedConjugacyStatement
+import Mathlib
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantCosetTwistedConjugacy
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
 
 noncomputable section
 
@@ -28,7 +32,7 @@ theorem s2raw (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (n : ℕ) (b : GLw n
       cptPart (twCent (MonoidHom.id (UL n w)) γ) =
         twCent (MonoidHom.id (UL n w)) γ ⊓ (iwU n w b).map (MulAut.conj p₀).toMonoidHom ∧
       γ.1.val.charpoly = ∏ i, (X - C (u i : w.adicCompletion E)) := by
-  obtain ⟨p₀, u, h1, h2, h3, h4⟩ := GlobalTheory.T.dominant_coset_twisted_conjugacy E hU w hw n b hb ϖ hϖ l hl
+  obtain ⟨p₀, u, h1, h2, h3, h4⟩ := _root_.GlobalTheory.CompanionTheory.SuppCent.main E hU w hw n b hb ϖ hϖ l hl
     (fun y hy δ hδ => contr_id_pf w ϖ hϖ n y hy δ hδ) γ hγ
   refine ⟨p₀, u, h1, h2, h3, h4, charpoly_conj_diagT _ (p₀.1 * b) u ?_⟩
   have : γ.1 = p₀.1 * (p₀⁻¹ * γ * p₀).1 * p₀.1⁻¹ := by simp [mul_assoc]

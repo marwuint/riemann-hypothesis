@@ -87,20 +87,4 @@ theorem symIntAt (C0 CE1 CE2 : ℝ) : SymIntAt C0 CE1 CE2 := by
         (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) mm (β j)) (s j) (hs j)
     exact aeval_mem_intAlg O _ (fun v => (IntAlg O _).pow_mem (hX _) _) hsj
 
-theorem srcHalf_of' {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc H : ℝ} (hCm : 13 ≤ Cm) (hCt : 30 ≤ Ct)
-    (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
-    (h44 : Lemma44At C0 CYb Cde Ck CD Cb CE1 CE2 Cc) (hP : PlaneAt) :
-    SrcHalfAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc :=
-  srcHalf_of hCm hCt hstd h44 monoAt hP (symIntAt C0 CE1 CE2)
-
-theorem restSrcHalf_of (h44 : BinomialRatioBeyondThreshold) (hP : PlaneAt) :
-    TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => ∃ Ct0 : ℝ, 0 < Ct0 ∧ ∀ Ct : ℝ, Ct0 ≤ Ct →
-      SrcHalfAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc := by
-  have h13 : TransportedAlt fun _ _ _ _ _ _ _ _ Cm _ => (13 : ℝ) ≤ Cm :=
-    TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 13) (fun _ _ _ _ _ => 1)
-      fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h _ _ _ _ _ _ _ _ _ _ => h
-  refine TransportedAlt.mono ?_ ((thr_std.and h44).and h13)
-  rintro C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨⟨_, hstd⟩, h4⟩, hCm⟩
-  exact ⟨30, by norm_num, fun Ct hCt => srcHalf_of' hCm hCt hstd h4 hP⟩
-
 end Formalism.MainNotions.ColumnSystems.Pf

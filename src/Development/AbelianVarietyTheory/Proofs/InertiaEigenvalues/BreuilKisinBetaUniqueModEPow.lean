@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinImagePowIdealAinfPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElemCyclotomicPeriodNotRootOfUnityStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElemCyclotomicPeriodNotRootOfUnity
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfDivisibilityBreuilKisinFacts
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
@@ -86,7 +86,7 @@ theorem GlobalTheory.BKLim.beta_unique : ∀ (l : ℕ) [Fact l.Prime] (K : FinEx
   intro l _ K bk m N d ρ F k k' β β' hβ hβ'
   rcases Nat.eq_zero_or_pos m with rfl | hm
   · intro i j; simp
-  obtain ⟨g, z, ⟨w, hw, hz⟩, hzi⟩ := GlobalTheory.T.exists_galois_elem_cyclotomic_period_not_root_of_unity l K bk
+  obtain ⟨g, z, ⟨w, hw, hz⟩, hzi⟩ := _root_.GlobalTheory.BKLim.exists_isZ_not_root l K bk
   have hwi : ∀ i : ℕ, 1 ≤ i → Per.θ l w ^ i ≠ 1 := by
     intro i hi h
     have h1 : Per.θD l (aDp l w) = (Per.θ l w : ℂ_[l]) := (GlobalTheory.MemLoc.thetaD_props l).2.2.2.1 w

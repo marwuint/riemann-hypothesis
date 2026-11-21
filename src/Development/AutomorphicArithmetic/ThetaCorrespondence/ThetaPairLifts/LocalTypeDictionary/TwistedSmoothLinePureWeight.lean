@@ -2,7 +2,14 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelGoodLineAction
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.PureTensorThetaSmoothAlongLine
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelGoodLineActionStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerSkewPlaneUniqueDual
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartz
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
+import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityUnitary
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualityReal
 
 section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField Matrix
@@ -28,7 +35,7 @@ theorem GlobalTheory.Twist.twist_smoothLine_isPure : _root_.GlobalTheory.FunPr.T
       (∀ t : ℝ, om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c t) φ) ∧
       Tendsto (fun t : ℝ => t⁻¹ • (c t - c 0)) (𝓝[≠] 0) (𝓝 g) := by
   intro hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hCM hψ hM hW γ hγ f φ hφ hv
-  have h1 := fun t : ℝ => GlobalTheory.T.archimedeanPoint_pureTensor_keeps_finiteFactor M ψ χX χW om hψ hM hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f φ hφ hv
+  have h1 := fun t : ℝ => _root_.GlobalTheory.ArchPure.pure_arch M ψ χX χW om hψ hM hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f φ hφ hv
   choose c hc using h1
   by_cases h : ∃ y : Fin n × Fin d → AF F, ∏ᶠ v, φ v (fun i => evFin F v (y i)) ≠ 0
   · obtain ⟨g, hg⟩ := _root_.GlobalTheory.T.pure_tensor_theta_smooth_along_line hP M ψ χX χW om hCM hψ hM hW γ hγ f φ hφ hv h c hc

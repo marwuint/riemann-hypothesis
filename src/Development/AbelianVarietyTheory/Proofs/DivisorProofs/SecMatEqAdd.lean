@@ -1,5 +1,6 @@
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableToGLEntry
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentLowerRowsLeviSetClosedSubgroupStatement
+import Mathlib
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentLowerRowsLeviSetClosedSubgroup
 open MeasureTheory GlobalTheory.JSW
 open scoped FourierTransform ContDiff
 
@@ -96,7 +97,7 @@ theorem secMat_main : ∀ (n : ℕ) (ρ j : Fin n), j ≤ ρ → (∀ v : Fin n 
     · rw [hSv, Matrix.of_apply, secMat_of_ne _ _ _ hiρ.ne', swap_of_lt' hj hiρ, if_neg hl.ne]
     · rw [hSv, Matrix.of_apply, secMat_of_ne _ _ _ hiρ.ne', swap_of_lt' hj hiρ, if_pos rfl]
   have hp : g * S⁻¹ ∈ levSet n (ρ + 1) :=
-    (GlobalTheory.T.unipotentLowerRowsLeviSet_closed_subgroup n (ρ + 1)).1 g hg _ ((GlobalTheory.T.unipotentLowerRowsLeviSet_closed_subgroup n (ρ + 1)).2.1 S hSlev)
+    (_root_.GlobalTheory.JSW.levSet_closed_subgroup n (ρ + 1)).1 g hg _ ((_root_.GlobalTheory.JSW.levSet_closed_subgroup n (ρ + 1)).2.1 S hSlev)
   set P := ((g * S⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) with hPdef
   have hPS : P * Matrix.of (secMat ρ j v) = (g : Matrix (Fin n) (Fin n) ℂ) := by
     rw [← hSv, hPdef, ← Units.val_mul, inv_mul_cancel_right]

@@ -175,30 +175,6 @@ theorem re_star_dot_hessC {D : ℕ} (φ : (Fin D → ℂ) → ℝ) (z x : Fin D 
     ring
   rw [hL, hR]
 
-theorem hessC_posDef {D : ℕ} (φ : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hφ : ContDiffAt ℝ 2 φ z)
-    (hpos : ∀ w : Fin D → ℂ, w ≠ 0 → 0 < levi φ z w) : (hessC φ z).PosDef := by
-  have hH := ReciprocityTheory.AnForm.A.hessC_isHermitian φ z hφ
-  refine Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_
-  have hw : star x ≠ 0 := star_ne_zero.2 hx
-  have him := hH.im_star_dotProduct_mulVec_self x
-  rw [Complex.lt_def]
-  refine ⟨?_, ?_⟩
-  · rw [Complex.zero_re, re_star_dot_hessC]
-    exact hpos _ hw
-  · rw [Complex.zero_im]
-    exact him.symm
-
-theorem locDensPos : LocDensPosStatement := by
-  intro e X _ A Φ hΦ hpos j y hy
-  have hPD : ∀ i, (hessC (fun y' => (Φ i).φ ((A.chart j).symm y) ((A.chart j).symm y')) y).PosDef :=
-    fun i => hessC_posDef _ y (potSmoothAt A (Φ i) (hΦ i) _ j ⟨hy, (Φ i).mem_U _⟩)
-      (fun w hw => hpos i _ j y ⟨hy, (Φ i).mem_U _⟩ w hw)
-  have hm := (ReciprocityTheory.AnForm.A.mdisc_pos_of_posDef
-    (fun i => hessC (fun y' => (Φ i).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) hPD).2
-  have hpi : 0 < (2 / Real.pi) := div_pos two_pos Real.pi_pos
-  have hf : (0 : ℝ) < (e.factorial : ℝ) := by exact_mod_cast Nat.factorial_pos e
-  exact mul_pos (mul_pos hf (pow_pos hpi e)) hm
-
 end
 
 end ReciprocityTheory.AnForm.M

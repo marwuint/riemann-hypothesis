@@ -455,15 +455,6 @@ theorem redFn_frGL (β : GL (Fin n) (E ⊗[F] Af F)) (PP : Pl E) (y : GL (Fin n)
   show bc (resS F PP) (pullFr β ⟨frGL β y, ⟨y, rfl⟩⟩) = _
   rw [pullFr_frGL]
 
-theorem redFn_int (PP : Pl E) (g : GL (Fin n) (𝓞 E)) :
-    redFn (1 : GL (Fin n) (E ⊗[F] Af F)) PP (intGL F E n (bc (oToS F E) g)) = bc (Ideal.Quotient.mk PP.asIdeal) g := by
-  have h : intGL F E n (bc (oToS F E) g) = frGL 1 (bc (oToS F E) g) := by
-    simp [frGL]
-  rw [h, redFn_frGL]
-  apply Units.ext
-  ext i j
-  exact resS_oToS PP _
-
 def IsFrame (β : GL (Fin n) (E ⊗[F] Af F)) (Λ : Submodule (𝓞 E) (Fin n → E)) : Prop :=
   ∀ x : Fin n → E ⊗[F] Af F, x ∈ hatL (F := F) Λ ↔
     ∀ i, ((β⁻¹ : GL (Fin n) (E ⊗[F] Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)).mulVec x i ∈ intAf F E
@@ -523,9 +514,6 @@ structure IsDefUnimod (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (L : Subm
   tdef : IsTotDef hc.sig J
   lat : Submodule.IsLattice E L
   selfdual : dualSet (hc.sig : E →+* E) J L = (L : Set (Fin n → E))
-
-def IsPosUnimod (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) : Prop :=
-  IsDefUnimod hc J L ∧ IsTotPosDef hc.sig J
 
 abbrev UR (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) : Subgroup (GL (Fin n) E) := UJ (hc.sig : E →+* E) J
 
@@ -800,12 +788,6 @@ def datV (r t j : ℕ) (Pg Q : Finset (Pl E)) (P : LevelP Pg r LL) (χ : ℕ →
   cg := fun _ PP => (χ j PP)⁻¹
   xq := ξ
 
-abbrev levX (hc : CMData F E) (r t m : ℕ) (J : Matrix (Fin (r + m * t)) (Fin (r + m * t)) E)
-    (β : GL (Fin (r + m * t)) (E ⊗[F] Af F)) (Pg Q : Finset (Pl E)) (P : LevelP Pg r LL)
-    (χ : ℕ → ∀ PP : Pl E, (kP PP)ˣ →* LLˣ) (ξ : ∀ PP : Pl E, (kP PP)ˣ →* LLˣ) :
-    Subgroup (GL (Fin (r + m * t)) (E ⊗[F] Af F)) :=
-  lev hc J β (datX r t m Pg Q P χ ξ)
-
 abbrev levV (hc : CMData F E) (r t j : ℕ) (J : Matrix (Fin (r + t)) (Fin (r + t)) E)
     (β : GL (Fin (r + t)) (E ⊗[F] Af F)) (Pg Q : Finset (Pl E)) (P : LevelP Pg r LL)
     (χ : ℕ → ∀ PP : Pl E, (kP PP)ˣ →* LLˣ) (ξ : ∀ PP : Pl E, (kP PP)ˣ →* LLˣ) :
@@ -840,11 +822,6 @@ theorem conjIn_apply (y : GL (Fin n) (E ⊗[F] Af F)) (γ : UR hc J) :
 
 def Gam (c : Cl hc J K) : Subgroup (UR hc J) :=
   K.comap (conjIn hc J ((rep c : UA hc J) : GL (Fin n) (E ⊗[F] Af F)))
-
-def gamTo (c : Cl hc J K) : Gam c →* K :=
-  ((conjIn hc J ((rep c : UA hc J) : GL (Fin n) (E ⊗[F] Af F))).comp (Gam c).subtype).codRestrict K (fun x => x.2)
-
-def gamChar {LL : Type} [CommRing LL] (lam : K →* LLˣ) (c : Cl hc J K) : Gam c →* LLˣ := lam.comp (gamTo c)
 
 def minkExp (N p : ℕ) : ℕ := ∑ i ∈ Finset.range (N + 1), N / (p ^ i * (p - 1))
 

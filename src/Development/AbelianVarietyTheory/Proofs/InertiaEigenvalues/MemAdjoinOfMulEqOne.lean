@@ -1,6 +1,6 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitBasePointAdjoinTwistedSigmaStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnitBasePointAdjoinTwistedSigma
 
 namespace GlobalTheory.UnitLemma.TwistUnit
 
@@ -118,7 +118,7 @@ theorem twisted_unit_eq_unit : ∀ (K : UQ) (B : InvAlg K), B.g * B.σ B.g = 1 �
         {L : Submodule K.O B.A | IsLat K.O K.E L ∧ ∀ z, z ∈ L ↔ ∀ y ∈ L,
           B.herm (β₀ * x) y z ∈ (algebraMap K.O K.E).range} = B.X x := by
   intro K B hg hs hi ε hε
-  obtain ⟨β₀, hβ, hb1, hb2⟩ := GlobalTheory.T.exists_unit_basePoint_adjoin_twisted_sigma K B hg hs hi ε hε
+  obtain ⟨β₀, hβ, hb1, hb2⟩ := _root_.GlobalTheory.UnitLemma.UnitBase.exists_unit_base K B hg hs hi ε hε
   refine ⟨β₀, hβ, fun x hx => ?_⟩
   set R := (algebraMap K.O K.E).range with hR
   set T := Algebra.trace K.E B.A with hT

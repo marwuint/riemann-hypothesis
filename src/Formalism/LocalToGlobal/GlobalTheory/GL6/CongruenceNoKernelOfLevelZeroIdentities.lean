@@ -43,33 +43,6 @@ theorem trace_zero_of_norm_zero_level_zero (ht : TraceDiamondInvariantLevelZero 
   rw [← Nat.cast_smul_eq_nsmul ℂ] at h1
   exact (smul_eq_zero.1 h1).resolve_left hc
 
-theorem hecke_ramified_zero_of_identities (Tf : FormsTied D u) (hT : (D.mem u).A.T ≠ 0) (hc : DiamondCommutesLevelZero D u)
-    (ht : TraceDiamondInvariantLevelZero D u) (h6 : DUFormulaLevelZero D u) : HeckeRamifiedLevelZero D u := by
-  intro v φ hφ
-  have hU : ∀ ψ ∈ MramI D u 0, Uop D u 0 v ψ ∈ MramI D u 0 := by
-    intro ψ hψ; rw [mem_ramified_forms_iff] at hψ ⊢
-    refine ⟨U_op_preserves_forms_level_zero Tf v ψ hψ.1, fun v' => ?_⟩
-    rw [(norm_commutes_hecke_level_zero hc v v' ψ hψ.1).1, hψ.2 v', map_zero]
-  have hD : ∀ ψ ∈ MramI D u 0, Dop D u 0 v ψ ∈ MramI D u 0 := by
-    intro ψ hψ; rw [mem_ramified_forms_iff] at hψ ⊢
-    refine ⟨D_op_preserves_forms_level_zero Tf v ψ hψ.1, fun v' => ?_⟩
-    rw [(norm_commutes_hecke_level_zero hc v v' ψ hψ.1).2, hψ.2 v', map_zero]
-  have hDU : ∀ ψ ∈ MramI D u 0, Dop D u 0 v (Uop D u 0 v ψ) = ((D.mem u).A.T : ℂ) ^ (D.R.N 0 - 1) • ψ := by
-    intro ψ hψ
-    have hψ' := (mem_ramified_forms_iff D u ψ).1 hψ
-    rw [h6 v ψ hψ'.1, hψ'.2 v, trace_zero_of_norm_zero_level_zero ht v ψ hψ'.1 (hψ'.2 v), smul_zero, sub_zero, add_zero]
-  have := ramified_forms_finite_dimensional D u 0
-  have hc0 : ((D.mem u).A.T : ℂ) ^ (D.R.N 0 - 1) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 hT)
-  exact ⟨hU φ hφ, hD φ hφ, U_D_of_D_U_on_finite_dim (MramI D u 0) (Uop D u 0 v) (Dop D u 0 v) _ hc0 hU hDU φ hφ⟩
-
-theorem congruence_no_kernel_of_level_zero_identities
-    (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → HidaSetting D u → admS D u →
-      HeckeIntegralLevelZero D u ∧ DiamondCommutesLevelZero D u ∧ TraceDiamondInvariantLevelZero D u ∧ DUFormulaLevelZero D u ∧ SecondBranchInclusionLength D u) : CongruenceLatticeLengthBoundFamily :=
-  congruence_no_kernel_family_minimal fun D u hT hS hA => by
-    obtain ⟨h4, hc, ht, h6, hB⟩ := h D u hT hS hA
-    obtain ⟨Tf, -⟩ := hT
-    exact ⟨h4, hecke_ramified_zero_of_identities Tf (by have := hS.1; omega) hc ht h6, hB⟩
-
 end UnramifiedDiagonal
 
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
